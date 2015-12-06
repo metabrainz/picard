@@ -8,7 +8,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2015-09-15 15:15+0000\n"
+"PO-Revision-Date: 2015-11-28 14:49+0000\n"
 "Last-Translator: Maurits Meulenbelt <mfmeulenbelt@gmail.com>\n"
 "Language-Team: Dutch (http://www.transifex.com/musicbrainz/musicbrainz/language/nl/)\n"
 "MIME-Version: 1.0\n"
@@ -23,7 +23,7 @@ msgid ""
 "\"Motet\" is a term that applies to different types of (usually "
 "unaccompanied) choral works. What exactly is a motet depends quite a bit on "
 "the period."
-msgstr "Motet is een benaming die wordt gebruikt om verschillende soorten gezongen composities aan te duiden. Meestal worden motetten niet door een instrument begeleid. Wat precies als een motet wordt beschouwd hangt af van de periode."
+msgstr "Met motet worden verschillende soorten gezongen composities aangeduid. Meestal worden motetten niet door een instrument begeleid. Wat precies als een motet wordt beschouwd, hangt af van de periode."
 
 #: DB:work_type/description:5
 msgctxt "work_type"
@@ -99,7 +99,7 @@ msgctxt "work_type"
 msgid ""
 "A ballet is music composed to be used, together with a choreography, for a "
 "ballet dance production."
-msgstr "Een ballet is muziek die gecomponeerd is om samen met choreografie te worden gebruikt in een balletvoorstelling."
+msgstr "Een ballet is muziek die is gecomponeerd om samen met choreografie te worden gebruikt in een balletvoorstelling."
 
 #: DB:work_type/description:3
 msgctxt "work_type"
@@ -206,7 +206,7 @@ msgid ""
 "A place whose main purpose is to host outdoor sport events, typically "
 "consisting of a pitch surrounded by a structure for spectators with no roof,"
 " or a roof which can be retracted."
-msgstr "Een plaats die als belangrijkste functie open lucht sportevenementen heeft. Meestal bestaat het uit een veld met daaromheen een gebouw voor toeschouwers zonder dak, of een dak dat kan worden ingetrokken."
+msgstr "Een plaats die als belangrijkste functie sportevenementen in de open lucht heeft. Meestal bestaat het uit een veld met daaromheen een gebouw voor toeschouwers zonder dak, of een dak dat kan worden ingetrokken."
 
 #: DB:work_type/description:28
 msgctxt "work_type"
@@ -517,7 +517,7 @@ msgid ""
 "An unofficial/underground release that was not sanctioned by the artist "
 "and/or the record company. This includes unofficial live recordings and "
 "pirated releases."
-msgstr "Een onofficiële- of underground-uitgave waar geen toestemming voor is gegeven door de artiest en/of de platenmaatschappij. Hieronder vallen ook onofficiële liveopnames en illegaal verspreide uitgaves."
+msgstr "Een onofficiële of underground uitgave waar geen toestemming voor is gegeven door de artiest en/of de platenmaatschappij. Hieronder vallen ook onofficiële liveopnames en illegaal verspreide uitgaves."
 
 #: DB:work_type/description:20
 msgctxt "work_type"
@@ -1845,7 +1845,7 @@ msgstr "Fer"
 #: DB:work_attribute_type_allowed_value/value:733
 msgctxt "work_attribute_type_allowed_value"
 msgid "Fer'i Muhammes"
-msgstr "Fer'i Muhammes"
+msgstr "Fer’i Muhammes"
 
 #: DB:work_attribute_type_allowed_value/value:367
 msgctxt "work_attribute_type_allowed_value"
@@ -2803,7 +2803,7 @@ msgstr "Kuntalavarāḷi"
 #: DB:work_attribute_type_allowed_value/value:633
 msgctxt "work_attribute_type_allowed_value"
 msgid "Kur'an-ı Kerim"
-msgstr "Kur'an-ı Kerim"
+msgstr "Kur’an-ı Kerim"
 
 #: DB:work_attribute_type_allowed_value/value:156
 msgctxt "work_attribute_type_allowed_value"
@@ -3318,7 +3318,7 @@ msgctxt "work_type"
 msgid ""
 "Musical theatre is a form of theatrical performance that combines songs, "
 "spoken dialogue, acting, and dance."
-msgstr ""
+msgstr "Een musical is een vorm van theater waarin liedjes, gesproken dialogen, acteerwerk en dans gecombineerd worden."
 
 #: DB:work_attribute_type_allowed_value/value:748
 msgctxt "work_attribute_type_allowed_value"

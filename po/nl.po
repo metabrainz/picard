@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2015-02-06 13:01+0100\n"
-"PO-Revision-Date: 2015-02-10 10:36+0000\n"
+"PO-Revision-Date: 2015-11-14 17:54+0000\n"
 "Last-Translator: Maurits Meulenbelt <mfmeulenbelt@gmail.com>\n"
 "Language-Team: Dutch (http://www.transifex.com/musicbrainz/musicbrainz/language/nl/)\n"
 "MIME-Version: 1.0\n"
@@ -24,7 +24,7 @@ msgstr ""
 
 #: contrib/plugins/albumartist_website.py:3
 msgid "Album Artist Website"
-msgstr "Website van de albumartiest"
+msgstr "Website van de artiest van het album"
 
 #: contrib/plugins/no_release.py:50
 msgid "Enable plugin for all releases by default"
@@ -117,7 +117,7 @@ msgstr "Albumgain aan het berekenen …"
 #: contrib/plugins/replaygain/__init__.py:124
 #, python-format
 msgid "Calculating album gain for \"%(album)s\"..."
-msgstr "Albumgain voor ‘%(album)s’ aan het berekenen …"
+msgstr "Albumgain voor ‘%(album)s’ wordt berekend …"
 
 #: contrib/plugins/replaygain/__init__.py:135
 #, python-format
@@ -201,11 +201,11 @@ msgstr "AcoustID zoekactie gaf geen resultaat voor ‘%(filename)s’"
 #: picard/acoustid.py:168
 #, python-format
 msgid "Looking up the fingerprint for file '%(filename)s' ..."
-msgstr "Opzoeken van vingerafdruk voor bestand ‘%(filename)s’ …"
+msgstr "Vingerafdruk voor bestand ‘%(filename)s’ wordt opgezocht …"
 
 #: picard/acoustidmanager.py:81
 msgid "Submitting AcoustIDs ..."
-msgstr "AcoustID’s aan het versturen …"
+msgstr "AcoustID’s worden verstuurd …"
 
 #: picard/acoustidmanager.py:95
 #, python-format
@@ -233,7 +233,7 @@ msgstr "Album %(id)s geladen: %(artist)s - %(album)s"
 #: picard/album.py:314
 #, python-format
 msgid "Loading album %(id)s ..."
-msgstr "Album %(id)s aan het laden …"
+msgstr "Album %(id)s wordt geladen …"
 
 #: picard/album.py:318
 msgid "[loading album information]"
@@ -259,7 +259,7 @@ msgstr "Cluster %(album)s geïdentificeerd!"
 #: picard/cluster.py:194
 #, python-format
 msgid "Looking up the metadata for cluster %(album)s..."
-msgstr "Metadata voor cluster %(album)s aan het opzoeken …"
+msgstr "Metadata voor cluster %(album)s wordt opgezocht …"
 
 #: picard/collection.py:64
 #, python-format
@@ -288,14 +288,14 @@ msgstr "Het verwijderen van het benoemingsstelsel voor diverse artiesten"
 msgid ""
 "The separate file naming scheme for various artists albums has been removed in this version of Picard.\n"
 "Your file naming scheme has automatically been merged with that of single artist albums."
-msgstr "Het aparte stelsel om albums van diverse artiesten te benoemen is in deze versie van Picard verwijderd.\nUw stelsel is automatisch samengevoegd met het stelsel voor albums van één artiest."
+msgstr "Het aparte stelsel om albums van diverse artiesten te hernoemen, is in deze versie van Picard verwijderd.\nJe stelsel is automatisch samengevoegd met het stelsel voor albums van één artiest."
 
 #: picard/config_upgrade.py:72
 msgid ""
 "The separate file naming scheme for various artists albums has been removed in this version of Picard.\n"
 "You currently do not use this option, but have a separate file naming scheme defined.\n"
 "Do you want to remove it or merge it with your file naming scheme for single artist albums?"
-msgstr "Het aparte stelsel om albums van diverse artiesten te benoemen is in deze versie van Picard verwijderd.\nU gebruikt deze optie nu niet, maar u heeft wel een apart stelsel gedefinieerd. Wilt u deze verwijderen of samenvoegen met uw stelsel voor het benoemen van albums van één artiest?"
+msgstr "Het aparte stelsel om albums van diverse artiesten te hernoemen, is in deze versie van Picard verwijderd.\nJe gebruikt deze optie nu niet, maar je hebt wel een apart stelsel gedefinieerd. Wil je deze verwijderen of samenvoegen met je stelsel voor het hernoemen van albums van één artiest?"
 
 #: picard/config_upgrade.py:78
 msgid "Merge"
@@ -323,7 +323,7 @@ msgstr "Bestand ‘%(filename)s’ geïdentificeerd!"
 #: picard/file.py:549
 #, python-format
 msgid "Looking up the metadata for file %(filename)s ..."
-msgstr "Metadata voor het bestand %(filename)s aan het opzoeken …"
+msgstr "Metadata voor het bestand %(filename)s wordt opgezocht …"
 
 #: picard/releasegroup.py:53
 msgid "Tracks"
@@ -361,8 +361,8 @@ msgstr "[geen uitgave-informatie]"
 #, python-format
 msgid "Adding %(count)d file from '%(directory)s' ..."
 msgid_plural "Adding %(count)d files from '%(directory)s' ..."
-msgstr[0] "%(count)d bestand van '%(directory)s' aan het toevoegen …"
-msgstr[1] "%(count)d bestanden van ‘%(directory)s’ aan het toevoegen …"
+msgstr[0] "%(count)d bestand uit ‘%(directory)s’ aan het toevoegen …"
+msgstr[1] "%(count)d bestanden uit ‘%(directory)s’ wordt toegevoegd …"
 
 #: picard/tagger.py:531
 #, python-format
@@ -446,7 +446,7 @@ msgstr "Afbeelding van het type ‘%(type)s’ voor %(albumid)s van %(host)s gel
 #, python-format
 msgid ""
 "Downloading cover art of type '%(type)s' for %(albumid)s from %(host)s ..."
-msgstr "Afbeelding van het type ‘%(type)s’ voor %(albumid)s van %(host)s aan het laden …"
+msgstr "Afbeelding van het type ‘%(type)s’ voor %(albumid)s van %(host)s wordt geladen …"
 
 #: picard/coverart/utils.py:31
 msgid "Unknown"
@@ -675,7 +675,7 @@ msgstr "Niet opgeslagen wijzigingen"
 
 #: picard/ui/mainwindow.py:157
 msgid "Are you sure you want to quit Picard?"
-msgstr "Weet u zeker dat u Picard wilt afsluiten?"
+msgstr "Weet je zeker dat je Picard wil afsluiten?"
 
 #: picard/ui/mainwindow.py:158
 #, python-format
@@ -699,7 +699,7 @@ msgid ""
 "Picard listens on this port to integrate with your browser. When you "
 "\"Search\" or \"Open in Browser\" from Picard, clicking the \"Tagger\" "
 "button on the web page loads the release into Picard."
-msgstr "Picard luistert naar deze poort om met uw browser te integreren. Nadat u vanuit Picard op “Zoeken” of “Opzoeken in de browser” hebt geklikt, wordt een uitgave in Picard geladen als u in de browser op “Tagger” klikt."
+msgstr "Picard luistert naar deze poort om met je browser te integreren. Nadat je vanuit Picard op “Zoeken” of “Opzoeken in de browser” hebt geklikt, kan je een uitgave in Picard laden als je in je browser op “Tagger” klikt."
 
 #: picard/ui/mainwindow.py:244
 #, python-format
@@ -714,11 +714,11 @@ msgstr "Verzendfout"
 msgid ""
 "You need to configure your AcoustID API key before you can submit "
 "fingerprints."
-msgstr "U moet uw AcoustID API sleutel invoeren voor u vingerafdrukken kan versturen."
+msgstr "Je moet je API-sleutel voor AcoustID invoeren voor je vingerafdrukken kan versturen."
 
 #: picard/ui/mainwindow.py:306
 msgid "&Options..."
-msgstr "&Opties …"
+msgstr "&Opties"
 
 #: picard/ui/mainwindow.py:310
 msgid "&Cut"
@@ -730,27 +730,27 @@ msgstr "&Plakken"
 
 #: picard/ui/mainwindow.py:320
 msgid "&Help..."
-msgstr "&Help …"
+msgstr "&Help"
 
 #: picard/ui/mainwindow.py:324
 msgid "&About..."
-msgstr "&Info …"
+msgstr "&Info"
 
 #: picard/ui/mainwindow.py:328
 msgid "&Donate..."
-msgstr "&Doneer …"
+msgstr "&Doneer"
 
 #: picard/ui/mainwindow.py:331
 msgid "&Report a Bug..."
-msgstr "&Rapporteer een bug …"
+msgstr "&Rapporteer een bug"
 
 #: picard/ui/mainwindow.py:334
 msgid "&Support Forum..."
-msgstr "&Ondersteuningsforum …"
+msgstr "&Ondersteuningsforum"
 
 #: picard/ui/mainwindow.py:337
 msgid "&Add Files..."
-msgstr "&Bestanden toevoegen …"
+msgstr "&Bestanden toevoegen"
 
 #: picard/ui/mainwindow.py:338
 msgid "Add files to the tagger"
@@ -758,7 +758,7 @@ msgstr "Bestanden aan de tagger toevoegen"
 
 #: picard/ui/mainwindow.py:343
 msgid "A&dd Folder..."
-msgstr "&Map toevoegen …"
+msgstr "&Map toevoegen"
 
 #: picard/ui/mainwindow.py:344
 msgid "Add a folder to the tagger"
@@ -826,11 +826,11 @@ msgstr "&Zoeken"
 
 #: picard/ui/mainwindow.py:393
 msgid "Lookup &CD..."
-msgstr "&CD opzoeken …"
+msgstr "&CD opzoeken"
 
 #: picard/ui/mainwindow.py:394
 msgid "Lookup the details of the CD in your drive"
-msgstr "Zoek de detail van de cd in uw cd-speler op."
+msgstr "Zoek details van de cd in je cd-speler op."
 
 #: picard/ui/mainwindow.py:396
 msgid "Ctrl+K"
@@ -866,7 +866,7 @@ msgstr "Ctrl+L"
 
 #: picard/ui/mainwindow.py:420
 msgid "&Info..."
-msgstr "&Info …"
+msgstr "&Info"
 
 #: picard/ui/mainwindow.py:423
 msgid "Ctrl+I"
@@ -894,7 +894,7 @@ msgstr "&Tags opslaan"
 
 #: picard/ui/mainwindow.py:445
 msgid "Tags From &File Names..."
-msgstr "&Tags vanuit bestandsnamen …"
+msgstr "&Tags vanuit bestandsnamen"
 
 #: picard/ui/mainwindow.py:449
 msgid "&Open My Collections in Browser"
@@ -922,7 +922,7 @@ msgstr "Open de bevattende &map"
 
 #: picard/ui/mainwindow.py:469
 msgid "Open the containing folder in your file explorer"
-msgstr "Open de folder met het bestand in uw verkenner"
+msgstr "Open de folder met het bestand in je verkenner"
 
 #: picard/ui/mainwindow.py:498
 msgid "&File"
@@ -963,12 +963,12 @@ msgstr "Alle ondersteunde formaten"
 #: picard/ui/mainwindow.py:701
 #, python-format
 msgid "Adding directory: '%(directory)s' ..."
-msgstr "Map ‘%(directory)s’ aan het toevoegen …"
+msgstr "Map ‘%(directory)s’ wordt toegevoegd …"
 
 #: picard/ui/mainwindow.py:708
 #, python-format
 msgid "Adding multiple directories from '%(directory)s' ..."
-msgstr "Meerdere mappen van ‘%(directory)s’ aan het toevoegen …"
+msgstr "Meerdere mappen uit ‘%(directory)s’ worden toegevoegd …"
 
 #: picard/ui/mainwindow.py:773
 msgid "Configuration Required"
@@ -978,7 +978,7 @@ msgstr "Configuratie vereist"
 msgid ""
 "Audio fingerprinting is not yet configured. Would you like to configure it "
 "now?"
-msgstr "Het nemen van audiovingerafdrukken is nog niet ingesteld. Wilt u het nu instellen?"
+msgstr "Het nemen van audiovingerafdrukken is nog niet ingesteld. Wil je het nu instellen?"
 
 #: picard/ui/mainwindow.py:860
 #, python-format
@@ -1008,7 +1008,7 @@ msgstr "Machtiging vereist"
 msgid ""
 "Picard needs authorization to access your personal data on the MusicBrainz "
 "server. Would you like to log in now?"
-msgstr "Picard heeft een machtiging nodig om toegang te krijgen tot uw persoonlijke gegevens op de server van MusicBrainz. Wilt u zich nu aanmelden?"
+msgstr "Picard heeft een machtiging nodig om toegang te krijgen tot je persoonlijke gegevens op de server van MusicBrainz. Wil je je nu aanmelden?"
 
 #: picard/ui/metadatabox.py:82
 #, python-format
@@ -1026,7 +1026,7 @@ msgstr[1] "(ontbrekend bij %d objecten)"
 
 #: picard/ui/metadatabox.py:154
 msgid "metadata view"
-msgstr "metagegevens-overzicht"
+msgstr "overzicht van metagegevens"
 
 #: picard/ui/metadatabox.py:155
 msgid "Displays original and new tags for the selected files"
@@ -1046,7 +1046,7 @@ msgstr "Nieuwe waarde"
 
 #: picard/ui/metadatabox.py:181
 msgid "Add New Tag..."
-msgstr "Nieuwe tag toevoegen …"
+msgstr "Nieuwe tag toevoegen"
 
 #: picard/ui/metadatabox.py:183
 msgid "Show Changes First"
@@ -1054,7 +1054,7 @@ msgstr "Laat eerst de veranderingen zien"
 
 #: picard/ui/metadatabox.py:238
 msgid "Edit..."
-msgstr "&Bewerken …"
+msgstr "&Bewerken"
 
 #: picard/ui/metadatabox.py:259
 msgid "Use Original Value"
@@ -1067,13 +1067,13 @@ msgstr[1] "Originele waardes gebruiken"
 msgid ""
 "The server %s requires you to login. Please enter your username and "
 "password."
-msgstr "Server %s vereist dat u bent ingelogd. Voor uw gebruikersnaam en wachtwoord in."
+msgstr "Server %s vereist dat je bent ingelogd. Voor uw gebruikersnaam en wachtwoord in."
 
 #: picard/ui/passworddialog.py:55
 #, python-format
 msgid ""
 "The proxy %s requires you to login. Please enter your username and password."
-msgstr "Proxy %s vereist dat u bent ingelogd. Voor uw gebruikersnaam en wachtwoord in."
+msgstr "Proxy %s vereist dat je bent ingelogd. Voer je gebruikersnaam en wachtwoord in."
 
 #: picard/ui/tagsfromfilenames.py:65 picard/ui/tagsfromfilenames.py:113
 msgid "File Name"
@@ -1210,7 +1210,7 @@ msgstr "Download alleen afbeeldingen die overeenkomen met de geselecteerde types
 
 #: picard/ui/ui_options_cover.py:158
 msgid "Select types..."
-msgstr "Types selecteren …"
+msgstr "Types selecteren"
 
 #: picard/ui/ui_options_cover.py:159
 msgid "Download only approved images"
@@ -1251,11 +1251,11 @@ msgstr "Vingerafdrukcalculator:"
 #: picard/ui/ui_options_fingerprinting.py:75
 #: picard/ui/ui_options_interface.py:75 picard/ui/ui_options_renaming.py:134
 msgid "Browse..."
-msgstr "Bladeren …"
+msgstr "Bladeren"
 
 #: picard/ui/ui_options_fingerprinting.py:76
 msgid "Download..."
-msgstr "Downloaden …"
+msgstr "Downloaden"
 
 #: picard/ui/ui_options_fingerprinting.py:77
 msgid "API key:"
@@ -1263,7 +1263,7 @@ msgstr "API-sleutel:"
 
 #: picard/ui/ui_options_fingerprinting.py:78
 msgid "Get API key..."
-msgstr "API-sleutel verkrijgen …"
+msgstr "API-sleutel verkrijgen"
 
 #: picard/ui/ui_options_folksonomy.py:102 picard/ui/options/folksonomy.py:28
 msgid "Folksonomy Tags"
@@ -1444,7 +1444,7 @@ msgstr "Auteur"
 
 #: picard/ui/ui_options_plugins.py:131
 msgid "Install plugin..."
-msgstr "Plugins installeren …"
+msgstr "Plugins installeren"
 
 #: picard/ui/ui_options_plugins.py:132
 msgid "Open plugin folder"
@@ -1468,7 +1468,7 @@ msgid ""
 "user who did the rating. That way different ratings for different users can "
 "be stored in the files. Please specify the e-mail you want to use to save "
 "your ratings."
-msgstr "Picard slaat het email adres van de gebruiker die een waardering maakte op bij die waardering. Op die manier kunnen verschillende waarderingen van verschillende gebruikers in de bestanden worden opgeslagen. Graag hier het email adres voor je waarderingen invullen."
+msgstr "Picard slaat het e-mailadres van de gebruiker die een waardering gaf op bij die waardering. Op die manier kunnen verschillende waarderingen van verschillende gebruikers in de bestanden worden opgeslagen. Vul hier het e-mailadres in dat je voor het opslaan van je waarderingen wil gebruiken."
 
 #: picard/ui/ui_options_ratings.py:51
 msgid "E-mail:"
@@ -1608,7 +1608,7 @@ msgid ""
 "<html><head/><body><p>Default is '/' to maintain compatibility with previous"
 " Picard releases.</p><p>New alternatives are ';_' or '_/_' or type your own."
 " </p></body></html>"
-msgstr "<html><head/><body><p>Standaard is ‘/’ om compatibiliteit te behouden met eerdere versies van Picard</p><p>Nieuwe alternatieven zijn ‘;_’ of ‘_/_’ of uw eigen voorkeur. </p></body></html>"
+msgstr "<html><head/><body><p>Standaard is ‘/’ om compatibiliteit te behouden met eerdere versies van Picard</p><p>Nieuwe alternatieven zijn ‘;_’ of ‘_/_’ of je eigen voorkeur. </p></body></html>"
 
 #: picard/ui/ui_options_tags.py:170
 msgid "Also include ID3v1 tags in the files"
@@ -1672,7 +1672,7 @@ msgid ""
 "<p align=\"center\"><strong>Credits</strong><br/>\n"
 "<small>Copyright © 2004-2014 Robert Kaye, Lukáš Lalinský and others%(translator-credits)s</small></p>\n"
 "<p align=\"center\"><a href=\"%(picard-doc-url)s\">%(picard-doc-url)s</a></p>\n"
-msgstr "<p align=\"center\"><span style=\"font-size:15px;font-weight:bold;\">MusicBrainz Picard</span><br/>\nVersie %(version)s</p>\n<p align=\"center\"><small>\nPyQt %(pyqt-version)s<br/>\nMutagen %(mutagen-version)s<br/>\nDiscid %(discid-version)s\n</small></p>\n<p align=\"center\"><strong>Ondersteunde formaten</strong><br/>%(formats)s</p>\n<p align=\"center\"><strong>Doneer a.u.b.</strong><br/>\nBedankt voor het gebruiken van Picard. Picard maakt gebruik van de gegevensbank van MusicBrainz die wordt beheerd door de MetaBrainz stichting, geholpen door duizenden vrijwilligers. Als dit programma u bevalt, denk er dan over na om een donatie te doen aan de stichting MetaBrainz om deze dienst draaiende te houden.</p>\n<p align=\"center\"><a href=\"%(picard-donate-url)s\">Doneer nu!</a></p>\n<p align=\"center\"><strong>Credits</strong><br/>\n<small>Auteursrecht © 2004-2014 Robert Kaye, Lukáš Lalinský en anderen%(translator-credits)s</small></p>\n<p align=\"center\"><a href=\"%(picard-doc-url)s\">%(picard-doc-url)s</a></p>\n"
+msgstr "<p align=\"center\"><span style=\"font-size:15px;font-weight:bold;\">MusicBrainz Picard</span><br/>\nVersie %(version)s</p>\n<p align=\"center\"><small>\nPyQt %(pyqt-version)s<br/>\nMutagen %(mutagen-version)s<br/>\nDiscid %(discid-version)s\n</small></p>\n<p align=\"center\"><strong>Ondersteunde formaten</strong><br/>%(formats)s</p>\n<p align=\"center\"><strong>Doneer a.u.b.</strong><br/>\nBedankt voor het gebruiken van Picard. Picard maakt gebruik van gegevens van MusicBrainz die worden beheerd door de MetaBrainz Foundation, geholpen door duizenden vrijwilligers. Overweeg, als dit programma je bevalt, om een donatie aan de MetaBrainz Foundation te doen om deze dienst draaiende te houden.</p>\n<p align=\"center\"><a href=\"%(picard-donate-url)s\">Doneer nu!</a></p>\n<p align=\"center\"><strong>Credits</strong><br/>\n<small>Auteursrecht © 2004-2014 Robert Kaye, Lukáš Lalinský en anderen%(translator-credits)s</small></p>\n<p align=\"center\"><a href=\"%(picard-doc-url)s\">%(picard-doc-url)s</a></p>\n"
 
 #: picard/ui/options/advanced.py:31
 msgid "Advanced"
@@ -1727,7 +1727,7 @@ msgstr "Taal gewijzigd"
 msgid ""
 "You have changed the interface language. You have to restart Picard in order"
 " for the change to take effect."
-msgstr "U heeft de weergavetaal veranderd. Om de taal te activeren, moet u nu Picard herstarten."
+msgstr "Je hebt de weergavetaal veranderd. Je moet Picard herstarten om de nieuwe taal te gebruiken."
 
 #: picard/ui/options/matching.py:28
 msgid "Matching"

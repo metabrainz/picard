@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2015-02-06 13:01+0100\n"
-"PO-Revision-Date: 2015-02-07 08:15+0000\n"
+"PO-Revision-Date: 2015-11-07 07:33+0000\n"
 "Last-Translator: nikki\n"
 "Language-Team: Occitan (post 1500) (http://www.transifex.com/musicbrainz/musicbrainz/language/oc/)\n"
 "MIME-Version: 1.0\n"
@@ -332,7 +332,7 @@ msgstr ""
 
 #: picard/releasegroup.py:55 picard/ui/cdlookup.py:35
 msgid "Country"
-msgstr ""
+msgstr "País"
 
 #: picard/releasegroup.py:56
 msgid "Format"
@@ -340,7 +340,7 @@ msgstr "Format"
 
 #: picard/releasegroup.py:57
 msgid "Label"
-msgstr ""
+msgstr "Labèl"
 
 #: picard/releasegroup.py:58
 msgid "Cat No"
@@ -380,7 +380,7 @@ msgstr "Error pendent la lectura del CD :\n\n%s"
 
 #: picard/const/languages.py:31
 msgid "Danish"
-msgstr ""
+msgstr "Danés"
 
 #: picard/const/languages.py:32
 msgid "German"
@@ -947,7 +947,7 @@ msgstr "&Ajuda"
 
 #: picard/ui/mainwindow.py:559
 msgid "Actions"
-msgstr ""
+msgstr "Accions"
 
 #: picard/ui/mainwindow.py:605
 msgid "Track"

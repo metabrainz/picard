@@ -9,7 +9,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2015-09-11 12:52+0000\n"
+"PO-Revision-Date: 2015-11-08 19:00+0000\n"
 "Last-Translator: salorock <salo.rock@gmail.com>\n"
 "Language-Team: Italian (http://www.transifex.com/musicbrainz/musicbrainz/language/it/)\n"
 "MIME-Version: 1.0\n"
@@ -24,14 +24,14 @@ msgid ""
 "\"Motet\" is a term that applies to different types of (usually "
 "unaccompanied) choral works. What exactly is a motet depends quite a bit on "
 "the period."
-msgstr ""
+msgstr "\"Mottetto\" è un termine che si applica a diversi tipi di composizioni corali (solitamente senza accompagnamento). La definizione esatta di mottetto dipende dal periodo considerato."
 
 #: DB:work_type/description:5
 msgctxt "work_type"
 msgid ""
 "\"Sonata\" is a general term used to describe small scale (very often solo "
 "or solo + keyboard) instrumental works, initially in baroque music."
-msgstr ""
+msgstr "\"Sonata\" è un termine generale usato per descrivere composizioni strumentali in scala ridotta (molto spesso per solisti o solisti + tastiera), inizialmente usate nella musica barocca."
 
 #: DB:medium_format/name:54
 msgctxt "medium_format"
@@ -88,7 +88,7 @@ msgctxt "medium_format"
 msgid ""
 "90 rpm, vertical-cut shellac discs, produced by the Pathé label from 1906 to"
 " 1932."
-msgstr ""
+msgstr "Dischi di gommalacca 90 giri a incisione verticale, prodotti dall'etichetta Pathé dal 1906 al 1932."
 
 #: DB:work_attribute_type_allowed_value/value:794
 msgctxt "work_attribute_type_allowed_value"
@@ -100,20 +100,20 @@ msgctxt "work_type"
 msgid ""
 "A ballet is music composed to be used, together with a choreography, for a "
 "ballet dance production."
-msgstr ""
+msgstr "Un balletto è la musica composta per essere utilizzata, insieme a una coreografia, per la produzione di un balletto di danza."
 
 #: DB:work_type/description:3
 msgctxt "work_type"
 msgid ""
 "A cantata is a vocal (often choral) composition with an instrumental "
 "(usually orchestral) accompaniment, typically in several movements."
-msgstr ""
+msgstr "Una cantata è una composizione vocale (spesso corale) con un accompagnamento strumentale (solitamente orchestrale), tipicamente divisa in diversi movimenti."
 
 #: DB:work_type/description:4
 msgctxt "work_type"
 msgid ""
 "A concerto is a musical work for soloist(s) accompanied by an orchestra."
-msgstr ""
+msgstr "Un concerto è una composizione musicale per uno o più solisti accompagnati da un'orchestra."
 
 #: DB:event_type/description:4
 msgctxt "event_type"
@@ -121,7 +121,7 @@ msgid ""
 "A convention, expo or trade fair is an event which is not typically "
 "orientated around music performances, but can include them as side "
 "activities."
-msgstr ""
+msgstr "Un convegno, esposizione o fiera campionaria è un evento che non è tipicamente indirizzato alle esibizioni musicali, ma che le può includere come attività collaterali."
 
 #: DB:release_status/description:2
 msgctxt "release_status"
@@ -142,7 +142,7 @@ msgid ""
 "A mass is a choral composition that sets the invariable portions of the "
 "Christian Eucharistic liturgy (Kyrie - Gloria - Credo - Sanctus - Benedictus"
 " - Agnus Dei, with other portions sometimes added) to music."
-msgstr ""
+msgstr "Una messa è una composizione corale che mette in musica le parti invariabili della liturgia eucaristica cristiana (Kyrie - Gloria - Credo - Santo - Benedetto - Agnello di Dio, con talvolta l'aggiunta di altre parti)."
 
 #: DB:event_type/description:5
 msgctxt "event_type"
@@ -162,14 +162,14 @@ msgctxt "work_type"
 msgid ""
 "A partita is an instrumental piece composed of a series of variations, and "
 "it's by its current definition very similar to a suite."
-msgstr ""
+msgstr "Una partita è un brano strumentale composto da una serie di variazioni, e secondo la sua attuale definizione è molto simile a una suite."
 
 #: DB:event_type/description:3
 msgctxt "event_type"
 msgid ""
 "A party, reception or other event held specifically for the launch of a "
 "release."
-msgstr ""
+msgstr "Una festa, ricevimento o altro tipo di evento organizzato appositamente per il lancio di una pubblicazione."
 
 #: DB:place_type/description:5
 msgctxt "place_type"
@@ -177,21 +177,21 @@ msgid ""
 "A place consisting of a large enclosed area with a central event space "
 "surrounded by tiered seating for spectators, which can be used for indoor "
 "sports, concerts and other entertainment events."
-msgstr ""
+msgstr "Un luogo composto da una grande area al chiuso al cui centro si trova uno spazio per eventi, circondato da file di posti a sedere per gli spettatori. Può essere usato per sport indoor, concerti e altri eventi di intrattenimento."
 
 #: DB:place_type/description:1
 msgctxt "place_type"
 msgid ""
 "A place designed for non-live production of music, typically a recording "
 "studio."
-msgstr ""
+msgstr "Un luogo progettato per la produzione di musica non dal vivo, come per esempio uno studio di registrazione."
 
 #: DB:place_type/description:2
 msgctxt "place_type"
 msgid ""
 "A place that has live artistic performances as one of its primary functions,"
 " such as a concert hall."
-msgstr ""
+msgstr "Un luogo che fa delle esibizioni artistiche dal vivo una delle sue funzioni primarie, come per esempio una sala concerti."
 
 #: DB:place_type/description:6
 msgctxt "place_type"
@@ -199,7 +199,7 @@ msgid ""
 "A place that has worship or religious studies as its main function. "
 "Religious buildings often host concerts and serve as recording locations, "
 "especially for classical music."
-msgstr ""
+msgstr "Un luogo che fa della preghiera o degli studi religiosi la sua funzione primaria. Gli edifici religiosi ospitano spesso concerti e fungono da luoghi di registrazione, in modo particolare per la musica classica."
 
 #: DB:place_type/description:4
 msgctxt "place_type"
@@ -207,7 +207,7 @@ msgid ""
 "A place whose main purpose is to host outdoor sport events, typically "
 "consisting of a pitch surrounded by a structure for spectators with no roof,"
 " or a roof which can be retracted."
-msgstr ""
+msgstr "Un luogo la cui funzione principale è ospitare eventi sportivi all'aperto, solitamente costituito da un campo circondato da una struttura per gli spettatori non coperta o con tetto retrattile."
 
 #: DB:work_type/description:28
 msgctxt "work_type"
@@ -215,20 +215,20 @@ msgid ""
 "A play is a form of literature usually consisting of scripted dialogue "
 "between characters, and intended for theatrical performance rather than just"
 " reading."
-msgstr ""
+msgstr "Una rappresentazione teatrale è una forma di letteratura che consiste solitamente di dialoghi tra personaggi secondo un copione, ed è destinata ad esibizioni teatrali piuttosto che alla lettura."
 
 #: DB:work_type/description:21
 msgctxt "work_type"
 msgid ""
 "A poem is a literary piece, generally short and in verse, where words are "
 "usually chosen for their sound and for the images and ideas they suggest."
-msgstr ""
+msgstr "Una poesia è un brano letterario, in genere breve e in versi, in cui le parole sono solitamente scelte per il loro suono e per le immagini e le idee che evocano."
 
 #: DB:work_type/description:14
 msgctxt "work_type"
 msgid ""
 "A quartet is a musical composition scored for four voices or instruments."
-msgstr ""
+msgstr "Un quartetto è una composizione musicale scritta per quattro voci o strumenti."
 
 #: DB:series_type/description:8
 msgctxt "series_type"
@@ -281,7 +281,7 @@ msgid ""
 "A song cycle is a group of songs designed to be performed in a sequence as a"
 " single entity. In most cases, all of the songs are by the same composer, "
 "and often use words from the same poet or lyricist."
-msgstr ""
+msgstr "Un ciclo di canzoni è un gruppo di canzoni concepito per essere eseguito in sequenza come una singola entità. Nella maggior parte dei casi, tutte le canzoni sono dello stesso compositore e spesso usano testi dello stesso poeta o paroliere."
 
 #: DB:work_type/description:17
 msgctxt "work_type"
@@ -290,7 +290,7 @@ msgid ""
 "with or without instruments, performed by singing. This is the most common "
 "form by far in folk and popular music, but also fairly common in a classical"
 " context (\"art songs\")."
-msgstr ""
+msgstr "Una canzone è in origine (ed è ancora, nella maggior parte dei casi) una composizione per voce, con o senza strumenti, eseguita con il canto. È di gran lunga la forma più comune nella musica popolare e folk ed è abbastanza comune anche in un contesto classico."
 
 #: DB:work_type/description:22
 msgctxt "work_type"
@@ -305,7 +305,7 @@ msgid ""
 "A suite is an ordered set of instrumental or orchestral pieces normally "
 "performed in a concert setting. They may be extracts from a ballet or opera,"
 " or entirely original movements."
-msgstr ""
+msgstr "Una suite è un insieme ordinato di brani strumentali o orchestrali, normalmente eseguita nel contesto di un concerto. Possono essere estratti da un balletto o da un'opera, oppure movimenti originali."
 
 #: DB:work_type/description:18
 msgctxt "work_type"
@@ -313,14 +313,14 @@ msgid ""
 "A symphonic poem is a piece of programmatic orchestral music, usually in a "
 "single movement, that evokes a painting, a landscape, the content of a poem,"
 " a story or novel, or other non-musical source."
-msgstr ""
+msgstr "Un poema sinfonico è un brano di musica orchestrale a programma, solitamente in un solo movimento, che evoca un dipinto, un paesaggio, il contenuto di un poema, una storia o un romanzo, oppure un'altra fonte non musicale."
 
 #: DB:work_type/description:16
 msgctxt "work_type"
 msgid ""
 "A symphony is an extended composition, almost always scored for orchestra "
 "without soloists."
-msgstr ""
+msgstr "Una sinfonia è una composizione lunga, quasi sempre scritta per orchestra senza solisti."
 
 #: DB:release_packaging/description:2
 msgctxt "release_packaging"
@@ -333,7 +333,7 @@ msgid ""
 "A zarzuela is a Spanish lyric-dramatic work that alternates between spoken "
 "and sung scenes, the latter incorporating operatic and popular song, as well"
 " as dance."
-msgstr ""
+msgstr "Una zarzuela è una composizione lirico-drammatica spagnola in cui si alternano scene parlate e scene cantate. Queste ultime incorporano canzoni d'opera e popolari, così come danza."
 
 #: DB:work_attribute_type_allowed_value/value:26
 msgctxt "work_attribute_type_allowed_value"
@@ -464,14 +464,14 @@ msgid ""
 "An aria is a self-contained piece for one voice usually with orchestral "
 "accompaniment. They are most common inside operas, but also appear in "
 "cantatas, oratorios and even on their own (concert arias)."
-msgstr ""
+msgstr "Un'aria è un brano a sé stante per voce solista, solitamente con accompagnamento orchestrale. Si trova più comunemente all'interno di un'opera, ma appare anche in cantate, oratori o persino da sola (aria da concerto)."
 
 #: DB:work_type/description:25
 msgctxt "work_type"
 msgid ""
 "An audio drama is a dramatized, purely acoustic performance, broadcast on "
 "radio or published on an audio medium (tape, CD, etc.)."
-msgstr ""
+msgstr "Un radiodramma è un'esibizione riadattata ed esclusivamente sonora, trasmessa alla radio o pubblicata su un supporto audio (cassetta, CD, ecc.)."
 
 #: DB:event_type/description:2
 msgctxt "event_type"
@@ -493,7 +493,7 @@ msgid ""
 "An opera is a dramatised work (text + musical score) for singers and "
 "orchestra/ensemble. In true operas all dialog is sung, through arias and "
 "recitatives, but some styles of opera include spoken dialogue."
-msgstr ""
+msgstr "Un'opera è una composizione melodrammatica (libretto + partitura) per cantanti e orchestra/ensemble. In un'opera in senso stretto tutti i dialoghi sono cantati attraverso arie e recitativi, ma alcuni generi di opera comprendono dialoghi parlati."
 
 #: DB:work_type/description:11
 msgctxt "work_type"
@@ -502,7 +502,7 @@ msgid ""
 "orchestra, a choir, and soloists. While it has characters and a plot, it is "
 "usually not performed theatrically (it lacks costumes, props and strong "
 "character interaction)."
-msgstr ""
+msgstr "Un oratorio è una composizione musicale lunga (solitamente sacra) per orchestra, coro e solisti. Pur avendo dei personaggi e una trama, non è solitamente rappresentata in scena (non ha costumi, scenografia né forte interazione tra i personaggi)."
 
 #: DB:work_type/description:12
 msgctxt "work_type"
@@ -510,7 +510,7 @@ msgid ""
 "An overture is, generally, the instrumental introduction to an opera. "
 "Independent (\"concert\") overtures also exist, which are generally "
 "programmatic works shorter than a symphonic poem."
-msgstr ""
+msgstr "Una ouverture è, in genere, l'introduzione strumentale a un'opera. Esistono anche ouverture indipendenti (\"da concerto\"), solitamente composizioni a programma di durata più breve rispetto a un poema sinfonico."
 
 #: DB:release_status/description:3
 msgctxt "release_status"
@@ -526,7 +526,7 @@ msgid ""
 "An étude is an instrumental musical composition, most commonly of "
 "considerable difficulty, usually designed to provide practice material for "
 "perfecting a particular technical skill."
-msgstr ""
+msgstr "Uno studio è una composizione musicale strumentale, in genere di difficoltà considerevole, solitamente concepita a scopo didattico per perfezionare una particolare capacità tecnica."
 
 #: DB:work_attribute_type_allowed_value/value:310
 msgctxt "work_attribute_type_allowed_value"
@@ -810,7 +810,7 @@ msgctxt "work_type"
 msgid ""
 "Beijing opera is a form of traditional Chinese theatre which combines music,"
 " vocal performance, mime, dance, and acrobatics."
-msgstr ""
+msgstr "L'opera di Pechino è una forma di teatro tradizionale cinese che combina musica, esibizioni vocali, mimica, danza e acrobazie."
 
 #: DB:work_attribute_type_allowed_value/value:697
 msgctxt "work_attribute_type_allowed_value"
@@ -1191,7 +1191,7 @@ msgstr "Città"
 msgctxt "area_type"
 msgid ""
 "City is used for settlements of any size, including towns and villages."
-msgstr "Città è utilizzato per luoghi abitati di qualsiasi dimensione, compresi paesi e villaggi."
+msgstr "\"Città\" è utilizzato per luoghi abitati di qualsiasi dimensione, compresi paesi e villaggi."
 
 #: DB:release_group_secondary_type/name:1
 msgctxt "release_group_secondary_type"
@@ -1237,7 +1237,7 @@ msgctxt "area_type"
 msgid ""
 "Country is used for areas included (or previously included) in ISO 3166-1, "
 "e.g. United States."
-msgstr "Paese è utilizzato per le aree incluse (o incluse in passato) nello standard ISO 3166-1, per es. gli Stati Uniti."
+msgstr "\"Paese\" è utilizzato per le aree incluse (attualmente o in passato) nello standard ISO 3166-1, per es. gli Stati Uniti."
 
 #: DB:area_type/name:7
 msgctxt "area_type"
@@ -1251,7 +1251,7 @@ msgid ""
 "not the main administrative divisions but are also not municipalities, e.g. "
 "counties in the USA. These are not considered when displaying the parent "
 "areas for a given area."
-msgstr "Provincia è utilizzato per piccole suddivisioni amministrative di uno Stato che non siano le principali suddivisioni amministrative ma nemmeno i comuni, per es. le contee negli Stati Uniti. Queste non sono considerate nella visualizzazione delle aree superiori di una determinata area."
+msgstr "\"Provincia\" è utilizzato per piccole suddivisioni amministrative di uno Stato che non siano le principali suddivisioni amministrative ma nemmeno i comuni, per es. le contee negli Stati Uniti. Queste non sono considerate nella visualizzazione delle aree superiori di una determinata area."
 
 #: DB:work_attribute_type_allowed_value/value:608
 msgctxt "work_attribute_type_allowed_value"
@@ -1541,12 +1541,12 @@ msgstr "Distributore"
 #: DB:area_type/name:5
 msgctxt "area_type"
 msgid "District"
-msgstr "Distretto"
+msgstr "Quartiere"
 
 #: DB:area_type/description:5
 msgctxt "area_type"
 msgid "District is used for a division of a large city, e.g. Queens."
-msgstr "Quartiere è utilizzato per una suddivisione di una grande città, per es. Queens."
+msgstr "\"Quartiere\" è utilizzato per una suddivisione di una grande città, per es. Queens."
 
 #: DB:work_attribute_type_allowed_value/value:611
 msgctxt "work_attribute_type_allowed_value"
@@ -2444,14 +2444,14 @@ msgstr "Casa discografica"
 #: DB:work_type/name:30
 msgctxt "work_type"
 msgid "Incidental music"
-msgstr ""
+msgstr "Musica di scena"
 
 #: DB:work_type/description:30
 msgctxt "work_type"
 msgid ""
 "Incidental music is music written as background for (usually) a theatre "
 "play."
-msgstr ""
+msgstr "La musica di scena è musica composta, in genere, per fare da sfondo a una rappresentazione teatrale."
 
 #: DB:place_type/name:5
 msgctxt "place_type"
@@ -2534,7 +2534,7 @@ msgid ""
 "Island is used for islands and atolls which don't form subdivisions of their"
 " own, e.g. Skye. These are not considered when displaying the parent areas "
 "for a given area."
-msgstr "Isola è utilizzato per isole e atolli che non formano suddivisioni independenti, per es. Skye. Queste non sono considerate nella visualizzazione delle aree superiori di una determinata area."
+msgstr "\"Isola\" è utilizzato per isole e atolli che non formano suddivisioni independenti, per es. Skye. Queste non sono considerate nella visualizzazione delle aree superiori di una determinata area."
 
 #: DB:work_attribute_type/name:3
 msgctxt "work_attribute_type"
@@ -3297,7 +3297,7 @@ msgid ""
 "Municipality is used for small administrative divisions which, for urban "
 "municipalities, often contain a single city and a few surrounding villages. "
 "Rural municipalities typically group several villages together."
-msgstr "Comune è utilizzato per piccole suddivisioni amministrative che, nel caso di comuni urbani, spesso contengono una singola città e diversi villaggi circostanti. I comuni rurali raggruppano di solito diversi villaggi."
+msgstr "\"Comune\" è utilizzato per piccole suddivisioni amministrative che, nel caso di comuni urbani, spesso contengono una singola città e diversi villaggi circostanti. I comuni rurali raggruppano di solito diversi villaggi."
 
 #: DB:work_attribute_type_allowed_value/value:645
 msgctxt "work_attribute_type_allowed_value"
@@ -3319,7 +3319,7 @@ msgctxt "work_type"
 msgid ""
 "Musical theatre is a form of theatrical performance that combines songs, "
 "spoken dialogue, acting, and dance."
-msgstr ""
+msgstr "Il musical è un genere di rappresentazione teatrale che unisce canzoni, dialoghi parlati, recitazione e danza."
 
 #: DB:work_attribute_type_allowed_value/value:748
 msgctxt "work_attribute_type_allowed_value"
@@ -3889,7 +3889,7 @@ msgstr "Nome luogo"
 #: DB:work_type/name:28
 msgctxt "work_type"
 msgid "Play"
-msgstr "Opera teatrale"
+msgstr "Rappresentazione teatrale"
 
 #: DB:medium_format/name:45
 msgctxt "medium_format"
@@ -4384,7 +4384,7 @@ msgstr "Sazsemaisi"
 #: DB:event_alias_type/name:2
 msgctxt "alias_type"
 msgid "Search hint"
-msgstr "Suggerimento per ricerca"
+msgstr "Suggerimento di ricerca"
 
 #: DB:work_attribute_type_allowed_value/value:528
 msgctxt "work_attribute_type_allowed_value"
@@ -4835,7 +4835,7 @@ msgid ""
 "system developed by RCA, in which video and audio could be played back on a "
 "TV set using a special needle and high-density groove system similar to "
 "phonograph records."
-msgstr ""
+msgstr "Il CED (Capacitance Electronic Disc) è un sistema di riproduzione di videodischi analogici sviluppato da RCA in cui video e audio possono essere riprodotti su un televisore utilizzando una puntina speciale e un sistema di solchi ad alta densità simile a quello dei dischi per fonografo."
 
 #: DB:work_type/description:7
 msgctxt "work_type"
@@ -4843,14 +4843,14 @@ msgid ""
 "The madrigal is a type of secular vocal music composition. In its original "
 "form, it had no instrumental accompaniment, although accompaniment is much "
 "more common in later madrigals."
-msgstr ""
+msgstr "Il madrigale è un tipo di composizione musicale vocale a carattere profano. Nella sua forma originale non ha alcun accompagnamentro strumentale, ma l'accompagnamento è molto più comune nei madrigali di epoche successive."
 
 #: DB:work_type/description:24
 msgctxt "work_type"
 msgid ""
 "The operetta is a genre of light opera, in terms both of music and subject "
 "matter. Operettas are generally short and include spoken parts."
-msgstr ""
+msgstr "L'operetta è un genere di opera leggera sia in termini musicali che di soggetto. Le operette sono in genere brevi e includono parti parlate."
 
 #: DB:release_packaging/description:1
 msgctxt "release_packaging"
@@ -4863,7 +4863,7 @@ msgid ""
 "This represents literary works written in prose, that is, written in "
 "relatively ordinary language without metrical structure (e.g. novels, short "
 "stories, essays...)."
-msgstr ""
+msgstr "Questa voce rappresenta le opere letterarie scritte in prosa, cioè scritte in un linguaggio relativamente ordinario, senza una metrica (per es. romanzi, storie brevi, saggi...)."
 
 #: DB:work_attribute_type_allowed_value/value:256
 msgctxt "work_attribute_type_allowed_value"
@@ -5065,7 +5065,7 @@ msgctxt "medium_format"
 msgid ""
 "Video High Density (VHD) was a videodisc format which was marketed "
 "predominantly in Japan by JVC."
-msgstr ""
+msgstr "Il VHD (Video High Density) era un formato di videodisco commercializzato principalmente in Giappone da JVC."
 
 #: DB:work_attribute_type_allowed_value/value:273
 msgctxt "work_attribute_type_allowed_value"

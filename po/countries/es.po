@@ -5,7 +5,7 @@
 # Héctor Arroyo <churruka@hangar18.cc>, 2012
 # Ismael Olea <ismael@olea.org>, 2014-2015
 # Nicolás Tamargo <reosarevok@gmail.com>, 2011, 2012
-# kelopezcl <tfx@kelopez.cl>, 2012
+# Kevin Doncam Demian López Brante <kevin@kddlb.cl>, 2012
 #   Tobias Quathamer <toddy@debian.org>, 2007
 # t0n3t <toni75@gmail.com>, 2012
 msgid ""

@@ -13,6 +13,8 @@
 # Lotheric <lotheric@gmail.com>, 2011-2012
 # murdos <aurelien.mino@gmail.com>, 2011-2012
 # murdos <email address hidden>, 2011
+# Nicolas HOUDELOT <nicolas.houdelot@free.fr>, 2015
+# Paul TREHIOU <paul.trehiou@gmail.com>, 2015
 # Paul Tremberth <agigaday@gmail.com>, 2013
 # Paul Tremberth <agigaday@gmail.com>, 2013
 # Trans-fr, 2015
@@ -20,8 +22,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2015-09-10 19:40+0000\n"
-"Last-Translator: Trans-fr\n"
+"PO-Revision-Date: 2015-11-23 09:28+0000\n"
+"Last-Translator: Paul TREHIOU <paul.trehiou@gmail.com>\n"
 "Language-Team: French (http://www.transifex.com/musicbrainz/musicbrainz/language/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -99,12 +101,12 @@ msgctxt "medium_format"
 msgid ""
 "90 rpm, vertical-cut shellac discs, produced by the Pathé label from 1906 to"
 " 1932."
-msgstr ""
+msgstr "Disque 78 tours, disques en gomme laque à gravure verticale, produits par Pathé de 1906 à 1932."
 
 #: DB:work_attribute_type_allowed_value/value:794
 msgctxt "work_attribute_type_allowed_value"
 msgid "A Dorian"
-msgstr ""
+msgstr "La dorien"
 
 #: DB:work_type/description:2
 msgctxt "work_type"
@@ -374,17 +376,17 @@ msgstr "ID ASCAP"
 #: DB:work_attribute_type_allowed_value/value:299
 msgctxt "work_attribute_type_allowed_value"
 msgid "Acem"
-msgstr ""
+msgstr "Persan"
 
 #: DB:work_attribute_type_allowed_value/value:305
 msgctxt "work_attribute_type_allowed_value"
 msgid "Acem Nevruz"
-msgstr ""
+msgstr "Persique Norouz"
 
 #: DB:work_attribute_type_allowed_value/value:306
 msgctxt "work_attribute_type_allowed_value"
 msgid "Acem Rast"
-msgstr ""
+msgstr "Persique Rast"
 
 #: DB:work_attribute_type_allowed_value/value:300
 msgctxt "work_attribute_type_allowed_value"
@@ -619,7 +621,7 @@ msgstr "Aria"
 #: DB:editor_collection_type/name:8
 msgctxt "collection_type"
 msgid "Artist"
-msgstr ""
+msgstr "Artiste"
 
 #: DB:artist_alias_type/name:1
 msgctxt "alias_type"
@@ -749,7 +751,7 @@ msgstr "Aṭṭa"
 #: DB:work_attribute_type_allowed_value/value:795
 msgctxt "work_attribute_type_allowed_value"
 msgid "B Dorian"
-msgstr ""
+msgstr "Si dorien"
 
 #: DB:work_attribute_type_allowed_value/value:33
 msgctxt "work_attribute_type_allowed_value"
@@ -1051,7 +1053,7 @@ msgstr "Bṛndāvani"
 #: DB:work_attribute_type_allowed_value/value:789
 msgctxt "work_attribute_type_allowed_value"
 msgid "C Dorian"
-msgstr ""
+msgstr "Do dorien"
 
 #: DB:work_attribute_type_allowed_value/value:2
 msgctxt "work_attribute_type_allowed_value"
@@ -1227,7 +1229,7 @@ msgstr "Congrès/exposition"
 #: DB:medium_format/name:61
 msgctxt "medium_format"
 msgid "Copy Control CD"
-msgstr ""
+msgstr "CD Copy Control"
 
 #: DB:medium_format/description:61
 msgctxt "medium_format"
@@ -1236,7 +1238,7 @@ msgid ""
 "containing software that is ostensibly designed to prevent the CD from being"
 " ripped. There are a number of software variants: the most well-known are "
 "Macrovision's Cactus Data Shield (CDS) and SunnComm's MediaMax."
-msgstr ""
+msgstr "Copy Control CD (CCCD) est un terme générique pour les CDs commercialisés entre 2001 et 2006 contenant un logiciel spécialement conçu pour empêcher un CD d'être copié. Il existe nombre de variantes logicielles : les plus connues sont le Cactus Data Shield (CDS) de Macrovision et le MediaMax de SunnComm."
 
 #: DB:area_type/name:1
 msgctxt "area_type"
@@ -1292,7 +1294,7 @@ msgstr "Cāyātarangiṇi"
 #: DB:work_attribute_type_allowed_value/value:790
 msgctxt "work_attribute_type_allowed_value"
 msgid "D Dorian"
-msgstr ""
+msgstr "Ré dorien"
 
 #: DB:work_attribute_type_allowed_value/value:8
 msgctxt "work_attribute_type_allowed_value"
@@ -1662,7 +1664,7 @@ msgstr "Dīpāḷi"
 #: DB:work_attribute_type_allowed_value/value:791
 msgctxt "work_attribute_type_allowed_value"
 msgid "E Dorian"
-msgstr ""
+msgstr "Mi dorien"
 
 #: DB:work_attribute_type_allowed_value/value:13
 msgctxt "work_attribute_type_allowed_value"
@@ -1802,7 +1804,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:792
 msgctxt "work_attribute_type_allowed_value"
 msgid "F Dorian"
-msgstr ""
+msgstr "Fa dorien"
 
 #: DB:work_attribute_type_allowed_value/value:17
 msgctxt "work_attribute_type_allowed_value"
@@ -1955,7 +1957,7 @@ msgstr "Devant"
 #: DB:work_attribute_type_allowed_value/value:793
 msgctxt "work_attribute_type_allowed_value"
 msgid "G Dorian"
-msgstr ""
+msgstr "Sol dorien"
 
 #: DB:work_attribute_type_allowed_value/value:22
 msgctxt "work_attribute_type_allowed_value"
@@ -2455,14 +2457,14 @@ msgstr "Marque d'éditeur"
 #: DB:work_type/name:30
 msgctxt "work_type"
 msgid "Incidental music"
-msgstr ""
+msgstr "Musique de scène"
 
 #: DB:work_type/description:30
 msgctxt "work_type"
 msgid ""
 "Incidental music is music written as background for (usually) a theatre "
 "play."
-msgstr ""
+msgstr "La musique de scène est un genre musical habituellement utilisé pour les pièces de théâtre."
 
 #: DB:place_type/name:5
 msgctxt "place_type"
@@ -2472,7 +2474,7 @@ msgstr "Stade couvert"
 #: DB:editor_collection_type/name:9
 msgctxt "collection_type"
 msgid "Instrument"
-msgstr ""
+msgstr "Instrument"
 
 #: DB:instrument_alias_type/name:1
 msgctxt "alias_type"
@@ -2930,7 +2932,7 @@ msgstr "Kōkilapriya"
 #: DB:editor_collection_type/name:10
 msgctxt "collection_type"
 msgid "Label"
-msgstr ""
+msgstr "Label"
 
 #: DB:label_alias_type/name:1
 msgctxt "alias_type"
@@ -3825,7 +3827,7 @@ msgstr "Partita"
 #: DB:medium_format/name:58
 msgctxt "medium_format"
 msgid "Pathé disc"
-msgstr ""
+msgstr "Disque Pathé"
 
 #: DB:work_attribute_type_allowed_value/value:204
 msgctxt "work_attribute_type_allowed_value"
@@ -3890,7 +3892,7 @@ msgstr "Rouleau de piano pneumatique"
 #: DB:editor_collection_type/name:11
 msgctxt "collection_type"
 msgid "Place"
-msgstr ""
+msgstr "Lieu"
 
 #: DB:place_alias_type/name:1
 msgctxt "alias_type"
@@ -4090,7 +4092,7 @@ msgstr "Ravicandrika"
 #: DB:editor_collection_type/name:12
 msgctxt "collection_type"
 msgid "Recording"
-msgstr ""
+msgstr "Enregistrement"
 
 #: DB:series_type/name:3
 msgctxt "series_type"
@@ -4100,7 +4102,7 @@ msgstr "Enregistrement"
 #: DB:recording_alias_type/name:1
 msgctxt "alias_type"
 msgid "Recording name"
-msgstr ""
+msgstr "Nom de l'enregistrement"
 
 #: DB:medium_format/name:10
 msgctxt "medium_format"
@@ -4135,7 +4137,7 @@ msgstr "Parution"
 #: DB:editor_collection_type/name:13
 msgctxt "collection_type"
 msgid "Release group"
-msgstr ""
+msgstr "Groupe de parution"
 
 #: DB:series_type/name:1
 msgctxt "series_type"
@@ -4145,12 +4147,12 @@ msgstr "Groupe de parution"
 #: DB:release_group_alias_type/name:1
 msgctxt "alias_type"
 msgid "Release group name"
-msgstr ""
+msgstr "Nom du groupe de parution"
 
 #: DB:release_alias_type/name:1
 msgctxt "alias_type"
 msgid "Release name"
-msgstr ""
+msgstr "Nom de la parution"
 
 #: DB:place_type/name:6
 msgctxt "place_type"
@@ -4772,7 +4774,7 @@ msgstr "Tanarūpi"
 #: DB:work_attribute_type_allowed_value/value:668
 msgctxt "work_attribute_type_allowed_value"
 msgid "Tango"
-msgstr ""
+msgstr "Tango"
 
 #: DB:work_attribute_type_allowed_value/value:575
 msgctxt "work_attribute_type_allowed_value"
@@ -4846,7 +4848,7 @@ msgid ""
 "system developed by RCA, in which video and audio could be played back on a "
 "TV set using a special needle and high-density groove system similar to "
 "phonograph records."
-msgstr ""
+msgstr "Le Capacitance Electronic Disc (CED) est un format disque vidéo analogique développé par RCA, le son et l'image peuvent êtres lus sur une télévision grâce à une aiguille spéciale et un système de rainures à haute-densité comme on peut en avoir sur les enregistrements de phonographe."
 
 #: DB:work_type/description:7
 msgctxt "work_type"
@@ -4994,7 +4996,7 @@ msgstr "VCD"
 #: DB:medium_format/name:59
 msgctxt "medium_format"
 msgid "VHD"
-msgstr ""
+msgstr "VHD"
 
 #: DB:medium_format/name:21
 msgctxt "medium_format"
@@ -5076,7 +5078,7 @@ msgctxt "medium_format"
 msgid ""
 "Video High Density (VHD) was a videodisc format which was marketed "
 "predominantly in Japan by JVC."
-msgstr ""
+msgstr "Le Video High Density (VHD) était un format de disque vidéo principalement commercialisé au Japon par JVC"
 
 #: DB:work_attribute_type_allowed_value/value:273
 msgctxt "work_attribute_type_allowed_value"

@@ -1,7 +1,7 @@
 # 
 # Translators:
 # czaja <krzysztof@czajkowski.edu.pl>, 2011
-# Debeat <krystian4842@gmail.com>, 2014
+# Debeat, 2014
 # Marcin Rataj <lidel@lidel.org>, 2011-2012,2014
 # Nikolai Prokoschenko <nikolai@prokoschenko.de>, 2011
 # Piotr Myśliński <piotr.myslinski@gmail.com>, 2013

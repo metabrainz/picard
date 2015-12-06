@@ -6,23 +6,27 @@
 # Daniel Schury <email address hidden>, 2011
 #   <email address hidden>, 2012
 # Ettore Atalan <atalanttore@googlemail.com>, 2014
+# Felix Kugler <relgukxilef@gmail.com>, 2015
+# Frank <senax79@gmail.com>, 2015
 # Mineo <email address hidden>, 2011
 # Wieland Hoffmann <themineo+transifex@googlemail.com>, 2011
 # Nikolai Prokoschenko <email address hidden>, 2011
 # Nikolai Prokoschenko <nikolai@prokoschenko.de>, 2011
 # nikki, 2013
+# Patrick <patrick.rein@gmail.com>, 2015
 # Philipp Wolfer <ph.wolfer@gmail.com>, 2012
 # S.Brandt <s.brandt@mixxx.org>, 2014-2015
 # Shepard <email address hidden>, 2011
 # Shepard, 2011
 # Shepard, 2013-2014
+# TL, 2015
 # Tobias Quathamer <email address hidden>, 2007
 # Tobias Quathamer <toddy@debian.org>, 2007
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2015-09-08 18:58+0000\n"
-"Last-Translator: Michael Wiencek <mwtuea@gmail.com>\n"
+"PO-Revision-Date: 2015-11-17 16:57+0000\n"
+"Last-Translator: TL\n"
 "Language-Team: German (http://www.transifex.com/musicbrainz/musicbrainz/language/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -36,14 +40,14 @@ msgid ""
 "\"Motet\" is a term that applies to different types of (usually "
 "unaccompanied) choral works. What exactly is a motet depends quite a bit on "
 "the period."
-msgstr ""
+msgstr "\"Motet\" beschreibt unterschiedliche Arten von (üblichweise nicht istrumental begleiteten) Choral-Werken. Die genaue Definition hängt stark vom Zeitalter ab."
 
 #: DB:work_type/description:5
 msgctxt "work_type"
 msgid ""
 "\"Sonata\" is a general term used to describe small scale (very often solo "
 "or solo + keyboard) instrumental works, initially in baroque music."
-msgstr ""
+msgstr "\"Sonate\" ist ein allgemeiner Begriff für Instrumentalstücke für kleine Besetzungen (meist Solo oder Solo + Klavier), ursprünglich aus dem Barock."
 
 #: DB:medium_format/name:54
 msgctxt "medium_format"
@@ -73,7 +77,7 @@ msgstr "3,5″-Diskette"
 #: DB:medium_format/name:52
 msgctxt "medium_format"
 msgid "7\" Flexi-disc"
-msgstr ""
+msgstr "7\" Flexible Disc"
 
 #: DB:medium_format/name:56
 msgctxt "medium_format"
@@ -100,32 +104,32 @@ msgctxt "medium_format"
 msgid ""
 "90 rpm, vertical-cut shellac discs, produced by the Pathé label from 1906 to"
 " 1932."
-msgstr ""
+msgstr "90 U/m vertikal geschnittene Shellack-Platte hergestellt vom Label \"Pathé\" zwischen 1906 und 1932."
 
 #: DB:work_attribute_type_allowed_value/value:794
 msgctxt "work_attribute_type_allowed_value"
 msgid "A Dorian"
-msgstr ""
+msgstr "Dorisch"
 
 #: DB:work_type/description:2
 msgctxt "work_type"
 msgid ""
 "A ballet is music composed to be used, together with a choreography, for a "
 "ballet dance production."
-msgstr ""
+msgstr "Als Ballett bezeichnet man Musik die, zusammen mit einer Choreographie, für einen Bühnentanz geschrieben wurde."
 
 #: DB:work_type/description:3
 msgctxt "work_type"
 msgid ""
 "A cantata is a vocal (often choral) composition with an instrumental "
 "(usually orchestral) accompaniment, typically in several movements."
-msgstr ""
+msgstr "Eine Kantate ist eine Komposition für Singstimme (üblicherweise Choral) und ein Begelitinstrument. Oft in mehreren Sätzen."
 
 #: DB:work_type/description:4
 msgctxt "work_type"
 msgid ""
 "A concerto is a musical work for soloist(s) accompanied by an orchestra."
-msgstr ""
+msgstr "Concerto beschreibt eine Komposition für Solisten mit Orchesterbegleitung"
 
 #: DB:event_type/description:4
 msgctxt "event_type"
@@ -133,7 +137,7 @@ msgid ""
 "A convention, expo or trade fair is an event which is not typically "
 "orientated around music performances, but can include them as side "
 "activities."
-msgstr ""
+msgstr "Eine Tagung, Weltausstellung oder Messe ist eine Veranstaltung die im Allgemeinen nicht auf Musik orientiert ist, diese aber als Nebenaktivität enthalten kann."
 
 #: DB:release_status/description:2
 msgctxt "release_status"
@@ -154,7 +158,7 @@ msgid ""
 "A mass is a choral composition that sets the invariable portions of the "
 "Christian Eucharistic liturgy (Kyrie - Gloria - Credo - Sanctus - Benedictus"
 " - Agnus Dei, with other portions sometimes added) to music."
-msgstr ""
+msgstr "Messe (Missa) heisst eine Gattung musikalischer Kompositionen, denen die Texte der Heiligen Messe der katholischen Liturgie zugrunde liegen. Neben den gleich bleibenden Texten (Ordinarium mit Kyrie eleison, Gloria, Credo, Sanctus, Agnus Dei, Ite missa est oder Benedicamus) werden oftmals auch die nach dem Kirchenjahr oder Anlass veränderlichen Texte (Proprium) vertont."
 
 #: DB:event_type/description:5
 msgctxt "event_type"
@@ -181,7 +185,7 @@ msgctxt "event_type"
 msgid ""
 "A party, reception or other event held specifically for the launch of a "
 "release."
-msgstr ""
+msgstr "Eine Party, ein Empfang oder eine andere Art von Veranstaltung, die anlässlich einer Veröffentlichung gegeben wird"
 
 #: DB:place_type/description:5
 msgctxt "place_type"
@@ -240,7 +244,7 @@ msgstr ""
 msgctxt "work_type"
 msgid ""
 "A quartet is a musical composition scored for four voices or instruments."
-msgstr ""
+msgstr "Ein Quartett ist eine musikalische Komposition, die für vier Stimmen oder Instrumente entworfen wurde"
 
 #: DB:series_type/description:8
 msgctxt "series_type"
@@ -250,22 +254,22 @@ msgstr ""
 #: DB:series_type/description:6
 msgctxt "series_type"
 msgid "A series of events."
-msgstr ""
+msgstr "Eine Veranstaltungsreihe"
 
 #: DB:series_type/description:9
 msgctxt "series_type"
 msgid "A series of performances of the same show at the same venue."
-msgstr ""
+msgstr "Eine Reihe von Veranstaltungen der gleichen Show am gleichen Ort"
 
 #: DB:series_type/description:3
 msgctxt "series_type"
 msgid "A series of recordings."
-msgstr ""
+msgstr "Eine Reihe von Aufnahmen"
 
 #: DB:series_type/description:7
 msgctxt "series_type"
 msgid "A series of related concerts by an artist in different locations."
-msgstr ""
+msgstr "Eine Reihe von zusammengehörigen Konzerten des gleichen Künstlers an verschiedenen Orten"
 
 #: DB:series_type/description:1
 msgctxt "series_type"
@@ -275,7 +279,7 @@ msgstr ""
 #: DB:series_type/description:2
 msgctxt "series_type"
 msgid "A series of releases."
-msgstr ""
+msgstr "Eine Reihe von Veröffentlichungen"
 
 #: DB:series_type/description:5
 msgctxt "series_type"
@@ -285,7 +289,7 @@ msgstr ""
 #: DB:series_type/description:4
 msgctxt "series_type"
 msgid "A series of works."
-msgstr ""
+msgstr "Eine Reihe von Werken"
 
 #: DB:work_type/description:15
 msgctxt "work_type"
@@ -309,7 +313,7 @@ msgctxt "work_type"
 msgid ""
 "A soundtrack is the music that accompanies a film, TV program, videogame, or"
 " even book."
-msgstr ""
+msgstr "Soundtrack (englisch) bezeichnet wörtlich die Tonspur eines Films oder (eher figurativ) die Vertonung des Films. Heute versteht man darunter meist nur noch die einem konkreten Film oder Computerspiel oder Buch unterlegte Musik."
 
 #: DB:work_type/description:6
 msgctxt "work_type"
@@ -317,7 +321,7 @@ msgid ""
 "A suite is an ordered set of instrumental or orchestral pieces normally "
 "performed in a concert setting. They may be extracts from a ballet or opera,"
 " or entirely original movements."
-msgstr ""
+msgstr "Eine Suite ist in der Musik ein Zyklus von Instrumental- oder Orchesterstücken, der in einer vorgegebenen Abfolge ohne längere Pausen gespielt wird. Das können auch Auszüge aus einem Ballett oder Oper sein. Eine Suite besteht aus mehreren in sich geschlossenen Teilen, sogenannten Sätzen."
 
 #: DB:work_type/description:18
 msgctxt "work_type"
@@ -332,7 +336,7 @@ msgctxt "work_type"
 msgid ""
 "A symphony is an extended composition, almost always scored for orchestra "
 "without soloists."
-msgstr ""
+msgstr "Eine Sinfonie oder Symphonie ist die Bezeichnung für Instrumentalwerke von über die Jahrhunderte wechselnder Form und Besetzung, inklusive Kompositionen für Tasteninstrumente."
 
 #: DB:release_packaging/description:2
 msgctxt "release_packaging"
@@ -476,7 +480,7 @@ msgid ""
 "An aria is a self-contained piece for one voice usually with orchestral "
 "accompaniment. They are most common inside operas, but also appear in "
 "cantatas, oratorios and even on their own (concert arias)."
-msgstr ""
+msgstr "Unter einer Arie versteht man ein solistisch vorgetragenes Gesangsstück, das von Instrumenten, im Regelfall einem Orchester, begleitet wird. Meistens ist eine Arie ein Teil eines grösseren Werkes wie einer Oper, einer Kantate oder eines Oratoriums. Die Arie vermittelt die Gefühle und Stimmungen, den Affekt."
 
 #: DB:work_type/description:25
 msgctxt "work_type"
@@ -505,7 +509,7 @@ msgid ""
 "An opera is a dramatised work (text + musical score) for singers and "
 "orchestra/ensemble. In true operas all dialog is sung, through arias and "
 "recitatives, but some styles of opera include spoken dialogue."
-msgstr ""
+msgstr "Als Oper bezeichnet man eine musikalische Gattung des Theaters. Eine Oper besteht aus der Vertonung einer dramatischen Dichtung, die von einem Sängerensemble, einem begleitenden Orchester sowie manchmal von einem Chor und einem Ballettensemble ausgeführt wird. Neben dem Gesang führen die Darsteller Schauspiel und Tanz auf einer Theaterbühne aus, die mit den Mitteln von Malerei, Architektur, Requisite, Beleuchtung und Bühnentechnik gestaltet ist. Die Rollen der Darsteller werden durch Maske und Kostüme optisch verdeutlicht. Als künstlerische Leitung betätigen sich der Dirigent für das Musikalische, der Regisseur für die Personenführung und der Bühnenbildner für die Ausstattung."
 
 #: DB:work_type/description:11
 msgctxt "work_type"
@@ -514,7 +518,7 @@ msgid ""
 "orchestra, a choir, and soloists. While it has characters and a plot, it is "
 "usually not performed theatrically (it lacks costumes, props and strong "
 "character interaction)."
-msgstr ""
+msgstr "Oratorium nennt man in der musikalischen Formenlehre die dramatische, mehrteilige Vertonung einer zumeist geistlichen Handlung, verteilt auf mehrere Personen, Chor und Orchester. Es ist eine erzählend-dramatische (also mit Handlungselementen durchsetzte) Komposition. Das Oratorium wird im Gegensatz zur Oper ausschließlich konzertant aufgeführt, die Handlung findet also nur in den Texten und in der Musik - ohne Kostüme oder Requisiten - statt."
 
 #: DB:work_type/description:12
 msgctxt "work_type"
@@ -522,7 +526,7 @@ msgid ""
 "An overture is, generally, the instrumental introduction to an opera. "
 "Independent (\"concert\") overtures also exist, which are generally "
 "programmatic works shorter than a symphonic poem."
-msgstr ""
+msgstr "Eine Ouvertüre ist ein Werk der Instrumentalmusik, das zur Eröffnung von Bühnenwerken (Oper, Ballett oder Tanz-Suite, Schauspiel), größeren Vokalwerken (Kantate, Oratorium) oder generell als Auftakt eines Konzertprogramms dient."
 
 #: DB:release_status/description:3
 msgctxt "release_status"
@@ -530,7 +534,7 @@ msgid ""
 "An unofficial/underground release that was not sanctioned by the artist "
 "and/or the record company. This includes unofficial live recordings and "
 "pirated releases."
-msgstr ""
+msgstr "Eine inoffizielle bzw. Szene-Veröffentlichung, die nicht vom Künstler und/oder dem Label abgesegnet wurde. (Trifft auf inoffizielle Liveaufnahmen und raubkopierte Veröffentlichungen zu.)"
 
 #: DB:work_type/description:20
 msgctxt "work_type"
@@ -538,7 +542,7 @@ msgid ""
 "An étude is an instrumental musical composition, most commonly of "
 "considerable difficulty, usually designed to provide practice material for "
 "perfecting a particular technical skill."
-msgstr ""
+msgstr "Eine Etüde ist ein Instrumentalwerk für ein Soloinstrument, das dem Musizierenden zu grösseren Fertigkeiten auf seinem Instrument verhelfen soll."
 
 #: DB:work_attribute_type_allowed_value/value:310
 msgctxt "work_attribute_type_allowed_value"
@@ -550,7 +554,7 @@ msgctxt "release_status"
 msgid ""
 "Any release officially sanctioned by the artist and/or their record company."
 " Most releases will fit into this category."
-msgstr ""
+msgstr "Jegliche vom Künstler und/oder dem Label offiziell abgesegnete Veröffentlichung. (Trifft auf die meisten Veröffentlichungen zu.)"
 
 #: DB:work_attribute_type_allowed_value/value:311
 msgctxt "work_attribute_type_allowed_value"
@@ -1237,7 +1241,7 @@ msgid ""
 "containing software that is ostensibly designed to prevent the CD from being"
 " ripped. There are a number of software variants: the most well-known are "
 "Macrovision's Cactus Data Shield (CDS) and SunnComm's MediaMax."
-msgstr ""
+msgstr "Copy Control CD (CCCD) ist ein Oberbegriff für CDs die ca. 2001-2006 veröffentlicht wurden und Software enthalten, die hauptsächlich verhindern soll, dass die CD gerippt werden kann. Es gibt eine Reihe von Software-Varianten: die bekanntesten sind Macrovision Cactus Daten Shield (CDS) und SunnComm's MediaMax ."
 
 #: DB:area_type/name:1
 msgctxt "area_type"
@@ -1931,7 +1935,7 @@ msgid ""
 "Flexi-discs are phonograph records made of a thin, flexible vinyl sheet with"
 " a molded-in groove, designed to be playable on a normal phonograph "
 "turntable."
-msgstr ""
+msgstr "Die flexible Disc (Flexidisc, Schallfolie oder Flexi) ist eine Schallplatte aus sehr dünnem, biegsamem Material. Zum Abspielen ist ein Plattenspieler samt Unterlage mit kleinem Mittelloch notwendig."
 
 #: DB:work_attribute_type/name:16
 msgctxt "work_attribute_type"
@@ -3331,7 +3335,7 @@ msgctxt "work_type"
 msgid ""
 "Musical theatre is a form of theatrical performance that combines songs, "
 "spoken dialogue, acting, and dance."
-msgstr ""
+msgstr "Musical-Theater ist eine Form der Theatervorstellung, die Lieder, gesprochene Dialoge, Schauspiel und Tanz verbindet."
 
 #: DB:work_attribute_type_allowed_value/value:748
 msgctxt "work_attribute_type_allowed_value"
@@ -4847,7 +4851,7 @@ msgid ""
 "system developed by RCA, in which video and audio could be played back on a "
 "TV set using a special needle and high-density groove system similar to "
 "phonograph records."
-msgstr ""
+msgstr "Die Capacitance Electronic Disc (CED) war ein von RCA entwickeltes, analoges Bildplatten-Wiedergabesystem (SelectaVision). Damit konnten Bild- und Ton auf einem TV-Gerät mit einer speziellen Nadel (ähnlich wie Schallplatten) abgespielt werden."
 
 #: DB:work_type/description:7
 msgctxt "work_type"
@@ -4855,14 +4859,14 @@ msgid ""
 "The madrigal is a type of secular vocal music composition. In its original "
 "form, it had no instrumental accompaniment, although accompaniment is much "
 "more common in later madrigals."
-msgstr ""
+msgstr "Das Madrigal ist ein mehrstimmiges Vokalstück meist weltlichen Inhalts. Es ist ursprünglich eine sehr freie Gedichtform, die als Textgrundlage für eine Komposition diente (Singgedicht). Der Text beinhaltet zumeist weltliche Themen; das geistliche Pendant zum Madrigal bildet die Motette."
 
 #: DB:work_type/description:24
 msgctxt "work_type"
 msgid ""
 "The operetta is a genre of light opera, in terms both of music and subject "
 "matter. Operettas are generally short and include spoken parts."
-msgstr ""
+msgstr "Die Operette ist ein musikalisches Bühnenwerk und bedeutet wörtlich „kleine Oper“ - entweder weil sie kürzer war als andere Werke (vor allem Einakter wurden als „Operette“ bezeichnet), weil sie „bloss“ eine Komödienhandlung hatte im Unterschied zu Opera seria oder Tragédie lyrique, oder weil nur wenige Figuren ohne Chor in ihr auftraten. Ausserdem wurden manche musikalischen Theaterwerke „Operette“ genannt, weil sie keine Gesangsvirtuosen erforderten, sondern von singenden Schauspielern ausgeführt werden konnten."
 
 #: DB:release_packaging/description:1
 msgctxt "release_packaging"
@@ -5077,7 +5081,7 @@ msgctxt "medium_format"
 msgid ""
 "Video High Density (VHD) was a videodisc format which was marketed "
 "predominantly in Japan by JVC."
-msgstr ""
+msgstr "Video High Density (VHD) war eine Videodisc-Format, welches überwiegend in Japan von JVC vermarktet wurde."
 
 #: DB:work_attribute_type_allowed_value/value:273
 msgctxt "work_attribute_type_allowed_value"

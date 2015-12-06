@@ -4,14 +4,14 @@
 # 
 # Translators:
 # Kurt-Håkon Eilertsen <kurt@kheds.com>, 2014
-# ZaphodBeeblebrox, 2013
-# ZaphodBeeblebrox, 2014
+# CatQuest, The Endeavouring Cat, 2013
+# CatQuest, The Endeavouring Cat, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2015-02-06 13:01+0100\n"
-"PO-Revision-Date: 2015-02-07 08:15+0000\n"
+"PO-Revision-Date: 2015-11-30 16:01+0000\n"
 "Last-Translator: nikki\n"
 "Language-Team: Norwegian Bokmål (http://www.transifex.com/musicbrainz/musicbrainz/language/nb/)\n"
 "MIME-Version: 1.0\n"
