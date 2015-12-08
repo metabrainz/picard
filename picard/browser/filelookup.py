@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+  # -*- coding: utf-8 -*-
 #
 # Picard, the next-generation MusicBrainz tagger
 # Copyright (c) 2004 Robert Kaye
@@ -22,6 +22,7 @@ from PyQt4 import QtCore
 import os.path
 import re
 from picard import log
+from picard.const import PICARD_URLS
 from picard.util import webbrowser2, build_qurl
 
 
@@ -62,18 +63,18 @@ class FileLookup(object):
 
     def artistLookup(self, artist_id):
         return self._lookup('artist', artist_id)
-		
+
     def trackLookup(self, track_id):
         return self._lookup('track', track_id)
-        
+
     def workLookup(self, work_id):
         return self._lookup('work', artist_id)
-        
+
     def releaseGroupLookup(self, releaseGroup_id):
         return self._lookup('release-group', releaseGroup_id)
-        
+
     def acoustLookup(self, acoust_id):
-        return self.launch('https://acoustid.org/track/' + acoust_id)
+        return self.launch(PICARD_URLS['acoustid_track'] + acoust_id)
 
     def mbidLookup(self, string, type_):
         """Parses string for known entity type and mbid, open browser for it

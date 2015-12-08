@@ -42,17 +42,6 @@ COMMON_TAGS = [
     "date",
 ]
 
-LOOKUP_TAGS = [
-	"musicbrainz_recordingid", 
-	"musicbrainz_trackid", 
-	"musicbrainz_albumid", 
-	"musicbrainz_workid", 
-	"musicbrainz_artistid", 
-	"musicbrainz_albumartistid", 
-	"musicbrainz_releasegroupid", 
-	"acoustid_id"
-]
-
 
 class TagStatus:
 
@@ -197,30 +186,30 @@ class MetadataBox(QtGui.QTableWidget):
         self.changes_first_action.setChecked(config.persist["show_changes_first"])
         self.changes_first_action.toggled.connect(self.toggle_changes_first)
         self.browser_integration = BrowserIntegration()
-		
+
     def get_file_lookup(self):
         """Return a FileLookup object."""
         return FileLookup(self, config.setting["server_host"],
                           config.setting["server_port"],
                           self.browser_integration.port)
-        
-    def open_link(self, item, tag):
+
+    def lookup_tags(self):
         lookup = self.get_file_lookup()
-        item = item.text()
-        if tag == LOOKUP_TAGS[0]:
-            lookup.recordingLookup(item)
-        elif tag == LOOKUP_TAGS[1]:
-            lookup.trackLookup(item)
-        elif tag == LOOKUP_TAGS[2]:
-            lookup.albumLookup(item)
-        elif tag == LOOKUP_TAGS[3]:
-            lookup.workLookup(item)
-        elif tag == LOOKUP_TAGS[4] or tag == LOOKUP_TAGS[5]:
-            lookup.artistLookup(item)
-        elif tag == LOOKUP_TAGS[6]:
-            lookup.releaseGroupLookup(item)
-        elif tag == LOOKUP_TAGS[7]:
-            lookup.acoustLookup(item)
+        LOOKUP_TAGS = {
+            "musicbrainz_recordingid": lookup.recordingLookup,
+            "musicbrainz_trackid": lookup.trackLookup,
+            "musicbrainz_albumid": lookup.albumLookup,
+            "musicbrainz_workid": lookup.workLookup,
+            "musicbrainz_artistid": lookup.artistLookup,
+            "musicbrainz_albumartistid": lookup.artistLookup,
+            "musicbrainz_releasegroupid": lookup.releaseGroupLookup,
+            "acoustid_id": lookup.acoustLookup
+        }
+        return LOOKUP_TAGS
+
+    def open_link(self, item, tag):
+        lookup = self.lookup_tags()
+        lookup[tag](item.text())
 
     def edit(self, index, trigger, event):
         if index.column() != 2:
@@ -279,10 +268,9 @@ class MetadataBox(QtGui.QTableWidget):
             useorigs = []
             item = self.currentItem()
             for tag in tags:
-                if tag in LOOKUP_TAGS:
-                    if item.column() == 1 or item.column() == 2:
-                        if len(tags) == 1:
-                            lookup_action = QtGui.QAction(_(u"Lookup tag"), self.parent)
+                if tag in self.lookup_tags().keys():
+                    if (item.column() == 1 or item.column() == 2) and len(tags) == 1 and item.text():
+                            lookup_action = QtGui.QAction(_(u"Lookup in &Browser"), self.parent)
                             lookup_action.triggered.connect(partial(self.open_link, item, tag))
                             menu.addAction(lookup_action)
                 if self.tag_is_removable(tag):
