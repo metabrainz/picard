@@ -1,4 +1,4 @@
-  # -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 #
 # Picard, the next-generation MusicBrainz tagger
 # Copyright (c) 2004 Robert Kaye

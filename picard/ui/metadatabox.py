@@ -33,6 +33,7 @@ from picard.metadata import MULTI_VALUED_JOINER
 from picard.browser.filelookup import FileLookup
 from picard.browser.browser import BrowserIntegration
 
+
 COMMON_TAGS = [
     "title",
     "artist",
