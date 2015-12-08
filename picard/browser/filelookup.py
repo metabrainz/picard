@@ -62,6 +62,18 @@ class FileLookup(object):
 
     def artistLookup(self, artist_id):
         return self._lookup('artist', artist_id)
+		
+    def trackLookup(self, track_id):
+        return self._lookup('track', track_id)
+        
+    def workLookup(self, work_id):
+        return self._lookup('work', artist_id)
+        
+    def releaseGroupLookup(self, releaseGroup_id):
+        return self._lookup('release-group', releaseGroup_id)
+        
+    def acoustLookup(self, acoust_id):
+        return self.launch('https://acoustid.org/track/' + acoust_id)
 
     def mbidLookup(self, string, type_):
         """Parses string for known entity type and mbid, open browser for it

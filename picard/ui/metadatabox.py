@@ -30,7 +30,8 @@ from picard.util import format_time, throttle, thread
 from picard.util.tags import display_tag_name
 from picard.ui.edittagdialog import EditTagDialog
 from picard.metadata import MULTI_VALUED_JOINER
-
+from picard.browser.filelookup import FileLookup
+from picard.browser.browser import BrowserIntegration
 
 COMMON_TAGS = [
     "title",
@@ -39,6 +40,17 @@ COMMON_TAGS = [
     "tracknumber",
     "~length",
     "date",
+]
+
+LOOKUP_TAGS = [
+	"musicbrainz_recordingid", 
+	"musicbrainz_trackid", 
+	"musicbrainz_albumid", 
+	"musicbrainz_workid", 
+	"musicbrainz_artistid", 
+	"musicbrainz_albumartistid", 
+	"musicbrainz_releasegroupid", 
+	"acoustid_id"
 ]
 
 
@@ -184,6 +196,31 @@ class MetadataBox(QtGui.QTableWidget):
         self.changes_first_action.setCheckable(True)
         self.changes_first_action.setChecked(config.persist["show_changes_first"])
         self.changes_first_action.toggled.connect(self.toggle_changes_first)
+        self.browser_integration = BrowserIntegration()
+		
+    def get_file_lookup(self):
+        """Return a FileLookup object."""
+        return FileLookup(self, config.setting["server_host"],
+                          config.setting["server_port"],
+                          self.browser_integration.port)
+        
+    def open_link(self, item, tag):
+        lookup = self.get_file_lookup()
+        item = item.text()
+        if tag == LOOKUP_TAGS[0]:
+            lookup.recordingLookup(item)
+        elif tag == LOOKUP_TAGS[1]:
+            lookup.trackLookup(item)
+        elif tag == LOOKUP_TAGS[2]:
+            lookup.albumLookup(item)
+        elif tag == LOOKUP_TAGS[3]:
+            lookup.workLookup(item)
+        elif tag == LOOKUP_TAGS[4] or tag == LOOKUP_TAGS[5]:
+            lookup.artistLookup(item)
+        elif tag == LOOKUP_TAGS[6]:
+            lookup.releaseGroupLookup(item)
+        elif tag == LOOKUP_TAGS[7]:
+            lookup.acoustLookup(item)
 
     def edit(self, index, trigger, event):
         if index.column() != 2:
@@ -240,7 +277,14 @@ class MetadataBox(QtGui.QTableWidget):
                 menu.addAction(edit_tag_action)
             removals = []
             useorigs = []
+            item = self.currentItem()
             for tag in tags:
+                if tag in LOOKUP_TAGS:
+                    if item.column() == 1 or item.column() == 2:
+                        if len(tags) == 1:
+                            lookup_action = QtGui.QAction(_(u"Lookup tag"), self.parent)
+                            lookup_action.triggered.connect(partial(self.open_link, item, tag))
+                            menu.addAction(lookup_action)
                 if self.tag_is_removable(tag):
                     removals.append(partial(self.remove_tag, tag))
                 status = self.tag_diff.status[tag] & TagStatus.Changed
