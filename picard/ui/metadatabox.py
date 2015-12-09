@@ -208,9 +208,11 @@ class MetadataBox(QtGui.QTableWidget):
         }
         return LOOKUP_TAGS
 
-    def open_link(self, item, tag):
+    def open_link(self, values, tag):
         lookup = self.lookup_tags()
-        lookup[tag](item.text())
+        lookup_func = lookup[tag]
+        for v in values:
+            lookup_func(v)
 
     def edit(self, index, trigger, event):
         if index.column() != 2:
@@ -268,12 +270,17 @@ class MetadataBox(QtGui.QTableWidget):
             removals = []
             useorigs = []
             item = self.currentItem()
+            column = item.column()
             for tag in tags:
                 if tag in self.lookup_tags().keys():
-                    if (item.column() == 1 or item.column() == 2) and len(tags) == 1 and item.text():
-                            lookup_action = QtGui.QAction(_(u"Lookup in &Browser"), self.parent)
-                            lookup_action.triggered.connect(partial(self.open_link, item, tag))
-                            menu.addAction(lookup_action)
+                    if (column == 1 or column == 2) and len(tags) == 1 and item.text():
+                        if column == 1:
+                            values = self.tag_diff.orig[tag]
+                        else:
+                            values = self.tag_diff.new[tag]
+                        lookup_action = QtGui.QAction(_(u"Lookup in &Browser"), self.parent)
+                        lookup_action.triggered.connect(partial(self.open_link, values, tag))
+                        menu.addAction(lookup_action)
                 if self.tag_is_removable(tag):
                     removals.append(partial(self.remove_tag, tag))
                 status = self.tag_diff.status[tag] & TagStatus.Changed
