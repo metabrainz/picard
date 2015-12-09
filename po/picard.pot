@@ -8,14 +8,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: picard 1.4.0dev3\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-09-27 21:13+0200\n"
+"POT-Creation-Date: 2015-12-09 16:36-0600\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 1.3\n"
+"Generated-By: Babel 2.1.1\n"
 
 #: contrib/plugins/albumartist_website.py:3
 msgid "Album Artist Website"
@@ -300,7 +300,7 @@ msgstr ""
 msgid "Merge"
 msgstr ""
 
-#: picard/config_upgrade.py:78 picard/ui/metadatabox.py:255
+#: picard/config_upgrade.py:78 picard/ui/metadatabox.py:295
 msgid "Remove"
 msgstr ""
 
@@ -361,23 +361,23 @@ msgstr ""
 msgid "[no release info]"
 msgstr ""
 
-#: picard/tagger.py:391
+#: picard/tagger.py:393
 #, python-format
 msgid "Adding %(count)d file from '%(directory)s' ..."
 msgid_plural "Adding %(count)d files from '%(directory)s' ..."
 msgstr[0] ""
 msgstr[1] ""
 
-#: picard/tagger.py:533
+#: picard/tagger.py:535
 #, python-format
 msgid "Removing album %(id)s: %(artist)s - %(album)s"
 msgstr ""
 
-#: picard/tagger.py:549
+#: picard/tagger.py:551
 msgid "CD Lookup Error"
 msgstr ""
 
-#: picard/tagger.py:550
+#: picard/tagger.py:552
 #, python-format
 msgid ""
 "Error while reading CD:\n"
@@ -508,7 +508,7 @@ msgstr ""
 msgid "Catalog #s"
 msgstr ""
 
-#: picard/ui/cdlookup.py:36 picard/util/tags.py:78
+#: picard/ui/cdlookup.py:36 picard/util/tags.py:79
 msgid "Barcode"
 msgstr ""
 
@@ -640,7 +640,7 @@ msgstr ""
 msgid "Title"
 msgstr ""
 
-#: picard/ui/itemviews.py:95 picard/util/tags.py:86
+#: picard/ui/itemviews.py:95 picard/util/tags.py:87
 msgid "Length"
 msgstr ""
 
@@ -841,7 +841,7 @@ msgstr ""
 msgid "Remove selected files/albums"
 msgstr ""
 
-#: picard/ui/mainwindow.py:375
+#: picard/ui/mainwindow.py:375 picard/ui/metadatabox.py:281
 msgid "Lookup in &Browser"
 msgstr ""
 
@@ -960,7 +960,7 @@ msgid "View Activity &History"
 msgstr ""
 
 #: picard/ui/mainwindow.py:468
-msgid "&Play file"
+msgid "&Open in Player"
 msgstr ""
 
 #: picard/ui/mainwindow.py:469
@@ -1051,63 +1051,63 @@ msgstr ""
 msgid "%(filename)s (%(similarity)d%%)"
 msgstr ""
 
-#: picard/ui/mainwindow.py:916
+#: picard/ui/mainwindow.py:915
 msgid "Authentication Required"
 msgstr ""
 
-#: picard/ui/mainwindow.py:917
+#: picard/ui/mainwindow.py:916
 msgid ""
 "Picard needs authorization to access your personal data on the "
 "MusicBrainz server. Would you like to log in now?"
 msgstr ""
 
-#: picard/ui/metadatabox.py:82
+#: picard/ui/metadatabox.py:84
 #, python-format
 msgid "(different across %d item)"
 msgid_plural "(different across %d items)"
 msgstr[0] ""
 msgstr[1] ""
 
-#: picard/ui/metadatabox.py:90
+#: picard/ui/metadatabox.py:92
 #, python-format
 msgid "(missing from %d item)"
 msgid_plural "(missing from %d items)"
 msgstr[0] ""
 msgstr[1] ""
 
-#: picard/ui/metadatabox.py:154
+#: picard/ui/metadatabox.py:156
 msgid "metadata view"
 msgstr ""
 
-#: picard/ui/metadatabox.py:155
+#: picard/ui/metadatabox.py:157
 msgid "Displays original and new tags for the selected files"
 msgstr ""
 
-#: picard/ui/metadatabox.py:157
+#: picard/ui/metadatabox.py:159
 msgid "Tag"
 msgstr ""
 
-#: picard/ui/metadatabox.py:157
+#: picard/ui/metadatabox.py:159
 msgid "Original Value"
 msgstr ""
 
-#: picard/ui/metadatabox.py:157
+#: picard/ui/metadatabox.py:159
 msgid "New Value"
 msgstr ""
 
-#: picard/ui/metadatabox.py:181
+#: picard/ui/metadatabox.py:183
 msgid "Add New Tag..."
 msgstr ""
 
-#: picard/ui/metadatabox.py:183
+#: picard/ui/metadatabox.py:185
 msgid "Show Changes First"
 msgstr ""
 
-#: picard/ui/metadatabox.py:238
+#: picard/ui/metadatabox.py:267
 msgid "Edit..."
 msgstr ""
 
-#: picard/ui/metadatabox.py:259
+#: picard/ui/metadatabox.py:299
 msgid "Use Original Value"
 msgid_plural "Use Original Values"
 msgstr[0] ""
@@ -1860,16 +1860,16 @@ msgstr ""
 msgid "Authors"
 msgstr ""
 
-#: picard/ui/options/plugins.py:297 picard/util/tags.py:43
+#: picard/ui/options/plugins.py:297 picard/util/tags.py:44
 msgid "License"
 msgstr ""
 
-#: picard/ui/options/plugins.py:327
+#: picard/ui/options/plugins.py:328
 #, python-format
 msgid "The plugin '%s' could not be downloaded."
 msgstr ""
 
-#: picard/ui/options/plugins.py:328
+#: picard/ui/options/plugins.py:329
 msgid "Please try again later."
 msgstr ""
 
@@ -2038,182 +2038,186 @@ msgid "BPM"
 msgstr ""
 
 #: picard/util/tags.py:42
+msgid "Key"
+msgstr ""
+
+#: picard/util/tags.py:43
 msgid "Copyright"
 msgstr ""
 
-#: picard/util/tags.py:44
+#: picard/util/tags.py:45
 msgid "Composer"
 msgstr ""
 
-#: picard/util/tags.py:45
+#: picard/util/tags.py:46
 msgid "Writer"
 msgstr ""
 
-#: picard/util/tags.py:46
+#: picard/util/tags.py:47
 msgid "Conductor"
 msgstr ""
 
-#: picard/util/tags.py:47
+#: picard/util/tags.py:48
 msgid "Lyricist"
 msgstr ""
 
-#: picard/util/tags.py:48
+#: picard/util/tags.py:49
 msgid "Arranger"
 msgstr ""
 
-#: picard/util/tags.py:49
+#: picard/util/tags.py:50
 msgid "Producer"
 msgstr ""
 
-#: picard/util/tags.py:50
+#: picard/util/tags.py:51
 msgid "Engineer"
 msgstr ""
 
-#: picard/util/tags.py:51
+#: picard/util/tags.py:52
 msgid "Subtitle"
 msgstr ""
 
-#: picard/util/tags.py:52
+#: picard/util/tags.py:53
 msgid "Disc Subtitle"
 msgstr ""
 
-#: picard/util/tags.py:53
+#: picard/util/tags.py:54
 msgid "Remixer"
 msgstr ""
 
-#: picard/util/tags.py:54
+#: picard/util/tags.py:55
 msgid "MusicBrainz Recording Id"
 msgstr ""
 
-#: picard/util/tags.py:55
+#: picard/util/tags.py:56
 msgid "MusicBrainz Track Id"
 msgstr ""
 
-#: picard/util/tags.py:56
+#: picard/util/tags.py:57
 msgid "MusicBrainz Release Id"
 msgstr ""
 
-#: picard/util/tags.py:57
+#: picard/util/tags.py:58
 msgid "MusicBrainz Artist Id"
 msgstr ""
 
-#: picard/util/tags.py:58
+#: picard/util/tags.py:59
 msgid "MusicBrainz Release Artist Id"
 msgstr ""
 
-#: picard/util/tags.py:59
+#: picard/util/tags.py:60
 msgid "MusicBrainz Work Id"
 msgstr ""
 
-#: picard/util/tags.py:60
+#: picard/util/tags.py:61
 msgid "MusicBrainz Release Group Id"
 msgstr ""
 
-#: picard/util/tags.py:61
+#: picard/util/tags.py:62
 msgid "MusicBrainz Disc Id"
 msgstr ""
 
-#: picard/util/tags.py:62
+#: picard/util/tags.py:63
 msgid "MusicIP PUID"
 msgstr ""
 
-#: picard/util/tags.py:63
+#: picard/util/tags.py:64
 msgid "MusicIP Fingerprint"
 msgstr ""
 
-#: picard/util/tags.py:64
+#: picard/util/tags.py:65
 msgid "AcoustID"
 msgstr ""
 
-#: picard/util/tags.py:65
+#: picard/util/tags.py:66
 msgid "AcoustID Fingerprint"
 msgstr ""
 
-#: picard/util/tags.py:66
+#: picard/util/tags.py:67
 msgid "Disc Id"
 msgstr ""
 
-#: picard/util/tags.py:67
+#: picard/util/tags.py:68
 msgid "Artist Website"
 msgstr ""
 
-#: picard/util/tags.py:68
+#: picard/util/tags.py:69
 msgid "Compilation (iTunes)"
 msgstr ""
 
-#: picard/util/tags.py:69
+#: picard/util/tags.py:70
 msgid "Comment"
 msgstr ""
 
-#: picard/util/tags.py:70
+#: picard/util/tags.py:71
 msgid "Genre"
 msgstr ""
 
-#: picard/util/tags.py:71
+#: picard/util/tags.py:72
 msgid "Encoded By"
 msgstr ""
 
-#: picard/util/tags.py:72
+#: picard/util/tags.py:73
 msgid "Encoder Settings"
 msgstr ""
 
-#: picard/util/tags.py:73
+#: picard/util/tags.py:74
 msgid "Performer"
 msgstr ""
 
-#: picard/util/tags.py:74
+#: picard/util/tags.py:75
 msgid "Release Type"
 msgstr ""
 
-#: picard/util/tags.py:75
+#: picard/util/tags.py:76
 msgid "Release Status"
 msgstr ""
 
-#: picard/util/tags.py:76
+#: picard/util/tags.py:77
 msgid "Release Country"
 msgstr ""
 
-#: picard/util/tags.py:77
+#: picard/util/tags.py:78
 msgid "Record Label"
 msgstr ""
 
-#: picard/util/tags.py:79
+#: picard/util/tags.py:80
 msgid "Catalog Number"
 msgstr ""
 
-#: picard/util/tags.py:80
+#: picard/util/tags.py:81
 msgid "DJ-Mixer"
 msgstr ""
 
-#: picard/util/tags.py:81
+#: picard/util/tags.py:82
 msgid "Media"
 msgstr ""
 
-#: picard/util/tags.py:82
+#: picard/util/tags.py:83
 msgid "Lyrics"
 msgstr ""
 
-#: picard/util/tags.py:83
+#: picard/util/tags.py:84
 msgid "Mixer"
 msgstr ""
 
-#: picard/util/tags.py:84
+#: picard/util/tags.py:85
 msgid "Language"
 msgstr ""
 
-#: picard/util/tags.py:85
+#: picard/util/tags.py:86
 msgid "Script"
 msgstr ""
 
-#: picard/util/tags.py:87
+#: picard/util/tags.py:88
 msgid "Rating"
 msgstr ""
 
-#: picard/util/tags.py:88
+#: picard/util/tags.py:89
 msgid "Artists"
 msgstr ""
 
-#: picard/util/tags.py:89
+#: picard/util/tags.py:90
 msgid "Work"
 msgstr ""
 

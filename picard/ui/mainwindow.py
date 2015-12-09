@@ -465,7 +465,7 @@ class MainWindow(QtGui.QMainWindow):
         xmlws_manager.authenticationRequired.connect(self.show_password_dialog)
         xmlws_manager.proxyAuthenticationRequired.connect(self.show_proxy_dialog)
 
-        self.play_file_action = QtGui.QAction(icontheme.lookup('play-music'), _(u"&Play file"), self)
+        self.play_file_action = QtGui.QAction(icontheme.lookup('play-music'), _(u"&Open in Player"), self)
         self.play_file_action.setStatusTip(_(u"Play the file in your default media player"))
         self.play_file_action.setEnabled(False)
         self.play_file_action.triggered.connect(self.play_file)
