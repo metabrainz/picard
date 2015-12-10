@@ -33,7 +33,7 @@ from picard.ui.options.scripting import TaggerScriptSyntaxHighlighter
 
 
 _DEFAULT_FILE_NAMING_FORMAT = "$if2(%albumartist%,%artist%)/" \
-    "$if($ne(%albumartist%,),%album%/)" \
+    "$if($ne(%albumartist%,),%album%/ ,)" \
     "$if($gt(%totaldiscs%,1),%discnumber%-,)" \
     "$if($ne(%albumartist%,),$num(%tracknumber%,2) ,)" \
     "$if(%_multiartist%,%artist% - ,)" \
