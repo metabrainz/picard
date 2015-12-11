@@ -106,13 +106,6 @@ class Ui_RenamingOptionsPage(object):
         self.file_naming_format.setTextInteractionFlags(QtCore.Qt.TextEditorInteraction)
         self.file_naming_format.setObjectName(_fromUtf8("file_naming_format"))
         self.verticalLayout_2.addWidget(self.file_naming_format)
-        self.file_naming_format_documentation = QtGui.QLabel(self.file_naming_format_group)
-        self.file_naming_format_documentation.setText(_fromUtf8(""))
-        self.file_naming_format_documentation.setOpenExternalLinks(True);
-        self.file_naming_format_documentation.setTextFormat(QtCore.Qt.RichText)
-        self.file_naming_format_documentation.setWordWrap(True)
-        self.file_naming_format_documentation.setObjectName(_fromUtf8("file_naming_format_documentation"))
-        self.verticalLayout_2.addWidget(self.file_naming_format_documentation)
         self.horizontalLayout = QtGui.QHBoxLayout()
         self.horizontalLayout.setSpacing(2)
         self.horizontalLayout.setObjectName(_fromUtf8("horizontalLayout"))
@@ -132,6 +125,12 @@ class Ui_RenamingOptionsPage(object):
         self.horizontalLayout.addWidget(self.file_naming_format_default)
         self.verticalLayout_2.addLayout(self.horizontalLayout)
         self.verticalLayout_3.addWidget(self.file_naming_format_group)
+        self.ile_naming_format_documentation = QtGui.QLabel(self.rename_files)
+        self.ile_naming_format_documentation.setOpenExternalLinks(True)
+        self.ile_naming_format_documentation.setTextFormat(QtCore.Qt.RichText)
+        self.ile_naming_format_documentation.setWordWrap(True)
+        self.ile_naming_format_documentation.setObjectName(_fromUtf8("ile_naming_format_documentation"))
+        self.verticalLayout_3.addWidget(self.ile_naming_format_documentation)
         self.verticalLayout_5.addWidget(self.rename_files)
         self.groupBox = QtGui.QGroupBox(RenamingOptionsPage)
         self.groupBox.setObjectName(_fromUtf8("groupBox"))
@@ -174,7 +173,9 @@ class Ui_RenamingOptionsPage(object):
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:\'Monospace\'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
 "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:10pt;\"><br /></p></body></html>", None))
-        self.file_naming_format_documentation.setText(_('''<a href='https://picard.musicbrainz.org/docs/scripting'>View full documentaton online'''))
         self.file_naming_format_default.setText(_("Default"))
+        self.ile_naming_format_documentation.setText(_translate("RenamingOptionsPage", "\n"
+"            <a href=\"https://picard.musicbrainz.org/docs/scripting\">View full documentation online</a>\n"
+"         ", None))
         self.groupBox.setTitle(_("Examples"))
 
