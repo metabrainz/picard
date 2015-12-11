@@ -24,6 +24,7 @@ from functools import partial
 from PyQt4 import QtGui
 from PyQt4.QtGui import QPalette, QColor
 from picard import config
+from picard.const import PICARD_URLS
 from picard.file import File
 from picard.script import ScriptParser, SyntaxError, ScriptError, UnknownFunction
 from picard.ui.options import OptionsPage, OptionsCheckError, register_options_page
@@ -167,6 +168,12 @@ class RenamingOptionsPage(OptionsPage):
         self.ui.move_files.setChecked(config.setting["move_files"])
         self.ui.ascii_filenames.setChecked(config.setting["ascii_filenames"])
         self.ui.file_naming_format.setPlainText(config.setting["file_naming_format"])
+        args = {
+            "picard-doc-scripting-url": PICARD_URLS['doc_scripting'],
+        }
+        text = _(u'<a href="%(picard-doc-scripting-url)s">Open Scripting'
+                 ' Documentation in your browser</a>') % args
+        self.ui.file_naming_format_documentation.setText(text)
         self.ui.move_files_to.setText(config.setting["move_files_to"])
         self.ui.move_files_to.setCursorPosition(0)
         self.ui.move_additional_files.setChecked(config.setting["move_additional_files"])

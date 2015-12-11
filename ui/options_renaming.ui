@@ -223,11 +223,9 @@ p, li { white-space: pre-wrap; }
        </widget>
       </item>
       <item>
-       <widget class="QLabel" name="ile_naming_format_documentation">
+       <widget class="QLabel" name="file_naming_format_documentation">
         <property name="text">
-         <string><![CDATA[
-            <a href="https://picard.musicbrainz.org/docs/scripting">View full documentation online</a>
-         ]]></string>
+          <string/>
         </property>
         <property name="openExternalLinks">
           <bool>true</bool>
