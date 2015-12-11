@@ -1,7 +1,8 @@
-<ui version="4.0" >
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
  <class>ScriptingOptionsPage</class>
- <widget class="QWidget" name="ScriptingOptionsPage" >
-  <property name="geometry" >
+ <widget class="QWidget" name="ScriptingOptionsPage">
+  <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
@@ -9,48 +10,61 @@
     <height>377</height>
    </rect>
   </property>
-  <layout class="QVBoxLayout" >
-   <property name="spacing" >
+  <layout class="QVBoxLayout">
+   <property name="spacing">
     <number>6</number>
    </property>
-   <property name="margin" >
+   <property name="margin">
     <number>9</number>
    </property>
    <item>
-    <widget class="QGroupBox" name="enable_tagger_script" >
-     <property name="title" >
+    <widget class="QGroupBox" name="enable_tagger_script">
+     <property name="title">
       <string>Tagger Script</string>
      </property>
-     <property name="checkable" >
+     <property name="checkable">
       <bool>true</bool>
      </property>
-     <layout class="QVBoxLayout" name="verticalLayout" >
+     <layout class="QVBoxLayout" name="verticalLayout">
       <item>
-       <widget class="QTextEdit" name="tagger_script" >
-        <property name="font" >
+       <widget class="QTextEdit" name="tagger_script">
+        <property name="font">
          <font>
           <family>Monospace</family>
          </font>
         </property>
-        <property name="lineWrapMode" >
+        <property name="lineWrapMode">
          <enum>QTextEdit::NoWrap</enum>
         </property>
-        <property name="acceptRichText" >
+        <property name="acceptRichText">
          <bool>false</bool>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QLabel" name="script_error" >
-        <property name="text" >
+       <widget class="QLabel" name="script_error">
+        <property name="text">
          <string/>
         </property>
-        <property name="alignment" >
+        <property name="alignment">
          <set>Qt::AlignCenter</set>
         </property>
        </widget>
       </item>
      </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="scripting_doc_link">
+     <property name="text">
+      <string/>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+     <property name="openExternalLinks">
+      <bool>true</bool>
+     </property>
     </widget>
    </item>
   </layout>
