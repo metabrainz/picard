@@ -125,6 +125,12 @@ class Ui_RenamingOptionsPage(object):
         self.horizontalLayout.addWidget(self.file_naming_format_default)
         self.verticalLayout_2.addLayout(self.horizontalLayout)
         self.verticalLayout_3.addWidget(self.file_naming_format_group)
+        self.ile_naming_format_documentation = QtGui.QLabel(self.rename_files)
+        self.ile_naming_format_documentation.setOpenExternalLinks(True)
+        self.ile_naming_format_documentation.setTextFormat(QtCore.Qt.RichText)
+        self.ile_naming_format_documentation.setWordWrap(True)
+        self.ile_naming_format_documentation.setObjectName(_fromUtf8("ile_naming_format_documentation"))
+        self.verticalLayout_3.addWidget(self.ile_naming_format_documentation)
         self.verticalLayout_5.addWidget(self.rename_files)
         self.groupBox = QtGui.QGroupBox(RenamingOptionsPage)
         self.groupBox.setObjectName(_fromUtf8("groupBox"))
@@ -168,5 +174,8 @@ class Ui_RenamingOptionsPage(object):
 "</style></head><body style=\" font-family:\'Monospace\'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
 "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:10pt;\"><br /></p></body></html>", None))
         self.file_naming_format_default.setText(_("Default"))
+        self.ile_naming_format_documentation.setText(_translate("RenamingOptionsPage", "\n"
+"            <a href=\"https://picard.musicbrainz.org/docs/scripting\">View full documentation online</a>\n"
+"         ", None))
         self.groupBox.setTitle(_("Examples"))
 
