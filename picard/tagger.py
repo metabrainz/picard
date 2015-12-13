@@ -310,6 +310,7 @@ class Tagger(QtGui.QApplication):
         if file is not None and not file.has_error():
             recordingid = file.metadata.getall('musicbrainz_recordingid')[0] \
                 if 'musicbrainz_recordingid' in file.metadata else ''
+            if config.setting["cluster_new_files"]: self.cluster([file])
             if target is not None:
                 self.move_files([file], target)
             elif not config.setting["ignore_file_mbids"]:
