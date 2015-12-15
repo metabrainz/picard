@@ -368,7 +368,8 @@ class Tagger(QtGui.QApplication):
                 target = None
             for file in new_files:
                 file.load(partial(self._file_loaded, target=target))
-            if (config.setting["cluster_new_files"]):
+        if (config.setting["cluster_new_files"]):
+            if config.setting["ignore_file_mbids"]:
                 self.cluster([file])
 
     def add_directory(self, path):
