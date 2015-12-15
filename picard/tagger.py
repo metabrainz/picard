@@ -310,7 +310,6 @@ class Tagger(QtGui.QApplication):
         if file is not None and not file.has_error():
             recordingid = file.metadata.getall('musicbrainz_recordingid')[0] \
                 if 'musicbrainz_recordingid' in file.metadata else ''
-            if config.setting["cluster_new_files"]: self.cluster([file])
             if target is not None:
                 self.move_files([file], target)
             elif not config.setting["ignore_file_mbids"]:
@@ -369,6 +368,8 @@ class Tagger(QtGui.QApplication):
                 target = None
             for file in new_files:
                 file.load(partial(self._file_loaded, target=target))
+            if (config.setting["cluster_new_files"]):
+                self.cluster([file])
 
     def add_directory(self, path):
         ignore_hidden = config.setting["ignore_hidden_files"]
