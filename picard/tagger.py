@@ -368,6 +368,8 @@ class Tagger(QtGui.QApplication):
                 target = None
             for file in new_files:
                 file.load(partial(self._file_loaded, target=target))
+            if (config.setting["cluster_new_files"]):
+                self.cluster([file])
 
     def add_directory(self, path):
         ignore_hidden = config.setting["ignore_hidden_files"]
