@@ -1,4 +1,3 @@
-# Pastebin KI9Dx3Rx
 # -*- coding: utf-8 -*-
 #
 # Picard, the next-generation MusicBrainz tagger
@@ -312,7 +311,7 @@ class Tagger(QtGui.QApplication):
             return 1
         return QtGui.QApplication.event(self, event)
 
-    def _file_loaded(self, file, progress, target=None,):
+    def _file_loaded(self, file, progress, target=None):
         if file is not None and not file.has_error():
             recordingid = file.metadata.getall('musicbrainz_recordingid')[0] \
                 if 'musicbrainz_recordingid' in file.metadata else ''
@@ -333,7 +332,6 @@ class Tagger(QtGui.QApplication):
             elif config.setting['analyze_new_files'] and file.can_analyze():
                 self.analyze([file])
         if config.setting["cluster_new_files"] and len(set(progress)) == 1:
-            print (len(self.unmatched_files))
             self.cluster([self.unmatched_files])
             self.total_file = 0
 
