@@ -1,8 +1,9 @@
+# Pastebin KI9Dx3Rx
 # -*- coding: utf-8 -*-
 #
 # Picard, the next-generation MusicBrainz tagger
 # Copyright (C) 2004 Robert Kaye
-# Copyright (C) 2006 Lukáš Lalinský
+# Copyright (C) 2006 LukÃƒÂ¡Ã…Â¡ LalinskÃƒÂ½
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -71,7 +72,6 @@ from picard.ui.mainwindow import MainWindow
 from picard.plugin import PluginManager
 from picard.acoustidmanager import AcoustIDManager
 from picard.config_upgrade import upgrade_config
-from picard.util import LockableObject
 from picard.util import (
     decode_filename,
     encode_filename,
@@ -84,26 +84,6 @@ from picard.util import (
 )
 from picard.webservice import XmlWebService
 
-class LockableInteger(LockableObject):
-    '''count_file = 0
-    count_dir = 0
-    total_file = 0
-    total_dir = 0'''
-
-    int = 0
-
-    def __init__(self):
-
-        super(LockableInteger, self).__init__()
-        self.int = 0
-
-    def increment(self):
-        super(LockableInteger, self).lock_for_write()
-        self.int += 1
-        super(LockableInteger, self).unlock()
-
-    def reset(self):
-        self.int = 0
 
 class Tagger(QtGui.QApplication):
 
@@ -231,11 +211,10 @@ class Tagger(QtGui.QApplication):
         self.window = MainWindow()
         self.exit_cleanup = []
 
-        self.count_file = LockableInteger()
-        self.count_dir = LockableInteger()
-        self.total_file = LockableInteger()
-        self.total_dir = LockableInteger()
-
+        self.count_file = 0
+        self.count_dir = 0
+        self.total_file = 0
+        self.total_dir = 0
 
     def register_cleanup(self, func):
         self.exit_cleanup.append(func)
@@ -353,20 +332,10 @@ class Tagger(QtGui.QApplication):
                     self.analyze([file])
             elif config.setting['analyze_new_files'] and file.can_analyze():
                 self.analyze([file])
-            if config.setting["cluster_new_files"] and len(set(progress)) == 1:
-                if self.total_dir.int:
-                    #self.count_dir = self.count_dir + 1
-                    self.count_dir.increment()
-                    dir_progress = [self.count_dir.int, self.total_dir.int]
-                    if len(set(dir_progress)) == 1:
-                        self.cluster([self.unmatched_files])
-                        self.count_dir.reset()
-                        self.count_dir.reset()
-                        self.total_file.reset()
-                        self.total_dir.reset()
-                else:
-                    self.cluster([self.unmatched_files])
-                    self.total_file.reset()
+        if config.setting["cluster_new_files"] and len(set(progress)) == 1:
+            print (len(self.unmatched_files))
+            self.cluster([self.unmatched_files])
+            self.total_file = 0
 
     def move_files(self, files, target):
         if isinstance(target, (Track, Cluster)):
@@ -402,18 +371,16 @@ class Tagger(QtGui.QApplication):
                     self.files[filename] = file
                     new_files.append(file)
         if new_files:
-            self.count_file = LockableInteger()
-            self.total_file.int = len(new_files)
+            self.count_file = 0
+            self.total_file = len(new_files)
             log.debug("Adding files %r", new_files)
             new_files.sort(key=lambda x: x.filename)
             if target is None or target is self.unmatched_files:
                 self.unmatched_files.add_files(new_files)
                 target = None
             for file in new_files:
-                #self.count_file = self.count_file + 1
-
-                self.count_file.increment()
-                file.load(partial(self._file_loaded, target=target, progress=[self.count_file.int, self.total_file.int]))
+                self.count_file += 1
+                file.load(partial(self._file_loaded, target=target, progress=[self.count_file,self.total_file]))
 
     def add_directory(self, path):
         ignore_hidden = config.setting["ignore_hidden_files"]
@@ -428,7 +395,7 @@ class Tagger(QtGui.QApplication):
                 return None
             else:
                 if len(dirs):
-                    self.total_dir.int = len(dirs)
+                    self.total_dir = len(dirs)
                 number_of_files = len(files)
                 if number_of_files:
                     mparms = {
@@ -654,7 +621,6 @@ class Tagger(QtGui.QApplication):
             cmp(a.tracknumber, b.tracknumber) or
             cmp(a.base_filename, b.base_filename))
         for name, artist, files in Cluster.cluster(files, 1.0):
-            QtCore.QCoreApplication.processEvents()
             cluster = self.load_cluster(name, artist)
             for file in sorted(files, fcmp):
                 file.move(cluster)
