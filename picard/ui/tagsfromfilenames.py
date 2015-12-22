@@ -19,7 +19,7 @@
 
 import re
 import os.path
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtWidgets
 from picard import config
 from picard.ui.util import StandardButton
 from picard.ui import PicardDialog
@@ -57,8 +57,8 @@ class TagsFromFileNamesDialog(PicardDialog):
             selected_index = items.index(format)
         self.ui.format.addItems(items)
         self.ui.format.setCurrentIndex(selected_index)
-        self.ui.buttonbox.addButton(StandardButton(StandardButton.OK), QtGui.QDialogButtonBox.AcceptRole)
-        self.ui.buttonbox.addButton(StandardButton(StandardButton.CANCEL), QtGui.QDialogButtonBox.RejectRole)
+        self.ui.buttonbox.addButton(StandardButton(StandardButton.OK), QtWidgets.QDialogButtonBox.AcceptRole)
+        self.ui.buttonbox.addButton(StandardButton(StandardButton.CANCEL), QtWidgets.QDialogButtonBox.RejectRole)
         self.ui.buttonbox.accepted.connect(self.accept)
         self.ui.buttonbox.rejected.connect(self.reject)
         self.ui.preview.clicked.connect(self.preview)
@@ -67,7 +67,7 @@ class TagsFromFileNamesDialog(PicardDialog):
         self.files = files
         self.items = []
         for file in files:
-            item = QtGui.QTreeWidgetItem(self.ui.files)
+            item = QtWidgets.QTreeWidgetItem(self.ui.files)
             item.setText(0, os.path.basename(file.filename))
             self.items.append(item)
         self._tag_re = re.compile("(%\w+%)")
@@ -116,7 +116,7 @@ class TagsFromFileNamesDialog(PicardDialog):
             for i in range(len(columns)):
                 value = matches.get(columns[i], '')
                 item.setText(i + 1, value)
-        self.ui.files.header().resizeSections(QtGui.QHeaderView.ResizeToContents)
+        self.ui.files.header().resizeSections(QtWidgets.QHeaderView.ResizeToContents)
         self.ui.files.header().setStretchLastSection(True)
 
     def accept(self):
@@ -128,11 +128,11 @@ class TagsFromFileNamesDialog(PicardDialog):
             file.update()
         config.persist["tags_from_filenames_format"] = self.ui.format.currentText()
         self.saveWindowState()
-        QtGui.QDialog.accept(self)
+        QtWidgets.QDialog.accept(self)
 
     def reject(self):
         self.saveWindowState()
-        QtGui.QDialog.reject(self)
+        QtWidgets.QDialog.reject(self)
 
     def closeEvent(self, event):
         self.saveWindowState()

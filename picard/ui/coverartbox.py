@@ -19,7 +19,7 @@
 
 import os
 from functools import partial
-from PyQt4 import QtCore, QtGui, QtNetwork
+from PyQt5 import QtCore, QtGui, QtNetwork, QtWidgets
 from picard import config, log
 from picard.album import Album
 from picard.coverart.image import CoverArtImage, CoverArtImageError
@@ -28,7 +28,7 @@ from picard.file import File
 from picard.util import encode_filename
 
 
-class ActiveLabel(QtGui.QLabel):
+class ActiveLabel(QtWidgets.QLabel):
 
     """Clickable QLabel."""
 
@@ -36,7 +36,7 @@ class ActiveLabel(QtGui.QLabel):
     imageDropped = QtCore.pyqtSignal(QtCore.QUrl)
 
     def __init__(self, active=True, *args):
-        QtGui.QLabel.__init__(self, *args)
+        QtWidgets.QLabel.__init__(self, *args)
         self.setMargin(0)
         self.setActive(active)
         self.setAcceptDrops(False)
@@ -68,11 +68,11 @@ class ActiveLabel(QtGui.QLabel):
             event.acceptProposedAction()
 
 
-class CoverArtBox(QtGui.QGroupBox):
+class CoverArtBox(QtWidgets.QGroupBox):
 
     def __init__(self, parent):
-        QtGui.QGroupBox.__init__(self, "")
-        self.layout = QtGui.QVBoxLayout()
+        QtWidgets.QGroupBox.__init__(self, "")
+        self.layout = QtWidgets.QVBoxLayout()
         self.layout.setSpacing(0)
         # Kills off any borders
         self.setStyleSheet('''QGroupBox{background-color:none;border:1px;}''')
@@ -91,7 +91,7 @@ class CoverArtBox(QtGui.QGroupBox):
 
     def show(self):
         self.__set_data(self.data, True)
-        QtGui.QGroupBox.show(self)
+        QtWidgets.QGroupBox.show(self)
 
     def __set_data(self, data, force=False, pixmap=None):
         if not force and self.data == data:
@@ -154,7 +154,7 @@ class CoverArtBox(QtGui.QGroupBox):
         if self.item is None:
             return
         if url.scheme() == 'http':
-            path = url.encodedPath()
+            path = url.path(QtCore.QUrl.FullyEncoded)
             if url.hasQuery():
                 path += '?' + url.encodedQuery()
             self.tagger.xmlws.get(url.encodedHost(), url.port(80), path,

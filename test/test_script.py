@@ -1,6 +1,6 @@
 import unittest
 import picard
-from PyQt4 import QtCore
+from PyQt5 import QtCore
 from picard import config
 from picard.script import ScriptParser, ScriptError, register_script_function
 from picard.metadata import Metadata

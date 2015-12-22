@@ -33,7 +33,8 @@ class Stderr(object):
         if self._file is not None:
             self._file.flush()
     def _show_messagebox_on_exit(self, title, message):
-        from PyQt4.QtGui import QApplication, QMessageBox
+        from PyQt5.QtGui import QApplication
+        from PyQt5.QtWidgets import QMessageBox
         QApplication(sys.argv)
         QMessageBox.warning(None, title, message)
 sys.stderr = Stderr()
@@ -42,4 +43,3 @@ del Stderr
 from picard.tagger import main
 basedir = os.path.dirname(sys.argv[0])
 main(os.path.join(basedir, 'locale'), True)
-

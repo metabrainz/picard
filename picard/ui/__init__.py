@@ -18,12 +18,12 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtWidgets
 
 
-class PicardDialog(QtGui.QDialog):
+class PicardDialog(QtWidgets.QDialog):
 
     flags = QtCore.Qt.WindowSystemMenuHint | QtCore.Qt.WindowTitleHint
 
     def __init__(self, parent=None):
-        QtGui.QDialog.__init__(self, parent, self.flags)
+        QtWidgets.QDialog.__init__(self, parent, self.flags)

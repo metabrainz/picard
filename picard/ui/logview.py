@@ -18,7 +18,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtGui, QtWidgets
 from picard import config, log
 from picard.ui import PicardDialog
 
@@ -33,9 +33,9 @@ class LogViewCommon(PicardDialog):
         self.setWindowTitle(title)
         self.doc = QtGui.QTextDocument(self)
         self.textCursor = QtGui.QTextCursor(self.doc)
-        self.browser = QtGui.QTextBrowser(self)
+        self.browser = QtWidgets.QTextBrowser(self)
         self.browser.setDocument(self.doc)
-        self.vbox = QtGui.QVBoxLayout(self)
+        self.vbox = QtWidgets.QVBoxLayout(self)
         self.vbox.addWidget(self.browser)
         self._display()
 
@@ -83,7 +83,7 @@ class LogViewCommon(PicardDialog):
 
     def closeEvent(self, event):
         self.logger.unregister_receiver(self._add_entry)
-        return QtGui.QDialog.closeEvent(self, event)
+        return QtWidgets.QDialog.closeEvent(self, event)
 
     def saveWindowState(self, position, size):
         pos = self.pos()
@@ -110,7 +110,7 @@ class LogView(LogViewCommon):
         logger = log.main_logger
         LogViewCommon.__init__(self, title, logger, parent=parent)
         self.restoreWindowState("logview_position", "logview_size")
-        cb = QtGui.QCheckBox(_('Debug mode'), self)
+        cb = QtWidgets.QCheckBox(_('Debug mode'), self)
         cb.setChecked(QtCore.QObject.tagger._debug)
         cb.stateChanged.connect(self.toggleDebug)
         self.vbox.addWidget(cb)

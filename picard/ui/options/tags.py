@@ -17,7 +17,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtWidgets
 from picard import config
 from picard.ui.options import OptionsPage, register_options_page
 from picard.ui.ui_options_tags import Ui_TagsOptionsPage
@@ -52,7 +52,7 @@ class TagsOptionsPage(OptionsPage):
         self.ui.setupUi(self)
         self.ui.write_id3v23.clicked.connect(self.update_encodings)
         self.ui.write_id3v24.clicked.connect(self.update_encodings)
-        self.completer = QtGui.QCompleter(sorted(TAG_NAMES.keys()), self)
+        self.completer = QtWidgets.QCompleter(sorted(TAG_NAMES.keys()), self)
         self.completer.setCaseSensitivity(QtCore.Qt.CaseInsensitive)
         self.completer.setWidget(self.ui.preserved_tags)
         self.ui.preserved_tags.textEdited.connect(self.preserved_tags_edited)

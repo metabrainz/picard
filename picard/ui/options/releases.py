@@ -19,7 +19,7 @@
 
 from operator import itemgetter
 from locale import strcoll
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtWidgets
 from picard import config
 from picard.ui.options import OptionsPage, register_options_page
 from picard.ui.ui_options_releases import Ui_ReleasesOptionsPage
@@ -40,10 +40,10 @@ class ReleaseTypeScore:
         row, column = cell  # it uses 2 cells (r,c and r,c+1)
         self.group = group
         self.layout = layout
-        self.label = QtGui.QLabel(self.group)
+        self.label = QtWidgets.QLabel(self.group)
         self.label.setText(label)
         self.layout.addWidget(self.label, row, column, 1, 1)
-        self.slider = QtGui.QSlider(self.group)
+        self.slider = QtWidgets.QSlider(self.group)
         self.slider.setMaximum(100)
         self.slider.setOrientation(QtCore.Qt.Horizontal)
         self.layout.addWidget(self.slider, row, column + 1, 1, 1)
@@ -117,9 +117,9 @@ class ReleasesOptionsPage(OptionsPage):
         for name in RELEASE_SECONDARY_GROUPS:
             add_slider(name, griditer, context=u'release_group_secondary_type')
 
-        self.reset_preferred_types_btn = QtGui.QPushButton(self.ui.type_group)
+        self.reset_preferred_types_btn = QtWidgets.QPushButton(self.ui.type_group)
         self.reset_preferred_types_btn.setText(_("Reset all"))
-        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Fixed)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.reset_preferred_types_btn.sizePolicy().hasHeightForWidth())
@@ -132,10 +132,10 @@ class ReleasesOptionsPage(OptionsPage):
         self.ui.remove_countries.clicked.connect(self.remove_preferred_countries)
         self.ui.add_formats.clicked.connect(self.add_preferred_formats)
         self.ui.remove_formats.clicked.connect(self.remove_preferred_formats)
-        self.ui.country_list.setSelectionMode(QtGui.QAbstractItemView.ExtendedSelection)
-        self.ui.preferred_country_list.setSelectionMode(QtGui.QAbstractItemView.ExtendedSelection)
-        self.ui.format_list.setSelectionMode(QtGui.QAbstractItemView.ExtendedSelection)
-        self.ui.preferred_format_list.setSelectionMode(QtGui.QAbstractItemView.ExtendedSelection)
+        self.ui.country_list.setSelectionMode(QtWidgets.QAbstractItemView.ExtendedSelection)
+        self.ui.preferred_country_list.setSelectionMode(QtWidgets.QAbstractItemView.ExtendedSelection)
+        self.ui.format_list.setSelectionMode(QtWidgets.QAbstractItemView.ExtendedSelection)
+        self.ui.preferred_format_list.setSelectionMode(QtWidgets.QAbstractItemView.ExtendedSelection)
 
     def load(self):
         scores = dict(config.setting["release_type_scores"])
@@ -194,7 +194,7 @@ class ReleasesOptionsPage(OptionsPage):
         saved_data = config.setting[setting]
         move = []
         for data, name in source_list:
-            item = QtGui.QListWidgetItem(name)
+            item = QtWidgets.QListWidgetItem(name)
             item.setData(QtCore.Qt.UserRole, data)
             try:
                 i = saved_data.index(data)

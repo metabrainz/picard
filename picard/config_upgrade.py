@@ -18,7 +18,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from PyQt4 import QtGui
+from PyQt5 import QtWidgets
 
 import re
 from picard import (log, config)
@@ -50,7 +50,7 @@ def upgrade_to_v1_0_0_final_0():
         _s.remove("use_va_format")
 
     if ("va_file_naming_format" in _s and "use_va_format" in _s):
-        msgbox = QtGui.QMessageBox()
+        msgbox = QtWidgets.QMessageBox()
 
         if _s.value("use_va_format", config.BoolOption):
             remove_va_file_naming_format()
@@ -60,7 +60,7 @@ def upgrade_to_v1_0_0_final_0():
                     "albums has been removed in this version of Picard.\n"
                     "Your file naming scheme has automatically been "
                     "merged with that of single artist albums."),
-                QtGui.QMessageBox.Ok)
+                QtWidgets.QMessageBox.Ok)
 
         elif (_s.value("va_file_naming_format", config.TextOption) !=
                 r"$if2(%albumartist%,%artist%)/%album%/$if($gt(%totaldis"

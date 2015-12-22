@@ -3,82 +3,69 @@
 # Automatically generated - don't edit.
 # Use `python setup.py build_ui` to update it.
 
-from PyQt4 import QtCore, QtGui
-
-try:
-    _fromUtf8 = QtCore.QString.fromUtf8
-except AttributeError:
-    def _fromUtf8(s):
-        return s
-
-try:
-    _encoding = QtGui.QApplication.UnicodeUTF8
-    def _translate(context, text, disambig):
-        return QtGui.QApplication.translate(context, text, disambig, _encoding)
-except AttributeError:
-    def _translate(context, text, disambig):
-        return QtGui.QApplication.translate(context, text, disambig)
+from PyQt5 import QtCore, QtGui, QtWidgets
 
 class Ui_CaaOptions(object):
     def setupUi(self, CaaOptions):
-        CaaOptions.setObjectName(_fromUtf8("CaaOptions"))
+        CaaOptions.setObjectName("CaaOptions")
         CaaOptions.resize(586, 194)
-        self.verticalLayout = QtGui.QVBoxLayout(CaaOptions)
-        self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
-        self.select_caa_types_group = QtGui.QHBoxLayout()
-        self.select_caa_types_group.setObjectName(_fromUtf8("select_caa_types_group"))
-        self.restrict_images_types = QtGui.QCheckBox(CaaOptions)
-        self.restrict_images_types.setObjectName(_fromUtf8("restrict_images_types"))
+        self.verticalLayout = QtWidgets.QVBoxLayout(CaaOptions)
+        self.verticalLayout.setObjectName("verticalLayout")
+        self.select_caa_types_group = QtWidgets.QHBoxLayout()
+        self.select_caa_types_group.setObjectName("select_caa_types_group")
+        self.restrict_images_types = QtWidgets.QCheckBox(CaaOptions)
+        self.restrict_images_types.setObjectName("restrict_images_types")
         self.select_caa_types_group.addWidget(self.restrict_images_types)
-        spacerItem = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
+        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.select_caa_types_group.addItem(spacerItem)
-        self.select_caa_types = QtGui.QPushButton(CaaOptions)
+        self.select_caa_types = QtWidgets.QPushButton(CaaOptions)
         self.select_caa_types.setEnabled(False)
-        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Fixed)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(100)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.select_caa_types.sizePolicy().hasHeightForWidth())
         self.select_caa_types.setSizePolicy(sizePolicy)
-        self.select_caa_types.setObjectName(_fromUtf8("select_caa_types"))
+        self.select_caa_types.setObjectName("select_caa_types")
         self.select_caa_types_group.addWidget(self.select_caa_types)
         self.verticalLayout.addLayout(self.select_caa_types_group)
-        self.horizontalLayout = QtGui.QHBoxLayout()
-        self.horizontalLayout.setObjectName(_fromUtf8("horizontalLayout"))
-        self.label = QtGui.QLabel(CaaOptions)
-        self.label.setObjectName(_fromUtf8("label"))
+        self.horizontalLayout = QtWidgets.QHBoxLayout()
+        self.horizontalLayout.setObjectName("horizontalLayout")
+        self.label = QtWidgets.QLabel(CaaOptions)
+        self.label.setObjectName("label")
         self.horizontalLayout.addWidget(self.label)
-        spacerItem1 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
+        spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout.addItem(spacerItem1)
-        self.cb_image_size = QtGui.QComboBox(CaaOptions)
-        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Fixed)
+        self.cb_image_size = QtWidgets.QComboBox(CaaOptions)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.cb_image_size.sizePolicy().hasHeightForWidth())
         self.cb_image_size.setSizePolicy(sizePolicy)
-        self.cb_image_size.setObjectName(_fromUtf8("cb_image_size"))
-        self.cb_image_size.addItem(_fromUtf8(""))
-        self.cb_image_size.addItem(_fromUtf8(""))
-        self.cb_image_size.addItem(_fromUtf8(""))
+        self.cb_image_size.setObjectName("cb_image_size")
+        self.cb_image_size.addItem("")
+        self.cb_image_size.addItem("")
+        self.cb_image_size.addItem("")
         self.horizontalLayout.addWidget(self.cb_image_size)
         self.verticalLayout.addLayout(self.horizontalLayout)
-        self.cb_approved_only = QtGui.QCheckBox(CaaOptions)
-        self.cb_approved_only.setObjectName(_fromUtf8("cb_approved_only"))
+        self.cb_approved_only = QtWidgets.QCheckBox(CaaOptions)
+        self.cb_approved_only.setObjectName("cb_approved_only")
         self.verticalLayout.addWidget(self.cb_approved_only)
-        self.cb_type_as_filename = QtGui.QCheckBox(CaaOptions)
-        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Fixed)
+        self.cb_type_as_filename = QtWidgets.QCheckBox(CaaOptions)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.cb_type_as_filename.sizePolicy().hasHeightForWidth())
         self.cb_type_as_filename.setSizePolicy(sizePolicy)
-        self.cb_type_as_filename.setObjectName(_fromUtf8("cb_type_as_filename"))
+        self.cb_type_as_filename.setObjectName("cb_type_as_filename")
         self.verticalLayout.addWidget(self.cb_type_as_filename)
-        spacerItem2 = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
+        spacerItem2 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.verticalLayout.addItem(spacerItem2)
 
         self.retranslateUi(CaaOptions)
         QtCore.QMetaObject.connectSlotsByName(CaaOptions)
 
     def retranslateUi(self, CaaOptions):
+        _translate = QtCore.QCoreApplication.translate
         CaaOptions.setWindowTitle(_("Form"))
         self.restrict_images_types.setText(_("Download only cover art images matching selected types"))
         self.select_caa_types.setText(_("Select types..."))

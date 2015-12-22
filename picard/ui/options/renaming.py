@@ -21,8 +21,8 @@
 import os.path
 import sys
 from functools import partial
-from PyQt4 import QtGui
-from PyQt4.QtGui import QPalette, QColor
+from PyQt5 import QtWidgets
+from PyQt5.QtGui import QPalette, QColor
 from picard import config
 from picard.const import PICARD_URLS
 from picard.file import File
@@ -275,7 +275,7 @@ class RenamingOptionsPage(OptionsPage):
         return file
 
     def move_files_to_browse(self):
-        path = QtGui.QFileDialog.getExistingDirectory(self, "", self.ui.move_files_to.text())
+        path = QtWidgets.QFileDialog.getExistingDirectory(self, "", self.ui.move_files_to.text())
         if path:
             path = os.path.normpath(unicode(path))
             self.ui.move_files_to.setText(path)

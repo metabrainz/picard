@@ -19,7 +19,7 @@
 
 import os.path
 from functools import partial
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtWidgets
 from picard import config
 from picard.ui.options import OptionsPage, register_options_page
 from picard.ui.ui_options_interface import Ui_InterfaceOptionsPage
@@ -93,11 +93,11 @@ class InterfaceOptionsPage(OptionsPage):
         new_language = self.ui.ui_language.itemData(self.ui.ui_language.currentIndex())
         if new_language != config.setting["ui_language"]:
             config.setting["ui_language"] = self.ui.ui_language.itemData(self.ui.ui_language.currentIndex())
-            dialog = QtGui.QMessageBox(
-                QtGui.QMessageBox.Information,
+            dialog = QtWidgets.QMessageBox(
+                QtWidgets.QMessageBox.Information,
                 _('Language changed'),
                 _('You have changed the interface language. You have to restart Picard in order for the change to take effect.'),
-                QtGui.QMessageBox.Ok,
+                QtWidgets.QMessageBox.Ok,
                 self)
             dialog.exec_()
         config.setting["starting_directory"] = self.ui.starting_directory.isChecked()
@@ -105,7 +105,7 @@ class InterfaceOptionsPage(OptionsPage):
 
     def starting_directory_browse(self):
         item = self.ui.starting_directory_path
-        path = QtGui.QFileDialog.getExistingDirectory(self, "", item.text())
+        path = QtWidgets.QFileDialog.getExistingDirectory(self, "", item.text())
         if path:
             path = os.path.normpath(unicode(path))
             item.setText(path)

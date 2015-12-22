@@ -19,7 +19,7 @@
 
 import sys
 import os.path
-from PyQt4 import QtGui
+from PyQt5 import QtGui
 
 if sys.platform == 'win32':
     _search_paths = []

@@ -17,7 +17,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtWidgets
 from picard import config
 from picard.util import webbrowser2
 from picard.ui import PicardDialog
@@ -57,7 +57,7 @@ class OptionsDialog(PicardDialog):
         pages = [(p.SORT_ORDER, p.NAME, p) for p in self.pages if p.PARENT == parent]
         items = []
         for foo, bar, page in sorted(pages):
-            item = QtGui.QTreeWidgetItem(parent_item)
+            item = QtWidgets.QTreeWidgetItem(parent_item)
             item.setText(0, _(page.TITLE))
             if page.ACTIVE:
                 self.item_to_page[item] = page
@@ -79,9 +79,9 @@ class OptionsDialog(PicardDialog):
         self.ui = Ui_Dialog()
         self.ui.setupUi(self)
 
-        self.ui.buttonbox.addButton(StandardButton(StandardButton.OK), QtGui.QDialogButtonBox.AcceptRole)
-        self.ui.buttonbox.addButton(StandardButton(StandardButton.CANCEL), QtGui.QDialogButtonBox.RejectRole)
-        self.ui.buttonbox.addButton(StandardButton(StandardButton.HELP), QtGui.QDialogButtonBox.HelpRole)
+        self.ui.buttonbox.addButton(StandardButton(StandardButton.OK), QtWidgets.QDialogButtonBox.AcceptRole)
+        self.ui.buttonbox.addButton(StandardButton(StandardButton.CANCEL), QtWidgets.QDialogButtonBox.RejectRole)
+        self.ui.buttonbox.addButton(StandardButton(StandardButton.HELP), QtWidgets.QDialogButtonBox.HelpRole)
         self.ui.buttonbox.accepted.connect(self.accept)
         self.ui.buttonbox.rejected.connect(self.reject)
         self.ui.buttonbox.helpRequested.connect(self.help)
@@ -125,7 +125,7 @@ class OptionsDialog(PicardDialog):
         for page in self.pages:
             page.save()
         self.saveWindowState()
-        QtGui.QDialog.accept(self)
+        QtWidgets.QDialog.accept(self)
 
     def closeEvent(self, event):
         self.saveWindowState()

@@ -17,7 +17,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtWidgets
 from picard.util.tags import TAG_NAMES
 from picard.ui import PicardDialog
 from picard.ui.ui_edittagdialog import Ui_EditTagDialog
@@ -42,8 +42,8 @@ class EditTagDialog(PicardDialog):
         tag_names.addItem("")
         visible_tags = [tn for tn in self.default_tags if not tn.startswith("~")]
         tag_names.addItems(visible_tags)
-        self.completer = QtGui.QCompleter(visible_tags, tag_names)
-        self.completer.setCompletionMode(QtGui.QCompleter.PopupCompletion)
+        self.completer = QtWidgets.QCompleter(visible_tags, tag_names)
+        self.completer.setCompletionMode(QtWidgets.QCompleter.PopupCompletion)
         tag_names.setCompleter(self.completer)
         self.tag_changed(tag)
         self.value_selection_changed()
@@ -60,7 +60,7 @@ class EditTagDialog(PicardDialog):
 
     def add_value(self):
         self._modified_tag().append("")
-        item = QtGui.QListWidgetItem()
+        item = QtWidgets.QListWidgetItem()
         item.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsEditable)
         self.value_list.addItem(item)
         self.value_list.editItem(item)
@@ -120,13 +120,13 @@ class EditTagDialog(PicardDialog):
             self.ui.add_value.setEnabled(not self.different)
 
         self._add_value_items(values)
-        self.value_list.setCurrentItem(self.value_list.item(0), QtGui.QItemSelectionModel.SelectCurrent)
+        self.value_list.setCurrentItem(self.value_list.item(0), QtWidgets.QItemSelectionModel.SelectCurrent)
         tag_names.editTextChanged.connect(self.tag_changed)
 
     def _add_value_items(self, values):
         values = [v for v in values if v] or [""]
         for value in values:
-            item = QtGui.QListWidgetItem(value)
+            item = QtWidgets.QListWidgetItem(value)
             item.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsEditable)
             font = item.font()
             font.setItalic(self.different)
@@ -172,4 +172,4 @@ class EditTagDialog(PicardDialog):
             obj.update()
         self.window.ignore_selection_changes = False
         self.window.update_selection()
-        QtGui.QDialog.accept(self)
+        QtWidgets.QDialog.accept(self)

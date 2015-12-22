@@ -20,8 +20,8 @@
 import json
 import time
 from functools import partial
-from PyQt4.QtNetwork import QNetworkRequest
-from PyQt4.QtCore import QUrl
+from PyQt5.QtNetwork import QNetworkRequest
+from PyQt5.QtCore import QUrl
 from picard import config, log
 from picard.const import (
     MUSICBRAINZ_SERVERS,

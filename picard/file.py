@@ -27,7 +27,7 @@ import unicodedata
 from functools import partial
 from operator import itemgetter
 from collections import defaultdict
-from PyQt4 import QtCore
+from PyQt5 import QtCore
 from picard import config, log
 from picard.metadata import Metadata
 from picard.ui.item import Item
