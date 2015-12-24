@@ -119,22 +119,5 @@
   <tabstop>save_images_overwrite</tabstop>
  </tabstops>
  <resources/>
- <connections>
-  <connection>
-   <sender>save_images_to_tags</sender>
-   <signal>clicked(bool)</signal>
-   <receiver>cb_embed_front_only</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>266</x>
-     <y>44</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>266</x>
-     <y>67</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>

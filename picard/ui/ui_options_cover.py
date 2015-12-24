@@ -69,7 +69,6 @@ class Ui_CoverOptionsPage(object):
         self.verticalLayout.addItem(spacerItem1)
 
         self.retranslateUi(CoverOptionsPage)
-        QtCore.QObject.connect(self.save_images_to_tags, QtCore.SIGNAL(_fromUtf8("clicked(bool)")), self.cb_embed_front_only.setEnabled)
         QtCore.QMetaObject.connectSlotsByName(CoverOptionsPage)
         CoverOptionsPage.setTabOrder(self.save_images_to_tags, self.cb_embed_front_only)
         CoverOptionsPage.setTabOrder(self.cb_embed_front_only, self.save_images_to_files)
