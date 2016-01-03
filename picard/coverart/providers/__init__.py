@@ -134,8 +134,8 @@ class CoverArtProvider(object):
         # CoverArtProvider.WAIT
         old = getattr(self, 'queue_downloads') #compat with old plugins
         if callable(old):
-            old()
             log.warning('CoverArtProvider: queue_downloads() was replaced by queue_images()')
+            return old()
         else:
             raise NotImplementedError
 
