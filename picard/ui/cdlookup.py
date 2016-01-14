@@ -36,7 +36,7 @@ class CDLookupDialog(PicardDialog):
                                               _(u"Labels"), _(u"Catalog #s"), _(u"Barcode")])
         if self.releases:
             for release in self.releases:
-                labels, catalog_numbers = label_info_from_node(release.label_info_list[0])
+                label_ids, labels, catalog_numbers = label_info_from_node(release.label_info_list[0])
                 date = release.date[0].text if "date" in release.children else ""
                 country = release.country[0].text if "country" in release.children else ""
                 barcode = release.barcode[0].text if "barcode" in release.children else ""

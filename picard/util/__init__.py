@@ -32,6 +32,7 @@ from string import Template
 # Required for compatibility with lastfmplus which imports this from here rather than loading it direct.
 from functools import partial
 from picard.const import MUSICBRAINZ_SERVERS
+from urlparse import urlparse
 
 
 class LockableObject(QtCore.QObject):
@@ -111,22 +112,49 @@ def format_time(ms):
         return "%d:%02d" % (round(ms / 1000.0) / 60, round(ms / 1000.0) % 60)
 
 
+def sanitize_int(number):
+    try:
+        return str(int(number))
+    except:
+        return number
+
+
+date_match = re.compile(
+        r'(\d{4})(?:-(1[0-2]|[ 0]?[1-9])(?=[^\d]|$)(?:-(3[0-1]|[12]\d|[ 0]?[1-9])(?=[^\d]|$)' +
+        r'(?:T(2[0-3]|[ 0-1]?\d):([ 0-5]?\d)(?=[^\d]|$)(?::([ 0-5]?\d)(?=[^\d]|$))' +
+        r'?)?)?)?'
+    ).match
+DATE_FORMATS = [
+    "",
+    "%04d",
+    "%04d-%02d",
+    "%04d-%02d-%02d",
+    "%04d-%02d-%02dT%02d",
+    "%04d-%02d-%02dT%02d:%02d",
+    "%04d-%02d-%02dT%02d:%02d:%02d",
+]
 def sanitize_date(datestr):
     """Sanitize date format.
+
+    Keeps the valid parts of an ID3 timestamp:
+
+    yyyy-mm-ddThh:mm:ss
 
     e.g.: "YYYY-00-00" -> "YYYY"
           "YYYY-  -  " -> "YYYY"
           ...
     """
-    date = []
-    for num in datestr.split("-"):
+
+    dates = date_match(datestr).groups()
+    valid_dates = []
+    for date in dates:
+        if date is None:
+            break
         try:
-            num = int(num.strip())
+            valid_dates.append(int(date))
         except ValueError:
             break
-        if num:
-            date.append(num)
-    return ("", "%04d", "%04d-%02d", "%04d-%02d-%02d")[len(date)] % tuple(date)
+    return DATE_FORMATS[len(valid_dates)] % tuple(valid_dates)
 
 
 _re_win32_incompat = re.compile(r'["*:<>?|]', re.UNICODE)
@@ -411,3 +439,38 @@ def build_qurl(host, port=80, path=None, mblogin=False, queryargs=None):
         for k, v in queryargs.iteritems():
             url.addEncodedQueryItem(k, unicode(v))
     return url
+
+
+def pack_performer(role, name):
+    if role:
+        return '%s (%s)' % (name.strip(), role.strip())
+    return name
+
+
+def unpack_performer(performer):
+    # Unpack Involved Persons strings of the form: Performer (Instrument)
+    performer = performer.strip()
+    if performer.endswith(')') and '(' in performer:
+        index = len(performer) - 2
+        brackets = 1
+        for index in range(len(performer) - 2, 0, -1):
+            if performer[index] == ')':
+                brackets += 1
+            elif performer[index] == '(':
+                brackets -= 1
+                if not brackets:
+                    return (performer[index + 1:-1].strip(), performer[:index].strip())
+        else:
+            # No matching left bracket - assume extra) in instrument
+            performer, instrument = performer[:-1].split('(', 1)
+            return (instrument.strip(), performer.strip())
+    elif '=' in performer:
+        instrument, performer = performer.split('=', 1)
+        return (instrument.strip(), performer.strip())
+    else:
+        return ('', performer)
+
+def isurl(urls):
+    if not isinstance(urls, list):
+        urls = [urls]
+    return all([all(urlparse(url)[:2]) for url in urls])

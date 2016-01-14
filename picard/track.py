@@ -60,7 +60,6 @@ class Track(DataObject, Item):
         if file not in self.linked_files:
             return
         file.copy_metadata(self.metadata)
-        file.metadata['~extension'] = file.orig_metadata['~extension']
         file.metadata.changed = True
         file.update(signal=False)
         self.update()
@@ -118,10 +117,10 @@ class Track(DataObject, Item):
 
     def is_pregap(self):
         return self.metadata['~pregap'] == '1'
-    
+
     def is_data(self):
         return self.metadata['~datatrack'] == '1'
-    
+
     def is_silence(self):
         return self.metadata['~silence'] == '1'
 

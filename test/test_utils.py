@@ -41,16 +41,34 @@ class ReplaceWin32IncompatTest(unittest.TestCase):
 class SanitizeDateTest(unittest.TestCase):
 
     def test_correct(self):
-        self.assertEqual(util.sanitize_date("2006--"), "2006")
+        self.assertEqual(util.sanitize_date("2006"), "2006")
+        self.assertEqual(util.sanitize_date("2006-12"), "2006-12")
+        self.assertEqual(util.sanitize_date("2006-12-31"), "2006-12-31")
+        self.assertEqual(util.sanitize_date("2006-12-31T23:59"), "2006-12-31T23:59")
+        self.assertEqual(util.sanitize_date("2006-12-31T23:59:59"), "2006-12-31T23:59:59")
+        self.assertEqual(util.sanitize_date("2006-"), "2006")
         self.assertEqual(util.sanitize_date("2006--02"), "2006")
         self.assertEqual(util.sanitize_date("2006   "), "2006")
-        self.assertEqual(util.sanitize_date("2006 02"), "")
-        self.assertEqual(util.sanitize_date("2006.02"), "")
-        self.assertEqual(util.sanitize_date("2006-02"), "2006-02")
+        self.assertEqual(util.sanitize_date("2006 02"), "2006")
+        self.assertEqual(util.sanitize_date("2006.02"), "2006")
+        self.assertEqual(util.sanitize_date("2006-2"), "2006-02")
+        self.assertEqual(util.sanitize_date("2006- 2"), "2006-02")
+        self.assertEqual(util.sanitize_date("2006-2-"), "2006-02")
+        self.assertEqual(util.sanitize_date("2006-2-28X"), "2006-02-28")
+        self.assertEqual(util.sanitize_date("2006-0"), "2006")
+        self.assertEqual(util.sanitize_date("2006-13"), "2006")
+        self.assertEqual(util.sanitize_date("2006-1-00"), "2006-01")
+        self.assertEqual(util.sanitize_date("2006-1-32"), "2006-01")
+        self.assertEqual(util.sanitize_date("2006-1-1T23"), "2006-01-01")
+        self.assertEqual(util.sanitize_date("2006-1-1T0:0"), "2006-01-01T00:00")
+        self.assertEqual(util.sanitize_date("2006-1-1T24:00"), "2006-01-01")
+        self.assertEqual(util.sanitize_date("2006-1-1T0:60"), "2006-01-01")
+        self.assertEqual(util.sanitize_date("2006-1-1T0:0:60"), "2006-01-01T00:00")
 
     def test_incorrect(self):
         self.assertNotEqual(util.sanitize_date("2006--02"), "2006-02")
         self.assertNotEqual(util.sanitize_date("2006.03.02"), "2006-03-02")
+        self.assertNotEqual(util.sanitize_date("2006-03-02 23:59:59"), "2006-03-02T23:59:59")
 
 
 class TranslateArtistTest(unittest.TestCase):

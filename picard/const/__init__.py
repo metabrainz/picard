@@ -110,3 +110,23 @@ PLUGINS_API = {
         'download': '/api/v1/download/'
     }
 }
+
+# MBIDs to URLs
+MBID_URLS = {
+    'artist': 'http://musicbrainz.org/artist/%s',
+    'label': 'http://musicbrainz.org/label/%s',
+    'recording': 'http://musicbrainz.org/recording/%s',
+    'release': 'http://musicbrainz.org/release/%s',
+    'release-group': 'http://musicbrainz.org/release-group/%s',
+    'work': 'http://musicbrainz.org/work/%s',
+}
+
+METADATA_PROVIDER = u"MusicBrainz.Org"
+METADATA_COPYRIGHT = u"\xa9 Core MusicBrainz metadata is licensed under the CC0 " +\
+"(http://creativecommons.org/publicdomain/zero/1.0/), with " +\
+"additional Musicbrainz metadata released under the " +\
+"Creative Commons Attribution-NonCommercial-ShareAlike 3.0 license" +\
+"(http://creativecommons.org/licenses/by-nc-sa/3.0/)."
+
+TIMESTAMP_FORMAT = '%Y-%m-%dT%H:%M:%S'
+TIMESTAMP_DISPLAY = '%Y-%m-%d %H:%M:%S'

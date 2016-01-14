@@ -17,7 +17,7 @@ rm -rf e
 virtualenv -p python2.7 --system-site-packages e
 . e/bin/activate
 
-pip install mutagen==1.27
+pip install mutagen==1.31
 pip install https://github.com/JonnyJD/python-discid/archive/dmg.zip
 pip install py2app==0.9
 

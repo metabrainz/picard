@@ -19,16 +19,19 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 import glob
+from math import ceil
 import os.path
 import shutil
 import sys
 import re
+import time
 import unicodedata
 from functools import partial
 from operator import itemgetter
 from collections import defaultdict
 from PyQt4 import QtCore
 from picard import config, log
+from picard.const import TIMESTAMP_DISPLAY
 from picard.metadata import Metadata
 from picard.ui.item import Item
 from picard.script import ScriptParser
@@ -69,6 +72,8 @@ class File(QtCore.QObject, Item):
         "releasecountry": 2,
         "format": 2,
     }
+
+    _supported_tags = []
 
     def __init__(self, filename):
         super(File, self).__init__()
@@ -220,8 +225,7 @@ class File(QtCore.QObject, Item):
             self.base_filename = os.path.basename(new_filename)
             length = self.orig_metadata.length
             temp_info = {}
-            for info in ('~bitrate', '~sample_rate', '~channels',
-                         '~bits_per_sample', '~format'):
+            for info in PRESERVED_TAGS:
                 temp_info[info] = self.orig_metadata[info]
             # Data is copied from New to Original because New may be a subclass to handle id3v23
             if config.setting["clear_existing_tags"]:
@@ -350,7 +354,7 @@ class File(QtCore.QObject, Item):
                 old_file = os.path.join(old_path, old_file)
                 # FIXME we shouldn't do this from a thread!
                 if self.tagger.files.get(decode_filename(old_file)):
-                    log.debug("File loaded in the tagger, not moving %r", old_file)
+                    log.warning("Moving %r to %r: Unable to move file as it is loaded in Picard", old_file, new_file)
                     continue
                 log.debug("Moving %r to %r", old_file, new_file)
                 shutil.move(old_file, new_file)
@@ -384,7 +388,9 @@ class File(QtCore.QObject, Item):
 
     def supports_tag(self, name):
         """Returns whether tag ``name`` can be saved to the file."""
-        return True
+        if self._supported_tags:
+            return name in self._supported_tags
+        return not name.startswith('~')
 
     def is_saved(self):
         return self.similarity == 1.0 and self.state == File.NORMAL
@@ -395,7 +401,7 @@ class File(QtCore.QObject, Item):
         names.update(self.orig_metadata.keys())
         clear_existing_tags = config.setting["clear_existing_tags"]
         for name in names:
-            if not name.startswith('~') and self.supports_tag(name):
+            if self.supports_tag(name):
                 new_values = new_metadata.getall(name)
                 if not (new_values or clear_existing_tags):
                     continue
@@ -441,16 +447,26 @@ class File(QtCore.QObject, Item):
 
     def _info(self, metadata, file):
         if hasattr(file.info, 'length'):
-            metadata.length = int(file.info.length * 1000)
+            metadata.length = int(ceil(file.info.length * 1000))
         if hasattr(file.info, 'bitrate') and file.info.bitrate:
             metadata['~bitrate'] = file.info.bitrate / 1000.0
         if hasattr(file.info, 'sample_rate') and file.info.sample_rate:
             metadata['~sample_rate'] = file.info.sample_rate
         if hasattr(file.info, 'channels') and file.info.channels:
             metadata['~channels'] = file.info.channels
+            metadata['~stereo'] = 1 if metadata['~channels'] >= 2 else 0
         if hasattr(file.info, 'bits_per_sample') and file.info.bits_per_sample:
             metadata['~bits_per_sample'] = file.info.bits_per_sample
-        metadata['~format'] = self.__class__.__name__.replace('File', '')
+        if self.__class__.NAME:
+            metadata['~format'] = self.__class__.NAME
+        else:
+            metadata['~format'] = self.__class__.__name__.replace('File', '')
+        metadata['~metadata_format'] = self.__class__.__module__.rsplit('.', 1)[1].title()
+        metadata['~filetime'] = time.strftime(
+            TIMESTAMP_DISPLAY,
+            #time.strptime(time.ctime(os.path.getmtime(self.filename)))
+            time.localtime(os.path.getmtime(self.filename))
+        )
         self._add_path_to_metadata(metadata)
 
     def _add_path_to_metadata(self, metadata):

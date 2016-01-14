@@ -19,12 +19,15 @@
 
 import os.path
 import cgi
+import time
 import traceback
 from PyQt4 import QtGui, QtCore
 from picard import log
+from picard.const import TIMESTAMP_FORMAT, TIMESTAMP_DISPLAY
 from picard.coverart.utils import translate_caa_type
 from picard.coverart.image import CoverArtImageIOError
 from picard.util import format_time, encode_filename, bytes2human, webbrowser2
+from picard.util.tags import TAG_NAMES
 from picard.ui import PicardDialog
 from picard.ui.ui_infodialog import Ui_InfoDialog
 
@@ -109,26 +112,27 @@ class FileInfoDialog(InfoDialog):
         InfoDialog.__init__(self, file, parent)
         self.setWindowTitle(_("Info") + " - " + file.base_filename)
 
+    def info_append(self, tag, format='%s'):
+        file = self.obj
+        if tag in file.orig_metadata:
+            title = TAG_NAMES[tag] if tag in TAG_NAMES else tag[1:].title()
+            self.info.append( (_(title).capitalize(), format % str(file.orig_metadata[tag]) ) )
+
     def _display_info_tab(self):
         file = self.obj
-        info = []
-        info.append((_('Filename:'), file.filename))
-        if '~format' in file.orig_metadata:
-            info.append((_('Format:'), file.orig_metadata['~format']))
+        self.info = []
+        path, filename = os.path.split(file.filename)
+        self.info.append((_('Filename'), filename))
+        self.info_append('~dirname')
+        self.info_append('~format')
         try:
             size = os.path.getsize(encode_filename(file.filename))
             sizestr = "%s (%s)" % (bytes2human.decimal(size), bytes2human.binary(size))
-            info.append((_('Size:'), sizestr))
+            self.info.append((_('Size') + ":", sizestr))
         except:
             pass
         if file.orig_metadata.length:
-            info.append((_('Length:'), format_time(file.orig_metadata.length)))
-        if '~bitrate' in file.orig_metadata:
-            info.append((_('Bitrate:'), '%s kbps' % file.orig_metadata['~bitrate']))
-        if '~sample_rate' in file.orig_metadata:
-            info.append((_('Sample rate:'), '%s Hz' % file.orig_metadata['~sample_rate']))
-        if '~bits_per_sample' in file.orig_metadata:
-            info.append((_('Bits per sample:'), str(file.orig_metadata['~bits_per_sample'])))
+            self.info.append((_('Length'), format_time(file.orig_metadata.length)))
         if '~channels' in file.orig_metadata:
             ch = file.orig_metadata['~channels']
             if ch == 1:
@@ -137,10 +141,21 @@ class FileInfoDialog(InfoDialog):
                 ch = _('Stereo')
             else:
                 ch = str(ch)
-            info.append((_('Channels:'), ch))
-        text = '<br/>'.join(map(lambda i: '<b>%s</b><br/>%s' %
+            self.info.append((_('Channels'), ch))
+        self.info_append('~bitrate', '%s kbps')
+        self.info_append('~sample_rate', '%s Hz')
+        self.info_append('~bits_per_sample')
+        self.info_append('~codec')
+        self.info_append('~metadata_format')
+        if '~tagtime' in file.orig_metadata:
+            self.info.append((
+                _(TAG_NAMES['~tagtime']),
+                time.strftime(TIMESTAMP_DISPLAY, time.strptime(file.orig_metadata['~tagtime'], TIMESTAMP_FORMAT))
+            ))
+        self.info_append('~filetime')
+        text = '<br/>'.join(map(lambda i: '<b>%s:</b><br/>&nbsp;&nbsp;%s' %
                                 (cgi.escape(i[0]),
-                                 cgi.escape(i[1])), info))
+                                 cgi.escape(i[1])), self.info))
         self.ui.info.setText(text)
 
 
