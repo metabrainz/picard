@@ -263,34 +263,38 @@ class XmlWebService(QtCore.QObject):
                       )
             if handler is not None:
                 # Redirect if found and not infinite
-                if redirect and not XmlWebService.urls_equivalent(redirect, reply.request().url()):
-                    log.debug("Redirect to %s requested", redirect.toString(QUrl.RemoveUserInfo))
-                    redirect_host = str(redirect.host())
-                    redirect_port = redirect.port(80)
-
+                if redirect:
                     url = request.url()
-                    original_host = str(url.host())
-                    original_port = url.port(80)
+                    # merge with base url (to cover the possibility of the URL being relative)
+                    redirect = url.resolved(redirect)
+                    if not XmlWebService.urls_equivalent(redirect, reply.request().url()):
+                        log.debug("Redirect to %s requested", redirect.toString(QUrl.RemoveUserInfo))
+                        redirect_host = str(redirect.host())
+                        redirect_port = redirect.port(80)
+                        redirect_query = dict(redirect.queryItems())
+                        redirect_path = redirect.path()
 
-                    if ((original_host, original_port) in REQUEST_DELAY
-                            and (redirect_host, redirect_port) not in REQUEST_DELAY):
-                        log.debug("Setting rate limit for %s:%i to %i" %
-                                  (redirect_host, redirect_port,
-                                   REQUEST_DELAY[(original_host, original_port)]))
-                        REQUEST_DELAY[(redirect_host, redirect_port)] =\
-                            REQUEST_DELAY[(original_host, original_port)]
+                        original_host = str(url.host())
+                        original_port = url.port(80)
 
-                    self.get(redirect_host,
-                             redirect_port,
-                             # retain path, query string and anchors from redirect URL
-                             redirect.toString(QUrl.RemoveAuthority | QUrl.RemoveScheme),
-                             handler, xml, priority=True, important=True, refresh=refresh,
-                             cacheloadcontrol=request.attribute(QtNetwork.QNetworkRequest.CacheLoadControlAttribute))
-                elif redirect:
-                    log.error("Redirect loop: %s",
-                              reply.request().url().toString(QUrl.RemoveUserInfo)
-                              )
-                    handler(str(reply.readAll()), reply, error)
+                        if ((original_host, original_port) in REQUEST_DELAY
+                                and (redirect_host, redirect_port) not in REQUEST_DELAY):
+                            log.debug("Setting rate limit for %s:%i to %i" %
+                                      (redirect_host, redirect_port,
+                                       REQUEST_DELAY[(original_host, original_port)]))
+                            REQUEST_DELAY[(redirect_host, redirect_port)] =\
+                                REQUEST_DELAY[(original_host, original_port)]
+
+                        self.get(redirect_host,
+                                 redirect_port,
+                                 redirect_path,
+                                 handler, xml, priority=True, important=True, refresh=refresh, queryargs=redirect_query,
+                                 cacheloadcontrol=request.attribute(QtNetwork.QNetworkRequest.CacheLoadControlAttribute))
+                    else:
+                        log.error("Redirect loop: %s",
+                                  reply.request().url().toString(QUrl.RemoveUserInfo)
+                                  )
+                        handler(str(reply.readAll()), reply, error)
                 elif xml:
                     document = _read_xml(QXmlStreamReader(reply))
                     handler(document, reply, error)
