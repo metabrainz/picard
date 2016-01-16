@@ -59,9 +59,9 @@ class Metadata(dict):
         if config.setting["save_only_front_images_to_tags"]:
             # FIXME : rename option at some point
             # Embed only ONE front image
-            front_image = get_single_front_image(images)
+            front_image = self.get_single_front_image(images)
             if front_image != []:
-                return [front_image]
+                return front_image
         return images
 
     def get_single_front_image(self, images=[]):
