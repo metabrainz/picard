@@ -337,7 +337,7 @@ class File(QtCore.QObject, Item):
         images = []
         if config.setting["caa_save_single_front_image"]:
             images = metadata.get_single_front_image()
-        if images == []:
+        if not images:
             images = metadata.images
         for image in images:
             image.save(dirname, metadata, counters)

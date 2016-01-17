@@ -60,12 +60,12 @@ class Metadata(dict):
             # FIXME : rename option at some point
             # Embed only ONE front image
             front_image = self.get_single_front_image(images)
-            if front_image != []:
+            if front_image:
                 return front_image
         return images
 
-    def get_single_front_image(self, images=[]):
-        if images == []:
+    def get_single_front_image(self, images=None):
+        if not images:
             images = self.images
         for img in images:
             if img.is_front_image():
