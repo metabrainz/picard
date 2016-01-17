@@ -334,5 +334,9 @@ class CoverArtProviderCaa(CoverArtProvider):
                             # PDFs cannot be saved to tags (as 2014/05/29)
                             coverartimage.can_be_saved_to_tags = False
                         self.queue_put(coverartimage)
+                        if config.setting["caa_save_single_front_image"] and \
+                                config.setting["save_images_to_files"] and \
+                                image["front"]:
+                                    break
 
         self.next_in_queue()
