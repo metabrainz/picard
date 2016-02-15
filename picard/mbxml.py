@@ -281,6 +281,17 @@ def recording_to_metadata(node, track):
             m['~recordingcomment'] = nodes[0].text
         elif name == 'artist_credit':
             artist_credit_to_metadata(nodes[0], m)
+            if 'name_credit' in nodes[0].children:
+                for name_credit in nodes[0].name_credit:
+                    if 'artist' in name_credit.children:
+                        for artist in name_credit.artist:
+                            trackartist = track.append_track_artist(artist.id)
+                            if 'tag_list' in artist.children:
+                                add_folksonomy_tags(artist.tag_list[0],
+                                                    trackartist)
+                            if 'user_tag_list' in artist.children:
+                                add_user_folksonomy_tags(artist.user_tag_list[0],
+                                                         trackartist)
         elif name == 'relation_list':
             _relations_to_metadata(nodes, m)
         elif name == 'tag_list':
