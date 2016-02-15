@@ -334,7 +334,12 @@ class File(QtCore.QObject, Item):
         if not metadata.images:
             return
         counters = defaultdict(lambda: 0)
-        for image in metadata.images:
+        images = []
+        if config.setting["caa_save_single_front_image"]:
+            images = metadata.get_single_front_image()
+        if not images:
+            images = metadata.images
+        for image in images:
             image.save(dirname, metadata, counters)
 
     def _move_additional_files(self, old_filename, new_filename):
