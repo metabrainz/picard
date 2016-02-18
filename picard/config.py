@@ -94,7 +94,17 @@ class Config(QtCore.QSettings):
 
     def __init__(self):
         """Initializes the configuration."""
-        QtCore.QSettings.__init__(self, PICARD_ORG_NAME, PICARD_APP_NAME)
+
+        QtCore.QSettings.__init__(self, QtCore.QSettings.IniFormat,
+                                  QtCore.QSettings.UserScope, PICARD_ORG_NAME, PICARD_APP_NAME)
+        # If there are no settings, copy existing settings from old format
+        # (registry on windows systems)
+        if not self.allKeys():
+            oldFormat = QtCore.QSettings(PICARD_ORG_NAME, PICARD_APP_NAME)
+            for k in oldFormat.allKeys():
+                self.setValue(k, oldFormat.value(k))
+            self.sync()
+
         self.application = ConfigSection(self, "application")
         self.setting = ConfigSection(self, "setting")
         self.persist = ConfigSection(self, "persist")
