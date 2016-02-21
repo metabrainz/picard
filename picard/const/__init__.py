@@ -37,7 +37,7 @@ USER_DIR = os.path.join(
 USER_PLUGIN_DIR = os.path.join(USER_DIR, "plugins")
 
 # AcoustID client API key
-ACOUSTID_KEY = 'tPrbdkhM'
+ACOUSTID_KEY = 'v8pQ6oyB'
 ACOUSTID_HOST = 'api.acoustid.org'
 ACOUSTID_PORT = 80
 FPCALC_NAMES = ['fpcalc', 'pyfpcalc']
