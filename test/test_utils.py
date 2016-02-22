@@ -197,7 +197,7 @@ class ImageInfoTest(unittest.TestCase):
         with open(file, 'rb') as f:
             self.assertEqual(
                 imageinfo.identify(f.read()),
-                (140, 96, 'image/png', '.png', 15692)
+                (140, 96, 'image/png', '.png', 11424)
             )
 
     def test_jpeg(self):
