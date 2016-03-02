@@ -58,7 +58,7 @@ PICARD_URLS = {
     'doc_options':      "http://picard.musicbrainz.org/docs/options/",
     'doc_scripting':    "http://picard.musicbrainz.org/docs/scripting",
     'plugins':          "http://picard.musicbrainz.org/plugins/",
-    'forum':            "http://forums.musicbrainz.org/viewforum.php?id=2",
+    'forum':            "https://community.metabrainz.org/c/picard",
     'donate':           "http://metabrainz.org/donate",
     'chromaprint':      "http://acoustid.org/chromaprint#download",
     'acoustid_apikey':  "http://acoustid.org/api-key",
