@@ -22,7 +22,7 @@ One can update `picard.pot` using:
 $ python setup.py regen_pot_file
 ```
 
-Transifex will _automatically_ pick `picard.pot` from [Picard git repository master branch](https://github.com/musicbrainz/picard/tree/master) once per day.
+Transifex will _automatically_ pick `picard.pot` from [Picard git repository master branch](https://github.com/metabrainz/picard/tree/master) once per day.
 
 
 `picard/countries.py` strings
