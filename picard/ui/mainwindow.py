@@ -173,6 +173,24 @@ class MainWindow(QtGui.QMainWindow):
 
         return True
 
+    def showCoverOverwriteConfirmation(self, fileName, noOfItems):
+        QMessageBox = QtGui.QMessageBox
+        msg = QMessageBox(self)
+        msg.setIcon(QMessageBox.Question)
+        msg.setWindowModality(QtCore.Qt.WindowModal)
+        msg.setWindowTitle(_(u"Cover Overwrite Warning"))
+        msg.setText(_(u"Would you like to overwrite existing cover art image?"))
+        info = (u"An embedded cover art in file <b>{0}</b> found. "
+                "Update existing cover art?".format(fileName))
+        msg.setInformativeText(info)
+        if noOfItems > 1:
+            msg.setStandardButtons(QMessageBox.Yes|QMessageBox.No|QMessageBox.YesToAll)
+        else:
+            msg.setStandardButtons(QMessageBox.Yes|QMessageBox.No)
+            msg.setInformativeText(info)
+
+        return msg.exec_()
+
     def saveWindowState(self):
         config.persist["window_state"] = self.saveState()
         isMaximized = int(self.windowState()) & QtCore.Qt.WindowMaximized != 0
