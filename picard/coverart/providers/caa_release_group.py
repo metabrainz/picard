@@ -47,7 +47,7 @@ class CoverArtProviderCaaReleaseGroup(CoverArtProviderCaa):
     coverartimage_thumbnail_class = CaaThumbnailCoverArtImageRg
 
     def enabled(self):
-        return (super(CoverArtProviderCaaReleaseGroup, self).enabled()
+        return (super(CoverArtProviderCaa, self).enabled()
                 and not self.coverart.front_image_found)
 
     @property
