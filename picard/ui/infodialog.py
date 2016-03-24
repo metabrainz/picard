@@ -45,14 +45,12 @@ class InfoDialog(PicardDialog):
         self._display_info_tab()
         self._display_artwork_tab()
 
-    def _display_artwork_tab(self):
-        tab = self.ui.artwork_tab
-        images = self.obj.metadata.images
+    def _display_artwork(self, tab, images, widget):
         if not images:
             self.tab_hide(tab)
             return
 
-        self.ui.artwork_list.itemDoubleClicked.connect(self.show_item)
+        widget.itemDoubleClicked.connect(self.show_item)
         for image in images:
             data = None
             try:
@@ -89,8 +87,14 @@ class InfoDialog(PicardDialog):
                 infos.append(u"%d x %d" % (image.width, image.height))
             infos.append(image.mimetype)
             item.setText(u"\n".join(infos))
-            self.ui.artwork_list.addItem(item)
+            widget.addItem(item)
 
+    def _display_artwork_tab(self):
+        tab = self.ui.artwork_tab
+        images = self.obj.metadata.images
+        widget = self.ui.artwork_list
+        self._display_artwork(tab, images, widget)
+        
     def tab_hide(self, widget):
         tab = self.ui.tabWidget
         index = tab.indexOf(widget)
@@ -108,6 +112,10 @@ class FileInfoDialog(InfoDialog):
     def __init__(self, file, parent=None):
         InfoDialog.__init__(self, file, parent)
         self.setWindowTitle(_("Info") + " - " + file.base_filename)
+        if file.metadata.images == file.orig_metadata.images:
+            self.tab_hide(self.ui.old_artwork_tab)
+        else:
+            self._display_old_artwork_tab()
 
     def _display_info_tab(self):
         file = self.obj
@@ -143,11 +151,19 @@ class FileInfoDialog(InfoDialog):
                                  cgi.escape(i[1])), info))
         self.ui.info.setText(text)
 
+    def _display_old_artwork_tab(self):
+        file = self.obj
+        images = file.orig_metadata.images
+        tab = self.ui.old_artwork_tab
+        widget = self.ui.old_artwork_list
+        self._display_artwork(tab, images, widget)
+
 
 class AlbumInfoDialog(InfoDialog):
 
     def __init__(self, album, parent=None):
         InfoDialog.__init__(self, album, parent)
+        self.tab_hide(self.ui.old_artwork_tab)
         self.setWindowTitle(_("Album Info"))
 
     def _display_info_tab(self):
@@ -174,6 +190,7 @@ class ClusterInfoDialog(InfoDialog):
 
     def __init__(self, cluster, parent=None):
         InfoDialog.__init__(self, cluster, parent)
+        self.tab_hide(self.ui.old_artwork_tab)
         self.setWindowTitle(_("Cluster Info"))
 
     def _display_info_tab(self):
