@@ -36,6 +36,7 @@ from picard.ui.options.dialog import OptionsDialog
 from picard.ui.infodialog import FileInfoDialog, AlbumInfoDialog, ClusterInfoDialog
 from picard.ui.infostatus import InfoStatus
 from picard.ui.passworddialog import PasswordDialog
+from picard.ui.logview import LogView, HistoryView
 from picard.ui.util import (
     find_starting_directory,
     ButtonLineEdit,
@@ -105,6 +106,9 @@ class MainWindow(QtGui.QMainWindow):
         self.cover_art_box = CoverArtBox(self)
         if not self.show_cover_art_action.isChecked():
             self.cover_art_box.hide()
+
+        self.logDialog = LogView()
+        self.historyDialog = HistoryView()
 
         bottomLayout = QtGui.QHBoxLayout()
         bottomLayout.setContentsMargins(0, 0, 0, 0)
@@ -720,12 +724,14 @@ class MainWindow(QtGui.QMainWindow):
         webbrowser2.goto('documentation')
 
     def show_log(self):
-        from picard.ui.logview import LogView
-        LogView(self).show()
+        self.logDialog.show()
+        self.logDialog.raise_()
+        self.logDialog.activateWindow()
 
     def show_history(self):
-        from picard.ui.logview import HistoryView
-        HistoryView(self).show()
+        self.historyDialog.show()
+        self.historyDialog.raise_()
+        self.historyDialog.activateWindow()
 
     def open_bug_report(self):
         webbrowser2.goto('troubleshooting')
