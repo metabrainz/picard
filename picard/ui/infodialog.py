@@ -35,25 +35,32 @@ class InfoDialog(PicardDialog):
         PicardDialog.__init__(self, parent)
         self.obj = obj
         self.ui = Ui_InfoDialog()
-        self.ui.setupUi(self)
+        self.display_existing_artwork = False
+        if isinstance(self, FileInfoDialog):
+            if obj.metadata.images != obj.orig_metadata.images:
+                self.display_existing_artwork = True
+        self.ui.setupUi(self, self.display_existing_artwork)
         self.ui.buttonBox.accepted.connect(self.accept)
         self.ui.buttonBox.rejected.connect(self.reject)
         self.setWindowTitle(_("Info"))
+        self.artwork_table = self.ui.artwork_table
         self._display_tabs()
 
     def _display_tabs(self):
         self._display_info_tab()
         self._display_artwork_tab()
 
-    def _display_artwork_tab(self):
-        tab = self.ui.artwork_tab
-        images = self.obj.metadata.images
-        if not images:
-            self.tab_hide(tab)
-            return
-
-        self.ui.artwork_list.itemDoubleClicked.connect(self.show_item)
+    def _display_artwork(self, images, col):
+        row = 0
+        row_count = self.artwork_table.rowCount()
         for image in images:
+            while row != row_count:
+                image_type = self.artwork_table.item(row, 0)
+                if image_type and image_type.text() == image.types_as_string():
+                    break
+                row+=1
+            if row == row_count:
+                continue
             data = None
             try:
                 if image.thumbnail:
@@ -67,19 +74,16 @@ class InfoDialog(PicardDialog):
             except CoverArtImageIOError:
                 log.error(traceback.format_exc())
                 continue
-            item = QtGui.QListWidgetItem()
+            item = QtGui.QTableWidgetItem()
             item.setData(QtCore.Qt.UserRole, image)
+            pixmap = QtGui.QPixmap()
             if data is not None:
-                pixmap = QtGui.QPixmap()
                 pixmap.loadFromData(data)
-                icon = QtGui.QIcon(pixmap)
-                item.setIcon(icon)
                 item.setToolTip(
                     _("Double-click to open in external viewer\n"
                       "Temporary file: %s\n"
                       "Source: %s") % (image.tempfile_filename, image.source))
             infos = []
-            infos.append(image.types_as_string())
             if image.comment:
                 infos.append(image.comment)
             infos.append(u"%s (%s)" %
@@ -88,8 +92,56 @@ class InfoDialog(PicardDialog):
             if image.width and image.height:
                 infos.append(u"%d x %d" % (image.width, image.height))
             infos.append(image.mimetype)
-            item.setText(u"\n".join(infos))
-            self.ui.artwork_list.addItem(item)
+
+            img_wgt = self.artwork_table.get_coverart_widget(pixmap, "\n".join(infos))
+            self.artwork_table.setCellWidget(row, col, img_wgt)
+            self.artwork_table.setItem(row, col, item)
+            row += 1
+
+    def _display_artwork_type(self):
+        types = []
+        types = [image.types_as_string() for image in self.obj.metadata.images]
+        if self.display_existing_artwork:
+            existing_types = [image.types_as_string() for image in self.obj.orig_metadata.images]
+            #Merge both lists
+            temp = []
+            i=0
+            j=0
+            while i!=len(types) and j!=len(existing_types):
+                if types[i] > existing_types[j]:
+                    temp.append(existing_types[j])
+                    j+=1
+                elif types[i] < existing_types[j]:
+                    temp.append(types[i])
+                    i+=1
+                else:
+                    temp.append(types[i])
+                    i+=1
+                    j+=1
+            if i==len(types):
+                temp.extend(existing_types[j:])
+            else:
+                temp.extend(types[i:])
+            types = temp
+        for row, type in enumerate(types):
+            self.artwork_table.insertRow(row)
+            item = QtGui.QTableWidgetItem()
+            item.setText(type)
+            item.setTextAlignment(QtCore.Qt.AlignCenter)
+            self.artwork_table.setItem(row, 0, item)
+
+    def arrange_images(self):
+        self.obj.metadata.images.sort(key=lambda img: img.types_as_string())
+        if self.display_existing_artwork:
+            self.obj.orig_metadata.images.sort(key=lambda img: img.types_as_string())
+
+    def _display_artwork_tab(self):
+        self.arrange_images()
+        self._display_artwork_type()
+        self._display_artwork(self.obj.metadata.images, 1)
+        if self.display_existing_artwork:
+            self._display_artwork(self.obj.orig_metadata.images, 2)
+        self.artwork_table.itemDoubleClicked.connect(self.show_item)
 
     def tab_hide(self, widget):
         tab = self.ui.tabWidget
@@ -97,6 +149,8 @@ class InfoDialog(PicardDialog):
         tab.removeTab(index)
 
     def show_item(self, item):
+        if not item.data:
+            return
         coverartimage = item.data(QtCore.Qt.UserRole)
         filename = coverartimage.tempfile_filename
         if filename:
