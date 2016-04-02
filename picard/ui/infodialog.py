@@ -58,7 +58,7 @@ class InfoDialog(PicardDialog):
                 image_type = self.artwork_table.item(row, 0)
                 if image_type and image_type.text() == image.types_as_string():
                     break
-                row+=1
+                row += 1
             if row == row_count:
                 continue
             data = None
@@ -99,25 +99,24 @@ class InfoDialog(PicardDialog):
             row += 1
 
     def _display_artwork_type(self):
-        types = []
         types = [image.types_as_string() for image in self.obj.metadata.images]
         if self.display_existing_artwork:
             existing_types = [image.types_as_string() for image in self.obj.orig_metadata.images]
             #Merge both lists
             temp = []
-            i=0
-            j=0
+            i = 0
+            j = 0
             while i!=len(types) and j!=len(existing_types):
                 if types[i] > existing_types[j]:
                     temp.append(existing_types[j])
-                    j+=1
+                    j += 1
                 elif types[i] < existing_types[j]:
                     temp.append(types[i])
-                    i+=1
+                    i += 1
                 else:
                     temp.append(types[i])
-                    i+=1
-                    j+=1
+                    i += 1
+                    j += 1
             if i==len(types):
                 temp.extend(existing_types[j:])
             else:
@@ -131,11 +130,15 @@ class InfoDialog(PicardDialog):
             self.artwork_table.setItem(row, 0, item)
 
     def arrange_images(self):
-        self.obj.metadata.images.sort(key=lambda img: img.types_as_string())
+        def get_image_type(image):
+            return image.types_as_string()
+        self.obj.metadata.images.sort(key=get_image_type)
         if self.display_existing_artwork:
-            self.obj.orig_metadata.images.sort(key=lambda img: img.types_as_string())
+            self.obj.orig_metadata.images.sort(key=get_image_type)
 
     def _display_artwork_tab(self):
+        if not self.obj.metadata.images:
+            self.tab_hide(self.ui.artwork_tab)
         self.arrange_images()
         self._display_artwork_type()
         self._display_artwork(self.obj.metadata.images, 1)
