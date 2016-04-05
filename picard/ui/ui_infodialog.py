@@ -29,6 +29,7 @@ class ArtworkTable(QtGui.QTableWidget):
             self._type_col = 0
             self._new_cover_col = 1
             self.setHorizontalHeaderLabels([_("Type"), _("Cover")])
+            self.setColumnWidth(self._type_col, 140)
 
     def get_coverart_widget(self, pixmap, text):
         """Return a QWidget that can be added to artwork column cell of ArtworkTable."""
