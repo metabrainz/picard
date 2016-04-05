@@ -51,6 +51,12 @@ class InfoDialog(PicardDialog):
         self._display_artwork_tab()
 
     def _display_artwork(self, images, col):
+        """Draw artwork in corresponding cell if image type matches type in Type column.
+
+        Arguments:
+        images -- The images to be drawn.
+        col -- Column in which images are to be drawn. Can be _new_cover_col or _existing_cover_col.
+        """
         row = 0
         row_count = self.artwork_table.rowCount()
         for image in images:
@@ -99,11 +105,15 @@ class InfoDialog(PicardDialog):
             row += 1
 
     def _display_artwork_type(self):
+        """Display image type in Type column.
+        If both existing covers and new covers are to be displayed, take union of both cover types list.
+        """
         types = [image.types_as_string() for image in self.obj.metadata.images]
         if self.display_existing_artwork:
             existing_types = [image.types_as_string() for image in self.obj.orig_metadata.images]
-            #Take union of new cover types and existing cover types to display
-            #covers having same type side by side.
+            #Merge both types and existing types list in sorted order.
+            #If a type is common in both types and existing_types list, append it only once.
+            #Otherwise append type in final list according to order.
             temp = []
             i = 0
             j = 0
@@ -155,6 +165,7 @@ class InfoDialog(PicardDialog):
 
     def show_item(self, item):
         data = item.data(QtCore.Qt.UserRole)
+        #Check if this function isn't triggered by cell in Type column
         if isinstance(data, unicode):
             return
         filename = data.tempfile_filename

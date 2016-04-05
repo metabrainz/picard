@@ -31,6 +31,7 @@ class ArtworkTable(QtGui.QTableWidget):
             self.setHorizontalHeaderLabels([_("Type"), _("Cover")])
 
     def get_coverart_widget(self, pixmap, text):
+        """Return a QWidget that can be added to artwork column cell of ArtworkTable."""
         coverart_widget = QtGui.QWidget()
         image_label = QtGui.QLabel()
         text_label = QtGui.QLabel()
@@ -47,6 +48,10 @@ class ArtworkTable(QtGui.QTableWidget):
         return coverart_widget
 
     def get_type_widget(self, type_text):
+        """Return a QWidget that can be added to type column cell of ArtworkTable.
+        If both existing and new artwork are to be displayed, insert an arrow icon to make comparison
+        obvious.
+        """
         type_widget = QtGui.QWidget()
         type_label = QtGui.QLabel()
         layout = QtGui.QVBoxLayout()
