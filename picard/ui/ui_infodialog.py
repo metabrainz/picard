@@ -12,15 +12,22 @@ except AttributeError:
 class ArtworkTable(QtGui.QTableWidget):
     def __init__(self, display_existing_art):
         QtGui.QTableWidget.__init__(self, 0, 2)
+        self.display_existing_art = display_existing_art
         h_header = self.horizontalHeader()
         v_header = self.verticalHeader()
         h_header.setDefaultSectionSize(200)
         v_header.setDefaultSectionSize(230)
-        if display_existing_art:
+        if self.display_existing_art:
+            self._existing_cover_col = 0
+            self._type_col = 1
+            self._new_cover_col = 2
             self.insertColumn(2)
-            self.setHorizontalHeaderLabels([_("Type"), _("New Cover"),
-                _("Existing Cover")])
+            self.setHorizontalHeaderLabels([_("Existing Cover"), _("Type"),
+                _("New Cover")])
+            self.arrow_pixmap = QtGui.QPixmap(":/images/arrow.png")
         else:
+            self._type_col = 0
+            self._new_cover_col = 1
             self.setHorizontalHeaderLabels([_("Type"), _("Cover")])
 
     def get_coverart_widget(self, pixmap, text):
@@ -38,6 +45,26 @@ class ArtworkTable(QtGui.QTableWidget):
         layout.addWidget(text_label)
         coverart_widget.setLayout(layout)
         return coverart_widget
+
+    def get_type_widget(self, type_text):
+        type_widget = QtGui.QWidget()
+        type_label = QtGui.QLabel()
+        layout = QtGui.QVBoxLayout()
+        type_label.setText(type_text)
+        type_label.setAlignment(QtCore.Qt.AlignCenter)
+        type_label.setWordWrap(True)
+        if self.display_existing_art:
+            arrow_label = QtGui.QLabel()
+            arrow_label.setPixmap(self.arrow_pixmap.scaled(170, 170, QtCore.Qt.KeepAspectRatio,
+                                                           QtCore.Qt.SmoothTransformation))
+            arrow_label.setAlignment(QtCore.Qt.AlignCenter)
+            layout.addWidget(arrow_label)
+            layout.addWidget(type_label)
+        else:
+            layout.addWidget(type_label)
+        type_widget.setLayout(layout)
+        return type_widget
+
 
 class Ui_InfoDialog(object):
     def setupUi(self, InfoDialog, display_existing_art):

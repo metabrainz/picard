@@ -55,8 +55,8 @@ class InfoDialog(PicardDialog):
         row_count = self.artwork_table.rowCount()
         for image in images:
             while row != row_count:
-                image_type = self.artwork_table.item(row, 0)
-                if image_type and image_type.text() == image.types_as_string():
+                image_type = self.artwork_table.item(row, self.artwork_table._type_col)
+                if image_type and image_type.data(QtCore.Qt.UserRole) == image.types_as_string():
                     break
                 row += 1
             if row == row_count:
@@ -102,7 +102,8 @@ class InfoDialog(PicardDialog):
         types = [image.types_as_string() for image in self.obj.metadata.images]
         if self.display_existing_artwork:
             existing_types = [image.types_as_string() for image in self.obj.orig_metadata.images]
-            #Merge both lists
+            #Take union of new cover types and existing cover types to display
+            #covers having same type side by side.
             temp = []
             i = 0
             j = 0
@@ -124,10 +125,11 @@ class InfoDialog(PicardDialog):
             types = temp
         for row, type in enumerate(types):
             self.artwork_table.insertRow(row)
+            type_wgt = self.artwork_table.get_type_widget(type)
             item = QtGui.QTableWidgetItem()
-            item.setText(type)
-            item.setTextAlignment(QtCore.Qt.AlignCenter)
-            self.artwork_table.setItem(row, 0, item)
+            item.setData(QtCore.Qt.UserRole, type)
+            self.artwork_table.setCellWidget(row, self.artwork_table._type_col, type_wgt)
+            self.artwork_table.setItem(row, self.artwork_table._type_col, item)
 
     def arrange_images(self):
         def get_image_type(image):
@@ -141,9 +143,9 @@ class InfoDialog(PicardDialog):
             self.tab_hide(self.ui.artwork_tab)
         self.arrange_images()
         self._display_artwork_type()
-        self._display_artwork(self.obj.metadata.images, 1)
+        self._display_artwork(self.obj.metadata.images, self.artwork_table._new_cover_col)
         if self.display_existing_artwork:
-            self._display_artwork(self.obj.orig_metadata.images, 2)
+            self._display_artwork(self.obj.orig_metadata.images, self.artwork_table._existing_cover_col)
         self.artwork_table.itemDoubleClicked.connect(self.show_item)
 
     def tab_hide(self, widget):
@@ -152,10 +154,10 @@ class InfoDialog(PicardDialog):
         tab.removeTab(index)
 
     def show_item(self, item):
-        if not item.data:
+        data = item.data(QtCore.Qt.UserRole)
+        if isinstance(data, unicode):
             return
-        coverartimage = item.data(QtCore.Qt.UserRole)
-        filename = coverartimage.tempfile_filename
+        filename = data.tempfile_filename
         if filename:
             webbrowser2.open("file://" + filename)
 
