@@ -22,6 +22,8 @@ import cgi
 import traceback
 from PyQt4 import QtGui, QtCore
 from picard import log
+from picard.file import File
+from picard.track import Track
 from picard.coverart.utils import translate_caa_type
 from picard.coverart.image import CoverArtImageIOError
 from picard.util import format_time, encode_filename, bytes2human, webbrowser2
@@ -36,9 +38,11 @@ class InfoDialog(PicardDialog):
         self.obj = obj
         self.ui = Ui_InfoDialog()
         self.display_existing_artwork = False
-        if isinstance(self, FileInfoDialog):
-            if obj.metadata.images != obj.orig_metadata.images:
-                self.display_existing_artwork = True
+        if isinstance(obj, File) and isinstance(obj.parent, Track) or \
+                isinstance(obj, Track):
+            #Display existing artwork only if selected object is track object
+            #or linked to a track object
+            self.display_existing_artwork = True
         self.ui.setupUi(self, self.display_existing_artwork)
         self.ui.buttonBox.accepted.connect(self.accept)
         self.ui.buttonBox.rejected.connect(self.reject)
