@@ -117,7 +117,7 @@ class InfoDialog(PicardDialog):
             temp = []
             i = 0
             j = 0
-            while i!=len(types) and j!=len(existing_types):
+            while i != len(types) and j != len(existing_types):
                 if types[i] > existing_types[j]:
                     temp.append(existing_types[j])
                     j += 1
@@ -128,7 +128,7 @@ class InfoDialog(PicardDialog):
                     temp.append(types[i])
                     i += 1
                     j += 1
-            if i==len(types):
+            if i == len(types):
                 temp.extend(existing_types[j:])
             else:
                 temp.extend(types[i:])
