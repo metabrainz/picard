@@ -26,7 +26,7 @@ from picard.file import File
 from picard.track import Track
 from picard.coverart.utils import translate_caa_type
 from picard.coverart.image import CoverArtImageIOError
-from picard.util import format_time, encode_filename, bytes2human, webbrowser2
+from picard.util import format_time, encode_filename, bytes2human, webbrowser2, union_sorted_lists
 from picard.ui import PicardDialog
 from picard.ui.ui_infodialog import Ui_InfoDialog
 
@@ -116,27 +116,7 @@ class InfoDialog(PicardDialog):
         if self.display_existing_artwork:
             existing_types = [image.types_as_string() for image in self.obj.orig_metadata.images]
             #Merge both types and existing types list in sorted order.
-            #If a type is common in both types and existing_types list, append it only once.
-            #Otherwise append type in final list according to order.
-            temp = []
-            i = 0
-            j = 0
-            while i != len(types) and j != len(existing_types):
-                if types[i] > existing_types[j]:
-                    temp.append(existing_types[j])
-                    j += 1
-                elif types[i] < existing_types[j]:
-                    temp.append(types[i])
-                    i += 1
-                else:
-                    temp.append(types[i])
-                    i += 1
-                    j += 1
-            if i == len(types):
-                temp.extend(existing_types[j:])
-            else:
-                temp.extend(types[i:])
-            types = temp
+            types = union_sorted_lists(types, existing_types)
         for row, type in enumerate(types):
             self.artwork_table.insertRow(row)
             type_wgt = self.artwork_table.get_type_widget(type)
