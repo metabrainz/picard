@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Automatically generated - don't edit.
 # Use `python setup.py build_ui` to update it.
 
@@ -10,10 +9,76 @@ try:
 except AttributeError:
     _fromUtf8 = lambda s: s
 
+class ArtworkTable(QtGui.QTableWidget):
+    def __init__(self, display_existing_art):
+        QtGui.QTableWidget.__init__(self, 0, 2)
+        self.display_existing_art = display_existing_art
+        h_header = self.horizontalHeader()
+        v_header = self.verticalHeader()
+        h_header.setDefaultSectionSize(200)
+        v_header.setDefaultSectionSize(230)
+        if self.display_existing_art:
+            self._existing_cover_col = 0
+            self._type_col = 1
+            self._new_cover_col = 2
+            self.insertColumn(2)
+            self.setHorizontalHeaderLabels([_("Existing Cover"), _("Type"),
+                _("New Cover")])
+            self.arrow_pixmap = QtGui.QPixmap(":/images/arrow.png")
+        else:
+            self._type_col = 0
+            self._new_cover_col = 1
+            self.setHorizontalHeaderLabels([_("Type"), _("Cover")])
+            self.setColumnWidth(self._type_col, 140)
+
+    def get_coverart_widget(self, pixmap, text):
+        """Return a QWidget that can be added to artwork column cell of ArtworkTable."""
+        coverart_widget = QtGui.QWidget()
+        image_label = QtGui.QLabel()
+        text_label = QtGui.QLabel()
+        layout = QtGui.QVBoxLayout()
+        image_label.setPixmap(pixmap.scaled(170,170,QtCore.Qt.KeepAspectRatio,
+                                            QtCore.Qt.SmoothTransformation))
+        image_label.setAlignment(QtCore.Qt.AlignCenter)
+        text_label.setText(text)
+        text_label.setAlignment(QtCore.Qt.AlignCenter)
+        text_label.setWordWrap(True)
+        layout.addWidget(image_label)
+        layout.addWidget(text_label)
+        coverart_widget.setLayout(layout)
+        return coverart_widget
+
+    def get_type_widget(self, type_text):
+        """Return a QWidget that can be added to type column cell of ArtworkTable.
+        If both existing and new artwork are to be displayed, insert an arrow icon to make comparison
+        obvious.
+        """
+        type_widget = QtGui.QWidget()
+        type_label = QtGui.QLabel()
+        layout = QtGui.QVBoxLayout()
+        type_label.setText(type_text)
+        type_label.setAlignment(QtCore.Qt.AlignCenter)
+        type_label.setWordWrap(True)
+        if self.display_existing_art:
+            arrow_label = QtGui.QLabel()
+            arrow_label.setPixmap(self.arrow_pixmap.scaled(170, 170, QtCore.Qt.KeepAspectRatio,
+                                                           QtCore.Qt.SmoothTransformation))
+            arrow_label.setAlignment(QtCore.Qt.AlignCenter)
+            layout.addWidget(arrow_label)
+            layout.addWidget(type_label)
+        else:
+            layout.addWidget(type_label)
+        type_widget.setLayout(layout)
+        return type_widget
+
+
 class Ui_InfoDialog(object):
-    def setupUi(self, InfoDialog):
+    def setupUi(self, InfoDialog, display_existing_art):
         InfoDialog.setObjectName(_fromUtf8("InfoDialog"))
-        InfoDialog.resize(535, 436)
+        if display_existing_art:
+            InfoDialog.resize(665, 436)
+        else:
+            InfoDialog.resize(535, 436)
         self.verticalLayout = QtGui.QVBoxLayout(InfoDialog)
         self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
         self.tabWidget = QtGui.QTabWidget(InfoDialog)
@@ -45,17 +110,9 @@ class Ui_InfoDialog(object):
         self.artwork_tab.setObjectName(_fromUtf8("artwork_tab"))
         self.vboxlayout1 = QtGui.QVBoxLayout(self.artwork_tab)
         self.vboxlayout1.setObjectName(_fromUtf8("vboxlayout1"))
-        self.artwork_list = QtGui.QListWidget(self.artwork_tab)
-        self.artwork_list.setSelectionMode(QtGui.QAbstractItemView.SingleSelection)
-        self.artwork_list.setIconSize(QtCore.QSize(170, 170))
-        self.artwork_list.setMovement(QtGui.QListView.Static)
-        self.artwork_list.setFlow(QtGui.QListView.LeftToRight)
-        self.artwork_list.setProperty("isWrapping", False)
-        self.artwork_list.setResizeMode(QtGui.QListView.Fixed)
-        self.artwork_list.setSpacing(10)
-        self.artwork_list.setViewMode(QtGui.QListView.IconMode)
-        self.artwork_list.setObjectName(_fromUtf8("artwork_list"))
-        self.vboxlayout1.addWidget(self.artwork_list)
+        self.artwork_table = ArtworkTable(display_existing_art)
+        self.artwork_table.setObjectName(_fromUtf8("artwork_table"))
+        self.vboxlayout1.addWidget(self.artwork_table)
         self.tabWidget.addTab(self.artwork_tab, _fromUtf8(""))
         self.verticalLayout.addWidget(self.tabWidget)
         self.buttonBox = QtGui.QDialogButtonBox(InfoDialog)
@@ -66,8 +123,8 @@ class Ui_InfoDialog(object):
         self.retranslateUi(InfoDialog)
         self.tabWidget.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(InfoDialog)
-        InfoDialog.setTabOrder(self.tabWidget, self.artwork_list)
-        InfoDialog.setTabOrder(self.artwork_list, self.buttonBox)
+        InfoDialog.setTabOrder(self.tabWidget, self.artwork_table)
+        InfoDialog.setTabOrder(self.artwork_table, self.buttonBox)
 
     def retranslateUi(self, InfoDialog):
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.info_tab), _("&Info"))

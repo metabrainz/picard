@@ -411,3 +411,32 @@ def build_qurl(host, port=80, path=None, mblogin=False, queryargs=None):
         for k, v in queryargs.iteritems():
             url.addEncodedQueryItem(k, unicode(v))
     return url
+
+def union_sorted_lists(list1, list2):
+    """
+    Returns union of two sorted lists.
+    >> list1 = [1, 2, 2, 2, 3]
+    >> list2 = [2, 3, 4]
+    >> union_sorted_lists(list1, list2)
+    >> [1, 2, 2, 2, 3, 4]
+    """
+    union = []
+    i = 0
+    j = 0
+    while i != len(list1) and j != len(list2):
+        if list1[i] > list2[j]:
+            union.append(list2[j])
+            j += 1
+        elif list1[i] < list2[j]:
+            union.append(list1[i])
+            i += 1
+        else:
+            union.append(list1[i])
+            i += 1
+            j += 1
+    if i == len(list1):
+        union.extend(list2[j:])
+    else:
+        union.extend(list1[i:])
+
+    return union
