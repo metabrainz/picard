@@ -271,7 +271,7 @@ class XmlWebService(QtCore.QObject):
                         log.debug("Redirect to %s requested", redirect.toString(QUrl.RemoveUserInfo))
                         redirect_host = str(redirect.host())
                         redirect_port = redirect.port(80)
-                        redirect_query = dict(redirect.queryItems())
+                        redirect_query = dict(redirect.encodedQueryItems())
                         redirect_path = redirect.path()
 
                         original_host = str(url.host())
