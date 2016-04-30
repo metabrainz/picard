@@ -240,6 +240,12 @@ class XmlWebService(QtCore.QObject):
         return leftUrl.port(80) == rightUrl.port(80) and \
             leftUrl.toString(QUrl.RemovePort) == rightUrl.toString(QUrl.RemovePort)
 
+    @staticmethod
+    def url_port(url):
+        if url.scheme() == 'https':
+            return url.port(443)
+        return url.port(80)
+
     def _handle_reply(self, reply, request, handler, xml, refresh):
         error = int(reply.error())
         if error:
@@ -270,12 +276,12 @@ class XmlWebService(QtCore.QObject):
                     if not XmlWebService.urls_equivalent(redirect, reply.request().url()):
                         log.debug("Redirect to %s requested", redirect.toString(QUrl.RemoveUserInfo))
                         redirect_host = str(redirect.host())
-                        redirect_port = redirect.port(80)
+                        redirect_port = self.url_port(redirect)
                         redirect_query = dict(redirect.encodedQueryItems())
                         redirect_path = redirect.path()
 
                         original_host = str(url.host())
-                        original_port = url.port(80)
+                        original_port = self.url_port(url)
 
                         if ((original_host, original_port) in REQUEST_DELAY
                                 and (redirect_host, redirect_port) not in REQUEST_DELAY):
