@@ -1,13 +1,16 @@
 # 
 # Translators:
+# Anton Karpuzikov <karpuzikovanton@gmail.com>, 2015
 # greycat <greycat.na.kor@gmail.com>, 2012
 # Nikolai Prokoschenko <nikolai@prokoschenko.de>, 2011
 # dubwai <o0wd8jx@lavabit.com>, 2012
+# Serg Green <serg.green@gmail.com>, 2016
+# Алексеев Денис <happy.den89@gmail.com>, 2015
 # Дмитрий <sema19689@gmail.com>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2015-09-08 18:58+0000\n"
+"PO-Revision-Date: 2016-04-04 13:22+0000\n"
 "Last-Translator: Michael Wiencek <mwtuea@gmail.com>\n"
 "Language-Team: Russian (http://www.transifex.com/musicbrainz/musicbrainz/language/ru/)\n"
 "MIME-Version: 1.0\n"
@@ -22,19 +25,19 @@ msgid ""
 "\"Motet\" is a term that applies to different types of (usually "
 "unaccompanied) choral works. What exactly is a motet depends quite a bit on "
 "the period."
-msgstr ""
+msgstr "1\"Мотет\""
 
 #: DB:work_type/description:5
 msgctxt "work_type"
 msgid ""
 "\"Sonata\" is a general term used to describe small scale (very often solo "
 "or solo + keyboard) instrumental works, initially in baroque music."
-msgstr ""
+msgstr "2 \"Соната"
 
 #: DB:medium_format/name:54
 msgctxt "medium_format"
 msgid "10\" Shellac"
-msgstr ""
+msgstr "10\"Винил(78 об.)"
 
 #: DB:medium_format/name:30
 msgctxt "medium_format"
@@ -44,27 +47,27 @@ msgstr "10\" Винил"
 #: DB:medium_format/name:55
 msgctxt "medium_format"
 msgid "12\" Shellac"
-msgstr ""
+msgstr "12\"Винил(78 об.)"
 
 #: DB:medium_format/name:31
 msgctxt "medium_format"
 msgid "12\" Vinyl"
-msgstr "12\" винил"
+msgstr "12\" Винил"
 
 #: DB:medium_format/name:49
 msgctxt "medium_format"
 msgid "3.5\" Floppy Disk"
-msgstr ""
+msgstr "3.5\" Дискета"
 
 #: DB:medium_format/name:52
 msgctxt "medium_format"
 msgid "7\" Flexi-disc"
-msgstr ""
+msgstr "7\"Флекси-диск"
 
 #: DB:medium_format/name:56
 msgctxt "medium_format"
 msgid "7\" Shellac"
-msgstr ""
+msgstr "7\"Винил(78 об.)"
 
 #: DB:medium_format/name:29
 msgctxt "medium_format"
@@ -86,7 +89,7 @@ msgctxt "medium_format"
 msgid ""
 "90 rpm, vertical-cut shellac discs, produced by the Pathé label from 1906 to"
 " 1932."
-msgstr ""
+msgstr "90 об / мин, вертикальный-рез лаковых дисков, произведенные на лейбле \"Pathé\" с 1906 по 1932 год."
 
 #: DB:work_attribute_type_allowed_value/value:794
 msgctxt "work_attribute_type_allowed_value"
@@ -98,20 +101,20 @@ msgctxt "work_type"
 msgid ""
 "A ballet is music composed to be used, together with a choreography, for a "
 "ballet dance production."
-msgstr ""
+msgstr "Балетная музыка предназначена для использование вместе с хореографией, для \t\nпостановка балета."
 
 #: DB:work_type/description:3
 msgctxt "work_type"
 msgid ""
 "A cantata is a vocal (often choral) composition with an instrumental "
 "(usually orchestral) accompaniment, typically in several movements."
-msgstr ""
+msgstr "Кантата - это вокальное исполнение (часто хоровое) совместно с инструментальным (обычно оркестровым сопровождением), как правило, в несколько движений."
 
 #: DB:work_type/description:4
 msgctxt "work_type"
 msgid ""
 "A concerto is a musical work for soloist(s) accompanied by an orchestra."
-msgstr ""
+msgstr "Концерт - это музыкальное произведение для солиста(ов) в сопровождении оркестра."
 
 #: DB:event_type/description:4
 msgctxt "event_type"
@@ -119,7 +122,7 @@ msgid ""
 "A convention, expo or trade fair is an event which is not typically "
 "orientated around music performances, but can include them as side "
 "activities."
-msgstr ""
+msgstr "Конвенции, выставки или ярмарки - это мероприятия, которое как правило, не ориентированы на музыкальные выступления, но может включать их как побочную деятельность."
 
 #: DB:release_status/description:2
 msgctxt "release_status"
@@ -132,7 +135,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:28
 msgctxt "work_attribute_type_allowed_value"
 msgid "A major"
-msgstr ""
+msgstr "Мажор"
 
 #: DB:work_type/description:8
 msgctxt "work_type"
@@ -153,7 +156,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:29
 msgctxt "work_attribute_type_allowed_value"
 msgid "A minor"
-msgstr ""
+msgstr "Минор"
 
 #: DB:work_type/description:13
 msgctxt "work_type"
@@ -182,7 +185,7 @@ msgctxt "place_type"
 msgid ""
 "A place designed for non-live production of music, typically a recording "
 "studio."
-msgstr ""
+msgstr "Место,созданное не для музицирования,типичная звукозаписывающая студия"
 
 #: DB:place_type/description:2
 msgctxt "place_type"
@@ -236,7 +239,7 @@ msgstr ""
 #: DB:series_type/description:6
 msgctxt "series_type"
 msgid "A series of events."
-msgstr ""
+msgstr "Серия событий"
 
 #: DB:series_type/description:9
 msgctxt "series_type"
@@ -246,7 +249,7 @@ msgstr ""
 #: DB:series_type/description:3
 msgctxt "series_type"
 msgid "A series of recordings."
-msgstr ""
+msgstr "Серия записей"
 
 #: DB:series_type/description:7
 msgctxt "series_type"
@@ -295,7 +298,7 @@ msgctxt "work_type"
 msgid ""
 "A soundtrack is the music that accompanies a film, TV program, videogame, or"
 " even book."
-msgstr ""
+msgstr "Саундтрек-это музыка,сопровождающая фильм,телепередачу,видеоигру или книгу"
 
 #: DB:work_type/description:6
 msgctxt "work_type"
@@ -606,7 +609,7 @@ msgstr "Ария"
 #: DB:editor_collection_type/name:8
 msgctxt "collection_type"
 msgid "Artist"
-msgstr ""
+msgstr "Исполнитель"
 
 #: DB:artist_alias_type/name:1
 msgctxt "alias_type"
@@ -1043,26 +1046,36 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:2
 msgctxt "work_attribute_type_allowed_value"
 msgid "C major"
-msgstr ""
+msgstr "C major"
 
 #: DB:work_attribute_type_allowed_value/value:3
 msgctxt "work_attribute_type_allowed_value"
 msgid "C minor"
-msgstr ""
+msgstr "C minor"
 
 #: DB:work_attribute_type_allowed_value/value:1
 msgctxt "work_attribute_type_allowed_value"
 msgid "C-flat major"
-msgstr ""
+msgstr "C-flat major"
 
 #: DB:work_attribute_type_allowed_value/value:4
 msgctxt "work_attribute_type_allowed_value"
 msgid "C-sharp major"
-msgstr ""
+msgstr "C-sharp major"
 
 #: DB:work_attribute_type_allowed_value/value:5
 msgctxt "work_attribute_type_allowed_value"
 msgid "C-sharp minor"
+msgstr "C-sharp minor"
+
+#: DB:work_attribute_type/name:19
+msgctxt "work_attribute_type"
+msgid "CASH ID"
+msgstr ""
+
+#: DB:work_attribute_type/name:22
+msgctxt "work_attribute_type"
+msgid "CCLI ID"
 msgstr ""
 
 #: DB:medium_format/name:1
@@ -1240,7 +1253,7 @@ msgstr ""
 #: DB:area_type/name:7
 msgctxt "area_type"
 msgid "County"
-msgstr ""
+msgstr "Страна"
 
 #: DB:area_type/description:7
 msgctxt "area_type"
@@ -1279,32 +1292,32 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:790
 msgctxt "work_attribute_type_allowed_value"
 msgid "D Dorian"
-msgstr ""
+msgstr "D Dorian"
 
 #: DB:work_attribute_type_allowed_value/value:8
 msgctxt "work_attribute_type_allowed_value"
 msgid "D major"
-msgstr ""
+msgstr "D major"
 
 #: DB:work_attribute_type_allowed_value/value:9
 msgctxt "work_attribute_type_allowed_value"
 msgid "D minor"
-msgstr ""
+msgstr "D minor"
 
 #: DB:work_attribute_type_allowed_value/value:6
 msgctxt "work_attribute_type_allowed_value"
 msgid "D-flat major"
-msgstr ""
+msgstr "D-flat major"
 
 #: DB:work_attribute_type_allowed_value/value:7
 msgctxt "work_attribute_type_allowed_value"
 msgid "D-flat minor"
-msgstr ""
+msgstr "D-flat minor"
 
 #: DB:work_attribute_type_allowed_value/value:10
 msgctxt "work_attribute_type_allowed_value"
 msgid "D-sharp minor"
-msgstr ""
+msgstr "D-sharp minor"
 
 #: DB:medium_format/name:11
 msgctxt "medium_format"
@@ -1376,6 +1389,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Darb-ı Türki"
 msgstr ""
 
+#: DB:work_attribute_type_allowed_value/value:796
+msgctxt "work_attribute_type_allowed_value"
+msgid "Darbeyn"
+msgstr ""
+
 #: DB:work_attribute_type_allowed_value/value:73
 msgctxt "work_attribute_type_allowed_value"
 msgid "Darbār"
@@ -1389,7 +1407,7 @@ msgstr ""
 #: DB:medium_format/name:43
 msgctxt "medium_format"
 msgid "Data CD"
-msgstr ""
+msgstr "Диск с данных"
 
 #: DB:release_group_secondary_type/name:10
 msgctxt "release_group_secondary_type"
@@ -1444,6 +1462,11 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:724
 msgctxt "work_attribute_type_allowed_value"
 msgid "Devr-i Turan"
+msgstr ""
+
+#: DB:work_attribute_type_allowed_value/value:797
+msgctxt "work_attribute_type_allowed_value"
+msgid "Devr-i Turan II"
 msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:79
@@ -1649,32 +1672,32 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:791
 msgctxt "work_attribute_type_allowed_value"
 msgid "E Dorian"
-msgstr ""
+msgstr "E Dorian"
 
 #: DB:work_attribute_type_allowed_value/value:13
 msgctxt "work_attribute_type_allowed_value"
 msgid "E major"
-msgstr ""
+msgstr "E major"
 
 #: DB:work_attribute_type_allowed_value/value:14
 msgctxt "work_attribute_type_allowed_value"
 msgid "E minor"
-msgstr ""
+msgstr "E minor"
 
 #: DB:work_attribute_type_allowed_value/value:11
 msgctxt "work_attribute_type_allowed_value"
 msgid "E-flat major"
-msgstr ""
+msgstr "E-flat major"
 
 #: DB:work_attribute_type_allowed_value/value:12
 msgctxt "work_attribute_type_allowed_value"
 msgid "E-flat minor"
-msgstr ""
+msgstr "E-flat minor"
 
 #: DB:work_attribute_type_allowed_value/value:15
 msgctxt "work_attribute_type_allowed_value"
 msgid "E-sharp minor"
-msgstr ""
+msgstr "E-sharp minor"
 
 #: DB:release_group_primary_type/name:3
 msgctxt "release_group_primary_type"
@@ -1861,14 +1884,14 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Ferahnakaşiran"
 msgstr ""
 
+#: DB:work_attribute_type_allowed_value/value:370
+msgctxt "work_attribute_type_allowed_value"
+msgid "Ferahnüma"
+msgstr ""
+
 #: DB:work_attribute_type_allowed_value/value:371
 msgctxt "work_attribute_type_allowed_value"
 msgid "Ferahzad"
-msgstr ""
-
-#: DB:work_attribute_type_allowed_value/value:370
-msgctxt "work_attribute_type_allowed_value"
-msgid "Feraznüma"
 msgstr ""
 
 #: DB:event_type/name:2
@@ -3989,6 +4012,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Raksaksağı"
 msgstr ""
 
+#: DB:work_attribute_type_allowed_value/value:798
+msgctxt "work_attribute_type_allowed_value"
+msgid "Raksaksağı II"
+msgstr ""
+
 #: DB:work_attribute_type_allowed_value/value:764
 msgctxt "work_attribute_type_allowed_value"
 msgid "Raksan"
@@ -4264,9 +4292,19 @@ msgctxt "medium_format"
 msgid "SACD"
 msgstr "SACD"
 
+#: DB:work_attribute_type/name:21
+msgctxt "work_attribute_type"
+msgid "SACEM ID"
+msgstr ""
+
 #: DB:work_attribute_type/name:8
 msgctxt "work_attribute_type"
 msgid "SESAC ID"
+msgstr ""
+
+#: DB:work_attribute_type/name:20
+msgctxt "work_attribute_type"
+msgid "SGAE ID"
 msgstr ""
 
 #: DB:medium_format/name:36
@@ -4282,6 +4320,11 @@ msgstr ""
 #: DB:work_attribute_type/name:10
 msgctxt "work_attribute_type"
 msgid "SOCAN ID"
+msgstr ""
+
+#: DB:work_attribute_type/name:18
+msgctxt "work_attribute_type"
+msgid "SUISA ID"
 msgstr ""
 
 #: DB:medium_format/name:23
@@ -4906,6 +4949,11 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:580
 msgctxt "work_attribute_type_allowed_value"
 msgid "Türki Hicaz"
+msgstr ""
+
+#: DB:work_attribute_type_allowed_value/value:799
+msgctxt "work_attribute_type_allowed_value"
+msgid "Türkmen"
 msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:675

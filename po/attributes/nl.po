@@ -2,13 +2,13 @@
 # Translators:
 # Maurits Meulenbelt <email address hidden>, 2012
 # Maurits Meulenbelt <mfmeulenbelt@gmail.com>, 2012
-# Maurits Meulenbelt <mfmeulenbelt@gmail.com>, 2013-2015
+# Maurits Meulenbelt <mfmeulenbelt@gmail.com>, 2013-2016
 # Nikolai Prokoschenko <email address hidden>, 2011
 # Nikolai Prokoschenko <nikolai@prokoschenko.de>, 2011
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2015-11-28 14:49+0000\n"
+"PO-Revision-Date: 2016-05-01 10:08+0000\n"
 "Last-Translator: Maurits Meulenbelt <mfmeulenbelt@gmail.com>\n"
 "Language-Team: Dutch (http://www.transifex.com/musicbrainz/musicbrainz/language/nl/)\n"
 "MIME-Version: 1.0\n"
@@ -352,12 +352,12 @@ msgstr "Ais kleine terts"
 #: DB:work_attribute_type/name:13
 msgctxt "work_attribute_type"
 msgid "APRA ID"
-msgstr "APRA ID"
+msgstr "APRA-ID"
 
 #: DB:work_attribute_type/name:6
 msgctxt "work_attribute_type"
 msgid "ASCAP ID"
-msgstr "ASCAP ID"
+msgstr "ASCAP-ID"
 
 #: DB:work_attribute_type_allowed_value/value:299
 msgctxt "work_attribute_type_allowed_value"
@@ -762,7 +762,7 @@ msgstr "Bes kleine terts"
 #: DB:work_attribute_type/name:7
 msgctxt "work_attribute_type"
 msgid "BMI ID"
-msgstr "BMI ID"
+msgstr "BMI-ID"
 
 #: DB:cover_art_archive.art_type/name:2
 msgctxt "cover_art_type"
@@ -1066,10 +1066,20 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "C-sharp minor"
 msgstr "Cis kleine terts"
 
+#: DB:work_attribute_type/name:19
+msgctxt "work_attribute_type"
+msgid "CASH ID"
+msgstr "CASH-ID"
+
+#: DB:work_attribute_type/name:22
+msgctxt "work_attribute_type"
+msgid "CCLI ID"
+msgstr "CCLI-ID"
+
 #: DB:medium_format/name:1
 msgctxt "medium_format"
 msgid "CD"
-msgstr "Cd"
+msgstr "cd"
 
 #: DB:medium_format/name:39
 msgctxt "medium_format"
@@ -1079,7 +1089,7 @@ msgstr "CD+G"
 #: DB:medium_format/name:33
 msgctxt "medium_format"
 msgid "CD-R"
-msgstr "CD-R"
+msgstr "cd-r"
 
 #: DB:medium_format/name:41
 msgctxt "medium_format"
@@ -1215,7 +1225,7 @@ msgstr "Conventie/Expositie"
 #: DB:medium_format/name:61
 msgctxt "medium_format"
 msgid "Copy Control CD"
-msgstr "CD met kopieerbeveiliging"
+msgstr "cd met kopieerbeveiliging"
 
 #: DB:medium_format/description:61
 msgctxt "medium_format"
@@ -1377,6 +1387,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Darb-ı Türki"
 msgstr "Darb-ı Türki"
 
+#: DB:work_attribute_type_allowed_value/value:796
+msgctxt "work_attribute_type_allowed_value"
+msgid "Darbeyn"
+msgstr "Darbeyn"
+
 #: DB:work_attribute_type_allowed_value/value:73
 msgctxt "work_attribute_type_allowed_value"
 msgid "Darbār"
@@ -1446,6 +1461,11 @@ msgstr "Devr-i Süreyya Sofyanı"
 msgctxt "work_attribute_type_allowed_value"
 msgid "Devr-i Turan"
 msgstr "Devr-i Turan"
+
+#: DB:work_attribute_type_allowed_value/value:797
+msgctxt "work_attribute_type_allowed_value"
+msgid "Devr-i Turan II"
+msgstr "Devr-i Turan II"
 
 #: DB:work_attribute_type_allowed_value/value:79
 msgctxt "work_attribute_type_allowed_value"
@@ -1862,15 +1882,15 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Ferahnakaşiran"
 msgstr "Ferahnakaşiran"
 
+#: DB:work_attribute_type_allowed_value/value:370
+msgctxt "work_attribute_type_allowed_value"
+msgid "Ferahnüma"
+msgstr "Ferahnüma"
+
 #: DB:work_attribute_type_allowed_value/value:371
 msgctxt "work_attribute_type_allowed_value"
 msgid "Ferahzad"
 msgstr "Ferahzad"
-
-#: DB:work_attribute_type_allowed_value/value:370
-msgctxt "work_attribute_type_allowed_value"
-msgid "Feraznüma"
-msgstr "Feraznüma"
 
 #: DB:event_type/name:2
 msgctxt "event_type"
@@ -1973,7 +1993,7 @@ msgstr "Gis kleine terts"
 #: DB:work_attribute_type/name:9
 msgctxt "work_attribute_type"
 msgid "GEMA ID"
-msgstr "GEMA ID"
+msgstr "GEMA-ID"
 
 #: DB:work_attribute_type_allowed_value/value:88
 msgctxt "work_attribute_type_allowed_value"
@@ -2538,7 +2558,7 @@ msgstr "Eiland wordt gebruikt voor eilanden en atollen die geen eigen subdivisie
 #: DB:work_attribute_type/name:3
 msgctxt "work_attribute_type"
 msgid "JASRAC ID"
-msgstr "JASRAC ID"
+msgstr "JASRAC-ID"
 
 #: DB:work_attribute_type_allowed_value/value:114
 msgctxt "work_attribute_type_allowed_value"
@@ -2603,7 +2623,7 @@ msgstr "Jōnpuri"
 #: DB:work_attribute_type/name:11
 msgctxt "work_attribute_type"
 msgid "KOMCA ID"
-msgstr "KOMCA ID"
+msgstr "KOMCA-ID"
 
 #: DB:work_attribute_type_allowed_value/value:621
 msgctxt "work_attribute_type_allowed_value"
@@ -3328,7 +3348,7 @@ msgstr "Muzaaf Devr-i Kebir"
 #: DB:work_attribute_type/name:12
 msgctxt "work_attribute_type"
 msgid "MÜST ID"
-msgstr "MÜST ID"
+msgstr "MÜST-ID"
 
 #: DB:work_attribute_type_allowed_value/value:463
 msgctxt "work_attribute_type_allowed_value"
@@ -3990,6 +4010,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Raksaksağı"
 msgstr "Raksaksağı"
 
+#: DB:work_attribute_type_allowed_value/value:798
+msgctxt "work_attribute_type_allowed_value"
+msgid "Raksaksağı II"
+msgstr "Raksaksağı II"
+
 #: DB:work_attribute_type_allowed_value/value:764
 msgctxt "work_attribute_type_allowed_value"
 msgid "Raksan"
@@ -4265,10 +4290,20 @@ msgctxt "medium_format"
 msgid "SACD"
 msgstr "SACD"
 
+#: DB:work_attribute_type/name:21
+msgctxt "work_attribute_type"
+msgid "SACEM ID"
+msgstr "SACEM-ID"
+
 #: DB:work_attribute_type/name:8
 msgctxt "work_attribute_type"
 msgid "SESAC ID"
-msgstr "SESAC ID"
+msgstr "SESAC-ID"
+
+#: DB:work_attribute_type/name:20
+msgctxt "work_attribute_type"
+msgid "SGAE ID"
+msgstr "SGAE-ID"
 
 #: DB:medium_format/name:36
 msgctxt "medium_format"
@@ -4283,7 +4318,12 @@ msgstr "SHM-SACD"
 #: DB:work_attribute_type/name:10
 msgctxt "work_attribute_type"
 msgid "SOCAN ID"
-msgstr "SOCAN ID"
+msgstr "SOCAN-ID"
+
+#: DB:work_attribute_type/name:18
+msgctxt "work_attribute_type"
+msgid "SUISA ID"
+msgstr "SUISA-ID"
 
 #: DB:medium_format/name:23
 msgctxt "medium_format"
@@ -4908,6 +4948,11 @@ msgstr "Türkaksağı"
 msgctxt "work_attribute_type_allowed_value"
 msgid "Türki Hicaz"
 msgstr "Türki Hicaz"
+
+#: DB:work_attribute_type_allowed_value/value:799
+msgctxt "work_attribute_type_allowed_value"
+msgid "Türkmen"
+msgstr "Türkmen"
 
 #: DB:work_attribute_type_allowed_value/value:675
 msgctxt "work_attribute_type_allowed_value"

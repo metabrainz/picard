@@ -6,13 +6,13 @@
 # Dogmatica <jeroendoggen@hotmail.com>, 2006
 # Jan van Thiel <zout@gewis.nl>, 2006
 # Maurits Meulenbelt <mfmeulenbelt@gmail.com>, 2012
-# Maurits Meulenbelt <mfmeulenbelt@gmail.com>, 2013-2015
+# Maurits Meulenbelt <mfmeulenbelt@gmail.com>, 2013-2016
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2015-02-06 13:01+0100\n"
-"PO-Revision-Date: 2015-11-14 17:54+0000\n"
+"PO-Revision-Date: 2016-05-01 10:08+0000\n"
 "Last-Translator: Maurits Meulenbelt <mfmeulenbelt@gmail.com>\n"
 "Language-Team: Dutch (http://www.transifex.com/musicbrainz/musicbrainz/language/nl/)\n"
 "MIME-Version: 1.0\n"
@@ -371,7 +371,7 @@ msgstr "Verwijdert album %(id)s: %(artist)s - %(album)s"
 
 #: picard/tagger.py:547
 msgid "CD Lookup Error"
-msgstr "Fout bij opzoeken van de CD"
+msgstr "Fout bij opzoeken van de cd"
 
 #: picard/tagger.py:548
 #, python-format
@@ -379,7 +379,7 @@ msgid ""
 "Error while reading CD:\n"
 "\n"
 "%s"
-msgstr "Fout tijdens lezen van de CD:\n\n%s"
+msgstr "Fout tijdens lezen van de cd:\n\n%s"
 
 #: picard/const/languages.py:31
 msgid "Danish"
@@ -826,7 +826,7 @@ msgstr "&Zoeken"
 
 #: picard/ui/mainwindow.py:393
 msgid "Lookup &CD..."
-msgstr "&CD opzoeken"
+msgstr "&Cd opzoeken"
 
 #: picard/ui/mainwindow.py:394
 msgid "Lookup the details of the CD in your drive"
@@ -1959,31 +1959,31 @@ msgstr "MusicBrainz opname-id"
 
 #: picard/util/tags.py:55
 msgid "MusicBrainz Track Id"
-msgstr "MusicBrainz nummer-ID"
+msgstr "MusicBrainz nummer-id"
 
 #: picard/util/tags.py:56
 msgid "MusicBrainz Release Id"
-msgstr "MusicBrainz uitgave-ID"
+msgstr "MusicBrainz uitgave-id"
 
 #: picard/util/tags.py:57
 msgid "MusicBrainz Artist Id"
-msgstr "MusicBrainz artiest-ID"
+msgstr "MusicBrainz artiest-id"
 
 #: picard/util/tags.py:58
 msgid "MusicBrainz Release Artist Id"
-msgstr "MusicBrainz uitgaveartiest-ID"
+msgstr "MusicBrainz uitgaveartiest-id"
 
 #: picard/util/tags.py:59
 msgid "MusicBrainz Work Id"
-msgstr "MusicBrainz compositie-ID"
+msgstr "MusicBrainz compositie-id"
 
 #: picard/util/tags.py:60
 msgid "MusicBrainz Release Group Id"
-msgstr "MusicBrainz uitgavegroep-ID"
+msgstr "MusicBrainz uitgavegroep-id"
 
 #: picard/util/tags.py:61
 msgid "MusicBrainz Disc Id"
-msgstr "MusicBrainz disc-ID"
+msgstr "MusicBrainz disc-id"
 
 #: picard/util/tags.py:62
 msgid "MusicIP PUID"
@@ -2003,7 +2003,7 @@ msgstr "AcoustID vingerafdruk:"
 
 #: picard/util/tags.py:66
 msgid "Disc Id"
-msgstr "Disc-ID"
+msgstr "Disc-id"
 
 #: picard/util/tags.py:67
 msgid "Artist Website"

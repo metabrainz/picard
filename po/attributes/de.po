@@ -15,18 +15,19 @@
 # nikki, 2013
 # Patrick <patrick.rein@gmail.com>, 2015
 # Philipp Wolfer <ph.wolfer@gmail.com>, 2012
-# S.Brandt <s.brandt@mixxx.org>, 2014-2015
+# S.Brandt <s.brandt@mixxx.org>, 2014-2016
 # Shepard <email address hidden>, 2011
 # Shepard, 2011
 # Shepard, 2013-2014
-# TL, 2015
+# TL, 2015-2016
 # Tobias Quathamer <email address hidden>, 2007
 # Tobias Quathamer <toddy@debian.org>, 2007
+# Ulrich Klauer <ulrich@chirlu.de>, 2015-2016
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2015-11-17 16:57+0000\n"
-"Last-Translator: TL\n"
+"PO-Revision-Date: 2016-04-04 13:22+0000\n"
+"Last-Translator: Michael Wiencek <mwtuea@gmail.com>\n"
 "Language-Team: German (http://www.transifex.com/musicbrainz/musicbrainz/language/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -40,29 +41,29 @@ msgid ""
 "\"Motet\" is a term that applies to different types of (usually "
 "unaccompanied) choral works. What exactly is a motet depends quite a bit on "
 "the period."
-msgstr "\"Motet\" beschreibt unterschiedliche Arten von (üblichweise nicht istrumental begleiteten) Choral-Werken. Die genaue Definition hängt stark vom Zeitalter ab."
+msgstr "„Motette“ bezeichnet unterschiedliche Arten von (üblicherweise nicht instrumental begleiteten) Chorwerken. Die genaue Definition hängt stark vom Zeitalter ab."
 
 #: DB:work_type/description:5
 msgctxt "work_type"
 msgid ""
 "\"Sonata\" is a general term used to describe small scale (very often solo "
 "or solo + keyboard) instrumental works, initially in baroque music."
-msgstr "\"Sonate\" ist ein allgemeiner Begriff für Instrumentalstücke für kleine Besetzungen (meist Solo oder Solo + Klavier), ursprünglich aus dem Barock."
+msgstr "„Sonate“ ist ein allgemeiner Begriff für Instrumentalstücke in kleiner Besetzung (meist Solo oder Solo + Tasten), ursprünglich in der Barockmusik."
 
 #: DB:medium_format/name:54
 msgctxt "medium_format"
 msgid "10\" Shellac"
-msgstr "10\"-Schellack"
+msgstr "10″-Schellack"
 
 #: DB:medium_format/name:30
 msgctxt "medium_format"
 msgid "10\" Vinyl"
-msgstr "10\"-Vinyl"
+msgstr "10″-Vinyl"
 
 #: DB:medium_format/name:55
 msgctxt "medium_format"
 msgid "12\" Shellac"
-msgstr "12\"-Schellack"
+msgstr "12″-Schellack"
 
 #: DB:medium_format/name:31
 msgctxt "medium_format"
@@ -77,27 +78,27 @@ msgstr "3,5″-Diskette"
 #: DB:medium_format/name:52
 msgctxt "medium_format"
 msgid "7\" Flexi-disc"
-msgstr "7\" Flexible Disc"
+msgstr "7″-Flexidisc"
 
 #: DB:medium_format/name:56
 msgctxt "medium_format"
 msgid "7\" Shellac"
-msgstr "7\"-Schellack"
+msgstr "7″-Schellack"
 
 #: DB:medium_format/name:29
 msgctxt "medium_format"
 msgid "7\" Vinyl"
-msgstr "7\"-Vinyl"
+msgstr "7″-Vinyl"
 
 #: DB:medium_format/name:34
 msgctxt "medium_format"
 msgid "8cm CD"
-msgstr "8cm-CD"
+msgstr "8-cm-CD"
 
 #: DB:medium_format/name:40
 msgctxt "medium_format"
 msgid "8cm CD+G"
-msgstr "8cm-CD+G"
+msgstr "8-cm-CD+G"
 
 #: DB:medium_format/description:58
 msgctxt "medium_format"
@@ -109,14 +110,14 @@ msgstr "90 U/m vertikal geschnittene Shellack-Platte hergestellt vom Label \"Pat
 #: DB:work_attribute_type_allowed_value/value:794
 msgctxt "work_attribute_type_allowed_value"
 msgid "A Dorian"
-msgstr "Dorisch"
+msgstr "a-Dorisch"
 
 #: DB:work_type/description:2
 msgctxt "work_type"
 msgid ""
 "A ballet is music composed to be used, together with a choreography, for a "
 "ballet dance production."
-msgstr "Als Ballett bezeichnet man Musik die, zusammen mit einer Choreographie, für einen Bühnentanz geschrieben wurde."
+msgstr "Als Ballett bezeichnet man Musik, die, zusammen mit einer Choreographie, für einen Bühnentanz geschrieben wurde."
 
 #: DB:work_type/description:3
 msgctxt "work_type"
@@ -274,7 +275,7 @@ msgstr "Eine Reihe von zusammengehörigen Konzerten des gleichen Künstlers an v
 #: DB:series_type/description:1
 msgctxt "series_type"
 msgid "A series of release groups."
-msgstr ""
+msgstr "Eine Serie von Veröffentlichungsgruppen."
 
 #: DB:series_type/description:2
 msgctxt "series_type"
@@ -399,7 +400,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:301
 msgctxt "work_attribute_type_allowed_value"
 msgid "Acemaşiran"
-msgstr ""
+msgstr "Acemaşiran"
 
 #: DB:work_attribute_type_allowed_value/value:302
 msgctxt "work_attribute_type_allowed_value"
@@ -409,7 +410,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:303
 msgctxt "work_attribute_type_allowed_value"
 msgid "Acemkürdi"
-msgstr ""
+msgstr "Acemkürdi"
 
 #: DB:work_attribute_type_allowed_value/value:304
 msgctxt "work_attribute_type_allowed_value"
@@ -424,12 +425,12 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:308
 msgctxt "work_attribute_type_allowed_value"
 msgid "Aheng-i Tarab"
-msgstr ""
+msgstr "Aheng-i Tarab"
 
 #: DB:work_attribute_type_allowed_value/value:309
 msgctxt "work_attribute_type_allowed_value"
 msgid "Ak Dügah"
-msgstr ""
+msgstr "Ak Dügah"
 
 #: DB:work_attribute_type_allowed_value/value:690
 msgctxt "work_attribute_type_allowed_value"
@@ -547,7 +548,7 @@ msgstr "Eine Etüde ist ein Instrumentalwerk für ein Soloinstrument, das dem Mu
 #: DB:work_attribute_type_allowed_value/value:310
 msgctxt "work_attribute_type_allowed_value"
 msgid "Anberefşan"
-msgstr ""
+msgstr "Anberefşan"
 
 #: DB:release_status/description:1
 msgctxt "release_status"
@@ -574,17 +575,17 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:314
 msgctxt "work_attribute_type_allowed_value"
 msgid "Aram-ı Can"
-msgstr ""
+msgstr "Aram-ı Can"
 
 #: DB:work_attribute_type_allowed_value/value:315
 msgctxt "work_attribute_type_allowed_value"
 msgid "Aram-ı Dil"
-msgstr ""
+msgstr "Aram-ı Dil"
 
 #: DB:work_attribute_type_allowed_value/value:604
 msgctxt "work_attribute_type_allowed_value"
 msgid "Aranağme"
-msgstr ""
+msgstr "Aranağme"
 
 #: DB:work_attribute_type_allowed_value/value:316
 msgctxt "work_attribute_type_allowed_value"
@@ -669,77 +670,77 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:695
 msgctxt "work_attribute_type_allowed_value"
 msgid "Ayin Devr-i Revanı"
-msgstr ""
+msgstr "Ayin Devr-i Revanı"
 
 #: DB:work_attribute_type_allowed_value/value:605
 msgctxt "work_attribute_type_allowed_value"
 msgid "Ayin-i Şerif"
-msgstr ""
+msgstr "Ayin-i Şerif"
 
 #: DB:work_attribute_type_allowed_value/value:696
 msgctxt "work_attribute_type_allowed_value"
 msgid "Azeri Yürüksemai"
-msgstr ""
+msgstr "Azeri Yürüksemai"
 
 #: DB:work_attribute_type_allowed_value/value:682
 msgctxt "work_attribute_type_allowed_value"
 msgid "Ağır Aksaksemai"
-msgstr ""
+msgstr "Ağır Aksaksemai"
 
 #: DB:work_attribute_type_allowed_value/value:683
 msgctxt "work_attribute_type_allowed_value"
 msgid "Ağıraksak"
-msgstr ""
+msgstr "Ağıraksak"
 
 #: DB:work_attribute_type_allowed_value/value:684
 msgctxt "work_attribute_type_allowed_value"
 msgid "Ağıraydın"
-msgstr ""
+msgstr "Ağıraydın"
 
 #: DB:work_attribute_type_allowed_value/value:686
 msgctxt "work_attribute_type_allowed_value"
 msgid "Ağırdarbıfetih"
-msgstr ""
+msgstr "Ağırdarbıfetih"
 
 #: DB:work_attribute_type_allowed_value/value:687
 msgctxt "work_attribute_type_allowed_value"
 msgid "Ağırdüyek"
-msgstr ""
+msgstr "Ağırdüyek"
 
 #: DB:work_attribute_type_allowed_value/value:688
 msgctxt "work_attribute_type_allowed_value"
 msgid "Ağırevfer"
-msgstr ""
+msgstr "Ağırevfer"
 
 #: DB:work_attribute_type_allowed_value/value:603
 msgctxt "work_attribute_type_allowed_value"
 msgid "Ağırsemai"
-msgstr ""
+msgstr "Ağırsemai"
 
 #: DB:work_attribute_type_allowed_value/value:689
 msgctxt "work_attribute_type_allowed_value"
 msgid "Ağırsenginsemai"
-msgstr ""
+msgstr "Ağırsenginsemai"
 
 #: DB:work_attribute_type_allowed_value/value:685
 msgctxt "work_attribute_type_allowed_value"
 msgid "Ağırçenber"
-msgstr ""
+msgstr "Ağırçenber"
 
 #: DB:work_attribute_type_allowed_value/value:321
 msgctxt "work_attribute_type_allowed_value"
 msgid "Aşiran Maye"
-msgstr ""
+msgstr "Aşiran Maye"
 
 #: DB:work_attribute_type_allowed_value/value:320
 msgctxt "work_attribute_type_allowed_value"
 msgid "Aşiran Zemzeme"
-msgstr ""
+msgstr "Aşiran Zemzeme"
 
 #: DB:work_attribute_type_allowed_value/value:322
 msgctxt "work_attribute_type_allowed_value"
 msgid "Aşkefza"
-msgstr ""
+msgstr "Aşkefza"
 
 #: DB:work_attribute_type_allowed_value/value:45
 msgctxt "work_attribute_type_allowed_value"
@@ -789,7 +790,7 @@ msgstr "Rückseite"
 #: DB:work_attribute_type_allowed_value/value:323
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bahr-ı Nazik"
-msgstr ""
+msgstr "Bahr-ı Nazik"
 
 #: DB:work_attribute_type_allowed_value/value:47
 msgctxt "work_attribute_type_allowed_value"
@@ -831,32 +832,32 @@ msgstr "Peking-Oper ist eine Form des traditionellen chinesischen Theaters welch
 #: DB:work_attribute_type_allowed_value/value:697
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bektaşi Devr-i Revanı"
-msgstr ""
+msgstr "Bektaşi Devr-i Revanı"
 
 #: DB:work_attribute_type_allowed_value/value:698
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bektaşi Raksanı"
-msgstr ""
+msgstr "Bektaşi Raksanı"
 
 #: DB:work_attribute_type_allowed_value/value:699
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bektaşi Raksı"
-msgstr ""
+msgstr "Bektaşi Raksı"
 
 #: DB:work_attribute_type_allowed_value/value:700
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bektaşi Raksı Evferi"
-msgstr ""
+msgstr "Bektaşi Raksı Evferi"
 
 #: DB:work_attribute_type_allowed_value/value:324
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bend-i Hisar"
-msgstr ""
+msgstr "Bend-i Hisar"
 
 #: DB:work_attribute_type_allowed_value/value:701
 msgctxt "work_attribute_type_allowed_value"
 msgid "Berefşan"
-msgstr ""
+msgstr "Berefşan"
 
 #: DB:work_attribute_type_allowed_value/value:606
 msgctxt "work_attribute_type_allowed_value"
@@ -866,7 +867,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:702
 msgctxt "work_attribute_type_allowed_value"
 msgid "Beste Devr-i Revanı"
-msgstr ""
+msgstr "Beste Devr-i Revanı"
 
 #: DB:work_attribute_type_allowed_value/value:325
 msgctxt "work_attribute_type_allowed_value"
@@ -916,7 +917,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:330
 msgctxt "work_attribute_type_allowed_value"
 msgid "Beyati Ruy-i Acem"
-msgstr ""
+msgstr "Beyati Ruy-i Acem"
 
 #: DB:work_attribute_type_allowed_value/value:334
 msgctxt "work_attribute_type_allowed_value"
@@ -926,7 +927,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:335
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bezm-i Tarab"
-msgstr ""
+msgstr "Bezm-i Tarab"
 
 #: DB:work_attribute_type_allowed_value/value:52
 msgctxt "work_attribute_type_allowed_value"
@@ -1026,12 +1027,12 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:337
 msgctxt "work_attribute_type_allowed_value"
 msgid "Buselikaşiran"
-msgstr ""
+msgstr "Buselikaşiran"
 
 #: DB:work_attribute_type_allowed_value/value:338
 msgctxt "work_attribute_type_allowed_value"
 msgid "Büzürk"
-msgstr ""
+msgstr "Büzürk"
 
 #: DB:work_attribute_type_allowed_value/value:46
 msgctxt "work_attribute_type_allowed_value"
@@ -1082,6 +1083,16 @@ msgstr "Cis-Dur"
 msgctxt "work_attribute_type_allowed_value"
 msgid "C-sharp minor"
 msgstr "cis-Moll"
+
+#: DB:work_attribute_type/name:19
+msgctxt "work_attribute_type"
+msgid "CASH ID"
+msgstr ""
+
+#: DB:work_attribute_type/name:22
+msgctxt "work_attribute_type"
+msgid "CCLI ID"
+msgstr ""
 
 #: DB:medium_format/name:1
 msgctxt "medium_format"
@@ -1367,7 +1378,7 @@ msgstr "DVDplus"
 #: DB:work_attribute_type_allowed_value/value:343
 msgctxt "work_attribute_type_allowed_value"
 msgid "Danişveran"
-msgstr ""
+msgstr "Danişveran"
 
 #: DB:work_attribute_type_allowed_value/value:711
 msgctxt "work_attribute_type_allowed_value"
@@ -1377,21 +1388,26 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:712
 msgctxt "work_attribute_type_allowed_value"
 msgid "Darb-ı Fetih"
-msgstr ""
+msgstr "Darb-ı Fetih"
 
 #: DB:work_attribute_type_allowed_value/value:713
 msgctxt "work_attribute_type_allowed_value"
 msgid "Darb-ı Hüner"
-msgstr ""
+msgstr "Darb-ı Hüner"
 
 #: DB:work_attribute_type_allowed_value/value:714
 msgctxt "work_attribute_type_allowed_value"
 msgid "Darb-ı Kürdi"
-msgstr ""
+msgstr "Darb-ı Kürdi"
 
 #: DB:work_attribute_type_allowed_value/value:715
 msgctxt "work_attribute_type_allowed_value"
 msgid "Darb-ı Türki"
+msgstr "Darb-ı Türki"
+
+#: DB:work_attribute_type_allowed_value/value:796
+msgctxt "work_attribute_type_allowed_value"
+msgid "Darbeyn"
 msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:73
@@ -1422,47 +1438,52 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:716
 msgctxt "work_attribute_type_allowed_value"
 msgid "Devr-i Aryan"
-msgstr ""
+msgstr "Devr-i Aryan"
 
 #: DB:work_attribute_type_allowed_value/value:717
 msgctxt "work_attribute_type_allowed_value"
 msgid "Devr-i Hindi"
-msgstr ""
+msgstr "Devr-i Hindi"
 
 #: DB:work_attribute_type_allowed_value/value:718
 msgctxt "work_attribute_type_allowed_value"
 msgid "Devr-i Hindi II"
-msgstr ""
+msgstr "Devr-i Hindi II"
 
 #: DB:work_attribute_type_allowed_value/value:719
 msgctxt "work_attribute_type_allowed_value"
 msgid "Devr-i Kebir"
-msgstr ""
+msgstr "Devr-i Kebir"
 
 #: DB:work_attribute_type_allowed_value/value:720
 msgctxt "work_attribute_type_allowed_value"
 msgid "Devr-i Revan"
-msgstr ""
+msgstr "Devr-i Revan"
 
 #: DB:work_attribute_type_allowed_value/value:721
 msgctxt "work_attribute_type_allowed_value"
 msgid "Devr-i Revan-ı Hindi"
-msgstr ""
+msgstr "Devr-i Revan-ı Hindi"
 
 #: DB:work_attribute_type_allowed_value/value:722
 msgctxt "work_attribute_type_allowed_value"
 msgid "Devr-i Süreyya"
-msgstr ""
+msgstr "Devr-i Süreyya"
 
 #: DB:work_attribute_type_allowed_value/value:723
 msgctxt "work_attribute_type_allowed_value"
 msgid "Devr-i Süreyya Sofyanı"
-msgstr ""
+msgstr "Devr-i Süreyya Sofyanı"
 
 #: DB:work_attribute_type_allowed_value/value:724
 msgctxt "work_attribute_type_allowed_value"
 msgid "Devr-i Turan"
-msgstr ""
+msgstr "Devr-i Turan"
+
+#: DB:work_attribute_type_allowed_value/value:797
+msgctxt "work_attribute_type_allowed_value"
+msgid "Devr-i Turan II"
+msgstr "Devr-i Turan II"
 
 #: DB:work_attribute_type_allowed_value/value:79
 msgctxt "work_attribute_type_allowed_value"
@@ -1522,17 +1543,17 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:346
 msgctxt "work_attribute_type_allowed_value"
 msgid "Dilkeş"
-msgstr ""
+msgstr "Dilkeş"
 
 #: DB:work_attribute_type_allowed_value/value:347
 msgctxt "work_attribute_type_allowed_value"
 msgid "Dilkeşhaveran"
-msgstr ""
+msgstr "Dilkeşhaveran"
 
 #: DB:work_attribute_type_allowed_value/value:349
 msgctxt "work_attribute_type_allowed_value"
 msgid "Dilküşa"
-msgstr ""
+msgstr "Dilküşa"
 
 #: DB:work_attribute_type_allowed_value/value:350
 msgctxt "work_attribute_type_allowed_value"
@@ -1542,7 +1563,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:351
 msgctxt "work_attribute_type_allowed_value"
 msgid "Dilnişin"
-msgstr ""
+msgstr "Dilnişin"
 
 #: DB:release_packaging/name:13
 msgctxt "release_packaging"
@@ -1602,32 +1623,32 @@ msgstr "Dvijāvanti"
 #: DB:work_attribute_type_allowed_value/value:352
 msgctxt "work_attribute_type_allowed_value"
 msgid "Dügah"
-msgstr ""
+msgstr "Dügah"
 
 #: DB:work_attribute_type_allowed_value/value:354
 msgctxt "work_attribute_type_allowed_value"
 msgid "Dügah Maye"
-msgstr ""
+msgstr "Dügah Maye"
 
 #: DB:work_attribute_type_allowed_value/value:353
 msgctxt "work_attribute_type_allowed_value"
 msgid "Dügahbuselik"
-msgstr ""
+msgstr "Dügahbuselik"
 
 #: DB:work_attribute_type_allowed_value/value:727
 msgctxt "work_attribute_type_allowed_value"
 msgid "Dümen"
-msgstr ""
+msgstr "Dümen"
 
 #: DB:work_attribute_type_allowed_value/value:728
 msgctxt "work_attribute_type_allowed_value"
 msgid "Düyek"
-msgstr ""
+msgstr "Düyek"
 
 #: DB:work_attribute_type_allowed_value/value:355
 msgctxt "work_attribute_type_allowed_value"
 msgid "Düşems"
-msgstr ""
+msgstr "Düşems"
 
 #: DB:work_attribute_type_allowed_value/value:76
 msgctxt "work_attribute_type_allowed_value"
@@ -1722,7 +1743,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:613
 msgctxt "work_attribute_type_allowed_value"
 msgid "Etüd"
-msgstr ""
+msgstr "Etüd"
 
 #: DB:work_attribute_type_allowed_value/value:357
 msgctxt "work_attribute_type_allowed_value"
@@ -1752,47 +1773,47 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:358
 msgctxt "work_attribute_type_allowed_value"
 msgid "Eviç"
-msgstr ""
+msgstr "Eviç"
 
 #: DB:work_attribute_type_allowed_value/value:359
 msgctxt "work_attribute_type_allowed_value"
 msgid "Eviç Bahr-i Nazik"
-msgstr ""
+msgstr "Eviç Bahr-i Nazik"
 
 #: DB:work_attribute_type_allowed_value/value:360
 msgctxt "work_attribute_type_allowed_value"
 msgid "Eviç Huzi"
-msgstr ""
+msgstr "Eviç Huzi"
 
 #: DB:work_attribute_type_allowed_value/value:364
 msgctxt "work_attribute_type_allowed_value"
 msgid "Eviç Maye"
-msgstr ""
+msgstr "Eviç Maye"
 
 #: DB:work_attribute_type_allowed_value/value:361
 msgctxt "work_attribute_type_allowed_value"
 msgid "Eviç Ruy-i Neva"
-msgstr ""
+msgstr "Eviç Ruy-i Neva"
 
 #: DB:work_attribute_type_allowed_value/value:365
 msgctxt "work_attribute_type_allowed_value"
 msgid "Eviç Saba"
-msgstr ""
+msgstr "Eviç Saba"
 
 #: DB:work_attribute_type_allowed_value/value:366
 msgctxt "work_attribute_type_allowed_value"
 msgid "Eviç Şevk"
-msgstr ""
+msgstr "Eviç Şevk"
 
 #: DB:work_attribute_type_allowed_value/value:362
 msgctxt "work_attribute_type_allowed_value"
 msgid "Eviçbuselik"
-msgstr ""
+msgstr "Eviçbuselik"
 
 #: DB:work_attribute_type_allowed_value/value:363
 msgctxt "work_attribute_type_allowed_value"
 msgid "Eviçkürdi"
-msgstr ""
+msgstr "Eviçkürdi"
 
 #: DB:work_attribute_type_allowed_value/value:730
 msgctxt "work_attribute_type_allowed_value"
@@ -1877,16 +1898,16 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:369
 msgctxt "work_attribute_type_allowed_value"
 msgid "Ferahnakaşiran"
-msgstr ""
+msgstr "Ferahnakaşiran"
+
+#: DB:work_attribute_type_allowed_value/value:370
+msgctxt "work_attribute_type_allowed_value"
+msgid "Ferahnüma"
+msgstr "Ferahnüma"
 
 #: DB:work_attribute_type_allowed_value/value:371
 msgctxt "work_attribute_type_allowed_value"
 msgid "Ferahzad"
-msgstr ""
-
-#: DB:work_attribute_type_allowed_value/value:370
-msgctxt "work_attribute_type_allowed_value"
-msgid "Feraznüma"
 msgstr ""
 
 #: DB:event_type/name:2
@@ -1902,27 +1923,27 @@ msgstr "Festival"
 #: DB:work_attribute_type_allowed_value/value:372
 msgctxt "work_attribute_type_allowed_value"
 msgid "Feth-i Bağdad"
-msgstr ""
+msgstr "Feth-i Bağdad"
 
 #: DB:work_attribute_type_allowed_value/value:373
 msgctxt "work_attribute_type_allowed_value"
 msgid "Feth-i Belgrad"
-msgstr ""
+msgstr "Feth-i Belgrad"
 
 #: DB:work_attribute_type_allowed_value/value:374
 msgctxt "work_attribute_type_allowed_value"
 msgid "Feth-i Dil"
-msgstr ""
+msgstr "Feth-i Dil"
 
 #: DB:work_attribute_type_allowed_value/value:375
 msgctxt "work_attribute_type_allowed_value"
 msgid "Feth-i Hicaz"
-msgstr ""
+msgstr "Feth-i Hicaz"
 
 #: DB:work_attribute_type_allowed_value/value:734
 msgctxt "work_attribute_type_allowed_value"
 msgid "Fireng-i Fer"
-msgstr ""
+msgstr "Fireng-i Fer"
 
 #: DB:medium_format/name:51
 msgctxt "medium_format"
@@ -1950,7 +1971,7 @@ msgstr "Amtlicher Name"
 #: DB:work_attribute_type_allowed_value/value:735
 msgctxt "work_attribute_type_allowed_value"
 msgid "Frengçin"
-msgstr ""
+msgstr "Frengçin"
 
 #: DB:cover_art_archive.art_type/name:1
 msgctxt "cover_art_type"
@@ -2060,17 +2081,17 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:378
 msgctxt "work_attribute_type_allowed_value"
 msgid "Gerdaniyekürdi"
-msgstr ""
+msgstr "Gerdaniyekürdi"
 
 #: DB:work_attribute_type_allowed_value/value:380
 msgctxt "work_attribute_type_allowed_value"
 msgid "Geveşt"
-msgstr ""
+msgstr "Geveşt"
 
 #: DB:work_attribute_type_allowed_value/value:379
 msgctxt "work_attribute_type_allowed_value"
 msgid "Geştü Güzar-ı Bahar"
-msgstr ""
+msgstr "Geştü Güzar-ı Bahar"
 
 #: DB:work_attribute_type_allowed_value/value:100
 msgctxt "work_attribute_type_allowed_value"
@@ -2080,7 +2101,7 @@ msgstr "Ghanṭa"
 #: DB:work_attribute_type_allowed_value/value:381
 msgctxt "work_attribute_type_allowed_value"
 msgid "Gonca-i Rana"
-msgstr ""
+msgstr "Gonca-i Rana"
 
 #: DB:artist_type/name:2
 msgctxt "artist_type"
@@ -2095,42 +2116,42 @@ msgstr "Gurjāri"
 #: DB:work_attribute_type_allowed_value/value:382
 msgctxt "work_attribute_type_allowed_value"
 msgid "Güldeste"
-msgstr ""
+msgstr "Güldeste"
 
 #: DB:work_attribute_type_allowed_value/value:384
 msgctxt "work_attribute_type_allowed_value"
 msgid "Gülizar"
-msgstr ""
+msgstr "Gülizar"
 
 #: DB:work_attribute_type_allowed_value/value:385
 msgctxt "work_attribute_type_allowed_value"
 msgid "Gülizarbuselik"
-msgstr ""
+msgstr "Gülizarbuselik"
 
 #: DB:work_attribute_type_allowed_value/value:386
 msgctxt "work_attribute_type_allowed_value"
 msgid "Gülnari"
-msgstr ""
+msgstr "Gülnari"
 
 #: DB:work_attribute_type_allowed_value/value:387
 msgctxt "work_attribute_type_allowed_value"
 msgid "Gülruh"
-msgstr ""
+msgstr "Gülruh"
 
 #: DB:work_attribute_type_allowed_value/value:383
 msgctxt "work_attribute_type_allowed_value"
 msgid "Gülzar"
-msgstr ""
+msgstr "Gülzar"
 
 #: DB:work_attribute_type_allowed_value/value:388
 msgctxt "work_attribute_type_allowed_value"
 msgid "Gülşen-i Vefa"
-msgstr ""
+msgstr "Gülşen-i Vefa"
 
 #: DB:work_attribute_type_allowed_value/value:617
 msgctxt "work_attribute_type_allowed_value"
 msgid "Güvende"
-msgstr ""
+msgstr "Güvende"
 
 #: DB:work_attribute_type_allowed_value/value:92
 msgctxt "work_attribute_type_allowed_value"
@@ -2175,7 +2196,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:618
 msgctxt "work_attribute_type_allowed_value"
 msgid "Halk Türküsü"
-msgstr ""
+msgstr "Halk Türküsü"
 
 #: DB:work_attribute_type_allowed_value/value:104
 msgctxt "work_attribute_type_allowed_value"
@@ -2225,7 +2246,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:738
 msgctxt "work_attribute_type_allowed_value"
 msgid "Hezeç"
-msgstr ""
+msgstr "Hezeç"
 
 #: DB:work_attribute_type_allowed_value/value:391
 msgctxt "work_attribute_type_allowed_value"
@@ -2235,17 +2256,17 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:395
 msgctxt "work_attribute_type_allowed_value"
 msgid "Hicaz Büzürk"
-msgstr ""
+msgstr "Hicaz Büzürk"
 
 #: DB:work_attribute_type_allowed_value/value:396
 msgctxt "work_attribute_type_allowed_value"
 msgid "Hicaz Dilkeş"
-msgstr ""
+msgstr "Hicaz Dilkeş"
 
 #: DB:work_attribute_type_allowed_value/value:398
 msgctxt "work_attribute_type_allowed_value"
 msgid "Hicaz Hümayun"
-msgstr ""
+msgstr "Hicaz Hümayun"
 
 #: DB:work_attribute_type_allowed_value/value:409
 msgctxt "work_attribute_type_allowed_value"
@@ -2260,12 +2281,12 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:410
 msgctxt "work_attribute_type_allowed_value"
 msgid "Hicaz Zirgüle"
-msgstr ""
+msgstr "Hicaz Zirgüle"
 
 #: DB:work_attribute_type_allowed_value/value:393
 msgctxt "work_attribute_type_allowed_value"
 msgid "Hicazaşiran"
-msgstr ""
+msgstr "Hicazaşiran"
 
 #: DB:work_attribute_type_allowed_value/value:394
 msgctxt "work_attribute_type_allowed_value"
@@ -2300,12 +2321,12 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:403
 msgctxt "work_attribute_type_allowed_value"
 msgid "Hicazi Türki"
-msgstr ""
+msgstr "Hicazi Türki"
 
 #: DB:work_attribute_type_allowed_value/value:404
 msgctxt "work_attribute_type_allowed_value"
 msgid "Hicazi Uşşak"
-msgstr ""
+msgstr "Hicazi Uşşak"
 
 #: DB:work_attribute_type_allowed_value/value:405
 msgctxt "work_attribute_type_allowed_value"
@@ -2315,12 +2336,12 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:408
 msgctxt "work_attribute_type_allowed_value"
 msgid "Hicazkar-Kürdi"
-msgstr ""
+msgstr "Hicazkar-Kürdi"
 
 #: DB:work_attribute_type_allowed_value/value:407
 msgctxt "work_attribute_type_allowed_value"
 msgid "Hicazkar-ı Kadim"
-msgstr ""
+msgstr "Hicazkar-ı Kadim"
 
 #: DB:work_attribute_type_allowed_value/value:406
 msgctxt "work_attribute_type_allowed_value"
@@ -2350,7 +2371,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:412
 msgctxt "work_attribute_type_allowed_value"
 msgid "Hisar Vech-i Şehnaz"
-msgstr ""
+msgstr "Hisar Vech-i Şehnaz"
 
 #: DB:work_attribute_type_allowed_value/value:413
 msgctxt "work_attribute_type_allowed_value"
@@ -2375,7 +2396,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:416
 msgctxt "work_attribute_type_allowed_value"
 msgid "Hoş Aver"
-msgstr ""
+msgstr "Hoş Aver"
 
 #: DB:work_attribute_type_allowed_value/value:113
 msgctxt "work_attribute_type_allowed_value"
@@ -2400,47 +2421,47 @@ msgstr "Hybrid-SACD"
 #: DB:work_attribute_type_allowed_value/value:418
 msgctxt "work_attribute_type_allowed_value"
 msgid "Hüdavendigar"
-msgstr ""
+msgstr "Hüdavendigar"
 
 #: DB:work_attribute_type_allowed_value/value:419
 msgctxt "work_attribute_type_allowed_value"
 msgid "Hüseyni"
-msgstr ""
+msgstr "Hüseyni"
 
 #: DB:work_attribute_type_allowed_value/value:422
 msgctxt "work_attribute_type_allowed_value"
 msgid "Hüseyni Araban"
-msgstr ""
+msgstr "Hüseyni Araban"
 
 #: DB:work_attribute_type_allowed_value/value:420
 msgctxt "work_attribute_type_allowed_value"
 msgid "Hüseyni Gülizar"
-msgstr ""
+msgstr "Hüseyni Gülizar"
 
 #: DB:work_attribute_type_allowed_value/value:421
 msgctxt "work_attribute_type_allowed_value"
 msgid "Hüseyni Zemzeme"
-msgstr ""
+msgstr "Hüseyni Zemzeme"
 
 #: DB:work_attribute_type_allowed_value/value:423
 msgctxt "work_attribute_type_allowed_value"
 msgid "Hüseyniaşiran"
-msgstr ""
+msgstr "Hüseyniaşiran"
 
 #: DB:work_attribute_type_allowed_value/value:424
 msgctxt "work_attribute_type_allowed_value"
 msgid "Hüseynibuselik"
-msgstr ""
+msgstr "Hüseynibuselik"
 
 #: DB:work_attribute_type_allowed_value/value:425
 msgctxt "work_attribute_type_allowed_value"
 msgid "Hüzzam"
-msgstr ""
+msgstr "Hüzzam"
 
 #: DB:work_attribute_type_allowed_value/value:426
 msgctxt "work_attribute_type_allowed_value"
 msgid "Hüzzam-ı Cedid"
-msgstr ""
+msgstr "Hüzzam-ı Cedid"
 
 #: DB:work_attribute_type_allowed_value/value:109
 msgctxt "work_attribute_type_allowed_value"
@@ -2497,7 +2518,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:428
 msgctxt "work_attribute_type_allowed_value"
 msgid "Irakaşiran"
-msgstr ""
+msgstr "Irakaşiran"
 
 #: DB:work_attribute_type_allowed_value/value:739
 msgctxt "work_attribute_type_allowed_value"
@@ -2512,7 +2533,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:430
 msgctxt "work_attribute_type_allowed_value"
 msgid "Isfahan Ruy-i Neva"
-msgstr ""
+msgstr "Isfahan Ruy-i Neva"
 
 #: DB:work_attribute_type_allowed_value/value:431
 msgctxt "work_attribute_type_allowed_value"
@@ -2522,7 +2543,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:434
 msgctxt "work_attribute_type_allowed_value"
 msgid "Isfahan-ı Cedid"
-msgstr ""
+msgstr "Isfahan-ı Cedid"
 
 #: DB:work_attribute_type_allowed_value/value:432
 msgctxt "work_attribute_type_allowed_value"
@@ -2680,17 +2701,17 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:626
 msgctxt "work_attribute_type_allowed_value"
 msgid "Kar-ı Natık"
-msgstr ""
+msgstr "Kar-ı Natık"
 
 #: DB:work_attribute_type_allowed_value/value:627
 msgctxt "work_attribute_type_allowed_value"
 msgid "Kar-ı Nev"
-msgstr ""
+msgstr "Kar-ı Nev"
 
 #: DB:work_attribute_type_allowed_value/value:437
 msgctxt "work_attribute_type_allowed_value"
 msgid "Karabağı"
-msgstr ""
+msgstr "Karabağı"
 
 #: DB:work_attribute_type_allowed_value/value:141
 msgctxt "work_attribute_type_allowed_value"
@@ -2700,17 +2721,17 @@ msgstr "Karaharapriya"
 #: DB:work_attribute_type_allowed_value/value:438
 msgctxt "work_attribute_type_allowed_value"
 msgid "Karcığar"
-msgstr ""
+msgstr "Karcığar"
 
 #: DB:work_attribute_type_allowed_value/value:625
 msgctxt "work_attribute_type_allowed_value"
 msgid "Karçe"
-msgstr ""
+msgstr "Karçe"
 
 #: DB:work_attribute_type_allowed_value/value:628
 msgctxt "work_attribute_type_allowed_value"
 msgid "Karşılama"
-msgstr ""
+msgstr "Karşılama"
 
 #: DB:work_attribute_type_allowed_value/value:142
 msgctxt "work_attribute_type_allowed_value"
@@ -2770,7 +2791,7 @@ msgstr "Kaḷānidhi"
 #: DB:work_attribute_type_allowed_value/value:439
 msgctxt "work_attribute_type_allowed_value"
 msgid "Kebüter"
-msgstr ""
+msgstr "Kebüter"
 
 #: DB:work_attribute_type_allowed_value/value:150
 msgctxt "work_attribute_type_allowed_value"
@@ -2810,7 +2831,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:631
 msgctxt "work_attribute_type_allowed_value"
 msgid "Koşma"
-msgstr ""
+msgstr "Koşma"
 
 #: DB:work_attribute_type_allowed_value/value:155
 msgctxt "work_attribute_type_allowed_value"
@@ -2820,7 +2841,7 @@ msgstr "Kuntalavarāḷi"
 #: DB:work_attribute_type_allowed_value/value:633
 msgctxt "work_attribute_type_allowed_value"
 msgid "Kur'an-ı Kerim"
-msgstr ""
+msgstr "Kur'an-ı Kerim"
 
 #: DB:work_attribute_type_allowed_value/value:156
 msgctxt "work_attribute_type_allowed_value"
@@ -2830,42 +2851,42 @@ msgstr "Kurinji"
 #: DB:work_attribute_type_allowed_value/value:632
 msgctxt "work_attribute_type_allowed_value"
 msgid "Köçekçe"
-msgstr ""
+msgstr "Köçekçe"
 
 #: DB:work_attribute_type_allowed_value/value:634
 msgctxt "work_attribute_type_allowed_value"
 msgid "Küpe"
-msgstr ""
+msgstr "Küpe"
 
 #: DB:work_attribute_type_allowed_value/value:442
 msgctxt "work_attribute_type_allowed_value"
 msgid "Kürdi"
-msgstr ""
+msgstr "Kürdi"
 
 #: DB:work_attribute_type_allowed_value/value:443
 msgctxt "work_attribute_type_allowed_value"
 msgid "Kürdi Gerdaniye"
-msgstr ""
+msgstr "Kürdi Gerdaniye"
 
 #: DB:work_attribute_type_allowed_value/value:444
 msgctxt "work_attribute_type_allowed_value"
 msgid "Kürdilihicazkar"
-msgstr ""
+msgstr "Kürdilihicazkar"
 
 #: DB:work_attribute_type_allowed_value/value:635
 msgctxt "work_attribute_type_allowed_value"
 msgid "Kürthavası"
-msgstr ""
+msgstr "Kürthavası"
 
 #: DB:work_attribute_type_allowed_value/value:440
 msgctxt "work_attribute_type_allowed_value"
 msgid "Küçek"
-msgstr ""
+msgstr "Küçek"
 
 #: DB:work_attribute_type_allowed_value/value:441
 msgctxt "work_attribute_type_allowed_value"
 msgid "Küçekneva"
-msgstr ""
+msgstr "Küçekneva"
 
 #: DB:work_attribute_type_allowed_value/value:132
 msgctxt "work_attribute_type_allowed_value"
@@ -2945,7 +2966,7 @@ msgstr "Labelname"
 #: DB:work_attribute_type_allowed_value/value:445
 msgctxt "work_attribute_type_allowed_value"
 msgid "Lalegül"
-msgstr ""
+msgstr "Lalegül"
 
 #: DB:work_attribute_type_allowed_value/value:157
 msgctxt "work_attribute_type_allowed_value"
@@ -3030,7 +3051,7 @@ msgstr "Maduvanti"
 #: DB:work_attribute_type_allowed_value/value:637
 msgctxt "work_attribute_type_allowed_value"
 msgid "Mahfelsürmesi"
-msgstr ""
+msgstr "Mahfelsürmesi"
 
 #: DB:work_attribute_type_allowed_value/value:446
 msgctxt "work_attribute_type_allowed_value"
@@ -3095,7 +3116,7 @@ msgstr "Manōranjani"
 #: DB:work_attribute_type_allowed_value/value:639
 msgctxt "work_attribute_type_allowed_value"
 msgid "Marş"
-msgstr ""
+msgstr "Marş"
 
 #: DB:work_type/name:8
 msgctxt "work_type"
@@ -3125,7 +3146,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:451
 msgctxt "work_attribute_type_allowed_value"
 msgid "Maveraünnehir"
-msgstr ""
+msgstr "Maveraünnehir"
 
 #: DB:editor_collection_type/name:6
 msgctxt "collection_type"
@@ -3185,7 +3206,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:643
 msgctxt "work_attribute_type_allowed_value"
 msgid "Mevlidişerif"
-msgstr ""
+msgstr "Mevlidişerif"
 
 #: DB:medium_format/name:6
 msgctxt "medium_format"
@@ -3245,7 +3266,7 @@ msgstr "Motette"
 #: DB:work_attribute_type_allowed_value/value:746
 msgctxt "work_attribute_type_allowed_value"
 msgid "Muaşşer"
-msgstr ""
+msgstr "Muaşşer"
 
 #: DB:work_attribute_type_allowed_value/value:454
 msgctxt "work_attribute_type_allowed_value"
@@ -3255,17 +3276,17 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:455
 msgctxt "work_attribute_type_allowed_value"
 msgid "Muhalif-i Irak"
-msgstr ""
+msgstr "Muhalif-i Irak"
 
 #: DB:work_attribute_type_allowed_value/value:456
 msgctxt "work_attribute_type_allowed_value"
 msgid "Muhalif-i Rast"
-msgstr ""
+msgstr "Muhalif-i Rast"
 
 #: DB:work_attribute_type_allowed_value/value:457
 msgctxt "work_attribute_type_allowed_value"
 msgid "Muhalif-i Uşşak"
-msgstr ""
+msgstr "Muhalif-i Uşşak"
 
 #: DB:work_attribute_type_allowed_value/value:747
 msgctxt "work_attribute_type_allowed_value"
@@ -3280,12 +3301,12 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:459
 msgctxt "work_attribute_type_allowed_value"
 msgid "Muhayyer Sünbüle"
-msgstr ""
+msgstr "Muhayyer Sünbüle"
 
 #: DB:work_attribute_type_allowed_value/value:462
 msgctxt "work_attribute_type_allowed_value"
 msgid "Muhayyer Zengüle"
-msgstr ""
+msgstr "Muhayyer Zengüle"
 
 #: DB:work_attribute_type_allowed_value/value:460
 msgctxt "work_attribute_type_allowed_value"
@@ -3295,7 +3316,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:461
 msgctxt "work_attribute_type_allowed_value"
 msgid "Muhayyerkürdi"
-msgstr ""
+msgstr "Muhayyerkürdi"
 
 #: DB:work_attribute_type_allowed_value/value:183
 msgctxt "work_attribute_type_allowed_value"
@@ -3340,7 +3361,7 @@ msgstr "Musical-Theater ist eine Form der Theatervorstellung, die Lieder, gespro
 #: DB:work_attribute_type_allowed_value/value:748
 msgctxt "work_attribute_type_allowed_value"
 msgid "Muzaaf Devr-i Kebir"
-msgstr ""
+msgstr "Muzaaf Devr-i Kebir"
 
 #: DB:work_attribute_type/name:12
 msgctxt "work_attribute_type"
@@ -3350,57 +3371,57 @@ msgstr "MÜST-ID"
 #: DB:work_attribute_type_allowed_value/value:463
 msgctxt "work_attribute_type_allowed_value"
 msgid "Müberka"
-msgstr ""
+msgstr "Müberka"
 
 #: DB:work_attribute_type_allowed_value/value:646
 msgctxt "work_attribute_type_allowed_value"
 msgid "Münacaat"
-msgstr ""
+msgstr "Münacaat"
 
 #: DB:work_attribute_type_allowed_value/value:464
 msgctxt "work_attribute_type_allowed_value"
 msgid "Mürekkep Isfahan"
-msgstr ""
+msgstr "Mürekkep Isfahan"
 
 #: DB:work_attribute_type_allowed_value/value:749
 msgctxt "work_attribute_type_allowed_value"
 msgid "Mürekkep Nimsofyan"
-msgstr ""
+msgstr "Mürekkep Nimsofyan"
 
 #: DB:work_attribute_type_allowed_value/value:750
 msgctxt "work_attribute_type_allowed_value"
 msgid "Mürekkep Semai/Üçleme"
-msgstr ""
+msgstr "Mürekkep Semai/Üçleme"
 
 #: DB:work_attribute_type_allowed_value/value:751
 msgctxt "work_attribute_type_allowed_value"
 msgid "Mürekkep Sofyan"
-msgstr ""
+msgstr "Mürekkep Sofyan"
 
 #: DB:work_attribute_type_allowed_value/value:465
 msgctxt "work_attribute_type_allowed_value"
 msgid "Müselles"
-msgstr ""
+msgstr "Müselles"
 
 #: DB:work_attribute_type_allowed_value/value:752
 msgctxt "work_attribute_type_allowed_value"
 msgid "Müsemmen"
-msgstr ""
+msgstr "Müsemmen"
 
 #: DB:work_attribute_type_allowed_value/value:753
 msgctxt "work_attribute_type_allowed_value"
 msgid "Müsemmen II"
-msgstr ""
+msgstr "Müsemmen II"
 
 #: DB:work_attribute_type_allowed_value/value:466
 msgctxt "work_attribute_type_allowed_value"
 msgid "Müstear"
-msgstr ""
+msgstr "Müstear"
 
 #: DB:work_attribute_type_allowed_value/value:467
 msgctxt "work_attribute_type_allowed_value"
 msgid "Müşküye"
-msgstr ""
+msgstr "Müşküye"
 
 #: DB:work_attribute_type_allowed_value/value:167
 msgctxt "work_attribute_type_allowed_value"
@@ -3450,7 +3471,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:648
 msgctxt "work_attribute_type_allowed_value"
 msgid "Nakış"
-msgstr ""
+msgstr "Nakış"
 
 #: DB:work_attribute_type_allowed_value/value:468
 msgctxt "work_attribute_type_allowed_value"
@@ -3480,7 +3501,7 @@ msgstr "Navrōj"
 #: DB:work_attribute_type_allowed_value/value:754
 msgctxt "work_attribute_type_allowed_value"
 msgid "Nazlı Düyek"
-msgstr ""
+msgstr "Nazlı Düyek"
 
 #: DB:work_attribute_type_allowed_value/value:187
 msgctxt "work_attribute_type_allowed_value"
@@ -3500,7 +3521,7 @@ msgstr "Naṭanārāyaṇi"
 #: DB:work_attribute_type_allowed_value/value:469
 msgctxt "work_attribute_type_allowed_value"
 msgid "Necd-i Hüseyni"
-msgstr ""
+msgstr "Necd-i Hüseyni"
 
 #: DB:work_attribute_type_allowed_value/value:650
 msgctxt "work_attribute_type_allowed_value"
@@ -3520,12 +3541,12 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:473
 msgctxt "work_attribute_type_allowed_value"
 msgid "Neva Bağdat"
-msgstr ""
+msgstr "Neva Bağdat"
 
 #: DB:work_attribute_type_allowed_value/value:474
 msgctxt "work_attribute_type_allowed_value"
 msgid "Neva Dilkeş"
-msgstr ""
+msgstr "Neva Dilkeş"
 
 #: DB:work_attribute_type_allowed_value/value:475
 msgctxt "work_attribute_type_allowed_value"
@@ -3535,12 +3556,12 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:476
 msgctxt "work_attribute_type_allowed_value"
 msgid "Nevakürdi"
-msgstr ""
+msgstr "Nevakürdi"
 
 #: DB:work_attribute_type_allowed_value/value:477
 msgctxt "work_attribute_type_allowed_value"
 msgid "Nevaziş"
-msgstr ""
+msgstr "Nevaziş"
 
 #: DB:work_attribute_type_allowed_value/value:478
 msgctxt "work_attribute_type_allowed_value"
@@ -3555,7 +3576,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:480
 msgctxt "work_attribute_type_allowed_value"
 msgid "Nevkeş"
-msgstr ""
+msgstr "Nevkeş"
 
 #: DB:work_attribute_type_allowed_value/value:481
 msgctxt "work_attribute_type_allowed_value"
@@ -3570,7 +3591,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:471
 msgctxt "work_attribute_type_allowed_value"
 msgid "Neşataver"
-msgstr ""
+msgstr "Neşataver"
 
 #: DB:work_attribute_type_allowed_value/value:483
 msgctxt "work_attribute_type_allowed_value"
@@ -3580,12 +3601,12 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:484
 msgctxt "work_attribute_type_allowed_value"
 msgid "Nihavend-i Kebir"
-msgstr ""
+msgstr "Nihavend-i Kebir"
 
 #: DB:work_attribute_type_allowed_value/value:485
 msgctxt "work_attribute_type_allowed_value"
 msgid "Nihavend-i Rumi"
-msgstr ""
+msgstr "Nihavend-i Rumi"
 
 #: DB:work_attribute_type_allowed_value/value:486
 msgctxt "work_attribute_type_allowed_value"
@@ -3600,7 +3621,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:755
 msgctxt "work_attribute_type_allowed_value"
 msgid "Nimberefşan"
-msgstr ""
+msgstr "Nimberefşan"
 
 #: DB:work_attribute_type_allowed_value/value:757
 msgctxt "work_attribute_type_allowed_value"
@@ -3630,7 +3651,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:756
 msgctxt "work_attribute_type_allowed_value"
 msgid "Nimçember"
-msgstr ""
+msgstr "Nimçember"
 
 #: DB:work_attribute_type_allowed_value/value:651
 msgctxt "work_attribute_type_allowed_value"
@@ -3645,17 +3666,17 @@ msgstr "Nirōṣita"
 #: DB:work_attribute_type_allowed_value/value:488
 msgctxt "work_attribute_type_allowed_value"
 msgid "Nişabur"
-msgstr ""
+msgstr "Nişabur"
 
 #: DB:work_attribute_type_allowed_value/value:489
 msgctxt "work_attribute_type_allowed_value"
 msgid "Nişaburek"
-msgstr ""
+msgstr "Nişaburek"
 
 #: DB:work_attribute_type_allowed_value/value:490
 msgctxt "work_attribute_type_allowed_value"
 msgid "Nişabureyn"
-msgstr ""
+msgstr "Nişabureyn"
 
 #: DB:release_packaging/name:7
 msgctxt "release_packaging"
@@ -3665,12 +3686,12 @@ msgstr "Keine"
 #: DB:work_attribute_type_allowed_value/value:491
 msgctxt "work_attribute_type_allowed_value"
 msgid "Nuşingül"
-msgstr ""
+msgstr "Nuşingül"
 
 #: DB:work_attribute_type_allowed_value/value:492
 msgctxt "work_attribute_type_allowed_value"
 msgid "Nühüft"
-msgstr ""
+msgstr "Nühüft"
 
 #: DB:work_attribute_type_allowed_value/value:184
 msgctxt "work_attribute_type_allowed_value"
@@ -3840,17 +3861,17 @@ msgstr "Paṭdīp"
 #: DB:work_attribute_type_allowed_value/value:493
 msgctxt "work_attribute_type_allowed_value"
 msgid "Pençgah"
-msgstr ""
+msgstr "Pençgah"
 
 #: DB:work_attribute_type_allowed_value/value:494
 msgctxt "work_attribute_type_allowed_value"
 msgid "Pençgah-ı Asl"
-msgstr ""
+msgstr "Pençgah-ı Asl"
 
 #: DB:work_attribute_type_allowed_value/value:495
 msgctxt "work_attribute_type_allowed_value"
 msgid "Pençgah-ı Zaid"
-msgstr ""
+msgstr "Pençgah-ı Zaid"
 
 #: DB:instrument_type/name:3
 msgctxt "instrument_type"
@@ -3860,7 +3881,7 @@ msgstr "Schlaginstrument"
 #: DB:work_attribute_type_allowed_value/value:496
 msgctxt "work_attribute_type_allowed_value"
 msgid "Perr-i Zerrin"
-msgstr ""
+msgstr "Perr-i Zerrin"
 
 #: DB:artist_type/name:1
 msgctxt "artist_type"
@@ -3875,17 +3896,17 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:498
 msgctxt "work_attribute_type_allowed_value"
 msgid "Peyk-i Neşat"
-msgstr ""
+msgstr "Peyk-i Neşat"
 
 #: DB:work_attribute_type_allowed_value/value:499
 msgctxt "work_attribute_type_allowed_value"
 msgid "Peyk-i Safa"
-msgstr ""
+msgstr "Peyk-i Safa"
 
 #: DB:work_attribute_type_allowed_value/value:654
 msgctxt "work_attribute_type_allowed_value"
 msgid "Peşrev"
-msgstr ""
+msgstr "Peşrev"
 
 #: DB:medium_format/name:15
 msgctxt "medium_format"
@@ -3920,7 +3941,7 @@ msgstr "Gedicht"
 #: DB:work_attribute_type_allowed_value/value:655
 msgctxt "work_attribute_type_allowed_value"
 msgid "Pop şarkısı"
-msgstr ""
+msgstr "Pop şarkısı"
 
 #: DB:cover_art_archive.art_type/name:11
 msgctxt "cover_art_type"
@@ -4000,12 +4021,17 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:501
 msgctxt "work_attribute_type_allowed_value"
 msgid "Rahatülervah"
-msgstr ""
+msgstr "Rahatülervah"
 
 #: DB:work_attribute_type_allowed_value/value:763
 msgctxt "work_attribute_type_allowed_value"
 msgid "Raksaksağı"
-msgstr ""
+msgstr "Raksaksağı"
+
+#: DB:work_attribute_type_allowed_value/value:798
+msgctxt "work_attribute_type_allowed_value"
+msgid "Raksaksağı II"
+msgstr "Raksaksağı II"
 
 #: DB:work_attribute_type_allowed_value/value:764
 msgctxt "work_attribute_type_allowed_value"
@@ -4015,7 +4041,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:502
 msgctxt "work_attribute_type_allowed_value"
 msgid "Ramiş-i Can"
-msgstr ""
+msgstr "Ramiş-i Can"
 
 #: DB:work_attribute_type_allowed_value/value:215
 msgctxt "work_attribute_type_allowed_value"
@@ -4045,32 +4071,32 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:507
 msgctxt "work_attribute_type_allowed_value"
 msgid "Rast-ı Atik"
-msgstr ""
+msgstr "Rast-ı Atik"
 
 #: DB:work_attribute_type_allowed_value/value:508
 msgctxt "work_attribute_type_allowed_value"
 msgid "Rast-ı Cedid"
-msgstr ""
+msgstr "Rast-ı Cedid"
 
 #: DB:work_attribute_type_allowed_value/value:509
 msgctxt "work_attribute_type_allowed_value"
 msgid "Rast-ı Rumi"
-msgstr ""
+msgstr "Rast-ı Rumi"
 
 #: DB:work_attribute_type_allowed_value/value:510
 msgctxt "work_attribute_type_allowed_value"
 msgid "Rast-ı Sağır"
-msgstr ""
+msgstr "Rast-ı Sağır"
 
 #: DB:work_attribute_type_allowed_value/value:511
 msgctxt "work_attribute_type_allowed_value"
 msgid "Rast-ı Sultani"
-msgstr ""
+msgstr "Rast-ı Sultani"
 
 #: DB:work_attribute_type_allowed_value/value:504
 msgctxt "work_attribute_type_allowed_value"
 msgid "Rastaşiran"
-msgstr ""
+msgstr "Rastaşiran"
 
 #: DB:work_attribute_type_allowed_value/value:505
 msgctxt "work_attribute_type_allowed_value"
@@ -4080,7 +4106,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:512
 msgctxt "work_attribute_type_allowed_value"
 msgid "Rastkürdi"
-msgstr ""
+msgstr "Rastkürdi"
 
 #: DB:work_attribute_type_allowed_value/value:217
 msgctxt "work_attribute_type_allowed_value"
@@ -4125,7 +4151,7 @@ msgstr "Neuaufleger"
 #: DB:work_attribute_type_allowed_value/value:515
 msgctxt "work_attribute_type_allowed_value"
 msgid "Rekb-i Zavil"
-msgstr ""
+msgstr "Rekb-i Zavil"
 
 #: DB:editor_collection_type/name:1
 msgctxt "collection_type"
@@ -4175,12 +4201,12 @@ msgstr "Remix"
 #: DB:work_attribute_type_allowed_value/value:516
 msgctxt "work_attribute_type_allowed_value"
 msgid "Reng-i Dil"
-msgstr ""
+msgstr "Reng-i Dil"
 
 #: DB:work_attribute_type_allowed_value/value:517
 msgctxt "work_attribute_type_allowed_value"
 msgid "Revnaknüma"
-msgstr ""
+msgstr "Revnaknüma"
 
 #: DB:work_attribute_type_allowed_value/value:518
 msgctxt "work_attribute_type_allowed_value"
@@ -4200,12 +4226,12 @@ msgstr "Rudrapriya"
 #: DB:work_attribute_type_allowed_value/value:519
 msgctxt "work_attribute_type_allowed_value"
 msgid "Ruhnüvaz"
-msgstr ""
+msgstr "Ruhnüvaz"
 
 #: DB:work_attribute_type_allowed_value/value:656
 msgctxt "work_attribute_type_allowed_value"
 msgid "Rumeli Türküsü"
-msgstr ""
+msgstr "Rumeli Türküsü"
 
 #: DB:series_type/name:9
 msgctxt "series_type"
@@ -4215,17 +4241,17 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:521
 msgctxt "work_attribute_type_allowed_value"
 msgid "Ruy-i Dilara"
-msgstr ""
+msgstr "Ruy-i Dilara"
 
 #: DB:work_attribute_type_allowed_value/value:520
 msgctxt "work_attribute_type_allowed_value"
 msgid "Ruy-i Irak"
-msgstr ""
+msgstr "Ruy-i Irak"
 
 #: DB:work_attribute_type_allowed_value/value:600
 msgctxt "work_attribute_type_allowed_value"
 msgid "Ruy-i Neva"
-msgstr ""
+msgstr "Ruy-i Neva"
 
 #: DB:work_attribute_type/name:4
 msgctxt "work_attribute_type"
@@ -4282,10 +4308,20 @@ msgctxt "medium_format"
 msgid "SACD"
 msgstr "SACD"
 
+#: DB:work_attribute_type/name:21
+msgctxt "work_attribute_type"
+msgid "SACEM ID"
+msgstr ""
+
 #: DB:work_attribute_type/name:8
 msgctxt "work_attribute_type"
 msgid "SESAC ID"
 msgstr "SESAC-ID"
+
+#: DB:work_attribute_type/name:20
+msgctxt "work_attribute_type"
+msgid "SGAE ID"
+msgstr ""
 
 #: DB:medium_format/name:36
 msgctxt "medium_format"
@@ -4301,6 +4337,11 @@ msgstr ""
 msgctxt "work_attribute_type"
 msgid "SOCAN ID"
 msgstr "SOCAN-ID"
+
+#: DB:work_attribute_type/name:18
+msgctxt "work_attribute_type"
+msgid "SUISA ID"
+msgstr ""
 
 #: DB:medium_format/name:23
 msgctxt "medium_format"
@@ -4320,7 +4361,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:524
 msgctxt "work_attribute_type_allowed_value"
 msgid "Sabaaşiran"
-msgstr ""
+msgstr "Sabaaşiran"
 
 #: DB:work_attribute_type_allowed_value/value:525
 msgctxt "work_attribute_type_allowed_value"
@@ -4330,7 +4371,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:526
 msgctxt "work_attribute_type_allowed_value"
 msgid "Sabakürdi"
-msgstr ""
+msgstr "Sabakürdi"
 
 #: DB:work_attribute_type_allowed_value/value:223
 msgctxt "work_attribute_type_allowed_value"
@@ -4345,12 +4386,12 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:658
 msgctxt "work_attribute_type_allowed_value"
 msgid "Salatüselam"
-msgstr ""
+msgstr "Salatüselam"
 
 #: DB:work_attribute_type_allowed_value/value:657
 msgctxt "work_attribute_type_allowed_value"
 msgid "Salatıümmiye"
-msgstr ""
+msgstr "Salatıümmiye"
 
 #: DB:work_attribute_type_allowed_value/value:231
 msgctxt "work_attribute_type_allowed_value"
@@ -4445,7 +4486,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:766
 msgctxt "work_attribute_type_allowed_value"
 msgid "Sengin Türkaksağı"
-msgstr ""
+msgstr "Sengin Türkaksağı"
 
 #: DB:work_attribute_type_allowed_value/value:769
 msgctxt "work_attribute_type_allowed_value"
@@ -4622,42 +4663,42 @@ msgstr "Suite"
 #: DB:work_attribute_type_allowed_value/value:534
 msgctxt "work_attribute_type_allowed_value"
 msgid "Sultani"
-msgstr ""
+msgstr "Sultani"
 
 #: DB:work_attribute_type_allowed_value/value:535
 msgctxt "work_attribute_type_allowed_value"
 msgid "Sultani Irak"
-msgstr ""
+msgstr "Sultani Irak"
 
 #: DB:work_attribute_type_allowed_value/value:536
 msgctxt "work_attribute_type_allowed_value"
 msgid "Sultanıbuselik"
-msgstr ""
+msgstr "Sultanıbuselik"
 
 #: DB:work_attribute_type_allowed_value/value:537
 msgctxt "work_attribute_type_allowed_value"
 msgid "Sultanıcedid"
-msgstr ""
+msgstr "Sultanıcedid"
 
 #: DB:work_attribute_type_allowed_value/value:538
 msgctxt "work_attribute_type_allowed_value"
 msgid "Sultanıeviç"
-msgstr ""
+msgstr "Sultanıeviç"
 
 #: DB:work_attribute_type_allowed_value/value:539
 msgctxt "work_attribute_type_allowed_value"
 msgid "Sultanıhüzzam"
-msgstr ""
+msgstr "Sultanıhüzzam"
 
 #: DB:work_attribute_type_allowed_value/value:540
 msgctxt "work_attribute_type_allowed_value"
 msgid "Sultanısegah"
-msgstr ""
+msgstr "Sultanısegah"
 
 #: DB:work_attribute_type_allowed_value/value:541
 msgctxt "work_attribute_type_allowed_value"
 msgid "Sultanıyegah"
-msgstr ""
+msgstr "Sultanıyegah"
 
 #: DB:work_attribute_type_allowed_value/value:250
 msgctxt "work_attribute_type_allowed_value"
@@ -4692,12 +4733,12 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:546
 msgctxt "work_attribute_type_allowed_value"
 msgid "Suzinak Zirgüle"
-msgstr ""
+msgstr "Suzinak Zirgüle"
 
 #: DB:work_attribute_type_allowed_value/value:545
 msgctxt "work_attribute_type_allowed_value"
 msgid "Suzinak-ı Nev"
-msgstr ""
+msgstr "Suzinak-ı Nev"
 
 #: DB:work_attribute_type_allowed_value/value:253
 msgctxt "work_attribute_type_allowed_value"
@@ -4717,17 +4758,17 @@ msgstr "Sinfonie"
 #: DB:work_attribute_type_allowed_value/value:547
 msgctxt "work_attribute_type_allowed_value"
 msgid "Sünbüle"
-msgstr ""
+msgstr "Sünbüle"
 
 #: DB:work_attribute_type_allowed_value/value:772
 msgctxt "work_attribute_type_allowed_value"
 msgid "Süreyya"
-msgstr ""
+msgstr "Süreyya"
 
 #: DB:work_attribute_type_allowed_value/value:548
 msgctxt "work_attribute_type_allowed_value"
 msgid "Sürurefza"
-msgstr ""
+msgstr "Sürurefza"
 
 #: DB:work_attribute_type_allowed_value/value:224
 msgctxt "work_attribute_type_allowed_value"
@@ -4782,22 +4823,22 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:575
 msgctxt "work_attribute_type_allowed_value"
 msgid "Tarz-ı Cedid"
-msgstr ""
+msgstr "Tarz-ı Cedid"
 
 #: DB:work_attribute_type_allowed_value/value:576
 msgctxt "work_attribute_type_allowed_value"
 msgid "Tarz-ı Cihan"
-msgstr ""
+msgstr "Tarz-ı Cihan"
 
 #: DB:work_attribute_type_allowed_value/value:577
 msgctxt "work_attribute_type_allowed_value"
 msgid "Tarz-ı Nevin"
-msgstr ""
+msgstr "Tarz-ı Nevin"
 
 #: DB:work_attribute_type_allowed_value/value:669
 msgctxt "work_attribute_type_allowed_value"
 msgid "Tavşanca"
-msgstr ""
+msgstr "Tavşanca"
 
 #: DB:work_attribute_type_allowed_value/value:578
 msgctxt "work_attribute_type_allowed_value"
@@ -4807,7 +4848,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:774
 msgctxt "work_attribute_type_allowed_value"
 msgid "Tek Vuruş"
-msgstr ""
+msgstr "Tek Vuruş"
 
 #: DB:work_attribute_type_allowed_value/value:670
 msgctxt "work_attribute_type_allowed_value"
@@ -4817,12 +4858,12 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:671
 msgctxt "work_attribute_type_allowed_value"
 msgid "Temcidmünacatı"
-msgstr ""
+msgstr "Temcidmünacatı"
 
 #: DB:work_attribute_type_allowed_value/value:579
 msgctxt "work_attribute_type_allowed_value"
 msgid "Tereşşüd"
-msgstr ""
+msgstr "Tereşşüd"
 
 #: DB:work_attribute_type_allowed_value/value:672
 msgctxt "work_attribute_type_allowed_value"
@@ -4842,7 +4883,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:674
 msgctxt "work_attribute_type_allowed_value"
 msgid "Tevşihilahi"
-msgstr ""
+msgstr "Tevşihilahi"
 
 #: DB:medium_format/description:60
 msgctxt "medium_format"
@@ -4914,27 +4955,32 @@ msgstr "Tray"
 #: DB:work_attribute_type_allowed_value/value:775
 msgctxt "work_attribute_type_allowed_value"
 msgid "Türk Darbı"
-msgstr ""
+msgstr "Türk Darbı"
 
 #: DB:work_attribute_type_allowed_value/value:776
 msgctxt "work_attribute_type_allowed_value"
 msgid "Türkaksağı"
-msgstr ""
+msgstr "Türkaksağı"
 
 #: DB:work_attribute_type_allowed_value/value:580
 msgctxt "work_attribute_type_allowed_value"
 msgid "Türki Hicaz"
-msgstr ""
+msgstr "Türki Hicaz"
+
+#: DB:work_attribute_type_allowed_value/value:799
+msgctxt "work_attribute_type_allowed_value"
+msgid "Türkmen"
+msgstr "Türkmen"
 
 #: DB:work_attribute_type_allowed_value/value:675
 msgctxt "work_attribute_type_allowed_value"
 msgid "Türkü"
-msgstr ""
+msgstr "Türkü"
 
 #: DB:work_attribute_type_allowed_value/value:581
 msgctxt "work_attribute_type_allowed_value"
 msgid "Tüvanger"
-msgstr ""
+msgstr "Tüvanger"
 
 #: DB:work_attribute_type/name:5
 msgctxt "work_attribute_type"
@@ -4979,17 +5025,17 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:582
 msgctxt "work_attribute_type_allowed_value"
 msgid "Uşşak"
-msgstr ""
+msgstr "Uşşak"
 
 #: DB:work_attribute_type_allowed_value/value:583
 msgctxt "work_attribute_type_allowed_value"
 msgid "Uşşak Ruy-i Nikriz"
-msgstr ""
+msgstr "Uşşak Ruy-i Nikriz"
 
 #: DB:work_attribute_type_allowed_value/value:584
 msgctxt "work_attribute_type_allowed_value"
 msgid "Uşşakaşiran"
-msgstr ""
+msgstr "Uşşakaşiran"
 
 #: DB:medium_format/name:22
 msgctxt "medium_format"
@@ -5054,22 +5100,22 @@ msgstr "Vasantabhairavi"
 #: DB:work_attribute_type_allowed_value/value:585
 msgctxt "work_attribute_type_allowed_value"
 msgid "Vecd-i Dil"
-msgstr ""
+msgstr "Vecd-i Dil"
 
 #: DB:work_attribute_type_allowed_value/value:586
 msgctxt "work_attribute_type_allowed_value"
 msgid "Vech-i Arazbar"
-msgstr ""
+msgstr "Vech-i Arazbar"
 
 #: DB:work_attribute_type_allowed_value/value:587
 msgctxt "work_attribute_type_allowed_value"
 msgid "Vech-i Dil"
-msgstr ""
+msgstr "Vech-i Dil"
 
 #: DB:work_attribute_type_allowed_value/value:588
 msgctxt "work_attribute_type_allowed_value"
 msgid "Vech-i Şehnaz"
-msgstr ""
+msgstr "Vech-i Şehnaz"
 
 #: DB:place_type/name:2
 msgctxt "place_type"
@@ -5191,23 +5237,23 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:590
 msgctxt "work_attribute_type_allowed_value"
 msgid "Yegah-ı Acemi"
-msgstr ""
+msgstr "Yegah-ı Acemi"
 
 #: DB:work_attribute_type_allowed_value/value:677
 #: DB:work_attribute_type_allowed_value/value:777
 msgctxt "work_attribute_type_allowed_value"
 msgid "Yürüksemai"
-msgstr ""
+msgstr "Yürüksemai"
 
 #: DB:work_attribute_type_allowed_value/value:778
 msgctxt "work_attribute_type_allowed_value"
 msgid "Yürüksemai II"
-msgstr ""
+msgstr "Yürüksemai II"
 
 #: DB:work_attribute_type_allowed_value/value:779
 msgctxt "work_attribute_type_allowed_value"
 msgid "Yürüksofyan"
-msgstr ""
+msgstr "Yürüksofyan"
 
 #: DB:work_attribute_type_allowed_value/value:780
 msgctxt "work_attribute_type_allowed_value"
@@ -5227,7 +5273,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:592
 msgctxt "work_attribute_type_allowed_value"
 msgid "Zavilaşiran"
-msgstr ""
+msgstr "Zavilaşiran"
 
 #: DB:work_attribute_type_allowed_value/value:781
 msgctxt "work_attribute_type_allowed_value"
@@ -5247,17 +5293,17 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:595
 msgctxt "work_attribute_type_allowed_value"
 msgid "Zenguleli Kürdi"
-msgstr ""
+msgstr "Zenguleli Kürdi"
 
 #: DB:work_attribute_type_allowed_value/value:597
 msgctxt "work_attribute_type_allowed_value"
 msgid "Zevk-ü Tarab"
-msgstr ""
+msgstr "Zevk-ü Tarab"
 
 #: DB:work_attribute_type_allowed_value/value:596
 msgctxt "work_attribute_type_allowed_value"
 msgid "Zevk-ı Dil"
-msgstr ""
+msgstr "Zevk-ı Dil"
 
 #: DB:work_attribute_type_allowed_value/value:678
 msgctxt "work_attribute_type_allowed_value"
@@ -5267,7 +5313,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:598
 msgctxt "work_attribute_type_allowed_value"
 msgid "Zilkeş"
-msgstr ""
+msgstr "Zilkeş"
 
 #: DB:work_attribute_type_allowed_value/value:599
 msgctxt "work_attribute_type_allowed_value"
@@ -5289,52 +5335,52 @@ msgstr "slotMusic"
 #: DB:work_attribute_type_allowed_value/value:340
 msgctxt "work_attribute_type_allowed_value"
 msgid "Çargah"
-msgstr ""
+msgstr "Çargah"
 
 #: DB:work_attribute_type_allowed_value/value:341
 msgctxt "work_attribute_type_allowed_value"
 msgid "Çargah (Yeni)"
-msgstr ""
+msgstr "Çargah (Yeni)"
 
 #: DB:work_attribute_type_allowed_value/value:342
 msgctxt "work_attribute_type_allowed_value"
 msgid "Çehar Agazin"
-msgstr ""
+msgstr "Çehar Agazin"
 
 #: DB:work_attribute_type_allowed_value/value:706
 msgctxt "work_attribute_type_allowed_value"
 msgid "Çenber"
-msgstr ""
+msgstr "Çenber"
 
 #: DB:work_attribute_type_allowed_value/value:707
 msgctxt "work_attribute_type_allowed_value"
 msgid "Çeng-i Harbi"
-msgstr ""
+msgstr "Çeng-i Harbi"
 
 #: DB:work_attribute_type_allowed_value/value:708
 msgctxt "work_attribute_type_allowed_value"
 msgid "Çifteaksak"
-msgstr ""
+msgstr "Çifteaksak"
 
 #: DB:work_attribute_type_allowed_value/value:709
 msgctxt "work_attribute_type_allowed_value"
 msgid "Çiftedüyek"
-msgstr ""
+msgstr "Çiftedüyek"
 
 #: DB:work_attribute_type_allowed_value/value:710
 msgctxt "work_attribute_type_allowed_value"
 msgid "Çiftesofyan"
-msgstr ""
+msgstr "Çiftesofyan"
 
 #: DB:work_attribute_type_allowed_value/value:679
 msgctxt "work_attribute_type_allowed_value"
 msgid "Çiftetelli"
-msgstr ""
+msgstr "Çiftetelli"
 
 #: DB:work_attribute_type_allowed_value/value:609
 msgctxt "work_attribute_type_allowed_value"
 msgid "Çocuk şarkısı"
-msgstr ""
+msgstr "Çocuk şarkısı"
 
 #: DB:work_type/name:20
 msgctxt "work_type"
@@ -5344,7 +5390,7 @@ msgstr "Etüde"
 #: DB:work_attribute_type_allowed_value/value:653
 msgctxt "work_attribute_type_allowed_value"
 msgid "Örnek Öz"
-msgstr ""
+msgstr "Örnek Öz"
 
 #: DB:work_attribute_type_allowed_value/value:35
 msgctxt "work_attribute_type_allowed_value"
@@ -5399,22 +5445,22 @@ msgstr "Ēka"
 #: DB:work_attribute_type_allowed_value/value:436
 msgctxt "work_attribute_type_allowed_value"
 msgid "İbrahimi"
-msgstr ""
+msgstr "İbrahimi"
 
 #: DB:work_attribute_type_allowed_value/value:740
 msgctxt "work_attribute_type_allowed_value"
 msgid "İki Bir"
-msgstr ""
+msgstr "İki Bir"
 
 #: DB:work_attribute_type_allowed_value/value:741
 msgctxt "work_attribute_type_allowed_value"
 msgid "İkiz Aksak"
-msgstr ""
+msgstr "İkiz Aksak"
 
 #: DB:work_attribute_type_allowed_value/value:620
 msgctxt "work_attribute_type_allowed_value"
 msgid "İlahi"
-msgstr ""
+msgstr "İlahi"
 
 #: DB:work_attribute_type_allowed_value/value:226
 msgctxt "work_attribute_type_allowed_value"
@@ -5474,137 +5520,137 @@ msgstr "Śūḷiṇi"
 #: DB:work_attribute_type_allowed_value/value:773
 msgctxt "work_attribute_type_allowed_value"
 msgid "Şark Devr-i Revanı"
-msgstr ""
+msgstr "Şark Devr-i Revanı"
 
 #: DB:work_attribute_type_allowed_value/value:665
 msgctxt "work_attribute_type_allowed_value"
 msgid "Şarkı"
-msgstr ""
+msgstr "Şarkı"
 
 #: DB:work_attribute_type_allowed_value/value:549
 msgctxt "work_attribute_type_allowed_value"
 msgid "Şedaraban"
-msgstr ""
+msgstr "Şedaraban"
 
 #: DB:work_attribute_type_allowed_value/value:550
 msgctxt "work_attribute_type_allowed_value"
 msgid "Şedd-i Saba"
-msgstr ""
+msgstr "Şedd-i Saba"
 
 #: DB:work_attribute_type_allowed_value/value:551
 msgctxt "work_attribute_type_allowed_value"
 msgid "Şehnaz"
-msgstr ""
+msgstr "Şehnaz"
 
 #: DB:work_attribute_type_allowed_value/value:554
 msgctxt "work_attribute_type_allowed_value"
 msgid "Şehnaz Nişaburek"
-msgstr ""
+msgstr "Şehnaz Nişaburek"
 
 #: DB:work_attribute_type_allowed_value/value:552
 msgctxt "work_attribute_type_allowed_value"
 msgid "Şehnazbuselik"
-msgstr ""
+msgstr "Şehnazbuselik"
 
 #: DB:work_attribute_type_allowed_value/value:553
 msgctxt "work_attribute_type_allowed_value"
 msgid "Şehnazhaveran"
-msgstr ""
+msgstr "Şehnazhaveran"
 
 #: DB:work_attribute_type_allowed_value/value:555
 msgctxt "work_attribute_type_allowed_value"
 msgid "Şemsefruz"
-msgstr ""
+msgstr "Şemsefruz"
 
 #: DB:work_attribute_type_allowed_value/value:556
 msgctxt "work_attribute_type_allowed_value"
 msgid "Şeref-i Hamidi"
-msgstr ""
+msgstr "Şeref-i Hamidi"
 
 #: DB:work_attribute_type_allowed_value/value:557
 msgctxt "work_attribute_type_allowed_value"
 msgid "Şerefnuma"
-msgstr ""
+msgstr "Şerefnuma"
 
 #: DB:work_attribute_type_allowed_value/value:558
 msgctxt "work_attribute_type_allowed_value"
 msgid "Şevk"
-msgstr ""
+msgstr "Şevk"
 
 #: DB:work_attribute_type_allowed_value/value:561
 msgctxt "work_attribute_type_allowed_value"
 msgid "Şevk-i Cedid"
-msgstr ""
+msgstr "Şevk-i Cedid"
 
 #: DB:work_attribute_type_allowed_value/value:563
 msgctxt "work_attribute_type_allowed_value"
 msgid "Şevk-i Cihan"
-msgstr ""
+msgstr "Şevk-i Cihan"
 
 #: DB:work_attribute_type_allowed_value/value:562
 msgctxt "work_attribute_type_allowed_value"
 msgid "Şevk-i Dil"
-msgstr ""
+msgstr "Şevk-i Dil"
 
 #: DB:work_attribute_type_allowed_value/value:564
 msgctxt "work_attribute_type_allowed_value"
 msgid "Şevk-i Serab"
-msgstr ""
+msgstr "Şevk-i Serab"
 
 #: DB:work_attribute_type_allowed_value/value:559
 msgctxt "work_attribute_type_allowed_value"
 msgid "Şevkaver"
-msgstr ""
+msgstr "Şevkaver"
 
 #: DB:work_attribute_type_allowed_value/value:560
 msgctxt "work_attribute_type_allowed_value"
 msgid "Şevkefza"
-msgstr ""
+msgstr "Şevkefza"
 
 #: DB:work_attribute_type_allowed_value/value:565
 msgctxt "work_attribute_type_allowed_value"
 msgid "Şevknüma"
-msgstr ""
+msgstr "Şevknüma"
 
 #: DB:work_attribute_type_allowed_value/value:566
 msgctxt "work_attribute_type_allowed_value"
 msgid "Şevkutarab"
-msgstr ""
+msgstr "Şevkutarab"
 
 #: DB:work_attribute_type_allowed_value/value:567
 msgctxt "work_attribute_type_allowed_value"
 msgid "Şinaver"
-msgstr ""
+msgstr "Şinaver"
 
 #: DB:work_attribute_type_allowed_value/value:568
 msgctxt "work_attribute_type_allowed_value"
 msgid "Şiraz"
-msgstr ""
+msgstr "Şiraz"
 
 #: DB:work_attribute_type_allowed_value/value:569
 msgctxt "work_attribute_type_allowed_value"
 msgid "Şivekar"
-msgstr ""
+msgstr "Şivekar"
 
 #: DB:work_attribute_type_allowed_value/value:570
 msgctxt "work_attribute_type_allowed_value"
 msgid "Şivekeş"
-msgstr ""
+msgstr "Şivekeş"
 
 #: DB:work_attribute_type_allowed_value/value:571
 msgctxt "work_attribute_type_allowed_value"
 msgid "Şivenüma"
-msgstr ""
+msgstr "Şivenüma"
 
 #: DB:work_attribute_type_allowed_value/value:572
 msgctxt "work_attribute_type_allowed_value"
 msgid "Şuri"
-msgstr ""
+msgstr "Şuri"
 
 #: DB:work_attribute_type_allowed_value/value:666
 msgctxt "work_attribute_type_allowed_value"
 msgid "Şuğul"
-msgstr ""
+msgstr "Şuğul"
 
 #: DB:work_attribute_type_allowed_value/value:227
 msgctxt "work_attribute_type_allowed_value"

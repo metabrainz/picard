@@ -3,7 +3,7 @@
 # This file is distributed under the same license as the picard project.
 # 
 # Translators:
-# Trans-fr, 2013
+# French language coordinator <yahoe.001@gmail.com>, 2013
 # Benjamin Sonntag <benjamin@sonntag.fr>, 2012
 # Dibou <doc@boudon.nom.fr>, 2013
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2010
@@ -13,9 +13,9 @@
 # Lotheric <lotheric@gmail.com>, 2012
 # Matthieu Martin <martin.matthieu@gmail.com>, 2006
 # Matthieu Martin <martin.matthieu@gmail.com>, 2006
-# teolemon <pierre.slamich@gmail.com>, 2006
-# Trans-fr, 2015
-# Trans-fr, 2014-2015
+# Pierre Slamich <pierre.slamich@gmail.com>, 2006
+# French language coordinator <yahoe.001@gmail.com>, 2015
+# French language coordinator <yahoe.001@gmail.com>, 2014-2015
 # ybsar <gybsar@gmail.com>, 2013
 # Laurent Monin <i18n@norz.org>, 2013
 msgid ""
@@ -24,7 +24,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2015-02-06 13:01+0100\n"
 "PO-Revision-Date: 2015-11-01 20:56+0000\n"
-"Last-Translator: Trans-fr\n"
+"Last-Translator: French language coordinator <yahoe.001@gmail.com>\n"
 "Language-Team: French (http://www.transifex.com/musicbrainz/musicbrainz/language/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"

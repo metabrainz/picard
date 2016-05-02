@@ -1,11 +1,12 @@
 # 
 # Translators:
+# Alex Mauer <hawke@hawkesnest.net>, 2016
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2009
 # Ian McEwen <ianmcorvidae@ianmcorvidae.net>, 2012-2013
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2015-09-08 18:58+0000\n"
+"PO-Revision-Date: 2016-04-04 13:22+0000\n"
 "Last-Translator: Michael Wiencek <mwtuea@gmail.com>\n"
 "Language-Team: Esperanto (http://www.transifex.com/musicbrainz/musicbrainz/language/eo/)\n"
 "MIME-Version: 1.0\n"
@@ -20,7 +21,7 @@ msgid ""
 "\"Motet\" is a term that applies to different types of (usually "
 "unaccompanied) choral works. What exactly is a motet depends quite a bit on "
 "the period."
-msgstr ""
+msgstr "\"Motet\" estas termino kui aplikas al diversaj tipoj de (ordinare malakompanas) ĥora verkaro. Kio ĝuste estas moteto dependas multe la periodo."
 
 #: DB:work_type/description:5
 msgctxt "work_type"
@@ -32,17 +33,17 @@ msgstr ""
 #: DB:medium_format/name:54
 msgctxt "medium_format"
 msgid "10\" Shellac"
-msgstr ""
+msgstr "10″ ŝelakdisko"
 
 #: DB:medium_format/name:30
 msgctxt "medium_format"
 msgid "10\" Vinyl"
-msgstr "10″ Vinildisko"
+msgstr "10″ vinildisko"
 
 #: DB:medium_format/name:55
 msgctxt "medium_format"
 msgid "12\" Shellac"
-msgstr ""
+msgstr "12″ ŝelakdisko"
 
 #: DB:medium_format/name:31
 msgctxt "medium_format"
@@ -52,22 +53,22 @@ msgstr "12″ Vinildisko"
 #: DB:medium_format/name:49
 msgctxt "medium_format"
 msgid "3.5\" Floppy Disk"
-msgstr ""
+msgstr "3.5″ disketo"
 
 #: DB:medium_format/name:52
 msgctxt "medium_format"
 msgid "7\" Flexi-disc"
-msgstr ""
+msgstr "7″ fleksadisko"
 
 #: DB:medium_format/name:56
 msgctxt "medium_format"
 msgid "7\" Shellac"
-msgstr ""
+msgstr "7″ ŝelakdisko"
 
 #: DB:medium_format/name:29
 msgctxt "medium_format"
 msgid "7\" Vinyl"
-msgstr "7″ Vinildisko"
+msgstr "7″ vinildisko"
 
 #: DB:medium_format/name:34
 msgctxt "medium_format"
@@ -77,26 +78,26 @@ msgstr "8cm KD"
 #: DB:medium_format/name:40
 msgctxt "medium_format"
 msgid "8cm CD+G"
-msgstr ""
+msgstr "8cm KD+G"
 
 #: DB:medium_format/description:58
 msgctxt "medium_format"
 msgid ""
 "90 rpm, vertical-cut shellac discs, produced by the Pathé label from 1906 to"
 " 1932."
-msgstr ""
+msgstr "90 RPM, vertikala-tranĉo ŝelako diskoj, produktis de la etikedo Pathé de 1906 ĝis 1932"
 
 #: DB:work_attribute_type_allowed_value/value:794
 msgctxt "work_attribute_type_allowed_value"
 msgid "A Dorian"
-msgstr ""
+msgstr "A dorio"
 
 #: DB:work_type/description:2
 msgctxt "work_type"
 msgid ""
 "A ballet is music composed to be used, together with a choreography, for a "
 "ballet dance production."
-msgstr ""
+msgstr "Baleto estas muziko komponis por uso kun koregrafio por baleto danco produktado"
 
 #: DB:work_type/description:3
 msgctxt "work_type"
@@ -130,7 +131,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:28
 msgctxt "work_attribute_type_allowed_value"
 msgid "A major"
-msgstr ""
+msgstr "A maĵora"
 
 #: DB:work_type/description:8
 msgctxt "work_type"
@@ -151,7 +152,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:29
 msgctxt "work_attribute_type_allowed_value"
 msgid "A minor"
-msgstr ""
+msgstr "A minora"
 
 #: DB:work_type/description:13
 msgctxt "work_type"
@@ -334,12 +335,12 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:26
 msgctxt "work_attribute_type_allowed_value"
 msgid "A-flat major"
-msgstr ""
+msgstr "A-bemolo maĵora"
 
 #: DB:work_attribute_type_allowed_value/value:27
 msgctxt "work_attribute_type_allowed_value"
 msgid "A-flat minor"
-msgstr ""
+msgstr "A-bemolo minora"
 
 #: DB:work_attribute_type_allowed_value/value:30
 msgctxt "work_attribute_type_allowed_value"
@@ -1063,6 +1064,16 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "C-sharp minor"
 msgstr ""
 
+#: DB:work_attribute_type/name:19
+msgctxt "work_attribute_type"
+msgid "CASH ID"
+msgstr ""
+
+#: DB:work_attribute_type/name:22
+msgctxt "work_attribute_type"
+msgid "CCLI ID"
+msgstr ""
+
 #: DB:medium_format/name:1
 msgctxt "medium_format"
 msgid "CD"
@@ -1374,6 +1385,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Darb-ı Türki"
 msgstr ""
 
+#: DB:work_attribute_type_allowed_value/value:796
+msgctxt "work_attribute_type_allowed_value"
+msgid "Darbeyn"
+msgstr ""
+
 #: DB:work_attribute_type_allowed_value/value:73
 msgctxt "work_attribute_type_allowed_value"
 msgid "Darbār"
@@ -1442,6 +1458,11 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:724
 msgctxt "work_attribute_type_allowed_value"
 msgid "Devr-i Turan"
+msgstr ""
+
+#: DB:work_attribute_type_allowed_value/value:797
+msgctxt "work_attribute_type_allowed_value"
+msgid "Devr-i Turan II"
 msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:79
@@ -1859,14 +1880,14 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Ferahnakaşiran"
 msgstr ""
 
+#: DB:work_attribute_type_allowed_value/value:370
+msgctxt "work_attribute_type_allowed_value"
+msgid "Ferahnüma"
+msgstr ""
+
 #: DB:work_attribute_type_allowed_value/value:371
 msgctxt "work_attribute_type_allowed_value"
 msgid "Ferahzad"
-msgstr ""
-
-#: DB:work_attribute_type_allowed_value/value:370
-msgctxt "work_attribute_type_allowed_value"
-msgid "Feraznüma"
 msgstr ""
 
 #: DB:event_type/name:2
@@ -3987,6 +4008,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Raksaksağı"
 msgstr ""
 
+#: DB:work_attribute_type_allowed_value/value:798
+msgctxt "work_attribute_type_allowed_value"
+msgid "Raksaksağı II"
+msgstr ""
+
 #: DB:work_attribute_type_allowed_value/value:764
 msgctxt "work_attribute_type_allowed_value"
 msgid "Raksan"
@@ -4262,9 +4288,19 @@ msgctxt "medium_format"
 msgid "SACD"
 msgstr "SAKD"
 
+#: DB:work_attribute_type/name:21
+msgctxt "work_attribute_type"
+msgid "SACEM ID"
+msgstr ""
+
 #: DB:work_attribute_type/name:8
 msgctxt "work_attribute_type"
 msgid "SESAC ID"
+msgstr ""
+
+#: DB:work_attribute_type/name:20
+msgctxt "work_attribute_type"
+msgid "SGAE ID"
 msgstr ""
 
 #: DB:medium_format/name:36
@@ -4280,6 +4316,11 @@ msgstr ""
 #: DB:work_attribute_type/name:10
 msgctxt "work_attribute_type"
 msgid "SOCAN ID"
+msgstr ""
+
+#: DB:work_attribute_type/name:18
+msgctxt "work_attribute_type"
+msgid "SUISA ID"
 msgstr ""
 
 #: DB:medium_format/name:23
@@ -4904,6 +4945,11 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:580
 msgctxt "work_attribute_type_allowed_value"
 msgid "Türki Hicaz"
+msgstr ""
+
+#: DB:work_attribute_type_allowed_value/value:799
+msgctxt "work_attribute_type_allowed_value"
+msgid "Türkmen"
 msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:675

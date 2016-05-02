@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2015-02-06 13:01+0100\n"
-"PO-Revision-Date: 2015-11-07 07:33+0000\n"
+"PO-Revision-Date: 2015-12-12 17:23+0000\n"
 "Last-Translator: nikki\n"
 "Language-Team: Occitan (post 1500) (http://www.transifex.com/musicbrainz/musicbrainz/language/oc/)\n"
 "MIME-Version: 1.0\n"
@@ -41,7 +41,7 @@ msgstr ""
 
 #: contrib/plugins/lastfm/ui_options_lastfm.py:99
 msgid "Last.fm"
-msgstr ""
+msgstr "Last.fm"
 
 #: contrib/plugins/lastfm/ui_options_lastfm.py:100
 msgid "Use track tags"
@@ -324,7 +324,7 @@ msgstr ""
 
 #: picard/releasegroup.py:53
 msgid "Tracks"
-msgstr ""
+msgstr "Pistas"
 
 #: picard/releasegroup.py:54
 msgid "Year"
@@ -464,7 +464,7 @@ msgstr "Data"
 
 #: picard/ui/cdlookup.py:36
 msgid "Labels"
-msgstr ""
+msgstr "Labèls"
 
 #: picard/ui/cdlookup.py:36
 msgid "Catalog #s"
@@ -2080,7 +2080,7 @@ msgstr ""
 
 #: picard/util/tags.py:88
 msgid "Artists"
-msgstr ""
+msgstr "Artistas"
 
 #: picard/util/tags.py:89
 msgid "Work"

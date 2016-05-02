@@ -4,7 +4,7 @@
 #      Alastair McKinstry, <mckinstry@debian.org>, 2004
 #      Andrzej M. Krzysztofowicz <ankry@mif.pg.gda.pl>, 2007
 # czaja <krzysztof@czajkowski.edu.pl>, 2011
-# Debeat, 2014-2015
+# Debeat <krystian4842@gmail.com>, 2014-2015
 # Łukasz Sumera <sumera.lukasz@gmail.com>, 2015
 # Marcin Rataj <lidel@lidel.org>, 2011, 2012
 # Nikolai Prokoschenko <nikolai@prokoschenko.de>, 2011

@@ -1,15 +1,16 @@
 # 
 # Translators:
 # czaja <krzysztof@czajkowski.edu.pl>, 2011
-# Debeat, 2014
+# Debeat <krystian4842@gmail.com>, 2014
 # Marcin Rataj <lidel@lidel.org>, 2011-2012,2014
 # Nikolai Prokoschenko <nikolai@prokoschenko.de>, 2011
 # Piotr Myśliński <piotr.myslinski@gmail.com>, 2013
+# szczepaxn pax <szczepaxn@gmail.com>, 2016
 #   Tobias Toedter <t.toedter@gmx.net>, 2007
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2015-09-08 18:58+0000\n"
+"PO-Revision-Date: 2016-04-04 13:22+0000\n"
 "Last-Translator: Michael Wiencek <mwtuea@gmail.com>\n"
 "Language-Team: Polish (http://www.transifex.com/musicbrainz/musicbrainz/language/pl/)\n"
 "MIME-Version: 1.0\n"
@@ -24,14 +25,14 @@ msgid ""
 "\"Motet\" is a term that applies to different types of (usually "
 "unaccompanied) choral works. What exactly is a motet depends quite a bit on "
 "the period."
-msgstr ""
+msgstr "\"Motet\" jest terminem, który tyczy się różnych typów dzieł chóralnych (zwykle nieakompaniowanych). To, czym motet w istocie jest - zależy od określonego przedziału czasu"
 
 #: DB:work_type/description:5
 msgctxt "work_type"
 msgid ""
 "\"Sonata\" is a general term used to describe small scale (very often solo "
 "or solo + keyboard) instrumental works, initially in baroque music."
-msgstr ""
+msgstr "\"Sonata\" jest ogólnym terminem rzadko stosowanym oznaczającym kwestię melodyczną (solo lub solo+instrument klawiszowy) w muzyce instrumentalnej, początkowo w muzyce barokowej."
 
 #: DB:medium_format/name:54
 msgctxt "medium_format"
@@ -41,7 +42,7 @@ msgstr ""
 #: DB:medium_format/name:30
 msgctxt "medium_format"
 msgid "10\" Vinyl"
-msgstr "10\" winyl"
+msgstr "10-calowy winyl"
 
 #: DB:medium_format/name:55
 msgctxt "medium_format"
@@ -51,12 +52,12 @@ msgstr ""
 #: DB:medium_format/name:31
 msgctxt "medium_format"
 msgid "12\" Vinyl"
-msgstr "12\" winyl"
+msgstr "12-calowy winyl"
 
 #: DB:medium_format/name:49
 msgctxt "medium_format"
 msgid "3.5\" Floppy Disk"
-msgstr ""
+msgstr "Dyskietka 3,5 cala"
 
 #: DB:medium_format/name:52
 msgctxt "medium_format"
@@ -71,12 +72,12 @@ msgstr ""
 #: DB:medium_format/name:29
 msgctxt "medium_format"
 msgid "7\" Vinyl"
-msgstr "7\" winyl"
+msgstr "7-calowy winyl"
 
 #: DB:medium_format/name:34
 msgctxt "medium_format"
 msgid "8cm CD"
-msgstr "8cm CD"
+msgstr "8-centymetrowa płyta kompaktowa"
 
 #: DB:medium_format/name:40
 msgctxt "medium_format"
@@ -593,7 +594,7 @@ msgstr ""
 #: DB:editor_collection_type/name:7
 msgctxt "collection_type"
 msgid "Area"
-msgstr ""
+msgstr "Rejon"
 
 #: DB:area_alias_type/name:1
 msgctxt "alias_type"
@@ -1067,6 +1068,16 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "C-sharp minor"
 msgstr ""
 
+#: DB:work_attribute_type/name:19
+msgctxt "work_attribute_type"
+msgid "CASH ID"
+msgstr ""
+
+#: DB:work_attribute_type/name:22
+msgctxt "work_attribute_type"
+msgid "CCLI ID"
+msgstr ""
+
 #: DB:medium_format/name:1
 msgctxt "medium_format"
 msgid "CD"
@@ -1378,6 +1389,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Darb-ı Türki"
 msgstr ""
 
+#: DB:work_attribute_type_allowed_value/value:796
+msgctxt "work_attribute_type_allowed_value"
+msgid "Darbeyn"
+msgstr ""
+
 #: DB:work_attribute_type_allowed_value/value:73
 msgctxt "work_attribute_type_allowed_value"
 msgid "Darbār"
@@ -1446,6 +1462,11 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:724
 msgctxt "work_attribute_type_allowed_value"
 msgid "Devr-i Turan"
+msgstr ""
+
+#: DB:work_attribute_type_allowed_value/value:797
+msgctxt "work_attribute_type_allowed_value"
+msgid "Devr-i Turan II"
 msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:79
@@ -1716,12 +1737,12 @@ msgstr ""
 #: DB:editor_collection_type/name:4
 msgctxt "collection_type"
 msgid "Event"
-msgstr ""
+msgstr "Wydarzenie"
 
 #: DB:series_type/name:6
 msgctxt "series_type"
 msgid "Event"
-msgstr ""
+msgstr "Wydarzenie"
 
 #: DB:event_alias_type/name:1
 msgctxt "alias_type"
@@ -1863,14 +1884,14 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Ferahnakaşiran"
 msgstr ""
 
+#: DB:work_attribute_type_allowed_value/value:370
+msgctxt "work_attribute_type_allowed_value"
+msgid "Ferahnüma"
+msgstr ""
+
 #: DB:work_attribute_type_allowed_value/value:371
 msgctxt "work_attribute_type_allowed_value"
 msgid "Ferahzad"
-msgstr ""
-
-#: DB:work_attribute_type_allowed_value/value:370
-msgctxt "work_attribute_type_allowed_value"
-msgid "Feraznüma"
 msgstr ""
 
 #: DB:event_type/name:2
@@ -2461,7 +2482,7 @@ msgstr ""
 #: DB:editor_collection_type/name:9
 msgctxt "collection_type"
 msgid "Instrument"
-msgstr ""
+msgstr "Instrument"
 
 #: DB:instrument_alias_type/name:1
 msgctxt "alias_type"
@@ -3879,7 +3900,7 @@ msgstr ""
 #: DB:editor_collection_type/name:11
 msgctxt "collection_type"
 msgid "Place"
-msgstr ""
+msgstr "Miejsce"
 
 #: DB:place_alias_type/name:1
 msgctxt "alias_type"
@@ -3989,6 +4010,11 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:763
 msgctxt "work_attribute_type_allowed_value"
 msgid "Raksaksağı"
+msgstr ""
+
+#: DB:work_attribute_type_allowed_value/value:798
+msgctxt "work_attribute_type_allowed_value"
+msgid "Raksaksağı II"
 msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:764
@@ -4266,10 +4292,20 @@ msgctxt "medium_format"
 msgid "SACD"
 msgstr "SACD"
 
+#: DB:work_attribute_type/name:21
+msgctxt "work_attribute_type"
+msgid "SACEM ID"
+msgstr ""
+
 #: DB:work_attribute_type/name:8
 msgctxt "work_attribute_type"
 msgid "SESAC ID"
 msgstr "SESAC ID"
+
+#: DB:work_attribute_type/name:20
+msgctxt "work_attribute_type"
+msgid "SGAE ID"
+msgstr ""
 
 #: DB:medium_format/name:36
 msgctxt "medium_format"
@@ -4285,6 +4321,11 @@ msgstr ""
 msgctxt "work_attribute_type"
 msgid "SOCAN ID"
 msgstr "SOCAN ID"
+
+#: DB:work_attribute_type/name:18
+msgctxt "work_attribute_type"
+msgid "SUISA ID"
+msgstr ""
 
 #: DB:medium_format/name:23
 msgctxt "medium_format"
@@ -4444,7 +4485,7 @@ msgstr ""
 #: DB:editor_collection_type/name:14
 msgctxt "collection_type"
 msgid "Series"
-msgstr ""
+msgstr "Serie"
 
 #: DB:series_alias_type/name:1
 msgctxt "alias_type"
@@ -4908,6 +4949,11 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:580
 msgctxt "work_attribute_type_allowed_value"
 msgid "Türki Hicaz"
+msgstr ""
+
+#: DB:work_attribute_type_allowed_value/value:799
+msgctxt "work_attribute_type_allowed_value"
+msgid "Türkmen"
 msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:675

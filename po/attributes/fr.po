@@ -1,6 +1,6 @@
 # 
 # Translators:
-# Trans-fr, 2013
+# French language coordinator <yahoe.001@gmail.com>, 2013
 # murdos <aurelien.mino@gmail.com>, 2015
 # Benjamin <email address hidden>, 2011
 # Benjamin Sonntag <benjamin@octopuce.fr>, 2011-2012
@@ -17,13 +17,13 @@
 # Paul TREHIOU <paul.trehiou@gmail.com>, 2015
 # Paul Tremberth <agigaday@gmail.com>, 2013
 # Paul Tremberth <agigaday@gmail.com>, 2013
-# Trans-fr, 2015
-# Trans-fr, 2013-2015
+# French language coordinator <yahoe.001@gmail.com>, 2015
+# French language coordinator <yahoe.001@gmail.com>, 2013-2015
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2015-11-23 09:28+0000\n"
-"Last-Translator: Paul TREHIOU <paul.trehiou@gmail.com>\n"
+"PO-Revision-Date: 2016-04-04 13:22+0000\n"
+"Last-Translator: Michael Wiencek <mwtuea@gmail.com>\n"
 "Language-Team: French (http://www.transifex.com/musicbrainz/musicbrainz/language/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1080,6 +1080,16 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "C-sharp minor"
 msgstr "Do♯ mineur"
 
+#: DB:work_attribute_type/name:19
+msgctxt "work_attribute_type"
+msgid "CASH ID"
+msgstr ""
+
+#: DB:work_attribute_type/name:22
+msgctxt "work_attribute_type"
+msgid "CCLI ID"
+msgstr ""
+
 #: DB:medium_format/name:1
 msgctxt "medium_format"
 msgid "CD"
@@ -1391,6 +1401,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Darb-ı Türki"
 msgstr ""
 
+#: DB:work_attribute_type_allowed_value/value:796
+msgctxt "work_attribute_type_allowed_value"
+msgid "Darbeyn"
+msgstr ""
+
 #: DB:work_attribute_type_allowed_value/value:73
 msgctxt "work_attribute_type_allowed_value"
 msgid "Darbār"
@@ -1459,6 +1474,11 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:724
 msgctxt "work_attribute_type_allowed_value"
 msgid "Devr-i Turan"
+msgstr ""
+
+#: DB:work_attribute_type_allowed_value/value:797
+msgctxt "work_attribute_type_allowed_value"
+msgid "Devr-i Turan II"
 msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:79
@@ -1876,14 +1896,14 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Ferahnakaşiran"
 msgstr ""
 
+#: DB:work_attribute_type_allowed_value/value:370
+msgctxt "work_attribute_type_allowed_value"
+msgid "Ferahnüma"
+msgstr ""
+
 #: DB:work_attribute_type_allowed_value/value:371
 msgctxt "work_attribute_type_allowed_value"
 msgid "Ferahzad"
-msgstr ""
-
-#: DB:work_attribute_type_allowed_value/value:370
-msgctxt "work_attribute_type_allowed_value"
-msgid "Feraznüma"
 msgstr ""
 
 #: DB:event_type/name:2
@@ -4004,6 +4024,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Raksaksağı"
 msgstr ""
 
+#: DB:work_attribute_type_allowed_value/value:798
+msgctxt "work_attribute_type_allowed_value"
+msgid "Raksaksağı II"
+msgstr ""
+
 #: DB:work_attribute_type_allowed_value/value:764
 msgctxt "work_attribute_type_allowed_value"
 msgid "Raksan"
@@ -4279,10 +4304,20 @@ msgctxt "medium_format"
 msgid "SACD"
 msgstr "SACD"
 
+#: DB:work_attribute_type/name:21
+msgctxt "work_attribute_type"
+msgid "SACEM ID"
+msgstr ""
+
 #: DB:work_attribute_type/name:8
 msgctxt "work_attribute_type"
 msgid "SESAC ID"
 msgstr "ID SESAC"
+
+#: DB:work_attribute_type/name:20
+msgctxt "work_attribute_type"
+msgid "SGAE ID"
+msgstr ""
 
 #: DB:medium_format/name:36
 msgctxt "medium_format"
@@ -4298,6 +4333,11 @@ msgstr ""
 msgctxt "work_attribute_type"
 msgid "SOCAN ID"
 msgstr "ID SOCAN"
+
+#: DB:work_attribute_type/name:18
+msgctxt "work_attribute_type"
+msgid "SUISA ID"
+msgstr ""
 
 #: DB:medium_format/name:23
 msgctxt "medium_format"
@@ -4921,6 +4961,11 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:580
 msgctxt "work_attribute_type_allowed_value"
 msgid "Türki Hicaz"
+msgstr ""
+
+#: DB:work_attribute_type_allowed_value/value:799
+msgctxt "work_attribute_type_allowed_value"
+msgid "Türkmen"
 msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:675

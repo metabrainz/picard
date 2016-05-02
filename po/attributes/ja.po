@@ -1,15 +1,23 @@
 # 
 # Translators:
 # nikki, 2014
+# Keshav Kini <keshav.kini@gmail.com>, 2013
 # mai inoue, 2015
+# mai inoue, 2015
+# nikki, 2013-2014
+# Nozomu Kurasawa <email address hidden>, 2012
 # Nozomu Kurasawa <nabetaro@caldron.jp>, 2012-2014
 # Osamu Takahashi, 2014
+# Osamu Takahashi, 2014
+# PATATE12, 2014
+# Shunsuke Shimizu <grafi@grafi.jp>, 2016
+# th1rtyf0ur, 2013
 # th1rtyf0ur, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2015-11-28 20:28+0000\n"
-"Last-Translator: mai inoue\n"
+"PO-Revision-Date: 2016-04-04 13:22+0000\n"
+"Last-Translator: Michael Wiencek <mwtuea@gmail.com>\n"
 "Language-Team: Japanese (http://www.transifex.com/musicbrainz/musicbrainz/language/ja/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -35,22 +43,22 @@ msgstr ""
 #: DB:medium_format/name:54
 msgctxt "medium_format"
 msgid "10\" Shellac"
-msgstr ""
+msgstr "10インチシェラック盤"
 
 #: DB:medium_format/name:30
 msgctxt "medium_format"
 msgid "10\" Vinyl"
-msgstr "10インチレコード盤"
+msgstr "10インチビニール盤"
 
 #: DB:medium_format/name:55
 msgctxt "medium_format"
 msgid "12\" Shellac"
-msgstr ""
+msgstr "12インチシェラック盤"
 
 #: DB:medium_format/name:31
 msgctxt "medium_format"
 msgid "12\" Vinyl"
-msgstr "12インチレコード盤"
+msgstr "12インチビニール盤"
 
 #: DB:medium_format/name:49
 msgctxt "medium_format"
@@ -60,17 +68,17 @@ msgstr "3.5インチ フロッピーディスク"
 #: DB:medium_format/name:52
 msgctxt "medium_format"
 msgid "7\" Flexi-disc"
-msgstr ""
+msgstr "7インチソノシート"
 
 #: DB:medium_format/name:56
 msgctxt "medium_format"
 msgid "7\" Shellac"
-msgstr ""
+msgstr "7インチシェラック盤"
 
 #: DB:medium_format/name:29
 msgctxt "medium_format"
 msgid "7\" Vinyl"
-msgstr "7インチレコード盤"
+msgstr "7インチビニール盤"
 
 #: DB:medium_format/name:34
 msgctxt "medium_format"
@@ -332,7 +340,7 @@ msgid ""
 "A zarzuela is a Spanish lyric-dramatic work that alternates between spoken "
 "and sung scenes, the latter incorporating operatic and popular song, as well"
 " as dance."
-msgstr ""
+msgstr "サルスエラは台詞と歌唱がの場面が入り混じったスペインの歌劇作品です。歌唱はオペラと流行歌が、ダンスとともに混ざり合ったものです。"
 
 #: DB:work_attribute_type_allowed_value/value:26
 msgctxt "work_attribute_type_allowed_value"
@@ -407,7 +415,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:308
 msgctxt "work_attribute_type_allowed_value"
 msgid "Aheng-i Tarab"
-msgstr ""
+msgstr "I<"
 
 #: DB:work_attribute_type_allowed_value/value:309
 msgctxt "work_attribute_type_allowed_value"
@@ -537,7 +545,7 @@ msgctxt "release_status"
 msgid ""
 "Any release officially sanctioned by the artist and/or their record company."
 " Most releases will fit into this category."
-msgstr ""
+msgstr "アーティストやレコード会社の許諾で発売されるリリース（"
 
 #: DB:work_attribute_type_allowed_value/value:311
 msgctxt "work_attribute_type_allowed_value"
@@ -592,7 +600,7 @@ msgstr ""
 #: DB:editor_collection_type/name:7
 msgctxt "collection_type"
 msgid "Area"
-msgstr ""
+msgstr "地域"
 
 #: DB:area_alias_type/name:1
 msgctxt "alias_type"
@@ -607,7 +615,7 @@ msgstr "アリア"
 #: DB:editor_collection_type/name:8
 msgctxt "collection_type"
 msgid "Artist"
-msgstr ""
+msgstr "アーティスト"
 
 #: DB:artist_alias_type/name:1
 msgctxt "alias_type"
@@ -627,12 +635,12 @@ msgstr ""
 #: DB:editor_collection_type/name:5
 msgctxt "collection_type"
 msgid "Attending"
-msgstr ""
+msgstr "どこから書きはじめればいいかわからないくらい多くの労力をCAcertに注ぎました。彼は Christian がドラフト状態までにした CPS をなんとか仕上げ、数えきれない時間を使って、人々を保証したり、"
 
 #: DB:work_type/name:25
 msgctxt "work_type"
 msgid "Audio drama"
-msgstr ""
+msgstr "オーディオドラマ"
 
 #: DB:release_group_secondary_type/name:5
 msgctxt "release_group_secondary_type"
@@ -737,7 +745,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:795
 msgctxt "work_attribute_type_allowed_value"
 msgid "B Dorian"
-msgstr ""
+msgstr "ロ調ドリア"
 
 #: DB:work_attribute_type_allowed_value/value:33
 msgctxt "work_attribute_type_allowed_value"
@@ -762,7 +770,7 @@ msgstr "変ロ短調"
 #: DB:work_attribute_type/name:7
 msgctxt "work_attribute_type"
 msgid "BMI ID"
-msgstr ""
+msgstr "BMI ID"
 
 #: DB:cover_art_archive.art_type/name:2
 msgctxt "cover_art_type"
@@ -959,7 +967,7 @@ msgstr "Blu-ray"
 #: DB:medium_format/name:35
 msgctxt "medium_format"
 msgid "Blu-spec CD"
-msgstr ""
+msgstr "Blu-spec CD"
 
 #: DB:release_packaging/name:9
 msgctxt "release_packaging"
@@ -1039,7 +1047,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:789
 msgctxt "work_attribute_type_allowed_value"
 msgid "C Dorian"
-msgstr ""
+msgstr "ハ調ドリア"
 
 #: DB:work_attribute_type_allowed_value/value:2
 msgctxt "work_attribute_type_allowed_value"
@@ -1065,6 +1073,16 @@ msgstr "嬰ハ長調"
 msgctxt "work_attribute_type_allowed_value"
 msgid "C-sharp minor"
 msgstr "嬰ハ短調"
+
+#: DB:work_attribute_type/name:19
+msgctxt "work_attribute_type"
+msgid "CASH ID"
+msgstr "CASH ID"
+
+#: DB:work_attribute_type/name:22
+msgctxt "work_attribute_type"
+msgid "CCLI ID"
+msgstr ""
 
 #: DB:medium_format/name:1
 msgctxt "medium_format"
@@ -1169,7 +1187,7 @@ msgstr "キャラクター"
 #: DB:artist_type/name:6
 msgctxt "artist_type"
 msgid "Choir"
-msgstr ""
+msgstr "合唱"
 
 #: DB:work_attribute_type_allowed_value/value:71
 msgctxt "work_attribute_type_allowed_value"
@@ -1215,7 +1233,7 @@ msgstr ""
 #: DB:medium_format/name:61
 msgctxt "medium_format"
 msgid "Copy Control CD"
-msgstr "Copy Control CD"
+msgstr "コピーコントロールCD"
 
 #: DB:medium_format/description:61
 msgctxt "medium_format"
@@ -1224,7 +1242,7 @@ msgid ""
 "containing software that is ostensibly designed to prevent the CD from being"
 " ripped. There are a number of software variants: the most well-known are "
 "Macrovision's Cactus Data Shield (CDS) and SunnComm's MediaMax."
-msgstr ""
+msgstr "コピーコントロールCD（CCCD）とは主に2001年から2006にかけてリリースされた、リッピングを防ぐためのものであると称するソフトウェアを含んだCDの総称です。最も有名なMacrovisionのCactus Data Shield（CDS）やSunnComm'sのMediaMaxといった、様々なソフトウェアが存在します。"
 
 #: DB:area_type/name:1
 msgctxt "area_type"
@@ -1236,7 +1254,7 @@ msgctxt "area_type"
 msgid ""
 "Country is used for areas included (or previously included) in ISO 3166-1, "
 "e.g. United States."
-msgstr ""
+msgstr "国は、アメリカ合衆国などの、ISO 3166-1に含まれる（または以前含まれていた）地域を表します。"
 
 #: DB:area_type/name:7
 msgctxt "area_type"
@@ -1280,7 +1298,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:790
 msgctxt "work_attribute_type_allowed_value"
 msgid "D Dorian"
-msgstr ""
+msgstr "ニ調ドリア"
 
 #: DB:work_attribute_type_allowed_value/value:8
 msgctxt "work_attribute_type_allowed_value"
@@ -1325,7 +1343,7 @@ msgstr "DJミックス"
 #: DB:medium_format/name:44
 msgctxt "medium_format"
 msgid "DTS CD"
-msgstr ""
+msgstr "DTS CD"
 
 #: DB:medium_format/name:2
 msgctxt "medium_format"
@@ -1345,7 +1363,7 @@ msgstr "DVD-Video"
 #: DB:medium_format/name:47
 msgctxt "medium_format"
 msgid "DVDplus"
-msgstr ""
+msgstr "DVDplus"
 
 #: DB:work_attribute_type_allowed_value/value:343
 msgctxt "work_attribute_type_allowed_value"
@@ -1377,6 +1395,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Darb-ı Türki"
 msgstr ""
 
+#: DB:work_attribute_type_allowed_value/value:796
+msgctxt "work_attribute_type_allowed_value"
+msgid "Darbeyn"
+msgstr ""
+
 #: DB:work_attribute_type_allowed_value/value:73
 msgctxt "work_attribute_type_allowed_value"
 msgid "Darbār"
@@ -1390,7 +1413,7 @@ msgstr ""
 #: DB:medium_format/name:43
 msgctxt "medium_format"
 msgid "Data CD"
-msgstr ""
+msgstr "データCD"
 
 #: DB:release_group_secondary_type/name:10
 msgctxt "release_group_secondary_type"
@@ -1445,6 +1468,11 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:724
 msgctxt "work_attribute_type_allowed_value"
 msgid "Devr-i Turan"
+msgstr ""
+
+#: DB:work_attribute_type_allowed_value/value:797
+msgctxt "work_attribute_type_allowed_value"
+msgid "Devr-i Turan II"
 msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:79
@@ -1535,7 +1563,7 @@ msgstr ""
 #: DB:label_type/name:1
 msgctxt "label_type"
 msgid "Distributor"
-msgstr "代理店"
+msgstr "流通業者"
 
 #: DB:area_type/name:5
 msgctxt "area_type"
@@ -1685,7 +1713,7 @@ msgstr "EP"
 #: DB:medium_format/name:50
 msgctxt "medium_format"
 msgid "Edison Diamond Disc"
-msgstr ""
+msgstr "エジソンダイヤモンドディスク"
 
 #: DB:instrument_type/name:4
 msgctxt "instrument_type"
@@ -1695,7 +1723,7 @@ msgstr "電子楽器"
 #: DB:medium_format/name:42
 msgctxt "medium_format"
 msgid "Enhanced CD"
-msgstr ""
+msgstr "CD-EXTRA"
 
 #: DB:work_attribute_type_allowed_value/value:356
 msgctxt "work_attribute_type_allowed_value"
@@ -1715,17 +1743,17 @@ msgstr ""
 #: DB:editor_collection_type/name:4
 msgctxt "collection_type"
 msgid "Event"
-msgstr ""
+msgstr "イベント"
 
 #: DB:series_type/name:6
 msgctxt "series_type"
 msgid "Event"
-msgstr ""
+msgstr "イベント"
 
 #: DB:event_alias_type/name:1
 msgctxt "alias_type"
 msgid "Event name"
-msgstr ""
+msgstr "イベント名"
 
 #: DB:work_attribute_type_allowed_value/value:729
 msgctxt "work_attribute_type_allowed_value"
@@ -1790,7 +1818,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:792
 msgctxt "work_attribute_type_allowed_value"
 msgid "F Dorian"
-msgstr ""
+msgstr "ヘ調ドリア"
 
 #: DB:work_attribute_type_allowed_value/value:17
 msgctxt "work_attribute_type_allowed_value"
@@ -1830,7 +1858,7 @@ msgstr ""
 #: DB:release_packaging/name:10
 msgctxt "release_packaging"
 msgid "Fatbox"
-msgstr ""
+msgstr "ファットボックス"
 
 #: DB:gender/name:2
 msgctxt "gender"
@@ -1862,14 +1890,14 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Ferahnakaşiran"
 msgstr ""
 
+#: DB:work_attribute_type_allowed_value/value:370
+msgctxt "work_attribute_type_allowed_value"
+msgid "Ferahnüma"
+msgstr ""
+
 #: DB:work_attribute_type_allowed_value/value:371
 msgctxt "work_attribute_type_allowed_value"
 msgid "Ferahzad"
-msgstr ""
-
-#: DB:work_attribute_type_allowed_value/value:370
-msgctxt "work_attribute_type_allowed_value"
-msgid "Feraznüma"
 msgstr ""
 
 #: DB:event_type/name:2
@@ -1910,7 +1938,7 @@ msgstr ""
 #: DB:medium_format/name:51
 msgctxt "medium_format"
 msgid "Flexi-disc"
-msgstr ""
+msgstr "ソノシート"
 
 #: DB:medium_format/description:51
 msgctxt "medium_format"
@@ -1943,7 +1971,7 @@ msgstr "前面"
 #: DB:work_attribute_type_allowed_value/value:793
 msgctxt "work_attribute_type_allowed_value"
 msgid "G Dorian"
-msgstr ""
+msgstr "ト調ドリア"
 
 #: DB:work_attribute_type_allowed_value/value:22
 msgctxt "work_attribute_type_allowed_value"
@@ -1973,7 +2001,7 @@ msgstr "嬰ト短調"
 #: DB:work_attribute_type/name:9
 msgctxt "work_attribute_type"
 msgid "GEMA ID"
-msgstr ""
+msgstr "GEMA ID"
 
 #: DB:work_attribute_type_allowed_value/value:88
 msgctxt "work_attribute_type_allowed_value"
@@ -2148,7 +2176,7 @@ msgstr "HDCD"
 #: DB:medium_format/name:37
 msgctxt "medium_format"
 msgid "HQCD"
-msgstr ""
+msgstr "HQCD"
 
 #: DB:work_attribute_type_allowed_value/value:736
 msgctxt "work_attribute_type_allowed_value"
@@ -2378,7 +2406,7 @@ msgstr ""
 #: DB:medium_format/name:38
 msgctxt "medium_format"
 msgid "Hybrid SACD"
-msgstr ""
+msgstr "ハイブリッドSACD"
 
 #: DB:work_attribute_type_allowed_value/value:418
 msgctxt "work_attribute_type_allowed_value"
@@ -2460,12 +2488,12 @@ msgstr ""
 #: DB:editor_collection_type/name:9
 msgctxt "collection_type"
 msgid "Instrument"
-msgstr ""
+msgstr "楽器"
 
 #: DB:instrument_alias_type/name:1
 msgctxt "alias_type"
 msgid "Instrument name"
-msgstr ""
+msgstr "楽器名"
 
 #: DB:release_group_secondary_type/name:4
 msgctxt "release_group_secondary_type"
@@ -2603,7 +2631,7 @@ msgstr ""
 #: DB:work_attribute_type/name:11
 msgctxt "work_attribute_type"
 msgid "KOMCA ID"
-msgstr ""
+msgstr "KOMCA ID"
 
 #: DB:work_attribute_type_allowed_value/value:621
 msgctxt "work_attribute_type_allowed_value"
@@ -2918,7 +2946,7 @@ msgstr ""
 #: DB:editor_collection_type/name:10
 msgctxt "collection_type"
 msgid "Label"
-msgstr ""
+msgstr "レーベル"
 
 #: DB:label_alias_type/name:1
 msgctxt "alias_type"
@@ -3306,7 +3334,7 @@ msgstr ""
 #: DB:medium_format/name:46
 msgctxt "medium_format"
 msgid "Music Card"
-msgstr ""
+msgstr "MUSIC CARD"
 
 #: DB:work_type/name:29
 msgctxt "work_type"
@@ -3733,7 +3761,7 @@ msgstr "オラトリオ"
 #: DB:artist_type/name:5
 msgctxt "artist_type"
 msgid "Orchestra"
-msgstr ""
+msgstr "オーケストラ"
 
 #: DB:label_type/name:4
 msgctxt "label_type"
@@ -3763,7 +3791,7 @@ msgstr "その他"
 #: DB:place_type/name:3
 msgctxt "place_type"
 msgid "Other"
-msgstr ""
+msgstr "その他"
 
 #: DB:release_group_primary_type/name:11
 msgctxt "release_group_primary_type"
@@ -3878,7 +3906,7 @@ msgstr "ピアノロール"
 #: DB:editor_collection_type/name:11
 msgctxt "collection_type"
 msgid "Place"
-msgstr ""
+msgstr "場所"
 
 #: DB:place_alias_type/name:1
 msgctxt "alias_type"
@@ -3893,7 +3921,7 @@ msgstr ""
 #: DB:medium_format/name:45
 msgctxt "medium_format"
 msgid "Playbutton"
-msgstr ""
+msgstr "PLAYBUTTON"
 
 #: DB:work_type/name:21
 msgctxt "work_type"
@@ -3988,6 +4016,11 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:763
 msgctxt "work_attribute_type_allowed_value"
 msgid "Raksaksağı"
+msgstr ""
+
+#: DB:work_attribute_type_allowed_value/value:798
+msgctxt "work_attribute_type_allowed_value"
+msgid "Raksaksağı II"
 msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:764
@@ -4113,7 +4146,7 @@ msgstr ""
 #: DB:editor_collection_type/name:1
 msgctxt "collection_type"
 msgid "Release"
-msgstr ""
+msgstr "リリース"
 
 #: DB:series_type/name:2
 msgctxt "series_type"
@@ -4123,7 +4156,7 @@ msgstr "リリース"
 #: DB:editor_collection_type/name:13
 msgctxt "collection_type"
 msgid "Release group"
-msgstr ""
+msgstr "リリースグループ"
 
 #: DB:series_type/name:1
 msgctxt "series_type"
@@ -4133,12 +4166,12 @@ msgstr "リリースグループ"
 #: DB:release_group_alias_type/name:1
 msgctxt "alias_type"
 msgid "Release group name"
-msgstr ""
+msgstr "リリースグループ名"
 
 #: DB:release_alias_type/name:1
 msgctxt "alias_type"
 msgid "Release name"
-msgstr ""
+msgstr "リリース名"
 
 #: DB:place_type/name:6
 msgctxt "place_type"
@@ -4265,25 +4298,40 @@ msgctxt "medium_format"
 msgid "SACD"
 msgstr "SACD"
 
+#: DB:work_attribute_type/name:21
+msgctxt "work_attribute_type"
+msgid "SACEM ID"
+msgstr "SACEM ID"
+
 #: DB:work_attribute_type/name:8
 msgctxt "work_attribute_type"
 msgid "SESAC ID"
-msgstr ""
+msgstr "SESAC ID"
+
+#: DB:work_attribute_type/name:20
+msgctxt "work_attribute_type"
+msgid "SGAE ID"
+msgstr "SGAE ID"
 
 #: DB:medium_format/name:36
 msgctxt "medium_format"
 msgid "SHM-CD"
-msgstr ""
+msgstr "SHM-CD"
 
 #: DB:medium_format/name:57
 msgctxt "medium_format"
 msgid "SHM-SACD"
-msgstr ""
+msgstr "SHM-SACD"
 
 #: DB:work_attribute_type/name:10
 msgctxt "work_attribute_type"
 msgid "SOCAN ID"
-msgstr ""
+msgstr "SOCAN ID"
+
+#: DB:work_attribute_type/name:18
+msgctxt "work_attribute_type"
+msgid "SUISA ID"
+msgstr "SUISA ID"
 
 #: DB:medium_format/name:23
 msgctxt "medium_format"
@@ -4443,7 +4491,7 @@ msgstr ""
 #: DB:editor_collection_type/name:14
 msgctxt "collection_type"
 msgid "Series"
-msgstr ""
+msgstr "シリーズ"
 
 #: DB:series_alias_type/name:1
 msgctxt "alias_type"
@@ -4458,7 +4506,7 @@ msgstr ""
 #: DB:medium_format/name:53
 msgctxt "medium_format"
 msgid "Shellac"
-msgstr ""
+msgstr "シェラック盤"
 
 #: DB:medium_format/description:53
 msgctxt "medium_format"
@@ -4510,7 +4558,7 @@ msgstr "スリムジュエルケース"
 #: DB:release_packaging/name:11
 msgctxt "release_packaging"
 msgid "Snap Case"
-msgstr ""
+msgstr "スナップケース"
 
 #: DB:work_attribute_type_allowed_value/value:771
 msgctxt "work_attribute_type_allowed_value"
@@ -4909,6 +4957,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Türki Hicaz"
 msgstr ""
 
+#: DB:work_attribute_type_allowed_value/value:799
+msgctxt "work_attribute_type_allowed_value"
+msgid "Türkmen"
+msgstr ""
+
 #: DB:work_attribute_type_allowed_value/value:675
 msgctxt "work_attribute_type_allowed_value"
 msgid "Türkü"
@@ -4982,7 +5035,7 @@ msgstr "VCD"
 #: DB:medium_format/name:59
 msgctxt "medium_format"
 msgid "VHD"
-msgstr ""
+msgstr "VHD"
 
 #: DB:medium_format/name:21
 msgctxt "medium_format"
@@ -5084,12 +5137,12 @@ msgstr ""
 #: DB:medium_format/name:7
 msgctxt "medium_format"
 msgid "Vinyl"
-msgstr "レコード盤"
+msgstr "ビニール盤"
 
 #: DB:medium_format/name:48
 msgctxt "medium_format"
 msgid "VinylDisc"
-msgstr ""
+msgstr "ビニール盤"
 
 #: DB:work_attribute_type_allowed_value/value:259
 msgctxt "work_attribute_type_allowed_value"
@@ -5144,7 +5197,7 @@ msgstr ""
 #: DB:editor_collection_type/name:15
 msgctxt "collection_type"
 msgid "Work"
-msgstr ""
+msgstr "作品"
 
 #: DB:series_type/name:4
 msgctxt "series_type"

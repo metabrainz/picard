@@ -6,15 +6,18 @@
 # Nerten <alex@nerten.info>, 2013
 # Ivan Ivaschenko <defuz.net@gmail.com>, 2014
 # Nikolai Prokoschenko <nikolai@prokoschenko.de>, 2012
+# Serg Green <serg.green@gmail.com>, 2016
 # aeontech <stroganov.a@gmail.com>, 2014
+# Un Knwn <hiroaritillwhen@gmail.com>, 2016
+# Александр Жибарь <santer1986@gmail.com>, 2016
 # Дмитрий <sema19689@gmail.com>, 2014-2015
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2015-02-06 13:01+0100\n"
-"PO-Revision-Date: 2015-02-07 08:15+0000\n"
-"Last-Translator: nikki\n"
+"PO-Revision-Date: 2016-05-01 15:18+0000\n"
+"Last-Translator: Александр Жибарь <santer1986@gmail.com>\n"
 "Language-Team: Russian (http://www.transifex.com/musicbrainz/musicbrainz/language/ru/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -582,19 +585,19 @@ msgstr "&Информация"
 
 #: picard/ui/infodialog.py:177
 msgid "Cluster Info"
-msgstr ""
+msgstr "Информация о кластере"
 
 #: picard/ui/infodialog.py:186
 msgid "Album:"
-msgstr ""
+msgstr "Альбом:"
 
 #: picard/ui/infodialog.py:188
 msgid "Artist:"
-msgstr ""
+msgstr "Исполнитель:"
 
 #: picard/ui/infodialog.py:198
 msgid "Tracklist:"
-msgstr ""
+msgstr "Треклист:"
 
 #: picard/ui/infostatus.py:51
 msgid "Files"
@@ -1015,13 +1018,13 @@ msgstr "%(filename)s (%(similarity)d%%)"
 
 #: picard/ui/mainwindow.py:920
 msgid "Authentication Required"
-msgstr ""
+msgstr "Требуется аутентификация"
 
 #: picard/ui/mainwindow.py:921
 msgid ""
 "Picard needs authorization to access your personal data on the MusicBrainz "
 "server. Would you like to log in now?"
-msgstr ""
+msgstr "Picard требует авторизации для доступа к вашим персональным данным на сервере MusicBrainz.Войти сейчас?"
 
 #: picard/ui/metadatabox.py:82
 #, python-format
@@ -1157,7 +1160,7 @@ msgstr "Игнорировать пути к файлам, соответств�
 
 #: picard/ui/ui_options_advanced.py:47
 msgid "Ignore hidden files"
-msgstr ""
+msgstr "Игнорировать скрытые файлы"
 
 #: picard/ui/ui_options_cdlookup.py:43
 msgid "CD-ROM device to use for lookups:"
@@ -1201,7 +1204,7 @@ msgstr "Amazon"
 
 #: picard/ui/ui_options_cover.py:150 picard/ui/ui_options_cover.py:152
 msgid "Cover Art Archive"
-msgstr "Cover Art Archive"
+msgstr "Архив обложек"
 
 #: picard/ui/ui_options_cover.py:151
 msgid "Sites on the whitelist"
@@ -1225,11 +1228,11 @@ msgstr "Полный размер"
 
 #: picard/ui/ui_options_cover.py:157
 msgid "Download only cover art images matching selected types"
-msgstr ""
+msgstr "Загружать только обложки совпадающие выбранным типам"
 
 #: picard/ui/ui_options_cover.py:158
 msgid "Select types..."
-msgstr ""
+msgstr "Выбор типов..."
 
 #: picard/ui/ui_options_cover.py:159
 msgid "Download only approved images"
@@ -1245,7 +1248,7 @@ msgstr "Первый тип изображения можно используй
 msgid ""
 "Use the image of the release group if no front image is associated with the "
 "release"
-msgstr ""
+msgstr "Использовать обложку релиз-группы, если не найдена обложка релиза"
 
 #: picard/ui/ui_options_fingerprinting.py:70
 msgid "Audio Fingerprinting"
@@ -1310,15 +1313,15 @@ msgstr "Адрес сервера:"
 
 #: picard/ui/ui_options_general.py:95 picard/ui/options/general.py:88
 msgid "MusicBrainz Account"
-msgstr ""
+msgstr "Аккаунт MusicBrainz"
 
 #: picard/ui/ui_options_general.py:96
 msgid "Log in"
-msgstr ""
+msgstr "Войти"
 
 #: picard/ui/ui_options_general.py:97
 msgid "Log out"
-msgstr ""
+msgstr "Выйти"
 
 #: picard/ui/ui_options_general.py:98 picard/ui/options/general.py:33
 msgid "General"
@@ -1707,11 +1710,11 @@ msgstr "Тип Обложки"
 
 #: picard/ui/options/cover.py:69
 msgid "Chec&k all"
-msgstr ""
+msgstr "&Выбрать всё"
 
 #: picard/ui/options/cover.py:70
 msgid "&Uncheck all"
-msgstr ""
+msgstr "&Очистить"
 
 #: picard/ui/options/cover.py:116
 msgid "Cover Art"
@@ -1724,11 +1727,11 @@ msgstr "Отпечаток"
 #: picard/ui/options/general.py:74
 #, python-format
 msgid "Logged in as <b>%s</b>."
-msgstr ""
+msgstr "Вошли, как <b>%s</b>."
 
 #: picard/ui/options/general.py:88
 msgid "Authorization code:"
-msgstr ""
+msgstr "Код авторизации:"
 
 #: picard/ui/options/interface.py:35
 msgid "User Interface"

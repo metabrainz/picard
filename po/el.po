@@ -7,7 +7,7 @@
 # Dimitris <dimpole@gmail.com>, 2012
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2009
 # Panos Bouklis <panos@echidna-band.com>, 2012
-# Γιάννης Ανθυμίδης <yannanth@gmail.com>, 2013
+# Γιάννης Ανθυμίδης, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"

@@ -6,8 +6,8 @@
 # bnw <thth0851@student.uu.se>, 2006
 # Christian Andersson <christian.ld.andersson@gmail.com>, 2012
 # Robin Björnsvik <robin@bjornsvik.se>, 2013
-# Staffan, 2014
-# Staffan, 2012
+# Staffan Vilcans, 2014
+# Staffan Vilcans, 2012
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
