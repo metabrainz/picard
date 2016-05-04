@@ -52,17 +52,17 @@ CAA_PORT = 80
 
 # URLs
 PICARD_URLS = {
-    'documentation':    "http://picard.musicbrainz.org/docs/",
-    'troubleshooting':  "http://picard.musicbrainz.org/docs/troubleshooting/",
-    'home':             "http://picard.musicbrainz.org/",
-    'doc_options':      "http://picard.musicbrainz.org/docs/options/",
-    'doc_scripting':    "http://picard.musicbrainz.org/docs/scripting",
-    'plugins':          "http://picard.musicbrainz.org/plugins/",
+    'documentation':    "https://picard.musicbrainz.org/docs/",
+    'troubleshooting':  "https://picard.musicbrainz.org/docs/troubleshooting/",
+    'home':             "https://picard.musicbrainz.org/",
+    'doc_options':      "https://picard.musicbrainz.org/docs/options/",
+    'doc_scripting':    "https://picard.musicbrainz.org/docs/scripting",
+    'plugins':          "https://picard.musicbrainz.org/plugins/",
     'forum':            "https://community.metabrainz.org/c/picard",
-    'donate':           "http://metabrainz.org/donate",
-    'chromaprint':      "http://acoustid.org/chromaprint#download",
-    'acoustid_apikey':  "http://acoustid.org/api-key",
-    'doc_cover_art_types': "http://musicbrainz.org/doc/Cover_Art/Types",
+    'donate':           "https://metabrainz.org/donate",
+    'chromaprint':      "https://acoustid.org/chromaprint#download",
+    'acoustid_apikey':  "https://acoustid.org/api-key",
+    'doc_cover_art_types': "https://musicbrainz.org/doc/Cover_Art/Types",
     'acoustid_track': "https://acoustid.org/track/",
 }
 
