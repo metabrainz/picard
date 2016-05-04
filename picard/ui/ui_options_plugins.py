@@ -8,7 +8,16 @@ from PyQt4 import QtCore, QtGui
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
 except AttributeError:
-    _fromUtf8 = lambda s: s
+    def _fromUtf8(s):
+        return s
+
+try:
+    _encoding = QtGui.QApplication.UnicodeUTF8
+    def _translate(context, text, disambig):
+        return QtGui.QApplication.translate(context, text, disambig, _encoding)
+except AttributeError:
+    def _translate(context, text, disambig):
+        return QtGui.QApplication.translate(context, text, disambig)
 
 class Ui_PluginsOptionsPage(object):
     def setupUi(self, PluginsOptionsPage):
@@ -16,11 +25,12 @@ class Ui_PluginsOptionsPage(object):
         PluginsOptionsPage.resize(513, 312)
         self.vboxlayout = QtGui.QVBoxLayout(PluginsOptionsPage)
         self.vboxlayout.setObjectName(_fromUtf8("vboxlayout"))
-        self.splitter = QtGui.QSplitter(PluginsOptionsPage)
-        self.splitter.setOrientation(QtCore.Qt.Vertical)
-        self.splitter.setHandleWidth(2)
-        self.splitter.setObjectName(_fromUtf8("splitter"))
-        self.groupBox_2 = QtGui.QGroupBox(self.splitter)
+        self.plugins_container = QtGui.QSplitter(PluginsOptionsPage)
+        self.plugins_container.setEnabled(True)
+        self.plugins_container.setOrientation(QtCore.Qt.Vertical)
+        self.plugins_container.setHandleWidth(2)
+        self.plugins_container.setObjectName(_fromUtf8("plugins_container"))
+        self.groupBox_2 = QtGui.QGroupBox(self.plugins_container)
         self.groupBox_2.setObjectName(_fromUtf8("groupBox_2"))
         self.vboxlayout1 = QtGui.QVBoxLayout(self.groupBox_2)
         self.vboxlayout1.setSpacing(2)
@@ -54,16 +64,16 @@ class Ui_PluginsOptionsPage(object):
         self.folder_open.setSizePolicy(sizePolicy)
         self.folder_open.setObjectName(_fromUtf8("folder_open"))
         self.horizontalLayout.addWidget(self.folder_open)
-        self.plugin_download = QtGui.QPushButton(self.groupBox_2)
+        self.reload_list_of_plugins = QtGui.QPushButton(self.groupBox_2)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.plugin_download.sizePolicy().hasHeightForWidth())
-        self.plugin_download.setSizePolicy(sizePolicy)
-        self.plugin_download.setObjectName(_fromUtf8("plugin_download"))
-        self.horizontalLayout.addWidget(self.plugin_download)
+        sizePolicy.setHeightForWidth(self.reload_list_of_plugins.sizePolicy().hasHeightForWidth())
+        self.reload_list_of_plugins.setSizePolicy(sizePolicy)
+        self.reload_list_of_plugins.setObjectName(_fromUtf8("reload_list_of_plugins"))
+        self.horizontalLayout.addWidget(self.reload_list_of_plugins)
         self.vboxlayout1.addLayout(self.horizontalLayout)
-        self.groupBox = QtGui.QGroupBox(self.splitter)
+        self.groupBox = QtGui.QGroupBox(self.plugins_container)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -88,7 +98,7 @@ class Ui_PluginsOptionsPage(object):
         self.scrollArea.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.scrollArea.setObjectName(_fromUtf8("scrollArea"))
         self.scrollAreaWidgetContents = QtGui.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 459, 76))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 469, 76))
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -118,7 +128,7 @@ class Ui_PluginsOptionsPage(object):
         self.verticalLayout.addWidget(self.details)
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
         self.vboxlayout2.addWidget(self.scrollArea)
-        self.vboxlayout.addWidget(self.splitter)
+        self.vboxlayout.addWidget(self.plugins_container)
 
         self.retranslateUi(PluginsOptionsPage)
         QtCore.QMetaObject.connectSlotsByName(PluginsOptionsPage)
@@ -127,9 +137,9 @@ class Ui_PluginsOptionsPage(object):
         self.groupBox_2.setTitle(_("Plugins"))
         self.plugins.headerItem().setText(0, _("Name"))
         self.plugins.headerItem().setText(1, _("Version"))
-        self.plugins.headerItem().setText(2, _("Author"))
+        self.plugins.headerItem().setText(2, _("Status"))
         self.install_plugin.setText(_("Install plugin..."))
         self.folder_open.setText(_("Open plugin folder"))
-        self.plugin_download.setText(_("Download plugins"))
+        self.reload_list_of_plugins.setText(_("Reload List of Plugins"))
         self.groupBox.setTitle(_("Details"))
 

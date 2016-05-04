@@ -9,9 +9,9 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2015-02-06 13:01+0100\n"
-"PO-Revision-Date: 2015-02-07 08:15+0000\n"
+"PO-Revision-Date: 2015-12-12 17:23+0000\n"
 "Last-Translator: nikki\n"
-"Language-Team: Occitan (post 1500) (http://www.transifex.com/projects/p/musicbrainz/language/oc/)\n"
+"Language-Team: Occitan (post 1500) (http://www.transifex.com/musicbrainz/musicbrainz/language/oc/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -41,7 +41,7 @@ msgstr ""
 
 #: contrib/plugins/lastfm/ui_options_lastfm.py:99
 msgid "Last.fm"
-msgstr ""
+msgstr "Last.fm"
 
 #: contrib/plugins/lastfm/ui_options_lastfm.py:100
 msgid "Use track tags"
@@ -324,7 +324,7 @@ msgstr ""
 
 #: picard/releasegroup.py:53
 msgid "Tracks"
-msgstr ""
+msgstr "Pistas"
 
 #: picard/releasegroup.py:54
 msgid "Year"
@@ -332,7 +332,7 @@ msgstr ""
 
 #: picard/releasegroup.py:55 picard/ui/cdlookup.py:35
 msgid "Country"
-msgstr ""
+msgstr "País"
 
 #: picard/releasegroup.py:56
 msgid "Format"
@@ -340,7 +340,7 @@ msgstr "Format"
 
 #: picard/releasegroup.py:57
 msgid "Label"
-msgstr ""
+msgstr "Labèl"
 
 #: picard/releasegroup.py:58
 msgid "Cat No"
@@ -380,7 +380,7 @@ msgstr "Error pendent la lectura del CD :\n\n%s"
 
 #: picard/const/languages.py:31
 msgid "Danish"
-msgstr ""
+msgstr "Danés"
 
 #: picard/const/languages.py:32
 msgid "German"
@@ -464,7 +464,7 @@ msgstr "Data"
 
 #: picard/ui/cdlookup.py:36
 msgid "Labels"
-msgstr ""
+msgstr "Labèls"
 
 #: picard/ui/cdlookup.py:36
 msgid "Catalog #s"
@@ -947,7 +947,7 @@ msgstr "&Ajuda"
 
 #: picard/ui/mainwindow.py:559
 msgid "Actions"
-msgstr ""
+msgstr "Accions"
 
 #: picard/ui/mainwindow.py:605
 msgid "Track"
@@ -2080,7 +2080,7 @@ msgstr ""
 
 #: picard/util/tags.py:88
 msgid "Artists"
-msgstr ""
+msgstr "Artistas"
 
 #: picard/util/tags.py:89
 msgid "Work"

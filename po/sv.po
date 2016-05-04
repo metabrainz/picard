@@ -6,8 +6,8 @@
 # bnw <thth0851@student.uu.se>, 2006
 # Christian Andersson <christian.ld.andersson@gmail.com>, 2012
 # Robin Björnsvik <robin@bjornsvik.se>, 2013
-# Staffan, 2014
-# Staffan, 2012
+# Staffan Vilcans, 2014
+# Staffan Vilcans, 2012
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
@@ -15,7 +15,7 @@ msgstr ""
 "POT-Creation-Date: 2015-02-06 13:01+0100\n"
 "PO-Revision-Date: 2015-02-07 08:15+0000\n"
 "Last-Translator: nikki\n"
-"Language-Team: Swedish (http://www.transifex.com/projects/p/musicbrainz/language/sv/)\n"
+"Language-Team: Swedish (http://www.transifex.com/musicbrainz/musicbrainz/language/sv/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"

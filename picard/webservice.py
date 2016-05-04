@@ -46,8 +46,10 @@ from picard.const import (ACOUSTID_KEY,
                           CAA_PORT,
                           MUSICBRAINZ_SERVERS)
 from picard.oauth import OAuthManager
+from picard.util import build_qurl
 
 
+COUNT_REQUESTS_DELAY_MS = 250
 REQUEST_DELAY = defaultdict(lambda: 1000)
 REQUEST_DELAY[(ACOUSTID_HOST, ACOUSTID_PORT)] = 333
 REQUEST_DELAY[(CAA_HOST, CAA_PORT)] = 0
@@ -141,21 +143,29 @@ class XmlWebService(QtCore.QObject):
         self.set_cache()
         self.setup_proxy()
         self.manager.finished.connect(self._process_reply)
-        self._last_request_times = {}
-        self._active_requests = {}
-        self._high_priority_queues = {}
-        self._low_priority_queues = {}
-        self._hosts = []
-        self._timer = QtCore.QTimer(self)
-        self._timer.setSingleShot(True)
-        self._timer.timeout.connect(self._run_next_task)
+        self._last_request_times = defaultdict(lambda: 0)
         self._request_methods = {
             "GET": self.manager.get,
             "POST": self.manager.post,
             "PUT": self.manager.put,
             "DELETE": self.manager.deleteResource
         }
+        self._init_queues()
+        self._init_timers()
+
+    def _init_queues(self):
+        self._active_requests = {}
+        self._queues = defaultdict(lambda: defaultdict(deque))
         self.num_pending_web_requests = 0
+        self._last_num_pending_web_requests = -1
+
+    def _init_timers(self):
+        self._timer_run_next_task = QtCore.QTimer(self)
+        self._timer_run_next_task.setSingleShot(True)
+        self._timer_run_next_task.timeout.connect(self._run_next_task)
+        self._timer_count_pending_requests = QtCore.QTimer(self)
+        self._timer_count_pending_requests.setSingleShot(True)
+        self._timer_count_pending_requests.timeout.connect(self._count_pending_requests)
 
     def set_cache(self, cache_size_in_mb=100):
         cache = QtNetwork.QNetworkDiskCache()
@@ -179,15 +189,9 @@ class XmlWebService(QtCore.QObject):
 
     def _start_request_continue(self, method, host, port, path, data, handler, xml,
                                 mblogin=False, cacheloadcontrol=None, refresh=None,
-                                access_token=None):
-        if (mblogin and host in MUSICBRAINZ_SERVERS and port == 80) or port == 443:
-            urlstring = "https://%s%s" % (host, path)
-        elif port is None or port == 80:
-            urlstring = "http://%s%s" % (host, path)
-        else:
-            urlstring = "http://%s:%d%s" % (host, port, path)
-        log.debug("%s %s", method, urlstring)
-        url = QUrl.fromEncoded(urlstring)
+                                access_token=None, queryargs=None):
+        url = build_qurl(host, port, path=path, mblogin=mblogin,
+                         queryargs=queryargs)
         request = QtNetwork.QNetworkRequest(url)
         if mblogin and access_token:
             request.setRawHeader("Authorization", "Bearer %s" % access_token)
@@ -210,17 +214,17 @@ class XmlWebService(QtCore.QObject):
                 request.setHeader(QtNetwork.QNetworkRequest.ContentTypeHeader, "application/x-www-form-urlencoded")
         send = self._request_methods[method]
         reply = send(request, data) if data is not None else send(request)
-        key = (host, port)
-        self._last_request_times[key] = time.time()
+        self._remember_request_time((host, port))
         self._active_requests[reply] = (request, handler, xml, refresh)
 
     def _start_request(self, method, host, port, path, data, handler, xml,
-                       mblogin=False, cacheloadcontrol=None, refresh=None):
+                       mblogin=False, cacheloadcontrol=None, refresh=None,
+                       queryargs=None):
         def start_request_continue(access_token=None):
             self._start_request_continue(
                 method, host, port, path, data, handler, xml,
                 mblogin=mblogin, cacheloadcontrol=cacheloadcontrol, refresh=refresh,
-                access_token=access_token)
+                access_token=access_token, queryargs=queryargs)
         if mblogin and path != "/oauth2/token":
             self.oauth_manager.get_access_token(start_request_continue)
         else:
@@ -236,12 +240,13 @@ class XmlWebService(QtCore.QObject):
         return leftUrl.port(80) == rightUrl.port(80) and \
             leftUrl.toString(QUrl.RemovePort) == rightUrl.toString(QUrl.RemovePort)
 
-    def _process_reply(self, reply):
-        try:
-            request, handler, xml, refresh = self._active_requests.pop(reply)
-        except KeyError:
-            log.error("Request not found for %s" % reply.request().url().toString(QUrl.RemoveUserInfo))
-            return
+    @staticmethod
+    def url_port(url):
+        if url.scheme() == 'https':
+            return url.port(443)
+        return url.port(80)
+
+    def _handle_reply(self, reply, request, handler, xml, refresh):
         error = int(reply.error())
         if error:
             log.error("Network request error for %s: %s (QT code %d, HTTP code %s)",
@@ -264,132 +269,175 @@ class XmlWebService(QtCore.QObject):
                       )
             if handler is not None:
                 # Redirect if found and not infinite
-                if redirect and not XmlWebService.urls_equivalent(redirect, reply.request().url()):
-                    log.debug("Redirect to %s requested", redirect.toString(QUrl.RemoveUserInfo))
-                    redirect_host = str(redirect.host())
-                    redirect_port = redirect.port(80)
-
+                if redirect:
                     url = request.url()
-                    original_host = str(url.host())
-                    original_port = url.port(80)
+                    # merge with base url (to cover the possibility of the URL being relative)
+                    redirect = url.resolved(redirect)
+                    if not XmlWebService.urls_equivalent(redirect, reply.request().url()):
+                        log.debug("Redirect to %s requested", redirect.toString(QUrl.RemoveUserInfo))
+                        redirect_host = str(redirect.host())
+                        redirect_port = self.url_port(redirect)
+                        redirect_query = dict(redirect.encodedQueryItems())
+                        redirect_path = redirect.path()
 
-                    if ((original_host, original_port) in REQUEST_DELAY
-                            and (redirect_host, redirect_port) not in REQUEST_DELAY):
-                        log.debug("Setting rate limit for %s:%i to %i" %
-                                  (redirect_host, redirect_port,
-                                   REQUEST_DELAY[(original_host, original_port)]))
-                        REQUEST_DELAY[(redirect_host, redirect_port)] =\
-                            REQUEST_DELAY[(original_host, original_port)]
+                        original_host = str(url.host())
+                        original_port = self.url_port(url)
 
-                    self.get(redirect_host,
-                             redirect_port,
-                             # retain path, query string and anchors from redirect URL
-                             redirect.toString(QUrl.RemoveAuthority | QUrl.RemoveScheme),
-                             handler, xml, priority=True, important=True, refresh=refresh,
-                             cacheloadcontrol=request.attribute(QtNetwork.QNetworkRequest.CacheLoadControlAttribute))
-                elif redirect:
-                    log.error("Redirect loop: %s",
-                              reply.request().url().toString(QUrl.RemoveUserInfo)
-                              )
-                    handler(str(reply.readAll()), reply, error)
+                        if ((original_host, original_port) in REQUEST_DELAY
+                                and (redirect_host, redirect_port) not in REQUEST_DELAY):
+                            log.debug("Setting rate limit for %s:%i to %i" %
+                                      (redirect_host, redirect_port,
+                                       REQUEST_DELAY[(original_host, original_port)]))
+                            REQUEST_DELAY[(redirect_host, redirect_port)] =\
+                                REQUEST_DELAY[(original_host, original_port)]
+
+                        self.get(redirect_host,
+                                 redirect_port,
+                                 redirect_path,
+                                 handler, xml, priority=True, important=True, refresh=refresh, queryargs=redirect_query,
+                                 cacheloadcontrol=request.attribute(QtNetwork.QNetworkRequest.CacheLoadControlAttribute))
+                    else:
+                        log.error("Redirect loop: %s",
+                                  reply.request().url().toString(QUrl.RemoveUserInfo)
+                                  )
+                        handler(str(reply.readAll()), reply, error)
                 elif xml:
                     document = _read_xml(QXmlStreamReader(reply))
                     handler(document, reply, error)
                 else:
                     handler(str(reply.readAll()), reply, error)
-        reply.close()
-        self.num_pending_web_requests -= 1
-        self.tagger.tagger_stats_changed.emit()
+
+    def _process_reply(self, reply):
+        try:
+            request, handler, xml, refresh = self._active_requests.pop(reply)
+        except KeyError:
+            log.error("Request not found for %s" % reply.request().url().toString(QUrl.RemoveUserInfo))
+            return
+        try:
+            self._handle_reply(reply, request, handler, xml, refresh)
+        finally:
+            reply.close()
+            reply.deleteLater()
 
     def get(self, host, port, path, handler, xml=True, priority=False,
-            important=False, mblogin=False, cacheloadcontrol=None, refresh=False):
+            important=False, mblogin=False, cacheloadcontrol=None, refresh=False, queryargs=None):
         func = partial(self._start_request, "GET", host, port, path, None,
-                       handler, xml, mblogin, cacheloadcontrol=cacheloadcontrol, refresh=refresh)
+                       handler, xml, mblogin, cacheloadcontrol=cacheloadcontrol, refresh=refresh, queryargs=queryargs)
         return self.add_task(func, host, port, priority, important=important)
 
-    def post(self, host, port, path, data, handler, xml=True, priority=False, important=False, mblogin=True):
+    def post(self, host, port, path, data, handler, xml=True, priority=False, important=False, mblogin=True, queryargs=None):
         log.debug("POST-DATA %r", data)
-        func = partial(self._start_request, "POST", host, port, path, data, handler, xml, mblogin)
+        func = partial(self._start_request, "POST", host, port, path, data, handler, xml, mblogin, queryargs=queryargs)
         return self.add_task(func, host, port, priority, important=important)
 
-    def put(self, host, port, path, data, handler, priority=True, important=False, mblogin=True):
-        func = partial(self._start_request, "PUT", host, port, path, data, handler, False, mblogin)
+    def put(self, host, port, path, data, handler, priority=True, important=False, mblogin=True, queryargs=None):
+        func = partial(self._start_request, "PUT", host, port, path, data, handler, False, mblogin, queryargs=queryargs)
         return self.add_task(func, host, port, priority, important=important)
 
-    def delete(self, host, port, path, handler, priority=True, important=False, mblogin=True):
-        func = partial(self._start_request, "DELETE", host, port, path, None, handler, False, mblogin)
+    def delete(self, host, port, path, handler, priority=True, important=False, mblogin=True, queryargs=None):
+        func = partial(self._start_request, "DELETE", host, port, path, None, handler, False, mblogin, queryargs=queryargs)
         return self.add_task(func, host, port, priority, important=important)
 
     def stop(self):
-        self._high_priority_queues = {}
-        self._low_priority_queues = {}
         for reply in self._active_requests.keys():
             reply.abort()
+        self._init_queues()
+
+    def _count_pending_requests(self):
+        count = len(self._active_requests)
+        for prio_queue in self._queues.values():
+            for queue in prio_queue.values():
+                count += len(queue)
+        self.num_pending_web_requests = count
+        if count != self._last_num_pending_web_requests:
+            self._last_num_pending_web_requests = count
+            self.tagger.tagger_stats_changed.emit()
+        if count:
+            self._timer_count_pending_requests.start(COUNT_REQUESTS_DELAY_MS)
+
+    def _get_delay_to_next_request(self, hostkey):
+        """Calculate delay to next request to hostkey (host, port)
+           returns a tuple (wait, delay) where:
+               wait is True if a delay is needed
+               delay is the delay in milliseconds to next request
+        """
+        interval = REQUEST_DELAY[hostkey]
+        if not interval:
+            log.debug("WSREQ: Starting another request to %s without delay", hostkey)
+            return (False, 0)
+        last_request = self._last_request_times[hostkey]
+        if not last_request:
+            log.debug("WSREQ: First request to %s", hostkey)
+            self._remember_request_time(hostkey) # set it on first run
+            return (False, interval)
+        elapsed = (time.time() - last_request) * 1000
+        if elapsed >= interval:
+            log.debug("WSREQ: Last request to %s was %d ms ago, starting another one", hostkey, elapsed)
+            return (False, interval)
+        delay = int(math.ceil(interval - elapsed))
+        log.debug("WSREQ: Last request to %s was %d ms ago, waiting %d ms before starting another one",
+                  hostkey, elapsed, delay)
+        return (True, delay)
+
+    def _remember_request_time(self, hostkey):
+        if REQUEST_DELAY[hostkey]:
+            self._last_request_times[hostkey] = time.time()
 
     def _run_next_task(self):
         delay = sys.maxsize
-        for key in self._hosts:
-            queue = self._high_priority_queues.get(key) or self._low_priority_queues.get(key)
-            if not queue:
+        for prio in sorted(self._queues.keys(), reverse=True):
+            prio_queue = self._queues[prio]
+            if not prio_queue:
+                del(self._queues[prio])
                 continue
-            now = time.time()
-            last = self._last_request_times.get(key)
-            request_delay = REQUEST_DELAY[key]
-            last_ms = (now - last) * 1000 if last is not None else request_delay
-            if last_ms >= request_delay:
-                log.debug("Last request to %s was %d ms ago, starting another one", key, last_ms)
-                d = request_delay
-                queue.popleft()()
-            else:
-                d = int(math.ceil(request_delay - last_ms))
-                log.debug("Waiting %d ms before starting another request to %s", d, key)
-            if d < delay:
-                delay = d
+            for hostkey in sorted(prio_queue.keys(),
+                                  key=lambda hostkey: REQUEST_DELAY[hostkey]):
+                queue = self._queues[prio][hostkey]
+                if not queue:
+                    del(self._queues[prio][hostkey])
+                    continue
+                wait, d = self._get_delay_to_next_request(hostkey)
+                if not wait:
+                    queue.popleft()()
+                if d < delay:
+                    delay = d
         if delay < sys.maxsize:
-            self._timer.start(delay)
+            self._timer_run_next_task.start(delay)
 
     def add_task(self, func, host, port, priority, important=False):
-        key = (host, port)
-        if key not in self._hosts:
-            self._hosts.append(key)
-        if priority:
-            queues = self._high_priority_queues
-        else:
-            queues = self._low_priority_queues
-        queues.setdefault(key, deque())
+        hostkey = (host, port)
+        prio = int(priority)  # priority is a boolean
         if important:
-            queues[key].appendleft(func)
+            self._queues[prio][hostkey].appendleft(func)
         else:
-            queues[key].append(func)
-        self.num_pending_web_requests += 1
-        self.tagger.tagger_stats_changed.emit()
-        if len(queues[key]) == 1:
-            self._timer.start(0)
-        return (key, func, priority)
+            self._queues[prio][hostkey].append(func)
+        if not self._timer_run_next_task.isActive():
+            self._timer_run_next_task.start(0)
+        if not self._timer_count_pending_requests.isActive():
+            self._timer_count_pending_requests.start(0)
+        return (hostkey, func, prio)
 
     def remove_task(self, task):
-        key, func, priority = task
-        if priority:
-            queue = self._high_priority_queues[key]
-        else:
-            queue = self._low_priority_queues[key]
+        hostkey, func, prio = task
         try:
-            queue.remove(func)
+            self._queues[prio][hostkey].remove(func)
+            if not self._timer_count_pending_requests.isActive():
+                self._timer_count_pending_requests.start(0)
         except:
             pass
-        else:
-            self.num_pending_web_requests -= 1
-            self.tagger.tagger_stats_changed.emit()
 
-    def _get_by_id(self, entitytype, entityid, handler, inc=[], params=[],
+    def _get_by_id(self, entitytype, entityid, handler, inc=[], queryargs=None,
                    priority=False, important=False, mblogin=False, refresh=False):
         host = config.setting["server_host"]
         port = config.setting["server_port"]
-        path = "/ws/2/%s/%s?inc=%s" % (entitytype, entityid, "+".join(inc))
-        if params:
-            path += "&" + "&".join(params)
+        path = "/ws/2/%s/%s" % (entitytype, entityid)
+        if queryargs is None:
+            queryargs = {}
+        if inc:
+            queryargs["inc"] = "+".join(inc)
         return self.get(host, port, path, handler,
-                        priority=priority, important=important, mblogin=mblogin, refresh=refresh)
+                        priority=priority, important=important, mblogin=mblogin,
+                        refresh=refresh, queryargs=queryargs)
 
     def get_release_by_id(self, releaseid, handler, inc=[],
                           priority=False, important=False, mblogin=False, refresh=False):
@@ -403,7 +451,7 @@ class XmlWebService(QtCore.QObject):
 
     def lookup_discid(self, discid, handler, priority=True, important=True, refresh=False):
         inc = ['artist-credits', 'labels']
-        return self._get_by_id('discid', discid, handler, inc, params=["cdstubs=no"],
+        return self._get_by_id('discid', discid, handler, inc, queryargs={"cdstubs": "no"},
                                priority=priority, important=important, refresh=refresh)
 
     def _find(self, entitytype, handler, kwargs):
@@ -420,12 +468,12 @@ class XmlWebService(QtCore.QObject):
                     query.append('%s:(%s)' % (name, value))
         if query:
             filters.append(('query', ' '.join(query)))
-        params = []
+        queryargs = {}
         for name, value in filters:
             value = QUrl.toPercentEncoding(unicode(value))
-            params.append('%s=%s' % (str(name), value))
-        path = "/ws/2/%s/?%s" % (entitytype, "&".join(params))
-        return self.get(host, port, path, handler)
+            queryargs[str(name)] = value
+        path = "/ws/2/%s" % (entitytype)
+        return self.get(host, port, path, handler, queryargs=queryargs)
 
     def find_releases(self, handler, **kwargs):
         return self._find('release', handler, kwargs)
@@ -436,9 +484,12 @@ class XmlWebService(QtCore.QObject):
     def _browse(self, entitytype, handler, kwargs, inc=[], priority=False, important=False):
         host = config.setting["server_host"]
         port = config.setting["server_port"]
-        params = "&".join(["%s=%s" % (k, v) for k, v in kwargs.items()])
-        path = "/ws/2/%s?%s&inc=%s" % (entitytype, params, "+".join(inc))
-        return self.get(host, port, path, handler, priority=priority, important=important)
+        path = "/ws/2/%s" % (entitytype)
+        queryargs = kwargs
+        if inc:
+            queryargs["inc"] = "+".join(inc)
+        return self.get(host, port, path, handler, priority=priority,
+                        important=important, queryargs=queryargs)
 
     def browse_releases(self, handler, priority=True, important=True, **kwargs):
         inc = ["media", "labels"]
@@ -481,17 +532,26 @@ class XmlWebService(QtCore.QObject):
         return self.post(host, port, '/v2/submit', body, handler, priority=True, important=False, mblogin=False)
 
     def download(self, host, port, path, handler, priority=False,
-                 important=False, cacheloadcontrol=None, refresh=False):
-        return self.get(host, port, path, handler, xml=False, priority=priority,
-                        important=important, cacheloadcontrol=cacheloadcontrol, refresh=refresh)
+                 important=False, cacheloadcontrol=None, refresh=False,
+                 queryargs=None):
+        return self.get(host, port, path, handler, xml=False,
+                        priority=priority, important=important,
+                        cacheloadcontrol=cacheloadcontrol, refresh=refresh,
+                        queryargs=queryargs)
 
     def get_collection(self, id, handler, limit=100, offset=0):
         host, port = config.setting['server_host'], config.setting['server_port']
         path = "/ws/2/collection"
+        queryargs = None
         if id is not None:
             inc = ["releases", "artist-credits", "media"]
-            path += "/%s/releases?inc=%s&limit=%d&offset=%d" % (id, "+".join(inc), limit, offset)
-        return self.get(host, port, path, handler, priority=True, important=True, mblogin=True)
+            path += "/%s/releases" % (id)
+            queryargs = {}
+            queryargs["inc"] = "+".join(inc)
+            queryargs["limit"] = limit
+            queryargs["offset"] = offset
+        return self.get(host, port, path, handler, priority=True, important=True,
+                        mblogin=True, queryargs=queryargs)
 
     def get_collection_list(self, handler):
         return self.get_collection(None, handler)
@@ -500,14 +560,20 @@ class XmlWebService(QtCore.QObject):
         while releases:
             ids = ";".join(releases if len(releases) <= 400 else releases[:400])
             releases = releases[400:]
-            yield "/ws/2/collection/%s/releases/%s?client=%s" % (id, ids, CLIENT_STRING)
+            yield "/ws/2/collection/%s/releases/%s" % (id, ids)
+
+    def _get_client_queryarg(self):
+        return {"client": CLIENT_STRING}
+
 
     def put_to_collection(self, id, releases, handler):
         host, port = config.setting['server_host'], config.setting['server_port']
         for path in self._collection_request(id, releases):
-            self.put(host, port, path, "", handler)
+            self.put(host, port, path, "", handler,
+                     queryargs=self._get_client_queryarg())
 
     def delete_from_collection(self, id, releases, handler):
         host, port = config.setting['server_host'], config.setting['server_port']
         for path in self._collection_request(id, releases):
-            self.delete(host, port, path, handler)
+            self.delete(host, port, path, handler,
+                        queryargs=self._get_client_queryarg)

@@ -36,6 +36,7 @@ from picard.ui.options.dialog import OptionsDialog
 from picard.ui.infodialog import FileInfoDialog, AlbumInfoDialog, ClusterInfoDialog
 from picard.ui.infostatus import InfoStatus
 from picard.ui.passworddialog import PasswordDialog
+from picard.ui.logview import LogView, HistoryView
 from picard.ui.util import (
     find_starting_directory,
     ButtonLineEdit,
@@ -105,6 +106,9 @@ class MainWindow(QtGui.QMainWindow):
         self.cover_art_box = CoverArtBox(self)
         if not self.show_cover_art_action.isChecked():
             self.cover_art_box.hide()
+
+        self.logDialog = LogView()
+        self.historyDialog = HistoryView()
 
         bottomLayout = QtGui.QHBoxLayout()
         bottomLayout.setContentsMargins(0, 0, 0, 0)
@@ -391,6 +395,7 @@ class MainWindow(QtGui.QMainWindow):
         self.show_cover_art_action.triggered.connect(self.show_cover_art)
 
         self.search_action = QtGui.QAction(icontheme.lookup('system-search'), _(u"Search"), self)
+        self.search_action.setEnabled(False)
         self.search_action.triggered.connect(self.search)
 
         self.cd_lookup_action = QtGui.QAction(icontheme.lookup('media-optical'), _(u"Lookup &CD..."), self)
@@ -465,7 +470,7 @@ class MainWindow(QtGui.QMainWindow):
         xmlws_manager.authenticationRequired.connect(self.show_password_dialog)
         xmlws_manager.proxyAuthenticationRequired.connect(self.show_proxy_dialog)
 
-        self.play_file_action = QtGui.QAction(icontheme.lookup('play-music'), _(u"&Play file"), self)
+        self.play_file_action = QtGui.QAction(icontheme.lookup('play-music'), _(u"Open in &Player"), self)
         self.play_file_action.setStatusTip(_(u"Play the file in your default media player"))
         self.play_file_action.setEnabled(False)
         self.play_file_action.triggered.connect(self.play_file)
@@ -610,7 +615,8 @@ class MainWindow(QtGui.QMainWindow):
         self.search_combo.addItem(_(u"Track"), "track")
         hbox.addWidget(self.search_combo, 0)
         self.search_edit = ButtonLineEdit(search_panel)
-        self.search_edit.returnPressed.connect(self.search)
+        self.search_edit.returnPressed.connect(self.trigger_search_action)
+        self.search_edit.textChanged.connect(self.enable_search)
         hbox.addWidget(self.search_edit, 0)
         self.search_button = QtGui.QToolButton(search_panel)
         self.search_button.setAutoRaise(True)
@@ -652,6 +658,17 @@ class MainWindow(QtGui.QMainWindow):
     def enable_cluster(self, enabled):
         """Enable/disable the 'Cluster' action."""
         self.cluster_action.setEnabled(enabled)
+
+    def enable_search(self):
+        """Enable/disable the 'Search' action."""
+        if self.search_edit.text():
+            self.search_action.setEnabled(True)
+        else:
+            self.search_action.setEnabled(False)
+
+    def trigger_search_action(self):
+        if self.search_action.isEnabled():
+            self.search_action.trigger()
 
     def search(self):
         """Search for album, artist or track on the MusicBrainz website."""
@@ -720,12 +737,14 @@ class MainWindow(QtGui.QMainWindow):
         webbrowser2.goto('documentation')
 
     def show_log(self):
-        from picard.ui.logview import LogView
-        LogView(self).show()
+        self.logDialog.show()
+        self.logDialog.raise_()
+        self.logDialog.activateWindow()
 
     def show_history(self):
-        from picard.ui.logview import HistoryView
-        HistoryView(self).show()
+        self.historyDialog.show()
+        self.historyDialog.raise_()
+        self.historyDialog.activateWindow()
 
     def open_bug_report(self):
         webbrowser2.goto('troubleshooting')
@@ -895,7 +914,6 @@ class MainWindow(QtGui.QMainWindow):
         """Show/hide the cover art box."""
         if self.show_cover_art_action.isChecked():
             self.cover_art_box.show()
-            self.metadata_box.resize_columns()
         else:
             self.cover_art_box.hide()
 

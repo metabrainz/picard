@@ -22,7 +22,8 @@ from PyQt4 import QtCore
 import os.path
 import re
 from picard import log
-from picard.util import webbrowser2
+from picard.const import PICARD_URLS
+from picard.util import webbrowser2, build_qurl
 
 
 class FileLookup(object):
@@ -32,20 +33,14 @@ class FileLookup(object):
         self.localPort = int(localPort)
         self.port = port
 
-    def _url(self, path, params={}, scheme='http'):
-        url = QtCore.QUrl()
-        url.setScheme(scheme)
-        url.setHost(self.server)
-        url.setPort(self.port if scheme != 'https' else 443)
-        url.setPath(path)
+    def _url(self, path, params={}):
         if self.localPort:
             params['tport'] = self.localPort
-        for k, v in params.iteritems():
-            url.addQueryItem(k, unicode(v))
+        url = build_qurl(self.server, self.port, path=path, queryargs=params)
         return url.toEncoded()
 
-    def _build_launch(self, path, params={}, scheme='http'):
-        return self.launch(self._url(path, params, scheme))
+    def _build_launch(self, path, params={}):
+        return self.launch(self._url(path, params))
 
     def launch(self, url):
         log.debug("webbrowser2: %s" % url)
@@ -68,6 +63,18 @@ class FileLookup(object):
 
     def artistLookup(self, artist_id):
         return self._lookup('artist', artist_id)
+
+    def trackLookup(self, track_id):
+        return self._lookup('track', track_id)
+
+    def workLookup(self, work_id):
+        return self._lookup('work', artist_id)
+
+    def releaseGroupLookup(self, releaseGroup_id):
+        return self._lookup('release-group', releaseGroup_id)
+
+    def acoustLookup(self, acoust_id):
+        return self.launch(PICARD_URLS['acoustid_track'] + acoust_id)
 
     def mbidLookup(self, string, type_):
         """Parses string for known entity type and mbid, open browser for it
@@ -123,4 +130,4 @@ class FileLookup(object):
         return self._build_launch('/taglookup', params)
 
     def collectionLookup(self, userid):
-        return self._build_launch('/user/%s/collections' % userid, scheme='https')
+        return self._build_launch('/user/%s/collections' % userid)

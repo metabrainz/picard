@@ -3,16 +3,18 @@
 # This file is distributed under the same license as the picard project.
 # 
 # Translators:
+# Miroslav Šulc <fordfrog@fordfrog.com>, 2016
 # Ondřej Vodáček <ondrej.vodacek+transifex@gmail.com>, 2012-2013
+# pabouk <pabouk@gmail.com>, 2015
 # pabouk <pabouk@gmail.com>, 2012
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2015-02-06 13:01+0100\n"
-"PO-Revision-Date: 2015-02-07 08:15+0000\n"
-"Last-Translator: nikki\n"
-"Language-Team: Czech (http://www.transifex.com/projects/p/musicbrainz/language/cs/)\n"
+"PO-Revision-Date: 2016-03-12 19:47+0000\n"
+"Last-Translator: Miroslav Šulc <fordfrog@fordfrog.com>\n"
+"Language-Team: Czech (http://www.transifex.com/musicbrainz/musicbrainz/language/cs/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -22,11 +24,11 @@ msgstr ""
 
 #: contrib/plugins/albumartist_website.py:3
 msgid "Album Artist Website"
-msgstr ""
+msgstr "Web umělce alba"
 
 #: contrib/plugins/no_release.py:50
 msgid "Enable plugin for all releases by default"
-msgstr ""
+msgstr "Povolit zásuvný modul pro všechna vydání ve výchozím nastavení"
 
 #: contrib/plugins/no_release.py:51
 msgid "Tags to strip (comma-separated)"
@@ -34,11 +36,11 @@ msgstr "Tagy k odstranění (oddělené čárkou)"
 
 #: contrib/plugins/no_release.py:63
 msgid "Remove specific release information..."
-msgstr ""
+msgstr "Odstranit informace o specifickém vydání..."
 
 #: contrib/plugins/standardise_performers.py:3
 msgid "Standardise Performers"
-msgstr ""
+msgstr "Standardizovat umělce"
 
 #: contrib/plugins/lastfm/ui_options_lastfm.py:99
 msgid "Last.fm"
@@ -150,36 +152,36 @@ msgstr ""
 #: contrib/plugins/viewvariables/__init__.py:42
 #, python-format
 msgid "File: %s"
-msgstr ""
+msgstr "Soubor: %s"
 
 #: contrib/plugins/viewvariables/__init__.py:47
 #, python-format
 msgid "Track: %s %s "
-msgstr ""
+msgstr "Stopa: %s %s"
 
 #: contrib/plugins/viewvariables/__init__.py:49
 msgid "Variables"
-msgstr ""
+msgstr "Proměnné"
 
 #: contrib/plugins/viewvariables/__init__.py:69
 msgid "File variables"
-msgstr ""
+msgstr "Proměnné souboru"
 
 #: contrib/plugins/viewvariables/__init__.py:74
 msgid "Hidden variables"
-msgstr ""
+msgstr "Skryté proměnné"
 
 #: contrib/plugins/viewvariables/__init__.py:79
 msgid "Tag variables"
-msgstr ""
+msgstr "Proměnné štítku"
 
 #: contrib/plugins/viewvariables/ui_variables_dialog.py:73
 msgid "Variable"
-msgstr ""
+msgstr "Proměnná"
 
 #: contrib/plugins/viewvariables/ui_variables_dialog.py:75
 msgid "Value"
-msgstr ""
+msgstr "Hodnota"
 
 #: picard/acoustid.py:111
 #, python-format
@@ -332,7 +334,7 @@ msgstr ""
 
 #: picard/releasegroup.py:54
 msgid "Year"
-msgstr ""
+msgstr "Rok"
 
 #: picard/releasegroup.py:55 picard/ui/cdlookup.py:35
 msgid "Country"
@@ -373,7 +375,7 @@ msgstr ""
 
 #: picard/tagger.py:547
 msgid "CD Lookup Error"
-msgstr "Chyba při prohledávání CD/DVD"
+msgstr "Chyba při vyhledávání CD"
 
 #: picard/tagger.py:548
 #, python-format
@@ -385,7 +387,7 @@ msgstr "Chyba při čtení CD/DVD:\n\n%s"
 
 #: picard/const/languages.py:31
 msgid "Danish"
-msgstr "Dánština"
+msgstr "dánština"
 
 #: picard/const/languages.py:32
 msgid "German"
@@ -409,7 +411,7 @@ msgstr "španělština"
 
 #: picard/const/languages.py:39
 msgid "Estonian"
-msgstr "Estonština"
+msgstr "estonština"
 
 #: picard/const/languages.py:41
 msgid "Finnish"
@@ -918,7 +920,7 @@ msgstr ""
 
 #: picard/ui/mainwindow.py:464
 msgid "Play the file in your default media player"
-msgstr ""
+msgstr "Přehrát soubor ve vašem výchozím přehrávači médií"
 
 #: picard/ui/mainwindow.py:468
 msgid "Open Containing &Folder"

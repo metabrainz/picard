@@ -37,7 +37,7 @@ USER_DIR = os.path.join(
 USER_PLUGIN_DIR = os.path.join(USER_DIR, "plugins")
 
 # AcoustID client API key
-ACOUSTID_KEY = 'tPrbdkhM'
+ACOUSTID_KEY = 'v8pQ6oyB'
 ACOUSTID_HOST = 'api.acoustid.org'
 ACOUSTID_PORT = 80
 FPCALC_NAMES = ['fpcalc', 'pyfpcalc']
@@ -52,16 +52,18 @@ CAA_PORT = 80
 
 # URLs
 PICARD_URLS = {
-    'documentation':    "http://picard.musicbrainz.org/docs/",
-    'troubleshooting':  "http://picard.musicbrainz.org/docs/troubleshooting/",
-    'home':             "http://picard.musicbrainz.org/",
-    'doc_options':      "http://picard.musicbrainz.org/docs/options/",
-    'plugins':          "http://picard.musicbrainz.org/plugins/",
-    'forum':            "http://forums.musicbrainz.org/viewforum.php?id=2",
-    'donate':           "http://metabrainz.org/donate",
-    'chromaprint':      "http://acoustid.org/chromaprint#download",
-    'acoustid_apikey':  "http://acoustid.org/api-key",
-    'doc_cover_art_types': "http://musicbrainz.org/doc/Cover_Art/Types",
+    'documentation':    "https://picard.musicbrainz.org/docs/",
+    'troubleshooting':  "https://picard.musicbrainz.org/docs/troubleshooting/",
+    'home':             "https://picard.musicbrainz.org/",
+    'doc_options':      "https://picard.musicbrainz.org/docs/options/",
+    'doc_scripting':    "https://picard.musicbrainz.org/docs/scripting",
+    'plugins':          "https://picard.musicbrainz.org/plugins/",
+    'forum':            "https://community.metabrainz.org/c/picard",
+    'donate':           "https://metabrainz.org/donate",
+    'chromaprint':      "https://acoustid.org/chromaprint#download",
+    'acoustid_apikey':  "https://acoustid.org/api-key",
+    'doc_cover_art_types': "https://musicbrainz.org/doc/Cover_Art/Types",
+    'acoustid_track': "https://acoustid.org/track/",
 }
 
 # Various Artists MBID
@@ -98,3 +100,13 @@ MUSICBRAINZ_SERVERS = [
     'musicbrainz.org',
     'beta.musicbrainz.org',
 ]
+
+# Plugins API
+PLUGINS_API = {
+    'host': 'picard.musicbrainz.org',
+    'port': 80,
+    'endpoint': {
+        'plugins': '/api/v1/plugins/',
+        'download': '/api/v1/download/'
+    }
+}

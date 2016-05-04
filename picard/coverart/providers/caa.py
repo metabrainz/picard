@@ -131,6 +131,7 @@ class ProviderOptionsCaa(ProviderOptions):
     """
 
     options = [
+        config.BoolOption("setting", "caa_save_single_front_image", False),
         config.BoolOption("setting", "caa_approved_only", False),
         config.BoolOption("setting", "caa_image_type_as_filename", False),
         config.IntOption("setting", "caa_image_size", 1),
@@ -147,6 +148,7 @@ class ProviderOptionsCaa(ProviderOptions):
 
     def load(self):
         self.ui.cb_image_size.setCurrentIndex(config.setting["caa_image_size"])
+        self.ui.cb_save_single_front_image.setChecked(config.setting["caa_save_single_front_image"])
         self.ui.cb_approved_only.setChecked(config.setting["caa_approved_only"])
         self.ui.cb_type_as_filename.setChecked(config.setting["caa_image_type_as_filename"])
         self.ui.restrict_images_types.setChecked(
@@ -154,9 +156,11 @@ class ProviderOptionsCaa(ProviderOptions):
         self.update_caa_types()
 
     def save(self):
-        config.setting["caa_image_size"] =\
+        config.setting["caa_image_size"] = \
             self.ui.cb_image_size.currentIndex()
-        config.setting["caa_approved_only"] =\
+        config.setting["caa_save_single_front_image"] = \
+            self.ui.cb_save_single_front_image.isChecked()
+        config.setting["caa_approved_only"] = \
             self.ui.cb_approved_only.isChecked()
         config.setting["caa_image_type_as_filename"] = \
             self.ui.cb_type_as_filename.isChecked()
@@ -246,7 +250,8 @@ class CoverArtProviderCaa(CoverArtProvider):
 
     def enabled(self):
         """Check if CAA artwork has to be downloaded"""
-        if not super(CoverArtProviderCaa, self).enabled():
+        if not super(CoverArtProviderCaa, self).enabled() or \
+                self.coverart.front_image_found:
             return False
         if self.restrict_types and not self.len_caa_types:
             log.debug("User disabled all Cover Art Archive types")
@@ -329,5 +334,9 @@ class CoverArtProviderCaa(CoverArtProvider):
                             # PDFs cannot be saved to tags (as 2014/05/29)
                             coverartimage.can_be_saved_to_tags = False
                         self.queue_put(coverartimage)
+                        if config.setting["caa_save_single_front_image"] and \
+                                config.setting["save_images_to_files"] and \
+                                image["front"]:
+                                    break
 
         self.next_in_queue()

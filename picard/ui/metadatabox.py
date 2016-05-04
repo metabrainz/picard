@@ -30,6 +30,8 @@ from picard.util import format_time, throttle, thread
 from picard.util.tags import display_tag_name
 from picard.ui.edittagdialog import EditTagDialog
 from picard.metadata import MULTI_VALUED_JOINER
+from picard.browser.filelookup import FileLookup
+from picard.browser.browser import BrowserIntegration
 
 
 COMMON_TAGS = [
@@ -184,6 +186,33 @@ class MetadataBox(QtGui.QTableWidget):
         self.changes_first_action.setCheckable(True)
         self.changes_first_action.setChecked(config.persist["show_changes_first"])
         self.changes_first_action.toggled.connect(self.toggle_changes_first)
+        self.browser_integration = BrowserIntegration()
+
+    def get_file_lookup(self):
+        """Return a FileLookup object."""
+        return FileLookup(self, config.setting["server_host"],
+                          config.setting["server_port"],
+                          self.browser_integration.port)
+
+    def lookup_tags(self):
+        lookup = self.get_file_lookup()
+        LOOKUP_TAGS = {
+            "musicbrainz_recordingid": lookup.recordingLookup,
+            "musicbrainz_trackid": lookup.trackLookup,
+            "musicbrainz_albumid": lookup.albumLookup,
+            "musicbrainz_workid": lookup.workLookup,
+            "musicbrainz_artistid": lookup.artistLookup,
+            "musicbrainz_albumartistid": lookup.artistLookup,
+            "musicbrainz_releasegroupid": lookup.releaseGroupLookup,
+            "acoustid_id": lookup.acoustLookup
+        }
+        return LOOKUP_TAGS
+
+    def open_link(self, values, tag):
+        lookup = self.lookup_tags()
+        lookup_func = lookup[tag]
+        for v in values:
+            lookup_func(v)
 
     def edit(self, index, trigger, event):
         if index.column() != 2:
@@ -240,7 +269,18 @@ class MetadataBox(QtGui.QTableWidget):
                 menu.addAction(edit_tag_action)
             removals = []
             useorigs = []
+            item = self.currentItem()
+            column = item.column()
             for tag in tags:
+                if tag in self.lookup_tags().keys():
+                    if (column == 1 or column == 2) and len(tags) == 1 and item.text():
+                        if column == 1:
+                            values = self.tag_diff.orig[tag]
+                        else:
+                            values = self.tag_diff.new[tag]
+                        lookup_action = QtGui.QAction(_(u"Lookup in &Browser"), self.parent)
+                        lookup_action.triggered.connect(partial(self.open_link, values, tag))
+                        menu.addAction(lookup_action)
                 if self.tag_is_removable(tag):
                     removals.append(partial(self.remove_tag, tag))
                 status = self.tag_diff.status[tag] & TagStatus.Changed
