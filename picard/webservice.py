@@ -169,6 +169,32 @@ class WsRequest(object):
             self._qrequest = QtNetwork.QNetworkRequest(url)
         return self._qrequest
 
+    def send(self, request_methods):
+        if self.mblogin and self.access_token:
+            self.qrequest.setRawHeader("Authorization", "Bearer %s" % self.access_token)
+        if self.mblogin or (self.method == "GET" and self.refresh):
+            self.qrequest.setPriority(QtNetwork.QNetworkRequest.HighPriority)
+            self.qrequest.setAttribute(QtNetwork.QNetworkRequest.CacheLoadControlAttribute,
+                                 QtNetwork.QNetworkRequest.AlwaysNetwork)
+        elif self.method in ("PUT", "DELETE"):
+            self.qrequest.setPriority(QtNetwork.QNetworkRequest.HighPriority)
+        elif self.cacheloadcontrol is not None:
+            self.qrequest.setAttribute(QtNetwork.QNetworkRequest.CacheLoadControlAttribute,
+                                 self.cacheloadcontrol)
+        self.qrequest.setRawHeader("User-Agent", USER_AGENT_STRING)
+        if self.xml:
+            self.qrequest.setRawHeader("Accept", "application/xml")
+        if self.data is not None:
+            if (self.method == "POST"
+                and self.host == config.setting["server_host"]
+                and self.xml):
+                self.qrequest.setHeader(QtNetwork.QNetworkRequest.ContentTypeHeader, "application/xml; charset=utf-8")
+            else:
+                self.qrequest.setHeader(QtNetwork.QNetworkRequest.ContentTypeHeader, "application/x-www-form-urlencoded")
+        send = request_methods[self.method]
+        return send(self.qrequest, self.data) if self.data is not None else send(self.qrequest)
+
+
 
 class XmlWebService(QtCore.QObject):
 
@@ -223,37 +249,12 @@ class XmlWebService(QtCore.QObject):
             proxy.setPassword(config.setting["proxy_password"])
         self.manager.setProxy(proxy)
 
-    def _start_request_continue(self, wsrequest):
-        if wsrequest.mblogin and wsrequest.access_token:
-            wsrequest.qrequest.setRawHeader("Authorization", "Bearer %s" % wsrequest.access_token)
-        if wsrequest.mblogin or (wsrequest.method == "GET" and wsrequest.refresh):
-            wsrequest.qrequest.setPriority(QtNetwork.QNetworkRequest.HighPriority)
-            wsrequest.qrequest.setAttribute(QtNetwork.QNetworkRequest.CacheLoadControlAttribute,
-                                 QtNetwork.QNetworkRequest.AlwaysNetwork)
-        elif wsrequest.method in ("PUT", "DELETE"):
-            wsrequest.qrequest.setPriority(QtNetwork.QNetworkRequest.HighPriority)
-        elif wsrequest.cacheloadcontrol is not None:
-            wsrequest.qrequest.setAttribute(QtNetwork.QNetworkRequest.CacheLoadControlAttribute,
-                                 wsrequest.cacheloadcontrol)
-        wsrequest.qrequest.setRawHeader("User-Agent", USER_AGENT_STRING)
-        if wsrequest.xml:
-            wsrequest.qrequest.setRawHeader("Accept", "application/xml")
-        if wsrequest.data is not None:
-            if (wsrequest.method == "POST"
-                and wsrequest.host == config.setting["server_host"]
-                and wsrequest.xml):
-                wsrequest.qrequest.setHeader(QtNetwork.QNetworkRequest.ContentTypeHeader, "application/xml; charset=utf-8")
-            else:
-                wsrequest.qrequest.setHeader(QtNetwork.QNetworkRequest.ContentTypeHeader, "application/x-www-form-urlencoded")
-        send = self._request_methods[wsrequest.method]
-        reply = send(wsrequest.qrequest, wsrequest.data) if wsrequest.data is not None else send(wsrequest.qrequest)
-        self._remember_request_time(wsrequest.get_host_key())
-        self._active_requests[reply] = (wsrequest)
-
     def _start_request(self, wsrequest):
         def start_request_continue(access_token=None):
             wsrequest.access_token = access_token
-            self._start_request_continue(wsrequest)
+            reply = wsrequest.send(self._request_methods)
+            self._remember_request_time(wsrequest.get_host_key())
+            self._active_requests[reply] = (wsrequest)
 
         if wsrequest.mblogin and wsrequest.path != "/oauth2/token":
             self.oauth_manager.get_access_token(start_request_continue)
