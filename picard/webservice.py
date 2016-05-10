@@ -61,6 +61,7 @@ USER_AGENT_STRING = '%s-%s/%s (%s;%s-%s)' % (PICARD_ORG_NAME, PICARD_APP_NAME,
 CLIENT_STRING = str(QUrl.toPercentEncoding('%s %s-%s' % (PICARD_ORG_NAME,
                                                          PICARD_APP_NAME,
                                                          PICARD_VERSION_STR)))
+TEMP_ERRORS_RETRIES = 5
 
 
 def _escape_lucene_query(text):
@@ -155,6 +156,7 @@ class WsRequest(object):
         self.priority = priority
         self.important = important
         self.retries = retries
+
         self._qrequest = None
 
     def get_host_key(self):
@@ -194,6 +196,24 @@ class WsRequest(object):
         send = request_methods[self.method]
         return send(self.qrequest, self.data) if self.data is not None else send(self.qrequest)
 
+    def copy(self):
+        return WsRequest(
+            method=self.method,
+            host=self.host,
+            port=self.port,
+            path=self.path,
+            data=self.data,
+            handler=self.handler,
+            xml=self.xml,
+            mblogin=self.mblogin,
+            cacheloadcontrol=self.cacheloadcontrol,
+            refresh=self.refresh,
+            access_token=self.access_token,
+            queryargs=self.queryargs,
+            retries=self.retries,
+            priority=self.priority,
+            important=self.important,
+        )
 
 
 class XmlWebService(QtCore.QObject):
@@ -281,14 +301,28 @@ class XmlWebService(QtCore.QObject):
         handler = wsrequest.handler
         error = int(reply.error())
         if error:
-            log.error("Network request error for %s: %s (QT code %d, HTTP code %s)",
-                      reply.request().url().toString(QUrl.RemoveUserInfo),
-                      reply.errorString(),
-                      error,
-                      repr(reply.attribute(QtNetwork.QNetworkRequest.HttpStatusCodeAttribute))
-                      )
-            if handler is not None:
+            code = int(reply.attribute(QtNetwork.QNetworkRequest.HttpStatusCodeAttribute))
+            errstr = reply.errorString()
+            url = reply.request().url().toString(QUrl.RemoveUserInfo)
+            log.error("Network request error for %s: %s (QT code %d, HTTP code %d)",
+                      url,errstr, error, code)
+
+            if (wsrequest.retries < TEMP_ERRORS_RETRIES
+                and (code == 503
+                     or code == 429
+                     # following line is a workaround for Picard-809
+                     or errstr.endswith("Service Temporarily Unavailable")
+                    )
+               ):
+                new_wsrequest = wsrequest.copy()
+                new_wsrequest.retries += 1
+                new_wsrequest.priority = False
+                new_wsrequest.important = False
+                log.debug("Retrying (#%d) %s", new_wsrequest.retries, url)
+                self._start_request(new_wsrequest)
+            elif handler is not None:
                 handler(str(reply.readAll()), reply, error)
+
         else:
             redirect = reply.attribute(QtNetwork.QNetworkRequest.RedirectionTargetAttribute)
             fromCache = reply.attribute(QtNetwork.QNetworkRequest.SourceIsFromCacheAttribute)
