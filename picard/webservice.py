@@ -274,7 +274,7 @@ class XmlWebService(QtCore.QObject):
             wsrequest.access_token = access_token
             reply = wsrequest.send(self._request_methods)
             self._remember_request_time(wsrequest.get_host_key())
-            self._active_requests[reply] = (wsrequest)
+            self._active_requests[reply] = wsrequest
 
         if wsrequest.mblogin and wsrequest.path != "/oauth2/token":
             self.oauth_manager.get_access_token(start_request_continue)
