@@ -318,7 +318,7 @@ class XmlWebService(QtCore.QObject):
                 new_wsrequest.retries += 1
                 new_wsrequest.priority = False
                 new_wsrequest.important = False
-                log.debug("Retrying (#%d) %s", new_wsrequest.retries, url)
+                log.debug("Retrying %s (#%d)", url, new_wsrequest.retries)
                 self._start_request(new_wsrequest)
             elif handler is not None:
                 handler(str(reply.readAll()), reply, error)
