@@ -193,8 +193,10 @@ class WsRequest(object):
                 self.qrequest.setHeader(QtNetwork.QNetworkRequest.ContentTypeHeader, "application/xml; charset=utf-8")
             else:
                 self.qrequest.setHeader(QtNetwork.QNetworkRequest.ContentTypeHeader, "application/x-www-form-urlencoded")
-        send = request_methods[self.method]
-        return send(self.qrequest, self.data) if self.data is not None else send(self.qrequest)
+        if self.data is None:
+            return request_methods[self.method](self.qrequest)
+        else:
+            return request_methods[self.method](self.qrequest, self.data)
 
     def copy(self):
         return WsRequest(
