@@ -218,6 +218,8 @@ class MetadataBox(QtGui.QTableWidget):
         if index.column() != 2:
             return False
         item = self.itemFromIndex(index)
+        if not item:
+            return False
         if item.flags() & QtCore.Qt.ItemIsEditable and \
            trigger in (QtGui.QAbstractItemView.DoubleClicked,
                        QtGui.QAbstractItemView.EditKeyPressed,
@@ -496,12 +498,55 @@ class MetadataBox(QtGui.QTableWidget):
             orig_item.setForeground(color)
             new_item.setForeground(color)
 
+        obj = self.parent.selected_objects
+        if len(obj) == 1:
+        # Display cover art changes if there is only 1 selected object
+            is_track_object = isinstance(obj[0], Track)
+            if (is_track_object and len(obj[0].linked_files) == 1 or
+               isinstance(obj[0], File) and isinstance(obj[0].parent, Track)):
+                row = self.rowCount()
+                self.insertRow(row)
+                self.setRowHeight(row, 170)
+                item = QtGui.QTableWidgetItem()
+                item.setText(_("Front Cover"))
+                font = item.font()
+                font.setBold(True)
+                item.setFont(font)
+                self.setItem(row, 0, item)
+                if is_track_object:
+                    self.display_front_cover(obj[0].linked_files[0], row)
+                else:
+                    self.display_front_cover(obj[0], row)
+
     def set_item_value(self, item, tags, name):
         text, italic = tags.display_value(name)
         item.setText(text)
         font = item.font()
         font.setItalic(italic)
         item.setFont(font)
+
+    def display_front_cover(self, file, row):
+        if not (file.metadata.images or file.orig_metadata.images):
+            self.setRowHidden(row, True)
+            return
+
+        def get_front_image_label(images):
+            for image in images:
+                if image.is_front_image():
+                    cover = image
+            else:
+                cover = images[0]
+            pixmap = QtGui.QPixmap()
+            image_label = QtGui.QLabel()
+            if cover.data:
+                pixmap.loadFromData(cover.data)
+                image_label.setPixmap(pixmap.scaled(170, 170, QtCore.Qt.KeepAspectRatio,
+                    QtCore.Qt.SmoothTransformation))
+                image_label.setAlignment(QtCore.Qt.AlignCenter)
+            return image_label
+
+        self.setCellWidget(row, 1, get_front_image_label(file.orig_metadata.images))
+        self.setCellWidget(row, 2, get_front_image_label(file.metadata.images))
 
     def restore_state(self):
         state = config.persist["metadatabox_header_state"]
