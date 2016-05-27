@@ -259,6 +259,7 @@ class BaseTreeView(QtGui.QTreeWidget):
                 menu.addAction(self.window.open_folder_action)
                 plugin_actions.extend(_file_actions)
             menu.addAction(self.window.browser_lookup_action)
+            menu.addAction(self.window.more_results_action)
             menu.addSeparator()
             if isinstance(obj, NonAlbumTrack):
                 menu.addAction(self.window.refresh_action)

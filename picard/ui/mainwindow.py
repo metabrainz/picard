@@ -34,6 +34,7 @@ from picard.ui.filebrowser import FileBrowser
 from picard.ui.tagsfromfilenames import TagsFromFileNamesDialog
 from picard.ui.options.dialog import OptionsDialog
 from picard.ui.infodialog import FileInfoDialog, AlbumInfoDialog, ClusterInfoDialog
+from picard.ui.searchdialog import SearchDialog
 from picard.ui.infostatus import InfoStatus
 from picard.ui.passworddialog import PasswordDialog
 from picard.ui.logview import LogView, HistoryView
@@ -380,6 +381,10 @@ class MainWindow(QtGui.QMainWindow):
         self.browser_lookup_action.setStatusTip(_(u"Lookup selected item on MusicBrainz website"))
         self.browser_lookup_action.setEnabled(False)
         self.browser_lookup_action.triggered.connect(self.browser_lookup)
+
+        self.more_results_action = QtGui.QAction(_(u"Display more results"), self)
+        self.more_results_action.setStatusTip(_(u"Display more results"))
+        self.more_results_action.triggered.connect(self.show_more_results)
 
         self.show_file_browser_action = QtGui.QAction(_(u"File &Browser"), self)
         self.show_file_browser_action.setCheckable(True)
@@ -790,6 +795,12 @@ class MainWindow(QtGui.QMainWindow):
             QtGui.QMessageBox.Yes | QtGui.QMessageBox.No,
             QtGui.QMessageBox.Yes)
         return ret == QtGui.QMessageBox.Yes
+
+    def show_more_results(self):
+        if isinstance(self.selected_objects[0], Track):
+            track = self.selected_objects[0]
+            dialog = SearchDialog(track, self)
+            dialog.exec_()
 
     def view_info(self):
         if isinstance(self.selected_objects[0], Album):
