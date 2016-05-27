@@ -33,11 +33,17 @@ class SearchDialog(PicardDialog):
         self.tracksTable = QtGui.QTableWidget(0, 5)
         self.tracksTable.setHorizontalHeaderLabels([_("Name"), _("Length"),
             _("Artist"), _("Release"), _("Type")])
-        self.tracksTable.setSelectionMode(QtGui.QAbstractItemView.SingleSelection)
-        self.tracksTable.setSelectionBehavior(QtGui.QAbstractItemView.SelectRows)
+        self.tracksTable.setSelectionMode(
+                QtGui.QAbstractItemView.SingleSelection)
+        self.tracksTable.setSelectionBehavior(
+                QtGui.QAbstractItemView.SelectRows)
         self.verticalLayout.addWidget(self.tracksTable)
         self.buttonBox = QtGui.QDialogButtonBox()
-        self.buttonBox.addButton(StandardButton(StandardButton.Ok), QtGui.QDialogButtonBox.AcceptRole)
-        self.buttonBox.addButton(StandardButton(StandardButton.Cancel), QtGui.QDialogButtonBox.RejectRole)
+        self.buttonBox.addButton(
+                StandardButton(StandardButton.Ok),
+                QtGui.QDialogButtonBox.AcceptRole)
+        self.buttonBox.addButton(
+                StandardButton(StandardButton.Cancel),
+                QtGui.QDialogButtonBox.RejectRole)
         self.buttonBox.accepted(self.load_selection)
         self.verticalLayout.addWidget(self.buttonBox)
