@@ -55,6 +55,8 @@ class SearchDialog(PicardDialog):
                 QtGui.QAbstractItemView.SingleSelection)
         self.tracksTable.setSelectionBehavior(
                 QtGui.QAbstractItemView.SelectRows)
+        self.tracksTable.setEditTriggers(
+                QtGui.QAbstractItemView.NoEditTriggers)
         self.verticalLayout.addWidget(self.tracksTable)
         self.buttonBox = QtGui.QDialogButtonBox()
         self.buttonBox.addButton(
@@ -68,7 +70,7 @@ class SearchDialog(PicardDialog):
         self.verticalLayout.addWidget(self.buttonBox)
 
     def load_selection(self):
-        pass
+        self
 
     def show_tracks(self, obj, document, http, error):
         try:
