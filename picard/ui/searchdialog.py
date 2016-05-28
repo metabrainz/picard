@@ -88,19 +88,22 @@ class SearchDialog(PicardDialog):
 
         for row, track in enumerate(tracks):
             title = track.title[0].text
-            length = format_time(track.length[0].text)
             artist = artist_credit_from_node(track.artist_credit[0])[0]
+
+            try:
+                length = format_time(track.length[0].text)
+            except AttributeError:
+                length = ""
+
             if "release_list" in track.children and \
                     "release" in track.release_list[0].children:
                 releases = track.release_list[0].release
                 for release in releases:
                     release_title = release.title[0].text
-                    if False and "release_group" in release.children:
-                        release_type = release.release_group[0].type
-                        insert_values_in_row(row, (title, length, artist,
-                            release_title, release_type))
-                    else:
-                        insert_values_in_row(row, (title, length, artist,
-                            release_title, ""))
-            else:
-                insert_values_in_row(row, (title, length, artist, "", ""))
+                    release_type = ""
+                    if "release_group" in release.children:
+                        try: 
+                            release_type = release.release_group[0].type
+                        except AttributeError:
+                            pass
+                    insert_values_in_row(row, (title, length, artist, release_title, release_type))
