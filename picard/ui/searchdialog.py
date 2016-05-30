@@ -28,7 +28,6 @@ from picard.mbxml import artist_credit_from_node
 class SearchDialog(PicardDialog):
 
     def __init__(self, obj, parent=None):
-        #obj can be a track/file object
         PicardDialog.__init__(self, parent)
         self.selected_object = None
         self.search_results = []
