@@ -32,7 +32,7 @@ class SearchDialog(PicardDialog):
         PicardDialog.__init__(self, parent)
         self.selected_object = None
         self.setupUi()
-        metadata = obj.metadata
+        metadata = obj.orig_metadata
         self.tagger.xmlws.find_tracks(partial(self.show_tracks, obj),
                 track=metadata['title'],
                 artist=metadata['artist'],

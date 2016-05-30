@@ -257,9 +257,9 @@ class BaseTreeView(QtGui.QTreeWidget):
             if obj.num_linked_files == 1:
                 menu.addAction(self.window.play_file_action)
                 menu.addAction(self.window.open_folder_action)
+                menu.addAction(self.window.more_results_action)
                 plugin_actions.extend(_file_actions)
             menu.addAction(self.window.browser_lookup_action)
-            menu.addAction(self.window.more_results_action)
             menu.addSeparator()
             if isinstance(obj, NonAlbumTrack):
                 menu.addAction(self.window.refresh_action)
@@ -286,6 +286,8 @@ class BaseTreeView(QtGui.QTreeWidget):
             menu.addSeparator()
             menu.addAction(self.window.autotag_action)
             menu.addAction(self.window.analyze_action)
+            if isinstance(obj.parent, Track):
+                menu.addAction(self.window.more_results_action)
             plugin_actions = list(_file_actions)
         elif isinstance(obj, Album):
             if can_view_info:

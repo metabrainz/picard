@@ -797,10 +797,11 @@ class MainWindow(QtGui.QMainWindow):
         return ret == QtGui.QMessageBox.Yes
 
     def show_more_results(self):
-        if isinstance(self.selected_objects[0], Track):
-            track = self.selected_objects[0]
-            dialog = SearchDialog(track, self)
-            dialog.exec_()
+        obj = self.selected_objects[0]
+        if isinstance(obj, Track):
+            obj = obj.linked_files[0]
+        dialog = SearchDialog(obj, self)
+        dialog.exec_()
 
     def view_info(self):
         if isinstance(self.selected_objects[0], Album):
