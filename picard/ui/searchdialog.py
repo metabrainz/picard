@@ -31,6 +31,7 @@ class SearchDialog(PicardDialog):
         #obj can be a track/file object
         PicardDialog.__init__(self, parent)
         self.selected_object = None
+        self.search_results = []
         self.setupUi()
         metadata = obj.orig_metadata
         self.tagger.xmlws.find_tracks(partial(self.show_tracks, obj),
@@ -48,9 +49,9 @@ class SearchDialog(PicardDialog):
         self.setWindowTitle(_("Track Search Results"))
         self.verticalLayout = QtGui.QVBoxLayout(self)
         self.verticalLayout.setObjectName(_("verticalLayout"))
-        self.tracksTable = QtGui.QTableWidget(0, 5)
+        self.tracksTable = QtGui.QTableWidget(0, 7)
         self.tracksTable.setHorizontalHeaderLabels([_("Name"), _("Length"),
-            _("Artist"), _("Release"), _("Type")])
+            _("Artist"), _("Release"), _("Date"), _("Country"), _("Type")])
         self.tracksTable.setSelectionMode(
                 QtGui.QAbstractItemView.SingleSelection)
         self.tracksTable.setSelectionBehavior(
@@ -72,40 +73,64 @@ class SearchDialog(PicardDialog):
     def load_selection(self):
         self
 
+    def parse_recording_node(self, track):
+        result = []
+        rec_id = track.id
+        rec_title = track.title[0].text
+        artist = artist_credit_from_node(track.artist_credit[0])[0]
+        try:
+            length = format_time(track.length[0].text)
+        except AttributeError:
+            length = ""
+        if "release_list" in track.children and "release" in \
+                track.release_list[0].children:
+            releases = track.release_list[0].release
+            for release in releases:
+                rel_id = release.id
+                rel_title = release.title[0].text
+                if "date" in release.children:
+                    date = release.date[0].text
+                else:
+                    date = None
+                if "country" in release.children:
+                    country = release.country[0].text
+                else:
+                    country = ""
+                rg = release.release_group[0]
+                rg_id = rg.id
+                types_list = []
+                if "primary_type" in rg.children:
+                    types_list.append(rg.primary_type[0].text)
+                if "secondary_type_list" in rg.children:
+                    for sec in rg.secondary_type_list:
+                        types_list.append(sec.secondary_type[0].text)
+                types = "+".join(types_list)
+
+                result.append((rec_id, rel_id, rg_id, rec_title, artist,
+                    length, rel_title, date, country, types))
+        else:
+            result.append((rec_id, "", "", rec_title, artist, length, "", "",
+                "", ""))
+        self.search_results.extend(result)
+        return result
+
     def show_tracks(self, obj, document, http, error):
         try:
             tracks = document.metadata[0].recording_list[0].recording
         except (AttributeError, IndexError):
             tracks = None
 
-        sorted_data = sorted((obj.metadata.compare_to_track(
-            track, File.comparison_weights) for track in tracks),
-            reverse=True, key=itemgetter(0))
-        #Value returned by `compare_to_track` is of type tuple
-        #(similarity, release_group, release, track)
-
-        tracks = [item[3] for item in sorted_data]
-
-        def insert_values_in_row(row, values):
-            self.tracksTable.insertRow(row)
-            item = QtGui.QTableWidgetItem
-            for i in range(self.tracksTable.columnCount()):
-                self.tracksTable.setItem(row, i, item(values[i]))
-
         for row, track in enumerate(tracks):
-            title = track.title[0].text
-            artist = artist_credit_from_node(track.artist_credit[0])[0]
-
-            try:
-                length = format_time(track.length[0].text)
-            except AttributeError:
-                length = ""
-
-            releases = track.release_list[0].release
-            for release in releases:
-                release_title = release.title[0].text
-                try:
-                    release_type = release.release_group[0].type
-                except AttributeError:
-                    release_type = ""
-                insert_values_in_row(row, (title, length, artist, release_title, release_type))
+            result = self.parse_recording_node(track)
+            for row2, item in enumerate(result):
+                cur_row = row + row2
+                self.tracksTable.insertRow(cur_row)
+                title, artist, length, release, date, country, type = item[3:]
+                table_item = QtGui.QTableWidgetItem
+                self.tracksTable.setItem(cur_row, 0, table_item(title))
+                self.tracksTable.setItem(cur_row, 1, table_item(length))
+                self.tracksTable.setItem(cur_row, 2, table_item(artist))
+                self.tracksTable.setItem(cur_row, 3, table_item(release))
+                self.tracksTable.setItem(cur_row, 4, table_item(date))
+                self.tracksTable.setItem(cur_row, 5, table_item(country))
+                self.tracksTable.setItem(cur_row, 6, table_item(type))
