@@ -78,9 +78,13 @@ class SearchDialog(PicardDialog):
         except (AttributeError, IndexError):
             tracks = None
 
-        #tracks = sorted((obj.metadata.compare_to_track(
-        #    track, File.comparison_weights) for track in tracks),
-        #    reverse=True, key=itemgetter(0))
+        sorted_data = sorted((obj.metadata.compare_to_track(
+            track, File.comparison_weights) for track in tracks),
+            reverse=True, key=itemgetter(0))
+        #Value returned by `compare_to_track` is of type tuple
+        #(similarity, release_group, release, track)
+
+        tracks = [item[3] for item in sorted_data]
 
         def insert_values_in_row(row, values):
             self.tracksTable.insertRow(row)
@@ -97,15 +101,11 @@ class SearchDialog(PicardDialog):
             except AttributeError:
                 length = ""
 
-            if "release_list" in track.children and \
-                    "release" in track.release_list[0].children:
-                releases = track.release_list[0].release
-                for release in releases:
-                    release_title = release.title[0].text
+            releases = track.release_list[0].release
+            for release in releases:
+                release_title = release.title[0].text
+                try:
+                    release_type = release.release_group[0].type
+                except AttributeError:
                     release_type = ""
-                    if "release_group" in release.children:
-                        try: 
-                            release_type = release.release_group[0].type
-                        except AttributeError:
-                            pass
-                    insert_values_in_row(row, (title, length, artist, release_title, release_type))
+                insert_values_in_row(row, (title, length, artist, release_title, release_type))
