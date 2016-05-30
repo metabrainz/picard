@@ -119,10 +119,10 @@ class SearchDialog(PicardDialog):
         except (AttributeError, IndexError):
             tracks = None
 
-        for row, track in enumerate(tracks):
+        cur_row = 0
+        for track in tracks:
             result = self.parse_recording_node(track)
-            for row2, item in enumerate(result):
-                cur_row = row + row2
+            for item in result:
                 self.tracksTable.insertRow(cur_row)
                 title, artist, length, release, date, country, type = item[3:]
                 table_item = QtGui.QTableWidgetItem
@@ -133,3 +133,4 @@ class SearchDialog(PicardDialog):
                 self.tracksTable.setItem(cur_row, 4, table_item(date))
                 self.tracksTable.setItem(cur_row, 5, table_item(country))
                 self.tracksTable.setItem(cur_row, 6, table_item(type))
+                cur_row += 1
