@@ -18,6 +18,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
 # USA.
 from PyQt4.QtCore import QObject
+from operator import itemgetter
 from picard import config, log
 from picard.plugin import PluginFunctions, PluginPriority
 from picard.similarity import similarity2
@@ -201,13 +202,13 @@ class Metadata(dict):
             sim = linear_combination_of_weights(parts)
             return (sim, None, None, track)
 
-        result = (-1,)
+        result = []
         for release in releases:
             release_parts = self.compare_to_release_parts(release, weights)
             sim = linear_combination_of_weights(parts + release_parts)
-            if sim > result[0]:
-                rg = release.release_group[0] if "release_group" in release.children else None
-                result = (sim, rg, release, track)
+            rg = release.release_group[0] if "release_group" in release.children else None
+            result.append((sim, rg, release, track))
+        result.sort(key=itemgetter(0), reverse=True)
 
         return result
 
