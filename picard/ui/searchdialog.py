@@ -29,7 +29,7 @@ class SearchDialog(PicardDialog):
 
     def __init__(self, obj, parent=None):
         PicardDialog.__init__(self, parent)
-        self.selected_object = None
+        self.obj = obj
         self.search_results = []
         self.setupUi()
         metadata = obj.orig_metadata
@@ -65,12 +65,19 @@ class SearchDialog(PicardDialog):
         self.buttonBox.addButton(
                 StandardButton(StandardButton.CANCEL),
                 QtGui.QDialogButtonBox.RejectRole)
-        self.buttonBox.accepted.connect(self.accept)
+        self.buttonBox.accepted.connect(self.load_selection)
         self.buttonBox.rejected.connect(self.reject)
         self.verticalLayout.addWidget(self.buttonBox)
 
     def load_selection(self):
-        self
+        sel_row = self.tracksTable.selectionModel().selectedRows()[0].row()
+        track_id, release_id, rg_id = self.search_results[sel_row][:3]
+        if release_id:
+            album = self.obj.parent.album
+            self.tagger.get_release_group_by_id(rg_id).loaded_albums.add(release_id)
+            self.tagger.move_file_to_track(self.obj, release_id, track_id)
+            self.tagger.remove_album(album)
+        self.accept()
 
     def parse_recording_node(self, track):
         result = []
@@ -117,7 +124,7 @@ class SearchDialog(PicardDialog):
         try:
             tracks = document.metadata[0].recording_list[0].recording
         except (AttributeError, IndexError):
-            tracks = None
+            tracks = []
 
         cur_row = 0
         for track in tracks:
