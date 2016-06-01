@@ -57,6 +57,7 @@ class SearchDialog(PicardDialog):
                 QtGui.QAbstractItemView.SelectRows)
         self.tracksTable.setEditTriggers(
                 QtGui.QAbstractItemView.NoEditTriggers)
+        self.tracksTable.cellDoubleClicked.connect(self.load_selection)
         self.verticalLayout.addWidget(self.tracksTable)
         self.buttonBox = QtGui.QDialogButtonBox()
         self.buttonBox.addButton(
@@ -69,8 +70,11 @@ class SearchDialog(PicardDialog):
         self.buttonBox.rejected.connect(self.reject)
         self.verticalLayout.addWidget(self.buttonBox)
 
-    def load_selection(self):
-        sel_row = self.tracksTable.selectionModel().selectedRows()[0].row()
+    def load_selection(self, row=None):
+        if row:
+            sel_row = row
+        else:
+            sel_row = self.tracksTable.selectionModel().selectedRows()[0].row()
         track_id, release_id, rg_id = self.search_results[sel_row][:3]
         if release_id:
             album = self.obj.parent.album
