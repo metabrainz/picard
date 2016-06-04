@@ -200,7 +200,7 @@ class Metadata(dict):
 
         if not releases:
             sim = linear_combination_of_weights(parts)
-            return (sim, None, None, track)
+            return [(sim, None, None, track)]
 
         result = []
         for release in releases:

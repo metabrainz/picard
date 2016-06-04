@@ -19,6 +19,7 @@
 from PyQt4 import QtGui
 from operator import itemgetter
 from functools import partial
+from picard import config
 from picard.file import File
 from picard.ui import PicardDialog
 from picard.ui.util import StandardButton
@@ -78,13 +79,14 @@ class SearchDialog(PicardDialog):
         track_id, release_id, rg_id = self.search_results[sel_row][:3]
         if release_id:
             album = self.obj.parent.album
-            self.tagger.get_release_group_by_id(rg_id).loaded_albums.add(release_id)
+            self.tagger.get_release_group_by_id(rg_id).loaded_albums.add(
+                    release_id)
             self.tagger.move_file_to_track(self.obj, release_id, track_id)
             self.tagger.remove_album(album)
         self.accept()
 
-    def parse_recording_node(self, track):
-        result = []
+    def parse_match(self, match):
+        rg, release, track = match[1:]
         rec_id = track.id
         rec_title = track.title[0].text
         artist = artist_credit_from_node(track.artist_credit[0])[0]
@@ -92,56 +94,58 @@ class SearchDialog(PicardDialog):
             length = format_time(track.length[0].text)
         except AttributeError:
             length = ""
-        if "release_list" in track.children and "release" in \
-                track.release_list[0].children:
-            releases = track.release_list[0].release
-            for release in releases:
-                rel_id = release.id
-                rel_title = release.title[0].text
-                if "date" in release.children:
-                    date = release.date[0].text
-                else:
-                    date = None
-                if "country" in release.children:
-                    country = release.country[0].text
-                else:
-                    country = ""
-                rg = release.release_group[0]
-                rg_id = rg.id
-                types_list = []
-                if "primary_type" in rg.children:
-                    types_list.append(rg.primary_type[0].text)
-                if "secondary_type_list" in rg.children:
-                    for sec in rg.secondary_type_list:
-                        types_list.append(sec.secondary_type[0].text)
-                types = "+".join(types_list)
+        if release:
+            rel_id = release.id
+            rel_title = release.title[0].text
+            if "date" in release.children:
+                date = release.date[0].text
+            else:
+                date = None
+            if "country" in release.children:
+                country = release.country[0].text
+            else:
+                country = ""
+            rg_id = rg.id
+            types_list = []
+            if "primary_type" in rg.children:
+                types_list.append(rg.primary_type[0].text)
+            if "secondary_type_list" in rg.children:
+                for sec in rg.secondary_type_list:
+                    types_list.append(sec.secondary_type[0].text)
+            types = "+".join(types_list)
 
-                result.append((rec_id, rel_id, rg_id, rec_title, artist,
-                    length, rel_title, date, country, types))
+            result = (rec_id, rel_id, rg_id, rec_title, artist, length,
+                    rel_title, date, country, types)
         else:
-            result.append((rec_id, "", "", rec_title, artist, length, "", "",
-                "", ""))
-        self.search_results.extend(result)
+            result = (rec_id, "", "", rec_title, artist, length, "", "",  "",
+                    "")
+        self.search_results.append(result)
         return result
 
     def show_tracks(self, obj, document, http, error):
         try:
             tracks = document.metadata[0].recording_list[0].recording
         except (AttributeError, IndexError):
-            tracks = []
+            # No results to show
+            # To be done: Notify user about that, or just close the dialog
+            return
 
-        cur_row = 0
+        tmp = []
         for track in tracks:
-            result = self.parse_recording_node(track)
-            for item in result:
-                self.tracksTable.insertRow(cur_row)
-                title, artist, length, release, date, country, type = item[3:]
-                table_item = QtGui.QTableWidgetItem
-                self.tracksTable.setItem(cur_row, 0, table_item(title))
-                self.tracksTable.setItem(cur_row, 1, table_item(length))
-                self.tracksTable.setItem(cur_row, 2, table_item(artist))
-                self.tracksTable.setItem(cur_row, 3, table_item(release))
-                self.tracksTable.setItem(cur_row, 4, table_item(date))
-                self.tracksTable.setItem(cur_row, 5, table_item(country))
-                self.tracksTable.setItem(cur_row, 6, table_item(type))
-                cur_row += 1
+            tmp.extend(self.obj.orig_metadata.compare_to_track(track,
+                    File.comparison_weights))
+
+        sorted_matches = [i for i in sorted(tmp, key=itemgetter(0), reverse=True)
+                if i[0] > config.setting['file_lookup_threshold']]
+        for row, match in enumerate(sorted_matches):
+            result = self.parse_match(match)
+            title, artist, length, release, date, country, type = result[3:]
+            table_item = QtGui.QTableWidgetItem
+            self.tracksTable.insertRow(row)
+            self.tracksTable.setItem(row, 0, table_item(title))
+            self.tracksTable.setItem(row, 1, table_item(length))
+            self.tracksTable.setItem(row, 2, table_item(artist))
+            self.tracksTable.setItem(row, 3, table_item(release))
+            self.tracksTable.setItem(row, 4, table_item(date))
+            self.tracksTable.setItem(row, 5, table_item(country))
+            self.tracksTable.setItem(row, 6, table_item(type))
