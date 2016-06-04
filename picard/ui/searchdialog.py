@@ -82,7 +82,11 @@ class SearchDialog(PicardDialog):
             self.tagger.get_release_group_by_id(rg_id).loaded_albums.add(
                     release_id)
             self.tagger.move_file_to_track(self.obj, release_id, track_id)
-            self.tagger.remove_album(album)
+            if album._files == 0:
+                # Remove album if the selected file was the only one in album
+                # Compared to 0 because file has already moved to another album
+                # by move_file_to_track
+                self.tagger.remove_album(album)
         self.accept()
 
     def parse_match(self, match):
