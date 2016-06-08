@@ -16,7 +16,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-from PyQt4 import QtGui
+from PyQt4 import QtGui, QtCore
 from operator import itemgetter
 from functools import partial
 from picard import config
@@ -28,11 +28,17 @@ from picard.mbxml import artist_credit_from_node
 
 class SearchDialog(PicardDialog):
 
+    options = [
+        config.Option("persist", "searchdialog_window_size", QtCore.QSize(720, 360)),
+        config.Option("persist", "searchdialog_header_state", QtCore.QByteArray())
+    ]
+
     def __init__(self, obj, parent=None):
         PicardDialog.__init__(self, parent)
         self.obj = obj
         self.search_results = []
         self.setupUi()
+        self.restore_state()
         metadata = obj.orig_metadata
         self.tagger.xmlws.find_tracks(partial(self.show_tracks, obj),
                 track=metadata['title'],
@@ -60,9 +66,11 @@ class SearchDialog(PicardDialog):
         self.tracksTable.setEditTriggers(
                 QtGui.QAbstractItemView.NoEditTriggers)
 
-        self.tracksTable.horizontalHeader().setResizeMode(
-                QtGui.QHeaderView.Interactive | QtGui.QHeaderView.Stretch)
         self.tracksTable.horizontalHeader().setStretchLastSection(True)
+        self.tracksTable.horizontalHeader().setResizeMode(
+                QtGui.QHeaderView.Stretch)
+        self.tracksTable.horizontalHeader().setResizeMode(
+                QtGui.QHeaderView.Interactive)
 
         self.tracksTable.resize(740, 360)
 
@@ -162,3 +170,18 @@ class SearchDialog(PicardDialog):
             self.tracksTable.setItem(row, 4, table_item(date))
             self.tracksTable.setItem(row, 5, table_item(country))
             self.tracksTable.setItem(row, 6, table_item(type))
+
+    def restore_state(self):
+        header = self.tracksTable.horizontalHeader()
+        state = config.persist["searchdialog_header_state"]
+        if state:
+            header.restoreState(state)
+        size = config.persist["searchdialog_window_size"]
+        if size:
+            self.resize(size)
+        header.setResizeMode(QtGui.QHeaderView.Interactive)
+
+    def save_state(self):
+        header = self.tracksTable.horizontalHeader()
+        config.persist["searchdialog_header_state"] = header.saveState()
+        config.persist["searchdialog_window_size"] = self.size()
