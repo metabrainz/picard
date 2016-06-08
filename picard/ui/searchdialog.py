@@ -74,7 +74,7 @@ class SearchDialog(PicardDialog):
 
         self.tracksTable.resize(740, 360)
 
-        self.tracksTable.cellDoubleClicked.connect(self.load_selection)
+        self.tracksTable.cellDoubleClicked.connect(self.track_double_clicked)
 
         self.verticalLayout.addWidget(self.tracksTable)
         self.buttonBox = QtGui.QDialogButtonBox()
@@ -84,16 +84,12 @@ class SearchDialog(PicardDialog):
         self.buttonBox.addButton(
                 StandardButton(StandardButton.CANCEL),
                 QtGui.QDialogButtonBox.RejectRole)
-        self.buttonBox.accepted.connect(self.load_selection)
+        self.buttonBox.accepted.connect(self.track_selected)
         self.buttonBox.rejected.connect(self.reject)
         self.verticalLayout.addWidget(self.buttonBox)
 
     def load_selection(self, row=None):
-        if row:
-            sel_row = row
-        else:
-            sel_row = self.tracksTable.selectionModel().selectedRows()[0].row()
-        track_id, release_id, rg_id = self.search_results[sel_row][:3]
+        track_id, release_id, rg_id = self.search_results[row][:3]
         if release_id:
             album = self.obj.parent.album
             self.tagger.get_release_group_by_id(rg_id).loaded_albums.add(
@@ -104,7 +100,26 @@ class SearchDialog(PicardDialog):
                 # Compared to 0 because file has already moved to another album
                 # by move_file_to_track
                 self.tagger.remove_album(album)
-        self.accept()
+        self.save_state()
+        self.closeEvent()
+
+    def track_double_clicked(self, row):
+        self.load_selection(row)
+
+    def track_selected(self):
+        sel_rows = self.tracksTable.selectionModel().selectedRows()
+        if sel_rows:
+            sel_row = sel_rows[0].row()
+            self.load_selection(sel_row)
+        else:
+            self.closeEvent()
+
+    def closeEvent(self, event=None):
+        self.save_state()
+        if event:
+            event.accept()
+        else:
+            self.accept()
 
     def parse_match(self, match):
         rg, release, track = match[1:]
