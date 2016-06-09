@@ -62,8 +62,10 @@ class SearchDialog(PicardDialog):
         self.obj = obj
         self.search_results = []
         self.setupUi()
+        self.load_similar_tracks(self.obj)
         self.restore_window_state()
 
+    def load_similar_tracks(self, obj):
         metadata = obj.orig_metadata
         self.tagger.xmlws.find_tracks(partial(self.show_tracks, obj),
                 track=metadata['title'],
