@@ -38,7 +38,8 @@ class SearchDialog(PicardDialog):
         self.obj = obj
         self.search_results = []
         self.setupUi()
-        self.restore_state()
+        self.restore_window_state()
+
         metadata = obj.orig_metadata
         self.tagger.xmlws.find_tracks(partial(self.show_tracks, obj),
                 track=metadata['title'],
@@ -186,15 +187,18 @@ class SearchDialog(PicardDialog):
             self.tracksTable.setItem(row, 5, table_item(country))
             self.tracksTable.setItem(row, 6, table_item(type))
 
-    def restore_state(self):
+    def restore_window_state(self):
+        size = config.persist["searchdialog_window_size"]
+        if size:
+            self.resize(size)
+
+    def restore_table_header_state(self):
         header = self.tracksTable.horizontalHeader()
         state = config.persist["searchdialog_header_state"]
         if state:
             header.restoreState(state)
-        size = config.persist["searchdialog_window_size"]
-        if size:
-            self.resize(size)
         header.setResizeMode(QtGui.QHeaderView.Interactive)
+
 
     def save_state(self):
         header = self.tracksTable.horizontalHeader()
