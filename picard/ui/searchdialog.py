@@ -67,6 +67,7 @@ class SearchDialog(PicardDialog):
 
     def load_similar_tracks(self, obj):
         metadata = obj.orig_metadata
+        self.show_progress()
         self.tagger.xmlws.find_tracks(partial(self.show_tracks, obj),
                 track=metadata['title'],
                 artist=metadata['artist'],
@@ -92,6 +93,10 @@ class SearchDialog(PicardDialog):
         self.buttonBox.rejected.connect(self.reject)
         self.verticalLayout.addWidget(self.buttonBox)
 
+    def show_progress(self):
+        self.label = QtGui.QLabel('Loading....')
+        self.label.setAlignment(QtCore.Qt.AlignCenter)
+        self.verticalLayout.insertWidget(0, self.label)
 
     def show_table(self):
         self.tracksTable = TracksTable()
