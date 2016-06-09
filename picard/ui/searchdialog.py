@@ -26,6 +26,28 @@ from picard.ui.util import StandardButton
 from picard.util import format_time
 from picard.mbxml import artist_credit_from_node
 
+
+class TracksTable(QtGui.QTableWidget):
+
+    def __init__(self, parent=None):
+        QtGui.QTableWidget.__init__(self, 0, 7)
+        self.setHorizontalHeaderLabels([_("Name"), _("Length"),
+            _("Artist"), _("Release"), _("Date"), _("Country"), _("Type")])
+
+        self.setSelectionMode(
+                QtGui.QAbstractItemView.SingleSelection)
+        self.setSelectionBehavior(
+                QtGui.QAbstractItemView.SelectRows)
+        self.setEditTriggers(
+                QtGui.QAbstractItemView.NoEditTriggers)
+
+        self.horizontalHeader().setStretchLastSection(True)
+        self.horizontalHeader().setResizeMode(
+                QtGui.QHeaderView.Stretch)
+        self.horizontalHeader().setResizeMode(
+                QtGui.QHeaderView.Interactive)
+
+
 class SearchDialog(PicardDialog):
 
     options = [
@@ -35,6 +57,8 @@ class SearchDialog(PicardDialog):
 
     def __init__(self, obj, parent=None):
         PicardDialog.__init__(self, parent)
+        self.setObjectName(_("SearchDialog"))
+        self.setWindowTitle(_("Track Search Results"))
         self.obj = obj
         self.search_results = []
         self.setupUi()
@@ -52,33 +76,10 @@ class SearchDialog(PicardDialog):
                 limit=25)
 
     def setupUi(self):
-        self.setObjectName(_("SearchDialog"))
-        self.setWindowTitle(_("Track Search Results"))
         self.verticalLayout = QtGui.QVBoxLayout(self)
         self.verticalLayout.setObjectName(_("verticalLayout"))
-        self.tracksTable = QtGui.QTableWidget(0, 7)
-        self.tracksTable.setHorizontalHeaderLabels([_("Name"), _("Length"),
-            _("Artist"), _("Release"), _("Date"), _("Country"), _("Type")])
 
-        self.tracksTable.setSelectionMode(
-                QtGui.QAbstractItemView.SingleSelection)
-        self.tracksTable.setSelectionBehavior(
-                QtGui.QAbstractItemView.SelectRows)
-        self.tracksTable.setEditTriggers(
-                QtGui.QAbstractItemView.NoEditTriggers)
-
-        self.tracksTable.horizontalHeader().setStretchLastSection(True)
-        self.tracksTable.horizontalHeader().setResizeMode(
-                QtGui.QHeaderView.Stretch)
-        self.tracksTable.horizontalHeader().setResizeMode(
-                QtGui.QHeaderView.Interactive)
-
-        self.tracksTable.resize(740, 360)
-
-        self.tracksTable.cellDoubleClicked.connect(self.track_double_clicked)
-
-        self.verticalLayout.addWidget(self.tracksTable)
-        self.buttonBox = QtGui.QDialogButtonBox()
+        self.buttonBox = QtGui.QDialogButtonBox(self)
         self.buttonBox.addButton(
                 StandardButton(StandardButton.OK),
                 QtGui.QDialogButtonBox.AcceptRole)
@@ -88,6 +89,14 @@ class SearchDialog(PicardDialog):
         self.buttonBox.accepted.connect(self.track_selected)
         self.buttonBox.rejected.connect(self.reject)
         self.verticalLayout.addWidget(self.buttonBox)
+
+
+    def show_table(self):
+        self.tracksTable = TracksTable()
+        self.tracksTable.cellDoubleClicked.connect(self.track_double_clicked)
+        self.verticalLayout.removeWidget(self.label)
+        self.verticalLayout.insertWidget(0, self.tracksTable)
+        self.restore_table_header_state()
 
     def load_selection(self, row=None):
         track_id, release_id, rg_id = self.search_results[row][:3]
@@ -160,6 +169,7 @@ class SearchDialog(PicardDialog):
         return result
 
     def show_tracks(self, obj, document, http, error):
+        self.show_table()
         try:
             tracks = document.metadata[0].recording_list[0].recording
         except (AttributeError, IndexError):
