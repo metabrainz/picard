@@ -517,7 +517,7 @@ class File(QtCore.QObject, Item):
 
         # multiple matches -- calculate similarities to each of them
         match = sorted((self.metadata.compare_to_track(
-            track, self.comparison_weights)[0] for track in tracks),
+            track, self.comparison_weights) for track in tracks),
             reverse=True, key=itemgetter(0))[0]
 
         if lookuptype != 'acoustid':
