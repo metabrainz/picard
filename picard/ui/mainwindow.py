@@ -679,7 +679,12 @@ class MainWindow(QtGui.QMainWindow):
         """Search for album, artist or track on the MusicBrainz website."""
         text = self.search_edit.text()
         type = self.search_combo.itemData(self.search_combo.currentIndex())
-        self.tagger.search(text, type, config.setting["use_adv_search_syntax"])
+        if config.setting["builtin_search"] and type == "track":
+            dialog = SearchDialog(self)
+            dialog.search(text)
+            dialog.exec_()
+        else:
+            self.tagger.search(text, type, config.setting["use_adv_search_syntax"])
 
     def add_files(self):
         """Add files to the tagger."""
@@ -800,7 +805,8 @@ class MainWindow(QtGui.QMainWindow):
         obj = self.selected_objects[0]
         if isinstance(obj, Track):
             obj = obj.linked_files[0]
-        dialog = SearchDialog(obj, self)
+        dialog = SearchDialog(self)
+        dialog.load_similar_tracks(obj)
         dialog.exec_()
 
     def view_info(self):

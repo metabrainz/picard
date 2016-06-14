@@ -55,20 +55,26 @@ class SearchDialog(PicardDialog):
         config.Option("persist", "searchdialog_header_state", QtCore.QByteArray())
     ]
 
-    def __init__(self, obj, parent=None):
+    def __init__(self, parent=None):
         PicardDialog.__init__(self, parent)
         self.setObjectName(_("SearchDialog"))
         self.setWindowTitle(_("Track Search Results"))
-        self.obj = obj
+        self.file_ = None
         self.search_results = []
         self.setupUi()
-        self.load_similar_tracks(self.obj)
         self.restore_window_state()
 
-    def load_similar_tracks(self, obj):
-        metadata = obj.orig_metadata
+    def search(self, query):
         self.show_progress()
-        self.tagger.xmlws.find_tracks(partial(self.show_tracks, obj),
+        self.tagger.xmlws.find_tracks(self.handle_reply,
+                track=query,
+                limit=25)
+
+    def load_similar_tracks(self, file_):
+        self.file_ = file_
+        metadata = file_.orig_metadata
+        self.show_progress()
+        self.tagger.xmlws.find_tracks(self.handle_reply,
                 track=metadata['title'],
                 artist=metadata['artist'],
                 release=metadata['tracknumber'],
@@ -108,15 +114,18 @@ class SearchDialog(PicardDialog):
     def load_selection(self, row=None):
         track_id, release_id, rg_id = self.search_results[row][:3]
         if release_id:
-            album = self.obj.parent.album
             self.tagger.get_release_group_by_id(rg_id).loaded_albums.add(
                     release_id)
-            self.tagger.move_file_to_track(self.obj, release_id, track_id)
-            if album._files == 0:
-                # Remove album if the selected file was the only one in album
-                # Compared to 0 because file has already moved to another album
-                # by move_file_to_track
-                self.tagger.remove_album(album)
+            if self.file_:
+                album = self.file_.parent.album
+                self.tagger.move_file_to_track(self.file_, release_id, track_id)
+                if album._files == 0:
+                    # Remove album if the selected file was the only one in album
+                    # Compared to 0 because file has already moved to another album
+                    # by move_file_to_track
+                    self.tagger.remove_album(album)
+            else:
+                self.tagger.load_album(release_id)
         self.save_state()
         self.closeEvent()
 
@@ -133,50 +142,52 @@ class SearchDialog(PicardDialog):
 
     def closeEvent(self, event=None):
         self.save_state()
-        if event:
-            event.accept()
-        else:
-            self.accept()
+        self.accept()
 
-    def parse_match(self, match):
-        rg, release, track = match[1:]
-        rec_id = track.id
-        rec_title = track.title[0].text
-        artist = artist_credit_from_node(track.artist_credit[0])[0]
-        try:
-            length = format_time(track.length[0].text)
-        except AttributeError:
-            length = ""
-        if release:
-            rel_id = release.id
-            rel_title = release.title[0].text
-            if "date" in release.children:
-                date = release.date[0].text
+    def parse_tracks(self, tracks):
+        for track in tracks:
+            rec_id = track.id
+            rec_title = track.title[0].text
+            artist = artist_credit_from_node(track.artist_credit[0])[0]
+            try:
+                length = format_time(track.length[0].text)
+            except AttributeError:
+                length = ""
+            try:
+                releases = track.release_list[0].release
+            except AttributeError:
+                pass
+            if releases:
+                for release in releases:
+                    rel_id = release.id
+                    rel_title = release.title[0].text
+                    if "date" in release.children:
+                        date = release.date[0].text
+                    else:
+                        date = None
+                    if "country" in release.children:
+                        country = release.country[0].text
+                    else:
+                        country = ""
+                    rg = release.release_group[0]
+                    rg_id = rg.id
+                    types_list = []
+                    if "primary_type" in rg.children:
+                        types_list.append(rg.primary_type[0].text)
+                    if "secondary_type_list" in rg.children:
+                        for sec in rg.secondary_type_list:
+                            types_list.append(sec.secondary_type[0].text)
+                    types = "+".join(types_list)
+
+                    result = (rec_id, rel_id, rg_id, rec_title, artist, length,
+                            rel_title, date, country, types)
+                    self.search_results.append(result)
             else:
-                date = None
-            if "country" in release.children:
-                country = release.country[0].text
-            else:
-                country = ""
-            rg_id = rg.id
-            types_list = []
-            if "primary_type" in rg.children:
-                types_list.append(rg.primary_type[0].text)
-            if "secondary_type_list" in rg.children:
-                for sec in rg.secondary_type_list:
-                    types_list.append(sec.secondary_type[0].text)
-            types = "+".join(types_list)
+                result = (rec_id, "", "", rec_title, artist, length, "", "",  "",
+                        "")
+                self.search_results.append(result)
 
-            result = (rec_id, rel_id, rg_id, rec_title, artist, length,
-                    rel_title, date, country, types)
-        else:
-            result = (rec_id, "", "", rec_title, artist, length, "", "",  "",
-                    "")
-        self.search_results.append(result)
-        return result
-
-    def show_tracks(self, obj, document, http, error):
-        self.show_table()
+    def handle_reply(self, document, http, error):
         try:
             tracks = document.metadata[0].recording_list[0].recording
         except (AttributeError, IndexError):
@@ -184,16 +195,19 @@ class SearchDialog(PicardDialog):
             # To be done: Notify user about that, or just close the dialog
             return
 
-        tmp = []
-        for track in tracks:
-            tmp.extend(self.obj.orig_metadata.compare_to_track(track,
-                    File.comparison_weights))
+        if self.file_:
+            tmp = sorted((self.file_.orig_metadata.compare_to_track(track,
+                File.comparison_weights) for track in tracks), reverse=True,
+                key=itemgetter(0))
+            tracks = [item[3] for item in tmp]
 
-        sorted_matches = [i for i in sorted(tmp, key=itemgetter(0), reverse=True)
-                if i[0] > config.setting['file_lookup_threshold']]
-        for row, match in enumerate(sorted_matches):
-            result = self.parse_match(match)
-            title, artist, length, release, date, country, type = result[3:]
+        self.parse_tracks(tracks)
+        self.display_results()
+
+    def display_results(self):
+        self.show_table()
+        for row, tup in enumerate(self.search_results):
+            title, artist, length, release, date, country, type = tup[3:]
             table_item = QtGui.QTableWidgetItem
             self.tracksTable.insertRow(row)
             self.tracksTable.setItem(row, 0, table_item(title))
@@ -215,7 +229,6 @@ class SearchDialog(PicardDialog):
         if state:
             header.restoreState(state)
         header.setResizeMode(QtGui.QHeaderView.Interactive)
-
 
     def save_state(self):
         header = self.tracksTable.horizontalHeader()
