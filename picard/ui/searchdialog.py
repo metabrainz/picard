@@ -68,6 +68,7 @@ class SearchDialog(PicardDialog):
         self.show_progress()
         self.tagger.xmlws.find_tracks(self.handle_reply,
                 track=query,
+                dismax="true",
                 limit=25)
 
     def load_similar_tracks(self, file_):
