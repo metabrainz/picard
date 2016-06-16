@@ -101,9 +101,20 @@ class SearchDialog(PicardDialog):
         self.verticalLayout.addWidget(self.buttonBox)
 
     def show_progress(self):
-        self.label = QtGui.QLabel('Loading....')
-        self.label.setAlignment(QtCore.Qt.AlignCenter)
-        self.verticalLayout.insertWidget(0, self.label)
+        widget = QtGui.QWidget(self)
+        layout = QtGui.QVBoxLayout(widget)
+        text_label = QtGui.QLabel('<strong>Fetching results...</strong>', widget)
+        text_label.setAlignment(QtCore.Qt.AlignHCenter | QtCore.Qt.AlignBottom)
+        gif_label = QtGui.QLabel(widget)
+        movie = QtGui.QMovie(":/images/loader.gif")
+        gif_label.setMovie(movie)
+        movie.start()
+        gif_label.setAlignment(QtCore.Qt.AlignHCenter | QtCore.Qt.AlignTop)
+        layout.addWidget(text_label)
+        layout.addWidget(gif_label)
+        layout.setMargin(1)
+        widget.setLayout(layout)
+        self.verticalLayout.insertWidget(0, widget)
 
     def show_table(self):
         self.tracksTable = TracksTable()
