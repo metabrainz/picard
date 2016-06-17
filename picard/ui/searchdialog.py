@@ -96,7 +96,7 @@ class SearchDialog(PicardDialog):
         self.buttonBox.addButton(
                 StandardButton(StandardButton.CANCEL),
                 QtGui.QDialogButtonBox.RejectRole)
-        self.buttonBox.accepted.connect(self.track_selected)
+        self.buttonBox.accepted.connect(self.accept)
         self.buttonBox.rejected.connect(self.reject)
         self.verticalLayout.addWidget(self.buttonBox)
 
@@ -147,23 +147,22 @@ class SearchDialog(PicardDialog):
                     self.tagger.remove_album(album)
             else:
                 self.tagger.load_album(release_id)
-        self.save_state()
-        self.closeEvent()
 
     def track_double_clicked(self, row):
         self.load_selection(row)
-
-    def track_selected(self):
-        sel_rows = self.tracksTable.selectionModel().selectedRows()
-        if sel_rows:
-            sel_row = sel_rows[0].row()
-            self.load_selection(sel_row)
-        else:
-            self.closeEvent()
-
-    def closeEvent(self, event=None):
-        self.save_state()
         self.accept()
+
+    def accept(self):
+        try:
+            sel_rows = self.tracksTable.selectionModel().selectedRows()
+            if sel_rows:
+                sel_row = sel_rows[0].row()
+                self.load_selection(sel_row)
+            self.save_state(True)
+            QtGui.QDialog.accept(self)
+        except AttributeError:
+            self.save_state(False)
+            QtGui.QDialog.accept(self)
 
     def parse_tracks(self, tracks):
         for track in tracks:
@@ -257,7 +256,8 @@ class SearchDialog(PicardDialog):
             header.restoreState(state)
         header.setResizeMode(QtGui.QHeaderView.Interactive)
 
-    def save_state(self):
-        header = self.tracksTable.horizontalHeader()
-        config.persist["searchdialog_header_state"] = header.saveState()
+    def save_state(self, table_loaded=True):
+        if table_loaded:
+            header = self.tracksTable.horizontalHeader()
+            config.persist["searchdialog_header_state"] = header.saveState()
         config.persist["searchdialog_window_size"] = self.size()
