@@ -124,6 +124,14 @@ class SearchDialog(PicardDialog):
         self.verticalLayout.insertWidget(0, self.tracksTable)
         self.restore_table_header_state()
 
+    def show_error(self, error):
+        self.error_widget = QtGui.QLabel(_("<strong>" + error + "</strong>"))
+        self.error_widget.setAlignment(QtCore.Qt.AlignCenter)
+        self.error_widget.setWordWrap(True)
+        self.verticalLayout.removeWidget(self.progress_widget)
+        self.progress_widget.deleteLater()
+        self.verticalLayout.insertWidget(0, self.error_widget)
+
     def load_selection(self, row=None):
         track_id, release_id, rg_id = self.search_results[row][:3]
         if release_id:
@@ -201,11 +209,17 @@ class SearchDialog(PicardDialog):
                 self.search_results.append(result)
 
     def handle_reply(self, document, http, error):
+        if error:
+            error_msg = _("Unable to fetch results. Close the dialog and try"
+                    "again. See debug logs for more details.")
+            self.show_error(error_msg)
+            return
+
         try:
             tracks = document.metadata[0].recording_list[0].recording
         except (AttributeError, IndexError):
-            # No results to show
-            # To be done: Notify user about that, or just close the dialog
+            error_msg = _("No results found. Please try a different search query.")
+            self.show_error(error_msg)
             return
 
         if self.file_:
