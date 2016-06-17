@@ -101,11 +101,11 @@ class SearchDialog(PicardDialog):
         self.verticalLayout.addWidget(self.buttonBox)
 
     def show_progress(self):
-        widget = QtGui.QWidget(self)
-        layout = QtGui.QVBoxLayout(widget)
-        text_label = QtGui.QLabel('<strong>Fetching results...</strong>', widget)
+        self.progress_widget = QtGui.QWidget(self)
+        layout = QtGui.QVBoxLayout(self.progress_widget)
+        text_label = QtGui.QLabel('<strong>Fetching results...</strong>', self.progress_widget)
         text_label.setAlignment(QtCore.Qt.AlignHCenter | QtCore.Qt.AlignBottom)
-        gif_label = QtGui.QLabel(widget)
+        gif_label = QtGui.QLabel(self.progress_widget)
         movie = QtGui.QMovie(":/images/loader.gif")
         gif_label.setMovie(movie)
         movie.start()
@@ -113,13 +113,14 @@ class SearchDialog(PicardDialog):
         layout.addWidget(text_label)
         layout.addWidget(gif_label)
         layout.setMargin(1)
-        widget.setLayout(layout)
-        self.verticalLayout.insertWidget(0, widget)
+        self.progress_widget.setLayout(layout)
+        self.verticalLayout.insertWidget(0, self.progress_widget)
 
     def show_table(self):
         self.tracksTable = TracksTable()
         self.tracksTable.cellDoubleClicked.connect(self.track_double_clicked)
-        self.verticalLayout.removeWidget(self.label)
+        self.verticalLayout.removeWidget(self.progress_widget)
+        self.progress_widget.deleteLater()
         self.verticalLayout.insertWidget(0, self.tracksTable)
         self.restore_table_header_state()
 
