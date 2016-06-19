@@ -264,6 +264,7 @@ class SearchDialog(PicardDialog):
                 key=itemgetter(0))
             tracks = [item[3] for item in tmp]
 
+        del self.search_results[:]  # Clear existing data
         self.parse_tracks(tracks)
         self.display_results()
 
