@@ -22,8 +22,8 @@ from functools import partial
 from picard import config
 from picard.file import File
 from picard.ui import PicardDialog
-from picard.ui.util import StandardButton
-from picard.util import format_time
+from picard.ui.util import StandardButton, ButtonLineEdit
+from picard.util import format_time, icontheme
 from picard.mbxml import artist_credit_from_node
 
 
@@ -46,6 +46,35 @@ class TracksTable(QtGui.QTableWidget):
                 QtGui.QHeaderView.Stretch)
         self.horizontalHeader().setResizeMode(
                 QtGui.QHeaderView.Interactive)
+
+
+class SearchBox(QtGui.QWidget):
+
+    def __init__(self, parent):
+        self.parent = parent
+        QtGui.QWidget.__init__(self, parent)
+        self.search_action = QtGui.QAction(icontheme.lookup('system-search'),
+                _(u"Search"), self)
+        self.search_action.triggered.connect(self.search)
+        self.setupUi()
+
+    def setupUi(self):
+        self.setMaximumHeight(35)
+        layout = QtGui.QHBoxLayout(self)
+        layout.setMargin(1)
+        layout.setSpacing(1)
+        self.search_edit = ButtonLineEdit(self)
+        layout.addWidget(self.search_edit)
+        self.search_button = QtGui.QToolButton(self)
+        self.search_button.setAutoRaise(True)
+        self.search_button.setDefaultAction(self.search_action)
+        self.search_button.setIconSize(QtCore.QSize(22, 22))
+        layout.addWidget(self.search_button)
+        self.setLayout(layout)
+
+    def search(self):
+        text = self.search_edit.text()
+        self.parent.search(text)
 
 
 class SearchDialog(PicardDialog):
@@ -89,6 +118,8 @@ class SearchDialog(PicardDialog):
         self.verticalLayout = QtGui.QVBoxLayout(self)
         self.verticalLayout.setObjectName(_("verticalLayout"))
 
+        self.search_box = SearchBox(self)
+        self.verticalLayout.addWidget(self.search_box)
         self.buttonBox = QtGui.QDialogButtonBox(self)
         self.buttonBox.addButton(
                 StandardButton(StandardButton.OK),
