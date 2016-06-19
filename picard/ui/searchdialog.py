@@ -120,6 +120,10 @@ class SearchDialog(PicardDialog):
 
         self.search_box = SearchBox(self)
         self.verticalLayout.addWidget(self.search_box)
+        self.center_widget = QtGui.QWidget(self)
+        self.center_layout = QtGui.QVBoxLayout(self.center_widget)
+        self.center_widget.setLayout(self.center_layout)
+        self.verticalLayout.addWidget(self.center_widget)
         self.buttonBox = QtGui.QDialogButtonBox(self)
         self.buttonBox.addButton(
                 StandardButton(StandardButton.OK),
@@ -130,6 +134,12 @@ class SearchDialog(PicardDialog):
         self.buttonBox.accepted.connect(self.accept)
         self.buttonBox.rejected.connect(self.reject)
         self.verticalLayout.addWidget(self.buttonBox)
+
+    def add_widget_to_center_layout(self, widget):
+        wid = self.center_layout.itemAt(0)
+        if wid:
+            wid.widget().deleteLater()
+        self.center_layout.addWidget(widget)
 
     def show_progress(self):
         self.progress_widget = QtGui.QWidget(self)
@@ -145,23 +155,19 @@ class SearchDialog(PicardDialog):
         layout.addWidget(gif_label)
         layout.setMargin(1)
         self.progress_widget.setLayout(layout)
-        self.verticalLayout.insertWidget(0, self.progress_widget)
+        self.add_widget_to_center_layout(self.progress_widget)
 
     def show_table(self):
         self.tracksTable = TracksTable()
         self.tracksTable.cellDoubleClicked.connect(self.track_double_clicked)
-        self.verticalLayout.removeWidget(self.progress_widget)
-        self.progress_widget.deleteLater()
-        self.verticalLayout.insertWidget(0, self.tracksTable)
         self.restore_table_header_state()
+        self.add_widget_to_center_layout(self.tracksTable)
 
     def show_error(self, error):
         self.error_widget = QtGui.QLabel(_("<strong>" + error + "</strong>"))
         self.error_widget.setAlignment(QtCore.Qt.AlignCenter)
         self.error_widget.setWordWrap(True)
-        self.verticalLayout.removeWidget(self.progress_widget)
-        self.progress_widget.deleteLater()
-        self.verticalLayout.insertWidget(0, self.error_widget)
+        self.add_widget_to_center_layout(self.error_widget)
 
     def load_selection(self, row=None):
         track_id, release_id, rg_id = self.search_results[row][:3]
