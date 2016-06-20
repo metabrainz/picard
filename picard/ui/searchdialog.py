@@ -93,11 +93,13 @@ class SearchDialog(PicardDialog):
         self.setupUi()
         self.restore_window_state()
 
-    def search(self, query):
+    def search(self, text):
         self.show_progress()
         self.tagger.xmlws.find_tracks(self.handle_reply,
-                track=query,
-                dismax="true",
+                query=text,
+                dismax=True,
+                search=True,
+                adv=config.setting["use_adv_search_syntax"],
                 limit=25)
 
     def load_similar_tracks(self, file_):

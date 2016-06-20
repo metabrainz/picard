@@ -459,15 +459,26 @@ class XmlWebService(QtCore.QObject):
         port = config.setting["server_port"]
         filters = []
         query = []
-        for name, value in kwargs.items():
-            if name in ('limit', 'dismax'):
-                filters.append((name, str(value)))
+        if kwargs.get("search"):
+        # Only for text searches. Auto lookup is handled by 'else' case.
+            if kwargs["adv"]:
+                # Lucene search syntax is enabled by default for /ws/2 requests.
+                # Simply pass the query if user has enabled advanced query syntax.
+                filters.append(("query", kwargs["query"]))
             else:
-                value = _escape_lucene_query(value).strip().lower()
-                if value:
-                    query.append('%s:(%s)' % (name, value))
-        if query:
-            filters.append(('query', ' '.join(query)))
+                value = _escape_lucene_query(kwargs["query"]).strip().lower()
+                filters.append(("query", value))
+                filters.append(("dismax", kwargs["dismax"]))
+        else:
+            for name, value in kwargs.items():
+                if name in ('limit', 'dismax'):
+                    filters.append((name, str(value)))
+                else:
+                    value = _escape_lucene_query(value).strip().lower()
+                    if value:
+                        query.append('%s:(%s)' % (name, value))
+            if query:
+                filters.append(('query', ' '.join(query)))
         queryargs = {}
         for name, value in filters:
             value = QUrl.toPercentEncoding(unicode(value))
