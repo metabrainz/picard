@@ -31,8 +31,15 @@ class TracksTable(QtGui.QTableWidget):
 
     def __init__(self, parent=None):
         QtGui.QTableWidget.__init__(self, 0, 7)
-        self.setHorizontalHeaderLabels([_("Name"), _("Length"),
-            _("Artist"), _("Release"), _("Date"), _("Country"), _("Type")])
+        self.setHorizontalHeaderLabels([
+                _("Name"),
+                _("Length"),
+                _("Artist"),
+                _("Release"),
+                _("Date"),
+                _("Country"),
+                _("Type")
+        ])
 
         self.setSelectionMode(
                 QtGui.QAbstractItemView.SingleSelection)
@@ -73,8 +80,7 @@ class SearchBox(QtGui.QWidget):
         self.setLayout(layout)
 
     def search(self):
-        text = self.search_edit.text()
-        self.parent.search(text)
+        self.parent.search(self.search_edit.text())
 
 
 class SearchDialog(PicardDialog):
@@ -198,10 +204,10 @@ class SearchDialog(PicardDialog):
                 sel_row = sel_rows[0].row()
                 self.load_selection(sel_row)
             self.save_state(True)
-            QtGui.QDialog.accept(self)
         except AttributeError:
             self.save_state(False)
-            QtGui.QDialog.accept(self)
+
+        QtGui.QDialog.accept(self)
 
     def parse_tracks(self, tracks):
         for track in tracks:
