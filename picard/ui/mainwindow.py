@@ -107,8 +107,8 @@ class MainWindow(QtGui.QMainWindow):
         if not self.show_cover_art_action.isChecked():
             self.cover_art_box.hide()
 
-        self.logDialog = LogView()
-        self.historyDialog = HistoryView()
+        self.logDialog = LogView(self)
+        self.historyDialog = HistoryView(self)
 
         bottomLayout = QtGui.QHBoxLayout()
         bottomLayout.setContentsMargins(0, 0, 0, 0)
