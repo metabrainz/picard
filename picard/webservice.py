@@ -470,7 +470,7 @@ class XmlWebService(QtCore.QObject):
                 filters.append(("query", value))
                 filters.append(("dismax", kwargs["dismax"]))
             if kwargs.get("limit"):
-                filters.append("limit", kwargs["limit"])
+                filters.append(("limit", kwargs["limit"]))
         else:
             for name, value in kwargs.items():
                 if name in ('limit'):
