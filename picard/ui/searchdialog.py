@@ -252,7 +252,7 @@ class SearchDialog(PicardDialog):
 
     def handle_reply(self, document, http, error):
         if error:
-            error_msg = _("Unable to fetch results. Close the dialog and try"
+            error_msg = _("Unable to fetch results. Close the dialog and try "
                     "again. See debug logs for more details.")
             self.show_error(error_msg)
             return
