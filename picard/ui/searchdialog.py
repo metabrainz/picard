@@ -27,6 +27,21 @@ from picard.util import format_time, icontheme
 from picard.mbxml import artist_credit_from_node
 
 
+class Track(object):
+
+    def __init__(self, **kwargs):
+        self.id = kwargs.get("track_id")
+        self.release_id = kwargs.get("release_id")
+        self.rg_id = kwargs.get("rg_id")
+        self.title = kwargs.get("title")
+        self.length = kwargs.get("length")
+        self.release = kwargs.get("release")
+        self.artist = kwargs.get("artist")
+        self.date = kwargs.get("date")
+        self.country = kwargs.get("country")
+        self.release_type = kwargs.get("release_type")
+
+
 class TracksTable(QtGui.QTableWidget):
 
     def __init__(self, parent=None):
@@ -176,20 +191,20 @@ class SearchDialog(PicardDialog):
         self.add_widget_to_center_layout(self.error_widget)
 
     def load_selection(self, row=None):
-        track_id, release_id, rg_id = self.search_results[row][:3]
-        if release_id:
-            self.tagger.get_release_group_by_id(rg_id).loaded_albums.add(
-                    release_id)
+        track = self.search_results[row]
+        if track.release_id:
+            self.tagger.get_release_group_by_id(track.rg_id).loaded_albums.add(
+                    track.release_id)
             if self.file_:
                 album = self.file_.parent.album
-                self.tagger.move_file_to_track(self.file_, release_id, track_id)
+                self.tagger.move_file_to_track(self.file_, track.release_id, track.track_id)
                 if album._files == 0:
                     # Remove album if the selected file was the only one in album
                     # Compared to 0 because file has already moved to another album
                     # by move_file_to_track
                     self.tagger.remove_album(album)
             else:
-                self.tagger.load_album(release_id)
+                self.tagger.load_album(track.release_id)
 
     def track_double_clicked(self, row):
         self.load_selection(row)
@@ -207,17 +222,17 @@ class SearchDialog(PicardDialog):
 
         QtGui.QDialog.accept(self)
 
-    def parse_tracks(self, tracks):
-        for track in tracks:
-            rec_id = track.id
-            rec_title = track.title[0].text
-            artist = artist_credit_from_node(track.artist_credit[0])[0]
+    def parse_tracks_from_xml(self, tracks_xml):
+        for obj in tracks_xml:
+            rec_id = obj.id
+            rec_title = obj.title[0].text
+            artist = artist_credit_from_node(obj.artist_credit[0])[0]
             try:
-                length = format_time(track.length[0].text)
+                length = format_time(obj.length[0].text)
             except AttributeError:
                 length = ""
             try:
-                releases = track.release_list[0].release
+                releases = obj.release_list[0].release
             except AttributeError:
                 pass
             if releases:
@@ -242,13 +257,15 @@ class SearchDialog(PicardDialog):
                             types_list.append(sec.secondary_type[0].text)
                     types = "+".join(types_list)
 
-                    result = (rec_id, rel_id, rg_id, rec_title, artist, length,
-                            rel_title, date, country, types)
-                    self.search_results.append(result)
+                    track = Track(id=rec_id, release_id=rel_id, rg_id=rg_id,
+                            title=rec_title, artist=artist, length=length,
+                            release=rel_title, date=date, country=country,
+                            release_type=types)
+                    self.search_results.append(track)
             else:
-                result = (rec_id, "", "", rec_title, artist, length, "", "",  "",
-                        "")
-                self.search_results.append(result)
+                track = Track(id=rec_id, artist=artist, length=length,
+                        title=rec_title)
+                self.search_results.append(track)
 
     def handle_reply(self, document, http, error):
         if error:
@@ -271,22 +288,21 @@ class SearchDialog(PicardDialog):
             tracks = [item[3] for item in tmp]
 
         del self.search_results[:]  # Clear existing data
-        self.parse_tracks(tracks)
+        self.parse_tracks_from_xml(tracks)
         self.display_results()
 
     def display_results(self):
         self.show_table()
-        for row, tup in enumerate(self.search_results):
-            title, artist, length, release, date, country, type = tup[3:]
+        for row, track in enumerate(self.search_results):
             table_item = QtGui.QTableWidgetItem
             self.tracksTable.insertRow(row)
-            self.tracksTable.setItem(row, 0, table_item(title))
-            self.tracksTable.setItem(row, 1, table_item(length))
-            self.tracksTable.setItem(row, 2, table_item(artist))
-            self.tracksTable.setItem(row, 3, table_item(release))
-            self.tracksTable.setItem(row, 4, table_item(date))
-            self.tracksTable.setItem(row, 5, table_item(country))
-            self.tracksTable.setItem(row, 6, table_item(type))
+            self.tracksTable.setItem(row, 0, table_item(track.title))
+            self.tracksTable.setItem(row, 1, table_item(track.length))
+            self.tracksTable.setItem(row, 2, table_item(track.artist))
+            self.tracksTable.setItem(row, 3, table_item(track.release))
+            self.tracksTable.setItem(row, 4, table_item(track.date))
+            self.tracksTable.setItem(row, 5, table_item(track.country))
+            self.tracksTable.setItem(row, 6, table_item(track.release_type))
 
     def restore_window_state(self):
         size = config.persist["searchdialog_window_size"]
