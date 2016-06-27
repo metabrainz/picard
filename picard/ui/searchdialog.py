@@ -42,20 +42,11 @@ class Track(object):
         self.release_type = kwargs.get("release_type")
 
 
-class TracksTable(QtGui.QTableWidget):
+class ResultTable(QtGui.QTableWidget):
 
-    def __init__(self, parent=None):
-        QtGui.QTableWidget.__init__(self, 0, 7)
-        self.setHorizontalHeaderLabels([
-                _("Name"),
-                _("Length"),
-                _("Artist"),
-                _("Release"),
-                _("Date"),
-                _("Country"),
-                _("Type")
-        ])
-
+    def __init__(self, column_titles):
+        QtGui.QTableWidget.__init__(self, 0, len(column_titles))
+        self.setHorizontalHeaderLabels(column_titles)
         self.setSelectionMode(
                 QtGui.QAbstractItemView.SingleSelection)
         self.setSelectionBehavior(
@@ -107,33 +98,10 @@ class SearchDialog(PicardDialog):
 
     def __init__(self, parent=None):
         PicardDialog.__init__(self, parent)
-        self.setObjectName(_("SearchDialog"))
-        self.setWindowTitle(_("Track Search Results"))
         self.file_ = None
         self.search_results = []
         self.setupUi()
         self.restore_window_state()
-
-    def search(self, text):
-        self.show_progress()
-        self.tagger.xmlws.find_tracks(self.handle_reply,
-                track=text,
-                search=True,
-                limit=25)
-
-    def load_similar_tracks(self, file_):
-        self.file_ = file_
-        metadata = file_.orig_metadata
-        self.show_progress()
-        self.tagger.xmlws.find_tracks(self.handle_reply,
-                track=metadata['title'],
-                artist=metadata['artist'],
-                release=metadata['tracknumber'],
-                tnum=metadata['totaltracks'],
-                tracks=metadata['totaltracks'],
-                qdur=str(metadata.length / 2000),
-                isrc=metadata['isrc'],
-                limit=25)
 
     def setupUi(self):
         self.verticalLayout = QtGui.QVBoxLayout(self)
@@ -178,41 +146,19 @@ class SearchDialog(PicardDialog):
         self.progress_widget.setLayout(layout)
         self.add_widget_to_center_layout(self.progress_widget)
 
-    def show_table(self):
-        self.tracksTable = TracksTable()
-        self.tracksTable.cellDoubleClicked.connect(self.track_double_clicked)
-        self.restore_table_header_state()
-        self.add_widget_to_center_layout(self.tracksTable)
-
     def show_error(self, error):
         self.error_widget = QtGui.QLabel(_("<strong>" + error + "</strong>"))
         self.error_widget.setAlignment(QtCore.Qt.AlignCenter)
         self.error_widget.setWordWrap(True)
         self.add_widget_to_center_layout(self.error_widget)
 
-    def load_selection(self, row=None):
-        track = self.search_results[row]
-        if track.release_id:
-            self.tagger.get_release_group_by_id(track.rg_id).loaded_albums.add(
-                    track.release_id)
-            if self.file_:
-                album = self.file_.parent.album
-                self.tagger.move_file_to_track(self.file_, track.release_id, track.track_id)
-                if album._files == 0:
-                    # Remove album if the selected file was the only one in album
-                    # Compared to 0 because file has already moved to another album
-                    # by move_file_to_track
-                    self.tagger.remove_album(album)
-            else:
-                self.tagger.load_album(track.release_id)
-
-    def track_double_clicked(self, row):
+    def row_double_clicked(self, row):
         self.load_selection(row)
         self.accept()
 
     def accept(self):
         try:
-            sel_rows = self.tracksTable.selectionModel().selectedRows()
+            sel_rows = self.table.selectionModel().selectedRows()
             if sel_rows:
                 sel_row = sel_rows[0].row()
                 self.load_selection(sel_row)
@@ -221,6 +167,104 @@ class SearchDialog(PicardDialog):
             self.save_state(False)
 
         QtGui.QDialog.accept(self)
+
+    def restore_window_state(self):
+        size = config.persist["searchdialog_window_size"]
+        if size:
+            self.resize(size)
+
+    def restore_table_header_state(self):
+        header = self.table.horizontalHeader()
+        state = config.persist["searchdialog_header_state"]
+        if state:
+            header.restoreState(state)
+        header.setResizeMode(QtGui.QHeaderView.Interactive)
+
+    def save_state(self, table_loaded=True):
+        if table_loaded:
+            header = self.table.horizontalHeader()
+            config.persist["searchdialog_header_state"] = header.saveState()
+        config.persist["searchdialog_window_size"] = self.size()
+
+
+class TrackSearchDialog(SearchDialog):
+
+    def __init__(self, parent):
+        super(TrackSearchDialog, self).__init__(parent)
+        self.setWindowTitle(_("Track Search Results"))
+        self.table_headers = [
+                _("Name"),
+                _("Length"),
+                _("Artist"),
+                _("Release"),
+                _("Date"),
+                _("Country"),
+                _("Type")
+                ]
+
+    def search(self, text):
+        self.show_progress()
+        self.tagger.xmlws.find_tracks(self.handle_reply,
+                track=text,
+                search=True,
+                limit=25)
+
+    def load_similar_tracks(self, file_):
+        self.file_ = file_
+        metadata = file_.orig_metadata
+        self.show_progress()
+        self.tagger.xmlws.find_tracks(self.handle_reply,
+                track=metadata['title'],
+                artist=metadata['artist'],
+                release=metadata['tracknumber'],
+                tnum=metadata['totaltracks'],
+                tracks=metadata['totaltracks'],
+                qdur=str(metadata.length / 2000),
+                isrc=metadata['isrc'],
+                limit=25)
+
+    def handle_reply(self, document, http, error):
+        if error:
+            error_msg = _("Unable to fetch results. Close the dialog and try "
+                    "again. See debug logs for more details.")
+            self.show_error(error_msg)
+            return
+
+        try:
+            tracks = document.metadata[0].recording_list[0].recording
+        except (AttributeError, IndexError):
+            error_msg = _("No results found. Please try a different search query.")
+            self.show_error(error_msg)
+            return
+
+        if self.file_:
+            tmp = sorted((self.file_.orig_metadata.compare_to_track(track,
+                File.comparison_weights) for track in tracks), reverse=True,
+                key=itemgetter(0))
+            tracks = [item[3] for item in tmp]
+
+        del self.search_results[:]  # Clear existing data
+        self.parse_tracks_from_xml(tracks)
+        self.display_results()
+
+    def show_table(self):
+        self.table = ResultTable(self.table_headers)
+        self.table.cellDoubleClicked.connect(self.row_double_clicked)
+        self.restore_table_header_state()
+        self.add_widget_to_center_layout(self.table)
+
+    def display_results(self):
+        self.show_table()
+        for row, track in enumerate(self.search_results):
+            table_item = QtGui.QTableWidgetItem
+            self.table.insertRow(row)
+            self.table.setItem(row, 0, table_item(track.title))
+            self.table.setItem(row, 1, table_item(track.length))
+            self.table.setItem(row, 2, table_item(track.artist))
+            self.table.setItem(row, 3, table_item(track.release))
+            self.table.setItem(row, 4, table_item(track.date))
+            self.table.setItem(row, 5, table_item(track.country))
+            self.table.setItem(row, 6, table_item(track.release_type))
 
     def parse_tracks_from_xml(self, tracks_xml):
         for obj in tracks_xml:
@@ -267,57 +311,18 @@ class SearchDialog(PicardDialog):
                         title=rec_title)
                 self.search_results.append(track)
 
-    def handle_reply(self, document, http, error):
-        if error:
-            error_msg = _("Unable to fetch results. Close the dialog and try "
-                    "again. See debug logs for more details.")
-            self.show_error(error_msg)
-            return
-
-        try:
-            tracks = document.metadata[0].recording_list[0].recording
-        except (AttributeError, IndexError):
-            error_msg = _("No results found. Please try a different search query.")
-            self.show_error(error_msg)
-            return
-
-        if self.file_:
-            tmp = sorted((self.file_.orig_metadata.compare_to_track(track,
-                File.comparison_weights) for track in tracks), reverse=True,
-                key=itemgetter(0))
-            tracks = [item[3] for item in tmp]
-
-        del self.search_results[:]  # Clear existing data
-        self.parse_tracks_from_xml(tracks)
-        self.display_results()
-
-    def display_results(self):
-        self.show_table()
-        for row, track in enumerate(self.search_results):
-            table_item = QtGui.QTableWidgetItem
-            self.tracksTable.insertRow(row)
-            self.tracksTable.setItem(row, 0, table_item(track.title))
-            self.tracksTable.setItem(row, 1, table_item(track.length))
-            self.tracksTable.setItem(row, 2, table_item(track.artist))
-            self.tracksTable.setItem(row, 3, table_item(track.release))
-            self.tracksTable.setItem(row, 4, table_item(track.date))
-            self.tracksTable.setItem(row, 5, table_item(track.country))
-            self.tracksTable.setItem(row, 6, table_item(track.release_type))
-
-    def restore_window_state(self):
-        size = config.persist["searchdialog_window_size"]
-        if size:
-            self.resize(size)
-
-    def restore_table_header_state(self):
-        header = self.tracksTable.horizontalHeader()
-        state = config.persist["searchdialog_header_state"]
-        if state:
-            header.restoreState(state)
-        header.setResizeMode(QtGui.QHeaderView.Interactive)
-
-    def save_state(self, table_loaded=True):
-        if table_loaded:
-            header = self.tracksTable.horizontalHeader()
-            config.persist["searchdialog_header_state"] = header.saveState()
-        config.persist["searchdialog_window_size"] = self.size()
+    def load_selection(self, row=None):
+        track = self.search_results[row]
+        if track.release_id:
+            self.tagger.get_release_group_by_id(track.rg_id).loaded_albums.add(
+                    track.release_id)
+            if self.file_:
+                album = self.file_.parent.album
+                self.tagger.move_file_to_track(self.file_, track.release_id, track.track_id)
+                if album._files == 0:
+                    # Remove album if the selected file was the only one in album
+                    # Compared to 0 because file has already moved to another album
+                    # by move_file_to_track
+                    self.tagger.remove_album(album)
+            else:
+                self.tagger.load_album(track.release_id)

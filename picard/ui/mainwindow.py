@@ -34,7 +34,7 @@ from picard.ui.filebrowser import FileBrowser
 from picard.ui.tagsfromfilenames import TagsFromFileNamesDialog
 from picard.ui.options.dialog import OptionsDialog
 from picard.ui.infodialog import FileInfoDialog, AlbumInfoDialog, ClusterInfoDialog
-from picard.ui.searchdialog import SearchDialog
+from picard.ui.searchdialog import TrackSearchDialog
 from picard.ui.infostatus import InfoStatus
 from picard.ui.passworddialog import PasswordDialog
 from picard.ui.logview import LogView, HistoryView
@@ -679,10 +679,11 @@ class MainWindow(QtGui.QMainWindow):
         """Search for album, artist or track on the MusicBrainz website."""
         text = self.search_edit.text()
         type = self.search_combo.itemData(self.search_combo.currentIndex())
-        if config.setting["builtin_search"] and type == "track":
-            dialog = SearchDialog(self)
-            dialog.search(text)
-            dialog.exec_()
+        if config.setting["builtin_search"]:
+            if type == "track":
+                dialog = TrackSearchDialog(self)
+                dialog.search(text)
+                dialog.exec_()
         else:
             self.tagger.search(text, type, config.setting["use_adv_search_syntax"])
 
@@ -805,7 +806,7 @@ class MainWindow(QtGui.QMainWindow):
         obj = self.selected_objects[0]
         if isinstance(obj, Track):
             obj = obj.linked_files[0]
-        dialog = SearchDialog(self)
+        dialog = TrackSearchDialog(self)
         dialog.load_similar_tracks(obj)
         dialog.exec_()
 
