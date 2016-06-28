@@ -268,18 +268,16 @@ class TrackSearchDialog(SearchDialog):
             self.table.setItem(row, 6, table_item(track.release_type))
 
     def parse_tracks_from_xml(self, tracks_xml):
-        for obj in tracks_xml:
-            rec_id = obj.id
-            rec_title = obj.title[0].text
-            artist = artist_credit_from_node(obj.artist_credit[0])[0]
+        for node in tracks_xml:
+            rec_id = node.id
+            rec_title = node.title[0].text
+            artist = artist_credit_from_node(node.artist_credit[0])[0]
             try:
-                length = format_time(obj.length[0].text)
+                length = format_time(node.length[0].text)
             except AttributeError:
                 length = ""
             try:
-                releases = obj.release_list[0].release
-            except AttributeError:
-                pass
+                releases = node.release_list[0].release
             if releases:
                 for release in releases:
                     rel_id = release.id
