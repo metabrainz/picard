@@ -255,7 +255,8 @@ class TrackSearchDialog(SearchDialog):
 
     def display_results(self):
         self.show_table()
-        for row, track in enumerate(self.search_results):
+        for row, obj in enumerate(self.search_results):
+            track = obj[0]
             table_item = QtGui.QTableWidgetItem
             self.table.insertRow(row)
             self.table.setItem(row, 0, table_item(track.title))
@@ -305,14 +306,14 @@ class TrackSearchDialog(SearchDialog):
                             title=rec_title, artist=artist, length=length,
                             release=rel_title, date=date, country=country,
                             release_type=types)
-                    self.search_results.append(track)
+                    self.search_results.append((track, node))
             else:
                 track = Track(id=rec_id, artist=artist, length=length,
-                        title=rec_title)
-                self.search_results.append(track)
+                        title=rec_title, release="(Standalone Recording)")
+                self.search_results.append((track, node))
 
     def load_selection(self, row=None):
-        track = self.search_results[row]
+        track, node = self.search_results[row]
         if track.release_id:
             self.tagger.get_release_group_by_id(track.rg_id).loaded_albums.add(
                     track.release_id)
@@ -326,3 +327,11 @@ class TrackSearchDialog(SearchDialog):
                     self.tagger.remove_album(album)
             else:
                 self.tagger.load_album(track.release_id)
+        else:
+            if self.file_:
+                album = self.file_.parent.album
+                self.tagger.move_file_to_nat(track.id)
+                if album._files == 0:
+                    self.tagger.remove_album(album)
+            else:
+                self.tagger.load_nat(track.id, node)
