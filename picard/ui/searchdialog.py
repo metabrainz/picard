@@ -321,9 +321,7 @@ class TrackSearchDialog(SearchDialog):
                 album = self.file_.parent.album
                 self.tagger.move_file_to_track(self.file_, track.release_id, track.track_id)
                 if album._files == 0:
-                    # Remove album if the selected file was the only one in album
-                    # Compared to 0 because file has already moved to another album
-                    # by move_file_to_track
+                    # Remove album if it has no more files associated
                     self.tagger.remove_album(album)
             else:
                 self.tagger.load_album(track.release_id)
