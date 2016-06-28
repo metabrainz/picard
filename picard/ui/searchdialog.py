@@ -278,7 +278,6 @@ class TrackSearchDialog(SearchDialog):
                 length = ""
             try:
                 releases = node.release_list[0].release
-            if releases:
                 for release in releases:
                     rel_id = release.id
                     rel_title = release.title[0].text
@@ -305,7 +304,8 @@ class TrackSearchDialog(SearchDialog):
                             release=rel_title, date=date, country=country,
                             release_type=types)
                     self.search_results.append((track, node))
-            else:
+
+            except AttributeError:
                 track = Track(id=rec_id, artist=artist, length=length,
                         title=rec_title, release="(Standalone Recording)")
                 self.search_results.append((track, node))
