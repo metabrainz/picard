@@ -200,7 +200,7 @@ class TrackSearchDialog(SearchDialog):
                 _("Date"),
                 _("Country"),
                 _("Type")
-                ]
+        ]
 
     def search(self, text):
         self.show_progress()
@@ -213,7 +213,8 @@ class TrackSearchDialog(SearchDialog):
         self.file_ = file_
         metadata = file_.orig_metadata
         self.show_progress()
-        self.tagger.xmlws.find_tracks(self.handle_reply,
+        self.tagger.xmlws.find_tracks(
+                self.handle_reply,
                 track=metadata['title'],
                 artist=metadata['artist'],
                 release=metadata['tracknumber'],
@@ -238,8 +239,9 @@ class TrackSearchDialog(SearchDialog):
             return
 
         if self.file_:
-            tmp = sorted((self.file_.orig_metadata.compare_to_track(track,
-                File.comparison_weights) for track in tracks), reverse=True,
+            tmp = sorted((self.file_.orig_metadata.compare_to_track(
+                track, File.comparison_weights) for track in tracks),
+                reverse=True,
                 key=itemgetter(0))
             tracks = [item[3] for item in tmp]
 
@@ -299,15 +301,26 @@ class TrackSearchDialog(SearchDialog):
                             types_list.append(sec.secondary_type[0].text)
                     types = "+".join(types_list)
 
-                    track = Track(id=rec_id, release_id=rel_id, rg_id=rg_id,
-                            title=rec_title, artist=artist, length=length,
-                            release=rel_title, date=date, country=country,
+                    track = Track(
+                            id=rec_id,
+                            release_id=rel_id,
+                            rg_id=rg_id,
+                            title=rec_title,
+                            artist=artist,
+                            length=length,
+                            release=rel_title,
+                            date=date,
+                            country=country,
                             release_type=types)
                     self.search_results.append((track, node))
 
             except AttributeError:
-                track = Track(id=rec_id, artist=artist, length=length,
-                        title=rec_title, release="(Standalone Recording)")
+                track = Track(
+                        id=rec_id,
+                        artist=artist,
+                        length=length,
+                        title=rec_title,
+                        release="(Standalone Recording)")
                 self.search_results.append((track, node))
 
     def load_selection(self, row=None):
