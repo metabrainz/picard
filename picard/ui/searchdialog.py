@@ -98,7 +98,6 @@ class SearchDialog(PicardDialog):
 
     def __init__(self, parent=None):
         PicardDialog.__init__(self, parent)
-        self.file_ = None
         self.search_results = []
         self.setupUi()
         self.restore_window_state()
@@ -191,6 +190,7 @@ class TrackSearchDialog(SearchDialog):
 
     def __init__(self, parent):
         super(TrackSearchDialog, self).__init__(parent)
+        self.file_ = None
         self.setWindowTitle(_("Track Search Results"))
         self.table_headers = [
                 _("Name"),
