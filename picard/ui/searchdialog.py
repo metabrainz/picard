@@ -326,17 +326,25 @@ class TrackSearchDialog(SearchDialog):
     def load_selection(self, row=None):
         track, node = self.search_results[row]
         if track.release_id:
+        # The track is not an NAT
             self.tagger.get_release_group_by_id(track.rg_id).loaded_albums.add(
                     track.release_id)
             if self.file_:
-                album = self.file_.parent.album
-                if album._files == 0:
-                    # Remove album if it has no more files associated
-                    self.tagger.remove_album(album)
-                self.tagger.move_file_to_track(self.file_, track.release_id, track.id)
+            # Search is performed for a file
+            # Have to move that file from its existing album to the new one
+                if type(self.file_.parent).__name__ == "Track":
+                    album = self.file_.parent.album
+                    self.tagger.move_file_to_track(self.file_, track.release_id, track.id)
+                    if album._files == 0:
+                        # Remove album if it has no more files associated
+                        self.tagger.remove_album(album)
+                else:
+                    self.tagger.move_file_to_track(self.file_, track.release_id, track.id)
             else:
+            # No files associated. Just a normal search.
                 self.tagger.load_album(track.release_id)
         else:
+        # The track is an NAT
             if self.file_:
                 album = self.file_.parent.album
                 self.tagger.move_file_to_nat(track.id)
