@@ -330,10 +330,10 @@ class TrackSearchDialog(SearchDialog):
                     track.release_id)
             if self.file_:
                 album = self.file_.parent.album
-                self.tagger.move_file_to_track(self.file_, track.release_id, track.track_id)
                 if album._files == 0:
                     # Remove album if it has no more files associated
                     self.tagger.remove_album(album)
+                self.tagger.move_file_to_track(self.file_, track.release_id, track.id)
             else:
                 self.tagger.load_album(track.release_id)
         else:
