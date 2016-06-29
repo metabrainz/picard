@@ -382,7 +382,7 @@ class MainWindow(QtGui.QMainWindow):
         self.browser_lookup_action.setEnabled(False)
         self.browser_lookup_action.triggered.connect(self.browser_lookup)
 
-        self.more_results_action = QtGui.QAction(_(u"Display more results"), self)
+        self.more_results_action = QtGui.QAction(icontheme.lookup('system-search'), _(u"Search similar tracks..."), self)
         self.more_results_action.setStatusTip(_(u"View similar tracks and optionally choose a different release"))
         self.more_results_action.triggered.connect(self.show_more_results)
 
