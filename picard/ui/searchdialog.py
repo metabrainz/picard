@@ -203,6 +203,7 @@ class TrackSearchDialog(SearchDialog):
         ]
 
     def search(self, text):
+        self.search_box.search_edit.setText(text)
         self.show_progress()
         self.tagger.xmlws.find_tracks(self.handle_reply,
                 track=text,
