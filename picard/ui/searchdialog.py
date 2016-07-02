@@ -114,8 +114,10 @@ class SearchDialog(PicardDialog):
         self.center_widget.setLayout(self.center_layout)
         self.verticalLayout.addWidget(self.center_widget)
         self.buttonBox = QtGui.QDialogButtonBox(self)
+        self.load_button = QtGui.QPushButton("Load into Picard")
+        self.load_button.setEnabled(False)
         self.buttonBox.addButton(
-                StandardButton(StandardButton.OK),
+                self.load_button,
                 QtGui.QDialogButtonBox.AcceptRole)
         self.buttonBox.addButton(
                 StandardButton(StandardButton.CANCEL),
@@ -157,6 +159,10 @@ class SearchDialog(PicardDialog):
         self.table.cellDoubleClicked.connect(self.row_double_clicked)
         self.restore_table_header_state()
         self.add_widget_to_center_layout(self.table)
+        def enable_loading_button():
+            self.load_button.setEnabled(True)
+        self.table.itemSelectionChanged.connect(
+                enable_loading_button)
 
     def row_double_clicked(self, row):
         self.load_selection(row)
