@@ -110,6 +110,7 @@ class SearchDialog(PicardDialog):
         self.verticalLayout.addWidget(self.search_box)
         self.center_widget = QtGui.QWidget(self)
         self.center_layout = QtGui.QVBoxLayout(self.center_widget)
+        self.center_layout.setMargin(1)
         self.center_widget.setLayout(self.center_layout)
         self.verticalLayout.addWidget(self.center_widget)
         self.buttonBox = QtGui.QDialogButtonBox(self)
