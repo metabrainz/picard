@@ -152,6 +152,12 @@ class SearchDialog(PicardDialog):
         self.error_widget.setWordWrap(True)
         self.add_widget_to_center_layout(self.error_widget)
 
+    def show_table(self, column_headers):
+        self.table = ResultTable(self.table_headers)
+        self.table.cellDoubleClicked.connect(self.row_double_clicked)
+        self.restore_table_header_state()
+        self.add_widget_to_center_layout(self.table)
+
     def row_double_clicked(self, row):
         self.load_selection(row)
         self.accept()
@@ -251,14 +257,8 @@ class TrackSearchDialog(SearchDialog):
         self.parse_tracks_from_xml(tracks)
         self.display_results()
 
-    def show_table(self):
-        self.table = ResultTable(self.table_headers)
-        self.table.cellDoubleClicked.connect(self.row_double_clicked)
-        self.restore_table_header_state()
-        self.add_widget_to_center_layout(self.table)
-
     def display_results(self):
-        self.show_table()
+        self.show_table(self.table_headers)
         for row, obj in enumerate(self.search_results):
             track = obj[0]
             table_item = QtGui.QTableWidgetItem
