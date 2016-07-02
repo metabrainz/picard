@@ -114,7 +114,7 @@ class SearchDialog(PicardDialog):
         self.center_widget.setLayout(self.center_layout)
         self.verticalLayout.addWidget(self.center_widget)
         self.buttonBox = QtGui.QDialogButtonBox(self)
-        self.load_button = QtGui.QPushButton("Load into Picard")
+        self.load_button = QtGui.QPushButton(_("Load into Picard"))
         self.load_button.setEnabled(False)
         self.buttonBox.addButton(
                 self.load_button,
