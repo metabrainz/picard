@@ -328,7 +328,7 @@ class TrackSearchDialog(SearchDialog):
                         artist=artist,
                         length=length,
                         title=rec_title,
-                        release="(Standalone Recording)")
+                        release=_("(Standalone Recording)"))
                 self.search_results.append((track, node))
 
     def load_selection(self, row=None):
