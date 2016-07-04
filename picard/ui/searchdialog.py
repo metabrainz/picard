@@ -25,6 +25,7 @@ from picard.ui import PicardDialog
 from picard.ui.util import StandardButton, ButtonLineEdit
 from picard.util import format_time, icontheme
 from picard.mbxml import artist_credit_from_node
+from picard.i18n import ugettext_attr
 
 
 class Track(object):
@@ -304,10 +305,14 @@ class TrackSearchDialog(SearchDialog):
                     rg_id = rg.id
                     types_list = []
                     if "primary_type" in rg.children:
-                        types_list.append(rg.primary_type[0].text)
+                        types_list.append(ugettext_attr(
+                            rg.primary_type[0].text,
+                            'release_group_primary_type'))
                     if "secondary_type_list" in rg.children:
                         for sec in rg.secondary_type_list:
-                            types_list.append(sec.secondary_type[0].text)
+                            types_list.append(ugettext_attr(
+                                sec.secondary_type[0].text,
+                                "release_group_secondary_type"))
                     types = "+".join(types_list)
 
                     track = Track(
