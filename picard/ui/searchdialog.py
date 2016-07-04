@@ -226,6 +226,7 @@ class TrackSearchDialog(SearchDialog):
     def load_similar_tracks(self, file_):
         self.file_ = file_
         metadata = file_.orig_metadata
+        self.search_box.search_edit.setText(metadata['title'])
         self.show_progress()
         self.tagger.xmlws.find_tracks(
                 self.handle_reply,
