@@ -286,7 +286,7 @@ class TrackSearchDialog(SearchDialog):
                 length = format_time(node.length[0].text)
             except AttributeError:
                 length = ""
-            try:
+            if "release_list" in node.children and "release" in node.release_list[0].children:
                 releases = node.release_list[0].release
                 for release in releases:
                     rel_id = release.id
@@ -322,7 +322,7 @@ class TrackSearchDialog(SearchDialog):
                             release_type=types)
                     self.search_results.append((track, node))
 
-            except AttributeError:
+            else:
                 track = Track(
                         id=rec_id,
                         artist=artist,
