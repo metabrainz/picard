@@ -227,18 +227,25 @@ class TrackSearchDialog(SearchDialog):
     def load_similar_tracks(self, file_):
         self.file_ = file_
         metadata = file_.orig_metadata
-        self.search_box.search_edit.setText(metadata['title'])
+        query = {
+                'track': metadata['title'],
+                'artist': metadata['artist'],
+                'release': metadata['album'],
+                'tnum': metadata['tracknumber'],
+                'tracks': metadata['totaltracks'],
+                'qdur': str(metadata.length / 2000),
+                'isrc': metadata['isrc'],
+        }
+        if config.setting["use_adv_search_syntax"]:
+            query_str = ' '.join(['%s:(%s)' % (item, value) for item, value in query.iteritems()])
+        else:
+            query_str = query["track"]
+        query["limit"] = 25
+        self.search_box.search_edit.setText(query_str)
         self.show_progress()
         self.tagger.xmlws.find_tracks(
                 self.handle_reply,
-                track=metadata['title'],
-                artist=metadata['artist'],
-                release=metadata['tracknumber'],
-                tnum=metadata['totaltracks'],
-                tracks=metadata['totaltracks'],
-                qdur=str(metadata.length / 2000),
-                isrc=metadata['isrc'],
-                limit=25)
+                **query)
 
     def handle_reply(self, document, http, error):
         if error:
