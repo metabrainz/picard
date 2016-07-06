@@ -58,21 +58,48 @@ class SearchBox(QtGui.QWidget):
         self.setupUi()
 
     def setupUi(self):
-        self.setMaximumHeight(35)
-        layout = QtGui.QHBoxLayout(self)
-        layout.setMargin(1)
-        layout.setSpacing(1)
-        self.search_edit = ButtonLineEdit(self)
-        layout.addWidget(self.search_edit)
-        self.search_button = QtGui.QToolButton(self)
+        self.layout = QtGui.QVBoxLayout(self)
+        self.search_row_widget = QtGui.QWidget()
+        self.search_row_layout = QtGui.QHBoxLayout(self.search_row_widget)
+        self.search_row_layout.setMargin(1)
+        self.search_row_layout.setSpacing(1)
+        self.search_edit = ButtonLineEdit(self.search_row_widget)
+        self.search_row_layout.addWidget(self.search_edit)
+        self.search_button = QtGui.QToolButton(self.search_row_widget)
         self.search_button.setAutoRaise(True)
         self.search_button.setDefaultAction(self.search_action)
         self.search_button.setIconSize(QtCore.QSize(22, 22))
-        layout.addWidget(self.search_button)
-        self.setLayout(layout)
+        self.search_row_layout.addWidget(self.search_button)
+        self.search_row_widget.setLayout(self.search_row_layout)
+        self.layout.addWidget(self.search_row_widget)
+        self.adv_opt_row_widget = QtGui.QWidget()
+        self.adv_opt_row_layout = QtGui.QHBoxLayout(self.adv_opt_row_widget)
+        self.adv_opt_row_layout.setAlignment(QtCore.Qt.AlignLeft)
+        self.adv_opt_row_layout.setMargin(1)
+        self.adv_opt_row_layout.setSpacing(1)
+        self.use_adv_search_syntax = QtGui.QCheckBox(self.adv_opt_row_widget)
+        self.use_adv_search_syntax.setText(_("Use advance query syntax"))
+        self.adv_opt_row_layout.addWidget(self.use_adv_search_syntax)
+        self.adv_syntax_help = QtGui.QLabel(self.adv_opt_row_widget)
+        self.adv_syntax_help.setOpenExternalLinks(True)
+        self.adv_syntax_help.setText(_(
+                "<a href='https://musicbrainz.org/doc/Indexed_Search_Syntax'>"
+                "Syntax Help</a>"))
+        self.adv_opt_row_layout.addWidget(self.adv_syntax_help)
+        self.adv_opt_row_widget.setLayout(self.adv_opt_row_layout)
+        self.layout.addWidget(self.adv_opt_row_widget)
+        self.layout.setMargin(1)
+        self.layout.setSpacing(1)
+        self.setMaximumHeight(60)
 
     def search(self):
         self.parent.search(self.search_edit.text())
+
+    def restore_checkbox_state(self):
+        self.use_adv_search_syntax.setChecked(config.setting["use_adv_search_syntax"])
+
+    def save_checkbox_state(self):
+        config.setting["use_adv_search_syntax"] = self.use_adv_search_syntax.isChecked()
 
 
 class SearchDialog(PicardDialog):
@@ -86,7 +113,7 @@ class SearchDialog(PicardDialog):
         PicardDialog.__init__(self, parent)
         self.search_results = []
         self.setupUi()
-        self.restore_window_state()
+        self.restore_state()
 
     def setupUi(self):
         self.verticalLayout = QtGui.QVBoxLayout(self)
@@ -166,10 +193,11 @@ class SearchDialog(PicardDialog):
 
         QtGui.QDialog.accept(self)
 
-    def restore_window_state(self):
+    def restore_state(self):
         size = config.persist["searchdialog_window_size"]
         if size:
             self.resize(size)
+        self.search_box.restore_checkbox_state()
 
     def restore_table_header_state(self):
         header = self.table.horizontalHeader()
@@ -183,6 +211,7 @@ class SearchDialog(PicardDialog):
             header = self.table.horizontalHeader()
             config.persist["searchdialog_header_state"] = header.saveState()
         config.persist["searchdialog_window_size"] = self.size()
+        self.search_box.save_checkbox_state()
 
 
 class TrackSearchDialog(SearchDialog):
