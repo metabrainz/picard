@@ -458,27 +458,28 @@ class XmlWebService(QtCore.QObject):
         host = config.setting["server_host"]
         port = config.setting["server_port"]
         filters = []
-        query = []
-        escape_lucene_query = True
+
+        limit = kwargs.pop("limit")
+        if limit:
+            filters.append(("limit", limit))
 
         is_search = kwargs.pop("search", False)
         if is_search:
             if config.setting["use_adv_search_syntax"]:
-                escape_lucene_query = False
+                query = kwargs["query"]
             else:
-                filters.append(('dismax', 'true'))
-
-        for name, value in kwargs.items():
-            if name == "limit":
-                filters.append((name, str(value)))
-            else:
-                if escape_lucene_query:
-                    value = _escape_lucene_query(value).strip().lower()
+                query = _escape_lucene_query(kwargs["query"]).strip().lower()
+                filters.append(("dismax", 'true'))
+        else:
+            query = []
+            for name, value in kwargs.items():
+                value = _escape_lucene_query(value).strip().lower()
                 if value:
                     query.append('%s:(%s)' % (name, value))
-        if query:
-            filters.append(('query', ' '.join(query)))
+            query = ' '.join(query)
 
+        if query:
+            filters.append(("query", query))
         queryargs = {}
         for name, value in filters:
             value = QUrl.toPercentEncoding(unicode(value))

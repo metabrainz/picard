@@ -220,7 +220,7 @@ class TrackSearchDialog(SearchDialog):
         self.search_box.search_edit.setText(text)
         self.show_progress()
         self.tagger.xmlws.find_tracks(self.handle_reply,
-                track=text,
+                query=text,
                 search=True,
                 limit=25)
 
