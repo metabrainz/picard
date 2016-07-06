@@ -251,7 +251,7 @@ class TrackSearchDialog(SearchDialog):
                 'isrc': metadata['isrc'],
         }
         if config.setting["use_adv_search_syntax"]:
-            query_str = ' '.join(['%s:(%s)' % (item, value) for item, value in query.iteritems()])
+            query_str = ' '.join(['%s:(%s)' % (item, value) for item, value in query.iteritems() if value])
         else:
             query_str = query["track"]
         query["limit"] = 25
