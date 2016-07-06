@@ -305,7 +305,7 @@ class TrackSearchDialog(SearchDialog):
                     else:
                         date = None
                     if "country" in release.children:
-                        country = release.country[0].text
+                        country = ugettext_countries(release.country[0].text)
                     else:
                         country = ""
                     rg = release.release_group[0]
