@@ -302,17 +302,21 @@ class TrackSearchDialog(SearchDialog):
 
     def parse_tracks_from_xml(self, tracks_xml):
         for node in tracks_xml:
-            track = dict()
-            track["id"] = node.id
-            track["title"] = node.title[0].text
-            track["artist"] = artist_credit_from_node(node.artist_credit[0])[0]
+            track_id = node.id
+            track_title = node.title[0].text
+            track_artist = artist_credit_from_node(node.artist_credit[0])[0]
             try:
-                track["length"] = format_time(node.length[0].text)
+                track_length = format_time(node.length[0].text)
             except AttributeError:
-                track["length"] = ""
+                track_length = ""
             if "release_list" in node.children and "release" in node.release_list[0].children:
                 releases = node.release_list[0].release
                 for release in releases:
+                    track = dict()
+                    track["id"] = track_id
+                    track["title"] = track_title
+                    track["artist"] = track_artist
+                    track["length"] = track_length
                     track["release_id"] = release.id
                     track["release"] = release.title[0].text
                     if "date" in release.children:
