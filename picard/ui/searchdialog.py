@@ -336,12 +336,19 @@ class TrackSearchDialog(SearchDialog):
                                 sec.secondary_type[0].text,
                                 "release_group_secondary_type"))
                     track["release_type"] = "+".join(types_list)
-
                     self.search_results.append((track, node))
+            else:
+                track = dict()
+                track["id"] = track_id
+                track["title"] = track_title
+                track["artist"] = track_artist
+                track["length"] = track_length
+                track["release"] = _("Standalone Recording")
+                self.search_results.append((track, node))
 
     def load_selection(self, row=None):
         track, node = self.search_results[row]
-        if track["release_id"]:
+        if track.get("release_id"):
         # The track is not an NAT
             self.tagger.get_release_group_by_id(track["rg_id"]).loaded_albums.add(
                     track["release_id"])
@@ -360,7 +367,7 @@ class TrackSearchDialog(SearchDialog):
             # No files associated. Just a normal search.
                 self.tagger.load_album(track["release_id"])
         else:
-        # The track is an NAT
+        # The track is a NAT
             if self.file_:
                 album = self.file_.parent.album
                 self.tagger.move_file_to_nat(track["id"])
