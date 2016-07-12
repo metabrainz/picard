@@ -321,8 +321,15 @@ class TrackSearchDialog(SearchDialog):
                     track["release"] = release.title[0].text
                     if "date" in release.children:
                         track["date"] = release.date[0].text
-                    if "country" in release.children:
-                        track["country"] = ugettext_countries(release.country[0].text)
+                    if "release_event_list" in release.children:
+                        country = []
+                        for re in release.release_event_list[0].release_event:
+                            try:
+                                country.append(
+                                        re.area[0].iso_3166_1_code_list[0].iso_3166_1_code[0].text)
+                            except AttributeError:
+                                pass
+                        track["country"] = ", ".join(country)
                     rg = release.release_group[0]
                     track["rg_id"] = rg.id
                     types_list = []
