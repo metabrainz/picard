@@ -117,16 +117,19 @@ class SearchDialog(PicardDialog):
 
     def setupUi(self):
         self.verticalLayout = QtGui.QVBoxLayout(self)
-        self.verticalLayout.setObjectName(_("verticalLayout"))
-
+        self.verticalLayout.setObjectName(_("vertical_layout"))
         self.search_box = SearchBox(self)
+        self.search_box.setObjectName(_("search_box"))
         self.verticalLayout.addWidget(self.search_box)
         self.center_widget = QtGui.QWidget(self)
+        self.center_widget.setObjectName(_("center_widget"))
         self.center_layout = QtGui.QVBoxLayout(self.center_widget)
+        self.center_layout.setObjectName(_("center_layout"))
         self.center_layout.setMargin(1)
         self.center_widget.setLayout(self.center_layout)
         self.verticalLayout.addWidget(self.center_widget)
         self.buttonBox = QtGui.QDialogButtonBox(self)
+        self.buttonBox.setObjectName(_("button_box"))
         self.load_button = QtGui.QPushButton(_("Load into Picard"))
         self.load_button.setEnabled(False)
         self.buttonBox.addButton(
