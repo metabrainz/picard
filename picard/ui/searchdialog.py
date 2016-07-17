@@ -24,8 +24,14 @@ from picard.file import File
 from picard.ui import PicardDialog
 from picard.ui.util import StandardButton, ButtonLineEdit
 from picard.util import format_time, icontheme
-from picard.mbxml import artist_credit_from_node
+from picard.mbxml import (
+    artist_credit_from_node,
+    recording_to_metadata,
+    release_to_metadata,
+    release_group_to_metadata
+)
 from picard.i18n import ugettext_attr
+from picard.metadata import Metadata
 
 
 class ResultTable(QtGui.QTableWidget):
@@ -291,97 +297,70 @@ class TrackSearchDialog(SearchDialog):
 
     def display_results(self):
         self.show_table(self.table_headers)
+        row = 0
         for row, obj in enumerate(self.search_results):
             track = obj[0]
             table_item = QtGui.QTableWidgetItem
             self.table.insertRow(row)
             self.table.setItem(row, 0, table_item(track.get("title", "")))
-            self.table.setItem(row, 1, table_item(track.get("length", "")))
+            self.table.setItem(row, 1, table_item(track.get("~length", "")))
             self.table.setItem(row, 2, table_item(track.get("artist", "")))
-            self.table.setItem(row, 3, table_item(track.get("release", "")))
+            self.table.setItem(row, 3, table_item(track.get("album", "")))
             self.table.setItem(row, 4, table_item(track.get("date", "")))
             self.table.setItem(row, 5, table_item(track.get("country", "")))
-            self.table.setItem(row, 6, table_item(track.get("release_type", "")))
+            self.table.setItem(row, 6, table_item(track.get("releasetype", "")))
 
     def parse_tracks_from_xml(self, tracks_xml):
         for node in tracks_xml:
-            track_id = node.id
-            track_title = node.title[0].text
-            track_artist = artist_credit_from_node(node.artist_credit[0])[0]
-            try:
-                track_length = format_time(node.length[0].text)
-            except AttributeError:
-                track_length = ""
             if "release_list" in node.children and "release" in node.release_list[0].children:
-                releases = node.release_list[0].release
-                for release in releases:
-                    track = dict()
-                    track["id"] = track_id
-                    track["title"] = track_title
-                    track["artist"] = track_artist
-                    track["length"] = track_length
-                    track["release_id"] = release.id
-                    track["release"] = release.title[0].text
-                    if "date" in release.children:
-                        track["date"] = release.date[0].text
-                    if "release_event_list" in release.children:
+                for rel_node in node.release_list[0].release:
+                    track = Metadata()
+                    recording_to_metadata(node, track)
+                    release_to_metadata(rel_node, track)
+                    rg_node = rel_node.release_group[0]
+                    release_group_to_metadata(rg_node, track)
+                    if "release_event_list" in rel_node.children:
                         country = []
-                        for re in release.release_event_list[0].release_event:
+                        for re in rel_node.release_event_list[0].release_event:
                             try:
                                 country.append(
                                         re.area[0].iso_3166_1_code_list[0].iso_3166_1_code[0].text)
                             except AttributeError:
                                 pass
                         track["country"] = ", ".join(country)
-                    rg = release.release_group[0]
-                    track["rg_id"] = rg.id
-                    types_list = []
-                    if "primary_type" in rg.children:
-                        types_list.append(ugettext_attr(
-                            rg.primary_type[0].text,
-                            'release_group_primary_type'))
-                    if "secondary_type_list" in rg.children:
-                        for sec in rg.secondary_type_list:
-                            types_list.append(ugettext_attr(
-                                sec.secondary_type[0].text,
-                                "release_group_secondary_type"))
-                    track["release_type"] = "+".join(types_list)
                     self.search_results.append((track, node))
             else:
-                track = dict()
-                track["id"] = track_id
-                track["title"] = track_title
-                track["artist"] = track_artist
-                track["length"] = track_length
-                track["release"] = _("Standalone Recording")
+                track = Metadata()
+                recording_to_metadata(node, track)
+                track["album"] = _("Standalone Recording")
                 self.search_results.append((track, node))
 
     def load_selection(self, row=None):
         track, node = self.search_results[row]
-        if track.get("release_id"):
+        if track.get("musicbrainz_albumid"):
         # The track is not an NAT
-            self.tagger.get_release_group_by_id(track["rg_id"]).loaded_albums.add(
-                    track["release_id"])
+            self.tagger.get_release_group_by_id(track["musicbrainz_releasegroupid"]).loaded_albums.add(
+                    track["musicbrainz_albumid"])
             if self.file_:
             # Search is performed for a file
             # Have to move that file from its existing album to the new one
                 if type(self.file_.parent).__name__ == "Track":
                     album = self.file_.parent.album
-                    self.tagger.move_file_to_track(self.file_, track["release_id"], track["id"])
+                    self.tagger.move_file_to_track(self.file_, track["musicbrainz_albumid"], track["musicbrainz_recordingid"])
                     if album._files == 0:
                         # Remove album if it has no more files associated
                         self.tagger.remove_album(album)
                 else:
-                    self.tagger.move_file_to_track(self.file_, track["release_id"], track["id"])
+                    self.tagger.move_file_to_track(self.file_, track["musicbrainz_albumid"], track["musicbrainz_recordingid"])
             else:
             # No files associated. Just a normal search.
-                self.tagger.load_album(track["release_id"])
+                self.tagger.load_album(track["musicbrainz_albumid"])
         else:
         # The track is a NAT
             if self.file_:
                 album = self.file_.parent.album
-                self.tagger.move_file_to_nat(track["id"])
+                self.tagger.move_file_to_nat(track["musicbrainz_recordingid"])
                 if album._files == 0:
                     self.tagger.remove_album(album)
             else:
-                self.tagger.load_nat(track["id"], node)
+                self.tagger.load_nat(track["musicbrainz_recordingid"], node)

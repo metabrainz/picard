@@ -246,7 +246,7 @@ def media_formats_from_node(node):
 
 def track_to_metadata(node, track):
     m = track.metadata
-    recording_to_metadata(node.recording[0], track)
+    recording_to_metadata(node.recording[0], m, track)
     m.add_unique('musicbrainz_trackid', node.id)
     # overwrite with data we have on the track
     for name, nodes in node.children.iteritems():
@@ -265,8 +265,7 @@ def track_to_metadata(node, track):
     m['~length'] = format_time(m.length)
 
 
-def recording_to_metadata(node, track):
-    m = track.metadata
+def recording_to_metadata(node, m, track=None):
     m.length = 0
     m.add_unique('musicbrainz_recordingid', node.id)
     for name, nodes in node.children.iteritems():
@@ -281,7 +280,7 @@ def recording_to_metadata(node, track):
             m['~recordingcomment'] = nodes[0].text
         elif name == 'artist_credit':
             artist_credit_to_metadata(nodes[0], m)
-            if 'name_credit' in nodes[0].children:
+            if 'name_credit' in nodes[0].children and track:
                 for name_credit in nodes[0].name_credit:
                     if 'artist' in name_credit.children:
                         for artist in name_credit.artist:
@@ -375,7 +374,7 @@ def release_to_metadata(node, m, album=None):
             m['barcode'] = nodes[0].text
         elif name == 'relation_list':
             _relations_to_metadata(nodes, m)
-        elif name == 'label_info_list' and nodes[0].count != '0':
+        elif name == 'label_info_list' and getattr(nodes[0], "count", 0) != '0':
             m['label'], m['catalognumber'] = label_info_from_node(nodes[0])
         elif name == 'text_representation':
             if 'language' in nodes[0].children:
