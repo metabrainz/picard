@@ -191,16 +191,24 @@ class SearchDialog(PicardDialog):
         self.accept()
 
     def accept(self):
-        try:
+        if hasattr(self, "table"):
             sel_rows = self.table.selectionModel().selectedRows()
             if sel_rows:
                 sel_row = sel_rows[0].row()
                 self.load_selection(sel_row)
             self.save_state(True)
-        except AttributeError:
+        else:
             self.save_state(False)
 
         QtGui.QDialog.accept(self)
+
+    def reject(self):
+        if hasattr(self, "table"):
+            self.save_state(True)
+        else:
+            self.save_state(False)
+
+        QtGui.QDialog.reject(self)
 
     def restore_state(self):
         size = config.persist["searchdialog_window_size"]
