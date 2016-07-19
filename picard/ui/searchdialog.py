@@ -89,8 +89,8 @@ class SearchBox(QtGui.QWidget):
         self.adv_syntax_help = QtGui.QLabel(self.adv_opt_row_widget)
         self.adv_syntax_help.setOpenExternalLinks(True)
         self.adv_syntax_help.setText(_(
-                "<a href='https://musicbrainz.org/doc/Indexed_Search_Syntax'>"
-                "Syntax Help</a>"))
+                "(<a href='https://musicbrainz.org/doc/Indexed_Search_Syntax'>"
+                "Syntax Help</a>)"))
         self.adv_opt_row_layout.addWidget(self.adv_syntax_help)
         self.adv_opt_row_widget.setLayout(self.adv_opt_row_layout)
         self.layout.addWidget(self.adv_opt_row_widget)
