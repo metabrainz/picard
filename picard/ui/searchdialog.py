@@ -61,6 +61,9 @@ class SearchBox(QtGui.QWidget):
         self.search_action = QtGui.QAction(icontheme.lookup('system-search'),
                 _(u"Search"), self)
         self.search_action.triggered.connect(self.search)
+        self.refresh_action = QtGui.QAction(icontheme.lookup('view-refresh'),
+                _(u"Refresh"), self)
+        self.refresh_action.triggered.connect(self.parent.retry)
         self.setupUi()
 
     def setupUi(self):
@@ -76,6 +79,11 @@ class SearchBox(QtGui.QWidget):
         self.search_button.setDefaultAction(self.search_action)
         self.search_button.setIconSize(QtCore.QSize(22, 22))
         self.search_row_layout.addWidget(self.search_button)
+        self.refresh_button = QtGui.QToolButton(self.search_row_widget)
+        self.refresh_button.setAutoRaise(True)
+        self.refresh_button.setDefaultAction(self.refresh_action)
+        self.refresh_button.setIconSize(QtCore.QSize(22, 22))
+        self.search_row_layout.addWidget(self.refresh_button)
         self.search_row_widget.setLayout(self.search_row_layout)
         self.layout.addWidget(self.search_row_widget)
         self.adv_opt_row_widget = QtGui.QWidget()
@@ -253,6 +261,7 @@ class TrackSearchDialog(SearchDialog):
         ]
 
     def search(self, text):
+        self.retry_params = (self.search, text)
         self.search_box.search_edit.setText(text)
         self.show_progress()
         self.tagger.xmlws.find_tracks(self.handle_reply,
@@ -261,6 +270,7 @@ class TrackSearchDialog(SearchDialog):
                 limit=25)
 
     def load_similar_tracks(self, file_):
+        self.retry_params = (self.load_similar_tracks, file_)
         self.file_ = file_
         metadata = file_.orig_metadata
         query = {
@@ -283,10 +293,15 @@ class TrackSearchDialog(SearchDialog):
                 self.handle_reply,
                 **query)
 
+    def retry(self):
+        self.retry_params[0](self.retry_params[1])
+
+
     def handle_reply(self, document, http, error):
         if error:
-            error_msg = _("Unable to fetch results. Close the dialog and try "
-                    "again. See debug logs for more details.")
+            error_msg = _("Some network error occurred. Check debug logs for more details.<br>"
+                "Click on refresh or try a different query."
+                )
             self.show_error(error_msg)
             return
 
