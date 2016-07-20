@@ -156,6 +156,7 @@ class SearchDialog(PicardDialog):
 
     def show_progress(self):
         self.progress_widget = QtGui.QWidget(self)
+        self.progress_widget.setObjectName("progress_widget")
         layout = QtGui.QVBoxLayout(self.progress_widget)
         text_label = QtGui.QLabel('<strong>Fetching results...</strong>', self.progress_widget)
         text_label.setAlignment(QtCore.Qt.AlignHCenter | QtCore.Qt.AlignBottom)
@@ -172,12 +173,14 @@ class SearchDialog(PicardDialog):
 
     def show_error(self, error):
         self.error_widget = QtGui.QLabel(_("<strong>" + error + "</strong>"))
+        self.error_widget.setObjectName("error_widget")
         self.error_widget.setAlignment(QtCore.Qt.AlignCenter)
         self.error_widget.setWordWrap(True)
         self.add_widget_to_center_layout(self.error_widget)
 
     def show_table(self, column_headers):
         self.table = ResultTable(self.table_headers)
+        self.table.setObjectName("results_table")
         self.table.cellDoubleClicked.connect(self.row_double_clicked)
         self.restore_table_header_state()
         self.add_widget_to_center_layout(self.table)
