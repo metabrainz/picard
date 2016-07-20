@@ -151,6 +151,8 @@ class SearchDialog(PicardDialog):
     def add_widget_to_center_layout(self, widget):
         wid = self.center_layout.itemAt(0)
         if wid:
+            if wid.widget().objectName() == "results_table":
+                self.table = None
             wid.widget().deleteLater()
         self.center_layout.addWidget(widget)
 
@@ -194,7 +196,7 @@ class SearchDialog(PicardDialog):
         self.accept()
 
     def accept(self):
-        if hasattr(self, "table"):
+        if getattr(self, "table"):
             sel_rows = self.table.selectionModel().selectedRows()
             if sel_rows:
                 sel_row = sel_rows[0].row()
@@ -206,7 +208,7 @@ class SearchDialog(PicardDialog):
         QtGui.QDialog.accept(self)
 
     def reject(self):
-        if hasattr(self, "table"):
+        if getattr(self, "table"):
             self.save_state(True)
         else:
             self.save_state(False)
