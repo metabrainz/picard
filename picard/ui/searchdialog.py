@@ -196,7 +196,7 @@ class SearchDialog(PicardDialog):
         self.accept()
 
     def accept(self):
-        if getattr(self, "table"):
+        if getattr(self, "table", None):
             sel_rows = self.table.selectionModel().selectedRows()
             if sel_rows:
                 sel_row = sel_rows[0].row()
@@ -208,7 +208,7 @@ class SearchDialog(PicardDialog):
         QtGui.QDialog.accept(self)
 
     def reject(self):
-        if getattr(self, "table"):
+        if getattr(self, "table", None):
             self.save_state(True)
         else:
             self.save_state(False)
