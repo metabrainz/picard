@@ -61,9 +61,6 @@ class SearchBox(QtGui.QWidget):
         self.search_action = QtGui.QAction(icontheme.lookup('system-search'),
                 _(u"Search"), self)
         self.search_action.triggered.connect(self.search)
-        self.refresh_action = QtGui.QAction(icontheme.lookup('view-refresh'),
-                _(u"Refresh"), self)
-        self.refresh_action.triggered.connect(self.parent.retry)
         self.setupUi()
 
     def setupUi(self):
@@ -79,11 +76,6 @@ class SearchBox(QtGui.QWidget):
         self.search_button.setDefaultAction(self.search_action)
         self.search_button.setIconSize(QtCore.QSize(22, 22))
         self.search_row_layout.addWidget(self.search_button)
-        self.refresh_button = QtGui.QToolButton(self.search_row_widget)
-        self.refresh_button.setAutoRaise(True)
-        self.refresh_button.setDefaultAction(self.refresh_action)
-        self.refresh_button.setIconSize(QtCore.QSize(22, 22))
-        self.search_row_layout.addWidget(self.refresh_button)
         self.search_row_widget.setLayout(self.search_row_layout)
         self.layout.addWidget(self.search_row_widget)
         self.adv_opt_row_widget = QtGui.QWidget()
@@ -181,11 +173,25 @@ class SearchDialog(PicardDialog):
         self.progress_widget.setLayout(layout)
         self.add_widget_to_center_layout(self.progress_widget)
 
-    def show_error(self, error):
-        self.error_widget = QtGui.QLabel(_("<strong>" + error + "</strong>"))
+    def show_error(self, error, show_retry_button=False):
+        self.error_widget = QtGui.QWidget(self)
         self.error_widget.setObjectName("error_widget")
-        self.error_widget.setAlignment(QtCore.Qt.AlignCenter)
-        self.error_widget.setWordWrap(True)
+        layout = QtGui.QVBoxLayout(self.error_widget)
+        error_label = QtGui.QLabel(_("<strong>" + error + "<strong>"))
+        error_label.setWordWrap(True)
+        error_label.setAlignment(QtCore.Qt.AlignCenter)
+        layout.addWidget(error_label)
+        if show_retry_button:
+            retry_widget = QtGui.QWidget(self.error_widget)
+            retry_layout = QtGui.QHBoxLayout(retry_widget)
+            retry_button = QtGui.QPushButton(_("Retry"), self.error_widget)
+            retry_button.clicked.connect(self.retry)
+            retry_button.setSizePolicy(QtGui.QSizePolicy(QtGui.QSizePolicy.Maximum, QtGui.QSizePolicy.Fixed))
+            retry_layout.addWidget(retry_button)
+            retry_layout.setAlignment(QtCore.Qt.AlignHCenter | QtCore.Qt.AlignTop)
+            retry_widget.setLayout(retry_layout)
+            layout.addWidget(retry_widget)
+        self.error_widget.setLayout(layout)
         self.add_widget_to_center_layout(self.error_widget)
 
     def show_table(self, column_headers):
@@ -300,9 +306,9 @@ class TrackSearchDialog(SearchDialog):
     def handle_reply(self, document, http, error):
         if error:
             error_msg = _("Some network error occurred. Check debug logs for more details.<br>"
-                "Click on refresh or try a different query."
+                "Hit `Retry` or try a different query."
                 )
-            self.show_error(error_msg)
+            self.show_error(error_msg, show_retry_button=True)
             return
 
         try:
