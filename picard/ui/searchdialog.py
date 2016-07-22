@@ -309,7 +309,7 @@ class TrackSearchDialog(SearchDialog):
     def handle_reply(self, document, http, error):
         if error:
             error_msg = _("Some network error occurred. Check debug logs for more details.<br>"
-                "Hit `Retry` or try a different query."
+                "Hit \"Retry\" or try a different query."
                 )
             self.show_error(error_msg, show_retry_button=True)
             return
