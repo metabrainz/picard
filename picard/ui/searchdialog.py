@@ -45,13 +45,11 @@ class ResultTable(QtGui.QTableWidget):
                 QtGui.QAbstractItemView.SelectRows)
         self.setEditTriggers(
                 QtGui.QAbstractItemView.NoEditTriggers)
-
         self.horizontalHeader().setStretchLastSection(True)
         self.horizontalHeader().setResizeMode(
                 QtGui.QHeaderView.Stretch)
         self.horizontalHeader().setResizeMode(
                 QtGui.QHeaderView.Interactive)
-
 
 class SearchBox(QtGui.QWidget):
 
@@ -198,6 +196,8 @@ class SearchDialog(PicardDialog):
         self.table = ResultTable(self.table_headers)
         self.table.setObjectName("results_table")
         self.table.cellDoubleClicked.connect(self.row_double_clicked)
+        self.table.horizontalHeader().sectionResized.connect(
+                self.save_table_header_state)
         self.restore_table_header_state()
         self.add_widget_to_center_layout(self.table)
         def enable_loading_button():
@@ -244,10 +244,13 @@ class SearchDialog(PicardDialog):
 
     def save_state(self, table_loaded=True):
         if table_loaded:
-            header = self.table.horizontalHeader()
-            config.persist["searchdialog_header_state"] = header.saveState()
+            self.save_table_header_state()
         config.persist["searchdialog_window_size"] = self.size()
         self.search_box.save_checkbox_state()
+
+    def save_table_header_state(self):
+        state = self.table.horizontalHeader().saveState()
+        config.persist["searchdialog_header_state"] = state
 
 
 class TrackSearchDialog(SearchDialog):
