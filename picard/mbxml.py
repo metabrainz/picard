@@ -374,7 +374,7 @@ def release_to_metadata(node, m, album=None):
             m['barcode'] = nodes[0].text
         elif name == 'relation_list':
             _relations_to_metadata(nodes, m)
-        elif name == 'label_info_list' and getattr(nodes[0], "count", 0) != '0':
+        elif name == 'label_info_list' and getattr(nodes[0], 'count', '0') != '0':
             m['label'], m['catalognumber'] = label_info_from_node(nodes[0])
         elif name == 'text_representation':
             if 'language' in nodes[0].children:
