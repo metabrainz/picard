@@ -16,7 +16,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-from PyQt4 import QtGui, QtCore
+from PyQt4 import QtGui, QtCore, QtNetwork
 from operator import itemgetter
 from functools import partial
 from picard import config
@@ -175,9 +175,10 @@ class SearchDialog(PicardDialog):
         self.error_widget = QtGui.QWidget(self)
         self.error_widget.setObjectName("error_widget")
         layout = QtGui.QVBoxLayout(self.error_widget)
-        error_label = QtGui.QLabel(_("<strong>" + error + "<strong>"))
+        error_label = QtGui.QLabel(error)
         error_label.setWordWrap(True)
         error_label.setAlignment(QtCore.Qt.AlignCenter)
+        error_label.setTextInteractionFlags(QtCore.Qt.TextSelectableByMouse)
         layout.addWidget(error_label)
         if show_retry_button:
             retry_widget = QtGui.QWidget(self.error_widget)
@@ -308,16 +309,20 @@ class TrackSearchDialog(SearchDialog):
 
     def handle_reply(self, document, http, error):
         if error:
-            error_msg = _("Some network error occurred. Check debug logs for more details.<br>"
-                "Hit \"Retry\" or try a different query."
-                )
+            error_msg = _("<strong>Following network request error occurred while fetching results:<br></strong>"
+                          "Network request error for %s: %s (QT code %d, HTTP code %s)<br>" % (
+                              http.request().url().toString(QtCore.QUrl.RemoveUserInfo),
+                              http.errorString(),
+                              error,
+                              repr(http.attribute(QtNetwork.QNetworkRequest.HttpStatusCodeAttribute)))
+                          )
             self.show_error(error_msg, show_retry_button=True)
             return
 
         try:
             tracks = document.metadata[0].recording_list[0].recording
         except (AttributeError, IndexError):
-            error_msg = _("No results found. Please try a different search query.")
+            error_msg = _("<strong>No results found. Please try a different search query.</strong>")
             self.show_error(error_msg)
             return
 
