@@ -158,7 +158,7 @@ class SearchDialog(PicardDialog):
         self.progress_widget = QtGui.QWidget(self)
         self.progress_widget.setObjectName("progress_widget")
         layout = QtGui.QVBoxLayout(self.progress_widget)
-        text_label = QtGui.QLabel('<strong>Fetching results...</strong>', self.progress_widget)
+        text_label = QtGui.QLabel(_('<strong>Loading...</strong>'), self.progress_widget)
         text_label.setAlignment(QtCore.Qt.AlignHCenter | QtCore.Qt.AlignBottom)
         gif_label = QtGui.QLabel(self.progress_widget)
         movie = QtGui.QMovie(":/images/loader.gif")
