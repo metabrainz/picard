@@ -210,6 +210,20 @@ class SearchDialog(PicardDialog):
         self.load_selection(row)
         self.accept()
 
+    def network_error(self, reply, error):
+        error_msg = _("<strong>Following error occurred while fetching results:<br></strong>"
+                      "Network request error for %s: %s (QT code %d, HTTP code %s)<br>" % (
+                          reply.request().url().toString(QtCore.QUrl.RemoveUserInfo),
+                          reply.errorString(),
+                          error,
+                          repr(reply.attribute(QtNetwork.QNetworkRequest.HttpStatusCodeAttribute)))
+                      )
+        self.show_error(error_msg, show_retry_button=True)
+
+    def no_results_found(self):
+        error_msg = _("<strong>No results found. Please try a different search query.</strong>")
+        self.show_error(error_msg)
+
     def accept(self):
         if getattr(self, "table", None):
             sel_rows = self.table.selectionModel().selectedRows()
@@ -309,21 +323,13 @@ class TrackSearchDialog(SearchDialog):
 
     def handle_reply(self, document, http, error):
         if error:
-            error_msg = _("<strong>Following network request error occurred while fetching results:<br></strong>"
-                          "Network request error for %s: %s (QT code %d, HTTP code %s)<br>" % (
-                              http.request().url().toString(QtCore.QUrl.RemoveUserInfo),
-                              http.errorString(),
-                              error,
-                              repr(http.attribute(QtNetwork.QNetworkRequest.HttpStatusCodeAttribute)))
-                          )
-            self.show_error(error_msg, show_retry_button=True)
+            self.network_error(http, error)
             return
 
         try:
             tracks = document.metadata[0].recording_list[0].recording
         except (AttributeError, IndexError):
-            error_msg = _("<strong>No results found. Please try a different search query.</strong>")
-            self.show_error(error_msg)
+            self.no_results_found()
             return
 
         if self.file_:
