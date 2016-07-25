@@ -63,7 +63,7 @@ class SearchBox(QtGui.QWidget):
 
     def setupUi(self):
         self.layout = QtGui.QVBoxLayout(self)
-        self.search_row_widget = QtGui.QWidget()
+        self.search_row_widget = QtGui.QWidget(self)
         self.search_row_layout = QtGui.QHBoxLayout(self.search_row_widget)
         self.search_row_layout.setContentsMargins(1, 1, 1, 1)
         self.search_row_layout.setSpacing(1)
@@ -76,7 +76,7 @@ class SearchBox(QtGui.QWidget):
         self.search_row_layout.addWidget(self.search_button)
         self.search_row_widget.setLayout(self.search_row_layout)
         self.layout.addWidget(self.search_row_widget)
-        self.adv_opt_row_widget = QtGui.QWidget()
+        self.adv_opt_row_widget = QtGui.QWidget(self)
         self.adv_opt_row_layout = QtGui.QHBoxLayout(self.adv_opt_row_widget)
         self.adv_opt_row_layout.setAlignment(QtCore.Qt.AlignLeft)
         self.adv_opt_row_layout.setContentsMargins(1, 1, 1, 1)
