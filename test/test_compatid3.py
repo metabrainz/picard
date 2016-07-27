@@ -3,23 +3,26 @@
 import unittest
 from mutagen import id3
 from picard.formats.mutagenext import compatid3
+from picard.formats.id3 import id3text
 
 
 class UpdateToV23Test(unittest.TestCase):
 
-    def test_multiple_text_values(self):
-        tags = compatid3.CompatID3()
-        tags.add(id3.TALB(encoding=0, text=["123", "abc"]))
-        tags.update_to_v23()
-        self.assertEqual(tags["TALB"].text, ["123/abc"])
+    def test_id3text(self):
+        self.assertEqual(id3text(u"\u1234", 0), u"?")
+        self.assertEqual(id3text(u"\u1234", 1), u"\u1234")
+        self.assertEqual(id3text(u"\u1234", 2), u"\u1234")
+        self.assertEqual(id3text(u"\u1234", 3), u"\u1234")
 
-    def test_encoding(self):
+    def test_keep_some_v24_tag(self):
         tags = compatid3.CompatID3()
-        tags.add(id3.TALB(encoding=2, text="abc"))
-        tags.add(id3.TIT2(encoding=3, text="abc"))
+        tags.add(id3.TSOP(encoding=0, text=["foo"]))
+        tags.add(id3.TSOA(encoding=0, text=["foo"]))
+        tags.add(id3.TSOT(encoding=0, text=["foo"]))
         tags.update_to_v23()
-        self.assertEqual(tags["TALB"].encoding, 1)
-        self.assertEqual(tags["TIT2"].encoding, 1)
+        self.assertEqual(tags["TSOP"].text, ["foo"])
+        self.assertEqual(tags["TSOA"].text, ["foo"])
+        self.assertEqual(tags["TSOT"].text, ["foo"])
 
     def test_tdrc(self):
         tags = compatid3.CompatID3()
@@ -39,22 +42,22 @@ class UpdateToV23Test(unittest.TestCase):
         tags = compatid3.CompatID3()
         tags.add(id3.TCON(encoding=1, text=["4", "Rock"]))
         tags.update_to_v23()
-        self.assertEqual(tags["TCON"].text, ["Disco/Rock"])
+        self.assertEqual(tags["TCON"].text, ["Disco", "Rock"])
 
     def test_genre_from_v24_2(self):
         tags = compatid3.CompatID3()
         tags.add(id3.TCON(encoding=1, text=["RX", "3", "CR"]))
         tags.update_to_v23()
-        self.assertEqual(tags["TCON"].text, ["Remix/Dance/Cover"])
+        self.assertEqual(tags["TCON"].text, ["Remix", "Dance", "Cover"])
 
     def test_genre_from_v23_1(self):
         tags = compatid3.CompatID3()
         tags.add(id3.TCON(encoding=1, text=["(4)Rock"]))
         tags.update_to_v23()
-        self.assertEqual(tags["TCON"].text, ["Disco/Rock"])
+        self.assertEqual(tags["TCON"].text, ["Disco", "Rock"])
 
     def test_genre_from_v23_2(self):
         tags = compatid3.CompatID3()
         tags.add(id3.TCON(encoding=1, text=["(RX)(3)(CR)"]))
         tags.update_to_v23()
-        self.assertEqual(tags["TCON"].text, ["Remix/Dance/Cover"])
+        self.assertEqual(tags["TCON"].text, ["Remix", "Dance", "Cover"])
