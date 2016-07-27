@@ -23,7 +23,11 @@ from struct import pack, unpack
 import mutagen
 from mutagen._util import insert_bytes
 from mutagen.id3 import ID3, Frames, Frames_2_2, TextFrame, TORY, \
-    TYER, TIME, APIC, IPLS, TDAT, BitPaddedInt, MakeID3v1
+    TYER, TIME, APIC, IPLS, TDAT, MakeID3v1
+try:
+    from mutagen import BitPaddedInt
+except ImportError:
+    from mutagen.id3._util import BitPaddedInt
 
 
 class TCMP(TextFrame):
