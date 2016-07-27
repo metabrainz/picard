@@ -345,7 +345,6 @@ class TrackSearchDialog(SearchDialog):
 
     def display_results(self):
         self.show_table(self.table_headers)
-        row = 0
         for row, obj in enumerate(self.search_results):
             track = obj[0]
             table_item = QtGui.QTableWidgetItem
