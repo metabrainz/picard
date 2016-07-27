@@ -40,23 +40,23 @@ from urlparse import urlparse
 # Ugly, but... I need to save the text in ISO-8859-1 even if it contains
 # unsupported characters and this better than encoding, decoding and
 # again encoding.
-def patched_EncodedTextSpec_write(self, frame, value):
+def patched_EncodedTextSpec_write(self, config, frame, value):
     try:
         enc, term = self._encodings[frame.encoding]
     except AttributeError:
         enc, term = self.encodings[frame.encoding]
     return value.encode(enc, 'ignore') + term
 
-id3.EncodedTextSpec.write = patched_EncodedTextSpec_write
+id3._specs.EncodedTextSpec.write = patched_EncodedTextSpec_write
 
 
 # One more "monkey patch". The ID3 spec says that multiple text
 # values should be _separated_ by the string terminator, which
 # means that e.g. 'a\x00' are two values, 'a' and ''.
-def patched_MultiSpec_write(self, frame, value):
-    data = self._write_orig(frame, value)
+def patched_MultiSpec_write(self, config, frame, value):
+    data = self._write_orig(config, frame, value)
     spec = self.specs[-1]
-    if isinstance(spec, id3.EncodedTextSpec):
+    if isinstance(spec, id3._specs.EncodedTextSpec):
         try:
             term = spec._encodings[frame.encoding][1]
         except AttributeError:
@@ -66,8 +66,8 @@ def patched_MultiSpec_write(self, frame, value):
     return data
 
 
-id3.MultiSpec._write_orig = id3.MultiSpec.write
-id3.MultiSpec.write = patched_MultiSpec_write
+id3._specs.MultiSpec._write_orig = id3._specs.MultiSpec.write
+id3._specs.MultiSpec.write = patched_MultiSpec_write
 
 
 id3.TCMP = compatid3.TCMP
