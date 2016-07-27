@@ -7,7 +7,7 @@ virtualenv:
   system_site_packages: true
 cache:
   - apt
-  - $HOME/.pip/cache
+  - pip
 env:
   global:
     - PIP_INSTALL="pip install --download-cache='$HOME/.pip/cache'"
