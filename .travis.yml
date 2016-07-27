@@ -32,3 +32,6 @@ install:
   - python setup.py build_locales -i
 # Run the tests!
 script: "python setup.py test"
+# Tell people that tests were run
+notifications:
+  irc: "chat.freenode.net#metabrainz"
