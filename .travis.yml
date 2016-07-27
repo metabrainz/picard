@@ -10,7 +10,7 @@ cache:
   - pip
 env:
   global:
-    - PIP_INSTALL="pip install --download-cache='$HOME/.pip/cache'"
+    - PIP_INSTALL="pip install"
   matrix:
     - DISCID="" MUTAGEN="$PIP_INSTALL mutagen>=1.23,<1.34"
     - DISCID="$PIP_INSTALL python-libdiscid" MUTAGEN="$PIP_INSTALL mutagen>=1.23,<1.34"
