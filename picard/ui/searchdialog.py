@@ -382,7 +382,7 @@ class TrackSearchDialog(SearchDialog):
                 track["album"] = _("Standalone Recording")
                 self.search_results.append((track, node))
 
-    def load_selection(self, row=None):
+    def load_selection(self, row):
         track, node = self.search_results[row]
         if track.get("musicbrainz_albumid"):
         # The track is not an NAT
