@@ -772,6 +772,7 @@ if py2exe is None and do_py2app is False:
     args['data_files'].append(('share/icons/hicolor/48x48/apps', ['resources/images/48x48/picard.png']))
     args['data_files'].append(('share/icons/hicolor/128x128/apps', ['resources/images/128x128/picard.png']))
     args['data_files'].append(('share/icons/hicolor/256x256/apps', ['resources/images/256x256/picard.png']))
+    args['data_files'].append(('share/icons/hicolor/scalable/apps', ['resources/img-src/picard.svg']))
     args['data_files'].append(('share/applications', ('picard.desktop',)))
 
 
