@@ -569,16 +569,17 @@ class LastfmOptionsPage(OptionsPage):
             self.ui.fileName.setText(fileName)
         columns = []
         lists = {}
-        for line in open(fileName):
-            data = line.rstrip('\r\n').split(",")
-            if not columns:  # first line
-                columns = tuple(data)
-                for column in columns:
-                    lists[column] = []
-            else:  # data lines
-                for column, value in zip(columns, data):
-                    if value:
-                        lists[column].append(value)
+        with open(fileName) as f:
+            for line in f:
+                data = line.rstrip('\r\n').split(",")
+                if not columns:  # first line
+                    columns = tuple(data)
+                    for column in columns:
+                        lists[column] = []
+                else:  # data lines
+                    for column, value in zip(columns, data):
+                        if value:
+                            lists[column].append(value)
         self.ui.genre_major.setText(', '.join(lists['Major']))
         self.ui.genre_minor.setText(', '.join(lists['Minor']))
         self.ui.genre_country.setText(', '.join(lists['Country']))
