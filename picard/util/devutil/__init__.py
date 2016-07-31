@@ -24,7 +24,7 @@ def printable_node(node, indent=0):
 
     Useful to debug mbxml.py mostly and to create unit tests using "real" nodes.
 
-    Exemple of usage:
+    Example of usage:
 
         from picard.util.devutil import printable_node
         from picard import log

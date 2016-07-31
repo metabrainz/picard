@@ -349,7 +349,7 @@ class File(QtCore.QObject, Item):
         patterns = encode_filename(config.setting["move_additional_files_pattern"])
         patterns = filter(bool, [p.strip() for p in patterns.split()])
         for pattern in patterns:
-            # FIXME glob1 is not documented, maybe we need our own implemention?
+            # FIXME glob1 is not documented, maybe we need our own implementation?
             for old_file in glob.glob1(old_path, pattern):
                 new_file = os.path.join(new_path, old_file)
                 old_file = os.path.join(old_path, old_file)
