@@ -115,7 +115,7 @@ class AddClusterAsRelease(AddObjectAsEntity):
                 i = int(file.metadata["tracknumber"]) - 1
             except:
                 pass
-            # As per https://musicbrainz.org/doc/Development/Release_Editor_Seeding#Tracklists_and_Mediums
+            # As per https://musicbrainz.org/doc/Development/Release_Editor_Seeding#Tracklists_data
             # the medium numbers ("m") must be starting with 0.
             # Maybe the existing tags don't have disc numbers in them or
             # they're starting with something smaller than or equal to 0, so try
