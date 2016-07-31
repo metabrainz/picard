@@ -164,10 +164,9 @@ class CoverArtBox(QtGui.QGroupBox):
         elif url.scheme() == 'file':
             path = encode_filename(unicode(url.toLocalFile()))
             if os.path.exists(path):
-                f = open(path, 'rb')
                 mime = 'image/png' if path.lower().endswith('.png') else 'image/jpeg'
-                data = f.read()
-                f.close()
+                with open(path, 'rb') as f:
+                    data = f.read()
                 self.load_remote_image(url, mime, data)
 
     def on_remote_image_fetched(self, url, data, reply, error):
