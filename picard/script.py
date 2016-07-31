@@ -472,7 +472,7 @@ def func_add(parser, x, y):
 
 
 def func_sub(parser, x, y):
-    """Substracts ``y`` from ``x``."""
+    """Subtracts ``y`` from ``x``."""
     try:
         return str(int(x) - int(y))
     except ValueError:
