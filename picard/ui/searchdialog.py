@@ -147,6 +147,12 @@ class SearchDialog(PicardDialog):
         self.verticalLayout.addWidget(self.buttonBox)
 
     def add_widget_to_center_layout(self, widget):
+        """Updates child widget of center_widget.
+
+        Child widgets represent dialog's current state, like progress,
+        error, and displaying fetched results.
+        """
+
         wid = self.center_layout.itemAt(0)
         if wid:
             if wid.widget().objectName() == "results_table":
@@ -155,6 +161,8 @@ class SearchDialog(PicardDialog):
         self.center_layout.addWidget(widget)
 
     def show_progress(self):
+        """Displays feedback while results are being fetched from server."""
+
         self.progress_widget = QtGui.QWidget(self)
         self.progress_widget.setObjectName("progress_widget")
         layout = QtGui.QVBoxLayout(self.progress_widget)
@@ -172,6 +180,13 @@ class SearchDialog(PicardDialog):
         self.add_widget_to_center_layout(self.progress_widget)
 
     def show_error(self, error, show_retry_button=False):
+        """Displays error inside the dialog.
+
+        Args:
+            error -- Error string
+            show_retry_button -- Whether to display retry button or not
+        """
+
         self.error_widget = QtGui.QWidget(self)
         self.error_widget.setObjectName("error_widget")
         layout = QtGui.QVBoxLayout(self.error_widget)
@@ -194,6 +209,8 @@ class SearchDialog(PicardDialog):
         self.add_widget_to_center_layout(self.error_widget)
 
     def show_table(self, column_headers):
+        """Displays results table inside the dialog."""
+
         self.table = ResultTable(self.table_headers)
         self.table.setObjectName("results_table")
         self.table.cellDoubleClicked.connect(self.row_double_clicked)
@@ -207,6 +224,8 @@ class SearchDialog(PicardDialog):
                 enable_loading_button)
 
     def row_double_clicked(self, row):
+        """Handle function for double click event inside the table."""
+
         self.load_selection(row)
         self.accept()
 
@@ -258,6 +277,12 @@ class SearchDialog(PicardDialog):
         header.setResizeMode(QtGui.QHeaderView.Interactive)
 
     def save_state(self, table_loaded=True):
+        """Saves dialog state i.e. window size, checkbox state, and table
+        header size.
+
+        Args:
+            table_loaded -- Whether table widget is loaded or not
+        """
         if table_loaded:
             self.save_table_header_state()
         config.persist["searchdialog_window_size"] = self.size()
@@ -285,6 +310,7 @@ class TrackSearchDialog(SearchDialog):
         ]
 
     def search(self, text):
+        """Performs search using query provided by the user."""
         self.retry_params = (self.search, text)
         self.search_box.search_edit.setText(text)
         self.show_progress()
@@ -294,6 +320,8 @@ class TrackSearchDialog(SearchDialog):
                 limit=25)
 
     def load_similar_tracks(self, file_):
+        """Performs search by using existing metadata information
+        from the file."""
         self.retry_params = (self.load_similar_tracks, file_)
         self.file_ = file_
         metadata = file_.orig_metadata
@@ -307,9 +335,13 @@ class TrackSearchDialog(SearchDialog):
                 'isrc': metadata['isrc'],
         }
         if config.setting["use_adv_search_syntax"]:
+            # Display the query in advance syntax format.
             query_str = ' '.join(['%s:(%s)' % (item, value) for item, value in query.iteritems() if value])
         else:
+            # Display only the track title
             query_str = query["track"]
+        # `query_str` is used only for presenting purpose. Actual query consists of all filters and follows
+        # advanced query syntax.
         query["limit"] = 25
         self.search_box.search_edit.setText(query_str)
         self.show_progress()
@@ -318,8 +350,15 @@ class TrackSearchDialog(SearchDialog):
                 **query)
 
     def retry(self):
-        self.retry_params[0](self.retry_params[1])
+        """Retries the search using information from `retry_params`.
 
+        `retry_params` is a tuple having search information.
+        retry_params[0] -- Method to be used to perform search
+                        -- Can be `self.search()` or `self.load_similar_tracks()`
+        retry_params[1] -- Search query information
+                        -- Can be a text string, or a File object
+        """
+        self.retry_params[0](self.retry_params[1])
 
     def handle_reply(self, document, http, error):
         if error:
@@ -333,6 +372,7 @@ class TrackSearchDialog(SearchDialog):
             return
 
         if self.file_:
+            # Sort the results by comparing them to original metadata tags
             tmp = sorted((self.file_.orig_metadata.compare_to_track(
                 track, File.comparison_weights) for track in tracks),
                 reverse=True,
@@ -358,6 +398,11 @@ class TrackSearchDialog(SearchDialog):
             self.table.setItem(row, 6, table_item(track.get("releasetype", "")))
 
     def parse_tracks_from_xml(self, tracks_xml):
+        """Extracts track information from XmlNode objects and stores that into Metadata objects.
+
+        Args:
+            tracks_xml -- list of XmlNode objects
+        """
         for node in tracks_xml:
             if "release_list" in node.children and "release" in node.release_list[0].children:
                 for rel_node in node.release_list[0].release:
@@ -367,6 +412,9 @@ class TrackSearchDialog(SearchDialog):
                     rg_node = rel_node.release_group[0]
                     release_group_to_metadata(rg_node, track)
                     if "release_event_list" in rel_node.children:
+                        # Extract contries list from `release_event_list` element
+                        # Don't use `country` element as it contains information of a single release
+                        # event and is basically for backward compatibility.
                         country = []
                         for re in rel_node.release_event_list[0].release_event:
                             try:
@@ -377,12 +425,18 @@ class TrackSearchDialog(SearchDialog):
                         track["country"] = ", ".join(country)
                     self.search_results.append((track, node))
             else:
+                # This handles the case when no release is associated with a track
+                # i.e. the track is a NAT
                 track = Metadata()
                 recording_to_metadata(node, track)
                 track["album"] = _("Standalone Recording")
                 self.search_results.append((track, node))
 
     def load_selection(self, row):
+        """Loads album corresponding to selected track.
+        If the search is performed for a file, also associates the file to
+        corresponding track in the album.
+        """
         track, node = self.search_results[row]
         if track.get("musicbrainz_albumid"):
         # The track is not an NAT
