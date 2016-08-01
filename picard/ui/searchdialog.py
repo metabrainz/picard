@@ -25,7 +25,6 @@ from picard.ui import PicardDialog
 from picard.ui.util import StandardButton, ButtonLineEdit
 from picard.util import format_time, icontheme
 from picard.mbxml import (
-    artist_credit_from_node,
     recording_to_metadata,
     release_to_metadata,
     release_group_to_metadata
