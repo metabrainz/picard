@@ -31,6 +31,7 @@ from picard.mbxml import (
 )
 from picard.i18n import ugettext_attr
 from picard.metadata import Metadata
+from picard.track import Track
 
 
 class ResultTable(QtGui.QTableWidget):
@@ -81,7 +82,7 @@ class SearchBox(QtGui.QWidget):
         self.adv_opt_row_layout.setContentsMargins(1, 1, 1, 1)
         self.adv_opt_row_layout.setSpacing(1)
         self.use_adv_search_syntax = QtGui.QCheckBox(self.adv_opt_row_widget)
-        self.use_adv_search_syntax.setText(_("Use advance query syntax"))
+        self.use_adv_search_syntax.setText(_("Use advanced query syntax"))
         self.adv_opt_row_layout.addWidget(self.use_adv_search_syntax)
         self.adv_syntax_help = QtGui.QLabel(self.adv_opt_row_widget)
         self.adv_syntax_help.setOpenExternalLinks(True)
@@ -115,6 +116,7 @@ class SearchDialog(PicardDialog):
     def __init__(self, parent=None):
         PicardDialog.__init__(self, parent)
         self.search_results = []
+        self.table = None
         self.setupUi()
         self.restore_state()
 
@@ -229,8 +231,8 @@ class SearchDialog(PicardDialog):
         self.accept()
 
     def network_error(self, reply, error):
-        error_msg = _("<strong>Following error occurred while fetching results:<br></strong>"
-                      "Network request error for %s: %s (QT code %d, HTTP code %s)<br>" % (
+        error_msg = _("<strong>Following error occurred while fetching results:<br><br></strong>"
+                      "Network request error for %s:<br>%s (QT code %d, HTTP code %s)<br>" % (
                           reply.request().url().toString(QtCore.QUrl.RemoveUserInfo),
                           reply.errorString(),
                           error,
@@ -243,23 +245,16 @@ class SearchDialog(PicardDialog):
         self.show_error(error_msg)
 
     def accept(self):
-        if getattr(self, "table", None):
+        if self.table:
             sel_rows = self.table.selectionModel().selectedRows()
             if sel_rows:
                 sel_row = sel_rows[0].row()
                 self.load_selection(sel_row)
-            self.save_state(True)
-        else:
-            self.save_state(False)
-
+        self.save_state()
         QtGui.QDialog.accept(self)
 
     def reject(self):
-        if getattr(self, "table", None):
-            self.save_state(True)
-        else:
-            self.save_state(False)
-
+        self.save_state()
         QtGui.QDialog.reject(self)
 
     def restore_state(self):
@@ -275,14 +270,12 @@ class SearchDialog(PicardDialog):
             header.restoreState(state)
         header.setResizeMode(QtGui.QHeaderView.Interactive)
 
-    def save_state(self, table_loaded=True):
+    def save_state(self):
         """Saves dialog state i.e. window size, checkbox state, and table
         header size.
-
-        Args:
-            table_loaded -- Whether table widget is loaded or not
         """
-        if table_loaded:
+
+        if self.table:
             self.save_table_header_state()
         config.persist["searchdialog_window_size"] = self.size()
         self.search_box.save_checkbox_state()
@@ -371,12 +364,14 @@ class TrackSearchDialog(SearchDialog):
             return
 
         if self.file_:
-            # Sort the results by comparing them to original metadata tags
-            tmp = sorted((self.file_.orig_metadata.compare_to_track(
-                track, File.comparison_weights) for track in tracks),
+            sorted_results = sorted(
+                (self.file_.orig_metadata.compare_to_track(
+                    track,
+                    File.comparison_weights)
+                 for track in tracks),
                 reverse=True,
                 key=itemgetter(0))
-            tracks = [item[3] for item in tmp]
+            tracks = [item[3] for item in sorted_results]
 
         del self.search_results[:]  # Clear existing data
         self.parse_tracks_from_xml(tracks)
@@ -444,7 +439,7 @@ class TrackSearchDialog(SearchDialog):
             if self.file_:
             # Search is performed for a file
             # Have to move that file from its existing album to the new one
-                if type(self.file_.parent).__name__ == "Track":
+                if isinstance(self.file_.parent, Track):
                     album = self.file_.parent.album
                     self.tagger.move_file_to_track(self.file_, track["musicbrainz_albumid"], track["musicbrainz_recordingid"])
                     if album._files == 0:
