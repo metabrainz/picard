@@ -63,7 +63,7 @@ CLIENT_STRING = str(QUrl.toPercentEncoding('%s %s-%s' % (PICARD_ORG_NAME,
                                                          PICARD_VERSION_STR)))
 
 
-def _escape_lucene_query(text):
+def escape_lucene_query(text):
     return re.sub(r'([+\-&|!(){}\[\]\^"~*?:\\/])', r'\\\1', text)
 
 
@@ -468,12 +468,12 @@ class XmlWebService(QtCore.QObject):
             if config.setting["use_adv_search_syntax"]:
                 query = kwargs["query"]
             else:
-                query = _escape_lucene_query(kwargs["query"]).strip().lower()
+                query = escape_lucene_query(kwargs["query"]).strip().lower()
                 filters.append(("dismax", 'true'))
         else:
             query = []
             for name, value in kwargs.items():
-                value = _escape_lucene_query(value).strip().lower()
+                value = escape_lucene_query(value).strip().lower()
                 if value:
                     query.append('%s:(%s)' % (name, value))
             query = ' '.join(query)

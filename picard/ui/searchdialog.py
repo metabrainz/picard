@@ -32,6 +32,7 @@ from picard.mbxml import (
 )
 from picard.i18n import ugettext_attr
 from picard.metadata import Metadata
+from picard.webservice import escape_lucene_query
 from picard.track import Track
 
 
@@ -334,7 +335,8 @@ class TrackSearchDialog(SearchDialog):
         }
         if config.setting["use_adv_search_syntax"]:
             # Display the query in advance syntax format.
-            query_str = ' '.join(['%s:(%s)' % (item, value) for item, value in query.iteritems() if value])
+            query_str = ' '.join(['%s:(%s)' % (item, escape_lucene_query(value))
+                                  for item, value in query.iteritems() if value])
         else:
             # Display only the track title
             query_str = query["track"]
