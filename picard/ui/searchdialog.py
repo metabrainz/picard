@@ -19,6 +19,7 @@
 from PyQt4 import QtGui, QtCore, QtNetwork
 from operator import itemgetter
 from functools import partial
+from collections import namedtuple
 from picard import config
 from picard.file import File
 from picard.ui import PicardDialog
@@ -104,6 +105,9 @@ class SearchBox(QtGui.QWidget):
 
     def save_checkbox_state(self):
         config.setting["use_adv_search_syntax"] = self.use_adv_search_syntax.isChecked()
+
+
+Retry = namedtuple("Retry", ["function", "query"])
 
 
 class SearchDialog(PicardDialog):
@@ -303,7 +307,8 @@ class TrackSearchDialog(SearchDialog):
 
     def search(self, text):
         """Performs search using query provided by the user."""
-        self.retry_params = (self.search, text)
+
+        self.retry_params = Retry(self.search, text)
         self.search_box.search_edit.setText(text)
         self.show_progress()
         self.tagger.xmlws.find_tracks(self.handle_reply,
@@ -314,7 +319,8 @@ class TrackSearchDialog(SearchDialog):
     def load_similar_tracks(self, file_):
         """Performs search by using existing metadata information
         from the file."""
-        self.retry_params = (self.load_similar_tracks, file_)
+
+        self.retry_params = Retry(self.load_similar_tracks, file_)
         self.file_ = file_
         metadata = file_.orig_metadata
         query = {
@@ -342,15 +348,8 @@ class TrackSearchDialog(SearchDialog):
                 **query)
 
     def retry(self):
-        """Retries the search using information from `retry_params`.
-
-        `retry_params` is a tuple having search information.
-        retry_params[0] -- Method to be used to perform search
-                        -- Can be `self.search()` or `self.load_similar_tracks()`
-        retry_params[1] -- Search query information
-                        -- Can be a text string, or a File object
-        """
-        self.retry_params[0](self.retry_params[1])
+        """Retries the search using information from `retry_params`."""
+        self.retry_params.function(self.retry_params.query)
 
     def handle_reply(self, document, http, error):
         if error:
