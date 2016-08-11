@@ -159,7 +159,7 @@ class SearchDialog(PicardDialog):
         error, and displaying fetched results.
         """
 
-        wid = self.center_layout.itemAt(0)
+        wid = self.center_layout.takeAt(0)
         if wid:
             if wid.widget().objectName() == "results_table":
                 self.table = None
@@ -196,7 +196,7 @@ class SearchDialog(PicardDialog):
         self.error_widget = QtGui.QWidget(self)
         self.error_widget.setObjectName("error_widget")
         layout = QtGui.QVBoxLayout(self.error_widget)
-        error_label = QtGui.QLabel(error)
+        error_label = QtGui.QLabel(error, self.error_widget)
         error_label.setWordWrap(True)
         error_label.setAlignment(QtCore.Qt.AlignCenter)
         error_label.setTextInteractionFlags(QtCore.Qt.TextSelectableByMouse)
