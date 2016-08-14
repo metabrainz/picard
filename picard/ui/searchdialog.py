@@ -16,6 +16,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+import json
 from PyQt4 import QtGui, QtCore, QtNetwork
 from operator import itemgetter
 from functools import partial
@@ -36,6 +37,8 @@ from picard.i18n import ugettext_attr
 from picard.metadata import Metadata
 from picard.webservice import escape_lucene_query
 from picard.track import Track
+from picard.const import CAA_HOST, CAA_PORT
+from picard.coverart.image import CaaThumbnailCoverArtImage
 
 
 class ResultTable(QtGui.QTableWidget):
@@ -108,6 +111,35 @@ class SearchBox(QtGui.QWidget):
 
     def save_checkbox_state(self):
         config.setting["use_adv_search_syntax"] = self.use_adv_search_syntax.isChecked()
+
+
+class CoverArt(QtGui.QWidget):
+
+    def __init__(self, parent):
+        QtGui.QWidget.__init__(self, parent)
+        self.layout = QtGui.QVBoxLayout(self)
+        self.loading_gif_label = QtGui.QLabel(self)
+        self.loading_gif_label.setAlignment(QtCore.Qt.AlignCenter)
+        loading_gif = QtGui.QMovie(":/images/loader.gif")
+        self.loading_gif_label.setMovie(loading_gif)
+        loading_gif.start()
+        self.layout.addWidget(self.loading_gif_label)
+
+    def update(self, pixmap):
+        wid = self.layout.takeAt(0)
+        if wid:
+            wid.widget().deleteLater()
+        cover_label = QtGui.QLabel(self)
+        cover_label.setPixmap(pixmap.scaled(100,
+                                            100,
+                                            QtCore.Qt.KeepAspectRatio,
+                                            QtCore.Qt.SmoothTransformation)
+                              )
+        self.layout.addWidget(cover_label)
+
+    def not_found(self):
+        shadow = QtGui.QPixmap(":/images/CoverArtShadow.png")
+        self.update(shadow)
 
 
 Retry = namedtuple("Retry", ["function", "query"])
@@ -484,6 +516,8 @@ class AlbumSearchDialog(SearchDialog):
                 _("Cover")
         ]
 
+    _coverart_column = 12
+
     def search(self, text):
         """Performs search using query provided by the user."""
 
@@ -526,6 +560,79 @@ class AlbumSearchDialog(SearchDialog):
         del self.search_results[:]
         self.parse_releases_from_xml(releases)
         self.display_results()
+        self.fetch_coverarts()
+
+    def fetch_coverarts(self):
+        """Queues cover art jsons from CAA server for each album in search
+        results.
+        """
+
+        for row, release in enumerate(self.search_results):
+            caa_path = "/release/%s" % release["musicbrainz_albumid"]
+            self.tagger.xmlws.download(
+                CAA_HOST,
+                CAA_PORT,
+                caa_path,
+                partial(self._caa_json_downloaded, row)
+            )
+
+    def _caa_json_downloaded(self, row, data, http, error):
+        """Handles reply from CAA server.
+        If server replies without error, tries to get small thumbnail of front coverart
+        of the release.
+        """
+
+        cover_cell = self.table.cellWidget(row, self._coverart_column)
+
+        if error:
+            cover_cell.not_found()
+            return
+
+        try:
+            caa_data = json.loads(data)
+        except ValueError:
+            cover_cell.not_found()
+            return
+
+        front = None
+        for image in caa_data["images"]:
+            if image["front"]:
+                front = image
+                break
+
+        if front:
+            url = front["thumbnails"]["small"]
+            coverartimage = CaaThumbnailCoverArtImage(url=url)
+            self.tagger.xmlws.download(
+                coverartimage.host,
+                coverartimage.port,
+                coverartimage.path,
+                partial(self._cover_downloaded, row),
+            )
+        else:
+            cover_cell.not_found()
+
+    def _cover_downloaded(self, row, data, http, error):
+        """Handles cover art query reply from CAA server.
+        If server returns the cover image, tries to update cover art cell
+        of particular release.
+
+        Args:
+            row -- Row in search results table
+                   Used to update cover art cell
+        """
+
+        cover_cell = self.table.cellWidget(row, self._coverart_column)
+
+        if error:
+            cover_cell.not_found()
+        else:
+            pixmap = QtGui.QPixmap()
+            try:
+                pixmap.loadFromData(data)
+                cover_cell.update(pixmap)
+            except:
+                cover_cell.not_found()
 
     def parse_releases_from_xml(self, release_xml):
         """Extracts release information from XmlNode objects and stores that
