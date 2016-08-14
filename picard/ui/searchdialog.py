@@ -406,18 +406,9 @@ class TrackSearchDialog(SearchDialog):
                     release_to_metadata(rel_node, track)
                     rg_node = rel_node.release_group[0]
                     release_group_to_metadata(rg_node, track)
-                    if "release_event_list" in rel_node.children:
-                        # Extract contries list from `release_event_list` element
-                        # Don't use `country` element as it contains information of a single release
-                        # event and is basically for backward compatibility.
-                        country = []
-                        for re in rel_node.release_event_list[0].release_event:
-                            try:
-                                country.append(
-                                        re.area[0].iso_3166_1_code_list[0].iso_3166_1_code[0].text)
-                            except AttributeError:
-                                pass
-                        track["country"] = ", ".join(country)
+                    countries = country_list_from_node(rel_node)
+                    if countries:
+                        track["country"] = ", ".join(countries)
                     self.search_results.append((track, node))
             else:
                 # This handles the case when no release is associated with a track

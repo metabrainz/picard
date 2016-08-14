@@ -205,6 +205,19 @@ def artist_credit_to_metadata(node, m, release=False):
         m["~artists_sort"] = artistsort
 
 
+def country_list_from_node(node):
+    # Extracts iso_3166_1_codes for all countries in `release_event_list`
+    if "release_event_list" in node.children:
+        country = []
+        for re in node.release_event_list[0].release_event:
+            try:
+                country.append(
+                    re.area[0].iso_3166_1_code_list[0].iso_3166_1_code[0].text)
+            except AttributeError:
+                pass
+        return country
+
+
 def label_info_from_node(node):
     labels = []
     catalog_numbers = []
