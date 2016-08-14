@@ -208,7 +208,7 @@ def artist_credit_to_metadata(node, m, release=False):
 def label_info_from_node(node):
     labels = []
     catalog_numbers = []
-    if node.count != "0":
+    if len(node.children) != 0:
         for label_info in node.label_info:
             if 'label' in label_info.children:
                 label = label_info.label[0].name[0].text
@@ -374,7 +374,7 @@ def release_to_metadata(node, m, album=None):
             m['barcode'] = nodes[0].text
         elif name == 'relation_list':
             _relations_to_metadata(nodes, m)
-        elif name == 'label_info_list' and getattr(nodes[0], 'count', '0') != '0':
+        elif name == 'label_info_list' and len(nodes[0].children) != 0:
             m['label'], m['catalognumber'] = label_info_from_node(nodes[0])
         elif name == 'text_representation':
             if 'language' in nodes[0].children:
