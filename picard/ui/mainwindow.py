@@ -34,7 +34,7 @@ from picard.ui.filebrowser import FileBrowser
 from picard.ui.tagsfromfilenames import TagsFromFileNamesDialog
 from picard.ui.options.dialog import OptionsDialog
 from picard.ui.infodialog import FileInfoDialog, AlbumInfoDialog, ClusterInfoDialog
-from picard.ui.searchdialog import TrackSearchDialog
+from picard.ui.searchdialog import TrackSearchDialog, AlbumSearchDialog
 from picard.ui.infostatus import InfoStatus
 from picard.ui.passworddialog import PasswordDialog
 from picard.ui.logview import LogView, HistoryView
@@ -686,6 +686,10 @@ class MainWindow(QtGui.QMainWindow):
         if config.setting["builtin_search"]:
             if type == "track":
                 dialog = TrackSearchDialog(self)
+                dialog.search(text)
+                dialog.exec_()
+            elif type == "album":
+                dialog = AlbumSearchDialog(self)
                 dialog.search(text)
                 dialog.exec_()
         else:
