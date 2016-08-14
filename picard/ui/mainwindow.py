@@ -382,6 +382,10 @@ class MainWindow(QtGui.QMainWindow):
         self.browser_lookup_action.setEnabled(False)
         self.browser_lookup_action.triggered.connect(self.browser_lookup)
 
+        self.albums_search_action = QtGui.QAction(icontheme.lookup('system-search'), _(u"Search similar albums..."), self)
+        self.albums_search_action.setStatusTip(_(u"View similar releases and optionally choose a different release"))
+        self.albums_search_action.triggered.connect(self.show_more_albums)
+
         self.tracks_search_action = QtGui.QAction(icontheme.lookup('system-search'), _(u"Search similar tracks..."), self)
         self.tracks_search_action.setStatusTip(_(u"View similar tracks and optionally choose a different release"))
         self.tracks_search_action.triggered.connect(self.show_more_tracks)
@@ -808,6 +812,12 @@ class MainWindow(QtGui.QMainWindow):
             obj = obj.linked_files[0]
         dialog = TrackSearchDialog(self)
         dialog.load_similar_tracks(obj)
+        dialog.exec_()
+
+    def show_more_albums(self):
+        obj = self.selected_objects[0]
+        dialog = AlbumSearchDialog(self)
+        dialog.show_similar_albums(obj)
         dialog.exec_()
 
     def view_info(self):

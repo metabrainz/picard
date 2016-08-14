@@ -28,7 +28,9 @@ from picard.util import format_time, icontheme
 from picard.mbxml import (
     recording_to_metadata,
     release_to_metadata,
-    release_group_to_metadata
+    release_group_to_metadata,
+    media_formats_from_node,
+    country_list_from_node
 )
 from picard.i18n import ugettext_attr
 from picard.metadata import Metadata
@@ -112,11 +114,6 @@ Retry = namedtuple("Retry", ["function", "query"])
 
 
 class SearchDialog(PicardDialog):
-
-    options = [
-        config.Option("persist", "searchdialog_window_size", QtCore.QSize(720, 360)),
-        config.Option("persist", "searchdialog_header_state", QtCore.QByteArray())
-    ]
 
     def __init__(self, parent=None):
         PicardDialog.__init__(self, parent)
@@ -262,35 +259,15 @@ class SearchDialog(PicardDialog):
         self.save_state()
         QtGui.QDialog.reject(self)
 
-    def restore_state(self):
-        size = config.persist["searchdialog_window_size"]
-        if size:
-            self.resize(size)
-        self.search_box.restore_checkbox_state()
-
-    def restore_table_header_state(self):
-        header = self.table.horizontalHeader()
-        state = config.persist["searchdialog_header_state"]
-        if state:
-            header.restoreState(state)
-        header.setResizeMode(QtGui.QHeaderView.Interactive)
-
-    def save_state(self):
-        """Saves dialog state i.e. window size, checkbox state, and table
-        header size.
-        """
-
-        if self.table:
-            self.save_table_header_state()
-        config.persist["searchdialog_window_size"] = self.size()
-        self.search_box.save_checkbox_state()
-
-    def save_table_header_state(self):
-        state = self.table.horizontalHeader().saveState()
-        config.persist["searchdialog_header_state"] = state
 
 
 class TrackSearchDialog(SearchDialog):
+
+    options = [
+        config.Option("persist", "tracksearchdialog_window_size", QtCore.QSize(720, 360)),
+        config.Option("persist", "tracksearchdialog_header_state", QtCore.QByteArray())
+    ]
+
 
     def __init__(self, parent):
         super(TrackSearchDialog, self).__init__(parent)
@@ -451,3 +428,181 @@ class TrackSearchDialog(SearchDialog):
                     self.tagger.remove_album(album)
             else:
                 self.tagger.load_nat(track["musicbrainz_recordingid"], node)
+
+    def restore_state(self):
+        size = config.persist["tracksearchdialog_window_size"]
+        if size:
+            self.resize(size)
+        self.search_box.restore_checkbox_state()
+
+    def restore_table_header_state(self):
+        header = self.table.horizontalHeader()
+        state = config.persist["tracksearchdialog_header_state"]
+        if state:
+            header.restoreState(state)
+        header.setResizeMode(QtGui.QHeaderView.Interactive)
+
+    def save_state(self):
+        """Saves dialog state i.e. window size, checkbox state, and table
+        header size.
+        """
+
+        if self.table:
+            self.save_table_header_state()
+        config.persist["tracksearchdialog_window_size"] = self.size()
+        self.search_box.save_checkbox_state()
+
+    def save_table_header_state(self):
+        state = self.table.horizontalHeader().saveState()
+        config.persist["tracksearchdialog_header_state"] = state
+
+
+class AlbumSearchDialog(SearchDialog):
+
+    options = [
+        config.Option("persist", "albumsearchdialog_window_size", QtCore.QSize(720, 360)),
+        config.Option("persist", "albumsearchdialog_header_state", QtCore.QByteArray())
+    ]
+
+    def __init__(self, parent):
+        super(AlbumSearchDialog, self).__init__(parent)
+        self.cluster = None
+        self.setWindowTitle(_("Album Search Dialog"))
+        self.table_headers = [
+                _("Name"),
+                _("Artist"),
+                _("Format"),
+                _("Tracks"),
+                _("Date"),
+                _("Country"),
+                _("Label"),
+                _("Catalog#"),
+                _("Barcode"),
+                _("Language"),
+                _("Type"),
+                _("Status"),
+                _("Cover")
+        ]
+
+    def search(self, text):
+        """Performs search using query provided by the user."""
+
+        self.retry_params = (self.search, text)
+        self.search_box.search_edit.setText(text)
+        self.show_progress()
+        self.tagger.xmlws.find_releases(self.handle_reply,
+                query=text,
+                search=True,
+                limit=25)
+
+    def show_similar_albums(self, cluster):
+        """Performs search by using existing metadata information
+        from the cluster."""
+
+        self.cluster = cluster
+        self.retry_params = (self.show_similar_albums, cluster)
+        self.tagger.xmlws.find_releases(self.handle_reply,
+                artist=cluster.metadata["albumartist"],
+                release=cluster.metadata["album"],
+                tracks=str(len(cluster.files)),
+                limit=25)
+
+    def retry(self):
+        """Retries search using information from `retry_params`."""
+
+        self.retry_params[0](self.retry_params[1])
+
+    def handle_reply(self, document, http, error):
+        if error:
+            self.network_error(http, error)
+            return
+
+        try:
+            releases = document.metadata[0].release_list[0].release
+        except (AttributeError, IndexError):
+            self.no_results_found()
+            return
+
+        del self.search_results[:]
+        self.parse_releases_from_xml(releases)
+        self.display_results()
+
+    def parse_releases_from_xml(self, release_xml):
+        """Extracts release information from XmlNode objects and stores that
+        into Metadata objects.
+
+        Args:
+            release_xml -- list of XmlNode objects
+        """
+
+        for node in release_xml:
+            release = Metadata()
+            release_to_metadata(node, release)
+            rg_node = node.release_group[0]
+            release_group_to_metadata(rg_node, release)
+            if "medium_list" in node.children:
+                medium_list = node.medium_list[0]
+                release["format"] = media_formats_from_node(medium_list)
+                release["tracks"] = medium_list.track_count[0].text
+            countries = country_list_from_node(node)
+            if countries:
+                release["country"] = ", ".join(countries)
+            self.search_results.append(release)
+
+    def display_results(self):
+        self.show_table(self.table_headers)
+        self.table.verticalHeader().setDefaultSectionSize(100)
+        for row, release in enumerate(self.search_results):
+            table_item = QtGui.QTableWidgetItem
+            self.table.insertRow(row)
+            self.table.setItem(row, 0, table_item(release.get("album", "")))
+            self.table.setItem(row, 1, table_item(release.get("albumartist", "")))
+            self.table.setItem(row, 2, table_item(release.get("format", "")))
+            self.table.setItem(row, 3, table_item(release.get("tracks", "")))
+            self.table.setItem(row, 4, table_item(release.get("date", "")))
+            self.table.setItem(row, 5, table_item(release.get("country", "")))
+            self.table.setItem(row, 6, table_item(release.get("label", "")))
+            self.table.setItem(row, 7, table_item(release.get("catalognumber", "")))
+            self.table.setItem(row, 8, table_item(release.get("barcode", "")))
+            self.table.setItem(row, 9, table_item(release.get("~releaselanguage", "")))
+            self.table.setItem(row, 10, table_item(release.get("releasetype", "")))
+            self.table.setItem(row, 11, table_item(release.get("releasestatus", "")))
+            self.table.setCellWidget(row, 12, CoverArt(self.table))
+
+    def load_selection(self, row):
+        release = self.search_results[row]
+        self.tagger.get_release_group_by_id(
+            release["musicbrainz_releasegroupid"]).loaded_albums.add(
+                release["musicbrainz_albumid"])
+        album = self.tagger.load_album(release["musicbrainz_albumid"])
+        if self.cluster:
+            files = self.tagger.get_files_from_objects([self.cluster])
+            self.tagger.move_files_to_album(files, release["musicbrainz_albumid"],
+                                            album)
+
+    def restore_state(self):
+        size = config.persist["albumsearchdialog_window_size"]
+        if size:
+            self.resize(size)
+        self.search_box.restore_checkbox_state()
+
+    def restore_table_header_state(self):
+        header = self.table.horizontalHeader()
+        state = config.persist["albumsearchdialog_header_state"]
+        if state:
+            header.restoreState(state)
+        header.setResizeMode(QtGui.QHeaderView.Interactive)
+
+    def save_state(self):
+        """Saves dialog state i.e. window size, checkbox state, and table
+        header size.
+        """
+
+        if self.table:
+            self.save_table_header_state()
+        config.persist["albumsearchdialog_window_size"] = self.size()
+        self.search_box.save_checkbox_state()
+
+    def save_table_header_state(self):
+        state = self.table.horizontalHeader().saveState()
+        config.persist["albumsearchdialog_header_state"] = state
