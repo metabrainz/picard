@@ -34,6 +34,7 @@ from picard.ui.filebrowser import FileBrowser
 from picard.ui.tagsfromfilenames import TagsFromFileNamesDialog
 from picard.ui.options.dialog import OptionsDialog
 from picard.ui.infodialog import FileInfoDialog, AlbumInfoDialog, ClusterInfoDialog
+from picard.ui.searchdialog import TrackSearchDialog
 from picard.ui.infostatus import InfoStatus
 from picard.ui.passworddialog import PasswordDialog
 from picard.ui.logview import LogView, HistoryView
@@ -381,6 +382,10 @@ class MainWindow(QtGui.QMainWindow):
         self.browser_lookup_action.setEnabled(False)
         self.browser_lookup_action.triggered.connect(self.browser_lookup)
 
+        self.tracks_search_action = QtGui.QAction(icontheme.lookup('system-search'), _(u"Search similar tracks..."), self)
+        self.tracks_search_action.setStatusTip(_(u"View similar tracks and optionally choose a different release"))
+        self.tracks_search_action.triggered.connect(self.show_more_tracks)
+
         self.show_file_browser_action = QtGui.QAction(_(u"File &Browser"), self)
         self.show_file_browser_action.setCheckable(True)
         if config.persist["view_file_browser"]:
@@ -674,7 +679,13 @@ class MainWindow(QtGui.QMainWindow):
         """Search for album, artist or track on the MusicBrainz website."""
         text = self.search_edit.text()
         type = self.search_combo.itemData(self.search_combo.currentIndex())
-        self.tagger.search(text, type, config.setting["use_adv_search_syntax"])
+        if config.setting["builtin_search"]:
+            if type == "track":
+                dialog = TrackSearchDialog(self)
+                dialog.search(text)
+                dialog.exec_()
+        else:
+            self.tagger.search(text, type, config.setting["use_adv_search_syntax"])
 
     def add_files(self):
         """Add files to the tagger."""
@@ -790,6 +801,14 @@ class MainWindow(QtGui.QMainWindow):
             QtGui.QMessageBox.Yes | QtGui.QMessageBox.No,
             QtGui.QMessageBox.Yes)
         return ret == QtGui.QMessageBox.Yes
+
+    def show_more_tracks(self):
+        obj = self.selected_objects[0]
+        if isinstance(obj, Track):
+            obj = obj.linked_files[0]
+        dialog = TrackSearchDialog(self)
+        dialog.load_similar_tracks(obj)
+        dialog.exec_()
 
     def view_info(self):
         if isinstance(self.selected_objects[0], Album):

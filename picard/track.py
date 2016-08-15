@@ -271,9 +271,9 @@ class NonAlbumTrack(Track):
             log.error(traceback.format_exc())
 
     def _parse_recording(self, recording):
-        recording_to_metadata(recording, self)
-        self._customize_metadata()
         m = self.metadata
+        recording_to_metadata(recording, m, self)
+        self._customize_metadata()
         run_track_metadata_processors(self.album, m, None, recording)
         if config.setting["enable_tagger_script"]:
             script = config.setting["tagger_script"]

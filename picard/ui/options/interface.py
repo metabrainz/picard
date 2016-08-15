@@ -40,6 +40,7 @@ class InterfaceOptionsPage(OptionsPage):
     options = [
         config.BoolOption("setting", "toolbar_show_labels", True),
         config.BoolOption("setting", "toolbar_multiselect", False),
+        config.BoolOption("setting", "builtin_search", False),
         config.BoolOption("setting", "use_adv_search_syntax", False),
         config.BoolOption("setting", "quit_confirmation", True),
         config.TextOption("setting", "ui_language", u""),
@@ -77,6 +78,7 @@ class InterfaceOptionsPage(OptionsPage):
     def load(self):
         self.ui.toolbar_show_labels.setChecked(config.setting["toolbar_show_labels"])
         self.ui.toolbar_multiselect.setChecked(config.setting["toolbar_multiselect"])
+        self.ui.builtin_search.setChecked(config.setting["builtin_search"])
         self.ui.use_adv_search_syntax.setChecked(config.setting["use_adv_search_syntax"])
         self.ui.quit_confirmation.setChecked(config.setting["quit_confirmation"])
         current_ui_language = config.setting["ui_language"]
@@ -87,6 +89,7 @@ class InterfaceOptionsPage(OptionsPage):
     def save(self):
         config.setting["toolbar_show_labels"] = self.ui.toolbar_show_labels.isChecked()
         config.setting["toolbar_multiselect"] = self.ui.toolbar_multiselect.isChecked()
+        config.setting["builtin_search"] = self.ui.builtin_search.isChecked()
         config.setting["use_adv_search_syntax"] = self.ui.use_adv_search_syntax.isChecked()
         config.setting["quit_confirmation"] = self.ui.quit_confirmation.isChecked()
         self.tagger.window.update_toolbar_style()
