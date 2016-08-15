@@ -118,7 +118,7 @@ class CompatID3(ID3):
                 raise
             f = open(filename, 'ab')  # create, then reopen
             f = open(filename, 'rb+')
-        try:
+        with f:
             idata = f.read(10)
             try:
                 id3, vmaj, vrev, flags, insize = unpack('>3sBBB4s', idata)
@@ -161,9 +161,6 @@ class CompatID3(ID3):
             elif v1 == 2:
                 f.seek(0, 2)
                 f.write(MakeID3v1(self))
-
-        finally:
-            f.close()
 
     def __save_frame(self, frame, v2_version):
         flags = 0

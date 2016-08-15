@@ -82,9 +82,8 @@ class Cuesheet(object):
         self.tracks = []
 
     def read(self):
-        f = open(encode_filename(self.filename))
-        self.parse(f.readlines())
-        f.close()
+        with open(encode_filename(self.filename)) as f:
+            self.parse(f.readlines())
 
     def unquote(self, string):
         if string.startswith('"'):
@@ -136,9 +135,8 @@ class Cuesheet(object):
                         indent = 4
                 line2 = u" ".join([self.quote(s) for s in line])
                 lines.append(" " * indent + line2.encode("UTF-8") + "\n")
-        f = open(encode_filename(self.filename), "wt")
-        f.writelines(lines)
-        f.close()
+        with open(encode_filename(self.filename), "wt") as f:
+            f.writelines(lines)
 
 
 class GenerateCuesheet(BaseAction):

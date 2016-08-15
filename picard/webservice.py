@@ -64,7 +64,7 @@ CLIENT_STRING = str(QUrl.toPercentEncoding('%s %s-%s' % (PICARD_ORG_NAME,
 TEMP_ERRORS_RETRIES = 5
 
 
-def _escape_lucene_query(text):
+def escape_lucene_query(text):
     return re.sub(r'([+\-&|!(){}\[\]\^"~*?:\\/])', r'\\\1', text)
 
 
@@ -538,16 +538,28 @@ class XmlWebService(QtCore.QObject):
         host = config.setting["server_host"]
         port = config.setting["server_port"]
         filters = []
-        query = []
-        for name, value in kwargs.items():
-            if name == 'limit':
-                filters.append((name, str(value)))
+
+        limit = kwargs.pop("limit")
+        if limit:
+            filters.append(("limit", limit))
+
+        is_search = kwargs.pop("search", False)
+        if is_search:
+            if config.setting["use_adv_search_syntax"]:
+                query = kwargs["query"]
             else:
-                value = _escape_lucene_query(value).strip().lower()
+                query = escape_lucene_query(kwargs["query"]).strip().lower()
+                filters.append(("dismax", 'true'))
+        else:
+            query = []
+            for name, value in kwargs.items():
+                value = escape_lucene_query(value).strip().lower()
                 if value:
                     query.append('%s:(%s)' % (name, value))
+            query = ' '.join(query)
+
         if query:
-            filters.append(('query', ' '.join(query)))
+            filters.append(("query", query))
         queryargs = {}
         for name, value in filters:
             value = QUrl.toPercentEncoding(unicode(value))

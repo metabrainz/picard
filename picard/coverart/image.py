@@ -112,7 +112,7 @@ class CoverArtImage:
     # formats may have types associated with cover art, but some other sources
     # don't provide such information
     support_types = False
-    # `is_front` has to be explicitely set, it is used to handle CAA is_front
+    # `is_front` has to be explicitly set, it is used to handle CAA is_front
     # indicator
     is_front = None
     sourceprefix = "URL"
