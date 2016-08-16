@@ -353,6 +353,35 @@ def medium_to_metadata(node, m):
             m['media'] = nodes[0].text
 
 
+def artist_to_metadata(node, m):
+    """Make meatadata dict from a XML 'artist' node."""
+    for name, nodes in node.children.iteritems():
+        if not nodes:
+            continue
+        if name == "name":
+            m["name"] = nodes[0].text
+        elif name == "area":
+            m["area"] = nodes[0].name[0].text
+        elif name == "gender":
+            m["gender"] = nodes[0].text
+        elif name == "life_span":
+            if "begin" in nodes[0].children:
+                m["begindate"] = nodes[0].begin[0].text
+            if "ended" in nodes[0].children:
+                ended = nodes[0].ended[0].text
+                if ended == "true" and "end" in nodes[0].children:
+                    m["enddate"] = nodes[0].end[0].text
+        elif name == "begin_area":
+            m["beginarea"] = nodes[0].name[0].text
+        elif name == "end_area":
+            m["endarea"] = nodes[0].name[0].text
+
+    try:
+        m["type"] = node.type
+    except AttributeError:
+        pass
+
+
 def release_to_metadata(node, m, album=None):
     """Make metadata dict from a XML 'release' node."""
     m.add_unique('musicbrainz_albumid', node.id)
