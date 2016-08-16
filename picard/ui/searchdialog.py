@@ -521,7 +521,7 @@ class AlbumSearchDialog(SearchDialog):
     def search(self, text):
         """Performs search using query provided by the user."""
 
-        self.retry_params = (self.search, text)
+        self.retry_params = Retry(self.search, text)
         self.search_box.search_edit.setText(text)
         self.show_progress()
         self.tagger.xmlws.find_releases(self.handle_reply,
@@ -534,7 +534,7 @@ class AlbumSearchDialog(SearchDialog):
         from the cluster."""
 
         self.cluster = cluster
-        self.retry_params = (self.show_similar_albums, cluster)
+        self.retry_params = Retry(self.show_similar_albums, cluster)
         self.tagger.xmlws.find_releases(self.handle_reply,
                 artist=cluster.metadata["albumartist"],
                 release=cluster.metadata["album"],
@@ -544,7 +544,7 @@ class AlbumSearchDialog(SearchDialog):
     def retry(self):
         """Retries search using information from `retry_params`."""
 
-        self.retry_params[0](self.retry_params[1])
+        self.retry_params.function(self.retry_params.query)
 
     def handle_reply(self, document, http, error):
         if error:
