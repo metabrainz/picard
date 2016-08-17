@@ -382,13 +382,13 @@ class MainWindow(QtGui.QMainWindow):
         self.browser_lookup_action.setEnabled(False)
         self.browser_lookup_action.triggered.connect(self.browser_lookup)
 
-        self.albums_search_action = QtGui.QAction(icontheme.lookup('system-search'), _(u"Search similar albums..."), self)
-        self.albums_search_action.setStatusTip(_(u"View similar releases and optionally choose a different release"))
-        self.albums_search_action.triggered.connect(self.show_more_albums)
+        self.album_search_action = QtGui.QAction(icontheme.lookup('system-search'), _(u"Search for similar albums..."), self)
+        self.album_search_action.setStatusTip(_(u"View similar releases and optionally choose a different release"))
+        self.album_search_action.triggered.connect(self.show_more_albums)
 
-        self.tracks_search_action = QtGui.QAction(icontheme.lookup('system-search'), _(u"Search similar tracks..."), self)
-        self.tracks_search_action.setStatusTip(_(u"View similar tracks and optionally choose a different release"))
-        self.tracks_search_action.triggered.connect(self.show_more_tracks)
+        self.track_search_action = QtGui.QAction(icontheme.lookup('system-search'), _(u"Search for similar tracks..."), self)
+        self.track_search_action.setStatusTip(_(u"View similar tracks and optionally choose a different release"))
+        self.track_search_action.triggered.connect(self.show_more_tracks)
 
         self.show_file_browser_action = QtGui.QAction(_(u"File &Browser"), self)
         self.show_file_browser_action.setCheckable(True)
