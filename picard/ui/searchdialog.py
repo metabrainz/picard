@@ -342,15 +342,16 @@ class TrackSearchDialog(SearchDialog):
                 'qdur': str(metadata.length / 2000),
                 'isrc': metadata['isrc'],
         }
+
+        # Generate query to be displayed to the user (in search box).
+        # If advanced query syntax setting is enabled by user, display query in
+        # advanced syntax style. Otherwise display only track title.
         if config.setting["use_adv_search_syntax"]:
-            # Display the query in advance syntax format.
             query_str = ' '.join(['%s:(%s)' % (item, escape_lucene_query(value))
                                   for item, value in query.iteritems() if value])
         else:
-            # Display only the track title
             query_str = query["track"]
-        # `query_str` is used only for presenting purpose. Actual query consists of all filters and follows
-        # advanced query syntax.
+
         query["limit"] = 25
         self.search_box.search_edit.setText(query_str)
         self.show_progress()
@@ -533,13 +534,30 @@ class AlbumSearchDialog(SearchDialog):
         """Performs search by using existing metadata information
         from the cluster."""
 
-        self.cluster = cluster
         self.retry_params = Retry(self.show_similar_albums, cluster)
-        self.tagger.xmlws.find_releases(self.handle_reply,
-                artist=cluster.metadata["albumartist"],
-                release=cluster.metadata["album"],
-                tracks=str(len(cluster.files)),
-                limit=25)
+        self.cluster = cluster
+        metadata = cluster.metadata
+        query = {
+            "artist": metadata["albumartist"],
+            "release": metadata["album"],
+            "tracks": str(len(cluster.files))
+        }
+
+        # Generate query to be displayed to the user (in search box).
+        # If advanced query syntax setting is enabled by user, display query in
+        # advanced syntax style. Otherwise display only album title.
+        if config.setting["use_adv_search_syntax"]:
+            query_str = ' '.join(['%s:(%s)' % (item, escape_lucene_query(value))
+                                for item, value in query.iteritems() if value])
+        else:
+            query_str = query["release"]
+
+        query["limit"] = 25
+        self.search_box.search_edit.setText(query_str)
+        self.show_progress()
+        self.tagger.xmlws.find_releases(
+            self.handle_reply,
+            **query)
 
     def retry(self):
         """Retries search using information from `retry_params`."""
