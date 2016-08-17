@@ -267,12 +267,13 @@ class BaseTreeView(QtGui.QTreeWidget):
             if can_view_info:
                 menu.addAction(self.window.view_info_action)
             menu.addAction(self.window.browser_lookup_action)
-            menu.addAction(self.window.albums_search_action)
             menu.addSeparator()
             menu.addAction(self.window.autotag_action)
             menu.addAction(self.window.analyze_action)
             if isinstance(obj, UnmatchedFiles):
                 menu.addAction(self.window.cluster_action)
+            else:
+                menu.addAction(self.window.album_search_action)
             plugin_actions = list(_cluster_actions)
         elif isinstance(obj, ClusterList):
             menu.addAction(self.window.autotag_action)
