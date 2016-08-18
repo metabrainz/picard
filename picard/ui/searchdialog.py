@@ -90,6 +90,7 @@ class SearchBox(QtGui.QWidget):
         self.adv_opt_row_layout.setSpacing(1)
         self.use_adv_search_syntax = QtGui.QCheckBox(self.adv_opt_row_widget)
         self.use_adv_search_syntax.setText(_("Use advanced query syntax"))
+        self.use_adv_search_syntax.stateChanged.connect(self.update_advanced_syntax_setting)
         self.adv_opt_row_layout.addWidget(self.use_adv_search_syntax)
         self.adv_syntax_help = QtGui.QLabel(self.adv_opt_row_widget)
         self.adv_syntax_help.setOpenExternalLinks(True)
@@ -109,7 +110,7 @@ class SearchBox(QtGui.QWidget):
     def restore_checkbox_state(self):
         self.use_adv_search_syntax.setChecked(config.setting["use_adv_search_syntax"])
 
-    def save_checkbox_state(self):
+    def update_advanced_syntax_setting(self):
         config.setting["use_adv_search_syntax"] = self.use_adv_search_syntax.isChecked()
 
 
@@ -483,7 +484,6 @@ class TrackSearchDialog(SearchDialog):
         if self.table:
             self.save_table_header_state()
         config.persist["tracksearchdialog_window_size"] = self.size()
-        self.search_box.save_checkbox_state()
 
     def save_table_header_state(self):
         state = self.table.horizontalHeader().saveState()
@@ -726,7 +726,6 @@ class AlbumSearchDialog(SearchDialog):
         if self.table:
             self.save_table_header_state()
         config.persist["albumsearchdialog_window_size"] = self.size()
-        self.search_box.save_checkbox_state()
 
     def save_table_header_state(self):
         state = self.table.horizontalHeader().saveState()
