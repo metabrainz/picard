@@ -493,6 +493,9 @@ class XmlWebService(QtCore.QObject):
     def find_tracks(self, handler, **kwargs):
         return self._find('recording', handler, kwargs)
 
+    def find_artists(self, handler, **kwargs):
+        return self._find('artist', handler, kwargs)
+
     def _browse(self, entitytype, handler, kwargs, inc=[], priority=False, important=False):
         host = config.setting["server_host"]
         port = config.setting["server_port"]

@@ -28,6 +28,7 @@ from picard.ui import PicardDialog
 from picard.ui.util import StandardButton, ButtonLineEdit
 from picard.util import format_time, icontheme
 from picard.mbxml import (
+    artist_to_metadata,
     recording_to_metadata,
     release_to_metadata,
     release_group_to_metadata,
@@ -721,3 +722,102 @@ class AlbumSearchDialog(SearchDialog):
     def save_table_header_state(self):
         state = self.table.horizontalHeader().saveState()
         config.persist["albumsearchdialog_header_state"] = state
+
+
+class ArtistSearchDialog(SearchDialog):
+
+    options = [
+        config.Option("persist", "artistsearchdialog_window_size", QtCore.QSize(720, 360)),
+        config.Option("persist", "artistsearchdialog_header_state", QtCore.QByteArray())
+    ]
+
+    def __init__(self, parent):
+        super(ArtistSearchDialog, self).__init__(
+            parent,
+            accept_button_title=_("Show in browser"))
+        self.setWindowTitle(_("Artist Search Dialog"))
+        self.table_headers = [
+                _("Name"),
+                _("Type"),
+                _("Gender"),
+                _("Area"),
+                _("Begin"),
+                _("Begin Area"),
+                _("End"),
+                _("End Area"),
+        ]
+
+    def search(self, text):
+        self.retry_params = (self.search, text)
+        self.search_box.search_edit.setText(text)
+        self.show_progress()
+        self.tagger.xmlws.find_artists(self.handle_reply,
+                query=text,
+                search=True,
+                limit=QUERY_LIMIT)
+
+    def retry(self):
+        self.retry_params[0](self.retry_params[1])
+
+    def handle_reply(self, document, http, error):
+        if error:
+            self.network_error(http, error)
+            return
+
+        try:
+            artists = document.metadata[0].artist_list[0].artist
+        except (AttributeError, IndexError):
+            self.no_results()
+            return
+
+        del self.search_results[:]
+        self.parse_artists_from_xml(artists)
+        self.display_results()
+
+    def parse_artists_from_xml(self, artist_xml):
+        for node in artist_xml:
+            artist = Metadata()
+            artist_to_metadata(node, artist)
+            self.search_results.append(artist)
+
+    def display_results(self):
+        self.show_table(self.table_headers)
+        for row, artist in enumerate(self.search_results):
+            table_item = QtGui.QTableWidgetItem
+            self.table.insertRow(row)
+            self.table.setItem(row, 0, table_item(artist.get("name", "")))
+            self.table.setItem(row, 1, table_item(artist.get("type", "")))
+            self.table.setItem(row, 2, table_item(artist.get("gender", "")))
+            self.table.setItem(row, 3, table_item(artist.get("area", "")))
+            self.table.setItem(row, 4, table_item(artist.get("begindate", "")))
+            self.table.setItem(row, 5, table_item(artist.get("beginarea", "")))
+            self.table.setItem(row, 6, table_item(artist.get("enddate", "")))
+            self.table.setItem(row, 7, table_item(artist.get("endarea", "")))
+
+    def accept_event(self, row):
+        self.load_in_browser(row)
+
+    def load_in_browser(self, row):
+        self.tagger.search(self.search_results[row]["musicbrainz_artistid"], "artist")
+
+    def restore_state(self):
+        size = config.persist["artistsearchdialog_window_size"]
+        if size:
+            self.resize(size)
+        self.search_box.restore_checkbox_state()
+
+    def restore_table_header_state(self):
+        header = self.table.horizontalHeader()
+        state = config.persist["artistsearchdialog_header_state"]
+        if state:
+            header.restoreState(state)
+        header.setResizeMode(QtGui.QHeaderView.Interactive)
+
+    def save_state(self):
+        if self.table:
+            self.save_table_header_state()
+        config.persist["artistsearchdialog_window_size"] = self.size()
+
+    def save_table_header_state(self):
+        state = self.table.horizontalHeader().saveState()
+        config.persist["artistsearchdialog_header_state"] = state

@@ -355,6 +355,7 @@ def medium_to_metadata(node, m):
 
 def artist_to_metadata(node, m):
     """Make meatadata dict from a XML 'artist' node."""
+    m.add_unique("musicbrainz_artistid", node.id)
     for name, nodes in node.children.iteritems():
         if not nodes:
             continue
