@@ -223,7 +223,7 @@ def label_info_from_node(node):
     catalog_numbers = []
     if node.children:
         for label_info in node.label_info:
-            if 'label' in label_info.children:
+            if 'label' in label_info.children and label_info.label[0].children:
                 label = label_info.label[0].name[0].text
                 if label not in labels:
                     labels.append(label)
