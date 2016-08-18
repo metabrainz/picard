@@ -78,7 +78,7 @@ class SearchBox(QtGui.QWidget):
         # hits enter.
         if self.parent.table:
             self.parent.table.clearSelection()
-        self.parent.load_button.setEnabled(False)
+        self.parent.accept_button.setEnabled(False)
 
     def setupUi(self):
         self.layout = QtGui.QVBoxLayout(self)
@@ -175,14 +175,14 @@ Retry = namedtuple("Retry", ["function", "query"])
 
 class SearchDialog(PicardDialog):
 
-    def __init__(self, parent=None):
+    def __init__(self, parent, accept_button_title):
         PicardDialog.__init__(self, parent)
         self.search_results = []
         self.table = None
-        self.setupUi()
+        self.setupUi(accept_button_title)
         self.restore_state()
 
-    def setupUi(self):
+    def setupUi(self, accept_button_title):
         self.verticalLayout = QtGui.QVBoxLayout(self)
         self.verticalLayout.setObjectName(_("vertical_layout"))
         self.search_box = SearchBox(self)
@@ -196,11 +196,12 @@ class SearchDialog(PicardDialog):
         self.center_widget.setLayout(self.center_layout)
         self.verticalLayout.addWidget(self.center_widget)
         self.buttonBox = QtGui.QDialogButtonBox(self)
-        self.buttonBox.setObjectName(_("button_box"))
-        self.load_button = QtGui.QPushButton(_("&Load into Picard"))
-        self.load_button.setEnabled(False)
+        self.accept_button = QtGui.QPushButton(
+            accept_button_title,
+            self.buttonBox)
+        self.accept_button.setEnabled(False)
         self.buttonBox.addButton(
-                self.load_button,
+                self.accept_button,
                 QtGui.QDialogButtonBox.AcceptRole)
         self.buttonBox.addButton(
                 StandardButton(StandardButton.CANCEL),
@@ -267,19 +268,15 @@ class SearchDialog(PicardDialog):
     def show_table(self, column_headers):
         self.table = ResultTable(self, self.table_headers)
         self.table.setObjectName("results_table")
-        self.table.cellDoubleClicked.connect(self.row_double_clicked)
+        self.table.cellDoubleClicked.connect(self.accept)
         self.table.horizontalHeader().sectionResized.connect(
                 self.save_table_header_state)
         self.restore_table_header_state()
         self.add_widget_to_center_layout(self.table)
-        def enable_loading_button():
-            self.load_button.setEnabled(True)
+        def enable_accept_button():
+            self.accept_button.setEnabled(True)
         self.table.itemSelectionChanged.connect(
-                enable_loading_button)
-
-    def row_double_clicked(self, row):
-        self.load_selection(row)
-        self.accept()
+                enable_accept_button)
 
     def network_error(self, reply, error):
         error_msg = _("<strong>Following error occurred while fetching results:<br><br></strong>"
@@ -297,10 +294,8 @@ class SearchDialog(PicardDialog):
 
     def accept(self):
         if self.table:
-            sel_rows = self.table.selectionModel().selectedRows()
-            if sel_rows:
-                sel_row = sel_rows[0].row()
-                self.load_selection(sel_row)
+            row = self.table.selectionModel().selectedRows()[0].row()
+            self.accept_event(row)
         self.save_state()
         QtGui.QDialog.accept(self)
 
@@ -319,7 +314,9 @@ class TrackSearchDialog(SearchDialog):
 
 
     def __init__(self, parent):
-        super(TrackSearchDialog, self).__init__(parent)
+        super(TrackSearchDialog, self).__init__(
+            parent,
+            accept_button_title=_("Load into Picard"))
         self.file_ = None
         self.setWindowTitle(_("Track Search Results"))
         self.table_headers = [
@@ -437,11 +434,15 @@ class TrackSearchDialog(SearchDialog):
                 track["album"] = _("Standalone Recording")
                 self.search_results.append((track, node))
 
+    def accept_event(self, arg):
+        self.load_selection(arg)
+
     def load_selection(self, row):
         """Load the album corresponding to the selected track.
         If the search is performed for a file, also associate the file to
         corresponding track in the album.
         """
+
         track, node = self.search_results[row]
         if track.get("musicbrainz_albumid"):
         # The track is not an NAT
@@ -501,7 +502,9 @@ class AlbumSearchDialog(SearchDialog):
     ]
 
     def __init__(self, parent):
-        super(AlbumSearchDialog, self).__init__(parent)
+        super(AlbumSearchDialog, self).__init__(
+            parent,
+            accept_button_title=_("Load into Picard"))
         self.cluster = None
         self.setWindowTitle(_("Album Search Results"))
         self.table_headers = [
@@ -682,6 +685,9 @@ class AlbumSearchDialog(SearchDialog):
             self.table.setItem(row, 10, table_item(release.get("releasetype", "")))
             self.table.setItem(row, 11, table_item(release.get("releasestatus", "")))
             self.table.setCellWidget(row, 12, CoverArt(self.table))
+
+    def accept_event(self, arg):
+        self.load_selection(arg)
 
     def load_selection(self, row):
         release = self.search_results[row]
