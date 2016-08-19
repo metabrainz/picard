@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # Picard, the next-generation MusicBrainz tagger
+# Copyright (C) 2016 Rahul Raturi
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -57,6 +58,7 @@ class ResultTable(QtGui.QTableWidget):
                 QtGui.QHeaderView.Stretch)
         self.horizontalHeader().setResizeMode(
                 QtGui.QHeaderView.Interactive)
+
 
 class SearchBox(QtGui.QWidget):
 
@@ -139,6 +141,7 @@ class CoverArt(QtGui.QWidget):
         self.layout.addWidget(cover_label)
 
     def not_found(self):
+        """Update the widget with a blank image."""
         shadow = QtGui.QPixmap(":/images/CoverArtShadow.png")
         self.update(shadow)
 
@@ -183,12 +186,8 @@ class SearchDialog(PicardDialog):
         self.verticalLayout.addWidget(self.buttonBox)
 
     def add_widget_to_center_layout(self, widget):
-        """Updates child widget of center_widget.
-
-        Child widgets represent dialog's current state, like progress,
-        error, and displaying fetched results.
-        """
-
+        """Update center widget with new child. If child widget exists,
+        schedule it for deletion."""
         wid = self.center_layout.takeAt(0)
         if wid:
             if wid.widget().objectName() == "results_table":
@@ -197,8 +196,6 @@ class SearchDialog(PicardDialog):
         self.center_layout.addWidget(widget)
 
     def show_progress(self):
-        """Displays feedback while results are being fetched from server."""
-
         self.progress_widget = QtGui.QWidget(self)
         self.progress_widget.setObjectName("progress_widget")
         layout = QtGui.QVBoxLayout(self.progress_widget)
@@ -216,13 +213,12 @@ class SearchDialog(PicardDialog):
         self.add_widget_to_center_layout(self.progress_widget)
 
     def show_error(self, error, show_retry_button=False):
-        """Displays error inside the dialog.
+        """Display the error string.
 
         Args:
             error -- Error string
             show_retry_button -- Whether to display retry button or not
         """
-
         self.error_widget = QtGui.QWidget(self)
         self.error_widget.setObjectName("error_widget")
         layout = QtGui.QVBoxLayout(self.error_widget)
@@ -245,8 +241,6 @@ class SearchDialog(PicardDialog):
         self.add_widget_to_center_layout(self.error_widget)
 
     def show_table(self, column_headers):
-        """Displays results table inside the dialog."""
-
         self.table = ResultTable(self.table_headers)
         self.table.setObjectName("results_table")
         self.table.cellDoubleClicked.connect(self.row_double_clicked)
@@ -260,8 +254,6 @@ class SearchDialog(PicardDialog):
                 enable_loading_button)
 
     def row_double_clicked(self, row):
-        """Handle function for double click event inside the table."""
-
         self.load_selection(row)
         self.accept()
 
@@ -317,8 +309,7 @@ class TrackSearchDialog(SearchDialog):
         ]
 
     def search(self, text):
-        """Performs search using query provided by the user."""
-
+        """Perform search using query provided by the user."""
         self.retry_params = Retry(self.search, text)
         self.search_box.search_edit.setText(text)
         self.show_progress()
@@ -328,9 +319,8 @@ class TrackSearchDialog(SearchDialog):
                 limit=25)
 
     def load_similar_tracks(self, file_):
-        """Performs search by using existing metadata information
-        from the file."""
-
+        """Perform search using existing metadata information
+        from the file as query."""
         self.retry_params = Retry(self.load_similar_tracks, file_)
         self.file_ = file_
         metadata = file_.orig_metadata
@@ -361,7 +351,6 @@ class TrackSearchDialog(SearchDialog):
                 **query)
 
     def retry(self):
-        """Retries the search using information from `retry_params`."""
         self.retry_params.function(self.retry_params.query)
 
     def handle_reply(self, document, http, error):
@@ -404,11 +393,6 @@ class TrackSearchDialog(SearchDialog):
             self.table.setItem(row, 6, table_item(track.get("releasetype", "")))
 
     def parse_tracks_from_xml(self, tracks_xml):
-        """Extracts track information from XmlNode objects and stores that into Metadata objects.
-
-        Args:
-            tracks_xml -- list of XmlNode objects
-        """
         for node in tracks_xml:
             if "release_list" in node.children and "release" in node.release_list[0].children:
                 for rel_node in node.release_list[0].release:
@@ -423,15 +407,15 @@ class TrackSearchDialog(SearchDialog):
                     self.search_results.append((track, node))
             else:
                 # This handles the case when no release is associated with a track
-                # i.e. the track is a NAT
+                # i.e. the track is an NAT
                 track = Metadata()
                 recording_to_metadata(node, track)
                 track["album"] = _("Standalone Recording")
                 self.search_results.append((track, node))
 
     def load_selection(self, row):
-        """Loads album corresponding to selected track.
-        If the search is performed for a file, also associates the file to
+        """Load the album corresponding to the selected track.
+        If the search is performed for a file, also associate the file to
         corresponding track in the album.
         """
         track, node = self.search_results[row]
@@ -440,8 +424,8 @@ class TrackSearchDialog(SearchDialog):
             self.tagger.get_release_group_by_id(track["musicbrainz_releasegroupid"]).loaded_albums.add(
                     track["musicbrainz_albumid"])
             if self.file_:
-            # Search is performed for a file
-            # Have to move that file from its existing album to the new one
+            # Search is performed for a file.
+            # Have to move that file from its existing album to the new one.
                 if isinstance(self.file_.parent, Track):
                     album = self.file_.parent.album
                     self.tagger.move_file_to_track(self.file_, track["musicbrainz_albumid"], track["musicbrainz_recordingid"])
@@ -454,7 +438,6 @@ class TrackSearchDialog(SearchDialog):
             # No files associated. Just a normal search.
                 self.tagger.load_album(track["musicbrainz_albumid"])
         else:
-        # The track is a NAT
             if self.file_:
                 album = self.file_.parent.album
                 self.tagger.move_file_to_nat(track["musicbrainz_recordingid"])
@@ -477,10 +460,6 @@ class TrackSearchDialog(SearchDialog):
         header.setResizeMode(QtGui.QHeaderView.Interactive)
 
     def save_state(self):
-        """Saves dialog state i.e. window size, checkbox state, and table
-        header size.
-        """
-
         if self.table:
             self.save_table_header_state()
         config.persist["tracksearchdialog_window_size"] = self.size()
@@ -520,8 +499,7 @@ class AlbumSearchDialog(SearchDialog):
     _coverart_column = 12
 
     def search(self, text):
-        """Performs search using query provided by the user."""
-
+        """Perform search using query provided by the user."""
         self.retry_params = Retry(self.search, text)
         self.search_box.search_edit.setText(text)
         self.show_progress()
@@ -531,9 +509,8 @@ class AlbumSearchDialog(SearchDialog):
                 limit=25)
 
     def show_similar_albums(self, cluster):
-        """Performs search by using existing metadata information
-        from the cluster."""
-
+        """Perform search by using existing metadata information
+        from the cluster as query."""
         self.retry_params = Retry(self.show_similar_albums, cluster)
         self.cluster = cluster
         metadata = cluster.metadata
@@ -560,8 +537,6 @@ class AlbumSearchDialog(SearchDialog):
             **query)
 
     def retry(self):
-        """Retries search using information from `retry_params`."""
-
         self.retry_params.function(self.retry_params.query)
 
     def handle_reply(self, document, http, error):
@@ -581,10 +556,9 @@ class AlbumSearchDialog(SearchDialog):
         self.fetch_coverarts()
 
     def fetch_coverarts(self):
-        """Queues cover art jsons from CAA server for each album in search
+        """Queue cover art jsons from CAA server for each album in search
         results.
         """
-
         for row, release in enumerate(self.search_results):
             caa_path = "/release/%s" % release["musicbrainz_albumid"]
             self.tagger.xmlws.download(
@@ -595,11 +569,10 @@ class AlbumSearchDialog(SearchDialog):
             )
 
     def _caa_json_downloaded(self, row, data, http, error):
-        """Handles reply from CAA server.
-        If server replies without error, tries to get small thumbnail of front coverart
-        of the release.
+        """Handle json reply from CAA server.
+        If server replies without error, try to get small thumbnail of front
+        coverart of the release.
         """
-
         cover_cell = self.table.cellWidget(row, self._coverart_column)
 
         if error:
@@ -631,15 +604,13 @@ class AlbumSearchDialog(SearchDialog):
             cover_cell.not_found()
 
     def _cover_downloaded(self, row, data, http, error):
-        """Handles cover art query reply from CAA server.
-        If server returns the cover image, tries to update cover art cell
+        """Handle cover art query reply from CAA server.
+        If server returns the cover image succesfully, update the cover art cell
         of particular release.
 
         Args:
-            row -- Row in search results table
-                   Used to update cover art cell
+            row -- Album's row in results table
         """
-
         cover_cell = self.table.cellWidget(row, self._coverart_column)
 
         if error:
@@ -653,13 +624,6 @@ class AlbumSearchDialog(SearchDialog):
                 cover_cell.not_found()
 
     def parse_releases_from_xml(self, release_xml):
-        """Extracts release information from XmlNode objects and stores that
-        into Metadata objects.
-
-        Args:
-            release_xml -- list of XmlNode objects
-        """
-
         for node in release_xml:
             release = Metadata()
             release_to_metadata(node, release)
@@ -719,10 +683,6 @@ class AlbumSearchDialog(SearchDialog):
         header.setResizeMode(QtGui.QHeaderView.Interactive)
 
     def save_state(self):
-        """Saves dialog state i.e. window size, checkbox state, and table
-        header size.
-        """
-
         if self.table:
             self.save_table_header_state()
         config.persist["albumsearchdialog_window_size"] = self.size()

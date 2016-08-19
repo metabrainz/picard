@@ -206,7 +206,10 @@ def artist_credit_to_metadata(node, m, release=False):
 
 
 def country_list_from_node(node):
-    # Extracts iso_3166_1_codes for all countries in `release_event_list`
+    """Extract list of country codes from `release_event_list` node.
+    This is in contrast with `country` element, which has single release
+    event information.
+    """
     if "release_event_list" in node.children:
         country = []
         for release_event in node.release_event_list[0].release_event:
