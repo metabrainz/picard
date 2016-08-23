@@ -479,7 +479,7 @@ class AlbumSearchDialog(SearchDialog):
     def __init__(self, parent):
         super(AlbumSearchDialog, self).__init__(parent)
         self.cluster = None
-        self.setWindowTitle(_("Album Search Dialog"))
+        self.setWindowTitle(_("Album Search Results"))
         self.table_headers = [
                 _("Name"),
                 _("Artist"),
