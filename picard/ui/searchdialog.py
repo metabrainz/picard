@@ -592,6 +592,9 @@ class AlbumSearchDialog(SearchDialog):
         If server replies without error, try to get small thumbnail of front
         coverart of the release.
         """
+        if not self.table:
+            return
+
         cover_cell = self.table.cellWidget(row, self._coverart_column)
 
         if error:
