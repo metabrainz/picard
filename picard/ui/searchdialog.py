@@ -44,8 +44,9 @@ from picard.coverart.image import CaaThumbnailCoverArtImage
 
 class ResultTable(QtGui.QTableWidget):
 
-    def __init__(self, column_titles):
+    def __init__(self, parent, column_titles):
         QtGui.QTableWidget.__init__(self, 0, len(column_titles))
+        self.parent = parent
         self.setHorizontalHeaderLabels(column_titles)
         self.setSelectionMode(
                 QtGui.QAbstractItemView.SingleSelection)
@@ -58,6 +59,11 @@ class ResultTable(QtGui.QTableWidget):
                 QtGui.QHeaderView.Stretch)
         self.horizontalHeader().setResizeMode(
                 QtGui.QHeaderView.Interactive)
+        self.setFocusPolicy(QtCore.Qt.StrongFocus)
+
+    def focusOutEvent(self, event):
+        self.clearSelection()
+        self.parent.load_button.setEnabled(False)
 
 
 class SearchBox(QtGui.QWidget):
@@ -67,6 +73,7 @@ class SearchBox(QtGui.QWidget):
         QtGui.QWidget.__init__(self, parent)
         self.search_action = QtGui.QAction(icontheme.lookup('system-search'),
                 _(u"Search"), self)
+        self.search_action.setEnabled(False)
         self.search_action.triggered.connect(self.search)
         self.setupUi()
 
@@ -77,6 +84,8 @@ class SearchBox(QtGui.QWidget):
         self.search_row_layout.setContentsMargins(1, 1, 1, 1)
         self.search_row_layout.setSpacing(1)
         self.search_edit = ButtonLineEdit(self.search_row_widget)
+        self.search_edit.returnPressed.connect(self.trigger_search_action)
+        self.search_edit.textChanged.connect(self.enable_search)
         self.search_row_layout.addWidget(self.search_edit)
         self.search_button = QtGui.QToolButton(self.search_row_widget)
         self.search_button.setAutoRaise(True)
@@ -114,6 +123,16 @@ class SearchBox(QtGui.QWidget):
 
     def update_advanced_syntax_setting(self):
         config.setting["use_adv_search_syntax"] = self.use_adv_search_syntax.isChecked()
+
+    def enable_search(self):
+        if self.search_edit.text():
+            self.search_action.setEnabled(True)
+        else:
+            self.search_action.setEnabled(False)
+
+    def trigger_search_action(self):
+        if self.search_action.isEnabled():
+            self.search_action.trigger()
 
 
 class CoverArt(QtGui.QWidget):
@@ -241,7 +260,7 @@ class SearchDialog(PicardDialog):
         self.add_widget_to_center_layout(self.error_widget)
 
     def show_table(self, column_headers):
-        self.table = ResultTable(self.table_headers)
+        self.table = ResultTable(self, self.table_headers)
         self.table.setObjectName("results_table")
         self.table.cellDoubleClicked.connect(self.row_double_clicked)
         self.table.horizontalHeader().sectionResized.connect(
