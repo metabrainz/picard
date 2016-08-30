@@ -38,7 +38,7 @@ from picard.i18n import ugettext_attr
 from picard.metadata import Metadata
 from picard.webservice import escape_lucene_query
 from picard.track import Track
-from picard.const import CAA_HOST, CAA_PORT
+from picard.const import CAA_HOST, CAA_PORT, QUERY_LIMIT
 from picard.coverart.image import CaaThumbnailCoverArtImage
 
 
@@ -335,7 +335,7 @@ class TrackSearchDialog(SearchDialog):
         self.tagger.xmlws.find_tracks(self.handle_reply,
                 query=text,
                 search=True,
-                limit=25)
+                limit=QUERY_LIMIT)
 
     def load_similar_tracks(self, file_):
         """Perform search using existing metadata information
@@ -362,7 +362,7 @@ class TrackSearchDialog(SearchDialog):
         else:
             query_str = query["track"]
 
-        query["limit"] = 25
+        query["limit"] = QUERY_LIMIT
         self.search_box.search_edit.setText(query_str)
         self.show_progress()
         self.tagger.xmlws.find_tracks(
@@ -525,7 +525,7 @@ class AlbumSearchDialog(SearchDialog):
         self.tagger.xmlws.find_releases(self.handle_reply,
                 query=text,
                 search=True,
-                limit=25)
+                limit=QUERY_LIMIT)
 
     def show_similar_albums(self, cluster):
         """Perform search by using existing metadata information
@@ -548,7 +548,7 @@ class AlbumSearchDialog(SearchDialog):
         else:
             query_str = query["release"]
 
-        query["limit"] = 25
+        query["limit"] = QUERY_LIMIT
         self.search_box.search_edit.setText(query_str)
         self.show_progress()
         self.tagger.xmlws.find_releases(
