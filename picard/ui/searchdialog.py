@@ -515,8 +515,6 @@ class AlbumSearchDialog(SearchDialog):
                 _("Cover")
         ]
 
-    _coverart_column = 12
-
     def search(self, text):
         """Perform search using query provided by the user."""
         self.retry_params = Retry(self.search, text)
@@ -595,7 +593,7 @@ class AlbumSearchDialog(SearchDialog):
         if not self.table:
             return
 
-        cover_cell = self.table.cellWidget(row, self._coverart_column)
+        cover_cell = self.table.cellWidget(row, len(self.table_headers)-1)
 
         if error:
             cover_cell.not_found()
@@ -633,7 +631,7 @@ class AlbumSearchDialog(SearchDialog):
         Args:
             row -- Album's row in results table
         """
-        cover_cell = self.table.cellWidget(row, self._coverart_column)
+        cover_cell = self.table.cellWidget(row, len(self.table_headers)-1)
 
         if error:
             cover_cell.not_found()
