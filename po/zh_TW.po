@@ -3,14 +3,15 @@
 # This file is distributed under the same license as the picard project.
 # 
 # Translators:
-# BestSteve <ibmibmibm.tw@gmail.com>, 2014
+# Shen-Ta Hsiea(BestSteve) <ibmibmibm.tw@gmail.com>, 2014
+# Shen-Ta Hsiea(BestSteve) <ibmibmibm.tw@gmail.com>, 2016
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2015-02-06 13:01+0100\n"
-"PO-Revision-Date: 2016-03-07 08:39+0000\n"
-"Last-Translator: nikki\n"
+"PO-Revision-Date: 2016-06-16 09:27+0000\n"
+"Last-Translator: Shen-Ta Hsiea(BestSteve) <ibmibmibm.tw@gmail.com>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/musicbrainz/musicbrainz/language/zh_TW/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -21,7 +22,7 @@ msgstr ""
 
 #: contrib/plugins/albumartist_website.py:3
 msgid "Album Artist Website"
-msgstr ""
+msgstr "專輯作者的網站"
 
 #: contrib/plugins/no_release.py:50
 msgid "Enable plugin for all releases by default"
@@ -49,7 +50,7 @@ msgstr "使用音軌標籤"
 
 #: contrib/plugins/lastfm/ui_options_lastfm.py:101
 msgid "Use artist tags"
-msgstr "使用作家標籤"
+msgstr "使用作者標籤"
 
 #: contrib/plugins/lastfm/ui_options_lastfm.py:102
 #: picard/ui/options/tags.py:30
@@ -571,7 +572,7 @@ msgstr ""
 
 #: picard/ui/infodialog.py:188
 msgid "Artist:"
-msgstr ""
+msgstr "作者："
 
 #: picard/ui/infodialog.py:198
 msgid "Tracklist:"
@@ -717,87 +718,87 @@ msgstr "剪下(&C)"
 
 #: picard/ui/mainwindow.py:315
 msgid "&Paste"
-msgstr ""
+msgstr "貼上(&P)"
 
 #: picard/ui/mainwindow.py:320
 msgid "&Help..."
-msgstr ""
+msgstr "說明(&H)…"
 
 #: picard/ui/mainwindow.py:324
 msgid "&About..."
-msgstr ""
+msgstr "關於(&A)…"
 
 #: picard/ui/mainwindow.py:328
 msgid "&Donate..."
-msgstr ""
+msgstr "捐獻(&D)…"
 
 #: picard/ui/mainwindow.py:331
 msgid "&Report a Bug..."
-msgstr ""
+msgstr "回報錯誤(&R)…"
 
 #: picard/ui/mainwindow.py:334
 msgid "&Support Forum..."
-msgstr ""
+msgstr "網頁論壇(&S)…"
 
 #: picard/ui/mainwindow.py:337
 msgid "&Add Files..."
-msgstr ""
+msgstr "增加檔案(&A)…"
 
 #: picard/ui/mainwindow.py:338
 msgid "Add files to the tagger"
-msgstr ""
+msgstr "增加檔案到標籤器"
 
 #: picard/ui/mainwindow.py:343
 msgid "A&dd Folder..."
-msgstr ""
+msgstr "增加資料夾(&d)…"
 
 #: picard/ui/mainwindow.py:344
 msgid "Add a folder to the tagger"
-msgstr ""
+msgstr "增加資料夾到標籤器"
 
 #: picard/ui/mainwindow.py:346
 msgid "Ctrl+D"
-msgstr ""
+msgstr "Ctrl+D"
 
 #: picard/ui/mainwindow.py:349
 msgid "&Save"
-msgstr ""
+msgstr "儲存(&S)"
 
 #: picard/ui/mainwindow.py:350
 msgid "Save selected files"
-msgstr ""
+msgstr "儲存已選擇的檔案"
 
 #: picard/ui/mainwindow.py:356
 msgid "S&ubmit"
-msgstr ""
+msgstr "提交(&u)"
 
 #: picard/ui/mainwindow.py:357
 msgid "Submit acoustic fingerprints"
-msgstr ""
+msgstr "提交聲音特徵碼"
 
 #: picard/ui/mainwindow.py:361
 msgid "E&xit"
-msgstr ""
+msgstr "結束(&x)"
 
 #: picard/ui/mainwindow.py:364
 msgid "Ctrl+Q"
-msgstr ""
+msgstr "Ctrl+Q"
 
 #: picard/ui/mainwindow.py:367
 msgid "&Remove"
-msgstr ""
+msgstr "移除(&R)"
 
 #: picard/ui/mainwindow.py:368
 msgid "Remove selected files/albums"
-msgstr ""
+msgstr "移除已選擇的檔案或專輯"
 
 #: picard/ui/mainwindow.py:372
 msgid "Lookup in &Browser"
-msgstr ""
+msgstr "以瀏覽器開啟(&B)"
 
 #: picard/ui/mainwindow.py:373
 msgid "Lookup selected item on MusicBrainz website"
-msgstr ""
+msgstr "在 MusicBrainz 網頁中檢視已選擇的項目"
 
 #: picard/ui/mainwindow.py:377
 msgid "File &Browser"
@@ -1267,19 +1268,19 @@ msgstr ""
 
 #: picard/ui/ui_options_general.py:92
 msgid "MusicBrainz Server"
-msgstr ""
+msgstr "MusicBrainz 伺服器"
 
 #: picard/ui/ui_options_general.py:93 picard/ui/ui_options_network.py:110
 msgid "Port:"
-msgstr ""
+msgstr "連接埠："
 
 #: picard/ui/ui_options_general.py:94 picard/ui/ui_options_network.py:111
 msgid "Server address:"
-msgstr ""
+msgstr "伺服機位址："
 
 #: picard/ui/ui_options_general.py:95 picard/ui/options/general.py:88
 msgid "MusicBrainz Account"
-msgstr ""
+msgstr "MusicBrainz 帳號"
 
 #: picard/ui/ui_options_general.py:96
 msgid "Log in"
@@ -1287,35 +1288,35 @@ msgstr "登入"
 
 #: picard/ui/ui_options_general.py:97
 msgid "Log out"
-msgstr ""
+msgstr "登出"
 
 #: picard/ui/ui_options_general.py:98 picard/ui/options/general.py:33
 msgid "General"
-msgstr ""
+msgstr "一般"
 
 #: picard/ui/ui_options_general.py:99
 msgid "Automatically scan all new files"
-msgstr ""
+msgstr "自動掃描所有新檔案"
 
 #: picard/ui/ui_options_general.py:100
 msgid "Ignore MBIDs when loading new files"
-msgstr ""
+msgstr "當讀取新檔案時忽略 MBID"
 
 #: picard/ui/ui_options_interface.py:69
 msgid "Miscellaneous"
-msgstr ""
+msgstr "其他"
 
 #: picard/ui/ui_options_interface.py:70
 msgid "Show text labels under icons"
-msgstr ""
+msgstr "在圖示下顯示文字標籤"
 
 #: picard/ui/ui_options_interface.py:71
 msgid "Allow selection of multiple directories"
-msgstr ""
+msgstr "允許選擇多個資料夾"
 
 #: picard/ui/ui_options_interface.py:72
 msgid "Use advanced query syntax"
-msgstr ""
+msgstr "使用進階查詢語法"
 
 #: picard/ui/ui_options_interface.py:73
 msgid "Show a quit confirmation dialog for unsaved changes"
@@ -1327,7 +1328,7 @@ msgstr ""
 
 #: picard/ui/ui_options_interface.py:76
 msgid "User interface language:"
-msgstr ""
+msgstr "使用者界面語言："
 
 #: picard/ui/ui_options_matching.py:73
 msgid "Thresholds"
@@ -1347,15 +1348,15 @@ msgstr ""
 
 #: picard/ui/ui_options_metadata.py:101 picard/ui/options/metadata.py:29
 msgid "Metadata"
-msgstr ""
+msgstr "後設資料"
 
 #: picard/ui/ui_options_metadata.py:102
 msgid "Translate artist names to this locale where possible:"
-msgstr ""
+msgstr "可能的話翻譯作者名稱到此語系："
 
 #: picard/ui/ui_options_metadata.py:103
 msgid "Use standardized artist names"
-msgstr ""
+msgstr "使用標準化的作者名稱"
 
 #: picard/ui/ui_options_metadata.py:104
 msgid "Convert Unicode punctuation characters to ASCII"
@@ -1379,7 +1380,7 @@ msgstr ""
 
 #: picard/ui/ui_options_metadata.py:109
 msgid "Various artists:"
-msgstr ""
+msgstr "多位作者："
 
 #: picard/ui/ui_options_metadata.py:110
 msgid "Non-album tracks:"
@@ -1388,19 +1389,19 @@ msgstr ""
 #: picard/ui/ui_options_metadata.py:111 picard/ui/ui_options_metadata.py:112
 #: picard/ui/ui_options_renaming.py:143
 msgid "Default"
-msgstr ""
+msgstr "預設"
 
 #: picard/ui/ui_options_network.py:107
 msgid "Web Proxy"
-msgstr ""
+msgstr "網頁代理伺服器"
 
 #: picard/ui/ui_options_network.py:108 picard/ui/ui_passworddialog.py:66
 msgid "Password:"
-msgstr ""
+msgstr "密碼："
 
 #: picard/ui/ui_options_network.py:109 picard/ui/ui_passworddialog.py:65
 msgid "Username:"
-msgstr ""
+msgstr "使用者名稱："
 
 #: picard/ui/ui_options_network.py:112
 msgid "Browser Integration"
@@ -1420,15 +1421,15 @@ msgstr "插件"
 
 #: picard/ui/ui_options_plugins.py:128 picard/ui/options/plugins.py:122
 msgid "Name"
-msgstr ""
+msgstr "名稱"
 
 #: picard/ui/ui_options_plugins.py:129
 msgid "Version"
-msgstr ""
+msgstr "版本"
 
 #: picard/ui/ui_options_plugins.py:130 picard/ui/options/plugins.py:125
 msgid "Author"
-msgstr ""
+msgstr "作者"
 
 #: picard/ui/ui_options_plugins.py:131
 msgid "Install plugin..."
@@ -1460,11 +1461,11 @@ msgstr ""
 
 #: picard/ui/ui_options_ratings.py:51
 msgid "E-mail:"
-msgstr ""
+msgstr "電子郵件："
 
 #: picard/ui/ui_options_ratings.py:52
 msgid "Submit ratings to MusicBrainz"
-msgstr ""
+msgstr "提交評分到 MusicBrainz"
 
 #: picard/ui/ui_options_releases.py:104
 msgid "Preferred release types"
@@ -1476,11 +1477,11 @@ msgstr ""
 
 #: picard/ui/ui_options_releases.py:106 picard/ui/ui_options_releases.py:109
 msgid ">"
-msgstr ""
+msgstr ">"
 
 #: picard/ui/ui_options_releases.py:107 picard/ui/ui_options_releases.py:110
 msgid "<"
-msgstr ""
+msgstr "<"
 
 #: picard/ui/ui_options_releases.py:108
 msgid "Preferred release formats"
@@ -1488,11 +1489,11 @@ msgstr ""
 
 #: picard/ui/ui_options_renaming.py:130
 msgid "Rename files when saving"
-msgstr ""
+msgstr "儲存檔案時更改檔名"
 
 #: picard/ui/ui_options_renaming.py:131
 msgid "Replace non-ASCII characters"
-msgstr ""
+msgstr "取代非 ASCII 字元"
 
 #: picard/ui/ui_options_renaming.py:132
 msgid "Windows compatibility"
@@ -1516,11 +1517,11 @@ msgstr ""
 
 #: picard/ui/ui_options_renaming.py:144
 msgid "Examples"
-msgstr ""
+msgstr "範例"
 
 #: picard/ui/ui_options_script.py:45
 msgid "Tagger Script"
-msgstr ""
+msgstr "標籤器腳本"
 
 #: picard/ui/ui_options_tags.py:152
 msgid "Write tags to files"
@@ -1532,19 +1533,19 @@ msgstr ""
 
 #: picard/ui/ui_options_tags.py:154
 msgid "Before Tagging"
-msgstr ""
+msgstr "寫入標籤之前"
 
 #: picard/ui/ui_options_tags.py:155
 msgid "Clear existing tags"
-msgstr ""
+msgstr "清除原有標籤"
 
 #: picard/ui/ui_options_tags.py:156
 msgid "Remove ID3 tags from FLAC files"
-msgstr ""
+msgstr "從 FLAC 檔案移除 ID3 標籤"
 
 #: picard/ui/ui_options_tags.py:157
 msgid "Remove APEv2 tags from MP3 files"
-msgstr ""
+msgstr "從 MP3 檔案移除 APEv2 標籤"
 
 #: picard/ui/ui_options_tags.py:158
 msgid ""
@@ -1553,39 +1554,39 @@ msgstr ""
 
 #: picard/ui/ui_options_tags.py:159
 msgid "Tags are separated by commas, and are case-sensitive."
-msgstr ""
+msgstr "以逗號分隔標籤，並且區別大小寫"
 
 #: picard/ui/ui_options_tags.py:160
 msgid "Tag Compatibility"
-msgstr ""
+msgstr "標籤相容性"
 
 #: picard/ui/ui_options_tags.py:161
 msgid "ID3v2 Version"
-msgstr ""
+msgstr "ID3v2 版本"
 
 #: picard/ui/ui_options_tags.py:162
 msgid "2.4"
-msgstr ""
+msgstr "2.4"
 
 #: picard/ui/ui_options_tags.py:163
 msgid "2.3"
-msgstr ""
+msgstr "2.3"
 
 #: picard/ui/ui_options_tags.py:164
 msgid "ID3v2 Text Encoding"
-msgstr ""
+msgstr "ID3v2 文字編碼"
 
 #: picard/ui/ui_options_tags.py:165
 msgid "UTF-8"
-msgstr ""
+msgstr "UTF-8"
 
 #: picard/ui/ui_options_tags.py:166
 msgid "UTF-16"
-msgstr ""
+msgstr "UTF-16"
 
 #: picard/ui/ui_options_tags.py:167
 msgid "ISO-8859-1"
-msgstr ""
+msgstr "ISO-8859-1"
 
 #: picard/ui/ui_options_tags.py:168
 msgid "Join multiple ID3v2.3 tags with:"
@@ -1604,7 +1605,7 @@ msgstr ""
 
 #: picard/ui/ui_passworddialog.py:64
 msgid "Authentication required"
-msgstr ""
+msgstr "需要認證"
 
 #: picard/ui/ui_tagsfromfilenames.py:50
 msgid "Convert File Names to Tags"
@@ -1616,27 +1617,27 @@ msgstr ""
 
 #: picard/ui/ui_tagsfromfilenames.py:52
 msgid "&Preview"
-msgstr ""
+msgstr "預覽(&P)"
 
 #: picard/ui/util.py:33
 msgid "&Ok"
-msgstr ""
+msgstr "確定(&O)"
 
 #: picard/ui/util.py:34
 msgid "&Cancel"
-msgstr ""
+msgstr "取消(&C)"
 
 #: picard/ui/util.py:87
 msgid "Clear entry"
-msgstr ""
+msgstr "清除條目"
 
 #: picard/ui/options/about.py:30
 msgid "About"
-msgstr ""
+msgstr "關於"
 
 #: picard/ui/options/about.py:53
 msgid "translator-credits"
-msgstr ""
+msgstr "Shen-Ta Hsieh"
 
 #: picard/ui/options/about.py:56
 #, python-format
@@ -1660,15 +1661,15 @@ msgid ""
 "<p align=\"center\"><strong>Credits</strong><br/>\n"
 "<small>Copyright © 2004-2014 Robert Kaye, Lukáš Lalinský and others%(translator-credits)s</small></p>\n"
 "<p align=\"center\"><a href=\"%(picard-doc-url)s\">%(picard-doc-url)s</a></p>\n"
-msgstr ""
+msgstr "<p align=\"center\"><span style=\"font-size:15px;font-weight:bold;\">MusicBrainz Picard</span><br/>\n版本 %(version)s</p>\n<p align=\"center\"><small>\nPyQt %(pyqt-version)s<br/>\nMutagen %(mutagen-version)s<br/>\nDiscid %(discid-version)s\n</small></p>\n<p align=\"center\"><strong>支援的格式</strong><br/>%(formats)s</p>\n<p align=\"center\"><strong>請捐獻</strong><br/>\n感謝您使用 Picard。Picard 依賴於 MusicBrainz 資料庫，是由 MetaBrainz 基金會與上千個志工維持。如果您喜歡這個程式，請考慮捐獻給 MetaBrainz 基金會來維持服務運作。</p>\n<p align=\"center\"><a href=\"%(picard-donate-url)s\">馬上捐獻！</a></p>\n<p align=\"center\"><strong>作者</strong><br/>\n<small>版權所有 © 2004-2014 Robert Kaye, Lukáš Lalinský 與其他%(translator-credits)s</small></p>\n<p align=\"center\"><a href=\"%(picard-doc-url)s\">%(picard-doc-url)s</a></p>\n"
 
 #: picard/ui/options/advanced.py:31
 msgid "Advanced"
-msgstr ""
+msgstr "進階"
 
 #: picard/ui/options/advanced.py:69
 msgid "Regex Error"
-msgstr ""
+msgstr "正規表示式錯誤"
 
 #: picard/ui/options/cover.py:35
 msgid "Cover art types"
@@ -1693,7 +1694,7 @@ msgstr ""
 #: picard/ui/options/general.py:74
 #, python-format
 msgid "Logged in as <b>%s</b>."
-msgstr ""
+msgstr "登入為<b>%s</b>。"
 
 #: picard/ui/options/general.py:88
 msgid "Authorization code:"
@@ -1705,17 +1706,17 @@ msgstr ""
 
 #: picard/ui/options/interface.py:54
 msgid "System default"
-msgstr ""
+msgstr "系統預設"
 
 #: picard/ui/options/interface.py:98
 msgid "Language changed"
-msgstr ""
+msgstr "已更改語言"
 
 #: picard/ui/options/interface.py:99
 msgid ""
 "You have changed the interface language. You have to restart Picard in order"
 " for the change to take effect."
-msgstr ""
+msgstr "您更改了界面的語言。您必須重新執行 Picard 來使更改生效。"
 
 #: picard/ui/options/matching.py:28
 msgid "Matching"
@@ -1723,19 +1724,19 @@ msgstr ""
 
 #: picard/ui/options/network.py:29
 msgid "Network"
-msgstr ""
+msgstr "網路"
 
 #: picard/ui/options/plugins.py:126
 msgid "File"
-msgstr ""
+msgstr "檔案"
 
 #: picard/ui/options/ratings.py:28
 msgid "Ratings"
-msgstr ""
+msgstr "評分"
 
 #: picard/ui/options/releases.py:87
 msgid "Preferred Releases"
-msgstr ""
+msgstr "喜好的成品"
 
 #: picard/ui/options/releases.py:121
 msgid "Reset all"
@@ -1827,7 +1828,7 @@ msgstr ""
 
 #: picard/util/tags.py:25
 msgid "Original Release Date"
-msgstr ""
+msgstr "原始發售日"
 
 #: picard/util/tags.py:26
 msgid "Original Year"
@@ -1835,7 +1836,7 @@ msgstr ""
 
 #: picard/util/tags.py:27
 msgid "Album Artist"
-msgstr ""
+msgstr "專輯作者"
 
 #: picard/util/tags.py:28
 msgid "Track Number"
@@ -1855,11 +1856,11 @@ msgstr ""
 
 #: picard/util/tags.py:32
 msgid "Album Artist Sort Order"
-msgstr ""
+msgstr "專輯作者排序方式"
 
 #: picard/util/tags.py:33
 msgid "Artist Sort Order"
-msgstr ""
+msgstr "作者排序方式"
 
 #: picard/util/tags.py:34
 msgid "Title Sort Order"
@@ -1951,15 +1952,15 @@ msgstr ""
 
 #: picard/util/tags.py:56
 msgid "MusicBrainz Release Id"
-msgstr ""
+msgstr "MusicBrainz 成品代號"
 
 #: picard/util/tags.py:57
 msgid "MusicBrainz Artist Id"
-msgstr ""
+msgstr "MusicBrainz 作者代號"
 
 #: picard/util/tags.py:58
 msgid "MusicBrainz Release Artist Id"
-msgstr ""
+msgstr "MusicBrainz 成品作者代號"
 
 #: picard/util/tags.py:59
 msgid "MusicBrainz Work Id"
@@ -1995,7 +1996,7 @@ msgstr ""
 
 #: picard/util/tags.py:67
 msgid "Artist Website"
-msgstr ""
+msgstr "作者的網站"
 
 #: picard/util/tags.py:68
 msgid "Compilation (iTunes)"
@@ -2071,7 +2072,7 @@ msgstr ""
 
 #: picard/util/tags.py:88
 msgid "Artists"
-msgstr ""
+msgstr "作者"
 
 #: picard/util/tags.py:89
 msgid "Work"

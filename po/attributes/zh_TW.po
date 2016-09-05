@@ -1,11 +1,13 @@
 # 
 # Translators:
 # Bai yun-xi <myhouse472@gmail.com>, 2016
-# BestSteve <ibmibmibm.tw@gmail.com>, 2014,2016
+# Shen-Ta Hsiea(BestSteve) <ibmibmibm.tw@gmail.com>, 2014,2016
+# Koala Bear <koalaleaves@openmailbox.org>, 2016
+# Shen-Ta Hsiea(BestSteve) <ibmibmibm.tw@gmail.com>, 2016
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2016-04-04 13:22+0000\n"
+"PO-Revision-Date: 2016-08-01 22:12+0000\n"
 "Last-Translator: Michael Wiencek <mwtuea@gmail.com>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/musicbrainz/musicbrainz/language/zh_TW/)\n"
 "MIME-Version: 1.0\n"
@@ -89,6 +91,11 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:794
 msgctxt "work_attribute_type_allowed_value"
 msgid "A Dorian"
+msgstr ""
+
+#: DB:work_attribute_type_allowed_value/value:806
+msgctxt "work_attribute_type_allowed_value"
+msgid "A Mixolydian"
 msgstr ""
 
 #: DB:work_type/description:2
@@ -234,7 +241,7 @@ msgstr ""
 #: DB:series_type/description:6
 msgctxt "series_type"
 msgid "A series of events."
-msgstr ""
+msgstr "一系列的事件。"
 
 #: DB:series_type/description:9
 msgctxt "series_type"
@@ -244,32 +251,32 @@ msgstr ""
 #: DB:series_type/description:3
 msgctxt "series_type"
 msgid "A series of recordings."
-msgstr ""
+msgstr "一系列的錄音。"
 
 #: DB:series_type/description:7
 msgctxt "series_type"
 msgid "A series of related concerts by an artist in different locations."
-msgstr ""
+msgstr "一系列互相關聯的演奏會，由同一作者在不同地方舉行。"
 
 #: DB:series_type/description:1
 msgctxt "series_type"
 msgid "A series of release groups."
-msgstr ""
+msgstr "一系列的作品組。"
 
 #: DB:series_type/description:2
 msgctxt "series_type"
 msgid "A series of releases."
-msgstr ""
+msgstr "一系列的作品。"
 
 #: DB:series_type/description:5
 msgctxt "series_type"
 msgid "A series of works which form a catalogue of classical compositions."
-msgstr ""
+msgstr "一系列的作品，來自同一古典樂曲編目。"
 
 #: DB:series_type/description:4
 msgctxt "series_type"
 msgid "A series of works."
-msgstr ""
+msgstr "一系列的作品。"
 
 #: DB:work_type/description:15
 msgctxt "work_type"
@@ -286,14 +293,14 @@ msgid ""
 "with or without instruments, performed by singing. This is the most common "
 "form by far in folk and popular music, but also fairly common in a classical"
 " context (\"art songs\")."
-msgstr ""
+msgstr "歌曲是指原本是為了演唱而作曲(且多數音樂後來仍維持)，包含或不包含樂器。這是目前流行音樂的主流形式，而且也常見於古典音樂中(藝術歌曲)。"
 
 #: DB:work_type/description:22
 msgctxt "work_type"
 msgid ""
 "A soundtrack is the music that accompanies a film, TV program, videogame, or"
 " even book."
-msgstr ""
+msgstr "原聲音樂是指伴隨著電影、電視影集、電子遊戲或書籍的音樂。"
 
 #: DB:work_type/description:6
 msgctxt "work_type"
@@ -345,6 +352,11 @@ msgstr "降A小調"
 msgctxt "work_attribute_type_allowed_value"
 msgid "A-sharp minor"
 msgstr "升A小調"
+
+#: DB:work_attribute_type/name:23
+msgctxt "work_attribute_type"
+msgid "AKM ID"
+msgstr ""
 
 #: DB:work_attribute_type/name:13
 msgctxt "work_attribute_type"
@@ -736,6 +748,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "B Dorian"
 msgstr ""
 
+#: DB:work_attribute_type_allowed_value/value:807
+msgctxt "work_attribute_type_allowed_value"
+msgid "B Mixolydian"
+msgstr ""
+
 #: DB:work_attribute_type_allowed_value/value:33
 msgctxt "work_attribute_type_allowed_value"
 msgid "B major"
@@ -1038,6 +1055,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "C Dorian"
 msgstr ""
 
+#: DB:work_attribute_type_allowed_value/value:801
+msgctxt "work_attribute_type_allowed_value"
+msgid "C Mixolydian"
+msgstr ""
+
 #: DB:work_attribute_type_allowed_value/value:2
 msgctxt "work_attribute_type_allowed_value"
 msgid "C major"
@@ -1289,6 +1311,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "D Dorian"
 msgstr ""
 
+#: DB:work_attribute_type_allowed_value/value:802
+msgctxt "work_attribute_type_allowed_value"
+msgid "D Mixolydian"
+msgstr ""
+
 #: DB:work_attribute_type_allowed_value/value:8
 msgctxt "work_attribute_type_allowed_value"
 msgid "D major"
@@ -1352,6 +1379,21 @@ msgstr "DVD-Video"
 #: DB:medium_format/name:47
 msgctxt "medium_format"
 msgid "DVDplus"
+msgstr ""
+
+#: DB:medium_format/name:70
+msgctxt "medium_format"
+msgid "DVDplus (CD side)"
+msgstr ""
+
+#: DB:medium_format/name:68
+msgctxt "medium_format"
+msgid "DVDplus (DVD-Audio side)"
+msgstr ""
+
+#: DB:medium_format/name:69
+msgctxt "medium_format"
+msgid "DVDplus (DVD-Video side)"
 msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:343
@@ -1579,6 +1621,21 @@ msgctxt "medium_format"
 msgid "DualDisc"
 msgstr "DualDisc"
 
+#: DB:medium_format/name:67
+msgctxt "medium_format"
+msgid "DualDisc (CD side)"
+msgstr ""
+
+#: DB:medium_format/name:65
+msgctxt "medium_format"
+msgid "DualDisc (DVD-Audio side)"
+msgstr ""
+
+#: DB:medium_format/name:66
+msgctxt "medium_format"
+msgid "DualDisc (DVD-Video side)"
+msgstr ""
+
 #: DB:work_attribute_type_allowed_value/value:612
 msgctxt "work_attribute_type_allowed_value"
 msgid "Durak"
@@ -1667,6 +1724,11 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:791
 msgctxt "work_attribute_type_allowed_value"
 msgid "E Dorian"
+msgstr ""
+
+#: DB:work_attribute_type_allowed_value/value:803
+msgctxt "work_attribute_type_allowed_value"
+msgid "E Mixolydian"
 msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:13
@@ -1807,6 +1869,11 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:792
 msgctxt "work_attribute_type_allowed_value"
 msgid "F Dorian"
+msgstr ""
+
+#: DB:work_attribute_type_allowed_value/value:804
+msgctxt "work_attribute_type_allowed_value"
+msgid "F Mixolydian"
 msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:17
@@ -1960,6 +2027,11 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:793
 msgctxt "work_attribute_type_allowed_value"
 msgid "G Dorian"
+msgstr ""
+
+#: DB:work_attribute_type_allowed_value/value:805
+msgctxt "work_attribute_type_allowed_value"
+msgid "G Mixolydian"
 msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:22
@@ -2397,6 +2469,16 @@ msgctxt "medium_format"
 msgid "Hybrid SACD"
 msgstr "Hybrid SACD"
 
+#: DB:medium_format/name:63
+msgctxt "medium_format"
+msgid "Hybrid SACD (CD layer)"
+msgstr ""
+
+#: DB:medium_format/name:64
+msgctxt "medium_format"
+msgid "Hybrid SACD (SACD layer)"
+msgstr ""
+
 #: DB:work_attribute_type_allowed_value/value:418
 msgctxt "work_attribute_type_allowed_value"
 msgid "Hüdavendigar"
@@ -2477,12 +2559,12 @@ msgstr ""
 #: DB:editor_collection_type/name:9
 msgctxt "collection_type"
 msgid "Instrument"
-msgstr ""
+msgstr "樂器"
 
 #: DB:instrument_alias_type/name:1
 msgctxt "alias_type"
 msgid "Instrument name"
-msgstr ""
+msgstr "樂器名稱"
 
 #: DB:release_group_secondary_type/name:4
 msgctxt "release_group_secondary_type"
@@ -2940,7 +3022,7 @@ msgstr "標籤"
 #: DB:label_alias_type/name:1
 msgctxt "alias_type"
 msgid "Label name"
-msgstr ""
+msgstr "標籤名稱"
 
 #: DB:work_attribute_type_allowed_value/value:445
 msgctxt "work_attribute_type_allowed_value"
@@ -3660,7 +3742,7 @@ msgstr ""
 #: DB:release_packaging/name:7
 msgctxt "release_packaging"
 msgid "None"
-msgstr ""
+msgstr "無"
 
 #: DB:work_attribute_type_allowed_value/value:491
 msgctxt "work_attribute_type_allowed_value"
@@ -3735,7 +3817,7 @@ msgstr "官方"
 #: DB:work_type/name:10
 msgctxt "work_type"
 msgid "Opera"
-msgstr ""
+msgstr "歌劇"
 
 #: DB:work_type/name:24
 msgctxt "work_type"
@@ -3760,47 +3842,47 @@ msgstr ""
 #: DB:artist_type/name:3
 msgctxt "artist_type"
 msgid "Other"
-msgstr ""
+msgstr "其他"
 
 #: DB:cover_art_archive.art_type/name:8
 msgctxt "cover_art_type"
 msgid "Other"
-msgstr ""
+msgstr "其他"
 
 #: DB:gender/name:3
 msgctxt "gender"
 msgid "Other"
-msgstr ""
+msgstr "其他"
 
 #: DB:medium_format/name:13
 msgctxt "medium_format"
 msgid "Other"
-msgstr ""
+msgstr "其他"
 
 #: DB:place_type/name:3
 msgctxt "place_type"
 msgid "Other"
-msgstr ""
+msgstr "其他"
 
 #: DB:release_group_primary_type/name:11
 msgctxt "release_group_primary_type"
 msgid "Other"
-msgstr ""
+msgstr "其他"
 
 #: DB:release_packaging/name:5
 msgctxt "release_packaging"
 msgid "Other"
-msgstr ""
+msgstr "其他"
 
 #: DB:instrument_type/name:5
 msgctxt "instrument_type"
 msgid "Other instrument"
-msgstr ""
+msgstr "其他樂器"
 
 #: DB:work_type/name:12
 msgctxt "work_type"
 msgid "Overture"
-msgstr ""
+msgstr "序曲"
 
 #: DB:editor_collection_type/name:2
 msgctxt "collection_type"
@@ -4100,17 +4182,17 @@ msgstr ""
 #: DB:editor_collection_type/name:12
 msgctxt "collection_type"
 msgid "Recording"
-msgstr ""
+msgstr "錄音"
 
 #: DB:series_type/name:3
 msgctxt "series_type"
 msgid "Recording"
-msgstr ""
+msgstr "錄音"
 
 #: DB:recording_alias_type/name:1
 msgctxt "alias_type"
 msgid "Recording name"
-msgstr ""
+msgstr "錄音名稱"
 
 #: DB:medium_format/name:10
 msgctxt "medium_format"
@@ -4290,6 +4372,11 @@ msgstr "SACD"
 #: DB:work_attribute_type/name:21
 msgctxt "work_attribute_type"
 msgid "SACEM ID"
+msgstr ""
+
+#: DB:medium_format/name:62
+msgctxt "medium_format"
+msgid "SD Card"
 msgstr ""
 
 #: DB:work_attribute_type/name:8
@@ -4480,12 +4567,12 @@ msgstr ""
 #: DB:editor_collection_type/name:14
 msgctxt "collection_type"
 msgid "Series"
-msgstr ""
+msgstr "系列"
 
 #: DB:series_alias_type/name:1
 msgctxt "alias_type"
 msgid "Series name"
-msgstr ""
+msgstr "系列名稱"
 
 #: DB:work_attribute_type_allowed_value/value:663
 msgctxt "work_attribute_type_allowed_value"
@@ -4574,7 +4661,7 @@ msgctxt "series_ordering_type"
 msgid ""
 "Sorts the items in the series automatically by their number attributes, "
 "using a natural sort order."
-msgstr ""
+msgstr "根據編號屬性，自動依照自然順序來排序系列內的項目。"
 
 #: DB:release_group_secondary_type/name:2
 msgctxt "release_group_secondary_type"
@@ -4687,6 +4774,11 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:251
 msgctxt "work_attribute_type_allowed_value"
 msgid "Sunādavinōdini"
+msgstr ""
+
+#: DB:release_packaging/name:16
+msgctxt "release_packaging"
+msgid "Super Jewel Box"
 msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:252
@@ -4864,6 +4956,27 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Tevşihilahi"
 msgstr ""
 
+#: DB:medium_format/description:70
+msgctxt "medium_format"
+msgid ""
+"The CD layer of a DVDplus. The DVD layer should be added as a separate "
+"medium."
+msgstr ""
+
+#: DB:medium_format/description:67
+msgctxt "medium_format"
+msgid ""
+"The CD layer of a DualDisc. The DVD layer should be added as a separate "
+"medium."
+msgstr ""
+
+#: DB:medium_format/description:63
+msgctxt "medium_format"
+msgid ""
+"The CD layer of a hybrid SACD. The SACD layer should be added as a separate "
+"medium."
+msgstr ""
+
 #: DB:medium_format/description:60
 msgctxt "medium_format"
 msgid ""
@@ -4871,6 +4984,34 @@ msgid ""
 "system developed by RCA, in which video and audio could be played back on a "
 "TV set using a special needle and high-density groove system similar to "
 "phonograph records."
+msgstr ""
+
+#: DB:medium_format/description:68 DB:medium_format/description:69
+msgctxt "medium_format"
+msgid ""
+"The DVD (audio) layer of a DVDplus. The CD layer should be added as a "
+"separate medium."
+msgstr ""
+
+#: DB:medium_format/description:65
+msgctxt "medium_format"
+msgid ""
+"The DVD (audio) layer of a DualDisc. The CD layer should be added as a "
+"separate medium."
+msgstr ""
+
+#: DB:medium_format/description:66
+msgctxt "medium_format"
+msgid ""
+"The DVD (video) layer of a DualDisc. The CD layer should be added as a "
+"separate medium."
+msgstr ""
+
+#: DB:medium_format/description:64
+msgctxt "medium_format"
+msgid ""
+"The SACD layer of a hybrid SACD. The CD layer should be added as a separate "
+"medium."
 msgstr ""
 
 #: DB:work_type/description:7

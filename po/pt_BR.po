@@ -7,6 +7,7 @@
 # André Aparecido Caniato <andre_caniato@yahoo.com.br>, 2015
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2006
 # Gleriston Sampaio <gleriston_sampaio@hotmail.com>, 2016
+# Ivan Noleto <ivannoleto@hotmail.com>, 2016
 # Jhonyd Marmo <jhonyd.07@gmail.com>, 2015
 # Lucas Miranda <Liddack@outlook.com>, 2016
 # Marcus Vinícius Marques, 2014
@@ -16,7 +17,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2015-02-06 13:01+0100\n"
-"PO-Revision-Date: 2016-04-26 22:52+0000\n"
+"PO-Revision-Date: 2016-07-30 21:29+0000\n"
 "Last-Translator: Lucas Miranda <Liddack@outlook.com>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/musicbrainz/musicbrainz/language/pt_BR/)\n"
 "MIME-Version: 1.0\n"
@@ -106,32 +107,32 @@ msgstr "Calculando replay gain para \"%(filename)s\"..."
 #: contrib/plugins/replaygain/__init__.py:75
 #, python-format
 msgid "Replay gain for \"%(filename)s\" successfully calculated."
-msgstr "Replay gain para \"%(filename)s\" calculado com sucesso."
+msgstr "Replay gain de \"%(filename)s\" calculado com sucesso."
 
 #: contrib/plugins/replaygain/__init__.py:80
 #, python-format
 msgid "Could not calculate replay gain for \"%(filename)s\"."
-msgstr "Não foi possível calcular o replay gain para \"%(filename)s\"."
+msgstr "Não foi possível calcular o replay gain de \"%(filename)s\"."
 
 #: contrib/plugins/replaygain/__init__.py:85
 msgid "Calculate album &gain..."
-msgstr "Calcular álbum &gain..."
+msgstr "Calcular album &gain..."
 
 #: contrib/plugins/replaygain/__init__.py:113
 #: contrib/plugins/replaygain/__init__.py:124
 #, python-format
 msgid "Calculating album gain for \"%(album)s\"..."
-msgstr "Calculando ganho de álbum para \"%(album)s\"..."
+msgstr "Calculando album gain para \"%(album)s\"..."
 
 #: contrib/plugins/replaygain/__init__.py:135
 #, python-format
 msgid "Album gain for \"%(album)s\" successfully calculated."
-msgstr "Ganho de álbum para \"%(album)s\" calculada com sucesso."
+msgstr "Album gain de \"%(album)s\" calculado com sucesso."
 
 #: contrib/plugins/replaygain/__init__.py:140
 #, python-format
 msgid "Could not calculate album gain for \"%(album)s\"."
-msgstr ""
+msgstr "Não foi possível calcular o album gain de \"%(album)s\"."
 
 #: contrib/plugins/replaygain/ui_options_replaygain.py:59
 msgid "Replay Gain"
@@ -190,22 +191,22 @@ msgstr "Valor"
 #: picard/acoustid.py:111
 #, python-format
 msgid "AcoustID lookup network error for '%(filename)s'!"
-msgstr "Ocorreu um erro de rede ao checar '%(filename)s' no AcoustID!"
+msgstr "Ocorreu um erro de rede ao analisar '%(filename)s' no AcoustID!"
 
 #: picard/acoustid.py:135
 #, python-format
 msgid "AcoustID lookup failed for '%(filename)s'!"
-msgstr "Falha ao checar '%(filename)s' no AcoustID!"
+msgstr "Falha ao analisar '%(filename)s' no AcoustID!"
 
 #: picard/acoustid.py:157
 #, python-format
 msgid "AcoustID lookup returned no result for file '%(filename)s'"
-msgstr "A checagem do arquivo '%(filename)s' no AcoustID não retornou resultados"
+msgstr "A análise do arquivo '%(filename)s' no AcoustID não retornou resultados"
 
 #: picard/acoustid.py:168
 #, python-format
 msgid "Looking up the fingerprint for file '%(filename)s' ..."
-msgstr "Pesquisando a impressão digital para o arquivo '%(filename)s' ..."
+msgstr "Buscando impressão digital do arquivo '%(filename)s' ..."
 
 #: picard/acoustidmanager.py:81
 msgid "Submitting AcoustIDs ..."
@@ -263,7 +264,7 @@ msgstr "Agrupamento %(album)s identificado!"
 #: picard/cluster.py:194
 #, python-format
 msgid "Looking up the metadata for cluster %(album)s..."
-msgstr "Pesquisando os metadados para agrupar %(album)s..."
+msgstr "Pesquisando os metadados do agrupamento %(album)s..."
 
 #: picard/collection.py:64
 #, python-format
@@ -292,14 +293,14 @@ msgstr "Remoção do esquema de nomeação de arquivos de Vários Artistas"
 msgid ""
 "The separate file naming scheme for various artists albums has been removed in this version of Picard.\n"
 "Your file naming scheme has automatically been merged with that of single artist albums."
-msgstr "O esquema de nomeação de arquivos separado para álbums de vários artistas foi removido nesta versão do Picard. Seu esquema de nomeação de arquivos foi automaticamente fundido com o de álbuns de artistas individuais."
+msgstr "O esquema separado de nomeação de arquivos para álbums de vários artistas foi removido nesta versão do Picard.\nSeu esquema de nomeação de arquivos foi automaticamente mesclado com o de álbuns de artistas individuais."
 
 #: picard/config_upgrade.py:72
 msgid ""
 "The separate file naming scheme for various artists albums has been removed in this version of Picard.\n"
 "You currently do not use this option, but have a separate file naming scheme defined.\n"
 "Do you want to remove it or merge it with your file naming scheme for single artist albums?"
-msgstr ""
+msgstr "O esquema separado de nomeação de arquivos para álbums de vários artistas foi removido nesta versão do Picard.\nApesar de você não estar usando esta opção neste momento, você tem um esquema de nomeação de arquivos definido.\nVocê deseja excluir este esquema ou mesclá-lo com o seu esquema de nomeação para álbums de artistas individuais?"
 
 #: picard/config_upgrade.py:78
 msgid "Merge"
@@ -312,12 +313,12 @@ msgstr "Remover"
 #: picard/file.py:506
 #, python-format
 msgid "No matching tracks for file '%(filename)s'"
-msgstr ""
+msgstr "Nenhuma faixa correspondente ao arquivo '%(filename)s'"
 
 #: picard/file.py:522
 #, python-format
 msgid "No matching tracks above the threshold for file '%(filename)s'"
-msgstr ""
+msgstr "Nenhuma faixa correspondente acima do limiar para o arquivo '%(filename)s'"
 
 #: picard/file.py:529
 #, python-format
@@ -327,7 +328,7 @@ msgstr "Arquivo '%(filename)s' identificado!"
 #: picard/file.py:549
 #, python-format
 msgid "Looking up the metadata for file %(filename)s ..."
-msgstr ""
+msgstr "Procurando metadados para o arquivo %(filename)s ..."
 
 #: picard/releasegroup.py:53
 msgid "Tracks"
@@ -351,7 +352,7 @@ msgstr "Rótulo"
 
 #: picard/releasegroup.py:58
 msgid "Cat No"
-msgstr ""
+msgstr "Cat. Nº"
 
 #: picard/releasegroup.py:88
 msgid "[no barcode]"
@@ -365,8 +366,8 @@ msgstr "[nenhuma informação de lançamento]"
 #, python-format
 msgid "Adding %(count)d file from '%(directory)s' ..."
 msgid_plural "Adding %(count)d files from '%(directory)s' ..."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Addicionando %(count)d arquivo de '%(directory)s' ..."
+msgstr[1] "Addicionando %(count)d arquivos de '%(directory)s' ..."
 
 #: picard/tagger.py:531
 #, python-format
@@ -375,7 +376,7 @@ msgstr "Removendo o álbum %(id)s: %(artist)s - %(album)s"
 
 #: picard/tagger.py:547
 msgid "CD Lookup Error"
-msgstr "Erro ao procurar CD"
+msgstr "Erro ao escanear CD"
 
 #: picard/tagger.py:548
 #, python-format
@@ -383,7 +384,7 @@ msgid ""
 "Error while reading CD:\n"
 "\n"
 "%s"
-msgstr "Erro ao ler o CD:\n\n%s"
+msgstr "Erro de leitura do CD:\n\n%s"
 
 #: picard/const/languages.py:31
 msgid "Danish"
@@ -444,13 +445,13 @@ msgstr "Sueco"
 #: picard/coverart/__init__.py:69
 #, python-format
 msgid "Cover art of type '%(type)s' downloaded for %(albumid)s from %(host)s"
-msgstr ""
+msgstr "Arte de capa do tipo '%(type)s' baixada para %(albumid)s do site %(host)s"
 
 #: picard/coverart/__init__.py:159
 #, python-format
 msgid ""
 "Downloading cover art of type '%(type)s' for %(albumid)s from %(host)s ..."
-msgstr ""
+msgstr "Baixando arte de capa do tipo '%(type)s' para %(albumid)s do site %(host)s ..."
 
 #: picard/coverart/utils.py:31
 msgid "Unknown"
@@ -498,7 +499,7 @@ msgstr "Ver lançamento no MusicBrainz"
 
 #: picard/ui/filebrowser.py:40
 msgid "&Move Tagged Files Here"
-msgstr "&Mover arquivos ao escrever tags para cá"
+msgstr "&Mover arquivos com etiqueta para cá"
 
 #: picard/ui/filebrowser.py:43
 msgid "Show &Hidden Files"
@@ -506,11 +507,11 @@ msgstr "Mostrar arquivos &ocultos"
 
 #: picard/ui/filebrowser.py:48
 msgid "&Set as starting directory"
-msgstr "&Definir como diretório inicial"
+msgstr "&Definir como pasta inicial"
 
 #: picard/ui/infodialog.py:41 picard/ui/infodialog.py:110
 msgid "Info"
-msgstr "Informação"
+msgstr "Informações"
 
 #: picard/ui/infodialog.py:78
 #, python-format
@@ -518,7 +519,7 @@ msgid ""
 "Double-click to open in external viewer\n"
 "Temporary file: %s\n"
 "Source: %s"
-msgstr ""
+msgstr "Clique duas vezes para abrir externamente\nArquivo temporário: %s\nFonte: %s"
 
 #: picard/ui/infodialog.py:115
 msgid "Filename:"
@@ -571,7 +572,7 @@ msgstr "&Erros"
 #: picard/ui/infodialog.py:169 picard/ui/infodialog.py:184
 #: picard/ui/ui_infodialog.py:73
 msgid "&Info"
-msgstr "&Informação"
+msgstr "&Informações"
 
 #: picard/ui/infodialog.py:177
 msgid "Cluster Info"
@@ -639,7 +640,7 @@ msgstr "P&lugins"
 
 #: picard/ui/itemviews.py:543
 msgid "file view"
-msgstr ""
+msgstr "Ver arquivo"
 
 #: picard/ui/itemviews.py:544
 msgid "Contains unmatched files and clusters"
@@ -647,11 +648,11 @@ msgstr "Contém arquivos e agrupamentos sem correspondência"
 
 #: picard/ui/itemviews.py:564
 msgid "Clusters"
-msgstr "Agrupados"
+msgstr "Agrupamentos"
 
 #: picard/ui/itemviews.py:573
 msgid "album view"
-msgstr ""
+msgstr "Ver álbum"
 
 #: picard/ui/itemviews.py:574
 msgid "Contains albums and matched files"
@@ -687,12 +688,12 @@ msgid ""
 "There is %d unsaved file. Closing Picard will lose all unsaved changes."
 msgid_plural ""
 "There are %d unsaved files. Closing Picard will lose all unsaved changes."
-msgstr[0] "Há %d arquivo não salvo. Fechando o Picard se perderão todas as alterações não salvas."
-msgstr[1] "Há %d arquivos não salvos. Fechando o Picard se perderão todas as alterações não salvas."
+msgstr[0] "Há %d arquivo não salvo. Ao fechar o Picard, todas as alterações não salvas serão perdidas."
+msgstr[1] "Há %d arquivos não salvos. Ao fechar o Picard, todas as alterações não salvas serão perdidas."
 
 #: picard/ui/mainwindow.py:165
 msgid "&Quit Picard"
-msgstr "E&ncerrar o Picard"
+msgstr "&Sair do Picard"
 
 #: picard/ui/mainwindow.py:217
 msgid "Ready"
@@ -703,12 +704,12 @@ msgid ""
 "Picard listens on this port to integrate with your browser. When you "
 "\"Search\" or \"Open in Browser\" from Picard, clicking the \"Tagger\" "
 "button on the web page loads the release into Picard."
-msgstr "Picard escuta esta porta para integrar-se com o seu navegador. Quando você \"Buscar\" ou \"Abrir no navegador\" no Picard, clicar no botão \"Etiquetar\" na página da web carregará o lançamento no Picard."
+msgstr "O Picard usa esta porta para integrar-se com o seu navegador. Quando você seleciona \"Buscar\" ou \"Abrir no navegador\" no Picard, clicar no botão \"Etiquetar\" na página da web carregará o lançamento no Picard."
 
 #: picard/ui/mainwindow.py:244
 #, python-format
 msgid " Listening on port %(port)d "
-msgstr "Escutando na porta %(port)d"
+msgstr "Escutando porta %(port)d"
 
 #: picard/ui/mainwindow.py:300
 msgid "Submission Error"
@@ -826,15 +827,15 @@ msgstr "&Capa"
 
 #: picard/ui/mainwindow.py:390 picard/ui/mainwindow.py:597
 msgid "Search"
-msgstr "Buscar"
+msgstr "Pesquisar"
 
 #: picard/ui/mainwindow.py:393
 msgid "Lookup &CD..."
-msgstr "Pesquisar &CD..."
+msgstr "Escanear &CD..."
 
 #: picard/ui/mainwindow.py:394
 msgid "Lookup the details of the CD in your drive"
-msgstr "Pesquisar os detalhes do CD na sua unidade"
+msgstr "Faz a busca dos detalhes do CD na sua unidade"
 
 #: picard/ui/mainwindow.py:396
 msgid "Ctrl+K"
@@ -918,7 +919,7 @@ msgstr "Re&produzir o arquivo"
 
 #: picard/ui/mainwindow.py:464
 msgid "Play the file in your default media player"
-msgstr "Reproduzir o arquivo no seu reprodutor de mídia padrão"
+msgstr "Reproduzir o arquivo no reprodutor de mídia padrão"
 
 #: picard/ui/mainwindow.py:468
 msgid "Open Containing &Folder"
@@ -967,12 +968,12 @@ msgstr "Todos os formatos suportados"
 #: picard/ui/mainwindow.py:701
 #, python-format
 msgid "Adding directory: '%(directory)s' ..."
-msgstr "Adicionando diretório: '%(directory)s' ..."
+msgstr "Adicionando pasta: '%(directory)s' ..."
 
 #: picard/ui/mainwindow.py:708
 #, python-format
 msgid "Adding multiple directories from '%(directory)s' ..."
-msgstr "Adicionando múltiplos diretórios de '%(directory)s' ..."
+msgstr "Adicionando várias pasta de dentro de '%(directory)s' ..."
 
 #: picard/ui/mainwindow.py:773
 msgid "Configuration Required"
@@ -1012,7 +1013,7 @@ msgstr "Autenticação necessária"
 msgid ""
 "Picard needs authorization to access your personal data on the MusicBrainz "
 "server. Would you like to log in now?"
-msgstr "Picard precisa de autorização para acessar seus dados pessoais no servidor MusicBrainz. Você gostaria de logar-se agora?"
+msgstr "O Picard precisa de autorização para acessar seus dados pessoais no servidor MusicBrainz. Você gostaria de logar-se agora?"
 
 #: picard/ui/metadatabox.py:82
 #, python-format
@@ -1025,12 +1026,12 @@ msgstr[1] "(diferente por %d itens)"
 #, python-format
 msgid "(missing from %d item)"
 msgid_plural "(missing from %d items)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "(faltando de %d item)"
+msgstr[1] "(faltando de %d itens)"
 
 #: picard/ui/metadatabox.py:154
 msgid "metadata view"
-msgstr ""
+msgstr "Ver metadados"
 
 #: picard/ui/metadatabox.py:155
 msgid "Displays original and new tags for the selected files"
@@ -1086,7 +1087,7 @@ msgstr "Nome do arquivo"
 #: picard/ui/ui_cdlookup.py:53 picard/ui/ui_options_cdlookup.py:42
 #: picard/ui/ui_options_cdlookup_select.py:49 picard/ui/options/cdlookup.py:38
 msgid "CD Lookup"
-msgstr "Procurar CD"
+msgstr "Escanear CD"
 
 #: picard/ui/ui_cdlookup.py:54
 msgid "The following releases on MusicBrainz match the CD:"
@@ -1146,11 +1147,11 @@ msgstr "Ignorar arquivos ocultos"
 
 #: picard/ui/ui_options_cdlookup.py:43
 msgid "CD-ROM device to use for lookups:"
-msgstr "Unidade de CD-ROM a ser usada para buscas:"
+msgstr "Unidade de CD-ROM a ser escaneada:"
 
 #: picard/ui/ui_options_cdlookup_select.py:50
 msgid "Default CD-ROM drive to use for lookups:"
-msgstr "Unidade de CD-ROM padrão a ser usada para buscas:"
+msgstr ":Unidade de CD-ROM padrão a ser escaneada:"
 
 #: picard/ui/ui_options_cover.py:142
 msgid "Location"
@@ -1186,7 +1187,7 @@ msgstr "Amazon"
 
 #: picard/ui/ui_options_cover.py:150 picard/ui/ui_options_cover.py:152
 msgid "Cover Art Archive"
-msgstr ""
+msgstr "Arquivo de Artes de Capa"
 
 #: picard/ui/ui_options_cover.py:151
 msgid "Sites on the whitelist"
@@ -1206,11 +1207,11 @@ msgstr "500 px"
 
 #: picard/ui/ui_options_cover.py:156
 msgid "Full size"
-msgstr ""
+msgstr "Tamanho completo"
 
 #: picard/ui/ui_options_cover.py:157
 msgid "Download only cover art images matching selected types"
-msgstr "Baixar somente imagens de arte de capa correspondentes aos tipos selecionados"
+msgstr "Baixar somente imagens de arte de capa do seguintes tipos"
 
 #: picard/ui/ui_options_cover.py:158
 msgid "Select types..."
@@ -1224,13 +1225,13 @@ msgstr "Baixar apenas imagens aprovadas"
 msgid ""
 "Use the first image type as the filename. This will not change the filename "
 "of front images."
-msgstr ""
+msgstr "Usar o primeiro tipo de imagem como o nome do arquivo. Isso não mudará o nome de arquivo das imagens frontais."
 
 #: picard/ui/ui_options_cover.py:161
 msgid ""
 "Use the image of the release group if no front image is associated with the "
 "release"
-msgstr ""
+msgstr "Usar a imagem do grupo do lançamento se nenhuma imagem frontal correspondente com o lançamento for encontrada"
 
 #: picard/ui/ui_options_fingerprinting.py:70
 msgid "Audio Fingerprinting"
@@ -1315,7 +1316,7 @@ msgstr "Analisar novos arquivos automaticamente"
 
 #: picard/ui/ui_options_general.py:100
 msgid "Ignore MBIDs when loading new files"
-msgstr ""
+msgstr "Gerar ID's do MB ao carregar novos arquivos"
 
 #: picard/ui/ui_options_interface.py:69
 msgid "Miscellaneous"
@@ -1676,7 +1677,7 @@ msgid ""
 "<p align=\"center\"><strong>Credits</strong><br/>\n"
 "<small>Copyright © 2004-2014 Robert Kaye, Lukáš Lalinský and others%(translator-credits)s</small></p>\n"
 "<p align=\"center\"><a href=\"%(picard-doc-url)s\">%(picard-doc-url)s</a></p>\n"
-msgstr "<p align=\"center\"><span style=\"font-size:15px;font-weight:bold;\">MusicBrainz Picard</span><br/>\nVersão %(version)s</p>\n<p align=\"center\"><small>\nPyQt %(pyqt-version)s<br/>\nMutagen %(mutagen-version)s<br/>\nDiscid %(discid-version)s\n</small></p>\n<p align=\"center\"><strong>Formatos com suporte</strong><br/>%(formats)s</p>\n<p align=\"center\"><strong>Por favor, doe</strong><br/>\nObrigado por usar o Picard. Picard baseia-se no banco de dados do MusicBrainz, que é operado pela MetaBrainz Foundation com a ajuda de milhares de voluntários. Se você gosta deste aplicativo, por favor, considere fazer uma doação à MetaBrainz Foundation para manter o serviço em funcionamento.</p>\n<p align=\"center\"><a href=\"%(picard-donate-url)s\">Doe agora!</a></p>\n<p align=\"center\"><strong>Créditos</strong><br/>\n<small>Copyright © 2004-2014 Robert Kaye, Lukáš Lalinský e outros%(translator-credits)s</small></p>\n<p align=\"center\"><a href=\"%(picard-doc-url)s\">%(picard-doc-url)s</a></p>\n"
+msgstr "<p align=\"center\"><span style=\"font-size:15px;font-weight:bold;\">MusicBrainz Picard</span><br/>\nVersão %(version)s</p>\n<p align=\"center\"><small>\nPyQt %(pyqt-version)s<br/>\nMutagen %(mutagen-version)s<br/>\nDiscid %(discid-version)s\n</small></p>\n<p align=\"center\"><strong>Formatos suportados</strong><br/>%(formats)s</p>\n<p align=\"center\"><strong>Por favor, doe</strong><br/>\nObrigado por usar o Picard. O Picard baseia-se no banco de dados do MusicBrainz, que é operado pela MetaBrainz Foundation com a ajuda de milhares de voluntários. Se você gosta deste aplicativo, por favor, considere fazer uma doação à MetaBrainz Foundation para manter o serviço em funcionamento.</p>\n<p align=\"center\"><a href=\"%(picard-donate-url)s\">Doe agora!</a></p>\n<p align=\"center\"><strong>Créditos</strong><br/>\n<small>Copyright © 2004-2014 Robert Kaye, Lukáš Lalinský e outros%(translator-credits)s</small></p>\n<p align=\"center\"><a href=\"%(picard-doc-url)s\">%(picard-doc-url)s</a></p>\n"
 
 #: picard/ui/options/advanced.py:31
 msgid "Advanced"
@@ -1684,7 +1685,7 @@ msgstr "Avançado"
 
 #: picard/ui/options/advanced.py:69
 msgid "Regex Error"
-msgstr ""
+msgstr "Erro de expressão regular"
 
 #: picard/ui/options/cover.py:35
 msgid "Cover art types"
@@ -1709,7 +1710,7 @@ msgstr "Impressões digitais"
 #: picard/ui/options/general.py:74
 #, python-format
 msgid "Logged in as <b>%s</b>."
-msgstr ""
+msgstr "Logado como <b>%s</b>."
 
 #: picard/ui/options/general.py:88
 msgid "Authorization code:"
@@ -1725,13 +1726,13 @@ msgstr "Padrão do sistema"
 
 #: picard/ui/options/interface.py:98
 msgid "Language changed"
-msgstr "Alterar Idioma"
+msgstr "Idioma alterado"
 
 #: picard/ui/options/interface.py:99
 msgid ""
 "You have changed the interface language. You have to restart Picard in order"
 " for the change to take effect."
-msgstr "Você trocou o idioma. Você precisa reiniciar o Picard para que as mudanças sejam aplicadas."
+msgstr "Você mudou o idioma. Você precisa reiniciar o Picard para que as mudanças sejam aplicadas."
 
 #: picard/ui/options/matching.py:28
 msgid "Matching"
@@ -1887,7 +1888,7 @@ msgstr "Modo de Ordenação do Álbum"
 
 #: picard/util/tags.py:36
 msgid "Composer Sort Order"
-msgstr ""
+msgstr "Modo de Ordenação do Compositor"
 
 #: picard/util/tags.py:37
 msgid "ASIN"
@@ -1959,11 +1960,11 @@ msgstr "Mixagem"
 
 #: picard/util/tags.py:54
 msgid "MusicBrainz Recording Id"
-msgstr ""
+msgstr "Id MusicBrainz da Gravação "
 
 #: picard/util/tags.py:55
 msgid "MusicBrainz Track Id"
-msgstr ""
+msgstr "Id MusicBrainz da Faixa"
 
 #: picard/util/tags.py:56
 msgid "MusicBrainz Release Id"
@@ -1975,19 +1976,19 @@ msgstr "Id MusicBrainz do Artista"
 
 #: picard/util/tags.py:58
 msgid "MusicBrainz Release Artist Id"
-msgstr "Id MusicBrainz do Artista"
+msgstr "Id MusicBrainz do Artista de Lançamento"
 
 #: picard/util/tags.py:59
 msgid "MusicBrainz Work Id"
-msgstr ""
+msgstr "Id MusicBrainz da Obra"
 
 #: picard/util/tags.py:60
 msgid "MusicBrainz Release Group Id"
-msgstr ""
+msgstr "Id MusicBrainz do Grupo de Lançamento"
 
 #: picard/util/tags.py:61
 msgid "MusicBrainz Disc Id"
-msgstr "MusicBrainz Disco Id"
+msgstr "Id MusicBrainz do Disco"
 
 #: picard/util/tags.py:62
 msgid "MusicIP PUID"
@@ -1995,7 +1996,7 @@ msgstr "PUID MusicIP"
 
 #: picard/util/tags.py:63
 msgid "MusicIP Fingerprint"
-msgstr "MusicIP Fingerprint"
+msgstr "Impressão digital do MusicIP"
 
 #: picard/util/tags.py:64
 msgid "AcoustID"
@@ -2075,7 +2076,7 @@ msgstr "Mixer"
 
 #: picard/util/tags.py:84
 msgid "Language"
-msgstr "Linguagem"
+msgstr "Idioma"
 
 #: picard/util/tags.py:85
 msgid "Script"

@@ -2,7 +2,10 @@
 # Translators:
 # Alex Luís Silva <alex.mooca@hotmail.com>, 2015
 # Eduardo Bastos <eduardorochacg@gmail.com>, 2012
+# Jefferson Gomes <jefferson.mg2@hotmail.com>, 2016
+# João Miguel Soares <joaomiguel32@live.com>, 2016
 # lampih <lampih@gmail.com>, 2012
+# Lucas de Jesus <lucasdj98@gmail.com>, 2016
 # Lucas Gomes <x8lucas8x@gmail.com>, 2012
 # Marco Tulio Costa <mmarcottulio@gmail.com>, 2012
 # Marcus Vinícius Marques, 2014
@@ -13,8 +16,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2016-04-04 13:22+0000\n"
-"Last-Translator: Michael Wiencek <mwtuea@gmail.com>\n"
+"PO-Revision-Date: 2016-08-28 02:53+0000\n"
+"Last-Translator: João Miguel Soares <joaomiguel32@live.com>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/musicbrainz/musicbrainz/language/pt_BR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -28,14 +31,14 @@ msgid ""
 "\"Motet\" is a term that applies to different types of (usually "
 "unaccompanied) choral works. What exactly is a motet depends quite a bit on "
 "the period."
-msgstr ""
+msgstr "\"Moteto\" é um termo que se aplica a diferentes tipos de (geralmente desacompanhadas) palavras de coral. O que é exatamente um moteto depende um pouco do período."
 
 #: DB:work_type/description:5
 msgctxt "work_type"
 msgid ""
 "\"Sonata\" is a general term used to describe small scale (very often solo "
 "or solo + keyboard) instrumental works, initially in baroque music."
-msgstr ""
+msgstr "\"Sonata\" é geralmente um termo usado para descrever trabalhos instrumentais em pequena escala (frequentemente solo ou solo + teclados), inicialmente na musica barroca."
 
 #: DB:medium_format/name:54
 msgctxt "medium_format"
@@ -65,7 +68,7 @@ msgstr "Disquete de 3.5\""
 #: DB:medium_format/name:52
 msgctxt "medium_format"
 msgid "7\" Flexi-disc"
-msgstr ""
+msgstr "Vinil flexível de 7 polegadas"
 
 #: DB:medium_format/name:56
 msgctxt "medium_format"
@@ -80,12 +83,12 @@ msgstr "Vinil de 7 polegadas"
 #: DB:medium_format/name:34
 msgctxt "medium_format"
 msgid "8cm CD"
-msgstr "CD 8cm"
+msgstr "CD de 8 centímetros"
 
 #: DB:medium_format/name:40
 msgctxt "medium_format"
 msgid "8cm CD+G"
-msgstr ""
+msgstr "CD+G de 8 centímetros"
 
 #: DB:medium_format/description:58
 msgctxt "medium_format"
@@ -97,6 +100,11 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:794
 msgctxt "work_attribute_type_allowed_value"
 msgid "A Dorian"
+msgstr ""
+
+#: DB:work_attribute_type_allowed_value/value:806
+msgctxt "work_attribute_type_allowed_value"
+msgid "A Mixolydian"
 msgstr ""
 
 #: DB:work_type/description:2
@@ -111,13 +119,13 @@ msgctxt "work_type"
 msgid ""
 "A cantata is a vocal (often choral) composition with an instrumental "
 "(usually orchestral) accompaniment, typically in several movements."
-msgstr ""
+msgstr "Uma cantata é uma composição vocal (frequentemente coroal) com um acompanhamento instrumental (geralmente orquestral), tipicamente com vários movimentos."
 
 #: DB:work_type/description:4
 msgctxt "work_type"
 msgid ""
 "A concerto is a musical work for soloist(s) accompanied by an orchestra."
-msgstr ""
+msgstr "Um concerto é um trabalho musical do solista(s) acompanhado por uma orquestra."
 
 #: DB:event_type/description:4
 msgctxt "event_type"
@@ -125,7 +133,7 @@ msgid ""
 "A convention, expo or trade fair is an event which is not typically "
 "orientated around music performances, but can include them as side "
 "activities."
-msgstr ""
+msgstr "Uma convenção, exposição ou feira de négocios é um evento cujo não é tipicamente orientado à performances musicais, mas pode incluí-las como atividades extras."
 
 #: DB:release_status/description:2
 msgctxt "release_status"
@@ -138,7 +146,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:28
 msgctxt "work_attribute_type_allowed_value"
 msgid "A major"
-msgstr ""
+msgstr "Uma maioria"
 
 #: DB:work_type/description:8
 msgctxt "work_type"
@@ -159,7 +167,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:29
 msgctxt "work_attribute_type_allowed_value"
 msgid "A minor"
-msgstr ""
+msgstr "Uma minoria"
 
 #: DB:work_type/description:13
 msgctxt "work_type"
@@ -188,14 +196,14 @@ msgctxt "place_type"
 msgid ""
 "A place designed for non-live production of music, typically a recording "
 "studio."
-msgstr ""
+msgstr "Um lugar designado para produções musicas não-ao vivo, tipicamente um estúdio de gravação."
 
 #: DB:place_type/description:2
 msgctxt "place_type"
 msgid ""
 "A place that has live artistic performances as one of its primary functions,"
 " such as a concert hall."
-msgstr ""
+msgstr "Um lugar que tem como uma de suas principais funções apresentações artisticas ao vivo,  como em um teatro."
 
 #: DB:place_type/description:6
 msgctxt "place_type"
@@ -211,7 +219,7 @@ msgid ""
 "A place whose main purpose is to host outdoor sport events, typically "
 "consisting of a pitch surrounded by a structure for spectators with no roof,"
 " or a roof which can be retracted."
-msgstr ""
+msgstr "Um lugar cujo o principal propósito é abrigar evento esportivos, tipicamente consistindo de um campo rodeado por um estrutura sem teto para espectadores, ou com teto retrátil."
 
 #: DB:work_type/description:28
 msgctxt "work_type"
@@ -226,18 +234,18 @@ msgctxt "work_type"
 msgid ""
 "A poem is a literary piece, generally short and in verse, where words are "
 "usually chosen for their sound and for the images and ideas they suggest."
-msgstr ""
+msgstr "Um poema é uma peça literária, geralmente curta e em verso, onde as palavras são geralmente escolhidas pelo som, imagens e ideias que sugerem."
 
 #: DB:work_type/description:14
 msgctxt "work_type"
 msgid ""
 "A quartet is a musical composition scored for four voices or instruments."
-msgstr ""
+msgstr "Um quarteto é uma composição musical de um conjunto de quatro vozes ou instrumentos."
 
 #: DB:series_type/description:8
 msgctxt "series_type"
 msgid "A recurring festival, usually happening annually in the same location."
-msgstr ""
+msgstr "Um festival recorrente, geralmente acontecendo anualmente no mesmo local."
 
 #: DB:series_type/description:6
 msgctxt "series_type"
@@ -257,7 +265,7 @@ msgstr "Uma série de gravações."
 #: DB:series_type/description:7
 msgctxt "series_type"
 msgid "A series of related concerts by an artist in different locations."
-msgstr ""
+msgstr "Uma série de shows relacionados de um artista em diferentes locais."
 
 #: DB:series_type/description:1
 msgctxt "series_type"
@@ -272,12 +280,12 @@ msgstr "Uma série de lançamentos."
 #: DB:series_type/description:5
 msgctxt "series_type"
 msgid "A series of works which form a catalogue of classical compositions."
-msgstr ""
+msgstr "Uma série de trabalhos cujos formam um catálogo de composições clássicas."
 
 #: DB:series_type/description:4
 msgctxt "series_type"
 msgid "A series of works."
-msgstr ""
+msgstr "Uma série de trabalhos."
 
 #: DB:work_type/description:15
 msgctxt "work_type"
@@ -352,6 +360,11 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:30
 msgctxt "work_attribute_type_allowed_value"
 msgid "A-sharp minor"
+msgstr ""
+
+#: DB:work_attribute_type/name:23
+msgctxt "work_attribute_type"
+msgid "AKM ID"
 msgstr ""
 
 #: DB:work_attribute_type/name:13
@@ -437,7 +450,7 @@ msgstr ""
 #: DB:release_group_primary_type/name:1
 msgctxt "release_group_primary_type"
 msgid "Album"
-msgstr "Album"
+msgstr "Álbum"
 
 #: DB:series_ordering_type/description:2
 msgctxt "series_ordering_type"
@@ -744,6 +757,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "B Dorian"
 msgstr ""
 
+#: DB:work_attribute_type_allowed_value/value:807
+msgctxt "work_attribute_type_allowed_value"
+msgid "B Mixolydian"
+msgstr ""
+
 #: DB:work_attribute_type_allowed_value/value:33
 msgctxt "work_attribute_type_allowed_value"
 msgid "B major"
@@ -1046,6 +1064,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "C Dorian"
 msgstr ""
 
+#: DB:work_attribute_type_allowed_value/value:801
+msgctxt "work_attribute_type_allowed_value"
+msgid "C Mixolydian"
+msgstr ""
+
 #: DB:work_attribute_type_allowed_value/value:2
 msgctxt "work_attribute_type_allowed_value"
 msgid "C major"
@@ -1297,6 +1320,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "D Dorian"
 msgstr ""
 
+#: DB:work_attribute_type_allowed_value/value:802
+msgctxt "work_attribute_type_allowed_value"
+msgid "D Mixolydian"
+msgstr ""
+
 #: DB:work_attribute_type_allowed_value/value:8
 msgctxt "work_attribute_type_allowed_value"
 msgid "D major"
@@ -1360,6 +1388,21 @@ msgstr "DVD-Vídeo"
 #: DB:medium_format/name:47
 msgctxt "medium_format"
 msgid "DVDplus"
+msgstr ""
+
+#: DB:medium_format/name:70
+msgctxt "medium_format"
+msgid "DVDplus (CD side)"
+msgstr ""
+
+#: DB:medium_format/name:68
+msgctxt "medium_format"
+msgid "DVDplus (DVD-Audio side)"
+msgstr ""
+
+#: DB:medium_format/name:69
+msgctxt "medium_format"
+msgid "DVDplus (DVD-Video side)"
 msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:343
@@ -1587,6 +1630,21 @@ msgctxt "medium_format"
 msgid "DualDisc"
 msgstr "DualDisc"
 
+#: DB:medium_format/name:67
+msgctxt "medium_format"
+msgid "DualDisc (CD side)"
+msgstr ""
+
+#: DB:medium_format/name:65
+msgctxt "medium_format"
+msgid "DualDisc (DVD-Audio side)"
+msgstr ""
+
+#: DB:medium_format/name:66
+msgctxt "medium_format"
+msgid "DualDisc (DVD-Video side)"
+msgstr ""
+
 #: DB:work_attribute_type_allowed_value/value:612
 msgctxt "work_attribute_type_allowed_value"
 msgid "Durak"
@@ -1675,6 +1733,11 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:791
 msgctxt "work_attribute_type_allowed_value"
 msgid "E Dorian"
+msgstr ""
+
+#: DB:work_attribute_type_allowed_value/value:803
+msgctxt "work_attribute_type_allowed_value"
+msgid "E Mixolydian"
 msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:13
@@ -1815,6 +1878,11 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:792
 msgctxt "work_attribute_type_allowed_value"
 msgid "F Dorian"
+msgstr ""
+
+#: DB:work_attribute_type_allowed_value/value:804
+msgctxt "work_attribute_type_allowed_value"
+msgid "F Mixolydian"
 msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:17
@@ -1968,6 +2036,11 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:793
 msgctxt "work_attribute_type_allowed_value"
 msgid "G Dorian"
+msgstr ""
+
+#: DB:work_attribute_type_allowed_value/value:805
+msgctxt "work_attribute_type_allowed_value"
+msgid "G Mixolydian"
 msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:22
@@ -2403,6 +2476,16 @@ msgstr ""
 #: DB:medium_format/name:38
 msgctxt "medium_format"
 msgid "Hybrid SACD"
+msgstr ""
+
+#: DB:medium_format/name:63
+msgctxt "medium_format"
+msgid "Hybrid SACD (CD layer)"
+msgstr ""
+
+#: DB:medium_format/name:64
+msgctxt "medium_format"
+msgid "Hybrid SACD (SACD layer)"
 msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:418
@@ -4143,12 +4226,12 @@ msgstr ""
 #: DB:editor_collection_type/name:1
 msgctxt "collection_type"
 msgid "Release"
-msgstr ""
+msgstr "Lançamento"
 
 #: DB:series_type/name:2
 msgctxt "series_type"
 msgid "Release"
-msgstr ""
+msgstr "Lançamento"
 
 #: DB:editor_collection_type/name:13
 msgctxt "collection_type"
@@ -4298,6 +4381,11 @@ msgstr "SACD"
 #: DB:work_attribute_type/name:21
 msgctxt "work_attribute_type"
 msgid "SACEM ID"
+msgstr ""
+
+#: DB:medium_format/name:62
+msgctxt "medium_format"
+msgid "SD Card"
 msgstr ""
 
 #: DB:work_attribute_type/name:8
@@ -4697,6 +4785,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Sunādavinōdini"
 msgstr ""
 
+#: DB:release_packaging/name:16
+msgctxt "release_packaging"
+msgid "Super Jewel Box"
+msgstr ""
+
 #: DB:work_attribute_type_allowed_value/value:252
 msgctxt "work_attribute_type_allowed_value"
 msgid "Suraṭi"
@@ -4872,6 +4965,27 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Tevşihilahi"
 msgstr ""
 
+#: DB:medium_format/description:70
+msgctxt "medium_format"
+msgid ""
+"The CD layer of a DVDplus. The DVD layer should be added as a separate "
+"medium."
+msgstr ""
+
+#: DB:medium_format/description:67
+msgctxt "medium_format"
+msgid ""
+"The CD layer of a DualDisc. The DVD layer should be added as a separate "
+"medium."
+msgstr ""
+
+#: DB:medium_format/description:63
+msgctxt "medium_format"
+msgid ""
+"The CD layer of a hybrid SACD. The SACD layer should be added as a separate "
+"medium."
+msgstr ""
+
 #: DB:medium_format/description:60
 msgctxt "medium_format"
 msgid ""
@@ -4879,6 +4993,34 @@ msgid ""
 "system developed by RCA, in which video and audio could be played back on a "
 "TV set using a special needle and high-density groove system similar to "
 "phonograph records."
+msgstr ""
+
+#: DB:medium_format/description:68 DB:medium_format/description:69
+msgctxt "medium_format"
+msgid ""
+"The DVD (audio) layer of a DVDplus. The CD layer should be added as a "
+"separate medium."
+msgstr ""
+
+#: DB:medium_format/description:65
+msgctxt "medium_format"
+msgid ""
+"The DVD (audio) layer of a DualDisc. The CD layer should be added as a "
+"separate medium."
+msgstr ""
+
+#: DB:medium_format/description:66
+msgctxt "medium_format"
+msgid ""
+"The DVD (video) layer of a DualDisc. The CD layer should be added as a "
+"separate medium."
+msgstr ""
+
+#: DB:medium_format/description:64
+msgctxt "medium_format"
+msgid ""
+"The SACD layer of a hybrid SACD. The CD layer should be added as a separate "
+"medium."
 msgstr ""
 
 #: DB:work_type/description:7
