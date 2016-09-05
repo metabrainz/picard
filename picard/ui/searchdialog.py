@@ -59,11 +59,6 @@ class ResultTable(QtGui.QTableWidget):
                 QtGui.QHeaderView.Stretch)
         self.horizontalHeader().setResizeMode(
                 QtGui.QHeaderView.Interactive)
-        self.setFocusPolicy(QtCore.Qt.StrongFocus)
-
-    def focusOutEvent(self, event):
-        self.clearSelection()
-        self.parent.load_button.setEnabled(False)
 
 
 class SearchBox(QtGui.QWidget):
@@ -77,6 +72,14 @@ class SearchBox(QtGui.QWidget):
         self.search_action.triggered.connect(self.search)
         self.setupUi()
 
+    def focus_in_event(self, event):
+        # When focus is on search edit box (ButtonLineEdit), need to disable
+        # dialog's accept button. This would avoid closing of dialog when user
+        # hits enter.
+        if self.parent.table:
+            self.parent.table.clearSelection()
+        self.parent.load_button.setEnabled(False)
+
     def setupUi(self):
         self.layout = QtGui.QVBoxLayout(self)
         self.search_row_widget = QtGui.QWidget(self)
@@ -86,6 +89,8 @@ class SearchBox(QtGui.QWidget):
         self.search_edit = ButtonLineEdit(self.search_row_widget)
         self.search_edit.returnPressed.connect(self.trigger_search_action)
         self.search_edit.textChanged.connect(self.enable_search)
+        self.search_edit.setFocusPolicy(QtCore.Qt.StrongFocus)
+        self.search_edit.focusInEvent = self.focus_in_event
         self.search_row_layout.addWidget(self.search_edit)
         self.search_button = QtGui.QToolButton(self.search_row_widget)
         self.search_button.setAutoRaise(True)
