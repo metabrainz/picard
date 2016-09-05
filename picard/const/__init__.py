@@ -110,3 +110,6 @@ PLUGINS_API = {
         'download': '/api/v1/download/'
     }
 }
+
+# Default query limit
+QUERY_LIMIT = 25

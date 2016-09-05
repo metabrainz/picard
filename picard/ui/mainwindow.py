@@ -34,7 +34,7 @@ from picard.ui.filebrowser import FileBrowser
 from picard.ui.tagsfromfilenames import TagsFromFileNamesDialog
 from picard.ui.options.dialog import OptionsDialog
 from picard.ui.infodialog import FileInfoDialog, AlbumInfoDialog, ClusterInfoDialog
-from picard.ui.searchdialog import TrackSearchDialog
+from picard.ui.searchdialog import TrackSearchDialog, AlbumSearchDialog
 from picard.ui.infostatus import InfoStatus
 from picard.ui.passworddialog import PasswordDialog
 from picard.ui.logview import LogView, HistoryView
@@ -382,9 +382,13 @@ class MainWindow(QtGui.QMainWindow):
         self.browser_lookup_action.setEnabled(False)
         self.browser_lookup_action.triggered.connect(self.browser_lookup)
 
-        self.tracks_search_action = QtGui.QAction(icontheme.lookup('system-search'), _(u"Search similar tracks..."), self)
-        self.tracks_search_action.setStatusTip(_(u"View similar tracks and optionally choose a different release"))
-        self.tracks_search_action.triggered.connect(self.show_more_tracks)
+        self.album_search_action = QtGui.QAction(icontheme.lookup('system-search'), _(u"Search for similar albums..."), self)
+        self.album_search_action.setStatusTip(_(u"View similar releases and optionally choose a different release"))
+        self.album_search_action.triggered.connect(self.show_more_albums)
+
+        self.track_search_action = QtGui.QAction(icontheme.lookup('system-search'), _(u"Search for similar tracks..."), self)
+        self.track_search_action.setStatusTip(_(u"View similar tracks and optionally choose a different release"))
+        self.track_search_action.triggered.connect(self.show_more_tracks)
 
         self.show_file_browser_action = QtGui.QAction(_(u"File &Browser"), self)
         self.show_file_browser_action.setCheckable(True)
@@ -684,6 +688,10 @@ class MainWindow(QtGui.QMainWindow):
                 dialog = TrackSearchDialog(self)
                 dialog.search(text)
                 dialog.exec_()
+            elif type == "album":
+                dialog = AlbumSearchDialog(self)
+                dialog.search(text)
+                dialog.exec_()
         else:
             self.tagger.search(text, type, config.setting["use_adv_search_syntax"])
 
@@ -808,6 +816,12 @@ class MainWindow(QtGui.QMainWindow):
             obj = obj.linked_files[0]
         dialog = TrackSearchDialog(self)
         dialog.load_similar_tracks(obj)
+        dialog.exec_()
+
+    def show_more_albums(self):
+        obj = self.selected_objects[0]
+        dialog = AlbumSearchDialog(self)
+        dialog.show_similar_albums(obj)
         dialog.exec_()
 
     def view_info(self):
