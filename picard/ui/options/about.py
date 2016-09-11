@@ -73,7 +73,8 @@ Thank you for using Picard. Picard relies on the MusicBrainz database, which is 
 <p align="center"><strong>Credits</strong><br/>
 <small>Copyright © 2004-2015 Robert Kaye, Lukáš Lalinský, Laurent Monin and others%(translator-credits)s</small></p>
 <p align="center"><strong>Official website</strong><br/><a href="%(picard-doc-url)s">%(picard-doc-url)s</a></p>
-<p align="center"><strong>Team Meme Teme</strong><br/>Dmitri Piquero</p><br/>Emily Hazen</p>
+<p align="center"><strong>Team Meme Teme</strong><br/>Dmitri Piquero<br/>Emily Hazen<br/>Alex Nemeroff
+</p>
 """) % args
         self.ui.label.setOpenExternalLinks(True)
         self.ui.label.setText(text)
