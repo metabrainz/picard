@@ -61,6 +61,7 @@ USER_AGENT_STRING = '%s-%s/%s (%s;%s-%s)' % (PICARD_ORG_NAME, PICARD_APP_NAME,
 CLIENT_STRING = str(QUrl.toPercentEncoding('%s %s-%s' % (PICARD_ORG_NAME,
                                                          PICARD_APP_NAME,
                                                          PICARD_VERSION_STR)))
+TEMP_ERRORS_RETRIES = 5
 
 
 def escape_lucene_query(text):
@@ -134,6 +135,89 @@ def _read_xml(stream):
     return document
 
 
+class WsRequest(object):
+
+    def __init__(self, method, host, port, path, data, handler, xml,
+                 mblogin=False, cacheloadcontrol=None, refresh=None,
+                 access_token=None, queryargs=None, retries=0,
+                 priority=False, important=False):
+        self.method = method
+        self.host = host
+        self.port = port
+        self.path = path
+        self.data = data
+        self.handler = handler
+        self.xml = xml
+        self.mblogin = mblogin
+        self.cacheloadcontrol = cacheloadcontrol
+        self.refresh = refresh
+        self.access_token = access_token
+        self.queryargs = queryargs
+        self.priority = priority
+        self.important = important
+        self.retries = retries
+
+        self._qrequest = None
+
+    def get_host_key(self):
+        return (self.host, self.port)
+
+    @property
+    def qrequest(self):
+        if self._qrequest is None:
+            url = build_qurl(self.host, self.port, path=self.path,
+                             mblogin=self.mblogin,
+                             queryargs=self.queryargs)
+            self._qrequest = QtNetwork.QNetworkRequest(url)
+        return self._qrequest
+
+    def send(self, request_methods):
+        if self.mblogin and self.access_token:
+            self.qrequest.setRawHeader("Authorization", "Bearer %s" % self.access_token)
+        if self.mblogin or (self.method == "GET" and self.refresh):
+            self.qrequest.setPriority(QtNetwork.QNetworkRequest.HighPriority)
+            self.qrequest.setAttribute(QtNetwork.QNetworkRequest.CacheLoadControlAttribute,
+                                 QtNetwork.QNetworkRequest.AlwaysNetwork)
+        elif self.method in ("PUT", "DELETE"):
+            self.qrequest.setPriority(QtNetwork.QNetworkRequest.HighPriority)
+        elif self.cacheloadcontrol is not None:
+            self.qrequest.setAttribute(QtNetwork.QNetworkRequest.CacheLoadControlAttribute,
+                                 self.cacheloadcontrol)
+        self.qrequest.setRawHeader("User-Agent", USER_AGENT_STRING)
+        if self.xml:
+            self.qrequest.setRawHeader("Accept", "application/xml")
+        if self.data is not None:
+            if (self.method == "POST"
+                and self.host == config.setting["server_host"]
+                and self.xml):
+                self.qrequest.setHeader(QtNetwork.QNetworkRequest.ContentTypeHeader, "application/xml; charset=utf-8")
+            else:
+                self.qrequest.setHeader(QtNetwork.QNetworkRequest.ContentTypeHeader, "application/x-www-form-urlencoded")
+        if self.data is None:
+            return request_methods[self.method](self.qrequest)
+        else:
+            return request_methods[self.method](self.qrequest, self.data)
+
+    def copy(self):
+        return WsRequest(
+            method=self.method,
+            host=self.host,
+            port=self.port,
+            path=self.path,
+            data=self.data,
+            handler=self.handler,
+            xml=self.xml,
+            mblogin=self.mblogin,
+            cacheloadcontrol=self.cacheloadcontrol,
+            refresh=self.refresh,
+            access_token=self.access_token,
+            queryargs=self.queryargs,
+            retries=self.retries,
+            priority=self.priority,
+            important=self.important,
+        )
+
+
 class XmlWebService(QtCore.QObject):
 
     def __init__(self, parent=None):
@@ -187,45 +271,14 @@ class XmlWebService(QtCore.QObject):
             proxy.setPassword(config.setting["proxy_password"])
         self.manager.setProxy(proxy)
 
-    def _start_request_continue(self, method, host, port, path, data, handler, xml,
-                                mblogin=False, cacheloadcontrol=None, refresh=None,
-                                access_token=None, queryargs=None):
-        url = build_qurl(host, port, path=path, mblogin=mblogin,
-                         queryargs=queryargs)
-        request = QtNetwork.QNetworkRequest(url)
-        if mblogin and access_token:
-            request.setRawHeader("Authorization", "Bearer %s" % access_token)
-        if mblogin or (method == "GET" and refresh):
-            request.setPriority(QtNetwork.QNetworkRequest.HighPriority)
-            request.setAttribute(QtNetwork.QNetworkRequest.CacheLoadControlAttribute,
-                                 QtNetwork.QNetworkRequest.AlwaysNetwork)
-        elif method == "PUT" or method == "DELETE":
-            request.setPriority(QtNetwork.QNetworkRequest.HighPriority)
-        elif cacheloadcontrol is not None:
-            request.setAttribute(QtNetwork.QNetworkRequest.CacheLoadControlAttribute,
-                                 cacheloadcontrol)
-        request.setRawHeader("User-Agent", USER_AGENT_STRING)
-        if xml:
-            request.setRawHeader("Accept", "application/xml")
-        if data is not None:
-            if method == "POST" and host == config.setting["server_host"] and xml:
-                request.setHeader(QtNetwork.QNetworkRequest.ContentTypeHeader, "application/xml; charset=utf-8")
-            else:
-                request.setHeader(QtNetwork.QNetworkRequest.ContentTypeHeader, "application/x-www-form-urlencoded")
-        send = self._request_methods[method]
-        reply = send(request, data) if data is not None else send(request)
-        self._remember_request_time((host, port))
-        self._active_requests[reply] = (request, handler, xml, refresh)
-
-    def _start_request(self, method, host, port, path, data, handler, xml,
-                       mblogin=False, cacheloadcontrol=None, refresh=None,
-                       queryargs=None):
+    def _start_request(self, wsrequest):
         def start_request_continue(access_token=None):
-            self._start_request_continue(
-                method, host, port, path, data, handler, xml,
-                mblogin=mblogin, cacheloadcontrol=cacheloadcontrol, refresh=refresh,
-                access_token=access_token, queryargs=queryargs)
-        if mblogin and path != "/oauth2/token":
+            wsrequest.access_token = access_token
+            reply = wsrequest.send(self._request_methods)
+            self._remember_request_time(wsrequest.get_host_key())
+            self._active_requests[reply] = wsrequest
+
+        if wsrequest.mblogin and wsrequest.path != "/oauth2/token":
             self.oauth_manager.get_access_token(start_request_continue)
         else:
             start_request_continue()
@@ -246,17 +299,32 @@ class XmlWebService(QtCore.QObject):
             return url.port(443)
         return url.port(80)
 
-    def _handle_reply(self, reply, request, handler, xml, refresh):
+    def _handle_reply(self, reply, wsrequest):
+        handler = wsrequest.handler
         error = int(reply.error())
         if error:
-            log.error("Network request error for %s: %s (QT code %d, HTTP code %s)",
-                      reply.request().url().toString(QUrl.RemoveUserInfo),
-                      reply.errorString(),
-                      error,
-                      repr(reply.attribute(QtNetwork.QNetworkRequest.HttpStatusCodeAttribute))
-                      )
-            if handler is not None:
+            code = int(reply.attribute(QtNetwork.QNetworkRequest.HttpStatusCodeAttribute))
+            errstr = reply.errorString()
+            url = reply.request().url().toString(QUrl.RemoveUserInfo)
+            log.error("Network request error for %s: %s (QT code %d, HTTP code %d)",
+                      url,errstr, error, code)
+
+            if (wsrequest.retries < TEMP_ERRORS_RETRIES
+                and (code == 503
+                     or code == 429
+                     # following line is a workaround for Picard-809
+                     or errstr.endswith("Service Temporarily Unavailable")
+                    )
+               ):
+                new_wsrequest = wsrequest.copy()
+                new_wsrequest.retries += 1
+                new_wsrequest.priority = False
+                new_wsrequest.important = False
+                log.debug("Retrying %s (#%d)", url, new_wsrequest.retries)
+                self._start_request(new_wsrequest)
+            elif handler is not None:
                 handler(str(reply.readAll()), reply, error)
+
         else:
             redirect = reply.attribute(QtNetwork.QNetworkRequest.RedirectionTargetAttribute)
             fromCache = reply.attribute(QtNetwork.QNetworkRequest.SourceIsFromCacheAttribute)
@@ -268,9 +336,10 @@ class XmlWebService(QtCore.QObject):
                       cached
                       )
             if handler is not None:
+                xml = wsrequest.xml
                 # Redirect if found and not infinite
                 if redirect:
-                    url = request.url()
+                    url = wsrequest.qrequest.url()
                     # merge with base url (to cover the possibility of the URL being relative)
                     redirect = url.resolved(redirect)
                     if not XmlWebService.urls_equivalent(redirect, reply.request().url()):
@@ -294,8 +363,9 @@ class XmlWebService(QtCore.QObject):
                         self.get(redirect_host,
                                  redirect_port,
                                  redirect_path,
-                                 handler, xml, priority=True, important=True, refresh=refresh, queryargs=redirect_query,
-                                 cacheloadcontrol=request.attribute(QtNetwork.QNetworkRequest.CacheLoadControlAttribute))
+                                 handler, xml, priority=True, important=True,
+                                 refresh=wsrequest.refresh, queryargs=redirect_query,
+                                 cacheloadcontrol=wsrequest.qrequest.attribute(QtNetwork.QNetworkRequest.CacheLoadControlAttribute))
                     else:
                         log.error("Redirect loop: %s",
                                   reply.request().url().toString(QUrl.RemoveUserInfo)
@@ -309,34 +379,46 @@ class XmlWebService(QtCore.QObject):
 
     def _process_reply(self, reply):
         try:
-            request, handler, xml, refresh = self._active_requests.pop(reply)
+            wsrequest = self._active_requests.pop(reply)
         except KeyError:
             log.error("Request not found for %s" % reply.request().url().toString(QUrl.RemoveUserInfo))
             return
         try:
-            self._handle_reply(reply, request, handler, xml, refresh)
+            self._handle_reply(reply, wsrequest)
         finally:
             reply.close()
             reply.deleteLater()
 
     def get(self, host, port, path, handler, xml=True, priority=False,
             important=False, mblogin=False, cacheloadcontrol=None, refresh=False, queryargs=None):
-        func = partial(self._start_request, "GET", host, port, path, None,
-                       handler, xml, mblogin, cacheloadcontrol=cacheloadcontrol, refresh=refresh, queryargs=queryargs)
-        return self.add_task(func, host, port, priority, important=important)
+        wsrequest = WsRequest("GET", host, port, path, None, handler, xml, mblogin,
+                              cacheloadcontrol=cacheloadcontrol,
+                              refresh=refresh, queryargs=queryargs,
+                              priority=priority, important=important)
+        func = partial(self._start_request, wsrequest)
+        return self.add_task(func, wsrequest)
 
     def post(self, host, port, path, data, handler, xml=True, priority=False, important=False, mblogin=True, queryargs=None):
+        wsrequest = WsRequest("POST", host, port, path, data, handler, xml,
+                              mblogin, queryargs=queryargs,
+                              priority=priority, important=important)
         log.debug("POST-DATA %r", data)
-        func = partial(self._start_request, "POST", host, port, path, data, handler, xml, mblogin, queryargs=queryargs)
-        return self.add_task(func, host, port, priority, important=important)
+        func = partial(self._start_request, wsrequest)
+        return self.add_task(func, wsrequest)
 
     def put(self, host, port, path, data, handler, priority=True, important=False, mblogin=True, queryargs=None):
-        func = partial(self._start_request, "PUT", host, port, path, data, handler, False, mblogin, queryargs=queryargs)
-        return self.add_task(func, host, port, priority, important=important)
+        wsrequest = WsRequest("PUT", host, port, path, data, handler, False,
+                              mblogin, queryargs=queryargs,
+                              priority=priority, important=important)
+        func = partial(self._start_request, wsrequest)
+        return self.add_task(func, wsrequest)
 
     def delete(self, host, port, path, handler, priority=True, important=False, mblogin=True, queryargs=None):
-        func = partial(self._start_request, "DELETE", host, port, path, None, handler, False, mblogin, queryargs=queryargs)
-        return self.add_task(func, host, port, priority, important=important)
+        wsrequest = WsRequest("DELETE", host, port, path, None, handler, False,
+                              mblogin, queryargs=queryargs,
+                              priority=priority, important=important)
+        func = partial(self._start_request, wsrequest)
+        return self.add_task(func, wsrequest)
 
     def stop(self):
         for reply in self._active_requests.keys():
@@ -404,10 +486,10 @@ class XmlWebService(QtCore.QObject):
         if delay < sys.maxsize:
             self._timer_run_next_task.start(delay)
 
-    def add_task(self, func, host, port, priority, important=False):
-        hostkey = (host, port)
-        prio = int(priority)  # priority is a boolean
-        if important:
+    def add_task(self, func, wsrequest):
+        hostkey = wsrequest.get_host_key()
+        prio = int(wsrequest.priority)  # priority is a boolean
+        if wsrequest.important:
             self._queues[prio][hostkey].appendleft(func)
         else:
             self._queues[prio][hostkey].append(func)
