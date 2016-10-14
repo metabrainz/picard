@@ -83,6 +83,16 @@ REQUEST_DELAY_MINIMUM = defaultdict(lambda: 1000)
 for hostkey in product(MUSICBRAINZ_SERVERS, (80, 443)):
     REQUEST_DELAY_MINIMUM[hostkey] = 20  # 50 reqs/s = 1 req/20ms.
 
+# "Do not make more than 3 requests per second." --
+# https://acoustid.org/webservice
+REQUEST_DELAY_MINIMUM[(ACOUSTID_HOST, ACOUSTID_PORT)] = 333
+
+# "There are currently no rate limiting rules in place." --
+# https://musicbrainz.org/doc/Cover_Art_Archive/API
+#
+# Even so, be nice and use the same limit as MusicBrainz.
+REQUEST_DELAY_MINIMUM[(CAA_HOST, CAA_PORT)] = 20
+
 #: Current delay (adaptive) between requests to a given hostkey.
 REQUEST_DELAY = defaultdict(lambda: 1000)  # Conservative initial value.
 
