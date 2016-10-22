@@ -43,8 +43,7 @@ from picard.const import (ACOUSTID_KEY,
                           ACOUSTID_HOST,
                           ACOUSTID_PORT,
                           CAA_HOST,
-                          CAA_PORT,
-                          MUSICBRAINZ_SERVERS)
+                          CAA_PORT)
 from picard.oauth import OAuthManager
 from picard.util import build_qurl
 
