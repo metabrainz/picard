@@ -591,4 +591,4 @@ class XmlWebService(QtCore.QObject):
         host, port = config.setting['server_host'], config.setting['server_port']
         for path in self._collection_request(id, releases):
             self.delete(host, port, path, handler,
-                        queryargs=self._get_client_queryarg)
+                        queryargs=self._get_client_queryarg())
