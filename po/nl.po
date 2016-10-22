@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2015-02-06 13:01+0100\n"
-"PO-Revision-Date: 2016-05-01 10:08+0000\n"
+"PO-Revision-Date: 2016-06-07 07:44+0000\n"
 "Last-Translator: Maurits Meulenbelt <mfmeulenbelt@gmail.com>\n"
 "Language-Team: Dutch (http://www.transifex.com/musicbrainz/musicbrainz/language/nl/)\n"
 "MIME-Version: 1.0\n"
@@ -1082,11 +1082,11 @@ msgstr "Bestandsnaam"
 #: picard/ui/ui_cdlookup.py:53 picard/ui/ui_options_cdlookup.py:42
 #: picard/ui/ui_options_cdlookup_select.py:49 picard/ui/options/cdlookup.py:38
 msgid "CD Lookup"
-msgstr "CD opzoeken"
+msgstr "Cd opzoeken"
 
 #: picard/ui/ui_cdlookup.py:54
 msgid "The following releases on MusicBrainz match the CD:"
-msgstr "De volgende uitgaves op MusicBrainz komen overeen met de CD:"
+msgstr "De volgende uitgaves op MusicBrainz komen overeen met de cd:"
 
 #: picard/ui/ui_cdlookup.py:55
 msgid "OK"
@@ -1142,11 +1142,11 @@ msgstr "Verborgen bestanden negeren"
 
 #: picard/ui/ui_options_cdlookup.py:43
 msgid "CD-ROM device to use for lookups:"
-msgstr "CD-station voor het opzoeken van CD’s:"
+msgstr "Cd-station voor het opzoeken van cd’s:"
 
 #: picard/ui/ui_options_cdlookup_select.py:50
 msgid "Default CD-ROM drive to use for lookups:"
-msgstr "Standaard CD-station voor het opzoeken van CD’s:"
+msgstr "Standaard cd-station voor het opzoeken van cd’s:"
 
 #: picard/ui/ui_options_cover.py:142
 msgid "Location"

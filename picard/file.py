@@ -48,6 +48,7 @@ from picard.util.textencoding import (
 )
 from picard.util.filenaming import make_short_filename
 from picard.util.tags import PRESERVED_TAGS
+from picard.const import QUERY_LIMIT
 
 
 class File(QtCore.QObject, Item):
@@ -564,7 +565,7 @@ class File(QtCore.QObject, Item):
             tracks=metadata['totaltracks'],
             qdur=str(metadata.length / 2000),
             isrc=metadata['isrc'],
-            limit=25)
+            limit=QUERY_LIMIT)
 
     def clear_lookup_task(self):
         if self.lookup_task:

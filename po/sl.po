@@ -4,14 +4,15 @@
 # 
 # Translators:
 # Alan Rener, 2012
+# Alan Rener, 2016
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2007
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2015-02-06 13:01+0100\n"
-"PO-Revision-Date: 2015-02-07 08:15+0000\n"
-"Last-Translator: nikki\n"
+"PO-Revision-Date: 2016-08-02 08:32+0000\n"
+"Last-Translator: Alan Rener\n"
 "Language-Team: Slovenian (http://www.transifex.com/musicbrainz/musicbrainz/language/sl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -22,7 +23,7 @@ msgstr ""
 
 #: contrib/plugins/albumartist_website.py:3
 msgid "Album Artist Website"
-msgstr ""
+msgstr "Spletna stran izvajalca albuma"
 
 #: contrib/plugins/no_release.py:50
 msgid "Enable plugin for all releases by default"
@@ -42,7 +43,7 @@ msgstr ""
 
 #: contrib/plugins/lastfm/ui_options_lastfm.py:99
 msgid "Last.fm"
-msgstr ""
+msgstr "Last.fm"
 
 #: contrib/plugins/lastfm/ui_options_lastfm.py:100
 msgid "Use track tags"
@@ -150,7 +151,7 @@ msgstr ""
 #: contrib/plugins/viewvariables/__init__.py:42
 #, python-format
 msgid "File: %s"
-msgstr ""
+msgstr "Datoteka: %s"
 
 #: contrib/plugins/viewvariables/__init__.py:47
 #, python-format
@@ -159,7 +160,7 @@ msgstr ""
 
 #: contrib/plugins/viewvariables/__init__.py:49
 msgid "Variables"
-msgstr ""
+msgstr "Spremenljivke"
 
 #: contrib/plugins/viewvariables/__init__.py:69
 msgid "File variables"
@@ -179,7 +180,7 @@ msgstr ""
 
 #: contrib/plugins/viewvariables/ui_variables_dialog.py:75
 msgid "Value"
-msgstr ""
+msgstr "Vrednost"
 
 #: picard/acoustid.py:111
 #, python-format
@@ -335,7 +336,7 @@ msgstr ""
 
 #: picard/releasegroup.py:54
 msgid "Year"
-msgstr ""
+msgstr "Leto"
 
 #: picard/releasegroup.py:55 picard/ui/cdlookup.py:35
 msgid "Country"
@@ -347,7 +348,7 @@ msgstr "Format"
 
 #: picard/releasegroup.py:57
 msgid "Label"
-msgstr ""
+msgstr "Založba"
 
 #: picard/releasegroup.py:58
 msgid "Cat No"
@@ -355,7 +356,7 @@ msgstr ""
 
 #: picard/releasegroup.py:88
 msgid "[no barcode]"
-msgstr ""
+msgstr "[brez črtne kode]"
 
 #: picard/releasegroup.py:108
 msgid "[no release info]"
@@ -456,7 +457,7 @@ msgstr ""
 
 #: picard/coverart/utils.py:31
 msgid "Unknown"
-msgstr ""
+msgstr "Neznano"
 
 #: picard/ui/cdlookup.py:35 picard/ui/mainwindow.py:603 picard/util/tags.py:21
 msgid "Album"
@@ -473,7 +474,7 @@ msgstr "Datum"
 
 #: picard/ui/cdlookup.py:36
 msgid "Labels"
-msgstr ""
+msgstr "Založbe"
 
 #: picard/ui/cdlookup.py:36
 msgid "Catalog #s"
@@ -481,7 +482,7 @@ msgstr ""
 
 #: picard/ui/cdlookup.py:36 picard/util/tags.py:78
 msgid "Barcode"
-msgstr "Barkoda"
+msgstr "Črtna koda"
 
 #: picard/ui/collectionmenu.py:42
 msgid "Refresh List"
@@ -583,11 +584,11 @@ msgstr ""
 
 #: picard/ui/infodialog.py:186
 msgid "Album:"
-msgstr ""
+msgstr "Album:"
 
 #: picard/ui/infodialog.py:188
 msgid "Artist:"
-msgstr ""
+msgstr "Izvajalec:"
 
 #: picard/ui/infodialog.py:198
 msgid "Tracklist:"
@@ -595,11 +596,11 @@ msgstr ""
 
 #: picard/ui/infostatus.py:51
 msgid "Files"
-msgstr ""
+msgstr "Datoteke"
 
 #: picard/ui/infostatus.py:52
 msgid "Albums"
-msgstr ""
+msgstr "Albumi"
 
 #: picard/ui/infostatus.py:53
 msgid "Pending files"
@@ -683,7 +684,7 @@ msgstr "Neshranjene spremembe"
 
 #: picard/ui/mainwindow.py:157
 msgid "Are you sure you want to quit Picard?"
-msgstr "Ali res želite ugasniti Picarda?"
+msgstr "Želite res ugasniti ugasniti Picarda?"
 
 #: picard/ui/mainwindow.py:158
 #, python-format
@@ -714,7 +715,7 @@ msgstr ""
 #: picard/ui/mainwindow.py:244
 #, python-format
 msgid " Listening on port %(port)d "
-msgstr ""
+msgstr " Poslušam na vratih %(port)d "
 
 #: picard/ui/mainwindow.py:300
 msgid "Submission Error"
@@ -1194,7 +1195,7 @@ msgstr ""
 
 #: picard/ui/ui_options_cover.py:149
 msgid "Amazon"
-msgstr ""
+msgstr "Amazon"
 
 #: picard/ui/ui_options_cover.py:150 picard/ui/ui_options_cover.py:152
 msgid "Cover Art Archive"
@@ -1210,15 +1211,15 @@ msgstr ""
 
 #: picard/ui/ui_options_cover.py:154
 msgid "250 px"
-msgstr ""
+msgstr "250 px"
 
 #: picard/ui/ui_options_cover.py:155
 msgid "500 px"
-msgstr ""
+msgstr "500 px"
 
 #: picard/ui/ui_options_cover.py:156
 msgid "Full size"
-msgstr ""
+msgstr "Polna velikosta"
 
 #: picard/ui/ui_options_cover.py:157
 msgid "Download only cover art images matching selected types"
@@ -1311,11 +1312,11 @@ msgstr ""
 
 #: picard/ui/ui_options_general.py:96
 msgid "Log in"
-msgstr ""
+msgstr "Prijava"
 
 #: picard/ui/ui_options_general.py:97
 msgid "Log out"
-msgstr ""
+msgstr "Odjava"
 
 #: picard/ui/ui_options_general.py:98 picard/ui/options/general.py:33
 msgid "General"
@@ -1664,12 +1665,12 @@ msgstr "O"
 
 #: picard/ui/options/about.py:53
 msgid "translator-credits"
-msgstr "Launchpad Contributions:\n  Alan Pepelko https://launchpad.net/~alan-new-deactivatedaccount\n  rokkralj https://launchpad.net/~rok-kralj"
+msgstr "prevajalci"
 
 #: picard/ui/options/about.py:56
 #, python-format
 msgid "<br/>Translated to LANG by %s"
-msgstr "<br/>V slovenščino prevedel %s"
+msgstr "<br/>V LANG prevedel %s"
 
 #: picard/ui/options/about.py:60
 #, python-format
@@ -1791,7 +1792,7 @@ msgstr ""
 
 #: picard/ui/options/scripting.py:131
 msgid "Script Error"
-msgstr "Napaka skripte"
+msgstr "Napaka skript"
 
 #: picard/util/bytes2human.py:33
 #, python-format
@@ -1907,7 +1908,7 @@ msgstr "ASIN"
 
 #: picard/util/tags.py:38
 msgid "Grouping"
-msgstr "Združevanje"
+msgstr "Grupiranje"
 
 #: picard/util/tags.py:39
 msgid "ISRC"
@@ -2091,7 +2092,7 @@ msgstr "Jezik"
 
 #: picard/util/tags.py:85
 msgid "Script"
-msgstr ""
+msgstr "Skripta"
 
 #: picard/util/tags.py:87
 msgid "Rating"
@@ -2103,11 +2104,11 @@ msgstr ""
 
 #: picard/util/tags.py:89
 msgid "Work"
-msgstr ""
+msgstr "Delo"
 
 #: picard/util/versions.py:44
 msgid "is not installed"
-msgstr ""
+msgstr "ni nameščen"
 
 #: picard/util/webbrowser2.py:90
 msgid "Web Browser Error"

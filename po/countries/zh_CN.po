@@ -3,6 +3,7 @@
 #  <>, 2002, 2001, Inc, 2003, 2007, 2008, 2009, 2010, 2011, 2000,�s�, 2012
 #   Alastair McKinstry <mckinstry@computer.org>, 2002
 # Alastair McKinstry <mckinstry@computer.org>, 2001
+# Clay Cheng <clay1994@mail.hfut.edu.cn>, 2016
 #   Free Software Foundation, Inc., 2002, 2003, 2007, 2008
 # RedHotHeat <gbonner@iol.ie>, 2012
 # RedHotHeat <gbonner@iol.ie>, 2012
@@ -15,8 +16,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2015-03-27 11:32+0000\n"
-"Last-Translator: Ian McEwen <ianmcorvidae@ianmcorvidae.net>\n"
+"PO-Revision-Date: 2016-07-22 14:44+0000\n"
+"Last-Translator: Clay Cheng <clay1994@mail.hfut.edu.cn>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/musicbrainz/musicbrainz/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -407,7 +408,7 @@ msgstr "法罗群岛"
 #. iso.code:FM
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:139
 msgid "Federated States of Micronesia"
-msgstr ""
+msgstr "密克罗尼西亚联邦"
 
 #. iso.code:FJ
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:71
@@ -947,7 +948,7 @@ msgstr "罗马尼亚"
 #. iso.code:RU
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:176
 msgid "Russia"
-msgstr ""
+msgstr "俄罗斯"
 
 #. iso.code:RW
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:177
@@ -1262,7 +1263,7 @@ msgstr "瓦努阿图"
 #. iso.code:VA
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:227
 msgid "Vatican City"
-msgstr ""
+msgstr "梵蒂冈"
 
 #. iso.code:VE
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:228

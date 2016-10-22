@@ -82,6 +82,11 @@ from picard.util import (
     versions,
 )
 from picard.webservice import XmlWebService
+from picard.ui.searchdialog import (
+    TrackSearchDialog,
+    AlbumSearchDialog,
+    ArtistSearchDialog
+)
 
 
 class Tagger(QtGui.QApplication):
@@ -417,7 +422,21 @@ class Tagger(QtGui.QApplication):
     def search(self, text, type, adv=False):
         """Search on the MusicBrainz website."""
         lookup = self.get_file_lookup()
-        getattr(lookup, type + "Search")(text, adv)
+        if config.setting["builtin_search"]:
+            if type == "track" and not lookup.mbidLookup(text, 'recording'):
+                dialog = TrackSearchDialog(self.window)
+                dialog.search(text)
+                dialog.exec_()
+            elif type == "album" and not lookup.mbidLookup(text, 'release'):
+                dialog = AlbumSearchDialog(self.window)
+                dialog.search(text)
+                dialog.exec_()
+            elif type == "artist" and not lookup.mbidLookup(text, 'artist'):
+                dialog = ArtistSearchDialog(self.window)
+                dialog.search(text)
+                dialog.exec_()
+        else:
+            getattr(lookup, type + "Search")(text, adv)
 
     def collection_lookup(self):
         """Lookup the users collections on the MusicBrainz website."""

@@ -37,3 +37,16 @@ class ParseAmazonUrlTest(unittest.TestCase):
         expected = None
         r = parse_amazon_url(url)
         self.assertEqual(r, expected)
+
+    def test_6(self):
+        url = 'https://www.amazon.co.jp/gp/product/B00005FMYV'
+        expected = {'asin': 'B00005FMYV', 'host': 'amazon.co.jp'}
+        r = parse_amazon_url(url)
+        self.assertEqual(r, expected)
+
+    def test_7(self):
+        #incorrect url scheme
+        url = 'httpsa://www.amazon.co.jp/gp/product/B00005FMYV'
+        expected = None
+        r = parse_amazon_url(url)
+        self.assertEqual(r, expected)

@@ -205,12 +205,28 @@ def artist_credit_to_metadata(node, m, release=False):
         m["~artists_sort"] = artistsort
 
 
+def country_list_from_node(node):
+    """Extract list of country codes from `release_event_list` node.
+    This is in contrast with `country` element, which has single release
+    event information.
+    """
+    if "release_event_list" in node.children:
+        country = []
+        for release_event in node.release_event_list[0].release_event:
+            try:
+                country.append(
+                    release_event.area[0].iso_3166_1_code_list[0].iso_3166_1_code[0].text)
+            except AttributeError:
+                pass
+        return country
+
+
 def label_info_from_node(node):
     labels = []
     catalog_numbers = []
-    if node.count != "0":
+    if node.children:
         for label_info in node.label_info:
-            if 'label' in label_info.children:
+            if 'label' in label_info.children and label_info.label[0].children:
                 label = label_info.label[0].name[0].text
                 if label not in labels:
                     labels.append(label)
@@ -337,6 +353,36 @@ def medium_to_metadata(node, m):
             m['media'] = nodes[0].text
 
 
+def artist_to_metadata(node, m):
+    """Make meatadata dict from a XML 'artist' node."""
+    m.add_unique("musicbrainz_artistid", node.id)
+    for name, nodes in node.children.iteritems():
+        if not nodes:
+            continue
+        if name == "name":
+            m["name"] = nodes[0].text
+        elif name == "area":
+            m["area"] = nodes[0].name[0].text
+        elif name == "gender":
+            m["gender"] = nodes[0].text
+        elif name == "life_span":
+            if "begin" in nodes[0].children:
+                m["begindate"] = nodes[0].begin[0].text
+            if "ended" in nodes[0].children:
+                ended = nodes[0].ended[0].text
+                if ended == "true" and "end" in nodes[0].children:
+                    m["enddate"] = nodes[0].end[0].text
+        elif name == "begin_area":
+            m["beginarea"] = nodes[0].name[0].text
+        elif name == "end_area":
+            m["endarea"] = nodes[0].name[0].text
+
+    try:
+        m["type"] = node.type
+    except AttributeError:
+        pass
+
+
 def release_to_metadata(node, m, album=None):
     """Make metadata dict from a XML 'release' node."""
     m.add_unique('musicbrainz_albumid', node.id)
@@ -374,7 +420,7 @@ def release_to_metadata(node, m, album=None):
             m['barcode'] = nodes[0].text
         elif name == 'relation_list':
             _relations_to_metadata(nodes, m)
-        elif name == 'label_info_list' and getattr(nodes[0], 'count', '0') != '0':
+        elif name == 'label_info_list' and nodes[0].children:
             m['label'], m['catalognumber'] = label_info_from_node(nodes[0])
         elif name == 'text_representation':
             if 'language' in nodes[0].children:

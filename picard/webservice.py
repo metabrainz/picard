@@ -573,6 +573,9 @@ class XmlWebService(QtCore.QObject):
     def find_tracks(self, handler, **kwargs):
         return self._find('recording', handler, kwargs)
 
+    def find_artists(self, handler, **kwargs):
+        return self._find('artist', handler, kwargs)
+
     def _browse(self, entitytype, handler, kwargs, inc=[], priority=False, important=False):
         host = config.setting["server_host"]
         port = config.setting["server_port"]
@@ -668,4 +671,4 @@ class XmlWebService(QtCore.QObject):
         host, port = config.setting['server_host'], config.setting['server_port']
         for path in self._collection_request(id, releases):
             self.delete(host, port, path, handler,
-                        queryargs=self._get_client_queryarg)
+                        queryargs=self._get_client_queryarg())

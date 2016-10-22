@@ -22,7 +22,7 @@ from PyQt4 import QtCore
 import os.path
 import re
 from picard import log
-from picard.const import PICARD_URLS
+from picard.const import PICARD_URLS, QUERY_LIMIT
 from picard.util import webbrowser2, build_qurl
 
 
@@ -101,7 +101,7 @@ class FileLookup(object):
         if self.mbidLookup(query, type_):
             return True
         params = {
-            'limit': 25,
+            'limit': QUERY_LIMIT,
             'type': type_,
             'query': query,
         }

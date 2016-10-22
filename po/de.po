@@ -15,8 +15,8 @@
 # Shepard, 2012
 # Wieland Hoffmann <themineo+transifex@googlemail.com>, 2012
 # Wieland Hoffmann <themineo+transifex@googlemail.com>, 2013,2015
-# HumHumXX <xhummuhx+transifex@gmail.com>, 2015
-# HumHumXX <xhummuhx+transifex@gmail.com>, 2012
+# HumHumXX, 2015
+# HumHumXX, 2012
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
