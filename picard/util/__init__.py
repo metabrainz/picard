@@ -213,7 +213,7 @@ def parse_amazon_url(url):
     """Extract host and asin from an amazon url.
     It returns a dict with host and asin keys on success, None else
     """
-    r = re.compile(r'^http://(?:www.)?(?P<host>.*?)(?:\:[0-9]+)?/.*/(?P<asin>[0-9B][0-9A-Z]{9})(?:[^0-9A-Z]|$)')
+    r = re.compile(r'^https?://(?:www.)?(?P<host>.*?)(?:\:[0-9]+)?/.*/(?P<asin>[0-9B][0-9A-Z]{9})(?:[^0-9A-Z]|$)')
     match = r.match(url)
     if match is not None:
         return match.groupdict()
