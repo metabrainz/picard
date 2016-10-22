@@ -45,6 +45,7 @@ class ParseAmazonUrlTest(unittest.TestCase):
         self.assertEqual(r, expected)
 
     def test_7(self):
+        #incorrect url scheme
         url = 'httpsa://www.amazon.co.jp/gp/product/B00005FMYV'
         expected = None
         r = parse_amazon_url(url)
