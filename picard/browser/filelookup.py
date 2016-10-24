@@ -68,7 +68,7 @@ class FileLookup(object):
         return self._lookup('track', track_id)
 
     def workLookup(self, work_id):
-        return self._lookup('work', artist_id)
+        return self._lookup('work', work_id)
 
     def releaseGroupLookup(self, releaseGroup_id):
         return self._lookup('release-group', releaseGroup_id)
