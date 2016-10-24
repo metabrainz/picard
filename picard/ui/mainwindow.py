@@ -35,8 +35,11 @@ from picard.ui.tagsfromfilenames import TagsFromFileNamesDialog
 from picard.ui.options.dialog import OptionsDialog
 from picard.ui.infodialog import FileInfoDialog, AlbumInfoDialog, ClusterInfoDialog
 from picard.ui.infostatus import InfoStatus
-from picard.ui.passworddialog import PasswordDialog
+from picard.ui.passworddialog import PasswordDialog, ProxyDialog
 from picard.ui.logview import LogView, HistoryView
+from picard.ui.searchdialog import (
+    TrackSearchDialog,
+    AlbumSearchDialog)
 from picard.ui.util import (
     find_starting_directory,
     ButtonLineEdit,
