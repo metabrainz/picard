@@ -361,6 +361,15 @@ class Tagger(QtGui.QApplication):
                     self.files[filename] = file
                     new_files.append(file)
         if new_files:
+            max_file = 2
+            if len(new_files) > max_file:
+                warning = _(u"Are you sure you want to load %s files? Picard may "
+                "run very slowly") % len(new_files)
+                pressed = QtGui.QMessageBox.warning(self.window, _(u"File Limit Exceeded"),
+                                       warning, QtGui.QMessageBox.Yes,
+                                       QtGui.QMessageBox.No)
+                if pressed:
+                    log.debug(pressed)
             log.debug("Adding files %r", new_files)
             new_files.sort(key=lambda x: x.filename)
             if target is None or target is self.unmatched_files:
