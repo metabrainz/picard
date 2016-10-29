@@ -374,7 +374,7 @@ class Tagger(QtGui.QApplication):
                 file.load(partial(self._file_loaded, target=target))
 
     def check_load(self, new_files):
-        max_file = 2
+        max_file = 5000
         if len(new_files) > max_file:
             QMessageBox = QtGui.QMessageBox
 
