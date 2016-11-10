@@ -25,7 +25,7 @@ import ntpath
 import sys
 from operator import itemgetter
 from heapq import heappush, heappop
-from PyQt4 import QtCore
+from PyQt4 import QtCore, QtGui
 from picard import config
 from picard.metadata import Metadata
 from picard.similarity import similarity
@@ -226,17 +226,23 @@ class Cluster(QtCore.QObject, Item):
 
         artist_cluster_engine = ClusterEngine(artistDict)
         artist_cluster_engine.cluster(threshold)
-
+        #print("THIS is cluster ids: ",artist_cluster_engine.clusterDict.ids)
         album_cluster_engine = ClusterEngine(albumDict)
         album_cluster_engine.cluster(threshold)
-
+        #print(album_cluster_engine.clusterDict.ids)
         # Arrange tracks into albums
         albums = {}
+
         for i in xrange(len(tracks)):
             cluster = album_cluster_engine.getClusterFromId(tracks[i][1])
+            # Some tracks may not have been clustered by artist in the engine
+            # Thus, can't use .getClusterFromId
+            #artistCluster = artist_cluster_engine.clusterDict.ids.get(tracks[i][0])
+            #print(artistCluster)
+            #album_cluster_engine.printCluster(cluster)
             if cluster is not None:
                 albums.setdefault(cluster, []).append(i)
-
+        print(albums)
         # Now determine the most prominent names in the cluster and build the
         # final cluster list
         for album_id, album in albums.items():
@@ -246,8 +252,35 @@ class Cluster(QtCore.QObject, Item):
             artist_id = None
             artist_hist = {}
             for track_id in album:
+                artist = tracks[track_id][0]
                 cluster = artist_cluster_engine.getClusterFromId(
                     tracks[track_id][0])
+                print(artist)
+                if artist is not artist_id and artist_max is not 0:
+                    print("oh dear, ", artist, " is new")
+                    QMessageBox = QtGui.QMessageBox
+                    QCheckBox = QtGui.QCheckBox
+                    QRadioButton = QtGui.QRadioButton
+
+                    msg = QMessageBox()
+                    msg.setIcon(QMessageBox.Question)
+                    msg.setWindowTitle(_(u"Album Artist Conflict"))
+                    msg.setText(_(u"We found tracks that share an album title, "
+                        "but do not share an artist name. How would you like to "
+                        "manage these tracks?"))
+                    cancel = msg.addButton(QMessageBox.Cancel)
+                    msg.setDefaultButton(cancel)
+                    box = QCheckBox()
+                    box.setText(_(u"Do this for all conflicts"))
+                    msg.addButton(box, QMessageBox.ActionRole)
+                    doCluster = QRadioButton()
+                    doCluster.setText(_(u"Cluster these tracks in the same album"))
+                    msg.addButton(doCluster, QMessageBox.YesRole)
+                    noCluster = QRadioButton()
+                    noCluster.setText(_(u"Cluster these tracks separately"))
+                    msg.addButton(noCluster, QMessageBox.NoRole)
+                    print(msg.childrenRect().getCoords())
+                    ret = msg.exec_()
                 if cluster is not None:
                     cnt = artist_hist.get(cluster, 0) + 1
                     if cnt > artist_max:

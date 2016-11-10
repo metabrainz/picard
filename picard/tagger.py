@@ -363,6 +363,7 @@ class Tagger(QtGui.QApplication):
                     new_files.append(file)
         if new_files and self.check_load(new_files):
             for filename in tmp_files:
+                # Now that we know they will be moved, add to list of files
                 file = open_file(filename)
                 self.files[filename] = file
             log.debug("Adding files %r", new_files)
@@ -373,6 +374,7 @@ class Tagger(QtGui.QApplication):
             for file in new_files:
                 file.load(partial(self._file_loaded, target=target))
 
+    # Alert if file load exceeds a set limit
     def check_load(self, new_files):
         max_file = 5000
         if len(new_files) > max_file:
