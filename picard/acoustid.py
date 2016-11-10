@@ -49,14 +49,14 @@ class AcoustIDClient(QtCore.QObject):
 
         def make_artist_credit_node(parent, artists):
             artist_credit_el = parent.append_child('artist_credit')
-            for i, artist in enumerate(artists):
+            for artist in artists:
                 name_credit_el = artist_credit_el.append_child('name_credit')
                 artist_el = name_credit_el.append_child('artist')
                 artist_el.append_child('id').text = artist.id[0].text
                 artist_el.append_child('name').text = artist.name[0].text
                 artist_el.append_child('sort_name').text = artist.name[0].text
-                if i > 0:
-                    name_credit_el.attribs['joinphrase'] = '; '
+                if 'joinphrase' in artist.children:
+                    name_credit_el.attribs['joinphrase'] = artist.joinphrase[0].text
             return artist_credit_el
 
         def parse_recording(recording):
@@ -76,6 +76,8 @@ class AcoustIDClient(QtCore.QObject):
                     release_el.attribs['id'] = release.id[0].text
                     release_group_el = release_el.append_child('release_group')
                     release_group_el.attribs['id'] = release_group.id[0].text
+                    if 'title' in release_group.children:
+                        release_group_el.append_child('title').text = release_group.title[0].text
                     if 'title' in release.children:
                         release_el.append_child('title').text = release.title[0].text
                     else:
@@ -96,8 +98,7 @@ class AcoustIDClient(QtCore.QObject):
 
         doc = XmlNode()
         metadata_el = doc.append_child('metadata')
-        acoustid_el = metadata_el.append_child('acoustid')
-        recording_list_el = acoustid_el.append_child('recording_list')
+        recording_list_el = metadata_el.append_child('recording_list')
 
         if error:
             mparms = {
@@ -120,8 +121,18 @@ class AcoustIDClient(QtCore.QObject):
                     result = results[0]
                     file.metadata['acoustid_id'] = result.id[0].text
                     if 'recordings' in result.children:
+                        # To eliminate spurious acoustids we will
+                        # ignore recordings with sources < 20% of greatest sources
+                        max = 0
                         for recording in result.recordings[0].recording:
-                            parse_recording(recording)
+                            if 'sources' in recording.children:
+                                s = int(recording.sources[0].text)
+                                max = s if s > max else max
+                        min = max * 0.2
+                        for recording in result.recordings[0].recording:
+                            s = int(recording.sources[0].text)
+                            if s > min:
+                                parse_recording(recording)
                         log.debug("AcoustID: Lookup successful for '%s'", file.filename)
             else:
                 mparms = {
@@ -169,7 +180,7 @@ class AcoustIDClient(QtCore.QObject):
             mparms,
             echo=None
         )
-        params = dict(meta='recordings releasegroups releases tracks compress')
+        params = dict(meta='recordings releasegroups releases tracks sources compress')
         if result[0] == 'fingerprint':
             type, fingerprint, length = result
             file.acoustid_fingerprint = fingerprint
