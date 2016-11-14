@@ -251,13 +251,15 @@ class Cluster(QtCore.QObject, Item):
             artist_max = 0
             artist_id = None
             artist_hist = {}
+            artist_set = set()
+            i = 0
             for track_id in album:
                 artist = tracks[track_id][0]
+
                 cluster = artist_cluster_engine.getClusterFromId(
                     tracks[track_id][0])
-                print(artist)
-                if artist is not artist_id and artist_max is not 0:
-                    print("oh dear, ", artist, " is new")
+
+                if artist in artist_set and i is not 0:
                     QMessageBox = QtGui.QMessageBox
                     QCheckBox = QtGui.QCheckBox
                     QRadioButton = QtGui.QRadioButton
@@ -287,6 +289,8 @@ class Cluster(QtCore.QObject, Item):
                         artist_max = cnt
                         artist_id = cluster
                     artist_hist[cluster] = cnt
+                artist_set.add(artist)
+                i+= 1
 
             if artist_id is None:
                 artist_name = u"Various Artists"
