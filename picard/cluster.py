@@ -259,7 +259,7 @@ class Cluster(QtCore.QObject, Item):
                 cluster = artist_cluster_engine.getClusterFromId(
                     tracks[track_id][0])
 
-                if artist in artist_set and i is not 0:
+                if artist not in artist_set and i is not 0:
                     QMessageBox = QtGui.QMessageBox
                     QCheckBox = QtGui.QCheckBox
                     QRadioButton = QtGui.QRadioButton
