@@ -1,4 +1,7 @@
-## This is the  basic ToolTip model
+## This is the  basic ToolTip model.
+## This creates a little dialogue box, with two buttons for testing.
+
+## pygtk easily create programs with a graphical user interface
 
 import pygtk
 
@@ -9,6 +12,7 @@ import gtk
 class MyGUI:
 
   def __init__( self, title):
+
     self.window = gtk.Window()
     self.title = title
     self.window.set_title( title)
@@ -50,9 +54,10 @@ class MyGUI:
     # second button
 
     button = gtk.Button( "Big red button")
-    button.connect( "clicked", self.red_button_clicked)
+    button.connect("clicked", self.red_button_clicked)
     self.button_box.pack_start( button)
     button.show()
+
     button.set_tooltip_markup( "Do <b>not</b> press this button!")
 
     # show the box

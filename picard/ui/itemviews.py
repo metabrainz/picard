@@ -76,6 +76,7 @@ def register_file_action(action):
 
 
 def get_match_color(similarity, basecolor):
+
     c1 = (basecolor.red(), basecolor.green(), basecolor.blue())
     c2 = (223, 125, 125)
     return QtGui.QColor(
@@ -87,16 +88,19 @@ def get_match_color(similarity, basecolor):
 class MainPanel(QtGui.QSplitter):
 
     options = [
+
         config.Option("persist", "splitter_state", QtCore.QByteArray()),
     ]
 
     columns = [
+
         (N_('Title'), 'title'),
         (N_('Length'), '~length'),
         (N_('Artist'), 'artist'),
     ]
 
     def __init__(self, window, parent=None):
+
         QtGui.QSplitter.__init__(self, parent)
         self.window = window
         self.create_icons()
@@ -147,7 +151,9 @@ class MainPanel(QtGui.QSplitter):
         AlbumItem.icon_cd_modified = icontheme.lookup('media-optical-modified', icontheme.ICON_SIZE_MENU)
 
         AlbumItem.icon_cd_saved = icontheme.lookup('Optical Import Complete', icontheme.ICON_SIZE_MENU)
+
         AlbumItem.icon_cd_saved_modified = icontheme.lookup('media-optical-saved-modified',
+
                                                             icontheme.ICON_SIZE_MENU)
 
         AlbumItem.icon_error = icontheme.lookup('Optical Import Error', icontheme.ICON_SIZE_MENU)
@@ -164,6 +170,7 @@ class MainPanel(QtGui.QSplitter):
         FileItem.icon_saved = QtGui.QIcon(":/images/track-saved.png")
 
         FileItem.match_icons = [
+
             QtGui.QIcon(":/images/match-50.png"),
             QtGui.QIcon(":/images/match-60.png"),
             QtGui.QIcon(":/images/match-70.png"),
