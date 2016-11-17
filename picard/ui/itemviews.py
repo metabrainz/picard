@@ -136,16 +136,24 @@ class MainPanel(QtGui.QSplitter):
         if hasattr(QtGui.QStyle, 'SP_DirIcon'):
             ClusterItem.icon_dir = self.style().standardIcon(QtGui.QStyle.SP_DirIcon)
         else:
+
             ClusterItem.icon_dir = icontheme.lookup('folder', icontheme.ICON_SIZE_MENU)
+
+            ##########
+
         AlbumItem.icon_cd = icontheme.lookup('media-optical', icontheme.ICON_SIZE_MENU)
         AlbumItem.icon_cd_modified = icontheme.lookup('media-optical-modified', icontheme.ICON_SIZE_MENU)
         AlbumItem.icon_cd_saved = icontheme.lookup('media-optical-saved', icontheme.ICON_SIZE_MENU)
         AlbumItem.icon_cd_saved_modified = icontheme.lookup('media-optical-saved-modified',
                                                             icontheme.ICON_SIZE_MENU)
+
         AlbumItem.icon_error = icontheme.lookup('media-optical-error', icontheme.ICON_SIZE_MENU)
         TrackItem.icon_audio = QtGui.QIcon(":/images/track-audio.png")
         TrackItem.icon_video = QtGui.QIcon(":/images/track-video.png")
         TrackItem.icon_data = QtGui.QIcon(":/images/track-data.png")
+
+        ## Error
+
         FileItem.icon_file = QtGui.QIcon(":/images/file.png")
         FileItem.icon_file_pending = QtGui.QIcon(":/images/file-pending.png")
         FileItem.icon_error = icontheme.lookup('dialog-error', icontheme.ICON_SIZE_MENU)
@@ -157,6 +165,10 @@ class MainPanel(QtGui.QSplitter):
             QtGui.QIcon(":/images/match-80.png"),
             QtGui.QIcon(":/images/match-90.png"),
             QtGui.QIcon(":/images/match-100.png"),
+
+
+
+            #######
         ]
         FileItem.match_pending_icons = [
             QtGui.QIcon(":/images/match-pending-50.png"),
@@ -685,20 +697,28 @@ class AlbumItem(TreeItem):
                 self.insertChildren(oldnum, items)
                 for item in items:  # Update after insertChildren so that setExpanded works
                     item.update(update_album=False)
+
+         ## Album Errror Setting
+
         if album.errors:
             self.setIcon(0, AlbumItem.icon_error)
+
         elif album.is_complete():
             if album.is_modified():
+
                 self.setIcon(0, AlbumItem.icon_cd_saved_modified)
             else:
                 self.setIcon(0, AlbumItem.icon_cd_saved)
         else:
             if album.is_modified():
+
                 self.setIcon(0, AlbumItem.icon_cd_modified)
             else:
                 self.setIcon(0, AlbumItem.icon_cd)
+
         for i, column in enumerate(MainPanel.columns):
             self.setText(i, album.column(column[1]))
+
         if self.isSelected():
             TreeItem.window.update_selection()
 
