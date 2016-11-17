@@ -141,9 +141,12 @@ class MainPanel(QtGui.QSplitter):
 
             ##########
 
+
         AlbumItem.icon_cd = icontheme.lookup('media-optical', icontheme.ICON_SIZE_MENU)
+
         AlbumItem.icon_cd_modified = icontheme.lookup('media-optical-modified', icontheme.ICON_SIZE_MENU)
-        AlbumItem.icon_cd_saved = icontheme.lookup('media-optical-saved', icontheme.ICON_SIZE_MENU)
+
+        AlbumItem.icon_cd_saved = icontheme.lookup('Optical Import Complete', icontheme.ICON_SIZE_MENU)
         AlbumItem.icon_cd_saved_modified = icontheme.lookup('media-optical-saved-modified',
                                                             icontheme.ICON_SIZE_MENU)
 
