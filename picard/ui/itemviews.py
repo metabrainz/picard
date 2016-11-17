@@ -147,7 +147,8 @@ class MainPanel(QtGui.QSplitter):
         AlbumItem.icon_cd_saved_modified = icontheme.lookup('media-optical-saved-modified',
                                                             icontheme.ICON_SIZE_MENU)
 
-        AlbumItem.icon_error = icontheme.lookup('media-optical-error', icontheme.ICON_SIZE_MENU)
+        AlbumItem.icon_error = icontheme.lookup('Optical Import Error', icontheme.ICON_SIZE_MENU)
+
         TrackItem.icon_audio = QtGui.QIcon(":/images/track-audio.png")
         TrackItem.icon_video = QtGui.QIcon(":/images/track-video.png")
         TrackItem.icon_data = QtGui.QIcon(":/images/track-data.png")
@@ -158,6 +159,7 @@ class MainPanel(QtGui.QSplitter):
         FileItem.icon_file_pending = QtGui.QIcon(":/images/file-pending.png")
         FileItem.icon_error = icontheme.lookup('dialog-error', icontheme.ICON_SIZE_MENU)
         FileItem.icon_saved = QtGui.QIcon(":/images/track-saved.png")
+
         FileItem.match_icons = [
             QtGui.QIcon(":/images/match-50.png"),
             QtGui.QIcon(":/images/match-60.png"),
