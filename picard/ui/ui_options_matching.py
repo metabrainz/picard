@@ -8,7 +8,16 @@ from PyQt4 import QtCore, QtGui
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
 except AttributeError:
-    _fromUtf8 = lambda s: s
+    def _fromUtf8(s):
+        return s
+
+try:
+    _encoding = QtGui.QApplication.UnicodeUTF8
+    def _translate(context, text, disambig):
+        return QtGui.QApplication.translate(context, text, disambig, _encoding)
+except AttributeError:
+    def _translate(context, text, disambig):
+        return QtGui.QApplication.translate(context, text, disambig)
 
 class Ui_MatchingOptionsPage(object):
     def setupUi(self, MatchingOptionsPage):
@@ -58,8 +67,17 @@ class Ui_MatchingOptionsPage(object):
         self.label_5.setObjectName(_fromUtf8("label_5"))
         self.gridlayout.addWidget(self.label_5, 1, 0, 1, 1)
         self.vboxlayout.addWidget(self.rename_files)
+        self.log_settings = QtGui.QGroupBox(MatchingOptionsPage)
+        self.log_settings.setObjectName(_fromUtf8("log_settings"))
+        self.VLogLayout = QtGui.QVBoxLayout(self.log_settings)
+        self.VLogLayout.setObjectName(_fromUtf8("VLogLayout"))
+        self.do_log_matching = QtGui.QCheckBox(self.log_settings)
+        self.do_log_matching.setChecked(False)
+        self.do_log_matching.setObjectName(_fromUtf8("do_log_matching"))
+        self.VLogLayout.addWidget(self.do_log_matching)
         spacerItem = QtGui.QSpacerItem(20, 41, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
-        self.vboxlayout.addItem(spacerItem)
+        self.VLogLayout.addItem(spacerItem)
+        self.vboxlayout.addWidget(self.log_settings)
         self.label_6.setBuddy(self.file_lookup_threshold)
         self.label_4.setBuddy(self.file_lookup_threshold)
         self.label_5.setBuddy(self.file_lookup_threshold)
@@ -68,6 +86,7 @@ class Ui_MatchingOptionsPage(object):
         QtCore.QMetaObject.connectSlotsByName(MatchingOptionsPage)
         MatchingOptionsPage.setTabOrder(self.file_lookup_threshold, self.cluster_lookup_threshold)
         MatchingOptionsPage.setTabOrder(self.cluster_lookup_threshold, self.track_matching_threshold)
+        MatchingOptionsPage.setTabOrder(self.track_matching_threshold, self.do_log_matching)
 
     def retranslateUi(self, MatchingOptionsPage):
         self.rename_files.setTitle(_("Thresholds"))
@@ -77,4 +96,6 @@ class Ui_MatchingOptionsPage(object):
         self.file_lookup_threshold.setSuffix(_(" %"))
         self.label_4.setText(_("Minimal similarity for file lookups:"))
         self.label_5.setText(_("Minimal similarity for cluster lookups:"))
+        self.log_settings.setTitle(_("Logging"))
+        self.do_log_matching.setText(_("Log results when matching files"))
 
