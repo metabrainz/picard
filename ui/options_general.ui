@@ -133,17 +133,55 @@
     </widget>
    </item>
    <item>
-    <spacer>
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
+    <widget class="QGroupBox" name="import_settings">
+    <property name="title">
+     <string>Importing</string>
+    </property>
+    <layout class="QGridLayout" name="VImportLayout">
+     <property name="spacing">
+      <number>2</number>
      </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>181</width>
-       <height>21</height>
-      </size>
-     </property>
-    </spacer>
+     <item row="0" column="1">
+       <widget class="QSpinBox" name="file_import_threshold">
+        <property name="minimum">
+         <number>1</number>
+        </property>
+        <property name="maximum">
+         <number>100000000</number>
+        </property>
+        <property name="value">
+         <number>5000</number>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_import">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="text">
+         <string>Maximum number of files to import without error:</string>
+        </property>
+       </widget>
+      </item>
+     <item>
+      <spacer>
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>181</width>
+         <height>21</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </widget>
    </item>
   </layout>
  </widget>
