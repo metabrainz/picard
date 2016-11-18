@@ -46,6 +46,7 @@ class GeneralOptionsPage(OptionsPage):
         config.TextOption("persist", "oauth_access_token", ""),
         config.IntOption("persist", "oauth_access_token_expires", 0),
         config.TextOption("persist", "oauth_username", ""),
+        config.IntOption("setting", "file_import_threshold", 5000),
     ]
 
     def __init__(self, parent=None):
@@ -62,12 +63,14 @@ class GeneralOptionsPage(OptionsPage):
         self.ui.server_port.setValue(config.setting["server_port"])
         self.ui.analyze_new_files.setChecked(config.setting["analyze_new_files"])
         self.ui.ignore_file_mbids.setChecked(config.setting["ignore_file_mbids"])
+        self.ui.file_import_threshold.setValue(config.setting["file_import_threshold"])
 
     def save(self):
         config.setting["server_host"] = unicode(self.ui.server_host.currentText()).strip()
         config.setting["server_port"] = self.ui.server_port.value()
         config.setting["analyze_new_files"] = self.ui.analyze_new_files.isChecked()
         config.setting["ignore_file_mbids"] = self.ui.ignore_file_mbids.isChecked()
+        config.setting["file_import_threshold"] = self.ui.file_import_threshold.value()
 
     def update_login_logout(self):
         if self.tagger.xmlws.oauth_manager.is_logged_in():
