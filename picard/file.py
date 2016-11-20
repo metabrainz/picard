@@ -48,7 +48,7 @@ from picard.util.textencoding import (
 )
 from picard.util.filenaming import make_short_filename
 from picard.util.tags import PRESERVED_TAGS
-
+from send2trash import send2trash
 
 class File(QtCore.QObject, Item):
 
@@ -380,7 +380,8 @@ class File(QtCore.QObject, Item):
                     continue
                 log.debug("Moving %r to %r", old_file, new_file)
                 shutil.move(old_file, new_file)
-                os.remove(new_file)
+                ##os.remove(new_file)#removes file from existance.
+                send2trash(new_file)
 
     def remove(self, from_parent=True):
         if from_parent and self.parent:
