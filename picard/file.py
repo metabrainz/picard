@@ -380,6 +380,7 @@ class File(QtCore.QObject, Item):
                     continue
                 log.debug("Moving %r to %r", old_file, new_file)
                 shutil.move(old_file, new_file)
+                os.remove(new_file)
 
     def remove(self, from_parent=True):
         if from_parent and self.parent:
