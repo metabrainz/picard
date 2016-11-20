@@ -76,6 +76,7 @@
         </property>
        </widget>
       </item>
+
       <item>
        <widget class="QLineEdit" name="move_additional_files_pattern">
         <property name="enabled">
@@ -83,6 +84,27 @@
         </property>
        </widget>
       </item>
+
+
+      <item>
+        <widget class="QCheckBox" name="delete_additional_files">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <property name="text">
+          <string>Delete additional files:</string>
+         </property>
+        </widget>
+      </item>
+
+      <item>
+       <widget class="QLineEdit" name="delete_additional_files_pattern">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+
       <item>
        <widget class="QCheckBox" name="delete_empty_dirs">
         <property name="enabled">

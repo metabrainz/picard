@@ -61,6 +61,8 @@ class RenamingOptionsPage(OptionsPage):
         config.TextOption("setting", "move_files_to", ""),
         config.BoolOption("setting", "move_additional_files", False),
         config.TextOption("setting", "move_additional_files_pattern", "*.jpg *.png"),
+        config.BoolOption("setting", "delete_additional_files", False),
+        config.TextOption("setting", "delete_additional_files_pattern", "*.jpg *.png"),
         config.BoolOption("setting", "delete_empty_dirs", True),
     ]
 
@@ -104,6 +106,8 @@ class RenamingOptionsPage(OptionsPage):
         self.ui.move_files_to_browse.setEnabled(state)
         self.ui.move_additional_files.setEnabled(state)
         self.ui.move_additional_files_pattern.setEnabled(state)
+        self.ui.delete_additional_files.setEnabled(state)
+        self.ui.delete_additional_files_pattern.setEnabled(state)
 
     def toggle_file_renaming(self, state):
 
@@ -178,6 +182,8 @@ class RenamingOptionsPage(OptionsPage):
         self.ui.move_files_to.setCursorPosition(0)
         self.ui.move_additional_files.setChecked(config.setting["move_additional_files"])
         self.ui.move_additional_files_pattern.setText(config.setting["move_additional_files_pattern"])
+        self.ui.delete_additional_files.setChecked(config.setting["delete_additional_files"])
+        self.ui.delete_additional_files_pattern.setText(config.setting["delete_additional_files_pattern"])
         self.ui.delete_empty_dirs.setChecked(config.setting["delete_empty_dirs"])
         self.update_examples()
 
@@ -206,6 +212,8 @@ class RenamingOptionsPage(OptionsPage):
         config.setting["move_files_to"] = os.path.normpath(unicode(self.ui.move_files_to.text()))
         config.setting["move_additional_files"] = self.ui.move_additional_files.isChecked()
         config.setting["move_additional_files_pattern"] = unicode(self.ui.move_additional_files_pattern.text())
+        config.setting["delete_additional_files"] = self.ui.delete_additional_files.isChecked()
+        config.setting["delete_additional_files_pattern"] = unicode(self.ui.delete_additional_files_pattern.text())
         config.setting["delete_empty_dirs"] = self.ui.delete_empty_dirs.isChecked()
         self.tagger.window.enable_moving_action.setChecked(config.setting["move_files"])
 

@@ -181,6 +181,9 @@ class File(QtCore.QObject, Item):
         # Move extra files (images, playlists, etc.)
         if config.setting["move_files"] and config.setting["move_additional_files"]:
             self._move_additional_files(old_filename, new_filename)
+        #changes, delete extra files
+        if config.setting["move_files"] and config.setting["delete_additional_files"]:
+            self._delete_additional_files(old_filename, new_filename)
         # Delete empty directories
         if config.setting["delete_empty_dirs"]:
             dirname = encode_filename(os.path.dirname(old_filename))
@@ -347,6 +350,24 @@ class File(QtCore.QObject, Item):
         old_path = encode_filename(os.path.dirname(old_filename))
         new_path = encode_filename(os.path.dirname(new_filename))
         patterns = encode_filename(config.setting["move_additional_files_pattern"])
+        patterns = filter(bool, [p.strip() for p in patterns.split()])
+        for pattern in patterns:
+            # FIXME glob1 is not documented, maybe we need our own implementation?
+            for old_file in glob.glob1(old_path, pattern):
+                new_file = os.path.join(new_path, old_file)
+                old_file = os.path.join(old_path, old_file)
+                # FIXME we shouldn't do this from a thread!
+                if self.tagger.files.get(decode_filename(old_file)):
+                    log.debug("File loaded in the tagger, not moving %r", old_file)
+                    continue
+                log.debug("Moving %r to %r", old_file, new_file)
+                shutil.move(old_file, new_file)
+
+    def _delete_additional_files(self, old_filename, new_filename):
+        """Move extra files, like playlists..."""
+        old_path = encode_filename(os.path.dirname(old_filename))
+        new_path = encode_filename(os.path.dirname(new_filename))
+        patterns = encode_filename(config.setting["delete_additional_files_pattern"])
         patterns = filter(bool, [p.strip() for p in patterns.split()])
         for pattern in patterns:
             # FIXME glob1 is not documented, maybe we need our own implementation?
