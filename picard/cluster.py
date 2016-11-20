@@ -210,10 +210,12 @@ class Cluster(QtCore.QObject, Item):
     def cluster(files, threshold):
         artistDict = ClusterDict()
         albumDict = ClusterDict()
+        titles = []
         tracks = []
         for file in files:
             artist = file.metadata["albumartist"] or file.metadata["artist"]
             album = file.metadata["album"]
+            title = file.metadata["title"]
             # Improve clustering from directory structure if no existing tags
             # Only used for grouping and to provide cluster title / artist - not added to file tags.
             filename = file.filename
@@ -242,7 +244,7 @@ class Cluster(QtCore.QObject, Item):
             #album_cluster_engine.printCluster(cluster)
             if cluster is not None:
                 albums.setdefault(cluster, []).append(i)
-        print(albums)
+
         # Now determine the most prominent names in the cluster and build the
         # final cluster list
         for album_id, album in albums.items():
@@ -253,36 +255,16 @@ class Cluster(QtCore.QObject, Item):
             artist_hist = {}
             artist_set = set()
             i = 0
+            doAll = False
             for track_id in album:
                 artist = tracks[track_id][0]
 
                 cluster = artist_cluster_engine.getClusterFromId(
                     tracks[track_id][0])
 
-                if artist not in artist_set and i is not 0:
-                    QMessageBox = QtGui.QMessageBox
-                    QCheckBox = QtGui.QCheckBox
-                    QRadioButton = QtGui.QRadioButton
-
-                    msg = QMessageBox()
-                    msg.setIcon(QMessageBox.Question)
-                    msg.setWindowTitle(_(u"Album Artist Conflict"))
-                    msg.setText(_(u"We found tracks that share an album title, "
-                        "but do not share an artist name. How would you like to "
-                        "manage these tracks?"))
-                    cancel = msg.addButton(QMessageBox.Cancel)
-                    msg.setDefaultButton(cancel)
-                    box = QCheckBox()
-                    box.setText(_(u"Do this for all conflicts"))
-                    msg.addButton(box, QMessageBox.ActionRole)
-                    doCluster = QRadioButton()
-                    doCluster.setText(_(u"Cluster these tracks in the same album"))
-                    msg.addButton(doCluster, QMessageBox.YesRole)
-                    noCluster = QRadioButton()
-                    noCluster.setText(_(u"Cluster these tracks separately"))
-                    msg.addButton(noCluster, QMessageBox.NoRole)
-                    print(msg.childrenRect().getCoords())
-                    ret = msg.exec_()
+                if artist not in artist_set and i is not 0 and doAll is False:
+                    choice, doAll = Cluster.cluster_warning(files, track_id)
+                    if choice ==
                 if cluster is not None:
                     cnt = artist_hist.get(cluster, 0) + 1
                     if cnt > artist_max:
@@ -299,6 +281,38 @@ class Cluster(QtCore.QObject, Item):
 
             yield album_name, artist_name, (files[i] for i in album)
 
+    @staticmethod
+    def cluster_warning(files, track_id):
+        artist_name = files[track_id].metadata["albumartist"]  or files[track_id].metadata["artist"];
+        album_name = files[track_id].metadata["album"]
+        song_title = files[track_id].metadata["title"]
+
+        QMessageBox = QtGui.QMessageBox
+        QCheckBox = QtGui.QCheckBox
+        QRadioButton = QtGui.QRadioButton
+
+        msg = QMessageBox()
+        msg.setIcon(QMessageBox.Question)
+        msg.setWindowTitle(_(u"Album Artist Conflict"))
+        msg.setText(_(u"Some tracks share an album title, "
+            "but do not share an artist name. How would you like to "
+            "manage these tracks?"))
+        msg.setInformativeText(album_name + '\n' + artist_name + '\n' + song_title)
+        cancel = msg.addButton(QMessageBox.Cancel)
+        msg.setDefaultButton(cancel)
+        doAll = QCheckBox()
+        doAll.setText(_(u"Do this for all conflicts"))
+        msg.addButton(doAll, QMessageBox.ActionRole)
+        doCluster = QRadioButton()
+        doCluster.setText(_(u"Cluster these tracks in the same album"))
+        msg.addButton(doCluster, QMessageBox.YesRole)
+        noCluster = QRadioButton()
+        noCluster.setText(_(u"Cluster these tracks separately"))
+        msg.addButton(noCluster, QMessageBox.NoRole)
+        #print(msg.childrenRect().getCoords())
+        ret = msg.exec_()
+
+        return ret, doAll.isChecked();
 
 class UnmatchedFiles(Cluster):
 
