@@ -256,6 +256,7 @@ class Cluster(QtCore.QObject, Item):
             artist_set = set()
             i = 0
             do_all = False
+            do_cluster = True
             for track_id in album:
                 artist = tracks[track_id][0]
 
@@ -263,7 +264,8 @@ class Cluster(QtCore.QObject, Item):
                     tracks[track_id][0])
 
                 if artist not in artist_set and i is not 0 and do_all is False:
-                    choice, do_all = Cluster.cluster_warning(files, track_id)
+                    choice, do_cluster, do_all = Cluster.cluster_warning(files, track_id)
+                    print(do_all)
 
                 if cluster is not None:
                     cnt = artist_hist.get(cluster, 0) + 1
@@ -291,33 +293,37 @@ class Cluster(QtCore.QObject, Item):
         QCheckBox = QtGui.QCheckBox
         QRadioButton = QtGui.QRadioButton
 
-
         title = _(u"Album Artist Conflict")
         text = _(u"Some tracks share an album title, "
             "but do not share an artist name. How would you like to "
             "manage these tracks?")
-        msg = QMessageBox(QMessageBox.Question, title, text, QMessageBox.Cancel)
-        #msg.setInformativeText(album_name + '\n' + artist_name + '\n' + song_title)
+        msg = QMessageBox(QMessageBox.Question, title, text)
+        layout = msg.layout()
+        cancel = msg.addButton(QMessageBox.Cancel)
+        msg.addButton("Continue", QMessageBox.ApplyRole)
 
-        group_box = QtGui.QGroupBox(msg)
+        group_box = QtGui.QGroupBox()
 
         do_cluster = QRadioButton()
-        do_cluster.setText(_(u"Cluster these tracks in the same album"))
+        do_cluster.setText(_(u"Cluster this track here"))
         no_cluster = QRadioButton()
-        no_cluster.setText(_(u"Cluster these tracks separately"))
+        no_cluster.setText(_(u"Cluster this track separately"))
         do_all = QCheckBox()
         do_all.setText(_(u"Do this for all conflicts"))
 
         vbox = QtGui.QVBoxLayout()
-        group_box.setGeometry(QtCore.QRect(1,1,200,200))
         vbox.addWidget(do_cluster)
         vbox.addWidget(no_cluster)
         vbox.addWidget(do_all)
         group_box.setLayout(vbox)
+        group_box.adjustSize()
+
+        layout.addWidget(group_box, layout.rowCount()-2, 1, 1, layout.columnCount()-1)
+
+
         #print(msg.childrenRect().getCoords())
         ret = msg.exec_()
-
-        return ret, do_all.isChecked();
+        return ret, do_cluster.isChecked(), do_all.isChecked();
 
 class UnmatchedFiles(Cluster):
 
