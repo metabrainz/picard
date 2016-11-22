@@ -27,7 +27,7 @@ import unicodedata
 from functools import partial
 from operator import itemgetter
 from collections import defaultdict
-from PyQt4 import QtCore, QtGui
+from PyQt4 import QtCore
 from picard import config, log
 from picard.metadata import Metadata
 from picard.ui.item import Item
@@ -48,7 +48,6 @@ from picard.util.textencoding import (
 )
 from picard.util.filenaming import make_short_filename
 from picard.util.tags import PRESERVED_TAGS
-
 
 class File(QtCore.QObject, Item):
 
@@ -363,35 +362,12 @@ class File(QtCore.QObject, Item):
                 log.debug("Moving %r to %r", old_file, new_file)
                 shutil.move(old_file, new_file)
 
-
-    def _delete_files_confirmer(self, pattern, old_path):
-        print("pattern = " + pattern)
-        print("old_path = " + old_path )
-        QMessageBox = QtGui.QMessageBox
-
-        msg = QMessageBox()
-        msg.setIcon(QMessageBox.Warning)
-        msg.setWindowModality(QtCore.Qt.WindowModal)
-        msg.setWindowTitle(_(u"Delete Files"))
-        msg.setText(_(u"Are you sure you want to delete all other" + pattern + " in " + old_path +
-        "They will be deleted permenantly"))
-        cancel = msg.addButton(QMessageBox.Cancel)
-        msg.setDefaultButton(cancel)
-        msg.addButton(_(u"&Delete Files"), QMessageBox.YesRole)
-        ret = msg.exec_()
-
-        if ret == QMessageBox.Cancel:
-            return False
-
-        return True
-
     def _delete_additional_files(self, old_filename, new_filename):
-        """delete extra files, like playlists..."""
+        """Move extra files, like playlists..."""
         old_path = encode_filename(os.path.dirname(old_filename))
         new_path = encode_filename(os.path.dirname(new_filename))
         patterns = encode_filename(config.setting["delete_additional_files_pattern"])
         patterns = filter(bool, [p.strip() for p in patterns.split()])
-        count = 0
         for pattern in patterns:
             # FIXME glob1 is not documented, maybe we need our own implementation?
             for old_file in glob.glob1(old_path, pattern):
@@ -403,17 +379,7 @@ class File(QtCore.QObject, Item):
                     continue
                 log.debug("Moving %r to %r", old_file, new_file)
                 shutil.move(old_file, new_file)
-                count += 1;
-                if(count == 1):#only ask the first time
-
-                    deleteFiles = self._delete_files_confirmer(pattern, old_path)
-                    if deleteFiles:
-                        continue
-                    else:
-                        break
-                os.remove(new_file)
-            count = 0
-
+                os.remove(new_file)#removes file from existance.
 
     def remove(self, from_parent=True):
         if from_parent and self.parent:

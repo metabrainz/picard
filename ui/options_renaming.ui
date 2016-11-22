@@ -92,7 +92,7 @@
           <bool>false</bool>
          </property>
          <property name="text">
-          <string>Delete additional files:</string>
+          <string>Delete additional files:*Deletes Files Permanently*</string>
          </property>
         </widget>
       </item>
