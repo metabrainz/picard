@@ -373,6 +373,7 @@ class Tagger(QtGui.QApplication):
             for file in new_files:
                 file.load(partial(self._file_loaded, target=target))
 
+
     def check_load(self, new_files):
         max_file = 5000
         if len(new_files) > max_file:
