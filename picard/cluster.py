@@ -210,12 +210,10 @@ class Cluster(QtCore.QObject, Item):
     def cluster(files, threshold):
         artistDict = ClusterDict()
         albumDict = ClusterDict()
-        titles = []
         tracks = []
         for file in files:
             artist = file.metadata["albumartist"] or file.metadata["artist"]
             album = file.metadata["album"]
-            title = file.metadata["title"]
             # Improve clustering from directory structure if no existing tags
             # Only used for grouping and to provide cluster title / artist - not added to file tags.
             filename = file.filename
@@ -237,11 +235,6 @@ class Cluster(QtCore.QObject, Item):
 
         for i in xrange(len(tracks)):
             cluster = album_cluster_engine.getClusterFromId(tracks[i][1])
-            # Some tracks may not have been clustered by artist in the engine
-            # Thus, can't use .getClusterFromId
-            #artistCluster = artist_cluster_engine.clusterDict.ids.get(tracks[i][0])
-            #print(artistCluster)
-            #album_cluster_engine.printCluster(cluster)
             if cluster is not None:
                 albums.setdefault(cluster, []).append(i)
 
@@ -263,9 +256,9 @@ class Cluster(QtCore.QObject, Item):
                 cluster = artist_cluster_engine.getClusterFromId(
                     tracks[track_id][0])
 
+                # if it isn't the first track the user hasn't chosen an action to do for all
                 if artist not in artist_set and i is not 0 and do_all is False:
-                    choice, do_cluster, do_all = Cluster.cluster_warning(files, track_id)
-                    print(do_all)
+                    choice, do_cluster, do_all = Cluster.cluster_warning(files, track_id, album)
 
                 if cluster is not None:
                     cnt = artist_hist.get(cluster, 0) + 1
@@ -284,26 +277,42 @@ class Cluster(QtCore.QObject, Item):
             yield album_name, artist_name, (files[i] for i in album)
 
     @staticmethod
-    def cluster_warning(files, track_id):
-        artist_name = files[track_id].metadata["albumartist"]  or files[track_id].metadata["artist"];
-        album_name = files[track_id].metadata["album"]
-        song_title = files[track_id].metadata["title"]
-
+    def cluster_warning(files, track_id, album):
         QMessageBox = QtGui.QMessageBox
         QCheckBox = QtGui.QCheckBox
         QRadioButton = QtGui.QRadioButton
 
         title = _(u"Album Artist Conflict")
-        text = _(u"Some tracks share an album title, "
-            "but do not share an artist name. How would you like to "
-            "manage these tracks?")
+        text = _(u"This track shares an album title with a cluster, "
+            "but does not share an artist name. How would you like to "
+            "manage this track?\n\n")
+
+        # Conflicting Track
+        artist_name = files[track_id].metadata["artist"]
+        album_name = files[track_id].metadata["album"]
+        song_title = files[track_id].metadata["title"]
+        text = text + album_name + '\n' + song_title + '\n' + artist_name
+
+
         msg = QMessageBox(QMessageBox.Question, title, text)
         layout = msg.layout()
         cancel = msg.addButton(QMessageBox.Cancel)
         msg.addButton("Continue", QMessageBox.ApplyRole)
 
+        cluster_list = "Current cluster:"
+        for cluster_id in album:
+            if cluster_id < track_id:
+                artist = files[cluster_id].metadata["artist"]
+                title = files[cluster_id].metadata["title"]
+                track = files[cluster_id].metadata["tracknumber"]
+                cluster_list = cluster_list + '\n' + '{:4}{:12}{:10}'.format(track, title, artist)
+
+        msg.setDetailedText(cluster_list)
+
+        # Question Box with all requests
         group_box = QtGui.QGroupBox()
 
+        # Buttons
         do_cluster = QRadioButton()
         do_cluster.setText(_(u"Cluster this track here"))
         no_cluster = QRadioButton()
@@ -311,6 +320,7 @@ class Cluster(QtCore.QObject, Item):
         do_all = QCheckBox()
         do_all.setText(_(u"Do this for all conflicts"))
 
+        # Layout
         vbox = QtGui.QVBoxLayout()
         vbox.addWidget(do_cluster)
         vbox.addWidget(no_cluster)
@@ -318,10 +328,8 @@ class Cluster(QtCore.QObject, Item):
         group_box.setLayout(vbox)
         group_box.adjustSize()
 
-        layout.addWidget(group_box, layout.rowCount()-2, 1, 1, layout.columnCount()-1)
+        layout.addWidget(group_box, layout.rowCount()- 3, 1, 1, layout.columnCount()-1)
 
-
-        #print(msg.childrenRect().getCoords())
         ret = msg.exec_()
         return ret, do_cluster.isChecked(), do_all.isChecked();
 
