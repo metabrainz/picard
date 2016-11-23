@@ -249,6 +249,7 @@ class Cluster(QtCore.QObject, Item):
             i = 0
             do_all = False
             do_cluster = True
+            to_remove = []
             for track_id in album:
                 artist = tracks[track_id][0]
 
@@ -256,17 +257,23 @@ class Cluster(QtCore.QObject, Item):
                     tracks[track_id][0])
 
                 # if it isn't the first track the user hasn't chosen an action to do for all
-                if artist not in artist_set and i is not 0 and do_all is False:
-                    choice, do_cluster, do_all = Cluster.cluster_warning(files, track_id, album)
+                if artist not in artist_set and i is not 0:
+                    if not do_all:
+                        do_cluster, do_all = Cluster.cluster_warning(files, track_id, album)
+                    if not do_cluster:
+                        to_remove.append(track_id)
 
-                if cluster is not None:
+                if do_cluster and cluster is not None:
                     cnt = artist_hist.get(cluster, 0) + 1
                     if cnt > artist_max:
                         artist_max = cnt
                         artist_id = cluster
                     artist_hist[cluster] = cnt
-                artist_set.add(artist)
+                    artist_set.add(artist)
                 i+= 1
+
+            for id in to_remove:
+                album.remove(id)
 
             if artist_id is None:
                 artist_name = u"Various Artists"
@@ -283,8 +290,8 @@ class Cluster(QtCore.QObject, Item):
 
         title = _(u"Album Artist Conflict")
         text = _(u"This track shares an album title with a cluster, "
-            "but does not share an artist name. How would you like to "
-            "manage this track?\n\n")
+            "but does not share an artist name. Would you still like to "
+            "cluster this track?\n\n")
 
         # Conflicting Track
         artist_name = files[track_id].metadata["artist"]
@@ -295,8 +302,9 @@ class Cluster(QtCore.QObject, Item):
 
         msg = QMessageBox(QMessageBox.Question, title, text)
         layout = msg.layout()
-        cancel = msg.addButton(QMessageBox.Cancel)
-        msg.addButton("Continue", QMessageBox.ApplyRole)
+        no = msg.addButton("No", QMessageBox.NoRole)
+        yes = msg.addButton("Yes", QMessageBox.YesRole)
+        msg.setDefaultButton(yes)
 
         cluster_list = "Current cluster:"
         for cluster_id in album:
@@ -309,28 +317,28 @@ class Cluster(QtCore.QObject, Item):
         msg.setDetailedText(cluster_list)
 
         # Question Box with all requests
-        group_box = QtGui.QGroupBox()
+        #group_box = QtGui.QGroupBox()
 
         # Buttons
-        do_cluster = QRadioButton()
-        do_cluster.setText(_(u"Cluster this track here"))
-        no_cluster = QRadioButton()
-        no_cluster.setText(_(u"Cluster this track separately"))
+        #do_cluster = QRadioButton()
+        #do_cluster.setText(_(u"Cluster with this album"))
+        #no_cluster = QRadioButton()
+        #no_cluster.setText(_(u"Don't cluster this tr"))
         do_all = QCheckBox()
         do_all.setText(_(u"Do this for all conflicts"))
 
         # Layout
-        vbox = QtGui.QVBoxLayout()
-        vbox.addWidget(do_cluster)
-        vbox.addWidget(no_cluster)
-        vbox.addWidget(do_all)
-        group_box.setLayout(vbox)
-        group_box.adjustSize()
+        # vbox = QtGui.QVBoxLayout()
+        # vbox.addWidget(do_cluster)
+        # vbox.addWidget(no_cluster)
+        # vbox.addWidget(do_all)
+        # group_box.setLayout(vbox)
+        # group_box.adjustSize()
 
-        layout.addWidget(group_box, layout.rowCount()- 3, 1, 1, layout.columnCount()-1)
+        layout.addWidget(do_all, layout.rowCount()- 3, 1)
 
         ret = msg.exec_()
-        return ret, do_cluster.isChecked(), do_all.isChecked();
+        return ret, do_all.isChecked();
 
 class UnmatchedFiles(Cluster):
 
