@@ -178,8 +178,6 @@ class MainPanel(QtGui.QSplitter):
             QtGui.QIcon(":/images/match-90.png"),
             QtGui.QIcon(":/images/match-100.png"),
 
-
-
             #######
         ]
         FileItem.match_pending_icons = [
@@ -713,9 +711,13 @@ class AlbumItem(TreeItem):
          ## Album Errror Setting
 
         if album.errors:
+
             self.setIcon(0, AlbumItem.icon_error)
 
+        ## If album successful, add code green.
+
         elif album.is_complete():
+
             if album.is_modified():
 
                 self.setIcon(0, AlbumItem.icon_cd_saved_modified)

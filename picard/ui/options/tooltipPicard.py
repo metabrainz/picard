@@ -3,7 +3,7 @@
 
 ## pygtk easily create programs with a graphical user interface
 
-## This class will be called by itemviews.py 
+## This class will be called by itemviews.py
 
 import pygtk
 
