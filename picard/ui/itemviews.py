@@ -145,6 +145,9 @@ class MainPanel(QtGui.QSplitter):
 
             ##########
 
+        tooltips.enable()
+        tooltips = gtk.Tooltips()
+        self.tooltips = gtk.Tooltips()
 
         AlbumItem.icon_cd = icontheme.lookup('media-optical', icontheme.ICON_SIZE_MENU)
 
