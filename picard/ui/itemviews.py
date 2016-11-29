@@ -144,7 +144,8 @@ class MainPanel(QtGui.QSplitter):
             ClusterItem.icon_dir = icontheme.lookup('folder', icontheme.ICON_SIZE_MENU)
 
             ##########
-
+        ## Tkinter
+        xs
         tooltips.enable()
         tooltips = gtk.Tooltips()
         self.tooltips = gtk.Tooltips()
