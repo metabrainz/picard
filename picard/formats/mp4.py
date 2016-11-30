@@ -81,6 +81,7 @@ class MP4File(File):
         "----:com.apple.iTunes:MusicBrainz Release Track Id": "musicbrainz_trackid",
         "----:com.apple.iTunes:Acoustid Fingerprint": "acoustid_fingerprint",
         "----:com.apple.iTunes:Acoustid Id": "acoustid_id",
+        "----:com.apple.iTunes:ARRANGER": "arranger",
         "----:com.apple.iTunes:ASIN": "asin",
         "----:com.apple.iTunes:BARCODE": "barcode",
         "----:com.apple.iTunes:PRODUCER": "producer",
@@ -173,7 +174,12 @@ class MP4File(File):
             if name.startswith('lyrics:'):
                 name = 'lyrics'
             if name in self.__r_text_tags:
-                file.tags[self.__r_text_tags[name]] = values
+                value = ""
+                for index, v in enumerate(values):
+                    value += v
+                    if (index + 1 < len(values)):
+                        value += "; "
+                file.tags[self.__r_text_tags[name]] = value
             elif name in self.__r_bool_tags:
                 file.tags[self.__r_bool_tags[name]] = (values[0] == '1')
             elif name in self.__r_int_tags:
@@ -183,7 +189,12 @@ class MP4File(File):
                     pass
             elif name in self.__r_freeform_tags:
                 values = [v.encode("utf-8") for v in values]
-                file.tags[self.__r_freeform_tags[name]] = values
+                value = ""
+                for index, v in enumerate(values):
+                    value += v
+                    if (index + 1 < len(values)):
+                        value += "; "
+                file.tags[self.__r_freeform_tags[name]] = value
             elif name == "musicip_fingerprint":
                 file.tags["----:com.apple.iTunes:fingerprint"] = ["MusicMagic Fingerprint%s" % str(v) for v in values]
 
