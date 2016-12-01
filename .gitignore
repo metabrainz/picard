@@ -13,3 +13,7 @@ locale
 po/countries/countries.pot
 po/attributes/attributes.pot
 .*.sw[a-z]
+HACKING.txt
+README.md
+scripts/picard
+Settuing Up Picard.txt
