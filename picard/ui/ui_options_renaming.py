@@ -172,7 +172,7 @@ class Ui_RenamingOptionsPage(object):
         self.label.setText(_("Destination directory:"))
         self.move_files_to_browse.setText(_("Browse..."))
         self.move_additional_files.setText(_("Move additional files:"))
-        self.delete_additional_files.setText(_("Delete additional files:*Deletes Files Permanently*"))
+        self.delete_additional_files.setText(_("Delete additional files: *Deletes Files Permanently*"))
         self.delete_empty_dirs.setText(_("Delete empty directories"))
         self.rename_files.setTitle(_("Rename files when saving"))
         self.ascii_filenames.setText(_("Replace non-ASCII characters"))

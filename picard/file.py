@@ -345,7 +345,7 @@ class File(QtCore.QObject, Item):
             image.save(dirname, metadata, counters)
 
     def _move_additional_files(self, old_filename, new_filename):
-        print(called)
+        
         """Move extra files, like playlists..."""
         old_path = encode_filename(os.path.dirname(old_filename))
         new_path = encode_filename(os.path.dirname(new_filename))
