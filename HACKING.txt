@@ -1,4 +1,4 @@
-http://i.imgur.com/jVoiLBp.jpgTranslations
+Translations
 ============
 
 See po/README.md for information about translations.

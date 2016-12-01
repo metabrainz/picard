@@ -226,13 +226,12 @@ class Cluster(QtCore.QObject, Item):
 
         artist_cluster_engine = ClusterEngine(artistDict)
         artist_cluster_engine.cluster(threshold)
-        #print("THIS is cluster ids: ",artist_cluster_engine.clusterDict.ids)
+
         album_cluster_engine = ClusterEngine(albumDict)
         album_cluster_engine.cluster(threshold)
-        #print(album_cluster_engine.clusterDict.ids)
+
         # Arrange tracks into albums
         albums = {}
-
         for i in xrange(len(tracks)):
             cluster = album_cluster_engine.getClusterFromId(tracks[i][1])
             if cluster is not None:
