@@ -316,24 +316,8 @@ class Cluster(QtCore.QObject, Item):
 
         msg.setDetailedText(cluster_list)
 
-        # Question Box with all requests
-        #group_box = QtGui.QGroupBox()
-
-        # Buttons
-        #do_cluster = QRadioButton()
-        #do_cluster.setText(_(u"Cluster with this album"))
-        #no_cluster = QRadioButton()
-        #no_cluster.setText(_(u"Don't cluster this tr"))
         do_all = QCheckBox()
         do_all.setText(_(u"Do this for all conflicts"))
-
-        # Layout
-        # vbox = QtGui.QVBoxLayout()
-        # vbox.addWidget(do_cluster)
-        # vbox.addWidget(no_cluster)
-        # vbox.addWidget(do_all)
-        # group_box.setLayout(vbox)
-        # group_box.adjustSize()
 
         layout.addWidget(do_all, layout.rowCount()- 3, 1)
 
