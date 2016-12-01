@@ -14,4 +14,4 @@ Binary downloads are available [here](http://picard.musicbrainz.org/downloads/).
 Support and issue reporting
 ---------------------------
 
-Please report all bugs and feature requests in the [MusicBrainz issue tracker](http://tickets.musicbrainz.org/browse/PICARD). If you need support in using Picard please read the [documentation](https://picard.musicbrainz.org/docs/) first and have a look at the [MusicBrainz community forums](https://community.metabrainz.org/c/picard).s
+Please report all bugs and feature requests in the [MusicBrainz issue tracker](http://tickets.musicbrainz.org/browse/PICARD). If you need support in using Picard please read the [documentation](https://picard.musicbrainz.org/docs/) first and have a look at the [MusicBrainz community forums](https://community.metabrainz.org/c/picard).
