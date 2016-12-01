@@ -113,7 +113,6 @@ class AcoustIDClient(QtCore.QObject):
                 echo=None
             )
         else:
-            #Song matched successfully
             status = document.response[0].status[0].text
             if status == 'ok':
                 results = document.response[0].results[0].children.get('result')
