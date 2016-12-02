@@ -49,6 +49,7 @@ from picard.util.textencoding import (
 from picard.util.filenaming import make_short_filename
 from picard.util.tags import PRESERVED_TAGS
 
+
 class File(QtCore.QObject, Item):
 
     UNDEFINED = -1
