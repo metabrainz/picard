@@ -49,7 +49,6 @@ from picard.util.textencoding import (
 from picard.util.filenaming import make_short_filename
 from picard.util.tags import PRESERVED_TAGS
 
-
 class File(QtCore.QObject, Item):
 
     UNDEFINED = -1
@@ -346,7 +345,6 @@ class File(QtCore.QObject, Item):
             image.save(dirname, metadata, counters)
 
     def _move_additional_files(self, old_filename, new_filename):
-        
         """Move extra files, like playlists..."""
         old_path = encode_filename(os.path.dirname(old_filename))
         new_path = encode_filename(os.path.dirname(new_filename))
@@ -383,7 +381,7 @@ class File(QtCore.QObject, Item):
                     log.debug("File loaded in the tagger, not deleting %r", old_file)
                     continue
                 log.debug("Deleting %r", old_file)
-                os.remove(old_file)#removes file from existance.
+                os.remove(old_file)
 
     def remove(self, from_parent=True):
         if from_parent and self.parent:
