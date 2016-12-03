@@ -246,13 +246,12 @@ class Cluster(QtCore.QObject, Item):
             artist_id = None
             artist_hist = {}
             main_artist = ""
-            i = 0
             do_all = False
             do_cluster = True
             to_remove = []
             for track_id in album:
                 artist = tracks[track_id][0]
-                if i is 0:
+                if main_artist is "":
                     main_artist = artist
 
                 cluster = artist_cluster_engine.getClusterFromId(
@@ -271,7 +270,6 @@ class Cluster(QtCore.QObject, Item):
                         artist_max = cnt
                         artist_id = cluster
                     artist_hist[cluster] = cnt
-                i+= 1
 
             for id in to_remove:
                 album.remove(id)
