@@ -245,19 +245,21 @@ class Cluster(QtCore.QObject, Item):
             artist_max = 0
             artist_id = None
             artist_hist = {}
-            artist_set = set()
+            main_artist = ""
             i = 0
             do_all = False
             do_cluster = True
             to_remove = []
             for track_id in album:
                 artist = tracks[track_id][0]
+                if i is 0:
+                    main_artist = artist
 
                 cluster = artist_cluster_engine.getClusterFromId(
                     tracks[track_id][0])
 
                 # if it isn't the first track the user hasn't chosen an action to do for all
-                if artist not in artist_set and i is not 0:
+                if artist is not main_artist:
                     if not do_all:
                         do_cluster, do_all = Cluster.cluster_warning(files, track_id, album)
                     if not do_cluster:
@@ -269,7 +271,6 @@ class Cluster(QtCore.QObject, Item):
                         artist_max = cnt
                         artist_id = cluster
                     artist_hist[cluster] = cnt
-                    artist_set.add(artist)
                 i+= 1
 
             for id in to_remove:
