@@ -151,21 +151,15 @@ class MainPanel(QtGui.QSplitter):
         self.tooltips = gtk.Tooltips()
 
         AlbumItem.icon_cd = icontheme.lookup('media-optical', icontheme.ICON_SIZE_MENU)
-
         AlbumItem.icon_cd_modified = icontheme.lookup('media-optical-modified', icontheme.ICON_SIZE_MENU)
-
         AlbumItem.icon_cd_saved = icontheme.lookup('Optical Import Complete', icontheme.ICON_SIZE_MENU)
-
         AlbumItem.icon_cd_saved_modified = icontheme.lookup('media-optical-saved-modified',
-
                                                             icontheme.ICON_SIZE_MENU)
 
         AlbumItem.icon_error = icontheme.lookup('Optical Import Error', icontheme.ICON_SIZE_MENU)
-
         TrackItem.icon_audio = QtGui.QIcon(":/images/track-audio.png")
         TrackItem.icon_video = QtGui.QIcon(":/images/track-video.png")
         TrackItem.icon_data = QtGui.QIcon(":/images/track-data.png")
-
         ## Error
 
         FileItem.icon_file = QtGui.QIcon(":/images/file.png")

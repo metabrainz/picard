@@ -1,5 +1,6 @@
 @startuml
-(*)  --> "check input"
+
+(*)  --> "derewrrewre"
 If "input is verbose" then
 --> [Yes] "turn on verbosity"
 --> "run command"
