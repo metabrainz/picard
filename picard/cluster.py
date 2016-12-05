@@ -245,13 +245,13 @@ class Cluster(QtCore.QObject, Item):
             artist_max = 0
             artist_id = None
             artist_hist = {}
-            main_artist = ""
+            main_artist = None
             do_all = False
             do_cluster = True
             to_remove = []
             for track_id in album:
                 artist = tracks[track_id][0]
-                if main_artist is "":
+                if main_artist is None:
                     main_artist = artist
 
                 cluster = artist_cluster_engine.getClusterFromId(
@@ -290,14 +290,13 @@ class Cluster(QtCore.QObject, Item):
         title = _(u"Album Artist Conflict")
         text = _(u"This track shares an album title with a cluster, "
             "but does not share an artist name. Would you still like to "
-            "cluster this track?\n\n")
+            "cluster this track?")
 
         # Conflicting Track
         artist_name = files[track_id].metadata["artist"]
         album_name = files[track_id].metadata["album"]
         song_title = files[track_id].metadata["title"]
         text = text + album_name + '\n' + song_title + '\n' + artist_name
-
 
         msg = QMessageBox(QMessageBox.Question, title, text)
         layout = msg.layout()
@@ -320,8 +319,7 @@ class Cluster(QtCore.QObject, Item):
 
         layout.addWidget(do_all, layout.rowCount()- 3, 1)
 
-        ret = msg.exec_()
-        return ret, do_all.isChecked();
+        return msg.exec_(), do_all.isChecked();
 
 class UnmatchedFiles(Cluster):
 
