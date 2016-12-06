@@ -36,9 +36,7 @@ from picard.util import format_time, album_artist_from_path
 class Cluster(QtCore.QObject, Item):
 
     # Weights for different elements when comparing a cluster to a release
-
     comparison_weights = {
-
         'album': 17,
         'albumartist': 6,
         'totaltracks': 5,

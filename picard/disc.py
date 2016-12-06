@@ -21,12 +21,10 @@
 
 try:
     # use python-libdiscid (http://pythonhosted.org/python-libdiscid/)
-
     from libdiscid.compat import discid
 except ImportError:
     try:
         # use python-discid (http://python-discid.readthedocs.org/en/latest/)
-
         import discid
     except ImportError:
         discid = None

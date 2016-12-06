@@ -76,7 +76,6 @@ def register_file_action(action):
 
 
 def get_match_color(similarity, basecolor):
-
     c1 = (basecolor.red(), basecolor.green(), basecolor.blue())
     c2 = (223, 125, 125)
     return QtGui.QColor(
@@ -88,19 +87,16 @@ def get_match_color(similarity, basecolor):
 class MainPanel(QtGui.QSplitter):
 
     options = [
-
         config.Option("persist", "splitter_state", QtCore.QByteArray()),
     ]
 
     columns = [
-
         (N_('Title'), 'title'),
         (N_('Length'), '~length'),
         (N_('Artist'), 'artist'),
     ]
 
     def __init__(self, window, parent=None):
-
         QtGui.QSplitter.__init__(self, parent)
         self.window = window
         self.create_icons()
@@ -140,7 +136,6 @@ class MainPanel(QtGui.QSplitter):
         if hasattr(QtGui.QStyle, 'SP_DirIcon'):
             ClusterItem.icon_dir = self.style().standardIcon(QtGui.QStyle.SP_DirIcon)
         else:
-
             ClusterItem.icon_dir = icontheme.lookup('folder', icontheme.ICON_SIZE_MENU)
 
             ##########
@@ -155,28 +150,21 @@ class MainPanel(QtGui.QSplitter):
         AlbumItem.icon_cd_saved = icontheme.lookup('Optical Import Complete', icontheme.ICON_SIZE_MENU)
         AlbumItem.icon_cd_saved_modified = icontheme.lookup('media-optical-saved-modified',
                                                             icontheme.ICON_SIZE_MENU)
-
         AlbumItem.icon_error = icontheme.lookup('Optical Import Error', icontheme.ICON_SIZE_MENU)
         TrackItem.icon_audio = QtGui.QIcon(":/images/track-audio.png")
         TrackItem.icon_video = QtGui.QIcon(":/images/track-video.png")
         TrackItem.icon_data = QtGui.QIcon(":/images/track-data.png")
-        ## Error
-
         FileItem.icon_file = QtGui.QIcon(":/images/file.png")
         FileItem.icon_file_pending = QtGui.QIcon(":/images/file-pending.png")
         FileItem.icon_error = icontheme.lookup('dialog-error', icontheme.ICON_SIZE_MENU)
         FileItem.icon_saved = QtGui.QIcon(":/images/track-saved.png")
-
         FileItem.match_icons = [
-
             QtGui.QIcon(":/images/match-50.png"),
             QtGui.QIcon(":/images/match-60.png"),
             QtGui.QIcon(":/images/match-70.png"),
             QtGui.QIcon(":/images/match-80.png"),
             QtGui.QIcon(":/images/match-90.png"),
             QtGui.QIcon(":/images/match-100.png"),
-
-            #######
         ]
         FileItem.match_pending_icons = [
             QtGui.QIcon(":/images/match-pending-50.png"),
@@ -707,30 +695,22 @@ class AlbumItem(TreeItem):
                     item.update(update_album=False)
 
          ## Album Errror Setting
-
         if album.errors:
-
             self.setIcon(0, AlbumItem.icon_error)
 
         ## If album successful, add code green.
-
         elif album.is_complete():
-
             if album.is_modified():
-
                 self.setIcon(0, AlbumItem.icon_cd_saved_modified)
             else:
                 self.setIcon(0, AlbumItem.icon_cd_saved)
         else:
             if album.is_modified():
-
                 self.setIcon(0, AlbumItem.icon_cd_modified)
             else:
                 self.setIcon(0, AlbumItem.icon_cd)
-
         for i, column in enumerate(MainPanel.columns):
             self.setText(i, album.column(column[1]))
-
         if self.isSelected():
             TreeItem.window.update_selection()
 
