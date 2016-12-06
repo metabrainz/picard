@@ -237,9 +237,12 @@ class Album(DataObject, Item):
                     track = self._finalize_loading_track(medium_node.pregap[0], mm, artists, va, absolutetracknumber, discpregap)
                     track.metadata['~pregap'] = "1"
 
-                for track_node in medium_node.track_list[0].track:
-                    absolutetracknumber += 1
-                    track = self._finalize_loading_track(track_node, mm, artists, va, absolutetracknumber, discpregap)
+                tracklist_node = medium_node.track_list[0]
+                track_count = int(tracklist_node.count)
+                if track_count:
+                    for track_node in tracklist_node.track:
+                        absolutetracknumber += 1
+                        track = self._finalize_loading_track(track_node, mm, artists, va, absolutetracknumber, discpregap)
 
                 if "data_track_list" in medium_node.children:
                     for track_node in medium_node.data_track_list[0].track:
