@@ -86,5 +86,3 @@ To run the included tests, follow the instructions for "Running From
 the Source Tree".  Afterward you can run the tests using setup.py:
 
   python setup.py test
-
-Alternatively, use a test runner such as nose.
