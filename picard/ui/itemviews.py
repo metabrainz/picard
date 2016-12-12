@@ -707,7 +707,7 @@ class AlbumItem(TreeItem):
 
 class TrackItem(TreeItem):
 
-    def update(self, update_album=True):
+    def update(self, update_album=True, update_files=True):
         track = self.obj
         if track.num_linked_files == 1:
             file = track.linked_files[0]
@@ -728,25 +728,26 @@ class TrackItem(TreeItem):
                 icon = TrackItem.icon_data
             else:
                 icon = TrackItem.icon_audio
-            oldnum = self.childCount()
-            newnum = track.num_linked_files
-            if oldnum > newnum:  # remove old items
-                for i in xrange(oldnum - newnum):
-                    self.takeChild(newnum - 1).obj.item = None
-                oldnum = newnum
-            for i in xrange(oldnum):  # update existing items
-                item = self.child(i)
-                file = track.linked_files[i]
-                item.obj = file
-                file.item = item
-                item.update()
-            if newnum > oldnum:  # add new items
-                items = []
-                for i in xrange(newnum - 1, oldnum - 1, -1):
-                    item = FileItem(track.linked_files[i], False)
-                    item.update()
-                    items.append(item)
-                self.addChildren(items)
+            if update_files:
+                oldnum = self.childCount()
+                newnum = track.num_linked_files
+                if oldnum > newnum:  # remove old items
+                    for i in xrange(oldnum - newnum):
+                        self.takeChild(newnum - 1).obj.item = None
+                    oldnum = newnum
+                for i in xrange(oldnum):  # update existing items
+                    item = self.child(i)
+                    file = track.linked_files[i]
+                    item.obj = file
+                    file.item = item
+                    item.update(update_track=False)
+                if newnum > oldnum:  # add new items
+                    items = []
+                    for i in xrange(newnum - 1, oldnum - 1, -1):
+                        item = FileItem(track.linked_files[i], False)
+                        item.update(update_track=False)
+                        items.append(item)
+                    self.addChildren(items)
             self.setExpanded(True)
         self.setIcon(0, icon)
         for i, column in enumerate(MainPanel.columns):
@@ -755,13 +756,14 @@ class TrackItem(TreeItem):
             self.setBackground(i, bgcolor)
         if self.isSelected():
             TreeItem.window.update_selection()
+
         if update_album:
             self.parent().update(update_tracks=False)
 
 
 class FileItem(TreeItem):
 
-    def update(self):
+    def update(self, update_track=True):
         file = self.obj
         self.setIcon(0, FileItem.decide_file_icon(file))
         color = FileItem.file_colors[file.state]
@@ -772,6 +774,9 @@ class FileItem(TreeItem):
             self.setBackground(i, bgcolor)
         if self.isSelected():
             TreeItem.window.update_selection()
+
+        if isinstance(self.parent(), TrackItem) and update_track:
+            self.parent().update(update_files=False)
 
     @staticmethod
     def decide_file_icon(file):
