@@ -140,10 +140,10 @@ class MainPanel(QtGui.QSplitter):
 
             ##########
         ## Tkinter
-        xs
-        tooltips.enable()
-        tooltips = gtk.Tooltips()
-        self.tooltips = gtk.Tooltips()
+       ## xs
+        ##tooltips.enable()
+        ##tooltips = gtk.Tooltips()
+        ##self.tooltips = gtk.Tooltips()
 
         AlbumItem.icon_cd = icontheme.lookup('media-optical', icontheme.ICON_SIZE_MENU)
         AlbumItem.icon_cd_modified = icontheme.lookup('media-optical-modified', icontheme.ICON_SIZE_MENU)
