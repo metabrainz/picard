@@ -71,7 +71,7 @@ class Metadata(dict):
             if img.is_front_image():
                 return [img]
         return []
-        
+
     def remove_image(self, index):
         self.images.pop(index)
 
@@ -121,13 +121,16 @@ class Metadata(dict):
             parts.append((similarity2(a, b), weights["albumartist"]))
 
         if "totaltracks" in self:
-            a = int(self["totaltracks"])
-            if "title" in weights:
-                b = int(release.medium_list[0].medium[0].track_list[0].count)
-            else:
-                b = int(release.medium_list[0].track_count[0].text)
-            score = 0.0 if a > b else 0.3 if a < b else 1.0
-            parts.append((score, weights["totaltracks"]))
+            try:
+                a = int(self["totaltracks"])
+                if "title" in weights:
+                    b = int(release.medium_list[0].medium[0].track_list[0].count)
+                else:
+                    b = int(release.medium_list[0].track_count[0].text)
+                score = 0.0 if a > b else 0.3 if a < b else 1.0
+                parts.append((score, weights["totaltracks"]))
+            except ValueError:
+                pass
 
         preferred_countries = config.setting["preferred_release_countries"]
         preferred_formats = config.setting["preferred_release_formats"]
