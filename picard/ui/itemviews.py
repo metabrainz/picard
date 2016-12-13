@@ -158,6 +158,14 @@ class MainPanel(QtGui.QSplitter):
             QtGui.QIcon(":/images/match-90.png"),
             QtGui.QIcon(":/images/match-100.png"),
         ]
+        FileItem.match_icons_info = [
+            "Bad match",
+            "Poor match",
+            "Ok match",
+            "Good match",
+            "Great match",
+            "Excellent match",
+        ]
         FileItem.match_pending_icons = [
             QtGui.QIcon(":/images/match-pending-50.png"),
             QtGui.QIcon(":/images/match-pending-60.png"),
@@ -721,6 +729,7 @@ class TrackItem(TreeItem):
             color = TrackItem.track_colors[file.state]
             bgcolor = get_match_color(file.similarity, TreeItem.base_color)
             icon = FileItem.decide_file_icon(file)
+            self.setStatusTip(0,FileItem.decide_file_icon_info(file))
             self.takeChildren()
         else:
             if track.ignored_for_completeness():
@@ -794,3 +803,19 @@ class FileItem(TreeItem):
             return FileItem.icon_file_pending
         else:
             return FileItem.icon_file
+
+    @staticmethod
+    def decide_file_icon_info(file):
+        # Note error state info is already handled
+        if isinstance(file.parent, Track):
+            if file.state == File.NORMAL:
+                return "Track saved"
+            elif file.state == File.PENDING:   # unsure how to use int(file.similarity * 5 + 0.5)
+                return "Pending "
+            else:   # returns description of the match ranging from bad to excellent
+                return FileItem.match_icons_info[int(file.similarity * 5 + 0.5)]
+        elif file.state == File.PENDING:
+            return "Pending"
+
+
+
