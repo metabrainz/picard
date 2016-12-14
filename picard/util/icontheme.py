@@ -30,8 +30,8 @@ else:
         '/usr/share/pixmaps',
     ]
 
-if 'GNOME_DESKTOP_SESSION_ID' in os.environ:
-    _current_theme = os.popen('gconftool-2 -g /desktop/gnome/interface/icon_theme').read().strip() or None
+if 'DESKTOP_SESSION' in os.environ and os.environ['DESKTOP_SESSION'].lower() == 'gnome':
+    _current_theme = os.popen('gconftool-2 -g /desktop/gnome/interface/icon_theme').read().strip() or os.popen('gsettings get org.gnome.desktop.interface icon-theme').read().strip() or None
 elif os.environ.get('KDE_FULL_SESSION'):
     _current_theme = os.popen("kreadconfig --file kdeglobals --group Icons --key Theme --default crystalsvg").read().strip() or None
 else:
