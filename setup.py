@@ -107,10 +107,6 @@ class picard_test(Command):
 
     def run(self):
         import unittest
-        import sip
-
-        sip.setapi("QString", 2)
-        sip.setapi("QVariant", 2)
 
         names = []
         for filename in glob.glob("test/test_*.py"):
