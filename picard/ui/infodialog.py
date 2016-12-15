@@ -21,6 +21,7 @@ import os.path
 import cgi
 import traceback
 from PyQt4 import QtGui, QtCore
+from picard import config
 from picard import log
 from picard.file import File
 from picard.track import Track
@@ -102,6 +103,11 @@ class InfoDialog(PicardDialog):
             if image.width and image.height:
                 infos.append(u"%d x %d" % (image.width, image.height))
             infos.append(image.mimetype)
+            if image in self.obj.metadata.images_to_be_saved_to_tags:
+                if image.preserved:
+                    infos.append("* Will be preserved *")
+                else:
+                    infos.append("* Will be saved to tags *")
 
             img_wgt = self.artwork_table.get_coverart_widget(pixmap, "\n".join(infos))
             self.artwork_table.setCellWidget(row, col, img_wgt)

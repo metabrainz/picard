@@ -29,6 +29,7 @@ from operator import itemgetter
 from collections import defaultdict
 from PyQt4 import QtCore
 from picard import config, log
+from picard.coverart.image import TagCoverArtImage
 from picard.metadata import Metadata
 from picard.ui.item import Item
 from picard.script import ScriptParser
@@ -136,14 +137,25 @@ class File(QtCore.QObject, Item):
         acoustid = self.metadata["acoustid_id"]
         preserve = config.setting["preserved_tags"].strip()
         saved_metadata = {}
+        saved_images = []
 
         for tag in re.split(r"\s*,\s*", preserve) + PRESERVED_TAGS:
             values = self.orig_metadata.getall(tag)
             if values:
                 saved_metadata[tag] = values
+
+        for image in self.orig_metadata.images:
+            log.debug("Preserving %r", image)
+            image.preserved = True
+            saved_images.append(image)
+
         self.metadata.copy(metadata)
         for tag, values in saved_metadata.iteritems():
             self.metadata.set(tag, values)
+
+        for image in saved_images:
+            if image not in self.metadata.images:
+                self.metadata.append_image(image)
 
         self.metadata["acoustid_id"] = acoustid
 

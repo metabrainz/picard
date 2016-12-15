@@ -1,0 +1,3 @@
+#!/usr/bin/env python
+from picard.tagger import main; main('/usr/share/locale', True)
+

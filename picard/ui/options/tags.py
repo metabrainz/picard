@@ -34,6 +34,7 @@ class TagsOptionsPage(OptionsPage):
 
     options = [
         config.BoolOption("setting", "clear_existing_tags", False),
+        config.BoolOption("setting", "preserve_image_tags", False),
         config.TextOption("setting", "preserved_tags", ""),
         config.BoolOption("setting", "write_id3v1", True),
         config.BoolOption("setting", "write_id3v23", True),
@@ -62,6 +63,7 @@ class TagsOptionsPage(OptionsPage):
         self.ui.write_tags.setChecked(not config.setting["dont_write_tags"])
         self.ui.preserve_timestamps.setChecked(config.setting["preserve_timestamps"])
         self.ui.clear_existing_tags.setChecked(config.setting["clear_existing_tags"])
+        self.ui.preserve_image_tags.setChecked(config.setting["preserve_image_tags"])
         self.ui.write_id3v1.setChecked(config.setting["write_id3v1"])
         self.ui.write_id3v23.setChecked(config.setting["write_id3v23"])
         if config.setting["id3v2_encoding"] == "iso-8859-1":
@@ -79,6 +81,7 @@ class TagsOptionsPage(OptionsPage):
     def save(self):
         config.setting["dont_write_tags"] = not self.ui.write_tags.isChecked()
         config.setting["preserve_timestamps"] = self.ui.preserve_timestamps.isChecked()
+        config.setting["preserve_image_tags"] = self.ui.preserve_image_tags.isChecked()
         clear_existing_tags = self.ui.clear_existing_tags.isChecked()
         if clear_existing_tags != config.setting["clear_existing_tags"]:
             config.setting["clear_existing_tags"] = clear_existing_tags
