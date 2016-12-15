@@ -698,21 +698,21 @@ class AlbumItem(TreeItem):
                     item.update(update_album=False)
         if album.errors:
             self.setIcon(0, AlbumItem.icon_error)
-            self.setStatusTip(0,"Error")
+            self.setToolTip(0,"Error")
         elif album.is_complete():
             if album.is_modified():
                 self.setIcon(0, AlbumItem.icon_cd_saved_modified)
-                self.setStatusTip(0,"Album successfully modified and complete")
+                self.setToolTip(0,"Album successfully modified and complete")
             else:
                 self.setIcon(0, AlbumItem.icon_cd_saved)
-                self.setStatusTip(0,"Album complete and unchanged")
+                self.setToolTip(0,"Album complete and unchanged")
         else:
             if album.is_modified():
                 self.setIcon(0, AlbumItem.icon_cd_modified)
-                self.setStatusTip(0,"Album modified but not all tracks present")
+                self.setToolTip(0,"Album modified but not all tracks present")
             else:
                 self.setIcon(0, AlbumItem.icon_cd)
-                self.setStatusTip(0,"Album unchanged")
+                self.setToolTip(0,"Album unchanged")
         for i, column in enumerate(MainPanel.columns):
             self.setText(i, album.column(column[1]))
         if self.isSelected():
@@ -729,7 +729,7 @@ class TrackItem(TreeItem):
             color = TrackItem.track_colors[file.state]
             bgcolor = get_match_color(file.similarity, TreeItem.base_color)
             icon = FileItem.decide_file_icon(file)
-            self.setStatusTip(0,FileItem.decide_file_icon_info(file))
+            self.setToolTip(0,FileItem.decide_file_icon_info(file))
             self.takeChildren()
         else:
             if track.ignored_for_completeness():
