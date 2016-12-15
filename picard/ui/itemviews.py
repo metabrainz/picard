@@ -702,14 +702,14 @@ class AlbumItem(TreeItem):
         elif album.is_complete():
             if album.is_modified():
                 self.setIcon(0, AlbumItem.icon_cd_saved_modified)
-                self.setToolTip(0,"Album successfully modified and complete")
+                self.setToolTip(0,"Album modified and complete")
             else:
                 self.setIcon(0, AlbumItem.icon_cd_saved)
-                self.setToolTip(0,"Album complete and unchanged")
+                self.setToolTip(0,"Album unchanged and complete")
         else:
             if album.is_modified():
                 self.setIcon(0, AlbumItem.icon_cd_modified)
-                self.setToolTip(0,"Album modified but not all tracks present")
+                self.setToolTip(0,"Album modified")
             else:
                 self.setIcon(0, AlbumItem.icon_cd)
                 self.setToolTip(0,"Album unchanged")
