@@ -209,7 +209,30 @@ class ASFFile(File):
                 continue
             name = self.__TRANS[name]
             file.tags[name] = map(unicode, values)
+
+        for tag in metadata.deleted_tags:
+            real_name = self._get_tag_name(tag)
+            if real_name and real_name in file.tags:
+                if tag == 'totaldiscs':
+                    try:
+                        file.tags[real_name] = map(unicode,metadata['discnumber'])
+                    except:
+                        pass
+                else:         
+                    del file.tags[real_name]
+                 
         file.save()
 
     def supports_tag(self, name):
         return name in self.__TRANS
+
+
+    def _get_tag_name(self, name):
+
+        if name.startswith('lyrics'):
+            return 'lyrics'
+        elif name == 'totaldiscs':
+            return self.__TRANS['discnumber']     
+        else:
+            return self.__TRANS[name]     
+

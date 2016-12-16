@@ -46,6 +46,7 @@ class Metadata(dict):
     def __init__(self):
         super(Metadata, self).__init__()
         self.images = []
+        self.deleted_tags = set()
         self.length = 0
 
     def append_image(self, coverartimage):
@@ -222,11 +223,13 @@ class Metadata(dict):
             self.images = other.images[:]
         if other.length:
             self.length = other.length
+        self.deleted_tags.update(other.deleted_tags)      
 
     def clear(self):
         dict.clear(self)
         self.images = []
         self.length = 0
+        self.deleted_tags = set()
 
     def getall(self, name):
         return dict.get(self, name, [])
@@ -243,15 +246,17 @@ class Metadata(dict):
 
     def set(self, name, values):
         dict.__setitem__(self, name, values)
+        if name in self.deleted_tags:
+            self.deleted_tags.remove(name)
 
     def __setitem__(self, name, values):
         if not isinstance(values, list):
             values = [values]
         values = filter(None, map(unicode, values))
         if len(values):
-            dict.__setitem__(self, name, values)
+            self.set(name, values)
         else:
-            self.pop(name, None)
+            self.delete(name)
 
     def add(self, name, value):
         if value or value == 0:
@@ -260,6 +265,12 @@ class Metadata(dict):
     def add_unique(self, name, value):
         if value not in self.getall(name):
             self.add(name, value)
+
+    def delete(self, name):
+        if name in self:
+            self.pop(name, None)
+        self.deleted_tags.add(name)     
+
 
     def iteritems(self):
         for name, values in dict.iteritems(self):

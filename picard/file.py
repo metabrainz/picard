@@ -141,11 +141,13 @@ class File(QtCore.QObject, Item):
             values = self.orig_metadata.getall(tag)
             if values:
                 saved_metadata[tag] = values
+        deleted_tags = self.metadata.deleted_tags             
         self.metadata.copy(metadata)
+        self.metadata.deleted_tags = deleted_tags
         for tag, values in saved_metadata.iteritems():
             self.metadata.set(tag, values)
-
-        self.metadata["acoustid_id"] = acoustid
+        if acoustid:
+            self.metadata["acoustid_id"] = acoustid
 
     def has_error(self):
         return self.state == File.ERROR

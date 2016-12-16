@@ -397,6 +397,19 @@ class ID3File(File):
         if tipl.people:
             tags.add(tipl)
 
+        self._build_inverse_dic()  
+ 
+        for tag in metadata.deleted_tags:
+            real_name = self._get_tag_name(tag)
+            log.debug(real_name)
+            log.debug(tag)
+            if real_name == 'POPM':
+                for key, frame in tags.items():
+                    if frame.FrameID == 'POPM' and frame.email == config.setting['rating_user_email']:
+                        del tags[key]           
+            elif real_name in tags:
+                del tags[real_name]
+
         self._save_tags(tags, encode_filename(filename))
 
         if self._IsMP3 and config.setting["remove_ape_from_mp3"]:
@@ -404,6 +417,18 @@ class ID3File(File):
                 mutagen.apev2.delete(encode_filename(filename))
             except:
                 pass
+    def _build_inverse_dic(self):
+        self.__itranslate = {}
+        for key, value in self.__translate.items():
+            self.__itranslate[value] = key              
+        for key, value in self.__translate_freetext.items():
+            self.__itranslate[value] = key              
+
+    def _get_tag_name(self,name):
+        if name in self.__itranslate:
+            return self.__itranslate[name]
+        elif name == '~rating':
+            return 'POPM'    
 
     def _get_file(self, filename):
         raise NotImplementedError()
