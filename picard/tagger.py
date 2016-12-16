@@ -658,6 +658,11 @@ class Tagger(QtGui.QApplication):
             if obj.can_refresh():
                 obj.load(priority=True, refresh=True)
 
+    def bring_tagger_front(self):
+        self.window.setWindowState(self.window.windowState() & ~QtCore.Qt.WindowMinimized | QtCore.Qt.WindowActive)
+        self.window.raise_()
+        self.window.activateWindow()
+
     @classmethod
     def instance(cls):
         return cls.__instance
