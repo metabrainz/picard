@@ -159,12 +159,12 @@ class MainPanel(QtGui.QSplitter):
             QtGui.QIcon(":/images/match-100.png"),
         ]
         FileItem.match_icons_info = [
-            "Bad match",
-            "Poor match",
-            "Ok match",
-            "Good match",
-            "Great match",
-            "Excellent match",
+            N_("Bad match"),
+            N_("Poor match"),
+            N_("Ok match"),
+            N_("Good match"),
+            N_("Great match"),
+            N_("Excellent match"),
         ]
         FileItem.match_pending_icons = [
             QtGui.QIcon(":/images/match-pending-50.png"),
@@ -698,21 +698,21 @@ class AlbumItem(TreeItem):
                     item.update(update_album=False)
         if album.errors:
             self.setIcon(0, AlbumItem.icon_error)
-            self.setToolTip(0,"Error")
+            self.setToolTip(0, _("Error"))
         elif album.is_complete():
             if album.is_modified():
                 self.setIcon(0, AlbumItem.icon_cd_saved_modified)
-                self.setToolTip(0,"Album modified and complete")
+                self.setToolTip(0, _("Album modified and complete"))
             else:
                 self.setIcon(0, AlbumItem.icon_cd_saved)
-                self.setToolTip(0,"Album unchanged and complete")
+                self.setToolTip(0, _("Album unchanged and complete"))
         else:
             if album.is_modified():
                 self.setIcon(0, AlbumItem.icon_cd_modified)
-                self.setToolTip(0,"Album modified")
+                self.setToolTip(0, _("Album modified"))
             else:
                 self.setIcon(0, AlbumItem.icon_cd)
-                self.setToolTip(0,"Album unchanged")
+                self.setToolTip(0, _("Album unchanged"))
         for i, column in enumerate(MainPanel.columns):
             self.setText(i, album.column(column[1]))
         if self.isSelected():
@@ -729,7 +729,7 @@ class TrackItem(TreeItem):
             color = TrackItem.track_colors[file.state]
             bgcolor = get_match_color(file.similarity, TreeItem.base_color)
             icon = FileItem.decide_file_icon(file)
-            self.setToolTip(0,FileItem.decide_file_icon_info(file))
+            self.setToolTip(0, _(FileItem.decide_file_icon_info(file)))
             self.takeChildren()
         else:
             if track.ignored_for_completeness():
@@ -809,13 +809,13 @@ class FileItem(TreeItem):
         # Note error state info is already handled
         if isinstance(file.parent, Track):
             if file.state == File.NORMAL:
-                return "Track saved"
+                return N_("Track saved")
             elif file.state == File.PENDING:   # unsure how to use int(file.similarity * 5 + 0.5)
-                return "Pending "
+                return N_("Pending")
             else:   # returns description of the match ranging from bad to excellent
                 return FileItem.match_icons_info[int(file.similarity * 5 + 0.5)]
         elif file.state == File.PENDING:
-            return "Pending"
+            return N_("Pending")
 
 
 
