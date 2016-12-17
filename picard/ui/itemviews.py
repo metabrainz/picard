@@ -594,7 +594,6 @@ class AlbumTreeView(BaseTreeView):
         self.setAccessibleDescription(_("Contains albums and matched files"))
         self.tagger.album_added.connect(self.add_album)
         self.tagger.album_removed.connect(self.remove_album)
-        self.setMouseTracking(True)
 
     def add_album(self, album):
         item = AlbumItem(album, True, self)
