@@ -815,6 +815,3 @@ class FileItem(TreeItem):
                 return FileItem.match_icons_info[int(file.similarity * 5 + 0.5)]
         elif file.state == File.PENDING:
             return N_("Pending")
-
-
-
