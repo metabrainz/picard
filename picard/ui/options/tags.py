@@ -34,6 +34,7 @@ class TagsOptionsPage(OptionsPage):
 
     options = [
         config.BoolOption("setting", "clear_existing_tags", False),
+        config.BoolOption("setting", "remove_extra_padding", False),
         config.TextOption("setting", "preserved_tags", ""),
         config.BoolOption("setting", "write_id3v1", True),
         config.BoolOption("setting", "write_id3v23", True),
@@ -50,6 +51,8 @@ class TagsOptionsPage(OptionsPage):
         super(TagsOptionsPage, self).__init__(parent)
         self.ui = Ui_TagsOptionsPage()
         self.ui.setupUi(self)
+        self.ui.clear_existing_tags.toggled.connect(self.ui.remove_extra_padding.setEnabled)
+        self.ui.clear_existing_tags.toggled.connect(lambda x : self.ui.remove_extra_padding.setChecked(False))
         self.ui.write_id3v23.clicked.connect(self.update_encodings)
         self.ui.write_id3v24.clicked.connect(self.update_encodings)
         self.completer = QtGui.QCompleter(sorted(TAG_NAMES.keys()), self)
@@ -62,6 +65,11 @@ class TagsOptionsPage(OptionsPage):
         self.ui.write_tags.setChecked(not config.setting["dont_write_tags"])
         self.ui.preserve_timestamps.setChecked(config.setting["preserve_timestamps"])
         self.ui.clear_existing_tags.setChecked(config.setting["clear_existing_tags"])
+        if not config.setting["clear_existing_tags"]:
+            self.ui.remove_extra_padding.setEnabled(False)
+            self.ui.remove_extra_padding.setChecked(False)
+        else:
+            self.ui.remove_extra_padding.setChecked(config.setting["remove_extra_padding"])
         self.ui.write_id3v1.setChecked(config.setting["write_id3v1"])
         self.ui.write_id3v23.setChecked(config.setting["write_id3v23"])
         if config.setting["id3v2_encoding"] == "iso-8859-1":
@@ -83,6 +91,7 @@ class TagsOptionsPage(OptionsPage):
         if clear_existing_tags != config.setting["clear_existing_tags"]:
             config.setting["clear_existing_tags"] = clear_existing_tags
             self.tagger.window.metadata_box.update()
+        config.setting["remove_extra_padding"] = self.ui.clear_existing_tags.isChecked() and self.ui.remove_extra_padding.isChecked()
         config.setting["write_id3v1"] = self.ui.write_id3v1.isChecked()
         config.setting["write_id3v23"] = self.ui.write_id3v23.isChecked()
         config.setting["id3v23_join_with"] = unicode(self.ui.id3v23_join_with.currentText())

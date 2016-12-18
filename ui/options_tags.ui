@@ -41,11 +41,28 @@
        <number>7</number>
       </property>
       <item>
-       <widget class="QCheckBox" name="clear_existing_tags">
-        <property name="text">
-         <string>Clear existing tags</string>
+       <layout class="QHBoxLayout" name="clear_or_delete">
+        <property name="spacing">
+         <number>0</number>
         </property>
-       </widget>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <item>
+         <widget class="QCheckBox" name="clear_existing_tags">
+          <property name="text">
+           <string>Clear existing tags</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QCheckBox" name="remove_extra_padding">
+          <property name="text">
+           <string>Remove extra padding</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </item>
       <item>
        <widget class="QCheckBox" name="remove_id3_from_flac">
@@ -312,6 +329,7 @@
   <tabstop>write_tags</tabstop>
   <tabstop>preserve_timestamps</tabstop>
   <tabstop>clear_existing_tags</tabstop>
+  <tabstop>remove_extra_padding</tabstop>
   <tabstop>remove_id3_from_flac</tabstop>
   <tabstop>remove_ape_from_mp3</tabstop>
   <tabstop>preserved_tags</tabstop>

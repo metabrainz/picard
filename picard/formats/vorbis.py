@@ -158,7 +158,12 @@ class VCommentFile(File):
         if file.tags is None:
             file.add_tags()
         if config.setting["clear_existing_tags"]:
-            file.tags.clear()
+            if config.setting["remove_extra_padding"]:
+                file.delete()
+                if file.tags is None:
+                    file.add_tags()
+            else:
+                file.tags.clear()
         if (is_flac and (config.setting["clear_existing_tags"] or
                          metadata.images_to_be_saved_to_tags)):
             file.clear_pictures()
