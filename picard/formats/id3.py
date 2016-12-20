@@ -401,8 +401,6 @@ class ID3File(File):
  
         for tag in metadata.deleted_tags:
             real_name = self._get_tag_name(tag)
-            log.debug(real_name)
-            log.debug(tag)
             if real_name == 'POPM':
                 for key, frame in tags.items():
                     if frame.FrameID == 'POPM' and frame.email == config.setting['rating_user_email']:
@@ -417,6 +415,7 @@ class ID3File(File):
                 mutagen.apev2.delete(encode_filename(filename))
             except:
                 pass
+                
     def _build_inverse_dic(self):
         self.__itranslate = {}
         for key, value in self.__translate.items():

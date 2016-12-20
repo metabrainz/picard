@@ -215,7 +215,7 @@ class ASFFile(File):
             if real_name and real_name in file.tags:
                 if tag == 'totaldiscs':
                     try:
-                        file.tags[real_name] = map(unicode,metadata['discnumber'])
+                        file.tags[real_name] = map(unicode, metadata['discnumber'])
                     except:
                         pass
                 else:         

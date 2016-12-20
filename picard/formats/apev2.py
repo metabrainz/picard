@@ -191,9 +191,9 @@ class APEv2File(File):
             return 'Lyrics'
         elif name == 'date':
             return 'Year'
-        elif name == ('tracknumber','totaltracks'):
+        elif name in ('tracknumber','totaltracks'):
             return 'Track'
-        elif name == ('discnumber', 'totaldiscs'):
+        elif name in ('discnumber', 'totaldiscs'):
             return 'Disc'
         elif name.startswith('performer:') or name.startswith('comment:'):
             return name.split(':',1)[0].title()
