@@ -5,16 +5,19 @@
 # Translators:
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2010
 # Keshav Kini <keshav.kini@gmail.com>, 2013
+# mai inoue, 2015
+# Mitsuharu Kurita, 2016
 # Nozomu Kurasawa <nabetaro@caldron.jp>, 2012
+# Shunsuke Shimizu <grafi@grafi.jp>, 2016
 # th1rtyf0ur, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2015-02-06 13:01+0100\n"
-"PO-Revision-Date: 2015-02-07 08:15+0000\n"
-"Last-Translator: nikki\n"
-"Language-Team: Japanese (http://www.transifex.com/projects/p/musicbrainz/language/ja/)\n"
+"PO-Revision-Date: 2016-05-14 19:37+0000\n"
+"Last-Translator: Mitsuharu Kurita\n"
+"Language-Team: Japanese (http://www.transifex.com/musicbrainz/musicbrainz/language/ja/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -24,7 +27,7 @@ msgstr ""
 
 #: contrib/plugins/albumartist_website.py:3
 msgid "Album Artist Website"
-msgstr ""
+msgstr "アルバムアーティストのウェブサイト"
 
 #: contrib/plugins/no_release.py:50
 msgid "Enable plugin for all releases by default"
@@ -40,7 +43,7 @@ msgstr "特定のリリース情報を削除…"
 
 #: contrib/plugins/standardise_performers.py:3
 msgid "Standardise Performers"
-msgstr ""
+msgstr "演奏者を正規化する"
 
 #: contrib/plugins/lastfm/ui_options_lastfm.py:99
 msgid "Last.fm"
@@ -92,133 +95,133 @@ msgstr " %"
 
 #: contrib/plugins/replaygain/__init__.py:50
 msgid "Calculate replay &gain..."
-msgstr "再生利得を計算 (&G)"
+msgstr "リプレイゲインを計算 (&G)"
 
 #: contrib/plugins/replaygain/__init__.py:67
 #, python-format
 msgid "Calculating replay gain for \"%(filename)s\"..."
-msgstr ""
+msgstr "「%(filename)s」のリプレイゲインを計算中..."
 
 #: contrib/plugins/replaygain/__init__.py:75
 #, python-format
 msgid "Replay gain for \"%(filename)s\" successfully calculated."
-msgstr ""
+msgstr "「%(filename)s」のリプレイゲインが計算されました"
 
 #: contrib/plugins/replaygain/__init__.py:80
 #, python-format
 msgid "Could not calculate replay gain for \"%(filename)s\"."
-msgstr ""
+msgstr "「%(filename)s」のリプレイゲインの計算に失敗しました"
 
 #: contrib/plugins/replaygain/__init__.py:85
 msgid "Calculate album &gain..."
-msgstr "アルバムの利得を計算 (&G)"
+msgstr "アルバムゲインを計算 (&G)"
 
 #: contrib/plugins/replaygain/__init__.py:113
 #: contrib/plugins/replaygain/__init__.py:124
 #, python-format
 msgid "Calculating album gain for \"%(album)s\"..."
-msgstr ""
+msgstr "「%(album)s」のアルバムゲインを計算中..."
 
 #: contrib/plugins/replaygain/__init__.py:135
 #, python-format
 msgid "Album gain for \"%(album)s\" successfully calculated."
-msgstr ""
+msgstr "「%(album)s」のアルバムゲインが計算されました。"
 
 #: contrib/plugins/replaygain/__init__.py:140
 #, python-format
 msgid "Could not calculate album gain for \"%(album)s\"."
-msgstr ""
+msgstr "「%(album)s」のアルバムゲインの計算に失敗しました。"
 
 #: contrib/plugins/replaygain/ui_options_replaygain.py:59
 msgid "Replay Gain"
-msgstr ""
+msgstr "リプレイゲイン"
 
 #: contrib/plugins/replaygain/ui_options_replaygain.py:60
 msgid "Path to VorbisGain:"
-msgstr ""
+msgstr "VorbisGainのパス"
 
 #: contrib/plugins/replaygain/ui_options_replaygain.py:61
 msgid "Path to MP3Gain:"
-msgstr ""
+msgstr "MP3Gainのパス"
 
 #: contrib/plugins/replaygain/ui_options_replaygain.py:62
 msgid "Path to metaflac:"
-msgstr ""
+msgstr "metaflacのパス"
 
 #: contrib/plugins/replaygain/ui_options_replaygain.py:63
 msgid "Path to wvgain:"
-msgstr ""
+msgstr "wvgainのパス"
 
 #: contrib/plugins/viewvariables/__init__.py:42
 #, python-format
 msgid "File: %s"
-msgstr ""
+msgstr "ファイル: %s"
 
 #: contrib/plugins/viewvariables/__init__.py:47
 #, python-format
 msgid "Track: %s %s "
-msgstr ""
+msgstr "トラック: %s %s"
 
 #: contrib/plugins/viewvariables/__init__.py:49
 msgid "Variables"
-msgstr ""
+msgstr "変数"
 
 #: contrib/plugins/viewvariables/__init__.py:69
 msgid "File variables"
-msgstr ""
+msgstr "ファイル変数"
 
 #: contrib/plugins/viewvariables/__init__.py:74
 msgid "Hidden variables"
-msgstr ""
+msgstr "隠し変数"
 
 #: contrib/plugins/viewvariables/__init__.py:79
 msgid "Tag variables"
-msgstr ""
+msgstr "タグ変数"
 
 #: contrib/plugins/viewvariables/ui_variables_dialog.py:73
 msgid "Variable"
-msgstr ""
+msgstr "変数"
 
 #: contrib/plugins/viewvariables/ui_variables_dialog.py:75
 msgid "Value"
-msgstr ""
+msgstr "値"
 
 #: picard/acoustid.py:111
 #, python-format
 msgid "AcoustID lookup network error for '%(filename)s'!"
-msgstr ""
+msgstr "「%(filename)s」のAcoustID検索でネットワークエラーが発生しました！"
 
 #: picard/acoustid.py:135
 #, python-format
 msgid "AcoustID lookup failed for '%(filename)s'!"
-msgstr ""
+msgstr "「%(filename)s」のAcoustID検索が失敗しました！"
 
 #: picard/acoustid.py:157
 #, python-format
 msgid "AcoustID lookup returned no result for file '%(filename)s'"
-msgstr ""
+msgstr "ファイル「%(filename)s」のAcoustID検索結果はありませんでした。"
 
 #: picard/acoustid.py:168
 #, python-format
 msgid "Looking up the fingerprint for file '%(filename)s' ..."
-msgstr ""
+msgstr "ファイル「%(filename)s」のフィンガープリントを検索しています..."
 
 #: picard/acoustidmanager.py:81
 msgid "Submitting AcoustIDs ..."
-msgstr ""
+msgstr "AcoustIDを送信しています..."
 
 #: picard/acoustidmanager.py:95
 #, python-format
 msgid "AcoustID submission failed with error '%(error)s'"
-msgstr ""
+msgstr "AcoustIDの送信がエラー'%(error)s%'で失敗しました。"
 
 #: picard/acoustidmanager.py:103
 msgid "AcoustIDs successfully submitted."
-msgstr ""
+msgstr "AcoustIDを送信しました。"
 
 #: picard/album.py:65 picard/cluster.py:270
 msgid "Unmatched Files"
-msgstr "マッチしてないファイル"
+msgstr "マッチしていないファイル"
 
 #: picard/album.py:189
 #, python-format
@@ -228,12 +231,12 @@ msgstr "［アルバム %s を読み込めません］"
 #: picard/album.py:273
 #, python-format
 msgid "Album %(id)s loaded: %(artist)s - %(album)s"
-msgstr ""
+msgstr "アルバム%(id)sを読み込みました: %(artist)s - %(album)s"
 
 #: picard/album.py:314
 #, python-format
 msgid "Loading album %(id)s ..."
-msgstr ""
+msgstr "アルバム%(id)sを読み込み中です..."
 
 #: picard/album.py:318
 msgid "[loading album information]"
@@ -248,51 +251,51 @@ msgstr[0] "； %i 画像"
 #: picard/cluster.py:164 picard/cluster.py:177
 #, python-format
 msgid "No matching releases for cluster %(album)s"
-msgstr ""
+msgstr "クラスタ%(album)sにマッチするリリースはありません"
 
 #: picard/cluster.py:183
 #, python-format
 msgid "Cluster %(album)s identified!"
-msgstr ""
+msgstr "クラスタ%(album)sを同定しました！"
 
 #: picard/cluster.py:194
 #, python-format
 msgid "Looking up the metadata for cluster %(album)s..."
-msgstr ""
+msgstr "クラスタ%(album)sのメタデータを検索しています..."
 
 #: picard/collection.py:64
 #, python-format
 msgid "Added %(count)i release to collection \"%(name)s\""
 msgid_plural "Added %(count)i releases to collection \"%(name)s\""
-msgstr[0] ""
+msgstr[0] "コレクション「%(name)s」に%(count)iリリースを追加しました。"
 
 #: picard/collection.py:86
 #, python-format
 msgid "Removed %(count)i release from collection \"%(name)s\""
 msgid_plural "Removed %(count)i releases from collection \"%(name)s\""
-msgstr[0] ""
+msgstr[0] "コレクション「%(name)s」から%(count)iリリースを削除しました。"
 
 #: picard/collection.py:100
 #, python-format
 msgid "Error loading collections: %(error)s"
-msgstr ""
+msgstr "コレクションのロード中にエラーが発生しました: %(error)s"
 
 #: picard/config_upgrade.py:58 picard/config_upgrade.py:71
 msgid "Various Artists file naming scheme removal"
-msgstr "Various Artistsの特別ファイル命名体系の削除"
+msgstr "複数のアーティストの場合のファイル名ルールを設定する機能は削除されました"
 
 #: picard/config_upgrade.py:59
 msgid ""
 "The separate file naming scheme for various artists albums has been removed in this version of Picard.\n"
 "Your file naming scheme has automatically been merged with that of single artist albums."
-msgstr ""
+msgstr "複数アーティストのアルバムの場合だけで用いるファイル名ルールの設定は、このバージョンのPicardではできません。\nファイル名ルールの設定は、単独アーティストの場合の設定を含めて自動的にマージされました。"
 
 #: picard/config_upgrade.py:72
 msgid ""
 "The separate file naming scheme for various artists albums has been removed in this version of Picard.\n"
 "You currently do not use this option, but have a separate file naming scheme defined.\n"
 "Do you want to remove it or merge it with your file naming scheme for single artist albums?"
-msgstr ""
+msgstr "複数アーティストのアルバムの場合だけで用いるファイル名ルールの設定は、このバージョンのPicardではできません。\n現在このオプションは無効になっていますが、別のファイル名ルールが定義されています。\nこのルールを削除しますか？または単独アーティストのアルバムに用いるファイル名ルールとマージしますか？"
 
 #: picard/config_upgrade.py:78
 msgid "Merge"
@@ -305,30 +308,30 @@ msgstr "削除"
 #: picard/file.py:506
 #, python-format
 msgid "No matching tracks for file '%(filename)s'"
-msgstr ""
+msgstr "ファイル「%(filename)s」にマッチするトラックはありません"
 
 #: picard/file.py:522
 #, python-format
 msgid "No matching tracks above the threshold for file '%(filename)s'"
-msgstr ""
+msgstr "ファイル「%(filename)s」にしきい値を超えてマッチするトラックはありません"
 
 #: picard/file.py:529
 #, python-format
 msgid "File '%(filename)s' identified!"
-msgstr ""
+msgstr "ファイル「%(filename)s」を同定しました！"
 
 #: picard/file.py:549
 #, python-format
 msgid "Looking up the metadata for file %(filename)s ..."
-msgstr ""
+msgstr "ファイル「%(filename)s」のメタデータを検索しています..."
 
 #: picard/releasegroup.py:53
 msgid "Tracks"
-msgstr ""
+msgstr "トラック"
 
 #: picard/releasegroup.py:54
 msgid "Year"
-msgstr ""
+msgstr "年"
 
 #: picard/releasegroup.py:55 picard/ui/cdlookup.py:35
 msgid "Country"
@@ -340,15 +343,15 @@ msgstr "フォーマット"
 
 #: picard/releasegroup.py:57
 msgid "Label"
-msgstr ""
+msgstr "レーベル"
 
 #: picard/releasegroup.py:58
 msgid "Cat No"
-msgstr ""
+msgstr "カタログ番号"
 
 #: picard/releasegroup.py:88
 msgid "[no barcode]"
-msgstr ""
+msgstr "[バーコードなし]"
 
 #: picard/releasegroup.py:108
 msgid "[no release info]"
@@ -358,12 +361,12 @@ msgstr "[リリース情報なし]"
 #, python-format
 msgid "Adding %(count)d file from '%(directory)s' ..."
 msgid_plural "Adding %(count)d files from '%(directory)s' ..."
-msgstr[0] ""
+msgstr[0] "%(count)dファイルを「%(directory)s」から追加しています..."
 
 #: picard/tagger.py:531
 #, python-format
 msgid "Removing album %(id)s: %(artist)s - %(album)s"
-msgstr ""
+msgstr "アルバム%(id)sを削除しています: %(artist)s - %(album)s"
 
 #: picard/tagger.py:547
 msgid "CD Lookup Error"
@@ -436,13 +439,13 @@ msgstr "スウェーデン語"
 #: picard/coverart/__init__.py:69
 #, python-format
 msgid "Cover art of type '%(type)s' downloaded for %(albumid)s from %(host)s"
-msgstr ""
+msgstr "%(albumid)s の '%(type)s' タイプのカバーアートが %(host)s からダウンロードされました"
 
 #: picard/coverart/__init__.py:159
 #, python-format
 msgid ""
 "Downloading cover art of type '%(type)s' for %(albumid)s from %(host)s ..."
-msgstr ""
+msgstr "%(albumid)s の '%(type)s' タイプのカバーアートを %(host)s からダウンロード中..."
 
 #: picard/coverart/utils.py:31
 msgid "Unknown"
@@ -475,7 +478,7 @@ msgstr "バーコード"
 
 #: picard/ui/collectionmenu.py:42
 msgid "Refresh List"
-msgstr "リスト更新"
+msgstr "リストを更新"
 
 #: picard/ui/collectionmenu.py:86
 #, python-format
@@ -485,7 +488,7 @@ msgstr[0] "%s (%i リリース)"
 
 #: picard/ui/coverartbox.py:143
 msgid "View release on MusicBrainz"
-msgstr "リリースをMusicBrainzに提出する"
+msgstr "MusicBrainzでリリースを表示する"
 
 #: picard/ui/filebrowser.py:40
 msgid "&Move Tagged Files Here"
@@ -509,7 +512,7 @@ msgid ""
 "Double-click to open in external viewer\n"
 "Temporary file: %s\n"
 "Source: %s"
-msgstr ""
+msgstr "外部ビューアで表示するにはダブルクリック\n一時ファイル: %s\nソース: %s"
 
 #: picard/ui/infodialog.py:115
 msgid "Filename:"
@@ -566,19 +569,19 @@ msgstr "情報(&I)"
 
 #: picard/ui/infodialog.py:177
 msgid "Cluster Info"
-msgstr ""
+msgstr "クラスタ情報"
 
 #: picard/ui/infodialog.py:186
 msgid "Album:"
-msgstr ""
+msgstr "アルバム:"
 
 #: picard/ui/infodialog.py:188
 msgid "Artist:"
-msgstr ""
+msgstr "アーティスト:"
 
 #: picard/ui/infodialog.py:198
 msgid "Tracklist:"
-msgstr ""
+msgstr "トラックリスト:"
 
 #: picard/ui/infostatus.py:51
 msgid "Files"
@@ -590,11 +593,11 @@ msgstr "アルバム"
 
 #: picard/ui/infostatus.py:53
 msgid "Pending files"
-msgstr "未解決ファイル"
+msgstr "未処理ファイル"
 
 #: picard/ui/infostatus.py:54
 msgid "Pending requests"
-msgstr "未解決リクエスト"
+msgstr "未処理リクエスト"
 
 #: picard/ui/itemviews.py:94 picard/util/tags.py:23
 msgid "Title"
@@ -626,7 +629,7 @@ msgstr "コレクション"
 
 #: picard/ui/itemviews.py:367
 msgid "P&lugins"
-msgstr ""
+msgstr "プラグイン(&L)"
 
 #: picard/ui/itemviews.py:543
 msgid "file view"
@@ -634,7 +637,7 @@ msgstr "ファイル表示"
 
 #: picard/ui/itemviews.py:544
 msgid "Contains unmatched files and clusters"
-msgstr "マッチされてないファイルとクラスタ含み"
+msgstr "マッチしていないファイル・クラスタを含む"
 
 #: picard/ui/itemviews.py:564
 msgid "Clusters"
@@ -654,11 +657,11 @@ msgstr "ログ"
 
 #: picard/ui/logview.py:113
 msgid "Debug mode"
-msgstr ""
+msgstr "デバッグモード"
 
 #: picard/ui/logview.py:134
 msgid "Activity History"
-msgstr ""
+msgstr "動作履歴"
 
 #: picard/ui/mainwindow.py:75
 msgid "MusicBrainz Picard"
@@ -670,7 +673,7 @@ msgstr "未保存の変更"
 
 #: picard/ui/mainwindow.py:157
 msgid "Are you sure you want to quit Picard?"
-msgstr "Picardを終了して宜しいですか？"
+msgstr "Picardを終了してよろしいですか？"
 
 #: picard/ui/mainwindow.py:158
 #, python-format
@@ -678,7 +681,7 @@ msgid ""
 "There is %d unsaved file. Closing Picard will lose all unsaved changes."
 msgid_plural ""
 "There are %d unsaved files. Closing Picard will lose all unsaved changes."
-msgstr[0] "保存されていないファイルが%dあります。Picardを終了したら、変更内容が失われます。"
+msgstr[0] "%d個の保存されていないファイルがあります。Picardを終了したら、変更内容が失われます。"
 
 #: picard/ui/mainwindow.py:165
 msgid "&Quit Picard"
@@ -693,7 +696,7 @@ msgid ""
 "Picard listens on this port to integrate with your browser. When you "
 "\"Search\" or \"Open in Browser\" from Picard, clicking the \"Tagger\" "
 "button on the web page loads the release into Picard."
-msgstr ""
+msgstr "Picardはブラウザと連携するためにこのポートで待ち受けています。Picardから「検索」または「ブラウザを開く」を実行したなら、ウェブページで\"Tagger\"ボタンをクリックするとリリースがPicardに読み込まれます。"
 
 #: picard/ui/mainwindow.py:244
 #, python-format
@@ -776,7 +779,7 @@ msgstr "送信(&U)"
 
 #: picard/ui/mainwindow.py:357
 msgid "Submit acoustic fingerprints"
-msgstr ""
+msgstr "音声フィンガープリントを送信"
 
 #: picard/ui/mainwindow.py:361
 msgid "E&xit"
@@ -820,11 +823,11 @@ msgstr "検索"
 
 #: picard/ui/mainwindow.py:393
 msgid "Lookup &CD..."
-msgstr ""
+msgstr "CDを検索(&C)"
 
 #: picard/ui/mainwindow.py:394
 msgid "Lookup the details of the CD in your drive"
-msgstr ""
+msgstr "ドライブ内のCDの詳細を検索"
 
 #: picard/ui/mainwindow.py:396
 msgid "Ctrl+K"
@@ -852,7 +855,7 @@ msgstr "検索(&L)"
 
 #: picard/ui/mainwindow.py:412
 msgid "Lookup selected items in MusicBrainz"
-msgstr ""
+msgstr "選択したアイテムをMusicBrainzで検索"
 
 #: picard/ui/mainwindow.py:417
 msgid "Ctrl+L"
@@ -896,27 +899,27 @@ msgstr ""
 
 #: picard/ui/mainwindow.py:453
 msgid "View Error/Debug &Log"
-msgstr ""
+msgstr "エラーログ・デバッグログを表示(&L)"
 
 #: picard/ui/mainwindow.py:456
 msgid "View Activity &History"
-msgstr ""
+msgstr "動作履歴を表示(&H)"
 
 #: picard/ui/mainwindow.py:463
 msgid "&Play file"
-msgstr ""
+msgstr "ファイルを再生(&P)"
 
 #: picard/ui/mainwindow.py:464
 msgid "Play the file in your default media player"
-msgstr ""
+msgstr "ファイルを既定のメディアプレイヤーで再生"
 
 #: picard/ui/mainwindow.py:468
 msgid "Open Containing &Folder"
-msgstr ""
+msgstr "フォルダを開く(&F)"
 
 #: picard/ui/mainwindow.py:469
 msgid "Open the containing folder in your file explorer"
-msgstr ""
+msgstr "含んでいるフォルダをエクスプローラで開く"
 
 #: picard/ui/mainwindow.py:498
 msgid "&File"
@@ -957,12 +960,12 @@ msgstr "サポートされているすべてのフォーマット"
 #: picard/ui/mainwindow.py:701
 #, python-format
 msgid "Adding directory: '%(directory)s' ..."
-msgstr ""
+msgstr "ディレクトリ「%(directory)s」を追加中..."
 
 #: picard/ui/mainwindow.py:708
 #, python-format
 msgid "Adding multiple directories from '%(directory)s' ..."
-msgstr ""
+msgstr "「%(directory)s」の中の複数のディレクトリを追加中..."
 
 #: picard/ui/mainwindow.py:773
 msgid "Configuration Required"
@@ -977,32 +980,32 @@ msgstr "音声フィンガープリント計算はまだ設定していません
 #: picard/ui/mainwindow.py:860
 #, python-format
 msgid "%(filename)s (error: %(error)s)"
-msgstr ""
+msgstr "%(filename)s (エラー: %(error)s)"
 
 #: picard/ui/mainwindow.py:866
 #, python-format
 msgid "%(filename)s"
-msgstr ""
+msgstr "%(filename)s"
 
 #: picard/ui/mainwindow.py:876
 #, python-format
 msgid "%(filename)s (%(similarity)d%%) (error: %(error)s)"
-msgstr ""
+msgstr "%(filename)s (%(similarity)d%%) (エラー: %(error)s)"
 
 #: picard/ui/mainwindow.py:883
 #, python-format
 msgid "%(filename)s (%(similarity)d%%)"
-msgstr ""
+msgstr "%(filename)s (%(similarity)d%%)"
 
 #: picard/ui/mainwindow.py:920
 msgid "Authentication Required"
-msgstr ""
+msgstr "認証が必要です"
 
 #: picard/ui/mainwindow.py:921
 msgid ""
 "Picard needs authorization to access your personal data on the MusicBrainz "
 "server. Would you like to log in now?"
-msgstr ""
+msgstr "MusicBrainzサーバー上の個人情報にPicardからアクセスするためには認証が必要です。ログインしますか？"
 
 #: picard/ui/metadatabox.py:82
 #, python-format
@@ -1077,7 +1080,7 @@ msgstr "CD読み込み"
 
 #: picard/ui/ui_cdlookup.py:54
 msgid "The following releases on MusicBrainz match the CD:"
-msgstr "以下のリリースがMusicBrainzにてCDとマッチしました："
+msgstr "MusicBrainzに登録された以下のリリースがCDとマッチしました:"
 
 #: picard/ui/ui_cdlookup.py:55
 msgid "OK"
@@ -1085,7 +1088,7 @@ msgstr "OK"
 
 #: picard/ui/ui_cdlookup.py:56
 msgid "Lookup manually"
-msgstr ""
+msgstr "自分で検索する"
 
 #: picard/ui/ui_cdlookup.py:57
 msgid "Cancel"
@@ -1121,15 +1124,15 @@ msgstr "オプション"
 
 #: picard/ui/ui_options_advanced.py:45
 msgid "Advanced options"
-msgstr ""
+msgstr "高度な設定"
 
 #: picard/ui/ui_options_advanced.py:46
 msgid "Ignore file paths matching the following regular expression:"
-msgstr ""
+msgstr "次の正規表現にマッチするファイルパスを無視:"
 
 #: picard/ui/ui_options_advanced.py:47
 msgid "Ignore hidden files"
-msgstr ""
+msgstr "隠しファイルを無視"
 
 #: picard/ui/ui_options_cdlookup.py:43
 msgid "CD-ROM device to use for lookups:"
@@ -1145,7 +1148,7 @@ msgstr "場所"
 
 #: picard/ui/ui_options_cover.py:143
 msgid "Embed cover images into tags"
-msgstr "カバー写真をタグに埋め込む"
+msgstr "カバー画像をタグに埋め込む"
 
 #: picard/ui/ui_options_cover.py:144
 msgid "Only embed a front image"
@@ -1165,7 +1168,7 @@ msgstr "すでファイルが存在している場合には上書きする"
 
 #: picard/ui/ui_options_cover.py:148
 msgid "Coverart Providers"
-msgstr "表紙画像プロバイダー"
+msgstr "カバーアートの提供元"
 
 #: picard/ui/ui_options_cover.py:149
 msgid "Amazon"
@@ -1173,15 +1176,15 @@ msgstr "Amazon"
 
 #: picard/ui/ui_options_cover.py:150 picard/ui/ui_options_cover.py:152
 msgid "Cover Art Archive"
-msgstr "Cover Art Archive (表紙画像書庫)"
+msgstr "Cover Art Archive "
 
 #: picard/ui/ui_options_cover.py:151
 msgid "Sites on the whitelist"
-msgstr "ホワイトリストされたサイト"
+msgstr "他の許可されているサイト"
 
 #: picard/ui/ui_options_cover.py:153
 msgid "Only use images of the following size:"
-msgstr "画像は以降のサイズのみを使用："
+msgstr "使用する画像のサイズを指定します。"
 
 #: picard/ui/ui_options_cover.py:154
 msgid "250 px"
@@ -1197,11 +1200,11 @@ msgstr "フルサイズ"
 
 #: picard/ui/ui_options_cover.py:157
 msgid "Download only cover art images matching selected types"
-msgstr ""
+msgstr "カバーアートの選択した箇所のみをダウンロードする"
 
 #: picard/ui/ui_options_cover.py:158
 msgid "Select types..."
-msgstr ""
+msgstr "形式を選択..."
 
 #: picard/ui/ui_options_cover.py:159
 msgid "Download only approved images"
@@ -1217,15 +1220,15 @@ msgstr "最初の画像タイプをファイルネームで使用。表紙画像
 msgid ""
 "Use the image of the release group if no front image is associated with the "
 "release"
-msgstr ""
+msgstr "リリースに対応する表側の画像がない場合にリリースグループの画像を使用する"
 
 #: picard/ui/ui_options_fingerprinting.py:70
 msgid "Audio Fingerprinting"
-msgstr "音声フィンガープリント計算"
+msgstr "音声フィンガープリント"
 
 #: picard/ui/ui_options_fingerprinting.py:71
 msgid "Do not use audio fingerprinting"
-msgstr "フィンガープリント計算を使用しない"
+msgstr "フィンガープリントを使用しない"
 
 #: picard/ui/ui_options_fingerprinting.py:72
 msgid "Use AcoustID"
@@ -1266,7 +1269,7 @@ msgstr "自分のタグのみ使用する"
 
 #: picard/ui/ui_options_folksonomy.py:107
 msgid "Maximum number of tags:"
-msgstr "タグ数の最大限："
+msgstr "タグ数の上限:"
 
 #: picard/ui/ui_options_general.py:92
 msgid "MusicBrainz Server"
@@ -1282,15 +1285,15 @@ msgstr "サーバアドレス:"
 
 #: picard/ui/ui_options_general.py:95 picard/ui/options/general.py:88
 msgid "MusicBrainz Account"
-msgstr ""
+msgstr "MusicBrainzアカウント"
 
 #: picard/ui/ui_options_general.py:96
 msgid "Log in"
-msgstr ""
+msgstr "ログイン"
 
 #: picard/ui/ui_options_general.py:97
 msgid "Log out"
-msgstr ""
+msgstr "ログアウト"
 
 #: picard/ui/ui_options_general.py:98 picard/ui/options/general.py:33
 msgid "General"
@@ -1354,7 +1357,7 @@ msgstr "メタデータ"
 
 #: picard/ui/ui_options_metadata.py:102
 msgid "Translate artist names to this locale where possible:"
-msgstr "可能ならこのロケールでアーティスト名を翻訳する"
+msgstr "可能であればアーティスト名をこのロケールに翻訳する: "
 
 #: picard/ui/ui_options_metadata.py:103
 msgid "Use standardized artist names"
@@ -1407,15 +1410,15 @@ msgstr "ユーザ名:"
 
 #: picard/ui/ui_options_network.py:112
 msgid "Browser Integration"
-msgstr ""
+msgstr "ブラウザとの連携"
 
 #: picard/ui/ui_options_network.py:113
 msgid "Default listening port:"
-msgstr ""
+msgstr "標準の待ち受けポート: "
 
 #: picard/ui/ui_options_network.py:114
 msgid "Listen only on localhost"
-msgstr ""
+msgstr "localhostの接続のみを受け付ける"
 
 #: picard/ui/ui_options_plugins.py:127 picard/ui/options/plugins.py:38
 msgid "Plugins"
@@ -1467,31 +1470,31 @@ msgstr "メールアドレス:"
 
 #: picard/ui/ui_options_ratings.py:52
 msgid "Submit ratings to MusicBrainz"
-msgstr "レーティングをMusicBrainzに提出する"
+msgstr "レーティングをMusicBrainzに送信する"
 
 #: picard/ui/ui_options_releases.py:104
 msgid "Preferred release types"
-msgstr "優先のリリースタイプ"
+msgstr "優先するリリースの種類"
 
 #: picard/ui/ui_options_releases.py:105
 msgid "Preferred release countries"
-msgstr "優先のリリース国"
+msgstr "優先するリリース国"
 
 #: picard/ui/ui_options_releases.py:106 picard/ui/ui_options_releases.py:109
 msgid ">"
-msgstr ">"
+msgstr "→"
 
 #: picard/ui/ui_options_releases.py:107 picard/ui/ui_options_releases.py:110
 msgid "<"
-msgstr "<"
+msgstr "←"
 
 #: picard/ui/ui_options_releases.py:108
 msgid "Preferred release formats"
-msgstr "優先のリリースフォーマット"
+msgstr "優先するリリースフォーマット"
 
 #: picard/ui/ui_options_renaming.py:130
 msgid "Rename files when saving"
-msgstr "別名で保存"
+msgstr "保存する際ファイル名を変更する"
 
 #: picard/ui/ui_options_renaming.py:131
 msgid "Replace non-ASCII characters"
@@ -1499,7 +1502,7 @@ msgstr "非ASCII文字を置き換える"
 
 #: picard/ui/ui_options_renaming.py:132
 msgid "Windows compatibility"
-msgstr ""
+msgstr "Windowsとの互換性を保つ"
 
 #: picard/ui/ui_options_renaming.py:133
 msgid "Move files to this directory when saving:"
@@ -1511,7 +1514,7 @@ msgstr "空のディレクトリを削除する"
 
 #: picard/ui/ui_options_renaming.py:136
 msgid "Move additional files:"
-msgstr "追加ファイルを移動:"
+msgstr "他のファイルも移動する:"
 
 #: picard/ui/ui_options_renaming.py:137
 msgid "Name files like this"
@@ -1531,11 +1534,11 @@ msgstr "タグをファイルに書き込む"
 
 #: picard/ui/ui_options_tags.py:153
 msgid "Preserve timestamps of tagged files"
-msgstr "タグされたファイルのタイムスタンプを保つ"
+msgstr "タグが書き込まれたファイルのタイムスタンプを変更しない"
 
 #: picard/ui/ui_options_tags.py:154
 msgid "Before Tagging"
-msgstr ""
+msgstr "タグ付けの前に"
 
 #: picard/ui/ui_options_tags.py:155
 msgid "Clear existing tags"
@@ -1556,15 +1559,15 @@ msgstr "このタグをMusicBrainzのデータにクリアもしくは上書き�
 
 #: picard/ui/ui_options_tags.py:159
 msgid "Tags are separated by commas, and are case-sensitive."
-msgstr ""
+msgstr "タグはコンマ区切りで、タグの大文字小文字は区別されます。"
 
 #: picard/ui/ui_options_tags.py:160
 msgid "Tag Compatibility"
-msgstr ""
+msgstr "タグの互換性"
 
 #: picard/ui/ui_options_tags.py:161
 msgid "ID3v2 Version"
-msgstr ""
+msgstr "ID3v2バージョン"
 
 #: picard/ui/ui_options_tags.py:162
 msgid "2.4"
@@ -1576,7 +1579,7 @@ msgstr "2.3"
 
 #: picard/ui/ui_options_tags.py:164
 msgid "ID3v2 Text Encoding"
-msgstr ""
+msgstr "ID3v2で用いる文字コード"
 
 #: picard/ui/ui_options_tags.py:165
 msgid "UTF-8"
@@ -1599,7 +1602,7 @@ msgid ""
 "<html><head/><body><p>Default is '/' to maintain compatibility with previous"
 " Picard releases.</p><p>New alternatives are ';_' or '_/_' or type your own."
 " </p></body></html>"
-msgstr ""
+msgstr "<html><head/><body><p>標準は以前のPicardとの互換性を保つために'/'になっています。</p><p>新しく';_'や'_/_'を選ぶことや、自分自身で入力することもできます。</p></body></html>"
 
 #: picard/ui/ui_options_tags.py:170
 msgid "Also include ID3v1 tags in the files"
@@ -1631,7 +1634,7 @@ msgstr "キャンセル(&C)"
 
 #: picard/ui/util.py:87
 msgid "Clear entry"
-msgstr ""
+msgstr "エントリーをクリア"
 
 #: picard/ui/options/about.py:30
 msgid "About"
@@ -1671,19 +1674,19 @@ msgstr "詳細設定"
 
 #: picard/ui/options/advanced.py:69
 msgid "Regex Error"
-msgstr ""
+msgstr "正規表現のエラー"
 
 #: picard/ui/options/cover.py:35
 msgid "Cover art types"
-msgstr ""
+msgstr "カバーアートのタイプ"
 
 #: picard/ui/options/cover.py:69
 msgid "Chec&k all"
-msgstr ""
+msgstr "全て選択(&K)"
 
 #: picard/ui/options/cover.py:70
 msgid "&Uncheck all"
-msgstr ""
+msgstr "全て選択解除(&U)"
 
 #: picard/ui/options/cover.py:116
 msgid "Cover Art"
@@ -1696,11 +1699,11 @@ msgstr "フィンガープリント計算"
 #: picard/ui/options/general.py:74
 #, python-format
 msgid "Logged in as <b>%s</b>."
-msgstr ""
+msgstr "<b>%s</b>でログイン中"
 
 #: picard/ui/options/general.py:88
 msgid "Authorization code:"
-msgstr ""
+msgstr "認証コード:"
 
 #: picard/ui/options/interface.py:35
 msgid "User Interface"
@@ -1726,7 +1729,7 @@ msgstr "マッチング"
 
 #: picard/ui/options/network.py:29
 msgid "Network"
-msgstr ""
+msgstr "ネットワーク"
 
 #: picard/ui/options/plugins.py:126
 msgid "File"
@@ -1746,7 +1749,7 @@ msgstr "全てリセット"
 
 #: picard/ui/options/renaming.py:44
 msgid "File Naming"
-msgstr ""
+msgstr "ファイル名"
 
 #: picard/ui/options/renaming.py:197
 msgid "Error"
@@ -1830,11 +1833,11 @@ msgstr "%s"
 
 #: picard/util/tags.py:25
 msgid "Original Release Date"
-msgstr "発売日"
+msgstr "オリジナリル盤リリース日"
 
 #: picard/util/tags.py:26
 msgid "Original Year"
-msgstr ""
+msgstr "オリジナル盤リリース年"
 
 #: picard/util/tags.py:27
 msgid "Album Artist"
@@ -1858,23 +1861,23 @@ msgstr "ディスク枚数"
 
 #: picard/util/tags.py:32
 msgid "Album Artist Sort Order"
-msgstr "アルバムアーティスト順"
+msgstr "アルバムアーティスト（ソート名）"
 
 #: picard/util/tags.py:33
 msgid "Artist Sort Order"
-msgstr "アーティスト順"
+msgstr "アーティスト（ソート名）"
 
 #: picard/util/tags.py:34
 msgid "Title Sort Order"
-msgstr "タイトル順"
+msgstr "タイトル（ソート名）"
 
 #: picard/util/tags.py:35
 msgid "Album Sort Order"
-msgstr "アルバム順"
+msgstr "アルバム（ソート名）"
 
 #: picard/util/tags.py:36
 msgid "Composer Sort Order"
-msgstr ""
+msgstr "作曲者（ソート名）"
 
 #: picard/util/tags.py:37
 msgid "ASIN"
@@ -1950,7 +1953,7 @@ msgstr "MusicBrainz レコーディング ID"
 
 #: picard/util/tags.py:55
 msgid "MusicBrainz Track Id"
-msgstr ""
+msgstr "MusicBrainz トラック ID"
 
 #: picard/util/tags.py:56
 msgid "MusicBrainz Release Id"
@@ -1998,11 +2001,11 @@ msgstr "ディスク ID"
 
 #: picard/util/tags.py:67
 msgid "Artist Website"
-msgstr ""
+msgstr "アーティストのウェブサイト"
 
 #: picard/util/tags.py:68
 msgid "Compilation (iTunes)"
-msgstr ""
+msgstr "コンピレーション (iTunes)"
 
 #: picard/util/tags.py:69
 msgid "Comment"
@@ -2018,7 +2021,7 @@ msgstr "エンコーダ"
 
 #: picard/util/tags.py:72
 msgid "Encoder Settings"
-msgstr ""
+msgstr "エンコーダ設定"
 
 #: picard/util/tags.py:73
 msgid "Performer"
@@ -2066,7 +2069,7 @@ msgstr "言語"
 
 #: picard/util/tags.py:85
 msgid "Script"
-msgstr "スクリプト"
+msgstr "文字"
 
 #: picard/util/tags.py:87
 msgid "Rating"
@@ -2074,15 +2077,15 @@ msgstr "評価"
 
 #: picard/util/tags.py:88
 msgid "Artists"
-msgstr ""
+msgstr "アーティスト（複数）"
 
 #: picard/util/tags.py:89
 msgid "Work"
-msgstr ""
+msgstr "作品"
 
 #: picard/util/versions.py:44
 msgid "is not installed"
-msgstr "はインストールされてない"
+msgstr "はインストールされていません"
 
 #: picard/util/webbrowser2.py:90
 msgid "Web Browser Error"

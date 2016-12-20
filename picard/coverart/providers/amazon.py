@@ -117,4 +117,4 @@ class CoverArtProviderAmazon(CoverArtProvider):
                 'serverid': serverInfo['id'],
                 'size': size
             }
-            self.queue_put(CoverArtImage("http://%s:%s" % (host, path)))
+            self.queue_put(CoverArtImage("http://%s%s" % (host, path)))

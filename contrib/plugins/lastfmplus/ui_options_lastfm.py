@@ -372,7 +372,7 @@ class Ui_LastfmOptionsPage(object):
 "</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;\"><span style=\" font-weight:600;\">Country   </span><span style=\" font-size:7pt; font-weight:600; color:#dd3a3a;\">Nonstandard!</span></p>\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;\"><span style=\" font-weight:600;\">Tag:   %Comment:Songs-db_Custom2%</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;\">The country the artist or track is most associated with. Will retreive results using the country tag list on Tag Filter List Page</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;\">The country the artist or track is most associated with. Will retrieve results using the country tag list on Tag Filter List Page</p>\n"
 "</body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.use_country_tag.setText(QtGui.QApplication.translate("LastfmOptionsPage", "Country", None, QtGui.QApplication.UnicodeUTF8))
         self.use_city_tag.setToolTip(QtGui.QApplication.translate("LastfmOptionsPage", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"

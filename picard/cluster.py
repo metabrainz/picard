@@ -31,6 +31,7 @@ from picard.metadata import Metadata
 from picard.similarity import similarity
 from picard.ui.item import Item
 from picard.util import format_time, album_artist_from_path
+from picard.const import QUERY_LIMIT
 
 
 class Cluster(QtCore.QObject, Item):
@@ -199,7 +200,7 @@ class Cluster(QtCore.QObject, Item):
             artist=self.metadata['albumartist'],
             release=self.metadata['album'],
             tracks=str(len(self.files)),
-            limit=25)
+            limit=QUERY_LIMIT)
 
     def clear_lookup_task(self):
         if self.lookup_task:

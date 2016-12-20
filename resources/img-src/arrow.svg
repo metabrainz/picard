@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="54.689716mm"
+   height="18.16695mm"
+   viewBox="0 0 193.78246 64.371083"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.91 r"
+   sodipodi:docname="arrow.svg"
+   inkscape:export-filename="/home/zas/arrow.png"
+   inkscape:export-xdpi="38.833599"
+   inkscape:export-ydpi="38.833599">
+  <title
+     id="title4263">Arrow L2R</title>
+  <defs
+     id="defs4" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="7.3845694"
+     inkscape:cx="96.891228"
+     inkscape:cy="32.185543"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer3"
+     showgrid="true"
+     showguides="true"
+     inkscape:guide-bbox="true"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0"
+     showborder="false"
+     inkscape:window-width="1920"
+     inkscape:window-height="1150"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:snap-grids="false">
+    <inkscape:grid
+       type="xygrid"
+       id="grid3422"
+       originx="-351.49069"
+       originy="-559.81442"
+       visible="true" />
+    <sodipodi:guide
+       position="23.509314,210.18554"
+       orientation="0,1"
+       id="guide3426" />
+    <sodipodi:guide
+       position="43.509315,205.18554"
+       orientation="1,0"
+       id="guide3428" />
+    <sodipodi:guide
+       position="93.509309,200.18554"
+       orientation="1,0"
+       id="guide3430" />
+    <sodipodi:guide
+       position="38.509315,220.18554"
+       orientation="0,1"
+       id="guide3432" />
+    <sodipodi:guide
+       position="33.509314,200.18554"
+       orientation="0,1"
+       id="guide3434" />
+    <sodipodi:guide
+       position="33.509314,180.18555"
+       orientation="0,1"
+       id="guide3436" />
+    <sodipodi:guide
+       position="43.509315,240.18554"
+       orientation="0,1"
+       id="guide3438" />
+    <sodipodi:guide
+       position="-86.490692,205.18554"
+       orientation="1,0"
+       id="guide3440" />
+    <sodipodi:guide
+       position="108.50932,40.185544"
+       orientation="0,1"
+       id="guide4331" />
+    <sodipodi:guide
+       position="140.50932,24.185545"
+       orientation="0,1"
+       id="guide4333" />
+    <sodipodi:guide
+       position="143.50932,32.185544"
+       orientation="0,1"
+       id="guide4335" />
+    <sodipodi:guide
+       position="136.50932,14.185545"
+       orientation="1,0"
+       id="guide4337" />
+    <sodipodi:guide
+       position="2.5093151,50.185543"
+       orientation="1,0"
+       id="guide4339" />
+    <sodipodi:guide
+       position="188.50932,30.185544"
+       orientation="1,0"
+       id="guide4343" />
+    <sodipodi:guide
+       position="168.50932,60.185543"
+       orientation="0,1"
+       id="guide4345" />
+    <sodipodi:guide
+       position="151.50932,4.1855458"
+       orientation="0,1"
+       id="guide4347" />
+  </sodipodi:namedview>
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title>Arrow L2R</dc:title>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>Laurent Monin</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>Public domain</dc:title>
+          </cc:Agent>
+        </dc:rights>
+        <dc:date>2016-04-04</dc:date>
+        <cc:license
+           rdf:resource="http://creativecommons.org/publicdomain/zero/1.0/" />
+      </cc:Work>
+      <cc:License
+         rdf:about="http://creativecommons.org/publicdomain/zero/1.0/">
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#Reproduction" />
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#Distribution" />
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#DerivativeWorks" />
+      </cc:License>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:groupmode="layer"
+     id="layer3"
+     inkscape:label="Calque 3"
+     transform="translate(-91.194792,-183.82376)">
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 227.7041,208.0093 0,-20 51.99999,28 -51.99999,28 0,-20 -134.000001,0 0.0595,-16 z"
+       id="path4349"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccccccc" />
+  </g>
+</svg>

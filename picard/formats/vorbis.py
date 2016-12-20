@@ -18,6 +18,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 import base64
+import re
 import mutagen.flac
 import mutagen.ogg
 import mutagen.oggflac
@@ -213,7 +214,13 @@ class VCommentFile(File):
         for tag in metadata.deleted_tags:
             real_name = self._get_tag_name(tag)
             if real_name and real_name in file.tags:
-                del file.tags[real_name]
+                if real_name == 'performer' or real_name == 'comment':
+                    tag_type = "\(%s\)" % tag.split(':',1)[1]
+                    for item in file.tags.get(real_name):
+                        if re.search(tag_type,item):
+                            file.tags.get(real_name).remove(item)
+                else:
+                    del file.tags[real_name]
 
         kwargs = {}
         if is_flac and config.setting["remove_id3_from_flac"]:

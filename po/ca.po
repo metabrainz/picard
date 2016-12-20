@@ -3,7 +3,7 @@
 # This file is distributed under the same license as the picard project.
 # 
 # Translators:
-# Aniol, 2014
+# Aniol, 2014-2015
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2008
 # t0n3t <toni75@gmail.com>, 2013
 # t0n3t <toni75@gmail.com>, 2012
@@ -12,9 +12,9 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2015-02-06 13:01+0100\n"
-"PO-Revision-Date: 2015-02-07 08:15+0000\n"
-"Last-Translator: nikki\n"
-"Language-Team: Catalan (http://www.transifex.com/projects/p/musicbrainz/language/ca/)\n"
+"PO-Revision-Date: 2015-08-05 14:28+0000\n"
+"Last-Translator: Aniol\n"
+"Language-Team: Catalan (http://www.transifex.com/musicbrainz/musicbrainz/language/ca/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -24,7 +24,7 @@ msgstr ""
 
 #: contrib/plugins/albumartist_website.py:3
 msgid "Album Artist Website"
-msgstr ""
+msgstr "Lloc web de l'artista de l'àlbum"
 
 #: contrib/plugins/no_release.py:50
 msgid "Enable plugin for all releases by default"
@@ -152,16 +152,16 @@ msgstr ""
 #: contrib/plugins/viewvariables/__init__.py:42
 #, python-format
 msgid "File: %s"
-msgstr ""
+msgstr "Fitxer: %s"
 
 #: contrib/plugins/viewvariables/__init__.py:47
 #, python-format
 msgid "Track: %s %s "
-msgstr ""
+msgstr "Pista: %s %s "
 
 #: contrib/plugins/viewvariables/__init__.py:49
 msgid "Variables"
-msgstr ""
+msgstr "Variables"
 
 #: contrib/plugins/viewvariables/__init__.py:69
 msgid "File variables"
@@ -181,7 +181,7 @@ msgstr ""
 
 #: contrib/plugins/viewvariables/ui_variables_dialog.py:75
 msgid "Value"
-msgstr ""
+msgstr "Valor"
 
 #: picard/acoustid.py:111
 #, python-format
@@ -278,7 +278,7 @@ msgstr[1] ""
 #: picard/collection.py:100
 #, python-format
 msgid "Error loading collections: %(error)s"
-msgstr ""
+msgstr "Error al carregar les col·leccions: %(error)s"
 
 #: picard/config_upgrade.py:58 picard/config_upgrade.py:71
 msgid "Various Artists file naming scheme removal"

@@ -18,6 +18,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from __future__ import absolute_import
+import re
 import mutagen.apev2
 import mutagen.monkeysaudio
 import mutagen.musepack
@@ -163,8 +164,43 @@ class APEv2File(File):
             tags['Cover Art (Front)'] = mutagen.apev2.APEValue(cover_filename + '\0' + image.data, mutagen.apev2.BINARY)
             break  # can't save more than one item with the same name
                     # (mp3tags does this, but it's against the specs)
+
+
+        for tag in metadata.deleted_tags:
+            real_name = str(self._get_tag_name(tag))
+            if real_name in ('Lyrics','Comment','Performer'):
+                tag_type = "\(%s\)" % tag.split(':',1)[1]
+                for item in tags.get(real_name):
+                    if re.search(tag_type,item):
+                        tags.get(real_name).remove(item)
+            elif tag in ('totaltracks', 'totaldiscs'):
+                tagstr = real_name.lower() + 'number'
+                try:
+                    tags[real_name] = metadata[tagstr]
+                except:
+                    pass
+            else:
+                del tags[real_name]          
+
+              
         tags.save(encode_filename(filename))
 
+
+    def _get_tag_name(self, name):
+        if name.startswith('lyrics:'):
+            return 'Lyrics'
+        elif name == 'date':
+            return 'Year'
+        elif name == ('tracknumber','totaltracks'):
+            return 'Track'
+        elif name == ('discnumber', 'totaldiscs'):
+            return 'Disc'
+        elif name.startswith('performer:') or name.startswith('comment:'):
+            return name.split(':',1)[0].title()
+        elif name in self.__rtranslate:
+            return self.__rtranslate[name]
+        else:
+            return name.title() 
 
 class MusepackFile(APEv2File):
 

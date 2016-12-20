@@ -22,7 +22,7 @@ import re
 
 PICARD_APP_NAME = "Picard"
 PICARD_ORG_NAME = "MusicBrainz"
-PICARD_VERSION = (1, 4, 0, 'dev', 3)
+PICARD_VERSION = (1, 4, 0, 'dev', 5)
 
 # optional build version
 # it should be in the form '<platform>_<YYMMDDHHMMSS>'
@@ -59,6 +59,8 @@ def version_to_string(version, short=False):
 
 
 _version_re = re.compile("(\d+)[._](\d+)(?:[._](\d+)[._]?(?:(dev|final)[._]?(\d+))?)?$")
+
+
 def version_from_string(version_str):
     m = _version_re.search(version_str)
     if m:
@@ -68,8 +70,8 @@ def version_from_string(version_str):
         if g[3] is None:
             return (int(g[0]), int(g[1]), int(g[2]), 'final', 0)
         return (int(g[0]), int(g[1]), int(g[2]), g[3], int(g[4]))
-    raise VersionError("String '%s' do not match regex '%s'" % (version_str,
-                                                                _version_re.pattern))
+    raise VersionError("String '%s' does not match regex '%s'" % (version_str,
+                                                                  _version_re.pattern))
 
 
 PICARD_VERSION_STR = version_to_string(PICARD_VERSION)
@@ -91,4 +93,5 @@ api_versions = [
     "1.1.0",
     "1.2.0",
     "1.3.0",
+    "1.4.0",
 ]

@@ -21,14 +21,15 @@ def natsort_key(s):
     return [ tryint(c) for c in re.split('(\d+)', s) ]
 
 
-def find_files(topdir, directory, pattern):
+def find_files(topdir, directory, patterns):
     tdir = os.path.join(topdir, directory)
     for root, dirs, files in os.walk(tdir):
         for basename in files:
-            if fnmatch.fnmatch(basename, pattern):
-                filepath = os.path.join(root, basename)
-                filename = os.path.relpath(filepath, topdir)
-                yield filename
+            for pattern in patterns:
+                if fnmatch.fnmatch(basename, pattern):
+                    filepath = os.path.join(root, basename)
+                    filename = os.path.relpath(filepath, topdir)
+                    yield filename
 
 
 def main():
@@ -36,7 +37,7 @@ def main():
     topdir = os.path.abspath(os.path.join(scriptdir, ".."))
     resourcesdir = os.path.join(topdir, "resources")
     qrcfile = os.path.join(resourcesdir, "picard.qrc")
-    images = [i for i in find_files(resourcesdir, 'images', '*.png')]
+    images = [i for i in find_files(resourcesdir, 'images', ['*.gif', '*.png'])]
     newimages = 0
     for filename in images:
         filepath = os.path.join(resourcesdir, filename)

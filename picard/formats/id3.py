@@ -37,39 +37,6 @@ from picard.util import encode_filename, sanitize_date
 from urlparse import urlparse
 
 
-# Ugly, but... I need to save the text in ISO-8859-1 even if it contains
-# unsupported characters and this better than encoding, decoding and
-# again encoding.
-def patched_EncodedTextSpec_write(self, frame, value):
-    try:
-        enc, term = self._encodings[frame.encoding]
-    except AttributeError:
-        enc, term = self.encodings[frame.encoding]
-    return value.encode(enc, 'ignore') + term
-
-id3.EncodedTextSpec.write = patched_EncodedTextSpec_write
-
-
-# One more "monkey patch". The ID3 spec says that multiple text
-# values should be _separated_ by the string terminator, which
-# means that e.g. 'a\x00' are two values, 'a' and ''.
-def patched_MultiSpec_write(self, frame, value):
-    data = self._write_orig(frame, value)
-    spec = self.specs[-1]
-    if isinstance(spec, id3.EncodedTextSpec):
-        try:
-            term = spec._encodings[frame.encoding][1]
-        except AttributeError:
-            term = spec.encodings[frame.encoding][1]
-        if data.endswith(term):
-            data = data[:-len(term)]
-    return data
-
-
-id3.MultiSpec._write_orig = id3.MultiSpec.write
-id3.MultiSpec.write = patched_MultiSpec_write
-
-
 id3.TCMP = compatid3.TCMP
 id3.TSO2 = compatid3.TSO2
 id3.TSOC = compatid3.TSOC
@@ -88,6 +55,16 @@ __ID3_IMAGE_TYPE_MAP = {
 }
 
 __ID3_REVERSE_IMAGE_TYPE_MAP = dict([(v, k) for k, v in __ID3_IMAGE_TYPE_MAP.iteritems()])
+
+
+def id3text(text, encoding):
+    """Returns a string which only contains code points which can
+    be encododed with the given numeric id3 encoding.
+    """
+
+    if encoding == 0:
+        return text.encode("latin1", "replace").decode("latin1")
+    return text
 
 
 def image_type_from_id3_num(id3type):
@@ -129,6 +106,7 @@ class ID3File(File):
         'TCOM': 'composer',
         'TENC': 'encodedby',
         'TBPM': 'bpm',
+        'TKEY': 'key',
         'TLAN': 'language',
         'TCON': 'genre',
         'TMED': 'media',
@@ -308,14 +286,14 @@ class ID3File(File):
                 text = '%s/%s' % (metadata['tracknumber'], metadata['totaltracks'])
             else:
                 text = metadata['tracknumber']
-            tags.add(id3.TRCK(encoding=0, text=text))
+            tags.add(id3.TRCK(encoding=0, text=id3text(text, 0)))
 
         if 'discnumber' in metadata:
             if 'totaldiscs' in metadata:
                 text = '%s/%s' % (metadata['discnumber'], metadata['totaldiscs'])
             else:
                 text = metadata['discnumber']
-            tags.add(id3.TPOS(encoding=0, text=text))
+            tags.add(id3.TPOS(encoding=0, text=id3text(text, 0)))
 
         # This is necessary because mutagens HashKey for APIC frames only
         # includes the FrameID (APIC) and description - it's basically
@@ -333,7 +311,7 @@ class ID3File(File):
             tags.add(id3.APIC(encoding=0,
                               mime=image.mimetype,
                               type=image_type_as_id3_num(image.maintype),
-                              desc=desctag,
+                              desc=id3text(desctag, 0),
                               data=image.data))
 
         tmcl = mutagen.id3.TMCL(encoding=encoding, people=[])
@@ -341,6 +319,9 @@ class ID3File(File):
 
         tags.delall('TCMP')
         for name, values in metadata.rawitems():
+            values = [id3text(v, encoding) for v in values]
+            name = id3text(name, encoding)
+
             if name.startswith('performer:'):
                 role = name.split(':', 1)[1]
                 for value in values:
@@ -416,6 +397,19 @@ class ID3File(File):
         if tipl.people:
             tags.add(tipl)
 
+        self._build_inverse_dic()  
+ 
+        for tag in metadata.deleted_tags:
+            real_name = self._get_tag_name(tag)
+            log.debug(real_name)
+            log.debug(tag)
+            if real_name == 'POPM':
+                for key, frame in tags.items():
+                    if frame.FrameID == 'POPM' and frame.email == config.setting['rating_user_email']:
+                        del tags[key]           
+            elif real_name in tags:
+                del tags[real_name]
+
         self._save_tags(tags, encode_filename(filename))
 
         if self._IsMP3 and config.setting["remove_ape_from_mp3"]:
@@ -423,6 +417,18 @@ class ID3File(File):
                 mutagen.apev2.delete(encode_filename(filename))
             except:
                 pass
+    def _build_inverse_dic(self):
+        self.__itranslate = {}
+        for key, value in self.__translate.items():
+            self.__itranslate[value] = key              
+        for key, value in self.__translate_freetext.items():
+            self.__itranslate[value] = key              
+
+    def _get_tag_name(self,name):
+        if name in self.__itranslate:
+            return self.__itranslate[name]
+        elif name == '~rating':
+            return 'POPM'    
 
     def _get_file(self, filename):
         raise NotImplementedError()
@@ -438,10 +444,11 @@ class ID3File(File):
             v1 = 2
         else:
             v1 = 0
-        
+
         if config.setting['write_id3v23']:
-            tags.update_to_v23(join_with=config.setting['id3v23_join_with'])
-            tags.save(filename, v2_version=3, v1=v1)
+            tags.update_to_v23()
+            separator = config.setting['id3v23_join_with']
+            tags.save(filename, v2_version=3, v1=v1, v23_sep=separator)
         else:
             tags.update_to_v24()
             tags.save(filename, v2_version=4, v1=v1)

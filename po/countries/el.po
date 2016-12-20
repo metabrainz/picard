@@ -1,14 +1,14 @@
 # 
 # Translators:
-# Dimitris <dimpole@gmail.com>, 2014
+# Dimitris <dimpole@gmail.com>, 2014,2016
 # Dimitris <dimpole@gmail.com>, 2012
 # Dimitris  <email address hidden>, 2012
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2015-03-27 11:32+0000\n"
-"Last-Translator: Ian McEwen <ianmcorvidae@ianmcorvidae.net>\n"
-"Language-Team: Greek (http://www.transifex.com/projects/p/musicbrainz/language/el/)\n"
+"PO-Revision-Date: 2016-01-17 13:36+0000\n"
+"Last-Translator: Dimitris <dimpole@gmail.com>\n"
+"Language-Team: Greek (http://www.transifex.com/musicbrainz/musicbrainz/language/el/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -398,7 +398,7 @@ msgstr "Νήσοι Φερόες"
 #. iso.code:FM
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:139
 msgid "Federated States of Micronesia"
-msgstr ""
+msgstr "Ομόσπονδες Πολιτείες της Μικρονησίας"
 
 #. iso.code:FJ
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:71
@@ -938,7 +938,7 @@ msgstr "Ρουμανία"
 #. iso.code:RU
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:176
 msgid "Russia"
-msgstr ""
+msgstr "Ρωσία"
 
 #. iso.code:RW
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:177
@@ -1253,7 +1253,7 @@ msgstr "Βανουάτου"
 #. iso.code:VA
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:227
 msgid "Vatican City"
-msgstr ""
+msgstr "Πόλη του Βατικανού"
 
 #. iso.code:VE
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:228

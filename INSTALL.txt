@@ -12,8 +12,8 @@ Before installing Picard, you need to have these:
  * PyQt 4.5 or newer
    http://www.riverbankcomputing.co.uk/software/pyqt/download
 
- * Mutagen 1.20 or newer (1.23 or newer for AIFF support)
-   http://code.google.com/p/mutagen/downloads
+ * Mutagen 1.22 or newer (1.23 or newer for AIFF support)
+   https://bitbucket.org/lazka/mutagen/downloads
 
  * gettext
    Windows: http://gnuwin32.sourceforge.net/packages/gettext.htm
@@ -32,6 +32,11 @@ Before installing Picard, you need to have these:
    Depends on libdiscid: http://musicbrainz.org/doc/libdiscid
    Due to slowdowns in reading the CD TOC, using libdiscid versions
    0.3.0 - 0.4.1 is not recommended.
+
+ * argparse (Python 2.6 only, required)
+   Required for command-line arguments parsing
+   https://pypi.python.org/pypi/argparse
+   NOTE: it is included in Python >= 2.7 and Python >= 3.2
 
 
 On Windows it is recommended to use Pip for Windows:
@@ -81,5 +86,3 @@ To run the included tests, follow the instructions for "Running From
 the Source Tree".  Afterward you can run the tests using setup.py:
 
   python setup.py test
-
-Alternatively, use a test runner such as nose.

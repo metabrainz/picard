@@ -164,6 +164,30 @@ def upgrade_to_v1_4_0_dev_3():
     _s['ca_providers'] = newopts
 
 
+def upgrade_to_v1_4_0_dev_4():
+    """Adds trailing comma to default file names for scripts"""
+    _DEFAULT_FILE_NAMING_FORMAT = "$if2(%albumartist%,%artist%)/" \
+        "$if($ne(%albumartist%,),%album%/)" \
+        "$if($gt(%totaldiscs%,1),%discnumber%-,)" \
+        "$if($ne(%albumartist%,),$num(%tracknumber%,2) ,)" \
+        "$if(%_multiartist%,%artist% - ,)" \
+        "%title%"
+    if _s["file_naming_format"] == _DEFAULT_FILE_NAMING_FORMAT:
+        _DEFAULT_FILE_NAMING_FORMAT = "$if2(%albumartist%,%artist%)/" \
+            "$if($ne(%albumartist%,),%album%/,)" \
+            "$if($gt(%totaldiscs%,1),%discnumber%-,)" \
+            "$if($ne(%albumartist%,),$num(%tracknumber%,2) ,)" \
+            "$if(%_multiartist%,%artist% - ,)" \
+            "%title%"
+        _s["file_naming_format"]  = _DEFAULT_FILE_NAMING_FORMAT
+
+
+def upgrade_to_v1_4_0_dev_5():
+    """Using Picard.ini configuration file on all platforms"""
+    # this is done in Config.__init__()
+    pass
+
+
 def upgrade_config():
     cfg = config._config
     cfg.register_upgrade_hook(upgrade_to_v1_0_0_final_0)
@@ -173,4 +197,6 @@ def upgrade_config():
     cfg.register_upgrade_hook(upgrade_to_v1_3_0_dev_4)
     cfg.register_upgrade_hook(upgrade_to_v1_4_0_dev_2)
     cfg.register_upgrade_hook(upgrade_to_v1_4_0_dev_3)
+    cfg.register_upgrade_hook(upgrade_to_v1_4_0_dev_4)
+    cfg.register_upgrade_hook(upgrade_to_v1_4_0_dev_5)
     cfg.run_upgrade_hooks(log.debug)

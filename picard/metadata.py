@@ -60,11 +60,19 @@ class Metadata(dict):
         if config.setting["save_only_front_images_to_tags"]:
             # FIXME : rename option at some point
             # Embed only ONE front image
-            for img in images:
-                if img.is_front_image():
-                    return [img]
+            front_image = self.get_single_front_image(images)
+            if front_image:
+                return front_image
         return images
 
+    def get_single_front_image(self, images=None):
+        if not images:
+            images = self.images
+        for img in images:
+            if img.is_front_image():
+                return [img]
+        return []
+        
     def remove_image(self, index):
         self.images.pop(index)
 
@@ -215,7 +223,8 @@ class Metadata(dict):
             self.images = other.images[:]
         if other.length:
             self.length = other.length
-        self.deleted_tags.update(other.deleted_tags)
+
+        self.deleted_tags.update(other.deleted_tags)      
 
     def clear(self):
         dict.clear(self)
@@ -263,7 +272,8 @@ class Metadata(dict):
     def delete(self, name):
         if name in self:
             self.pop(name, None)
-        self.deleted_tags.add(name)
+        
+        self.deleted_tags.add(name)     
 
     def iteritems(self):
         for name, values in dict.iteritems(self):

@@ -16,6 +16,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+import traceback
 
 from picard import log, config
 from picard.plugin import ExtensionPoint
@@ -99,7 +100,7 @@ class CoverArtProvider(object):
        potential cover art downloads (using `queue_put(<CoverArtImage object>).
        If `queue_images()` delegates the job of queuing downloads to another
        method (asynchronous) it should return `WAIT` and the other method has to
-       explicitely call `next_in_queue()`.
+       explicitly call `next_in_queue()`.
        If `FINISHED` is returned, `next_in_queue()` will be automatically called
        by CoverArt object.
     """
@@ -110,7 +111,7 @@ class CoverArtProvider(object):
     # next_in_queue() will be automatically called
     FINISHED = 1
     # returned by queue_images():
-    # next_in_queue() has to be called explicitely by provider
+    # next_in_queue() has to be called explicitly by provider
     WAIT = 2
 
     def __init__(self, coverart):
@@ -134,8 +135,8 @@ class CoverArtProvider(object):
         # CoverArtProvider.WAIT
         old = getattr(self, 'queue_downloads') #compat with old plugins
         if callable(old):
-            old()
             log.warning('CoverArtProvider: queue_downloads() was replaced by queue_images()')
+            return old()
         else:
             raise NotImplementedError
 

@@ -43,8 +43,10 @@
     <file>images/128x128/picard.png</file>
     <file>images/256x256/picard.png</file>
     <file>images/CoverArtShadow.png</file>
+    <file>images/arrow.png</file>
     <file>images/file-pending.png</file>
     <file>images/file.png</file>
+    <file>images/loader.gif</file>
     <file>images/match-50.png</file>
     <file>images/match-60.png</file>
     <file>images/match-70.png</file>

@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 
 from __future__ import print_function
@@ -68,7 +68,7 @@ if do_py2app:
             'includes'       : ['json', 'sip', 'PyQt4', 'ntpath'] + [e.name for e in ext_modules],
             'excludes'  : exclude_modules + py2app_exclude_modules,
             'plist'     : { 'CFBundleName' : 'MusicBrainz Picard',
-                            'CFBundleGetInfoString' : 'Picard, the next generation MusicBrainz tagger (see http://musicbrainz.org/doc/MusicBrainz_Picard)',
+                            'CFBundleGetInfoString' : 'Picard, the next generation MusicBrainz tagger (see https://picard.musicbrainz.org/)',
                             'CFBundleIdentifier':'org.musicbrainz.picard',
                             'CFBundleShortVersionString':__version__,
                             'CFBundleVersion': 'Picard ' + __version__,
@@ -107,10 +107,6 @@ class picard_test(Command):
 
     def run(self):
         import unittest
-        import sip
-
-        sip.setapi("QString", 2)
-        sip.setapi("QVariant", 2)
 
         names = []
         for filename in glob.glob("test/test_*.py"):
@@ -639,7 +635,7 @@ args2 = {
     'name': 'picard',
     'version': __version__,
     'description': 'The next generation MusicBrainz tagger',
-    'url': 'http://musicbrainz.org/doc/MusicBrainz_Picard',
+    'url': 'https://picard.musicbrainz.org/',
     'package_dir': {'picard': 'picard'},
     'packages': _picard_packages(),
     'locales': _picard_get_locale_files(),
@@ -713,7 +709,7 @@ try:
                           {'name': 'MusicBrainz Picard',
                            'version': __version__,
                            'description': 'The next generation MusicBrainz tagger.',
-                           'url': 'http://musicbrainz.org/doc/MusicBrainz_Picard', })
+                           'url': 'https://picard.musicbrainz.org/', })
             print("*** compiling the NSIS setup script ***")
             subprocess.call([self.find_nsis(), pathname])
 
@@ -772,6 +768,7 @@ if py2exe is None and do_py2app is False:
     args['data_files'].append(('share/icons/hicolor/48x48/apps', ['resources/images/48x48/picard.png']))
     args['data_files'].append(('share/icons/hicolor/128x128/apps', ['resources/images/128x128/picard.png']))
     args['data_files'].append(('share/icons/hicolor/256x256/apps', ['resources/images/256x256/picard.png']))
+    args['data_files'].append(('share/icons/hicolor/scalable/apps', ['resources/img-src/picard.svg']))
     args['data_files'].append(('share/applications', ('picard.desktop',)))
 
 

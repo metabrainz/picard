@@ -61,6 +61,9 @@ class Ui_CaaOptions(object):
         self.cb_image_size.addItem(_fromUtf8(""))
         self.horizontalLayout.addWidget(self.cb_image_size)
         self.verticalLayout.addLayout(self.horizontalLayout)
+        self.cb_save_single_front_image = QtGui.QCheckBox(CaaOptions)
+        self.cb_save_single_front_image.setObjectName(_fromUtf8("cb_save_single_front_image"))
+        self.verticalLayout.addWidget(self.cb_save_single_front_image)
         self.cb_approved_only = QtGui.QCheckBox(CaaOptions)
         self.cb_approved_only.setObjectName(_fromUtf8("cb_approved_only"))
         self.verticalLayout.addWidget(self.cb_approved_only)
@@ -86,6 +89,7 @@ class Ui_CaaOptions(object):
         self.cb_image_size.setItemText(0, _("250 px"))
         self.cb_image_size.setItemText(1, _("500 px"))
         self.cb_image_size.setItemText(2, _("Full size"))
+        self.cb_save_single_front_image.setText(_("Save only one front image as separate file"))
         self.cb_approved_only.setText(_("Download only approved images"))
         self.cb_type_as_filename.setText(_("Use the first image type as the filename. This will not change the filename of front images."))
 

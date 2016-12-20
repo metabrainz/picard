@@ -26,7 +26,7 @@ sip.setapi("QVariant", 2)
 
 from PyQt4 import QtGui, QtCore
 
-import getopt
+import argparse
 import os.path
 import platform
 import re
@@ -82,6 +82,11 @@ from picard.util import (
     versions,
 )
 from picard.webservice import XmlWebService
+from picard.ui.searchdialog import (
+    TrackSearchDialog,
+    AlbumSearchDialog,
+    ArtistSearchDialog
+)
 
 
 class Tagger(QtGui.QApplication):
@@ -95,11 +100,13 @@ class Tagger(QtGui.QApplication):
 
     __instance = None
 
-    def __init__(self, args, localedir, autoupdate, debug=False):
-        QtGui.QApplication.__init__(self, args)
+    def __init__(self, picard_args, unparsed_args, localedir, autoupdate):
+        # Set the WM_CLASS to 'MusicBrainz-Picard' so desktop environments
+        # can use it to look up the app
+        QtGui.QApplication.__init__(self, ['MusicBrainz-Picard'] + unparsed_args)
         self.__class__.__instance = self
 
-        self._args = args
+        self._cmdline_files = picard_args.FILE
         self._autoupdate = autoupdate
         self._debug = False
 
@@ -136,7 +143,7 @@ class Tagger(QtGui.QApplication):
             signal.signal(signal.SIGTERM, self.signal)
 
         # Setup logging
-        self.debug(debug or "PICARD_DEBUG" in os.environ)
+        self.debug(picard_args.debug or "PICARD_DEBUG" in os.environ)
         log.debug("Starting Picard from %r", os.path.abspath(__file__))
         log.debug("Platform: %s %s %s", platform.platform(),
                   platform.python_implementation(), platform.python_version())
@@ -193,6 +200,7 @@ class Tagger(QtGui.QApplication):
         if not os.path.exists(USER_PLUGIN_DIR):
             os.makedirs(USER_PLUGIN_DIR)
         self.pluginmanager.load_plugindir(USER_PLUGIN_DIR)
+        self.pluginmanager.query_available_plugins()
 
         self.acoustidmanager = AcoustIDManager()
         self.browser_integration = BrowserIntegration()
@@ -271,16 +279,16 @@ class Tagger(QtGui.QApplication):
             f()
 
     def _run_init(self):
-        if self._args:
+        if self._cmdline_files:
             files = []
-            for file in self._args:
+            for file in self._cmdline_files:
                 if os.path.isdir(file):
                     self.add_directory(decode_filename(file))
                 else:
                     files.append(decode_filename(file))
             if files:
                 self.add_files(files)
-            del self._args
+            del self._cmdline_files
 
     def run(self):
         if config.setting["browser_integration"]:
@@ -414,7 +422,21 @@ class Tagger(QtGui.QApplication):
     def search(self, text, type, adv=False):
         """Search on the MusicBrainz website."""
         lookup = self.get_file_lookup()
-        getattr(lookup, type + "Search")(text, adv)
+        if config.setting["builtin_search"]:
+            if type == "track" and not lookup.mbidLookup(text, 'recording'):
+                dialog = TrackSearchDialog(self.window)
+                dialog.search(text)
+                dialog.exec_()
+            elif type == "album" and not lookup.mbidLookup(text, 'release'):
+                dialog = AlbumSearchDialog(self.window)
+                dialog.search(text)
+                dialog.exec_()
+            elif type == "artist" and not lookup.mbidLookup(text, 'artist'):
+                dialog = ArtistSearchDialog(self.window)
+                dialog.search(text)
+                dialog.exec_()
+        else:
+            getattr(lookup, type + "Search")(text, adv)
 
     def collection_lookup(self):
         """Lookup the users collections on the MusicBrainz website."""
@@ -653,25 +675,27 @@ class Tagger(QtGui.QApplication):
         self.signalnotifier.setEnabled(True)
 
 
-def help():
-    print("""Usage: %s [OPTIONS] [FILE] [FILE] ...
-
-If one of the filenames begins with a hyphen, use -- to separate the options
-from the filenames.
-
-Options:
-    -d, --debug             enable debug-level logging
-    -h, --help              display this help and exit
-    -v, --version           display version information and exit
-    -V, --long-version      display long version information and exit
-""" % (sys.argv[0],))
-
-
 def version():
     print("%s %s %s" % (PICARD_ORG_NAME, PICARD_APP_NAME, PICARD_FANCY_VERSION_STR))
 
+
 def longversion():
     print(versions.as_string())
+
+
+def process_picard_args():
+    parser = argparse.ArgumentParser(
+        epilog="If one of the filenames begins with a hyphen, use -- to separate the options from the filenames."
+    )
+    parser.add_argument("-d", "--debug", action='store_true',
+                        help="enable debug-level logging")
+    parser.add_argument('-v', '--version', action='store_true',
+                        help="display version information and exit")
+    parser.add_argument("-V", "--long-version", action='store_true',
+                        help="display long version information and exit")
+    parser.add_argument('FILE', nargs='*')
+    picard_args, unparsed_args = parser.parse_known_args()
+    return picard_args, unparsed_args
 
 
 def main(localedir=None, autoupdate=True):
@@ -680,18 +704,13 @@ def main(localedir=None, autoupdate=True):
     QtGui.QApplication.setOrganizationName(PICARD_ORG_NAME)
 
     signal.signal(signal.SIGINT, signal.SIG_DFL)
-    opts, args = getopt.gnu_getopt(sys.argv[1:], "hvdV", ["help", "version",
-                                                          "debug", "long-version"])
-    kwargs = {}
-    for opt, arg in opts:
-        if opt in ("-h", "--help"):
-            return help()
-        elif opt in ("-v", "--version"):
-            return version()
-        elif opt in ("-V", "--long-version"):
-            return longversion()
-        elif opt in ("-d", "--debug"):
-            kwargs["debug"] = True
-    tagger = Tagger(args, localedir, autoupdate, **kwargs)
+
+    picard_args, unparsed_args = process_picard_args()
+    if picard_args.version:
+        return version()
+    if picard_args.long_version:
+        return longversion()
+
+    tagger = Tagger(picard_args, unparsed_args, localedir, autoupdate)
     tagger.startTimer(1000)
     sys.exit(tagger.run())

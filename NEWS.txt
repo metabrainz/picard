@@ -50,7 +50,7 @@ Version 1.3 - 2014-10-20
  * New Work tag (which for Classical music is often different from the track title) saved as ID3 TOAL tag.
  * New Composer Sort Order tag (variable %composersort%).
  * Improve the Other Releases list to prioritise and separate releases which match the correct number of tracks
-   and your Options / Metadata / Prefered Releases settings for Country and Format.
+   and your Options / Metadata / Preferred Releases settings for Country and Format.
  * New %_absolutetracknumber% variable numbering tracks sequentially regardless of disc structure
    (so you can numbers tracks on multi-disc releases without a disc number)
  * Support dropping image directly from Google image results to cover art box

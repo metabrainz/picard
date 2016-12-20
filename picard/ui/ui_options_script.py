@@ -8,7 +8,16 @@ from PyQt4 import QtCore, QtGui
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
 except AttributeError:
-    _fromUtf8 = lambda s: s
+    def _fromUtf8(s):
+        return s
+
+try:
+    _encoding = QtGui.QApplication.UnicodeUTF8
+    def _translate(context, text, disambig):
+        return QtGui.QApplication.translate(context, text, disambig, _encoding)
+except AttributeError:
+    def _translate(context, text, disambig):
+        return QtGui.QApplication.translate(context, text, disambig)
 
 class Ui_ScriptingOptionsPage(object):
     def setupUi(self, ScriptingOptionsPage):
@@ -37,6 +46,12 @@ class Ui_ScriptingOptionsPage(object):
         self.script_error.setObjectName(_fromUtf8("script_error"))
         self.verticalLayout.addWidget(self.script_error)
         self.vboxlayout.addWidget(self.enable_tagger_script)
+        self.scripting_doc_link = QtGui.QLabel(ScriptingOptionsPage)
+        self.scripting_doc_link.setText(_fromUtf8(""))
+        self.scripting_doc_link.setWordWrap(True)
+        self.scripting_doc_link.setOpenExternalLinks(True)
+        self.scripting_doc_link.setObjectName(_fromUtf8("scripting_doc_link"))
+        self.vboxlayout.addWidget(self.scripting_doc_link)
 
         self.retranslateUi(ScriptingOptionsPage)
         QtCore.QMetaObject.connectSlotsByName(ScriptingOptionsPage)

@@ -48,6 +48,7 @@ from picard.util.textencoding import (
 )
 from picard.util.filenaming import make_short_filename
 from picard.util.tags import PRESERVED_TAGS
+from picard.const import QUERY_LIMIT
 
 
 class File(QtCore.QObject, Item):
@@ -140,7 +141,7 @@ class File(QtCore.QObject, Item):
             values = self.orig_metadata.getall(tag)
             if values:
                 saved_metadata[tag] = values
-        deleted_tags = set(self.metadata.deleted_tags)
+        deleted_tags = self.metadata.deleted_tags             
         self.metadata.copy(metadata)
         self.metadata.deleted_tags = deleted_tags
         for tag, values in saved_metadata.iteritems():
@@ -337,7 +338,12 @@ class File(QtCore.QObject, Item):
         if not metadata.images:
             return
         counters = defaultdict(lambda: 0)
-        for image in metadata.images:
+        images = []
+        if config.setting["caa_save_single_front_image"]:
+            images = metadata.get_single_front_image()
+        if not images:
+            images = metadata.images
+        for image in images:
             image.save(dirname, metadata, counters)
 
     def _move_additional_files(self, old_filename, new_filename):
@@ -347,7 +353,7 @@ class File(QtCore.QObject, Item):
         patterns = encode_filename(config.setting["move_additional_files_pattern"])
         patterns = filter(bool, [p.strip() for p in patterns.split()])
         for pattern in patterns:
-            # FIXME glob1 is not documented, maybe we need our own implemention?
+            # FIXME glob1 is not documented, maybe we need our own implementation?
             for old_file in glob.glob1(old_path, pattern):
                 new_file = os.path.join(new_path, old_file)
                 old_file = os.path.join(old_path, old_file)
@@ -562,7 +568,7 @@ class File(QtCore.QObject, Item):
             tracks=metadata['totaltracks'],
             qdur=str(metadata.length / 2000),
             isrc=metadata['isrc'],
-            limit=25)
+            limit=QUERY_LIMIT)
 
     def clear_lookup_task(self):
         if self.lookup_task:

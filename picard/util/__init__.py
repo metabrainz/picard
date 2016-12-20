@@ -31,7 +31,7 @@ from PyQt4 import QtCore
 from string import Template
 # Required for compatibility with lastfmplus which imports this from here rather than loading it direct.
 from functools import partial
-from collections import defaultdict
+from picard.const import MUSICBRAINZ_SERVERS
 
 
 class LockableObject(QtCore.QObject):
@@ -213,7 +213,7 @@ def parse_amazon_url(url):
     """Extract host and asin from an amazon url.
     It returns a dict with host and asin keys on success, None else
     """
-    r = re.compile(r'^http://(?:www.)?(?P<host>.*?)(?:\:[0-9]+)?/.*/(?P<asin>[0-9B][0-9A-Z]{9})(?:[^0-9A-Z]|$)')
+    r = re.compile(r'^https?://(?:www.)?(?P<host>.*?)(?:\:[0-9]+)?/.*/(?P<asin>[0-9B][0-9A-Z]{9})(?:[^0-9A-Z]|$)')
     match = r.match(url)
     if match is not None:
         return match.groupdict()
@@ -381,3 +381,62 @@ def album_artist_from_path(filename, album, artist):
             elif not artist and len(dirs) >= 2:
                 artist = dirs[-2]
     return album, artist
+
+
+def build_qurl(host, port=80, path=None, mblogin=False, queryargs=None):
+    """
+    Builds and returns a QUrl object from `host`, `port` and `path` and
+    automatically enables HTTPS if necessary.
+
+    Setting `mblogin` to True forces HTTPS on MusicBrainz' servers.
+
+    Encoded query arguments can be provided in `queryargs`, a
+    dictionary mapping field names to values.
+    """
+    url = QtCore.QUrl()
+    url.setHost(host)
+    url.setPort(port)
+    if (# Login is required and we're contacting an MB server
+        (mblogin and host in MUSICBRAINZ_SERVERS and port == 80) or
+        # Or we're contacting some other server via HTTPS.
+         port == 443):
+            url.setScheme("https")
+            url.setPort(443)
+    else:
+        url.setScheme("http")
+
+    if path is not None:
+        url.setPath(path)
+    if queryargs is not None:
+        for k, v in queryargs.iteritems():
+            url.addEncodedQueryItem(k, unicode(v))
+    return url
+
+def union_sorted_lists(list1, list2):
+    """
+    Returns union of two sorted lists.
+    >> list1 = [1, 2, 2, 2, 3]
+    >> list2 = [2, 3, 4]
+    >> union_sorted_lists(list1, list2)
+    >> [1, 2, 2, 2, 3, 4]
+    """
+    union = []
+    i = 0
+    j = 0
+    while i != len(list1) and j != len(list2):
+        if list1[i] > list2[j]:
+            union.append(list2[j])
+            j += 1
+        elif list1[i] < list2[j]:
+            union.append(list1[i])
+            i += 1
+        else:
+            union.append(list1[i])
+            i += 1
+            j += 1
+    if i == len(list1):
+        union.extend(list2[j:])
+    else:
+        union.extend(list1[i:])
+
+    return union

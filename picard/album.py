@@ -226,26 +226,31 @@ class Album(DataObject, Item):
                 mm = Metadata()
                 mm.copy(self._new_metadata)
                 medium_to_metadata(medium_node, mm)
-                totalalbumtracks += int(mm["totaltracks"])
+                discpregap = False
 
                 for dj in djmix_ars.get(mm["discnumber"], []):
                     mm.add("djmixer", dj)
 
                 if "pregap" in medium_node.children:
-                    track = self._finalize_loading_track(medium_node.pregap[0], mm, artists, va, absolutetracknumber)
+                    discpregap = True
+                    absolutetracknumber += 1
+                    track = self._finalize_loading_track(medium_node.pregap[0], mm, artists, va, absolutetracknumber, discpregap)
                     track.metadata['~pregap'] = "1"
 
-                for track_node in medium_node.track_list[0].track:
-                    absolutetracknumber += 1
-                    track = self._finalize_loading_track(track_node, mm, artists, va, absolutetracknumber)
+                tracklist_node = medium_node.track_list[0]
+                track_count = int(tracklist_node.count)
+                if track_count:
+                    for track_node in tracklist_node.track:
+                        absolutetracknumber += 1
+                        track = self._finalize_loading_track(track_node, mm, artists, va, absolutetracknumber, discpregap)
 
                 if "data_track_list" in medium_node.children:
                     for track_node in medium_node.data_track_list[0].track:
                         absolutetracknumber += 1
-                        track = self._finalize_loading_track(track_node, mm, artists, va, absolutetracknumber)
+                        track = self._finalize_loading_track(track_node, mm, artists, va, absolutetracknumber, discpregap)
                         track.metadata['~datatrack'] = "1"
 
-            totalalbumtracks = str(totalalbumtracks)
+            totalalbumtracks = str(absolutetracknumber)
 
             for track in self._new_tracks:
                 track.metadata["~totalalbumtracks"] = totalalbumtracks
@@ -299,7 +304,7 @@ class Album(DataObject, Item):
                 func()
             self._after_load_callbacks = []
 
-    def _finalize_loading_track(self, track_node, metadata, artists, va, absolutetracknumber):
+    def _finalize_loading_track(self, track_node, metadata, artists, va, absolutetracknumber, discpregap):
         track = Track(track_node.recording[0].id, self)
         self._new_tracks.append(track)
 
@@ -314,6 +319,8 @@ class Album(DataObject, Item):
         artists.add(tm["artist"])
         if va:
             tm["compilation"] = "1"
+        if discpregap:
+            tm["~discpregap"] = "1"
 
         # Run track metadata plugins
         try:
