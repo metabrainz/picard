@@ -775,8 +775,9 @@ class FileItem(TreeItem):
         if self.isSelected():
             TreeItem.window.update_selection()
 
-        if isinstance(self.parent(), TrackItem) and update_track:
-            self.parent().update(update_files=False)
+        parent = self.parent()
+        if isinstance(parent, TrackItem) and update_track:
+            parent.update(update_files=False)
 
     @staticmethod
     def decide_file_icon(file):
