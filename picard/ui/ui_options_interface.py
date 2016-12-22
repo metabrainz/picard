@@ -8,12 +8,21 @@ from PyQt4 import QtCore, QtGui
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
 except AttributeError:
-    _fromUtf8 = lambda s: s
+    def _fromUtf8(s):
+        return s
+
+try:
+    _encoding = QtGui.QApplication.UnicodeUTF8
+    def _translate(context, text, disambig):
+        return QtGui.QApplication.translate(context, text, disambig, _encoding)
+except AttributeError:
+    def _translate(context, text, disambig):
+        return QtGui.QApplication.translate(context, text, disambig)
 
 class Ui_InterfaceOptionsPage(object):
     def setupUi(self, InterfaceOptionsPage):
         InterfaceOptionsPage.setObjectName(_fromUtf8("InterfaceOptionsPage"))
-        InterfaceOptionsPage.resize(421, 275)
+        InterfaceOptionsPage.resize(431, 289)
         self.vboxlayout = QtGui.QVBoxLayout(InterfaceOptionsPage)
         self.vboxlayout.setObjectName(_fromUtf8("vboxlayout"))
         self.groupBox_2 = QtGui.QGroupBox(InterfaceOptionsPage)
@@ -27,7 +36,7 @@ class Ui_InterfaceOptionsPage(object):
         self.toolbar_multiselect.setObjectName(_fromUtf8("toolbar_multiselect"))
         self.vboxlayout1.addWidget(self.toolbar_multiselect)
         self.builtin_search = QtGui.QCheckBox(self.groupBox_2)
-        self.builtin_search.setObjectName("builtin_search")
+        self.builtin_search.setObjectName(_fromUtf8("builtin_search"))
         self.vboxlayout1.addWidget(self.builtin_search)
         self.use_adv_search_syntax = QtGui.QCheckBox(self.groupBox_2)
         self.use_adv_search_syntax.setObjectName(_fromUtf8("use_adv_search_syntax"))
