@@ -22,7 +22,7 @@ except AttributeError:
 class Ui_CaaOptions(object):
     def setupUi(self, CaaOptions):
         CaaOptions.setObjectName(_fromUtf8("CaaOptions"))
-        CaaOptions.resize(586, 194)
+        CaaOptions.resize(660, 194)
         self.verticalLayout = QtGui.QVBoxLayout(CaaOptions)
         self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
         self.select_caa_types_group = QtGui.QHBoxLayout()
