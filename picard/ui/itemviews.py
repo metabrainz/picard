@@ -756,7 +756,6 @@ class TrackItem(TreeItem):
             self.setBackground(i, bgcolor)
         if self.isSelected():
             TreeItem.window.update_selection()
-
         if update_album:
             self.parent().update(update_tracks=False)
 
