@@ -123,14 +123,15 @@ class Metadata(dict):
         if "totaltracks" in self:
             try:
                 a = int(self["totaltracks"])
+            except ValueError:
+                pass
+            else:
                 if "title" in weights:
                     b = int(release.medium_list[0].medium[0].track_list[0].count)
                 else:
                     b = int(release.medium_list[0].track_count[0].text)
                 score = 0.0 if a > b else 0.3 if a < b else 1.0
                 parts.append((score, weights["totaltracks"]))
-            except ValueError:
-                pass
 
         preferred_countries = config.setting["preferred_release_countries"]
         preferred_formats = config.setting["preferred_release_formats"]
