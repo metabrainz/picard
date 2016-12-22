@@ -340,7 +340,7 @@ class picard_build_ui(Command):
         else:
             for uifile, pyfile in ui_files():
                 if newer(uifile, pyfile):
-                   compile_ui(uifile, pyfile)
+                    compile_ui(uifile, pyfile)
 
         from resources import compile, makeqrc
         makeqrc.main()
