@@ -27,7 +27,7 @@ if sys.platform == 'win32':
 	from ctypes import windll
 
 from time import time
-from PyQt4 import QtCore
+from PyQt5 import QtCore
 from string import Template
 # Required for compatibility with lastfmplus which imports this from here rather than loading it direct.
 from functools import partial
@@ -404,8 +404,10 @@ def build_qurl(host, port=80, path=None, queryargs=None):
     if path is not None:
         url.setPath(path)
     if queryargs is not None:
+        url_query = QtCore.QUrlQuery()
         for k, v in queryargs.iteritems():
-            url.addEncodedQueryItem(k, unicode(v))
+            url_query.addQueryItem(k, unicode(v))
+        url.setQuery(url_query)
     return url
 
 def union_sorted_lists(list1, list2):

@@ -24,8 +24,8 @@
 
 import json
 import traceback
-from PyQt4 import QtCore, QtGui
-from PyQt4.QtNetwork import QNetworkReply
+from PyQt5 import QtCore, QtWidgets
+from PyQt5.QtNetwork import QNetworkReply
 from picard import config, log
 from picard.const import CAA_HOST, CAA_PORT
 from picard.coverart.providers import CoverArtProvider, ProviderOptions
@@ -42,7 +42,7 @@ _CAA_THUMBNAIL_SIZE_MAP = {
     1: "large",
 }
 
-class CAATypesSelectorDialog(QtGui.QDialog):
+class CAATypesSelectorDialog(QtWidgets.QDialog):
     _columns = 4
 
     def __init__(self, parent=None, types=[]):
@@ -50,10 +50,10 @@ class CAATypesSelectorDialog(QtGui.QDialog):
 
         self.setWindowTitle(_("Cover art types"))
         self._items = {}
-        self.layout = QtGui.QVBoxLayout(self)
+        self.layout = QtWidgets.QVBoxLayout(self)
 
-        grid = QtGui.QWidget()
-        gridlayout = QtGui.QGridLayout()
+        grid = QtWidgets.QWidget()
+        gridlayout = QtWidgets.QGridLayout()
         grid.setLayout(gridlayout)
 
         for index, caa_type in enumerate(CAA_TYPES):
@@ -61,21 +61,21 @@ class CAATypesSelectorDialog(QtGui.QDialog):
             column = index % self._columns
             name = caa_type["name"]
             text = translate_caa_type(name)
-            item = QtGui.QCheckBox(text)
+            item = QtWidgets.QCheckBox(text)
             item.setChecked(name in types)
             self._items[item] = caa_type
             gridlayout.addWidget(item, row, column)
 
         self.layout.addWidget(grid)
 
-        self.buttonbox = QtGui.QDialogButtonBox(self)
+        self.buttonbox = QtWidgets.QDialogButtonBox(self)
         self.buttonbox.setOrientation(QtCore.Qt.Horizontal)
         self.buttonbox.addButton(
-            StandardButton(StandardButton.OK), QtGui.QDialogButtonBox.AcceptRole)
+            StandardButton(StandardButton.OK), QtWidgets.QDialogButtonBox.AcceptRole)
         self.buttonbox.addButton(StandardButton(StandardButton.CANCEL),
-                                 QtGui.QDialogButtonBox.RejectRole)
+                                 QtWidgets.QDialogButtonBox.RejectRole)
         self.buttonbox.addButton(
-            StandardButton(StandardButton.HELP), QtGui.QDialogButtonBox.HelpRole)
+            StandardButton(StandardButton.HELP), QtWidgets.QDialogButtonBox.HelpRole)
         self.buttonbox.accepted.connect(self.accept)
         self.buttonbox.rejected.connect(self.reject)
         self.buttonbox.helpRequested.connect(self.help)
@@ -85,10 +85,10 @@ class CAATypesSelectorDialog(QtGui.QDialog):
             (N_("&Uncheck all"), self.uncheckall),
         ]
         for label, callback in extrabuttons:
-            button = QtGui.QPushButton(_(label))
+            button = QtWidgets.QPushButton(_(label))
             button.setSizePolicy(
-                QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Expanding)
-            self.buttonbox.addButton(button, QtGui.QDialogButtonBox.ActionRole)
+                QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Expanding)
+            self.buttonbox.addButton(button, QtWidgets.QDialogButtonBox.ActionRole)
             button.clicked.connect(callback)
 
         self.layout.addWidget(self.buttonbox)
@@ -122,7 +122,7 @@ class CAATypesSelectorDialog(QtGui.QDialog):
     def run(parent=None, types=[]):
         dialog = CAATypesSelectorDialog(parent, types)
         result = dialog.exec_()
-        return (dialog.get_selected_types(), result == QtGui.QDialog.Accepted)
+        return (dialog.get_selected_types(), result == QtWidgets.QDialog.Accepted)
 
 
 class ProviderOptionsCaa(ProviderOptions):

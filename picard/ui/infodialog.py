@@ -20,7 +20,7 @@
 import os.path
 import cgi
 import traceback
-from PyQt4 import QtGui, QtCore
+from PyQt5 import QtGui, QtCore, QtWidgets
 from picard import log
 from picard.file import File
 from picard.track import Track
@@ -31,9 +31,9 @@ from picard.ui import PicardDialog
 from picard.ui.ui_infodialog import Ui_InfoDialog
 
 
-class ArtworkTable(QtGui.QTableWidget):
+class ArtworkTable(QtWidgets.QTableWidget):
     def __init__(self, display_existing_art):
-        QtGui.QTableWidget.__init__(self, 0, 2)
+        QtWidgets.QTableWidget.__init__(self, 0, 2)
         self.display_existing_art = display_existing_art
         h_header = self.horizontalHeader()
         v_header = self.verticalHeader()
@@ -55,10 +55,10 @@ class ArtworkTable(QtGui.QTableWidget):
 
     def get_coverart_widget(self, pixmap, text):
         """Return a QWidget that can be added to artwork column cell of ArtworkTable."""
-        coverart_widget = QtGui.QWidget()
-        image_label = QtGui.QLabel()
-        text_label = QtGui.QLabel()
-        layout = QtGui.QVBoxLayout()
+        coverart_widget = QtWidgets.QWidget()
+        image_label = QtWidgets.QLabel()
+        text_label = QtWidgets.QLabel()
+        layout = QtWidgets.QVBoxLayout()
         image_label.setPixmap(pixmap.scaled(170, 170, QtCore.Qt.KeepAspectRatio,
                                             QtCore.Qt.SmoothTransformation))
         image_label.setAlignment(QtCore.Qt.AlignCenter)
@@ -75,14 +75,14 @@ class ArtworkTable(QtGui.QTableWidget):
         If both existing and new artwork are to be displayed, insert an arrow icon to make comparison
         obvious.
         """
-        type_widget = QtGui.QWidget()
-        type_label = QtGui.QLabel()
-        layout = QtGui.QVBoxLayout()
+        type_widget = QtWidgets.QWidget()
+        type_label = QtWidgets.QLabel()
+        layout = QtWidgets.QVBoxLayout()
         type_label.setText(type_text)
         type_label.setAlignment(QtCore.Qt.AlignCenter)
         type_label.setWordWrap(True)
         if self.display_existing_art:
-            arrow_label = QtGui.QLabel()
+            arrow_label = QtWidgets.QLabel()
             arrow_label.setPixmap(self.arrow_pixmap.scaled(170, 170, QtCore.Qt.KeepAspectRatio,
                                                            QtCore.Qt.SmoothTransformation))
             arrow_label.setAlignment(QtCore.Qt.AlignCenter)
@@ -173,7 +173,7 @@ class InfoDialog(PicardDialog):
             except CoverArtImageIOError:
                 log.error(traceback.format_exc())
                 continue
-            item = QtGui.QTableWidgetItem()
+            item = QtWidgets.QTableWidgetItem()
             item.setData(QtCore.Qt.UserRole, image)
             pixmap = QtGui.QPixmap()
             if data is not None:
@@ -209,7 +209,7 @@ class InfoDialog(PicardDialog):
         for row, type in enumerate(types):
             self.artwork_table.insertRow(row)
             type_wgt = self.artwork_table.get_type_widget(type)
-            item = QtGui.QTableWidgetItem()
+            item = QtWidgets.QTableWidgetItem()
             item.setData(QtCore.Qt.UserRole, type)
             self.artwork_table.setCellWidget(row, self.artwork_table._type_col, type_wgt)
             self.artwork_table.setItem(row, self.artwork_table._type_col, item)
@@ -297,7 +297,7 @@ class AlbumInfoDialog(InfoDialog):
         if album.errors:
             tabWidget.setTabText(tab_index, _("&Errors"))
             text = '<br />'.join(map(lambda s: '<font color="darkred">%s</font>' %
-                                     '<br />'.join(unicode(QtCore.Qt.escape(s))
+                                     '<br />'.join(unicode(cgi.escape(s))
                                                    .replace('\t', ' ')
                                                    .replace(' ', '&nbsp;')
                                                    .splitlines()
@@ -347,9 +347,9 @@ class ClusterInfoDialog(InfoDialog):
         tabWidget.setTabText(tab_index, _("&Info"))
         info = []
         info.append("<b>%s</b> %s" % (_('Album:'),
-                                      unicode(QtCore.Qt.escape(cluster.metadata["album"]))))
+                                      unicode(cgi.escape(cluster.metadata["album"]))))
         info.append("<b>%s</b> %s" % (_('Artist:'),
-                                      unicode(QtCore.Qt.escape(cluster.metadata["albumartist"]))))
+                                      unicode(cgi.escape(cluster.metadata["albumartist"]))))
         info.append("")
         lines = []
         for file in cluster.iterfiles(False):
@@ -359,5 +359,5 @@ class ClusterInfoDialog(InfoDialog):
                          m["title"] + " - " + artist + " (" +
                          m["~length"] + ")")
         info.append("<b>%s</b><br />%s" % (_('Tracklist:'),
-                    '<br />'.join([unicode(QtCore.Qt.escape(s)).replace(' ', '&nbsp;') for s in lines])))
+                    '<br />'.join([unicode(cgi.escape(s)).replace(' ', '&nbsp;') for s in lines])))
         self.ui.info.setText('<br/>'.join(info))

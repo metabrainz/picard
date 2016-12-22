@@ -31,9 +31,8 @@ import platform
 import math
 from collections import deque, defaultdict
 from functools import partial
-from PyQt4 import QtCore, QtNetwork
-from PyQt4.QtGui import QDesktopServices
-from PyQt4.QtCore import QUrl, QXmlStreamReader
+from PyQt5 import QtCore, QtNetwork
+from PyQt5.QtCore import QUrl, QXmlStreamReader, QStandardPaths, QUrlQuery
 from picard import (PICARD_APP_NAME,
                     PICARD_ORG_NAME,
                     PICARD_VERSION_STR,
@@ -168,7 +167,7 @@ class XmlWebService(QtCore.QObject):
 
     def set_cache(self, cache_size_in_mb=100):
         cache = QtNetwork.QNetworkDiskCache()
-        location = QDesktopServices.storageLocation(QDesktopServices.CacheLocation)
+        location = QStandardPaths.writableLocation(QStandardPaths.CacheLocation)
         cache.setCacheDirectory(os.path.join(unicode(location), u'picard'))
         cache.setMaximumCacheSize(cache_size_in_mb * 1024 * 1024)
         self.manager.setCache(cache)
@@ -192,7 +191,8 @@ class XmlWebService(QtCore.QObject):
         url = build_qurl(host, port, path=path, queryargs=queryargs)
         request = QtNetwork.QNetworkRequest(url)
         if mblogin and access_token:
-            request.setRawHeader("Authorization", "Bearer %s" % access_token)
+            # access_token must not be unicode - PyQt5 doesn't like it.
+            request.setRawHeader("Authorization", "Bearer %s" % str(access_token))
         if mblogin or (method == "GET" and refresh):
             request.setPriority(QtNetwork.QNetworkRequest.HighPriority)
             request.setAttribute(QtNetwork.QNetworkRequest.CacheLoadControlAttribute,
@@ -275,7 +275,7 @@ class XmlWebService(QtCore.QObject):
                         log.debug("Redirect to %s requested", redirect.toString(QUrl.RemoveUserInfo))
                         redirect_host = str(redirect.host())
                         redirect_port = self.url_port(redirect)
-                        redirect_query = dict(redirect.encodedQueryItems())
+                        redirect_query = dict(QUrlQuery(redirect).queryItems(QUrl.FullyEncoded))
                         redirect_path = redirect.path()
 
                         original_host = str(url.host())
@@ -511,7 +511,7 @@ class XmlWebService(QtCore.QObject):
     def submit_ratings(self, ratings, handler):
         host = config.setting['server_host']
         port = config.setting['server_port']
-        path = '/ws/2/rating/'
+        path = '/ws/2/rating/?client=' + CLIENT_STRING
         params = {"client": CLIENT_STRING}
         recordings = (''.join(['<recording id="%s"><user-rating>%s</user-rating></recording>' %
             (i[1], j*20) for i, j in ratings.items() if i[0] == 'recording']))

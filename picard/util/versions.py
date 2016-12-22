@@ -20,7 +20,7 @@
 
 from collections import OrderedDict
 from mutagen import version_string as mutagen_version
-from PyQt4.QtCore import PYQT_VERSION_STR as pyqt_version, QT_VERSION_STR
+from PyQt5.QtCore import PYQT_VERSION_STR as pyqt_version, QT_VERSION_STR
 from picard import PICARD_FANCY_VERSION_STR
 from picard.disc import discid_version
 
