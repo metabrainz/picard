@@ -88,7 +88,7 @@ class FormatsTest(unittest.TestCase):
             metadata[key] = value
         loaded_metadata = save_and_load_metadata(self.filename, metadata)
         for (key, value) in self.tags.iteritems():
-            #if key == 'comment:foo':
+            # if key == 'comment:foo':
             #    print "%r" % loaded_metadata
             self.assertEqual(loaded_metadata[key], value, '%s: %r != %r' % (key, loaded_metadata[key], value))
 
@@ -806,6 +806,7 @@ class MusepackSV8Test(FormatsTest):
         #'podcasturl': 'Foo',
         #'show': 'Foo',
     }
+
 
 cover_settings = {
     'save_only_front_images_to_tags': True,

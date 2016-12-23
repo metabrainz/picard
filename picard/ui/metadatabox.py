@@ -407,7 +407,7 @@ class MetadataBox(QtGui.QTableWidget):
                 new_values = new_metadata.getall(name)
                 orig_values = orig_metadata.getall(name)
 
-                if not ((new_values and not name in existing_tags) or clear_existing_tags):
+                if not ((new_values and name not in existing_tags) or clear_existing_tags):
                     new_values = list(orig_values or [""])
                     existing_tags.add(name)
 
@@ -497,7 +497,7 @@ class MetadataBox(QtGui.QTableWidget):
             else:
                 font.setStrikeOut(False)
 
-            new_item.setFont(font)              
+            new_item.setFont(font)
 
             color = self.colors.get(result.tag_status(name),
                                     self.colors[TagStatus.NoChange])

@@ -130,10 +130,10 @@ class VCommentFile(File):
                 except CoverArtImageError as e:
                     log.error('Cannot load image from %r: %s' % (filename, e))
                 else:
-                     metadata.append_image(coverartimage)
+                    metadata.append_image(coverartimage)
 
         # Read the unofficial COVERART tags, for backward compatibillity only
-        if not "metadata_block_picture" in file.tags:
+        if "metadata_block_picture" not in file.tags:
             try:
                 for data in file["COVERART"]:
                     try:
@@ -215,9 +215,9 @@ class VCommentFile(File):
             real_name = self._get_tag_name(tag)
             if real_name and real_name in file.tags:
                 if real_name in ('performer', 'comment'):
-                    tag_type = "\(%s\)" % tag.split(':',1)[1]
+                    tag_type = "\(%s\)" % tag.split(':', 1)[1]
                     for item in file.tags.get(real_name):
-                        if re.search(tag_type,item):
+                        if re.search(tag_type, item):
                             file.tags.get(real_name).remove(item)
                 else:
                     del file.tags[real_name]
@@ -353,6 +353,7 @@ def OggVideoFile(filename):
     """Generic Ogg video file."""
     options = [OggTheoraFile]
     return _select_ogg_type(filename, options)
+
 
 OggVideoFile.EXTENSIONS = [".ogv"]
 OggVideoFile.NAME = "Ogg Video"

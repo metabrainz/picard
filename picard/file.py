@@ -141,7 +141,7 @@ class File(QtCore.QObject, Item):
             values = self.orig_metadata.getall(tag)
             if values:
                 saved_metadata[tag] = values
-        deleted_tags = self.metadata.deleted_tags             
+        deleted_tags = self.metadata.deleted_tags
         self.metadata.copy(metadata)
         self.metadata.deleted_tags = deleted_tags
         for tag, values in saved_metadata.iteritems():
