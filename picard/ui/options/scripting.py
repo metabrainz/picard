@@ -105,6 +105,7 @@ class ScriptingOptionsPage(OptionsPage):
     options = [
         config.BoolOption("setting", "enable_tagger_script", False),
         config.TextOption("setting", "tagger_script", ""),
+        config.IntOption("setting", "total_tagger_scripts", 0)
     ]
 
     def __init__(self, parent=None):
@@ -113,6 +114,16 @@ class ScriptingOptionsPage(OptionsPage):
         self.ui.setupUi(self)
         self.highlighter = TaggerScriptSyntaxHighlighter(self.ui.tagger_script.document())
         self.ui.tagger_script.textChanged.connect(self.live_checker)
+        self.ui.add_script.clicked.connect(self.add_to_lscript)
+
+    def add_to_lscript(self):
+        config.setting["total_tagger_scripts"] += 1
+        script_name ="script "+ str(config.setting["total_tagger_scripts"])
+        script = QtGui.QListWidgetItem(script_name)
+        script.setFlags(script.flags() | QtCore.Qt.ItemIsUserCheckable)
+        script.setCheckState(QtCore.Qt.Checked)
+        self.ui.script_list.addItem(script)
+
 
     def live_checker(self):
         self.ui.script_error.setStyleSheet("")
