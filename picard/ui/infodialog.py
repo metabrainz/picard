@@ -31,6 +31,69 @@ from picard.ui import PicardDialog
 from picard.ui.ui_infodialog import Ui_InfoDialog
 
 
+class ArtworkTable(QtGui.QTableWidget):
+    def __init__(self, display_existing_art):
+        QtGui.QTableWidget.__init__(self, 0, 2)
+        self.display_existing_art = display_existing_art
+        h_header = self.horizontalHeader()
+        v_header = self.verticalHeader()
+        h_header.setDefaultSectionSize(200)
+        v_header.setDefaultSectionSize(230)
+        if self.display_existing_art:
+            self._existing_cover_col = 0
+            self._type_col = 1
+            self._new_cover_col = 2
+            self.insertColumn(2)
+            self.setHorizontalHeaderLabels([_("Existing Cover"), _("Type"),
+                _("New Cover")])
+            self.arrow_pixmap = QtGui.QPixmap(":/images/arrow.png")
+        else:
+            self._type_col = 0
+            self._new_cover_col = 1
+            self.setHorizontalHeaderLabels([_("Type"), _("Cover")])
+            self.setColumnWidth(self._type_col, 140)
+
+    def get_coverart_widget(self, pixmap, text):
+        """Return a QWidget that can be added to artwork column cell of ArtworkTable."""
+        coverart_widget = QtGui.QWidget()
+        image_label = QtGui.QLabel()
+        text_label = QtGui.QLabel()
+        layout = QtGui.QVBoxLayout()
+        image_label.setPixmap(pixmap.scaled(170,170,QtCore.Qt.KeepAspectRatio,
+                                            QtCore.Qt.SmoothTransformation))
+        image_label.setAlignment(QtCore.Qt.AlignCenter)
+        text_label.setText(text)
+        text_label.setAlignment(QtCore.Qt.AlignCenter)
+        text_label.setWordWrap(True)
+        layout.addWidget(image_label)
+        layout.addWidget(text_label)
+        coverart_widget.setLayout(layout)
+        return coverart_widget
+
+    def get_type_widget(self, type_text):
+        """Return a QWidget that can be added to type column cell of ArtworkTable.
+        If both existing and new artwork are to be displayed, insert an arrow icon to make comparison
+        obvious.
+        """
+        type_widget = QtGui.QWidget()
+        type_label = QtGui.QLabel()
+        layout = QtGui.QVBoxLayout()
+        type_label.setText(type_text)
+        type_label.setAlignment(QtCore.Qt.AlignCenter)
+        type_label.setWordWrap(True)
+        if self.display_existing_art:
+            arrow_label = QtGui.QLabel()
+            arrow_label.setPixmap(self.arrow_pixmap.scaled(170, 170, QtCore.Qt.KeepAspectRatio,
+                                                           QtCore.Qt.SmoothTransformation))
+            arrow_label.setAlignment(QtCore.Qt.AlignCenter)
+            layout.addWidget(arrow_label)
+            layout.addWidget(type_label)
+        else:
+            layout.addWidget(type_label)
+        type_widget.setLayout(layout)
+        return type_widget
+
+
 class InfoDialog(PicardDialog):
 
     def __init__(self, obj, parent=None):
@@ -40,12 +103,23 @@ class InfoDialog(PicardDialog):
         self.display_existing_artwork = False
         if isinstance(obj, File) and isinstance(obj.parent, Track) or \
                 isinstance(obj, Track):
-            #Display existing artwork only if selected object is track object
-            #or linked to a track object
+            # Display existing artwork only if selected object is track object
+            # or linked to a track object
             self.display_existing_artwork = True
-        self.ui.setupUi(self, self.display_existing_artwork)
+
+        self.ui.setupUi(self)
         self.ui.buttonBox.accepted.connect(self.accept)
         self.ui.buttonBox.rejected.connect(self.reject)
+
+        # Add the ArtworkTable to the ui
+        self.ui.artwork_table = ArtworkTable(self.display_existing_artwork)
+        self.ui.artwork_table.setObjectName("artwork_table")
+        self.ui.vboxlayout1.addWidget(self.ui.artwork_table)
+        if self.display_existing_artwork:
+            self.resize(665, 436)
+        self.setTabOrder(self.ui.tabWidget, self.ui.artwork_table)
+        self.setTabOrder(self.ui.artwork_table, self.ui.buttonBox)
+
         self.setWindowTitle(_("Info"))
         self.artwork_table = self.ui.artwork_table
         self._display_tabs()
@@ -115,7 +189,7 @@ class InfoDialog(PicardDialog):
         types = [image.types_as_string() for image in self.obj.metadata.images]
         if self.display_existing_artwork:
             existing_types = [image.types_as_string() for image in self.obj.orig_metadata.images]
-            #Merge both types and existing types list in sorted order.
+            # Merge both types and existing types list in sorted order.
             types = union_sorted_lists(types, existing_types)
         for row, type in enumerate(types):
             self.artwork_table.insertRow(row)
@@ -149,7 +223,7 @@ class InfoDialog(PicardDialog):
 
     def show_item(self, item):
         data = item.data(QtCore.Qt.UserRole)
-        #Check if this function isn't triggered by cell in Type column
+        # Check if this function isn't triggered by cell in Type column
         if isinstance(data, unicode):
             return
         filename = data.tempfile_filename
