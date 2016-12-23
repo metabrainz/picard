@@ -24,7 +24,6 @@ from PyQt4 import QtGui, QtCore
 from picard import log
 from picard.file import File
 from picard.track import Track
-from picard.coverart.utils import translate_caa_type
 from picard.coverart.image import CoverArtImageIOError
 from picard.util import format_time, encode_filename, bytes2human, webbrowser2, union_sorted_lists
 from picard.ui import PicardDialog
