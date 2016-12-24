@@ -124,35 +124,41 @@ class ScriptingOptionsPage(OptionsPage):
         self.ui = Ui_ScriptingOptionsPage()
         self.ui.setupUi(self)
         self.highlighter = TaggerScriptSyntaxHighlighter(self.ui.tagger_script.document())
-        self.ui.tagger_script.textChanged.connect(self.live_checker)
+        self.ui.tagger_script.textChanged.connect(self.live_update_and_check)
         self.ui.add_script.clicked.connect(self.add_to_lscript)
         self.ui.remove_script.clicked.connect(self.remove_from_lscript)
-        self.ui.script_list.itemClicked.connect(self.script_selected)
+        self.ui.script_list.itemSelectionChanged.connect(self.script_selected)
+        self.ui.tagger_script.setEnabled(False)
 
         self.listitem_to_scriptitem = {}
 
     def script_selected(self):
         items=self.ui.script_list.selectedItems()
         if items:
+            self.ui.tagger_script.setEnabled(True)
             script=self.listitem_to_scriptitem[items[0]]
-            self.ui.tagger_script.setText(script.name)
-
+            self.ui.tagger_script.setText(script.text_item)
 
     def add_to_lscript(self):
         config.setting["total_tagger_scripts"] += 1
-        #script_name ="My Script "+ str(config.setting["total_tagger_scripts"])
-        #script = QtGui.QListWidgetItem(script_name)
-        #script.setFlags(script.flags() | QtCore.Qt.ItemIsUserCheckable | QtCore.Qt.ItemIsEditable)
-        #script.setCheckState(QtCore.Qt.Checked)
         script = ScriptItem()
         self.ui.script_list.addItem(script.list_item)
-        self.listitem_to_scriptitem[script.list_item]=script
+        self.listitem_to_scriptitem[script.list_item] = script
 
     def remove_from_lscript(self):
-        pass
+        item = self.ui.script_list.takeItem(self.ui.script_list.currentRow())
+        script = self.listitem_to_scriptitem[item]
+        item = None
+        del script
+        if self.ui.script_list.count()==0:
+            self.ui.tagger_script.setText("")
+            self.ui.tagger_script.setEnabled(False)
 
-
-    def live_checker(self):
+    def live_update_and_check(self):
+        items = self.ui.script_list.selectedItems()
+        if items:
+            script = self.listitem_to_scriptitem[items[0]]
+            script.text_item = self.ui.tagger_script.toPlainText()
         self.ui.script_error.setStyleSheet("")
         self.ui.script_error.setText("")
         try:
