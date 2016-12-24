@@ -117,6 +117,7 @@ class ScriptingOptionsPage(OptionsPage):
         config.BoolOption("setting", "enable_tagger_script", False),
         config.TextOption("setting", "tagger_script", ""),
         config.IntOption("setting", "total_tagger_scripts", 0),
+        config.ListOption("setting", "list_of_scripts",[]),
     ]
 
     def __init__(self, parent=None):
@@ -143,16 +144,19 @@ class ScriptingOptionsPage(OptionsPage):
         config.setting["total_tagger_scripts"] += 1
         script = ScriptItem()
         self.ui.script_list.addItem(script.list_item)
-        self.listitem_to_scriptitem[script.list_item] = script
+        self.listitem_to_scriptitem[script.list_item]=script
+        config.setting["list_of_scripts"].append(script)
 
     def remove_from_lscript(self):
         item = self.ui.script_list.takeItem(self.ui.script_list.currentRow())
-        script = self.listitem_to_scriptitem[item]
-        item = None
-        del script
-        if self.ui.script_list.count()==0:
-            self.ui.tagger_script.setText("")
-            self.ui.tagger_script.setEnabled(False)
+        if item:
+            script = self.listitem_to_scriptitem[item]
+            item = None
+            del script
+            config.setting["total_tagger_scripts"] -= 1
+            if self.ui.script_list.count() == 0:
+                self.ui.tagger_script.setText("")
+                self.ui.tagger_script.setEnabled(False)
 
     def live_update_and_check(self):
         items = self.ui.script_list.selectedItems()
@@ -178,6 +182,12 @@ class ScriptingOptionsPage(OptionsPage):
     def load(self):
         self.ui.enable_tagger_script.setChecked(config.setting["enable_tagger_script"])
         self.ui.tagger_script.document().setPlainText(config.setting["tagger_script"])
+        for script in config.setting["list_of_scripts"]:
+            script.list_item = QtGui.QListWidgetItem(script.name)
+            script.list_item.setFlags(script.list_item.flags() | QtCore.Qt.ItemIsUserCheckable | QtCore.Qt.ItemIsEditable)
+            script.list_item.setCheckState(QtCore.Qt.Checked)
+            self.listitem_to_scriptitem[script.list_item] = script
+            self.ui.script_list.addItem(script.list_item)
         args = {
             "picard-doc-scripting-url": PICARD_URLS['doc_scripting'],
         }
