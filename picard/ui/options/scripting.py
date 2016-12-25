@@ -131,6 +131,8 @@ class ScriptingOptionsPage(OptionsPage):
         self.ui.tagger_script.textChanged.connect(self.live_update_and_check)
         self.ui.add_script.clicked.connect(self.add_to_lscript)
         self.ui.remove_script.clicked.connect(self.remove_from_lscript)
+        self.ui.up_script.clicked.connect(self.move_script_up)
+        self.ui.down_script.clicked.connect(self.move_script_down)
         self.ui.script_list.itemSelectionChanged.connect(self.script_selected)
         self.ui.script_list.itemChanged.connect(self.script_attr_changed)
         self.ui.tagger_script.setEnabled(False)
@@ -170,16 +172,52 @@ class ScriptingOptionsPage(OptionsPage):
         if item:
             script = self.listitem_to_scriptitem[item]
             item = None
+            del self.list_of_scripts[script.pos]
             del script
             if self.ui.script_list.count() == 0:
                 self.ui.tagger_script.setText("")
                 self.ui.tagger_script.setEnabled(False)
 
     def move_script_up(self):
-        pass
+        currentRow = self.ui.script_list.currentRow()
+        item1 = self.ui.script_list.item(currentRow)
+        if currentRow != 0:
+            item2 = self.ui.script_list.item(currentRow-1)
+        else:
+            item2 = None
+        if item1 and item2:
+            # make changes in the ui
+            item1 = self.ui.script_list.takeItem(currentRow)
+            self.ui.script_list.insertItem(currentRow-1, item1)
 
-    def movie_script_down(self):
-        pass
+            # make changes in the picklable list
+            script1 = self.listitem_to_scriptitem[item1]
+            script2 = self.listitem_to_scriptitem[item2]
+            # workaround since tuples are immutable
+            self.list_of_scripts[script1.pos] = (script1.pos-1, script1.name, script1.enabled, script1.text_item)
+            self.list_of_scripts[script2.pos] = (script2.pos+1, script2.name, script2.enabled, script2.text_item)
+            self.list_of_scripts = sorted(self.list_of_scripts,key=lambda x: x[0])
+            for l in self.list_of_scripts:
+                print l
+
+    def move_script_down(self):
+        currentRow = self.ui.script_list.currentRow()
+        item1 = self.ui.script_list.takeItem(currentRow)
+        if currentRow != self.ui.script_list.count():
+            item2 = self.ui.script_list.item(currentRow+1)
+        else:
+            item2 = None
+        if item1 and item2:
+            # make changes in the ui
+            self.ui.script_list.insertItem(currentRow+1, item1)
+
+            # make changes in the picklable list
+            script1 = self.listitem_to_scriptitem[item1]
+            script2 = self.listitem_to_scriptitem[item2]
+            # workaround since tuples are immutable
+            self.list_of_scripts[script1.pos] = (script1.pos + 1, script1.name, script1.enabled, script1.text_item)
+            self.list_of_scripts[script2.pos] = (script2.pos - 1, script2.name, script2.enabled, script2.text_item)
+            self.list_of_scripts = sorted(self.list_of_scripts, key=lambda x: x[0])
 
     def live_update_and_check(self):
         items = self.ui.script_list.selectedItems()
@@ -225,6 +263,8 @@ class ScriptingOptionsPage(OptionsPage):
     def save(self):
         config.setting["enable_tagger_script"] = self.ui.enable_tagger_script.isChecked()
         config.setting["tagger_script"] = self.ui.tagger_script.toPlainText()
+        for l in self.list_of_scripts:
+            print l
         config.setting["list_of_scripts"] = self.list_of_scripts
 
     def display_error(self, error):
