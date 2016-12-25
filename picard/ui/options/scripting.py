@@ -96,16 +96,17 @@ class TaggerScriptSyntaxHighlighter(QtGui.QSyntaxHighlighter):
 
 class ScriptItem:
 
-    def __init__(self, title = None, state = True,text = ""):
+    def __init__(self, position, title=None, state=True,text=""):
+        self.pos = position
         if title is None:
-            self.name = "My Script " + str(config.setting["total_tagger_scripts"])
+            self.name = "My Script"
         else:
             self.name = title
         self.enabled = state
         self.text_item = text
 
     def get_all(self):
-        tup= (self.name, self.enabled, self.text_item)
+        tup = (self.pos, self.name, self.enabled, self.text_item)
         return tup
 
 class ScriptingOptionsPage(OptionsPage):
@@ -119,9 +120,7 @@ class ScriptingOptionsPage(OptionsPage):
     options = [
         config.BoolOption("setting", "enable_tagger_script", False),
         config.TextOption("setting", "tagger_script", ""),
-        config.IntOption("setting", "total_tagger_scripts", 0),
         config.ListOption("setting", "list_of_scripts", []),
-        config.ListOption("setting", "list_of_names", []),
     ]
 
     def __init__(self, parent=None):
@@ -138,16 +137,16 @@ class ScriptingOptionsPage(OptionsPage):
 
         self.listitem_to_scriptitem = {}
         self.list_of_scripts = []
-        self.list_of_names = []
 
     def script_attr_changed(self,item):
+        item.setSelected(True)
         script = self.listitem_to_scriptitem[item]
         if item.checkState():
             script.enabled = True
         else:
             script.enabled = False
         script.name = item.text()
-        print script.enabled
+        self.list_of_scripts[script.pos] = script.get_all()
 
     def script_selected(self):
         items = self.ui.script_list.selectedItems()
@@ -157,8 +156,8 @@ class ScriptingOptionsPage(OptionsPage):
             self.ui.tagger_script.setText(script.text_item)
 
     def add_to_lscript(self):
-        config.setting["total_tagger_scripts"] += 1
-        script = ScriptItem()
+        count = self.ui.script_list.count()
+        script = ScriptItem(position=count, title="My Script "+str(count+1))
         list_item = QtGui.QListWidgetItem(script.name)
         list_item.setFlags(list_item.flags() | QtCore.Qt.ItemIsUserCheckable | QtCore.Qt.ItemIsEditable)
         list_item.setCheckState(QtCore.Qt.Checked)
@@ -172,16 +171,22 @@ class ScriptingOptionsPage(OptionsPage):
             script = self.listitem_to_scriptitem[item]
             item = None
             del script
-            config.setting["total_tagger_scripts"] -= 1
             if self.ui.script_list.count() == 0:
                 self.ui.tagger_script.setText("")
                 self.ui.tagger_script.setEnabled(False)
+
+    def move_script_up(self):
+        pass
+
+    def movie_script_down(self):
+        pass
 
     def live_update_and_check(self):
         items = self.ui.script_list.selectedItems()
         if items:
             script = self.listitem_to_scriptitem[items[0]]
             script.text_item = self.ui.tagger_script.toPlainText()
+            self.list_of_scripts[script.pos] = script.get_all()
         self.ui.script_error.setStyleSheet("")
         self.ui.script_error.setText("")
         try:
@@ -203,13 +208,10 @@ class ScriptingOptionsPage(OptionsPage):
         self.ui.tagger_script.document().setPlainText(config.setting["tagger_script"])
         self.list_of_scripts = config.setting["list_of_scripts"]
         for item in self.list_of_scripts:
-            print item[0]
-            print item[1]
-            print item[2]
-            script = ScriptItem(item[0],item[1],item[2])
+            script = ScriptItem(item[0], item[1], item[2], item[3])
             script.list_item = QtGui.QListWidgetItem(script.name)
             script.list_item.setFlags(script.list_item.flags() | QtCore.Qt.ItemIsUserCheckable | QtCore.Qt.ItemIsEditable)
-            script.list_item.setCheckState(QtCore.Qt.Checked if item[1] else QtCore.Qt.Unchecked)
+            script.list_item.setCheckState(QtCore.Qt.Checked if item[2] else QtCore.Qt.Unchecked)
             self.listitem_to_scriptitem[script.list_item] = script
             self.ui.script_list.addItem(script.list_item)
 
