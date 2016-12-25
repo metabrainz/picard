@@ -18,7 +18,7 @@
     <number>9</number>
    </property>
    <item>
-    <widget class="QGroupBox" name="enable_tagger_script">
+    <widget class="QGroupBox" name="enable_tagger_scripts">
      <property name="title">
       <string>Tagger Script(s)</string>
      </property>

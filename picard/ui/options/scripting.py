@@ -118,7 +118,7 @@ class ScriptingOptionsPage(OptionsPage):
     ACTIVE = True
 
     options = [
-        config.BoolOption("setting", "enable_tagger_script", False),
+        config.BoolOption("setting", "enable_tagger_scripts", False),
         config.TextOption("setting", "tagger_script", ""),
         config.ListOption("setting", "list_of_scripts", []),
     ]
@@ -271,7 +271,7 @@ class ScriptingOptionsPage(OptionsPage):
             raise OptionsCheckError(_("Script Error"), str(e))
 
     def load(self):
-        self.ui.enable_tagger_script.setChecked(config.setting["enable_tagger_script"])
+        self.ui.enable_tagger_scripts.setChecked(config.setting["enable_tagger_scripts"])
         self.ui.tagger_script.document().setPlainText(config.setting["tagger_script"])
         self.list_of_scripts = config.setting["list_of_scripts"]
         for item in self.list_of_scripts:
@@ -290,7 +290,7 @@ class ScriptingOptionsPage(OptionsPage):
         self.ui.scripting_doc_link.setText(text)
 
     def save(self):
-        config.setting["enable_tagger_script"] = self.ui.enable_tagger_script.isChecked()
+        config.setting["enable_tagger_scripts"] = self.ui.enable_tagger_scripts.isChecked()
         config.setting["tagger_script"] = self.ui.tagger_script.toPlainText()
         config.setting["list_of_scripts"] = self.list_of_scripts
 
