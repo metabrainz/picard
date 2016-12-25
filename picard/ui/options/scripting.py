@@ -96,7 +96,7 @@ class TaggerScriptSyntaxHighlighter(QtGui.QSyntaxHighlighter):
 
 class ScriptItem:
 
-    def __init__(self, position, title=None, state=True,text=""):
+    def __init__(self, position, title=None, state=True, text=""):
         self.pos = position
         if title is None:
             self.name = "My Script"
@@ -108,6 +108,7 @@ class ScriptItem:
     def get_all(self):
         tup = (self.pos, self.name, self.enabled, self.text_item)
         return tup
+
 
 class ScriptingOptionsPage(OptionsPage):
 
@@ -140,7 +141,7 @@ class ScriptingOptionsPage(OptionsPage):
         self.listitem_to_scriptitem = {}
         self.list_of_scripts = []
 
-    def script_attr_changed(self,item):
+    def script_attr_changed(self, item):
         item.setSelected(True)
         script = self.listitem_to_scriptitem[item]
         if item.checkState():
@@ -168,8 +169,8 @@ class ScriptingOptionsPage(OptionsPage):
         self.list_of_scripts.append(script.get_all())
 
     def update_script_positions(self):
-        for i,script in enumerate(self.list_of_scripts):
-            self.list_of_scripts[i]=(i,script[1],script[2],script[3])
+        for i, script in enumerate(self.list_of_scripts):
+            self.list_of_scripts[i] = (i, script[1], script[2], script[3])
             item = self.ui.script_list.item(i)
             self.listitem_to_scriptitem[item].pos = i
 
@@ -182,7 +183,7 @@ class ScriptingOptionsPage(OptionsPage):
             del self.list_of_scripts[script.pos]
             del script
             item = None
-            #update positions of other items
+            # update positions of other items
             self.update_script_positions()
             if self.ui.script_list.count() == 0:
                 self.ui.tagger_script.setText("")
@@ -192,7 +193,7 @@ class ScriptingOptionsPage(OptionsPage):
         currentRow = self.ui.script_list.currentRow()
         item1 = self.ui.script_list.item(currentRow)
         if currentRow != 0:
-            item2 = self.ui.script_list.item(currentRow-1)
+            item2 = self.ui.script_list.item(currentRow - 1)
         else:
             item2 = None
         if item1 and item2:
@@ -211,7 +212,7 @@ class ScriptingOptionsPage(OptionsPage):
             new_script2 = (script2.pos + 1, script2.name, script2.enabled, script2.text_item)
             self.list_of_scripts.append(new_script1)
             self.list_of_scripts.append(new_script2)
-            self.list_of_scripts = sorted(self.list_of_scripts,key=lambda x: x[0])
+            self.list_of_scripts = sorted(self.list_of_scripts, key=lambda x: x[0])
             # corresponding mapping support also has to be updated
             self.listitem_to_scriptitem[item1] = ScriptItem(script1.pos - 1, script1.name, script1.enabled,
                                                             script1.text_item)
@@ -277,7 +278,8 @@ class ScriptingOptionsPage(OptionsPage):
         for item in self.list_of_scripts:
             script = ScriptItem(item[0], item[1], item[2], item[3])
             script.list_item = QtGui.QListWidgetItem(script.name)
-            script.list_item.setFlags(script.list_item.flags() | QtCore.Qt.ItemIsUserCheckable | QtCore.Qt.ItemIsEditable)
+            script.list_item.setFlags(
+                script.list_item.flags() | QtCore.Qt.ItemIsUserCheckable | QtCore.Qt.ItemIsEditable)
             script.list_item.setCheckState(QtCore.Qt.Checked if item[2] else QtCore.Qt.Unchecked)
             self.listitem_to_scriptitem[script.list_item] = script
             self.ui.script_list.addItem(script.list_item)
