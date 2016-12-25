@@ -68,6 +68,7 @@ from picard.track import Track, NonAlbumTrack
 from picard.releasegroup import ReleaseGroup
 from picard.collection import load_user_collections
 from picard.ui.mainwindow import MainWindow
+from picard.ui.itemviews import BaseTreeView
 from picard.plugin import PluginManager
 from picard.acoustidmanager import AcoustIDManager
 from picard.config_upgrade import upgrade_config
@@ -418,6 +419,16 @@ class Tagger(QtGui.QApplication):
         return FileLookup(self, config.setting["server_host"],
                           config.setting["server_port"],
                           self.browser_integration.port)
+
+    def copy_files(self, objects):
+        mimeData = QtCore.QMimeData()
+        mimeData.setUrls([QtCore.QUrl.fromLocalFile(f.filename) for f in (self.get_files_from_objects(objects))])
+        self.clipboard().setMimeData(mimeData)
+
+    def paste_files(self, target):
+        mimeData = self.clipboard().mimeData()
+        if mimeData.hasUrls():
+            BaseTreeView.drop_urls(mimeData.urls(), target)
 
     def search(self, text, type, adv=False):
         """Search on the MusicBrainz website."""
