@@ -220,6 +220,8 @@ class VCommentFile(File):
                         if re.search(tag_type, item):
                             file.tags.get(real_name).remove(item)
                 else:
+                    if tag in ('totaldiscs', 'totaltracks'):
+                        del file.tags[tag]
                     del file.tags[real_name]
 
         kwargs = {}
@@ -244,6 +246,10 @@ class VCommentFile(File):
             return name.split(':', 1)[0]
         elif name == 'musicip_fingerprint':
             return 'fingerprint'
+        elif name == 'totaltracks':
+            return 'tracktotal'
+        elif name == 'totaldiscs':
+            return 'disctotal'
         elif name in self.__rtranslate:
             return self.__rtranslate[name]
         else:

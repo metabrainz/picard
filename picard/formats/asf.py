@@ -192,8 +192,8 @@ class ASFFile(File):
         cover = []
         for image in metadata.images_to_be_saved_to_tags:
             tag_data = pack_image(image.mimetype, image.data,
-                                    image_type_as_id3_num(image.maintype),
-                                    image.comment)
+                                  image_type_as_id3_num(image.maintype),
+                                  image.comment)
             cover.append(ASFByteArrayAttribute(tag_data))
         if cover:
             file.tags['WM/Picture'] = cover
@@ -213,11 +213,9 @@ class ASFFile(File):
         for tag in metadata.deleted_tags:
             real_name = self._get_tag_name(tag)
             if real_name and real_name in file.tags:
-                if tag == 'totaldiscs':
-                    try:
-                        file.tags[real_name] = map(unicode, metadata['discnumber'])
-                    except:
-                        pass
+                if tag in ('totaldiscs', 'totaltracks'):
+                    metadata_name = tag[5:-1]
+                    file.tags[real_name] = map(unicode, metadata[metadata_name])
                 else:
                     del file.tags[real_name]
 
@@ -232,5 +230,7 @@ class ASFFile(File):
             return 'lyrics'
         elif name == 'totaldiscs':
             return self.__TRANS['discnumber']
+        elif name == 'totaltracks':
+            return self.__TRANS['tracknumber']
         else:
             return self.__TRANS[name]
