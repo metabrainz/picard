@@ -95,7 +95,7 @@ class TaggerScriptSyntaxHighlighter(QtGui.QSyntaxHighlighter):
 
 
 class ScriptItem:
-
+    """Represents a script item, holds together all its attributes and makes life simple"""
     def __init__(self, position, title=None, state=True, text=""):
         self.pos = position
         if title is None:
@@ -120,7 +120,6 @@ class ScriptingOptionsPage(OptionsPage):
 
     options = [
         config.BoolOption("setting", "enable_tagger_scripts", False),
-        config.TextOption("setting", "tagger_script", ""),
         config.ListOption("setting", "list_of_scripts", []),
     ]
 
