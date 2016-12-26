@@ -134,8 +134,8 @@ class ScriptingOptionsPage(OptionsPage):
         self.ui.tagger_script.textChanged.connect(self.live_update_and_check)
         self.ui.add_script.clicked.connect(self.add_to_lscript)
         self.ui.remove_script.clicked.connect(self.remove_from_lscript)
-        self.ui.up_script.clicked.connect(self.move_script_up)
-        self.ui.down_script.clicked.connect(self.move_script_down)
+        self.ui.up_script.clicked.connect(lambda: self.move_script(1))
+        self.ui.down_script.clicked.connect(lambda: self.move_script(-1))
         self.ui.script_list.itemSelectionChanged.connect(self.script_selected)
         self.ui.script_list.itemChanged.connect(self.script_attr_changed)
         self.ui.tagger_script.setEnabled(False)
@@ -190,17 +190,18 @@ class ScriptingOptionsPage(OptionsPage):
                 self.ui.tagger_script.setText("")
                 self.ui.tagger_script.setEnabled(False)
 
-    def move_script_up(self):
+    def move_script(self, step):
+        # step is +1 for moving up and -1 for down
         currentRow = self.ui.script_list.currentRow()
         item1 = self.ui.script_list.item(currentRow)
         if currentRow != 0:
-            item2 = self.ui.script_list.item(currentRow - 1)
+            item2 = self.ui.script_list.item(currentRow - step)
         else:
             item2 = None
         if item1 and item2:
             # make changes in the ui
 
-            self.ui.script_list.insertItem(currentRow - 1, self.ui.script_list.takeItem(currentRow))
+            self.ui.script_list.insertItem(currentRow - step, self.ui.script_list.takeItem(currentRow))
 
             # make changes in the picklable list
 
@@ -209,45 +210,15 @@ class ScriptingOptionsPage(OptionsPage):
             # workaround since tuples are immutable
             indices = script1.pos, script2.pos
             self.list_of_scripts = [i for j, i in enumerate(self.list_of_scripts) if j not in indices]
-            new_script1 = (script1.pos - 1, script1.name, script1.enabled, script1.text_item)
-            new_script2 = (script2.pos + 1, script2.name, script2.enabled, script2.text_item)
+            new_script1 = (script1.pos - step, script1.name, script1.enabled, script1.text_item)
+            new_script2 = (script2.pos + step, script2.name, script2.enabled, script2.text_item)
             self.list_of_scripts.append(new_script1)
             self.list_of_scripts.append(new_script2)
             self.list_of_scripts = sorted(self.list_of_scripts, key=lambda x: x[0])
             # corresponding mapping support also has to be updated
-            self.listitem_to_scriptitem[item1] = ScriptItem(script1.pos - 1, script1.name, script1.enabled,
+            self.listitem_to_scriptitem[item1] = ScriptItem(script1.pos - step, script1.name, script1.enabled,
                                                             script1.text_item)
-            self.listitem_to_scriptitem[item2] = ScriptItem(script2.pos + 1, script2.name, script2.enabled,
-                                                            script2.text_item)
-
-    def move_script_down(self):
-        currentRow = self.ui.script_list.currentRow()
-        item1 = self.ui.script_list.item(currentRow)
-        if currentRow != 0:
-            item2 = self.ui.script_list.item(currentRow + 1)
-        else:
-            item2 = None
-        if item1 and item2:
-            # make changes in the ui
-
-            self.ui.script_list.insertItem(currentRow + 1, self.ui.script_list.takeItem(currentRow))
-
-            # make changes in the picklable list
-
-            script1 = self.listitem_to_scriptitem[item1]
-            script2 = self.listitem_to_scriptitem[item2]
-            # workaround since tuples are immutable
-            indices = script1.pos, script2.pos
-            self.list_of_scripts = [i for j, i in enumerate(self.list_of_scripts) if j not in indices]
-            new_script1 = (script1.pos + 1, script1.name, script1.enabled, script1.text_item)
-            new_script2 = (script2.pos - 1, script2.name, script2.enabled, script2.text_item)
-            self.list_of_scripts.append(new_script1)
-            self.list_of_scripts.append(new_script2)
-            self.list_of_scripts = sorted(self.list_of_scripts, key=lambda x: x[0])
-            # corresponding mapping support also has to be updated
-            self.listitem_to_scriptitem[item1] = ScriptItem(script1.pos + 1, script1.name, script1.enabled,
-                                                            script1.text_item)
-            self.listitem_to_scriptitem[item2] = ScriptItem(script2.pos - 1, script2.name, script2.enabled,
+            self.listitem_to_scriptitem[item2] = ScriptItem(script2.pos + step, script2.name, script2.enabled,
                                                             script2.text_item)
 
     def live_update_and_check(self):
