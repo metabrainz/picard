@@ -188,6 +188,16 @@ def upgrade_to_v1_4_0_dev_5():
     pass
 
 
+def upgrade_to_v1_4_0_dev_6():
+    """Adds support for multiple and selective tagger scripts"""
+    _s["enable_tagger_scripts"] = _s["enable_tagger_script"]
+    _s["list_of_scripts"] = []
+    if _s["tagger_script"]:
+        _s["list_of_scripts"].append((0, _("My Script")+" 1", _s["enable_tagger_script"], _s["tagger_script"]))
+    _s.remove("enable_tagger_script")
+    _s.remove("tagger_script")
+
+
 def upgrade_config():
     cfg = config._config
     cfg.register_upgrade_hook(upgrade_to_v1_0_0_final_0)
@@ -199,4 +209,5 @@ def upgrade_config():
     cfg.register_upgrade_hook(upgrade_to_v1_4_0_dev_3)
     cfg.register_upgrade_hook(upgrade_to_v1_4_0_dev_4)
     cfg.register_upgrade_hook(upgrade_to_v1_4_0_dev_5)
+    cfg.register_upgrade_hook(upgrade_to_v1_4_0_dev_6)
     cfg.run_upgrade_hooks(log.debug)
