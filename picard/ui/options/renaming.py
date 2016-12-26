@@ -136,11 +136,10 @@ class RenamingOptionsPage(OptionsPage):
         }
         try:
             if config.setting["enable_tagger_scripts"]:
-                for item in config.setting["list_of_scripts"]:
-                    if item[2]:
-                        script = item[3]
+                for s_pos, s_name, s_enabled, s_text in config.setting["list_of_scripts"]:
+                    if s_enabled and s_text:
                         parser = ScriptParser()
-                        parser.eval(script, file.metadata)
+                        parser.eval(s_text, file.metadata)
             filename = file._make_filename(file.filename, file.metadata, settings)
             if not settings["move_files"]:
                 return os.path.basename(filename)

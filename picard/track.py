@@ -276,16 +276,15 @@ class NonAlbumTrack(Track):
         self._customize_metadata()
         run_track_metadata_processors(self.album, m, None, recording)
         if config.setting["enable_tagger_scripts"]:
-            for item in config.setting["list_of_scripts"]:
-                if item[2]:
-                    script = item[3]
-                    if script:
-                        parser = ScriptParser()
-                        try:
-                            parser.eval(script, m)
-                        except:
-                            log.error(traceback.format_exc())
-                        m.strip_whitespace()
+            for s_pos, s_name, s_enabled, s_text in config.setting["list_of_scripts"]:
+                if s_enabled and s_text:
+                    parser = ScriptParser()
+                    try:
+                        parser.eval(s_text, m)
+                    except:
+                        log.error(traceback.format_exc())
+                    m.strip_whitespace()
+
         self.loaded = True
         if self.callback:
             self.callback()
