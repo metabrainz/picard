@@ -95,17 +95,18 @@ class TaggerScriptSyntaxHighlighter(QtGui.QSyntaxHighlighter):
 
 
 class ScriptItem:
-    """Represents a script item, holds together all its attributes and makes life simple"""
+    """Holds a script's list and text widget properties and improves readability"""
     def __init__(self, position, title=None, state=True, text=""):
         self.pos = position
         if title is None:
-            self.name = "My Script"
+            self.name = _("My Script")
         else:
             self.name = title
         self.enabled = state
         self.text_item = text
 
     def get_all(self):
+        # tuples used to get pickle dump of settings to work
         tup = (self.pos, self.name, self.enabled, self.text_item)
         return tup
 
@@ -123,6 +124,8 @@ class ScriptingOptionsPage(OptionsPage):
         config.ListOption("setting", "list_of_scripts", []),
     ]
 
+    SCRIPT_DEFAULT_NAME = N_("My Script")
+
     def __init__(self, parent=None):
         super(ScriptingOptionsPage, self).__init__(parent)
         self.ui = Ui_ScriptingOptionsPage()
@@ -136,7 +139,6 @@ class ScriptingOptionsPage(OptionsPage):
         self.ui.script_list.itemSelectionChanged.connect(self.script_selected)
         self.ui.script_list.itemChanged.connect(self.script_attr_changed)
         self.ui.tagger_script.setEnabled(False)
-
         self.listitem_to_scriptitem = {}
         self.list_of_scripts = []
 
@@ -159,7 +161,7 @@ class ScriptingOptionsPage(OptionsPage):
 
     def add_to_lscript(self):
         count = self.ui.script_list.count()
-        script = ScriptItem(position=count, title="My Script "+str(count+1))
+        script = ScriptItem(position=count, title=_(self.SCRIPT_DEFAULT_NAME)+" "+str(count+1))
         list_item = QtGui.QListWidgetItem(script.name)
         list_item.setFlags(list_item.flags() | QtCore.Qt.ItemIsUserCheckable | QtCore.Qt.ItemIsEditable)
         list_item.setCheckState(QtCore.Qt.Checked)
@@ -272,7 +274,6 @@ class ScriptingOptionsPage(OptionsPage):
 
     def load(self):
         self.ui.enable_tagger_scripts.setChecked(config.setting["enable_tagger_scripts"])
-        self.ui.tagger_script.document().setPlainText(config.setting["tagger_script"])
         self.list_of_scripts = config.setting["list_of_scripts"]
         for item in self.list_of_scripts:
             script = ScriptItem(item[0], item[1], item[2], item[3])
@@ -292,7 +293,6 @@ class ScriptingOptionsPage(OptionsPage):
 
     def save(self):
         config.setting["enable_tagger_scripts"] = self.ui.enable_tagger_scripts.isChecked()
-        config.setting["tagger_script"] = self.ui.tagger_script.toPlainText()
         config.setting["list_of_scripts"] = self.list_of_scripts
 
     def display_error(self, error):
