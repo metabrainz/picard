@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import os
 import os.path
 import unittest
 import sys
@@ -11,6 +12,10 @@ class ShortFilenameTest(unittest.TestCase):
     def __init__(self, *args, **kwargs):
         self.maxDiff = None
         self.root = os.path.join(sys.platform == "win32" and "X:\\" or "/", "x" * 10)
+        if sys.platform in ("win32"):
+            self.max_len = 255
+        else:
+            self.max_len = os.statvfs("/").f_namemax
         super(ShortFilenameTest, self).__init__(*args, **kwargs)
 
     @unittest.skipUnless(sys.platform in ("win32", "darwin"), "windows / os x test")
@@ -22,7 +27,7 @@ class ShortFilenameTest(unittest.TestCase):
     @unittest.skipUnless(sys.platform not in ("win32", "darwin"), "non-windows, non-osx test")
     def test_bmp_unicode_on_nix(self):
         char = u"\N{LATIN SMALL LETTER SHARP S}"
-        max_len = 255
+        max_len = self.max_len
         divisor = len(char.encode(sys.getfilesystemencoding()))
         fn = make_short_filename(self.root, os.path.join(*[char * 200] * 2))
         self.assertEqual(fn, os.path.join(*[char * (max_len // divisor)] * 2))
@@ -30,7 +35,7 @@ class ShortFilenameTest(unittest.TestCase):
     @unittest.skipUnless(sys.platform == "darwin", "os x test")
     def test_precomposed_unicode_on_osx(self):
         char = u"\N{LATIN SMALL LETTER A WITH BREVE}"
-        max_len = 255
+        max_len = self.max_len
         fn = make_short_filename(self.root, os.path.join(*[char * 200] * 2))
         self.assertEqual(fn, os.path.join(*[char * (max_len // 2)] * 2))
 
@@ -44,14 +49,14 @@ class ShortFilenameTest(unittest.TestCase):
     @unittest.skipUnless(sys.platform == "darwin", "os x test")
     def test_nonbmp_unicode_on_osx(self):
         char = u"\N{MUSICAL SYMBOL G CLEF}"
-        max_len = 255
+        max_len = self.max_len
         fn = make_short_filename(self.root, os.path.join(*[char * 200] * 2))
         self.assertEqual(fn, os.path.join(*[char * (max_len // 2)] * 2))
 
     @unittest.skipUnless(sys.platform not in ("win32", "darwin"), "non-windows, non-osx test")
     def test_nonbmp_unicode_on_nix(self):
         char = u"\N{MUSICAL SYMBOL G CLEF}"
-        max_len = 255
+        max_len = self.max_len
         divisor = len(char.encode(sys.getfilesystemencoding()))
         fn = make_short_filename(self.root, os.path.join(*[char * 100] * 2))
         self.assertEqual(fn, os.path.join(*[char * (max_len // divisor)] * 2))
@@ -59,7 +64,7 @@ class ShortFilenameTest(unittest.TestCase):
     @unittest.skipUnless(sys.platform not in ("win32", "darwin"), "non-windows, non-osx test")
     def test_nonbmp_unicode_on_nix_with_windows_compat(self):
         char = u"\N{MUSICAL SYMBOL G CLEF}"
-        max_len = 255
+        max_len = self.max_len
         remaining = 259 - (3 + 10 + 1 + 200 + 1)
         divisor = len(char.encode(sys.getfilesystemencoding()))
         fn = make_short_filename(self.root, os.path.join(*[char * 100] * 2), win_compat=True)
@@ -108,4 +113,3 @@ class ShortFilenameTest(unittest.TestCase):
     def test_whitespace(self):
         fn = make_short_filename(self.root, os.path.join("a1234567890   ", "  b1234567890  "))
         self.assertEqual(fn, os.path.join("a1234567890", "b1234567890"))
-
