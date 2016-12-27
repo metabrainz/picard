@@ -211,18 +211,7 @@ class VCommentFile(File):
 
         file.tags.update(tags)
 
-        for tag in metadata.deleted_tags:
-            real_name = self._get_tag_name(tag)
-            if real_name and real_name in file.tags:
-                if real_name in ('performer', 'comment'):
-                    tag_type = "\(%s\)" % tag.split(':', 1)[1]
-                    for item in file.tags.get(real_name):
-                        if re.search(tag_type, item):
-                            file.tags.get(real_name).remove(item)
-                else:
-                    if tag in ('totaldiscs', 'totaltracks'):
-                        del file.tags[tag]
-                    del file.tags[real_name]
+        self._remove_deleted_tags(metadata, file.tags)
 
         kwargs = {}
         if is_flac and config.setting["remove_id3_from_flac"]:
@@ -231,6 +220,22 @@ class VCommentFile(File):
             file.save(**kwargs)
         except TypeError:
             file.save()
+
+    def _remove_deleted_tags(self, metadata, tags):
+        """Remove the tags from the file that were deleted in the UI"""
+        for tag in metadata.deleted_tags:
+            real_name = self._get_tag_name(tag)
+            if real_name and real_name in tags:
+                if real_name in ('performer', 'comment'):
+                    tag_type = "\(%s\)" % tag.split(':', 1)[1]
+                    for item in tags.get(real_name):
+                        if re.search(tag_type, item):
+                            tags.get(real_name).remove(item)
+                else:
+                    if tag in ('totaldiscs', 'totaltracks'):
+                        # both tag and real_name are to be deleted in this case
+                        del tags[tag]
+                    del tags[real_name]
 
     def _get_tag_name(self, name):
         if name == '~rating':
