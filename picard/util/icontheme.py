@@ -30,14 +30,19 @@ else:
         '/usr/share/pixmaps',
     ]
 
-if 'XDG_CURRENT_DESKTOP' in os.environ and os.environ['XDG_CURRENT_DESKTOP'].lower() == 'gnome':
-    _current_theme = os.popen('gconftool-2 -g /desktop/gnome/interface/icon_theme').read().strip() or os.popen('gsettings get org.gnome.desktop.interface icon-theme').read().strip()[1:-1] or None
-elif 'XDG_CURRENT_DESKTOP' in os.environ and os.environ['XDG_CURRENT_DESKTOP'].lower() == 'unity':
-    _current_theme = os.popen('dconf read /desktop/gnome/interface/icon_theme').read().strip()[1:-1] or None
+_current_theme = None
+if 'XDG_CURRENT_DESKTOP' in os.environ:
+    if os.environ['XDG_CURRENT_DESKTOP'].lower() == 'gnome':
+        _current_theme = (os.popen('gconftool-2 -g /desktop/gnome/interface/icon_theme').read().strip()
+                          or os.popen('gsettings get org.gnome.desktop.interface icon-theme').read().strip()[1:-1]
+                          or None)
+    elif os.environ['XDG_CURRENT_DESKTOP'].lower() == 'unity':
+        current_theme = (os.popen('dconf read /desktop/gnome/interface/icon_theme').read().strip()[1:-1]
+                         or None)
 elif os.environ.get('KDE_FULL_SESSION'):
-    _current_theme = os.popen("kreadconfig --file kdeglobals --group Icons --key Theme --default crystalsvg").read().strip() or None
-else:
-    _current_theme = None
+    _current_theme = (os.popen("kreadconfig --file kdeglobals --group Icons --key Theme --default crystalsvg").read().strip()
+                      or None)
+
 
 ICON_SIZE_MENU = ('16x16',)
 ICON_SIZE_TOOLBAR = ('22x22',)
