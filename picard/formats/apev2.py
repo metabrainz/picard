@@ -162,8 +162,9 @@ class APEv2File(File):
             cover_filename = 'Cover Art (Front)'
             cover_filename += image.extension
             tags['Cover Art (Front)'] = mutagen.apev2.APEValue(cover_filename + '\0' + image.data, mutagen.apev2.BINARY)
-            break   # can't save more than one item with the same name
-                    # (mp3tags does this, but it's against the specs)
+            break
+            # can't save more than one item with the same name
+            # (mp3tags does this, but it's against the specs)
 
         self._remove_deleted_tags(metadata, tags)
 
