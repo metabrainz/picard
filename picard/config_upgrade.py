@@ -193,14 +193,15 @@ def upgrade_to_v1_4_0_dev_6():
     DEFAULT_NUMBERED_SCRIPT_NAME = N_("My script %d")
     old_enabled_option = "enable_tagger_script"
     old_script_text_option = "tagger_script"
+    list_of_scripts = []
     if old_enabled_option in _s:
         _s["enable_tagger_scripts"] = _s.value(old_enabled_option, config.BoolOption, False)
     if old_script_text_option in _s:
         old_script_text = _s.value(old_script_text_option, config.TextOption, "")
         if old_script_text:
-            _s["list_of_scripts"] = []
             old_script = (0, _(DEFAULT_NUMBERED_SCRIPT_NAME) % 1, _s["enable_tagger_scripts"], old_script_text)
-            _s["list_of_scripts"].append(old_script)
+            list_of_scripts.append(old_script)
+    _s["list_of_scripts"] = list_of_scripts
     _s.remove(old_enabled_option)
     _s.remove(old_script_text_option)
 
