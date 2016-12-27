@@ -190,10 +190,12 @@ def upgrade_to_v1_4_0_dev_5():
 
 def upgrade_to_v1_4_0_dev_6():
     """Adds support for multiple and selective tagger scripts"""
+    DEFAULT_NUMBERED_SCRIPT_NAME = N_("My script %d")
     _s["enable_tagger_scripts"] = _s["enable_tagger_script"]
     _s["list_of_scripts"] = []
     if _s["tagger_script"]:
-        _s["list_of_scripts"].append((0, _("My Script")+" 1", _s["enable_tagger_script"], _s["tagger_script"]))
+        _s["list_of_scripts"].append(
+            (0, _(DEFAULT_NUMBERED_SCRIPT_NAME) % 1, _s["enable_tagger_script"], _s["tagger_script"]))
     _s.remove("enable_tagger_script")
     _s.remove("tagger_script")
 
