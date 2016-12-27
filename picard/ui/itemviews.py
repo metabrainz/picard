@@ -446,14 +446,8 @@ class BaseTreeView(QtGui.QTreeWidget):
             obj = item.obj
             if isinstance(obj, Album):
                 album_ids.append(str(obj.id))
-            elif isinstance(obj, Track):
-                files.extend(url(file.filename) for file in obj.linked_files)
-            elif isinstance(obj, File):
-                files.append(url(obj.filename))
-            elif isinstance(obj, Cluster):
-                files.extend(url(file.filename) for file in obj.files)
-            elif isinstance(obj, ClusterList):
-                files.extend(url(file.filename) for cluster in obj for file in cluster.files)
+            elif obj.iterfiles:
+                files.extend([url(f.filename) for f in obj.iterfiles()])
         mimeData = QtCore.QMimeData()
         mimeData.setData("application/picard.album-list", "\n".join(album_ids))
         if files:
