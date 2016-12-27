@@ -166,7 +166,6 @@ class CoverArt:
 
         # local files
         if hasattr(coverartimage, 'filepath'):
-            data = None
             try:
                 with open(coverartimage.filepath, 'rb') as file:
                     self._set_metadata(coverartimage, file.read())
@@ -175,9 +174,9 @@ class CoverArt:
                 log.error("Failed to read %r: %s (%d)" %
                           (coverartimage.from_file, errmsg, errnum))
             except CoverArtImageIOError:
-                 # It doesn't make sense to store/download more images if we can't
-                 # save them in the temporary folder, abort.
-                 return
+                # It doesn't make sense to store/download more images if we can't
+                # save them in the temporary folder, abort.
+                return
             self.next_in_queue()
             return
 
