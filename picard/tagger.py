@@ -356,17 +356,17 @@ class Tagger(QtGui.QApplication):
             if ignoreregex is not None and ignoreregex.search(filename):
                 log.info("File ignored (matching %s): %s" % (pattern, filename))
                 continue
-            if filename not in self.files:
+            if filename not in tmp_files:
                 file = open_file(filename)
                 if file:
                     tmp_files[filename] = file
-                    new_files.append(file)
-        if new_files and self.check_load(new_files):
-            for filename in tmp_files:
-                file = open_file(filename)
+        if tmp_files and self.check_load(tmp_files):
+            new_files = []
+            for filename in sorted(tmp_files):
+                file = tmp_files[filename]
                 self.files[filename] = file
+                new_files.append(file)
             log.debug("Adding files %r", new_files)
-            new_files.sort(key=lambda x: x.filename)
             if target is None or target is self.unmatched_files:
                 self.unmatched_files.add_files(new_files)
                 target = None
