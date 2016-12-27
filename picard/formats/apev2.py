@@ -165,6 +165,12 @@ class APEv2File(File):
             break   # can't save more than one item with the same name
                     # (mp3tags does this, but it's against the specs)
 
+        self._remove_deleted_tags(metadata, tags)
+
+        tags.save(encode_filename(filename))
+
+    def _remove_deleted_tags(self, metadata, tags):
+        """Remove the tags from the file that were deleted in the UI"""
         for tag in metadata.deleted_tags:
             real_name = str(self._get_tag_name(tag))
             if real_name in ('Lyrics', 'Comment', 'Performer'):
@@ -176,12 +182,10 @@ class APEv2File(File):
                 tagstr = real_name.lower() + 'number'
                 try:
                     tags[real_name] = metadata[tagstr]
-                except:
+                except KeyError:
                     pass
             else:
                 del tags[real_name]
-
-        tags.save(encode_filename(filename))
 
     def _get_tag_name(self, name):
         if name.startswith('lyrics:'):
