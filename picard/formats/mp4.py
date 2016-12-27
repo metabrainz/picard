@@ -112,11 +112,12 @@ class MP4File(File):
     def _load(self, filename):
         log.debug("Loading file %r", filename)
         file = MP4(encode_filename(filename))
-        if file.tags is None:
+        tags = file.tags
+        if tags is None:
             file.add_tags()
 
         metadata = Metadata()
-        for name, values in file.tags.items():
+        for name, values in tags.items():
             if name in self.__text_tags:
                 for value in values:
                     metadata.add(self.__text_tags[name], value)
@@ -163,43 +164,44 @@ class MP4File(File):
     def _save(self, filename, metadata):
         log.debug("Saving file %r", filename)
         file = MP4(encode_filename(self.filename))
-        if file.tags is None:
+        tags = file.tags
+        if tags is None:
             file.add_tags()
 
         if config.setting["clear_existing_tags"]:
-            file.tags.clear()
+            tags.clear()
 
         for name, values in metadata.rawitems():
             if name.startswith('lyrics:'):
                 name = 'lyrics'
             if name in self.__r_text_tags:
-                file.tags[self.__r_text_tags[name]] = values
+                tags[self.__r_text_tags[name]] = values
             elif name in self.__r_bool_tags:
-                file.tags[self.__r_bool_tags[name]] = (values[0] == '1')
+                tags[self.__r_bool_tags[name]] = (values[0] == '1')
             elif name in self.__r_int_tags:
                 try:
-                    file.tags[self.__r_int_tags[name]] = [int(value) for value in values]
+                    tags[self.__r_int_tags[name]] = [int(value) for value in values]
                 except ValueError:
                     pass
             elif name in self.__r_freeform_tags:
                 values = [v.encode("utf-8") for v in values]
-                file.tags[self.__r_freeform_tags[name]] = values
+                tags[self.__r_freeform_tags[name]] = values
             elif name == "musicip_fingerprint":
-                file.tags["----:com.apple.iTunes:fingerprint"] = ["MusicMagic Fingerprint%s" % str(v) for v in values]
+                tags["----:com.apple.iTunes:fingerprint"] = ["MusicMagic Fingerprint%s" % str(v) for v in values]
 
         if "tracknumber" in metadata:
             if "totaltracks" in metadata:
-                file.tags["trkn"] = [(int(metadata["tracknumber"]),
-                                      int(metadata["totaltracks"]))]
+                tags["trkn"] = [(int(metadata["tracknumber"]),
+                                 int(metadata["totaltracks"]))]
             else:
-                file.tags["trkn"] = [(int(metadata["tracknumber"]), 0)]
+                tags["trkn"] = [(int(metadata["tracknumber"]), 0)]
 
         if "discnumber" in metadata:
             if "totaldiscs" in metadata:
-                file.tags["disk"] = [(int(metadata["discnumber"]),
-                                      int(metadata["totaldiscs"]))]
+                tags["disk"] = [(int(metadata["discnumber"]),
+                                 int(metadata["totaldiscs"]))]
             else:
-                file.tags["disk"] = [(int(metadata["discnumber"]), 0)]
+                tags["disk"] = [(int(metadata["discnumber"]), 0)]
 
         covr = []
         for image in metadata.images_to_be_saved_to_tags:
@@ -208,14 +210,19 @@ class MP4File(File):
             elif image.mimetype == "image/png":
                 covr.append(MP4Cover(image.data, MP4Cover.FORMAT_PNG))
         if covr:
-            file.tags["covr"] = covr
+            tags["covr"] = covr
 
-        for tag in metadata.deleted_tags:
-            real_name = self._get_tag_name(tag)
-            if real_name and real_name in file.tags:
-                del file.tags[real_name]
+        self._remove_deleted_tags(metadata, tags)
 
         file.save()
+
+    def _remove_deleted_tags(self, metadata, tags):
+        """Remove the tags from the file that were deleted in the UI"""
+        for tag in metadata.deleted_tags:
+            real_name = self._get_tag_name(tag)
+            if real_name and real_name in tags:
+                if tag not in ("totaltracks", "totaldiscs"):
+                    del tags[real_name]
 
     def supports_tag(self, name):
         return name in self.__r_text_tags or name in self.__r_bool_tags\
@@ -236,9 +243,9 @@ class MP4File(File):
             return self.__r_freeform_tags[name]
         elif name == "musicip_fingerprint":
             return "----:com.apple.iTunes:fingerprint"
-        elif name == "tracknumber":
+        elif name in ("tracknumber", "totaltracks"):
             return "trkn"
-        elif name == "discnumber":
+        elif name in ("discnumber", "totaldiscs"):
             return "disk"
         else:
             return None
