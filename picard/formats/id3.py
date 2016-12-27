@@ -397,16 +397,7 @@ class ID3File(File):
         if tipl.people:
             tags.add(tipl)
 
-        self._build_inverse_dic()
-
-        for tag in metadata.deleted_tags:
-            real_name = self._get_tag_name(tag)
-            if real_name == 'POPM':
-                for key, frame in tags.items():
-                    if frame.FrameID == 'POPM' and frame.email == config.setting['rating_user_email']:
-                        del tags[key]
-            elif real_name in tags:
-                del tags[real_name]
+        self._remove_deleted_tags(metadata, tags)
 
         self._save_tags(tags, encode_filename(filename))
 
@@ -416,18 +407,32 @@ class ID3File(File):
             except:
                 pass
 
-    def _build_inverse_dic(self):
-        self.__itranslate = {}
-        for key, value in self.__translate.items():
-            self.__itranslate[value] = key
-        for key, value in self.__translate_freetext.items():
-            self.__itranslate[value] = key
+    def _remove_deleted_tags(self, metadata, tags):
+        """Remove the tags from the file that were deleted in the UI"""
+        for tag in metadata.deleted_tags:
+            real_name = self._get_tag_name(tag)
+            if real_name == 'POPM':
+                for key, frame in tags.items():
+                    if frame.FrameID == 'POPM' and frame.email == config.setting['rating_user_email']:
+                        del tags[key]
+            elif real_name in tags:
+                del tags[real_name]
+
+    def supports_tag(self, name):
+        return name in self.__rtranslate or name in self.__rtranslate_freetext\
+            or name.startswith('performer:')\
+            or name.startswith('lyrics:') or name == 'lyrics'\
+            or name in self.__other_supported_tags
 
     def _get_tag_name(self, name):
-        if name in self.__itranslate:
-            return self.__itranslate[name]
+        if name in self.__rtranslate:
+            return self.__rtranslate[name]
+        elif name in self.__rtranslate_freetext:
+            return self.__rtranslate_freetext[name]
         elif name == '~rating':
             return 'POPM'
+        else:
+            return None
 
     def _get_file(self, filename):
         raise NotImplementedError()
@@ -451,12 +456,6 @@ class ID3File(File):
         else:
             tags.update_to_v24()
             tags.save(filename, v2_version=4, v1=v1)
-
-    def supports_tag(self, name):
-        return name in self.__rtranslate or name in self.__rtranslate_freetext\
-            or name.startswith('performer:')\
-            or name.startswith('lyrics:') or name == 'lyrics'\
-            or name in self.__other_supported_tags
 
     @property
     def new_metadata(self):
