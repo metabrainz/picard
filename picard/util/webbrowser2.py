@@ -39,7 +39,7 @@ if sys.version_info >= (2, 5):
         if 'KDE_FULL_SESSION' in os.environ and os.environ['KDE_FULL_SESSION'] == 'true' and webbrowser._iscommand('kfmclient'):
             webbrowser.register('kfmclient', None, webbrowser.BackgroundBrowser(["kfmclient", "exec", "%s"]), update_tryorder=-1)
         # GNOME default browser
-        if 'GNOME_DESKTOP_SESSION_ID' in os.environ and webbrowser._iscommand('gnome-open'):
+        if 'XDG_CURRENT_DESKTOP' in os.environ and os.environ['XDG_CURRENT_DESKTOP'].lower() == 'gnome' and webbrowser._iscommand('gnome-open'):
             webbrowser.register('gnome-open', None, webbrowser.BackgroundBrowser(["gnome-open", "%s"]), update_tryorder=-1)
 
 
@@ -52,7 +52,7 @@ else:
         else:
             webbrowser._tryorder.insert(0, 'kfmclient')
     # GNOME default browser
-    if 'GNOME_DESKTOP_SESSION_ID' in os.environ and webbrowser._iscommand('gnome-open'):
+    if 'DESKTOP_SESSION' in os.environ and os.environ['DESKTOP_SESSION'].lower() == 'gnome' and webbrowser._iscommand('gnome-open'):
         webbrowser.register('gnome-open', None, webbrowser.GenericBrowser("gnome-open '%s' &"))
         if 'BROWSER' in os.environ:
             webbrowser._tryorder.insert(len(os.environ['BROWSER'].split(os.pathsep)), 'gnome-open')
