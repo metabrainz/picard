@@ -480,9 +480,21 @@ class Tagger(QtGui.QApplication):
 
     def save(self, objects):
         """Save the specified objects."""
-        files = self.get_files_from_objects(objects, save=True)
-        for file in files:
-            file.save()
+        coverOverwritePrompt = config.setting["cover_overwrite_prompt"]
+        for obj in objects:
+            files = self.get_files_from_objects([obj])
+            for file in files:
+                if (coverOverwritePrompt and config.setting["save_images_to_tags"]
+                    and file.metadata.images and file.orig_metadata.images
+                    and file.metadata.images != file.orig_metadata.images):
+                    #Only prompt if new and old covers exist and are different
+                    ret = self.window.showCoverOverwriteConfirmation(file.metadata["~filename"], len(files))
+                    if ret == QtGui.QMessageBox.No:
+                        file.metadata.images = file.orig_metadata.images
+                        obj.metadata.images = file.orig_metadata.images
+                    if ret == QtGui.QMessageBox.YesToAll:
+                        coverOverwritePrompt = False
+                file.save()
 
     def load_album(self, id, discid=None):
         id = self.mbid_redirects.get(id, id)
