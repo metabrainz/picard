@@ -135,10 +135,11 @@ class RenamingOptionsPage(OptionsPage):
             'move_files_to': os.path.normpath(unicode(self.ui.move_files_to.text()))
         }
         try:
-            if config.setting["enable_tagger_script"]:
-                script = config.setting["tagger_script"]
-                parser = ScriptParser()
-                parser.eval(script, file.metadata)
+            if config.setting["enable_tagger_scripts"]:
+                for s_pos, s_name, s_enabled, s_text in config.setting["list_of_scripts"]:
+                    if s_enabled and s_text:
+                        parser = ScriptParser()
+                        parser.eval(s_text, file.metadata)
             filename = file._make_filename(file.filename, file.metadata, settings)
             if not settings["move_files"]:
                 return os.path.basename(filename)

@@ -261,24 +261,24 @@ class Album(DataObject, Item):
 
         if not self._requests:
             # Prepare parser for user's script
-            if config.setting["enable_tagger_script"]:
-                script = config.setting["tagger_script"]
-                if script:
-                    parser = ScriptParser()
-                    for track in self._new_tracks:
-                        # Run tagger script for each track
+            if config.setting["enable_tagger_scripts"]:
+                for s_pos, s_name, s_enabled, s_text in config.setting["list_of_scripts"]:
+                    if s_enabled and s_text:
+                        parser = ScriptParser()
+                        for track in self._new_tracks:
+                            # Run tagger script for each track
+                            try:
+                                parser.eval(s_text, track.metadata)
+                            except:
+                                self.error_append(traceback.format_exc())
+                            # Strip leading/trailing whitespace
+                            track.metadata.strip_whitespace()
+                        # Run tagger script for the album itself
                         try:
-                            parser.eval(script, track.metadata)
+                            parser.eval(s_text, self._new_metadata)
                         except:
                             self.error_append(traceback.format_exc())
-                        # Strip leading/trailing whitespace
-                        track.metadata.strip_whitespace()
-                    # Run tagger script for the album itself
-                    try:
-                        parser.eval(script, self._new_metadata)
-                    except:
-                        self.error_append(traceback.format_exc())
-                    self._new_metadata.strip_whitespace()
+                        self._new_metadata.strip_whitespace()
 
             for track in self.tracks:
                 for file in list(track.linked_files):

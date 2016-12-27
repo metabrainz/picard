@@ -85,7 +85,7 @@ class ConfigSection(LockableObject):
         except:
             return default
         finally:
-            self.unlock()        
+            self.unlock()
 
 
 class Config(QtCore.QSettings):
