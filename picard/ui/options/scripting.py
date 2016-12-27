@@ -27,6 +27,7 @@ from picard.ui.ui_options_script import Ui_ScriptingOptionsPage
 DEFAULT_NUMBERED_SCRIPT_NAME = N_("My script %d")
 DEFAULT_SCRIPT_NAME = N_("My script")
 
+
 class TaggerScriptSyntaxHighlighter(QtGui.QSyntaxHighlighter):
 
     def __init__(self, document):
@@ -98,18 +99,18 @@ class TaggerScriptSyntaxHighlighter(QtGui.QSyntaxHighlighter):
 
 class ScriptItem:
     """Holds a script's list and text widget properties and improves readability"""
-    def __init__(self, position, title=None, enabled=True, text=""):
-        self.pos = position
-        if title is None:
+    def __init__(self, pos, name=None, enabled=True, text=""):
+        self.pos = pos
+        if name is None:
             self.name = _(DEFAULT_SCRIPT_NAME)
         else:
-            self.name = title
+            self.name = name
         self.enabled = enabled
-        self.text_item = text
+        self.text = text
 
     def get_all(self):
         # tuples used to get pickle dump of settings to work
-        return (self.pos, self.name, self.enabled, self.text_item)
+        return (self.pos, self.name, self.enabled, self.text)
 
 
 class ScriptingOptionsPage(OptionsPage):
@@ -156,11 +157,11 @@ class ScriptingOptionsPage(OptionsPage):
         if items:
             self.ui.tagger_script.setEnabled(True)
             script = self.listitem_to_scriptitem[items[0]]
-            self.ui.tagger_script.setText(script.text_item)
+            self.ui.tagger_script.setText(script.text)
 
     def add_to_list_of_scripts(self):
         count = self.ui.script_list.count()
-        script = ScriptItem(position=count, title = _(DEFAULT_NUMBERED_SCRIPT_NAME) % (count + 1))
+        script = ScriptItem(pos=count, name=_(DEFAULT_NUMBERED_SCRIPT_NAME) % (count + 1))
         list_item = QtGui.QListWidgetItem(script.name)
         list_item.setFlags(list_item.flags() | QtCore.Qt.ItemIsUserCheckable | QtCore.Qt.ItemIsEditable)
         list_item.setCheckState(QtCore.Qt.Checked)
@@ -193,10 +194,7 @@ class ScriptingOptionsPage(OptionsPage):
         # step is +1 for moving up and -1 for down
         currentRow = self.ui.script_list.currentRow()
         item1 = self.ui.script_list.item(currentRow)
-        if currentRow != 0:
-            item2 = self.ui.script_list.item(currentRow - step)
-        else:
-            item2 = None
+        item2 = self.ui.script_list.item(currentRow - step)
         if item1 and item2:
             # make changes in the ui
 
@@ -209,22 +207,22 @@ class ScriptingOptionsPage(OptionsPage):
             # workaround since tuples are immutable
             indices = script1.pos, script2.pos
             self.list_of_scripts = [i for j, i in enumerate(self.list_of_scripts) if j not in indices]
-            new_script1 = (script1.pos - step, script1.name, script1.enabled, script1.text_item)
-            new_script2 = (script2.pos + step, script2.name, script2.enabled, script2.text_item)
+            new_script1 = (script1.pos - step, script1.name, script1.enabled, script1.text)
+            new_script2 = (script2.pos + step, script2.name, script2.enabled, script2.text)
             self.list_of_scripts.append(new_script1)
             self.list_of_scripts.append(new_script2)
             self.list_of_scripts = sorted(self.list_of_scripts, key=lambda x: x[0])
             # corresponding mapping support also has to be updated
             self.listitem_to_scriptitem[item1] = ScriptItem(script1.pos - step, script1.name, script1.enabled,
-                                                            script1.text_item)
+                                                            script1.text)
             self.listitem_to_scriptitem[item2] = ScriptItem(script2.pos + step, script2.name, script2.enabled,
-                                                            script2.text_item)
+                                                            script2.text)
 
     def live_update_and_check(self):
         items = self.ui.script_list.selectedItems()
         if items:
             script = self.listitem_to_scriptitem[items[0]]
-            script.text_item = self.ui.tagger_script.toPlainText()
+            script.text = self.ui.tagger_script.toPlainText()
             self.list_of_scripts[script.pos] = script.get_all()
         self.ui.script_error.setStyleSheet("")
         self.ui.script_error.setText("")
