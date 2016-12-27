@@ -1,34 +1,9 @@
-language: python
-python:
-  # Picard currently supports Python >=2.6 and <3
-  # However, since apt-get only installs PyQt4 for Py2.7, we only test against that :/
-  - "2.7"
-virtualenv:
-  system_site_packages: true
-cache:
-  - apt
-  - pip
-env:
-  global:
-    - PIP_INSTALL="pip install"
-  matrix:
-    - DISCID="" MUTAGEN="$PIP_INSTALL mutagen>=1.23"
-    - DISCID="$PIP_INSTALL python-libdiscid" MUTAGEN="$PIP_INSTALL mutagen>=1.23"
-    - DISCID="$PIP_INSTALL discid" MUTAGEN="$PIP_INSTALL mutagen>=1.23"
-    - MUTAGEN="$PIP_INSTALL mutagen==1.34"
+sudo: required
+services:
+  - docker
 before_install:
-  - sudo apt-get update -qq
-  - sudo apt-get install -qq python-qt4
-  - sudo apt-get install -qq libdiscid0 libdiscid0-dev
-install:
-  # Install dependencies
-  - $MUTAGEN
-  - $DISCID
-  # Set up Picard
-  - python setup.py build_ext -i
-  - python setup.py build_locales -i
-# Run the tests!
-script: "python setup.py test"
+  - docker build -t picard .
+script: "docker run picard"
 # Tell people that tests were run
 notifications:
   irc: "chat.freenode.net#metabrainz"
