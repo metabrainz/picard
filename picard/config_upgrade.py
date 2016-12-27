@@ -206,6 +206,14 @@ def upgrade_to_v1_4_0_dev_6():
     _s.remove(old_script_text_option)
 
 
+def upgrade_to_v1_4_0_dev_7():
+    """Option "save_only_front_images_to_tags" was renamed to "embed_only_one_front_image"."""
+    old_opt = "save_only_front_images_to_tags"
+    new_opt = "embed_only_one_front_image"
+    if old_opt in _s:
+        _s[new_opt] = _s.value(old_opt, config.BoolOption, True)
+        _s.remove(old_opt)
+
 def upgrade_config():
     cfg = config._config
     cfg.register_upgrade_hook(upgrade_to_v1_0_0_final_0)
@@ -218,4 +226,5 @@ def upgrade_config():
     cfg.register_upgrade_hook(upgrade_to_v1_4_0_dev_4)
     cfg.register_upgrade_hook(upgrade_to_v1_4_0_dev_5)
     cfg.register_upgrade_hook(upgrade_to_v1_4_0_dev_6)
+    cfg.register_upgrade_hook(upgrade_to_v1_4_0_dev_7)
     cfg.run_upgrade_hooks(log.debug)
