@@ -137,12 +137,20 @@ class MainPanel(QtGui.QSplitter):
             ClusterItem.icon_dir = self.style().standardIcon(QtGui.QStyle.SP_DirIcon)
         else:
             ClusterItem.icon_dir = icontheme.lookup('folder', icontheme.ICON_SIZE_MENU)
+
+            ##########
+        ## Tkinter
+       ## xs
+        ##tooltips.enable()
+        ##tooltips = gtk.Tooltips()
+        ##self.tooltips = gtk.Tooltips()
+
         AlbumItem.icon_cd = icontheme.lookup('media-optical', icontheme.ICON_SIZE_MENU)
         AlbumItem.icon_cd_modified = icontheme.lookup('media-optical-modified', icontheme.ICON_SIZE_MENU)
-        AlbumItem.icon_cd_saved = icontheme.lookup('media-optical-saved', icontheme.ICON_SIZE_MENU)
+        AlbumItem.icon_cd_saved = icontheme.lookup('Optical Import Complete', icontheme.ICON_SIZE_MENU)
         AlbumItem.icon_cd_saved_modified = icontheme.lookup('media-optical-saved-modified',
                                                             icontheme.ICON_SIZE_MENU)
-        AlbumItem.icon_error = icontheme.lookup('media-optical-error', icontheme.ICON_SIZE_MENU)
+        AlbumItem.icon_error = icontheme.lookup('Optical Import Error', icontheme.ICON_SIZE_MENU)
         TrackItem.icon_audio = QtGui.QIcon(":/images/track-audio.png")
         TrackItem.icon_video = QtGui.QIcon(":/images/track-video.png")
         TrackItem.icon_data = QtGui.QIcon(":/images/track-data.png")
@@ -681,8 +689,12 @@ class AlbumItem(TreeItem):
                 self.insertChildren(oldnum, items)
                 for item in items:  # Update after insertChildren so that setExpanded works
                     item.update(update_album=False)
+
+         ## Album Errror Setting
         if album.errors:
             self.setIcon(0, AlbumItem.icon_error)
+
+        ## If album successful, add code green.
         elif album.is_complete():
             if album.is_modified():
                 self.setIcon(0, AlbumItem.icon_cd_saved_modified)
