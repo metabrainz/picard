@@ -382,6 +382,8 @@ class MainWindow(QtGui.QMainWindow):
         self.browser_lookup_action = QtGui.QAction(icontheme.lookup('lookup-musicbrainz'), _(u"Lookup in &Browser"), self)
         self.browser_lookup_action.setStatusTip(_(u"Lookup selected item on MusicBrainz website"))
         self.browser_lookup_action.setEnabled(False)
+        # TR: Keyboard shortcut for "Lookup in Browser"
+        self.browser_lookup_action.setShortcut(QtGui.QKeySequence(_(u"Ctrl+Shift+L")))
         self.browser_lookup_action.triggered.connect(self.browser_lookup)
 
         self.album_search_action = QtGui.QAction(icontheme.lookup('system-search'), _(u"Search for similar albums..."), self)
