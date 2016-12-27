@@ -186,17 +186,18 @@ class ASFFile(File):
     def _save(self, filename, metadata):
         log.debug("Saving file %r", filename)
         file = ASF(encode_filename(filename))
+        tags = file.tags
 
         if config.setting['clear_existing_tags']:
-            file.tags.clear()
+            tags.clear()
         cover = []
         for image in metadata.images_to_be_saved_to_tags:
             tag_data = pack_image(image.mimetype, image.data,
-                                    image_type_as_id3_num(image.maintype),
-                                    image.comment)
+                                  image_type_as_id3_num(image.maintype),
+                                  image.comment)
             cover.append(ASFByteArrayAttribute(tag_data))
         if cover:
-            file.tags['WM/Picture'] = cover
+            tags['WM/Picture'] = cover
 
         for name, values in metadata.rawitems():
             if name.startswith('lyrics:'):
@@ -208,8 +209,34 @@ class ASFFile(File):
             if name not in self.__TRANS:
                 continue
             name = self.__TRANS[name]
-            file.tags[name] = map(unicode, values)
+            tags[name] = map(unicode, values)
+
+        self._remove_deleted_tags(metadata, tags)
+
         file.save()
+
+    def _remove_deleted_tags(self, metadata, tags):
+        """Remove the tags from the file that were deleted in the UI"""
+        for tag in metadata.deleted_tags:
+            real_name = self._get_tag_name(tag)
+            if real_name and real_name in tags:
+                if tag in ('totaldiscs', 'totaltracks'):
+                    metadata_name = tag[5:-1]
+                    tags[real_name] = map(unicode, metadata[metadata_name])
+                else:
+                    del tags[real_name]
 
     def supports_tag(self, name):
         return name in self.__TRANS
+
+    def _get_tag_name(self, name):
+        if name.startswith('lyrics'):
+            return 'lyrics'
+        elif name == 'totaldiscs':
+            return self.__TRANS['discnumber']
+        elif name == 'totaltracks':
+            return self.__TRANS['tracknumber']
+        elif name in self.__TRANS:
+            return self.__TRANS[name]
+        else:
+            return None

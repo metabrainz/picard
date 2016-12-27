@@ -104,7 +104,6 @@ def _insert_bytes_no_mmap(fobj, size, offset, BUFFER_SIZE=2**16):
             _win32_locking(fobj, filesize, msvcrt.LK_UNLCK)
 
 
-
 def _delete_bytes_no_mmap(fobj, size, offset, BUFFER_SIZE=2**16):
     """Delete size bytes of empty space starting at offset.
 

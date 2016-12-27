@@ -88,9 +88,65 @@ class FormatsTest(unittest.TestCase):
             metadata[key] = value
         loaded_metadata = save_and_load_metadata(self.filename, metadata)
         for (key, value) in self.tags.iteritems():
-            #if key == 'comment:foo':
+            # if key == 'comment:foo':
             #    print "%r" % loaded_metadata
             self.assertEqual(loaded_metadata[key], value, '%s: %r != %r' % (key, loaded_metadata[key], value))
+
+    def test_delete_simple_tags(self):
+        if not self.original:
+            return
+        metadata = Metadata()
+        for (key, value) in self.tags.iteritems():
+            metadata[key] = value
+        if self.supports_ratings:
+            metadata['~rating'] = 1
+        original_metadata = save_and_load_metadata(self.filename, metadata)
+        metadata.delete('albumartist')
+        if self.supports_ratings:
+            metadata.delete('~rating')
+        new_metadata = save_and_load_metadata(self.filename, metadata)
+        self.assertIn('albumartist', original_metadata.keys())
+        self.assertNotIn('albumartist', new_metadata.keys())
+        if self.supports_ratings:
+            self.assertIn('~rating', original_metadata.keys())
+            self.assertNotIn('~rating', new_metadata.keys())
+
+    def test_delete_complex_tags(self):
+        if not self.original:
+            return
+        metadata = Metadata()
+
+        for (key, value) in self.tags.iteritems():
+            metadata[key] = value
+
+        original_metadata = save_and_load_metadata(self.filename, metadata)
+        metadata.delete('totaldiscs')
+        new_metadata = save_and_load_metadata(self.filename, metadata)
+
+        self.assertIn('totaldiscs', original_metadata)
+        if self.original.split(".")[1] == 'm4a':
+            self.assertEqual(u'0', new_metadata['totaldiscs'])
+        else:
+            self.assertNotIn('totaldiscs', new_metadata)
+
+    def test_delete_performer(self):
+        if not self.original:
+            return
+        if 'performer:guest vocal' in self.tags:
+            metadata = Metadata()
+            for (key, value) in self.tags.iteritems():
+                metadata[key] = value
+
+            metadata['performer:piano'] = 'Foo'
+
+            original_metadata = save_and_load_metadata(self.filename, metadata)
+            metadata.delete('performer:piano')
+            new_metadata = save_and_load_metadata(self.filename, metadata)
+
+            self.assertIn('performer:guest vocal', original_metadata)
+            self.assertIn('performer:guest vocal', new_metadata)
+            self.assertIn('performer:piano', original_metadata)
+            self.assertNotIn('performer:piano', new_metadata)
 
     def test_ratings(self):
         if not self.original or not self.supports_ratings:
@@ -787,6 +843,7 @@ class MusepackSV8Test(FormatsTest):
         #'podcasturl': 'Foo',
         #'show': 'Foo',
     }
+
 
 cover_settings = {
     'save_only_front_images_to_tags': True,

@@ -389,13 +389,15 @@ class ID3File(File):
                     if frameclass:
                         tags.add(frameclass(encoding=encoding, text=values))
             # don't save private / already stored tags
-            elif not name.startswith("~") and not name in self.__other_supported_tags:
+            elif not name.startswith("~") and name not in self.__other_supported_tags:
                 tags.add(id3.TXXX(encoding=encoding, desc=name, text=values))
 
         if tmcl.people:
             tags.add(tmcl)
         if tipl.people:
             tags.add(tipl)
+
+        self._remove_deleted_tags(metadata, tags)
 
         self._save_tags(tags, encode_filename(filename))
 
@@ -404,6 +406,34 @@ class ID3File(File):
                 mutagen.apev2.delete(encode_filename(filename))
             except:
                 pass
+
+    def _remove_deleted_tags(self, metadata, tags):
+        """Remove the tags from the file that were deleted in the UI"""
+        for tag in metadata.deleted_tags:
+            real_name = self._get_tag_name(tag)
+            if real_name == 'POPM':
+                for key, frame in tags.items():
+                    if frame.FrameID == 'POPM' and frame.email == config.setting['rating_user_email']:
+                        del tags[key]
+            elif real_name in tags:
+                del tags[real_name]
+
+    def supports_tag(self, name):
+        return (name in self.__rtranslate
+                or name in self.__rtranslate_freetext
+                or name.startswith('performer:')
+                or name.startswith('lyrics:') or name == 'lyrics'
+                or name in self.__other_supported_tags)
+
+    def _get_tag_name(self, name):
+        if name in self.__rtranslate:
+            return self.__rtranslate[name]
+        elif name in self.__rtranslate_freetext:
+            return self.__rtranslate_freetext[name]
+        elif name == '~rating':
+            return 'POPM'
+        else:
+            return None
 
     def _get_file(self, filename):
         raise NotImplementedError()
@@ -427,12 +457,6 @@ class ID3File(File):
         else:
             tags.update_to_v24()
             tags.save(filename, v2_version=4, v1=v1)
-
-    def supports_tag(self, name):
-        return name in self.__rtranslate or name in self.__rtranslate_freetext\
-            or name.startswith('performer:')\
-            or name.startswith('lyrics:') or name == 'lyrics'\
-            or name in self.__other_supported_tags
 
     @property
     def new_metadata(self):
@@ -458,7 +482,7 @@ class ID3File(File):
             # If this is a multi-valued field, then it needs to be flattened,
             # unless it's TIPL or TMCL which can still be multi-valued.
 
-            if (len(values) > 1 and not name in ID3File._rtipl_roles
+            if (len(values) > 1 and name not in ID3File._rtipl_roles
                     and not name.startswith("performer:")):
                 values = [join_with.join(values)]
 
