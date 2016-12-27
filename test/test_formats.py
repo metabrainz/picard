@@ -24,7 +24,7 @@ settings = {
     'remove_id3_from_flac': False,
     'rating_steps': 6,
     'rating_user_email': 'users@musicbrainz.org',
-    'save_only_front_images_to_tags': False,
+    'embed_only_one_front_image': False,
 }
 
 
@@ -846,7 +846,7 @@ class MusepackSV8Test(FormatsTest):
 
 
 cover_settings = {
-    'save_only_front_images_to_tags': True,
+    'embed_only_one_front_image': True,
 }
 
 
@@ -1116,7 +1116,7 @@ class TestCoverArt(unittest.TestCase):
             self._tear_down()
 
     def _test_cover_art_types_only_front(self, filename, expect):
-        self._set_up(filename, {'save_only_front_images_to_tags': True})
+        self._set_up(filename, {'embed_only_one_front_image': True})
         try:
             f = picard.formats.open(self.filename)
             f._save(self.filename, self._cover_metadata())

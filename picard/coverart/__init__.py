@@ -123,7 +123,7 @@ class CoverArt:
         if (self.front_image_found and
                 config.setting["save_images_to_tags"] and not
                 config.setting["save_images_to_files"] and
-                config.setting["save_only_front_images_to_tags"]):
+                config.setting["embed_only_one_front_image"]):
             # no need to continue
             self.album._finalize_loading(None)
             return
