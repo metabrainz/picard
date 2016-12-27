@@ -128,9 +128,6 @@ class MainWindow(QtGui.QMainWindow):
         # accessibility
         self.set_tab_order()
 
-        # FIXME: use QApplication's clipboard
-        self._clipboard = []
-
         for function in ui_init:
             function(self)
 
@@ -976,8 +973,8 @@ class MainWindow(QtGui.QMainWindow):
         self.tagger.autotag(self.selected_objects)
 
     def cut(self):
-        self._clipboard = self.selected_objects
-        self.paste_action.setEnabled(bool(self._clipboard))
+        self.tagger.copy_files(self.selected_objects)
+        self.paste_action.setEnabled(bool(self.selected_objects))
 
     def paste(self):
         selected_objects = self.selected_objects
@@ -985,6 +982,5 @@ class MainWindow(QtGui.QMainWindow):
             target = self.tagger.unmatched_files
         else:
             target = selected_objects[0]
-        self.tagger.move_files(self.tagger.get_files_from_objects(self._clipboard), target)
-        self._clipboard = []
+        self.tagger.paste_files(target)
         self.paste_action.setEnabled(False)
