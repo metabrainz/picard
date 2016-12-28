@@ -356,7 +356,7 @@ class Tagger(QtGui.QApplication):
             if ignoreregex is not None and ignoreregex.search(filename):
                 log.info("File ignored (matching %s): %s" % (pattern, filename))
                 continue
-            if filename not in tmp_files:
+            if filename not in self.files:
                 file = open_file(filename)
                 if file:
                     tmp_files[filename] = file
@@ -375,18 +375,22 @@ class Tagger(QtGui.QApplication):
 
     def check_load(self, new_files):
         #Load large amounts of files
-        if len(new_files) > config.setting["file_import_threshold"]:
+        num_files = len(new_files)
+        if num_files > config.setting["file_import_threshold"]:
             QMessageBox = QtGui.QMessageBox
 
             msg = QMessageBox()
             msg.setIcon(QMessageBox.Warning)
             msg.setWindowModality(QtCore.Qt.WindowModal)
             msg.setWindowTitle(_(u"Large File Load"))
-            msg.setText(_(u"Are you sure you want to load %s files? Picard may "
-                "run very slowly") % len(new_files))
+            msg.setText(
+                ungettext(
+                    u"Are you sure you want to load %d file? Picard may run very slowly" %num_files,
+                    u"Are you sure you want to load %d files? Picard may run very slowly" %num_files,
+                    num_files))
             cancel = msg.addButton(QMessageBox.Cancel)
             msg.setDefaultButton(cancel)
-            msg.addButton(_(u"&Load Files"), QMessageBox.YesRole)
+            msg.addButton(_(u"&Load"), QMessageBox.YesRole)
             ret = msg.exec_()
 
             if ret == QMessageBox.Cancel:
