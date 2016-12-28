@@ -245,11 +245,13 @@ class AcoustIDClient(QtCore.QObject):
 
     def analyze(self, file, next):
         fpcalc_next = partial(self._lookup_fingerprint, next, file.filename)
-        # use cached fingerprint
-        fingerprints = file.metadata.getall('acoustid_fingerprint')
-        if fingerprints:
-            fpcalc_next(result=('fingerprint', fingerprints[0], 0))
-            return
+
+        if not config.setting["ignore_existing_acoustid"]:
+            # use cached fingerprint
+            fingerprints = file.metadata.getall('acoustid_fingerprint')
+            if fingerprints:
+                fpcalc_next(result=('fingerprint', fingerprints[0], 0))
+                return
         # calculate the fingerprint
         task = (file, fpcalc_next)
         self._queue.append(task)
