@@ -312,7 +312,6 @@ class OggTheoraFile(VCommentFile):
 class OggVorbisFile(VCommentFile):
 
     """Ogg Vorbis file."""
-    EXTENSIONS = [".ogg"]
     NAME = "Ogg Vorbis"
     _File = mutagen.oggvorbis.OggVorbis
 
@@ -348,6 +347,16 @@ def _select_ogg_type(filename, options):
     if not results or results[-1][0] <= 0:
         raise mutagen.ogg.error("unknown Ogg audio format")
     return results[-1][2](filename)
+
+
+def OggContainerFile(filename):
+    """Generic Ogg audio file."""
+    options = [OggVorbisFile, OggOpusFile]
+    return _select_ogg_type(filename, options)
+
+
+OggContainerFile.EXTENSIONS = [".ogg"]
+OggContainerFile.NAME = "Ogg Audio"
 
 
 def OggAudioFile(filename):

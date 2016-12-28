@@ -180,16 +180,16 @@ from picard.formats.vorbis import (
     FLACFile,
     OggFLACFile,
     OggSpeexFile,
-    OggVorbisFile,
     OggAudioFile,
     OggVideoFile,
     OggOpusFile,
+    OggContainerFile,
     with_opus,
 )
 register_format(FLACFile)
 register_format(OggFLACFile)
 register_format(OggSpeexFile)
-register_format(OggVorbisFile)
+register_format(OggContainerFile)
 if with_opus:
     register_format(OggOpusFile)
 register_format(OggAudioFile)
