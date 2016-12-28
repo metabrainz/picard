@@ -57,9 +57,7 @@ class Metadata(dict):
         if not config.setting["save_images_to_tags"]:
             return ()
         images = [img for img in self.images if img.can_be_saved_to_tags]
-        if config.setting["save_only_front_images_to_tags"]:
-            # FIXME : rename option at some point
-            # Embed only ONE front image
+        if config.setting["embed_only_one_front_image"]:
             front_image = self.get_single_front_image(images)
             if front_image:
                 return front_image
