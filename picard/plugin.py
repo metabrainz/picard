@@ -106,6 +106,15 @@ class ExtensionPoint(object):
             if module is None or module in enabled_plugins:
                 yield item
 
+    def __nonzero__(self):
+        return bool(self.__items)
+
+    def __len__(self):
+        return len(self.__items)
+
+    def __contains__(self, value):
+        return value in self.__items
+
 
 class PluginShared(object):
 

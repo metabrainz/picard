@@ -30,6 +30,7 @@ from collections import defaultdict
 from PyQt4 import QtCore
 from picard import config, log
 from picard.metadata import Metadata
+from picard.plugin import ExtensionPoint
 from picard.ui.item import Item
 from picard.script import ScriptParser
 from picard.util import (
@@ -49,6 +50,20 @@ from picard.util.textencoding import (
 from picard.util.filenaming import make_short_filename
 from picard.util.tags import PRESERVED_TAGS
 from picard.const import QUERY_LIMIT
+
+
+file_move = ExtensionPoint()
+
+def register_file_move(function):
+    file_move.register(function.__module__, function)
+
+
+def _file_move(old_file, new_file):
+    if file_move:
+        for function in file_move:
+            function(old_file, new_file)
+    else:
+        shutil.move(old_file, new_file)
 
 
 class File(QtCore.QObject, Item):
@@ -330,7 +345,7 @@ class File(QtCore.QObject, Item):
             i += 1
         new_filename = new_filename + ext
         log.debug("Moving file %r => %r", old_filename, new_filename)
-        shutil.move(encode_filename(old_filename), encode_filename(new_filename))
+        _file_move(encode_filename(old_filename), encode_filename(new_filename))
         return new_filename
 
     def _save_images(self, dirname, metadata):
@@ -362,7 +377,7 @@ class File(QtCore.QObject, Item):
                     log.debug("File loaded in the tagger, not moving %r", old_file)
                     continue
                 log.debug("Moving %r to %r", old_file, new_file)
-                shutil.move(old_file, new_file)
+                _file_move(old_file, new_file)
 
     def remove(self, from_parent=True):
         if from_parent and self.parent:
