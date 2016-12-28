@@ -15,19 +15,30 @@
 
 PLUGIN_NAME = u"Sort Multi-Value Tags"
 PLUGIN_AUTHOR = u"Sophist"
-PLUGIN_DESCRIPTION = u'Sort Multi-Value Tags e.g. Release Type, Lyrics alphabetically.'
-PLUGIN_VERSION = "0.1"
-PLUGIN_API_VERSIONS = ["0.15"]
+PLUGIN_DESCRIPTION = u'''Sort Multi-Value Tags e.g. Performers alphabetically.
+<br/>
+Note: For some multi-value tags the position has meaning
+(e.g. for artists, the first item is the primary track artist)
+and these tags are NOT sorted.'''
+PLUGIN_VERSION = "0.3"
+PLUGIN_API_VERSIONS = ["0.15.0", "0.15.1", "0.16.0", "1.0.0", "1.1.0", "1.2.0", "1.3.0"]
 
 from picard.metadata import register_track_metadata_processor
 
-# Define and register the Track Metadata function
+# Exclude the following tags because the sort order is related to other tags or has a meaning like primary artist
+_sort_multivalue_tags_exclude = [
+    'artists', '~artists_sort', 'musicbrainz_artistid',
+    'albumartists', '~albumartists_sort', 'musicbrainz_albumartistid',
+    'work', 'musicbrainz_workid',
+    'label', 'catalognumber',
+    'country', 'date',
+    'releasetype',
+    ]
 
-
-def sort_multivalue_tags(tagger, metadata, track, release):
-
-    for tag in metadata.keys():
-        data = metadata.getall(tag)
+def sort_multivalue_tags(album, metadata, *args):
+    for tag, data in metadata.iteritems():
+        if tag in _sort_multivalue_tags_exclude:
+            continue
         if len(data) > 1:
             sorted_data = sorted(data)
             if data != sorted_data:
