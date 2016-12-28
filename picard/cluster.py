@@ -288,31 +288,35 @@ class Cluster(QtCore.QObject, Item):
         QRadioButton = QtGui.QRadioButton
 
         title = _(u"Album Artist Conflict")
-        text = _(u"This track shares an album title with a cluster, "
+        text = [_(u"This track shares an album title with a cluster, "
             "but does not share an artist name. Would you still like to "
-            "cluster this track?")
+            "cluster this track?")]
 
         # Conflicting Track
-        artist_name = files[track_id].metadata["artist"]
-        album_name = files[track_id].metadata["album"]
-        song_title = files[track_id].metadata["title"]
-        text = text + album_name + '\n' + song_title + '\n' + artist_name
+        conflict = {
+            'album': files[track_id].metadata["album"],
+            'title': files[track_id].metadata["title"],
+            'artist': files[track_id].metadata["artist"]
+        }
+        text.append('{album}\n{title}\n{artist}'.format(**conflict))
 
-        msg = QMessageBox(QMessageBox.Question, title, text)
+        msg = QMessageBox(QMessageBox.Question, title, '\n'.join(text))
         layout = msg.layout()
         no = msg.addButton("No", QMessageBox.NoRole)
         yes = msg.addButton("Yes", QMessageBox.YesRole)
         msg.setDefaultButton(yes)
 
-        cluster_list = "Current cluster:"
+        cluster_list = ["Current cluster:"]
         for cluster_id in album:
             if cluster_id < track_id:
-                artist = files[cluster_id].metadata["artist"]
-                title = files[cluster_id].metadata["title"]
-                track = files[cluster_id].metadata["tracknumber"]
-                cluster_list = cluster_list + '\n' + '{:4}{:12}{:10}'.format(track, title, artist)
+                track = {
+                    'track':files[cluster_id].metadata["tracknumber"],
+                    'title':files[cluster_id].metadata["title"],
+                    'artist':files[cluster_id].metadata["artist"]
+                }
+                cluster_list.append('{track:4}{title:12}{artist:10}'.format(**track))
 
-        msg.setDetailedText(cluster_list)
+        msg.setDetailedText('\n'.join(cluster_list))
 
         do_all = QCheckBox()
         do_all.setText(_(u"Do this for all conflicts"))
