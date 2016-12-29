@@ -261,10 +261,7 @@ class VCommentFile(File):
             return name
 
     def supports_tag(self, name):
-        if self._get_tag_name(name):
-            return True
-        else:
-            return False
+        return bool(self._get_tag_name(name))
 
 
 class FLACFile(VCommentFile):
