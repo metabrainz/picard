@@ -90,8 +90,8 @@ class OptionsDialog(PicardDialog):
 
         self.ui.buttonbox.accepted.connect(self.accept)
         self.ui.buttonbox.rejected.connect(self.reject)
-        self.ui.reset_all_button.clicked.connect(self.restore_all_defaults)
-        self.ui.reset_button.clicked.connect(self.restore_defaults)
+        self.ui.reset_all_button.clicked.connect(self.confirm_reset_all)
+        self.ui.reset_button.clicked.connect(self.confirm_reset)
         self.ui.buttonbox.helpRequested.connect(self.help)
 
         self.pages = []
@@ -175,3 +175,19 @@ class OptionsDialog(PicardDialog):
         for key in old_options:
             config.setting[key] = old_options[key]
         return
+
+    def confirm_reset(self):
+        msg = _("You are about to reset your options for this page.\nAre you sure:")
+        self._show_dialog(msg, self.restore_defaults)
+
+    def confirm_reset_all(self):
+        msg = _("Warning! This will reset all of your settings.\nAre you sure:")
+        self._show_dialog(msg, self.restore_all_defaults)
+
+    def _show_dialog(self, msg, function):
+        message_box = QtGui.QMessageBox()
+        message_box.setIcon(QtGui.QMessageBox.Warning)
+        message_box.setText(msg)
+        message_box.setStandardButtons(QtGui.QMessageBox.Ok | QtGui.QMessageBox.Cancel)
+        if message_box.exec_() == QtGui.QMessageBox.Ok:
+            function()
