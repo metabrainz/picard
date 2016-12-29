@@ -355,7 +355,13 @@ class File(QtCore.QObject, Item):
         patterns = filter(bool, [p.strip() for p in patterns.split()])
         for pattern in patterns:
             pattern_regex = re.compile(fnmatch.translate(pattern), re.IGNORECASE)
-            for old_file in os.listdir(old_path):
+            try:
+                names = os.listdir(old_path)
+            except os.error:
+                return
+            if pattern[0] != '.':
+                names = filter(lambda x: x[0] != '.', names)
+            for old_file in names:
                 if pattern_regex.match(old_file):
                     old_file = os.path.join(old_path, old_file)
                     # FIXME we shouldn't do this from a thread!
