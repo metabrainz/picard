@@ -350,7 +350,7 @@ def _select_ogg_type(filename, options):
 
 
 def OggContainerFile(filename):
-    """Generic Ogg audio file."""
+    """Ogg container file."""
     options = [OggVorbisFile, OggOpusFile]
     return _select_ogg_type(filename, options)
 
