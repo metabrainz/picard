@@ -60,7 +60,14 @@ class Metadata(dict):
         if config.setting["embed_only_one_front_image"]:
             front_image = self.get_single_front_image(images)
             if front_image:
-                return front_image
+                images = front_image
+
+        # Run coverart tag embed actions
+        try:
+            for image in images:
+                run_coverart_tag_embed_action(image)
+        except Exception as e:
+            log.debug(e)
         return images
 
     def get_single_front_image(self, images=None):
