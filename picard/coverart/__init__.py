@@ -263,4 +263,4 @@ def run_coverart_tag_embed_action(coverartimage):
 
 
 def run_coverart_file_save_action(coverartimage, ext, filename):
-    _coverart_file_save_actions.run(coverart, ext, filename)
+    _coverart_file_save_actions.run(coverartimage, ext, filename)
