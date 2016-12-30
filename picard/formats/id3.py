@@ -318,6 +318,8 @@ class ID3File(File):
         tipl = mutagen.id3.TIPL(encoding=encoding, people=[])
 
         tags.delall('TCMP')
+        tags.delall('TMCL')
+        tags.delall('TIPL')
         for name, values in metadata.rawitems():
             values = [id3text(v, encoding) for v in values]
             name = id3text(name, encoding)
