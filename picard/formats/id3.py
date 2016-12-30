@@ -409,14 +409,64 @@ class ID3File(File):
 
     def _remove_deleted_tags(self, metadata, tags):
         """Remove the tags from the file that were deleted in the UI"""
-        for tag in metadata.deleted_tags:
-            real_name = self._get_tag_name(tag)
-            if real_name == 'POPM':
-                for key, frame in tags.items():
-                    if frame.FrameID == 'POPM' and frame.email == config.setting['rating_user_email']:
-                        del tags[key]
-            elif real_name in tags:
-                del tags[real_name]
+        for name in metadata.deleted_tags:
+            real_name = self._get_tag_name(name)
+            try:
+                if name.startswith('performer:'):
+                    role = name.split(':', 1)[1]
+                    for people in tags['TMCL'].people:
+                        if people[0] == role:
+                            del people
+                    if len(tags['TMCL'].people) == 0:
+                        del tags['TMCL']
+                elif name.startswith('comment:'):
+                    desc = name.split(':', 1)[1]
+                    if desc.lower()[:4] != 'itun':
+                        for key, frame in tags.items():
+                            if frame.FrameID == 'COMM' and frame.desc == desc:
+                                del tags[key]
+                elif name.startswith('lyrics:') or name == 'lyrics':
+                    if ':' in name:
+                        desc = name.split(':', 1)[1]
+                    else:
+                        desc = ''
+                    for key, frame in tags.items:
+                        if frame.FrameID == desc:
+                            del tags[key]
+                elif name in self._rtipl_roles:
+                    role = self._rtipl_roles[name]
+                    for people in tags['TIPL'].people:
+                        if people[0] == role:
+                            del people
+                    if len(tags['TIPL'].people) == 0:
+                        del tags['TIPL']
+                elif name == 'musicbrainz_recordingid':
+                    for key, frame in tags.items():
+                        if frame.FrameID == 'UFID' and frame.owner == 'http://musicbrainz.org':
+                            del tags[key]
+                elif real_name == 'POPM':
+                    for key, frame in tags.items():
+                        if frame.FrameID == 'POPM' and frame.email == config.setting['rating_user_email']:
+                            del tags[key]
+                elif real_name in self.__translate:
+                    del tags[real_name]
+                elif real_name in self.__translate_freetext:
+                    for key, frame in tags.items():
+                        if frame.FrameID == 'TXXX' and frame.desc == real_name:
+                            del tags[key]
+                elif not name.startswith("~") and name not in self.__other_supported_tags:
+                    for key, frame in tags.items():
+                        if frame.FrameID == 'TXXX' and frame.desc == name:
+                            del tags[key]
+                elif name.startswith("~"):
+                    name = name[1:]
+                    for key, frame in tags.items():
+                        if frame.FrameID == 'TXXX' and frame.desc == name:
+                            del tags[key]
+                elif name in self.__other_supported_tags:
+                    del tags[real_name]
+            except KeyError:
+                pass
 
     def supports_tag(self, name):
         return (name in self.__rtranslate
@@ -432,6 +482,10 @@ class ID3File(File):
             return self.__rtranslate_freetext[name]
         elif name == '~rating':
             return 'POPM'
+        elif name == 'tracknumber':
+            return 'TRCK'
+        elif name == 'discnumber':
+            return 'TPOS'
         else:
             return None
 
