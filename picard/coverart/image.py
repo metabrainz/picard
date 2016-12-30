@@ -29,7 +29,6 @@ import tempfile
 from hashlib import md5
 from PyQt4.QtCore import QUrl, QObject, QMutex
 from picard import config, log
-from picard.coverart import run_coverart_file_save_action
 from picard.coverart.utils import translate_caa_type
 from picard.script import ScriptParser
 from picard.util import (
@@ -272,6 +271,7 @@ class CoverArtImage:
         overwrite = config.setting["save_images_overwrite"]
         ext = self.extension
         try:
+            from picard.coverart import run_coverart_file_save_action
             run_coverart_file_save_action(self, ext, filename)
         except Exception as e:
             log.debug(e)

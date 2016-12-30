@@ -64,6 +64,7 @@ class Metadata(dict):
 
         # Run coverart tag embed actions
         try:
+            from picard.coverart import run_coverart_tag_embed_action
             for image in images:
                 run_coverart_tag_embed_action(image)
         except Exception as e:
