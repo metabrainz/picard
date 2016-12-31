@@ -79,11 +79,19 @@ class OptionsDialog(PicardDialog):
         self.ui = Ui_Dialog()
         self.ui.setupUi(self)
 
+        self.ui.reset_all_button = QtGui.QPushButton(_("&Restore all Defaults"))
+        self.ui.reset_button = QtGui.QPushButton(_("Restore &Defaults"))
+
         self.ui.buttonbox.addButton(StandardButton(StandardButton.OK), QtGui.QDialogButtonBox.AcceptRole)
         self.ui.buttonbox.addButton(StandardButton(StandardButton.CANCEL), QtGui.QDialogButtonBox.RejectRole)
         self.ui.buttonbox.addButton(StandardButton(StandardButton.HELP), QtGui.QDialogButtonBox.HelpRole)
+        self.ui.buttonbox.addButton(self.ui.reset_all_button, QtGui.QDialogButtonBox.ActionRole)
+        self.ui.buttonbox.addButton(self.ui.reset_button, QtGui.QDialogButtonBox.ActionRole)
+
         self.ui.buttonbox.accepted.connect(self.accept)
         self.ui.buttonbox.rejected.connect(self.reject)
+        self.ui.reset_all_button.clicked.connect(self.confirm_reset_all)
+        self.ui.reset_button.clicked.connect(self.confirm_reset)
         self.ui.buttonbox.helpRequested.connect(self.help)
 
         self.pages = []
@@ -144,3 +152,42 @@ class OptionsDialog(PicardDialog):
             self.move(pos)
         self.resize(config.persist["options_size"])
         self.ui.splitter.restoreState(config.persist["options_splitter"])
+
+    def restore_all_defaults(self):
+        for page in self.pages:
+            self._restore_default(page)
+
+    def restore_defaults(self):
+        self._restore_default(self.ui.pages_stack.currentWidget())
+
+    def _restore_default(self, page):
+        try:
+            options = page.options
+        except AttributeError:
+            return
+        old_options = {}
+        for option in options:
+            if option.section == 'setting':
+                old_options[option.name] = config.setting[option.name]
+                config.setting[option.name] = option.default
+        page.load()
+        # Restore the config values incase the user doesn't save after restoring defaults
+        for key in old_options:
+            config.setting[key] = old_options[key]
+        return
+
+    def confirm_reset(self):
+        msg = _("You are about to reset your options for this page.\nAre you sure:")
+        self._show_dialog(msg, self.restore_defaults)
+
+    def confirm_reset_all(self):
+        msg = _("Warning! This will reset all of your settings.\nAre you sure:")
+        self._show_dialog(msg, self.restore_all_defaults)
+
+    def _show_dialog(self, msg, function):
+        message_box = QtGui.QMessageBox()
+        message_box.setIcon(QtGui.QMessageBox.Warning)
+        message_box.setText(msg)
+        message_box.setStandardButtons(QtGui.QMessageBox.Ok | QtGui.QMessageBox.Cancel)
+        if message_box.exec_() == QtGui.QMessageBox.Ok:
+            function()
