@@ -414,11 +414,11 @@ class ID3File(File):
             try:
                 if name.startswith('performer:'):
                     role = name.split(':', 1)[1]
-                    for people in tags['TMCL'].people:
-                        if people[0] == role:
-                            del people
-                    if len(tags['TMCL'].people) == 0:
-                        del tags['TMCL']
+                    for key, frame in tags.items():
+                        if frame.FrameID in ('TMCL', 'TIPL', 'IPLS'):
+                            for people in frame.people:
+                                if people[0] == role:
+                                    frame.people.remove(people)   
                 elif name.startswith('comment:'):
                     desc = name.split(':', 1)[1]
                     if desc.lower()[:4] != 'itun':
@@ -435,11 +435,11 @@ class ID3File(File):
                             del tags[key]
                 elif name in self._rtipl_roles:
                     role = self._rtipl_roles[name]
-                    for people in tags['TIPL'].people:
-                        if people[0] == role:
-                            del people
-                    if len(tags['TIPL'].people) == 0:
-                        del tags['TIPL']
+                    for key, frame in tags.items():
+                        if frame.FrameID in ('TIPL', 'IPLS'):
+                            for people in frame.people:
+                                if people[0] == role:
+                                    frame.people.remove(people)   
                 elif name == 'musicbrainz_recordingid':
                     for key, frame in tags.items():
                         if frame.FrameID == 'UFID' and frame.owner == 'http://musicbrainz.org':
