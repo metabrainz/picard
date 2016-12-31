@@ -44,7 +44,7 @@ def _guess_format(filename, options):
     results = []
     try:
         header = fileobj.read(128)
-        options = [option for option in options if option._File is not None]
+        options = [option for option in options if not option in (OggAudioFile, OggVideoFile) and option._File is not None]
         results = [
             (option._File.score(filename, fileobj, header), option.__name__, option)
             for option in options]
