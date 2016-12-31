@@ -430,7 +430,7 @@ class ID3File(File):
                         desc = name.split(':', 1)[1]
                     else:
                         desc = ''
-                    for key, frame in tags.items:
+                    for key, frame in tags.items():
                         if frame.FrameID == desc:
                             del tags[key]
                 elif name in self._rtipl_roles:
