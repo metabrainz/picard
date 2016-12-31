@@ -27,6 +27,7 @@ from picard.util import encode_filename
 class WAVFile(File):
     EXTENSIONS = [".wav"]
     NAME = "Microsoft WAVE"
+    _File = None
 
     def _load(self, filename):
         log.debug("Loading file %r", filename)

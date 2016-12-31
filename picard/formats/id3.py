@@ -497,6 +497,7 @@ class MP3File(ID3File):
     EXTENSIONS = [".mp3", ".mp2", ".m2a"]
     NAME = "MPEG-1 Audio"
     _IsMP3 = True
+    _File = mutagen.mp3.MP3
 
     def _get_file(self, filename):
         return mutagen.mp3.MP3(filename, ID3=compatid3.CompatID3)
@@ -514,6 +515,7 @@ class TrueAudioFile(ID3File):
     """TTA file."""
     EXTENSIONS = [".tta"]
     NAME = "The True Audio"
+    _File = mutagen.trueaudio.TrueAudio
 
     def _get_file(self, filename):
         return mutagen.trueaudio.TrueAudio(filename, ID3=compatid3.CompatID3)
@@ -529,6 +531,7 @@ if mutagen.aiff:
         """AIFF file."""
         EXTENSIONS = [".aiff", ".aif", ".aifc"]
         NAME = "Audio Interchange File Format (AIFF)"
+        _File = mutagen.aiff.AIFF
 
         def _get_file(self, filename):
             return mutagen.aiff.AIFF(filename)

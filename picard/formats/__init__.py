@@ -38,6 +38,23 @@ def supported_formats():
         formats.append((format.EXTENSIONS, format.NAME))
     return formats
 
+def _guess_format(filename, options):
+    """Select the best matching file type amongst supported formats."""
+    fileobj = file(filename, "rb")
+    results = []
+    try:
+        header = fileobj.read(128)
+        options = [option for option in options if option._File is not None]
+        results = [
+            (option._File.score(filename, fileobj, header), option.__name__, option)
+            for option in options]
+    finally:
+        fileobj.close()
+    results.sort()
+    if not results or results[-1][0] <= 0:
+        raise Exception("Unknown audio format")
+    return results[-1][2]
+
 
 def open(filename):
     """Open the specified file and return a File instance with the appropriate format handler, or None."""
@@ -49,6 +66,9 @@ def open(filename):
         format = _extensions[ext]
     except KeyError:
         return None
+    else:
+        format = _guess_format(filename, _formats)
+
     return format(filename)
 
 

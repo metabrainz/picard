@@ -353,8 +353,8 @@ def _select_ogg_type(filename, options):
 def OggAudioFile(filename):
     """Generic Ogg audio file."""
     options = [OggFLACFile, OggSpeexFile, OggVorbisFile]
+    _File = None
     return _select_ogg_type(filename, options)
-
 
 OggAudioFile.EXTENSIONS = [".oga"]
 OggAudioFile.NAME = "Ogg Audio"
@@ -363,6 +363,7 @@ OggAudioFile.NAME = "Ogg Audio"
 def OggVideoFile(filename):
     """Generic Ogg video file."""
     options = [OggTheoraFile]
+    _File = None
     return _select_ogg_type(filename, options)
 
 
