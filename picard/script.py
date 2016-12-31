@@ -332,12 +332,18 @@ def func_noop(parser, *args):
 
 def func_left(parser, text, length):
     """Returns first ``num`` characters from ``text``."""
-    return text[:int(length)]
+    try:
+        return text[:int(length)]
+    except ValueError:
+        return ""
 
 
 def func_right(parser, text, length):
     """Returns last ``num`` characters from ``text``."""
-    return text[-int(length):]
+    try:
+        return text[-int(length):]
+    except ValueError:
+        return ""
 
 
 def func_lower(parser, text):
@@ -351,7 +357,10 @@ def func_upper(parser, text):
 
 
 def func_pad(parser, text, length, char):
-    return char * (int(length) - len(text)) + text
+    try:
+        return char * (int(length) - len(text)) + text
+    except ValueError:
+        return ""
 
 
 def func_strip(parser, text):
@@ -389,7 +398,10 @@ def func_rsearch(parser, text, pattern):
 
 
 def func_num(parser, text, length):
-    format = "%%0%dd" % int(length)
+    try:
+        format = "%%0%dd" % int(length)
+    except ValueError:
+        return ""
     try:
         value = int(text)
     except ValueError:
