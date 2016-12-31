@@ -205,7 +205,7 @@ class APEv2File(File):
             return name.title()
 
     def supports_tag(self, name):
-        return bool(self._get_tag_name(name))
+        return bool(name)
 
 
 class MusepackFile(APEv2File):
