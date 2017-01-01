@@ -278,6 +278,8 @@ def track_to_metadata(node, track):
             m.length = int(nodes[0].text)
         elif name == 'artist_credit':
             artist_credit_to_metadata(nodes[0], m)
+    if config.setting["language_from_release"] and 'language' not in m and '~releaselanguage' in m:
+        m.add_unique("language", m['~releaselanguage'])
     m['~length'] = format_time(m.length)
 
 

@@ -16,6 +16,7 @@ settings = {
     "standardize_tracks": False,
     "standardize_artists": False,
     "standardize_releases": False,
+    "language_from_release": False,
     "translate_artist_names": False
 }
 

@@ -41,6 +41,7 @@ class MetadataOptionsPage(OptionsPage):
         config.BoolOption("setting", "folksonomy_tags", False),
         config.BoolOption("setting", "convert_punctuation", True),
         config.BoolOption("setting", "standardize_artists", False),
+        config.BoolOption("setting", "language_from_release", False),
     ]
 
     def __init__(self, parent=None):
@@ -70,6 +71,7 @@ class MetadataOptionsPage(OptionsPage):
         self.ui.va_name.setText(config.setting["va_name"])
         self.ui.nat_name.setText(config.setting["nat_name"])
         self.ui.standardize_artists.setChecked(config.setting["standardize_artists"])
+        self.ui.language_from_release.setChecked(config.setting["language_from_release"])
 
     def save(self):
         config.setting["translate_artist_names"] = self.ui.translate_artist_names.isChecked()
@@ -85,6 +87,7 @@ class MetadataOptionsPage(OptionsPage):
             if self.tagger.nats is not None:
                 self.tagger.nats.update()
         config.setting["standardize_artists"] = self.ui.standardize_artists.isChecked()
+        config.setting["language_from_release"] = self.ui.language_from_release.isChecked()
 
     def set_va_name_default(self):
         self.ui.va_name.setText(self.options[0].default)

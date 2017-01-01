@@ -50,6 +50,13 @@
        </widget>
       </item>
       <item>
+       <widget class="QCheckBox" name="language_from_release">
+        <property name="text">
+         <string>Use language from release for tracks without work language</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QCheckBox" name="convert_punctuation">
         <property name="text">
          <string>Convert Unicode punctuation characters to ASCII</string>
@@ -166,6 +173,7 @@
   <tabstop>translate_artist_names</tabstop>
   <tabstop>artist_locale</tabstop>
   <tabstop>standardize_artists</tabstop>
+  <tabstop>language_from_release</tabstop>
   <tabstop>convert_punctuation</tabstop>
   <tabstop>release_ars</tabstop>
   <tabstop>track_ars</tabstop>
