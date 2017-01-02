@@ -356,7 +356,7 @@ class File(QtCore.QObject, Item):
         try:
             names = os.listdir(old_path)
         except os.error:
-            log.debug("Error: {} directory not found".format(old_path))
+            log.error("Error: {} directory not found".format(old_path))
             return
         filtered_names = filter(lambda x: x[0] != '.', names)
         for pattern in patterns:
