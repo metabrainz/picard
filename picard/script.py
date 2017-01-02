@@ -399,7 +399,7 @@ def func_rsearch(parser, text, pattern):
 
 def func_num(parser, text, length):
     try:
-        format = "%%0%dd" % int(length)
+        format = "%%0%dd" % min(int(length), 20)
     except ValueError:
         return ""
     try:
