@@ -37,7 +37,7 @@ from picard.file import File
 from picard.formats.id3 import types_from_id3, image_type_as_id3_num
 from picard.metadata import Metadata
 from picard.util import encode_filename, sanitize_date
-
+from picard.formats import guess_format
 
 class VCommentFile(File):
 
@@ -333,28 +333,11 @@ class OggOpusFile(VCommentFile):
         metadata['~format'] = self.NAME
 
 
-def _select_ogg_type(filename, options):
-    """Select the best matching Ogg file type."""
-    fileobj = file(filename, "rb")
-    results = []
-    try:
-        header = fileobj.read(128)
-        results = [
-            (option._File.score(filename, fileobj, header), option.__name__, option)
-            for option in options]
-    finally:
-        fileobj.close()
-    results.sort()
-    if not results or results[-1][0] <= 0:
-        raise mutagen.ogg.error("unknown Ogg audio format")
-    return results[-1][2](filename)
-
-
 def OggAudioFile(filename):
     """Generic Ogg audio file."""
     options = [OggFLACFile, OggSpeexFile, OggVorbisFile]
     _File = None
-    return _select_ogg_type(filename, options)
+    return guess_format(filename, options)(filename)
 
 OggAudioFile.EXTENSIONS = [".oga"]
 OggAudioFile.NAME = "Ogg Audio"
@@ -364,7 +347,7 @@ def OggVideoFile(filename):
     """Generic Ogg video file."""
     options = [OggTheoraFile]
     _File = None
-    return _select_ogg_type(filename, options)
+    return guess_format(filename, options)(filename)
 
 
 OggVideoFile.EXTENSIONS = [".ogv"]
