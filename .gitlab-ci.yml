@@ -1,0 +1,20 @@
+stages:
+  - package
+
+variables:
+  CHROMAPRINT_FPCALC_VERSION: "1.4.2"
+  DISCID_VERSION: "0.6.1"
+  PYTHON_DISCID_VERSION: "1.1.0"
+  MUTAGEN_VERSION: "1.36"
+
+package win:
+  stage: package
+  script:
+    - set PATCH_VERSION=1
+    - scripts/package-win.bat
+  artifacts:
+    paths:
+      - picard-setup-*.exe
+    expire_in: 90d
+  tags:
+    - winxp

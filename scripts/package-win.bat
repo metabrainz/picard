@@ -1,20 +1,25 @@
-set PATH=%PATH%;%WORKSPACE%;C:\MinGW\bin;C:\Python27;C:\Python27\Scripts;"C:\Program Files\7-Zip"
-call "C:\Program Files\Microsoft Visual Studio 9.0\Common7\Tools\vsvars32.bat"
+echo on
 
-del installer\*.exe
+set PATH=%PATH%;%CI_PROJECT_DIR%;C:\MinGW\bin;C:\Python27;C:\Python27\Scripts;"C:\Program Files\7-Zip";"C:\Program Files\GnuWin32\bin"
+call "C:\Program Files\Microsoft Visual Studio 9.0\Common7\Tools\vsvars32.bat"
 
 copy /Y "C:\Program Files\Microsoft Visual Studio 9.0\VC\redist\x86\Microsoft.VC90.CRT\msvcr90.dll" .
 copy /Y "C:\Program Files\Microsoft Visual Studio 9.0\VC\redist\x86\Microsoft.VC90.CRT\msvcp90.dll" .
 
-7z e -odeps deps\chromaprint-fpcalc-*.zip
-copy /Y deps\fpcalc.exe .
+wget --no-check-certificate https://github.com/acoustid/chromaprint/releases/download/v%CHROMAPRINT_FPCALC_VERSION%/chromaprint-fpcalc-%CHROMAPRINT_FPCALC_VERSION%-windows-i686.zip -O fpcalc.zip
+7z e fpcalc.zip
+copy /Y chromaprint-fpcalc-%CHROMAPRINT_FPCALC_VERSION%-windows-i686\fpcalc.exe .
+
+wget --no-check-certificate http://ftp.musicbrainz.org/pub/musicbrainz/libdiscid/libdiscid-%DISCID_VERSION%-win32.zip -O libdiscid.zip
+7z e libdiscid.zip
+copy /Y libdiscid-%DISCID_VERSION%-win32\discid.dll .
 
 rmdir /S /Q e
 virtualenv --system-site-packages e
-set PATH=%WORKSPACE%\e\scripts;%PATH%
+set PATH=%CI_PROJECT_DIR%\e\scripts;%PATH%
 
-pip install mutagen==1.27
-pip install discid==1.1.0
+pip install mutagen==%MUTAGEN_VERSION%
+pip install discid==%PYTHON_DISCID_VERSION%
 
 if "%PATCH_VERSION%" == "1" python setup.py patch_version --platform=win
 
@@ -23,3 +28,5 @@ python setup.py clean
 python setup.py build_ext -i
 python setup.py build_locales -i
 python setup.py bdist_nsis
+
+move installer\*.exe .
