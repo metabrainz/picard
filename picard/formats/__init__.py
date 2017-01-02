@@ -20,7 +20,6 @@
 import sys
 from mutagen import _util
 from picard.plugin import ExtensionPoint
-
 _formats = ExtensionPoint()
 _extensions = {}
 
@@ -46,10 +45,10 @@ def guess_format(filename, options):
         header = fileobj.read(128)
         # Calls the score method of a particulat format's associated filetype
         # and assigns a positive score depending on how closely the fileobj's header matches
-        # the header for a particular file format.
+        # the header for a particular file format. 
         results = [(option._File.score(filename, fileobj, header), option.__name__, option)
                    for option in options
-                   if option not in (OggAudioFile, OggVideoFile)
+                   if hasattr(option, "_File")
                    and option._File is not None]
     if results:
         results.sort()
@@ -72,7 +71,6 @@ def open(filename):
         return None
     else:
         format = guess_format(filename, _formats)
-
     return format(filename)
 
 
