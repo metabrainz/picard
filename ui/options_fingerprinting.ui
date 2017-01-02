@@ -103,17 +103,36 @@
     </widget>
    </item>
    <item>
-    <spacer>
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>181</width>
-       <height>21</height>
-      </size>
-     </property>
-    </spacer>
+    <widget class="QGroupBox" name="log_settings">
+    <property name="title">
+     <string>Logging</string>
+    </property>
+    <layout class="QVBoxLayout" name="VLogLayout">
+     <item>
+      <widget class="QCheckBox" name="do_log_matching">
+       <property name="text">
+        <string>Log results when matching files</string>
+       </property>
+       <property name="checked">
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer>
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>20</width>
+         <height>41</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </widget>
    </item>
   </layout>
  </widget>

@@ -382,6 +382,9 @@ class File(QtCore.QObject, Item):
             self.parent = parent
             self.parent.add_file(self)
             self.tagger.acoustidmanager.update(self, self.metadata['musicbrainz_recordingid'])
+            # Log successful match
+            if config.setting["do_log_matching"] and self.parent.metadata['album'] != 'Unmatched Files':
+                log.info("AcoustID: File '%s' matched to '%s' by %s", self.filename, self.metadata['title'], self.metadata['artist'])
 
     def _move(self, parent):
         if parent != self.parent:
