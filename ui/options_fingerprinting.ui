@@ -44,6 +44,13 @@
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
+       <widget class="QCheckBox" name="ignore_existing_acoustid_fingerprints">
+        <property name="text">
+         <string>Ignore existing AcoustID fingerprints</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QLabel" name="label">
         <property name="text">
          <string>Fingerprint calculator:</string>
