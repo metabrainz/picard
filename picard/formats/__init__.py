@@ -38,21 +38,25 @@ def supported_formats():
         formats.append((format.EXTENSIONS, format.NAME))
     return formats
 
-def _guess_format(filename, options):
+
+def guess_format(filename, options):
     """Select the best matching file type amongst supported formats."""
-    fileobj = file(filename, "rb")
     results = []
-    try:
+    with file(filename, "rb") as fileobj:
         header = fileobj.read(128)
-        options = [option for option in options if not option in (OggAudioFile, OggVideoFile) and option._File is not None]
-        results = [
-            (option._File.score(filename, fileobj, header), option.__name__, option)
-            for option in options]
-    finally:
-        fileobj.close()
-    results.sort()
+        # Calls the score method of a particulat format's associated filetype
+        # and assigns a positive score depending on how closely the fileobj's header matches
+        # the header for a particular file format.
+        results = [(option._File.score(filename, fileobj, header), option.__name__, option)
+                   for option in options
+                   if option not in (OggAudioFile, OggVideoFile)
+                   and option._File is not None]
+    if results:
+        results.sort()
+    # No postive score i.e. the fileobj's header did not match any supported format
     if not results or results[-1][0] <= 0:
         raise Exception("Unknown audio format")
+    # return the format with the highest matching score
     return results[-1][2]
 
 
@@ -67,7 +71,7 @@ def open(filename):
     except KeyError:
         return None
     else:
-        format = _guess_format(filename, _formats)
+        format = guess_format(filename, _formats)
 
     return format(filename)
 
