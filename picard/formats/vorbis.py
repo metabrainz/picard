@@ -339,7 +339,6 @@ class OggOpusFile(VCommentFile):
 def OggAudioFile(filename):
     """Generic Ogg audio file."""
     options = [OggFLACFile, OggSpeexFile, OggVorbisFile]
-    _File = None
     return guess_format(filename, options)
 
 OggAudioFile.EXTENSIONS = [".oga"]
@@ -349,7 +348,6 @@ OggAudioFile.NAME = "Ogg Audio"
 def OggVideoFile(filename):
     """Generic Ogg video file."""
     options = [OggTheoraFile]
-    _File = None
     return guess_format(filename, options)
 
 
