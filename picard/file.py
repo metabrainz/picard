@@ -18,7 +18,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-import glob
+import fnmatch
+import os
 import os.path
 import shutil
 import sys
@@ -352,17 +353,27 @@ class File(QtCore.QObject, Item):
         new_path = encode_filename(os.path.dirname(new_filename))
         patterns = encode_filename(config.setting["move_additional_files_pattern"])
         patterns = filter(bool, [p.strip() for p in patterns.split()])
+        try:
+            names = os.listdir(old_path)
+        except os.error:
+            log.error("Error: {} directory not found".format(old_path))
+            return
+        filtered_names = filter(lambda x: x[0] != '.', names)
         for pattern in patterns:
-            # FIXME glob1 is not documented, maybe we need our own implementation?
-            for old_file in glob.glob1(old_path, pattern):
-                new_file = os.path.join(new_path, old_file)
-                old_file = os.path.join(old_path, old_file)
-                # FIXME we shouldn't do this from a thread!
-                if self.tagger.files.get(decode_filename(old_file)):
-                    log.debug("File loaded in the tagger, not moving %r", old_file)
-                    continue
-                log.debug("Moving %r to %r", old_file, new_file)
-                shutil.move(old_file, new_file)
+            pattern_regex = re.compile(fnmatch.translate(pattern), re.IGNORECASE)
+            file_names = names
+            if pattern[0] != '.':
+                file_names = filtered_names
+            for old_file in file_names:
+                if pattern_regex.match(old_file):
+                    old_file = os.path.join(old_path, old_file)
+                    # FIXME we shouldn't do this from a thread!
+                    if self.tagger.files.get(decode_filename(old_file)):
+                        log.debug("File loaded in the tagger, not moving %r", old_file)
+                        continue
+                    new_file = os.path.join(new_path, old_file)
+                    log.debug("Moving %r to %r", old_file, new_file)
+                    shutil.move(old_file, new_file)
 
     def remove(self, from_parent=True):
         if from_parent and self.parent:
