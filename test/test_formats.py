@@ -298,8 +298,77 @@ class WMATest(FormatsTest):
         'website': 'http://example.com',
     }
 
+class ID3Test(FormatsTest):
 
-class MP3Test(FormatsTest):
+    def test_id3_freeform_delete(self):
+        if not self.original:
+            return
+        metadata = Metadata()
+        for (key, value) in self.tags.iteritems():
+            metadata[key] = value
+
+        metadata['Foo'] = 'Foo'
+        original_metadata = save_and_load_metadata(self.filename, metadata)
+        metadata.delete('Foo')
+        new_metadata = save_and_load_metadata(self.filename, metadata)
+
+        self.assertIn('Foo', original_metadata)
+        self.assertNotIn('Foo', new_metadata)
+
+    def test_id3_ufid_delete(self):
+        if not self.original:
+            return
+        metadata = Metadata()
+        for (key, value) in self.tags.iteritems():
+            metadata[key] = value
+        metadata['musicbrainz_recordingid'] = "Foo"
+        original_metadata = save_and_load_metadata(self.filename, metadata)
+        metadata.delete('musicbrainz_recordingid')
+        new_metadata = save_and_load_metadata(self.filename, metadata)
+
+        self.assertIn('musicbrainz_recordingid', original_metadata)
+        self.assertNotIn('musicbrainz_recordingid', new_metadata)
+
+    def test_id3_multiple_freeform_delete(self):
+        if not self.original:
+            return
+        metadata = Metadata()
+        for (key, value) in self.tags.iteritems():
+            metadata[key] = value
+
+        metadata['Foo'] = 'Foo'
+        metadata['Bar'] = 'Foo'
+        metadata['FooBar'] = 'Foo'
+        original_metadata = save_and_load_metadata(self.filename, metadata)
+        metadata.delete('Foo')
+        metadata.delete('Bar')
+        new_metadata = save_and_load_metadata(self.filename, metadata)
+
+        self.assertIn('Foo', original_metadata)
+        self.assertIn('Bar', original_metadata)
+        self.assertIn('FooBar', original_metadata)
+        self.assertNotIn('Foo', new_metadata)
+        self.assertNotIn('Bar', new_metadata)
+        self.assertIn('FooBar', new_metadata)
+
+    def test_comment_delete(self):
+        if not self.original:
+            return
+        metadata = Metadata()
+        for (key, value) in self.tags.iteritems():
+            metadata[key] = value
+        metadata['comment:bar'] = 'Foo'
+        original_metadata = save_and_load_metadata(self.filename, metadata)
+        metadata.delete('comment:bar')
+        new_metadata = save_and_load_metadata(self.filename, metadata)
+
+        self.assertIn('comment:foo', original_metadata)
+        self.assertIn('comment:bar', original_metadata)
+        self.assertIn('comment:foo', new_metadata)
+        self.assertNotIn('comment:bar', new_metadata)
+
+
+class MP3Test(ID3Test):
     original = os.path.join('test', 'data', 'test.mp3')
     supports_ratings = True
     tags = {
@@ -367,7 +436,7 @@ class MP3Test(FormatsTest):
     }
 
 
-class TTATest(FormatsTest):
+class TTATest(ID3Test):
     original = os.path.join('test', 'data', 'test.tta')
     supports_ratings = True
     tags = {
@@ -436,7 +505,7 @@ class TTATest(FormatsTest):
 
 
 if picard.formats.AiffFile:
-    class AIFFTest(FormatsTest):
+    class AIFFTest(ID3Test):
         original = os.path.join('test', 'data', 'test.aiff')
         supports_ratings = False
         tags = {
