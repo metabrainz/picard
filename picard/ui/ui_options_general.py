@@ -119,5 +119,4 @@ class Ui_GeneralOptionsPage(object):
         self.analyze_new_files.setText(_("Automatically scan all new files"))
         self.ignore_file_mbids.setText(_("Ignore MBIDs when loading new files"))
         self.import_settings.setTitle(_("Importing"))
-        self.label_import.setText(_("Maximum number of files to import without error:"))
-
+        self.label_import.setText(_("Warn if user tries to load more than this number of files at once:"))
