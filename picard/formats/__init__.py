@@ -19,6 +19,7 @@
 
 import sys
 from mutagen import _util
+from picard import log
 from picard.plugin import ExtensionPoint
 
 _formats = ExtensionPoint()
@@ -39,17 +40,47 @@ def supported_formats():
     return formats
 
 
+def guess_format(filename, options=_formats):
+    """Select the best matching file type amongst supported formats."""
+    results = []
+    with file(filename, "rb") as fileobj:
+        header = fileobj.read(128)
+        # Calls the score method of a particular format's associated filetype
+        # and assigns a positive score depending on how closely the fileobj's header matches
+        # the header for a particular file format.
+        results = [(option._File.score(filename, fileobj, header), option.__name__, option)
+                   for option in options
+                   if hasattr(option, "_File")
+                   and option._File is not None]
+    if results:
+        results.sort()
+        if results[-1][0] > 0:
+            # return the format with the highest matching score
+            return results[-1][2](filename)
+
+    # No positive score i.e. the fileobj's header did not match any supported format
+    return None
+
+
 def open(filename):
     """Open the specified file and return a File instance with the appropriate format handler, or None."""
-    i = filename.rfind(".")
-    if i < 0:
-        return None
-    ext = filename[i+1:].lower()
     try:
-        format = _extensions[ext]
+        # First try to guess the format on the basis of file headers
+        audio_file = guess_format(filename)
+        if not audio_file:
+            i = filename.rfind(".")
+            if i < 0:
+                return None
+            ext = filename[i+1:].lower()
+            # Switch to extension based opening
+            audio_file = _extensions[ext](filename)
+        return audio_file
     except KeyError:
+        # None is returned if both the methods fail
         return None
-    return format(filename)
+    except Exception as error:
+        log.error("Error occured:\n{}".format(error.message))
+        return None
 
 
 def _insert_bytes_no_mmap(fobj, size, offset, BUFFER_SIZE=2**16):

@@ -75,6 +75,7 @@ class ASFFile(File):
     """
     EXTENSIONS = [".wma", ".wmv", ".asf"]
     NAME = "Windows Media Audio"
+    _File = ASF
 
     __TRANS = {
         'album': 'WM/AlbumTitle',

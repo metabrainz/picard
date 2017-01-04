@@ -4,7 +4,6 @@ import picard.formats
 import unittest
 import shutil
 
-
 from PyQt4 import QtCore
 from picard import config, log
 from picard.coverart.image import CoverArtImage, TagCoverArtImage
@@ -157,6 +156,16 @@ class FormatsTest(unittest.TestCase):
             metadata['~rating'] = rating
             loaded_metadata = save_and_load_metadata(self.filename, metadata)
             self.assertEqual(int(loaded_metadata['~rating']), rating, '~rating: %r != %r' % (loaded_metadata['~rating'], rating))
+
+    def test_guess_format(self):
+        if self.original:
+            fd, temp_file = mkstemp()
+            os.close(fd)
+            shutil.copy(self.original, temp_file)
+            audio = picard.formats.guess_format(temp_file)
+            audio_original = picard.formats.open(self.filename)
+            self.assertEqual(type(audio), type(audio_original))
+            self.addCleanup(os.unlink,temp_file)
 
 
 class FLACTest(FormatsTest):
