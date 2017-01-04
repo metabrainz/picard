@@ -68,9 +68,14 @@ def open(filename):
         return None
     ext = filename[i+1:].lower()
     try:
-        audio_file = _extensions[ext](filename)
-    except KeyError:
+        # First try to guess the format on the basis of file headers
         audio_file = guess_format(filename)
+        if not audio_file:
+            # Switch to extension based opening
+            audio_file = _extensions[ext](filename)
+    except KeyError:
+        # None is returned if both the methods fail
+        pass
     return audio_file
 
 
