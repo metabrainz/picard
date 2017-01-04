@@ -159,7 +159,7 @@ class FormatsTest(unittest.TestCase):
 
     def test_guess_format(self):
         if self.original:
-            fd, temp_file = mkstemp(suffix=".test")
+            fd, temp_file = mkstemp()
             os.close(fd)
             shutil.copy(self.original, temp_file)
             audio = picard.formats.guess_format(temp_file)
