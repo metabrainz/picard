@@ -72,7 +72,7 @@
          <bool>false</bool>
         </property>
         <property name="text">
-         <string>Move additional files(case insensitive):</string>
+         <string>Move additional files (case insensitive):</string>
         </property>
        </widget>
       </item>
