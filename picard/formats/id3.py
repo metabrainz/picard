@@ -419,11 +419,7 @@ class ID3File(File):
                 del tags[real_name]
 
     def supports_tag(self, name):
-        return (name in self.__rtranslate
-                or name in self.__rtranslate_freetext
-                or name.startswith('performer:')
-                or name.startswith('lyrics:') or name == 'lyrics'
-                or name in self.__other_supported_tags)
+        return ((name and not name.startswith("~")) or name == "~rating")
 
     def _get_tag_name(self, name):
         if name in self.__rtranslate:

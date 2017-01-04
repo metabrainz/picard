@@ -462,12 +462,17 @@ class MetadataBox(QtGui.QTableWidget):
             self.setRowCount(0)
             return
 
-        self.setRowCount(len(result.tag_names))
-
         orig_flags = QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled
         new_flags = orig_flags | QtCore.Qt.ItemIsEditable
+        if len(self.files) == 1:
+            current_file = list(self.files)[0]
+            display_tags = filter(lambda x: current_file.supports_tag(x),
+                                  result.tag_names)
+        else:
+            display_tags = result.tag_names
+        self.setRowCount(len(display_tags))
 
-        for i, name in enumerate(result.tag_names):
+        for i, name in enumerate(display_tags):
             length = name == "~length"
             tag_item = self.item(i, 0)
             orig_item = self.item(i, 1)
