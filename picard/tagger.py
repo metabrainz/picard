@@ -382,18 +382,18 @@ class Tagger(QtGui.QApplication):
             msg = QMessageBox()
             msg.setIcon(QMessageBox.Warning)
             msg.setWindowModality(QtCore.Qt.WindowModal)
-            msg.setWindowTitle(_(u"Large File Load"))
+            msg.setWindowTitle(_(u"Warning: Too many files at once"))
             msg.setText(
                 ungettext(
-                    u"Are you sure you want to load %d file? Picard may run very slowly" %num_files,
-                    u"Are you sure you want to load %d files? Picard may run very slowly" %num_files,
+                    u"Are you sure you want to load %d file? Picard may run very slowly" % num_files,
+                    u"Are you sure you want to load %d files? Picard may run very slowly" % num_files,
                     num_files))
-            cancel = msg.addButton(QMessageBox.Cancel)
+            cancel = msg.addButton(QMessageBox.No)
             msg.setDefaultButton(cancel)
-            msg.addButton(_(u"&Load"), QMessageBox.YesRole)
+            msg.addButton(QMessageBox.Yes)
             ret = msg.exec_()
 
-            if ret == QMessageBox.Cancel:
+            if ret == QMessageBox.No:
                 return False
 
         return True

@@ -46,7 +46,7 @@ class GeneralOptionsPage(OptionsPage):
         config.TextOption("persist", "oauth_access_token", ""),
         config.IntOption("persist", "oauth_access_token_expires", 0),
         config.TextOption("persist", "oauth_username", ""),
-        config.IntOption("setting", "file_import_threshold", 5000),
+        config.IntOption("setting", "file_import_warning_threshold", 5000),
     ]
 
     def __init__(self, parent=None):
