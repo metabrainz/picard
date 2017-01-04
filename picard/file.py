@@ -50,7 +50,6 @@ from picard.util.filenaming import make_short_filename
 from picard.util.tags import PRESERVED_TAGS
 from picard.const import QUERY_LIMIT
 
-
 class File(QtCore.QObject, Item):
 
     UNDEFINED = -1
@@ -185,6 +184,9 @@ class File(QtCore.QObject, Item):
         # Move extra files (images, playlists, etc.)
         if config.setting["move_files"] and config.setting["move_additional_files"]:
             self._move_additional_files(old_filename, new_filename)
+        #changes, delete extra files
+        if config.setting["move_files"] and config.setting["delete_additional_files"]:
+            self._delete_additional_files(old_filename)
         # Delete empty directories
         if config.setting["delete_empty_dirs"]:
             dirname = encode_filename(os.path.dirname(old_filename))
@@ -363,6 +365,27 @@ class File(QtCore.QObject, Item):
                     continue
                 log.debug("Moving %r to %r", old_file, new_file)
                 shutil.move(old_file, new_file)
+
+    def _delete_additional_files(self, old_filename):
+        """Delete all other files of type that are not being saved.."""
+
+        """Retrieve path of saved file"""
+        old_path = encode_filename(os.path.dirname(old_filename))
+
+        """Retrieve patterns(types) to be deleted"""
+        patterns = encode_filename(config.setting["delete_additional_files_pattern"])
+        patterns = filter(bool, [p.strip() for p in patterns.split()])
+        for pattern in patterns:
+            # FIXME glob1 is not documented, maybe we need our own implementation?
+            for old_file in glob.glob1(old_path, pattern):
+                old_file = os.path.join(old_path, old_file)
+                # FIXME we shouldn't do this from a thread!
+                if self.tagger.files.get(decode_filename(old_file)):
+                    """Ensures file being saved is not deleted"""
+                    log.debug("File loaded in the tagger, not deleting %r", old_file)
+                    continue
+                log.debug("Deleting %r", old_file)
+                os.remove(old_file)
 
     def remove(self, from_parent=True):
         if from_parent and self.parent:
