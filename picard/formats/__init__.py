@@ -50,8 +50,7 @@ def guess_format(filename, options=_formats):
         # the header for a particular file format.
         results = [(option._File.score(filename, fileobj, header), option.__name__, option)
                    for option in options
-                   if hasattr(option, "_File")
-                   and option._File is not None]
+                   if getattr(option, "_File", None)]
     if results:
         results.sort()
         if results[-1][0] > 0:
@@ -72,7 +71,7 @@ def open(filename):
             if i < 0:
                 return None
             ext = filename[i+1:].lower()
-            # Switch to extension based opening
+            # Switch to extension based opening if guess_format fails
             audio_file = _extensions[ext](filename)
         return audio_file
     except KeyError:
