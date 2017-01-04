@@ -19,6 +19,7 @@
 
 import sys
 from mutagen import _util
+from picard import log
 from picard.plugin import ExtensionPoint
 
 _formats = ExtensionPoint()
@@ -73,10 +74,13 @@ def open(filename):
             ext = filename[i+1:].lower()
             # Switch to extension based opening
             audio_file = _extensions[ext](filename)
+        return audio_file
     except KeyError:
         # None is returned if both the methods fail
-        pass
-    return audio_file
+        return None
+    except Exception as error:
+        log.error("Error occured:\n{}".format(error.message))
+        return None
 
 
 def _insert_bytes_no_mmap(fobj, size, offset, BUFFER_SIZE=2**16):
