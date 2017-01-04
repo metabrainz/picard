@@ -165,7 +165,7 @@ class FormatsTest(unittest.TestCase):
             audio = picard.formats.guess_format(temp_file)
             audio_original = picard.formats.open(self.filename)
             self.assertEqual(type(audio), type(audio_original))
-            os.unlink(temp_file)
+            self.addCleanup(os.unlink,temp_file)
 
 
 class FLACTest(FormatsTest):
