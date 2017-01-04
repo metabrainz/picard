@@ -39,7 +39,7 @@ def supported_formats():
     return formats
 
 
-def guess_format(filename, options):
+def guess_format(filename, options=_formats):
     """Select the best matching file type amongst supported formats."""
     results = []
     with file(filename, "rb") as fileobj:
@@ -55,10 +55,10 @@ def guess_format(filename, options):
         results.sort()
         if results[-1][0] > 0:
             # return the format with the highest matching score
-            return results[-1][2]
+            return results[-1][2](filename)
 
     # No positive score i.e. the fileobj's header did not match any supported format
-    raise Exception("Unknown audio format")
+    return None
 
 
 def open(filename):
@@ -68,12 +68,10 @@ def open(filename):
         return None
     ext = filename[i+1:].lower()
     try:
-        format = _extensions[ext]
+        audio_file = _extensions[ext](filename)
     except KeyError:
-        return None
-    else:
-        format = guess_format(filename, _formats)
-    return format(filename)
+        audio_file = guess_format(filename)
+    return audio_file
 
 
 def _insert_bytes_no_mmap(fobj, size, offset, BUFFER_SIZE=2**16):
