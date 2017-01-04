@@ -350,6 +350,9 @@ class File(QtCore.QObject, Item):
         """Move extra files, like playlists..."""
         old_path = encode_filename(os.path.dirname(old_filename))
         new_path = encode_filename(os.path.dirname(new_filename))
+        if pathcmp(old_path, new_path):
+            # no need to move files if old and new directories are identical
+            return
         patterns = encode_filename(config.setting["move_additional_files_pattern"])
         patterns = filter(bool, [p.strip() for p in patterns.split()])
         for pattern in patterns:
@@ -361,6 +364,13 @@ class File(QtCore.QObject, Item):
                 if self.tagger.files.get(decode_filename(old_file)):
                     log.debug("File loaded in the tagger, not moving %r", old_file)
                     continue
+                new_file_, ext = os.path.splitext(decode_filename(new_file))
+                tmp_filename = new_file_
+                i = 1
+                while (os.path.exists(encode_filename(new_file_ + ext))):
+                    new_file_ = "%s (%d)" % (tmp_filename, i)
+                    i += 1
+                new_file = encode_filename(new_file_ + ext)
                 log.debug("Moving %r to %r", old_file, new_file)
                 shutil.move(old_file, new_file)
 
