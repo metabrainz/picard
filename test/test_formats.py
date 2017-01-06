@@ -19,6 +19,7 @@ settings = {
     'id3v2_encoding': 'utf-8',
     'save_images_to_tags': True,
     'write_id3v23': False,
+    'id3v23_join_with': '/',
     'remove_ape_from_mp3': False,
     'remove_id3_from_flac': False,
     'rating_steps': 6,
@@ -307,6 +308,7 @@ class WMATest(FormatsTest):
         'website': 'http://example.com',
     }
 
+
 class ID3Test(FormatsTest):
 
     def test_id3_freeform_delete(self):
@@ -359,6 +361,30 @@ class ID3Test(FormatsTest):
         self.assertNotIn('Foo', new_metadata)
         self.assertNotIn('Bar', new_metadata)
         self.assertIn('FooBar', new_metadata)
+
+    def test_performer_duplication(self):
+        if not self.original:
+            return
+
+        def reset_id2ver(): config.setting['write_id3v23'] = False
+
+        self.addCleanup(reset_id2ver)
+        config.setting['write_id3v23'] = True
+        metadata = Metadata()
+        tags = {
+            'album': 'Foo',
+            'title': 'Foo',
+            'artist': 'Foo',
+            'performer:piano': 'Foo'
+        }
+
+        for (key, value) in tags.iteritems():
+            metadata[key] = value
+
+        original_metadata = save_and_load_metadata(self.filename, metadata)
+        new_metadata = save_and_load_metadata(self.filename, original_metadata)
+
+        self.assertEqual(len(new_metadata['performer:piano']), len(original_metadata['performer:piano']))
 
     def test_comment_delete(self):
         if not self.original:
