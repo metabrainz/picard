@@ -366,9 +366,9 @@ class ID3Test(FormatsTest):
         if not self.original:
             return
 
-        def reset_id2ver(): config.setting['write_id3v23'] = False
+        def reset_id3_ver(): config.setting['write_id3v23'] = False
 
-        self.addCleanup(reset_id2ver)
+        self.addCleanup(reset_id3_ver)
         config.setting['write_id3v23'] = True
         metadata = Metadata()
         tags = {
