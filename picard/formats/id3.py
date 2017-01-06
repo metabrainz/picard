@@ -316,9 +316,8 @@ class ID3File(File):
 
         tmcl = mutagen.id3.TMCL(encoding=encoding, people=[])
         tipl = mutagen.id3.TIPL(encoding=encoding, people=[])
+
         tags.delall('TCMP')
-        # tags.delall('TMCL')
-        # tags.delall('TIPL')
         for name, values in metadata.rawitems():
             values = [id3text(v, encoding) for v in values]
             name = id3text(name, encoding)
@@ -393,18 +392,8 @@ class ID3File(File):
             elif not name.startswith("~") and name not in self.__other_supported_tags:
                 tags.add(id3.TXXX(encoding=encoding, desc=name, text=values))
 
-        if config.setting['write_id3v23']:
-            import itertools
-            ipls = mutagen.id3.IPLS(encoding=encoding, people=[])
-            for performer in itertools.chain(tmcl.people, tipl.people):
-                ipls.people.append(performer)
-            if ipls.people:
-                tags.add(ipls)
-        else:
-            if tmcl.people:
-                tags.add(tmcl)
-            if tipl.people:
-                tags.add(tipl)
+        tags.add(tmcl)
+        tags.add(tipl)
 
         self._remove_deleted_tags(metadata, tags)
 
