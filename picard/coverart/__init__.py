@@ -88,7 +88,11 @@ class CoverArt:
             raise e
         except CoverArtImageIdentificationError as e:
             self.album.error_append(unicode(e))
-
+        # Run coverart downloaded processors
+        try:
+            run_coverart_downloaded_action(coverartimage)
+        except Exception as e:
+            log.debug(e)
 
     def _coverart_downloaded(self, coverartimage, data, http, error):
         """Handle finished download, save it to metadata"""
@@ -108,11 +112,6 @@ class CoverArt:
                 },
                 echo=None
             )
-            # Run coverart downloaded processors
-            try:
-                run_coverart_downloaded_action(coverartimage, data)
-            except Exception as e:
-                log.debug(e)
             try:
                 self._set_metadata(coverartimage, data)
             except CoverArtImageIOError:
@@ -254,13 +253,13 @@ def register_coverart_file_save_action(action):
     _coverart_file_save_actions.register(action.__module__, action)
 
 
-def run_coverart_downloaded_action(coverartimage, data):
-    _coverart_downloaded_actions.run(coverartimage, data)
+def run_coverart_downloaded_action(coverartimage):
+    _coverart_downloaded_actions.run(coverartimage)
 
 
 def run_coverart_tag_embed_action(coverartimage):
     _coverart_tag_embed_actions.run(coverartimage)
 
 
-def run_coverart_file_save_action(coverartimage, ext, filename):
-    _coverart_file_save_actions.run(coverartimage, ext, filename)
+def run_coverart_file_save_action(coverartimage):
+    _coverart_file_save_actions.run(coverartimage)
