@@ -67,7 +67,7 @@ class CompatID3(ID3):
         # leave TSOP, TSOA and TSOT even though they are officially defined
         # only in ID3v2.4, because most applications use them also in ID3v2.3
         frames = []
-        for key in ["TSOP", "TSOA", "TSOT", "TMOO"]:
+        for key in ["TSOP", "TSOA", "TSOT", "TSST"]:
             frames.extend(self.getall(key))
         super(CompatID3, self).update_to_v23()
         for frame in frames:

@@ -88,6 +88,7 @@ class ID3File(File):
         'XSOP': 'TSOP',
         'TXXX:ALBUMARTISTSORT': 'TSO2',
         'TXXX:COMPOSERSORT': 'TSOC',
+        'TXXX:mood': 'TMOO',
     }
 
     __translate = {
@@ -371,6 +372,11 @@ class ID3File(File):
                         for url in values:
                             tags.add(id3.WOAR(url=url))
                 elif frameid.startswith('T'):
+                    if config.setting['write_id3v23']:
+                        if frameid == 'TMOO':
+                            tags.add(id3.TXXX(encoding=encoding, desc='mood', text=values))
+                    # No need to care about the TMOO tag being added again as it is
+                    # automatically deleted by Mutagen if id2v23 is selected
                     tags.add(getattr(id3, frameid)(encoding=encoding, text=values))
                     if frameid == 'TSOA':
                         tags.delall('XSOA')

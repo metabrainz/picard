@@ -19,6 +19,7 @@ settings = {
     'id3v2_encoding': 'utf-8',
     'save_images_to_tags': True,
     'write_id3v23': False,
+    'id3v23_join_with': '/',
     'remove_ape_from_mp3': False,
     'remove_id3_from_flac': False,
     'rating_steps': 6,
@@ -375,6 +376,21 @@ class ID3Test(FormatsTest):
         self.assertIn('comment:bar', original_metadata)
         self.assertIn('comment:foo', new_metadata)
         self.assertNotIn('comment:bar', new_metadata)
+
+    def test_id3v23_simple_tags(self):
+        if not self.original:
+            return
+        def reset_to_id3v24(): config.setting['write_id3v23'] = False
+        config.setting['write_id3v23'] = True
+        self.addCleanup(reset_to_id3v24)
+        metadata = Metadata()
+        for (key, value) in self.tags.iteritems():
+            metadata[key] = value
+        loaded_metadata = save_and_load_metadata(self.filename, metadata)
+        for (key, value) in self.tags.iteritems():
+            # if key == 'comment:foo':
+            #    print "%r" % loaded_metadata
+            self.assertEqual(loaded_metadata[key], value, '%s: %r != %r' % (key, loaded_metadata[key], value))
 
 
 class MP3Test(ID3Test):
