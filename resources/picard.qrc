@@ -1,6 +1,7 @@
 <!DOCTYPE RCC><RCC version="1.0">
 <qresource>
     <file>images/16x16/action-go-down-16.png</file>
+    <file>images/16x16/add-item.png</file>
     <file>images/16x16/applications-system.png</file>
     <file>images/16x16/dialog-error.png</file>
     <file>images/16x16/document-open.png</file>
@@ -17,6 +18,7 @@
     <file>images/16x16/picard.png</file>
     <file>images/16x16/play-music.png</file>
     <file>images/16x16/preferences-desktop.png</file>
+    <file>images/16x16/remove-item.png</file>
     <file>images/16x16/view-refresh.png</file>
     <file>images/22x22/document-open.png</file>
     <file>images/22x22/document-save.png</file>
