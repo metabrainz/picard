@@ -106,6 +106,7 @@ class CoverOptionsPage(OptionsPage):
         self.ui.save_images_to_tags.clicked.connect(self.update_save_images_to_tags)
         self.provider_list_widget = ProviderList()
         self.ui.ca_providers_list.insertWidget(0, self.provider_list_widget)
+        self.ca_providers = []
 
     def load_cover_art_providers(self):
         """Load available providers, initialize provider-specific options, restore state of each
@@ -124,8 +125,7 @@ class CoverOptionsPage(OptionsPage):
             self.provider_list_widget.addItem(SortableCheckboxListItem(title, checked=checked, data=provider.NAME))
 
         def update_providers_options(items):
-            config.setting['ca_providers'] = [(item.data, item.checked)
-                                              for item in items]
+            self.ca_providers = [(item.data, item.checked) for item in items]
         self.provider_list_widget.changed.connect(update_providers_options)
 
     def load(self):
@@ -134,6 +134,7 @@ class CoverOptionsPage(OptionsPage):
         self.ui.save_images_to_files.setChecked(config.setting["save_images_to_files"])
         self.ui.cover_image_filename.setText(config.setting["cover_image_filename"])
         self.ui.save_images_overwrite.setChecked(config.setting["save_images_overwrite"])
+        self.ca_providers = config.setting["ca_providers"]
         self.load_cover_art_providers()
         self.update_all()
 
@@ -143,6 +144,7 @@ class CoverOptionsPage(OptionsPage):
         config.setting["save_images_to_files"] = self.ui.save_images_to_files.isChecked()
         config.setting["cover_image_filename"] = unicode(self.ui.cover_image_filename.text())
         config.setting["save_images_overwrite"] = self.ui.save_images_overwrite.isChecked()
+        config.setting["ca_providers"] = self.ca_providers
 
     def update_all(self):
         self.update_filename()
