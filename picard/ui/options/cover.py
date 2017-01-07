@@ -61,6 +61,10 @@ class CoverOptionsPage(OptionsPage):
     def load_cover_art_providers(self):
         """Load available providers, initialize provider-specific options, restore state of each
         """
+        # Remove current provider items during a reset
+        if self.ui.ca_providers_list.count() > 1:
+            self.ui.ca_providers_list.itemAt(0).widget().setParent(None)
+
         widget = SortableCheckboxListWidget()
         providers = cover_art_providers()
         for provider in providers:
