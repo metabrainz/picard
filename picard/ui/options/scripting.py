@@ -24,6 +24,7 @@ from picard.script import ScriptParser
 from picard.ui.options import OptionsPage, OptionsCheckError, register_options_page
 from picard.ui.ui_options_script import Ui_ScriptingOptionsPage
 from picard.util import icontheme
+
 DEFAULT_NUMBERED_SCRIPT_NAME = N_("My script %d")
 DEFAULT_SCRIPT_NAME = N_("My script")
 
@@ -143,10 +144,10 @@ class ScriptingOptionsPage(OptionsPage):
         self.listitem_to_scriptitem = {}
         self.list_of_scripts = []
 
-        add_fallback_icon = icontheme.lookup('add-item')
-        remove_fallback_icon = icontheme.lookup('remove-item')
-        self.ui.add_script.setIcon(QtGui.QIcon.fromTheme("add", add_fallback_icon))
-        self.ui.remove_script.setIcon(QtGui.QIcon.fromTheme("remove", remove_fallback_icon))
+        add_script_fallback_icon = icontheme.lookup('add-item')
+        remove_script_fallback_icon = icontheme.lookup('remove-item')
+        self.ui.add_script.setIcon(QtGui.QIcon.fromTheme("add", add_script_fallback_icon))
+        self.ui.remove_script.setIcon(QtGui.QIcon.fromTheme("remove", remove_script_fallback_icon))
 
     def script_attr_changed(self, item):
         item.setSelected(True)
