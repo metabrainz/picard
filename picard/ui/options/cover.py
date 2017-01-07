@@ -28,6 +28,52 @@ from picard.ui.sortablecheckboxlist import (
 )
 
 
+class ProviderList(SortableCheckboxListWidget):
+
+    def __init__(self, parent=None):
+        super(ProviderList, self).__init__(parent)
+        self._all_marked = False
+        self.item_marking = []
+
+    def addItem(self, item):
+        self.item_markings.append(False)
+        super(ProviderList,self).addItem(item)
+
+    def addItems(self, items):
+        for item in items:
+            self.addItem(item)
+
+    def moveItem(self, from_row, to_row):
+        self.item_markings[from_row], self.item_markings[to_row] = self.item_markings[to_row], self.item_markings[
+            from_row]
+        super(ProviderList,self).moveItem(from_row, to_row)
+
+    def set_item_marking(self, row, value):
+        self.item_marking[row] = value
+
+    def set_all_marked(self, value):
+        self._all_marked = value
+
+    def remove_marked(self):
+        if self._all_marked:
+            for i in reversed(range(len(self.__items))):
+                self._remove(i)
+            self.__items = []
+            self._all_marked = False
+            self.item_marking = []
+        else:
+            indices = []
+            for i in reversed(range(len(self.__items))):
+                if self.item_marking[i]:
+                    indices.append(i)
+                    self._remove(i)
+            self.__items= [i for j, i in enumerate(self.__items) if j not in indices]
+            self.item_marking = [i for j, i in enumerate(self.__item_marking) if j not in indices]
+
+    def _remove(self, row):
+        self.layout().itemAtPosition(row, self._CHECKBOX_POS).widget().setParent(None)
+
+
 class CoverOptionsPage(OptionsPage):
 
     NAME = "cover"
@@ -57,15 +103,23 @@ class CoverOptionsPage(OptionsPage):
         self.ui.setupUi(self)
         self.ui.save_images_to_files.clicked.connect(self.update_filename)
         self.ui.save_images_to_tags.clicked.connect(self.update_save_images_to_tags)
+        self.provider_list_widget = ProviderList()
+        self.ui.ca_providers_list.insertWidget(0, self.provider_list_widget)
 
     def load_cover_art_providers(self):
         """Load available providers, initialize provider-specific options, restore state of each
         """
+
+        self.provider_list_widget.set_all_marked(True)
+        self.provider_list_widget.remove_marked()
+
+        '''
         # Remove current provider items during a reset
         if self.ui.ca_providers_list.count() > 1:
             self.ui.ca_providers_list.itemAt(0).widget().setParent(None)
 
         widget = SortableCheckboxListWidget()
+        '''
         providers = cover_art_providers()
         for provider in providers:
             try:
@@ -73,13 +127,13 @@ class CoverOptionsPage(OptionsPage):
             except AttributeError:
                 title = provider.NAME
             checked = is_provider_enabled(provider.NAME)
-            widget.addItem(SortableCheckboxListItem(title, checked=checked, data=provider.NAME))
+            self.provider_list_widget.addItem(SortableCheckboxListItem(title, checked=checked, data=provider.NAME))
 
         def update_providers_options(items):
             config.setting['ca_providers'] = [(item.data, item.checked)
                                               for item in items]
-        widget.changed.connect(update_providers_options)
-        self.ui.ca_providers_list.insertWidget(0, widget)
+        self.provider_list_widget.changed.connect(update_providers_options)
+        # self.ui.ca_providers_list.insertWidget(0, widget)
 
     def load(self):
         self.ui.save_images_to_tags.setChecked(config.setting["save_images_to_tags"])
