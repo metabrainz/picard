@@ -105,7 +105,7 @@ class Ui_MetadataOptionsPage(object):
         self.metadata_groupbox.setTitle(_("Metadata"))
         self.translate_artist_names.setText(_("Translate artist names to this locale where possible:"))
         self.standardize_artists.setText(_("Use standardized artist names"))
-        self.language_from_release.setText(_("Use language from release for tracks without work language"))
+        self.language_from_release.setText(_("Use the release language as fallback for tracks"))
         self.convert_punctuation.setText(_("Convert Unicode punctuation characters to ASCII"))
         self.release_ars.setText(_("Use release relationships"))
         self.track_ars.setText(_("Use track relationships"))
