@@ -31,12 +31,12 @@ from picard.ui.sortablecheckboxlist import (
 class ProviderList(SortableCheckboxListWidget):
 
     def __init__(self, parent=None):
-        super(ProviderList, self).__init__(parent)
         self._all_marked = False
         self.item_marking = []
+        super(ProviderList, self).__init__(parent)
 
     def addItem(self, item):
-        self.item_markings.append(False)
+        self.item_marking.append(False)
         super(ProviderList,self).addItem(item)
 
     def addItems(self, items):
@@ -44,7 +44,7 @@ class ProviderList(SortableCheckboxListWidget):
             self.addItem(item)
 
     def moveItem(self, from_row, to_row):
-        self.item_markings[from_row], self.item_markings[to_row] = self.item_markings[to_row], self.item_markings[
+        self.item_marking[from_row], self.item_marking[to_row] = self.item_marking[to_row], self.item_marking[
             from_row]
         super(ProviderList,self).moveItem(from_row, to_row)
 
@@ -56,18 +56,18 @@ class ProviderList(SortableCheckboxListWidget):
 
     def remove_marked(self):
         if self._all_marked:
-            for i in reversed(range(len(self.__items))):
+            for i in reversed(range(len(self._SortableCheckboxListWidget__items))):
                 self._remove(i)
-            self.__items = []
+            self._SortableCheckboxListWidget__items = []
             self._all_marked = False
             self.item_marking = []
         else:
             indices = []
-            for i in reversed(range(len(self.__items))):
+            for i in reversed(range(len(self._SortableCheckboxListWidget__items))):
                 if self.item_marking[i]:
                     indices.append(i)
                     self._remove(i)
-            self.__items= [i for j, i in enumerate(self.__items) if j not in indices]
+            self._SortableCheckboxListWidget__items= [i for j, i in enumerate(self._SortableCheckboxListWidget__items) if j not in indices]
             self.item_marking = [i for j, i in enumerate(self.__item_marking) if j not in indices]
 
     def _remove(self, row):
