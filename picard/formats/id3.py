@@ -392,10 +392,8 @@ class ID3File(File):
             elif not name.startswith("~") and name not in self.__other_supported_tags:
                 tags.add(id3.TXXX(encoding=encoding, desc=name, text=values))
 
-        if tmcl.people:
-            tags.add(tmcl)
-        if tipl.people:
-            tags.add(tipl)
+        tags.add(tmcl)
+        tags.add(tipl)
 
         self._remove_deleted_tags(metadata, tags)
 
