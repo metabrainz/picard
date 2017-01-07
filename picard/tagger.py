@@ -332,6 +332,8 @@ class Tagger(QtGui.QApplication):
                     self.analyze([file])
             elif config.setting['analyze_new_files'] and file.can_analyze():
                 self.analyze([file])
+            if config.setting['cluster_new_files']:
+                self.cluster([file])
 
     def move_files(self, files, target):
         if isinstance(target, (Track, Cluster)):
