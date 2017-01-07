@@ -31,13 +31,13 @@ from picard.ui.sortablecheckboxlist import (
 class ProviderList(SortableCheckboxListWidget):
 
     def __init__(self, parent=None):
-        self._all_marked = False
+        self.all_marked = False
         self.item_marking = []
         super(ProviderList, self).__init__(parent)
 
     def addItem(self, item):
         self.item_marking.append(False)
-        super(ProviderList,self).addItem(item)
+        super(ProviderList, self).addItem(item)
 
     def addItems(self, items):
         for item in items:
@@ -46,20 +46,20 @@ class ProviderList(SortableCheckboxListWidget):
     def moveItem(self, from_row, to_row):
         self.item_marking[from_row], self.item_marking[to_row] = self.item_marking[to_row], self.item_marking[
             from_row]
-        super(ProviderList,self).moveItem(from_row, to_row)
+        super(ProviderList, self).moveItem(from_row, to_row)
 
     def set_item_marking(self, row, value):
         self.item_marking[row] = value
 
     def set_all_marked(self, value):
-        self._all_marked = value
+        self.all_marked = value
 
     def remove_marked(self):
-        if self._all_marked:
+        if self.all_marked:
             for i in reversed(range(len(self._SortableCheckboxListWidget__items))):
                 self._remove(i)
             self._SortableCheckboxListWidget__items = []
-            self._all_marked = False
+            self.all_marked = False
             self.item_marking = []
         else:
             indices = []
@@ -67,7 +67,8 @@ class ProviderList(SortableCheckboxListWidget):
                 if self.item_marking[i]:
                     indices.append(i)
                     self._remove(i)
-            self._SortableCheckboxListWidget__items= [i for j, i in enumerate(self._SortableCheckboxListWidget__items) if j not in indices]
+            self._SortableCheckboxListWidget__items = [i for j, i in enumerate(self._SortableCheckboxListWidget__items)
+                                                       if j not in indices]
             self.item_marking = [i for j, i in enumerate(self.__item_marking) if j not in indices]
 
     def _remove(self, row):
@@ -109,17 +110,10 @@ class CoverOptionsPage(OptionsPage):
     def load_cover_art_providers(self):
         """Load available providers, initialize provider-specific options, restore state of each
         """
-
+        # Mark and remove previous entries in providers during reset
         self.provider_list_widget.set_all_marked(True)
         self.provider_list_widget.remove_marked()
 
-        '''
-        # Remove current provider items during a reset
-        if self.ui.ca_providers_list.count() > 1:
-            self.ui.ca_providers_list.itemAt(0).widget().setParent(None)
-
-        widget = SortableCheckboxListWidget()
-        '''
         providers = cover_art_providers()
         for provider in providers:
             try:
@@ -133,7 +127,6 @@ class CoverOptionsPage(OptionsPage):
             config.setting['ca_providers'] = [(item.data, item.checked)
                                               for item in items]
         self.provider_list_widget.changed.connect(update_providers_options)
-        # self.ui.ca_providers_list.insertWidget(0, widget)
 
     def load(self):
         self.ui.save_images_to_tags.setChecked(config.setting["save_images_to_tags"])
