@@ -56,10 +56,8 @@
            <property name="text">
             <string>...</string>
            </property>
-           <property name="icon">
-            <iconset theme="add">
-             <normaloff/>
-            </iconset>
+           <property name="autoRaise">
+            <bool>false</bool>
            </property>
           </widget>
          </item>
@@ -71,10 +69,11 @@
            <property name="text">
             <string>...</string>
            </property>
-           <property name="icon">
-            <iconset theme="remove">
-             <normaloff/>
-            </iconset>
+           <property name="toolButtonStyle">
+            <enum>Qt::ToolButtonIconOnly</enum>
+           </property>
+           <property name="autoRaise">
+            <bool>false</bool>
            </property>
           </widget>
          </item>
@@ -86,10 +85,8 @@
            <property name="text">
             <string>...</string>
            </property>
-           <property name="icon">
-            <iconset theme="up">
-             <normaloff/>
-            </iconset>
+           <property name="arrowType">
+            <enum>Qt::UpArrow</enum>
            </property>
           </widget>
          </item>
@@ -101,10 +98,8 @@
            <property name="text">
             <string>...</string>
            </property>
-           <property name="icon">
-            <iconset theme="down">
-             <normaloff/>
-            </iconset>
+           <property name="arrowType">
+            <enum>Qt::DownArrow</enum>
            </property>
           </widget>
          </item>
