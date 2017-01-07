@@ -186,6 +186,9 @@ class MetadataBox(QtGui.QTableWidget):
         self.changes_first_action.setChecked(config.persist["show_changes_first"])
         self.changes_first_action.toggled.connect(self.toggle_changes_first)
         self.browser_integration = BrowserIntegration()
+        QtGui.QShortcut(QtGui.QKeySequence(_("Alt+Shift+R")), self, self.remove_selected_tags)
+        QtGui.QShortcut(QtGui.QKeySequence(_("Alt+Shift+A")), self, partial(self.edit_tag, ""))
+        QtGui.QShortcut(QtGui.QKeySequence(_("Alt+Shift+E")), self, partial(self.edit_selected_tag))
 
     def get_file_lookup(self):
         """Return a FileLookup object."""
@@ -310,6 +313,11 @@ class MetadataBox(QtGui.QTableWidget):
 
     def edit_tag(self, tag):
         EditTagDialog(self.parent, tag).exec_()
+
+    def edit_selected_tag(self):
+        tags = self.selected_tags()
+        if len(tags) == 1:
+            self.edit_tag(list(tags)[0])
 
     def toggle_changes_first(self, checked):
         config.persist["show_changes_first"] = checked
