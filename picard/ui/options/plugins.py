@@ -131,7 +131,6 @@ class PluginsOptionsPage(OptionsPage):
         else:
             self.ui.plugins.setCurrentItem(self.ui.plugins.topLevelItem(0))
 
-
     def _populate(self):
         self.ui.details.setText("<b>" + _("No plugins installed.") + "</b>")
         self._user_interaction(False)
@@ -158,7 +157,19 @@ class PluginsOptionsPage(OptionsPage):
 
         self._user_interaction(True)
 
+    def _remove_all(self):
+        self._user_interaction(False)
+        for i, p in self.items.items():
+            idx = self.ui.plugins.indexOfTopLevelItem(i)
+            item = self.ui.plugins.takeTopLevelItem(idx)
+            del item
+        self.items = {}
+        self._user_interaction(True)
+
     def load(self):
+        # Remove previous entries during reset
+        self._remove_all()
+
         self._populate()
         self.restore_state()
 
