@@ -73,6 +73,8 @@ class ProviderList(SortableCheckboxListWidget):
 
     def _remove(self, row):
         self.layout().itemAtPosition(row, self._CHECKBOX_POS).widget().setParent(None)
+        self.layout().itemAtPosition(row, self._BUTTON_UP).widget().setParent(None)
+        self.layout().itemAtPosition(row, self._BUTTON_DOWN).widget().setParent(None)
 
 
 class CoverOptionsPage(OptionsPage):
