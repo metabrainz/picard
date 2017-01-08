@@ -306,7 +306,7 @@ class Cluster(QtCore.QObject, Item):
         yes = msg.addButton("Yes", QMessageBox.YesRole)
         msg.setDefaultButton(yes)
 
-        cluster_list = ["Current cluster:"]
+        cluster_list = [_("Current cluster:")]
         for cluster_id in album:
             if cluster_id < track_id:
                 track = {
