@@ -152,6 +152,7 @@ class ScriptingOptionsPage(OptionsPage):
         remove_script_fallback_icon = icontheme.lookup('remove-item')
         self.ui.add_script.setIcon(QtGui.QIcon.fromTheme("add", add_script_fallback_icon))
         self.ui.remove_script.setIcon(QtGui.QIcon.fromTheme("remove", remove_script_fallback_icon))
+        self.list_widget = SortableCheckboxListWidget()
 
     def script_attr_changed(self, item):
         item.setSelected(True)
@@ -173,11 +174,10 @@ class ScriptingOptionsPage(OptionsPage):
     def add_to_list_of_scripts(self):
         count = self.ui.script_list.count()
         name = _(DEFAULT_NUMBERED_SCRIPT_NAME) % (count + 1)
-        widget = SortableCheckboxListWidget()
-        widget.addItem(SortableCheckboxListItem(name, checked=True, data=name))
+        self.list_widget.addItem(SortableCheckboxListItem(name, checked=True, data=name))
         item = QtGui.QListWidgetItem()
         self.ui.script_list.addItem(item)
-        self.ui.script_list.setItemWidget(item, widget)
+        self.ui.script_list.setItemWidget(item, self.list_widget)
 
         # Previous implementation
         '''
