@@ -403,7 +403,7 @@ class MetadataBox(QtGui.QTableWidget):
             orig_metadata = file.orig_metadata
             tags = set(new_metadata.keys() + orig_metadata.keys())
 
-            for name in filter(lambda x: not x.startswith("~"), tags):
+            for name in filter(lambda x: not x.startswith("~") and file.supports_tag(x), tags):
                 new_values = new_metadata.getall(name)
                 orig_values = orig_metadata.getall(name)
 
@@ -462,17 +462,12 @@ class MetadataBox(QtGui.QTableWidget):
             self.setRowCount(0)
             return
 
+        self.setRowCount(len(result.tag_names))
+
         orig_flags = QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled
         new_flags = orig_flags | QtCore.Qt.ItemIsEditable
-        if len(self.files) == 1:
-            current_file = list(self.files)[0]
-            display_tags = filter(lambda x: current_file.supports_tag(x),
-                                  result.tag_names)
-        else:
-            display_tags = result.tag_names
-        self.setRowCount(len(display_tags))
 
-        for i, name in enumerate(display_tags):
+        for i, name in enumerate(result.tag_names):
             length = name == "~length"
             tag_item = self.item(i, 0)
             orig_item = self.item(i, 1)
