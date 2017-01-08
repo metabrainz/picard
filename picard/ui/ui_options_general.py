@@ -77,6 +77,9 @@ class Ui_GeneralOptionsPage(object):
         self.analyze_new_files = QtGui.QCheckBox(self.groupBox_2)
         self.analyze_new_files.setObjectName(_fromUtf8("analyze_new_files"))
         self.verticalLayout.addWidget(self.analyze_new_files)
+        self.cluster_new_files = QtGui.QCheckBox(self.groupBox_2)
+        self.cluster_new_files.setObjectName(_fromUtf8("cluster_new_files"))
+        self.verticalLayout.addWidget(self.cluster_new_files)
         self.ignore_file_mbids = QtGui.QCheckBox(self.groupBox_2)
         self.ignore_file_mbids.setObjectName(_fromUtf8("ignore_file_mbids"))
         self.verticalLayout.addWidget(self.ignore_file_mbids)
@@ -97,5 +100,5 @@ class Ui_GeneralOptionsPage(object):
         self.logout.setText(_("Log out"))
         self.groupBox_2.setTitle(_("General"))
         self.analyze_new_files.setText(_("Automatically scan all new files"))
+        self.cluster_new_files.setText(_("Automatically cluster when loading new files"))
         self.ignore_file_mbids.setText(_("Ignore MBIDs when loading new files"))
-
