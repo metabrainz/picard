@@ -28,55 +28,6 @@ from picard.ui.sortablecheckboxlist import (
 )
 
 
-class ProviderList(SortableCheckboxListWidget):
-
-    def __init__(self, parent=None):
-        self.all_marked = False
-        self.item_marking = []
-        super(ProviderList, self).__init__(parent)
-
-    def addItem(self, item):
-        self.item_marking.append(False)
-        super(ProviderList, self).addItem(item)
-
-    def addItems(self, items):
-        for item in items:
-            self.addItem(item)
-
-    def moveItem(self, from_row, to_row):
-        self.item_marking[from_row], self.item_marking[to_row] = self.item_marking[to_row], self.item_marking[
-            from_row]
-        super(ProviderList, self).moveItem(from_row, to_row)
-
-    def set_item_marking(self, row, value):
-        self.item_marking[row] = value
-
-    def set_all_marked(self, value):
-        self.all_marked = value
-
-    def remove_marked(self):
-        if self.all_marked:
-            for i in reversed(range(len(self._SortableCheckboxListWidget__items))):
-                self._remove(i)
-            self._SortableCheckboxListWidget__items = []
-            self.all_marked = False
-            self.item_marking = []
-        else:
-            indices = []
-            for i in reversed(range(len(self._SortableCheckboxListWidget__items))):
-                if self.item_marking[i]:
-                    indices.append(i)
-                    self._remove(i)
-            self._SortableCheckboxListWidget__items = [i for j, i in enumerate(self._SortableCheckboxListWidget__items)
-                                                       if j not in indices]
-            self.item_marking = [i for j, i in enumerate(self.__item_marking) if j not in indices]
-
-    def _remove(self, row):
-        self.layout().itemAtPosition(row, self._CHECKBOX_POS).widget().setParent(None)
-        self.layout().itemAtPosition(row, self._BUTTON_UP).widget().setParent(None)
-        self.layout().itemAtPosition(row, self._BUTTON_DOWN).widget().setParent(None)
-
-
 class CoverOptionsPage(OptionsPage):
 
     NAME = "cover"
@@ -106,7 +57,7 @@ class CoverOptionsPage(OptionsPage):
         self.ui.setupUi(self)
         self.ui.save_images_to_files.clicked.connect(self.update_filename)
         self.ui.save_images_to_tags.clicked.connect(self.update_save_images_to_tags)
-        self.provider_list_widget = ProviderList()
+        self.provider_list_widget = SortableCheckboxListWidget()
         self.ui.ca_providers_list.insertWidget(0, self.provider_list_widget)
         self.ca_providers = []
 
