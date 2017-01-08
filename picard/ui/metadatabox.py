@@ -312,10 +312,22 @@ class MetadataBox(QtGui.QTableWidget):
             if len(tags) == 1 or removals or useorigs:
                 menu.addSeparator()
             menu.addAction(self.add_tag_action)
+            add_to_preserved_tags_action = QtGui.QAction(_(u"Add selected tags to 'Preserve Tags' list"), self.parent)
+            add_to_preserved_tags_action.triggered.connect(self.add_to_preserved_tags)
+            menu.addAction(add_to_preserved_tags_action)
             menu.addSeparator()
         menu.addAction(self.changes_first_action)
         menu.exec_(event.globalPos())
         event.accept()
+
+    def add_to_preserved_tags(self):
+        tags = self.selected_tags()
+        preserved_tags = config.setting['preserved_tags'].split(',')
+        for tag in preserved_tags:
+            if tag.strip() == "":
+                preserved_tags.remove(tag)
+        preserved_tags.extend(tags)
+        config.setting['preserved_tags'] = ", ".join(preserved_tags)
 
     def edit_tag(self, tag):
         EditTagDialog(self.parent, tag).exec_()
