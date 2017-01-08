@@ -164,12 +164,15 @@ class File(QtCore.QObject, Item):
         new_metadata = self.new_metadata
         orig_metadata = self.orig_metadata
         tags = set(new_metadata.keys() + orig_metadata.keys())
-        for name in filter(lambda x: not x.startswith("~") and self.supports_tag(x), tags):
+        for name in filter(lambda x: (not x.startswith("~")
+                                      or x.startswith("~id3")
+                                      or x == "~rating")
+                                    and self.supports_tag(x), tags):
             new_values = new_metadata.getall(name)
             orig_values = orig_metadata.getall(name)
             if new_values != orig_values:
                 return False
-        if orig_metadata.length != new_metadata.length:
+        if abs(float(orig_metadata.length) - float(new_metadata.length)) > 2000:
             return False
         return True
 
