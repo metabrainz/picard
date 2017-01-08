@@ -158,16 +158,15 @@ class PluginsOptionsPage(OptionsPage):
         self._user_interaction(True)
 
     def _remove_all(self):
-        self._user_interaction(False)
         for i, p in self.items.items():
             idx = self.ui.plugins.indexOfTopLevelItem(i)
             item = self.ui.plugins.takeTopLevelItem(idx)
             del item
         self.items = {}
-        self._user_interaction(True)
 
     def load(self):
         # Remove previous entries during reset
+        self._user_interaction(False)
         self._remove_all()
 
         self._populate()
@@ -185,11 +184,7 @@ class PluginsOptionsPage(OptionsPage):
         self.ui.details.setText("")
         self._user_interaction(False)
         self.save_state()
-        for i, p in self.items.items():
-            idx = self.ui.plugins.indexOfTopLevelItem(i)
-            item = self.ui.plugins.takeTopLevelItem(idx)
-            del item
-        self.items = {}
+        self._remove_all()
         self.tagger.pluginmanager.query_available_plugins(callback=self._reload)
 
     def plugin_installed(self, plugin):
