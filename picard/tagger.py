@@ -376,7 +376,7 @@ class Tagger(QtGui.QApplication):
     def check_load(self, new_files):
         #Load large amounts of files
         num_files = len(new_files)
-        if num_files > config.setting["file_import_threshold"]:
+        if num_files > config.setting["file_import_warning_threshold"]:
             QMessageBox = QtGui.QMessageBox
 
             msg = QMessageBox()

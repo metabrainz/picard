@@ -142,7 +142,7 @@
       <number>2</number>
      </property>
      <item row="0" column="1">
-       <widget class="QSpinBox" name="file_import_threshold">
+       <widget class="QSpinBox" name="file_import_warning_threshold">
         <property name="minimum">
          <number>1</number>
         </property>
@@ -163,7 +163,7 @@
          </sizepolicy>
         </property>
         <property name="text">
-         <string>Maximum number of files to import without error:</string>
+         <string>Warn if user tries to load more than this number of files at once:</string>
         </property>
        </widget>
       </item>
