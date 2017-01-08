@@ -412,7 +412,11 @@ class Tagger(QtGui.QApplication):
                     self.add_files(result)
                 thread.run_task(get_files, process)
 
-        process(True, False)
+        if config.setting['recursively_add_files']:
+            process(True, False)
+        else:
+            self.add_files(os.path.join(path, f) for f in os.listdir(path))
+
 
     def get_file_lookup(self):
         """Return a FileLookup object."""
