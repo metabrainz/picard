@@ -158,6 +158,21 @@ class File(QtCore.QObject, Item):
         """Load metadata from the file."""
         raise NotImplementedError
 
+    def _test_same(self):
+        if config.setting['clear_existing_tags']:
+            return False
+        new_metadata = self.new_metadata
+        orig_metadata = self.orig_metadata
+        tags = set(new_metadata.keys() + orig_metadata.keys())
+        for name in filter(lambda x: not x.startswith("~") and self.supports_tag(x), tags):
+            new_values = new_metadata.getall(name)
+            orig_values = orig_metadata.getall(name)
+            if new_values != orig_values:
+                return False
+        if orig_metadata.length != new_metadata.length:
+            return False
+        return True
+
     def save(self):
         self.set_pending()
         metadata = Metadata()
@@ -172,14 +187,17 @@ class File(QtCore.QObject, Item):
         """Save the metadata."""
         new_filename = old_filename
         if not config.setting["dont_write_tags"]:
-            encoded_old_filename = encode_filename(old_filename)
-            info = os.stat(encoded_old_filename)
-            self._save(old_filename, metadata)
-            if config.setting["preserve_timestamps"]:
-                try:
-                    os.utime(encoded_old_filename, (info.st_atime, info.st_mtime))
-                except OSError:
-                    log.warning("Couldn't preserve timestamp for %r", old_filename)
+            if config.setting['dont_save_on_unchanged'] and self._test_same():
+                log.debug("No changes in tags detected for %r Skipping..." % (old_filename))
+            else:
+                encoded_old_filename = encode_filename(old_filename)
+                info = os.stat(encoded_old_filename)
+                self._save(old_filename, metadata)
+                if config.setting["preserve_timestamps"]:
+                    try:
+                        os.utime(encoded_old_filename, (info.st_atime, info.st_mtime))
+                    except OSError:
+                        log.warning("Couldn't preserve timestamp for %r", old_filename)
         # Rename files
         if config.setting["rename_files"] or config.setting["move_files"]:
             new_filename = self._rename(old_filename, metadata)
