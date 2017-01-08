@@ -8,12 +8,21 @@ from PyQt4 import QtCore, QtGui
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
 except AttributeError:
-    _fromUtf8 = lambda s: s
+    def _fromUtf8(s):
+        return s
+
+try:
+    _encoding = QtGui.QApplication.UnicodeUTF8
+    def _translate(context, text, disambig):
+        return QtGui.QApplication.translate(context, text, disambig, _encoding)
+except AttributeError:
+    def _translate(context, text, disambig):
+        return QtGui.QApplication.translate(context, text, disambig)
 
 class Ui_TagsOptionsPage(object):
     def setupUi(self, TagsOptionsPage):
         TagsOptionsPage.setObjectName(_fromUtf8("TagsOptionsPage"))
-        TagsOptionsPage.resize(539, 425)
+        TagsOptionsPage.resize(569, 458)
         self.vboxlayout = QtGui.QVBoxLayout(TagsOptionsPage)
         self.vboxlayout.setObjectName(_fromUtf8("vboxlayout"))
         self.write_tags = QtGui.QCheckBox(TagsOptionsPage)
@@ -25,8 +34,8 @@ class Ui_TagsOptionsPage(object):
         self.before_tagging = QtGui.QGroupBox(TagsOptionsPage)
         self.before_tagging.setObjectName(_fromUtf8("before_tagging"))
         self.vboxlayout1 = QtGui.QVBoxLayout(self.before_tagging)
-        self.vboxlayout1.setSpacing(2)
         self.vboxlayout1.setContentsMargins(-1, 6, -1, 7)
+        self.vboxlayout1.setSpacing(2)
         self.vboxlayout1.setObjectName(_fromUtf8("vboxlayout1"))
         self.clear_existing_tags = QtGui.QCheckBox(self.before_tagging)
         self.clear_existing_tags.setObjectName(_fromUtf8("clear_existing_tags"))
@@ -37,6 +46,9 @@ class Ui_TagsOptionsPage(object):
         self.remove_ape_from_mp3 = QtGui.QCheckBox(self.before_tagging)
         self.remove_ape_from_mp3.setObjectName(_fromUtf8("remove_ape_from_mp3"))
         self.vboxlayout1.addWidget(self.remove_ape_from_mp3)
+        self.dont_save_on_unchanged = QtGui.QCheckBox(self.before_tagging)
+        self.dont_save_on_unchanged.setObjectName(_fromUtf8("dont_save_on_unchanged"))
+        self.vboxlayout1.addWidget(self.dont_save_on_unchanged)
         spacerItem = QtGui.QSpacerItem(20, 6, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Fixed)
         self.vboxlayout1.addItem(spacerItem)
         self.preserved_tags_label = QtGui.QLabel(self.before_tagging)
@@ -52,8 +64,8 @@ class Ui_TagsOptionsPage(object):
         self.tag_compatibility = QtGui.QGroupBox(TagsOptionsPage)
         self.tag_compatibility.setObjectName(_fromUtf8("tag_compatibility"))
         self.vboxlayout2 = QtGui.QVBoxLayout(self.tag_compatibility)
-        self.vboxlayout2.setSpacing(2)
         self.vboxlayout2.setContentsMargins(-1, 6, -1, 7)
+        self.vboxlayout2.setSpacing(2)
         self.vboxlayout2.setObjectName(_fromUtf8("vboxlayout2"))
         self.id3v2_version = QtGui.QGroupBox(self.tag_compatibility)
         self.id3v2_version.setFlat(False)
@@ -155,6 +167,7 @@ class Ui_TagsOptionsPage(object):
         self.clear_existing_tags.setText(_("Clear existing tags"))
         self.remove_id3_from_flac.setText(_("Remove ID3 tags from FLAC files"))
         self.remove_ape_from_mp3.setText(_("Remove APEv2 tags from MP3 files"))
+        self.dont_save_on_unchanged.setText(_("Don\'t save files if the tags are uncahnged"))
         self.preserved_tags_label.setText(_("Preserve these tags from being cleared or overwritten with MusicBrainz data:"))
         self.preserved_tags_help.setText(_("Tags are separated by commas, and are case-sensitive."))
         self.tag_compatibility.setTitle(_("Tag Compatibility"))
