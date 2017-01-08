@@ -24,6 +24,10 @@ from picard.script import ScriptParser
 from picard.ui.options import OptionsPage, OptionsCheckError, register_options_page
 from picard.ui.ui_options_script import Ui_ScriptingOptionsPage
 from picard.util import icontheme
+from picard.ui.sortablecheckboxlist import (
+    SortableCheckboxListWidget,
+    SortableCheckboxListItem
+)
 
 DEFAULT_NUMBERED_SCRIPT_NAME = N_("My script %d")
 DEFAULT_SCRIPT_NAME = N_("My script")
@@ -168,6 +172,16 @@ class ScriptingOptionsPage(OptionsPage):
 
     def add_to_list_of_scripts(self):
         count = self.ui.script_list.count()
+        name = _(DEFAULT_NUMBERED_SCRIPT_NAME) % (count + 1)
+        widget = SortableCheckboxListWidget()
+        widget.addItem(SortableCheckboxListItem(name, checked=True, data=name))
+        item = QtGui.QListWidgetItem()
+        self.ui.script_list.addItem(item)
+        self.ui.script_list.setItemWidget(item, widget)
+
+        # Previous implementation
+        '''
+        count = self.ui.script_list.count()
         script = ScriptItem(pos=count, name=_(DEFAULT_NUMBERED_SCRIPT_NAME) % (count + 1))
         list_item = QtGui.QListWidgetItem(script.name)
         list_item.setFlags(list_item.flags() | QtCore.Qt.ItemIsUserCheckable | QtCore.Qt.ItemIsEditable)
@@ -175,6 +189,7 @@ class ScriptingOptionsPage(OptionsPage):
         self.ui.script_list.addItem(list_item)
         self.listitem_to_scriptitem[list_item] = script
         self.list_of_scripts.append(script.get_all())
+        '''
 
     def update_script_positions(self):
         for i, script in enumerate(self.list_of_scripts):
