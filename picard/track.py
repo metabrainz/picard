@@ -80,8 +80,8 @@ class Track(DataObject, Item):
                 if s_enabled and s_text:
                     parser = ScriptParser()
                     try:
-                        parser.eval(script, file.metadata)
-                        parser.eval(script, self.metadata)
+                        parser.eval(s_text, file.metadata)
+                        parser.eval(s_text, self.metadata)
                     except:
                         log.error(traceback.format_exc())
                     file.metadata.strip_whitespace()
@@ -110,7 +110,7 @@ class Track(DataObject, Item):
                 if s_enabled and s_text:
                     parser = ScriptParser()
                     try:
-                        parser.eval(script, self.metadata)
+                        parser.eval(s_text, self.metadata)
                     except:
                         log.error(traceback.format_exc())
                     self.metadata.strip_whitespace()
@@ -318,7 +318,7 @@ class NonAlbumTrack(Track):
                 if s_enabled and s_text:
                     parser = ScriptParser()
                     try:
-                        parser.eval(script, m)
+                        parser.eval(s_text, m)
                     except:
                         log.error(traceback.format_exc())
                     m.strip_whitespace()
