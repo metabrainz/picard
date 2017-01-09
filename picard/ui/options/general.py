@@ -41,7 +41,6 @@ class GeneralOptionsPage(OptionsPage):
         config.TextOption("persist", "oauth_refresh_token", ""),
         config.BoolOption("setting", "analyze_new_files", False),
         config.BoolOption("setting", "ignore_file_mbids", False),
-        config.BoolOption("setting", "recursively_add_files", True),
         config.TextOption("persist", "oauth_refresh_token", ""),
         config.TextOption("persist", "oauth_refresh_token_scopes", ""),
         config.TextOption("persist", "oauth_access_token", ""),
@@ -63,14 +62,12 @@ class GeneralOptionsPage(OptionsPage):
         self.ui.server_port.setValue(config.setting["server_port"])
         self.ui.analyze_new_files.setChecked(config.setting["analyze_new_files"])
         self.ui.ignore_file_mbids.setChecked(config.setting["ignore_file_mbids"])
-        self.ui.recursively_add_files.setChecked(config.setting["recursively_add_files"])
 
     def save(self):
         config.setting["server_host"] = unicode(self.ui.server_host.currentText()).strip()
         config.setting["server_port"] = self.ui.server_port.value()
         config.setting["analyze_new_files"] = self.ui.analyze_new_files.isChecked()
         config.setting["ignore_file_mbids"] = self.ui.ignore_file_mbids.isChecked()
-        config.setting["recursively_add_files"] = self.ui.recursively_add_files.isChecked()
 
     def update_login_logout(self):
         if self.tagger.xmlws.oauth_manager.is_logged_in():

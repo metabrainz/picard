@@ -22,7 +22,7 @@ except AttributeError:
 class Ui_GeneralOptionsPage(object):
     def setupUi(self, GeneralOptionsPage):
         GeneralOptionsPage.setObjectName(_fromUtf8("GeneralOptionsPage"))
-        GeneralOptionsPage.resize(395, 435)
+        GeneralOptionsPage.resize(283, 435)
         self.vboxlayout = QtGui.QVBoxLayout(GeneralOptionsPage)
         self.vboxlayout.setObjectName(_fromUtf8("vboxlayout"))
         self.groupBox = QtGui.QGroupBox(GeneralOptionsPage)
@@ -80,9 +80,6 @@ class Ui_GeneralOptionsPage(object):
         self.ignore_file_mbids = QtGui.QCheckBox(self.groupBox_2)
         self.ignore_file_mbids.setObjectName(_fromUtf8("ignore_file_mbids"))
         self.verticalLayout.addWidget(self.ignore_file_mbids)
-        self.recursively_add_files = QtGui.QCheckBox(self.groupBox_2)
-        self.recursively_add_files.setObjectName(_fromUtf8("recursively_add_files"))
-        self.verticalLayout.addWidget(self.recursively_add_files)
         self.vboxlayout.addWidget(self.groupBox_2)
         spacerItem1 = QtGui.QSpacerItem(181, 21, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
         self.vboxlayout.addItem(spacerItem1)
@@ -101,5 +98,4 @@ class Ui_GeneralOptionsPage(object):
         self.groupBox_2.setTitle(_("General"))
         self.analyze_new_files.setText(_("Automatically scan all new files"))
         self.ignore_file_mbids.setText(_("Ignore MBIDs when loading new files"))
-        self.recursively_add_files.setText(_("Recursively add files and folders from directory"))
 

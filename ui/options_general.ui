@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>395</width>
+    <width>283</width>
     <height>435</height>
    </rect>
   </property>
@@ -126,13 +126,6 @@
        <widget class="QCheckBox" name="ignore_file_mbids">
         <property name="text">
          <string>Ignore MBIDs when loading new files</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QCheckBox" name="recursively_add_files">
-        <property name="text">
-         <string>Recursively add files and folders from directory</string>
         </property>
        </widget>
       </item>
