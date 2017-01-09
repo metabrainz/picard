@@ -412,10 +412,35 @@ class Tagger(QtGui.QApplication):
                     self.add_files(result)
                 thread.run_task(get_files, process)
 
+        def get_files_non_recursive():
+            listings = [f for f in os.listdir(path)]
+            if ignore_hidden:
+                listings = filter(lambda x: not is_hidden(x), listings)
+            listings = map(lambda x: os.path.join(path, x), listings)
+            files = filter(lambda x: os.path.isfile(x), listings)
+            number_of_files = len(files)
+            if number_of_files:
+                mparms = {
+                    'count': number_of_files,
+                    'directory': path,
+                }
+                log.debug("Adding %(count)d files from '%(directory)s'" %
+                          mparms)
+                self.window.set_statusbar_message(
+                    ungettext(
+                        "Adding %(count)d file from '%(directory)s' ...",
+                        "Adding %(count)d files from '%(directory)s' ...",
+                        number_of_files),
+                    mparms,
+                    translate=None,
+                    echo=None
+                )
+            return files        
+
         if config.setting['recursively_add_files']:
             process(True, False)
         else:
-            self.add_files(os.path.join(path, f) for f in os.listdir(path))
+            self.add_files(get_files_non_recursive())
 
 
     def get_file_lookup(self):
