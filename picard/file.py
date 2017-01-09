@@ -511,7 +511,6 @@ class File(QtCore.QObject, Item):
         if self.state == File.REMOVED:
             return
 
-        self.clear_pending()
         try:
             m = document.metadata[0]
             if lookuptype == "metadata":
