@@ -27,7 +27,7 @@ from picard.cluster import Cluster
 from picard.track import Track
 from picard.file import File
 from picard.util import format_time, throttle, thread
-from picard.util.tags import display_tag_name
+from picard.util.tags import display_tag_name, TAG_NAMES
 from picard.ui.edittagdialog import EditTagDialog
 from picard.metadata import MULTI_VALUED_JOINER
 from picard.browser.filelookup import FileLookup
@@ -330,6 +330,8 @@ class MetadataBox(QtGui.QTableWidget):
         preserved_tags.extend(tags)
         # Remove duplicates and spaces
         preserved_tags = list(set(map(lambda x: x.strip(), preserved_tags)))
+        filtered_tags = TAG_NAMES.keys()
+        preserved_tags = filter(lambda x: x in filtered_tags, preserved_tags)
         config.setting['preserved_tags'] = ", ".join(preserved_tags)
 
     def edit_tag(self, tag):
