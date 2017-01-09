@@ -312,7 +312,7 @@ class MetadataBox(QtGui.QTableWidget):
             if len(tags) == 1 or removals or useorigs:
                 menu.addSeparator()
             menu.addAction(self.add_tag_action)
-            add_to_preserved_tags_action = QtGui.QAction(_(u"Add selected tags to 'Preserve Tags' list"), self.parent)
+            add_to_preserved_tags_action = QtGui.QAction(_(u"Add Selected Tags to 'Preserve Tags' List"), self.parent)
             add_to_preserved_tags_action.triggered.connect(self.add_to_preserved_tags)
             menu.addAction(add_to_preserved_tags_action)
             menu.addSeparator()
@@ -321,12 +321,15 @@ class MetadataBox(QtGui.QTableWidget):
         event.accept()
 
     def add_to_preserved_tags(self):
-        tags = self.selected_tags()
+        # Get all selected tags including '~length'
+        tags = self.selected_tags(False)
         preserved_tags = config.setting['preserved_tags'].split(',')
         for tag in preserved_tags:
             if tag.strip() == "":
                 preserved_tags.remove(tag)
         preserved_tags.extend(tags)
+        # Remove duplicates and spaces
+        preserved_tags = list(set(map(lambda x: x.strip(), preserved_tags)))
         config.setting['preserved_tags'] = ", ".join(preserved_tags)
 
     def edit_tag(self, tag):
@@ -363,10 +366,11 @@ class MetadataBox(QtGui.QTableWidget):
     def tag_is_removable(self, tag):
         return self.tag_diff.status[tag] & TagStatus.NotRemovable == 0
 
-    def selected_tags(self):
+    def selected_tags(self, discard_length=True):
         tags = set(self.tag_diff.tag_names[item.row()]
                    for item in self.selectedItems())
-        tags.discard("~length")
+        if discard_length:
+            tags.discard("~length")
         return tags
 
     def _update_selection(self):
