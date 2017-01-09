@@ -511,6 +511,7 @@ class File(QtCore.QObject, Item):
         if self.state == File.REMOVED:
             return
 
+        self.clear_pending()
         try:
             m = document.metadata[0]
             if lookuptype == "metadata":
@@ -571,6 +572,7 @@ class File(QtCore.QObject, Item):
         )
         self.clear_lookup_task()
         metadata = self.metadata
+        self.set_pending()
         self.lookup_task = self.tagger.xmlws.find_tracks(partial(self._lookup_finished, 'metadata'),
             track=metadata['title'],
             artist=metadata['artist'],
