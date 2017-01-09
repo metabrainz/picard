@@ -24,13 +24,180 @@ from picard.script import ScriptParser
 from picard.ui.options import OptionsPage, OptionsCheckError, register_options_page
 from picard.ui.ui_options_script import Ui_ScriptingOptionsPage
 from picard.util import icontheme
-from picard.ui.sortablecheckboxlist import (
-    SortableCheckboxListWidget,
-    SortableCheckboxListItem
-)
+
 
 DEFAULT_NUMBERED_SCRIPT_NAME = N_("My script %d")
 DEFAULT_SCRIPT_NAME = N_("My script")
+
+
+from functools import partial
+from PyQt4.QtCore import pyqtSignal
+
+
+class SortableCheckboxListWidget(QtGui.QWidget):
+    _CHECKBOX_POS = 0
+    _BUTTON_UP = 1
+    _BUTTON_DOWN = 2
+
+    __no_emit = False
+    changed = pyqtSignal(list)
+
+    def __init__(self, parent=None):
+        super(SortableCheckboxListWidget, self).__init__(parent)
+        layout = QtGui.QGridLayout()
+        layout.setHorizontalSpacing(5)
+        layout.setVerticalSpacing(2)
+        layout.setContentsMargins(0, 0, 0, 0)
+        self.setLayout(layout)
+        self.__items = []
+
+    def addItems(self, items):
+        for item in items:
+            self.addItem(item)
+
+    def setSignals(self, row):
+        layout = self.layout()
+        checkbox = layout.itemAtPosition(row, self._CHECKBOX_POS).widget()
+        up = layout.itemAtPosition(row, self._BUTTON_UP).widget()
+        down = layout.itemAtPosition(row, self._BUTTON_DOWN).widget()
+        checkbox.stateChanged.connect(partial(self.checkbox_toggled, row))
+        up.clicked.connect(partial(self.move_button_clicked, row, up=True))
+        down.clicked.connect(partial(self.move_button_clicked, row, up=False))
+
+    def moveItem(self, from_row, to_row):
+        to_row = to_row % len(self.__items)
+        self.__items[to_row], self.__items[from_row] = \
+            self.__items[from_row], self.__items[to_row]
+        self.updateRow(to_row)
+        self.updateRow(from_row)
+        self._emit_changed()
+
+    def checkbox_toggled(self, row, state):
+        self.__items[row].setChecked(state == QtCore.Qt.Checked)
+        self._emit_changed()
+
+    def move_button_clicked(self, row, up):
+        if up:
+            to = row - 1
+        else:
+            to = row + 1
+        self.moveItem(row, to)
+
+    def updateRow(self, row):
+        self.__no_emit = True
+        item = self.__items[row]
+        layout = self.layout()
+        checkbox = layout.itemAtPosition(row, self._CHECKBOX_POS).widget()
+        checkbox.setText(item.text)
+        checkbox.setChecked(item.checked)
+        self.__no_emit = False
+
+    def addItem(self, item):
+        self.__items.append(item)
+        row = len(self.__items) - 1
+        layout = self.layout()
+        layout.addWidget(QtGui.QCheckBox(), row, self._CHECKBOX_POS)
+        self.updateRow(row)
+        up_button = QtGui.QToolButton()
+        up_button.setArrowType(QtCore.Qt.UpArrow)
+        up_button.setMaximumSize(QtCore.QSize(16, 16))
+        down_button = QtGui.QToolButton()
+        down_button.setArrowType(QtCore.Qt.DownArrow)
+        down_button.setMaximumSize(QtCore.QSize(16, 16))
+        layout.addWidget(up_button, row, self._BUTTON_UP)
+        layout.addWidget(down_button, row, self._BUTTON_DOWN)
+        self.setSignals(row)
+
+    def _emit_changed(self):
+        if not self.__no_emit:
+            self.changed.emit(self.__items)
+
+class SortableCheckboxListItem(object):
+
+    def __init__(self, text=u'', checked=False, data=None):
+        self._checked = checked
+        self._text = text
+        self._data = data
+
+    @property
+    def text(self):
+        return self._text
+
+    def setText(self, text):
+        self._text = text
+
+    @property
+    def checked(self):
+        return self._checked
+
+    def setChecked(self, state):
+        self._checked = state
+
+    @property
+    def data(self):
+        return self._data
+
+    def setData(self, data):
+        self._data = data
+
+    def __repr__(self):
+        params = []
+        params.append('text=' + repr(self.text))
+        params.append('checked=' + repr(self.checked))
+        if self.data is not None:
+            params.append('data=' + repr(self.data))
+        return "%s(%s)" % (self.__class__.__name__, ", ".join(params))
+
+
+class AdvancedScriptItem(QtGui.QWidget):
+    _CHECKBOX_POS = 0
+    _BUTTON_UP = 1
+    _BUTTON_DOWN = 2
+
+    __no_emit = False
+    changed = pyqtSignal(list)
+
+    def __init__(self, parent=None):
+        super(AdvancedScriptItem, self).__init__(parent)
+        layout = QtGui.QGridLayout()
+        layout.setHorizontalSpacing(5)
+        layout.setVerticalSpacing(2)
+        layout.setContentsMargins(0, 0, 0, 0)
+        self.setLayout(layout)
+        #TODO replace all row with 0 below
+        row = 0
+        layout.addWidget(QtGui.QCheckBox(), row, self._CHECKBOX_POS)
+        up_button = QtGui.QToolButton()
+        up_button.setArrowType(QtCore.Qt.UpArrow)
+        up_button.setMaximumSize(QtCore.QSize(16, 16))
+        down_button = QtGui.QToolButton()
+        down_button.setArrowType(QtCore.Qt.DownArrow)
+        down_button.setMaximumSize(QtCore.QSize(16, 16))
+        layout.addWidget(up_button, row, self._BUTTON_UP)
+        layout.addWidget(down_button, row, self._BUTTON_DOWN)
+        other_button = QtGui.QToolButton()
+        '''
+        remove_script_fallback_icon = icontheme.lookup('remove-item')
+        other_button.setIcon(QtGui.QIcon.fromTheme("remove", remove_script_fallback_icon))
+        '''
+        other_button.setText("...")
+        other_button.setAutoRaise(True)
+        other_button.setMaximumSize(QtCore.QSize(16, 16))
+        menu = QtGui.QMenu()
+        menu.addAction('Rename script', self.Action1)
+        menu.addAction('Remove script', self.Action2)
+        other_button.setMenu(menu)
+        other_button.setStyleSheet('QToolButton::menu-indicator { image: none; }')
+        other_button.clicked.connect(other_button.showMenu)
+        #other_button.setIcon( icontheme.lookup('delete-square-button'))
+        layout.addWidget(other_button, row, 3)
+        #Temp
+        checkbox = layout.itemAtPosition(row, self._CHECKBOX_POS).widget()
+        checkbox.setText("My Script")
+    def Action1(self):
+        print 'rename'
+    def Action2(self):
+        print 'remove'
 
 
 class TaggerScriptSyntaxHighlighter(QtGui.QSyntaxHighlighter):
@@ -138,9 +305,9 @@ class ScriptingOptionsPage(OptionsPage):
         self.highlighter = TaggerScriptSyntaxHighlighter(self.ui.tagger_script.document())
         self.ui.tagger_script.textChanged.connect(self.live_update_and_check)
         self.ui.add_script.clicked.connect(self.add_to_list_of_scripts)
-        self.ui.remove_script.clicked.connect(self.remove_from_list_of_scripts)
-        self.ui.up_script.clicked.connect(lambda: self.move_script(1))
-        self.ui.down_script.clicked.connect(lambda: self.move_script(-1))
+        #self.ui.remove_script.clicked.connect(self.remove_from_list_of_scripts)
+        #self.ui.up_script.clicked.connect(lambda: self.move_script(1))
+        #self.ui.down_script.clicked.connect(lambda: self.move_script(-1))
         self.ui.script_list.itemSelectionChanged.connect(self.script_selected)
         self.ui.script_list.itemChanged.connect(self.script_attr_changed)
         self.ui.tagger_script.setEnabled(False)
@@ -149,10 +316,19 @@ class ScriptingOptionsPage(OptionsPage):
         self.list_of_scripts = []
 
         add_script_fallback_icon = icontheme.lookup('add-item')
-        remove_script_fallback_icon = icontheme.lookup('remove-item')
+        #remove_script_fallback_icon = icontheme.lookup('remove-item')
         self.ui.add_script.setIcon(QtGui.QIcon.fromTheme("add", add_script_fallback_icon))
-        self.ui.remove_script.setIcon(QtGui.QIcon.fromTheme("remove", remove_script_fallback_icon))
+        #self.ui.remove_script.setIcon(QtGui.QIcon.fromTheme("remove", remove_script_fallback_icon))
         self.list_widget = SortableCheckboxListWidget()
+
+        list_widget = AdvancedScriptItem()
+        item = QtGui.QListWidgetItem()
+        self.ui.script_list.addItem(item)
+        self.ui.script_list.setItemWidget(item, list_widget)
+        list_widget = AdvancedScriptItem()
+        item = QtGui.QListWidgetItem()
+        self.ui.script_list.addItem(item)
+        self.ui.script_list.setItemWidget(item, list_widget)
 
     def script_attr_changed(self, item):
         item.setSelected(True)
@@ -170,6 +346,7 @@ class ScriptingOptionsPage(OptionsPage):
             self.ui.tagger_script.setEnabled(True)
             script = self.listitem_to_scriptitem[items[0]]
             self.ui.tagger_script.setText(script.text)
+
 
     def add_to_list_of_scripts(self):
         count = self.ui.script_list.count()
