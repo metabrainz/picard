@@ -469,7 +469,9 @@ class ID3File(File):
                 pass
 
     def supports_tag(self, name):
-        return ((name and not name.startswith("~")) or name == "~rating")
+        return ((name and not name.startswith("~"))
+                or name in ("~rating", "~length")
+                or name.startswith("~id3"))
 
     def _get_tag_name(self, name):
         if name in self.__rtranslate:
