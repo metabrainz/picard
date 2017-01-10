@@ -167,7 +167,7 @@ class Ui_TagsOptionsPage(object):
         self.clear_existing_tags.setText(_("Clear existing tags"))
         self.remove_id3_from_flac.setText(_("Remove ID3 tags from FLAC files"))
         self.remove_ape_from_mp3.setText(_("Remove APEv2 tags from MP3 files"))
-        self.dont_save_on_unchanged.setText(_("Don\'t save files if the tags are uncahnged"))
+        self.dont_save_on_unchanged.setText(_("Don\'t save files if the tags are unchanged"))
         self.preserved_tags_label.setText(_("Preserve these tags from being cleared or overwritten with MusicBrainz data:"))
         self.preserved_tags_help.setText(_("Tags are separated by commas, and are case-sensitive."))
         self.tag_compatibility.setTitle(_("Tag Compatibility"))

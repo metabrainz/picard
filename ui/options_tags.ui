@@ -64,7 +64,7 @@
       <item>
        <widget class="QCheckBox" name="dont_save_on_unchanged">
         <property name="text">
-         <string>Don't save files if the tags are uncahnged</string>
+         <string>Don't save files if the tags are unchanged</string>
         </property>
        </widget>
       </item>
