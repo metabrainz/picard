@@ -158,12 +158,23 @@ class File(QtCore.QObject, Item):
         """Load metadata from the file."""
         raise NotImplementedError
 
+    def _load_preserved_config(self, metadata):
+        """Preserve current tag related config to metadata and returns True.
+        Returns False if no related configs"""
+        raise False
+
     def _test_same(self):
         if config.setting['clear_existing_tags']:
             return False
         new_metadata = self.new_metadata
         orig_metadata = self.orig_metadata
         tags = set(new_metadata.keys() + orig_metadata.keys())
+        if len(filter(lambda x: x.startswith("~config:"), tags)) == 0:
+            if self._load_preserved_config(self.orig_metadata):
+                # Return False if no '~config' tags in orig_metadata
+                # and file has tag related config settings i.e.
+                # it is loaded for the first time
+                return False
         for name in filter(lambda x: x.startswith("~config:"), tags):
             new_metadata[name] = config.setting[name.split(':')[1]]
             if new_metadata[name] != orig_metadata[name]:
