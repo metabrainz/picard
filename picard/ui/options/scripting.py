@@ -312,14 +312,18 @@ class ScriptingOptionsPage(OptionsPage):
                 self.ui.tagger_script.setEnabled(False)
 
     def move_script(self, row, step):
-        print 'here'
         item1 = self.ui.script_list.item(row)
         item2 = self.ui.script_list.item(row - step)
         if item1 and item2:
-            print 'working?'
             # make changes in the ui
 
-            self.ui.script_list.insertItem(row - step, self.ui.script_list.takeItem(row))
+            list_item = self.ui.script_list.takeItem(row)
+            # list_widget has to be set again
+            list_widget = AdvancedScriptItem(self.listitem_to_scriptitem[list_item].name)
+            self.setSignals(list_widget, list_item)
+            self.ui.script_list.insertItem(row - step, list_item)
+            self.ui.script_list.setItemWidget(list_item, list_widget)
+
 
             # make changes in the picklable list
 
