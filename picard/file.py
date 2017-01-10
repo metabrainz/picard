@@ -164,6 +164,10 @@ class File(QtCore.QObject, Item):
         new_metadata = self.new_metadata
         orig_metadata = self.orig_metadata
         tags = set(new_metadata.keys() + orig_metadata.keys())
+        for name in filter(lambda x: x.startswith("~config:"), tags):
+            new_metadata[name] = config.setting[name.split(':')[1]]
+            if new_metadata[name] != orig_metadata[name]:
+                return False
         for name in filter(lambda x: (not x.startswith("~")
                                       or x.startswith("~id3")
                                       or x == "~rating")
