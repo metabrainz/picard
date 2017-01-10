@@ -419,7 +419,7 @@ try:
             # cannot use super() with old-style parent class
             babel.extract_messages.initialize_options(self)
             self.output_file = 'po/picard.pot'
-            self.input_dirs = 'contrib, picard'
+            self.input_dirs = 'picard'
             if self.input_dirs and input_dirs_workaround:
                 self._input_dirs = self.input_dirs
 
