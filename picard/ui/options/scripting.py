@@ -33,10 +33,6 @@ DEFAULT_SCRIPT_NAME = N_("My script")
 from functools import partial
 from PyQt4.QtCore import pyqtSignal
 
-
-
-
-
 class AdvancedScriptItem(QtGui.QWidget):
     _CHECKBOX_POS = 0
     _BUTTON_UP = 1
@@ -89,7 +85,9 @@ class AdvancedScriptItem(QtGui.QWidget):
     def Action2(self):
         print 'remove'
 
-    def establish_connection(self,move_up):
+    def set_up_connection(self,move_up):
+        pass
+        '''
         layout = self.layout()
         checkbox = layout.itemAtPosition(0, self._CHECKBOX_POS).widget()
         up = layout.itemAtPosition(0, self._BUTTON_UP).widget()
@@ -97,6 +95,9 @@ class AdvancedScriptItem(QtGui.QWidget):
         #checkbox.stateChanged.connect(partial(self.checkbox_toggled, row))
         up.clicked.connect(move_up)
         #down.clicked.connect(partial(self.move_button_clicked, row, up=False))
+        '''
+    def set_down_connection(self, move_down):
+        pass
 
 
 
@@ -221,8 +222,7 @@ class ScriptingOptionsPage(OptionsPage):
         #self.ui.remove_script.setIcon(QtGui.QIcon.fromTheme("remove", remove_script_fallback_icon))
         #self.list_widget = SortableCheckboxListWidget()
 
-
-
+        '''
         list_widget = AdvancedScriptItem("My Script 1")
         item = QtGui.QListWidgetItem()
         self.ui.script_list.addItem(item)
@@ -235,7 +235,7 @@ class ScriptingOptionsPage(OptionsPage):
 
         self.ui.script_list.addItem(item)
         self.ui.script_list.setItemWidget(item, list_widget)
-
+        '''
     def dummy_function(self,item,step):
         self.move_script(step)
         print 'it works'
@@ -259,14 +259,22 @@ class ScriptingOptionsPage(OptionsPage):
             script = self.listitem_to_scriptitem[items[0]]
             self.ui.tagger_script.setText(script.text)
         '''
+    def setSignals(self, list_widget, item):
+        list_widget.set_up_connection(lambda: self.dummy_function(item, 1))
+        list_widget.set_down_connection(lambda: self.dummy_function(item, -1))
 
     def add_to_list_of_scripts(self):
         count = self.ui.script_list.count()
-        name = _(DEFAULT_NUMBERED_SCRIPT_NAME) % (count + 1)
-        self.list_widget.addItem(SortableCheckboxListItem(name, checked=True, data=name))
-        item = QtGui.QListWidgetItem()
-        self.ui.script_list.addItem(item)
-        self.ui.script_list.setItemWidget(item, self.list_widget)
+        numbered_name = _(DEFAULT_NUMBERED_SCRIPT_NAME) % (count + 1)
+        script = ScriptItem(pos=count, name=numbered_name)
+
+        list_item = QtGui.QListWidgetItem()
+        list_widget = AdvancedScriptItem(numbered_name)
+        self.setSignals(list_widget, list_item)
+        self.ui.script_list.addItem(list_item)
+        self.ui.script_list.setItemWidget(list_item, list_widget)
+        self.listitem_to_scriptitem[list_item] = script
+        self.list_of_scripts.append(script.get_all())
 
         # Previous implementation
         '''
