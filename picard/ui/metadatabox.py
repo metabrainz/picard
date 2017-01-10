@@ -268,7 +268,7 @@ class MetadataBox(QtGui.QTableWidget):
     def contextMenuEvent(self, event):
         menu = QtGui.QMenu(self)
         if self.objects:
-            tags = self.selected_tags()
+            tags = self.selected_tags(discard=('~length'))
             if len(tags) == 1:
                 edit_tag_action = QtGui.QAction(_(u"Edit..."), self.parent)
                 edit_tag_action.triggered.connect(partial(self.edit_tag, list(tags)[0]))
@@ -322,23 +322,19 @@ class MetadataBox(QtGui.QTableWidget):
 
     def add_to_preserved_tags(self):
         # Get all selected tags including '~length'
-        tags = self.selected_tags(False)
-        preserved_tags = config.setting['preserved_tags'].split(',')
-        for tag in preserved_tags:
-            if tag.strip() == "":
-                preserved_tags.remove(tag)
+        tags = self.selected_tags()
+        preserved_tags = [tag for tag in
+                          map(lambda x: x.strip(), config.setting['preserved_tags'].split(','))
+                          if tag != ""]
         preserved_tags.extend(tags)
-        # Remove duplicates and spaces
-        preserved_tags = list(set(map(lambda x: x.strip(), preserved_tags)))
-        filtered_tags = TAG_NAMES.keys()
-        preserved_tags = filter(lambda x: x in filtered_tags, preserved_tags)
-        config.setting['preserved_tags'] = ", ".join(preserved_tags)
+        config.setting['preserved_tags'] = ", ".join(filter(lambda x: x in TAG_NAMES.keys(),
+                                                            list(set(preserved_tags))))
 
     def edit_tag(self, tag):
         EditTagDialog(self.parent, tag).exec_()
 
     def edit_selected_tag(self):
-        tags = self.selected_tags()
+        tags = self.selected_tags(discard=('~length'))
         if len(tags) == 1:
             self.edit_tag(list(tags)[0])
 
@@ -361,19 +357,19 @@ class MetadataBox(QtGui.QTableWidget):
         self.set_tag_values(tag, [""])
 
     def remove_selected_tags(self):
-        for tag in self.selected_tags():
+        for tag in self.selected_tags(discard=('~length')):
             if self.tag_is_removable(tag):
                 self.remove_tag(tag)
 
     def tag_is_removable(self, tag):
         return self.tag_diff.status[tag] & TagStatus.NotRemovable == 0
 
-    def selected_tags(self, discard_length=True):
+    def selected_tags(self, discard=None):
+        if discard is None:
+            discard = set()
         tags = set(self.tag_diff.tag_names[item.row()]
                    for item in self.selectedItems())
-        if discard_length:
-            tags.discard("~length")
-        return tags
+        return tags.difference(discard)
 
     def _update_selection(self):
         files = set()
