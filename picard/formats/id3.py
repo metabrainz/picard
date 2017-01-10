@@ -267,16 +267,6 @@ class ID3File(File):
                 metadata['date'] = sanitized
 
         self._info(metadata, file)
-        # Adding additional config to metadata to prevent unecessary saving
-        metadata['~config:rating_steps'] = config.setting['rating_steps']
-        metadata['~config:rating_user_email'] = config.setting['rating_user_email']
-        metadata['~config:id3v2_encoding'] = config.setting['id3v2_encoding']
-        metadata['~config:id3v23_join_with'] = config.setting['id3v23_join_with']
-        metadata['~config:write_id3v23'] = config.setting['write_id3v23']
-        if self._IsMP3:
-            metadata['~config:remove_ape_from_mp3'] = config.setting['remove_ape_from_mp3']
-        if self._File != mutagen.aiff.AIFF:
-            metadata['~config:write_id3v1'] = config.setting['write_id3v1']
         return metadata
 
     def _save(self, filename, metadata):
@@ -503,6 +493,19 @@ class ID3File(File):
             return compatid3.CompatID3(encode_filename(filename))
         except mutagen.id3.ID3NoHeaderError:
             return compatid3.CompatID3()
+
+    def _load_preserved_config(self, metadata):
+        # Adding additional config to metadata to prevent unecessary saving
+        metadata['~config:rating_steps'] = config.setting['rating_steps']
+        metadata['~config:rating_user_email'] = config.setting['rating_user_email']
+        metadata['~config:id3v2_encoding'] = config.setting['id3v2_encoding']
+        metadata['~config:id3v23_join_with'] = config.setting['id3v23_join_with']
+        metadata['~config:write_id3v23'] = config.setting['write_id3v23']
+        if self._IsMP3:
+            metadata['~config:remove_ape_from_mp3'] = config.setting['remove_ape_from_mp3']
+        if self._File != mutagen.aiff.AIFF:
+            metadata['~config:write_id3v1'] = config.setting['write_id3v1']
+        return True
 
     def _save_tags(self, tags, filename):
         if config.setting['write_id3v1']:

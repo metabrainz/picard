@@ -182,8 +182,6 @@ class ASFFile(File):
             if values:
                 metadata[name] = values
         self._info(metadata, file)
-        # Adding additional config to metadata to prevent unecessary saving
-        metadata['~config:rating_steps'] = config.setting['rating_steps']
         return metadata
 
     def _save(self, filename, metadata):
@@ -245,3 +243,8 @@ class ASFFile(File):
             return self.__TRANS[name]
         else:
             return None
+
+    def _load_preserved_config(self, metadata):
+        # Adding additional config to metadata to prevent unecessary saving
+        metadata['~config:rating_steps'] = config.setting['rating_steps']
+        return True
