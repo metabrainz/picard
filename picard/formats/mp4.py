@@ -226,10 +226,12 @@ class MP4File(File):
                     del tags[real_name]
 
     def supports_tag(self, name):
-        return name in self.__r_text_tags or name in self.__r_bool_tags\
-            or name in self.__r_freeform_tags\
-            or name in self.__other_supported_tags\
-            or name.startswith('lyrics:')
+        return (name in self.__r_text_tags
+                or name in self.__r_bool_tags
+                or name in self.__r_freeform_tags
+                or name in self.__other_supported_tags
+                or name.startswith('lyrics:')
+                or name in ('~length', 'musicip_fingerprint'))
 
     def _get_tag_name(self, name):
         if name.startswith('lyrics:'):

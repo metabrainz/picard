@@ -228,7 +228,9 @@ class ASFFile(File):
                     del tags[real_name]
 
     def supports_tag(self, name):
-        return name in self.__TRANS
+        return (name in self.__TRANS
+                or name in ('~rating', '~length', 'totaldiscs', 'totaltracks')
+                or name.startswith('lyrics'))
 
     def _get_tag_name(self, name):
         if name.startswith('lyrics'):
