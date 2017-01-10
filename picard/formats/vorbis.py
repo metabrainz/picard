@@ -149,6 +149,9 @@ class VCommentFile(File):
             except KeyError:
                 pass
         self._info(metadata, file)
+        # Adding additional config to metadata to prevent unecessary saving
+        metadata['~config:rating_steps'] = config.setting['rating_steps']
+        metadata['~config:rating_user_email'] = config.setting['rating_user_email']
         return metadata
 
     def _save(self, filename, metadata):
