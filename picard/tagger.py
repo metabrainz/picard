@@ -393,17 +393,13 @@ class Tagger(QtGui.QApplication):
                         'count': number_of_files,
                         'directory': root,
                     }
-                    log.debug("Adding %(count)d files from '%(directory)s'" %
-                              mparms)
                     self.window.set_statusbar_message(
                         ungettext(
                             "Adding %(count)d file from '%(directory)s' ...",
                             "Adding %(count)d files from '%(directory)s' ...",
                             number_of_files),
                         mparms,
-                        translate=None,
-                        echo=None
-                    )
+                        translate=None)
                 return (os.path.join(root, f) for f in files)
 
         def process(result=None, error=None):
