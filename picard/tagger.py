@@ -424,18 +424,14 @@ class Tagger(QtGui.QApplication):
                     'count': number_of_files,
                     'directory': path,
                 }
-                log.debug("Adding %(count)d files from '%(directory)s'" %
-                          mparms)
                 self.window.set_statusbar_message(
                     ungettext(
                         "Adding %(count)d file from '%(directory)s' ...",
                         "Adding %(count)d files from '%(directory)s' ...",
                         number_of_files),
                     mparms,
-                    translate=None,
-                    echo=None
-                )
-            return files        
+                    translate=None)
+            return files
 
         if config.setting['recursively_add_files']:
             process(True, False)
