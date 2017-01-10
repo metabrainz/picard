@@ -86,7 +86,9 @@ class AdvancedScriptItem(QtGui.QWidget):
         print 'remove'
 
     def set_up_connection(self,move_up):
-        pass
+        layout = self.layout()
+        up = layout.itemAtPosition(0, self._BUTTON_UP).widget()
+        up.clicked.connect(move_up)
         '''
         layout = self.layout()
         checkbox = layout.itemAtPosition(0, self._CHECKBOX_POS).widget()
@@ -97,7 +99,9 @@ class AdvancedScriptItem(QtGui.QWidget):
         #down.clicked.connect(partial(self.move_button_clicked, row, up=False))
         '''
     def set_down_connection(self, move_down):
-        pass
+        layout = self.layout()
+        down = layout.itemAtPosition(0, self._BUTTON_DOWN).widget()
+        down.clicked.connect(move_down)
 
 
 
@@ -251,17 +255,15 @@ class ScriptingOptionsPage(OptionsPage):
         self.list_of_scripts[script.pos] = script.get_all()
 
     def script_selected(self):
-        pass
-        '''
         items = self.ui.script_list.selectedItems()
         if items:
             self.ui.tagger_script.setEnabled(True)
             script = self.listitem_to_scriptitem[items[0]]
             self.ui.tagger_script.setText(script.text)
-        '''
+
     def setSignals(self, list_widget, item):
-        list_widget.set_up_connection(lambda: self.dummy_function(item, 1))
-        list_widget.set_down_connection(lambda: self.dummy_function(item, -1))
+        list_widget.set_up_connection(lambda: self.move_script(self.ui.script_list.row(item), 1))
+        list_widget.set_down_connection(lambda: self.move_script(self.ui.script_list.row(item), -1))
 
     def add_to_list_of_scripts(self):
         count = self.ui.script_list.count()
@@ -309,7 +311,35 @@ class ScriptingOptionsPage(OptionsPage):
                 self.ui.tagger_script.setText("")
                 self.ui.tagger_script.setEnabled(False)
 
-    def move_script(self, step):
+    def move_script(self, row, step):
+        print 'here'
+        item1 = self.ui.script_list.item(row)
+        item2 = self.ui.script_list.item(row - step)
+        if item1 and item2:
+            print 'working?'
+            # make changes in the ui
+
+            self.ui.script_list.insertItem(row - step, self.ui.script_list.takeItem(row))
+
+            # make changes in the picklable list
+
+            script1 = self.listitem_to_scriptitem[item1]
+            script2 = self.listitem_to_scriptitem[item2]
+            # workaround since tuples are immutable
+            indices = script1.pos, script2.pos
+            self.list_of_scripts = [i for j, i in enumerate(self.list_of_scripts) if j not in indices]
+            new_script1 = (script1.pos - step, script1.name, script1.enabled, script1.text)
+            new_script2 = (script2.pos + step, script2.name, script2.enabled, script2.text)
+            self.list_of_scripts.append(new_script1)
+            self.list_of_scripts.append(new_script2)
+            self.list_of_scripts = sorted(self.list_of_scripts, key=lambda x: x[0])
+            # corresponding mapping support also has to be updated
+            self.listitem_to_scriptitem[item1] = ScriptItem(script1.pos - step, script1.name, script1.enabled,
+                                                            script1.text)
+            self.listitem_to_scriptitem[item2] = ScriptItem(script2.pos + step, script2.name, script2.enabled,
+                                                            script2.text)
+        # Previous implementation
+        '''
         # step is +1 for moving up and -1 for down
         currentRow = self.ui.script_list.currentRow()
         item1 = self.ui.script_list.item(currentRow)
@@ -339,6 +369,7 @@ class ScriptingOptionsPage(OptionsPage):
                                                             script1.text)
             self.listitem_to_scriptitem[item2] = ScriptItem(script2.pos + step, script2.name, script2.enabled,
                                                             script2.text)
+            '''
 
     def live_update_and_check(self):
         items = self.ui.script_list.selectedItems()
