@@ -43,7 +43,7 @@ class AdvancedScriptItem(QtGui.QWidget):
     __no_emit = False
     changed = pyqtSignal(list)
 
-    def __init__(self, name=None, parent=None):
+    def __init__(self, name=None, state=True, parent=None):
         super(AdvancedScriptItem, self).__init__(parent)
         layout = QtGui.QGridLayout()
         layout.setHorizontalSpacing(5)
@@ -53,7 +53,7 @@ class AdvancedScriptItem(QtGui.QWidget):
         #TODO replace all row with 0 below
         row = 0
         checkbox = QtGui.QCheckBox()
-        checkbox.setChecked(True)
+        checkbox.setChecked(state)
         layout.addWidget(checkbox, row, self._CHECKBOX_POS)
         up_button = QtGui.QToolButton()
         up_button.setArrowType(QtCore.Qt.UpArrow)
@@ -366,8 +366,9 @@ class ScriptingOptionsPage(OptionsPage):
             # make changes in the ui
 
             list_item = self.ui.script_list.takeItem(row)
+            script = self.listitem_to_scriptitem[list_item]
             # list_widget has to be set again
-            list_widget = AdvancedScriptItem(self.listitem_to_scriptitem[list_item].name)
+            list_widget = AdvancedScriptItem(name=script.name,state=script.enabled)
             self.setSignals(list_widget, list_item)
             self.ui.script_list.insertItem(row - step, list_item)
             self.ui.script_list.setItemWidget(list_item, list_widget)
@@ -451,7 +452,7 @@ class ScriptingOptionsPage(OptionsPage):
         for s_pos, s_name, s_enabled, s_text in self.list_of_scripts:
             script = ScriptItem(s_pos, s_name, s_enabled, s_text)
             list_item = QtGui.QListWidgetItem()
-            list_widget = AdvancedScriptItem(s_name)
+            list_widget = AdvancedScriptItem(name=s_name, state=s_enabled)
             self.setSignals(list_widget, list_item)
             self.ui.script_list.addItem(list_item)
             self.ui.script_list.setItemWidget(list_item, list_widget)
