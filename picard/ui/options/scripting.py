@@ -118,6 +118,16 @@ class AdvancedScriptItem(QtGui.QWidget):
         menu_options = self.menu.actions()
         menu_options[1].triggered.connect(rename)
 
+    def set_checkbox_connection(self, check_state):
+        layout = self.layout()
+        checkbox = layout.itemAtPosition(0, self._CHECKBOX_POS).widget()
+        checkbox.stateChanged.connect(partial(check_state))
+
+    def checkbox_state(self):
+        layout = self.layout()
+        checkbox = layout.itemAtPosition(0, self._CHECKBOX_POS).widget()
+        return checkbox.isChecked()
+
 
 class TaggerScriptSyntaxHighlighter(QtGui.QSyntaxHighlighter):
 
@@ -279,6 +289,12 @@ class ScriptingOptionsPage(OptionsPage):
         list_widget.set_up_connection(lambda: self.move_script(self.ui.script_list.row(item), 1))
         list_widget.set_down_connection(lambda: self.move_script(self.ui.script_list.row(item), -1))
         list_widget.set_remove_connection(lambda: self.remove_from_list_of_scripts(self.ui.script_list.row(item)))
+        list_widget.set_checkbox_connection(lambda: self.update_check_state(item,list_widget.checkbox_state()))
+
+    def update_check_state(self, item, checkbox_state):
+        script = self.listitem_to_scriptitem[item]
+        script.enabled = checkbox_state
+        self.list_of_scripts[script.pos] = script.get_all()
 
     def add_to_list_of_scripts(self):
         count = self.ui.script_list.count()
