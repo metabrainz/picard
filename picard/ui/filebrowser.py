@@ -26,6 +26,20 @@ from picard.formats import supported_formats
 from picard.util import find_existing_path, icontheme
 
 
+class FileBrowserPane(QtGui.QWidget):
+
+    def __init__(self, parent):
+        QtGui.QWidget.__init__(self, parent)
+        layout = QtGui.QVBoxLayout()
+        layout.setContentsMargins(0, 0, 0, 0)
+        layout.setSpacing(0)
+        self.toolbar = FileBrowserToolbar(self)
+        self.file_browser = FileBrowser(self)
+        layout.insertWidget(0, self.toolbar)
+        layout.insertWidget(1, self.file_browser)
+        self.setLayout(layout)
+
+
 class FileBrowser(QtGui.QTreeView):
 
     options = [
