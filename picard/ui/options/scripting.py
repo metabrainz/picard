@@ -100,7 +100,7 @@ class TaggerScriptSyntaxHighlighter(QtGui.QSyntaxHighlighter):
 
 
 class AdvancedScriptItem(QtGui.QWidget):
-    """Custom widget for UI of scripts"""
+    """Custom widget for script list items"""
 
     _CHECKBOX_POS = 0
     _BUTTON_UP = 1
@@ -246,7 +246,7 @@ class ScriptingOptionsPage(OptionsPage):
         list_widget.set_up_connection(lambda: self.move_script(self.ui.script_list.row(item), 1))
         list_widget.set_down_connection(lambda: self.move_script(self.ui.script_list.row(item), -1))
         list_widget.set_remove_connection(lambda: self.remove_from_list_of_scripts(self.ui.script_list.row(item)))
-        list_widget.set_checkbox_connection(lambda: self.update_check_state(item,list_widget.checkbox_state()))
+        list_widget.set_checkbox_connection(lambda: self.update_check_state(item, list_widget.checkbox_state()))
         list_widget.set_rename_connection(lambda: self.rename_script(item))
 
     def rename_script(self, item):
@@ -271,7 +271,7 @@ class ScriptingOptionsPage(OptionsPage):
         self.ui.script_list.setItemWidget(list_item, list_widget)
         self.listitem_to_scriptitem[list_item] = script
         self.list_of_scripts.append(script.get_all())
-        self.ui.script_list.setItemSelected(list_item,True)
+        self.ui.script_list.setItemSelected(list_item, True)
 
     def update_script_positions(self):
         for i, script in enumerate(self.list_of_scripts):
@@ -302,11 +302,10 @@ class ScriptingOptionsPage(OptionsPage):
             list_item = self.ui.script_list.takeItem(row)
             script = self.listitem_to_scriptitem[list_item]
             # list_widget has to be set again
-            list_widget = AdvancedScriptItem(name=script.name,state=script.enabled)
+            list_widget = AdvancedScriptItem(name=script.name, state=script.enabled)
             self.setSignals(list_widget, list_item)
             self.ui.script_list.insertItem(row - step, list_item)
             self.ui.script_list.setItemWidget(list_item, list_widget)
-
 
             # make changes in the picklable list
 
