@@ -23,7 +23,7 @@ import sys
 from PyQt4 import QtCore, QtGui
 from picard import config
 from picard.formats import supported_formats
-from picard.util import find_existing_path
+from picard.util import find_existing_path, icontheme
 
 
 class FileBrowser(QtGui.QTreeView):
@@ -147,3 +147,12 @@ class FileBrowser(QtGui.QTreeView):
         if indexes:
             path = self.model.filePath(indexes[0])
             config.setting["starting_directory_path"] = self._get_destination_from_path(path)
+
+
+class FileBrowserToolbar(QtGui.QToolBar):
+
+    def __init__(self, parent):
+        QtGui.QToolBar.__init__(self, parent)
+        self.add_items_action = QtGui.QAction(icontheme.lookup('add-item', icontheme.ICON_SIZE_MENU), _(u"Add Items..."), self)
+        self.add_items_action.setToolTip(_(u"Add selected items to the tagger"))
+        self.addAction(self.add_items_action)
