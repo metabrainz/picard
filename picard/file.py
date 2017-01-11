@@ -49,7 +49,7 @@ from picard.util.textencoding import (
 )
 from picard.util.filenaming import make_short_filename
 from picard.util.tags import PRESERVED_TAGS
-from picard.const import QUERY_LIMIT
+from picard.const import QUERY_LIMIT, MAX_INSIGNIFICANT_LENGTH_DIFFERENCE
 
 
 class File(QtCore.QObject, Item):
@@ -187,7 +187,7 @@ class File(QtCore.QObject, Item):
             orig_values = orig_metadata.getall(name)
             if new_values != orig_values:
                 return False
-        if abs(float(orig_metadata.length) - float(new_metadata.length)) > 2000:
+        if abs(float(orig_metadata.length) - float(new_metadata.length)) > MAX_INSIGNIFICANT_LENGTH_DIFFERENCE:
             return False
         return True
 

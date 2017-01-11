@@ -24,6 +24,7 @@ from functools import partial
 from picard import config
 from picard.album import Album
 from picard.cluster import Cluster
+from picard.const import MAX_INSIGNIFICANT_LENGTH_DIFFERENCE
 from picard.track import Track
 from picard.file import File
 from picard.util import format_time, throttle, thread
@@ -107,7 +108,7 @@ class TagDiff(object):
 
     def __tag_ne(self, tag, orig, new):
         if tag == "~length":
-            return abs(float(orig) - float(new)) > 2000
+            return abs(float(orig) - float(new)) > MAX_INSIGNIFICANT_LENGTH_DIFFERENCE
         else:
             return orig != new
 
