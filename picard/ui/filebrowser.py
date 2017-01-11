@@ -129,21 +129,21 @@ class FileBrowser(QtGui.QTreeView):
             self.expand(index)
             self.scrollTo(index, scrolltype)
 
+    def _get_destination_from_path(self, path):
+        destination = os.path.normpath(unicode(path))
+        if not os.path.isdir(destination):
+            destination = os.path.dirname(destination)
+        return destination
+
     def move_files_here(self):
         indexes = self.selectedIndexes()
         if not indexes:
             return
         path = self.model.filePath(indexes[0])
-        destination = os.path.normpath(unicode(path))
-        if not os.path.isdir(destination):
-            destination = os.path.dirname(destination)
-        config.setting["move_files_to"] = destination
+        config.setting["move_files_to"] = self._get_destination_from_path(path)
 
     def set_as_starting_directory(self):
         indexes = self.selectedIndexes()
         if indexes:
             path = self.model.filePath(indexes[0])
-            destination = os.path.normpath(unicode(path))
-            if not os.path.isdir(destination):
-                destination = os.path.dirname(destination)
-            config.setting["starting_directory_path"] = destination
+            config.setting["starting_directory_path"] = self._get_destination_from_path(path)
