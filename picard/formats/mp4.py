@@ -119,7 +119,7 @@ class MP4File(File):
 
         metadata = Metadata()
         if not tags:
-            # MPEG-4 file in an mov containter is unsupported and is one of
+            # MPEG-4 file in an mov container is unsupported and is one of
             # the formats which returns a positive score in guess_format method
             # If we are unable to add tags, it is not a supported mp4 file
             # remove it and log an error
