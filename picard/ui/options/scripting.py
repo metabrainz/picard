@@ -292,6 +292,8 @@ class ScriptingOptionsPage(OptionsPage):
             if not self.ui.script_list:
                 self.ui.tagger_script.setText("")
                 self.ui.tagger_script.setEnabled(False)
+                self.ui.script_name.setText("")
+                self.ui.script_name.setEnabled(False)
 
     def move_script(self, row, step):
         item1 = self.ui.script_list.item(row)
