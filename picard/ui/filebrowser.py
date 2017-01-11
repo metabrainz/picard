@@ -63,9 +63,9 @@ class FileBrowserPane(QtGui.QWidget):
             else:
                 directories.append(path)
 
-        if len(files):
+        if files:
             self.tagger.add_files(files)
-        if len(directories):
+        if directories:
             for directory in directories:
                 self.tagger.add_directory(directory)
 
