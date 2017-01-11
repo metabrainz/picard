@@ -27,7 +27,7 @@ from picard.cluster import Cluster
 from picard.track import Track
 from picard.file import File
 from picard.util import format_time, throttle, thread
-from picard.util.tags import display_tag_name, TAG_NAMES
+from picard.util.tags import display_tag_name
 from picard.ui.edittagdialog import EditTagDialog
 from picard.metadata import MULTI_VALUED_JOINER
 from picard.browser.filelookup import FileLookup
@@ -327,8 +327,7 @@ class MetadataBox(QtGui.QTableWidget):
                           map(lambda x: x.strip(), config.setting['preserved_tags'].split(','))
                           if tag != ""]
         preserved_tags.extend(tags)
-        config.setting['preserved_tags'] = ", ".join(filter(lambda x: x in TAG_NAMES.keys(),
-                                                            list(set(preserved_tags))))
+        config.setting['preserved_tags'] = ", ".join(list(set(preserved_tags)))
 
     def edit_tag(self, tag):
         EditTagDialog(self.parent, tag).exec_()
