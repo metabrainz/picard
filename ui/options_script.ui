@@ -72,6 +72,9 @@
              <verstretch>0</verstretch>
             </sizepolicy>
            </property>
+           <property name="placeholderText">
+            <string>Display Name</string>
+           </property>
           </widget>
          </item>
         </layout>

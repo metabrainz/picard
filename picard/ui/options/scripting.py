@@ -33,10 +33,12 @@ DEFAULT_SCRIPT_NAME = N_("My script")
 from functools import partial
 from PyQt4.QtCore import pyqtSignal
 
+
 class AdvancedScriptItem(QtGui.QWidget):
     _CHECKBOX_POS = 0
     _BUTTON_UP = 1
     _BUTTON_DOWN = 2
+    _BUTTON_OTHER = 3
 
     __no_emit = False
     changed = pyqtSignal(list)
@@ -50,7 +52,9 @@ class AdvancedScriptItem(QtGui.QWidget):
         self.setLayout(layout)
         #TODO replace all row with 0 below
         row = 0
-        layout.addWidget(QtGui.QCheckBox(), row, self._CHECKBOX_POS)
+        checkbox = QtGui.QCheckBox()
+        checkbox.setChecked(True)
+        layout.addWidget(checkbox, row, self._CHECKBOX_POS)
         up_button = QtGui.QToolButton()
         up_button.setArrowType(QtCore.Qt.UpArrow)
         up_button.setMaximumSize(QtCore.QSize(16, 16))
@@ -68,13 +72,15 @@ class AdvancedScriptItem(QtGui.QWidget):
         other_button.setAutoRaise(True)
         other_button.setMaximumSize(QtCore.QSize(16, 16))
         menu = QtGui.QMenu()
-        menu.addAction('Rename script', self.Action1)
-        menu.addAction('Remove script', self.Action2)
+        menu.addAction('Rename script')
+        menu.addAction('Remove script')
+        self.menu = menu
         other_button.setMenu(menu)
         other_button.setStyleSheet('QToolButton::menu-indicator { image: none; }')
         other_button.clicked.connect(other_button.showMenu)
+
         #other_button.setIcon( icontheme.lookup('delete-square-button'))
-        layout.addWidget(other_button, row, 3)
+        layout.addWidget(other_button, row, self._BUTTON_OTHER)
         #Temp
         checkbox = layout.itemAtPosition(row, self._CHECKBOX_POS).widget()
         checkbox.setText(name)
@@ -83,7 +89,8 @@ class AdvancedScriptItem(QtGui.QWidget):
         print 'add'
 
     def Action2(self):
-        print 'remove'
+        print 'old'
+
 
     def set_up_connection(self,move_up):
         layout = self.layout()
@@ -103,6 +110,13 @@ class AdvancedScriptItem(QtGui.QWidget):
         down = layout.itemAtPosition(0, self._BUTTON_DOWN).widget()
         down.clicked.connect(move_down)
 
+    def set_remove_connection(self, remove):
+        menu_options = self.menu.actions()
+        menu_options[1].triggered.connect(remove)
+
+    def set_rename_connection(self, rename):
+        menu_options = self.menu.actions()
+        menu_options[1].triggered.connect(rename)
 
 
 class TaggerScriptSyntaxHighlighter(QtGui.QSyntaxHighlighter):
@@ -264,6 +278,7 @@ class ScriptingOptionsPage(OptionsPage):
     def setSignals(self, list_widget, item):
         list_widget.set_up_connection(lambda: self.move_script(self.ui.script_list.row(item), 1))
         list_widget.set_down_connection(lambda: self.move_script(self.ui.script_list.row(item), -1))
+        list_widget.set_remove_connection(lambda: self.remove_from_list_of_scripts(self.ui.script_list.row(item)))
 
     def add_to_list_of_scripts(self):
         count = self.ui.script_list.count()
@@ -277,7 +292,7 @@ class ScriptingOptionsPage(OptionsPage):
         self.ui.script_list.setItemWidget(list_item, list_widget)
         self.listitem_to_scriptitem[list_item] = script
         self.list_of_scripts.append(script.get_all())
-
+        self.ui.script_list.setItemSelected(list_item,True)
         # Previous implementation
         '''
         count = self.ui.script_list.count()
@@ -296,7 +311,22 @@ class ScriptingOptionsPage(OptionsPage):
             item = self.ui.script_list.item(i)
             self.listitem_to_scriptitem[item].pos = i
 
-    def remove_from_list_of_scripts(self):
+    def remove_from_list_of_scripts(self, row):
+        item = self.ui.script_list.takeItem(row)
+        if item:
+            script = self.listitem_to_scriptitem[item]
+            del self.listitem_to_scriptitem[item]
+            del self.list_of_scripts[script.pos]
+            del script
+            item = None
+            # update positions of other items
+            self.update_script_positions()
+            if not self.ui.script_list:
+                self.ui.tagger_script.setText("")
+                self.ui.tagger_script.setEnabled(False)
+
+        # Previous Implementation
+        '''
         currentRow = self.ui.script_list.currentRow()
         item = self.ui.script_list.takeItem(currentRow)
         if item:
@@ -310,6 +340,8 @@ class ScriptingOptionsPage(OptionsPage):
             if not self.ui.script_list:
                 self.ui.tagger_script.setText("")
                 self.ui.tagger_script.setEnabled(False)
+
+        '''
 
     def move_script(self, row, step):
         item1 = self.ui.script_list.item(row)

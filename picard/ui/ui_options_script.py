@@ -86,4 +86,5 @@ class Ui_ScriptingOptionsPage(object):
         self.enable_tagger_scripts.setTitle(_("Tagger Script(s)"))
         self.add_script.setToolTip(_("Add script"))
         self.add_script.setText(_("..."))
+        self.lineEdit.setPlaceholderText(_("Display Name"))
 
