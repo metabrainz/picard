@@ -64,10 +64,6 @@ class AdvancedScriptItem(QtGui.QWidget):
         layout.addWidget(up_button, row, self._BUTTON_UP)
         layout.addWidget(down_button, row, self._BUTTON_DOWN)
         other_button = QtGui.QToolButton()
-        '''
-        remove_script_fallback_icon = icontheme.lookup('remove-item')
-        other_button.setIcon(QtGui.QIcon.fromTheme("remove", remove_script_fallback_icon))
-        '''
         other_button.setText("...")
         other_button.setAutoRaise(True)
         other_button.setMaximumSize(QtCore.QSize(16, 16))
@@ -85,26 +81,11 @@ class AdvancedScriptItem(QtGui.QWidget):
         checkbox = layout.itemAtPosition(row, self._CHECKBOX_POS).widget()
         checkbox.setText(name)
 
-    def Action1(self):
-        print 'add'
-
-    def Action2(self):
-        print 'old'
-
-
     def set_up_connection(self,move_up):
         layout = self.layout()
         up = layout.itemAtPosition(0, self._BUTTON_UP).widget()
         up.clicked.connect(move_up)
-        '''
-        layout = self.layout()
-        checkbox = layout.itemAtPosition(0, self._CHECKBOX_POS).widget()
-        up = layout.itemAtPosition(0, self._BUTTON_UP).widget()
-        down = layout.itemAtPosition(0, self._BUTTON_DOWN).widget()
-        #checkbox.stateChanged.connect(partial(self.checkbox_toggled, row))
-        up.clicked.connect(move_up)
-        #down.clicked.connect(partial(self.move_button_clicked, row, up=False))
-        '''
+
     def set_down_connection(self, move_down):
         layout = self.layout()
         down = layout.itemAtPosition(0, self._BUTTON_DOWN).widget()
@@ -240,39 +221,14 @@ class ScriptingOptionsPage(OptionsPage):
         self.ui.tagger_script.textChanged.connect(self.live_update_and_check)
         self.ui.script_name.textChanged.connect(self.script_name_changed)
         self.ui.add_script.clicked.connect(self.add_to_list_of_scripts)
-        #self.ui.remove_script.clicked.connect(self.remove_from_list_of_scripts)
-        #self.ui.up_script.clicked.connect(lambda: self.move_script(1))
-        #self.ui.down_script.clicked.connect(lambda: self.move_script(-1))
         self.ui.script_list.itemSelectionChanged.connect(self.script_selected)
-        self.ui.script_list.itemChanged.connect(self.script_attr_changed)
         self.ui.tagger_script.setEnabled(False)
         self.ui.script_name.setEnabled(False)
         self.listitem_to_scriptitem = {}
         self.list_of_scripts = []
 
         add_script_fallback_icon = icontheme.lookup('add-item')
-        #remove_script_fallback_icon = icontheme.lookup('remove-item')
         self.ui.add_script.setIcon(QtGui.QIcon.fromTheme("add", add_script_fallback_icon))
-        #self.ui.remove_script.setIcon(QtGui.QIcon.fromTheme("remove", remove_script_fallback_icon))
-        #self.list_widget = SortableCheckboxListWidget()
-
-        '''
-        list_widget = AdvancedScriptItem("My Script 1")
-        item = QtGui.QListWidgetItem()
-        self.ui.script_list.addItem(item)
-        self.ui.script_list.setItemWidget(item, list_widget)
-
-        item = QtGui.QListWidgetItem()
-        list_widget = AdvancedScriptItem("My Script 2")
-        list_widget.set_up_connection(lambda: self.dummy_function(item,1))
-        list_widget.set_down_connection(lambda: self.dummy_function(item,-1))
-
-        self.ui.script_list.addItem(item)
-        self.ui.script_list.setItemWidget(item, list_widget)
-        '''
-    def dummy_function(self,item,step):
-        self.move_script(step)
-        print 'it works'
 
     def script_name_changed(self):
         items = self.ui.script_list.selectedItems()
@@ -282,19 +238,6 @@ class ScriptingOptionsPage(OptionsPage):
             list_widget = self.ui.script_list.itemWidget(items[0])
             list_widget.update_name(script.name)
             self.list_of_scripts[script.pos] = script.get_all()
-
-    def script_attr_changed(self, item):
-        item.setSelected(True)
-        script = self.listitem_to_scriptitem[item]
-        '''
-        if item.checkState():
-            script.enabled = True
-        else:
-            script.enabled = False
-        script.name = item.text()
-        '''
-        script.name = self.ui.script_name.text()
-        self.list_of_scripts[script.pos] = script.get_all()
 
     def script_selected(self):
         items = self.ui.script_list.selectedItems()
@@ -335,17 +278,6 @@ class ScriptingOptionsPage(OptionsPage):
         self.listitem_to_scriptitem[list_item] = script
         self.list_of_scripts.append(script.get_all())
         self.ui.script_list.setItemSelected(list_item,True)
-        # Previous implementation
-        '''
-        count = self.ui.script_list.count()
-        script = ScriptItem(pos=count, name=_(DEFAULT_NUMBERED_SCRIPT_NAME) % (count + 1))
-        list_item = QtGui.QListWidgetItem(script.name)
-        list_item.setFlags(list_item.flags() | QtCore.Qt.ItemIsUserCheckable | QtCore.Qt.ItemIsEditable)
-        list_item.setCheckState(QtCore.Qt.Checked)
-        self.ui.script_list.addItem(list_item)
-        self.listitem_to_scriptitem[list_item] = script
-        self.list_of_scripts.append(script.get_all())
-        '''
 
     def update_script_positions(self):
         for i, script in enumerate(self.list_of_scripts):
@@ -366,24 +298,6 @@ class ScriptingOptionsPage(OptionsPage):
             if not self.ui.script_list:
                 self.ui.tagger_script.setText("")
                 self.ui.tagger_script.setEnabled(False)
-
-        # Previous Implementation
-        '''
-        currentRow = self.ui.script_list.currentRow()
-        item = self.ui.script_list.takeItem(currentRow)
-        if item:
-            script = self.listitem_to_scriptitem[item]
-            del self.listitem_to_scriptitem[item]
-            del self.list_of_scripts[script.pos]
-            del script
-            item = None
-            # update positions of other items
-            self.update_script_positions()
-            if not self.ui.script_list:
-                self.ui.tagger_script.setText("")
-                self.ui.tagger_script.setEnabled(False)
-
-        '''
 
     def move_script(self, row, step):
         item1 = self.ui.script_list.item(row)
@@ -417,38 +331,6 @@ class ScriptingOptionsPage(OptionsPage):
                                                             script1.text)
             self.listitem_to_scriptitem[item2] = ScriptItem(script2.pos + step, script2.name, script2.enabled,
                                                             script2.text)
-        # Previous implementation
-        '''
-        # step is +1 for moving up and -1 for down
-        currentRow = self.ui.script_list.currentRow()
-        item1 = self.ui.script_list.item(currentRow)
-        item2 = self.ui.script_list.item(currentRow - step)
-        print currentRow
-        print 'current row problem'
-        if item1 and item2:
-            print 'working?'
-            # make changes in the ui
-
-            self.ui.script_list.insertItem(currentRow - step, self.ui.script_list.takeItem(currentRow))
-
-            # make changes in the picklable list
-
-            script1 = self.listitem_to_scriptitem[item1]
-            script2 = self.listitem_to_scriptitem[item2]
-            # workaround since tuples are immutable
-            indices = script1.pos, script2.pos
-            self.list_of_scripts = [i for j, i in enumerate(self.list_of_scripts) if j not in indices]
-            new_script1 = (script1.pos - step, script1.name, script1.enabled, script1.text)
-            new_script2 = (script2.pos + step, script2.name, script2.enabled, script2.text)
-            self.list_of_scripts.append(new_script1)
-            self.list_of_scripts.append(new_script2)
-            self.list_of_scripts = sorted(self.list_of_scripts, key=lambda x: x[0])
-            # corresponding mapping support also has to be updated
-            self.listitem_to_scriptitem[item1] = ScriptItem(script1.pos - step, script1.name, script1.enabled,
-                                                            script1.text)
-            self.listitem_to_scriptitem[item2] = ScriptItem(script2.pos + step, script2.name, script2.enabled,
-                                                            script2.text)
-            '''
 
     def live_update_and_check(self):
         items = self.ui.script_list.selectedItems()
