@@ -434,12 +434,12 @@ class ScriptingOptionsPage(OptionsPage):
         self.list_of_scripts = config.setting["list_of_scripts"]
         for s_pos, s_name, s_enabled, s_text in self.list_of_scripts:
             script = ScriptItem(s_pos, s_name, s_enabled, s_text)
-            list_item = QtGui.QListWidgetItem(script.name)
-            list_item.setFlags(
-                list_item.flags() | QtCore.Qt.ItemIsUserCheckable | QtCore.Qt.ItemIsEditable)
-            list_item.setCheckState(QtCore.Qt.Checked if script.enabled else QtCore.Qt.Unchecked)
-            self.listitem_to_scriptitem[list_item] = script
+            list_item = QtGui.QListWidgetItem()
+            list_widget = AdvancedScriptItem(s_name)
+            self.setSignals(list_widget, list_item)
             self.ui.script_list.addItem(list_item)
+            self.ui.script_list.setItemWidget(list_item, list_widget)
+            self.listitem_to_scriptitem[list_item] = script
 
         args = {
             "picard-doc-scripting-url": PICARD_URLS['doc_scripting'],
