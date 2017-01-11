@@ -134,8 +134,8 @@ class AdvancedScriptItem(QtGui.QWidget):
         other_button.setAutoRaise(True)
         other_button.setMaximumSize(QtCore.QSize(16, 16))
         menu = QtGui.QMenu()
-        menu.addAction('Rename script')
-        menu.addAction('Remove script')
+        menu.addAction(_("Rename script"))
+        menu.addAction(_("Remove script"))
         self.menu = menu
         other_button.setMenu(menu)
         # remove menu indicator
