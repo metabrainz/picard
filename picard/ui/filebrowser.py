@@ -38,6 +38,8 @@ class FileBrowserPane(QtGui.QWidget):
         layout.insertWidget(0, self.toolbar)
         layout.insertWidget(1, self.file_browser)
         self.setLayout(layout)
+        self.tagger = self.parent().tagger
+        self.toolbar.add_items_action.triggered.connect(self.add_items)
 
     def save_state(self):
         self.file_browser.save_state()
@@ -45,6 +47,27 @@ class FileBrowserPane(QtGui.QWidget):
     def restore_state(self):
         self.file_browser.restore_state()
 
+    def _selected_paths(self):
+        paths = []
+        for index in self.file_browser.selectedIndexes():
+            paths.append(self.file_browser.model.filePath(index))
+        return paths
+
+    def add_items(self):
+        paths = self._selected_paths()
+        files = []
+        directories = []
+        for path in paths:
+            if os.path.isfile(path):
+                files.append(path)
+            else:
+                directories.append(path)
+
+        if len(files):
+            self.tagger.add_files(files)
+        if len(directories):
+            for directory in directories:
+                self.tagger.add_directory(directory)
 
 
 class FileBrowser(QtGui.QTreeView):
