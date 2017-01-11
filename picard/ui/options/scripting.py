@@ -30,91 +30,6 @@ DEFAULT_NUMBERED_SCRIPT_NAME = N_("My script %d")
 DEFAULT_SCRIPT_NAME = N_("My script")
 
 
-from functools import partial
-from PyQt4.QtCore import pyqtSignal
-
-
-class AdvancedScriptItem(QtGui.QWidget):
-    _CHECKBOX_POS = 0
-    _BUTTON_UP = 1
-    _BUTTON_DOWN = 2
-    _BUTTON_OTHER = 3
-
-    __no_emit = False
-    changed = pyqtSignal(list)
-
-    def __init__(self, name=None, state=True, parent=None):
-        super(AdvancedScriptItem, self).__init__(parent)
-        layout = QtGui.QGridLayout()
-        layout.setHorizontalSpacing(5)
-        layout.setVerticalSpacing(2)
-        layout.setContentsMargins(0, 0, 0, 0)
-        self.setLayout(layout)
-        #TODO replace all row with 0 below
-        row = 0
-        checkbox = QtGui.QCheckBox()
-        checkbox.setChecked(state)
-        layout.addWidget(checkbox, row, self._CHECKBOX_POS)
-        up_button = QtGui.QToolButton()
-        up_button.setArrowType(QtCore.Qt.UpArrow)
-        up_button.setMaximumSize(QtCore.QSize(16, 16))
-        down_button = QtGui.QToolButton()
-        down_button.setArrowType(QtCore.Qt.DownArrow)
-        down_button.setMaximumSize(QtCore.QSize(16, 16))
-        layout.addWidget(up_button, row, self._BUTTON_UP)
-        layout.addWidget(down_button, row, self._BUTTON_DOWN)
-        other_button = QtGui.QToolButton()
-        other_button.setText("...")
-        other_button.setAutoRaise(True)
-        other_button.setMaximumSize(QtCore.QSize(16, 16))
-        menu = QtGui.QMenu()
-        menu.addAction('Rename script')
-        menu.addAction('Remove script')
-        self.menu = menu
-        other_button.setMenu(menu)
-        other_button.setStyleSheet('QToolButton::menu-indicator { image: none; }')
-        other_button.clicked.connect(other_button.showMenu)
-
-        #other_button.setIcon( icontheme.lookup('delete-square-button'))
-        layout.addWidget(other_button, row, self._BUTTON_OTHER)
-        #Temp
-        checkbox = layout.itemAtPosition(row, self._CHECKBOX_POS).widget()
-        checkbox.setText(name)
-
-    def set_up_connection(self,move_up):
-        layout = self.layout()
-        up = layout.itemAtPosition(0, self._BUTTON_UP).widget()
-        up.clicked.connect(move_up)
-
-    def set_down_connection(self, move_down):
-        layout = self.layout()
-        down = layout.itemAtPosition(0, self._BUTTON_DOWN).widget()
-        down.clicked.connect(move_down)
-
-    def set_remove_connection(self, remove):
-        menu_options = self.menu.actions()
-        menu_options[1].triggered.connect(remove)
-
-    def set_rename_connection(self, rename):
-        menu_options = self.menu.actions()
-        menu_options[0].triggered.connect(rename)
-
-    def set_checkbox_connection(self, check_state):
-        layout = self.layout()
-        checkbox = layout.itemAtPosition(0, self._CHECKBOX_POS).widget()
-        checkbox.stateChanged.connect(partial(check_state))
-
-    def update_name(self, name):
-        layout = self.layout()
-        checkbox = layout.itemAtPosition(0, self._CHECKBOX_POS).widget()
-        checkbox.setText(name)
-
-    def checkbox_state(self):
-        layout = self.layout()
-        checkbox = layout.itemAtPosition(0, self._CHECKBOX_POS).widget()
-        return checkbox.isChecked()
-
-
 class TaggerScriptSyntaxHighlighter(QtGui.QSyntaxHighlighter):
 
     def __init__(self, document):
@@ -182,6 +97,85 @@ class TaggerScriptSyntaxHighlighter(QtGui.QSyntaxHighlighter):
             index = next_index + 1 if (next_index > -1) and (next_index < len(text)) else -1
 
         self.setCurrentBlockState(open_brackets)
+
+
+class AdvancedScriptItem(QtGui.QWidget):
+    """Custom widget for UI of scripts"""
+
+    _CHECKBOX_POS = 0
+    _BUTTON_UP = 1
+    _BUTTON_DOWN = 2
+    _BUTTON_OTHER = 3
+
+    def __init__(self, name=None, state=True, parent=None):
+        super(AdvancedScriptItem, self).__init__(parent)
+        layout = QtGui.QGridLayout()
+        layout.setHorizontalSpacing(5)
+        layout.setVerticalSpacing(2)
+        layout.setContentsMargins(0, 0, 0, 0)
+        self.setLayout(layout)
+
+        checkbox = QtGui.QCheckBox()
+        checkbox.setChecked(state)
+        checkbox.setText(name)
+        layout.addWidget(checkbox, 0, self._CHECKBOX_POS)
+
+        up_button = QtGui.QToolButton()
+        up_button.setArrowType(QtCore.Qt.UpArrow)
+        up_button.setMaximumSize(QtCore.QSize(16, 16))
+        down_button = QtGui.QToolButton()
+        down_button.setArrowType(QtCore.Qt.DownArrow)
+        down_button.setMaximumSize(QtCore.QSize(16, 16))
+        layout.addWidget(up_button, 0, self._BUTTON_UP)
+        layout.addWidget(down_button, 0, self._BUTTON_DOWN)
+
+        other_button = QtGui.QToolButton()
+        other_button.setText("...")
+        other_button.setAutoRaise(True)
+        other_button.setMaximumSize(QtCore.QSize(16, 16))
+        menu = QtGui.QMenu()
+        menu.addAction('Rename script')
+        menu.addAction('Remove script')
+        self.menu = menu
+        other_button.setMenu(menu)
+        # remove menu indicator
+        other_button.setStyleSheet('QToolButton::menu-indicator { image: none; }')
+        other_button.clicked.connect(other_button.showMenu)
+
+        layout.addWidget(other_button, 0, self._BUTTON_OTHER)
+
+    def set_up_connection(self, move_up):
+        layout = self.layout()
+        up = layout.itemAtPosition(0, self._BUTTON_UP).widget()
+        up.clicked.connect(move_up)
+
+    def set_down_connection(self, move_down):
+        layout = self.layout()
+        down = layout.itemAtPosition(0, self._BUTTON_DOWN).widget()
+        down.clicked.connect(move_down)
+
+    def set_remove_connection(self, remove):
+        menu_options = self.menu.actions()
+        menu_options[1].triggered.connect(remove)
+
+    def set_rename_connection(self, rename):
+        menu_options = self.menu.actions()
+        menu_options[0].triggered.connect(rename)
+
+    def set_checkbox_connection(self, check_state):
+        layout = self.layout()
+        checkbox = layout.itemAtPosition(0, self._CHECKBOX_POS).widget()
+        checkbox.stateChanged.connect(check_state)
+
+    def update_name(self, name):
+        layout = self.layout()
+        checkbox = layout.itemAtPosition(0, self._CHECKBOX_POS).widget()
+        checkbox.setText(name)
+
+    def checkbox_state(self):
+        layout = self.layout()
+        checkbox = layout.itemAtPosition(0, self._CHECKBOX_POS).widget()
+        return checkbox.isChecked()
 
 
 class ScriptItem:
