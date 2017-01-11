@@ -181,13 +181,14 @@ class MetadataBox(QtGui.QTableWidget):
         self.clipboard = [""]
         self.add_tag_action = QtGui.QAction(_(u"Add New Tag..."), parent)
         self.add_tag_action.triggered.connect(partial(self.edit_tag, ""))
-        # TR: Keyboard shortcut for "Add New Tag..."
-        self.add_tag_action.setShortcut(QtGui.QKeySequence(_("Alt+Shift+A")))
         self.changes_first_action = QtGui.QAction(_(u"Show Changes First"), parent)
         self.changes_first_action.setCheckable(True)
         self.changes_first_action.setChecked(config.persist["show_changes_first"])
         self.changes_first_action.toggled.connect(self.toggle_changes_first)
         self.browser_integration = BrowserIntegration()
+        # TR: Keyboard shortcut for "Add New Tag..."
+        self.add_tag_shortcut = QtGui.QShortcut(QtGui.QKeySequence(_("Alt+Shift+A")), self, partial(self.edit_tag, ""))
+        self.add_tag_action.setShortcut(self.add_tag_shortcut.key())
         # TR: Keyboard shortcut for "Edit..." (tag)
         self.edit_tag_shortcut = QtGui.QShortcut(QtGui.QKeySequence(_("Alt+Shift+E")), self, partial(self.edit_selected_tag))
         # TR: Keyboard shortcut for "Remove" (tag)
