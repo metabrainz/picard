@@ -39,6 +39,13 @@ class FileBrowserPane(QtGui.QWidget):
         layout.insertWidget(1, self.file_browser)
         self.setLayout(layout)
 
+    def save_state(self):
+        self.file_browser.save_state()
+
+    def restore_state(self):
+        self.file_browser.restore_state()
+
+
 
 class FileBrowser(QtGui.QTreeView):
 
