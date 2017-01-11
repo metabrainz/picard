@@ -134,10 +134,16 @@ class FileBrowser(QtGui.QTreeView):
         if not indexes:
             return
         path = self.model.filePath(indexes[0])
-        config.setting["move_files_to"] = os.path.normpath(unicode(path))
+        destination = os.path.normpath(unicode(path))
+        if not os.path.isdir(destination):
+            destination = os.path.dirname(destination)
+        config.setting["move_files_to"] = destination
 
     def set_as_starting_directory(self):
         indexes = self.selectedIndexes()
         if indexes:
             path = self.model.filePath(indexes[0])
-            config.setting["starting_directory_path"] = os.path.normpath(unicode(path))
+            destination = os.path.normpath(unicode(path))
+            if not os.path.isdir(destination):
+                destination = os.path.dirname(destination)
+            config.setting["starting_directory_path"] = destination
