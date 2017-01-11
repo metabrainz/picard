@@ -116,12 +116,17 @@ class AdvancedScriptItem(QtGui.QWidget):
 
     def set_rename_connection(self, rename):
         menu_options = self.menu.actions()
-        menu_options[1].triggered.connect(rename)
+        menu_options[0].triggered.connect(rename)
 
     def set_checkbox_connection(self, check_state):
         layout = self.layout()
         checkbox = layout.itemAtPosition(0, self._CHECKBOX_POS).widget()
         checkbox.stateChanged.connect(partial(check_state))
+
+    def update_name(self, name):
+        layout = self.layout()
+        checkbox = layout.itemAtPosition(0, self._CHECKBOX_POS).widget()
+        checkbox.setText(name)
 
     def checkbox_state(self):
         layout = self.layout()
@@ -233,6 +238,7 @@ class ScriptingOptionsPage(OptionsPage):
         self.ui.setupUi(self)
         self.highlighter = TaggerScriptSyntaxHighlighter(self.ui.tagger_script.document())
         self.ui.tagger_script.textChanged.connect(self.live_update_and_check)
+        self.ui.script_name.textChanged.connect(self.script_name_changed)
         self.ui.add_script.clicked.connect(self.add_to_list_of_scripts)
         #self.ui.remove_script.clicked.connect(self.remove_from_list_of_scripts)
         #self.ui.up_script.clicked.connect(lambda: self.move_script(1))
@@ -240,7 +246,7 @@ class ScriptingOptionsPage(OptionsPage):
         self.ui.script_list.itemSelectionChanged.connect(self.script_selected)
         self.ui.script_list.itemChanged.connect(self.script_attr_changed)
         self.ui.tagger_script.setEnabled(False)
-
+        self.ui.script_name.setEnabled(False)
         self.listitem_to_scriptitem = {}
         self.list_of_scripts = []
 
@@ -268,28 +274,48 @@ class ScriptingOptionsPage(OptionsPage):
         self.move_script(step)
         print 'it works'
 
+    def script_name_changed(self):
+        items = self.ui.script_list.selectedItems()
+        if items:
+            script = self.listitem_to_scriptitem[items[0]]
+            script.name = self.ui.script_name.text()
+            list_widget = self.ui.script_list.itemWidget(items[0])
+            list_widget.update_name(script.name)
+            self.list_of_scripts[script.pos] = script.get_all()
+
     def script_attr_changed(self, item):
         item.setSelected(True)
         script = self.listitem_to_scriptitem[item]
+        '''
         if item.checkState():
             script.enabled = True
         else:
             script.enabled = False
         script.name = item.text()
+        '''
+        script.name = self.ui.script_name.text()
         self.list_of_scripts[script.pos] = script.get_all()
 
     def script_selected(self):
         items = self.ui.script_list.selectedItems()
         if items:
             self.ui.tagger_script.setEnabled(True)
+            self.ui.script_name.setEnabled(True)
             script = self.listitem_to_scriptitem[items[0]]
             self.ui.tagger_script.setText(script.text)
+            self.ui.script_name.setText(script.name)
 
     def setSignals(self, list_widget, item):
         list_widget.set_up_connection(lambda: self.move_script(self.ui.script_list.row(item), 1))
         list_widget.set_down_connection(lambda: self.move_script(self.ui.script_list.row(item), -1))
         list_widget.set_remove_connection(lambda: self.remove_from_list_of_scripts(self.ui.script_list.row(item)))
         list_widget.set_checkbox_connection(lambda: self.update_check_state(item,list_widget.checkbox_state()))
+        list_widget.set_rename_connection(lambda: self.rename_script(item))
+
+    def rename_script(self, item):
+        self.ui.script_list.setItemSelected(item, True)
+        self.ui.script_name.setFocus()
+        self.ui.script_name.selectAll()
 
     def update_check_state(self, item, checkbox_state):
         script = self.listitem_to_scriptitem[item]
