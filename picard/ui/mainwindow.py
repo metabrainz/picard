@@ -30,7 +30,7 @@ from picard.formats import supported_formats
 from picard.ui.coverartbox import CoverArtBox
 from picard.ui.itemviews import MainPanel
 from picard.ui.metadatabox import MetadataBox
-from picard.ui.filebrowser import FileBrowser
+from picard.ui.filebrowser import FileBrowserPane
 from picard.ui.tagsfromfilenames import TagsFromFileNamesDialog
 from picard.ui.options.dialog import OptionsDialog
 from picard.ui.infodialog import FileInfoDialog, AlbumInfoDialog, ClusterInfoDialog
@@ -99,7 +99,7 @@ class MainWindow(QtGui.QMainWindow):
         mainLayout.setHandleWidth(1)
 
         self.panel = MainPanel(self, mainLayout)
-        self.file_browser = FileBrowser(self.panel)
+        self.file_browser = FileBrowserPane(self.panel)
         if not self.show_file_browser_action.isChecked():
             self.file_browser.hide()
         self.panel.insertWidget(0, self.file_browser)
