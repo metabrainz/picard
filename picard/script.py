@@ -496,8 +496,8 @@ def func_trim(parser, text, char=None):
 
 def func_add(parser, x, y, *args):
     """Adds ``y`` to ``x``.
-       Can be used with arbitrary number of arguements. The result is
-       $add($add(x,y)...)
+       Can be used with an arbitrary number of arguments.
+       Eg: $add(x, y, z) = ((x + y) + z)
     """
     try:
         return _compute_int('add', x, y, *args)
@@ -507,8 +507,8 @@ def func_add(parser, x, y, *args):
 
 def func_sub(parser, x, y, *args):
     """Subtracts ``y`` from ``x``.
-       Can be used with arbitrary number of arguements. The result is
-       $sub($sub(x,y)...)
+       Can be used with an arbitrary number of arguments.
+       Eg: $sub(x, y, z) = ((x - y) - z)
     """
     try:
         return _compute_int('sub', x, y, *args)
@@ -518,8 +518,8 @@ def func_sub(parser, x, y, *args):
 
 def func_div(parser, x, y, *args):
     """Divides ``x`` by ``y``.
-       Can be used with arbitrary number of arguements. The result is
-       $div($div(x,y)...)
+       Can be used with an arbitrary number of arguments.
+       Eg: $div(x, y, z) = ((x / y) / z)
     """
     try:
         return _compute_int('div', x, y, *args)
@@ -529,8 +529,8 @@ def func_div(parser, x, y, *args):
 
 def func_mod(parser, x, y, *args):
     """Returns the remainder of ``x`` divided by ``y``.
-    Can be used with arbitrary number of arguements. The result is
-    $mod($mod(x,y)...)
+       Can be used with an arbitrary number of arguments.
+       Eg: $mod(x, y, z) = ((x % y) % z)
     """
     try:
         return _compute_int('mod', x, y, *args)
@@ -540,8 +540,8 @@ def func_mod(parser, x, y, *args):
 
 def func_mul(parser, x, y, *args):
     """Multiplies ``x`` by ``y``.
-    Can be used with arbitrary number of arguements. The result is
-    $mul($mul(x,y)...)
+       Can be used with an arbitrary number of arguments.
+       Eg: $mul(x, y, z) = ((x * y) * z)
     """
     try:
         return _compute_int('mul', x, y, *args)
@@ -551,8 +551,8 @@ def func_mul(parser, x, y, *args):
 
 def func_or(parser, x, y, *args):
     """Returns true, if either ``x`` or ``y`` not empty.
-    Can be used with arbitrary number of arguements. The result is
-    true if any of the arguements is not empty.
+       Can be used with an arbitrary number of arguments. The result is
+       true if ANY of the arguments is not empty.
     """
     if _compute_logic('or', x, y, *args):
         return "1"
@@ -562,8 +562,8 @@ def func_or(parser, x, y, *args):
 
 def func_and(parser, x, y, *args):
     """Returns true, if both ``x`` and ``y`` are not empty.
-    Can be used with arbitrary number of arguements. The result is
-    true if all of the arguements are not empty.
+       Can be used with an arbitrary number of arguments. The result is
+       true if ALL of the arguments are not empty.
     """
     if _compute_logic('and', x, y, *args):
         return "1"
