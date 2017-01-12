@@ -226,7 +226,10 @@ class Metadata(dict):
         if other.length:
             self.length = other.length
 
-        self.deleted_tags.update(other.deleted_tags)      
+        self.deleted_tags.update(other.deleted_tags)
+        # Remove deleted tags from UI on save
+        for tag in other.deleted_tags:
+            self.pop(tag, None)
 
     def clear(self):
         dict.clear(self)
@@ -274,8 +277,7 @@ class Metadata(dict):
     def delete(self, name):
         if name in self:
             self.pop(name, None)
-        
-        self.deleted_tags.add(name)     
+        self.deleted_tags.add(name)
 
     def iteritems(self):
         for name, values in dict.iteritems(self):
