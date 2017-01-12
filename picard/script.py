@@ -21,6 +21,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 import re
+import operator
 from collections import namedtuple
 from inspect import getargspec
 from picard.metadata import Metadata
@@ -307,6 +308,22 @@ def register_script_function(function, name=None, eval_args=True,
     )
 
 
+def _compute(operation, operands):
+
+    operand_list = [operands.get('x'), operands.get('y')] + list(operands.get('args'))
+    int_operators = {'add': operator.add,
+                     'sub': operator.sub,
+                     'mul': operator.mul,
+                     'div': operator.div,
+                     'mod': operator.mod}
+    logic_operators = {'and': (lambda x, y: x and y),
+                       'or': (lambda x, y: x or y)}
+    if operation in int_operators:
+        return str(reduce(int_operators[operation], map(int, operand_list)))
+    elif operation in logic_operators:
+        return reduce(logic_operators[operation], operand_list)
+
+
 def func_if(parser, _if, _then, _else=None):
     """If ``if`` is not empty, it returns ``then``, otherwise it returns ``else``."""
     if _if.eval(parser):
@@ -475,57 +492,78 @@ def func_trim(parser, text, char=None):
         return text.strip()
 
 
-def func_add(parser, x, y):
-    """Add ``y`` to ``x``."""
+def func_add(parser, x, y, *args):
+    """Adds ``y`` to ``x``.
+       Can be used with arbitary number of arguements. The result is
+       $add($add(x,y)...)
+    """
     try:
-        return str(int(x) + int(y))
+        return _compute('add', locals())
     except ValueError:
         return ""
 
 
-def func_sub(parser, x, y):
-    """Subtracts ``y`` from ``x``."""
+def func_sub(parser, x, y, *args):
+    """Subtracts ``y`` from ``x``.
+       Can be used with arbitary number of arguements. The result is
+       $sub($sub(x,y)...)
+    """
     try:
-        return str(int(x) - int(y))
+        return _compute('sub', locals())
     except ValueError:
         return ""
 
 
-def func_div(parser, x, y):
-    """Divides ``x`` by ``y``."""
+def func_div(parser, x, y, *args):
+    """Divides ``x`` by ``y``.
+       Can be used with arbitary number of arguements. The result is
+       $div($div(x,y)...)
+    """
     try:
-        return str(int(x) / int(y))
+        return _compute('div', locals())
     except ValueError:
         return ""
 
 
-def func_mod(parser, x, y):
-    """Returns the remainder of ``x`` divided by ``y``."""
+def func_mod(parser, x, y, *args):
+    """Returns the remainder of ``x`` divided by ``y``.
+    Can be used with arbitary number of arguements. The result is
+    $mod($mod(x,y)...)
+    """
     try:
-        return str(int(x) % int(y))
+        return _compute('mod', locals())
     except ValueError:
         return ""
 
 
-def func_mul(parser, x, y):
-    """Multiplies ``x`` by ``y``."""
+def func_mul(parser, x, y, *args):
+    """Multiplies ``x`` by ``y``.
+    Can be used with arbitary number of arguements. The result is
+    $mul($mul(x,y)...)
+    """
     try:
-        return str(int(x) * int(y))
+        return _compute('mul', locals())
     except ValueError:
         return ""
 
 
-def func_or(parser, x, y):
-    """Returns true, if either ``x`` or ``y`` not empty."""
-    if x or y:
+def func_or(parser, x, y, *args):
+    """Returns true, if either ``x`` or ``y`` not empty.
+    Can be used with arbitary number of arguements. The result is
+    true if any of the arguements is not empty.
+    """
+    if _compute('or', locals()):
         return "1"
     else:
         return ""
 
 
-def func_and(parser, x, y):
-    """Returns true, if both ``x`` and ``y`` are not empty."""
-    if x and y:
+def func_and(parser, x, y, *args):
+    """Returns true, if both ``x`` and ``y`` are not empty.
+    Can be used with arbitary number of arguements. The result is
+    true if all of the arguements is not empty.
+    """
+    if _compute('and', locals()):
         return "1"
     else:
         return ""
