@@ -95,15 +95,19 @@ class ScriptParserTest(unittest.TestCase):
 
     def test_cmd_or(self):
         self.assertEqual(self.parser.eval("$or(,)"), "")
+        self.assertEqual(self.parser.eval("$or(,,)"), "")
         self.assertEqual(self.parser.eval("$or(,q)"), "1")
         self.assertEqual(self.parser.eval("$or(q,)"), "1")
         self.assertEqual(self.parser.eval("$or(q,q)"), "1")
+        self.assertEqual(self.parser.eval("$or(q,,)"), "1")
 
     def test_cmd_and(self):
         self.assertEqual(self.parser.eval("$and(,)"), "")
         self.assertEqual(self.parser.eval("$and(,q)"), "")
         self.assertEqual(self.parser.eval("$and(q,)"), "")
+        self.assertEqual(self.parser.eval("$and(q,q,)"), "")
         self.assertEqual(self.parser.eval("$and(q,q)"), "1")
+        self.assertEqual(self.parser.eval("$and(q,q,q)"), "1")
 
     def test_cmd_not(self):
         self.assertEqual(self.parser.eval("$not($noop())"), "1")
@@ -111,22 +115,27 @@ class ScriptParserTest(unittest.TestCase):
 
     def test_cmd_add(self):
         self.assertEqual(self.parser.eval("$add(1,2)"), "3")
+        self.assertEqual(self.parser.eval("$add(1,2,3)"), "6")
 
     def test_cmd_sub(self):
         self.assertEqual(self.parser.eval("$sub(1,2)"), "-1")
         self.assertEqual(self.parser.eval("$sub(2,1)"), "1")
+        self.assertEqual(self.parser.eval("$sub(4,2,1)"), "1")
 
     def test_cmd_div(self):
         self.assertEqual(self.parser.eval("$div(9,3)"), "3")
         self.assertEqual(self.parser.eval("$div(10,3)"), "3")
+        self.assertEqual(self.parser.eval("$div(30,3,3)"), "3")
 
     def test_cmd_mod(self):
         self.assertEqual(self.parser.eval("$mod(9,3)"), "0")
         self.assertEqual(self.parser.eval("$mod(10,3)"), "1")
+        self.assertEqual(self.parser.eval("$mod(10,6,3)"), "1")
 
     def test_cmd_mul(self):
         self.assertEqual(self.parser.eval("$mul(9,3)"), "27")
         self.assertEqual(self.parser.eval("$mul(10,3)"), "30")
+        self.assertEqual(self.parser.eval("$mul(2,5,3)"), "30")
 
     def test_cmd_eq(self):
         self.assertEqual(self.parser.eval("$eq(,)"), "1")
