@@ -208,6 +208,7 @@ class ScriptingOptionsPage(OptionsPage):
     options = [
         config.BoolOption("setting", "enable_tagger_scripts", False),
         config.ListOption("setting", "list_of_scripts", []),
+        config.IntOption("persist", "last_selected_script_pos", 0),
     ]
 
     def __init__(self, parent=None):
@@ -223,6 +224,7 @@ class ScriptingOptionsPage(OptionsPage):
         self.ui.script_name.setEnabled(False)
         self.listitem_to_scriptitem = {}
         self.list_of_scripts = []
+        self.last_selected_script_pos = 0
 
     def script_name_changed(self):
         items = self.ui.script_list.selectedItems()
@@ -241,6 +243,7 @@ class ScriptingOptionsPage(OptionsPage):
             script = self.listitem_to_scriptitem[items[0]]
             self.ui.tagger_script.setText(script.text)
             self.ui.script_name.setText(script.name)
+            self.last_selected_script_pos = script.pos
 
     def setSignals(self, list_widget, item):
         list_widget.set_up_connection(lambda: self.move_script(self.ui.script_list.row(item), 1))
@@ -299,6 +302,12 @@ class ScriptingOptionsPage(OptionsPage):
                 self.ui.tagger_script.setEnabled(False)
                 self.ui.script_name.setText("")
                 self.ui.script_name.setEnabled(False)
+
+            # update position of last_selected_script
+            if row == self.last_selected_script_pos:
+                self.last_selected_script_pos = 0
+            elif row < self.last_selected_script_pos:
+                self.last_selected_script_pos -= 1
 
     def move_script(self, row, step):
         item1 = self.ui.script_list.item(row)
@@ -366,6 +375,12 @@ class ScriptingOptionsPage(OptionsPage):
             self.ui.script_list.setItemWidget(list_item, list_widget)
             self.listitem_to_scriptitem[list_item] = script
 
+        # Select the last selected script item
+        self.last_selected_script_pos = config.persist["last_selected_script_pos"]
+        last_selected_script = self.ui.script_list.item(self.last_selected_script_pos)
+        if last_selected_script:
+            self.ui.script_list.setItemSelected(last_selected_script, True)
+
         args = {
             "picard-doc-scripting-url": PICARD_URLS['doc_scripting'],
         }
@@ -376,6 +391,7 @@ class ScriptingOptionsPage(OptionsPage):
     def save(self):
         config.setting["enable_tagger_scripts"] = self.ui.enable_tagger_scripts.isChecked()
         config.setting["list_of_scripts"] = self.list_of_scripts
+        config.persist["last_selected_script_pos"] = self.last_selected_script_pos
 
     def display_error(self, error):
         pass
