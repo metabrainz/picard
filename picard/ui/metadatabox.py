@@ -27,7 +27,7 @@ from picard.cluster import Cluster
 from picard.track import Track
 from picard.file import File
 from picard.util import format_time, throttle, thread
-from picard.util.tags import display_tag_name
+from picard.util.tags import display_tag_name, TAG_NAMES
 from picard.ui.edittagdialog import EditTagDialog
 from picard.metadata import MULTI_VALUED_JOINER
 from picard.browser.filelookup import FileLookup
@@ -270,10 +270,16 @@ class MetadataBox(QtGui.QTableWidget):
         if self.objects:
             tags = self.selected_tags(discard=('~length'))
             if len(tags) == 1:
+                selected_tag = list(tags)[0]
                 edit_tag_action = QtGui.QAction(_(u"Edit..."), self.parent)
                 edit_tag_action.triggered.connect(partial(self.edit_tag, list(tags)[0]))
                 edit_tag_action.setShortcut(self.edit_tag_shortcut.key())
+                edit_tag_action.triggered.connect(partial(self.edit_tag, selected_tag))
                 menu.addAction(edit_tag_action)
+                if selected_tag in TAG_NAMES:
+                    add_to_preserved_tags_action = QtGui.QAction(_(u"Add to 'Preserve Tags' List"), self.parent)
+                    add_to_preserved_tags_action.triggered.connect(partial(self.add_to_preserved_tags, selected_tag))
+                    menu.addAction(add_to_preserved_tags_action)
             removals = []
             useorigs = []
             item = self.currentItem()
@@ -312,21 +318,16 @@ class MetadataBox(QtGui.QTableWidget):
             if len(tags) == 1 or removals or useorigs:
                 menu.addSeparator()
             menu.addAction(self.add_tag_action)
-            add_to_preserved_tags_action = QtGui.QAction(_(u"Add Selected Tags to 'Preserve Tags' List"), self.parent)
-            add_to_preserved_tags_action.triggered.connect(self.add_to_preserved_tags)
-            menu.addAction(add_to_preserved_tags_action)
             menu.addSeparator()
         menu.addAction(self.changes_first_action)
         menu.exec_(event.globalPos())
         event.accept()
 
-    def add_to_preserved_tags(self):
-        # Get all selected tags including '~length'
-        tags = self.selected_tags()
+    def add_to_preserved_tags(self, name):
         preserved_tags = [tag for tag in
                           map(lambda x: x.strip(), config.setting['preserved_tags'].split(','))
                           if tag != ""]
-        preserved_tags.extend(tags)
+        preserved_tags.append(name)
         config.setting['preserved_tags'] = ", ".join(list(set(preserved_tags)))
 
     def edit_tag(self, tag):
