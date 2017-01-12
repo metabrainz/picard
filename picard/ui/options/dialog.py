@@ -174,6 +174,8 @@ class OptionsDialog(PicardDialog):
         # Restore the config values incase the user doesn't save after restoring defaults
         for key in old_options:
             config.setting[key] = old_options[key]
+        if isinstance(page, general.GeneralOptionsPage):
+            page.logout()
         return
 
     def confirm_reset(self):
