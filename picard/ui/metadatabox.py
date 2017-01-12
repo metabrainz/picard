@@ -328,7 +328,7 @@ class MetadataBox(QtGui.QTableWidget):
                           map(lambda x: x.strip(), config.setting['preserved_tags'].split(','))
                           if tag != ""]
         preserved_tags.append(name)
-        config.setting['preserved_tags'] = ", ".join(list(set(preserved_tags)))
+        config.setting['preserved_tags'] = ", ".join((set(preserved_tags)))
 
     def edit_tag(self, tag):
         EditTagDialog(self.parent, tag).exec_()
