@@ -280,8 +280,13 @@ class ScriptingOptionsPage(OptionsPage):
             self.listitem_to_scriptitem[item].pos = i
 
     def remove_from_list_of_scripts(self, row):
-        item = self.ui.script_list.takeItem(row)
-        if item:
+        item = self.ui.script_list.item(row)
+        confirm_remove = QtGui.QMessageBox()
+        msg = _("Are you sure you want to remove this script?")
+        reply = confirm_remove.question(confirm_remove, _('Confirm Remove'), msg, QtGui.QMessageBox.Yes,
+                                        QtGui.QMessageBox.No)
+        if item and reply == QtGui.QMessageBox.Yes:
+            item = self.ui.script_list.takeItem(row)
             script = self.listitem_to_scriptitem[item]
             del self.listitem_to_scriptitem[item]
             del self.list_of_scripts[script.pos]
