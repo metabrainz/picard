@@ -324,4 +324,11 @@ class ScriptParserTest(unittest.TestCase):
             self.parser.eval("$noargstest()")
         except ScriptError:
             self.fail("Function noargs raised ScriptError unexpectedly.")
-        
+
+    def test_cmd_unset(self):
+        context = Metadata()
+        context['performer:foo'] = u'Foo'
+        context['performer:bar'] = u'Foo'
+        self.parser.eval("$unset(performer:*)", context)
+        self.assertNotIn('performer:bar', context)
+        self.assertNotIn('performer:foo', context)
