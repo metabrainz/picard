@@ -54,10 +54,13 @@
          <item row="0" column="2">
           <widget class="QToolButton" name="add_script">
            <property name="toolTip">
-            <string>Add script</string>
+            <string>Add new script</string>
            </property>
            <property name="text">
-            <string>...</string>
+            <string>Add new script</string>
+           </property>
+           <property name="toolButtonStyle">
+            <enum>Qt::ToolButtonTextOnly</enum>
            </property>
            <property name="autoRaise">
             <bool>false</bool>

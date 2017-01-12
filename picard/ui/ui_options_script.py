@@ -54,6 +54,7 @@ class Ui_ScriptingOptionsPage(object):
         self.tagger_script.setObjectName(_fromUtf8("tagger_script"))
         self.gridLayout.addWidget(self.tagger_script, 3, 4, 2, 2)
         self.add_script = QtGui.QToolButton(self.groupBox)
+        self.add_script.setToolButtonStyle(QtCore.Qt.ToolButtonTextOnly)
         self.add_script.setAutoRaise(False)
         self.add_script.setObjectName(_fromUtf8("add_script"))
         self.gridLayout.addWidget(self.add_script, 0, 2, 1, 1)
@@ -84,7 +85,7 @@ class Ui_ScriptingOptionsPage(object):
 
     def retranslateUi(self, ScriptingOptionsPage):
         self.enable_tagger_scripts.setTitle(_("Tagger Script(s)"))
-        self.add_script.setToolTip(_("Add script"))
-        self.add_script.setText(_("..."))
+        self.add_script.setToolTip(_("Add new script"))
+        self.add_script.setText(_("Add new script"))
         self.script_name.setPlaceholderText(_("Display Name"))
 

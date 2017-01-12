@@ -221,9 +221,6 @@ class ScriptingOptionsPage(OptionsPage):
         self.listitem_to_scriptitem = {}
         self.list_of_scripts = []
 
-        add_script_fallback_icon = icontheme.lookup('add-item')
-        self.ui.add_script.setIcon(QtGui.QIcon.fromTheme("add", add_script_fallback_icon))
-
     def script_name_changed(self):
         items = self.ui.script_list.selectedItems()
         if items:
