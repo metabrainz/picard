@@ -117,6 +117,7 @@ class MP4File(File):
         if tags is None:
             file.add_tags()
 
+        metadata = Metadata()
         if not tags:
             # MPEG-4 file in an mov container is unsupported and is one of
             # the formats which returns a positive score in guess_format method
@@ -124,8 +125,8 @@ class MP4File(File):
             # remove it and log an error
             log.error("Unable to load tags for file {}".format(self))
             self.remove()
-            return {}
-        metadata = Metadata()
+            return metadata
+
         for name, values in tags.items():
             if name in self.__text_tags:
                 for value in values:
