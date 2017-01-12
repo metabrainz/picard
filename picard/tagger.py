@@ -384,6 +384,12 @@ class Tagger(QtGui.QApplication):
                 file.load(partial(self._file_loaded, target=target))
 
     def add_directory(self, path):
+        if config.setting['recursively_add_files']:
+            self._add_directory_recursive(path)
+        else:
+            self._add_directory_non_recursive(path)
+
+    def _add_directory_recursive(self, path):
         ignore_hidden = config.setting["ignore_hidden_files"]
         walk = os.walk(unicode(path))
 
@@ -421,6 +427,32 @@ class Tagger(QtGui.QApplication):
                 thread.run_task(get_files, process)
 
         process(True, False)
+
+    def _add_directory_non_recursive(self, path):
+        files = []
+        for f in os.listdir(path):
+            listing = os.path.join(path, f)
+            if os.path.isfile(listing):
+                files.append(listing)
+        number_of_files = len(files)
+        if number_of_files:
+            mparms = {
+                'count': number_of_files,
+                'directory': path,
+            }
+            log.debug("Adding %(count)d files from '%(directory)s'" %
+                      mparms)
+            self.window.set_statusbar_message(
+                ungettext(
+                    "Adding %(count)d file from '%(directory)s' ...",
+                    "Adding %(count)d files from '%(directory)s' ...",
+                    number_of_files),
+                mparms,
+                translate=None,
+                echo=None
+            )
+            # Function call only if files exist
+            self.add_files(files)
 
     def get_file_lookup(self):
         """Return a FileLookup object."""
