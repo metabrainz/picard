@@ -308,20 +308,22 @@ def register_script_function(function, name=None, eval_args=True,
     )
 
 
-def _compute(operation, operands):
+_int_operators = {'add': operator.add,
+                  'sub': operator.sub,
+                  'mul': operator.mul,
+                  'div': operator.div,
+                  'mod': operator.mod}
 
-    operand_list = [operands.get('x'), operands.get('y')] + list(operands.get('args'))
-    int_operators = {'add': operator.add,
-                     'sub': operator.sub,
-                     'mul': operator.mul,
-                     'div': operator.div,
-                     'mod': operator.mod}
-    logic_operators = {'and': (lambda x, y: x and y),
-                       'or': (lambda x, y: x or y)}
-    if operation in int_operators:
-        return str(reduce(int_operators[operation], map(int, operand_list)))
-    elif operation in logic_operators:
-        return reduce(logic_operators[operation], operand_list)
+_logic_operators = {'and': (lambda x, y: x and y),
+                    'or': (lambda x, y: x or y)}
+
+
+def _compute_int(operation, *args):
+    return str(reduce(_int_operators[operation], map(int, list(args))))
+
+
+def _compute_logic(operation, *args):
+    return reduce(_logic_operators[operation], list(args))
 
 
 def func_if(parser, _if, _then, _else=None):
@@ -498,7 +500,7 @@ def func_add(parser, x, y, *args):
        $add($add(x,y)...)
     """
     try:
-        return _compute('add', locals())
+        return _compute_int('add', x, y, *args)
     except ValueError:
         return ""
 
@@ -509,7 +511,7 @@ def func_sub(parser, x, y, *args):
        $sub($sub(x,y)...)
     """
     try:
-        return _compute('sub', locals())
+        return _compute_int('sub', x, y, *args)
     except ValueError:
         return ""
 
@@ -520,7 +522,7 @@ def func_div(parser, x, y, *args):
        $div($div(x,y)...)
     """
     try:
-        return _compute('div', locals())
+        return _compute_int('div', x, y, *args)
     except ValueError:
         return ""
 
@@ -531,7 +533,7 @@ def func_mod(parser, x, y, *args):
     $mod($mod(x,y)...)
     """
     try:
-        return _compute('mod', locals())
+        return _compute_int('mod', x, y, *args)
     except ValueError:
         return ""
 
@@ -542,7 +544,7 @@ def func_mul(parser, x, y, *args):
     $mul($mul(x,y)...)
     """
     try:
-        return _compute('mul', locals())
+        return _compute_int('mul', x, y, *args)
     except ValueError:
         return ""
 
@@ -552,7 +554,7 @@ def func_or(parser, x, y, *args):
     Can be used with arbitrary number of arguements. The result is
     true if any of the arguements is not empty.
     """
-    if _compute('or', locals()):
+    if _compute_logic('or', x, y, *args):
         return "1"
     else:
         return ""
@@ -563,7 +565,7 @@ def func_and(parser, x, y, *args):
     Can be used with arbitrary number of arguements. The result is
     true if all of the arguements are not empty.
     """
-    if _compute('and', locals()):
+    if _compute_logic('and', x, y, *args):
         return "1"
     else:
         return ""
