@@ -29,7 +29,6 @@ from picard.const import (
     USER_PLUGIN_DIR,
     PLUGINS_API,
 )
-from picard.util import encode_filename, webbrowser2
 from picard.ui.options import OptionsPage, register_options_page
 from picard.ui.ui_options_plugins import Ui_PluginsOptionsPage
 
