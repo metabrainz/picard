@@ -24,6 +24,7 @@ from picard.similarity import similarity2
 from picard.util import (
     linear_combination_of_weights,
 )
+from picard.coverart.plugins import run_coverart_tag_embed_action
 from picard.mbxml import artist_credit_from_node
 
 MULTI_VALUED_JOINER = '; '
@@ -60,7 +61,13 @@ class Metadata(dict):
         if config.setting["embed_only_one_front_image"]:
             front_image = self.get_single_front_image(images)
             if front_image:
-                return front_image
+                images = front_image
+        # Run coverart tag embed actions
+        try:
+            for image in images:
+                run_coverart_tag_embed_action(image)
+        except Exception as e:
+            log.error(e)
         return images
 
     def get_single_front_image(self, images=None):

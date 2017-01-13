@@ -30,6 +30,7 @@ from hashlib import md5
 from PyQt4.QtCore import QUrl, QObject, QMutex
 from picard import config, log
 from picard.coverart.utils import translate_caa_type
+from picard.coverart.plugins import run_coverart_file_save_action
 from picard.script import ScriptParser
 from picard.util import (
     encode_filename,
@@ -125,6 +126,7 @@ class CoverArtImage:
         self.types = types
         self.comment = comment
         self.datahash = None
+        self.original_datahash = None
         # thumbnail is used to link to another CoverArtImage, ie. for PDFs
         self.thumbnail = None
         self.can_be_saved_to_tags = True
@@ -205,7 +207,8 @@ class CoverArtImage:
            it will be re-used and no file write occurs
         """
         if self.datahash:
-            self.datahash.delete_file()
+            if self.data != self.original_data:
+                self.datahash.delete_file()
             self.datahash = None
 
         try:
@@ -216,6 +219,8 @@ class CoverArtImage:
 
         try:
             self.datahash = DataHash(data, suffix=self.extension)
+            if not self.original_datahash:
+                self.original_datahash = DataHash(data, suffix=self.extension)
         except (OSError, IOError) as e:
             raise CoverArtImageIOError(e)
 
@@ -266,6 +271,12 @@ class CoverArtImage:
         else:
             filename = config.setting["cover_image_filename"]
             log.debug("Using default cover image filename %r", filename)
+
+        try:
+            run_coverart_file_save_action(self)
+        except Exception as e:
+            log.error(e)
+
         filename = self._make_image_filename(filename, dirname, metadata)
 
         overwrite = config.setting["save_images_overwrite"]
@@ -312,6 +323,16 @@ class CoverArtImage:
         """
         try:
             return self.datahash.data
+        except (OSError, IOError) as e:
+            raise CoverArtImageIOError(e)
+
+    @property
+    def original_data(self):
+        """Reads the data from the temporary file created for this image when it was initially set.
+        May raise CoverArtImageIOError
+        """
+        try:
+            return self.original_datahash.data
         except (OSError, IOError) as e:
             raise CoverArtImageIOError(e)
 

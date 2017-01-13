@@ -31,6 +31,7 @@ from functools import partial
 from picard import config, log
 from picard.coverart.image import (CoverArtImageIOError,
                                    CoverArtImageIdentificationError)
+from picard.coverart.plugins import run_coverart_downloaded_action
 from PyQt4.QtCore import QObject
 
 
@@ -83,7 +84,11 @@ class CoverArt:
             raise e
         except CoverArtImageIdentificationError as e:
             self.album.error_append(unicode(e))
-
+        # Run coverart downloaded processors
+        try:
+            run_coverart_downloaded_action(coverartimage)
+        except Exception as e:
+            log.error(e)
 
     def _coverart_downloaded(self, coverartimage, data, http, error):
         """Handle finished download, save it to metadata"""
