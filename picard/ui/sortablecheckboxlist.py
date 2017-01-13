@@ -39,8 +39,6 @@ class SortableCheckboxListWidget(QtGui.QWidget):
         layout.setContentsMargins(0, 0, 0, 0)
         self.setLayout(layout)
         self.__items = []
-        self.all_marked = False
-        self.item_marking = []
 
     def addItems(self, items):
         for item in items:
@@ -59,8 +57,6 @@ class SortableCheckboxListWidget(QtGui.QWidget):
         to_row = to_row % len(self.__items)
         self.__items[to_row], self.__items[from_row] = \
             self.__items[from_row], self.__items[to_row]
-        self.item_marking[from_row], self.item_marking[to_row] = self.item_marking[to_row], self.item_marking[
-            from_row]
         self.updateRow(to_row)
         self.updateRow(from_row)
         self._emit_changed()
@@ -87,7 +83,6 @@ class SortableCheckboxListWidget(QtGui.QWidget):
 
     def addItem(self, item):
         self.__items.append(item)
-        self.item_marking.append(False)
         row = len(self.__items) - 1
         layout = self.layout()
         layout.addWidget(QtGui.QCheckBox(), row, self._CHECKBOX_POS)
@@ -106,27 +101,10 @@ class SortableCheckboxListWidget(QtGui.QWidget):
         if not self.__no_emit:
             self.changed.emit(self.__items)
 
-    def set_item_marking(self, row, value):
-        self.item_marking[row] = value
-
-    def set_all_marked(self, value):
-        self.all_marked = value
-
-    def remove_marked(self):
-        if self.all_marked:
-            for i in reversed(range(len(self.__items))):
-                self._remove(i)
-            self.__items = []
-            self.all_marked = False
-            self.item_marking = []
-        else:
-            indices = []
-            for i in reversed(range(len(self.__items))):
-                if self.item_marking[i]:
-                    indices.append(i)
-                    self._remove(i)
-            self.__items = [i for j, i in enumerate(self.__items) if j not in indices]
-            self.item_marking = [i for j, i in enumerate(self.item_marking) if j not in indices]
+    def clear(self):
+        for i in reversed(range(len(self.__items))):
+            self._remove(i)
+        self.__items = []
 
     def _remove(self, row):
         self.layout().itemAtPosition(row, self._CHECKBOX_POS).widget().setParent(None)

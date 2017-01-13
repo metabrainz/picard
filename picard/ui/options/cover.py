@@ -64,9 +64,8 @@ class CoverOptionsPage(OptionsPage):
     def load_cover_art_providers(self):
         """Load available providers, initialize provider-specific options, restore state of each
         """
-        # Mark and remove previous entries in providers during reset
-        self.provider_list_widget.set_all_marked(True)
-        self.provider_list_widget.remove_marked()
+        # Remove previous entries in providers during reset
+        self.provider_list_widget.clear()
 
         providers = cover_art_providers()
         for provider in providers:
