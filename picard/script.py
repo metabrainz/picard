@@ -308,10 +308,6 @@ def register_script_function(function, name=None, eval_args=True,
     )
 
 
-_logic_operators = {'and': (lambda x, y: x and y),
-                    'or': (lambda x, y: x or y)}
-
-
 def _compute_int(operation, *args):
     return str(reduce(operation, map(int, args)))
 
