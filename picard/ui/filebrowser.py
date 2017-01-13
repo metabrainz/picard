@@ -39,7 +39,7 @@ class FileBrowserPane(QtGui.QWidget):
         layout.insertWidget(1, self.file_browser)
         self.setLayout(layout)
         self.tagger = self.parent().tagger
-        self.toolbar.add_items_action.triggered.connect(self.add_items)
+        self.toolbar.add_items_button.clicked.connect(self.add_items)
 
     def save_state(self):
         self.file_browser.save_state()
@@ -56,18 +56,14 @@ class FileBrowserPane(QtGui.QWidget):
     def add_items(self):
         paths = self._selected_paths()
         files = []
-        directories = []
         for path in paths:
             if os.path.isfile(path):
                 files.append(path)
             else:
-                directories.append(path)
+                self.tagger.add_directory(path)
 
         if files:
             self.tagger.add_files(files)
-        if directories:
-            for directory in directories:
-                self.tagger.add_directory(directory)
 
 
 class FileBrowser(QtGui.QTreeView):
@@ -197,6 +193,8 @@ class FileBrowserToolbar(QtGui.QToolBar):
 
     def __init__(self, parent):
         QtGui.QToolBar.__init__(self, parent)
-        self.add_items_action = QtGui.QAction(icontheme.lookup('add-item', icontheme.ICON_SIZE_MENU), _(u"Add Items..."), self)
-        self.add_items_action.setToolTip(_(u"Add selected items to the tagger"))
-        self.addAction(self.add_items_action)
+        self.add_items_button = QtGui.QToolButton(self)
+        self.add_items_button.setText(_(u"Add items"))
+        self.add_items_button.setIcon(icontheme.lookup('add-item', icontheme.ICON_SIZE_MENU))
+        self.add_items_button.setToolButtonStyle(QtCore.Qt.ToolButtonTextBesideIcon)
+        self.addWidget(self.add_items_button)
