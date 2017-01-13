@@ -245,6 +245,6 @@ class ASFFile(File):
             return None
 
     def _load_preserved_config(self, file_config):
-        # Adding additional config to metadata to prevent unecessary saving
-        file_config['rating_steps'] = config.setting['rating_steps']
-        return True
+        # Adding present config to prevent unecessary saving
+        related_settings = ['rating_steps']
+        return self._set_config(file_config, related_settings, images_supported=True)

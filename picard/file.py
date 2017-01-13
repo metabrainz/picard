@@ -159,12 +159,22 @@ class File(QtCore.QObject, Item):
         """Load metadata from the file."""
         raise NotImplementedError
 
-    def _load_preserved_config(self, metadata):
+    def _load_preserved_config(self, file_config):
         """Preserve current tag related config to metadata and returns True.
         Returns False if no related configs"""
         raise False
 
-    def _test_same(self):
+    def _set_config(self, file_config, related_settings=[], images_supported=False):
+        if images_supported:
+            related_settings.extend(['save_images_to_tags', 'embed_only_one_front_image'])
+        for name in related_settings:
+            file_config[name] = config.setting[name]
+        if related_settings:
+            return True
+        else:
+            return False
+
+    def _metadata_unchanged(self):
         if config.setting['clear_existing_tags']:
             return False
         new_metadata = self.new_metadata
@@ -209,7 +219,7 @@ class File(QtCore.QObject, Item):
         """Save the metadata."""
         new_filename = old_filename
         if not config.setting["dont_write_tags"]:
-            if config.setting['dont_save_on_unchanged'] and self._test_same():
+            if config.setting['dont_save_on_unchanged'] and self._metadata_unchanged():
                 log.debug("No changes in tags detected for %r Skipping..." % (old_filename))
             else:
                 encoded_old_filename = encode_filename(old_filename)

@@ -496,16 +496,13 @@ class ID3File(File):
 
     def _load_preserved_config(self, file_config):
         # Adding present config to prevent unecessary saving
-        file_config['rating_steps'] = config.setting['rating_steps']
-        file_config['rating_user_email'] = config.setting['rating_user_email']
-        file_config['id3v2_encoding'] = config.setting['id3v2_encoding']
-        file_config['id3v23_join_with'] = config.setting['id3v23_join_with']
-        file_config['write_id3v23'] = config.setting['write_id3v23']
+        related_settings = ['rating_steps', 'rating_user_email', 'id3v2_encoding',
+                            'id3v23_join_with', 'write_id3v23']
         if self._IsMP3:
-            file_config['remove_ape_from_mp3'] = config.setting['remove_ape_from_mp3']
+            related_settings.append('remove_ape_from_mp3')
         if self._File != mutagen.aiff.AIFF:
-            file_config['write_id3v1'] = config.setting['write_id3v1']
-        return True
+            related_settings.append('write_id3v1')
+        return self._set_config(file_config, related_settings, images_supported=True)
 
     def _save_tags(self, tags, filename):
         if config.setting['write_id3v1']:

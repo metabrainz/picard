@@ -264,10 +264,9 @@ class VCommentFile(File):
         return bool(name)
 
     def _load_preserved_config(self, file_config):
-        # Adding additional config to metadata to prevent unecessary saving
-        file_config['rating_steps'] = config.setting['rating_steps']
-        file_config['rating_user_email'] = config.setting['rating_user_email']
-        return True
+        # Adding present config to prevent unecessary saving
+        related_settings = ['rating_steps', 'rating_user_email']
+        return self._set_config(file_config, related_settings, images_supported=True)
 
 
 class FLACFile(VCommentFile):
