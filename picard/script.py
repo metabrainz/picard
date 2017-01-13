@@ -21,6 +21,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 import re
+import operator
 from collections import namedtuple
 from inspect import getargspec
 from picard.metadata import Metadata
@@ -307,6 +308,18 @@ def register_script_function(function, name=None, eval_args=True,
     )
 
 
+_logic_operators = {'and': (lambda x, y: x and y),
+                    'or': (lambda x, y: x or y)}
+
+
+def _compute_int(operation, *args):
+    return str(reduce(operation, map(int, args)))
+
+
+def _compute_logic(operation, *args):
+    return operation(args)
+
+
 def func_if(parser, _if, _then, _else=None):
     """If ``if`` is not empty, it returns ``then``, otherwise it returns ``else``."""
     if _if.eval(parser):
@@ -475,57 +488,78 @@ def func_trim(parser, text, char=None):
         return text.strip()
 
 
-def func_add(parser, x, y):
-    """Add ``y`` to ``x``."""
+def func_add(parser, x, y, *args):
+    """Adds ``y`` to ``x``.
+       Can be used with an arbitrary number of arguments.
+       Eg: $add(x, y, z) = ((x + y) + z)
+    """
     try:
-        return str(int(x) + int(y))
+        return _compute_int(operator.add, x, y, *args)
     except ValueError:
         return ""
 
 
-def func_sub(parser, x, y):
-    """Subtracts ``y`` from ``x``."""
+def func_sub(parser, x, y, *args):
+    """Subtracts ``y`` from ``x``.
+       Can be used with an arbitrary number of arguments.
+       Eg: $sub(x, y, z) = ((x - y) - z)
+    """
     try:
-        return str(int(x) - int(y))
+        return _compute_int(operator.sub, x, y, *args)
     except ValueError:
         return ""
 
 
-def func_div(parser, x, y):
-    """Divides ``x`` by ``y``."""
+def func_div(parser, x, y, *args):
+    """Divides ``x`` by ``y``.
+       Can be used with an arbitrary number of arguments.
+       Eg: $div(x, y, z) = ((x / y) / z)
+    """
     try:
-        return str(int(x) / int(y))
+        return _compute_int(operator.div, x, y, *args)
     except ValueError:
         return ""
 
 
-def func_mod(parser, x, y):
-    """Returns the remainder of ``x`` divided by ``y``."""
+def func_mod(parser, x, y, *args):
+    """Returns the remainder of ``x`` divided by ``y``.
+       Can be used with an arbitrary number of arguments.
+       Eg: $mod(x, y, z) = ((x % y) % z)
+    """
     try:
-        return str(int(x) % int(y))
+        return _compute_int(operator.mod, x, y, *args)
     except ValueError:
         return ""
 
 
-def func_mul(parser, x, y):
-    """Multiplies ``x`` by ``y``."""
+def func_mul(parser, x, y, *args):
+    """Multiplies ``x`` by ``y``.
+       Can be used with an arbitrary number of arguments.
+       Eg: $mul(x, y, z) = ((x * y) * z)
+    """
     try:
-        return str(int(x) * int(y))
+        return _compute_int(operator.mul, x, y, *args)
     except ValueError:
         return ""
 
 
-def func_or(parser, x, y):
-    """Returns true, if either ``x`` or ``y`` not empty."""
-    if x or y:
+def func_or(parser, x, y, *args):
+    """Returns true, if either ``x`` or ``y`` not empty.
+       Can be used with an arbitrary number of arguments. The result is
+       true if ANY of the arguments is not empty.
+    """
+    if _compute_logic(any, x, y, *args):
         return "1"
     else:
         return ""
 
 
-def func_and(parser, x, y):
-    """Returns true, if both ``x`` and ``y`` are not empty."""
-    if x and y:
+def func_and(parser, x, y, *args):
+    """Returns true, if both ``x`` and ``y`` are not empty.
+       Can be used with an arbitrary number of arguments. The result is
+       true if ALL of the arguments are not empty.
+    """
+    if _compute_logic(all, x, y, *args):
         return "1"
     else:
         return ""
