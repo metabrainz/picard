@@ -119,8 +119,7 @@ class Tagger(QtGui.QApplication):
         # to avoid race conditions in File._save_and_rename.
         self.save_thread_pool = QtCore.QThreadPool(self)
         self.save_thread_pool.setMaxThreadCount(1)
-        self.file_load_semaphore = QtCore.QSemaphore(self.thread_pool.maxThreadCount())
-        self.file_cluster_semaphore = QtCore.QSemaphore(1)
+
         if not sys.platform == "win32":
             # Set up signal handling
             # It's not possible to call all available functions from signal
@@ -315,7 +314,6 @@ class Tagger(QtGui.QApplication):
 
     def _file_loaded(self, file, target=None):
         if file is not None and not file.has_error():
-            self.file_load_semaphore.acquire()
             recordingid = file.metadata.getall('musicbrainz_recordingid')[0] \
                 if 'musicbrainz_recordingid' in file.metadata else ''
             if target is not None:
@@ -334,12 +332,6 @@ class Tagger(QtGui.QApplication):
                     self.analyze([file])
             elif config.setting['analyze_new_files'] and file.can_analyze():
                 self.analyze([file])
-            self.file_load_semaphore.release()
-            # if config.setting['cluster_new_files']:
-            if self.file_load_semaphore.available() == self.thread_pool.maxThreadCount():
-                if self.file_cluster_semaphore.tryAcquire():
-                    self.cluster(self.unmatched_files.files)
-                    self.file_cluster_semaphore.release()
 
     def move_files(self, files, target):
         if isinstance(target, (Track, Cluster)):
