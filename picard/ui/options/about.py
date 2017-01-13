@@ -18,7 +18,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from picard.const import PICARD_URLS
-from picard.formats import supported_formats
+from picard.formats import supported_extensions
 from picard.ui.options import OptionsPage, register_options_page
 from picard.ui.ui_options_about import Ui_AboutOptionsPage
 from picard.util import versions
@@ -44,10 +44,7 @@ class AboutOptionsPage(OptionsPage):
         }
         args.update(versions.as_dict(i18n=True))
 
-        formats = []
-        for exts, name in supported_formats():
-            formats.extend(exts)
-        args["formats"] = ", ".join(formats)
+        args["formats"] = ", ".join(supported_extensions())
 
         # TR: Replace this with your name to have it appear in the "About" dialog.
         args["translator-credits"] = _("translator-credits")

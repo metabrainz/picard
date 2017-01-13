@@ -40,6 +40,11 @@ def supported_formats():
     return formats
 
 
+def supported_extensions():
+    extensions = [ext for exts, name in supported_formats() for ext in exts]
+    return extensions
+
+
 def guess_format(filename, options=_formats):
     """Select the best matching file type amongst supported formats."""
     results = []
