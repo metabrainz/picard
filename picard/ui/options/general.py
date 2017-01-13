@@ -90,6 +90,11 @@ class GeneralOptionsPage(OptionsPage):
             self.tagger.xmlws.oauth_manager.exchange_authorization_code(
                 authorization_code, scopes, self.on_authorization_finished)
 
+    def restore_defaults(self):
+        super(GeneralOptionsPage, self).restore_defaults()
+        self.logout()
+        return
+
     def on_authorization_finished(self, successful):
         if successful:
             self.tagger.xmlws.oauth_manager.fetch_username(
@@ -104,5 +109,6 @@ class GeneralOptionsPage(OptionsPage):
         self.tagger.xmlws.oauth_manager.revoke_tokens()
         self.update_login_logout()
         load_user_collections()
+
 
 register_options_page(GeneralOptionsPage)
