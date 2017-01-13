@@ -155,28 +155,10 @@ class OptionsDialog(PicardDialog):
 
     def restore_all_defaults(self):
         for page in self.pages:
-            self._restore_default(page)
+            page.restore_defaults()
 
-    def restore_defaults(self):
-        self._restore_default(self.ui.pages_stack.currentWidget())
-
-    def _restore_default(self, page):
-        try:
-            options = page.options
-        except AttributeError:
-            return
-        old_options = {}
-        for option in options:
-            if option.section == 'setting':
-                old_options[option.name] = config.setting[option.name]
-                config.setting[option.name] = option.default
-        page.load()
-        # Restore the config values incase the user doesn't save after restoring defaults
-        for key in old_options:
-            config.setting[key] = old_options[key]
-        if isinstance(page, general.GeneralOptionsPage):
-            page.logout()
-        return
+    def restore_page_defaults(self):
+        self.ui.pages_stack.currentWidget().restore_defaults()
 
     def confirm_reset(self):
         msg = _("You are about to reset your options for this page.")
