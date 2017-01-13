@@ -263,10 +263,10 @@ class VCommentFile(File):
     def supports_tag(self, name):
         return bool(name)
 
-    def _load_preserved_config(self, metadata):
+    def _load_preserved_config(self, file_config):
         # Adding additional config to metadata to prevent unecessary saving
-        metadata['~config:rating_steps'] = config.setting['rating_steps']
-        metadata['~config:rating_user_email'] = config.setting['rating_user_email']
+        file_config['rating_steps'] = config.setting['rating_steps']
+        file_config['rating_user_email'] = config.setting['rating_user_email']
         return True
 
 

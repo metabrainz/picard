@@ -88,6 +88,7 @@ class File(QtCore.QObject, Item):
 
         self.lookup_task = None
         self.item = None
+        self.tag_config = {}
 
     def __repr__(self):
         return '<File %r>' % self.base_filename
@@ -169,16 +170,19 @@ class File(QtCore.QObject, Item):
         new_metadata = self.new_metadata
         orig_metadata = self.orig_metadata
         tags = set(new_metadata.keys() + orig_metadata.keys())
-        if len(filter(lambda x: x.startswith("~config:"), tags)) == 0:
-            if self._load_preserved_config(self.orig_metadata):
-                # Return False if no '~config' tags in orig_metadata
+        if not self.tag_config:
+            if self._load_preserved_config(self.tag_config):
+                # Return False if tag_config has no keys
                 # and file has tag related config settings i.e.
                 # it is loaded for the first time
                 return False
-        for name in filter(lambda x: x.startswith("~config:"), tags):
-            new_metadata[name] = config.setting[name.split(':')[1]]
-            if new_metadata[name] != orig_metadata[name]:
-                return False
+        same_config = True
+        for name in self.tag_config.keys():
+            if self.tag_config[name] != config.setting[name]:
+                self.tag_config[name] = config.setting[name]
+                same_config = False
+        if not same_config:
+            return False
         for name in filter(lambda x: (not x.startswith("~")
                                       or x.startswith("~id3")
                                       or x == "~rating")

@@ -244,7 +244,7 @@ class ASFFile(File):
         else:
             return None
 
-    def _load_preserved_config(self, metadata):
+    def _load_preserved_config(self, file_config):
         # Adding additional config to metadata to prevent unecessary saving
-        metadata['~config:rating_steps'] = config.setting['rating_steps']
+        file_config['rating_steps'] = config.setting['rating_steps']
         return True
