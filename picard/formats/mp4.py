@@ -102,6 +102,7 @@ class MP4File(File):
         "----:com.apple.iTunes:SCRIPT": "script",
         "----:com.apple.iTunes:LANGUAGE": "language",
         "----:com.apple.iTunes:ARTISTS": "artists",
+        "----:com.apple.iTunes:ALBUMARTISTS": "albumartists",
         "----:com.apple.iTunes:WORK": "work",
         "----:com.apple.iTunes:initialkey": "key",
     }

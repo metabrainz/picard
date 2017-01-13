@@ -153,6 +153,7 @@ class ID3File(File):
         'ASIN': 'asin',
         'MusicMagic Fingerprint': 'musicip_fingerprint',
         'Artists': 'artists',
+        'Album Artists': 'albumartists',
         'Work': 'work',
         'Writer': 'writer',
     }
