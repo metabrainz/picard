@@ -308,22 +308,16 @@ def register_script_function(function, name=None, eval_args=True,
     )
 
 
-_int_operators = {'add': operator.add,
-                  'sub': operator.sub,
-                  'mul': operator.mul,
-                  'div': operator.div,
-                  'mod': operator.mod}
-
 _logic_operators = {'and': (lambda x, y: x and y),
                     'or': (lambda x, y: x or y)}
 
 
 def _compute_int(operation, *args):
-    return str(reduce(_int_operators[operation], map(int, list(args))))
+    return str(reduce(operation, map(int, args)))
 
 
 def _compute_logic(operation, *args):
-    return reduce(_logic_operators[operation], list(args))
+    return operation(args)
 
 
 def func_if(parser, _if, _then, _else=None):
@@ -500,7 +494,7 @@ def func_add(parser, x, y, *args):
        Eg: $add(x, y, z) = ((x + y) + z)
     """
     try:
-        return _compute_int('add', x, y, *args)
+        return _compute_int(operator.add, x, y, *args)
     except ValueError:
         return ""
 
@@ -511,7 +505,7 @@ def func_sub(parser, x, y, *args):
        Eg: $sub(x, y, z) = ((x - y) - z)
     """
     try:
-        return _compute_int('sub', x, y, *args)
+        return _compute_int(operator.sub, x, y, *args)
     except ValueError:
         return ""
 
@@ -522,7 +516,7 @@ def func_div(parser, x, y, *args):
        Eg: $div(x, y, z) = ((x / y) / z)
     """
     try:
-        return _compute_int('div', x, y, *args)
+        return _compute_int(operator.div, x, y, *args)
     except ValueError:
         return ""
 
@@ -533,7 +527,7 @@ def func_mod(parser, x, y, *args):
        Eg: $mod(x, y, z) = ((x % y) % z)
     """
     try:
-        return _compute_int('mod', x, y, *args)
+        return _compute_int(operator.mod, x, y, *args)
     except ValueError:
         return ""
 
@@ -544,7 +538,7 @@ def func_mul(parser, x, y, *args):
        Eg: $mul(x, y, z) = ((x * y) * z)
     """
     try:
-        return _compute_int('mul', x, y, *args)
+        return _compute_int(operator.mul, x, y, *args)
     except ValueError:
         return ""
 
@@ -554,7 +548,7 @@ def func_or(parser, x, y, *args):
        Can be used with an arbitrary number of arguments. The result is
        true if ANY of the arguments is not empty.
     """
-    if _compute_logic('or', x, y, *args):
+    if _compute_logic(any, x, y, *args):
         return "1"
     else:
         return ""
@@ -565,7 +559,7 @@ def func_and(parser, x, y, *args):
        Can be used with an arbitrary number of arguments. The result is
        true if ALL of the arguments are not empty.
     """
-    if _compute_logic('and', x, y, *args):
+    if _compute_logic(all, x, y, *args):
         return "1"
     else:
         return ""
