@@ -6,7 +6,7 @@ Dependencies
 
 Before installing Picard, you need to have these:
 
- * Python 2.6 or newer (Picard will not work with Python 3)
+ * Python 2.7 or newer (Picard will not work with Python 3)
    http://python.org/download
 
  * PyQt 4.5 or newer
@@ -32,11 +32,6 @@ Before installing Picard, you need to have these:
    Depends on libdiscid: http://musicbrainz.org/doc/libdiscid
    Due to slowdowns in reading the CD TOC, using libdiscid versions
    0.3.0 - 0.4.1 is not recommended.
-
- * argparse (Python 2.6 only, required)
-   Required for command-line arguments parsing
-   https://pypi.python.org/pypi/argparse
-   NOTE: it is included in Python >= 2.7 and Python >= 3.2
 
 
 On Windows it is recommended to use Pip for Windows:
