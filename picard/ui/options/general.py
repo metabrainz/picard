@@ -93,7 +93,6 @@ class GeneralOptionsPage(OptionsPage):
     def restore_defaults(self):
         super(GeneralOptionsPage, self).restore_defaults()
         self.logout()
-        return
 
     def on_authorization_finished(self, successful):
         if successful:

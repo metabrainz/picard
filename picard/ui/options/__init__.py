@@ -63,7 +63,6 @@ class OptionsPage(QtGui.QWidget):
         # Restore the config values incase the user doesn't save after restoring defaults
         for key in old_options:
             config.setting[key] = old_options[key]
-        return
 
     def display_error(self, error):
         dialog = QtGui.QMessageBox(QtGui.QMessageBox.Warning, error.title, error.info, QtGui.QMessageBox.Ok, self)
