@@ -360,7 +360,7 @@ class MainWindow(QtGui.QMainWindow):
         self.save_action.setEnabled(False)
         self.save_action.triggered.connect(self.save)
 
-        self.submit_action = QtGui.QAction(icontheme.lookup('picard-submit'), _(u"S&ubmit"), self)
+        self.submit_action = QtGui.QAction(icontheme.lookup('acoustid-fingerprinter'), _(u"S&ubmit"), self)
         self.submit_action.setStatusTip(_(u"Submit acoustic fingerprints"))
         self.submit_action.setEnabled(False)
         self.submit_action.triggered.connect(self._on_submit)
