@@ -207,7 +207,7 @@ class CoverArtImage:
            it will be re-used and no file write occurs
         """
         if self.datahash:
-            if self.data != self.original_data:
+            if self.datahash != self.original_datahash:
                 self.datahash.delete_file()
             self.datahash = None
 
@@ -219,8 +219,6 @@ class CoverArtImage:
 
         try:
             self.datahash = DataHash(data, suffix=self.extension)
-            if not self.original_datahash:
-                self.original_datahash = DataHash(data, suffix=self.extension)
         except (OSError, IOError) as e:
             raise CoverArtImageIOError(e)
 

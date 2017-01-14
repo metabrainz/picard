@@ -69,6 +69,8 @@ def is_cached(action_id, coverartimage, options, extra_settings):
     result = False
     try:
         m = md5()
+        if not coverartimage.original_datahash:
+            coverartimage.original_datahash = coverartimage.datahash
         m.update(coverartimage.original_data)
         for option in options:
             m.update("{}:{}".format(option.name, config.setting[option.name]))
@@ -76,13 +78,12 @@ def is_cached(action_id, coverartimage, options, extra_settings):
             m.update(json.dumps(extra_settings))
         m.update(action_id.hex)
         process_hash = m.hexdigest()
-        print process_hash
         if process_hash not in _process_cache:
             _process_cache.add(process_hash)
         else:
             result = True
     except Exception as e:
-        print(e)           
+        print(e)
     finally:
         _cache_mutex.unlock()
         return result
