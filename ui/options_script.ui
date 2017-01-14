@@ -27,6 +27,63 @@
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
+       <widget class="QGroupBox" name="groupBox">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="title">
+         <string/>
+        </property>
+        <layout class="QGridLayout" name="gridLayout">
+         <item row="2" column="2" rowspan="3">
+          <widget class="QListWidget" name="script_list">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="4" rowspan="2" colspan="2">
+          <widget class="QTextEdit" name="tagger_script"/>
+         </item>
+         <item row="0" column="2">
+          <widget class="QToolButton" name="add_script">
+           <property name="toolTip">
+            <string>Add new script</string>
+           </property>
+           <property name="text">
+            <string>Add new script</string>
+           </property>
+           <property name="toolButtonStyle">
+            <enum>Qt::ToolButtonTextOnly</enum>
+           </property>
+           <property name="autoRaise">
+            <bool>false</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="4" colspan="2">
+          <widget class="QLineEdit" name="script_name">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="placeholderText">
+            <string>Display Name</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
        <widget class="QLabel" name="script_error">
         <property name="text">
          <string/>
@@ -37,102 +94,19 @@
        </widget>
       </item>
       <item>
-       <widget class="QListWidget" name="script_list"/>
-      </item>
-      <item>
-       <widget class="QTextEdit" name="tagger_script"/>
-      </item>
-      <item>
-       <widget class="QGroupBox" name="script_tools">
-        <property name="title">
+       <widget class="QLabel" name="scripting_doc_link">
+        <property name="text">
          <string/>
         </property>
-        <layout class="QHBoxLayout" name="horizontalLayout">
-         <item alignment="Qt::AlignLeft">
-          <widget class="QToolButton" name="add_script">
-           <property name="toolTip">
-            <string>Add script</string>
-           </property>
-           <property name="text">
-            <string>...</string>
-           </property>
-           <property name="autoRaise">
-            <bool>false</bool>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QToolButton" name="remove_script">
-           <property name="toolTip">
-            <string>Remove script</string>
-           </property>
-           <property name="text">
-            <string>...</string>
-           </property>
-           <property name="toolButtonStyle">
-            <enum>Qt::ToolButtonIconOnly</enum>
-           </property>
-           <property name="autoRaise">
-            <bool>false</bool>
-           </property>
-          </widget>
-         </item>
-         <item alignment="Qt::AlignLeft">
-          <widget class="QToolButton" name="up_script">
-           <property name="toolTip">
-            <string>Move script up</string>
-           </property>
-           <property name="text">
-            <string>...</string>
-           </property>
-           <property name="arrowType">
-            <enum>Qt::UpArrow</enum>
-           </property>
-          </widget>
-         </item>
-         <item alignment="Qt::AlignLeft">
-          <widget class="QToolButton" name="down_script">
-           <property name="toolTip">
-            <string>Move script down</string>
-           </property>
-           <property name="text">
-            <string>...</string>
-           </property>
-           <property name="arrowType">
-            <enum>Qt::DownArrow</enum>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <spacer name="horizontalSpacer">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-        </layout>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+        <property name="openExternalLinks">
+         <bool>true</bool>
+        </property>
        </widget>
       </item>
      </layout>
-    </widget>
-   </item>
-   <item>
-    <widget class="QLabel" name="scripting_doc_link">
-     <property name="text">
-      <string/>
-     </property>
-     <property name="wordWrap">
-      <bool>true</bool>
-     </property>
-     <property name="openExternalLinks">
-      <bool>true</bool>
-     </property>
     </widget>
    </item>
   </layout>
