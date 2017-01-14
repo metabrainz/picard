@@ -23,7 +23,6 @@ from picard.const import PICARD_URLS
 from picard.script import ScriptParser
 from picard.ui.options import OptionsPage, OptionsCheckError, register_options_page
 from picard.ui.ui_options_script import Ui_ScriptingOptionsPage
-from picard.util import icontheme
 
 
 DEFAULT_NUMBERED_SCRIPT_NAME = N_("My script %d")
