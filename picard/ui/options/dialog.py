@@ -179,17 +179,19 @@ class OptionsDialog(PicardDialog):
         return
 
     def confirm_reset(self):
-        msg = _("You are about to reset your options for this page.\nAre you sure:")
+        msg = _("You are about to reset your options for this page.")
         self._show_dialog(msg, self.restore_defaults)
 
     def confirm_reset_all(self):
-        msg = _("Warning! This will reset all of your settings.\nAre you sure:")
+        msg = _("Warning! This will reset all of your settings.")
         self._show_dialog(msg, self.restore_all_defaults)
 
     def _show_dialog(self, msg, function):
         message_box = QtGui.QMessageBox()
         message_box.setIcon(QtGui.QMessageBox.Warning)
-        message_box.setText(msg)
-        message_box.setStandardButtons(QtGui.QMessageBox.Ok | QtGui.QMessageBox.Cancel)
-        if message_box.exec_() == QtGui.QMessageBox.Ok:
+        message_box.setWindowModality(QtCore.Qt.WindowModal)
+        message_box.setText("Are you sure?")
+        message_box.setInformativeText(msg)
+        message_box.setStandardButtons(QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
+        if message_box.exec_() == QtGui.QMessageBox.Yes:
             function()
