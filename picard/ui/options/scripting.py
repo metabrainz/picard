@@ -103,9 +103,10 @@ class AdvancedScriptItem(QtGui.QWidget):
     """Custom widget for script list items"""
 
     _CHECKBOX_POS = 0
-    _BUTTON_UP = 1
-    _BUTTON_DOWN = 2
-    _BUTTON_OTHER = 3
+    _NAME_POS = 1
+    _BUTTON_UP = 2
+    _BUTTON_DOWN = 3
+    _BUTTON_OTHER = 4
 
     def __init__(self, name=None, state=True, parent=None):
         super(AdvancedScriptItem, self).__init__(parent)
@@ -117,8 +118,10 @@ class AdvancedScriptItem(QtGui.QWidget):
 
         checkbox = QtGui.QCheckBox()
         checkbox.setChecked(state)
-        checkbox.setText(name)
+        checkbox.setMaximumSize(QtCore.QSize(22, 22))
         layout.addWidget(checkbox, 0, self._CHECKBOX_POS)
+
+        layout.addWidget(QtGui.QLabel(name), 0, self._NAME_POS)
 
         up_button = QtGui.QToolButton()
         up_button.setArrowType(QtCore.Qt.UpArrow)
@@ -172,8 +175,8 @@ class AdvancedScriptItem(QtGui.QWidget):
 
     def update_name(self, name):
         layout = self.layout()
-        checkbox = layout.itemAtPosition(0, self._CHECKBOX_POS).widget()
-        checkbox.setText(name)
+        name_label = layout.itemAtPosition(0, self._NAME_POS).widget()
+        name_label.setText(name)
 
     def checkbox_state(self):
         layout = self.layout()
