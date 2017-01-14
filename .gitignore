@@ -12,4 +12,5 @@ locale
 .DS_Store
 po/countries/countries.pot
 po/attributes/attributes.pot
+scripts/picard
 .*.sw[a-z]
