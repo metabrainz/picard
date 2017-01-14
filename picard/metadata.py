@@ -63,6 +63,8 @@ class Metadata(dict):
                 images = front_image
         # Run coverart tag embed actions
         try:
+            from copy import deepcopy
+            images = deepcopy(images)
             from picard.coverart.plugins import run_coverart_tag_embed_action
             for image in images:
                 run_coverart_tag_embed_action(image)

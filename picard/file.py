@@ -345,6 +345,13 @@ class File(QtCore.QObject, Item):
         if not images:
             images = metadata.images
         for image in images:
+            try:
+                from copy import deepcopy
+                from picard.coverart.plugins import run_coverart_file_save_action
+                image = deepcopy(image)
+                run_coverart_file_save_action(image)
+            except Exception as e:
+                log.error(e)
             image.save(dirname, metadata, counters)
 
     def _move_additional_files(self, old_filename, new_filename):

@@ -270,11 +270,6 @@ class CoverArtImage:
             filename = config.setting["cover_image_filename"]
             log.debug("Using default cover image filename %r", filename)
 
-        try:
-            run_coverart_file_save_action(self)
-        except Exception as e:
-            log.error(e)
-
         filename = self._make_image_filename(filename, dirname, metadata)
 
         overwrite = config.setting["save_images_overwrite"]
