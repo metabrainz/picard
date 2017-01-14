@@ -106,6 +106,7 @@ class TagsOptionsPage(OptionsPage):
             self.ui.id3v23_join_with.setEnabled(True)
         else:
             self.ui.enc_utf8.setEnabled(True)
+            self.ui.enc_utf8.setChecked(True)
             self.ui.label_id3v23_join_with.setEnabled(False)
             self.ui.id3v23_join_with.setEnabled(False)
 
