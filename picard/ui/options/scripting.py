@@ -308,6 +308,14 @@ class ScriptingOptionsPage(OptionsPage):
             # update position of last_selected_script
             if row == self.last_selected_script_pos:
                 self.last_selected_script_pos = 0
+                # workaround to remove residue on UI
+                if not self.ui.script_list.selectedItems():
+                    current_item = self.ui.script_list.currentItem()
+                    if current_item:
+                        self.ui.script_list.setItemSelected(current_item, True)
+                    else:
+                        item = self.ui.script_list.item(0)
+                        self.ui.script_list.setItemSelected(item, True)
             elif row < self.last_selected_script_pos:
                 self.last_selected_script_pos -= 1
 
