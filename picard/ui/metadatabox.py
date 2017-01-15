@@ -329,13 +329,17 @@ class MetadataBox(QtGui.QTableWidget):
         menu.exec_(event.globalPos())
         event.accept()
 
+    @staticmethod
+    def _make_preserved_tags_string(preserved_tags):
+        return ", ".join(uniqify(preserved_tags))
+
     def add_to_preserved_tags(self, name, preserved_tags):
         preserved_tags.append(name)
-        config.setting['preserved_tags'] = ", ".join(uniqify(preserved_tags))
+        config.setting['preserved_tags'] = self._make_preserved_tags_string(preserved_tags)
 
     def remove_from_preserved_tags(self, name, preserved_tags):
         preserved_tags = filter(lambda x: x != name, preserved_tags)
-        config.setting['preserved_tags'] = ", ".join(uniqify(preserved_tags))
+        config.setting['preserved_tags'] = self._make_preserved_tags_string(preserved_tags)
 
     def edit_tag(self, tag):
         EditTagDialog(self.parent, tag).exec_()
