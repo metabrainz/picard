@@ -44,7 +44,7 @@ class AboutOptionsPage(OptionsPage):
         }
         args.update(versions.as_dict(i18n=True))
 
-        args["formats"] = ", ".join(supported_extensions())
+        args["formats"] = ", ".join(map(lambda x: x[1:], supported_extensions()))
 
         # TR: Replace this with your name to have it appear in the "About" dialog.
         args["translator-credits"] = _("translator-credits")
