@@ -331,11 +331,11 @@ class MetadataBox(QtGui.QTableWidget):
 
     def add_to_preserved_tags(self, name, preserved_tags):
         preserved_tags.append(name)
-        config.setting['preserved_tags'] = ", ".join((uniqify(preserved_tags)))
+        config.setting['preserved_tags'] = ", ".join(uniqify(preserved_tags))
 
     def remove_from_preserved_tags(self, name, preserved_tags):
-        preserved_tags.remove(name)
-        config.setting['preserved_tags'] = ", ".join((uniqify(preserved_tags)))
+        preserved_tags = filter(lambda x: x != name, preserved_tags)
+        config.setting['preserved_tags'] = ", ".join(uniqify(preserved_tags))
 
     def edit_tag(self, tag):
         EditTagDialog(self.parent, tag).exec_()
