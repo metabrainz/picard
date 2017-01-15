@@ -34,10 +34,12 @@ def register_format(format):
 
 def supported_formats():
     """Returns list of supported formats."""
-    formats = []
-    for format in _formats:
-        formats.append((format.EXTENSIONS, format.NAME))
-    return formats
+    return [(format.EXTENSIONS, format.NAME) for format in _formats]
+
+
+def supported_extensions():
+    """Returns list of supported extensions."""
+    return [ext for exts, name in supported_formats() for ext in exts]
 
 
 def guess_format(filename, options=_formats):
