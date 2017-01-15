@@ -162,7 +162,7 @@ class OptionsDialog(PicardDialog):
 
     def confirm_reset(self):
         msg = _("You are about to reset your options for this page.")
-        self._show_dialog(msg, self.restore_defaults)
+        self._show_dialog(msg, self.restore_page_defaults)
 
     def confirm_reset_all(self):
         msg = _("Warning! This will reset all of your settings.")
