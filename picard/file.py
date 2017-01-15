@@ -112,7 +112,7 @@ class File(QtCore.QObject, Item):
             file_name, file_extension = os.path.splitext(self.base_filename)
             if file_extension not in supported_extensions():
                 self.remove()
-                log.error('Unsupported media file {} wrongly loaded. Removing ...'.format(self))
+                log.error('Unsupported media file %r wrongly loaded. Removing ...',self)
                 return
         else:
             self.error = None
