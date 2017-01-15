@@ -373,12 +373,16 @@ class ScriptingOptionsPage(OptionsPage):
         except Exception as e:
             raise OptionsCheckError(_("Script Error"), str(e))
 
+    def restore_defaults(self):
+        # Remove existing scripts
+        self.ui.script_list.clear()
+        self.ui.script_name.setText("")
+        self.ui.tagger_script.setText("")
+        super(ScriptingOptionsPage, self).restore_defaults()
+
     def load(self):
         self.ui.enable_tagger_scripts.setChecked(config.setting["enable_tagger_scripts"])
         self.list_of_scripts = config.setting["list_of_scripts"]
-        # Remove scripts during a reset
-        self.ui.script_list.clear()
-
         for s_pos, s_name, s_enabled, s_text in self.list_of_scripts:
             script = ScriptItem(s_pos, s_name, s_enabled, s_text)
             list_item = QtGui.QListWidgetItem()

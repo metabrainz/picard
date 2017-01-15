@@ -64,9 +64,6 @@ class CoverOptionsPage(OptionsPage):
     def load_cover_art_providers(self):
         """Load available providers, initialize provider-specific options, restore state of each
         """
-        # Remove previous entries in providers during reset
-        self.provider_list_widget.clear()
-
         providers = cover_art_providers()
         for provider in providers:
             try:
@@ -79,6 +76,11 @@ class CoverOptionsPage(OptionsPage):
         def update_providers_options(items):
             self.ca_providers = [(item.data, item.checked) for item in items]
         self.provider_list_widget.changed.connect(update_providers_options)
+
+    def restore_defaults(self):
+        # Remove previous entries
+        self.provider_list_widget.clear()
+        super(CoverOptionsPage, self).restore_defaults()
 
     def load(self):
         self.ui.save_images_to_tags.setChecked(config.setting["save_images_to_tags"])

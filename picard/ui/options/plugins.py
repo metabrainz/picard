@@ -164,11 +164,16 @@ class PluginsOptionsPage(OptionsPage):
             del item
         self.items = {}
 
-    def load(self):
-        # Remove previous entries during reset
+    def restore_defaults(self):
+        # Plugin manager has to be updated
+        for plugin in self.tagger.pluginmanager.plugins:
+            plugin.enabled = False
+        # Remove previous entries
         self._user_interaction(False)
         self._remove_all()
+        super(PluginsOptionsPage, self).restore_defaults()
 
+    def load(self):
         self._populate()
         self.restore_state()
 
