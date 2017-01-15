@@ -422,6 +422,13 @@ def func_unset(parser, name):
     """Unsets the variable ``name``."""
     if name.startswith("_"):
         name = "~" + name[1:]
+    # Allow wild-card unset for certain keys
+    if name in ('performer:*', 'comment:*', 'lyrics:*'):
+        name = name[:-1]
+        for key in parser.context.keys():
+            if key.startswith(name):
+                del parser.context[key]
+        return ""
     try:
         del parser.context[name]
     except KeyError:

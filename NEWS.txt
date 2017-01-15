@@ -1,4 +1,5 @@
 Version ? - ?
+  * Picard now requires at least Python 2.7
   * Task: Update Picard logo/icons. (PICARD-760)
 
 Version 1.3.2 - 2015-01-07

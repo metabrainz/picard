@@ -19,6 +19,7 @@
 
 import re
 from PyQt4 import QtGui
+from picard import config
 from picard.plugin import ExtensionPoint
 
 
@@ -47,6 +48,21 @@ class OptionsPage(QtGui.QWidget):
 
     def save(self):
         pass
+
+    def restore_defaults(self):
+        try:
+            options = self.options
+        except AttributeError:
+            return
+        old_options = {}
+        for option in options:
+            if option.section == 'setting':
+                old_options[option.name] = config.setting[option.name]
+                config.setting[option.name] = option.default
+        self.load()
+        # Restore the config values incase the user doesn't save after restoring defaults
+        for key in old_options:
+            config.setting[key] = old_options[key]
 
     def display_error(self, error):
         dialog = QtGui.QMessageBox(QtGui.QMessageBox.Warning, error.title, error.info, QtGui.QMessageBox.Ok, self)

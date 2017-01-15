@@ -131,7 +131,6 @@ class PluginsOptionsPage(OptionsPage):
         else:
             self.ui.plugins.setCurrentItem(self.ui.plugins.topLevelItem(0))
 
-
     def _populate(self):
         self.ui.details.setText("<b>" + _("No plugins installed.") + "</b>")
         self._user_interaction(False)
@@ -158,6 +157,22 @@ class PluginsOptionsPage(OptionsPage):
 
         self._user_interaction(True)
 
+    def _remove_all(self):
+        for i, p in self.items.items():
+            idx = self.ui.plugins.indexOfTopLevelItem(i)
+            item = self.ui.plugins.takeTopLevelItem(idx)
+            del item
+        self.items = {}
+
+    def restore_defaults(self):
+        # Plugin manager has to be updated
+        for plugin in self.tagger.pluginmanager.plugins:
+            plugin.enabled = False
+        # Remove previous entries
+        self._user_interaction(False)
+        self._remove_all()
+        super(PluginsOptionsPage, self).restore_defaults()
+
     def load(self):
         self._populate()
         self.restore_state()
@@ -174,11 +189,7 @@ class PluginsOptionsPage(OptionsPage):
         self.ui.details.setText("")
         self._user_interaction(False)
         self.save_state()
-        for i, p in self.items.items():
-            idx = self.ui.plugins.indexOfTopLevelItem(i)
-            item = self.ui.plugins.takeTopLevelItem(idx)
-            del item
-        self.items = {}
+        self._remove_all()
         self.tagger.pluginmanager.query_available_plugins(callback=self._reload)
 
     def plugin_installed(self, plugin):

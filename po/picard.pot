@@ -1,14 +1,14 @@
 # Translations template for picard.
-# Copyright (C) 2016 ORGANIZATION
+# Copyright (C) 2017 ORGANIZATION
 # This file is distributed under the same license as the picard project.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2016.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2017.
 #
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: picard 1.4.0dev6\n"
+"Project-Id-Version: picard 1.4.0dev7\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2016-12-27 18:49+0100\n"
+"POT-Creation-Date: 2017-01-14 16:23+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,166 +16,6 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 1.3\n"
-
-#: contrib/plugins/albumartist_website.py:3
-msgid "Album Artist Website"
-msgstr ""
-
-#: contrib/plugins/no_release.py:50
-msgid "Enable plugin for all releases by default"
-msgstr ""
-
-#: contrib/plugins/no_release.py:51
-msgid "Tags to strip (comma-separated)"
-msgstr ""
-
-#: contrib/plugins/no_release.py:63
-msgid "Remove specific release information..."
-msgstr ""
-
-#: contrib/plugins/standardise_performers.py:3
-msgid "Standardise Performers"
-msgstr ""
-
-#: contrib/plugins/lastfm/ui_options_lastfm.py:99
-msgid "Last.fm"
-msgstr ""
-
-#: contrib/plugins/lastfm/ui_options_lastfm.py:100
-msgid "Use track tags"
-msgstr ""
-
-#: contrib/plugins/lastfm/ui_options_lastfm.py:101
-msgid "Use artist tags"
-msgstr ""
-
-#: contrib/plugins/lastfm/ui_options_lastfm.py:102 picard/ui/options/tags.py:30
-msgid "Tags"
-msgstr ""
-
-#: contrib/plugins/lastfm/ui_options_lastfm.py:103
-#: picard/ui/ui_options_folksonomy.py:116
-msgid "Ignore tags:"
-msgstr ""
-
-#: contrib/plugins/lastfm/ui_options_lastfm.py:104
-#: picard/ui/ui_options_folksonomy.py:122
-msgid "Join multiple tags with:"
-msgstr ""
-
-#: contrib/plugins/lastfm/ui_options_lastfm.py:105
-#: picard/ui/ui_options_folksonomy.py:123
-msgid " / "
-msgstr ""
-
-#: contrib/plugins/lastfm/ui_options_lastfm.py:106
-#: picard/ui/ui_options_folksonomy.py:124
-msgid ", "
-msgstr ""
-
-#: contrib/plugins/lastfm/ui_options_lastfm.py:107
-#: picard/ui/ui_options_folksonomy.py:119
-msgid "Minimal tag usage:"
-msgstr ""
-
-#: contrib/plugins/lastfm/ui_options_lastfm.py:108
-#: picard/ui/ui_options_folksonomy.py:120 picard/ui/ui_options_matching.py:75
-#: picard/ui/ui_options_matching.py:76 picard/ui/ui_options_matching.py:77
-msgid " %"
-msgstr ""
-
-#: contrib/plugins/replaygain/__init__.py:50
-msgid "Calculate replay &gain..."
-msgstr ""
-
-#: contrib/plugins/replaygain/__init__.py:67
-#, python-format
-msgid "Calculating replay gain for \"%(filename)s\"..."
-msgstr ""
-
-#: contrib/plugins/replaygain/__init__.py:75
-#, python-format
-msgid "Replay gain for \"%(filename)s\" successfully calculated."
-msgstr ""
-
-#: contrib/plugins/replaygain/__init__.py:80
-#, python-format
-msgid "Could not calculate replay gain for \"%(filename)s\"."
-msgstr ""
-
-#: contrib/plugins/replaygain/__init__.py:85
-msgid "Calculate album &gain..."
-msgstr ""
-
-#: contrib/plugins/replaygain/__init__.py:113
-#: contrib/plugins/replaygain/__init__.py:124
-#, python-format
-msgid "Calculating album gain for \"%(album)s\"..."
-msgstr ""
-
-#: contrib/plugins/replaygain/__init__.py:135
-#, python-format
-msgid "Album gain for \"%(album)s\" successfully calculated."
-msgstr ""
-
-#: contrib/plugins/replaygain/__init__.py:140
-#, python-format
-msgid "Could not calculate album gain for \"%(album)s\"."
-msgstr ""
-
-#: contrib/plugins/replaygain/ui_options_replaygain.py:59
-msgid "Replay Gain"
-msgstr ""
-
-#: contrib/plugins/replaygain/ui_options_replaygain.py:60
-msgid "Path to VorbisGain:"
-msgstr ""
-
-#: contrib/plugins/replaygain/ui_options_replaygain.py:61
-msgid "Path to MP3Gain:"
-msgstr ""
-
-#: contrib/plugins/replaygain/ui_options_replaygain.py:62
-msgid "Path to metaflac:"
-msgstr ""
-
-#: contrib/plugins/replaygain/ui_options_replaygain.py:63
-msgid "Path to wvgain:"
-msgstr ""
-
-#: contrib/plugins/viewvariables/__init__.py:42
-#, python-format
-msgid "File: %s"
-msgstr ""
-
-#: contrib/plugins/viewvariables/__init__.py:47
-#, python-format
-msgid "Track: %s %s "
-msgstr ""
-
-#: contrib/plugins/viewvariables/__init__.py:49
-msgid "Variables"
-msgstr ""
-
-#: contrib/plugins/viewvariables/__init__.py:69
-msgid "File variables"
-msgstr ""
-
-#: contrib/plugins/viewvariables/__init__.py:74
-msgid "Hidden variables"
-msgstr ""
-
-#: contrib/plugins/viewvariables/__init__.py:79
-msgid "Tag variables"
-msgstr ""
-
-#: contrib/plugins/viewvariables/ui_variables_dialog.py:73
-msgid "Variable"
-msgstr ""
-
-#: contrib/plugins/viewvariables/ui_variables_dialog.py:75
-msgid "Value"
-msgstr ""
 
 #: picard/acoustid.py:111
 #, python-format
@@ -300,31 +140,31 @@ msgstr ""
 msgid "Merge"
 msgstr ""
 
-#: picard/config_upgrade.py:78 picard/ui/metadatabox.py:294
+#: picard/config_upgrade.py:78 picard/ui/metadatabox.py:302
 msgid "Remove"
 msgstr ""
 
-#: picard/config_upgrade.py:193 picard/ui/options/scripting.py:27
+#: picard/config_upgrade.py:193 picard/ui/options/scripting.py:28
 #, python-format
 msgid "My script %d"
 msgstr ""
 
-#: picard/file.py:515
+#: picard/file.py:526
 #, python-format
 msgid "No matching tracks for file '%(filename)s'"
 msgstr ""
 
-#: picard/file.py:531
+#: picard/file.py:542
 #, python-format
 msgid "No matching tracks above the threshold for file '%(filename)s'"
 msgstr ""
 
-#: picard/file.py:538
+#: picard/file.py:549
 #, python-format
 msgid "File '%(filename)s' identified!"
 msgstr ""
 
-#: picard/file.py:558
+#: picard/file.py:569
 #, python-format
 msgid "Looking up the metadata for file %(filename)s ..."
 msgstr ""
@@ -367,23 +207,23 @@ msgstr ""
 msgid "[no release info]"
 msgstr ""
 
-#: picard/tagger.py:399
+#: picard/tagger.py:405 picard/tagger.py:438
 #, python-format
 msgid "Adding %(count)d file from '%(directory)s' ..."
 msgid_plural "Adding %(count)d files from '%(directory)s' ..."
 msgstr[0] ""
 msgstr[1] ""
 
-#: picard/tagger.py:565
+#: picard/tagger.py:597
 #, python-format
 msgid "Removing album %(id)s: %(artist)s - %(album)s"
 msgstr ""
 
-#: picard/tagger.py:581
+#: picard/tagger.py:613
 msgid "CD Lookup Error"
 msgstr ""
 
-#: picard/tagger.py:582
+#: picard/tagger.py:614
 #, python-format
 msgid ""
 "Error while reading CD:\n"
@@ -647,7 +487,7 @@ msgstr ""
 msgid "Tracklist:"
 msgstr ""
 
-#: picard/ui/infostatus.py:51 picard/ui/options/plugins.py:298
+#: picard/ui/infostatus.py:51 picard/ui/options/plugins.py:297
 msgid "Files"
 msgstr ""
 
@@ -921,7 +761,7 @@ msgstr ""
 msgid "Remove selected files/albums"
 msgstr ""
 
-#: picard/ui/mainwindow.py:379 picard/ui/metadatabox.py:280
+#: picard/ui/mainwindow.py:379 picard/ui/metadatabox.py:288
 msgid "Lookup in &Browser"
 msgstr ""
 
@@ -1204,11 +1044,23 @@ msgstr ""
 msgid "Show Changes First"
 msgstr ""
 
-#: picard/ui/metadatabox.py:266
+#: picard/ui/metadatabox.py:190
+msgid "Alt+Shift+A"
+msgstr ""
+
+#: picard/ui/metadatabox.py:193
+msgid "Alt+Shift+E"
+msgstr ""
+
+#: picard/ui/metadatabox.py:195
+msgid "Alt+Shift+R"
+msgstr ""
+
+#: picard/ui/metadatabox.py:273
 msgid "Edit..."
 msgstr ""
 
-#: picard/ui/metadatabox.py:298
+#: picard/ui/metadatabox.py:307
 msgid "Use Original Value"
 msgid_plural "Use Original Values"
 msgstr[0] ""
@@ -1284,7 +1136,7 @@ msgstr ""
 
 #: picard/ui/searchdialog.py:324 picard/ui/searchdialog.py:512
 #: picard/ui/searchdialog.py:740 picard/ui/ui_options_plugins.py:138
-#: picard/ui/options/plugins.py:293
+#: picard/ui/options/plugins.py:292
 msgid "Name"
 msgstr ""
 
@@ -1394,35 +1246,39 @@ msgstr ""
 msgid "Options"
 msgstr ""
 
-#: picard/ui/ui_options_advanced.py:72
+#: picard/ui/ui_options_advanced.py:75
 msgid "Advanced options"
 msgstr ""
 
-#: picard/ui/ui_options_advanced.py:73
+#: picard/ui/ui_options_advanced.py:76
 msgid "Ignore file paths matching the following regular expression:"
 msgstr ""
 
-#: picard/ui/ui_options_advanced.py:74
+#: picard/ui/ui_options_advanced.py:77
 msgid "Ignore hidden files"
 msgstr ""
 
-#: picard/ui/ui_options_advanced.py:75
-msgid "Ignore the following tracks when determining whether a release is complete"
-msgstr ""
-
-#: picard/ui/ui_options_advanced.py:76
-msgid "Video tracks"
-msgstr ""
-
-#: picard/ui/ui_options_advanced.py:77
-msgid "Pregap tracks"
-msgstr ""
-
 #: picard/ui/ui_options_advanced.py:78
-msgid "Data tracks"
+msgid "Recursively add files and folders from directory"
 msgstr ""
 
 #: picard/ui/ui_options_advanced.py:79
+msgid "Ignore the following tracks when determining whether a release is complete"
+msgstr ""
+
+#: picard/ui/ui_options_advanced.py:80
+msgid "Video tracks"
+msgstr ""
+
+#: picard/ui/ui_options_advanced.py:81
+msgid "Pregap tracks"
+msgstr ""
+
+#: picard/ui/ui_options_advanced.py:82
+msgid "Data tracks"
+msgstr ""
+
+#: picard/ui/ui_options_advanced.py:83
 msgid "Silent tracks"
 msgstr ""
 
@@ -1462,45 +1318,53 @@ msgstr ""
 msgid "Cover Art Providers"
 msgstr ""
 
-#: picard/ui/ui_options_fingerprinting.py:83
+#: picard/ui/ui_options_fingerprinting.py:86
 msgid "Audio Fingerprinting"
 msgstr ""
 
-#: picard/ui/ui_options_fingerprinting.py:84
+#: picard/ui/ui_options_fingerprinting.py:87
 msgid "Do not use audio fingerprinting"
 msgstr ""
 
-#: picard/ui/ui_options_fingerprinting.py:85
+#: picard/ui/ui_options_fingerprinting.py:88
 msgid "Use AcoustID"
 msgstr ""
 
-#: picard/ui/ui_options_fingerprinting.py:86
+#: picard/ui/ui_options_fingerprinting.py:89
 msgid "AcoustID Settings"
 msgstr ""
 
-#: picard/ui/ui_options_fingerprinting.py:87
+#: picard/ui/ui_options_fingerprinting.py:90
+msgid "Ignore existing AcoustID fingerprints"
+msgstr ""
+
+#: picard/ui/ui_options_fingerprinting.py:91
 msgid "Fingerprint calculator:"
 msgstr ""
 
-#: picard/ui/ui_options_fingerprinting.py:88
+#: picard/ui/ui_options_fingerprinting.py:92
 #: picard/ui/ui_options_interface.py:88 picard/ui/ui_options_renaming.py:165
 msgid "Browse..."
 msgstr ""
 
-#: picard/ui/ui_options_fingerprinting.py:89
+#: picard/ui/ui_options_fingerprinting.py:93
 msgid "Download..."
 msgstr ""
 
-#: picard/ui/ui_options_fingerprinting.py:90
+#: picard/ui/ui_options_fingerprinting.py:94
 msgid "API key:"
 msgstr ""
 
-#: picard/ui/ui_options_fingerprinting.py:91
+#: picard/ui/ui_options_fingerprinting.py:95
 msgid "Get API key..."
 msgstr ""
 
 #: picard/ui/ui_options_folksonomy.py:115 picard/ui/options/folksonomy.py:28
 msgid "Folksonomy Tags"
+msgstr ""
+
+#: picard/ui/ui_options_folksonomy.py:116
+msgid "Ignore tags:"
 msgstr ""
 
 #: picard/ui/ui_options_folksonomy.py:117
@@ -1513,8 +1377,29 @@ msgid ""
 " release group"
 msgstr ""
 
+#: picard/ui/ui_options_folksonomy.py:119
+msgid "Minimal tag usage:"
+msgstr ""
+
+#: picard/ui/ui_options_folksonomy.py:120 picard/ui/ui_options_matching.py:75
+#: picard/ui/ui_options_matching.py:76 picard/ui/ui_options_matching.py:77
+msgid " %"
+msgstr ""
+
 #: picard/ui/ui_options_folksonomy.py:121
 msgid "Maximum number of tags:"
+msgstr ""
+
+#: picard/ui/ui_options_folksonomy.py:122
+msgid "Join multiple tags with:"
+msgstr ""
+
+#: picard/ui/ui_options_folksonomy.py:123
+msgid " / "
+msgstr ""
+
+#: picard/ui/ui_options_folksonomy.py:124
+msgid ", "
 msgstr ""
 
 #: picard/ui/ui_options_general.py:92
@@ -1667,7 +1552,7 @@ msgstr ""
 msgid "Listen only on localhost"
 msgstr ""
 
-#: picard/ui/ui_options_plugins.py:137 picard/ui/options/plugins.py:69
+#: picard/ui/ui_options_plugins.py:137 picard/ui/options/plugins.py:68
 msgid "Plugins"
 msgstr ""
 
@@ -1740,7 +1625,7 @@ msgid "Destination directory:"
 msgstr ""
 
 #: picard/ui/ui_options_renaming.py:166
-msgid "Move additional files:"
+msgid "Move additional files (case insensitive):"
 msgstr ""
 
 #: picard/ui/ui_options_renaming.py:167
@@ -1767,29 +1652,16 @@ msgstr ""
 msgid "Examples"
 msgstr ""
 
-#: picard/ui/ui_options_script.py:86
+#: picard/ui/ui_options_script.py:87
 msgid "Tagger Script(s)"
 msgstr ""
 
-#: picard/ui/ui_options_script.py:87
-msgid "Add script"
+#: picard/ui/ui_options_script.py:88 picard/ui/ui_options_script.py:89
+msgid "Add new script"
 msgstr ""
 
-#: picard/ui/ui_options_script.py:88 picard/ui/ui_options_script.py:90
-#: picard/ui/ui_options_script.py:92 picard/ui/ui_options_script.py:94
-msgid "..."
-msgstr ""
-
-#: picard/ui/ui_options_script.py:89
-msgid "Remove script"
-msgstr ""
-
-#: picard/ui/ui_options_script.py:91
-msgid "Move script up"
-msgstr ""
-
-#: picard/ui/ui_options_script.py:93
-msgid "Move script down"
+#: picard/ui/ui_options_script.py:90
+msgid "Display Name"
 msgstr ""
 
 #: picard/ui/ui_options_tags.py:152
@@ -2000,16 +1872,32 @@ msgstr ""
 msgid "Cover Art"
 msgstr ""
 
+#: picard/ui/options/dialog.py:82
+msgid "&Restore all Defaults"
+msgstr ""
+
+#: picard/ui/options/dialog.py:83
+msgid "Restore &Defaults"
+msgstr ""
+
+#: picard/ui/options/dialog.py:182
+msgid "You are about to reset your options for this page."
+msgstr ""
+
+#: picard/ui/options/dialog.py:186
+msgid "Warning! This will reset all of your settings."
+msgstr ""
+
 #: picard/ui/options/fingerprinting.py:32
 msgid "Fingerprinting"
 msgstr ""
 
-#: picard/ui/options/fingerprinting.py:132
-#: picard/ui/options/fingerprinting.py:136
+#: picard/ui/options/fingerprinting.py:135
+#: picard/ui/options/fingerprinting.py:139
 msgid "Please select a valid fpcalc executable."
 msgstr ""
 
-#: picard/ui/options/fingerprinting.py:136
+#: picard/ui/options/fingerprinting.py:139
 msgid "Invalid fpcalc executable"
 msgstr ""
 
@@ -2048,58 +1936,58 @@ msgstr ""
 msgid "Network"
 msgstr ""
 
-#: picard/ui/options/plugins.py:137
+#: picard/ui/options/plugins.py:136
 msgid "No plugins installed."
 msgstr ""
 
-#: picard/ui/options/plugins.py:188
+#: picard/ui/options/plugins.py:187
 #, python-format
 msgid "The plugin '%s' is not compatible with this version of Picard."
 msgstr ""
 
-#: picard/ui/options/plugins.py:216
+#: picard/ui/options/plugins.py:215
 #, python-format
 msgid "The plugin '%s' will be upgraded to version %s on next run of Picard."
 msgstr ""
 
-#: picard/ui/options/plugins.py:244
+#: picard/ui/options/plugins.py:243
 msgid "Update"
 msgstr ""
 
-#: picard/ui/options/plugins.py:246
+#: picard/ui/options/plugins.py:245
 msgid "Install"
 msgstr ""
 
-#: picard/ui/options/plugins.py:261
+#: picard/ui/options/plugins.py:260
 msgid "Updated"
 msgstr ""
 
-#: picard/ui/options/plugins.py:263
+#: picard/ui/options/plugins.py:262
 msgid "Installed"
 msgstr ""
 
-#: picard/ui/options/plugins.py:287
+#: picard/ui/options/plugins.py:286
 msgid "Restart Picard to upgrade to new version"
 msgstr ""
 
-#: picard/ui/options/plugins.py:289
+#: picard/ui/options/plugins.py:288
 msgid "New version available"
 msgstr ""
 
-#: picard/ui/options/plugins.py:295
+#: picard/ui/options/plugins.py:294
 msgid "Authors"
 msgstr ""
 
-#: picard/ui/options/plugins.py:297 picard/util/tags.py:44
+#: picard/ui/options/plugins.py:296 picard/util/tags.py:44
 msgid "License"
 msgstr ""
 
-#: picard/ui/options/plugins.py:328
+#: picard/ui/options/plugins.py:327
 #, python-format
 msgid "The plugin '%s' could not be downloaded."
 msgstr ""
 
-#: picard/ui/options/plugins.py:329
+#: picard/ui/options/plugins.py:328
 msgid "Please try again later."
 msgstr ""
 
@@ -2119,7 +2007,7 @@ msgstr ""
 msgid "File Naming"
 msgstr ""
 
-#: picard/ui/options/renaming.py:175 picard/ui/options/scripting.py:258
+#: picard/ui/options/renaming.py:175 picard/ui/options/scripting.py:397
 msgid ""
 "<a href=\"%(picard-doc-scripting-url)s\">Open Scripting Documentation in "
 "your browser</a>"
@@ -2133,16 +2021,48 @@ msgstr ""
 msgid "The file naming format must not be empty."
 msgstr ""
 
-#: picard/ui/options/scripting.py:28
+#: picard/ui/options/scripting.py:29
 msgid "My script"
 msgstr ""
 
-#: picard/ui/options/scripting.py:119
+#: picard/ui/options/scripting.py:128
+msgid "Move script up"
+msgstr ""
+
+#: picard/ui/options/scripting.py:132
+msgid "Move script down"
+msgstr ""
+
+#: picard/ui/options/scripting.py:140
+msgid "Other options"
+msgstr ""
+
+#: picard/ui/options/scripting.py:142
+msgid "Rename script"
+msgstr ""
+
+#: picard/ui/options/scripting.py:143
+msgid "Remove script"
+msgstr ""
+
+#: picard/ui/options/scripting.py:205
 msgid "Scripting"
 msgstr ""
 
-#: picard/ui/options/scripting.py:241
+#: picard/ui/options/scripting.py:290
+msgid "Are you sure you want to remove this script?"
+msgstr ""
+
+#: picard/ui/options/scripting.py:291
+msgid "Confirm Remove"
+msgstr ""
+
+#: picard/ui/options/scripting.py:374
 msgid "Script Error"
+msgstr ""
+
+#: picard/ui/options/tags.py:30
+msgid "Tags"
 msgstr ""
 
 #: picard/util/bytes2human.py:33

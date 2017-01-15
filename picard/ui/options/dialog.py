@@ -155,41 +155,25 @@ class OptionsDialog(PicardDialog):
 
     def restore_all_defaults(self):
         for page in self.pages:
-            self._restore_default(page)
+            page.restore_defaults()
 
-    def restore_defaults(self):
-        self._restore_default(self.ui.pages_stack.currentWidget())
-
-    def _restore_default(self, page):
-        try:
-            options = page.options
-        except AttributeError:
-            return
-        old_options = {}
-        for option in options:
-            if option.section == 'setting':
-                old_options[option.name] = config.setting[option.name]
-                config.setting[option.name] = option.default
-        page.load()
-        # Restore the config values incase the user doesn't save after restoring defaults
-        for key in old_options:
-            config.setting[key] = old_options[key]
-        if isinstance(page, general.GeneralOptionsPage):
-            page.logout()
-        return
+    def restore_page_defaults(self):
+        self.ui.pages_stack.currentWidget().restore_defaults()
 
     def confirm_reset(self):
-        msg = _("You are about to reset your options for this page.\nAre you sure:")
-        self._show_dialog(msg, self.restore_defaults)
+        msg = _("You are about to reset your options for this page.")
+        self._show_dialog(msg, self.restore_page_defaults)
 
     def confirm_reset_all(self):
-        msg = _("Warning! This will reset all of your settings.\nAre you sure:")
+        msg = _("Warning! This will reset all of your settings.")
         self._show_dialog(msg, self.restore_all_defaults)
 
     def _show_dialog(self, msg, function):
         message_box = QtGui.QMessageBox()
         message_box.setIcon(QtGui.QMessageBox.Warning)
-        message_box.setText(msg)
-        message_box.setStandardButtons(QtGui.QMessageBox.Ok | QtGui.QMessageBox.Cancel)
-        if message_box.exec_() == QtGui.QMessageBox.Ok:
+        message_box.setWindowModality(QtCore.Qt.WindowModal)
+        message_box.setText("Are you sure?")
+        message_box.setInformativeText(msg)
+        message_box.setStandardButtons(QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
+        if message_box.exec_() == QtGui.QMessageBox.Yes:
             function()
