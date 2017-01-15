@@ -27,7 +27,7 @@ from picard.cluster import Cluster
 from picard.track import Track
 from picard.file import File
 from picard.util import format_time, throttle, thread, uniqify
-from picard.util.tags import display_tag_name, TAG_NAMES
+from picard.util.tags import display_tag_name
 from picard.ui.edittagdialog import EditTagDialog
 from picard.metadata import MULTI_VALUED_JOINER
 from picard.browser.filelookup import FileLookup
