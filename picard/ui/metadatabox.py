@@ -282,6 +282,10 @@ class MetadataBox(QtGui.QTableWidget):
                     add_to_preserved_tags_action = QtGui.QAction(_(u"Add to 'Preserve Tags' List"), self.parent)
                     add_to_preserved_tags_action.triggered.connect(partial(self.add_to_preserved_tags, selected_tag, preserved_tags))
                     menu.addAction(add_to_preserved_tags_action)
+                else:
+                    remove_from_preserved_tags_action = QtGui.QAction(_(u"Remove from 'Preserve Tags' List"), self.parent)
+                    remove_from_preserved_tags_action.triggered.connect(partial(self.remove_from_preserved_tags, selected_tag, preserved_tags))
+                    menu.addAction(remove_from_preserved_tags_action)
             removals = []
             useorigs = []
             item = self.currentItem()
@@ -327,6 +331,10 @@ class MetadataBox(QtGui.QTableWidget):
 
     def add_to_preserved_tags(self, name, preserved_tags):
         preserved_tags.append(name)
+        config.setting['preserved_tags'] = ", ".join((uniqify(preserved_tags)))
+
+    def remove_from_preserved_tags(self, name, preserved_tags):
+        preserved_tags.remove(name)
         config.setting['preserved_tags'] = ", ".join((uniqify(preserved_tags)))
 
     def edit_tag(self, tag):
