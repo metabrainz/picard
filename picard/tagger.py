@@ -111,10 +111,6 @@ class Tagger(QtGui.QApplication):
         self._autoupdate = autoupdate
         self._debug = False
 
-        # FIXME: Figure out what's wrong with QThreadPool.globalInstance().
-        # It's a valid reference, but its start() method doesn't work.
-        self.thread_pool = QtCore.QThreadPool(self)
-
         # Use a separate thread pool for file saving, with a thread count of 1,
         # to avoid race conditions in File._save_and_rename.
         self.save_thread_pool = QtCore.QThreadPool(self)
@@ -273,7 +269,7 @@ class Tagger(QtGui.QApplication):
         log.debug("exit")
         self.stopping = True
         self._acoustid.done()
-        self.thread_pool.waitForDone()
+        QtCore.QThreadPool.globalInstance().waitForDone()
         self.browser_integration.stop()
         self.xmlws.stop()
         for f in self.exit_cleanup:

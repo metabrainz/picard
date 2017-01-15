@@ -19,7 +19,7 @@
 
 import sys
 import traceback
-from PyQt4.QtCore import QRunnable, QCoreApplication, QEvent
+from PyQt4.QtCore import QRunnable, QCoreApplication, QEvent, QThreadPool
 
 
 class ProxyToMainEvent(QEvent):
@@ -54,7 +54,7 @@ class Runnable(QRunnable):
 
 def run_task(func, next, priority=0, thread_pool=None):
     if thread_pool is None:
-        thread_pool = QCoreApplication.instance().thread_pool
+        thread_pool = QThreadPool.globalInstance()
     thread_pool.start(Runnable(func, next), priority)
 
 
