@@ -118,7 +118,6 @@ class MP4File(File):
             file.add_tags()
 
         metadata = Metadata()
-
         for name, values in tags.items():
             if name in self.__text_tags:
                 for value in values:
