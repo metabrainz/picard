@@ -26,7 +26,7 @@ from picard.album import Album
 from picard.cluster import Cluster
 from picard.track import Track
 from picard.file import File
-from picard.util import format_time, throttle, thread
+from picard.util import format_time, throttle, thread, uniqify
 from picard.util.tags import display_tag_name, TAG_NAMES
 from picard.ui.edittagdialog import EditTagDialog
 from picard.metadata import MULTI_VALUED_JOINER
@@ -270,15 +270,17 @@ class MetadataBox(QtGui.QTableWidget):
         if self.objects:
             tags = self.selected_tags(discard=('~length'))
             if len(tags) == 1:
-                selected_tag = list(tags)[0]
+                selected_tag = tags[0]
                 edit_tag_action = QtGui.QAction(_(u"Edit..."), self.parent)
-                edit_tag_action.triggered.connect(partial(self.edit_tag, list(tags)[0]))
-                edit_tag_action.setShortcut(self.edit_tag_shortcut.key())
                 edit_tag_action.triggered.connect(partial(self.edit_tag, selected_tag))
+                edit_tag_action.setShortcut(self.edit_tag_shortcut.key())
                 menu.addAction(edit_tag_action)
-                if selected_tag in TAG_NAMES:
+                preserved_tags = [tag for tag in
+                                  map(lambda x: x.strip(), config.setting['preserved_tags'].split(','))
+                                  if tag != ""]
+                if selected_tag not in preserved_tags:
                     add_to_preserved_tags_action = QtGui.QAction(_(u"Add to 'Preserve Tags' List"), self.parent)
-                    add_to_preserved_tags_action.triggered.connect(partial(self.add_to_preserved_tags, selected_tag))
+                    add_to_preserved_tags_action.triggered.connect(partial(self.add_to_preserved_tags, selected_tag, preserved_tags))
                     menu.addAction(add_to_preserved_tags_action)
             removals = []
             useorigs = []
@@ -323,12 +325,9 @@ class MetadataBox(QtGui.QTableWidget):
         menu.exec_(event.globalPos())
         event.accept()
 
-    def add_to_preserved_tags(self, name):
-        preserved_tags = [tag for tag in
-                          map(lambda x: x.strip(), config.setting['preserved_tags'].split(','))
-                          if tag != ""]
+    def add_to_preserved_tags(self, name, preserved_tags):
         preserved_tags.append(name)
-        config.setting['preserved_tags'] = ", ".join((set(preserved_tags)))
+        config.setting['preserved_tags'] = ", ".join((uniqify(preserved_tags)))
 
     def edit_tag(self, tag):
         EditTagDialog(self.parent, tag).exec_()
@@ -336,7 +335,7 @@ class MetadataBox(QtGui.QTableWidget):
     def edit_selected_tag(self):
         tags = self.selected_tags(discard=('~length'))
         if len(tags) == 1:
-            self.edit_tag(list(tags)[0])
+            self.edit_tag(tags[0])
 
     def toggle_changes_first(self, checked):
         config.persist["show_changes_first"] = checked
@@ -369,7 +368,7 @@ class MetadataBox(QtGui.QTableWidget):
             discard = set()
         tags = set(self.tag_diff.tag_names[item.row()]
                    for item in self.selectedItems())
-        return tags.difference(discard)
+        return list(tags.difference(discard))
 
     def _update_selection(self):
         files = set()
