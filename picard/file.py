@@ -290,14 +290,11 @@ class File(QtCore.QObject, Item):
 
         if settings["rename_files"]:
             new_filename, ext = os.path.splitext(new_filename)
-            try:
-                # In case the filename is blank and only has the extension
-                # the real extension is in new_filename and ext is blank
-                if ext == '' and new_filename.lower() in map(unicode, self.EXTENSIONS):
-                    ext = new_filename
-                    new_filename = ''
-            except AttributeError:
-                pass
+            # In case the filename is blank and only has the extension
+            # the real extension is in new_filename and ext is blank
+            if ext == '' and new_filename.lower() in map(unicode, self.EXTENSIONS):
+                ext = new_filename
+                new_filename = ''
             ext = ext.lower()
             new_filename = new_filename + ext
 
