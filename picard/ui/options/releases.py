@@ -137,6 +137,14 @@ class ReleasesOptionsPage(OptionsPage):
         self.ui.format_list.setSelectionMode(QtGui.QAbstractItemView.ExtendedSelection)
         self.ui.preferred_format_list.setSelectionMode(QtGui.QAbstractItemView.ExtendedSelection)
 
+    def restore_defaults(self):
+        # Clear lists
+        self.ui.preferred_country_list.clear()
+        self.ui.preferred_format_list.clear()
+        self.ui.country_list.clear()
+        self.ui.format_list.clear()
+        super(ReleasesOptionsPage, self).restore_defaults()
+
     def load(self):
         scores = dict(config.setting["release_type_scores"])
         for (release_type, release_type_slider) in self._release_type_sliders.iteritems():
