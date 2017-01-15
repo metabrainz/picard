@@ -278,6 +278,15 @@ class File(QtCore.QObject, Item):
         filename = filename.replace("\x00", "")
         return filename
 
+    def _fixed_splitext(self, filename):
+        # In case the filename is blank and only has the extension
+        # the real extension is in new_filename and ext is blank
+        new_filename, ext = os.path.splitext(filename)
+        if ext == '' and new_filename.lower() in map(unicode, self.EXTENSIONS):
+            ext = new_filename
+            new_filename = ''
+        return new_filename, ext
+
     def _make_filename(self, filename, metadata, settings=config.setting):
         """Constructs file name based on metadata and file naming formats."""
         if settings["move_files"]:
@@ -289,7 +298,7 @@ class File(QtCore.QObject, Item):
         new_filename = os.path.basename(filename)
 
         if settings["rename_files"]:
-            new_filename, ext = os.path.splitext(new_filename)
+            new_filename, ext = self._fixed_splitext(new_filename)
             ext = ext.lower()
             new_filename = new_filename + ext
 
