@@ -103,8 +103,11 @@ class OptionsDialog(PicardDialog):
         self.default_item = None
         self.add_pages(None, default_page, self.ui.pages_tree)
 
-        max_top_page_name = self.ui.pages_tree.sizeHintForColumn(0) + 2*self.ui.pages_tree.frameWidth()
-        self.ui.pages_tree.setMinimumWidth(max_top_page_name)
+        # work-around to set optimal option pane width
+        self.ui.pages_tree.expandAll()
+        max_page_name = self.ui.pages_tree.sizeHintForColumn(0) + 2*self.ui.pages_tree.frameWidth()
+        self.ui.pages_tree.collapseAll()
+        self.ui.pages_tree.setMinimumWidth(max_page_name)
 
         self.ui.pages_tree.setHeaderLabels([""])
         self.ui.pages_tree.header().hide()
