@@ -36,6 +36,7 @@ class InterfaceOptionsPage(OptionsPage):
     PARENT = "advanced"
     SORT_ORDER = 40
     ACTIVE = True
+    SEPERATOR = u'-'*10
     TOOLBAR_BUTTONS = {'add_directory': N_(u'Add Folder'),
                        'add_files': N_(u'Add Files'),
                        'cluster': N_(u'Cluster'),
@@ -91,6 +92,8 @@ class InterfaceOptionsPage(OptionsPage):
             )
         )
         self.ui.starting_directory_browse.clicked.connect(self.starting_directory_browse)
+        self.ui.add_button.clicked.connect(self.add_to_toolbar)
+
 
     def load(self):
         self.ui.toolbar_show_labels.setChecked(config.setting["toolbar_show_labels"])
@@ -102,7 +105,7 @@ class InterfaceOptionsPage(OptionsPage):
         self.ui.ui_language.setCurrentIndex(self.ui.ui_language.findData(current_ui_language))
         self.ui.starting_directory.setChecked(config.setting["starting_directory"])
         self.ui.starting_directory_path.setText(config.setting["starting_directory_path"])
-        self.load_button_layout()
+        self.populate_action_list()
 
     def save(self):
         config.setting["toolbar_show_labels"] = self.ui.toolbar_show_labels.isChecked()
@@ -131,13 +134,31 @@ class InterfaceOptionsPage(OptionsPage):
             path = os.path.normpath(unicode(path))
             item.setText(path)
 
-    def load_button_layout(self):
+    def populate_action_list(self):
         self.ui.toolbar_layout_list.setDragDropMode(QtGui.QAbstractItemView.DragDrop)
         self.ui.toolbar_layout_list.setDefaultDropAction(QtCore.Qt.MoveAction)
         for name in config.setting['toolbar_layout']:
             if name in self.TOOLBAR_BUTTONS.keys():
-                list_item = QtGui.QListWidgetItem(self.TOOLBAR_BUTTONS[name])
-                list_item.setToolTip(_(u'Drag and Drop to re-order'))
-                self.ui.toolbar_layout_list.addItem(list_item)         
+                self._insert_item(self.TOOLBAR_BUTTONS[name])
+            else:
+                self._insert_item(self.SEPERATOR)
+
+    def _insert_item(self, action, index=None):
+        list_item = QtGui.QListWidgetItem(action)
+        list_item.setToolTip(_(u'Drag and Drop to re-order'))
+        if index:
+            self.ui.toolbar_layout_list.insertItem(index, list_item)
+        else:
+            self.ui.toolbar_layout_list.addItem(list_item)
+        return list_item
+
+    def add_to_toolbar(self):
+        added_items = self._added_actions()
+        display_list = list(set.difference(self.ACTION_NAMES, added_items))
+        action, ok = QtGui.QInputDialog.getItem(self, "Add Action", "Select an Action:", display_list)
+        if ok:
+            list_item = self._insert_item(action)
+            self.ui.toolbar_layout_list.setCurrentItem(list_item)
+
 
 register_options_page(InterfaceOptionsPage)
