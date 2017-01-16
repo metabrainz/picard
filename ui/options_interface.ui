@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>462</width>
+    <width>466</width>
     <height>500</height>
    </rect>
   </property>
@@ -115,6 +115,12 @@
    </item>
    <item>
     <widget class="QGroupBox" name="customize_toolbar_box">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
      <property name="title">
       <string>Customize Action Toolbar</string>
      </property>
@@ -150,7 +156,17 @@
             <string>Add a new button to Toolbar</string>
            </property>
            <property name="text">
-            <string>Add Button</string>
+            <string>Add Action</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QToolButton" name="insert_seperator_button">
+           <property name="toolTip">
+            <string>Insert a seperator</string>
+           </property>
+           <property name="text">
+            <string>Add Seperator</string>
            </property>
           </widget>
          </item>
@@ -159,9 +175,12 @@
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
            </property>
+           <property name="sizeType">
+            <enum>QSizePolicy::MinimumExpanding</enum>
+           </property>
            <property name="sizeHint" stdset="0">
             <size>
-             <width>40</width>
+             <width>60</width>
              <height>20</height>
             </size>
            </property>
