@@ -70,6 +70,11 @@ class MainWindow(QtGui.QMainWindow):
         config.BoolOption("persist", "view_cover_art", True),
         config.BoolOption("persist", "view_file_browser", False),
         config.TextOption("persist", "current_directory", ""),
+        config.ListOption("setting", "toolbar_layout", [
+            'add_directory_action', 'add_files_action', 'seperator', 'cluster_action', 'seperator',
+            'autotag_action', 'analyze_action', 'browser_lookup_action', 'seperator',
+            'save_action', 'view_info_action', 'remove_action', 'seperator',
+            'submit_action', 'seperator', 'play_file_action']),
     ]
 
     def __init__(self, parent=None):
@@ -576,6 +581,8 @@ class MainWindow(QtGui.QMainWindow):
                                          discid is not None)
 
     def create_toolbar(self):
+        if getattr(self,'toolbar',None):
+            self.toolbar.clear()
         self.toolbar = toolbar = self.addToolBar(_(u"Actions"))
         self.toolbar_toggle_action = self.toolbar.toggleViewAction()
         self.update_toolbar_style()
@@ -587,32 +594,22 @@ class MainWindow(QtGui.QMainWindow):
             widget.setFocusPolicy(QtCore.Qt.TabFocus)
             widget.setAttribute(QtCore.Qt.WA_MacShowFocusRect)
 
-        add_toolbar_action(self.add_directory_action)
-        add_toolbar_action(self.add_files_action)
-        toolbar.addSeparator()
-        add_toolbar_action(self.play_file_action)
-        toolbar.addSeparator()
-        add_toolbar_action(self.save_action)
-        add_toolbar_action(self.submit_action)
-        toolbar.addSeparator()
-
-        add_toolbar_action(self.cd_lookup_action)
-        drives = get_cdrom_drives()
-        if len(drives) > 1:
-            self.cd_lookup_menu = QtGui.QMenu()
-            for drive in drives:
-                self.cd_lookup_menu.addAction(drive)
-            self.cd_lookup_menu.triggered.connect(self.tagger.lookup_cd)
-            button = toolbar.widgetForAction(self.cd_lookup_action)
-            button.setPopupMode(QtGui.QToolButton.MenuButtonPopup)
-            button.setMenu(self.cd_lookup_menu)
-
-        add_toolbar_action(self.cluster_action)
-        add_toolbar_action(self.autotag_action)
-        add_toolbar_action(self.analyze_action)
-        add_toolbar_action(self.view_info_action)
-        add_toolbar_action(self.remove_action)
-        add_toolbar_action(self.browser_lookup_action)
+        for action in config.setting['toolbar_layout']:
+            if action not in ('cd_lookup_action', 'seperator'):
+                add_toolbar_action(getattr(self, action))
+            elif action == 'cd_lookup_action':
+                add_toolbar_action(self.cd_lookup_action)
+                drives = get_cdrom_drives()
+                if len(drives) > 1:
+                    self.cd_lookup_menu = QtGui.QMenu()
+                    for drive in drives:
+                        self.cd_lookup_menu.addAction(drive)
+                    self.cd_lookup_menu.triggered.connect(self.tagger.lookup_cd)
+                    button = toolbar.widgetForAction(self.cd_lookup_action)
+                    button.setPopupMode(QtGui.QToolButton.MenuButtonPopup)
+                    button.setMenu(self.cd_lookup_menu)
+            elif action == 'seperator':
+                toolbar.addSeparator()                     
 
         self.search_toolbar = toolbar = self.addToolBar(_(u"Search"))
         self.search_toolbar_toggle_action = self.search_toolbar.toggleViewAction()
