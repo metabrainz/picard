@@ -184,7 +184,7 @@ class InterfaceOptionsPage(OptionsPage):
         config.setting['toolbar_layout'] = updated_layout
         self._update_toolbar()
 
-    def _update_toolbar(self):      
+    def _update_toolbar(self):
         widget = self.parent()
         while not isinstance(widget, QtGui.QMainWindow):
             widget = widget.parent()

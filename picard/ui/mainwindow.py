@@ -581,9 +581,15 @@ class MainWindow(QtGui.QMainWindow):
                                          discid is not None)
 
     def create_toolbar(self):
-        if getattr(self,'toolbar',None):
+        self.create_search_toolbar()
+        self.create_action_toolbar()
+
+    def create_action_toolbar(self):
+        if getattr(self, 'toolbar', None):
             self.toolbar.clear()
-        self.toolbar = toolbar = self.addToolBar(_(u"Actions"))
+            self.removeToolBar(self.toolbar)
+        self.toolbar = toolbar = QtGui.QToolBar(_(u"Actions"))
+        self.insertToolBar(self.search_toolbar, self.toolbar)
         self.toolbar_toggle_action = self.toolbar.toggleViewAction()
         self.update_toolbar_style()
         toolbar.setObjectName("main_toolbar")
@@ -609,8 +615,9 @@ class MainWindow(QtGui.QMainWindow):
                     button.setPopupMode(QtGui.QToolButton.MenuButtonPopup)
                     button.setMenu(self.cd_lookup_menu)
             elif action == 'seperator':
-                toolbar.addSeparator()                     
+                toolbar.addSeparator()
 
+    def create_search_toolbar(self):
         self.search_toolbar = toolbar = self.addToolBar(_(u"Search"))
         self.search_toolbar_toggle_action = self.search_toolbar.toggleViewAction()
         toolbar.setObjectName("search_toolbar")
@@ -632,6 +639,7 @@ class MainWindow(QtGui.QMainWindow):
         self.search_button.setAttribute(QtCore.Qt.WA_MacShowFocusRect)
         hbox.addWidget(self.search_button)
         toolbar.addWidget(search_panel)
+
 
     def set_tab_order(self):
         tab_order = self.setTabOrder
