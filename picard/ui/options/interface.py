@@ -94,7 +94,9 @@ class InterfaceOptionsPage(OptionsPage):
         self.ui.starting_directory_browse.clicked.connect(self.starting_directory_browse)
         self.ui.add_button.clicked.connect(self.add_to_toolbar)
         self.ui.insert_seperator_button.clicked.connect(self.insert_seperator)
-
+        self.ui.remove_button.clicked.connect(self.remove_action)
+        self.ui.up_button.clicked.connect(partial(self.move_item, 1))
+        self.ui.down_button.clicked.connect(partial(self.move_item, -1))
 
 
     def load(self):
@@ -161,10 +163,25 @@ class InterfaceOptionsPage(OptionsPage):
         if ok:
             list_item = self._insert_item(action)
             self.ui.toolbar_layout_list.setCurrentItem(list_item)
+            self.update_buttons()
 
     def insert_seperator(self):
         insert_index = self._current_item('row') + 1
         self._insert_item(self.SEPERATOR, insert_index)
-                  
+
+    def _current_item(self, return_type='item'):
+        if return_type == 'item':
+            return self.ui.toolbar_layout_list.currentItem()
+        elif return_type == 'row':
+            return self.ui.toolbar_layout_list.currentRow()
+
+    def remove_action(self):
+        item = self.ui.toolbar_layout_list.takeItem(self._current_item('row'))
+        del item
+        self.update_buttons()
+
+    def update_buttons(self):
+        self.ui.add_button.setEnabled(self._added_actions() != self.ACTION_NAMES)
+
 
 register_options_page(InterfaceOptionsPage)
