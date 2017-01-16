@@ -172,8 +172,8 @@ class OptionsDialog(PicardDialog):
         message_box = QtGui.QMessageBox()
         message_box.setIcon(QtGui.QMessageBox.Warning)
         message_box.setWindowModality(QtCore.Qt.WindowModal)
-        message_box.setText("Are you sure?")
-        message_box.setInformativeText(msg)
+        message_box.setWindowTitle(_("Confirm Reset"))
+        message_box.setText(_("Are you sure?") + "\n\n" + msg)
         message_box.setStandardButtons(QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
         if message_box.exec_() == QtGui.QMessageBox.Yes:
             function()
