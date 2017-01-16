@@ -20,7 +20,7 @@
 import os.path
 from functools import partial
 from PyQt4 import QtCore, QtGui
-from picard import config
+from picard import config, log
 from picard.ui.options import OptionsPage, register_options_page
 from picard.ui.ui_options_interface import Ui_InterfaceOptionsPage
 from picard.ui.util import enabledSlot
@@ -138,6 +138,29 @@ class InterfaceOptionsPage(OptionsPage):
             path = os.path.normpath(unicode(path))
             item.setText(path)
 
+    def _insert_item(self, action, index=None):
+        list_item = QtGui.QListWidgetItem(action)
+        list_item.setToolTip(_(u'Drag and Drop to re-order'))
+        if index:
+            self.ui.toolbar_layout_list.insertItem(index, list_item)
+        else:
+            self.ui.toolbar_layout_list.addItem(list_item)
+        return list_item
+
+    def _all_list_items(self):
+        return [self.ui.toolbar_layout_list.item(i).text() for i in range(self.ui.toolbar_layout_list.count())]
+
+    def _added_actions(self):
+        actions = self._all_list_items()
+        actions = filter(lambda x: x != self.SEPERATOR, actions)
+        return set(actions)
+
+    def _current_item(self, return_type='item'):
+        if return_type == 'item':
+            return self.ui.toolbar_layout_list.currentItem()
+        elif return_type == 'row':
+            return self.ui.toolbar_layout_list.currentRow()
+
     def populate_action_list(self):
         self.ui.toolbar_layout_list.setDragDropMode(QtGui.QAbstractItemView.DragDrop)
         self.ui.toolbar_layout_list.setDefaultDropAction(QtCore.Qt.MoveAction)
@@ -147,14 +170,11 @@ class InterfaceOptionsPage(OptionsPage):
             else:
                 self._insert_item(self.SEPERATOR)
 
-    def _insert_item(self, action, index=None):
-        list_item = QtGui.QListWidgetItem(action)
-        list_item.setToolTip(_(u'Drag and Drop to re-order'))
-        if index:
-            self.ui.toolbar_layout_list.insertItem(index, list_item)
-        else:
-            self.ui.toolbar_layout_list.addItem(list_item)
-        return list_item
+    def update_buttons(self):
+        self.ui.add_button.setEnabled(self._added_actions() != self.ACTION_NAMES)
+        current_row = self._current_item('row')
+        self.ui.up_button.setEnabled(current_row > 0)
+        self.ui.down_button.setEnabled(current_row < self.ui.toolbar_layout_list.count() - 1)
 
     def add_to_toolbar(self):
         added_items = self._added_actions()
@@ -165,13 +185,24 @@ class InterfaceOptionsPage(OptionsPage):
             self.ui.toolbar_layout_list.setCurrentItem(list_item)
         self.update_buttons()
 
-    def _all_list_items(self):
-        return [self.ui.toolbar_layout_list.item(i).text() for i in range(self.ui.toolbar_layout_list.count())]
+    def insert_seperator(self):
+        insert_index = self._current_item('row') + 1
+        self._insert_item(self.SEPERATOR, insert_index)
 
-    def _added_actions(self):
-        actions = self._all_list_items()
-        actions = filter(lambda x: x != self.SEPERATOR, actions)
-        return set(actions)
+    def move_item(self, offset):
+        current_index = self._current_item('row')
+        offset_index = current_index - offset
+        offset_item = self.ui.toolbar_layout_list.item(offset_index)
+        if offset_item:
+            current_item = self.ui.toolbar_layout_list.takeItem(current_index)
+            self.ui.toolbar_layout_list.insertItem(offset_index, current_item)
+            self.ui.toolbar_layout_list.setCurrentItem(current_item)
+            self.update_buttons()
+
+    def remove_action(self):
+        item = self.ui.toolbar_layout_list.takeItem(self._current_item('row'))
+        del item
+        self.update_buttons()
 
     def update_layout_config(self):
         actions = self._all_list_items()
@@ -192,43 +223,6 @@ class InterfaceOptionsPage(OptionsPage):
             widget.create_action_toolbar()
         except AttributeError:
             log.error('Unable to update action toolbar. Error occured.')             
-
-    def insert_seperator(self):
-        insert_index = self._current_item('row') + 1
-        self._insert_item(self.SEPERATOR, insert_index)
-
-    def _current_item(self, return_type='item'):
-        if return_type == 'item':
-            return self.ui.toolbar_layout_list.currentItem()
-        elif return_type == 'row':
-            return self.ui.toolbar_layout_list.currentRow()
-
-    def remove_action(self):
-        item = self.ui.toolbar_layout_list.takeItem(self._current_item('row'))
-        del item
-        self.update_buttons()
-
-    def update_buttons(self):
-        self.ui.add_button.setEnabled(self._added_actions() != self.ACTION_NAMES)
-        current_row = self._current_item('row')
-        up_enabled = True
-        down_enabled = True
-        if current_row < 1:
-            up_enabled = False
-        if current_row > self.ui.toolbar_layout_list.count() - 2:
-            down_enabled = False
-        self.ui.up_button.setEnabled(up_enabled)
-        self.ui.down_button.setEnabled(down_enabled)
-
-    def move_item(self, offset):
-        current_index = self._current_item('row')
-        offset_index = current_index - offset
-        offset_item = self.ui.toolbar_layout_list.item(offset_index)
-        if offset_item:
-            current_item = self.ui.toolbar_layout_list.takeItem(current_index)
-            self.ui.toolbar_layout_list.insertItem(offset_index, current_item)
-            self.ui.toolbar_layout_list.setCurrentItem(current_item)
-            self.update_buttons()
 
 
 register_options_page(InterfaceOptionsPage)
