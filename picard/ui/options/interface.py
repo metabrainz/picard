@@ -36,7 +36,9 @@ class InterfaceOptionsPage(OptionsPage):
     PARENT = "advanced"
     SORT_ORDER = 40
     ACTIVE = True
-
+    TOOLBAR_BUTTONS = ['add_directory', 'add_files', 'cluster', 'autotag',
+                       'analyze', 'browser_lookup', 'save', 'view_info',
+                       'remove', 'submit', 'play_file', 'cd_lookup']
     options = [
         config.BoolOption("setting", "toolbar_show_labels", True),
         config.BoolOption("setting", "toolbar_multiselect", False),
@@ -46,6 +48,11 @@ class InterfaceOptionsPage(OptionsPage):
         config.TextOption("setting", "ui_language", u""),
         config.BoolOption("setting", "starting_directory", False),
         config.TextOption("setting", "starting_directory_path", ""),
+        config.ListOption("setting", "toolbar_layout", [
+            'add_directory', 'add_files', 'seperator', 'cluster', 'seperator',
+            'autotag', 'analyze', 'browser_lookup', 'seperator',
+            'save', 'view_info', 'remove', 'seperator',
+            'submit', 'seperator', 'play_file', 'seperator', 'cd_lookup']),
     ]
 
     def __init__(self, parent=None):
@@ -85,6 +92,7 @@ class InterfaceOptionsPage(OptionsPage):
         self.ui.ui_language.setCurrentIndex(self.ui.ui_language.findData(current_ui_language))
         self.ui.starting_directory.setChecked(config.setting["starting_directory"])
         self.ui.starting_directory_path.setText(config.setting["starting_directory_path"])
+        self.load_button_layout()
 
     def save(self):
         config.setting["toolbar_show_labels"] = self.ui.toolbar_show_labels.isChecked()
@@ -112,5 +120,8 @@ class InterfaceOptionsPage(OptionsPage):
         if path:
             path = os.path.normpath(unicode(path))
             item.setText(path)
+
+    def load_button_layout(self):
+        self.ui.toolbar_layout_list.setDragDropMode(QtGui.QAbstractItemView.DragDrop)           
 
 register_options_page(InterfaceOptionsPage)
