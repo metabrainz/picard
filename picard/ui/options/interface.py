@@ -61,6 +61,11 @@ class InterfaceOptionsPage(OptionsPage):
         config.TextOption("setting", "ui_language", u""),
         config.BoolOption("setting", "starting_directory", False),
         config.TextOption("setting", "starting_directory_path", ""),
+        config.ListOption("setting", "toolbar_layout", [
+            'add_directory_action', 'add_files_action', 'seperator', 'cluster_action', 'seperator',
+            'autotag_action', 'analyze_action', 'browser_lookup_action', 'seperator',
+            'save_action', 'view_info_action', 'remove_action', 'seperator',
+            'submit_action', 'seperator', 'play_file_action']),
     ]
 
     def __init__(self, parent=None):
@@ -164,6 +169,7 @@ class InterfaceOptionsPage(OptionsPage):
     def populate_action_list(self):
         self.ui.toolbar_layout_list.setDragDropMode(QtGui.QAbstractItemView.DragDrop)
         self.ui.toolbar_layout_list.setDefaultDropAction(QtCore.Qt.MoveAction)
+        self.ui.toolbar_layout_list.clear()
         for name in config.setting['toolbar_layout']:
             if name in self.TOOLBAR_BUTTONS.keys():
                 self._insert_item(self.TOOLBAR_BUTTONS[name])
@@ -222,7 +228,7 @@ class InterfaceOptionsPage(OptionsPage):
         try:
             widget.create_action_toolbar()
         except AttributeError:
-            log.error('Unable to update action toolbar. Error occured.')             
+            log.error('Unable to update action toolbar. Error occured.')
 
 
 register_options_page(InterfaceOptionsPage)

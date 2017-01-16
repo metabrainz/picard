@@ -70,11 +70,6 @@ class MainWindow(QtGui.QMainWindow):
         config.BoolOption("persist", "view_cover_art", True),
         config.BoolOption("persist", "view_file_browser", False),
         config.TextOption("persist", "current_directory", ""),
-        config.ListOption("setting", "toolbar_layout", [
-            'add_directory_action', 'add_files_action', 'seperator', 'cluster_action', 'seperator',
-            'autotag_action', 'analyze_action', 'browser_lookup_action', 'seperator',
-            'save_action', 'view_info_action', 'remove_action', 'seperator',
-            'submit_action', 'seperator', 'play_file_action']),
     ]
 
     def __init__(self, parent=None):
