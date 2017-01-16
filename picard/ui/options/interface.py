@@ -97,6 +97,7 @@ class InterfaceOptionsPage(OptionsPage):
         self.ui.remove_button.clicked.connect(self.remove_action)
         self.ui.up_button.clicked.connect(partial(self.move_item, 1))
         self.ui.down_button.clicked.connect(partial(self.move_item, -1))
+        self.ui.toolbar_layout_list.currentRowChanged.connect(self.update_buttons)
 
 
     def load(self):
@@ -182,6 +183,25 @@ class InterfaceOptionsPage(OptionsPage):
 
     def update_buttons(self):
         self.ui.add_button.setEnabled(self._added_actions() != self.ACTION_NAMES)
+        current_row = self._current_item('row')
+        up_enabled = True
+        down_enabled = True
+        if current_row < 1:
+            up_enabled = False
+        if current_row > self.ui.toolbar_layout_list.count() - 2:
+            down_enabled = False
+        self.ui.up_button.setEnabled(up_enabled)
+        self.ui.down_button.setEnabled(down_enabled)
+
+    def move_item(self, offset):
+        current_index = self._current_item('row')
+        offset_index = current_index - offset
+        offset_item = self.ui.toolbar_layout_list.item(offset_index)
+        if offset_item:
+            current_item = self.ui.toolbar_layout_list.takeItem(current_index)
+            self.ui.toolbar_layout_list.insertItem(offset_index, current_item)
+            self.ui.toolbar_layout_list.setCurrentItem(current_item)
+            self.update_buttons()
 
 
 register_options_page(InterfaceOptionsPage)
