@@ -93,6 +93,8 @@ class InterfaceOptionsPage(OptionsPage):
         )
         self.ui.starting_directory_browse.clicked.connect(self.starting_directory_browse)
         self.ui.add_button.clicked.connect(self.add_to_toolbar)
+        self.ui.insert_seperator_button.clicked.connect(self.insert_seperator)
+
 
 
     def load(self):
@@ -160,5 +162,9 @@ class InterfaceOptionsPage(OptionsPage):
             list_item = self._insert_item(action)
             self.ui.toolbar_layout_list.setCurrentItem(list_item)
 
+    def insert_seperator(self):
+        insert_index = self._current_item('row') + 1
+        self._insert_item(self.SEPERATOR, insert_index)
+                  
 
 register_options_page(InterfaceOptionsPage)
