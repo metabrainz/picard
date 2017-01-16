@@ -37,19 +37,21 @@ class InterfaceOptionsPage(OptionsPage):
     SORT_ORDER = 40
     ACTIVE = True
     SEPERATOR = u'-'*10
-    TOOLBAR_BUTTONS = {'add_directory': N_(u'Add Folder'),
-                       'add_files': N_(u'Add Files'),
-                       'cluster': N_(u'Cluster'),
-                       'autotag': N_(u'Lookup'),
-                       'analyze': N_(u'Scan'),
-                       'browser_lookup': N_(u'Lookup in Browser'),
-                       'save': N_(u'Save'),
-                       'view_info': N_(u'Info'),
-                       'remove': N_(u'Remove'),
-                       'submit': N_(u'Submit AcoustIDs'),
-                       'play_file': N_(u'Open in Player'),
-                       'cd_lookup': N_(u'Lookup CD...')
+    TOOLBAR_BUTTONS = {'add_directory_action': N_(u'Add Folder'),
+                       'add_files_action': N_(u'Add Files'),
+                       'cluster_action': N_(u'Cluster'),
+                       'autotag_action': N_(u'Lookup'),
+                       'analyze_action': N_(u'Scan'),
+                       'browser_lookup_action': N_(u'Lookup in Browser'),
+                       'save_action': N_(u'Save'),
+                       'view_info_action': N_(u'Info'),
+                       'remove_action': N_(u'Remove'),
+                       'submit_action': N_(u'Submit AcoustIDs'),
+                       'play_file_action': N_(u'Open in Player'),
+                       'cd_lookup_action': N_(u'Lookup CD...'),
                        }
+    TOOLBAR_BUTTONS_REV = dict((value, key) for key, value in TOOLBAR_BUTTONS.items())
+    ACTION_NAMES = set(TOOLBAR_BUTTONS.values())
     options = [
         config.BoolOption("setting", "toolbar_show_labels", True),
         config.BoolOption("setting", "toolbar_multiselect", False),
@@ -59,11 +61,6 @@ class InterfaceOptionsPage(OptionsPage):
         config.TextOption("setting", "ui_language", u""),
         config.BoolOption("setting", "starting_directory", False),
         config.TextOption("setting", "starting_directory_path", ""),
-        config.ListOption("setting", "toolbar_layout", [
-            'add_directory', 'add_files', 'seperator', 'cluster', 'seperator',
-            'autotag', 'analyze', 'browser_lookup', 'seperator',
-            'save', 'view_info', 'remove', 'seperator',
-            'submit', 'seperator', 'play_file', 'seperator', 'cd_lookup']),
     ]
 
     def __init__(self, parent=None):
@@ -99,7 +96,6 @@ class InterfaceOptionsPage(OptionsPage):
         self.ui.down_button.clicked.connect(partial(self.move_item, -1))
         self.ui.toolbar_layout_list.currentRowChanged.connect(self.update_buttons)
 
-
     def load(self):
         self.ui.toolbar_show_labels.setChecked(config.setting["toolbar_show_labels"])
         self.ui.toolbar_multiselect.setChecked(config.setting["toolbar_multiselect"])
@@ -113,7 +109,6 @@ class InterfaceOptionsPage(OptionsPage):
         self.populate_action_list()
         self.ui.toolbar_layout_list.setCurrentRow(0)
         self.update_buttons()
-        
 
     def save(self):
         config.setting["toolbar_show_labels"] = self.ui.toolbar_show_labels.isChecked()
@@ -134,6 +129,7 @@ class InterfaceOptionsPage(OptionsPage):
             dialog.exec_()
         config.setting["starting_directory"] = self.ui.starting_directory.isChecked()
         config.setting["starting_directory_path"] = os.path.normpath(unicode(self.ui.starting_directory_path.text()))
+        self.update_layout_config()
 
     def starting_directory_browse(self):
         item = self.ui.starting_directory_path
@@ -167,7 +163,35 @@ class InterfaceOptionsPage(OptionsPage):
         if ok:
             list_item = self._insert_item(action)
             self.ui.toolbar_layout_list.setCurrentItem(list_item)
-            self.update_buttons()
+        self.update_buttons()
+
+    def _all_list_items(self):
+        return [self.ui.toolbar_layout_list.item(i).text() for i in range(self.ui.toolbar_layout_list.count())]
+
+    def _added_actions(self):
+        actions = self._all_list_items()
+        actions = filter(lambda x: x != self.SEPERATOR, actions)
+        return set(actions)
+
+    def update_layout_config(self):
+        actions = self._all_list_items()
+        updated_layout = []
+        for action in actions:
+            if action in self.TOOLBAR_BUTTONS_REV:
+                updated_layout.append(self.TOOLBAR_BUTTONS_REV[action])
+            else:
+                updated_layout.append('seperator')
+        config.setting['toolbar_layout'] = updated_layout
+        self._update_toolbar()
+
+    def _update_toolbar(self):      
+        widget = self.parent()
+        while not isinstance(widget, QtGui.QMainWindow):
+            widget = widget.parent()
+        try:
+            widget.create_action_toolbar()
+        except AttributeError:
+            log.error('Unable to update action toolbar. Error occured.')             
 
     def insert_seperator(self):
         insert_index = self._current_item('row') + 1
