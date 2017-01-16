@@ -36,9 +36,19 @@ class InterfaceOptionsPage(OptionsPage):
     PARENT = "advanced"
     SORT_ORDER = 40
     ACTIVE = True
-    TOOLBAR_BUTTONS = ['add_directory', 'add_files', 'cluster', 'autotag',
-                       'analyze', 'browser_lookup', 'save', 'view_info',
-                       'remove', 'submit', 'play_file', 'cd_lookup']
+    TOOLBAR_BUTTONS = {'add_directory': N_(u'Add Folder'),
+                       'add_files': N_(u'Add Files'),
+                       'cluster': N_(u'Cluster'),
+                       'autotag': N_(u'Lookup'),
+                       'analyze': N_(u'Scan'),
+                       'browser_lookup': N_(u'Lookup in Browser'),
+                       'save': N_(u'Save'),
+                       'view_info': N_(u'Info'),
+                       'remove': N_(u'Remove'),
+                       'submit': N_(u'Submit AcoustIDs'),
+                       'play_file': N_(u'Open in Player'),
+                       'cd_lookup': N_(u'Lookup CD...')
+                       }
     options = [
         config.BoolOption("setting", "toolbar_show_labels", True),
         config.BoolOption("setting", "toolbar_multiselect", False),
@@ -122,6 +132,12 @@ class InterfaceOptionsPage(OptionsPage):
             item.setText(path)
 
     def load_button_layout(self):
-        self.ui.toolbar_layout_list.setDragDropMode(QtGui.QAbstractItemView.DragDrop)           
+        self.ui.toolbar_layout_list.setDragDropMode(QtGui.QAbstractItemView.DragDrop)
+        self.ui.toolbar_layout_list.setDefaultDropAction(QtCore.Qt.MoveAction)
+        for name in config.setting['toolbar_layout']:
+            if name in self.TOOLBAR_BUTTONS.keys():
+                list_item = QtGui.QListWidgetItem(self.TOOLBAR_BUTTONS[name])
+                list_item.setToolTip(_(u'Drag and Drop to re-order'))
+                self.ui.toolbar_layout_list.addItem(list_item)         
 
 register_options_page(InterfaceOptionsPage)
