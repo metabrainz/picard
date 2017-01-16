@@ -8,14 +8,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: picard 1.4.0dev7\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2017-01-14 16:23+0100\n"
+"POT-Creation-Date: 2017-01-16 19:11+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 1.3\n"
+"Generated-By: Babel 2.3.4\n"
 
 #: picard/acoustid.py:111
 #, python-format
@@ -140,7 +140,7 @@ msgstr ""
 msgid "Merge"
 msgstr ""
 
-#: picard/config_upgrade.py:78 picard/ui/metadatabox.py:302
+#: picard/config_upgrade.py:78 picard/ui/metadatabox.py:314
 msgid "Remove"
 msgstr ""
 
@@ -149,22 +149,22 @@ msgstr ""
 msgid "My script %d"
 msgstr ""
 
-#: picard/file.py:526
+#: picard/file.py:541
 #, python-format
 msgid "No matching tracks for file '%(filename)s'"
 msgstr ""
 
-#: picard/file.py:542
+#: picard/file.py:557
 #, python-format
 msgid "No matching tracks above the threshold for file '%(filename)s'"
 msgstr ""
 
-#: picard/file.py:549
+#: picard/file.py:564
 #, python-format
 msgid "File '%(filename)s' identified!"
 msgstr ""
 
-#: picard/file.py:569
+#: picard/file.py:584
 #, python-format
 msgid "Looking up the metadata for file %(filename)s ..."
 msgstr ""
@@ -487,7 +487,7 @@ msgstr ""
 msgid "Tracklist:"
 msgstr ""
 
-#: picard/ui/infostatus.py:51 picard/ui/options/plugins.py:297
+#: picard/ui/infostatus.py:51 picard/ui/options/plugins.py:308
 msgid "Files"
 msgstr ""
 
@@ -738,7 +738,7 @@ msgid "Save selected files"
 msgstr ""
 
 #: picard/ui/mainwindow.py:363
-msgid "S&ubmit"
+msgid "S&ubmit AcoustIDs"
 msgstr ""
 
 #: picard/ui/mainwindow.py:364
@@ -761,7 +761,7 @@ msgstr ""
 msgid "Remove selected files/albums"
 msgstr ""
 
-#: picard/ui/mainwindow.py:379 picard/ui/metadatabox.py:288
+#: picard/ui/mainwindow.py:379 picard/ui/metadatabox.py:300
 msgid "Lookup in &Browser"
 msgstr ""
 
@@ -1056,11 +1056,19 @@ msgstr ""
 msgid "Alt+Shift+R"
 msgstr ""
 
-#: picard/ui/metadatabox.py:273
+#: picard/ui/metadatabox.py:274
 msgid "Edit..."
 msgstr ""
 
-#: picard/ui/metadatabox.py:307
+#: picard/ui/metadatabox.py:282
+msgid "Add to 'Preserve Tags' List"
+msgstr ""
+
+#: picard/ui/metadatabox.py:286
+msgid "Remove from 'Preserve Tags' List"
+msgstr ""
+
+#: picard/ui/metadatabox.py:319
 msgid "Use Original Value"
 msgid_plural "Use Original Values"
 msgstr[0] ""
@@ -1134,9 +1142,9 @@ msgstr ""
 msgid "Track Search Results"
 msgstr ""
 
-#: picard/ui/searchdialog.py:324 picard/ui/searchdialog.py:512
-#: picard/ui/searchdialog.py:740 picard/ui/ui_options_plugins.py:138
-#: picard/ui/options/plugins.py:292
+#: picard/ui/options/plugins.py:303 picard/ui/searchdialog.py:324
+#: picard/ui/searchdialog.py:512 picard/ui/searchdialog.py:740
+#: picard/ui/ui_options_plugins.py:138
 msgid "Name"
 msgstr ""
 
@@ -1196,8 +1204,9 @@ msgstr ""
 msgid "File Name"
 msgstr ""
 
-#: picard/ui/ui_cdlookup.py:53 picard/ui/ui_options_cdlookup.py:42
-#: picard/ui/ui_options_cdlookup_select.py:49 picard/ui/options/cdlookup.py:38
+#: picard/ui/options/cdlookup.py:38 picard/ui/ui_cdlookup.py:53
+#: picard/ui/ui_options_cdlookup.py:42
+#: picard/ui/ui_options_cdlookup_select.py:49
 msgid "CD Lookup"
 msgstr ""
 
@@ -1359,7 +1368,7 @@ msgstr ""
 msgid "Get API key..."
 msgstr ""
 
-#: picard/ui/ui_options_folksonomy.py:115 picard/ui/options/folksonomy.py:28
+#: picard/ui/options/folksonomy.py:28 picard/ui/ui_options_folksonomy.py:115
 msgid "Folksonomy Tags"
 msgstr ""
 
@@ -1414,7 +1423,7 @@ msgstr ""
 msgid "Server address:"
 msgstr ""
 
-#: picard/ui/ui_options_general.py:95 picard/ui/options/general.py:88
+#: picard/ui/options/general.py:88 picard/ui/ui_options_general.py:95
 msgid "MusicBrainz Account"
 msgstr ""
 
@@ -1426,7 +1435,7 @@ msgstr ""
 msgid "Log out"
 msgstr ""
 
-#: picard/ui/ui_options_general.py:98 picard/ui/options/general.py:33
+#: picard/ui/options/general.py:33 picard/ui/ui_options_general.py:98
 msgid "General"
 msgstr ""
 
@@ -1482,7 +1491,7 @@ msgstr ""
 msgid "Minimal similarity for cluster lookups:"
 msgstr ""
 
-#: picard/ui/ui_options_metadata.py:101 picard/ui/options/metadata.py:29
+#: picard/ui/options/metadata.py:29 picard/ui/ui_options_metadata.py:101
 msgid "Metadata"
 msgstr ""
 
@@ -1552,7 +1561,7 @@ msgstr ""
 msgid "Listen only on localhost"
 msgstr ""
 
-#: picard/ui/ui_options_plugins.py:137 picard/ui/options/plugins.py:68
+#: picard/ui/options/plugins.py:68 picard/ui/ui_options_plugins.py:137
 msgid "Plugins"
 msgstr ""
 
@@ -1822,7 +1831,7 @@ msgstr ""
 msgid "Clear entry"
 msgstr ""
 
-#: picard/ui/options/__init__.py:67
+#: picard/ui/options/__init__.py:83
 msgid "Regex Error"
 msgstr ""
 
@@ -1830,16 +1839,16 @@ msgstr ""
 msgid "About"
 msgstr ""
 
-#: picard/ui/options/about.py:53
+#: picard/ui/options/about.py:50
 msgid "translator-credits"
 msgstr ""
 
-#: picard/ui/options/about.py:56
+#: picard/ui/options/about.py:53
 #, python-format
 msgid "<br/>Translated to LANG by %s"
 msgstr ""
 
-#: picard/ui/options/about.py:64
+#: picard/ui/options/about.py:61
 #, python-format
 msgid ""
 "<p align=\"center\"><span style=\"font-size:15px;font-"
@@ -1880,11 +1889,11 @@ msgstr ""
 msgid "Restore &Defaults"
 msgstr ""
 
-#: picard/ui/options/dialog.py:182
+#: picard/ui/options/dialog.py:164
 msgid "You are about to reset your options for this page."
 msgstr ""
 
-#: picard/ui/options/dialog.py:186
+#: picard/ui/options/dialog.py:168
 msgid "Warning! This will reset all of your settings."
 msgstr ""
 
@@ -1936,58 +1945,58 @@ msgstr ""
 msgid "Network"
 msgstr ""
 
-#: picard/ui/options/plugins.py:136
+#: picard/ui/options/plugins.py:135
 msgid "No plugins installed."
 msgstr ""
 
-#: picard/ui/options/plugins.py:187
+#: picard/ui/options/plugins.py:198
 #, python-format
 msgid "The plugin '%s' is not compatible with this version of Picard."
 msgstr ""
 
-#: picard/ui/options/plugins.py:215
+#: picard/ui/options/plugins.py:226
 #, python-format
 msgid "The plugin '%s' will be upgraded to version %s on next run of Picard."
 msgstr ""
 
-#: picard/ui/options/plugins.py:243
+#: picard/ui/options/plugins.py:254
 msgid "Update"
 msgstr ""
 
-#: picard/ui/options/plugins.py:245
+#: picard/ui/options/plugins.py:256
 msgid "Install"
 msgstr ""
 
-#: picard/ui/options/plugins.py:260
+#: picard/ui/options/plugins.py:271
 msgid "Updated"
 msgstr ""
 
-#: picard/ui/options/plugins.py:262
+#: picard/ui/options/plugins.py:273
 msgid "Installed"
 msgstr ""
 
-#: picard/ui/options/plugins.py:286
+#: picard/ui/options/plugins.py:297
 msgid "Restart Picard to upgrade to new version"
 msgstr ""
 
-#: picard/ui/options/plugins.py:288
+#: picard/ui/options/plugins.py:299
 msgid "New version available"
 msgstr ""
 
-#: picard/ui/options/plugins.py:294
+#: picard/ui/options/plugins.py:305
 msgid "Authors"
 msgstr ""
 
-#: picard/ui/options/plugins.py:296 picard/util/tags.py:44
+#: picard/ui/options/plugins.py:307 picard/util/tags.py:44
 msgid "License"
 msgstr ""
 
-#: picard/ui/options/plugins.py:327
+#: picard/ui/options/plugins.py:338
 #, python-format
 msgid "The plugin '%s' could not be downloaded."
 msgstr ""
 
-#: picard/ui/options/plugins.py:328
+#: picard/ui/options/plugins.py:339
 msgid "Please try again later."
 msgstr ""
 
@@ -2007,7 +2016,7 @@ msgstr ""
 msgid "File Naming"
 msgstr ""
 
-#: picard/ui/options/renaming.py:175 picard/ui/options/scripting.py:397
+#: picard/ui/options/renaming.py:175 picard/ui/options/scripting.py:404
 msgid ""
 "<a href=\"%(picard-doc-scripting-url)s\">Open Scripting Documentation in "
 "your browser</a>"
