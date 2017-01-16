@@ -600,12 +600,10 @@ class MainWindow(QtGui.QMainWindow):
         add_toolbar_action(self.view_info_action)
         add_toolbar_action(self.remove_action)
         toolbar.addSeparator()
-        add_toolbar_action(self.submit_action)
-        toolbar.addSeparator()
-        add_toolbar_action(self.play_file_action)
-        toolbar.addSeparator()
-
         add_toolbar_action(self.cd_lookup_action)
+        toolbar.addSeparator()
+        add_toolbar_action(self.submit_action)
+        add_toolbar_action(self.play_file_action)
         drives = get_cdrom_drives()
         if len(drives) > 1:
             self.cd_lookup_menu = QtGui.QMenu()
