@@ -111,6 +111,9 @@ class InterfaceOptionsPage(OptionsPage):
         self.ui.starting_directory.setChecked(config.setting["starting_directory"])
         self.ui.starting_directory_path.setText(config.setting["starting_directory_path"])
         self.populate_action_list()
+        self.ui.toolbar_layout_list.setCurrentRow(0)
+        self.update_buttons()
+        
 
     def save(self):
         config.setting["toolbar_show_labels"] = self.ui.toolbar_show_labels.isChecked()
