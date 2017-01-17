@@ -249,10 +249,10 @@ class InterfaceOptionsPage(OptionsPage):
     def add_to_toolbar(self):
         added_items = self._added_actions()
         display_list = set.difference(self.ACTION_NAMES, added_items)
-        # selected_action, ok = AddActionDialog.get_selected_action(display_list, self)
-        # if ok:
-        #     list_item = self._insert_item(selected_action, self._current_item('row') + 1)
-        #     self.ui.toolbar_layout_list.setCurrentItem(list_item)
+        selected_action, ok = AddActionDialog.get_selected_action(display_list, self)
+        if ok:
+            list_item = self._insert_item(selected_action, self._current_item('row') + 1)
+            self.ui.toolbar_layout_list.setCurrentItem(list_item)
         self.update_buttons()
 
     def insert_separator(self):
@@ -292,6 +292,37 @@ class ToolbarListItem(QtGui.QListWidgetItem):
     def __init__(self, action_name, *args, **kwargs):
         super(ToolbarListItem, self).__init__(*args, **kwargs)
         self.action_name = action_name
+
+
+class AddActionDialog(QtGui.QDialog):
+    def __init__(self, action_list, *args, **kwargs):
+        super(AddActionDialog, self).__init__(*args, **kwargs)
+
+        layout = QtGui.QVBoxLayout(self)
+
+        self.action_list = sorted([[_(self.parent().TOOLBAR_BUTTONS[action]['label']), action]
+                                  for action in action_list])
+
+        self.combo_box = QtGui.QComboBox(self)
+        self.combo_box.addItems([label for label, action in self.action_list])
+        layout.addWidget(self.combo_box)
+
+        buttons = QtGui.QDialogButtonBox(
+            QtGui.QDialogButtonBox.Ok | QtGui.QDialogButtonBox.Cancel,
+            QtCore.Qt.Horizontal, self)
+        buttons.accepted.connect(self.accept)
+        buttons.rejected.connect(self.reject)
+        layout.addWidget(buttons)
+
+    def selected_action(self):
+        return self.action_list[self.combo_box.currentIndex()][1]
+
+    @staticmethod
+    def get_selected_action(action_list, parent=None):
+        dialog = AddActionDialog(action_list, parent)
+        result = dialog.exec_()
+        selected_action = dialog.selected_action()
+        return (selected_action, result == QtGui.QDialog.Accepted)
 
 
 register_options_page(InterfaceOptionsPage)
