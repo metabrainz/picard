@@ -38,19 +38,56 @@ class InterfaceOptionsPage(OptionsPage):
     SORT_ORDER = 40
     ACTIVE = True
     SEPARATOR = u'—'*5
-    TOOLBAR_BUTTONS = {'add_directory_action': {'label': N_(u'Add Folder'), 'icon': 'folder'},
-                       'add_files_action': {'label': N_(u'Add Files'), 'icon': 'document-open'},
-                       'cluster_action': {'label': N_(u'Cluster'), 'icon': 'picard-cluster'},
-                       'autotag_action': {'label': N_(u'Lookup'), 'icon': 'picard-auto-tag'},
-                       'analyze_action': {'label': N_(u'Scan'), 'icon': 'picard-analyze'},
-                       'browser_lookup_action': {'label': N_(u'Lookup in Browser'), 'icon': 'lookup-musicbrainz'},
-                       'save_action': {'label': N_(u'Save'), 'icon': 'document-save'},
-                       'view_info_action': {'label': N_(u'Info'), 'icon': 'picard-edit-tags'},
-                       'remove_action': {'label': N_(u'Remove'), 'icon': 'list-remove'},
-                       'submit_acoustid_action': {'label': N_(u'Submit AcoustIDs'), 'icon': 'acoustid-fingerprinter'},
-                       'play_file_action': {'label': N_(u'Open in Player'), 'icon': 'play-music'},
-                       'cd_lookup_action': {'label': N_(u'Lookup CD...'), 'icon': 'media-optical'},
-                       }
+    TOOLBAR_BUTTONS = {
+        'add_directory_action': {
+            'label': N_(u'Add Folder'),
+            'icon': 'folder'
+        },
+       'add_files_action': {
+            'label': N_(u'Add Files'),
+            'icon': 'document-open'
+        },
+       'cluster_action': {
+            'label': N_(u'Cluster'),
+            'icon': 'picard-cluster'
+        },
+       'autotag_action': {
+            'label': N_(u'Lookup'),
+            'icon': 'picard-auto-tag'
+        },
+       'analyze_action': {
+            'label': N_(u'Scan'),
+            'icon': 'picard-analyze'
+        },
+       'browser_lookup_action': {
+            'label': N_(u'Lookup in Browser'),
+            'icon': 'lookup-musicbrainz'
+        },
+       'save_action': {
+            'label': N_(u'Save'),
+            'icon': 'document-save'
+        },
+       'view_info_action': {
+            'label': N_(u'Info'),
+            'icon': 'picard-edit-tags'
+        },
+       'remove_action': {
+            'label': N_(u'Remove'),
+            'icon': 'list-remove'
+        },
+       'submit_acoustid_action': {
+            'label': N_(u'Submit AcoustIDs'),
+            'icon': 'acoustid-fingerprinter'
+        },
+       'play_file_action': {
+            'label': N_(u'Open in Player'),
+            'icon': 'play-music'
+        },
+       'cd_lookup_action': {
+            'label': N_(u'Lookup CD...'),
+            'icon': 'media-optical'
+        },
+    }
     TOOLBAR_BUTTONS_REV = dict((value['label'], key) for key, value in TOOLBAR_BUTTONS.items())
     ACTION_NAMES = set(TOOLBAR_BUTTONS_REV.keys())
     options = [
