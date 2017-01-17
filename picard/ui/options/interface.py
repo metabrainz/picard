@@ -88,6 +88,7 @@ class InterfaceOptionsPage(OptionsPage):
             'icon': 'media-optical'
         },
     }
+    ACTION_NAMES = set(TOOLBAR_BUTTONS.keys())
     options = [
         config.BoolOption("setting", "toolbar_show_labels", True),
         config.BoolOption("setting", "toolbar_multiselect", False),
@@ -149,8 +150,6 @@ class InterfaceOptionsPage(OptionsPage):
         self.ui.up_button.clicked.connect(partial(self.move_item, 1))
         self.ui.down_button.clicked.connect(partial(self.move_item, -1))
         self.ui.toolbar_layout_list.currentRowChanged.connect(self.update_buttons)
-        self.toolbar_button_rev = dict((_(value['label']), key) for key, value in self.TOOLBAR_BUTTONS.items())
-        self.action_names = self.toolbar_button_rev.keys()
 
     def load(self):
         self.ui.toolbar_show_labels.setChecked(config.setting["toolbar_show_labels"])
@@ -198,14 +197,20 @@ class InterfaceOptionsPage(OptionsPage):
             path = os.path.normpath(unicode(path))
             item.setText(path)
 
+    def _valid_action(self, name):
+        return name in self.TOOLBAR_BUTTONS or name == 'separator'
+
     def _get_icon_from_name(self, name):
-        return self.TOOLBAR_BUTTONS[self.toolbar_button_rev[name]]['icon']
+        return self.TOOLBAR_BUTTONS[name]['icon']
 
     def _insert_item(self, action, index=None):
-        list_item = QtGui.QListWidgetItem(action)
+        list_item = ToolbarListItem(action)
         list_item.setToolTip(_(u'Drag and Drop to re-order'))
-        if action != self.SEPARATOR:
+        if action in self.TOOLBAR_BUTTONS:
+            list_item.setText(_(self.TOOLBAR_BUTTONS[action]['label']))
             list_item.setIcon(icontheme.lookup(self._get_icon_from_name(action), icontheme.ICON_SIZE_MENU))
+        else:
+            list_item.setText(self.SEPARATOR)
         if index:
             self.ui.toolbar_layout_list.insertItem(index, list_item)
         else:
@@ -213,11 +218,12 @@ class InterfaceOptionsPage(OptionsPage):
         return list_item
 
     def _all_list_items(self):
-        return [self.ui.toolbar_layout_list.item(i).text() for i in range(self.ui.toolbar_layout_list.count())]
+        return [self.ui.toolbar_layout_list.item(i).action_name
+                for i in range(self.ui.toolbar_layout_list.count())]
 
     def _added_actions(self):
         actions = self._all_list_items()
-        actions = filter(lambda x: x != self.SEPARATOR, actions)
+        actions = filter(lambda x: x != 'separator', actions)
         return set(actions)
 
     def _current_item(self, return_type='item'):
@@ -231,29 +237,27 @@ class InterfaceOptionsPage(OptionsPage):
         self.ui.toolbar_layout_list.setDefaultDropAction(QtCore.Qt.MoveAction)
         self.ui.toolbar_layout_list.clear()
         for name in config.setting['toolbar_layout']:
-            if name in self.TOOLBAR_BUTTONS.keys():
-                self._insert_item(self.TOOLBAR_BUTTONS[name]['label'])
-            else:
-                self._insert_item(self.SEPARATOR)
+            if self._valid_action(name):
+                self._insert_item(name)
 
     def update_buttons(self):
-        self.ui.add_button.setEnabled(self._added_actions() != self.action_names)
+        self.ui.add_button.setEnabled(self._added_actions() != self.ACTION_NAMES)
         current_row = self._current_item('row')
         self.ui.up_button.setEnabled(current_row > 0)
         self.ui.down_button.setEnabled(current_row < self.ui.toolbar_layout_list.count() - 1)
 
     def add_to_toolbar(self):
         added_items = self._added_actions()
-        display_list = sorted(list(set.difference(self.action_names, added_items)))
-        action, ok = QtGui.QInputDialog.getItem(self, _(u"Add Action"), _(u"Select an Action:"), display_list, editable=False)
-        if ok:
-            list_item = self._insert_item(action, self._current_item('row') + 1)
-            self.ui.toolbar_layout_list.setCurrentItem(list_item)
+        display_list = set.difference(self.ACTION_NAMES, added_items)
+        # selected_action, ok = AddActionDialog.get_selected_action(display_list, self)
+        # if ok:
+        #     list_item = self._insert_item(selected_action, self._current_item('row') + 1)
+        #     self.ui.toolbar_layout_list.setCurrentItem(list_item)
         self.update_buttons()
 
     def insert_separator(self):
         insert_index = self._current_item('row') + 1
-        self._insert_item(self.SEPARATOR, insert_index)
+        self._insert_item('separator', insert_index)
 
     def move_item(self, offset):
         current_index = self._current_item('row')
@@ -271,14 +275,7 @@ class InterfaceOptionsPage(OptionsPage):
         self.update_buttons()
 
     def update_layout_config(self):
-        actions = self._all_list_items()
-        updated_layout = []
-        for action in actions:
-            if action in self.toolbar_button_rev:
-                updated_layout.append(self.toolbar_button_rev[action])
-            else:
-                updated_layout.append('separator')
-        config.setting['toolbar_layout'] = updated_layout
+        config.setting['toolbar_layout'] = self._all_list_items()
         self._update_toolbar()
 
     def _update_toolbar(self):
@@ -289,6 +286,12 @@ class InterfaceOptionsPage(OptionsPage):
             widget.create_action_toolbar()
         except AttributeError:
             log.error('Unable to update action toolbar. Error occured.')
+
+
+class ToolbarListItem(QtGui.QListWidgetItem):
+    def __init__(self, action_name, *args, **kwargs):
+        super(ToolbarListItem, self).__init__(*args, **kwargs)
+        self.action_name = action_name
 
 
 register_options_page(InterfaceOptionsPage)
