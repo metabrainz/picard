@@ -76,9 +76,9 @@ class InterfaceOptionsPage(OptionsPage):
             'view_info_action',
             'remove_action',
             'separator',
+            'cd_lookup_action',
+            'seperator',
             'submit_action',
-            'separator',
-            'play_file_action',
         ]),
     ]
 
