@@ -21,6 +21,7 @@ import os.path
 from functools import partial
 from PyQt4 import QtCore, QtGui
 from picard import config, log
+from picard.util import icontheme
 from picard.ui.options import OptionsPage, register_options_page
 from picard.ui.ui_options_interface import Ui_InterfaceOptionsPage
 from picard.ui.util import enabledSlot
@@ -36,7 +37,7 @@ class InterfaceOptionsPage(OptionsPage):
     PARENT = "advanced"
     SORT_ORDER = 40
     ACTIVE = True
-    SEPERATOR = u'-'*10
+    SEPERATOR = u'—'*5
     TOOLBAR_BUTTONS = {'add_directory_action': N_(u'Add Folder'),
                        'add_files_action': N_(u'Add Files'),
                        'cluster_action': N_(u'Cluster'),
@@ -50,6 +51,19 @@ class InterfaceOptionsPage(OptionsPage):
                        'play_file_action': N_(u'Open in Player'),
                        'cd_lookup_action': N_(u'Lookup CD...'),
                        }
+    TOOLBAR_ICONS = {'add_directory_action': 'folder',
+                     'add_files_action': 'document-open',
+                     'cluster_action': 'picard-cluster',
+                     'autotag_action': 'picard-auto-tag',
+                     'analyze_action': 'picard-analyze',
+                     'browser_lookup_action': 'lookup-musicbrainz',
+                     'save_action': 'document-save',
+                     'view_info_action': 'picard-edit-tags',
+                     'remove_action': 'list-remove',
+                     'submit_action': 'acoustid-fingerprinter',
+                     'play_file_action': 'play-music',
+                     'cd_lookup_action': 'media-optical',
+                     }
     TOOLBAR_BUTTONS_REV = dict((value, key) for key, value in TOOLBAR_BUTTONS.items())
     ACTION_NAMES = set(TOOLBAR_BUTTONS.values())
     options = [
@@ -143,9 +157,14 @@ class InterfaceOptionsPage(OptionsPage):
             path = os.path.normpath(unicode(path))
             item.setText(path)
 
+    def _get_icon_from_name(self, name):
+        return self.TOOLBAR_ICONS[self.TOOLBAR_BUTTONS_REV[name]]
+
     def _insert_item(self, action, index=None):
         list_item = QtGui.QListWidgetItem(action)
         list_item.setToolTip(_(u'Drag and Drop to re-order'))
+        if action != self.SEPERATOR:
+            list_item.setIcon(icontheme.lookup(self._get_icon_from_name(action), icontheme.ICON_SIZE_MENU))
         if index:
             self.ui.toolbar_layout_list.insertItem(index, list_item)
         else:
