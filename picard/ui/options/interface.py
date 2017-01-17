@@ -202,7 +202,7 @@ class InterfaceOptionsPage(OptionsPage):
         return self.TOOLBAR_BUTTONS[self.TOOLBAR_BUTTONS_REV[name]]['icon']
 
     def _insert_item(self, action, index=None):
-        list_item = QtGui.QListWidgetItem(action)
+        list_item = QtGui.QListWidgetItem(_(action))
         list_item.setToolTip(_(u'Drag and Drop to re-order'))
         if action != self.SEPARATOR:
             list_item.setIcon(icontheme.lookup(self._get_icon_from_name(action), icontheme.ICON_SIZE_MENU))
@@ -232,7 +232,7 @@ class InterfaceOptionsPage(OptionsPage):
         self.ui.toolbar_layout_list.clear()
         for name in config.setting['toolbar_layout']:
             if name in self.TOOLBAR_BUTTONS.keys():
-                self._insert_item(self.TOOLBAR_BUTTONS[name]['label'])
+                self._insert_item(_(self.TOOLBAR_BUTTONS[name]['label']))
             else:
                 self._insert_item(self.SEPARATOR)
 
