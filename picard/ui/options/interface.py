@@ -207,10 +207,10 @@ class InterfaceOptionsPage(OptionsPage):
 
     def add_to_toolbar(self):
         added_items = self._added_actions()
-        display_list = list(set.difference(self.ACTION_NAMES, added_items))
-        action, ok = QtGui.QInputDialog.getItem(self, "Add Action", "Select an Action:", display_list)
+        display_list = sorted(list(set.difference(self.ACTION_NAMES, added_items)))
+        action, ok = QtGui.QInputDialog.getItem(self, "Add Action", "Select an Action:", display_list, editable=False)
         if ok:
-            list_item = self._insert_item(action)
+            list_item = self._insert_item(action, self._current_item('row') + 1)
             self.ui.toolbar_layout_list.setCurrentItem(list_item)
         self.update_buttons()
 
