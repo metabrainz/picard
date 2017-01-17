@@ -360,10 +360,10 @@ class MainWindow(QtGui.QMainWindow):
         self.save_action.setEnabled(False)
         self.save_action.triggered.connect(self.save)
 
-        self.submit_action = QtGui.QAction(icontheme.lookup('acoustid-fingerprinter'), _(u"S&ubmit AcoustIDs"), self)
-        self.submit_action.setStatusTip(_(u"Submit acoustic fingerprints"))
-        self.submit_action.setEnabled(False)
-        self.submit_action.triggered.connect(self._on_submit)
+        self.submit_acoustid_action = QtGui.QAction(icontheme.lookup('acoustid-fingerprinter'), _(u"S&ubmit AcoustIDs"), self)
+        self.submit_acoustid_action.setStatusTip(_(u"Submit acoustic fingerprints"))
+        self.submit_acoustid_action.setEnabled(False)
+        self.submit_acoustid_action.triggered.connect(self._on_submit)
 
         self.exit_action = QtGui.QAction(_(u"E&xit"), self)
         self.exit_action.setMenuRole(QtGui.QAction.QuitRole)
@@ -523,7 +523,7 @@ class MainWindow(QtGui.QMainWindow):
         menu.addAction(self.open_folder_action)
         menu.addSeparator()
         menu.addAction(self.save_action)
-        menu.addAction(self.submit_action)
+        menu.addAction(self.submit_acoustid_action)
         menu.addSeparator()
         menu.addAction(self.exit_action)
         menu = self.menuBar().addMenu(_(u"&Edit"))
@@ -644,8 +644,8 @@ class MainWindow(QtGui.QMainWindow):
         tab_order(tw(self.add_directory_action), tw(self.add_files_action))
         tab_order(tw(self.add_files_action), tw(self.play_file_action))
         tab_order(tw(self.play_file_action), tw(self.save_action))
-        tab_order(tw(self.save_action), tw(self.submit_action))
-        tab_order(tw(self.submit_action), tw(self.cd_lookup_action))
+        tab_order(tw(self.save_action), tw(self.submit_acoustid_action))
+        tab_order(tw(self.submit_acoustid_action), tw(self.cd_lookup_action))
         tab_order(tw(self.cd_lookup_action), tw(self.cluster_action))
         tab_order(tw(self.cluster_action), tw(self.autotag_action))
         tab_order(tw(self.autotag_action), tw(self.analyze_action))
@@ -663,7 +663,7 @@ class MainWindow(QtGui.QMainWindow):
 
     def enable_submit(self, enabled):
         """Enable/disable the 'Submit fingerprints' action."""
-        self.submit_action.setEnabled(enabled)
+        self.submit_acoustid_action.setEnabled(enabled)
 
     def enable_cluster(self, enabled):
         """Enable/disable the 'Cluster' action."""

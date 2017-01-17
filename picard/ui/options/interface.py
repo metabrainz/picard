@@ -47,7 +47,7 @@ class InterfaceOptionsPage(OptionsPage):
                        'save_action': {'label': N_(u'Save'), 'icon': 'document-save'},
                        'view_info_action': {'label': N_(u'Info'), 'icon': 'picard-edit-tags'},
                        'remove_action': {'label': N_(u'Remove'), 'icon': 'list-remove'},
-                       'submit_action': {'label': N_(u'Submit AcoustIDs'), 'icon': 'acoustid-fingerprinter'},
+                       'submit_acoustid_action': {'label': N_(u'Submit AcoustIDs'), 'icon': 'acoustid-fingerprinter'},
                        'play_file_action': {'label': N_(u'Open in Player'), 'icon': 'play-music'},
                        'cd_lookup_action': {'label': N_(u'Lookup CD...'), 'icon': 'media-optical'},
                        }
@@ -77,8 +77,8 @@ class InterfaceOptionsPage(OptionsPage):
             'remove_action',
             'separator',
             'cd_lookup_action',
-            'seperator',
-            'submit_action',
+            'separator',
+            'submit_acoustid_action',
         ]),
     ]
 
