@@ -63,10 +63,23 @@ class InterfaceOptionsPage(OptionsPage):
         config.BoolOption("setting", "starting_directory", False),
         config.TextOption("setting", "starting_directory_path", ""),
         config.ListOption("setting", "toolbar_layout", [
-            'add_directory_action', 'add_files_action', 'separator', 'cluster_action', 'separator',
-            'autotag_action', 'analyze_action', 'browser_lookup_action', 'separator',
-            'save_action', 'view_info_action', 'remove_action', 'separator',
-            'submit_action', 'separator', 'play_file_action']),
+            'add_directory_action',
+            'add_files_action',
+            'separator',
+            'cluster_action',
+            'separator',
+            'autotag_action',
+            'analyze_action',
+            'browser_lookup_action',
+            'separator',
+            'save_action',
+            'view_info_action',
+            'remove_action',
+            'separator',
+            'submit_action',
+            'separator',
+            'play_file_action',
+        ]),
     ]
 
     def __init__(self, parent=None):
@@ -136,6 +149,10 @@ class InterfaceOptionsPage(OptionsPage):
         config.setting["starting_directory"] = self.ui.starting_directory.isChecked()
         config.setting["starting_directory_path"] = os.path.normpath(unicode(self.ui.starting_directory_path.text()))
         self.update_layout_config()
+
+    def restore_defaults(self):
+        super(InterfaceOptionsPage, self).restore_defaults()
+        self.update_buttons()
 
     def starting_directory_browse(self):
         item = self.ui.starting_directory_path
