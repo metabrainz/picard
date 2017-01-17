@@ -600,7 +600,7 @@ class MainWindow(QtGui.QMainWindow):
                 try:
                     add_toolbar_action(getattr(self, action))
                 except AttributeError:
-                    log.warning('Warning: Unknown action name "%r" found in config. Ignored.', action)      
+                    log.warning('Warning: Unknown action name "%r" found in config. Ignored.', action)
             elif action == 'cd_lookup_action':
                 add_toolbar_action(self.cd_lookup_action)
                 drives = get_cdrom_drives()
