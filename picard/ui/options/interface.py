@@ -150,6 +150,8 @@ class InterfaceOptionsPage(OptionsPage):
         self.ui.up_button.clicked.connect(partial(self.move_item, 1))
         self.ui.down_button.clicked.connect(partial(self.move_item, -1))
         self.ui.toolbar_layout_list.currentRowChanged.connect(self.update_buttons)
+        self.ui.toolbar_layout_list.setDragDropMode(QtGui.QAbstractItemView.DragDrop)
+        self.ui.toolbar_layout_list.setDefaultDropAction(QtCore.Qt.MoveAction)
 
     def load(self):
         self.ui.toolbar_show_labels.setChecked(config.setting["toolbar_show_labels"])
@@ -233,8 +235,6 @@ class InterfaceOptionsPage(OptionsPage):
             return self.ui.toolbar_layout_list.currentRow()
 
     def populate_action_list(self):
-        self.ui.toolbar_layout_list.setDragDropMode(QtGui.QAbstractItemView.DragDrop)
-        self.ui.toolbar_layout_list.setDefaultDropAction(QtCore.Qt.MoveAction)
         self.ui.toolbar_layout_list.clear()
         for name in config.setting['toolbar_layout']:
             if self._valid_action(name):
