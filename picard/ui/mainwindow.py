@@ -596,7 +596,7 @@ class MainWindow(QtGui.QMainWindow):
             widget.setAttribute(QtCore.Qt.WA_MacShowFocusRect)
 
         for action in config.setting['toolbar_layout']:
-            if action not in ('cd_lookup_action', 'seperator'):
+            if action not in ('cd_lookup_action', 'separator'):
                 add_toolbar_action(getattr(self, action))
             elif action == 'cd_lookup_action':
                 add_toolbar_action(self.cd_lookup_action)
@@ -609,7 +609,7 @@ class MainWindow(QtGui.QMainWindow):
                     button = toolbar.widgetForAction(self.cd_lookup_action)
                     button.setPopupMode(QtGui.QToolButton.MenuButtonPopup)
                     button.setMenu(self.cd_lookup_menu)
-            elif action == 'seperator':
+            elif action == 'separator':
                 toolbar.addSeparator()
 
     def create_search_toolbar(self):

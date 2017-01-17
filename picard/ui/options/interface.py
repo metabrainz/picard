@@ -37,35 +37,22 @@ class InterfaceOptionsPage(OptionsPage):
     PARENT = "advanced"
     SORT_ORDER = 40
     ACTIVE = True
-    SEPERATOR = u'—'*5
-    TOOLBAR_BUTTONS = {'add_directory_action': N_(u'Add Folder'),
-                       'add_files_action': N_(u'Add Files'),
-                       'cluster_action': N_(u'Cluster'),
-                       'autotag_action': N_(u'Lookup'),
-                       'analyze_action': N_(u'Scan'),
-                       'browser_lookup_action': N_(u'Lookup in Browser'),
-                       'save_action': N_(u'Save'),
-                       'view_info_action': N_(u'Info'),
-                       'remove_action': N_(u'Remove'),
-                       'submit_action': N_(u'Submit AcoustIDs'),
-                       'play_file_action': N_(u'Open in Player'),
-                       'cd_lookup_action': N_(u'Lookup CD...'),
+    SEPARATOR = u'—'*5
+    TOOLBAR_BUTTONS = {'add_directory_action': {'label': N_(u'Add Folder'), 'icon': 'folder'},
+                       'add_files_action': {'label': N_(u'Add Files'), 'icon': 'document-open'},
+                       'cluster_action': {'label': N_(u'Cluster'), 'icon': 'picard-cluster'},
+                       'autotag_action': {'label': N_(u'Lookup'), 'icon': 'picard-auto-tag'},
+                       'analyze_action': {'label': N_(u'Scan'), 'icon': 'picard-analyze'},
+                       'browser_lookup_action': {'label': N_(u'Lookup in Browser'), 'icon': 'lookup-musicbrainz'},
+                       'save_action': {'label': N_(u'Save'), 'icon': 'document-save'},
+                       'view_info_action': {'label': N_(u'Info'), 'icon': 'picard-edit-tags'},
+                       'remove_action': {'label': N_(u'Remove'), 'icon': 'list-remove'},
+                       'submit_action': {'label': N_(u'Submit AcoustIDs'), 'icon': 'acoustid-fingerprinter'},
+                       'play_file_action': {'label': N_(u'Open in Player'), 'icon': 'play-music'},
+                       'cd_lookup_action': {'label': N_(u'Lookup CD...'), 'icon': 'media-optical'},
                        }
-    TOOLBAR_ICONS = {'add_directory_action': 'folder',
-                     'add_files_action': 'document-open',
-                     'cluster_action': 'picard-cluster',
-                     'autotag_action': 'picard-auto-tag',
-                     'analyze_action': 'picard-analyze',
-                     'browser_lookup_action': 'lookup-musicbrainz',
-                     'save_action': 'document-save',
-                     'view_info_action': 'picard-edit-tags',
-                     'remove_action': 'list-remove',
-                     'submit_action': 'acoustid-fingerprinter',
-                     'play_file_action': 'play-music',
-                     'cd_lookup_action': 'media-optical',
-                     }
-    TOOLBAR_BUTTONS_REV = dict((value, key) for key, value in TOOLBAR_BUTTONS.items())
-    ACTION_NAMES = set(TOOLBAR_BUTTONS.values())
+    TOOLBAR_BUTTONS_REV = dict((value['label'], key) for key, value in TOOLBAR_BUTTONS.items())
+    ACTION_NAMES = set(TOOLBAR_BUTTONS_REV.keys())
     options = [
         config.BoolOption("setting", "toolbar_show_labels", True),
         config.BoolOption("setting", "toolbar_multiselect", False),
@@ -76,10 +63,10 @@ class InterfaceOptionsPage(OptionsPage):
         config.BoolOption("setting", "starting_directory", False),
         config.TextOption("setting", "starting_directory_path", ""),
         config.ListOption("setting", "toolbar_layout", [
-            'add_directory_action', 'add_files_action', 'seperator', 'cluster_action', 'seperator',
-            'autotag_action', 'analyze_action', 'browser_lookup_action', 'seperator',
-            'save_action', 'view_info_action', 'remove_action', 'seperator',
-            'submit_action', 'seperator', 'play_file_action']),
+            'add_directory_action', 'add_files_action', 'separator', 'cluster_action', 'separator',
+            'autotag_action', 'analyze_action', 'browser_lookup_action', 'separator',
+            'save_action', 'view_info_action', 'remove_action', 'separator',
+            'submit_action', 'separator', 'play_file_action']),
     ]
 
     def __init__(self, parent=None):
@@ -109,7 +96,7 @@ class InterfaceOptionsPage(OptionsPage):
         )
         self.ui.starting_directory_browse.clicked.connect(self.starting_directory_browse)
         self.ui.add_button.clicked.connect(self.add_to_toolbar)
-        self.ui.insert_seperator_button.clicked.connect(self.insert_seperator)
+        self.ui.insert_separator_button.clicked.connect(self.insert_separator)
         self.ui.remove_button.clicked.connect(self.remove_action)
         self.ui.up_button.clicked.connect(partial(self.move_item, 1))
         self.ui.down_button.clicked.connect(partial(self.move_item, -1))
@@ -158,12 +145,12 @@ class InterfaceOptionsPage(OptionsPage):
             item.setText(path)
 
     def _get_icon_from_name(self, name):
-        return self.TOOLBAR_ICONS[self.TOOLBAR_BUTTONS_REV[name]]
+        return self.TOOLBAR_BUTTONS[self.TOOLBAR_BUTTONS_REV[name]]['icon']
 
     def _insert_item(self, action, index=None):
         list_item = QtGui.QListWidgetItem(action)
         list_item.setToolTip(_(u'Drag and Drop to re-order'))
-        if action != self.SEPERATOR:
+        if action != self.SEPARATOR:
             list_item.setIcon(icontheme.lookup(self._get_icon_from_name(action), icontheme.ICON_SIZE_MENU))
         if index:
             self.ui.toolbar_layout_list.insertItem(index, list_item)
@@ -176,7 +163,7 @@ class InterfaceOptionsPage(OptionsPage):
 
     def _added_actions(self):
         actions = self._all_list_items()
-        actions = filter(lambda x: x != self.SEPERATOR, actions)
+        actions = filter(lambda x: x != self.SEPARATOR, actions)
         return set(actions)
 
     def _current_item(self, return_type='item'):
@@ -191,9 +178,9 @@ class InterfaceOptionsPage(OptionsPage):
         self.ui.toolbar_layout_list.clear()
         for name in config.setting['toolbar_layout']:
             if name in self.TOOLBAR_BUTTONS.keys():
-                self._insert_item(self.TOOLBAR_BUTTONS[name])
+                self._insert_item(self.TOOLBAR_BUTTONS[name]['label'])
             else:
-                self._insert_item(self.SEPERATOR)
+                self._insert_item(self.SEPARATOR)
 
     def update_buttons(self):
         self.ui.add_button.setEnabled(self._added_actions() != self.ACTION_NAMES)
@@ -210,9 +197,9 @@ class InterfaceOptionsPage(OptionsPage):
             self.ui.toolbar_layout_list.setCurrentItem(list_item)
         self.update_buttons()
 
-    def insert_seperator(self):
+    def insert_separator(self):
         insert_index = self._current_item('row') + 1
-        self._insert_item(self.SEPERATOR, insert_index)
+        self._insert_item(self.SEPARATOR, insert_index)
 
     def move_item(self, offset):
         current_index = self._current_item('row')
@@ -236,7 +223,7 @@ class InterfaceOptionsPage(OptionsPage):
             if action in self.TOOLBAR_BUTTONS_REV:
                 updated_layout.append(self.TOOLBAR_BUTTONS_REV[action])
             else:
-                updated_layout.append('seperator')
+                updated_layout.append('separator')
         config.setting['toolbar_layout'] = updated_layout
         self._update_toolbar()
 

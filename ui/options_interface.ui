@@ -161,12 +161,12 @@
           </widget>
          </item>
          <item>
-          <widget class="QToolButton" name="insert_seperator_button">
+          <widget class="QToolButton" name="insert_separator_button">
            <property name="toolTip">
-            <string>Insert a seperator</string>
+            <string>Insert a separator</string>
            </property>
            <property name="text">
-            <string>Add Seperator</string>
+            <string>Add Separator</string>
            </property>
           </widget>
          </item>
