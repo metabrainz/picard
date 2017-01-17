@@ -597,7 +597,10 @@ class MainWindow(QtGui.QMainWindow):
 
         for action in config.setting['toolbar_layout']:
             if action not in ('cd_lookup_action', 'separator'):
-                add_toolbar_action(getattr(self, action))
+                try:
+                    add_toolbar_action(getattr(self, action))
+                except AttributeError:
+                    log.warning('Warning: Unknown action name "%r" found in config. Ignored.', action)      
             elif action == 'cd_lookup_action':
                 add_toolbar_action(self.cd_lookup_action)
                 drives = get_cdrom_drives()
