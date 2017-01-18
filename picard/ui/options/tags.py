@@ -63,7 +63,10 @@ class TagsOptionsPage(OptionsPage):
         self.ui.preserve_timestamps.setChecked(config.setting["preserve_timestamps"])
         self.ui.clear_existing_tags.setChecked(config.setting["clear_existing_tags"])
         self.ui.write_id3v1.setChecked(config.setting["write_id3v1"])
-        self.ui.write_id3v23.setChecked(config.setting["write_id3v23"])
+        if config.setting["write_id3v23"]:
+            self.ui.write_id3v23.setChecked(True)
+        else:
+            self.ui.write_id3v24.setChecked(True)
         if config.setting["id3v2_encoding"] == "iso-8859-1":
             self.ui.enc_iso88591.setChecked(True)
         elif config.setting["id3v2_encoding"] == "utf-16":
