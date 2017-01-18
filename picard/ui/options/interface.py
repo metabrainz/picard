@@ -213,7 +213,7 @@ class InterfaceOptionsPage(OptionsPage):
             list_item.setIcon(icontheme.lookup(self._get_icon_from_name(action), icontheme.ICON_SIZE_MENU))
         else:
             list_item.setText(self.SEPARATOR)
-        if index:
+        if index is not None:
             self.ui.toolbar_layout_list.insertItem(index, list_item)
         else:
             self.ui.toolbar_layout_list.addItem(list_item)
@@ -228,39 +228,32 @@ class InterfaceOptionsPage(OptionsPage):
         actions = filter(lambda x: x != 'separator', actions)
         return set(actions)
 
-    def _current_item(self, return_type='item'):
-        if return_type == 'item':
-            return self.ui.toolbar_layout_list.currentItem()
-        elif return_type == 'row':
-            return self.ui.toolbar_layout_list.currentRow()
-
     def populate_action_list(self):
         self.ui.toolbar_layout_list.clear()
         for name in config.setting['toolbar_layout']:
-            if self._valid_action(name):
+            if name in self.ACTION_NAMES or name == 'separator':
                 self._insert_item(name)
 
     def update_buttons(self):
         self.ui.add_button.setEnabled(self._added_actions() != self.ACTION_NAMES)
-        current_row = self._current_item('row')
+        current_row = self.ui.toolbar_layout_list.currentRow()
         self.ui.up_button.setEnabled(current_row > 0)
         self.ui.down_button.setEnabled(current_row < self.ui.toolbar_layout_list.count() - 1)
 
     def add_to_toolbar(self):
-        added_items = self._added_actions()
-        display_list = set.difference(self.ACTION_NAMES, added_items)
+        display_list = set.difference(self.ACTION_NAMES, self._added_actions())
         selected_action, ok = AddActionDialog.get_selected_action(display_list, self)
         if ok:
-            list_item = self._insert_item(selected_action, self._current_item('row') + 1)
+            list_item = self._insert_item(selected_action, self.ui.toolbar_layout_list.currentRow() + 1)
             self.ui.toolbar_layout_list.setCurrentItem(list_item)
         self.update_buttons()
 
     def insert_separator(self):
-        insert_index = self._current_item('row') + 1
+        insert_index = self.ui.toolbar_layout_list.currentRow() + 1
         self._insert_item('separator', insert_index)
 
     def move_item(self, offset):
-        current_index = self._current_item('row')
+        current_index = self.ui.toolbar_layout_list.currentRow()
         offset_index = current_index - offset
         offset_item = self.ui.toolbar_layout_list.item(offset_index)
         if offset_item:
@@ -270,7 +263,7 @@ class InterfaceOptionsPage(OptionsPage):
             self.update_buttons()
 
     def remove_action(self):
-        item = self.ui.toolbar_layout_list.takeItem(self._current_item('row'))
+        item = self.ui.toolbar_layout_list.takeItem(self.ui.toolbar_layout_list.currentRow())
         del item
         self.update_buttons()
 
@@ -282,10 +275,8 @@ class InterfaceOptionsPage(OptionsPage):
         widget = self.parent()
         while not isinstance(widget, QtGui.QMainWindow):
             widget = widget.parent()
-        try:
-            widget.create_action_toolbar()
-        except AttributeError:
-            log.error('Unable to update action toolbar. Error occured.')
+        # Call the main window's create toolbar method
+        widget.create_action_toolbar()
 
 
 class ToolbarListItem(QtGui.QListWidgetItem):
