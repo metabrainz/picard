@@ -211,6 +211,7 @@ class ScriptingOptionsPage(OptionsPage):
         config.BoolOption("setting", "enable_tagger_scripts", False),
         config.ListOption("setting", "list_of_scripts", []),
         config.IntOption("persist", "last_selected_script_pos", 0),
+        config.Option("persist", "scripting_splitter", QtCore.QByteArray()),
     ]
 
     def __init__(self, parent=None):
@@ -400,6 +401,9 @@ class ScriptingOptionsPage(OptionsPage):
         if last_selected_script:
             self.ui.script_list.setItemSelected(last_selected_script, True)
 
+        # Preserve previous splitter position
+        self.ui.splitter.restoreState(config.persist["scripting_splitter"])
+
         args = {
             "picard-doc-scripting-url": PICARD_URLS['doc_scripting'],
         }
@@ -411,6 +415,7 @@ class ScriptingOptionsPage(OptionsPage):
         config.setting["enable_tagger_scripts"] = self.ui.enable_tagger_scripts.isChecked()
         config.setting["list_of_scripts"] = self.list_of_scripts
         config.persist["last_selected_script_pos"] = self.last_selected_script_pos
+        config.persist["scripting_splitter"] = self.ui.splitter.saveState()
 
     def display_error(self, error):
         pass
