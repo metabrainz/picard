@@ -300,7 +300,7 @@ class MainWindow(QtGui.QMainWindow):
                 history(message)
         thread.to_main(self.statusBar().showMessage, message, timeout)
 
-    def _on_submit(self):
+    def _on_submit_acoustid(self):
         if self.tagger.use_acoustid:
             if not config.setting["acoustid_apikey"]:
                 QtGui.QMessageBox.warning(self,
@@ -360,10 +360,10 @@ class MainWindow(QtGui.QMainWindow):
         self.save_action.setEnabled(False)
         self.save_action.triggered.connect(self.save)
 
-        self.submit_action = QtGui.QAction(icontheme.lookup('acoustid-fingerprinter'), _(u"S&ubmit AcoustIDs"), self)
-        self.submit_action.setStatusTip(_(u"Submit acoustic fingerprints"))
-        self.submit_action.setEnabled(False)
-        self.submit_action.triggered.connect(self._on_submit)
+        self.submit_acoustid_action = QtGui.QAction(icontheme.lookup('acoustid-fingerprinter'), _(u"S&ubmit AcoustIDs"), self)
+        self.submit_acoustid_action.setStatusTip(_(u"Submit acoustic fingerprints"))
+        self.submit_acoustid_action.setEnabled(False)
+        self.submit_acoustid_action.triggered.connect(self._on_submit_acoustid)
 
         self.exit_action = QtGui.QAction(_(u"E&xit"), self)
         self.exit_action.setMenuRole(QtGui.QAction.QuitRole)
@@ -523,7 +523,7 @@ class MainWindow(QtGui.QMainWindow):
         menu.addAction(self.open_folder_action)
         menu.addSeparator()
         menu.addAction(self.save_action)
-        menu.addAction(self.submit_action)
+        menu.addAction(self.submit_acoustid_action)
         menu.addSeparator()
         menu.addAction(self.exit_action)
         menu = self.menuBar().addMenu(_(u"&Edit"))
@@ -576,7 +576,15 @@ class MainWindow(QtGui.QMainWindow):
                                          discid is not None)
 
     def create_toolbar(self):
-        self.toolbar = toolbar = self.addToolBar(_(u"Actions"))
+        self.create_search_toolbar()
+        self.create_action_toolbar()
+
+    def create_action_toolbar(self):
+        if getattr(self, 'toolbar', None):
+            self.toolbar.clear()
+            self.removeToolBar(self.toolbar)
+        self.toolbar = toolbar = QtGui.QToolBar(_(u"Actions"))
+        self.insertToolBar(self.search_toolbar, self.toolbar)
         self.toolbar_toggle_action = self.toolbar.toggleViewAction()
         self.update_toolbar_style()
         toolbar.setObjectName("main_toolbar")
@@ -587,33 +595,27 @@ class MainWindow(QtGui.QMainWindow):
             widget.setFocusPolicy(QtCore.Qt.TabFocus)
             widget.setAttribute(QtCore.Qt.WA_MacShowFocusRect)
 
-        add_toolbar_action(self.add_directory_action)
-        add_toolbar_action(self.add_files_action)
-        toolbar.addSeparator()
-        add_toolbar_action(self.play_file_action)
-        toolbar.addSeparator()
-        add_toolbar_action(self.save_action)
-        add_toolbar_action(self.submit_action)
-        toolbar.addSeparator()
+        for action in config.setting['toolbar_layout']:
+            if action not in ('cd_lookup_action', 'separator'):
+                try:
+                    add_toolbar_action(getattr(self, action))
+                except AttributeError:
+                    log.warning('Warning: Unknown action name "%r" found in config. Ignored.', action)
+            elif action == 'cd_lookup_action':
+                add_toolbar_action(self.cd_lookup_action)
+                drives = get_cdrom_drives()
+                if len(drives) > 1:
+                    self.cd_lookup_menu = QtGui.QMenu()
+                    for drive in drives:
+                        self.cd_lookup_menu.addAction(drive)
+                    self.cd_lookup_menu.triggered.connect(self.tagger.lookup_cd)
+                    button = toolbar.widgetForAction(self.cd_lookup_action)
+                    button.setPopupMode(QtGui.QToolButton.MenuButtonPopup)
+                    button.setMenu(self.cd_lookup_menu)
+            elif action == 'separator':
+                toolbar.addSeparator()
 
-        add_toolbar_action(self.cd_lookup_action)
-        drives = get_cdrom_drives()
-        if len(drives) > 1:
-            self.cd_lookup_menu = QtGui.QMenu()
-            for drive in drives:
-                self.cd_lookup_menu.addAction(drive)
-            self.cd_lookup_menu.triggered.connect(self.tagger.lookup_cd)
-            button = toolbar.widgetForAction(self.cd_lookup_action)
-            button.setPopupMode(QtGui.QToolButton.MenuButtonPopup)
-            button.setMenu(self.cd_lookup_menu)
-
-        add_toolbar_action(self.cluster_action)
-        add_toolbar_action(self.autotag_action)
-        add_toolbar_action(self.analyze_action)
-        add_toolbar_action(self.view_info_action)
-        add_toolbar_action(self.remove_action)
-        add_toolbar_action(self.browser_lookup_action)
-
+    def create_search_toolbar(self):
         self.search_toolbar = toolbar = self.addToolBar(_(u"Search"))
         self.search_toolbar_toggle_action = self.search_toolbar.toggleViewAction()
         toolbar.setObjectName("search_toolbar")
@@ -636,6 +638,7 @@ class MainWindow(QtGui.QMainWindow):
         hbox.addWidget(self.search_button)
         toolbar.addWidget(search_panel)
 
+
     def set_tab_order(self):
         tab_order = self.setTabOrder
         tw = self.toolbar.widgetForAction
@@ -644,8 +647,8 @@ class MainWindow(QtGui.QMainWindow):
         tab_order(tw(self.add_directory_action), tw(self.add_files_action))
         tab_order(tw(self.add_files_action), tw(self.play_file_action))
         tab_order(tw(self.play_file_action), tw(self.save_action))
-        tab_order(tw(self.save_action), tw(self.submit_action))
-        tab_order(tw(self.submit_action), tw(self.cd_lookup_action))
+        tab_order(tw(self.save_action), tw(self.submit_acoustid_action))
+        tab_order(tw(self.submit_acoustid_action), tw(self.cd_lookup_action))
         tab_order(tw(self.cd_lookup_action), tw(self.cluster_action))
         tab_order(tw(self.cluster_action), tw(self.autotag_action))
         tab_order(tw(self.autotag_action), tw(self.analyze_action))
@@ -663,7 +666,7 @@ class MainWindow(QtGui.QMainWindow):
 
     def enable_submit(self, enabled):
         """Enable/disable the 'Submit fingerprints' action."""
-        self.submit_action.setEnabled(enabled)
+        self.submit_acoustid_action.setEnabled(enabled)
 
     def enable_cluster(self, enabled):
         """Enable/disable the 'Cluster' action."""
