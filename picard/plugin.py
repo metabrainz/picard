@@ -203,6 +203,13 @@ class PluginData(PluginShared):
         super(PluginData, self).__init__()
         self.module_name = module_name
 
+    def __getattribute__(self, name):
+        try:
+            return PluginShared.__getattribute__(self, name)
+        except AttributeError:
+            log.debug('Attribute %r not found for plugin %r', name, self.module_name)
+            return None
+
     @property
     def files_list(self):
         return ", ".join(self.files.keys())
