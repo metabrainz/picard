@@ -684,14 +684,14 @@ def func_firstwords(parser, text, length):
         return text[:length].rsplit(' ', 1)[0]
 
 
-def func_startswith(parser, text, pattern):
-    if text.startswith(pattern):
+def func_startswith(parser, text, prefix):
+    if text.startswith(prefix):
         return "1"
     return "0"
 
 
-def func_endswith(parser, text, pattern):
-    if text.endswith(pattern):
+def func_endswith(parser, text, suffix):
+    if text.endswith(suffix):
         return "1"
     return "0"
 
