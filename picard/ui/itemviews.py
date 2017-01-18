@@ -725,6 +725,7 @@ class TrackItem(TreeItem):
             self.setToolTip(0, _(FileItem.decide_file_icon_info(file)))
             self.takeChildren()
         else:
+            self.setToolTip(0, "")
             if track.ignored_for_completeness():
                 color = TreeItem.text_color_secondary
             else:
