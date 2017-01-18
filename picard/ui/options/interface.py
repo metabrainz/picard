@@ -34,8 +34,8 @@ class InterfaceOptionsPage(OptionsPage):
 
     NAME = "interface"
     TITLE = N_("User Interface")
-    PARENT = "advanced"
-    SORT_ORDER = 40
+    PARENT = None
+    SORT_ORDER = 80
     ACTIVE = True
     SEPARATOR = u'—'*5
     TOOLBAR_BUTTONS = {

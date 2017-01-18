@@ -203,8 +203,8 @@ class ScriptingOptionsPage(OptionsPage):
 
     NAME = "scripting"
     TITLE = N_("Scripting")
-    PARENT = "advanced"
-    SORT_ORDER = 30
+    PARENT = None
+    SORT_ORDER = 85
     ACTIVE = True
 
     options = [
