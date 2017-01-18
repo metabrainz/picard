@@ -225,6 +225,20 @@ class ScriptParserTest(unittest.TestCase):
         self.assertEqual(self.parser.eval("$firstwords(Abc Def Ghi,NaN)"), "")
         self.assertEqual(self.parser.eval("$firstwords(Abc Def Ghi,)"), "")
 
+    def test_cmd_startswith(self):
+        self.assertEqual(self.parser.eval("$startswith(abc,a)"), "1")
+        self.assertEqual(self.parser.eval("$startswith(abc,abc)"), "1")
+        self.assertEqual(self.parser.eval("$startswith(abc,)"), "1")
+        self.assertEqual(self.parser.eval("$startswith(abc,b)"), "0")
+        self.assertEqual(self.parser.eval("$startswith(abc,Ab)"), "0")
+
+    def test_cmd_endswith(self):
+        self.assertEqual(self.parser.eval("$endswith(abc,c)"), "1")
+        self.assertEqual(self.parser.eval("$endswith(abc,abc)"), "1")
+        self.assertEqual(self.parser.eval("$endswith(abc,)"), "1")
+        self.assertEqual(self.parser.eval("$endswith(abc,b)"), "0")
+        self.assertEqual(self.parser.eval("$endswith(abc,bC)"), "0")
+
     def test_cmd_truncate(self):
         self.assertEqual(self.parser.eval("$truncate(abcdefg,0)"), "")
         self.assertEqual(self.parser.eval("$truncate(abcdefg,7)"), "abcdefg")
