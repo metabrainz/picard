@@ -227,6 +227,8 @@ class ScriptingOptionsPage(OptionsPage):
         self.listitem_to_scriptitem = {}
         self.list_of_scripts = []
         self.last_selected_script_pos = 0
+        self.ui.splitter.setStretchFactor(0, 1)
+        self.ui.splitter.setStretchFactor(1, 2)
 
     def script_name_changed(self):
         items = self.ui.script_list.selectedItems()
