@@ -199,9 +199,6 @@ class InterfaceOptionsPage(OptionsPage):
             path = os.path.normpath(unicode(path))
             item.setText(path)
 
-    def _valid_action(self, name):
-        return name in self.TOOLBAR_BUTTONS or name == 'separator'
-
     def _get_icon_from_name(self, name):
         return self.TOOLBAR_BUTTONS[name]['icon']
 
