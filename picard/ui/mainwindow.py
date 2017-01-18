@@ -300,7 +300,7 @@ class MainWindow(QtGui.QMainWindow):
                 history(message)
         thread.to_main(self.statusBar().showMessage, message, timeout)
 
-    def _on_submit(self):
+    def _on_submit_acoustid(self):
         if self.tagger.use_acoustid:
             if not config.setting["acoustid_apikey"]:
                 QtGui.QMessageBox.warning(self,
@@ -363,7 +363,7 @@ class MainWindow(QtGui.QMainWindow):
         self.submit_acoustid_action = QtGui.QAction(icontheme.lookup('acoustid-fingerprinter'), _(u"S&ubmit AcoustIDs"), self)
         self.submit_acoustid_action.setStatusTip(_(u"Submit acoustic fingerprints"))
         self.submit_acoustid_action.setEnabled(False)
-        self.submit_acoustid_action.triggered.connect(self._on_submit)
+        self.submit_acoustid_action.triggered.connect(self._on_submit_acoustid)
 
         self.exit_action = QtGui.QAction(_(u"E&xit"), self)
         self.exit_action.setMenuRole(QtGui.QAction.QuitRole)
