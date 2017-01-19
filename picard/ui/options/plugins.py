@@ -200,7 +200,7 @@ class PluginsOptionsPage(OptionsPage):
             msgbox.setDefaultButton(QtGui.QMessageBox.Ok)
             msgbox.exec_()
             return
-        plugin.new_version = False
+        plugin.new_version = ""
         plugin.enabled = False
         plugin.can_be_updated = False
         plugin.can_be_downloaded = False
