@@ -111,7 +111,7 @@ class PluginShared(object):
 
     def __init__(self):
         super(PluginShared, self).__init__()
-        self.new_version = False
+        self.new_version = ""
         self.enabled = False
         self.can_be_updated = False
         self.can_be_downloaded = False
