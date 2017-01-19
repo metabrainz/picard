@@ -162,11 +162,19 @@ class FormatsTest(unittest.TestCase):
         if self.original:
             fd, temp_file = mkstemp()
             os.close(fd)
-            self.addCleanup(os.unlink,temp_file)
+            self.addCleanup(os.unlink, temp_file)
             shutil.copy(self.original, temp_file)
             audio = picard.formats.guess_format(temp_file)
             audio_original = picard.formats.open(self.filename)
             self.assertEqual(type(audio), type(audio_original))
+
+    def test_split_ext(self):
+        if self.original:
+            f = picard.formats.open(self.filename)
+            self.assertEqual(f._fixed_splitext(f.filename), os.path.splitext(f.filename))
+            self.assertEqual(f._fixed_splitext(f.EXTENSIONS[0]), ('', f.EXTENSIONS[0]))
+            self.assertEqual(f._fixed_splitext('.test'), os.path.splitext('.test'))
+            self.assertNotEqual(f._fixed_splitext(f.EXTENSIONS[0]), os.path.splitext(f.EXTENSIONS[0]))
 
 
 class FLACTest(FormatsTest):

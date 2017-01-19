@@ -684,6 +684,18 @@ def func_firstwords(parser, text, length):
         return text[:length].rsplit(' ', 1)[0]
 
 
+def func_startswith(parser, text, prefix):
+    if text.startswith(prefix):
+        return "1"
+    return "0"
+
+
+def func_endswith(parser, text, suffix):
+    if text.endswith(suffix):
+        return "1"
+    return "0"
+
+
 def func_truncate(parser, text, length):
     try:
         length = int(length)
@@ -817,6 +829,8 @@ register_script_function(func_is_complete, "is_complete")
 register_script_function(func_firstalphachar, "firstalphachar")
 register_script_function(func_initials, "initials")
 register_script_function(func_firstwords, "firstwords")
+register_script_function(func_startswith, "startswith")
+register_script_function(func_endswith, "endswith")
 register_script_function(func_truncate, "truncate")
 register_script_function(func_swapprefix, "swapprefix", check_argcount=False)
 register_script_function(func_delprefix, "delprefix", check_argcount=False)

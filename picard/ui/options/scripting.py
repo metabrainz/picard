@@ -203,14 +203,15 @@ class ScriptingOptionsPage(OptionsPage):
 
     NAME = "scripting"
     TITLE = N_("Scripting")
-    PARENT = "advanced"
-    SORT_ORDER = 30
+    PARENT = None
+    SORT_ORDER = 85
     ACTIVE = True
 
     options = [
         config.BoolOption("setting", "enable_tagger_scripts", False),
         config.ListOption("setting", "list_of_scripts", []),
         config.IntOption("persist", "last_selected_script_pos", 0),
+        config.Option("persist", "scripting_splitter", QtCore.QByteArray()),
     ]
 
     def __init__(self, parent=None):
@@ -227,6 +228,8 @@ class ScriptingOptionsPage(OptionsPage):
         self.listitem_to_scriptitem = {}
         self.list_of_scripts = []
         self.last_selected_script_pos = 0
+        self.ui.splitter.setStretchFactor(0, 1)
+        self.ui.splitter.setStretchFactor(1, 2)
 
     def script_name_changed(self):
         items = self.ui.script_list.selectedItems()
@@ -373,6 +376,13 @@ class ScriptingOptionsPage(OptionsPage):
         except Exception as e:
             raise OptionsCheckError(_("Script Error"), str(e))
 
+    def restore_defaults(self):
+        # Remove existing scripts
+        self.ui.script_list.clear()
+        self.ui.script_name.setText("")
+        self.ui.tagger_script.setText("")
+        super(ScriptingOptionsPage, self).restore_defaults()
+
     def load(self):
         self.ui.enable_tagger_scripts.setChecked(config.setting["enable_tagger_scripts"])
         self.list_of_scripts = config.setting["list_of_scripts"]
@@ -391,6 +401,9 @@ class ScriptingOptionsPage(OptionsPage):
         if last_selected_script:
             self.ui.script_list.setItemSelected(last_selected_script, True)
 
+        # Preserve previous splitter position
+        self.ui.splitter.restoreState(config.persist["scripting_splitter"])
+
         args = {
             "picard-doc-scripting-url": PICARD_URLS['doc_scripting'],
         }
@@ -402,6 +415,7 @@ class ScriptingOptionsPage(OptionsPage):
         config.setting["enable_tagger_scripts"] = self.ui.enable_tagger_scripts.isChecked()
         config.setting["list_of_scripts"] = self.list_of_scripts
         config.persist["last_selected_script_pos"] = self.last_selected_script_pos
+        config.persist["scripting_splitter"] = self.ui.splitter.saveState()
 
     def display_error(self, error):
         pass

@@ -1,5 +1,6 @@
 <!DOCTYPE RCC><RCC version="1.0">
 <qresource>
+    <file>images/16x16/acoustid-fingerprinter.png</file>
     <file>images/16x16/action-go-down-16.png</file>
     <file>images/16x16/add-item.png</file>
     <file>images/16x16/applications-system.png</file>
@@ -10,16 +11,23 @@
     <file>images/16x16/edit-cut.png</file>
     <file>images/16x16/edit-paste.png</file>
     <file>images/16x16/folder.png</file>
+    <file>images/16x16/list-remove.png</file>
+    <file>images/16x16/lookup-musicbrainz.png</file>
     <file>images/16x16/media-optical-error.png</file>
     <file>images/16x16/media-optical-modified.png</file>
     <file>images/16x16/media-optical-saved-modified.png</file>
     <file>images/16x16/media-optical-saved.png</file>
     <file>images/16x16/media-optical.png</file>
+    <file>images/16x16/picard-analyze.png</file>
+    <file>images/16x16/picard-auto-tag.png</file>
+    <file>images/16x16/picard-cluster.png</file>
+    <file>images/16x16/picard-edit-tags.png</file>
     <file>images/16x16/picard.png</file>
     <file>images/16x16/play-music.png</file>
     <file>images/16x16/preferences-desktop.png</file>
     <file>images/16x16/remove-item.png</file>
     <file>images/16x16/view-refresh.png</file>
+    <file>images/22x22/acoustid-fingerprinter.png</file>
     <file>images/22x22/document-open.png</file>
     <file>images/22x22/document-save.png</file>
     <file>images/22x22/edit-clear.png</file>
@@ -35,7 +43,6 @@
     <file>images/22x22/picard-auto-tag.png</file>
     <file>images/22x22/picard-cluster.png</file>
     <file>images/22x22/picard-edit-tags.png</file>
-    <file>images/22x22/picard-submit.png</file>
     <file>images/22x22/play-music.png</file>
     <file>images/22x22/preferences-desktop.png</file>
     <file>images/22x22/system-search.png</file>

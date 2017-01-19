@@ -101,6 +101,16 @@ class SortableCheckboxListWidget(QtGui.QWidget):
         if not self.__no_emit:
             self.changed.emit(self.__items)
 
+    def clear(self):
+        for i in reversed(range(len(self.__items))):
+            self._remove(i)
+        self.__items = []
+
+    def _remove(self, row):
+        self.layout().itemAtPosition(row, self._CHECKBOX_POS).widget().setParent(None)
+        self.layout().itemAtPosition(row, self._BUTTON_UP).widget().setParent(None)
+        self.layout().itemAtPosition(row, self._BUTTON_DOWN).widget().setParent(None)
+
 
 class SortableCheckboxListItem(object):
 

@@ -40,8 +40,10 @@ def setup_gettext(localedir, ui_language=None, logger=None):
         except:
             pass
     if sys.platform == "win32":
+        from ctypes import windll
         try:
-            locale.setlocale(locale.LC_ALL, os.environ["LANG"])
+            current_locale = locale.windows_locale[windll.kernel32.GetUserDefaultUILanguage()]
+            locale.setlocale(locale.LC_ALL, current_locale)
         except KeyError:
             os.environ["LANG"] = locale.getdefaultlocale()[0]
             try:

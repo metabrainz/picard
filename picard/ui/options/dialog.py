@@ -80,7 +80,9 @@ class OptionsDialog(PicardDialog):
         self.ui.setupUi(self)
 
         self.ui.reset_all_button = QtGui.QPushButton(_("&Restore all Defaults"))
+        self.ui.reset_all_button.setToolTip(_("Reset all of Picard's settings"))
         self.ui.reset_button = QtGui.QPushButton(_("Restore &Defaults"))
+        self.ui.reset_button.setToolTip(_("Reset all settings for current option page"))
 
         self.ui.buttonbox.addButton(StandardButton(StandardButton.OK), QtGui.QDialogButtonBox.AcceptRole)
         self.ui.buttonbox.addButton(StandardButton(StandardButton.CANCEL), QtGui.QDialogButtonBox.RejectRole)
@@ -102,6 +104,12 @@ class OptionsDialog(PicardDialog):
         self.page_to_item = {}
         self.default_item = None
         self.add_pages(None, default_page, self.ui.pages_tree)
+
+        # work-around to set optimal option pane width
+        self.ui.pages_tree.expandAll()
+        max_page_name = self.ui.pages_tree.sizeHintForColumn(0) + 2*self.ui.pages_tree.frameWidth()
+        self.ui.pages_tree.collapseAll()
+        self.ui.pages_tree.setMinimumWidth(max_page_name)
 
         self.ui.pages_tree.setHeaderLabels([""])
         self.ui.pages_tree.header().hide()
@@ -162,7 +170,7 @@ class OptionsDialog(PicardDialog):
 
     def confirm_reset(self):
         msg = _("You are about to reset your options for this page.")
-        self._show_dialog(msg, self.restore_defaults)
+        self._show_dialog(msg, self.restore_page_defaults)
 
     def confirm_reset_all(self):
         msg = _("Warning! This will reset all of your settings.")
@@ -172,8 +180,8 @@ class OptionsDialog(PicardDialog):
         message_box = QtGui.QMessageBox()
         message_box.setIcon(QtGui.QMessageBox.Warning)
         message_box.setWindowModality(QtCore.Qt.WindowModal)
-        message_box.setText("Are you sure?")
-        message_box.setInformativeText(msg)
+        message_box.setWindowTitle(_("Confirm Reset"))
+        message_box.setText(_("Are you sure?") + "\n\n" + msg)
         message_box.setStandardButtons(QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
         if message_box.exec_() == QtGui.QMessageBox.Yes:
             function()
