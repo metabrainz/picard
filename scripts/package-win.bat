@@ -14,6 +14,11 @@ wget --no-check-certificate http://ftp.musicbrainz.org/pub/musicbrainz/libdiscid
 7z e libdiscid.zip
 copy /Y libdiscid-%DISCID_VERSION%-win32\discid.dll .
 
+wget --no-check-certificate https://github.com/metabrainz/picard-plugins/archive/master.zip -O plugins.zip
+7z e plugins.zip
+mkdir .\contrib\plugins
+xcopy /E /Y picard-plugins-master\plugins contrib\plugins
+
 rmdir /S /Q e
 virtualenv --system-site-packages e
 set PATH=%CI_PROJECT_DIR%\e\scripts;%PATH%
