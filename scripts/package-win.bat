@@ -1,4 +1,4 @@
-echo on
+@ECHO ON
 
 set PATH=%PATH%;%CI_PROJECT_DIR%;C:\MinGW\bin;C:\Python27;C:\Python27\Scripts;"C:\Program Files\7-Zip";"C:\Program Files\GnuWin32\bin"
 call "C:\Program Files\Microsoft Visual Studio 9.0\Common7\Tools\vsvars32.bat"
@@ -16,8 +16,8 @@ copy /Y libdiscid-%DISCID_VERSION%-win32\discid.dll .
 
 wget --no-check-certificate https://github.com/metabrainz/picard-plugins/archive/master.zip -O plugins.zip
 7z e plugins.zip -y
-mkdir .\contrib\plugins
-xcopy /E /Y picard-plugins-master\plugins contrib\plugins
+mkdir .\contrib\
+move picard-plugins-master\plugins contrib\plugins
 
 rmdir /S /Q e
 virtualenv --system-site-packages e
