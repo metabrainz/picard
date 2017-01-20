@@ -26,7 +26,7 @@ set PATH=%CI_PROJECT_DIR%\e\scripts;%PATH%
 pip install mutagen==%MUTAGEN_VERSION%
 pip install discid==%PYTHON_DISCID_VERSION%
 
-if "%PATCH_VERSION%" == "1" python setup.py patch_version --platform=win
+if NOT "%CI_BUILD_TAG%" == "" python setup.py patch_version --platform=win
 
 rmdir /S /Q dist build locale
 python setup.py clean

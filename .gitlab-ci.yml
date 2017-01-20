@@ -10,11 +10,21 @@ variables:
 package win:
   stage: package
   script:
-    - set PATCH_VERSION=1
-    - scripts/package-win.bat
+    - call "scripts\package-win.bat"
   artifacts:
     paths:
       - picard-setup-*.exe
     expire_in: 90d
   tags:
     - winxp
+
+package osx:
+  stage: package
+  script:
+    - bash -xe ./scripts/package-osx.sh
+  artifacts:
+    paths:
+      - MusicBrainz-Picard-*.dmg
+    expire_in: 90d
+  tags:
+    - osx
