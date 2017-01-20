@@ -17,7 +17,7 @@ copy /Y libdiscid-%DISCID_VERSION%-win32\discid.dll .
 wget --no-check-certificate https://github.com/metabrainz/picard-plugins/archive/master.zip -O plugins.zip
 7z e plugins.zip -y
 mkdir .\contrib\
-move picard-plugins-master\plugins contrib\plugins
+move .\picard-plugins-master\plugins\ .\contrib\
 
 rmdir /S /Q e
 virtualenv --system-site-packages e
