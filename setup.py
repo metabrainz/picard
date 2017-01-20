@@ -726,6 +726,7 @@ try:
     }]
     args['options'] = {
         'bdist_nsis': {
+            # mimetypes is necessary for the videotools plugin
             'includes': ['json', 'sip', 'mimetypes'] + [e.name for e in ext_modules],
             'excludes': exclude_modules + py2exe_exclude_modules,
             'optimize': 2,
