@@ -709,7 +709,7 @@ try:
     }]
     args['options'] = {
         'bdist_nsis': {
-            'includes': ['json', 'sip'] + [e.name for e in ext_modules],
+            'includes': ['json', 'sip', 'mimetypes'] + [e.name for e in ext_modules],
             'excludes': exclude_modules + py2exe_exclude_modules,
             'optimize': 2,
         },
