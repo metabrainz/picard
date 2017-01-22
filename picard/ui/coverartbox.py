@@ -137,88 +137,50 @@ class CoverArtThumbnail(ActiveLabel):
     def fetch_remote_image(self, url):
         return self.parent().fetch_remote_image(url)
 
-
 class CoverArtBox(QtGui.QGroupBox):
 
     def __init__(self, parent):
         QtGui.QGroupBox.__init__(self, "")
         self.layout = QtGui.QVBoxLayout()
-        self.layout.setSpacing(0)
+        self.layout.setSpacing(6)
         # Kills off any borders
         self.setStyleSheet('''QGroupBox{background-color:none;border:1px;}''')
         self.setFlat(True)
-        self.release = None
-        self.data = None
         self.item = None
-        self.shadow = QtGui.QPixmap(":/images/CoverArtShadow.png")
-        self.coverArt = ActiveLabel(False, parent)
-        self.coverArt.setPixmap(self.shadow)
-        self.coverArt.setAlignment(QtCore.Qt.AlignTop | QtCore.Qt.AlignHCenter)
-        self.coverArt.clicked.connect(self.open_release_page)
-        self.coverArt.imageDropped.connect(self.fetch_remote_image)
-        self.layout.addWidget(self.coverArt, 0)
+        self.cover_art_label = QtGui.QLabel('Cover-Art')
+        self.cover_art_label.setAlignment(QtCore.Qt.AlignTop | QtCore.Qt.AlignHCenter)
+        self.cover_art = CoverArtThumbnail(False, True, parent)
+        self.orig_cover_art_label = QtGui.QLabel('')
+        self.orig_cover_art = CoverArtThumbnail(False, False, parent)
+        self.orig_cover_art_label.setAlignment(QtCore.Qt.AlignTop | QtCore.Qt.AlignHCenter)
+        self.orig_cover_art.setHidden(True)
+        self.layout.addWidget(self.cover_art_label)
+        self.layout.addWidget(self.cover_art)
+        self.layout.addWidget(self.orig_cover_art_label)
+        self.layout.addWidget(self.orig_cover_art)
         self.setLayout(self.layout)
 
+    def _show(self):
+        if self.cover_art.data == self.orig_cover_art.data:
+            self.orig_cover_art.setHidden(True)
+        else:
+            self.orig_cover_art.setHidden(False)
+            self.cover_art_label.setText('New Cover-Art')
+            self.orig_cover_art_label.setText('Original Cover-Art')
+
     def show(self):
-        self.__set_data(self.data, True)
+        self.cover_art.show()
+        if self.orig_cover_art.data:
+            self.orig_cover_art.show()
+            self._show()
         QtGui.QGroupBox.show(self)
 
-    def __set_data(self, data, force=False, pixmap=None):
-        if not force and self.data == data:
-            return
-
-        self.data = data
-        if not force and self.isHidden():
-            return
-
-        cover = self.shadow
-        if self.data:
-            if pixmap is None:
-                pixmap = QtGui.QPixmap()
-                pixmap.loadFromData(self.data.data)
-            if not pixmap.isNull():
-                offx, offy, w, h = (1, 1, 121, 121)
-                cover = QtGui.QPixmap(self.shadow)
-                pixmap = pixmap.scaled(w, h, QtCore.Qt.KeepAspectRatio, QtCore.Qt.SmoothTransformation)
-                painter = QtGui.QPainter(cover)
-                bgcolor = QtGui.QColor.fromRgb(0, 0, 0, 128)
-                painter.fillRect(QtCore.QRectF(offx, offy, w, h), bgcolor)
-                x = offx + (w - pixmap.width()) / 2
-                y = offy + (h - pixmap.height()) / 2
-                painter.drawPixmap(x, y, pixmap)
-                painter.end()
-        self.coverArt.setPixmap(cover)
-
-    def set_metadata(self, metadata, item):
-        self.item = item
-        data = None
-        if metadata and metadata.images:
-            for image in metadata.images:
-                if image.is_front_image():
-                    data = image
-                    break
-            else:
-                # There's no front image, choose the first one available
-                data = metadata.images[0]
-        self.__set_data(data)
-        if item and metadata:
-            self.coverArt.setAcceptDrops(True)
-        else:
-            self.coverArt.setAcceptDrops(False)
-        release = None
-        if metadata:
-            release = metadata.get("musicbrainz_albumid", None)
-        if release:
-            self.coverArt.setActive(True)
-            self.coverArt.setToolTip(_(u"View release on MusicBrainz"))
-        else:
-            self.coverArt.setActive(False)
-            self.coverArt.setToolTip("")
-        self.release = release
-
-    def open_release_page(self):
-        lookup = self.tagger.get_file_lookup()
-        lookup.albumLookup(self.release)
+    def set_metadata(self, metadata, orig_metadata, item):
+        self.cover_art.set_metadata(metadata)
+        self.orig_cover_art.set_metadata(orig_metadata)
+        self._show()
+        if item:
+            self.item = item
 
     def fetch_remote_image(self, url):
         if self.item is None:
@@ -261,7 +223,8 @@ class CoverArtBox(QtGui.QGroupBox):
             return
         pixmap = QtGui.QPixmap()
         pixmap.loadFromData(data)
-        self.__set_data([mime, data], pixmap=pixmap)
+        self.cover_art.set_data([mime, data], pixmap=pixmap)
+        self._show()
         if isinstance(self.item, Album):
             album = self.item
             album.metadata.append_image(coverartimage)
