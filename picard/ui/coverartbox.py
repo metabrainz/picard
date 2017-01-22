@@ -130,6 +130,12 @@ class CoverArtThumbnail(ActiveLabel):
             self.setToolTip("")
         self.release = release
 
+    def open_release_page(self):
+        lookup = self.tagger.get_file_lookup()
+        lookup.albumLookup(self.release)
+
+    def fetch_remote_image(self, url):
+        return self.parent().fetch_remote_image(url)
 
 
 class CoverArtBox(QtGui.QGroupBox):
