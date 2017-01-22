@@ -35,11 +35,11 @@ class ActiveLabel(QtGui.QLabel):
     clicked = QtCore.pyqtSignal()
     imageDropped = QtCore.pyqtSignal(QtCore.QUrl)
 
-    def __init__(self, active=True, *args):
+    def __init__(self, active=True, drops=False, *args):
         QtGui.QLabel.__init__(self, *args)
         self.setMargin(0)
         self.setActive(active)
-        self.setAcceptDrops(False)
+        self.setAcceptDrops(drops)
 
     def setActive(self, active):
         self.active = active
@@ -66,6 +66,7 @@ class ActiveLabel(QtGui.QLabel):
                 self.imageDropped.emit(url)
         if accepted:
             event.acceptProposedAction()
+
 
 class CoverArtThumbnail(ActiveLabel):
 
@@ -137,6 +138,7 @@ class CoverArtThumbnail(ActiveLabel):
     def fetch_remote_image(self, url):
         return self.parent().fetch_remote_image(url)
 
+
 class CoverArtBox(QtGui.QGroupBox):
 
     def __init__(self, parent):
@@ -147,7 +149,7 @@ class CoverArtBox(QtGui.QGroupBox):
         self.setStyleSheet('''QGroupBox{background-color:none;border:1px;}''')
         self.setFlat(True)
         self.item = None
-        self.cover_art_label = QtGui.QLabel('Cover-Art')
+        self.cover_art_label = QtGui.QLabel('')
         self.cover_art_label.setAlignment(QtCore.Qt.AlignTop | QtCore.Qt.AlignHCenter)
         self.cover_art = CoverArtThumbnail(False, True, parent)
         self.orig_cover_art_label = QtGui.QLabel('')
@@ -163,6 +165,8 @@ class CoverArtBox(QtGui.QGroupBox):
     def _show(self):
         if self.cover_art.data == self.orig_cover_art.data:
             self.orig_cover_art.setHidden(True)
+            self.cover_art_label.setText('')
+            self.orig_cover_art_label.setText('')
         else:
             self.orig_cover_art.setHidden(False)
             self.cover_art_label.setText('New Cover-Art')
