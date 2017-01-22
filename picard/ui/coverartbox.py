@@ -155,6 +155,7 @@ class CoverArtBox(QtGui.QGroupBox):
         QtGui.QGroupBox.__init__(self, "")
         self.layout = QtGui.QVBoxLayout()
         self.layout.setSpacing(6)
+        self.parent = parent
         # Kills off any borders
         self.setStyleSheet('''QGroupBox{background-color:none;border:1px;}''')
         self.setFlat(True)
@@ -166,20 +167,29 @@ class CoverArtBox(QtGui.QGroupBox):
         self.orig_cover_art = CoverArtThumbnail(False, False, parent)
         self.orig_cover_art_label.setAlignment(QtCore.Qt.AlignTop | QtCore.Qt.AlignHCenter)
         self.orig_cover_art.setHidden(True)
+        self.view_changes_button = QtGui.QPushButton(_(u'View all changes'), self)
+        self.view_changes_button.setHidden(True)
         self.layout.addWidget(self.cover_art_label)
         self.layout.addWidget(self.cover_art)
         self.layout.addWidget(self.orig_cover_art_label)
         self.layout.addWidget(self.orig_cover_art)
+        self.layout.addWidget(self.view_changes_button)
         self.setLayout(self.layout)
+        self.view_changes_button.clicked.connect(self.show_cover_art_info)
+
+    def show_cover_art_info(self):
+        self.parent.view_info(default_tab=1)
 
     def _show(self):
         # We want to show the 2 coverarts only if they are different
         # and orig_cover_art is not None
         if getattr(self.orig_cover_art, 'data', None) is None or self.cover_art == self.orig_cover_art:
+            self.view_changes_button.setHidden(True)
             self.orig_cover_art.setHidden(True)
             self.cover_art_label.setText('')
             self.orig_cover_art_label.setText('')
         else:
+            self.view_changes_button.setHidden(False)
             self.orig_cover_art.setHidden(False)
             self.cover_art_label.setText(_(u'New Cover-Art'))
             self.orig_cover_art_label.setText(_(u'Original Cover-Art'))

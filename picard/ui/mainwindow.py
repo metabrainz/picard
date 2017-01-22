@@ -826,7 +826,7 @@ class MainWindow(QtGui.QMainWindow):
         dialog.show_similar_albums(obj)
         dialog.exec_()
 
-    def view_info(self):
+    def view_info(self, default_tab=0):
         if isinstance(self.selected_objects[0], Album):
             album = self.selected_objects[0]
             dialog = AlbumInfoDialog(album, self)
@@ -836,6 +836,7 @@ class MainWindow(QtGui.QMainWindow):
         else:
             file = self.tagger.get_files_from_objects(self.selected_objects)[0]
             dialog = FileInfoDialog(file, self)
+        dialog.ui.tabWidget.setCurrentIndex(default_tab)
         dialog.exec_()
 
     def cluster(self):
