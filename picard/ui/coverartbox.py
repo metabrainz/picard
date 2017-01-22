@@ -163,6 +163,7 @@ class CoverArtBox(QtGui.QGroupBox):
         self.cover_art_label = QtGui.QLabel('')
         self.cover_art_label.setAlignment(QtCore.Qt.AlignTop | QtCore.Qt.AlignHCenter)
         self.cover_art = CoverArtThumbnail(False, True, parent)
+        spacerItem = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
         self.orig_cover_art_label = QtGui.QLabel('')
         self.orig_cover_art = CoverArtThumbnail(False, False, parent)
         self.orig_cover_art_label.setAlignment(QtCore.Qt.AlignTop | QtCore.Qt.AlignHCenter)
@@ -174,6 +175,7 @@ class CoverArtBox(QtGui.QGroupBox):
         self.layout.addWidget(self.orig_cover_art_label)
         self.layout.addWidget(self.orig_cover_art)
         self.layout.addWidget(self.view_changes_button)
+        self.layout.addSpacerItem(spacerItem)
         self.setLayout(self.layout)
         self.view_changes_button.clicked.connect(self.show_cover_art_info)
 
