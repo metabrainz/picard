@@ -67,6 +67,70 @@ class ActiveLabel(QtGui.QLabel):
         if accepted:
             event.acceptProposedAction()
 
+class CoverArtThumbnail(ActiveLabel):
+
+    def __init__(self, active=False, drops=False, *args, **kwargs):
+        super(CoverArtThumbnail, self).__init__(active, drops, *args, **kwargs)
+        self.data = None
+        self.shadow = QtGui.QPixmap(":/images/CoverArtShadow.png")
+        self.release = None
+        self.setPixmap(self.shadow)
+        self.setAlignment(QtCore.Qt.AlignTop | QtCore.Qt.AlignHCenter)
+        self.clicked.connect(self.open_release_page)
+        self.imageDropped.connect(self.fetch_remote_image)
+
+    def show(self):
+        self.set_data(self.data, True)
+
+    def set_data(self, data, force=False, pixmap=None):
+        if not force and self.data == data:
+            return
+
+        self.data = data
+        if not force and self.parent().isHidden():
+            return
+
+        cover = self.shadow
+        if self.data:
+            if pixmap is None:
+                pixmap = QtGui.QPixmap()
+                pixmap.loadFromData(self.data.data)
+            if not pixmap.isNull():
+                offx, offy, w, h = (1, 1, 121, 121)
+                cover = QtGui.QPixmap(self.shadow)
+                pixmap = pixmap.scaled(w, h, QtCore.Qt.KeepAspectRatio, QtCore.Qt.SmoothTransformation)
+                painter = QtGui.QPainter(cover)
+                bgcolor = QtGui.QColor.fromRgb(0, 0, 0, 128)
+                painter.fillRect(QtCore.QRectF(offx, offy, w, h), bgcolor)
+                x = offx + (w - pixmap.width()) / 2
+                y = offy + (h - pixmap.height()) / 2
+                painter.drawPixmap(x, y, pixmap)
+                painter.end()
+        self.setPixmap(cover)
+
+    def set_metadata(self, metadata):
+        data = None
+        if metadata and metadata.images:
+            for image in metadata.images:
+                if image.is_front_image():
+                    data = image
+                    break
+            else:
+                # There's no front image, choose the first one available
+                data = metadata.images[0]
+        self.set_data(data)
+        release = None
+        if metadata:
+            release = metadata.get("musicbrainz_albumid", None)
+        if release:
+            self.setActive(True)
+            self.setToolTip(_(u"View release on MusicBrainz"))
+        else:
+            self.setActive(False)
+            self.setToolTip("")
+        self.release = release
+
+
 
 class CoverArtBox(QtGui.QGroupBox):
 
