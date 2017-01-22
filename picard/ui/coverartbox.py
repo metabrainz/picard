@@ -181,8 +181,8 @@ class CoverArtBox(QtGui.QGroupBox):
             self.orig_cover_art_label.setText('')
         else:
             self.orig_cover_art.setHidden(False)
-            self.cover_art_label.setText('New Cover-Art')
-            self.orig_cover_art_label.setText('Original Cover-Art')
+            self.cover_art_label.setText(_(u'New Cover-Art'))
+            self.orig_cover_art_label.setText(_(u'Original Cover-Art'))
 
     def show(self):
         self.cover_art.show()
