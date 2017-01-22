@@ -900,6 +900,7 @@ class MainWindow(QtGui.QMainWindow):
         self.update_actions()
 
         metadata = None
+        orig_metadata = None
         obj = None
 
         # Clear any existing status bar messages
@@ -909,6 +910,7 @@ class MainWindow(QtGui.QMainWindow):
             obj = list(objects)[0]
             if isinstance(obj, File):
                 metadata = obj.metadata
+                orig_metadata = obj.orig_metadata
                 if obj.state == obj.ERROR:
                     msg = N_("%(filename)s (error: %(error)s)")
                     mparms = {
@@ -925,6 +927,7 @@ class MainWindow(QtGui.QMainWindow):
                 metadata = obj.metadata
                 if obj.num_linked_files == 1:
                     file = obj.linked_files[0]
+                    orig_metadata = file.orig_metadata
                     if file.state == File.ERROR:
                         msg = N_("%(filename)s (%(similarity)d%%) (error: %(error)s)")
                         mparms = {
@@ -945,7 +948,7 @@ class MainWindow(QtGui.QMainWindow):
 
         self.metadata_box.selection_dirty = True
         self.metadata_box.update()
-        self.cover_art_box.set_metadata(metadata, obj)
+        self.cover_art_box.set_metadata(metadata, orig_metadata, obj)
         self.selection_updated.emit(objects)
 
     def show_cover_art(self):
