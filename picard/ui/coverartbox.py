@@ -80,6 +80,12 @@ class CoverArtThumbnail(ActiveLabel):
         self.clicked.connect(self.open_release_page)
         self.imageDropped.connect(self.fetch_remote_image)
 
+    def __eq__(self, other):
+        if self.data and other.data:
+            return self.data.data == other.data.data
+        else:
+            return False
+
     def show(self):
         self.set_data(self.data, True)
 
@@ -163,7 +169,9 @@ class CoverArtBox(QtGui.QGroupBox):
         self.setLayout(self.layout)
 
     def _show(self):
-        if self.cover_art.data == self.orig_cover_art.data:
+        # We want to show the 2 coverarts only if they are different
+        # and orig_cover_art is not None
+        if getattr(self.orig_cover_art, 'data', None) is None or self.cover_art == self.orig_cover_art:
             self.orig_cover_art.setHidden(True)
             self.cover_art_label.setText('')
             self.orig_cover_art_label.setText('')
