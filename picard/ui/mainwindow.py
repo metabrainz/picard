@@ -894,6 +894,9 @@ class MainWindow(QtGui.QMainWindow):
         metadata = None
         obj = None
 
+        # Clear any existing status bar messages
+        self.set_statusbar_message("")
+
         if len(objects) == 1:
             obj = list(objects)[0]
             if isinstance(obj, File):
