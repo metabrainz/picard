@@ -274,6 +274,7 @@ class Tagger(QtGui.QApplication):
         self.stopping = True
         self._acoustid.done()
         self.thread_pool.waitForDone()
+        self.save_thread_pool.waitForDone()
         self.browser_integration.stop()
         self.xmlws.stop()
         for f in self.exit_cleanup:
