@@ -1,4 +1,4 @@
-# 
+# Translators:
 # Translators:
 #  <>, 2002, 2001, Inc, 2003, 2007, 2008, 2009, 2010, 2011, 2000,�s�, 2012
 #   Alastair McKinstry <mckinstry@computer.org>, 2002
@@ -9,7 +9,9 @@
 # RedHotHeat <gbonner@iol.ie>, 2012
 #   LI Daobing <lidaobing@gmail.com>, 2007, 2008, 2009, 2010, 2011
 # LI Daobing <lidaobing@gmail.com>, 2007, 2008, 2009, 2010
+# Lin Xueyuan <767763591@qq.com>, 2016
 # 毛瑞盈 <mry_33@163.com>, 2014
+# niklasb <niklas.berglund@gmail.com>, 2016
 #   Tobias Toedter <t.toedter@gmx.net>, 2007
 #   - Wang Jian <lark@linux.net.cn>, 2000
 # YunQiang Su <wzssyqa@gmail.com>, 2011
@@ -17,8 +19,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2016-08-19 13:31+0000\n"
-"Last-Translator: Clay Cheng <clay1994@mail.hfut.edu.cn>\n"
+"PO-Revision-Date: 2017-01-16 20:46+0000\n"
+"Last-Translator: Laurent Monin <i18n@norz.org>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/musicbrainz/musicbrainz/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -39,7 +41,7 @@ msgctxt "work_type"
 msgid ""
 "\"Sonata\" is a general term used to describe small scale (very often solo "
 "or solo + keyboard) instrumental works, initially in baroque music."
-msgstr ""
+msgstr "”奏鸣曲“是一种源自巴洛克音乐的小规模(常常仅有独唱或者仅有独唱和键盘手)的音乐。"
 
 #: DB:medium_format/name:54
 msgctxt "medium_format"
@@ -626,7 +628,7 @@ msgstr "咏叹调"
 #: DB:editor_collection_type/name:8
 msgctxt "collection_type"
 msgid "Artist"
-msgstr ""
+msgstr "艺人"
 
 #: DB:artist_alias_type/name:1
 msgctxt "alias_type"
@@ -3872,7 +3874,7 @@ msgstr "其它"
 #: DB:place_type/name:3
 msgctxt "place_type"
 msgid "Other"
-msgstr ""
+msgstr "其它"
 
 #: DB:release_group_primary_type/name:11
 msgctxt "release_group_primary_type"
@@ -3887,7 +3889,7 @@ msgstr "其它"
 #: DB:instrument_type/name:5
 msgctxt "instrument_type"
 msgid "Other instrument"
-msgstr ""
+msgstr "其它乐器"
 
 #: DB:work_type/name:12
 msgctxt "work_type"
@@ -4382,6 +4384,11 @@ msgstr "超级音频CD"
 #: DB:work_attribute_type/name:21
 msgctxt "work_attribute_type"
 msgid "SACEM ID"
+msgstr ""
+
+#: DB:work_attribute_type/name:24
+msgctxt "work_attribute_type"
+msgid "SADAIC ID"
 msgstr ""
 
 #: DB:medium_format/name:62

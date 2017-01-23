@@ -1,4 +1,4 @@
-# 
+# Translators:
 # Translators:
 # Arto Astala, 2016
 # Jaakko Perttilä <jormangeud@gmail.com>, 2012,2015

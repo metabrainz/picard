@@ -1,4 +1,4 @@
-# 
+# Translators:
 # Translators:
 # derr84 <derr84@mail.ru>, 2013
 # greycat <greycat.na.kor@gmail.com>, 2012

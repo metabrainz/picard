@@ -1,4 +1,4 @@
-# 
+# Translators:
 # Translators:
 # Xosé <xosecalvo@gmail.com>, 2015
 msgid ""

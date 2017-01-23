@@ -1,4 +1,4 @@
-# 
+# Translators:
 # Translators:
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2006
 # Freso <transifex.net@freso.dk>, 2013

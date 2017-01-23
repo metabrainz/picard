@@ -1,4 +1,4 @@
-# 
+# Translators:
 # Translators:
 # Chris_Kay_083, 2014
 msgid ""

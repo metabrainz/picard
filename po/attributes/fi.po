@@ -1,4 +1,4 @@
-# 
+# Translators:
 # Translators:
 # Jaakko Perttilä <email address hidden>, 2012
 # Jaakko Perttilä <jormangeud@gmail.com>, 2012-2014
@@ -14,8 +14,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2016-08-01 22:12+0000\n"
-"Last-Translator: Michael Wiencek <mwtuea@gmail.com>\n"
+"PO-Revision-Date: 2017-01-16 20:46+0000\n"
+"Last-Translator: Laurent Monin <i18n@norz.org>\n"
 "Language-Team: Finnish (http://www.transifex.com/musicbrainz/musicbrainz/language/fi/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -4379,6 +4379,11 @@ msgstr "Super Audio CD"
 #: DB:work_attribute_type/name:21
 msgctxt "work_attribute_type"
 msgid "SACEM ID"
+msgstr ""
+
+#: DB:work_attribute_type/name:24
+msgctxt "work_attribute_type"
+msgid "SADAIC ID"
 msgstr ""
 
 #: DB:medium_format/name:62

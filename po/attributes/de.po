@@ -1,4 +1,4 @@
-# 
+# Translators:
 # Translators:
 # nikki, 2014
 # nikki2 <b4931048@nwldx.com>, 2012
@@ -7,7 +7,8 @@
 #   <email address hidden>, 2012
 # Ettore Atalan <atalanttore@googlemail.com>, 2014
 # Felix Kugler <relgukxilef@gmail.com>, 2015
-# Frank <senax79@gmail.com>, 2015
+# Frank Matthiae <senax79@gmail.com>, 2015
+# Leo_Verto <leotheverto@googlemail.com>, 2017
 # Mineo <email address hidden>, 2011
 # Wieland Hoffmann <themineo+transifex@googlemail.com>, 2011
 # Nikolai Prokoschenko <email address hidden>, 2011
@@ -26,8 +27,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2016-08-04 11:54+0000\n"
-"Last-Translator: TL\n"
+"PO-Revision-Date: 2017-01-16 20:46+0000\n"
+"Last-Translator: Laurent Monin <i18n@norz.org>\n"
 "Language-Team: German (http://www.transifex.com/musicbrainz/musicbrainz/language/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -41,7 +42,7 @@ msgid ""
 "\"Motet\" is a term that applies to different types of (usually "
 "unaccompanied) choral works. What exactly is a motet depends quite a bit on "
 "the period."
-msgstr "„Motette“ bezeichnet unterschiedliche Arten von (üblicherweise nicht instrumental begleiteten) Chorwerken. Die genaue Definition hängt stark vom Zeitalter ab."
+msgstr "„Motette“ bezeichnet unterschiedliche Arten von (üblicherweise nicht instrumental begleiteten) Chorwerken. Die genaue Definition hängt stark von der Epoche ab."
 
 #: DB:work_type/description:5
 msgctxt "work_type"
@@ -129,7 +130,7 @@ msgctxt "work_type"
 msgid ""
 "A cantata is a vocal (often choral) composition with an instrumental "
 "(usually orchestral) accompaniment, typically in several movements."
-msgstr "Eine Kantate ist eine Komposition für Singstimme (üblicherweise Choral) und ein Begelitinstrument. Oft in mehreren Sätzen."
+msgstr "Eine Kantate ist eine Komposition für Singstimme (üblicherweise Choral) und ein Begleitinstrument. Oft in mehreren Sätzen."
 
 #: DB:work_type/description:4
 msgctxt "work_type"
@@ -4006,7 +4007,7 @@ msgstr "Örtlichkeitsname"
 #: DB:work_type/name:28
 msgctxt "work_type"
 msgid "Play"
-msgstr ""
+msgstr "Schauspiel"
 
 #: DB:medium_format/name:45
 msgctxt "medium_format"
@@ -4392,6 +4393,11 @@ msgstr "SACD"
 msgctxt "work_attribute_type"
 msgid "SACEM ID"
 msgstr "SACEM ID"
+
+#: DB:work_attribute_type/name:24
+msgctxt "work_attribute_type"
+msgid "SADAIC ID"
+msgstr ""
 
 #: DB:medium_format/name:62
 msgctxt "medium_format"
@@ -5464,7 +5470,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:681
 msgctxt "work_attribute_type_allowed_value"
 msgid "ambiguous"
-msgstr ""
+msgstr "nicht eindeutig"
 
 #: DB:medium_format/name:27
 msgctxt "medium_format"

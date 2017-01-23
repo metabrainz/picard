@@ -1,4 +1,4 @@
-# 
+# Translators:
 # Translators:
 # yoktur <aptaling@msn.com>, 2015
 # ym syserror <cilek.kocak@gmail.com>, 2012

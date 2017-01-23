@@ -1,11 +1,12 @@
-# 
+# Translators:
 # Translators:
 # Cédric Valmary <cvalmary@yahoo.fr>, 2013,2015-2016
+# joanluc <joanluc.laborda@free.fr>, 2016
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2016-08-01 22:12+0000\n"
-"Last-Translator: Michael Wiencek <mwtuea@gmail.com>\n"
+"PO-Revision-Date: 2017-01-16 20:46+0000\n"
+"Last-Translator: Laurent Monin <i18n@norz.org>\n"
 "Language-Team: Occitan (post 1500) (http://www.transifex.com/musicbrainz/musicbrainz/language/oc/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -83,37 +84,37 @@ msgctxt "medium_format"
 msgid ""
 "90 rpm, vertical-cut shellac discs, produced by the Pathé label from 1906 to"
 " 1932."
-msgstr ""
+msgstr "90 tpm, disques shellac copa verticala, pròduch per lo label Pathé de 1906 entà 1932"
 
 #: DB:work_attribute_type_allowed_value/value:794
 msgctxt "work_attribute_type_allowed_value"
 msgid "A Dorian"
-msgstr ""
+msgstr "Un Dorian"
 
 #: DB:work_attribute_type_allowed_value/value:806
 msgctxt "work_attribute_type_allowed_value"
 msgid "A Mixolydian"
-msgstr ""
+msgstr "Un Mixolydian"
 
 #: DB:work_type/description:2
 msgctxt "work_type"
 msgid ""
 "A ballet is music composed to be used, together with a choreography, for a "
 "ballet dance production."
-msgstr ""
+msgstr "Un baleti es de musica composat per esser utilizat d'amb una coregrafia, per una pròducion de dança en baleti."
 
 #: DB:work_type/description:3
 msgctxt "work_type"
 msgid ""
 "A cantata is a vocal (often choral) composition with an instrumental "
 "(usually orchestral) accompaniment, typically in several movements."
-msgstr ""
+msgstr "Una cantata es una composicion vocala (sovent corala) d'amb un acompanhament instrumentau (usuaument orquestrau), tipicament en plusiors moviments"
 
 #: DB:work_type/description:4
 msgctxt "work_type"
 msgid ""
 "A concerto is a musical work for soloist(s) accompanied by an orchestra."
-msgstr ""
+msgstr "Un concerto es una pèça musicala per solista(s) acompanhats per un orquestra."
 
 #: DB:event_type/description:4
 msgctxt "event_type"
@@ -121,7 +122,7 @@ msgid ""
 "A convention, expo or trade fair is an event which is not typically "
 "orientated around music performances, but can include them as side "
 "activities."
-msgstr ""
+msgstr "Una convencion, exposicion o feira  commerciala es un eveniment que es generaument cap orientat autorn deus espectacles de musica, mès pòt o inclure dens las activitats secondaires."
 
 #: DB:release_status/description:2
 msgctxt "release_status"
@@ -129,12 +130,12 @@ msgid ""
 "A give-away release or a release intended to promote an upcoming official "
 "release (e.g. pre-release versions, releases included with a magazine, "
 "versions supplied to radio DJs for air-play)."
-msgstr ""
+msgstr "Una version de revelament  o una version destinada à promòver una  version oficiala a vener (per exemple pre-versions, las versions inclusas dens un magazine, las versions procuradas aus DJs de ràdio per l'air-play)."
 
 #: DB:work_attribute_type_allowed_value/value:28
 msgctxt "work_attribute_type_allowed_value"
 msgid "A major"
-msgstr ""
+msgstr "Una \"major\""
 
 #: DB:work_type/description:8
 msgctxt "work_type"
@@ -155,14 +156,14 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:29
 msgctxt "work_attribute_type_allowed_value"
 msgid "A minor"
-msgstr ""
+msgstr "Un minor"
 
 #: DB:work_type/description:13
 msgctxt "work_type"
 msgid ""
 "A partita is an instrumental piece composed of a series of variations, and "
 "it's by its current definition very similar to a suite."
-msgstr ""
+msgstr "Una partida es un tròç instrumentau composat d'una seria de variacions, e es per la sua définicion actuala mei similaria à una suita."
 
 #: DB:event_type/description:3
 msgctxt "event_type"
@@ -4369,6 +4370,11 @@ msgstr ""
 #: DB:work_attribute_type/name:21
 msgctxt "work_attribute_type"
 msgid "SACEM ID"
+msgstr ""
+
+#: DB:work_attribute_type/name:24
+msgctxt "work_attribute_type"
+msgid "SADAIC ID"
 msgstr ""
 
 #: DB:medium_format/name:62

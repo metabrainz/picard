@@ -1,5 +1,6 @@
-# 
 # Translators:
+# Translators:
+# Abby Zla <abby230492@gmail.com>, 2017
 # adeluna <adelunaddl@yahoo.com.mx>, 2012
 # Alexander Dupuy <alex.dupuy@mac.com>, 2012
 # Alexander Dupuy <email address hidden>, 2012
@@ -12,6 +13,7 @@
 # Héctor Arroyo <email address hidden>, 2012
 # Ismael Olea <ismael@olea.org>, 2013-2015
 # Juan Acuña <jmacuna0@gmail.com>, 2016
+# Kevin Doncam Demian López Brante <kevin@kddlb.cl>, 2016
 # Kevin López Brante <kelopez.cl@gmail.com>, 2015
 # Marta PD <marta_puerto_d@yahoo.com>, 2014
 # Mathias Gonzalez <mathiias.gonzalez@gmail.com>, 2015
@@ -21,11 +23,12 @@
 #   Tobias Quathamer <email address hidden>, 2007
 #   Tobias Quathamer <toddy@debian.org>, 2007
 # t0n3t <toni75@gmail.com>, 2012
+# Victor reaven <victoreaven@gmail.com>, 2016
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2016-08-01 22:12+0000\n"
-"Last-Translator: Michael Wiencek <mwtuea@gmail.com>\n"
+"PO-Revision-Date: 2017-01-16 20:46+0000\n"
+"Last-Translator: Laurent Monin <i18n@norz.org>\n"
 "Language-Team: Spanish (http://www.transifex.com/musicbrainz/musicbrainz/language/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -113,7 +116,7 @@ msgstr "la dórico"
 #: DB:work_attribute_type_allowed_value/value:806
 msgctxt "work_attribute_type_allowed_value"
 msgid "A Mixolydian"
-msgstr ""
+msgstr "Modo mixolidio"
 
 #: DB:work_type/description:2
 msgctxt "work_type"
@@ -162,7 +165,7 @@ msgid ""
 "A mass is a choral composition that sets the invariable portions of the "
 "Christian Eucharistic liturgy (Kyrie - Gloria - Credo - Sanctus - Benedictus"
 " - Agnus Dei, with other portions sometimes added) to music."
-msgstr ""
+msgstr "Una misa es una composición coral que traslada a la música secciones fijas de la liturgia ( Kyrie - Gloria -Credo - Sanctus - Benedictus - Agnus Dei, otras secciones a veces añadidas)."
 
 #: DB:event_type/description:5
 msgctxt "event_type"
@@ -170,7 +173,7 @@ msgid ""
 "A masterclass or clinic is an event where an artist meets with a small to "
 "medium-sized audience and instructs them individually and/or takes questions"
 " intended to improve the audience members' playing skills."
-msgstr ""
+msgstr "Una clase magistral u clínica es un evento donde un artista se reúne con una audiencia de tamaño pequeño o mediano y les instruye individualmente y/o recibe preguntas con el propósito de mejorar las habilidades musicales de la audiencia."
 
 #: DB:work_attribute_type_allowed_value/value:29
 msgctxt "work_attribute_type_allowed_value"
@@ -182,7 +185,7 @@ msgctxt "work_type"
 msgid ""
 "A partita is an instrumental piece composed of a series of variations, and "
 "it's by its current definition very similar to a suite."
-msgstr ""
+msgstr "Una partita es una pieza instrumental compuesta por una serie de variaciones, y por definición es muy similar a una suite."
 
 #: DB:event_type/description:3
 msgctxt "event_type"
@@ -197,7 +200,7 @@ msgid ""
 "A place consisting of a large enclosed area with a central event space "
 "surrounded by tiered seating for spectators, which can be used for indoor "
 "sports, concerts and other entertainment events."
-msgstr ""
+msgstr "Un lugar consistente de una gran área cerrada con un espacio de eventos central rodeado por asientos escalonados para los espectadores, que puede ser usado para deportes de interior, conciertos y otros eventos de entretenimiento."
 
 #: DB:place_type/description:1
 msgctxt "place_type"
@@ -310,7 +313,7 @@ msgid ""
 "with or without instruments, performed by singing. This is the most common "
 "form by far in folk and popular music, but also fairly common in a classical"
 " context (\"art songs\")."
-msgstr ""
+msgstr "Una canción es en su origen (y aún en la mayoría de casos) una composición para voz, con o sin instrumentos, interpretada en forma de canto. Esta es la forma más común en la música popular y tradicional, pero también bastante común en un contexto clásico (\"art songs\")."
 
 #: DB:work_type/description:22
 msgctxt "work_type"
@@ -4390,6 +4393,11 @@ msgstr "SACD"
 msgctxt "work_attribute_type"
 msgid "SACEM ID"
 msgstr "SACEM ID"
+
+#: DB:work_attribute_type/name:24
+msgctxt "work_attribute_type"
+msgid "SADAIC ID"
+msgstr ""
 
 #: DB:medium_format/name:62
 msgctxt "medium_format"

@@ -1,14 +1,14 @@
-# 
+# Translators:
 # Translators:
 # Maurits Meulenbelt <email address hidden>, 2012
 # Maurits Meulenbelt <mfmeulenbelt@gmail.com>, 2012
-# Maurits Meulenbelt <mfmeulenbelt@gmail.com>, 2013-2016
+# Maurits Meulenbelt <mfmeulenbelt@gmail.com>, 2013-2017
 # Nikolai Prokoschenko <email address hidden>, 2011
 # Nikolai Prokoschenko <nikolai@prokoschenko.de>, 2011
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2016-08-05 20:13+0000\n"
+"PO-Revision-Date: 2017-01-18 16:52+0000\n"
 "Last-Translator: Maurits Meulenbelt <mfmeulenbelt@gmail.com>\n"
 "Language-Team: Dutch (http://www.transifex.com/musicbrainz/musicbrainz/language/nl/)\n"
 "MIME-Version: 1.0\n"
@@ -35,7 +35,7 @@ msgstr "Sonate is een benaming die wordt gebruikt voor kleinschalige instrumenta
 #: DB:medium_format/name:54
 msgctxt "medium_format"
 msgid "10\" Shellac"
-msgstr "10″ Schellak"
+msgstr "10″ schellak"
 
 #: DB:medium_format/name:30
 msgctxt "medium_format"
@@ -45,7 +45,7 @@ msgstr "10″ vinyl"
 #: DB:medium_format/name:55
 msgctxt "medium_format"
 msgid "12\" Shellac"
-msgstr "12″ Schellak"
+msgstr "12″ schellak"
 
 #: DB:medium_format/name:31
 msgctxt "medium_format"
@@ -60,12 +60,12 @@ msgstr "3,5″ floppy"
 #: DB:medium_format/name:52
 msgctxt "medium_format"
 msgid "7\" Flexi-disc"
-msgstr "7″ Flexi-disc"
+msgstr "7″ flexi-disc"
 
 #: DB:medium_format/name:56
 msgctxt "medium_format"
 msgid "7\" Shellac"
-msgstr "7″ Schellak"
+msgstr "7″ schellak"
 
 #: DB:medium_format/name:29
 msgctxt "medium_format"
@@ -637,7 +637,7 @@ msgstr "Asāvēri"
 #: DB:editor_collection_type/name:5
 msgctxt "collection_type"
 msgid "Attending"
-msgstr "Waar ik heen ga"
+msgstr "Ga ik heen"
 
 #: DB:work_type/name:25
 msgctxt "work_type"
@@ -969,12 +969,12 @@ msgstr "Bilahari"
 #: DB:medium_format/name:20
 msgctxt "medium_format"
 msgid "Blu-ray"
-msgstr "Blu-ray"
+msgstr "blu-ray"
 
 #: DB:medium_format/name:35
 msgctxt "medium_format"
 msgid "Blu-spec CD"
-msgstr "Blu-spec cd"
+msgstr "blu-spec cd"
 
 #: DB:release_packaging/name:9
 msgctxt "release_packaging"
@@ -1149,7 +1149,7 @@ msgstr "Cantate"
 #: DB:release_packaging/name:4
 msgctxt "release_packaging"
 msgid "Cardboard/Paper Sleeve"
-msgstr "Kartonnen / papieren hoes"
+msgstr "Kartonnen of papieren hoes"
 
 #: DB:medium_format/name:9
 msgctxt "medium_format"
@@ -1164,7 +1164,7 @@ msgstr "Carturdaśa rāgamālika"
 #: DB:medium_format/name:8
 msgctxt "medium_format"
 msgid "Cassette"
-msgstr "Cassette"
+msgstr "cassette"
 
 #: DB:release_packaging/name:8
 msgctxt "release_packaging"
@@ -1445,7 +1445,7 @@ msgstr "Darbārī kānaḍa"
 #: DB:medium_format/name:43
 msgctxt "medium_format"
 msgid "Data CD"
-msgstr "Data-cd"
+msgstr "data-cd"
 
 #: DB:release_group_secondary_type/name:10
 msgctxt "release_group_secondary_type"
@@ -1995,7 +1995,7 @@ msgstr "Fireng-i Fer"
 #: DB:medium_format/name:51
 msgctxt "medium_format"
 msgid "Flexi-disc"
-msgstr "Flexidisc"
+msgstr "flexidisc"
 
 #: DB:medium_format/description:51
 msgctxt "medium_format"
@@ -2468,17 +2468,17 @@ msgstr "Huzi"
 #: DB:medium_format/name:38
 msgctxt "medium_format"
 msgid "Hybrid SACD"
-msgstr "Hybride sacd"
+msgstr "hybride sacd"
 
 #: DB:medium_format/name:63
 msgctxt "medium_format"
 msgid "Hybrid SACD (CD layer)"
-msgstr "Hybride sacd (cd-laag)"
+msgstr "hybride sacd (cd-laag)"
 
 #: DB:medium_format/name:64
 msgctxt "medium_format"
 msgid "Hybrid SACD (SACD layer)"
-msgstr "Hybride sacd (sacd-laag)"
+msgstr "hybride sacd (sacd-laag)"
 
 #: DB:work_attribute_type_allowed_value/value:418
 msgctxt "work_attribute_type_allowed_value"
@@ -3213,7 +3213,7 @@ msgstr "Maveraünnehir"
 #: DB:editor_collection_type/name:6
 msgctxt "collection_type"
 msgid "Maybe attending"
-msgstr "Waar ik misschien heen ga"
+msgstr "Ga ik misschien heen"
 
 #: DB:work_attribute_type_allowed_value/value:175
 msgctxt "work_attribute_type_allowed_value"
@@ -3273,7 +3273,7 @@ msgstr "Mevlidişerif"
 #: DB:medium_format/name:6
 msgctxt "medium_format"
 msgid "MiniDisc"
-msgstr "MiniDisc"
+msgstr "minidisc"
 
 #: DB:work_attribute_type_allowed_value/value:644
 msgctxt "work_attribute_type_allowed_value"
@@ -3406,7 +3406,7 @@ msgstr "Murabba"
 #: DB:medium_format/name:46
 msgctxt "medium_format"
 msgid "Music Card"
-msgstr "Muziekkaart"
+msgstr "muziekkaart"
 
 #: DB:work_type/name:29
 msgctxt "work_type"
@@ -3888,7 +3888,7 @@ msgstr "Ouverture"
 #: DB:editor_collection_type/name:2
 msgctxt "collection_type"
 msgid "Owned music"
-msgstr "Eigen muziek"
+msgstr "Heb ik"
 
 #: DB:work_attribute_type_allowed_value/value:762
 msgctxt "work_attribute_type_allowed_value"
@@ -3973,7 +3973,7 @@ msgstr "Peşrev"
 #: DB:medium_format/name:15
 msgctxt "medium_format"
 msgid "Piano Roll"
-msgstr "Pianorol (notenrol)"
+msgstr "pianorol (notenrol)"
 
 #: DB:editor_collection_type/name:11
 msgctxt "collection_type"
@@ -3993,7 +3993,7 @@ msgstr "Toneelstuk"
 #: DB:medium_format/name:45
 msgctxt "medium_format"
 msgid "Playbutton"
-msgstr "Playbutton"
+msgstr "playbutton"
 
 #: DB:work_type/name:21
 msgctxt "work_type"
@@ -4198,7 +4198,7 @@ msgstr "Naam van de opname"
 #: DB:medium_format/name:10
 msgctxt "medium_format"
 msgid "Reel-to-reel"
-msgstr "Bandrecorder"
+msgstr "bandrecorder"
 
 #: DB:work_attribute_type_allowed_value/value:514
 msgctxt "work_attribute_type_allowed_value"
@@ -4298,7 +4298,7 @@ msgstr "Rumeli Türküsü"
 #: DB:series_type/name:9
 msgctxt "series_type"
 msgid "Run"
-msgstr ""
+msgstr "Voorstellingenreeks"
 
 #: DB:work_attribute_type_allowed_value/value:521
 msgctxt "work_attribute_type_allowed_value"
@@ -4374,6 +4374,11 @@ msgstr "sacd"
 msgctxt "work_attribute_type"
 msgid "SACEM ID"
 msgstr "SACEM-ID"
+
+#: DB:work_attribute_type/name:24
+msgctxt "work_attribute_type"
+msgid "SADAIC ID"
+msgstr "SADAIC-ID"
 
 #: DB:medium_format/name:62
 msgctxt "medium_format"
@@ -4583,7 +4588,7 @@ msgstr "Seyir"
 #: DB:medium_format/name:53
 msgctxt "medium_format"
 msgid "Shellac"
-msgstr "Schellak"
+msgstr "schellak"
 
 #: DB:medium_format/description:53
 msgctxt "medium_format"
@@ -5161,7 +5166,7 @@ msgstr "Uşşakaşiran"
 #: DB:medium_format/name:22
 msgctxt "medium_format"
 msgid "VCD"
-msgstr "Video-cd"
+msgstr "video-cd"
 
 #: DB:medium_format/name:59
 msgctxt "medium_format"
@@ -5313,7 +5318,7 @@ msgstr "Watermerk"
 #: DB:medium_format/name:14
 msgctxt "medium_format"
 msgid "Wax Cylinder"
-msgstr "Wascilinder"
+msgstr "wascilinder"
 
 #: DB:instrument_type/name:1
 msgctxt "instrument_type"
