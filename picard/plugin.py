@@ -234,7 +234,7 @@ class PluginManager(QtCore.QObject):
     def load_plugindir(self, plugindir):
         plugindir = os.path.normpath(plugindir)
         if not os.path.isdir(plugindir):
-            log.warning("Plugin directory %r doesn't exist", plugindir)
+            log.info("Plugin directory %r doesn't exist", plugindir)
             return
         # first, handle eventual plugin updates
         for updatepath in [os.path.join(plugindir, file) for file in
