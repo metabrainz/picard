@@ -123,6 +123,13 @@
        </widget>
       </item>
       <item>
+       <widget class="QCheckBox" name="cluster_new_files">
+        <property name="text">
+         <string>Automatically cluster when loading new files</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QCheckBox" name="ignore_file_mbids">
         <property name="text">
          <string>Ignore MBIDs when loading new files</string>
