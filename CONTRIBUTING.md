@@ -2,11 +2,11 @@
 
 ## Coding Style
 
-As most of the other projects written in Python, we use the [PEP 8](https://www.python.org/dev/peps/pep-0008/). Though, we ignore some of the recomendations:
+As most of the other projects written in Python, we use the [PEP 8](https://www.python.org/dev/peps/pep-0008/). Though, we ignore some of the recommendations:
 
 * E501 - Maximum line length (79 characters). The general limit we have is somewhere around 120-130.
 
-*Reccomended video: "[Beyond PEP 8 -- Best practices for beautiful intelligible code](https://www.youtube.com/watch?v=wf-BqAjZb8M)" by Raymond Hettinger at PyCon 2015, which talks about the famous P versus NP problem.*
+*Recommended video: "[Beyond PEP 8 -- Best practices for beautiful intelligible code](https://www.youtube.com/watch?v=wf-BqAjZb8M)" by Raymond Hettinger at PyCon 2015, which talks about the famous P versus NP problem.*
 
 The general idea is to make the code within a project consistent and easy to interpret (for humans).
 
@@ -15,6 +15,12 @@ The general idea is to make the code within a project consistent and easy to int
 Unless the function is easy to understand quickly, it should probably have a docstring describing what it does, how it does it, what the arguments are, and what the expected output is.
 
 Most of our Python projects use ["Google-style" docstrings](https://google.github.io/styleguide/pyguide.html?showone=Comments#Comments).
+
+### Picard specific code
+
+Picard has some auto-generated `picard/ui/ui_*.py` PyQt UI related files. Please do not change them directly. To modify them, use Qt-Designer to edit the `ui/*.ui` and use the command `python setup.py build_ui` to generate the corresponding `ui_*.py` files.
+
+We use camel-case to name all functions and variables except for the pre-generated PyQt functions/variables.
 
 
 ## Git Work-flow
