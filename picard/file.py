@@ -381,12 +381,12 @@ class File(QtCore.QObject, Item):
                 file_names = filtered_names
             for old_file in file_names:
                 if pattern_regex.match(old_file):
+                    new_file = os.path.join(new_path, old_file)
                     old_file = os.path.join(old_path, old_file)
                     # FIXME we shouldn't do this from a thread!
                     if self.tagger.files.get(decode_filename(old_file)):
                         log.debug("File loaded in the tagger, not moving %r", old_file)
                         continue
-                    new_file = os.path.join(new_path, old_file)
                     log.debug("Moving %r to %r", old_file, new_file)
                     shutil.move(old_file, new_file)
 
