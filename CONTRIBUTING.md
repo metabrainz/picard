@@ -22,6 +22,7 @@ Picard has some auto-generated `picard/ui/ui_*.py` PyQt UI related files. Please
 
 We use camel-case to name all functions and variables except for the pre-generated PyQt functions/variables.
 
+`gettext` and `gettext-noop` have been built-in the Picard code as `_` and `N_` respectively to provide support for internationalization/localization. You can use them without imports across all of Picard code. Make sure to mark all displayable strings for translation using `_` or `N_` as applicable. You can read more about python-gettext [here](https://docs.python.org/2/library/gettext.html).
 
 ## Git Work-flow
 
