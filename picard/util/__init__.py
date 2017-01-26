@@ -395,9 +395,9 @@ def build_qurl(host, port=80, path=None, queryargs=None):
     url.setHost(host)
     url.setPort(port)
     if (# We're contacting a MusicBrainz server
-        (host in MUSICBRAINZ_SERVERS and port == 80) or
+        host in MUSICBRAINZ_SERVERS or
         # Or we're contacting some other server via HTTPS.
-         port == 443):
+        port == 443):
             url.setScheme("https")
             url.setPort(443)
     else:
