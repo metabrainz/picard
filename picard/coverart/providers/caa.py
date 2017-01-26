@@ -200,7 +200,7 @@ class CoverArtProviderCaa(CoverArtProvider):
     @property
     def _has_suitable_artwork(self):
         # MB web service indicates if CAA has artwork
-        # http://tickets.musicbrainz.org/browse/MBS-4536
+        # https://tickets.metabrainz.org/browse/MBS-4536
         if 'cover_art_archive' not in self.release.children:
             log.debug("No Cover Art Archive information for %s"
                       % self.release.id)
