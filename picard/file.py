@@ -254,7 +254,9 @@ class File(QtCore.QObject, Item):
         """Save the metadata."""
         raise NotImplementedError
 
-    def _script_to_filename(self, format, file_metadata, settings=config.setting):
+    def _script_to_filename(self, format, file_metadata, settings=None):
+        if settings is None:
+            settings = config.setting
         metadata = Metadata()
         if config.setting["clear_existing_tags"]:
             metadata.copy(file_metadata)
@@ -287,8 +289,10 @@ class File(QtCore.QObject, Item):
             new_filename = ''
         return new_filename, ext
 
-    def _make_filename(self, filename, metadata, settings=config.setting):
+    def _make_filename(self, filename, metadata, settings=None):
         """Constructs file name based on metadata and file naming formats."""
+        if settings is None:
+            settings = config.setting
         if settings["move_files"]:
             new_dirname = settings["move_files_to"]
             if not os.path.isabs(new_dirname):
