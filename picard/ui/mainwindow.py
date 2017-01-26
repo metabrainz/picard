@@ -804,7 +804,7 @@ class MainWindow(QtGui.QMainWindow):
             url = self._openUrl(os.path.dirname(file.filename))
             if not url in opened:
                 QtGui.QDesktopServices.openUrl(url)
-                opened.append(url)
+                opened.add(url)
 
     def show_analyze_settings_info(self):
         ret = QtGui.QMessageBox.question(self,
