@@ -785,6 +785,8 @@ class MainWindow(QtGui.QMainWindow):
         return self.tagger.analyze(self.selected_objects)
 
     def _openUrl(self,url):
+        # Resolves a bug in Qt opening remote URLs - QTBUG-13359
+        # See https://bugreports.qt.io/browse/QTBUG-13359
         if url.startswith("\\\\") or url.startswith("//"):
             return QtCore.QUrl(QtCore.QDir.toNativeSeparators(url))
         else:
