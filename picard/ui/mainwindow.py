@@ -799,7 +799,7 @@ class MainWindow(QtGui.QMainWindow):
 
     def open_folder(self):
         files = self.tagger.get_files_from_objects(self.selected_objects)
-        opened = []
+        opened = set()
         for file in files:
             url = self._openUrl(os.path.dirname(file.filename))
             if not url in opened:
