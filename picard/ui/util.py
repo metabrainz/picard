@@ -47,7 +47,7 @@ class StandardButton(QtGui.QPushButton):
 
 
 # The following code is there to fix
-# http://tickets.musicbrainz.org/browse/PICARD-417
+# https://tickets.metabrainz.org/browse/PICARD-417
 # In some older version of PyQt/sip it's impossible to connect a signal
 # emitting an `int` to a slot expecting a `bool`.
 # By using `enabledSlot` instead we can force python to do the
