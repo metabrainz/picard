@@ -14,13 +14,13 @@ The general idea is to make the code within a project consistent and easy to int
 
 Unless the function is easy to understand quickly, it should probably have a docstring describing what it does, how it does it, what the arguments are, and what the expected output is.
 
-Most of our Python projects use ["Google-style" docstrings](https://google.github.io/styleguide/pyguide.html?showone=Comments#Comments).
+We recommend using ["Google-style" docstrings](https://google.github.io/styleguide/pyguide.html?showone=Comments#Comments) for writing docstrings.
 
 ### Picard specific code
 
 Picard has some auto-generated `picard/ui/ui_*.py` PyQt UI related files. Please do not change them directly. To modify them, use Qt-Designer to edit the `ui/*.ui` and use the command `python setup.py build_ui` to generate the corresponding `ui_*.py` files.
 
-We use camel-case to name all functions and variables except for the pre-generated PyQt functions/variables.
+We use snake-case to name all functions and variables except for the pre-generated PyQt functions/variables.
 
 `gettext` and `gettext-noop` have been built-in the Picard code as `_` and `N_` respectively to provide support for internationalization/localization. You can use them without imports across all of Picard code. Make sure to mark all displayable strings for translation using `_` or `N_` as applicable. You can read more about python-gettext [here](https://docs.python.org/2/library/gettext.html).
 
