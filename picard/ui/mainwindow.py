@@ -784,17 +784,21 @@ class MainWindow(QtGui.QMainWindow):
                 return
         return self.tagger.analyze(self.selected_objects)
 
+    def _openUrl(self,url):
+        if url.startswith("\\\\") or url.startswith("//"):
+            return QtCore.QUrl(QtCore.QDir.toNativeSeparators(url))
+        else:
+            return QtCore.QUrl.fromLocalFile(url)
+
     def play_file(self):
         files = self.tagger.get_files_from_objects(self.selected_objects)
         for file in files:
-            url = QtCore.QUrl.fromLocalFile(file.filename)
-            QtGui.QDesktopServices.openUrl(url)
+            QtGui.QDesktopServices.openUrl(self._openUrl(file.filename))
 
     def open_folder(self):
         files = self.tagger.get_files_from_objects(self.selected_objects)
         for file in files:
-            url = QtCore.QUrl.fromLocalFile(os.path.dirname(file.filename))
-            QtGui.QDesktopServices.openUrl(url)
+            QtGui.QDesktopServices.openUrl(self._openUrl(os.path.dirname(file.filename)))
 
     def show_analyze_settings_info(self):
         ret = QtGui.QMessageBox.question(self,
