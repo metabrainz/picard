@@ -25,7 +25,7 @@ import ntpath
 import sys
 from operator import itemgetter
 from heapq import heappush, heappop
-from PyQt4 import QtCore
+from PyQt4 import QtCore, QtGui
 from picard import config
 from picard.metadata import Metadata
 from picard.similarity import similarity
@@ -246,15 +246,34 @@ class Cluster(QtCore.QObject, Item):
             artist_max = 0
             artist_id = None
             artist_hist = {}
+            main_artist = None
+            do_all = False
+            do_cluster = True
+            to_remove = []
             for track_id in album:
+                artist = tracks[track_id][0]
+                if main_artist is None:
+                    main_artist = artist
+
                 cluster = artist_cluster_engine.getClusterFromId(
                     tracks[track_id][0])
-                if cluster is not None:
+
+                # if it isn't the first track the user hasn't chosen an action to do for all
+                if artist is not main_artist:
+                    if not do_all:
+                        do_cluster, do_all = Cluster.cluster_warning(files, track_id, album)
+                    if not do_cluster:
+                        to_remove.append(track_id)
+
+                if do_cluster and cluster is not None:
                     cnt = artist_hist.get(cluster, 0) + 1
                     if cnt > artist_max:
                         artist_max = cnt
                         artist_id = cluster
                     artist_hist[cluster] = cnt
+
+            for id in to_remove:
+                album.remove(id)
 
             if artist_id is None:
                 artist_name = u"Various Artists"
@@ -263,6 +282,49 @@ class Cluster(QtCore.QObject, Item):
 
             yield album_name, artist_name, (files[i] for i in album)
 
+    @staticmethod
+    def cluster_warning(files, track_id, album):
+        QMessageBox = QtGui.QMessageBox
+        QCheckBox = QtGui.QCheckBox
+        QRadioButton = QtGui.QRadioButton
+
+        title = _(u"Album Artist Conflict")
+        text = [_(u"This track shares an album title with a cluster, "
+            "but does not share an artist name. Would you still like to "
+            "cluster this track?")]
+
+        # Conflicting Track
+        conflict = {
+            'album': files[track_id].metadata["album"],
+            'title': files[track_id].metadata["title"],
+            'artist': files[track_id].metadata["artist"]
+        }
+        text.append('{album}\n{title}\n{artist}'.format(**conflict))
+
+        msg = QMessageBox(QMessageBox.Question, title, '\n'.join(text))
+        layout = msg.layout()
+        no = msg.addButton("No", QMessageBox.NoRole)
+        yes = msg.addButton("Yes", QMessageBox.YesRole)
+        msg.setDefaultButton(yes)
+
+        cluster_list = [_("Current cluster:")]
+        for cluster_id in album:
+            if cluster_id < track_id:
+                track = {
+                    'track':files[cluster_id].metadata["tracknumber"],
+                    'title':files[cluster_id].metadata["title"],
+                    'artist':files[cluster_id].metadata["artist"]
+                }
+                cluster_list.append('{track:4}{title:12}{artist:10}'.format(**track))
+
+        msg.setDetailedText('\n'.join(cluster_list))
+
+        do_all = QCheckBox()
+        do_all.setText(_(u"Do this for all conflicts"))
+
+        layout.addWidget(do_all, layout.rowCount()- 3, 1)
+
+        return msg.exec_(), do_all.isChecked();
 
 class UnmatchedFiles(Cluster):
 
