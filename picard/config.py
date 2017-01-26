@@ -92,11 +92,11 @@ class Config(QtCore.QSettings):
 
     """Configuration."""
 
-    def __init__(self):
+    def __init__(self, app):
         """Initializes the configuration."""
 
         QtCore.QSettings.__init__(self, QtCore.QSettings.IniFormat,
-                                  QtCore.QSettings.UserScope, PICARD_ORG_NAME, PICARD_APP_NAME)
+                                  QtCore.QSettings.UserScope, PICARD_ORG_NAME, PICARD_APP_NAME, app)
         # If there are no settings, copy existing settings from old format
         # (registry on windows systems)
         if not self.allKeys():
@@ -241,21 +241,12 @@ class IntListOption(Option):
         return map(int, value)
 
 
-_config = Config()
+config = None
+setting = None
+persist = None
 
-setting = _config.setting
-persist = _config.persist
-
-# http://pyqt.sourceforge.net/Docs/PyQt4/qsettings.html#fileName
-# QString QSettings.fileName (self)
-#
-# Returns the path where settings written using this QSettings object are stored.
-#
-# On Windows, if the format is QSettings.NativeFormat, the return value is a system registry path, not a file path.
-FILE_PATH = 0
-REGISTRY_PATH = 1
-storage = _config.fileName()
-if _config.format() == QtCore.QSettings.NativeFormat and sys.platform == "win32":
-    storage_type = REGISTRY_PATH
-else:
-    storage_type = FILE_PATH
+def _setup(app):
+    global config, setting, persist
+    config = Config(app)
+    setting = config.setting
+    persist = config.persist

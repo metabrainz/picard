@@ -107,6 +107,8 @@ class Tagger(QtGui.QApplication):
         QtGui.QApplication.__init__(self, ['MusicBrainz-Picard'] + unparsed_args)
         self.__class__.__instance = self
 
+        config._setup(self)
+
         self._cmdline_files = picard_args.FILE
         self._autoupdate = autoupdate
         self._debug = False
@@ -149,10 +151,7 @@ class Tagger(QtGui.QApplication):
         log.debug("Platform: %s %s %s", platform.platform(),
                   platform.python_implementation(), platform.python_version())
         log.debug("Versions: %s", versions.as_string())
-        if config.storage_type == config.REGISTRY_PATH:
-            log.debug("Configuration registry path: %s", config.storage)
-        else:
-            log.debug("Configuration file path: %s", config.storage)
+        log.debug("Configuration file path: %s", config.config.fileName())
 
         # TODO remove this before the final release
         if sys.platform == "win32":

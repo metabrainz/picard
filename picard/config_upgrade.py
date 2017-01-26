@@ -32,12 +32,11 @@ from picard import (log, config)
 # and modify PICARD_VERSION to match it
 #
 
-_s = config.setting
-
 
 def upgrade_to_v1_0_0_final_0():
     """In version 1.0, the file naming formats for single and various artist releases were merged.
     """
+    _s = config.setting
     def remove_va_file_naming_format(merge=True):
         if merge:
             _s["file_naming_format"] = (
@@ -89,6 +88,7 @@ def upgrade_to_v1_0_0_final_0():
 def upgrade_to_v1_3_0_dev_1():
     """Option "windows_compatible_filenames" was renamed "windows_compatibility" (PICARD-110).
     """
+    _s = config.setting
     old_opt = "windows_compatible_filenames"
     new_opt = "windows_compatibility"
     if old_opt in _s:
@@ -99,6 +99,7 @@ def upgrade_to_v1_3_0_dev_1():
 def upgrade_to_v1_3_0_dev_2():
     """Option "preserved_tags" is now using comma instead of spaces as tag separator (PICARD-536)
     """
+    _s = config.setting
     opt = "preserved_tags"
     if opt in _s:
         _s[opt] = re.sub(r"\s+", ",", _s[opt].strip())
@@ -107,6 +108,7 @@ def upgrade_to_v1_3_0_dev_2():
 def upgrade_to_v1_3_0_dev_3():
     """Options were made to support lists (solving PICARD-144 and others)
     """
+    _s = config.setting
     option_separators = {
         "preferred_release_countries": "  ",
         "preferred_release_formats": "  ",
@@ -122,6 +124,7 @@ def upgrade_to_v1_3_0_dev_3():
 def upgrade_to_v1_3_0_dev_4():
     """Option "release_type_scores" is now a list of tuples
     """
+    _s = config.setting
     def load_release_type_scores(setting):
         scores = []
         values = setting.split()
@@ -143,6 +146,7 @@ def upgrade_to_v1_4_0_dev_2():
     replaced with OAuth tokens
     """
 
+    _s = config.setting
     opts = ["username", "password"]
     for opt in opts:
         _s.remove(opt)
@@ -150,6 +154,7 @@ def upgrade_to_v1_4_0_dev_2():
 
 def upgrade_to_v1_4_0_dev_3():
     """Cover art providers options were moved to a list of tuples"""
+    _s = config.setting
     map = [
         ('ca_provider_use_amazon', 'Amazon'),
         ('ca_provider_use_caa', 'Cover Art Archive'),
@@ -166,6 +171,7 @@ def upgrade_to_v1_4_0_dev_3():
 
 def upgrade_to_v1_4_0_dev_4():
     """Adds trailing comma to default file names for scripts"""
+    _s = config.setting
     _DEFAULT_FILE_NAMING_FORMAT = "$if2(%albumartist%,%artist%)/" \
         "$if($ne(%albumartist%,),%album%/)" \
         "$if($gt(%totaldiscs%,1),%discnumber%-,)" \
@@ -190,6 +196,7 @@ def upgrade_to_v1_4_0_dev_5():
 
 def upgrade_to_v1_4_0_dev_6():
     """Adds support for multiple and selective tagger scripts"""
+    _s = config.setting
     DEFAULT_NUMBERED_SCRIPT_NAME = N_("My script %d")
     old_enabled_option = "enable_tagger_script"
     old_script_text_option = "tagger_script"
@@ -208,14 +215,16 @@ def upgrade_to_v1_4_0_dev_6():
 
 def upgrade_to_v1_4_0_dev_7():
     """Option "save_only_front_images_to_tags" was renamed to "embed_only_one_front_image"."""
+    _s = config.setting
     old_opt = "save_only_front_images_to_tags"
     new_opt = "embed_only_one_front_image"
     if old_opt in _s:
         _s[new_opt] = _s.value(old_opt, config.BoolOption, True)
         _s.remove(old_opt)
 
+
 def upgrade_config():
-    cfg = config._config
+    cfg = config.config
     cfg.register_upgrade_hook(upgrade_to_v1_0_0_final_0)
     cfg.register_upgrade_hook(upgrade_to_v1_3_0_dev_1)
     cfg.register_upgrade_hook(upgrade_to_v1_3_0_dev_2)
