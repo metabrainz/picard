@@ -383,12 +383,10 @@ def album_artist_from_path(filename, album, artist):
     return album, artist
 
 
-def build_qurl(host, port=80, path=None, mblogin=False, queryargs=None):
+def build_qurl(host, port=80, path=None, queryargs=None):
     """
     Builds and returns a QUrl object from `host`, `port` and `path` and
     automatically enables HTTPS if necessary.
-
-    Setting `mblogin` to True forces HTTPS on MusicBrainz' servers.
 
     Encoded query arguments can be provided in `queryargs`, a
     dictionary mapping field names to values.
@@ -396,8 +394,8 @@ def build_qurl(host, port=80, path=None, mblogin=False, queryargs=None):
     url = QtCore.QUrl()
     url.setHost(host)
     url.setPort(port)
-    if (# Login is required and we're contacting an MB server
-        (mblogin and host in MUSICBRAINZ_SERVERS and port == 80) or
+    if (# We're contacting a MusicBrainz server
+        (host in MUSICBRAINZ_SERVERS and port == 80) or
         # Or we're contacting some other server via HTTPS.
          port == 443):
             url.setScheme("https")
