@@ -799,8 +799,12 @@ class MainWindow(QtGui.QMainWindow):
 
     def open_folder(self):
         files = self.tagger.get_files_from_objects(self.selected_objects)
+        opened = []
         for file in files:
-            QtGui.QDesktopServices.openUrl(self._openUrl(os.path.dirname(file.filename)))
+            url = self._openUrl(os.path.dirname(file.filename))
+            if not url in opened:
+                QtGui.QDesktopServices.openUrl(url)
+                opened.append(url)
 
     def show_analyze_settings_info(self):
         ret = QtGui.QMessageBox.question(self,
