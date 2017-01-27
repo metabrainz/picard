@@ -44,6 +44,7 @@ def supported_extensions():
 
 def guess_format(filename, options=_formats):
     """Select the best matching file type amongst supported formats."""
+    log.debug("Evaluating file format: %r", filename)
     results = []
     # Since we are reading only 128 bytes and then immediately closing the file,
     # use unbuffered mode.
