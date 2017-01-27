@@ -113,9 +113,22 @@ class Tagger(QtGui.QApplication):
 
         # FIXME: Figure out what's wrong with QThreadPool.globalInstance().
         # It's a valid reference, but its start() method doesn't work.
+        # Main thread_pool is intended for CPU intensive activities
         self.thread_pool = QtCore.QThreadPool(self)
+        # Since Python LGL effectively confines Python to  single core
+        # set threadcount for CPU intensive activities to 1
+        self.thread_pool.setMaxThreadCount(1)
 
-        # Use a separate thread pool for file saving, with a thread count of 1,
+        # Use a separate thread pools for directory loading, file loading, and
+        # file saving to avoid blocking file i/o exhausting the main thread pool.
+        # We are using a single thread per pool, however except for the file save pool
+        # there is no reason that this cannot be increased if necessary.
+        self.dir_thread_pool = QtCore.QThreadPool(self)
+        #self.dir_thread_pool.setMaxThreadCount(1)
+        self.load_thread_pool = QtCore.QThreadPool(self)
+        self.load_thread_pool.setMaxThreadCount(1)
+
+        # Use a separate thread pool with a single thread for file saving,
         # to avoid race conditions in File._save_and_rename.
         self.save_thread_pool = QtCore.QThreadPool(self)
         self.save_thread_pool.setMaxThreadCount(1)
@@ -150,6 +163,10 @@ class Tagger(QtGui.QApplication):
                   platform.python_implementation(), platform.python_version())
         log.debug("Versions: %s", versions.as_string())
         log.debug("Configuration file path: %r", config.config.fileName())
+        log.debug("Main thread pool: %d threads", self.thread_pool.maxThreadCount())
+        log.debug("Dir thread pool: %d threads", self.dir_thread_pool.maxThreadCount())
+        log.debug("Load thread pool: %d threads", self.load_thread_pool.maxThreadCount())
+        log.debug("Save thread pool: %d threads", self.save_thread_pool.maxThreadCount())
 
         # TODO remove this before the final release
         if sys.platform == "win32":
@@ -418,7 +435,11 @@ class Tagger(QtGui.QApplication):
             if result:
                 if error is None:
                     self.add_files(result)
-                thread.run_task(get_files, process)
+                thread.run_task(
+                    get_files,
+                    process,
+                    priority=2,
+                    thread_pool=self.dir_thread_pool)
 
         process(True, False)
 

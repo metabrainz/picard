@@ -102,7 +102,8 @@ class File(QtCore.QObject, Item):
         thread.run_task(
             partial(self._load, self.filename),
             partial(self._loading_finished, callback),
-            priority=1)
+            priority=1,
+            thread_pool=self.tagger.load_thread_pool)
 
     def _loading_finished(self, callback, result=None, error=None):
         if self.state != self.PENDING:
