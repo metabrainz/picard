@@ -799,7 +799,7 @@ class MainWindow(QtGui.QMainWindow):
 
     def open_folder(self):
         files = self.tagger.get_files_from_objects(self.selected_objects)
-        folders = set([os.path.realpath(os.path.dirname(f.filename)) for f in files])
+        folders = set([os.path.dirname(f.filename) for f in files])
         for folder in folders:
             QtGui.QDesktopServices.openUrl(self._openUrl(folder))
 

@@ -151,7 +151,7 @@ class Tagger(QtGui.QApplication):
         log.debug("Platform: %s %s %s", platform.platform(),
                   platform.python_implementation(), platform.python_version())
         log.debug("Versions: %s", versions.as_string())
-        log.debug("Configuration file path: %s", config.config.fileName())
+        log.debug("Configuration file path: %r", config.config.fileName())
 
         # TODO remove this before the final release
         if sys.platform == "win32":
@@ -160,12 +160,12 @@ class Tagger(QtGui.QApplication):
             olduserdir = "~/.picard"
         olduserdir = os.path.expanduser(olduserdir)
         if os.path.isdir(olduserdir):
-            log.info("Moving %s to %s", olduserdir, USER_DIR)
+            log.info("Moving %r to %r", olduserdir, USER_DIR)
             try:
                 shutil.move(olduserdir, USER_DIR)
             except:
                 pass
-        log.debug("User directory: %s", os.path.abspath(USER_DIR))
+        log.debug("User directory: %r", os.path.abspath(USER_DIR))
 
         # for compatibility with pre-1.3 plugins
         QtCore.QObject.tagger = self
@@ -356,10 +356,10 @@ class Tagger(QtGui.QApplication):
         for filename in filenames:
             filename = os.path.normpath(os.path.realpath(filename))
             if ignore_hidden and is_hidden(filename):
-                log.debug("File ignored (hidden): %s" % (filename))
+                log.debug("File ignored (hidden): %r" % (filename))
                 continue
             if ignoreregex is not None and ignoreregex.search(filename):
-                log.info("File ignored (matching %s): %s" % (pattern, filename))
+                log.info("File ignored (matching %r): %r" % (pattern, filename))
                 continue
             if filename not in self.files:
                 file = open_file(filename)
@@ -399,7 +399,7 @@ class Tagger(QtGui.QApplication):
                         'count': number_of_files,
                         'directory': root,
                     }
-                    log.debug("Adding %(count)d files from '%(directory)s'" %
+                    log.debug("Adding %(count)d files from '%(directory)r'" %
                               mparms)
                     self.window.set_statusbar_message(
                         ungettext(
@@ -432,7 +432,7 @@ class Tagger(QtGui.QApplication):
                 'count': number_of_files,
                 'directory': path,
             }
-            log.debug("Adding %(count)d files from '%(directory)s'" %
+            log.debug("Adding %(count)d files from '%(directory)r'" %
                       mparms)
             self.window.set_statusbar_message(
                 ungettext(
