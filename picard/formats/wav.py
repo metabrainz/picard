@@ -30,7 +30,7 @@ class WAVFile(File):
     _File = None
 
     def _load(self, filename):
-        log.debug("Loading file %r", filename)
+        log.debug("Loading file %s", filename)
         f = wave.open(encode_filename(filename), "rb")
         metadata = Metadata()
         metadata['~channels'] = f.getnchannels()

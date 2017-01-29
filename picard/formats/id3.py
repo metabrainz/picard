@@ -176,7 +176,7 @@ class ID3File(File):
     }
 
     def _load(self, filename):
-        log.debug("Loading file %r", filename)
+        log.debug("Loading file %s", filename)
         file = self._get_file(encode_filename(filename))
         tags = file.tags or {}
         # upgrade custom 2.3 frames to 2.4
@@ -422,7 +422,7 @@ class ID3File(File):
                         if frame.FrameID in ('TMCL', 'TIPL', 'IPLS'):
                             for people in frame.people:
                                 if people[0] == role:
-                                    frame.people.remove(people)   
+                                    frame.people.remove(people)
                 elif name.startswith('comment:'):
                     desc = name.split(':', 1)[1]
                     if desc.lower()[:4] != 'itun':
@@ -443,7 +443,7 @@ class ID3File(File):
                         if frame.FrameID in ('TIPL', 'IPLS'):
                             for people in frame.people:
                                 if people[0] == role:
-                                    frame.people.remove(people)   
+                                    frame.people.remove(people)
                 elif name == 'musicbrainz_recordingid':
                     for key, frame in tags.items():
                         if frame.FrameID == 'UFID' and frame.owner == 'http://musicbrainz.org':

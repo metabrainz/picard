@@ -144,7 +144,7 @@ class ASFFile(File):
     __RTRANS = dict([(b, a) for a, b in __TRANS.items()])
 
     def _load(self, filename):
-        log.debug("Loading file %r", filename)
+        log.debug("Loading file %s", filename)
         file = ASF(encode_filename(filename))
         metadata = Metadata()
         for name, values in file.tags.items():

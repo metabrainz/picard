@@ -147,7 +147,7 @@ class Tagger(QtGui.QApplication):
 
         # Setup logging
         self.debug(picard_args.debug or "PICARD_DEBUG" in os.environ)
-        log.debug("Starting Picard from %r", os.path.abspath(__file__))
+        log.debug("Starting Picard from %s", os.path.abspath(__file__))
         log.debug("Platform: %s %s %s", platform.platform(),
                   platform.python_implementation(), platform.python_version())
         log.debug("Versions: %s", versions.as_string())

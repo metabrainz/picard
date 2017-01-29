@@ -185,7 +185,7 @@ class File(QtCore.QObject, Item):
                 try:
                     os.utime(encoded_old_filename, (info.st_atime, info.st_mtime))
                 except OSError:
-                    log.warning("Couldn't preserve timestamp for %r", old_filename)
+                    log.warning("Couldn't preserve timestamp for %s", old_filename)
         # Rename files
         if config.setting["rename_files"] or config.setting["move_files"]:
             new_filename = self._rename(old_filename, metadata)
@@ -349,7 +349,7 @@ class File(QtCore.QObject, Item):
             new_filename = "%s (%d)" % (tmp_filename, i)
             i += 1
         new_filename = new_filename + ext
-        log.debug("Moving file %r => %r", old_filename, new_filename)
+        log.debug("Moving file %s => %s", old_filename, new_filename)
         shutil.move(encode_filename(old_filename), encode_filename(new_filename))
         return new_filename
 
@@ -389,9 +389,9 @@ class File(QtCore.QObject, Item):
                     old_file = os.path.join(old_path, old_file)
                     # FIXME we shouldn't do this from a thread!
                     if self.tagger.files.get(decode_filename(old_file)):
-                        log.debug("File loaded in the tagger, not moving %r", old_file)
+                        log.debug("File loaded in the tagger, not moving %s", old_file)
                         continue
-                    log.debug("Moving %r to %r", old_file, new_file)
+                    log.debug("Moving %s to %s", old_file, new_file)
                     shutil.move(old_file, new_file)
 
     def remove(self, from_parent=True):

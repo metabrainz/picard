@@ -207,7 +207,7 @@ class PluginData(PluginShared):
         try:
             return PluginShared.__getattribute__(self, name)
         except AttributeError:
-            log.debug('Attribute %r not found for plugin %r', name, self.module_name)
+            log.debug('Attribute %s not found for plugin %s', name, self.module_name)
             return None
 
     @property
@@ -234,7 +234,7 @@ class PluginManager(QtCore.QObject):
     def load_plugindir(self, plugindir):
         plugindir = os.path.normpath(plugindir)
         if not os.path.isdir(plugindir):
-            log.info("Plugin directory %r doesn't exist", plugindir)
+            log.info("Plugin directory %s doesn't exist", plugindir)
             return
         # first, handle eventual plugin updates
         for updatepath in [os.path.join(plugindir, file) for file in
@@ -246,9 +246,9 @@ class PluginManager(QtCore.QObject):
             if name:
                 self.remove_plugin(name)
                 os.rename(updatepath, path)
-                log.debug('Updating plugin %r (%r))', name, path)
+                log.debug('Updating plugin %s (%s))', name, path)
             else:
-                log.error('Cannot get plugin name from %r', updatepath)
+                log.error('Cannot get plugin name from %s', updatepath)
         # now load found plugins
         names = set()
         for path in [os.path.join(plugindir, file) for file in os.listdir(plugindir)]:
@@ -257,7 +257,7 @@ class PluginManager(QtCore.QObject):
                 name = _plugin_name_from_path(path)
             if name:
                 names.add(name)
-        log.debug("Looking for plugins in directory %r, %d names found",
+        log.debug("Looking for plugins in directory %s, %d names found",
                   plugindir,
                   len(names))
         for name in sorted(names):
@@ -269,7 +269,7 @@ class PluginManager(QtCore.QObject):
         if importer:
             name = module_name
             if not importer.find_module(name):
-                log.error("Failed loading zipped plugin %r", name)
+                log.error("Failed loading zipped plugin %s", name)
                 return None
             module_pathname = importer.get_filename(name)
         else:
@@ -278,7 +278,7 @@ class PluginManager(QtCore.QObject):
                 module_file = info[0]
                 module_pathname = info[1]
             except ImportError:
-                log.error("Failed loading plugin %r", name)
+                log.error("Failed loading plugin %s", name)
                 return None
 
         plugin = None
@@ -286,8 +286,8 @@ class PluginManager(QtCore.QObject):
             index = None
             for i, p in enumerate(self.plugins):
                 if name == p.module_name:
-                    log.warning("Module %r conflict: unregistering previously" \
-                              " loaded %r version %s from %r",
+                    log.warning("Module %s conflict: unregistering previously" \
+                              " loaded %s version %s from %s",
                               p.module_name,
                               p.name,
                               p.version,
@@ -304,7 +304,7 @@ class PluginManager(QtCore.QObject):
                         list(plugin.api_versions)]
             compatible_versions = list(set(versions) & self._api_versions)
             if compatible_versions:
-                log.debug("Loading plugin %r version %s, compatible with API: %s",
+                log.debug("Loading plugin %s version %s, compatible with API: %s",
                           plugin.name,
                           plugin.version,
                           ", ".join([version_to_string(v, short=True) for v in
@@ -320,9 +320,9 @@ class PluginManager(QtCore.QObject):
                             " with this version of Picard."
                             % (plugin.name, plugin.file))
         except VersionError as e:
-            log.error("Plugin %r has an invalid API version string : %s", name, e)
+            log.error("Plugin %s has an invalid API version string : %s", name, e)
         except:
-            log.error("Plugin %r : %s", name, traceback.format_exc())
+            log.error("Plugin %s : %s", name, traceback.format_exc())
         if module_file is not None:
             module_file.close()
         return plugin
@@ -341,14 +341,14 @@ class PluginManager(QtCore.QObject):
     def remove_plugin(self, plugin_name):
         if plugin_name.endswith('.zip'):
             plugin_name = os.path.splitext(plugin_name)[0]
-        log.debug("Remove plugin files and dirs : %r", plugin_name)
+        log.debug("Remove plugin files and dirs : %s", plugin_name)
         dirpath, filepaths = self._get_existing_paths(plugin_name)
         if dirpath:
-            log.debug("Removing directory %r", dirpath)
+            log.debug("Removing directory %s", dirpath)
             shutil.rmtree(dirpath)
         if filepaths:
             for filepath in filepaths:
-                log.debug("Removing file %r", filepath)
+                log.debug("Removing file %s", filepath)
                 os.remove(filepath)
 
     def install_plugin(self, path, overwrite_confirm=None, plugin_name=None,
@@ -387,7 +387,7 @@ class PluginManager(QtCore.QObject):
                             zipfile.flush()
                             os.fsync(zipfile.fileno())
                         os.rename(ziptmp, dst)
-                        log.debug("Plugin saved to %r", dst)
+                        log.debug("Plugin saved to %s", dst)
                     except:
                         try:
                             os.remove(ziptmp)
