@@ -37,7 +37,7 @@ class GeneralOptionsPage(OptionsPage):
 
     options = [
         config.TextOption("setting", "server_host", MUSICBRAINZ_SERVERS[0]),
-        config.IntOption("setting", "server_port", 80),
+        config.IntOption("setting", "server_port", 443),
         config.TextOption("persist", "oauth_refresh_token", ""),
         config.BoolOption("setting", "analyze_new_files", False),
         config.BoolOption("setting", "ignore_file_mbids", False),
