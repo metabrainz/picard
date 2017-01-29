@@ -15,7 +15,7 @@ virtualenv -p python2.7 --system-site-packages e
 . e/bin/activate
 
 pip install mutagen==$MUTAGEN_VERSION
-pip install https://github.com/JonnyJD/python-discid/archive/dmg.zip # XXX can't use $PYTHON_DISCID_VERSION
+pip install discid==$PYTHON_DISCID_VERSION
 pip install py2app
 
 perl -pi -e 's{plugin_dir = (.*)$}{plugin_dir = "/Developer/Applications/Qt/plugins"}' e/lib/python2.7/site-packages/py2app/recipes/sip.py
