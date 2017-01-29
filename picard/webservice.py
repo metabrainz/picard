@@ -512,11 +512,12 @@ class XmlWebService(QtCore.QObject):
     def submit_ratings(self, ratings, handler):
         host = config.setting['server_host']
         port = config.setting['server_port']
-        path = '/ws/2/rating/?client=' + CLIENT_STRING
+        path = '/ws/2/rating/'
+        params = {"client": CLIENT_STRING}
         recordings = (''.join(['<recording id="%s"><user-rating>%s</user-rating></recording>' %
             (i[1], j*20) for i, j in ratings.items() if i[0] == 'recording']))
         data = _wrap_xml_metadata('<recording-list>%s</recording-list>' % recordings)
-        return self.post(host, port, path, data, handler, priority=True)
+        return self.post(host, port, path, data, handler, priority=True, queryargs=params)
 
     def _encode_acoustid_args(self, args, format='xml'):
         filters = []
