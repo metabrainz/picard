@@ -20,6 +20,7 @@
 from __future__ import print_function
 import sys
 import os
+import codecs, locale
 from collections import deque
 from PyQt4 import QtCore
 from picard.util import thread
@@ -103,8 +104,8 @@ _log_prefixes = {
 
 
 def formatted_log_line(level, time, message, timefmt='hh:mm:ss',
-                       level_prefixes=_log_prefixes):
-    msg = "%s %s" % (time.toString(timefmt), message)
+                       level_prefixes=_log_prefixes, format='%s %s'):
+    msg = format % (time.toString(timefmt), message)
     if level_prefixes:
         return "%s: %s" % (level_prefixes[level], msg)
     else:
@@ -113,11 +114,9 @@ def formatted_log_line(level, time, message, timefmt='hh:mm:ss',
 
 def _stderr_receiver(level, time, msg):
     try:
-        sys.stderr.write(formatted_log_line(level, time, msg + os.linesep))
-    except UnicodeDecodeError:
-        import traceback
-        traceback.print_exc()
-        print("%r" % msg)
+        sys.stderr.write(formatted_log_line(level, time, msg) + os.linesep)
+    except (UnicodeDecodeError, UnicodeEncodeError):
+        sys.stderr.write(formatted_log_line(level, time, msg, format='%s %r') + os.linesep)
 
 
 main_logger.register_receiver(_stderr_receiver)
