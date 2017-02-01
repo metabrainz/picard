@@ -225,8 +225,9 @@ class File(QtCore.QObject, Item):
             raise OSError
 
     def _saving_finished(self, result=None, error=None):
-        # Handle file removed
-        if self.state == File.REMOVED and not result:
+        # Handle file removed before save
+        # Result is None if save was skipped because file was removed. 
+        if self.state == File.REMOVED and result is not None:
             return
         old_filename = new_filename = self.filename
         if error is not None:
