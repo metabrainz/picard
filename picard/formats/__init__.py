@@ -45,7 +45,7 @@ def supported_extensions():
 def guess_format(filename, options=_formats):
     """Select the best matching file type amongst supported formats."""
     results = []
-    with file(filename, "rb") as fileobj:
+    with file(filename, "rb", 128) as fileobj:
         header = fileobj.read(128)
         # Calls the score method of a particular format's associated filetype
         # and assigns a positive score depending on how closely the fileobj's header matches
