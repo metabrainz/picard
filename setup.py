@@ -43,8 +43,11 @@ py2app_exclude_modules = [
     'PyQt4.QtTest', 'PyQt4.QtWebKit', 'PyQt4.QtXml', 'PyQt4.QtXmlPatterns', 'PyQt4.phonon'
 ]
 
+# sockets module, however not excluded from py2exe should not be used in Picard. Instead
+# the QtNetwork module should be used. sockets module was removed from the excluded list
+# to support bundled plugins on platforms it is not available.
 py2exe_exclude_modules = [
-    'socket', 'select',
+    'select',
 ]
 
 exclude_modules = [
