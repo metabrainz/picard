@@ -20,7 +20,6 @@
 from __future__ import print_function
 import sys
 import os
-import codecs, locale
 from collections import deque
 from PyQt4 import QtCore
 from picard.util import thread
