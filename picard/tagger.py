@@ -214,6 +214,7 @@ class Tagger(QtGui.QApplication):
         self.nats = None
         self.window = MainWindow()
         self.exit_cleanup = []
+        self.stopping = False
 
     def register_cleanup(self, func):
         self.exit_cleanup.append(func)
