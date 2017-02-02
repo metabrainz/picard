@@ -263,6 +263,9 @@ class File(QtCore.QObject, Item):
             del self.tagger.files[old_filename]
             self.tagger.files[new_filename] = self
 
+        if self.tagger.stopping:
+            log.debug("Save of %r completed before stopping Picard", self.filename)
+
     def _save(self, filename, metadata):
         """Save the metadata."""
         raise NotImplementedError
