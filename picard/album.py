@@ -34,7 +34,7 @@ from picard.ui.item import Item
 from picard.util import format_time, mbid_validate
 from picard.util.textencoding import asciipunct
 from picard.cluster import Cluster
-from picard.collection import Collection, user_collections
+from picard.collection import add_release_to_user_collections
 from picard.mbxml import (
     release_group_to_metadata,
     release_to_metadata,
@@ -140,15 +140,7 @@ class Album(DataObject, Item):
         m['totaldiscs'] = release_node.medium_list[0].count
 
         # Add album to collections
-        if "collection_list" in release_node.children:
-            # Check for empty collection list
-            if "collection" in release_node.collection_list[0].children:
-                for node in release_node.collection_list[0].collection:
-                    if node.editor[0].text.lower() == config.persist["oauth_username"].lower():
-                        if node.id not in user_collections:
-                            user_collections[node.id] = \
-                                Collection(node.id, node.name[0].text, node.release_list[0].count)
-                        user_collections[node.id].releases.add(self.id)
+        add_release_to_user_collections(release_node)
 
         # Run album metadata plugins
         try:

@@ -131,3 +131,19 @@ def load_user_collections(callback=None):
         tagger.xmlws.get_collection_list(partial(request_finished))
     else:
         user_collections.clear()
+
+
+def add_release_to_user_collections(release_node):
+    # Add album to collections
+    if "collection_list" in release_node.children:
+        # Check for empty collection list
+        if "collection" in release_node.collection_list[0].children:
+            username = config.persist["oauth_username"].lower()
+            for node in release_node.collection_list[0].collection:
+                if node.editor[0].text.lower() == username:
+                    if node.id not in user_collections:
+                        user_collections[node.id] = \
+                            Collection(node.id, node.name[0].text, node.release_list[0].count)
+                    user_collections[node.id].releases.add(release_node.id)
+                    log.debug("Adding release %r to %r" %
+                              (release_node.id, user_collections[node.id]))
