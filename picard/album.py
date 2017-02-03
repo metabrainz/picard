@@ -141,12 +141,14 @@ class Album(DataObject, Item):
 
         # Add album to collections
         if "collection_list" in release_node.children:
-            for node in release_node.collection_list[0].collection:
-                if node.editor[0].text.lower() == config.persist["oauth_username"].lower():
-                    if node.id not in user_collections:
-                        user_collections[node.id] = \
-                            Collection(node.id, node.name[0].text, node.release_list[0].count)
-                    user_collections[node.id].releases.add(self.id)
+            # Check for empty collection list
+            if "collection" in release_node.collection_list.children:
+                for node in release_node.collection_list[0].collection:
+                    if node.editor[0].text.lower() == config.persist["oauth_username"].lower():
+                        if node.id not in user_collections:
+                            user_collections[node.id] = \
+                                Collection(node.id, node.name[0].text, node.release_list[0].count)
+                        user_collections[node.id].releases.add(self.id)
 
         # Run album metadata plugins
         try:
