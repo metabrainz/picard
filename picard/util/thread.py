@@ -36,12 +36,15 @@ class ProxyToMainEvent(QEvent):
 
 class Runnable(QRunnable):
 
-    def __init__(self, func, next):
+    def __init__(self, func, next, os_priority=0):
         QRunnable.__init__(self)
         self.func = func
         self.next = next
+        self.thread_priority = min(QThread.IdlePriority,max(QThread.TimeCriticalPriority,
+            QThread.currentThread().priority() + os_priority))
 
     def run(self):
+        QThread.currentThread().setPriority(self.thread_priority)
         try:
             result = self.func()
         except:
@@ -52,10 +55,10 @@ class Runnable(QRunnable):
             to_main(self.next, result=result)
 
 
-def run_task(func, next, priority=0, thread_pool=None):
+def run_task(func, next, priority=0, thread_pool=None, os_priority=0):
     if thread_pool is None:
         thread_pool = QCoreApplication.instance().thread_pool
-    thread_pool.start(Runnable(func, next), priority)
+    thread_pool.start(Runnable(func, next, os_priority=os_priority), priority)
 
 
 def to_main(func, *args, **kwargs):
