@@ -34,6 +34,9 @@ class Collection(QtCore.QObject):
         self.size = int(size)
         self.releases = set()
 
+    def __repr__(self):
+        return '<Collection %s (%s)>' % (self.name, self.id)
+
     def add_releases(self, ids, callback):
         ids = ids - self.pending
         if ids:
