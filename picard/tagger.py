@@ -378,6 +378,8 @@ class Tagger(QtGui.QApplication):
         return temp_files
 
     def _file_opening_finsished(self, target=None, result=None, error=None):
+        if error is not None:
+            log.error('Error occured %s', error)
         if result and self.check_load(result):
             new_files = []
             for filename in sorted(result):
