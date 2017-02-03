@@ -303,9 +303,9 @@ class Tagger(QtGui.QApplication):
                     self.add_directory(decode_filename(file))
                 else:
                     files.append(decode_filename(file))
-            if files:
-                self.add_files(files)
             del self._cmdline_files
+            if files:
+                self.add_files([files])
 
     def run(self):
         if config.setting["browser_integration"]:
@@ -321,7 +321,7 @@ class Tagger(QtGui.QApplication):
             event.run()
         elif event.type() == QtCore.QEvent.FileOpen:
             f = str(event.file())
-            self.add_files([f])
+            self.add_files([[f]])
             # We should just return True here, except that seems to
             # cause the event's sender to get a -9874 error, so
             # apparently there's some magic inside QFileOpenEvent...
@@ -364,80 +364,72 @@ class Tagger(QtGui.QApplication):
         elif isinstance(target, ClusterList):
             self.cluster(files)
 
-    def add_files(self, filenames, target=None):
+    def add_files(self, list_of_filenames, target=None):
         """Add files to the tagger."""
+        # If we want to know the total number of files sum the lengths of the lists
+        # number_of_files = sum([len(x) for x in list_of_filenames])
+        for filenames in list_of_filenames:
+            new_files = []
+            for filename in filenames:
+                filename = os.path.normpath(os.path.realpath(filename))
+                if filename not in self.files:
+                    file = open_file(filename)
+                    if file:
+                        self.files[filename] = file
+                        new_files.append(file)
+                    QtCore.QCoreApplication.processEvents()
+            if new_files:
+                log.debug("Adding files %r", new_files)
+                new_files.sort(key=lambda x: x.filename)
+                if target is None or target is self.unmatched_files:
+                    self.unmatched_files.add_files(new_files)
+                    target = None
+                for file in new_files:
+                    file.load(partial(self._file_loaded, target=target))
+
+    def add_directory(self, path):
+        if config.setting['recursively_add_files']:
+            list_of_files = self._add_directory_recursive(path)
+        else:
+            list_of_files = self._add_directory_non_recursive(path)
+        self.add_files(list_of_files)
+
+    def _add_directory_recursive(self, path):
+        ignore_hidden = config.setting["ignore_hidden_files"]
+        list_to_add = []
+        # walk topdown to allow modifying the sub-dirs to remove hidden dirs
+        for root, dirs, files in os.walk(unicode(path), topdown=True):
+            QtCore.QCoreApplication.processEvents()
+            if ignore_hidden:
+                dirs[:] = [d for d in dirs if not is_hidden(os.path.join(root, d))]
+            files_to_add = self._add_files_from_directory(root, files)
+            if files_to_add:
+                list_to_add.append(files_to_add)
+        return list_to_add
+
+    def _add_directory_non_recursive(self, path):
+        return [self._add_files_from_directory(path, os.listdir(path))]
+
+    def _add_files_from_directory(self, path, files):
         ignoreregex = None
         pattern = config.setting['ignore_regex']
         if pattern:
             ignoreregex = re.compile(pattern)
         ignore_hidden = config.setting["ignore_hidden_files"]
-        new_files = []
-        for filename in filenames:
-            filename = os.path.normpath(os.path.realpath(filename))
+        files_to_add = []
+        for f in files:
+            f = os.path.join(path, f)
+            filename = os.path.normpath(os.path.realpath(f))
+            if not os.path.isfile(f):
+                continue
             if ignore_hidden and is_hidden(filename):
                 log.debug("File ignored (hidden): %r" % (filename))
                 continue
             if ignoreregex is not None and ignoreregex.search(filename):
                 log.info("File ignored (matching %r): %r" % (pattern, filename))
                 continue
-            if filename not in self.files:
-                file = open_file(filename)
-                if file:
-                    self.files[filename] = file
-                    new_files.append(file)
-                QtCore.QCoreApplication.processEvents()
-        if new_files:
-            log.debug("Adding files %r", new_files)
-            new_files.sort(key=lambda x: x.filename)
-            if target is None or target is self.unmatched_files:
-                self.unmatched_files.add_files(new_files)
-                target = None
-            for file in new_files:
-                file.load(partial(self._file_loaded, target=target))
-
-    def add_directory(self, path):
-        if config.setting['recursively_add_files']:
-            self._add_directory_recursive(path)
-        else:
-            self._add_directory_non_recursive(path)
-
-    def _add_directory_recursive(self, path):
-        ignore_hidden = config.setting["ignore_hidden_files"]
-        files_to_be_added = list()
-        # walk topdown to allow modifying the sub-dirs to remove hidden dirs
-        for root, dirs, files in os.walk(unicode(path), topdown=True):
-            QtCore.QCoreApplication.processEvents()
-            if ignore_hidden:
-                dirs[:] = [d for d in dirs if not is_hidden(os.path.join(root, d))]
-            number_of_files = len(files)
-            if number_of_files:
-                mparms = {
-                    'count': number_of_files,
-                    'directory': root,
-                }
-                log.debug("Adding %(count)d files from '%(directory)r'" %
-                          mparms)
-                self.window.set_statusbar_message(
-                    ungettext(
-                        "Adding %(count)d file from '%(directory)s' ...",
-                        "Adding %(count)d files from '%(directory)s' ...",
-                        number_of_files),
-                    mparms,
-                    translate=None,
-                    echo=None
-                )
-                files_to_be_added.extend([os.path.join(root, f) for f in files])
-
-        if files_to_be_added:
-            self.add_files(files_to_be_added)
-
-    def _add_directory_non_recursive(self, path):
-        files = []
-        for f in os.listdir(path):
-            listing = os.path.join(path, f)
-            if os.path.isfile(listing):
-                files.append(listing)
-        number_of_files = len(files)
+            files_to_add.append(f)
+        number_of_files = len(files_to_add)
         if number_of_files:
             mparms = {
                 'count': number_of_files,
@@ -454,8 +446,7 @@ class Tagger(QtGui.QApplication):
                 translate=None,
                 echo=None
             )
-            # Function call only if files exist
-            self.add_files(files)
+        return files_to_add
 
     def get_file_lookup(self):
         """Return a FileLookup object."""
