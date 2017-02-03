@@ -142,7 +142,7 @@ class Album(DataObject, Item):
         # Add album to collections
         if "collection_list" in release_node.children:
             # Check for empty collection list
-            if "collection" in release_node.collection_list.children:
+            if "collection" in release_node.collection_list[0].children:
                 for node in release_node.collection_list[0].collection:
                     if node.editor[0].text.lower() == config.persist["oauth_username"].lower():
                         if node.id not in user_collections:
