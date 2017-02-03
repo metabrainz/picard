@@ -380,6 +380,7 @@ class Tagger(QtGui.QApplication):
                 file = open_file(filename)
                 if file:
                     new_files[filename] = file
+                QtCore.QCoreApplication.processEvents()
         return new_files
 
     def _open_files_finished(self, target=None, result=None, error=None):
