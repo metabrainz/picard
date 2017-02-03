@@ -19,7 +19,7 @@
 
 import sys
 import traceback
-from PyQt4.QtCore import QRunnable, QCoreApplication, QEvent
+from PyQt4.QtCore import QRunnable, QCoreApplication, QEvent, QThread
 
 
 class ProxyToMainEvent(QEvent):
@@ -61,4 +61,5 @@ def run_task(func, next, priority=0, thread_pool=None):
 def to_main(func, *args, **kwargs):
     QCoreApplication.postEvent(QCoreApplication.instance(),
                                ProxyToMainEvent(func, *args, **kwargs))
-    QCoreApplication.processEvents()
+    if QCoreApplication.instance().thread() != QThread.currentThread():
+        QCoreApplication.processEvents()
