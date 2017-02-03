@@ -302,7 +302,7 @@ class Tagger(QtGui.QApplication):
                     files.append(decode_filename(file))
             del self._cmdline_files
             if files:
-                self.add_files([files])
+                self._add_files([files])
 
     def run(self):
         if config.setting["browser_integration"]:
@@ -318,7 +318,7 @@ class Tagger(QtGui.QApplication):
             event.run()
         elif event.type() == QtCore.QEvent.FileOpen:
             f = str(event.file())
-            self.add_files([[f]])
+            self._add_files([[f]])
             # We should just return True here, except that seems to
             # cause the event's sender to get a -9874 error, so
             # apparently there's some magic inside QFileOpenEvent...
@@ -361,7 +361,10 @@ class Tagger(QtGui.QApplication):
         elif isinstance(target, ClusterList):
             self.cluster(files)
 
-    def add_files(self, list_of_filenames, target=None):
+    def add_files(self, filenames, target=None):
+        self._add_files([self._add_files_from_directory("", filenames)], target=target)
+
+    def _add_files(self, list_of_filenames, target=None):
         """Add files to the tagger."""
         # If we want to know the total number of files e.g. to warn the user
         # sum the lengths of the lists.
@@ -380,6 +383,7 @@ class Tagger(QtGui.QApplication):
                 file = open_file(filename)
                 if file:
                     new_files[filename] = file
+                # Allow UI to process events to keep it responsive
                 QtCore.QCoreApplication.processEvents()
         return new_files
 
@@ -402,7 +406,7 @@ class Tagger(QtGui.QApplication):
             list_of_files = self._add_directory_recursive(path)
         else:
             list_of_files = self._add_directory_non_recursive(path)
-        self.add_files(list_of_files)
+        self._add_files(list_of_files)
 
     def _add_directory_recursive(self, path):
         ignore_hidden = config.setting["ignore_hidden_files"]
