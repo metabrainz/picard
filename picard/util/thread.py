@@ -61,3 +61,4 @@ def run_task(func, next, priority=0, thread_pool=None):
 def to_main(func, *args, **kwargs):
     QCoreApplication.postEvent(QCoreApplication.instance(),
                                ProxyToMainEvent(func, *args, **kwargs))
+    QCoreApplication.processEvents()
