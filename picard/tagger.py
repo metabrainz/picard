@@ -123,8 +123,6 @@ class Tagger(QtGui.QApplication):
         # file saving to avoid blocking file i/o exhausting the main thread pool.
         # We are using a single thread per pool, however except for the file save pool
         # there is no reason that this cannot be increased if necessary.
-        self.dir_thread_pool = QtCore.QThreadPool(self)
-        #self.dir_thread_pool.setMaxThreadCount(1)
         self.load_thread_pool = QtCore.QThreadPool(self)
         self.load_thread_pool.setMaxThreadCount(1)
 
@@ -164,7 +162,6 @@ class Tagger(QtGui.QApplication):
         log.debug("Versions: %s", versions.as_string())
         log.debug("Configuration file path: %r", config.config.fileName())
         log.debug("Main thread pool: %d threads", self.thread_pool.maxThreadCount())
-        log.debug("Dir thread pool: %d threads", self.dir_thread_pool.maxThreadCount())
         log.debug("Load thread pool: %d threads", self.load_thread_pool.maxThreadCount())
         log.debug("Save thread pool: %d threads", self.save_thread_pool.maxThreadCount())
 
@@ -366,26 +363,38 @@ class Tagger(QtGui.QApplication):
 
     def add_files(self, list_of_filenames, target=None):
         """Add files to the tagger."""
-        # If we want to know the total number of files sum the lengths of the lists
+        # If we want to know the total number of files e.g. to warn the user
+        # sum the lengths of the lists.
         # number_of_files = sum([len(x) for x in list_of_filenames])
         for filenames in list_of_filenames:
+            thread.run_task(partial(self._open_files, filenames),
+                    partial(self._open_files_finished, target),
+                    priority=2,
+                    thread_pool=self.load_thread_pool)
+
+    def _open_files(self, filenames):
+        new_files = {}
+        for filename in filenames:
+            filename = os.path.normpath(os.path.realpath(filename))
+            if filename not in self.files:
+                file = open_file(filename)
+                if file:
+                    new_files[filename] = file
+        return new_files
+
+    def _open_files_finished(self, target=None, result=None, error=None):
+        if result:
             new_files = []
-            for filename in filenames:
-                filename = os.path.normpath(os.path.realpath(filename))
-                if filename not in self.files:
-                    file = open_file(filename)
-                    if file:
-                        self.files[filename] = file
-                        new_files.append(file)
-                    QtCore.QCoreApplication.processEvents()
-            if new_files:
-                log.debug("Adding files %r", new_files)
-                new_files.sort(key=lambda x: x.filename)
-                if target is None or target is self.unmatched_files:
-                    self.unmatched_files.add_files(new_files)
-                    target = None
-                for file in new_files:
-                    file.load(partial(self._file_loaded, target=target))
+            for filename in sorted(result):
+                file = result[filename]
+                self.files[filename] = file
+                new_files.append(file)
+            log.debug("Adding files %r", new_files)
+            if target is None or target is self.unmatched_files:
+                self.unmatched_files.add_files(new_files)
+                target = None
+            for file in new_files:
+                file.load(partial(self._file_loaded, target=target))
 
     def add_directory(self, path):
         if config.setting['recursively_add_files']:
