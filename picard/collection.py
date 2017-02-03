@@ -94,6 +94,7 @@ class Collection(QtCore.QObject):
                 echo=None
             )
 
+
 def load_user_collections(callback=None):
     tagger = QtCore.QObject.tagger
 
