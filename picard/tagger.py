@@ -122,6 +122,10 @@ class Tagger(QtGui.QApplication):
         self.save_thread_pool = QtCore.QThreadPool(self)
         self.save_thread_pool.setMaxThreadCount(1)
 
+        # Use a seperate thread pool for loading to allow UI to be responsonsive
+        self.load_thread_pool = QtCore.QThreadPool(self)
+        self.load_thread_pool.setMaxThreadCount(1)
+
         if not sys.platform == "win32":
             # Set up signal handling
             # It's not possible to call all available functions from signal
@@ -347,13 +351,18 @@ class Tagger(QtGui.QApplication):
 
     def add_files(self, filenames, target=None):
         """Add files to the tagger."""
+        thread.run_task(partial(self._open_files, filenames),
+                        partial(self._file_opening_finsished, target),
+                        priority=1,
+                        thread_pool=self.load_thread_pool)
+
+    def _open_files(self, filenames):
         ignoreregex = None
         pattern = config.setting['ignore_regex']
         if pattern:
             ignoreregex = re.compile(pattern)
         ignore_hidden = config.setting["ignore_hidden_files"]
-        new_files = []
-        tmp_files = {}
+        temp_files = dict()
         for filename in filenames:
             filename = os.path.normpath(os.path.realpath(filename))
             if ignore_hidden and is_hidden(filename):
@@ -365,11 +374,14 @@ class Tagger(QtGui.QApplication):
             if filename not in self.files:
                 file = open_file(filename)
                 if file:
-                    tmp_files[filename] = file
-        if tmp_files and self.check_load(tmp_files):
+                    temp_files[filename] = file
+        return temp_files
+
+    def _file_opening_finsished(self, target=None, result=None, error=None):
+        if result and self.check_load(result):
             new_files = []
-            for filename in sorted(tmp_files):
-                file = tmp_files[filename]
+            for filename in sorted(result):
+                file = result[filename]
                 self.files[filename] = file
                 new_files.append(file)
             log.debug("Adding files %r", new_files)
