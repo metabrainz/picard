@@ -24,9 +24,9 @@ class UpdateToV23Test(unittest.TestCase):
         self.assertEqual(tags["TSOA"].text, ["foo"])
         self.assertEqual(tags["TSOT"].text, ["foo"])
 
-    def test_tdrc(self):
+    def test_tdrl(self):
         tags = compatid3.CompatID3()
-        tags.add(id3.TDRC(encoding=1, text="2003-04-05 12:03"))
+        tags.add(id3.TDRL(encoding=1, text="2003-04-05 12:03"))
         tags.update_to_v23()
         self.assertEqual(tags["TYER"].text, ["2003"])
         self.assertEqual(tags["TDAT"].text, ["0504"])
