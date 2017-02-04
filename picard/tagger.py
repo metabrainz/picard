@@ -410,6 +410,11 @@ class Tagger(QtGui.QApplication):
             for file in new_files:
                 file.load(partial(self._file_loaded, target=target))
 
+    def _add_directory_method(self):
+        if config.setting['recursively_add_files']:
+            return self._add_directory_recursive
+        return self._add_directory_non_recursive
+
     def add_directory_list(self, dir_list, parent=None):
         if parent:
             parent = os.path.normpath(parent)
@@ -431,21 +436,13 @@ class Tagger(QtGui.QApplication):
                 {'directory': dir_list[0]}
             )
 
-        list_of_files = []
-        recursively = config.setting['recursively_add_files']
-        for directory in dir_list:
-            if recursively:
-                list_of_files.extend(self._add_directory_recursive(directory))
-            else:
-                list_of_files.extend(self._add_directory_non_recursive(directory))
-        self._add_files(list_of_files)
+        add_directory = self._add_directory_method()
+        self._add_files(list(chain.from_iterable([add_directory(d) for d in dir_list])))
+
 
     def add_directory(self, path):
-        if config.setting['recursively_add_files']:
-            list_of_files = self._add_directory_recursive(path)
-        else:
-            list_of_files = self._add_directory_non_recursive(path)
-        self._add_files(list_of_files)
+        add_directory = self._add_directory_method()
+        self._add_files(add_directory(path))
 
     def _add_directory_recursive(self, path):
         ignore_hidden = config.setting["ignore_hidden_files"]
