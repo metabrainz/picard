@@ -474,6 +474,7 @@ class BaseTreeView(QtGui.QTreeWidget):
     @staticmethod
     def drop_urls(urls, target):
         files = []
+        directories = []
         new_files = []
         for url in urls:
             log.debug("Dropped the URL: %r", url.toString(QtCore.QUrl.RemoveUserInfo))
@@ -490,11 +491,12 @@ class BaseTreeView(QtGui.QTreeWidget):
                 else:
                     # Dropping a file from iTunes gives a filename with a NULL terminator
                     filename = os.path.normpath(os.path.realpath(unicode(url.toLocalFile()).rstrip("\0")))
+                log.debug("Dropped file/dir: %r", filename)
                 file = BaseTreeView.tagger.files.get(filename)
                 if file:
                     files.append(file)
                 elif os.path.isdir(encode_filename(filename)):
-                    BaseTreeView.tagger.add_directory(filename)
+                    directories.append(filename)
                 else:
                     new_files.append(filename)
             elif url.scheme() in ("http", "https"):
@@ -504,11 +506,15 @@ class BaseTreeView(QtGui.QTreeWidget):
                     entity = match.group(1)
                     mbid = match.group(2)
                     if entity == "release":
+                        log.debug("Dropped release MBID: %s", mbid)
                         BaseTreeView.tagger.load_album(mbid)
                     elif entity == "recording":
+                        log.debug("Dropped recording MBID: %s", mbid)
                         BaseTreeView.tagger.load_nat(mbid)
         if files:
             BaseTreeView.tagger.move_files(files, target)
+        if directories:
+            BaseTreeView.tagger.add_directory_list(directories)
         if new_files:
             BaseTreeView.tagger.add_files(new_files, target=target)
 

@@ -295,14 +295,17 @@ class Tagger(QtGui.QApplication):
     def _run_init(self):
         if self._cmdline_files:
             files = []
+            directories = []
             for file in self._cmdline_files:
                 if os.path.isdir(file):
-                    self.add_directory(decode_filename(file))
+                    directories.append(decode_filename(file))
                 else:
                     files.append(decode_filename(file))
             del self._cmdline_files
             if files:
                 self._add_files([files])
+            if directories:
+                self.add_directory_list(directories)
 
     def run(self):
         if config.setting["browser_integration"]:
@@ -366,9 +369,15 @@ class Tagger(QtGui.QApplication):
 
     def _add_files(self, list_of_filenames, target=None):
         """Add files to the tagger."""
-        # If we want to know the total number of files e.g. to warn the user
-        # sum the lengths of the lists.
-        # number_of_files = sum([len(x) for x in list_of_filenames])
+        number_of_files = sum([len(x) for x in list_of_filenames])
+        number_of_directories = len(list_of_filenames)
+        log.debug("Adding a total of %d files in %d directories",
+                number_of_files, number_of_directories)
+        self.window.set_statusbar_message(
+            N_("Adding a total of %(files)d files in %(directories)d directories ..."),
+            {'files': number_of_files, 'directories': number_of_directories},
+            echo=None
+        )
         for filenames in list_of_filenames:
             thread.run_task(partial(self._open_files, filenames),
                     partial(self._open_files_finished, target),
@@ -400,6 +409,36 @@ class Tagger(QtGui.QApplication):
                 target = None
             for file in new_files:
                 file.load(partial(self._file_loaded, target=target))
+
+    def add_directory_list(self, dir_list, parent=None):
+        if parent:
+            parent = os.path.normpath(parent)
+        number_of_dirs = len(dir_list)
+        if number_of_dirs > 1:
+            if parent:
+                self.window.set_statusbar_message(
+                    N_("Adding %(count)d directories from '%(directory)s' ..."),
+                    {'directory': parent, 'count': number_of_dirs}
+                )
+            else:
+                self.window.set_statusbar_message(
+                    N_("Adding %(count)d directories ..."),
+                    {'directory': parent, 'count': number_of_dirs}
+                )
+        else:
+            self.window.set_statusbar_message(
+                N_("Adding directory: '%(directory)s' ..."),
+                {'directory': dir_list[0]}
+            )
+
+        list_of_files = []
+        recursively = config.setting['recursively_add_files']
+        for directory in dir_list:
+            if recursively:
+                list_of_files.extend(self._add_directory_recursive(directory))
+            else:
+                list_of_files.extend(self._add_directory_non_recursive(directory))
+        self._add_files(list_of_files)
 
     def add_directory(self, path):
         if config.setting['recursively_add_files']:
@@ -446,17 +485,27 @@ class Tagger(QtGui.QApplication):
             files_to_add.append(f)
         number_of_files = len(files_to_add)
         if number_of_files:
+            if path:
+                path = os.path.normpath(path)
+                log.debug("Adding %d files from %r",
+                          number_of_files, path)
+                message = ungettext(
+                        "Adding %(count)d file from '%(directory)s' ...",
+                        "Adding %(count)d files from '%(directory)s' ...",
+                        number_of_files)
+            else:
+                log.debug("Adding %d files" %
+                          number_of_files)
+                message = ungettext(
+                        "Adding %(count)d file ...",
+                        "Adding %(count)d files ...",
+                        number_of_files)
             mparms = {
                 'count': number_of_files,
                 'directory': path,
             }
-            log.debug("Adding %(count)d files from '%(directory)r'" %
-                      mparms)
             self.window.set_statusbar_message(
-                ungettext(
-                    "Adding %(count)d file from '%(directory)s' ...",
-                    "Adding %(count)d files from '%(directory)s' ...",
-                    number_of_files),
+                message,
                 mparms,
                 translate=None,
                 echo=None
