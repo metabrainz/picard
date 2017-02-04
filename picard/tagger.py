@@ -413,6 +413,7 @@ class Tagger(QtGui.QApplication):
         list_to_add = []
         # walk topdown to allow modifying the sub-dirs to remove hidden dirs
         for root, dirs, files in os.walk(unicode(path), topdown=True):
+            # Keep UI responsive and ensure that log messages are written to stderr
             QtCore.QCoreApplication.processEvents()
             if ignore_hidden:
                 dirs[:] = [d for d in dirs if not is_hidden(os.path.join(root, d))]

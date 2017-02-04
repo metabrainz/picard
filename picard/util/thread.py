@@ -64,5 +64,13 @@ def run_task(func, next, priority=0, thread_pool=None, os_priority=0):
 def to_main(func, *args, **kwargs):
     QCoreApplication.postEvent(QCoreApplication.instance(),
                                ProxyToMainEvent(func, *args, **kwargs))
+    # If we are in a worker thread, use processEvents to pass control to the
+    # main thread to execute the event we just posted. If we don't do this
+    # the main thread may not get CPU for a long time.
+    # See http://www.dabeaz.com/python/UnderstandingGIL.pdf for details.
+    #
+    # If we are in the main thread already, we should wait for the event loop to
+    # process the event because if we run processEvents we leave this on the stack
+    # and after this happens a lot we can get Recursion Level Exceeded errors.
     if QCoreApplication.instance().thread() != QThread.currentThread():
         QCoreApplication.processEvents()
