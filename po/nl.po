@@ -11,14 +11,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2017-01-18 12:51+0100\n"
-"PO-Revision-Date: 2017-01-19 09:58+0000\n"
+"POT-Creation-Date: 2017-01-23 14:00+0100\n"
+"PO-Revision-Date: 2017-01-28 13:16+0000\n"
 "Last-Translator: Maurits Meulenbelt <mfmeulenbelt@gmail.com>\n"
 "Language-Team: Dutch (http://www.transifex.com/musicbrainz/musicbrainz/language/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.3.4\n"
+"Generated-By: Babel 1.3\n"
 "Language: nl\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
@@ -141,7 +141,7 @@ msgid "Merge"
 msgstr "Samenvoegen"
 
 #: picard/config_upgrade.py:78 picard/ui/metadatabox.py:314
-#: picard/ui/options/interface.py:75 picard/ui/ui_options_interface.py:141
+#: picard/ui/ui_options_interface.py:141 picard/ui/options/interface.py:75
 msgid "Remove"
 msgstr "&Verwijderen"
 
@@ -365,7 +365,7 @@ msgstr "Streepjescode"
 
 #: picard/ui/collectionmenu.py:42
 msgid "Refresh List"
-msgstr "Lijst verversen"
+msgstr "Lijst herladen"
 
 #: picard/ui/collectionmenu.py:86
 #, python-format
@@ -871,7 +871,7 @@ msgstr "Ctrl+I"
 
 #: picard/ui/mainwindow.py:446
 msgid "&Refresh"
-msgstr "&Verversen"
+msgstr "&Herladen"
 
 #: picard/ui/mainwindow.py:447
 msgid "Ctrl+R"
@@ -1011,15 +1011,15 @@ msgstr "Picard heeft een machtiging nodig om toegang tot je persoonlijke gegeven
 #, python-format
 msgid "(different across %d item)"
 msgid_plural "(different across %d items)"
-msgstr[0] "(verschillend tussen %d object)"
-msgstr[1] "(verschillend tussen %d objecten)"
+msgstr[0] "(verschilt bij %d nummer)"
+msgstr[1] "(verschilt bij %d nummers)"
 
 #: picard/ui/metadatabox.py:92
 #, python-format
 msgid "(missing from %d item)"
 msgid_plural "(missing from %d items)"
-msgstr[0] "(ontbrekend bij %d object)"
-msgstr[1] "(ontbrekend bij %d objecten)"
+msgstr[0] "(ontbreekt bij bij %d nummer)"
+msgstr[1] "(ontbreekt bij %d nummers)"
 
 #: picard/ui/metadatabox.py:155
 msgid "metadata view"
@@ -1131,9 +1131,9 @@ msgstr "In Picard laden"
 msgid "Track Search Results"
 msgstr "Zoekresultaten voor nummers"
 
-#: picard/ui/options/plugins.py:303 picard/ui/searchdialog.py:324
-#: picard/ui/searchdialog.py:512 picard/ui/searchdialog.py:740
-#: picard/ui/ui_options_plugins.py:138
+#: picard/ui/searchdialog.py:324 picard/ui/searchdialog.py:512
+#: picard/ui/searchdialog.py:740 picard/ui/ui_options_plugins.py:138
+#: picard/ui/options/plugins.py:303
 msgid "Name"
 msgstr "Naam"
 
@@ -1193,9 +1193,8 @@ msgstr "Eindgebied"
 msgid "File Name"
 msgstr "Bestandsnaam"
 
-#: picard/ui/options/cdlookup.py:38 picard/ui/ui_cdlookup.py:53
-#: picard/ui/ui_options_cdlookup.py:42
-#: picard/ui/ui_options_cdlookup_select.py:49
+#: picard/ui/ui_cdlookup.py:53 picard/ui/ui_options_cdlookup.py:42
+#: picard/ui/ui_options_cdlookup_select.py:49 picard/ui/options/cdlookup.py:38
 msgid "CD Lookup"
 msgstr "Cd opzoeken"
 
@@ -1358,7 +1357,7 @@ msgstr "API-sleutel:"
 msgid "Get API key..."
 msgstr "API-sleutel verkrijgen"
 
-#: picard/ui/options/folksonomy.py:28 picard/ui/ui_options_folksonomy.py:115
+#: picard/ui/ui_options_folksonomy.py:115 picard/ui/options/folksonomy.py:28
 msgid "Folksonomy Tags"
 msgstr "Folksonomietags"
 
@@ -1413,7 +1412,7 @@ msgstr "Poort:"
 msgid "Server address:"
 msgstr "Serveradres:"
 
-#: picard/ui/options/general.py:88 picard/ui/ui_options_general.py:95
+#: picard/ui/ui_options_general.py:95 picard/ui/options/general.py:88
 msgid "MusicBrainz Account"
 msgstr "MusicBrainz-account"
 
@@ -1425,13 +1424,13 @@ msgstr "Aanmelden"
 msgid "Log out"
 msgstr "Afmelden"
 
-#: picard/ui/options/general.py:33 picard/ui/ui_options_general.py:98
+#: picard/ui/ui_options_general.py:98 picard/ui/options/general.py:33
 msgid "General"
 msgstr "Algemeen"
 
 #: picard/ui/ui_options_general.py:99
 msgid "Automatically scan all new files"
-msgstr "Automatisch alle nieuwe bestanden analyseren"
+msgstr "Alle nieuwe bestanden automatisch analyseren"
 
 #: picard/ui/ui_options_general.py:100
 msgid "Ignore MBIDs when loading new files"
@@ -1517,7 +1516,7 @@ msgstr "Minimale overeenkomst voor het opzoeken van bestanden:"
 msgid "Minimal similarity for cluster lookups:"
 msgstr "Minimale overeenkomst voor het opzoeken van clusters:"
 
-#: picard/ui/options/metadata.py:29 picard/ui/ui_options_metadata.py:101
+#: picard/ui/ui_options_metadata.py:101 picard/ui/options/metadata.py:29
 msgid "Metadata"
 msgstr "Metadata"
 
@@ -1587,7 +1586,7 @@ msgstr "Standaard luisterpoort:"
 msgid "Listen only on localhost"
 msgstr "Alleen op localhost luisteren"
 
-#: picard/ui/options/plugins.py:68 picard/ui/ui_options_plugins.py:137
+#: picard/ui/ui_options_plugins.py:137 picard/ui/options/plugins.py:68
 msgid "Plugins"
 msgstr "Plugins"
 
@@ -1809,17 +1808,17 @@ msgstr "Grootste formaat"
 
 #: picard/ui/ui_provider_options_caa.py:92
 msgid "Save only one front image as separate file"
-msgstr "Maar één afbeelding van de voorkant als los bestand opslaan."
+msgstr "Maar één afbeelding van de voorkant als los bestand opslaan"
 
 #: picard/ui/ui_provider_options_caa.py:93
 msgid "Download only approved images"
-msgstr "Alleen goedgekeurde afbeeldingen downloaden."
+msgstr "Alleen goedgekeurde afbeeldingen downloaden"
 
 #: picard/ui/ui_provider_options_caa.py:94
 msgid ""
 "Use the first image type as the filename. This will not change the filename "
 "of front images."
-msgstr "Gebruik het eerste afbeeldingstype als bestandsnaam. Dit verandert de bestandsnaam van afbeeldingen van de voorkant niet."
+msgstr "Gebruik het eerste afbeeldingstype als bestandsnaam. Dit verandert de bestandsnaam van afbeeldingen van de voorkant niet"
 
 #: picard/ui/ui_provider_options_local.py:64
 msgid "Local cover art files match the following regular expression:"
@@ -1838,7 +1837,7 @@ msgstr "Bestandsnamen naar tags converteren"
 
 #: picard/ui/ui_tagsfromfilenames.py:51
 msgid "Replace underscores with spaces"
-msgstr "Lage streepjes vervangen door spaties"
+msgstr "Lage streepjes door spaties vervangen"
 
 #: picard/ui/ui_tagsfromfilenames.py:52
 msgid "&Preview"
@@ -1896,7 +1895,7 @@ msgstr "Geavanceerd"
 
 #: picard/ui/options/cover.py:34
 msgid "Cover Art"
-msgstr "Hoesafbeelding"
+msgstr "Hoesafbeeldingen"
 
 #: picard/ui/options/dialog.py:82
 msgid "&Restore all Defaults"
@@ -1914,19 +1913,19 @@ msgstr "Instellingen herstellen"
 msgid "Reset all settings for current option page"
 msgstr "Zet de instellingen van deze pagina terug naar de standaard"
 
-#: picard/ui/options/dialog.py:166
+#: picard/ui/options/dialog.py:172
 msgid "You are about to reset your options for this page."
 msgstr "Je staat op het punt de instellingen op deze pagina naar de standaardwaardes te herstellen."
 
-#: picard/ui/options/dialog.py:170
+#: picard/ui/options/dialog.py:176
 msgid "Warning! This will reset all of your settings."
 msgstr "Waarschuwing! Dit zet al je instellingen terug naar de standaardwaardes."
 
-#: picard/ui/options/dialog.py:177
+#: picard/ui/options/dialog.py:183
 msgid "Confirm Reset"
 msgstr "Terugzetten bevestigen"
 
-#: picard/ui/options/dialog.py:178
+#: picard/ui/options/dialog.py:184
 msgid "Are you sure?"
 msgstr "Weet je het zeker?"
 
@@ -2097,7 +2096,7 @@ msgstr "Alles terugzetten"
 msgid "File Naming"
 msgstr "Bestandsnamen"
 
-#: picard/ui/options/renaming.py:175 picard/ui/options/scripting.py:406
+#: picard/ui/options/renaming.py:175 picard/ui/options/scripting.py:410
 msgid ""
 "<a href=\"%(picard-doc-scripting-url)s\">Open Scripting Documentation in "
 "your browser</a>"
@@ -2139,15 +2138,15 @@ msgstr "Script verwijderen"
 msgid "Scripting"
 msgstr "Scripting"
 
-#: picard/ui/options/scripting.py:292
+#: picard/ui/options/scripting.py:293
 msgid "Are you sure you want to remove this script?"
 msgstr "Weet je zeker dat je dit script wil verwijderen?"
 
-#: picard/ui/options/scripting.py:293
+#: picard/ui/options/scripting.py:294
 msgid "Confirm Remove"
 msgstr "Verwijderen bevestigen"
 
-#: picard/ui/options/scripting.py:376
+#: picard/ui/options/scripting.py:377
 msgid "Script Error"
 msgstr "Scriptfout"
 
@@ -2433,7 +2432,7 @@ msgstr "Catalogusnummer"
 
 #: picard/util/tags.py:81
 msgid "DJ-Mixer"
-msgstr "DJ-Mixer"
+msgstr "Dj-mixer"
 
 #: picard/util/tags.py:82
 msgid "Media"

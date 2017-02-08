@@ -1,5 +1,6 @@
 # Translators:
 # Translators:
+# Jonatan Nyberg <jonatan@autistici.org>, 2017
 # Kristoffer Grundström <kristoffer.grundstrom1983@gmail.com>, 2016
 # Killinstinct <myaku@msn.com>, 2015
 # Robin Björnsvik <robin@bjornsvik.se>, 2013
@@ -7,8 +8,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2017-01-16 20:46+0000\n"
-"Last-Translator: Laurent Monin <i18n@norz.org>\n"
+"PO-Revision-Date: 2017-01-24 01:39+0000\n"
+"Last-Translator: Jonatan Nyberg <jonatan@autistici.org>\n"
 "Language-Team: Swedish (http://www.transifex.com/musicbrainz/musicbrainz/language/sv/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -4297,7 +4298,7 @@ msgstr ""
 #: DB:series_type/name:9
 msgctxt "series_type"
 msgid "Run"
-msgstr ""
+msgstr "Kör"
 
 #: DB:work_attribute_type_allowed_value/value:521
 msgctxt "work_attribute_type_allowed_value"
@@ -4382,7 +4383,7 @@ msgstr ""
 #: DB:medium_format/name:62
 msgctxt "medium_format"
 msgid "SD Card"
-msgstr ""
+msgstr "SD-kort"
 
 #: DB:work_attribute_type/name:8
 msgctxt "work_attribute_type"
@@ -4572,12 +4573,12 @@ msgstr ""
 #: DB:editor_collection_type/name:14
 msgctxt "collection_type"
 msgid "Series"
-msgstr ""
+msgstr "Serier"
 
 #: DB:series_alias_type/name:1
 msgctxt "alias_type"
 msgid "Series name"
-msgstr ""
+msgstr "Serier namn"
 
 #: DB:work_attribute_type_allowed_value/value:663
 msgctxt "work_attribute_type_allowed_value"
@@ -4701,7 +4702,7 @@ msgstr "Klistermärke"
 #: DB:instrument_type/name:2
 msgctxt "instrument_type"
 msgid "String instrument"
-msgstr ""
+msgstr "Sträng instrument"
 
 #: DB:place_type/name:1
 msgctxt "place_type"
@@ -4894,7 +4895,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:668
 msgctxt "work_attribute_type_allowed_value"
 msgid "Tango"
-msgstr ""
+msgstr "Tango"
 
 #: DB:work_attribute_type_allowed_value/value:575
 msgctxt "work_attribute_type_allowed_value"
@@ -5170,7 +5171,7 @@ msgstr "VCD"
 #: DB:medium_format/name:59
 msgctxt "medium_format"
 msgid "VHD"
-msgstr ""
+msgstr "VHD"
 
 #: DB:medium_format/name:21
 msgctxt "medium_format"

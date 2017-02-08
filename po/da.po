@@ -4,23 +4,23 @@
 # 
 # Translators:
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2006
-# Freso <transifex.net@freso.dk>, 2012
-# Freso <transifex.net@freso.dk>, 2012
+# Frederik “Freso” S. Olesen <transifex.net@freso.dk>, 2012
+# Frederik “Freso” S. Olesen <transifex.net@freso.dk>, 2012
 # Jakob Miland <saebekassebil@gmail.com>, 2013
-# Freso <transifex.net@freso.dk>, 2013-2014
-# Freso <transifex.net@freso.dk>, 2012
+# Frederik “Freso” S. Olesen <transifex.net@freso.dk>, 2013-2014,2017
+# Frederik “Freso” S. Olesen <transifex.net@freso.dk>, 2012
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2017-01-18 12:51+0100\n"
-"PO-Revision-Date: 2017-01-19 09:17+0000\n"
-"Last-Translator: nikki\n"
+"POT-Creation-Date: 2017-01-23 14:00+0100\n"
+"PO-Revision-Date: 2017-01-25 15:50+0000\n"
+"Last-Translator: Frederik “Freso” S. Olesen <transifex.net@freso.dk>\n"
 "Language-Team: Danish (http://www.transifex.com/musicbrainz/musicbrainz/language/da/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.3.4\n"
+"Generated-By: Babel 1.3\n"
 "Language: da\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
@@ -42,16 +42,16 @@ msgstr "AcoustID-opslag gav ingen resultater for filen \"%(filename)s\""
 #: picard/acoustid.py:168
 #, python-format
 msgid "Looking up the fingerprint for file '%(filename)s' ..."
-msgstr "Slår fingeraftryk for filen \"%(filename)s\" op..."
+msgstr "Slår fingeraftryk for filen \"%(filename)s\" op…"
 
 #: picard/acoustidmanager.py:82
 msgid "Submitting AcoustIDs ..."
-msgstr "Sender AcoustID'er ..."
+msgstr "Sender AcoustID’er…"
 
 #: picard/acoustidmanager.py:103
 #, python-format
 msgid "AcoustID submission failed with error '%(error)s': %(message)s"
-msgstr ""
+msgstr "AcoustID-indsending mislykkedes med fejlen \"%(error)s\": %(message)s"
 
 #: picard/acoustidmanager.py:111
 msgid "AcoustIDs successfully submitted."
@@ -100,7 +100,7 @@ msgstr "Klyngen %(album)s identificeret!"
 #: picard/cluster.py:196
 #, python-format
 msgid "Looking up the metadata for cluster %(album)s..."
-msgstr "Slår metadata op for klyngen %(album)s..."
+msgstr "Slår metadata op for klyngen %(album)s…"
 
 #: picard/collection.py:64
 #, python-format
@@ -143,7 +143,7 @@ msgid "Merge"
 msgstr "Sammenflet"
 
 #: picard/config_upgrade.py:78 picard/ui/metadatabox.py:314
-#: picard/ui/options/interface.py:75 picard/ui/ui_options_interface.py:141
+#: picard/ui/ui_options_interface.py:141 picard/ui/options/interface.py:75
 msgid "Remove"
 msgstr "Fjern"
 
@@ -170,7 +170,7 @@ msgstr "Filen '%(filename)s' blev identificeret!"
 #: picard/file.py:584
 #, python-format
 msgid "Looking up the metadata for file %(filename)s ..."
-msgstr "Slår metadata for filen %(filename)s op ..."
+msgstr "Slår metadata for filen %(filename)s op…"
 
 #: picard/plugin.py:434
 #, python-format
@@ -196,7 +196,7 @@ msgstr "Format"
 
 #: picard/releasegroup.py:57
 msgid "Label"
-msgstr ""
+msgstr "Selskab"
 
 #: picard/releasegroup.py:58
 msgid "Cat No"
@@ -215,12 +215,12 @@ msgstr "[ingen udgivelsesinfo]"
 msgid "Adding %(count)d file from '%(directory)s' ..."
 msgid_plural "Adding %(count)d files from '%(directory)s' ..."
 msgstr[0] "Tilføjer %(count)d fil fra '%(directory)s' ..."
-msgstr[1] "Tilføjer %(count)d filer fra '%(directory)s' ..."
+msgstr[1] "Tilføjer %(count)d filer fra \"%(directory)s\"…"
 
 #: picard/tagger.py:597
 #, python-format
 msgid "Removing album %(id)s: %(artist)s - %(album)s"
-msgstr ""
+msgstr "Fjerner album %(id)s: %(artist)s - %(album)s"
 
 #: picard/tagger.py:613
 msgid "CD Lookup Error"
@@ -331,7 +331,7 @@ msgstr ""
 
 #: picard/coverart/providers/local.py:65
 msgid "Local Files"
-msgstr ""
+msgstr "Lokale filer"
 
 #: picard/coverart/providers/whitelist.py:38
 msgid "Whitelist"
@@ -354,7 +354,7 @@ msgstr "Dato"
 
 #: picard/ui/cdlookup.py:36 picard/ui/searchdialog.py:518
 msgid "Labels"
-msgstr ""
+msgstr "Selskaber"
 
 #: picard/ui/cdlookup.py:36 picard/ui/searchdialog.py:519
 msgid "Catalog #s"
@@ -482,11 +482,11 @@ msgstr ""
 
 #: picard/ui/infodialog.py:313
 msgid "Album:"
-msgstr ""
+msgstr "Album:"
 
 #: picard/ui/infodialog.py:315
 msgid "Artist:"
-msgstr ""
+msgstr "Kunstner:"
 
 #: picard/ui/infodialog.py:325
 msgid "Tracklist:"
@@ -551,11 +551,11 @@ msgstr "Fold alle sammen"
 
 #: picard/ui/itemviews.py:247
 msgid "Select &all"
-msgstr ""
+msgstr "Marker &alt"
 
 #: picard/ui/itemviews.py:249
 msgid "Ctrl+A"
-msgstr ""
+msgstr "Ctrl+A"
 
 #: picard/ui/itemviews.py:315
 msgid "&Other versions"
@@ -563,7 +563,7 @@ msgstr "Andre udgaver"
 
 #: picard/ui/itemviews.py:318
 msgid "Loading..."
-msgstr "Indlæser..."
+msgstr "Indlæser…"
 
 #: picard/ui/itemviews.py:383
 msgid "Collections"
@@ -615,7 +615,7 @@ msgstr ""
 
 #: picard/ui/itemviews.py:811
 msgid "Track saved"
-msgstr ""
+msgstr "Skæring gemt"
 
 #: picard/ui/itemviews.py:813 picard/ui/itemviews.py:817
 msgid "Pending"
@@ -686,7 +686,7 @@ msgstr "Du skal angive din AcoustID API-nøgle før du kan indsende fingeraftryk
 
 #: picard/ui/mainwindow.py:313
 msgid "&Options..."
-msgstr "&Indstillinger..."
+msgstr "&Indstillinger…"
 
 #: picard/ui/mainwindow.py:317
 msgid "&Cut"
@@ -698,27 +698,27 @@ msgstr "&Indsæt"
 
 #: picard/ui/mainwindow.py:327
 msgid "&Help..."
-msgstr "&Hjælp..."
+msgstr "&Hjælp…"
 
 #: picard/ui/mainwindow.py:331
 msgid "&About..."
-msgstr "&Om..."
+msgstr "&Om…"
 
 #: picard/ui/mainwindow.py:335
 msgid "&Donate..."
-msgstr "%Donere..."
+msgstr "%Donér…"
 
 #: picard/ui/mainwindow.py:338
 msgid "&Report a Bug..."
-msgstr "&Rapportér en fejl..."
+msgstr "&Rapportér en fejl…"
 
 #: picard/ui/mainwindow.py:341
 msgid "&Support Forum..."
-msgstr "&Support-forum..."
+msgstr "&Hjælpeforum…"
 
 #: picard/ui/mainwindow.py:344
 msgid "&Add Files..."
-msgstr "&Tilføj filer..."
+msgstr "&Tilføj filer…"
 
 #: picard/ui/mainwindow.py:345
 msgid "Add files to the tagger"
@@ -726,7 +726,7 @@ msgstr "Tilføj filer til taggeren"
 
 #: picard/ui/mainwindow.py:350
 msgid "A&dd Folder..."
-msgstr "Tilføj &mappe..."
+msgstr "Tilføj &mappe…"
 
 #: picard/ui/mainwindow.py:351
 msgid "Add a folder to the tagger"
@@ -746,7 +746,7 @@ msgstr "Gem valgte filer"
 
 #: picard/ui/mainwindow.py:363
 msgid "S&ubmit AcoustIDs"
-msgstr ""
+msgstr "Indsend Aco&ustID’er"
 
 #: picard/ui/mainwindow.py:364
 msgid "Submit acoustic fingerprints"
@@ -778,7 +778,7 @@ msgstr "Slå det valgte element op på MusicBrainz-netstedet"
 
 #: picard/ui/mainwindow.py:383
 msgid "Ctrl+Shift+L"
-msgstr ""
+msgstr "Ctrl+Shift+L"
 
 #: picard/ui/mainwindow.py:386
 msgid "Search for similar albums..."
@@ -815,7 +815,7 @@ msgstr "Søg"
 
 #: picard/ui/mainwindow.py:411
 msgid "Lookup &CD..."
-msgstr "Slå &cd op..."
+msgstr "Slå &cd op…"
 
 #: picard/ui/mainwindow.py:412
 msgid "Lookup the details of the CD in your drive"
@@ -865,7 +865,7 @@ msgstr "Ctrl+L"
 
 #: picard/ui/mainwindow.py:440
 msgid "&Info..."
-msgstr "&Info..."
+msgstr "&Info…"
 
 #: picard/ui/mainwindow.py:443
 msgid "Ctrl+I"
@@ -893,7 +893,7 @@ msgstr "Gem &tags"
 
 #: picard/ui/mainwindow.py:465
 msgid "Tags From &File Names..."
-msgstr "Tags fra &filnavne..."
+msgstr "Tags fra &filnavne…"
 
 #: picard/ui/mainwindow.py:469
 msgid "&Open My Collections in Browser"
@@ -1065,7 +1065,7 @@ msgstr ""
 
 #: picard/ui/metadatabox.py:274
 msgid "Edit..."
-msgstr "Redigér..."
+msgstr "Redigér…"
 
 #: picard/ui/metadatabox.py:282
 msgid "Add to 'Preserve Tags' List"
@@ -1133,9 +1133,9 @@ msgstr ""
 msgid "Track Search Results"
 msgstr ""
 
-#: picard/ui/options/plugins.py:303 picard/ui/searchdialog.py:324
-#: picard/ui/searchdialog.py:512 picard/ui/searchdialog.py:740
-#: picard/ui/ui_options_plugins.py:138
+#: picard/ui/searchdialog.py:324 picard/ui/searchdialog.py:512
+#: picard/ui/searchdialog.py:740 picard/ui/ui_options_plugins.py:138
+#: picard/ui/options/plugins.py:303
 msgid "Name"
 msgstr "Navn"
 
@@ -1195,9 +1195,8 @@ msgstr ""
 msgid "File Name"
 msgstr "Filnavn"
 
-#: picard/ui/options/cdlookup.py:38 picard/ui/ui_cdlookup.py:53
-#: picard/ui/ui_options_cdlookup.py:42
-#: picard/ui/ui_options_cdlookup_select.py:49
+#: picard/ui/ui_cdlookup.py:53 picard/ui/ui_options_cdlookup.py:42
+#: picard/ui/ui_options_cdlookup_select.py:49 picard/ui/options/cdlookup.py:38
 msgid "CD Lookup"
 msgstr "Cd-opslag"
 
@@ -1346,11 +1345,11 @@ msgstr "Fingeraftryksberegner:"
 #: picard/ui/ui_options_fingerprinting.py:92
 #: picard/ui/ui_options_interface.py:129 picard/ui/ui_options_renaming.py:165
 msgid "Browse..."
-msgstr "Gennemse..."
+msgstr "Gennemse…"
 
 #: picard/ui/ui_options_fingerprinting.py:93
 msgid "Download..."
-msgstr "Download..."
+msgstr "Download…"
 
 #: picard/ui/ui_options_fingerprinting.py:94
 msgid "API key:"
@@ -1358,9 +1357,9 @@ msgstr "API-nøgle:"
 
 #: picard/ui/ui_options_fingerprinting.py:95
 msgid "Get API key..."
-msgstr "Få API-nøgle..."
+msgstr "Få API-nøgle…"
 
-#: picard/ui/options/folksonomy.py:28 picard/ui/ui_options_folksonomy.py:115
+#: picard/ui/ui_options_folksonomy.py:115 picard/ui/options/folksonomy.py:28
 msgid "Folksonomy Tags"
 msgstr "Folksonomitags"
 
@@ -1415,7 +1414,7 @@ msgstr "Port:"
 msgid "Server address:"
 msgstr "Serveradresse:"
 
-#: picard/ui/options/general.py:88 picard/ui/ui_options_general.py:95
+#: picard/ui/ui_options_general.py:95 picard/ui/options/general.py:88
 msgid "MusicBrainz Account"
 msgstr ""
 
@@ -1427,7 +1426,7 @@ msgstr ""
 msgid "Log out"
 msgstr ""
 
-#: picard/ui/options/general.py:33 picard/ui/ui_options_general.py:98
+#: picard/ui/ui_options_general.py:98 picard/ui/options/general.py:33
 msgid "General"
 msgstr "Generelt"
 
@@ -1493,7 +1492,7 @@ msgstr ""
 
 #: picard/ui/ui_options_interface.py:137 picard/ui/ui_options_interface.py:139
 msgid "..."
-msgstr ""
+msgstr "…"
 
 #: picard/ui/ui_options_interface.py:138
 msgid "Move selected item down"
@@ -1519,7 +1518,7 @@ msgstr "Mindste lighed for filopslag:"
 msgid "Minimal similarity for cluster lookups:"
 msgstr "Mindste lighed for klyngeopslag:"
 
-#: picard/ui/options/metadata.py:29 picard/ui/ui_options_metadata.py:101
+#: picard/ui/ui_options_metadata.py:101 picard/ui/options/metadata.py:29
 msgid "Metadata"
 msgstr "Metadata"
 
@@ -1589,7 +1588,7 @@ msgstr ""
 msgid "Listen only on localhost"
 msgstr ""
 
-#: picard/ui/options/plugins.py:68 picard/ui/ui_options_plugins.py:137
+#: picard/ui/ui_options_plugins.py:137 picard/ui/options/plugins.py:68
 msgid "Plugins"
 msgstr "Udvidelsesmoduler"
 
@@ -1599,7 +1598,7 @@ msgstr "Version"
 
 #: picard/ui/ui_options_plugins.py:141
 msgid "Install plugin..."
-msgstr "Installér modul..."
+msgstr "Installér modul…"
 
 #: picard/ui/ui_options_plugins.py:142
 msgid "Open plugin folder"
@@ -1916,21 +1915,21 @@ msgstr ""
 msgid "Reset all settings for current option page"
 msgstr ""
 
-#: picard/ui/options/dialog.py:166
+#: picard/ui/options/dialog.py:172
 msgid "You are about to reset your options for this page."
 msgstr ""
 
-#: picard/ui/options/dialog.py:170
+#: picard/ui/options/dialog.py:176
 msgid "Warning! This will reset all of your settings."
 msgstr ""
 
-#: picard/ui/options/dialog.py:177
+#: picard/ui/options/dialog.py:183
 msgid "Confirm Reset"
 msgstr ""
 
-#: picard/ui/options/dialog.py:178
+#: picard/ui/options/dialog.py:184
 msgid "Are you sure?"
-msgstr ""
+msgstr "Er du sikker?"
 
 #: picard/ui/options/fingerprinting.py:32
 msgid "Fingerprinting"
@@ -1948,7 +1947,7 @@ msgstr ""
 #: picard/ui/options/general.py:74
 #, python-format
 msgid "Logged in as <b>%s</b>."
-msgstr ""
+msgstr "Logget ind som <b>%s</b>"
 
 #: picard/ui/options/general.py:88
 msgid "Authorization code:"
@@ -1960,11 +1959,11 @@ msgstr "Brugergrænseflade"
 
 #: picard/ui/options/interface.py:43
 msgid "Add Folder"
-msgstr ""
+msgstr "Tilføj mappe"
 
 #: picard/ui/options/interface.py:47
 msgid "Add Files"
-msgstr ""
+msgstr "Tilføj filer"
 
 #: picard/ui/options/interface.py:51
 msgid "Cluster"
@@ -1972,31 +1971,31 @@ msgstr ""
 
 #: picard/ui/options/interface.py:55
 msgid "Lookup"
-msgstr ""
+msgstr "Slå op"
 
 #: picard/ui/options/interface.py:59
 msgid "Scan"
-msgstr ""
+msgstr "Skan"
 
 #: picard/ui/options/interface.py:63
 msgid "Lookup in Browser"
-msgstr ""
+msgstr "Slå op i browser"
 
 #: picard/ui/options/interface.py:67
 msgid "Save"
-msgstr ""
+msgstr "Gem"
 
 #: picard/ui/options/interface.py:79
 msgid "Submit AcoustIDs"
-msgstr ""
+msgstr "Indsend AcoustID’er"
 
 #: picard/ui/options/interface.py:83
 msgid "Open in Player"
-msgstr ""
+msgstr "Åben i afspiller"
 
 #: picard/ui/options/interface.py:87
 msgid "Lookup CD..."
-msgstr ""
+msgstr "Slå cd op…"
 
 #: picard/ui/options/interface.py:125
 msgid "System default"
@@ -2018,7 +2017,7 @@ msgstr ""
 
 #: picard/ui/options/interface.py:209 picard/ui/options/interface.py:291
 msgid "label"
-msgstr ""
+msgstr "selskab"
 
 #: picard/ui/options/matching.py:28
 msgid "Matching"
@@ -2044,27 +2043,27 @@ msgstr ""
 
 #: picard/ui/options/plugins.py:254
 msgid "Update"
-msgstr ""
+msgstr "Opdatér"
 
 #: picard/ui/options/plugins.py:256
 msgid "Install"
-msgstr ""
+msgstr "Installér"
 
 #: picard/ui/options/plugins.py:271
 msgid "Updated"
-msgstr ""
+msgstr "Opdateret"
 
 #: picard/ui/options/plugins.py:273
 msgid "Installed"
-msgstr ""
+msgstr "Installeret"
 
 #: picard/ui/options/plugins.py:297
 msgid "Restart Picard to upgrade to new version"
-msgstr ""
+msgstr "Genstart Picard for at opgradere til den nyeste version"
 
 #: picard/ui/options/plugins.py:299
 msgid "New version available"
-msgstr ""
+msgstr "Ny udgave tilgængelig"
 
 #: picard/ui/options/plugins.py:305
 msgid "Authors"
@@ -2081,7 +2080,7 @@ msgstr ""
 
 #: picard/ui/options/plugins.py:339
 msgid "Please try again later."
-msgstr ""
+msgstr "Prøv igen senere."
 
 #: picard/ui/options/ratings.py:28
 msgid "Ratings"
@@ -2099,7 +2098,7 @@ msgstr "Nulstil alle"
 msgid "File Naming"
 msgstr "Navngivning af filer"
 
-#: picard/ui/options/renaming.py:175 picard/ui/options/scripting.py:406
+#: picard/ui/options/renaming.py:175 picard/ui/options/scripting.py:410
 msgid ""
 "<a href=\"%(picard-doc-scripting-url)s\">Open Scripting Documentation in "
 "your browser</a>"
@@ -2141,15 +2140,15 @@ msgstr ""
 msgid "Scripting"
 msgstr "Skriptning"
 
-#: picard/ui/options/scripting.py:292
+#: picard/ui/options/scripting.py:293
 msgid "Are you sure you want to remove this script?"
 msgstr ""
 
-#: picard/ui/options/scripting.py:293
+#: picard/ui/options/scripting.py:294
 msgid "Confirm Remove"
 msgstr ""
 
-#: picard/ui/options/scripting.py:376
+#: picard/ui/options/scripting.py:377
 msgid "Script Error"
 msgstr "Skriptfejl"
 
@@ -2223,7 +2222,7 @@ msgstr "Oprindelig udgivelsesdato"
 
 #: picard/util/tags.py:26
 msgid "Original Year"
-msgstr ""
+msgstr "Originalt år"
 
 #: picard/util/tags.py:27
 msgid "Album Artist"
@@ -2263,7 +2262,7 @@ msgstr "Sorteringsrækkefølge for album"
 
 #: picard/util/tags.py:36
 msgid "Composer Sort Order"
-msgstr ""
+msgstr "Sorteringsrækkefølge for komponister"
 
 #: picard/util/tags.py:37
 msgid "ASIN"
@@ -2287,7 +2286,7 @@ msgstr "BPM"
 
 #: picard/util/tags.py:42
 msgid "Key"
-msgstr ""
+msgstr "Toneart"
 
 #: picard/util/tags.py:43
 msgid "Copyright"
@@ -2299,7 +2298,7 @@ msgstr "Komponist"
 
 #: picard/util/tags.py:46
 msgid "Writer"
-msgstr ""
+msgstr "Forfatter/sangskriver"
 
 #: picard/util/tags.py:47
 msgid "Conductor"

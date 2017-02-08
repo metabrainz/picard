@@ -9,14 +9,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2017-01-18 12:51+0100\n"
+"POT-Creation-Date: 2017-01-23 14:00+0100\n"
 "PO-Revision-Date: 2017-01-19 09:17+0000\n"
 "Last-Translator: nikki\n"
 "Language-Team: Ukrainian (http://www.transifex.com/musicbrainz/musicbrainz/language/uk/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.3.4\n"
+"Generated-By: Babel 1.3\n"
 "Language: uk\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
@@ -142,7 +142,7 @@ msgid "Merge"
 msgstr ""
 
 #: picard/config_upgrade.py:78 picard/ui/metadatabox.py:314
-#: picard/ui/options/interface.py:75 picard/ui/ui_options_interface.py:141
+#: picard/ui/ui_options_interface.py:141 picard/ui/options/interface.py:75
 msgid "Remove"
 msgstr ""
 
@@ -1138,9 +1138,9 @@ msgstr ""
 msgid "Track Search Results"
 msgstr ""
 
-#: picard/ui/options/plugins.py:303 picard/ui/searchdialog.py:324
-#: picard/ui/searchdialog.py:512 picard/ui/searchdialog.py:740
-#: picard/ui/ui_options_plugins.py:138
+#: picard/ui/searchdialog.py:324 picard/ui/searchdialog.py:512
+#: picard/ui/searchdialog.py:740 picard/ui/ui_options_plugins.py:138
+#: picard/ui/options/plugins.py:303
 msgid "Name"
 msgstr "Назва"
 
@@ -1200,9 +1200,8 @@ msgstr ""
 msgid "File Name"
 msgstr "Назва файла"
 
-#: picard/ui/options/cdlookup.py:38 picard/ui/ui_cdlookup.py:53
-#: picard/ui/ui_options_cdlookup.py:42
-#: picard/ui/ui_options_cdlookup_select.py:49
+#: picard/ui/ui_cdlookup.py:53 picard/ui/ui_options_cdlookup.py:42
+#: picard/ui/ui_options_cdlookup_select.py:49 picard/ui/options/cdlookup.py:38
 msgid "CD Lookup"
 msgstr "Пошук CD"
 
@@ -1365,7 +1364,7 @@ msgstr ""
 msgid "Get API key..."
 msgstr ""
 
-#: picard/ui/options/folksonomy.py:28 picard/ui/ui_options_folksonomy.py:115
+#: picard/ui/ui_options_folksonomy.py:115 picard/ui/options/folksonomy.py:28
 msgid "Folksonomy Tags"
 msgstr "Фолкосономічні позначки"
 
@@ -1420,7 +1419,7 @@ msgstr "Порт:"
 msgid "Server address:"
 msgstr "Адреса сервера:"
 
-#: picard/ui/options/general.py:88 picard/ui/ui_options_general.py:95
+#: picard/ui/ui_options_general.py:95 picard/ui/options/general.py:88
 msgid "MusicBrainz Account"
 msgstr ""
 
@@ -1432,7 +1431,7 @@ msgstr ""
 msgid "Log out"
 msgstr ""
 
-#: picard/ui/options/general.py:33 picard/ui/ui_options_general.py:98
+#: picard/ui/ui_options_general.py:98 picard/ui/options/general.py:33
 msgid "General"
 msgstr "Загальне"
 
@@ -1524,7 +1523,7 @@ msgstr "Мінімальна схожість для пошуків файлів
 msgid "Minimal similarity for cluster lookups:"
 msgstr "Мінімальна схожість для пошуків кластерів:"
 
-#: picard/ui/options/metadata.py:29 picard/ui/ui_options_metadata.py:101
+#: picard/ui/ui_options_metadata.py:101 picard/ui/options/metadata.py:29
 msgid "Metadata"
 msgstr "Метадані"
 
@@ -1594,7 +1593,7 @@ msgstr ""
 msgid "Listen only on localhost"
 msgstr ""
 
-#: picard/ui/options/plugins.py:68 picard/ui/ui_options_plugins.py:137
+#: picard/ui/ui_options_plugins.py:137 picard/ui/options/plugins.py:68
 msgid "Plugins"
 msgstr "Модулі"
 
@@ -1921,19 +1920,19 @@ msgstr ""
 msgid "Reset all settings for current option page"
 msgstr ""
 
-#: picard/ui/options/dialog.py:166
+#: picard/ui/options/dialog.py:172
 msgid "You are about to reset your options for this page."
 msgstr ""
 
-#: picard/ui/options/dialog.py:170
+#: picard/ui/options/dialog.py:176
 msgid "Warning! This will reset all of your settings."
 msgstr ""
 
-#: picard/ui/options/dialog.py:177
+#: picard/ui/options/dialog.py:183
 msgid "Confirm Reset"
 msgstr ""
 
-#: picard/ui/options/dialog.py:178
+#: picard/ui/options/dialog.py:184
 msgid "Are you sure?"
 msgstr ""
 
@@ -2104,7 +2103,7 @@ msgstr ""
 msgid "File Naming"
 msgstr ""
 
-#: picard/ui/options/renaming.py:175 picard/ui/options/scripting.py:406
+#: picard/ui/options/renaming.py:175 picard/ui/options/scripting.py:410
 msgid ""
 "<a href=\"%(picard-doc-scripting-url)s\">Open Scripting Documentation in "
 "your browser</a>"
@@ -2146,15 +2145,15 @@ msgstr ""
 msgid "Scripting"
 msgstr "Сценарії"
 
-#: picard/ui/options/scripting.py:292
+#: picard/ui/options/scripting.py:293
 msgid "Are you sure you want to remove this script?"
 msgstr ""
 
-#: picard/ui/options/scripting.py:293
+#: picard/ui/options/scripting.py:294
 msgid "Confirm Remove"
 msgstr ""
 
-#: picard/ui/options/scripting.py:376
+#: picard/ui/options/scripting.py:377
 msgid "Script Error"
 msgstr "Помилка сценарію"
 

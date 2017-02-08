@@ -10,6 +10,7 @@
 # Ettore Atalan <atalanttore@googlemail.com>, 2014
 # Felix Kugler <relgukxilef@gmail.com>, 2015
 # Frank Matthiae <senax79@gmail.com>, 2017
+# ix5 5 <lenelsner@uos.de>, 2017
 # nikki, 2013
 # Philipp Wolfer <ph.wolfer@gmail.com>, 2014,2017
 # S.Brandt <s.brandt@mixxx.org>, 2014-2015,2017
@@ -23,14 +24,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2017-01-18 12:51+0100\n"
-"PO-Revision-Date: 2017-01-20 14:23+0000\n"
-"Last-Translator: S.Brandt <s.brandt@mixxx.org>\n"
+"POT-Creation-Date: 2017-01-23 14:00+0100\n"
+"PO-Revision-Date: 2017-01-26 22:37+0000\n"
+"Last-Translator: ix5 5 <lenelsner@uos.de>\n"
 "Language-Team: German (http://www.transifex.com/musicbrainz/musicbrainz/language/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.3.4\n"
+"Generated-By: Babel 1.3\n"
 "Language: de\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
@@ -153,7 +154,7 @@ msgid "Merge"
 msgstr "Vereinen"
 
 #: picard/config_upgrade.py:78 picard/ui/metadatabox.py:314
-#: picard/ui/options/interface.py:75 picard/ui/ui_options_interface.py:141
+#: picard/ui/ui_options_interface.py:141 picard/ui/options/interface.py:75
 msgid "Remove"
 msgstr "Entfernen"
 
@@ -1143,9 +1144,9 @@ msgstr "In Picard laden"
 msgid "Track Search Results"
 msgstr "Ergebnisse der Titelsuche"
 
-#: picard/ui/options/plugins.py:303 picard/ui/searchdialog.py:324
-#: picard/ui/searchdialog.py:512 picard/ui/searchdialog.py:740
-#: picard/ui/ui_options_plugins.py:138
+#: picard/ui/searchdialog.py:324 picard/ui/searchdialog.py:512
+#: picard/ui/searchdialog.py:740 picard/ui/ui_options_plugins.py:138
+#: picard/ui/options/plugins.py:303
 msgid "Name"
 msgstr "Name"
 
@@ -1205,9 +1206,8 @@ msgstr "Endgebiet"
 msgid "File Name"
 msgstr "Dateiname"
 
-#: picard/ui/options/cdlookup.py:38 picard/ui/ui_cdlookup.py:53
-#: picard/ui/ui_options_cdlookup.py:42
-#: picard/ui/ui_options_cdlookup_select.py:49
+#: picard/ui/ui_cdlookup.py:53 picard/ui/ui_options_cdlookup.py:42
+#: picard/ui/ui_options_cdlookup_select.py:49 picard/ui/options/cdlookup.py:38
 msgid "CD Lookup"
 msgstr "CD abfragen"
 
@@ -1370,7 +1370,7 @@ msgstr "API-Key:"
 msgid "Get API key..."
 msgstr "API-Schlüssel anfordern …"
 
-#: picard/ui/options/folksonomy.py:28 picard/ui/ui_options_folksonomy.py:115
+#: picard/ui/ui_options_folksonomy.py:115 picard/ui/options/folksonomy.py:28
 msgid "Folksonomy Tags"
 msgstr "Folksonomy-Tags"
 
@@ -1425,7 +1425,7 @@ msgstr "Port:"
 msgid "Server address:"
 msgstr "Serveradresse:"
 
-#: picard/ui/options/general.py:88 picard/ui/ui_options_general.py:95
+#: picard/ui/ui_options_general.py:95 picard/ui/options/general.py:88
 msgid "MusicBrainz Account"
 msgstr "MusicBrainz Benutzerkonto"
 
@@ -1437,7 +1437,7 @@ msgstr "Einloggen"
 msgid "Log out"
 msgstr "Abmelden"
 
-#: picard/ui/options/general.py:33 picard/ui/ui_options_general.py:98
+#: picard/ui/ui_options_general.py:98 picard/ui/options/general.py:33
 msgid "General"
 msgstr "Allgemein"
 
@@ -1529,7 +1529,7 @@ msgstr "Minimale Ähnlichkeit für Datei-Abfragen:"
 msgid "Minimal similarity for cluster lookups:"
 msgstr "Minimale Ähnlichkeit für Gruppierungsabfragen:"
 
-#: picard/ui/options/metadata.py:29 picard/ui/ui_options_metadata.py:101
+#: picard/ui/ui_options_metadata.py:101 picard/ui/options/metadata.py:29
 msgid "Metadata"
 msgstr "Metadaten"
 
@@ -1599,7 +1599,7 @@ msgstr "Standard-Verbindungsport"
 msgid "Listen only on localhost"
 msgstr "Nur auf localhost Verbindungen annehmen"
 
-#: picard/ui/options/plugins.py:68 picard/ui/ui_options_plugins.py:137
+#: picard/ui/ui_options_plugins.py:137 picard/ui/options/plugins.py:68
 msgid "Plugins"
 msgstr "Plugins"
 
@@ -1926,19 +1926,19 @@ msgstr "&Standard wiederherstellen"
 msgid "Reset all settings for current option page"
 msgstr ""
 
-#: picard/ui/options/dialog.py:166
+#: picard/ui/options/dialog.py:172
 msgid "You are about to reset your options for this page."
 msgstr "Du bist dabei, die Einstellungen für diese Seite zurückzusetzen."
 
-#: picard/ui/options/dialog.py:170
+#: picard/ui/options/dialog.py:176
 msgid "Warning! This will reset all of your settings."
 msgstr "Warnung! Dadurch werden alle deine Einstellungen zurückgesetzt."
 
-#: picard/ui/options/dialog.py:177
+#: picard/ui/options/dialog.py:183
 msgid "Confirm Reset"
 msgstr "Zurücksetzen bestätigen"
 
-#: picard/ui/options/dialog.py:178
+#: picard/ui/options/dialog.py:184
 msgid "Are you sure?"
 msgstr "Bist du sicher?"
 
@@ -2109,7 +2109,7 @@ msgstr "Alle zurücksetzen"
 msgid "File Naming"
 msgstr "Dateibenennung"
 
-#: picard/ui/options/renaming.py:175 picard/ui/options/scripting.py:406
+#: picard/ui/options/renaming.py:175 picard/ui/options/scripting.py:410
 msgid ""
 "<a href=\"%(picard-doc-scripting-url)s\">Open Scripting Documentation in "
 "your browser</a>"
@@ -2151,15 +2151,15 @@ msgstr "Skript entfernen"
 msgid "Scripting"
 msgstr "Scripting"
 
-#: picard/ui/options/scripting.py:292
+#: picard/ui/options/scripting.py:293
 msgid "Are you sure you want to remove this script?"
 msgstr "Sind sie sicher, dass sie dieses Skript entfernen wollen?"
 
-#: picard/ui/options/scripting.py:293
+#: picard/ui/options/scripting.py:294
 msgid "Confirm Remove"
 msgstr "Entfernen bestätigen"
 
-#: picard/ui/options/scripting.py:376
+#: picard/ui/options/scripting.py:377
 msgid "Script Error"
 msgstr "Script-Fehler"
 

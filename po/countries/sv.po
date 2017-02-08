@@ -1,13 +1,14 @@
 # Translators:
 # Translators:
+# Kebabpizza <alex_elle@hotmail.com>, 2017
 # niklasb <niklas.berglund@gmail.com>, 2016
 # Robin Björnsvik <robin@bjornsvik.se>, 2013
 # Staffan Vilcans, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2016-12-05 06:04+0000\n"
-"Last-Translator: niklasb <niklas.berglund@gmail.com>\n"
+"PO-Revision-Date: 2017-02-02 19:44+0000\n"
+"Last-Translator: Kebabpizza <alex_elle@hotmail.com>\n"
 "Language-Team: Swedish (http://www.transifex.com/musicbrainz/musicbrainz/language/sv/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1078,7 +1079,7 @@ msgstr "Sydkorea"
 #. iso.code:SS
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:257
 msgid "South Sudan"
-msgstr ""
+msgstr "Sydsudan"
 
 #. iso.code:SU
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:243
