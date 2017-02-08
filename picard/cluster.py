@@ -59,6 +59,11 @@ class Cluster(QtCore.QObject, Item):
         self.lookup_task = None
 
     def __repr__(self):
+        if self.related_album:
+            return '<Cluster %s %r>' % (
+                self.related_album.id,
+                self.related_album.metadata[u"album"] + '/' + self.metadata['album']
+                )
         return '<Cluster %r>' % self.metadata['album']
 
     def __len__(self):
