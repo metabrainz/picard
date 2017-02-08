@@ -58,7 +58,7 @@ from picard import (PICARD_APP_NAME, PICARD_ORG_NAME,
 from picard.album import Album, NatAlbum
 from picard.browser.browser import BrowserIntegration
 from picard.browser.filelookup import FileLookup
-from picard.cluster import Cluster, ClusterList, UnmatchedFiles
+from picard.cluster import Cluster, ClusterList, UnclusteredFiles
 from picard.const import USER_DIR, USER_PLUGIN_DIR
 from picard.dataobj import DataObject
 from picard.disc import Disc
@@ -210,7 +210,7 @@ class Tagger(QtGui.QApplication):
         self.albums = {}
         self.release_groups = {}
         self.mbid_redirects = {}
-        self.unmatched_files = UnmatchedFiles()
+        self.unclustered_files = UnclusteredFiles()
         self.nats = None
         self.window = MainWindow()
         self.exit_cleanup = []
@@ -369,8 +369,8 @@ class Tagger(QtGui.QApplication):
         if new_files:
             log.debug("Adding files %r", new_files)
             new_files.sort(key=lambda x: x.filename)
-            if target is None or target is self.unmatched_files:
-                self.unmatched_files.add_files(new_files)
+            if target is None or target is self.unclustered_files:
+                self.unclustered_files.add_files(new_files)
                 target = None
             for file in new_files:
                 file.load(partial(self._file_loaded, target=target))
@@ -659,8 +659,8 @@ class Tagger(QtGui.QApplication):
     def cluster(self, objs):
         """Group files with similar metadata to 'clusters'."""
         log.debug("Clustering %r", objs)
-        if len(objs) <= 1 or self.unmatched_files in objs:
-            files = list(self.unmatched_files.files)
+        if len(objs) <= 1 or self.unclustered_files in objs:
+            files = list(self.unclustered_files.files)
         else:
             files = self.get_files_from_objects(objs)
         fcmp = lambda a, b: (

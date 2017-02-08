@@ -264,12 +264,12 @@ class Cluster(QtCore.QObject, Item):
             yield album_name, artist_name, (files[i] for i in album)
 
 
-class UnmatchedFiles(Cluster):
+class UnclusteredFiles(Cluster):
 
     """Special cluster for 'Unmatched Files' which have no PUID and have not been clustered."""
 
     def __init__(self):
-        super(UnmatchedFiles, self).__init__(_(u"Unclustered Files"), special=True)
+        super(UnclusteredFiles, self).__init__(_(u"Unclustered Files"), special=True)
 
     def add_files(self, files):
         Cluster.add_files(self, files)
