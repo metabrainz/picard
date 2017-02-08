@@ -269,7 +269,7 @@ class UnmatchedFiles(Cluster):
     """Special cluster for 'Unmatched Files' which have no PUID and have not been clustered."""
 
     def __init__(self):
-        super(UnmatchedFiles, self).__init__(_(u"Unmatched Files"), special=True)
+        super(UnmatchedFiles, self).__init__(_(u"Unclustered Files"), special=True)
 
     def add_files(self, files):
         Cluster.add_files(self, files)
