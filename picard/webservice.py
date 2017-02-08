@@ -453,7 +453,9 @@ class XmlWebService(QtCore.QObject):
         return self._get_by_id('discid', discid, handler, inc, queryargs={"cdstubs": "no"},
                                priority=priority, important=important, refresh=refresh)
 
-    def _find(self, entitytype, handler, kwargs):
+    def _find(self, entitytype, handler, kwargs,
+            xml=True, priority=False, important=False, mblogin=False,
+            cacheloadcontrol=None, refresh=False, queryargs=None):
         host = config.setting["server_host"]
         port = config.setting["server_port"]
         filters = []
@@ -484,30 +486,55 @@ class XmlWebService(QtCore.QObject):
             value = QUrl.toPercentEncoding(unicode(value))
             queryargs[str(name)] = value
         path = "/ws/2/%s" % (entitytype)
-        return self.get(host, port, path, handler, queryargs=queryargs)
+        return self.get(host, port, path, handler, queryargs=queryargs,
+                xml=xml, priority=priority, important=important, mblogin=mblogin,
+                cacheloadcontrol=cacheloadcontrol, refresh=refresh)
 
-    def find_releases(self, handler, **kwargs):
-        return self._find('release', handler, kwargs)
+    def find_releases(self, handler,
+            xml=True, priority=False, important=False, mblogin=False,
+            cacheloadcontrol=None, refresh=False, queryargs=None,
+            **kwargs):
+        return self._find('release', handler, kwargs,
+                xml=xml, priority=priority, important=important, mblogin=mblogin,
+                cacheloadcontrol=cacheloadcontrol, refresh=refresh, queryargs=queryargs)
 
-    def find_tracks(self, handler, **kwargs):
-        return self._find('recording', handler, kwargs)
+    def find_tracks(self, handler,
+            xml=True, priority=False, important=False, mblogin=False,
+            cacheloadcontrol=None, refresh=False, queryargs=None,
+            **kwargs):
+        return self._find('recording', handler, kwargs,
+                xml=xml, priority=priority, important=important, mblogin=mblogin,
+                cacheloadcontrol=cacheloadcontrol, refresh=refresh, queryargs=queryargs)
 
-    def find_artists(self, handler, **kwargs):
-        return self._find('artist', handler, kwargs)
+    def find_artists(self, handler,
+            xml=True, priority=False, important=False, mblogin=False,
+            cacheloadcontrol=None, refresh=False, queryargs=None,
+            **kwargs):
+        return self._find('artist', handler, kwargs,
+                xml=xml, priority=priority, important=important, mblogin=mblogin,
+                cacheloadcontrol=cacheloadcontrol, refresh=refresh, queryargs=queryargs)
 
-    def _browse(self, entitytype, handler, kwargs, inc=[], priority=False, important=False):
+    def _browse(self, entitytype, handler, kwargs, inc=[],
+            xml=True, priority=False, important=False, mblogin=False,
+            cacheloadcontrol=None, refresh=False, queryargs=None):
         host = config.setting["server_host"]
         port = config.setting["server_port"]
         path = "/ws/2/%s" % (entitytype)
         queryargs = kwargs
         if inc:
             queryargs["inc"] = "+".join(inc)
-        return self.get(host, port, path, handler, priority=priority,
-                        important=important, queryargs=queryargs)
+        return self.get(host, port, path, handler, queryargs=queryargs,
+                xml=xml, priority=priority, important=important, mblogin=mblogin,
+                cacheloadcontrol=cacheloadcontrol, refresh=refresh)
 
-    def browse_releases(self, handler, priority=True, important=True, **kwargs):
+    def browse_releases(self, handler,
+            xml=True, priority=False, important=False, mblogin=False,
+            cacheloadcontrol=None, refresh=False, queryargs=None,
+            **kwargs):
         inc = ["media", "labels"]
-        return self._browse("release", handler, kwargs, inc, priority=priority, important=important)
+        return self._browse("release", handler, kwargs, inc,
+                xml=xml, priority=priority, important=important, mblogin=mblogin,
+                cacheloadcontrol=cacheloadcontrol, refresh=refresh, queryargs=queryargs)
 
     def submit_ratings(self, ratings, handler):
         host = config.setting['server_host']
