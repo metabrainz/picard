@@ -63,11 +63,11 @@ class ActiveLabel(QtGui.QLabel):
         # Chromium includes the actual data of the dragged image in the drop event. This
         # is useful for Google Images, where the url links to the page that contains the image
         # so we use it if the downloaded url is not an image.
-        droppedData = event.mimeData().data('application/octet-stream')
+        dropped_data = event.mimeData().data('application/octet-stream')
         for url in event.mimeData().urls():
             if url.scheme() in ('https', 'http', 'file'):
                 accepted = True
-                self.imageDropped.emit(url, droppedData)
+                self.imageDropped.emit(url, dropped_data)
         if accepted:
             event.acceptProposedAction()
 
@@ -154,7 +154,7 @@ class CoverArtBox(QtGui.QGroupBox):
         lookup = self.tagger.get_file_lookup()
         lookup.albumLookup(self.release)
 
-    def fetch_remote_image(self, url, fallbackData=None):
+    def fetch_remote_image(self, url, fallback_data=None):
         if self.item is None:
             return
         if url.scheme() in ('https', 'http'):
@@ -166,7 +166,7 @@ class CoverArtBox(QtGui.QGroupBox):
             else:
                 port = 80
             self.tagger.xmlws.get(str(url.encodedHost()), url.port(port), str(path),
-                                  partial(self.on_remote_image_fetched, url, fallbackData=fallbackData),
+                                  partial(self.on_remote_image_fetched, url, fallback_data=fallback_data),
                                   xml=False,
                                   priority=True, important=True)
         elif url.scheme() == 'file':
@@ -177,7 +177,7 @@ class CoverArtBox(QtGui.QGroupBox):
                     data = f.read()
                 self.load_remote_image(url, mime, data)
 
-    def on_remote_image_fetched(self, url, data, reply, error, fallbackData=None):
+    def on_remote_image_fetched(self, url, data, reply, error, fallback_data=None):
         mime = reply.header(QtNetwork.QNetworkRequest.ContentTypeHeader)
         if mime in ('image/jpeg', 'image/png'):
             self.load_remote_image(url, mime, data)
@@ -187,18 +187,18 @@ class CoverArtBox(QtGui.QGroupBox):
             self.fetch_remote_image(url)
         else:
             log.warning("Can't load remote image with MIME-Type %s", mime)
-            if fallbackData:
+            if fallback_data:
                # Tests for image format obtained from file-magic
-               if fallbackData[:2]=='\xff\xd8':
+               if fallback_data[:2]=='\xff\xd8':
                    mime = 'image/jpeg'
-               elif fallbackData[:8]=='\x89PNG\x0d\x0a\x1a\x0a':
+               elif fallback_data[:8]=='\x89PNG\x0d\x0a\x1a\x0a':
                    mime = 'image/png'
                else:
                    mime = None
 
                if mime:
-                   log.warning("Trying the dropped %s data", mime)
-                   self.load_remote_image(url, mime, fallbackData)
+                   log.debug("Trying the dropped %s data", mime)
+                   self.load_remote_image(url, mime, fallback_data)
 
 
     def load_remote_image(self, url, mime, data):
