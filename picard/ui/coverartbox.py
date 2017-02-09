@@ -33,7 +33,7 @@ class ActiveLabel(QtGui.QLabel):
     """Clickable QLabel."""
 
     clicked = QtCore.pyqtSignal()
-    imageDropped = QtCore.pyqtSignal(QtCore.QUrl, QtCore.QByteArray)
+    image_dropped = QtCore.pyqtSignal(QtCore.QUrl, QtCore.QByteArray)
 
     def __init__(self, active=True, *args):
         QtGui.QLabel.__init__(self, *args)
@@ -67,7 +67,7 @@ class ActiveLabel(QtGui.QLabel):
         for url in event.mimeData().urls():
             if url.scheme() in ('https', 'http', 'file'):
                 accepted = True
-                self.imageDropped.emit(url, dropped_data)
+                self.image_dropped.emit(url, dropped_data)
         if accepted:
             event.acceptProposedAction()
 
@@ -89,7 +89,7 @@ class CoverArtBox(QtGui.QGroupBox):
         self.coverArt.setPixmap(self.shadow)
         self.coverArt.setAlignment(QtCore.Qt.AlignTop | QtCore.Qt.AlignHCenter)
         self.coverArt.clicked.connect(self.open_release_page)
-        self.coverArt.imageDropped.connect(self.fetch_remote_image)
+        self.coverArt.image_dropped.connect(self.fetch_remote_image)
         self.layout.addWidget(self.coverArt, 0)
         self.setLayout(self.layout)
 
