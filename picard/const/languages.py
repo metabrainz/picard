@@ -54,7 +54,7 @@ UI_LANGUAGES = [
     #(u'kn', u'ಕನ್ನಡ', N_(u'Kannada')),
     #(u'ko', u'한국어', N_(u'Korean')),
     #(u'lt', u'Lietuvių', N_(u'Lithuanian')),
-    #(u'nb', u'Norsk bokmål', N_(u'Norwegian Bokmal')),
+    (u'nb', u'Norsk bokmål', N_(u'Norwegian Bokmal')),
     #(u'nds', u'Plattdüütsch', N_(u'Low German')),
     (u'nl', u'Nederlands', N_(u'Dutch')),
     #(u'oc', u'Occitan', N_(u'Occitan')),
