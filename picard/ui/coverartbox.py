@@ -25,7 +25,7 @@ from picard.album import Album
 from picard.coverart.image import CoverArtImage, CoverArtImageError
 from picard.track import Track
 from picard.file import File
-from picard.util import encode_filename
+from picard.util import encode_filename, imageinfo
 
 
 class ActiveLabel(QtGui.QLabel):
@@ -189,16 +189,13 @@ class CoverArtBox(QtGui.QGroupBox):
             log.warning("Can't load remote image with MIME-Type %s", mime)
             if fallback_data:
                # Tests for image format obtained from file-magic
-               if fallback_data[:2]=='\xff\xd8':
-                   mime = 'image/jpeg'
-               elif fallback_data[:8]=='\x89PNG\x0d\x0a\x1a\x0a':
-                   mime = 'image/png'
-               else:
-                   mime = None
-
-               if mime:
-                   log.debug("Trying the dropped %s data", mime)
+               try:
+                   mime = imageinfo.identify(fallback_data)[2]
+                   log.warning("Trying the dropped %s data", mime)
                    self.load_remote_image(url, mime, fallback_data)
+               except:
+                   log.error("Unable to identify dropped data format")
+
 
 
     def load_remote_image(self, url, mime, data):
