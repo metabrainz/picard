@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2017-01-23 14:00+0100\n"
-"PO-Revision-Date: 2017-02-08 15:05+0000\n"
+"PO-Revision-Date: 2017-02-09 19:13+0000\n"
 "Last-Translator: CatQuest, The Endeavouring Cat\n"
 "Language-Team: Norwegian Bokmål (http://www.transifex.com/musicbrainz/musicbrainz/language/nb/)\n"
 "MIME-Version: 1.0\n"
@@ -148,7 +148,7 @@ msgstr "Fjern"
 #: picard/config_upgrade.py:193 picard/ui/options/scripting.py:28
 #, python-format
 msgid "My script %d"
-msgstr "Mine skript %d"
+msgstr "Mitt skript %d"
 
 #: picard/file.py:541
 #, python-format
@@ -206,7 +206,7 @@ msgstr "[ingen strekkode]"
 
 #: picard/releasegroup.py:108
 msgid "[no release info]"
-msgstr "[ingen informasjon om utgivels]"
+msgstr "[ingen informasjon om utgivelse]"
 
 #: picard/tagger.py:405 picard/tagger.py:438
 #, python-format
@@ -222,7 +222,7 @@ msgstr "Fjerner album %(id)s: %(artist)s - %(album)s"
 
 #: picard/tagger.py:613
 msgid "CD Lookup Error"
-msgstr "Feil i CD oppsøk"
+msgstr "Feil ved CD oppslag"
 
 #: picard/tagger.py:614
 #, python-format
@@ -333,7 +333,7 @@ msgstr "Lokale filer"
 
 #: picard/coverart/providers/whitelist.py:38
 msgid "Whitelist"
-msgstr "Godkjenningsliste"
+msgstr "Godkjent liste"
 
 #: picard/ui/cdlookup.py:35 picard/ui/mainwindow.py:625 picard/util/tags.py:21
 msgid "Album"
@@ -545,7 +545,7 @@ msgstr "&Utvid alle"
 
 #: picard/ui/itemviews.py:245
 msgid "&Collapse all"
-msgstr "%Skjul alle"
+msgstr "&Skjul alle"
 
 #: picard/ui/itemviews.py:247
 msgid "Select &all"
@@ -813,7 +813,7 @@ msgstr "Søk"
 
 #: picard/ui/mainwindow.py:411
 msgid "Lookup &CD..."
-msgstr "Søk opp &CD..."
+msgstr "Slå opp &CD..."
 
 #: picard/ui/mainwindow.py:412
 msgid "Lookup the details of the CD in your drive"
@@ -907,7 +907,7 @@ msgstr "Se &handlingshistorie"
 
 #: picard/ui/mainwindow.py:483
 msgid "Open in &Player"
-msgstr "Åpne i %spiller"
+msgstr "Åpne i &spiller"
 
 #: picard/ui/mainwindow.py:484
 msgid "Play the file in your default media player"
@@ -915,11 +915,11 @@ msgstr "Spill filen i standard mediespiller"
 
 #: picard/ui/mainwindow.py:488
 msgid "Open Containing &Folder"
-msgstr "Åpne overordnet %mappe"
+msgstr "Åpne overordnet &mappe"
 
 #: picard/ui/mainwindow.py:489
 msgid "Open the containing folder in your file explorer"
-msgstr "Åpne den overordnende %mappen i filbehandleren"
+msgstr "Åpne den overordnende mappen i filbehandleren"
 
 #: picard/ui/mainwindow.py:518
 msgid "&File"
@@ -1196,7 +1196,7 @@ msgstr "Filnavn"
 #: picard/ui/ui_cdlookup.py:53 picard/ui/ui_options_cdlookup.py:42
 #: picard/ui/ui_options_cdlookup_select.py:49 picard/ui/options/cdlookup.py:38
 msgid "CD Lookup"
-msgstr "CD oppsøk"
+msgstr "CD oppslag"
 
 #: picard/ui/ui_cdlookup.py:54
 msgid "The following releases on MusicBrainz match the CD:"
@@ -1314,7 +1314,7 @@ msgstr "Overskriv filen hvis den allerede finnes?"
 
 #: picard/ui/ui_options_cover.py:85
 msgid "Cover Art Providers"
-msgstr "Leverandører av omslagsbilder"
+msgstr "Omslagsbilde opphav"
 
 #: picard/ui/ui_options_fingerprinting.py:86
 msgid "Audio Fingerprinting"
@@ -1330,7 +1330,7 @@ msgstr "Bruk AcoustID"
 
 #: picard/ui/ui_options_fingerprinting.py:89
 msgid "AcoustID Settings"
-msgstr "AcoustID Innstillinger"
+msgstr "Innstillinger for AcoustID"
 
 #: picard/ui/ui_options_fingerprinting.py:90
 msgid "Ignore existing AcoustID fingerprints"
@@ -1359,7 +1359,7 @@ msgstr "Få API nøkkel..."
 
 #: picard/ui/ui_options_folksonomy.py:115 picard/ui/options/folksonomy.py:28
 msgid "Folksonomy Tags"
-msgstr "Folksonomi tagger"
+msgstr "Folksonomitagger"
 
 #: picard/ui/ui_options_folksonomy.py:116
 msgid "Ignore tags:"
@@ -1377,7 +1377,7 @@ msgstr "Fall tilbake på artist tagger hvis ingen utgivelse- eller utgivelsesgru
 
 #: picard/ui/ui_options_folksonomy.py:119
 msgid "Minimal tag usage:"
-msgstr "Minimal tagg bruk:"
+msgstr "Minste tagg bruk:"
 
 #: picard/ui/ui_options_folksonomy.py:120 picard/ui/ui_options_matching.py:75
 #: picard/ui/ui_options_matching.py:76 picard/ui/ui_options_matching.py:77
@@ -1390,7 +1390,7 @@ msgstr "Maksimum antall tagger:"
 
 #: picard/ui/ui_options_folksonomy.py:122
 msgid "Join multiple tags with:"
-msgstr "Slå sammen flere tagger med:"
+msgstr "Kombinér flere tagger med:"
 
 #: picard/ui/ui_options_folksonomy.py:123
 msgid " / "
@@ -1542,7 +1542,7 @@ msgstr "Bruk sporrelasjoner"
 
 #: picard/ui/ui_options_metadata.py:107
 msgid "Use folksonomy tags as genre"
-msgstr "Bruk folksonomi tagger som sjanger"
+msgstr "Bruk folksonomitagger som sjanger"
 
 #: picard/ui/ui_options_metadata.py:108
 msgid "Custom Fields"
@@ -1660,7 +1660,7 @@ msgstr "Destinasjonsmappe:"
 
 #: picard/ui/ui_options_renaming.py:166
 msgid "Move additional files (case insensitive):"
-msgstr "Flytt flere filer (ikke versalsensitiv):"
+msgstr "Flytt også filtypene (navn er ikke versalsensitiv):"
 
 #: picard/ui/ui_options_renaming.py:167
 msgid "Delete empty directories"
@@ -1668,7 +1668,7 @@ msgstr "Slett tomme mapper"
 
 #: picard/ui/ui_options_renaming.py:168
 msgid "Rename files when saving"
-msgstr "Endre navn på filer ved lagring"
+msgstr "Endre filnavn ved lagring"
 
 #: picard/ui/ui_options_renaming.py:169
 msgid "Replace non-ASCII characters"
@@ -1680,7 +1680,7 @@ msgstr "Windows kombatibilitet"
 
 #: picard/ui/ui_options_renaming.py:171
 msgid "Name files like this"
-msgstr "Gi nye filer navn som dette"
+msgstr "Navngi filer ifølge regeks:"
 
 #: picard/ui/ui_options_renaming.py:178
 msgid "Examples"
@@ -1692,7 +1692,7 @@ msgstr "Taggerskript"
 
 #: picard/ui/ui_options_script.py:99 picard/ui/ui_options_script.py:100
 msgid "Add new script"
-msgstr "Legg til nytt skript"
+msgstr "Lag nytt skript"
 
 #: picard/ui/ui_options_script.py:101
 msgid "Display Name"
@@ -1729,7 +1729,7 @@ msgstr "Ivareta disse taggene fra å fjernes eller overskrives med MusicBrainz d
 
 #: picard/ui/ui_options_tags.py:159
 msgid "Tags are separated by commas, and are case-sensitive."
-msgstr "Tagger er atskilt med komma, og er versalsensitive."
+msgstr "Tagger er atskilt med komma og er versalsensitive."
 
 #: picard/ui/ui_options_tags.py:160
 msgid "Tag Compatibility"
@@ -1741,11 +1741,11 @@ msgstr "ID3v2 versjon"
 
 #: picard/ui/ui_options_tags.py:162
 msgid "2.4"
-msgstr "2,4"
+msgstr "2.4"
 
 #: picard/ui/ui_options_tags.py:163
 msgid "2.3"
-msgstr "2,3"
+msgstr "2.3"
 
 #: picard/ui/ui_options_tags.py:164
 msgid "ID3v2 Text Encoding"
@@ -1765,7 +1765,7 @@ msgstr "ISO-8859-1"
 
 #: picard/ui/ui_options_tags.py:168
 msgid "Join multiple ID3v2.3 tags with:"
-msgstr "Slå sammen flere ID3v2.3 tagger med:"
+msgstr "Kombinér flere ID3v2.3 tagger med:"
 
 #: picard/ui/ui_options_tags.py:169
 msgid ""
@@ -1780,11 +1780,11 @@ msgstr "Inkluder også ID3v1 tagger i filene"
 
 #: picard/ui/ui_passworddialog.py:64
 msgid "Authentication required"
-msgstr "Godkjenning nødvendig"
+msgstr "Autorisering nødvendig"
 
 #: picard/ui/ui_provider_options_caa.py:86
 msgid "Download only cover art images matching selected types"
-msgstr "Last ned bare omslagsbilder av samsvarende type"
+msgstr "Last bare ned omslagsbilder valgte typer:"
 
 #: picard/ui/ui_provider_options_caa.py:87
 msgid "Select types..."
@@ -1822,14 +1822,14 @@ msgstr "Bruk den første bildetypen som filnavn. Dette endrer ikke filnavnet til
 
 #: picard/ui/ui_provider_options_local.py:64
 msgid "Local cover art files match the following regular expression:"
-msgstr "Eksisterende omslagsbilder passer følgende regulære uttrykk:"
+msgstr "Regulært uttrykk for eksisterende omslagsbilder:"
 
 #: picard/ui/ui_provider_options_local.py:66
 msgid ""
 "First group in the regular expression, if any, will be used as type, ie. "
 "cover-back-spine.jpg will be set as types Back + Spine. If no type is found,"
 " it will default to Front type."
-msgstr "Første gruppe i det eventuelle regulære uttrykket, vil bli benyttet som type, dvs cover-back-spine.jpg "
+msgstr "Første gruppe i det eventuelle regulære uttrykket, vil bli benyttet som type, dvs omslag-bakside-rygg.jpg settest som bakside + rygg, hvis ingen type er funnet, vil typen bli satt som forside"
 
 #: picard/ui/ui_tagsfromfilenames.py:50
 msgid "Convert File Names to Tags"
@@ -1887,7 +1887,7 @@ msgid ""
 "<p align=\"center\"><strong>Credits</strong><br/>\n"
 "<small>Copyright © 2004-2017 Robert Kaye, Lukáš Lalinský, Laurent Monin and others%(translator-credits)s</small></p>\n"
 "<p align=\"center\"><strong>Official website</strong><br/><a href=\"%(picard-doc-url)s\">%(picard-doc-url)s</a></p>\n"
-msgstr "<p align=\"center\"><span style=\"font-size:15px;font-weight:bold;\">MusicBrainz Picard</span><br/>\nversjon %(version)s</p>\n<p align=\"center\"><small>\n%(third_parties_versions)s\n</small></p>\n<p align=\"center\"><strong>Støttede formater</strong><br/>%(formats)s</p>\n<p align=\"center\"><strong>Donasjon</strong><br/>\nTakk for at du bruker Picard. Picard baserer seg på MusicBrainz databasen, som drives av MetaBrainz Foundation ved hjelp av tusenvis av frivillige. Hvis du liker dette programmet kan du donere til MetaBrainz Foundation for å holde tjenesten gående.</p>\n<p align=\"center\"><a href=\"%(picard-donate-url)s\">Donér nå!</a></p>\n<p align=\"center\"><strong>Credits</strong><br/>\n<small>Copyright © 2004-2017 Robert Kaye, Lukáš Lalinský, Laurent Monin og andre%(translator-credits)s</small></p>\n<p align=\"center\"><strong>Offisiell nettside</strong><br/><a href=\"%(picard-doc-url)s\">%(picard-doc-url)s</a></p>\n"
+msgstr "<p align=\"center\"><span style=\"font-size:15px;font-weight:bold;\">MusicBrainz Picard</span><br/>\nversjon %(version)s</p>\n<p align=\"center\"><small>\n%(third_parties_versions)s\n</small></p>\n<p align=\"center\"><strong>Støttede formater</strong><br/>%(formats)s</p>\n<p align=\"center\"><strong>Donasjon</strong><br/>\nTakk for at du bruker Picard. Picard baserer seg på MusicBrainz databasen, som drives av MetaBrainz Foundation ved hjelp av tusenvis av frivillige. Hvis du liker dette programmet kan du donere til MetaBrainz Foundation for å holde tjenesten gående.</p>\n<p align=\"center\"><a href=\"%(picard-donate-url)s\">Donér nå!</a></p>\n<p align=\"center\"><strong>Anerkjennelser</strong><br/>\n<small>Copyright © 2004-2017 Robert Kaye, Lukáš Lalinský, Laurent Monin og andre%(translator-credits)s</small></p>\n<p align=\"center\"><strong>Offisiell nettside</strong><br/><a href=\"%(picard-doc-url)s\">%(picard-doc-url)s</a></p>\n"
 
 #: picard/ui/options/advanced.py:30
 msgid "Advanced"
@@ -1973,7 +1973,7 @@ msgstr "Slå opp"
 
 #: picard/ui/options/interface.py:59
 msgid "Scan"
-msgstr "Skanner"
+msgstr "Skann"
 
 #: picard/ui/options/interface.py:63
 msgid "Lookup in Browser"
@@ -2094,7 +2094,7 @@ msgstr "Tilbakestill alle"
 
 #: picard/ui/options/renaming.py:46
 msgid "File Naming"
-msgstr "Filbenevning"
+msgstr "Filnavn og -flytting"
 
 #: picard/ui/options/renaming.py:175 picard/ui/options/scripting.py:410
 msgid ""
@@ -2116,11 +2116,11 @@ msgstr "Mitt skript"
 
 #: picard/ui/options/scripting.py:128
 msgid "Move script up"
-msgstr "Flytt skript opp"
+msgstr "Flytt opp"
 
 #: picard/ui/options/scripting.py:132
 msgid "Move script down"
-msgstr "Flytt skript ned"
+msgstr "Flytt ned"
 
 #: picard/ui/options/scripting.py:140
 msgid "Other options"
@@ -2128,11 +2128,11 @@ msgstr "Andre innstillinger"
 
 #: picard/ui/options/scripting.py:142
 msgid "Rename script"
-msgstr "Gi nytt navn til skript"
+msgstr "Gi nytt navn"
 
 #: picard/ui/options/scripting.py:143
 msgid "Remove script"
-msgstr "Fjern skript"
+msgstr "Slett skript"
 
 #: picard/ui/options/scripting.py:205
 msgid "Scripting"
@@ -2140,7 +2140,7 @@ msgstr "Skripting"
 
 #: picard/ui/options/scripting.py:293
 msgid "Are you sure you want to remove this script?"
-msgstr "Er du sikker på at du vil fjerne dette skriptet?"
+msgstr "Er du sikker på at du vil slette dette skriptet?"
 
 #: picard/ui/options/scripting.py:294
 msgid "Confirm Remove"
@@ -2152,7 +2152,7 @@ msgstr "Skriptfeil"
 
 #: picard/ui/options/tags.py:30
 msgid "Tags"
-msgstr "Metadata"
+msgstr "Tagger"
 
 #: picard/util/bytes2human.py:33
 #, python-format
@@ -2224,7 +2224,7 @@ msgstr "Opprinnelig utgivelsesår"
 
 #: picard/util/tags.py:27
 msgid "Album Artist"
-msgstr "Album Artist"
+msgstr "Album artist"
 
 #: picard/util/tags.py:28
 msgid "Track Number"
@@ -2324,7 +2324,7 @@ msgstr "Undertittel"
 
 #: picard/util/tags.py:53
 msgid "Disc Subtitle"
-msgstr "Disk undertittel"
+msgstr "Diskundertittel"
 
 #: picard/util/tags.py:54
 msgid "Remixer"
@@ -2332,7 +2332,7 @@ msgstr "Remikser"
 
 #: picard/util/tags.py:55
 msgid "MusicBrainz Recording Id"
-msgstr "MusicBrainz InnspillingsID"
+msgstr "MusicBrainz Innspillings ID"
 
 #: picard/util/tags.py:56
 msgid "MusicBrainz Track Id"
@@ -2340,7 +2340,7 @@ msgstr "MusicBrainz Spor ID"
 
 #: picard/util/tags.py:57
 msgid "MusicBrainz Release Id"
-msgstr "MusicBrainz UtgivelsesID"
+msgstr "MusicBrainz Utgivelses ID"
 
 #: picard/util/tags.py:58
 msgid "MusicBrainz Artist Id"
@@ -2348,11 +2348,11 @@ msgstr "MusicBrainz Artist ID"
 
 #: picard/util/tags.py:59
 msgid "MusicBrainz Release Artist Id"
-msgstr "MusicBrainz UtgivelsesartistID"
+msgstr "MusicBrainz Utgivelsesartist ID"
 
 #: picard/util/tags.py:60
 msgid "MusicBrainz Work Id"
-msgstr "MusicBrainz ÅndsverksID"
+msgstr "MusicBrainz Åndsverks ID"
 
 #: picard/util/tags.py:61
 msgid "MusicBrainz Release Group Id"

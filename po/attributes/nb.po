@@ -1,14 +1,14 @@
 # Translators:
 # Translators:
-# CatQuest, The Endeavouring Cat, 2015
+# CatQuest, The Endeavouring Cat, 2015,2017
 # Kurt-Håkon Eilertsen <kurt@kheds.com>, 2014
 # CatQuest, The Endeavouring Cat, 2012
 # CatQuest, The Endeavouring Cat, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2017-01-16 20:46+0000\n"
-"Last-Translator: Laurent Monin <i18n@norz.org>\n"
+"PO-Revision-Date: 2017-02-10 00:50+0000\n"
+"Last-Translator: CatQuest, The Endeavouring Cat\n"
 "Language-Team: Norwegian Bokmål (http://www.transifex.com/musicbrainz/musicbrainz/language/nb/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -251,7 +251,7 @@ msgstr ""
 #: DB:series_type/description:3
 msgctxt "series_type"
 msgid "A series of recordings."
-msgstr ""
+msgstr "En serie av innspillinger"
 
 #: DB:series_type/description:7
 msgctxt "series_type"
@@ -816,7 +816,7 @@ msgstr "Behāg"
 #: DB:work_type/name:26
 msgctxt "work_type"
 msgid "Beijing opera"
-msgstr "Beijing opera"
+msgstr "Beijing operaen"
 
 #: DB:work_type/description:26
 msgctxt "work_type"
@@ -988,12 +988,12 @@ msgstr "Hefte"
 #: DB:release_status/name:3
 msgctxt "release_status"
 msgid "Bootleg"
-msgstr "Ulovlig"
+msgstr ""
 
 #: DB:label_type/name:5
 msgctxt "label_type"
 msgid "Bootleg Production"
-msgstr "Ulovlig produksjon"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:607
 msgctxt "work_attribute_type_allowed_value"
@@ -1003,7 +1003,7 @@ msgstr "Bozlak"
 #: DB:release_group_primary_type/name:12
 msgctxt "release_group_primary_type"
 msgid "Broadcast"
-msgstr "Kringkaste"
+msgstr "Kringkasting"
 
 #: DB:work_attribute_type_allowed_value/value:62
 msgctxt "work_attribute_type_allowed_value"
@@ -1153,7 +1153,7 @@ msgstr "Kortbord/Papirarm"
 #: DB:medium_format/name:9
 msgctxt "medium_format"
 msgid "Cartridge"
-msgstr "Patron"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:66
 msgctxt "work_attribute_type_allowed_value"
@@ -1168,7 +1168,7 @@ msgstr "Kassett"
 #: DB:release_packaging/name:8
 msgctxt "release_packaging"
 msgid "Cassette Case"
-msgstr "Kassett etui"
+msgstr "Kassettetui"
 
 #: DB:series_type/name:5
 msgctxt "series_type"
@@ -1193,7 +1193,7 @@ msgstr "Cevher"
 #: DB:artist_type/name:4
 msgctxt "artist_type"
 msgid "Character"
-msgstr "Karakter"
+msgstr "Rolle"
 
 #: DB:artist_type/name:6
 msgctxt "artist_type"
@@ -1599,7 +1599,7 @@ msgstr "Distributør"
 #: DB:area_type/name:5
 msgctxt "area_type"
 msgid "District"
-msgstr "Område"
+msgstr "Distrikt"
 
 #: DB:area_type/description:5
 msgctxt "area_type"
@@ -1769,7 +1769,7 @@ msgstr ""
 #: DB:instrument_type/name:4
 msgctxt "instrument_type"
 msgid "Electronic instrument"
-msgstr "elektronisk instrument"
+msgstr "Elektronisk instrument"
 
 #: DB:medium_format/name:42
 msgctxt "medium_format"
@@ -1794,17 +1794,17 @@ msgstr "Evcara"
 #: DB:editor_collection_type/name:4
 msgctxt "collection_type"
 msgid "Event"
-msgstr ""
+msgstr "Arrangement"
 
 #: DB:series_type/name:6
 msgctxt "series_type"
 msgid "Event"
-msgstr ""
+msgstr "Arrangement"
 
 #: DB:event_alias_type/name:1
 msgctxt "alias_type"
 msgid "Event name"
-msgstr ""
+msgstr "Arrangementnavn"
 
 #: DB:work_attribute_type_allowed_value/value:729
 msgctxt "work_attribute_type_allowed_value"
@@ -2082,7 +2082,7 @@ msgstr "Garuḍadhvani"
 #: DB:release_packaging/name:12
 msgctxt "release_packaging"
 msgid "Gatefold Cover"
-msgstr "Sammenbrettet forside"
+msgstr "Digipak"
 
 #: DB:work_attribute_type_allowed_value/value:99
 msgctxt "work_attribute_type_allowed_value"
@@ -2564,7 +2564,7 @@ msgstr "Instrument"
 #: DB:instrument_alias_type/name:1
 msgctxt "alias_type"
 msgid "Instrument name"
-msgstr "Instrument navn"
+msgstr "Instrumentnavn"
 
 #: DB:release_group_secondary_type/name:4
 msgctxt "release_group_secondary_type"
@@ -3167,7 +3167,7 @@ msgstr "Mandāri"
 #: DB:series_ordering_type/name:2
 msgctxt "series_ordering_type"
 msgid "Manual"
-msgstr "Håndbok"
+msgstr "Manual"
 
 #: DB:work_attribute_type_allowed_value/value:172
 msgctxt "work_attribute_type_allowed_value"
@@ -3877,7 +3877,7 @@ msgstr "Annet"
 #: DB:instrument_type/name:5
 msgctxt "instrument_type"
 msgid "Other instrument"
-msgstr "Andre instrument"
+msgstr "Annet instrument"
 
 #: DB:work_type/name:12
 msgctxt "work_type"
@@ -4017,7 +4017,7 @@ msgstr "Produksjon"
 #: DB:release_status/name:2
 msgctxt "release_status"
 msgid "Promotion"
-msgstr "Reklame"
+msgstr "Promoplate"
 
 #: DB:work_type/name:23
 msgctxt "work_type"
@@ -4681,12 +4681,12 @@ msgstr "Lydspor"
 #: DB:cover_art_archive.art_type/name:6
 msgctxt "cover_art_type"
 msgid "Spine"
-msgstr ""
+msgstr "Rygg"
 
 #: DB:release_group_secondary_type/name:3
 msgctxt "release_group_secondary_type"
 msgid "Spokenword"
-msgstr "Uttalt ord"
+msgstr "Taleplate"
 
 #: DB:place_type/name:4
 msgctxt "place_type"
@@ -5075,7 +5075,7 @@ msgstr "Spor"
 #: DB:cover_art_archive.art_type/name:9
 msgctxt "cover_art_type"
 msgid "Tray"
-msgstr ""
+msgstr "Innlegg"
 
 #: DB:work_attribute_type_allowed_value/value:775
 msgctxt "work_attribute_type_allowed_value"
