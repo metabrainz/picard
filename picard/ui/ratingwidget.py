@@ -19,6 +19,7 @@
 
 from PyQt4 import QtCore, QtGui
 from picard import config
+from picard.track import Track
 
 
 class RatingWidget(QtGui.QWidget):
@@ -80,7 +81,8 @@ class RatingWidget(QtGui.QWidget):
     def _update_track(self):
         track = self._track
         track.metadata["~rating"] = unicode(self._rating)
-        if config.setting["submit_ratings"]:
+        if config.setting["submit_ratings"] and \
+           isinstance(track, Track):
             ratings = {("recording", track.id): self._rating}
             self.tagger.xmlws.submit_ratings(ratings, None)
 
