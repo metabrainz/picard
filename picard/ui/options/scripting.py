@@ -258,7 +258,7 @@ class ScriptingOptionsPage(OptionsPage):
         list_widget.set_rename_connection(lambda: self.rename_script(item))
 
     def rename_script(self, item):
-        self.ui.script_list.setItemSelected(item, True)
+        item.setSelected(True)
         self.ui.script_name.setFocus()
         self.ui.script_name.selectAll()
 
@@ -279,7 +279,7 @@ class ScriptingOptionsPage(OptionsPage):
         self.ui.script_list.setItemWidget(list_item, list_widget)
         self.listitem_to_scriptitem[list_item] = script
         self.list_of_scripts.append(script.get_all())
-        self.ui.script_list.setItemSelected(list_item, True)
+        list_item.setSelected(True)
 
     def update_script_positions(self):
         for i, script in enumerate(self.list_of_scripts):
@@ -315,10 +315,10 @@ class ScriptingOptionsPage(OptionsPage):
                 if not self.ui.script_list.selectedItems():
                     current_item = self.ui.script_list.currentItem()
                     if current_item:
-                        self.ui.script_list.setItemSelected(current_item, True)
+                        current_item.setSelected(True)
                     else:
                         item = self.ui.script_list.item(0)
-                        self.ui.script_list.setItemSelected(item, True)
+                        item.setSelected(True)
             elif row < self.last_selected_script_pos:
                 self.last_selected_script_pos -= 1
 
@@ -399,7 +399,7 @@ class ScriptingOptionsPage(OptionsPage):
         self.last_selected_script_pos = config.persist["last_selected_script_pos"]
         last_selected_script = self.ui.script_list.item(self.last_selected_script_pos)
         if last_selected_script:
-            self.ui.script_list.setItemSelected(last_selected_script, True)
+            last_selected_script.setSelected(True)
 
         # Preserve previous splitter position
         self.ui.splitter.restoreState(config.persist["scripting_splitter"])
