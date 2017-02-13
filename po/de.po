@@ -10,7 +10,7 @@
 # Ettore Atalan <atalanttore@googlemail.com>, 2014
 # Felix Kugler <relgukxilef@gmail.com>, 2015
 # Frank Matthiae <senax79@gmail.com>, 2017
-# ix5 5 <lenelsner@uos.de>, 2017
+# ix5, 2017
 # nikki, 2013
 # Philipp Wolfer <ph.wolfer@gmail.com>, 2014,2017
 # S.Brandt <s.brandt@mixxx.org>, 2014-2015,2017

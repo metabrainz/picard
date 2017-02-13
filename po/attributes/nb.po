@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2017-02-10 00:50+0000\n"
+"PO-Revision-Date: 2017-02-10 12:38+0000\n"
 "Last-Translator: CatQuest, The Endeavouring Cat\n"
 "Language-Team: Norwegian Bokmål (http://www.transifex.com/musicbrainz/musicbrainz/language/nb/)\n"
 "MIME-Version: 1.0\n"
@@ -54,12 +54,12 @@ msgstr "12\" Vinyl"
 #: DB:medium_format/name:49
 msgctxt "medium_format"
 msgid "3.5\" Floppy Disk"
-msgstr ""
+msgstr "3.5\" Diskett"
 
 #: DB:medium_format/name:52
 msgctxt "medium_format"
 msgid "7\" Flexi-disc"
-msgstr ""
+msgstr "7\" Flexidisk"
 
 #: DB:medium_format/name:56
 msgctxt "medium_format"
@@ -1148,7 +1148,7 @@ msgstr "Kantate"
 #: DB:release_packaging/name:4
 msgctxt "release_packaging"
 msgid "Cardboard/Paper Sleeve"
-msgstr "Kortbord/Papirarm"
+msgstr ""
 
 #: DB:medium_format/name:9
 msgctxt "medium_format"
@@ -1444,7 +1444,7 @@ msgstr "Darbārī kānaḍa"
 #: DB:medium_format/name:43
 msgctxt "medium_format"
 msgid "Data CD"
-msgstr ""
+msgstr "Data CD"
 
 #: DB:release_group_secondary_type/name:10
 msgctxt "release_group_secondary_type"
@@ -1994,7 +1994,7 @@ msgstr "Fireng-i Fer"
 #: DB:medium_format/name:51
 msgctxt "medium_format"
 msgid "Flexi-disc"
-msgstr ""
+msgstr "Flexidisk"
 
 #: DB:medium_format/description:51
 msgctxt "medium_format"
@@ -2012,7 +2012,7 @@ msgstr ""
 #: DB:area_alias_type/name:2
 msgctxt "alias_type"
 msgid "Formal name"
-msgstr "Formelt navn"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:735
 msgctxt "work_attribute_type_allowed_value"
@@ -2467,17 +2467,17 @@ msgstr "Huzi"
 #: DB:medium_format/name:38
 msgctxt "medium_format"
 msgid "Hybrid SACD"
-msgstr ""
+msgstr "Hybrid SACD"
 
 #: DB:medium_format/name:63
 msgctxt "medium_format"
 msgid "Hybrid SACD (CD layer)"
-msgstr ""
+msgstr "Hybrid SACD (CD lag)"
 
 #: DB:medium_format/name:64
 msgctxt "medium_format"
 msgid "Hybrid SACD (SACD layer)"
-msgstr ""
+msgstr "Hybrid SACD (SACD lag)"
 
 #: DB:work_attribute_type_allowed_value/value:418
 msgctxt "work_attribute_type_allowed_value"
@@ -3862,7 +3862,7 @@ msgstr "Annet"
 #: DB:place_type/name:3
 msgctxt "place_type"
 msgid "Other"
-msgstr "Andre"
+msgstr "Annet"
 
 #: DB:release_group_primary_type/name:11
 msgctxt "release_group_primary_type"
@@ -4382,7 +4382,7 @@ msgstr ""
 #: DB:medium_format/name:62
 msgctxt "medium_format"
 msgid "SD Card"
-msgstr ""
+msgstr "SDkort"
 
 #: DB:work_attribute_type/name:8
 msgctxt "work_attribute_type"
@@ -5170,7 +5170,7 @@ msgstr "VCD"
 #: DB:medium_format/name:59
 msgctxt "medium_format"
 msgid "VHD"
-msgstr ""
+msgstr "Videokassett"
 
 #: DB:medium_format/name:21
 msgctxt "medium_format"

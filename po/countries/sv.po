@@ -1,7 +1,7 @@
 # Translators:
 # Translators:
 # Kebabpizza <alex_elle@hotmail.com>, 2017
-# niklasb <niklas.berglund@gmail.com>, 2016
+# Niklas Berglund <niklas.berglund@gmail.com>, 2016
 # Robin Björnsvik <robin@bjornsvik.se>, 2013
 # Staffan Vilcans, 2014
 msgid ""

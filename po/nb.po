@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2017-01-23 14:00+0100\n"
-"PO-Revision-Date: 2017-02-09 19:13+0000\n"
+"PO-Revision-Date: 2017-02-13 12:45+0000\n"
 "Last-Translator: CatQuest, The Endeavouring Cat\n"
 "Language-Team: Norwegian Bokmål (http://www.transifex.com/musicbrainz/musicbrainz/language/nb/)\n"
 "MIME-Version: 1.0\n"
@@ -44,7 +44,7 @@ msgstr "Søker opp lydavtrykk for fil \"%(filename)s\" ..."
 
 #: picard/acoustidmanager.py:82
 msgid "Submitting AcoustIDs ..."
-msgstr "Sender AcoustIDer..."
+msgstr "Sender inn AcoustID..."
 
 #: picard/acoustidmanager.py:103
 #, python-format
@@ -57,7 +57,7 @@ msgstr "AcoustIDer sendt inn."
 
 #: picard/album.py:70 picard/cluster.py:272
 msgid "Unmatched Files"
-msgstr "Usamsvarende filer"
+msgstr "Ufiltrerte filer"
 
 #: picard/album.py:206
 #, python-format
@@ -98,7 +98,7 @@ msgstr "Filklynge %(album)s identifisert!"
 #: picard/cluster.py:196
 #, python-format
 msgid "Looking up the metadata for cluster %(album)s..."
-msgstr "Søker opp metadata for filklynge %(album)s..."
+msgstr "Ser etter metadata for filklynge %(album)s..."
 
 #: picard/collection.py:64
 #, python-format
