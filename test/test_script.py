@@ -6,15 +6,19 @@ from picard.script import ScriptParser, ScriptError, register_script_function
 from picard.metadata import Metadata
 from picard.ui.options.renaming import _DEFAULT_FILE_NAMING_FORMAT
 
+
 class ScriptParserTest(unittest.TestCase):
 
     def setUp(self):
         config.setting = {
             'enabled_plugins': '',
         }
+
         self.parser = ScriptParser()
+
         def func_noargstest(parser):
             return ""
+
         register_script_function(func_noargstest, "noargstest")
 
     def test_cmd_noop(self):
@@ -374,18 +378,29 @@ class ScriptParserTest(unittest.TestCase):
     def test_cmd_inmulti(self):
         context = Metadata()
         self.parser.eval("$set(foo,First; Second; Third)", context)
-        self.assertEqual(self.parser.eval("$in(%foo%,Second)", context), "1")
-        self.assertEqual(self.parser.eval("$in(%foo%,irst; Second; Thi)", context), "1")
-        self.assertEqual(self.parser.eval("$in(%foo%,First; Second; Third)", context), "1")
-        self.assertEqual(self.parser.eval("$inmulti(%foo%,Second)", context), "")
-        self.assertEqual(self.parser.eval("$inmulti(%foo%,irst; Second; Thi)", context), "")
-        self.assertEqual(self.parser.eval("$inmulti(%foo%,First; Second; Third)", context), "1")
+        self.assertEqual(
+            self.parser.eval("$in(%foo%,Second)", context), "1")
+        self.assertEqual(
+            self.parser.eval("$in(%foo%,irst; Second; Thi)", context), "1")
+        self.assertEqual(
+            self.parser.eval("$in(%foo%,First; Second; Third)", context), "1")
+        self.assertEqual(
+            self.parser.eval("$inmulti(%foo%,Second)", context), "")
+        self.assertEqual(
+            self.parser.eval("$inmulti(%foo%,irst; Second; Thi)", context), "")
+        self.assertEqual(
+            self.parser.eval("$inmulti(%foo%,First; Second; Third)", context), "1")
 
         self.parser.eval("$setmulti(foo,First; Second; Third)", context)
-        self.assertEqual(self.parser.eval("$in(%foo%,Second)", context), "1")
-        self.assertEqual(self.parser.eval("$in(%foo%,irst; Second; Thi)", context), "1")
-        self.assertEqual(self.parser.eval("$in(%foo%,First; Second; Third)", context), "1")
-        self.assertEqual(self.parser.eval("$inmulti(%foo%,Second)", context), "1")
-        self.assertEqual(self.parser.eval("$inmulti(%foo%,irst; Second; Thi)", context), "")
-        self.assertEqual(self.parser.eval("$inmulti(%foo%,First; Second; Third)", context), "")
-
+        self.assertEqual(
+            self.parser.eval("$in(%foo%,Second)", context), "1")
+        self.assertEqual(
+            self.parser.eval("$in(%foo%,irst; Second; Thi)", context), "1")
+        self.assertEqual(
+            self.parser.eval("$in(%foo%,First; Second; Third)", context), "1")
+        self.assertEqual(
+            self.parser.eval("$inmulti(%foo%,Second)", context), "1")
+        self.assertEqual(
+            self.parser.eval("$inmulti(%foo%,irst; Second; Thi)", context), "")
+        self.assertEqual(
+            self.parser.eval("$inmulti(%foo%,First; Second; Third)", context), "")
