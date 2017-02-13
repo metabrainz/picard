@@ -21,7 +21,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 1.3\n"
 "Language: pl\n"
-"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n%100<12 || n%100>=14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
 
 #: picard/acoustid.py:111
 #, python-format
@@ -86,6 +86,7 @@ msgid_plural "; %i images"
 msgstr[0] "%i grafika"
 msgstr[1] "%i grafiki"
 msgstr[2] "%i grafik"
+msgstr[3] "%i grafik"
 
 #: picard/cluster.py:166 picard/cluster.py:179
 #, python-format
@@ -109,6 +110,7 @@ msgid_plural "Added %(count)i releases to collection \"%(name)s\""
 msgstr[0] "Dodano %(count)i wydanie do kolekcji \"%(name)s\""
 msgstr[1] "Dodano %(count)i wydania do kolekcji \"%(name)s\""
 msgstr[2] "Dodano %(count)i wydań do kolekcji \"%(name)s\""
+msgstr[3] "Dodano %(count)i wydań do kolekcji \"%(name)s\""
 
 #: picard/collection.py:86
 #, python-format
@@ -117,6 +119,7 @@ msgid_plural "Removed %(count)i releases from collection \"%(name)s\""
 msgstr[0] "Usunięto %(count)i wydanie z kolekcji \"%(name)s\""
 msgstr[1] "Usunięto %(count)i wydania z kolekcji \"%(name)s\""
 msgstr[2] "Usunięto %(count)i wydań z kolekcji \"%(name)s\""
+msgstr[3] "Usunięto %(count)i wydań z kolekcji \"%(name)s\""
 
 #: picard/collection.py:100
 #, python-format
@@ -219,6 +222,7 @@ msgid_plural "Adding %(count)d files from '%(directory)s' ..."
 msgstr[0] "Dodawanie %(count)d pliku z '%(directory)s' ..."
 msgstr[1] "Dodawanie %(count)d plików z '%(directory)s' ..."
 msgstr[2] "Dodawanie %(count)d plików z '%(directory)s' ..."
+msgstr[3] "Dodawanie %(count)d plików z '%(directory)s' ..."
 
 #: picard/tagger.py:597
 #, python-format
@@ -379,6 +383,7 @@ msgid_plural "%s (%i releases)"
 msgstr[0] "%s (%i wydanie)"
 msgstr[1] "%s (%i wydania)"
 msgstr[2] "%s (%i wydań)"
+msgstr[3] "%s (%i wydań)"
 
 #: picard/ui/coverartbox.py:143
 msgid "View release on MusicBrainz"
@@ -658,6 +663,7 @@ msgid_plural ""
 msgstr[0] "%d plik posiada niezapisane zmiany. Zamykając program Picard  utracisz zmiany dokonane na tym pliku."
 msgstr[1] "%d pliki posiadają niezapisane zmiany. Zamykając program Picard utracisz zmiany dokonane na tych plikach."
 msgstr[2] "%d plików posiada niezapisane zmiany. Zamykając program Picard utracisz zmiany dokonane na tych plikach."
+msgstr[3] "%d plików posiada niezapisane zmiany. Zamykając program Picard utracisz zmiany dokonane na tych plikach."
 
 #: picard/ui/mainwindow.py:172
 msgid "&Quit Picard"
@@ -1021,6 +1027,7 @@ msgid_plural "(different across %d items)"
 msgstr[0] "(różne pośród %d pozycji)"
 msgstr[1] "(różne pośród %d pozycji)"
 msgstr[2] "(różne pośród %d pozycji)"
+msgstr[3] "(różne pośród %d pozycji)"
 
 #: picard/ui/metadatabox.py:92
 #, python-format
@@ -1029,6 +1036,7 @@ msgid_plural "(missing from %d items)"
 msgstr[0] "(brak w %d elemencie)"
 msgstr[1] "(brak w %d elementach)"
 msgstr[2] "(brak w %d elementach)"
+msgstr[3] "(brak w %d elementach)"
 
 #: picard/ui/metadatabox.py:155
 msgid "metadata view"
@@ -1088,6 +1096,7 @@ msgid_plural "Use Original Values"
 msgstr[0] "Użyj oryginalnej wartości"
 msgstr[1] "Użyj oryginalnych wartości"
 msgstr[2] "Użyj oryginalnych wartości"
+msgstr[3] "Użyj oryginalnych wartości"
 
 #: picard/ui/passworddialog.py:35
 #, python-format
