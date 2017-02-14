@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2017-02-10 12:38+0000\n"
+"PO-Revision-Date: 2017-02-14 11:49+0000\n"
 "Last-Translator: CatQuest, The Endeavouring Cat\n"
 "Language-Team: Norwegian Bokmål (http://www.transifex.com/musicbrainz/musicbrainz/language/nb/)\n"
 "MIME-Version: 1.0\n"
@@ -973,7 +973,7 @@ msgstr "Blu-ray"
 #: DB:medium_format/name:35
 msgctxt "medium_format"
 msgid "Blu-spec CD"
-msgstr ""
+msgstr "Blu-spec CD"
 
 #: DB:release_packaging/name:9
 msgctxt "release_packaging"
@@ -1118,7 +1118,7 @@ msgstr "CDV"
 #: DB:medium_format/name:60
 msgctxt "medium_format"
 msgid "CED"
-msgstr ""
+msgstr "CED"
 
 #: DB:work_attribute_type_allowed_value/value:63
 msgctxt "work_attribute_type_allowed_value"
@@ -1153,7 +1153,7 @@ msgstr ""
 #: DB:medium_format/name:9
 msgctxt "medium_format"
 msgid "Cartridge"
-msgstr ""
+msgstr "Kassett (generell)"
 
 #: DB:work_attribute_type_allowed_value/value:66
 msgctxt "work_attribute_type_allowed_value"
@@ -1163,7 +1163,7 @@ msgstr "Carturdaśa rāgamālika"
 #: DB:medium_format/name:8
 msgctxt "medium_format"
 msgid "Cassette"
-msgstr "Kassett"
+msgstr "Musikkassett"
 
 #: DB:release_packaging/name:8
 msgctxt "release_packaging"
@@ -1244,7 +1244,7 @@ msgstr ""
 #: DB:medium_format/name:61
 msgctxt "medium_format"
 msgid "Copy Control CD"
-msgstr ""
+msgstr "Copy Control CD"
 
 #: DB:medium_format/description:61
 msgctxt "medium_format"
@@ -1359,7 +1359,7 @@ msgstr "DJ-miks"
 #: DB:medium_format/name:44
 msgctxt "medium_format"
 msgid "DTS CD"
-msgstr ""
+msgstr "DTS CD"
 
 #: DB:medium_format/name:2
 msgctxt "medium_format"
@@ -1379,22 +1379,22 @@ msgstr "DVD-Video"
 #: DB:medium_format/name:47
 msgctxt "medium_format"
 msgid "DVDplus"
-msgstr ""
+msgstr "DVDplus"
 
 #: DB:medium_format/name:70
 msgctxt "medium_format"
 msgid "DVDplus (CD side)"
-msgstr ""
+msgstr "DVDplus (CD side)"
 
 #: DB:medium_format/name:68
 msgctxt "medium_format"
 msgid "DVDplus (DVD-Audio side)"
-msgstr ""
+msgstr "DVDplus (DVD-Audio side)"
 
 #: DB:medium_format/name:69
 msgctxt "medium_format"
 msgid "DVDplus (DVD-Video side)"
-msgstr ""
+msgstr "DVDplus (DVD-Video side)"
 
 #: DB:work_attribute_type_allowed_value/value:343
 msgctxt "work_attribute_type_allowed_value"
@@ -1624,17 +1624,17 @@ msgstr "DualDisc"
 #: DB:medium_format/name:67
 msgctxt "medium_format"
 msgid "DualDisc (CD side)"
-msgstr ""
+msgstr "DualDisc (CD side)"
 
 #: DB:medium_format/name:65
 msgctxt "medium_format"
 msgid "DualDisc (DVD-Audio side)"
-msgstr ""
+msgstr "DualDisc (DVD-Audio side)"
 
 #: DB:medium_format/name:66
 msgctxt "medium_format"
 msgid "DualDisc (DVD-Video side)"
-msgstr ""
+msgstr "DualDisc (DVD-Video side)"
 
 #: DB:work_attribute_type_allowed_value/value:612
 msgctxt "work_attribute_type_allowed_value"
