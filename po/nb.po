@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2017-01-23 14:00+0100\n"
-"PO-Revision-Date: 2017-02-13 12:45+0000\n"
+"PO-Revision-Date: 2017-02-14 09:27+0000\n"
 "Last-Translator: CatQuest, The Endeavouring Cat\n"
 "Language-Team: Norwegian Bokmål (http://www.transifex.com/musicbrainz/musicbrainz/language/nb/)\n"
 "MIME-Version: 1.0\n"
@@ -851,7 +851,7 @@ msgstr "Ctrl+U"
 
 #: picard/ui/mainwindow.py:431
 msgid "&Lookup"
-msgstr "Opps&øk"
+msgstr "MB &Søk"
 
 #: picard/ui/mainwindow.py:432
 msgid "Lookup selected items in MusicBrainz"
@@ -999,7 +999,7 @@ msgstr "%(filename)s (%(similarity)d%%)"
 
 #: picard/ui/mainwindow.py:961
 msgid "Authentication Required"
-msgstr "Godkjenning nødvendig"
+msgstr "Autorisering nødvendig"
 
 #: picard/ui/mainwindow.py:962
 msgid ""
@@ -1035,7 +1035,7 @@ msgstr "Tagger"
 
 #: picard/ui/metadatabox.py:158
 msgid "Original Value"
-msgstr "Opprinnelig verdi"
+msgstr "Uendret verdi"
 
 #: picard/ui/metadatabox.py:158
 msgid "New Value"
@@ -1220,15 +1220,15 @@ msgstr "Endre tagg"
 
 #: picard/ui/ui_edittagdialog.py:89
 msgid "Edit value"
-msgstr "Endre verdi"
+msgstr "Endre"
 
 #: picard/ui/ui_edittagdialog.py:90
 msgid "Add value"
-msgstr "Legg til verdi"
+msgstr "Legg til ny"
 
 #: picard/ui/ui_edittagdialog.py:91
 msgid "Remove value"
-msgstr "Fjern verdi"
+msgstr "Fjern"
 
 #: picard/ui/ui_infodialog.py:71
 msgid "A&rtwork"
@@ -1969,7 +1969,7 @@ msgstr "Gruppér"
 
 #: picard/ui/options/interface.py:55
 msgid "Lookup"
-msgstr "Slå opp"
+msgstr "MB Søk"
 
 #: picard/ui/options/interface.py:59
 msgid "Scan"
