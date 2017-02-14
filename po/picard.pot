@@ -8,14 +8,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: picard 1.4.0dev7\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2017-01-23 14:00+0100\n"
+"POT-Creation-Date: 2017-02-14 12:57+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 1.3\n"
+"Generated-By: Babel 2.3.4\n"
 
 #: picard/acoustid.py:111
 #, python-format
@@ -54,26 +54,26 @@ msgstr ""
 msgid "Unmatched Files"
 msgstr ""
 
-#: picard/album.py:206
+#: picard/album.py:200
 #, python-format
 msgid "[could not load album %s]"
 msgstr ""
 
-#: picard/album.py:295
+#: picard/album.py:289
 #, python-format
 msgid "Album %(id)s loaded: %(artist)s - %(album)s"
 msgstr ""
 
-#: picard/album.py:338
+#: picard/album.py:332
 #, python-format
 msgid "Loading album %(id)s ..."
 msgstr ""
 
-#: picard/album.py:342
+#: picard/album.py:336
 msgid "[loading album information]"
 msgstr ""
 
-#: picard/album.py:527
+#: picard/album.py:521
 #, python-format
 msgid "; %i image"
 msgid_plural "; %i images"
@@ -95,30 +95,30 @@ msgstr ""
 msgid "Looking up the metadata for cluster %(album)s..."
 msgstr ""
 
-#: picard/collection.py:64
+#: picard/collection.py:67
 #, python-format
 msgid "Added %(count)i release to collection \"%(name)s\""
 msgid_plural "Added %(count)i releases to collection \"%(name)s\""
 msgstr[0] ""
 msgstr[1] ""
 
-#: picard/collection.py:86
+#: picard/collection.py:89
 #, python-format
 msgid "Removed %(count)i release from collection \"%(name)s\""
 msgid_plural "Removed %(count)i releases from collection \"%(name)s\""
 msgstr[0] ""
 msgstr[1] ""
 
-#: picard/collection.py:100
+#: picard/collection.py:104
 #, python-format
 msgid "Error loading collections: %(error)s"
 msgstr ""
 
-#: picard/config_upgrade.py:58 picard/config_upgrade.py:71
+#: picard/config_upgrade.py:57 picard/config_upgrade.py:70
 msgid "Various Artists file naming scheme removal"
 msgstr ""
 
-#: picard/config_upgrade.py:59
+#: picard/config_upgrade.py:58
 msgid ""
 "The separate file naming scheme for various artists albums has been "
 "removed in this version of Picard.\n"
@@ -126,7 +126,7 @@ msgid ""
 " artist albums."
 msgstr ""
 
-#: picard/config_upgrade.py:72
+#: picard/config_upgrade.py:71
 msgid ""
 "The separate file naming scheme for various artists albums has been "
 "removed in this version of Picard.\n"
@@ -136,36 +136,36 @@ msgid ""
 "single artist albums?"
 msgstr ""
 
-#: picard/config_upgrade.py:78
+#: picard/config_upgrade.py:77
 msgid "Merge"
 msgstr ""
 
-#: picard/config_upgrade.py:78 picard/ui/metadatabox.py:314
-#: picard/ui/ui_options_interface.py:141 picard/ui/options/interface.py:75
+#: picard/config_upgrade.py:77 picard/ui/metadatabox.py:314
+#: picard/ui/options/interface.py:75 picard/ui/ui_options_interface.py:141
 msgid "Remove"
 msgstr ""
 
-#: picard/config_upgrade.py:193 picard/ui/options/scripting.py:28
+#: picard/config_upgrade.py:200 picard/ui/options/scripting.py:28
 #, python-format
 msgid "My script %d"
 msgstr ""
 
-#: picard/file.py:541
+#: picard/file.py:545
 #, python-format
 msgid "No matching tracks for file '%(filename)s'"
 msgstr ""
 
-#: picard/file.py:557
+#: picard/file.py:561
 #, python-format
 msgid "No matching tracks above the threshold for file '%(filename)s'"
 msgstr ""
 
-#: picard/file.py:564
+#: picard/file.py:568
 #, python-format
 msgid "File '%(filename)s' identified!"
 msgstr ""
 
-#: picard/file.py:584
+#: picard/file.py:588
 #, python-format
 msgid "Looking up the metadata for file %(filename)s ..."
 msgstr ""
@@ -270,6 +270,10 @@ msgstr ""
 
 #: picard/const/languages.py:52
 msgid "Italian"
+msgstr ""
+
+#: picard/const/languages.py:57
+msgid "Norwegian Bokmal"
 msgstr ""
 
 #: picard/const/languages.py:59
@@ -964,41 +968,41 @@ msgstr ""
 msgid "Adding directory: '%(directory)s' ..."
 msgstr ""
 
-#: picard/ui/mainwindow.py:801
+#: picard/ui/mainwindow.py:808
 msgid "Configuration Required"
 msgstr ""
 
-#: picard/ui/mainwindow.py:802
+#: picard/ui/mainwindow.py:809
 msgid ""
 "Audio fingerprinting is not yet configured. Would you like to configure "
 "it now?"
 msgstr ""
 
-#: picard/ui/mainwindow.py:902
+#: picard/ui/mainwindow.py:912
 #, python-format
 msgid "%(filename)s (error: %(error)s)"
 msgstr ""
 
-#: picard/ui/mainwindow.py:908
+#: picard/ui/mainwindow.py:918
 #, python-format
 msgid "%(filename)s"
 msgstr ""
 
-#: picard/ui/mainwindow.py:918
+#: picard/ui/mainwindow.py:928
 #, python-format
 msgid "%(filename)s (%(similarity)d%%) (error: %(error)s)"
 msgstr ""
 
-#: picard/ui/mainwindow.py:925
+#: picard/ui/mainwindow.py:935
 #, python-format
 msgid "%(filename)s (%(similarity)d%%)"
 msgstr ""
 
-#: picard/ui/mainwindow.py:961
+#: picard/ui/mainwindow.py:971
 msgid "Authentication Required"
 msgstr ""
 
-#: picard/ui/mainwindow.py:962
+#: picard/ui/mainwindow.py:972
 msgid ""
 "Picard needs authorization to access your personal data on the "
 "MusicBrainz server. Would you like to log in now?"
@@ -1108,7 +1112,7 @@ msgstr ""
 msgid "Retry"
 msgstr ""
 
-#: picard/ui/searchdialog.py:288
+#: picard/ui/searchdialog.py:283
 #, python-format
 msgid ""
 "<strong>Following error occurred while fetching "
@@ -1128,9 +1132,9 @@ msgstr ""
 msgid "Track Search Results"
 msgstr ""
 
-#: picard/ui/searchdialog.py:324 picard/ui/searchdialog.py:512
-#: picard/ui/searchdialog.py:740 picard/ui/ui_options_plugins.py:138
-#: picard/ui/options/plugins.py:303
+#: picard/ui/options/plugins.py:303 picard/ui/searchdialog.py:324
+#: picard/ui/searchdialog.py:512 picard/ui/searchdialog.py:740
+#: picard/ui/ui_options_plugins.py:138
 msgid "Name"
 msgstr ""
 
@@ -1190,8 +1194,9 @@ msgstr ""
 msgid "File Name"
 msgstr ""
 
-#: picard/ui/ui_cdlookup.py:53 picard/ui/ui_options_cdlookup.py:42
-#: picard/ui/ui_options_cdlookup_select.py:49 picard/ui/options/cdlookup.py:38
+#: picard/ui/options/cdlookup.py:38 picard/ui/ui_cdlookup.py:53
+#: picard/ui/ui_options_cdlookup.py:42
+#: picard/ui/ui_options_cdlookup_select.py:49
 msgid "CD Lookup"
 msgstr ""
 
@@ -1353,7 +1358,7 @@ msgstr ""
 msgid "Get API key..."
 msgstr ""
 
-#: picard/ui/ui_options_folksonomy.py:115 picard/ui/options/folksonomy.py:28
+#: picard/ui/options/folksonomy.py:28 picard/ui/ui_options_folksonomy.py:115
 msgid "Folksonomy Tags"
 msgstr ""
 
@@ -1408,7 +1413,7 @@ msgstr ""
 msgid "Server address:"
 msgstr ""
 
-#: picard/ui/ui_options_general.py:95 picard/ui/options/general.py:88
+#: picard/ui/options/general.py:88 picard/ui/ui_options_general.py:95
 msgid "MusicBrainz Account"
 msgstr ""
 
@@ -1420,7 +1425,7 @@ msgstr ""
 msgid "Log out"
 msgstr ""
 
-#: picard/ui/ui_options_general.py:98 picard/ui/options/general.py:33
+#: picard/ui/options/general.py:33 picard/ui/ui_options_general.py:98
 msgid "General"
 msgstr ""
 
@@ -1512,7 +1517,7 @@ msgstr ""
 msgid "Minimal similarity for cluster lookups:"
 msgstr ""
 
-#: picard/ui/ui_options_metadata.py:101 picard/ui/options/metadata.py:29
+#: picard/ui/options/metadata.py:29 picard/ui/ui_options_metadata.py:101
 msgid "Metadata"
 msgstr ""
 
@@ -1582,7 +1587,7 @@ msgstr ""
 msgid "Listen only on localhost"
 msgstr ""
 
-#: picard/ui/ui_options_plugins.py:137 picard/ui/options/plugins.py:68
+#: picard/ui/options/plugins.py:68 picard/ui/ui_options_plugins.py:137
 msgid "Plugins"
 msgstr ""
 
