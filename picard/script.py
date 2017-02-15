@@ -387,33 +387,9 @@ def func_in(parser, text, needle):
         return ""
 
 
-def func_inmulti(parser, haystack, needle, separator=MULTI_VALUED_JOINER):
-    """Searches for ``needle`` in ``haystack``, supporting a list variable for
-       ``haystack``. If a string is used instead, then a ``separator`` can be
-       used to split it. In both cases, it returns true if the resulting list
-       contains ``needle``."""
-
-    needle = needle.eval(parser)
-    if (isinstance(haystack, ScriptExpression) and
-            len(haystack) == 1 and
-            isinstance(haystack[0], ScriptVariable)):
-        haystack = haystack[0]
-
-    if isinstance(haystack, ScriptVariable):
-        if haystack.name.startswith(u"_"):
-            name = u"~" + haystack.name[1:]
-        else:
-            name = haystack.name
-        values = parser.context.getall(name)
-
-        return func_in(parser, values, needle)
-
-    # I'm not sure if it is actually possible to continue in this code path,
-    # but just in case, it's better to have a fallback to correct behaviour
-    haystack = haystack.eval(parser)
-    return func_in(parser,
-                   haystack.split(separator) if separator else [haystack],
-                   needle)
+def func_inmulti(parser, text, value, separator=MULTI_VALUED_JOINER):
+    """Splits ``text`` by ``separator``, and returns true if the resulting list contains ``value``."""
+    return func_in(parser, text.split(separator) if separator else [text], value)
 
 
 def func_rreplace(parser, text, old, new):
@@ -843,7 +819,7 @@ register_script_function(func_lte, "lte")
 register_script_function(func_gt, "gt")
 register_script_function(func_gte, "gte")
 register_script_function(func_in, "in")
-register_script_function(func_inmulti, "inmulti", eval_args=False)
+register_script_function(func_inmulti, "inmulti")
 register_script_function(func_copy, "copy")
 register_script_function(func_copymerge, "copymerge")
 register_script_function(func_len, "len")
