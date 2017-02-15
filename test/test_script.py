@@ -6,19 +6,15 @@ from picard.script import ScriptParser, ScriptError, register_script_function
 from picard.metadata import Metadata
 from picard.ui.options.renaming import _DEFAULT_FILE_NAMING_FORMAT
 
-
 class ScriptParserTest(unittest.TestCase):
 
     def setUp(self):
         config.setting = {
             'enabled_plugins': '',
         }
-
         self.parser = ScriptParser()
-
         def func_noargstest(parser):
             return ""
-
         register_script_function(func_noargstest, "noargstest")
 
     def test_cmd_noop(self):
