@@ -67,6 +67,9 @@ class DataHash:
         finally:
             _datafile_mutex.unlock()
 
+    def __eq__(self, other):
+        return self._hash == other._hash
+
     def delete_file(self):
         if self._filename:
             try:
