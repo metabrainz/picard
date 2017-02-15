@@ -191,10 +191,11 @@ class CoverArtBox(QtGui.QGroupBox):
                # Tests for image format obtained from file-magic
                try:
                    mime = imageinfo.identify(fallback_data)[2]
-                   log.warning("Trying the dropped %s data", mime)
+               except IdentificationError as e:
+                   log.error("Unable to identify dropped data format: %s" % e)
+               else:
+                   log.debug("Trying the dropped %s data", mime)
                    self.load_remote_image(url, mime, fallback_data)
-               except:
-                   log.error("Unable to identify dropped data format")
 
 
 
