@@ -375,7 +375,7 @@ class ScriptParserTest(unittest.TestCase):
         self.assertNotIn('performer:bar', context)
         self.assertNotIn('performer:foo', context)
 
-    def test_cmd_inmulti(self):
+    def test_cmd_inmulti2(self):
         context = Metadata()
         self.parser.eval("$set(foo,First; Second; Third)", context)
         self.assertEqual(
@@ -385,11 +385,11 @@ class ScriptParserTest(unittest.TestCase):
         self.assertEqual(
             self.parser.eval("$in(%foo%,First; Second; Third)", context), "1")
         self.assertEqual(
-            self.parser.eval("$inmulti(%foo%,Second)", context), "")
+            self.parser.eval("$inmulti2(foo,Second)", context), "")
         self.assertEqual(
-            self.parser.eval("$inmulti(%foo%,irst; Second; Thi)", context), "")
+            self.parser.eval("$inmulti2(foo,irst; Second; Thi)", context), "")
         self.assertEqual(
-            self.parser.eval("$inmulti(%foo%,First; Second; Third)", context), "1")
+            self.parser.eval("$inmulti2(foo,First; Second; Third)", context), "1")
 
         self.parser.eval("$setmulti(foo,First; Second; Third)", context)
         self.assertEqual(
@@ -399,8 +399,8 @@ class ScriptParserTest(unittest.TestCase):
         self.assertEqual(
             self.parser.eval("$in(%foo%,First; Second; Third)", context), "1")
         self.assertEqual(
-            self.parser.eval("$inmulti(%foo%,Second)", context), "1")
+            self.parser.eval("$inmulti2(foo,Second)", context), "1")
         self.assertEqual(
-            self.parser.eval("$inmulti(%foo%,irst; Second; Thi)", context), "")
+            self.parser.eval("$inmulti2(foo,irst; Second; Thi)", context), "")
         self.assertEqual(
-            self.parser.eval("$inmulti(%foo%,First; Second; Third)", context), "")
+            self.parser.eval("$inmulti2(foo,First; Second; Third)", context), "")
