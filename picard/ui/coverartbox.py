@@ -83,9 +83,10 @@ class ActiveLabel(QtGui.QLabel):
 
 class CoverArtThumbnail(ActiveLabel):
 
-    def __init__(self, active=False, drops=False, *args, **kwargs):
+    def __init__(self, active=False, drops=False, name=None, *args, **kwargs):
         super(CoverArtThumbnail, self).__init__(active, drops, *args, **kwargs)
         self.data = None
+        self.name = name
         self.shadow = QtGui.QPixmap(":/images/CoverArtShadow.png")
         self.release = None
         self.setPixmap(self.shadow)
@@ -134,6 +135,8 @@ class CoverArtThumbnail(ActiveLabel):
         self.related_images = []
         if metadata and metadata.images:
             self.related_images = metadata.images
+            print("%s using images:" % (self.name), metadata.images)
+            # TODO: Combine all images to show there are different images in use instead of getting the first one
             for image in metadata.images:
                 if image.is_front_image():
                     data = image
@@ -174,10 +177,10 @@ class CoverArtBox(QtGui.QGroupBox):
         self.item = None
         self.cover_art_label = QtGui.QLabel('')
         self.cover_art_label.setAlignment(QtCore.Qt.AlignTop | QtCore.Qt.AlignHCenter)
-        self.cover_art = CoverArtThumbnail(False, True, parent)
+        self.cover_art = CoverArtThumbnail(False, True, "new cover", parent)
         spacerItem = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
         self.orig_cover_art_label = QtGui.QLabel('')
-        self.orig_cover_art = CoverArtThumbnail(False, False, parent)
+        self.orig_cover_art = CoverArtThumbnail(False, False, "original cover", parent)
         self.orig_cover_art_label.setAlignment(QtCore.Qt.AlignTop | QtCore.Qt.AlignHCenter)
         self.orig_cover_art.setHidden(True)
         self.show_details_button = QtGui.QPushButton(_(u'Show more details'), self)
