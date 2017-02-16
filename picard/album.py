@@ -58,6 +58,7 @@ class Album(DataObject, Item):
     def __init__(self, id, discid=None):
         DataObject.__init__(self, id)
         self.metadata = Metadata()
+        self.orig_metadata = Metadata()
         self.tracks = []
         self.loaded = False
         self.load_task = None
@@ -382,6 +383,10 @@ class Album(DataObject, Item):
     def _add_file(self, track, file):
         self._files += 1
         self.update(update_tracks=False)
+        # Fixme: The next lines can probably be moved to update()
+        for image in file.orig_metadata.images:
+            if image not in self.orig_metadata.images:
+                self.orig_metadata.append_image(image)
 
     def _remove_file(self, track, file):
         self._files -= 1
