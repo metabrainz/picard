@@ -203,6 +203,12 @@ class CoverArtImage:
     def __str__(self):
         return unicode(self).encode('utf-8')
 
+    def __eq__(self, other):
+        if self and other:
+            return (self.datahash, self.types) == (other.datahash, other.types)
+        else:
+            return False
+
     def set_data(self, data):
         """Store image data in a file, if data already exists in such file
            it will be re-used and no file write occurs
