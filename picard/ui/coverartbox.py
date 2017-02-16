@@ -83,12 +83,10 @@ class CoverArtThumbnail(ActiveLabel):
         self.setAlignment(QtCore.Qt.AlignTop | QtCore.Qt.AlignHCenter)
         self.clicked.connect(self.open_release_page)
         self.imageDropped.connect(self.fetch_remote_image)
+        self.related_images = list()
 
     def __eq__(self, other):
-        if self.data and other.data:
-            return self.data.datahash == other.data.datahash
-        else:
-            return False
+        return self.related_images == other.related_images
 
     def show(self):
         self.set_data(self.data, True)
@@ -121,9 +119,8 @@ class CoverArtThumbnail(ActiveLabel):
 
     def set_metadata(self, metadata):
         data = None
-        # Check if metadata has any images. It might have images even if
-        # metadata's dictionary is None
-        if getattr(metadata, 'images', None):
+        if metadata and metadata.images:
+            self.related_images = metadata.images
             for image in metadata.images:
                 if image.is_front_image():
                     data = image
