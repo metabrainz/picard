@@ -464,6 +464,9 @@ class File(QtCore.QObject, Item):
             self.similarity = 1.0
             if self.state in (File.CHANGED, File.NORMAL):
                 self.state = File.NORMAL
+        # Set the file state to changed if the cover art changes
+        if self.metadata.images != self.orig_metadata.images:
+            self.state = File.CHANGED
         if signal:
             log.debug("Updating file %r", self)
             if self.item:
