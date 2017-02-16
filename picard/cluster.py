@@ -69,6 +69,9 @@ class Cluster(QtCore.QObject, Item):
             self.metadata.length += file.metadata.length
             file._move(self)
             file.update(signal=False)
+            cover = file.metadata.get_single_front_image()
+            if cover and cover[0] not in self.metadata.images:
+                self.metadata.append_image(cover[0])
         self.files.extend(files)
         self.metadata['totaltracks'] = len(self.files)
         self.item.add_files(files)
@@ -79,6 +82,9 @@ class Cluster(QtCore.QObject, Item):
         self.metadata['totaltracks'] = len(self.files)
         file._move(self)
         file.update(signal=False)
+        cover = file.metadata.get_single_front_image()
+        if cover and cover[0] not in self.metadata.images:
+            self.metadata.append_image(cover[0])
         self.item.add_file(file)
 
     def remove_file(self, file):
