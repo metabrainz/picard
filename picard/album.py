@@ -557,6 +557,19 @@ class Album(DataObject, Item):
             self.tagger.albums[mbid] = self
             self.load(priority=True, refresh=True)
 
+    def update_metadata_images(self):
+        new_images = []
+        for track in self.tracks:
+            for file in list(track.linked_files):
+                for image in file.metadata.images:
+                    if image not in new_images:
+                        new_images.append(image)
+        for file in list(self.unmatched_files.files):
+            for image in file.metadata.images:
+                if image not in new_images:
+                    new_images.append(image)
+        self.metadata.images = new_images
+
 
 class NatAlbum(Album):
 
