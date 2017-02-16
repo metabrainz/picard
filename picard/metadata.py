@@ -49,6 +49,9 @@ class Metadata(dict):
         self.deleted_tags = set()
         self.length = 0
 
+    def __nonzero__(self):
+        return len(self) or len(self.images)
+
     def append_image(self, coverartimage):
         self.images.append(coverartimage)
 
