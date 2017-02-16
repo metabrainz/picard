@@ -302,6 +302,7 @@ class CoverArtBox(QtGui.QGroupBox):
         try:
             coverartimage = CoverArtImage(
                 url=url.toString(),
+                types=[u'front'],
                 data=data
             )
         except CoverArtImageError as e:
@@ -309,21 +310,18 @@ class CoverArtBox(QtGui.QGroupBox):
             return
         if isinstance(self.item, Album):
             album = self.item
-            album.metadata.append_image(coverartimage)
+            album.metadata.set_front_image(coverartimage)
             for track in album.tracks:
-                track.metadata.append_image(coverartimage)
+                track.metadata.set_front_image(coverartimage)
             for file in album.iterfiles():
-                file.metadata.append_image(coverartimage)
-                file.update()
+                file.metadata.set_front_image(coverartimage)
         elif isinstance(self.item, Track):
             track = self.item
-            track.metadata.append_image(coverartimage)
+            track.metadata.set_front_image(coverartimage)
             for file in track.iterfiles():
-                file.metadata.append_image(coverartimage)
-                file.update()
+                file.metadata.set_front_image(coverartimage)
         elif isinstance(self.item, File):
             file = self.item
-            file.metadata.append_image(coverartimage)
-            file.update()
+            file.metadata.set_front_image(coverartimage)
         self.cover_art.set_metadata(self.item.metadata)
         self.show()

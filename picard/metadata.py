@@ -55,6 +55,11 @@ class Metadata(dict):
     def append_image(self, coverartimage):
         self.images.append(coverartimage)
 
+    def set_front_image(self, coverartimage):
+        # First remove all front images
+        self.images[:] = [ img for img in self.images if not img.is_front_image() ]
+        self.images.append(coverartimage)
+
     @property
     def images_to_be_saved_to_tags(self):
         if not config.setting["save_images_to_tags"]:
