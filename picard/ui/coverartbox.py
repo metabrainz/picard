@@ -82,11 +82,7 @@ class CoverArtThumbnail(ActiveLabel):
         self.setPixmap(self.shadow)
         self.setAlignment(QtCore.Qt.AlignTop | QtCore.Qt.AlignHCenter)
         self.clicked.connect(self.open_release_page)
-        self.imageDropped.connect(self.fetch_remote_image)
-        self.related_images = list()
-
-    def __eq__(self, other):
-        return self.related_images == other.related_images
+        self.image_dropped.connect(self.fetch_remote_image)
 
     def show(self):
         self.set_data(self.data, True)
@@ -120,7 +116,6 @@ class CoverArtThumbnail(ActiveLabel):
     def set_metadata(self, metadata):
         data = None
         if metadata and metadata.images:
-            self.related_images = metadata.images
             for image in metadata.images:
                 if image.is_front_image():
                     data = image
@@ -243,16 +238,14 @@ class CoverArtBox(QtGui.QGroupBox):
         else:
             log.warning("Can't load remote image with MIME-Type %s", mime)
             if fallback_data:
-               # Tests for image format obtained from file-magic
-               try:
-                   mime = imageinfo.identify(fallback_data)[2]
-               except IdentificationError as e:
-                   log.error("Unable to identify dropped data format: %s" % e)
-               else:
-                   log.debug("Trying the dropped %s data", mime)
-                   self.load_remote_image(url, mime, fallback_data)
-
-
+                # Tests for image format obtained from file-magic
+                try:
+                    mime = imageinfo.identify(fallback_data)[2]
+                except imageinfo.IdentificationError as e:
+                    log.error("Unable to identify dropped data format: %s" % e)
+                else:
+                    log.debug("Trying the dropped %s data", mime)
+                    self.load_remote_image(url, mime, fallback_data)
 
     def load_remote_image(self, url, mime, data):
         try:
@@ -263,9 +256,7 @@ class CoverArtBox(QtGui.QGroupBox):
         except CoverArtImageError as e:
             log.warning("Can't load image: %s" % unicode(e))
             return
-        pixmap = QtGui.QPixmap()
-        pixmap.loadFromData(data)
-        self.cover_art.set_data([mime, data], pixmap=pixmap)
+        self.cover_art.set_data(coverartimage)
         self._show()
         if isinstance(self.item, Album):
             album = self.item
