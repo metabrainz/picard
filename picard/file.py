@@ -176,6 +176,13 @@ class File(QtCore.QObject, Item):
 
     def _save_and_rename(self, old_filename, metadata):
         """Save the metadata."""
+        # Check that file has not been removed since thread was queued
+        # Also don't save if we are stopping.
+        if self.state == File.REMOVED or self.tagger.stopping:
+            log.debug("File not saved because %s: %r",
+                "Picard is stopping" if self.tagger.stopping else "it was removed",
+                self.filename)
+            return None
         new_filename = old_filename
         if not config.setting["dont_write_tags"]:
             encoded_old_filename = encode_filename(old_filename)
@@ -222,6 +229,11 @@ class File(QtCore.QObject, Item):
             raise OSError
 
     def _saving_finished(self, result=None, error=None):
+        # Handle file removed before save
+        # Result is None if save was skipped
+        if ((self.state == File.REMOVED or self.tagger.stopping)
+            and result is None):
+            return
         old_filename = new_filename = self.filename
         if error is not None:
             self.error = str(error)
@@ -247,8 +259,12 @@ class File(QtCore.QObject, Item):
             self.clear_pending()
             self._add_path_to_metadata(self.orig_metadata)
 
-        del self.tagger.files[old_filename]
-        self.tagger.files[new_filename] = self
+        if self.state != File.REMOVED:
+            del self.tagger.files[old_filename]
+            self.tagger.files[new_filename] = self
+
+        if self.tagger.stopping:
+            log.debug("Save of %r completed before stopping Picard", self.filename)
 
     def _save(self, filename, metadata):
         """Save the metadata."""

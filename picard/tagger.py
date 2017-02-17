@@ -214,6 +214,7 @@ class Tagger(QtGui.QApplication):
         self.nats = None
         self.window = MainWindow()
         self.exit_cleanup = []
+        self.stopping = False
 
     def register_cleanup(self, func):
         self.exit_cleanup.append(func)
@@ -269,7 +270,7 @@ class Tagger(QtGui.QApplication):
             self.nats.update()
 
     def exit(self):
-        log.debug("exit")
+        log.debug("Picard stopping")
         self.stopping = True
         self._acoustid.done()
         self.thread_pool.waitForDone()
@@ -278,6 +279,7 @@ class Tagger(QtGui.QApplication):
         self.xmlws.stop()
         for f in self.exit_cleanup:
             f()
+        QtCore.QCoreApplication.processEvents()
 
     def _run_init(self):
         if self._cmdline_files:

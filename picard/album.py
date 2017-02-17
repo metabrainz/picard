@@ -479,6 +479,8 @@ class Album(DataObject, Item):
         for track in self.tracks:
             if not track.is_complete():
                 return False
+        if self.get_num_unmatched_files():
+            return False
         else:
             return True
 
