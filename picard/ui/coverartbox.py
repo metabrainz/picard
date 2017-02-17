@@ -25,7 +25,7 @@ from picard.album import Album
 from picard.coverart.image import CoverArtImage, CoverArtImageError
 from picard.track import Track
 from picard.file import File
-from picard.util import encode_filename
+from picard.util import encode_filename, imageinfo
 
 
 class ActiveLabel(QtGui.QLabel):
@@ -33,7 +33,7 @@ class ActiveLabel(QtGui.QLabel):
     """Clickable QLabel."""
 
     clicked = QtCore.pyqtSignal()
-    imageDropped = QtCore.pyqtSignal(QtCore.QUrl)
+    image_dropped = QtCore.pyqtSignal(QtCore.QUrl, QtCore.QByteArray)
 
     def __init__(self, active=True, *args):
         QtGui.QLabel.__init__(self, *args)
@@ -54,16 +54,20 @@ class ActiveLabel(QtGui.QLabel):
 
     def dragEnterEvent(self, event):
         for url in event.mimeData().urls():
-            if url.scheme() in ('http', 'file'):
+            if url.scheme() in ('https', 'http', 'file'):
                 event.acceptProposedAction()
                 break
 
     def dropEvent(self, event):
         accepted = False
+        # Chromium includes the actual data of the dragged image in the drop event. This
+        # is useful for Google Images, where the url links to the page that contains the image
+        # so we use it if the downloaded url is not an image.
+        dropped_data = event.mimeData().data('application/octet-stream')
         for url in event.mimeData().urls():
-            if url.scheme() in ('http', 'file'):
+            if url.scheme() in ('https', 'http', 'file'):
                 accepted = True
-                self.imageDropped.emit(url)
+                self.image_dropped.emit(url, dropped_data)
         if accepted:
             event.acceptProposedAction()
 
@@ -85,7 +89,7 @@ class CoverArtBox(QtGui.QGroupBox):
         self.coverArt.setPixmap(self.shadow)
         self.coverArt.setAlignment(QtCore.Qt.AlignTop | QtCore.Qt.AlignHCenter)
         self.coverArt.clicked.connect(self.open_release_page)
-        self.coverArt.imageDropped.connect(self.fetch_remote_image)
+        self.coverArt.image_dropped.connect(self.fetch_remote_image)
         self.layout.addWidget(self.coverArt, 0)
         self.setLayout(self.layout)
 
@@ -150,15 +154,19 @@ class CoverArtBox(QtGui.QGroupBox):
         lookup = self.tagger.get_file_lookup()
         lookup.albumLookup(self.release)
 
-    def fetch_remote_image(self, url):
+    def fetch_remote_image(self, url, fallback_data=None):
         if self.item is None:
             return
-        if url.scheme() == 'http':
+        if url.scheme() in ('https', 'http'):
             path = url.encodedPath()
             if url.hasQuery():
                 path += '?' + url.encodedQuery()
-            self.tagger.xmlws.get(url.encodedHost(), url.port(80), path,
-                                  partial(self.on_remote_image_fetched, url),
+            if url.scheme() == 'https':
+                port = 443
+            else:
+                port = 80
+            self.tagger.xmlws.get(str(url.encodedHost()), url.port(port), str(path),
+                                  partial(self.on_remote_image_fetched, url, fallback_data=fallback_data),
                                   xml=False,
                                   priority=True, important=True)
         elif url.scheme() == 'file':
@@ -169,16 +177,27 @@ class CoverArtBox(QtGui.QGroupBox):
                     data = f.read()
                 self.load_remote_image(url, mime, data)
 
-    def on_remote_image_fetched(self, url, data, reply, error):
+    def on_remote_image_fetched(self, url, data, reply, error, fallback_data=None):
         mime = reply.header(QtNetwork.QNetworkRequest.ContentTypeHeader)
         if mime in ('image/jpeg', 'image/png'):
             self.load_remote_image(url, mime, data)
-        elif reply.url().hasQueryItem("imgurl"):
+        elif url.hasQueryItem("imgurl"):
             # This may be a google images result, try to get the URL which is encoded in the query
-            url = QtCore.QUrl(reply.url().queryItemValue("imgurl"))
+            url = QtCore.QUrl(url.queryItemValue("imgurl"))
             self.fetch_remote_image(url)
         else:
-            log.warning("Can't load image with MIME-Type %s", mime)
+            log.warning("Can't load remote image with MIME-Type %s", mime)
+            if fallback_data:
+               # Tests for image format obtained from file-magic
+               try:
+                   mime = imageinfo.identify(fallback_data)[2]
+               except IdentificationError as e:
+                   log.error("Unable to identify dropped data format: %s" % e)
+               else:
+                   log.debug("Trying the dropped %s data", mime)
+                   self.load_remote_image(url, mime, fallback_data)
+
+
 
     def load_remote_image(self, url, mime, data):
         try:
