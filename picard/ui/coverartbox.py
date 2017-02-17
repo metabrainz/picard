@@ -83,6 +83,10 @@ class CoverArtThumbnail(ActiveLabel):
         self.setAlignment(QtCore.Qt.AlignTop | QtCore.Qt.AlignHCenter)
         self.clicked.connect(self.open_release_page)
         self.image_dropped.connect(self.fetch_remote_image)
+        self.related_images = list()
+
+    def __eq__(self, other):
+        return self.related_images == other.related_images
 
     def show(self):
         self.set_data(self.data, True)
@@ -116,6 +120,7 @@ class CoverArtThumbnail(ActiveLabel):
     def set_metadata(self, metadata):
         data = None
         if metadata and metadata.images:
+            self.related_images = metadata.images
             for image in metadata.images:
                 if image.is_front_image():
                     data = image
@@ -265,11 +270,14 @@ class CoverArtBox(QtGui.QGroupBox):
                 track.metadata.append_image(coverartimage)
             for file in album.iterfiles():
                 file.metadata.append_image(coverartimage)
+                file.update()
         elif isinstance(self.item, Track):
             track = self.item
             track.metadata.append_image(coverartimage)
             for file in track.iterfiles():
                 file.metadata.append_image(coverartimage)
+                file.update()
         elif isinstance(self.item, File):
             file = self.item
             file.metadata.append_image(coverartimage)
+            file.update()
