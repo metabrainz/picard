@@ -317,13 +317,16 @@ class CoverArtBox(QtGui.QGroupBox):
                 track.metadata.set_front_image(coverartimage)
             for file in album.iterfiles():
                 file.metadata.set_front_image(coverartimage)
+                file.update()
         elif isinstance(self.item, Track):
             track = self.item
             track.metadata.set_front_image(coverartimage)
             for file in track.iterfiles():
                 file.metadata.set_front_image(coverartimage)
+                file.update()
         elif isinstance(self.item, File):
             file = self.item
             file.metadata.set_front_image(coverartimage)
+            file.update()
         self.cover_art.set_metadata(self.item.metadata)
         self.show()
