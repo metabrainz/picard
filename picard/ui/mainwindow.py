@@ -836,10 +836,7 @@ class MainWindow(QtGui.QMainWindow):
         else:
             file = self.tagger.get_files_from_objects(self.selected_objects)[0]
             dialog = FileInfoDialog(file, self)
-        try:
-            dialog.ui.tabWidget.setCurrentIndex(default_tab)
-        except IndexError:
-            dialog.ui.tabWidget.setCurrentIndex(0)
+        dialog.ui.tabWidget.setCurrentIndex(default_tab)
         dialog.exec_()
 
     def cluster(self):
