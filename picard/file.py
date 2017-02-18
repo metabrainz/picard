@@ -461,9 +461,12 @@ class File(QtCore.QObject, Item):
                         self.state = File.CHANGED
                     break
         else:
-            self.similarity = 1.0
-            if self.state in (File.CHANGED, File.NORMAL):
-                self.state = File.NORMAL
+            if self.orig_metadata.images != self.metadata.images:
+                self.state = File.CHANGED
+            else:
+                self.similarity = 1.0
+                if self.state in (File.CHANGED, File.NORMAL):
+                    self.state = File.NORMAL
         if signal:
             log.debug("Updating file %r", self)
             if self.item:

@@ -67,6 +67,9 @@ class DataHash:
         finally:
             _datafile_mutex.unlock()
 
+    def __eq__(self, other):
+        return self._hash == other._hash
+
     def delete_file(self):
         if self._filename:
             try:
@@ -199,6 +202,14 @@ class CoverArtImage:
 
     def __str__(self):
         return unicode(self).encode('utf-8')
+
+    def __eq__(self, other):
+        if self and other:
+            return (self.datahash, self.types) == (other.datahash, other.types)
+        elif not self and not other:
+            return True
+        else:
+            return False
 
     def set_data(self, data):
         """Store image data in a file, if data already exists in such file
