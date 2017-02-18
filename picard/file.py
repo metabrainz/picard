@@ -256,7 +256,8 @@ class File(QtCore.QObject, Item):
             for k, v in temp_info.items():
                 self.orig_metadata[k] = v
             self.error = None
-            self.clear_pending()
+            # Force update to ensure file status icon changes immediately after save
+            self.clear_pending(force_update=True)
             self._add_path_to_metadata(self.orig_metadata)
 
         if self.state != File.REMOVED:
@@ -630,9 +631,11 @@ class File(QtCore.QObject, Item):
             self.state = File.PENDING
             self.update()
 
-    def clear_pending(self):
+    def clear_pending(self, force_update=False):
         if self.state == File.PENDING:
             self.state = File.NORMAL
+            self.update()
+        elif force_update:
             self.update()
 
     def iterfiles(self, save=False):
