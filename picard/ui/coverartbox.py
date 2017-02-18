@@ -122,6 +122,7 @@ class CoverArtThumbnail(ActiveLabel):
 
     def set_metadata(self, metadata):
         data = None
+        self.related_images = []
         if metadata and metadata.images:
             self.related_images = metadata.images
             for image in metadata.images:
@@ -170,39 +171,33 @@ class CoverArtBox(QtGui.QGroupBox):
         self.orig_cover_art = CoverArtThumbnail(False, False, parent)
         self.orig_cover_art_label.setAlignment(QtCore.Qt.AlignTop | QtCore.Qt.AlignHCenter)
         self.orig_cover_art.setHidden(True)
-        self.view_changes_button = QtGui.QPushButton(_(u'Show more details'), self)
-        self.view_changes_button.setHidden(True)
+        self.show_details_button = QtGui.QPushButton(_(u'Show more details'), self)
+        self.show_details_button.setHidden(True)
         self.layout.addWidget(self.cover_art_label)
         self.layout.addWidget(self.cover_art)
         self.layout.addWidget(self.orig_cover_art_label)
         self.layout.addWidget(self.orig_cover_art)
-        self.layout.addWidget(self.view_changes_button)
+        self.layout.addWidget(self.show_details_button)
         self.layout.addSpacerItem(spacerItem)
         self.setLayout(self.layout)
-        self.view_changes_button.clicked.connect(self.show_cover_art_info)
+        self.show_details_button.clicked.connect(self.show_cover_art_info)
 
     def show_cover_art_info(self):
         self.parent.view_info(default_tab=1)
 
-    def _show(self):
+    def show(self):
         # We want to show the 2 coverarts only if they are different
         # and orig_cover_art data is set and not the default cd shadow
         if self.orig_cover_art.data is None or self.cover_art == self.orig_cover_art:
-            self.view_changes_button.setHidden(len(self.cover_art.related_images) <= 1)
+            self.show_details_button.setHidden(len(self.cover_art.related_images) <= 1)
             self.orig_cover_art.setHidden(True)
             self.cover_art_label.setText('')
             self.orig_cover_art_label.setText('')
         else:
-            if (isinstance(self.item, File) and isinstance(self.item.parent, Track)
-                    or isinstance(self.item, Track) and self.item.is_linked()):
-                self.view_changes_button.setHidden(False)
+            self.show_details_button.setHidden(False)
             self.orig_cover_art.setHidden(False)
             self.cover_art_label.setText(_(u'New Cover Art'))
             self.orig_cover_art_label.setText(_(u'Original Cover Art'))
-
-    def show(self):
-        self._show()
-        QtGui.QGroupBox.show(self)
 
     def set_metadata(self, metadata, orig_metadata, item):
         if not metadata or not metadata.images:
@@ -210,9 +205,8 @@ class CoverArtBox(QtGui.QGroupBox):
         else:
             self.cover_art.set_metadata(metadata)
         self.orig_cover_art.set_metadata(orig_metadata)
+        self.item = item
         self.show()
-        if item:
-            self.item = item
 
     def fetch_remote_image(self, url, fallback_data=None):
         if self.item is None:
