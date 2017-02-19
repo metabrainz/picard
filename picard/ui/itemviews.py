@@ -467,6 +467,7 @@ class BaseTreeView(QtGui.QTreeWidget):
         files = []
         new_files = []
         for url in urls:
+            log.debug("Adding the URL: %r", url)
             if url.scheme() == "file" or not url.scheme():
                 # Dropping a file from iTunes gives a filename with a NULL terminator
                 filename = os.path.normpath(os.path.realpath(unicode(url.toLocalFile()).rstrip("\0")))
