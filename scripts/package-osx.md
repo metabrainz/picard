@@ -11,6 +11,10 @@ Download the required packages:
 
 Open the Qt DMG image, click on `Qt.mpkg` and proceed with the install using the defaults for everything.
 
+Build PyObjC:
+
+    pip install pyobjc-framework-Cocoa
+
 Build SIP:
 
     tar -C /tmp -xf ~/Downloads/sip-4.19.tar.gz
