@@ -476,7 +476,7 @@ class BaseTreeView(QtGui.QTreeWidget):
                     try:
                         from Foundation import NSURL
                     except ImportError:
-                        pass
+                        log.debug("Unable to import NSURL")
                     else:
                         filename = os.path.normpath(os.path.realpath(unicode(NSURL.URLWithString_(str(url.toString())).filePathURL().path()).rstrip("\0")))
                         log.debug('OSX NSURL path detected. Dropped File is: %r', filename)
