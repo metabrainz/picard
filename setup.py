@@ -55,7 +55,7 @@ exclude_modules = [
     'distutils', 'unittest',
     'bdb', 'calendar', 'difflib', 'doctest', 'dummy_thread', 'gzip',
     'optparse', 'pdb', 'plistlib', 'pyexpat', 'quopri', 'repr',
-    'stringio', 'tarfile', 'uu', 'zipfile'
+    'stringio', 'tarfile', 'uu'
 ]
 
 if do_py2app:
