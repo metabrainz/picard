@@ -32,6 +32,14 @@ from picard.plugin import ExtensionPoint
 from picard.ui.ratingwidget import RatingWidget
 from picard.ui.collectionmenu import CollectionMenu
 
+if sys.platform == 'darwin':
+    try:
+        from Foundation import NSURL
+        NSURL_IMPORTED = True     
+    except ImportError:
+        NSURL_IMPORTED = False     
+        log.warning("Unable to import NSURL, file drag'n'drop might not work correctly")       
+
 
 class BaseAction(QtGui.QAction):
     NAME = "Unknown"
@@ -473,13 +481,11 @@ class BaseTreeView(QtGui.QTreeWidget):
                 # Workaround for https://bugreports.qt.io/browse/QTBUG-40449
                 # OSX Urls follow the NSURL scheme and need to be converted
                 if sys.platform == 'darwin' and unicode(url.path()).startswith('/.file/id='):
-                    try:
-                        from Foundation import NSURL
-                    except ImportError:
-                        log.debug("Unable to import NSURL")
-                    else:
+                    if NSURL_IMPORTED:
                         filename = os.path.normpath(os.path.realpath(unicode(NSURL.URLWithString_(str(url.toString())).filePathURL().path()).rstrip("\0")))
                         log.debug('OSX NSURL path detected. Dropped File is: %r', filename)
+                    else:
+                        log.error("Unable to get appropriate file path for %r", url.toString(QtCore.QUrl.RemoveUserInfo))
                 else:
                     # Dropping a file from iTunes gives a filename with a NULL terminator
                     filename = os.path.normpath(os.path.realpath(unicode(url.toLocalFile()).rstrip("\0")))
