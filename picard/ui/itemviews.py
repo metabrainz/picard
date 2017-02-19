@@ -19,6 +19,7 @@
 
 import os
 import re
+import sys
 from functools import partial
 from PyQt4 import QtCore, QtGui
 from picard import config, log
@@ -467,10 +468,21 @@ class BaseTreeView(QtGui.QTreeWidget):
         files = []
         new_files = []
         for url in urls:
-            log.debug("Adding the URL: %r", url)
+            log.debug("Dropped the URL: %r", url.toString(QtCore.QUrl.RemoveUserInfo))
             if url.scheme() == "file" or not url.scheme():
-                # Dropping a file from iTunes gives a filename with a NULL terminator
-                filename = os.path.normpath(os.path.realpath(unicode(url.toLocalFile()).rstrip("\0")))
+                # Workaround for https://bugreports.qt.io/browse/QTBUG-40449
+                # OSX Urls follow the NSURL scheme and need to be converted
+                if sys.platform == 'darwin' and unicode(url.path()).startswith('/.file/id='):
+                    try:
+                        from Foundation import NSURL
+                    except ImportError:
+                        pass
+                    else:
+                        filename = os.path.normpath(os.path.realpath(unicode(NSURL.URLWithString_(str(url.toString())).filePathURL().path()).rstrip("\0")))
+                        log.debug('OSX NSURL path detected. Dropped File is: %r', filename)
+                else:
+                    # Dropping a file from iTunes gives a filename with a NULL terminator
+                    filename = os.path.normpath(os.path.realpath(unicode(url.toLocalFile()).rstrip("\0")))
                 file = BaseTreeView.tagger.files.get(filename)
                 if file:
                     files.append(file)
