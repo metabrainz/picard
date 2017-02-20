@@ -102,7 +102,7 @@ class OAuthManager(object):
         url_query.addQueryItem("refresh_token", refresh_token)
         url_query.addQueryItem("client_id", MUSICBRAINZ_OAUTH_CLIENT_ID)
         url_query.addQueryItem("client_secret", MUSICBRAINZ_OAUTH_CLIENT_SECRET)
-        url.setEncodedQuery(url_query)
+        url.setQuery(url_query.query(QUrl.FullyEncoded))
         data = str(url.query())
         self.xmlws.post(host, port, path, data,
                         partial(self.on_refresh_access_token_finished, callback),
@@ -135,7 +135,7 @@ class OAuthManager(object):
         url_query.addQueryItem("client_id", MUSICBRAINZ_OAUTH_CLIENT_ID)
         url_query.addQueryItem("client_secret", MUSICBRAINZ_OAUTH_CLIENT_SECRET)
         url_query.addQueryItem("redirect_uri", "urn:ietf:wg:oauth:2.0:oob")
-        url.setEncodedQuery(url_query)
+        url.setQuery(url_query.query(QUrl.FullyEncoded))
         data = str(url.query())
         self.xmlws.post(host, port, path, data,
                         partial(self.on_exchange_authorization_code_finished, scopes, callback),
