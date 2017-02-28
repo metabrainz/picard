@@ -227,7 +227,7 @@ class VCommentFile(File):
             real_name = self._get_tag_name(tag)
             if real_name and real_name in tags:
                 if real_name in ('performer', 'comment'):
-                    tag_type = "\(%s\)" % tag.split(':', 1)[1]
+                    tag_type = r"\(%s\)" % tag.split(':', 1)[1]
                     for item in tags.get(real_name):
                         if re.search(tag_type, item):
                             tags.get(real_name).remove(item)

@@ -33,7 +33,7 @@ class ProviderOptionsLocal(ProviderOptions):
         Options for Local Files cover art provider
     """
 
-    _DEFAULT_LOCAL_COVER_ART_REGEX = '^(?:cover|folder|albumart)(.*)\.(?:jpe?g|png|gif|tiff?)$'
+    _DEFAULT_LOCAL_COVER_ART_REGEX = r'^(?:cover|folder|albumart)(.*)\.(?:jpe?g|png|gif|tiff?)$'
 
     options = [
         config.TextOption("setting", "local_cover_regex",

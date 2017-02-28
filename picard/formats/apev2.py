@@ -175,7 +175,7 @@ class APEv2File(File):
         for tag in metadata.deleted_tags:
             real_name = str(self._get_tag_name(tag))
             if real_name in ('Lyrics', 'Comment', 'Performer'):
-                tag_type = "\(%s\)" % tag.split(':', 1)[1]
+                tag_type = r"\(%s\)" % tag.split(':', 1)[1]
                 for item in tags.get(real_name):
                     if re.search(tag_type, item):
                         tags.get(real_name).remove(item)
