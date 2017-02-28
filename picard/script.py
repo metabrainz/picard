@@ -127,7 +127,7 @@ def isidentif(ch):
 
 class ScriptParser(object):
 
-    """Tagger script parser.
+    r"""Tagger script parser.
 
 Grammar:
   text       ::= [^$%] | '\$' | '\%' | '\(' | '\)' | '\,'
@@ -373,7 +373,7 @@ def func_pad(parser, text, length, char):
 
 
 def func_strip(parser, text):
-    return re.sub("\s+", " ", text).strip()
+    return re.sub(r"\s+", " ", text).strip()
 
 
 def func_replace(parser, text, old, new):

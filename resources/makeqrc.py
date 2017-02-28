@@ -18,7 +18,7 @@ def tryint(s):
 
 
 def natsort_key(s):
-    return [ tryint(c) for c in re.split('(\d+)', s) ]
+    return [ tryint(c) for c in re.split(r'(\d+)', s) ]
 
 
 def find_files(topdir, directory, patterns):

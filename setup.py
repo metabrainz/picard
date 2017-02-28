@@ -429,7 +429,7 @@ try:
         def finalize_options(self):
             babel.extract_messages.finalize_options(self)
             if input_dirs_workaround and self._input_dirs:
-                self.input_dirs = re.split(',\s*', self._input_dirs)
+                self.input_dirs = re.split(r',\s*', self._input_dirs)
 
 except ImportError:
     class picard_regen_pot_file(Command):
@@ -707,7 +707,7 @@ try:
 
             py2exe.run(self)
             print("*** creating the NSIS setup script ***")
-            pathname = "installer\picard-setup.nsi"
+            pathname = r"installer\picard-setup.nsi"
             generate_file(pathname + ".in", pathname,
                           {'name': 'MusicBrainz Picard',
                            'version': __version__,
