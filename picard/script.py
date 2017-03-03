@@ -686,7 +686,7 @@ def func_firstwords(parser, text, length):
 
 def func_startswith(parser, text, prefix):
      """
-    Checks if a `text` ends with `prefix`
+    Checks if a `text` starts with `prefix`
     
     :param text: The entire string in consideration
     :type text: str
