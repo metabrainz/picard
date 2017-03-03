@@ -685,12 +685,32 @@ def func_firstwords(parser, text, length):
 
 
 def func_startswith(parser, text, prefix):
+     """
+    Checks if a `text` ends with `prefix`
+    
+    :param text: The entire string in consideration
+    :type text: str
+    :param prefix: The prefix to be checked
+    :type prefix: str
+    :return: "1" if text starts with prefix, else "0"
+    :rtype: str
+    """
     if text.startswith(prefix):
         return "1"
     return "0"
 
 
 def func_endswith(parser, text, suffix):
+    """
+    Checks if a `text` ends with `suffix`
+    
+    :param text: The entire string in consideration
+    :type text: str
+    :param suffix: The suffix to be checked
+    :type suffix: str
+    :return: "1" if text ends with suffix, else "0"
+    :rtype: str
+    """
     if text.endswith(suffix):
         return "1"
     return "0"
