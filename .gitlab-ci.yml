@@ -21,6 +21,7 @@ package win:
 package osx:
   stage: package
   script:
+    - export PATH=/Library/Frameworks/Python.framework/Versions/2.7/bin:$PATH
     - bash -xe ./scripts/package-osx.sh
   artifacts:
     paths:
