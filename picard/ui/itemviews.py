@@ -486,6 +486,7 @@ class BaseTreeView(QtGui.QTreeWidget):
                         log.debug('OSX NSURL path detected. Dropped File is: %r', filename)
                     else:
                         log.error("Unable to get appropriate file path for %r", url.toString(QtCore.QUrl.RemoveUserInfo))
+                        continue
                 else:
                     # Dropping a file from iTunes gives a filename with a NULL terminator
                     filename = os.path.normpath(os.path.realpath(unicode(url.toLocalFile()).rstrip("\0")))

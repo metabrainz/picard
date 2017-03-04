@@ -40,7 +40,7 @@ def similarity(a1, b1):
     return astrcmp(a2, b2)
 
 
-_split_words_re = re.compile('\W+', re.UNICODE)
+_split_words_re = re.compile(r'\W+', re.UNICODE)
 
 
 def similarity2(a, b):

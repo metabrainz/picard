@@ -70,7 +70,7 @@ class TagsFromFileNamesDialog(PicardDialog):
             item = QtGui.QTreeWidgetItem(self.ui.files)
             item.setText(0, os.path.basename(file.filename))
             self.items.append(item)
-        self._tag_re = re.compile("(%\w+%)")
+        self._tag_re = re.compile(r"(%\w+%)")
         self.numeric_tags = ('tracknumber', 'totaltracks', 'discnumber', 'totaldiscs')
 
     def parse_format(self):
@@ -82,9 +82,9 @@ class TagsFromFileNamesDialog(PicardDialog):
                 name = part[1:-1]
                 columns.append(name)
                 if name in self.numeric_tags:
-                    format_re.append('(?P<' + name + '>\d+)')
+                    format_re.append('(?P<' + name + r'>\d+)')
                 elif name in ('date'):
-                    format_re.append('(?P<' + name + '>\d+(?:-\d+(?:-\d+)?)?)')
+                    format_re.append('(?P<' + name + r'>\d+(?:-\d+(?:-\d+)?)?)')
                 else:
                     format_re.append('(?P<' + name + '>[^/]*?)')
             else:

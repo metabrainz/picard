@@ -58,7 +58,7 @@ def version_to_string(version, short=False):
     return version_str
 
 
-_version_re = re.compile("(\d+)[._](\d+)(?:[._](\d+)[._]?(?:(dev|final)[._]?(\d+))?)?$")
+_version_re = re.compile(r"(\d+)[._](\d+)(?:[._](\d+)[._]?(?:(dev|final)[._]?(\d+))?)?$")
 
 
 def version_from_string(version_str):
