@@ -126,35 +126,38 @@ class CoverArtThumbnail(ActiveLabel):
             return
 
         cover = self.shadow
-        if self.data:
-            w, h, displacements = (121, 121, 20)
-            if pixmap is None:
-                if len(self.data) == 1:
-                    pixmap = QtGui.QPixmap()
-                    pixmap.loadFromData(self.data[0].data)
-                else:
-                    stack_width, stack_height = (w + displacements * (len(self.data) - 1), h + displacements * (len(self.data) - 1))
-                    pixmap = QtGui.QPixmap(stack_width, stack_height)
-                    bgcolor = self.palette().color(QtGui.QPalette.Window)
-                    painter = QtGui.QPainter(pixmap)
-                    painter.fillRect(QtCore.QRectF(0, 0, stack_width, stack_height), bgcolor)
-                    x = w / 2
-                    y = h / 2
-                    for image in self.data:
-                        thumb = QtGui.QPixmap()
-                        thumb.loadFromData(image.data)
-                        thumb = self.decorate_cover(thumb)
-                        painter.drawPixmap(x - thumb.width() / 2, y - thumb.height() / 2, thumb)
-                        x += displacements
-                        y += displacements
-                    painter.end()
-                    pixmap = pixmap.scaled(w, h, QtCore.Qt.KeepAspectRatio, QtCore.Qt.SmoothTransformation)
-                    self.setPixmap(pixmap)
-                    pixmap = None
+        if not self.data:
+            self.setPixmap(self.shadow)
+            return
 
-            if pixmap and not pixmap.isNull():
-                cover = self.decorate_cover(pixmap)
-                self.setPixmap(cover)
+        w, h, displacements = (121, 121, 20)
+        if pixmap is None:
+            if len(self.data) == 1:
+                pixmap = QtGui.QPixmap()
+                pixmap.loadFromData(self.data[0].data)
+            else:
+                stack_width, stack_height = (w + displacements * (len(self.data) - 1), h + displacements * (len(self.data) - 1))
+                pixmap = QtGui.QPixmap(stack_width, stack_height)
+                bgcolor = self.palette().color(QtGui.QPalette.Window)
+                painter = QtGui.QPainter(pixmap)
+                painter.fillRect(QtCore.QRectF(0, 0, stack_width, stack_height), bgcolor)
+                x = w / 2
+                y = h / 2
+                for image in self.data:
+                    thumb = QtGui.QPixmap()
+                    thumb.loadFromData(image.data)
+                    thumb = self.decorate_cover(thumb)
+                    painter.drawPixmap(x - thumb.width() / 2, y - thumb.height() / 2, thumb)
+                    x += displacements
+                    y += displacements
+                painter.end()
+                pixmap = pixmap.scaled(w, h, QtCore.Qt.KeepAspectRatio, QtCore.Qt.SmoothTransformation)
+                self.setPixmap(pixmap)
+                pixmap = None
+
+        if pixmap and not pixmap.isNull():
+            cover = self.decorate_cover(pixmap)
+            self.setPixmap(cover)
 
     def set_metadata(self, metadata):
         data = None
