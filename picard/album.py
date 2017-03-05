@@ -383,10 +383,6 @@ class Album(DataObject, Item):
     def _add_file(self, track, file):
         self._files += 1
         self.update(update_tracks=False)
-        # Fixme: The next lines can probably be moved to update()
-        for image in file.orig_metadata.images:
-            if image not in self.orig_metadata.images:
-                self.orig_metadata.append_image(image)
 
     def _remove_file(self, track, file):
         self._files -= 1
@@ -559,16 +555,24 @@ class Album(DataObject, Item):
 
     def update_metadata_images(self):
         new_images = []
+        orig_images = []
         for track in self.tracks:
             for file in list(track.linked_files):
                 for image in file.metadata.images:
                     if image not in new_images:
                         new_images.append(image)
+                for image in file.orig_metadata.images:
+                    if image not in orig_images:
+                        orig_images.append(image)
         for file in list(self.unmatched_files.files):
             for image in file.metadata.images:
                 if image not in new_images:
                     new_images.append(image)
+            for image in file.orig_metadata.images:
+                if image not in orig_images:
+                    orig_images.append(image)
         self.metadata.images = new_images
+        self.orig_metadata.images = orig_images
 
 
 class NatAlbum(Album):
