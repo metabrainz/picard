@@ -228,6 +228,14 @@ class Track(DataObject, Item):
     def update_orig_metadata_images(self):
         update_metadata_images(self)
 
+    def keep_original_images(self):
+        for file in self.linked_files:
+            file.keep_original_images()
+        if self.linked_files:
+            self.update_orig_metadata_images()
+            self.metadata.images = self.orig_metadata.images[:]
+        self.update()
+
 
 class NonAlbumTrack(Track):
 
