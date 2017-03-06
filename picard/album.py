@@ -587,7 +587,6 @@ class Album(DataObject, Item):
         self.update(False)
 
     def keep_original_images(self):
-        print('keep')
         for track in self.tracks:
             track.keep_original_images()
         for file in list(self.unmatched_files.files):

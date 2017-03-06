@@ -241,10 +241,6 @@ class CoverArtThumbnail(ActiveLabel):
     def fetch_remote_image(self, url):
         return self.parent().fetch_remote_image(url)
 
-    def contextMenuEvent(self, event):
-        print('CoverArtThumbnail.contextMenuEvent', type(self.parent()))
-        return self.parent().contextMenuEvent(event)
-
 
 class CoverArtBox(QtGui.QGroupBox):
 
