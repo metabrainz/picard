@@ -561,11 +561,15 @@ class Album(DataObject, Item):
             for image in file.metadata.images:
                 if image not in new_images:
                     new_images.append(image)
-            for image in file.orig_metadata.images:
-                if image not in orig_images:
-                    orig_images.append(image)
+            try:
+                for image in file.orig_metadata.images:
+                    if image not in orig_images:
+                        orig_images.append(image)
+            except AttributeError:
+                pass
 
         for track in self.tracks:
+            process_file_images(track)
             for file in list(track.linked_files):
                 process_file_images(file)
         for file in list(self.unmatched_files.files):
