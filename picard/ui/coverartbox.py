@@ -380,9 +380,11 @@ class CoverArtBox(QtGui.QGroupBox):
             return
 
         if config.setting["behaviour_on_image_drop"] == 'replace':
-            drop_image = lambda obj: obj.metadata.set_front_image(coverartimage)
+            def drop_image(obj):
+                obj.metadata.set_front_image(coverartimage)
         else:
-            drop_image = lambda obj: obj.metadata.append_image(coverartimage)
+            def drop_image(obj):
+                obj.metadata.append_image(coverartimage)
 
         if isinstance(self.item, Album):
             album = self.item
