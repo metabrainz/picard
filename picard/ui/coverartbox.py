@@ -198,6 +198,7 @@ class CoverArtBox(QtGui.QGroupBox):
             self.orig_cover_art.setHidden(False)
             self.cover_art_label.setText(_(u'New Cover Art'))
             self.orig_cover_art_label.setText(_(u'Original Cover Art'))
+        super(CoverArtBox, self).show()
 
     def set_metadata(self, metadata, orig_metadata, item):
         if not metadata or not metadata.images:
