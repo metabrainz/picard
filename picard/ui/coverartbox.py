@@ -195,7 +195,6 @@ class CoverArtThumbnail(ActiveLabel):
         self.related_images = []
         if metadata and metadata.images:
             self.related_images = metadata.images
-            log.debug("%s using images:" % (self.name), metadata.images)
             data = [image for image in metadata.images if image.is_front_image()]
             if not data:
                 # There's no front image, choose the first one available
