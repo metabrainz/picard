@@ -104,7 +104,8 @@ class InfoDialog(PicardDialog):
                 isinstance(obj, Track):
             # Display existing artwork only if selected object is track object
             # or linked to a track object
-            self.display_existing_artwork = True
+            if getattr(obj, 'orig_metadata', None) is not None:
+                self.display_existing_artwork = True
 
         self.ui.setupUi(self)
         self.ui.buttonBox.accepted.connect(self.accept)
@@ -295,6 +296,20 @@ class AlbumInfoDialog(InfoDialog):
         else:
             tabWidget.setTabText(tab_index, _("&Info"))
             self.tab_hide(tab)
+
+class TrackInfoDialog(InfoDialog):
+
+    def __init__(self, track, parent=None):
+        InfoDialog.__init__(self, track, parent)
+        self.setWindowTitle(_("Track Info"))
+
+    def _display_info_tab(self):
+        tab = self.ui.info_tab
+        track = self.obj
+        tabWidget = self.ui.tabWidget
+        tab_index = tabWidget.indexOf(tab)
+        tabWidget.setTabText(tab_index, _("&Info"))
+        self.tab_hide(tab)
 
 
 class ClusterInfoDialog(InfoDialog):
