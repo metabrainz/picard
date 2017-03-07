@@ -24,6 +24,7 @@ from PyQt4 import QtGui, QtCore
 from picard import log
 from picard.file import File
 from picard.track import Track
+from picard.album import Album
 from picard.coverart.image import CoverArtImageIOError
 from picard.util import format_time, encode_filename, bytes2human, webbrowser2, union_sorted_lists
 from picard.ui import PicardDialog
@@ -101,7 +102,7 @@ class InfoDialog(PicardDialog):
         self.ui = Ui_InfoDialog()
         self.display_existing_artwork = False
         if isinstance(obj, File) and isinstance(obj.parent, Track) or \
-                isinstance(obj, Track):
+                isinstance(obj, Track) or isinstance(obj, Album):
             # Display existing artwork only if selected object is track object
             # or linked to a track object
             if getattr(obj, 'orig_metadata', None) is not None:
@@ -305,7 +306,6 @@ class TrackInfoDialog(InfoDialog):
 
     def _display_info_tab(self):
         tab = self.ui.info_tab
-        track = self.obj
         tabWidget = self.ui.tabWidget
         tab_index = tabWidget.indexOf(tab)
         tabWidget.setTabText(tab_index, _("&Info"))
