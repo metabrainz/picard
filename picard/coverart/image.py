@@ -70,6 +70,9 @@ class DataHash:
     def __eq__(self, other):
         return self._hash == other._hash
 
+    def hash(self):
+        return self._hash
+
     def delete_file(self):
         if self._filename:
             try:
@@ -210,6 +213,11 @@ class CoverArtImage:
             return True
         else:
             return False
+
+    def __hash__(self):
+        if self.datahash is None:
+            return 0
+        return hash(self.datahash.hash())
 
     def set_data(self, data):
         """Store image data in a file, if data already exists in such file
