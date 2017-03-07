@@ -37,6 +37,36 @@ if sys.platform == 'darwin':
         log.warning("Unable to import NSURL, file drag'n'drop might not work correctly")
 
 
+class LRUCache(dict):
+
+    def __init__(self, max_size):
+        self._ordered_keys = []
+        self._max_size = max_size
+
+    def __getitem__(self, key):
+        if key in self:
+            self._ordered_keys.remove(key)
+            self._ordered_keys.insert(0, key)
+        return super(LRUCache, self).__getitem__(key)
+
+    def __setitem__(self, key, value):
+        if key in self:
+            self._ordered_keys.remove(key)
+        self._ordered_keys.insert(0, key)
+
+        r = super(LRUCache, self).__setitem__(key, value)
+
+        if len(self) > self._max_size:
+            item = self._ordered_keys.pop()
+            super(LRUCache, self).__delitem__(item)
+
+        return r
+
+    def __delitem__(self, key):
+        self._ordered_keys.remove(key)
+        super(LRUCache, self).__delitem__(key)
+
+
 class ActiveLabel(QtGui.QLabel):
 
     """Clickable QLabel."""
@@ -83,7 +113,7 @@ class ActiveLabel(QtGui.QLabel):
 
 class CoverArtThumbnail(ActiveLabel):
 
-    def __init__(self, active=False, drops=False, name=None, *args, **kwargs):
+    def __init__(self, active=False, drops=False, name=None, pixmap_cache=None, *args, **kwargs):
         super(CoverArtThumbnail, self).__init__(active, drops, *args, **kwargs)
         self.data = None
         self.name = name
@@ -94,6 +124,7 @@ class CoverArtThumbnail(ActiveLabel):
         self.clicked.connect(self.open_release_page)
         self.image_dropped.connect(self.fetch_remote_image)
         self.related_images = list()
+        self._pixmap_cache = pixmap_cache
 
     def __eq__(self, other):
         if len(self.related_images) or len(other.related_images):
@@ -117,7 +148,7 @@ class CoverArtThumbnail(ActiveLabel):
         painter.end()
         return cover
 
-    def set_data(self, data, force=False, pixmap=None):
+    def set_data(self, data, force=False):
         if not force and self.data == data:
             return
 
@@ -125,16 +156,19 @@ class CoverArtThumbnail(ActiveLabel):
         if not force and self.parent().isHidden():
             return
 
-        cover = self.shadow
         if not self.data:
             self.setPixmap(self.shadow)
             return
 
         w, h, displacements = (121, 121, 20)
-        if pixmap is None:
+        key = hash(tuple(sorted(self.data)))
+        try:
+            pixmap = self._pixmap_cache[key]
+        except KeyError:
             if len(self.data) == 1:
                 pixmap = QtGui.QPixmap()
                 pixmap.loadFromData(self.data[0].data)
+                pixmap = self.decorate_cover(pixmap)
             else:
                 stack_width, stack_height = (w + displacements * (len(self.data) - 1), h + displacements * (len(self.data) - 1))
                 pixmap = QtGui.QPixmap(stack_width, stack_height)
@@ -152,12 +186,9 @@ class CoverArtThumbnail(ActiveLabel):
                     y += displacements
                 painter.end()
                 pixmap = pixmap.scaled(w, h, QtCore.Qt.KeepAspectRatio, QtCore.Qt.SmoothTransformation)
-                self.setPixmap(pixmap)
-                pixmap = None
+            self._pixmap_cache[key] = pixmap
 
-        if pixmap and not pixmap.isNull():
-            cover = self.decorate_cover(pixmap)
-            self.setPixmap(cover)
+        self.setPixmap(pixmap)
 
     def set_metadata(self, metadata):
         data = None
@@ -200,12 +231,13 @@ class CoverArtBox(QtGui.QGroupBox):
         self.setStyleSheet('''QGroupBox{background-color:none;border:1px;}''')
         self.setFlat(True)
         self.item = None
+        self.pixmap_cache = LRUCache(40)
         self.cover_art_label = QtGui.QLabel('')
         self.cover_art_label.setAlignment(QtCore.Qt.AlignTop | QtCore.Qt.AlignHCenter)
-        self.cover_art = CoverArtThumbnail(False, True, "new cover", parent)
+        self.cover_art = CoverArtThumbnail(False, True, "new cover", self.pixmap_cache, parent)
         spacerItem = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
         self.orig_cover_art_label = QtGui.QLabel('')
-        self.orig_cover_art = CoverArtThumbnail(False, False, "original cover", parent)
+        self.orig_cover_art = CoverArtThumbnail(False, False, "original cover", self.pixmap_cache, parent)
         self.orig_cover_art_label.setAlignment(QtCore.Qt.AlignTop | QtCore.Qt.AlignHCenter)
         self.orig_cover_art.setHidden(True)
         self.show_details_button = QtGui.QPushButton(_(u'Show more details'), self)
