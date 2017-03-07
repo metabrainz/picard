@@ -68,6 +68,7 @@ class MainWindow(QtGui.QMainWindow):
         config.Option("persist", "bottom_splitter_state", QtCore.QByteArray()),
         config.BoolOption("persist", "window_maximized", False),
         config.BoolOption("persist", "view_cover_art", True),
+        config.BoolOption("persist", "view_toolbar", True),
         config.BoolOption("persist", "view_file_browser", False),
         config.TextOption("persist", "current_directory", ""),
     ]
@@ -192,6 +193,7 @@ class MainWindow(QtGui.QMainWindow):
             config.persist["window_size"] = self.size()
         config.persist["window_maximized"] = isMaximized
         config.persist["view_cover_art"] = self.show_cover_art_action.isChecked()
+        config.persist["view_toolbar"] = self.show_toolbar_action.isChecked()
         config.persist["view_file_browser"] = self.show_file_browser_action.isChecked()
         config.persist["bottom_splitter_state"] = self.centralWidget().saveState()
         self.file_browser.save_state()
@@ -404,6 +406,12 @@ class MainWindow(QtGui.QMainWindow):
             self.show_cover_art_action.setChecked(True)
         self.show_cover_art_action.triggered.connect(self.show_cover_art)
 
+        self.show_toolbar_action = QtGui.QAction(_(u"&Actions"), self)
+        self.show_toolbar_action.setCheckable(True)
+        if config.persist["view_toolbar"]:
+            self.show_toolbar_action.setChecked(True)
+        self.show_toolbar_action.triggered.connect(self.show_toolbar)
+
         self.search_action = QtGui.QAction(icontheme.lookup('system-search'), _(u"Search"), self)
         self.search_action.setEnabled(False)
         self.search_action.triggered.connect(self.search)
@@ -537,7 +545,7 @@ class MainWindow(QtGui.QMainWindow):
         menu.addAction(self.show_file_browser_action)
         menu.addAction(self.show_cover_art_action)
         menu.addSeparator()
-        menu.addAction(self.toolbar_toggle_action)
+        menu.addAction(self.show_toolbar_action)
         menu.addAction(self.search_toolbar_toggle_action)
         menu = self.menuBar().addMenu(_(u"&Options"))
         menu.addAction(self.enable_renaming_action)
@@ -586,7 +594,6 @@ class MainWindow(QtGui.QMainWindow):
             self.removeToolBar(self.toolbar)
         self.toolbar = toolbar = QtGui.QToolBar(_(u"Actions"))
         self.insertToolBar(self.search_toolbar, self.toolbar)
-        self.toolbar_toggle_action = self.toolbar.toggleViewAction()
         self.update_toolbar_style()
         toolbar.setObjectName("main_toolbar")
 
@@ -615,6 +622,7 @@ class MainWindow(QtGui.QMainWindow):
                     button.setMenu(self.cd_lookup_menu)
             elif action == 'separator':
                 toolbar.addSeparator()
+        self.show_toolbar()
 
     def create_search_toolbar(self):
         self.search_toolbar = toolbar = self.addToolBar(_(u"Search"))
@@ -958,6 +966,13 @@ class MainWindow(QtGui.QMainWindow):
             self.cover_art_box.show()
         else:
             self.cover_art_box.hide()
+
+    def show_toolbar(self):
+        """Show/hide the Action toolbar."""
+        if self.show_toolbar_action.isChecked():
+            self.toolbar.show()
+        else:
+            self.toolbar.hide()
 
     def show_file_browser(self):
         """Show/hide the file browser."""
