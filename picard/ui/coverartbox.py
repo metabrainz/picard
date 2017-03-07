@@ -413,16 +413,17 @@ class CoverArtBox(QtGui.QGroupBox):
 
     def contextMenuEvent(self, event):
         menu = QtGui.QMenu(self)
-        name = _(u'Show more details')
-        show_more_details_action = QtGui.QAction(name, self.parent)
-        show_more_details_action.triggered.connect(self.show_cover_art_info)
-        menu.addAction(show_more_details_action)
+        if self.show_details_button.isVisible():
+            name = _(u'Show more details')
+            show_more_details_action = QtGui.QAction(name, self.parent)
+            show_more_details_action.triggered.connect(self.show_cover_art_info)
+            menu.addAction(show_more_details_action)
 
         if self.orig_cover_art.isVisible():
-                name = _(u'Use Original Cover Art')
-                use_orig_value_action = QtGui.QAction(name, self.parent)
-                use_orig_value_action.triggered.connect(self.item.keep_original_images)
-                menu.addAction(use_orig_value_action)
+            name = _(u'Use Original Cover Art')
+            use_orig_value_action = QtGui.QAction(name, self.parent)
+            use_orig_value_action.triggered.connect(self.item.keep_original_images)
+            menu.addAction(use_orig_value_action)
 
         menu.exec_(event.globalPos())
         event.accept()
