@@ -139,7 +139,8 @@ class CoverArtThumbnail(ActiveLabel):
                 pixmap.loadFromData(self.data[0].data)
                 pixmap = self.decorate_cover(pixmap)
             else:
-                stack_width, stack_height = (w + displacements * (len(self.data) - 1), h + displacements * (len(self.data) - 1))
+                offset = displacements * (len(self.data) - 1)
+                stack_width, stack_height = (w + offset, h + offset)
                 pixmap = QtGui.QPixmap(stack_width, stack_height)
                 bgcolor = self.palette().color(QtGui.QPalette.Window)
                 painter = QtGui.QPainter(pixmap)
