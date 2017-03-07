@@ -295,6 +295,9 @@ class UnmatchedFiles(Cluster):
     def can_view_info(self):
         return False
 
+    def can_remove(self):
+        return True
+
 
 class ClusterList(list, Item):
 
