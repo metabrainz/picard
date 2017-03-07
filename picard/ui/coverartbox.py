@@ -26,7 +26,8 @@ from picard.album import Album
 from picard.coverart.image import CoverArtImage, CoverArtImageError
 from picard.track import Track
 from picard.file import File
-from picard.util import encode_filename, imageinfo
+from picard.util import encode_filename, imageinfo, get_file_path
+from picard.util.lrucache import LRUCache
 
 if sys.platform == 'darwin':
     try:
@@ -37,38 +38,7 @@ if sys.platform == 'darwin':
         log.warning("Unable to import NSURL, file drag'n'drop might not work correctly")
 
 
-class LRUCache(dict):
-
-    def __init__(self, max_size):
-        self._ordered_keys = []
-        self._max_size = max_size
-
-    def __getitem__(self, key):
-        if key in self:
-            self._ordered_keys.remove(key)
-            self._ordered_keys.insert(0, key)
-        return super(LRUCache, self).__getitem__(key)
-
-    def __setitem__(self, key, value):
-        if key in self:
-            self._ordered_keys.remove(key)
-        self._ordered_keys.insert(0, key)
-
-        r = super(LRUCache, self).__setitem__(key, value)
-
-        if len(self) > self._max_size:
-            item = self._ordered_keys.pop()
-            super(LRUCache, self).__delitem__(item)
-
-        return r
-
-    def __delitem__(self, key):
-        self._ordered_keys.remove(key)
-        super(LRUCache, self).__delitem__(key)
-
-
 class ActiveLabel(QtGui.QLabel):
-
     """Clickable QLabel."""
 
     clicked = QtCore.pyqtSignal()
