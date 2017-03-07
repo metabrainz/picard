@@ -57,7 +57,7 @@ class Metadata(dict):
 
     def set_front_image(self, coverartimage):
         # First remove all front images
-        self.images[:] = [ img for img in self.images if not img.is_front_image() ]
+        self.images[:] = [img for img in self.images if not img.is_front_image()]
         self.images.append(coverartimage)
 
     @property
