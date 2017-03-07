@@ -113,10 +113,9 @@ class ActiveLabel(QtGui.QLabel):
 
 class CoverArtThumbnail(ActiveLabel):
 
-    def __init__(self, active=False, drops=False, name=None, pixmap_cache=None, *args, **kwargs):
+    def __init__(self, active=False, drops=False, pixmap_cache=None, *args, **kwargs):
         super(CoverArtThumbnail, self).__init__(active, drops, *args, **kwargs)
         self.data = None
-        self.name = name
         self.shadow = QtGui.QPixmap(":/images/CoverArtShadow.png")
         self.release = None
         self.setPixmap(self.shadow)
@@ -233,10 +232,10 @@ class CoverArtBox(QtGui.QGroupBox):
         self.pixmap_cache = LRUCache(40)
         self.cover_art_label = QtGui.QLabel('')
         self.cover_art_label.setAlignment(QtCore.Qt.AlignTop | QtCore.Qt.AlignHCenter)
-        self.cover_art = CoverArtThumbnail(False, True, "new cover", self.pixmap_cache, parent)
+        self.cover_art = CoverArtThumbnail(False, True, self.pixmap_cache, parent)
         spacerItem = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
         self.orig_cover_art_label = QtGui.QLabel('')
-        self.orig_cover_art = CoverArtThumbnail(False, False, "original cover", self.pixmap_cache, parent)
+        self.orig_cover_art = CoverArtThumbnail(False, False, self.pixmap_cache, parent)
         self.orig_cover_art_label.setAlignment(QtCore.Qt.AlignTop | QtCore.Qt.AlignHCenter)
         self.orig_cover_art.setHidden(True)
         self.show_details_button = QtGui.QPushButton(_(u'Show more details'), self)
