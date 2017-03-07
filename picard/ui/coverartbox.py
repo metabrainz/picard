@@ -21,7 +21,7 @@ import os
 import sys
 from functools import partial
 from PyQt4 import QtCore, QtGui, QtNetwork
-from picard import log
+from picard import config, log
 from picard.album import Album
 from picard.coverart.image import CoverArtImage, CoverArtImageError
 from picard.track import Track
@@ -378,14 +378,21 @@ class CoverArtBox(QtGui.QGroupBox):
         except CoverArtImageError as e:
             log.warning("Can't load image: %s" % unicode(e))
             return
+
+        if config.setting["behaviour_on_image_drop"] == 'replace':
+            drop_image = lambda obj: obj.metadata.set_front_image(coverartimage)
+        else:
+            drop_image = lambda obj: obj.metadata.append_image(coverartimage)
+
         if isinstance(self.item, Album):
             album = self.item
             album.enable_update_metadata_images(False)
+            drop_image(album)
             for track in album.tracks:
-                track.metadata.set_front_image(coverartimage)
+                drop_image(track)
                 track.metadata_images_changed.emit()
             for file in album.iterfiles():
-                file.metadata.set_front_image(coverartimage)
+                drop_image(file)
                 file.metadata_images_changed.emit()
                 file.update()
             album.enable_update_metadata_images(True)
@@ -394,10 +401,10 @@ class CoverArtBox(QtGui.QGroupBox):
         elif isinstance(self.item, Track):
             track = self.item
             track.album.enable_update_metadata_images(False)
-            track.metadata.set_front_image(coverartimage)
+            drop_image(track)
             track.metadata_images_changed.emit()
             for file in track.iterfiles():
-                file.metadata.set_front_image(coverartimage)
+                drop_image(file)
                 file.metadata_images_changed.emit()
                 file.update()
             track.album.enable_update_metadata_images(True)
@@ -405,11 +412,14 @@ class CoverArtBox(QtGui.QGroupBox):
             track.album.update(False)
         elif isinstance(self.item, File):
             file = self.item
-            file.metadata.set_front_image(coverartimage)
+            drop_image(file)
             file.metadata_images_changed.emit()
             file.update()
         self.cover_art.set_metadata(self.item.metadata)
         self.show()
+
+    def setBehaviourOnImageDrop(self, behaviour):
+        config.setting["behaviour_on_image_drop"] = behaviour
 
     def contextMenuEvent(self, event):
         menu = QtGui.QMenu(self)
@@ -424,6 +434,21 @@ class CoverArtBox(QtGui.QGroupBox):
             use_orig_value_action = QtGui.QAction(name, self.parent)
             use_orig_value_action.triggered.connect(self.item.keep_original_images)
             menu.addAction(use_orig_value_action)
+
+        if not menu.isEmpty():
+            menu.addSeparator()
+
+        behaviourOnDrop = QtGui.QActionGroup(self.parent, exclusive=True)
+        action = behaviourOnDrop.addAction(QtGui.QAction(_(u'Replace front cover art on drop'), self.parent, checkable=True))
+        action.triggered.connect(partial(self.setBehaviourOnImageDrop, behaviour='replace'))
+        if config.setting["behaviour_on_image_drop"] == 'replace':
+            action.setChecked(True)
+        menu.addAction(action)
+        action = behaviourOnDrop.addAction(QtGui.QAction(_(u'Append front cover art on drop'), self.parent, checkable=True))
+        action.triggered.connect(partial(self.setBehaviourOnImageDrop, behaviour='append'))
+        if config.setting["behaviour_on_image_drop"] == 'append':
+            action.setChecked(True)
+        menu.addAction(action)
 
         menu.exec_(event.globalPos())
         event.accept()

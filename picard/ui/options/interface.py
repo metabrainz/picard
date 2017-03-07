@@ -98,6 +98,7 @@ class InterfaceOptionsPage(OptionsPage):
         config.TextOption("setting", "ui_language", u""),
         config.BoolOption("setting", "starting_directory", False),
         config.TextOption("setting", "starting_directory_path", ""),
+        config.TextOption("setting", "behaviour_on_image_drop", "replace"),
         config.ListOption("setting", "toolbar_layout", [
             'add_directory_action',
             'add_files_action',
