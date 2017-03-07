@@ -101,8 +101,8 @@ class InfoDialog(PicardDialog):
         self.obj = obj
         self.ui = Ui_InfoDialog()
         self.display_existing_artwork = False
-        if isinstance(obj, File) and isinstance(obj.parent, Track) or \
-                isinstance(obj, Track) or isinstance(obj, Album):
+        if (isinstance(obj, File) and isinstance(obj.parent, Track) or
+                isinstance(obj, (Track, Album))):
             # Display existing artwork only if selected object is track object
             # or linked to a track object
             if getattr(obj, 'orig_metadata', None) is not None:
