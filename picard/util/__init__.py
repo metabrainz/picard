@@ -31,7 +31,6 @@ from PyQt4 import QtCore
 from string import Template
 # Required for compatibility with lastfmplus which imports this from here rather than loading it direct.
 from functools import partial
-from picard import log
 from picard.const import MUSICBRAINZ_SERVERS
 
 if sys.platform == 'darwin':
@@ -40,6 +39,7 @@ if sys.platform == 'darwin':
         NSURL_IMPORTED = True
     except ImportError:
         NSURL_IMPORTED = False
+        from picard import log
         log.warning("Unable to import NSURL, file drag'n'drop might not work correctly")
 
 
@@ -450,6 +450,8 @@ def union_sorted_lists(list1, list2):
 def get_file_path(url):
     # Workaround for https://bugreports.qt.io/browse/QTBUG-40449
     # OSX Urls follow the NSURL scheme and need to be converted
+    from picard import log
+
     file_path = ""
     if sys.platform == 'darwin' and unicode(url.path()).startswith('/.file/id='):
         if NSURL_IMPORTED:
