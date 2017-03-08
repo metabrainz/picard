@@ -85,6 +85,11 @@ class Album(DataObject, Item):
             for file in self.unmatched_files.iterfiles():
                 yield file
 
+    def enable_update_metadata_images(self, enabled):
+        self.update_metadata_images_enabled = enabled
+        if enabled:
+            self.update_metadata_images()
+
     def append_album_artist(self, id):
         """Append artist id to the list of album artists
         and return an AlbumArtist instance"""
@@ -256,7 +261,7 @@ class Album(DataObject, Item):
             self._tracks_loaded = True
 
         if not self._requests:
-            self.update_metadata_images_enabled = False
+            self.enable_update_metadata_images(False)
             # Prepare parser for user's script
             if config.setting["enable_tagger_scripts"]:
                 for s_pos, s_name, s_enabled, s_text in config.setting["list_of_scripts"]:
@@ -288,8 +293,8 @@ class Album(DataObject, Item):
             self.loaded = True
             self.status = None
             self.match_files(self.unmatched_files.files)
-            self.update_metadata_images_enabled = True
             self.update()
+            self.enable_update_metadata_images(True)
             self.tagger.window.set_statusbar_message(
                 N_('Album %(id)s loaded: %(artist)s - %(album)s'),
                 {
