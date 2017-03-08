@@ -117,7 +117,7 @@ class CoverArtThumbnail(ActiveLabel):
         painter.end()
         return cover
 
-    def set_data(self, data, force=False):
+    def set_data(self, data, force=False, has_common_images=True):
         if not force and self.data == data:
             return
 
@@ -129,8 +129,8 @@ class CoverArtThumbnail(ActiveLabel):
             self.setPixmap(self.shadow)
             return
 
-        w, h, displacements = (121, 121, 20)
-        key = hash(tuple(sorted(self.data)))
+        w, h, displacements = (128, 128, 20)
+        key = hash(tuple(sorted(self.data)) + (has_common_images,))
         try:
             pixmap = self._pixmap_cache[key]
         except KeyError:
@@ -145,15 +145,28 @@ class CoverArtThumbnail(ActiveLabel):
                 bgcolor = self.palette().color(QtGui.QPalette.Window)
                 painter = QtGui.QPainter(pixmap)
                 painter.fillRect(QtCore.QRectF(0, 0, stack_width, stack_height), bgcolor)
-                x = stack_width - w / 2
-                y = h / 2
+                cx = stack_width - w / 2
+                cy = h / 2
                 for image in reversed(self.data):
                     thumb = QtGui.QPixmap()
                     thumb.loadFromData(image.data)
-                    thumb = self.decorate_cover(thumb)
-                    painter.drawPixmap(x - thumb.width() / 2, y - thumb.height() / 2, thumb)
-                    x -= displacements
-                    y += displacements
+                    thumb = self.decorate_cover(thumb)  # QtGui.QColor("darkgoldenrod")
+                    x, y = (cx - thumb.width() / 2, cy - thumb.height() / 2)
+                    painter.drawPixmap(x, y, thumb)
+                    cx -= displacements
+                    cy += displacements
+                if not has_common_images:
+                    color = QtGui.QColor("darkgoldenrod")
+                    border_length = 10
+                    for k in range(border_length):
+                        color.setAlpha(255 - k * 255 / border_length)
+                        painter.setPen(color)
+                        painter.drawLine(x, y - k - 1, x + 121 + k + 1, y - k - 1)
+                        painter.drawLine(x + 121 + k + 2, y - 1 - k, x + 121 + k + 2, y + 121 + 4)
+                    for k in range(5):
+                        bgcolor.setAlpha(80 + k * 255 / 7)
+                        painter.setPen(bgcolor)
+                        painter.drawLine(x + 121 + 2, y + 121 + 2 + k, x + 121 + border_length + 2, y + 121 + 2 + k)
                 painter.end()
                 pixmap = pixmap.scaled(w, h, QtCore.Qt.KeepAspectRatio, QtCore.Qt.SmoothTransformation)
             self._pixmap_cache[key] = pixmap
@@ -169,7 +182,8 @@ class CoverArtThumbnail(ActiveLabel):
             if not data:
                 # There's no front image, choose the first one available
                 data = [metadata.images[0]]
-        self.set_data(data)
+        has_common_images = getattr(metadata, 'has_common_images', True)
+        self.set_data(data, has_common_images=has_common_images)
         release = None
         if metadata:
             release = metadata.get("musicbrainz_albumid", None)
