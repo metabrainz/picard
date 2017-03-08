@@ -841,13 +841,12 @@ class MainWindow(QtGui.QMainWindow):
         elif isinstance(self.selected_objects[0], Cluster):
             cluster = self.selected_objects[0]
             dialog = ClusterInfoDialog(cluster, self)
+        elif isinstance(self.selected_objects[0], Track):
+            track = self.selected_objects[0]
+            dialog = TrackInfoDialog(track, self)
         else:
-            files = self.tagger.get_files_from_objects(self.selected_objects)
-            if not files and isinstance(self.selected_objects[0], Track):
-                track = self.selected_objects[0]
-                dialog = TrackInfoDialog(track, self)
-            else:
-                dialog = FileInfoDialog(files[0], self)
+            file = self.tagger.get_files_from_objects(self.selected_objects)[0]
+            dialog = FileInfoDialog(file, self)
         dialog.ui.tabWidget.setCurrentIndex(default_tab)
         dialog.exec_()
 
