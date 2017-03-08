@@ -139,7 +139,13 @@ class CoverArtThumbnail(ActiveLabel):
                 pixmap.loadFromData(self.data[0].data)
                 pixmap = self.decorate_cover(pixmap)
             else:
-                offset = displacements * (len(self.data) - 1)
+                limited = len(self.data) > 4
+                if limited:
+                    data_to_paint = data[:3]
+                    offset = displacements * len(data_to_paint)
+                else:
+                    data_to_paint = data
+                    offset = displacements * (len(data_to_paint) - 1)
                 stack_width, stack_height = (w + offset, h + offset)
                 pixmap = QtGui.QPixmap(stack_width, stack_height)
                 bgcolor = self.palette().color(QtGui.QPalette.Window)
@@ -147,9 +153,23 @@ class CoverArtThumbnail(ActiveLabel):
                 painter.fillRect(QtCore.QRectF(0, 0, stack_width, stack_height), bgcolor)
                 cx = stack_width - w / 2
                 cy = h / 2
-                for image in reversed(self.data):
-                    thumb = QtGui.QPixmap()
-                    thumb.loadFromData(image.data)
+                if limited:
+                    x, y = (cx - self.shadow.width() / 2, cy - self.shadow.height() / 2)
+                    for i in range(3):
+                        painter.drawPixmap(x, y, self.shadow)
+                        x -= displacements / 3
+                        y += displacements / 3
+                    cx -= displacements
+                    cy += displacements
+                else:
+                    cx = stack_width - w / 2
+                    cy = h / 2
+                for image in reversed(data_to_paint):
+                    if isinstance(image, QtGui.QPixmap):
+                        thumb = image
+                    else:
+                        thumb = QtGui.QPixmap()
+                        thumb.loadFromData(image.data)
                     thumb = self.decorate_cover(thumb)  # QtGui.QColor("darkgoldenrod")
                     x, y = (cx - thumb.width() / 2, cy - thumb.height() / 2)
                     painter.drawPixmap(x, y, thumb)
