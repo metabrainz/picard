@@ -25,7 +25,7 @@ from picard.album import Album
 from picard.coverart.image import CoverArtImage, CoverArtImageError
 from picard.track import Track
 from picard.file import File
-from picard.util import encode_filename, imageinfo
+from picard.util import encode_filename, imageinfo, get_file_path
 
 
 class ActiveLabel(QtGui.QLabel):
@@ -225,8 +225,8 @@ class CoverArtBox(QtGui.QGroupBox):
                                   xml=False,
                                   priority=True, important=True)
         elif url.scheme() == 'file':
-            path = encode_filename(unicode(url.toLocalFile()))
-            if os.path.exists(path):
+            path = get_file_path(url)
+            if path and os.path.exists(path):
                 mime = 'image/png' if path.lower().endswith('.png') else 'image/jpeg'
                 with open(path, 'rb') as f:
                     data = f.read()
