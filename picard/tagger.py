@@ -337,6 +337,7 @@ class Tagger(QtGui.QApplication):
 
     def move_files(self, files, target):
         if target is None:
+            log.debug("Aborting move since target is invalid")
             return
         if isinstance(target, (Track, Cluster)):
             for file in files:
