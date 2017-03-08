@@ -529,8 +529,6 @@ class BaseTreeView(QtGui.QTreeWidget):
         # text/uri-list
         urls = data.urls()
         if urls:
-            if target is None:
-                target = self.tagger.unmatched_files
             self.drop_urls(urls, target)
             handled = True
         # application/picard.album-list
