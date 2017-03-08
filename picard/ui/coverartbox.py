@@ -145,14 +145,14 @@ class CoverArtThumbnail(ActiveLabel):
                 bgcolor = self.palette().color(QtGui.QPalette.Window)
                 painter = QtGui.QPainter(pixmap)
                 painter.fillRect(QtCore.QRectF(0, 0, stack_width, stack_height), bgcolor)
-                x = w / 2
+                x = stack_width - w / 2
                 y = h / 2
-                for image in self.data:
+                for image in reversed(self.data):
                     thumb = QtGui.QPixmap()
                     thumb.loadFromData(image.data)
                     thumb = self.decorate_cover(thumb)
                     painter.drawPixmap(x - thumb.width() / 2, y - thumb.height() / 2, thumb)
-                    x += displacements
+                    x -= displacements
                     y += displacements
                 painter.end()
                 pixmap = pixmap.scaled(w, h, QtCore.Qt.KeepAspectRatio, QtCore.Qt.SmoothTransformation)
