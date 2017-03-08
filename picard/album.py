@@ -557,23 +557,23 @@ class Album(DataObject, Item):
         new_images = []
         orig_images = []
 
-        def process_file_images(file):
-            for image in file.metadata.images:
+        def process_images(obj):
+            for image in obj.metadata.images:
                 if image not in new_images:
                     new_images.append(image)
             try:
-                for image in file.orig_metadata.images:
+                for image in obj.orig_metadata.images:
                     if image not in orig_images:
                         orig_images.append(image)
             except AttributeError:
                 pass
 
         for track in self.tracks:
-            process_file_images(track)
+            process_images(track)
             for file in list(track.linked_files):
-                process_file_images(file)
+                process_images(file)
         for file in list(self.unmatched_files.files):
-            process_file_images(file)
+            process_images(file)
 
         self.metadata.images = new_images
         self.orig_metadata.images = orig_images
