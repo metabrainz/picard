@@ -336,6 +336,8 @@ class Tagger(QtGui.QApplication):
                 self.analyze([file])
 
     def move_files(self, files, target):
+        if target is None:
+            return
         if isinstance(target, (Track, Cluster)):
             for file in files:
                 file.move(target)
