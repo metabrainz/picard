@@ -72,6 +72,7 @@ class Album(DataObject, Item):
         self.errors = []
         self.status = None
         self._album_artists = []
+        self.update_metadata_images_enabled = True
 
     def __repr__(self):
         return '<Album %s %r>' % (self.id, self.metadata[u"album"])
@@ -255,6 +256,7 @@ class Album(DataObject, Item):
             self._tracks_loaded = True
 
         if not self._requests:
+            self.update_metadata_images_enabled = False
             # Prepare parser for user's script
             if config.setting["enable_tagger_scripts"]:
                 for s_pos, s_name, s_enabled, s_text in config.setting["list_of_scripts"]:
@@ -276,6 +278,7 @@ class Album(DataObject, Item):
                         self._new_metadata.strip_whitespace()
 
             for track in self.tracks:
+                track.metadata_images_changed.connect(self.update_metadata_images)
                 for file in list(track.linked_files):
                     file.move(self.unmatched_files)
             self.metadata = self._new_metadata
@@ -285,6 +288,7 @@ class Album(DataObject, Item):
             self.loaded = True
             self.status = None
             self.match_files(self.unmatched_files.files)
+            self.update_metadata_images_enabled = True
             self.update()
             self.tagger.window.set_statusbar_message(
                 N_('Album %(id)s loaded: %(artist)s - %(album)s'),
@@ -379,14 +383,19 @@ class Album(DataObject, Item):
     def update(self, update_tracks=True):
         if self.item:
             self.item.update(update_tracks)
+        self.update_metadata_images()
 
     def _add_file(self, track, file):
         self._files += 1
         self.update(update_tracks=False)
+        file.metadata_images_changed.connect(self.update_metadata_images)
+        self.update_metadata_images()
 
     def _remove_file(self, track, file):
         self._files -= 1
         self.update(update_tracks=False)
+        file.metadata_images_changed.disconnect(self.update_metadata_images)
+        self.update_metadata_images()
 
     def match_files(self, files, use_recordingid=True):
         """Match files to tracks on this album, based on metadata similarity or recordingid."""
@@ -554,6 +563,8 @@ class Album(DataObject, Item):
             self.load(priority=True, refresh=True)
 
     def update_metadata_images(self):
+        if not self.update_metadata_images_enabled:
+            return
         new_images = []
         orig_images = []
 
