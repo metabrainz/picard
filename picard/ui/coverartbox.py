@@ -189,7 +189,14 @@ class CoverArtThumbnail(ActiveLabel):
             release = metadata.get("musicbrainz_albumid", None)
         if release:
             self.setActive(True)
-            self.setToolTip(_(u"View release on MusicBrainz"))
+            text = _(u"View release on MusicBrainz")
+            if hasattr(metadata, 'has_common_images'):
+                text += '<br />'
+                if has_common_images:
+                    text += _(u'<i>Common images on all tracks</i>')
+                else:
+                    text += _(u'<i>Tracks contain different images</i>')
+            self.setToolTip(text)
         else:
             self.setActive(False)
             self.setToolTip("")
