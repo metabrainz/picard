@@ -17,40 +17,40 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-"""
-Helper class to cache items using a Least Recently Used policy.
-
-It's originally used to cache generated pixmaps in the CoverArtBox object
-but it's generic enough to be used for other purposes if necessary.
-The cache will never hold more than max_size items and the item least
-recently used will be discarded.
-
->>> cache = LRUCache(3)
->>> cache['item1'] = 'some value'
->>> cache['item2'] = 'some other value'
->>> cache['item3'] = 'yet another value'
->>> cache['item1']
-'some value'
->>> cache['item4'] = 'This will push item 2 out of the cache'
->>> cache['item2']
-Traceback (most recent call last):
-  File "<stdin>", line 1, in <module>
-  File "lrucache.py", line 48, in __getitem__
-    return super(LRUCache, self).__getitem__(key)
-KeyError: 'item2'
->>> cache['item5'] = 'This will push item3 out of the cache'
->>> cache['item3']
-Traceback (most recent call last):
-  File "<stdin>", line 1, in <module>
-  File "lrucache.py", line 48, in __getitem__
-    return super(LRUCache, self).__getitem__(key)
-KeyError: 'item3'
->>> cache['item1']
-'some value'
-"""
-
 
 class LRUCache(dict):
+    """
+    Helper class to cache items using a Least Recently Used policy.
+
+    It's originally used to cache generated pixmaps in the CoverArtBox object
+    but it's generic enough to be used for other purposes if necessary.
+    The cache will never hold more than max_size items and the item least
+    recently used will be discarded.
+
+    >>> cache = LRUCache(3)
+    >>> cache['item1'] = 'some value'
+    >>> cache['item2'] = 'some other value'
+    >>> cache['item3'] = 'yet another value'
+    >>> cache['item1']
+    'some value'
+    >>> cache['item4'] = 'This will push item 2 out of the cache'
+    >>> cache['item2']
+    Traceback (most recent call last):
+      File "<stdin>", line 1, in <module>
+      File "lrucache.py", line 48, in __getitem__
+        return super(LRUCache, self).__getitem__(key)
+    KeyError: 'item2'
+    >>> cache['item5'] = 'This will push item3 out of the cache'
+    >>> cache['item3']
+    Traceback (most recent call last):
+      File "<stdin>", line 1, in <module>
+      File "lrucache.py", line 48, in __getitem__
+        return super(LRUCache, self).__getitem__(key)
+    KeyError: 'item3'
+    >>> cache['item1']
+    'some value'
+    """
+
     def __init__(self, max_size):
         self._ordered_keys = []
         self._max_size = max_size
