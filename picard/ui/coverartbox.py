@@ -28,6 +28,7 @@ from picard.track import Track
 from picard.file import File
 from picard.util import encode_filename, imageinfo, get_file_path
 from picard.util.lrucache import LRUCache
+from picard.const import MAX_COVERS_TO_STACK
 
 if sys.platform == 'darwin':
     try:
@@ -82,7 +83,6 @@ class ActiveLabel(QtGui.QLabel):
 
 
 class CoverArtThumbnail(ActiveLabel):
-    MAX_COVERS_TO_STACK = 4
 
     def __init__(self, active=False, drops=False, pixmap_cache=None, *args, **kwargs):
         super(CoverArtThumbnail, self).__init__(active, drops, *args, **kwargs)
@@ -140,9 +140,9 @@ class CoverArtThumbnail(ActiveLabel):
                 pixmap.loadFromData(self.data[0].data)
                 pixmap = self.decorate_cover(pixmap)
             else:
-                limited = len(self.data) > self.MAX_COVERS_TO_STACK
+                limited = len(self.data) > MAX_COVERS_TO_STACK
                 if limited:
-                    data_to_paint = data[:self.MAX_COVERS_TO_STACK - 1]
+                    data_to_paint = data[:MAX_COVERS_TO_STACK - 1]
                     offset = displacements * len(data_to_paint)
                 else:
                     data_to_paint = data
