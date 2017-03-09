@@ -8,6 +8,11 @@ import os
 import re
 import sys
 import subprocess
+import sip
+
+sip.setapi("QString", 2)
+sip.setapi("QVariant", 2)
+
 from picard import __version__, compat
 
 if sys.version_info < (2, 7):
