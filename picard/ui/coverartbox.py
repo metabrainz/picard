@@ -82,6 +82,7 @@ class ActiveLabel(QtGui.QLabel):
 
 
 class CoverArtThumbnail(ActiveLabel):
+    MAX_COVERS_TO_STACK = 4
 
     def __init__(self, active=False, drops=False, pixmap_cache=None, *args, **kwargs):
         super(CoverArtThumbnail, self).__init__(active, drops, *args, **kwargs)
@@ -139,9 +140,9 @@ class CoverArtThumbnail(ActiveLabel):
                 pixmap.loadFromData(self.data[0].data)
                 pixmap = self.decorate_cover(pixmap)
             else:
-                limited = len(self.data) > 4
+                limited = len(self.data) > self.MAX_COVERS_TO_STACK
                 if limited:
-                    data_to_paint = data[:3]
+                    data_to_paint = data[:self.MAX_COVERS_TO_STACK - 1]
                     offset = displacements * len(data_to_paint)
                 else:
                     data_to_paint = data
@@ -170,7 +171,7 @@ class CoverArtThumbnail(ActiveLabel):
                     else:
                         thumb = QtGui.QPixmap()
                         thumb.loadFromData(image.data)
-                    thumb = self.decorate_cover(thumb)  # QtGui.QColor("darkgoldenrod")
+                    thumb = self.decorate_cover(thumb)
                     x, y = (cx - thumb.width() / 2, cy - thumb.height() / 2)
                     painter.drawPixmap(x, y, thumb)
                     cx -= displacements
@@ -211,11 +212,11 @@ class CoverArtThumbnail(ActiveLabel):
             self.setActive(True)
             text = _(u"View release on MusicBrainz")
             if hasattr(metadata, 'has_common_images'):
-                text += '<br />'
                 if has_common_images:
-                    text += _(u'<i>Common images on all tracks</i>')
+                    note = _(u'Common images on all tracks')
                 else:
-                    text += _(u'<i>Tracks contain different images</i>')
+                    note = _(u'Tracks contain different images')
+                text += '<br /><i>%s</i>' % note
             self.setToolTip(text)
         else:
             self.setActive(False)
