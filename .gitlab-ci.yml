@@ -6,6 +6,7 @@ variables:
   DISCID_VERSION: "0.6.1"
   PYTHON_DISCID_VERSION: "1.1.1"
   MUTAGEN_VERSION: "1.36"
+  PY2APP_VERSION: "0.11"
 
 package win:
   stage: package
