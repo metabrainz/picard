@@ -33,15 +33,6 @@ from string import Template
 from functools import partial
 from picard.const import MUSICBRAINZ_SERVERS
 
-if sys.platform == 'darwin':
-    try:
-        from Foundation import NSURL
-        NSURL_IMPORTED = True
-    except ImportError:
-        NSURL_IMPORTED = False
-        from picard import log
-        log.warning("Unable to import NSURL, file drag'n'drop might not work correctly")
-
 
 class LockableObject(QtCore.QObject):
 
@@ -445,21 +436,3 @@ def union_sorted_lists(list1, list2):
         union.extend(list1[i:])
 
     return union
-
-
-def get_file_path(url):
-    # Workaround for https://bugreports.qt.io/browse/QTBUG-40449
-    # OSX Urls follow the NSURL scheme and need to be converted
-    from picard import log
-
-    file_path = ""
-    if sys.platform == 'darwin' and unicode(url.path()).startswith('/.file/id='):
-        if NSURL_IMPORTED:
-            file_path = os.path.normpath(os.path.realpath(unicode(NSURL.URLWithString_(str(url.toString())).filePathURL().path()).rstrip("\0")))
-            log.debug('OSX NSURL path detected. Dropped File is: %r', file_path)
-        else:
-            log.error("Unable to get appropriate file path for %r", url.toString(QtCore.QUrl.RemoveUserInfo))
-    else:
-        # Dropping a file from iTunes gives a filename with a NULL terminator
-        file_path = os.path.normpath(os.path.realpath(unicode(url.toLocalFile()).rstrip("\0")))
-    return file_path
