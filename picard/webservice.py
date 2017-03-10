@@ -512,14 +512,9 @@ class XmlWebService(QtCore.QObject):
                 xml=xml, priority=priority, important=important, mblogin=mblogin,
                 cacheloadcontrol=cacheloadcontrol, refresh=refresh)
 
-    def browse_releases(self, handler,
-            xml=True, priority=False, important=False, mblogin=False,
-            cacheloadcontrol=None, refresh=False, queryargs=None,
-            **kwargs):
+    def browse_releases(self, handler, **kwargs):
         inc = ["media", "labels"]
-        return self._browse("release", handler, kwargs, inc,
-                xml=xml, priority=priority, important=important, mblogin=mblogin,
-                cacheloadcontrol=cacheloadcontrol, refresh=refresh, queryargs=queryargs)
+        return self._browse("release", handler, kwargs, inc)
 
     def submit_ratings(self, ratings, handler):
         host = config.setting['server_host']
