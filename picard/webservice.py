@@ -490,29 +490,14 @@ class XmlWebService(QtCore.QObject):
                 xml=xml, priority=priority, important=important, mblogin=mblogin,
                 cacheloadcontrol=cacheloadcontrol, refresh=refresh)
 
-    def find_releases(self, handler,
-            xml=True, priority=False, important=False, mblogin=False,
-            cacheloadcontrol=None, refresh=False, queryargs=None,
-            **kwargs):
-        return self._find('release', handler, kwargs,
-                xml=xml, priority=priority, important=important, mblogin=mblogin,
-                cacheloadcontrol=cacheloadcontrol, refresh=refresh, queryargs=queryargs)
+    def find_releases(self, handler, **kwargs):
+        return self._find('release', handler, kwargs)
 
-    def find_tracks(self, handler,
-            xml=True, priority=False, important=False, mblogin=False,
-            cacheloadcontrol=None, refresh=False, queryargs=None,
-            **kwargs):
-        return self._find('recording', handler, kwargs,
-                xml=xml, priority=priority, important=important, mblogin=mblogin,
-                cacheloadcontrol=cacheloadcontrol, refresh=refresh, queryargs=queryargs)
+    def find_tracks(self, handler, **kwargs):
+        return self._find('recording', handler, kwargs)
 
-    def find_artists(self, handler,
-            xml=True, priority=False, important=False, mblogin=False,
-            cacheloadcontrol=None, refresh=False, queryargs=None,
-            **kwargs):
-        return self._find('artist', handler, kwargs,
-                xml=xml, priority=priority, important=important, mblogin=mblogin,
-                cacheloadcontrol=cacheloadcontrol, refresh=refresh, queryargs=queryargs)
+    def find_artists(self, handler, **kwargs):
+        return self._find('artist', handler, kwargs)
 
     def _browse(self, entitytype, handler, kwargs, inc=[],
             xml=True, priority=False, important=False, mblogin=False,
