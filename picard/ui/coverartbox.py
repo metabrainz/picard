@@ -18,6 +18,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 import os
+import sys
 from functools import partial
 from PyQt4 import QtCore, QtGui, QtNetwork
 from picard import config, log
@@ -25,7 +26,15 @@ from picard.album import Album
 from picard.coverart.image import CoverArtImage, CoverArtImageError
 from picard.track import Track
 from picard.file import File
-from picard.util import encode_filename, imageinfo, get_file_path
+from picard.util import encode_filename, imageinfo
+
+if sys.platform == 'darwin':
+    try:
+        from Foundation import NSURL
+        NSURL_IMPORTED = True
+    except ImportError:
+        NSURL_IMPORTED = False
+        log.warning("Unable to import NSURL, file drag'n'drop might not work correctly")
 
 
 class ActiveLabel(QtGui.QLabel):
@@ -225,7 +234,18 @@ class CoverArtBox(QtGui.QGroupBox):
                                   xml=False,
                                   priority=True, important=True)
         elif url.scheme() == 'file':
-            path = get_file_path(url)
+            log.debug("Dropped the URL: %r", url.toString(QtCore.QUrl.RemoveUserInfo))
+            if sys.platform == 'darwin' and unicode(url.path()).startswith('/.file/id='):
+                # Workaround for https://bugreports.qt.io/browse/QTBUG-40449
+                # OSX Urls follow the NSURL scheme and need to be converted
+                if NSURL_IMPORTED:
+                    path = os.path.normpath(os.path.realpath(unicode(NSURL.URLWithString_(str(url.toString())).filePathURL().path()).rstrip("\0")))
+                    log.debug('OSX NSURL path detected. Dropped File is: %r', path)
+                else:
+                    log.error("Unable to get appropriate file path for %r", url.toString(QtCore.QUrl.RemoveUserInfo))
+            else:
+                # Dropping a file from iTunes gives a path with a NULL terminator
+                path = os.path.normpath(os.path.realpath(unicode(url.toLocalFile()).rstrip("\0")))
             if path and os.path.exists(path):
                 mime = 'image/png' if path.lower().endswith('.png') else 'image/jpeg'
                 with open(path, 'rb') as f:
