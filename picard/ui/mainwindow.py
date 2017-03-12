@@ -658,7 +658,7 @@ class MainWindow(QtGui.QMainWindow):
         tab_order(tw(self.cluster_action), tw(self.autotag_action))
         tab_order(tw(self.autotag_action), tw(self.analyze_action))
         tab_order(tw(self.analyze_action), tw(self.browser_lookup_action))
-        tab_order(tw(self.browser_lookup_action), self.save_action)
+        tab_order(tw(self.browser_lookup_action), tw(self.save_action))
         tab_order(tw(self.save_action), tw(self.view_info_action))
         tab_order(tw(self.view_info_action), tw(self.remove_action))
         tab_order(tw(self.remove_action), tw(self.cd_lookup_action))
