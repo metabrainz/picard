@@ -664,7 +664,7 @@ class MainWindow(QtGui.QMainWindow):
         tab_order(tw(self.remove_action), tw(self.cd_lookup_action))
         tab_order(tw(self.cd_lookup_action), tw(self.submit_acoustid_action))
         tab_order(tw(self.submit_acoustid_action), tw(self.play_file_action))
-        tab_order(tw(self.play_file_action), search_combo)
+        tab_order(tw(self.play_file_action), self.search_combo)
         tab_order(self.search_combo, self.search_edit)
         tab_order(self.search_edit, self.search_button)
         # panels
