@@ -26,7 +26,7 @@ from picard.album import Album
 from picard.coverart.image import CoverArtImage, CoverArtImageError
 from picard.track import Track
 from picard.file import File
-from picard.util import encode_filename, imageinfo, get_file_path
+from picard.util import encode_filename, imageinfo
 from picard.util.lrucache import LRUCache
 from picard.const import MAX_COVERS_TO_STACK
 
