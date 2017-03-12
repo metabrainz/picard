@@ -113,3 +113,6 @@ PLUGINS_API = {
 
 # Default query limit
 QUERY_LIMIT = 25
+
+# Default insignificant difference in file length
+MAX_INSIGNIFICANT_LENGTH_DIFFERENCE = 2000

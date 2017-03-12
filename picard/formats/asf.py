@@ -240,3 +240,8 @@ class ASFFile(File):
             return self.__TRANS[name]
         else:
             return None
+
+    def _load_preserved_config(self, file_config):
+        # Adding present config to prevent unecessary saving
+        related_settings = ['rating_steps']
+        return self._set_config(file_config, related_settings, images_supported=True)

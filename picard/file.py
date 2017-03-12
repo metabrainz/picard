@@ -49,7 +49,7 @@ from picard.util.textencoding import (
 )
 from picard.util.filenaming import make_short_filename
 from picard.util.tags import PRESERVED_TAGS
-from picard.const import QUERY_LIMIT
+from picard.const import QUERY_LIMIT, MAX_INSIGNIFICANT_LENGTH_DIFFERENCE
 
 
 class File(QtCore.QObject, Item):
@@ -88,6 +88,7 @@ class File(QtCore.QObject, Item):
 
         self.lookup_task = None
         self.item = None
+        self.tag_config = {}
 
     def __repr__(self):
         return '<File %r>' % self.base_filename
@@ -164,6 +165,52 @@ class File(QtCore.QObject, Item):
         """Load metadata from the file."""
         raise NotImplementedError
 
+    def _load_preserved_config(self, file_config):
+        """Preserve current tag related config to metadata and returns True.
+        Returns False if no related configs"""
+        raise False
+
+    def _set_config(self, file_config, related_settings=[], images_supported=False):
+        if images_supported:
+            related_settings.extend(['save_images_to_tags', 'embed_only_one_front_image'])
+        for name in related_settings:
+            file_config[name] = config.setting[name]
+        if related_settings:
+            return True
+        else:
+            return False
+
+    def _metadata_unchanged(self):
+        if config.setting['clear_existing_tags']:
+            return False
+        new_metadata = self.new_metadata
+        orig_metadata = self.orig_metadata
+        tags = set(new_metadata.keys() + orig_metadata.keys())
+        if not self.tag_config:
+            if self._load_preserved_config(self.tag_config):
+                # Return False if tag_config has no keys
+                # and file has tag related config settings i.e.
+                # it is loaded for the first time
+                return False
+        same_config = True
+        for name in self.tag_config.keys():
+            if self.tag_config[name] != config.setting[name]:
+                self.tag_config[name] = config.setting[name]
+                same_config = False
+        if not same_config:
+            return False
+        for name in filter(lambda x: (not x.startswith("~")
+                                      or x.startswith("~id3")
+                                      or x == "~rating")
+                                    and self.supports_tag(x), tags):
+            new_values = new_metadata.getall(name)
+            orig_values = orig_metadata.getall(name)
+            if new_values != orig_values:
+                return False
+        if abs(float(orig_metadata.length) - float(new_metadata.length)) > MAX_INSIGNIFICANT_LENGTH_DIFFERENCE:
+            return False
+        return True
+
     def save(self):
         self.set_pending()
         metadata = Metadata()
@@ -185,14 +232,17 @@ class File(QtCore.QObject, Item):
             return None
         new_filename = old_filename
         if not config.setting["dont_write_tags"]:
-            encoded_old_filename = encode_filename(old_filename)
-            info = os.stat(encoded_old_filename)
-            self._save(old_filename, metadata)
-            if config.setting["preserve_timestamps"]:
-                try:
-                    os.utime(encoded_old_filename, (info.st_atime, info.st_mtime))
-                except OSError:
-                    log.warning("Couldn't preserve timestamp for %r", old_filename)
+            if config.setting['dont_save_on_unchanged'] and self._metadata_unchanged():
+                log.debug("No changes in tags detected for %r Skipping..." % (old_filename))
+            else:
+                encoded_old_filename = encode_filename(old_filename)
+                info = os.stat(encoded_old_filename)
+                self._save(old_filename, metadata)
+                if config.setting["preserve_timestamps"]:
+                    try:
+                        os.utime(encoded_old_filename, (info.st_atime, info.st_mtime))
+                    except OSError:
+                        log.warning("Couldn't preserve timestamp for %r", old_filename)
         # Rename files
         if config.setting["rename_files"] or config.setting["move_files"]:
             new_filename = self._rename(old_filename, metadata)

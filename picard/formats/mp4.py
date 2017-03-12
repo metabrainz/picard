@@ -257,3 +257,7 @@ class MP4File(File):
         super(MP4File, self)._info(metadata, file)
         if hasattr(file.info, 'codec_description') and file.info.codec_description:
             metadata['~format'] = "%s (%s)" % (metadata['~format'], file.info.codec_description)
+
+    def _load_preserved_config(self, file_config):
+        # Adding present config to prevent unecessary saving
+        return self._set_config(file_config, images_supported=True)

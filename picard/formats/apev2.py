@@ -207,6 +207,10 @@ class APEv2File(File):
     def supports_tag(self, name):
         return bool(name)
 
+    def _load_preserved_config(self, file_config):
+        # Adding present config to prevent unecessary saving
+        return self._set_config(file_config, images_supported=True)
+
 
 class MusepackFile(APEv2File):
 

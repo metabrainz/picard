@@ -500,6 +500,16 @@ class ID3File(File):
         except mutagen.id3.ID3NoHeaderError:
             return compatid3.CompatID3()
 
+    def _load_preserved_config(self, file_config):
+        # Adding present config to prevent unecessary saving
+        related_settings = ['rating_steps', 'rating_user_email', 'id3v2_encoding',
+                            'id3v23_join_with', 'write_id3v23']
+        if self._IsMP3:
+            related_settings.append('remove_ape_from_mp3')
+        if self._File != mutagen.aiff.AIFF:
+            related_settings.append('write_id3v1')
+        return self._set_config(file_config, related_settings, images_supported=True)
+
     def _save_tags(self, tags, filename):
         if config.setting['write_id3v1']:
             v1 = 2
