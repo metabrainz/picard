@@ -27,8 +27,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2017-01-16 20:46+0000\n"
-"Last-Translator: Laurent Monin <i18n@norz.org>\n"
+"PO-Revision-Date: 2017-03-08 06:20+0000\n"
+"Last-Translator: Abby Zla <abby230492@gmail.com>\n"
 "Language-Team: Spanish (http://www.transifex.com/musicbrainz/musicbrainz/language/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -230,7 +230,7 @@ msgid ""
 "A place whose main purpose is to host outdoor sport events, typically "
 "consisting of a pitch surrounded by a structure for spectators with no roof,"
 " or a roof which can be retracted."
-msgstr ""
+msgstr "Un lugar cuyo principal propósito es acoger eventos deportivos al aire libre, consiste típicamente en un campo rodeado por una estructura para los espectadores sin techo, o un techo que puede ser replegado."
 
 #: DB:work_type/description:28
 msgctxt "work_type"
@@ -513,7 +513,7 @@ msgctxt "event_type"
 msgid ""
 "An individual concert by a single artist or collaboration, often with "
 "supporting artists who perform before the main act."
-msgstr ""
+msgstr "Un concierto individual por un solo artista o en colaboración, frecuentemente con artistas de apoyo que se presentan antes del acto principal."
 
 #: DB:work_type/description:10
 msgctxt "work_type"
@@ -546,7 +546,7 @@ msgid ""
 "An unofficial/underground release that was not sanctioned by the artist "
 "and/or the record company. This includes unofficial live recordings and "
 "pirated releases."
-msgstr ""
+msgstr "Una edición no oficial/ oculta que no fue autorizada por el artista y/o la compañía discográfica. Esto incluye grabaciones no oficiales o ediciones piratas."
 
 #: DB:work_type/description:20
 msgctxt "work_type"
