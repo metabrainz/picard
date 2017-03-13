@@ -179,9 +179,7 @@ class CoverArtBox(QtGui.QGroupBox):
         self.orig_cover_art_label = QtGui.QLabel('')
         self.orig_cover_art = CoverArtThumbnail(False, False, parent)
         self.orig_cover_art_label.setAlignment(QtCore.Qt.AlignTop | QtCore.Qt.AlignHCenter)
-        self.orig_cover_art.setHidden(True)
         self.show_details_button = QtGui.QPushButton(_(u'Show more details'), self)
-        self.show_details_button.setHidden(True)
         self.layout.addWidget(self.cover_art_label)
         self.layout.addWidget(self.cover_art)
         self.layout.addWidget(self.orig_cover_art_label)
@@ -189,12 +187,25 @@ class CoverArtBox(QtGui.QGroupBox):
         self.layout.addWidget(self.show_details_button)
         self.layout.addSpacerItem(spacerItem)
         self.setLayout(self.layout)
+        self.orig_cover_art.setHidden(True)
+        self.show_details_button.setHidden(True)
         self.show_details_button.clicked.connect(self.show_cover_art_info)
 
     def show_cover_art_info(self):
         self.parent.view_info(default_tab=1)
 
-    def show(self):
+    def update_display(self, force=False):
+        if self.isHidden():
+            if not force:
+                # If the Cover art box is hidden and selection is updated
+                # we should not update the display of child widgets
+                return
+            else:
+                # Coverart box display was toggled.
+                # Update the pixmaps and display them
+                self.cover_art.show()
+                self.orig_cover_art.show()
+
         # We want to show the 2 coverarts only if they are different
         # and orig_cover_art data is set and not the default cd shadow
         if self.orig_cover_art.data is None or self.cover_art == self.orig_cover_art:
@@ -207,6 +218,9 @@ class CoverArtBox(QtGui.QGroupBox):
             self.orig_cover_art.setHidden(False)
             self.cover_art_label.setText(_(u'New Cover Art'))
             self.orig_cover_art_label.setText(_(u'Original Cover Art'))
+
+    def show(self):
+        self.update_display(True)
         super(CoverArtBox, self).show()
 
     def set_metadata(self, metadata, orig_metadata, item):
@@ -216,7 +230,7 @@ class CoverArtBox(QtGui.QGroupBox):
             self.cover_art.set_metadata(metadata)
         self.orig_cover_art.set_metadata(orig_metadata)
         self.item = item
-        self.show()
+        self.update_display()
 
     def fetch_remote_image(self, url, fallback_data=None):
         if self.item is None:
