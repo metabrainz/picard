@@ -274,6 +274,7 @@ class InterfaceOptionsPage(OptionsPage):
             widget = widget.parent()
         # Call the main window's create toolbar method
         widget.create_action_toolbar()
+        widget.set_tab_order()
 
 
 class ToolbarListItem(QtGui.QListWidgetItem):

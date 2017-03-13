@@ -647,27 +647,30 @@ class MainWindow(QtGui.QMainWindow):
         hbox.addWidget(self.search_button)
         toolbar.addWidget(search_panel)
 
-
     def set_tab_order(self):
         tab_order = self.setTabOrder
         tw = self.toolbar.widgetForAction
+        prev_action = None
+        current_action = None
+        # Setting toolbar widget tab-orders for accessibility
+        for action in config.setting['toolbar_layout']:
+            if action != 'separator':
+                try:
+                    current_action = tw(getattr(self, action))
+                except AttributeError:
+                    # No need to log warnings since we have already
+                    # done it once in create_toolbar
+                    pass
 
-        # toolbar
-        tab_order(tw(self.add_directory_action), tw(self.add_files_action))
-        tab_order(tw(self.add_files_action), tw(self.play_file_action))
-        tab_order(tw(self.play_file_action), tw(self.save_action))
-        tab_order(tw(self.save_action), tw(self.submit_acoustid_action))
-        tab_order(tw(self.submit_acoustid_action), tw(self.cd_lookup_action))
-        tab_order(tw(self.cd_lookup_action), tw(self.cluster_action))
-        tab_order(tw(self.cluster_action), tw(self.autotag_action))
-        tab_order(tw(self.autotag_action), tw(self.analyze_action))
-        tab_order(tw(self.analyze_action), tw(self.view_info_action))
-        tab_order(tw(self.view_info_action), tw(self.remove_action))
-        tab_order(tw(self.remove_action), tw(self.browser_lookup_action))
-        tab_order(tw(self.browser_lookup_action), self.search_combo)
+            if prev_action is not None and prev_action != current_action:
+                tab_order(prev_action, current_action)
+
+            prev_action = current_action
+
+        tab_order(prev_action, self.search_combo)
         tab_order(self.search_combo, self.search_edit)
         tab_order(self.search_edit, self.search_button)
-        # panels
+        # Panels
         tab_order(self.search_button, self.file_browser)
         tab_order(self.file_browser, self.panel.views[0])
         tab_order(self.panel.views[0], self.panel.views[1])
