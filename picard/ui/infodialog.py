@@ -24,6 +24,7 @@ from PyQt4 import QtGui, QtCore
 from picard import log
 from picard.file import File
 from picard.track import Track
+from picard.album import Album
 from picard.coverart.image import CoverArtImageIOError
 from picard.util import format_time, encode_filename, bytes2human, webbrowser2, union_sorted_lists
 from picard.ui import PicardDialog
@@ -100,10 +101,14 @@ class InfoDialog(PicardDialog):
         self.obj = obj
         self.ui = Ui_InfoDialog()
         self.display_existing_artwork = False
-        if isinstance(obj, File) and isinstance(obj.parent, Track) or \
-                isinstance(obj, Track):
+        if (isinstance(obj, File)
+            and isinstance(obj.parent, Track)
+            or isinstance(obj, Track)):
             # Display existing artwork only if selected object is track object
             # or linked to a track object
+            if getattr(obj, 'orig_metadata', None) is not None:
+                self.display_existing_artwork = True
+        elif isinstance(obj, Album) and obj.get_num_total_files() > 0:
             self.display_existing_artwork = True
 
         self.ui.setupUi(self)
@@ -236,8 +241,8 @@ class FileInfoDialog(InfoDialog):
         InfoDialog.__init__(self, file, parent)
         self.setWindowTitle(_("Info") + " - " + file.base_filename)
 
-    def _display_info_tab(self):
-        file = self.obj
+    @staticmethod
+    def format_file_info(file):
         info = []
         info.append((_('Filename:'), file.filename))
         if '~format' in file.orig_metadata:
@@ -265,9 +270,13 @@ class FileInfoDialog(InfoDialog):
             else:
                 ch = str(ch)
             info.append((_('Channels:'), ch))
-        text = '<br/>'.join(map(lambda i: '<b>%s</b><br/>%s' %
+        return '<br/>'.join(map(lambda i: '<b>%s</b><br/>%s' %
                                 (cgi.escape(i[0]),
                                  cgi.escape(i[1])), info))
+
+    def _display_info_tab(self):
+        file = self.obj
+        text = FileInfoDialog.format_file_info(file)
         self.ui.info.setText(text)
 
 
@@ -295,6 +304,29 @@ class AlbumInfoDialog(InfoDialog):
         else:
             tabWidget.setTabText(tab_index, _("&Info"))
             self.tab_hide(tab)
+
+class TrackInfoDialog(FileInfoDialog):
+
+    def __init__(self, track, parent=None):
+        InfoDialog.__init__(self, track, parent)
+        self.setWindowTitle(_("Track Info"))
+
+    def _display_info_tab(self):
+        track = self.obj
+        tab = self.ui.info_tab
+        tabWidget = self.ui.tabWidget
+        tab_index = tabWidget.indexOf(tab)
+        if track.num_linked_files == 0:
+            tabWidget.setTabText(tab_index, _("&Info"))
+            self.tab_hide(tab)
+            return
+
+        tabWidget.setTabText(tab_index, _("&Info"))
+        text = ungettext("%i file in this track", "%i files in this track",
+                         track.num_linked_files) % track.num_linked_files
+        info_files = [FileInfoDialog.format_file_info(file) for file in track.linked_files]
+        text += '<hr />' + '<hr />'.join(info_files)
+        self.ui.info.setText(text)
 
 
 class ClusterInfoDialog(InfoDialog):

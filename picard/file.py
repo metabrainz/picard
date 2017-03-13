@@ -54,6 +54,8 @@ from picard.const import QUERY_LIMIT
 
 class File(QtCore.QObject, Item):
 
+    metadata_images_changed = QtCore.pyqtSignal()
+
     UNDEFINED = -1
     PENDING = 0
     NORMAL = 1
@@ -156,6 +158,7 @@ class File(QtCore.QObject, Item):
 
         if acoustid:
             self.metadata["acoustid_id"] = acoustid
+        self.metadata_images_changed.emit()
 
     def has_error(self):
         return self.state == File.ERROR

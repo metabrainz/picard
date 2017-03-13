@@ -27,6 +27,8 @@ from picard.coverart.image import CoverArtImage, CoverArtImageError
 from picard.track import Track
 from picard.file import File
 from picard.util import encode_filename, imageinfo
+from picard.util.lrucache import LRUCache
+from picard.const import MAX_COVERS_TO_STACK
 
 if sys.platform == 'darwin':
     try:
@@ -38,7 +40,6 @@ if sys.platform == 'darwin':
 
 
 class ActiveLabel(QtGui.QLabel):
-
     """Clickable QLabel."""
 
     clicked = QtCore.pyqtSignal()
@@ -83,7 +84,7 @@ class ActiveLabel(QtGui.QLabel):
 
 class CoverArtThumbnail(ActiveLabel):
 
-    def __init__(self, active=False, drops=False, *args, **kwargs):
+    def __init__(self, active=False, drops=False, pixmap_cache=None, *args, **kwargs):
         super(CoverArtThumbnail, self).__init__(active, drops, *args, **kwargs)
         self.data = None
         self.shadow = QtGui.QPixmap(":/images/CoverArtShadow.png")
@@ -93,6 +94,7 @@ class CoverArtThumbnail(ActiveLabel):
         self.clicked.connect(self.open_release_page)
         self.image_dropped.connect(self.fetch_remote_image)
         self.related_images = list()
+        self._pixmap_cache = pixmap_cache
 
     def __eq__(self, other):
         if len(self.related_images) or len(other.related_images):
@@ -103,7 +105,20 @@ class CoverArtThumbnail(ActiveLabel):
     def show(self):
         self.set_data(self.data, True)
 
-    def set_data(self, data, force=False, pixmap=None):
+    def decorate_cover(self, pixmap):
+        offx, offy, w, h = (1, 1, 121, 121)
+        cover = QtGui.QPixmap(self.shadow)
+        pixmap = pixmap.scaled(w, h, QtCore.Qt.KeepAspectRatio, QtCore.Qt.SmoothTransformation)
+        painter = QtGui.QPainter(cover)
+        bgcolor = QtGui.QColor.fromRgb(0, 0, 0, 128)
+        painter.fillRect(QtCore.QRectF(offx, offy, w, h), bgcolor)
+        x = offx + (w - pixmap.width()) / 2
+        y = offy + (h - pixmap.height()) / 2
+        painter.drawPixmap(x, y, pixmap)
+        painter.end()
+        return cover
+
+    def set_data(self, data, force=False, has_common_images=True):
         if not force and self.data == data:
             return
 
@@ -111,43 +126,98 @@ class CoverArtThumbnail(ActiveLabel):
         if not force and self.parent().isHidden():
             return
 
-        cover = self.shadow
-        if self.data:
-            if pixmap is None:
+        if not self.data:
+            self.setPixmap(self.shadow)
+            return
+
+        w, h, displacements = (128, 128, 20)
+        key = hash(tuple(sorted(self.data)) + (has_common_images,))
+        try:
+            pixmap = self._pixmap_cache[key]
+        except KeyError:
+            if len(self.data) == 1:
                 pixmap = QtGui.QPixmap()
-                pixmap.loadFromData(self.data.data)
-            if not pixmap.isNull():
-                offx, offy, w, h = (1, 1, 121, 121)
-                cover = QtGui.QPixmap(self.shadow)
-                pixmap = pixmap.scaled(w, h, QtCore.Qt.KeepAspectRatio, QtCore.Qt.SmoothTransformation)
-                painter = QtGui.QPainter(cover)
-                bgcolor = QtGui.QColor.fromRgb(0, 0, 0, 128)
-                painter.fillRect(QtCore.QRectF(offx, offy, w, h), bgcolor)
-                x = offx + (w - pixmap.width()) / 2
-                y = offy + (h - pixmap.height()) / 2
-                painter.drawPixmap(x, y, pixmap)
+                pixmap.loadFromData(self.data[0].data)
+                pixmap = self.decorate_cover(pixmap)
+            else:
+                limited = len(self.data) > MAX_COVERS_TO_STACK
+                if limited:
+                    data_to_paint = data[:MAX_COVERS_TO_STACK - 1]
+                    offset = displacements * len(data_to_paint)
+                else:
+                    data_to_paint = data
+                    offset = displacements * (len(data_to_paint) - 1)
+                stack_width, stack_height = (w + offset, h + offset)
+                pixmap = QtGui.QPixmap(stack_width, stack_height)
+                bgcolor = self.palette().color(QtGui.QPalette.Window)
+                painter = QtGui.QPainter(pixmap)
+                painter.fillRect(QtCore.QRectF(0, 0, stack_width, stack_height), bgcolor)
+                cx = stack_width - w / 2
+                cy = h / 2
+                if limited:
+                    x, y = (cx - self.shadow.width() / 2, cy - self.shadow.height() / 2)
+                    for i in range(3):
+                        painter.drawPixmap(x, y, self.shadow)
+                        x -= displacements / 3
+                        y += displacements / 3
+                    cx -= displacements
+                    cy += displacements
+                else:
+                    cx = stack_width - w / 2
+                    cy = h / 2
+                for image in reversed(data_to_paint):
+                    if isinstance(image, QtGui.QPixmap):
+                        thumb = image
+                    else:
+                        thumb = QtGui.QPixmap()
+                        thumb.loadFromData(image.data)
+                    thumb = self.decorate_cover(thumb)
+                    x, y = (cx - thumb.width() / 2, cy - thumb.height() / 2)
+                    painter.drawPixmap(x, y, thumb)
+                    cx -= displacements
+                    cy += displacements
+                if not has_common_images:
+                    color = QtGui.QColor("darkgoldenrod")
+                    border_length = 10
+                    for k in range(border_length):
+                        color.setAlpha(255 - k * 255 / border_length)
+                        painter.setPen(color)
+                        painter.drawLine(x, y - k - 1, x + 121 + k + 1, y - k - 1)
+                        painter.drawLine(x + 121 + k + 2, y - 1 - k, x + 121 + k + 2, y + 121 + 4)
+                    for k in range(5):
+                        bgcolor.setAlpha(80 + k * 255 / 7)
+                        painter.setPen(bgcolor)
+                        painter.drawLine(x + 121 + 2, y + 121 + 2 + k, x + 121 + border_length + 2, y + 121 + 2 + k)
                 painter.end()
-        self.setPixmap(cover)
+                pixmap = pixmap.scaled(w, h, QtCore.Qt.KeepAspectRatio, QtCore.Qt.SmoothTransformation)
+            self._pixmap_cache[key] = pixmap
+
+        self.setPixmap(pixmap)
 
     def set_metadata(self, metadata):
         data = None
         self.related_images = []
         if metadata and metadata.images:
             self.related_images = metadata.images
-            for image in metadata.images:
-                if image.is_front_image():
-                    data = image
-                    break
-            else:
+            data = [image for image in metadata.images if image.is_front_image()]
+            if not data:
                 # There's no front image, choose the first one available
-                data = metadata.images[0]
-        self.set_data(data)
+                data = [metadata.images[0]]
+        has_common_images = getattr(metadata, 'has_common_images', True)
+        self.set_data(data, has_common_images=has_common_images)
         release = None
         if metadata:
             release = metadata.get("musicbrainz_albumid", None)
         if release:
             self.setActive(True)
-            self.setToolTip(_(u"View release on MusicBrainz"))
+            text = _(u"View release on MusicBrainz")
+            if hasattr(metadata, 'has_common_images'):
+                if has_common_images:
+                    note = _(u'Common images on all tracks')
+                else:
+                    note = _(u'Tracks contain different images')
+                text += '<br /><i>%s</i>' % note
+            self.setToolTip(text)
         else:
             self.setActive(False)
             self.setToolTip("")
@@ -172,12 +242,13 @@ class CoverArtBox(QtGui.QGroupBox):
         self.setStyleSheet('''QGroupBox{background-color:none;border:1px;}''')
         self.setFlat(True)
         self.item = None
+        self.pixmap_cache = LRUCache(40)
         self.cover_art_label = QtGui.QLabel('')
         self.cover_art_label.setAlignment(QtCore.Qt.AlignTop | QtCore.Qt.AlignHCenter)
-        self.cover_art = CoverArtThumbnail(False, True, parent)
+        self.cover_art = CoverArtThumbnail(False, True, self.pixmap_cache, parent)
         spacerItem = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
         self.orig_cover_art_label = QtGui.QLabel('')
-        self.orig_cover_art = CoverArtThumbnail(False, False, parent)
+        self.orig_cover_art = CoverArtThumbnail(False, False, self.pixmap_cache, parent)
         self.orig_cover_art_label.setAlignment(QtCore.Qt.AlignTop | QtCore.Qt.AlignHCenter)
         self.show_details_button = QtGui.QPushButton(_(u'Show more details'), self)
         self.layout.addWidget(self.cover_art_label)
@@ -209,7 +280,7 @@ class CoverArtBox(QtGui.QGroupBox):
         # We want to show the 2 coverarts only if they are different
         # and orig_cover_art data is set and not the default cd shadow
         if self.orig_cover_art.data is None or self.cover_art == self.orig_cover_art:
-            self.show_details_button.setHidden(len(self.cover_art.related_images) <= 1)
+            self.show_details_button.setHidden(len(self.cover_art.related_images) == 0)
             self.orig_cover_art.setHidden(True)
             self.cover_art_label.setText('')
             self.orig_cover_art_label.setText('')
@@ -290,6 +361,7 @@ class CoverArtBox(QtGui.QGroupBox):
         try:
             coverartimage = CoverArtImage(
                 url=url.toString(),
+                types=[u'front'],
                 data=data
             )
         except CoverArtImageError as e:
@@ -297,21 +369,29 @@ class CoverArtBox(QtGui.QGroupBox):
             return
         if isinstance(self.item, Album):
             album = self.item
-            album.metadata.append_image(coverartimage)
+            album.enable_update_metadata_images(False)
             for track in album.tracks:
-                track.metadata.append_image(coverartimage)
+                track.metadata.set_front_image(coverartimage)
+                track.metadata_images_changed.emit()
             for file in album.iterfiles():
-                file.metadata.append_image(coverartimage)
+                file.metadata.set_front_image(coverartimage)
+                file.metadata_images_changed.emit()
                 file.update()
+            album.enable_update_metadata_images(True)
         elif isinstance(self.item, Track):
             track = self.item
-            track.metadata.append_image(coverartimage)
+            track.album.enable_update_metadata_images(False)
+            track.metadata.set_front_image(coverartimage)
+            track.metadata_images_changed.emit()
             for file in track.iterfiles():
-                file.metadata.append_image(coverartimage)
+                file.metadata.set_front_image(coverartimage)
+                file.metadata_images_changed.emit()
                 file.update()
+            track.album.enable_update_metadata_images(True)
         elif isinstance(self.item, File):
             file = self.item
-            file.metadata.append_image(coverartimage)
+            file.metadata.set_front_image(coverartimage)
+            file.metadata_images_changed.emit()
             file.update()
         self.cover_art.set_metadata(self.item.metadata)
         self.show()

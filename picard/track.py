@@ -19,6 +19,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from functools import partial
+from PyQt4 import QtCore
 from picard import config, log
 from picard.metadata import Metadata, run_track_metadata_processors
 from picard.dataobj import DataObject
@@ -43,6 +44,8 @@ class TrackArtist(DataObject):
 
 
 class Track(DataObject, Item):
+
+    metadata_images_changed = QtCore.pyqtSignal()
 
     def __init__(self, id, album=None):
         DataObject.__init__(self, id)
@@ -110,7 +113,7 @@ class Track(DataObject, Item):
         return True
 
     def can_view_info(self):
-        return self.num_linked_files == 1
+        return self.num_linked_files == 1 or self.metadata.images
 
     def column(self, column):
         m = self.metadata

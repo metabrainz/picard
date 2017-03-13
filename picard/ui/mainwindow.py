@@ -33,7 +33,7 @@ from picard.ui.metadatabox import MetadataBox
 from picard.ui.filebrowser import FileBrowser
 from picard.ui.tagsfromfilenames import TagsFromFileNamesDialog
 from picard.ui.options.dialog import OptionsDialog
-from picard.ui.infodialog import FileInfoDialog, AlbumInfoDialog, ClusterInfoDialog
+from picard.ui.infodialog import FileInfoDialog, AlbumInfoDialog, TrackInfoDialog, ClusterInfoDialog
 from picard.ui.infostatus import InfoStatus
 from picard.ui.passworddialog import PasswordDialog, ProxyDialog
 from picard.ui.logview import LogView, HistoryView
@@ -844,6 +844,9 @@ class MainWindow(QtGui.QMainWindow):
         elif isinstance(self.selected_objects[0], Cluster):
             cluster = self.selected_objects[0]
             dialog = ClusterInfoDialog(cluster, self)
+        elif isinstance(self.selected_objects[0], Track):
+            track = self.selected_objects[0]
+            dialog = TrackInfoDialog(track, self)
         else:
             file = self.tagger.get_files_from_objects(self.selected_objects)[0]
             dialog = FileInfoDialog(file, self)
@@ -955,6 +958,9 @@ class MainWindow(QtGui.QMainWindow):
                         }
                     self.set_statusbar_message(msg, mparms, echo=None,
                                                history=None)
+            elif isinstance(obj, Album):
+                metadata = obj.metadata
+                orig_metadata = obj.orig_metadata
             elif obj.can_edit_tags():
                 metadata = obj.metadata
 

@@ -58,6 +58,7 @@ class Album(DataObject, Item):
     def __init__(self, id, discid=None):
         DataObject.__init__(self, id)
         self.metadata = Metadata()
+        self.orig_metadata = Metadata()
         self.tracks = []
         self.loaded = False
         self.load_task = None
@@ -71,6 +72,7 @@ class Album(DataObject, Item):
         self.errors = []
         self.status = None
         self._album_artists = []
+        self.update_metadata_images_enabled = True
 
     def __repr__(self):
         return '<Album %s %r>' % (self.id, self.metadata[u"album"])
@@ -82,6 +84,11 @@ class Album(DataObject, Item):
         if not save:
             for file in self.unmatched_files.iterfiles():
                 yield file
+
+    def enable_update_metadata_images(self, enabled):
+        self.update_metadata_images_enabled = enabled
+        if enabled:
+            self.update_metadata_images()
 
     def append_album_artist(self, id):
         """Append artist id to the list of album artists
@@ -254,6 +261,7 @@ class Album(DataObject, Item):
             self._tracks_loaded = True
 
         if not self._requests:
+            self.enable_update_metadata_images(False)
             # Prepare parser for user's script
             if config.setting["enable_tagger_scripts"]:
                 for s_pos, s_name, s_enabled, s_text in config.setting["list_of_scripts"]:
@@ -275,6 +283,7 @@ class Album(DataObject, Item):
                         self._new_metadata.strip_whitespace()
 
             for track in self.tracks:
+                track.metadata_images_changed.connect(self.update_metadata_images)
                 for file in list(track.linked_files):
                     file.move(self.unmatched_files)
             self.metadata = self._new_metadata
@@ -285,6 +294,7 @@ class Album(DataObject, Item):
             self.status = None
             self.match_files(self.unmatched_files.files)
             self.update()
+            self.enable_update_metadata_images(True)
             self.tagger.window.set_statusbar_message(
                 N_('Album %(id)s loaded: %(artist)s - %(album)s'),
                 {
@@ -378,14 +388,19 @@ class Album(DataObject, Item):
     def update(self, update_tracks=True):
         if self.item:
             self.item.update(update_tracks)
+        self.update_metadata_images()
 
     def _add_file(self, track, file):
         self._files += 1
         self.update(update_tracks=False)
+        file.metadata_images_changed.connect(self.update_metadata_images)
+        self.update_metadata_images()
 
     def _remove_file(self, track, file):
         self._files -= 1
         self.update(update_tracks=False)
+        file.metadata_images_changed.disconnect(self.update_metadata_images)
+        self.update_metadata_images()
 
     def match_files(self, files, use_recordingid=True):
         """Match files to tracks on this album, based on metadata similarity or recordingid."""
@@ -551,6 +566,52 @@ class Album(DataObject, Item):
             self.id = mbid
             self.tagger.albums[mbid] = self
             self.load(priority=True, refresh=True)
+
+    def update_metadata_images(self):
+        if not self.update_metadata_images_enabled:
+            return
+
+        class State:
+            new_images = []
+            orig_images = []
+            has_common_new_images = True
+            has_common_orig_images = True
+            first_new_obj = True
+            first_orig_obj = True
+
+        state = State()
+
+        def process_images(state, obj):
+            # Check new images
+            if state.first_new_obj:
+                state.new_images = obj.metadata.images[:]
+                state.first_new_obj = False
+            else:
+                if state.new_images != obj.metadata.images:
+                    state.has_common_new_images = False
+                    state.new_images.extend([image for image in obj.metadata.images if image not in state.new_images])
+            if isinstance(obj, Track):
+                return
+            # Check orig images, but not for Tracks (which don't have orig_metadata)
+            if state.first_orig_obj:
+                state.orig_images = obj.orig_metadata.images[:]
+                state.first_orig_obj = False
+            else:
+                if state.orig_images != obj.orig_metadata.images:
+                    state.has_common_orig_images = False
+                    state.orig_images.extend([image for image in obj.orig_metadata.images if image not in state.orig_images])
+
+        for track in self.tracks:
+            process_images(state, track)
+            for file in list(track.linked_files):
+                process_images(state, file)
+        for file in list(self.unmatched_files.files):
+            process_images(state, file)
+
+        self.metadata.images = state.new_images
+        self.metadata.has_common_images = state.has_common_new_images
+        self.orig_metadata.images = state.orig_images
+        self.orig_metadata.has_common_images = state.has_common_orig_images
 
 
 class NatAlbum(Album):
