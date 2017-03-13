@@ -1,4 +1,4 @@
-Version 1.4.1 - 2017-03-14
+Version 1.4.1 - ???
   * Bugfix: Album shown matched even if extra unmatched files (PICARD-953)
   * Bugfix: Removing album with saves pending does not remove pending saves (PICARD-972)
   * Bugfix: Pending log messages not flushed to stderr on quit (PICARD-973)
