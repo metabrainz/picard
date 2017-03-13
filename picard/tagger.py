@@ -383,6 +383,9 @@ class Tagger(QtGui.QApplication):
                     partial(self._open_files_finished, target),
                     priority=2,
                     thread_pool=self.load_thread_pool)
+            # Queuing threads for a large number of directories can make UI unresponsive
+            # Allow UI to process events after each folder to keep it responsive
+            QtCore.QCoreApplication.processEvents()
 
     def _open_files(self, filenames):
         new_files = {}
@@ -392,7 +395,9 @@ class Tagger(QtGui.QApplication):
                 file = open_file(filename)
                 if file:
                     new_files[filename] = file
-                # Allow UI to process events to keep it responsive
+                # This function runs in a thread.
+                # Opening a large number of files in a single directory can make UI unresponsive
+                # Allow UI to process events after each file to keep it responsive
                 QtCore.QCoreApplication.processEvents()
         return new_files
 
@@ -409,6 +414,9 @@ class Tagger(QtGui.QApplication):
                 target = None
             for file in new_files:
                 file.load(partial(self._file_loaded, target=target))
+                # Queuing threads for a large number of files in a directory can make UI unresponsive
+                # Allow UI to process events after each file to keep it responsive
+                QtCore.QCoreApplication.processEvents()
 
     def _add_directory_method(self):
         if config.setting['recursively_add_files']:
@@ -438,7 +446,6 @@ class Tagger(QtGui.QApplication):
 
         add_directory = self._add_directory_method()
         self._add_files(list(chain.from_iterable([add_directory(d) for d in dir_list])))
-
 
     def add_directory(self, path):
         add_directory = self._add_directory_method()
@@ -578,6 +585,9 @@ class Tagger(QtGui.QApplication):
         files = self.get_files_from_objects(objects, save=True)
         for file in files:
             file.save()
+            # Queuing threads for a large number of files can make UI unresponsive
+            # Allow UI to process events after each file to keep it responsive
+            QtCore.QCoreApplication.processEvents()
 
     def load_album(self, id, discid=None):
         id = self.mbid_redirects.get(id, id)
