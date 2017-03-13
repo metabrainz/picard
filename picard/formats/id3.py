@@ -175,6 +175,13 @@ class ID3File(File):
         'TPOS': re.compile(r'^(?P<discnumber>\d+)(?:/(?P<totaldiscs>\d+))?$')
     }
 
+    def build_TXXX(self, encoding, desc, values):
+        """Construct and return a TXXX frame."""
+        # This is here so that plugins can customize the behavior of TXXX
+        # frames in particular via subclassing.
+        # discussion: https://github.com/metabrainz/picard/pull/634
+        return id3.TXXX(encoding=encoding, desc=desc, text=values)
+
     def _load(self, filename):
         log.debug("Loading file %r", filename)
         file = self._get_file(encode_filename(filename))
@@ -365,7 +372,7 @@ class ID3File(File):
                     if frameid == 'WCOP':
                         # Only add WCOP if there is only one license URL, otherwise use TXXX:LICENSE
                         if len(values) > 1 or not valid_urls:
-                            tags.add(id3.TXXX(encoding=encoding, desc=self.__rtranslate_freetext[name], text=values))
+                            tags.add(self.build_TXXX(encoding, self.__rtranslate_freetext[name], values))
                         else:
                             tags.add(id3.WCOP(url=values[0]))
                     elif frameid == 'WOAR' and valid_urls:
@@ -374,7 +381,7 @@ class ID3File(File):
                 elif frameid.startswith('T'):
                     if config.setting['write_id3v23']:
                         if frameid == 'TMOO':
-                            tags.add(id3.TXXX(encoding=encoding, desc='mood', text=values))
+                            tags.add(self.build_TXXX(encoding, 'mood', values))
                     # No need to care about the TMOO tag being added again as it is
                     # automatically deleted by Mutagen if id2v23 is selected
                     tags.add(getattr(id3, frameid)(encoding=encoding, text=values))
@@ -385,18 +392,18 @@ class ID3File(File):
                     elif frameid == 'TSO2':
                         tags.delall('TXXX:ALBUMARTISTSORT')
             elif name in self.__rtranslate_freetext:
-                tags.add(id3.TXXX(encoding=encoding, desc=self.__rtranslate_freetext[name], text=values))
+                tags.add(self.build_TXXX(encoding, self.__rtranslate_freetext[name], values))
             elif name.startswith('~id3:'):
                 name = name[5:]
                 if name.startswith('TXXX:'):
-                    tags.add(id3.TXXX(encoding=encoding, desc=name[5:], text=values))
+                    tags.add(self.build_TXXX(encoding, name[5:], values))
                 else:
                     frameclass = getattr(id3, name[:4], None)
                     if frameclass:
                         tags.add(frameclass(encoding=encoding, text=values))
             # don't save private / already stored tags
             elif not name.startswith("~") and name not in self.__other_supported_tags:
-                tags.add(id3.TXXX(encoding=encoding, desc=name, text=values))
+                tags.add(self.build_TXXX(encoding, name, values))
 
         tags.add(tmcl)
         tags.add(tipl)
