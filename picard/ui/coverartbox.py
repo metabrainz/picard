@@ -378,6 +378,7 @@ class CoverArtBox(QtGui.QGroupBox):
                 file.metadata_images_changed.emit()
                 file.update()
             album.enable_update_metadata_images(True)
+            album.update(False)
         elif isinstance(self.item, Track):
             track = self.item
             track.album.enable_update_metadata_images(False)
@@ -388,6 +389,7 @@ class CoverArtBox(QtGui.QGroupBox):
                 file.metadata_images_changed.emit()
                 file.update()
             track.album.enable_update_metadata_images(True)
+            track.album.update(False)
         elif isinstance(self.item, File):
             file = self.item
             file.metadata.set_front_image(coverartimage)

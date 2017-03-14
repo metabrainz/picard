@@ -87,8 +87,6 @@ class Album(DataObject, Item):
 
     def enable_update_metadata_images(self, enabled):
         self.update_metadata_images_enabled = enabled
-        if enabled:
-            self.update_metadata_images()
 
     def append_album_artist(self, id):
         """Append artist id to the list of album artists
@@ -293,8 +291,8 @@ class Album(DataObject, Item):
             self.loaded = True
             self.status = None
             self.match_files(self.unmatched_files.files)
-            self.update()
             self.enable_update_metadata_images(True)
+            self.update()
             self.tagger.window.set_statusbar_message(
                 N_('Album %(id)s loaded: %(artist)s - %(album)s'),
                 {
@@ -386,9 +384,9 @@ class Album(DataObject, Item):
             self.load_task = None
 
     def update(self, update_tracks=True):
+        self.update_metadata_images()
         if self.item:
             self.item.update(update_tracks)
-        self.update_metadata_images()
 
     def _add_file(self, track, file):
         self._files += 1
@@ -534,8 +532,12 @@ class Album(DataObject, Item):
                 unsaved = self.get_num_unsaved_files()
                 if unsaved:
                     text += '; %d*' % (unsaved,)
-                text += ungettext("; %i image", "; %i images",
-                                  len(self.metadata.images)) % len(self.metadata.images)
+                if getattr(self.metadata, 'has_common_images', True):
+                    text += ungettext("; %i image", "; %i images",
+                                      len(self.metadata.images)) % len(self.metadata.images)
+                else:
+                    text += ungettext("; %i image", "; %i different images among tracks",
+                                      len(self.metadata.images)) % len(self.metadata.images)
                 return text + ')'
             else:
                 return title
