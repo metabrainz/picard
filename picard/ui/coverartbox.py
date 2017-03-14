@@ -87,6 +87,7 @@ class CoverArtThumbnail(ActiveLabel):
     def __init__(self, active=False, drops=False, pixmap_cache=None, *args, **kwargs):
         super(CoverArtThumbnail, self).__init__(active, drops, *args, **kwargs)
         self.data = None
+        self.has_common_images = None
         self.shadow = QtGui.QPixmap(":/images/CoverArtShadow.png")
         self.release = None
         self.setPixmap(self.shadow)
@@ -119,10 +120,12 @@ class CoverArtThumbnail(ActiveLabel):
         return cover
 
     def set_data(self, data, force=False, has_common_images=True):
-        if not force and self.data == data:
+        if not force and self.data == data and self.has_common_images == has_common_images:
             return
 
         self.data = data
+        self.has_common_images = has_common_images
+
         if not force and self.parent().isHidden():
             return
 
@@ -380,6 +383,7 @@ class CoverArtBox(QtGui.QGroupBox):
                 file.metadata_images_changed.emit()
                 file.update()
             album.enable_update_metadata_images(True)
+            album.update_metadata_images()
             album.update(False)
         elif isinstance(self.item, Track):
             track = self.item
@@ -391,6 +395,7 @@ class CoverArtBox(QtGui.QGroupBox):
                 file.metadata_images_changed.emit()
                 file.update()
             track.album.enable_update_metadata_images(True)
+            track.album.update_metadata_images()
             track.album.update(False)
         elif isinstance(self.item, File):
             file = self.item
