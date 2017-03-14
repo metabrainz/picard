@@ -75,6 +75,9 @@ class Cluster(QtCore.QObject, Item):
         self.files.extend(files)
         self.metadata['totaltracks'] = len(self.files)
         self.item.add_files(files)
+        if self.related_album:
+            self.related_album.update_metadata_images()
+            self.related_album.update()
 
     def add_file(self, file):
         self.metadata.length += file.metadata.length
@@ -86,6 +89,9 @@ class Cluster(QtCore.QObject, Item):
         if cover and cover[0] not in self.metadata.images:
             self.metadata.append_image(cover[0])
         self.item.add_file(file)
+        if self.related_album:
+            self.related_album.update_metadata_images()
+            self.related_album.update()
 
     def remove_file(self, file):
         self.metadata.length -= file.metadata.length
@@ -94,6 +100,10 @@ class Cluster(QtCore.QObject, Item):
         self.item.remove_file(file)
         if not self.special and self.get_num_files() == 0:
             self.tagger.remove_cluster(self)
+        self.update_metadata_images()
+        if self.related_album:
+            self.related_album.update_metadata_images()
+            self.related_album.update()
 
     def update(self):
         if self.item:
@@ -268,6 +278,30 @@ class Cluster(QtCore.QObject, Item):
                 artist_name = artist_cluster_engine.getClusterTitle(artist_id)
 
             yield album_name, artist_name, (files[i] for i in album)
+
+    def update_metadata_images(self):
+        class State:
+            new_images = []
+            has_common_new_images = True
+            first_new_obj = True
+
+        state = State()
+
+        def process_images(state, obj):
+            # Check new images
+            if state.first_new_obj:
+                state.new_images = obj.metadata.images[:]
+                state.first_new_obj = False
+            else:
+                if state.new_images != obj.metadata.images:
+                    state.has_common_new_images = False
+                    state.new_images.extend([image for image in obj.metadata.images if image not in state.new_images])
+
+        for file in self.files:
+            process_images(state, file)
+
+        self.metadata.images = state.new_images
+        self.metadata.has_common_images = state.has_common_new_images
 
 
 class UnmatchedFiles(Cluster):
