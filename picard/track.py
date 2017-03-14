@@ -53,6 +53,7 @@ class Track(DataObject, Item):
         self.linked_files = []
         self.num_linked_files = 0
         self.metadata = Metadata()
+        self.orig_metadata = Metadata()
         self._track_artists = []
 
     def __repr__(self):
@@ -86,6 +87,7 @@ class Track(DataObject, Item):
     def update(self):
         if self.item:
             self.item.update()
+        self.update_orig_metadata_images()
 
     def iterfiles(self, save=False):
         for file in self.linked_files:
@@ -219,6 +221,30 @@ class Track(DataObject, Item):
         if ignore_tags:
             tags = [s.strip().lower() for s in ignore_tags.split(',')]
         return tags
+
+    def update_orig_metadata_images(self):
+        class State:
+            orig_images = []
+            has_common_orig_images = True
+            first_orig_obj = True
+
+        state = State()
+
+        def process_images(state, obj):
+            # Check orig images
+            if state.first_orig_obj:
+                state.orig_images = obj.orig_metadata.images[:]
+                state.first_orig_obj = False
+            else:
+                if state.orig_images != obj.orig_metadata.images:
+                    state.has_common_orig_images = False
+                    state.orig_images.extend([image for image in obj.orig_metadata.images if image not in state.orig_images])
+
+        for file in self.linked_files:
+            process_images(state, file)
+
+        self.orig_metadata.images = state.orig_images
+        self.orig_metadata.has_common_images = state.has_common_orig_images
 
 
 class NonAlbumTrack(Track):
