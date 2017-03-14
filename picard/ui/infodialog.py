@@ -101,15 +101,22 @@ class InfoDialog(PicardDialog):
         self.obj = obj
         self.ui = Ui_InfoDialog()
         self.display_existing_artwork = False
-        if (isinstance(obj, File)
-            and isinstance(obj.parent, Track)
-            or isinstance(obj, Track)):
+
+        def get_image_type(image):
+            return image.types_as_string()
+
+        if (isinstance(obj, File) and
+                isinstance(obj.parent, Track) or
+                isinstance(obj, Track)):
             # Display existing artwork only if selected object is track object
             # or linked to a track object
-            if getattr(obj, 'orig_metadata', None) is not None:
+            if (getattr(obj, 'orig_metadata', None) is not None and
+                    sorted(obj.orig_metadata.images, key=get_image_type) != sorted(obj.metadata.images, key=get_image_type)):
                 self.display_existing_artwork = True
         elif isinstance(obj, Album) and obj.get_num_total_files() > 0:
-            self.display_existing_artwork = True
+            if (getattr(obj, 'orig_metadata', None) is not None and
+                    sorted(obj.orig_metadata.images, key=get_image_type) != sorted(obj.metadata.images, key=get_image_type)):
+                self.display_existing_artwork = True
 
         self.ui.setupUi(self)
         self.ui.buttonBox.accepted.connect(self.accept)

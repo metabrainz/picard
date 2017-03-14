@@ -99,7 +99,7 @@ class CoverArtThumbnail(ActiveLabel):
 
     def __eq__(self, other):
         if len(self.related_images) or len(other.related_images):
-            return self.related_images == other.related_images
+            return self.related_images == other.related_images and self.has_common_images == other.has_common_images
         else:
             return True
 
@@ -201,7 +201,7 @@ class CoverArtThumbnail(ActiveLabel):
         data = None
         self.related_images = []
         if metadata and metadata.images:
-            self.related_images = metadata.images
+            self.related_images = sorted(metadata.images, key=lambda image: image.types_as_string())
             data = [image for image in metadata.images if image.is_front_image()]
             if not data:
                 # There's no front image, choose the first one available
