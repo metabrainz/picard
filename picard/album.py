@@ -531,12 +531,21 @@ class Album(DataObject, Item):
                 unsaved = self.get_num_unsaved_files()
                 if unsaved:
                     text += '; %d*' % (unsaved,)
-                if getattr(self.metadata, 'has_common_images', True):
-                    text += ungettext("; %i image", "; %i images",
-                                      len(self.metadata.images)) % len(self.metadata.images)
+                # CoverArt.set_metadata uses the orig_metadata.images if metadata.images is empty
+                # in order to show existing cover art if there's no cover art for a release. So
+                # we do the same here in order to show the number of images consistently.
+                if self.metadata.images:
+                    metadata = self.metadata
                 else:
-                    text += ungettext("; %i image", "; %i different images among tracks",
-                                      len(self.metadata.images)) % len(self.metadata.images)
+                    metadata = self.orig_metadata
+
+                number_of_images = len(metadata.images)
+                if getattr(metadata, 'has_common_images', True):
+                    text += ungettext("; %i image", "; %i images",
+                                      number_of_images) % number_of_images
+                else:
+                    text += ungettext("; %i image not in all tracks", "; %i different images among tracks",
+                                      number_of_images) % number_of_images
                 return text + ')'
             else:
                 return title
