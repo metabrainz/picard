@@ -467,7 +467,7 @@ class Album(DataObject, Item):
         return True
 
     def can_view_info(self):
-        return (self.loaded and self.metadata and self.metadata.images) or self.errors
+        return (self.loaded and (self.metadata.images or self.orig_metadata.images)) or self.errors
 
     def is_album_like(self):
         return True
