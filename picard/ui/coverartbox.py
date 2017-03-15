@@ -96,10 +96,11 @@ class CoverArtThumbnail(ActiveLabel):
         self.image_dropped.connect(self.fetch_remote_image)
         self.related_images = list()
         self._pixmap_cache = pixmap_cache
+        self.current_pixmap_key = None
 
     def __eq__(self, other):
-        if len(self.related_images) or len(other.related_images):
-            return self.related_images == other.related_images and self.has_common_images == other.has_common_images
+        if len(self.data) or len(other.data):
+            return self.current_pixmap_key == other.current_pixmap_key
         else:
             return True
 
@@ -131,7 +132,11 @@ class CoverArtThumbnail(ActiveLabel):
 
         if not self.data:
             self.setPixmap(self.shadow)
+            self.current_pixmap_key = None
             return
+
+        if len(self.data) == 1:
+            has_common_images = True
 
         w, h, displacements = (128, 128, 20)
         key = hash(tuple(sorted(self.data)) + (has_common_images,))
@@ -196,6 +201,7 @@ class CoverArtThumbnail(ActiveLabel):
             self._pixmap_cache[key] = pixmap
 
         self.setPixmap(pixmap)
+        self.current_pixmap_key = key
 
     def set_metadata(self, metadata):
         data = None
