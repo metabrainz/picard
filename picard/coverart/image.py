@@ -208,7 +208,10 @@ class CoverArtImage:
 
     def __eq__(self, other):
         if self and other:
-            return (self.datahash, self.types) == (other.datahash, other.types)
+            if self.types and other.types:
+                return (self.datahash, self.types) == (other.datahash, other.types)
+            else:
+                return self.datahash == other.datahash
         elif not self and not other:
             return True
         else:
