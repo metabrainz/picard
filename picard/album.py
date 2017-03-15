@@ -384,7 +384,6 @@ class Album(DataObject, Item):
             self.load_task = None
 
     def update(self, update_tracks=True):
-        self.update_metadata_images()
         if self.item:
             self.item.update(update_tracks)
 
@@ -614,6 +613,7 @@ class Album(DataObject, Item):
         self.metadata.has_common_images = state.has_common_new_images
         self.orig_metadata.images = state.orig_images
         self.orig_metadata.has_common_images = state.has_common_orig_images
+        self.update(False)
 
 
 class NatAlbum(Album):
