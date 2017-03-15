@@ -59,7 +59,7 @@ class ArtworkTable(QtGui.QTableWidget):
         image_label = QtGui.QLabel()
         text_label = QtGui.QLabel()
         layout = QtGui.QVBoxLayout()
-        image_label.setPixmap(pixmap.scaled(170,170,QtCore.Qt.KeepAspectRatio,
+        image_label.setPixmap(pixmap.scaled(170, 170, QtCore.Qt.KeepAspectRatio,
                                             QtCore.Qt.SmoothTransformation))
         image_label.setAlignment(QtCore.Qt.AlignCenter)
         text_label.setText(text)
@@ -99,6 +99,8 @@ class InfoDialog(PicardDialog):
     def __init__(self, obj, parent=None):
         PicardDialog.__init__(self, parent)
         self.obj = obj
+        self.images = []
+        self.existing_images = []
         self.ui = Ui_InfoDialog()
         self.display_existing_artwork = False
 
@@ -111,13 +113,23 @@ class InfoDialog(PicardDialog):
             # Display existing artwork only if selected object is track object
             # or linked to a track object
             if (getattr(obj, 'orig_metadata', None) is not None and
+                    obj.orig_metadata.images and
                     sorted(obj.orig_metadata.images, key=get_image_type) != sorted(obj.metadata.images, key=get_image_type)):
                 self.display_existing_artwork = True
+                self.existing_images = obj.orig_metadata.images
         elif isinstance(obj, Album) and obj.get_num_total_files() > 0:
             if (getattr(obj, 'orig_metadata', None) is not None and
+                    obj.orig_metadata.images and
                     sorted(obj.orig_metadata.images, key=get_image_type) != sorted(obj.metadata.images, key=get_image_type)):
                 self.display_existing_artwork = True
+                self.existing_images = obj.orig_metadata.images
 
+        if obj.metadata.images:
+            self.images = obj.metadata.images
+        if not self.images and self.existing_images:
+            self.images = self.existing_images
+            self.existing_images = []
+            self.display_existing_artwork = False
         self.ui.setupUi(self)
         self.ui.buttonBox.accepted.connect(self.accept)
         self.ui.buttonBox.rejected.connect(self.reject)
@@ -197,9 +209,9 @@ class InfoDialog(PicardDialog):
         """Display image type in Type column.
         If both existing covers and new covers are to be displayed, take union of both cover types list.
         """
-        types = [image.types_as_string() for image in self.obj.metadata.images]
+        types = [image.types_as_string() for image in self.images]
         if self.display_existing_artwork:
-            existing_types = [image.types_as_string() for image in self.obj.orig_metadata.images]
+            existing_types = [image.types_as_string() for image in self.existing_images]
             # Merge both types and existing types list in sorted order.
             types = union_sorted_lists(types, existing_types)
         for row, type in enumerate(types):
@@ -213,18 +225,17 @@ class InfoDialog(PicardDialog):
     def arrange_images(self):
         def get_image_type(image):
             return image.types_as_string()
-        self.obj.metadata.images.sort(key=get_image_type)
-        if self.display_existing_artwork:
-            self.obj.orig_metadata.images.sort(key=get_image_type)
+        self.images.sort(key=get_image_type)
+        self.existing_images.sort(key=get_image_type)
 
     def _display_artwork_tab(self):
-        if not self.obj.metadata.images:
+        if not self.images:
             self.tab_hide(self.ui.artwork_tab)
         self.arrange_images()
         self._display_artwork_type()
-        self._display_artwork(self.obj.metadata.images, self.artwork_table._new_cover_col)
-        if self.display_existing_artwork:
-            self._display_artwork(self.obj.orig_metadata.images, self.artwork_table._existing_cover_col)
+        self._display_artwork(self.images, self.artwork_table._new_cover_col)
+        if self.existing_images:
+            self._display_artwork(self.existing_images, self.artwork_table._existing_cover_col)
         self.artwork_table.itemDoubleClicked.connect(self.show_item)
 
     def tab_hide(self, widget):
