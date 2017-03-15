@@ -65,6 +65,7 @@ class Track(DataObject, Item):
             self.num_linked_files += 1
         self.album._add_file(self, file)
         self.update_file_metadata(file)
+        file.metadata_images_changed.connect(self.update_orig_metadata_images)
 
     def update_file_metadata(self, file):
         if file not in self.linked_files:
@@ -82,6 +83,7 @@ class Track(DataObject, Item):
         self.num_linked_files -= 1
         file.copy_metadata(file.orig_metadata)
         self.album._remove_file(self, file)
+        file.metadata_images_changed.disconnect(self.update_orig_metadata_images)
         self.update()
 
     def update(self):
