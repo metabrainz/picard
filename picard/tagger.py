@@ -285,11 +285,13 @@ class Tagger(QtGui.QApplication):
         log.debug("Picard stopping")
         self.stopping = True
         self._acoustid.done()
-        self.thread_pool.waitForDone()
-        self.save_thread_pool.waitForDone()
         self.browser_integration.stop()
         self.xmlws.stop()
+        self.thread_pool.waitForDone()
+        self.load_thread_pool.waitForDone()
+        self.save_thread_pool.waitForDone()
         self.run_cleanup()
+        # Ensure that log messages etc. are processed before quitting
         QtCore.QCoreApplication.processEvents()
 
     def _run_init(self):
@@ -303,7 +305,7 @@ class Tagger(QtGui.QApplication):
                     files.append(decode_filename(file))
             del self._cmdline_files
             if files:
-                self._add_files([files])
+                self.add_files(files)
             if directories:
                 self.add_directory_list(directories)
 
@@ -321,14 +323,101 @@ class Tagger(QtGui.QApplication):
             event.run()
         elif event.type() == QtCore.QEvent.FileOpen:
             f = str(event.file())
-            self._add_files([[f]])
+            self.add_files([f])
             # We should just return True here, except that seems to
             # cause the event's sender to get a -9874 error, so
             # apparently there's some magic inside QFileOpenEvent...
             return 1
         return QtGui.QApplication.event(self, event)
 
+    def move_files(self, files, target):
+        if target is None:
+            log.debug("Aborting move since target is invalid")
+            return
+        if isinstance(target, (Track, Cluster)):
+            for file in files:
+                file.move(target)
+        elif isinstance(target, File):
+            for file in files:
+                file.move(target.parent)
+        elif isinstance(target, Album):
+            self.move_files_to_album(files, album=target)
+        elif isinstance(target, ClusterList):
+            self.cluster(files)
+
+    def add_files(self, filenames, target=None):
+        # Run in a worker thread in case there are large numbers of directories which will make UI non-responsive
+        # Run on main thread_pool rather than file load pool because it is low overhead
+        thread.run_task(partial(self._add_files, [self._add_files_from_directory("", filenames)], target=target),
+                None,
+                thread_pool=self.thread_pool)
+
+    def _add_files(self, list_of_filenames, target=None):
+        if self.stopping:
+            return
+        """Add files to the tagger."""
+        number_of_files = sum([len(x) for x in list_of_filenames])
+        number_of_directories = len(list_of_filenames)
+        self.window.set_statusbar_message(
+            N_("Adding a total of %(files)d files in %(directories)d directories ..."),
+            {'files': number_of_files, 'directories': number_of_directories}
+        )
+        for filenames in list_of_filenames:
+            # Run open_files at lower queuing priority (0) than loading files (1)
+            thread.run_task(partial(self._open_files, filenames),
+                    partial(self._open_files_finished, target),
+                    priority=0,
+                    thread_pool=self.load_thread_pool)
+            # This function runs in a worker thread.
+            # Queuing threads for a large number of directories can make UI unresponsive
+            # Allow UI to process events after each folder to keep it responsive
+            QtCore.QCoreApplication.processEvents()
+
+    def _open_files(self, filenames):
+        if self.stopping:
+            return
+        new_files = {}
+        for filename in filenames:
+            filename = os.path.normpath(os.path.realpath(filename))
+            if filename not in self.files:
+                file = open_file(filename)
+                if file:
+                    new_files[filename] = file
+                # This function runs in a worker thread.
+                # Opening a large number of files in a single directory can make UI unresponsive
+                # Allow UI to process events after each file to keep it responsive
+                QtCore.QCoreApplication.processEvents()
+        return new_files
+
+    def _open_files_finished(self, target=None, result=None, error=None):
+        if self.stopping:
+            return
+        if result:
+            new_files = [result[f] for f in sorted(result)]
+            log.debug("Adding files %r", new_files)
+            self.files.update(result)
+            if target is None or target is self.unmatched_files:
+                self.unmatched_files.add_files(new_files)
+                target = None
+            # Run in a worker thread in case there are large numbers of files which will make UI non-responsive
+            # Run on main thread_pool rather than file load pool because it is low overhead
+            thread.run_task(partial(self._files_load, new_files, target=target),
+                    None,
+                    thread_pool=self.thread_pool)
+        return
+
+    def _files_load(self, files, target=None):
+        if self.stopping:
+            return
+        for file in files:
+            file.load(partial(self._file_loaded, target=target))
+            # Queuing threads for a large number of files in a directory can make UI unresponsive
+            # Allow UI to process events after each file to keep it responsive
+            QtCore.QCoreApplication.processEvents()
+
     def _file_loaded(self, file, target=None):
+        if self.stopping:
+            return
         if file is not None and not file.has_error():
             recordingid = file.metadata.getall('musicbrainz_recordingid')[0] \
                 if 'musicbrainz_recordingid' in file.metadata else ''
@@ -349,81 +438,19 @@ class Tagger(QtGui.QApplication):
             elif config.setting['analyze_new_files'] and file.can_analyze():
                 self.analyze([file])
 
-    def move_files(self, files, target):
-        if target is None:
-            log.debug("Aborting move since target is invalid")
-            return
-        if isinstance(target, (Track, Cluster)):
-            for file in files:
-                file.move(target)
-        elif isinstance(target, File):
-            for file in files:
-                file.move(target.parent)
-        elif isinstance(target, Album):
-            self.move_files_to_album(files, album=target)
-        elif isinstance(target, ClusterList):
-            self.cluster(files)
-
-    def add_files(self, filenames, target=None):
-        self._add_files([self._add_files_from_directory("", filenames)], target=target)
-
-    def _add_files(self, list_of_filenames, target=None):
-        """Add files to the tagger."""
-        number_of_files = sum([len(x) for x in list_of_filenames])
-        number_of_directories = len(list_of_filenames)
-        log.debug("Adding a total of %d files in %d directories",
-                number_of_files, number_of_directories)
-        self.window.set_statusbar_message(
-            N_("Adding a total of %(files)d files in %(directories)d directories ..."),
-            {'files': number_of_files, 'directories': number_of_directories},
-            echo=None
-        )
-        for filenames in list_of_filenames:
-            thread.run_task(partial(self._open_files, filenames),
-                    partial(self._open_files_finished, target),
-                    priority=2,
-                    thread_pool=self.load_thread_pool)
-            # Queuing threads for a large number of directories can make UI unresponsive
-            # Allow UI to process events after each folder to keep it responsive
-            QtCore.QCoreApplication.processEvents()
-
-    def _open_files(self, filenames):
-        new_files = {}
-        for filename in filenames:
-            filename = os.path.normpath(os.path.realpath(filename))
-            if filename not in self.files:
-                file = open_file(filename)
-                if file:
-                    new_files[filename] = file
-                # This function runs in a thread.
-                # Opening a large number of files in a single directory can make UI unresponsive
-                # Allow UI to process events after each file to keep it responsive
-                QtCore.QCoreApplication.processEvents()
-        return new_files
-
-    def _open_files_finished(self, target=None, result=None, error=None):
-        if result:
-            new_files = []
-            for filename in sorted(result):
-                file = result[filename]
-                self.files[filename] = file
-                new_files.append(file)
-            log.debug("Adding files %r", new_files)
-            if target is None or target is self.unmatched_files:
-                self.unmatched_files.add_files(new_files)
-                target = None
-            for file in new_files:
-                file.load(partial(self._file_loaded, target=target))
-                # Queuing threads for a large number of files in a directory can make UI unresponsive
-                # Allow UI to process events after each file to keep it responsive
-                QtCore.QCoreApplication.processEvents()
-
     def _add_directory_method(self):
         if config.setting['recursively_add_files']:
             return self._add_directory_recursive
         return self._add_directory_non_recursive
 
     def add_directory_list(self, dir_list, parent=None):
+        # Run in a worker thread in case there are large numbers of directories which will make UI non-responsive
+        # Run on main thread_pool rather than file load pool because it is low overhead
+        thread.run_task(partial(self._add_directory_list, dir_list, parent),
+                None,
+                thread_pool=self.thread_pool)
+
+    def _add_directory_list(self, dir_list, parent=None):
         if parent:
             parent = os.path.normpath(parent)
         number_of_dirs = len(dir_list)
@@ -434,7 +461,7 @@ class Tagger(QtGui.QApplication):
                     {'directory': parent, 'count': number_of_dirs}
                 )
             else:
-                self.window.set_statusbar_message(
+                self.window.set_statusbar_-message(
                     N_("Adding %(count)d directories ..."),
                     {'directory': parent, 'count': number_of_dirs}
                 )
@@ -456,13 +483,13 @@ class Tagger(QtGui.QApplication):
         list_to_add = []
         # walk topdown to allow modifying the sub-dirs to remove hidden dirs
         for root, dirs, files in os.walk(unicode(path), topdown=True):
-            # Keep UI responsive and ensure that log messages are written to stderr
-            QtCore.QCoreApplication.processEvents()
             if ignore_hidden:
                 dirs[:] = [d for d in dirs if not is_hidden(os.path.join(root, d))]
             files_to_add = self._add_files_from_directory(root, files)
             if files_to_add:
                 list_to_add.append(files_to_add)
+            # Keep UI responsive
+            QtCore.QCoreApplication.processEvents()
         return list_to_add
 
     def _add_directory_non_recursive(self, path):
@@ -491,15 +518,11 @@ class Tagger(QtGui.QApplication):
         if number_of_files:
             if path:
                 path = os.path.normpath(path)
-                log.debug("Adding %d files from %r",
-                          number_of_files, path)
                 message = ungettext(
                         "Adding %(count)d file from '%(directory)s' ...",
                         "Adding %(count)d files from '%(directory)s' ...",
                         number_of_files)
             else:
-                log.debug("Adding %d files" %
-                          number_of_files)
                 message = ungettext(
                         "Adding %(count)d file ...",
                         "Adding %(count)d files ...",
@@ -511,8 +534,7 @@ class Tagger(QtGui.QApplication):
             self.window.set_statusbar_message(
                 message,
                 mparms,
-                translate=None,
-                echo=None
+                translate=None
             )
         return files_to_add
 
@@ -583,6 +605,13 @@ class Tagger(QtGui.QApplication):
     def save(self, objects):
         """Save the specified objects."""
         files = self.get_files_from_objects(objects, save=True)
+        # Run in a worker thread in case there are large numbers of files which will make UI non-responsive
+        # Run on main thread_pool rather than file save pool because it is low overhead
+        thread.run_task(partial(self._save, files),
+                None,
+                thread_pool=self.thread_pool)
+
+    def _save(self, files):
         for file in files:
             file.save()
             # Queuing threads for a large number of files can make UI unresponsive
