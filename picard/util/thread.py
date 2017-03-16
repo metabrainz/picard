@@ -59,15 +59,32 @@ def run_task(func, next, priority=0, thread_pool=None):
 
 
 def to_main(func, *args, **kwargs):
-    QCoreApplication.postEvent(QCoreApplication.instance(),
-                               ProxyToMainEvent(func, *args, **kwargs))
-    # If we are in a worker thread, use processEvents to pass control to the
-    # main thread to execute the event we just posted. If we don't do this
-    # the main thread may not get CPU for a long time.
-    # See http://www.dabeaz.com/python/UnderstandingGIL.pdf for details.
-    #
-    # If we are in the main thread already, we should wait for the event loop to
-    # process the event because if we run processEvents we leave this on the stack
-    # and after this happens a lot we can get Recursion Level Exceeded errors.
+    # TODO Sophist
+    # At present we use processEvents which both processes events sent to the generic window
+    # and processes UI events as well.
+    # We should consider whether we would have greater control over returning here if we either
+    # a. Use processEvents with flags to exclude user events or socket notifiers; or
+    # b. Use a specific event receiver for to_main rather than the generic receiver and use
+    # sendPostedEvents to execute this code.
+    # My current thoughts are that these are no more likely to switch back to this task,
+    # and just avoid processing UI events which we want processed to keep the UI responsive.
+    # TODO Sophist
+    if func is not None:
+        QCoreApplication.postEvent(QCoreApplication.instance(),
+                                   ProxyToMainEvent(func, *args, **kwargs))
     if QCoreApplication.instance().thread() != QThread.currentThread():
+        # If we are in a worker thread, use processEvents to pass control to the
+        # main thread to execute the event we just posted. If we don't do this
+        # the main thread may not get CPU to process the function for a long time.
+        # See http://www.dabeaz.com/python/UnderstandingGIL.pdf for details.
+        #
+        # If we are in the main thread and post the event and call processEvents then,
+        # IF there are worker threads queued, it is possible (or based on experience likely)
+        # that instead of returning here and finish executing to_main, instead
+        # Python will dispatch a worker thread which will finish by running to_main again.
+        # The multiple instances of to_main will only finish executing when there is no other work.
+        # With sufficient worker thread tasks queued, we will get Recursion Level Exceeded errors.
+        #
+        # Calling from within a worker thread is OK because the number of threads
+        # in thread pools is small and well below Python's recursion limit.
         QCoreApplication.processEvents()
