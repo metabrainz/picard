@@ -277,8 +277,7 @@ class Tagger(QtGui.QApplication):
         self.save_thread_pool.waitForDone()
         self.browser_integration.stop()
         self.xmlws.stop()
-        for f in self.exit_cleanup:
-            f()
+        self.run_cleanup()
         QtCore.QCoreApplication.processEvents()
 
     def _run_init(self):
