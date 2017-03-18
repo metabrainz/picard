@@ -49,11 +49,9 @@ _orig_shutil_copystat = shutil.copystat
 shutil.copystat = _patched_shutil_copystat
 
 import picard.resources
-import picard.plugins
 from picard.i18n import setup_gettext
 
-from picard import (PICARD_APP_NAME, PICARD_ORG_NAME,
-                    PICARD_FANCY_VERSION_STR, __version__,
+from picard import (PICARD_APP_NAME, PICARD_ORG_NAME, PICARD_FANCY_VERSION_STR,
                     log, acoustid, config)
 from picard.album import Album, NatAlbum
 from picard.browser.browser import BrowserIntegration
@@ -277,8 +275,7 @@ class Tagger(QtGui.QApplication):
         self.save_thread_pool.waitForDone()
         self.browser_integration.stop()
         self.xmlws.stop()
-        for f in self.exit_cleanup:
-            f()
+        self.run_cleanup()
         QtCore.QCoreApplication.processEvents()
 
     def _run_init(self):
