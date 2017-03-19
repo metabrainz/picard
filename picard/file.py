@@ -105,10 +105,11 @@ class File(QtCore.QObject, Item):
     def _load_check(self, filename):
         # Check that file has not been removed since thread was queued
         # Don't load if we are stopping.
-        if self.state != File.PENDING or self.tagger.stopping:
-            log.debug("File not loaded because %s: %r",
-                "Picard is stopping" if self.tagger.stopping else "it was removed",
-                self.filename)
+        if self.state != File.PENDING:
+            log.debug("File not loaded because it was removed: %r", self.filename)
+            return None
+        if self.tagger.stopping:
+            log.debug("File not loaded because %s is stopping: %r", PICARD_APP_NAME, self.filename)
             return None
         return self._load(filename)
 
@@ -188,10 +189,11 @@ class File(QtCore.QObject, Item):
         """Save the metadata."""
         # Check that file has not been removed since thread was queued
         # Also don't save if we are stopping.
-        if self.state == File.REMOVED or self.tagger.stopping:
-            log.debug("File not saved because %s: %r",
-                "Picard is stopping" if self.tagger.stopping else "it was removed",
-                self.filename)
+        if self.state == File.REMOVED:
+            log.debug("File not saved because it was removed: %r", self.filename)
+            return None
+        if self.tagger.stopping:
+            log.debug("File not saved because %s is stopping: %r", PICARD_APP_NAME, self.filename)
             return None
         new_filename = old_filename
         if not config.setting["dont_write_tags"]:
