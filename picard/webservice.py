@@ -499,9 +499,9 @@ class XmlWebService(QtCore.QObject):
     def find_artists(self, handler, **kwargs):
         return self._find('artist', handler, **kwargs)
 
-    def _browse(self, entitytype, handler, kwargs, inc=[],
+    def _browse(self, entitytype, handler, inc=[],
             xml=True, priority=False, important=False, mblogin=False,
-            cacheloadcontrol=None, refresh=False, queryargs=None):
+            cacheloadcontrol=None, refresh=False, queryargs=None, **kwargs):
         host = config.setting["server_host"]
         port = config.setting["server_port"]
         path = "/ws/2/%s" % (entitytype)
@@ -514,7 +514,7 @@ class XmlWebService(QtCore.QObject):
 
     def browse_releases(self, handler, **kwargs):
         inc = ["media", "labels"]
-        return self._browse("release", handler, kwargs, inc)
+        return self._browse("release", handler, inc, **kwargs)
 
     def submit_ratings(self, ratings, handler):
         host = config.setting['server_host']
