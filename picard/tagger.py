@@ -119,10 +119,12 @@ class Tagger(QtGui.QApplication):
         # set threadcount for CPU intensive activities to 1
         self.thread_pool.setMaxThreadCount(1)
 
-        # Use a separate thread pools for directory loading, file loading, and
-        # file saving to avoid blocking file i/o exhausting the main thread pool.
-        # We are using a single thread per pool, however except for the file save pool
-        # there is no reason that this cannot be increased if necessary.
+        # Use a separate thread pools for file loading to avoid blocking file
+        # I/O exhausting the main thread pool. We are using a single thread per pool,
+        # however except for the file save pool there is no reason that this
+        # cannot be increased if necessary.
+        self.open_thread_pool = QtCore.QThreadPool(self)
+        self.open_thread_pool.setMaxThreadCount(1)
         self.load_thread_pool = QtCore.QThreadPool(self)
         self.load_thread_pool.setMaxThreadCount(1)
 
@@ -162,6 +164,7 @@ class Tagger(QtGui.QApplication):
         log.debug("Versions: %s", versions.as_string())
         log.debug("Configuration file path: %r", config.config.fileName())
         log.debug("Main thread pool: %d threads", self.thread_pool.maxThreadCount())
+        log.debug("Open thread pool: %d threads", self.load_thread_pool.maxThreadCount())
         log.debug("Load thread pool: %d threads", self.load_thread_pool.maxThreadCount())
         log.debug("Save thread pool: %d threads", self.save_thread_pool.maxThreadCount())
 
@@ -288,6 +291,7 @@ class Tagger(QtGui.QApplication):
         self.browser_integration.stop()
         self.xmlws.stop()
         self.thread_pool.waitForDone()
+        self.open_thread_pool.waitForDone()
         self.load_thread_pool.waitForDone()
         self.save_thread_pool.waitForDone()
         self.run_cleanup()
@@ -367,7 +371,7 @@ class Tagger(QtGui.QApplication):
             thread.run_task(partial(self._open_files, filenames),
                     partial(self._open_files_finished, target),
                     priority=0,
-                    thread_pool=self.load_thread_pool)
+                    thread_pool=self.open_thread_pool)
             # This function runs in a worker thread.
             # Queuing threads for a large number of directories can make UI unresponsive
             # Allow UI to process events after each folder to keep it responsive
@@ -461,7 +465,7 @@ class Tagger(QtGui.QApplication):
                     {'directory': parent, 'count': number_of_dirs}
                 )
             else:
-                self.window.set_statusbar_-message(
+                self.window.set_statusbar_message(
                     N_("Adding %(count)d directories ..."),
                     {'directory': parent, 'count': number_of_dirs}
                 )
