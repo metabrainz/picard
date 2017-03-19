@@ -100,12 +100,27 @@ class File(QtCore.QObject, Item):
 
     def load(self, callback):
         thread.run_task(
-            partial(self._load, self.filename),
+            partial(self._load_check, self.filename),
             partial(self._loading_finished, callback),
             priority=1)
 
+    def _load_check(self, filename):
+        # Check that file has not been removed since thread was queued
+        # Don't load if we are stopping.
+        if self.state != File.PENDING:
+            log.debug("File not loaded because it was removed: %r", self.filename)
+            return None
+        if self.tagger.stopping:
+            log.debug("File not loaded because %s is stopping: %r", PICARD_APP_NAME, self.filename)
+            return None
+        return self._load(filename)
+
+    def _load(self, filename):
+        """Load metadata from the file."""
+        raise NotImplementedError
+
     def _loading_finished(self, callback, result=None, error=None):
-        if self.state != self.PENDING:
+        if self.state != File.PENDING or self.tagger.stopping:
             return
         if error is not None:
             self.error = str(error)
@@ -163,10 +178,6 @@ class File(QtCore.QObject, Item):
     def has_error(self):
         return self.state == File.ERROR
 
-    def _load(self, filename):
-        """Load metadata from the file."""
-        raise NotImplementedError
-
     def save(self):
         self.set_pending()
         metadata = Metadata()
@@ -181,10 +192,11 @@ class File(QtCore.QObject, Item):
         """Save the metadata."""
         # Check that file has not been removed since thread was queued
         # Also don't save if we are stopping.
-        if self.state == File.REMOVED or self.tagger.stopping:
-            log.debug("File not saved because %s: %r",
-                "Picard is stopping" if self.tagger.stopping else "it was removed",
-                self.filename)
+        if self.state == File.REMOVED:
+            log.debug("File not saved because it was removed: %r", self.filename)
+            return None
+        if self.tagger.stopping:
+            log.debug("File not saved because %s is stopping: %r", PICARD_APP_NAME, self.filename)
             return None
         new_filename = old_filename
         if not config.setting["dont_write_tags"]:
