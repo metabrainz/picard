@@ -18,8 +18,6 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from __future__ import print_function
-import re
-import sys
 from operator import itemgetter
 from PyQt4 import QtCore
 from picard import (PICARD_APP_NAME, PICARD_ORG_NAME, PICARD_VERSION,
@@ -92,11 +90,13 @@ class Config(QtCore.QSettings):
 
     """Configuration."""
 
-    def __init__(self, app):
-        """Initializes the configuration."""
+    def __init__(self):
+        pass
 
-        QtCore.QSettings.__init__(self, QtCore.QSettings.IniFormat,
-                                  QtCore.QSettings.UserScope, PICARD_ORG_NAME, PICARD_APP_NAME, app)
+    def __initialize(self):
+        """Common initializer method for :meth:`from_app` and
+        :meth:`from_file`."""
+
         # If there are no settings, copy existing settings from old format
         # (registry on windows systems)
         if not self.allKeys():
@@ -114,6 +114,27 @@ class Config(QtCore.QSettings):
         TextOption("application", "version", '0.0.0dev0')
         self._version = version_from_string(self.application["version"])
         self._upgrade_hooks = dict()
+
+    @classmethod
+    def from_app(cls, parent):
+        """Build a Config object using the default configuration file
+        location."""
+        this = cls()
+        QtCore.QSettings.__init__(this, QtCore.QSettings.IniFormat,
+                                  QtCore.QSettings.UserScope, PICARD_ORG_NAME,
+                                  PICARD_APP_NAME, parent)
+        this.__initialize()
+        return this
+
+    @classmethod
+    def from_file(cls, parent, filename):
+        """Build a Config object using a user-provided configuration file
+        path."""
+        this = cls()
+        QtCore.QSettings.__init__(this, filename, QtCore.QSettings.IniFormat,
+                                  parent)
+        this.__initialize()
+        return this
 
     def switchProfile(self, profilename):
         """Sets the current profile."""
@@ -245,8 +266,12 @@ config = None
 setting = None
 persist = None
 
-def _setup(app):
+
+def _setup(app, filename=None):
     global config, setting, persist
-    config = Config(app)
+    if filename is None:
+        config = Config.from_app(app)
+    else:
+        config = Config.from_file(app, filename)
     setting = config.setting
     persist = config.persist

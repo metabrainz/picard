@@ -105,7 +105,7 @@ class Tagger(QtGui.QApplication):
         QtGui.QApplication.__init__(self, ['MusicBrainz-Picard'] + unparsed_args)
         self.__class__.__instance = self
 
-        config._setup(self)
+        config._setup(self, picard_args.config_file)
 
         self._cmdline_files = picard_args.FILE
         self._autoupdate = autoupdate
@@ -739,6 +739,9 @@ def process_picard_args():
     parser = argparse.ArgumentParser(
         epilog="If one of the filenames begins with a hyphen, use -- to separate the options from the filenames."
     )
+    parser.add_argument("-c", "--config-file", action='store',
+                        default=None,
+                        help="location of the configuration file")
     parser.add_argument("-d", "--debug", action='store_true',
                         help="enable debug-level logging")
     parser.add_argument('-v', '--version', action='store_true',
