@@ -453,9 +453,9 @@ class XmlWebService(QtCore.QObject):
         return self._get_by_id('discid', discid, handler, inc, queryargs={"cdstubs": "no"},
                                priority=priority, important=important, refresh=refresh)
 
-    def _find(self, entitytype, handler, kwargs,
-            xml=True, priority=False, important=False, mblogin=False,
-            cacheloadcontrol=None, refresh=False, queryargs=None):
+    def _find(self, entitytype, handler,
+            xml=True, priority=True, important=True, mblogin=False,
+            cacheloadcontrol=None, refresh=False, queryargs=None, **kwargs):
         host = config.setting["server_host"]
         port = config.setting["server_port"]
         filters = []
@@ -491,13 +491,13 @@ class XmlWebService(QtCore.QObject):
                 cacheloadcontrol=cacheloadcontrol, refresh=refresh)
 
     def find_releases(self, handler, **kwargs):
-        return self._find('release', handler, kwargs)
+        return self._find('release', handler, **kwargs)
 
     def find_tracks(self, handler, **kwargs):
-        return self._find('recording', handler, kwargs)
+        return self._find('recording', handler, **kwargs)
 
     def find_artists(self, handler, **kwargs):
-        return self._find('artist', handler, kwargs)
+        return self._find('artist', handler, **kwargs)
 
     def _browse(self, entitytype, handler, kwargs, inc=[],
             xml=True, priority=False, important=False, mblogin=False,

@@ -338,8 +338,6 @@ class TrackSearchDialog(SearchDialog):
         self.tagger.xmlws.find_tracks(self.handle_reply,
                 query=text,
                 search=True,
-                priority=True,
-                important=True,
                 limit=QUERY_LIMIT)
 
     def load_similar_tracks(self, file_):
@@ -372,8 +370,6 @@ class TrackSearchDialog(SearchDialog):
         self.show_progress()
         self.tagger.xmlws.find_tracks(
                 self.handle_reply,
-                priority=True,
-                important=True,
                 **query)
 
     def retry(self):
@@ -536,8 +532,6 @@ class AlbumSearchDialog(SearchDialog):
         self.tagger.xmlws.find_releases(self.handle_reply,
                 query=text,
                 search=True,
-                priority=True,
-                important=True,
                 limit=QUERY_LIMIT)
 
     def show_similar_albums(self, cluster):
@@ -566,8 +560,6 @@ class AlbumSearchDialog(SearchDialog):
         self.show_progress()
         self.tagger.xmlws.find_releases(
             self.handle_reply,
-            priority=True,
-            important=True,
             **query)
 
     def retry(self):
@@ -762,8 +754,6 @@ class ArtistSearchDialog(SearchDialog):
         self.tagger.xmlws.find_artists(self.handle_reply,
                 query=text,
                 search=True,
-                priority=True,
-                important=True,
                 limit=QUERY_LIMIT)
 
     def retry(self):
