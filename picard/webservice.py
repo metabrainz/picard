@@ -499,7 +499,7 @@ class XmlWebService(QtCore.QObject):
 
     def _browse(self, entitytype, handler, inc=[],
             xml=True, priority=False, important=False, mblogin=False,
-            cacheloadcontrol=None, refresh=False, queryargs=None, **kwargs):
+            cacheloadcontrol=None, refresh=False, **kwargs):
         host = config.setting["server_host"]
         port = config.setting["server_port"]
         path = "/ws/2/%s" % (entitytype)
