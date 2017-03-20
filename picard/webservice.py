@@ -455,7 +455,7 @@ class XmlWebService(QtCore.QObject):
 
     def _find(self, entitytype, handler,
             xml=True, priority=True, important=True, mblogin=False,
-            cacheloadcontrol=None, refresh=False, queryargs=None, **kwargs):
+            cacheloadcontrol=None, refresh=False, **kwargs):
         host = config.setting["server_host"]
         port = config.setting["server_port"]
         filters = []
