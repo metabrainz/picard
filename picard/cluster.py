@@ -64,6 +64,11 @@ class Cluster(QtCore.QObject, Item):
     def __len__(self):
         return len(self.files)
 
+    def _update_related_album(self):
+        if self.related_album:
+            self.related_album.update_metadata_images()
+            self.related_album.update()
+
     def add_files(self, files):
         for file in files:
             self.metadata.length += file.metadata.length
@@ -75,9 +80,7 @@ class Cluster(QtCore.QObject, Item):
         self.files.extend(files)
         self.metadata['totaltracks'] = len(self.files)
         self.item.add_files(files)
-        if self.related_album:
-            self.related_album.update_metadata_images()
-            self.related_album.update()
+        self._update_related_album()
 
     def add_file(self, file):
         self.metadata.length += file.metadata.length
@@ -89,9 +92,7 @@ class Cluster(QtCore.QObject, Item):
         if cover and cover[0] not in self.metadata.images:
             self.metadata.append_image(cover[0])
         self.item.add_file(file)
-        if self.related_album:
-            self.related_album.update_metadata_images()
-            self.related_album.update()
+        self._update_related_album()
 
     def remove_file(self, file):
         self.metadata.length -= file.metadata.length
@@ -101,9 +102,7 @@ class Cluster(QtCore.QObject, Item):
         if not self.special and self.get_num_files() == 0:
             self.tagger.remove_cluster(self)
         self.update_metadata_images()
-        if self.related_album:
-            self.related_album.update_metadata_images()
-            self.related_album.update()
+        self._update_related_album()
 
     def update(self):
         if self.item:

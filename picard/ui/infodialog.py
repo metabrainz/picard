@@ -109,15 +109,10 @@ class InfoDialog(PicardDialog):
 
         if (isinstance(obj, File) and
                 isinstance(obj.parent, Track) or
-                isinstance(obj, Track)):
+                isinstance(obj, Track) or
+                (isinstance(obj, Album) and obj.get_num_total_files() > 0)):
             # Display existing artwork only if selected object is track object
-            # or linked to a track object
-            if (getattr(obj, 'orig_metadata', None) is not None and
-                    obj.orig_metadata.images and
-                    sorted(obj.orig_metadata.images, key=get_image_type) != sorted(obj.metadata.images, key=get_image_type)):
-                self.display_existing_artwork = True
-                self.existing_images = obj.orig_metadata.images
-        elif isinstance(obj, Album) and obj.get_num_total_files() > 0:
+            # or linked to a track object or it's an album with files
             if (getattr(obj, 'orig_metadata', None) is not None and
                     obj.orig_metadata.images and
                     sorted(obj.orig_metadata.images, key=get_image_type) != sorted(obj.metadata.images, key=get_image_type)):
