@@ -28,6 +28,7 @@ from picard.mbxml import recording_to_metadata
 from picard.script import ScriptParser
 from picard.const import VARIOUS_ARTISTS_ID, SILENCE_TRACK_TITLE, DATA_TRACK_TITLE
 from picard.ui.item import Item
+from picard.coverart.imagelist import ImageList
 import traceback
 
 
@@ -226,7 +227,7 @@ class Track(DataObject, Item):
 
     def update_orig_metadata_images(self):
         class State:
-            orig_images = []
+            orig_images = ImageList()
             has_common_orig_images = True
             first_orig_obj = True
 

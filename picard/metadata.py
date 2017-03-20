@@ -21,6 +21,7 @@ from PyQt4.QtCore import QObject
 from picard import config, log
 from picard.plugin import PluginFunctions, PluginPriority
 from picard.similarity import similarity2
+from picard.coverart.imagelist import ImageList
 from picard.util import (
     linear_combination_of_weights,
 )
@@ -45,7 +46,7 @@ class Metadata(dict):
 
     def __init__(self):
         super(Metadata, self).__init__()
-        self.images = []
+        self.images = ImageList()
         self.deleted_tags = set()
         self.length = 0
 
@@ -241,7 +242,7 @@ class Metadata(dict):
 
     def clear(self):
         dict.clear(self)
-        self.images = []
+        self.images = ImageList()
         self.length = 0
         self.deleted_tags = set()
 

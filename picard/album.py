@@ -22,6 +22,7 @@ import traceback
 from PyQt4 import QtCore, QtNetwork
 from picard import config, log
 from picard.coverart import coverart
+from picard.coverart.imagelist import ImageList
 from picard.metadata import (Metadata,
                              register_album_metadata_processor,
                              run_album_metadata_processors,
@@ -582,8 +583,8 @@ class Album(DataObject, Item):
             return
 
         class State:
-            new_images = []
-            orig_images = []
+            new_images = ImageList()
+            orig_images = ImageList()
             has_common_new_images = True
             has_common_orig_images = True
             first_new_obj = True

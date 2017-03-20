@@ -26,6 +26,7 @@ from picard.file import File
 from picard.track import Track
 from picard.album import Album
 from picard.coverart.image import CoverArtImageIOError
+from picard.coverart.imagelist import ImageList
 from picard.util import format_time, encode_filename, bytes2human, webbrowser2, union_sorted_lists
 from picard.ui import PicardDialog
 from picard.ui.ui_infodialog import Ui_InfoDialog
@@ -99,13 +100,10 @@ class InfoDialog(PicardDialog):
     def __init__(self, obj, parent=None):
         PicardDialog.__init__(self, parent)
         self.obj = obj
-        self.images = []
-        self.existing_images = []
+        self.images = ImageList()
+        self.existing_images = ImageList()
         self.ui = Ui_InfoDialog()
         self.display_existing_artwork = False
-
-        def get_image_type(image):
-            return image.types_as_string()
 
         if (isinstance(obj, File) and
                 isinstance(obj.parent, Track) or
@@ -115,7 +113,7 @@ class InfoDialog(PicardDialog):
             # or linked to a track object or it's an album with files
             if (getattr(obj, 'orig_metadata', None) is not None and
                     obj.orig_metadata.images and
-                    sorted(obj.orig_metadata.images, key=get_image_type) != sorted(obj.metadata.images, key=get_image_type)):
+                    obj.orig_metadata.images != obj.metadata.images):
                 self.display_existing_artwork = True
                 self.existing_images = obj.orig_metadata.images
 
@@ -217,16 +215,9 @@ class InfoDialog(PicardDialog):
             self.artwork_table.setCellWidget(row, self.artwork_table._type_col, type_wgt)
             self.artwork_table.setItem(row, self.artwork_table._type_col, item)
 
-    def arrange_images(self):
-        def get_image_type(image):
-            return image.types_as_string()
-        self.images.sort(key=get_image_type)
-        self.existing_images.sort(key=get_image_type)
-
     def _display_artwork_tab(self):
         if not self.images:
             self.tab_hide(self.ui.artwork_tab)
-        self.arrange_images()
         self._display_artwork_type()
         self._display_artwork(self.images, self.artwork_table._new_cover_col)
         if self.existing_images:

@@ -32,6 +32,7 @@ from picard.similarity import similarity
 from picard.ui.item import Item
 from picard.util import format_time, album_artist_from_path
 from picard.const import QUERY_LIMIT
+from picard.coverart.imagelist import ImageList
 
 
 class Cluster(QtCore.QObject, Item):
@@ -280,7 +281,7 @@ class Cluster(QtCore.QObject, Item):
 
     def update_metadata_images(self):
         class State:
-            new_images = []
+            new_images = ImageList()
             has_common_new_images = True
             first_new_obj = True
 
