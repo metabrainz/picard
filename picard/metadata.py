@@ -21,11 +21,11 @@ from PyQt4.QtCore import QObject
 from picard import config, log
 from picard.plugin import PluginFunctions, PluginPriority
 from picard.similarity import similarity2
-from picard.coverart.imagelist import ImageList
 from picard.util import (
     linear_combination_of_weights,
 )
 from picard.mbxml import artist_credit_from_node
+from picard.util.imagelist import ImageList
 
 MULTI_VALUED_JOINER = '; '
 

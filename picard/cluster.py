@@ -31,8 +31,8 @@ from picard.metadata import Metadata
 from picard.similarity import similarity
 from picard.ui.item import Item
 from picard.util import format_time, album_artist_from_path
+from picard.util.imagelist import ImageList
 from picard.const import QUERY_LIMIT
-from picard.coverart.imagelist import ImageList
 
 
 class Cluster(QtCore.QObject, Item):

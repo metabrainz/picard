@@ -28,7 +28,7 @@ from picard.mbxml import recording_to_metadata
 from picard.script import ScriptParser
 from picard.const import VARIOUS_ARTISTS_ID, SILENCE_TRACK_TITLE, DATA_TRACK_TITLE
 from picard.ui.item import Item
-from picard.coverart.imagelist import ImageList
+from picard.util.imagelist import ImageList
 import traceback
 
 

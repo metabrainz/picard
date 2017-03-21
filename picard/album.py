@@ -22,7 +22,6 @@ import traceback
 from PyQt4 import QtCore, QtNetwork
 from picard import config, log
 from picard.coverart import coverart
-from picard.coverart.imagelist import ImageList
 from picard.metadata import (Metadata,
                              register_album_metadata_processor,
                              run_album_metadata_processors,
@@ -33,6 +32,7 @@ from picard.track import Track
 from picard.script import ScriptParser
 from picard.ui.item import Item
 from picard.util import format_time, mbid_validate
+from picard.util.imagelist import ImageList
 from picard.util.textencoding import asciipunct
 from picard.cluster import Cluster
 from picard.collection import add_release_to_user_collections
