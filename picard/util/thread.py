@@ -66,14 +66,20 @@ def to_main(func, *args, **kwargs):
     # a. Use processEvents with flags to exclude user events or socket notifiers; or
     # b. Use a specific event receiver for to_main rather than the generic receiver and use
     # sendPostedEvents to execute this code.
+    # c.Use signals rather than events to execute code on the main thread
+    # see http://www.qtcentre.org/threads/7167-Main-thread-worker-thread-communication
     # My current thoughts are that these are no more likely to switch back to this task,
     # and just avoid processing UI events which we want processed to keep the UI responsive.
     # TODO Sophist
     if func is not None:
         QCoreApplication.postEvent(QCoreApplication.instance(),
                                    ProxyToMainEvent(func, *args, **kwargs))
-    if QCoreApplication.instance().thread() != QThread.currentThread():
-        # If we are in a worker thread, use processEvents to pass control to the
+    processEvents()
+
+
+def processEvents():
+   if QCoreApplication.instance().thread() != QThread.currentThread():
+        # If we are in a worker thread, use QApplication.processEvents to pass control to the
         # main thread to execute the event we just posted. If we don't do this
         # the main thread may not get CPU to process the function for a long time.
         # See http://www.dabeaz.com/python/UnderstandingGIL.pdf for details.
@@ -87,4 +93,7 @@ def to_main(func, *args, **kwargs):
         #
         # Calling from within a worker thread is OK because the number of threads
         # in thread pools is small and well below Python's recursion limit.
-        QCoreApplication.processEvents()
+        QCoreApplication.instance().processEvents()
+        # Sleep this thread for a few ms to allow main thread to get CPU.
+        # TODO Python 3 has a different thread dispatch mechanism which needs to be tested
+        QThread.currentThread().msleep(10)

@@ -56,8 +56,8 @@ class Logger(object):
             # run thread.to_main which would cede control to the main thread.
             # If we are not logging, to ensure same characteristics, we will
             # cede control in the same way
-            if self._receivers and QtCore.QCoreApplication.instance().thread() != QtCore.QThread.currentThread():
-                QtCore.QCoreApplication.processEvents()
+            if self._receivers:
+                thread.processEvents()
             return
         if not (isinstance(message, str) or isinstance(message, unicode)):
             message = repr(message)
