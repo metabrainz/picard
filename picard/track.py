@@ -28,7 +28,7 @@ from picard.mbxml import recording_to_metadata
 from picard.script import ScriptParser
 from picard.const import VARIOUS_ARTISTS_ID, SILENCE_TRACK_TITLE, DATA_TRACK_TITLE
 from picard.ui.item import Item
-from picard.util.imagelist import ImageList
+from picard.util.imagelist import ImageList, update_metadata_images
 import traceback
 
 
@@ -226,28 +226,7 @@ class Track(DataObject, Item):
         return tags
 
     def update_orig_metadata_images(self):
-        class State:
-            orig_images = ImageList()
-            has_common_orig_images = True
-            first_orig_obj = True
-
-        state = State()
-
-        def process_images(state, obj):
-            # Check orig images
-            if state.first_orig_obj:
-                state.orig_images = obj.orig_metadata.images[:]
-                state.first_orig_obj = False
-            else:
-                if state.orig_images != obj.orig_metadata.images:
-                    state.has_common_orig_images = False
-                    state.orig_images.extend([image for image in obj.orig_metadata.images if image not in state.orig_images])
-
-        for file in self.linked_files:
-            process_images(state, file)
-
-        self.orig_metadata.images = state.orig_images
-        self.orig_metadata.has_common_images = state.has_common_orig_images
+        update_metadata_images(self)
 
 
 class NonAlbumTrack(Track):

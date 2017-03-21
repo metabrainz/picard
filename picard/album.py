@@ -32,7 +32,7 @@ from picard.track import Track
 from picard.script import ScriptParser
 from picard.ui.item import Item
 from picard.util import format_time, mbid_validate
-from picard.util.imagelist import ImageList
+from picard.util.imagelist import ImageList, update_metadata_images
 from picard.util.textencoding import asciipunct
 from picard.cluster import Cluster
 from picard.collection import add_release_to_user_collections
@@ -582,47 +582,8 @@ class Album(DataObject, Item):
         if not self.update_metadata_images_enabled:
             return
 
-        class State:
-            new_images = ImageList()
-            orig_images = ImageList()
-            has_common_new_images = True
-            has_common_orig_images = True
-            first_new_obj = True
-            first_orig_obj = True
+        update_metadata_images(self)
 
-        state = State()
-
-        def process_images(state, obj):
-            # Check new images
-            if state.first_new_obj:
-                state.new_images = obj.metadata.images[:]
-                state.first_new_obj = False
-            else:
-                if state.new_images != obj.metadata.images:
-                    state.has_common_new_images = False
-                    state.new_images.extend([image for image in obj.metadata.images if image not in state.new_images])
-            if isinstance(obj, Track):
-                return
-            # Check orig images, but not for Tracks (which don't have orig_metadata)
-            if state.first_orig_obj:
-                state.orig_images = obj.orig_metadata.images[:]
-                state.first_orig_obj = False
-            else:
-                if state.orig_images != obj.orig_metadata.images:
-                    state.has_common_orig_images = False
-                    state.orig_images.extend([image for image in obj.orig_metadata.images if image not in state.orig_images])
-
-        for track in self.tracks:
-            process_images(state, track)
-            for file in list(track.linked_files):
-                process_images(state, file)
-        for file in list(self.unmatched_files.files):
-            process_images(state, file)
-
-        self.metadata.images = state.new_images
-        self.metadata.has_common_images = state.has_common_new_images
-        self.orig_metadata.images = state.orig_images
-        self.orig_metadata.has_common_images = state.has_common_orig_images
         self.update(False)
 
 

@@ -31,7 +31,7 @@ from picard.metadata import Metadata
 from picard.similarity import similarity
 from picard.ui.item import Item
 from picard.util import format_time, album_artist_from_path
-from picard.util.imagelist import ImageList
+from picard.util.imagelist import ImageList, update_metadata_images
 from picard.const import QUERY_LIMIT
 
 
@@ -280,28 +280,7 @@ class Cluster(QtCore.QObject, Item):
             yield album_name, artist_name, (files[i] for i in album)
 
     def update_metadata_images(self):
-        class State:
-            new_images = ImageList()
-            has_common_new_images = True
-            first_new_obj = True
-
-        state = State()
-
-        def process_images(state, obj):
-            # Check new images
-            if state.first_new_obj:
-                state.new_images = obj.metadata.images[:]
-                state.first_new_obj = False
-            else:
-                if state.new_images != obj.metadata.images:
-                    state.has_common_new_images = False
-                    state.new_images.extend([image for image in obj.metadata.images if image not in state.new_images])
-
-        for file in self.files:
-            process_images(state, file)
-
-        self.metadata.images = state.new_images
-        self.metadata.has_common_images = state.has_common_new_images
+        update_metadata_images(self)
 
 
 class UnmatchedFiles(Cluster):
