@@ -735,7 +735,7 @@ class MainWindow(QtGui.QMainWindow):
 
         dir_count = len(dir_list)
         if dir_count:
-            parent = os.path.dirname(dir_list[0])
+            parent = os.path.dirname(dir_list[0]) if dir_count > 1 else dir_list[0]
             config.persist["current_directory"] = parent
             if dir_count > 1:
                 self.set_statusbar_message(
