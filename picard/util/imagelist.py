@@ -62,21 +62,24 @@ def _process_images(state, src_obj):
                 state.orig_images.extend([image for image in src_obj.orig_metadata.images if image not in state.orig_images])
 
 
+class State:
+    def __init__(self):
+        self.new_images = ImageList()
+        self.orig_images = ImageList()
+        self.has_common_new_images = True
+        self.has_common_orig_images = True
+        self.first_new_obj = True
+        self.first_orig_obj = True
+        # The next variables specify what will be updated
+        self.update_new_metadata = False
+        self.update_orig_metadata = False
+
+
+# TODO: use functools.singledispatch when py3 is supported
 def update_metadata_images(obj):
     from picard.track import Track
     from picard.cluster import Cluster
     from picard.album import Album
-
-    class State:
-        new_images = ImageList()
-        orig_images = ImageList()
-        has_common_new_images = True
-        has_common_orig_images = True
-        first_new_obj = True
-        first_orig_obj = True
-        # The next variables specify what will be updated
-        update_new_metadata = False
-        update_orig_metadata = False
 
     state = State()
 
