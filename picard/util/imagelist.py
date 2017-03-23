@@ -24,18 +24,14 @@ def get_image_type(image):
 
 class ImageList(list):
 
-    def __init__(self):
-        super(ImageList, self).__init__()
-
     def __eq__(self, other):
         return sorted(self, key=get_image_type) == sorted(other, key=get_image_type)
 
     def __getslice__(self, i, j):
-        i = max(0, min(i, len(self)))
-        j = max(0, min(j, len(self)))
-        r = ImageList()
-        r[:] = [self[it] for it in range(i, j)]
-        return r
+        length = len(self)
+        i = max(0, min(i, length))
+        j = max(0, min(j, length))
+        return ImageList([self[it] for it in range(i, j)])
 
 
 def _process_images(state, src_obj):
