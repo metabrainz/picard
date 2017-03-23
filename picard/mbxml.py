@@ -202,7 +202,7 @@ def artist_credit_to_metadata(node, m, release=False):
         m["artist"] = artist
         m["artistsort"] = artistsort
         m["artists"] = artists
-        m["~artists_sort"] = artistsort
+        m["~artists_sort"] = artistssort
 
 
 def country_list_from_node(node):
