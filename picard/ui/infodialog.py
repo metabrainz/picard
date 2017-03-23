@@ -26,7 +26,6 @@ from picard.file import File
 from picard.track import Track
 from picard.album import Album
 from picard.coverart.image import CoverArtImageIOError
-from picard.coverart.imagelist import ImageList
 from picard.util import format_time, encode_filename, bytes2human, webbrowser2, union_sorted_lists
 from picard.ui import PicardDialog
 from picard.ui.ui_infodialog import Ui_InfoDialog
@@ -100,8 +99,8 @@ class InfoDialog(PicardDialog):
     def __init__(self, obj, parent=None):
         PicardDialog.__init__(self, parent)
         self.obj = obj
-        self.images = ImageList()
-        self.existing_images = ImageList()
+        self.images = []
+        self.existing_images = []
         self.ui = Ui_InfoDialog()
         self.display_existing_artwork = False
 
@@ -308,6 +307,7 @@ class AlbumInfoDialog(InfoDialog):
         else:
             tabWidget.setTabText(tab_index, _("&Info"))
             self.tab_hide(tab)
+
 
 class TrackInfoDialog(FileInfoDialog):
 

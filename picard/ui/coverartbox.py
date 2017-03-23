@@ -21,13 +21,12 @@ import os
 import sys
 from functools import partial
 from PyQt4 import QtCore, QtGui, QtNetwork
-from picard import config, log
+from picard import log
 from picard.album import Album
 from picard.coverart.image import CoverArtImage, CoverArtImageError
-from picard.coverart.imagelist import ImageList
 from picard.track import Track
 from picard.file import File
-from picard.util import encode_filename, imageinfo
+from picard.util import imageinfo
 from picard.util.lrucache import LRUCache
 from picard.const import MAX_COVERS_TO_STACK
 
@@ -95,7 +94,7 @@ class CoverArtThumbnail(ActiveLabel):
         self.setAlignment(QtCore.Qt.AlignTop | QtCore.Qt.AlignHCenter)
         self.clicked.connect(self.open_release_page)
         self.image_dropped.connect(self.fetch_remote_image)
-        self.related_images = ImageList()
+        self.related_images = []
         self._pixmap_cache = pixmap_cache
         self.current_pixmap_key = None
 
@@ -206,7 +205,7 @@ class CoverArtThumbnail(ActiveLabel):
 
     def set_metadata(self, metadata):
         data = None
-        self.related_images = ImageList()
+        self.related_images = []
         if metadata and metadata.images:
             self.related_images = metadata.images
             data = [image for image in metadata.images if image.is_front_image()]
