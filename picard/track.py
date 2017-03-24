@@ -234,6 +234,8 @@ class Track(DataObject, Item):
         if self.linked_files:
             self.update_orig_metadata_images()
             self.metadata.images = self.orig_metadata.images[:]
+        else:
+            self.metadata.images = []
         self.update()
 
 
