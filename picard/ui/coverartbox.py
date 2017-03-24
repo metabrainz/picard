@@ -448,12 +448,12 @@ class CoverArtBox(QtGui.QGroupBox):
 
         load_image_behavior_group = QtGui.QActionGroup(self.parent, exclusive=True)
         action = load_image_behavior_group.addAction(QtGui.QAction(_(u'Replace front cover art on drop'), self.parent, checkable=True))
-        action.triggered.connect(partial(self.setLoadImageBehavior, behavior='replace'))
+        action.triggered.connect(partial(self.set_load_image_behavior, behavior='replace'))
         if config.setting["load_image_behavior"] == 'replace':
             action.setChecked(True)
         menu.addAction(action)
         action = load_image_behavior_group.addAction(QtGui.QAction(_(u'Append front cover art on drop'), self.parent, checkable=True))
-        action.triggered.connect(partial(self.setLoadImageBehavior, behavior='append'))
+        action.triggered.connect(partial(self.set_load_image_behavior, behavior='append'))
         if config.setting["load_image_behavior"] == 'append':
             action.setChecked(True)
         menu.addAction(action)
