@@ -21,7 +21,7 @@ import os
 import sys
 from functools import partial
 from PyQt4 import QtCore, QtGui, QtNetwork
-from picard import log
+from picard import config, log
 from picard.album import Album
 from picard.coverart.image import CoverArtImage, CoverArtImageError
 from picard.track import Track
@@ -242,6 +242,14 @@ class CoverArtThumbnail(ActiveLabel):
         return self.parent().fetch_remote_image(url)
 
 
+def set_image_replace(obj, coverartimage):
+    obj.metadata.set_front_image(coverartimage)
+
+
+def set_image_append(obj, coverartimage):
+    obj.metadata.append_image(coverartimage)
+
+
 class CoverArtBox(QtGui.QGroupBox):
 
     def __init__(self, parent):
@@ -378,14 +386,21 @@ class CoverArtBox(QtGui.QGroupBox):
         except CoverArtImageError as e:
             log.warning("Can't load image: %s" % unicode(e))
             return
+
+        if config.setting["load_image_behavior"] == 'replace':
+            set_image = set_image_replace
+        else:
+            set_image = set_image_append
+
         if isinstance(self.item, Album):
             album = self.item
             album.enable_update_metadata_images(False)
+            set_image(album, coverartimage)
             for track in album.tracks:
-                track.metadata.set_front_image(coverartimage)
+                set_image(track, coverartimage)
                 track.metadata_images_changed.emit()
             for file in album.iterfiles():
-                file.metadata.set_front_image(coverartimage)
+                set_image(file, coverartimage)
                 file.metadata_images_changed.emit()
                 file.update()
             album.enable_update_metadata_images(True)
@@ -394,10 +409,10 @@ class CoverArtBox(QtGui.QGroupBox):
         elif isinstance(self.item, Track):
             track = self.item
             track.album.enable_update_metadata_images(False)
-            track.metadata.set_front_image(coverartimage)
+            set_image(track, coverartimage)
             track.metadata_images_changed.emit()
             for file in track.iterfiles():
-                file.metadata.set_front_image(coverartimage)
+                set_image(file, coverartimage)
                 file.metadata_images_changed.emit()
                 file.update()
             track.album.enable_update_metadata_images(True)
@@ -405,8 +420,43 @@ class CoverArtBox(QtGui.QGroupBox):
             track.album.update(False)
         elif isinstance(self.item, File):
             file = self.item
-            file.metadata.set_front_image(coverartimage)
+            set_image(file, coverartimage)
             file.metadata_images_changed.emit()
             file.update()
         self.cover_art.set_metadata(self.item.metadata)
         self.show()
+
+    def set_load_image_behavior(self, behavior):
+        config.setting["load_image_behavior"] = behavior
+
+    def contextMenuEvent(self, event):
+        menu = QtGui.QMenu(self)
+        if self.show_details_button.isVisible():
+            name = _(u'Show more details...')
+            show_more_details_action = QtGui.QAction(name, self.parent)
+            show_more_details_action.triggered.connect(self.show_cover_art_info)
+            menu.addAction(show_more_details_action)
+
+        if self.orig_cover_art.isVisible():
+            name = _(u'Keep original cover art')
+            use_orig_value_action = QtGui.QAction(name, self.parent)
+            use_orig_value_action.triggered.connect(self.item.keep_original_images)
+            menu.addAction(use_orig_value_action)
+
+        if not menu.isEmpty():
+            menu.addSeparator()
+
+        load_image_behavior_group = QtGui.QActionGroup(self.parent, exclusive=True)
+        action = load_image_behavior_group.addAction(QtGui.QAction(_(u'Replace front cover art on drop'), self.parent, checkable=True))
+        action.triggered.connect(partial(self.set_load_image_behavior, behavior='replace'))
+        if config.setting["load_image_behavior"] == 'replace':
+            action.setChecked(True)
+        menu.addAction(action)
+        action = load_image_behavior_group.addAction(QtGui.QAction(_(u'Append front cover art on drop'), self.parent, checkable=True))
+        action.triggered.connect(partial(self.set_load_image_behavior, behavior='append'))
+        if config.setting["load_image_behavior"] == 'append':
+            action.setChecked(True)
+        menu.addAction(action)
+
+        menu.exec_(event.globalPos())
+        event.accept()

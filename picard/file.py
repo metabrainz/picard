@@ -175,6 +175,11 @@ class File(QtCore.QObject, Item):
             self.metadata["acoustid_id"] = acoustid
         self.metadata_images_changed.emit()
 
+    def keep_original_images(self):
+        self.metadata.images = self.orig_metadata.images[:]
+        self.update()
+        self.metadata_images_changed.emit()
+
     def has_error(self):
         return self.state == File.ERROR
 
