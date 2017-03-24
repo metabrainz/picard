@@ -587,10 +587,12 @@ class Album(DataObject, Item):
         self.update(False)
 
     def keep_original_images(self):
+        self.enable_update_metadata_images(False)
         for track in self.tracks:
             track.keep_original_images()
         for file in list(self.unmatched_files.files):
             file.keep_original_images()
+        self.enable_update_metadata_images(True)
         self.update_metadata_images()
 
 
