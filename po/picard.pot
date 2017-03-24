@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: picard 1.4.1dev1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2017-03-24 11:08+0100\n"
+"POT-Creation-Date: 2017-03-24 14:38+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -157,22 +157,22 @@ msgstr ""
 msgid "My script %d"
 msgstr ""
 
-#: picard/file.py:582
+#: picard/file.py:587
 #, python-format
 msgid "No matching tracks for file '%(filename)s'"
 msgstr ""
 
-#: picard/file.py:598
+#: picard/file.py:603
 #, python-format
 msgid "No matching tracks above the threshold for file '%(filename)s'"
 msgstr ""
 
-#: picard/file.py:605
+#: picard/file.py:610
 #, python-format
 msgid "File '%(filename)s' identified!"
 msgstr ""
 
-#: picard/file.py:625
+#: picard/file.py:630
 #, python-format
 msgid "Looking up the metadata for file %(filename)s ..."
 msgstr ""
@@ -396,16 +396,32 @@ msgstr ""
 msgid "Tracks contain different images"
 msgstr ""
 
-#: picard/ui/coverartbox.py:264
+#: picard/ui/coverartbox.py:272
 msgid "Show more details"
 msgstr ""
 
-#: picard/ui/coverartbox.py:301
+#: picard/ui/coverartbox.py:309
 msgid "New Cover Art"
 msgstr ""
 
-#: picard/ui/coverartbox.py:302
+#: picard/ui/coverartbox.py:310
 msgid "Original Cover Art"
+msgstr ""
+
+#: picard/ui/coverartbox.py:435
+msgid "Show more details..."
+msgstr ""
+
+#: picard/ui/coverartbox.py:441
+msgid "Keep original cover art"
+msgstr ""
+
+#: picard/ui/coverartbox.py:450
+msgid "Replace front cover art on drop"
+msgstr ""
+
+#: picard/ui/coverartbox.py:455
+msgid "Append front cover art on drop"
 msgstr ""
 
 #: picard/ui/filebrowser.py:40
@@ -2051,25 +2067,25 @@ msgstr ""
 msgid "Lookup CD..."
 msgstr ""
 
-#: picard/ui/options/interface.py:125
+#: picard/ui/options/interface.py:126
 msgid "System default"
 msgstr ""
 
-#: picard/ui/options/interface.py:182
+#: picard/ui/options/interface.py:183
 msgid "Language changed"
 msgstr ""
 
-#: picard/ui/options/interface.py:183
+#: picard/ui/options/interface.py:184
 msgid ""
 "You have changed the interface language. You have to restart Picard in "
 "order for the change to take effect."
 msgstr ""
 
-#: picard/ui/options/interface.py:207
+#: picard/ui/options/interface.py:208
 msgid "Drag and Drop to re-order"
 msgstr ""
 
-#: picard/ui/options/interface.py:209 picard/ui/options/interface.py:292
+#: picard/ui/options/interface.py:210 picard/ui/options/interface.py:293
 msgid "label"
 msgstr ""
 
