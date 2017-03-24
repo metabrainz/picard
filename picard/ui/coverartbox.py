@@ -380,21 +380,21 @@ class CoverArtBox(QtGui.QGroupBox):
             return
 
         if config.setting["behaviour_on_image_drop"] == 'replace':
-            def drop_image(obj):
+            def set_image(obj):
                 obj.metadata.set_front_image(coverartimage)
         else:
-            def drop_image(obj):
+            def set_image(obj):
                 obj.metadata.append_image(coverartimage)
 
         if isinstance(self.item, Album):
             album = self.item
             album.enable_update_metadata_images(False)
-            drop_image(album)
+            set_image(album)
             for track in album.tracks:
-                drop_image(track)
+                set_image(track)
                 track.metadata_images_changed.emit()
             for file in album.iterfiles():
-                drop_image(file)
+                set_image(file)
                 file.metadata_images_changed.emit()
                 file.update()
             album.enable_update_metadata_images(True)
@@ -403,10 +403,10 @@ class CoverArtBox(QtGui.QGroupBox):
         elif isinstance(self.item, Track):
             track = self.item
             track.album.enable_update_metadata_images(False)
-            drop_image(track)
+            set_image(track)
             track.metadata_images_changed.emit()
             for file in track.iterfiles():
-                drop_image(file)
+                set_image(file)
                 file.metadata_images_changed.emit()
                 file.update()
             track.album.enable_update_metadata_images(True)
@@ -414,7 +414,7 @@ class CoverArtBox(QtGui.QGroupBox):
             track.album.update(False)
         elif isinstance(self.item, File):
             file = self.item
-            drop_image(file)
+            set_image(file)
             file.metadata_images_changed.emit()
             file.update()
         self.cover_art.set_metadata(self.item.metadata)
@@ -426,13 +426,13 @@ class CoverArtBox(QtGui.QGroupBox):
     def contextMenuEvent(self, event):
         menu = QtGui.QMenu(self)
         if self.show_details_button.isVisible():
-            name = _(u'Show more details')
+            name = _(u'Show more details...')
             show_more_details_action = QtGui.QAction(name, self.parent)
             show_more_details_action.triggered.connect(self.show_cover_art_info)
             menu.addAction(show_more_details_action)
 
         if self.orig_cover_art.isVisible():
-            name = _(u'Use Original Cover Art')
+            name = _(u'Keep original cover art')
             use_orig_value_action = QtGui.QAction(name, self.parent)
             use_orig_value_action.triggered.connect(self.item.keep_original_images)
             menu.addAction(use_orig_value_action)
