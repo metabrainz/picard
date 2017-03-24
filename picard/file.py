@@ -478,7 +478,8 @@ class File(QtCore.QObject, Item):
                         self.state = File.CHANGED
                     break
         else:
-            if self.orig_metadata.images != self.metadata.images:
+            if (self.metadata.images and
+               self.orig_metadata.images != self.metadata.images):
                 self.state = File.CHANGED
             else:
                 self.similarity = 1.0
