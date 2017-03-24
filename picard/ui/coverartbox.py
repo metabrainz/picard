@@ -21,12 +21,12 @@ import os
 import sys
 from functools import partial
 from PyQt4 import QtCore, QtGui, QtNetwork
-from picard import config, log
+from picard import log
 from picard.album import Album
 from picard.coverart.image import CoverArtImage, CoverArtImageError
 from picard.track import Track
 from picard.file import File
-from picard.util import encode_filename, imageinfo
+from picard.util import imageinfo
 from picard.util.lrucache import LRUCache
 from picard.const import MAX_COVERS_TO_STACK
 
@@ -87,18 +87,20 @@ class CoverArtThumbnail(ActiveLabel):
     def __init__(self, active=False, drops=False, pixmap_cache=None, *args, **kwargs):
         super(CoverArtThumbnail, self).__init__(active, drops, *args, **kwargs)
         self.data = None
+        self.has_common_images = None
         self.shadow = QtGui.QPixmap(":/images/CoverArtShadow.png")
         self.release = None
         self.setPixmap(self.shadow)
         self.setAlignment(QtCore.Qt.AlignTop | QtCore.Qt.AlignHCenter)
         self.clicked.connect(self.open_release_page)
         self.image_dropped.connect(self.fetch_remote_image)
-        self.related_images = list()
+        self.related_images = []
         self._pixmap_cache = pixmap_cache
+        self.current_pixmap_key = None
 
     def __eq__(self, other):
-        if len(self.related_images) or len(other.related_images):
-            return self.related_images == other.related_images
+        if len(self.data) or len(other.data):
+            return self.current_pixmap_key == other.current_pixmap_key
         else:
             return True
 
@@ -119,16 +121,22 @@ class CoverArtThumbnail(ActiveLabel):
         return cover
 
     def set_data(self, data, force=False, has_common_images=True):
-        if not force and self.data == data:
+        if not force and self.data == data and self.has_common_images == has_common_images:
             return
 
         self.data = data
+        self.has_common_images = has_common_images
+
         if not force and self.parent().isHidden():
             return
 
         if not self.data:
             self.setPixmap(self.shadow)
+            self.current_pixmap_key = None
             return
+
+        if len(self.data) == 1:
+            has_common_images = True
 
         w, h, displacements = (128, 128, 20)
         key = hash(tuple(sorted(self.data)) + (has_common_images,))
@@ -193,6 +201,7 @@ class CoverArtThumbnail(ActiveLabel):
             self._pixmap_cache[key] = pixmap
 
         self.setPixmap(pixmap)
+        self.current_pixmap_key = key
 
     def set_metadata(self, metadata):
         data = None
@@ -211,16 +220,18 @@ class CoverArtThumbnail(ActiveLabel):
         if release:
             self.setActive(True)
             text = _(u"View release on MusicBrainz")
-            if hasattr(metadata, 'has_common_images'):
-                if has_common_images:
-                    note = _(u'Common images on all tracks')
-                else:
-                    note = _(u'Tracks contain different images')
-                text += '<br /><i>%s</i>' % note
-            self.setToolTip(text)
         else:
             self.setActive(False)
-            self.setToolTip("")
+            text = ""
+        if hasattr(metadata, 'has_common_images'):
+            if has_common_images:
+                note = _(u'Common images on all tracks')
+            else:
+                note = _(u'Tracks contain different images')
+            if text:
+                text += '<br />'
+            text += '<i>%s</i>' % note
+        self.setToolTip(text)
         self.release = release
 
     def open_release_page(self):
@@ -280,13 +291,13 @@ class CoverArtBox(QtGui.QGroupBox):
         # We want to show the 2 coverarts only if they are different
         # and orig_cover_art data is set and not the default cd shadow
         if self.orig_cover_art.data is None or self.cover_art == self.orig_cover_art:
-            self.show_details_button.setHidden(len(self.cover_art.related_images) == 0)
-            self.orig_cover_art.setHidden(True)
+            self.show_details_button.setVisible(bool(self.item and self.item.can_view_info()))
+            self.orig_cover_art.setVisible(False)
             self.cover_art_label.setText('')
             self.orig_cover_art_label.setText('')
         else:
-            self.show_details_button.setHidden(False)
-            self.orig_cover_art.setHidden(False)
+            self.show_details_button.setVisible(True)
+            self.orig_cover_art.setVisible(True)
             self.cover_art_label.setText(_(u'New Cover Art'))
             self.orig_cover_art_label.setText(_(u'Original Cover Art'))
 
@@ -378,6 +389,8 @@ class CoverArtBox(QtGui.QGroupBox):
                 file.metadata_images_changed.emit()
                 file.update()
             album.enable_update_metadata_images(True)
+            album.update_metadata_images()
+            album.update(False)
         elif isinstance(self.item, Track):
             track = self.item
             track.album.enable_update_metadata_images(False)
@@ -388,6 +401,8 @@ class CoverArtBox(QtGui.QGroupBox):
                 file.metadata_images_changed.emit()
                 file.update()
             track.album.enable_update_metadata_images(True)
+            track.album.update_metadata_images()
+            track.album.update(False)
         elif isinstance(self.item, File):
             file = self.item
             file.metadata.set_front_image(coverartimage)

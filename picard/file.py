@@ -274,6 +274,7 @@ class File(QtCore.QObject, Item):
             # Force update to ensure file status icon changes immediately after save
             self.clear_pending(force_update=True)
             self._add_path_to_metadata(self.orig_metadata)
+            self.metadata_images_changed.emit()
 
         if self.state != File.REMOVED:
             del self.tagger.files[old_filename]
@@ -477,7 +478,8 @@ class File(QtCore.QObject, Item):
                         self.state = File.CHANGED
                     break
         else:
-            if self.orig_metadata.images != self.metadata.images:
+            if (self.metadata.images and
+               self.orig_metadata.images != self.metadata.images):
                 self.state = File.CHANGED
             else:
                 self.similarity = 1.0
