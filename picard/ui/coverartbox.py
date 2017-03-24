@@ -242,6 +242,14 @@ class CoverArtThumbnail(ActiveLabel):
         return self.parent().fetch_remote_image(url)
 
 
+def set_image_replace(obj, coverartimage):
+    obj.metadata.set_front_image(coverartimage)
+
+
+def set_image_append(obj, coverartimage):
+    obj.metadata.append_image(coverartimage)
+
+
 class CoverArtBox(QtGui.QGroupBox):
 
     def __init__(self, parent):
@@ -380,21 +388,19 @@ class CoverArtBox(QtGui.QGroupBox):
             return
 
         if config.setting["load_image_behavior"] == 'replace':
-            def set_image(obj):
-                obj.metadata.set_front_image(coverartimage)
+            set_image = set_image_replace
         else:
-            def set_image(obj):
-                obj.metadata.append_image(coverartimage)
+            set_image = set_image_append
 
         if isinstance(self.item, Album):
             album = self.item
             album.enable_update_metadata_images(False)
-            set_image(album)
+            set_image(album, coverartimage)
             for track in album.tracks:
-                set_image(track)
+                set_image(track, coverartimage)
                 track.metadata_images_changed.emit()
             for file in album.iterfiles():
-                set_image(file)
+                set_image(file, coverartimage)
                 file.metadata_images_changed.emit()
                 file.update()
             album.enable_update_metadata_images(True)
@@ -403,10 +409,10 @@ class CoverArtBox(QtGui.QGroupBox):
         elif isinstance(self.item, Track):
             track = self.item
             track.album.enable_update_metadata_images(False)
-            set_image(track)
+            set_image(track, coverartimage)
             track.metadata_images_changed.emit()
             for file in track.iterfiles():
-                set_image(file)
+                set_image(file, coverartimage)
                 file.metadata_images_changed.emit()
                 file.update()
             track.album.enable_update_metadata_images(True)
@@ -414,7 +420,7 @@ class CoverArtBox(QtGui.QGroupBox):
             track.album.update(False)
         elif isinstance(self.item, File):
             file = self.item
-            set_image(file)
+            set_image(file, coverartimage)
             file.metadata_images_changed.emit()
             file.update()
         self.cover_art.set_metadata(self.item.metadata)
