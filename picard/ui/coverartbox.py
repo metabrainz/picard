@@ -379,7 +379,7 @@ class CoverArtBox(QtGui.QGroupBox):
             log.warning("Can't load image: %s" % unicode(e))
             return
 
-        if config.setting["behaviour_on_image_drop"] == 'replace':
+        if config.setting["load_image_behavior"] == 'replace':
             def set_image(obj):
                 obj.metadata.set_front_image(coverartimage)
         else:
@@ -420,8 +420,8 @@ class CoverArtBox(QtGui.QGroupBox):
         self.cover_art.set_metadata(self.item.metadata)
         self.show()
 
-    def setBehaviourOnImageDrop(self, behaviour):
-        config.setting["behaviour_on_image_drop"] = behaviour
+    def set_load_image_behavior(self, behavior):
+        config.setting["load_image_behavior"] = behavior
 
     def contextMenuEvent(self, event):
         menu = QtGui.QMenu(self)
@@ -440,15 +440,15 @@ class CoverArtBox(QtGui.QGroupBox):
         if not menu.isEmpty():
             menu.addSeparator()
 
-        behaviourOnDrop = QtGui.QActionGroup(self.parent, exclusive=True)
-        action = behaviourOnDrop.addAction(QtGui.QAction(_(u'Replace front cover art on drop'), self.parent, checkable=True))
-        action.triggered.connect(partial(self.setBehaviourOnImageDrop, behaviour='replace'))
-        if config.setting["behaviour_on_image_drop"] == 'replace':
+        load_image_behavior_group = QtGui.QActionGroup(self.parent, exclusive=True)
+        action = load_image_behavior_group.addAction(QtGui.QAction(_(u'Replace front cover art on drop'), self.parent, checkable=True))
+        action.triggered.connect(partial(self.setLoadImageBehavior, behavior='replace'))
+        if config.setting["load_image_behavior"] == 'replace':
             action.setChecked(True)
         menu.addAction(action)
-        action = behaviourOnDrop.addAction(QtGui.QAction(_(u'Append front cover art on drop'), self.parent, checkable=True))
-        action.triggered.connect(partial(self.setBehaviourOnImageDrop, behaviour='append'))
-        if config.setting["behaviour_on_image_drop"] == 'append':
+        action = load_image_behavior_group.addAction(QtGui.QAction(_(u'Append front cover art on drop'), self.parent, checkable=True))
+        action.triggered.connect(partial(self.setLoadImageBehavior, behavior='append'))
+        if config.setting["load_image_behavior"] == 'append':
             action.setChecked(True)
         menu.addAction(action)
 
