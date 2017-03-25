@@ -21,9 +21,9 @@ import gettext
 import locale
 import os.path
 import sys
-import __builtin__
+import builtins
 
-__builtin__.__dict__['N_'] = lambda a: a
+builtins.__dict__['N_'] = lambda a: a
 
 
 def setup_gettext(localedir, ui_language=None, logger=None):
@@ -79,7 +79,7 @@ def setup_gettext(localedir, ui_language=None, logger=None):
         _ugettext_attributes = trans_attributes.ugettext
     except IOError as e:
         logger(e)
-        __builtin__.__dict__['_'] = lambda a: a
+        builtins.__dict__['_'] = lambda a: a
 
         def _ungettext(a, b, c):
             if c == 1:
@@ -93,9 +93,9 @@ def setup_gettext(localedir, ui_language=None, logger=None):
         def _ugettext_attributes(msg):
             return msg
 
-    __builtin__.__dict__['ungettext'] = _ungettext
-    __builtin__.__dict__['ugettext_countries'] = _ugettext_countries
-    __builtin__.__dict__['ugettext_attributes'] = _ugettext_attributes
+    builtins.__dict__['ungettext'] = _ungettext
+    builtins.__dict__['ugettext_countries'] = _ugettext_countries
+    builtins.__dict__['ugettext_attributes'] = _ugettext_attributes
 
     logger("_ = %r", _)
     logger("N_ = %r", N_)

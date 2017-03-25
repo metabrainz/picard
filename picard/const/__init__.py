@@ -21,8 +21,8 @@ import os
 import sys
 
 # Install gettext "noop" function in case const.py gets imported directly.
-import __builtin__
-__builtin__.__dict__['N_'] = lambda a: a
+import builtins
+builtins.__dict__['N_'] = lambda a: a
 
 # Config directory
 if sys.platform == "win32":
