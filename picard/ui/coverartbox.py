@@ -323,7 +323,7 @@ class CoverArtBox(QtWidgets.QGroupBox):
         if self.item is None:
             return
 
-        if url.scheme() == 'http':
+        if url.scheme() in ('http', 'https'):
             path = url.path(QtCore.QUrl.FullyEncoded)
             if url.hasQuery():
                 path += '?' + url.query(QtCore.QUrl.FullyEncoded)
