@@ -63,10 +63,7 @@ class ActiveLabel(QtWidgets.QLabel):
             self.clicked.emit()
 
     def dragEnterEvent(self, event):
-        for url in event.mimeData().urls():
-            if url.scheme() in ('https', 'http', 'file'):
-                event.acceptProposedAction()
-                break
+        event.acceptProposedAction()
 
     def dropEvent(self, event):
         accepted = False
@@ -74,6 +71,14 @@ class ActiveLabel(QtWidgets.QLabel):
         # is useful for Google Images, where the url links to the page that contains the image
         # so we use it if the downloaded url is not an image.
         dropped_data = event.mimeData().data('application/octet-stream')
+        try:
+            mime = imageinfo.identify(dropped_data)[2]
+            if mime in ('image/jpeg', 'image/png'):
+                accepted = True
+                self.image_dropped.emit(QtCore.QUrl(''), dropped_data)
+        except imageinfo.IdentificationError:
+            pass
+
         for url in event.mimeData().urls():
             if url.scheme() in ('https', 'http', 'file'):
                 accepted = True
@@ -322,6 +327,9 @@ class CoverArtBox(QtWidgets.QGroupBox):
     def fetch_remote_image(self, url, fallback_data=None):
         if self.item is None:
             return
+
+        if fallback_data is not None:
+            self.load_remote_image(url, None, fallback_data)
 
         if url.scheme() in ('http', 'https'):
             path = url.path(QtCore.QUrl.FullyEncoded)
