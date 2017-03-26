@@ -164,7 +164,7 @@ class Tagger(QtGui.QApplication):
         log.debug("Versions: %s", versions.as_string())
         log.debug("Configuration file path: %r", config.config.fileName())
         log.debug("Main thread pool: %d threads", self.thread_pool.maxThreadCount())
-        log.debug("Open thread pool: %d threads", self.load_thread_pool.maxThreadCount())
+        log.debug("Open thread pool: %d threads", self.open_thread_pool.maxThreadCount())
         log.debug("Load thread pool: %d threads", self.load_thread_pool.maxThreadCount())
         log.debug("Save thread pool: %d threads", self.save_thread_pool.maxThreadCount())
 
