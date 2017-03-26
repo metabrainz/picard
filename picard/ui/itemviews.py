@@ -19,6 +19,7 @@
 
 import os
 import re
+import sys
 from functools import partial
 from PyQt4 import QtCore, QtGui
 from picard import config, log
@@ -30,6 +31,14 @@ from picard.util import encode_filename, icontheme
 from picard.plugin import ExtensionPoint
 from picard.ui.ratingwidget import RatingWidget
 from picard.ui.collectionmenu import CollectionMenu
+
+if sys.platform == 'darwin':
+    try:
+        from Foundation import NSURL
+        NSURL_IMPORTED = True
+    except ImportError:
+        NSURL_IMPORTED = False
+        log.warning("Unable to import NSURL, file drag'n'drop might not work correctly")
 
 
 class BaseAction(QtGui.QAction):
@@ -467,9 +476,20 @@ class BaseTreeView(QtGui.QTreeWidget):
         files = []
         new_files = []
         for url in urls:
+            log.debug("Dropped the URL: %r", url.toString(QtCore.QUrl.RemoveUserInfo))
             if url.scheme() == "file" or not url.scheme():
-                # Dropping a file from iTunes gives a filename with a NULL terminator
-                filename = os.path.normpath(os.path.realpath(unicode(url.toLocalFile()).rstrip("\0")))
+                if sys.platform == 'darwin' and unicode(url.path()).startswith('/.file/id='):
+                    # Workaround for https://bugreports.qt.io/browse/QTBUG-40449
+                    # OSX Urls follow the NSURL scheme and need to be converted
+                    if NSURL_IMPORTED:
+                        filename = os.path.normpath(os.path.realpath(unicode(NSURL.URLWithString_(str(url.toString())).filePathURL().path()).rstrip("\0")))
+                        log.debug('OSX NSURL path detected. Dropped File is: %r', filename)
+                    else:
+                        log.error("Unable to get appropriate file path for %r", url.toString(QtCore.QUrl.RemoveUserInfo))
+                        continue
+                else:
+                    # Dropping a file from iTunes gives a filename with a NULL terminator
+                    filename = os.path.normpath(os.path.realpath(unicode(url.toLocalFile()).rstrip("\0")))
                 file = BaseTreeView.tagger.files.get(filename)
                 if file:
                     files.append(file)
@@ -509,8 +529,6 @@ class BaseTreeView(QtGui.QTreeWidget):
         # text/uri-list
         urls = data.urls()
         if urls:
-            if target is None:
-                target = self.tagger.unmatched_files
             self.drop_urls(urls, target)
             handled = True
         # application/picard.album-list

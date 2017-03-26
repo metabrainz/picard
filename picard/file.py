@@ -54,6 +54,8 @@ from picard.const import QUERY_LIMIT
 
 class File(QtCore.QObject, Item):
 
+    metadata_images_changed = QtCore.pyqtSignal()
+
     UNDEFINED = -1
     PENDING = 0
     NORMAL = 1
@@ -98,12 +100,27 @@ class File(QtCore.QObject, Item):
 
     def load(self, callback):
         thread.run_task(
-            partial(self._load, self.filename),
+            partial(self._load_check, self.filename),
             partial(self._loading_finished, callback),
             priority=1)
 
+    def _load_check(self, filename):
+        # Check that file has not been removed since thread was queued
+        # Don't load if we are stopping.
+        if self.state != File.PENDING:
+            log.debug("File not loaded because it was removed: %r", self.filename)
+            return None
+        if self.tagger.stopping:
+            log.debug("File not loaded because %s is stopping: %r", PICARD_APP_NAME, self.filename)
+            return None
+        return self._load(filename)
+
+    def _load(self, filename):
+        """Load metadata from the file."""
+        raise NotImplementedError
+
     def _loading_finished(self, callback, result=None, error=None):
-        if self.state != self.PENDING:
+        if self.state != File.PENDING or self.tagger.stopping:
             return
         if error is not None:
             self.error = str(error)
@@ -156,13 +173,15 @@ class File(QtCore.QObject, Item):
 
         if acoustid:
             self.metadata["acoustid_id"] = acoustid
+        self.metadata_images_changed.emit()
+
+    def keep_original_images(self):
+        self.metadata.images = self.orig_metadata.images[:]
+        self.update()
+        self.metadata_images_changed.emit()
 
     def has_error(self):
         return self.state == File.ERROR
-
-    def _load(self, filename):
-        """Load metadata from the file."""
-        raise NotImplementedError
 
     def save(self):
         self.set_pending()
@@ -176,6 +195,14 @@ class File(QtCore.QObject, Item):
 
     def _save_and_rename(self, old_filename, metadata):
         """Save the metadata."""
+        # Check that file has not been removed since thread was queued
+        # Also don't save if we are stopping.
+        if self.state == File.REMOVED:
+            log.debug("File not saved because it was removed: %r", self.filename)
+            return None
+        if self.tagger.stopping:
+            log.debug("File not saved because %s is stopping: %r", PICARD_APP_NAME, self.filename)
+            return None
         new_filename = old_filename
         if not config.setting["dont_write_tags"]:
             encoded_old_filename = encode_filename(old_filename)
@@ -222,6 +249,11 @@ class File(QtCore.QObject, Item):
             raise OSError
 
     def _saving_finished(self, result=None, error=None):
+        # Handle file removed before save
+        # Result is None if save was skipped
+        if ((self.state == File.REMOVED or self.tagger.stopping)
+            and result is None):
+            return
         old_filename = new_filename = self.filename
         if error is not None:
             self.error = str(error)
@@ -244,11 +276,17 @@ class File(QtCore.QObject, Item):
             for k, v in temp_info.items():
                 self.orig_metadata[k] = v
             self.error = None
-            self.clear_pending()
+            # Force update to ensure file status icon changes immediately after save
+            self.clear_pending(force_update=True)
             self._add_path_to_metadata(self.orig_metadata)
+            self.metadata_images_changed.emit()
 
-        del self.tagger.files[old_filename]
-        self.tagger.files[new_filename] = self
+        if self.state != File.REMOVED:
+            del self.tagger.files[old_filename]
+            self.tagger.files[new_filename] = self
+
+        if self.tagger.stopping:
+            log.debug("Save of %r completed before stopping Picard", self.filename)
 
     def _save(self, filename, metadata):
         """Save the metadata."""
@@ -445,9 +483,13 @@ class File(QtCore.QObject, Item):
                         self.state = File.CHANGED
                     break
         else:
-            self.similarity = 1.0
-            if self.state in (File.CHANGED, File.NORMAL):
-                self.state = File.NORMAL
+            if (self.metadata.images and
+               self.orig_metadata.images != self.metadata.images):
+                self.state = File.CHANGED
+            else:
+                self.similarity = 1.0
+                if self.state in (File.CHANGED, File.NORMAL):
+                    self.state = File.NORMAL
         if signal:
             log.debug("Updating file %r", self)
             if self.item:
@@ -611,9 +653,11 @@ class File(QtCore.QObject, Item):
             self.state = File.PENDING
             self.update()
 
-    def clear_pending(self):
+    def clear_pending(self, force_update=False):
         if self.state == File.PENDING:
             self.state = File.NORMAL
+            self.update()
+        elif force_update:
             self.update()
 
     def iterfiles(self, save=False):

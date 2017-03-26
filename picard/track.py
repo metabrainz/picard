@@ -19,6 +19,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from functools import partial
+from PyQt4 import QtCore
 from picard import config, log
 from picard.metadata import Metadata, run_track_metadata_processors
 from picard.dataobj import DataObject
@@ -27,6 +28,7 @@ from picard.mbxml import recording_to_metadata
 from picard.script import ScriptParser
 from picard.const import VARIOUS_ARTISTS_ID, SILENCE_TRACK_TITLE, DATA_TRACK_TITLE
 from picard.ui.item import Item
+from picard.util.imagelist import ImageList, update_metadata_images
 import traceback
 
 
@@ -44,12 +46,15 @@ class TrackArtist(DataObject):
 
 class Track(DataObject, Item):
 
+    metadata_images_changed = QtCore.pyqtSignal()
+
     def __init__(self, id, album=None):
         DataObject.__init__(self, id)
         self.album = album
         self.linked_files = []
         self.num_linked_files = 0
         self.metadata = Metadata()
+        self.orig_metadata = Metadata()
         self._track_artists = []
 
     def __repr__(self):
@@ -61,6 +66,7 @@ class Track(DataObject, Item):
             self.num_linked_files += 1
         self.album._add_file(self, file)
         self.update_file_metadata(file)
+        file.metadata_images_changed.connect(self.update_orig_metadata_images)
 
     def update_file_metadata(self, file):
         if file not in self.linked_files:
@@ -78,11 +84,13 @@ class Track(DataObject, Item):
         self.num_linked_files -= 1
         file.copy_metadata(file.orig_metadata)
         self.album._remove_file(self, file)
+        file.metadata_images_changed.disconnect(self.update_orig_metadata_images)
         self.update()
 
     def update(self):
         if self.item:
             self.item.update()
+        self.update_orig_metadata_images()
 
     def iterfiles(self, save=False):
         for file in self.linked_files:
@@ -110,7 +118,7 @@ class Track(DataObject, Item):
         return True
 
     def can_view_info(self):
-        return self.num_linked_files == 1
+        return self.num_linked_files == 1 or self.metadata.images
 
     def column(self, column):
         m = self.metadata
@@ -216,6 +224,19 @@ class Track(DataObject, Item):
         if ignore_tags:
             tags = [s.strip().lower() for s in ignore_tags.split(',')]
         return tags
+
+    def update_orig_metadata_images(self):
+        update_metadata_images(self)
+
+    def keep_original_images(self):
+        for file in self.linked_files:
+            file.keep_original_images()
+        if self.linked_files:
+            self.update_orig_metadata_images()
+            self.metadata.images = self.orig_metadata.images[:]
+        else:
+            self.metadata.images = []
+        self.update()
 
 
 class NonAlbumTrack(Track):

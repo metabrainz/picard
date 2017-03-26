@@ -32,6 +32,7 @@ from picard.track import Track
 from picard.script import ScriptParser
 from picard.ui.item import Item
 from picard.util import format_time, mbid_validate
+from picard.util.imagelist import ImageList, update_metadata_images
 from picard.util.textencoding import asciipunct
 from picard.cluster import Cluster
 from picard.collection import add_release_to_user_collections
@@ -58,6 +59,7 @@ class Album(DataObject, Item):
     def __init__(self, id, discid=None):
         DataObject.__init__(self, id)
         self.metadata = Metadata()
+        self.orig_metadata = Metadata()
         self.tracks = []
         self.loaded = False
         self.load_task = None
@@ -71,6 +73,7 @@ class Album(DataObject, Item):
         self.errors = []
         self.status = None
         self._album_artists = []
+        self.update_metadata_images_enabled = True
 
     def __repr__(self):
         return '<Album %s %r>' % (self.id, self.metadata[u"album"])
@@ -82,6 +85,9 @@ class Album(DataObject, Item):
         if not save:
             for file in self.unmatched_files.iterfiles():
                 yield file
+
+    def enable_update_metadata_images(self, enabled):
+        self.update_metadata_images_enabled = enabled
 
     def append_album_artist(self, id):
         """Append artist id to the list of album artists
@@ -254,6 +260,7 @@ class Album(DataObject, Item):
             self._tracks_loaded = True
 
         if not self._requests:
+            self.enable_update_metadata_images(False)
             # Prepare parser for user's script
             if config.setting["enable_tagger_scripts"]:
                 for s_pos, s_name, s_enabled, s_text in config.setting["list_of_scripts"]:
@@ -275,6 +282,7 @@ class Album(DataObject, Item):
                         self._new_metadata.strip_whitespace()
 
             for track in self.tracks:
+                track.metadata_images_changed.connect(self.update_metadata_images)
                 for file in list(track.linked_files):
                     file.move(self.unmatched_files)
             self.metadata = self._new_metadata
@@ -284,6 +292,7 @@ class Album(DataObject, Item):
             self.loaded = True
             self.status = None
             self.match_files(self.unmatched_files.files)
+            self.enable_update_metadata_images(True)
             self.update()
             self.tagger.window.set_statusbar_message(
                 N_('Album %(id)s loaded: %(artist)s - %(album)s'),
@@ -382,10 +391,14 @@ class Album(DataObject, Item):
     def _add_file(self, track, file):
         self._files += 1
         self.update(update_tracks=False)
+        file.metadata_images_changed.connect(self.update_metadata_images)
+        self.update_metadata_images()
 
     def _remove_file(self, track, file):
         self._files -= 1
         self.update(update_tracks=False)
+        file.metadata_images_changed.disconnect(self.update_metadata_images)
+        self.update_metadata_images()
 
     def match_files(self, files, use_recordingid=True):
         """Match files to tracks on this album, based on metadata similarity or recordingid."""
@@ -455,7 +468,7 @@ class Album(DataObject, Item):
         return True
 
     def can_view_info(self):
-        return (self.loaded and self.metadata and self.metadata.images) or self.errors
+        return (self.loaded and (self.metadata.images or self.orig_metadata.images)) or self.errors
 
     def is_album_like(self):
         return True
@@ -479,6 +492,8 @@ class Album(DataObject, Item):
         for track in self.tracks:
             if not track.is_complete():
                 return False
+        if self.get_num_unmatched_files():
+            return False
         else:
             return True
 
@@ -517,8 +532,21 @@ class Album(DataObject, Item):
                 unsaved = self.get_num_unsaved_files()
                 if unsaved:
                     text += '; %d*' % (unsaved,)
-                text += ungettext("; %i image", "; %i images",
-                                  len(self.metadata.images)) % len(self.metadata.images)
+                # CoverArt.set_metadata uses the orig_metadata.images if metadata.images is empty
+                # in order to show existing cover art if there's no cover art for a release. So
+                # we do the same here in order to show the number of images consistently.
+                if self.metadata.images:
+                    metadata = self.metadata
+                else:
+                    metadata = self.orig_metadata
+
+                number_of_images = len(metadata.images)
+                if getattr(metadata, 'has_common_images', True):
+                    text += ungettext("; %i image", "; %i images",
+                                      number_of_images) % number_of_images
+                else:
+                    text += ungettext("; %i image not in all tracks", "; %i different images among tracks",
+                                      number_of_images) % number_of_images
                 return text + ')'
             else:
                 return title
@@ -549,6 +577,23 @@ class Album(DataObject, Item):
             self.id = mbid
             self.tagger.albums[mbid] = self
             self.load(priority=True, refresh=True)
+
+    def update_metadata_images(self):
+        if not self.update_metadata_images_enabled:
+            return
+
+        update_metadata_images(self)
+
+        self.update(False)
+
+    def keep_original_images(self):
+        self.enable_update_metadata_images(False)
+        for track in self.tracks:
+            track.keep_original_images()
+        for file in list(self.unmatched_files.files):
+            file.keep_original_images()
+        self.enable_update_metadata_images(True)
+        self.update_metadata_images()
 
 
 class NatAlbum(Album):

@@ -31,6 +31,7 @@ from picard.metadata import Metadata
 from picard.similarity import similarity
 from picard.ui.item import Item
 from picard.util import format_time, album_artist_from_path
+from picard.util.imagelist import ImageList, update_metadata_images
 from picard.const import QUERY_LIMIT
 
 
@@ -64,14 +65,23 @@ class Cluster(QtCore.QObject, Item):
     def __len__(self):
         return len(self.files)
 
+    def _update_related_album(self):
+        if self.related_album:
+            self.related_album.update_metadata_images()
+            self.related_album.update()
+
     def add_files(self, files):
         for file in files:
             self.metadata.length += file.metadata.length
             file._move(self)
             file.update(signal=False)
+            cover = file.metadata.get_single_front_image()
+            if cover and cover[0] not in self.metadata.images:
+                self.metadata.append_image(cover[0])
         self.files.extend(files)
         self.metadata['totaltracks'] = len(self.files)
         self.item.add_files(files)
+        self._update_related_album()
 
     def add_file(self, file):
         self.metadata.length += file.metadata.length
@@ -79,7 +89,11 @@ class Cluster(QtCore.QObject, Item):
         self.metadata['totaltracks'] = len(self.files)
         file._move(self)
         file.update(signal=False)
+        cover = file.metadata.get_single_front_image()
+        if cover and cover[0] not in self.metadata.images:
+            self.metadata.append_image(cover[0])
         self.item.add_file(file)
+        self._update_related_album()
 
     def remove_file(self, file):
         self.metadata.length -= file.metadata.length
@@ -88,6 +102,8 @@ class Cluster(QtCore.QObject, Item):
         self.item.remove_file(file)
         if not self.special and self.get_num_files() == 0:
             self.tagger.remove_cluster(self)
+        self.update_metadata_images()
+        self._update_related_album()
 
     def update(self):
         if self.item:
@@ -263,6 +279,9 @@ class Cluster(QtCore.QObject, Item):
 
             yield album_name, artist_name, (files[i] for i in album)
 
+    def update_metadata_images(self):
+        update_metadata_images(self)
+
 
 class UnmatchedFiles(Cluster):
 
@@ -294,6 +313,9 @@ class UnmatchedFiles(Cluster):
 
     def can_view_info(self):
         return False
+
+    def can_remove(self):
+        return True
 
 
 class ClusterList(list, Item):

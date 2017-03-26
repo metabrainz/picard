@@ -49,11 +49,9 @@ _orig_shutil_copystat = shutil.copystat
 shutil.copystat = _patched_shutil_copystat
 
 import picard.resources
-import picard.plugins
 from picard.i18n import setup_gettext
 
-from picard import (PICARD_APP_NAME, PICARD_ORG_NAME,
-                    PICARD_FANCY_VERSION_STR, __version__,
+from picard import (PICARD_APP_NAME, PICARD_ORG_NAME, PICARD_FANCY_VERSION_STR,
                     log, acoustid, config)
 from picard.album import Album, NatAlbum
 from picard.browser.browser import BrowserIntegration
@@ -107,7 +105,7 @@ class Tagger(QtGui.QApplication):
         QtGui.QApplication.__init__(self, ['MusicBrainz-Picard'] + unparsed_args)
         self.__class__.__instance = self
 
-        config._setup(self)
+        config._setup(self, picard_args.config_file)
 
         self._cmdline_files = picard_args.FILE
         self._autoupdate = autoupdate
@@ -214,6 +212,7 @@ class Tagger(QtGui.QApplication):
         self.nats = None
         self.window = MainWindow()
         self.exit_cleanup = []
+        self.stopping = False
 
     def register_cleanup(self, func):
         self.exit_cleanup.append(func)
@@ -269,15 +268,15 @@ class Tagger(QtGui.QApplication):
             self.nats.update()
 
     def exit(self):
-        log.debug("exit")
+        log.debug("Picard stopping")
         self.stopping = True
         self._acoustid.done()
         self.thread_pool.waitForDone()
         self.save_thread_pool.waitForDone()
         self.browser_integration.stop()
         self.xmlws.stop()
-        for f in self.exit_cleanup:
-            f()
+        self.run_cleanup()
+        QtCore.QCoreApplication.processEvents()
 
     def _run_init(self):
         if self._cmdline_files:
@@ -334,6 +333,9 @@ class Tagger(QtGui.QApplication):
                 self.analyze([file])
 
     def move_files(self, files, target):
+        if target is None:
+            log.debug("Aborting move since target is invalid")
+            return
         if isinstance(target, (Track, Cluster)):
             for file in files:
                 file.move(target)
@@ -602,6 +604,8 @@ class Tagger(QtGui.QApplication):
                     }
                 )
                 self.remove_album(obj)
+            elif isinstance(obj, UnmatchedFiles):
+                files.extend(list(obj.files))
             elif isinstance(obj, Cluster):
                 self.remove_cluster(obj)
         if files:
@@ -735,6 +739,9 @@ def process_picard_args():
     parser = argparse.ArgumentParser(
         epilog="If one of the filenames begins with a hyphen, use -- to separate the options from the filenames."
     )
+    parser.add_argument("-c", "--config-file", action='store',
+                        default=None,
+                        help="location of the configuration file")
     parser.add_argument("-d", "--debug", action='store_true',
                         help="enable debug-level logging")
     parser.add_argument('-v', '--version', action='store_true',

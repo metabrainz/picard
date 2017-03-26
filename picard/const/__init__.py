@@ -48,7 +48,7 @@ MUSICBRAINZ_OAUTH_CLIENT_SECRET = 'xIsvXbIuntaLuRRhzuazOA'
 
 # Cover art archive URL and port
 CAA_HOST = "coverartarchive.org"
-CAA_PORT = 80
+CAA_PORT = 443
 
 # URLs
 PICARD_URLS = {
@@ -113,3 +113,6 @@ PLUGINS_API = {
 
 # Default query limit
 QUERY_LIMIT = 25
+
+# Maximum number of covers to draw in a stack in CoverArtThumbnail
+MAX_COVERS_TO_STACK = 4

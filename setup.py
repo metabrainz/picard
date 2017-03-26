@@ -8,6 +8,11 @@ import os
 import re
 import sys
 import subprocess
+import sip
+
+sip.setapi("QString", 2)
+sip.setapi("QVariant", 2)
+
 from picard import __version__, compat
 
 if sys.version_info < (2, 7):
@@ -55,7 +60,7 @@ exclude_modules = [
     'distutils', 'unittest',
     'bdb', 'calendar', 'difflib', 'doctest', 'dummy_thread', 'gzip',
     'optparse', 'pdb', 'plistlib', 'pyexpat', 'quopri', 'repr',
-    'stringio', 'tarfile', 'uu', 'zipfile'
+    'stringio', 'tarfile', 'uu'
 ]
 
 if do_py2app:
@@ -422,14 +427,14 @@ try:
             # cannot use super() with old-style parent class
             babel.extract_messages.initialize_options(self)
             self.output_file = 'po/picard.pot'
-            self.input_dirs = 'contrib, picard'
+            self.input_dirs = 'picard'
             if self.input_dirs and input_dirs_workaround:
                 self._input_dirs = self.input_dirs
 
         def finalize_options(self):
             babel.extract_messages.finalize_options(self)
             if input_dirs_workaround and self._input_dirs:
-                self.input_dirs = re.split(',\s*', self._input_dirs)
+                self.input_dirs = re.split(r',\s*', self._input_dirs)
 
 except ImportError:
     class picard_regen_pot_file(Command):
@@ -707,7 +712,7 @@ try:
 
             py2exe.run(self)
             print("*** creating the NSIS setup script ***")
-            pathname = "installer\picard-setup.nsi"
+            pathname = r"installer\picard-setup.nsi"
             generate_file(pathname + ".in", pathname,
                           {'name': 'MusicBrainz Picard',
                            'version': __version__,

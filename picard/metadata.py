@@ -25,6 +25,7 @@ from picard.util import (
     linear_combination_of_weights,
 )
 from picard.mbxml import artist_credit_from_node
+from picard.util.imagelist import ImageList
 
 MULTI_VALUED_JOINER = '; '
 
@@ -45,11 +46,19 @@ class Metadata(dict):
 
     def __init__(self):
         super(Metadata, self).__init__()
-        self.images = []
+        self.images = ImageList()
         self.deleted_tags = set()
         self.length = 0
 
+    def __nonzero__(self):
+        return len(self) or len(self.images)
+
     def append_image(self, coverartimage):
+        self.images.append(coverartimage)
+
+    def set_front_image(self, coverartimage):
+        # First remove all front images
+        self.images[:] = [img for img in self.images if not img.is_front_image()]
         self.images.append(coverartimage)
 
     @property
@@ -233,7 +242,7 @@ class Metadata(dict):
 
     def clear(self):
         dict.clear(self)
-        self.images = []
+        self.images = ImageList()
         self.length = 0
         self.deleted_tags = set()
 

@@ -98,6 +98,7 @@ class InterfaceOptionsPage(OptionsPage):
         config.TextOption("setting", "ui_language", u""),
         config.BoolOption("setting", "starting_directory", False),
         config.TextOption("setting", "starting_directory_path", ""),
+        config.TextOption("setting", "load_image_behavior", "append"),
         config.ListOption("setting", "toolbar_layout", [
             'add_directory_action',
             'add_files_action',
@@ -274,6 +275,7 @@ class InterfaceOptionsPage(OptionsPage):
             widget = widget.parent()
         # Call the main window's create toolbar method
         widget.create_action_toolbar()
+        widget.set_tab_order()
 
 
 class ToolbarListItem(QtGui.QListWidgetItem):

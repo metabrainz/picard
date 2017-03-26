@@ -1,23 +1,24 @@
 # Translators:
 # Translators:
 # Alex Luís Silva <alex.mooca@hotmail.com>, 2015
+# Daniel Biasotto <biasotto@tuta.io>, 2017
 # Eduardo Bastos <eduardorochacg@gmail.com>, 2012
 # Jefferson Gomes <jefferson.mg2@hotmail.com>, 2016
 # João Miguel Soares <joaomiguel32@live.com>, 2016
 # lampih <lampih@gmail.com>, 2012
 # Lucas de Jesus <lucasdj98@gmail.com>, 2016
 # Lucas Gomes <x8lucas8x@gmail.com>, 2012
-# Marco Tulio Costa <mmarcottulio@gmail.com>, 2012
+# Marco Costa <mmarcottulio@gmail.com>, 2012
 # Marcus Vinícius Marques, 2014
-# Marco Tulio Costa <mmarcottulio@gmail.com>, 2012
+# Marco Costa <mmarcottulio@gmail.com>, 2012
 # rafaelbrandao <rblcin@gmail.com>, 2012
 # davitf <transifex@davitf.com>, 2012
 # Lucas Gomes <x8lucas8x@gmail.com>, 2012
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2017-01-16 20:46+0000\n"
-"Last-Translator: Laurent Monin <i18n@norz.org>\n"
+"PO-Revision-Date: 2017-02-11 04:56+0000\n"
+"Last-Translator: Marco Costa <mmarcottulio@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/musicbrainz/musicbrainz/language/pt_BR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -31,19 +32,19 @@ msgid ""
 "\"Motet\" is a term that applies to different types of (usually "
 "unaccompanied) choral works. What exactly is a motet depends quite a bit on "
 "the period."
-msgstr "\"Moteto\" é um termo que se aplica a diferentes tipos de (geralmente desacompanhadas) palavras de coral. O que é exatamente um moteto depende um pouco do período."
+msgstr "\"Moteto\" é um termo que se aplica a diferentes tipos de obras de coral (geralmente não-acompanhadas). O que é exatamente um moteto depende um pouco do período."
 
 #: DB:work_type/description:5
 msgctxt "work_type"
 msgid ""
 "\"Sonata\" is a general term used to describe small scale (very often solo "
 "or solo + keyboard) instrumental works, initially in baroque music."
-msgstr "\"Sonata\" é geralmente um termo usado para descrever trabalhos instrumentais em pequena escala (frequentemente solo ou solo + teclados), inicialmente na musica barroca."
+msgstr "\"Sonata\" é um termo geral usado para descrever trabalhos instrumentais em pequena escala (frequentemente solo ou solo + teclados), inicialmente na musica barroca."
 
 #: DB:medium_format/name:54
 msgctxt "medium_format"
 msgid "10\" Shellac"
-msgstr ""
+msgstr "Goma-laca 10\""
 
 #: DB:medium_format/name:30
 msgctxt "medium_format"
@@ -53,7 +54,7 @@ msgstr "Vinil de 10 polegadas"
 #: DB:medium_format/name:55
 msgctxt "medium_format"
 msgid "12\" Shellac"
-msgstr ""
+msgstr "Goma-laca 12\""
 
 #: DB:medium_format/name:31
 msgctxt "medium_format"
@@ -73,7 +74,7 @@ msgstr "Vinil flexível de 7 polegadas"
 #: DB:medium_format/name:56
 msgctxt "medium_format"
 msgid "7\" Shellac"
-msgstr ""
+msgstr "Goma-laca 7\""
 
 #: DB:medium_format/name:29
 msgctxt "medium_format"
@@ -95,17 +96,17 @@ msgctxt "medium_format"
 msgid ""
 "90 rpm, vertical-cut shellac discs, produced by the Pathé label from 1906 to"
 " 1932."
-msgstr ""
+msgstr "Discos de goma-laca verticalmente cortados, de 90 rpm, produzidos pela gravadora Pathé de 1906 à 1932."
 
 #: DB:work_attribute_type_allowed_value/value:794
 msgctxt "work_attribute_type_allowed_value"
 msgid "A Dorian"
-msgstr ""
+msgstr "Lá Dórico"
 
 #: DB:work_attribute_type_allowed_value/value:806
 msgctxt "work_attribute_type_allowed_value"
 msgid "A Mixolydian"
-msgstr ""
+msgstr "Lá Mixolídio"
 
 #: DB:work_type/description:2
 msgctxt "work_type"
@@ -146,7 +147,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:28
 msgctxt "work_attribute_type_allowed_value"
 msgid "A major"
-msgstr "Uma maioria"
+msgstr "Lá maior"
 
 #: DB:work_type/description:8
 msgctxt "work_type"
@@ -167,7 +168,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:29
 msgctxt "work_attribute_type_allowed_value"
 msgid "A minor"
-msgstr "Uma minoria"
+msgstr "Lá menor"
 
 #: DB:work_type/description:13
 msgctxt "work_type"
@@ -350,17 +351,17 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:26
 msgctxt "work_attribute_type_allowed_value"
 msgid "A-flat major"
-msgstr ""
+msgstr "Lá bemol maior"
 
 #: DB:work_attribute_type_allowed_value/value:27
 msgctxt "work_attribute_type_allowed_value"
 msgid "A-flat minor"
-msgstr ""
+msgstr "Lá bemol menor"
 
 #: DB:work_attribute_type_allowed_value/value:30
 msgctxt "work_attribute_type_allowed_value"
 msgid "A-sharp minor"
-msgstr ""
+msgstr "Lá sustenido menor"
 
 #: DB:work_attribute_type/name:23
 msgctxt "work_attribute_type"
@@ -755,32 +756,32 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:795
 msgctxt "work_attribute_type_allowed_value"
 msgid "B Dorian"
-msgstr ""
+msgstr "Si Dórico"
 
 #: DB:work_attribute_type_allowed_value/value:807
 msgctxt "work_attribute_type_allowed_value"
 msgid "B Mixolydian"
-msgstr ""
+msgstr "Si Mixolídio"
 
 #: DB:work_attribute_type_allowed_value/value:33
 msgctxt "work_attribute_type_allowed_value"
 msgid "B major"
-msgstr ""
+msgstr "Si maior"
 
 #: DB:work_attribute_type_allowed_value/value:34
 msgctxt "work_attribute_type_allowed_value"
 msgid "B minor"
-msgstr ""
+msgstr "Si menor"
 
 #: DB:work_attribute_type_allowed_value/value:31
 msgctxt "work_attribute_type_allowed_value"
 msgid "B-flat major"
-msgstr ""
+msgstr "Si bemol maior"
 
 #: DB:work_attribute_type_allowed_value/value:32
 msgctxt "work_attribute_type_allowed_value"
 msgid "B-flat minor"
-msgstr ""
+msgstr "Si bemol menor"
 
 #: DB:work_attribute_type/name:7
 msgctxt "work_attribute_type"
@@ -1062,37 +1063,37 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:789
 msgctxt "work_attribute_type_allowed_value"
 msgid "C Dorian"
-msgstr ""
+msgstr "Dó Dórico"
 
 #: DB:work_attribute_type_allowed_value/value:801
 msgctxt "work_attribute_type_allowed_value"
 msgid "C Mixolydian"
-msgstr ""
+msgstr "Dó MIxolídio"
 
 #: DB:work_attribute_type_allowed_value/value:2
 msgctxt "work_attribute_type_allowed_value"
 msgid "C major"
-msgstr ""
+msgstr "Dó maior"
 
 #: DB:work_attribute_type_allowed_value/value:3
 msgctxt "work_attribute_type_allowed_value"
 msgid "C minor"
-msgstr ""
+msgstr "Dó menor"
 
 #: DB:work_attribute_type_allowed_value/value:1
 msgctxt "work_attribute_type_allowed_value"
 msgid "C-flat major"
-msgstr ""
+msgstr "Dó bemol maior"
 
 #: DB:work_attribute_type_allowed_value/value:4
 msgctxt "work_attribute_type_allowed_value"
 msgid "C-sharp major"
-msgstr ""
+msgstr "Dó sustenido maior"
 
 #: DB:work_attribute_type_allowed_value/value:5
 msgctxt "work_attribute_type_allowed_value"
 msgid "C-sharp minor"
-msgstr ""
+msgstr "Dó sustenido menor"
 
 #: DB:work_attribute_type/name:19
 msgctxt "work_attribute_type"
@@ -1318,37 +1319,37 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:790
 msgctxt "work_attribute_type_allowed_value"
 msgid "D Dorian"
-msgstr ""
+msgstr "Ré Dórico"
 
 #: DB:work_attribute_type_allowed_value/value:802
 msgctxt "work_attribute_type_allowed_value"
 msgid "D Mixolydian"
-msgstr ""
+msgstr "Ré Mixolídio"
 
 #: DB:work_attribute_type_allowed_value/value:8
 msgctxt "work_attribute_type_allowed_value"
 msgid "D major"
-msgstr ""
+msgstr "Ré maior"
 
 #: DB:work_attribute_type_allowed_value/value:9
 msgctxt "work_attribute_type_allowed_value"
 msgid "D minor"
-msgstr ""
+msgstr "Ré menor"
 
 #: DB:work_attribute_type_allowed_value/value:6
 msgctxt "work_attribute_type_allowed_value"
 msgid "D-flat major"
-msgstr ""
+msgstr "Ré bemol maior"
 
 #: DB:work_attribute_type_allowed_value/value:7
 msgctxt "work_attribute_type_allowed_value"
 msgid "D-flat minor"
-msgstr ""
+msgstr "Ré bemol menor"
 
 #: DB:work_attribute_type_allowed_value/value:10
 msgctxt "work_attribute_type_allowed_value"
 msgid "D-sharp minor"
-msgstr ""
+msgstr "Ré sustenido menor"
 
 #: DB:medium_format/name:11
 msgctxt "medium_format"
@@ -1553,7 +1554,7 @@ msgstr "Digipak"
 #: DB:medium_format/name:12
 msgctxt "medium_format"
 msgid "Digital Media"
-msgstr "Mídia Digitalk"
+msgstr "Mídia Digital"
 
 #: DB:work_attribute_type_allowed_value/value:345
 msgctxt "work_attribute_type_allowed_value"
@@ -1633,17 +1634,17 @@ msgstr "DualDisc"
 #: DB:medium_format/name:67
 msgctxt "medium_format"
 msgid "DualDisc (CD side)"
-msgstr ""
+msgstr "DualDisc (lado do CD)"
 
 #: DB:medium_format/name:65
 msgctxt "medium_format"
 msgid "DualDisc (DVD-Audio side)"
-msgstr ""
+msgstr "DualDisc (lado do DVD de Áudio)"
 
 #: DB:medium_format/name:66
 msgctxt "medium_format"
 msgid "DualDisc (DVD-Video side)"
-msgstr ""
+msgstr "DualDisc (lado do DVD de Vídeo)"
 
 #: DB:work_attribute_type_allowed_value/value:612
 msgctxt "work_attribute_type_allowed_value"
@@ -1733,37 +1734,37 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:791
 msgctxt "work_attribute_type_allowed_value"
 msgid "E Dorian"
-msgstr ""
+msgstr "Mi Dórico"
 
 #: DB:work_attribute_type_allowed_value/value:803
 msgctxt "work_attribute_type_allowed_value"
 msgid "E Mixolydian"
-msgstr ""
+msgstr "Mi Mixolídio"
 
 #: DB:work_attribute_type_allowed_value/value:13
 msgctxt "work_attribute_type_allowed_value"
 msgid "E major"
-msgstr ""
+msgstr "Mi maior"
 
 #: DB:work_attribute_type_allowed_value/value:14
 msgctxt "work_attribute_type_allowed_value"
 msgid "E minor"
-msgstr ""
+msgstr "Mi menor"
 
 #: DB:work_attribute_type_allowed_value/value:11
 msgctxt "work_attribute_type_allowed_value"
 msgid "E-flat major"
-msgstr ""
+msgstr "Mi bemol maior"
 
 #: DB:work_attribute_type_allowed_value/value:12
 msgctxt "work_attribute_type_allowed_value"
 msgid "E-flat minor"
-msgstr ""
+msgstr "Mi bemol menor"
 
 #: DB:work_attribute_type_allowed_value/value:15
 msgctxt "work_attribute_type_allowed_value"
 msgid "E-sharp minor"
-msgstr ""
+msgstr "Mi sustenido menor"
 
 #: DB:release_group_primary_type/name:3
 msgctxt "release_group_primary_type"
@@ -1878,37 +1879,37 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:792
 msgctxt "work_attribute_type_allowed_value"
 msgid "F Dorian"
-msgstr ""
+msgstr "Fá Dórico"
 
 #: DB:work_attribute_type_allowed_value/value:804
 msgctxt "work_attribute_type_allowed_value"
 msgid "F Mixolydian"
-msgstr ""
+msgstr "Fá MIxolídio"
 
 #: DB:work_attribute_type_allowed_value/value:17
 msgctxt "work_attribute_type_allowed_value"
 msgid "F major"
-msgstr ""
+msgstr "Fá maior"
 
 #: DB:work_attribute_type_allowed_value/value:18
 msgctxt "work_attribute_type_allowed_value"
 msgid "F minor"
-msgstr ""
+msgstr "Fá menor"
 
 #: DB:work_attribute_type_allowed_value/value:16
 msgctxt "work_attribute_type_allowed_value"
 msgid "F-flat major"
-msgstr ""
+msgstr "Fá bemol maior"
 
 #: DB:work_attribute_type_allowed_value/value:19
 msgctxt "work_attribute_type_allowed_value"
 msgid "F-sharp major"
-msgstr ""
+msgstr "Fá sustenido maior"
 
 #: DB:work_attribute_type_allowed_value/value:20
 msgctxt "work_attribute_type_allowed_value"
 msgid "F-sharp minor"
-msgstr ""
+msgstr "Fá sustenido menor"
 
 #: DB:work_attribute_type_allowed_value/value:731
 msgctxt "work_attribute_type_allowed_value"
@@ -2036,37 +2037,37 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:793
 msgctxt "work_attribute_type_allowed_value"
 msgid "G Dorian"
-msgstr ""
+msgstr "Sol Dórico"
 
 #: DB:work_attribute_type_allowed_value/value:805
 msgctxt "work_attribute_type_allowed_value"
 msgid "G Mixolydian"
-msgstr ""
+msgstr "Sol Mixolídio"
 
 #: DB:work_attribute_type_allowed_value/value:22
 msgctxt "work_attribute_type_allowed_value"
 msgid "G major"
-msgstr ""
+msgstr "Sol maior"
 
 #: DB:work_attribute_type_allowed_value/value:23
 msgctxt "work_attribute_type_allowed_value"
 msgid "G minor"
-msgstr ""
+msgstr "Sol menor"
 
 #: DB:work_attribute_type_allowed_value/value:21
 msgctxt "work_attribute_type_allowed_value"
 msgid "G-flat major"
-msgstr ""
+msgstr "Sol bemol maior"
 
 #: DB:work_attribute_type_allowed_value/value:24
 msgctxt "work_attribute_type_allowed_value"
 msgid "G-sharp major"
-msgstr ""
+msgstr "Sol sustenido maior"
 
 #: DB:work_attribute_type_allowed_value/value:25
 msgctxt "work_attribute_type_allowed_value"
 msgid "G-sharp minor"
-msgstr ""
+msgstr "Sol sustenido menor"
 
 #: DB:work_attribute_type/name:9
 msgctxt "work_attribute_type"
@@ -2633,7 +2634,7 @@ msgstr ""
 #: DB:area_type/name:6
 msgctxt "area_type"
 msgid "Island"
-msgstr ""
+msgstr "Ilha"
 
 #: DB:area_type/description:6
 msgctxt "area_type"
@@ -2641,7 +2642,7 @@ msgid ""
 "Island is used for islands and atolls which don't form subdivisions of their"
 " own, e.g. Skye. These are not considered when displaying the parent areas "
 "for a given area."
-msgstr ""
+msgstr "Ilha é usado para ilhas e atóis que não formam subdivisões de si mesmas, e.g. Ilhabela. Essas não são consideradas ao exibir as áreas pai para uma determinada área."
 
 #: DB:work_attribute_type/name:3
 msgctxt "work_attribute_type"
@@ -3026,7 +3027,7 @@ msgstr ""
 #: DB:editor_collection_type/name:10
 msgctxt "collection_type"
 msgid "Label"
-msgstr "Rótulo"
+msgstr "Gravadora"
 
 #: DB:label_alias_type/name:1
 msgctxt "alias_type"
@@ -3251,7 +3252,7 @@ msgstr ""
 #: DB:cover_art_archive.art_type/name:4
 msgctxt "cover_art_type"
 msgid "Medium"
-msgstr "Médio"
+msgstr "Mídia"
 
 #: DB:work_attribute_type_allowed_value/value:176
 msgctxt "work_attribute_type_allowed_value"
@@ -3404,7 +3405,7 @@ msgid ""
 "Municipality is used for small administrative divisions which, for urban "
 "municipalities, often contain a single city and a few surrounding villages. "
 "Rural municipalities typically group several villages together."
-msgstr ""
+msgstr "Municipalidade é usado para pequenas divisões administrativas que, para municipalidades urbanas, frequentemente contêm uma única cidade e algumas vilas ao redor. Municipalidades rurais tipicamente agrupam várias vilas."
 
 #: DB:work_attribute_type_allowed_value/value:645
 msgctxt "work_attribute_type_allowed_value"
@@ -3419,7 +3420,7 @@ msgstr ""
 #: DB:work_type/name:29
 msgctxt "work_type"
 msgid "Musical"
-msgstr ""
+msgstr "Musical"
 
 #: DB:work_type/description:29
 msgctxt "work_type"
@@ -3871,7 +3872,7 @@ msgstr "Outro"
 #: DB:place_type/name:3
 msgctxt "place_type"
 msgid "Other"
-msgstr ""
+msgstr "Outro"
 
 #: DB:release_group_primary_type/name:11
 msgctxt "release_group_primary_type"
@@ -3886,7 +3887,7 @@ msgstr "Outro"
 #: DB:instrument_type/name:5
 msgctxt "instrument_type"
 msgid "Other instrument"
-msgstr ""
+msgstr "Outro instrumento"
 
 #: DB:work_type/name:12
 msgctxt "work_type"
@@ -3986,12 +3987,12 @@ msgstr ""
 #: DB:editor_collection_type/name:11
 msgctxt "collection_type"
 msgid "Place"
-msgstr ""
+msgstr "Local"
 
 #: DB:place_alias_type/name:1
 msgctxt "alias_type"
 msgid "Place name"
-msgstr ""
+msgstr "Nome do local"
 
 #: DB:work_type/name:28
 msgctxt "work_type"
@@ -4226,12 +4227,12 @@ msgstr ""
 #: DB:editor_collection_type/name:1
 msgctxt "collection_type"
 msgid "Release"
-msgstr "Lançamento"
+msgstr "Álbum"
 
 #: DB:series_type/name:2
 msgctxt "series_type"
 msgid "Release"
-msgstr "Lançamento"
+msgstr "Álbum"
 
 #: DB:editor_collection_type/name:13
 msgctxt "collection_type"
@@ -4251,7 +4252,7 @@ msgstr ""
 #: DB:release_alias_type/name:1
 msgctxt "alias_type"
 msgid "Release name"
-msgstr ""
+msgstr "Nome do álbum"
 
 #: DB:place_type/name:6
 msgctxt "place_type"
@@ -4596,14 +4597,14 @@ msgstr ""
 #: DB:medium_format/name:53
 msgctxt "medium_format"
 msgid "Shellac"
-msgstr ""
+msgstr "Goma-laca"
 
 #: DB:medium_format/description:53
 msgctxt "medium_format"
 msgid ""
 "Shellac records were the most predominant type of gramophone record during "
 "the first half of the 20th century."
-msgstr ""
+msgstr "Discos de goma-laca foram o tipo mais predominante de discos de gramofone durante a primeira metade do século XX."
 
 #: DB:work_attribute_type_allowed_value/value:236
 msgctxt "work_attribute_type_allowed_value"
@@ -4720,7 +4721,7 @@ msgstr ""
 #: DB:area_type/name:2
 msgctxt "area_type"
 msgid "Subdivision"
-msgstr ""
+msgstr "Subdivisão"
 
 #: DB:area_type/description:2
 msgctxt "area_type"
@@ -4728,7 +4729,7 @@ msgid ""
 "Subdivision is used for the main administrative divisions of a country, e.g."
 " California, Ontario, Okinawa. These are considered when displaying the "
 "parent areas for a given area."
-msgstr ""
+msgstr "Subdivisão é usado para a principal divisão administrativa de um país, e.g. São Paulo, Texas, Okinawa. Essas são consideradas ao exibir as áreas pai para uma determinada área."
 
 #: DB:work_attribute_type_allowed_value/value:244
 msgctxt "work_attribute_type_allowed_value"

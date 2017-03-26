@@ -281,11 +281,11 @@ class SearchDialog(PicardDialog):
 
     def network_error(self, reply, error):
         error_msg = _("<strong>Following error occurred while fetching results:<br><br></strong>"
-                      "Network request error for %s:<br>%s (QT code %d, HTTP code %s)<br>" % (
+                      "Network request error for %s:<br>%s (QT code %d, HTTP code %s)<br>") % (
                           reply.request().url().toString(QtCore.QUrl.RemoveUserInfo),
                           reply.errorString(),
                           error,
-                          repr(reply.attribute(QtNetwork.QNetworkRequest.HttpStatusCodeAttribute)))
+                          repr(reply.attribute(QtNetwork.QNetworkRequest.HttpStatusCodeAttribute))
                       )
         self.show_error(error_msg, show_retry_button=True)
 

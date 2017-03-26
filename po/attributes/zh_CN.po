@@ -4,14 +4,15 @@
 #   Alastair McKinstry <mckinstry@computer.org>, 2002
 # Alastair McKinstry <mckinstry@computer.org>, 2001
 # Clay Cheng <clay1994@mail.hfut.edu.cn>, 2016
+# Erwin Synth <kingdzy1996@gmail.com>, 2017
 #   Free Software Foundation, Inc., 2002, 2003, 2007, 2008
 # RedHotHeat <gbonner@iol.ie>, 2012
 # RedHotHeat <gbonner@iol.ie>, 2012
 #   LI Daobing <lidaobing@gmail.com>, 2007, 2008, 2009, 2010, 2011
 # LI Daobing <lidaobing@gmail.com>, 2007, 2008, 2009, 2010
-# Lin Xueyuan <767763591@qq.com>, 2016
+# LXY <767763591@qq.com>, 2016
 # 毛瑞盈 <mry_33@163.com>, 2014
-# niklasb <niklas.berglund@gmail.com>, 2016
+# Niklas Berglund <niklas.berglund@gmail.com>, 2016
 #   Tobias Toedter <t.toedter@gmx.net>, 2007
 #   - Wang Jian <lark@linux.net.cn>, 2000
 # YunQiang Su <wzssyqa@gmail.com>, 2011
@@ -19,8 +20,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2017-01-16 20:46+0000\n"
-"Last-Translator: Laurent Monin <i18n@norz.org>\n"
+"PO-Revision-Date: 2017-03-06 17:43+0000\n"
+"Last-Translator: Erwin Synth <kingdzy1996@gmail.com>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/musicbrainz/musicbrainz/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -128,7 +129,7 @@ msgstr ""
 msgctxt "work_type"
 msgid ""
 "A concerto is a musical work for soloist(s) accompanied by an orchestra."
-msgstr ""
+msgstr "“协奏曲”是伴有交响的独奏音乐作品。"
 
 #: DB:event_type/description:4
 msgctxt "event_type"
@@ -253,7 +254,7 @@ msgstr ""
 #: DB:series_type/description:6
 msgctxt "series_type"
 msgid "A series of events."
-msgstr ""
+msgstr "一系列事件"
 
 #: DB:series_type/description:9
 msgctxt "series_type"
@@ -312,7 +313,7 @@ msgctxt "work_type"
 msgid ""
 "A soundtrack is the music that accompanies a film, TV program, videogame, or"
 " even book."
-msgstr ""
+msgstr "原声是指电影、电视节目、游戏或书籍所伴有的音乐。"
 
 #: DB:work_type/description:6
 msgctxt "work_type"
@@ -1781,7 +1782,7 @@ msgstr ""
 #: DB:instrument_type/name:4
 msgctxt "instrument_type"
 msgid "Electronic instrument"
-msgstr ""
+msgstr "电子乐器"
 
 #: DB:medium_format/name:42
 msgctxt "medium_format"
@@ -1811,12 +1812,12 @@ msgstr ""
 #: DB:series_type/name:6
 msgctxt "series_type"
 msgid "Event"
-msgstr ""
+msgstr "事件"
 
 #: DB:event_alias_type/name:1
 msgctxt "alias_type"
 msgid "Event name"
-msgstr ""
+msgstr "事件名称"
 
 #: DB:work_attribute_type_allowed_value/value:729
 msgctxt "work_attribute_type_allowed_value"
@@ -1891,27 +1892,27 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:17
 msgctxt "work_attribute_type_allowed_value"
 msgid "F major"
-msgstr ""
+msgstr "F 大调"
 
 #: DB:work_attribute_type_allowed_value/value:18
 msgctxt "work_attribute_type_allowed_value"
 msgid "F minor"
-msgstr ""
+msgstr "F 小调"
 
 #: DB:work_attribute_type_allowed_value/value:16
 msgctxt "work_attribute_type_allowed_value"
 msgid "F-flat major"
-msgstr ""
+msgstr "降 F 大调"
 
 #: DB:work_attribute_type_allowed_value/value:19
 msgctxt "work_attribute_type_allowed_value"
 msgid "F-sharp major"
-msgstr ""
+msgstr "升 F 大调"
 
 #: DB:work_attribute_type_allowed_value/value:20
 msgctxt "work_attribute_type_allowed_value"
 msgid "F-sharp minor"
-msgstr ""
+msgstr "升 F 小调"
 
 #: DB:work_attribute_type_allowed_value/value:731
 msgctxt "work_attribute_type_allowed_value"
@@ -2049,27 +2050,27 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:22
 msgctxt "work_attribute_type_allowed_value"
 msgid "G major"
-msgstr ""
+msgstr "G 大调"
 
 #: DB:work_attribute_type_allowed_value/value:23
 msgctxt "work_attribute_type_allowed_value"
 msgid "G minor"
-msgstr ""
+msgstr "G 小调"
 
 #: DB:work_attribute_type_allowed_value/value:21
 msgctxt "work_attribute_type_allowed_value"
 msgid "G-flat major"
-msgstr ""
+msgstr "降 G 大调"
 
 #: DB:work_attribute_type_allowed_value/value:24
 msgctxt "work_attribute_type_allowed_value"
 msgid "G-sharp major"
-msgstr ""
+msgstr "升 G 大调"
 
 #: DB:work_attribute_type_allowed_value/value:25
 msgctxt "work_attribute_type_allowed_value"
 msgid "G-sharp minor"
-msgstr ""
+msgstr "升 G 小调"
 
 #: DB:work_attribute_type/name:9
 msgctxt "work_attribute_type"
@@ -2566,12 +2567,12 @@ msgstr ""
 #: DB:place_type/name:5
 msgctxt "place_type"
 msgid "Indoor arena"
-msgstr ""
+msgstr "室内竞技场"
 
 #: DB:editor_collection_type/name:9
 msgctxt "collection_type"
 msgid "Instrument"
-msgstr ""
+msgstr "乐器"
 
 #: DB:instrument_alias_type/name:1
 msgctxt "alias_type"
@@ -2586,7 +2587,7 @@ msgstr "采访"
 #: DB:work_attribute_type_allowed_value/value:427
 msgctxt "work_attribute_type_allowed_value"
 msgid "Irak"
-msgstr ""
+msgstr "伊拉克"
 
 #: DB:work_attribute_type_allowed_value/value:428
 msgctxt "work_attribute_type_allowed_value"
@@ -2601,7 +2602,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:429
 msgctxt "work_attribute_type_allowed_value"
 msgid "Isfahan"
-msgstr ""
+msgstr "伊斯法罕"
 
 #: DB:work_attribute_type_allowed_value/value:430
 msgctxt "work_attribute_type_allowed_value"
@@ -3029,7 +3030,7 @@ msgstr ""
 #: DB:editor_collection_type/name:10
 msgctxt "collection_type"
 msgid "Label"
-msgstr ""
+msgstr "标签"
 
 #: DB:label_alias_type/name:1
 msgctxt "alias_type"
@@ -3084,7 +3085,7 @@ msgstr ""
 #: DB:cover_art_archive.art_type/name:12
 msgctxt "cover_art_type"
 msgid "Liner"
-msgstr ""
+msgstr "线性"
 
 #: DB:release_group_secondary_type/name:6
 msgctxt "release_group_secondary_type"
@@ -3844,7 +3845,7 @@ msgstr "清唱剧"
 #: DB:artist_type/name:5
 msgctxt "artist_type"
 msgid "Orchestra"
-msgstr ""
+msgstr "交响乐"
 
 #: DB:label_type/name:4
 msgctxt "label_type"
@@ -3999,12 +4000,12 @@ msgstr ""
 #: DB:work_type/name:28
 msgctxt "work_type"
 msgid "Play"
-msgstr ""
+msgstr "播放"
 
 #: DB:medium_format/name:45
 msgctxt "medium_format"
 msgid "Playbutton"
-msgstr ""
+msgstr "播放键"
 
 #: DB:work_type/name:21
 msgctxt "work_type"
@@ -4309,7 +4310,7 @@ msgstr ""
 #: DB:series_type/name:9
 msgctxt "series_type"
 msgid "Run"
-msgstr ""
+msgstr "运行"
 
 #: DB:work_attribute_type_allowed_value/value:521
 msgctxt "work_attribute_type_allowed_value"
@@ -4394,7 +4395,7 @@ msgstr ""
 #: DB:medium_format/name:62
 msgctxt "medium_format"
 msgid "SD Card"
-msgstr ""
+msgstr "SD 卡"
 
 #: DB:work_attribute_type/name:8
 msgctxt "work_attribute_type"
@@ -4584,7 +4585,7 @@ msgstr ""
 #: DB:editor_collection_type/name:14
 msgctxt "collection_type"
 msgid "Series"
-msgstr ""
+msgstr "系列"
 
 #: DB:series_alias_type/name:1
 msgctxt "alias_type"
@@ -4703,22 +4704,22 @@ msgstr "演讲"
 #: DB:place_type/name:4
 msgctxt "place_type"
 msgid "Stadium"
-msgstr ""
+msgstr "体育场"
 
 #: DB:cover_art_archive.art_type/name:10
 msgctxt "cover_art_type"
 msgid "Sticker"
-msgstr ""
+msgstr "表情贴纸"
 
 #: DB:instrument_type/name:2
 msgctxt "instrument_type"
 msgid "String instrument"
-msgstr ""
+msgstr "弦乐器"
 
 #: DB:place_type/name:1
 msgctxt "place_type"
 msgid "Studio"
-msgstr ""
+msgstr "工作室"
 
 #: DB:area_type/name:2
 msgctxt "area_type"
@@ -4906,7 +4907,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:668
 msgctxt "work_attribute_type_allowed_value"
 msgid "Tango"
-msgstr ""
+msgstr "探戈"
 
 #: DB:work_attribute_type_allowed_value/value:575
 msgctxt "work_attribute_type_allowed_value"
@@ -5049,7 +5050,7 @@ msgstr ""
 #: DB:release_packaging/description:1
 msgctxt "release_packaging"
 msgid "The traditional CD case, made of hard, brittle plastic."
-msgstr ""
+msgstr "传统 CD 盒由硬脆塑料制成。"
 
 #: DB:work_type/description:23
 msgctxt "work_type"
@@ -5082,12 +5083,12 @@ msgstr ""
 #: DB:cover_art_archive.art_type/name:7
 msgctxt "cover_art_type"
 msgid "Track"
-msgstr ""
+msgstr "音轨"
 
 #: DB:cover_art_archive.art_type/name:9
 msgctxt "cover_art_type"
 msgid "Tray"
-msgstr ""
+msgstr "托盘"
 
 #: DB:work_attribute_type_allowed_value/value:775
 msgctxt "work_attribute_type_allowed_value"
@@ -5324,7 +5325,7 @@ msgstr ""
 #: DB:cover_art_archive.art_type/name:13
 msgctxt "cover_art_type"
 msgid "Watermark"
-msgstr ""
+msgstr "水印"
 
 #: DB:medium_format/name:14
 msgctxt "medium_format"
@@ -5339,7 +5340,7 @@ msgstr ""
 #: DB:editor_collection_type/name:3
 msgctxt "collection_type"
 msgid "Wishlist"
-msgstr ""
+msgstr "愿望单"
 
 #: DB:editor_collection_type/name:15
 msgctxt "collection_type"

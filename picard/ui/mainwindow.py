@@ -33,7 +33,7 @@ from picard.ui.metadatabox import MetadataBox
 from picard.ui.filebrowser import FileBrowser
 from picard.ui.tagsfromfilenames import TagsFromFileNamesDialog
 from picard.ui.options.dialog import OptionsDialog
-from picard.ui.infodialog import FileInfoDialog, AlbumInfoDialog, ClusterInfoDialog
+from picard.ui.infodialog import FileInfoDialog, AlbumInfoDialog, TrackInfoDialog, ClusterInfoDialog
 from picard.ui.infostatus import InfoStatus
 from picard.ui.passworddialog import PasswordDialog, ProxyDialog
 from picard.ui.logview import LogView, HistoryView
@@ -68,6 +68,7 @@ class MainWindow(QtGui.QMainWindow):
         config.Option("persist", "bottom_splitter_state", QtCore.QByteArray()),
         config.BoolOption("persist", "window_maximized", False),
         config.BoolOption("persist", "view_cover_art", True),
+        config.BoolOption("persist", "view_toolbar", True),
         config.BoolOption("persist", "view_file_browser", False),
         config.TextOption("persist", "current_directory", ""),
     ]
@@ -192,6 +193,7 @@ class MainWindow(QtGui.QMainWindow):
             config.persist["window_size"] = self.size()
         config.persist["window_maximized"] = isMaximized
         config.persist["view_cover_art"] = self.show_cover_art_action.isChecked()
+        config.persist["view_toolbar"] = self.show_toolbar_action.isChecked()
         config.persist["view_file_browser"] = self.show_file_browser_action.isChecked()
         config.persist["bottom_splitter_state"] = self.centralWidget().saveState()
         self.file_browser.save_state()
@@ -404,6 +406,12 @@ class MainWindow(QtGui.QMainWindow):
             self.show_cover_art_action.setChecked(True)
         self.show_cover_art_action.triggered.connect(self.show_cover_art)
 
+        self.show_toolbar_action = QtGui.QAction(_(u"&Actions"), self)
+        self.show_toolbar_action.setCheckable(True)
+        if config.persist["view_toolbar"]:
+            self.show_toolbar_action.setChecked(True)
+        self.show_toolbar_action.triggered.connect(self.show_toolbar)
+
         self.search_action = QtGui.QAction(icontheme.lookup('system-search'), _(u"Search"), self)
         self.search_action.setEnabled(False)
         self.search_action.triggered.connect(self.search)
@@ -417,6 +425,7 @@ class MainWindow(QtGui.QMainWindow):
         self.analyze_action = QtGui.QAction(icontheme.lookup('picard-analyze'), _(u"&Scan"), self)
         self.analyze_action.setStatusTip(_(u"Use AcoustID audio fingerprint to identify the files by the actual music, even if they have no metadata"))
         self.analyze_action.setEnabled(False)
+        self.analyze_action.setToolTip(_(u'Identify the file using its AcoustID audio fingerprint'))
         # TR: Keyboard shortcut for "Analyze"
         self.analyze_action.setShortcut(QtGui.QKeySequence(_(u"Ctrl+Y")))
         self.analyze_action.triggered.connect(self.analyze)
@@ -536,7 +545,7 @@ class MainWindow(QtGui.QMainWindow):
         menu.addAction(self.show_file_browser_action)
         menu.addAction(self.show_cover_art_action)
         menu.addSeparator()
-        menu.addAction(self.toolbar_toggle_action)
+        menu.addAction(self.show_toolbar_action)
         menu.addAction(self.search_toolbar_toggle_action)
         menu = self.menuBar().addMenu(_(u"&Options"))
         menu.addAction(self.enable_renaming_action)
@@ -585,7 +594,6 @@ class MainWindow(QtGui.QMainWindow):
             self.removeToolBar(self.toolbar)
         self.toolbar = toolbar = QtGui.QToolBar(_(u"Actions"))
         self.insertToolBar(self.search_toolbar, self.toolbar)
-        self.toolbar_toggle_action = self.toolbar.toggleViewAction()
         self.update_toolbar_style()
         toolbar.setObjectName("main_toolbar")
 
@@ -614,6 +622,7 @@ class MainWindow(QtGui.QMainWindow):
                     button.setMenu(self.cd_lookup_menu)
             elif action == 'separator':
                 toolbar.addSeparator()
+        self.show_toolbar()
 
     def create_search_toolbar(self):
         self.search_toolbar = toolbar = self.addToolBar(_(u"Search"))
@@ -638,27 +647,30 @@ class MainWindow(QtGui.QMainWindow):
         hbox.addWidget(self.search_button)
         toolbar.addWidget(search_panel)
 
-
     def set_tab_order(self):
         tab_order = self.setTabOrder
         tw = self.toolbar.widgetForAction
+        prev_action = None
+        current_action = None
+        # Setting toolbar widget tab-orders for accessibility
+        for action in config.setting['toolbar_layout']:
+            if action != 'separator':
+                try:
+                    current_action = tw(getattr(self, action))
+                except AttributeError:
+                    # No need to log warnings since we have already
+                    # done it once in create_toolbar
+                    pass
 
-        # toolbar
-        tab_order(tw(self.add_directory_action), tw(self.add_files_action))
-        tab_order(tw(self.add_files_action), tw(self.play_file_action))
-        tab_order(tw(self.play_file_action), tw(self.save_action))
-        tab_order(tw(self.save_action), tw(self.submit_acoustid_action))
-        tab_order(tw(self.submit_acoustid_action), tw(self.cd_lookup_action))
-        tab_order(tw(self.cd_lookup_action), tw(self.cluster_action))
-        tab_order(tw(self.cluster_action), tw(self.autotag_action))
-        tab_order(tw(self.autotag_action), tw(self.analyze_action))
-        tab_order(tw(self.analyze_action), tw(self.view_info_action))
-        tab_order(tw(self.view_info_action), tw(self.remove_action))
-        tab_order(tw(self.remove_action), tw(self.browser_lookup_action))
-        tab_order(tw(self.browser_lookup_action), self.search_combo)
+            if prev_action is not None and prev_action != current_action:
+                tab_order(prev_action, current_action)
+
+            prev_action = current_action
+
+        tab_order(prev_action, self.search_combo)
         tab_order(self.search_combo, self.search_edit)
         tab_order(self.search_edit, self.search_button)
-        # panels
+        # Panels
         tab_order(self.search_button, self.file_browser)
         tab_order(self.file_browser, self.panel.views[0])
         tab_order(self.panel.views[0], self.panel.views[1])
@@ -723,7 +735,7 @@ class MainWindow(QtGui.QMainWindow):
 
         dir_count = len(dir_list)
         if dir_count:
-            parent = os.path.dirname(dir_list[0])
+            parent = os.path.dirname(dir_list[0]) if dir_count > 1 else dir_list[0]
             config.persist["current_directory"] = parent
             if dir_count > 1:
                 self.set_statusbar_message(
@@ -825,16 +837,20 @@ class MainWindow(QtGui.QMainWindow):
         dialog.show_similar_albums(obj)
         dialog.exec_()
 
-    def view_info(self):
+    def view_info(self, default_tab=0):
         if isinstance(self.selected_objects[0], Album):
             album = self.selected_objects[0]
             dialog = AlbumInfoDialog(album, self)
         elif isinstance(self.selected_objects[0], Cluster):
             cluster = self.selected_objects[0]
             dialog = ClusterInfoDialog(cluster, self)
+        elif isinstance(self.selected_objects[0], Track):
+            track = self.selected_objects[0]
+            dialog = TrackInfoDialog(track, self)
         else:
             file = self.tagger.get_files_from_objects(self.selected_objects)[0]
             dialog = FileInfoDialog(file, self)
+        dialog.ui.tabWidget.setCurrentIndex(default_tab)
         dialog.exec_()
 
     def cluster(self):
@@ -899,6 +915,7 @@ class MainWindow(QtGui.QMainWindow):
         self.update_actions()
 
         metadata = None
+        orig_metadata = None
         obj = None
 
         # Clear any existing status bar messages
@@ -908,6 +925,7 @@ class MainWindow(QtGui.QMainWindow):
             obj = list(objects)[0]
             if isinstance(obj, File):
                 metadata = obj.metadata
+                orig_metadata = obj.orig_metadata
                 if obj.state == obj.ERROR:
                     msg = N_("%(filename)s (error: %(error)s)")
                     mparms = {
@@ -924,6 +942,7 @@ class MainWindow(QtGui.QMainWindow):
                 metadata = obj.metadata
                 if obj.num_linked_files == 1:
                     file = obj.linked_files[0]
+                    orig_metadata = file.orig_metadata
                     if file.state == File.ERROR:
                         msg = N_("%(filename)s (%(similarity)d%%) (error: %(error)s)")
                         mparms = {
@@ -939,12 +958,15 @@ class MainWindow(QtGui.QMainWindow):
                         }
                     self.set_statusbar_message(msg, mparms, echo=None,
                                                history=None)
+            elif isinstance(obj, Album):
+                metadata = obj.metadata
+                orig_metadata = obj.orig_metadata
             elif obj.can_edit_tags():
                 metadata = obj.metadata
 
         self.metadata_box.selection_dirty = True
         self.metadata_box.update()
-        self.cover_art_box.set_metadata(metadata, obj)
+        self.cover_art_box.set_metadata(metadata, orig_metadata, obj)
         self.selection_updated.emit(objects)
 
     def show_cover_art(self):
@@ -953,6 +975,13 @@ class MainWindow(QtGui.QMainWindow):
             self.cover_art_box.show()
         else:
             self.cover_art_box.hide()
+
+    def show_toolbar(self):
+        """Show/hide the Action toolbar."""
+        if self.show_toolbar_action.isChecked():
+            self.toolbar.show()
+        else:
+            self.toolbar.hide()
 
     def show_file_browser(self):
         """Show/hide the file browser."""

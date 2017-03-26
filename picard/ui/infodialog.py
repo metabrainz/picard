@@ -24,6 +24,7 @@ from PyQt4 import QtGui, QtCore
 from picard import log
 from picard.file import File
 from picard.track import Track
+from picard.album import Album
 from picard.coverart.image import CoverArtImageIOError
 from picard.util import format_time, encode_filename, bytes2human, webbrowser2, union_sorted_lists
 from picard.ui import PicardDialog
@@ -58,7 +59,7 @@ class ArtworkTable(QtGui.QTableWidget):
         image_label = QtGui.QLabel()
         text_label = QtGui.QLabel()
         layout = QtGui.QVBoxLayout()
-        image_label.setPixmap(pixmap.scaled(170,170,QtCore.Qt.KeepAspectRatio,
+        image_label.setPixmap(pixmap.scaled(170, 170, QtCore.Qt.KeepAspectRatio,
                                             QtCore.Qt.SmoothTransformation))
         image_label.setAlignment(QtCore.Qt.AlignCenter)
         text_label.setText(text)
@@ -98,14 +99,29 @@ class InfoDialog(PicardDialog):
     def __init__(self, obj, parent=None):
         PicardDialog.__init__(self, parent)
         self.obj = obj
+        self.images = []
+        self.existing_images = []
         self.ui = Ui_InfoDialog()
         self.display_existing_artwork = False
-        if isinstance(obj, File) and isinstance(obj.parent, Track) or \
-                isinstance(obj, Track):
-            # Display existing artwork only if selected object is track object
-            # or linked to a track object
-            self.display_existing_artwork = True
 
+        if (isinstance(obj, File) and
+                isinstance(obj.parent, Track) or
+                isinstance(obj, Track) or
+                (isinstance(obj, Album) and obj.get_num_total_files() > 0)):
+            # Display existing artwork only if selected object is track object
+            # or linked to a track object or it's an album with files
+            if (getattr(obj, 'orig_metadata', None) is not None and
+                    obj.orig_metadata.images and
+                    obj.orig_metadata.images != obj.metadata.images):
+                self.display_existing_artwork = True
+                self.existing_images = obj.orig_metadata.images
+
+        if obj.metadata.images:
+            self.images = obj.metadata.images
+        if not self.images and self.existing_images:
+            self.images = self.existing_images
+            self.existing_images = []
+            self.display_existing_artwork = False
         self.ui.setupUi(self)
         self.ui.buttonBox.accepted.connect(self.accept)
         self.ui.buttonBox.rejected.connect(self.reject)
@@ -185,9 +201,9 @@ class InfoDialog(PicardDialog):
         """Display image type in Type column.
         If both existing covers and new covers are to be displayed, take union of both cover types list.
         """
-        types = [image.types_as_string() for image in self.obj.metadata.images]
+        types = [image.types_as_string() for image in self.images]
         if self.display_existing_artwork:
-            existing_types = [image.types_as_string() for image in self.obj.orig_metadata.images]
+            existing_types = [image.types_as_string() for image in self.existing_images]
             # Merge both types and existing types list in sorted order.
             types = union_sorted_lists(types, existing_types)
         for row, type in enumerate(types):
@@ -198,21 +214,13 @@ class InfoDialog(PicardDialog):
             self.artwork_table.setCellWidget(row, self.artwork_table._type_col, type_wgt)
             self.artwork_table.setItem(row, self.artwork_table._type_col, item)
 
-    def arrange_images(self):
-        def get_image_type(image):
-            return image.types_as_string()
-        self.obj.metadata.images.sort(key=get_image_type)
-        if self.display_existing_artwork:
-            self.obj.orig_metadata.images.sort(key=get_image_type)
-
     def _display_artwork_tab(self):
-        if not self.obj.metadata.images:
+        if not self.images:
             self.tab_hide(self.ui.artwork_tab)
-        self.arrange_images()
         self._display_artwork_type()
-        self._display_artwork(self.obj.metadata.images, self.artwork_table._new_cover_col)
-        if self.display_existing_artwork:
-            self._display_artwork(self.obj.orig_metadata.images, self.artwork_table._existing_cover_col)
+        self._display_artwork(self.images, self.artwork_table._new_cover_col)
+        if self.existing_images:
+            self._display_artwork(self.existing_images, self.artwork_table._existing_cover_col)
         self.artwork_table.itemDoubleClicked.connect(self.show_item)
 
     def tab_hide(self, widget):
@@ -236,8 +244,8 @@ class FileInfoDialog(InfoDialog):
         InfoDialog.__init__(self, file, parent)
         self.setWindowTitle(_("Info") + " - " + file.base_filename)
 
-    def _display_info_tab(self):
-        file = self.obj
+    @staticmethod
+    def format_file_info(file):
         info = []
         info.append((_('Filename:'), file.filename))
         if '~format' in file.orig_metadata:
@@ -265,9 +273,13 @@ class FileInfoDialog(InfoDialog):
             else:
                 ch = str(ch)
             info.append((_('Channels:'), ch))
-        text = '<br/>'.join(map(lambda i: '<b>%s</b><br/>%s' %
+        return '<br/>'.join(map(lambda i: '<b>%s</b><br/>%s' %
                                 (cgi.escape(i[0]),
                                  cgi.escape(i[1])), info))
+
+    def _display_info_tab(self):
+        file = self.obj
+        text = FileInfoDialog.format_file_info(file)
         self.ui.info.setText(text)
 
 
@@ -295,6 +307,30 @@ class AlbumInfoDialog(InfoDialog):
         else:
             tabWidget.setTabText(tab_index, _("&Info"))
             self.tab_hide(tab)
+
+
+class TrackInfoDialog(FileInfoDialog):
+
+    def __init__(self, track, parent=None):
+        InfoDialog.__init__(self, track, parent)
+        self.setWindowTitle(_("Track Info"))
+
+    def _display_info_tab(self):
+        track = self.obj
+        tab = self.ui.info_tab
+        tabWidget = self.ui.tabWidget
+        tab_index = tabWidget.indexOf(tab)
+        if track.num_linked_files == 0:
+            tabWidget.setTabText(tab_index, _("&Info"))
+            self.tab_hide(tab)
+            return
+
+        tabWidget.setTabText(tab_index, _("&Info"))
+        text = ungettext("%i file in this track", "%i files in this track",
+                         track.num_linked_files) % track.num_linked_files
+        info_files = [FileInfoDialog.format_file_info(file) for file in track.linked_files]
+        text += '<hr />' + '<hr />'.join(info_files)
+        self.ui.info.setText(text)
 
 
 class ClusterInfoDialog(InfoDialog):

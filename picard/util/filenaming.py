@@ -155,7 +155,7 @@ def _shorten_to_utf16_ratio(text, ratio):
 
 
 def _make_win_short_filename(relpath, reserved=0):
-    """Shorten a relative file path according to WinAPI quirks.
+    r"""Shorten a relative file path according to WinAPI quirks.
 
     relpath: The file's path.
     reserved: Number of characters reserved for the parent path to be joined with,

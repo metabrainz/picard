@@ -103,7 +103,7 @@ combinations_to = (
     u"jLqdzdztslslzBDLuebdfmnprrstzthIpUbdfgklmnprsvx"
     u"zadeeiussSSLLllVvYy(C)(R)CECrFr.L.PtsTLRsRx,.x/.ddHhts"
     )
-ascii = u" !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~"
+ascii = u" !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~"
 
 
 class CompatibilityTest(unittest.TestCase):
