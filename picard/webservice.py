@@ -505,7 +505,7 @@ class XmlWebService(QtCore.QObject):
         if inc:
             queryargs["inc"] = "+".join(inc)
         return self.get(host, port, path, handler, queryargs=queryargs,
-                        xml=True, priority=False, important=False, mblogin=False,
+                        xml=True, priority=True, important=True, mblogin=False,
                         cacheloadcontrol=None, refresh=False)
 
     def browse_releases(self, handler, **kwargs):
