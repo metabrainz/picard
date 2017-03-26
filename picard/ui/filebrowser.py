@@ -20,10 +20,24 @@
 
 import os
 import sys
+from functools import partial
 from PyQt4 import QtCore, QtGui
 from picard import config
 from picard.formats import supported_formats
 from picard.util import find_existing_path
+
+try:
+    from collections import OrderedDict
+except ImportError:
+    # for python < 2.7
+    from picard.util.ordered_dict_compat import OrderedDict
+
+
+_columns_num2name = {
+    0: 'name',
+    3: 'date',
+}
+_columns_name2num = dict([(v, k) for k, v in _columns_num2name.iteritems()])
 
 
 class FileBrowser(QtGui.QTreeView):
@@ -31,26 +45,65 @@ class FileBrowser(QtGui.QTreeView):
     options = [
         config.TextOption("persist", "current_browser_path", ""),
         config.BoolOption("persist", "show_hidden_files", False),
+        config.TextOption("persist", "file_browser_sort", 'name:asc'),
     ]
+
+    # order of tuples defines order of the items in the submenu
+    _actions_dict = OrderedDict([
+        ('name:asc', N_("Sort by &name, ascending")),
+        ('name:desc', N_("Sort by n&ame, descending")),
+        ('date:asc', N_("Sort by &date, ascending")),
+        ('date:desc', N_("Sort by da&te, descending")),
+    ])
 
     def __init__(self, parent):
         QtGui.QTreeView.__init__(self, parent)
         self.setSelectionMode(QtGui.QAbstractItemView.ExtendedSelection)
         self.setDragEnabled(True)
+        self.focused = False
+        self._set_model()
+        self.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
+        self.customContextMenuRequested.connect(self.menuContextTree)
+
+    def menuContextTree(self, point):
+        menu = QtGui.QMenu(self)
         self.move_files_here_action = QtGui.QAction(_("&Move Tagged Files Here"), self)
         self.move_files_here_action.triggered.connect(self.move_files_here)
-        self.addAction(self.move_files_here_action)
+        menu.addAction(self.move_files_here_action)
         self.toggle_hidden_action = QtGui.QAction(_("Show &Hidden Files"), self)
         self.toggle_hidden_action.setCheckable(True)
         self.toggle_hidden_action.setChecked(config.persist["show_hidden_files"])
         self.toggle_hidden_action.toggled.connect(self.show_hidden)
-        self.addAction(self.toggle_hidden_action)
+        menu.addAction(self.toggle_hidden_action)
         self.set_as_starting_directory_action = QtGui.QAction(_("&Set as starting directory"), self)
         self.set_as_starting_directory_action.triggered.connect(self.set_as_starting_directory)
-        self.addAction(self.set_as_starting_directory_action)
-        self.setContextMenuPolicy(QtCore.Qt.ActionsContextMenu)
-        self.focused = False
-        self._set_model()
+        menu.addAction(self.set_as_starting_directory_action)
+        sep = menu.addSeparator()
+        sortGroup = QtGui.QActionGroup(menu)
+        sortGroup.setExclusive(True)
+        self.sort_by = dict()
+        for sort_order, label in self._actions_dict.iteritems():
+            action = QtGui.QAction(_(label), sortGroup)
+            menu.addAction(action)
+            action.setCheckable(True)
+            action.triggered.connect(partial(self._sort_change, sort_order))
+            self.sort_by[sort_order] = action
+        self.sort_by[config.persist["file_browser_sort"]].setChecked(True)
+        menu.exec_(QtGui.QCursor.pos())
+
+    def _sort_model(self, sort_order):
+        column_txt, order_txt = sort_order.split(':')
+        column = _columns_name2num[column_txt]
+        if order_txt == 'asc':
+            order = QtCore.Qt.AscendingOrder
+        else:
+            order = QtCore.Qt.DescendingOrder
+        self.model.sort(column, order)
+
+    def _sort_change(self, sort_order):
+        self._sort_model(sort_order)
+        self.sort_by[sort_order].setChecked(True)
+        config.persist["file_browser_sort"] = sort_order
 
     def _set_model(self):
         self.model = QtGui.QFileSystemModel()
@@ -63,7 +116,7 @@ class FileBrowser(QtGui.QTreeView):
         self.model.setNameFilters(filters)
         # Hide unsupported files completely
         self.model.setNameFilterDisables(False)
-        self.model.sort(0, QtCore.Qt.AscendingOrder)
+        self._sort_model(config.persist["file_browser_sort"])
         self.setModel(self.model)
         if sys.platform == "darwin":
             self.setRootIndex(self.model.index("/Volumes"))
