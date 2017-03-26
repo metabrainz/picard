@@ -26,7 +26,9 @@ from picard.file import File
 from picard.track import Track
 from picard.album import Album
 from picard.coverart.image import CoverArtImageIOError
-from picard.util import format_time, encode_filename, bytes2human, webbrowser2, union_sorted_lists
+from picard.util import (format_time, encode_filename,
+                         bytes2human, webbrowser2,
+                         union_sorted_lists, htmlescape)
 from picard.ui import PicardDialog
 from picard.ui.ui_infodialog import Ui_InfoDialog
 
@@ -274,8 +276,8 @@ class FileInfoDialog(InfoDialog):
                 ch = str(ch)
             info.append((_('Channels:'), ch))
         return '<br/>'.join(map(lambda i: '<b>%s</b><br/>%s' %
-                                (cgi.escape(i[0]),
-                                 cgi.escape(i[1])), info))
+                                (picard.util.htmlescape(i[0]),
+                                 picard.util.htmlescape(i[1])), info))
 
     def _display_info_tab(self):
         file = self.obj
@@ -297,7 +299,7 @@ class AlbumInfoDialog(InfoDialog):
         if album.errors:
             tabWidget.setTabText(tab_index, _("&Errors"))
             text = '<br />'.join(map(lambda s: '<font color="darkred">%s</font>' %
-                                     '<br />'.join(unicode(cgi.escape(s))
+                                     '<br />'.join(unicode(picard.util.htmlescape(s))
                                                    .replace('\t', ' ')
                                                    .replace(' ', '&nbsp;')
                                                    .splitlines()
@@ -347,9 +349,9 @@ class ClusterInfoDialog(InfoDialog):
         tabWidget.setTabText(tab_index, _("&Info"))
         info = []
         info.append("<b>%s</b> %s" % (_('Album:'),
-                                      unicode(cgi.escape(cluster.metadata["album"]))))
+                                      unicode(picard.util.htmlescape(cluster.metadata["album"]))))
         info.append("<b>%s</b> %s" % (_('Artist:'),
-                                      unicode(cgi.escape(cluster.metadata["albumartist"]))))
+                                      unicode(picard.util.htmlescape(cluster.metadata["albumartist"]))))
         info.append("")
         lines = []
         for file in cluster.iterfiles(False):
@@ -359,5 +361,5 @@ class ClusterInfoDialog(InfoDialog):
                          m["title"] + " - " + artist + " (" +
                          m["~length"] + ")")
         info.append("<b>%s</b><br />%s" % (_('Tracklist:'),
-                    '<br />'.join([unicode(cgi.escape(s)).replace(' ', '&nbsp;') for s in lines])))
+                    '<br />'.join([unicode(picard.util.htmlescape(s)).replace(' ', '&nbsp;') for s in lines])))
         self.ui.info.setText('<br/>'.join(info))

@@ -6,13 +6,13 @@ RUN apt-get update \
 						python-pyqt5 \
 						libdiscid0 \
 						libdiscid-dev \
-						python-mutagen 
+						python-mutagen
 
 
 RUN mkdir -p /build/
 ADD . /build/
 WORKDIR /build/
 ENV PYTHONPATH /usr/lib/python2.7/dist-packages
-RUN python setup.py build_ext -i 
-RUN python setup.py build_locales -i 
+RUN python setup.py build_ext -i
+RUN python setup.py build_locales -i
 CMD python setup.py test

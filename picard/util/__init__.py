@@ -17,7 +17,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
-
+import cgi
 import os
 import ntpath
 import re
@@ -410,6 +410,7 @@ def build_qurl(host, port=80, path=None, queryargs=None):
         url.setQuery(url_query)
     return url
 
+
 def union_sorted_lists(list1, list2):
     """
     Returns union of two sorted lists.
@@ -438,3 +439,7 @@ def union_sorted_lists(list1, list2):
         union.extend(list1[i:])
 
     return union
+
+
+def htmlescape(string):
+    return cgi.escape(string)
