@@ -453,9 +453,7 @@ class XmlWebService(QtCore.QObject):
         return self._get_by_id('discid', discid, handler, inc, queryargs={"cdstubs": "no"},
                                priority=priority, important=important, refresh=refresh)
 
-    def _find(self, entitytype, handler,
-            xml=True, priority=True, important=True, mblogin=False,
-            cacheloadcontrol=None, refresh=False, queryargs=None, **kwargs):
+    def _find(self, entitytype, handler, **kwargs):
         host = config.setting["server_host"]
         port = config.setting["server_port"]
         filters = []
@@ -487,8 +485,8 @@ class XmlWebService(QtCore.QObject):
             queryargs[str(name)] = value
         path = "/ws/2/%s" % (entitytype)
         return self.get(host, port, path, handler, queryargs=queryargs,
-                xml=xml, priority=priority, important=important, mblogin=mblogin,
-                cacheloadcontrol=cacheloadcontrol, refresh=refresh)
+                        xml=True, priority=True, important=True, mblogin=False,
+                        cacheloadcontrol=None, refresh=False)
 
     def find_releases(self, handler, **kwargs):
         return self._find('release', handler, **kwargs)
@@ -499,9 +497,7 @@ class XmlWebService(QtCore.QObject):
     def find_artists(self, handler, **kwargs):
         return self._find('artist', handler, **kwargs)
 
-    def _browse(self, entitytype, handler, inc=[],
-            xml=True, priority=False, important=False, mblogin=False,
-            cacheloadcontrol=None, refresh=False, queryargs=None, **kwargs):
+    def _browse(self, entitytype, handler, inc=[], **kwargs):
         host = config.setting["server_host"]
         port = config.setting["server_port"]
         path = "/ws/2/%s" % (entitytype)
@@ -509,8 +505,8 @@ class XmlWebService(QtCore.QObject):
         if inc:
             queryargs["inc"] = "+".join(inc)
         return self.get(host, port, path, handler, queryargs=queryargs,
-                xml=xml, priority=priority, important=important, mblogin=mblogin,
-                cacheloadcontrol=cacheloadcontrol, refresh=refresh)
+                        xml=True, priority=False, important=False, mblogin=False,
+                        cacheloadcontrol=None, refresh=False)
 
     def browse_releases(self, handler, **kwargs):
         inc = ["media", "labels"]
