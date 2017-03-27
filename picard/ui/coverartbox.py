@@ -93,7 +93,6 @@ class CoverArtThumbnail(ActiveLabel):
         self.setPixmap(self.shadow)
         self.setAlignment(QtCore.Qt.AlignTop | QtCore.Qt.AlignHCenter)
         self.clicked.connect(self.open_release_page)
-        self.image_dropped.connect(self.fetch_remote_image)
         self.related_images = []
         self._pixmap_cache = pixmap_cache
         self.current_pixmap_key = None
@@ -238,9 +237,6 @@ class CoverArtThumbnail(ActiveLabel):
         lookup = self.tagger.get_file_lookup()
         lookup.albumLookup(self.release)
 
-    def fetch_remote_image(self, url):
-        return self.parent().fetch_remote_image(url)
-
 
 def set_image_replace(obj, coverartimage):
     obj.metadata.set_front_image(coverartimage)
@@ -265,6 +261,7 @@ class CoverArtBox(QtGui.QGroupBox):
         self.cover_art_label = QtGui.QLabel('')
         self.cover_art_label.setAlignment(QtCore.Qt.AlignTop | QtCore.Qt.AlignHCenter)
         self.cover_art = CoverArtThumbnail(False, True, self.pixmap_cache, parent)
+        self.cover_art.image_dropped.connect(self.fetch_remote_image)
         spacerItem = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
         self.orig_cover_art_label = QtGui.QLabel('')
         self.orig_cover_art = CoverArtThumbnail(False, False, self.pixmap_cache, parent)
