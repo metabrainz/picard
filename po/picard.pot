@@ -8,14 +8,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: picard 1.4.1dev1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2017-03-13 13:33+0100\n"
+"POT-Creation-Date: 2017-03-24 14:38+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.3.4\n"
+"Generated-By: Babel 1.3\n"
 
 #: picard/acoustid.py:111
 #, python-format
@@ -50,47 +50,54 @@ msgstr ""
 msgid "AcoustIDs successfully submitted."
 msgstr ""
 
-#: picard/album.py:71 picard/cluster.py:278
+#: picard/album.py:72 picard/cluster.py:291
 msgid "Unmatched Files"
 msgstr ""
 
-#: picard/album.py:207
+#: picard/album.py:206
 #, python-format
 msgid "[could not load album %s]"
 msgstr ""
 
-#: picard/album.py:299
+#: picard/album.py:298
 #, python-format
 msgid "Album %(id)s loaded: %(artist)s - %(album)s"
 msgstr ""
 
-#: picard/album.py:342
+#: picard/album.py:341
 #, python-format
 msgid "Loading album %(id)s ..."
 msgstr ""
 
-#: picard/album.py:346
+#: picard/album.py:345
 msgid "[loading album information]"
 msgstr ""
 
-#: picard/album.py:538
+#: picard/album.py:545
 #, python-format
 msgid "; %i image"
 msgid_plural "; %i images"
 msgstr[0] ""
 msgstr[1] ""
 
-#: picard/cluster.py:172 picard/cluster.py:185
+#: picard/album.py:548
+#, python-format
+msgid "; %i image not in all tracks"
+msgid_plural "; %i different images among tracks"
+msgstr[0] ""
+msgstr[1] ""
+
+#: picard/cluster.py:182 picard/cluster.py:195
 #, python-format
 msgid "No matching releases for cluster %(album)s"
 msgstr ""
 
-#: picard/cluster.py:191
+#: picard/cluster.py:201
 #, python-format
 msgid "Cluster %(album)s identified!"
 msgstr ""
 
-#: picard/cluster.py:202
+#: picard/cluster.py:212
 #, python-format
 msgid "Looking up the metadata for cluster %(album)s..."
 msgstr ""
@@ -150,22 +157,22 @@ msgstr ""
 msgid "My script %d"
 msgstr ""
 
-#: picard/file.py:568
+#: picard/file.py:587
 #, python-format
 msgid "No matching tracks for file '%(filename)s'"
 msgstr ""
 
-#: picard/file.py:584
+#: picard/file.py:603
 #, python-format
 msgid "No matching tracks above the threshold for file '%(filename)s'"
 msgstr ""
 
-#: picard/file.py:591
+#: picard/file.py:610
 #, python-format
 msgid "File '%(filename)s' identified!"
 msgstr ""
 
-#: picard/file.py:611
+#: picard/file.py:630
 #, python-format
 msgid "Looking up the metadata for file %(filename)s ..."
 msgstr ""
@@ -208,23 +215,23 @@ msgstr ""
 msgid "[no release info]"
 msgstr ""
 
-#: picard/tagger.py:410 picard/tagger.py:443
+#: picard/tagger.py:407 picard/tagger.py:440
 #, python-format
 msgid "Adding %(count)d file from '%(directory)s' ..."
 msgid_plural "Adding %(count)d files from '%(directory)s' ..."
 msgstr[0] ""
 msgstr[1] ""
 
-#: picard/tagger.py:602
+#: picard/tagger.py:599
 #, python-format
 msgid "Removing album %(id)s: %(artist)s - %(album)s"
 msgstr ""
 
-#: picard/tagger.py:620
+#: picard/tagger.py:617
 msgid "CD Lookup Error"
 msgstr ""
 
-#: picard/tagger.py:621
+#: picard/tagger.py:618
 #, python-format
 msgid ""
 "Error while reading CD:\n"
@@ -377,28 +384,44 @@ msgid_plural "%s (%i releases)"
 msgstr[0] ""
 msgstr[1] ""
 
-#: picard/ui/coverartbox.py:213
+#: picard/ui/coverartbox.py:222
 msgid "View release on MusicBrainz"
 msgstr ""
 
-#: picard/ui/coverartbox.py:216
+#: picard/ui/coverartbox.py:228
 msgid "Common images on all tracks"
 msgstr ""
 
-#: picard/ui/coverartbox.py:218
+#: picard/ui/coverartbox.py:230
 msgid "Tracks contain different images"
 msgstr ""
 
-#: picard/ui/coverartbox.py:253
+#: picard/ui/coverartbox.py:272
 msgid "Show more details"
 msgstr ""
 
-#: picard/ui/coverartbox.py:290
+#: picard/ui/coverartbox.py:309
 msgid "New Cover Art"
 msgstr ""
 
-#: picard/ui/coverartbox.py:291
+#: picard/ui/coverartbox.py:310
 msgid "Original Cover Art"
+msgstr ""
+
+#: picard/ui/coverartbox.py:435
+msgid "Show more details..."
+msgstr ""
+
+#: picard/ui/coverartbox.py:441
+msgid "Keep original cover art"
+msgstr ""
+
+#: picard/ui/coverartbox.py:450
+msgid "Replace front cover art on drop"
+msgstr ""
+
+#: picard/ui/coverartbox.py:455
+msgid "Append front cover art on drop"
 msgstr ""
 
 #: picard/ui/filebrowser.py:40
@@ -431,12 +454,12 @@ msgstr ""
 msgid "Cover"
 msgstr ""
 
-#: picard/ui/infodialog.py:127 picard/ui/infodialog.py:242
+#: picard/ui/infodialog.py:138 picard/ui/infodialog.py:245
 #: picard/ui/options/interface.py:71
 msgid "Info"
 msgstr ""
 
-#: picard/ui/infodialog.py:171
+#: picard/ui/infodialog.py:182
 #, python-format
 msgid ""
 "Double-click to open in external viewer\n"
@@ -444,84 +467,84 @@ msgid ""
 "Source: %s"
 msgstr ""
 
-#: picard/ui/infodialog.py:247
+#: picard/ui/infodialog.py:250
 msgid "Filename:"
 msgstr ""
 
-#: picard/ui/infodialog.py:249
+#: picard/ui/infodialog.py:252
 msgid "Format:"
 msgstr ""
 
-#: picard/ui/infodialog.py:253
+#: picard/ui/infodialog.py:256
 msgid "Size:"
 msgstr ""
 
-#: picard/ui/infodialog.py:257
+#: picard/ui/infodialog.py:260
 msgid "Length:"
 msgstr ""
 
-#: picard/ui/infodialog.py:259
+#: picard/ui/infodialog.py:262
 msgid "Bitrate:"
 msgstr ""
 
-#: picard/ui/infodialog.py:261
+#: picard/ui/infodialog.py:264
 msgid "Sample rate:"
 msgstr ""
 
-#: picard/ui/infodialog.py:263
+#: picard/ui/infodialog.py:266
 msgid "Bits per sample:"
 msgstr ""
 
-#: picard/ui/infodialog.py:267
+#: picard/ui/infodialog.py:270
 msgid "Mono"
 msgstr ""
 
-#: picard/ui/infodialog.py:269
+#: picard/ui/infodialog.py:272
 msgid "Stereo"
 msgstr ""
 
-#: picard/ui/infodialog.py:272
+#: picard/ui/infodialog.py:275
 msgid "Channels:"
 msgstr ""
 
-#: picard/ui/infodialog.py:287
+#: picard/ui/infodialog.py:290
 msgid "Album Info"
 msgstr ""
 
-#: picard/ui/infodialog.py:295
+#: picard/ui/infodialog.py:298
 msgid "&Errors"
 msgstr ""
 
-#: picard/ui/infodialog.py:305 picard/ui/infodialog.py:320
-#: picard/ui/infodialog.py:324 picard/ui/infodialog.py:343
+#: picard/ui/infodialog.py:308 picard/ui/infodialog.py:324
+#: picard/ui/infodialog.py:328 picard/ui/infodialog.py:347
 #: picard/ui/ui_infodialog.py:70
 msgid "&Info"
 msgstr ""
 
-#: picard/ui/infodialog.py:312
+#: picard/ui/infodialog.py:316
 msgid "Track Info"
 msgstr ""
 
-#: picard/ui/infodialog.py:325
+#: picard/ui/infodialog.py:329
 #, python-format
 msgid "%i file in this track"
 msgid_plural "%i files in this track"
 msgstr[0] ""
 msgstr[1] ""
 
-#: picard/ui/infodialog.py:336
+#: picard/ui/infodialog.py:340
 msgid "Cluster Info"
 msgstr ""
 
-#: picard/ui/infodialog.py:345
+#: picard/ui/infodialog.py:349
 msgid "Album:"
 msgstr ""
 
-#: picard/ui/infodialog.py:347
+#: picard/ui/infodialog.py:351
 msgid "Artist:"
 msgstr ""
 
-#: picard/ui/infodialog.py:357
+#: picard/ui/infodialog.py:361
 msgid "Tracklist:"
 msgstr ""
 
@@ -2044,25 +2067,25 @@ msgstr ""
 msgid "Lookup CD..."
 msgstr ""
 
-#: picard/ui/options/interface.py:125
+#: picard/ui/options/interface.py:126
 msgid "System default"
 msgstr ""
 
-#: picard/ui/options/interface.py:182
+#: picard/ui/options/interface.py:183
 msgid "Language changed"
 msgstr ""
 
-#: picard/ui/options/interface.py:183
+#: picard/ui/options/interface.py:184
 msgid ""
 "You have changed the interface language. You have to restart Picard in "
 "order for the change to take effect."
 msgstr ""
 
-#: picard/ui/options/interface.py:207
+#: picard/ui/options/interface.py:208
 msgid "Drag and Drop to re-order"
 msgstr ""
 
-#: picard/ui/options/interface.py:209 picard/ui/options/interface.py:292
+#: picard/ui/options/interface.py:210 picard/ui/options/interface.py:293
 msgid "label"
 msgstr ""
 
