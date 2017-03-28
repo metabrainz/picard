@@ -733,8 +733,9 @@ class MainWindow(QtGui.QMainWindow):
             if file_dialog.exec_() == QtGui.QDialog.Accepted:
                 dir_list = file_dialog.selectedFiles()
 
-        if dir_list:
-            parent = os.path.dirname(dir_list[0])
+        dir_count = len(dir_list)
+        if dir_count:
+            parent = os.path.dirname(dir_list[0]) if dir_count > 1 else dir_list[0]
             config.persist["current_directory"] = parent
             self.tagger.add_directory_list(dir_list, parent)
 

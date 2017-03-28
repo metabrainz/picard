@@ -32,6 +32,7 @@ from picard.track import Track
 from picard.script import ScriptParser
 from picard.ui.item import Item
 from picard.util import format_time, mbid_validate
+from picard.util.imagelist import ImageList, update_metadata_images
 from picard.util.textencoding import asciipunct
 from picard.cluster import Cluster
 from picard.collection import add_release_to_user_collections
@@ -87,8 +88,6 @@ class Album(DataObject, Item):
 
     def enable_update_metadata_images(self, enabled):
         self.update_metadata_images_enabled = enabled
-        if enabled:
-            self.update_metadata_images()
 
     def append_album_artist(self, id):
         """Append artist id to the list of album artists
@@ -293,8 +292,8 @@ class Album(DataObject, Item):
             self.loaded = True
             self.status = None
             self.match_files(self.unmatched_files.files)
-            self.update()
             self.enable_update_metadata_images(True)
+            self.update()
             self.tagger.window.set_statusbar_message(
                 N_('Album %(id)s loaded: %(artist)s - %(album)s'),
                 {
@@ -388,7 +387,6 @@ class Album(DataObject, Item):
     def update(self, update_tracks=True):
         if self.item:
             self.item.update(update_tracks)
-        self.update_metadata_images()
 
     def _add_file(self, track, file):
         self._files += 1
@@ -470,7 +468,7 @@ class Album(DataObject, Item):
         return True
 
     def can_view_info(self):
-        return (self.loaded and self.metadata and self.metadata.images) or self.errors
+        return (self.loaded and (self.metadata.images or self.orig_metadata.images)) or self.errors
 
     def is_album_like(self):
         return True
@@ -534,8 +532,21 @@ class Album(DataObject, Item):
                 unsaved = self.get_num_unsaved_files()
                 if unsaved:
                     text += '; %d*' % (unsaved,)
-                text += ungettext("; %i image", "; %i images",
-                                  len(self.metadata.images)) % len(self.metadata.images)
+                # CoverArt.set_metadata uses the orig_metadata.images if metadata.images is empty
+                # in order to show existing cover art if there's no cover art for a release. So
+                # we do the same here in order to show the number of images consistently.
+                if self.metadata.images:
+                    metadata = self.metadata
+                else:
+                    metadata = self.orig_metadata
+
+                number_of_images = len(metadata.images)
+                if getattr(metadata, 'has_common_images', True):
+                    text += ungettext("; %i image", "; %i images",
+                                      number_of_images) % number_of_images
+                else:
+                    text += ungettext("; %i image not in all tracks", "; %i different images among tracks",
+                                      number_of_images) % number_of_images
                 return text + ')'
             else:
                 return title
@@ -571,47 +582,18 @@ class Album(DataObject, Item):
         if not self.update_metadata_images_enabled:
             return
 
-        class State:
-            new_images = []
-            orig_images = []
-            has_common_new_images = True
-            has_common_orig_images = True
-            first_new_obj = True
-            first_orig_obj = True
+        update_metadata_images(self)
 
-        state = State()
+        self.update(False)
 
-        def process_images(state, obj):
-            # Check new images
-            if state.first_new_obj:
-                state.new_images = obj.metadata.images[:]
-                state.first_new_obj = False
-            else:
-                if state.new_images != obj.metadata.images:
-                    state.has_common_new_images = False
-                    state.new_images.extend([image for image in obj.metadata.images if image not in state.new_images])
-            if isinstance(obj, Track):
-                return
-            # Check orig images, but not for Tracks (which don't have orig_metadata)
-            if state.first_orig_obj:
-                state.orig_images = obj.orig_metadata.images[:]
-                state.first_orig_obj = False
-            else:
-                if state.orig_images != obj.orig_metadata.images:
-                    state.has_common_orig_images = False
-                    state.orig_images.extend([image for image in obj.orig_metadata.images if image not in state.orig_images])
-
+    def keep_original_images(self):
+        self.enable_update_metadata_images(False)
         for track in self.tracks:
-            process_images(state, track)
-            for file in list(track.linked_files):
-                process_images(state, file)
+            track.keep_original_images()
         for file in list(self.unmatched_files.files):
-            process_images(state, file)
-
-        self.metadata.images = state.new_images
-        self.metadata.has_common_images = state.has_common_new_images
-        self.orig_metadata.images = state.orig_images
-        self.orig_metadata.has_common_images = state.has_common_orig_images
+            file.keep_original_images()
+        self.enable_update_metadata_images(True)
+        self.update_metadata_images()
 
 
 class NatAlbum(Album):
