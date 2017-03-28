@@ -78,7 +78,7 @@ def to_main(func, *args, **kwargs):
 
 
 def processEvents():
-   if QCoreApplication.instance().thread() != QThread.currentThread():
+   if QCoreApplication.instance() and QCoreApplication.instance().thread() != QThread.currentThread():
         # If we are in a worker thread, use QApplication.processEvents to pass control to the
         # main thread to execute the event we just posted. If we don't do this
         # the main thread may not get CPU to process the function for a long time.
