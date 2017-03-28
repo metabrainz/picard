@@ -477,7 +477,6 @@ class BaseTreeView(QtGui.QTreeWidget):
         directories = []
         new_files = []
         for url in urls:
-            log.debug("Dropped the URL: %r", url.toString(QtCore.QUrl.RemoveUserInfo))
             if url.scheme() == "file" or not url.scheme():
                 if sys.platform == 'darwin' and unicode(url.path()).startswith('/.file/id='):
                     # Workaround for https://bugreports.qt.io/browse/QTBUG-40449
@@ -500,6 +499,7 @@ class BaseTreeView(QtGui.QTreeWidget):
                 else:
                     new_files.append(filename)
             elif url.scheme() in ("http", "https"):
+                log.debug("Dropped URL: %r", url.toString(QtCore.QUrl.RemoveUserInfo))
                 path = unicode(url.path())
                 match = re.search(r"/(release|recording)/([0-9a-z\-]{36})", path)
                 if match:
@@ -511,6 +511,10 @@ class BaseTreeView(QtGui.QTreeWidget):
                     elif entity == "recording":
                         log.debug("Dropped recording MBID: %s", mbid)
                         BaseTreeView.tagger.load_nat(mbid)
+                    else:
+                        log.debug("Dropped unknown entity & MBID: %s/%s", entity, mbid)
+            else:
+                log.debug("Dropped unknown scheme: %r", url.toString(QtCore.QUrl.RemoveUserInfo))
         if files:
             BaseTreeView.tagger.move_files(files, target)
         if directories:
