@@ -112,6 +112,7 @@ class ID3File(File):
         'TCON': 'genre',
         'TMED': 'media',
         'TMOO': 'mood',
+        'TOAL': 'work',
         'TCOP': 'copyright',
         'TPUB': 'label',
         'TDOR': 'originaldate',
@@ -153,7 +154,6 @@ class ID3File(File):
         'ASIN': 'asin',
         'MusicMagic Fingerprint': 'musicip_fingerprint',
         'Artists': 'artists',
-        'Work': 'work',
         'Writer': 'writer',
     }
     __rtranslate_freetext = dict([(v, k) for k, v in __translate_freetext.iteritems()])
