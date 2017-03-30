@@ -88,6 +88,7 @@ TAG_NAMES = {
     '~rating': N_('Rating'),
     'artists': N_('Artists'),
     'work': N_('Work'),
+    'originalartist': N_('Original Artist'),
 }
 
 PRESERVED_TAGS = [
