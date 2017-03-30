@@ -57,7 +57,7 @@ class Logger(object):
             # If we are not logging, to ensure same characteristics, we will
             # cede control in the same way
             if self._receivers:
-                thread.processEvents()
+                thread.sleep()
             return
         if not (isinstance(message, str) or isinstance(message, unicode)):
             message = repr(message)

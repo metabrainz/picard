@@ -70,7 +70,9 @@
 
 import sys
 import traceback
-from PyQt4.QtCore import QRunnable, QCoreApplication, QEvent, QThread
+from time import time
+from PyQt4.QtCore import QRunnable, QCoreApplication, QEvent, QThread, QMutex
+from picard.util import throttle
 
 
 class ProxyToMainEvent(QEvent):
@@ -101,6 +103,7 @@ class Runnable(QRunnable):
             to_main(self.next, error=sys.exc_info()[1])
         else:
             to_main(self.next, result=result)
+        sleep_now()
 
 
 def run_task(func, next, priority=0, thread_pool=None):
@@ -109,13 +112,44 @@ def run_task(func, next, priority=0, thread_pool=None):
     thread_pool.start(Runnable(func, next), priority)
 
 
+thread_processEvents_throttle = 100
+thread_sleep_throttle = 100
+thread_throttle_mutex = QMutex()
+thread_processEvents_last = thread_sleep_last = time()
+def thread_throttle(throttle, last, func):
+    thread_throttle_mutex.lock()
+    now = time()
+    if (now - last) * 1000.0 < throttle:
+        thread_throttle_mutex.unlock()
+        return
+    last = now
+    thread_throttle_mutex.unlock()
+    func()
+
+
 def to_main(func, *args, **kwargs):
-    QCoreApplication.postEvent(QCoreApplication.instance(),
-                               ProxyToMainEvent(func, *args, **kwargs))
-    processEvents()
+    if func is not None:
+        QCoreApplication.postEvent(QCoreApplication.instance(),
+                                    ProxyToMainEvent(func, *args, **kwargs))
+        # Cannot run processEvents here because it may be running a worker-thread
+        # call-back in the main-thread e.g. calling debug.log
+        sleep()
 
 
 def processEvents():
-   if QCoreApplication.instance() and QCoreApplication.instance().thread() != QThread.currentThread():
-        QCoreApplication.instance().processEvents()
+    if QCoreApplication.instance():
+        if QCoreApplication.instance().thread() == QThread.currentThread():
+            thread_throttle(thread_processEvents_throttle, thread_processEvents_last, QCoreApplication.processEvents)
+        else:
+            sleep()
+
+
+def sleep():
+    thread_throttle(thread_sleep_throttle, thread_sleep_last, sleep_now)
+
+def sleep_now():
+    if QCoreApplication.instance() and QCoreApplication.instance().thread() != QThread.currentThread():
+        thread_throttle_mutex.lock()
+        thread_sleep_last = time()
+        thread_throttle_mutex.unlock()
         QThread.currentThread().msleep(10)

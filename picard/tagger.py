@@ -296,7 +296,7 @@ class Tagger(QtGui.QApplication):
         self.save_thread_pool.waitForDone()
         self.run_cleanup()
         # Ensure that log messages etc. are processed before quitting
-        self.processEvents()
+        thread.processEvents()
 
     def _run_init(self):
         if self._cmdline_files:
@@ -376,7 +376,7 @@ class Tagger(QtGui.QApplication):
             # This function runs in a worker thread.
             # Queuing threads for a large number of directories can make UI unresponsive
             # Allow UI to process events after each folder to keep it responsive
-            self.processEvents()
+            thread.processEvents()
 
     def _open_files(self, filenames):
         if self.stopping:
@@ -391,7 +391,7 @@ class Tagger(QtGui.QApplication):
                 # This function runs in a worker thread.
                 # Opening a large number of files in a single directory can make UI unresponsive
                 # Allow UI to process events after each file to keep it responsive
-                self.processEvents()
+                thread.processEvents()
         return new_files
 
     def _open_files_finished(self, target=None, result=None, error=None):
@@ -418,7 +418,7 @@ class Tagger(QtGui.QApplication):
             file.load(partial(self._file_loaded, target=target))
             # Queuing threads for a large number of files in a directory can make UI unresponsive
             # Allow UI to process events after each file to keep it responsive
-            self.processEvents()
+            thread.processEvents()
 
     def _file_loaded(self, file, target=None):
         if self.stopping:
@@ -494,7 +494,7 @@ class Tagger(QtGui.QApplication):
             if files_to_add:
                 list_to_add.append(files_to_add)
             # Keep UI responsive
-            self.processEvents()
+            thread.processEvents()
         return list_to_add
 
     def _add_directory_non_recursive(self, path):
@@ -621,7 +621,7 @@ class Tagger(QtGui.QApplication):
             file.save()
             # Queuing threads for a large number of files can make UI unresponsive
             # Allow UI to process events after each file to keep it responsive
-            self.processEvents()
+            thread.processEvents()
 
     def load_album(self, id, discid=None):
         id = self.mbid_redirects.get(id, id)
@@ -777,10 +777,10 @@ class Tagger(QtGui.QApplication):
             cmp(a.tracknumber, b.tracknumber) or
             cmp(a.base_filename, b.base_filename))
         for name, artist, files in Cluster.cluster(files, 1.0):
-            self.processEvents()
             cluster = self.load_cluster(name, artist)
             for file in sorted(files, fcmp):
                 file.move(cluster)
+            thread.processEvents()
 
     def load_cluster(self, name, artist):
         for cluster in self.clusters:
