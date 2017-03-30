@@ -154,7 +154,7 @@ class MainWindow(QtWidgets.QMainWindow):
         event.accept()
 
     def show_quit_confirmation(self):
-        unsaved_files = sum(a.get_num_unsaved_files() for a in self.tagger.albums.itervalues())
+        unsaved_files = sum(a.get_num_unsaved_files() for a in self.tagger.albums.values())
         QMessageBox = QtWidgets.QMessageBox
 
         if unsaved_files > 0:

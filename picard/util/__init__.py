@@ -405,7 +405,7 @@ def build_qurl(host, port=80, path=None, queryargs=None):
         url.setPath(path)
     if queryargs is not None:
         url_query = QtCore.QUrlQuery()
-        for k, v in queryargs.iteritems():
+        for k, v in queryargs.items():
             url_query.addQueryItem(k, unicode(v))
         url.setQuery(url_query)
     return url

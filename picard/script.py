@@ -425,7 +425,8 @@ def func_unset(parser, name):
     # Allow wild-card unset for certain keys
     if name in ('performer:*', 'comment:*', 'lyrics:*'):
         name = name[:-1]
-        for key in parser.context.keys():
+        key_list = list(parser.context.keys())
+        for key in key_list:
             if key.startswith(name):
                 del parser.context[key]
         return ""

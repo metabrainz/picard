@@ -52,19 +52,19 @@ class MP4File(File):
         "tvsh": "show",
         "purl": "podcasturl",
     }
-    __r_text_tags = dict([(v, k) for k, v in __text_tags.iteritems()])
+    __r_text_tags = dict([(v, k) for k, v in __text_tags.items()])
 
     __bool_tags = {
         "pcst": "podcast",
         "cpil": "compilation",
         "pgap": "gapless",
     }
-    __r_bool_tags = dict([(v, k) for k, v in __bool_tags.iteritems()])
+    __r_bool_tags = dict([(v, k) for k, v in __bool_tags.items()])
 
     __int_tags = {
         "tmpo": "bpm",
     }
-    __r_int_tags = dict([(v, k) for k, v in __int_tags.iteritems()])
+    __r_int_tags = dict([(v, k) for k, v in __int_tags.items()])
 
     __freeform_tags = {
         "----:com.apple.iTunes:MusicBrainz Track Id": "musicbrainz_recordingid",
@@ -105,7 +105,7 @@ class MP4File(File):
         "----:com.apple.iTunes:WORK": "work",
         "----:com.apple.iTunes:initialkey": "key",
     }
-    __r_freeform_tags = dict([(v, k) for k, v in __freeform_tags.iteritems()])
+    __r_freeform_tags = dict([(v, k) for k, v in __freeform_tags.items()])
 
     __other_supported_tags = ("discnumber", "tracknumber",
                               "totaldiscs", "totaltracks")

@@ -61,7 +61,7 @@ class AcoustIDManager(QtCore.QObject):
         self._check_unsubmitted()
 
     def _unsubmitted(self):
-        for submission in self._fingerprints.itervalues():
+        for submission in self._fingerprints.values():
             if submission.recordingid and submission.orig_recordingid != submission.recordingid:
                 yield submission
 

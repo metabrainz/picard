@@ -472,7 +472,7 @@ class PluginFunctions:
 
     def run(self, *args, **kwargs):
         "Execute registered functions with passed parameters honouring priority"
-        for priority, functions in sorted(self.functions.iteritems(),
+        for priority, functions in sorted(self.functions.items(),
                                           key=lambda i: i[0],
                                           reverse=True):
             for function in functions:

@@ -54,7 +54,7 @@ __ID3_IMAGE_TYPE_MAP = {
     "track": 6,
 }
 
-__ID3_REVERSE_IMAGE_TYPE_MAP = dict([(v, k) for k, v in __ID3_IMAGE_TYPE_MAP.iteritems()])
+__ID3_REVERSE_IMAGE_TYPE_MAP = dict([(v, k) for k, v in __ID3_IMAGE_TYPE_MAP.items()])
 
 
 def id3text(text, encoding):
@@ -131,7 +131,7 @@ class ID3File(File):
         'TSOC': 'composersort',
         'TSO2': 'albumartistsort',
     }
-    __rtranslate = dict([(v, k) for k, v in __translate.iteritems()])
+    __rtranslate = dict([(v, k) for k, v in __translate.items()])
 
     __translate_freetext = {
         'MusicBrainz Artist Id': 'musicbrainz_artistid',
@@ -158,7 +158,7 @@ class ID3File(File):
         'Work': 'work',
         'Writer': 'writer',
     }
-    __rtranslate_freetext = dict([(v, k) for k, v in __translate_freetext.iteritems()])
+    __rtranslate_freetext = dict([(v, k) for k, v in __translate_freetext.items()])
     __translate_freetext['writer'] = 'writer'  # For backward compatibility of case
 
     _tipl_roles = {
@@ -168,7 +168,7 @@ class ID3File(File):
         'DJ-mix': 'djmixer',
         'mix': 'mixer',
     }
-    _rtipl_roles = dict([(v, k) for k, v in _tipl_roles.iteritems()])
+    _rtipl_roles = dict([(v, k) for k, v in _tipl_roles.items()])
 
     __other_supported_tags = ("discnumber", "tracknumber",
                               "totaldiscs", "totaltracks")
@@ -249,7 +249,7 @@ class ID3File(File):
             elif frameid in self.__tag_re_parse.keys():
                 m = self.__tag_re_parse[frameid].search(frame.text[0])
                 if m:
-                    for name, value in m.groupdict().iteritems():
+                    for name, value in m.groupdict().items():
                         if value is not None:
                             metadata[name] = value
                 else:
@@ -438,7 +438,7 @@ class ID3File(File):
                 elif name.startswith('comment:'):
                     desc = name.split(':', 1)[1]
                     if desc.lower()[:4] != 'itun':
-                        for key, frame in tags.items():
+                        for key, frame in list(tags.items()):
                             if frame.FrameID == 'COMM' and frame.desc == desc:
                                 del tags[key]
                 elif name.startswith('lyrics:') or name == 'lyrics':
@@ -446,7 +446,7 @@ class ID3File(File):
                         desc = name.split(':', 1)[1]
                     else:
                         desc = ''
-                    for key, frame in tags.items():
+                    for key, frame in list(tags.items()):
                         if frame.FrameID == desc:
                             del tags[key]
                 elif name in self._rtipl_roles:
@@ -457,26 +457,26 @@ class ID3File(File):
                                 if people[0] == role:
                                     frame.people.remove(people)
                 elif name == 'musicbrainz_recordingid':
-                    for key, frame in tags.items():
+                    for key, frame in list(tags.items()):
                         if frame.FrameID == 'UFID' and frame.owner == 'http://musicbrainz.org':
                             del tags[key]
                 elif real_name == 'POPM':
-                    for key, frame in tags.items():
+                    for key, frame in list(tags.items()):
                         if frame.FrameID == 'POPM' and frame.email == config.setting['rating_user_email']:
                             del tags[key]
                 elif real_name in self.__translate:
                     del tags[real_name]
                 elif real_name in self.__translate_freetext:
-                    for key, frame in tags.items():
+                    for key, frame in list(tags.items()):
                         if frame.FrameID == 'TXXX' and frame.desc == real_name:
                             del tags[key]
                 elif not name.startswith("~") and name not in self.__other_supported_tags:
-                    for key, frame in tags.items():
+                    for key, frame in list(tags.items()):
                         if frame.FrameID == 'TXXX' and frame.desc == name:
                             del tags[key]
                 elif name.startswith("~"):
                     name = name[1:]
-                    for key, frame in tags.items():
+                    for key, frame in list(tags.items()):
                         if frame.FrameID == 'TXXX' and frame.desc == name:
                             del tags[key]
                 elif name in self.__other_supported_tags:

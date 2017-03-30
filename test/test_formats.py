@@ -84,10 +84,10 @@ class FormatsTest(unittest.TestCase):
         if not self.original:
             return
         metadata = Metadata()
-        for (key, value) in self.tags.iteritems():
+        for (key, value) in self.tags.items():
             metadata[key] = value
         loaded_metadata = save_and_load_metadata(self.filename, metadata)
-        for (key, value) in self.tags.iteritems():
+        for (key, value) in self.tags.items():
             # if key == 'comment:foo':
             #    print "%r" % loaded_metadata
             self.assertEqual(loaded_metadata[key], value, '%s: %r != %r' % (key, loaded_metadata[key], value))
@@ -96,7 +96,7 @@ class FormatsTest(unittest.TestCase):
         if not self.original:
             return
         metadata = Metadata()
-        for (key, value) in self.tags.iteritems():
+        for (key, value) in self.tags.items():
             metadata[key] = value
         if self.supports_ratings:
             metadata['~rating'] = 1
@@ -116,7 +116,7 @@ class FormatsTest(unittest.TestCase):
             return
         metadata = Metadata()
 
-        for (key, value) in self.tags.iteritems():
+        for (key, value) in self.tags.items():
             metadata[key] = value
 
         original_metadata = save_and_load_metadata(self.filename, metadata)
@@ -134,7 +134,7 @@ class FormatsTest(unittest.TestCase):
             return
         if 'performer:guest vocal' in self.tags:
             metadata = Metadata()
-            for (key, value) in self.tags.iteritems():
+            for (key, value) in self.tags.items():
                 metadata[key] = value
 
             metadata['performer:piano'] = 'Foo'
@@ -323,7 +323,7 @@ class ID3Test(FormatsTest):
         if not self.original:
             return
         metadata = Metadata()
-        for (key, value) in self.tags.iteritems():
+        for (key, value) in self.tags.items():
             metadata[key] = value
 
         metadata['Foo'] = 'Foo'
@@ -338,7 +338,7 @@ class ID3Test(FormatsTest):
         if not self.original:
             return
         metadata = Metadata()
-        for (key, value) in self.tags.iteritems():
+        for (key, value) in self.tags.items():
             metadata[key] = value
         metadata['musicbrainz_recordingid'] = "Foo"
         original_metadata = save_and_load_metadata(self.filename, metadata)
@@ -352,7 +352,7 @@ class ID3Test(FormatsTest):
         if not self.original:
             return
         metadata = Metadata()
-        for (key, value) in self.tags.iteritems():
+        for (key, value) in self.tags.items():
             metadata[key] = value
 
         metadata['Foo'] = 'Foo'
@@ -386,7 +386,7 @@ class ID3Test(FormatsTest):
             'performer:piano': 'Foo'
         }
 
-        for (key, value) in tags.iteritems():
+        for (key, value) in tags.items():
             metadata[key] = value
 
         original_metadata = save_and_load_metadata(self.filename, metadata)
@@ -398,7 +398,7 @@ class ID3Test(FormatsTest):
         if not self.original:
             return
         metadata = Metadata()
-        for (key, value) in self.tags.iteritems():
+        for (key, value) in self.tags.items():
             metadata[key] = value
         metadata['comment:bar'] = 'Foo'
         original_metadata = save_and_load_metadata(self.filename, metadata)
@@ -417,10 +417,10 @@ class ID3Test(FormatsTest):
         config.setting['write_id3v23'] = True
         self.addCleanup(reset_to_id3v24)
         metadata = Metadata()
-        for (key, value) in self.tags.iteritems():
+        for (key, value) in self.tags.items():
             metadata[key] = value
         loaded_metadata = save_and_load_metadata(self.filename, metadata)
-        for (key, value) in self.tags.iteritems():
+        for (key, value) in self.tags.items():
             # if key == 'comment:foo':
             #    print "%r" % loaded_metadata
             self.assertEqual(loaded_metadata[key], value, '%s: %r != %r' % (key, loaded_metadata[key], value))

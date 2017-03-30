@@ -48,7 +48,7 @@ class VCommentFile(File):
         "musicbrainz_trackid": "musicbrainz_recordingid",
         "musicbrainz_releasetrackid": "musicbrainz_trackid",
     }
-    __rtranslate = dict([(v, k) for k, v in __translate.iteritems()])
+    __rtranslate = dict([(v, k) for k, v in __translate.items()])
 
     def _load(self, filename):
         log.debug("Loading file %r", filename)

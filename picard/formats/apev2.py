@@ -54,7 +54,7 @@ class APEv2File(File):
         "musicbrainz_trackid": "musicbrainz_recordingid",
         "musicbrainz_releasetrackid": "musicbrainz_trackid",
     }
-    __rtranslate = dict([(v, k) for k, v in __translate.iteritems()])
+    __rtranslate = dict([(v, k) for k, v in __translate.items()])
 
     def _load(self, filename):
         log.debug("Loading file %r", filename)
@@ -175,9 +175,9 @@ class APEv2File(File):
         for tag in metadata.deleted_tags:
             real_name = str(self._get_tag_name(tag))
             if real_name in ('Lyrics', 'Comment', 'Performer'):
-                tag_type = r"\(%s\)" % tag.split(':', 1)[1]
+                tag_type = re.compile(r"\(%s\)" % tag.split(':', 1)[1])
                 for item in tags.get(real_name):
-                    if re.search(tag_type, item):
+                    if tag_type.search(item):
                         tags.get(real_name).remove(item)
             elif tag in ('totaltracks', 'totaldiscs'):
                 tagstr = real_name.lower() + 'number'

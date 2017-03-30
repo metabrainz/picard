@@ -97,7 +97,7 @@ class TagsFromFileNamesDialog(PicardDialog):
         match = format.search(file.filename.replace('\\','/'))
         if match:
             result = {}
-            for name, value in match.groupdict().iteritems():
+            for name, value in match.groupdict().items():
                 value = value.strip()
                 if name in self.numeric_tags:
                     value = value.lstrip("0")
@@ -123,7 +123,7 @@ class TagsFromFileNamesDialog(PicardDialog):
         format, columns = self.parse_format()
         for file in self.files:
             metadata = self.match_file(file, format)
-            for name, value in metadata.iteritems():
+            for name, value in metadata.items():
                 file.metadata[name] = value
             file.update()
         config.persist["tags_from_filenames_format"] = self.ui.format.currentText()

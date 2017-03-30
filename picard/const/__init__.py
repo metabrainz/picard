@@ -78,7 +78,7 @@ from picard.const.attributes import MB_ATTRIBUTES
 RELEASE_FORMATS = {}
 RELEASE_PRIMARY_GROUPS = {}
 RELEASE_SECONDARY_GROUPS = {}
-for k, v in MB_ATTRIBUTES.iteritems():
+for k, v in MB_ATTRIBUTES.items():
     if k.startswith(u'DB:medium_format/name:'):
         RELEASE_FORMATS[v] = v
     elif k.startswith(u'DB:release_group_primary_type/name:'):

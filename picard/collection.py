@@ -121,7 +121,7 @@ def load_user_collections(callback=None):
                     collection.name = node.name[0].text
                     collection.size = int(node.release_list[0].count)
 
-            for id in set(user_collections.iterkeys()) - new_collections:
+            for id in set(user_collections.keys()) - new_collections:
                 del user_collections[id]
 
         if callback:

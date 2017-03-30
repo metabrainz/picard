@@ -228,7 +228,7 @@ class Metadata(dict):
         self.update(other)
 
     def update(self, other):
-        for key in other.iterkeys():
+        for key in other.keys():
             self.set(key, other.getall(key)[:])
         if other.images:
             self.images = other.images[:]
@@ -288,18 +288,10 @@ class Metadata(dict):
             self.pop(name, None)
         self.deleted_tags.add(name)
 
-    def iteritems(self):
-        for name, values in dict.iteritems(self):
+    def items(self):
+        for name, values in dict.items(self):
             for value in values:
                 yield name, value
-
-    def items(self):
-        """Returns the metadata items.
-
-        >>> m.items()
-        [("key1", "value1"), ("key1", "value2"), ("key2", "value3")]
-        """
-        return list(self.iteritems())
 
     def rawitems(self):
         """Returns the metadata items.

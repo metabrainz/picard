@@ -358,7 +358,7 @@ class TrackSearchDialog(SearchDialog):
         # advanced syntax style. Otherwise display only track title.
         if config.setting["use_adv_search_syntax"]:
             query_str = ' '.join(['%s:(%s)' % (item, escape_lucene_query(value))
-                                  for item, value in query.iteritems() if value])
+                                  for item, value in query.items() if value])
         else:
             query_str = query["track"]
 
@@ -548,7 +548,7 @@ class AlbumSearchDialog(SearchDialog):
         # advanced syntax style. Otherwise display only album title.
         if config.setting["use_adv_search_syntax"]:
             query_str = ' '.join(['%s:(%s)' % (item, escape_lucene_query(value))
-                                for item, value in query.iteritems() if value])
+                                for item, value in query.items() if value])
         else:
             query_str = query["release"]
 

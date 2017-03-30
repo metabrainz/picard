@@ -280,7 +280,7 @@ class PluginsOptionsPage(OptionsPage):
 
     def save(self):
         enabled_plugins = []
-        for item, plugin in self.items.iteritems():
+        for item, plugin in self.items.items():
             if item.checkState(0) == QtCore.Qt.Checked:
                 enabled_plugins.append(plugin.module_name)
         config.setting["enabled_plugins"] = enabled_plugins

@@ -440,7 +440,7 @@ class MetadataBox(QtWidgets.QTableWidget):
         for file in files:
             new_metadata = file.new_metadata
             orig_metadata = file.orig_metadata
-            tags = set(new_metadata.keys() + orig_metadata.keys())
+            tags = set(list(new_metadata.keys()) + list(orig_metadata.keys()))
 
             for name in filter(lambda x: not x.startswith("~") and file.supports_tag(x), tags):
                 new_values = new_metadata.getall(name)
@@ -458,7 +458,7 @@ class MetadataBox(QtWidgets.QTableWidget):
 
         for track in tracks:
             if track.num_linked_files == 0:
-                for name, values in dict.iteritems(track.metadata):
+                for name, values in track.metadata.rawitems():
                     if not name.startswith("~"):
                         tag_diff.add(name, values, values, True)
 
@@ -467,7 +467,7 @@ class MetadataBox(QtWidgets.QTableWidget):
 
                 tag_diff.objects += 1
 
-        all_tags = set(orig_tags.keys() + new_tags.keys())
+        all_tags = set(list(orig_tags.keys()) + list(new_tags.keys()))
         tag_names = COMMON_TAGS + \
                     sorted(all_tags.difference(COMMON_TAGS),
                            key=lambda x: display_tag_name(x).lower())

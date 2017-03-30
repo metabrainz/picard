@@ -109,14 +109,14 @@ class ReleaseGroup(DataObject):
             versions[name].append(release)
 
         # de-duplicate names if possible
-        for name, releases in versions.iteritems():
+        for name, releases in versions.items():
             for a, b in combinations(releases, 2):
                 for key in extrakeys:
                     (value1, value2) = (a[key], b[key])
                     if value1 != value2:
                         a['_disambiguate_name'].append(value1)
                         b['_disambiguate_name'].append(value2)
-        for name, releases in versions.iteritems():
+        for name, releases in versions.items():
             for release in releases:
                 dis = " / ".join(filter(None, uniqify(release['_disambiguate_name']))).replace("&", "&&")
                 disname = name if not dis else name + ' / ' + dis

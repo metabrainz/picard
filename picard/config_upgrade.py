@@ -116,7 +116,7 @@ def upgrade_to_v1_3_0_dev_3():
         "caa_image_types": None,
         "metadata_box_sizes": None,
     }
-    for (opt, sep) in option_separators.iteritems():
+    for (opt, sep) in option_separators.items():
         if opt in _s:
             _s[opt] = _s.raw_value(opt).split(sep)
 

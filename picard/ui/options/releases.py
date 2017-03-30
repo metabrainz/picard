@@ -31,7 +31,7 @@ from picard.i18n import ugettext_attr
 
 
 _DEFAULT_SCORE = 0.5
-_release_type_scores = [(g, _DEFAULT_SCORE) for g in RELEASE_PRIMARY_GROUPS.keys() + RELEASE_SECONDARY_GROUPS.keys()]
+_release_type_scores = [(g, _DEFAULT_SCORE) for g in list(RELEASE_PRIMARY_GROUPS.keys()) + list(RELEASE_SECONDARY_GROUPS.keys())]
 
 
 class ReleaseTypeScore:
@@ -71,7 +71,7 @@ class RowColIter:
     def __iter__(self):
         return self
 
-    def next(self):
+    def __next__(self):
         row, col = self.current
         row += 1
         if row == self.rows:
@@ -147,7 +147,7 @@ class ReleasesOptionsPage(OptionsPage):
 
     def load(self):
         scores = dict(config.setting["release_type_scores"])
-        for (release_type, release_type_slider) in self._release_type_sliders.iteritems():
+        for (release_type, release_type_slider) in self._release_type_sliders.items():
             release_type_slider.setValue(scores.get(release_type,
                                                     _DEFAULT_SCORE))
 
@@ -158,7 +158,7 @@ class ReleasesOptionsPage(OptionsPage):
 
     def save(self):
         scores = []
-        for (release_type, release_type_slider) in self._release_type_sliders.iteritems():
+        for (release_type, release_type_slider) in self._release_type_sliders.items():
             scores.append((release_type, release_type_slider.value()))
         config.setting["release_type_scores"] = scores
 
@@ -217,7 +217,7 @@ class ReleasesOptionsPage(OptionsPage):
         data = []
         for i in range(list1.count()):
             item = list1.item(i)
-            data.append(unicode(item.data(QtCore.Qt.UserRole)))
+            data.append(str(item.data(QtCore.Qt.UserRole)))
         config.setting[setting] = data
 
 
