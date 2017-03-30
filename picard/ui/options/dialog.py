@@ -84,7 +84,9 @@ class OptionsDialog(PicardDialog):
         self.ui.reset_button = QtGui.QPushButton(_("Restore &Defaults"))
         self.ui.reset_button.setToolTip(_("Reset all settings for current option page"))
 
-        self.ui.buttonbox.addButton(StandardButton(StandardButton.OK), QtGui.QDialogButtonBox.AcceptRole)
+        ok = StandardButton(StandardButton.OK)
+        ok.setText(_("Make It So!"))
+        self.ui.buttonbox.addButton(ok, QtGui.QDialogButtonBox.AcceptRole)
         self.ui.buttonbox.addButton(StandardButton(StandardButton.CANCEL), QtGui.QDialogButtonBox.RejectRole)
         self.ui.buttonbox.addButton(StandardButton(StandardButton.HELP), QtGui.QDialogButtonBox.HelpRole)
         self.ui.buttonbox.addButton(self.ui.reset_all_button, QtGui.QDialogButtonBox.ActionRole)
