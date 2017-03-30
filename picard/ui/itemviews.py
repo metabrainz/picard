@@ -400,7 +400,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
             plugin_menus = {}
             for action in plugin_actions:
                 action_menu = plugin_menu
-                for index in xrange(1, len(action.MENU) + 1):
+                for index in range(1, len(action.MENU) + 1):
                     key = tuple(action.MENU[:index])
                     if key in plugin_menus:
                         action_menu = plugin_menus[key]
@@ -688,11 +688,11 @@ class AlbumItem(TreeItem):
             oldnum = self.childCount() - 1
             newnum = len(album.tracks)
             if oldnum > newnum:  # remove old items
-                for i in xrange(oldnum - newnum):
+                for i in range(oldnum - newnum):
                     self.takeChild(newnum - 1)
                 oldnum = newnum
             # update existing items
-            for i in xrange(oldnum):
+            for i in range(oldnum):
                 item = self.child(i)
                 track = album.tracks[i]
                 item.obj = track
@@ -700,7 +700,7 @@ class AlbumItem(TreeItem):
                 item.update(update_album=False)
             if newnum > oldnum:  # add new items
                 items = []
-                for i in xrange(newnum - 1, oldnum - 1, -1):  # insertChildren is backwards
+                for i in range(newnum - 1, oldnum - 1, -1):  # insertChildren is backwards
                     item = TrackItem(album.tracks[i], False)
                     item.setHidden(False)  # Workaround to make sure the parent state gets updated
                     items.append(item)
@@ -759,10 +759,10 @@ class TrackItem(TreeItem):
                 oldnum = self.childCount()
                 newnum = track.num_linked_files
                 if oldnum > newnum:  # remove old items
-                    for i in xrange(oldnum - newnum):
+                    for i in range(oldnum - newnum):
                         self.takeChild(newnum - 1).obj.item = None
                     oldnum = newnum
-                for i in xrange(oldnum):  # update existing items
+                for i in range(oldnum):  # update existing items
                     item = self.child(i)
                     file = track.linked_files[i]
                     item.obj = file
@@ -770,7 +770,7 @@ class TrackItem(TreeItem):
                     item.update(update_track=False)
                 if newnum > oldnum:  # add new items
                     items = []
-                    for i in xrange(newnum - 1, oldnum - 1, -1):
+                    for i in range(newnum - 1, oldnum - 1, -1):
                         item = FileItem(track.linked_files[i], False)
                         item.update(update_track=False)
                         items.append(item)

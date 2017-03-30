@@ -249,7 +249,7 @@ class Cluster(QtCore.QObject, Item):
 
         # Arrange tracks into albums
         albums = {}
-        for i in xrange(len(tracks)):
+        for i in range(len(tracks)):
             cluster = album_cluster_engine.getClusterFromId(tracks[i][1])
             if cluster is not None:
                 albums.setdefault(cluster, []).append(i)
@@ -464,8 +464,8 @@ class ClusterEngine(object):
         # Keep the matches sorted in a heap
         heap = []
 
-        for y in xrange(self.clusterDict.getSize()):
-            for x in xrange(y):
+        for y in range(self.clusterDict.getSize()):
+            for x in range(y):
                 if x != y:
                     c = similarity(self.clusterDict.getToken(x).lower(),
                                    self.clusterDict.getToken(y).lower())
@@ -473,14 +473,14 @@ class ClusterEngine(object):
                         heappush(heap, ((1.0 - c), [x, y]))
             QtCore.QCoreApplication.processEvents()
 
-        for i in xrange(self.clusterDict.getSize()):
+        for i in range(self.clusterDict.getSize()):
             word, count = self.clusterDict.getWordAndCount(i)
             if word and count > 1:
                 self.clusterBins[self.clusterCount] = [i]
                 self.idClusterIndex[i] = self.clusterCount
                 self.clusterCount = self.clusterCount + 1
 
-        for i in xrange(len(heap)):
+        for i in range(len(heap)):
             c, pair = heappop(heap)
             c = 1.0 - c
 

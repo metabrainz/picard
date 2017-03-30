@@ -115,7 +115,7 @@ def _read_xml(stream):
             node = XmlNode()
             attrs = stream.attributes()
 
-            for i in xrange(attrs.count()):
+            for i in range(attrs.count()):
                 attr = attrs.at(i)
                 node.attribs[_node_name(attr.name())] = unicode(attr.value())
 
