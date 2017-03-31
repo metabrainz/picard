@@ -251,8 +251,8 @@ class ListOption(Option):
 class IntListOption(Option):
 
     @staticmethod
-    def convert(value):
-        return map(int, value)
+    def convert(values):
+        return list(map(int, values))
 
 
 config = None

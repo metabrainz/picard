@@ -715,7 +715,6 @@ class MainWindow(QtWidgets.QMainWindow):
         formats.insert(0, _("All Supported Formats") + " (%s)" % " ".join(extensions))
         files, _filter = QtWidgets.QFileDialog.getOpenFileNames(self, "", current_directory, u";;".join(formats))
         if files:
-            files = map(unicode, files)
             config.persist["current_directory"] = os.path.dirname(files[0])
             self.tagger.add_files(files)
 

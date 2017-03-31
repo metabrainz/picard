@@ -223,7 +223,7 @@ class InterfaceOptionsPage(OptionsPage):
 
     def _added_actions(self):
         actions = self._all_list_items()
-        actions = filter(lambda x: x != 'separator', actions)
+        actions = [action for action in actions if action != 'separator']
         return set(actions)
 
     def populate_action_list(self):

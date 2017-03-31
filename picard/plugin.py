@@ -98,7 +98,7 @@ class ExtensionPoint(object):
         self.__items.append((module, item))
 
     def unregister_module(self, name):
-        self.__items = filter(lambda i: i[0] != name, self.__items)
+        self.__items = [item for item in self.__items if item[0] != name]
 
     def __iter__(self):
         enabled_plugins = config.setting["enabled_plugins"]

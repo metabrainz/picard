@@ -193,7 +193,7 @@ class CoverArtProviderCaa(CoverArtProvider):
 
     def __init__(self, coverart):
         CoverArtProvider.__init__(self, coverart)
-        self.caa_types = map(unicode.lower, config.setting["caa_image_types"])
+        self.caa_types = list(map(str.lower, config.setting["caa_image_types"]))
         self.len_caa_types = len(self.caa_types)
         self.restrict_types = config.setting["caa_restrict_image_types"]
 
@@ -302,7 +302,7 @@ class CoverArtProviderCaa(CoverArtProvider):
                     if not image["types"]:
                         image["types"] = [u"unknown"]
                     else:
-                        image["types"] = map(unicode.lower, image["types"])
+                        image["types"] = list(map(str.lower, image["types"]))
                     if self.restrict_types:
                         # only keep enabled caa types
                         types = set(image["types"]).intersection(

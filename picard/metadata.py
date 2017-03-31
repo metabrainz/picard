@@ -267,7 +267,7 @@ class Metadata(dict):
     def __setitem__(self, name, values):
         if not isinstance(values, list):
             values = [values]
-        values = filter(None, map(unicode, values))
+        values = [str(value) for value in values if value]
         if len(values):
             self.set(name, values)
         else:
@@ -304,7 +304,7 @@ class Metadata(dict):
     def apply_func(self, func):
         for key, values in self.rawitems():
             if not key.startswith("~"):
-                self[key] = map(func, values)
+                self[key] = [func(value) for value in values]
 
     def strip_whitespace(self):
         """Strip leading/trailing whitespace.

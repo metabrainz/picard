@@ -316,7 +316,6 @@ class PluginsOptionsPage(OptionsPage):
             "Picard plugin (*.py *.pyc *.zip)"
         )
         if files:
-            files = map(unicode, files)
             for path in files:
                 self.tagger.pluginmanager.install_plugin(path)
 

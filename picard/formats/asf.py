@@ -178,7 +178,7 @@ class ASFFile(File):
                     metadata["totaldiscs"] = disc[1]
                     values[0] = disc[0]
             name = self.__RTRANS[name]
-            values = filter(bool, map(unicode, values))
+            values = [str(value) for value in values if value]
             if values:
                 metadata[name] = values
         self._info(metadata, file)
@@ -210,7 +210,7 @@ class ASFFile(File):
             if name not in self.__TRANS:
                 continue
             name = self.__TRANS[name]
-            tags[name] = map(unicode, values)
+            tags[name] = values
 
         self._remove_deleted_tags(metadata, tags)
 
@@ -222,7 +222,7 @@ class ASFFile(File):
             real_name = self._get_tag_name(tag)
             if real_name and real_name in tags:
                 if tag == 'totaldiscs':
-                    tags[real_name] = map(unicode, metadata['discnumber'])
+                    tags[real_name] = metadata['discnumber']
                 else:
                     del tags[real_name]
 

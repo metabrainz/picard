@@ -338,7 +338,7 @@ class MetadataBox(QtWidgets.QTableWidget):
         self._save_preserved_tags(preserved_tags)
 
     def remove_from_preserved_tags(self, name, preserved_tags):
-        preserved_tags = filter(lambda x: x != name, preserved_tags)
+        preserved_tags = [tag for tag in preserved_tags if tag != name]
         self._save_preserved_tags(preserved_tags)
 
     def edit_tag(self, tag):

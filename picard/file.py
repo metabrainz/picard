@@ -322,7 +322,7 @@ class File(QtCore.QObject, Item):
         # In case the filename is blank and only has the extension
         # the real extension is in new_filename and ext is blank
         new_filename, ext = os.path.splitext(filename)
-        if ext == '' and new_filename.lower() in map(unicode, self.EXTENSIONS):
+        if ext == '' and new_filename.lower() in self.EXTENSIONS:
             ext = new_filename
             new_filename = ''
         return new_filename, ext
@@ -409,13 +409,13 @@ class File(QtCore.QObject, Item):
         old_path = encode_filename(os.path.dirname(old_filename))
         new_path = encode_filename(os.path.dirname(new_filename))
         patterns = encode_filename(config.setting["move_additional_files_pattern"])
-        patterns = filter(bool, [p.strip() for p in patterns.split()])
+        patterns = [p.strip() for p in patterns.split() if p.strip()]
         try:
             names = os.listdir(old_path)
         except os.error:
             log.error("Error: {} directory not found".format(old_path))
             return
-        filtered_names = filter(lambda x: x[0] != '.', names)
+        filtered_names = [name for name in names if name[0] != "."]
         for pattern in patterns:
             pattern_regex = re.compile(fnmatch.translate(pattern), re.IGNORECASE)
             file_names = names

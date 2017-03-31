@@ -110,7 +110,7 @@ class TagsFromFileNamesDialog(PicardDialog):
 
     def preview(self):
         format, columns = self.parse_format()
-        self.ui.files.setHeaderLabels([_("File Name")] + map(display_tag_name, columns))
+        self.ui.files.setHeaderLabels([_("File Name")] + list(map(display_tag_name, columns)))
         for item, file in zip(self.items, self.files):
             matches = self.match_file(file, format)
             for i in range(len(columns)):

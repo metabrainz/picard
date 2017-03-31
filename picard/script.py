@@ -22,6 +22,7 @@
 
 import re
 import operator
+from functools import reduce
 from collections import namedtuple
 from inspect import getargspec
 from picard.metadata import Metadata
@@ -49,7 +50,7 @@ class UnknownFunction(ScriptError):
     pass
 
 
-class ScriptText(unicode):
+class ScriptText(str):
 
     def eval(self, state):
         return self
@@ -425,8 +426,7 @@ def func_unset(parser, name):
     # Allow wild-card unset for certain keys
     if name in ('performer:*', 'comment:*', 'lyrics:*'):
         name = name[:-1]
-        key_list = list(parser.context.keys())
-        for key in key_list:
+        for key in list(parser.context.keys()):
             if key.startswith(name):
                 del parser.context[key]
         return ""
