@@ -50,7 +50,7 @@ from picard.util.textencoding import (
 from picard.util.filenaming import make_short_filename
 from picard.util.tags import PRESERVED_TAGS
 from picard.const import QUERY_LIMIT
-
+from picard import PICARD_APP_NAME
 
 class File(QtCore.QObject, Item):
 
