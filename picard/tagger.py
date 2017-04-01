@@ -355,6 +355,7 @@ class Tagger(QtGui.QApplication):
             ignoreregex = re.compile(pattern)
         ignore_hidden = config.setting["ignore_hidden_files"]
         new_files = []
+        tmp_files = {}
         for filename in filenames:
             filename = os.path.normpath(os.path.realpath(filename))
             if ignore_hidden and is_hidden(filename):
@@ -366,16 +367,44 @@ class Tagger(QtGui.QApplication):
             if filename not in self.files:
                 file = open_file(filename)
                 if file:
-                    self.files[filename] = file
-                    new_files.append(file)
-        if new_files:
+                    tmp_files[filename] = file
+        if tmp_files and self.check_load(tmp_files):
+            new_files = []
+            for filename in sorted(tmp_files):
+                file = tmp_files[filename]
+                self.files[filename] = file
+                new_files.append(file)
             log.debug("Adding files %r", new_files)
-            new_files.sort(key=lambda x: x.filename)
             if target is None or target is self.unmatched_files:
                 self.unmatched_files.add_files(new_files)
                 target = None
             for file in new_files:
                 file.load(partial(self._file_loaded, target=target))
+
+    def check_load(self, new_files):
+        #Load large amounts of files
+        num_files = len(new_files)
+        if num_files > config.setting["file_import_warning_threshold"]:
+            QMessageBox = QtGui.QMessageBox
+
+            msg = QMessageBox()
+            msg.setIcon(QMessageBox.Warning)
+            msg.setWindowModality(QtCore.Qt.WindowModal)
+            msg.setWindowTitle(_(u"Warning: Too many files at once"))
+            msg.setText(
+                ungettext(
+                    u"Are you sure you want to load %d file? Picard may run very slowly" % num_files,
+                    u"Are you sure you want to load %d files? Picard may run very slowly" % num_files,
+                    num_files))
+            cancel = msg.addButton(QMessageBox.No)
+            msg.setDefaultButton(cancel)
+            msg.addButton(QMessageBox.Yes)
+            ret = msg.exec_()
+
+            if ret == QMessageBox.No:
+                return False
+
+        return True
 
     def add_directory(self, path):
         if config.setting['recursively_add_files']:
