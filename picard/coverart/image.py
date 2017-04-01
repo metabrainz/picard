@@ -288,6 +288,12 @@ class CoverArtImage:
         else:
             filename = config.setting["cover_image_filename"]
             log.debug("Using default cover image filename %r", filename)
+        try:
+            from picard.coverart import run_coverart_file_save_action
+            run_coverart_file_save_action(self)
+        except Exception as e:
+            log.debug(e)
+
         filename = self._make_image_filename(filename, dirname, metadata)
 
         overwrite = config.setting["save_images_overwrite"]
