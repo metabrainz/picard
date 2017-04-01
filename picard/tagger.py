@@ -120,6 +120,10 @@ class Tagger(QtGui.QApplication):
         self.save_thread_pool = QtCore.QThreadPool(self)
         self.save_thread_pool.setMaxThreadCount(1)
 
+        # Use a seperate thread pool for loading to allow UI to be responsonsive
+        self.load_thread_pool = QtCore.QThreadPool(self)
+        self.load_thread_pool.setMaxThreadCount(1)
+
         if not sys.platform == "win32":
             # Set up signal handling
             # It's not possible to call all available functions from signal
@@ -349,12 +353,18 @@ class Tagger(QtGui.QApplication):
 
     def add_files(self, filenames, target=None):
         """Add files to the tagger."""
+        thread.run_task(partial(self._open_files, filenames),
+                        partial(self._file_opening_finsished, target),
+                        priority=1,
+                        thread_pool=self.load_thread_pool)
+
+    def _open_files(self, filenames):
         ignoreregex = None
         pattern = config.setting['ignore_regex']
         if pattern:
             ignoreregex = re.compile(pattern)
         ignore_hidden = config.setting["ignore_hidden_files"]
-        new_files = []
+        temp_files = dict()
         for filename in filenames:
             filename = os.path.normpath(os.path.realpath(filename))
             if ignore_hidden and is_hidden(filename):
@@ -366,16 +376,49 @@ class Tagger(QtGui.QApplication):
             if filename not in self.files:
                 file = open_file(filename)
                 if file:
-                    self.files[filename] = file
-                    new_files.append(file)
-        if new_files:
+                    temp_files[filename] = file
+        return temp_files
+
+    def _file_opening_finsished(self, target=None, result=None, error=None):
+        if error is not None:
+            log.error('Error occured %s', error)
+        if result and self.check_load(result):
+            new_files = []
+            for filename in sorted(result):
+                file = result[filename]
+                self.files[filename] = file
+                new_files.append(file)
             log.debug("Adding files %r", new_files)
-            new_files.sort(key=lambda x: x.filename)
             if target is None or target is self.unmatched_files:
                 self.unmatched_files.add_files(new_files)
                 target = None
             for file in new_files:
                 file.load(partial(self._file_loaded, target=target))
+
+    def check_load(self, new_files):
+        #Load large amounts of files
+        num_files = len(new_files)
+        if num_files > config.setting["file_import_warning_threshold"]:
+            QMessageBox = QtGui.QMessageBox
+
+            msg = QMessageBox()
+            msg.setIcon(QMessageBox.Warning)
+            msg.setWindowModality(QtCore.Qt.WindowModal)
+            msg.setWindowTitle(_(u"Warning: Too many files at once"))
+            msg.setText(
+                ungettext(
+                    u"Are you sure you want to load %d file? Picard may run very slowly" % num_files,
+                    u"Are you sure you want to load %d files? Picard may run very slowly" % num_files,
+                    num_files))
+            cancel = msg.addButton(QMessageBox.No)
+            msg.setDefaultButton(cancel)
+            msg.addButton(QMessageBox.Yes)
+            ret = msg.exec_()
+
+            if ret == QMessageBox.No:
+                return False
+
+        return True
 
     def add_directory(self, path):
         if config.setting['recursively_add_files']:
@@ -385,42 +428,33 @@ class Tagger(QtGui.QApplication):
 
     def _add_directory_recursive(self, path):
         ignore_hidden = config.setting["ignore_hidden_files"]
-        walk = os.walk(unicode(path))
+        files_to_be_added = list()
+        # walk topdown to allow modifying the sub-dirs to remove
+        # hidden dirs
+        for root, dirs, files in os.walk(unicode(path), topdown=True):
+            if ignore_hidden:
+                dirs[:] = [d for d in dirs if not is_hidden(os.path.join(root, d))]
+            number_of_files = len(files)
+            if number_of_files:
+                mparms = {
+                    'count': number_of_files,
+                    'directory': root,
+                }
+                log.debug("Adding %(count)d files from '%(directory)r'" %
+                          mparms)
+                self.window.set_statusbar_message(
+                    ungettext(
+                        "Adding %(count)d file from '%(directory)s' ...",
+                        "Adding %(count)d files from '%(directory)s' ...",
+                        number_of_files),
+                    mparms,
+                    translate=None,
+                    echo=None
+                )
+                files_to_be_added.extend([os.path.join(root, f) for f in files])
 
-        def get_files():
-            try:
-                root, dirs, files = next(walk)
-                if ignore_hidden:
-                    dirs[:] = [d for d in dirs if not is_hidden(os.path.join(root, d))]
-            except StopIteration:
-                return None
-            else:
-                number_of_files = len(files)
-                if number_of_files:
-                    mparms = {
-                        'count': number_of_files,
-                        'directory': root,
-                    }
-                    log.debug("Adding %(count)d files from '%(directory)r'" %
-                              mparms)
-                    self.window.set_statusbar_message(
-                        ungettext(
-                            "Adding %(count)d file from '%(directory)s' ...",
-                            "Adding %(count)d files from '%(directory)s' ...",
-                            number_of_files),
-                        mparms,
-                        translate=None,
-                        echo=None
-                    )
-                return (os.path.join(root, f) for f in files)
-
-        def process(result=None, error=None):
-            if result:
-                if error is None:
-                    self.add_files(result)
-                thread.run_task(get_files, process)
-
-        process(True, False)
+        if files_to_be_added:
+            self.add_files(files_to_be_added)
 
     def _add_directory_non_recursive(self, path):
         files = []
