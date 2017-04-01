@@ -1,14 +1,15 @@
 # Translators:
 # Translators:
 # Kebabpizza <alex_elle@hotmail.com>, 2017
+# A. Regnander <anton_r_3@hotmail.com>, 2017
 # Niklas Berglund <niklas.berglund@gmail.com>, 2016
 # Robin Björnsvik <robin@bjornsvik.se>, 2013
 # Staffan Vilcans, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2017-02-02 19:44+0000\n"
-"Last-Translator: Kebabpizza <alex_elle@hotmail.com>\n"
+"PO-Revision-Date: 2017-03-27 17:06+0000\n"
+"Last-Translator: A. Regnander <anton_r_3@hotmail.com>\n"
 "Language-Team: Swedish (http://www.transifex.com/musicbrainz/musicbrainz/language/sv/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1039,7 +1040,7 @@ msgstr "Singapore"
 #. iso.code:SX
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:260
 msgid "Sint Maarten (Dutch part)"
-msgstr ""
+msgstr "Sint Maarten (nederländska delen)"
 
 #. iso.code:SK
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:189
@@ -1069,7 +1070,7 @@ msgstr "Sydafrika"
 #. iso.code:GS
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:248
 msgid "South Georgia and the South Sandwich Islands"
-msgstr ""
+msgstr "Sydgeorgien och Sydsandwichöarna"
 
 #. iso.code:KR
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:113
@@ -1154,7 +1155,7 @@ msgstr "Thailand"
 #. iso.code:TL
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:61
 msgid "Timor-Leste"
-msgstr ""
+msgstr "Timor-Leste"
 
 #. iso.code:TG
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:209

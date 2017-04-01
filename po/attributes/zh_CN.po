@@ -3,7 +3,7 @@
 #  <>, 2002, 2001, Inc, 2003, 2007, 2008, 2009, 2010, 2011, 2000,�s�, 2012
 #   Alastair McKinstry <mckinstry@computer.org>, 2002
 # Alastair McKinstry <mckinstry@computer.org>, 2001
-# Clay Cheng <clay1994@mail.hfut.edu.cn>, 2016
+# Clay Cheng <clay1994@mail.hfut.edu.cn>, 2016-2017
 # Erwin Synth <kingdzy1996@gmail.com>, 2017
 #   Free Software Foundation, Inc., 2002, 2003, 2007, 2008
 # RedHotHeat <gbonner@iol.ie>, 2012
@@ -20,8 +20,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2017-03-06 17:43+0000\n"
-"Last-Translator: Erwin Synth <kingdzy1996@gmail.com>\n"
+"PO-Revision-Date: 2017-03-29 04:07+0000\n"
+"Last-Translator: Clay Cheng <clay1994@mail.hfut.edu.cn>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/musicbrainz/musicbrainz/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -384,22 +384,22 @@ msgstr "ASCAP代号"
 #: DB:work_attribute_type_allowed_value/value:299
 msgctxt "work_attribute_type_allowed_value"
 msgid "Acem"
-msgstr "艾且木卡姆"
+msgstr "艾且"
 
 #: DB:work_attribute_type_allowed_value/value:305
 msgctxt "work_attribute_type_allowed_value"
 msgid "Acem Nevruz"
-msgstr "那吾肉孜艾且木卡姆"
+msgstr "艾且那吾肉孜"
 
 #: DB:work_attribute_type_allowed_value/value:306
 msgctxt "work_attribute_type_allowed_value"
 msgid "Acem Rast"
-msgstr "拉斯特艾且木卡姆"
+msgstr "艾且拉斯特"
 
 #: DB:work_attribute_type_allowed_value/value:300
 msgctxt "work_attribute_type_allowed_value"
 msgid "Acem Zemzeme"
-msgstr "泽木泽木艾且木卡姆"
+msgstr "艾且泽木泽木"
 
 #: DB:work_attribute_type_allowed_value/value:301
 msgctxt "work_attribute_type_allowed_value"
@@ -464,12 +464,12 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:40
 msgctxt "work_attribute_type_allowed_value"
 msgid "Amṛtavarṣiṇi"
-msgstr "庵罗陀婆罗悉尼"
+msgstr "安塔伐西尼"
 
 #: DB:work_attribute_type_allowed_value/value:39
 msgctxt "work_attribute_type_allowed_value"
 msgid "Amṛtavāhiṇi"
-msgstr ""
+msgstr "安塔伐希尼"
 
 #: DB:release_status/description:4
 msgctxt "release_status"
@@ -552,7 +552,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:310
 msgctxt "work_attribute_type_allowed_value"
 msgid "Anberefşan"
-msgstr ""
+msgstr "安贝雷夫山"
 
 #: DB:release_status/description:1
 msgctxt "release_status"
@@ -564,57 +564,57 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:311
 msgctxt "work_attribute_type_allowed_value"
 msgid "Araban"
-msgstr ""
+msgstr "阿拉班"
 
 #: DB:work_attribute_type_allowed_value/value:312
 msgctxt "work_attribute_type_allowed_value"
 msgid "Arabanbuselik"
-msgstr ""
+msgstr "阿拉班普塞利克"
 
 #: DB:work_attribute_type_allowed_value/value:313
 msgctxt "work_attribute_type_allowed_value"
 msgid "Arabankurdi"
-msgstr ""
+msgstr "阿拉班库尔迪"
 
 #: DB:work_attribute_type_allowed_value/value:314
 msgctxt "work_attribute_type_allowed_value"
 msgid "Aram-ı Can"
-msgstr ""
+msgstr "阿拉米坎"
 
 #: DB:work_attribute_type_allowed_value/value:315
 msgctxt "work_attribute_type_allowed_value"
 msgid "Aram-ı Dil"
-msgstr ""
+msgstr "阿拉米迪尔"
 
 #: DB:work_attribute_type_allowed_value/value:604
 msgctxt "work_attribute_type_allowed_value"
 msgid "Aranağme"
-msgstr ""
+msgstr "阿拉那梅"
 
 #: DB:work_attribute_type_allowed_value/value:316
 msgctxt "work_attribute_type_allowed_value"
 msgid "Arazbar"
-msgstr ""
+msgstr "阿拉兹巴"
 
 #: DB:work_attribute_type_allowed_value/value:317
 msgctxt "work_attribute_type_allowed_value"
 msgid "Arazbar Zemzeme"
-msgstr ""
+msgstr "阿拉兹巴泽木泽木"
 
 #: DB:work_attribute_type_allowed_value/value:318
 msgctxt "work_attribute_type_allowed_value"
 msgid "Arazbarbuselik"
-msgstr ""
+msgstr "阿拉兹巴普塞利克"
 
 #: DB:work_attribute_type_allowed_value/value:319
 msgctxt "work_attribute_type_allowed_value"
 msgid "Arazbarek"
-msgstr ""
+msgstr "阿拉兹巴力"
 
 #: DB:editor_collection_type/name:7
 msgctxt "collection_type"
 msgid "Area"
-msgstr ""
+msgstr "地区"
 
 #: DB:area_alias_type/name:1
 msgctxt "alias_type"
@@ -639,17 +639,17 @@ msgstr "艺术家名称"
 #: DB:work_attribute_type_allowed_value/value:693
 msgctxt "work_attribute_type_allowed_value"
 msgid "Artık Aksaksemai"
-msgstr ""
+msgstr "阿提克阿克萨克塞玛依"
 
 #: DB:work_attribute_type_allowed_value/value:44
 msgctxt "work_attribute_type_allowed_value"
 msgid "Asāvēri"
-msgstr ""
+msgstr "阿萨维利"
 
 #: DB:editor_collection_type/name:5
 msgctxt "collection_type"
 msgid "Attending"
-msgstr ""
+msgstr "参加"
 
 #: DB:work_type/name:25
 msgctxt "work_type"
@@ -664,132 +664,132 @@ msgstr "有声读物"
 #: DB:series_ordering_type/name:1
 msgctxt "series_ordering_type"
 msgid "Automatic"
-msgstr ""
+msgstr "自动"
 
 #: DB:work_attribute_type_allowed_value/value:694
 msgctxt "work_attribute_type_allowed_value"
 msgid "Aydın"
-msgstr ""
+msgstr "艾登"
 
 #: DB:work_attribute_type_allowed_value/value:695
 msgctxt "work_attribute_type_allowed_value"
 msgid "Ayin Devr-i Revanı"
-msgstr ""
+msgstr "艾因戴夫利雷瓦尼"
 
 #: DB:work_attribute_type_allowed_value/value:605
 msgctxt "work_attribute_type_allowed_value"
 msgid "Ayin-i Şerif"
-msgstr ""
+msgstr "艾因尼谢立夫"
 
 #: DB:work_attribute_type_allowed_value/value:696
 msgctxt "work_attribute_type_allowed_value"
 msgid "Azeri Yürüksemai"
-msgstr ""
+msgstr "阿泽利尤鲁克塞玛依"
 
 #: DB:work_attribute_type_allowed_value/value:682
 msgctxt "work_attribute_type_allowed_value"
 msgid "Ağır Aksaksemai"
-msgstr ""
+msgstr "阿伊儿阿克萨克塞玛依"
 
 #: DB:work_attribute_type_allowed_value/value:683
 msgctxt "work_attribute_type_allowed_value"
 msgid "Ağıraksak"
-msgstr ""
+msgstr "阿伊儿阿卡萨克"
 
 #: DB:work_attribute_type_allowed_value/value:684
 msgctxt "work_attribute_type_allowed_value"
 msgid "Ağıraydın"
-msgstr ""
+msgstr "阿伊儿艾登"
 
 #: DB:work_attribute_type_allowed_value/value:686
 msgctxt "work_attribute_type_allowed_value"
 msgid "Ağırdarbıfetih"
-msgstr ""
+msgstr "阿伊儿达布菲帝"
 
 #: DB:work_attribute_type_allowed_value/value:687
 msgctxt "work_attribute_type_allowed_value"
 msgid "Ağırdüyek"
-msgstr ""
+msgstr "阿伊儿杜也克"
 
 #: DB:work_attribute_type_allowed_value/value:688
 msgctxt "work_attribute_type_allowed_value"
 msgid "Ağırevfer"
-msgstr ""
+msgstr "阿伊儿艾菲尔"
 
 #: DB:work_attribute_type_allowed_value/value:603
 msgctxt "work_attribute_type_allowed_value"
 msgid "Ağırsemai"
-msgstr ""
+msgstr "阿伊儿塞玛依"
 
 #: DB:work_attribute_type_allowed_value/value:689
 msgctxt "work_attribute_type_allowed_value"
 msgid "Ağırsenginsemai"
-msgstr ""
+msgstr "阿伊儿森因塞玛依"
 
 #: DB:work_attribute_type_allowed_value/value:685
 msgctxt "work_attribute_type_allowed_value"
 msgid "Ağırçenber"
-msgstr ""
+msgstr "阿伊儿辰贝"
 
 #: DB:work_attribute_type_allowed_value/value:321
 msgctxt "work_attribute_type_allowed_value"
 msgid "Aşiran Maye"
-msgstr ""
+msgstr "阿西兰玛耶"
 
 #: DB:work_attribute_type_allowed_value/value:320
 msgctxt "work_attribute_type_allowed_value"
 msgid "Aşiran Zemzeme"
-msgstr ""
+msgstr "阿西兰泽木泽木"
 
 #: DB:work_attribute_type_allowed_value/value:322
 msgctxt "work_attribute_type_allowed_value"
 msgid "Aşkefza"
-msgstr ""
+msgstr "阿施开夫萨"
 
 #: DB:work_attribute_type_allowed_value/value:45
 msgctxt "work_attribute_type_allowed_value"
 msgid "Aṭāna"
-msgstr ""
+msgstr "阿坦那"
 
 #: DB:work_attribute_type_allowed_value/value:289
 msgctxt "work_attribute_type_allowed_value"
 msgid "Aṭṭa"
-msgstr ""
+msgstr "阿塔"
 
 #: DB:work_attribute_type_allowed_value/value:795
 msgctxt "work_attribute_type_allowed_value"
 msgid "B Dorian"
-msgstr ""
+msgstr "多利安B调式"
 
 #: DB:work_attribute_type_allowed_value/value:807
 msgctxt "work_attribute_type_allowed_value"
 msgid "B Mixolydian"
-msgstr ""
+msgstr "米克索吕底安B调式"
 
 #: DB:work_attribute_type_allowed_value/value:33
 msgctxt "work_attribute_type_allowed_value"
 msgid "B major"
-msgstr ""
+msgstr "B大调"
 
 #: DB:work_attribute_type_allowed_value/value:34
 msgctxt "work_attribute_type_allowed_value"
 msgid "B minor"
-msgstr ""
+msgstr "B小调"
 
 #: DB:work_attribute_type_allowed_value/value:31
 msgctxt "work_attribute_type_allowed_value"
 msgid "B-flat major"
-msgstr ""
+msgstr "降B大调"
 
 #: DB:work_attribute_type_allowed_value/value:32
 msgctxt "work_attribute_type_allowed_value"
 msgid "B-flat minor"
-msgstr ""
+msgstr "降B小调"
 
 #: DB:work_attribute_type/name:7
 msgctxt "work_attribute_type"
 msgid "BMI ID"
-msgstr ""
+msgstr "BMI代号"
 
 #: DB:cover_art_archive.art_type/name:2
 msgctxt "cover_art_type"
@@ -799,17 +799,17 @@ msgstr "封底"
 #: DB:work_attribute_type_allowed_value/value:323
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bahr-ı Nazik"
-msgstr ""
+msgstr "巴利纳吉克"
 
 #: DB:work_attribute_type_allowed_value/value:47
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bahudāri"
-msgstr ""
+msgstr "巴胡达利"
 
 #: DB:work_attribute_type_allowed_value/value:48
 msgctxt "work_attribute_type_allowed_value"
 msgid "Balahaṁsa"
-msgstr ""
+msgstr "巴拉哈姆萨"
 
 #: DB:work_type/name:2
 msgctxt "work_type"
@@ -819,17 +819,17 @@ msgstr "芭蕾"
 #: DB:work_attribute_type_allowed_value/value:49
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bauḷi"
-msgstr ""
+msgstr "巴乌力"
 
 #: DB:work_attribute_type_allowed_value/value:51
 msgctxt "work_attribute_type_allowed_value"
 msgid "Behāg"
-msgstr ""
+msgstr "贝哈格"
 
 #: DB:work_type/name:26
 msgctxt "work_type"
 msgid "Beijing opera"
-msgstr ""
+msgstr "京剧"
 
 #: DB:work_type/description:26
 msgctxt "work_type"
@@ -841,62 +841,62 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:697
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bektaşi Devr-i Revanı"
-msgstr ""
+msgstr "拜克塔什戴夫利雷瓦尼"
 
 #: DB:work_attribute_type_allowed_value/value:698
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bektaşi Raksanı"
-msgstr ""
+msgstr "拜克塔什拉克萨尼"
 
 #: DB:work_attribute_type_allowed_value/value:699
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bektaşi Raksı"
-msgstr ""
+msgstr "拜克塔什拉克斯"
 
 #: DB:work_attribute_type_allowed_value/value:700
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bektaşi Raksı Evferi"
-msgstr ""
+msgstr "拜克塔什拉克斯艾非力"
 
 #: DB:work_attribute_type_allowed_value/value:324
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bend-i Hisar"
-msgstr ""
+msgstr "本迪希萨尔"
 
 #: DB:work_attribute_type_allowed_value/value:701
 msgctxt "work_attribute_type_allowed_value"
 msgid "Berefşan"
-msgstr ""
+msgstr "贝雷夫山"
 
 #: DB:work_attribute_type_allowed_value/value:606
 msgctxt "work_attribute_type_allowed_value"
 msgid "Beste"
-msgstr ""
+msgstr "贝斯特"
 
 #: DB:work_attribute_type_allowed_value/value:702
 msgctxt "work_attribute_type_allowed_value"
 msgid "Beste Devr-i Revanı"
-msgstr ""
+msgstr "贝斯特戴夫利雷瓦尼"
 
 #: DB:work_attribute_type_allowed_value/value:325
 msgctxt "work_attribute_type_allowed_value"
 msgid "Beste Hicaz"
-msgstr ""
+msgstr "贝斯特汉志"
 
 #: DB:work_attribute_type_allowed_value/value:326
 msgctxt "work_attribute_type_allowed_value"
 msgid "Beste Hisar"
-msgstr ""
+msgstr "贝斯特希萨尔"
 
 #: DB:work_attribute_type_allowed_value/value:327
 msgctxt "work_attribute_type_allowed_value"
 msgid "Beste Isfahan"
-msgstr ""
+msgstr "贝斯特伊斯法罕"
 
 #: DB:work_attribute_type_allowed_value/value:328
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bestenigar"
-msgstr ""
+msgstr "贝斯特尼加"
 
 #: DB:medium_format/name:24
 msgctxt "medium_format"
@@ -906,77 +906,77 @@ msgstr "Betamax录像带"
 #: DB:work_attribute_type_allowed_value/value:329
 msgctxt "work_attribute_type_allowed_value"
 msgid "Beyati"
-msgstr ""
+msgstr "巴雅提"
 
 #: DB:work_attribute_type_allowed_value/value:331
 msgctxt "work_attribute_type_allowed_value"
 msgid "Beyati Araban"
-msgstr ""
+msgstr "巴雅提阿拉班"
 
 #: DB:work_attribute_type_allowed_value/value:332
 msgctxt "work_attribute_type_allowed_value"
 msgid "Beyati Arabanbuselik"
-msgstr ""
+msgstr "巴雅提阿拉班普塞利克"
 
 #: DB:work_attribute_type_allowed_value/value:333
 msgctxt "work_attribute_type_allowed_value"
 msgid "Beyati Arabankurdi"
-msgstr ""
+msgstr "巴雅提阿拉班库尔迪"
 
 #: DB:work_attribute_type_allowed_value/value:330
 msgctxt "work_attribute_type_allowed_value"
 msgid "Beyati Ruy-i Acem"
-msgstr ""
+msgstr "巴雅提鲁仪艾且"
 
 #: DB:work_attribute_type_allowed_value/value:334
 msgctxt "work_attribute_type_allowed_value"
 msgid "Beyatibuselik"
-msgstr ""
+msgstr "巴雅提普塞利克"
 
 #: DB:work_attribute_type_allowed_value/value:335
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bezm-i Tarab"
-msgstr ""
+msgstr "贝兹密塔拉布"
 
 #: DB:work_attribute_type_allowed_value/value:52
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bhairavi"
-msgstr ""
+msgstr "伐罗毗"
 
 #: DB:work_attribute_type_allowed_value/value:53
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bhavāni"
-msgstr ""
+msgstr "珀瓦尼"
 
 #: DB:work_attribute_type_allowed_value/value:54
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bhāvapriya"
-msgstr ""
+msgstr "珀瓦普利亚"
 
 #: DB:work_attribute_type_allowed_value/value:55
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bhīmpalāsi"
-msgstr ""
+msgstr "宾帕拉西"
 
 #: DB:work_attribute_type_allowed_value/value:56
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bhōga sāvēri"
-msgstr ""
+msgstr "波加萨维利"
 
 #: DB:work_attribute_type_allowed_value/value:57
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bhūpāḷaṁ"
-msgstr ""
+msgstr "卜帕尔安"
 
 #: DB:work_attribute_type_allowed_value/value:58
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bhūṣāvaḷi"
-msgstr ""
+msgstr "卜萨瓦里"
 
 #: DB:work_attribute_type_allowed_value/value:59
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bilahari"
-msgstr ""
+msgstr "比拉哈里"
 
 #: DB:medium_format/name:20
 msgctxt "medium_format"
@@ -1011,7 +1011,7 @@ msgstr "非法制作的产品"
 #: DB:work_attribute_type_allowed_value/value:607
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bozlak"
-msgstr ""
+msgstr "波兹拉克"
 
 #: DB:release_group_primary_type/name:12
 msgctxt "release_group_primary_type"
@@ -1021,92 +1021,92 @@ msgstr "广播"
 #: DB:work_attribute_type_allowed_value/value:62
 msgctxt "work_attribute_type_allowed_value"
 msgid "Budamanōhari"
-msgstr ""
+msgstr "布达马诺哈里"
 
 #: DB:work_attribute_type_allowed_value/value:703
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bulgar Darbı"
-msgstr ""
+msgstr "保加尔达尔布"
 
 #: DB:work_attribute_type_allowed_value/value:336
 msgctxt "work_attribute_type_allowed_value"
 msgid "Buselik"
-msgstr ""
+msgstr "普塞利克"
 
 #: DB:work_attribute_type_allowed_value/value:337
 msgctxt "work_attribute_type_allowed_value"
 msgid "Buselikaşiran"
-msgstr ""
+msgstr "普塞利克阿西兰"
 
 #: DB:work_attribute_type_allowed_value/value:338
 msgctxt "work_attribute_type_allowed_value"
 msgid "Büzürk"
-msgstr ""
+msgstr "布祖尔克"
 
 #: DB:work_attribute_type_allowed_value/value:46
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bāgēśrī"
-msgstr ""
+msgstr "巴盖室利"
 
 #: DB:work_attribute_type_allowed_value/value:50
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bēgaḍa"
-msgstr ""
+msgstr "贝佳达"
 
 #: DB:work_attribute_type_allowed_value/value:60
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bṛndāvana sāranga"
-msgstr ""
+msgstr "布伦达伐那萨朗加"
 
 #: DB:work_attribute_type_allowed_value/value:61
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bṛndāvani"
-msgstr ""
+msgstr "布伦达伐尼"
 
 #: DB:work_attribute_type_allowed_value/value:789
 msgctxt "work_attribute_type_allowed_value"
 msgid "C Dorian"
-msgstr ""
+msgstr "多利安C调式"
 
 #: DB:work_attribute_type_allowed_value/value:801
 msgctxt "work_attribute_type_allowed_value"
 msgid "C Mixolydian"
-msgstr ""
+msgstr "米克索吕底安C调式"
 
 #: DB:work_attribute_type_allowed_value/value:2
 msgctxt "work_attribute_type_allowed_value"
 msgid "C major"
-msgstr ""
+msgstr "C大调"
 
 #: DB:work_attribute_type_allowed_value/value:3
 msgctxt "work_attribute_type_allowed_value"
 msgid "C minor"
-msgstr ""
+msgstr "C小调"
 
 #: DB:work_attribute_type_allowed_value/value:1
 msgctxt "work_attribute_type_allowed_value"
 msgid "C-flat major"
-msgstr ""
+msgstr "降C大调"
 
 #: DB:work_attribute_type_allowed_value/value:4
 msgctxt "work_attribute_type_allowed_value"
 msgid "C-sharp major"
-msgstr ""
+msgstr "升C大调"
 
 #: DB:work_attribute_type_allowed_value/value:5
 msgctxt "work_attribute_type_allowed_value"
 msgid "C-sharp minor"
-msgstr ""
+msgstr "升C小调"
 
 #: DB:work_attribute_type/name:19
 msgctxt "work_attribute_type"
 msgid "CASH ID"
-msgstr ""
+msgstr "CASH代号"
 
 #: DB:work_attribute_type/name:22
 msgctxt "work_attribute_type"
 msgid "CCLI ID"
-msgstr ""
+msgstr "CCLI代号"
 
 #: DB:medium_format/name:1
 msgctxt "medium_format"
@@ -1126,32 +1126,32 @@ msgstr "可写光盘"
 #: DB:medium_format/name:41
 msgctxt "medium_format"
 msgid "CDV"
-msgstr ""
+msgstr "CDV"
 
 #: DB:medium_format/name:60
 msgctxt "medium_format"
 msgid "CED"
-msgstr ""
+msgstr "CED"
 
 #: DB:work_attribute_type_allowed_value/value:63
 msgctxt "work_attribute_type_allowed_value"
 msgid "Cakravākaṁ"
-msgstr ""
+msgstr "查克拉瓦卡姆"
 
 #: DB:work_attribute_type_allowed_value/value:64
 msgctxt "work_attribute_type_allowed_value"
 msgid "Candrajyōti"
-msgstr ""
+msgstr "昌德拉乔提"
 
 #: DB:work_attribute_type_allowed_value/value:65
 msgctxt "work_attribute_type_allowed_value"
 msgid "Candrakauns"
-msgstr ""
+msgstr "昌德拉卡文斯"
 
 #: DB:work_attribute_type_allowed_value/value:339
 msgctxt "work_attribute_type_allowed_value"
 msgid "Canfeza"
-msgstr ""
+msgstr "詹非查"
 
 #: DB:work_type/name:3
 msgctxt "work_type"
@@ -1166,42 +1166,42 @@ msgstr "硬纸板"
 #: DB:medium_format/name:9
 msgctxt "medium_format"
 msgid "Cartridge"
-msgstr "打印机的墨盒"
+msgstr "盒带"
 
 #: DB:work_attribute_type_allowed_value/value:66
 msgctxt "work_attribute_type_allowed_value"
 msgid "Carturdaśa rāgamālika"
-msgstr ""
+msgstr "查图达撒拉加马利卡"
 
 #: DB:medium_format/name:8
 msgctxt "medium_format"
 msgid "Cassette"
-msgstr "磁带"
+msgstr "卡带"
 
 #: DB:release_packaging/name:8
 msgctxt "release_packaging"
 msgid "Cassette Case"
-msgstr "磁带包装"
+msgstr "卡带包装"
 
 #: DB:series_type/name:5
 msgctxt "series_type"
 msgid "Catalogue"
-msgstr ""
+msgstr "目录"
 
 #: DB:work_attribute_type_allowed_value/value:291
 msgctxt "work_attribute_type_allowed_value"
 msgid "Caturaśra-jāti jhaṁpe"
-msgstr ""
+msgstr "招杜罗室罗阇提瞻陪"
 
 #: DB:work_attribute_type_allowed_value/value:70
 msgctxt "work_attribute_type_allowed_value"
 msgid "Cencu kāmbhōji"
-msgstr ""
+msgstr "辰楚坎波吉"
 
 #: DB:work_attribute_type_allowed_value/value:704
 msgctxt "work_attribute_type_allowed_value"
 msgid "Cevher"
-msgstr ""
+msgstr "杰维尔"
 
 #: DB:artist_type/name:4
 msgctxt "artist_type"
@@ -1211,17 +1211,17 @@ msgstr "特性"
 #: DB:artist_type/name:6
 msgctxt "artist_type"
 msgid "Choir"
-msgstr ""
+msgstr "合唱"
 
 #: DB:work_attribute_type_allowed_value/value:71
 msgctxt "work_attribute_type_allowed_value"
 msgid "Cintāmaṇi"
-msgstr ""
+msgstr "真陀摩尼"
 
 #: DB:work_attribute_type_allowed_value/value:72
 msgctxt "work_attribute_type_allowed_value"
 msgid "Cittaranjani"
-msgstr ""
+msgstr "齐塔兰加尼"
 
 #: DB:area_type/name:3
 msgctxt "area_type"
@@ -1242,7 +1242,7 @@ msgstr "曲集"
 #: DB:event_type/name:1
 msgctxt "event_type"
 msgid "Concert"
-msgstr ""
+msgstr "音乐会"
 
 #: DB:work_type/name:4
 msgctxt "work_type"
@@ -1252,12 +1252,12 @@ msgstr "协奏曲"
 #: DB:event_type/name:4
 msgctxt "event_type"
 msgid "Convention/Expo"
-msgstr ""
+msgstr "展览会"
 
 #: DB:medium_format/name:61
 msgctxt "medium_format"
 msgid "Copy Control CD"
-msgstr ""
+msgstr "Copy Control光盘"
 
 #: DB:medium_format/description:61
 msgctxt "medium_format"
@@ -1283,7 +1283,7 @@ msgstr ""
 #: DB:area_type/name:7
 msgctxt "area_type"
 msgid "County"
-msgstr ""
+msgstr "国家"
 
 #: DB:area_type/description:7
 msgctxt "area_type"
@@ -1297,62 +1297,62 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:608
 msgctxt "work_attribute_type_allowed_value"
 msgid "Cumhurilahi"
-msgstr ""
+msgstr "朱木呼尔以拉西"
 
 #: DB:work_attribute_type_allowed_value/value:705
 msgctxt "work_attribute_type_allowed_value"
 msgid "Curcuna"
-msgstr ""
+msgstr "朱尔朱纳"
 
 #: DB:work_attribute_type_allowed_value/value:67
 msgctxt "work_attribute_type_allowed_value"
 msgid "Cārukēśi"
-msgstr ""
+msgstr "查鲁凯西"
 
 #: DB:work_attribute_type_allowed_value/value:68
 msgctxt "work_attribute_type_allowed_value"
 msgid "Cāyānāṭa"
-msgstr ""
+msgstr "查雅纳塔"
 
 #: DB:work_attribute_type_allowed_value/value:69
 msgctxt "work_attribute_type_allowed_value"
 msgid "Cāyātarangiṇi"
-msgstr ""
+msgstr "查雅塔兰吉尼"
 
 #: DB:work_attribute_type_allowed_value/value:790
 msgctxt "work_attribute_type_allowed_value"
 msgid "D Dorian"
-msgstr ""
+msgstr "多利安D调式"
 
 #: DB:work_attribute_type_allowed_value/value:802
 msgctxt "work_attribute_type_allowed_value"
 msgid "D Mixolydian"
-msgstr ""
+msgstr "米克索吕底安D调式"
 
 #: DB:work_attribute_type_allowed_value/value:8
 msgctxt "work_attribute_type_allowed_value"
 msgid "D major"
-msgstr ""
+msgstr "D大调"
 
 #: DB:work_attribute_type_allowed_value/value:9
 msgctxt "work_attribute_type_allowed_value"
 msgid "D minor"
-msgstr ""
+msgstr "D小调"
 
 #: DB:work_attribute_type_allowed_value/value:6
 msgctxt "work_attribute_type_allowed_value"
 msgid "D-flat major"
-msgstr ""
+msgstr "降D大调"
 
 #: DB:work_attribute_type_allowed_value/value:7
 msgctxt "work_attribute_type_allowed_value"
 msgid "D-flat minor"
-msgstr ""
+msgstr "降D小调"
 
 #: DB:work_attribute_type_allowed_value/value:10
 msgctxt "work_attribute_type_allowed_value"
 msgid "D-sharp minor"
-msgstr ""
+msgstr "升D小调"
 
 #: DB:medium_format/name:11
 msgctxt "medium_format"
@@ -1372,7 +1372,7 @@ msgstr "混音DJ"
 #: DB:medium_format/name:44
 msgctxt "medium_format"
 msgid "DTS CD"
-msgstr ""
+msgstr "DTS CD"
 
 #: DB:medium_format/name:2
 msgctxt "medium_format"
@@ -1392,167 +1392,167 @@ msgstr "DVD-Video"
 #: DB:medium_format/name:47
 msgctxt "medium_format"
 msgid "DVDplus"
-msgstr ""
+msgstr "DVDplus"
 
 #: DB:medium_format/name:70
 msgctxt "medium_format"
 msgid "DVDplus (CD side)"
-msgstr ""
+msgstr "DVDplus (CD面)"
 
 #: DB:medium_format/name:68
 msgctxt "medium_format"
 msgid "DVDplus (DVD-Audio side)"
-msgstr ""
+msgstr "DVDplus (DVD-Audio面)"
 
 #: DB:medium_format/name:69
 msgctxt "medium_format"
 msgid "DVDplus (DVD-Video side)"
-msgstr ""
+msgstr "DVDplus (DVD-Video面)"
 
 #: DB:work_attribute_type_allowed_value/value:343
 msgctxt "work_attribute_type_allowed_value"
 msgid "Danişveran"
-msgstr ""
+msgstr "达尼什菲兰"
 
 #: DB:work_attribute_type_allowed_value/value:711
 msgctxt "work_attribute_type_allowed_value"
 msgid "Darb"
-msgstr ""
+msgstr "达布"
 
 #: DB:work_attribute_type_allowed_value/value:712
 msgctxt "work_attribute_type_allowed_value"
 msgid "Darb-ı Fetih"
-msgstr ""
+msgstr "达比非迪"
 
 #: DB:work_attribute_type_allowed_value/value:713
 msgctxt "work_attribute_type_allowed_value"
 msgid "Darb-ı Hüner"
-msgstr ""
+msgstr "达比胡纳"
 
 #: DB:work_attribute_type_allowed_value/value:714
 msgctxt "work_attribute_type_allowed_value"
 msgid "Darb-ı Kürdi"
-msgstr ""
+msgstr "达比库尔迪"
 
 #: DB:work_attribute_type_allowed_value/value:715
 msgctxt "work_attribute_type_allowed_value"
 msgid "Darb-ı Türki"
-msgstr ""
+msgstr "达比土耳其"
 
 #: DB:work_attribute_type_allowed_value/value:796
 msgctxt "work_attribute_type_allowed_value"
 msgid "Darbeyn"
-msgstr ""
+msgstr "达尔贝因"
 
 #: DB:work_attribute_type_allowed_value/value:73
 msgctxt "work_attribute_type_allowed_value"
 msgid "Darbār"
-msgstr ""
+msgstr "达尔巴"
 
 #: DB:work_attribute_type_allowed_value/value:74
 msgctxt "work_attribute_type_allowed_value"
 msgid "Darbārī kānaḍa"
-msgstr ""
+msgstr "达尔巴利卡纳达"
 
 #: DB:medium_format/name:43
 msgctxt "medium_format"
 msgid "Data CD"
-msgstr ""
+msgstr "数据CD"
 
 #: DB:release_group_secondary_type/name:10
 msgctxt "release_group_secondary_type"
 msgid "Demo"
-msgstr ""
+msgstr "样本唱片"
 
 #: DB:work_attribute_type_allowed_value/value:610
 msgctxt "work_attribute_type_allowed_value"
 msgid "Destan"
-msgstr ""
+msgstr "达斯坦"
 
 #: DB:work_attribute_type_allowed_value/value:716
 msgctxt "work_attribute_type_allowed_value"
 msgid "Devr-i Aryan"
-msgstr ""
+msgstr "德夫利雅利安"
 
 #: DB:work_attribute_type_allowed_value/value:717
 msgctxt "work_attribute_type_allowed_value"
 msgid "Devr-i Hindi"
-msgstr ""
+msgstr "德夫利印地"
 
 #: DB:work_attribute_type_allowed_value/value:718
 msgctxt "work_attribute_type_allowed_value"
 msgid "Devr-i Hindi II"
-msgstr ""
+msgstr "德夫利印地利"
 
 #: DB:work_attribute_type_allowed_value/value:719
 msgctxt "work_attribute_type_allowed_value"
 msgid "Devr-i Kebir"
-msgstr ""
+msgstr "德夫利凯比尔"
 
 #: DB:work_attribute_type_allowed_value/value:720
 msgctxt "work_attribute_type_allowed_value"
 msgid "Devr-i Revan"
-msgstr ""
+msgstr "德夫利里温"
 
 #: DB:work_attribute_type_allowed_value/value:721
 msgctxt "work_attribute_type_allowed_value"
 msgid "Devr-i Revan-ı Hindi"
-msgstr ""
+msgstr "德夫利里温尼印地"
 
 #: DB:work_attribute_type_allowed_value/value:722
 msgctxt "work_attribute_type_allowed_value"
 msgid "Devr-i Süreyya"
-msgstr ""
+msgstr "德夫利苏雷亚"
 
 #: DB:work_attribute_type_allowed_value/value:723
 msgctxt "work_attribute_type_allowed_value"
 msgid "Devr-i Süreyya Sofyanı"
-msgstr ""
+msgstr "德夫利苏雷亚索菲亚讷"
 
 #: DB:work_attribute_type_allowed_value/value:724
 msgctxt "work_attribute_type_allowed_value"
 msgid "Devr-i Turan"
-msgstr ""
+msgstr "德夫利图兰"
 
 #: DB:work_attribute_type_allowed_value/value:797
 msgctxt "work_attribute_type_allowed_value"
 msgid "Devr-i Turan II"
-msgstr ""
+msgstr "德夫利图兰利"
 
 #: DB:work_attribute_type_allowed_value/value:79
 msgctxt "work_attribute_type_allowed_value"
 msgid "Devāmṛtavarṣiṇi"
-msgstr ""
+msgstr "提婆摩罗陀伐悉尼"
 
 #: DB:work_attribute_type_allowed_value/value:80
 msgctxt "work_attribute_type_allowed_value"
 msgid "Dhanaśrī"
-msgstr ""
+msgstr "达纳室利"
 
 #: DB:work_attribute_type_allowed_value/value:81
 msgctxt "work_attribute_type_allowed_value"
 msgid "Dhanyāsi"
-msgstr ""
+msgstr "丹亚西"
 
 #: DB:work_attribute_type_allowed_value/value:82
 msgctxt "work_attribute_type_allowed_value"
 msgid "Dharmāvati"
-msgstr ""
+msgstr "达马瓦提"
 
 #: DB:work_attribute_type_allowed_value/value:285
 msgctxt "work_attribute_type_allowed_value"
 msgid "Dhr̥va"
-msgstr ""
+msgstr "德尔瓦"
 
 #: DB:work_attribute_type_allowed_value/value:83
 msgctxt "work_attribute_type_allowed_value"
 msgid "Dhēnuka"
-msgstr ""
+msgstr "德努卡"
 
 #: DB:release_packaging/name:3
 msgctxt "release_packaging"
 msgid "Digipak"
-msgstr "硬纸板的环保包装"
+msgstr "纸盒光盘"
 
 #: DB:medium_format/name:12
 msgctxt "medium_format"
@@ -1562,47 +1562,47 @@ msgstr "数字媒体"
 #: DB:work_attribute_type_allowed_value/value:345
 msgctxt "work_attribute_type_allowed_value"
 msgid "Dil Efruz"
-msgstr ""
+msgstr "迪尔艾夫肉孜"
 
 #: DB:work_attribute_type_allowed_value/value:344
 msgctxt "work_attribute_type_allowed_value"
 msgid "Dildar"
-msgstr ""
+msgstr "迪尔达"
 
 #: DB:work_attribute_type_allowed_value/value:348
 msgctxt "work_attribute_type_allowed_value"
 msgid "Dilkeside"
-msgstr ""
+msgstr "迪尔克希德"
 
 #: DB:work_attribute_type_allowed_value/value:346
 msgctxt "work_attribute_type_allowed_value"
 msgid "Dilkeş"
-msgstr ""
+msgstr "迪尔克什"
 
 #: DB:work_attribute_type_allowed_value/value:347
 msgctxt "work_attribute_type_allowed_value"
 msgid "Dilkeşhaveran"
-msgstr ""
+msgstr "迪尔克什哈维兰"
 
 #: DB:work_attribute_type_allowed_value/value:349
 msgctxt "work_attribute_type_allowed_value"
 msgid "Dilküşa"
-msgstr ""
+msgstr "迪尔库沙"
 
 #: DB:work_attribute_type_allowed_value/value:350
 msgctxt "work_attribute_type_allowed_value"
 msgid "Dilnevaz"
-msgstr ""
+msgstr "迪尔内瓦兹"
 
 #: DB:work_attribute_type_allowed_value/value:351
 msgctxt "work_attribute_type_allowed_value"
 msgid "Dilnişin"
-msgstr ""
+msgstr "迪尔尼欣"
 
 #: DB:release_packaging/name:13
 msgctxt "release_packaging"
 msgid "Discbox Slider"
-msgstr ""
+msgstr "抽取式碟片盒"
 
 #: DB:label_type/name:1
 msgctxt "label_type"
@@ -1622,12 +1622,12 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:611
 msgctxt "work_attribute_type_allowed_value"
 msgid "Divan"
-msgstr ""
+msgstr "底万"
 
 #: DB:work_attribute_type_allowed_value/value:725
 msgctxt "work_attribute_type_allowed_value"
 msgid "Dolap"
-msgstr ""
+msgstr "杜拉普"
 
 #: DB:medium_format/name:4
 msgctxt "medium_format"
@@ -1637,137 +1637,137 @@ msgstr "双面碟"
 #: DB:medium_format/name:67
 msgctxt "medium_format"
 msgid "DualDisc (CD side)"
-msgstr ""
+msgstr "双面碟(CD面)"
 
 #: DB:medium_format/name:65
 msgctxt "medium_format"
 msgid "DualDisc (DVD-Audio side)"
-msgstr ""
+msgstr "双面碟(DVD-Audio面)"
 
 #: DB:medium_format/name:66
 msgctxt "medium_format"
 msgid "DualDisc (DVD-Video side)"
-msgstr ""
+msgstr "双面碟(DVD-Video面)"
 
 #: DB:work_attribute_type_allowed_value/value:612
 msgctxt "work_attribute_type_allowed_value"
 msgid "Durak"
-msgstr ""
+msgstr "杜拉克"
 
 #: DB:work_attribute_type_allowed_value/value:726
 msgctxt "work_attribute_type_allowed_value"
 msgid "Durak Evferi"
-msgstr ""
+msgstr "杜拉克艾菲力"
 
 #: DB:work_attribute_type_allowed_value/value:86
 msgctxt "work_attribute_type_allowed_value"
 msgid "Durga"
-msgstr ""
+msgstr "突伽"
 
 #: DB:work_attribute_type_allowed_value/value:87
 msgctxt "work_attribute_type_allowed_value"
 msgid "Dvijāvanti"
-msgstr ""
+msgstr "德维贾万提"
 
 #: DB:work_attribute_type_allowed_value/value:352
 msgctxt "work_attribute_type_allowed_value"
 msgid "Dügah"
-msgstr ""
+msgstr "杜加"
 
 #: DB:work_attribute_type_allowed_value/value:354
 msgctxt "work_attribute_type_allowed_value"
 msgid "Dügah Maye"
-msgstr ""
+msgstr "杜加玛耶"
 
 #: DB:work_attribute_type_allowed_value/value:353
 msgctxt "work_attribute_type_allowed_value"
 msgid "Dügahbuselik"
-msgstr ""
+msgstr "杜加普塞利克"
 
 #: DB:work_attribute_type_allowed_value/value:727
 msgctxt "work_attribute_type_allowed_value"
 msgid "Dümen"
-msgstr ""
+msgstr "杜门"
 
 #: DB:work_attribute_type_allowed_value/value:728
 msgctxt "work_attribute_type_allowed_value"
 msgid "Düyek"
-msgstr ""
+msgstr "杜也克"
 
 #: DB:work_attribute_type_allowed_value/value:355
 msgctxt "work_attribute_type_allowed_value"
 msgid "Düşems"
-msgstr ""
+msgstr "杜谢姆斯"
 
 #: DB:work_attribute_type_allowed_value/value:76
 msgctxt "work_attribute_type_allowed_value"
 msgid "Dēvagāndhāri"
-msgstr ""
+msgstr "提婆犍陀利"
 
 #: DB:work_attribute_type_allowed_value/value:77
 msgctxt "work_attribute_type_allowed_value"
 msgid "Dēvakriya"
-msgstr ""
+msgstr "提婆伽利耶"
 
 #: DB:work_attribute_type_allowed_value/value:78
 msgctxt "work_attribute_type_allowed_value"
 msgid "Dēvamanōhari"
-msgstr ""
+msgstr "提婆摩奴诃利"
 
 #: DB:work_attribute_type_allowed_value/value:75
 msgctxt "work_attribute_type_allowed_value"
 msgid "Dēś"
-msgstr ""
+msgstr "戴什"
 
 #: DB:work_attribute_type_allowed_value/value:292
 msgctxt "work_attribute_type_allowed_value"
 msgid "Dēśādi"
-msgstr ""
+msgstr "戴沙迪"
 
 #: DB:work_attribute_type_allowed_value/value:84
 msgctxt "work_attribute_type_allowed_value"
 msgid "Dīpakaṁ"
-msgstr ""
+msgstr "迪帕坎"
 
 #: DB:work_attribute_type_allowed_value/value:85
 msgctxt "work_attribute_type_allowed_value"
 msgid "Dīpāḷi"
-msgstr ""
+msgstr "迪帕尔伊"
 
 #: DB:work_attribute_type_allowed_value/value:791
 msgctxt "work_attribute_type_allowed_value"
 msgid "E Dorian"
-msgstr ""
+msgstr "多利安E调式"
 
 #: DB:work_attribute_type_allowed_value/value:803
 msgctxt "work_attribute_type_allowed_value"
 msgid "E Mixolydian"
-msgstr ""
+msgstr "米克索吕底安E调式"
 
 #: DB:work_attribute_type_allowed_value/value:13
 msgctxt "work_attribute_type_allowed_value"
 msgid "E major"
-msgstr ""
+msgstr "E大调"
 
 #: DB:work_attribute_type_allowed_value/value:14
 msgctxt "work_attribute_type_allowed_value"
 msgid "E minor"
-msgstr ""
+msgstr "E小调"
 
 #: DB:work_attribute_type_allowed_value/value:11
 msgctxt "work_attribute_type_allowed_value"
 msgid "E-flat major"
-msgstr ""
+msgstr "降E大调"
 
 #: DB:work_attribute_type_allowed_value/value:12
 msgctxt "work_attribute_type_allowed_value"
 msgid "E-flat minor"
-msgstr ""
+msgstr "降E小调"
 
 #: DB:work_attribute_type_allowed_value/value:15
 msgctxt "work_attribute_type_allowed_value"
 msgid "E-sharp minor"
-msgstr ""
+msgstr "升E小调"
 
 #: DB:release_group_primary_type/name:3
 msgctxt "release_group_primary_type"
@@ -1777,7 +1777,7 @@ msgstr "细碟"
 #: DB:medium_format/name:50
 msgctxt "medium_format"
 msgid "Edison Diamond Disc"
-msgstr ""
+msgstr "爱迪生钻石碟"
 
 #: DB:instrument_type/name:4
 msgctxt "instrument_type"
@@ -1787,27 +1787,27 @@ msgstr "电子乐器"
 #: DB:medium_format/name:42
 msgctxt "medium_format"
 msgid "Enhanced CD"
-msgstr ""
+msgstr "增强CD"
 
 #: DB:work_attribute_type_allowed_value/value:356
 msgctxt "work_attribute_type_allowed_value"
 msgid "Eski Sipihr"
-msgstr ""
+msgstr "艾思奇希皮尔"
 
 #: DB:work_attribute_type_allowed_value/value:613
 msgctxt "work_attribute_type_allowed_value"
 msgid "Etüd"
-msgstr ""
+msgstr "艾图德"
 
 #: DB:work_attribute_type_allowed_value/value:357
 msgctxt "work_attribute_type_allowed_value"
 msgid "Evcara"
-msgstr ""
+msgstr "艾夫卡拉"
 
 #: DB:editor_collection_type/name:4
 msgctxt "collection_type"
 msgid "Event"
-msgstr ""
+msgstr "事件"
 
 #: DB:series_type/name:6
 msgctxt "series_type"
@@ -1822,32 +1822,32 @@ msgstr "事件名称"
 #: DB:work_attribute_type_allowed_value/value:729
 msgctxt "work_attribute_type_allowed_value"
 msgid "Evfer"
-msgstr ""
+msgstr "艾菲尔"
 
 #: DB:work_attribute_type_allowed_value/value:358
 msgctxt "work_attribute_type_allowed_value"
 msgid "Eviç"
-msgstr ""
+msgstr "艾维齐"
 
 #: DB:work_attribute_type_allowed_value/value:359
 msgctxt "work_attribute_type_allowed_value"
 msgid "Eviç Bahr-i Nazik"
-msgstr ""
+msgstr "艾维齐巴利纳吉克"
 
 #: DB:work_attribute_type_allowed_value/value:360
 msgctxt "work_attribute_type_allowed_value"
 msgid "Eviç Huzi"
-msgstr ""
+msgstr "艾维齐胡齐"
 
 #: DB:work_attribute_type_allowed_value/value:364
 msgctxt "work_attribute_type_allowed_value"
 msgid "Eviç Maye"
-msgstr ""
+msgstr "艾维齐玛耶"
 
 #: DB:work_attribute_type_allowed_value/value:361
 msgctxt "work_attribute_type_allowed_value"
 msgid "Eviç Ruy-i Neva"
-msgstr ""
+msgstr "艾维齐鲁伊纳瓦"
 
 #: DB:work_attribute_type_allowed_value/value:365
 msgctxt "work_attribute_type_allowed_value"
@@ -5285,7 +5285,7 @@ msgstr ""
 #: DB:medium_format/name:7
 msgctxt "medium_format"
 msgid "Vinyl"
-msgstr "乙烯基"
+msgstr "黑胶"
 
 #: DB:medium_format/name:48
 msgctxt "medium_format"
