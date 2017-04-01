@@ -1,24 +1,42 @@
-Version 1.4.1 - ???
-  * Bugfix: Album shown matched even if extra unmatched files (PICARD-953)
-  * Bugfix: Removing album with saves pending does not remove pending saves (PICARD-972)
-  * Bugfix: Pending log messages not flushed to stderr on quit (PICARD-973)
-  * Bugfix: Drag & Drop not working (PICARD-988)
-  * Bugfix: Picard violating ID3 standard for TXXX frames (PICARD-990)
-  * Bugfix: Disabling the cover art box and enabling it again doesn't bring it back (PICARD-996)
-  * Bugfix: Disabling the action toolbar sometimes doesn't work (PICARD-998)
-  * Bugfix: If a cluster is moved to the album side of the main window it gets moved to unmatched files (PICARD-1005)
-  * Bugfix: Drag and drop for cover arts doesnt work on OSX (PICARD-1006)
-  * Bugfix: Unsetting View/Cover Art doesn't work permanently (PICARD-1010)
-  * Bugfix: Toolbar tab order incorrect after PICARD-908 (PICARD-1011)
-  * New Feature:  Visual feedback for changes to artwork in before-after pane. (PICARD-258)
-  * New Feature:  Implement artwork diff for albums (PICARD-1000)
-  * Task:  Remove monkey patching of file write methods in picard formats (PICARD-943)
-  * Improvement: Remove should work when Unmatched Files is selected (PICARD-223)
-  * Improvement: Always use HTTPS for musicbrainz.org (PICARD-951)
-  * Improvement: Use Cover Art Archive over HTTPS (PICARD-952)
-  * Improvement: Mention AcoustID on Scan button too (PICARD-961)
-  * Improvement: Drag&drop cover art doesn't work for images from amazon/google images/https links (PICARD-980)
-  * Improvement: Buttons on the "User Interface" and "Scripting" pages are smaller than buttons in other places (PICARD-1012)
+Version 1.4.1 - 2017-04-01
+** Bug
+    * [PICARD-953] - Album shown matched even if extra unmatched files
+    * [PICARD-972] - Removing album with saves pending does not remove pending saves
+    * [PICARD-973] - Pending log messages not flushed to stderr on quit
+    * [PICARD-988] - Drag & Drop not working
+    * [PICARD-990] - Picard violating ID3 standard for TXXX frames
+    * [PICARD-996] - Disabling the cover art box and enabling it again doesn't bring it back
+    * [PICARD-998] - Disabling the action toolbar sometimes doesn't work
+    * [PICARD-1005] - If a cluster is moved to the album side of the main window it gets moved to unmatched files
+    * [PICARD-1006] - Drag and drop for cover arts doesnt work on OSX
+    * [PICARD-1010] - Unsetting View/Cover Art doesn't work permanently
+    * [PICARD-1011] - Toolbar tab order incorrect after PICARD-908
+    * [PICARD-1014] - Number of images in release info is calculated incorrectly
+    * [PICARD-1015] - Artwork tab of the Track Info DIalog doesn't show changes anymore
+    * [PICARD-1018] - CoverArtBox doesn't show new/removed images after unmatched files are added/removed to the album
+    * [PICARD-1023] - Directory persistence for Add Directory needs tweaking
+    * [PICARD-1029] - Fix ~artists_sort metadata variable
+    * [PICARD-1042] - Missing import for PICARD_APP_NAME
+
+** New Feature
+    * [PICARD-258] - Visual feedback for changes to artwork in before-after pane.
+    * [PICARD-1000] - Implement artwork diff for albums
+
+** Task
+    * [PICARD-943] - Remove monkey patching of file write methods in picard formats
+    * [PICARD-1041] - Replace Ok button text by Make It So! in Options dialog
+
+** Improvement
+    * [PICARD-223] - Remove should work when Unmatched Files is selected
+    * [PICARD-951] - Always use HTTPS for musicbrainz.org
+    * [PICARD-952] - Use Cover Art Archive over HTTPS
+    * [PICARD-961] - Mention AcoustID on Scan button too
+    * [PICARD-980] - Drag&drop cover art doesn't work for images from amazon/google images/https links
+    * [PICARD-1012] - Buttons on the "User Interface" and "Scripting" pages are smaller than buttons in other places
+    * [PICARD-1016] - Multiple images in related tracks confusing
+    * [PICARD-1021] - Picard loads all pending files before quitting
+    * [PICARD-1024] - Allow specifying a configuration file path
+    * [PICARD-1030] - Allow to add/replace cover art images and keep existing cover art
 
 Version 1.4 - 2017-02-14
   * Bugfix: AcoustID submission fails with code 299 (PICARD-82)
