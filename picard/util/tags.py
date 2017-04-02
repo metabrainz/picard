@@ -56,7 +56,6 @@ TAG_NAMES = {
     'musicbrainz_trackid': N_('MusicBrainz Track Id'),
     'musicbrainz_albumid': N_('MusicBrainz Release Id'),
     'musicbrainz_artistid': N_('MusicBrainz Artist Id'),
-    'musicbrainz_originalartistid': N_('MusicBrainz Original Artist Id'),
     'musicbrainz_albumartistid': N_('MusicBrainz Release Artist Id'),
     'musicbrainz_workid': N_('MusicBrainz Work Id'),
     'musicbrainz_releasegroupid': N_('MusicBrainz Release Group Id'),
@@ -90,6 +89,9 @@ TAG_NAMES = {
     'artists': N_('Artists'),
     'work': N_('Work'),
     'originalartist': N_('Original Artist'),
+    'musicbrainz_originalartistid': N_('MusicBrainz Original Artist Id'),
+    'originalalbum': N_('Original Album'),
+    'musicbrainz_originalalbumid': N_('MusicBrainz Orignal Release Id'),
 }
 
 PRESERVED_TAGS = [
