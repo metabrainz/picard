@@ -737,19 +737,7 @@ class MainWindow(QtGui.QMainWindow):
         if dir_count:
             parent = os.path.dirname(dir_list[0]) if dir_count > 1 else dir_list[0]
             config.persist["current_directory"] = parent
-            if dir_count > 1:
-                self.set_statusbar_message(
-                    N_("Adding multiple directories from '%(directory)s' ..."),
-                    {'directory': parent}
-                )
-            else:
-                self.set_statusbar_message(
-                    N_("Adding directory: '%(directory)s' ..."),
-                    {'directory': dir_list[0]}
-                )
-
-            for directory in dir_list:
-                self.tagger.add_directory(directory)
+            self.tagger.add_directory_list(dir_list, parent)
 
     def show_about(self):
         self.show_options("about")

@@ -113,9 +113,22 @@ class Tagger(QtGui.QApplication):
 
         # FIXME: Figure out what's wrong with QThreadPool.globalInstance().
         # It's a valid reference, but its start() method doesn't work.
+        # Main thread_pool is intended for CPU intensive activities
         self.thread_pool = QtCore.QThreadPool(self)
+        # Since Python LGL effectively confines Python to  single core
+        # set threadcount for CPU intensive activities to 1
+        self.thread_pool.setMaxThreadCount(1)
 
-        # Use a separate thread pool for file saving, with a thread count of 1,
+        # Use a separate thread pools for file loading to avoid blocking file
+        # I/O exhausting the main thread pool. We are using a single thread per pool,
+        # however except for the file save pool there is no reason that this
+        # cannot be increased if necessary.
+        self.open_thread_pool = QtCore.QThreadPool(self)
+        self.open_thread_pool.setMaxThreadCount(1)
+        self.load_thread_pool = QtCore.QThreadPool(self)
+        self.load_thread_pool.setMaxThreadCount(1)
+
+        # Use a separate thread pool with a single thread for file saving,
         # to avoid race conditions in File._save_and_rename.
         self.save_thread_pool = QtCore.QThreadPool(self)
         self.save_thread_pool.setMaxThreadCount(1)
@@ -150,6 +163,10 @@ class Tagger(QtGui.QApplication):
                   platform.python_implementation(), platform.python_version())
         log.debug("Versions: %s", versions.as_string())
         log.debug("Configuration file path: %r", config.config.fileName())
+        log.debug("Main thread pool: %d threads", self.thread_pool.maxThreadCount())
+        log.debug("Open thread pool: %d threads", self.open_thread_pool.maxThreadCount())
+        log.debug("Load thread pool: %d threads", self.load_thread_pool.maxThreadCount())
+        log.debug("Save thread pool: %d threads", self.save_thread_pool.maxThreadCount())
 
         # TODO remove this before the final release
         if sys.platform == "win32":
@@ -271,24 +288,30 @@ class Tagger(QtGui.QApplication):
         log.debug("Picard stopping")
         self.stopping = True
         self._acoustid.done()
-        self.thread_pool.waitForDone()
-        self.save_thread_pool.waitForDone()
         self.browser_integration.stop()
         self.xmlws.stop()
+        self.thread_pool.waitForDone()
+        self.open_thread_pool.waitForDone()
+        self.load_thread_pool.waitForDone()
+        self.save_thread_pool.waitForDone()
         self.run_cleanup()
-        QtCore.QCoreApplication.processEvents()
+        # Ensure that log messages etc. are processed before quitting
+        thread.processEvents()
 
     def _run_init(self):
         if self._cmdline_files:
             files = []
+            directories = []
             for file in self._cmdline_files:
                 if os.path.isdir(file):
-                    self.add_directory(decode_filename(file))
+                    directories.append(decode_filename(file))
                 else:
                     files.append(decode_filename(file))
+            del self._cmdline_files
             if files:
                 self.add_files(files)
-            del self._cmdline_files
+            if directories:
+                self.add_directory_list(directories)
 
     def run(self):
         if config.setting["browser_integration"]:
@@ -302,6 +325,7 @@ class Tagger(QtGui.QApplication):
     def event(self, event):
         if isinstance(event, thread.ProxyToMainEvent):
             event.run()
+            return True
         elif event.type() == QtCore.QEvent.FileOpen:
             f = str(event.file())
             self.add_files([f])
@@ -311,7 +335,94 @@ class Tagger(QtGui.QApplication):
             return 1
         return QtGui.QApplication.event(self, event)
 
+    def move_files(self, files, target):
+        if target is None:
+            log.debug("Aborting move since target is invalid")
+            return
+        if isinstance(target, (Track, Cluster)):
+            for file in files:
+                file.move(target)
+        elif isinstance(target, File):
+            for file in files:
+                file.move(target.parent)
+        elif isinstance(target, Album):
+            self.move_files_to_album(files, album=target)
+        elif isinstance(target, ClusterList):
+            self.cluster(files)
+
+    def add_files(self, filenames, target=None):
+        # Run in a worker thread in case there are large numbers of directories which will make UI non-responsive
+        # Run on main thread_pool rather than file load pool because it is low overhead
+        thread.run_task(partial(self._add_files, [self._add_files_from_directory("", filenames)], target=target),
+                None,
+                thread_pool=self.thread_pool)
+
+    def _add_files(self, list_of_filenames, target=None):
+        if self.stopping:
+            return
+        """Add files to the tagger."""
+        number_of_files = sum([len(x) for x in list_of_filenames])
+        number_of_directories = len(list_of_filenames)
+        self.window.set_statusbar_message(
+            N_("Adding a total of %(files)d files in %(directories)d directories ..."),
+            {'files': number_of_files, 'directories': number_of_directories}
+        )
+        for filenames in list_of_filenames:
+            # Run open_files at lower queuing priority (0) than loading files (1)
+            thread.run_task(partial(self._open_files, filenames),
+                    partial(self._open_files_finished, target=target),
+                    priority=0,
+                    thread_pool=self.open_thread_pool)
+            # This function runs in a worker thread.
+            # Queuing threads for a large number of directories can make UI unresponsive
+            # Allow UI to process events after each folder to keep it responsive
+            thread.processEvents()
+
+    def _open_files(self, filenames):
+        if self.stopping:
+            return
+        new_files = {}
+        for filename in filenames:
+            filename = os.path.normpath(os.path.realpath(filename))
+            if filename not in self.files:
+                file = open_file(filename)
+                if file:
+                    new_files[filename] = file
+                # This function runs in a worker thread.
+                # Opening a large number of files in a single directory can make UI unresponsive
+                # Allow UI to process events after each file to keep it responsive
+                thread.processEvents()
+        return new_files
+
+    def _open_files_finished(self, target=None, result=None, error=None):
+        if self.stopping:
+            return
+        if result:
+            new_files = [result[f] for f in sorted(result)]
+            log.debug("Adding files %r", new_files)
+            self.files.update(result)
+            if target is None or target is self.unmatched_files:
+                self.unmatched_files.add_files(new_files)
+                target = None
+            # Run in a worker thread in case there are large numbers of files which will make UI non-responsive
+            # Run on main thread_pool rather than file load pool because it is low overhead
+            thread.run_task(partial(self._files_load, new_files, target=target),
+                    None,
+                    thread_pool=self.thread_pool)
+        return
+
+    def _files_load(self, files, target=None):
+        if self.stopping:
+            return
+        for file in files:
+            file.load(partial(self._file_loaded, target=target))
+            # Queuing threads for a large number of files in a directory can make UI unresponsive
+            # Allow UI to process events after each file to keep it responsive
+            thread.processEvents()
+
     def _file_loaded(self, file, target=None):
+        if self.stopping:
+            return
         if file is not None and not file.has_error():
             recordingid = file.metadata.getall('musicbrainz_recordingid')[0] \
                 if 'musicbrainz_recordingid' in file.metadata else ''
@@ -332,121 +443,105 @@ class Tagger(QtGui.QApplication):
             elif config.setting['analyze_new_files'] and file.can_analyze():
                 self.analyze([file])
 
-    def move_files(self, files, target):
-        if target is None:
-            log.debug("Aborting move since target is invalid")
-            return
-        if isinstance(target, (Track, Cluster)):
-            for file in files:
-                file.move(target)
-        elif isinstance(target, File):
-            for file in files:
-                file.move(target.parent)
-        elif isinstance(target, Album):
-            self.move_files_to_album(files, album=target)
-        elif isinstance(target, ClusterList):
-            self.cluster(files)
+    def _add_directory_method(self):
+        if config.setting['recursively_add_files']:
+            return self._add_directory_recursive
+        return self._add_directory_non_recursive
 
-    def add_files(self, filenames, target=None):
-        """Add files to the tagger."""
+    def add_directory_list(self, dir_list, parent=None):
+        # Run in a worker thread in case there are large numbers of directories which will make UI non-responsive
+        # Run on main thread_pool rather than file load pool because it is low overhead
+        thread.run_task(partial(self._add_directory_list, dir_list, parent),
+                None,
+                thread_pool=self.thread_pool)
+
+    def _add_directory_list(self, dir_list, parent=None):
+        if parent:
+            parent = os.path.normpath(parent)
+        number_of_dirs = len(dir_list)
+        if number_of_dirs > 1:
+            if parent:
+                self.window.set_statusbar_message(
+                    N_("Adding %(count)d directories from '%(directory)s' ..."),
+                    {'directory': parent, 'count': number_of_dirs}
+                )
+            else:
+                self.window.set_statusbar_message(
+                    N_("Adding %(count)d directories ..."),
+                    {'directory': parent, 'count': number_of_dirs}
+                )
+        else:
+            self.window.set_statusbar_message(
+                N_("Adding directory: '%(directory)s' ..."),
+                {'directory': dir_list[0]}
+            )
+
+        add_directory = self._add_directory_method()
+        self._add_files(list(chain.from_iterable([add_directory(d) for d in dir_list])))
+
+    def add_directory(self, path):
+        add_directory = self._add_directory_method()
+        self._add_files(add_directory(path))
+
+    def _add_directory_recursive(self, path):
+        ignore_hidden = config.setting["ignore_hidden_files"]
+        list_to_add = []
+        # walk topdown to allow modifying the sub-dirs to remove hidden dirs
+        for root, dirs, files in os.walk(unicode(path), topdown=True):
+            if ignore_hidden:
+                dirs[:] = [d for d in dirs if not is_hidden(os.path.join(root, d))]
+            files_to_add = self._add_files_from_directory(root, files)
+            if files_to_add:
+                list_to_add.append(files_to_add)
+            # Keep UI responsive
+            thread.processEvents()
+        return list_to_add
+
+    def _add_directory_non_recursive(self, path):
+        return [self._add_files_from_directory(path, os.listdir(path))]
+
+    def _add_files_from_directory(self, path, files):
         ignoreregex = None
         pattern = config.setting['ignore_regex']
         if pattern:
             ignoreregex = re.compile(pattern)
         ignore_hidden = config.setting["ignore_hidden_files"]
-        new_files = []
-        for filename in filenames:
-            filename = os.path.normpath(os.path.realpath(filename))
+        files_to_add = []
+        for f in files:
+            f = os.path.join(path, f)
+            filename = os.path.normpath(os.path.realpath(f))
+            if not os.path.isfile(f):
+                continue
             if ignore_hidden and is_hidden(filename):
                 log.debug("File ignored (hidden): %r" % (filename))
                 continue
             if ignoreregex is not None and ignoreregex.search(filename):
                 log.info("File ignored (matching %r): %r" % (pattern, filename))
                 continue
-            if filename not in self.files:
-                file = open_file(filename)
-                if file:
-                    self.files[filename] = file
-                    new_files.append(file)
-        if new_files:
-            log.debug("Adding files %r", new_files)
-            new_files.sort(key=lambda x: x.filename)
-            if target is None or target is self.unmatched_files:
-                self.unmatched_files.add_files(new_files)
-                target = None
-            for file in new_files:
-                file.load(partial(self._file_loaded, target=target))
-
-    def add_directory(self, path):
-        if config.setting['recursively_add_files']:
-            self._add_directory_recursive(path)
-        else:
-            self._add_directory_non_recursive(path)
-
-    def _add_directory_recursive(self, path):
-        ignore_hidden = config.setting["ignore_hidden_files"]
-        walk = os.walk(unicode(path))
-
-        def get_files():
-            try:
-                root, dirs, files = next(walk)
-                if ignore_hidden:
-                    dirs[:] = [d for d in dirs if not is_hidden(os.path.join(root, d))]
-            except StopIteration:
-                return None
-            else:
-                number_of_files = len(files)
-                if number_of_files:
-                    mparms = {
-                        'count': number_of_files,
-                        'directory': root,
-                    }
-                    log.debug("Adding %(count)d files from '%(directory)r'" %
-                              mparms)
-                    self.window.set_statusbar_message(
-                        ungettext(
-                            "Adding %(count)d file from '%(directory)s' ...",
-                            "Adding %(count)d files from '%(directory)s' ...",
-                            number_of_files),
-                        mparms,
-                        translate=None,
-                        echo=None
-                    )
-                return (os.path.join(root, f) for f in files)
-
-        def process(result=None, error=None):
-            if result:
-                if error is None:
-                    self.add_files(result)
-                thread.run_task(get_files, process)
-
-        process(True, False)
-
-    def _add_directory_non_recursive(self, path):
-        files = []
-        for f in os.listdir(path):
-            listing = os.path.join(path, f)
-            if os.path.isfile(listing):
-                files.append(listing)
-        number_of_files = len(files)
+            files_to_add.append(f)
+        number_of_files = len(files_to_add)
         if number_of_files:
+            if path:
+                path = os.path.normpath(path)
+                message = ungettext(
+                        "Adding %(count)d file from '%(directory)s' ...",
+                        "Adding %(count)d files from '%(directory)s' ...",
+                        number_of_files)
+            else:
+                message = ungettext(
+                        "Adding %(count)d file ...",
+                        "Adding %(count)d files ...",
+                        number_of_files)
             mparms = {
                 'count': number_of_files,
                 'directory': path,
             }
-            log.debug("Adding %(count)d files from '%(directory)r'" %
-                      mparms)
             self.window.set_statusbar_message(
-                ungettext(
-                    "Adding %(count)d file from '%(directory)s' ...",
-                    "Adding %(count)d files from '%(directory)s' ...",
-                    number_of_files),
+                message,
                 mparms,
-                translate=None,
-                echo=None
+                translate=None
             )
-            # Function call only if files exist
-            self.add_files(files)
+        return files_to_add
 
     def get_file_lookup(self):
         """Return a FileLookup object."""
@@ -515,8 +610,18 @@ class Tagger(QtGui.QApplication):
     def save(self, objects):
         """Save the specified objects."""
         files = self.get_files_from_objects(objects, save=True)
+        # Run in a worker thread in case there are large numbers of files which will make UI non-responsive
+        # Run on main thread_pool rather than file save pool because it is low overhead
+        thread.run_task(partial(self._save, files),
+                None,
+                thread_pool=self.thread_pool)
+
+    def _save(self, files):
         for file in files:
             file.save()
+            # Queuing threads for a large number of files can make UI unresponsive
+            # Allow UI to process events after each file to keep it responsive
+            thread.processEvents()
 
     def load_album(self, id, discid=None):
         id = self.mbid_redirects.get(id, id)
@@ -672,10 +777,10 @@ class Tagger(QtGui.QApplication):
             cmp(a.tracknumber, b.tracknumber) or
             cmp(a.base_filename, b.base_filename))
         for name, artist, files in Cluster.cluster(files, 1.0):
-            QtCore.QCoreApplication.processEvents()
             cluster = self.load_cluster(name, artist)
             for file in sorted(files, fcmp):
                 file.move(cluster)
+            thread.processEvents()
 
     def load_cluster(self, name, artist):
         for cluster in self.clusters:
