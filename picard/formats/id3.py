@@ -123,6 +123,7 @@ class ID3File(File):
         'WCOP': 'license',
         'WOAR': 'website',
         'COMM': 'comment',
+        'TOAL': 'originalalbum',
         'TOPE': 'originalartist',
 
         # The following are informal iTunes extensions to id3v2:
