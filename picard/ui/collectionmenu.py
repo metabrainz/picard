@@ -19,14 +19,14 @@
 
 import locale
 
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtWidgets
 from picard.collection import user_collections, load_user_collections
 
 
-class CollectionMenu(QtGui.QMenu):
+class CollectionMenu(QtWidgets.QMenu):
 
     def __init__(self, albums, *args):
-        QtGui.QMenu.__init__(self, *args)
+        QtWidgets.QMenu.__init__(self, *args)
         self.ids = set(a.id for a in albums)
         self.update_collections()
 
@@ -35,7 +35,7 @@ class CollectionMenu(QtGui.QMenu):
         for id, collection in sorted(user_collections.iteritems(),
                                      key=lambda k_v:
                                      (locale.strxfrm(k_v[1].name.encode('utf-8')), k_v[0])):
-            action = QtGui.QWidgetAction(self)
+            action = QtWidgets.QWidgetAction(self)
             action.setDefaultWidget(CollectionCheckBox(self, collection))
             self.addAction(action)
         self.addSeparator()
@@ -51,12 +51,12 @@ class CollectionMenu(QtGui.QMenu):
             self.refresh_list()
 
 
-class CollectionCheckBox(QtGui.QCheckBox):
+class CollectionCheckBox(QtWidgets.QCheckBox):
 
     def __init__(self, menu, collection):
         self.menu = menu
         self.collection = collection
-        QtGui.QCheckBox.__init__(self, self.label())
+        QtWidgets.QCheckBox.__init__(self, self.label())
 
         releases = collection.releases & menu.ids
         if len(releases) == len(menu.ids):

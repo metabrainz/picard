@@ -19,7 +19,7 @@
 
 from collections import deque
 from functools import partial
-from PyQt4 import QtCore
+from PyQt5 import QtCore
 from picard import config, log
 from picard.const import FPCALC_NAMES
 from picard.util import find_executable

@@ -20,8 +20,8 @@
 import json
 import time
 from functools import partial
-from PyQt4.QtNetwork import QNetworkRequest
-from PyQt4.QtCore import QUrl
+from PyQt5.QtNetwork import QNetworkRequest
+from PyQt5.QtCore import QUrl, QUrlQuery
 from picard import config, log
 from picard.const import (
     MUSICBRAINZ_SERVERS,
@@ -97,11 +97,13 @@ class OAuthManager(object):
         host, port = config.setting['server_host'], config.setting['server_port']
         path = "/oauth2/token"
         url = QUrl()
-        url.addQueryItem("grant_type", "refresh_token")
-        url.addQueryItem("refresh_token", refresh_token)
-        url.addQueryItem("client_id", MUSICBRAINZ_OAUTH_CLIENT_ID)
-        url.addQueryItem("client_secret", MUSICBRAINZ_OAUTH_CLIENT_SECRET)
-        data = str(url.encodedQuery())
+        url_query = QUrlQuery()
+        url_query.addQueryItem("grant_type", "refresh_token")
+        url_query.addQueryItem("refresh_token", refresh_token)
+        url_query.addQueryItem("client_id", MUSICBRAINZ_OAUTH_CLIENT_ID)
+        url_query.addQueryItem("client_secret", MUSICBRAINZ_OAUTH_CLIENT_SECRET)
+        url.setQuery(url_query.query(QUrl.FullyEncoded))
+        data = str(url.query())
         self.xmlws.post(host, port, path, data,
                         partial(self.on_refresh_access_token_finished, callback),
                         xml=False, mblogin=True, priority=True, important=True)
@@ -127,12 +129,14 @@ class OAuthManager(object):
         host, port = config.setting['server_host'], config.setting['server_port']
         path = "/oauth2/token"
         url = QUrl()
-        url.addQueryItem("grant_type", "authorization_code")
-        url.addQueryItem("code", authorization_code)
-        url.addQueryItem("client_id", MUSICBRAINZ_OAUTH_CLIENT_ID)
-        url.addQueryItem("client_secret", MUSICBRAINZ_OAUTH_CLIENT_SECRET)
-        url.addQueryItem("redirect_uri", "urn:ietf:wg:oauth:2.0:oob")
-        data = str(url.encodedQuery())
+        url_query = QUrlQuery()
+        url_query.addQueryItem("grant_type", "authorization_code")
+        url_query.addQueryItem("code", authorization_code)
+        url_query.addQueryItem("client_id", MUSICBRAINZ_OAUTH_CLIENT_ID)
+        url_query.addQueryItem("client_secret", MUSICBRAINZ_OAUTH_CLIENT_SECRET)
+        url_query.addQueryItem("redirect_uri", "urn:ietf:wg:oauth:2.0:oob")
+        url.setQuery(url_query.query(QUrl.FullyEncoded))
+        data = str(url.query())
         self.xmlws.post(host, port, path, data,
                         partial(self.on_exchange_authorization_code_finished, scopes, callback),
                         xml=False, mblogin=True, priority=True, important=True)

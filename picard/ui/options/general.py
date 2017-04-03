@@ -17,8 +17,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-from PyQt4.QtGui import QInputDialog
-from PyQt4.QtCore import QUrl
+from PyQt5.QtWidgets import QInputDialog
+from PyQt5.QtCore import QUrl
 from picard import config, log
 from picard.util import webbrowser2
 from picard.ui.options import OptionsPage, register_options_page

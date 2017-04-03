@@ -18,12 +18,12 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 import sys
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtGui, QtWidgets
 from picard import config
 from picard.util import find_existing_path, icontheme
 
 
-class StandardButton(QtGui.QPushButton):
+class StandardButton(QtWidgets.QPushButton):
 
     OK = 0
     CANCEL = 1
@@ -40,10 +40,10 @@ class StandardButton(QtGui.QPushButton):
         args = [label]
         if sys.platform != 'win32' and sys.platform != 'darwin':
             iconname = self.__types[btntype][1]
-            if hasattr(QtGui.QStyle, iconname):
-                icon = self.tagger.style().standardIcon(getattr(QtGui.QStyle, iconname))
+            if hasattr(QtWidgets.QStyle, iconname):
+                icon = self.tagger.style().standardIcon(getattr(QtWidgets.QStyle, iconname))
                 args = [icon, label]
-        QtGui.QPushButton.__init__(self, *args)
+        QtWidgets.QPushButton.__init__(self, *args)
 
 
 # The following code is there to fix
@@ -65,12 +65,12 @@ def find_starting_directory():
     return find_existing_path(unicode(path))
 
 
-class ButtonLineEdit(QtGui.QLineEdit):
+class ButtonLineEdit(QtWidgets.QLineEdit):
 
     def __init__(self, parent=None):
-        QtGui.QLineEdit.__init__(self, parent)
+        QtWidgets.QLineEdit.__init__(self, parent)
 
-        self.clear_button = QtGui.QToolButton(self)
+        self.clear_button = QtWidgets.QToolButton(self)
         self.clear_button.setVisible(False)
         self.clear_button.setCursor(QtCore.Qt.PointingHandCursor)
         self.clear_button.setFocusPolicy(QtCore.Qt.NoFocus)
@@ -79,11 +79,10 @@ class ButtonLineEdit(QtGui.QLineEdit):
                                                         fallback_icon))
         self.clear_button.setStyleSheet(
             "QToolButton { background: transparent; border: none;} QToolButton QWidget { color: black;}")
-        layout = QtGui.QHBoxLayout(self)
+        layout = QtWidgets.QHBoxLayout(self)
         layout.addWidget(self.clear_button, 0, QtCore.Qt.AlignRight)
 
         layout.setSpacing(0)
-        layout.setMargin(5)
         self.clear_button.setToolTip(_("Clear entry"))
         self.clear_button.clicked.connect(self.clear)
         self.textChanged.connect(self._update_clear_button)
@@ -95,13 +94,12 @@ class ButtonLineEdit(QtGui.QLineEdit):
         self.setTextMargins(left, top, right + self.clear_button.width(), bottom)
 
 
-class MultiDirsSelectDialog(QtGui.QFileDialog):
+class MultiDirsSelectDialog(QtWidgets.QFileDialog):
 
     """Custom file selection dialog which allows the selection
     of multiple directories.
     Depending on the platform, dialog may fallback on non-native.
     """
-
     def __init__(self, *args):
         super(MultiDirsSelectDialog, self).__init__(*args)
         self.setFileMode(self.Directory)
@@ -109,6 +107,6 @@ class MultiDirsSelectDialog(QtGui.QFileDialog):
         if sys.platform == "darwin":
             # The native dialog doesn't allow selecting >1 directory
             self.setOption(self.DontUseNativeDialog)
-        for view in self.findChildren((QtGui.QListView, QtGui.QTreeView)):
-            if isinstance(view.model(), QtGui.QFileSystemModel):
-                view.setSelectionMode(QtGui.QAbstractItemView.ExtendedSelection)
+        for view in self.findChildren((QtWidgets.QListView, QtWidgets.QTreeView)):
+            if isinstance(view.model(), QtWidgets.QFileSystemModel):
+                view.setSelectionMode(QtWidgets.QAbstractItemView.ExtendedSelection)

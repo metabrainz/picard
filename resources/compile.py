@@ -12,7 +12,7 @@ def main():
     pyfile = os.path.join(topdir, "picard", "resources.py")
     qrcfile = os.path.join(topdir, "resources", "picard.qrc")
     if newer(qrcfile, pyfile):
-        pyrcc = 'pyrcc4'
+        pyrcc = 'pyrcc5'
         pyrcc_path = find_executable(pyrcc)
         if pyrcc_path is None:
             log.error("%s command not found, cannot build resource file !", pyrcc)

@@ -18,7 +18,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 import re
-from PyQt4 import QtGui
+from PyQt5 import QtWidgets
 from picard import config
 from picard.plugin import ExtensionPoint
 
@@ -30,7 +30,7 @@ class OptionsCheckError(Exception):
         self.info = info
 
 
-class OptionsPage(QtGui.QWidget):
+class OptionsPage(QtWidgets.QWidget):
 
     PARENT = None
     SORT_ORDER = 1000
@@ -65,7 +65,7 @@ class OptionsPage(QtGui.QWidget):
             config.setting[key] = old_options[key]
 
     def display_error(self, error):
-        dialog = QtGui.QMessageBox(QtGui.QMessageBox.Warning, error.title, error.info, QtGui.QMessageBox.Ok, self)
+        dialog = QtWidgets.QMessageBox(QtWidgets.QMessageBox.Warning, error.title, error.info, QtWidgets.QMessageBox.Ok, self)
         dialog.exec_()
 
     def init_regex_checker(self, regex_edit, regex_error):

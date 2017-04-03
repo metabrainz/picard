@@ -19,8 +19,8 @@
 
 import os.path
 from functools import partial
-from PyQt4 import QtCore, QtGui
-from picard import config, log
+from PyQt5 import QtCore, QtWidgets
+from picard import config
 from picard.util import icontheme
 from picard.ui.options import OptionsPage, register_options_page
 from picard.ui.ui_options_interface import Ui_InterfaceOptionsPage
@@ -151,7 +151,7 @@ class InterfaceOptionsPage(OptionsPage):
         self.ui.up_button.clicked.connect(partial(self.move_item, 1))
         self.ui.down_button.clicked.connect(partial(self.move_item, -1))
         self.ui.toolbar_layout_list.currentRowChanged.connect(self.update_buttons)
-        self.ui.toolbar_layout_list.setDragDropMode(QtGui.QAbstractItemView.DragDrop)
+        self.ui.toolbar_layout_list.setDragDropMode(QtWidgets.QAbstractItemView.DragDrop)
         self.ui.toolbar_layout_list.setDefaultDropAction(QtCore.Qt.MoveAction)
 
     def load(self):
@@ -178,11 +178,11 @@ class InterfaceOptionsPage(OptionsPage):
         new_language = self.ui.ui_language.itemData(self.ui.ui_language.currentIndex())
         if new_language != config.setting["ui_language"]:
             config.setting["ui_language"] = self.ui.ui_language.itemData(self.ui.ui_language.currentIndex())
-            dialog = QtGui.QMessageBox(
-                QtGui.QMessageBox.Information,
+            dialog = QtWidgets.QMessageBox(
+                QtWidgets.QMessageBox.Information,
                 _('Language changed'),
                 _('You have changed the interface language. You have to restart Picard in order for the change to take effect.'),
-                QtGui.QMessageBox.Ok,
+                QtWidgets.QMessageBox.Ok,
                 self)
             dialog.exec_()
         config.setting["starting_directory"] = self.ui.starting_directory.isChecked()
@@ -195,7 +195,7 @@ class InterfaceOptionsPage(OptionsPage):
 
     def starting_directory_browse(self):
         item = self.ui.starting_directory_path
-        path = QtGui.QFileDialog.getExistingDirectory(self, "", item.text())
+        path = QtWidgets.QFileDialog.getExistingDirectory(self, "", item.text())
         if path:
             path = os.path.normpath(unicode(path))
             item.setText(path)
@@ -271,34 +271,34 @@ class InterfaceOptionsPage(OptionsPage):
 
     def _update_toolbar(self):
         widget = self.parent()
-        while not isinstance(widget, QtGui.QMainWindow):
+        while not isinstance(widget, QtWidgets.QMainWindow):
             widget = widget.parent()
         # Call the main window's create toolbar method
         widget.create_action_toolbar()
         widget.set_tab_order()
 
 
-class ToolbarListItem(QtGui.QListWidgetItem):
+class ToolbarListItem(QtWidgets.QListWidgetItem):
     def __init__(self, action_name, *args, **kwargs):
         super(ToolbarListItem, self).__init__(*args, **kwargs)
         self.action_name = action_name
 
 
-class AddActionDialog(QtGui.QDialog):
+class AddActionDialog(QtWidgets.QDialog):
     def __init__(self, action_list, *args, **kwargs):
         super(AddActionDialog, self).__init__(*args, **kwargs)
 
-        layout = QtGui.QVBoxLayout(self)
+        layout = QtWidgets.QVBoxLayout(self)
 
         self.action_list = sorted([[_(self.parent().TOOLBAR_BUTTONS[action]['label']), action]
                                   for action in action_list])
 
-        self.combo_box = QtGui.QComboBox(self)
+        self.combo_box = QtWidgets.QComboBox(self)
         self.combo_box.addItems([label for label, action in self.action_list])
         layout.addWidget(self.combo_box)
 
-        buttons = QtGui.QDialogButtonBox(
-            QtGui.QDialogButtonBox.Ok | QtGui.QDialogButtonBox.Cancel,
+        buttons = QtWidgets.QDialogButtonBox(
+            QtWidgets.QDialogButtonBox.Ok | QtWidgets.QDialogButtonBox.Cancel,
             QtCore.Qt.Horizontal, self)
         buttons.accepted.connect(self.accept)
         buttons.rejected.connect(self.reject)
@@ -312,7 +312,7 @@ class AddActionDialog(QtGui.QDialog):
         dialog = AddActionDialog(action_list, parent)
         result = dialog.exec_()
         selected_action = dialog.selected_action()
-        return (selected_action, result == QtGui.QDialog.Accepted)
+        return (selected_action, result == QtWidgets.QDialog.Accepted)
 
 
 register_options_page(InterfaceOptionsPage)

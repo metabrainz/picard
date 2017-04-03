@@ -17,7 +17,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
-
+import cgi
 import os
 import ntpath
 import re
@@ -27,7 +27,7 @@ if sys.platform == 'win32':
 	from ctypes import windll
 
 from time import time
-from PyQt4 import QtCore
+from PyQt5 import QtCore
 from string import Template
 # Required for compatibility with lastfmplus which imports this from here rather than loading it direct.
 from functools import partial
@@ -404,9 +404,12 @@ def build_qurl(host, port=80, path=None, queryargs=None):
     if path is not None:
         url.setPath(path)
     if queryargs is not None:
+        url_query = QtCore.QUrlQuery()
         for k, v in queryargs.iteritems():
-            url.addEncodedQueryItem(k, unicode(v))
+            url_query.addQueryItem(k, unicode(v))
+        url.setQuery(url_query)
     return url
+
 
 def union_sorted_lists(list1, list2):
     """
@@ -436,3 +439,7 @@ def union_sorted_lists(list1, list2):
         union.extend(list1[i:])
 
     return union
+
+
+def htmlescape(string):
+    return cgi.escape(string)

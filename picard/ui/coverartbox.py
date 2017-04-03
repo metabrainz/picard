@@ -20,7 +20,7 @@
 import os
 import sys
 from functools import partial
-from PyQt4 import QtCore, QtGui, QtNetwork
+from PyQt5 import QtCore, QtGui, QtNetwork, QtWidgets
 from picard import config, log
 from picard.album import Album
 from picard.coverart.image import CoverArtImage, CoverArtImageError
@@ -39,14 +39,14 @@ if sys.platform == 'darwin':
         log.warning("Unable to import NSURL, file drag'n'drop might not work correctly")
 
 
-class ActiveLabel(QtGui.QLabel):
+class ActiveLabel(QtWidgets.QLabel):
     """Clickable QLabel."""
 
     clicked = QtCore.pyqtSignal()
     image_dropped = QtCore.pyqtSignal(QtCore.QUrl, QtCore.QByteArray)
 
     def __init__(self, active=True, drops=False, *args):
-        QtGui.QLabel.__init__(self, *args)
+        QtWidgets.QLabel.__init__(self, *args)
         self.setMargin(0)
         self.setActive(active)
         self.setAcceptDrops(drops)
@@ -63,10 +63,7 @@ class ActiveLabel(QtGui.QLabel):
             self.clicked.emit()
 
     def dragEnterEvent(self, event):
-        for url in event.mimeData().urls():
-            if url.scheme() in ('https', 'http', 'file'):
-                event.acceptProposedAction()
-                break
+        event.acceptProposedAction()
 
     def dropEvent(self, event):
         accepted = False
@@ -74,6 +71,14 @@ class ActiveLabel(QtGui.QLabel):
         # is useful for Google Images, where the url links to the page that contains the image
         # so we use it if the downloaded url is not an image.
         dropped_data = event.mimeData().data('application/octet-stream')
+        try:
+            mime = imageinfo.identify(dropped_data)[2]
+            if mime in ('image/jpeg', 'image/png'):
+                accepted = True
+                self.image_dropped.emit(QtCore.QUrl(''), dropped_data)
+        except imageinfo.IdentificationError:
+            pass
+
         for url in event.mimeData().urls():
             if url.scheme() in ('https', 'http', 'file'):
                 accepted = True
@@ -246,11 +251,11 @@ def set_image_append(obj, coverartimage):
     obj.metadata.append_image(coverartimage)
 
 
-class CoverArtBox(QtGui.QGroupBox):
+class CoverArtBox(QtWidgets.QGroupBox):
 
     def __init__(self, parent):
-        QtGui.QGroupBox.__init__(self, "")
-        self.layout = QtGui.QVBoxLayout()
+        QtWidgets.QGroupBox.__init__(self, "")
+        self.layout = QtWidgets.QVBoxLayout()
         self.layout.setSpacing(6)
         self.parent = parent
         # Kills off any borders
@@ -258,15 +263,15 @@ class CoverArtBox(QtGui.QGroupBox):
         self.setFlat(True)
         self.item = None
         self.pixmap_cache = LRUCache(40)
-        self.cover_art_label = QtGui.QLabel('')
+        self.cover_art_label = QtWidgets.QLabel('')
         self.cover_art_label.setAlignment(QtCore.Qt.AlignTop | QtCore.Qt.AlignHCenter)
         self.cover_art = CoverArtThumbnail(False, True, self.pixmap_cache, parent)
         self.cover_art.image_dropped.connect(self.fetch_remote_image)
-        spacerItem = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
-        self.orig_cover_art_label = QtGui.QLabel('')
+        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        self.orig_cover_art_label = QtWidgets.QLabel('')
         self.orig_cover_art = CoverArtThumbnail(False, False, self.pixmap_cache, parent)
         self.orig_cover_art_label.setAlignment(QtCore.Qt.AlignTop | QtCore.Qt.AlignHCenter)
-        self.show_details_button = QtGui.QPushButton(_(u'Show more details'), self)
+        self.show_details_button = QtWidgets.QPushButton(_(u'Show more details'), self)
         self.layout.addWidget(self.cover_art_label)
         self.layout.addWidget(self.cover_art)
         self.layout.addWidget(self.orig_cover_art_label)
@@ -322,10 +327,14 @@ class CoverArtBox(QtGui.QGroupBox):
     def fetch_remote_image(self, url, fallback_data=None):
         if self.item is None:
             return
-        if url.scheme() in ('https', 'http'):
-            path = url.encodedPath()
+
+        if fallback_data is not None:
+            self.load_remote_image(url, None, fallback_data)
+
+        if url.scheme() in ('http', 'https'):
+            path = url.path(QtCore.QUrl.FullyEncoded)
             if url.hasQuery():
-                path += '?' + url.encodedQuery()
+                path += '?' + url.query(QtCore.QUrl.FullyEncoded)
             if url.scheme() == 'https':
                 port = 443
             else:
@@ -427,29 +436,29 @@ class CoverArtBox(QtGui.QGroupBox):
         config.setting["load_image_behavior"] = behavior
 
     def contextMenuEvent(self, event):
-        menu = QtGui.QMenu(self)
+        menu = QtWidgets.QMenu(self)
         if self.show_details_button.isVisible():
             name = _(u'Show more details...')
-            show_more_details_action = QtGui.QAction(name, self.parent)
+            show_more_details_action = QtWidgets.QAction(name, self.parent)
             show_more_details_action.triggered.connect(self.show_cover_art_info)
             menu.addAction(show_more_details_action)
 
         if self.orig_cover_art.isVisible():
             name = _(u'Keep original cover art')
-            use_orig_value_action = QtGui.QAction(name, self.parent)
+            use_orig_value_action = QtWidgets.QAction(name, self.parent)
             use_orig_value_action.triggered.connect(self.item.keep_original_images)
             menu.addAction(use_orig_value_action)
 
         if not menu.isEmpty():
             menu.addSeparator()
 
-        load_image_behavior_group = QtGui.QActionGroup(self.parent, exclusive=True)
-        action = load_image_behavior_group.addAction(QtGui.QAction(_(u'Replace front cover art on drop'), self.parent, checkable=True))
+        load_image_behavior_group = QtWidgets.QActionGroup(self.parent, exclusive=True)
+        action = load_image_behavior_group.addAction(QtWidgets.QAction(_(u'Replace front cover art on drop'), self.parent, checkable=True))
         action.triggered.connect(partial(self.set_load_image_behavior, behavior='replace'))
         if config.setting["load_image_behavior"] == 'replace':
             action.setChecked(True)
         menu.addAction(action)
-        action = load_image_behavior_group.addAction(QtGui.QAction(_(u'Append front cover art on drop'), self.parent, checkable=True))
+        action = load_image_behavior_group.addAction(QtWidgets.QAction(_(u'Append front cover art on drop'), self.parent, checkable=True))
         action.triggered.connect(partial(self.set_load_image_behavior, behavior='append'))
         if config.setting["load_image_behavior"] == 'append':
             action.setChecked(True)
