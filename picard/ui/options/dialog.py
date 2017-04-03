@@ -87,7 +87,6 @@ class OptionsDialog(PicardDialog):
         ok = StandardButton(StandardButton.OK)
         ok.setText(_("Make It So!"))
         self.ui.buttonbox.addButton(ok, QtWidgets.QDialogButtonBox.AcceptRole)
-        self.ui.buttonbox.addButton(StandardButton(StandardButton.OK), QtWidgets.QDialogButtonBox.AcceptRole)
         self.ui.buttonbox.addButton(StandardButton(StandardButton.CANCEL), QtWidgets.QDialogButtonBox.RejectRole)
         self.ui.buttonbox.addButton(StandardButton(StandardButton.HELP), QtWidgets.QDialogButtonBox.HelpRole)
         self.ui.buttonbox.addButton(self.ui.reset_all_button, QtWidgets.QDialogButtonBox.ActionRole)
