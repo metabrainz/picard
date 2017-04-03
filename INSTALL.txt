@@ -44,6 +44,14 @@ there for Mutagen and python-discid.
 The binaries for Python, GetText (msgfmt), fpcalc and discid.dll have to be
 in the %PATH% on Windows.
 
+On Debian issue the following command to install dependencies:
+  sudo apt-get installl python-dev python-pyqt5 python-mutagen python-libdiscid libchromaprint0
+Use this if you prefer pip packages:
+  sudo apt-get install python-dev libchromaprint0
+  wget https://bootstrap.pypa.io/get-pip.py
+  sudo python get-pip.py
+  sudo pip install mutagen discid python-qt5
+You can also get older pip from python-pip package.
 
 Installation
 ------------
@@ -59,6 +67,16 @@ To start Picard now you can use:
 
   picard
 
+Uninstallation
+--------------
+
+Instead of using the above install command use:
+
+  sudo python setup.py install --record install.txt
+
+Then to uninstall run:
+
+  cat install.txt | sudo xargs rm -rf
 
 Running From the Source Tree
 ----------------------------
