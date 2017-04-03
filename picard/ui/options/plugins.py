@@ -221,12 +221,12 @@ class PluginsOptionsPage(OptionsPage):
                 p.can_be_updated = False
                 p.can_be_downloaded = False
                 p.marked_for_update = True
-                msgbox = QtGui.QMessageBox(self)
+                msgbox = QtWidgets.QMessageBox(self)
                 msgbox.setText(
                     _(u"The plugin '%s' will be upgraded to version %s on next run of Picard.")
                     % (p.name, p.new_version))
-                msgbox.setStandardButtons(QtGui.QMessageBox.Ok)
-                msgbox.setDefaultButton(QtGui.QMessageBox.Ok)
+                msgbox.setStandardButtons(QtWidgets.QMessageBox.Ok)
+                msgbox.setDefaultButton(QtWidgets.QMessageBox.Ok)
                 msgbox.exec_()
                 self.add_plugin_item(p, item=i)
                 self.ui.plugins.setCurrentItem(i)
