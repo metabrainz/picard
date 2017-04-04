@@ -21,22 +21,36 @@
 from mutagen.id3 import ID3, Frames, Frames_2_2, TextFrame
 
 
+# iTunes Compilation flag
 class TCMP(TextFrame):
     pass
 
-
+# iTunes Album Artist Sort Order
 class TSO2(TextFrame):
     pass
 
 
+# iTunes Composer Sort Order
 class TSOC(TextFrame):
     pass
 
 
+# iTunes Classical Movement Name
+class MVNM(TextFrame):
+    pass
+
+
+# iTunes Classical Movement Number & Total x/y
+class MVIN(TextFrame):
+    pass
+
+
+# Obsolete Original Release Time
 class XDOR(TextFrame):
     pass
 
 
+# Obsolete Performer Sort Order
 class XSOP(TextFrame):
     pass
 
@@ -58,6 +72,8 @@ class CompatID3(ID3):
             known_frames["TCMP"] = TCMP
             known_frames["TSO2"] = TSO2
             known_frames["TSOC"] = TSOC
+            known_frames["MVNM"] = MVNM
+            known_frames["MVIN"] = MVIN
             known_frames["XDOR"] = XDOR
             known_frames["XSOP"] = XSOP
             kwargs["known_frames"] = known_frames
