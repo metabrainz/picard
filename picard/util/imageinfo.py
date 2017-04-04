@@ -17,8 +17,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-import StringIO
 import struct
+from io import BytesIO
 
 
 class IdentificationError(Exception):
@@ -76,7 +76,7 @@ def identify(data):
 
     # http://en.wikipedia.org/wiki/JPEG
     elif data[:2] == '\xFF\xD8':  # Start Of Image (SOI) marker
-        jpeg = StringIO.StringIO(data)
+        jpeg = BytesIO(data)
         # skip SOI
         jpeg.read(2)
         b = jpeg.read(1)
