@@ -49,16 +49,16 @@ class ResultTable(QtWidgets.QTableWidget):
         self.parent = parent
         self.setHorizontalHeaderLabels(column_titles)
         self.setSelectionMode(
-                QtWidgets.QAbstractItemView.SingleSelection)
+            QtWidgets.QAbstractItemView.SingleSelection)
         self.setSelectionBehavior(
-                QtWidgets.QAbstractItemView.SelectRows)
+            QtWidgets.QAbstractItemView.SelectRows)
         self.setEditTriggers(
-                QtWidgets.QAbstractItemView.NoEditTriggers)
+            QtWidgets.QAbstractItemView.NoEditTriggers)
         self.horizontalHeader().setStretchLastSection(True)
-        self.horizontalHeader().setResizeMode(
-                QtWidgets.QHeaderView.Stretch)
-        self.horizontalHeader().setResizeMode(
-                QtWidgets.QHeaderView.Interactive)
+        self.horizontalHeader().setSectionResizeMode(
+            QtWidgets.QHeaderView.Stretch)
+        self.horizontalHeader().setSectionResizeMode(
+            QtWidgets.QHeaderView.Interactive)
 
 
 class SearchBox(QtWidgets.QWidget):
@@ -480,7 +480,7 @@ class TrackSearchDialog(SearchDialog):
         state = config.persist["tracksearchdialog_header_state"]
         if state:
             header.restoreState(state)
-        header.setResizeMode(QtWidgets.QHeaderView.Interactive)
+        header.setSectionResizeMode(QtWidgets.QHeaderView.Interactive)
 
     def save_state(self):
         if self.table:
@@ -709,7 +709,7 @@ class AlbumSearchDialog(SearchDialog):
         state = config.persist["albumsearchdialog_header_state"]
         if state:
             header.restoreState(state)
-        header.setResizeMode(QtWidgets.QHeaderView.Interactive)
+        header.setSectionResizeMode(QtWidgets.QHeaderView.Interactive)
 
     def save_state(self):
         if self.table:
@@ -808,7 +808,7 @@ class ArtistSearchDialog(SearchDialog):
         state = config.persist["artistsearchdialog_header_state"]
         if state:
             header.restoreState(state)
-        header.setResizeMode(QtWidgets.QHeaderView.Interactive)
+        header.setSectionResizeMode(QtWidgets.QHeaderView.Interactive)
 
     def save_state(self):
         if self.table:
