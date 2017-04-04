@@ -1,12 +1,12 @@
 # Translators:
 # Translators:
 # Mihkel Tõnnov <mihhkel@gmail.com>, 2008-2009,2011-2014
-# Mihkel Tõnnov <mihhkel@gmail.com>, 2015
+# Mihkel Tõnnov <mihhkel@gmail.com>, 2015,2017
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2017-01-16 20:46+0000\n"
-"Last-Translator: Laurent Monin <i18n@norz.org>\n"
+"PO-Revision-Date: 2017-03-27 11:29+0000\n"
+"Last-Translator: Mihkel Tõnnov <mihhkel@gmail.com>\n"
 "Language-Team: Estonian (http://www.transifex.com/musicbrainz/musicbrainz/language/et/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"

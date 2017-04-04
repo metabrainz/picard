@@ -3,7 +3,7 @@
 #  <>, 2002, 2001, Inc, 2003, 2007, 2008, 2009, 2010, 2011, 2000,�s�, 2012
 #   Alastair McKinstry <mckinstry@computer.org>, 2002
 # Alastair McKinstry <mckinstry@computer.org>, 2001
-# Clay Cheng <clay1994@mail.hfut.edu.cn>, 2016
+# Clay Cheng <clay1994@mail.hfut.edu.cn>, 2016-2017
 #   Free Software Foundation, Inc., 2002, 2003, 2007, 2008
 # RedHotHeat <gbonner@iol.ie>, 2012
 # RedHotHeat <gbonner@iol.ie>, 2012
@@ -16,7 +16,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2016-07-22 14:44+0000\n"
+"PO-Revision-Date: 2017-03-27 14:33+0000\n"
 "Last-Translator: Clay Cheng <clay1994@mail.hfut.edu.cn>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/musicbrainz/musicbrainz/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
@@ -803,7 +803,7 @@ msgstr "纳米比亚"
 #. iso.code:NR
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:148
 msgid "Nauru"
-msgstr "蒙古语"
+msgstr "瑙鲁"
 
 #. iso.code:NP
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:149
@@ -1173,7 +1173,7 @@ msgstr "多哥"
 #. iso.code:TK
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:210
 msgid "Tokelau"
-msgstr "托克劳语"
+msgstr "托克劳"
 
 #. iso.code:TO
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:211
@@ -1208,7 +1208,7 @@ msgstr "特克斯和凯科斯群岛"
 #. iso.code:TV
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:217
 msgid "Tuvalu"
-msgstr "图瓦卢语"
+msgstr "图瓦卢"
 
 #. iso.code:VI
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:231

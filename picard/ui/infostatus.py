@@ -16,16 +16,15 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-from PyQt4 import QtCore, QtGui
-from PyQt4.QtGui import QIcon
+from PyQt5 import QtCore, QtGui, QtWidgets
 from picard.util import icontheme
 from picard.ui.ui_infostatus import Ui_InfoStatus
 
 
-class InfoStatus(QtGui.QWidget, Ui_InfoStatus):
+class InfoStatus(QtWidgets.QWidget, Ui_InfoStatus):
 
     def __init__(self, parent):
-        QtGui.QWidget.__init__(self, parent)
+        QtWidgets.QWidget.__init__(self, parent)
         Ui_InfoStatus.__init__(self)
         self.setupUi(self)
 
@@ -38,7 +37,7 @@ class InfoStatus(QtGui.QWidget, Ui_InfoStatus):
         self.label1.setPixmap(self.icon_file.pixmap(size))
         self.label2.setPixmap(self.icon_cd.pixmap(size))
         self.label3.setPixmap(self.icon_file_pending.pixmap(size))
-        self.label4.setPixmap(self.icon_download.pixmap(size, QIcon.Disabled))
+        self.label4.setPixmap(self.icon_download.pixmap(size, QtGui.QIcon.Disabled))
         self._init_tooltips()
 
     def _create_icons(self):
@@ -72,8 +71,8 @@ class InfoStatus(QtGui.QWidget, Ui_InfoStatus):
 
     def setPendingRequests(self, num):
         if num <= 0:
-            enabled = QIcon.Disabled
+            enabled = QtGui.QIcon.Disabled
         else:
-            enabled = QIcon.Normal
+            enabled = QtGui.QIcon.Normal
         self.label4.setPixmap(self.icon_download.pixmap(self._size, enabled))
         self.val4.setText(unicode(num))

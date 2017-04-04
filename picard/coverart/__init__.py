@@ -31,7 +31,7 @@ from functools import partial
 from picard import config, log
 from picard.coverart.image import (CoverArtImageIOError,
                                    CoverArtImageIdentificationError)
-from PyQt4.QtCore import QObject
+from PyQt5.QtCore import QObject
 
 
 class CoverArt:

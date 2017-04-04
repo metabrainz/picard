@@ -18,7 +18,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtGui, QtWidgets
 from collections import defaultdict
 from functools import partial
 from picard import config
@@ -142,7 +142,7 @@ class TagDiff(object):
         return TagStatus.NoChange
 
 
-class MetadataBox(QtGui.QTableWidget):
+class MetadataBox(QtWidgets.QTableWidget):
 
     options = (
         config.Option("persist", "metadatabox_header_state", QtCore.QByteArray()),
@@ -150,19 +150,19 @@ class MetadataBox(QtGui.QTableWidget):
     )
 
     def __init__(self, parent):
-        QtGui.QTableWidget.__init__(self, parent)
+        QtWidgets.QTableWidget.__init__(self, parent)
         self.parent = parent
         self.setAccessibleName(_("metadata view"))
         self.setAccessibleDescription(_("Displays original and new tags for the selected files"))
         self.setColumnCount(3)
         self.setHorizontalHeaderLabels((_("Tag"), _("Original Value"), _("New Value")))
         self.horizontalHeader().setStretchLastSection(True)
-        self.horizontalHeader().setResizeMode(QtGui.QHeaderView.Stretch)
-        self.horizontalHeader().setClickable(False)
+        self.horizontalHeader().setSectionResizeMode(QtWidgets.QHeaderView.Stretch)
+        self.horizontalHeader().setSectionsClickable(False)
         self.verticalHeader().setDefaultSectionSize(21)
         self.verticalHeader().setVisible(False)
-        self.setHorizontalScrollMode(QtGui.QAbstractItemView.ScrollPerPixel)
-        self.setSelectionMode(QtGui.QAbstractItemView.ExtendedSelection)
+        self.setHorizontalScrollMode(QtWidgets.QAbstractItemView.ScrollPerPixel)
+        self.setSelectionMode(QtWidgets.QAbstractItemView.ExtendedSelection)
         self.setTabKeyNavigation(False)
         self.setStyleSheet("QTableWidget {border: none;}")
         self.setAttribute(QtCore.Qt.WA_MacShowFocusRect, 1)
@@ -179,20 +179,20 @@ class MetadataBox(QtGui.QTableWidget):
         self.selection_dirty = False
         self.editing = None  # the QTableWidgetItem being edited
         self.clipboard = [""]
-        self.add_tag_action = QtGui.QAction(_(u"Add New Tag..."), parent)
+        self.add_tag_action = QtWidgets.QAction(_(u"Add New Tag..."), parent)
         self.add_tag_action.triggered.connect(partial(self.edit_tag, ""))
-        self.changes_first_action = QtGui.QAction(_(u"Show Changes First"), parent)
+        self.changes_first_action = QtWidgets.QAction(_(u"Show Changes First"), parent)
         self.changes_first_action.setCheckable(True)
         self.changes_first_action.setChecked(config.persist["show_changes_first"])
         self.changes_first_action.toggled.connect(self.toggle_changes_first)
         self.browser_integration = BrowserIntegration()
         # TR: Keyboard shortcut for "Add New Tag..."
-        self.add_tag_shortcut = QtGui.QShortcut(QtGui.QKeySequence(_("Alt+Shift+A")), self, partial(self.edit_tag, ""))
+        self.add_tag_shortcut = QtWidgets.QShortcut(QtGui.QKeySequence(_("Alt+Shift+A")), self, partial(self.edit_tag, ""))
         self.add_tag_action.setShortcut(self.add_tag_shortcut.key())
         # TR: Keyboard shortcut for "Edit..." (tag)
-        self.edit_tag_shortcut = QtGui.QShortcut(QtGui.QKeySequence(_("Alt+Shift+E")), self, partial(self.edit_selected_tag))
+        self.edit_tag_shortcut = QtWidgets.QShortcut(QtGui.QKeySequence(_("Alt+Shift+E")), self, partial(self.edit_selected_tag))
         # TR: Keyboard shortcut for "Remove" (tag)
-        self.remove_tag_shortcut = QtGui.QShortcut(QtGui.QKeySequence(_("Alt+Shift+R")), self, self.remove_selected_tags)
+        self.remove_tag_shortcut = QtWidgets.QShortcut(QtGui.QKeySequence(_("Alt+Shift+R")), self, self.remove_selected_tags)
 
     def get_file_lookup(self):
         """Return a FileLookup object."""
@@ -225,9 +225,9 @@ class MetadataBox(QtGui.QTableWidget):
             return False
         item = self.itemFromIndex(index)
         if item.flags() & QtCore.Qt.ItemIsEditable and \
-           trigger in (QtGui.QAbstractItemView.DoubleClicked,
-                       QtGui.QAbstractItemView.EditKeyPressed,
-                       QtGui.QAbstractItemView.AnyKeyPressed):
+           trigger in (QtWidgets.QAbstractItemView.DoubleClicked,
+                       QtWidgets.QAbstractItemView.EditKeyPressed,
+                       QtWidgets.QAbstractItemView.AnyKeyPressed):
             tag = self.tag_diff.tag_names[item.row()]
             values = self.tag_diff.new[tag]
             if len(values) > 1:
@@ -236,7 +236,7 @@ class MetadataBox(QtGui.QTableWidget):
             else:
                 self.editing = item
                 item.setText(values[0])
-                return QtGui.QTableWidget.edit(self, index, trigger, event)
+                return QtWidgets.QTableWidget.edit(self, index, trigger, event)
         return False
 
     def event(self, e):
@@ -251,10 +251,10 @@ class MetadataBox(QtGui.QTableWidget):
                     self.clipboard = list(self.tag_diff.new[tag])
             elif e.key() == QtCore.Qt.Key_V and column == 2 and tag != "~length":
                 self.set_tag_values(tag, list(self.clipboard))
-        return QtGui.QTableWidget.event(self, e)
+        return QtWidgets.QTableWidget.event(self, e)
 
     def closeEditor(self, editor, hint):
-        QtGui.QTableWidget.closeEditor(self, editor, hint)
+        QtWidgets.QTableWidget.closeEditor(self, editor, hint)
         tag = self.tag_diff.tag_names[self.editing.row()]
         old = self.tag_diff.new[tag]
         new = [unicode(editor.text())]
@@ -266,12 +266,12 @@ class MetadataBox(QtGui.QTableWidget):
         self.update()
 
     def contextMenuEvent(self, event):
-        menu = QtGui.QMenu(self)
+        menu = QtWidgets.QMenu(self)
         if self.objects:
             tags = self.selected_tags(discard=('~length'))
             if len(tags) == 1:
                 selected_tag = tags[0]
-                edit_tag_action = QtGui.QAction(_(u"Edit..."), self.parent)
+                edit_tag_action = QtWidgets.QAction(_(u"Edit..."), self.parent)
                 edit_tag_action.triggered.connect(partial(self.edit_tag, selected_tag))
                 edit_tag_action.setShortcut(self.edit_tag_shortcut.key())
                 menu.addAction(edit_tag_action)
@@ -279,11 +279,11 @@ class MetadataBox(QtGui.QTableWidget):
                                   map(lambda x: x.strip(), config.setting['preserved_tags'].split(','))
                                   if tag != ""]
                 if selected_tag not in preserved_tags:
-                    add_to_preserved_tags_action = QtGui.QAction(_(u"Add to 'Preserve Tags' List"), self.parent)
+                    add_to_preserved_tags_action = QtWidgets.QAction(_(u"Add to 'Preserve Tags' List"), self.parent)
                     add_to_preserved_tags_action.triggered.connect(partial(self.add_to_preserved_tags, selected_tag, preserved_tags))
                     menu.addAction(add_to_preserved_tags_action)
                 else:
-                    remove_from_preserved_tags_action = QtGui.QAction(_(u"Remove from 'Preserve Tags' List"), self.parent)
+                    remove_from_preserved_tags_action = QtWidgets.QAction(_(u"Remove from 'Preserve Tags' List"), self.parent)
                     remove_from_preserved_tags_action.triggered.connect(partial(self.remove_from_preserved_tags, selected_tag, preserved_tags))
                     menu.addAction(remove_from_preserved_tags_action)
             removals = []
@@ -297,7 +297,7 @@ class MetadataBox(QtGui.QTableWidget):
                             values = self.tag_diff.orig[tag]
                         else:
                             values = self.tag_diff.new[tag]
-                        lookup_action = QtGui.QAction(_(u"Lookup in &Browser"), self.parent)
+                        lookup_action = QtWidgets.QAction(_(u"Lookup in &Browser"), self.parent)
                         lookup_action.triggered.connect(partial(self.open_link, values, tag))
                         menu.addAction(lookup_action)
                 if self.tag_is_removable(tag):
@@ -311,13 +311,13 @@ class MetadataBox(QtGui.QTableWidget):
                         orig_values = list(file.orig_metadata.getall(tag)) or [""]
                         useorigs.append(partial(self.set_tag_values, tag, orig_values, objects))
             if removals:
-                remove_tag_action = QtGui.QAction(_(u"Remove"), self.parent)
+                remove_tag_action = QtWidgets.QAction(_(u"Remove"), self.parent)
                 remove_tag_action.triggered.connect(lambda: [f() for f in removals])
                 remove_tag_action.setShortcut(self.remove_tag_shortcut.key())
                 menu.addAction(remove_tag_action)
             if useorigs:
                 name = ungettext("Use Original Value", "Use Original Values", len(useorigs))
-                use_orig_value_action = QtGui.QAction(name, self.parent)
+                use_orig_value_action = QtWidgets.QAction(name, self.parent)
                 use_orig_value_action.triggered.connect(lambda: [f() for f in useorigs])
                 menu.addAction(use_orig_value_action)
                 menu.addSeparator()
@@ -512,18 +512,18 @@ class MetadataBox(QtGui.QTableWidget):
             orig_item = self.item(i, 1)
             new_item = self.item(i, 2)
             if not tag_item:
-                tag_item = QtGui.QTableWidgetItem()
+                tag_item = QtWidgets.QTableWidgetItem()
                 tag_item.setFlags(orig_flags)
                 font = tag_item.font()
                 font.setBold(True)
                 tag_item.setFont(font)
                 self.setItem(i, 0, tag_item)
             if not orig_item:
-                orig_item = QtGui.QTableWidgetItem()
+                orig_item = QtWidgets.QTableWidgetItem()
                 orig_item.setFlags(orig_flags)
                 self.setItem(i, 1, orig_item)
             if not new_item:
-                new_item = QtGui.QTableWidgetItem()
+                new_item = QtWidgets.QTableWidgetItem()
                 self.setItem(i, 2, new_item)
             tag_item.setText(display_tag_name(name))
             self.set_item_value(orig_item, self.tag_diff.orig, name)
@@ -554,7 +554,7 @@ class MetadataBox(QtGui.QTableWidget):
         state = config.persist["metadatabox_header_state"]
         header = self.horizontalHeader()
         header.restoreState(state)
-        header.setResizeMode(QtGui.QHeaderView.Interactive)
+        header.setSectionResizeMode(QtWidgets.QHeaderView.Interactive)
 
     def save_state(self):
         header = self.horizontalHeader()

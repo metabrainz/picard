@@ -28,7 +28,7 @@ import unicodedata
 from functools import partial
 from operator import itemgetter
 from collections import defaultdict
-from PyQt4 import QtCore
+from PyQt5 import QtCore
 from picard import config, log
 from picard.metadata import Metadata
 from picard.ui.item import Item
@@ -50,7 +50,7 @@ from picard.util.textencoding import (
 from picard.util.filenaming import make_short_filename
 from picard.util.tags import PRESERVED_TAGS
 from picard.const import QUERY_LIMIT
-
+from picard import PICARD_APP_NAME
 
 class File(QtCore.QObject, Item):
 

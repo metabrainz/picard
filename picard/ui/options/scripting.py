@@ -17,7 +17,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtGui, QtWidgets
 from picard import config
 from picard.const import PICARD_URLS
 from picard.script import ScriptParser
@@ -98,7 +98,7 @@ class TaggerScriptSyntaxHighlighter(QtGui.QSyntaxHighlighter):
         self.setCurrentBlockState(open_brackets)
 
 
-class AdvancedScriptItem(QtGui.QWidget):
+class AdvancedScriptItem(QtWidgets.QWidget):
     """Custom widget for script list items"""
 
     _CHECKBOX_POS = 0
@@ -109,36 +109,36 @@ class AdvancedScriptItem(QtGui.QWidget):
 
     def __init__(self, name=None, state=True, parent=None):
         super(AdvancedScriptItem, self).__init__(parent)
-        layout = QtGui.QGridLayout()
+        layout = QtWidgets.QGridLayout()
         layout.setHorizontalSpacing(5)
         layout.setVerticalSpacing(2)
         layout.setContentsMargins(0, 0, 0, 0)
         self.setLayout(layout)
 
-        checkbox = QtGui.QCheckBox()
+        checkbox = QtWidgets.QCheckBox()
         checkbox.setChecked(state)
         checkbox.setMaximumSize(QtCore.QSize(22, 22))
         layout.addWidget(checkbox, 0, self._CHECKBOX_POS)
 
-        layout.addWidget(QtGui.QLabel(name), 0, self._NAME_POS)
+        layout.addWidget(QtWidgets.QLabel(name), 0, self._NAME_POS)
 
-        up_button = QtGui.QToolButton()
+        up_button = QtWidgets.QToolButton()
         up_button.setArrowType(QtCore.Qt.UpArrow)
         up_button.setMaximumSize(QtCore.QSize(16, 16))
         up_button.setToolTip(_("Move script up"))
-        down_button = QtGui.QToolButton()
+        down_button = QtWidgets.QToolButton()
         down_button.setArrowType(QtCore.Qt.DownArrow)
         down_button.setMaximumSize(QtCore.QSize(16, 16))
         down_button.setToolTip(_("Move script down"))
         layout.addWidget(up_button, 0, self._BUTTON_UP)
         layout.addWidget(down_button, 0, self._BUTTON_DOWN)
 
-        other_button = QtGui.QToolButton()
+        other_button = QtWidgets.QToolButton()
         other_button.setText("...")
         other_button.setAutoRaise(True)
         other_button.setMaximumSize(QtCore.QSize(16, 16))
         other_button.setToolTip(_("Other options"))
-        menu = QtGui.QMenu()
+        menu = QtWidgets.QMenu()
         menu.addAction(_("Rename script"))
         menu.addAction(_("Remove script"))
         self.menu = menu
@@ -258,7 +258,7 @@ class ScriptingOptionsPage(OptionsPage):
         list_widget.set_rename_connection(lambda: self.rename_script(item))
 
     def rename_script(self, item):
-        self.ui.script_list.setItemSelected(item, True)
+        item.setSelected(True)
         self.ui.script_name.setFocus()
         self.ui.script_name.selectAll()
 
@@ -272,14 +272,14 @@ class ScriptingOptionsPage(OptionsPage):
         numbered_name = _(DEFAULT_NUMBERED_SCRIPT_NAME) % (count + 1)
         script = ScriptItem(pos=count, name=numbered_name)
 
-        list_item = QtGui.QListWidgetItem()
+        list_item = QtWidgets.QListWidgetItem()
         list_widget = AdvancedScriptItem(numbered_name)
         self.setSignals(list_widget, list_item)
         self.ui.script_list.addItem(list_item)
         self.ui.script_list.setItemWidget(list_item, list_widget)
         self.listitem_to_scriptitem[list_item] = script
         self.list_of_scripts.append(script.get_all())
-        self.ui.script_list.setItemSelected(list_item, True)
+        list_item.setSelected(True)
 
     def update_script_positions(self):
         for i, script in enumerate(self.list_of_scripts):
@@ -289,11 +289,11 @@ class ScriptingOptionsPage(OptionsPage):
 
     def remove_from_list_of_scripts(self, row):
         item = self.ui.script_list.item(row)
-        confirm_remove = QtGui.QMessageBox()
+        confirm_remove = QtWidgets.QMessageBox()
         msg = _("Are you sure you want to remove this script?")
-        reply = confirm_remove.question(confirm_remove, _('Confirm Remove'), msg, QtGui.QMessageBox.Yes,
-                                        QtGui.QMessageBox.No)
-        if item and reply == QtGui.QMessageBox.Yes:
+        reply = confirm_remove.question(confirm_remove, _('Confirm Remove'), msg, QtWidgets.QMessageBox.Yes,
+                                        QtWidgets.QMessageBox.No)
+        if item and reply == QtWidgets.QMessageBox.Yes:
             item = self.ui.script_list.takeItem(row)
             script = self.listitem_to_scriptitem[item]
             del self.listitem_to_scriptitem[item]
@@ -315,10 +315,10 @@ class ScriptingOptionsPage(OptionsPage):
                 if not self.ui.script_list.selectedItems():
                     current_item = self.ui.script_list.currentItem()
                     if current_item:
-                        self.ui.script_list.setItemSelected(current_item, True)
+                        current_item.setSelected(True)
                     else:
                         item = self.ui.script_list.item(0)
-                        self.ui.script_list.setItemSelected(item, True)
+                        item.setSelected(True)
             elif row < self.last_selected_script_pos:
                 self.last_selected_script_pos -= 1
 
@@ -388,7 +388,7 @@ class ScriptingOptionsPage(OptionsPage):
         self.list_of_scripts = config.setting["list_of_scripts"]
         for s_pos, s_name, s_enabled, s_text in self.list_of_scripts:
             script = ScriptItem(s_pos, s_name, s_enabled, s_text)
-            list_item = QtGui.QListWidgetItem()
+            list_item = QtWidgets.QListWidgetItem()
             list_widget = AdvancedScriptItem(name=s_name, state=s_enabled)
             self.setSignals(list_widget, list_item)
             self.ui.script_list.addItem(list_item)
@@ -399,7 +399,7 @@ class ScriptingOptionsPage(OptionsPage):
         self.last_selected_script_pos = config.persist["last_selected_script_pos"]
         last_selected_script = self.ui.script_list.item(self.last_selected_script_pos)
         if last_selected_script:
-            self.ui.script_list.setItemSelected(last_selected_script, True)
+            last_selected_script.setSelected(True)
 
         # Preserve previous splitter position
         self.ui.splitter.restoreState(config.persist["scripting_splitter"])

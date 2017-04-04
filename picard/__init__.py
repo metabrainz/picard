@@ -22,7 +22,7 @@ import re
 
 PICARD_APP_NAME = "Picard"
 PICARD_ORG_NAME = "MusicBrainz"
-PICARD_VERSION = (1, 4, 1, 'dev', 1)
+PICARD_VERSION = (2, 0, 0, 'dev', 1)
 
 # optional build version
 # it should be in the form '<platform>_<YYMMDDHHMMSS>'
@@ -86,12 +86,5 @@ else:
 
 # Keep those ordered
 api_versions = [
-    "0.15.0",
-    "0.15.1",
-    "0.16.0",
-    "1.0.0",
-    "1.1.0",
-    "1.2.0",
-    "1.3.0",
-    "1.4.0",
+    "2.0",
 ]

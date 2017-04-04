@@ -19,7 +19,7 @@
 
 from __future__ import print_function
 from operator import itemgetter
-from PyQt4 import QtCore
+from PyQt5 import QtCore
 from picard import (PICARD_APP_NAME, PICARD_ORG_NAME, PICARD_VERSION,
                     version_to_string, version_from_string)
 from picard.util import LockableObject
@@ -63,13 +63,6 @@ class ConfigSection(LockableObject):
     def raw_value(self, key):
         """Return an option value without any type conversion."""
         value = self.__config.value("%s/%s" % (self.__name, key))
-
-        # XXX QPyNullVariant does not exist in all PyQt versions, and was
-        # removed entirely in PyQt5. See:
-        # http://pyqt.sourceforge.net/Docs/PyQt5/pyqt_qvariant.html
-        if str(type(value)) == "<class 'PyQt4.QtCore.QPyNullVariant'>":
-            return ""
-
         return value
 
     def value(self, name, type, default=None):
