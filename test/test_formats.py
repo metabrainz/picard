@@ -52,11 +52,11 @@ class FakeTagger(QtCore.QObject):
 
 def save_and_load_metadata(filename, metadata):
     """Save new metadata to a file and load it again."""
-    f = picard.formats.open(filename)
+    f = picard.formats.open_(filename)
     loaded_metadata = f._load(filename)
     f._copy_loaded_metadata(loaded_metadata)
     f._save(filename, metadata)
-    f = picard.formats.open(filename)
+    f = picard.formats.open_(filename)
     loaded_metadata = f._load(filename)
     return loaded_metadata
 
@@ -165,12 +165,12 @@ class FormatsTest(unittest.TestCase):
             self.addCleanup(os.unlink, temp_file)
             shutil.copy(self.original, temp_file)
             audio = picard.formats.guess_format(temp_file)
-            audio_original = picard.formats.open(self.filename)
+            audio_original = picard.formats.open_(self.filename)
             self.assertEqual(type(audio), type(audio_original))
 
     def test_split_ext(self):
         if self.original:
-            f = picard.formats.open(self.filename)
+            f = picard.formats.open_(self.filename)
             self.assertEqual(f._fixed_splitext(f.filename), os.path.splitext(f.filename))
             self.assertEqual(f._fixed_splitext(f.EXTENSIONS[0]), ('', f.EXTENSIONS[0]))
             self.assertEqual(f._fixed_splitext('.test'), os.path.splitext('.test'))
@@ -1132,7 +1132,7 @@ class TestCoverArt(unittest.TestCase):
                 },
             }
             for t in tests:
-                f = picard.formats.open(self.filename)
+                f = picard.formats.open_(self.filename)
                 metadata = Metadata()
                 imgdata = tests[t]['data']
                 metadata.append_image(
@@ -1142,7 +1142,7 @@ class TestCoverArt(unittest.TestCase):
                 )
                 f._save(self.filename, metadata)
 
-                f = picard.formats.open(self.filename)
+                f = picard.formats.open_(self.filename)
                 loaded_metadata = f._load(self.filename)
                 image = loaded_metadata.images[0]
                 self.assertEqual(image.mimetype, tests[t]['mime'])
@@ -1230,10 +1230,10 @@ class TestCoverArt(unittest.TestCase):
     def _test_cover_art_types(self, filename, expect):
         self._set_up(filename)
         try:
-            f = picard.formats.open(self.filename)
+            f = picard.formats.open_(self.filename)
             f._save(self.filename, self._cover_metadata())
 
-            f = picard.formats.open(self.filename)
+            f = picard.formats.open_(self.filename)
             loaded_metadata = f._load(self.filename)
             found = set()
             for n, image in enumerate(loaded_metadata.images):
@@ -1245,10 +1245,10 @@ class TestCoverArt(unittest.TestCase):
     def _test_cover_art_types_only_front(self, filename, expect):
         self._set_up(filename, {'embed_only_one_front_image': True})
         try:
-            f = picard.formats.open(self.filename)
+            f = picard.formats.open_(self.filename)
             f._save(self.filename, self._cover_metadata())
 
-            f = picard.formats.open(self.filename)
+            f = picard.formats.open_(self.filename)
             loaded_metadata = f._load(self.filename)
             found = set()
             for n, image in enumerate(loaded_metadata.images):

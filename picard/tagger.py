@@ -61,7 +61,7 @@ from picard.const import USER_DIR, USER_PLUGIN_DIR
 from picard.dataobj import DataObject
 from picard.disc import Disc
 from picard.file import File
-from picard.formats import open as open_file
+from picard.formats import open_ as open_file
 from picard.track import Track, NonAlbumTrack
 from picard.releasegroup import ReleaseGroup
 from picard.collection import load_user_collections
