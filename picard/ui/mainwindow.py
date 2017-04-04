@@ -873,6 +873,7 @@ class MainWindow(QtWidgets.QMainWindow):
         can_view_info = bool(single and single.can_view_info())
         can_browser_lookup = bool(single and single.can_browser_lookup())
         have_files = len(self.tagger.get_files_from_objects(self.selected_objects)) > 0
+        have_objects = len(self.selected_objects) > 0
         for obj in self.selected_objects:
             if obj is None:
                 continue
@@ -901,6 +902,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.cut_action.setEnabled(bool(self.selected_objects))
         files = self.get_selected_or_unmatched_files()
         self.tags_from_filenames_action.setEnabled(bool(files))
+        self.track_search_action.setEnabled(have_objects)
 
     def update_selection(self, objects=None):
         if self.ignore_selection_changes:
