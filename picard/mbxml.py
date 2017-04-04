@@ -108,6 +108,8 @@ def _relations_to_metadata(relation_lists, m):
                 if relation.type == 'performance':
                     performance_to_metadata(relation, m)
                     work_to_metadata(relation.work[0], m)
+                elif relation.type == 'parts':
+                    workparts_to_metadata(relation, m)
         elif relation_list.target_type == 'url':
             for relation in relation_list.relation:
                 if relation.type == 'amazon asin' and 'asin' not in m:
@@ -329,12 +331,31 @@ def performance_to_metadata(relation, m):
                 m.add_unique("~performance_attributes", attribute.text)
 
 
+def workparts_to_metadata(partof, m):
+    if not 'work' in partof.children:
+        log.debug('MBXML: Work missing from "work is part of work" relationship.')
+        return
+    if 'ordering_key' in partof.children:
+        m["movementnumber"] = partof.ordering_key[0].text
+    work = partof.work[0]
+    m["musicbrainz_movementid"] = m.getall("musicbrainz_workid")
+    m["movementname"] = m.getall("work")
+    m["~movementcomment"] = m.getall("~workcomment")
+    m["musicbrainz_workid"] = work.id
+    if 'title' in work.children:
+        m["work"] = work.title[0].text
+    if 'disambiguation' in work.children:
+        m["~workcomment"] = work.disambiguation[0].text
+
+
 def work_to_metadata(work, m):
     m.add_unique("musicbrainz_workid", work.id)
-    if 'language' in work.children:
-        m.add_unique("language", work.language[0].text)
     if 'title' in work.children:
         m.add_unique("work", work.title[0].text)
+    if 'language' in work.children:
+        m.add_unique("language", work.language[0].text)
+    if 'disambiguation' in work.children:
+        m.add_unique("~workcomment", work.disambiguation[0].text)
     if 'relation_list' in work.children:
         _relations_to_metadata(work.relation_list, m)
 
