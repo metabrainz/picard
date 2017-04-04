@@ -204,7 +204,7 @@ class ASFFile(File):
             if name.startswith('lyrics:'):
                 name = 'lyrics'
             elif name == '~rating':
-                values[0] = int(values[0]) * 99 / (config.setting['rating_steps'] - 1)
+                values[0] = int(values[0]) * 99 // (config.setting['rating_steps'] - 1)
             elif name == 'discnumber' and 'totaldiscs' in metadata:
                 values[0] = '%s/%s' % (metadata['discnumber'], metadata['totaldiscs'])
             if name not in self.__TRANS:

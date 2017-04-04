@@ -520,7 +520,7 @@ def func_div(parser, x, y, *args):
        Eg: $div(x, y, z) = ((x / y) / z)
     """
     try:
-        return _compute_int(operator.div, x, y, *args)
+        return _compute_int(operator.floordiv, x, y, *args)
     except ValueError:
         return ""
 

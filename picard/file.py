@@ -639,7 +639,7 @@ class File(QtCore.QObject, Item):
             release=metadata['album'],
             tnum=metadata['tracknumber'],
             tracks=metadata['totaltracks'],
-            qdur=str(metadata.length / 2000),
+            qdur=str(metadata.length // 2000),
             isrc=metadata['isrc'],
             limit=QUERY_LIMIT)
 
