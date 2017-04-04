@@ -50,16 +50,27 @@ class TrackTest(unittest.TestCase):
             pass
 
         node = XmlNode(attribs={'id': u'321'}, children={
-            'title': [XmlNode(text=u'Foo')],
-            'length': [XmlNode(text=u'180000')],
             'position': [XmlNode(text=u'1')],
             'recording': [XmlNode(attribs={'id': u'123'}, children={
+                'title': [XmlNode(text=u'Foo')],
+                'length': [XmlNode(text=u'180000')],
                 'relation_list': [XmlNode(attribs={'target_type': u'work'}, children={
                     'relation': [XmlNode(attribs={'type': u'performance'}, children={
-                        'work': [XmlNode(attribs={'id': u'workid123'}, children={
-                            'title': [XmlNode(text=u'Bar')],
-                            'language': [XmlNode(text=u'eng')]
-                        })]
+                        'work': [XmlNode(attribs={'id': u'movement5'}, children={
+                            'title': [XmlNode(text=u'Bar Part 5')],
+                            'language': [XmlNode(text=u'eng')],
+                            'disambiguation': [XmlNode(text=u'Movement comment')],
+                            'relation_list': [XmlNode(attribs={'target_type': u'work'}, children={
+                                'relation': [XmlNode(attribs={'type': u'parts'}, children={
+                                    'target': [XmlNode(text=u'work-mbid')],
+                                    'ordering_key': [XmlNode(text=u'5')],
+                                    'work': [XmlNode(attribs={'id': u'work123'}, children={
+                                        'title': [XmlNode(text=u'Bar')],
+                                        'disambiguation': [XmlNode(text=u'Work comment')]
+                                    })]
+                                })]
+                            })]
+                        })],
                     })]
                 })]
             })],
@@ -86,8 +97,12 @@ class TrackTest(unittest.TestCase):
         self.assertEqual(u'Foo', m['title'])
         self.assertEqual(u'Foo Bar & Baz', m['artist'])
         self.assertEqual(u'Bar, Foo & Baz', m['artistsort'])
-        self.assertEqual(u'workid123', m['musicbrainz_workid'])
         self.assertEqual(u'Bar', m['work'])
+        self.assertEqual(u'Bar Part 5', m['movementname'])
+        self.assertEqual(u'Work comment', m['~workcomment'])
+        self.assertEqual(u'Movement comment', m['~movementcomment'])
+        self.assertEqual(u'work123', m['musicbrainz_workid'])
+        self.assertEqual(u'movement5', m['musicbrainz_movementid'])
         self.assertEqual(u'eng', m['language'])
 
 
