@@ -93,6 +93,7 @@ TAG_NAMES = {
     'originalalbum': N_('Original Album'),
     'musicbrainz_originalalbumid': N_('MusicBrainz Orignal Release Id'),
     'movementname': N_('Movement name'),
+    'musicbrainz_movementid': N_('MusicBrainz Movement Work Id'),
     'movementnumber': N_('Movement number'),
     'movementtotal': N_('Movement total'),
 }
