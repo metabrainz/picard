@@ -96,6 +96,8 @@ TAG_NAMES = {
     'musicbrainz_movementid': N_('MusicBrainz Movement Work Id'),
     'movementnumber': N_('Movement number'),
     'movementtotal': N_('Movement total'),
+    '~workcomment': N_('Work Disambiguation'),
+    '~movementcomment': N_('Movement Disambiguation'),
 }
 
 PRESERVED_TAGS = [
