@@ -55,8 +55,6 @@ class MP4File(File):
         # & https://forums.mp3tag.de/index.php?showtopic=21586
         "\xa9wrk": "work",
         "\xa9mvn": "movementname",
-        "\xa9mvi": "movementnumber",
-        "\xa9mvc": "movementtotal",
     }
     __r_text_tags = dict([(v, k) for k, v in __text_tags.iteritems()])
 
@@ -69,6 +67,8 @@ class MP4File(File):
 
     __int_tags = {
         "tmpo": "bpm",
+        "\xa9mvi": "movementnumber",
+        "\xa9mvc": "movementtotal",
     }
     __r_int_tags = dict([(v, k) for k, v in __int_tags.iteritems()])
 
