@@ -125,8 +125,8 @@ class InterfaceOptionsPage(OptionsPage):
         self.ui.setupUi(self)
         self.ui.ui_language.addItem(_('System default'), '')
         language_list = [(l[0], l[1], _(l[2])) for l in UI_LANGUAGES]
-        for lang_code, native, translation in sorted(language_list, key=operator.itemgetter(2),
-                                                     cmp=locale.strcoll):
+        fcmp = lambda x: locale.strxfrm(x[2])
+        for lang_code, native, translation in sorted(language_list, key=fcmp):
             if native and native != translation:
                 name = u'%s (%s)' % (translation, native)
             else:

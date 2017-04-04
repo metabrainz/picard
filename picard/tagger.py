@@ -35,6 +35,7 @@ import signal
 import sys
 from functools import partial
 from itertools import chain
+from operator import attrgetter
 
 
 # A "fix" for http://python.org/sf/1438480
@@ -667,14 +668,10 @@ class Tagger(QtWidgets.QApplication):
             files = list(self.unmatched_files.files)
         else:
             files = self.get_files_from_objects(objs)
-        fcmp = lambda a, b: (
-            cmp(a.discnumber, b.discnumber) or
-            cmp(a.tracknumber, b.tracknumber) or
-            cmp(a.base_filename, b.base_filename))
         for name, artist, files in Cluster.cluster(files, 1.0):
             QtCore.QCoreApplication.processEvents()
             cluster = self.load_cluster(name, artist)
-            for file in sorted(files, fcmp):
+            for file in sorted(files, key=attrgetter('discnumber', 'tracknumber', 'base_filename')):
                 file.move(cluster)
 
     def load_cluster(self, name, artist):

@@ -101,7 +101,7 @@ class Metadata(dict):
                     except ValueError:
                         ia = a
                         ib = b
-                    score = 1.0 - abs(cmp(ia, ib))
+                    score = 1.0 - (int(ia != ib))
                 else:
                     score = similarity2(a, b)
                 parts.append((score, weight))

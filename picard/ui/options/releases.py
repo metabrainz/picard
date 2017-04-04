@@ -18,7 +18,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from operator import itemgetter
-from locale import strcoll
+from locale import strxfrm
 from PyQt5 import QtCore, QtWidgets
 from picard import config
 from picard.ui.options import OptionsPage, register_options_page
@@ -198,7 +198,8 @@ class ReleasesOptionsPage(OptionsPage):
                            in source.items()]
         else:
             source_list = [(c[0], _(c[1])) for c in source.items()]
-        source_list.sort(key=itemgetter(1), cmp=strcoll)
+        fcmp = lambda x: strxfrm(x[1])
+        source_list.sort(key=fcmp)
         saved_data = config.setting[setting]
         move = []
         for data, name in source_list:
