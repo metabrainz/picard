@@ -88,8 +88,6 @@ class FormatsTest(unittest.TestCase):
             metadata[key] = value
         loaded_metadata = save_and_load_metadata(self.filename, metadata)
         for (key, value) in self.tags.iteritems():
-            # if key == 'comment:foo':
-            #    print "%r" % loaded_metadata
             self.assertEqual(loaded_metadata[key], value, '%s: %r != %r' % (key, loaded_metadata[key], value))
 
     def test_delete_simple_tags(self):
@@ -491,6 +489,10 @@ class MP3Test(ID3Test):
         #'podcast': '1',
         #'podcasturl': 'Foo',
         #'show': 'Foo',
+        'work': 'Foo',
+        'movementname': 'Bar',
+        'movementnumber': '1',
+        'movementtotal': '2',
     }
 
 
@@ -765,6 +767,10 @@ class MP4Test(FormatsTest):
         'podcast': '1',
         'podcasturl': 'Foo',
         'show': 'Foo',
+        'work': 'Foo',
+        'movementname': 'Bar',
+        'movementnumber': '1',
+        'movementtotal': '2',
     }
 
 
