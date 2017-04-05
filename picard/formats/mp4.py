@@ -189,11 +189,6 @@ class MP4File(File):
             elif name in self.__r_int_tags:
                 try:
                     tags[self.__r_int_tags[name]] = [int(value) for value in values]
-                    log.error("MP4: Saving tag %s from %s as %r in %r",
-                        self.__r_int_tags[name],
-                        name,
-                        [int(value) for value in values],
-                        filename)
                 except (ValueError, TypeError) as e:
                     log.error("MP4: Cannot save tag %s from %s as %r in %r: %s",
                         self.__r_int_tags[name],
