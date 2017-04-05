@@ -252,21 +252,10 @@ class Album(DataObject, Item):
 
             totalalbumtracks = str(absolutetracknumber)
 
-            work_parts = {}
-            for track in self._new_tracks:
-                movementno = track.metadata["movementnumber"]
-                if track.metadata["musicbrainz_movementid"] and movementno.isdigit():
-                    workid = track.metadata["musicbrainz_workid"]
-                    partno = int(movementno)
-                    if workid not in work_parts or work_parts[workid] < partno:
-                        work_parts[workid] = partno
             for track in self._new_tracks:
                 track.metadata["~totalalbumtracks"] = totalalbumtracks
                 if len(artists) > 1:
                     track.metadata["~multiartist"] = "1"
-                workid = track.metadata["musicbrainz_workid"]
-                if workid in work_parts:
-                    track.metadata["movementtotal"] = work_parts[workid]
 
             del self._release_node
             self._tracks_loaded = True
