@@ -53,7 +53,6 @@ class MP4File(File):
         "purl": "podcasturl",
         # Movement source information https://github.com/taglib/taglib/issues/758
         # & https://forums.mp3tag.de/index.php?showtopic=21586
-        "\xa9wrk": "work",
         "\xa9mvn": "movementname",
     }
     __r_text_tags = dict([(v, k) for k, v in __text_tags.iteritems()])
@@ -67,6 +66,8 @@ class MP4File(File):
 
     __int_tags = {
         "tmpo": "bpm",
+        # Movement source information https://github.com/taglib/taglib/issues/758
+        # & https://forums.mp3tag.de/index.php?showtopic=21586
         "\xa9mvi": "movementnumber",
         "\xa9mvc": "movementtotal",
     }
@@ -188,7 +189,18 @@ class MP4File(File):
             elif name in self.__r_int_tags:
                 try:
                     tags[self.__r_int_tags[name]] = [int(value) for value in values]
-                except ValueError:
+                    log.error("MP4: Saving tag %s from %s as %r in %r",
+                        self.__r_int_tags[name],
+                        name,
+                        [int(value) for value in values],
+                        filename)
+                except (ValueError, TypeError) as e:
+                    log.error("MP4: Cannot save tag %s from %s as %r in %r: %s",
+                        self.__r_int_tags[name],
+                        name,
+                        [int(value) for value in values],
+                        filename,
+                        e)
                     pass
             elif name in self.__r_freeform_tags:
                 values = [v.encode("utf-8") for v in values]
