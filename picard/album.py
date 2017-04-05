@@ -256,7 +256,6 @@ class Album(DataObject, Item):
                 track.metadata["~totalalbumtracks"] = totalalbumtracks
                 if len(artists) > 1:
                     track.metadata["~multiartist"] = "1"
-
             del self._release_node
             self._tracks_loaded = True
 
