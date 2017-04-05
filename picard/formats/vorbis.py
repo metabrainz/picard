@@ -206,8 +206,8 @@ class VCommentFile(File):
             if self._File == mutagen.flac.FLAC:
                 file.add_picture(picture)
             else:
-                tags.setdefault(u"METADATA_BLOCK_PICTURE", []).append(
-                    base64.standard_b64encode(picture.write()))
+                tags.setdefault("METADATA_BLOCK_PICTURE", []).append(
+                    base64.b64encode(picture.write()).decode('ascii'))
 
         file.tags.update(tags)
 
