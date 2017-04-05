@@ -128,16 +128,16 @@ class MP4File(File):
         for name, values in tags.items():
             if name in self.__text_tags:
                 for value in values:
-                    metadata.add_unique(self.__text_tags[name], value)
+                    metadata.add(self.__text_tags[name], value)
             elif name in self.__bool_tags:
-                metadata.add_unique(self.__bool_tags[name], values and '1' or '0')
+                metadata.add(self.__bool_tags[name], values and '1' or '0')
             elif name in self.__int_tags:
                 for value in values:
-                    metadata.add_unique(self.__int_tags[name], unicode(value))
+                    metadata.add(self.__int_tags[name], unicode(value))
             elif name in self.__freeform_tags:
                 for value in values:
                     value = value.strip("\x00").decode("utf-8", "replace")
-                    metadata.add_unique(self.__freeform_tags[name], value)
+                    metadata.add(self.__freeform_tags[name], value)
             elif name == "----:com.apple.iTunes:fingerprint":
                 for value in values:
                     value = value.strip("\x00").decode("utf-8", "replace")
