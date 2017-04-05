@@ -81,7 +81,7 @@ Translation: Picard will have problems with non-english characters
 
 def encode_filename(filename):
     """Encode unicode strings to filesystem encoding."""
-    if isinstance(filename, unicode):
+    if isinstance(filename, str):
         if os.path.supports_unicode_filenames and sys.platform != "darwin":
             return filename
         else:
@@ -92,7 +92,7 @@ def encode_filename(filename):
 
 def decode_filename(filename):
     """Decode strings from filesystem encoding to unicode."""
-    if isinstance(filename, unicode):
+    if isinstance(filename, str):
         return filename
     else:
         return filename.decode(_io_encoding)
@@ -330,7 +330,7 @@ def _has_hidden_attribute(filepath):
     # than just checking for dot files, see
     # https://stackoverflow.com/questions/284115/cross-platform-hidden-file-detection
     try:
-        attrs = windll.kernel32.GetFileAttributesW(unicode(filepath))
+        attrs = windll.kernel32.GetFileAttributesW(filepath)
         assert attrs != -1
         return bool(attrs & 2)
     except (AttributeError, AssertionError):
@@ -406,7 +406,7 @@ def build_qurl(host, port=80, path=None, queryargs=None):
     if queryargs is not None:
         url_query = QtCore.QUrlQuery()
         for k, v in queryargs.items():
-            url_query.addQueryItem(k, unicode(v))
+            url_query.addQueryItem(k, str(v))
         url.setQuery(url_query)
     return url
 

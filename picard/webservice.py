@@ -100,7 +100,7 @@ _node_name_re = re.compile('[^a-zA-Z0-9]')
 
 
 def _node_name(n):
-    return _node_name_re.sub('_', unicode(n))
+    return _node_name_re.sub('_', n)
 
 
 def _read_xml(stream):
@@ -117,7 +117,7 @@ def _read_xml(stream):
 
             for i in range(attrs.count()):
                 attr = attrs.at(i)
-                node.attribs[_node_name(attr.name())] = unicode(attr.value())
+                node.attribs[_node_name(attr.name())] = str(attr.value())
 
             current_node.append_child(_node_name(stream.name()), node)
             path.append(current_node)
@@ -127,7 +127,7 @@ def _read_xml(stream):
             current_node = path.pop()
 
         elif stream.isCharacters():
-            current_node.text += unicode(stream.text())
+            current_node.text += stream.text()
 
     return document
 
@@ -168,7 +168,7 @@ class XmlWebService(QtCore.QObject):
     def set_cache(self, cache_size_in_mb=100):
         cache = QtNetwork.QNetworkDiskCache()
         location = QStandardPaths.writableLocation(QStandardPaths.CacheLocation)
-        cache.setCacheDirectory(os.path.join(unicode(location), u'picard'))
+        cache.setCacheDirectory(os.path.join(location, u'picard'))
         cache.setMaximumCacheSize(cache_size_in_mb * 1024 * 1024)
         self.manager.setCache(cache)
         log.debug("NetworkDiskCache dir: %s", cache.cacheDirectory())
@@ -480,7 +480,7 @@ class XmlWebService(QtCore.QObject):
             filters.append(("query", query))
         queryargs = {}
         for name, value in filters:
-            value = QUrl.toPercentEncoding(unicode(value))
+            value = QUrl.toPercentEncoding(str(value))
             queryargs[str(name)] = value
         path = "/ws/2/%s" % (entitytype)
         return self.get(host, port, path, handler, queryargs=queryargs,

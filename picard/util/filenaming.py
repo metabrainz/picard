@@ -41,9 +41,9 @@ def _get_utf16_length(text):
 
 
 def _shorten_to_utf16_length(text, length):
-    """Truncates a unicode object to the given number of UTF-16 code points.
+    """Truncates a str object to the given number of UTF-16 code points.
     """
-    assert isinstance(text, unicode), "This function only works on unicode"
+    assert isinstance(text, str), "This function only works on unicode"
     # if this is a narrow Python build, regular slicing will do exactly
     # what we're looking for
     if sys.maxunicode == 0xFFFF:
@@ -83,7 +83,7 @@ def _shorten_to_bytes_length(text, length):
     """Truncates a unicode object to the given number of bytes it would take
     when encoded in the "filesystem encoding".
     """
-    assert isinstance(text, unicode), "This function only works on unicode"
+    assert isinstance(text, str), "This function only works on unicode"
     raw = encode_filename(text)
     # maybe there's no need to truncate anything
     if len(raw) <= length:

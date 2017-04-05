@@ -88,7 +88,7 @@ class TagsOptionsPage(OptionsPage):
             self.tagger.window.metadata_box.update()
         config.setting["write_id3v1"] = self.ui.write_id3v1.isChecked()
         config.setting["write_id3v23"] = self.ui.write_id3v23.isChecked()
-        config.setting["id3v23_join_with"] = unicode(self.ui.id3v23_join_with.currentText())
+        config.setting["id3v23_join_with"] = self.ui.id3v23_join_with.currentText()
         if self.ui.enc_iso88591.isChecked():
             config.setting["id3v2_encoding"] = "iso-8859-1"
         elif self.ui.enc_utf16.isChecked():
@@ -97,7 +97,7 @@ class TagsOptionsPage(OptionsPage):
             config.setting["id3v2_encoding"] = "utf-8"
         config.setting["remove_ape_from_mp3"] = self.ui.remove_ape_from_mp3.isChecked()
         config.setting["remove_id3_from_flac"] = self.ui.remove_id3_from_flac.isChecked()
-        config.setting["preserved_tags"] = unicode(self.ui.preserved_tags.text())
+        config.setting["preserved_tags"] = self.ui.preserved_tags.text()
         self.tagger.window.enable_tag_saving_action.setChecked(not config.setting["dont_write_tags"])
 
     def update_encodings(self):
@@ -114,7 +114,7 @@ class TagsOptionsPage(OptionsPage):
             self.ui.id3v23_join_with.setEnabled(False)
 
     def preserved_tags_edited(self, text):
-        prefix = unicode(text)[:self.ui.preserved_tags.cursorPosition()].split(",")[-1]
+        prefix = text[:self.ui.preserved_tags.cursorPosition()].split(",")[-1]
         self.completer.setCompletionPrefix(prefix)
         if prefix:
             self.completer.complete()
@@ -123,7 +123,7 @@ class TagsOptionsPage(OptionsPage):
 
     def completer_activated(self, text):
         input = self.ui.preserved_tags
-        current = unicode(input.text())
+        current = input.text()
         i = input.cursorPosition()
         p = len(self.completer.completionPrefix())
         input.setText("%s%s %s" % (current[:i - p], text, current[i:]))

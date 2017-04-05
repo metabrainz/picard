@@ -280,7 +280,7 @@ class CoverArtProviderCaa(CoverArtProvider):
         self.album._requests -= 1
         if error:
             if not (error == QNetworkReply.ContentNotFoundError and self.ignore_json_not_found_error):
-                self.error(u'CAA JSON error: %s' % (unicode(http.errorString())))
+                self.error(u'CAA JSON error: %s' % (http.errorString()))
         else:
             try:
                 caa_data = json.loads(data)

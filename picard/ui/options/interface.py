@@ -186,7 +186,7 @@ class InterfaceOptionsPage(OptionsPage):
                 self)
             dialog.exec_()
         config.setting["starting_directory"] = self.ui.starting_directory.isChecked()
-        config.setting["starting_directory_path"] = os.path.normpath(unicode(self.ui.starting_directory_path.text()))
+        config.setting["starting_directory_path"] = os.path.normpath(self.ui.starting_directory_path.text())
         self.update_layout_config()
 
     def restore_defaults(self):
@@ -197,7 +197,7 @@ class InterfaceOptionsPage(OptionsPage):
         item = self.ui.starting_directory_path
         path = QtWidgets.QFileDialog.getExistingDirectory(self, "", item.text())
         if path:
-            path = os.path.normpath(unicode(path))
+            path = os.path.normpath(path)
             item.setText(path)
 
     def _get_icon_from_name(self, name):

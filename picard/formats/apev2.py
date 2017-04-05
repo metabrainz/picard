@@ -63,8 +63,8 @@ class APEv2File(File):
         if file.tags:
             for origname, values in file.tags.items():
                 if origname.lower().startswith("cover art") and values.kind == mutagen.apev2.BINARY:
-                    if '\0' in values.value:
-                        descr, data = values.value.split('\0', 1)
+                    if b'\0' in values.value:
+                        descr, data = values.value.split(b'\0', 1)
                         try:
                             coverartimage = TagCoverArtImage(
                                 file=filename,
@@ -161,7 +161,7 @@ class APEv2File(File):
         for image in metadata.images_to_be_saved_to_tags:
             cover_filename = 'Cover Art (Front)'
             cover_filename += image.extension
-            tags['Cover Art (Front)'] = mutagen.apev2.APEValue(cover_filename + '\0' + image.data, mutagen.apev2.BINARY)
+            tags['Cover Art (Front)'] = mutagen.apev2.APEValue(cover_filename + b'\0' + image.data, mutagen.apev2.BINARY)
             break
             # can't save more than one item with the same name
             # (mp3tags does this, but it's against the specs)

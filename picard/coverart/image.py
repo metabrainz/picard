@@ -204,7 +204,7 @@ class CoverArtImage:
         return u' '.join(p)
 
     def __str__(self):
-        return unicode(self).encode('utf-8')
+        return str(self).encode('utf-8')
 
     def __eq__(self, other):
         if self and other:
@@ -256,7 +256,7 @@ class CoverArtImage:
     def _make_image_filename(self, filename, dirname, metadata):
         filename = ScriptParser().eval(filename, metadata)
         if config.setting["ascii_filenames"]:
-            if isinstance(filename, unicode):
+            if isinstance(filename, str):
                 filename = unaccent(filename)
             filename = replace_non_ascii(filename)
         if not filename:
@@ -267,7 +267,8 @@ class CoverArtImage:
         if config.setting["windows_compatibility"] or sys.platform == "win32":
             filename = replace_win32_incompat(filename)
         # remove null characters
-        filename = filename.replace("\x00", "")
+        if isinstance(filename, bytes):
+            filename = filename.replace("\x00", "")
         return encode_filename(filename)
 
     def save(self, dirname, metadata, counters):

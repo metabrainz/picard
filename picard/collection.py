@@ -102,7 +102,7 @@ def load_user_collections(callback=None):
         if error:
             tagger.window.set_statusbar_message(
                 N_("Error loading collections: %(error)s"),
-                {'error': unicode(reply.errorString())},
+                {'error': reply.errorString()},
                 echo=log.error
             )
             return

@@ -58,7 +58,7 @@ class AdvancedOptionsPage(OptionsPage):
         self.ui.completeness_ignore_silence.setChecked(config.setting["completeness_ignore_silence"])
 
     def save(self):
-        config.setting["ignore_regex"] = unicode(self.ui.ignore_regex.text())
+        config.setting["ignore_regex"] = self.ui.ignore_regex.text()
         config.setting["ignore_hidden_files"] = self.ui.ignore_hidden_files.isChecked()
         config.setting["recursively_add_files"] = self.ui.recursively_add_files.isChecked()
         config.setting["completeness_ignore_videos"] = self.ui.completeness_ignore_videos.isChecked()

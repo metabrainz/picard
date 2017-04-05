@@ -84,7 +84,7 @@ class VCommentFile(File):
                     if email != config.setting['rating_user_email']:
                         continue
                     name = '~rating'
-                    value = unicode(int(round((float(value) * (config.setting['rating_steps'] - 1)))))
+                    value = str(int(round((float(value) * (config.setting['rating_steps'] - 1)))))
                 elif name == "fingerprint" and value.startswith("MusicMagic Fingerprint"):
                     name = "musicip_fingerprint"
                     value = value[22:]
@@ -171,7 +171,7 @@ class VCommentFile(File):
                     name = 'rating:%s' % config.setting['rating_user_email']
                 else:
                     name = 'rating'
-                value = unicode(float(value) / (config.setting['rating_steps'] - 1))
+                value = str(float(value) / (config.setting['rating_steps'] - 1))
             # don't save private tags
             elif name.startswith("~"):
                 continue

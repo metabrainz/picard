@@ -164,7 +164,7 @@ class Album(DataObject, Item):
         parsed = False
         try:
             if error:
-                self.error_append(unicode(http.errorString()))
+                self.error_append(http.errorString())
                 # Fix for broken NAT releases
                 if error == QtNetwork.QNetworkReply.ContentNotFoundError:
                     nats = False

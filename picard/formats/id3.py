@@ -76,7 +76,7 @@ def image_type_as_id3_num(texttype):
 
 
 def types_from_id3(id3type):
-    return [unicode(image_type_from_id3_num(id3type))]
+    return [str(image_type_from_id3_num(id3type))]
 
 
 class ID3File(File):
@@ -204,13 +204,13 @@ class ID3File(File):
                 if frameid.startswith('T'):
                     for text in frame.text:
                         if text:
-                            metadata.add(name, unicode(text))
+                            metadata.add(name, str(text))
                 elif frameid == 'COMM':
                     for text in frame.text:
                         if text:
-                            metadata.add('%s:%s' % (name, frame.desc), unicode(text))
+                            metadata.add('%s:%s' % (name, frame.desc), str(text))
                 else:
-                    metadata.add(name, unicode(frame))
+                    metadata.add(name, str(frame))
             elif frameid == "TMCL":
                 for role, name in frame.people:
                     if role or name:
@@ -238,12 +238,12 @@ class ID3File(File):
                     # ways.) Currently, the only tag in both is license.
                     name = '~id3:TXXX:' + name
                 for text in frame.text:
-                    metadata.add(name, unicode(text))
+                    metadata.add(name, str(text))
             elif frameid == 'USLT':
                 name = 'lyrics'
                 if frame.desc:
                     name += ':%s' % frame.desc
-                metadata.add(name, unicode(frame.text))
+                metadata.add(name, str(frame.text))
             elif frameid == 'UFID' and frame.owner == 'http://musicbrainz.org':
                 metadata['musicbrainz_recordingid'] = frame.data.decode('ascii', 'ignore')
             elif frameid in self.__tag_re_parse.keys():
@@ -271,7 +271,7 @@ class ID3File(File):
             elif frameid == 'POPM':
                 # Rating in ID3 ranges from 0 to 255, normalize this to the range 0 to 5
                 if frame.email == config.setting['rating_user_email']:
-                    rating = unicode(int(round(frame.rating / 255.0 * (config.setting['rating_steps'] - 1))))
+                    rating = str(int(round(frame.rating / 255.0 * (config.setting['rating_steps'] - 1))))
                     metadata.add('~rating', rating)
 
         if 'date' in metadata:
@@ -343,7 +343,7 @@ class ID3File(File):
                 desc = name.split(':', 1)[1]
                 if desc.lower()[:4] == "itun":
                     tags.delall('COMM:' + desc)
-                    tags.add(id3.COMM(encoding=0, desc=desc, lang='eng', text=[v + u'\x00' for v in values]))
+                    tags.add(id3.COMM(encoding=0, desc=desc, lang='eng', text=[v + b'\x00' for v in values]))
                 else:
                     tags.add(id3.COMM(encoding=encoding, desc=desc, lang='eng', text=values))
             elif name.startswith('lyrics:') or name == 'lyrics':

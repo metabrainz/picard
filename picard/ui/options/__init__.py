@@ -78,7 +78,7 @@ class OptionsPage(QtWidgets.QWidget):
 
         def check():
             try:
-                re.compile(unicode(regex_edit.text()))
+                re.compile(regex_edit.text())
             except re.error as e:
                 raise OptionsCheckError(_("Regex Error"), str(e))
 

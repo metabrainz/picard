@@ -68,8 +68,8 @@ class FingerprintingOptionsPage(OptionsPage):
             config.setting["fingerprinting_system"] = "acoustid"
         else:
             config.setting["fingerprinting_system"] = ""
-        config.setting["acoustid_fpcalc"] = unicode(self.ui.acoustid_fpcalc.text())
-        config.setting["acoustid_apikey"] = unicode(self.ui.acoustid_apikey.text())
+        config.setting["acoustid_fpcalc"] = self.ui.acoustid_fpcalc.text()
+        config.setting["acoustid_apikey"] = self.ui.acoustid_apikey.text()
         config.setting["ignore_existing_acoustid_fingerprints"] = self.ui.ignore_existing_acoustid_fingerprints.isChecked()
 
     def update_groupboxes(self):
@@ -86,7 +86,7 @@ class FingerprintingOptionsPage(OptionsPage):
     def acoustid_fpcalc_browse(self):
         path, _filter = QtWidgets.QFileDialog.getOpenFileName(self, "", self.ui.acoustid_fpcalc.text())
         if path:
-            path = os.path.normpath(unicode(path))
+            path = os.path.normpath(path)
             self.ui.acoustid_fpcalc.setText(path)
 
     def acoustid_fpcalc_download(self):
@@ -99,7 +99,7 @@ class FingerprintingOptionsPage(OptionsPage):
         if not self.ui.use_acoustid.isChecked():
             self._acoustid_fpcalc_set_success("")
             return
-        fpcalc = unicode(self.ui.acoustid_fpcalc.text())
+        fpcalc = self.ui.acoustid_fpcalc.text()
         if not fpcalc:
             self._acoustid_fpcalc_set_success("")
             return

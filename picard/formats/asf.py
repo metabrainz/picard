@@ -41,12 +41,12 @@ def unpack_image(data):
     (type, size) = struct.unpack_from("<bi", data)
     pos = 5
     mime = ""
-    while data[pos:pos+2] != "\x00\x00":
+    while data[pos:pos+2] != b"\x00\x00":
         mime += data[pos:pos+2]
         pos += 2
     pos += 2
     description = ""
-    while data[pos:pos+2] != "\x00\x00":
+    while data[pos:pos+2] != b"\x00\x00":
         description += data[pos:pos+2]
         pos += 2
     pos += 2
@@ -60,8 +60,8 @@ def pack_image(mime, data, type=3, description=""):
     See unpack_image for a description of the data format.
     """
     tag_data = struct.pack("<bi", type, len(data))
-    tag_data += mime.encode("utf-16-le") + "\x00\x00"
-    tag_data += description.encode("utf-16-le") + "\x00\x00"
+    tag_data += mime.encode("utf-16-le") + b"\x00\x00"
+    tag_data += description.encode("utf-16-le") + b"\x00\x00"
     tag_data += data
     return tag_data
 
@@ -171,9 +171,9 @@ class ASFFile(File):
                 continue
             elif name == 'WM/SharedUserRating':
                 # Rating in WMA ranges from 0 to 99, normalize this to the range 0 to 5
-                values[0] = int(round(int(unicode(values[0])) / 99.0 * (config.setting['rating_steps'] - 1)))
+                values[0] = int(round(int(str(values[0])) / 99.0 * (config.setting['rating_steps'] - 1)))
             elif name == 'WM/PartOfSet':
-                disc = unicode(values[0]).split("/")
+                disc = str(values[0]).split("/")
                 if len(disc) > 1:
                     metadata["totaldiscs"] = disc[1]
                     values[0] = disc[0]

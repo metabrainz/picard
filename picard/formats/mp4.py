@@ -126,7 +126,7 @@ class MP4File(File):
                 metadata.add(self.__bool_tags[name], values and '1' or '0')
             elif name in self.__int_tags:
                 for value in values:
-                    metadata.add(self.__int_tags[name], unicode(value))
+                    metadata.add(self.__int_tags[name], str(value))
             elif name in self.__freeform_tags:
                 for value in values:
                     value = value.strip("\x00").decode("utf-8", "replace")

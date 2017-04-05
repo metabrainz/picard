@@ -257,7 +257,7 @@ class MetadataBox(QtWidgets.QTableWidget):
         QtWidgets.QTableWidget.closeEditor(self, editor, hint)
         tag = self.tag_diff.tag_names[self.editing.row()]
         old = self.tag_diff.new[tag]
-        new = [unicode(editor.text())]
+        new = [editor.text()]
         if old == new:
             self.editing.setText(old[0])
         else:

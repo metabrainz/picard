@@ -98,7 +98,7 @@ class EditTagDialog(PicardDialog):
             tag_names.removeItem(tag_names.findText(self.tag, flags))
 
         row = tag_names.findText(tag, flags)
-        self.tag = unicode(tag)
+        self.tag = str(tag)
         if row <= 0:
             if tag:
                 # add custom tags to the QComboBox immediately
@@ -139,7 +139,7 @@ class EditTagDialog(PicardDialog):
 
     def value_edited(self, item):
         row = self.value_list.row(item)
-        value = unicode(item.text())
+        value = item.text()
         if row == 0 and self.different:
             self.modified_tags[self.tag] = [value]
             self.different = False

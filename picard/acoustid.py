@@ -101,7 +101,7 @@ class AcoustIDClient(QtCore.QObject):
 
         if error:
             mparms = {
-                'error': unicode(http.errorString()),
+                'error': http.errorString(),
                 'filename': file.filename,
             }
             log.error(
@@ -212,7 +212,7 @@ class AcoustIDClient(QtCore.QObject):
                     "Fingerprint calculator failed exit code = %r, exit status = %r, error = %s",
                     exit_code,
                     exit_status,
-                    unicode(process.errorString()))
+                    process.errorString())
         finally:
             next(result)
 
@@ -225,7 +225,7 @@ class AcoustIDClient(QtCore.QObject):
         try:
             self._running -= 1
             self._run_next_task()
-            log.error("Fingerprint calculator failed error = %s (%r)", unicode(process.errorString()), error)
+            log.error("Fingerprint calculator failed error = %s (%r)", process.errorString(), error)
         finally:
             next(None)
 

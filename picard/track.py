@@ -281,7 +281,7 @@ class NonAlbumTrack(Track):
 
     def _recording_request_finished(self, document, http, error):
         if error:
-            log.error("%r", unicode(http.errorString()))
+            log.error("%r", http.errorString())
             return
         try:
             recording = document.metadata[0].recording[0]

@@ -64,7 +64,7 @@ class GeneralOptionsPage(OptionsPage):
         self.ui.ignore_file_mbids.setChecked(config.setting["ignore_file_mbids"])
 
     def save(self):
-        config.setting["server_host"] = unicode(self.ui.server_host.currentText()).strip()
+        config.setting["server_host"] = self.ui.server_host.currentText().strip()
         config.setting["server_port"] = self.ui.server_port.value()
         config.setting["analyze_new_files"] = self.ui.analyze_new_files.isChecked()
         config.setting["ignore_file_mbids"] = self.ui.ignore_file_mbids.isChecked()

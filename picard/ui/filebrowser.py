@@ -111,7 +111,7 @@ class FileBrowser(QtWidgets.QTreeView):
         indexes = self.selectedIndexes()
         if indexes:
             path = self.model.filePath(indexes[0])
-            config.persist["current_browser_path"] = os.path.normpath(unicode(path))
+            config.persist["current_browser_path"] = os.path.normpath(path)
 
     def restore_state(self):
         pass
@@ -124,13 +124,13 @@ class FileBrowser(QtWidgets.QTreeView):
             path = config.persist["current_browser_path"]
             scrolltype = QtWidgets.QAbstractItemView.PositionAtCenter
         if path:
-            index = self.model.index(find_existing_path(unicode(path)))
+            index = self.model.index(find_existing_path(path))
             self.setCurrentIndex(index)
             self.expand(index)
             self.scrollTo(index, scrolltype)
 
     def _get_destination_from_path(self, path):
-        destination = os.path.normpath(unicode(path))
+        destination = os.path.normpath(path)
         if not os.path.isdir(destination):
             destination = os.path.dirname(destination)
         return destination

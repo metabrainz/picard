@@ -74,7 +74,7 @@ class TagsFromFileNamesDialog(PicardDialog):
         self.numeric_tags = ('tracknumber', 'totaltracks', 'discnumber', 'totaldiscs')
 
     def parse_format(self):
-        format = unicode(self.ui.format.currentText())
+        format = self.ui.format.currentText()
         columns = []
         format_re = ['(?:^|/)']
         for part in self._tag_re.split(format):

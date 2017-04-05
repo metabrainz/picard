@@ -359,8 +359,8 @@ class ClusterDict(object):
         self.ids = {}
         # counter for new id generation
         self.id = 0
-        self.regexp = re.compile(ur'\W', re.UNICODE)
-        self.spaces = re.compile(ur'\s', re.UNICODE)
+        self.regexp = re.compile(r'\W', re.UNICODE)
+        self.spaces = re.compile(r'\s', re.UNICODE)
 
     def getSize(self):
         return self.id

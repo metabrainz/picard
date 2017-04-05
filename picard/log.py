@@ -53,7 +53,7 @@ class Logger(object):
     def message(self, level, message, *args):
         if not self.log_level(level):
             return
-        if not (isinstance(message, str) or isinstance(message, unicode)):
+        if not isinstance(message, str):
             message = repr(message)
         if args:
             message = message % args

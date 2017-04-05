@@ -96,7 +96,7 @@ class CoverOptionsPage(OptionsPage):
         config.setting["save_images_to_tags"] = self.ui.save_images_to_tags.isChecked()
         config.setting["embed_only_one_front_image"] = self.ui.cb_embed_front_only.isChecked()
         config.setting["save_images_to_files"] = self.ui.save_images_to_files.isChecked()
-        config.setting["cover_image_filename"] = unicode(self.ui.cover_image_filename.text())
+        config.setting["cover_image_filename"] = self.ui.cover_image_filename.text()
         config.setting["save_images_overwrite"] = self.ui.save_images_overwrite.isChecked()
         config.setting["ca_providers"] = self.ca_providers
 

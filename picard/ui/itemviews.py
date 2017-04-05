@@ -478,18 +478,18 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         for url in urls:
             log.debug("Dropped the URL: %r", url.toString(QtCore.QUrl.RemoveUserInfo))
             if url.scheme() == "file" or not url.scheme():
-                if sys.platform == 'darwin' and unicode(url.path()).startswith('/.file/id='):
+                if sys.platform == 'darwin' and url.path().startswith('/.file/id='):
                     # Workaround for https://bugreports.qt.io/browse/QTBUG-40449
                     # OSX Urls follow the NSURL scheme and need to be converted
                     if NSURL_IMPORTED:
-                        filename = os.path.normpath(os.path.realpath(unicode(NSURL.URLWithString_(str(url.toString())).filePathURL().path()).rstrip("\0")))
+                        filename = os.path.normpath(os.path.realpath(NSURL.URLWithString_(url.toString().filePathURL().path()).rstrip("\0")))
                         log.debug('OSX NSURL path detected. Dropped File is: %r', filename)
                     else:
                         log.error("Unable to get appropriate file path for %r", url.toString(QtCore.QUrl.RemoveUserInfo))
                         continue
                 else:
                     # Dropping a file from iTunes gives a filename with a NULL terminator
-                    filename = os.path.normpath(os.path.realpath(unicode(url.toLocalFile()).rstrip("\0")))
+                    filename = os.path.normpath(os.path.realpath(url.toLocalFile().rstrip("\0")))
                 file = BaseTreeView.tagger.files.get(filename)
                 if file:
                     files.append(file)
@@ -498,7 +498,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
                 else:
                     new_files.append(filename)
             elif url.scheme() in ("http", "https"):
-                path = unicode(url.path())
+                path = url.path()
                 match = re.search(r"/(release|recording)/([0-9a-z\-]{36})", path)
                 if match:
                     entity = match.group(1)

@@ -218,7 +218,7 @@ class Option(QtCore.QObject):
 
 class TextOption(Option):
 
-    convert = unicode
+    convert = str
 
 
 class BoolOption(Option):

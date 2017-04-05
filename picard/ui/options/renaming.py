@@ -131,8 +131,8 @@ class RenamingOptionsPage(OptionsPage):
             'rename_files': self.ui.rename_files.isChecked(),
             'move_files': self.ui.move_files.isChecked(),
             'use_va_format': False,  # TODO remove
-            'file_naming_format': unicode(self.ui.file_naming_format.toPlainText()),
-            'move_files_to': os.path.normpath(unicode(self.ui.move_files_to.text()))
+            'file_naming_format': self.ui.file_naming_format.toPlainText(),
+            'move_files_to': os.path.normpath(self.ui.move_files_to.text())
         }
         try:
             if config.setting["enable_tagger_scripts"]:
@@ -184,29 +184,29 @@ class RenamingOptionsPage(OptionsPage):
 
     def check(self):
         self.check_format()
-        if self.ui.move_files.isChecked() and not unicode(self.ui.move_files_to.text()).strip():
+        if self.ui.move_files.isChecked() and not self.ui.move_files_to.text().strip():
             raise OptionsCheckError(_("Error"), _("The location to move files to must not be empty."))
 
     def check_format(self):
         parser = ScriptParser()
         try:
-            parser.eval(unicode(self.ui.file_naming_format.toPlainText()))
+            parser.eval(self.ui.file_naming_format.toPlainText())
         except Exception as e:
             raise OptionsCheckError("", str(e))
         if self.ui.rename_files.isChecked():
-            if not unicode(self.ui.file_naming_format.toPlainText()).strip():
+            if not self.ui.file_naming_format.toPlainText().strip():
                 raise OptionsCheckError("", _("The file naming format must not be empty."))
 
     def save(self):
         config.setting["windows_compatibility"] = self.ui.windows_compatibility.isChecked()
         config.setting["ascii_filenames"] = self.ui.ascii_filenames.isChecked()
         config.setting["rename_files"] = self.ui.rename_files.isChecked()
-        config.setting["file_naming_format"] = unicode(self.ui.file_naming_format.toPlainText())
+        config.setting["file_naming_format"] = self.ui.file_naming_format.toPlainText()
         self.tagger.window.enable_renaming_action.setChecked(config.setting["rename_files"])
         config.setting["move_files"] = self.ui.move_files.isChecked()
-        config.setting["move_files_to"] = os.path.normpath(unicode(self.ui.move_files_to.text()))
+        config.setting["move_files_to"] = os.path.normpath(self.ui.move_files_to.text())
         config.setting["move_additional_files"] = self.ui.move_additional_files.isChecked()
-        config.setting["move_additional_files_pattern"] = unicode(self.ui.move_additional_files_pattern.text())
+        config.setting["move_additional_files_pattern"] = self.ui.move_additional_files_pattern.text()
         config.setting["delete_empty_dirs"] = self.ui.delete_empty_dirs.isChecked()
         self.tagger.window.enable_moving_action.setChecked(config.setting["move_files"])
 
@@ -278,7 +278,7 @@ class RenamingOptionsPage(OptionsPage):
     def move_files_to_browse(self):
         path = QtWidgets.QFileDialog.getExistingDirectory(self, "", self.ui.move_files_to.text())
         if path:
-            path = os.path.normpath(unicode(path))
+            path = os.path.normpath(path)
             self.ui.move_files_to.setText(path)
 
     def test(self):

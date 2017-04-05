@@ -308,14 +308,15 @@ class File(QtCore.QObject, Item):
         format = format.replace("\t", "").replace("\n", "")
         filename = ScriptParser().eval(format, metadata, self)
         if settings["ascii_filenames"]:
-            if isinstance(filename, unicode):
+            if isinstance(filename, str):
                 filename = unaccent(filename)
             filename = replace_non_ascii(filename)
         # replace incompatible characters
         if settings["windows_compatibility"] or sys.platform == "win32":
             filename = replace_win32_incompat(filename)
         # remove null characters
-        filename = filename.replace("\x00", "")
+        if isinstance(filename, (bytes, bytearray)):
+            filename = filename.replace(b"\x00", "")
         return filename
 
     def _fixed_splitext(self, filename):
@@ -366,7 +367,7 @@ class File(QtCore.QObject, Item):
                     new_filename = '_' + new_filename[1:]
                 # Fix for precomposed characters on OSX
                 if sys.platform == "darwin":
-                    new_filename = unicodedata.normalize("NFD", unicode(new_filename))
+                    new_filename = unicodedata.normalize("NFD", new_filename)
 
         return os.path.realpath(os.path.join(new_dirname, new_filename))
 

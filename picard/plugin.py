@@ -218,7 +218,7 @@ class PluginData(PluginShared):
 class PluginManager(QtCore.QObject):
 
     plugin_installed = QtCore.pyqtSignal(PluginWrapper, bool)
-    plugin_updated = QtCore.pyqtSignal(unicode, bool)
+    plugin_updated = QtCore.pyqtSignal(str, bool)
 
 
     def __init__(self):
@@ -432,7 +432,7 @@ class PluginManager(QtCore.QObject):
         if error:
             self.tagger.window.set_statusbar_message(
                 N_("Error loading plugins list: %(error)s"),
-                {'error': unicode(reply.errorString())},
+                {'error': reply.errorString()},
                 echo=log.error
             )
         else:

@@ -345,17 +345,17 @@ class CoverArtBox(QtWidgets.QGroupBox):
                                   priority=True, important=True)
         elif url.scheme() == 'file':
             log.debug("Dropped the URL: %r", url.toString(QtCore.QUrl.RemoveUserInfo))
-            if sys.platform == 'darwin' and unicode(url.path()).startswith('/.file/id='):
+            if sys.platform == 'darwin' and url.path().startswith('/.file/id='):
                 # Workaround for https://bugreports.qt.io/browse/QTBUG-40449
                 # OSX Urls follow the NSURL scheme and need to be converted
                 if NSURL_IMPORTED:
-                    path = os.path.normpath(os.path.realpath(unicode(NSURL.URLWithString_(str(url.toString())).filePathURL().path()).rstrip("\0")))
+                    path = os.path.normpath(os.path.realpath(NSURL.URLWithString_(str(url.toString()).filePathURL().path()).rstrip("\0")))
                     log.debug('OSX NSURL path detected. Dropped File is: %r', path)
                 else:
                     log.error("Unable to get appropriate file path for %r", url.toString(QtCore.QUrl.RemoveUserInfo))
             else:
                 # Dropping a file from iTunes gives a path with a NULL terminator
-                path = os.path.normpath(os.path.realpath(unicode(url.toLocalFile()).rstrip("\0")))
+                path = os.path.normpath(os.path.realpath(url.toLocalFile().rstrip("\0")))
             if path and os.path.exists(path):
                 mime = 'image/png' if path.lower().endswith('.png') else 'image/jpeg'
                 with open(path, 'rb') as f:
@@ -390,7 +390,7 @@ class CoverArtBox(QtWidgets.QGroupBox):
                 data=data
             )
         except CoverArtImageError as e:
-            log.warning("Can't load image: %s" % unicode(e))
+            log.warning("Can't load image: %s" % e)
             return
 
         if config.setting["load_image_behavior"] == 'replace':

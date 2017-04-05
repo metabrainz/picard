@@ -93,7 +93,7 @@ class AcoustIDManager(QtCore.QObject):
             except :
                 message = ""
             mparms = {
-                'error': unicode(http.errorString()),
+                'error': http.errorString(),
                 'message': message
             }
             log.error(

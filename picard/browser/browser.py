@@ -66,7 +66,7 @@ class BrowserIntegration(QtNetwork.QTcpServer):
         if line[0] == "GET" and "?" in line[1]:
             action, args = line[1].split("?")
             args = [a.split("=", 1) for a in args.split("&")]
-            args = dict((a, unicode(QtCore.QUrl.fromPercentEncoding(b))) for (a, b) in args)
+            args = dict((a, str(QtCore.QUrl.fromPercentEncoding(b))) for (a, b) in args)
             self.tagger.bring_tagger_front()
             if action == "/openalbum":
                 self.tagger.load_album(args["id"])

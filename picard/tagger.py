@@ -386,7 +386,7 @@ class Tagger(QtWidgets.QApplication):
 
     def _add_directory_recursive(self, path):
         ignore_hidden = config.setting["ignore_hidden_files"]
-        walk = os.walk(unicode(path))
+        walk = os.walk(path)
 
         def get_files():
             try:
@@ -623,7 +623,7 @@ class Tagger(QtWidgets.QApplication):
     def lookup_cd(self, action):
         """Reads CD from the selected drive and tries to lookup the DiscID on MusicBrainz."""
         if isinstance(action, QtWidgets.QAction):
-            device = unicode(action.text())
+            device = action.text()
         elif config.setting["cd_lookup_device"] != '':
             device = config.setting["cd_lookup_device"].split(",", 1)[0]
         else:

@@ -133,7 +133,7 @@ class ReleaseGroup(DataObject):
     def _request_finished(self, callback, document, http, error):
         try:
             if error:
-                log.error("%r", unicode(http.errorString()))
+                log.error("%r", http.errorString())
             else:
                 try:
                     self._parse_versions(document)
