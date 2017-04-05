@@ -66,6 +66,11 @@ class FormatsTest(unittest.TestCase):
     original = None
     tags = []
 
+    def _log_receiver(self, level, time, msg):
+        if level in log._log_prefixes:
+            msg = "%s: %s" % (log._log_prefixes[level], msg.decode('ascii', 'replace'))
+        self.log_messages.append((level, msg))
+
     def setUp(self):
         if not self.original:
             return
@@ -74,8 +79,12 @@ class FormatsTest(unittest.TestCase):
         shutil.copy(self.original, self.filename)
         config.setting = settings.copy()
         QtCore.QObject.tagger = FakeTagger()
+        self.log_messages = []
+        log.main_logger.unregister_receiver(log._stderr_receiver)
+        log.main_logger.register_receiver(self._log_receiver)
 
     def tearDown(self):
+        log.main_logger.unregister_receiver(self._log_receiver)
         if not self.original:
             return
         os.unlink(self.filename)
