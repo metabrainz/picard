@@ -34,7 +34,7 @@ from picard.metadata import Metadata
 from picard.file import File
 from picard.formats.mutagenext import compatid3
 from picard.util import encode_filename, sanitize_date
-from urlparse import urlparse
+from urllib.parse import urlparse
 
 
 id3.TCMP = compatid3.TCMP
