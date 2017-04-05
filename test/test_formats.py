@@ -1124,11 +1124,11 @@ class TestCoverArt(unittest.TestCase):
             tests = {
                 'jpg': {
                     'mime': 'image/jpeg',
-                    'data': self.jpegdata + "a" * 1024 * 128
+                    'data': self.jpegdata + b"a" * 1024 * 128
                 },
                 'png': {
                     'mime': 'image/png',
-                    'data': self.pngdata + "a" * 1024 * 128
+                    'data': self.pngdata + b"a" * 1024 * 128
                 },
             }
             for t in tests:
@@ -1157,7 +1157,7 @@ class TestCoverArt(unittest.TestCase):
             TagCoverArtImage(
                 file='a',
                 tag='a',
-                data=imgdata + 'a',
+                data=imgdata + b'a',
                 support_types=True,
                 types=[u'booklet', u'front'],
             )
@@ -1166,7 +1166,7 @@ class TestCoverArt(unittest.TestCase):
             TagCoverArtImage(
                 file='b',
                 tag='b',
-                data=imgdata + 'b',
+                data=imgdata + b'b',
                 support_types=True,
                 types=[u'back'],
             )
@@ -1175,7 +1175,7 @@ class TestCoverArt(unittest.TestCase):
             TagCoverArtImage(
                 file='c',
                 tag='c',
-                data=imgdata + 'c',
+                data=imgdata + b'c',
                 support_types=True,
                 types=[u'front'],
             )
@@ -1184,14 +1184,14 @@ class TestCoverArt(unittest.TestCase):
             TagCoverArtImage(
                 file='d',
                 tag='d',
-                data=imgdata + 'd',
+                data=imgdata + b'd',
             )
         )
         metadata.append_image(
             TagCoverArtImage(
                 file='e',
                 tag='e',
-                data=imgdata + 'e',
+                data=imgdata + b'e',
                 is_front=False
             )
         )
@@ -1199,7 +1199,7 @@ class TestCoverArt(unittest.TestCase):
             TagCoverArtImage(
                 file='f',
                 tag='f',
-                data=imgdata + 'f',
+                data=imgdata + b'f',
                 types=[u'front']
             )
         )
@@ -1207,7 +1207,7 @@ class TestCoverArt(unittest.TestCase):
             TagCoverArtImage(
                 file='g',
                 tag='g',
-                data=imgdata + 'g',
+                data=imgdata + b'g',
                 types=[u'back'],
                 is_front=True
             )
@@ -1229,6 +1229,7 @@ class TestCoverArt(unittest.TestCase):
 
     def _test_cover_art_types(self, filename, expect):
         self._set_up(filename)
+        expect = {ord(char) for char in expect}
         try:
             f = picard.formats.open_(self.filename)
             f._save(self.filename, self._cover_metadata())
@@ -1244,6 +1245,7 @@ class TestCoverArt(unittest.TestCase):
 
     def _test_cover_art_types_only_front(self, filename, expect):
         self._set_up(filename, {'embed_only_one_front_image': True})
+        expect = {ord(char) for char in expect}
         try:
             f = picard.formats.open_(self.filename)
             f._save(self.filename, self._cover_metadata())
