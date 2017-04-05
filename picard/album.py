@@ -604,11 +604,13 @@ class NatAlbum(Album):
         self.update()
 
     def update(self, update_tracks=True):
+        self.enable_update_metadata_images(False)
         self.metadata["album"] = config.setting["nat_name"]
         for track in self.tracks:
             track.metadata["album"] = self.metadata["album"]
             for file in track.linked_files:
                 track.update_file_metadata(file)
+        self.enable_update_metadata_images(True)
         Album.update(self, update_tracks)
 
     def _finalize_loading(self, error):
