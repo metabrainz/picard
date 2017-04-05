@@ -1018,7 +1018,7 @@ class TestCoverArt(unittest.TestCase):
         tmp_files = []
         for t in tests:
             imgdata = tests[t]['data']
-            imgdata2 = imgdata + 'xxx'
+            imgdata2 = imgdata + b'xxx'
             # set data once
             coverartimage = CoverArtImage(
                 data=imgdata2
