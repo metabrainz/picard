@@ -328,7 +328,7 @@ class TrackInfoDialog(FileInfoDialog):
             return
 
         tabWidget.setTabText(tab_index, _("&Info"))
-        text = ungettext("%i file in this track", "%i files in this track",
+        text = ngettext("%i file in this track", "%i files in this track",
                          track.num_linked_files) % track.num_linked_files
         info_files = [FileInfoDialog.format_file_info(file) for file in track.linked_files]
         text += '<hr />' + '<hr />'.join(info_files)

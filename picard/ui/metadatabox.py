@@ -81,7 +81,7 @@ class TagCounter(dict):
         missing = self.parent.objects - count
 
         if tag in self.different:
-            return (ungettext("(different across %d item)", "(different across %d items)", count) % count, True)
+            return (ngettext("(different across %d item)", "(different across %d items)", count) % count, True)
         else:
             if tag == "~length":
                 msg = format_time(self.get(tag, 0))
@@ -89,7 +89,7 @@ class TagCounter(dict):
                 msg = MULTI_VALUED_JOINER.join(self[tag])
 
             if count > 0 and missing > 0:
-                return (msg + " " + (ungettext("(missing from %d item)", "(missing from %d items)", missing) % missing), True)
+                return (msg + " " + (ngettext("(missing from %d item)", "(missing from %d items)", missing) % missing), True)
             else:
                 return (msg, False)
 
@@ -316,7 +316,7 @@ class MetadataBox(QtWidgets.QTableWidget):
                 remove_tag_action.setShortcut(self.remove_tag_shortcut.key())
                 menu.addAction(remove_tag_action)
             if useorigs:
-                name = ungettext("Use Original Value", "Use Original Values", len(useorigs))
+                name = ngettext("Use Original Value", "Use Original Values", len(useorigs))
                 use_orig_value_action = QtWidgets.QAction(name, self.parent)
                 use_orig_value_action.triggered.connect(lambda: [f() for f in useorigs])
                 menu.addAction(use_orig_value_action)

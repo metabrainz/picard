@@ -70,7 +70,7 @@ def setup_gettext(localedir, ui_language=None, logger=None):
         logger("Loading gettext translation, localedir=%r", localedir)
         trans = gettext.translation("picard", localedir)
         trans.install(True)
-        _ungettext = trans.ungettext
+        _ngettext = trans.ngettext
         logger("Loading gettext translation (picard-countries), localedir=%r", localedir)
         trans_countries = gettext.translation("picard-countries", localedir)
         _ugettext_countries = trans_countries.ugettext
@@ -81,7 +81,7 @@ def setup_gettext(localedir, ui_language=None, logger=None):
         logger(e)
         builtins.__dict__['_'] = lambda a: a
 
-        def _ungettext(a, b, c):
+        def _ngettext(a, b, c):
             if c == 1:
                 return a
             else:
@@ -93,13 +93,13 @@ def setup_gettext(localedir, ui_language=None, logger=None):
         def _ugettext_attributes(msg):
             return msg
 
-    builtins.__dict__['ungettext'] = _ungettext
+    builtins.__dict__['ngettext'] = _ngettext
     builtins.__dict__['ugettext_countries'] = _ugettext_countries
     builtins.__dict__['ugettext_attributes'] = _ugettext_attributes
 
     logger("_ = %r", _)
     logger("N_ = %r", N_)
-    logger("ungettext = %r", ungettext)
+    logger("ngettext = %r", ngettext)
     logger("ugettext_countries = %r", ugettext_countries)
     logger("ugettext_attributes = %r", ugettext_attributes)
 

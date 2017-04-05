@@ -405,7 +405,7 @@ class Tagger(QtWidgets.QApplication):
                     log.debug("Adding %(count)d files from '%(directory)r'" %
                               mparms)
                     self.window.set_statusbar_message(
-                        ungettext(
+                        ngettext(
                             "Adding %(count)d file from '%(directory)s' ...",
                             "Adding %(count)d files from '%(directory)s' ...",
                             number_of_files),
@@ -438,7 +438,7 @@ class Tagger(QtWidgets.QApplication):
             log.debug("Adding %(count)d files from '%(directory)r'" %
                       mparms)
             self.window.set_statusbar_message(
-                ungettext(
+                ngettext(
                     "Adding %(count)d file from '%(directory)s' ...",
                     "Adding %(count)d files from '%(directory)s' ...",
                     number_of_files),

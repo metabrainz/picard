@@ -83,4 +83,4 @@ class CollectionCheckBox(QtWidgets.QCheckBox):
 
     def label(self):
         c = self.collection
-        return ungettext("%s (%i release)", "%s (%i releases)", c.size) % (c.name, c.size)
+        return ngettext("%s (%i release)", "%s (%i releases)", c.size) % (c.name, c.size)
