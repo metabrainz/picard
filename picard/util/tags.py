@@ -91,7 +91,7 @@ TAG_NAMES = {
     'originalartist': N_('Original Artist'),
     'musicbrainz_originalartistid': N_('MusicBrainz Original Artist Id'),
     'originalalbum': N_('Original Album'),
-    'musicbrainz_originalalbumid': N_('MusicBrainz Orignal Release Id'),
+    'musicbrainz_originalalbumid': N_('MusicBrainz Original Release Id'),
     'movementname': N_('Movement name'),
     'musicbrainz_movementid': N_('MusicBrainz Movement Work Id'),
     'movementnumber': N_('Movement number'),
