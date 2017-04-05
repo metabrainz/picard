@@ -150,12 +150,12 @@ class ASFFile(File):
         for name, values in file.tags.items():
             if name == 'WM/Picture':
                 for image in values:
-                    (mime, data, type, description) = unpack_image(image.value)
+                    (mime, data, type_, description) = unpack_image(image.value)
                     try:
                         coverartimage = TagCoverArtImage(
                             file=filename,
                             tag=name,
-                            types=types_from_id3(type),
+                            types=types_from_id3(type_),
                             comment=description,
                             support_types=True,
                             data=data,
@@ -199,7 +199,6 @@ class ASFFile(File):
             cover.append(ASFByteArrayAttribute(tag_data))
         if cover:
             tags['WM/Picture'] = cover
-
         for name, values in metadata.rawitems():
             if name.startswith('lyrics:'):
                 name = 'lyrics'
@@ -221,10 +220,7 @@ class ASFFile(File):
         for tag in metadata.deleted_tags:
             real_name = self._get_tag_name(tag)
             if real_name and real_name in tags:
-                if tag == 'totaldiscs':
-                    tags[real_name] = metadata['discnumber']
-                else:
-                    del tags[real_name]
+                del tags[real_name]
 
     def supports_tag(self, name):
         return (name in self.__TRANS
