@@ -437,7 +437,7 @@ class PluginManager(QtCore.QObject):
             )
         else:
             self._available_plugins = [PluginData(data, key) for key, data in
-                                       json.loads(response)['plugins'].items()]
+                                       json.loads(bytes(response))['plugins'].items()]
         if callback:
             callback()
 

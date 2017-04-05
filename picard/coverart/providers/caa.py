@@ -283,7 +283,7 @@ class CoverArtProviderCaa(CoverArtProvider):
                 self.error(u'CAA JSON error: %s' % (http.errorString()))
         else:
             try:
-                caa_data = json.loads(data)
+                caa_data = json.loads(bytes(data))
             except ValueError:
                 self.error("Invalid JSON: %s" % (http.url().toString()))
             else:

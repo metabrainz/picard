@@ -88,7 +88,7 @@ class AcoustIDManager(QtCore.QObject):
     def __fingerprint_submission_finished(self, fingerprints, document, http, error):
         if error:
             try:
-                error = json.loads(document)
+                error = json.loads(bytes(document))
                 message = error["error"]["message"]
             except :
                 message = ""

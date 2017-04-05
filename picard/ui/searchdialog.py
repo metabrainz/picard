@@ -606,7 +606,7 @@ class AlbumSearchDialog(SearchDialog):
             return
 
         try:
-            caa_data = json.loads(data)
+            caa_data = json.loads(bytes(data))
         except ValueError:
             cover_cell.not_found()
             return

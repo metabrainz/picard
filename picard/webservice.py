@@ -192,7 +192,7 @@ class XmlWebService(QtCore.QObject):
         request = QtNetwork.QNetworkRequest(url)
         if mblogin and access_token:
             # access_token must not be unicode - PyQt5 doesn't like it.
-            request.setRawHeader("Authorization", "Bearer %s" % str(access_token))
+            request.setRawHeader(b"Authorization", ("Bearer %s" % str(access_token)).encode('utf-8'))
         if mblogin or (method == "GET" and refresh):
             request.setPriority(QtNetwork.QNetworkRequest.HighPriority)
             request.setAttribute(QtNetwork.QNetworkRequest.CacheLoadControlAttribute,
@@ -202,16 +202,16 @@ class XmlWebService(QtCore.QObject):
         elif cacheloadcontrol is not None:
             request.setAttribute(QtNetwork.QNetworkRequest.CacheLoadControlAttribute,
                                  cacheloadcontrol)
-        request.setRawHeader("User-Agent", USER_AGENT_STRING)
+        request.setRawHeader(b"User-Agent", USER_AGENT_STRING.encode('utf-8'))
         if xml:
-            request.setRawHeader("Accept", "application/xml")
+            request.setRawHeader(b"Accept", b"application/xml")
         if data is not None:
             if method == "POST" and host == config.setting["server_host"] and xml:
                 request.setHeader(QtNetwork.QNetworkRequest.ContentTypeHeader, "application/xml; charset=utf-8")
             else:
                 request.setHeader(QtNetwork.QNetworkRequest.ContentTypeHeader, "application/x-www-form-urlencoded")
         send = self._request_methods[method]
-        reply = send(request, data) if data is not None else send(request)
+        reply = send(request, data.encode('utf-8')) if data is not None else send(request)
         self._remember_request_time((host, port))
         self._active_requests[reply] = (request, handler, xml, refresh)
 
@@ -254,7 +254,7 @@ class XmlWebService(QtCore.QObject):
                       repr(reply.attribute(QtNetwork.QNetworkRequest.HttpStatusCodeAttribute))
                       )
             if handler is not None:
-                handler(str(reply.readAll()), reply, error)
+                handler(reply.readAll(), reply, error)
         else:
             redirect = reply.attribute(QtNetwork.QNetworkRequest.RedirectionTargetAttribute)
             fromCache = reply.attribute(QtNetwork.QNetworkRequest.SourceIsFromCacheAttribute)
@@ -298,12 +298,12 @@ class XmlWebService(QtCore.QObject):
                         log.error("Redirect loop: %s",
                                   reply.request().url().toString(QUrl.RemoveUserInfo)
                                   )
-                        handler(str(reply.readAll()), reply, error)
+                        handler(reply.readAll(), reply, error)
                 elif xml:
                     document = _read_xml(QXmlStreamReader(reply))
                     handler(document, reply, error)
                 else:
-                    handler(str(reply.readAll()), reply, error)
+                    handler(reply.readAll(), reply, error)
 
     def _process_reply(self, reply):
         try:
