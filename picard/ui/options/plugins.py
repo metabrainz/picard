@@ -30,11 +30,12 @@ from picard.const import (
     USER_PLUGIN_DIR,
     PLUGINS_API,
 )
+from picard.ui import HashableTreeWidgetItem
 from picard.ui.options import OptionsPage, register_options_page
 from picard.ui.ui_options_plugins import Ui_PluginsOptionsPage
 
 
-class PluginTreeWidgetItem(QtWidgets.QTreeWidgetItem):
+class PluginTreeWidgetItem(HashableTreeWidgetItem):
 
     def __lt__(self, other):
         if (not isinstance(other, PluginTreeWidgetItem)):
