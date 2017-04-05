@@ -204,6 +204,7 @@ class Option(QtCore.QObject):
     registry = {}
 
     def __init__(self, section, name, default):
+        super().__init__()
         self.section = section
         self.name = name
         self.default = default
