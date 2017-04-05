@@ -47,7 +47,7 @@ class TAK(APEv2File):
     _mimes = ["audio/x-tak"]
 
     def score(filename, fileobj, header):
-        return header.startswith("tBaK") + filename.lower().endswith(".tak")
+        return header.startswith(b"tBaK") + filename.lower().endswith(".tak")
     score = staticmethod(score)
 
 Open = TAK
