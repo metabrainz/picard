@@ -357,7 +357,7 @@ class ID3File(File):
                 for value in values:
                     tipl.people.append([self._rtipl_roles[name], value])
             elif name == 'musicbrainz_recordingid':
-                tags.add(id3.UFID(owner='http://musicbrainz.org', data=str(values[0])))
+                tags.add(id3.UFID(owner='http://musicbrainz.org', data=bytes(values[0], 'ascii')))
             elif name == '~rating':
                 # Search for an existing POPM frame to get the current playcount
                 for frame in tags.values():

@@ -268,7 +268,7 @@ class CoverArtImage:
             filename = replace_win32_incompat(filename)
         # remove null characters
         if isinstance(filename, bytes):
-            filename = filename.replace("\x00", "")
+            filename = filename.replace(b"\x00", "")
         return encode_filename(filename)
 
     def save(self, dirname, metadata, counters):
