@@ -350,10 +350,10 @@ def workparts_to_metadata(partof, m):
 
 def work_to_metadata(work, m):
     m.add_unique("musicbrainz_workid", work.id)
-    if 'title' in work.children:
-        m.add_unique("work", work.title[0].text)
     if 'language' in work.children:
         m.add_unique("language", work.language[0].text)
+    if 'title' in work.children:
+        m.add_unique("work", work.title[0].text)
     if 'disambiguation' in work.children:
         m.add_unique("~workcomment", work.disambiguation[0].text)
     if 'relation_list' in work.children:
