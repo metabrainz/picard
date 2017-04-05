@@ -26,7 +26,6 @@ from picard.ui.options import OptionsPage, register_options_page
 from picard.ui.ui_options_interface import Ui_InterfaceOptionsPage
 from picard.ui.util import enabledSlot
 from picard.const import UI_LANGUAGES
-import operator
 import locale
 
 
@@ -223,8 +222,8 @@ class InterfaceOptionsPage(OptionsPage):
 
     def _added_actions(self):
         actions = self._all_list_items()
-        actions = [action for action in actions if action != 'separator']
-        return set(actions)
+        actions = set(action for action in actions if action != 'separator')
+        return actions
 
     def populate_action_list(self):
         self.ui.toolbar_layout_list.clear()
