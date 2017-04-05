@@ -190,7 +190,7 @@ class VCommentFile(File):
                 value = "MusicMagic Fingerprint%s" % value
             elif name in self.__rtranslate:
                 name = self.__rtranslate[name]
-            tags.setdefault(name.upper().encode('utf-8'), []).append(value)
+            tags.setdefault(name.upper(), []).append(value)
 
         if "totaltracks" in metadata:
             tags.setdefault(u"TRACKTOTAL", []).append(metadata["totaltracks"])
