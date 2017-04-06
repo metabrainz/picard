@@ -194,7 +194,7 @@ class AcoustIDClient(QtCore.QObject):
             self._run_next_task()
             process = self.sender()
             if exit_code == 0 and exit_status == 0:
-                output = str(process.readAllStandardOutput())
+                output = bytes(process.readAllStandardOutput()).decode()
                 duration = None
                 fingerprint = None
                 for line in output.splitlines():
