@@ -22,7 +22,6 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-import json
 import traceback
 from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtNetwork import QNetworkReply
@@ -33,7 +32,7 @@ from picard.coverart.image import CaaCoverArtImage, CaaThumbnailCoverArtImage
 from picard.coverart.utils import CAA_TYPES, translate_caa_type
 from picard.ui.ui_provider_options_caa import Ui_CaaOptions
 from picard.ui.util import StandardButton
-from picard.util import webbrowser2
+from picard.util import webbrowser2, json_load
 from picard.ui.options import OptionsPage, OptionsCheckError, register_options_page
 
 
@@ -283,7 +282,7 @@ class CoverArtProviderCaa(CoverArtProvider):
                 self.error(u'CAA JSON error: %s' % (http.errorString()))
         else:
             try:
-                caa_data = json.loads(bytes(data))
+                caa_data = json_load(data)
             except ValueError:
                 self.error("Invalid JSON: %s" % (http.url().toString()))
             else:

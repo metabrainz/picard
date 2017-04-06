@@ -17,10 +17,10 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-import json
 from functools import partial
 from PyQt5 import QtCore
 from picard import log
+from picard.util import json_load
 
 
 class Submission(object):
@@ -88,7 +88,7 @@ class AcoustIDManager(QtCore.QObject):
     def __fingerprint_submission_finished(self, fingerprints, document, http, error):
         if error:
             try:
-                error = json.loads(bytes(document))
+                error = json_load(document)
                 message = error["error"]["message"]
             except :
                 message = ""

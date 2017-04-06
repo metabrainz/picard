@@ -17,7 +17,6 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-import json
 import time
 from functools import partial
 from PyQt5.QtNetwork import QNetworkRequest
@@ -28,7 +27,7 @@ from picard.const import (
     MUSICBRAINZ_OAUTH_CLIENT_ID,
     MUSICBRAINZ_OAUTH_CLIENT_SECRET,
 )
-from picard.util import build_qurl
+from picard.util import build_qurl, json_load
 
 
 class OAuthManager(object):
@@ -114,11 +113,11 @@ class OAuthManager(object):
             if error:
                 log.error("OAuth: access_token refresh failed: %s", data)
                 if http.attribute(QNetworkRequest.HttpStatusCodeAttribute) == 400:
-                    response = json.loads(bytes(data))
+                    response = json_load(data)
                     if response["error"] == "invalid_grant":
                         self.forget_refresh_token()
             else:
-                response = json.loads(bytes(data))
+                response = json_load(data)
                 self.set_access_token(response["access_token"], response["expires_in"])
                 access_token = response["access_token"]
         finally:
@@ -147,7 +146,7 @@ class OAuthManager(object):
             if error:
                 log.error("OAuth: authorization_code exchange failed: %s", data)
             else:
-                response = json.loads(bytes(data))
+                response = json_load(data)
                 self.set_refresh_token(response["refresh_token"], scopes)
                 self.set_access_token(response["access_token"], response["expires_in"])
                 successful = True
@@ -168,7 +167,7 @@ class OAuthManager(object):
             if error:
                 log.error("OAuth: username fetching failed: %s", data)
             else:
-                response = json.loads(bytes(data))
+                response = json_load(data)
                 self.set_username(response["sub"])
                 successful = True
         finally:

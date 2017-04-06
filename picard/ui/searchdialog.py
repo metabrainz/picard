@@ -17,7 +17,6 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-import json
 from PyQt5 import QtGui, QtCore, QtNetwork, QtWidgets
 from operator import itemgetter
 from functools import partial
@@ -26,7 +25,7 @@ from picard import config
 from picard.file import File
 from picard.ui import PicardDialog
 from picard.ui.util import StandardButton, ButtonLineEdit
-from picard.util import icontheme
+from picard.util import icontheme, json_load
 from picard.mbxml import (
     artist_to_metadata,
     recording_to_metadata,
@@ -606,7 +605,7 @@ class AlbumSearchDialog(SearchDialog):
             return
 
         try:
-            caa_data = json.loads(bytes(data))
+            caa_data = json_load(data)
         except ValueError:
             cover_cell.not_found()
             return

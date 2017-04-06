@@ -18,6 +18,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 import cgi
+import json
 import os
 import ntpath
 import re
@@ -443,3 +444,7 @@ def union_sorted_lists(list1, list2):
 
 def htmlescape(string):
     return cgi.escape(string)
+
+
+def json_load(data):
+    return json.loads(bytes(data).decode())
