@@ -715,7 +715,7 @@ class Tagger(QtWidgets.QApplication):
         log.debug("signal %i received", signum)
         # Send a notification about a received signal from the signal handler
         # to Qt.
-        self.signalfd[0].sendall("a")
+        self.signalfd[0].sendall(b"a")
 
     def sighandler(self):
         self.signalnotifier.setEnabled(False)
