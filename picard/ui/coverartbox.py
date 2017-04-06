@@ -143,7 +143,7 @@ class CoverArtThumbnail(ActiveLabel):
             has_common_images = True
 
         w, h, displacements = (128, 128, 20)
-        key = hash(tuple(sorted(self.data)) + (has_common_images,))
+        key = hash(tuple(sorted(self.data, key=lambda x: x.types_as_string())) + (has_common_images,))
         try:
             pixmap = self._pixmap_cache[key]
         except KeyError:
