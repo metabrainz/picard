@@ -337,7 +337,7 @@ class XmlWebService(QtCore.QObject):
         return self.add_task(func, host, port, priority, important=important)
 
     def stop(self):
-        for reply in self._active_requests.keys():
+        for reply in list(self._active_requests.keys()):
             reply.abort()
         self._init_queues()
 
