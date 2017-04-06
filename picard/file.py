@@ -410,7 +410,7 @@ class File(QtCore.QObject, Item):
         old_path = encode_filename(os.path.dirname(old_filename))
         new_path = encode_filename(os.path.dirname(new_filename))
         patterns = encode_filename(config.setting["move_additional_files_pattern"])
-        patterns = [p.strip() for p in patterns.split() if p.strip()]
+        patterns = [string_(p.strip()) for p in patterns.split() if p.strip()]
         try:
             names = os.listdir(old_path)
         except os.error:
