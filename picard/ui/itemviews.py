@@ -466,7 +466,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
             elif obj.iterfiles:
                 files.extend([url(f.filename) for f in obj.iterfiles()])
         mimeData = QtCore.QMimeData()
-        mimeData.setData("application/picard.album-list", "\n".join(album_ids))
+        mimeData.setData("application/picard.album-list", "\n".join(album_ids).encode())
         if files:
             mimeData.setUrls(files)
         return mimeData
