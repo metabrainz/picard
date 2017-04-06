@@ -527,7 +527,7 @@ class XmlWebService(QtCore.QObject):
         args['clientversion'] = PICARD_VERSION_STR
         args['format'] = format
         for name, value in args.items():
-            value = str(QUrl.toPercentEncoding(value))
+            value = bytes(QUrl.toPercentEncoding(value)).decode()
             filters.append('%s=%s' % (str(name), value))
         return '&'.join(filters)
 
