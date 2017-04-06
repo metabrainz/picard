@@ -193,7 +193,7 @@ class CoverArtImage:
             p.append("comment=%r" % self.comment)
         return "%s(%s)" % (self.__class__.__name__, ", ".join(p))
 
-    def __unicode__(self):
+    def __str__(self):
         p = [u'Image']
         if self.url is not None:
             p.append(u"from %s" % self.url.toString())
@@ -202,9 +202,6 @@ class CoverArtImage:
         if self.comment:
             p.append(u"and comment '%s'" % self.comment)
         return u' '.join(p)
-
-    def __str__(self):
-        return string_(self).encode('utf-8')
 
     def __eq__(self, other):
         if self and other:
