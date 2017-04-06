@@ -299,7 +299,7 @@ class AlbumInfoDialog(InfoDialog):
         if album.errors:
             tabWidget.setTabText(tab_index, _("&Errors"))
             text = '<br />'.join(map(lambda s: '<font color="darkred">%s</font>' %
-                                     '<br />'.join(picard.util.htmlescape(s)
+                                     '<br />'.join(htmlescape(s)
                                                    .replace('\t', ' ')
                                                    .replace(' ', '&nbsp;')
                                                    .splitlines()
@@ -349,9 +349,9 @@ class ClusterInfoDialog(InfoDialog):
         tabWidget.setTabText(tab_index, _("&Info"))
         info = []
         info.append("<b>%s</b> %s" % (_('Album:'),
-                                      picard.util.htmlescape(cluster.metadata["album"])))
+                                      htmlescape(cluster.metadata["album"])))
         info.append("<b>%s</b> %s" % (_('Artist:'),
-                                      picard.util.htmlescape(cluster.metadata["albumartist"])))
+                                      htmlescape(cluster.metadata["albumartist"])))
         info.append("")
         lines = []
         for file in cluster.iterfiles(False):
@@ -361,5 +361,5 @@ class ClusterInfoDialog(InfoDialog):
                          m["title"] + " - " + artist + " (" +
                          m["~length"] + ")")
         info.append("<b>%s</b><br />%s" % (_('Tracklist:'),
-                    '<br />'.join([picard.util.htmlescape(s).replace(' ', '&nbsp;') for s in lines])))
+                    '<br />'.join([htmlescape(s).replace(' ', '&nbsp;') for s in lines])))
         self.ui.info.setText('<br/>'.join(info))
