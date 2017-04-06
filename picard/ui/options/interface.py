@@ -222,8 +222,7 @@ class InterfaceOptionsPage(OptionsPage):
 
     def _added_actions(self):
         actions = self._all_list_items()
-        actions = set(action for action in actions if action != 'separator')
-        return actions
+        return set(action for action in actions if action != 'separator')
 
     def populate_action_list(self):
         self.ui.toolbar_layout_list.clear()
