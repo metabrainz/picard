@@ -126,11 +126,12 @@ def _relations_to_metadata(relation_lists, m):
             for relation in relation_list.relation:
                 if relation.type == 'performance':
                     performance_to_metadata(relation, m)
-                    if 'target' in relation.children:
-                        performance_id = relation.target[0].text
-                    else:
+                    if ('work' not in relation.children
+                        or 'id' not in relation.work[0].attribs
+                        ):
                         log.warning('MBXML: Recording work skipped - no target work MBID present')
                         continue
+                    performance_id = relation.work[0].attribs['id']
                     m.performance_parts = []
                     work_to_metadata(relation.work[0], m)
                     m.partsof[performance_id] = m.performance_parts
@@ -364,10 +365,15 @@ def recording_to_metadata(node, m, track=None):
             m["movementname"] = m.getall("work")
             m["~movementcomment"] = m.getall("~workcomment")
             m["musicbrainz_workid"] = work
+            m['work'] = ''
+            m['~workcomment'] = ''
             parts_of = m.partsof[m.partsof.keys()[0]]
             for partof in parts_of:
                 if partof['workid'] == work:
-                    m["work"] = partof['work']
+                    if 'work' in partof:
+                        m["work"] = partof['work']
+                    if 'disambiguation' in partof:
+                        m["~workcomment"] = partof['disambiguation']
                     if len(m.partsof) == 1 and len(parts_of) == 1 and 'ordering' in partof:
                         m["movementnumber"] = partof['ordering']
                     break
