@@ -339,7 +339,7 @@ class CoverArtBox(QtWidgets.QGroupBox):
                 port = 443
             else:
                 port = 80
-            self.tagger.xmlws.get(str(url.encodedHost()), url.port(port), str(path),
+            self.tagger.xmlws.get(string_(url.encodedHost()), url.port(port), string_(path),
                                   partial(self.on_remote_image_fetched, url, fallback_data=fallback_data),
                                   xml=False,
                                   priority=True, important=True)
@@ -349,7 +349,7 @@ class CoverArtBox(QtWidgets.QGroupBox):
                 # Workaround for https://bugreports.qt.io/browse/QTBUG-40449
                 # OSX Urls follow the NSURL scheme and need to be converted
                 if NSURL_IMPORTED:
-                    path = os.path.normpath(os.path.realpath(NSURL.URLWithString_(str(url.toString()).filePathURL().path()).rstrip("\0")))
+                    path = os.path.normpath(os.path.realpath(NSURL.URLWithString_(string_(url.toString()).filePathURL().path()).rstrip("\0")))
                     log.debug('OSX NSURL path detected. Dropped File is: %r', path)
                 else:
                     log.error("Unable to get appropriate file path for %r", url.toString(QtCore.QUrl.RemoveUserInfo))

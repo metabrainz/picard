@@ -123,7 +123,7 @@ class File(QtCore.QObject, Item):
         if self.state != File.PENDING or self.tagger.stopping:
             return
         if error is not None:
-            self.error = str(error)
+            self.error = string_(error)
             self.state = self.ERROR
             from picard.formats import supported_extensions
             file_name, file_extension = os.path.splitext(self.base_filename)
@@ -146,7 +146,7 @@ class File(QtCore.QObject, Item):
         if 'tracknumber' not in metadata:
             tracknumber = tracknum_from_filename(self.base_filename)
             if tracknumber != -1:
-                tracknumber = str(tracknumber)
+                tracknumber = string_(tracknumber)
                 metadata['tracknumber'] = tracknumber
                 if metadata['title'] == filename:
                     stripped_filename = filename.lstrip('0')
@@ -256,7 +256,7 @@ class File(QtCore.QObject, Item):
             return
         old_filename = new_filename = self.filename
         if error is not None:
-            self.error = str(error)
+            self.error = string_(error)
             self.set_state(File.ERROR, update=True)
         else:
             self.filename = new_filename = result
@@ -640,7 +640,7 @@ class File(QtCore.QObject, Item):
             release=metadata['album'],
             tnum=metadata['tracknumber'],
             tracks=metadata['totaltracks'],
-            qdur=str(metadata.length // 2000),
+            qdur=string_(metadata.length // 2000),
             isrc=metadata['isrc'],
             limit=QUERY_LIMIT)
 

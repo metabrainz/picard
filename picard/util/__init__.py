@@ -24,6 +24,7 @@ import ntpath
 import re
 import sys
 import unicodedata
+import builtins
 if sys.platform == 'win32':
 	from ctypes import windll
 
@@ -407,7 +408,7 @@ def build_qurl(host, port=80, path=None, queryargs=None):
     if queryargs is not None:
         url_query = QtCore.QUrlQuery()
         for k, v in queryargs.items():
-            url_query.addQueryItem(k, str(v))
+            url_query.addQueryItem(k, string_(v))
         url.setQuery(url_query)
     return url
 
@@ -448,3 +449,15 @@ def htmlescape(string):
 
 def json_load(data):
     return json.loads(bytes(data).decode())
+
+
+def convert_to_string(obj):
+    if isinstance(obj, QtCore.QByteArray):
+        return bytes(obj).decode()
+    elif isinstance(obj, (bytes, bytearray)):
+        return obj.decode()
+    else:
+        return str(obj)
+
+
+builtins.__dict__['string_'] = convert_to_string

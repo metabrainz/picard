@@ -429,7 +429,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
 
     def save_state(self):
         cols = range(self.numHeaderSections - 1)
-        sizes = " ".join(str(self.header().sectionSize(i)) for i in cols)
+        sizes = " ".join(string_(self.header().sectionSize(i)) for i in cols)
         config.persist[self.view_sizes.name] = sizes
 
     def supportedDropActions(self):
@@ -462,7 +462,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         for item in items:
             obj = item.obj
             if isinstance(obj, Album):
-                album_ids.append(str(obj.id))
+                album_ids.append(string_(obj.id))
             elif obj.iterfiles:
                 files.extend([url(f.filename) for f in obj.iterfiles()])
         mimeData = QtCore.QMimeData()
@@ -536,7 +536,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         if albums:
             if isinstance(self, FileTreeView) and target is None:
                 target = self.tagger.unmatched_files
-            albums = [self.tagger.load_album(id) for id in str(albums).split("\n")]
+            albums = [self.tagger.load_album(id) for id in string_(albums).split("\n")]
             self.tagger.move_files(self.tagger.get_files_from_objects(albums), target)
             handled = True
         return handled

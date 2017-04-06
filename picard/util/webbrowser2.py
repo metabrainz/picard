@@ -29,7 +29,7 @@ in PyQt and also adds a utility function for opening Picard URLS.
 
 def open(url):
     try:
-        webbrowser.open(bytes(url).decode())
+        webbrowser.open(string_(url))
     except webbrowser.Error as e:
         QtWidgets.QMessageBox.critical(None, _("Web Browser Error"), _("Error while launching a web browser:\n\n%s") % (e,))
 

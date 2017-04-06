@@ -56,7 +56,7 @@ USER_AGENT_STRING = '%s-%s/%s (%s;%s-%s)' % (PICARD_ORG_NAME, PICARD_APP_NAME,
                                              platform.platform(),
                                              platform.python_implementation(),
                                              platform.python_version())
-CLIENT_STRING = str(QUrl.toPercentEncoding('%s %s-%s' % (PICARD_ORG_NAME,
+CLIENT_STRING = string_(QUrl.toPercentEncoding('%s %s-%s' % (PICARD_ORG_NAME,
                                                          PICARD_APP_NAME,
                                                          PICARD_VERSION_STR)))
 
@@ -117,7 +117,7 @@ def _read_xml(stream):
 
             for i in range(attrs.count()):
                 attr = attrs.at(i)
-                node.attribs[_node_name(attr.name())] = str(attr.value())
+                node.attribs[_node_name(attr.name())] = string_(attr.value())
 
             current_node.append_child(_node_name(stream.name()), node)
             path.append(current_node)
@@ -192,7 +192,7 @@ class XmlWebService(QtCore.QObject):
         request = QtNetwork.QNetworkRequest(url)
         if mblogin and access_token:
             # access_token must not be unicode - PyQt5 doesn't like it.
-            request.setRawHeader(b"Authorization", ("Bearer %s" % str(access_token)).encode('utf-8'))
+            request.setRawHeader(b"Authorization", ("Bearer %s" % string_(access_token)).encode('utf-8'))
         if mblogin or (method == "GET" and refresh):
             request.setPriority(QtNetwork.QNetworkRequest.HighPriority)
             request.setAttribute(QtNetwork.QNetworkRequest.CacheLoadControlAttribute,
@@ -273,12 +273,12 @@ class XmlWebService(QtCore.QObject):
                     redirect = url.resolved(redirect)
                     if not XmlWebService.urls_equivalent(redirect, reply.request().url()):
                         log.debug("Redirect to %s requested", redirect.toString(QUrl.RemoveUserInfo))
-                        redirect_host = str(redirect.host())
+                        redirect_host = string_(redirect.host())
                         redirect_port = self.url_port(redirect)
                         redirect_query = dict(QUrlQuery(redirect).queryItems(QUrl.FullyEncoded))
                         redirect_path = redirect.path()
 
-                        original_host = str(url.host())
+                        original_host = string_(url.host())
                         original_port = self.url_port(url)
 
                         if ((original_host, original_port) in REQUEST_DELAY
@@ -480,8 +480,8 @@ class XmlWebService(QtCore.QObject):
             filters.append(("query", query))
         queryargs = {}
         for name, value in filters:
-            value = QUrl.toPercentEncoding(str(value))
-            queryargs[str(name)] = value
+            value = QUrl.toPercentEncoding(string_(value))
+            queryargs[string_(name)] = value
         path = "/ws/2/%s" % (entitytype)
         return self.get(host, port, path, handler, queryargs=queryargs,
                         xml=True, priority=True, important=True, mblogin=False,
@@ -527,8 +527,8 @@ class XmlWebService(QtCore.QObject):
         args['clientversion'] = PICARD_VERSION_STR
         args['format'] = format
         for name, value in args.items():
-            value = bytes(QUrl.toPercentEncoding(value)).decode()
-            filters.append('%s=%s' % (str(name), value))
+            value = string_(QUrl.toPercentEncoding(value))
+            filters.append('%s=%s' % (string_(name), value))
         return '&'.join(filters)
 
     def query_acoustid(self, handler, **args):
@@ -539,11 +539,11 @@ class XmlWebService(QtCore.QObject):
     def submit_acoustid_fingerprints(self, submissions, handler):
         args = {'user': config.setting["acoustid_apikey"]}
         for i, submission in enumerate(submissions):
-            args['fingerprint.%d' % i] = str(submission.fingerprint)
-            args['duration.%d' % i] = str(submission.duration)
-            args['mbid.%d' % i] = str(submission.recordingid)
+            args['fingerprint.%d' % i] = string_(submission.fingerprint)
+            args['duration.%d' % i] = string_(submission.duration)
+            args['mbid.%d' % i] = string_(submission.recordingid)
             if submission.puid:
-                args['puid.%d' % i] = str(submission.puid)
+                args['puid.%d' % i] = string_(submission.puid)
         host, port = ACOUSTID_HOST, ACOUSTID_PORT
         body = self._encode_acoustid_args(args, format='json')
         return self.post(host, port, '/v2/submit', body, handler, priority=True, important=False, mblogin=False)

@@ -113,7 +113,7 @@ class FingerprintingOptionsPage(OptionsPage):
     def _on_acoustid_fpcalc_check_finished(self, exit_code, exit_status):
         process = self.sender()
         if exit_code == 0 and exit_status == 0:
-            output = bytes(process.readAllStandardOutput()).decode()
+            output = string_(process.readAllStandardOutput())
             if output.startswith("fpcalc version"):
                 self._acoustid_fpcalc_set_success(output.strip())
             else:

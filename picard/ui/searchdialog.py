@@ -348,7 +348,7 @@ class TrackSearchDialog(SearchDialog):
                 'release': metadata['album'],
                 'tnum': metadata['tracknumber'],
                 'tracks': metadata['totaltracks'],
-                'qdur': str(metadata.length // 2000),
+                'qdur': string_(metadata.length // 2000),
                 'isrc': metadata['isrc'],
         }
 
@@ -539,7 +539,7 @@ class AlbumSearchDialog(SearchDialog):
         query = {
             "artist": metadata["albumartist"],
             "release": metadata["album"],
-            "tracks": str(len(cluster.files))
+            "tracks": string_(len(cluster.files))
         }
 
         # Generate query to be displayed to the user (in search box).

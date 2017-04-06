@@ -58,7 +58,7 @@ class BrowserIntegration(QtNetwork.QTcpServer):
 
     def _process_request(self):
         conn = self.sender()
-        line = str(conn.readLine())
+        line = string_(conn.readLine())
         conn.write("HTTP/1.1 200 OK\r\nCache-Control: max-age=0\r\n\r\nNothing to see here.")
         conn.disconnectFromHost()
         line = line.split()
@@ -66,7 +66,7 @@ class BrowserIntegration(QtNetwork.QTcpServer):
         if line[0] == "GET" and "?" in line[1]:
             action, args = line[1].split("?")
             args = [a.split("=", 1) for a in args.split("&")]
-            args = dict((a, str(QtCore.QUrl.fromPercentEncoding(b))) for (a, b) in args)
+            args = dict((a, string_(QtCore.QUrl.fromPercentEncoding(b))) for (a, b) in args)
             self.tagger.bring_tagger_front()
             if action == "/openalbum":
                 self.tagger.load_album(args["id"])

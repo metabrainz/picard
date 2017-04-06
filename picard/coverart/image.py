@@ -141,11 +141,11 @@ class CoverArtImage:
 
     def parse_url(self, url):
         self.url = QUrl(url)
-        self.host = str(self.url.host())
+        self.host = string_(self.url.host())
         self.port = self.url.port(80)
-        self.path = str(self.url.path(QUrl.FullyEncoded))
+        self.path = string_(self.url.path(QUrl.FullyEncoded))
         if self.url.hasQuery():
-            self.path += '?' + str(self.url.query(QUrl.FullyEncoded))
+            self.path += '?' + string_(self.url.query(QUrl.FullyEncoded))
 
     @property
     def source(self):
@@ -204,7 +204,7 @@ class CoverArtImage:
         return u' '.join(p)
 
     def __str__(self):
-        return str(self).encode('utf-8')
+        return string_(self).encode('utf-8')
 
     def __eq__(self, other):
         if self and other:

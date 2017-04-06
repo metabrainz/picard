@@ -218,7 +218,7 @@ class ReleasesOptionsPage(OptionsPage):
         data = []
         for i in range(list1.count()):
             item = list1.item(i)
-            data.append(str(item.data(QtCore.Qt.UserRole)))
+            data.append(string_(item.data(QtCore.Qt.UserRole)))
         config.setting[setting] = data
 
 

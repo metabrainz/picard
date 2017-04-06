@@ -171,14 +171,14 @@ class ASFFile(File):
                 continue
             elif name == 'WM/SharedUserRating':
                 # Rating in WMA ranges from 0 to 99, normalize this to the range 0 to 5
-                values[0] = int(round(int(str(values[0])) / 99.0 * (config.setting['rating_steps'] - 1)))
+                values[0] = int(round(int(string_(values[0])) / 99.0 * (config.setting['rating_steps'] - 1)))
             elif name == 'WM/PartOfSet':
-                disc = str(values[0]).split("/")
+                disc = string_(values[0]).split("/")
                 if len(disc) > 1:
                     metadata["totaldiscs"] = disc[1]
                     values[0] = disc[0]
             name = self.__RTRANS[name]
-            values = [str(value) for value in values if value]
+            values = [string_(value) for value in values if value]
             if values:
                 metadata[name] = values
         self._info(metadata, file)

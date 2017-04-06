@@ -80,7 +80,7 @@ class OptionsPage(QtWidgets.QWidget):
             try:
                 re.compile(regex_edit.text())
             except re.error as e:
-                raise OptionsCheckError(_("Regex Error"), str(e))
+                raise OptionsCheckError(_("Regex Error"), string_(e))
 
         def live_checker(text):
             regex_error.setStyleSheet("")

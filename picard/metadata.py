@@ -267,7 +267,7 @@ class Metadata(dict):
     def __setitem__(self, name, values):
         if not isinstance(values, list):
             values = [values]
-        values = [str(value) for value in values if value]
+        values = [string_(value) for value in values if value]
         if len(values):
             self.set(name, values)
         else:

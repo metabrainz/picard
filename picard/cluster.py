@@ -215,7 +215,7 @@ class Cluster(QtCore.QObject, Item):
         self.lookup_task = self.tagger.xmlws.find_releases(self._lookup_finished,
             artist=self.metadata['albumartist'],
             release=self.metadata['album'],
-            tracks=str(len(self.files)),
+            tracks=string_(len(self.files)),
             limit=QUERY_LIMIT)
 
     def clear_lookup_task(self):

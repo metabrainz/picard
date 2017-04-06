@@ -265,7 +265,7 @@ class FileInfoDialog(InfoDialog):
         if '~sample_rate' in file.orig_metadata:
             info.append((_('Sample rate:'), '%s Hz' % file.orig_metadata['~sample_rate']))
         if '~bits_per_sample' in file.orig_metadata:
-            info.append((_('Bits per sample:'), str(file.orig_metadata['~bits_per_sample'])))
+            info.append((_('Bits per sample:'), string_(file.orig_metadata['~bits_per_sample'])))
         if '~channels' in file.orig_metadata:
             ch = file.orig_metadata['~channels']
             if ch == 1:
@@ -273,7 +273,7 @@ class FileInfoDialog(InfoDialog):
             elif ch == 2:
                 ch = _('Stereo')
             else:
-                ch = str(ch)
+                ch = string_(ch)
             info.append((_('Channels:'), ch))
         return '<br/>'.join(map(lambda i: '<b>%s</b><br/>%s' %
                                 (htmlescape(i[0]),

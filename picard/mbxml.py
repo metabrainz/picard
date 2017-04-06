@@ -255,7 +255,7 @@ def media_formats_from_node(node):
         count = formats_count[format]
         format = RELEASE_FORMATS.get(format, format)
         if count > 1:
-            format = str(count) + u"×" + format
+            format = string_(count) + u"×" + format
         formats.append(format)
     return " + ".join(formats)
 
