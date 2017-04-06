@@ -1,19 +1,24 @@
 os: linux
 dist: trusty
 language: python
-python: "3.6"
+python: 
+  - "3.5"
+  - "3.6"
 cache:
   - apt
   - pip
 env:
   global:
     - PIP_INSTALL="pip install"
-  matrix:
     - DISCID="$PIP_INSTALL discid" MUTAGEN="$PIP_INSTALL mutagen>=1.37"
+  matrix:
+    - PYQT="$PIP_INSTALL pyqt5==5.7.1"
+    - PYQT="$PIP_INSTALL pyqt5==5.8"
+    - PYQT="$PIP_INSTALL pyqt5==5.8.1.1"
+    - PYQT="$PIP_INSTALL pyqt5==5.8.2"
 before_install:
   - sudo apt-get update -qq && sudo apt-get install -qq libdiscid0 libdiscid0-dev qt5-default
-  - $PIP_INSTALL sip
-  - $PIP_INSTALL pyqt5
+  - $PYQT
   - $MUTAGEN
   - $DISCID
 install:
