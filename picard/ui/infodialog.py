@@ -276,8 +276,8 @@ class FileInfoDialog(InfoDialog):
                 ch = str(ch)
             info.append((_('Channels:'), ch))
         return '<br/>'.join(map(lambda i: '<b>%s</b><br/>%s' %
-                                (picard.util.htmlescape(i[0]),
-                                 picard.util.htmlescape(i[1])), info))
+                                (htmlescape(i[0]),
+                                 htmlescape(i[1])), info))
 
     def _display_info_tab(self):
         file = self.obj
@@ -299,7 +299,7 @@ class AlbumInfoDialog(InfoDialog):
         if album.errors:
             tabWidget.setTabText(tab_index, _("&Errors"))
             text = '<br />'.join(map(lambda s: '<font color="darkred">%s</font>' %
-                                     '<br />'.join(unicode(picard.util.htmlescape(s))
+                                     '<br />'.join(unicode(htmlescape(s))
                                                    .replace('\t', ' ')
                                                    .replace(' ', '&nbsp;')
                                                    .splitlines()
@@ -349,9 +349,9 @@ class ClusterInfoDialog(InfoDialog):
         tabWidget.setTabText(tab_index, _("&Info"))
         info = []
         info.append("<b>%s</b> %s" % (_('Album:'),
-                                      unicode(picard.util.htmlescape(cluster.metadata["album"]))))
+                                      unicode(htmlescape(cluster.metadata["album"]))))
         info.append("<b>%s</b> %s" % (_('Artist:'),
-                                      unicode(picard.util.htmlescape(cluster.metadata["albumartist"]))))
+                                      unicode(htmlescape(cluster.metadata["albumartist"]))))
         info.append("")
         lines = []
         for file in cluster.iterfiles(False):
@@ -361,5 +361,5 @@ class ClusterInfoDialog(InfoDialog):
                          m["title"] + " - " + artist + " (" +
                          m["~length"] + ")")
         info.append("<b>%s</b><br />%s" % (_('Tracklist:'),
-                    '<br />'.join([unicode(picard.util.htmlescape(s)).replace(' ', '&nbsp;') for s in lines])))
+                    '<br />'.join([unicode(htmlescape(s)).replace(' ', '&nbsp;') for s in lines])))
         self.ui.info.setText('<br/>'.join(info))
