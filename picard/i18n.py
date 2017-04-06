@@ -73,10 +73,10 @@ def setup_gettext(localedir, ui_language=None, logger=None):
         _ngettext = trans.ngettext
         logger("Loading gettext translation (picard-countries), localedir=%r", localedir)
         trans_countries = gettext.translation("picard-countries", localedir)
-        _ugettext_countries = trans_countries.ugettext
+        _gettext_countries = trans_countries.gettext
         logger("Loading gettext translation (picard-attributes), localedir=%r", localedir)
         trans_attributes = gettext.translation("picard-attributes", localedir)
-        _ugettext_attributes = trans_attributes.ugettext
+        _gettext_attributes = trans_attributes.gettext
     except IOError as e:
         logger(e)
         builtins.__dict__['_'] = lambda a: a
@@ -87,41 +87,41 @@ def setup_gettext(localedir, ui_language=None, logger=None):
             else:
                 return b
 
-        def _ugettext_countries(msg):
+        def _gettext_countries(msg):
             return msg
 
-        def _ugettext_attributes(msg):
+        def _gettext_attributes(msg):
             return msg
 
     builtins.__dict__['ngettext'] = _ngettext
-    builtins.__dict__['ugettext_countries'] = _ugettext_countries
-    builtins.__dict__['ugettext_attributes'] = _ugettext_attributes
+    builtins.__dict__['gettext_countries'] = _gettext_countries
+    builtins.__dict__['gettext_attributes'] = _gettext_attributes
 
     logger("_ = %r", _)
     logger("N_ = %r", N_)
     logger("ngettext = %r", ngettext)
-    logger("ugettext_countries = %r", ugettext_countries)
-    logger("ugettext_attributes = %r", ugettext_attributes)
+    logger("gettext_countries = %r", gettext_countries)
+    logger("gettext_attributes = %r", gettext_attributes)
 
 
 # Workaround for po files with msgctxt which isn't supported by current python
 # gettext
-# msgctxt are used within attributes.po, and ugettext is failing to translate
+# msgctxt are used within attributes.po, and gettext is failing to translate
 # strings due to that
 # This workaround is a hack until we get proper msgctxt support
 _CONTEXT_SEPARATOR = "\x04"
-def ugettext_ctxt(ugettext_, message, context=None):
+def gettext_ctxt(gettext_, message, context=None):
     if context is None:
-        return ugettext_(message)
+        return gettext_(message)
 
     msg_with_ctxt = u"%s%s%s" % (context, _CONTEXT_SEPARATOR, message)
-    translated = ugettext_(msg_with_ctxt)
+    translated = gettext_(msg_with_ctxt)
     if _CONTEXT_SEPARATOR in translated:
         # no translation found, return original message
         return message
     return translated
 
 
-def ugettext_attr(message, context=None):
+def gettext_attr(message, context=None):
     """Translate MB attributes, depending on context"""
-    return ugettext_ctxt(ugettext_attributes, message, context)
+    return gettext_ctxt(gettext_attributes, message, context)

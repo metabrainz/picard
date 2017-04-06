@@ -18,7 +18,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from picard.const import MB_ATTRIBUTES
-from picard.i18n import ugettext_attr
+from picard.i18n import gettext_attr
 
 # list of types from http://musicbrainz.org/doc/Cover_Art/Types
 # order of declaration is preserved in selection box
@@ -39,4 +39,4 @@ def translate_caa_type(name):
     if name == 'unknown':
         return _(CAA_TYPES_TR[name])
     else:
-        return ugettext_attr(CAA_TYPES_TR[name], u"cover_art_type")
+        return gettext_attr(CAA_TYPES_TR[name], u"cover_art_type")

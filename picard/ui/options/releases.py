@@ -27,7 +27,7 @@ from picard.const import (RELEASE_COUNTRIES,
                           RELEASE_FORMATS,
                           RELEASE_PRIMARY_GROUPS,
                           RELEASE_SECONDARY_GROUPS)
-from picard.i18n import ugettext_attr
+from picard.i18n import gettext_attr
 
 
 _DEFAULT_SCORE = 0.5
@@ -103,7 +103,7 @@ class ReleasesOptionsPage(OptionsPage):
         self._release_type_sliders = {}
 
         def add_slider(name, griditer, context):
-            label = ugettext_attr(name, context)
+            label = gettext_attr(name, context)
             self._release_type_sliders[name] = \
                 ReleaseTypeScore(self.ui.type_group,
                                  self.ui.gridLayout,
@@ -191,10 +191,10 @@ class ReleasesOptionsPage(OptionsPage):
 
     def _load_list_items(self, setting, source, list1, list2):
         if setting == "preferred_release_countries":
-            source_list = [(c[0], ugettext_countries(c[1])) for c in
+            source_list = [(c[0], gettext_countries(c[1])) for c in
                            source.items()]
         elif setting == "preferred_release_formats":
-            source_list = [(c[0], ugettext_attr(c[1], u"medium_format")) for c
+            source_list = [(c[0], gettext_attr(c[1], u"medium_format")) for c
                            in source.items()]
         else:
             source_list = [(c[0], _(c[1])) for c in source.items()]
