@@ -34,7 +34,7 @@ class CollectionMenu(QtWidgets.QMenu):
         self.clear()
         for id_, collection in sorted(user_collections.items(),
                                      key=lambda k_v:
-                                     (locale.strxfrm(k_v[1].name.encode('utf-8')), k_v[0])):
+                                     (locale.strxfrm(string_(k_v[1])), k_v[0])):
             action = QtWidgets.QWidgetAction(self)
             action.setDefaultWidget(CollectionCheckBox(self, collection))
             self.addAction(action)
