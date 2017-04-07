@@ -23,7 +23,6 @@ from PyQt5.QtNetwork import QNetworkRequest
 from PyQt5.QtCore import QUrl, QUrlQuery
 from picard import config, log
 from picard.const import (
-    MUSICBRAINZ_SERVERS,
     MUSICBRAINZ_OAUTH_CLIENT_ID,
     MUSICBRAINZ_OAUTH_CLIENT_SECRET,
 )

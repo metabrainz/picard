@@ -19,7 +19,6 @@
 
 import traceback
 
-from picard import config, log
 from picard.coverart.providers import CoverArtProvider
 from picard.coverart.providers.caa import CoverArtProviderCaa
 from picard.coverart.image import CaaCoverArtImage, CaaThumbnailCoverArtImage

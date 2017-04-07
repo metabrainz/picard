@@ -18,7 +18,6 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 import os.path
-import cgi
 import traceback
 from PyQt5 import QtGui, QtCore, QtWidgets
 from picard import log

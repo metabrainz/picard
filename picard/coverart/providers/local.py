@@ -20,7 +20,7 @@
 import os
 import re
 import traceback
-from picard import config, log
+from picard import config
 from picard.coverart.providers import CoverArtProvider, ProviderOptions
 from picard.coverart.image import CoverArtImageFromFile
 from picard.coverart.utils import CAA_TYPES

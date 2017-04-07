@@ -17,8 +17,6 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-from PyQt5.QtGui import QPalette, QColor
-
 from picard import config
 from picard.ui.options import OptionsPage, register_options_page
 from picard.ui.ui_options_advanced import Ui_AdvancedOptionsPage

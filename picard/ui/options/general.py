@@ -18,8 +18,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from PyQt5.QtWidgets import QInputDialog
-from PyQt5.QtCore import QUrl
-from picard import config, log
+from picard import config
 from picard.util import webbrowser2
 from picard.ui.options import OptionsPage, register_options_page
 from picard.ui.ui_options_general import Ui_GeneralOptionsPage

@@ -32,7 +32,6 @@ from time import time
 from PyQt5 import QtCore
 from string import Template
 # Required for compatibility with lastfmplus which imports this from here rather than loading it direct.
-from functools import partial
 from picard.const import MUSICBRAINZ_SERVERS
 
 

@@ -22,11 +22,11 @@ import os.path
 import sys
 from functools import partial
 from PyQt5 import QtWidgets
-from PyQt5.QtGui import QPalette, QColor
+from PyQt5.QtGui import QPalette
 from picard import config
 from picard.const import PICARD_URLS
 from picard.file import File
-from picard.script import ScriptParser, SyntaxError, ScriptError, UnknownFunction
+from picard.script import ScriptParser, SyntaxError, ScriptError
 from picard.ui.options import OptionsPage, OptionsCheckError, register_options_page
 from picard.ui.ui_options_renaming import Ui_RenamingOptionsPage
 from picard.ui.util import enabledSlot

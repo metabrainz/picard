@@ -24,7 +24,7 @@
 
 import traceback
 
-from picard import config, log
+from picard import log
 from picard.util import parse_amazon_url
 from picard.coverart.providers import CoverArtProvider
 from picard.coverart.image import CoverArtImage

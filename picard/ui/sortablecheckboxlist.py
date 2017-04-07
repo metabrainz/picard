@@ -17,7 +17,6 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-import sys
 from functools import partial
 from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtCore import pyqtSignal

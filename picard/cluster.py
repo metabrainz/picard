@@ -20,7 +20,6 @@
 
 from __future__ import print_function
 import re
-import os
 import ntpath
 import sys
 from operator import itemgetter
@@ -31,7 +30,7 @@ from picard.metadata import Metadata
 from picard.similarity import similarity
 from picard.ui.item import Item
 from picard.util import format_time, album_artist_from_path
-from picard.util.imagelist import ImageList, update_metadata_images
+from picard.util.imagelist import update_metadata_images
 from picard.const import QUERY_LIMIT
 
 
