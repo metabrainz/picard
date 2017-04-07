@@ -217,6 +217,9 @@ class MP4File(File):
             else:
                 tags["disk"] = [(int(metadata["discnumber"]), 0)]
 
+        # Add iTunes show/hide classical work/movement fields
+        tags["shwm"] = [1 if "movementname" in metadata else 0]
+
         covr = []
         for image in metadata.images_to_be_saved_to_tags:
             if image.mimetype == "image/jpeg":
