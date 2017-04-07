@@ -144,6 +144,8 @@ class ID3File(File):
         'MusicBrainz Disc Id': 'musicbrainz_discid',
         'MusicBrainz Work Id': 'musicbrainz_workid',
         'MusicBrainz Release Group Id': 'musicbrainz_releasegroupid',
+        'MusicBrainz Original Album Id': 'musicbrainz_originalalbumid',
+        'MusicBrainz Original Artist Id': 'musicbrainz_originalartistid',
         'MusicBrainz Album Release Country': 'releasecountry',
         'MusicIP PUID': 'musicip_puid',
         'Acoustid Fingerprint': 'acoustid_fingerprint',
