@@ -15,8 +15,8 @@ sip.setapi("QVariant", 2)
 
 from picard import __version__, compat
 
-if sys.version_info < (2, 7):
-    print("*** You need Python 2.7 or higher to use Picard.")
+if sys.version_info < (2, 7, 9):
+    print("*** You need Python 2.7.9 or higher to use Picard.")
 
 
 args = {}
