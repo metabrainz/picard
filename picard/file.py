@@ -412,13 +412,13 @@ class File(QtCore.QObject, Item):
         patterns = encode_filename(config.setting["move_additional_files_pattern"])
         patterns = [string_(p.strip()) for p in patterns.split() if p.strip()]
         try:
-            names = os.listdir(old_path)
+            names = list(map(encode_filename, os.listdir(old_path)))
         except os.error:
             log.error("Error: {} directory not found".format(old_path))
             return
         filtered_names = [name for name in names if name[0] != "."]
         for pattern in patterns:
-            pattern_regex = re.compile(fnmatch.translate(pattern), re.IGNORECASE)
+            pattern_regex = re.compile(encode_filename(fnmatch.translate(pattern)), re.IGNORECASE)
             file_names = names
             if pattern[0] != '.':
                 file_names = filtered_names
