@@ -16,7 +16,7 @@ Before installing Picard, you need to have these:
    * [Windows](http://gnuwin32.sourceforge.net/packages/gettext.htm)
 
  * a compiler
-   Windows should work with [Visual C++ 2008 Express](http://go.microsoft.com/?linkid=7729279)
+   * Windows should work with [Visual C++ 2008 Express](http://go.microsoft.com/?linkid=7729279)
 
  * [chromaprint](http://acoustid.org/chromaprint) (optional)
    For fingerprinting (scanning) files
