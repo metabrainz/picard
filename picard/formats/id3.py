@@ -146,6 +146,7 @@ class ID3File(File):
         'MusicBrainz Release Track Id': 'musicbrainz_trackid',
         'MusicBrainz Disc Id': 'musicbrainz_discid',
         'MusicBrainz Work Id': 'musicbrainz_workid',
+        'MusicBrainz Movement Work Id': 'musicbrainz_movementid',
         'MusicBrainz Release Group Id': 'musicbrainz_releasegroupid',
         'MusicBrainz Album Release Country': 'releasecountry',
         'MusicIP PUID': 'musicip_puid',
