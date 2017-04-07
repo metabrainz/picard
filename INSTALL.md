@@ -31,7 +31,7 @@ We recommend you use [pip](https://pip.pypa.io/en/stable/) to install the depend
 
 Run the following command to install PyQt5, Mutagen and discid:
 
-```pip install -r requirements.txt```
+    pip install -r requirements.txt
 
 The binaries for Python, GetText (msgfmt), fpcalc and discid.dll have to be
 in the %PATH% on Windows.
@@ -42,14 +42,14 @@ Installation
 
 After installing the dependencies, you can install Picard by running:
 
-```sudo python setup.py install```
+    sudo python setup.py install
 
 This will automatically build and install all required Python modules.
 On Windows you need to have Administrator rights, but don't put "sudo"
 in front of the command.
 To start Picard now you can use:
 
-```picard```
+    picard
 
 
 Running From the Source Tree
@@ -57,13 +57,15 @@ Running From the Source Tree
 
 If you want to run Picard from the source directory without installing, you
 need to build the C extensions and locales manually:
+
 ```python
 python setup.py build_ext -i
 python setup.py build_locales -i
 ```
+
 And to start Picard use:
 
-```python tagger.py```
+    python tagger.py
 
 
 Running the Test Suite
@@ -72,4 +74,4 @@ Running the Test Suite
 To run the included tests, follow the instructions for "Running From
 the Source Tree".  Afterward you can run the tests using setup.py:
 
-```python setup.py test```
+    python setup.py test
