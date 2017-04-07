@@ -26,7 +26,7 @@ import sys
 import unicodedata
 import builtins
 if sys.platform == 'win32':
-	from ctypes import windll
+    from ctypes import windll
 
 from time import time
 from PyQt5 import QtCore
@@ -442,21 +442,36 @@ def union_sorted_lists(list1, list2):
     return union
 
 
-def htmlescape(string):
-    return cgi.escape(string)
-
-
-def json_load(data):
-    return json.loads(bytes(data).decode())
-
-
 def convert_to_string(obj):
+    """
+    Appropriately converts the input `obj` to a string.
+    Args:
+        obj (QByteArray, bytes, bytearray, ...): The input object
+    Returns:
+        string: The appropriately decoded string
+    """
     if isinstance(obj, QtCore.QByteArray):
         return bytes(obj).decode()
     elif isinstance(obj, (bytes, bytearray)):
         return obj.decode()
     else:
         return str(obj)
+
+
+def htmlescape(string):
+    return cgi.escape(string)
+
+
+def json_load(data):
+    """
+    Appropriately convert and returns a python dictionary from
+    json string.
+    Args:
+        data (QByteArray): The json response
+    Returns:
+        dict: Response data as a python dict
+    """
+    return json.loads(convert_to_string(data))
 
 
 builtins.__dict__['string_'] = convert_to_string
