@@ -6,40 +6,32 @@ Dependencies
 
 Before installing Picard, you need to have these:
 
- * Python 2.7 or newer (Picard will not work with Python 3)
-   http://python.org/download
+ * [Python 3.5 or newer](http://python.org/download)
 
- * PyQt 4.5 or newer
-   http://www.riverbankcomputing.co.uk/software/pyqt/download
+ * [PyQt 5.7.1 or newer](http://www.riverbankcomputing.co.uk/software/pyqt/download)
 
- * Mutagen 1.22 or newer (1.23 or newer for AIFF support)
-   https://bitbucket.org/lazka/mutagen/downloads
+ * [Mutagen 1.37 or newer](https://bitbucket.org/lazka/mutagen/downloads)
 
- * gettext
-   Windows: http://gnuwin32.sourceforge.net/packages/gettext.htm
+ * gettext:
+   * [Windows](http://gnuwin32.sourceforge.net/packages/gettext.htm)
 
  * a compiler
-   Windows should work with Visual C++ 2008 Express:
-   http://go.microsoft.com/?linkid=7729279
+   Windows should work with [Visual C++ 2008 Express](http://go.microsoft.com/?linkid=7729279)
 
- * chromaprint (optional)
+ * [chromaprint](http://acoustid.org/chromaprint) (optional)
    For fingerprinting (scanning) files
-   http://acoustid.org/chromaprint
 
- * python-discid or python-libdiscid (optional)
+ * [python-discid or python-libdiscid](https://python-discid.readthedocs.org/) (optional)
    Required for CD lookups.
-   https://python-discid.readthedocs.org/
-   Depends on libdiscid: http://musicbrainz.org/doc/libdiscid
+   Depends on [libdiscid](http://musicbrainz.org/doc/libdiscid)
    Due to slowdowns in reading the CD TOC, using libdiscid versions
    0.3.0 - 0.4.1 is not recommended.
 
+We recommend you use [pip](https://pip.pypa.io/en/stable/) to install the dependencies:
 
-On Windows it is recommended to use Pip for Windows:
-https://sites.google.com/site/pydatalog/python/pip-for-windows
-and then just:
-  pip install mutagen
-  pip install discid
-there for Mutagen and python-discid.
+Run the following command to install PyQt5, Mutagen and discid:
+
+```pip install -r requirements.txt```
 
 The binaries for Python, GetText (msgfmt), fpcalc and discid.dll have to be
 in the %PATH% on Windows.
@@ -50,14 +42,14 @@ Installation
 
 After installing the dependencies, you can install Picard by running:
 
-  sudo python setup.py install
+```sudo python setup.py install```
 
 This will automatically build and install all required Python modules.
 On Windows you need to have Administrator rights, but don't put "sudo"
 in front of the command.
 To start Picard now you can use:
 
-  picard
+```picard```
 
 
 Running From the Source Tree
@@ -65,13 +57,13 @@ Running From the Source Tree
 
 If you want to run Picard from the source directory without installing, you
 need to build the C extensions and locales manually:
-
-  python setup.py build_ext -i
-  python setup.py build_locales -i
-
+```python
+python setup.py build_ext -i
+python setup.py build_locales -i
+```
 And to start Picard use:
 
-  python tagger.py
+```python tagger.py```
 
 
 Running the Test Suite
@@ -80,4 +72,4 @@ Running the Test Suite
 To run the included tests, follow the instructions for "Running From
 the Source Tree".  Afterward you can run the tests using setup.py:
 
-  python setup.py test
+```python setup.py test```
