@@ -44,7 +44,7 @@ class XmlNode(object):
 class ReleaseTest(unittest.TestCase):
     def setUp(self):
         # we are using temporary locales for tests
-        self.tmp_path = tempfile.mkdtemp().decode("utf-8")
+        self.tmp_path = tempfile.mkdtemp()
         if sys.hexversion >= 0x020700F0:
             self.addCleanup(shutil.rmtree, self.tmp_path)
         self.localedir = os.path.join(self.tmp_path, 'locale')

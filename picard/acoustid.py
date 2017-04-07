@@ -67,7 +67,7 @@ class AcoustIDClient(QtCore.QObject):
             recording_el.attribs['id'] = recording_id
             recording_el.append_child('title').text = recording.title[0].text
             if 'duration' in recording.children:
-                recording_el.append_child('length').text = str(int(recording.duration[0].text) * 1000)
+                recording_el.append_child('length').text = string_(int(recording.duration[0].text) * 1000)
             make_artist_credit_node(recording_el, recording.artists[0].artist)
             release_list_el = recording_el.append_child('release_list')
             for release_group in recording.releasegroups[0].releasegroup:
@@ -101,7 +101,7 @@ class AcoustIDClient(QtCore.QObject):
 
         if error:
             mparms = {
-                'error': unicode(http.errorString()),
+                'error': http.errorString(),
                 'filename': file.filename,
             }
             log.error(
@@ -176,7 +176,7 @@ class AcoustIDClient(QtCore.QObject):
             file.acoustid_length = length
             self.tagger.acoustidmanager.add(file, None)
             params['fingerprint'] = fingerprint
-            params['duration'] = str(length)
+            params['duration'] = string_(length)
         else:
             type, recordingid = result
             params['recordingid'] = recordingid
@@ -194,7 +194,7 @@ class AcoustIDClient(QtCore.QObject):
             self._run_next_task()
             process = self.sender()
             if exit_code == 0 and exit_status == 0:
-                output = str(process.readAllStandardOutput())
+                output = string_(process.readAllStandardOutput())
                 duration = None
                 fingerprint = None
                 for line in output.splitlines():
@@ -212,7 +212,7 @@ class AcoustIDClient(QtCore.QObject):
                     "Fingerprint calculator failed exit code = %r, exit status = %r, error = %s",
                     exit_code,
                     exit_status,
-                    unicode(process.errorString()))
+                    process.errorString())
         finally:
             next(result)
 
@@ -225,7 +225,7 @@ class AcoustIDClient(QtCore.QObject):
         try:
             self._running -= 1
             self._run_next_task()
-            log.error("Fingerprint calculator failed error = %s (%r)", unicode(process.errorString()), error)
+            log.error("Fingerprint calculator failed error = %s (%r)", process.errorString(), error)
         finally:
             next(None)
 

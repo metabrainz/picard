@@ -32,9 +32,9 @@ class CollectionMenu(QtWidgets.QMenu):
 
     def update_collections(self):
         self.clear()
-        for id, collection in sorted(user_collections.iteritems(),
+        for id_, collection in sorted(user_collections.items(),
                                      key=lambda k_v:
-                                     (locale.strxfrm(k_v[1].name.encode('utf-8')), k_v[0])):
+                                     (locale.strxfrm(string_(k_v[1])), k_v[0])):
             action = QtWidgets.QWidgetAction(self)
             action.setDefaultWidget(CollectionCheckBox(self, collection))
             self.addAction(action)
@@ -83,4 +83,4 @@ class CollectionCheckBox(QtWidgets.QCheckBox):
 
     def label(self):
         c = self.collection
-        return ungettext("%s (%i release)", "%s (%i releases)", c.size) % (c.name, c.size)
+        return ngettext("%s (%i release)", "%s (%i releases)", c.size) % (c.name, c.size)

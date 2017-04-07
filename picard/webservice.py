@@ -56,7 +56,7 @@ USER_AGENT_STRING = '%s-%s/%s (%s;%s-%s)' % (PICARD_ORG_NAME, PICARD_APP_NAME,
                                              platform.platform(),
                                              platform.python_implementation(),
                                              platform.python_version())
-CLIENT_STRING = str(QUrl.toPercentEncoding('%s %s-%s' % (PICARD_ORG_NAME,
+CLIENT_STRING = string_(QUrl.toPercentEncoding('%s %s-%s' % (PICARD_ORG_NAME,
                                                          PICARD_APP_NAME,
                                                          PICARD_VERSION_STR)))
 
@@ -100,7 +100,7 @@ _node_name_re = re.compile('[^a-zA-Z0-9]')
 
 
 def _node_name(n):
-    return _node_name_re.sub('_', unicode(n))
+    return _node_name_re.sub('_', n)
 
 
 def _read_xml(stream):
@@ -115,9 +115,9 @@ def _read_xml(stream):
             node = XmlNode()
             attrs = stream.attributes()
 
-            for i in xrange(attrs.count()):
+            for i in range(attrs.count()):
                 attr = attrs.at(i)
-                node.attribs[_node_name(attr.name())] = unicode(attr.value())
+                node.attribs[_node_name(attr.name())] = string_(attr.value())
 
             current_node.append_child(_node_name(stream.name()), node)
             path.append(current_node)
@@ -127,7 +127,7 @@ def _read_xml(stream):
             current_node = path.pop()
 
         elif stream.isCharacters():
-            current_node.text += unicode(stream.text())
+            current_node.text += stream.text()
 
     return document
 
@@ -168,7 +168,7 @@ class XmlWebService(QtCore.QObject):
     def set_cache(self, cache_size_in_mb=100):
         cache = QtNetwork.QNetworkDiskCache()
         location = QStandardPaths.writableLocation(QStandardPaths.CacheLocation)
-        cache.setCacheDirectory(os.path.join(unicode(location), u'picard'))
+        cache.setCacheDirectory(os.path.join(location, u'picard'))
         cache.setMaximumCacheSize(cache_size_in_mb * 1024 * 1024)
         self.manager.setCache(cache)
         log.debug("NetworkDiskCache dir: %s", cache.cacheDirectory())
@@ -192,7 +192,7 @@ class XmlWebService(QtCore.QObject):
         request = QtNetwork.QNetworkRequest(url)
         if mblogin and access_token:
             # access_token must not be unicode - PyQt5 doesn't like it.
-            request.setRawHeader("Authorization", "Bearer %s" % str(access_token))
+            request.setRawHeader(b"Authorization", ("Bearer %s" % string_(access_token)).encode('utf-8'))
         if mblogin or (method == "GET" and refresh):
             request.setPriority(QtNetwork.QNetworkRequest.HighPriority)
             request.setAttribute(QtNetwork.QNetworkRequest.CacheLoadControlAttribute,
@@ -202,16 +202,16 @@ class XmlWebService(QtCore.QObject):
         elif cacheloadcontrol is not None:
             request.setAttribute(QtNetwork.QNetworkRequest.CacheLoadControlAttribute,
                                  cacheloadcontrol)
-        request.setRawHeader("User-Agent", USER_AGENT_STRING)
+        request.setRawHeader(b"User-Agent", USER_AGENT_STRING.encode('utf-8'))
         if xml:
-            request.setRawHeader("Accept", "application/xml")
+            request.setRawHeader(b"Accept", b"application/xml")
         if data is not None:
             if method == "POST" and host == config.setting["server_host"] and xml:
                 request.setHeader(QtNetwork.QNetworkRequest.ContentTypeHeader, "application/xml; charset=utf-8")
             else:
                 request.setHeader(QtNetwork.QNetworkRequest.ContentTypeHeader, "application/x-www-form-urlencoded")
         send = self._request_methods[method]
-        reply = send(request, data) if data is not None else send(request)
+        reply = send(request, data.encode('utf-8')) if data is not None else send(request)
         self._remember_request_time((host, port))
         self._active_requests[reply] = (request, handler, xml, refresh)
 
@@ -254,7 +254,7 @@ class XmlWebService(QtCore.QObject):
                       repr(reply.attribute(QtNetwork.QNetworkRequest.HttpStatusCodeAttribute))
                       )
             if handler is not None:
-                handler(str(reply.readAll()), reply, error)
+                handler(reply.readAll(), reply, error)
         else:
             redirect = reply.attribute(QtNetwork.QNetworkRequest.RedirectionTargetAttribute)
             fromCache = reply.attribute(QtNetwork.QNetworkRequest.SourceIsFromCacheAttribute)
@@ -273,12 +273,12 @@ class XmlWebService(QtCore.QObject):
                     redirect = url.resolved(redirect)
                     if not XmlWebService.urls_equivalent(redirect, reply.request().url()):
                         log.debug("Redirect to %s requested", redirect.toString(QUrl.RemoveUserInfo))
-                        redirect_host = str(redirect.host())
+                        redirect_host = string_(redirect.host())
                         redirect_port = self.url_port(redirect)
                         redirect_query = dict(QUrlQuery(redirect).queryItems(QUrl.FullyEncoded))
                         redirect_path = redirect.path()
 
-                        original_host = str(url.host())
+                        original_host = string_(url.host())
                         original_port = self.url_port(url)
 
                         if ((original_host, original_port) in REQUEST_DELAY
@@ -298,12 +298,12 @@ class XmlWebService(QtCore.QObject):
                         log.error("Redirect loop: %s",
                                   reply.request().url().toString(QUrl.RemoveUserInfo)
                                   )
-                        handler(str(reply.readAll()), reply, error)
+                        handler(reply.readAll(), reply, error)
                 elif xml:
                     document = _read_xml(QXmlStreamReader(reply))
                     handler(document, reply, error)
                 else:
-                    handler(str(reply.readAll()), reply, error)
+                    handler(reply.readAll(), reply, error)
 
     def _process_reply(self, reply):
         try:
@@ -337,7 +337,7 @@ class XmlWebService(QtCore.QObject):
         return self.add_task(func, host, port, priority, important=important)
 
     def stop(self):
-        for reply in self._active_requests.keys():
+        for reply in list(self._active_requests.keys()):
             reply.abort()
         self._init_queues()
 
@@ -480,8 +480,8 @@ class XmlWebService(QtCore.QObject):
             filters.append(("query", query))
         queryargs = {}
         for name, value in filters:
-            value = QUrl.toPercentEncoding(unicode(value))
-            queryargs[str(name)] = value
+            value = QUrl.toPercentEncoding(string_(value))
+            queryargs[string_(name)] = value
         path = "/ws/2/%s" % (entitytype)
         return self.get(host, port, path, handler, queryargs=queryargs,
                         xml=True, priority=True, important=True, mblogin=False,
@@ -527,8 +527,8 @@ class XmlWebService(QtCore.QObject):
         args['clientversion'] = PICARD_VERSION_STR
         args['format'] = format
         for name, value in args.items():
-            value = str(QUrl.toPercentEncoding(value))
-            filters.append('%s=%s' % (str(name), value))
+            value = string_(QUrl.toPercentEncoding(value))
+            filters.append('%s=%s' % (string_(name), value))
         return '&'.join(filters)
 
     def query_acoustid(self, handler, **args):
@@ -539,11 +539,11 @@ class XmlWebService(QtCore.QObject):
     def submit_acoustid_fingerprints(self, submissions, handler):
         args = {'user': config.setting["acoustid_apikey"]}
         for i, submission in enumerate(submissions):
-            args['fingerprint.%d' % i] = str(submission.fingerprint)
-            args['duration.%d' % i] = str(submission.duration)
-            args['mbid.%d' % i] = str(submission.recordingid)
+            args['fingerprint.%d' % i] = string_(submission.fingerprint)
+            args['duration.%d' % i] = string_(submission.duration)
+            args['mbid.%d' % i] = string_(submission.recordingid)
             if submission.puid:
-                args['puid.%d' % i] = str(submission.puid)
+                args['puid.%d' % i] = string_(submission.puid)
         host, port = ACOUSTID_HOST, ACOUSTID_PORT
         body = self._encode_acoustid_args(args, format='json')
         return self.post(host, port, '/v2/submit', body, handler, priority=True, important=False, mblogin=False)

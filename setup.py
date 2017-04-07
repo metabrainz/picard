@@ -8,12 +8,9 @@ import os
 import re
 import sys
 import subprocess
-import sip
+from io import StringIO
 
-sip.setapi("QString", 2)
-sip.setapi("QVariant", 2)
-
-from picard import __version__, compat
+from picard import __version__
 
 if sys.version_info < (2, 7):
     print("*** You need Python 2.7 or higher to use Picard.")
@@ -328,7 +325,7 @@ class picard_build_ui(Command):
 
         def compile_ui(uifile, pyfile):
             log.info("compiling %s -> %s", uifile, pyfile)
-            tmp = compat.StringIO()
+            tmp = StringIO()
             uic.compileUi(uifile, tmp)
             source = tmp.getvalue()
             rc = re.compile(r'\n\n#.*?(?=\n\n)', re.MULTILINE|re.DOTALL)
@@ -453,7 +450,7 @@ except ImportError:
 
 def _get_option_name(obj):
     """Returns the name of the option for specified Command object"""
-    for name, klass in obj.distribution.cmdclass.iteritems():
+    for name, klass in obj.distribution.cmdclass.items():
             if obj.__class__ == klass:
                 return name
     raise Exception("No such command class")
@@ -685,7 +682,7 @@ def contrib_plugin_files():
                     plugin_files[file_root].append(os.path.join(root, file))
                 else:
                     plugin_files[file_root] = [os.path.join(root, file)]
-    data_files = [(x, sorted(y)) for x, y in plugin_files.iteritems()]
+    data_files = [(x, sorted(y)) for x, y in plugin_files.items()]
     return sorted(data_files, key=lambda x: x[0])
 
 

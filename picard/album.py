@@ -32,7 +32,7 @@ from picard.track import Track
 from picard.script import ScriptParser
 from picard.ui.item import Item
 from picard.util import format_time, mbid_validate
-from picard.util.imagelist import ImageList, update_metadata_images
+from picard.util.imagelist import update_metadata_images
 from picard.util.textencoding import asciipunct
 from picard.cluster import Cluster
 from picard.collection import add_release_to_user_collections
@@ -164,7 +164,7 @@ class Album(DataObject, Item):
         parsed = False
         try:
             if error:
-                self.error_append(unicode(http.errorString()))
+                self.error_append(http.errorString())
                 # Fix for broken NAT releases
                 if error == QtNetwork.QNetworkReply.ContentNotFoundError:
                     nats = False
@@ -250,7 +250,7 @@ class Album(DataObject, Item):
                         track = self._finalize_loading_track(track_node, mm, artists, va, absolutetracknumber, discpregap)
                         track.metadata['~datatrack'] = "1"
 
-            totalalbumtracks = str(absolutetracknumber)
+            totalalbumtracks = string_(absolutetracknumber)
 
             for track in self._new_tracks:
                 track.metadata["~totalalbumtracks"] = totalalbumtracks
@@ -542,10 +542,10 @@ class Album(DataObject, Item):
 
                 number_of_images = len(metadata.images)
                 if getattr(metadata, 'has_common_images', True):
-                    text += ungettext("; %i image", "; %i images",
+                    text += ngettext("; %i image", "; %i images",
                                       number_of_images) % number_of_images
                 else:
-                    text += ungettext("; %i image not in all tracks", "; %i different images among tracks",
+                    text += ngettext("; %i image not in all tracks", "; %i different images among tracks",
                                       number_of_images) % number_of_images
                 return text + ')'
             else:

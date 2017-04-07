@@ -81,7 +81,7 @@ class TagCounter(dict):
         missing = self.parent.objects - count
 
         if tag in self.different:
-            return (ungettext("(different across %d item)", "(different across %d items)", count) % count, True)
+            return (ngettext("(different across %d item)", "(different across %d items)", count) % count, True)
         else:
             if tag == "~length":
                 msg = format_time(self.get(tag, 0))
@@ -89,7 +89,7 @@ class TagCounter(dict):
                 msg = MULTI_VALUED_JOINER.join(self[tag])
 
             if count > 0 and missing > 0:
-                return (msg + " " + (ungettext("(missing from %d item)", "(missing from %d items)", missing) % missing), True)
+                return (msg + " " + (ngettext("(missing from %d item)", "(missing from %d items)", missing) % missing), True)
             else:
                 return (msg, False)
 
@@ -257,7 +257,7 @@ class MetadataBox(QtWidgets.QTableWidget):
         QtWidgets.QTableWidget.closeEditor(self, editor, hint)
         tag = self.tag_diff.tag_names[self.editing.row()]
         old = self.tag_diff.new[tag]
-        new = [unicode(editor.text())]
+        new = [editor.text()]
         if old == new:
             self.editing.setText(old[0])
         else:
@@ -316,7 +316,7 @@ class MetadataBox(QtWidgets.QTableWidget):
                 remove_tag_action.setShortcut(self.remove_tag_shortcut.key())
                 menu.addAction(remove_tag_action)
             if useorigs:
-                name = ungettext("Use Original Value", "Use Original Values", len(useorigs))
+                name = ngettext("Use Original Value", "Use Original Values", len(useorigs))
                 use_orig_value_action = QtWidgets.QAction(name, self.parent)
                 use_orig_value_action.triggered.connect(lambda: [f() for f in useorigs])
                 menu.addAction(use_orig_value_action)
@@ -338,7 +338,7 @@ class MetadataBox(QtWidgets.QTableWidget):
         self._save_preserved_tags(preserved_tags)
 
     def remove_from_preserved_tags(self, name, preserved_tags):
-        preserved_tags = filter(lambda x: x != name, preserved_tags)
+        preserved_tags = [tag for tag in preserved_tags if tag != name]
         self._save_preserved_tags(preserved_tags)
 
     def edit_tag(self, tag):
@@ -440,7 +440,7 @@ class MetadataBox(QtWidgets.QTableWidget):
         for file in files:
             new_metadata = file.new_metadata
             orig_metadata = file.orig_metadata
-            tags = set(new_metadata.keys() + orig_metadata.keys())
+            tags = set(list(new_metadata.keys()) + list(orig_metadata.keys()))
 
             for name in filter(lambda x: not x.startswith("~") and file.supports_tag(x), tags):
                 new_values = new_metadata.getall(name)
@@ -454,20 +454,20 @@ class MetadataBox(QtWidgets.QTableWidget):
                 tag_diff.add(name, orig_values, new_values, True, removed)
 
             tag_diff.add("~length",
-                         str(orig_metadata.length), str(new_metadata.length), False)
+                         string_(orig_metadata.length), string_(new_metadata.length), False)
 
         for track in tracks:
             if track.num_linked_files == 0:
-                for name, values in dict.iteritems(track.metadata):
+                for name, values in track.metadata.rawitems():
                     if not name.startswith("~"):
                         tag_diff.add(name, values, values, True)
 
-                length = str(track.metadata.length)
+                length = string_(track.metadata.length)
                 tag_diff.add("~length", length, length, False)
 
                 tag_diff.objects += 1
 
-        all_tags = set(orig_tags.keys() + new_tags.keys())
+        all_tags = set(list(orig_tags.keys()) + list(new_tags.keys()))
         tag_names = COMMON_TAGS + \
                     sorted(all_tags.difference(COMMON_TAGS),
                            key=lambda x: display_tag_name(x).lower())

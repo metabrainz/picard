@@ -118,8 +118,8 @@ class CoverArtThumbnail(ActiveLabel):
         painter = QtGui.QPainter(cover)
         bgcolor = QtGui.QColor.fromRgb(0, 0, 0, 128)
         painter.fillRect(QtCore.QRectF(offx, offy, w, h), bgcolor)
-        x = offx + (w - pixmap.width()) / 2
-        y = offy + (h - pixmap.height()) / 2
+        x = offx + (w - pixmap.width()) // 2
+        y = offy + (h - pixmap.height()) // 2
         painter.drawPixmap(x, y, pixmap)
         painter.end()
         return cover
@@ -143,7 +143,7 @@ class CoverArtThumbnail(ActiveLabel):
             has_common_images = True
 
         w, h, displacements = (128, 128, 20)
-        key = hash(tuple(sorted(self.data)) + (has_common_images,))
+        key = hash(tuple(sorted(self.data, key=lambda x: x.types_as_string())) + (has_common_images,))
         try:
             pixmap = self._pixmap_cache[key]
         except KeyError:
@@ -164,19 +164,19 @@ class CoverArtThumbnail(ActiveLabel):
                 bgcolor = self.palette().color(QtGui.QPalette.Window)
                 painter = QtGui.QPainter(pixmap)
                 painter.fillRect(QtCore.QRectF(0, 0, stack_width, stack_height), bgcolor)
-                cx = stack_width - w / 2
-                cy = h / 2
+                cx = stack_width - w // 2
+                cy = h // 2
                 if limited:
-                    x, y = (cx - self.shadow.width() / 2, cy - self.shadow.height() / 2)
+                    x, y = (cx - self.shadow.width() // 2, cy - self.shadow.height() // 2)
                     for i in range(3):
                         painter.drawPixmap(x, y, self.shadow)
-                        x -= displacements / 3
-                        y += displacements / 3
+                        x -= displacements // 3
+                        y += displacements // 3
                     cx -= displacements
                     cy += displacements
                 else:
-                    cx = stack_width - w / 2
-                    cy = h / 2
+                    cx = stack_width - w // 2
+                    cy = h // 2
                 for image in reversed(data_to_paint):
                     if isinstance(image, QtGui.QPixmap):
                         thumb = image
@@ -184,7 +184,7 @@ class CoverArtThumbnail(ActiveLabel):
                         thumb = QtGui.QPixmap()
                         thumb.loadFromData(image.data)
                     thumb = self.decorate_cover(thumb)
-                    x, y = (cx - thumb.width() / 2, cy - thumb.height() / 2)
+                    x, y = (cx - thumb.width() // 2, cy - thumb.height() // 2)
                     painter.drawPixmap(x, y, thumb)
                     cx -= displacements
                     cy += displacements
@@ -192,12 +192,12 @@ class CoverArtThumbnail(ActiveLabel):
                     color = QtGui.QColor("darkgoldenrod")
                     border_length = 10
                     for k in range(border_length):
-                        color.setAlpha(255 - k * 255 / border_length)
+                        color.setAlpha(255 - k * 255 // border_length)
                         painter.setPen(color)
                         painter.drawLine(x, y - k - 1, x + 121 + k + 1, y - k - 1)
                         painter.drawLine(x + 121 + k + 2, y - 1 - k, x + 121 + k + 2, y + 121 + 4)
                     for k in range(5):
-                        bgcolor.setAlpha(80 + k * 255 / 7)
+                        bgcolor.setAlpha(80 + k * 255 // 7)
                         painter.setPen(bgcolor)
                         painter.drawLine(x + 121 + 2, y + 121 + 2 + k, x + 121 + border_length + 2, y + 121 + 2 + k)
                 painter.end()
@@ -339,23 +339,23 @@ class CoverArtBox(QtWidgets.QGroupBox):
                 port = 443
             else:
                 port = 80
-            self.tagger.xmlws.get(str(url.encodedHost()), url.port(port), str(path),
+            self.tagger.xmlws.get(string_(url.encodedHost()), url.port(port), string_(path),
                                   partial(self.on_remote_image_fetched, url, fallback_data=fallback_data),
                                   xml=False,
                                   priority=True, important=True)
         elif url.scheme() == 'file':
             log.debug("Dropped the URL: %r", url.toString(QtCore.QUrl.RemoveUserInfo))
-            if sys.platform == 'darwin' and unicode(url.path()).startswith('/.file/id='):
+            if sys.platform == 'darwin' and url.path().startswith('/.file/id='):
                 # Workaround for https://bugreports.qt.io/browse/QTBUG-40449
                 # OSX Urls follow the NSURL scheme and need to be converted
                 if NSURL_IMPORTED:
-                    path = os.path.normpath(os.path.realpath(unicode(NSURL.URLWithString_(str(url.toString())).filePathURL().path()).rstrip("\0")))
+                    path = os.path.normpath(os.path.realpath(NSURL.URLWithString_(string_(url.toString()).filePathURL().path()).rstrip("\0")))
                     log.debug('OSX NSURL path detected. Dropped File is: %r', path)
                 else:
                     log.error("Unable to get appropriate file path for %r", url.toString(QtCore.QUrl.RemoveUserInfo))
             else:
                 # Dropping a file from iTunes gives a path with a NULL terminator
-                path = os.path.normpath(os.path.realpath(unicode(url.toLocalFile()).rstrip("\0")))
+                path = os.path.normpath(os.path.realpath(url.toLocalFile().rstrip("\0")))
             if path and os.path.exists(path):
                 mime = 'image/png' if path.lower().endswith('.png') else 'image/jpeg'
                 with open(path, 'rb') as f:
@@ -390,7 +390,7 @@ class CoverArtBox(QtWidgets.QGroupBox):
                 data=data
             )
         except CoverArtImageError as e:
-            log.warning("Can't load image: %s" % unicode(e))
+            log.warning("Can't load image: %s" % e)
             return
 
         if config.setting["load_image_behavior"] == 'replace':

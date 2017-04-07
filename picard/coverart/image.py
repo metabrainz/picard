@@ -141,11 +141,11 @@ class CoverArtImage:
 
     def parse_url(self, url):
         self.url = QUrl(url)
-        self.host = str(self.url.host())
+        self.host = string_(self.url.host())
         self.port = self.url.port(80)
-        self.path = str(self.url.path(QUrl.FullyEncoded))
+        self.path = string_(self.url.path(QUrl.FullyEncoded))
         if self.url.hasQuery():
-            self.path += '?' + str(self.url.query(QUrl.FullyEncoded))
+            self.path += '?' + string_(self.url.query(QUrl.FullyEncoded))
 
     @property
     def source(self):
@@ -193,7 +193,7 @@ class CoverArtImage:
             p.append("comment=%r" % self.comment)
         return "%s(%s)" % (self.__class__.__name__, ", ".join(p))
 
-    def __unicode__(self):
+    def __str__(self):
         p = [u'Image']
         if self.url is not None:
             p.append(u"from %s" % self.url.toString())
@@ -202,9 +202,6 @@ class CoverArtImage:
         if self.comment:
             p.append(u"and comment '%s'" % self.comment)
         return u' '.join(p)
-
-    def __str__(self):
-        return unicode(self).encode('utf-8')
 
     def __eq__(self, other):
         if self and other:
@@ -256,7 +253,7 @@ class CoverArtImage:
     def _make_image_filename(self, filename, dirname, metadata):
         filename = ScriptParser().eval(filename, metadata)
         if config.setting["ascii_filenames"]:
-            if isinstance(filename, unicode):
+            if isinstance(filename, str):
                 filename = unaccent(filename)
             filename = replace_non_ascii(filename)
         if not filename:
@@ -267,7 +264,8 @@ class CoverArtImage:
         if config.setting["windows_compatibility"] or sys.platform == "win32":
             filename = replace_win32_incompat(filename)
         # remove null characters
-        filename = filename.replace("\x00", "")
+        if isinstance(filename, bytes):
+            filename = filename.replace(b"\x00", "")
         return encode_filename(filename)
 
     def save(self, dirname, metadata, counters):

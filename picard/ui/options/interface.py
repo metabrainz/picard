@@ -26,7 +26,6 @@ from picard.ui.options import OptionsPage, register_options_page
 from picard.ui.ui_options_interface import Ui_InterfaceOptionsPage
 from picard.ui.util import enabledSlot
 from picard.const import UI_LANGUAGES
-import operator
 import locale
 
 
@@ -125,8 +124,8 @@ class InterfaceOptionsPage(OptionsPage):
         self.ui.setupUi(self)
         self.ui.ui_language.addItem(_('System default'), '')
         language_list = [(l[0], l[1], _(l[2])) for l in UI_LANGUAGES]
-        for lang_code, native, translation in sorted(language_list, key=operator.itemgetter(2),
-                                                     cmp=locale.strcoll):
+        fcmp = lambda x: locale.strxfrm(x[2])
+        for lang_code, native, translation in sorted(language_list, key=fcmp):
             if native and native != translation:
                 name = u'%s (%s)' % (translation, native)
             else:
@@ -186,7 +185,7 @@ class InterfaceOptionsPage(OptionsPage):
                 self)
             dialog.exec_()
         config.setting["starting_directory"] = self.ui.starting_directory.isChecked()
-        config.setting["starting_directory_path"] = os.path.normpath(unicode(self.ui.starting_directory_path.text()))
+        config.setting["starting_directory_path"] = os.path.normpath(self.ui.starting_directory_path.text())
         self.update_layout_config()
 
     def restore_defaults(self):
@@ -197,7 +196,7 @@ class InterfaceOptionsPage(OptionsPage):
         item = self.ui.starting_directory_path
         path = QtWidgets.QFileDialog.getExistingDirectory(self, "", item.text())
         if path:
-            path = os.path.normpath(unicode(path))
+            path = os.path.normpath(path)
             item.setText(path)
 
     def _get_icon_from_name(self, name):
@@ -223,8 +222,7 @@ class InterfaceOptionsPage(OptionsPage):
 
     def _added_actions(self):
         actions = self._all_list_items()
-        actions = filter(lambda x: x != 'separator', actions)
-        return set(actions)
+        return set(action for action in actions if action != 'separator')
 
     def populate_action_list(self):
         self.ui.toolbar_layout_list.clear()

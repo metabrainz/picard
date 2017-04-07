@@ -17,18 +17,16 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-import json
 import time
 from functools import partial
 from PyQt5.QtNetwork import QNetworkRequest
 from PyQt5.QtCore import QUrl, QUrlQuery
 from picard import config, log
 from picard.const import (
-    MUSICBRAINZ_SERVERS,
     MUSICBRAINZ_OAUTH_CLIENT_ID,
     MUSICBRAINZ_OAUTH_CLIENT_SECRET,
 )
-from picard.util import build_qurl
+from picard.util import build_qurl, json_load
 
 
 class OAuthManager(object):
@@ -75,7 +73,7 @@ class OAuthManager(object):
                   "urn:ietf:wg:oauth:2.0:oob", "scope": scopes}
         url = build_qurl(host, port, path="/oauth2/authorize",
                          queryargs=params)
-        return str(url.toEncoded())
+        return string_(url.toEncoded())
 
     def set_refresh_token(self, refresh_token, scopes):
         log.debug("OAuth: got refresh_token %s with scopes %s", refresh_token, scopes)
@@ -103,7 +101,7 @@ class OAuthManager(object):
         url_query.addQueryItem("client_id", MUSICBRAINZ_OAUTH_CLIENT_ID)
         url_query.addQueryItem("client_secret", MUSICBRAINZ_OAUTH_CLIENT_SECRET)
         url.setQuery(url_query.query(QUrl.FullyEncoded))
-        data = str(url.query())
+        data = string_(url.query())
         self.xmlws.post(host, port, path, data,
                         partial(self.on_refresh_access_token_finished, callback),
                         xml=False, mblogin=True, priority=True, important=True)
@@ -114,11 +112,11 @@ class OAuthManager(object):
             if error:
                 log.error("OAuth: access_token refresh failed: %s", data)
                 if http.attribute(QNetworkRequest.HttpStatusCodeAttribute) == 400:
-                    response = json.loads(data)
+                    response = json_load(data)
                     if response["error"] == "invalid_grant":
                         self.forget_refresh_token()
             else:
-                response = json.loads(data)
+                response = json_load(data)
                 self.set_access_token(response["access_token"], response["expires_in"])
                 access_token = response["access_token"]
         finally:
@@ -136,7 +134,7 @@ class OAuthManager(object):
         url_query.addQueryItem("client_secret", MUSICBRAINZ_OAUTH_CLIENT_SECRET)
         url_query.addQueryItem("redirect_uri", "urn:ietf:wg:oauth:2.0:oob")
         url.setQuery(url_query.query(QUrl.FullyEncoded))
-        data = str(url.query())
+        data = string_(url.query())
         self.xmlws.post(host, port, path, data,
                         partial(self.on_exchange_authorization_code_finished, scopes, callback),
                         xml=False, mblogin=True, priority=True, important=True)
@@ -147,7 +145,7 @@ class OAuthManager(object):
             if error:
                 log.error("OAuth: authorization_code exchange failed: %s", data)
             else:
-                response = json.loads(data)
+                response = json_load(data)
                 self.set_refresh_token(response["refresh_token"], scopes)
                 self.set_access_token(response["access_token"], response["expires_in"])
                 successful = True
@@ -168,7 +166,7 @@ class OAuthManager(object):
             if error:
                 log.error("OAuth: username fetching failed: %s", data)
             else:
-                response = json.loads(data)
+                response = json_load(data)
                 self.set_username(response["sub"])
                 successful = True
         finally:

@@ -18,7 +18,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from operator import itemgetter
-from locale import strcoll
+from locale import strxfrm
 from PyQt5 import QtCore, QtWidgets
 from picard import config
 from picard.ui.options import OptionsPage, register_options_page
@@ -27,11 +27,11 @@ from picard.const import (RELEASE_COUNTRIES,
                           RELEASE_FORMATS,
                           RELEASE_PRIMARY_GROUPS,
                           RELEASE_SECONDARY_GROUPS)
-from picard.i18n import ugettext_attr
+from picard.i18n import gettext_attr
 
 
 _DEFAULT_SCORE = 0.5
-_release_type_scores = [(g, _DEFAULT_SCORE) for g in RELEASE_PRIMARY_GROUPS.keys() + RELEASE_SECONDARY_GROUPS.keys()]
+_release_type_scores = [(g, _DEFAULT_SCORE) for g in list(RELEASE_PRIMARY_GROUPS.keys()) + list(RELEASE_SECONDARY_GROUPS.keys())]
 
 
 class ReleaseTypeScore:
@@ -71,7 +71,7 @@ class RowColIter:
     def __iter__(self):
         return self
 
-    def next(self):
+    def __next__(self):
         row, col = self.current
         row += 1
         if row == self.rows:
@@ -103,7 +103,7 @@ class ReleasesOptionsPage(OptionsPage):
         self._release_type_sliders = {}
 
         def add_slider(name, griditer, context):
-            label = ugettext_attr(name, context)
+            label = gettext_attr(name, context)
             self._release_type_sliders[name] = \
                 ReleaseTypeScore(self.ui.type_group,
                                  self.ui.gridLayout,
@@ -147,7 +147,7 @@ class ReleasesOptionsPage(OptionsPage):
 
     def load(self):
         scores = dict(config.setting["release_type_scores"])
-        for (release_type, release_type_slider) in self._release_type_sliders.iteritems():
+        for (release_type, release_type_slider) in self._release_type_sliders.items():
             release_type_slider.setValue(scores.get(release_type,
                                                     _DEFAULT_SCORE))
 
@@ -158,7 +158,7 @@ class ReleasesOptionsPage(OptionsPage):
 
     def save(self):
         scores = []
-        for (release_type, release_type_slider) in self._release_type_sliders.iteritems():
+        for (release_type, release_type_slider) in self._release_type_sliders.items():
             scores.append((release_type, release_type_slider.value()))
         config.setting["release_type_scores"] = scores
 
@@ -191,14 +191,15 @@ class ReleasesOptionsPage(OptionsPage):
 
     def _load_list_items(self, setting, source, list1, list2):
         if setting == "preferred_release_countries":
-            source_list = [(c[0], ugettext_countries(c[1])) for c in
+            source_list = [(c[0], gettext_countries(c[1])) for c in
                            source.items()]
         elif setting == "preferred_release_formats":
-            source_list = [(c[0], ugettext_attr(c[1], u"medium_format")) for c
+            source_list = [(c[0], gettext_attr(c[1], u"medium_format")) for c
                            in source.items()]
         else:
             source_list = [(c[0], _(c[1])) for c in source.items()]
-        source_list.sort(key=itemgetter(1), cmp=strcoll)
+        fcmp = lambda x: strxfrm(x[1])
+        source_list.sort(key=fcmp)
         saved_data = config.setting[setting]
         move = []
         for data, name in source_list:
@@ -217,7 +218,7 @@ class ReleasesOptionsPage(OptionsPage):
         data = []
         for i in range(list1.count()):
             item = list1.item(i)
-            data.append(unicode(item.data(QtCore.Qt.UserRole)))
+            data.append(string_(item.data(QtCore.Qt.UserRole)))
         config.setting[setting] = data
 
 

@@ -204,6 +204,7 @@ class Option(QtCore.QObject):
     registry = {}
 
     def __init__(self, section, name, default):
+        super().__init__()
         self.section = section
         self.name = name
         self.default = default
@@ -218,7 +219,7 @@ class Option(QtCore.QObject):
 
 class TextOption(Option):
 
-    convert = unicode
+    convert = str
 
 
 class BoolOption(Option):
@@ -251,8 +252,8 @@ class ListOption(Option):
 class IntListOption(Option):
 
     @staticmethod
-    def convert(value):
-        return map(int, value)
+    def convert(values):
+        return list(map(int, values))
 
 
 config = None

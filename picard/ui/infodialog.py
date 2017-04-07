@@ -18,7 +18,6 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 import os.path
-import cgi
 import traceback
 from PyQt5 import QtGui, QtCore, QtWidgets
 from picard import log
@@ -168,7 +167,7 @@ class InfoDialog(PicardDialog):
                     try:
                         data = image.thumbnail.data
                     except CoverArtImageIOError as e:
-                        log.warning(unicode(e))
+                        log.warning(e)
                         pass
                 else:
                     data = image.data
@@ -233,7 +232,7 @@ class InfoDialog(PicardDialog):
     def show_item(self, item):
         data = item.data(QtCore.Qt.UserRole)
         # Check if this function isn't triggered by cell in Type column
-        if isinstance(data, unicode):
+        if isinstance(data, str):
             return
         filename = data.tempfile_filename
         if filename:
@@ -265,7 +264,7 @@ class FileInfoDialog(InfoDialog):
         if '~sample_rate' in file.orig_metadata:
             info.append((_('Sample rate:'), '%s Hz' % file.orig_metadata['~sample_rate']))
         if '~bits_per_sample' in file.orig_metadata:
-            info.append((_('Bits per sample:'), str(file.orig_metadata['~bits_per_sample'])))
+            info.append((_('Bits per sample:'), string_(file.orig_metadata['~bits_per_sample'])))
         if '~channels' in file.orig_metadata:
             ch = file.orig_metadata['~channels']
             if ch == 1:
@@ -273,7 +272,7 @@ class FileInfoDialog(InfoDialog):
             elif ch == 2:
                 ch = _('Stereo')
             else:
-                ch = str(ch)
+                ch = string_(ch)
             info.append((_('Channels:'), ch))
         return '<br/>'.join(map(lambda i: '<b>%s</b><br/>%s' %
                                 (htmlescape(i[0]),
@@ -299,7 +298,7 @@ class AlbumInfoDialog(InfoDialog):
         if album.errors:
             tabWidget.setTabText(tab_index, _("&Errors"))
             text = '<br />'.join(map(lambda s: '<font color="darkred">%s</font>' %
-                                     '<br />'.join(unicode(htmlescape(s))
+                                     '<br />'.join(htmlescape(s)
                                                    .replace('\t', ' ')
                                                    .replace(' ', '&nbsp;')
                                                    .splitlines()
@@ -328,7 +327,7 @@ class TrackInfoDialog(FileInfoDialog):
             return
 
         tabWidget.setTabText(tab_index, _("&Info"))
-        text = ungettext("%i file in this track", "%i files in this track",
+        text = ngettext("%i file in this track", "%i files in this track",
                          track.num_linked_files) % track.num_linked_files
         info_files = [FileInfoDialog.format_file_info(file) for file in track.linked_files]
         text += '<hr />' + '<hr />'.join(info_files)
@@ -349,9 +348,9 @@ class ClusterInfoDialog(InfoDialog):
         tabWidget.setTabText(tab_index, _("&Info"))
         info = []
         info.append("<b>%s</b> %s" % (_('Album:'),
-                                      unicode(htmlescape(cluster.metadata["album"]))))
+                                      htmlescape(cluster.metadata["album"])))
         info.append("<b>%s</b> %s" % (_('Artist:'),
-                                      unicode(htmlescape(cluster.metadata["albumartist"]))))
+                                      htmlescape(cluster.metadata["albumartist"])))
         info.append("")
         lines = []
         for file in cluster.iterfiles(False):
@@ -361,5 +360,5 @@ class ClusterInfoDialog(InfoDialog):
                          m["title"] + " - " + artist + " (" +
                          m["~length"] + ")")
         info.append("<b>%s</b><br />%s" % (_('Tracklist:'),
-                    '<br />'.join([unicode(htmlescape(s)).replace(' ', '&nbsp;') for s in lines])))
+                    '<br />'.join([htmlescape(s).replace(' ', '&nbsp;') for s in lines])))
         self.ui.info.setText('<br/>'.join(info))

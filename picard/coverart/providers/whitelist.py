@@ -24,7 +24,7 @@
 
 import traceback
 
-from picard import config, log
+from picard import log
 from picard.coverart.providers import CoverArtProvider
 from picard.coverart.image import CoverArtImage
 

@@ -170,8 +170,17 @@ static PyMethodDef AstrcmpMethods[] = {
 	{NULL, NULL, 0, NULL}
 };
 
-PyMODINIT_FUNC
-initastrcmp(void)
+static struct PyModuleDef AstrcmpModule =
 {
-	(void)Py_InitModule("astrcmp", AstrcmpMethods);
+    PyModuleDef_HEAD_INIT,
+    "astrcmp", /* name of module */
+    NULL,      /* module documentation, may be NULL */
+    -1,        /* size of per-interpreter state of the module, or -1 if the module keeps state in global variables. */
+    AstrcmpMethods
+};
+
+PyMODINIT_FUNC 
+PyInit_astrcmp(void)
+{
+    return PyModule_Create(&AstrcmpModule);
 }

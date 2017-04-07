@@ -35,6 +35,7 @@ import signal
 import sys
 from functools import partial
 from itertools import chain
+from operator import attrgetter
 
 
 # A "fix" for http://python.org/sf/1438480
@@ -61,7 +62,7 @@ from picard.const import USER_DIR, USER_PLUGIN_DIR
 from picard.dataobj import DataObject
 from picard.disc import Disc
 from picard.file import File
-from picard.formats import open as open_file
+from picard.formats import open_ as open_file
 from picard.track import Track, NonAlbumTrack
 from picard.releasegroup import ReleaseGroup
 from picard.collection import load_user_collections
@@ -303,7 +304,7 @@ class Tagger(QtWidgets.QApplication):
         if isinstance(event, thread.ProxyToMainEvent):
             event.run()
         elif event.type() == QtCore.QEvent.FileOpen:
-            f = str(event.file())
+            f = string_(event.file())
             self.add_files([f])
             # We should just return True here, except that seems to
             # cause the event's sender to get a -9874 error, so
@@ -385,7 +386,7 @@ class Tagger(QtWidgets.QApplication):
 
     def _add_directory_recursive(self, path):
         ignore_hidden = config.setting["ignore_hidden_files"]
-        walk = os.walk(unicode(path))
+        walk = os.walk(path)
 
         def get_files():
             try:
@@ -404,7 +405,7 @@ class Tagger(QtWidgets.QApplication):
                     log.debug("Adding %(count)d files from '%(directory)r'" %
                               mparms)
                     self.window.set_statusbar_message(
-                        ungettext(
+                        ngettext(
                             "Adding %(count)d file from '%(directory)s' ...",
                             "Adding %(count)d files from '%(directory)s' ...",
                             number_of_files),
@@ -437,7 +438,7 @@ class Tagger(QtWidgets.QApplication):
             log.debug("Adding %(count)d files from '%(directory)r'" %
                       mparms)
             self.window.set_statusbar_message(
-                ungettext(
+                ngettext(
                     "Adding %(count)d file from '%(directory)s' ...",
                     "Adding %(count)d files from '%(directory)s' ...",
                     number_of_files),
@@ -505,7 +506,7 @@ class Tagger(QtWidgets.QApplication):
                 metadata["album"],
                 metadata["title"],
                 metadata["tracknumber"],
-                '' if item.is_album_like() else str(metadata.length),
+                '' if item.is_album_like() else string_(metadata.length),
                 item.filename if isinstance(item, File) else '')
 
     def get_files_from_objects(self, objects, save=False):
@@ -622,7 +623,7 @@ class Tagger(QtWidgets.QApplication):
     def lookup_cd(self, action):
         """Reads CD from the selected drive and tries to lookup the DiscID on MusicBrainz."""
         if isinstance(action, QtWidgets.QAction):
-            device = unicode(action.text())
+            device = action.text()
         elif config.setting["cd_lookup_device"] != '':
             device = config.setting["cd_lookup_device"].split(",", 1)[0]
         else:
@@ -667,14 +668,10 @@ class Tagger(QtWidgets.QApplication):
             files = list(self.unmatched_files.files)
         else:
             files = self.get_files_from_objects(objs)
-        fcmp = lambda a, b: (
-            cmp(a.discnumber, b.discnumber) or
-            cmp(a.tracknumber, b.tracknumber) or
-            cmp(a.base_filename, b.base_filename))
         for name, artist, files in Cluster.cluster(files, 1.0):
             QtCore.QCoreApplication.processEvents()
             cluster = self.load_cluster(name, artist)
-            for file in sorted(files, fcmp):
+            for file in sorted(files, key=attrgetter('discnumber', 'tracknumber', 'base_filename')):
                 file.move(cluster)
 
     def load_cluster(self, name, artist):
@@ -718,7 +715,7 @@ class Tagger(QtWidgets.QApplication):
         log.debug("signal %i received", signum)
         # Send a notification about a received signal from the signal handler
         # to Qt.
-        self.signalfd[0].sendall("a")
+        self.signalfd[0].sendall(b"a")
 
     def sighandler(self):
         self.signalnotifier.setEnabled(False)

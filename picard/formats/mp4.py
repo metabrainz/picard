@@ -52,19 +52,19 @@ class MP4File(File):
         "tvsh": "show",
         "purl": "podcasturl",
     }
-    __r_text_tags = dict([(v, k) for k, v in __text_tags.iteritems()])
+    __r_text_tags = dict([(v, k) for k, v in __text_tags.items()])
 
     __bool_tags = {
         "pcst": "podcast",
         "cpil": "compilation",
         "pgap": "gapless",
     }
-    __r_bool_tags = dict([(v, k) for k, v in __bool_tags.iteritems()])
+    __r_bool_tags = dict([(v, k) for k, v in __bool_tags.items()])
 
     __int_tags = {
         "tmpo": "bpm",
     }
-    __r_int_tags = dict([(v, k) for k, v in __int_tags.iteritems()])
+    __r_int_tags = dict([(v, k) for k, v in __int_tags.items()])
 
     __freeform_tags = {
         "----:com.apple.iTunes:MusicBrainz Track Id": "musicbrainz_recordingid",
@@ -105,7 +105,7 @@ class MP4File(File):
         "----:com.apple.iTunes:WORK": "work",
         "----:com.apple.iTunes:initialkey": "key",
     }
-    __r_freeform_tags = dict([(v, k) for k, v in __freeform_tags.iteritems()])
+    __r_freeform_tags = dict([(v, k) for k, v in __freeform_tags.items()])
 
     __other_supported_tags = ("discnumber", "tracknumber",
                               "totaldiscs", "totaltracks")
@@ -126,22 +126,22 @@ class MP4File(File):
                 metadata.add(self.__bool_tags[name], values and '1' or '0')
             elif name in self.__int_tags:
                 for value in values:
-                    metadata.add(self.__int_tags[name], unicode(value))
+                    metadata.add(self.__int_tags[name], string_(value))
             elif name in self.__freeform_tags:
                 for value in values:
-                    value = value.strip("\x00").decode("utf-8", "replace")
+                    value = value.decode("utf-8", "replace").strip("\x00")
                     metadata.add(self.__freeform_tags[name], value)
             elif name == "----:com.apple.iTunes:fingerprint":
                 for value in values:
-                    value = value.strip("\x00").decode("utf-8", "replace")
+                    value = value.decode("utf-8", "replace").strip("\x00")
                     if value.startswith("MusicMagic Fingerprint"):
                         metadata.add("musicip_fingerprint", value[22:])
             elif name == "trkn":
-                metadata["tracknumber"] = str(values[0][0])
-                metadata["totaltracks"] = str(values[0][1])
+                metadata["tracknumber"] = string_(values[0][0])
+                metadata["totaltracks"] = string_(values[0][1])
             elif name == "disk":
-                metadata["discnumber"] = str(values[0][0])
-                metadata["totaldiscs"] = str(values[0][1])
+                metadata["discnumber"] = string_(values[0][0])
+                metadata["totaldiscs"] = string_(values[0][1])
             elif name == "covr":
                 for value in values:
                     if value.imageformat not in (value.FORMAT_JPEG,
@@ -188,7 +188,7 @@ class MP4File(File):
                 values = [v.encode("utf-8") for v in values]
                 tags[self.__r_freeform_tags[name]] = values
             elif name == "musicip_fingerprint":
-                tags["----:com.apple.iTunes:fingerprint"] = ["MusicMagic Fingerprint%s" % str(v) for v in values]
+                tags["----:com.apple.iTunes:fingerprint"] = [b"MusicMagic Fingerprint%s" % v.encode('ascii') for v in values]
 
         if "tracknumber" in metadata:
             if "totaltracks" in metadata:

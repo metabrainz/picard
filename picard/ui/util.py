@@ -62,7 +62,7 @@ def find_starting_directory():
         path = config.setting["starting_directory_path"]
     else:
         path = config.persist["current_directory"] or QtCore.QDir.homePath()
-    return find_existing_path(unicode(path))
+    return find_existing_path(path)
 
 
 class ButtonLineEdit(QtWidgets.QLineEdit):

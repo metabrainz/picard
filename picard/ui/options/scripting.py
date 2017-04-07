@@ -21,6 +21,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from picard import config
 from picard.const import PICARD_URLS
 from picard.script import ScriptParser
+from picard.ui import HashableListWidgetItem
 from picard.ui.options import OptionsPage, OptionsCheckError, register_options_page
 from picard.ui.ui_options_script import Ui_ScriptingOptionsPage
 
@@ -272,7 +273,7 @@ class ScriptingOptionsPage(OptionsPage):
         numbered_name = _(DEFAULT_NUMBERED_SCRIPT_NAME) % (count + 1)
         script = ScriptItem(pos=count, name=numbered_name)
 
-        list_item = QtWidgets.QListWidgetItem()
+        list_item = HashableListWidgetItem()
         list_widget = AdvancedScriptItem(numbered_name)
         self.setSignals(list_widget, list_item)
         self.ui.script_list.addItem(list_item)
@@ -372,9 +373,9 @@ class ScriptingOptionsPage(OptionsPage):
     def check(self):
         parser = ScriptParser()
         try:
-            parser.eval(unicode(self.ui.tagger_script.toPlainText()))
+            parser.eval(self.ui.tagger_script.toPlainText())
         except Exception as e:
-            raise OptionsCheckError(_("Script Error"), str(e))
+            raise OptionsCheckError(_("Script Error"), string_(e))
 
     def restore_defaults(self):
         # Remove existing scripts
@@ -388,7 +389,7 @@ class ScriptingOptionsPage(OptionsPage):
         self.list_of_scripts = config.setting["list_of_scripts"]
         for s_pos, s_name, s_enabled, s_text in self.list_of_scripts:
             script = ScriptItem(s_pos, s_name, s_enabled, s_text)
-            list_item = QtWidgets.QListWidgetItem()
+            list_item = HashableListWidgetItem()
             list_widget = AdvancedScriptItem(name=s_name, state=s_enabled)
             self.setSignals(list_widget, list_item)
             self.ui.script_list.addItem(list_item)

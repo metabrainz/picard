@@ -28,7 +28,7 @@ from picard.mbxml import recording_to_metadata
 from picard.script import ScriptParser
 from picard.const import VARIOUS_ARTISTS_ID, SILENCE_TRACK_TITLE, DATA_TRACK_TITLE
 from picard.ui.item import Item
-from picard.util.imagelist import ImageList, update_metadata_images
+from picard.util.imagelist import update_metadata_images
 import traceback
 
 
@@ -199,7 +199,7 @@ class Track(DataObject, Item):
         maxcount = max(tags.values())
         taglist = []
         for name, count in tags.items():
-            taglist.append((100 * count / maxcount, name))
+            taglist.append((100 * count // maxcount, name))
         taglist.sort(reverse=True)
         # And generate the genre metadata tag
         maxtags = config.setting['max_tags']
@@ -281,7 +281,7 @@ class NonAlbumTrack(Track):
 
     def _recording_request_finished(self, document, http, error):
         if error:
-            log.error("%r", unicode(http.errorString()))
+            log.error("%r", http.errorString())
             return
         try:
             recording = document.metadata[0].recording[0]

@@ -23,21 +23,19 @@
 import os.path
 import sys
 from functools import partial
+from operator import attrgetter
 from PyQt5 import QtCore, QtGui, QtWidgets
 from picard import config, log
 from picard.const import (
     USER_PLUGIN_DIR,
     PLUGINS_API,
 )
+from picard.ui import HashableTreeWidgetItem
 from picard.ui.options import OptionsPage, register_options_page
 from picard.ui.ui_options_plugins import Ui_PluginsOptionsPage
 
 
-def cmp_plugins(a, b):
-    return cmp(a.name, b.name)
-
-
-class PluginTreeWidgetItem(QtWidgets.QTreeWidgetItem):
+class PluginTreeWidgetItem(HashableTreeWidgetItem):
 
     def __lt__(self, other):
         if (not isinstance(other, PluginTreeWidgetItem)):
@@ -134,7 +132,7 @@ class PluginsOptionsPage(OptionsPage):
     def _populate(self):
         self.ui.details.setText("<b>" + _("No plugins installed.") + "</b>")
         self._user_interaction(False)
-        plugins = sorted(self.tagger.pluginmanager.plugins, cmp=cmp_plugins)
+        plugins = sorted(self.tagger.pluginmanager.plugins, key=attrgetter('name'))
         enabled_plugins = config.setting["enabled_plugins"]
         available_plugins = dict([(p.module_name, p.version) for p in
                                   self.tagger.pluginmanager.available_plugins])
@@ -150,7 +148,7 @@ class PluginsOptionsPage(OptionsPage):
             item = self.add_plugin_item(plugin)
             installed.append(plugin.module_name)
 
-        for plugin in sorted(self.tagger.pluginmanager.available_plugins, cmp=cmp_plugins):
+        for plugin in sorted(self.tagger.pluginmanager.available_plugins, key=attrgetter('name')):
             if plugin.module_name not in installed:
                 plugin.can_be_downloaded = True
                 item = self.add_plugin_item(plugin)
@@ -280,7 +278,7 @@ class PluginsOptionsPage(OptionsPage):
 
     def save(self):
         enabled_plugins = []
-        for item, plugin in self.items.iteritems():
+        for item, plugin in self.items.items():
             if item.checkState(0) == QtCore.Qt.Checked:
                 enabled_plugins.append(plugin.module_name)
         config.setting["enabled_plugins"] = enabled_plugins
@@ -316,7 +314,6 @@ class PluginsOptionsPage(OptionsPage):
             "Picard plugin (*.py *.pyc *.zip)"
         )
         if files:
-            files = map(unicode, files)
             for path in files:
                 self.tagger.pluginmanager.install_plugin(path)
 
@@ -363,7 +360,7 @@ class PluginsOptionsPage(OptionsPage):
         event.accept()
 
     def dropEvent(self, event):
-        for path in [os.path.normpath(unicode(u.toLocalFile())) for u in event.mimeData().urls()]:
+        for path in [os.path.normpath(u.toLocalFile()) for u in event.mimeData().urls()]:
             self.tagger.pluginmanager.install_plugin(path)
 
 

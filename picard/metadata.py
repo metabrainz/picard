@@ -18,7 +18,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
 # USA.
 from PyQt5.QtCore import QObject
-from picard import config, log
+from picard import config
 from picard.plugin import PluginFunctions, PluginPriority
 from picard.similarity import similarity2
 from picard.util import (
@@ -50,8 +50,8 @@ class Metadata(dict):
         self.deleted_tags = set()
         self.length = 0
 
-    def __nonzero__(self):
-        return len(self) or len(self.images)
+    def __bool__(self):
+        return bool(len(self) or len(self.images))
 
     def append_image(self, coverartimage):
         self.images.append(coverartimage)
@@ -101,7 +101,7 @@ class Metadata(dict):
                     except ValueError:
                         ia = a
                         ib = b
-                    score = 1.0 - abs(cmp(ia, ib))
+                    score = 1.0 - (int(ia != ib))
                 else:
                     score = similarity2(a, b)
                 parts.append((score, weight))
@@ -228,7 +228,7 @@ class Metadata(dict):
         self.update(other)
 
     def update(self, other):
-        for key in other.iterkeys():
+        for key in other.keys():
             self.set(key, other.getall(key)[:])
         if other.images:
             self.images = other.images[:]
@@ -267,7 +267,7 @@ class Metadata(dict):
     def __setitem__(self, name, values):
         if not isinstance(values, list):
             values = [values]
-        values = filter(None, map(unicode, values))
+        values = [string_(value) for value in values if value]
         if len(values):
             self.set(name, values)
         else:
@@ -288,18 +288,10 @@ class Metadata(dict):
             self.pop(name, None)
         self.deleted_tags.add(name)
 
-    def iteritems(self):
-        for name, values in dict.iteritems(self):
+    def items(self):
+        for name, values in dict.items(self):
             for value in values:
                 yield name, value
-
-    def items(self):
-        """Returns the metadata items.
-
-        >>> m.items()
-        [("key1", "value1"), ("key1", "value2"), ("key2", "value3")]
-        """
-        return list(self.iteritems())
 
     def rawitems(self):
         """Returns the metadata items.
@@ -312,7 +304,7 @@ class Metadata(dict):
     def apply_func(self, func):
         for key, values in self.rawitems():
             if not key.startswith("~"):
-                self[key] = map(func, values)
+                self[key] = [func(value) for value in values]
 
     def strip_whitespace(self):
         """Strip leading/trailing whitespace.

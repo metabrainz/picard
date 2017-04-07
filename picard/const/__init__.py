@@ -21,8 +21,8 @@ import os
 import sys
 
 # Install gettext "noop" function in case const.py gets imported directly.
-import __builtin__
-__builtin__.__dict__['N_'] = lambda a: a
+import builtins
+builtins.__dict__['N_'] = lambda a: a
 
 # Config directory
 if sys.platform == "win32":
@@ -78,7 +78,7 @@ from picard.const.attributes import MB_ATTRIBUTES
 RELEASE_FORMATS = {}
 RELEASE_PRIMARY_GROUPS = {}
 RELEASE_SECONDARY_GROUPS = {}
-for k, v in MB_ATTRIBUTES.iteritems():
+for k, v in MB_ATTRIBUTES.items():
     if k.startswith(u'DB:medium_format/name:'):
         RELEASE_FORMATS[v] = v
     elif k.startswith(u'DB:release_group_primary_type/name:'):

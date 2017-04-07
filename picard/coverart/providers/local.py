@@ -20,7 +20,7 @@
 import os
 import re
 import traceback
-from picard import config, log
+from picard import config
 from picard.coverart.providers import CoverArtProvider, ProviderOptions
 from picard.coverart.image import CoverArtImageFromFile
 from picard.coverart.utils import CAA_TYPES
@@ -53,7 +53,7 @@ class ProviderOptionsLocal(ProviderOptions):
         self.ui.local_cover_regex_edit.setText(config.setting["local_cover_regex"])
 
     def save(self):
-        config.setting["local_cover_regex"] = unicode(self.ui.local_cover_regex_edit.text())
+        config.setting["local_cover_regex"] = self.ui.local_cover_regex_edit.text()
 
 
 class CoverArtProviderLocal(CoverArtProvider):

@@ -18,11 +18,13 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 import cgi
+import json
 import os
 import ntpath
 import re
 import sys
 import unicodedata
+import builtins
 if sys.platform == 'win32':
 	from ctypes import windll
 
@@ -30,7 +32,6 @@ from time import time
 from PyQt5 import QtCore
 from string import Template
 # Required for compatibility with lastfmplus which imports this from here rather than loading it direct.
-from functools import partial
 from picard.const import MUSICBRAINZ_SERVERS
 
 
@@ -81,7 +82,7 @@ Translation: Picard will have problems with non-english characters
 
 def encode_filename(filename):
     """Encode unicode strings to filesystem encoding."""
-    if isinstance(filename, unicode):
+    if isinstance(filename, str):
         if os.path.supports_unicode_filenames and sys.platform != "darwin":
             return filename
         else:
@@ -92,7 +93,7 @@ def encode_filename(filename):
 
 def decode_filename(filename):
     """Decode strings from filesystem encoding to unicode."""
-    if isinstance(filename, unicode):
+    if isinstance(filename, str):
         return filename
     else:
         return filename.decode(_io_encoding)
@@ -330,7 +331,7 @@ def _has_hidden_attribute(filepath):
     # than just checking for dot files, see
     # https://stackoverflow.com/questions/284115/cross-platform-hidden-file-detection
     try:
-        attrs = windll.kernel32.GetFileAttributesW(unicode(filepath))
+        attrs = windll.kernel32.GetFileAttributesW(filepath)
         assert attrs != -1
         return bool(attrs & 2)
     except (AttributeError, AssertionError):
@@ -405,8 +406,8 @@ def build_qurl(host, port=80, path=None, queryargs=None):
         url.setPath(path)
     if queryargs is not None:
         url_query = QtCore.QUrlQuery()
-        for k, v in queryargs.iteritems():
-            url_query.addQueryItem(k, unicode(v))
+        for k, v in queryargs.items():
+            url_query.addQueryItem(k, string_(v))
         url.setQuery(url_query)
     return url
 
@@ -443,3 +444,19 @@ def union_sorted_lists(list1, list2):
 
 def htmlescape(string):
     return cgi.escape(string)
+
+
+def json_load(data):
+    return json.loads(bytes(data).decode())
+
+
+def convert_to_string(obj):
+    if isinstance(obj, QtCore.QByteArray):
+        return bytes(obj).decode()
+    elif isinstance(obj, (bytes, bytearray)):
+        return obj.decode()
+    else:
+        return str(obj)
+
+
+builtins.__dict__['string_'] = convert_to_string

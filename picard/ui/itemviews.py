@@ -400,7 +400,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
             plugin_menus = {}
             for action in plugin_actions:
                 action_menu = plugin_menu
-                for index in xrange(1, len(action.MENU) + 1):
+                for index in range(1, len(action.MENU) + 1):
                     key = tuple(action.MENU[:index])
                     if key in plugin_menus:
                         action_menu = plugin_menus[key]
@@ -429,7 +429,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
 
     def save_state(self):
         cols = range(self.numHeaderSections - 1)
-        sizes = " ".join(str(self.header().sectionSize(i)) for i in cols)
+        sizes = " ".join(string_(self.header().sectionSize(i)) for i in cols)
         config.persist[self.view_sizes.name] = sizes
 
     def supportedDropActions(self):
@@ -462,11 +462,11 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         for item in items:
             obj = item.obj
             if isinstance(obj, Album):
-                album_ids.append(str(obj.id))
+                album_ids.append(string_(obj.id))
             elif obj.iterfiles:
                 files.extend([url(f.filename) for f in obj.iterfiles()])
         mimeData = QtCore.QMimeData()
-        mimeData.setData("application/picard.album-list", "\n".join(album_ids))
+        mimeData.setData("application/picard.album-list", "\n".join(album_ids).encode())
         if files:
             mimeData.setUrls(files)
         return mimeData
@@ -478,18 +478,18 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         for url in urls:
             log.debug("Dropped the URL: %r", url.toString(QtCore.QUrl.RemoveUserInfo))
             if url.scheme() == "file" or not url.scheme():
-                if sys.platform == 'darwin' and unicode(url.path()).startswith('/.file/id='):
+                if sys.platform == 'darwin' and url.path().startswith('/.file/id='):
                     # Workaround for https://bugreports.qt.io/browse/QTBUG-40449
                     # OSX Urls follow the NSURL scheme and need to be converted
                     if NSURL_IMPORTED:
-                        filename = os.path.normpath(os.path.realpath(unicode(NSURL.URLWithString_(str(url.toString())).filePathURL().path()).rstrip("\0")))
+                        filename = os.path.normpath(os.path.realpath(NSURL.URLWithString_(url.toString().filePathURL().path()).rstrip("\0")))
                         log.debug('OSX NSURL path detected. Dropped File is: %r', filename)
                     else:
                         log.error("Unable to get appropriate file path for %r", url.toString(QtCore.QUrl.RemoveUserInfo))
                         continue
                 else:
                     # Dropping a file from iTunes gives a filename with a NULL terminator
-                    filename = os.path.normpath(os.path.realpath(unicode(url.toLocalFile()).rstrip("\0")))
+                    filename = os.path.normpath(os.path.realpath(url.toLocalFile().rstrip("\0")))
                 file = BaseTreeView.tagger.files.get(filename)
                 if file:
                     files.append(file)
@@ -498,7 +498,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
                 else:
                     new_files.append(filename)
             elif url.scheme() in ("http", "https"):
-                path = unicode(url.path())
+                path = url.path()
                 match = re.search(r"/(release|recording)/([0-9a-z\-]{36})", path)
                 if match:
                     entity = match.group(1)
@@ -536,7 +536,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         if albums:
             if isinstance(self, FileTreeView) and target is None:
                 target = self.tagger.unmatched_files
-            albums = [self.tagger.load_album(id) for id in str(albums).split("\n")]
+            albums = [self.tagger.load_album(id) for id in string_(albums).split("\n")]
             self.tagger.move_files(self.tagger.get_files_from_objects(albums), target)
             handled = True
         return handled
@@ -688,11 +688,11 @@ class AlbumItem(TreeItem):
             oldnum = self.childCount() - 1
             newnum = len(album.tracks)
             if oldnum > newnum:  # remove old items
-                for i in xrange(oldnum - newnum):
+                for i in range(oldnum - newnum):
                     self.takeChild(newnum - 1)
                 oldnum = newnum
             # update existing items
-            for i in xrange(oldnum):
+            for i in range(oldnum):
                 item = self.child(i)
                 track = album.tracks[i]
                 item.obj = track
@@ -700,7 +700,7 @@ class AlbumItem(TreeItem):
                 item.update(update_album=False)
             if newnum > oldnum:  # add new items
                 items = []
-                for i in xrange(newnum - 1, oldnum - 1, -1):  # insertChildren is backwards
+                for i in range(newnum - 1, oldnum - 1, -1):  # insertChildren is backwards
                     item = TrackItem(album.tracks[i], False)
                     item.setHidden(False)  # Workaround to make sure the parent state gets updated
                     items.append(item)
@@ -759,10 +759,10 @@ class TrackItem(TreeItem):
                 oldnum = self.childCount()
                 newnum = track.num_linked_files
                 if oldnum > newnum:  # remove old items
-                    for i in xrange(oldnum - newnum):
+                    for i in range(oldnum - newnum):
                         self.takeChild(newnum - 1).obj.item = None
                     oldnum = newnum
-                for i in xrange(oldnum):  # update existing items
+                for i in range(oldnum):  # update existing items
                     item = self.child(i)
                     file = track.linked_files[i]
                     item.obj = file
@@ -770,7 +770,7 @@ class TrackItem(TreeItem):
                     item.update(update_track=False)
                 if newnum > oldnum:  # add new items
                     items = []
-                    for i in xrange(newnum - 1, oldnum - 1, -1):
+                    for i in range(newnum - 1, oldnum - 1, -1):
                         item = FileItem(track.linked_files[i], False)
                         item.update(update_track=False)
                         items.append(item)

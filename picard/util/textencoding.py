@@ -437,6 +437,6 @@ def replace_non_ascii(string, repl="_"):
 
     def error_repl(e, repl=u"_"):
         return(repl, e.start + 1)
-    codecs.register_error('repl', partial(error_repl, repl=unicode(repl)))
-
-    return interim.encode('ascii', 'repl')
+    codecs.register_error('repl', partial(error_repl, repl=repl))
+    # Decoding and encoding to allow replacements
+    return interim.encode('ascii', 'repl').decode('ascii')

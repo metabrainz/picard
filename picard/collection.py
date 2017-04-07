@@ -64,7 +64,7 @@ class Collection(QtCore.QObject):
             }
             log.debug('Added %(count)i releases to collection "%(name)s"' % mparms)
             self.tagger.window.set_statusbar_message(
-                ungettext('Added %(count)i release to collection "%(name)s"',
+                ngettext('Added %(count)i release to collection "%(name)s"',
                           'Added %(count)i releases to collection "%(name)s"',
                           count),
                 mparms,
@@ -86,7 +86,7 @@ class Collection(QtCore.QObject):
             log.debug('Removed %(count)i releases from collection "%(name)s"' %
                       mparms)
             self.tagger.window.set_statusbar_message(
-                ungettext('Removed %(count)i release from collection "%(name)s"',
+                ngettext('Removed %(count)i release from collection "%(name)s"',
                           'Removed %(count)i releases from collection "%(name)s"',
                           count),
                 mparms,
@@ -102,7 +102,7 @@ def load_user_collections(callback=None):
         if error:
             tagger.window.set_statusbar_message(
                 N_("Error loading collections: %(error)s"),
-                {'error': unicode(reply.errorString())},
+                {'error': reply.errorString()},
                 echo=log.error
             )
             return
@@ -121,7 +121,7 @@ def load_user_collections(callback=None):
                     collection.name = node.name[0].text
                     collection.size = int(node.release_list[0].count)
 
-            for id in set(user_collections.iterkeys()) - new_collections:
+            for id in set(user_collections.keys()) - new_collections:
                 del user_collections[id]
 
         if callback:

@@ -64,9 +64,9 @@ class CDLookupOptionsPage(OptionsPage):
 
     def save(self):
         if AUTO_DETECT_DRIVES:
-            config.setting["cd_lookup_device"] = unicode(self.ui.cd_lookup_device.currentText())
+            config.setting["cd_lookup_device"] = self.ui.cd_lookup_device.currentText()
         else:
-            config.setting["cd_lookup_device"] = unicode(self.ui.cd_lookup_device.text())
+            config.setting["cd_lookup_device"] = self.ui.cd_lookup_device.text()
 
 
 register_options_page(CDLookupOptionsPage)

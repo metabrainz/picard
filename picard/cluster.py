@@ -20,7 +20,6 @@
 
 from __future__ import print_function
 import re
-import os
 import ntpath
 import sys
 from operator import itemgetter
@@ -31,7 +30,7 @@ from picard.metadata import Metadata
 from picard.similarity import similarity
 from picard.ui.item import Item
 from picard.util import format_time, album_artist_from_path
-from picard.util.imagelist import ImageList, update_metadata_images
+from picard.util.imagelist import update_metadata_images
 from picard.const import QUERY_LIMIT
 
 
@@ -215,7 +214,7 @@ class Cluster(QtCore.QObject, Item):
         self.lookup_task = self.tagger.xmlws.find_releases(self._lookup_finished,
             artist=self.metadata['albumartist'],
             release=self.metadata['album'],
-            tracks=str(len(self.files)),
+            tracks=string_(len(self.files)),
             limit=QUERY_LIMIT)
 
     def clear_lookup_task(self):
@@ -249,7 +248,7 @@ class Cluster(QtCore.QObject, Item):
 
         # Arrange tracks into albums
         albums = {}
-        for i in xrange(len(tracks)):
+        for i in range(len(tracks)):
             cluster = album_cluster_engine.getClusterFromId(tracks[i][1])
             if cluster is not None:
                 albums.setdefault(cluster, []).append(i)
@@ -359,8 +358,8 @@ class ClusterDict(object):
         self.ids = {}
         # counter for new id generation
         self.id = 0
-        self.regexp = re.compile(ur'\W', re.UNICODE)
-        self.spaces = re.compile(ur'\s', re.UNICODE)
+        self.regexp = re.compile(r'\W', re.UNICODE)
+        self.spaces = re.compile(r'\s', re.UNICODE)
 
     def getSize(self):
         return self.id
@@ -464,8 +463,8 @@ class ClusterEngine(object):
         # Keep the matches sorted in a heap
         heap = []
 
-        for y in xrange(self.clusterDict.getSize()):
-            for x in xrange(y):
+        for y in range(self.clusterDict.getSize()):
+            for x in range(y):
                 if x != y:
                     c = similarity(self.clusterDict.getToken(x).lower(),
                                    self.clusterDict.getToken(y).lower())
@@ -473,14 +472,14 @@ class ClusterEngine(object):
                         heappush(heap, ((1.0 - c), [x, y]))
             QtCore.QCoreApplication.processEvents()
 
-        for i in xrange(self.clusterDict.getSize()):
+        for i in range(self.clusterDict.getSize()):
             word, count = self.clusterDict.getWordAndCount(i)
             if word and count > 1:
                 self.clusterBins[self.clusterCount] = [i]
                 self.idClusterIndex[i] = self.clusterCount
                 self.clusterCount = self.clusterCount + 1
 
-        for i in xrange(len(heap)):
+        for i in range(len(heap)):
             c, pair = heappop(heap)
             c = 1.0 - c
 

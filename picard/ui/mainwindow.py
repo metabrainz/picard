@@ -154,7 +154,7 @@ class MainWindow(QtWidgets.QMainWindow):
         event.accept()
 
     def show_quit_confirmation(self):
-        unsaved_files = sum(a.get_num_unsaved_files() for a in self.tagger.albums.itervalues())
+        unsaved_files = sum(a.get_num_unsaved_files() for a in self.tagger.albums.values())
         QMessageBox = QtWidgets.QMessageBox
 
         if unsaved_files > 0:
@@ -163,7 +163,7 @@ class MainWindow(QtWidgets.QMainWindow):
             msg.setWindowModality(QtCore.Qt.WindowModal)
             msg.setWindowTitle(_(u"Unsaved Changes"))
             msg.setText(_(u"Are you sure you want to quit Picard?"))
-            txt = ungettext(
+            txt = ngettext(
                 "There is %d unsaved file. Closing Picard will lose all unsaved changes.",
                 "There are %d unsaved files. Closing Picard will lose all unsaved changes.",
                 unsaved_files) % unsaved_files
@@ -281,7 +281,7 @@ class MainWindow(QtWidgets.QMainWindow):
             return hasattr(obj, 'keys') and hasattr(obj, '__getitem__')
 
         echo = kwargs.get('echo', log.debug)
-        # _ is defined using __builtin__.__dict__, so setting it as default named argument
+        # _ is defined using builtins.__dict__, so setting it as default named argument
         # value doesn't work as expected
         translate = kwargs.get('translate', _)
         timeout = kwargs.get('timeout', 0)
@@ -715,7 +715,6 @@ class MainWindow(QtWidgets.QMainWindow):
         formats.insert(0, _("All Supported Formats") + " (%s)" % " ".join(extensions))
         files, _filter = QtWidgets.QFileDialog.getOpenFileNames(self, "", current_directory, u";;".join(formats))
         if files:
-            files = map(unicode, files)
             config.persist["current_directory"] = os.path.dirname(files[0])
             self.tagger.add_files(files)
 
@@ -988,7 +987,7 @@ class MainWindow(QtWidgets.QMainWindow):
         if self.show_file_browser_action.isChecked():
             sizes = self.panel.sizes()
             if sizes[0] == 0:
-                sizes[0] = sum(sizes) / 4
+                sizes[0] = sum(sizes) // 4
                 self.panel.setSizes(sizes)
             self.file_browser.show()
         else:

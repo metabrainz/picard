@@ -5,10 +5,10 @@ import sys
 import unittest
 from picard import util
 
-import __builtin__
+import builtins
 # ensure _() is defined
-if '_' not in __builtin__.__dict__:
-    __builtin__.__dict__['_'] = lambda a: a
+if '_' not in builtins.__dict__:
+    builtins.__dict__['_'] = lambda a: a
 
 
 class ReplaceWin32IncompatTest(unittest.TestCase):

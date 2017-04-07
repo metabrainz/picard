@@ -33,5 +33,5 @@ class DataObject(LockableObject):
 
     @staticmethod
     def merge_folksonomy_tags(this, that):
-        for name, count in that.iteritems():
+        for name, count in that.items():
             this[name] = this.get(name, 0) + count

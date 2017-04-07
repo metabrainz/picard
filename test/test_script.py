@@ -257,7 +257,7 @@ class ScriptParserTest(unittest.TestCase):
 
     def _eval_and_check_copymerge(self, context, expected):
         self.parser.eval("$copymerge(target,source)", context)
-        self.assertEqual(self.parser.context.getall("target"), expected)
+        self.assertEqual(sorted(self.parser.context.getall("target")), sorted(expected))
 
     def test_cmd_copymerge_notarget(self):
         context = Metadata()

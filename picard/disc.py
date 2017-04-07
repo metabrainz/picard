@@ -57,7 +57,7 @@ class Disc(QtCore.QObject):
         self.tagger.restore_cursor()
         releases = []
         if error:
-            log.error("%r", unicode(http.errorString()))
+            log.error("%r", http.errorString())
         else:
             try:
                 releases = document.metadata[0].disc[0].release_list[0].release

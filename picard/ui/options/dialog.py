@@ -20,7 +20,7 @@
 from PyQt5 import QtCore, QtWidgets
 from picard import config
 from picard.util import webbrowser2
-from picard.ui import PicardDialog
+from picard.ui import PicardDialog, HashableTreeWidgetItem
 from picard.ui.util import StandardButton
 from picard.ui.options import (
     about,
@@ -57,7 +57,7 @@ class OptionsDialog(PicardDialog):
         pages = [(p.SORT_ORDER, p.NAME, p) for p in self.pages if p.PARENT == parent]
         items = []
         for foo, bar, page in sorted(pages):
-            item = QtWidgets.QTreeWidgetItem(parent_item)
+            item = HashableTreeWidgetItem(parent_item)
             item.setText(0, _(page.TITLE))
             if page.ACTIVE:
                 self.item_to_page[item] = page

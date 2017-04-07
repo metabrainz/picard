@@ -79,7 +79,7 @@ class MetadataOptionsPage(OptionsPage):
         config.setting["track_ars"] = self.ui.track_ars.isChecked()
         config.setting["folksonomy_tags"] = self.ui.folksonomy_tags.isChecked()
         config.setting["va_name"] = self.ui.va_name.text()
-        nat_name = unicode(self.ui.nat_name.text())
+        nat_name = self.ui.nat_name.text()
         if nat_name != config.setting["nat_name"]:
             config.setting["nat_name"] = nat_name
             if self.tagger.nats is not None:

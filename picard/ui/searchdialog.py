@@ -17,7 +17,6 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-import json
 from PyQt5 import QtGui, QtCore, QtNetwork, QtWidgets
 from operator import itemgetter
 from functools import partial
@@ -26,7 +25,7 @@ from picard import config
 from picard.file import File
 from picard.ui import PicardDialog
 from picard.ui.util import StandardButton, ButtonLineEdit
-from picard.util import icontheme
+from picard.util import icontheme, json_load
 from picard.mbxml import (
     artist_to_metadata,
     recording_to_metadata,
@@ -349,7 +348,7 @@ class TrackSearchDialog(SearchDialog):
                 'release': metadata['album'],
                 'tnum': metadata['tracknumber'],
                 'tracks': metadata['totaltracks'],
-                'qdur': str(metadata.length / 2000),
+                'qdur': string_(metadata.length // 2000),
                 'isrc': metadata['isrc'],
         }
 
@@ -358,7 +357,7 @@ class TrackSearchDialog(SearchDialog):
         # advanced syntax style. Otherwise display only track title.
         if config.setting["use_adv_search_syntax"]:
             query_str = ' '.join(['%s:(%s)' % (item, escape_lucene_query(value))
-                                  for item, value in query.iteritems() if value])
+                                  for item, value in query.items() if value])
         else:
             query_str = query["track"]
 
@@ -540,7 +539,7 @@ class AlbumSearchDialog(SearchDialog):
         query = {
             "artist": metadata["albumartist"],
             "release": metadata["album"],
-            "tracks": str(len(cluster.files))
+            "tracks": string_(len(cluster.files))
         }
 
         # Generate query to be displayed to the user (in search box).
@@ -548,7 +547,7 @@ class AlbumSearchDialog(SearchDialog):
         # advanced syntax style. Otherwise display only album title.
         if config.setting["use_adv_search_syntax"]:
             query_str = ' '.join(['%s:(%s)' % (item, escape_lucene_query(value))
-                                for item, value in query.iteritems() if value])
+                                for item, value in query.items() if value])
         else:
             query_str = query["release"]
 
@@ -606,7 +605,7 @@ class AlbumSearchDialog(SearchDialog):
             return
 
         try:
-            caa_data = json.loads(data)
+            caa_data = json_load(data)
         except ValueError:
             cover_cell.not_found()
             return

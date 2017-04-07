@@ -22,6 +22,7 @@
 
 import re
 import operator
+from functools import reduce
 from collections import namedtuple
 from inspect import getargspec
 from picard.metadata import Metadata
@@ -49,7 +50,7 @@ class UnknownFunction(ScriptError):
     pass
 
 
-class ScriptText(unicode):
+class ScriptText(str):
 
     def eval(self, state):
         return self
@@ -88,7 +89,7 @@ class ScriptFunction(object):
                 raise ScriptError(
                     "Wrong number of arguments for $%s: Expected %s, got %i at position %i, line %i"
                     % (name,
-                       str(argnum_bound.lower)
+                       string_(argnum_bound.lower)
                         if argnum_bound.upper is None
                         else "%i - %i" % (argnum_bound.lower, argnum_bound.upper),
                        argcount,
@@ -309,7 +310,7 @@ def register_script_function(function, name=None, eval_args=True,
 
 
 def _compute_int(operation, *args):
-    return str(reduce(operation, map(int, args)))
+    return string_(reduce(operation, map(int, args)))
 
 
 def _compute_logic(operation, *args):
@@ -425,7 +426,7 @@ def func_unset(parser, name):
     # Allow wild-card unset for certain keys
     if name in ('performer:*', 'comment:*', 'lyrics:*'):
         name = name[:-1]
-        for key in parser.context.keys():
+        for key in list(parser.context.keys()):
             if key.startswith(name):
                 del parser.context[key]
         return ""
@@ -519,7 +520,7 @@ def func_div(parser, x, y, *args):
        Eg: $div(x, y, z) = ((x / y) / z)
     """
     try:
-        return _compute_int(operator.div, x, y, *args)
+        return _compute_int(operator.floordiv, x, y, *args)
     except ValueError:
         return ""
 
@@ -633,7 +634,7 @@ def func_gte(parser, x, y):
 
 
 def func_len(parser, text=""):
-    return str(len(text))
+    return string_(len(text))
 
 
 def func_performer(parser, pattern="", join=", "):
@@ -646,7 +647,7 @@ def func_performer(parser, pattern="", join=", "):
 
 def func_matchedtracks(parser, arg):
     if parser.file and parser.file.parent:
-        return str(parser.file.parent.album.get_num_matched_tracks())
+        return string_(parser.file.parent.album.get_num_matched_tracks())
     return "0"
 
 

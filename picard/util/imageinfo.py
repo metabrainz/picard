@@ -17,8 +17,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-import StringIO
 import struct
+from io import BytesIO
 
 
 class IdentificationError(Exception):
@@ -62,21 +62,21 @@ def identify(data):
     extension = ''
 
     # http://en.wikipedia.org/wiki/Graphics_Interchange_Format
-    if data[:6] in ('GIF87a', 'GIF89a'):
+    if data[:6] in (b'GIF87a', b'GIF89a'):
         w, h = struct.unpack('<HH', data[6:10])
         mime = 'image/gif'
         extension = '.gif'
 
     # http://en.wikipedia.org/wiki/Portable_Network_Graphics
     # http://www.w3.org/TR/PNG/#11IHDR
-    elif data[:8] == '\x89PNG\x0D\x0A\x1A\x0A' and data[12:16] == 'IHDR':
+    elif data[:8] == b'\x89PNG\x0D\x0A\x1A\x0A' and data[12:16] == b'IHDR':
         w, h = struct.unpack('>LL', data[16:24])
         mime = 'image/png'
         extension = '.png'
 
     # http://en.wikipedia.org/wiki/JPEG
-    elif data[:2] == '\xFF\xD8':  # Start Of Image (SOI) marker
-        jpeg = StringIO.StringIO(data)
+    elif data[:2] == b'\xFF\xD8':  # Start Of Image (SOI) marker
+        jpeg = BytesIO(data)
         # skip SOI
         jpeg.read(2)
         b = jpeg.read(1)

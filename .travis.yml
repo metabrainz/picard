@@ -1,11 +1,33 @@
-sudo: required
-services:
-  - docker
+os: linux
+dist: trusty
+language: python
+python: 
+  - "3.5"
+  - "3.6"
+cache:
+  - apt
+  - pip
+env:
+  global:
+    - PIP_INSTALL="pip install"
+    - DISCID="$PIP_INSTALL discid" MUTAGEN="$PIP_INSTALL mutagen>=1.37"
+  matrix:
+    - PYQT="$PIP_INSTALL pyqt5==5.7.1"
+    - PYQT="$PIP_INSTALL pyqt5==5.8"
+    - PYQT="$PIP_INSTALL pyqt5==5.8.1.1"
+    - PYQT="$PIP_INSTALL pyqt5==5.8.2"
 before_install:
-  - docker build -t picard .
-script: "docker run picard"
+  - sudo apt-get update -qq && sudo apt-get install -qq libdiscid0 libdiscid0-dev qt5-default
+  - $PYQT
+  - $MUTAGEN
+  - $DISCID
+install:
+  # Set up Picard
+  - python setup.py build_ext -i
+  - python setup.py build_locales -i
+# Run the tests!
+script: "python setup.py test"
+
 # Tell people that tests were run
 notifications:
   irc: "chat.freenode.net#metabrainz"
-sudo: required
-dist: trusty

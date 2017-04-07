@@ -123,7 +123,7 @@ class File(QtCore.QObject, Item):
         if self.state != File.PENDING or self.tagger.stopping:
             return
         if error is not None:
-            self.error = str(error)
+            self.error = string_(error)
             self.state = self.ERROR
             from picard.formats import supported_extensions
             file_name, file_extension = os.path.splitext(self.base_filename)
@@ -146,7 +146,7 @@ class File(QtCore.QObject, Item):
         if 'tracknumber' not in metadata:
             tracknumber = tracknum_from_filename(self.base_filename)
             if tracknumber != -1:
-                tracknumber = str(tracknumber)
+                tracknumber = string_(tracknumber)
                 metadata['tracknumber'] = tracknumber
                 if metadata['title'] == filename:
                     stripped_filename = filename.lstrip('0')
@@ -168,7 +168,7 @@ class File(QtCore.QObject, Item):
         deleted_tags = self.metadata.deleted_tags
         self.metadata.copy(metadata)
         self.metadata.deleted_tags = deleted_tags
-        for tag, values in saved_metadata.iteritems():
+        for tag, values in saved_metadata.items():
             self.metadata.set(tag, values)
 
         if acoustid:
@@ -256,7 +256,7 @@ class File(QtCore.QObject, Item):
             return
         old_filename = new_filename = self.filename
         if error is not None:
-            self.error = str(error)
+            self.error = string_(error)
             self.set_state(File.ERROR, update=True)
         else:
             self.filename = new_filename = result
@@ -303,26 +303,27 @@ class File(QtCore.QObject, Item):
             metadata.update(file_metadata)
         # make sure every metadata can safely be used in a path name
         for name in metadata.keys():
-            if isinstance(metadata[name], basestring):
+            if isinstance(metadata[name], str):
                 metadata[name] = sanitize_filename(metadata[name])
         format = format.replace("\t", "").replace("\n", "")
         filename = ScriptParser().eval(format, metadata, self)
         if settings["ascii_filenames"]:
-            if isinstance(filename, unicode):
+            if isinstance(filename, str):
                 filename = unaccent(filename)
             filename = replace_non_ascii(filename)
         # replace incompatible characters
         if settings["windows_compatibility"] or sys.platform == "win32":
             filename = replace_win32_incompat(filename)
         # remove null characters
-        filename = filename.replace("\x00", "")
+        if isinstance(filename, (bytes, bytearray)):
+            filename = filename.replace(b"\x00", "")
         return filename
 
     def _fixed_splitext(self, filename):
         # In case the filename is blank and only has the extension
         # the real extension is in new_filename and ext is blank
         new_filename, ext = os.path.splitext(filename)
-        if ext == '' and new_filename.lower() in map(unicode, self.EXTENSIONS):
+        if ext == '' and new_filename.lower() in self.EXTENSIONS:
             ext = new_filename
             new_filename = ''
         return new_filename, ext
@@ -366,7 +367,7 @@ class File(QtCore.QObject, Item):
                     new_filename = '_' + new_filename[1:]
                 # Fix for precomposed characters on OSX
                 if sys.platform == "darwin":
-                    new_filename = unicodedata.normalize("NFD", unicode(new_filename))
+                    new_filename = unicodedata.normalize("NFD", new_filename)
 
         return os.path.realpath(os.path.join(new_dirname, new_filename))
 
@@ -409,15 +410,15 @@ class File(QtCore.QObject, Item):
         old_path = encode_filename(os.path.dirname(old_filename))
         new_path = encode_filename(os.path.dirname(new_filename))
         patterns = encode_filename(config.setting["move_additional_files_pattern"])
-        patterns = filter(bool, [p.strip() for p in patterns.split()])
+        patterns = [string_(p.strip()) for p in patterns.split() if p.strip()]
         try:
-            names = os.listdir(old_path)
+            names = list(map(encode_filename, os.listdir(old_path)))
         except os.error:
             log.error("Error: {} directory not found".format(old_path))
             return
-        filtered_names = filter(lambda x: x[0] != '.', names)
+        filtered_names = [name for name in names if name[0] != "."]
         for pattern in patterns:
-            pattern_regex = re.compile(fnmatch.translate(pattern), re.IGNORECASE)
+            pattern_regex = re.compile(encode_filename(fnmatch.translate(pattern)), re.IGNORECASE)
             file_names = names
             if pattern[0] != '.':
                 file_names = filtered_names
@@ -639,7 +640,7 @@ class File(QtCore.QObject, Item):
             release=metadata['album'],
             tnum=metadata['tracknumber'],
             tracks=metadata['totaltracks'],
-            qdur=str(metadata.length / 2000),
+            qdur=string_(metadata.length // 2000),
             isrc=metadata['isrc'],
             limit=QUERY_LIMIT)
 

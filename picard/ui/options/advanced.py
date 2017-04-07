@@ -17,8 +17,6 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-from PyQt5.QtGui import QPalette, QColor
-
 from picard import config
 from picard.ui.options import OptionsPage, register_options_page
 from picard.ui.ui_options_advanced import Ui_AdvancedOptionsPage
@@ -58,7 +56,7 @@ class AdvancedOptionsPage(OptionsPage):
         self.ui.completeness_ignore_silence.setChecked(config.setting["completeness_ignore_silence"])
 
     def save(self):
-        config.setting["ignore_regex"] = unicode(self.ui.ignore_regex.text())
+        config.setting["ignore_regex"] = self.ui.ignore_regex.text()
         config.setting["ignore_hidden_files"] = self.ui.ignore_hidden_files.isChecked()
         config.setting["recursively_add_files"] = self.ui.recursively_add_files.isChecked()
         config.setting["completeness_ignore_videos"] = self.ui.completeness_ignore_videos.isChecked()

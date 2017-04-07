@@ -109,14 +109,14 @@ class ReleaseGroup(DataObject):
             versions[name].append(release)
 
         # de-duplicate names if possible
-        for name, releases in versions.iteritems():
+        for name, releases in versions.items():
             for a, b in combinations(releases, 2):
                 for key in extrakeys:
                     (value1, value2) = (a[key], b[key])
                     if value1 != value2:
                         a['_disambiguate_name'].append(value1)
                         b['_disambiguate_name'].append(value2)
-        for name, releases in versions.iteritems():
+        for name, releases in versions.items():
             for release in releases:
                 dis = " / ".join(filter(None, uniqify(release['_disambiguate_name']))).replace("&", "&&")
                 disname = name if not dis else name + ' / ' + dis
@@ -133,7 +133,7 @@ class ReleaseGroup(DataObject):
     def _request_finished(self, callback, document, http, error):
         try:
             if error:
-                log.error("%r", unicode(http.errorString()))
+                log.error("%r", http.errorString())
             else:
                 try:
                     self._parse_versions(document)

@@ -78,13 +78,13 @@ def printable_node(node, indent=0):
 
     if node.attribs:
         l = []
-        for k,v in node.attribs.iteritems():
+        for k,v in node.attribs.items():
             l.append(repr(k).decode('unicode-escape') + u': ' + repr(v).decode('unicode-escape'))
         el.append(indented(u'attribs={', l, u'}', indent+1))
 
     if node.children:
         l = []
-        for k, v in node.children.iteritems():
+        for k, v in node.children.items():
             l.append(
                 indented(
                     repr(k).decode('unicode-escape') + u': [',

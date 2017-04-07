@@ -17,8 +17,6 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-import sys
-from mutagen import _util
 from picard import log
 from picard.plugin import ExtensionPoint
 
@@ -47,7 +45,7 @@ def guess_format(filename, options=_formats):
     results = []
     # Since we are reading only 128 bytes and then immediately closing the file,
     # use unbuffered mode.
-    with file(filename, "rb", 0) as fileobj:
+    with open(filename, "rb", 0) as fileobj:
         header = fileobj.read(128)
         # Calls the score method of a particular format's associated filetype
         # and assigns a positive score depending on how closely the fileobj's header matches
@@ -65,7 +63,7 @@ def guess_format(filename, options=_formats):
     return None
 
 
-def open(filename):
+def open_(filename):
     """Open the specified file and return a File instance with the appropriate format handler, or None."""
     try:
         # First try to guess the format on the basis of file headers
@@ -82,7 +80,7 @@ def open(filename):
         # None is returned if both the methods fail
         return None
     except Exception as error:
-        log.error("Error occured:\n{}".format(error.message))
+        log.error("Error occured:\n{}".format(error))
         return None
 
 

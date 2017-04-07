@@ -29,7 +29,7 @@ def _get_utf16_length(text):
     """Returns the number of code points used by a unicode object in its
     UTF-16 representation.
     """
-    if isinstance(text, str):
+    if isinstance(text, bytes):
         return len(text)
     # if this is a narrow Python build, len will in fact return exactly
     # what we're looking for
@@ -41,9 +41,9 @@ def _get_utf16_length(text):
 
 
 def _shorten_to_utf16_length(text, length):
-    """Truncates a unicode object to the given number of UTF-16 code points.
+    """Truncates a str object to the given number of UTF-16 code points.
     """
-    assert isinstance(text, unicode), "This function only works on unicode"
+    assert isinstance(text, str), "This function only works on unicode"
     # if this is a narrow Python build, regular slicing will do exactly
     # what we're looking for
     if sys.maxunicode == 0xFFFF:
@@ -83,7 +83,7 @@ def _shorten_to_bytes_length(text, length):
     """Truncates a unicode object to the given number of bytes it would take
     when encoded in the "filesystem encoding".
     """
-    assert isinstance(text, unicode), "This function only works on unicode"
+    assert isinstance(text, str), "This function only works on unicode"
     raw = encode_filename(text)
     # maybe there's no need to truncate anything
     if len(raw) <= length:
@@ -97,7 +97,7 @@ def _shorten_to_bytes_length(text, length):
         i = length
         # a UTF-8 intermediate byte starts with the bits 10xxxxxx,
         # so ord(char) & 0b11000000 = 0b10000000
-        while i > 0 and (ord(raw[i]) & 0xC0) == 0x80:
+        while i > 0 and (raw[i] & 0xC0) == 0x80:
             i -= 1
         return decode_filename(raw[:i])
     # finally, a brute force approach
@@ -117,7 +117,7 @@ def shorten_filename(filename, length, mode):
     """Truncates a filename to the given number of thingies,
     as implied by `mode`.
     """
-    if isinstance(filename, str):
+    if isinstance(filename, bytes):
         return filename[:length]
     if mode == SHORTEN_BYTES:
         return _shorten_to_bytes_length(filename, length)
@@ -148,7 +148,7 @@ def _shorten_to_utf16_ratio(text, ratio):
     """Shortens the string to the given ratio (and strips it)."""
     length = _get_utf16_length(text)
     limit = max(1, int(math.floor(length / ratio)))
-    if isinstance(text, str):
+    if isinstance(text, bytes):
         return text[:limit].strip()
     else:
         return _shorten_to_utf16_length(text, limit).strip()

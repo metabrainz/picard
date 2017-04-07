@@ -22,7 +22,6 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-import json
 import traceback
 from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtNetwork import QNetworkReply
@@ -33,7 +32,7 @@ from picard.coverart.image import CaaCoverArtImage, CaaThumbnailCoverArtImage
 from picard.coverart.utils import CAA_TYPES, translate_caa_type
 from picard.ui.ui_provider_options_caa import Ui_CaaOptions
 from picard.ui.util import StandardButton
-from picard.util import webbrowser2
+from picard.util import webbrowser2, json_load
 from picard.ui.options import OptionsPage, OptionsCheckError, register_options_page
 
 
@@ -111,7 +110,7 @@ class CAATypesSelectorDialog(QtWidgets.QDialog):
 
     def get_selected_types(self):
         types = []
-        for item, typ in self._items.iteritems():
+        for item, typ in self._items.items():
             if item.isChecked():
                 types.append(typ['name'])
         if not types:
@@ -193,7 +192,7 @@ class CoverArtProviderCaa(CoverArtProvider):
 
     def __init__(self, coverart):
         CoverArtProvider.__init__(self, coverart)
-        self.caa_types = map(unicode.lower, config.setting["caa_image_types"])
+        self.caa_types = list(map(str.lower, config.setting["caa_image_types"]))
         self.len_caa_types = len(self.caa_types)
         self.restrict_types = config.setting["caa_restrict_image_types"]
 
@@ -280,10 +279,10 @@ class CoverArtProviderCaa(CoverArtProvider):
         self.album._requests -= 1
         if error:
             if not (error == QNetworkReply.ContentNotFoundError and self.ignore_json_not_found_error):
-                self.error(u'CAA JSON error: %s' % (unicode(http.errorString())))
+                self.error(u'CAA JSON error: %s' % (http.errorString()))
         else:
             try:
-                caa_data = json.loads(data)
+                caa_data = json_load(data)
             except ValueError:
                 self.error("Invalid JSON: %s" % (http.url().toString()))
             else:
@@ -302,7 +301,7 @@ class CoverArtProviderCaa(CoverArtProvider):
                     if not image["types"]:
                         image["types"] = [u"unknown"]
                     else:
-                        image["types"] = map(unicode.lower, image["types"])
+                        image["types"] = list(map(str.lower, image["types"]))
                     if self.restrict_types:
                         # only keep enabled caa types
                         types = set(image["types"]).intersection(

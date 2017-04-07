@@ -27,11 +27,12 @@ class ImageList(list):
     def __eq__(self, other):
         return sorted(self, key=get_image_type) == sorted(other, key=get_image_type)
 
-    def __getslice__(self, i, j):
-        length = len(self)
-        i = max(0, min(i, length))
-        j = max(0, min(j, length))
-        return ImageList([self[it] for it in range(i, j)])
+    def __getitem__(self, k):
+        result = super().__getitem__(k)
+        try:
+            return ImageList(result)
+        except TypeError:
+            return result
 
 
 def _process_images(state, src_obj):

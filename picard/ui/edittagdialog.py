@@ -39,8 +39,8 @@ class EditTagDialog(PicardDialog):
             set(TAG_NAMES.keys() + self.metadata_box.tag_diff.tag_names))
         if len(self.metadata_box.files) == 1:
             current_file = list(self.metadata_box.files)[0]
-            self.default_tags = filter(lambda x: current_file.supports_tag(x),
-                                       self.default_tags)
+            self.default_tags = list(filter(lambda x: current_file.supports_tag(x),
+                                            self.default_tags))
         tag_names = self.ui.tag_names
         tag_names.editTextChanged.connect(self.tag_changed)
         tag_names.addItem("")
@@ -98,7 +98,7 @@ class EditTagDialog(PicardDialog):
             tag_names.removeItem(tag_names.findText(self.tag, flags))
 
         row = tag_names.findText(tag, flags)
-        self.tag = unicode(tag)
+        self.tag = string_(tag)
         if row <= 0:
             if tag:
                 # add custom tags to the QComboBox immediately
@@ -139,7 +139,7 @@ class EditTagDialog(PicardDialog):
 
     def value_edited(self, item):
         row = self.value_list.row(item)
-        value = unicode(item.text())
+        value = item.text()
         if row == 0 and self.different:
             self.modified_tags[self.tag] = [value]
             self.different = False

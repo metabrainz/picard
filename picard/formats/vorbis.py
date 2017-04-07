@@ -48,7 +48,7 @@ class VCommentFile(File):
         "musicbrainz_trackid": "musicbrainz_recordingid",
         "musicbrainz_releasetrackid": "musicbrainz_trackid",
     }
-    __rtranslate = dict([(v, k) for k, v in __translate.iteritems()])
+    __rtranslate = dict([(v, k) for k, v in __translate.items()])
 
     def _load(self, filename):
         log.debug("Loading file %r", filename)
@@ -84,7 +84,7 @@ class VCommentFile(File):
                     if email != config.setting['rating_user_email']:
                         continue
                     name = '~rating'
-                    value = unicode(int(round((float(value) * (config.setting['rating_steps'] - 1)))))
+                    value = string_(int(round((float(value) * (config.setting['rating_steps'] - 1)))))
                 elif name == "fingerprint" and value.startswith("MusicMagic Fingerprint"):
                     name = "musicip_fingerprint"
                     value = value[22:]
@@ -171,7 +171,7 @@ class VCommentFile(File):
                     name = 'rating:%s' % config.setting['rating_user_email']
                 else:
                     name = 'rating'
-                value = unicode(float(value) / (config.setting['rating_steps'] - 1))
+                value = string_(float(value) / (config.setting['rating_steps'] - 1))
             # don't save private tags
             elif name.startswith("~"):
                 continue
@@ -190,7 +190,7 @@ class VCommentFile(File):
                 value = "MusicMagic Fingerprint%s" % value
             elif name in self.__rtranslate:
                 name = self.__rtranslate[name]
-            tags.setdefault(name.upper().encode('utf-8'), []).append(value)
+            tags.setdefault(name.upper(), []).append(value)
 
         if "totaltracks" in metadata:
             tags.setdefault(u"TRACKTOTAL", []).append(metadata["totaltracks"])
@@ -206,8 +206,8 @@ class VCommentFile(File):
             if self._File == mutagen.flac.FLAC:
                 file.add_picture(picture)
             else:
-                tags.setdefault(u"METADATA_BLOCK_PICTURE", []).append(
-                    base64.standard_b64encode(picture.write()))
+                tags.setdefault("METADATA_BLOCK_PICTURE", []).append(
+                    base64.b64encode(picture.write()).decode('ascii'))
 
         file.tags.update(tags)
 

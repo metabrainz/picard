@@ -23,7 +23,6 @@ from PyQt5 import QtCore
 from collections import defaultdict
 from functools import partial
 import imp
-import json
 import os.path
 import shutil
 import picard.plugins
@@ -36,6 +35,7 @@ from picard import (config,
                     version_to_string,
                     VersionError)
 from picard.const import USER_PLUGIN_DIR, PLUGINS_API
+from picard.util import json_load
 
 
 _suffixes = [s[0] for s in imp.get_suffixes()]
@@ -98,7 +98,7 @@ class ExtensionPoint(object):
         self.__items.append((module, item))
 
     def unregister_module(self, name):
-        self.__items = filter(lambda i: i[0] != name, self.__items)
+        self.__items = [item for item in self.__items if item[0] != name]
 
     def __iter__(self):
         enabled_plugins = config.setting["enabled_plugins"]
@@ -218,7 +218,7 @@ class PluginData(PluginShared):
 class PluginManager(QtCore.QObject):
 
     plugin_installed = QtCore.pyqtSignal(PluginWrapper, bool)
-    plugin_updated = QtCore.pyqtSignal(unicode, bool)
+    plugin_updated = QtCore.pyqtSignal(str, bool)
 
 
     def __init__(self):
@@ -432,12 +432,12 @@ class PluginManager(QtCore.QObject):
         if error:
             self.tagger.window.set_statusbar_message(
                 N_("Error loading plugins list: %(error)s"),
-                {'error': unicode(reply.errorString())},
+                {'error': reply.errorString()},
                 echo=log.error
             )
         else:
             self._available_plugins = [PluginData(data, key) for key, data in
-                                       json.loads(response)['plugins'].items()]
+                                       json_load(response)['plugins'].items()]
         if callback:
             callback()
 
@@ -472,7 +472,7 @@ class PluginFunctions:
 
     def run(self, *args, **kwargs):
         "Execute registered functions with passed parameters honouring priority"
-        for priority, functions in sorted(self.functions.iteritems(),
+        for priority, functions in sorted(self.functions.items(),
                                           key=lambda i: i[0],
                                           reverse=True):
             for function in functions:
