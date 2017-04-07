@@ -27,7 +27,8 @@ Before installing Picard, you need to have these:
    Due to slowdowns in reading the CD TOC, using libdiscid versions
    0.3.0 - 0.4.1 is not recommended.
 
-We recommend you use [pip](https://pip.pypa.io/en/stable/) to install the dependencies:
+We recommend you use [pip](https://pip.pypa.io/en/stable/) to install the Python
+dependencies:
 
 Run the following command to install PyQt5, Mutagen and discid:
 
