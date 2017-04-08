@@ -443,12 +443,14 @@ def union_sorted_lists(list1, list2):
 
 
 def convert_to_string(obj):
-    """
-    Appropriately converts the input `obj` to a string.
+    """Appropriately converts the input `obj` to a string.
+
     Args:
         obj (QByteArray, bytes, bytearray, ...): The input object
+
     Returns:
         string: The appropriately decoded string
+
     """
     if isinstance(obj, QtCore.QByteArray):
         return bytes(obj).decode()
@@ -463,13 +465,15 @@ def htmlescape(string):
 
 
 def load_json(data):
-    """
-    Appropriately convert and returns a python dictionary from
+    """Appropriately convert and returns a python dictionary from
     json string.
+
     Args:
         data (QByteArray): The json response
+
     Returns:
         dict: Response data as a python dict
+
     """
     return json.loads(convert_to_string(data))
 
