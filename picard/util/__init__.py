@@ -465,11 +465,11 @@ def htmlescape(string):
 
 
 def load_json(data):
-    """Appropriately convert and returns a python dictionary from
-    json string.
+    """Deserializes a string or bytes like json response and converts
+    it to a python object.
 
     Args:
-        data (QByteArray): The json response
+        data (QByteArray, bytes, bytearray, ...): The json response
 
     Returns:
         dict: Response data as a python dict
