@@ -35,7 +35,7 @@ from distutils.dist import Distribution
 from distutils.spawn import find_executable
 
 ext_modules = [
-    Extension('picard.util.astrcmp', sources=['picard/util/astrcmp.c']),
+    Extension('picard.util._astrcmp', sources=['picard/util/_astrcmp.c']),
 ]
 
 py2app_exclude_modules = [

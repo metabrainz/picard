@@ -180,7 +180,7 @@ static struct PyModuleDef AstrcmpModule =
 };
 
 PyMODINIT_FUNC 
-PyInit_astrcmp(void)
+PyInit__astrcmp(void)
 {
     return PyModule_Create(&AstrcmpModule);
 }
