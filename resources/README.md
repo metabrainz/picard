@@ -12,8 +12,8 @@ For adding a new image into existing resources, follow these steps:
 1. Add image file (like .png) into `resources/images/` and source file (like .svg) into `resources/img-src`.
 2. Generate new .qrc file. This would automatically detect any changes in directory.
 
-    $ python2 makeqrc.py
+    $ python makeqrc.py
 
 3. Create binary of all resources which will be used by Picard.
 
-    $ python2 compile.py
+    $ python compile.py
