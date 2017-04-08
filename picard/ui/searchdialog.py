@@ -25,7 +25,7 @@ from picard import config
 from picard.file import File
 from picard.ui import PicardDialog
 from picard.ui.util import StandardButton, ButtonLineEdit
-from picard.util import icontheme, json_load
+from picard.util import icontheme, load_json
 from picard.mbxml import (
     artist_to_metadata,
     recording_to_metadata,
@@ -605,7 +605,7 @@ class AlbumSearchDialog(SearchDialog):
             return
 
         try:
-            caa_data = json_load(data)
+            caa_data = load_json(data)
         except ValueError:
             cover_cell.not_found()
             return

@@ -20,7 +20,7 @@
 from functools import partial
 from PyQt5 import QtCore
 from picard import log
-from picard.util import json_load
+from picard.util import load_json
 
 
 class Submission(object):
@@ -88,7 +88,7 @@ class AcoustIDManager(QtCore.QObject):
     def __fingerprint_submission_finished(self, fingerprints, document, http, error):
         if error:
             try:
-                error = json_load(document)
+                error = load_json(document)
                 message = error["error"]["message"]
             except :
                 message = ""

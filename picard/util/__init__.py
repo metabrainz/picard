@@ -462,7 +462,7 @@ def htmlescape(string):
     return cgi.escape(string)
 
 
-def json_load(data):
+def load_json(data):
     """
     Appropriately convert and returns a python dictionary from
     json string.
