@@ -289,7 +289,7 @@ class CoverArtImage:
         filename = self._make_image_filename(filename, dirname, metadata)
 
         overwrite = config.setting["save_images_overwrite"]
-        ext = self.extension
+        ext = encode_filename(self.extension)
         image_filename = self._next_filename(filename, counters)
         while os.path.exists(image_filename + ext) and not overwrite:
             if not self._is_write_needed(image_filename + ext):
@@ -312,7 +312,7 @@ class CoverArtImage:
 
     def _next_filename(self, filename, counters):
         if counters[filename]:
-            new_filename = "%s (%d)" % (filename, counters[filename])
+            new_filename = b"%b (%d)" % (filename, counters[filename])
         else:
             new_filename = filename
         counters[filename] += 1
