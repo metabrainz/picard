@@ -107,8 +107,11 @@ class picard_test(Command):
     def finalize_options(self):
         if self.tests:
             self.tests = self.tests.split(",")
-        if self.verbosity:
-            self.verbosity = int(self.verbosity)
+        # In case the verbosity flag is used, verbosity is None
+        if not self.verbosity:
+            self.verbosity = 2
+        # Convert to appropriate verbosity if passed by --verbosity option
+        self.verbosity = int(self.verbosity)
 
     def run(self):
         import unittest
