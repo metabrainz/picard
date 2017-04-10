@@ -3,7 +3,6 @@
 import os
 import os.path
 import unittest
-from picard.util.astrcmp import astrcmp_c, astrcmp_py
 
 
 class AstrcmpBase(object):
@@ -20,9 +19,15 @@ class AstrcmpBase(object):
         self.assertAlmostEqual(0.7083333333333333, astrcmp(u"The Great Gig in the Sky", u"Great Gig In The sky"))
 
 
-class AstrcmpCTest(AstrcmpBase, unittest.TestCase):
-    func = astrcmp_c
-
+from picard.util.astrcmp import astrcmp_py
 
 class AstrcmpPyTest(AstrcmpBase, unittest.TestCase):
     func = astrcmp_py
+
+try:
+    from picard.util.astrcmp import astrcmp_c
+
+    class AstrcmpCTest(AstrcmpBase, unittest.TestCase):
+        func = astrcmp_c
+except:
+    pass
