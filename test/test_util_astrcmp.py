@@ -3,6 +3,12 @@
 import os
 import os.path
 import unittest
+from picard.util.astrcmp import astrcmp_py
+
+try:
+    from picard.util.astrcmp import astrcmp_c
+except ImportError:
+    astrcmp_c = None
 
 
 class AstrcmpBase(object):
@@ -19,15 +25,15 @@ class AstrcmpBase(object):
         self.assertAlmostEqual(0.7083333333333333, astrcmp(u"The Great Gig in the Sky", u"Great Gig In The sky"))
 
 
-from picard.util.astrcmp import astrcmp_py
+class AstrcmpCTest(AstrcmpBase, unittest.TestCase):
+    func = astrcmp_c
+
+    @unittest.skipIf(astrcmp_c is None, "compiled astrcmp.c does not exist")
+    def test_astrcmp(self):
+        super()
+
 
 class AstrcmpPyTest(AstrcmpBase, unittest.TestCase):
     func = astrcmp_py
 
-try:
-    from picard.util.astrcmp import astrcmp_c
 
-    class AstrcmpCTest(AstrcmpBase, unittest.TestCase):
-        func = astrcmp_c
-except:
-    pass
