@@ -32,7 +32,7 @@ from picard.coverart.image import CaaCoverArtImage, CaaThumbnailCoverArtImage
 from picard.coverart.utils import CAA_TYPES, translate_caa_type
 from picard.ui.ui_provider_options_caa import Ui_CaaOptions
 from picard.ui.util import StandardButton
-from picard.util import webbrowser2, json_load
+from picard.util import webbrowser2, load_json
 from picard.ui.options import OptionsPage, OptionsCheckError, register_options_page
 
 
@@ -282,7 +282,7 @@ class CoverArtProviderCaa(CoverArtProvider):
                 self.error(u'CAA JSON error: %s' % (http.errorString()))
         else:
             try:
-                caa_data = json_load(data)
+                caa_data = load_json(data)
             except ValueError:
                 self.error("Invalid JSON: %s" % (http.url().toString()))
             else:

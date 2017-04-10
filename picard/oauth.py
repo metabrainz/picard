@@ -26,7 +26,7 @@ from picard.const import (
     MUSICBRAINZ_OAUTH_CLIENT_ID,
     MUSICBRAINZ_OAUTH_CLIENT_SECRET,
 )
-from picard.util import build_qurl, json_load
+from picard.util import build_qurl, load_json
 
 
 class OAuthManager(object):
@@ -112,11 +112,11 @@ class OAuthManager(object):
             if error:
                 log.error("OAuth: access_token refresh failed: %s", data)
                 if http.attribute(QNetworkRequest.HttpStatusCodeAttribute) == 400:
-                    response = json_load(data)
+                    response = load_json(data)
                     if response["error"] == "invalid_grant":
                         self.forget_refresh_token()
             else:
-                response = json_load(data)
+                response = load_json(data)
                 self.set_access_token(response["access_token"], response["expires_in"])
                 access_token = response["access_token"]
         finally:
@@ -145,7 +145,7 @@ class OAuthManager(object):
             if error:
                 log.error("OAuth: authorization_code exchange failed: %s", data)
             else:
-                response = json_load(data)
+                response = load_json(data)
                 self.set_refresh_token(response["refresh_token"], scopes)
                 self.set_access_token(response["access_token"], response["expires_in"])
                 successful = True
@@ -166,7 +166,7 @@ class OAuthManager(object):
             if error:
                 log.error("OAuth: username fetching failed: %s", data)
             else:
-                response = json_load(data)
+                response = load_json(data)
                 self.set_username(response["sub"])
                 successful = True
         finally:

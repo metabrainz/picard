@@ -35,7 +35,7 @@ from picard import (config,
                     version_to_string,
                     VersionError)
 from picard.const import USER_PLUGIN_DIR, PLUGINS_API
-from picard.util import json_load
+from picard.util import load_json
 
 
 _suffixes = [s[0] for s in imp.get_suffixes()]
@@ -437,7 +437,7 @@ class PluginManager(QtCore.QObject):
             )
         else:
             self._available_plugins = [PluginData(data, key) for key, data in
-                                       json_load(response)['plugins'].items()]
+                                       load_json(response)['plugins'].items()]
         if callback:
             callback()
 
