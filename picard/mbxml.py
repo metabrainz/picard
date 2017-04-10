@@ -353,7 +353,7 @@ def recording_to_metadata(node, m, track=None):
     # Analyse to see if we should populate the movement variables
     if m.partsof:
         target_work = None
-        for work, parts_of in m.partsof.iteritems():
+        for work, parts_of in m.partsof.items():
             works = set([p['workid'] for p in parts_of])
             if target_work is None:
                 target_work = works
