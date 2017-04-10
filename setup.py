@@ -588,9 +588,9 @@ class picard_patch_version(Command):
     def patch_version(self, filename):
         regex = re.compile(r'^PICARD_BUILD_VERSION_STR\s*=.*$', re.MULTILINE)
         with open(filename, 'r+b') as f:
-            source = f.read()
+            source = (f.read()).decode()
             build = self.platform + '_' + datetime.datetime.utcnow().strftime('%Y%m%d%H%M%S')
-            patched_source = regex.sub('PICARD_BUILD_VERSION_STR = "%s"' % build, source)
+            patched_source = regex.sub('PICARD_BUILD_VERSION_STR = "%s"' % build, source).encode()
             f.seek(0)
             f.write(patched_source)
             f.truncate()
