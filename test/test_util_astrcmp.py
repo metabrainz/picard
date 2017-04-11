@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 
-import os
-import os.path
 import unittest
 from picard.util.astrcmp import astrcmp_py
 
@@ -28,12 +26,10 @@ class AstrcmpBase(object):
 class AstrcmpCTest(AstrcmpBase, unittest.TestCase):
     func = astrcmp_c
 
-    @unittest.skipIf(astrcmp_c is None, "compiled astrcmp.c does not exist")
+    @unittest.skipIf(astrcmp_c is None, "The _astrcmp C extension module has not been compiled")
     def test_astrcmp(self):
         super()
 
 
 class AstrcmpPyTest(AstrcmpBase, unittest.TestCase):
     func = astrcmp_py
-
-
