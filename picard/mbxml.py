@@ -367,7 +367,7 @@ def recording_to_metadata(node, m, track=None):
             m["musicbrainz_workid"] = work
             m['work'] = ''
             m['~workcomment'] = ''
-            parts_of = m.partsof[m.partsof.keys()[0]]
+            parts_of = m.partsof[list(m.partsof.keys())[0]]
             for partof in parts_of:
                 if partof['workid'] == work:
                     if 'work' in partof:
