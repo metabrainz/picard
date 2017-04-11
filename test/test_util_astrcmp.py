@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 
-import os
-import os.path
 import unittest
 from picard.util.astrcmp import astrcmp_py
 
@@ -35,5 +33,3 @@ class AstrcmpCTest(AstrcmpBase, unittest.TestCase):
 
 class AstrcmpPyTest(AstrcmpBase, unittest.TestCase):
     func = astrcmp_py
-
-
