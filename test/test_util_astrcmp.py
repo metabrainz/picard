@@ -26,7 +26,7 @@ class AstrcmpBase(object):
 class AstrcmpCTest(AstrcmpBase, unittest.TestCase):
     func = astrcmp_c
 
-    @unittest.skipIf(astrcmp_c is None, "compiled astrcmp.c does not exist")
+    @unittest.skipIf(astrcmp_c is None, "The _astrcmp C extension module has not been compiled")
     def test_astrcmp(self):
         super()
 
