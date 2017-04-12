@@ -11,22 +11,35 @@ env:
   global:
     - PIP_INSTALL="pip install"
     - DISCID="$PIP_INSTALL discid" MUTAGEN="$PIP_INSTALL mutagen>=1.37"
+    - BABEL="$PIP_INSTALL babel"
   matrix:
     - PYQT="$PIP_INSTALL pyqt5==5.7.1"
     - PYQT="$PIP_INSTALL pyqt5==5.8"
     - PYQT="$PIP_INSTALL pyqt5==5.8.1.1"
     - PYQT="$PIP_INSTALL pyqt5==5.8.2"
+
 before_install:
-  - sudo apt-get update -qq && sudo apt-get install -qq libdiscid0 libdiscid0-dev qt5-default
+  - sudo apt-get update -qq && sudo apt-get install -qq transifex-client libdiscid0 libdiscid0-dev qt5-default
+  - $BABEL
   - $PYQT
   - $MUTAGEN
   - $DISCID
+  - touch ~/.transifexrc
+  - printf "[https://www.transifex.com]\nhostname = https://www.transifex.com\npassword = $TX_PASSWORD\ntoken =\nusername = $TX_USERNAME" > ~/.transifexrc
 install:
   # Set up Picard
+  - python setup.py clean
+  - python setup.py clean_ui
+  - python setup.py build_ui
   - python setup.py build_ext -i
+  - python setup.py regen_pot_file
+  - python setup.py get_po_files
+  - python setup.py update_constants
   - python setup.py build_locales -i
+  - python setup.py patch_version --platform=test
+  - python setup.py install
 # Run the tests!
-script: "python setup.py test"
+script: "python setup.py test -v"
 
 # Tell people that tests were run
 notifications:
