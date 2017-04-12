@@ -19,6 +19,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 import traceback
+from operator import itemgetter
 from PyQt5 import QtCore, QtNetwork
 from picard import config, log
 from picard.coverart import coverart
@@ -415,7 +416,7 @@ class Album(DataObject, Item):
                     if sim >= config.setting['track_matching_threshold']:
                         matches.append((sim, track))
             if matches:
-                matches.sort(reverse=True)
+                matches.sort(key=itemgetter(0), reverse=True)
                 file.move(matches[0][1])
             else:
                 file.move(self.unmatched_files)
@@ -427,7 +428,7 @@ class Album(DataObject, Item):
         if recordingid is not None:
             matches = self._get_recordingid_matches(file, recordingid)
             if matches:
-                matches.sort(reverse=True)
+                matches.sort(key=itemgetter(0), reverse=True)
                 file.move(matches[0][1])
                 return
         self.match_files([file], use_recordingid=False)
