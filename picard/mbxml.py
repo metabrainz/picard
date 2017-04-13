@@ -17,27 +17,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-# NOTES ON MOVEMENTS (because logic is not straight forward):
-# If a recording is a movement i.e. part of an overall work, then the movement fields
-# store the movement details and the work fields store details of the overall work.
-# The movement details consist of:
-#   Movement Work MBID
-#   Movement Title
-#   Movement Number
-#   Movement Total (i.e. number of movments in work) - not currently available in MB xml
-#
-# A recording can consist of zero, one or multiple 'base' works (performances)
-# The base works can be part of zero, one or multiple 'container' works (parts)
-# Movement name/workid can be set if and only if:
-#   Every base work is part of exactly one same container work
-#   If there is exactly one base work, then movement index and total can also be set.
-#
-# Processing therefore needs to be done in two parts:
-#   A. For all base works, save details of all work-part-of-work relationships
-#   B. Analyse parts for common container work
-
 import re
-from picard import config, log
+from picard import config
 from picard.util import (format_time, translate_from_sortname, parse_amazon_url,
                          linear_combination_of_weights)
 from picard.const import RELEASE_FORMATS
@@ -126,17 +107,7 @@ def _relations_to_metadata(relation_lists, m):
             for relation in relation_list.relation:
                 if relation.type == 'performance':
                     performance_to_metadata(relation, m)
-                    if ('work' not in relation.children
-                        or 'id' not in relation.work[0].attribs
-                        ):
-                        log.warning('MBXML: Recording work skipped - no target work MBID present')
-                        continue
-                    performance_id = relation.work[0].attribs['id']
-                    m.performance_parts = []
                     work_to_metadata(relation.work[0], m)
-                    m.partsof[performance_id] = m.performance_parts
-                elif relation.type == 'parts':
-                    workparts_to_metadata(relation, m)
         elif relation_list.target_type == 'url':
             for relation in relation_list.relation:
                 if relation.type == 'amazon asin' and 'asin' not in m:
@@ -312,7 +283,6 @@ def track_to_metadata(node, track):
 
 def recording_to_metadata(node, m, track=None):
     m.length = 0
-    m.partsof = {}
     m.add_unique('musicbrainz_recordingid', node.id)
     for name, nodes in node.children.items():
         if not nodes:
@@ -350,33 +320,6 @@ def recording_to_metadata(node, m, track=None):
         elif name == 'video' and nodes[0].text == 'true':
             m['~video'] = '1'
     m['~length'] = format_time(m.length)
-    # Analyse to see if we should populate the movement variables
-    if m.partsof:
-        target_work = None
-        for work, parts_of in m.partsof.items():
-            works = set([p['workid'] for p in parts_of])
-            if target_work is None:
-                target_work = works
-            else:
-                target_work &= works
-        if len(target_work) == 1:
-            work = target_work.pop()
-            m["musicbrainz_movementid"] = m.getall("musicbrainz_workid")
-            m["movementname"] = m.getall("work")
-            m["~movementcomment"] = m.getall("~workcomment")
-            m["musicbrainz_workid"] = work
-            m['work'] = ''
-            m['~workcomment'] = ''
-            parts_of = m.partsof[list(m.partsof.keys())[0]]
-            for partof in parts_of:
-                if partof['workid'] == work:
-                    if 'work' in partof:
-                        m["work"] = partof['work']
-                    if 'disambiguation' in partof:
-                        m["~workcomment"] = partof['disambiguation']
-                    if len(m.partsof) == 1 and len(parts_of) == 1 and 'ordering' in partof:
-                        m["movementnumber"] = partof['ordering']
-                    break
 
 
 def performance_to_metadata(relation, m):
@@ -386,33 +329,12 @@ def performance_to_metadata(relation, m):
                 m.add_unique("~performance_attributes", attribute.text)
 
 
-def workparts_to_metadata(works, m):
-    if not 'work' in works.children:
-        log.warning('MBXML: Work missing from "work is part of work" relationship.')
-        return
-    if 'direction' in works.children and works.direction[0].text != 'backward':
-        log.warning('MBXML: Ignoring work sub-part: %s', works.work[0].id)
-        return
-    for work in works.work:
-        part_of = {}
-        part_of['workid'] = work.id
-        if 'ordering_key' in works.children:
-            part_of['ordering'] = works.ordering_key[0].text
-        if 'title' in work.children:
-            part_of['work'] = work.title[0].text
-        if 'disambiguation' in work.children:
-            part_of['disambiguation'] = work.disambiguation[0].text
-        m.performance_parts.append(part_of)
-
-
 def work_to_metadata(work, m):
     m.add_unique("musicbrainz_workid", work.id)
     if 'language' in work.children:
         m.add_unique("language", work.language[0].text)
     if 'title' in work.children:
         m.add_unique("work", work.title[0].text)
-    if 'disambiguation' in work.children:
-        m.add_unique("~workcomment", work.disambiguation[0].text)
     if 'relation_list' in work.children:
         _relations_to_metadata(work.relation_list, m)
 
