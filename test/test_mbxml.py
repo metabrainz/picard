@@ -50,28 +50,16 @@ class TrackTest(unittest.TestCase):
             pass
 
         node = XmlNode(attribs={'id': u'321'}, children={
+            'title': [XmlNode(text=u'Foo')],
+            'length': [XmlNode(text=u'180000')],
             'position': [XmlNode(text=u'1')],
             'recording': [XmlNode(attribs={'id': u'123'}, children={
-                'title': [XmlNode(text=u'Foo')],
-                'length': [XmlNode(text=u'180000')],
                 'relation_list': [XmlNode(attribs={'target_type': u'work'}, children={
                     'relation': [XmlNode(attribs={'type': u'performance'}, children={
-                        'target': [XmlNode(text=u'movement5')],
-                        'work': [XmlNode(attribs={'id': u'movement5'}, children={
-                            'title': [XmlNode(text=u'Bar Part 5')],
-                            'language': [XmlNode(text=u'eng')],
-                            'disambiguation': [XmlNode(text=u'Movement comment')],
-                            'relation_list': [XmlNode(attribs={'target_type': u'work'}, children={
-                                'relation': [XmlNode(attribs={'type': u'parts'}, children={
-                                    'target': [XmlNode(text=u'work-mbid')],
-                                    'ordering_key': [XmlNode(text=u'5')],
-                                    'work': [XmlNode(attribs={'id': u'work-mbid'}, children={
-                                        'title': [XmlNode(text=u'Bar')],
-                                        'disambiguation': [XmlNode(text=u'Work comment')]
-                                    })]
-                                })]
-                            })]
-                        })],
+                        'work': [XmlNode(attribs={'id': u'workid123'}, children={
+                            'title': [XmlNode(text=u'Bar')],
+                            'language': [XmlNode(text=u'eng')]
+                        })]
                     })]
                 })]
             })],
@@ -98,185 +86,8 @@ class TrackTest(unittest.TestCase):
         self.assertEqual(u'Foo', m['title'])
         self.assertEqual(u'Foo Bar & Baz', m['artist'])
         self.assertEqual(u'Bar, Foo & Baz', m['artistsort'])
+        self.assertEqual(u'workid123', m['musicbrainz_workid'])
         self.assertEqual(u'Bar', m['work'])
-        self.assertEqual(u'Bar Part 5', m['movementname'])
-        self.assertEqual(u'Work comment', m['~workcomment'])
-        self.assertEqual(u'Movement comment', m['~movementcomment'])
-        self.assertEqual(u'5', m['movementnumber'])
-        self.assertEqual(u'work-mbid', m['musicbrainz_workid'])
-        self.assertEqual(u'movement5', m['musicbrainz_movementid'])
-        self.assertEqual(u'eng', m['language'])
-
-
-class MultiMovementTest(unittest.TestCase):
-
-    def test_1(self):
-        config.setting = settings
-
-        class Track:
-            pass
-
-        node = XmlNode(attribs={'id': u'321'}, children={
-            'position': [XmlNode(text=u'1')],
-            'recording': [XmlNode(attribs={'id': u'123'}, children={
-                'title': [XmlNode(text=u'Foo')],
-                'length': [XmlNode(text=u'180000')],
-                'relation_list': [XmlNode(attribs={'target_type': u'work'}, children={
-                    'relation': [XmlNode(attribs={'type': u'performance'}, children={
-                        'target': [XmlNode(text=u'movement5')],
-                        'work': [XmlNode(attribs={'id': u'movement5'}, children={
-                            'title': [XmlNode(text=u'Bar Part 5')],
-                            'language': [XmlNode(text=u'eng')],
-                            'disambiguation': [XmlNode(text=u'Movement comment 5')],
-                            'relation_list': [XmlNode(attribs={'target_type': u'work'}, children={
-                                'relation': [XmlNode(attribs={'type': u'parts'}, children={
-                                    'target': [XmlNode(text=u'work-mbid')],
-                                    'ordering_key': [XmlNode(text=u'5')],
-                                    'work': [XmlNode(attribs={'id': u'work-mbid'}, children={
-                                        'title': [XmlNode(text=u'Bar')],
-                                        'disambiguation': [XmlNode(text=u'Work comment')],
-                                    })],
-                                })],
-                            })],
-                        })],
-                    })],
-                }), XmlNode(attribs={'target_type': u'work'}, children={
-                    'relation': [XmlNode(attribs={'type': u'performance'}, children={
-                        'target': [XmlNode(text=u'movement6')],
-                        'work': [XmlNode(attribs={'id': u'movement6'}, children={
-                            'title': [XmlNode(text=u'Bar Part 6')],
-                            'language': [XmlNode(text=u'eng')],
-                            'disambiguation': [XmlNode(text=u'Movement comment 6')],
-                            'relation_list': [XmlNode(attribs={'target_type': u'work'}, children={
-                                'relation': [XmlNode(attribs={'type': u'parts'}, children={
-                                    'target': [XmlNode(text=u'work-mbid')],
-                                    'ordering_key': [XmlNode(text=u'6')],
-                                    'work': [XmlNode(attribs={'id': u'work-mbid'}, children={
-                                        'title': [XmlNode(text=u'Bar')],
-                                        'disambiguation': [XmlNode(text=u'Work comment')],
-                                    })],
-                                })],
-                            })],
-                        })],
-                    })],
-                })],
-            })],
-            'artist_credit': [XmlNode(children={
-                'name_credit': [XmlNode(attribs={'joinphrase': u' & '}, children={
-                    'artist': [XmlNode(attribs={'id': u'456'}, children={
-                        'name': [XmlNode(text=u'Foo Bar')],
-                        'sort_name': [XmlNode(text=u'Bar, Foo')]
-                    })]
-                }), XmlNode(children={
-                    'artist': [XmlNode(attribs={'id': u'789'}, children={
-                        'name': [XmlNode(text=u'Baz')],
-                        'sort_name': [XmlNode(text=u'Baz')]
-                    })]
-                })]
-            })]
-        })
-        track = Track()
-        m = track.metadata = Metadata()
-        track_to_metadata(node, track)
-        self.assertEqual(u'123', m['musicbrainz_recordingid'])
-        self.assertEqual(u'321', m['musicbrainz_trackid'])
-        self.assertEqual(u'456; 789', m['musicbrainz_artistid'])
-        self.assertEqual(u'Foo', m['title'])
-        self.assertEqual(u'Foo Bar & Baz', m['artist'])
-        self.assertEqual(u'Bar, Foo & Baz', m['artistsort'])
-        self.assertEqual(u'Bar', m['work'])
-        self.assertEqual(u'Bar Part 5; Bar Part 6', m['movementname'])
-        self.assertEqual(u'Work comment', m['~workcomment'])
-        self.assertEqual(u'Movement comment 5; Movement comment 6', m['~movementcomment'])
-        self.assertEqual(u'', m['movementnumber'])
-        self.assertEqual(u'work-mbid', m['musicbrainz_workid'])
-        self.assertEqual(u'movement5; movement6', m['musicbrainz_movementid'])
-        self.assertEqual(u'eng', m['language'])
-
-
-class MismatchedMovementTest(unittest.TestCase):
-
-    def test_1(self):
-        config.setting = settings
-
-        class Track:
-            pass
-
-        node = XmlNode(attribs={'id': u'321'}, children={
-            'position': [XmlNode(text=u'1')],
-            'recording': [XmlNode(attribs={'id': u'123'}, children={
-                'title': [XmlNode(text=u'Foo')],
-                'length': [XmlNode(text=u'180000')],
-                'relation_list': [XmlNode(attribs={'target_type': u'work'}, children={
-                    'relation': [XmlNode(attribs={'type': u'performance'}, children={
-                        'target': [XmlNode(text=u'movement5')],
-                        'work': [XmlNode(attribs={'id': u'movement5'}, children={
-                            'title': [XmlNode(text=u'Bar Part 5')],
-                            'language': [XmlNode(text=u'eng')],
-                            'disambiguation': [XmlNode(text=u'Movement comment 5')],
-                            'relation_list': [XmlNode(attribs={'target_type': u'work'}, children={
-                                'relation': [XmlNode(attribs={'type': u'parts'}, children={
-                                    'target': [XmlNode(text=u'work-mbid1')],
-                                    'ordering_key': [XmlNode(text=u'5')],
-                                    'work': [XmlNode(attribs={'id': u'work-mbid1'}, children={
-                                        'title': [XmlNode(text=u'Bar')],
-                                        'disambiguation': [XmlNode(text=u'Work comment')],
-                                    })],
-                                })],
-                            })],
-                        })],
-                    })],
-                }), XmlNode(attribs={'target_type': u'work'}, children={
-                    'relation': [XmlNode(attribs={'type': u'performance'}, children={
-                        'target': [XmlNode(text=u'movement6')],
-                        'work': [XmlNode(attribs={'id': u'movement6'}, children={
-                            'title': [XmlNode(text=u'Bar Part 6')],
-                            'language': [XmlNode(text=u'eng')],
-                            'disambiguation': [XmlNode(text=u'Movement comment 6')],
-                            'relation_list': [XmlNode(attribs={'target_type': u'work'}, children={
-                                'relation': [XmlNode(attribs={'type': u'parts'}, children={
-                                    'target': [XmlNode(text=u'work-mbid2')],
-                                    'ordering_key': [XmlNode(text=u'6')],
-                                    'work': [XmlNode(attribs={'id': u'work-mbid2'}, children={
-                                        'title': [XmlNode(text=u'Bar')],
-                                        'disambiguation': [XmlNode(text=u'Work comment')],
-                                    })],
-                                })],
-                            })],
-                        })],
-                    })],
-                })],
-            })],
-            'artist_credit': [XmlNode(children={
-                'name_credit': [XmlNode(attribs={'joinphrase': u' & '}, children={
-                    'artist': [XmlNode(attribs={'id': u'456'}, children={
-                        'name': [XmlNode(text=u'Foo Bar')],
-                        'sort_name': [XmlNode(text=u'Bar, Foo')]
-                    })]
-                }), XmlNode(children={
-                    'artist': [XmlNode(attribs={'id': u'789'}, children={
-                        'name': [XmlNode(text=u'Baz')],
-                        'sort_name': [XmlNode(text=u'Baz')]
-                    })]
-                })]
-            })]
-        })
-        track = Track()
-        m = track.metadata = Metadata()
-        track_to_metadata(node, track)
-        self.assertEqual(u'123', m['musicbrainz_recordingid'])
-        self.assertEqual(u'321', m['musicbrainz_trackid'])
-        self.assertEqual(u'456; 789', m['musicbrainz_artistid'])
-        self.assertEqual(u'Foo', m['title'])
-        self.assertEqual(u'Foo Bar & Baz', m['artist'])
-        self.assertEqual(u'Bar, Foo & Baz', m['artistsort'])
-        self.assertEqual(u'Bar Part 5; Bar Part 6', m['work'])
-        self.assertEqual(u'', m['movementname'])
-        self.assertEqual(u'Movement comment 5; Movement comment 6', m['~workcomment'])
-        self.assertEqual(u'', m['~movementcomment'])
-        self.assertEqual(u'', m['movementnumber'])
-        self.assertEqual(u'movement5; movement6', m['musicbrainz_workid'])
-        self.assertEqual(u'', m['musicbrainz_movementid'])
         self.assertEqual(u'eng', m['language'])
 
 
