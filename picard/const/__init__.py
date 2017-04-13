@@ -106,8 +106,8 @@ PLUGINS_API = {
     'host': 'picard.musicbrainz.org',
     'port': 443,
     'endpoint': {
-        'plugins': '/api/v1/plugins/',
-        'download': '/api/v1/download/'
+        'plugins': '/api/v2/plugins/',
+        'download': '/api/v2/download/'
     }
 }
 
