@@ -61,7 +61,6 @@ class MP4File(File):
         "pcst": "podcast",
         "cpil": "compilation",
         "pgap": "gapless",
-        "shwm": "~movementshow",
     }
     __r_bool_tags = dict([(v, k) for k, v in __bool_tags.items()])
 
@@ -71,6 +70,7 @@ class MP4File(File):
         # & https://forums.mp3tag.de/index.php?showtopic=21586
         "\xa9mvi": "movementnumber",
         "\xa9mvc": "movementtotal",
+        "shwm": "~movementshow",
     }
     __r_int_tags = dict([(v, k) for k, v in __int_tags.items()])
 
