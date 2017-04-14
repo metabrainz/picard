@@ -66,11 +66,6 @@ class FormatsTest(unittest.TestCase):
     original = None
     tags = []
 
-    def _log_receiver(self, level, time, msg):
-        if level in log._log_prefixes:
-            msg = "%s: %s" % (log._log_prefixes[level], msg.decode('ascii', 'replace'))
-        self.log_messages.append((level, msg))
-
     def setUp(self):
         if not self.original:
             return
