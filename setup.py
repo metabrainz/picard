@@ -107,8 +107,11 @@ class picard_test(Command):
     def finalize_options(self):
         if self.tests:
             self.tests = self.tests.split(",")
-        if self.verbosity:
-            self.verbosity = int(self.verbosity)
+        # In case the verbosity flag is used, verbosity is None
+        if not self.verbosity:
+            self.verbosity = 2
+        # Convert to appropriate verbosity if passed by --verbosity option
+        self.verbosity = int(self.verbosity)
 
     def run(self):
         import unittest
@@ -493,7 +496,7 @@ class picard_update_constants(Command):
             log.info('Parsing %s' % countries_potfile)
             po = pofile.read_po(f)
             for message in po:
-                if not message.id or not isinstance(message.id, unicode):
+                if not message.id or not isinstance(message.id, str):
                     continue
                 for comment in message.auto_comments:
                     if comment.startswith(isocode_comment):
@@ -516,7 +519,7 @@ class picard_update_constants(Command):
             log.info('Parsing %s' % attributes_potfile)
             po = pofile.read_po(f)
             for message in po:
-                if not message.id or not isinstance(message.id, unicode):
+                if not message.id or not isinstance(message.id, str):
                     continue
                 for loc, pos in message.locations:
                     if loc in extract_attributes:
@@ -536,13 +539,13 @@ class picard_update_constants(Command):
         footer =  u"}}\n"
         filename = os.path.join('picard', 'const', 'countries.py')
         with open(filename, 'w') as countries_py:
-            def write_utf8(s, **kwargs):
-                countries_py.write(s.format(**kwargs).encode('utf-8'))
+            def write(s, **kwargs):
+                countries_py.write(s.format(**kwargs))
 
-            write_utf8(header, option=_get_option_name(self))
+            write(header, option=_get_option_name(self))
             for code, name in sorted(countries.items(), key=lambda t: t[0]):
-                write_utf8(line, code=code, name=name.replace("'", "\\'"))
-            write_utf8(footer)
+                write(line, code=code, name=name.replace("'", "\\'"))
+            write(footer)
             log.info("%s was rewritten (%d countries)" % (filename,
                                                           len(countries)))
 
@@ -556,13 +559,13 @@ class picard_update_constants(Command):
         footer =  u"}}\n"
         filename = os.path.join('picard', 'const', 'attributes.py')
         with open(filename, 'w') as attributes_py:
-            def write_utf8(s, **kwargs):
-                attributes_py.write(s.format(**kwargs).encode('utf-8'))
+            def write(s, **kwargs):
+                attributes_py.write(s.format(**kwargs))
 
-            write_utf8(header, option=_get_option_name(self))
+            write(header, option=_get_option_name(self))
             for key, value in sorted(attributes.items(), key=lambda i: i[0]):
-                write_utf8(line, key=key, value=value.replace("'", "\\'"))
-            write_utf8(footer)
+                write(line, key=key, value=value.replace("'", "\\'"))
+            write(footer)
             log.info("%s was rewritten (%d attributes)" % (filename,
                                                            len(attributes)))
 
@@ -585,9 +588,9 @@ class picard_patch_version(Command):
     def patch_version(self, filename):
         regex = re.compile(r'^PICARD_BUILD_VERSION_STR\s*=.*$', re.MULTILINE)
         with open(filename, 'r+b') as f:
-            source = f.read()
+            source = (f.read()).decode()
             build = self.platform + '_' + datetime.datetime.utcnow().strftime('%Y%m%d%H%M%S')
-            patched_source = regex.sub('PICARD_BUILD_VERSION_STR = "%s"' % build, source)
+            patched_source = regex.sub('PICARD_BUILD_VERSION_STR = "%s"' % build, source).encode()
             f.seek(0)
             f.write(patched_source)
             f.truncate()
