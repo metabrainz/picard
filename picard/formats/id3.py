@@ -209,7 +209,7 @@ class ID3File(File):
             frameid = frame.FrameID
             if frameid in self.__translate:
                 name = self.__translate[frameid]
-                if frameid.startswith('T'):
+                if frameid.startswith('T') or frameid in ["MVNM", "GRP1"]:
                     for text in frame.text:
                         if text:
                             metadata.add(name, unicode(text))
