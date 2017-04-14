@@ -70,6 +70,7 @@ class MP4File(File):
         # & https://forums.mp3tag.de/index.php?showtopic=21586
         "\xa9mvi": "movementnumber",
         "\xa9mvc": "movementtotal",
+        "shwm": "~movementshow",
     }
     __r_int_tags = dict([(v, k) for k, v in __int_tags.iteritems()])
 
@@ -217,9 +218,6 @@ class MP4File(File):
                                  int(metadata["totaldiscs"]))]
             else:
                 tags["disk"] = [(int(metadata["discnumber"]), 0)]
-
-        # Add iTunes show/hide classical work/movement fields
-        tags["shwm"] = [1 if "movementname" in metadata else 0]
 
         covr = []
         for image in metadata.images_to_be_saved_to_tags:
