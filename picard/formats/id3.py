@@ -42,6 +42,7 @@ id3.TSO2 = compatid3.TSO2
 id3.TSOC = compatid3.TSOC
 id3.MVNM = compatid3.MVNM
 id3.MVIN = compatid3.MVIN
+id3.GRP1 = compatid3.GRP1
 
 __ID3_IMAGE_TYPE_MAP = {
     "other": 0,
@@ -133,6 +134,7 @@ class ID3File(File):
         'TSOC': 'composersort',
         'TSO2': 'albumartistsort',
         'MVNM': 'movementname',
+        'GRP1': 'itunesgrouping',
     }
     __rtranslate = dict([(v, k) for k, v in __translate.items()])
 
@@ -398,7 +400,7 @@ class ID3File(File):
                     elif frameid == 'WOAR' and valid_urls:
                         for url in values:
                             tags.add(id3.WOAR(url=url))
-                elif frameid.startswith('T') or frameid == "MVNM":
+                elif frameid.startswith('T') or frameid in ["MVNM", "GRP1"]:
                     if config.setting['write_id3v23']:
                         if frameid == 'TMOO':
                             tags.add(self.build_TXXX(encoding, 'mood', values))

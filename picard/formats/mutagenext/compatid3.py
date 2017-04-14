@@ -45,6 +45,11 @@ class MVIN(TextFrame):
     pass
 
 
+# iTunes Classical Grouping
+class GRP1(TextFrame):
+    pass
+
+
 # Obsolete Original Release Time
 class XDOR(TextFrame):
     pass
@@ -74,6 +79,7 @@ class CompatID3(ID3):
             known_frames["TSOC"] = TSOC
             known_frames["MVNM"] = MVNM
             known_frames["MVIN"] = MVIN
+            known_frames["GRP1"] = GRP1
             known_frames["XDOR"] = XDOR
             known_frames["XSOP"] = XSOP
             kwargs["known_frames"] = known_frames
