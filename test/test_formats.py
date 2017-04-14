@@ -493,6 +493,7 @@ class MP3Test(ID3Test):
         'movementname': 'Bar',
         'movementnumber': '1',
         'movementtotal': '2',
+        'itunesgrouping': 'Foo',
     }
 
 
