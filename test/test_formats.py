@@ -771,6 +771,8 @@ class MP4Test(FormatsTest):
         'movementname': 'Bar',
         'movementnumber': '1',
         'movementtotal': '2',
+        '~movementshow': '1',
+        'itunesgrouping': 'Foo',
     }
 
 
