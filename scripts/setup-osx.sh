@@ -1,11 +1,11 @@
-brew tap cartr/qt4
-brew tap-pin cartr/qt4
+brew update
 brew install gettext
 brew link gettext --force
-brew install qt
-brew install pyqt
-brew install libdiscid 
+brew install python3
+brew install qt5
+brew install pyqt5
+brew install libdiscid
+virtualenv venv -p python3
+source venv/bin/activate
 pip install mutagen
 pip install discid
-pip install py2app
-pip install pyobjc-framework-Cocoa

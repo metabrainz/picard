@@ -1,26 +1,14 @@
 os: linux
-dist: trusty
 language: python
-python: 
-  - "3.5"
-  - "3.6"
-cache:
-  - apt
-  - pip
-env:
-  global:
-    - PIP_INSTALL="pip install"
-    - DISCID="$PIP_INSTALL discid" MUTAGEN="$PIP_INSTALL mutagen>=1.37"
-  matrix:
-    - PYQT="$PIP_INSTALL pyqt5==5.7.1"
-    - PYQT="$PIP_INSTALL pyqt5==5.8"
-    - PYQT="$PIP_INSTALL pyqt5==5.8.1.1"
-    - PYQT="$PIP_INSTALL pyqt5==5.8.2"
+python: "2.7"
+matrix:
+  include:
+    - os: osx
+      osx_image: xcode8.3
+      language: generic
 before_install:
-  - sudo apt-get update -qq && sudo apt-get install -qq libdiscid0 libdiscid0-dev qt5-default
-  - $PYQT
-  - $MUTAGEN
-  - $DISCID
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then bash scripts/setup-osx.sh; source venv/bin/activate; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get update -qq && sudo apt-get install -qq python-qt4 libdiscid0 libdiscid0-dev; $MUTAGEN; $DISCID; fi
 install:
   # Set up Picard
   - python setup.py build_ext -i
