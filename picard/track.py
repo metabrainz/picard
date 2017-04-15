@@ -258,6 +258,7 @@ class NonAlbumTrack(Track):
         self.metadata.copy(self.album.metadata)
         self.metadata["title"] = u"[loading track information]"
         self.loaded = False
+        self.tagger.create_nats()
         self.tagger.nats.update(True)
         mblogin = False
         inc = ["artist-credits", "artists", "aliases"]
@@ -310,6 +311,7 @@ class NonAlbumTrack(Track):
         if self.callback:
             self.callback()
             self.callback = None
+        self.tagger.create_nats()
         self.tagger.nats.update(True)
 
     def run_when_loaded(self, func):
