@@ -33,8 +33,8 @@ install:
   - python setup.py build_ui
   - python setup.py build_ext -i
   - python setup.py regen_pot_file
-  - python setup.py get_po_files
-  - python setup.py update_constants
+  - 'if [ ! -z "${TX_PASSWORD}" ]; then python setup.py get_po_files; fi'
+  - 'if [ ! -z "${TX_PASSWORD}" ]; then python setup.py update_constants; fi'
   - python setup.py build_locales -i
   - python setup.py patch_version --platform=test
   - python setup.py install
