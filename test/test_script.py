@@ -1,10 +1,9 @@
 import unittest
-import picard
-from PyQt5 import QtCore
 from picard import config
 from picard.script import ScriptParser, ScriptError, register_script_function
 from picard.metadata import Metadata
 from picard.ui.options.renaming import _DEFAULT_FILE_NAMING_FORMAT
+
 
 class ScriptParserTest(unittest.TestCase):
 
