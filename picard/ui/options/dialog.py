@@ -49,7 +49,7 @@ class OptionsDialog(PicardDialog):
 
     options = [
         config.Option("persist", "options_position", QtCore.QPoint()),
-        config.Option("persist", "options_size", QtCore.QSize(560, 400)),
+        config.Option("persist", "options_size", QtCore.QSize(700, 400)),
         config.Option("persist", "options_splitter", QtCore.QByteArray()),
     ]
 
