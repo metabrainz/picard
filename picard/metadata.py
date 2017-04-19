@@ -311,8 +311,7 @@ class Metadata(dict):
 
     def apply_func(self, func):
         for key, values in self.rawitems():
-            if not key.startswith("~"):
-                self[key] = map(func, values)
+            self[key] = map(func, values)
 
     def strip_whitespace(self):
         """Strip leading/trailing whitespace.
