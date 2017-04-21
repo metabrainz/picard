@@ -872,8 +872,8 @@ class MainWindow(QtWidgets.QMainWindow):
         single = self.selected_objects[0] if len(self.selected_objects) == 1 else None
         can_view_info = bool(single and single.can_view_info())
         can_browser_lookup = bool(single and single.can_browser_lookup())
-        have_files = len(self.tagger.get_files_from_objects(self.selected_objects)) > 0
-        have_objects = len(self.selected_objects) > 0
+        have_files = bool(self.tagger.get_files_from_objects(self.selected_objects))
+        have_objects = bool(self.selected_objects)
         for obj in self.selected_objects:
             if obj is None:
                 continue
@@ -899,7 +899,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.browser_lookup_action.setEnabled(can_browser_lookup)
         self.play_file_action.setEnabled(have_files)
         self.open_folder_action.setEnabled(have_files)
-        self.cut_action.setEnabled(bool(self.selected_objects))
+        self.cut_action.setEnabled(have_objects)
         files = self.get_selected_or_unmatched_files()
         self.tags_from_filenames_action.setEnabled(bool(files))
         self.track_search_action.setEnabled(have_objects)
