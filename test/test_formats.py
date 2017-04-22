@@ -408,6 +408,34 @@ class ID3Test(FormatsTest):
         self.assertIn('comment:foo', new_metadata)
         self.assertNotIn('comment:bar', new_metadata)
 
+    def test_delete_itunes_classical(self):
+        if not self.original:
+            return
+        if 'movementname' in self.tags:
+            metadata = Metadata()
+            for (key, value) in self.tags.items():
+                metadata[key] = value
+
+            original_metadata = save_and_load_metadata(self.filename, metadata)
+            metadata.delete('work')
+            metadata.delete('movementname')
+            metadata.delete('movementnumber')
+            metadata.delete('movementtotal')
+            metadata.delete('itunesgrouping')
+            new_metadata = save_and_load_metadata(self.filename, metadata)
+
+            self.assertIn('work', original_metadata)
+            self.assertIn('movementname', original_metadata)
+            self.assertIn('movementnumber', original_metadata)
+            self.assertIn('movementtotal', original_metadata)
+            self.assertIn('itunesgrouping', original_metadata)
+
+            self.assertNotIn('work', new_metadata)
+            self.assertNotIn('movementname', new_metadata)
+            self.assertNotIn('movementnumber', new_metadata)
+            self.assertNotIn('movementtotal', new_metadata)
+            self.assertNotIn('itunesgrouping', new_metadata)
+
     def test_id3v23_simple_tags(self):
         if not self.original:
             return
@@ -493,7 +521,7 @@ class MP3Test(ID3Test):
         'movementname': 'Bar',
         'movementnumber': '1',
         'movementtotal': '2',
-        'itunesgrouping': 'Foo',
+        'itunesgrouping': 'FooBar',
     }
 
 
@@ -703,6 +731,38 @@ class OggVorbisTest(FormatsTest):
 
 
 class MP4Test(FormatsTest):
+
+    def test_delete_itunes_classical(self):
+        if not self.original:
+            return
+        if 'movementname' in self.tags:
+            metadata = Metadata()
+            for (key, value) in self.tags.items():
+                metadata[key] = value
+
+            original_metadata = save_and_load_metadata(self.filename, metadata)
+            metadata.delete('work')
+            metadata.delete('movementname')
+            metadata.delete('movementnumber')
+            metadata.delete('movementtotal')
+            metadata.delete('ituneswork')
+            metadata.delete('~movementshow')
+            new_metadata = save_and_load_metadata(self.filename, metadata)
+
+            self.assertIn('work', original_metadata)
+            self.assertIn('movementname', original_metadata)
+            self.assertIn('movementnumber', original_metadata)
+            self.assertIn('movementtotal', original_metadata)
+            self.assertIn('ituneswork', original_metadata)
+            self.assertIn('~movementshow', original_metadata)
+
+            self.assertNotIn('work', new_metadata)
+            self.assertNotIn('movementname', new_metadata)
+            self.assertNotIn('movementnumber', new_metadata)
+            self.assertNotIn('movementtotal', new_metadata)
+            self.assertNotIn('itunesgrouping', new_metadata)
+            self.assertNotIn('~movementshow', new_metadata)
+
     original = os.path.join('test', 'data', 'test.m4a')
     supports_ratings = False
     tags = {
