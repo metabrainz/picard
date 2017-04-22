@@ -54,6 +54,7 @@ class MP4File(File):
         # Movement source information https://github.com/taglib/taglib/issues/758
         # & https://forums.mp3tag.de/index.php?showtopic=21586
         "\xa9mvn": "movementname",
+        "\xa9wrk": "ituneswork",
     }
     __r_text_tags = dict([(v, k) for k, v in __text_tags.items()])
 
