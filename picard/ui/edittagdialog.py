@@ -36,7 +36,7 @@ class EditTagDialog(PicardDialog):
         self.modified_tags = {}
         self.different = False
         self.default_tags = sorted(
-            set(TAG_NAMES.keys() + self.metadata_box.tag_diff.tag_names))
+            set(list(TAG_NAMES.keys()) + self.metadata_box.tag_diff.tag_names))
         if len(self.metadata_box.files) == 1:
             current_file = list(self.metadata_box.files)[0]
             self.default_tags = list(filter(lambda x: current_file.supports_tag(x),
