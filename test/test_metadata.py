@@ -1,12 +1,8 @@
 # -*- coding: utf-8 -*-
-import os.path
-import picard.formats
 import unittest
-import shutil
 
 from picard import config
-from picard.coverart.image import CoverArtImage, TagCoverArtImage
-from picard.metadata import Metadata
+from picard.metadata import Metadata, MULTI_VALUED_JOINER
 
 
 settings = {
@@ -26,10 +22,13 @@ class MetadataTest(unittest.TestCase):
         self.metadata["single1"] = "single1-value"
         self.metadata.add_unique("single2", "single2-value")
         self.metadata.add_unique("single2", "single2-value")
-        self.metadata.add("multi1", "multi1-value")
-        self.metadata.add("multi1", "multi1-value")
-        self.metadata["multi2"] = ["multi2-value1", "multi2-value2"]
-        self.metadata.set("multi3", ["multi3-value1", "multi3-value2"])
+        self.multi1 = ["multi1-value", "multi1-value"]
+        self.metadata.add("multi1", self.multi1[0])
+        self.metadata.add("multi1", self.multi1[1])
+        self.multi2 = ["multi2-value1", "multi2-value2"]
+        self.metadata["multi2"] = self.multi2
+        self.multi3 = ["multi3-value1", "multi3-value2"]
+        self.metadata.set("multi3", self.multi3)
         self.metadata["~hidden"] = "hidden-value"
 
     def tearDown(self):
@@ -38,9 +37,9 @@ class MetadataTest(unittest.TestCase):
     def test_metadata_set(self):
         self.assertEqual(["single1-value"], dict.get(self.metadata,"single1"))
         self.assertEqual(["single2-value"], dict.get(self.metadata,"single2"))
-        self.assertEqual(["multi1-value", "multi1-value"], dict.get(self.metadata,"multi1"))
-        self.assertEqual(["multi2-value1", "multi2-value2"], dict.get(self.metadata,"multi2"))
-        self.assertEqual(["multi3-value1", "multi3-value2"], dict.get(self.metadata,"multi3"))
+        self.assertEqual(self.multi1, dict.get(self.metadata,"multi1"))
+        self.assertEqual(self.multi2, dict.get(self.metadata,"multi2"))
+        self.assertEqual(self.multi3, dict.get(self.metadata,"multi3"))
         self.assertEqual(["hidden-value"], dict.get(self.metadata,"~hidden"))
 
     def test_metadata_get(self):
@@ -48,9 +47,9 @@ class MetadataTest(unittest.TestCase):
         self.assertEqual("single1-value", self.metadata.get("single1"))
         self.assertEqual(["single1-value"], self.metadata.getall("single1"))
 
-        self.assertEqual("multi1-value; multi1-value", self.metadata["multi1"])
-        self.assertEqual("multi1-value; multi1-value", self.metadata.get("multi1"))
-        self.assertEqual(["multi1-value", "multi1-value"], self.metadata.getall("multi1"))
+        self.assertEqual(MULTI_VALUED_JOINER.join(self.multi1), self.metadata["multi1"])
+        self.assertEqual(MULTI_VALUED_JOINER.join(self.multi1), self.metadata.get("multi1"))
+        self.assertEqual(self.multi1, self.metadata.getall("multi1"))
 
         self.assertEqual("", self.metadata["nonexistent"])
         self.assertEqual(None, self.metadata.get("nonexistent"))
@@ -93,15 +92,16 @@ class MetadataTest(unittest.TestCase):
         self.assertEqual(0, len(self.metadata))
 
     def test_metadata_applyfunc(self):
-        self.metadata.apply_func(lambda x: x[1:])
+        func = lambda x: x[1:]
+        self.metadata.apply_func(func)
 
         self.assertEqual("ingle1-value", self.metadata["single1"])
         self.assertEqual("ingle1-value", self.metadata.get("single1"))
         self.assertEqual(["ingle1-value"], self.metadata.getall("single1"))
 
-        self.assertEqual("ulti1-value; ulti1-value", self.metadata["multi1"])
-        self.assertEqual("ulti1-value; ulti1-value", self.metadata.get("multi1"))
-        self.assertEqual(["ulti1-value", "ulti1-value"], self.metadata.getall("multi1"))
+        self.assertEqual(MULTI_VALUED_JOINER.join(map(func, self.multi1)), self.metadata["multi1"])
+        self.assertEqual(MULTI_VALUED_JOINER.join(map(func, self.multi1)), self.metadata.get("multi1"))
+        self.assertEqual(list(map(func, self.multi1)), self.metadata.getall("multi1"))
 
         self.assertEqual("", self.metadata["nonexistent"])
         self.assertEqual(None, self.metadata.get("nonexistent"))
