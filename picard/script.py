@@ -392,7 +392,7 @@ def func_inmulti(parser, haystack, needle, separator=MULTI_VALUED_JOINER):
     """Searches for ``needle`` in ``haystack``, supporting a list variable for
        ``haystack``. If a string is used instead, then a ``separator`` can be
        used to split it. In both cases, it returns true if the resulting list
-       contains ``needle``."""
+       contains exactly ``needle`` as a member."""
 
     needle = needle.eval(parser)
     if (isinstance(haystack, ScriptExpression) and
