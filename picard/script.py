@@ -501,7 +501,14 @@ def func_copymerge(parser, new, old):
         old = "~" + old[1:]
     newvals = parser.context.getall(new)
     oldvals = parser.context.getall(old)
-    parser.context[new] = newvals + list(set(oldvals) - set(newvals))
+    result = []
+    for x in newvals:
+        if x not in result:
+            result.append(x)
+    for x in oldvals:
+        if x not in result:
+            result.append(x)
+    parser.context[new] = result
     return ""
 
 

@@ -274,7 +274,8 @@ class ScriptParserTest(unittest.TestCase):
 
     def _eval_and_check_copymerge(self, context, expected):
         self.parser.eval("$copymerge(target,source)", context)
-        self.assertEqual(sorted(self.parser.context.getall("target")), sorted(expected))
+        #self.assertEqual(sorted(self.parser.context.getall("target")), sorted(expected))
+        self.assertEqual(self.parser.context.getall("target"), expected)
 
     def test_cmd_copymerge_notarget(self):
         context = Metadata()
@@ -290,8 +291,8 @@ class ScriptParserTest(unittest.TestCase):
 
     def test_cmd_copymerge_removedupes(self):
         context = Metadata()
-        context["target"] = ["tag1", "tag2"]
-        context["source"] = ["tag2", "tag3"]
+        context["target"] = ["tag1", "tag2", "tag1"]
+        context["source"] = ["tag2", "tag3", "tag2"]
         self._eval_and_check_copymerge(context, ["tag1", "tag2", "tag3"])
 
     def test_cmd_copymerge_nonlist(self):
