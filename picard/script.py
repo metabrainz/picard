@@ -66,9 +66,9 @@ class ScriptVariable(object):
 
     def eval(self, state):
         name = self.name
-        if name.startswith(u"_"):
-            name = u"~" + name[1:]
-        return state.context.get(name, u"")
+        if name.startswith("_"):
+            name = "~" + name[1:]
+        return state.context.get(name, "")
 
 
 FunctionRegistryItem = namedtuple("FunctionRegistryItem",
@@ -401,8 +401,8 @@ def func_inmulti(parser, haystack, needle, separator=MULTI_VALUED_JOINER):
         haystack = haystack[0]
 
     if isinstance(haystack, ScriptVariable):
-        if haystack.name.startswith(u"_"):
-            name = u"~" + haystack.name[1:]
+        if haystack.name.startswith("_"):
+            name = "~" + haystack.name[1:]
         else:
             name = haystack.name
         values = parser.context.getall(name)
@@ -426,7 +426,7 @@ def func_rsearch(parser, text, pattern):
             return match.group(1)
         except IndexError:
             return match.group(0)
-    return u""
+    return ""
 
 
 def func_num(parser, text, length):
@@ -479,7 +479,7 @@ def func_get(parser, name):
     """Returns the variable ``name`` (equivalent to ``%name%``)."""
     if name.startswith("_"):
         name = "~" + name[1:]
-    return parser.context.get(name, u"")
+    return parser.context.get(name, "")
 
 
 def func_copy(parser, new, old):
@@ -673,8 +673,8 @@ def func_lenmulti(parser, multi, separator=MULTI_VALUED_JOINER):
         multi = multi[0]
 
     if isinstance(multi, ScriptVariable):
-        if multi.name.startswith(u"_"):
-            name = u"~" + multi.name[1:]
+        if multi.name.startswith("_"):
+            name = "~" + multi.name[1:]
         else:
             name = multi.name
         return func_len(parser, parser.context.getall(name))
