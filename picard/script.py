@@ -666,6 +666,23 @@ def func_len(parser, text=""):
     return string_(len(text))
 
 
+def func_lenmulti(parser, multi, separator=MULTI_VALUED_JOINER):
+    if (isinstance(multi, ScriptExpression) and
+            len(multi) == 1 and
+            isinstance(multi[0], ScriptVariable)):
+        multi = multi[0]
+
+    if isinstance(multi, ScriptVariable):
+        if multi.name.startswith(u"_"):
+            name = u"~" + multi.name[1:]
+        else:
+            name = multi.name
+        return func_len(parser, parser.context.getall(name))
+
+    multi = multi.eval(parser)
+    return func_len(parser, multi.split(separator) if separator else [multi])
+
+
 def func_performer(parser, pattern="", join=", "):
     values = []
     for name, value in parser.context.items():
@@ -853,6 +870,7 @@ register_script_function(func_inmulti, "inmulti", eval_args=False)
 register_script_function(func_copy, "copy")
 register_script_function(func_copymerge, "copymerge")
 register_script_function(func_len, "len")
+register_script_function(func_lenmulti, "lenmulti", eval_args=False)
 register_script_function(func_performer, "performer")
 register_script_function(func_matchedtracks, "matchedtracks")
 register_script_function(func_is_complete, "is_complete")
