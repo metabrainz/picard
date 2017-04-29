@@ -184,7 +184,7 @@ class AdvancedScriptItem(QtWidgets.QWidget):
         return checkbox.isChecked()
 
 
-class ScriptItem:
+class ScriptItem(object):
     """Holds a script's list and text widget properties and improves readability"""
     def __init__(self, pos, name=None, enabled=True, text=""):
         self.pos = pos

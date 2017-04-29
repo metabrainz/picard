@@ -34,7 +34,7 @@ _DEFAULT_SCORE = 0.5
 _release_type_scores = [(g, _DEFAULT_SCORE) for g in list(RELEASE_PRIMARY_GROUPS.keys()) + list(RELEASE_SECONDARY_GROUPS.keys())]
 
 
-class ReleaseTypeScore:
+class ReleaseTypeScore(object):
 
     def __init__(self, group, layout, label, cell):
         row, column = cell  # it uses 2 cells (r,c and r,c+1)
@@ -59,7 +59,7 @@ class ReleaseTypeScore:
         self.setValue(_DEFAULT_SCORE)
 
 
-class RowColIter:
+class RowColIter(object):
 
     def __init__(self, max_cells, max_cols=6, step=2):
         assert(max_cols % step == 0)

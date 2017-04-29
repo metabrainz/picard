@@ -46,7 +46,7 @@ class TrackTest(unittest.TestCase):
     def test_1(self):
         config.setting = settings
 
-        class Track:
+        class Track(object):
             pass
 
         node = XmlNode(attribs={'id': u'321'}, children={

@@ -46,7 +46,7 @@ _datafiles = dict()
 _datafile_mutex = QMutex(QMutex.Recursive)
 
 
-class DataHash:
+class DataHash(object):
 
     def __init__(self, data, prefix='picard', suffix=''):
         self._filename = None
@@ -112,7 +112,7 @@ class CoverArtImageIdentificationError(CoverArtImageError):
     pass
 
 
-class CoverArtImage:
+class CoverArtImage(object):
 
     # Indicate if types are provided by the source, ie. CAA or certain file
     # formats may have types associated with cover art, but some other sources

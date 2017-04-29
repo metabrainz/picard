@@ -59,7 +59,7 @@ def _process_images(state, src_obj):
                 state.orig_images.extend([image for image in src_obj.orig_metadata.images if image not in state.orig_images])
 
 
-class State:
+class State(object):
     def __init__(self):
         self.new_images = ImageList()
         self.orig_images = ImageList()

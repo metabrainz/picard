@@ -44,7 +44,7 @@ COMMON_TAGS = [
 ]
 
 
-class TagStatus:
+class TagStatus(object):
 
     NoChange = 1
     Added = 2
