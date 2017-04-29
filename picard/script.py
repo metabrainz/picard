@@ -395,19 +395,20 @@ def func_inmulti(parser, haystack, needle, separator=MULTI_VALUED_JOINER):
        contains exactly ``needle`` as a member."""
 
     needle = needle.eval(parser)
-    if (isinstance(haystack, ScriptExpression) and
-            len(haystack) == 1 and
-            isinstance(haystack[0], ScriptVariable)):
-        haystack = haystack[0]
 
-    if isinstance(haystack, ScriptVariable):
-        if haystack.name.startswith("_"):
-            name = "~" + haystack.name[1:]
-        else:
-            name = haystack.name
-        values = parser.context.getall(name)
+    if separator == MULTI_VALUED_JOINER:
+        if (isinstance(haystack, ScriptExpression) and
+                len(haystack) == 1 and
+                isinstance(haystack[0], ScriptVariable)):
+            haystack = haystack[0]
 
-        return func_in(parser, values, needle)
+        if isinstance(haystack, ScriptVariable):
+            if haystack.name.startswith("_"):
+                name = "~" + haystack.name[1:]
+            else:
+                name = haystack.name
+            values = parser.context.getall(name)
+            return func_in(parser, values, needle)
 
     haystack = haystack.eval(parser)
     return func_in(parser,
