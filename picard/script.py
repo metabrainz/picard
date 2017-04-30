@@ -28,6 +28,7 @@ from inspect import getargspec
 from picard.metadata import Metadata
 from picard.metadata import MULTI_VALUED_JOINER
 from picard.plugin import ExtensionPoint
+from picard.util import uniqify
 
 
 class ScriptError(Exception):
@@ -506,14 +507,7 @@ def func_copymerge(parser, new, old):
         old = "~" + old[1:]
     newvals = parser.context.getall(new)
     oldvals = parser.context.getall(old)
-    result = []
-    for x in newvals:
-        if x not in result:
-            result.append(x)
-    for x in oldvals:
-        if x not in result:
-            result.append(x)
-    parser.context[new] = result
+    parser.context[new] = uniqify(newvals + oldvals)
     return ""
 
 
