@@ -317,6 +317,28 @@ def _compute_logic(operation, *args):
     return operation(args)
 
 
+def _get_multi_values(parser, multi, separator):
+    if separator == MULTI_VALUED_JOINER:
+        # Convert ScriptExpression containing only a single variable into variable
+        if (isinstance(multi, ScriptExpression) and
+                len(multi) == 1 and
+                isinstance(multi[0], ScriptVariable)):
+            multi = multi[0]
+
+        # If a variable, return multi-values
+        if isinstance(multi, ScriptVariable):
+            if multi.name.startswith("_"):
+                name = "~" + multi.name[1:]
+            else:
+                name = multi.name
+            return parser.context.getall(name)
+
+    # Fall-back to converting to a string and splitting if haystack is an expression
+    # or user has overridden the separator character.
+    multi = multi.eval(parser)
+    return multi.split(separator) if separator else [multi]
+
+
 def func_if(parser, _if, _then, _else=None):
     """If ``if`` is not empty, it returns ``then``, otherwise it returns ``else``."""
     if _if.eval(parser):
@@ -395,25 +417,7 @@ def func_inmulti(parser, haystack, needle, separator=MULTI_VALUED_JOINER):
        contains exactly ``needle`` as a member."""
 
     needle = needle.eval(parser)
-
-    if separator == MULTI_VALUED_JOINER:
-        if (isinstance(haystack, ScriptExpression) and
-                len(haystack) == 1 and
-                isinstance(haystack[0], ScriptVariable)):
-            haystack = haystack[0]
-
-        if isinstance(haystack, ScriptVariable):
-            if haystack.name.startswith("_"):
-                name = "~" + haystack.name[1:]
-            else:
-                name = haystack.name
-            values = parser.context.getall(name)
-            return func_in(parser, values, needle)
-
-    haystack = haystack.eval(parser)
-    return func_in(parser,
-                   haystack.split(separator) if separator else [haystack],
-                   needle)
+    return func_in(parser, _get_multi_values(parser, haystack, separator), needle)
 
 
 def func_rreplace(parser, text, old, new):
@@ -668,20 +672,7 @@ def func_len(parser, text=""):
 
 
 def func_lenmulti(parser, multi, separator=MULTI_VALUED_JOINER):
-    if (isinstance(multi, ScriptExpression) and
-            len(multi) == 1 and
-            isinstance(multi[0], ScriptVariable)):
-        multi = multi[0]
-
-    if isinstance(multi, ScriptVariable):
-        if multi.name.startswith("_"):
-            name = "~" + multi.name[1:]
-        else:
-            name = multi.name
-        return func_len(parser, parser.context.getall(name))
-
-    multi = multi.eval(parser)
-    return func_len(parser, multi.split(separator) if separator else [multi])
+    return func_len(parser, _get_multi_values(parser, multi, separator))
 
 
 def func_performer(parser, pattern="", join=", "):
