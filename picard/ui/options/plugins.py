@@ -193,7 +193,7 @@ class PluginsOptionsPage(OptionsPage):
     def plugin_installed(self, plugin):
         if not plugin.compatible:
             msgbox = QtWidgets.QMessageBox(self)
-            msgbox.setText(_(u"The plugin '%s' is not compatible with this version of Picard.") % plugin.name)
+            msgbox.setText(_("The plugin '%s' is not compatible with this version of Picard.") % plugin.name)
             msgbox.setStandardButtons(QtWidgets.QMessageBox.Ok)
             msgbox.setDefaultButton(QtWidgets.QMessageBox.Ok)
             msgbox.exec_()
@@ -221,7 +221,7 @@ class PluginsOptionsPage(OptionsPage):
                 p.marked_for_update = True
                 msgbox = QtWidgets.QMessageBox(self)
                 msgbox.setText(
-                    _(u"The plugin '%s' will be upgraded to version %s on next run of Picard.")
+                    _("The plugin '%s' will be upgraded to version %s on next run of Picard.")
                     % (p.name, p.new_version))
                 msgbox.setStandardButtons(QtWidgets.QMessageBox.Ok)
                 msgbox.setDefaultButton(QtWidgets.QMessageBox.Ok)
@@ -335,7 +335,7 @@ class PluginsOptionsPage(OptionsPage):
     def download_handler(self, response, reply, error, plugin):
         if error:
             msgbox = QtWidgets.QMessageBox(self)
-            msgbox.setText(_(u"The plugin '%s' could not be downloaded.") % plugin.module_name)
+            msgbox.setText(_("The plugin '%s' could not be downloaded.") % plugin.module_name)
             msgbox.setInformativeText(_("Please try again later."))
             msgbox.setStandardButtons(QtWidgets.QMessageBox.Ok)
             msgbox.setDefaultButton(QtWidgets.QMessageBox.Ok)

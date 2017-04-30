@@ -66,9 +66,9 @@ class ScriptVariable(object):
 
     def eval(self, state):
         name = self.name
-        if name.startswith(u"_"):
-            name = u"~" + name[1:]
-        return state.context.get(name, u"")
+        if name.startswith("_"):
+            name = "~" + name[1:]
+        return state.context.get(name, "")
 
 
 FunctionRegistryItem = namedtuple("FunctionRegistryItem",
@@ -404,7 +404,7 @@ def func_rsearch(parser, text, pattern):
             return match.group(1)
         except IndexError:
             return match.group(0)
-    return u""
+    return ""
 
 
 def func_num(parser, text, length):
@@ -457,7 +457,7 @@ def func_get(parser, name):
     """Returns the variable ``name`` (equivalent to ``%name%``)."""
     if name.startswith("_"):
         name = "~" + name[1:]
-    return parser.context.get(name, u"")
+    return parser.context.get(name, "")
 
 
 def func_copy(parser, new, old):

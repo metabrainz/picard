@@ -131,7 +131,7 @@ def sanitize_date(datestr):
 
 
 _re_win32_incompat = re.compile(r'["*:<>?|]', re.UNICODE)
-def replace_win32_incompat(string, repl=u"_"):
+def replace_win32_incompat(string, repl="_"):
     """Replace win32 filename incompatible characters from ``string`` by
        ``repl``."""
     # Don't replace : with _ for windows drive
@@ -145,7 +145,7 @@ def replace_win32_incompat(string, repl=u"_"):
 _re_non_alphanum = re.compile(r'\W+', re.UNICODE)
 def strip_non_alnum(string):
     """Remove all non-alphanumeric characters from ``string``."""
-    return _re_non_alphanum.sub(u" ", string).strip()
+    return _re_non_alphanum.sub(" ", string).strip()
 
 
 _re_slashes = re.compile(r'[\\/]', re.UNICODE)

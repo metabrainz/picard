@@ -111,7 +111,7 @@ def load_user_collections(callback=None):
             new_collections = set()
 
             for node in collection_list.collection:
-                if node.attribs.get(u"entity_type") != u"release":
+                if node.attribs.get("entity_type") != "release":
                     continue
                 new_collections.add(node.id)
                 collection = user_collections.get(node.id)

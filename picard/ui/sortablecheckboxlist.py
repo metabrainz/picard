@@ -113,7 +113,7 @@ class SortableCheckboxListWidget(QtWidgets.QWidget):
 
 class SortableCheckboxListItem(object):
 
-    def __init__(self, text=u'', checked=False, data=None):
+    def __init__(self, text='', checked=False, data=None):
         self._checked = checked
         self._text = text
         self._data = data

@@ -408,7 +408,7 @@ class ScriptingOptionsPage(OptionsPage):
         args = {
             "picard-doc-scripting-url": PICARD_URLS['doc_scripting'],
         }
-        text = _(u'<a href="%(picard-doc-scripting-url)s">Open Scripting'
+        text = _('<a href="%(picard-doc-scripting-url)s">Open Scripting'
                  ' Documentation in your browser</a>') % args
         self.ui.scripting_doc_link.setText(text)
 

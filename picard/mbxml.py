@@ -141,9 +141,9 @@ def _translate_artist_node(node):
                 else:
                     continue
                 parts.append((score, 5))
-                if alias.attribs.get("type") == u"Artist name":
+                if alias.attribs.get("type") == "Artist name":
                     score = 0.8
-                elif alias.attribs.get("type") == u"Legal Name":
+                elif alias.attribs.get("type") == "Legal Name":
                     score = 0.5
                 else:
                     # as 2014/09/19, only Artist or Legal names should have the
@@ -255,7 +255,7 @@ def media_formats_from_node(node):
         count = formats_count[format]
         format = RELEASE_FORMATS.get(format, format)
         if count > 1:
-            format = string_(count) + u"×" + format
+            format = string_(count) + "×" + format
         formats.append(format)
     return " + ".join(formats)
 

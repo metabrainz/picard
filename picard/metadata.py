@@ -257,7 +257,7 @@ class Metadata(dict):
             return default
 
     def __getitem__(self, name):
-        return self.get(name, u'')
+        return self.get(name, '')
 
     def set(self, name, values):
         dict.__setitem__(self, name, values)

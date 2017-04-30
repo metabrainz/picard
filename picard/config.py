@@ -131,7 +131,7 @@ class Config(QtCore.QSettings):
 
     def switchProfile(self, profilename):
         """Sets the current profile."""
-        key = u"profile/%s" % (profilename,)
+        key = "profile/%s" % (profilename,)
         if self.contains(key):
             self.profile.name = key
         else:

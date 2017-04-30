@@ -54,11 +54,11 @@ class AboutOptionsPage(OptionsPage):
         else:
             args["translator-credits"] = ""
 
-        args['third_parties_versions'] = '<br />'.join([u"%s %s" %
+        args['third_parties_versions'] = '<br />'.join(["%s %s" %
                                                         (versions.version_name(name), value) for name, value
                                                         in versions.as_dict(i18n=True).items()
                                                         if name != 'version'])
-        text = _(u"""<p align="center"><span style="font-size:15px;font-weight:bold;">MusicBrainz Picard</span><br/>
+        text = _("""<p align="center"><span style="font-size:15px;font-weight:bold;">MusicBrainz Picard</span><br/>
 Version %(version)s</p>
 <p align="center"><small>
 %(third_parties_versions)s
