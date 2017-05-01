@@ -77,7 +77,7 @@ class Album(DataObject, Item):
         self.update_metadata_images_enabled = True
 
     def __repr__(self):
-        return '<Album %s %r>' % (self.id, self.metadata[u"album"])
+        return '<Album %s %r>' % (self.id, self.metadata["album"])
 
     def iterfiles(self, save=False):
         for track in self.tracks:
@@ -526,7 +526,7 @@ class Album(DataObject, Item):
                     if track.is_linked():
                         linked_tracks += 1
 
-                text = u'%s\u200E (%d/%d' % (title, linked_tracks, len(self.tracks))
+                text = '%s\u200E (%d/%d' % (title, linked_tracks, len(self.tracks))
                 unmatched = self.get_num_unmatched_files()
                 if unmatched:
                     text += '; %d?' % (unmatched,)

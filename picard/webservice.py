@@ -73,7 +73,7 @@ def _wrap_xml_metadata(data):
 class XmlNode(object):
 
     def __init__(self):
-        self.text = u''
+        self.text = ''
         self.children = {}
         self.attribs = {}
 
@@ -168,7 +168,7 @@ class XmlWebService(QtCore.QObject):
     def set_cache(self, cache_size_in_mb=100):
         cache = QtNetwork.QNetworkDiskCache()
         location = QStandardPaths.writableLocation(QStandardPaths.CacheLocation)
-        cache.setCacheDirectory(os.path.join(location, u'picard'))
+        cache.setCacheDirectory(os.path.join(location, 'picard'))
         cache.setMaximumCacheSize(cache_size_in_mb * 1024 * 1024)
         self.manager.setCache(cache)
         log.debug("NetworkDiskCache dir: %s", cache.cacheDirectory())

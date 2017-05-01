@@ -66,7 +66,7 @@ class SearchBox(QtWidgets.QWidget):
         self.parent = parent
         QtWidgets.QWidget.__init__(self, parent)
         self.search_action = QtWidgets.QAction(icontheme.lookup('system-search'),
-                _(u"Search"), self)
+                _("Search"), self)
         self.search_action.setEnabled(False)
         self.search_action.triggered.connect(self.search)
         self.setupUi()

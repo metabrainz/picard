@@ -615,8 +615,8 @@ class Tagger(QtWidgets.QApplication):
     def _lookup_disc(self, disc, result=None, error=None):
         self.restore_cursor()
         if error is not None:
-            QtWidgets.QMessageBox.critical(self.window, _(u"CD Lookup Error"),
-                                       _(u"Error while reading CD:\n\n%s") % error)
+            QtWidgets.QMessageBox.critical(self.window, _("CD Lookup Error"),
+                                       _("Error while reading CD:\n\n%s") % error)
         else:
             disc.lookup()
 

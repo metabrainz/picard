@@ -215,15 +215,15 @@ class CoverArtThumbnail(ActiveLabel):
             release = metadata.get("musicbrainz_albumid", None)
         if release:
             self.setActive(True)
-            text = _(u"View release on MusicBrainz")
+            text = _("View release on MusicBrainz")
         else:
             self.setActive(False)
             text = ""
         if hasattr(metadata, 'has_common_images'):
             if has_common_images:
-                note = _(u'Common images on all tracks')
+                note = _('Common images on all tracks')
             else:
-                note = _(u'Tracks contain different images')
+                note = _('Tracks contain different images')
             if text:
                 text += '<br />'
             text += '<i>%s</i>' % note
@@ -263,7 +263,7 @@ class CoverArtBox(QtWidgets.QGroupBox):
         self.orig_cover_art_label = QtWidgets.QLabel('')
         self.orig_cover_art = CoverArtThumbnail(False, False, self.pixmap_cache, parent)
         self.orig_cover_art_label.setAlignment(QtCore.Qt.AlignTop | QtCore.Qt.AlignHCenter)
-        self.show_details_button = QtWidgets.QPushButton(_(u'Show more details'), self)
+        self.show_details_button = QtWidgets.QPushButton(_('Show more details'), self)
         self.layout.addWidget(self.cover_art_label)
         self.layout.addWidget(self.cover_art)
         self.layout.addWidget(self.orig_cover_art_label)
@@ -300,8 +300,8 @@ class CoverArtBox(QtWidgets.QGroupBox):
         else:
             self.show_details_button.setVisible(True)
             self.orig_cover_art.setVisible(True)
-            self.cover_art_label.setText(_(u'New Cover Art'))
-            self.orig_cover_art_label.setText(_(u'Original Cover Art'))
+            self.cover_art_label.setText(_('New Cover Art'))
+            self.orig_cover_art_label.setText(_('Original Cover Art'))
 
     def show(self):
         self.update_display(True)
@@ -367,7 +367,7 @@ class CoverArtBox(QtWidgets.QGroupBox):
         try:
             coverartimage = CoverArtImage(
                 url=url.toString(),
-                types=[u'front'],
+                types=['front'],
                 data=data
             )
         except CoverArtImageError as e:
@@ -419,13 +419,13 @@ class CoverArtBox(QtWidgets.QGroupBox):
     def contextMenuEvent(self, event):
         menu = QtWidgets.QMenu(self)
         if self.show_details_button.isVisible():
-            name = _(u'Show more details...')
+            name = _('Show more details...')
             show_more_details_action = QtWidgets.QAction(name, self.parent)
             show_more_details_action.triggered.connect(self.show_cover_art_info)
             menu.addAction(show_more_details_action)
 
         if self.orig_cover_art.isVisible():
-            name = _(u'Keep original cover art')
+            name = _('Keep original cover art')
             use_orig_value_action = QtWidgets.QAction(name, self.parent)
             use_orig_value_action.triggered.connect(self.item.keep_original_images)
             menu.addAction(use_orig_value_action)
@@ -434,12 +434,12 @@ class CoverArtBox(QtWidgets.QGroupBox):
             menu.addSeparator()
 
         load_image_behavior_group = QtWidgets.QActionGroup(self.parent, exclusive=True)
-        action = load_image_behavior_group.addAction(QtWidgets.QAction(_(u'Replace front cover art on drop'), self.parent, checkable=True))
+        action = load_image_behavior_group.addAction(QtWidgets.QAction(_('Replace front cover art on drop'), self.parent, checkable=True))
         action.triggered.connect(partial(self.set_load_image_behavior, behavior='replace'))
         if config.setting["load_image_behavior"] == 'replace':
             action.setChecked(True)
         menu.addAction(action)
-        action = load_image_behavior_group.addAction(QtWidgets.QAction(_(u'Append front cover art on drop'), self.parent, checkable=True))
+        action = load_image_behavior_group.addAction(QtWidgets.QAction(_('Append front cover art on drop'), self.parent, checkable=True))
         action.triggered.connect(partial(self.set_load_image_behavior, behavior='append'))
         if config.setting["load_image_behavior"] == 'append':
             action.setChecked(True)

@@ -272,7 +272,7 @@ class Cluster(QtCore.QObject, Item):
                     artist_hist[cluster] = cnt
 
             if artist_id is None:
-                artist_name = u"Various Artists"
+                artist_name = "Various Artists"
             else:
                 artist_name = artist_cluster_engine.getClusterTitle(artist_id)
 
@@ -287,7 +287,7 @@ class UnmatchedFiles(Cluster):
     """Special cluster for 'Unmatched Files' which have no PUID and have not been clustered."""
 
     def __init__(self):
-        super(UnmatchedFiles, self).__init__(_(u"Unmatched Files"), special=True)
+        super(UnmatchedFiles, self).__init__(_("Unmatched Files"), special=True)
 
     def add_files(self, files):
         Cluster.add_files(self, files)
@@ -365,8 +365,8 @@ class ClusterDict(object):
         return self.id
 
     def tokenize(self, word):
-        token = self.regexp.sub(u'', word.lower())
-        return token if token else self.spaces.sub(u'', word.lower())
+        token = self.regexp.sub('', word.lower())
+        return token if token else self.spaces.sub('', word.lower())
 
     def add(self, word):
         """
@@ -375,11 +375,11 @@ class ClusterDict(object):
         in the dictionary or -1 is the word is empty.
         """
 
-        if word == u'':
+        if word == '':
             return -1
 
         token = self.tokenize(word)
-        if token == u'':
+        if token == '':
             return -1
 
         try:
@@ -449,7 +449,7 @@ class ClusterEngine(object):
             return ""
 
         max = 0
-        maxWord = u''
+        maxWord = ''
         for id in self.clusterBins[cluster]:
             word, count = self.clusterDict.getWordAndCount(id)
             if count >= max:

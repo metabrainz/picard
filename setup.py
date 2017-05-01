@@ -332,8 +332,8 @@ class picard_build_ui(Command):
             uic.compileUi(uifile, tmp)
             source = tmp.getvalue()
             rc = re.compile(r'\n\n#.*?(?=\n\n)', re.MULTILINE|re.DOTALL)
-            comment = (u"\n\n# Automatically generated - don't edit.\n"
-                       u"# Use `python setup.py %s` to update it."
+            comment = ("\n\n# Automatically generated - don't edit.\n"
+                       "# Use `python setup.py %s` to update it."
                        % _get_option_name(self))
             for r in list(_translate_re):
                 source = r.sub(r'_(\1)', source)
@@ -491,7 +491,7 @@ class picard_update_constants(Command):
 
         countries = dict()
         countries_potfile = os.path.join('po', 'countries', 'countries.pot')
-        isocode_comment = u'iso.code:'
+        isocode_comment = 'iso.code:'
         with open(countries_potfile, 'rb') as f:
             log.info('Parsing %s' % countries_potfile)
             po = pofile.read_po(f)
@@ -500,7 +500,7 @@ class picard_update_constants(Command):
                     continue
                 for comment in message.auto_comments:
                     if comment.startswith(isocode_comment):
-                        code = comment.replace(isocode_comment, u'')
+                        code = comment.replace(isocode_comment, '')
                         countries[code] = message.id
             if countries:
                 self.countries_py_file(countries)
@@ -510,10 +510,10 @@ class picard_update_constants(Command):
         attributes = dict()
         attributes_potfile = os.path.join('po', 'attributes', 'attributes.pot')
         extract_attributes = (
-            u'DB:cover_art_archive.art_type/name',
-            u'DB:medium_format/name',
-            u'DB:release_group_primary_type/name',
-            u'DB:release_group_secondary_type/name',
+            'DB:cover_art_archive.art_type/name',
+            'DB:medium_format/name',
+            'DB:release_group_primary_type/name',
+            'DB:release_group_secondary_type/name',
         )
         with open(attributes_potfile, 'rb') as f:
             log.info('Parsing %s' % attributes_potfile)
@@ -523,20 +523,20 @@ class picard_update_constants(Command):
                     continue
                 for loc, pos in message.locations:
                     if loc in extract_attributes:
-                        attributes[u"%s:%03d" % (loc, pos)] = message.id
+                        attributes["%s:%03d" % (loc, pos)] = message.id
             if attributes:
                 self.attributes_py_file(attributes)
             else:
                 sys.exit('Failed to extract any attribute !')
 
     def countries_py_file(self, countries):
-        header = (u"# -*- coding: utf-8 -*-\n"
-                  u"# Automatically generated - don't edit.\n"
-                  u"# Use `python setup.py {option}` to update it.\n"
-                  u"\n"
-                  u"RELEASE_COUNTRIES = {{\n")
-        line   =  u"    u'{code}': u'{name}',\n"
-        footer =  u"}}\n"
+        header = ("# -*- coding: utf-8 -*-\n"
+                  "# Automatically generated - don't edit.\n"
+                  "# Use `python setup.py {option}` to update it.\n"
+                  "\n"
+                  "RELEASE_COUNTRIES = {{\n")
+        line   =  "    '{code}': '{name}',\n"
+        footer =  "}}\n"
         filename = os.path.join('picard', 'const', 'countries.py')
         with open(filename, 'w') as countries_py:
             def write(s, **kwargs):
@@ -550,13 +550,13 @@ class picard_update_constants(Command):
                                                           len(countries)))
 
     def attributes_py_file(self, attributes):
-        header = (u"# -*- coding: utf-8 -*-\n"
-                  u"# Automatically generated - don't edit.\n"
-                  u"# Use `python setup.py {option}` to update it.\n"
-                  u"\n"
-                  u"MB_ATTRIBUTES = {{\n")
-        line   =  u"    u'{key}': u'{value}',\n"
-        footer =  u"}}\n"
+        header = ("# -*- coding: utf-8 -*-\n"
+                  "# Automatically generated - don't edit.\n"
+                  "# Use `python setup.py {option}` to update it.\n"
+                  "\n"
+                  "MB_ATTRIBUTES = {{\n")
+        line   =  "    '{key}': '{value}',\n"
+        footer =  "}}\n"
         filename = os.path.join('picard', 'const', 'attributes.py')
         with open(filename, 'w') as attributes_py:
             def write(s, **kwargs):

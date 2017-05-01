@@ -150,9 +150,9 @@ class CoverArtImage:
     @property
     def source(self):
         if self.url is not None:
-            return u"%s: %s" % (self.sourceprefix, self.url.toString())
+            return "%s: %s" % (self.sourceprefix, self.url.toString())
         else:
-            return u"%s" % self.sourceprefix
+            return "%s" % self.sourceprefix
 
     def is_front_image(self):
         """Indicates if image is considered as a 'front' image.
@@ -167,7 +167,7 @@ class CoverArtImage:
             return False
         if self.is_front is not None:
             return self.is_front
-        if u'front' in self.types:
+        if 'front' in self.types:
             return True
         return (self.support_types is False)
 
@@ -194,14 +194,14 @@ class CoverArtImage:
         return "%s(%s)" % (self.__class__.__name__, ", ".join(p))
 
     def __str__(self):
-        p = [u'Image']
+        p = ['Image']
         if self.url is not None:
-            p.append(u"from %s" % self.url.toString())
+            p.append("from %s" % self.url.toString())
         if self.types:
-            p.append(u"of type %s" % u','.join(self.types))
+            p.append("of type %s" % ','.join(self.types))
         if self.comment:
-            p.append(u"and comment '%s'" % self.comment)
-        return u' '.join(p)
+            p.append("and comment '%s'" % self.comment)
+        return ' '.join(p)
 
     def __eq__(self, other):
         if self and other:
@@ -245,8 +245,8 @@ class CoverArtImage:
         don't support multiple types for one image.
         Images coming from CAA can have multiple types (ie. 'front, booklet').
         """
-        if self.is_front_image() or not self.types or u'front' in self.types:
-            return u'front'
+        if self.is_front_image() or not self.types or 'front' in self.types:
+            return 'front'
         # TODO: do something better than randomly using the first in the list
         return self.types[0]
 
@@ -343,9 +343,9 @@ class CoverArtImage:
         if self.types:
             types = self.types
         elif self.is_front_image():
-            types = [u'front']
+            types = ['front']
         else:
-            types = [u'-']
+            types = ['-']
         if translate:
             types = [translate_caa_type(type) for type in types]
         return separator.join(types)
@@ -356,7 +356,7 @@ class CaaCoverArtImage(CoverArtImage):
     """Image from Cover Art Archive"""
 
     support_types = True
-    sourceprefix = u"CAA"
+    sourceprefix = "CAA"
 
     def __init__(self, url, types=[], is_front=False, comment='', data=None):
         CoverArtImage.__init__(self, url=url, types=types, comment=comment,
@@ -395,9 +395,9 @@ class TagCoverArtImage(CoverArtImage):
     @property
     def source(self):
         if self.tag:
-            return u'Tag %s from %s' % (self.tag, self.sourcefile)
+            return 'Tag %s from %s' % (self.tag, self.sourcefile)
         else:
-            return u'File %s' % (self.sourcefile)
+            return 'File %s' % (self.sourcefile)
 
     def __repr__(self):
         p = []
@@ -429,7 +429,7 @@ class CoverArtImageFromFile(CoverArtImage):
 
     @property
     def source(self):
-        return u'%s %s' % (self.sourceprefix, self.filepath)
+        return '%s %s' % (self.sourceprefix, self.filepath)
 
     def __repr__(self):
         p = []

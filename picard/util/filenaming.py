@@ -109,7 +109,7 @@ def _shorten_to_bytes_length(text, length):
             pass
         i -= 1
     # hmm. we got here?
-    return u""
+    return ""
 
 
 SHORTEN_BYTES, SHORTEN_UTF16, SHORTEN_UTF16_NFD = 0, 1, 2
@@ -134,7 +134,7 @@ def shorten_path(path, length, mode):
     length: Maximum number of code points / bytes allowed in a node.
     mode: One of SHORTEN_BYTES, SHORTEN_UTF16, SHORTEN_UTF16_NFD.
     """
-    shorten = lambda n, l: n and shorten_filename(n, l, mode).strip() or u""
+    shorten = lambda n, l: n and shorten_filename(n, l, mode).strip() or ""
     dirpath, filename = os.path.split(path)
     fileroot, ext = os.path.splitext(filename)
     return os.path.join(

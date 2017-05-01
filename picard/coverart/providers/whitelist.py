@@ -35,7 +35,7 @@ class CoverArtProviderWhitelist(CoverArtProvider):
     cover art"""
 
     NAME = "Whitelist"
-    TITLE = N_(u'Whitelist')
+    TITLE = N_('Whitelist')
 
     def enabled(self):
         return (super(CoverArtProviderWhitelist, self).enabled()
