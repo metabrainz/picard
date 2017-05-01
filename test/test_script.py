@@ -390,25 +390,31 @@ class ScriptParserTest(unittest.TestCase):
 
     def test_cmd_inmulti(self):
         context = Metadata()
+
+        # Test with single-value string
         context["foo"] = "First:A; Second:B; Third:C"
+        # Tests with $in for comparison purposes
         self.assertEqual(
             self.parser.eval("$in(%foo%,Second:B)", context), "1")
         self.assertEqual(
             self.parser.eval("$in(%foo%,irst:A; Second:B; Thi)", context), "1")
         self.assertEqual(
             self.parser.eval("$in(%foo%,First:A; Second:B; Third:C)", context), "1")
+        # Base $inmulti tests
         self.assertEqual(
             self.parser.eval("$inmulti(%foo%,Second:B)", context), "")
         self.assertEqual(
             self.parser.eval("$inmulti(%foo%,irst:A; Second:B; Thi)", context), "")
         self.assertEqual(
             self.parser.eval("$inmulti(%foo%,First:A; Second:B; Third:C)", context), "1")
+        # Test separator override but with existing separator - results should be same as base
         self.assertEqual(
             self.parser.eval("$inmulti(%foo%,Second:B,; )", context), "")
         self.assertEqual(
             self.parser.eval("$inmulti(%foo%,irst:A; Second:B; Thi,; )", context), "")
         self.assertEqual(
             self.parser.eval("$inmulti(%foo%,First:A; Second:B; Third:C,; )", context), "1")
+        # Test separator override
         self.assertEqual(
             self.parser.eval("$inmulti(%foo%,First:A,:)", context), "")
         self.assertEqual(
@@ -424,25 +430,30 @@ class ScriptParserTest(unittest.TestCase):
         self.assertEqual(
             self.parser.eval("$inmulti(%foo%,C,:)", context), "1")
 
+        # Test with multi-values
         context["foo"] = ["First:A", "Second:B", "Third:C"]
+        # Tests with $in for comparison purposes
         self.assertEqual(
             self.parser.eval("$in(%foo%,Second:B)", context), "1")
         self.assertEqual(
             self.parser.eval("$in(%foo%,irst:A; Second:B; Thi)", context), "1")
         self.assertEqual(
             self.parser.eval("$in(%foo%,First:A; Second:B; Third:C)", context), "1")
+        # Base $inmulti tests
         self.assertEqual(
             self.parser.eval("$inmulti(%foo%,Second:B)", context), "1")
         self.assertEqual(
             self.parser.eval("$inmulti(%foo%,irst:A; Second:B; Thi)", context), "")
         self.assertEqual(
             self.parser.eval("$inmulti(%foo%,First:A; Second:B; Third:C)", context), "")
+        # Test separator override but with existing separator - results should be same as base
         self.assertEqual(
             self.parser.eval("$inmulti(%foo%,Second:B,; )", context), "1")
         self.assertEqual(
             self.parser.eval("$inmulti(%foo%,irst:A; Second:B; Thi,; )", context), "")
         self.assertEqual(
             self.parser.eval("$inmulti(%foo%,First:A; Second:B; Third:C,; )", context), "")
+        # Test separator override
         self.assertEqual(
             self.parser.eval("$inmulti(%foo%,First:A,:)", context), "")
         self.assertEqual(
@@ -462,22 +473,26 @@ class ScriptParserTest(unittest.TestCase):
         context = Metadata()
         context["foo"] = "First:A; Second:B; Third:C"
         context["bar"] = ["First:A", "Second:B", "Third:C"]
+        # Tests with $len for comparison purposes
         self.assertEqual(
             self.parser.eval("$len(%foo%)", context), "26")
         self.assertEqual(
             self.parser.eval("$len(%bar%)", context), "26")
+        # Base $lenmulti tests
         self.assertEqual(
             self.parser.eval("$lenmulti(%foo%)", context), "1")
         self.assertEqual(
             self.parser.eval("$lenmulti(%bar%)", context), "3")
         self.assertEqual(
             self.parser.eval("$lenmulti(%foo%.)", context), "3")
+        # Test separator override but with existing separator - results should be same as base
         self.assertEqual(
             self.parser.eval("$lenmulti(%foo%,; )", context), "1")
         self.assertEqual(
             self.parser.eval("$lenmulti(%bar%,; )", context), "3")
         self.assertEqual(
             self.parser.eval("$lenmulti(%foo%.,; )", context), "3")
+        # Test separator override
         self.assertEqual(
             self.parser.eval("$lenmulti(%foo%,:)", context), "4")
         self.assertEqual(
