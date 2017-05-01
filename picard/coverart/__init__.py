@@ -34,7 +34,7 @@ from picard.coverart.image import (CoverArtImageIOError,
 from PyQt5.QtCore import QObject
 
 
-class CoverArt:
+class CoverArt(object):
 
     def __init__(self, album, metadata, release):
         self._queue_new()

@@ -445,7 +445,7 @@ class PluginManager(QtCore.QObject):
         return True
 
 
-class PluginPriority:
+class PluginPriority(object):
 
     """
     Define few priority values for plugin functions execution order
@@ -457,7 +457,7 @@ class PluginPriority:
     LOW = -100
 
 
-class PluginFunctions:
+class PluginFunctions(object):
 
     """
     Store ExtensionPoint in a defaultdict with priority as key
