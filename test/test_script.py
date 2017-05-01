@@ -274,7 +274,6 @@ class ScriptParserTest(unittest.TestCase):
 
     def _eval_and_check_copymerge(self, context, expected):
         self.parser.eval("$copymerge(target,source)", context)
-        #self.assertEqual(sorted(self.parser.context.getall("target")), sorted(expected))
         self.assertEqual(self.parser.context.getall("target"), expected)
 
     def test_cmd_copymerge_notarget(self):
@@ -391,33 +390,61 @@ class ScriptParserTest(unittest.TestCase):
 
     def test_cmd_inmulti(self):
         context = Metadata()
-        context["foo"] = "First; Second; Third"
+        context["foo"] = "First:A; Second:B; Third:C"
         self.assertEqual(
-            self.parser.eval("$in(%foo%,Second)", context), "1")
+            self.parser.eval("$in(%foo%,Second:B)", context), "1")
         self.assertEqual(
-            self.parser.eval("$in(%foo%,irst; Second; Thi)", context), "1")
+            self.parser.eval("$in(%foo%,irst:A; Second:B; Thi)", context), "1")
         self.assertEqual(
-            self.parser.eval("$in(%foo%,First; Second; Third)", context), "1")
+            self.parser.eval("$in(%foo%,First:A; Second:B; Third:C)", context), "1")
         self.assertEqual(
-            self.parser.eval("$inmulti(%foo%,Second)", context), "")
+            self.parser.eval("$inmulti(%foo%,Second:B)", context), "")
         self.assertEqual(
-            self.parser.eval("$inmulti(%foo%,irst; Second; Thi)", context), "")
+            self.parser.eval("$inmulti(%foo%,irst:A; Second:B; Thi)", context), "")
         self.assertEqual(
-            self.parser.eval("$inmulti(%foo%,First; Second; Third)", context), "1")
+            self.parser.eval("$inmulti(%foo%,First:A; Second:B; Third:C)", context), "1")
+        self.assertEqual(
+            self.parser.eval("$inmulti(%foo%,First:A,:)", context), "")
+        self.assertEqual(
+            self.parser.eval("$inmulti(%foo%,Second:B,:)", context), "")
+        self.assertEqual(
+            self.parser.eval("$inmulti(%foo%,Third:C,:)", context), "")
+        self.assertEqual(
+            self.parser.eval("$inmulti(%foo%,First,:)", context), "1")
+        self.assertEqual(
+            self.parser.eval("$inmulti(%foo%,A; Second,:)", context), "1")
+        self.assertEqual(
+            self.parser.eval("$inmulti(%foo%,B; Third,:)", context), "1")
+        self.assertEqual(
+            self.parser.eval("$inmulti(%foo%,C,:)", context), "1")
 
-        context["foo"] = ["First", "Second", "Third"]
+        context["foo"] = ["First:A", "Second:B", "Third:C"]
         self.assertEqual(
-            self.parser.eval("$in(%foo%,Second)", context), "1")
+            self.parser.eval("$in(%foo%,Second:B)", context), "1")
         self.assertEqual(
-            self.parser.eval("$in(%foo%,irst; Second; Thi)", context), "1")
+            self.parser.eval("$in(%foo%,irst:A; Second:B; Thi)", context), "1")
         self.assertEqual(
-            self.parser.eval("$in(%foo%,First; Second; Third)", context), "1")
+            self.parser.eval("$in(%foo%,First:A; Second:B; Third:C)", context), "1")
         self.assertEqual(
-            self.parser.eval("$inmulti(%foo%,Second)", context), "1")
+            self.parser.eval("$inmulti(%foo%,Second:B)", context), "1")
         self.assertEqual(
-            self.parser.eval("$inmulti(%foo%,irst; Second; Thi)", context), "")
+            self.parser.eval("$inmulti(%foo%,irst:A; Second:B; Thi)", context), "")
         self.assertEqual(
-            self.parser.eval("$inmulti(%foo%,First; Second; Third)", context), "")
+            self.parser.eval("$inmulti(%foo%,First:A; Second:B; Third:C)", context), "")
+        self.assertEqual(
+            self.parser.eval("$inmulti(%foo%,First:A,:)", context), "")
+        self.assertEqual(
+            self.parser.eval("$inmulti(%foo%,Second:B,:)", context), "")
+        self.assertEqual(
+            self.parser.eval("$inmulti(%foo%,Third:C,:)", context), "")
+        self.assertEqual(
+            self.parser.eval("$inmulti(%foo%,First,:)", context), "1")
+        self.assertEqual(
+            self.parser.eval("$inmulti(%foo%,A; Second,:)", context), "1")
+        self.assertEqual(
+            self.parser.eval("$inmulti(%foo%,B; Third,:)", context), "1")
+        self.assertEqual(
+            self.parser.eval("$inmulti(%foo%,C,:)", context), "1")
 
     def test_cmd_lenmulti(self):
         context = Metadata()

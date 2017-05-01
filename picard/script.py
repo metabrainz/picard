@@ -319,6 +319,9 @@ def _compute_logic(operation, *args):
 
 
 def _get_multi_values(parser, multi, separator):
+    if isinstance(separator, ScriptExpression):
+        separator = separator.eval(parser)
+
     if separator == MULTI_VALUED_JOINER:
         # Convert ScriptExpression containing only a single variable into variable
         if (isinstance(multi, ScriptExpression) and
