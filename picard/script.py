@@ -392,6 +392,16 @@ def func_inmulti(parser, text, value, separator=MULTI_VALUED_JOINER):
     """Splits ``text`` by ``separator``, and returns true if the resulting list contains ``value``."""
     return func_in(parser, text.split(separator) if separator else [text], value)
 
+def func_inmulti2(parser, haystack, needle):
+    """Searches for ``needle`` in the contents of the variable named
+       ``haystack`` . It returns true if the resulting list
+       contains ``needle``."""
+
+    if haystack.startswith("_"):
+        haystack = "~" + haystack[1:]
+    values = parser.context.getall(haystack)
+
+    return func_in(parser, values, needle)
 
 def func_rreplace(parser, text, old, new):
     return re.sub(old, new, text)
@@ -821,6 +831,7 @@ register_script_function(func_gt, "gt")
 register_script_function(func_gte, "gte")
 register_script_function(func_in, "in")
 register_script_function(func_inmulti, "inmulti")
+register_script_function(func_inmulti2, "inmulti2")
 register_script_function(func_copy, "copy")
 register_script_function(func_copymerge, "copymerge")
 register_script_function(func_len, "len")
