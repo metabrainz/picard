@@ -577,7 +577,7 @@ class picard_patch_version(Command):
     ]
 
     def initialize_options(self):
-        self.platform = 'unknown'
+        self.platform = sys.platform
 
     def finalize_options(self):
         pass
