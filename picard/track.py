@@ -197,6 +197,8 @@ class Track(DataObject, Item):
             return
         # Convert counts to values from 0 to 100
         maxcount = max(tags.values())
+        if maxcount == 0:
+            return
         taglist = []
         for name, count in tags.items():
             taglist.append((100 * count // maxcount, name))
