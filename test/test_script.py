@@ -448,15 +448,21 @@ class ScriptParserTest(unittest.TestCase):
 
     def test_cmd_lenmulti(self):
         context = Metadata()
-        context["foo"] = "First; Second; Third"
-        context["bar"] = ["First", "Second", "Third"]
+        context["foo"] = "First:A; Second:B; Third:C"
+        context["bar"] = ["First:A", "Second:B", "Third:C"]
         self.assertEqual(
-            self.parser.eval("$len(%foo%)", context), "20")
+            self.parser.eval("$len(%foo%)", context), "26")
         self.assertEqual(
-            self.parser.eval("$len(%bar%)", context), "20")
+            self.parser.eval("$len(%bar%)", context), "26")
         self.assertEqual(
             self.parser.eval("$lenmulti(%foo%)", context), "1")
         self.assertEqual(
             self.parser.eval("$lenmulti(%bar%)", context), "3")
         self.assertEqual(
             self.parser.eval("$lenmulti(%foo%.)", context), "3")
+        self.assertEqual(
+            self.parser.eval("$lenmulti(%foo%,:)", context), "4")
+        self.assertEqual(
+            self.parser.eval("$lenmulti(%bar%,:)", context), "4")
+        self.assertEqual(
+            self.parser.eval("$lenmulti(%foo%.,:)", context), "4")
