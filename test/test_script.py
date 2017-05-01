@@ -404,6 +404,12 @@ class ScriptParserTest(unittest.TestCase):
         self.assertEqual(
             self.parser.eval("$inmulti(%foo%,First:A; Second:B; Third:C)", context), "1")
         self.assertEqual(
+            self.parser.eval("$inmulti(%foo%,Second:B,; )", context), "")
+        self.assertEqual(
+            self.parser.eval("$inmulti(%foo%,irst:A; Second:B; Thi,; )", context), "")
+        self.assertEqual(
+            self.parser.eval("$inmulti(%foo%,First:A; Second:B; Third:C,; )", context), "1")
+        self.assertEqual(
             self.parser.eval("$inmulti(%foo%,First:A,:)", context), "")
         self.assertEqual(
             self.parser.eval("$inmulti(%foo%,Second:B,:)", context), "")
@@ -431,6 +437,12 @@ class ScriptParserTest(unittest.TestCase):
             self.parser.eval("$inmulti(%foo%,irst:A; Second:B; Thi)", context), "")
         self.assertEqual(
             self.parser.eval("$inmulti(%foo%,First:A; Second:B; Third:C)", context), "")
+        self.assertEqual(
+            self.parser.eval("$inmulti(%foo%,Second:B,; )", context), "1")
+        self.assertEqual(
+            self.parser.eval("$inmulti(%foo%,irst:A; Second:B; Thi,; )", context), "")
+        self.assertEqual(
+            self.parser.eval("$inmulti(%foo%,First:A; Second:B; Third:C,; )", context), "")
         self.assertEqual(
             self.parser.eval("$inmulti(%foo%,First:A,:)", context), "")
         self.assertEqual(
@@ -460,6 +472,12 @@ class ScriptParserTest(unittest.TestCase):
             self.parser.eval("$lenmulti(%bar%)", context), "3")
         self.assertEqual(
             self.parser.eval("$lenmulti(%foo%.)", context), "3")
+        self.assertEqual(
+            self.parser.eval("$lenmulti(%foo%,; )", context), "1")
+        self.assertEqual(
+            self.parser.eval("$lenmulti(%bar%,; )", context), "3")
+        self.assertEqual(
+            self.parser.eval("$lenmulti(%foo%.,; )", context), "3")
         self.assertEqual(
             self.parser.eval("$lenmulti(%foo%,:)", context), "4")
         self.assertEqual(
