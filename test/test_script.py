@@ -384,3 +384,17 @@ class ScriptParserTest(unittest.TestCase):
         self.parser.eval("$unset(performer:*)", context)
         self.assertNotIn('performer:bar', context)
         self.assertNotIn('performer:foo', context)
+
+    def test_required_kwonly_parameters(self):
+        def func(a, *, required_kwarg):
+            pass
+
+        with self.assertRaises(TypeError,
+                               msg="Functions with required keyword-only parameters are not supported"):
+            register_script_function(func)
+
+    def test_optional_kwonly_parameters(self):
+        def func(a, *, optional_kwarg=1):
+            pass
+
+        register_script_function(func)
