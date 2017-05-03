@@ -175,16 +175,10 @@ class ScriptParserTest(unittest.TestCase):
         self.assertScriptResultEquals("$upper(AbeCeDA)", "ABECEDA")
 
     def test_cmd_rreplace(self):
-        self.assertEqual(
-            self.parser.eval(r'''$rreplace(test \(disc 1\),\\s\\\(disc \\d+\\\),)'''),
-            "test"
-        )
+        self.assertScriptResultEquals(r'''$rreplace(test \(disc 1\),\\s\\\(disc \\d+\\\),)''', "test")
 
     def test_cmd_rsearch(self):
-        self.assertEqual(
-            self.parser.eval(r"$rsearch(test \(disc 1\),\\\(disc \(\\d+\)\\\))"),
-            "1"
-        )
+        self.assertScriptResultEquals(r"$rsearch(test \(disc 1\),\\\(disc \(\\d+\)\\\))", "1")
 
     def test_arguments(self):
         self.assertTrue(
@@ -394,108 +388,65 @@ class ScriptParserTest(unittest.TestCase):
         # Test with single-value string
         context["foo"] = "First:A; Second:B; Third:C"
         # Tests with $in for comparison purposes
-        self.assertEqual(
-            self.parser.eval("$in(%foo%,Second:B)", context), "1")
-        self.assertEqual(
-            self.parser.eval("$in(%foo%,irst:A; Second:B; Thi)", context), "1")
-        self.assertEqual(
-            self.parser.eval("$in(%foo%,First:A; Second:B; Third:C)", context), "1")
+        self.assertScriptResultEquals("$in(%foo%,Second:B)", "1", context)
+        self.assertScriptResultEquals("$in(%foo%,irst:A; Second:B; Thi)", "1", context)
+        self.assertScriptResultEquals("$in(%foo%,First:A; Second:B; Third:C)", "1", context)
         # Base $inmulti tests
-        self.assertEqual(
-            self.parser.eval("$inmulti(%foo%,Second:B)", context), "")
-        self.assertEqual(
-            self.parser.eval("$inmulti(%foo%,irst:A; Second:B; Thi)", context), "")
-        self.assertEqual(
-            self.parser.eval("$inmulti(%foo%,First:A; Second:B; Third:C)", context), "1")
+        self.assertScriptResultEquals("$inmulti(%foo%,Second:B)", "", context)
+        self.assertScriptResultEquals("$inmulti(%foo%,irst:A; Second:B; Thi)", "", context)
+        self.assertScriptResultEquals("$inmulti(%foo%,First:A; Second:B; Third:C)", "1", context)
         # Test separator override but with existing separator - results should be same as base
-        self.assertEqual(
-            self.parser.eval("$inmulti(%foo%,Second:B,; )", context), "")
-        self.assertEqual(
-            self.parser.eval("$inmulti(%foo%,irst:A; Second:B; Thi,; )", context), "")
-        self.assertEqual(
-            self.parser.eval("$inmulti(%foo%,First:A; Second:B; Third:C,; )", context), "1")
+        self.assertScriptResultEquals("$inmulti(%foo%,Second:B,; )", "", context)
+        self.assertScriptResultEquals("$inmulti(%foo%,irst:A; Second:B; Thi,; )", "", context)
+        self.assertScriptResultEquals("$inmulti(%foo%,First:A; Second:B; Third:C,; )", "1", context)
         # Test separator override
-        self.assertEqual(
-            self.parser.eval("$inmulti(%foo%,First:A,:)", context), "")
-        self.assertEqual(
-            self.parser.eval("$inmulti(%foo%,Second:B,:)", context), "")
-        self.assertEqual(
-            self.parser.eval("$inmulti(%foo%,Third:C,:)", context), "")
-        self.assertEqual(
-            self.parser.eval("$inmulti(%foo%,First,:)", context), "1")
-        self.assertEqual(
-            self.parser.eval("$inmulti(%foo%,A; Second,:)", context), "1")
-        self.assertEqual(
-            self.parser.eval("$inmulti(%foo%,B; Third,:)", context), "1")
-        self.assertEqual(
-            self.parser.eval("$inmulti(%foo%,C,:)", context), "1")
+        self.assertScriptResultEquals("$inmulti(%foo%,First:A,:)", "", context)
+        self.assertScriptResultEquals("$inmulti(%foo%,Second:B,:)", "", context)
+        self.assertScriptResultEquals("$inmulti(%foo%,Third:C,:)", "", context)
+        self.assertScriptResultEquals("$inmulti(%foo%,First,:)", "1", context)
+        self.assertScriptResultEquals("$inmulti(%foo%,A; Second,:)", "1", context)
+        self.assertScriptResultEquals("$inmulti(%foo%,B; Third,:)", "1", context)
+        self.assertScriptResultEquals("$inmulti(%foo%,C,:)", "1", context)
 
         # Test with multi-values
         context["foo"] = ["First:A", "Second:B", "Third:C"]
         # Tests with $in for comparison purposes
-        self.assertEqual(
-            self.parser.eval("$in(%foo%,Second:B)", context), "1")
-        self.assertEqual(
-            self.parser.eval("$in(%foo%,irst:A; Second:B; Thi)", context), "1")
-        self.assertEqual(
-            self.parser.eval("$in(%foo%,First:A; Second:B; Third:C)", context), "1")
+        self.assertScriptResultEquals("$in(%foo%,Second:B)", "1", context)
+        self.assertScriptResultEquals("$in(%foo%,irst:A; Second:B; Thi)", "1", context)
+        self.assertScriptResultEquals("$in(%foo%,First:A; Second:B; Third:C)", "1", context)
         # Base $inmulti tests
-        self.assertEqual(
-            self.parser.eval("$inmulti(%foo%,Second:B)", context), "1")
-        self.assertEqual(
-            self.parser.eval("$inmulti(%foo%,irst:A; Second:B; Thi)", context), "")
-        self.assertEqual(
-            self.parser.eval("$inmulti(%foo%,First:A; Second:B; Third:C)", context), "")
+        self.assertScriptResultEquals("$inmulti(%foo%,Second:B)", "1", context)
+        self.assertScriptResultEquals("$inmulti(%foo%,irst:A; Second:B; Thi)", "", context)
+        self.assertScriptResultEquals("$inmulti(%foo%,First:A; Second:B; Third:C)", "", context)
         # Test separator override but with existing separator - results should be same as base
-        self.assertEqual(
-            self.parser.eval("$inmulti(%foo%,Second:B,; )", context), "1")
-        self.assertEqual(
-            self.parser.eval("$inmulti(%foo%,irst:A; Second:B; Thi,; )", context), "")
-        self.assertEqual(
-            self.parser.eval("$inmulti(%foo%,First:A; Second:B; Third:C,; )", context), "")
+        self.assertScriptResultEquals("$inmulti(%foo%,Second:B,; )", "1", context)
+        self.assertScriptResultEquals("$inmulti(%foo%,irst:A; Second:B; Thi,; )", "", context)
+        self.assertScriptResultEquals("$inmulti(%foo%,First:A; Second:B; Third:C,; )", "", context)
         # Test separator override
-        self.assertEqual(
-            self.parser.eval("$inmulti(%foo%,First:A,:)", context), "")
-        self.assertEqual(
-            self.parser.eval("$inmulti(%foo%,Second:B,:)", context), "")
-        self.assertEqual(
-            self.parser.eval("$inmulti(%foo%,Third:C,:)", context), "")
-        self.assertEqual(
-            self.parser.eval("$inmulti(%foo%,First,:)", context), "1")
-        self.assertEqual(
-            self.parser.eval("$inmulti(%foo%,A; Second,:)", context), "1")
-        self.assertEqual(
-            self.parser.eval("$inmulti(%foo%,B; Third,:)", context), "1")
-        self.assertEqual(
-            self.parser.eval("$inmulti(%foo%,C,:)", context), "1")
+        self.assertScriptResultEquals("$inmulti(%foo%,First:A,:)", "", context)
+        self.assertScriptResultEquals("$inmulti(%foo%,Second:B,:)", "", context)
+        self.assertScriptResultEquals("$inmulti(%foo%,Third:C,:)", "", context)
+        self.assertScriptResultEquals("$inmulti(%foo%,First,:)", "1", context)
+        self.assertScriptResultEquals("$inmulti(%foo%,A; Second,:)", "1", context)
+        self.assertScriptResultEquals("$inmulti(%foo%,B; Third,:)", "1", context)
+        self.assertScriptResultEquals("$inmulti(%foo%,C,:)", "1", context)
 
     def test_cmd_lenmulti(self):
         context = Metadata()
         context["foo"] = "First:A; Second:B; Third:C"
         context["bar"] = ["First:A", "Second:B", "Third:C"]
         # Tests with $len for comparison purposes
-        self.assertEqual(
-            self.parser.eval("$len(%foo%)", context), "26")
-        self.assertEqual(
-            self.parser.eval("$len(%bar%)", context), "26")
+        self.assertScriptResultEquals("$len(%foo%)", "26", context)
+        self.assertScriptResultEquals("$len(%bar%)", "26", context)
         # Base $lenmulti tests
-        self.assertEqual(
-            self.parser.eval("$lenmulti(%foo%)", context), "1")
-        self.assertEqual(
-            self.parser.eval("$lenmulti(%bar%)", context), "3")
-        self.assertEqual(
-            self.parser.eval("$lenmulti(%foo%.)", context), "3")
+        self.assertScriptResultEquals("$lenmulti(%foo%)", "1", context)
+        self.assertScriptResultEquals("$lenmulti(%bar%)", "3", context)
+        self.assertScriptResultEquals("$lenmulti(%foo%.)", "3", context)
         # Test separator override but with existing separator - results should be same as base
-        self.assertEqual(
-            self.parser.eval("$lenmulti(%foo%,; )", context), "1")
-        self.assertEqual(
-            self.parser.eval("$lenmulti(%bar%,; )", context), "3")
-        self.assertEqual(
-            self.parser.eval("$lenmulti(%foo%.,; )", context), "3")
+        self.assertScriptResultEquals("$lenmulti(%foo%,; )", "1", context)
+        self.assertScriptResultEquals("$lenmulti(%bar%,; )", "3", context)
+        self.assertScriptResultEquals("$lenmulti(%foo%.,; )", "3", context)
         # Test separator override
-        self.assertEqual(
-            self.parser.eval("$lenmulti(%foo%,:)", context), "4")
-        self.assertEqual(
-            self.parser.eval("$lenmulti(%bar%,:)", context), "4")
-        self.assertEqual(
-            self.parser.eval("$lenmulti(%foo%.,:)", context), "4")
+        self.assertScriptResultEquals("$lenmulti(%foo%,:)", "4", context)
+        self.assertScriptResultEquals("$lenmulti(%bar%,:)", "4", context)
+        self.assertScriptResultEquals("$lenmulti(%foo%.,:)", "4", context)
