@@ -17,6 +17,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+from functools import partial
 from PyQt4 import QtCore, QtGui
 from picard import config
 from picard.ui.options import OptionsPage, register_options_page
@@ -51,7 +52,7 @@ class TagsOptionsPage(OptionsPage):
         self.ui = Ui_TagsOptionsPage()
         self.ui.setupUi(self)
         self.ui.write_id3v23.clicked.connect(self.update_encodings)
-        self.ui.write_id3v24.clicked.connect(self.update_encodings)
+        self.ui.write_id3v24.clicked.connect(partial(self.update_encodings, force_utf8=True))
         self.completer = QtGui.QCompleter(sorted(TAG_NAMES.keys()), self)
         self.completer.setCaseSensitivity(QtCore.Qt.CaseInsensitive)
         self.completer.setWidget(self.ui.preserved_tags)
@@ -100,7 +101,7 @@ class TagsOptionsPage(OptionsPage):
         config.setting["preserved_tags"] = unicode(self.ui.preserved_tags.text())
         self.tagger.window.enable_tag_saving_action.setChecked(not config.setting["dont_write_tags"])
 
-    def update_encodings(self):
+    def update_encodings(self, force_utf8=False):
         if self.ui.write_id3v23.isChecked():
             if self.ui.enc_utf8.isChecked():
                 self.ui.enc_utf16.setChecked(True)
@@ -109,7 +110,8 @@ class TagsOptionsPage(OptionsPage):
             self.ui.id3v23_join_with.setEnabled(True)
         else:
             self.ui.enc_utf8.setEnabled(True)
-            self.ui.enc_utf8.setChecked(True)
+            if force_utf8:
+                self.ui.enc_utf8.setChecked(True)
             self.ui.label_id3v23_join_with.setEnabled(False)
             self.ui.id3v23_join_with.setEnabled(False)
 
