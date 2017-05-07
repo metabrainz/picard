@@ -40,6 +40,9 @@ from urlparse import urlparse
 id3.TCMP = compatid3.TCMP
 id3.TSO2 = compatid3.TSO2
 id3.TSOC = compatid3.TSOC
+id3.MVNM = compatid3.MVNM
+id3.MVIN = compatid3.MVIN
+id3.GRP1 = compatid3.GRP1
 
 __ID3_IMAGE_TYPE_MAP = {
     "other": 0,
@@ -123,11 +126,15 @@ class ID3File(File):
         'WCOP': 'license',
         'WOAR': 'website',
         'COMM': 'comment',
+        'TOAL': 'originalalbum',
+        'TOPE': 'originalartist',
 
         # The following are informal iTunes extensions to id3v2:
         'TCMP': 'compilation',
         'TSOC': 'composersort',
         'TSO2': 'albumartistsort',
+        'MVNM': 'movementname',
+        'GRP1': 'itunesgrouping',
     }
     __rtranslate = dict([(v, k) for k, v in __translate.iteritems()])
 
@@ -141,6 +148,7 @@ class ID3File(File):
         'MusicBrainz Release Track Id': 'musicbrainz_trackid',
         'MusicBrainz Disc Id': 'musicbrainz_discid',
         'MusicBrainz Work Id': 'musicbrainz_workid',
+        'MusicBrainz Movement Work Id': 'musicbrainz_movementid',
         'MusicBrainz Release Group Id': 'musicbrainz_releasegroupid',
         'MusicBrainz Album Release Country': 'releasecountry',
         'MusicIP PUID': 'musicip_puid',
@@ -169,10 +177,12 @@ class ID3File(File):
     _rtipl_roles = dict([(v, k) for k, v in _tipl_roles.iteritems()])
 
     __other_supported_tags = ("discnumber", "tracknumber",
-                              "totaldiscs", "totaltracks")
+                              "totaldiscs", "totaltracks",
+                              "movementnumber", "movementtotal")
     __tag_re_parse = {
         'TRCK': re.compile(r'^(?P<tracknumber>\d+)(?:/(?P<totaltracks>\d+))?$'),
-        'TPOS': re.compile(r'^(?P<discnumber>\d+)(?:/(?P<totaldiscs>\d+))?$')
+        'TPOS': re.compile(r'^(?P<discnumber>\d+)(?:/(?P<totaldiscs>\d+))?$'),
+        'MVIN': re.compile(r'^(?P<movementnumber>\d+)(?:/(?P<movementtotal>\d+))?$'),
     }
 
     def build_TXXX(self, encoding, desc, values):
@@ -199,7 +209,7 @@ class ID3File(File):
             frameid = frame.FrameID
             if frameid in self.__translate:
                 name = self.__translate[frameid]
-                if frameid.startswith('T'):
+                if frameid.startswith('T') or frameid in ["MVNM", "GRP1"]:
                     for text in frame.text:
                         if text:
                             metadata.add(name, unicode(text))
@@ -306,6 +316,13 @@ class ID3File(File):
                 text = metadata['discnumber']
             tags.add(id3.TPOS(encoding=0, text=id3text(text, 0)))
 
+        if 'movementnumber' in metadata:
+            if 'movementtotal' in metadata:
+                text = '%s/%s' % (metadata['movementnumber'], metadata['movementtotal'])
+            else:
+                text = metadata['movementnumber']
+            tags.add(id3.MVIN(encoding=0, text=id3text(text, 0)))
+
         # This is necessary because mutagens HashKey for APIC frames only
         # includes the FrameID (APIC) and description - it's basically
         # impossible to save two images, even of different types, without
@@ -381,7 +398,7 @@ class ID3File(File):
                     elif frameid == 'WOAR' and valid_urls:
                         for url in values:
                             tags.add(id3.WOAR(url=url))
-                elif frameid.startswith('T'):
+                elif frameid.startswith('T') or frameid in ["MVNM", "GRP1"]:
                     if config.setting['write_id3v23']:
                         if frameid == 'TMOO':
                             tags.add(self.build_TXXX(encoding, 'mood', values))
@@ -432,7 +449,7 @@ class ID3File(File):
                         if frame.FrameID in ('TMCL', 'TIPL', 'IPLS'):
                             for people in frame.people:
                                 if people[0] == role:
-                                    frame.people.remove(people)   
+                                    frame.people.remove(people)
                 elif name.startswith('comment:'):
                     desc = name.split(':', 1)[1]
                     if desc.lower()[:4] != 'itun':
@@ -453,7 +470,7 @@ class ID3File(File):
                         if frame.FrameID in ('TIPL', 'IPLS'):
                             for people in frame.people:
                                 if people[0] == role:
-                                    frame.people.remove(people)   
+                                    frame.people.remove(people)
                 elif name == 'musicbrainz_recordingid':
                     for key, frame in tags.items():
                         if frame.FrameID == 'UFID' and frame.owner == 'http://musicbrainz.org':
@@ -498,6 +515,8 @@ class ID3File(File):
             return 'TRCK'
         elif name == 'discnumber':
             return 'TPOS'
+        elif name == 'movementnumber':
+            return 'MVIN'
         else:
             return None
 

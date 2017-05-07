@@ -19,10 +19,16 @@ class UpdateToV23Test(unittest.TestCase):
         tags.add(id3.TSOP(encoding=0, text=["foo"]))
         tags.add(id3.TSOA(encoding=0, text=["foo"]))
         tags.add(id3.TSOT(encoding=0, text=["foo"]))
+        tags.add(id3.MVNM(encoding=0, text=["foo"]))
+        tags.add(id3.MVIN(encoding=0, text=["1/2"]))
+        tags.add(id3.GRP1(encoding=0, text=["1"]))
         tags.update_to_v23()
         self.assertEqual(tags["TSOP"].text, ["foo"])
         self.assertEqual(tags["TSOA"].text, ["foo"])
         self.assertEqual(tags["TSOT"].text, ["foo"])
+        self.assertEqual(tags["MVNM"].text, ["foo"])
+        self.assertEqual(tags["MVIN"].text, ["1/2"])
+        self.assertEqual(tags["GRP1"].text, ["1"])
 
     def test_tdrc(self):
         tags = compatid3.CompatID3()
