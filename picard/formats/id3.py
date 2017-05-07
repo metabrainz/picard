@@ -123,6 +123,8 @@ class ID3File(File):
         'WCOP': 'license',
         'WOAR': 'website',
         'COMM': 'comment',
+        'TOAL': 'originalalbum',
+        'TOPE': 'originalartist',
 
         # The following are informal iTunes extensions to id3v2:
         'TCMP': 'compilation',
@@ -432,7 +434,7 @@ class ID3File(File):
                         if frame.FrameID in ('TMCL', 'TIPL', 'IPLS'):
                             for people in frame.people:
                                 if people[0] == role:
-                                    frame.people.remove(people)   
+                                    frame.people.remove(people)
                 elif name.startswith('comment:'):
                     desc = name.split(':', 1)[1]
                     if desc.lower()[:4] != 'itun':
@@ -453,7 +455,7 @@ class ID3File(File):
                         if frame.FrameID in ('TIPL', 'IPLS'):
                             for people in frame.people:
                                 if people[0] == role:
-                                    frame.people.remove(people)   
+                                    frame.people.remove(people)
                 elif name == 'musicbrainz_recordingid':
                     for key, frame in tags.items():
                         if frame.FrameID == 'UFID' and frame.owner == 'http://musicbrainz.org':
