@@ -8,6 +8,8 @@
 # Ettore Atalan <atalanttore@googlemail.com>, 2014
 # Felix Kugler <relgukxilef@gmail.com>, 2015
 # Frank Matthiae <senax79@gmail.com>, 2015
+# Jod isnotmyname <beebeebeethats3bees@aaathats3as.com>, 2017
+# happykraut, 2017
 # Leo_Verto <leotheverto@googlemail.com>, 2017
 # Mineo <email address hidden>, 2011
 # Wieland Hoffmann <themineo+transifex@googlemail.com>, 2011
@@ -27,8 +29,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2017-01-16 20:46+0000\n"
-"Last-Translator: Laurent Monin <i18n@norz.org>\n"
+"PO-Revision-Date: 2017-04-28 19:42+0000\n"
+"Last-Translator: Jod isnotmyname <beebeebeethats3bees@aaathats3as.com>\n"
 "Language-Team: German (http://www.transifex.com/musicbrainz/musicbrainz/language/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -116,7 +118,7 @@ msgstr "a-Dorisch"
 #: DB:work_attribute_type_allowed_value/value:806
 msgctxt "work_attribute_type_allowed_value"
 msgid "A Mixolydian"
-msgstr ""
+msgstr "A-Mixolydisch"
 
 #: DB:work_type/description:2
 msgctxt "work_type"
@@ -152,7 +154,7 @@ msgid ""
 "A give-away release or a release intended to promote an upcoming official "
 "release (e.g. pre-release versions, releases included with a magazine, "
 "versions supplied to radio DJs for air-play)."
-msgstr ""
+msgstr "Ein Werbegeschenk bzw. eine Veröffentlichung, die zu Promotionszwecken verteilt wird, um eine bevorstehende offizielle Veröffentlichung zu bewerben (z.B. Vorveröffentlichungsalben, Magazinen beigelegte CDs, Versionen für Radio DJs)."
 
 #: DB:work_attribute_type_allowed_value/value:28
 msgctxt "work_attribute_type_allowed_value"
@@ -4277,7 +4279,7 @@ msgstr ""
 #: DB:release_group_secondary_type/name:7
 msgctxt "release_group_secondary_type"
 msgid "Remix"
-msgstr "Remix"
+msgstr "Neumischung"
 
 #: DB:work_attribute_type_allowed_value/value:516
 msgctxt "work_attribute_type_allowed_value"

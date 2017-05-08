@@ -7,15 +7,16 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2009
 # joseph <josph0@gmail.com>, 2016
 # secgin <secgink.57@gmail.com>, 2014
+# Sertan Şentürk <sertan.senturk@upf.edu>, 2017
 # portik <yetmisbeskere75@hotmail.com>, 2013-2014
 # portik <yetmisbeskere75@hotmail.com>, 2012
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2017-03-24 14:38+0100\n"
-"PO-Revision-Date: 2017-03-24 13:39+0000\n"
-"Last-Translator: Laurent Monin <i18n@norz.org>\n"
+"POT-Creation-Date: 2017-04-01 11:45+0200\n"
+"PO-Revision-Date: 2017-04-27 10:55+0000\n"
+"Last-Translator: Sertan Şentürk <sertan.senturk@upf.edu>\n"
 "Language-Team: Turkish (http://www.transifex.com/musicbrainz/musicbrainz/language/tr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -387,43 +388,43 @@ msgid_plural "%s (%i releases)"
 msgstr[0] ""
 msgstr[1] ""
 
-#: picard/ui/coverartbox.py:222
+#: picard/ui/coverartbox.py:221
 msgid "View release on MusicBrainz"
 msgstr ""
 
-#: picard/ui/coverartbox.py:228
+#: picard/ui/coverartbox.py:227
 msgid "Common images on all tracks"
 msgstr ""
 
-#: picard/ui/coverartbox.py:230
+#: picard/ui/coverartbox.py:229
 msgid "Tracks contain different images"
 msgstr ""
 
-#: picard/ui/coverartbox.py:272
+#: picard/ui/coverartbox.py:269
 msgid "Show more details"
-msgstr ""
+msgstr "Daha fazla detay göster"
 
-#: picard/ui/coverartbox.py:309
+#: picard/ui/coverartbox.py:306
 msgid "New Cover Art"
 msgstr ""
 
-#: picard/ui/coverartbox.py:310
+#: picard/ui/coverartbox.py:307
 msgid "Original Cover Art"
 msgstr ""
 
-#: picard/ui/coverartbox.py:435
+#: picard/ui/coverartbox.py:432
 msgid "Show more details..."
-msgstr ""
+msgstr "Daha fazla detay göster..."
 
-#: picard/ui/coverartbox.py:441
+#: picard/ui/coverartbox.py:438
 msgid "Keep original cover art"
 msgstr ""
 
-#: picard/ui/coverartbox.py:450
+#: picard/ui/coverartbox.py:447
 msgid "Replace front cover art on drop"
 msgstr ""
 
-#: picard/ui/coverartbox.py:455
+#: picard/ui/coverartbox.py:452
 msgid "Append front cover art on drop"
 msgstr ""
 
@@ -841,7 +842,7 @@ msgstr ""
 
 #: picard/ui/mainwindow.py:388
 msgid "Search for similar albums..."
-msgstr ""
+msgstr "Benzer albümleri ara..."
 
 #: picard/ui/mainwindow.py:389
 msgid "View similar releases and optionally choose a different release"
@@ -1982,19 +1983,23 @@ msgstr ""
 msgid "Reset all settings for current option page"
 msgstr ""
 
-#: picard/ui/options/dialog.py:172
+#: picard/ui/options/dialog.py:88
+msgid "Make It So!"
+msgstr ""
+
+#: picard/ui/options/dialog.py:174
 msgid "You are about to reset your options for this page."
 msgstr ""
 
-#: picard/ui/options/dialog.py:176
+#: picard/ui/options/dialog.py:178
 msgid "Warning! This will reset all of your settings."
 msgstr ""
 
-#: picard/ui/options/dialog.py:183
+#: picard/ui/options/dialog.py:185
 msgid "Confirm Reset"
 msgstr ""
 
-#: picard/ui/options/dialog.py:184
+#: picard/ui/options/dialog.py:186
 msgid "Are you sure?"
 msgstr ""
 
@@ -2050,7 +2055,7 @@ msgstr ""
 
 #: picard/ui/options/interface.py:67
 msgid "Save"
-msgstr ""
+msgstr "Kaydet"
 
 #: picard/ui/options/interface.py:79
 msgid "Submit AcoustIDs"
@@ -2080,7 +2085,7 @@ msgstr "Arayüz dilini değiştirdiniz. Değişikliklerin uygulanabilmesi için 
 
 #: picard/ui/options/interface.py:208
 msgid "Drag and Drop to re-order"
-msgstr ""
+msgstr "Tekrar sıralamak için sürükle ve bırak"
 
 #: picard/ui/options/interface.py:210 picard/ui/options/interface.py:293
 msgid "label"
@@ -2110,7 +2115,7 @@ msgstr ""
 
 #: picard/ui/options/plugins.py:254
 msgid "Update"
-msgstr ""
+msgstr "Güncelle"
 
 #: picard/ui/options/plugins.py:256
 msgid "Install"
@@ -2126,7 +2131,7 @@ msgstr ""
 
 #: picard/ui/options/plugins.py:297
 msgid "Restart Picard to upgrade to new version"
-msgstr ""
+msgstr "Son sürüme yükseltmek için Picard'ı yeniden başlat"
 
 #: picard/ui/options/plugins.py:299
 msgid "New version available"
@@ -2193,7 +2198,7 @@ msgstr ""
 
 #: picard/ui/options/scripting.py:140
 msgid "Other options"
-msgstr ""
+msgstr "Diğer seçenekler"
 
 #: picard/ui/options/scripting.py:142
 msgid "Rename script"
@@ -2213,7 +2218,7 @@ msgstr ""
 
 #: picard/ui/options/scripting.py:294
 msgid "Confirm Remove"
-msgstr ""
+msgstr "Kaldırmayı Onayla"
 
 #: picard/ui/options/scripting.py:377
 msgid "Script Error"
