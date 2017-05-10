@@ -23,9 +23,52 @@ from picard.file import File
 from picard.formats.id3 import types_from_id3, image_type_as_id3_num
 from picard.util import encode_filename
 from picard.metadata import Metadata
+import mutagen
 from mutagen.asf import ASF, ASFByteArrayAttribute
 import struct
 
+if mutagen.version[0] == 1 and mutagen.version[1] < 32:
+    # Fix ASF locally so that it doesn't unnecessarily give Picard errors
+    import mutagen.asf
+
+    class FixedASF(ASF):
+        def __read_object(self, fileobj):
+            guid, size = struct.unpack("<16sQ", fileobj.read(24))
+            if guid in mutagen.asf._object_types:
+                obj = mutagen.asf._object_types[guid]()
+            else:
+                obj = mutagen.asf.UnknownObject(guid)
+
+            if size > self.size:
+                raise mutagen.asf.ASFError(
+                    'Corrupt ASF - skipping rest of header'
+                )
+
+            data = fileobj.read(size - 24)
+            obj.parse(self, data, fileobj, size)
+            self.objects.append(obj)
+
+        def _ASF__read_file(self, fileobj):
+            header = fileobj.read(30)
+            if (len(header) != 30 or
+                    header[:16] != mutagen.asf.HeaderObject.GUID):
+                raise mutagen.asf.ASFHeaderError("Not an ASF file.")
+
+            self.extended_content_description_obj = None
+            self.content_description_obj = None
+            self.header_extension_obj = None
+            self.metadata_obj = None
+            self.metadata_library_obj = None
+
+            self.size, self.num_objects = struct.unpack("<QL", header[16:28])
+            self.objects = []
+            for i in range(self.num_objects):
+                try:
+                    self.__read_object(fileobj)
+                except mutagen.asf.ASFError:
+                    break
+
+    ASF = DerivedASF
 
 def unpack_image(data):
     """
