@@ -54,7 +54,7 @@ def version_to_string(version, short=False):
         else:
             version_str = '%d.%d.%d' % version[:3]
     else:
-        version_str = '%d.%d.%d%s%d' % version
+        version_str = '%d.%d.%d.%s%d' % version
     return version_str
 
 
