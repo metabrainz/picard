@@ -105,8 +105,11 @@ class Tagger(QtWidgets.QApplication):
         # can use it to look up the app
         QtWidgets.QApplication.__init__(self, ['MusicBrainz-Picard'] + unparsed_args)
         self.__class__.__instance = self
-
         config._setup(self, picard_args.config_file)
+
+        # Allow High DPI Support
+        self.setAttribute(QtCore.Qt.AA_UseHighDpiPixmaps)
+        self.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling)
 
         self._cmdline_files = picard_args.FILE
         self._autoupdate = autoupdate
