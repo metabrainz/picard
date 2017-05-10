@@ -1,0 +1,18 @@
+.since {
+    font-size: 80%;
+    font-weight: bold;
+}
+
+#technical-variables dl dd, #functions dl dd {
+    padding-left: 15px;
+    margin-top: 4px;
+}
+
+.row-even {
+  background-color: #fffdfa;
+}
+
+table caption {
+  font-style: italic;
+  margin: 10px;
+}
