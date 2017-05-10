@@ -19,19 +19,25 @@ if sys.version_info[:2] == (2, 6):
 class VersionsTest(unittest.TestCase):
 
     def test_version_conv_1(self):
-        l, s = (0, 0, 1, 'dev', 1), '0.0.1dev1'
+        l, s = (0, 0, 1, 'dev', 1), '0.0.1.dev1'
+        r = '0.0.1.dev1'
         self.assertEqual(version_to_string(l), s)
         self.assertEqual(l, version_from_string(s))
+        self.assertEqual(l, version_from_string(r))
 
     def test_version_conv_2(self):
-        l, s = (1, 1, 0, 'final', 0), '1.1.0final0'
+        l, s = (1, 1, 0, 'final', 0), '1.1.0.final0'
+        r = '1.1.0.final0'
         self.assertEqual(version_to_string(l), s)
         self.assertEqual(l, version_from_string(s))
+        self.assertEqual(l, version_from_string(r))
 
     def test_version_conv_3(self):
-        l, s = (1, 1, 0, 'dev', 0), '1.1.0dev0'
+        l, s = (1, 1, 0, 'dev', 0), '1.1.0.dev0'
+        r = '1.1.0.dev0'
         self.assertEqual(version_to_string(l), s)
         self.assertEqual(l, version_from_string(s))
+        self.assertEqual(l, version_from_string(r))
 
     def test_version_conv_4(self):
         l, s = (1, 0, 2, 'final', 0), '1.0.2'
@@ -39,9 +45,11 @@ class VersionsTest(unittest.TestCase):
         self.assertEqual(l, version_from_string(s))
 
     def test_version_conv_5(self):
-        l, s = (999, 999, 999, 'dev', 999), '999.999.999dev999'
+        l, s = (999, 999, 999, 'dev', 999), '999.999.999.dev999'
+        r = '999.999.999dev999'
         self.assertEqual(version_to_string(l), s)
         self.assertEqual(l, version_from_string(s))
+        self.assertEqual(l, version_from_string(r))
 
     def test_version_conv_6(self):
         l = (1, 0, 2, 'xx', 0)
@@ -60,11 +68,11 @@ class VersionsTest(unittest.TestCase):
         self.assertEqual(version_to_string(l, short=True), s)
 
     def test_version_conv_10(self):
-        l, s = (1, 1, 0, 'dev', 0), '1.1.0dev0'
+        l, s = (1, 1, 0, 'dev', 0), '1.1.0.dev0'
         self.assertEqual(version_to_string(l, short=True), s)
 
     def test_version_conv_11(self):
-        l, s = ('1', '1', '0', 'dev', '0'), '1.1.0dev0'
+        l, s = ('1', '1', '0', 'dev', '0'), '1.1.0.dev0'
         self.assertEqual(version_to_string(l), s)
 
     def test_version_conv_12(self):

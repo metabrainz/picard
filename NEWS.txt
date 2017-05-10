@@ -1,3 +1,14 @@
+Version 1.4.2 - 2017-05-08
+** Bug
+    * [PICARD-1053] - Picard does not stop analyzer while moving
+    * [PICARD-1055] - picard hangs with: RuntimeError: maximum recursion depth exceeded in cmp
+    * [PICARD-1070] - The "Convert Unicode punctuation characters to ASCII" function only works in certain tags
+    * [PICARD-1077] - ID3v2.4 text encoding settings are not saved correctly
+
+** Improvement
+    * [PICARD-969] - Search dialog webservices get queued behind matched album requests
+    * [PICARD-1034] - Picard not seeing TOPE and TOAL
+
 Version 1.4.1 - 2017-04-01
 ** Bug-fix
     * [PICARD-953] - Album shown matched even if extra unmatched files
