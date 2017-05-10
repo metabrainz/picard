@@ -44,7 +44,9 @@ _CAA_THUMBNAIL_SIZE_MAP = {
 class CAATypesSelectorDialog(QtWidgets.QDialog):
     _columns = 4
 
-    def __init__(self, parent=None, types=[]):
+    def __init__(self, parent=None, types=None):
+        if types is None:
+            types = []
         super(CAATypesSelectorDialog, self).__init__(parent)
 
         self.setWindowTitle(_("Cover art types"))
@@ -118,7 +120,9 @@ class CAATypesSelectorDialog(QtWidgets.QDialog):
         return types
 
     @staticmethod
-    def run(parent=None, types=[]):
+    def run(parent=None, types=None):
+        if types is None:
+                types = []
         dialog = CAATypesSelectorDialog(parent, types)
         result = dialog.exec_()
         return (dialog.get_selected_types(), result == QtWidgets.QDialog.Accepted)

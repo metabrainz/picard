@@ -123,12 +123,15 @@ class CoverArtImage:
     is_front = None
     sourceprefix = "URL"
 
-    def __init__(self, url=None, types=[], comment='', data=None):
+    def __init__(self, url=None, types=None, comment='', data=None):
+        if types is None:
+            self.types = []
+        else:
+            self.types = types
         if url is not None:
             self.parse_url(url)
         else:
             self.url = None
-        self.types = types
         self.comment = comment
         self.datahash = None
         # thumbnail is used to link to another CoverArtImage, ie. for PDFs
@@ -358,7 +361,7 @@ class CaaCoverArtImage(CoverArtImage):
     support_types = True
     sourceprefix = "CAA"
 
-    def __init__(self, url, types=[], is_front=False, comment='', data=None):
+    def __init__(self, url, types=None, is_front=False, comment='', data=None):
         CoverArtImage.__init__(self, url=url, types=types, comment=comment,
                                data=data)
         self.is_front = is_front
@@ -369,7 +372,7 @@ class CaaThumbnailCoverArtImage(CaaCoverArtImage):
     """Used for thumbnails of CaaCoverArtImage objects, together with thumbnail
     property"""
 
-    def __init__(self, url, types=[], is_front=False, comment='', data=None):
+    def __init__(self, url, types=None, is_front=False, comment='', data=None):
         CaaCoverArtImage.__init__(self, url=url, types=types, comment=comment,
                                   data=data)
         self.is_front = False
@@ -382,7 +385,7 @@ class TagCoverArtImage(CoverArtImage):
 
     """Image from file tags"""
 
-    def __init__(self, file, tag=None, types=[], is_front=None,
+    def __init__(self, file, tag=None, types=None, is_front=None,
                  support_types=False, comment='', data=None):
         CoverArtImage.__init__(self, url=None, types=types, comment=comment,
                                data=data)
@@ -418,7 +421,7 @@ class CoverArtImageFromFile(CoverArtImage):
 
     sourceprefix = 'LOCAL'
 
-    def __init__(self, filepath, types=[], is_front=None,
+    def __init__(self, filepath, types=None, is_front=None,
                  support_types=False, comment='', data=None):
         CoverArtImage.__init__(self, url=None, types=types, comment=comment,
                                data=data)

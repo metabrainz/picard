@@ -33,13 +33,17 @@ class FileLookup(object):
         self.localPort = int(localPort)
         self.port = port
 
-    def _url(self, path, params={}):
+    def _url(self, path, params=None):
+        if params is None:
+            params = {}
         if self.localPort:
             params['tport'] = self.localPort
         url = build_qurl(self.server, self.port, path=path, queryargs=params)
         return url.toEncoded()
 
-    def _build_launch(self, path, params={}):
+    def _build_launch(self, path, params=None):
+        if params is None:
+            params = {}
         return self.launch(self._url(path, params))
 
     def launch(self, url):
