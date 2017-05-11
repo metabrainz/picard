@@ -186,11 +186,11 @@ class InfoDialog(PicardDialog):
             infos = []
             if image.comment:
                 infos.append(image.comment)
-            infos.append(u"%s (%s)" %
+            infos.append("%s (%s)" %
                          (bytes2human.decimal(image.datalength),
                           bytes2human.binary(image.datalength)))
             if image.width and image.height:
-                infos.append(u"%d x %d" % (image.width, image.height))
+                infos.append("%d x %d" % (image.width, image.height))
             infos.append(image.mimetype)
 
             img_wgt = self.artwork_table.get_coverart_widget(pixmap, "\n".join(infos))
@@ -356,7 +356,7 @@ class ClusterInfoDialog(InfoDialog):
         for file in cluster.iterfiles(False):
             m = file.metadata
             artist = m["artist"] or m["albumartist"] or cluster.metadata["albumartist"]
-            lines.append(m["tracknumber"] + u" " +
+            lines.append(m["tracknumber"] + " " +
                          m["title"] + " - " + artist + " (" +
                          m["~length"] + ")")
         info.append("<b>%s</b><br />%s" % (_('Tracklist:'),

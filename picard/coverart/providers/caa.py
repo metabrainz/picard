@@ -44,7 +44,9 @@ _CAA_THUMBNAIL_SIZE_MAP = {
 class CAATypesSelectorDialog(QtWidgets.QDialog):
     _columns = 4
 
-    def __init__(self, parent=None, types=[]):
+    def __init__(self, parent=None, types=None):
+        if types is None:
+            types = []
         super(CAATypesSelectorDialog, self).__init__(parent)
 
         self.setWindowTitle(_("Cover art types"))
@@ -114,11 +116,13 @@ class CAATypesSelectorDialog(QtWidgets.QDialog):
             if item.isChecked():
                 types.append(typ['name'])
         if not types:
-            return [u'front']
+            return ['front']
         return types
 
     @staticmethod
-    def run(parent=None, types=[]):
+    def run(parent=None, types=None):
+        if types is None:
+                types = []
         dialog = CAATypesSelectorDialog(parent, types)
         result = dialog.exec_()
         return (dialog.get_selected_types(), result == QtWidgets.QDialog.Accepted)
@@ -134,7 +138,7 @@ class ProviderOptionsCaa(ProviderOptions):
         config.BoolOption("setting", "caa_approved_only", False),
         config.BoolOption("setting", "caa_image_type_as_filename", False),
         config.IntOption("setting", "caa_image_size", 1),
-        config.ListOption("setting", "caa_image_types", [u"front"]),
+        config.ListOption("setting", "caa_image_types", ["front"]),
         config.BoolOption("setting", "caa_restrict_image_types", True),
     ]
 
@@ -183,7 +187,7 @@ class CoverArtProviderCaa(CoverArtProvider):
     """Get cover art from Cover Art Archive using release mbid"""
 
     NAME = "Cover Art Archive"
-    TITLE = N_(u'Cover Art Archive')
+    TITLE = N_('Cover Art Archive')
     OPTIONS = ProviderOptionsCaa
 
     ignore_json_not_found_error = False
@@ -279,7 +283,7 @@ class CoverArtProviderCaa(CoverArtProvider):
         self.album._requests -= 1
         if error:
             if not (error == QNetworkReply.ContentNotFoundError and self.ignore_json_not_found_error):
-                self.error(u'CAA JSON error: %s' % (http.errorString()))
+                self.error('CAA JSON error: %s' % (http.errorString()))
         else:
             try:
                 caa_data = load_json(data)
@@ -299,7 +303,7 @@ class CoverArtProviderCaa(CoverArtProvider):
                     # if image has no type set, we still want it to match
                     # pseudo type 'unknown'
                     if not image["types"]:
-                        image["types"] = [u"unknown"]
+                        image["types"] = ["unknown"]
                     else:
                         image["types"] = list(map(str.lower, image["types"]))
                     if self.restrict_types:

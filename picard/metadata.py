@@ -24,6 +24,7 @@ from picard.similarity import similarity2
 from picard.util import (
     linear_combination_of_weights,
 )
+from picard.util.tags import PRESERVED_TAGS
 from picard.mbxml import artist_credit_from_node
 from picard.util.imagelist import ImageList
 
@@ -257,7 +258,7 @@ class Metadata(dict):
             return default
 
     def __getitem__(self, name):
-        return self.get(name, u'')
+        return self.get(name, '')
 
     def set(self, name, values):
         dict.__setitem__(self, name, values)
@@ -303,7 +304,8 @@ class Metadata(dict):
 
     def apply_func(self, func):
         for key, values in self.rawitems():
-            self[key] = [func(value) for value in values]
+            if key not in PRESERVED_TAGS:
+                self[key] = [func(value) for value in values]
 
     def strip_whitespace(self):
         """Strip leading/trailing whitespace.

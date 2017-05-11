@@ -193,9 +193,9 @@ class VCommentFile(File):
             tags.setdefault(name.upper(), []).append(value)
 
         if "totaltracks" in metadata:
-            tags.setdefault(u"TRACKTOTAL", []).append(metadata["totaltracks"])
+            tags.setdefault("TRACKTOTAL", []).append(metadata["totaltracks"])
         if "totaldiscs" in metadata:
-            tags.setdefault(u"DISCTOTAL", []).append(metadata["totaldiscs"])
+            tags.setdefault("DISCTOTAL", []).append(metadata["totaldiscs"])
 
         for image in metadata.images_to_be_saved_to_tags:
             picture = mutagen.flac.Picture()

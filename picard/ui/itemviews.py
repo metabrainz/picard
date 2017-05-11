@@ -247,7 +247,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         self.collapse_all_action.triggered.connect(self.collapseAll)
         self.select_all_action = QtWidgets.QAction(_("Select &all"), self)
         self.select_all_action.triggered.connect(self.selectAll)
-        self.select_all_action.setShortcut(QtGui.QKeySequence(_(u"Ctrl+A")))
+        self.select_all_action.setShortcut(QtGui.QKeySequence(_("Ctrl+A")))
         self.doubleClicked.connect(self.activate_item)
 
     def contextMenuEvent(self, event):
@@ -574,7 +574,7 @@ class FileTreeView(BaseTreeView):
         self.set_clusters_text()
 
     def set_clusters_text(self):
-        self.clusters.setText(0, '%s (%d)' % (_(u"Clusters"), len(self.tagger.clusters)))
+        self.clusters.setText(0, '%s (%d)' % (_("Clusters"), len(self.tagger.clusters)))
 
 
 class AlbumTreeView(BaseTreeView):

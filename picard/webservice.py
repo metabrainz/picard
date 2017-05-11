@@ -73,7 +73,7 @@ def _wrap_xml_metadata(data):
 class XmlNode(object):
 
     def __init__(self):
-        self.text = u''
+        self.text = ''
         self.children = {}
         self.attribs = {}
 
@@ -168,7 +168,7 @@ class XmlWebService(QtCore.QObject):
     def set_cache(self, cache_size_in_mb=100):
         cache = QtNetwork.QNetworkDiskCache()
         location = QStandardPaths.writableLocation(QStandardPaths.CacheLocation)
-        cache.setCacheDirectory(os.path.join(location, u'picard'))
+        cache.setCacheDirectory(os.path.join(location, 'picard'))
         cache.setMaximumCacheSize(cache_size_in_mb * 1024 * 1024)
         self.manager.setCache(cache)
         log.debug("NetworkDiskCache dir: %s", cache.cacheDirectory())
@@ -424,7 +424,7 @@ class XmlWebService(QtCore.QObject):
         except:
             pass
 
-    def _get_by_id(self, entitytype, entityid, handler, inc=[], queryargs=None,
+    def _get_by_id(self, entitytype, entityid, handler, inc=None, queryargs=None,
                    priority=False, important=False, mblogin=False, refresh=False):
         host = config.setting["server_host"]
         port = config.setting["server_port"]
@@ -437,13 +437,17 @@ class XmlWebService(QtCore.QObject):
                         priority=priority, important=important, mblogin=mblogin,
                         refresh=refresh, queryargs=queryargs)
 
-    def get_release_by_id(self, releaseid, handler, inc=[],
+    def get_release_by_id(self, releaseid, handler, inc=None,
                           priority=False, important=False, mblogin=False, refresh=False):
+        if inc is None:
+            inc = []
         return self._get_by_id('release', releaseid, handler, inc,
                                priority=priority, important=important, mblogin=mblogin, refresh=refresh)
 
-    def get_track_by_id(self, trackid, handler, inc=[],
+    def get_track_by_id(self, trackid, handler, inc=None,
                         priority=False, important=False, mblogin=False, refresh=False):
+        if inc is None:
+            inc = []
         return self._get_by_id('recording', trackid, handler, inc,
                                priority=priority, important=important, mblogin=mblogin, refresh=refresh)
 
@@ -496,7 +500,7 @@ class XmlWebService(QtCore.QObject):
     def find_artists(self, handler, **kwargs):
         return self._find('artist', handler, **kwargs)
 
-    def _browse(self, entitytype, handler, inc=[], **kwargs):
+    def _browse(self, entitytype, handler, inc=None, **kwargs):
         host = config.setting["server_host"]
         port = config.setting["server_port"]
         path = "/ws/2/%s" % (entitytype)

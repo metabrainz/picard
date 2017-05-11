@@ -33,9 +33,9 @@ import traceback
 
 
 _TRANSLATE_TAGS = {
-    "hip hop": u"Hip-Hop",
-    "synth-pop": u"Synthpop",
-    "electronica": u"Electronic",
+    "hip hop": "Hip-Hop",
+    "synth-pop": "Synthpop",
+    "electronica": "Electronic",
 }
 
 
@@ -124,7 +124,7 @@ class Track(DataObject, Item):
         m = self.metadata
         if column == 'title':
             prefix = "%s-" % m['discnumber'] if m['discnumber'] and m['totaldiscs'] != "1" else ""
-            return u"%s%s  %s" % (prefix, m['tracknumber'].zfill(2), m['title'])
+            return "%s%s  %s" % (prefix, m['tracknumber'].zfill(2), m['title'])
         return m[column]
 
     def is_video(self):
@@ -256,7 +256,7 @@ class NonAlbumTrack(Track):
 
     def load(self, priority=False, refresh=False):
         self.metadata.copy(self.album.metadata)
-        self.metadata["title"] = u"[loading track information]"
+        self.metadata["title"] = "[loading track information]"
         self.loaded = False
         self.tagger.nats.update(True)
         mblogin = False

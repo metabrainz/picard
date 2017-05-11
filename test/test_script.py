@@ -450,3 +450,17 @@ class ScriptParserTest(unittest.TestCase):
         self.assertScriptResultEquals("$lenmulti(%foo%,:)", "4", context)
         self.assertScriptResultEquals("$lenmulti(%bar%,:)", "4", context)
         self.assertScriptResultEquals("$lenmulti(%foo%.,:)", "4", context)
+
+    def test_required_kwonly_parameters(self):
+        def func(a, *, required_kwarg):
+            pass
+
+        with self.assertRaises(TypeError,
+                               msg="Functions with required keyword-only parameters are not supported"):
+            register_script_function(func)
+
+    def test_optional_kwonly_parameters(self):
+        def func(a, *, optional_kwarg=1):
+            pass
+
+        register_script_function(func)

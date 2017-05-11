@@ -113,9 +113,9 @@ class ReleasesOptionsPage(OptionsPage):
         griditer = RowColIter(len(RELEASE_PRIMARY_GROUPS) +
                               len(RELEASE_SECONDARY_GROUPS) + 1)  # +1 for Reset button
         for name in RELEASE_PRIMARY_GROUPS:
-            add_slider(name, griditer, context=u'release_group_primary_type')
+            add_slider(name, griditer, context='release_group_primary_type')
         for name in RELEASE_SECONDARY_GROUPS:
-            add_slider(name, griditer, context=u'release_group_secondary_type')
+            add_slider(name, griditer, context='release_group_secondary_type')
 
         self.reset_preferred_types_btn = QtWidgets.QPushButton(self.ui.type_group)
         self.reset_preferred_types_btn.setText(_("Reset all"))
@@ -194,7 +194,7 @@ class ReleasesOptionsPage(OptionsPage):
             source_list = [(c[0], gettext_countries(c[1])) for c in
                            source.items()]
         elif setting == "preferred_release_formats":
-            source_list = [(c[0], gettext_attr(c[1], u"medium_format")) for c
+            source_list = [(c[0], gettext_attr(c[1], "medium_format")) for c
                            in source.items()]
         else:
             source_list = [(c[0], _(c[1])) for c in source.items()]

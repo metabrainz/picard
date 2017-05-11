@@ -24,7 +24,7 @@ import re
 import operator
 from functools import reduce
 from collections import namedtuple
-from inspect import getargspec
+from inspect import getfullargspec
 from picard.metadata import Metadata
 from picard.metadata import MULTI_VALUED_JOINER
 from picard.plugin import ExtensionPoint
@@ -293,7 +293,14 @@ def register_script_function(function, name=None, eval_args=True,
     If ``check_argcount`` is ``False`` the number of arguments passed to the
     function will not be verified."""
 
-    args, varargs, keywords, defaults = getargspec(function)
+    args, varargs, varkw, defaults, kwonlyargs, kwonlydefaults, annotations = getfullargspec(function)
+
+    required_kwonlyargs = len(kwonlyargs)
+    if kwonlydefaults is not None:
+        required_kwonlyargs -= len(kwonlydefaults.keys())
+    if required_kwonlyargs:
+        raise TypeError("Functions with required keyword-only parameters are not supported")
+
     args = len(args) - 1  # -1 for the parser
     varargs = varargs is not None
     defaults = len(defaults) if defaults else 0

@@ -37,7 +37,7 @@ class CoverArtProviderCaaReleaseGroup(CoverArtProviderCaa):
     """Use cover art from album release group"""
 
     NAME = "CaaReleaseGroup"
-    TITLE = N_(u"CAA Release Group")
+    TITLE = N_("CAA Release Group")
     # FIXME: caa release group uses the same options than caa
     OPTIONS = None
 

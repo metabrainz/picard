@@ -45,7 +45,7 @@ class Disc(QtCore.QObject):
     def read(self, device=None):
         if device is None:
             device = discid.get_default_device()
-        log.debug(u"Reading CD using device: %r", device)
+        log.debug("Reading CD using device: %r", device)
         disc = discid.read(device)
         self.id = disc.id
         self.submission_url = disc.submission_url
