@@ -138,5 +138,57 @@
     <file>images/track-saved@2x.png</file>
     <file>images/track-video.png</file>
     <file>images/track-video@2x.png</file>
+    <file>img-src/CoverArtShadow.svg</file>
+    <file>img-src/Picard_logo_icon.svg</file>
+    <file>img-src/Picard_logo_small_no_text.svg</file>
+    <file>img-src/acoustid-fingerprinter.svg</file>
+    <file>img-src/action-go-down-16.svg</file>
+    <file>img-src/add-item.svg</file>
+    <file>img-src/applications-system.svg</file>
+    <file>img-src/arrow.svg</file>
+    <file>img-src/dialog-error.svg</file>
+    <file>img-src/document-open.svg</file>
+    <file>img-src/document-save.svg</file>
+    <file>img-src/edit-clear.svg</file>
+    <file>img-src/edit-cut.svg</file>
+    <file>img-src/edit-paste.svg</file>
+    <file>img-src/file-pending.svg</file>
+    <file>img-src/file.svg</file>
+    <file>img-src/folder.svg</file>
+    <file>img-src/list-remove.svg</file>
+    <file>img-src/lookup-musicbrainz.svg</file>
+    <file>img-src/match-50.svg</file>
+    <file>img-src/match-60.svg</file>
+    <file>img-src/match-70.svg</file>
+    <file>img-src/match-80.svg</file>
+    <file>img-src/match-90.svg</file>
+    <file>img-src/match-100.svg</file>
+    <file>img-src/match-pending-50.svg</file>
+    <file>img-src/match-pending-60.svg</file>
+    <file>img-src/match-pending-70.svg</file>
+    <file>img-src/match-pending-80.svg</file>
+    <file>img-src/match-pending-90.svg</file>
+    <file>img-src/match-pending-100.svg</file>
+    <file>img-src/media-optical-error.svg</file>
+    <file>img-src/media-optical-modified.svg</file>
+    <file>img-src/media-optical-saved-modified.svg</file>
+    <file>img-src/media-optical-saved.svg</file>
+    <file>img-src/media-optical.svg</file>
+    <file>img-src/picard-analyze.svg</file>
+    <file>img-src/picard-auto-tag.svg</file>
+    <file>img-src/picard-cluster.svg</file>
+    <file>img-src/picard-edit-tags.svg</file>
+    <file>img-src/picard.svg</file>
+    <file>img-src/play-music.svg</file>
+    <file>img-src/preferences-desktop.svg</file>
+    <file>img-src/remove-item.svg</file>
+    <file>img-src/star-gray.svg</file>
+    <file>img-src/star.svg</file>
+    <file>img-src/system-search.svg.svg</file>
+    <file>img-src/track-audio.svg</file>
+    <file>img-src/track-data.svg</file>
+    <file>img-src/track-saved.svg</file>
+    <file>img-src/track-video.svg</file>
+    <file>img-src/view-refresh.svg</file>
 </qresource>
 </RCC>

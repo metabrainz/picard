@@ -38,6 +38,7 @@ def main():
     resourcesdir = os.path.join(topdir, "resources")
     qrcfile = os.path.join(resourcesdir, "picard.qrc")
     images = [i for i in find_files(resourcesdir, 'images', ['*.gif', '*.png'])]
+    images.extend([i for i in find_files(resourcesdir, 'img-src', ['*.svg'])])
     newimages = 0
     for filename in images:
         filepath = os.path.join(resourcesdir, filename)

@@ -80,6 +80,7 @@ from picard.util import (
     uniqify,
     is_hidden,
     versions,
+    icontheme
 )
 from picard.webservice import XmlWebService
 from picard.ui.searchdialog import (
@@ -110,6 +111,7 @@ class Tagger(QtWidgets.QApplication):
         # Allow High DPI Support
         self.setAttribute(QtCore.Qt.AA_UseHighDpiPixmaps)
         self.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling)
+        icontheme.PIXEL_RATIO = self.primaryScreen().devicePixelRatio()
 
         self._cmdline_files = picard_args.FILE
         self._autoupdate = autoupdate
@@ -118,7 +120,6 @@ class Tagger(QtWidgets.QApplication):
         # FIXME: Figure out what's wrong with QThreadPool.globalInstance().
         # It's a valid reference, but its start() method doesn't work.
         self.thread_pool = QtCore.QThreadPool(self)
-
         # Use a separate thread pool for file saving, with a thread count of 1,
         # to avoid race conditions in File._save_and_rename.
         self.save_thread_pool = QtCore.QThreadPool(self)
