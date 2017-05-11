@@ -76,3 +76,12 @@ To run the included tests, follow the instructions for "Running From
 the Source Tree".  Afterward you can run the tests using setup.py:
 
     python3 setup.py test
+
+Packaging
+---------
+
+Picard supports packaging binaries and uploading them to PyPi.
+
+To submit a package run:
+
+    python setup.py sdist upload -r pypi
