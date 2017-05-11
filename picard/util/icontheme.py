@@ -19,7 +19,7 @@
 
 import sys
 import os.path
-from PyQt5 import QtGui
+from PyQt5 import QtGui, QtSvg, QtCore
 
 if sys.platform == 'win32':
     _search_paths = []
@@ -46,6 +46,28 @@ ICON_SIZE_MENU = ('16x16',)
 ICON_SIZE_TOOLBAR = ('22x22',)
 ICON_SIZE_ALL = ('22x22', '16x16')
 
+# A default initial value of 1, it is changed by the main tagger
+# according to the screen pixel ratio
+PIXEL_RATIO = 1
+
+
+def make_icon(name, size):
+    renderer = QtSvg.QSvgRenderer("/".join([':', 'img-src', name]) + '.svg')
+
+    size = int(size.split('x')[0]) * PIXEL_RATIO
+
+    pixmap = QtGui.QPixmap(size, size)
+    pixmap.fill(QtCore.Qt.transparent)
+
+    painter = QtGui.QPainter()
+    painter.begin(pixmap)
+    renderer.render(painter)
+    painter.end()
+
+    pixmap.setDevicePixelRatio(PIXEL_RATIO)
+
+    return pixmap
+
 
 def lookup(name, size=ICON_SIZE_ALL):
     icon = QtGui.QIcon()
@@ -59,5 +81,5 @@ def lookup(name, size=ICON_SIZE_ALL):
                         icon.addFile(os.path.join(path, _current_theme, s, subdir, name) + '.png')
                     return icon
     for s in size:
-        icon.addFile('/'.join([':', 'images', s, name]) + '.png')
+        icon.addPixmap(make_icon(name, s))
     return icon
