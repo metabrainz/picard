@@ -18,7 +18,6 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 import os
-import sys
 from functools import partial
 from PyQt5 import QtCore, QtGui, QtNetwork, QtWidgets
 from picard import config, log
@@ -86,6 +85,10 @@ class CoverArtThumbnail(ActiveLabel):
         self.data = None
         self.has_common_images = None
         self.shadow = QtGui.QPixmap(":/images/CoverArtShadow.png")
+        self.pixel_ratio = self.tagger.primaryScreen().devicePixelRatio()
+        w, h = self.scaled(128, 128)
+        self.shadow = self.shadow.scaled(w, h, QtCore.Qt.KeepAspectRatio, QtCore.Qt.SmoothTransformation)
+        self.shadow.setDevicePixelRatio(self.pixel_ratio)
         self.release = None
         self.setPixmap(self.shadow)
         self.setAlignment(QtCore.Qt.AlignTop | QtCore.Qt.AlignHCenter)
@@ -100,13 +103,17 @@ class CoverArtThumbnail(ActiveLabel):
         else:
             return True
 
+    def scaled(self, *dimensions):
+        return (self.pixel_ratio * dimension for dimension in dimensions)
+
     def show(self):
         self.set_data(self.data, True)
 
     def decorate_cover(self, pixmap):
-        offx, offy, w, h = (1, 1, 121, 121)
+        offx, offy, w, h = self.scaled(1, 1, 121, 121)
         cover = QtGui.QPixmap(self.shadow)
         pixmap = pixmap.scaled(w, h, QtCore.Qt.KeepAspectRatio, QtCore.Qt.SmoothTransformation)
+        pixmap.setDevicePixelRatio(self.pixel_ratio)
         painter = QtGui.QPainter(cover)
         bgcolor = QtGui.QColor.fromRgb(0, 0, 0, 128)
         painter.fillRect(QtCore.QRectF(offx, offy, w, h), bgcolor)
@@ -134,7 +141,7 @@ class CoverArtThumbnail(ActiveLabel):
         if len(self.data) == 1:
             has_common_images = True
 
-        w, h, displacements = (128, 128, 20)
+        w, h, displacements = self.scaled(128, 128, 20)
         key = hash(tuple(sorted(self.data, key=lambda x: x.types_as_string())) + (has_common_images,))
         try:
             pixmap = self._pixmap_cache[key]
@@ -196,6 +203,7 @@ class CoverArtThumbnail(ActiveLabel):
                 pixmap = pixmap.scaled(w, h, QtCore.Qt.KeepAspectRatio, QtCore.Qt.SmoothTransformation)
             self._pixmap_cache[key] = pixmap
 
+        pixmap.setDevicePixelRatio(self.pixel_ratio)
         self.setPixmap(pixmap)
         self.current_pixmap_key = key
 
