@@ -69,6 +69,13 @@ Thank you for using Picard. Picard relies on the MusicBrainz database, which is 
 <p align="center"><a href="%(picard-donate-url)s">Donate now!</a></p>
 <p align="center"><strong>Credits</strong><br/>
 <small>Copyright © 2004-2017 Robert Kaye, Lukáš Lalinský, Laurent Monin, Sambhav Kothari and others%(translator-credits)s</small></p>
+<p align="center"><small>Icons made by Sambhav Kothari <sambhavs.email@gmail.com>
+and <a href="http://www.flaticon.com/authors/madebyoliver">Madebyoliver</a>,
+<a href="http://www.flaticon.com/authors/pixel-buddha">Pixel Buddha</a>,
+<a href="http://www.flaticon.com/authors/nikita-golubev">Nikita Golubev</a>,
+<a href="http://www.flaticon.com/authors/maxim-basinski">Maxim Basinski</a>
+from <a href="www.flaticon.com">www.flaticon.com</a>
+</small></p>
 <p align="center"><strong>Official website</strong><br/><a href="%(picard-doc-url)s">%(picard-doc-url)s</a></p>
 """) % args
         self.ui.label.setOpenExternalLinks(True)
