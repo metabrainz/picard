@@ -28,6 +28,7 @@ from inspect import getfullargspec
 from picard.metadata import Metadata
 from picard.metadata import MULTI_VALUED_JOINER
 from picard.plugin import ExtensionPoint
+from picard.util import uniqify
 
 
 class ScriptError(Exception):
@@ -324,6 +325,31 @@ def _compute_logic(operation, *args):
     return operation(args)
 
 
+def _get_multi_values(parser, multi, separator):
+    if isinstance(separator, ScriptExpression):
+        separator = separator.eval(parser)
+
+    if separator == MULTI_VALUED_JOINER:
+        # Convert ScriptExpression containing only a single variable into variable
+        if (isinstance(multi, ScriptExpression) and
+                len(multi) == 1 and
+                isinstance(multi[0], ScriptVariable)):
+            multi = multi[0]
+
+        # If a variable, return multi-values
+        if isinstance(multi, ScriptVariable):
+            if multi.name.startswith("_"):
+                name = "~" + multi.name[1:]
+            else:
+                name = multi.name
+            return parser.context.getall(name)
+
+    # Fall-back to converting to a string and splitting if haystack is an expression
+    # or user has overridden the separator character.
+    multi = multi.eval(parser)
+    return multi.split(separator) if separator else [multi]
+
+
 def func_if(parser, _if, _then, _else=None):
     """If ``if`` is not empty, it returns ``then``, otherwise it returns ``else``."""
     if _if.eval(parser):
@@ -395,9 +421,14 @@ def func_in(parser, text, needle):
         return ""
 
 
-def func_inmulti(parser, text, value, separator=MULTI_VALUED_JOINER):
-    """Splits ``text`` by ``separator``, and returns true if the resulting list contains ``value``."""
-    return func_in(parser, text.split(separator) if separator else [text], value)
+def func_inmulti(parser, haystack, needle, separator=MULTI_VALUED_JOINER):
+    """Searches for ``needle`` in ``haystack``, supporting a list variable for
+       ``haystack``. If a string is used instead, then a ``separator`` can be
+       used to split it. In both cases, it returns true if the resulting list
+       contains exactly ``needle`` as a member."""
+
+    needle = needle.eval(parser)
+    return func_in(parser, _get_multi_values(parser, haystack, separator), needle)
 
 
 def func_rreplace(parser, text, old, new):
@@ -486,7 +517,7 @@ def func_copymerge(parser, new, old):
         old = "~" + old[1:]
     newvals = parser.context.getall(new)
     oldvals = parser.context.getall(old)
-    parser.context[new] = newvals + list(set(oldvals) - set(newvals))
+    parser.context[new] = uniqify(newvals + oldvals)
     return ""
 
 
@@ -642,6 +673,10 @@ def func_gte(parser, x, y):
 
 def func_len(parser, text=""):
     return string_(len(text))
+
+
+def func_lenmulti(parser, multi, separator=MULTI_VALUED_JOINER):
+    return func_len(parser, _get_multi_values(parser, multi, separator))
 
 
 def func_performer(parser, pattern="", join=", "):
@@ -827,10 +862,11 @@ register_script_function(func_lte, "lte")
 register_script_function(func_gt, "gt")
 register_script_function(func_gte, "gte")
 register_script_function(func_in, "in")
-register_script_function(func_inmulti, "inmulti")
+register_script_function(func_inmulti, "inmulti", eval_args=False)
 register_script_function(func_copy, "copy")
 register_script_function(func_copymerge, "copymerge")
 register_script_function(func_len, "len")
+register_script_function(func_lenmulti, "lenmulti", eval_args=False)
 register_script_function(func_performer, "performer")
 register_script_function(func_matchedtracks, "matchedtracks")
 register_script_function(func_is_complete, "is_complete")
