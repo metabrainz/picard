@@ -31,7 +31,7 @@ else:
     USER_DIR = os.environ.get("XDG_CONFIG_HOME", "~/.config")
 
 USER_DIR = os.path.join(
-    os.path.expanduser(USER_DIR), "MusicBrainz", "Picard"
+    os.path.expanduser(USER_DIR), "MusicBrainz", "Picard Dev"
 )
 
 USER_PLUGIN_DIR = os.path.join(USER_DIR, "plugins")

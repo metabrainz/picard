@@ -263,8 +263,8 @@ class picard_build(build):
 
     def run(self):
         if 'bdist_nsis' not in sys.argv:  # somebody shoot me please
-            log.info('generating scripts/picard from scripts/picard.in')
-            generate_file('scripts/picard.in', 'scripts/picard', {'localedir': self.localedir, 'autoupdate': not self.disable_autoupdate})
+            log.info('generating scripts/picard_dev from scripts/picard.in')
+            generate_file('scripts/picard.in', 'scripts/picard_dev', {'localedir': self.localedir, 'autoupdate': not self.disable_autoupdate})
         build.run(self)
 
 
@@ -640,7 +640,7 @@ def _picard_packages():
 
 
 args2 = {
-    'name': 'picard',
+    'name': 'picard_dev',
     'version': __version__,
     'description': 'The next generation MusicBrainz tagger',
     'url': 'https://picard.musicbrainz.org/',
@@ -662,7 +662,7 @@ args2 = {
         'regen_pot_file': picard_regen_pot_file,
         'patch_version': picard_patch_version,
     },
-    'scripts': ['scripts/picard'],
+    'scripts': ['scripts/picard_dev'],
     'install_requires': ['PyQt5', 'mutagen'],
 }
 args.update(args2)
