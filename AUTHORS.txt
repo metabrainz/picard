@@ -6,5 +6,3 @@ Sambhav Kothari <sambhavs.email@gmail.com>
 Picard logo by <http://monkeydo.digital>, © 2015 MetaBrainz Foundation
 
 Picard v2.0 interface icons made by Sambhav Kothari <sambhavs.email@gmail.com> and Madebyoliver, Pixel Buddha, Nikita Golubev, Maxim Basinski from www.flaticon.com
-
-Interface icons by Carlin Mangar <openshift@gmail.com> and from the Tango Desktop Project <http://tango.freedesktop.org/>.
