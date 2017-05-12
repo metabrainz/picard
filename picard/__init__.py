@@ -20,7 +20,7 @@
 import re
 
 
-PICARD_APP_NAME = "Picard"
+PICARD_APP_NAME = "Picard Dev"
 PICARD_ORG_NAME = "MusicBrainz"
 PICARD_VERSION = (2, 0, 0, 'dev', 1)
 

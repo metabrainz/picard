@@ -20,9 +20,12 @@
 import os
 import sys
 
+from picard import PICARD_APP_NAME
+
 # Install gettext "noop" function in case const.py gets imported directly.
 import builtins
 builtins.__dict__['N_'] = lambda a: a
+
 
 # Config directory
 if sys.platform == "win32":
@@ -31,7 +34,7 @@ else:
     USER_DIR = os.environ.get("XDG_CONFIG_HOME", "~/.config")
 
 USER_DIR = os.path.join(
-    os.path.expanduser(USER_DIR), "MusicBrainz", "Picard"
+    os.path.expanduser(USER_DIR), "MusicBrainz", PICARD_APP_NAME
 )
 
 USER_PLUGIN_DIR = os.path.join(USER_DIR, "plugins")
