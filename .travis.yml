@@ -1,7 +1,7 @@
 os: linux
 dist: trusty
 language: python
-python: 
+python:
   - "3.5"
   - "3.6"
 cache:
@@ -12,6 +12,9 @@ env:
     - PIP_INSTALL="pip install"
     - DISCID="$PIP_INSTALL discid" MUTAGEN="$PIP_INSTALL mutagen>=1.37"
     - BABEL="$PIP_INSTALL babel"
+    - NOSE="$PIP_INSTALL nose2"
+    - COVERAGE="$PIP_INSTALL nose-cov"
+    - CODACY="$PIP_INSTALL codacy-coverage"
   matrix:
     - PYQT="$PIP_INSTALL pyqt5==5.7.1"
     - PYQT="$PIP_INSTALL pyqt5==5.8"
@@ -24,6 +27,8 @@ before_install:
   - $PYQT
   - $MUTAGEN
   - $DISCID
+  - $NOSE
+  - $COVERAGE
   - touch ~/.transifexrc
   - printf "[https://www.transifex.com]\nhostname = https://www.transifex.com\npassword = $TX_PASSWORD\ntoken =\nusername = $TX_USERNAME" > ~/.transifexrc
 install:
@@ -39,8 +44,9 @@ install:
   - python setup.py patch_version --platform=test
   - python setup.py install
 # Run the tests!
-script: "python setup.py test -v"
-
+script: "nose2 -v --with-coverage --coverage picard --coverage-report xml"
+after_success:
+  - 'if [ ! -z "${CODACY_PROJECT_TOKEN}" ]; then $CODACY; python-codacy-coverage -r coverage.xml; fi'
 # Tell people that tests were run
 notifications:
   irc: "chat.freenode.net#metabrainz"
