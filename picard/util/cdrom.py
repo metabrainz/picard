@@ -63,7 +63,7 @@ def get_cdrom_drives():
 
     if sys.platform == 'win32':
         GetLogicalDrives = windll.kernel32.GetLogicalDrives
-        GetDriveType = windll.kernel32.GetDriveTypeA
+        GetDriveType = windll.kernel32.GetDriveTypeW
         DRIVE_CDROM = 5
         mask = GetLogicalDrives()
         for i in range(26):
