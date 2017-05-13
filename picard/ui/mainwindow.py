@@ -421,6 +421,13 @@ class MainWindow(QtWidgets.QMainWindow):
         # TR: Keyboard shortcut for "Lookup CD"
         self.cd_lookup_action.setShortcut(QtGui.QKeySequence(_("Ctrl+K")))
         self.cd_lookup_action.triggered.connect(self.tagger.lookup_cd)
+        self.cd_lookup_action.setEnabled(False)
+        if discid is None:
+            log.warning("CDROM: discid library not found - Lookup CD functionality disabled")
+        elif len(get_cdrom_drives()) == 0:
+            log.warning("CDROM: No CD-ROM drives found - Lookup CD functionality disabled")
+        else:
+            self.cd_lookup_action.setEnabled(True)
 
         self.analyze_action = QtWidgets.QAction(icontheme.lookup('picard-analyze'), _("&Scan"), self)
         self.analyze_action.setStatusTip(_("Use AcoustID audio fingerprint to identify the files by the actual music, even if they have no metadata"))
@@ -581,8 +588,7 @@ class MainWindow(QtWidgets.QMainWindow):
             self.toolbar.setToolButtonStyle(QtCore.Qt.ToolButtonTextUnderIcon)
         else:
             self.toolbar.setToolButtonStyle(QtCore.Qt.ToolButtonIconOnly)
-        self.cd_lookup_action.setEnabled(len(get_cdrom_drives()) > 0 and
-                                         discid is not None)
+
 
     def create_toolbar(self):
         self.create_search_toolbar()
