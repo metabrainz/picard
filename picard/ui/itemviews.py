@@ -19,7 +19,6 @@
 
 import os
 import re
-import sys
 from functools import partial
 from PyQt5 import QtCore, QtGui, QtWidgets
 from picard import config, log

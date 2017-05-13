@@ -43,4 +43,3 @@ class WAVFile(File):
 
     def _save(self, filename, metadata):
         log.debug("Saving file %r", filename)
-        pass

@@ -17,9 +17,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-import traceback
 
-from picard.coverart.providers import CoverArtProvider
 from picard.coverart.providers.caa import CoverArtProviderCaa
 from picard.coverart.image import CaaCoverArtImage, CaaThumbnailCoverArtImage
 

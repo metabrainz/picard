@@ -49,7 +49,6 @@ def version_to_string(version, short=False):
             n = int(p)
         except ValueError:
             n = p
-            pass
         _version.append(n)
     version = tuple(_version)
     if short and version[3] == 'final':
