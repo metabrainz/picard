@@ -168,7 +168,6 @@ class InfoDialog(PicardDialog):
                         data = image.thumbnail.data
                     except CoverArtImageIOError as e:
                         log.warning(e)
-                        pass
                 else:
                     data = image.data
             except CoverArtImageIOError:
