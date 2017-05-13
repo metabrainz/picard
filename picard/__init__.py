@@ -20,9 +20,13 @@
 import re
 
 
-PICARD_APP_NAME = "Picard Dev"
 PICARD_ORG_NAME = "MusicBrainz"
 PICARD_VERSION = (2, 0, 0, 'dev', 1)
+
+if PICARD_VERSION[3] == 'dev':
+    PICARD_APP_NAME = "Picard Dev"
+else:
+    PICARD_APP_NAME = "Picard"
 
 # optional build version
 # it should be in the form '<platform>_<YYMMDDHHMMSS>'

@@ -35,8 +35,13 @@ from distutils.spawn import find_executable
 from setuptools import setup, Command, Extension
 
 
-# Change to 'picard' when building for production
-PACKAGE_NAME = "picard_dev"
+from picard import PICARD_VERSION
+
+# Decides package name on the basis of version
+if PICARD_VERSION[3] == 'dev':
+	PACKAGE_NAME = "picard_dev"
+else:
+	PACKAGE_NAME = "picard"
 
 ext_modules = [
     Extension('picard.util._astrcmp', sources=['picard/util/_astrcmp.c']),
