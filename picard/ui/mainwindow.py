@@ -429,7 +429,7 @@ class MainWindow(QtWidgets.QMainWindow):
             log.warning("CDROM: discid library not found - Lookup CD functionality disabled")
         else:
             drives = get_cdrom_drives()
-            if len(drives) == 0:
+            if not drives:
                 log.warning("CDROM: No CD-ROM drives found - Lookup CD functionality disabled")
             else:
                 shortcut_drive = config.setting["cd_lookup_device"].split(",")[0] if len(drives) > 1 else ""
@@ -437,8 +437,9 @@ class MainWindow(QtWidgets.QMainWindow):
                 for drive in drives:
                     action = self.cd_lookup_menu.addAction(drive)
                     if drive == shortcut_drive:
-                        action.setShortcut(QtGui.QKeySequence(_("Ctrl+K")))
+                        # Clear existing shortcode on main action and assign it to sub-action
                         self.cd_lookup_action.setShortcut(QtGui.QKeySequence())
+                        action.setShortcut(QtGui.QKeySequence(_("Ctrl+K")))
 
         self.analyze_action = QtWidgets.QAction(icontheme.lookup('picard-analyze'), _("&Scan"), self)
         self.analyze_action.setStatusTip(_("Use AcoustID audio fingerprint to identify the files by the actual music, even if they have no metadata"))
