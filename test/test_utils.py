@@ -154,7 +154,6 @@ class AlbumArtistFromPathTest(unittest.TestCase):
 
     def test_album_artist_from_path(self):
         aafp = util.album_artist_from_path
-        from picard.file import File
         file_1 = r"/10cc/Original Soundtrack/02 I'm Not in Love.mp3"
         file_2 = r"/10cc - Original Soundtrack/02 I'm Not in Love.mp3"
         file_3 = r"/Original Soundtrack/02 I'm Not in Love.mp3"

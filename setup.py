@@ -375,7 +375,6 @@ class picard_clean_ui(Command):
         pass
 
     def run(self):
-        from PyQt5 import uic
         for uifile, pyfile in ui_files():
             try:
                 os.unlink(pyfile)
