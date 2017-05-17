@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 
-import os.path
-import re
 import unittest
 from picard.util import tracknum_from_filename
 

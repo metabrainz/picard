@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import print_function
-import os.path
 import unittest
 from picard import util
 #from picard.util import textencoding

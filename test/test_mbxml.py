@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 import unittest
-import picard
 from picard import config
 from picard.metadata import Metadata
 from picard.mbxml import (
