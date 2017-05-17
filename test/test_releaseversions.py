@@ -1,13 +1,9 @@
-import locale
 import os.path
 import unittest
 import shutil
 import sys
 import tempfile
-import picard
 from picard import config
-from picard.metadata import Metadata
-from picard.mbxml import track_to_metadata, release_to_metadata
 from picard.releasegroup import ReleaseGroup
 from picard.i18n import setup_gettext
 
