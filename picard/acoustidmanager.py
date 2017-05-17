@@ -66,10 +66,7 @@ class AcoustIDManager(QtCore.QObject):
                 yield submission
 
     def _check_unsubmitted(self):
-        enabled = False
-        for submission in self._unsubmitted():
-            enabled = True
-            break
+        enabled = next(self._unsubmitted(), None) != None
         self.tagger.window.enable_submit(enabled)
 
     def submit(self):

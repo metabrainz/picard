@@ -145,21 +145,20 @@ class PluginsOptionsPage(OptionsPage):
                 if latest.split('.') > plugin.version.split('.'):
                     plugin.new_version = latest
                     plugin.can_be_updated = True
-            item = self.add_plugin_item(plugin)
+            self.add_plugin_item(plugin)
             installed.append(plugin.module_name)
 
         for plugin in sorted(self.tagger.pluginmanager.available_plugins, key=attrgetter('name')):
             if plugin.module_name not in installed:
                 plugin.can_be_downloaded = True
-                item = self.add_plugin_item(plugin)
+                self.add_plugin_item(plugin)
 
         self._user_interaction(True)
 
     def _remove_all(self):
         for i, p in self.items.items():
             idx = self.ui.plugins.indexOfTopLevelItem(i)
-            item = self.ui.plugins.takeTopLevelItem(idx)
-            del item
+            self.ui.plugins.takeTopLevelItem(idx)
         self.items = {}
 
     def restore_defaults(self):

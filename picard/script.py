@@ -717,7 +717,7 @@ def func_initials(parser, text=""):
 def func_firstwords(parser, text, length):
     try:
         length = int(length)
-    except ValueError as e:
+    except ValueError:
         length = 0
     if len(text) <= length:
         return text
