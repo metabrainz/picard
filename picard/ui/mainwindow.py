@@ -422,6 +422,25 @@ class MainWindow(QtWidgets.QMainWindow):
         self.cd_lookup_action.setShortcut(QtGui.QKeySequence(_("Ctrl+K")))
         self.cd_lookup_action.triggered.connect(self.tagger.lookup_cd)
 
+        self.cd_lookup_menu = QtWidgets.QMenu(_("Lookup &CD..."))
+        self.cd_lookup_menu.triggered.connect(self.tagger.lookup_cd)
+        self.cd_lookup_action.setEnabled(False)
+        if discid is None:
+            log.warning("CDROM: discid library not found - Lookup CD functionality disabled")
+        else:
+            drives = get_cdrom_drives()
+            if not drives:
+                log.warning("CDROM: No CD-ROM drives found - Lookup CD functionality disabled")
+            else:
+                shortcut_drive = config.setting["cd_lookup_device"].split(",")[0] if len(drives) > 1 else ""
+                self.cd_lookup_action.setEnabled(True)
+                for drive in drives:
+                    action = self.cd_lookup_menu.addAction(drive)
+                    if drive == shortcut_drive:
+                        # Clear existing shortcode on main action and assign it to sub-action
+                        self.cd_lookup_action.setShortcut(QtGui.QKeySequence())
+                        action.setShortcut(QtGui.QKeySequence(_("Ctrl+K")))
+
         self.analyze_action = QtWidgets.QAction(icontheme.lookup('picard-analyze'), _("&Scan"), self)
         self.analyze_action.setStatusTip(_("Use AcoustID audio fingerprint to identify the files by the actual music, even if they have no metadata"))
         self.analyze_action.setEnabled(False)
@@ -555,7 +574,10 @@ class MainWindow(QtWidgets.QMainWindow):
         menu.addAction(self.options_action)
         menu = self.menuBar().addMenu(_("&Tools"))
         menu.addAction(self.refresh_action)
-        menu.addAction(self.cd_lookup_action)
+        if len(self.cd_lookup_menu.actions()) > 1:
+            menu.addMenu(self.cd_lookup_menu)
+        else:
+            menu.addAction(self.cd_lookup_action)
         menu.addAction(self.autotag_action)
         menu.addAction(self.analyze_action)
         menu.addAction(self.cluster_action)
@@ -581,8 +603,7 @@ class MainWindow(QtWidgets.QMainWindow):
             self.toolbar.setToolButtonStyle(QtCore.Qt.ToolButtonTextUnderIcon)
         else:
             self.toolbar.setToolButtonStyle(QtCore.Qt.ToolButtonIconOnly)
-        self.cd_lookup_action.setEnabled(len(get_cdrom_drives()) > 0 and
-                                         discid is not None)
+
 
     def create_toolbar(self):
         self.create_search_toolbar()
@@ -604,24 +625,19 @@ class MainWindow(QtWidgets.QMainWindow):
             widget.setAttribute(QtCore.Qt.WA_MacShowFocusRect)
 
         for action in config.setting['toolbar_layout']:
-            if action not in ('cd_lookup_action', 'separator'):
-                try:
-                    add_toolbar_action(getattr(self, action))
-                except AttributeError:
-                    log.warning('Warning: Unknown action name "%r" found in config. Ignored.', action)
-            elif action == 'cd_lookup_action':
+            if action == 'cd_lookup_action':
                 add_toolbar_action(self.cd_lookup_action)
-                drives = get_cdrom_drives()
-                if len(drives) > 1:
-                    self.cd_lookup_menu = QtWidgets.QMenu()
-                    for drive in drives:
-                        self.cd_lookup_menu.addAction(drive)
-                    self.cd_lookup_menu.triggered.connect(self.tagger.lookup_cd)
+                if len(self.cd_lookup_menu.actions()) > 1:
                     button = toolbar.widgetForAction(self.cd_lookup_action)
                     button.setPopupMode(QtWidgets.QToolButton.MenuButtonPopup)
                     button.setMenu(self.cd_lookup_menu)
             elif action == 'separator':
                 toolbar.addSeparator()
+            else:
+                try:
+                    add_toolbar_action(getattr(self, action))
+                except AttributeError:
+                    log.warning('Warning: Unknown action name "%r" found in config. Ignored.', action)
         self.show_toolbar()
 
     def create_search_toolbar(self):
