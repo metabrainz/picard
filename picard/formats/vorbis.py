@@ -51,7 +51,7 @@ class VCommentFile(File):
     __rtranslate = dict([(v, k) for k, v in __translate.items()])
 
     def _load(self, filename):
-        log.debug("Loading file %r", filename)
+        log.debug("Loading file %s", filename)
         file = self._File(encode_filename(filename))
         file.tags = file.tags or {}
         metadata = Metadata()

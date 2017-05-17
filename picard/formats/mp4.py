@@ -111,7 +111,7 @@ class MP4File(File):
                               "totaldiscs", "totaltracks")
 
     def _load(self, filename):
-        log.debug("Loading file %r", filename)
+        log.debug("Loading file %s", filename)
         file = MP4(encode_filename(filename))
         tags = file.tags
         if tags is None:

@@ -57,7 +57,7 @@ class APEv2File(File):
     __rtranslate = dict([(v, k) for k, v in __translate.items()])
 
     def _load(self, filename):
-        log.debug("Loading file %r", filename)
+        log.debug("Loading file %s", filename)
         file = self._File(encode_filename(filename))
         metadata = Metadata()
         if file.tags:

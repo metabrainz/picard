@@ -190,7 +190,7 @@ class ID3File(File):
         return id3.TXXX(encoding=encoding, desc=desc, text=values)
 
     def _load(self, filename):
-        log.debug("Loading file %r", filename)
+        log.debug("Loading file %s", filename)
         file = self._get_file(encode_filename(filename))
         tags = file.tags or {}
         # upgrade custom 2.3 frames to 2.4
