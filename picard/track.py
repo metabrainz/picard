@@ -40,16 +40,16 @@ _TRANSLATE_TAGS = {
 
 
 class TrackArtist(DataObject):
-    def __init__(self, id):
-        DataObject.__init__(self, id)
+    def __init__(self, ta_id):
+        DataObject.__init__(self, ta_id)
 
 
 class Track(DataObject, Item):
 
     metadata_images_changed = QtCore.pyqtSignal()
 
-    def __init__(self, id, album=None):
-        DataObject.__init__(self, id)
+    def __init__(self, track_id, album=None):
+        DataObject.__init__(self, track_id)
         self.album = album
         self.linked_files = []
         self.num_linked_files = 0
@@ -150,10 +150,10 @@ class Track(DataObject, Item):
             return True
         return False
 
-    def append_track_artist(self, id):
+    def append_track_artist(self, ta_id):
         """Append artist id to the list of track artists
         and return an TrackArtist instance"""
-        track_artist = TrackArtist(id)
+        track_artist = TrackArtist(ta_id)
         self._track_artists.append(track_artist)
         return track_artist
 
@@ -241,8 +241,8 @@ class Track(DataObject, Item):
 
 class NonAlbumTrack(Track):
 
-    def __init__(self, id):
-        Track.__init__(self, id, self.tagger.nats)
+    def __init__(self, nat_id):
+        Track.__init__(self, nat_id, self.tagger.nats)
         self.callback = None
         self.loaded = False
 
