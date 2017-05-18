@@ -38,7 +38,7 @@ def unpack_image(data):
     Description, null terminated UTF-16-LE string
     The image data in the given length
     """
-    (type, size) = struct.unpack_from("<bi", data)
+    (image_type, size) = struct.unpack_from("<bi", data)
     pos = 5
     mime = b""
     while data[pos:pos+2] != b"\x00\x00":
@@ -51,15 +51,15 @@ def unpack_image(data):
         pos += 2
     pos += 2
     image_data = data[pos:pos+size]
-    return (mime.decode("utf-16-le"), image_data, type, description.decode("utf-16-le"))
+    return (mime.decode("utf-16-le"), image_data, image_type, description.decode("utf-16-le"))
 
 
-def pack_image(mime, data, type=3, description=""):
+def pack_image(mime, data, image_type=3, description=""):
     """
     Helper function to pack image data for a WM/Picture tag.
     See unpack_image for a description of the data format.
     """
-    tag_data = struct.pack("<bi", type, len(data))
+    tag_data = struct.pack("<bi", image_type, len(data))
     tag_data += mime.encode("utf-16-le") + b"\x00\x00"
     tag_data += description.encode("utf-16-le") + b"\x00\x00"
     tag_data += data
