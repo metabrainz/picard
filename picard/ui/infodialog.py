@@ -206,11 +206,11 @@ class InfoDialog(PicardDialog):
             existing_types = [image.types_as_string() for image in self.existing_images]
             # Merge both types and existing types list in sorted order.
             types = union_sorted_lists(types, existing_types)
-        for row, type in enumerate(types):
+        for row, artwork_type in enumerate(types):
             self.artwork_table.insertRow(row)
-            type_wgt = self.artwork_table.get_type_widget(type)
+            type_wgt = self.artwork_table.get_type_widget(artwork_type)
             item = QtWidgets.QTableWidgetItem()
-            item.setData(QtCore.Qt.UserRole, type)
+            item.setData(QtCore.Qt.UserRole, artwork_type)
             self.artwork_table.setCellWidget(row, self.artwork_table._type_col, type_wgt)
             self.artwork_table.setItem(row, self.artwork_table._type_col, item)
 
