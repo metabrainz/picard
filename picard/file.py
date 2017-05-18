@@ -292,7 +292,7 @@ class File(QtCore.QObject, Item):
         """Save the metadata."""
         raise NotImplementedError
 
-    def _script_to_filename(self, format, file_metadata, settings=None):
+    def _script_to_filename(self, naming_format, file_metadata, settings=None):
         if settings is None:
             settings = config.setting
         metadata = Metadata()
@@ -305,8 +305,8 @@ class File(QtCore.QObject, Item):
         for name in metadata.keys():
             if isinstance(metadata[name], str):
                 metadata[name] = sanitize_filename(metadata[name])
-        format = format.replace("\t", "").replace("\n", "")
-        filename = ScriptParser().eval(format, metadata, self)
+        naming_format = naming_format.replace("\t", "").replace("\n", "")
+        filename = ScriptParser().eval(naming_format, metadata, self)
         if settings["ascii_filenames"]:
             if isinstance(filename, str):
                 filename = unaccent(filename)
@@ -346,9 +346,9 @@ class File(QtCore.QObject, Item):
             new_filename = new_filename + ext
 
             # expand the naming format
-            format = settings['file_naming_format']
-            if len(format) > 0:
-                new_filename = self._script_to_filename(format, metadata, settings)
+            naming_format = settings['file_naming_format']
+            if len(naming_format) > 0:
+                new_filename = self._script_to_filename(naming_format, metadata, settings)
                 # NOTE: the _script_to_filename strips the extension away
                 new_filename = new_filename + ext
                 if not settings['move_files']:
@@ -414,7 +414,7 @@ class File(QtCore.QObject, Item):
         try:
             names = list(map(encode_filename, os.listdir(old_path)))
         except os.error:
-            log.error("Error: {} directory not found".format(old_path))
+            log.error("Error: {} directory not found".naming_format(old_path))
             return
         filtered_names = [name for name in names if name[0] != "."]
         for pattern in patterns:
