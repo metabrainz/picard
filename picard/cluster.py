@@ -248,8 +248,8 @@ class Cluster(QtCore.QObject, Item):
 
         # Arrange tracks into albums
         albums = {}
-        for i in range(len(tracks)):
-            cluster = album_cluster_engine.getClusterFromId(tracks[i][1])
+        for i, track in enumerate(tracks):
+            cluster = album_cluster_engine.getClusterFromId(track[1])
             if cluster is not None:
                 albums.setdefault(cluster, []).append(i)
 

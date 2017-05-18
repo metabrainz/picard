@@ -113,9 +113,8 @@ class TagsFromFileNamesDialog(PicardDialog):
         self.ui.files.setHeaderLabels([_("File Name")] + list(map(display_tag_name, columns)))
         for item, file in zip(self.items, self.files):
             matches = self.match_file(file, format)
-            for i in range(len(columns)):
-                value = matches.get(columns[i], '')
-                item.setText(i + 1, value)
+            for i, column in enumerate(columns):
+                item.setText(i + 1, matches.get(column, ''))
         self.ui.files.header().resizeSections(QtWidgets.QHeaderView.ResizeToContents)
         self.ui.files.header().setStretchLastSection(True)
 
