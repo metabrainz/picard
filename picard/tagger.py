@@ -468,24 +468,24 @@ class Tagger(QtWidgets.QApplication):
         if mimeData.hasUrls():
             BaseTreeView.drop_urls(mimeData.urls(), target)
 
-    def search(self, text, type, adv=False):
+    def search(self, text, search_type, adv=False):
         """Search on the MusicBrainz website."""
         lookup = self.get_file_lookup()
         if config.setting["builtin_search"]:
-            if type == "track" and not lookup.mbidLookup(text, 'recording'):
+            if search_type == "track" and not lookup.mbidLookup(text, 'recording'):
                 dialog = TrackSearchDialog(self.window)
                 dialog.search(text)
                 dialog.exec_()
-            elif type == "album" and not lookup.mbidLookup(text, 'release'):
+            elif search_type == "album" and not lookup.mbidLookup(text, 'release'):
                 dialog = AlbumSearchDialog(self.window)
                 dialog.search(text)
                 dialog.exec_()
-            elif type == "artist" and not lookup.mbidLookup(text, 'artist'):
+            elif search_type == "artist" and not lookup.mbidLookup(text, 'artist'):
                 dialog = ArtistSearchDialog(self.window)
                 dialog.search(text)
                 dialog.exec_()
         else:
-            getattr(lookup, type + "Search")(text, adv)
+            getattr(lookup, search_type + "Search")(text, adv)
 
     def collection_lookup(self):
         """Lookup the users collections on the MusicBrainz website."""
@@ -522,25 +522,25 @@ class Tagger(QtWidgets.QApplication):
         for file in files:
             file.save()
 
-    def load_album(self, id, discid=None):
-        id = self.mbid_redirects.get(id, id)
-        album = self.albums.get(id)
+    def load_album(self, album_id, discid=None):
+        album_id = self.mbid_redirects.get(album_id, album_id)
+        album = self.albums.get(album_id)
         if album:
-            log.debug("Album %s already loaded.", id)
+            log.debug("Album %s already loaded.", album_id)
             return album
-        album = Album(id, discid=discid)
-        self.albums[id] = album
+        album = Album(album_id, discid=discid)
+        self.albums[album_id] = album
         self.album_added.emit(album)
         album.load()
         return album
 
-    def load_nat(self, id, node=None):
+    def load_nat(self, nat_id, node=None):
         self.create_nats()
-        nat = self.get_nat_by_id(id)
+        nat = self.get_nat_by_id(nat_id)
         if nat:
-            log.debug("NAT %s already loaded.", id)
+            log.debug("NAT %s already loaded.", nat_id)
             return nat
-        nat = NonAlbumTrack(id)
+        nat = NonAlbumTrack(nat_id)
         self.nats.tracks.append(nat)
         self.nats.update(True)
         if node:
@@ -549,14 +549,14 @@ class Tagger(QtWidgets.QApplication):
             nat.load()
         return nat
 
-    def get_nat_by_id(self, id):
+    def get_nat_by_id(self, nat_id):
         if self.nats is not None:
             for nat in self.nats.tracks:
-                if nat.id == id:
+                if nat.id == nat_id:
                     return nat
 
-    def get_release_group_by_id(self, id):
-        return self.release_groups.setdefault(id, ReleaseGroup(id))
+    def get_release_group_by_id(self, rg_id):
+        return self.release_groups.setdefault(rg_id, ReleaseGroup(rg_id))
 
     def remove_files(self, files, from_parent=True):
         """Remove files from the tagger."""
