@@ -65,13 +65,13 @@ class ConfigSection(LockableObject):
         value = self.__config.value("%s/%s" % (self.__name, key))
         return value
 
-    def value(self, name, type, default=None):
+    def value(self, name, option_type, default=None):
         """Return an option value converted to the given Option type."""
         key = "%s/%s" % (self.__name, name)
         self.lock_for_read()
         try:
             if self.__config.contains(key):
-                return type.convert(self.raw_value(name))
+                return option_type.convert(self.raw_value(name))
             return default
         except:
             return default
