@@ -39,7 +39,7 @@ class Runnable(QRunnable):
     def __init__(self, func, next_func):
         QRunnable.__init__(self)
         self.func = func
-        self.next = next_func
+        self.next_func = next_func
 
     def run(self):
         try:
@@ -47,9 +47,9 @@ class Runnable(QRunnable):
         except:
             from picard import log
             log.error(traceback.format_exc())
-            to_main(self.next, error=sys.exc_info()[1])
+            to_main(self.next_func, error=sys.exc_info()[1])
         else:
-            to_main(self.next, result=result)
+            to_main(self.next_func, result=result)
 
 
 def run_task(func, next_func, priority=0, thread_pool=None):
