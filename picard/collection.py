@@ -27,8 +27,8 @@ user_collections = {}
 
 class Collection(QtCore.QObject):
 
-    def __init__(self, id, name, size):
-        self.id = id
+    def __init__(self, collection_id, name, size):
+        self.id = collection_id
         self.name = name
         self.pending = set()
         self.size = int(size)
