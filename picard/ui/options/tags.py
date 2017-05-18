@@ -124,12 +124,12 @@ class TagsOptionsPage(OptionsPage):
             self.completer.popup().hide()
 
     def completer_activated(self, text):
-        input = self.ui.preserved_tags
-        current = input.text()
-        i = input.cursorPosition()
+        input_field = self.ui.preserved_tags
+        current = input_field.text()
+        i = input_field.cursorPosition()
         p = len(self.completer.completionPrefix())
-        input.setText("%s%s %s" % (current[:i - p], text, current[i:]))
-        input.setCursorPosition(i - p + len(text) + 1)
+        input_field.setText("%s%s %s" % (current[:i - p], text, current[i:]))
+        input_field.setCursorPosition(i - p + len(text) + 1)
 
 
 register_options_page(TagsOptionsPage)
