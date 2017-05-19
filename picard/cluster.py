@@ -440,21 +440,21 @@ class ClusterEngine(object):
             print("[no such cluster]")
             return
 
-        bin = self.clusterBins[cluster]
-        print(cluster, " -> ", ", ".join([("'" + self.clusterDict.getWord(i) + "'") for i in bin]))
+        cluster_bin = self.clusterBins[cluster]
+        print(cluster, " -> ", ", ".join([("'" + self.clusterDict.getWord(i) + "'") for i in cluster_bin]))
 
     def getClusterTitle(self, cluster):
 
         if cluster < 0:
             return ""
 
-        max = 0
+        cluster_max = 0
         maxWord = ''
-        for id in self.clusterBins[cluster]:
-            word, count = self.clusterDict.getWordAndCount(id)
-            if count >= max:
+        for cluster_bin in self.clusterBins[cluster]:
+            word, count = self.clusterDict.getWordAndCount(cluster_bin)
+            if count >= cluster_max:
                 maxWord = word
-                max = count
+                cluster_max = count
 
         return maxWord
 

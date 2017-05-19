@@ -560,13 +560,13 @@ class XmlWebService(QtCore.QObject):
                         cacheloadcontrol=cacheloadcontrol, refresh=refresh,
                         queryargs=queryargs)
 
-    def get_collection(self, id, handler, limit=100, offset=0):
+    def get_collection(self, release_id, handler, limit=100, offset=0):
         host, port = config.setting['server_host'], config.setting['server_port']
         path = "/ws/2/collection"
         queryargs = None
-        if id is not None:
+        if release_id is not None:
             inc = ["releases", "artist-credits", "media"]
-            path += "/%s/releases" % (id)
+            path += "/%s/releases" % (release_id)
             queryargs = {}
             queryargs["inc"] = "+".join(inc)
             queryargs["limit"] = limit
@@ -577,24 +577,24 @@ class XmlWebService(QtCore.QObject):
     def get_collection_list(self, handler):
         return self.get_collection(None, handler)
 
-    def _collection_request(self, id, releases):
+    def _collection_request(self, collection_id, releases):
         while releases:
             ids = ";".join(releases if len(releases) <= 400 else releases[:400])
             releases = releases[400:]
-            yield "/ws/2/collection/%s/releases/%s" % (id, ids)
+            yield "/ws/2/collection/%s/releases/%s" % (collection_id, ids)
 
     def _get_client_queryarg(self):
         return {"client": CLIENT_STRING}
 
 
-    def put_to_collection(self, id, releases, handler):
+    def put_to_collection(self, collection_id, releases, handler):
         host, port = config.setting['server_host'], config.setting['server_port']
-        for path in self._collection_request(id, releases):
+        for path in self._collection_request(collection_id, releases):
             self.put(host, port, path, "", handler,
                      queryargs=self._get_client_queryarg())
 
-    def delete_from_collection(self, id, releases, handler):
+    def delete_from_collection(self, collection_id, releases, handler):
         host, port = config.setting['server_host'], config.setting['server_port']
-        for path in self._collection_request(id, releases):
+        for path in self._collection_request(collection_id, releases):
             self.delete(host, port, path, handler,
                         queryargs=self._get_client_queryarg())

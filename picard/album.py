@@ -49,16 +49,16 @@ register_album_metadata_processor(coverart)
 
 
 class AlbumArtist(DataObject):
-    def __init__(self, id):
-        DataObject.__init__(self, id)
+    def __init__(self, album_artist_id):
+        DataObject.__init__(self, album_artist_id)
 
 
 class Album(DataObject, Item):
 
     release_group_loaded = QtCore.pyqtSignal()
 
-    def __init__(self, id, discid=None):
-        DataObject.__init__(self, id)
+    def __init__(self, album_id, discid=None):
+        DataObject.__init__(self, album_id)
         self.metadata = Metadata()
         self.orig_metadata = Metadata()
         self.tracks = []
@@ -90,10 +90,10 @@ class Album(DataObject, Item):
     def enable_update_metadata_images(self, enabled):
         self.update_metadata_images_enabled = enabled
 
-    def append_album_artist(self, id):
+    def append_album_artist(self, album_artist_id):
         """Append artist id to the list of album artists
         and return an AlbumArtist instance"""
-        album_artist = AlbumArtist(id)
+        album_artist = AlbumArtist(album_artist_id)
         self._album_artists.append(album_artist)
         return album_artist
 
@@ -600,7 +600,7 @@ class Album(DataObject, Item):
 class NatAlbum(Album):
 
     def __init__(self):
-        Album.__init__(self, id="NATS")
+        Album.__init__(self, "NATS")
         self.loaded = True
         self.update()
 

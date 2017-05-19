@@ -251,12 +251,12 @@ def media_formats_from_node(node):
             formats_count[text] = 1
             formats_order.append(text)
     formats = []
-    for format in formats_order:
-        count = formats_count[format]
-        format = RELEASE_FORMATS.get(format, format)
+    for medium_format in formats_order:
+        count = formats_count[medium_format]
+        medium_format = RELEASE_FORMATS.get(medium_format, medium_format)
         if count > 1:
-            format = string_(count) + "×" + format
-        formats.append(format)
+            medium_format = string_(count) + "×" + medium_format
+        formats.append(medium_format)
     return " + ".join(formats)
 
 
