@@ -1,7 +1,7 @@
 # Translators:
 # Translators:
 # A. Regnander <anton_r_3@hotmail.com>, 2017
-# Jonatan Nyberg <jonatan@autistici.org>, 2017
+# Jonatan Nyberg, 2017
 # Kristoffer Grundström <kristoffer.grundstrom1983@gmail.com>, 2016
 # Killinstinct <myaku@msn.com>, 2015
 # Robin Björnsvik <robin@bjornsvik.se>, 2013

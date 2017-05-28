@@ -5,11 +5,12 @@
 # Koala Bear <koalaleaves@openmailbox.org>, 2016
 # Shen-Ta Hsieh(BestSteve) <ibmibmibm.tw@gmail.com>, 2016
 # Shen-Ta Hsieh(BestSteve) <ibmibmibm.tw@gmail.com>, 2016
+# riotism, 2017
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2017-01-16 20:46+0000\n"
-"Last-Translator: Laurent Monin <i18n@norz.org>\n"
+"PO-Revision-Date: 2017-05-17 23:49+0000\n"
+"Last-Translator: riotism\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/musicbrainz/musicbrainz/language/zh_TW/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -23,14 +24,14 @@ msgid ""
 "\"Motet\" is a term that applies to different types of (usually "
 "unaccompanied) choral works. What exactly is a motet depends quite a bit on "
 "the period."
-msgstr "「經文歌」這個詞彙可套用到不同種類的(通常為無伴奏的)聲樂作品。經文歌的精確定義依據年代而不同。"
+msgstr "「經文歌」這個詞彙可套用到不同種類的 (通常為無伴奏的) 聲樂作品。經文歌的精確定義依據年代而不同。"
 
 #: DB:work_type/description:5
 msgctxt "work_type"
 msgid ""
 "\"Sonata\" is a general term used to describe small scale (very often solo "
 "or solo + keyboard) instrumental works, initially in baroque music."
-msgstr "「奏鳴曲」這個常見的詞彙是用來描述從巴洛克音樂開始出現，小型的(通常為獨奏，或是獨奏加上鍵盤樂器) 樂器作品。"
+msgstr "「奏鳴曲」這個常見的詞彙是用來描述從巴洛克音樂開始出現，小型的 (通常為獨奏，或是獨奏加上鍵盤樂器) 樂器作品。"
 
 #: DB:medium_format/name:54
 msgctxt "medium_format"
@@ -104,7 +105,7 @@ msgctxt "work_type"
 msgid ""
 "A ballet is music composed to be used, together with a choreography, for a "
 "ballet dance production."
-msgstr ""
+msgstr "芭蕾是為舞蹈設計與芭蕾舞而創作的音樂。"
 
 #: DB:work_type/description:3
 msgctxt "work_type"
@@ -117,7 +118,7 @@ msgstr ""
 msgctxt "work_type"
 msgid ""
 "A concerto is a musical work for soloist(s) accompanied by an orchestra."
-msgstr ""
+msgstr "協奏曲是為一名或數名獨奏家和管弦樂團伴奏而創作的樂章。"
 
 #: DB:event_type/description:4
 msgctxt "event_type"
@@ -125,7 +126,7 @@ msgid ""
 "A convention, expo or trade fair is an event which is not typically "
 "orientated around music performances, but can include them as side "
 "activities."
-msgstr ""
+msgstr "大型會議、展覽會或貿易會通常不以音樂表演為主要內容的活動，但可以音樂表演為次要活動。"
 
 #: DB:release_status/description:2
 msgctxt "release_status"
@@ -173,7 +174,7 @@ msgctxt "event_type"
 msgid ""
 "A party, reception or other event held specifically for the launch of a "
 "release."
-msgstr ""
+msgstr "為發佈新成品的而設的派對、酒會或其他活動。"
 
 #: DB:place_type/description:5
 msgctxt "place_type"
@@ -324,7 +325,7 @@ msgctxt "work_type"
 msgid ""
 "A symphony is an extended composition, almost always scored for orchestra "
 "without soloists."
-msgstr ""
+msgstr "交響曲是一種較長的樂章，通常為管弦樂團創作，並不包含獨奏的部分。"
 
 #: DB:release_packaging/description:2
 msgctxt "release_packaging"
@@ -637,7 +638,7 @@ msgstr ""
 #: DB:editor_collection_type/name:5
 msgctxt "collection_type"
 msgid "Attending"
-msgstr ""
+msgstr "會出席"
 
 #: DB:work_type/name:25
 msgctxt "work_type"
@@ -1119,7 +1120,7 @@ msgstr "CDV"
 #: DB:medium_format/name:60
 msgctxt "medium_format"
 msgid "CED"
-msgstr ""
+msgstr "CED"
 
 #: DB:work_attribute_type_allowed_value/value:63
 msgctxt "work_attribute_type_allowed_value"
@@ -1164,12 +1165,12 @@ msgstr ""
 #: DB:medium_format/name:8
 msgctxt "medium_format"
 msgid "Cassette"
-msgstr ""
+msgstr "卡式錄音帶"
 
 #: DB:release_packaging/name:8
 msgctxt "release_packaging"
 msgid "Cassette Case"
-msgstr ""
+msgstr "卡帶盒"
 
 #: DB:series_type/name:5
 msgctxt "series_type"
@@ -1199,7 +1200,7 @@ msgstr "角色"
 #: DB:artist_type/name:6
 msgctxt "artist_type"
 msgid "Choir"
-msgstr ""
+msgstr "合唱團"
 
 #: DB:work_attribute_type_allowed_value/value:71
 msgctxt "work_attribute_type_allowed_value"
@@ -1220,7 +1221,7 @@ msgstr "城市"
 msgctxt "area_type"
 msgid ""
 "City is used for settlements of any size, including towns and villages."
-msgstr "城市用於任何大小的居住區，包含城鎮與村莊。"
+msgstr "城市指任何大小的居住區，包含城鎮與村莊。"
 
 #: DB:release_group_secondary_type/name:1
 msgctxt "release_group_secondary_type"
@@ -1240,7 +1241,7 @@ msgstr "協奏曲"
 #: DB:event_type/name:4
 msgctxt "event_type"
 msgid "Convention/Expo"
-msgstr ""
+msgstr "大型會議或展覽會"
 
 #: DB:medium_format/name:61
 msgctxt "medium_format"
@@ -1254,7 +1255,7 @@ msgid ""
 "containing software that is ostensibly designed to prevent the CD from being"
 " ripped. There are a number of software variants: the most well-known are "
 "Macrovision's Cactus Data Shield (CDS) and SunnComm's MediaMax."
-msgstr ""
+msgstr "Copy Control CD (CCCD) 包含 2001-2006 年間發行，含防盜軟件的 CD。市面上有多種防盜軟件，其中以 Macrovision 的 Cactus Data Shield (CDS) 與 SunnComm 的 MediaMax 最為廣為人知。"
 
 #: DB:area_type/name:1
 msgctxt "area_type"
@@ -1605,7 +1606,7 @@ msgstr "區域"
 #: DB:area_type/description:5
 msgctxt "area_type"
 msgid "District is used for a division of a large city, e.g. Queens."
-msgstr "區用於分割大城市。如皇后區。"
+msgstr "區域用於分割大城市，如紐約市皇后區。"
 
 #: DB:work_attribute_type_allowed_value/value:611
 msgctxt "work_attribute_type_allowed_value"
@@ -2538,7 +2539,7 @@ msgstr ""
 #: DB:label_type/name:9
 msgctxt "label_type"
 msgid "Imprint"
-msgstr ""
+msgstr "廠牌"
 
 #: DB:work_type/name:30
 msgctxt "work_type"
@@ -2555,7 +2556,7 @@ msgstr ""
 #: DB:place_type/name:5
 msgctxt "place_type"
 msgid "Indoor arena"
-msgstr ""
+msgstr "室內場館"
 
 #: DB:editor_collection_type/name:9
 msgctxt "collection_type"
@@ -2570,7 +2571,7 @@ msgstr "樂器名稱"
 #: DB:release_group_secondary_type/name:4
 msgctxt "release_group_secondary_type"
 msgid "Interview"
-msgstr ""
+msgstr "採訪"
 
 #: DB:work_attribute_type_allowed_value/value:427
 msgctxt "work_attribute_type_allowed_value"
@@ -3411,14 +3412,14 @@ msgstr ""
 #: DB:work_type/name:29
 msgctxt "work_type"
 msgid "Musical"
-msgstr ""
+msgstr "音樂劇"
 
 #: DB:work_type/description:29
 msgctxt "work_type"
 msgid ""
 "Musical theatre is a form of theatrical performance that combines songs, "
 "spoken dialogue, acting, and dance."
-msgstr ""
+msgstr "音樂劇是彙集歌曲、對話、戲劇與舞蹈的一種舞臺表演。"
 
 #: DB:work_attribute_type_allowed_value/value:748
 msgctxt "work_attribute_type_allowed_value"
@@ -3938,7 +3939,7 @@ msgstr ""
 #: DB:instrument_type/name:3
 msgctxt "instrument_type"
 msgid "Percussion instrument"
-msgstr ""
+msgstr "打擊樂器"
 
 #: DB:work_attribute_type_allowed_value/value:496
 msgctxt "work_attribute_type_allowed_value"
@@ -3988,7 +3989,7 @@ msgstr "地點名稱"
 #: DB:work_type/name:28
 msgctxt "work_type"
 msgid "Play"
-msgstr ""
+msgstr "話劇"
 
 #: DB:medium_format/name:45
 msgctxt "medium_format"
@@ -4008,12 +4009,12 @@ msgstr ""
 #: DB:cover_art_archive.art_type/name:11
 msgctxt "cover_art_type"
 msgid "Poster"
-msgstr ""
+msgstr "海報"
 
 #: DB:label_type/name:3
 msgctxt "label_type"
 msgid "Production"
-msgstr ""
+msgstr "製作公司"
 
 #: DB:release_status/name:2
 msgctxt "release_status"
@@ -4073,7 +4074,7 @@ msgstr ""
 #: DB:work_type/name:14
 msgctxt "work_type"
 msgid "Quartet"
-msgstr ""
+msgstr "四重奏"
 
 #: DB:work_attribute_type_allowed_value/value:500
 msgctxt "work_attribute_type_allowed_value"
@@ -4278,7 +4279,7 @@ msgstr ""
 #: DB:label_type/name:8
 msgctxt "label_type"
 msgid "Rights Society"
-msgstr ""
+msgstr "著作權協會"
 
 #: DB:work_attribute_type_allowed_value/value:222
 msgctxt "work_attribute_type_allowed_value"
@@ -4682,22 +4683,22 @@ msgstr "原聲音樂"
 #: DB:cover_art_archive.art_type/name:6
 msgctxt "cover_art_type"
 msgid "Spine"
-msgstr ""
+msgstr "書脊"
 
 #: DB:release_group_secondary_type/name:3
 msgctxt "release_group_secondary_type"
 msgid "Spokenword"
-msgstr ""
+msgstr "會話"
 
 #: DB:place_type/name:4
 msgctxt "place_type"
 msgid "Stadium"
-msgstr ""
+msgstr "大型運動場"
 
 #: DB:cover_art_archive.art_type/name:10
 msgctxt "cover_art_type"
 msgid "Sticker"
-msgstr ""
+msgstr "標籤"
 
 #: DB:instrument_type/name:2
 msgctxt "instrument_type"
@@ -5018,7 +5019,7 @@ msgctxt "medium_format"
 msgid ""
 "The SACD layer of a hybrid SACD. The CD layer should be added as a separate "
 "medium."
-msgstr "hybird SACD 的 SACD 層。CD 層應新增為別的媒體。"
+msgstr "Hybird SACD 的 SACD 層。CD 層應新增為別的媒體。"
 
 #: DB:work_type/description:7
 msgctxt "work_type"
@@ -5038,7 +5039,7 @@ msgstr ""
 #: DB:release_packaging/description:1
 msgctxt "release_packaging"
 msgid "The traditional CD case, made of hard, brittle plastic."
-msgstr "傳統的CD盒，由堅硬，易碎的塑膠製成。"
+msgstr "傳統的 CD 盒，由堅硬易碎的塑膠製成。"
 
 #: DB:work_type/description:23
 msgctxt "work_type"
@@ -5066,7 +5067,7 @@ msgstr ""
 #: DB:series_type/name:7
 msgctxt "series_type"
 msgid "Tour"
-msgstr ""
+msgstr "巡迴表演"
 
 #: DB:cover_art_archive.art_type/name:7
 msgctxt "cover_art_type"
@@ -5076,7 +5077,7 @@ msgstr "音軌"
 #: DB:cover_art_archive.art_type/name:9
 msgctxt "cover_art_type"
 msgid "Tray"
-msgstr ""
+msgstr "盤子"
 
 #: DB:work_attribute_type_allowed_value/value:775
 msgctxt "work_attribute_type_allowed_value"
@@ -5126,7 +5127,7 @@ msgstr ""
 #: DB:medium_format/name:26
 msgctxt "medium_format"
 msgid "USB Flash Drive"
-msgstr ""
+msgstr "USB 隨身碟"
 
 #: DB:work_attribute_type_allowed_value/value:258
 msgctxt "work_attribute_type_allowed_value"
@@ -5278,7 +5279,7 @@ msgstr "黑膠唱片"
 #: DB:medium_format/name:48
 msgctxt "medium_format"
 msgid "VinylDisc"
-msgstr ""
+msgstr "VinylDisc"
 
 #: DB:work_attribute_type_allowed_value/value:259
 msgctxt "work_attribute_type_allowed_value"

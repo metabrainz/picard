@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2017-03-24 14:38+0100\n"
-"PO-Revision-Date: 2017-03-31 05:39+0000\n"
+"POT-Creation-Date: 2017-04-01 11:45+0200\n"
+"PO-Revision-Date: 2017-04-19 07:44+0000\n"
 "Last-Translator: Maurits Meulenbelt <mfmeulenbelt@gmail.com>\n"
 "Language-Team: Dutch (http://www.transifex.com/musicbrainz/musicbrainz/language/nl/)\n"
 "MIME-Version: 1.0\n"
@@ -90,8 +90,8 @@ msgstr[1] "; %i afbeeldingen"
 #, python-format
 msgid "; %i image not in all tracks"
 msgid_plural "; %i different images among tracks"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "; %i afbeelding niet in alle nummers"
+msgstr[1] "; %i verschillende afbeeldingen in de nummers"
 
 #: picard/cluster.py:182 picard/cluster.py:195
 #, python-format
@@ -386,45 +386,45 @@ msgid_plural "%s (%i releases)"
 msgstr[0] "%s (%i uitgave)"
 msgstr[1] "%s (%i uitgaves)"
 
-#: picard/ui/coverartbox.py:222
+#: picard/ui/coverartbox.py:221
 msgid "View release on MusicBrainz"
 msgstr "Uitgave op MusicBrainz bekijken"
 
-#: picard/ui/coverartbox.py:228
+#: picard/ui/coverartbox.py:227
 msgid "Common images on all tracks"
-msgstr ""
+msgstr "Nummers hebben dezelfde afbeeldingen"
 
-#: picard/ui/coverartbox.py:230
+#: picard/ui/coverartbox.py:229
 msgid "Tracks contain different images"
-msgstr ""
+msgstr "Nummers hebben verschillende afbeeldingen"
 
-#: picard/ui/coverartbox.py:272
+#: picard/ui/coverartbox.py:269
 msgid "Show more details"
 msgstr "Meer details"
 
-#: picard/ui/coverartbox.py:309
+#: picard/ui/coverartbox.py:306
 msgid "New Cover Art"
 msgstr "Nieuwe afbeelding"
 
-#: picard/ui/coverartbox.py:310
+#: picard/ui/coverartbox.py:307
 msgid "Original Cover Art"
 msgstr "Huidige afbeelding"
 
-#: picard/ui/coverartbox.py:435
+#: picard/ui/coverartbox.py:432
 msgid "Show more details..."
-msgstr ""
+msgstr "Meer details"
 
-#: picard/ui/coverartbox.py:441
+#: picard/ui/coverartbox.py:438
 msgid "Keep original cover art"
-msgstr ""
+msgstr "Originele afbeelding behouden"
 
-#: picard/ui/coverartbox.py:450
+#: picard/ui/coverartbox.py:447
 msgid "Replace front cover art on drop"
-msgstr ""
+msgstr "Door hiernaartoe gesleepte afbeelding vervangen"
 
-#: picard/ui/coverartbox.py:455
+#: picard/ui/coverartbox.py:452
 msgid "Append front cover art on drop"
-msgstr ""
+msgstr "Hiernaartoe gesleepte afbeelding toevoegen"
 
 #: picard/ui/filebrowser.py:40
 msgid "&Move Tagged Files Here"
@@ -531,8 +531,8 @@ msgstr "Informatie over het nummer"
 #, python-format
 msgid "%i file in this track"
 msgid_plural "%i files in this track"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%i bestand aan dit nummer gekoppeld"
+msgstr[1] "%i bestanden aan dit nummer gekoppeld"
 
 #: picard/ui/infodialog.py:340
 msgid "Cluster Info"
@@ -1981,19 +1981,23 @@ msgstr "Instellingen herstellen"
 msgid "Reset all settings for current option page"
 msgstr "Zet de instellingen van deze pagina terug naar de standaard"
 
-#: picard/ui/options/dialog.py:172
+#: picard/ui/options/dialog.py:88
+msgid "Make It So!"
+msgstr "Ok"
+
+#: picard/ui/options/dialog.py:174
 msgid "You are about to reset your options for this page."
 msgstr "Je staat op het punt de instellingen op deze pagina naar de standaardwaardes te herstellen."
 
-#: picard/ui/options/dialog.py:176
+#: picard/ui/options/dialog.py:178
 msgid "Warning! This will reset all of your settings."
 msgstr "Waarschuwing! Dit zet al je instellingen terug naar de standaardwaardes."
 
-#: picard/ui/options/dialog.py:183
+#: picard/ui/options/dialog.py:185
 msgid "Confirm Reset"
 msgstr "Terugzetten bevestigen"
 
-#: picard/ui/options/dialog.py:184
+#: picard/ui/options/dialog.py:186
 msgid "Are you sure?"
 msgstr "Weet je het zeker?"
 
