@@ -6,7 +6,7 @@
 # A. Regnander <anton_r_3@hotmail.com>, 2017
 # bnw <thth0851@student.uu.se>, 2006
 # Christian Andersson <christian.ld.andersson@gmail.com>, 2012
-# Jonatan Nyberg <jonatan@autistici.org>, 2016-2017
+# Jonatan Nyberg, 2016-2017
 # Robin Björnsvik <robin@bjornsvik.se>, 2013
 # Staffan Vilcans, 2014
 # Staffan Vilcans, 2016-2017
@@ -15,9 +15,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2017-03-24 14:38+0100\n"
-"PO-Revision-Date: 2017-03-27 17:35+0000\n"
-"Last-Translator: A. Regnander <anton_r_3@hotmail.com>\n"
+"POT-Creation-Date: 2017-04-01 11:45+0200\n"
+"PO-Revision-Date: 2017-04-14 04:00+0000\n"
+"Last-Translator: Jonatan Nyberg\n"
 "Language-Team: Swedish (http://www.transifex.com/musicbrainz/musicbrainz/language/sv/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -389,43 +389,43 @@ msgid_plural "%s (%i releases)"
 msgstr[0] "%s (%i utgåva)"
 msgstr[1] "%s (%i utgåvor)"
 
-#: picard/ui/coverartbox.py:222
+#: picard/ui/coverartbox.py:221
 msgid "View release on MusicBrainz"
 msgstr "Visa utgåva på MusicBrainz"
 
-#: picard/ui/coverartbox.py:228
+#: picard/ui/coverartbox.py:227
 msgid "Common images on all tracks"
 msgstr ""
 
-#: picard/ui/coverartbox.py:230
+#: picard/ui/coverartbox.py:229
 msgid "Tracks contain different images"
 msgstr ""
 
-#: picard/ui/coverartbox.py:272
+#: picard/ui/coverartbox.py:269
 msgid "Show more details"
 msgstr "Visa fler detaljer"
 
-#: picard/ui/coverartbox.py:309
+#: picard/ui/coverartbox.py:306
 msgid "New Cover Art"
 msgstr "Nytt omslag"
 
-#: picard/ui/coverartbox.py:310
+#: picard/ui/coverartbox.py:307
 msgid "Original Cover Art"
 msgstr "Ursprungligt omslag"
 
-#: picard/ui/coverartbox.py:435
+#: picard/ui/coverartbox.py:432
 msgid "Show more details..."
 msgstr ""
 
-#: picard/ui/coverartbox.py:441
+#: picard/ui/coverartbox.py:438
 msgid "Keep original cover art"
 msgstr "Behåll ursprungligt omslag"
 
-#: picard/ui/coverartbox.py:450
+#: picard/ui/coverartbox.py:447
 msgid "Replace front cover art on drop"
 msgstr "Ersätt framsidans omslag vid släpp"
 
-#: picard/ui/coverartbox.py:455
+#: picard/ui/coverartbox.py:452
 msgid "Append front cover art on drop"
 msgstr "Lägg till framsidans omslag vid släpp"
 
@@ -1501,11 +1501,11 @@ msgstr "Allmänt"
 
 #: picard/ui/ui_options_general.py:99
 msgid "Automatically scan all new files"
-msgstr "Läs automatiskt in alla nya filer"
+msgstr "Skanna automatiskt alla nya filer"
 
 #: picard/ui/ui_options_general.py:100
 msgid "Ignore MBIDs when loading new files"
-msgstr "Ignorera MBIDn vid laddning av nya filer"
+msgstr "Ignorera MBID vid laddning av nya filer"
 
 #: picard/ui/ui_options_interface.py:122
 msgid "Miscellaneous"
@@ -1605,11 +1605,11 @@ msgstr "Konvertera interpunktionstecken från Unicode till ASCII"
 
 #: picard/ui/ui_options_metadata.py:105
 msgid "Use release relationships"
-msgstr "Använd samband mellan utgåvor"
+msgstr "Använd utgåvesamband"
 
 #: picard/ui/ui_options_metadata.py:106
 msgid "Use track relationships"
-msgstr "Använd samband mellan spår"
+msgstr "Använd spårsamband"
 
 #: picard/ui/ui_options_metadata.py:107
 msgid "Use folksonomy tags as genre"
@@ -1691,7 +1691,7 @@ msgid ""
 "user who did the rating. That way different ratings for different users can "
 "be stored in the files. Please specify the e-mail you want to use to save "
 "your ratings."
-msgstr "Picard sparar betyg tillsammans med en epostadress som identiferar den användare som gav betygen. På detta sätt kan filerna innehålla olika betyg av olika användare. Ange den emailadress du vill spara tillsammans med dina betyg."
+msgstr "Picard sparar betyg tillsammans med en e-postadress som identifierar användaren som gav betygen. På detta sätt kan filerna innehålla olika betyg av olika användare. Ange e-postadressen du vill använda för att spara dina betyg."
 
 #: picard/ui/ui_options_ratings.py:51
 msgid "E-mail:"
@@ -1707,7 +1707,7 @@ msgstr "Föredragna releasetyper"
 
 #: picard/ui/ui_options_releases.py:105
 msgid "Preferred release countries"
-msgstr "Föredragna releaseländer"
+msgstr "Föredragna utgivningsländer"
 
 #: picard/ui/ui_options_releases.py:106 picard/ui/ui_options_releases.py:109
 msgid ">"
@@ -1719,7 +1719,7 @@ msgstr "<"
 
 #: picard/ui/ui_options_releases.py:108
 msgid "Preferred release formats"
-msgstr "Föredragna releaseformat"
+msgstr "Föredragna utgivningsformat"
 
 #: picard/ui/ui_options_renaming.py:163
 msgid "Move files when saving"
@@ -1984,19 +1984,23 @@ msgstr "Återställ standardvärden"
 msgid "Reset all settings for current option page"
 msgstr ""
 
-#: picard/ui/options/dialog.py:172
+#: picard/ui/options/dialog.py:88
+msgid "Make It So!"
+msgstr ""
+
+#: picard/ui/options/dialog.py:174
 msgid "You are about to reset your options for this page."
 msgstr ""
 
-#: picard/ui/options/dialog.py:176
+#: picard/ui/options/dialog.py:178
 msgid "Warning! This will reset all of your settings."
 msgstr "Varning! Detta kommer nollställa alla dina inställningar."
 
-#: picard/ui/options/dialog.py:183
+#: picard/ui/options/dialog.py:185
 msgid "Confirm Reset"
 msgstr "Bekräfta nollställning"
 
-#: picard/ui/options/dialog.py:184
+#: picard/ui/options/dialog.py:186
 msgid "Are you sure?"
 msgstr "Är du säker?"
 

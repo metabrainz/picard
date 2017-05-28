@@ -11,6 +11,7 @@
 # French language coordinator <french.coordinator@rbox.me>, 2013,2015
 # ybsar <gybsar@gmail.com>, 2013
 # Jahrynx <fjochaud@yahoo.fr>, 2006
+# Laurent Hosch <laurent.hosch@gmail.com>, 2017
 # Laurent Monin <i18n@norz.org>, 2013-2014,2017
 # Lotheric <lotheric@gmail.com>, 2012
 # Matthieu Martin <martin.matthieu@gmail.com>, 2006
@@ -26,9 +27,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2017-03-24 14:38+0100\n"
-"PO-Revision-Date: 2017-03-24 13:41+0000\n"
-"Last-Translator: Laurent Monin <i18n@norz.org>\n"
+"POT-Creation-Date: 2017-04-01 11:45+0200\n"
+"PO-Revision-Date: 2017-04-19 17:15+0000\n"
+"Last-Translator: Laurent Hosch <laurent.hosch@gmail.com>\n"
 "Language-Team: French (http://www.transifex.com/musicbrainz/musicbrainz/language/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -400,43 +401,43 @@ msgid_plural "%s (%i releases)"
 msgstr[0] "%s (%i parution)"
 msgstr[1] "%s (%i parutions)"
 
-#: picard/ui/coverartbox.py:222
+#: picard/ui/coverartbox.py:221
 msgid "View release on MusicBrainz"
 msgstr "Voir la parution sur MusicBrainz"
 
-#: picard/ui/coverartbox.py:228
+#: picard/ui/coverartbox.py:227
 msgid "Common images on all tracks"
 msgstr "Images communes à toutes les pistes"
 
-#: picard/ui/coverartbox.py:230
+#: picard/ui/coverartbox.py:229
 msgid "Tracks contain different images"
 msgstr "Les pistes contiennent des images différentes"
 
-#: picard/ui/coverartbox.py:272
+#: picard/ui/coverartbox.py:269
 msgid "Show more details"
 msgstr "Plus de détails"
 
-#: picard/ui/coverartbox.py:309
+#: picard/ui/coverartbox.py:306
 msgid "New Cover Art"
 msgstr "Nouvelle illustration"
 
-#: picard/ui/coverartbox.py:310
+#: picard/ui/coverartbox.py:307
 msgid "Original Cover Art"
 msgstr "Illustration initiale"
 
-#: picard/ui/coverartbox.py:435
+#: picard/ui/coverartbox.py:432
 msgid "Show more details..."
 msgstr "Plus de détails..."
 
-#: picard/ui/coverartbox.py:441
+#: picard/ui/coverartbox.py:438
 msgid "Keep original cover art"
 msgstr "Conserver les illustrations originales"
 
-#: picard/ui/coverartbox.py:450
+#: picard/ui/coverartbox.py:447
 msgid "Replace front cover art on drop"
 msgstr "Remplacer l'illustration de couverture lors du glisser-déposer"
 
-#: picard/ui/coverartbox.py:455
+#: picard/ui/coverartbox.py:452
 msgid "Append front cover art on drop"
 msgstr "Ajouter l'illustration de couverture lors du glisser-déposer"
 
@@ -1995,19 +1996,23 @@ msgstr "Restaurer par &défaut"
 msgid "Reset all settings for current option page"
 msgstr "Réinitialiser toutes les options de la page courante"
 
-#: picard/ui/options/dialog.py:172
+#: picard/ui/options/dialog.py:88
+msgid "Make It So!"
+msgstr "Faites ainsi!"
+
+#: picard/ui/options/dialog.py:174
 msgid "You are about to reset your options for this page."
 msgstr "Vous êtes sur le point de réinitialiser vos options pour cette page."
 
-#: picard/ui/options/dialog.py:176
+#: picard/ui/options/dialog.py:178
 msgid "Warning! This will reset all of your settings."
 msgstr "Attention ! Cela réinitialisera tout votre configuration."
 
-#: picard/ui/options/dialog.py:183
+#: picard/ui/options/dialog.py:185
 msgid "Confirm Reset"
 msgstr "Confirmation de la réinitialisation"
 
-#: picard/ui/options/dialog.py:184
+#: picard/ui/options/dialog.py:186
 msgid "Are you sure?"
 msgstr "Êtes-vous sûr ?"
 

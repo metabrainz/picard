@@ -4,10 +4,13 @@
 # nikki2 <b4931048@nwldx.com>, 2012
 # Daniel Schury <Daniel.Schury@physik.uni-giessen.de>, 2011
 # Daniel Schury <email address hidden>, 2011
+# Elmar Stichnoth, 2017
 #   <email address hidden>, 2012
 # Ettore Atalan <atalanttore@googlemail.com>, 2014
 # Felix Kugler <relgukxilef@gmail.com>, 2015
 # Frank Matthiae <senax79@gmail.com>, 2015
+# Jod isnotmyname <beebeebeethats3bees@aaathats3as.com>, 2017
+# happykraut, 2017
 # Leo_Verto <leotheverto@googlemail.com>, 2017
 # Mineo <email address hidden>, 2011
 # Wieland Hoffmann <themineo+transifex@googlemail.com>, 2011
@@ -27,8 +30,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2017-01-16 20:46+0000\n"
-"Last-Translator: Laurent Monin <i18n@norz.org>\n"
+"PO-Revision-Date: 2017-05-16 22:24+0000\n"
+"Last-Translator: Elmar Stichnoth\n"
 "Language-Team: German (http://www.transifex.com/musicbrainz/musicbrainz/language/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -116,7 +119,7 @@ msgstr "a-Dorisch"
 #: DB:work_attribute_type_allowed_value/value:806
 msgctxt "work_attribute_type_allowed_value"
 msgid "A Mixolydian"
-msgstr ""
+msgstr "A-Mixolydisch"
 
 #: DB:work_type/description:2
 msgctxt "work_type"
@@ -152,7 +155,7 @@ msgid ""
 "A give-away release or a release intended to promote an upcoming official "
 "release (e.g. pre-release versions, releases included with a magazine, "
 "versions supplied to radio DJs for air-play)."
-msgstr ""
+msgstr "Ein Werbegeschenk bzw. eine Veröffentlichung, die zu Promotionszwecken verteilt wird, um eine bevorstehende offizielle Veröffentlichung zu bewerben (z.B. Vorveröffentlichungsalben, Magazinen beigelegte CDs, Versionen für Radio DJs)."
 
 #: DB:work_attribute_type_allowed_value/value:28
 msgctxt "work_attribute_type_allowed_value"
@@ -173,7 +176,7 @@ msgid ""
 "A masterclass or clinic is an event where an artist meets with a small to "
 "medium-sized audience and instructs them individually and/or takes questions"
 " intended to improve the audience members' playing skills."
-msgstr ""
+msgstr "Als Meisterklasse oder Workshop werden Veranstaltungen bezeichnet, bei denen ein Künstler ein kleines bis mittleres Publikum individuell unterrichtet und/oder Fragen beantwortet, um die Spielfähigkeiten der Teilnehmer aus dem Publikum zu verbessern."
 
 #: DB:work_attribute_type_allowed_value/value:29
 msgctxt "work_attribute_type_allowed_value"
@@ -4277,7 +4280,7 @@ msgstr ""
 #: DB:release_group_secondary_type/name:7
 msgctxt "release_group_secondary_type"
 msgid "Remix"
-msgstr "Remix"
+msgstr "Neumischung"
 
 #: DB:work_attribute_type_allowed_value/value:516
 msgctxt "work_attribute_type_allowed_value"
