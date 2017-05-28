@@ -8,6 +8,7 @@ import os
 import re
 import sys
 import subprocess
+import time
 from io import StringIO
 
 from picard import __version__
@@ -649,7 +650,7 @@ def _picard_packages():
 
 args2 = {
     'name': PACKAGE_NAME,
-    'version': __version__,
+    'version': __version__[:-4]+"alpha."+str(int(time.time())),
     'description': 'The next generation MusicBrainz tagger',
     'keywords': 'MusicBrainz metadata tagger picard',
     'url': 'https://picard.musicbrainz.org/',
