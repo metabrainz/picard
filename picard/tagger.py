@@ -38,10 +38,10 @@ from itertools import chain
 from operator import attrgetter
 
 
-def _patched_shutil_copystat(src, dst):
 # A "fix" for https://bugs.python.org/issue1438480
+def _patched_shutil_copystat(src, dst, *, follow_symlinks=True):
     try:
-        _orig_shutil_copystat(src, dst)
+        _orig_shutil_copystat(src, dst, follow_symlinks=follow_symlinks)
     except OSError:
         pass
 
