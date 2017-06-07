@@ -38,8 +38,8 @@ from itertools import chain
 from operator import attrgetter
 
 
-# A "fix" for http://python.org/sf/1438480
 def _patched_shutil_copystat(src, dst):
+# A "fix" for https://bugs.python.org/issue1438480
     try:
         _orig_shutil_copystat(src, dst)
     except OSError:
