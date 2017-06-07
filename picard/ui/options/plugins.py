@@ -306,7 +306,7 @@ class PluginsOptionsPage(OptionsPage):
         self.ui.details.setText("<p>%s</p>" % "<br/>\n".join(text))
 
     def open_plugins(self):
-        files = QtWidgets.QFileDialog.getOpenFileNames(
+        files, _filter = QtWidgets.QFileDialog.getOpenFileNames(
             self,
             "",
             QtCore.QDir.homePath(),
