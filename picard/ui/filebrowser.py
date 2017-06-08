@@ -23,7 +23,47 @@ import sys
 from PyQt5 import QtCore, QtWidgets
 from picard import config
 from picard.formats import supported_formats
-from picard.util import find_existing_path
+from picard.util import find_existing_path, icontheme
+
+
+class FileBrowserPane(QtGui.QWidget):
+
+    def __init__(self, parent):
+        QtGui.QWidget.__init__(self, parent)
+        layout = QtGui.QVBoxLayout()
+        layout.setContentsMargins(0, 0, 0, 0)
+        layout.setSpacing(0)
+        self.toolbar = FileBrowserToolbar(self)
+        self.file_browser = FileBrowser(self)
+        layout.insertWidget(0, self.toolbar)
+        layout.insertWidget(1, self.file_browser)
+        self.setLayout(layout)
+        self.tagger = self.parent().tagger
+        self.toolbar.add_items_button.clicked.connect(self.add_items)
+
+    def save_state(self):
+        self.file_browser.save_state()
+
+    def restore_state(self):
+        self.file_browser.restore_state()
+
+    def _selected_paths(self):
+        paths = []
+        for index in self.file_browser.selectedIndexes():
+            paths.append(self.file_browser.model.filePath(index))
+        return paths
+
+    def add_items(self):
+        paths = self._selected_paths()
+        files = []
+        for path in paths:
+            if os.path.isfile(path):
+                files.append(path)
+            else:
+                self.tagger.add_directory(path)
+
+        if files:
+            self.tagger.add_files(files)
 
 
 class FileBrowser(QtWidgets.QTreeView):
@@ -147,3 +187,14 @@ class FileBrowser(QtWidgets.QTreeView):
         if indexes:
             path = self.model.filePath(indexes[0])
             config.setting["starting_directory_path"] = self._get_destination_from_path(path)
+
+
+class FileBrowserToolbar(QtGui.QToolBar):
+
+    def __init__(self, parent):
+        QtGui.QToolBar.__init__(self, parent)
+        self.add_items_button = QtGui.QToolButton(self)
+        self.add_items_button.setText(_(u"Add items"))
+        self.add_items_button.setIcon(icontheme.lookup('add-item', icontheme.ICON_SIZE_MENU))
+        self.add_items_button.setToolButtonStyle(QtCore.Qt.ToolButtonTextBesideIcon)
+        self.addWidget(self.add_items_button)
