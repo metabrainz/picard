@@ -124,7 +124,7 @@ class EditTagDialog(PicardDialog):
             self.ui.add_value.setEnabled(not self.different)
 
         self._add_value_items(values)
-        self.value_list.setCurrentItem(self.value_list.item(0), QtWidgets.QItemSelectionModel.SelectCurrent)
+        self.value_list.setCurrentItem(self.value_list.item(0), QtCore.QItemSelectionModel.SelectCurrent)
         tag_names.editTextChanged.connect(self.tag_changed)
 
     def _add_value_items(self, values):
