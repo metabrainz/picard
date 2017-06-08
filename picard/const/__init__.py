@@ -37,7 +37,7 @@ USER_DIR = os.path.join(
     os.path.expanduser(USER_DIR), "MusicBrainz", PICARD_APP_NAME
 )
 
-USER_PLUGIN_DIR = os.path.join(USER_DIR, "plugins")
+USER_PLUGIN_DIR = os.path.join(USER_DIR, "pluginsV2")
 
 # AcoustID client API key
 ACOUSTID_KEY = 'v8pQ6oyB'
