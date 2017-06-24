@@ -28,28 +28,28 @@ class APIHelper():
                 priority=False, important=False, mblogin=False,
                 cacheloadcontrol=None, refresh=False, queryargs=None):
         path = self.api_path + "/".join(path_list)
-        self._webservice.get(self.host, self.port, path, handler,
+        return self._webservice.get(self.host, self.port, path, handler,
                  priority=priority, important=important, mblogin=mblogin,
                  refresh=refresh, queryargs=queryargs)
 
     def post(self, path_list, data, handler, priority=False, important=False,
                  mblogin=False, refresh=False, queryargs=None):
         path = self.api_path + "/".join(path_list)
-        self._webservice.post(self.host, self.port, path, data, handler,
+        return self._webservice.post(self.host, self.port, path, data, handler,
                   priority=priority, important=important, mblogin=mblogin,
                   refresh=refresh, queryargs=queryargs)
 
     def put(self, path_list, data, handler, priority=True, important=False,
                 mblogin=True, queryargs=None):
         path = self.api_path + "/".join(path_list)
-        self._webservice.put(self.host, self.port, path, data, handler,
+        return self._webservice.put(self.host, self.port, path, data, handler,
                  priority=priority, important=important, mblogin=mblogin,
                  queryargs=queryargs)
 
     def delete(self, path_list, handler, priority=True, important=False,
                    mblogin=True, queryargs=None):
         path = self.api_path + "/".join(path_list)
-        self._webservice.put(self.host, self.port, path, handler,
+        return self._webservice.put(self.host, self.port, path, handler,
                  priority=priority, important=important, mblogin=mblogin,
                  queryargs=queryargs)
 
@@ -62,7 +62,7 @@ class MBAPIHelper():
 
     def _get_by_id(self, entitytype, entityid, handler, inc=None, queryargs=None,
                    priority=False, important=False, mblogin=False, refresh=False):
-        path_list = (entitytype, entityid)
+        path_list = [entitytype, entityid]
         if queryargs is None:
             queryargs = {}
         if inc:
