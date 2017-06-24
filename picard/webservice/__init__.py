@@ -3,6 +3,7 @@
 # Picard, the next-generation MusicBrainz tagger
 # Copyright (C) 2007 Lukáš Lalinský
 # Copyright (C) 2009 Carlin Mangar
+# Copyright (C) 2017 Sambhav Kothari
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -20,11 +21,10 @@
 
 
 """
-Asynchronous XML web service.
+Asynchronous web service.
 """
 
 import sys
-import re
 import time
 import os.path
 import platform
@@ -32,19 +32,19 @@ import math
 from collections import deque, defaultdict
 from functools import partial
 from PyQt5 import QtCore, QtNetwork
-from PyQt5.QtCore import QUrl, QXmlStreamReader, QStandardPaths, QUrlQuery
+from PyQt5.QtCore import QUrl, QStandardPaths, QUrlQuery
 from picard import (PICARD_APP_NAME,
                     PICARD_ORG_NAME,
                     PICARD_VERSION_STR,
                     config,
                     log)
-from picard.const import (ACOUSTID_KEY,
-                          ACOUSTID_HOST,
+from picard.const import (ACOUSTID_HOST,
                           ACOUSTID_PORT,
                           CAA_HOST,
                           CAA_PORT)
 from picard.oauth import OAuthManager
 from picard.util import build_qurl
+from picard.util.xml import parse_xml
 
 
 COUNT_REQUESTS_DELAY_MS = 250
@@ -61,78 +61,7 @@ CLIENT_STRING = string_(QUrl.toPercentEncoding('%s %s-%s' % (PICARD_ORG_NAME,
                                                          PICARD_VERSION_STR)))
 
 
-def escape_lucene_query(text):
-    return re.sub(r'([+\-&|!(){}\[\]\^"~*?:\\/])', r'\\\1', text)
-
-
-def _wrap_xml_metadata(data):
-    return ('<?xml version="1.0" encoding="UTF-8"?>' +
-            '<metadata xmlns="http://musicbrainz.org/ns/mmd-2.0#">%s</metadata>' % data)
-
-
-class XmlNode(object):
-
-    def __init__(self):
-        self.text = ''
-        self.children = {}
-        self.attribs = {}
-
-    def __repr__(self):
-        return repr(self.__dict__)
-
-    def append_child(self, name, node=None):
-        if node is None:
-            node = XmlNode()
-        self.children.setdefault(name, []).append(node)
-        return node
-
-    def __getattr__(self, name):
-        try:
-            return self.children[name]
-        except KeyError:
-            try:
-                return self.attribs[name]
-            except KeyError:
-                raise AttributeError(name)
-
-
-_node_name_re = re.compile('[^a-zA-Z0-9]')
-
-
-def _node_name(n):
-    return _node_name_re.sub('_', n)
-
-
-def _read_xml(stream):
-    document = XmlNode()
-    current_node = document
-    path = []
-
-    while not stream.atEnd():
-        stream.readNext()
-
-        if stream.isStartElement():
-            node = XmlNode()
-            attrs = stream.attributes()
-
-            for i in range(attrs.count()):
-                attr = attrs.at(i)
-                node.attribs[_node_name(attr.name())] = string_(attr.value())
-
-            current_node.append_child(_node_name(stream.name()), node)
-            path.append(current_node)
-            current_node = node
-
-        elif stream.isEndElement():
-            current_node = path.pop()
-
-        elif stream.isCharacters():
-            current_node.text += stream.text()
-
-    return document
-
-
-class XmlWebService(QtCore.QObject):
+class WebService(QtCore.QObject):
 
     def __init__(self, parent=None):
         QtCore.QObject.__init__(self, parent)
@@ -150,6 +79,8 @@ class XmlWebService(QtCore.QObject):
         }
         self._init_queues()
         self._init_timers()
+        self.format_parser = None
+        self.format_header = ""
 
     def _init_queues(self):
         self._active_requests = {}
@@ -185,7 +116,7 @@ class XmlWebService(QtCore.QObject):
             proxy.setPassword(config.setting["proxy_password"])
         self.manager.setProxy(proxy)
 
-    def _start_request_continue(self, method, host, port, path, data, handler, xml,
+    def _start_request_continue(self, method, host, port, path, data, handler, parse_format,
                                 mblogin=False, cacheloadcontrol=None, refresh=None,
                                 access_token=None, queryargs=None):
         url = build_qurl(host, port, path=path, queryargs=queryargs)
@@ -203,24 +134,24 @@ class XmlWebService(QtCore.QObject):
             request.setAttribute(QtNetwork.QNetworkRequest.CacheLoadControlAttribute,
                                  cacheloadcontrol)
         request.setRawHeader(b"User-Agent", USER_AGENT_STRING.encode('utf-8'))
-        if xml:
-            request.setRawHeader(b"Accept", b"application/xml")
+        if parse_format:
+            request.setRawHeader(b"Accept", self.format_header.encode('utf-8'))
         if data is not None:
-            if method == "POST" and host == config.setting["server_host"] and xml:
-                request.setHeader(QtNetwork.QNetworkRequest.ContentTypeHeader, "application/xml; charset=utf-8")
+            if method == "POST" and host == config.setting["server_host"] and parse_format:
+                request.setHeader(QtNetwork.QNetworkRequest.ContentTypeHeader, "%s; charset=utf-8" % self.format_header)
             else:
                 request.setHeader(QtNetwork.QNetworkRequest.ContentTypeHeader, "application/x-www-form-urlencoded")
         send = self._request_methods[method]
         reply = send(request, data.encode('utf-8')) if data is not None else send(request)
         self._remember_request_time((host, port))
-        self._active_requests[reply] = (request, handler, xml, refresh)
+        self._active_requests[reply] = (request, handler, parse_format, refresh)
 
-    def _start_request(self, method, host, port, path, data, handler, xml,
+    def _start_request(self, method, host, port, path, data, handler, parse_format,
                        mblogin=False, cacheloadcontrol=None, refresh=None,
                        queryargs=None):
         def start_request_continue(access_token=None):
             self._start_request_continue(
-                method, host, port, path, data, handler, xml,
+                method, host, port, path, data, handler, parse_format,
                 mblogin=mblogin, cacheloadcontrol=cacheloadcontrol, refresh=refresh,
                 access_token=access_token, queryargs=queryargs)
         if mblogin and path != "/oauth2/token":
@@ -244,7 +175,7 @@ class XmlWebService(QtCore.QObject):
             return url.port(443)
         return url.port(80)
 
-    def _handle_reply(self, reply, request, handler, xml, refresh):
+    def _handle_reply(self, reply, request, handler, parse_format, refresh):
         error = int(reply.error())
         if error:
             log.error("Network request error for %s: %s (QT code %d, HTTP code %s)",
@@ -271,7 +202,7 @@ class XmlWebService(QtCore.QObject):
                     url = request.url()
                     # merge with base url (to cover the possibility of the URL being relative)
                     redirect = url.resolved(redirect)
-                    if not XmlWebService.urls_equivalent(redirect, reply.request().url()):
+                    if not WebService.urls_equivalent(redirect, reply.request().url()):
                         log.debug("Redirect to %s requested", redirect.toString(QUrl.RemoveUserInfo))
                         redirect_host = string_(redirect.host())
                         redirect_port = self.url_port(redirect)
@@ -292,40 +223,40 @@ class XmlWebService(QtCore.QObject):
                         self.get(redirect_host,
                                  redirect_port,
                                  redirect_path,
-                                 handler, xml, priority=True, important=True, refresh=refresh, queryargs=redirect_query,
+                                 handler, parse_format, priority=True, important=True, refresh=refresh, queryargs=redirect_query,
                                  cacheloadcontrol=request.attribute(QtNetwork.QNetworkRequest.CacheLoadControlAttribute))
                     else:
                         log.error("Redirect loop: %s",
                                   reply.request().url().toString(QUrl.RemoveUserInfo)
                                   )
                         handler(reply.readAll(), reply, error)
-                elif xml:
-                    document = _read_xml(QXmlStreamReader(reply))
+                elif parse_format:
+                    document = self.format_parser(reply)
                     handler(document, reply, error)
                 else:
                     handler(reply.readAll(), reply, error)
 
     def _process_reply(self, reply):
         try:
-            request, handler, xml, refresh = self._active_requests.pop(reply)
+            request, handler, parse_format, refresh = self._active_requests.pop(reply)
         except KeyError:
             log.error("Request not found for %s" % reply.request().url().toString(QUrl.RemoveUserInfo))
             return
         try:
-            self._handle_reply(reply, request, handler, xml, refresh)
+            self._handle_reply(reply, request, handler, parse_format, refresh)
         finally:
             reply.close()
             reply.deleteLater()
 
-    def get(self, host, port, path, handler, xml=True, priority=False,
+    def get(self, host, port, path, handler, parse_format=True, priority=False,
             important=False, mblogin=False, cacheloadcontrol=None, refresh=False, queryargs=None):
         func = partial(self._start_request, "GET", host, port, path, None,
-                       handler, xml, mblogin, cacheloadcontrol=cacheloadcontrol, refresh=refresh, queryargs=queryargs)
+                       handler, parse_format, mblogin, cacheloadcontrol=cacheloadcontrol, refresh=refresh, queryargs=queryargs)
         return self.add_task(func, host, port, priority, important=important)
 
-    def post(self, host, port, path, data, handler, xml=True, priority=False, important=False, mblogin=True, queryargs=None):
+    def post(self, host, port, path, data, handler, parse_format=True, priority=False, important=False, mblogin=True, queryargs=None):
         log.debug("POST-DATA %r", data)
-        func = partial(self._start_request, "POST", host, port, path, data, handler, xml, mblogin, queryargs=queryargs)
+        func = partial(self._start_request, "POST", host, port, path, data, handler, parse_format, mblogin, queryargs=queryargs)
         return self.add_task(func, host, port, priority, important=important)
 
     def put(self, host, port, path, data, handler, priority=True, important=False, mblogin=True, queryargs=None):
@@ -335,6 +266,14 @@ class XmlWebService(QtCore.QObject):
     def delete(self, host, port, path, handler, priority=True, important=False, mblogin=True, queryargs=None):
         func = partial(self._start_request, "DELETE", host, port, path, None, handler, False, mblogin, queryargs=queryargs)
         return self.add_task(func, host, port, priority, important=important)
+
+    def download(self, host, port, path, handler, priority=False,
+                 important=False, cacheloadcontrol=None, refresh=False,
+                 queryargs=None):
+        return self.get(host, port, path, handler, parse_format=False,
+                        priority=priority, important=important,
+                        cacheloadcontrol=cacheloadcontrol, refresh=refresh,
+                        queryargs=queryargs)
 
     def stop(self):
         for reply in list(self._active_requests.keys()):
@@ -421,180 +360,13 @@ class XmlWebService(QtCore.QObject):
             self._queues[prio][hostkey].remove(func)
             if not self._timer_count_pending_requests.isActive():
                 self._timer_count_pending_requests.start(0)
-        except:
-            pass
-
-    def _get_by_id(self, entitytype, entityid, handler, inc=None, queryargs=None,
-                   priority=False, important=False, mblogin=False, refresh=False):
-        host = config.setting["server_host"]
-        port = config.setting["server_port"]
-        path = "/ws/2/%s/%s" % (entitytype, entityid)
-        if queryargs is None:
-            queryargs = {}
-        if inc:
-            queryargs["inc"] = "+".join(inc)
-        return self.get(host, port, path, handler,
-                        priority=priority, important=important, mblogin=mblogin,
-                        refresh=refresh, queryargs=queryargs)
-
-    def get_release_by_id(self, releaseid, handler, inc=None,
-                          priority=False, important=False, mblogin=False, refresh=False):
-        if inc is None:
-            inc = []
-        return self._get_by_id('release', releaseid, handler, inc,
-                               priority=priority, important=important, mblogin=mblogin, refresh=refresh)
-
-    def get_track_by_id(self, trackid, handler, inc=None,
-                        priority=False, important=False, mblogin=False, refresh=False):
-        if inc is None:
-            inc = []
-        return self._get_by_id('recording', trackid, handler, inc,
-                               priority=priority, important=important, mblogin=mblogin, refresh=refresh)
-
-    def lookup_discid(self, discid, handler, priority=True, important=True, refresh=False):
-        inc = ['artist-credits', 'labels']
-        return self._get_by_id('discid', discid, handler, inc, queryargs={"cdstubs": "no"},
-                               priority=priority, important=important, refresh=refresh)
-
-    def _find(self, entitytype, handler, **kwargs):
-        host = config.setting["server_host"]
-        port = config.setting["server_port"]
-        filters = []
-
-        limit = kwargs.pop("limit")
-        if limit:
-            filters.append(("limit", limit))
-
-        is_search = kwargs.pop("search", False)
-        if is_search:
-            if config.setting["use_adv_search_syntax"]:
-                query = kwargs["query"]
-            else:
-                query = escape_lucene_query(kwargs["query"]).strip().lower()
-                filters.append(("dismax", 'true'))
-        else:
-            query = []
-            for name, value in kwargs.items():
-                value = escape_lucene_query(value).strip().lower()
-                if value:
-                    query.append('%s:(%s)' % (name, value))
-            query = ' '.join(query)
-
-        if query:
-            filters.append(("query", query))
-        queryargs = {}
-        for name, value in filters:
-            value = QUrl.toPercentEncoding(string_(value))
-            queryargs[string_(name)] = value
-        path = "/ws/2/%s" % (entitytype)
-        return self.get(host, port, path, handler, queryargs=queryargs,
-                        xml=True, priority=True, important=True, mblogin=False,
-                        cacheloadcontrol=None, refresh=False)
-
-    def find_releases(self, handler, **kwargs):
-        return self._find('release', handler, **kwargs)
-
-    def find_tracks(self, handler, **kwargs):
-        return self._find('recording', handler, **kwargs)
-
-    def find_artists(self, handler, **kwargs):
-        return self._find('artist', handler, **kwargs)
-
-    def _browse(self, entitytype, handler, inc=None, **kwargs):
-        host = config.setting["server_host"]
-        port = config.setting["server_port"]
-        path = "/ws/2/%s" % (entitytype)
-        queryargs = kwargs
-        if inc:
-            queryargs["inc"] = "+".join(inc)
-        return self.get(host, port, path, handler, queryargs=queryargs,
-                        xml=True, priority=True, important=True, mblogin=False,
-                        cacheloadcontrol=None, refresh=False)
-
-    def browse_releases(self, handler, **kwargs):
-        inc = ["media", "labels"]
-        return self._browse("release", handler, inc, **kwargs)
-
-    def submit_ratings(self, ratings, handler):
-        host = config.setting['server_host']
-        port = config.setting['server_port']
-        path = '/ws/2/rating/'
-        params = {"client": CLIENT_STRING}
-        recordings = (''.join(['<recording id="%s"><user-rating>%s</user-rating></recording>' %
-            (i[1], j*20) for i, j in ratings.items() if i[0] == 'recording']))
-        data = _wrap_xml_metadata('<recording-list>%s</recording-list>' % recordings)
-        return self.post(host, port, path, data, handler, priority=True, queryargs=params)
-
-    def _encode_acoustid_args(self, args, format='xml'):
-        filters = []
-        args['client'] = ACOUSTID_KEY
-        args['clientversion'] = PICARD_VERSION_STR
-        args['format'] = format
-        for name, value in args.items():
-            value = string_(QUrl.toPercentEncoding(value))
-            filters.append('%s=%s' % (string_(name), value))
-        return '&'.join(filters)
-
-    def query_acoustid(self, handler, **args):
-        host, port = ACOUSTID_HOST, ACOUSTID_PORT
-        body = self._encode_acoustid_args(args)
-        return self.post(host, port, '/v2/lookup', body, handler, priority=False, important=False, mblogin=False)
-
-    def submit_acoustid_fingerprints(self, submissions, handler):
-        args = {'user': config.setting["acoustid_apikey"]}
-        for i, submission in enumerate(submissions):
-            args['fingerprint.%d' % i] = string_(submission.fingerprint)
-            args['duration.%d' % i] = string_(submission.duration)
-            args['mbid.%d' % i] = string_(submission.recordingid)
-            if submission.puid:
-                args['puid.%d' % i] = string_(submission.puid)
-        host, port = ACOUSTID_HOST, ACOUSTID_PORT
-        body = self._encode_acoustid_args(args, format='json')
-        return self.post(host, port, '/v2/submit', body, handler, priority=True, important=False, mblogin=False)
-
-    def download(self, host, port, path, handler, priority=False,
-                 important=False, cacheloadcontrol=None, refresh=False,
-                 queryargs=None):
-        return self.get(host, port, path, handler, xml=False,
-                        priority=priority, important=important,
-                        cacheloadcontrol=cacheloadcontrol, refresh=refresh,
-                        queryargs=queryargs)
-
-    def get_collection(self, release_id, handler, limit=100, offset=0):
-        host, port = config.setting['server_host'], config.setting['server_port']
-        path = "/ws/2/collection"
-        queryargs = None
-        if release_id is not None:
-            inc = ["releases", "artist-credits", "media"]
-            path += "/%s/releases" % (release_id)
-            queryargs = {}
-            queryargs["inc"] = "+".join(inc)
-            queryargs["limit"] = limit
-            queryargs["offset"] = offset
-        return self.get(host, port, path, handler, priority=True, important=True,
-                        mblogin=True, queryargs=queryargs)
-
-    def get_collection_list(self, handler):
-        return self.get_collection(None, handler)
-
-    def _collection_request(self, collection_id, releases):
-        while releases:
-            ids = ";".join(releases if len(releases) <= 400 else releases[:400])
-            releases = releases[400:]
-            yield "/ws/2/collection/%s/releases/%s" % (collection_id, ids)
-
-    def _get_client_queryarg(self):
-        return {"client": CLIENT_STRING}
+        except Exception as e:
+            log.debug(e)
 
 
-    def put_to_collection(self, collection_id, releases, handler):
-        host, port = config.setting['server_host'], config.setting['server_port']
-        for path in self._collection_request(collection_id, releases):
-            self.put(host, port, path, "", handler,
-                     queryargs=self._get_client_queryarg())
+class XmlWebService(WebService):
 
-    def delete_from_collection(self, collection_id, releases, handler):
-        host, port = config.setting['server_host'], config.setting['server_port']
-        for path in self._collection_request(collection_id, releases):
-            self.delete(host, port, path, handler,
-                        queryargs=self._get_client_queryarg())
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.format_parser = parse_xml
+        self.format_header = "application/xml"
