@@ -23,7 +23,7 @@ from picard import config
 from picard.const import (ACOUSTID_KEY,
                           ACOUSTID_HOST,
                           ACOUSTID_PORT)
-from picard.webservice import PICARD_VERSION_STR
+from picard.webservice import PICARD_VERSION_STR, CLIENT_STRING
 
 
 def escape_lucene_query(text):
@@ -68,7 +68,7 @@ class APIHelper():
     def delete(self, path_list, handler, priority=True, important=False,
                    mblogin=True, queryargs=None):
         path = self.api_path + "/".join(path_list)
-        return self._webservice.put(self.host, self.port, path, handler,
+        return self._webservice.delete(self.host, self.port, path, handler,
                  priority=priority, important=important, mblogin=mblogin,
                  queryargs=queryargs)
 
@@ -109,7 +109,6 @@ class MBAPIHelper():
         return self._get_by_id('discid', discid, handler, inc, queryargs={"cdstubs": "no"},
                                priority=priority, important=important, refresh=refresh)
 
-    @staticmethod
     def _find(self, entitytype, handler, **kwargs):
         filters = []
 
@@ -196,8 +195,7 @@ class MBAPIHelper():
             releases = releases[400:]
             yield ["collection", collection_id, "releases", ids]
 
-    @staticmethod
-    def _get_client_queryarg():
+    def _get_client_queryarg(self):
         return {"client": CLIENT_STRING}
 
     def put_to_collection(self, collection_id, releases, handler):
@@ -207,7 +205,7 @@ class MBAPIHelper():
 
     def delete_from_collection(self, collection_id, releases, handler):
         for path_list in self._collection_request(collection_id, releases):
-            self.delete(path_list, handler,
+            self.api_helper.delete(path_list, handler,
                         queryargs=self._get_client_queryarg())
 
 
