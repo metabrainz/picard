@@ -33,11 +33,11 @@ class APIHelper():
                  refresh=refresh, queryargs=queryargs)
 
     def post(self, path_list, data, handler, priority=False, important=False,
-                 mblogin=False, refresh=False, queryargs=None):
+                 mblogin=False, queryargs=None):
         path = self.api_path + "/".join(path_list)
         return self._webservice.post(self.host, self.port, path, data, handler,
                   priority=priority, important=important, mblogin=mblogin,
-                  refresh=refresh, queryargs=queryargs)
+                  queryargs=queryargs)
 
     def put(self, path_list, data, handler, priority=True, important=False,
                 mblogin=True, queryargs=None):
