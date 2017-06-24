@@ -423,7 +423,7 @@ class PluginManager(QtCore.QObject):
             PLUGINS_API['port'],
             PLUGINS_API['endpoint']['plugins'],
             partial(self._plugins_json_loaded, callback=callback),
-            xml=False,
+            parse_format=False,
             priority=True,
             important=True
         )

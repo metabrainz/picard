@@ -41,7 +41,7 @@ class ReleaseGroup(DataObject):
 
     def load_versions(self, callback):
         kwargs = {"release-group": self.id, "limit": 100}
-        self.tagger.xmlws.browse_releases(partial(self._request_finished, callback), **kwargs)
+        self.tagger.mb_api.browse_releases(partial(self._request_finished, callback), **kwargs)
 
     def _parse_versions(self, document):
         """Parse document and return a list of releases"""

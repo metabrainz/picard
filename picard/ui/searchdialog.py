@@ -35,7 +35,7 @@ from picard.mbxml import (
     country_list_from_node
 )
 from picard.metadata import Metadata
-from picard.webservice import escape_lucene_query
+from picard.webservice.api_helpers import escape_lucene_query
 from picard.track import Track
 from picard.const import CAA_HOST, CAA_PORT, QUERY_LIMIT
 from picard.coverart.image import CaaThumbnailCoverArtImage
@@ -331,7 +331,7 @@ class TrackSearchDialog(SearchDialog):
         self.retry_params = Retry(self.search, text)
         self.search_box.search_edit.setText(text)
         self.show_progress()
-        self.tagger.xmlws.find_tracks(self.handle_reply,
+        self.tagger.mb_api.find_tracks(self.handle_reply,
                 query=text,
                 search=True,
                 limit=QUERY_LIMIT)
@@ -364,7 +364,7 @@ class TrackSearchDialog(SearchDialog):
         query["limit"] = QUERY_LIMIT
         self.search_box.search_edit.setText(query_str)
         self.show_progress()
-        self.tagger.xmlws.find_tracks(
+        self.tagger.mb_api.find_tracks(
                 self.handle_reply,
                 **query)
 
@@ -525,7 +525,7 @@ class AlbumSearchDialog(SearchDialog):
         self.retry_params = Retry(self.search, text)
         self.search_box.search_edit.setText(text)
         self.show_progress()
-        self.tagger.xmlws.find_releases(self.handle_reply,
+        self.tagger.mb_api.find_releases(self.handle_reply,
                 query=text,
                 search=True,
                 limit=QUERY_LIMIT)
@@ -554,7 +554,7 @@ class AlbumSearchDialog(SearchDialog):
         query["limit"] = QUERY_LIMIT
         self.search_box.search_edit.setText(query_str)
         self.show_progress()
-        self.tagger.xmlws.find_releases(
+        self.tagger.mb_api.find_releases(
             self.handle_reply,
             **query)
 
@@ -747,7 +747,7 @@ class ArtistSearchDialog(SearchDialog):
         self.retry_params = (self.search, text)
         self.search_box.search_edit.setText(text)
         self.show_progress()
-        self.tagger.xmlws.find_artists(self.handle_reply,
+        self.tagger.mb_api.find_artists(self.handle_reply,
                 query=text,
                 search=True,
                 limit=QUERY_LIMIT)

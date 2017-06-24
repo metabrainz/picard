@@ -23,7 +23,7 @@ from PyQt5 import QtCore
 from picard import config, log
 from picard.const import FPCALC_NAMES
 from picard.util import find_executable
-from picard.webservice import XmlNode
+from picard.util.xml import XmlNode
 
 
 class AcoustIDClient(QtCore.QObject):
@@ -180,7 +180,7 @@ class AcoustIDClient(QtCore.QObject):
         else:
             fp_type, recordingid = result
             params['recordingid'] = recordingid
-        self.tagger.xmlws.query_acoustid(partial(self._on_lookup_finished, next_func, file), **params)
+        self.tagger.acoustid_api.query_acoustid(partial(self._on_lookup_finished, next_func, file), **params)
 
     def _on_fpcalc_finished(self, next_func, file, exit_code, exit_status):
         process = self.sender()

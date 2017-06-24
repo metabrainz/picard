@@ -82,6 +82,7 @@ from picard.util import (
     versions,
 )
 from picard.webservice import XmlWebService
+from picard.webservice.api_helpers import MBAPIHelper, AcoustIdAPIHelper
 from picard.ui.searchdialog import (
     TrackSearchDialog,
     AlbumSearchDialog,
@@ -183,6 +184,8 @@ class Tagger(QtWidgets.QApplication):
         upgrade_config()
 
         self.xmlws = XmlWebService()
+        self.mb_api = MBAPIHelper(self.xmlws)
+        self.acoustid_api = AcoustIdAPIHelper(self.xmlws) 
 
         load_user_collections()
 

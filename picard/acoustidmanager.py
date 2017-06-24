@@ -79,7 +79,7 @@ class AcoustIDManager(QtCore.QObject):
             N_('Submitting AcoustIDs ...'),
             echo=None
         )
-        self.tagger.xmlws.submit_acoustid_fingerprints(fingerprints,
+        self.tagger.acoustid_api.submit_acoustid_fingerprints(fingerprints,
             partial(self.__fingerprint_submission_finished, fingerprints))
 
     def __fingerprint_submission_finished(self, fingerprints, document, http, error):
