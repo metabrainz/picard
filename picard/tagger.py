@@ -185,7 +185,7 @@ class Tagger(QtWidgets.QApplication):
 
         self.xmlws = XmlWebService()
         self.mb_api = MBAPIHelper(self.xmlws)
-        self.acoustid_api = AcoustIdAPIHelper(self.xmlws) 
+        self.acoustid_api = AcoustIdAPIHelper(self.xmlws)
 
         load_user_collections()
 

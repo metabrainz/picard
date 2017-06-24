@@ -160,7 +160,7 @@ class MBAPIHelper():
         queryargs = None
         if collection_id is not None:
             inc = ["releases", "artist-credits", "media"]
-            path_list.extend[collection_id, "releases"]
+            path_list.extend([collection_id, "releases"])
             queryargs = {}
             queryargs["inc"] = "+".join(inc)
             queryargs["limit"] = limit
@@ -177,7 +177,8 @@ class MBAPIHelper():
             releases = releases[400:]
             yield ["collection", collection_id, "releases", ids]
 
-    def _get_client_queryarg(self):
+    @staticmethod
+    def _get_client_queryarg():
         return {"client": CLIENT_STRING}
 
     def put_to_collection(self, collection_id, releases, handler):
@@ -197,11 +198,11 @@ class AcoustIdAPIHelper():
         self.api_helper = APIHelper(ACOUSTID_HOST, ACOUSTID_PORT,
                                     '/v2/', webservice)
 
-    def _encode_acoustid_args(self, args, format='xml'):
+    def _encode_acoustid_args(self, args, format_='xml'):
         filters = []
         args['client'] = ACOUSTID_KEY
         args['clientversion'] = PICARD_VERSION_STR
-        args['format'] = format
+        args['format'] = format_
         for name, value in args.items():
             value = string_(QUrl.toPercentEncoding(value))
             filters.append('%s=%s' % (string_(name), value))
@@ -221,5 +222,5 @@ class AcoustIdAPIHelper():
             args['mbid.%d' % i] = string_(submission.recordingid)
             if submission.puid:
                 args['puid.%d' % i] = string_(submission.puid)
-        body = self._encode_acoustid_args(args, format='json')
+        body = self._encode_acoustid_args(args, format_='json')
         return self.api_helper.post(path_list, body, handler, priority=True, important=False, mblogin=False)
