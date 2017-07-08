@@ -35,7 +35,7 @@ def _wrap_xml_metadata(data):
             '<metadata xmlns="http://musicbrainz.org/ns/mmd-2.0#">%s</metadata>' % data)
 
 
-class APIHelper():
+class APIHelper(object):
 
     def __init__(self, host, port, api_path, webservice):
         self.host = host
@@ -73,10 +73,10 @@ class APIHelper():
                  queryargs=queryargs)
 
 
-class MBAPIHelper():
+class MBAPIHelper(APIHelper):
 
     def __init__(self, webservice):
-        self.api_helper = APIHelper(config.setting['server_host'],config.setting['server_port'],
+        super().__init__(config.setting['server_host'], config.setting['server_port'],
                                   "/ws/2/", webservice)
 
     def _get_by_id(self, entitytype, entityid, handler, inc=None, queryargs=None,
@@ -86,7 +86,7 @@ class MBAPIHelper():
             queryargs = {}
         if inc:
             queryargs["inc"] = "+".join(inc)
-        return self.api_helper.get(path_list, handler,
+        return self.get(path_list, handler,
                         priority=priority, important=important, mblogin=mblogin,
                         refresh=refresh, queryargs=queryargs)
 
@@ -138,7 +138,7 @@ class MBAPIHelper():
             value = QUrl.toPercentEncoding(string_(value))
             queryargs[string_(name)] = value
         path_list = [entitytype]
-        return self.api_helper.get(path_list, handler, queryargs=queryargs,
+        return self.get(path_list, handler, queryargs=queryargs,
                             priority=True, important=True, mblogin=False,
                             refresh=False)
 
@@ -156,7 +156,7 @@ class MBAPIHelper():
         queryargs = kwargs
         if inc:
             queryargs["inc"] = "+".join(inc)
-        return self.api_helper.get(path_list, handler, queryargs=queryargs,
+        return self.get(path_list, handler, queryargs=queryargs,
                             priority=True, important=True, mblogin=False,
                             refresh=False)
 
@@ -171,7 +171,7 @@ class MBAPIHelper():
             (i[1], j*20) for i, j in ratings.items() if i[0] == 'recording']))
 
         data = _wrap_xml_metadata('<recording-list>%s</recording-list>' % recordings)
-        return self.api_helper.post(path_list, data, handler, priority=True, queryargs=params)
+        return self.post(path_list, data, handler, priority=True, queryargs=params)
 
     def get_collection(self, collection_id, handler, limit=100, offset=0):
         path_list = ["collection"]
@@ -183,7 +183,7 @@ class MBAPIHelper():
             queryargs["inc"] = "+".join(inc)
             queryargs["limit"] = limit
             queryargs["offset"] = offset
-        return self.api_helper.get(path_list, handler, priority=True, important=True,
+        return self.get(path_list, handler, priority=True, important=True,
                             mblogin=True, queryargs=queryargs)
 
     def get_collection_list(self, handler):
@@ -200,19 +200,19 @@ class MBAPIHelper():
 
     def put_to_collection(self, collection_id, releases, handler):
         for path_list in self._collection_request(collection_id, releases):
-            self.api_helper.put(path_list, "", handler,
+            self.put(path_list, "", handler,
                      queryargs=self._get_client_queryarg())
 
     def delete_from_collection(self, collection_id, releases, handler):
         for path_list in self._collection_request(collection_id, releases):
-            self.api_helper.delete(path_list, handler,
+            self.delete(path_list, handler,
                         queryargs=self._get_client_queryarg())
 
 
-class AcoustIdAPIHelper():
+class AcoustIdAPIHelper(APIHelper):
 
     def __init__(self, webservice):
-        self.api_helper = APIHelper(ACOUSTID_HOST, ACOUSTID_PORT,
+        super().__init__(ACOUSTID_HOST, ACOUSTID_PORT,
                                     '/v2/', webservice)
 
     def _encode_acoustid_args(self, args, format_='xml'):
@@ -228,7 +228,7 @@ class AcoustIdAPIHelper():
     def query_acoustid(self, handler, **args):
         path_list = ['lookup']
         body = self._encode_acoustid_args(args)
-        return self.api_helper.post(path_list, body, handler, priority=False, important=False, mblogin=False)
+        return self.post(path_list, body, handler, priority=False, important=False, mblogin=False)
 
     def submit_acoustid_fingerprints(self, submissions, handler):
         path_list = ['submit']
@@ -240,4 +240,4 @@ class AcoustIdAPIHelper():
             if submission.puid:
                 args['puid.%d' % i] = string_(submission.puid)
         body = self._encode_acoustid_args(args, format_='json')
-        return self.api_helper.post(path_list, body, handler, priority=True, important=False, mblogin=False)
+        return self.post(path_list, body, handler, priority=True, important=False, mblogin=False)
