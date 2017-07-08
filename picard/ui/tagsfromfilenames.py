@@ -73,7 +73,7 @@ class TagsFromFileNamesDialog(PicardDialog):
         self._tag_re = re.compile(r"(%\w+%)")
         self.numeric_tags = ('tracknumber', 'totaltracks', 'discnumber', 'totaldiscs')
 
-    def parse_format(self):
+    def parse_response(self):
         tff_format = self.ui.format.currentText()
         columns = []
         format_re = ['(?:^|/)']
@@ -109,7 +109,7 @@ class TagsFromFileNamesDialog(PicardDialog):
             return {}
 
     def preview(self):
-        tff_format, columns = self.parse_format()
+        tff_format, columns = self.parse_response()
         self.ui.files.setHeaderLabels([_("File Name")] + list(map(display_tag_name, columns)))
         for item, file in zip(self.items, self.files):
             matches = self.match_file(file, tff_format)
@@ -119,7 +119,7 @@ class TagsFromFileNamesDialog(PicardDialog):
         self.ui.files.header().setStretchLastSection(True)
 
     def accept(self):
-        tff_format, columns = self.parse_format()
+        tff_format, columns = self.parse_response()
         for file in self.files:
             metadata = self.match_file(file, tff_format)
             for name, value in metadata.items():

@@ -43,7 +43,7 @@ class APIHelper(object):
         self.api_path = api_path
         self._webservice = webservice
 
-    def get(self, path_list, handler, parse_format=True,
+    def get(self, path_list, handler, parse_response=True,
                 priority=False, important=False, mblogin=False,
                 cacheloadcontrol=None, refresh=False, queryargs=None):
         path = self.api_path + "/".join(path_list)

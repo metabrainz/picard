@@ -104,7 +104,7 @@ class OAuthManager(object):
         data = string_(url.query())
         self.xmlws.post(host, port, path, data,
                         partial(self.on_refresh_access_token_finished, callback),
-                        parse_format=False, mblogin=True, priority=True, important=True)
+                        parse_response=False, mblogin=True, priority=True, important=True)
 
     def on_refresh_access_token_finished(self, callback, data, http, error):
         access_token = None
@@ -137,7 +137,7 @@ class OAuthManager(object):
         data = string_(url.query())
         self.xmlws.post(host, port, path, data,
                         partial(self.on_exchange_authorization_code_finished, scopes, callback),
-                        parse_format=False, mblogin=True, priority=True, important=True)
+                        parse_response=False, mblogin=True, priority=True, important=True)
 
     def on_exchange_authorization_code_finished(self, scopes, callback, data, http, error):
         successful = False
@@ -158,7 +158,7 @@ class OAuthManager(object):
         path = "/oauth2/userinfo"
         self.xmlws.get(host, port, path,
                         partial(self.on_fetch_username_finished, callback),
-                        parse_format=False, mblogin=True, priority=True, important=True)
+                        parse_response=False, mblogin=True, priority=True, important=True)
 
     def on_fetch_username_finished(self, callback, data, http, error):
         successful = False

@@ -79,7 +79,7 @@ class WebService(QtCore.QObject):
         }
         self._init_queues()
         self._init_timers()
-        self.format_parser = None
+        self.response_parser = None
         self.format_header = ""
 
     def _init_queues(self):
@@ -116,7 +116,7 @@ class WebService(QtCore.QObject):
             proxy.setPassword(config.setting["proxy_password"])
         self.manager.setProxy(proxy)
 
-    def _start_request_continue(self, method, host, port, path, data, handler, parse_format,
+    def _start_request_continue(self, method, host, port, path, data, handler, parse_response,
                                 mblogin=False, cacheloadcontrol=None, refresh=None,
                                 access_token=None, queryargs=None):
         url = build_qurl(host, port, path=path, queryargs=queryargs)
@@ -134,24 +134,24 @@ class WebService(QtCore.QObject):
             request.setAttribute(QtNetwork.QNetworkRequest.CacheLoadControlAttribute,
                                  cacheloadcontrol)
         request.setRawHeader(b"User-Agent", USER_AGENT_STRING.encode('utf-8'))
-        if parse_format:
+        if parse_response:
             request.setRawHeader(b"Accept", self.format_header.encode('utf-8'))
         if data is not None:
-            if method == "POST" and host == config.setting["server_host"] and parse_format:
+            if method == "POST" and host == config.setting["server_host"] and parse_response:
                 request.setHeader(QtNetwork.QNetworkRequest.ContentTypeHeader, "%s; charset=utf-8" % self.format_header)
             else:
                 request.setHeader(QtNetwork.QNetworkRequest.ContentTypeHeader, "application/x-www-form-urlencoded")
         send = self._request_methods[method]
         reply = send(request, data.encode('utf-8')) if data is not None else send(request)
         self._remember_request_time((host, port))
-        self._active_requests[reply] = (request, handler, parse_format, refresh)
+        self._active_requests[reply] = (request, handler, parse_response, refresh)
 
-    def _start_request(self, method, host, port, path, data, handler, parse_format,
+    def _start_request(self, method, host, port, path, data, handler, parse_response,
                        mblogin=False, cacheloadcontrol=None, refresh=None,
                        queryargs=None):
         def start_request_continue(access_token=None):
             self._start_request_continue(
-                method, host, port, path, data, handler, parse_format,
+                method, host, port, path, data, handler, parse_response,
                 mblogin=mblogin, cacheloadcontrol=cacheloadcontrol, refresh=refresh,
                 access_token=access_token, queryargs=queryargs)
         if mblogin and path != "/oauth2/token":
@@ -175,7 +175,7 @@ class WebService(QtCore.QObject):
             return url.port(443)
         return url.port(80)
 
-    def _handle_reply(self, reply, request, handler, parse_format, refresh):
+    def _handle_reply(self, reply, request, handler, parse_response, refresh):
         error = int(reply.error())
         if error:
             log.error("Network request error for %s: %s (QT code %d, HTTP code %s)",
@@ -223,40 +223,43 @@ class WebService(QtCore.QObject):
                         self.get(redirect_host,
                                  redirect_port,
                                  redirect_path,
-                                 handler, parse_format, priority=True, important=True, refresh=refresh, queryargs=redirect_query,
+                                 handler, parse_response, priority=True, important=True, refresh=refresh, queryargs=redirect_query,
                                  cacheloadcontrol=request.attribute(QtNetwork.QNetworkRequest.CacheLoadControlAttribute))
                     else:
                         log.error("Redirect loop: %s",
                                   reply.request().url().toString(QUrl.RemoveUserInfo)
                                   )
                         handler(reply.readAll(), reply, error)
-                elif parse_format:
-                    document = self.format_parser(reply)
-                    handler(document, reply, error)
+                elif parse_response:
+                    if self.response_parser:
+                        document = self.response_parser(reply)
+                        handler(document, reply, error)
+                    else:
+                        log.error("Attempting to parse the response body without a proper parser")
                 else:
                     handler(reply.readAll(), reply, error)
 
     def _process_reply(self, reply):
         try:
-            request, handler, parse_format, refresh = self._active_requests.pop(reply)
+            request, handler, parse_response, refresh = self._active_requests.pop(reply)
         except KeyError:
             log.error("Request not found for %s" % reply.request().url().toString(QUrl.RemoveUserInfo))
             return
         try:
-            self._handle_reply(reply, request, handler, parse_format, refresh)
+            self._handle_reply(reply, request, handler, parse_response, refresh)
         finally:
             reply.close()
             reply.deleteLater()
 
-    def get(self, host, port, path, handler, parse_format=True, priority=False,
+    def get(self, host, port, path, handler, parse_response=True, priority=False,
             important=False, mblogin=False, cacheloadcontrol=None, refresh=False, queryargs=None):
         func = partial(self._start_request, "GET", host, port, path, None,
-                       handler, parse_format, mblogin, cacheloadcontrol=cacheloadcontrol, refresh=refresh, queryargs=queryargs)
+                       handler, parse_response, mblogin, cacheloadcontrol=cacheloadcontrol, refresh=refresh, queryargs=queryargs)
         return self.add_task(func, host, port, priority, important=important)
 
-    def post(self, host, port, path, data, handler, parse_format=True, priority=False, important=False, mblogin=True, queryargs=None):
+    def post(self, host, port, path, data, handler, parse_response=True, priority=False, important=False, mblogin=True, queryargs=None):
         log.debug("POST-DATA %r", data)
-        func = partial(self._start_request, "POST", host, port, path, data, handler, parse_format, mblogin, queryargs=queryargs)
+        func = partial(self._start_request, "POST", host, port, path, data, handler, parse_response, mblogin, queryargs=queryargs)
         return self.add_task(func, host, port, priority, important=important)
 
     def put(self, host, port, path, data, handler, priority=True, important=False, mblogin=True, queryargs=None):
@@ -270,7 +273,7 @@ class WebService(QtCore.QObject):
     def download(self, host, port, path, handler, priority=False,
                  important=False, cacheloadcontrol=None, refresh=False,
                  queryargs=None):
-        return self.get(host, port, path, handler, parse_format=False,
+        return self.get(host, port, path, handler, parse_response=False,
                         priority=priority, important=important,
                         cacheloadcontrol=cacheloadcontrol, refresh=refresh,
                         queryargs=queryargs)
@@ -368,5 +371,5 @@ class XmlWebService(WebService):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.format_parser = parse_xml
+        self.response_parser = parse_xml
         self.format_header = "application/xml"
