@@ -127,7 +127,7 @@ def load_user_collections(callback=None):
         if callback:
             callback()
 
-    if tagger.xmlws.oauth_manager.is_authorized():
+    if tagger.webservice.oauth_manager.is_authorized():
         tagger.mb_api.get_collection_list(partial(request_finished))
     else:
         user_collections.clear()

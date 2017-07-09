@@ -81,7 +81,7 @@ from picard.util import (
     is_hidden,
     versions,
 )
-from picard.webservice import XmlWebService
+from picard.webservice import WebService
 from picard.webservice.api_helpers import MBAPIHelper, AcoustIdAPIHelper
 from picard.ui.searchdialog import (
     TrackSearchDialog,
@@ -183,9 +183,9 @@ class Tagger(QtWidgets.QApplication):
 
         upgrade_config()
 
-        self.xmlws = XmlWebService()
-        self.mb_api = MBAPIHelper(self.xmlws)
-        self.acoustid_api = AcoustIdAPIHelper(self.xmlws)
+        self.webservice = WebService()
+        self.mb_api = MBAPIHelper(self.webservice)
+        self.acoustid_api = AcoustIdAPIHelper(self.webservice)
 
         load_user_collections()
 
@@ -281,7 +281,7 @@ class Tagger(QtWidgets.QApplication):
         self.thread_pool.waitForDone()
         self.save_thread_pool.waitForDone()
         self.browser_integration.stop()
-        self.xmlws.stop()
+        self.webservice.stop()
         self.run_cleanup()
         QtCore.QCoreApplication.processEvents()
 

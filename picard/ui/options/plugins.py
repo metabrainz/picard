@@ -320,12 +320,12 @@ class PluginsOptionsPage(OptionsPage):
         selected = self.ui.plugins.selectedItems()[0]
         plugin = self.items[selected]
 
-        self.tagger.xmlws.get(
+        self.tagger.webservice.get(
             PLUGINS_API['host'],
             PLUGINS_API['port'],
             PLUGINS_API['endpoint']['download'],
             partial(self.download_handler, plugin=plugin),
-            parse_response=False,
+            parse_response_format=None,
             priority=True,
             important=True,
             queryargs={"id": plugin.module_name}

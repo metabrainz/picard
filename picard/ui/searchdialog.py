@@ -583,7 +583,7 @@ class AlbumSearchDialog(SearchDialog):
         """
         for row, release in enumerate(self.search_results):
             caa_path = "/release/%s" % release["musicbrainz_albumid"]
-            self.tagger.xmlws.download(
+            self.tagger.webservice.download(
                 CAA_HOST,
                 CAA_PORT,
                 caa_path,
@@ -619,7 +619,7 @@ class AlbumSearchDialog(SearchDialog):
         if front:
             url = front["thumbnails"]["small"]
             coverartimage = CaaThumbnailCoverArtImage(url=url)
-            self.tagger.xmlws.download(
+            self.tagger.webservice.download(
                 coverartimage.host,
                 coverartimage.port,
                 coverartimage.path,

@@ -382,7 +382,7 @@ class Album(DataObject, Item):
 
     def stop_loading(self):
         if self.load_task:
-            self.tagger.xmlws.remove_task(self.load_task)
+            self.tagger.webservice.remove_task(self.load_task)
             self.load_task = None
 
     def update(self, update_tracks=True):

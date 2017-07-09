@@ -219,7 +219,7 @@ class Cluster(QtCore.QObject, Item):
 
     def clear_lookup_task(self):
         if self.lookup_task:
-            self.tagger.xmlws.remove_task(self.lookup_task)
+            self.tagger.webservice.remove_task(self.lookup_task)
             self.lookup_task = None
 
     @staticmethod

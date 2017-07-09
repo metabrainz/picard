@@ -64,7 +64,7 @@ class NetworkOptionsPage(OptionsPage):
         config.setting["proxy_server_port"] = self.ui.server_port.value()
         config.setting["proxy_username"] = self.ui.username.text()
         config.setting["proxy_password"] = self.ui.password.text()
-        self.tagger.xmlws.setup_proxy()
+        self.tagger.webservice.setup_proxy()
         config.setting["browser_integration"] = self.ui.browser_integration.isChecked()
         config.setting["browser_integration_port"] = self.ui.browser_integration_port.value()
         config.setting["browser_integration_localhost_only"] = \

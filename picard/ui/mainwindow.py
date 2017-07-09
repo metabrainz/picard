@@ -244,7 +244,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.infostatus.setFiles(len(self.tagger.files))
         self.infostatus.setAlbums(len(self.tagger.albums))
         self.infostatus.setPendingFiles(File.num_pending_files)
-        ws = self.tagger.xmlws
+        ws = self.tagger.webservice
         self.infostatus.setPendingRequests(ws.num_pending_web_requests)
 
     def update_statusbar_listen_port(self, listen_port):
@@ -504,9 +504,9 @@ class MainWindow(QtWidgets.QMainWindow):
         self.view_history_action = QtWidgets.QAction(_("View Activity &History"), self)
         self.view_history_action.triggered.connect(self.show_history)
 
-        xmlws_manager = self.tagger.xmlws.manager
-        xmlws_manager.authenticationRequired.connect(self.show_password_dialog)
-        xmlws_manager.proxyAuthenticationRequired.connect(self.show_proxy_dialog)
+        webservice_manager = self.tagger.webservice.manager
+        webservice_manager.authenticationRequired.connect(self.show_password_dialog)
+        webservice_manager.proxyAuthenticationRequired.connect(self.show_proxy_dialog)
 
         self.play_file_action = QtWidgets.QAction(icontheme.lookup('play-music'), _("Open in &Player"), self)
         self.play_file_action.setStatusTip(_("Play the file in your default media player"))

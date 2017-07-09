@@ -191,7 +191,7 @@ class CoverArt:
             echo=None
         )
         log.debug("Downloading %r" % coverartimage)
-        self.album.tagger.xmlws.download(
+        self.album.tagger.webservice.download(
             coverartimage.host,
             coverartimage.port,
             coverartimage.path,
