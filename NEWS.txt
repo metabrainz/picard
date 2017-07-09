@@ -509,7 +509,7 @@ Version 0.10 - 2008-07-27
  * Fixed crash when reading CD TOC on 64-bit systems
  * Fixed handling of MP4 files with no metadata
  * Change the hotkey for help to the right key for OS X
- * Replace special characters after tagger script evalutaion to allow
+ * Replace special characters after tagger script evaluation to allow
    special characters being replaced by tagger script
  * Actually ignore 'ignored (folksonomy) tags'
  * Remove dependency on Mutagen 1.13, version 1.11 is enough now

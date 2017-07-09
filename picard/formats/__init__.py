@@ -80,7 +80,7 @@ def open_(filename):
         # None is returned if both the methods fail
         return None
     except Exception as error:
-        log.error("Error occured:\n{}".format(error))
+        log.error("Error occurred:\n{}".format(error))
         return None
 
 

@@ -31,7 +31,7 @@
  * implementing the improvements suggested by such people as Esko Ukkonen, Hal
  * Berghel & David Roach, and Sun Wu and Udi Manber.
  *
- * This has been succesfully compiled using:
+ * This has been successfully compiled using:
  *	Microsoft Visual C++ 6 SP 5
  *	GNU gcc 3.2 & Cygwin
  *	GNU gcc 3.2 & MinGW
