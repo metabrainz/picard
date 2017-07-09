@@ -19,14 +19,14 @@
 
 import re
 from PyQt5.QtCore import QUrl
-from picard import config
+from picard import config, PICARD_VERSION_STR
 from picard.const import (ACOUSTID_KEY,
                           ACOUSTID_HOST,
                           ACOUSTID_PORT,
                           CAA_HOST,
                           CAA_PORT)
 
-from picard.webservice import PICARD_VERSION_STR, CLIENT_STRING, REQUEST_DELAY
+from picard.webservice import CLIENT_STRING, REQUEST_DELAY
 
 REQUEST_DELAY[(ACOUSTID_HOST, ACOUSTID_PORT)] = 333
 REQUEST_DELAY[(CAA_HOST, CAA_PORT)] = 0
