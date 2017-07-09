@@ -132,7 +132,7 @@ class VCommentFile(File):
                 else:
                     metadata.append_image(coverartimage)
 
-        # Read the unofficial COVERART tags, for backward compatibillity only
+        # Read the unofficial COVERART tags, for backward compatibility only
         if "metadata_block_picture" not in file.tags:
             try:
                 for data in file["COVERART"]:

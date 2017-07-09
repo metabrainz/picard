@@ -630,8 +630,8 @@ class AlbumSearchDialog(SearchDialog):
 
     def _cover_downloaded(self, row, data, http, error):
         """Handle cover art query reply from CAA server.
-        If server returns the cover image succesfully, update the cover art cell
-        of particular release.
+        If server returns the cover image successfully, update the cover art
+        cell of particular release.
 
         Args:
             row -- Album's row in results table
