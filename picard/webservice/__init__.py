@@ -38,10 +38,6 @@ from picard import (PICARD_APP_NAME,
                     PICARD_VERSION_STR,
                     config,
                     log)
-from picard.const import (ACOUSTID_HOST,
-                          ACOUSTID_PORT,
-                          CAA_HOST,
-                          CAA_PORT)
 from picard.oauth import OAuthManager
 from picard.util import build_qurl
 from picard.util.xml import parse_xml
@@ -49,8 +45,6 @@ from picard.util.xml import parse_xml
 
 COUNT_REQUESTS_DELAY_MS = 250
 REQUEST_DELAY = defaultdict(lambda: 1000)
-REQUEST_DELAY[(ACOUSTID_HOST, ACOUSTID_PORT)] = 333
-REQUEST_DELAY[(CAA_HOST, CAA_PORT)] = 0
 USER_AGENT_STRING = '%s-%s/%s (%s;%s-%s)' % (PICARD_ORG_NAME, PICARD_APP_NAME,
                                              PICARD_VERSION_STR,
                                              platform.platform(),
@@ -61,6 +55,10 @@ CLIENT_STRING = string_(QUrl.toPercentEncoding('%s %s-%s' % (PICARD_ORG_NAME,
                                                          PICARD_VERSION_STR)))
 
 DEFAULT_RESPONSE_PARSER = "xml"
+
+
+class UnknownResponseParserError(Exception):
+    pass
 
 
 class WebService(QtCore.QObject):
@@ -236,7 +234,7 @@ class WebService(QtCore.QObject):
                     response_parser = self.response_parser(parse_response_format)
                     try:
                         document = response_parser(reply)
-                    except Exception as e:
+                    except UnknownResponseParserError as e:
                         log.error("Attempting to parse the response body without a proper parser")
                         document = reply.readAll()
                     finally:
@@ -387,7 +385,7 @@ class WebService(QtCore.QObject):
         if name in cls.PARSERS:
             return cls.PARSERS[name]['parser']
         else:
-            log.error('Parser of type %s not found', name)
+            raise UnknownResponseParserError
 
 
 WebService.add_parser('xml', 'application/xml', parse_xml)
