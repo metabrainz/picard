@@ -32,7 +32,7 @@ class WebServiceTest(unittest.TestCase):
         handler = None
         data = None
         self.ws.get(host, port, path, handler)
-        mock_add_task.assert_called()
+        self.assertEqual(1, mock_add_task.call_count)
         self.assertIn(host, mock_add_task.call_args[0])
         self.assertIn(port, mock_add_task.call_args[0])
         self.assertIn("'GET'", repr(mock_add_task.call_args))
