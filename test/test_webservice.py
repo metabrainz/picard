@@ -3,7 +3,7 @@
 import unittest
 from picard import config
 from picard.webservice import WebService
-from mock import patch, MagicMock
+from unittest.mock import patch, MagicMock
 
 PROXY_SETTINGS = {
     "use_proxy": True,
