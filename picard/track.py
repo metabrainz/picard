@@ -273,7 +273,7 @@ class NonAlbumTrack(Track):
         if config.setting["enable_ratings"]:
             mblogin = True
             inc += ["user-ratings"]
-        self.tagger.xmlws.get_track_by_id(self.id,
+        self.tagger.mb_api.get_track_by_id(self.id,
                                           partial(self._recording_request_finished),
                                           inc, mblogin=mblogin,
                                           priority=priority,

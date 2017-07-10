@@ -418,12 +418,12 @@ class PluginManager(QtCore.QObject):
                 log.warning("Unable to copy %s to plugin folder %s" % (path, USER_PLUGIN_DIR))
 
     def query_available_plugins(self, callback=None):
-        self.tagger.xmlws.get(
+        self.tagger.webservice.get(
             PLUGINS_API['host'],
             PLUGINS_API['port'],
             PLUGINS_API['endpoint']['plugins'],
             partial(self._plugins_json_loaded, callback=callback),
-            xml=False,
+            parse_response_format=None,
             priority=True,
             important=True
         )

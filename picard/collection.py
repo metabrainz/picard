@@ -41,14 +41,14 @@ class Collection(QtCore.QObject):
         ids = ids - self.pending
         if ids:
             self.pending.update(ids)
-            self.tagger.xmlws.put_to_collection(self.id, list(ids),
+            self.tagger.mb_api.put_to_collection(self.id, list(ids),
                 partial(self._add_finished, ids, callback))
 
     def remove_releases(self, ids, callback):
         ids = ids - self.pending
         if ids:
             self.pending.update(ids)
-            self.tagger.xmlws.delete_from_collection(self.id, list(ids),
+            self.tagger.mb_api.delete_from_collection(self.id, list(ids),
                 partial(self._remove_finished, ids, callback))
 
     def _add_finished(self, ids, callback, document, reply, error):
@@ -127,8 +127,8 @@ def load_user_collections(callback=None):
         if callback:
             callback()
 
-    if tagger.xmlws.oauth_manager.is_authorized():
-        tagger.xmlws.get_collection_list(partial(request_finished))
+    if tagger.webservice.oauth_manager.is_authorized():
+        tagger.mb_api.get_collection_list(partial(request_finished))
     else:
         user_collections.clear()
 

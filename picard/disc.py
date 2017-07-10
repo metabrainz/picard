@@ -51,7 +51,7 @@ class Disc(QtCore.QObject):
         self.submission_url = disc.submission_url
 
     def lookup(self):
-        self.tagger.xmlws.lookup_discid(self.id, self._lookup_finished)
+        self.tagger.mb_api.lookup_discid(self.id, self._lookup_finished)
 
     def _lookup_finished(self, document, http, error):
         self.tagger.restore_cursor()

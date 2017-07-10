@@ -634,7 +634,7 @@ class File(QtCore.QObject, Item):
         self.clear_lookup_task()
         metadata = self.metadata
         self.set_pending()
-        self.lookup_task = self.tagger.xmlws.find_tracks(partial(self._lookup_finished, 'metadata'),
+        self.lookup_task = self.tagger.mb_api.find_tracks(partial(self._lookup_finished, 'metadata'),
             track=metadata['title'],
             artist=metadata['artist'],
             release=metadata['album'],
@@ -646,7 +646,7 @@ class File(QtCore.QObject, Item):
 
     def clear_lookup_task(self):
         if self.lookup_task:
-            self.tagger.xmlws.remove_task(self.lookup_task)
+            self.tagger.webservice.remove_task(self.lookup_task)
             self.lookup_task = None
 
     def set_pending(self):

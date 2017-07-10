@@ -82,7 +82,7 @@ class RatingWidget(QtWidgets.QWidget):
         track.metadata["~rating"] = string_(self._rating)
         if config.setting["submit_ratings"]:
             ratings = {("recording", track.id): self._rating}
-            self.tagger.xmlws.submit_ratings(ratings, None)
+            self.tagger.mb_api.submit_ratings(ratings, None)
 
     def paintEvent(self, event=None):
         painter = QtGui.QPainter(self)

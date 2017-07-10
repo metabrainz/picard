@@ -69,7 +69,7 @@ class GeneralOptionsPage(OptionsPage):
         config.setting["ignore_file_mbids"] = self.ui.ignore_file_mbids.isChecked()
 
     def update_login_logout(self):
-        if self.tagger.xmlws.oauth_manager.is_logged_in():
+        if self.tagger.webservice.oauth_manager.is_logged_in():
             self.ui.logged_in.setText(_("Logged in as <b>%s</b>.") % config.persist["oauth_username"])
             self.ui.logged_in.show()
             self.ui.login.hide()
@@ -81,12 +81,12 @@ class GeneralOptionsPage(OptionsPage):
 
     def login(self):
         scopes = "profile tag rating collection submit_isrc submit_barcode"
-        authorization_url = self.tagger.xmlws.oauth_manager.get_authorization_url(scopes)
+        authorization_url = self.tagger.webservice.oauth_manager.get_authorization_url(scopes)
         webbrowser2.open(authorization_url)
         authorization_code, ok = QInputDialog.getText(self,
             _("MusicBrainz Account"), _("Authorization code:"))
         if ok:
-            self.tagger.xmlws.oauth_manager.exchange_authorization_code(
+            self.tagger.webservice.oauth_manager.exchange_authorization_code(
                 authorization_code, scopes, self.on_authorization_finished)
 
     def restore_defaults(self):
@@ -95,7 +95,7 @@ class GeneralOptionsPage(OptionsPage):
 
     def on_authorization_finished(self, successful):
         if successful:
-            self.tagger.xmlws.oauth_manager.fetch_username(
+            self.tagger.webservice.oauth_manager.fetch_username(
                 self.on_login_finished)
 
     def on_login_finished(self, successful):
@@ -104,7 +104,7 @@ class GeneralOptionsPage(OptionsPage):
             load_user_collections()
 
     def logout(self):
-        self.tagger.xmlws.oauth_manager.revoke_tokens()
+        self.tagger.webservice.oauth_manager.revoke_tokens()
         self.update_login_logout()
         load_user_collections()
 

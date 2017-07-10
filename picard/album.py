@@ -370,7 +370,7 @@ class Album(DataObject, Item):
         if config.setting['enable_ratings']:
             require_authentication = True
             inc += ['user-ratings']
-        self.load_task = self.tagger.xmlws.get_release_by_id(
+        self.load_task = self.tagger.mb_api.get_release_by_id(
             self.id, self._release_request_finished, inc=inc,
             mblogin=require_authentication, priority=priority, refresh=refresh)
 
@@ -382,7 +382,7 @@ class Album(DataObject, Item):
 
     def stop_loading(self):
         if self.load_task:
-            self.tagger.xmlws.remove_task(self.load_task)
+            self.tagger.webservice.remove_task(self.load_task)
             self.load_task = None
 
     def update(self, update_tracks=True):

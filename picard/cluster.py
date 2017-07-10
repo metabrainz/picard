@@ -211,7 +211,7 @@ class Cluster(QtCore.QObject, Item):
             N_("Looking up the metadata for cluster %(album)s..."),
             {'album': self.metadata['album']}
         )
-        self.lookup_task = self.tagger.xmlws.find_releases(self._lookup_finished,
+        self.lookup_task = self.tagger.mb_api.find_releases(self._lookup_finished,
             artist=self.metadata['albumartist'],
             release=self.metadata['album'],
             tracks=string_(len(self.files)),
@@ -219,7 +219,7 @@ class Cluster(QtCore.QObject, Item):
 
     def clear_lookup_task(self):
         if self.lookup_task:
-            self.tagger.xmlws.remove_task(self.lookup_task)
+            self.tagger.webservice.remove_task(self.lookup_task)
             self.lookup_task = None
 
     @staticmethod
