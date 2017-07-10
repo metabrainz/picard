@@ -3,7 +3,7 @@
 import unittest
 from picard import config
 from picard.webservice import WebService
-from mock import patch
+from mock import patch, MagicMock
 
 PROXY_SETTINGS = {
     "use_proxy": True,
@@ -45,6 +45,69 @@ class WebServiceTest(unittest.TestCase):
         self.ws.download(host, port, path, handler)
         self.assertIn("'GET'", repr(mock_add_task.call_args))
         self.assertEqual(5, mock_add_task.call_count)
+
+
+class WebServiceTaskTest(unittest.TestCase):
+
+    def setUp(self):
+        config.setting = {'use_proxy': False}
+        self.ws = WebService()
+
+        # Patching the QTimers since they can only be started in a QThread
+        self.ws._timer_run_next_task = MagicMock()
+        self.ws._timer_count_pending_requests = MagicMock()
+
+    def tearDown(self):
+        del self.ws
+        config.setting = {}
+
+    def test_add_task(self):
+
+        mock_timer1 = self.ws._timer_run_next_task
+        mock_timer2 = self.ws._timer_count_pending_requests
+
+        host = "abc.xyz"
+        port = 80
+        key = (host, port)
+
+        self.ws.add_task(0, host, port, priority=False)
+        self.ws.add_task(0, host, port, priority=True)
+        self.ws.add_task(1, host, port, priority=True, important=True)
+
+        # Test if timer start was called in case it was inactive
+        mock_timer1.isActive.return_value = False
+        mock_timer2.isActive.return_value = False
+        self.ws.add_task(1, host, port, priority=False, important=True)
+        self.assertIn('start', repr(mock_timer1.method_calls))
+
+        # Test if key was added to prio queue
+        self.assertEqual(len(self.ws._queues[1]), 1)
+        self.assertIn(key, self.ws._queues[1])
+
+        # Test if 2 requests were added in prio queue
+        self.assertEqual(len(self.ws._queues[1][key]), 2)
+
+        # Test if important request was added ahead in the queue
+        self.assertEqual(self.ws._queues[0][key][0], 1)
+
+    def test_remove_task(self):
+        host = "abc.xyz"
+        port = 80
+        key = (host, port)
+
+        # Add a task and check for its existance
+        task = self.ws.add_task(0, host, port, priority=False)
+        self.assertIn(key, self.ws._queues[0])
+        self.assertEqual(len(self.ws._queues[0][key]), 1)
+
+        # Remove the task and check
+        self.ws.remove_task(task)
+        self.assertIn(key, self.ws._queues[0])
+        self.assertEqual(len(self.ws._queues[0][key]), 0)
+
+        # Try to remove a non existing task and check for errors
+        non_existing_task = (1, "a", "b")
+        self.ws.remove_task(non_existing_task)
 
 
 class WebServiceProxyTest(unittest.TestCase):
