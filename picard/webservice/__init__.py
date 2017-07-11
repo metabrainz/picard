@@ -68,6 +68,7 @@ class WebService(QtCore.QObject):
     def __init__(self, parent=None):
         QtCore.QObject.__init__(self, parent)
         self.manager = QtNetwork.QNetworkAccessManager()
+        self.manager.setRedirectPolicy(QtNetwork.QNetworkRequest.NoLessSafeRedirectPolicy)
         self.oauth_manager = OAuthManager(self)
         self.set_cache()
         self.setup_proxy()
@@ -159,22 +160,6 @@ class WebService(QtCore.QObject):
         else:
             start_request_continue()
 
-    @staticmethod
-    def urls_equivalent(leftUrl, rightUrl):
-        """
-            Lazy method to determine whether two QUrls are equivalent. At the moment it assumes that if ports are unset
-            that they are port 80 - in absence of a URL normalization function in QUrl or ability to use qHash
-            from QT 4.7
-        """
-        return leftUrl.port(80) == rightUrl.port(80) and \
-            leftUrl.toString(QUrl.RemovePort) == rightUrl.toString(QUrl.RemovePort)
-
-    @staticmethod
-    def url_port(url):
-        if url.scheme() == 'https':
-            return url.port(443)
-        return url.port(80)
-
     def _handle_reply(self, reply, request, handler, parse_response_format, refresh):
         error = int(reply.error())
         if error:
@@ -197,40 +182,7 @@ class WebService(QtCore.QObject):
                       cached
                       )
             if handler is not None:
-                # Redirect if found and not infinite
-                if redirect:
-                    url = request.url()
-                    # merge with base url (to cover the possibility of the URL being relative)
-                    redirect = url.resolved(redirect)
-                    if not WebService.urls_equivalent(redirect, reply.request().url()):
-                        log.debug("Redirect to %s requested", redirect.toString(QUrl.RemoveUserInfo))
-                        redirect_host = string_(redirect.host())
-                        redirect_port = self.url_port(redirect)
-                        redirect_query = dict(QUrlQuery(redirect).queryItems(QUrl.FullyEncoded))
-                        redirect_path = redirect.path()
-
-                        original_host = string_(url.host())
-                        original_port = self.url_port(url)
-
-                        if ((original_host, original_port) in REQUEST_DELAY
-                                and (redirect_host, redirect_port) not in REQUEST_DELAY):
-                            log.debug("Setting rate limit for %s:%i to %i" %
-                                      (redirect_host, redirect_port,
-                                       REQUEST_DELAY[(original_host, original_port)]))
-                            REQUEST_DELAY[(redirect_host, redirect_port)] =\
-                                REQUEST_DELAY[(original_host, original_port)]
-
-                        self.get(redirect_host,
-                                 redirect_port,
-                                 redirect_path,
-                                 handler, parse_response_format, priority=True, important=True, refresh=refresh, queryargs=redirect_query,
-                                 cacheloadcontrol=request.attribute(QtNetwork.QNetworkRequest.CacheLoadControlAttribute))
-                    else:
-                        log.error("Redirect loop: %s",
-                                  reply.request().url().toString(QUrl.RemoveUserInfo)
-                                  )
-                        handler(reply.readAll(), reply, error)
-                elif parse_response_format:
+                if parse_response_format:
                     response_parser = self.response_parser(parse_response_format)
                     try:
                         document = response_parser(reply)
