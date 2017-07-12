@@ -63,7 +63,7 @@ _MEDIUM_TO_METADATA = {
 _RECORDING_TO_METADATA = {
     'title': 'title',
     'disambiguation': '~recordingcomment',
-    'user_rating': '~rating',
+    'user-rating': '~rating',
 }
 
 _RELEASE_TO_METADATA = {
@@ -84,7 +84,7 @@ _ARTIST_TO_METADATA = {
 _RELEASE_GROUP_TO_METADATA = {
     'title': '~releasegroup',
     'disambiguation': '~releasegroupcomment',
-    'first_release_date': 'originaldate',
+    'first-release-date': 'originaldate',
 }
 
 
@@ -110,15 +110,15 @@ def _parse_attributes(attrs, reltype):
     return ' '.join([prefix, attrs]).strip().lower()
 
 
-def _relations_to_metadata(relation_lists, m):
+def _relations_to_metadata(relations, m):
     use_credited_as = not config.setting["standardize_artists"]
     for relation in relations:
-        if relation['target_type'] == 'artist':
+        if relation['target-type'] == 'artist':
             artist = relation['artist']
             value, valuesort = _translate_artist_node(artist)
             has_translation = (value != artist['name'])
-            if not has_translation and use_credited_as and 'target_credit' in relation:
-                credited_as = relation['target_credit']
+            if not has_translation and use_credited_as and 'target-credit' in relation:
+                credited_as = relation['target-credit']
                 if credited_as:
                     value, valuesort = credited_as, credited_as
             reltype = relation['type']
@@ -142,16 +142,16 @@ def _relations_to_metadata(relation_lists, m):
                 m.add(name, value)
             if name == 'composer' and valuesort not in m['composersort']:
                 m.add('composersort', valuesort)
-        elif relation['target_type'] == 'work':
+        elif relation['target-type'] == 'work':
             if relation['type'] == 'performance':
                 performance_to_metadata(relation, m)
                 work_to_metadata(relation['work'], m)
-        elif relation['target_type'] == 'url':
+        elif relation['target-type'] == 'url':
             if relation['type'] == 'amazon asin' and 'asin' not in m:
                 amz = parse_amazon_url(relation['url']['resource'])
                 if amz is not None:
                     m['asin'] = amz['asin']
-            elif relation.type == 'license':
+            elif relation['type'] == 'license':
                 url = relation['url']['resource']
                 m.add('license', url)
 
@@ -205,23 +205,23 @@ def artist_credit_from_node(node):
     artists = []
     artistssort = []
     use_credited_as = not config.setting["standardize_artists"]
-    for artist in node:
-        a = artist['artist']
+    for artist_info in node:
+        a = artist_info['artist']
         translated, translated_sort = _translate_artist_node(a)
         has_translation = (translated != a['name'])
         if has_translation:
             name = translated
-        elif use_credited_as and 'name' in artist:
-            name = artist['name']
+        elif use_credited_as and 'name' in artist_info:
+            name = artist_info['name']
         else:
             name = a['name']
         artist += name
         artistsort += translated_sort
         artists.append(name)
         artistssort.append(translated_sort)
-        if 'joinphrase' in artist:
-            artist += artist['joinphrase']
-            artistsort += artist['joinphrase']
+        if 'joinphrase' in artist_info:
+            artist += artist_info['joinphrase']
+            artistsort += artist_info['joinphrase']
     return (artist, artistsort, artists, artistssort)
 
 
@@ -243,15 +243,11 @@ def artist_credit_to_metadata(node, m, release=False):
 
 
 def country_list_from_node(node):
-    """Extract list of country codes from `release_event_list` node.
-    This is in contrast with `country` element, which has single release
-    event information.
-    """
-    if "release_events" in node.children:
+    if "release-events" in node:
         country = []
-        for release_event in node['release_events']:
+        for release_event in node['release-events']:
             try:
-                country.append(release_event['area']['iso_3166_1_codes'][0])
+                country.append(release_event['area']['iso-3166-1-codes'][0])
             except KeyError:
                 pass
         return country
@@ -307,7 +303,7 @@ def track_to_metadata(node, track):
             m[_TRACK_TO_METADATA[key]] = value
         elif key == 'length' and value:
             m.length = int(value)
-        elif key == 'artist_credit':
+        elif key == 'artist-credit':
             artist_credit_to_metadata(value, m)
     m['~length'] = format_time(m.length)
 
@@ -322,20 +318,16 @@ def recording_to_metadata(node, m, track=None):
             m[_RECORDING_TO_METADATA[key]] = value
         elif key == 'length':
             m.length = int(value)
-        elif key == 'artist_credit':
+        elif key == 'artist-credit':
             artist_credit_to_metadata(value, m)
             # set tags from artists
             for artist in value:
-                trackartist = track.append_track_artist(artist['artist']['id'])
-                if 'tags' in artist:
-                    add_folksonomy_tags(artist['tags'], trackartist)
-                if 'user_tags' in artist:
-                    add_user_folksonomy_tags(artist['user_tags'], trackartist)
+                track.append_track_artist(artist['artist']['id'])
         elif key == 'relations':
             _relations_to_metadata(value, m)
         elif key == 'tags':
             add_folksonomy_tags(value, track)
-        elif key == 'user_tags':
+        elif key == 'user-tags':
             add_user_folksonomy_tags(value, track)
         elif key == 'isrcs':
             add_isrcs_to_metadata(value, m)
@@ -348,7 +340,7 @@ def recording_to_metadata(node, m, track=None):
 def performance_to_metadata(relation, m):
     if 'attributes' in relation:
         for attribute in relation['attributes']:
-            m.add_unique("~performance_attributes", attribute.text)
+            m.add_unique("~performance_attributes", attribute)
 
 
 def work_to_metadata(work, m):
@@ -379,7 +371,7 @@ def artist_to_metadata(node, m):
             m[_ARTIST_TO_METADATA[key]] = value
         elif key == "area":
             m["area"] = value['name']
-        elif key == "life_span":
+        elif key == "life-span":
             if "begin" in value:
                 m["begindate"] = value['begin']
             if "ended" in value:
@@ -402,28 +394,24 @@ def release_to_metadata(node, m, album=None):
             m[_RELEASE_TO_METADATA[key]] = value
         elif key == 'status':
             m['releasestatus'] = value.lower()
-        elif key == 'artist_credit':
+        elif key == 'artist-credit':
             artist_credit_to_metadata(value, m, release=True)
             # set tags from artists
             if album is not None:
                 for artist in value:
-                    albumartist = album.append_album_artist(artist['artist']['id'])
-                    if 'tags' in artist:
-                        add_folksonomy_tags(artist['tags'], albumartist)
-                    if 'user_tags' in artist:
-                        add_user_folksonomy_tags(artist['user_tags'], albumartist)
+                    album.append_album_artist(artist['artist']['id'])
         elif key == 'relations':
             _relations_to_metadata(value, m)
-        elif key == 'label_info':
+        elif key == 'label-info':
             m['label'], m['catalognumber'] = label_info_from_node(value)
-        elif key == 'text_representation':
+        elif key == 'text-representation':
             if 'language' in value:
                 m['~releaselanguage'] = value['language']
             if 'script' in value:
                 m['script'] = value['script']
         elif key == 'tags':
             add_folksonomy_tags(value, album)
-        elif key == 'user_tags':
+        elif key == 'user-tags':
             add_user_folksonomy_tags(value, album)
 
 
@@ -437,11 +425,11 @@ def release_group_to_metadata(node, m, release_group=None):
             m[_RELEASE_GROUP_TO_METADATA[key]] = value
         elif key == 'tags':
             add_folksonomy_tags(value, release_group)
-        elif key == 'user_tags':
+        elif key == 'user-tags':
             add_user_folksonomy_tags(value, release_group)
-        elif key == 'primary_type':
+        elif key == 'primary-type':
             m['~primaryreleasetype'] = value.lower()
-        elif key == 'secondary_types':
+        elif key == 'secondary-types':
             add_secondary_release_types(value, m)
     if m['originaldate']:
         m['originalyear'] = m['originaldate'][:4]
@@ -454,18 +442,16 @@ def add_secondary_release_types(node, m):
 
 
 def add_folksonomy_tags(node, obj):
-    if obj and 'tag' in node.children:
-        for tag in node.tag:
-            key = tag.key[0].text
-            count = int(tag.attribs['count'])
-            obj.add_folksonomy_tag(key, count)
+    for tag in node:
+        key = tag['name']
+        count = int(tag['count'])
+        obj.add_folksonomy_tag(key, count)
 
 
 def add_user_folksonomy_tags(node, obj):
-    if obj and 'user_tag' in node.children:
-        for tag in node.user_tag:
-            key = tag.key[0].text
-            obj.add_folksonomy_tag(key, 1)
+    for tag in node:
+        key = tag['name']
+        obj.add_folksonomy_tag(key, 1)
 
 
 def add_isrcs_to_metadata(node, metadata):
