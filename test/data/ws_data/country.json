@@ -1,0 +1,39 @@
+{  
+    "country":"GB",
+    "barcode":"",
+    "packaging":"Cardboard/Paper Sleeve",
+    "disambiguation":"",
+    "cover-art-archive":{  
+        "darkened":false,
+        "back":false,
+        "count":1,
+        "artwork":true,
+        "front":true
+    },
+    "date":"1986-03",
+    "status-id":"4e304316-386d-3409-af2e-78857eec5cfe",
+    "asin":null,
+    "quality":"normal",
+    "title":"Master of Puppets",
+    "text-representation":{  
+        "script":"Latn",
+        "language":"eng"
+    },
+    "release-events":[  
+        {  
+            "area":{  
+                "disambiguation":"",
+                "iso-3166-1-codes":[  
+                    "GB"
+                ],
+                "name":"United Kingdom",
+                "id":"8a754a16-0027-3a29-b6d7-2b40ea0481ed",
+                "sort-name":"United Kingdom"
+            },
+            "date":"1986-03"
+        }
+    ],
+    "id":"03e4ebe1-0a44-411c-8e19-78e0768603f8",
+    "status":"Official",
+    "packaging-id":"f7101ce3-0384-39ce-9fde-fbbd0044d35f"
+}

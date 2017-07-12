@@ -177,7 +177,6 @@ class CountryListTest(unittest.TestCase):
         with open(os.path.join('test', 'data', 'ws_data', 'country.json')) as f:
             self.json_doc = json.loads(f.read())
 
-    def test_release_group(self):
-        m = Metadata()
+    def test_country_from_node(self):
         country_list = country_list_from_node(self.json_doc)
         self.assertEqual(['GB'], country_list)
