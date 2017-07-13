@@ -325,7 +325,7 @@ class PluginsOptionsPage(OptionsPage):
             PLUGINS_API['port'],
             PLUGINS_API['endpoint']['download'],
             partial(self.download_handler, plugin=plugin),
-            parse_response_format=None,
+            parse_response_type=None,
             priority=True,
             important=True,
             queryargs={"id": plugin.module_name}
