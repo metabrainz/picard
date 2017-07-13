@@ -26,7 +26,7 @@ from picard.file import File
 from picard.ui import PicardDialog
 from picard.ui.util import StandardButton, ButtonLineEdit
 from picard.util import icontheme, load_json
-from picard.mbxml import (
+from picard.mbjson import (
     artist_to_metadata,
     recording_to_metadata,
     release_to_metadata,
@@ -377,8 +377,8 @@ class TrackSearchDialog(SearchDialog):
             return
 
         try:
-            tracks = document.metadata[0].recording_list[0].recording
-        except (AttributeError, IndexError):
+            tracks = document['recordings']
+        except Exception:
             self.no_results_found()
             return
 
@@ -412,12 +412,12 @@ class TrackSearchDialog(SearchDialog):
 
     def parse_tracks_from_xml(self, tracks_xml):
         for node in tracks_xml:
-            if "release_list" in node.children and "release" in node.release_list[0].children:
-                for rel_node in node.release_list[0].release:
+            if "releases" in node:
+                for rel_node in node['releases']:
                     track = Metadata()
                     recording_to_metadata(node, track)
                     release_to_metadata(rel_node, track)
-                    rg_node = rel_node.release_group[0]
+                    rg_node = rel_node['release-group']
                     release_group_to_metadata(rg_node, track)
                     countries = country_list_from_node(rel_node)
                     if countries:
@@ -567,8 +567,8 @@ class AlbumSearchDialog(SearchDialog):
             return
 
         try:
-            releases = document.metadata[0].release_list[0].release
-        except (AttributeError, IndexError):
+            releases = document['releases']
+        except Exception:
             self.no_results_found()
             return
 
@@ -645,19 +645,19 @@ class AlbumSearchDialog(SearchDialog):
             try:
                 pixmap.loadFromData(data)
                 cover_cell.update(pixmap)
-            except:
+            except Exception:
                 cover_cell.not_found()
 
     def parse_releases_from_xml(self, release_xml):
         for node in release_xml:
             release = Metadata()
             release_to_metadata(node, release)
-            rg_node = node.release_group[0]
+            rg_node = node['release-group']
             release_group_to_metadata(rg_node, release)
-            if "medium_list" in node.children:
-                medium_list = node.medium_list[0]
-                release["format"] = media_formats_from_node(medium_list)
-                release["tracks"] = medium_list.track_count[0].text
+            if "media" in node:
+                media = node['media']
+                release["format"] = media_formats_from_node(media)
+                release["tracks"] = media[0]['track-count']
             countries = country_list_from_node(node)
             if countries:
                 release["country"] = ", ".join(countries)
@@ -761,8 +761,8 @@ class ArtistSearchDialog(SearchDialog):
             return
 
         try:
-            artists = document.metadata[0].artist_list[0].artist
-        except (AttributeError, IndexError):
+            artists = document['artists']
+        except Exception:
             self.no_results()
             return
 
