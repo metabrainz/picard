@@ -1,15 +1,17 @@
 import json
 import os
 import unittest
+
 from picard import config
-from picard.metadata import Metadata
+from picard.album import Album
 from picard.mbjson import (release_to_metadata,
                            recording_to_metadata, track_to_metadata,
                            medium_to_metadata, artist_to_metadata,
                            release_group_to_metadata, country_list_from_node,
                            media_formats_from_node)
-from picard.album import Album
+from picard.metadata import Metadata
 from picard.track import Track
+
 
 settings = {
     "standardize_tracks": False,
@@ -20,19 +22,19 @@ settings = {
 }
 
 
-def print_assert(m):
-    m=sorted(m, key=lambda i: i[0])
-    for i in m:
-        print("self.assertEqual(m['%s'], '%s')"%(i[0],i[1]))
+class MBJSONTest(unittest.TestCase):
 
-
-class ReleaseTest(unittest.TestCase):
-
-    def setUp(self):
+    def init_test(self, filename):
         config.setting = settings
         self.json_doc = None
-        with open(os.path.join('test', 'data', 'ws_data', 'release.json')) as f:
-            self.json_doc = json.loads(f.read())
+        with open(os.path.join('test', 'data', 'ws_data', filename)) as f:
+            self.json_doc = json.load(f)
+
+
+class ReleaseTest(MBJSONTest):
+
+    def setUp(self):
+        self.init_test('release.json')
 
     def test_release(self):
         m = Metadata()
@@ -60,13 +62,10 @@ class ReleaseTest(unittest.TestCase):
         self.assertEqual(formats, '12" Vinyl')
 
 
-class RecordingTest(unittest.TestCase):
+class RecordingTest(MBJSONTest):
 
     def setUp(self):
-        config.setting = settings
-        self.json_doc = None
-        with open(os.path.join('test', 'data', 'ws_data', 'recording.json')) as f:
-            self.json_doc = json.loads(f.read())
+        self.init_test('recording.json')
 
     def test_recording(self):
         m = Metadata()
@@ -90,13 +89,10 @@ class RecordingTest(unittest.TestCase):
         self.assertEqual(m['~recordingtitle'], 'Thinking Out Loud')
 
 
-class TrackTest(unittest.TestCase):
+class TrackTest(MBJSONTest):
 
     def setUp(self):
-        config.setting = settings
-        self.json_doc = None
-        with open(os.path.join('test', 'data', 'ws_data', 'track.json')) as f:
-            self.json_doc = json.loads(f.read())
+        self.init_test('track.json')
 
     def test_track(self):
         t = Track("1")
@@ -112,13 +108,10 @@ class TrackTest(unittest.TestCase):
         self.assertEqual(m['~recordingtitle'], 'Speak to Me')
 
 
-class MediaTest(unittest.TestCase):
+class MediaTest(MBJSONTest):
 
     def setUp(self):
-        config.setting = settings
-        self.json_doc = None
-        with open(os.path.join('test', 'data', 'ws_data', 'media.json')) as f:
-            self.json_doc = json.loads(f.read())
+        self.init_test('media.json')
 
     def test_track(self):
         m = Metadata()
@@ -128,13 +121,10 @@ class MediaTest(unittest.TestCase):
         self.assertEqual(m['totaltracks'], '10')
 
 
-class ArtistTest(unittest.TestCase):
+class ArtistTest(MBJSONTest):
 
     def setUp(self):
-        config.setting = settings
-        self.json_doc = None
-        with open(os.path.join('test', 'data', 'ws_data', 'artist.json')) as f:
-            self.json_doc = json.loads(f.read())
+        self.init_test('artist.json')
 
     def test_artist(self):
         m = Metadata()
@@ -148,13 +138,10 @@ class ArtistTest(unittest.TestCase):
         self.assertEqual(m['type'], 'Person')
 
 
-class ReleaseGroupTest(unittest.TestCase):
+class ReleaseGroupTest(MBJSONTest):
 
     def setUp(self):
-        config.setting = settings
-        self.json_doc = None
-        with open(os.path.join('test', 'data', 'ws_data', 'release_group.json')) as f:
-            self.json_doc = json.loads(f.read())
+        self.init_test('release_group.json')
 
     def test_release_group(self):
         m = Metadata()
@@ -166,16 +153,11 @@ class ReleaseGroupTest(unittest.TestCase):
         self.assertEqual(m['~primaryreleasetype'], 'album')
         self.assertEqual(m['~releasegroup'], 'The Dark Side of the Moon')
 
-        # self.assertEqual(first, second)
 
-
-class CountryListTest(unittest.TestCase):
+class CountryListTest(MBJSONTest):
 
     def setUp(self):
-        config.setting = settings
-        self.json_doc = None
-        with open(os.path.join('test', 'data', 'ws_data', 'country.json')) as f:
-            self.json_doc = json.loads(f.read())
+        self.init_test('country.json')
 
     def test_country_from_node(self):
         country_list = country_list_from_node(self.json_doc)
