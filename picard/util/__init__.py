@@ -478,4 +478,8 @@ def load_json(data):
     return json.loads(convert_to_string(data))
 
 
+def parse_json(reply):
+    return load_json(reply.readAll())
+
+
 builtins.__dict__['string_'] = convert_to_string
