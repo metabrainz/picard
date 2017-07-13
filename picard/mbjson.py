@@ -101,9 +101,10 @@ def _parse_attributes(attrs, reltype):
     attrs = [_decamelcase(_REPLACE_MAP.get(a, a)) for a in attrs]
     prefix = ' '.join([a for a in attrs if a in _EXTRA_ATTRS])
     attrs = [a for a in attrs if a not in _EXTRA_ATTRS]
-    if len(attrs) > 1:
+    len_attrs = len(attrs)
+    if len_attrs > 1:
         attrs = '%s and %s' % (', '.join(attrs[:-1]), attrs[-1:][0])
-    elif len(attrs) == 1:
+    elif len_attrs == 1:
         attrs = attrs[0]
     else:
         attrs = _BLANK_SPECIAL_RELTYPES.get(reltype, '')
