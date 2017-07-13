@@ -1,4 +1,11 @@
 {
+    "tags": [
+        {"name": "test", "count": 5},
+        {"name": "test2", "count": 3}
+    ],
+    "user-tags": [
+        {"name": "test"}
+    ],
     "release-group": {
         "first-release-date": "1973-03-24",
         "artist-credit": [
@@ -153,9 +160,6 @@
         "script": "Latn"
     },
     "barcode": "123",
-    "tags": [
-        
-    ],
     "relations": [
         {
             "attributes": [

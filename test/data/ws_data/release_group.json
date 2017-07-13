@@ -1,5 +1,12 @@
 {
     "first-release-date":"1973-03-24",
+    "tags": [
+        {"name": "test", "count": 5},
+        {"name": "test2", "count": 3}
+    ],
+    "user-tags": [
+        {"name": "test"}
+    ],
     "disambiguation":"",
     "title":"The Dark Side of the Moon",
     "id":"f5093c06-23e3-404f-aeaa-40f72885ee3a",

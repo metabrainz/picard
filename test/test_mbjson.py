@@ -10,8 +10,8 @@ from picard.mbjson import (release_to_metadata,
                            release_group_to_metadata, country_list_from_node,
                            media_formats_from_node)
 from picard.metadata import Metadata
+from picard.releasegroup import ReleaseGroup
 from picard.track import Track
-
 
 settings = {
     "standardize_tracks": False,
@@ -56,6 +56,7 @@ class ReleaseTest(MBJSONTest):
         self.assertEqual(m['~albumartists'], 'Pink Floyd')
         self.assertEqual(m['~albumartists_sort'], 'Pink Floyd')
         self.assertEqual(m['~releaselanguage'], 'eng')
+        self.assertEqual(a.folksonomy_tags, {'test2': 3, 'test': 6})
 
     def test_media_formats_from_node(self):
         formats = media_formats_from_node(self.json_doc['media'])
@@ -145,13 +146,15 @@ class ReleaseGroupTest(MBJSONTest):
 
     def test_release_group(self):
         m = Metadata()
-        release_group_to_metadata(self.json_doc, m)
+        r = ReleaseGroup("1")
+        release_group_to_metadata(self.json_doc, m, r)
         self.assertEqual(m['musicbrainz_releasegroupid'], 'f5093c06-23e3-404f-aeaa-40f72885ee3a')
         self.assertEqual(m['originaldate'], '1973-03-24')
         self.assertEqual(m['originalyear'], '1973')
         self.assertEqual(m['releasetype'], 'album')
         self.assertEqual(m['~primaryreleasetype'], 'album')
         self.assertEqual(m['~releasegroup'], 'The Dark Side of the Moon')
+        self.assertEqual(r.folksonomy_tags, {'test2': 3, 'test': 6})
 
 
 class CountryListTest(MBJSONTest):
