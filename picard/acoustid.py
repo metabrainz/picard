@@ -48,56 +48,53 @@ class AcoustIDClient(QtCore.QObject):
     def _on_lookup_finished(self, next_func, file, document, http, error):
 
         def make_artist_credit_node(parent, artists):
-            artist_credit_el = parent.append_child('artist_credit')
             for i, artist in enumerate(artists):
-                name_credit_el = artist_credit_el.append_child('name_credit')
-                artist_el = name_credit_el.append_child('artist')
-                artist_el.append_child('id').text = artist.id[0].text
-                artist_el.append_child('name').text = artist.name[0].text
-                artist_el.append_child('sort_name').text = artist.name[0].text
+                node = {}
+                artist_mb = node['artist'] = {}
+                artist_mb['name'] = artist['name']
+                artist_mb['sort-name'] = artist['name']
+                artist_mb['id'] = artist['id']
                 if i > 0:
-                    name_credit_el.attribs['joinphrase'] = '; '
-            return artist_credit_el
+                    node['joinphrase'] = '; '
+                node['name'] = artist['name']
+                parent.append(node)
 
         def parse_recording(recording):
-            if 'title' not in recording.children:  # we have no metadata for this recording
+            if 'title' not in recording:  # we have no metadata for this recording
                 return
-            recording_id = recording.id[0].text
-            recording_el = recording_list_el.append_child('recording')
-            recording_el.attribs['id'] = recording_id
-            recording_el.append_child('title').text = recording.title[0].text
-            if 'duration' in recording.children:
-                recording_el.append_child('length').text = string_(int(recording.duration[0].text) * 1000)
-            make_artist_credit_node(recording_el, recording.artists[0].artist)
-            release_list_el = recording_el.append_child('release_list')
-            for release_group in recording.releasegroups[0].releasegroup:
-                for release in release_group.releases[0].release:
-                    release_el = release_list_el.append_child('release')
-                    release_el.attribs['id'] = release.id[0].text
-                    release_group_el = release_el.append_child('release_group')
-                    release_group_el.attribs['id'] = release_group.id[0].text
-                    if 'title' in release.children:
-                        release_el.append_child('title').text = release.title[0].text
+            recording_id = recording['id']
+            recording_mb = {}
+            recording_mb['id'] = recording_id
+            recording_mb['title'] = recording['title']
+            if 'duration' in recording:
+                recording_mb['length'] = int(recording['duration']) * 1000
+            recording_mb['artist-credit'] = []
+            make_artist_credit_node(recording_mb['artist-credit'], recording['artists'])
+            recording_mb['releases'] = []
+            for release_group in recording['releasegroups']:
+                for release in release_group['releases']:
+                    release_mb = {}
+                    release_mb['id'] = release['id']
+                    release_mb['release-group'] = {}
+                    release_mb['release-group']['id'] = release_group['id']
+                    if 'title' in release:
+                        release_mb['title'] = release['title']
                     else:
-                        release_el.append_child('title').text = release_group.title[0].text
-                    if 'country' in release.children:
-                        release_el.append_child('country').text = release.country[0].text
-                    medium_list_el = release_el.append_child('medium_list')
-                    medium_list_el.attribs['count'] = release.medium_count[0].text
-                    for medium in release.mediums[0].medium:
-                        medium_el = medium_list_el.append_child('medium')
-                        if 'format' in medium.children:
-                            medium_el.append_child('format').text = medium.format[0].text
-                        track_list_el = medium_el.append_child('track_list')
-                        track_list_el.attribs['count'] = medium.track_count[0].text
-                        for track in medium.tracks[0].track:
-                            track_el = track_list_el.append_child('track')
-                            track_el.append_child('position').text = track.position[0].text
-
-        doc = XmlNode()
-        metadata_el = doc.append_child('metadata')
-        acoustid_el = metadata_el.append_child('acoustid')
-        recording_list_el = acoustid_el.append_child('recording_list')
+                        release_mb['title'] = release_group['title']
+                    if 'country' in release:
+                        release_mb['country'] = release['country']
+                    release_mb['media'] = []
+                    for medium in release['mediums']:
+                        medium_mb = {}
+                        if 'format' in medium:
+                            medium_mb['format'] = medium['format']
+                        medium_mb['track'] = {}
+                        medium_mb['track-count'] = medium['track_count']
+                        release_mb['media'].append(medium_mb)
+                    recording_mb['releases'].append(release_mb)
+            doc['recordings'].append(recording_mb)
+        doc = {}
+        doc['recordings'] = []
 
         if error:
             mparms = {
@@ -113,19 +110,19 @@ class AcoustIDClient(QtCore.QObject):
                 echo=None
             )
         else:
-            status = document.response[0].status[0].text
+            status = document['status']
             if status == 'ok':
-                results = document.response[0].results[0].children.get('result')
+                results = document['results']
                 if results:
                     result = results[0]
-                    file.metadata['acoustid_id'] = result.id[0].text
-                    if 'recordings' in result.children:
-                        for recording in result.recordings[0].recording:
+                    file.metadata['acoustid_id'] = result['id']
+                    if 'recordings' in result:
+                        for recording in result['recordings']:
                             parse_recording(recording)
                         log.debug("AcoustID: Lookup successful for '%s'", file.filename)
             else:
                 mparms = {
-                    'error': document.response[0].error[0].message[0].text,
+                    'error': document['error']['message'],
                     'filename': file.filename
                 }
                 log.error(
@@ -136,7 +133,6 @@ class AcoustIDClient(QtCore.QObject):
                     mparms,
                     echo=None
                 )
-
         next_func(doc, http, error)
 
     def _lookup_fingerprint(self, next_func, filename, result=None, error=None):

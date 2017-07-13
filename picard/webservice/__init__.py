@@ -194,7 +194,7 @@ class WebService(QtCore.QObject):
                       repr(reply.attribute(QtNetwork.QNetworkRequest.HttpStatusCodeAttribute))
                       )
             if handler is not None:
-                handler(reply.readAll(), reply, error)
+                handler(string_(reply.readAll()), reply, error)
         else:
             redirect = reply.attribute(QtNetwork.QNetworkRequest.RedirectionTargetAttribute)
             fromCache = reply.attribute(QtNetwork.QNetworkRequest.SourceIsFromCacheAttribute)
