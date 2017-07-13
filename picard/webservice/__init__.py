@@ -249,8 +249,8 @@ class WebService(QtCore.QObject):
                     else:
                         try:
                             document = response_parser(reply)
-                        except TypeError as e:
-                            log.error("Unable to parse the response. %s" % e.message)
+                        except Exception as e:
+                            log.error("Unable to parse the response. %s", e)
                             document = reply.readAll()
                     finally:
                         handler(document, reply, error)
