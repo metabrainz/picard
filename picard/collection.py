@@ -106,23 +106,24 @@ def load_user_collections(callback=None):
                 echo=log.error
             )
             return
-        collection_list = document.metadata[0].collection_list[0]
-        if "collection" in collection_list.children:
+        if document and "collection" in document:
+            collection_list = document['collections']
             new_collections = set()
 
-            for node in collection_list.collection:
-                if node.attribs.get("entity_type") != "release":
+            for node in collection_list:
+                if node["entity-type"] != "release":
                     continue
-                new_collections.add(node.id)
-                collection = user_collections.get(node.id)
+                node_id = node['id']
+                new_collections.add(node_id)
+                collection = user_collections.get(node_id)
                 if collection is None:
-                    user_collections[node.id] = Collection(node.id, node.name[0].text, node.release_list[0].count)
+                    user_collections[node_id] = Collection(node_id, node['name'], node['release-count'])
                 else:
-                    collection.name = node.name[0].text
-                    collection.size = int(node.release_list[0].count)
+                    collection.name = node['name']
+                    collection.size = int(node['release-count'])
 
-            for id in set(user_collections.keys()) - new_collections:
-                del user_collections[id]
+            for collection_id in set(user_collections.keys()) - new_collections:
+                del user_collections[collection_id]
 
         if callback:
             callback()
@@ -136,14 +137,13 @@ def load_user_collections(callback=None):
 def add_release_to_user_collections(release_node):
     """Add album to collections"""
     # Check for empy collection list
-    if ("collection_list" in release_node.children and
-        "collection" in release_node.collection_list[0].children):
+    if "collections" in release_node:
+        release_id = release_node['id']
         username = config.persist["oauth_username"].lower()
-        for node in release_node.collection_list[0].collection:
-            if node.editor[0].text.lower() == username:
-                if node.id not in user_collections:
-                    user_collections[node.id] = \
-                        Collection(node.id, node.name[0].text, node.release_list[0].count)
-                user_collections[node.id].releases.add(release_node.id)
-                log.debug("Adding release %r to %r" %
-                          (release_node.id, user_collections[node.id]))
+        for node in release_node['collections']:
+            node_id = node['id']
+            if node['editor'].lower() == username:
+                if node_id not in user_collections:
+                    user_collections[node_id] = Collection(node_id, node['name'], node['release-count'])
+                user_collections[node_id].releases.add(release_id)
+                log.debug("Adding release %r to %r", release_id, user_collections[node_id])

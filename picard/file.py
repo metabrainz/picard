@@ -572,15 +572,16 @@ class File(QtCore.QObject, Item):
 
         if self.state == File.REMOVED:
             return
-
+        if error:
+            log.error(document)
         try:
-            m = document.metadata[0]
             if lookuptype == "metadata":
-                tracks = m.recording_list[0].recording
+                tracks = document['recordings']
             elif lookuptype == "acoustid":
-                tracks = m.acoustid[0].recording_list[0].recording
-        except (AttributeError, IndexError):
+                tracks = document['recordings']
+        except Exception as e:
             tracks = None
+            log.debug(e)
 
         # no matches
         if not tracks:
@@ -596,7 +597,6 @@ class File(QtCore.QObject, Item):
         match = sorted((self.metadata.compare_to_track(
             track, self.comparison_weights) for track in tracks),
             reverse=True, key=itemgetter(0))[0]
-
         if lookuptype != 'acoustid':
             threshold = config.setting['file_lookup_threshold']
             if match[0] < threshold:
@@ -616,12 +616,12 @@ class File(QtCore.QObject, Item):
 
         rg, release, track = match[1:]
         if lookuptype == 'acoustid':
-            self.tagger.acoustidmanager.add(self, track.id)
+            self.tagger.acoustidmanager.add(self, track['id'])
         if release:
-            self.tagger.get_release_group_by_id(rg.id).loaded_albums.add(release.id)
-            self.tagger.move_file_to_track(self, release.id, track.id)
+            self.tagger.get_release_group_by_id(rg['id']).loaded_albums.add(release['id'])
+            self.tagger.move_file_to_track(self, release['id'], track['id'])
         else:
-            self.tagger.move_file_to_nat(self, track.id, node=track)
+            self.tagger.move_file_to_nat(self, track['id'], node=track)
 
     def lookup_metadata(self):
         """Try to identify the file using the existing metadata."""

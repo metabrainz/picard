@@ -37,7 +37,7 @@ from picard.util.imagelist import update_metadata_images
 from picard.util.textencoding import asciipunct
 from picard.cluster import Cluster
 from picard.collection import add_release_to_user_collections
-from picard.mbxml import (
+from picard.mbjson import (
     release_group_to_metadata,
     release_to_metadata,
     medium_to_metadata,
@@ -101,31 +101,30 @@ class Album(DataObject, Item):
         """Returns the list of album artists (as AlbumArtist objects)"""
         return self._album_artists
 
-    def _parse_release(self, document):
+    def _parse_release(self, release_node):
         log.debug("Loading release %r ...", self.id)
         self._tracks_loaded = False
-
-        release_node = document.metadata[0].release[0]
-        if release_node.id != self.id:
-            self.tagger.mbid_redirects[self.id] = release_node.id
-            album = self.tagger.albums.get(release_node.id)
+        release_id = release_node['id']
+        if release_id != self.id:
+            self.tagger.mbid_redirects[self.id] = release_id
+            album = self.tagger.albums.get(release_id)
             if album:
-                log.debug("Release %r already loaded", release_node.id)
+                log.debug("Release %r already loaded", release_id)
                 album.match_files(self.unmatched_files.files)
                 album.update()
                 self.tagger.remove_album(self)
                 return False
             else:
                 del self.tagger.albums[self.id]
-                self.tagger.albums[release_node.id] = self
-                self.id = release_node.id
+                self.tagger.albums[release_id] = self
+                self.id = release_id
 
         # Get release metadata
         m = self._new_metadata
         m.length = 0
 
-        rg_node = release_node.release_group[0]
-        rg = self.release_group = self.tagger.get_release_group_by_id(rg_node.id)
+        rg_node = release_node['release-group']
+        rg = self.release_group = self.tagger.get_release_group_by_id(rg_node['id'])
         rg.loaded_albums.add(self.id)
         rg.refcount += 1
 
@@ -144,7 +143,7 @@ class Album(DataObject, Item):
         if config.setting['convert_punctuation']:
             m.apply_func(asciipunct)
 
-        m['totaldiscs'] = release_node.medium_list[0].count
+        m['totaldiscs'] = len(release_node['media'])
 
         # Add album to collections
         add_release_to_user_collections(release_node)
@@ -223,7 +222,7 @@ class Album(DataObject, Item):
             if hasattr(self._new_metadata, "_djmix_ars"):
                 djmix_ars = self._new_metadata._djmix_ars
 
-            for medium_node in self._release_node.medium_list[0].medium:
+            for medium_node in self._release_node['media']:
                 mm = Metadata()
                 mm.copy(self._new_metadata)
                 medium_to_metadata(medium_node, mm)
@@ -232,21 +231,21 @@ class Album(DataObject, Item):
                 for dj in djmix_ars.get(mm["discnumber"], []):
                     mm.add("djmixer", dj)
 
-                if "pregap" in medium_node.children:
+                if "pregap" in medium_node:
                     discpregap = True
                     absolutetracknumber += 1
-                    track = self._finalize_loading_track(medium_node.pregap[0], mm, artists, va, absolutetracknumber, discpregap)
+                    track = self._finalize_loading_track(medium_node['pregap'], mm, artists, va, absolutetracknumber, discpregap)
                     track.metadata['~pregap'] = "1"
 
-                tracklist_node = medium_node.track_list[0]
-                track_count = int(tracklist_node.count)
+                tracklist_node = medium_node['tracks']
+                track_count = int(medium_node['track-count'])
                 if track_count:
-                    for track_node in tracklist_node.track:
+                    for track_node in tracklist_node:
                         absolutetracknumber += 1
                         track = self._finalize_loading_track(track_node, mm, artists, va, absolutetracknumber, discpregap)
 
-                if "data_track_list" in medium_node.children:
-                    for track_node in medium_node.data_track_list[0].track:
+                if "data-tracks" in medium_node:
+                    for track_node in medium_node['data-tracks']:
                         absolutetracknumber += 1
                         track = self._finalize_loading_track(track_node, mm, artists, va, absolutetracknumber, discpregap)
                         track.metadata['~datatrack'] = "1"
@@ -309,7 +308,7 @@ class Album(DataObject, Item):
             self._after_load_callbacks = []
 
     def _finalize_loading_track(self, track_node, metadata, artists, va, absolutetracknumber, discpregap):
-        track = Track(track_node.recording[0].id, self)
+        track = Track(track_node['id'], self)
         self._new_tracks.append(track)
 
         # Get track metadata
