@@ -134,7 +134,7 @@ class MBAPIHelper(APIHelper):
                 value = escape_lucene_query(value).strip().lower()
                 if value:
                     query.append('%s:(%s)' % (name, value))
-            query = ' '.join(query)
+            query = ''.join(query)
 
         if query:
             filters.append(("query", query))
@@ -220,7 +220,7 @@ class AcoustIdAPIHelper(APIHelper):
         super().__init__(ACOUSTID_HOST, ACOUSTID_PORT,
                                     '/v2/', webservice)
 
-    def _encode_acoustid_args(self, args, format_='xml'):
+    def _encode_acoustid_args(self, args, format_='json'):
         filters = []
         args['client'] = ACOUSTID_KEY
         args['clientversion'] = PICARD_VERSION_STR
