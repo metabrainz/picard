@@ -322,13 +322,14 @@ def recording_to_metadata(node, m, track=None):
         elif key == 'artist-credit':
             artist_credit_to_metadata(value, m)
             # set tags from artists
-            for artist in value:
-                track.append_track_artist(artist['artist']['id'])
+            if track:
+                for artist in value:
+                    track.append_track_artist(artist['artist']['id'])
         elif key == 'relations':
             _relations_to_metadata(value, m)
-        elif key == 'tags':
+        elif key == 'tags' and track:
             add_folksonomy_tags(value, track)
-        elif key == 'user-tags':
+        elif key == 'user-tags' and track:
             add_user_folksonomy_tags(value, track)
         elif key == 'isrcs':
             add_isrcs_to_metadata(value, m)
