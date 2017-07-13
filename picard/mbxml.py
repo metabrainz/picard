@@ -195,7 +195,7 @@ def artist_credit_to_metadata(node, m, release=False):
         m["musicbrainz_albumartistid"] = ids
         m["albumartist"] = artist
         m["albumartistsort"] = artistsort
-        m["~albumartists"] = artists
+        m["albumartists"] = artists
         m["~albumartists_sort"] = artistssort
     else:
         m["musicbrainz_artistid"] = ids
