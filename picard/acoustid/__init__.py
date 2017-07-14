@@ -23,7 +23,10 @@ from PyQt5 import QtCore
 from picard import config, log
 from picard.const import FPCALC_NAMES
 from picard.util import find_executable
-from picard.util.xml import XmlNode
+from picard.acoustid.json_helpers import parse_recording
+
+# Not an unused import. Don't remove it
+from picard.acoustid.acoustidmanager import AcoustIDManager
 
 
 class AcoustIDClient(QtCore.QObject):
@@ -47,55 +50,7 @@ class AcoustIDClient(QtCore.QObject):
 
     def _on_lookup_finished(self, next_func, file, document, http, error):
 
-        def make_artist_credit_node(parent, artists):
-            for i, artist in enumerate(artists):
-                node = {}
-                artist_mb = node['artist'] = {}
-                artist_mb['name'] = artist['name']
-                artist_mb['sort-name'] = artist['name']
-                artist_mb['id'] = artist['id']
-                if i > 0:
-                    node['joinphrase'] = '; '
-                node['name'] = artist['name']
-                parent.append(node)
-
-        def parse_recording(recording):
-            if 'title' not in recording:  # we have no metadata for this recording
-                return
-            recording_id = recording['id']
-            recording_mb = {}
-            recording_mb['id'] = recording_id
-            recording_mb['title'] = recording['title']
-            if 'duration' in recording:
-                recording_mb['length'] = int(recording['duration']) * 1000
-            recording_mb['artist-credit'] = []
-            make_artist_credit_node(recording_mb['artist-credit'], recording['artists'])
-            recording_mb['releases'] = []
-            for release_group in recording['releasegroups']:
-                for release in release_group['releases']:
-                    release_mb = {}
-                    release_mb['id'] = release['id']
-                    release_mb['release-group'] = {}
-                    release_mb['release-group']['id'] = release_group['id']
-                    if 'title' in release:
-                        release_mb['title'] = release['title']
-                    else:
-                        release_mb['title'] = release_group['title']
-                    if 'country' in release:
-                        release_mb['country'] = release['country']
-                    release_mb['media'] = []
-                    for medium in release['mediums']:
-                        medium_mb = {}
-                        if 'format' in medium:
-                            medium_mb['format'] = medium['format']
-                        medium_mb['track'] = {}
-                        medium_mb['track-count'] = medium['track_count']
-                        release_mb['media'].append(medium_mb)
-                    recording_mb['releases'].append(release_mb)
-            doc['recordings'].append(recording_mb)
         doc = {}
-        doc['recordings'] = []
-
         if error:
             mparms = {
                 'error': http.errorString(),
@@ -110,6 +65,7 @@ class AcoustIDClient(QtCore.QObject):
                 echo=None
             )
         else:
+            recording_list = doc['recordings'] = []
             status = document['status']
             if status == 'ok':
                 results = document['results']
@@ -118,7 +74,7 @@ class AcoustIDClient(QtCore.QObject):
                     file.metadata['acoustid_id'] = result['id']
                     if 'recordings' in result:
                         for recording in result['recordings']:
-                            parse_recording(recording)
+                            recording_list.append(parse_recording(recording))
                         log.debug("AcoustID: Lookup successful for '%s'", file.filename)
             else:
                 mparms = {
@@ -133,6 +89,7 @@ class AcoustIDClient(QtCore.QObject):
                     mparms,
                     echo=None
                 )
+
         next_func(doc, http, error)
 
     def _lookup_fingerprint(self, next_func, filename, result=None, error=None):

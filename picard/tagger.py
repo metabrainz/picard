@@ -69,7 +69,7 @@ from picard.collection import load_user_collections
 from picard.ui.mainwindow import MainWindow
 from picard.ui.itemviews import BaseTreeView
 from picard.plugin import PluginManager
-from picard.acoustidmanager import AcoustIDManager
+from picard.acoustid import AcoustIDManager
 from picard.config_upgrade import upgrade_config
 from picard.util import (
     decode_filename,
