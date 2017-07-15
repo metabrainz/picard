@@ -189,6 +189,11 @@ class Metadata(dict):
 
     def compare_to_track(self, track, weights):
         parts = []
+        result = (-1,)
+
+        if not track:
+            return result
+
         if 'title' in self:
             a = self['title']
             b = track['title']
@@ -213,7 +218,6 @@ class Metadata(dict):
             sim = linear_combination_of_weights(parts)
             return (sim, None, None, track)
 
-        result = (-1,)
         for release in releases:
             release_parts = self.compare_to_release_parts(release, weights)
             sim = linear_combination_of_weights(parts + release_parts)
