@@ -138,7 +138,7 @@ class Metadata(dict):
                     if "title" in weights:
                         b = int(release['media'][0]['track-count'])
                     else:
-                        b = int(release['media'][0]['track-count'])
+                        b = int(release['track-count'])
                 score = 0.0 if a > b else 0.3 if a < b else 1.0
                 parts.append((score, weights["totaltracks"]))
 
