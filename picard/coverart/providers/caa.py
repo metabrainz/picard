@@ -208,8 +208,9 @@ class CoverArtProviderCaa(CoverArtProvider):
             return False
 
         caa_node = self.release['cover-art-archive']
+        caa_has_suitable_artwork = caa_node['artwork']
 
-        if not caa_node['artwork']:
+        if not caa_has_suitable_artwork:
             log.debug("There are no images in the Cover Art Archive for %s"
                       % self.release['id'])
             return False
