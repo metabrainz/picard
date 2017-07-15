@@ -52,6 +52,7 @@ from picard.util.tags import PRESERVED_TAGS
 from picard.const import QUERY_LIMIT
 from picard import PICARD_APP_NAME
 
+
 class File(QtCore.QObject, Item):
 
     metadata_images_changed = QtCore.pyqtSignal()
@@ -579,9 +580,8 @@ class File(QtCore.QObject, Item):
                 tracks = document['recordings']
             elif lookuptype == "acoustid":
                 tracks = document['recordings']
-        except Exception as e:
+        except (KeyError, TypeError):
             tracks = None
-            log.debug(e)
 
         # no matches
         if not tracks:
@@ -597,21 +597,21 @@ class File(QtCore.QObject, Item):
         match = sorted((self.metadata.compare_to_track(
             track, self.comparison_weights) for track in tracks),
             reverse=True, key=itemgetter(0))[0]
-        if lookuptype != 'acoustid':
-            threshold = config.setting['file_lookup_threshold']
-            if match[0] < threshold:
-                self.tagger.window.set_statusbar_message(
-                    N_("No matching tracks above the threshold for file '%(filename)s'"),
-                    {'filename': self.filename},
-                    timeout=3000
-                )
-                self.clear_pending()
-                return
+        if lookuptype != 'acoustid' and match[0] < config.setting['file_lookup_threshold']:
+            self.tagger.window.set_statusbar_message(
+                N_("No matching tracks above the threshold for file '%(filename)s'"),
+                {'filename': self.filename},
+                timeout=3000
+            )
+            self.clear_pending()
+            return
+
         self.tagger.window.set_statusbar_message(
             N_("File '%(filename)s' identified!"),
             {'filename': self.filename},
             timeout=3000
         )
+
         self.clear_pending()
 
         rg, release, track = match[1:]

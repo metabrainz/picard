@@ -182,7 +182,7 @@ class Album(DataObject, Item):
             else:
                 try:
                     parsed = self._parse_release(document)
-                except:
+                except Exception as e:
                     error = True
                     self.error_append(traceback.format_exc())
         finally:

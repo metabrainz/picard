@@ -134,7 +134,7 @@ class MBAPIHelper(APIHelper):
                 value = escape_lucene_query(value).strip().lower()
                 if value:
                     query.append('%s:(%s)' % (name, value))
-            query = ''.join(query)
+            query = ' '.join(query)
 
         if query:
             filters.append(("query", query))

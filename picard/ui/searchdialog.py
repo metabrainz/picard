@@ -378,7 +378,7 @@ class TrackSearchDialog(SearchDialog):
 
         try:
             tracks = document['recordings']
-        except Exception:
+        except (KeyError, TypeError):
             self.no_results_found()
             return
 
@@ -393,7 +393,7 @@ class TrackSearchDialog(SearchDialog):
             tracks = [item[3] for item in sorted_results]
 
         del self.search_results[:]  # Clear existing data
-        self.parse_tracks_from_xml(tracks)
+        self.parse_tracks(tracks)
         self.display_results()
 
     def display_results(self):
@@ -410,8 +410,8 @@ class TrackSearchDialog(SearchDialog):
             self.table.setItem(row, 5, table_item(track.get("country", "")))
             self.table.setItem(row, 6, table_item(track.get("releasetype", "")))
 
-    def parse_tracks_from_xml(self, tracks_xml):
-        for node in tracks_xml:
+    def parse_tracks(self, tracks):
+        for node in tracks:
             if "releases" in node:
                 for rel_node in node['releases']:
                     track = Metadata()
@@ -568,12 +568,12 @@ class AlbumSearchDialog(SearchDialog):
 
         try:
             releases = document['releases']
-        except Exception:
+        except (KeyError, TypeError):
             self.no_results_found()
             return
 
         del self.search_results[:]
-        self.parse_releases_from_xml(releases)
+        self.parse_releases(releases)
         self.display_results()
         self.fetch_coverarts()
 
@@ -645,11 +645,12 @@ class AlbumSearchDialog(SearchDialog):
             try:
                 pixmap.loadFromData(data)
                 cover_cell.update(pixmap)
-            except Exception:
+            except Exception as e:
                 cover_cell.not_found()
+                log.debug(e)
 
-    def parse_releases_from_xml(self, release_xml):
-        for node in release_xml:
+    def parse_releases(self, releases):
+        for node in releases:
             release = Metadata()
             release_to_metadata(node, release)
             rg_node = node['release-group']
@@ -657,7 +658,7 @@ class AlbumSearchDialog(SearchDialog):
             if "media" in node:
                 media = node['media']
                 release["format"] = media_formats_from_node(media)
-                release["tracks"] = media[0]['track-count']
+                release["tracks"] = node['track-count']
             countries = country_list_from_node(node)
             if countries:
                 release["country"] = ", ".join(countries)
@@ -762,16 +763,16 @@ class ArtistSearchDialog(SearchDialog):
 
         try:
             artists = document['artists']
-        except Exception:
+        except (KeyError, TypeError):
             self.no_results()
             return
 
         del self.search_results[:]
-        self.parse_artists_from_xml(artists)
+        self.parse_artists(artists)
         self.display_results()
 
-    def parse_artists_from_xml(self, artist_xml):
-        for node in artist_xml:
+    def parse_artists(self, artists):
+        for node in artists:
             artist = Metadata()
             artist_to_metadata(node, artist)
             self.search_results.append(artist)

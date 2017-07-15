@@ -168,7 +168,7 @@ class Cluster(QtCore.QObject, Item):
 
         try:
             releases = document['releases']
-        except (AttributeError, IndexError):
+        except (KeyError, TypeError):
             releases = None
 
         mparms = {

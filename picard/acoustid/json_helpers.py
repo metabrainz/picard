@@ -69,6 +69,7 @@ def _make_artist_credit_node(artists):
 def parse_recording(recording):
     if 'title' not in recording:  # we have no metadata for this recording
         return
+
     recording_mb = {
         'id': recording['id'],
         'title': recording['title'],

@@ -58,7 +58,13 @@ class ReleaseGroup(DataObject):
             "catnum":   N_('Cat No'),
         }
         extrakeys = ("packaging", "barcode", "disambiguation")
-        for node in document['releases']:
+
+        try:
+            releases = document['releases']
+        except (TypeError, KeyError):
+            releases = []
+
+        for node in releases:
             labels, catnums = label_info_from_node(node['label-info'])
 
             countries = country_list_from_node(node)
