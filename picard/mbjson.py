@@ -440,7 +440,7 @@ def release_group_to_metadata(node, m, release_group=None):
 
 def add_secondary_release_types(node, m):
     for secondary_type in node:
-        m.add_unique('~secondaryreleasetype', secondary_type)
+        m.add_unique('~secondaryreleasetype', secondary_type.lower())
 
 
 def add_folksonomy_tags(node, obj):
