@@ -82,7 +82,7 @@ class ReleaseGroup(DataObject):
                 "format":  media_formats_from_node(node['media']),
                 "label":  ", ".join([' '.join(x.split(' ')[:2]) for x in set(labels)]),
                 "catnum": ", ".join(set(catnums)),
-                "tracks":  "+".join([m['track-count'] for m in node['media']]),
+                "tracks":  "+".join([str(m['track-count']) for m in node['media']]),
                 "barcode":
                     node['barcode']
                     if "barcode" in node
