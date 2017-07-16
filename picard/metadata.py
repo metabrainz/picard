@@ -135,9 +135,9 @@ class Metadata(dict):
         else:
             try:
                 if "title" in weights:
-                    b = int(release['media'][0]['track-count'])
+                    b = release['media'][0]['track-count']
                 else:
-                    b = int(release['track-count'])
+                    b = release['track-count']
             except (KeyError, TypeError):
                 pass
             else:
@@ -208,7 +208,7 @@ class Metadata(dict):
 
         a = self.length
         if a > 0 and 'length' in track:
-            b = int(track['length'])
+            b = track['length']
             score = 1.0 - min(abs(a - b), 30000) / 30000.0
             parts.append((score, weights["length"]))
 

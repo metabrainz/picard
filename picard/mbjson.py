@@ -303,7 +303,7 @@ def track_to_metadata(node, track):
         if key in _TRACK_TO_METADATA:
             m[_TRACK_TO_METADATA[key]] = value
         elif key == 'length' and value:
-            m.length = int(value)
+            m.length = value
         elif key == 'artist-credit':
             artist_credit_to_metadata(value, m)
     m['~length'] = format_time(m.length)
@@ -318,7 +318,7 @@ def recording_to_metadata(node, m, track=None):
         if key in _RECORDING_TO_METADATA:
             m[_RECORDING_TO_METADATA[key]] = value
         elif key == 'length':
-            m.length = int(value)
+            m.length = value
         elif key == 'artist-credit':
             artist_credit_to_metadata(value, m)
             # set tags from artists
@@ -447,7 +447,7 @@ def add_folksonomy_tags(node, obj):
     if obj is not None:
         for tag in node:
             key = tag['name']
-            count = int(tag['count'])
+            count = tag['count']
             obj.add_folksonomy_tag(key, count)
 
 

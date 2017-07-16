@@ -97,7 +97,7 @@ class ReleaseGroup(DataObject):
                     if "disambiguation" in node
                     else None,
                 "_disambiguate_name": list(),
-                "totaltracks": sum([int(m['track-count']) for m in node['media']]),
+                "totaltracks": sum([m['track-count'] for m in node['media']]),
                 "countries": countries,
                 "formats": formats,
             }

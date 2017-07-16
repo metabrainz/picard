@@ -120,7 +120,7 @@ def load_user_collections(callback=None):
                     user_collections[node_id] = Collection(node_id, node['name'], node['release-count'])
                 else:
                     collection.name = node['name']
-                    collection.size = int(node['release-count'])
+                    collection.size = node['release-count']
 
             for collection_id in set(user_collections.keys()) - new_collections:
                 del user_collections[collection_id]

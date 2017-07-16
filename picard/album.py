@@ -238,7 +238,7 @@ class Album(DataObject, Item):
                     track.metadata['~pregap'] = "1"
 
                 tracklist_node = medium_node['tracks']
-                track_count = int(medium_node['track-count'])
+                track_count = medium_node['track-count']
                 if track_count:
                     for track_node in tracklist_node:
                         absolutetracknumber += 1
