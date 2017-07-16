@@ -647,7 +647,7 @@ class AlbumSearchDialog(SearchDialog):
                 cover_cell.update(pixmap)
             except Exception as e:
                 cover_cell.not_found()
-                log.debug(e)
+                log.error(e)
 
     def parse_releases(self, releases):
         for node in releases:
