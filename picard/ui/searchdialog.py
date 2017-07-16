@@ -21,7 +21,7 @@ from PyQt5 import QtGui, QtCore, QtNetwork, QtWidgets
 from operator import itemgetter
 from functools import partial
 from collections import namedtuple
-from picard import config
+from picard import config, log
 from picard.file import File
 from picard.ui import PicardDialog
 from picard.ui.util import StandardButton, ButtonLineEdit
