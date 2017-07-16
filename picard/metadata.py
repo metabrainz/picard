@@ -128,17 +128,19 @@ class Metadata(dict):
             b = artist_credit_from_node(release['artist-credit'])[0]
             parts.append((similarity2(a, b), weights["albumartist"]))
 
-        if "totaltracks" in self:
+        try:
+            a = int(self["totaltracks"])
+        except (ValueError, KeyError):
+            pass
+        else:
             try:
-                a = int(self["totaltracks"])
-            except ValueError:
+                if "title" in weights:
+                    b = int(release['media'][0]['track-count'])
+                else:
+                    b = int(release['track-count'])
+            except (KeyError, TypeError):
                 pass
             else:
-                if 'media' in release:
-                    if "title" in weights:
-                        b = int(release['media'][0]['track-count'])
-                    else:
-                        b = int(release['track-count'])
                 score = 0.0 if a > b else 0.3 if a < b else 1.0
                 parts.append((score, weights["totaltracks"]))
 
