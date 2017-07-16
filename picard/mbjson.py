@@ -364,7 +364,7 @@ def medium_to_metadata(node, m):
 
 
 def artist_to_metadata(node, m):
-    """Make meatadata dict from a json 'artist' node."""
+    """Make meatadata dict from a JSON 'artist' node."""
     m.add_unique("musicbrainz_artistid", node['id'])
     for key, value in node.items():
         if not value:
@@ -387,7 +387,7 @@ def artist_to_metadata(node, m):
 
 
 def release_to_metadata(node, m, album=None):
-    """Make metadata dict from a json 'release' node."""
+    """Make metadata dict from a JSON 'release' node."""
     m.add_unique('musicbrainz_albumid', node['id'])
     for key, value in node.items():
         if not value:
@@ -418,7 +418,7 @@ def release_to_metadata(node, m, album=None):
 
 
 def release_group_to_metadata(node, m, release_group=None):
-    """Make metadata dict from a json 'release-group' node taken from inside a 'release' node."""
+    """Make metadata dict from a JSON 'release-group' node taken from inside a 'release' node."""
     m.add_unique('musicbrainz_releasegroupid', node['id'])
     for key, value in node.items():
         if not value:
@@ -444,7 +444,7 @@ def add_secondary_release_types(node, m):
 
 
 def add_folksonomy_tags(node, obj):
-    if obj:
+    if obj is not None:
         for tag in node:
             key = tag['name']
             count = int(tag['count'])
@@ -452,7 +452,7 @@ def add_folksonomy_tags(node, obj):
 
 
 def add_user_folksonomy_tags(node, obj):
-    if obj:
+    if obj is not None:
         for tag in node:
             key = tag['name']
             obj.add_folksonomy_tag(key, 1)
