@@ -106,7 +106,7 @@ def load_user_collections(callback=None):
                 echo=log.error
             )
             return
-        if document and "collection" in document:
+        if document and "collections" in document:
             collection_list = document['collections']
             new_collections = set()
 
