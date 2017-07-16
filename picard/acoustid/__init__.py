@@ -25,9 +25,6 @@ from picard.const import FPCALC_NAMES
 from picard.util import find_executable
 from picard.acoustid.json_helpers import parse_recording
 
-# Not an unused import. Don't remove it
-from picard.acoustid.acoustidmanager import AcoustIDManager
-
 
 class AcoustIDClient(QtCore.QObject):
 

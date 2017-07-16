@@ -133,16 +133,12 @@ class Metadata(dict):
         except (ValueError, KeyError):
             pass
         else:
-            try:
-                if "title" in weights:
-                    b = release['media'][0]['track-count']
-                else:
-                    b = release['track-count']
-            except (KeyError, TypeError):
-                pass
+            if "title" in weights:
+                b = release['media'][0]['track-count']
             else:
-                score = 0.0 if a > b else 0.3 if a < b else 1.0
-                parts.append((score, weights["totaltracks"]))
+                b = release['track-count']
+            score = 0.0 if a > b else 0.3 if a < b else 1.0
+            parts.append((score, weights["totaltracks"]))
 
         preferred_countries = config.setting["preferred_release_countries"]
         preferred_formats = config.setting["preferred_release_formats"]
@@ -191,10 +187,6 @@ class Metadata(dict):
 
     def compare_to_track(self, track, weights):
         parts = []
-        result = (-1,)
-
-        if not track:
-            return result
 
         if 'title' in self:
             a = self['title']
@@ -219,6 +211,8 @@ class Metadata(dict):
         if not releases:
             sim = linear_combination_of_weights(parts)
             return (sim, None, None, track)
+
+        result = (-1,)
 
         for release in releases:
             release_parts = self.compare_to_release_parts(release, weights)
