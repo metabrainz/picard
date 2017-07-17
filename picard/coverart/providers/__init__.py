@@ -155,12 +155,11 @@ class CoverArtProvider(object):
            `relation_types`
         """
         try:
-            if 'relation_list' in self.release.children:
-                for relation_list in self.release.relation_list:
-                    if relation_list.target_type == 'url':
-                        for relation in relation_list.relation:
-                            if relation.type in relation_types:
-                                func(relation.target[0].text)
+            if 'relations' in self.release:
+                for relation in self.release['relations']:
+                    if relation['target-type'] == 'url':
+                        if relation['type'] in relation_types:
+                            func(relation['url']['resource'])
         except AttributeError:
             self.error(traceback.format_exc())
 

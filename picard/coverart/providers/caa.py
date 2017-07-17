@@ -202,24 +202,24 @@ class CoverArtProviderCaa(CoverArtProvider):
     def _has_suitable_artwork(self):
         # MB web service indicates if CAA has artwork
         # https://tickets.metabrainz.org/browse/MBS-4536
-        if 'cover_art_archive' not in self.release.children:
+        if 'cover-art-archive' not in self.release:
             log.debug("No Cover Art Archive information for %s"
-                      % self.release.id)
+                      % self.release['id'])
             return False
 
-        caa_node = self.release.children['cover_art_archive'][0]
-        caa_has_suitable_artwork = caa_node.artwork[0].text == 'true'
+        caa_node = self.release['cover-art-archive']
+        caa_has_suitable_artwork = caa_node['artwork']
 
         if not caa_has_suitable_artwork:
             log.debug("There are no images in the Cover Art Archive for %s"
-                      % self.release.id)
+                      % self.release['id'])
             return False
 
         if self.restrict_types:
             want_front = 'front' in self.caa_types
             want_back = 'back' in self.caa_types
-            caa_has_front = caa_node.front[0].text == 'true'
-            caa_has_back = caa_node.back[0].text == 'true'
+            caa_has_front = caa_node['front']
+            caa_has_back = caa_node['back']
 
             if self.len_caa_types == 2 and (want_front or want_back):
                 # The OR cases are there to still download and process the CAA
@@ -242,10 +242,10 @@ class CoverArtProviderCaa(CoverArtProvider):
 
         if not caa_has_suitable_artwork:
             log.debug("There are no suitable images in the Cover Art Archive for %s"
-                      % self.release.id)
+                      % self.release['id'])
         else:
             log.debug("There are suitable images in the Cover Art Archive for %s"
-                      % self.release.id)
+                      % self.release['id'])
 
         return caa_has_suitable_artwork
 

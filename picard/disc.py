@@ -60,7 +60,7 @@ class Disc(QtCore.QObject):
             log.error("%r", http.errorString())
         else:
             try:
-                releases = document.metadata[0].disc[0].release_list[0].release
+                releases = document['releases']
             except (AttributeError, IndexError):
                 log.error(traceback.format_exc())
 

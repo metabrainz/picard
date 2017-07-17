@@ -25,7 +25,7 @@ from picard.util import (
     linear_combination_of_weights,
 )
 from picard.util.tags import PRESERVED_TAGS
-from picard.mbxml import artist_credit_from_node
+from picard.mbjson import artist_credit_from_node
 from picard.util.imagelist import ImageList
 
 MULTI_VALUED_JOINER = '; '
@@ -119,28 +119,26 @@ class Metadata(dict):
 
     def compare_to_release_parts(self, release, weights):
         parts = []
-
         if "album" in self:
-            b = release.title[0].text
+            b = release['title']
             parts.append((similarity2(self["album"], b), weights["album"]))
 
         if "albumartist" in self and "albumartist" in weights:
             a = self["albumartist"]
-            b = artist_credit_from_node(release.artist_credit[0])[0]
+            b = artist_credit_from_node(release['artist-credit'])[0]
             parts.append((similarity2(a, b), weights["albumartist"]))
 
-        if "totaltracks" in self:
-            try:
-                a = int(self["totaltracks"])
-            except ValueError:
-                pass
+        try:
+            a = int(self["totaltracks"])
+        except (ValueError, KeyError):
+            pass
+        else:
+            if "title" in weights:
+                b = release['media'][0]['track-count']
             else:
-                if "title" in weights:
-                    b = int(release.medium_list[0].medium[0].track_list[0].count)
-                else:
-                    b = int(release.medium_list[0].track_count[0].text)
-                score = 0.0 if a > b else 0.3 if a < b else 1.0
-                parts.append((score, weights["totaltracks"]))
+                b = release['track-count']
+            score = 0.0 if a > b else 0.3 if a < b else 1.0
+            parts.append((score, weights["totaltracks"]))
 
         preferred_countries = config.setting["preferred_release_countries"]
         preferred_formats = config.setting["preferred_release_formats"]
@@ -148,9 +146,9 @@ class Metadata(dict):
         total_countries = len(preferred_countries)
         if total_countries:
             score = 0.0
-            if "country" in release.children:
+            if "country" in release:
                 try:
-                    i = preferred_countries.index(release.country[0].text)
+                    i = preferred_countries.index(release['country'])
                     score = float(total_countries - i) / float(total_countries)
                 except ValueError:
                     pass
@@ -160,10 +158,10 @@ class Metadata(dict):
         if total_formats:
             score = 0.0
             subtotal = 0
-            for medium in release.medium_list[0].medium:
-                if "format" in medium.children:
+            for medium in release['media']:
+                if "format" in medium:
                     try:
-                        i = preferred_formats.index(medium.format[0].text)
+                        i = preferred_formats.index(medium['format'])
                         score += float(total_formats - i) / float(total_formats)
                     except ValueError:
                         pass
@@ -174,15 +172,15 @@ class Metadata(dict):
 
         if "releasetype" in weights:
             type_scores = dict(config.setting["release_type_scores"])
-            if 'release_group' in release.children and 'type' in release.release_group[0].attribs:
-                release_type = release.release_group[0].type
+            if 'release-group' in release and 'primary-type' in release['release-group']:
+                release_type = release['release-group']['primary-type']
                 score = type_scores.get(release_type, type_scores.get('Other', 0.5))
             else:
                 score = 0.0
             parts.append((score, weights["releasetype"]))
 
-        rg = QObject.tagger.get_release_group_by_id(release.release_group[0].id)
-        if release.id in rg.loaded_albums:
+        rg = QObject.tagger.get_release_group_by_id(release['release-group']['id'])
+        if release['id'] in rg.loaded_albums:
             parts.append((1.0, 6))
 
         return parts
@@ -192,36 +190,36 @@ class Metadata(dict):
 
         if 'title' in self:
             a = self['title']
-            b = track.title[0].text
+            b = track['title']
             parts.append((similarity2(a, b), weights["title"]))
 
         if 'artist' in self:
             a = self['artist']
-            b = artist_credit_from_node(track.artist_credit[0])[0]
+            b = artist_credit_from_node(track['artist-credit'])[0]
             parts.append((similarity2(a, b), weights["artist"]))
 
         a = self.length
-        if a > 0 and 'length' in track.children:
-            b = int(track.length[0].text)
+        if a > 0 and 'length' in track:
+            b = track['length']
             score = 1.0 - min(abs(a - b), 30000) / 30000.0
             parts.append((score, weights["length"]))
 
         releases = []
-        if "release_list" in track.children and "release" in track.release_list[0].children:
-            releases = track.release_list[0].release
+        if "releases" in track:
+            releases = track['releases']
 
         if not releases:
             sim = linear_combination_of_weights(parts)
             return (sim, None, None, track)
 
         result = (-1,)
+
         for release in releases:
             release_parts = self.compare_to_release_parts(release, weights)
             sim = linear_combination_of_weights(parts + release_parts)
             if sim > result[0]:
-                rg = release.release_group[0] if "release_group" in release.children else None
+                rg = release['release-group'] if "release-group" in release else None
                 result = (sim, rg, release, track)
-
         return result
 
     def copy(self, other):

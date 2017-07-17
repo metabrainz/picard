@@ -303,7 +303,7 @@ def track_to_metadata(node, track):
         if key in _TRACK_TO_METADATA:
             m[_TRACK_TO_METADATA[key]] = value
         elif key == 'length' and value:
-            m.length = int(value)
+            m.length = value
         elif key == 'artist-credit':
             artist_credit_to_metadata(value, m)
     m['~length'] = format_time(m.length)
@@ -318,17 +318,18 @@ def recording_to_metadata(node, m, track=None):
         if key in _RECORDING_TO_METADATA:
             m[_RECORDING_TO_METADATA[key]] = value
         elif key == 'length':
-            m.length = int(value)
+            m.length = value
         elif key == 'artist-credit':
             artist_credit_to_metadata(value, m)
             # set tags from artists
-            for artist in value:
-                track.append_track_artist(artist['artist']['id'])
+            if track:
+                for artist in value:
+                    track.append_track_artist(artist['artist']['id'])
         elif key == 'relations':
             _relations_to_metadata(value, m)
-        elif key == 'tags':
+        elif key == 'tags' and track:
             add_folksonomy_tags(value, track)
-        elif key == 'user-tags':
+        elif key == 'user-tags' and track:
             add_user_folksonomy_tags(value, track)
         elif key == 'isrcs':
             add_isrcs_to_metadata(value, m)
@@ -363,7 +364,7 @@ def medium_to_metadata(node, m):
 
 
 def artist_to_metadata(node, m):
-    """Make meatadata dict from a XML 'artist' node."""
+    """Make meatadata dict from a JSON 'artist' node."""
     m.add_unique("musicbrainz_artistid", node['id'])
     for key, value in node.items():
         if not value:
@@ -386,7 +387,7 @@ def artist_to_metadata(node, m):
 
 
 def release_to_metadata(node, m, album=None):
-    """Make metadata dict from a XML 'release' node."""
+    """Make metadata dict from a JSON 'release' node."""
     m.add_unique('musicbrainz_albumid', node['id'])
     for key, value in node.items():
         if not value:
@@ -417,7 +418,7 @@ def release_to_metadata(node, m, album=None):
 
 
 def release_group_to_metadata(node, m, release_group=None):
-    """Make metadata dict from a XML 'release-group' node taken from inside a 'release' node."""
+    """Make metadata dict from a JSON 'release-group' node taken from inside a 'release' node."""
     m.add_unique('musicbrainz_releasegroupid', node['id'])
     for key, value in node.items():
         if not value:
@@ -439,20 +440,22 @@ def release_group_to_metadata(node, m, release_group=None):
 
 def add_secondary_release_types(node, m):
     for secondary_type in node:
-        m.add_unique(secondary_type)
+        m.add_unique('~secondaryreleasetype', secondary_type.lower())
 
 
 def add_folksonomy_tags(node, obj):
-    for tag in node:
-        key = tag['name']
-        count = int(tag['count'])
-        obj.add_folksonomy_tag(key, count)
+    if obj is not None:
+        for tag in node:
+            key = tag['name']
+            count = tag['count']
+            obj.add_folksonomy_tag(key, count)
 
 
 def add_user_folksonomy_tags(node, obj):
-    for tag in node:
-        key = tag['name']
-        obj.add_folksonomy_tag(key, 1)
+    if obj is not None:
+        for tag in node:
+            key = tag['name']
+            obj.add_folksonomy_tag(key, 1)
 
 
 def add_isrcs_to_metadata(node, metadata):

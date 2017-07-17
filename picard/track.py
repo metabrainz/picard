@@ -24,7 +24,7 @@ from picard import config, log
 from picard.metadata import Metadata, run_track_metadata_processors
 from picard.dataobj import DataObject
 from picard.util.textencoding import asciipunct
-from picard.mbxml import recording_to_metadata
+from picard.mbjson import recording_to_metadata
 from picard.script import ScriptParser
 from picard.const import VARIOUS_ARTISTS_ID, SILENCE_TRACK_TITLE, DATA_TRACK_TITLE
 from picard.ui.item import Item
@@ -279,16 +279,15 @@ class NonAlbumTrack(Track):
                                           priority=priority,
                                           refresh=refresh)
 
-    def _recording_request_finished(self, document, http, error):
+    def _recording_request_finished(self, recording, http, error):
         if error:
             log.error("%r", http.errorString())
             return
         try:
-            recording = document.metadata[0].recording[0]
             self._parse_recording(recording)
             for file in self.linked_files:
                 self.update_file_metadata(file)
-        except:
+        except Exception:
             log.error(traceback.format_exc())
 
     def _parse_recording(self, recording):

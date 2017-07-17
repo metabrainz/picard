@@ -167,8 +167,8 @@ class Cluster(QtCore.QObject, Item):
         self.lookup_task = None
 
         try:
-            releases = document.metadata[0].release_list[0].release
-        except (AttributeError, IndexError):
+            releases = document['releases']
+        except (KeyError, TypeError):
             releases = None
 
         mparms = {
@@ -201,7 +201,7 @@ class Cluster(QtCore.QObject, Item):
             mparms,
             timeout=3000
         )
-        self.tagger.move_files_to_album(self.files, match[1].id)
+        self.tagger.move_files_to_album(self.files, match[1]['id'])
 
     def lookup_metadata(self):
         """Try to identify the cluster using the existing metadata."""

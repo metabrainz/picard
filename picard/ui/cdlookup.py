@@ -20,7 +20,7 @@
 from PyQt5 import QtCore, QtWidgets
 from picard.ui import PicardDialog
 from picard.ui.ui_cdlookup import Ui_Dialog
-from picard.mbxml import artist_credit_from_node, label_info_from_node
+from picard.mbjson import artist_credit_from_node, label_info_from_node
 
 
 class CDLookupDialog(PicardDialog):
@@ -36,13 +36,13 @@ class CDLookupDialog(PicardDialog):
                                               _("Labels"), _("Catalog #s"), _("Barcode")])
         if self.releases:
             for release in self.releases:
-                labels, catalog_numbers = label_info_from_node(release.label_info_list[0])
-                date = release.date[0].text if "date" in release.children else ""
-                country = release.country[0].text if "country" in release.children else ""
-                barcode = release.barcode[0].text if "barcode" in release.children else ""
+                labels, catalog_numbers = label_info_from_node(release['label-info'])
+                date = release['date'] if "date" in release else ""
+                country = release['country'] if "country" in release else ""
+                barcode = release['barcode'] if "barcode" in release else ""
                 item = QtWidgets.QTreeWidgetItem(self.ui.release_list)
-                item.setText(0, release.title[0].text)
-                item.setText(1, artist_credit_from_node(release.artist_credit[0])[0])
+                item.setText(0, release['title'])
+                item.setText(1, artist_credit_from_node(release['artist_credit']))
                 item.setText(2, date)
                 item.setText(3, country)
                 item.setText(4, ", ".join(labels))

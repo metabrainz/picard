@@ -52,6 +52,7 @@ from picard.util.tags import PRESERVED_TAGS
 from picard.const import QUERY_LIMIT
 from picard import PICARD_APP_NAME
 
+
 class File(QtCore.QObject, Item):
 
     metadata_images_changed = QtCore.pyqtSignal()
@@ -572,14 +573,14 @@ class File(QtCore.QObject, Item):
 
         if self.state == File.REMOVED:
             return
-
+        if error:
+            log.error(document)
         try:
-            m = document.metadata[0]
             if lookuptype == "metadata":
-                tracks = m.recording_list[0].recording
+                tracks = document['recordings']
             elif lookuptype == "acoustid":
-                tracks = m.acoustid[0].recording_list[0].recording
-        except (AttributeError, IndexError):
+                tracks = document['recordings']
+        except (KeyError, TypeError):
             tracks = None
 
         # no matches
@@ -596,32 +597,31 @@ class File(QtCore.QObject, Item):
         match = sorted((self.metadata.compare_to_track(
             track, self.comparison_weights) for track in tracks),
             reverse=True, key=itemgetter(0))[0]
+        if lookuptype != 'acoustid' and match[0] < config.setting['file_lookup_threshold']:
+            self.tagger.window.set_statusbar_message(
+                N_("No matching tracks above the threshold for file '%(filename)s'"),
+                {'filename': self.filename},
+                timeout=3000
+            )
+            self.clear_pending()
+            return
 
-        if lookuptype != 'acoustid':
-            threshold = config.setting['file_lookup_threshold']
-            if match[0] < threshold:
-                self.tagger.window.set_statusbar_message(
-                    N_("No matching tracks above the threshold for file '%(filename)s'"),
-                    {'filename': self.filename},
-                    timeout=3000
-                )
-                self.clear_pending()
-                return
         self.tagger.window.set_statusbar_message(
             N_("File '%(filename)s' identified!"),
             {'filename': self.filename},
             timeout=3000
         )
+
         self.clear_pending()
 
         rg, release, track = match[1:]
         if lookuptype == 'acoustid':
-            self.tagger.acoustidmanager.add(self, track.id)
+            self.tagger.acoustidmanager.add(self, track['id'])
         if release:
-            self.tagger.get_release_group_by_id(rg.id).loaded_albums.add(release.id)
-            self.tagger.move_file_to_track(self, release.id, track.id)
+            self.tagger.get_release_group_by_id(rg['id']).loaded_albums.add(release['id'])
+            self.tagger.move_file_to_track(self, release['id'], track['id'])
         else:
-            self.tagger.move_file_to_nat(self, track.id, node=track)
+            self.tagger.move_file_to_nat(self, track['id'], node=track)
 
     def lookup_metadata(self):
         """Try to identify the file using the existing metadata."""
@@ -666,14 +666,14 @@ class File(QtCore.QObject, Item):
 
     def _get_tracknumber(self):
         try:
-            return int(self.metadata["tracknumber"])
+            return self.metadata["tracknumber"]
         except:
             return 0
     tracknumber = property(_get_tracknumber, doc="The track number as an int.")
 
     def _get_discnumber(self):
         try:
-            return int(self.metadata["discnumber"])
+            return self.metadata["discnumber"]
         except:
             return 0
     discnumber = property(_get_discnumber, doc="The disc number as an int.")

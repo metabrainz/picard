@@ -24,7 +24,7 @@ from itertools import combinations
 from picard import log
 from picard.metadata import Metadata
 from picard.dataobj import DataObject
-from picard.mbxml import media_formats_from_node, label_info_from_node
+from picard.mbjson import media_formats_from_node, label_info_from_node, country_list_from_node
 from picard.util import uniqify
 
 
@@ -58,44 +58,46 @@ class ReleaseGroup(DataObject):
             "catnum":   N_('Cat No'),
         }
         extrakeys = ("packaging", "barcode", "disambiguation")
-        for node in document.metadata[0].release_list[0].release:
-            labels, catnums = label_info_from_node(node.label_info_list[0])
 
-            countries = []
-            if 'release_event_list' in node.children:
-                for release_event in node.release_event_list[0].release_event:
-                    if "area" in release_event.children:
-                        countries.append(release_event.area[0].iso_3166_1_code_list[0].iso_3166_1_code[0].text)
+        try:
+            releases = document['releases']
+        except (TypeError, KeyError):
+            releases = []
+
+        for node in releases:
+            labels, catnums = label_info_from_node(node['label-info'])
+
+            countries = country_list_from_node(node)
 
             formats = []
-            for medium in node.medium_list[0].medium:
-                if "format" in medium.children:
-                    formats.append(medium.format[0].text)
+            for medium in node['media']:
+                if "format" in medium:
+                    formats.append(medium['format'])
             release = {
-                "id":      node.id,
-                "year":    node.date[0].text[:4] if "date" in node.children else "????",
+                "id":      node['id'],
+                "year":    node['date'][:4] if "date" in node else "????",
                 "country": "+".join(countries) if countries
-                    else node.country[0].text if "country" in node.children
+                    else node['country'] if "country" in node
                     else "??",
-                "format":  media_formats_from_node(node.medium_list[0]),
+                "format":  media_formats_from_node(node['media']),
                 "label":  ", ".join([' '.join(x.split(' ')[:2]) for x in set(labels)]),
                 "catnum": ", ".join(set(catnums)),
-                "tracks":  "+".join([m.track_list[0].count for m in node.medium_list[0].medium]),
+                "tracks":  "+".join([str(m['track-count']) for m in node['media']]),
                 "barcode":
-                    node.barcode[0].text
-                    if "barcode" in node.children
-                    and node.barcode[0].text != ""
+                    node['barcode']
+                    if "barcode" in node
+                    and node['barcode'] != ""
                     else _("[no barcode]"),
                 "packaging":
-                    node.packaging[0].text
-                    if "packaging" in node.children
+                    node['packaging']
+                    if "packaging" in node
                     else None,
                 "disambiguation":
-                    node.disambiguation[0].text
-                    if "disambiguation" in node.children
+                    node['disambiguation']
+                    if "disambiguation" in node
                     else None,
                 "_disambiguate_name": list(),
-                "totaltracks": sum([int(m.track_list[0].count) for m in node.medium_list[0].medium]),
+                "totaltracks": sum([m['track-count'] for m in node['media']]),
                 "countries": countries,
                 "formats": formats,
             }

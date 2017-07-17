@@ -39,9 +39,8 @@ from picard import (PICARD_APP_NAME,
                     config,
                     log)
 from picard.oauth import OAuthManager
-from picard.util import build_qurl
+from picard.util import build_qurl, parse_json
 from picard.util.xml import parse_xml
-
 
 COUNT_REQUESTS_DELAY_MS = 250
 REQUEST_DELAY = defaultdict(lambda: 1000)
@@ -54,7 +53,7 @@ CLIENT_STRING = string_(QUrl.toPercentEncoding('%s %s-%s' % (PICARD_ORG_NAME,
                                                          PICARD_APP_NAME,
                                                          PICARD_VERSION_STR)))
 
-DEFAULT_RESPONSE_PARSER_TYPE = "xml"
+DEFAULT_RESPONSE_PARSER_TYPE = "json"
 
 Parser = namedtuple('Parser', 'mimetype parser')
 
@@ -195,7 +194,7 @@ class WebService(QtCore.QObject):
                       repr(reply.attribute(QtNetwork.QNetworkRequest.HttpStatusCodeAttribute))
                       )
             if handler is not None:
-                handler(reply.readAll(), reply, error)
+                handler(string_(reply.readAll()), reply, error)
         else:
             redirect = reply.attribute(QtNetwork.QNetworkRequest.RedirectionTargetAttribute)
             fromCache = reply.attribute(QtNetwork.QNetworkRequest.SourceIsFromCacheAttribute)
@@ -404,3 +403,4 @@ class WebService(QtCore.QObject):
 
 
 WebService.add_parser('xml', 'application/xml', parse_xml)
+WebService.add_parser('json', 'application/json', parse_json)

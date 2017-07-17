@@ -220,7 +220,7 @@ class AcoustIdAPIHelper(APIHelper):
         super().__init__(ACOUSTID_HOST, ACOUSTID_PORT,
                                     '/v2/', webservice)
 
-    def _encode_acoustid_args(self, args, format_='xml'):
+    def _encode_acoustid_args(self, args, format_='json'):
         filters = []
         args['client'] = ACOUSTID_KEY
         args['clientversion'] = PICARD_VERSION_STR
