@@ -23,6 +23,7 @@ from mutagen import version_string as mutagen_version
 from PyQt5.QtCore import PYQT_VERSION_STR as pyqt_version, QT_VERSION_STR
 from picard import PICARD_FANCY_VERSION_STR
 from picard.disc import discid_version
+from picard.util.astrcmp import astrcmp_implementation
 
 
 _versions = OrderedDict([
@@ -31,6 +32,7 @@ _versions = OrderedDict([
     ("qt-version", QT_VERSION_STR),
     ("mutagen-version", mutagen_version),
     ("discid-version", discid_version),
+    ("astrcmp", astrcmp_implementation),
 ])
 
 _names = {
@@ -39,6 +41,7 @@ _names = {
     "qt-version": "Qt",
     "mutagen-version": "Mutagen",
     "discid-version": "Discid",
+    "astrcmp": "astrcmp",
 }
 
 
