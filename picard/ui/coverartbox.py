@@ -240,7 +240,7 @@ class CoverArtThumbnail(ActiveLabel):
 
     def open_release_page(self):
         lookup = self.tagger.get_file_lookup()
-        lookup.albumLookup(self.release)
+        lookup.album_lookup(self.release)
 
 
 def set_image_replace(obj, coverartimage):

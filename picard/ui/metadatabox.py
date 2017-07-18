@@ -203,14 +203,14 @@ class MetadataBox(QtWidgets.QTableWidget):
     def lookup_tags(self):
         lookup = self.get_file_lookup()
         LOOKUP_TAGS = {
-            "musicbrainz_recordingid": lookup.recordingLookup,
-            "musicbrainz_trackid": lookup.trackLookup,
-            "musicbrainz_albumid": lookup.albumLookup,
-            "musicbrainz_workid": lookup.workLookup,
-            "musicbrainz_artistid": lookup.artistLookup,
-            "musicbrainz_albumartistid": lookup.artistLookup,
-            "musicbrainz_releasegroupid": lookup.releaseGroupLookup,
-            "acoustid_id": lookup.acoustLookup
+            "musicbrainz_recordingid": lookup.recording_lookup,
+            "musicbrainz_trackid": lookup.track_lookup,
+            "musicbrainz_albumid": lookup.album_lookup,
+            "musicbrainz_workid": lookup.work_lookup,
+            "musicbrainz_artistid": lookup.artist_lookup,
+            "musicbrainz_albumartistid": lookup.artist_lookup,
+            "musicbrainz_releasegroupid": lookup.release_group_lookup,
+            "acoustid_id": lookup.acoust_lookup
         }
         return LOOKUP_TAGS
 

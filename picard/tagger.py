@@ -475,15 +475,15 @@ class Tagger(QtWidgets.QApplication):
         """Search on the MusicBrainz website."""
         lookup = self.get_file_lookup()
         if config.setting["builtin_search"]:
-            if search_type == "track" and not lookup.mbidLookup(text, 'recording'):
+            if search_type == "track" and not lookup.mbid_lookup(text, 'recording'):
                 dialog = TrackSearchDialog(self.window)
                 dialog.search(text)
                 dialog.exec_()
-            elif search_type == "album" and not lookup.mbidLookup(text, 'release'):
+            elif search_type == "album" and not lookup.mbid_lookup(text, 'release'):
                 dialog = AlbumSearchDialog(self.window)
                 dialog.search(text)
                 dialog.exec_()
-            elif search_type == "artist" and not lookup.mbidLookup(text, 'artist'):
+            elif search_type == "artist" and not lookup.mbid_lookup(text, 'artist'):
                 dialog = ArtistSearchDialog(self.window)
                 dialog.search(text)
                 dialog.exec_()
@@ -493,7 +493,7 @@ class Tagger(QtWidgets.QApplication):
     def collection_lookup(self):
         """Lookup the users collections on the MusicBrainz website."""
         lookup = self.get_file_lookup()
-        lookup.collectionLookup(config.persist["oauth_username"])
+        lookup.collection_lookup(config.persist["oauth_username"])
 
     def browser_lookup(self, item):
         """Lookup the object's metadata on the MusicBrainz website."""
@@ -503,11 +503,11 @@ class Tagger(QtWidgets.QApplication):
         if isinstance(item, DataObject):
             itemid = item.id
             if isinstance(item, Track):
-                lookup.recordingLookup(itemid)
+                lookup.recording_lookup(itemid)
             elif isinstance(item, Album):
-                lookup.albumLookup(itemid)
+                lookup.album_lookup(itemid)
         else:
-            lookup.tagLookup(
+            lookup.tag_lookup(
                 metadata["albumartist"] if item.is_album_like() else metadata["artist"],
                 metadata["album"],
                 metadata["title"],
