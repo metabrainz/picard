@@ -65,5 +65,5 @@ class CDLookupDialog(PicardDialog):
 
     def lookup(self):
         lookup = self.tagger.get_file_lookup()
-        lookup.discLookup(self.disc.submission_url)
+        lookup.disc_lookup(self.disc.submission_url)
         QtWidgets.QDialog.accept(self)
