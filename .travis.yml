@@ -50,3 +50,10 @@ after_success:
 # Tell people that tests were run
 notifications:
   irc: "chat.freenode.net#metabrainz"
+
+# Only build commits pushed to master or 1.4 dev branch. 
+# This avoid duplicate builds when we make a PR from the original repo
+branches:
+  only:
+    - master
+    - 1.4.x
