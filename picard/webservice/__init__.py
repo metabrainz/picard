@@ -230,7 +230,7 @@ class WSPostRequest(WSRequest):
     def _init_headers(self):
         super()._init_headers()
         if self.host == config.setting["server_host"] and self.response_mimetype:
-            self.setHeaderz(QtNetwork.QNetworkRequest.ContentTypeHeader,
+            self.setHeader(QtNetwork.QNetworkRequest.ContentTypeHeader,
                             "%s; charset=utf-8" % self.response_mimetype)
 
 
