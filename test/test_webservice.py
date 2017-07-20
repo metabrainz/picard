@@ -2,7 +2,7 @@
 
 import unittest
 from picard import config
-from picard.webservice import WebService, UnknownResponseParserError
+from picard.webservice import WebService, UnknownResponseParserError, WSRequest
 from unittest.mock import patch, MagicMock
 
 PROXY_SETTINGS = {
@@ -31,19 +31,23 @@ class WebServiceTest(unittest.TestCase):
         path = ""
         handler = None
         data = None
+
+        def get_wsreq(mock_add_task):
+            return mock_add_task.call_args[0][1]
+
         self.ws.get(host, port, path, handler)
         self.assertEqual(1, mock_add_task.call_count)
-        self.assertIn(host, mock_add_task.call_args[0])
-        self.assertIn(port, mock_add_task.call_args[0])
-        self.assertIn("GET", mock_add_task.call_args[0][0].args)
+        self.assertEqual(host, get_wsreq(mock_add_task).host)
+        self.assertEqual(port, get_wsreq(mock_add_task).port)
+        self.assertIn("GET", get_wsreq(mock_add_task).method)
         self.ws.post(host, port, path, data, handler)
-        self.assertIn("POST", mock_add_task.call_args[0][0].args)
+        self.assertIn("POST", get_wsreq(mock_add_task).method)
         self.ws.put(host, port, path, data, handler)
-        self.assertIn("PUT", mock_add_task.call_args[0][0].args)
+        self.assertIn("PUT", get_wsreq(mock_add_task).method)
         self.ws.delete(host, port, path, handler)
-        self.assertIn("DELETE", mock_add_task.call_args[0][0].args)
+        self.assertIn("DELETE", get_wsreq(mock_add_task).method)
         self.ws.download(host, port, path, handler)
-        self.assertIn("GET", mock_add_task.call_args[0][0].args)
+        self.assertIn("GET", get_wsreq(mock_add_task).method)
         self.assertEqual(5, mock_add_task.call_count)
 
 
@@ -68,16 +72,20 @@ class WebServiceTaskTest(unittest.TestCase):
 
         host = "abc.xyz"
         port = 80
-        key = (host, port)
+        request = WSRequest("", host, port, "", None)
+        key = request.get_host_key()
 
-        self.ws.add_task(0, host, port, priority=False)
-        self.ws.add_task(0, host, port, priority=True)
-        self.ws.add_task(1, host, port, priority=True, important=True)
+        self.ws.add_task(0, request)
+        request.priority = True
+        self.ws.add_task(0, request)
+        request.important = True
+        self.ws.add_task(1, request)
 
         # Test if timer start was called in case it was inactive
         mock_timer1.isActive.return_value = False
         mock_timer2.isActive.return_value = False
-        self.ws.add_task(1, host, port, priority=False, important=True)
+        request.priority = False
+        self.ws.add_task(1, request)
         self.assertIn('start', repr(mock_timer1.method_calls))
 
         # Test if key was added to prio queue
@@ -93,10 +101,11 @@ class WebServiceTaskTest(unittest.TestCase):
     def test_remove_task(self):
         host = "abc.xyz"
         port = 80
-        key = (host, port)
+        request = WSRequest("", host, port, "", None)
+        key = request.get_host_key()
 
         # Add a task and check for its existance
-        task = self.ws.add_task(0, host, port, priority=False)
+        task = self.ws.add_task(0, request)
         self.assertIn(key, self.ws._queues[0])
         self.assertEqual(len(self.ws._queues[0][key]), 1)
 
@@ -112,17 +121,21 @@ class WebServiceTaskTest(unittest.TestCase):
     def test_run_task(self):
         host = "abc.xyz"
         port = 80
-        key = (host, port)
+        request = WSRequest("", host, port, "", None)
+        key = request.get_host_key()
+
         mock_task = MagicMock()
         mock_task2 = MagicMock()
         delay_func = self.ws._get_delay_to_next_request = MagicMock()
 
         # Patching the get delay function to delay the 2nd task on queue to the next call
         delay_func.side_effect = [(False, 0), (True, 0), (False, 0), (False, 0), (False, 0), (False, 0)]
-        self.ws.add_task(mock_task, host, port, priority=False)
-        self.ws.add_task(mock_task2, host, port, priority=True)
-        self.ws.add_task(mock_task, host, port, priority=False)
-        self.ws.add_task(mock_task, host, port, priority=False)
+        self.ws.add_task(mock_task, request)
+        request.priority = True
+        self.ws.add_task(mock_task2, request)
+        request.priority = False
+        self.ws.add_task(mock_task, request)
+        self.ws.add_task(mock_task, request)
 
         # Ensure no tasks are run before run_next_task is called
         self.assertEqual(mock_task.call_count, 0)
