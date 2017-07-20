@@ -10,14 +10,14 @@ PROXY_SETTINGS = {
     "proxy_server_host": '127.0.0.1',
     "proxy_server_port": 3128,
     "proxy_username": 'user',
-    "proxy_password": 'password'
+    "proxy_password": 'password',
 }
 
 
 class WebServiceTest(unittest.TestCase):
 
     def setUp(self):
-        config.setting = {'use_proxy': False}
+        config.setting = {'use_proxy': False, 'server_host': ''}
         self.ws = WebService()
 
     def tearDown(self):
