@@ -125,21 +125,16 @@ class WSRequest(QtNetwork.QNetworkRequest):
         self._init_headers()
 
     def _init_headers(self):
-        self.setRawHeader(b"User-Agent", USER_AGENT_STRING.encode('utf-8'))
+        self.setHeader(QtNetwork.QNetworkRequest.UserAgentHeader, USER_AGENT_STRING)
 
-        if self.method == "GET":
-            self.setAttribute(QtNetwork.QNetworkRequest.HttpPipeliningAllowedAttribute,
-                              True)
-
-        if self.mblogin or (self.method == "GET" and self.refresh):
+        if self.mblogin:
             self.setPriority(QtNetwork.QNetworkRequest.HighPriority)
             self.setAttribute(QtNetwork.QNetworkRequest.CacheLoadControlAttribute,
                                  QtNetwork.QNetworkRequest.AlwaysNetwork)
-        elif self.method in ("PUT", "DELETE"):
-            self.setPriority(QtNetwork.QNetworkRequest.HighPriority)
         elif self.cacheloadcontrol is not None:
             self.setAttribute(QtNetwork.QNetworkRequest.CacheLoadControlAttribute,
                                  self.cacheloadcontrol)
+
         if self.parse_response_type:
             try:
                 self.response_mimetype = WebService.get_response_mimetype(self.parse_response_type)
@@ -148,12 +143,8 @@ class WSRequest(QtNetwork.QNetworkRequest):
                 log.error(e.args[0])
             else:
                 self.setRawHeader(b"Accept", self.response_mimetype.encode('utf-8'))
-        if self.data is not None:
-            if (self.method == "POST"
-                and self.host == config.setting["server_host"]
-                and self.response_mimetype):
-                self.setHeader(QtNetwork.QNetworkRequest.ContentTypeHeader, "%s; charset=utf-8" % self.response_mimetype)
-            else:
+
+        if self.data:
                 self.setHeader(QtNetwork.QNetworkRequest.ContentTypeHeader, "application/x-www-form-urlencoded")
 
     def _update_authorization_header(self):
@@ -194,6 +185,53 @@ class WSRequest(QtNetwork.QNetworkRequest):
         self.priority = priority
         self._retries += 1
         return self._retries
+
+
+class WSGetRequest(WSRequest):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__("GET", *args, **kwargs)
+
+    def _init_headers(self):
+        super()._init_headers()
+        self.setAttribute(QtNetwork.QNetworkRequest.HttpPipeliningAllowedAttribute,
+                          True)
+        if self.refresh:
+            self.setPriority(QtNetwork.QNetworkRequest.HighPriority)
+            self.setAttribute(QtNetwork.QNetworkRequest.CacheLoadControlAttribute,
+                                 QtNetwork.QNetworkRequest.AlwaysNetwork)
+
+
+class WSPutRequest(WSRequest):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__("PUT", *args, **kwargs)
+
+    def _init_headers(self):
+        super()._init_headers()
+        self.setPriority(QtNetwork.QNetworkRequest.HighPriority)
+
+
+class WSDeleteRequest(WSRequest):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__("DELETE", *args, **kwargs)
+
+    def _init_headers(self):
+        super()._init_headers()
+        self.setPriority(QtNetwork.QNetworkRequest.HighPriority)
+
+
+class WSPostRequest(WSRequest):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__("POST", *args, **kwargs)
+
+    def _init_headers(self):
+        super()._init_headers()
+        if self.host == config.setting["server_host"] and self.response_mimetype:
+            self.setHeaderz(QtNetwork.QNetworkRequest.ContentTypeHeader,
+                            "%s; charset=utf-8" % self.response_mimetype)
 
 
 class WebService(QtCore.QObject):
@@ -380,7 +418,7 @@ class WebService(QtCore.QObject):
     def get(self, host, port, path, handler, parse_response_type=DEFAULT_RESPONSE_PARSER_TYPE,
             priority=False, important=False, mblogin=False, cacheloadcontrol=None, refresh=False,
             queryargs=None):
-        request = WSRequest("GET", host, port, path, handler, parse_response_type=parse_response_type,
+        request = WSGetRequest(host, port, path, handler, parse_response_type=parse_response_type,
                             mblogin=mblogin, cacheloadcontrol=cacheloadcontrol, refresh=refresh,
                             queryargs=queryargs, priority=priority, important=important)
         func = partial(self._start_request, request)
@@ -388,7 +426,7 @@ class WebService(QtCore.QObject):
 
     def post(self, host, port, path, data, handler, parse_response_type=DEFAULT_RESPONSE_PARSER_TYPE,
              priority=False, important=False, mblogin=True, queryargs=None):
-        request = WSRequest("POST", host, port, path, handler, parse_response_type=parse_response_type,
+        request = WSPostRequest(host, port, path, handler, parse_response_type=parse_response_type,
                             data=data, mblogin=mblogin, queryargs=queryargs,
                             priority=priority, important=important)
         log.debug("POST-DATA %r", data)
@@ -397,14 +435,14 @@ class WebService(QtCore.QObject):
 
     def put(self, host, port, path, data, handler, priority=True, important=False, mblogin=True,
             queryargs=None):
-        request = WSRequest("PUT", host, port, path, handler, data=data, mblogin=mblogin,
+        request = WSPutRequest(host, port, path, handler, data=data, mblogin=mblogin,
                             queryargs=queryargs, priority=priority, important=important)
         func = partial(self._start_request, request)
         return self.add_task(func, request)
 
     def delete(self, host, port, path, handler, priority=True, important=False, mblogin=True,
                queryargs=None):
-        request = WSRequest("DELETE", host, port, path, handler, mblogin=mblogin,
+        request = WSDeleteRequest(host, port, path, handler, mblogin=mblogin,
                             queryargs=queryargs, priority=priority, important=important)
         func = partial(self._start_request, request)
         return self.add_task(func, request)
