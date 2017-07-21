@@ -368,8 +368,7 @@ class WebService(QtCore.QObject):
             if (not request.max_retries_reached()
                 and (code == 503
                      or code == 429
-                     # following line is a workaround for Picard-809
-                     or errstr.endswith("Service Temporarily Unavailable")
+                     or error == 403
                     )
                ):
                 retries = request.mark_for_retry()
