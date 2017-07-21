@@ -26,10 +26,10 @@ from picard.const import (ACOUSTID_KEY,
                           CAA_HOST,
                           CAA_PORT)
 
-from picard.webservice import CLIENT_STRING, REQUEST_DELAY
+from picard.webservice import CLIENT_STRING, REQUEST_DELAY_MINIMUM
 
-REQUEST_DELAY[(ACOUSTID_HOST, ACOUSTID_PORT)] = 333
-REQUEST_DELAY[(CAA_HOST, CAA_PORT)] = 0
+REQUEST_DELAY_MINIMUM[(ACOUSTID_HOST, ACOUSTID_PORT)] = 333
+REQUEST_DELAY_MINIMUM[(CAA_HOST, CAA_PORT)] = 0
 
 
 def escape_lucene_query(text):
