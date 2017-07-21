@@ -48,7 +48,7 @@ _artist_rel_types = {
 }
 
 _TRACK_TO_METADATA = {
-    'title': 'discsubtitle',
+    'title': 'title',
     'position': 'tracknumber',
     'number': '~musicbrainz_tracknumber',
 }
