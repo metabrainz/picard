@@ -368,6 +368,9 @@ class WebService(QtCore.QObject):
             if (not request.max_retries_reached()
                 and (code == 503
                      or code == 429
+                     # Sometimes QT returns a http status code of 200 even when there
+                     # is a service unavailable error. But it returns a QT error code
+                     # of 403 when this happens
                      or error == 403
                     )
                ):
