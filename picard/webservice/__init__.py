@@ -58,37 +58,37 @@ CLIENT_STRING = string_(QUrl.toPercentEncoding('%s %s-%s' % (PICARD_ORG_NAME,
 # Throttling/congestion avoidance
 # ============================================================================
 
-#: Throttles requests to a given hostkey by assigning a minimum delay between
-#: requests in milliseconds.
-#:
-#: Plugins may assign limits to their associated service(s) like so:
-#:
-#: >>> from picard.webservice import REQUEST_DELAY_MINIMUM
-#: >>> REQUEST_DELAY_MINIMUM[('myservice.org', 80)] = 100  # 10 requests/second
+# Throttles requests to a given hostkey by assigning a minimum delay between
+# requests in milliseconds.
+#
+# Plugins may assign limits to their associated service(s) like so:
+#
+# >>> from picard.webservice import REQUEST_DELAY_MINIMUM
+# >>> REQUEST_DELAY_MINIMUM[('myservice.org', 80)] = 100  # 10 requests/second
 REQUEST_DELAY_MINIMUM = defaultdict(lambda: 1000)
 
-#: Current delay (adaptive) between requests to a given hostkey.
+# Current delay (adaptive) between requests to a given hostkey.
 REQUEST_DELAY = defaultdict(lambda: 1000)  # Conservative initial value.
 
-#: Determines delay during exponential backoff phase.
+# Determines delay during exponential backoff phase.
 REQUEST_DELAY_EXPONENT = defaultdict(lambda: 0)
 
-#: Unacknowledged request counter.
-#:
-#: Bump this when handing a request to QNetworkManager and trim when receiving
-#: a response.
+# Unacknowledged request counter.
+#
+# Bump this when handing a request to QNetworkManager and trim when receiving
+# a response.
 CONGESTION_UNACK = defaultdict(lambda: 0)
 
-#: Congestion window size in terms of unacked requests.
-#:
-#: We're allowed to send up to `int(this)` many requests at a time.
+# Congestion window size in terms of unacked requests.
+#
+# We're allowed to send up to `int(this)` many requests at a time.
 CONGESTION_WINDOW_SIZE = defaultdict(lambda: 1.0)
 
-#: Slow start threshold.
-#:
-#: After placing this many unacknowledged requests on the wire, switch from
-#: slow start to congestion avoidance.  (See `_adjust_throttle`.)  Initialized
-#: upon encountering a temporary error.
+# Slow start threshold.
+#
+# After placing this many unacknowledged requests on the wire, switch from
+# slow start to congestion avoidance.  (See `_adjust_throttle`.)  Initialized
+# upon encountering a temporary error.
 CONGESTION_SSTHRESH = defaultdict(lambda: 0)
 
 
@@ -105,34 +105,33 @@ class UnknownResponseParserError(Exception):
 
 
 class WSRequest(QtNetwork.QNetworkRequest):
-    """Represents a single HTTP request.
-
-    :param method: HTTP method.  One of ``GET``, ``POST``, ``PUT``, or ``DELETE``.
-    :param host: Hostname.
-    :param port: TCP port number (80 or 443).
-    :param path: Path component.
-    :param handler: Callback which takes a 3-tuple of `(str:document,
-        QNetworkReply:reply, QNetworkReply.Error:error)`.
-    :param parse_response_type: Specifies that request either sends or accepts
-        data as ``application/{{response_mimetype}}``.
-    :param data: Data to include with ``PUT`` or ``POST`` requests.
-    :param mblogin: Hints that this request should be tied to a MusicBrainz
-        account, requiring that we obtain an OAuth token first.
-    :param cacheloadcontrol: See `QNetworkRequest.CacheLoadControlAttribute`.
-    :param refresh: Indicates a user-specified resource refresh, such as when
-        the user wishes to reload a release.  Marks the request as high priority
-        and disables caching.
-    :param access_token: OAuth token.
-    :param queryargs: `dict` of query arguments.
-    :param retries: Current retry attempt number.
-    :param priority: Indicates that this is a high priority request.  (See
-        `WebService._run_next_task`.)
-    :param important: Indicates that this is an important request.  (Ditto.)
-    """
+    """Represents a single HTTP request."""
 
     def __init__(self, method, host, port, path, handler, parse_response_type=None, data=None,
-                 mblogin=False, cacheloadcontrol=None, refresh=None,
+                 mblogin=False, cacheloadcontrol=None, refresh=False,
                  queryargs=None, priority=False, important=False):
+        """
+        Args:
+            method: HTTP method.  One of ``GET``, ``POST``, ``PUT``, or ``DELETE``.
+            host: Hostname.
+            port: TCP port number (80 or 443).
+            path: Path component.
+            handler: Callback which takes a 3-tuple of `(str:document,
+            QNetworkReply:reply, QNetworkReply.Error:error)`.
+            parse_response_type: Specifies that request either sends or accepts
+            data as ``application/{{response_mimetype}}``.
+            data: Data to include with ``PUT`` or ``POST`` requests.
+            mblogin: Hints that this request should be tied to a MusicBrainz
+            account, requiring that we obtain an OAuth token first.
+            cacheloadcontrol: See `QNetworkRequest.CacheLoadControlAttribute`.
+            refresh: Indicates a user-specified resource refresh, such as when
+            the user wishes to reload a release.  Marks the request as high priority
+            and disables caching.
+            queryargs: `dict` of query arguments.
+            retries: Current retry attempt number.
+            priority: Indicates that this is a high priority request.
+            important: Indicates that this is an important request.
+        """
         url = build_qurl(host, port, path=path, queryargs=queryargs)
         super().__init__(url)
 
@@ -330,9 +329,11 @@ class WebService(QtCore.QObject):
     @staticmethod
     def _adjust_throttle(hostkey, slow_down):
         """Adjust `REQUEST` and `CONGESTION` metrics when a HTTP request completes.
-        :param hostkey: `(host, port)`.
-        :param slow_down: `True` if we encountered intermittent server trouble
-            and need to slow down.
+
+            Args:
+                hostkey: `(host, port)`.
+                slow_down: `True` if we encountered intermittent server trouble
+                and need to slow down.
         """
         def in_backoff_phase(hostkey):
             return CONGESTION_UNACK[hostkey] > CONGESTION_WINDOW_SIZE[hostkey]
