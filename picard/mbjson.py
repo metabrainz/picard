@@ -273,10 +273,7 @@ def media_formats_from_node(node):
     formats_count = {}
     formats_order = []
     for medium in node:
-        try:
-            text = medium['format']
-        except KeyError:
-            text = "(unknown)"
+        text = medium.get('format', "(unknown)") or "(unknown)"
         if text in formats_count:
             formats_count[text] += 1
         else:
