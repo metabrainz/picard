@@ -9,7 +9,7 @@ class AcoustIDTest(unittest.TestCase):
 
     def init_test(self, filename):
         self.json_doc = None
-        with open(os.path.join('test', 'data', 'ws_data', filename)) as f:
+        with open(os.path.join('test', 'data', 'ws_data', filename), encoding='utf-8') as f:
             self.json_doc = json.load(f)
 
 
