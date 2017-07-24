@@ -21,7 +21,7 @@ class ReleaseTest(unittest.TestCase):
 
     @staticmethod
     def load_data(filename):
-        with open(os.path.join('test', 'data', 'ws_data', filename)) as f:
+        with open(os.path.join('test', 'data', 'ws_data', filename), encoding='utf-8') as f:
             return json.load(f)
 
     def setUp(self):
