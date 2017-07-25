@@ -1,8 +1,8 @@
 MusicBrainz Picard
 ==================
-[![Travis Status](https://img.shields.io/travis/metabrainz/picard/master.svg?style=plastic&label=Travis)](https://travis-ci.org/metabrainz/picard)
-[![Codacy Grade](https://img.shields.io/codacy/grade/53a33607234a4c18a11a6207d1173c0c/master.svg?style=plastic&label=Codacy)](https://www.codacy.com/app/MetaBrainz/picard)
-[![AppVeyor Status](https://img.shields.io/appveyor/ci/metabrainz/picard/master.svg?style=plastic&label=AppVeyor)](https://ci.appveyor.com/project/MetaBrainz/picard)
+[![Travis Status](https://img.shields.io/travis/metabrainz/picard/master.svg?style=flat-square&label=Travis)](https://travis-ci.org/metabrainz/picard)
+[![Codacy Grade](https://img.shields.io/codacy/grade/53a33607234a4c18a11a6207d1173c0c/master.svg?style=flat-square&label=Codacy)](https://www.codacy.com/app/MetaBrainz/picard)
+[![AppVeyor Status](https://img.shields.io/appveyor/ci/metabrainz/picard/master.svg?style=flat-square&label=AppVeyor)](https://ci.appveyor.com/project/MetaBrainz/picard)
 
 [MusicBrainz Picard](http://picard.musicbrainz.org) is a cross-platform (Linux/Mac OS X/Windows) application written in Python and is the official [MusicBrainz](http://musicbrainz.org) tagger.
 
