@@ -179,18 +179,17 @@ class LabelInfoTest(MBJSONTest):
     def setUp(self):
         self.init_test('label_info.json')
 
+    def _label_info(self, n):
+        return label_info_from_node(self.json_doc['releases'][n]['label-info'])
+
     def test_label_info_from_node_0(self):
-        label_info = label_info_from_node(self.json_doc['releases'][0]['label-info'])
-        self.assertEqual((['naïve'], ['NJ628311']), label_info)
+        self.assertEqual((['naïve'], ['NJ628311']), self._label_info(0))
 
     def test_label_info_from_node_1(self):
-        label_info = label_info_from_node(self.json_doc['releases'][1]['label-info'])
-        self.assertEqual((['naïve'], []), label_info)
+        self.assertEqual((['naïve'], []), self._label_info(1))
 
     def test_label_info_from_node_2(self):
-        label_info = label_info_from_node(self.json_doc['releases'][2]['label-info'])
-        self.assertEqual((['naïve'], []), label_info)
+        self.assertEqual((['naïve'], []), self._label_info(2))
 
     def test_label_info_from_node_3(self):
-        label_info = label_info_from_node(self.json_doc['releases'][3]['label-info'])
-        self.assertEqual(([], ["[None]"]), label_info)
+        self.assertEqual(([], ["[None]"]), self._label_info(3))
