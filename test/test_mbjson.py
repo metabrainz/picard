@@ -4,11 +4,17 @@ import unittest
 
 from picard import config
 from picard.album import Album
-from picard.mbjson import (release_to_metadata,
-                           recording_to_metadata, track_to_metadata,
-                           medium_to_metadata, artist_to_metadata,
-                           release_group_to_metadata, country_list_from_node,
-                           media_formats_from_node)
+from picard.mbjson import (
+    artist_to_metadata,
+    country_list_from_node,
+    label_info_from_node,
+    media_formats_from_node,
+    medium_to_metadata,
+    recording_to_metadata,
+    release_group_to_metadata,
+    release_to_metadata,
+    track_to_metadata,
+)
 from picard.metadata import Metadata
 from picard.releasegroup import ReleaseGroup
 from picard.track import Track
@@ -166,3 +172,25 @@ class CountryListTest(MBJSONTest):
     def test_country_from_node(self):
         country_list = country_list_from_node(self.json_doc)
         self.assertEqual(['GB'], country_list)
+
+
+class LabelInfoTest(MBJSONTest):
+
+    def setUp(self):
+        self.init_test('label_info.json')
+
+    def test_label_info_from_node_0(self):
+        label_info = label_info_from_node(self.json_doc['releases'][0]['label-info'])
+        self.assertEqual((['naïve'], ['NJ628311']), label_info)
+
+    def test_label_info_from_node_1(self):
+        label_info = label_info_from_node(self.json_doc['releases'][1]['label-info'])
+        self.assertEqual((['naïve'], []), label_info)
+
+    def test_label_info_from_node_2(self):
+        label_info = label_info_from_node(self.json_doc['releases'][2]['label-info'])
+        self.assertEqual((['naïve'], []), label_info)
+
+    def test_label_info_from_node_3(self):
+        label_info = label_info_from_node(self.json_doc['releases'][3]['label-info'])
+        self.assertEqual(([], ["[None]"]), label_info)
