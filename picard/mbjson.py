@@ -258,13 +258,13 @@ def label_info_from_node(node):
     labels = []
     catalog_numbers = []
     for label_info in node:
-        if 'label' in label_info and 'name' in label_info['label']:
+        if 'label' in label_info and label_info['label'] and 'name' in label_info['label']:
             label = label_info['label']['name']
             if label not in labels:
                 labels.append(label)
         if 'catalog-number' in label_info:
             cat_num = label_info['catalog-number']
-            if cat_num not in catalog_numbers:
+            if cat_num and cat_num not in catalog_numbers:
                 catalog_numbers.append(cat_num)
     return (labels, catalog_numbers)
 
