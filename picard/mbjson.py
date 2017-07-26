@@ -252,8 +252,9 @@ def country_list_from_node(node):
             # TypeError in case object is None
             except (KeyError, IndexError, TypeError):
                 pass
-            if country_code:
-                country.append(country_code)
+            else:
+                if country_code:
+                    country.append(country_code)
         return country
 
 
@@ -263,7 +264,7 @@ def label_info_from_node(node):
     for label_info in node:
         if 'label' in label_info and label_info['label'] and 'name' in label_info['label']:
             label = label_info['label']['name']
-            if label not in labels and label:
+            if label and label not in labels:
                 labels.append(label)
         if 'catalog-number' in label_info:
             cat_num = label_info['catalog-number']
