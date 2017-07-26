@@ -1,0 +1,534 @@
+{
+    "disambiguation": null,
+    "aliases": [
+        {
+            "begin": null,
+            "ended": null,
+            "type": null,
+            "sort-name": null,
+            "locale": null,
+            "end": null,
+            "name": null,
+            "primary": null,
+            "type-id": null
+        }
+    ],
+    "isrcs": [
+        null
+    ],
+    "title": null,
+    "video": null,
+    "length": null,
+    "relations": [
+        {
+            "attribute-values": {},
+            "target-credit": null,
+            "begin": null,
+            "attributes": [],
+            "type": null,
+            "type-id": null,
+            "target-type": null,
+            "direction": null,
+            "recording": {
+                "disambiguation": null,
+                "aliases": [],
+                "isrcs": [],
+                "title": null,
+                "video": null,
+                "length": null,
+                "id": null,
+                "artist-credit": [
+                    {
+                        "joinphrase": null,
+                        "artist": {
+                            "disambiguation": null,
+                            "sort-name": null,
+                            "name": null,
+                            "id": null
+                        },
+                        "name": null
+                    }
+                ]
+            },
+            "source-credit": null,
+            "ended": null,
+            "end": null
+        },
+        {
+            "attribute-values": {},
+            "target-credit": null,
+            "begin": null,
+            "attributes": [],
+            "source-credit": null,
+            "type": null,
+            "type-id": null,
+            "target-type": null,
+            "direction": null,
+            "ended": null,
+            "work": {
+                "disambiguation": null,
+                "relations": [
+                    {
+                        "attribute-values": {},
+                        "target-credit": null,
+                        "begin": null,
+                        "attributes": [
+                            null
+                        ],
+                        "source-credit": null,
+                        "type": null,
+                        "type-id": null,
+                        "target-type": null,
+                        "direction": null,
+                        "recording": {
+                            "disambiguation": null,
+                            "aliases": [],
+                            "id": null,
+                            "video": null,
+                            "title": null,
+                            "length": null,
+                            "artist-credit": [
+                                {
+                                    "joinphrase": null,
+                                    "artist": {
+                                        "disambiguation": null,
+                                        "sort-name": null,
+                                        "name": null,
+                                        "id": null
+                                    },
+                                    "name": null
+                                }
+                            ],
+                            "isrcs": []
+                        },
+                        "ended": null,
+                        "end": null
+                    },
+                    {
+                        "attribute-values": {},
+                        "target-credit": null,
+                        "begin": null,
+                        "attributes": [
+                            null
+                        ],
+                        "type": null,
+                        "type-id": null,
+                        "target-type": null,
+                        "direction": null,
+                        "recording": {
+                            "disambiguation": null,
+                            "aliases": [],
+                            "isrcs": [],
+                            "id": null,
+                            "video": null,
+                            "title": null,
+                            "length": null,
+                            "artist-credit": [
+                                {
+                                    "joinphrase": null,
+                                    "artist": {
+                                        "disambiguation": null,
+                                        "sort-name": null,
+                                        "name": null,
+                                        "id": null
+                                    },
+                                    "name": null
+                                }
+                            ]
+                        },
+                        "source-credit": null,
+                        "ended": null,
+                        "end": null
+                    },
+                    {
+                        "attribute-values": {},
+                        "target-credit": null,
+                        "begin": null,
+                        "attributes": [
+                            null
+                        ],
+                        "type": null,
+                        "type-id": null,
+                        "target-type": null,
+                        "direction": null,
+                        "recording": {
+                            "disambiguation": null,
+                            "aliases": [],
+                            "isrcs": [],
+                            "title": null,
+                            "video": null,
+                            "length": null,
+                            "id": null,
+                            "artist-credit": [
+                                {
+                                    "joinphrase": null,
+                                    "artist": {
+                                        "disambiguation": null,
+                                        "sort-name": null,
+                                        "name": null,
+                                        "id": null
+                                    },
+                                    "name": null
+                                }
+                            ]
+                        },
+                        "source-credit": null,
+                        "ended": null,
+                        "end": null
+                    },
+                    {
+                        "attribute-values": {},
+                        "target-credit": null,
+                        "begin": null,
+                        "attributes": [
+                            null
+                        ],
+                        "type": null,
+                        "type-id": null,
+                        "target-type": null,
+                        "direction": null,
+                        "recording": {
+                            "disambiguation": null,
+                            "aliases": [],
+                            "isrcs": [],
+                            "title": null,
+                            "video": null,
+                            "length": null,
+                            "id": null,
+                            "artist-credit": [
+                                {
+                                    "joinphrase": null,
+                                    "artist": {
+                                        "disambiguation": null,
+                                        "sort-name": null,
+                                        "name": null,
+                                        "id": null
+                                    },
+                                    "name": null
+                                }
+                            ]
+                        },
+                        "source-credit": null,
+                        "ended": null,
+                        "end": null
+                    },
+                    {
+                        "attribute-values": {},
+                        "target-credit": null,
+                        "begin": null,
+                        "attributes": [
+                            null
+                        ],
+                        "type": null,
+                        "type-id": null,
+                        "target-type": null,
+                        "direction": null,
+                        "recording": {
+                            "disambiguation": null,
+                            "aliases": [],
+                            "isrcs": [],
+                            "id": null,
+                            "video": null,
+                            "title": null,
+                            "length": null,
+                            "artist-credit": [
+                                {
+                                    "joinphrase": null,
+                                    "artist": {
+                                        "disambiguation": null,
+                                        "sort-name": null,
+                                        "name": null,
+                                        "id": null
+                                    },
+                                    "name": null
+                                }
+                            ]
+                        },
+                        "source-credit": null,
+                        "ended": null,
+                        "end": null
+                    },
+                    {
+                        "attribute-values": {},
+                        "target-credit": null,
+                        "begin": null,
+                        "attributes": [],
+                        "source-credit": null,
+                        "type": null,
+                        "type-id": null,
+                        "target-type": null,
+                        "direction": null,
+                        "recording": {
+                            "disambiguation": null,
+                            "aliases": [
+                                {
+                                    "begin": null,
+                                    "sort-name": null,
+                                    "type": null,
+                                    "ended": null,
+                                    "locale": null,
+                                    "end": null,
+                                    "name": null,
+                                    "primary": null,
+                                    "type-id": null
+                                }
+                            ],
+                            "isrcs": [
+                                null
+                            ],
+                            "title": null,
+                            "video": null,
+                            "length": null,
+                            "id": null,
+                            "artist-credit": [
+                                {
+                                    "joinphrase": null,
+                                    "artist": {
+                                        "disambiguation": null,
+                                        "sort-name": null,
+                                        "name": null,
+                                        "id": null
+                                    },
+                                    "name": null
+                                }
+                            ]
+                        },
+                        "ended": null,
+                        "end": null
+                    },
+                    {
+                        "attribute-values": {},
+                        "target-credit": null,
+                        "begin": null,
+                        "ended": null,
+                        "type": null,
+                        "type-id": null,
+                        "attributes": [
+                            null,
+                            null
+                        ],
+                        "target-type": null,
+                        "direction": null,
+                        "recording": {
+                            "disambiguation": null,
+                            "aliases": [],
+                            "isrcs": [],
+                            "title": null,
+                            "video": null,
+                            "length": null,
+                            "id": null,
+                            "artist-credit": [
+                                {
+                                    "joinphrase": null,
+                                    "artist": {
+                                        "disambiguation": null,
+                                        "sort-name": null,
+                                        "name": null,
+                                        "id": null
+                                    },
+                                    "name": null
+                                }
+                            ]
+                        },
+                        "source-credit": null,
+                        "end": null
+                    },
+                    {
+                        "attribute-values": {},
+                        "target-credit": null,
+                        "begin": null,
+                        "attributes": [
+                            null
+                        ],
+                        "source-credit": null,
+                        "type": null,
+                        "type-id": null,
+                        "target-type": null,
+                        "direction": null,
+                        "recording": {
+                            "disambiguation": null,
+                            "aliases": [],
+                            "isrcs": [],
+                            "id": null,
+                            "video": null,
+                            "title": null,
+                            "length": null,
+                            "artist-credit": [
+                                {
+                                    "joinphrase": null,
+                                    "artist": {
+                                        "disambiguation": null,
+                                        "sort-name": null,
+                                        "name": null,
+                                        "id": null
+                                    },
+                                    "name": null
+                                }
+                            ]
+                        },
+                        "ended": null,
+                        "end": null
+                    },
+                    {
+                        "attribute-values": {},
+                        "target-credit": null,
+                        "begin": null,
+                        "attributes": [
+                            null
+                        ],
+                        "type": null,
+                        "type-id": null,
+                        "target-type": null,
+                        "direction": null,
+                        "recording": {
+                            "disambiguation": null,
+                            "aliases": [],
+                            "isrcs": [],
+                            "title": null,
+                            "video": null,
+                            "length": null,
+                            "id": null,
+                            "artist-credit": [
+                                {
+                                    "joinphrase": null,
+                                    "artist": {
+                                        "disambiguation": null,
+                                        "sort-name": null,
+                                        "name": null,
+                                        "id": null
+                                    },
+                                    "name": null
+                                }
+                            ]
+                        },
+                        "source-credit": null,
+                        "ended": null,
+                        "end": null
+                    },
+                    {
+                        "attribute-values": {},
+                        "target-credit": null,
+                        "begin": null,
+                        "attributes": [],
+                        "source-credit": null,
+                        "type": null,
+                        "url": {
+                            "resource": null,
+                            "id": null
+                        },
+                        "type-id": null,
+                        "target-type": null,
+                        "direction": null,
+                        "ended": null,
+                        "end": null
+                    },
+                    {
+                        "attribute-values": {},
+                        "target-credit": null,
+                        "begin": null,
+                        "attributes": [],
+                        "source-credit": null,
+                        "type": null,
+                        "artist": {
+                            "disambiguation": null,
+                            "aliases": [],
+                            "sort-name": null,
+                            "name": null,
+                            "id": null
+                        },
+                        "type-id": null,
+                        "target-type": null,
+                        "direction": null,
+                        "ended": null,
+                        "end": null
+                    },
+                    {
+                        "attribute-values": {},
+                        "target-credit": null,
+                        "begin": null,
+                        "ended": null,
+                        "type": null,
+                        "artist": {
+                            "disambiguation": null,
+                            "aliases": [],
+                            "sort-name": null,
+                            "name": null,
+                            "id": null
+                        },
+                        "type-id": null,
+                        "attributes": [],
+                        "target-type": null,
+                        "direction": null,
+                        "source-credit": null,
+                        "end": null
+                    }
+                ],
+                "aliases": [],
+                "title": null,
+                "type": null,
+                "attributes": [],
+                "iswcs": [],
+                "language": null,
+                "languages": [
+                    null
+                ],
+                "type-id": null,
+                "id": null
+            },
+            "end": null
+        },
+        {
+            "attribute-values": {},
+            "target-credit": null,
+            "begin": null,
+            "attributes": [],
+            "source-credit": null,
+            "type": null,
+            "artist": {
+                "disambiguation": null,
+                "sort-name": null,
+                "aliases": [],
+                "name": null,
+                "id": null
+            },
+            "type-id": null,
+            "target-type": null,
+            "direction": null,
+            "ended": null,
+            "end": null
+        },
+        {
+            "attribute-values": {},
+            "target-credit": null,
+            "begin": null,
+            "ended": null,
+            "source-credit": null,
+            "type": null,
+            "artist": {
+                "disambiguation": null,
+                "sort-name": null,
+                "aliases": [],
+                "name": null,
+                "id": null
+            },
+            "type-id": null,
+            "target-type": null,
+            "direction": null,
+            "attributes": [],
+            "end": null
+        }
+    ],
+    "id": null,
+    "artist-credit": [
+        {
+            "joinphrase": null,
+            "artist": {
+                "disambiguation": null,
+                "sort-name": null,
+                "name": null,
+                "id": null
+            },
+            "name": null
+        }
+    ]
+}

@@ -1,0 +1,88 @@
+{
+    "releasegroups": [
+        {
+            "type": null,
+            "title": null,
+            "releases": [
+                {
+                    "country": null,
+                    "date": {
+                        "month": null,
+                        "day": null,
+                        "year": null
+                    },
+                    "releaseevents": [
+                        {
+                            "country": null,
+                            "date": {
+                                "month": null,
+                                "day": null,
+                                "year": null
+                            }
+                        }
+                    ],
+                    "track_count": null,
+                    "medium_count": null,
+                    "id": null,
+                    "mediums": [
+                        {
+                            "track_count": null,
+                            "position": null,
+                            "format": null,
+                            "tracks": [
+                                {
+                                    "position": null,
+                                    "id": null
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "country": null,
+                    "date": {
+                        "month": null,
+                        "day": null,
+                        "year": null
+                    },
+                    "releaseevents": [
+                        {
+                            "country": null,
+                            "date": {
+                                "month": null,
+                                "day": null,
+                                "year": null
+                            }
+                        }
+                    ],
+                    "track_count": null,
+                    "medium_count": null,
+                    "id": null,
+                    "mediums": [
+                        {
+                            "track_count": null,
+                            "position": null,
+                            "format": null,
+                            "tracks": [
+                                {
+                                    "position": null,
+                                    "id": null
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ],
+            "id": null
+        }
+    ],
+    "title": null,
+    "artists": [
+        {
+            "name": null,
+            "id": null
+        }
+    ],
+    "duration": null,
+    "id": null
+}

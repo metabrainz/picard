@@ -78,5 +78,8 @@ def parse_recording(recording):
     }
 
     if 'duration' in recording:
-        recording_mb['length'] = int(recording['duration']) * 1000
+        try:
+            recording_mb['length'] = int(recording['duration']) * 1000
+        except TypeError:
+            pass
     return recording_mb

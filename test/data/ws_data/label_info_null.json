@@ -1,0 +1,18 @@
+{
+    "releases": [
+        {
+            "label-info": [
+                {
+                    "catalog-number": null,
+                    "label": {
+                        "disambiguation": null,
+                        "label-code": null,
+                        "sort-name": null,
+                        "name": null,
+                        "id": null
+                    }
+                }
+            ]
+        }
+    ]
+}
