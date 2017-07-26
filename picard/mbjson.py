@@ -249,7 +249,8 @@ def country_list_from_node(node):
         for release_event in node['release-events']:
             try:
                 country.append(release_event['area']['iso-3166-1-codes'][0])
-            except KeyError:
+            # TypeError in case object is None
+            except (KeyError, IndexError, TypeError):
                 pass
         return country
 
