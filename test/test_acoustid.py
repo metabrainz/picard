@@ -2,12 +2,25 @@ import json
 import os
 import unittest
 
+from picard import config
 from picard.acoustid.json_helpers import parse_recording
+from picard.mbjson import recording_to_metadata
+from picard.metadata import Metadata
+from picard.track import Track
+
+settings = {
+    "standardize_tracks": False,
+    "standardize_artists": False,
+    "standardize_releases": False,
+    "translate_artist_names": True,
+    "artist_locale": 'en'
+}
 
 
 class AcoustIDTest(unittest.TestCase):
 
     def init_test(self, filename):
+        config.setting = settings
         self.json_doc = None
         with open(os.path.join('test', 'data', 'ws_data', filename), encoding='utf-8') as f:
             self.json_doc = json.load(f)
@@ -34,3 +47,16 @@ class RecordingTest(AcoustIDTest):
                                                    'name': 'Ed Sheeran',
                                                    'id': 'b8a7c51f-362c-4dcb-a259-bc6e0095f0a6'})
         self.assertEqual(artist_credit['name'], 'Ed Sheeran')
+
+
+class NullRecordingTest(AcoustIDTest):
+
+    def setUp(self):
+        self.init_test('acoustid_null.json')
+
+    def test_recording(self):
+        m = Metadata()
+        t = Track("1")
+        parsed_recording = parse_recording(self.json_doc)
+        recording_to_metadata(parsed_recording, m, t)
+        self.assertEqual(m, {})
