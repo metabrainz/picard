@@ -194,7 +194,7 @@ def _translate_artist_node(node):
             transl, translsort = result[1]
         if not transl:
             translsort = node['sort-name']
-            transl = translate_from_sortname(node['name'], translsort)
+            transl = translate_from_sortname(node['name'] or "", translsort)
     else:
         transl, translsort = node['name'], node['sort-name']
     return (transl, translsort)
@@ -217,12 +217,12 @@ def artist_credit_from_node(node):
         else:
             name = a['name']
         artist += name
-        artistsort += translated_sort
+        artistsort += translated_sort or ""
         artists.append(name)
         artistssort.append(translated_sort)
         if 'joinphrase' in artist_info:
-            artist += artist_info['joinphrase']
-            artistsort += artist_info['joinphrase']
+            artist += artist_info['joinphrase'] or ""
+            artistsort += artist_info['joinphrase'] or ""
     return (artist, artistsort, artists, artistssort)
 
 
@@ -248,10 +248,12 @@ def country_list_from_node(node):
         country = []
         for release_event in node['release-events']:
             try:
-                country.append(release_event['area']['iso-3166-1-codes'][0])
+                country_code = release_event['area']['iso-3166-1-codes'][0]
             # TypeError in case object is None
             except (KeyError, IndexError, TypeError):
                 pass
+            if country_code:
+                country.append(country_code)
         return country
 
 
@@ -261,7 +263,7 @@ def label_info_from_node(node):
     for label_info in node:
         if 'label' in label_info and label_info['label'] and 'name' in label_info['label']:
             label = label_info['label']['name']
-            if label not in labels:
+            if label not in labels and label:
                 labels.append(label)
         if 'catalog-number' in label_info:
             cat_num = label_info['catalog-number']
@@ -304,7 +306,8 @@ def track_to_metadata(node, track):
             m.length = value
         elif key == 'artist-credit':
             artist_credit_to_metadata(value, m)
-    m['~length'] = format_time(m.length)
+    if m.length:
+        m['~length'] = format_time(m.length)
 
 
 def recording_to_metadata(node, m, track=None):
@@ -333,8 +336,10 @@ def recording_to_metadata(node, m, track=None):
             add_isrcs_to_metadata(value, m)
         elif key == 'video' and value:
             m['~video'] = '1'
-    m['~recordingtitle'] = m['title']
-    m['~length'] = format_time(m.length)
+    if m['title']:
+        m['~recordingtitle'] = m['title']
+    if m.length:
+        m['~length'] = format_time(m.length)
 
 
 def performance_to_metadata(relation, m):
@@ -446,14 +451,16 @@ def add_folksonomy_tags(node, obj):
         for tag in node:
             key = tag['name']
             count = tag['count']
-            obj.add_folksonomy_tag(key, count)
+            if key:
+                obj.add_folksonomy_tag(key, count)
 
 
 def add_user_folksonomy_tags(node, obj):
     if obj is not None:
         for tag in node:
             key = tag['name']
-            obj.add_folksonomy_tag(key, 1)
+            if key:
+                obj.add_folksonomy_tag(key, 1)
 
 
 def add_isrcs_to_metadata(node, metadata):
