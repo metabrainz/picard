@@ -451,7 +451,7 @@ class WebService(QtCore.QObject):
             log.error("Redirect loop: %s",
                       reply.request().url().toString(QUrl.RemoveUserInfo)
                       )
-            handler(reply.readAll(), reply, error)
+            request.handler(reply.readAll(), reply, error)
 
     def _handle_reply(self, reply, request):
         hostkey = request.get_host_key()
