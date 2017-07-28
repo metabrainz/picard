@@ -26,7 +26,7 @@ from picard.const import (ACOUSTID_KEY,
                           CAA_HOST,
                           CAA_PORT)
 
-from picard.webservice import CLIENT_STRING, REQUEST_DELAY_MINIMUM
+from picard.webservice import CLIENT_STRING, REQUEST_DELAY_MINIMUM, DEFAULT_RESPONSE_PARSER_TYPE
 
 REQUEST_DELAY_MINIMUM[(ACOUSTID_HOST, ACOUSTID_PORT)] = 333
 REQUEST_DELAY_MINIMUM[(CAA_HOST, CAA_PORT)] = 0
@@ -50,18 +50,18 @@ class APIHelper(object):
         self._webservice = webservice
 
     def get(self, path_list, handler, priority=False, important=False, mblogin=False,
-                cacheloadcontrol=None, refresh=False, queryargs=None):
+                cacheloadcontrol=None, refresh=False, queryargs=None, parse_response_type=DEFAULT_RESPONSE_PARSER_TYPE):
         path = self.api_path + "/".join(path_list)
         return self._webservice.get(self.host, self.port, path, handler,
                  priority=priority, important=important, mblogin=mblogin,
-                 refresh=refresh, queryargs=queryargs)
+                 refresh=refresh, queryargs=queryargs, parse_response_type=parse_response_type)
 
     def post(self, path_list, data, handler, priority=False, important=False,
-                 mblogin=False, queryargs=None):
+                 mblogin=True, queryargs=None, parse_response_type=DEFAULT_RESPONSE_PARSER_TYPE):
         path = self.api_path + "/".join(path_list)
         return self._webservice.post(self.host, self.port, path, data, handler,
                   priority=priority, important=important, mblogin=mblogin,
-                  queryargs=queryargs)
+                  queryargs=queryargs, parse_response_type=parse_response_type)
 
     def put(self, path_list, data, handler, priority=True, important=False,
                 mblogin=True, queryargs=None):
@@ -176,7 +176,7 @@ class MBAPIHelper(APIHelper):
             (i[1], j*20) for i, j in ratings.items() if i[0] == 'recording']))
 
         data = _wrap_xml_metadata('<recording-list>%s</recording-list>' % recordings)
-        return self.post(path_list, data, handler, priority=True, queryargs=params)
+        return self.post(path_list, data, handler, priority=True, queryargs=params, parse_response_type="xml")
 
     def get_collection(self, collection_id, handler, limit=100, offset=0):
         path_list = ["collection"]
