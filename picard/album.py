@@ -308,7 +308,7 @@ class Album(DataObject, Item):
             self._after_load_callbacks = []
 
     def _finalize_loading_track(self, track_node, metadata, artists, va, absolutetracknumber, discpregap):
-        track = Track(track_node['id'], self)
+        track = Track(track_node['recording']['id'], self)
         self._new_tracks.append(track)
 
         # Get track metadata
