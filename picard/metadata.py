@@ -172,11 +172,23 @@ class Metadata(dict):
 
         if "releasetype" in weights:
             type_scores = dict(config.setting["release_type_scores"])
+            # This section generates a score that determines how likely this release will be selected in a lookup.
+            # The score goes from 0 to 1 with 1 being the most likely to be chosen and 0 the least likely
+            # This score is based on the preferences of release-types found in this release
+            # This algorithm works by taking the scores of the primary type (and secondary if found) and averages them
+            # If no types are found, it is set to the score of the 'Other' type or 0.5 if 'Other' doesnt exist
             if 'release-group' in release and 'primary-type' in release['release-group']:
-                release_type = release['release-group']['primary-type']
-                score = type_scores.get(release_type, type_scores.get('Other', 0.5))
+                types_found = [release['release-group']['primary-type']]
+                if 'secondary-types' in release['release-group']:
+                    types_found += release['release-group']['secondary-types']
+                score = 0
+                for release_type in types_found:
+                    score += type_scores.get(release_type, type_scores.get('Other', 0.5))
+                score /= len(types_found)
             else:
                 score = 0.0
+
+
             parts.append((score, weights["releasetype"]))
 
         rg = QObject.tagger.get_release_group_by_id(release['release-group']['id'])
