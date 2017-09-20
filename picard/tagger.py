@@ -488,7 +488,7 @@ class Tagger(QtWidgets.QApplication):
                 dialog.search(text)
                 dialog.exec_()
         else:
-            getattr(lookup, search_type + "Search")(text, adv)
+            getattr(lookup, search_type + "_search")(text, adv)
 
     def collection_lookup(self):
         """Lookup the users collections on the MusicBrainz website."""
