@@ -18,6 +18,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtWidgets import QMessageBox
 
 import os.path
 
@@ -1043,3 +1044,10 @@ class MainWindow(QtWidgets.QMainWindow):
             target = selected_objects[0]
         self.tagger.paste_files(target)
         self.paste_action.setEnabled(False)
+
+    def closeEvent(self,event):
+        ans=QMessageBox.question(self,'Confirm Close',"Are you sure to quit? ", QMessageBox.Yes | QMessageBox.No,QMessageBox.No)
+        if ans == QMessageBox.Yes:
+            event.accept()
+        else:
+            event.ignore()
