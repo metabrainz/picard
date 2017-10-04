@@ -367,6 +367,9 @@ class Tagger(QtWidgets.QApplication):
             if ignore_hidden and is_hidden(filename):
                 log.debug("File ignored (hidden): %r" % (filename))
                 continue
+            if os.path.basename(filename).startswith(".smbdelete") and is_hidden(filename):
+                log.debug("File ignored (.smbdelete): %r", filename)
+                continue
             if ignoreregex is not None and ignoreregex.search(filename):
                 log.info("File ignored (matching %r): %r" % (pattern, filename))
                 continue
