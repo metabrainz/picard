@@ -42,13 +42,13 @@ class CDLookupDialog(PicardDialog):
                 barcode = release['barcode'] if "barcode" in release else ""
                 item = QtWidgets.QTreeWidgetItem(self.ui.release_list)
                 item.setText(0, release['title'])
-                item.setText(1, artist_credit_from_node(release['artist_credit']))
+                item.setText(1, artist_credit_from_node(release['artist-credit'])[0])
                 item.setText(2, date)
                 item.setText(3, country)
                 item.setText(4, ", ".join(labels))
                 item.setText(5, ", ".join(catalog_numbers))
                 item.setText(6, barcode)
-                item.setData(0, QtCore.Qt.UserRole, release.id)
+                item.setData(0, QtCore.Qt.UserRole, release['id'])
             self.ui.release_list.setCurrentItem(self.ui.release_list.topLevelItem(0))
             self.ui.ok_button.setEnabled(True)
         for i in range(self.ui.release_list.columnCount() - 1):
