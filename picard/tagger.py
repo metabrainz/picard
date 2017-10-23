@@ -367,7 +367,7 @@ class Tagger(QtWidgets.QApplication):
             if ignore_hidden and is_hidden(filename):
                 log.debug("File ignored (hidden): %r" % (filename))
                 continue
-            # Ignore .smbdelete* files which Applie iOS creates by renaming a file when it cannot delete it
+            # Ignore .smbdelete* files which Applie iOS SMB creates by renaming a file when it cannot delete it
             if os.path.basename(filename).startswith(".smbdelete"):
                 log.debug("File ignored (.smbdelete): %r", filename)
                 continue
