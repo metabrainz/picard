@@ -574,7 +574,8 @@ class File(QtCore.QObject, Item):
         if self.state == File.REMOVED:
             return
         if error:
-            log.error(document)
+            log.error("Network error encountered during the lookup for %s. Error code: %s",
+                       self.filename, error)
         try:
             if lookuptype == "metadata":
                 tracks = document['recordings']
