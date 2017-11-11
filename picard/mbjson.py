@@ -63,7 +63,6 @@ _MEDIUM_TO_METADATA = {
 _RECORDING_TO_METADATA = {
     'title': 'title',
     'disambiguation': '~recordingcomment',
-    'user-rating': '~rating',
 }
 
 _RELEASE_TO_METADATA = {
@@ -319,6 +318,8 @@ def recording_to_metadata(node, m, track=None):
             continue
         if key in _RECORDING_TO_METADATA:
             m[_RECORDING_TO_METADATA[key]] = value
+        elif key == 'user-rating':
+            m['~rating'] = value['value']
         elif key == 'length':
             m.length = value
         elif key == 'artist-credit':
