@@ -365,8 +365,12 @@ class PluginManager(QtCore.QObject):
         log.debug("Remove plugin files and dirs : %r", plugin_name)
         dirpath, filepaths = self._get_existing_paths(plugin_name)
         if dirpath:
-            log.debug("Removing directory %r", dirpath)
-            shutil.rmtree(dirpath)
+            if os.path.islink(dirpath):
+                log.debug("Removing symlink %r", dirpath)
+                os.remove(dirpath)
+            elif os.path.isdir(dirpath):
+                log.debug("Removing directory %r", dirpath)
+                shutil.rmtree(dirpath)
         if filepaths:
             for filepath in filepaths:
                 log.debug("Removing file %r", filepath)
