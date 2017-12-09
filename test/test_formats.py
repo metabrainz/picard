@@ -1258,3 +1258,11 @@ class TestCoverArt(unittest.TestCase):
             self.assertEqual(expect, found)
         finally:
             self._tear_down()
+
+
+class WAVTest(unittest.TestCase):
+    filename = os.path.join('test', 'data', 'test.wav')
+
+    def test_can_open_and_save(self):
+        metadata = Metadata()
+        save_and_load_metadata(self.filename, metadata)
