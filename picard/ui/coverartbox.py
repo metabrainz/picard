@@ -61,7 +61,12 @@ class ActiveLabel(QtWidgets.QLabel):
         # Chromium includes the actual data of the dragged image in the drop event. This
         # is useful for Google Images, where the url links to the page that contains the image
         # so we use it if the downloaded url is not an image.
-        dropped_data = event.mimeData().data('application/octet-stream')
+        mime_data = event.mimeData()
+        dropped_data = mime_data.data('application/octet-stream')
+
+        if not dropped_data:
+            dropped_data = mime_data.data('application/x-qt-image')
+
         try:
             mime = imageinfo.identify(dropped_data)[2]
             if mime in ('image/jpeg', 'image/png'):
@@ -70,10 +75,21 @@ class ActiveLabel(QtWidgets.QLabel):
         except imageinfo.IdentificationError:
             pass
 
-        for url in event.mimeData().urls():
-            if url.scheme() in ('https', 'http', 'file'):
+        if not accepted:
+            for url in event.mimeData().urls():
+                if url.scheme() in ('https', 'http', 'file'):
+                    accepted = True
+                    self.image_dropped.emit(url, dropped_data)
+
+        if not accepted:
+            if mime_data.hasImage():
+                image_bytes = QtCore.QByteArray()
+                image_buffer = QtCore.QBuffer(image_bytes)
+                mime_data.imageData().save(image_buffer, 'JPEG')
+
                 accepted = True
-                self.image_dropped.emit(url, dropped_data)
+                self.image_dropped.emit(QtCore.QUrl(''), image_bytes)
+
         if accepted:
             event.acceptProposedAction()
 
