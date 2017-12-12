@@ -1,0 +1,64 @@
+{
+    "release-offset": 0,
+    "releases": [
+    {
+        "id":"789",
+        "title":"Foox",
+        "status":"Official",
+        "country":"FR",
+        "barcode":"0123456789",
+        "disambiguation":"special A",
+        "date":"2011-08-07",
+        "text-representation":{
+            "language":"eng",
+            "script":"Latn"
+        },
+        "media":[
+            {
+                "track-count":5,
+                "position":1,
+                "format":"CD",
+                "title":""
+            }
+        ],
+        "label-info":[
+            {
+                "label":{
+                    "name":"label A"
+                },
+                "catalog-number":"cat 123"
+            }
+        ]
+    },
+    {
+        "id":"789",
+        "title":"Foox",
+        "status":"Official",
+        "country":"FR",
+        "barcode":"0123456789",
+        "date":"2011-08-07",
+        "text-representation":{
+            "language":"eng",
+            "script":"Latn"
+        },
+        "media":[
+            {
+                "track-count":5,
+                "position":1,
+                "format":"CD",
+                "title":""
+            }
+        ],
+        "label-info":[
+            {
+                "label":{
+                    "name":"label A"
+                },
+                "catalog-number":"cat 123"
+            }
+        ]
+    }
+
+    ],
+    "release-count": 2
+}

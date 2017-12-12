@@ -24,15 +24,15 @@ _formats = ExtensionPoint()
 _extensions = {}
 
 
-def register_format(format):
-    _formats.register(format.__module__, format)
-    for ext in format.EXTENSIONS:
-        _extensions[ext[1:]] = format
+def register_format(file_format):
+    _formats.register(file_format.__module__, file_format)
+    for ext in file_format.EXTENSIONS:
+        _extensions[ext[1:]] = file_format
 
 
 def supported_formats():
     """Returns list of supported formats."""
-    return [(format.EXTENSIONS, format.NAME) for format in _formats]
+    return [(file_format.EXTENSIONS, file_format.NAME) for file_format in _formats]
 
 
 def supported_extensions():
@@ -80,7 +80,7 @@ def open_(filename):
         # None is returned if both the methods fail
         return None
     except Exception as error:
-        log.error("Error occured:\n{}".format(error))
+        log.error("Error occurred:\n{}".format(error))
         return None
 
 

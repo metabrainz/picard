@@ -168,7 +168,6 @@ class InfoDialog(PicardDialog):
                         data = image.thumbnail.data
                     except CoverArtImageIOError as e:
                         log.warning(e)
-                        pass
                 else:
                     data = image.data
             except CoverArtImageIOError:
@@ -186,11 +185,11 @@ class InfoDialog(PicardDialog):
             infos = []
             if image.comment:
                 infos.append(image.comment)
-            infos.append(u"%s (%s)" %
+            infos.append("%s (%s)" %
                          (bytes2human.decimal(image.datalength),
                           bytes2human.binary(image.datalength)))
             if image.width and image.height:
-                infos.append(u"%d x %d" % (image.width, image.height))
+                infos.append("%d x %d" % (image.width, image.height))
             infos.append(image.mimetype)
 
             img_wgt = self.artwork_table.get_coverart_widget(pixmap, "\n".join(infos))
@@ -207,11 +206,11 @@ class InfoDialog(PicardDialog):
             existing_types = [image.types_as_string() for image in self.existing_images]
             # Merge both types and existing types list in sorted order.
             types = union_sorted_lists(types, existing_types)
-        for row, type in enumerate(types):
+        for row, artwork_type in enumerate(types):
             self.artwork_table.insertRow(row)
-            type_wgt = self.artwork_table.get_type_widget(type)
+            type_wgt = self.artwork_table.get_type_widget(artwork_type)
             item = QtWidgets.QTableWidgetItem()
-            item.setData(QtCore.Qt.UserRole, type)
+            item.setData(QtCore.Qt.UserRole, artwork_type)
             self.artwork_table.setCellWidget(row, self.artwork_table._type_col, type_wgt)
             self.artwork_table.setItem(row, self.artwork_table._type_col, item)
 
@@ -356,7 +355,7 @@ class ClusterInfoDialog(InfoDialog):
         for file in cluster.iterfiles(False):
             m = file.metadata
             artist = m["artist"] or m["albumartist"] or cluster.metadata["albumartist"]
-            lines.append(m["tracknumber"] + u" " +
+            lines.append(m["tracknumber"] + " " +
                          m["title"] + " - " + artist + " (" +
                          m["~length"] + ")")
         info.append("<b>%s</b><br />%s" % (_('Tracklist:'),

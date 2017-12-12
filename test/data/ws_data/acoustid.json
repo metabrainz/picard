@@ -1,0 +1,88 @@
+{
+    "artists": [
+        {
+            "id": "b8a7c51f-362c-4dcb-a259-bc6e0095f0a6",
+            "name": "Ed Sheeran"
+        }
+    ],
+    "duration": 225,
+    "releasegroups": [
+        {
+            "type": "Album",
+            "id": "c24e5416-cd2e-4cff-851b-5faa78db98a2",
+            "releases": [
+                {
+                    "track_count": 12,
+                    "releaseevents": [
+                        {
+                            "date": {
+                                "month": 6,
+                                "day": 23,
+                                "year": 2014
+                            },
+                            "country": "XE"
+                        }
+                    ],
+                    "country": "XE",
+                    "date": {
+                        "month": 6,
+                        "day": 23,
+                        "year": 2014
+                    },
+                    "medium_count": 1,
+                    "mediums": [
+                        {
+                            "position": 1,
+                            "tracks": [
+                                {
+                                    "position": 5,
+                                    "id": "16affcc3-9f34-48e5-88dc-68378c4cc208"
+                                }
+                            ],
+                            "track_count": 12,
+                            "format": "CD"
+                        }
+                    ],
+                    "id": "a2b25883-306f-4a53-809a-a234737c209d"
+                },
+                {
+                    "track_count": 18,
+                    "releaseevents": [
+                        {
+                            "date": {
+                                "month": 11,
+                                "day": 13,
+                                "year": 2015
+                            },
+                            "country": "US"
+                        }
+                    ],
+                    "country": "US",
+                    "date": {
+                        "month": 11,
+                        "day": 13,
+                        "year": 2015
+                    },
+                    "medium_count": 1,
+                    "mediums": [
+                        {
+                            "position": 1,
+                            "tracks": [
+                                {
+                                    "position": 5,
+                                    "id": "25fb0152-28ce-4472-b7af-8ce47287df71"
+                                }
+                            ],
+                            "track_count": 18,
+                            "format": "CD"
+                        }
+                    ],
+                    "id": "629417d4-939f-4e79-bead-fecdf10ba5fd"
+                }
+            ],
+            "title": "x"
+        }
+    ],
+    "title": "Nina",
+    "id": "017830c1-d1cf-46f3-8801-aaaa0a930223"
+}

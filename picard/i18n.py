@@ -114,7 +114,7 @@ def gettext_ctxt(gettext_, message, context=None):
     if context is None:
         return gettext_(message)
 
-    msg_with_ctxt = u"%s%s%s" % (context, _CONTEXT_SEPARATOR, message)
+    msg_with_ctxt = "%s%s%s" % (context, _CONTEXT_SEPARATOR, message)
     translated = gettext_(msg_with_ctxt)
     if _CONTEXT_SEPARATOR in translated:
         # no translation found, return original message

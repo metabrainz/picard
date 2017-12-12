@@ -21,12 +21,12 @@ from PyQt5 import QtGui, QtCore, QtNetwork, QtWidgets
 from operator import itemgetter
 from functools import partial
 from collections import namedtuple
-from picard import config
+from picard import config, log
 from picard.file import File
 from picard.ui import PicardDialog
 from picard.ui.util import StandardButton, ButtonLineEdit
 from picard.util import icontheme, load_json
-from picard.mbxml import (
+from picard.mbjson import (
     artist_to_metadata,
     recording_to_metadata,
     release_to_metadata,
@@ -35,7 +35,7 @@ from picard.mbxml import (
     country_list_from_node
 )
 from picard.metadata import Metadata
-from picard.webservice import escape_lucene_query
+from picard.webservice.api_helpers import escape_lucene_query
 from picard.track import Track
 from picard.const import CAA_HOST, CAA_PORT, QUERY_LIMIT
 from picard.coverart.image import CaaThumbnailCoverArtImage
@@ -66,7 +66,7 @@ class SearchBox(QtWidgets.QWidget):
         self.parent = parent
         QtWidgets.QWidget.__init__(self, parent)
         self.search_action = QtWidgets.QAction(icontheme.lookup('system-search'),
-                _(u"Search"), self)
+                _("Search"), self)
         self.search_action.setEnabled(False)
         self.search_action.triggered.connect(self.search)
         self.setupUi()
@@ -331,7 +331,7 @@ class TrackSearchDialog(SearchDialog):
         self.retry_params = Retry(self.search, text)
         self.search_box.search_edit.setText(text)
         self.show_progress()
-        self.tagger.xmlws.find_tracks(self.handle_reply,
+        self.tagger.mb_api.find_tracks(self.handle_reply,
                 query=text,
                 search=True,
                 limit=QUERY_LIMIT)
@@ -364,7 +364,7 @@ class TrackSearchDialog(SearchDialog):
         query["limit"] = QUERY_LIMIT
         self.search_box.search_edit.setText(query_str)
         self.show_progress()
-        self.tagger.xmlws.find_tracks(
+        self.tagger.mb_api.find_tracks(
                 self.handle_reply,
                 **query)
 
@@ -377,8 +377,8 @@ class TrackSearchDialog(SearchDialog):
             return
 
         try:
-            tracks = document.metadata[0].recording_list[0].recording
-        except (AttributeError, IndexError):
+            tracks = document['recordings']
+        except (KeyError, TypeError):
             self.no_results_found()
             return
 
@@ -393,7 +393,7 @@ class TrackSearchDialog(SearchDialog):
             tracks = [item[3] for item in sorted_results]
 
         del self.search_results[:]  # Clear existing data
-        self.parse_tracks_from_xml(tracks)
+        self.parse_tracks(tracks)
         self.display_results()
 
     def display_results(self):
@@ -410,14 +410,14 @@ class TrackSearchDialog(SearchDialog):
             self.table.setItem(row, 5, table_item(track.get("country", "")))
             self.table.setItem(row, 6, table_item(track.get("releasetype", "")))
 
-    def parse_tracks_from_xml(self, tracks_xml):
-        for node in tracks_xml:
-            if "release_list" in node.children and "release" in node.release_list[0].children:
-                for rel_node in node.release_list[0].release:
+    def parse_tracks(self, tracks):
+        for node in tracks:
+            if "releases" in node:
+                for rel_node in node['releases']:
                     track = Metadata()
                     recording_to_metadata(node, track)
                     release_to_metadata(rel_node, track)
-                    rg_node = rel_node.release_group[0]
+                    rg_node = rel_node['release-group']
                     release_group_to_metadata(rg_node, track)
                     countries = country_list_from_node(rel_node)
                     if countries:
@@ -525,7 +525,7 @@ class AlbumSearchDialog(SearchDialog):
         self.retry_params = Retry(self.search, text)
         self.search_box.search_edit.setText(text)
         self.show_progress()
-        self.tagger.xmlws.find_releases(self.handle_reply,
+        self.tagger.mb_api.find_releases(self.handle_reply,
                 query=text,
                 search=True,
                 limit=QUERY_LIMIT)
@@ -554,7 +554,7 @@ class AlbumSearchDialog(SearchDialog):
         query["limit"] = QUERY_LIMIT
         self.search_box.search_edit.setText(query_str)
         self.show_progress()
-        self.tagger.xmlws.find_releases(
+        self.tagger.mb_api.find_releases(
             self.handle_reply,
             **query)
 
@@ -567,13 +567,13 @@ class AlbumSearchDialog(SearchDialog):
             return
 
         try:
-            releases = document.metadata[0].release_list[0].release
-        except (AttributeError, IndexError):
+            releases = document['releases']
+        except (KeyError, TypeError):
             self.no_results_found()
             return
 
         del self.search_results[:]
-        self.parse_releases_from_xml(releases)
+        self.parse_releases(releases)
         self.display_results()
         self.fetch_coverarts()
 
@@ -583,7 +583,7 @@ class AlbumSearchDialog(SearchDialog):
         """
         for row, release in enumerate(self.search_results):
             caa_path = "/release/%s" % release["musicbrainz_albumid"]
-            self.tagger.xmlws.download(
+            self.tagger.webservice.download(
                 CAA_HOST,
                 CAA_PORT,
                 caa_path,
@@ -619,7 +619,7 @@ class AlbumSearchDialog(SearchDialog):
         if front:
             url = front["thumbnails"]["small"]
             coverartimage = CaaThumbnailCoverArtImage(url=url)
-            self.tagger.xmlws.download(
+            self.tagger.webservice.download(
                 coverartimage.host,
                 coverartimage.port,
                 coverartimage.path,
@@ -630,8 +630,8 @@ class AlbumSearchDialog(SearchDialog):
 
     def _cover_downloaded(self, row, data, http, error):
         """Handle cover art query reply from CAA server.
-        If server returns the cover image succesfully, update the cover art cell
-        of particular release.
+        If server returns the cover image successfully, update the cover art
+        cell of particular release.
 
         Args:
             row -- Album's row in results table
@@ -645,19 +645,20 @@ class AlbumSearchDialog(SearchDialog):
             try:
                 pixmap.loadFromData(data)
                 cover_cell.update(pixmap)
-            except:
+            except Exception as e:
                 cover_cell.not_found()
+                log.error(e)
 
-    def parse_releases_from_xml(self, release_xml):
-        for node in release_xml:
+    def parse_releases(self, releases):
+        for node in releases:
             release = Metadata()
             release_to_metadata(node, release)
-            rg_node = node.release_group[0]
+            rg_node = node['release-group']
             release_group_to_metadata(rg_node, release)
-            if "medium_list" in node.children:
-                medium_list = node.medium_list[0]
-                release["format"] = media_formats_from_node(medium_list)
-                release["tracks"] = medium_list.track_count[0].text
+            if "media" in node:
+                media = node['media']
+                release["format"] = media_formats_from_node(media)
+                release["tracks"] = node['track-count']
             countries = country_list_from_node(node)
             if countries:
                 release["country"] = ", ".join(countries)
@@ -747,7 +748,7 @@ class ArtistSearchDialog(SearchDialog):
         self.retry_params = (self.search, text)
         self.search_box.search_edit.setText(text)
         self.show_progress()
-        self.tagger.xmlws.find_artists(self.handle_reply,
+        self.tagger.mb_api.find_artists(self.handle_reply,
                 query=text,
                 search=True,
                 limit=QUERY_LIMIT)
@@ -761,17 +762,17 @@ class ArtistSearchDialog(SearchDialog):
             return
 
         try:
-            artists = document.metadata[0].artist_list[0].artist
-        except (AttributeError, IndexError):
+            artists = document['artists']
+        except (KeyError, TypeError):
             self.no_results()
             return
 
         del self.search_results[:]
-        self.parse_artists_from_xml(artists)
+        self.parse_artists(artists)
         self.display_results()
 
-    def parse_artists_from_xml(self, artist_xml):
-        for node in artist_xml:
+    def parse_artists(self, artists):
+        for node in artists:
             artist = Metadata()
             artist_to_metadata(node, artist)
             self.search_results.append(artist)

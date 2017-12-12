@@ -22,12 +22,14 @@
 from PyQt5 import QtCore
 from collections import defaultdict
 from functools import partial
+import json
 import imp
 import os.path
 import shutil
 import picard.plugins
 import tempfile
 import traceback
+import zipfile
 import zipimport
 from picard import (config,
                     log,
@@ -43,6 +45,8 @@ _package_entries = ["__init__.py", "__init__.pyc", "__init__.pyo"]
 _extension_points = []
 _PLUGIN_MODULE_PREFIX = "picard.plugins."
 _PLUGIN_MODULE_PREFIX_LEN = len(_PLUGIN_MODULE_PREFIX)
+_PLUGIN_PACKAGE_SUFFIX = ".picard"
+_PLUGIN_PACKAGE_SUFFIX_LEN = len(_PLUGIN_PACKAGE_SUFFIX)
 
 
 def _plugin_name_from_path(path):
@@ -66,17 +70,33 @@ def is_zip(path):
         return os.path.basename(path)
     return False
 
+
+def load_manifest(archive_path):
+    archive = zipfile.ZipFile(archive_path)
+    manifest_data = None
+    with archive.open('MANIFEST.json') as f:
+        manifest_data = json.loads(str(f.read().decode()))
+    return manifest_data
+
+
 def zip_import(path):
     splitext = os.path.splitext(path)
     if (not os.path.isfile(path)
         or not splitext[1] == '.zip'):
-        return (None, None)
+        return (None, None, None)
     try:
         importer = zipimport.zipimporter(path)
         basename = os.path.basename(splitext[0])
-        return (importer, basename)
+        manifest_data = None
+        if basename.endswith(_PLUGIN_PACKAGE_SUFFIX):
+            basename = basename[:-_PLUGIN_PACKAGE_SUFFIX_LEN]
+            try:
+                manifest_data = load_manifest(path)
+            except Exception:
+                pass
+        return (importer, basename, manifest_data)
     except zipimport.ZipImportError:
-        return (None, None)
+        return (None, None, None)
 
 
 def _unregister_module_extensions(module):
@@ -120,18 +140,19 @@ class PluginShared(object):
 
 class PluginWrapper(PluginShared):
 
-    def __init__(self, module, plugindir, file=None):
+    def __init__(self, module, plugindir, file=None, manifest_data=None):
         super(PluginWrapper, self).__init__()
         self.module = module
         self.compatible = False
         self.dir = plugindir
         self._file = file
+        self.data = manifest_data or self.module.__dict__
 
     @property
     def name(self):
         try:
-            return self.module.PLUGIN_NAME
-        except AttributeError:
+            return self.data['PLUGIN_NAME']
+        except KeyError:
             return self.module_name
 
     @property
@@ -144,29 +165,29 @@ class PluginWrapper(PluginShared):
     @property
     def author(self):
         try:
-            return self.module.PLUGIN_AUTHOR
-        except AttributeError:
+            return self.data['PLUGIN_AUTHOR']
+        except KeyError:
             return ""
 
     @property
     def description(self):
         try:
-            return self.module.PLUGIN_DESCRIPTION
-        except AttributeError:
+            return self.data['PLUGIN_DESCRIPTION']
+        except KeyError:
             return ""
 
     @property
     def version(self):
         try:
-            return self.module.PLUGIN_VERSION
-        except AttributeError:
+            return self.data['PLUGIN_VERSION']
+        except KeyError:
             return ""
 
     @property
     def api_versions(self):
         try:
-            return self.module.PLUGIN_API_VERSIONS
-        except AttributeError:
+            return self.data['PLUGIN_API_VERSIONS']
+        except KeyError:
             return []
 
     @property
@@ -179,15 +200,15 @@ class PluginWrapper(PluginShared):
     @property
     def license(self):
         try:
-            return self.module.PLUGIN_LICENSE
-        except AttributeError:
+            return self.data['PLUGIN_LICENSE']
+        except KeyError:
             return ""
 
     @property
     def license_url(self):
         try:
-            return self.module.PLUGIN_LICENSE_URL
-        except AttributeError:
+            return self.data['PLUGIN_LICENSE_URL']
+        except KeyError:
             return ""
 
     @property
@@ -219,7 +240,6 @@ class PluginManager(QtCore.QObject):
 
     plugin_installed = QtCore.pyqtSignal(PluginWrapper, bool)
     plugin_updated = QtCore.pyqtSignal(str, bool)
-
 
     def __init__(self):
         QtCore.QObject.__init__(self)
@@ -265,7 +285,7 @@ class PluginManager(QtCore.QObject):
 
     def load_plugin(self, name, plugindir):
         module_file = None
-        (importer, module_name) = zip_import(os.path.join(plugindir, name))
+        (importer, module_name, manifest_data) = zip_import(os.path.join(plugindir, name))
         if importer:
             name = module_name
             if not importer.find_module(name):
@@ -299,7 +319,8 @@ class PluginManager(QtCore.QObject):
                 plugin_module = imp.load_module(_PLUGIN_MODULE_PREFIX + name, *info)
             else:
                 plugin_module = importer.load_module(_PLUGIN_MODULE_PREFIX + name)
-            plugin = PluginWrapper(plugin_module, plugindir, file=module_pathname)
+            plugin = PluginWrapper(plugin_module, plugindir,
+                                   file=module_pathname, manifest_data=manifest_data)
             versions = [version_from_string(v) for v in
                         list(plugin.api_versions)]
             compatible_versions = list(set(versions) & self._api_versions)
@@ -332,7 +353,7 @@ class PluginManager(QtCore.QObject):
         if not os.path.isdir(dirpath):
             dirpath = None
         fileexts = ['.py', '.pyc', '.pyo', '.zip']
-        filepaths = [ os.path.join(USER_PLUGIN_DIR, f)
+        filepaths = [os.path.join(USER_PLUGIN_DIR, f)
                       for f in os.listdir(USER_PLUGIN_DIR)
                       if f in [plugin_name + ext for ext in fileexts]
                     ]
@@ -344,8 +365,12 @@ class PluginManager(QtCore.QObject):
         log.debug("Remove plugin files and dirs : %r", plugin_name)
         dirpath, filepaths = self._get_existing_paths(plugin_name)
         if dirpath:
-            log.debug("Removing directory %r", dirpath)
-            shutil.rmtree(dirpath)
+            if os.path.islink(dirpath):
+                log.debug("Removing symlink %r", dirpath)
+                os.remove(dirpath)
+            elif os.path.isdir(dirpath):
+                log.debug("Removing directory %r", dirpath)
+                shutil.rmtree(dirpath)
         if filepaths:
             for filepath in filepaths:
                 log.debug("Removing file %r", filepath)
@@ -418,12 +443,12 @@ class PluginManager(QtCore.QObject):
                 log.warning("Unable to copy %s to plugin folder %s" % (path, USER_PLUGIN_DIR))
 
     def query_available_plugins(self, callback=None):
-        self.tagger.xmlws.get(
+        self.tagger.webservice.get(
             PLUGINS_API['host'],
             PLUGINS_API['port'],
             PLUGINS_API['endpoint']['plugins'],
             partial(self._plugins_json_loaded, callback=callback),
-            xml=False,
+            parse_response_type=None,
             priority=True,
             important=True
         )

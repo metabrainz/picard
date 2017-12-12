@@ -18,7 +18,6 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 import os
-import sys
 from functools import partial
 from PyQt5 import QtCore, QtGui, QtNetwork, QtWidgets
 from picard import config, log
@@ -62,7 +61,12 @@ class ActiveLabel(QtWidgets.QLabel):
         # Chromium includes the actual data of the dragged image in the drop event. This
         # is useful for Google Images, where the url links to the page that contains the image
         # so we use it if the downloaded url is not an image.
-        dropped_data = event.mimeData().data('application/octet-stream')
+        mime_data = event.mimeData()
+        dropped_data = mime_data.data('application/octet-stream')
+
+        if not dropped_data:
+            dropped_data = mime_data.data('application/x-qt-image')
+
         try:
             mime = imageinfo.identify(dropped_data)[2]
             if mime in ('image/jpeg', 'image/png'):
@@ -71,10 +75,21 @@ class ActiveLabel(QtWidgets.QLabel):
         except imageinfo.IdentificationError:
             pass
 
-        for url in event.mimeData().urls():
-            if url.scheme() in ('https', 'http', 'file'):
+        if not accepted:
+            for url in event.mimeData().urls():
+                if url.scheme() in ('https', 'http', 'file'):
+                    accepted = True
+                    self.image_dropped.emit(url, dropped_data)
+
+        if not accepted:
+            if mime_data.hasImage():
+                image_bytes = QtCore.QByteArray()
+                image_buffer = QtCore.QBuffer(image_bytes)
+                mime_data.imageData().save(image_buffer, 'JPEG')
+
                 accepted = True
-                self.image_dropped.emit(url, dropped_data)
+                self.image_dropped.emit(QtCore.QUrl(''), image_bytes)
+
         if accepted:
             event.acceptProposedAction()
 
@@ -86,6 +101,10 @@ class CoverArtThumbnail(ActiveLabel):
         self.data = None
         self.has_common_images = None
         self.shadow = QtGui.QPixmap(":/images/CoverArtShadow.png")
+        self.pixel_ratio = self.tagger.primaryScreen().devicePixelRatio()
+        w, h = self.scaled(128, 128)
+        self.shadow = self.shadow.scaled(w, h, QtCore.Qt.KeepAspectRatio, QtCore.Qt.SmoothTransformation)
+        self.shadow.setDevicePixelRatio(self.pixel_ratio)
         self.release = None
         self.setPixmap(self.shadow)
         self.setAlignment(QtCore.Qt.AlignTop | QtCore.Qt.AlignHCenter)
@@ -100,13 +119,17 @@ class CoverArtThumbnail(ActiveLabel):
         else:
             return True
 
+    def scaled(self, *dimensions):
+        return (self.pixel_ratio * dimension for dimension in dimensions)
+
     def show(self):
         self.set_data(self.data, True)
 
     def decorate_cover(self, pixmap):
-        offx, offy, w, h = (1, 1, 121, 121)
+        offx, offy, w, h = self.scaled(1, 1, 121, 121)
         cover = QtGui.QPixmap(self.shadow)
         pixmap = pixmap.scaled(w, h, QtCore.Qt.KeepAspectRatio, QtCore.Qt.SmoothTransformation)
+        pixmap.setDevicePixelRatio(self.pixel_ratio)
         painter = QtGui.QPainter(cover)
         bgcolor = QtGui.QColor.fromRgb(0, 0, 0, 128)
         painter.fillRect(QtCore.QRectF(offx, offy, w, h), bgcolor)
@@ -134,7 +157,7 @@ class CoverArtThumbnail(ActiveLabel):
         if len(self.data) == 1:
             has_common_images = True
 
-        w, h, displacements = (128, 128, 20)
+        w, h, displacements = self.scaled(128, 128, 20)
         key = hash(tuple(sorted(self.data, key=lambda x: x.types_as_string())) + (has_common_images,))
         try:
             pixmap = self._pixmap_cache[key]
@@ -196,6 +219,7 @@ class CoverArtThumbnail(ActiveLabel):
                 pixmap = pixmap.scaled(w, h, QtCore.Qt.KeepAspectRatio, QtCore.Qt.SmoothTransformation)
             self._pixmap_cache[key] = pixmap
 
+        pixmap.setDevicePixelRatio(self.pixel_ratio)
         self.setPixmap(pixmap)
         self.current_pixmap_key = key
 
@@ -215,15 +239,15 @@ class CoverArtThumbnail(ActiveLabel):
             release = metadata.get("musicbrainz_albumid", None)
         if release:
             self.setActive(True)
-            text = _(u"View release on MusicBrainz")
+            text = _("View release on MusicBrainz")
         else:
             self.setActive(False)
             text = ""
         if hasattr(metadata, 'has_common_images'):
             if has_common_images:
-                note = _(u'Common images on all tracks')
+                note = _('Common images on all tracks')
             else:
-                note = _(u'Tracks contain different images')
+                note = _('Tracks contain different images')
             if text:
                 text += '<br />'
             text += '<i>%s</i>' % note
@@ -232,7 +256,7 @@ class CoverArtThumbnail(ActiveLabel):
 
     def open_release_page(self):
         lookup = self.tagger.get_file_lookup()
-        lookup.albumLookup(self.release)
+        lookup.album_lookup(self.release)
 
 
 def set_image_replace(obj, coverartimage):
@@ -263,7 +287,7 @@ class CoverArtBox(QtWidgets.QGroupBox):
         self.orig_cover_art_label = QtWidgets.QLabel('')
         self.orig_cover_art = CoverArtThumbnail(False, False, self.pixmap_cache, parent)
         self.orig_cover_art_label.setAlignment(QtCore.Qt.AlignTop | QtCore.Qt.AlignHCenter)
-        self.show_details_button = QtWidgets.QPushButton(_(u'Show more details'), self)
+        self.show_details_button = QtWidgets.QPushButton(_('Show more details'), self)
         self.layout.addWidget(self.cover_art_label)
         self.layout.addWidget(self.cover_art)
         self.layout.addWidget(self.orig_cover_art_label)
@@ -300,8 +324,8 @@ class CoverArtBox(QtWidgets.QGroupBox):
         else:
             self.show_details_button.setVisible(True)
             self.orig_cover_art.setVisible(True)
-            self.cover_art_label.setText(_(u'New Cover Art'))
-            self.orig_cover_art_label.setText(_(u'Original Cover Art'))
+            self.cover_art_label.setText(_('New Cover Art'))
+            self.orig_cover_art_label.setText(_('Original Cover Art'))
 
     def show(self):
         self.update_display(True)
@@ -331,9 +355,9 @@ class CoverArtBox(QtWidgets.QGroupBox):
                 port = 443
             else:
                 port = 80
-            self.tagger.xmlws.get(string_(url.encodedHost()), url.port(port), string_(path),
+            self.tagger.webservice.get(string_(url.encodedHost()), url.port(port), string_(path),
                                   partial(self.on_remote_image_fetched, url, fallback_data=fallback_data),
-                                  xml=False,
+                                  parse_response_type=None,
                                   priority=True, important=True)
         elif url.scheme() == 'file':
             path = os.path.normpath(os.path.realpath(url.toLocalFile().rstrip("\0")))
@@ -367,7 +391,7 @@ class CoverArtBox(QtWidgets.QGroupBox):
         try:
             coverartimage = CoverArtImage(
                 url=url.toString(),
-                types=[u'front'],
+                types=['front'],
                 data=data
             )
         except CoverArtImageError as e:
@@ -419,13 +443,13 @@ class CoverArtBox(QtWidgets.QGroupBox):
     def contextMenuEvent(self, event):
         menu = QtWidgets.QMenu(self)
         if self.show_details_button.isVisible():
-            name = _(u'Show more details...')
+            name = _('Show more details...')
             show_more_details_action = QtWidgets.QAction(name, self.parent)
             show_more_details_action.triggered.connect(self.show_cover_art_info)
             menu.addAction(show_more_details_action)
 
         if self.orig_cover_art.isVisible():
-            name = _(u'Keep original cover art')
+            name = _('Keep original cover art')
             use_orig_value_action = QtWidgets.QAction(name, self.parent)
             use_orig_value_action.triggered.connect(self.item.keep_original_images)
             menu.addAction(use_orig_value_action)
@@ -434,12 +458,12 @@ class CoverArtBox(QtWidgets.QGroupBox):
             menu.addSeparator()
 
         load_image_behavior_group = QtWidgets.QActionGroup(self.parent, exclusive=True)
-        action = load_image_behavior_group.addAction(QtWidgets.QAction(_(u'Replace front cover art on drop'), self.parent, checkable=True))
+        action = load_image_behavior_group.addAction(QtWidgets.QAction(_('Replace front cover art on drop'), self.parent, checkable=True))
         action.triggered.connect(partial(self.set_load_image_behavior, behavior='replace'))
         if config.setting["load_image_behavior"] == 'replace':
             action.setChecked(True)
         menu.addAction(action)
-        action = load_image_behavior_group.addAction(QtWidgets.QAction(_(u'Append front cover art on drop'), self.parent, checkable=True))
+        action = load_image_behavior_group.addAction(QtWidgets.QAction(_('Append front cover art on drop'), self.parent, checkable=True))
         action.triggered.connect(partial(self.set_load_image_behavior, behavior='append'))
         if config.setting["load_image_behavior"] == 'append':
             action.setChecked(True)

@@ -36,5 +36,7 @@ def astrcmp_py(a,b):
 try:
     from picard.util._astrcmp import astrcmp as astrcmp_c
     astrcmp = astrcmp_c
+    astrcmp_implementation = "C"
 except ImportError:
     astrcmp = astrcmp_py
+    astrcmp_implementation = "Python"

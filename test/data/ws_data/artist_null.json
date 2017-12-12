@@ -1,0 +1,38 @@
+{
+    "disambiguation": null,
+    "gender": null,
+    "gender-id": null,
+    "country": null,
+    "begin_area": {
+        "disambiguation": null,
+        "sort-name": null,
+        "name": null,
+        "id": null
+    },
+    "type-id": null,
+    "ipis": [
+        null
+    ],
+    "type": null,
+    "sort-name": null,
+    "end_area": null,
+    "area": {
+        "disambiguation": null,
+        "sort-name": null,
+        "id": null,
+        "iso-3166-1-codes": [
+            null
+        ],
+        "name": null
+    },
+    "isnis": [
+        null
+    ],
+    "name": null,
+    "id": null,
+    "life-span": {
+        "ended": null,
+        "begin": null,
+        "end": null
+    }
+}

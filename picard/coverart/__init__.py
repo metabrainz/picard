@@ -90,7 +90,7 @@ class CoverArt:
         self.album._requests -= 1
 
         if error:
-            self.album.error_append(u'Coverart error: %s' % (http.errorString()))
+            self.album.error_append('Coverart error: %s' % (http.errorString()))
         elif len(data) < 1000:
             log.warning("Not enough data, skipping %s" % coverartimage)
         else:
@@ -191,7 +191,7 @@ class CoverArt:
             echo=None
         )
         log.debug("Downloading %r" % coverartimage)
-        self.album.tagger.xmlws.download(
+        self.album.tagger.webservice.download(
             coverartimage.host,
             coverartimage.port,
             coverartimage.path,

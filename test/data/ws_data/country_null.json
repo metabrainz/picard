@@ -1,0 +1,39 @@
+{
+    "disambiguation": null,
+    "date": null,
+    "text-representation": {
+        "script": null,
+        "language": null
+    },
+    "country": null,
+    "status": null,
+    "asin": null,
+    "release-events": [
+        {
+            "date": null,
+            "area": {
+                "disambiguation": null,
+                "id": null,
+                "sort-name": null,
+                "name": null,
+                "iso-3166-1-codes": [
+                    null
+                ]
+            }
+        }
+    ],
+    "quality": null,
+    "cover-art-archive": {
+        "front": null,
+        "back": null,
+        "artwork": null,
+        "darkened": null,
+        "count": null
+    },
+    "packaging-id": null,
+    "packaging": null,
+    "barcode": null,
+    "title": null,
+    "status-id": null,
+    "id": null
+}

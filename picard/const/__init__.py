@@ -20,9 +20,12 @@
 import os
 import sys
 
+from picard import PICARD_APP_NAME
+
 # Install gettext "noop" function in case const.py gets imported directly.
 import builtins
 builtins.__dict__['N_'] = lambda a: a
+
 
 # Config directory
 if sys.platform == "win32":
@@ -31,7 +34,7 @@ else:
     USER_DIR = os.environ.get("XDG_CONFIG_HOME", "~/.config")
 
 USER_DIR = os.path.join(
-    os.path.expanduser(USER_DIR), "MusicBrainz", "Picard"
+    os.path.expanduser(USER_DIR), "MusicBrainz", PICARD_APP_NAME
 )
 
 USER_PLUGIN_DIR = os.path.join(USER_DIR, "plugins")
@@ -79,11 +82,11 @@ RELEASE_FORMATS = {}
 RELEASE_PRIMARY_GROUPS = {}
 RELEASE_SECONDARY_GROUPS = {}
 for k, v in MB_ATTRIBUTES.items():
-    if k.startswith(u'DB:medium_format/name:'):
+    if k.startswith('DB:medium_format/name:'):
         RELEASE_FORMATS[v] = v
-    elif k.startswith(u'DB:release_group_primary_type/name:'):
+    elif k.startswith('DB:release_group_primary_type/name:'):
         RELEASE_PRIMARY_GROUPS[v] = v
-    elif k.startswith(u'DB:release_group_secondary_type/name:'):
+    elif k.startswith('DB:release_group_secondary_type/name:'):
         RELEASE_SECONDARY_GROUPS[v] = v
 
 # Release countries
@@ -106,8 +109,8 @@ PLUGINS_API = {
     'host': 'picard.musicbrainz.org',
     'port': 443,
     'endpoint': {
-        'plugins': '/api/v1/plugins/',
-        'download': '/api/v1/download/'
+        'plugins': '/api/v2/plugins/',
+        'download': '/api/v2/download/'
     }
 }
 

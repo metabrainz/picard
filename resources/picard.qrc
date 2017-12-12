@@ -1,51 +1,96 @@
 <!DOCTYPE RCC><RCC version="1.0">
 <qresource>
     <file>images/16x16/acoustid-fingerprinter.png</file>
+    <file>images/16x16/acoustid-fingerprinter@2x.png</file>
     <file>images/16x16/action-go-down-16.png</file>
+    <file>images/16x16/action-go-down-16@2x.png</file>
     <file>images/16x16/add-item.png</file>
+    <file>images/16x16/add-item@2x.png</file>
     <file>images/16x16/applications-system.png</file>
+    <file>images/16x16/applications-system@2x.png</file>
     <file>images/16x16/dialog-error.png</file>
+    <file>images/16x16/dialog-error@2x.png</file>
     <file>images/16x16/document-open.png</file>
+    <file>images/16x16/document-open@2x.png</file>
     <file>images/16x16/document-save.png</file>
+    <file>images/16x16/document-save@2x.png</file>
     <file>images/16x16/edit-clear.png</file>
+    <file>images/16x16/edit-clear@2x.png</file>
     <file>images/16x16/edit-cut.png</file>
+    <file>images/16x16/edit-cut@2x.png</file>
     <file>images/16x16/edit-paste.png</file>
+    <file>images/16x16/edit-paste@2x.png</file>
     <file>images/16x16/folder.png</file>
+    <file>images/16x16/folder@2x.png</file>
     <file>images/16x16/list-remove.png</file>
+    <file>images/16x16/list-remove@2x.png</file>
     <file>images/16x16/lookup-musicbrainz.png</file>
+    <file>images/16x16/lookup-musicbrainz@2x.png</file>
     <file>images/16x16/media-optical-error.png</file>
+    <file>images/16x16/media-optical-error@2x.png</file>
     <file>images/16x16/media-optical-modified.png</file>
+    <file>images/16x16/media-optical-modified@2x.png</file>
     <file>images/16x16/media-optical-saved-modified.png</file>
+    <file>images/16x16/media-optical-saved-modified@2x.png</file>
     <file>images/16x16/media-optical-saved.png</file>
+    <file>images/16x16/media-optical-saved@2x.png</file>
     <file>images/16x16/media-optical.png</file>
+    <file>images/16x16/media-optical@2x.png</file>
     <file>images/16x16/picard-analyze.png</file>
+    <file>images/16x16/picard-analyze@2x.png</file>
     <file>images/16x16/picard-auto-tag.png</file>
+    <file>images/16x16/picard-auto-tag@2x.png</file>
     <file>images/16x16/picard-cluster.png</file>
+    <file>images/16x16/picard-cluster@2x.png</file>
     <file>images/16x16/picard-edit-tags.png</file>
+    <file>images/16x16/picard-edit-tags@2x.png</file>
     <file>images/16x16/picard.png</file>
     <file>images/16x16/play-music.png</file>
+    <file>images/16x16/play-music@2x.png</file>
     <file>images/16x16/preferences-desktop.png</file>
+    <file>images/16x16/preferences-desktop@2x.png</file>
     <file>images/16x16/remove-item.png</file>
+    <file>images/16x16/remove-item@2x.png</file>
     <file>images/16x16/view-refresh.png</file>
+    <file>images/16x16/view-refresh@2x.png</file>
     <file>images/22x22/acoustid-fingerprinter.png</file>
+    <file>images/22x22/acoustid-fingerprinter@2x.png</file>
     <file>images/22x22/document-open.png</file>
+    <file>images/22x22/document-open@2x.png</file>
     <file>images/22x22/document-save.png</file>
+    <file>images/22x22/document-save@2x.png</file>
     <file>images/22x22/edit-clear.png</file>
+    <file>images/22x22/edit-clear@2x.png</file>
     <file>images/22x22/folder.png</file>
+    <file>images/22x22/folder@2x.png</file>
     <file>images/22x22/list-remove.png</file>
+    <file>images/22x22/list-remove@2x.png</file>
     <file>images/22x22/lookup-musicbrainz.png</file>
+    <file>images/22x22/lookup-musicbrainz@2x.png</file>
     <file>images/22x22/media-optical-error.png</file>
+    <file>images/22x22/media-optical-error@2x.png</file>
     <file>images/22x22/media-optical-modified.png</file>
+    <file>images/22x22/media-optical-modified@2x.png</file>
     <file>images/22x22/media-optical-saved-modified.png</file>
+    <file>images/22x22/media-optical-saved-modified@2x.png</file>
     <file>images/22x22/media-optical-saved.png</file>
+    <file>images/22x22/media-optical-saved@2x.png</file>
     <file>images/22x22/media-optical.png</file>
+    <file>images/22x22/media-optical@2x.png</file>
     <file>images/22x22/picard-analyze.png</file>
+    <file>images/22x22/picard-analyze@2x.png</file>
     <file>images/22x22/picard-auto-tag.png</file>
+    <file>images/22x22/picard-auto-tag@2x.png</file>
     <file>images/22x22/picard-cluster.png</file>
+    <file>images/22x22/picard-cluster@2x.png</file>
     <file>images/22x22/picard-edit-tags.png</file>
+    <file>images/22x22/picard-edit-tags@2x.png</file>
     <file>images/22x22/play-music.png</file>
+    <file>images/22x22/play-music@2x.png</file>
     <file>images/22x22/preferences-desktop.png</file>
+    <file>images/22x22/preferences-desktop@2x.png</file>
     <file>images/22x22/system-search.png</file>
+    <file>images/22x22/system-search@2x.png</file>
     <file>images/24x24/picard.png</file>
     <file>images/32x32/picard.png</file>
     <file>images/48x48/picard.png</file>
@@ -54,25 +99,45 @@
     <file>images/CoverArtShadow.png</file>
     <file>images/arrow.png</file>
     <file>images/file-pending.png</file>
+    <file>images/file-pending@2x.png</file>
     <file>images/file.png</file>
+    <file>images/file@2x.png</file>
     <file>images/loader.gif</file>
     <file>images/match-50.png</file>
+    <file>images/match-50@2x.png</file>
     <file>images/match-60.png</file>
+    <file>images/match-60@2x.png</file>
     <file>images/match-70.png</file>
+    <file>images/match-70@2x.png</file>
     <file>images/match-80.png</file>
+    <file>images/match-80@2x.png</file>
     <file>images/match-90.png</file>
+    <file>images/match-90@2x.png</file>
     <file>images/match-100.png</file>
+    <file>images/match-100@2x.png</file>
     <file>images/match-pending-50.png</file>
+    <file>images/match-pending-50@2x.png</file>
     <file>images/match-pending-60.png</file>
+    <file>images/match-pending-60@2x.png</file>
     <file>images/match-pending-70.png</file>
+    <file>images/match-pending-70@2x.png</file>
     <file>images/match-pending-80.png</file>
+    <file>images/match-pending-80@2x.png</file>
     <file>images/match-pending-90.png</file>
+    <file>images/match-pending-90@2x.png</file>
     <file>images/match-pending-100.png</file>
+    <file>images/match-pending-100@2x.png</file>
     <file>images/star-gray.png</file>
+    <file>images/star-gray@2x.png</file>
     <file>images/star.png</file>
+    <file>images/star@2x.png</file>
     <file>images/track-audio.png</file>
+    <file>images/track-audio@2x.png</file>
     <file>images/track-data.png</file>
+    <file>images/track-data@2x.png</file>
     <file>images/track-saved.png</file>
+    <file>images/track-saved@2x.png</file>
     <file>images/track-video.png</file>
+    <file>images/track-video@2x.png</file>
 </qresource>
 </RCC>

@@ -22,7 +22,6 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-import traceback
 
 from picard import log
 from picard.util import parse_amazon_url
@@ -89,7 +88,7 @@ class CoverArtProviderAmazon(CoverArtProvider):
     """Use Amazon ASIN Musicbrainz relationships to get cover art"""
 
     NAME = "Amazon"
-    TITLE = N_(u'Amazon')
+    TITLE = N_('Amazon')
 
     def enabled(self):
         return (super(CoverArtProviderAmazon, self).enabled()

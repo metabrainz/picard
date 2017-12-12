@@ -63,7 +63,7 @@ def get_cdrom_drives():
 
     if sys.platform == 'win32':
         GetLogicalDrives = windll.kernel32.GetLogicalDrives
-        GetDriveType = windll.kernel32.GetDriveTypeA
+        GetDriveType = windll.kernel32.GetDriveTypeW
         DRIVE_CDROM = 5
         mask = GetLogicalDrives()
         for i in range(26):
@@ -91,7 +91,7 @@ def get_cdrom_drives():
             # Show only drives that are capable of playing audio
             for index, drive in enumerate(drive_names):
                 if drive_audio_caps[index]:
-                    device = u'/dev/%s' % drive
+                    device = '/dev/%s' % drive
                     symlink_target = QFile.symLinkTarget(device)
                     if symlink_target != '':
                         device = symlink_target
@@ -101,7 +101,7 @@ def get_cdrom_drives():
         for device in config.setting["cd_lookup_device"].split(","):
             # Need to filter out empty strings,
             # particularly if the device list is empty
-            if device.strip() != u'':
+            if device.strip() != '':
                 drives.append(device.strip())
 
     # make sure no drive is listed twice (given by multiple sources)

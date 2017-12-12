@@ -191,7 +191,6 @@ def upgrade_to_v1_4_0_dev_4():
 def upgrade_to_v1_4_0_dev_5():
     """Using Picard.ini configuration file on all platforms"""
     # this is done in Config.__init__()
-    pass
 
 
 def upgrade_to_v1_4_0_dev_6():

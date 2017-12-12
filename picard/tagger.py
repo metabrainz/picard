@@ -38,10 +38,10 @@ from itertools import chain
 from operator import attrgetter
 
 
-# A "fix" for http://python.org/sf/1438480
-def _patched_shutil_copystat(src, dst):
+# A "fix" for https://bugs.python.org/issue1438480
+def _patched_shutil_copystat(src, dst, *, follow_symlinks=True):
     try:
-        _orig_shutil_copystat(src, dst)
+        _orig_shutil_copystat(src, dst, follow_symlinks=follow_symlinks)
     except OSError:
         pass
 
@@ -69,7 +69,7 @@ from picard.collection import load_user_collections
 from picard.ui.mainwindow import MainWindow
 from picard.ui.itemviews import BaseTreeView
 from picard.plugin import PluginManager
-from picard.acoustidmanager import AcoustIDManager
+from picard.acoustid.manager import AcoustIDManager
 from picard.config_upgrade import upgrade_config
 from picard.util import (
     decode_filename,
@@ -81,7 +81,8 @@ from picard.util import (
     is_hidden,
     versions,
 )
-from picard.webservice import XmlWebService
+from picard.webservice import WebService
+from picard.webservice.api_helpers import MBAPIHelper, AcoustIdAPIHelper
 from picard.ui.searchdialog import (
     TrackSearchDialog,
     AlbumSearchDialog,
@@ -105,8 +106,11 @@ class Tagger(QtWidgets.QApplication):
         # can use it to look up the app
         QtWidgets.QApplication.__init__(self, ['MusicBrainz-Picard'] + unparsed_args)
         self.__class__.__instance = self
-
         config._setup(self, picard_args.config_file)
+
+        # Allow High DPI Support
+        self.setAttribute(QtCore.Qt.AA_UseHighDpiPixmaps)
+        self.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling)
 
         self._cmdline_files = picard_args.FILE
         self._autoupdate = autoupdate
@@ -179,7 +183,9 @@ class Tagger(QtWidgets.QApplication):
 
         upgrade_config()
 
-        self.xmlws = XmlWebService()
+        self.webservice = WebService()
+        self.mb_api = MBAPIHelper(self.webservice)
+        self.acoustid_api = AcoustIdAPIHelper(self.webservice)
 
         load_user_collections()
 
@@ -275,7 +281,7 @@ class Tagger(QtWidgets.QApplication):
         self.thread_pool.waitForDone()
         self.save_thread_pool.waitForDone()
         self.browser_integration.stop()
-        self.xmlws.stop()
+        self.webservice.stop()
         self.run_cleanup()
         QtCore.QCoreApplication.processEvents()
 
@@ -360,6 +366,10 @@ class Tagger(QtWidgets.QApplication):
             filename = os.path.normpath(os.path.realpath(filename))
             if ignore_hidden and is_hidden(filename):
                 log.debug("File ignored (hidden): %r" % (filename))
+                continue
+            # Ignore .smbdelete* files which Applie iOS SMB creates by renaming a file when it cannot delete it
+            if os.path.basename(filename).startswith(".smbdelete"):
+                log.debug("File ignored (.smbdelete): %r", filename)
                 continue
             if ignoreregex is not None and ignoreregex.search(filename):
                 log.info("File ignored (matching %r): %r" % (pattern, filename))
@@ -465,29 +475,29 @@ class Tagger(QtWidgets.QApplication):
         if mimeData.hasUrls():
             BaseTreeView.drop_urls(mimeData.urls(), target)
 
-    def search(self, text, type, adv=False):
+    def search(self, text, search_type, adv=False):
         """Search on the MusicBrainz website."""
         lookup = self.get_file_lookup()
         if config.setting["builtin_search"]:
-            if type == "track" and not lookup.mbidLookup(text, 'recording'):
+            if search_type == "track" and not lookup.mbid_lookup(text, 'recording'):
                 dialog = TrackSearchDialog(self.window)
                 dialog.search(text)
                 dialog.exec_()
-            elif type == "album" and not lookup.mbidLookup(text, 'release'):
+            elif search_type == "album" and not lookup.mbid_lookup(text, 'release'):
                 dialog = AlbumSearchDialog(self.window)
                 dialog.search(text)
                 dialog.exec_()
-            elif type == "artist" and not lookup.mbidLookup(text, 'artist'):
+            elif search_type == "artist" and not lookup.mbid_lookup(text, 'artist'):
                 dialog = ArtistSearchDialog(self.window)
                 dialog.search(text)
                 dialog.exec_()
         else:
-            getattr(lookup, type + "Search")(text, adv)
+            getattr(lookup, search_type + "_search")(text, adv)
 
     def collection_lookup(self):
         """Lookup the users collections on the MusicBrainz website."""
         lookup = self.get_file_lookup()
-        lookup.collectionLookup(config.persist["oauth_username"])
+        lookup.collection_lookup(config.persist["oauth_username"])
 
     def browser_lookup(self, item):
         """Lookup the object's metadata on the MusicBrainz website."""
@@ -497,11 +507,11 @@ class Tagger(QtWidgets.QApplication):
         if isinstance(item, DataObject):
             itemid = item.id
             if isinstance(item, Track):
-                lookup.recordingLookup(itemid)
+                lookup.recording_lookup(itemid)
             elif isinstance(item, Album):
-                lookup.albumLookup(itemid)
+                lookup.album_lookup(itemid)
         else:
-            lookup.tagLookup(
+            lookup.tag_lookup(
                 metadata["albumartist"] if item.is_album_like() else metadata["artist"],
                 metadata["album"],
                 metadata["title"],
@@ -519,25 +529,25 @@ class Tagger(QtWidgets.QApplication):
         for file in files:
             file.save()
 
-    def load_album(self, id, discid=None):
-        id = self.mbid_redirects.get(id, id)
-        album = self.albums.get(id)
+    def load_album(self, album_id, discid=None):
+        album_id = self.mbid_redirects.get(album_id, album_id)
+        album = self.albums.get(album_id)
         if album:
-            log.debug("Album %s already loaded.", id)
+            log.debug("Album %s already loaded.", album_id)
             return album
-        album = Album(id, discid=discid)
-        self.albums[id] = album
+        album = Album(album_id, discid=discid)
+        self.albums[album_id] = album
         self.album_added.emit(album)
         album.load()
         return album
 
-    def load_nat(self, id, node=None):
+    def load_nat(self, nat_id, node=None):
         self.create_nats()
-        nat = self.get_nat_by_id(id)
+        nat = self.get_nat_by_id(nat_id)
         if nat:
-            log.debug("NAT %s already loaded.", id)
+            log.debug("NAT %s already loaded.", nat_id)
             return nat
-        nat = NonAlbumTrack(id)
+        nat = NonAlbumTrack(nat_id)
         self.nats.tracks.append(nat)
         self.nats.update(True)
         if node:
@@ -546,14 +556,14 @@ class Tagger(QtWidgets.QApplication):
             nat.load()
         return nat
 
-    def get_nat_by_id(self, id):
+    def get_nat_by_id(self, nat_id):
         if self.nats is not None:
             for nat in self.nats.tracks:
-                if nat.id == id:
+                if nat.id == nat_id:
                     return nat
 
-    def get_release_group_by_id(self, id):
-        return self.release_groups.setdefault(id, ReleaseGroup(id))
+    def get_release_group_by_id(self, rg_id):
+        return self.release_groups.setdefault(rg_id, ReleaseGroup(rg_id))
 
     def remove_files(self, files, from_parent=True):
         """Remove files from the tagger."""
@@ -615,8 +625,8 @@ class Tagger(QtWidgets.QApplication):
     def _lookup_disc(self, disc, result=None, error=None):
         self.restore_cursor()
         if error is not None:
-            QtWidgets.QMessageBox.critical(self.window, _(u"CD Lookup Error"),
-                                       _(u"Error while reading CD:\n\n%s") % error)
+            QtWidgets.QMessageBox.critical(self.window, _("CD Lookup Error"),
+                                       _("Error while reading CD:\n\n%s") % error)
         else:
             disc.lookup()
 

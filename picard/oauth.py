@@ -31,8 +31,8 @@ from picard.util import build_qurl, load_json
 
 class OAuthManager(object):
 
-    def __init__(self, xmlws):
-        self.xmlws = xmlws
+    def __init__(self, webservice):
+        self.webservice = webservice
 
     def is_authorized(self):
         return bool(config.persist["oauth_refresh_token"] and
@@ -102,9 +102,9 @@ class OAuthManager(object):
         url_query.addQueryItem("client_secret", MUSICBRAINZ_OAUTH_CLIENT_SECRET)
         url.setQuery(url_query.query(QUrl.FullyEncoded))
         data = string_(url.query())
-        self.xmlws.post(host, port, path, data,
+        self.webservice.post(host, port, path, data,
                         partial(self.on_refresh_access_token_finished, callback),
-                        xml=False, mblogin=True, priority=True, important=True)
+                        parse_response_type=None, mblogin=True, priority=True, important=True)
 
     def on_refresh_access_token_finished(self, callback, data, http, error):
         access_token = None
@@ -135,9 +135,9 @@ class OAuthManager(object):
         url_query.addQueryItem("redirect_uri", "urn:ietf:wg:oauth:2.0:oob")
         url.setQuery(url_query.query(QUrl.FullyEncoded))
         data = string_(url.query())
-        self.xmlws.post(host, port, path, data,
+        self.webservice.post(host, port, path, data,
                         partial(self.on_exchange_authorization_code_finished, scopes, callback),
-                        xml=False, mblogin=True, priority=True, important=True)
+                        parse_response_type=None, mblogin=True, priority=True, important=True)
 
     def on_exchange_authorization_code_finished(self, scopes, callback, data, http, error):
         successful = False
@@ -156,9 +156,9 @@ class OAuthManager(object):
         log.debug("OAuth: fetching username")
         host, port = config.setting['server_host'], config.setting['server_port']
         path = "/oauth2/userinfo"
-        self.xmlws.get(host, port, path,
+        self.webservice.get(host, port, path,
                         partial(self.on_fetch_username_finished, callback),
-                        xml=False, mblogin=True, priority=True, important=True)
+                        parse_response_type=None, mblogin=True, priority=True, important=True)
 
     def on_fetch_username_finished(self, callback, data, http, error):
         successful = False

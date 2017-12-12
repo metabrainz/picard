@@ -36,54 +36,54 @@ class InterfaceOptionsPage(OptionsPage):
     PARENT = None
     SORT_ORDER = 80
     ACTIVE = True
-    SEPARATOR = u'—'*5
+    SEPARATOR = '—'*5
     TOOLBAR_BUTTONS = {
         'add_directory_action': {
-            'label': N_(u'Add Folder'),
+            'label': N_('Add Folder'),
             'icon': 'folder'
         },
        'add_files_action': {
-            'label': N_(u'Add Files'),
+            'label': N_('Add Files'),
             'icon': 'document-open'
         },
        'cluster_action': {
-            'label': N_(u'Cluster'),
+            'label': N_('Cluster'),
             'icon': 'picard-cluster'
         },
        'autotag_action': {
-            'label': N_(u'Lookup'),
+            'label': N_('Lookup'),
             'icon': 'picard-auto-tag'
         },
        'analyze_action': {
-            'label': N_(u'Scan'),
+            'label': N_('Scan'),
             'icon': 'picard-analyze'
         },
        'browser_lookup_action': {
-            'label': N_(u'Lookup in Browser'),
+            'label': N_('Lookup in Browser'),
             'icon': 'lookup-musicbrainz'
         },
        'save_action': {
-            'label': N_(u'Save'),
+            'label': N_('Save'),
             'icon': 'document-save'
         },
        'view_info_action': {
-            'label': N_(u'Info'),
+            'label': N_('Info'),
             'icon': 'picard-edit-tags'
         },
        'remove_action': {
-            'label': N_(u'Remove'),
+            'label': N_('Remove'),
             'icon': 'list-remove'
         },
        'submit_acoustid_action': {
-            'label': N_(u'Submit AcoustIDs'),
+            'label': N_('Submit AcoustIDs'),
             'icon': 'acoustid-fingerprinter'
         },
        'play_file_action': {
-            'label': N_(u'Open in Player'),
+            'label': N_('Open in Player'),
             'icon': 'play-music'
         },
        'cd_lookup_action': {
-            'label': N_(u'Lookup CD...'),
+            'label': N_('Lookup CD...'),
             'icon': 'media-optical'
         },
     }
@@ -94,7 +94,7 @@ class InterfaceOptionsPage(OptionsPage):
         config.BoolOption("setting", "builtin_search", False),
         config.BoolOption("setting", "use_adv_search_syntax", False),
         config.BoolOption("setting", "quit_confirmation", True),
-        config.TextOption("setting", "ui_language", u""),
+        config.TextOption("setting", "ui_language", ""),
         config.BoolOption("setting", "starting_directory", False),
         config.TextOption("setting", "starting_directory_path", ""),
         config.TextOption("setting", "load_image_behavior", "append"),
@@ -127,7 +127,7 @@ class InterfaceOptionsPage(OptionsPage):
         fcmp = lambda x: locale.strxfrm(x[2])
         for lang_code, native, translation in sorted(language_list, key=fcmp):
             if native and native != translation:
-                name = u'%s (%s)' % (translation, native)
+                name = '%s (%s)' % (translation, native)
             else:
                 name = translation
             self.ui.ui_language.addItem(name, lang_code)
@@ -204,7 +204,7 @@ class InterfaceOptionsPage(OptionsPage):
 
     def _insert_item(self, action, index=None):
         list_item = ToolbarListItem(action)
-        list_item.setToolTip(_(u'Drag and Drop to re-order'))
+        list_item.setToolTip(_('Drag and Drop to re-order'))
         if action in self.TOOLBAR_BUTTONS:
             list_item.setText(_(self.TOOLBAR_BUTTONS[action]['label']))
             list_item.setIcon(icontheme.lookup(self._get_icon_from_name(action), icontheme.ICON_SIZE_MENU))

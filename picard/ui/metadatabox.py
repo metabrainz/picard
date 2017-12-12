@@ -179,9 +179,9 @@ class MetadataBox(QtWidgets.QTableWidget):
         self.selection_dirty = False
         self.editing = None  # the QTableWidgetItem being edited
         self.clipboard = [""]
-        self.add_tag_action = QtWidgets.QAction(_(u"Add New Tag..."), parent)
+        self.add_tag_action = QtWidgets.QAction(_("Add New Tag..."), parent)
         self.add_tag_action.triggered.connect(partial(self.edit_tag, ""))
-        self.changes_first_action = QtWidgets.QAction(_(u"Show Changes First"), parent)
+        self.changes_first_action = QtWidgets.QAction(_("Show Changes First"), parent)
         self.changes_first_action.setCheckable(True)
         self.changes_first_action.setChecked(config.persist["show_changes_first"])
         self.changes_first_action.toggled.connect(self.toggle_changes_first)
@@ -203,14 +203,14 @@ class MetadataBox(QtWidgets.QTableWidget):
     def lookup_tags(self):
         lookup = self.get_file_lookup()
         LOOKUP_TAGS = {
-            "musicbrainz_recordingid": lookup.recordingLookup,
-            "musicbrainz_trackid": lookup.trackLookup,
-            "musicbrainz_albumid": lookup.albumLookup,
-            "musicbrainz_workid": lookup.workLookup,
-            "musicbrainz_artistid": lookup.artistLookup,
-            "musicbrainz_albumartistid": lookup.artistLookup,
-            "musicbrainz_releasegroupid": lookup.releaseGroupLookup,
-            "acoustid_id": lookup.acoustLookup
+            "musicbrainz_recordingid": lookup.recording_lookup,
+            "musicbrainz_trackid": lookup.track_lookup,
+            "musicbrainz_albumid": lookup.album_lookup,
+            "musicbrainz_workid": lookup.work_lookup,
+            "musicbrainz_artistid": lookup.artist_lookup,
+            "musicbrainz_albumartistid": lookup.artist_lookup,
+            "musicbrainz_releasegroupid": lookup.release_group_lookup,
+            "acoustid_id": lookup.acoust_lookup
         }
         return LOOKUP_TAGS
 
@@ -271,7 +271,7 @@ class MetadataBox(QtWidgets.QTableWidget):
             tags = self.selected_tags(discard=('~length'))
             if len(tags) == 1:
                 selected_tag = tags[0]
-                edit_tag_action = QtWidgets.QAction(_(u"Edit..."), self.parent)
+                edit_tag_action = QtWidgets.QAction(_("Edit..."), self.parent)
                 edit_tag_action.triggered.connect(partial(self.edit_tag, selected_tag))
                 edit_tag_action.setShortcut(self.edit_tag_shortcut.key())
                 menu.addAction(edit_tag_action)
@@ -279,11 +279,11 @@ class MetadataBox(QtWidgets.QTableWidget):
                                   map(lambda x: x.strip(), config.setting['preserved_tags'].split(','))
                                   if tag != ""]
                 if selected_tag not in preserved_tags:
-                    add_to_preserved_tags_action = QtWidgets.QAction(_(u"Add to 'Preserve Tags' List"), self.parent)
+                    add_to_preserved_tags_action = QtWidgets.QAction(_("Add to 'Preserve Tags' List"), self.parent)
                     add_to_preserved_tags_action.triggered.connect(partial(self.add_to_preserved_tags, selected_tag, preserved_tags))
                     menu.addAction(add_to_preserved_tags_action)
                 else:
-                    remove_from_preserved_tags_action = QtWidgets.QAction(_(u"Remove from 'Preserve Tags' List"), self.parent)
+                    remove_from_preserved_tags_action = QtWidgets.QAction(_("Remove from 'Preserve Tags' List"), self.parent)
                     remove_from_preserved_tags_action.triggered.connect(partial(self.remove_from_preserved_tags, selected_tag, preserved_tags))
                     menu.addAction(remove_from_preserved_tags_action)
             removals = []
@@ -297,7 +297,7 @@ class MetadataBox(QtWidgets.QTableWidget):
                             values = self.tag_diff.orig[tag]
                         else:
                             values = self.tag_diff.new[tag]
-                        lookup_action = QtWidgets.QAction(_(u"Lookup in &Browser"), self.parent)
+                        lookup_action = QtWidgets.QAction(_("Lookup in &Browser"), self.parent)
                         lookup_action.triggered.connect(partial(self.open_link, values, tag))
                         menu.addAction(lookup_action)
                 if self.tag_is_removable(tag):
@@ -311,7 +311,7 @@ class MetadataBox(QtWidgets.QTableWidget):
                         orig_values = list(file.orig_metadata.getall(tag)) or [""]
                         useorigs.append(partial(self.set_tag_values, tag, orig_values, objects))
             if removals:
-                remove_tag_action = QtWidgets.QAction(_(u"Remove"), self.parent)
+                remove_tag_action = QtWidgets.QAction(_("Remove"), self.parent)
                 remove_tag_action.triggered.connect(lambda: [f() for f in removals])
                 remove_tag_action.setShortcut(self.remove_tag_shortcut.key())
                 menu.addAction(remove_tag_action)

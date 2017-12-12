@@ -1,0 +1,294 @@
+{
+    "tags": [
+        {"name": "test", "count": 5},
+        {"name": "test2", "count": 3}
+    ],
+    "user-tags": [
+        {"name": "test"}
+    ],
+    "release-group": {
+        "first-release-date": "1973-03-24",
+        "artist-credit": [
+            {
+                "name": "Pink Floyd",
+                "artist": {
+                    "id": "83d91898-7763-47d7-b03b-b92132375c47",
+                    "disambiguation": "",
+                    "sort-name": "Pink Floyd",
+                    "name": "Pink Floyd"
+                },
+                "joinphrase": ""
+            }
+        ],
+        "primary-type": "Album",
+        "id": "f5093c06-23e3-404f-aeaa-40f72885ee3a",
+        "title": "The Dark Side of the Moon",
+        "disambiguation": "",
+        "secondary-type-ids": [
+            
+        ],
+        "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
+        "secondary-types": [
+            
+        ],
+        "aliases": [
+            
+        ]
+    },
+    "aliases": [
+        
+    ],
+    "cover-art-archive": {
+        "front": true,
+        "back": true,
+        "count": 10,
+        "artwork": true,
+        "darkened": false
+    },
+    "media": [
+        {
+            "position": 1,
+            "track-count": 10,
+            "format-id": "3e9080b0-5e6c-34ab-bd15-f526b6306a64",
+            "title": "",
+            "format": "12\" Vinyl",
+            "track-offset": 0
+        }
+    ],
+    "title": "The Dark Side of the Moon",
+    "date": "1973-03-24",
+    "packaging": "Gatefold Cover",
+    "artist-credit": [
+        {
+            "artist": {
+                "id": "83d91898-7763-47d7-b03b-b92132375c47",
+                "disambiguation": "",
+                "aliases": [
+                    {
+                        "end": null,
+                        "primary": null,
+                        "name": "Floyd",
+                        "type-id": "1937e404-b981-3cb7-8151-4c86ebfc8d8e",
+                        "ended": false,
+                        "type": "Search hint",
+                        "locale": null,
+                        "sort-name": "Floyd",
+                        "begin": null
+                    },
+                    {
+                        "begin": null,
+                        "sort-name": "Pink Floid",
+                        "locale": null,
+                        "type": "Search hint",
+                        "ended": false,
+                        "type-id": "1937e404-b981-3cb7-8151-4c86ebfc8d8e",
+                        "name": "Pink Floid",
+                        "end": null,
+                        "primary": null
+                    },
+                    {
+                        "end": null,
+                        "primary": true,
+                        "type-id": "894afba6-2816-3c24-8072-eadb66bd04bc",
+                        "name": "Pink Floyd",
+                        "ended": false,
+                        "type": "Artist name",
+                        "locale": "en",
+                        "sort-name": "Pink Floyd",
+                        "begin": null
+                    },
+                    {
+                        "type": "Search hint",
+                        "locale": null,
+                        "sort-name": "The Pink Floyd",
+                        "begin": null,
+                        "primary": null,
+                        "end": null,
+                        "name": "The Pink Floyd",
+                        "type-id": "1937e404-b981-3cb7-8151-4c86ebfc8d8e",
+                        "ended": false
+                    },
+                    {
+                        "ended": false,
+                        "primary": true,
+                        "end": null,
+                        "name": "ピンク・フロイド",
+                        "type-id": "894afba6-2816-3c24-8072-eadb66bd04bc",
+                        "sort-name": "ピンク・フロイド",
+                        "begin": null,
+                        "type": "Artist name",
+                        "locale": "ja"
+                    },
+                    {
+                        "sort-name": "핑크 플로이드",
+                        "begin": null,
+                        "type": "Artist name",
+                        "locale": "ko",
+                        "ended": false,
+                        "primary": true,
+                        "end": null,
+                        "type-id": "894afba6-2816-3c24-8072-eadb66bd04bc",
+                        "name": "핑크 플로이드"
+                    }
+                ],
+                "sort-name": "Pink Floyd",
+                "name": "Pink Floyd"
+            },
+            "joinphrase": "",
+            "name": "Pink Floyd"
+        }
+    ],
+    "release-events": [
+        {
+            "date": "1973-03-24",
+            "area": {
+                "disambiguation": "",
+                "sort-name": "United Kingdom",
+                "iso-3166-1-codes": [
+                    "GB"
+                ],
+                "id": "8a754a16-0027-3a29-b6d7-2b40ea0481ed",
+                "name": "United Kingdom"
+            }
+        }
+    ],
+    "quality": "normal",
+    "asin": "b123",
+    "status": "Official",
+    "text-representation": {
+        "language": "eng",
+        "script": "Latn"
+    },
+    "barcode": "123",
+    "relations": [
+        {
+            "attributes": [
+                
+            ],
+            "target-credit": "George Hardie N.T.A.",
+            "source-credit": "",
+            "target-type": "artist",
+            "type": "design/illustration",
+            "attribute-values": {
+                
+            },
+            "begin": null,
+            "type-id": "307e95dd-88b5-419b-8223-b146d4a0d439",
+            "end": null,
+            "direction": "backward",
+            "artist": {
+                "id": "89931942-3182-4448-8e63-0c2ce90f1f81",
+                "aliases": [
+                    
+                ],
+                "sort-name": "Hardie, George",
+                "disambiguation": "",
+                "name": "George Hardie"
+            },
+            "ended": false
+        },
+        {
+            "attributes": [
+                
+            ],
+            "target-credit": "",
+            "source-credit": "",
+            "type": "design/illustration",
+            "target-type": "artist",
+            "attribute-values": {
+                
+            },
+            "begin": null,
+            "type-id": "307e95dd-88b5-419b-8223-b146d4a0d439",
+            "end": null,
+            "direction": "backward",
+            "ended": false,
+            "artist": {
+                "name": "Hipgnosis",
+                "id": "fd1a4572-59ca-40f2-8f55-b82be28bb0ff",
+                "aliases": [
+                    
+                ],
+                "sort-name": "Hipgnosis",
+                "disambiguation": "UK art design group"
+            }
+        },
+        {
+            "end": null,
+            "direction": "forward",
+            "type-id": "4a78823c-1c53-4176-a5f3-58026c76f2bc",
+            "ended": false,
+            "target-credit": "",
+            "source-credit": "",
+            "url": {
+                "resource": "https://www.discogs.com/release/1873013",
+                "id": "49af9dc2-196e-42be-bdf6-ea320eaa1dab"
+            },
+            "target-type": "url",
+            "type": "discogs",
+            "attributes": [
+                
+            ],
+            "attribute-values": {
+                
+            },
+            "begin": null
+        },
+        {
+            "attribute-values": {
+                
+            },
+            "begin": null,
+            "type": "photography",
+            "target-type": "artist",
+            "target-credit": "",
+            "source-credit": "",
+            "attributes": [
+                
+            ],
+            "ended": false,
+            "artist": {
+                "id": "fd1a4572-59ca-40f2-8f55-b82be28bb0ff",
+                "sort-name": "Hipgnosis",
+                "aliases": [
+                    
+                ],
+                "disambiguation": "UK art design group",
+                "name": "Hipgnosis"
+            },
+            "end": null,
+            "direction": "backward",
+            "type-id": "0b58dc9b-9c49-4b19-bb58-9c06d41c8fbf"
+        }
+    ],
+    "id": "b84ee12a-09ef-421b-82de-0441a926375b",
+    "packaging-id": "e724a489-a7e8-30a1-a17c-30dfd6831202",
+    "disambiguation": "",
+    "label-info": [
+        {
+            "catalog-number": "SHVL 804",
+            "label": {
+                "disambiguation": "UK based sub-label of EMI, re-activated in 2013 under Capitol Music Group in Hollywood, CA",
+                "aliases": [
+                    {
+                        "locale": null,
+                        "type": null,
+                        "begin": null,
+                        "sort-name": "Harvest Records",
+                        "type-id": null,
+                        "name": "Harvest Records",
+                        "primary": null,
+                        "end": null,
+                        "ended": false
+                    }
+                ],
+                "sort-name": "Harvest",
+                "id": "993af7f6-bb99-456b-83e7-5e728ea80a0e",
+                "label-code": 1305,
+                "name": "Harvest"
+            }
+        }
+    ],
+    "country": "GB",
+    "status-id": "4e304316-386d-3409-af2e-78857eec5cfe"
+}

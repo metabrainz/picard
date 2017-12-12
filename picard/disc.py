@@ -45,13 +45,13 @@ class Disc(QtCore.QObject):
     def read(self, device=None):
         if device is None:
             device = discid.get_default_device()
-        log.debug(u"Reading CD using device: %r", device)
+        log.debug("Reading CD using device: %r", device)
         disc = discid.read(device)
         self.id = disc.id
         self.submission_url = disc.submission_url
 
     def lookup(self):
-        self.tagger.xmlws.lookup_discid(self.id, self._lookup_finished)
+        self.tagger.mb_api.lookup_discid(self.id, self._lookup_finished)
 
     def _lookup_finished(self, document, http, error):
         self.tagger.restore_cursor()
@@ -60,7 +60,7 @@ class Disc(QtCore.QObject):
             log.error("%r", http.errorString())
         else:
             try:
-                releases = document.metadata[0].disc[0].release_list[0].release
+                releases = document['releases']
             except (AttributeError, IndexError):
                 log.error(traceback.format_exc())
 

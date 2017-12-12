@@ -1,0 +1,97 @@
+{
+    "release-offset": 0,
+    "releases": [
+    {
+        "id":"123",
+        "title":"Foo",
+        "status":"Official",
+        "country":"GB",
+        "barcode":"0123456789",
+        "disambiguation":"special",
+        "packaging":"Jewel Case",
+        "date":"2009-08-07",
+        "text-representation":{
+            "language":"eng",
+            "script":"Latn"
+        },
+        "media":[
+            {
+                "track-count":5,
+                "position":1,
+                "format":"CD",
+                "title":""
+            }
+        ],
+        "label-info":[
+            {
+                "label":{
+                    "name":"label A"
+                },
+                "catalog-number":"cat 123"
+            }
+        ]
+    },
+    {
+        "id":"456",
+        "title":"Foo",
+        "status":"Official",
+        "country":"GB",
+        "barcode":"0123456789",
+        "disambiguation":"special",
+        "packaging":"Digipak",
+        "date":"2009-08-07",
+        "text-representation":{
+            "language":"eng",
+            "script":"Latn"
+        },
+        "media":[
+            {
+                "track-count":5,
+                "position":1,
+                "format":"CD",
+                "title":""
+            }
+        ],
+        "label-info":[
+            {
+                "label":{
+                    "name":"label A"
+                },
+                "catalog-number":"cat 123"
+            }
+        ]
+    },
+    {
+        "id":"789",
+        "title":"Foo",
+        "status":"Official",
+        "country":"GB",
+        "barcode":"0123456789",
+        "disambiguation":"specialx",
+        "packaging":"Digipak",
+        "date":"2009-08-07",
+        "text-representation":{
+            "language":"eng",
+            "script":"Latn"
+        },
+        "media":[
+            {
+                "track-count":5,
+                "position":1,
+                "format":"CD",
+                "title":""
+            }
+        ],
+        "label-info":[
+            {
+                "label":{
+                    "name":"label A"
+                },
+                "catalog-number":"cat 123"
+            }
+        ]
+    }
+
+    ],
+    "release-count": 3
+}

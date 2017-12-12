@@ -1,0 +1,1030 @@
+{
+    "user-tags": [
+        {
+            "name": null
+        }
+    ],
+    "disambiguation": null,
+    "first-release-date": null,
+    "tags": [
+        {
+            "name": null,
+            "count": null
+        },
+        {
+            "name": null,
+            "count": null
+        }
+    ],
+    "releases": [
+        {
+            "disambiguation": null,
+            "media": [
+                {
+                    "title": null,
+                    "position": null,
+                    "format": null,
+                    "track-count": null,
+                    "format-id": null
+                }
+            ],
+            "date": null,
+            "status": null,
+            "country": null,
+            "release-events": [
+                {
+                    "date": null,
+                    "area": {
+                        "disambiguation": null,
+                        "sort-name": null,
+                        "id": null,
+                        "iso-3166-1-codes": [
+                            null
+                        ],
+                        "name": null
+                    }
+                }
+            ],
+            "quality": null,
+            "text-representation": {
+                "script": null,
+                "language": null
+            },
+            "packaging-id": null,
+            "packaging": null,
+            "barcode": null,
+            "title": null,
+            "status-id": null,
+            "id": null
+        },
+        {
+            "disambiguation": null,
+            "media": [
+                {
+                    "format": null,
+                    "title": null,
+                    "format-id": null,
+                    "track-count": null,
+                    "position": null
+                }
+            ],
+            "date": null,
+            "status": null,
+            "packaging-id": null,
+            "release-events": [
+                {
+                    "date": null,
+                    "area": {
+                        "disambiguation": null,
+                        "sort-name": null,
+                        "id": null,
+                        "iso-3166-1-codes": [
+                            null
+                        ],
+                        "name": null
+                    }
+                }
+            ],
+            "quality": null,
+            "country": null,
+            "packaging": null,
+            "barcode": null,
+            "title": null,
+            "status-id": null,
+            "id": null,
+            "text-representation": {
+                "script": null,
+                "language": null
+            }
+        },
+        {
+            "disambiguation": null,
+            "media": [
+                {
+                    "format": null,
+                    "title": null,
+                    "position": null,
+                    "track-count": null,
+                    "format-id": null
+                }
+            ],
+            "date": null,
+            "status": null,
+            "country": null,
+            "release-events": [
+                {
+                    "date": null,
+                    "area": {
+                        "id": null,
+                        "disambiguation": null,
+                        "sort-name": null,
+                        "name": null,
+                        "iso-3166-1-codes": [
+                            null
+                        ]
+                    }
+                }
+            ],
+            "quality": null,
+            "text-representation": {
+                "script": null,
+                "language": null
+            },
+            "packaging-id": null,
+            "packaging": null,
+            "barcode": null,
+            "title": null,
+            "status-id": null,
+            "id": null
+        },
+        {
+            "disambiguation": null,
+            "media": [
+                {
+                    "title": null,
+                    "position": null,
+                    "format": null,
+                    "track-count": null,
+                    "format-id": null
+                }
+            ],
+            "date": null,
+            "status": null,
+            "country": null,
+            "release-events": [
+                {
+                    "date": null,
+                    "area": {
+                        "disambiguation": null,
+                        "sort-name": null,
+                        "iso-3166-1-codes": [
+                            null
+                        ],
+                        "id": null,
+                        "name": null
+                    }
+                }
+            ],
+            "quality": null,
+            "text-representation": {
+                "script": null,
+                "language": null
+            },
+            "packaging-id": null,
+            "packaging": null,
+            "barcode": null,
+            "title": null,
+            "status-id": null,
+            "id": null
+        },
+        {
+            "disambiguation": null,
+            "media": [
+                {
+                    "format": null,
+                    "title": null,
+                    "format-id": null,
+                    "track-count": null,
+                    "position": null
+                }
+            ],
+            "date": null,
+            "status": null,
+            "packaging-id": null,
+            "release-events": [
+                {
+                    "date": null,
+                    "area": {
+                        "disambiguation": null,
+                        "id": null,
+                        "sort-name": null,
+                        "name": null,
+                        "iso-3166-1-codes": [
+                            null
+                        ]
+                    }
+                }
+            ],
+            "quality": null,
+            "country": null,
+            "packaging": null,
+            "barcode": null,
+            "title": null,
+            "status-id": null,
+            "id": null,
+            "text-representation": {
+                "script": null,
+                "language": null
+            }
+        },
+        {
+            "disambiguation": null,
+            "media": [
+                {
+                    "format": null,
+                    "title": null,
+                    "format-id": null,
+                    "track-count": null,
+                    "position": null
+                }
+            ],
+            "date": null,
+            "status": null,
+            "packaging-id": null,
+            "release-events": [
+                {
+                    "date": null,
+                    "area": {
+                        "disambiguation": null,
+                        "sort-name": null,
+                        "id": null,
+                        "iso-3166-1-codes": [
+                            null
+                        ],
+                        "name": null
+                    }
+                }
+            ],
+            "quality": null,
+            "country": null,
+            "packaging": null,
+            "barcode": null,
+            "title": null,
+            "status-id": null,
+            "id": null,
+            "text-representation": {
+                "script": null,
+                "language": null
+            }
+        },
+        {
+            "disambiguation": null,
+            "media": [
+                {
+                    "format": null,
+                    "title": null,
+                    "format-id": null,
+                    "track-count": null,
+                    "position": null
+                }
+            ],
+            "date": null,
+            "status": null,
+            "country": null,
+            "release-events": [
+                {
+                    "date": null,
+                    "area": {
+                        "id": null,
+                        "disambiguation": null,
+                        "sort-name": null,
+                        "name": null,
+                        "iso-3166-1-codes": [
+                            null
+                        ]
+                    }
+                }
+            ],
+            "quality": null,
+            "packaging-id": null,
+            "packaging": null,
+            "barcode": null,
+            "title": null,
+            "status-id": null,
+            "id": null,
+            "text-representation": {
+                "script": null,
+                "language": null
+            }
+        },
+        {
+            "disambiguation": null,
+            "media": [
+                {
+                    "title": null,
+                    "format-id": null,
+                    "format": null,
+                    "track-count": null,
+                    "position": null
+                }
+            ],
+            "date": null,
+            "status": null,
+            "packaging-id": null,
+            "release-events": [
+                {
+                    "date": null,
+                    "area": {
+                        "disambiguation": null,
+                        "iso-3166-3-codes": [
+                            null
+                        ],
+                        "sort-name": null,
+                        "iso-3166-1-codes": [
+                            null
+                        ],
+                        "name": null,
+                        "id": null
+                    }
+                }
+            ],
+            "quality": null,
+            "country": null,
+            "packaging": null,
+            "barcode": null,
+            "title": null,
+            "status-id": null,
+            "id": null,
+            "text-representation": {
+                "script": null,
+                "language": null
+            }
+        },
+        {
+            "disambiguation": null,
+            "media": [
+                {
+                    "title": null,
+                    "position": null,
+                    "format": null,
+                    "track-count": null,
+                    "format-id": null
+                }
+            ],
+            "date": null,
+            "status": null,
+            "country": null,
+            "release-events": [
+                {
+                    "date": null,
+                    "area": {
+                        "id": null,
+                        "disambiguation": null,
+                        "sort-name": null,
+                        "name": null,
+                        "iso-3166-1-codes": [
+                            null
+                        ]
+                    }
+                }
+            ],
+            "quality": null,
+            "packaging-id": null,
+            "packaging": null,
+            "barcode": null,
+            "title": null,
+            "status-id": null,
+            "id": null,
+            "text-representation": {
+                "script": null,
+                "language": null
+            }
+        },
+        {
+            "disambiguation": null,
+            "media": [
+                {
+                    "format": null,
+                    "title": null,
+                    "format-id": null,
+                    "track-count": null,
+                    "position": null
+                }
+            ],
+            "date": null,
+            "status": null,
+            "country": null,
+            "release-events": [
+                {
+                    "date": null,
+                    "area": {
+                        "disambiguation": null,
+                        "sort-name": null,
+                        "iso-3166-1-codes": [
+                            null
+                        ],
+                        "id": null,
+                        "name": null
+                    }
+                }
+            ],
+            "quality": null,
+            "text-representation": {
+                "script": null,
+                "language": null
+            },
+            "packaging-id": null,
+            "packaging": null,
+            "barcode": null,
+            "title": null,
+            "status-id": null,
+            "id": null
+        },
+        {
+            "disambiguation": null,
+            "media": [
+                {
+                    "title": null,
+                    "position": null,
+                    "format": null,
+                    "track-count": null,
+                    "format-id": null
+                }
+            ],
+            "date": null,
+            "status": null,
+            "packaging-id": null,
+            "release-events": [
+                {
+                    "date": null,
+                    "area": {
+                        "disambiguation": null,
+                        "sort-name": null,
+                        "id": null,
+                        "iso-3166-1-codes": [
+                            null
+                        ],
+                        "name": null
+                    }
+                }
+            ],
+            "quality": null,
+            "country": null,
+            "packaging": null,
+            "barcode": null,
+            "title": null,
+            "status-id": null,
+            "id": null,
+            "text-representation": {
+                "script": null,
+                "language": null
+            }
+        },
+        {
+            "disambiguation": null,
+            "media": [
+                {
+                    "format": null,
+                    "position": null,
+                    "title": null,
+                    "track-count": null,
+                    "format-id": null
+                }
+            ],
+            "date": null,
+            "status": null,
+            "country": null,
+            "release-events": [
+                {
+                    "date": null,
+                    "area": {
+                        "disambiguation": null,
+                        "iso-3166-1-codes": [
+                            null
+                        ],
+                        "sort-name": null,
+                        "name": null,
+                        "id": null
+                    }
+                }
+            ],
+            "quality": null,
+            "text-representation": {
+                "script": null,
+                "language": null
+            },
+            "packaging-id": null,
+            "packaging": null,
+            "barcode": null,
+            "title": null,
+            "status-id": null,
+            "id": null
+        },
+        {
+            "disambiguation": null,
+            "media": [
+                {
+                    "title": null,
+                    "format-id": null,
+                    "format": null,
+                    "track-count": null,
+                    "position": null
+                }
+            ],
+            "date": null,
+            "status": null,
+            "country": null,
+            "release-events": [
+                {
+                    "date": null,
+                    "area": {
+                        "disambiguation": null,
+                        "iso-3166-1-codes": [
+                            null
+                        ],
+                        "sort-name": null,
+                        "name": null,
+                        "id": null
+                    }
+                }
+            ],
+            "quality": null,
+            "packaging-id": null,
+            "packaging": null,
+            "barcode": null,
+            "title": null,
+            "status-id": null,
+            "id": null,
+            "text-representation": {
+                "script": null,
+                "language": null
+            }
+        },
+        {
+            "disambiguation": null,
+            "media": [
+                {
+                    "format": null,
+                    "title": null,
+                    "position": null,
+                    "track-count": null,
+                    "format-id": null
+                }
+            ],
+            "date": null,
+            "status": null,
+            "country": null,
+            "release-events": [
+                {
+                    "date": null,
+                    "area": {
+                        "disambiguation": null,
+                        "sort-name": null,
+                        "id": null,
+                        "iso-3166-1-codes": [
+                            null
+                        ],
+                        "name": null
+                    }
+                }
+            ],
+            "quality": null,
+            "packaging-id": null,
+            "packaging": null,
+            "barcode": null,
+            "title": null,
+            "status-id": null,
+            "id": null,
+            "text-representation": {
+                "script": null,
+                "language": null
+            }
+        },
+        {
+            "disambiguation": null,
+            "media": [
+                {
+                    "format": null,
+                    "title": null,
+                    "position": null,
+                    "track-count": null,
+                    "format-id": null
+                }
+            ],
+            "date": null,
+            "status": null,
+            "country": null,
+            "release-events": [
+                {
+                    "date": null,
+                    "area": {
+                        "disambiguation": null,
+                        "sort-name": null,
+                        "iso-3166-1-codes": [
+                            null
+                        ],
+                        "id": null,
+                        "name": null
+                    }
+                }
+            ],
+            "quality": null,
+            "text-representation": {
+                "script": null,
+                "language": null
+            },
+            "packaging-id": null,
+            "packaging": null,
+            "barcode": null,
+            "title": null,
+            "status-id": null,
+            "id": null
+        },
+        {
+            "disambiguation": null,
+            "media": [
+                {
+                    "title": null,
+                    "format-id": null,
+                    "format": null,
+                    "track-count": null,
+                    "position": null
+                }
+            ],
+            "date": null,
+            "status": null,
+            "country": null,
+            "release-events": [
+                {
+                    "date": null,
+                    "area": {
+                        "disambiguation": null,
+                        "iso-3166-1-codes": [
+                            null
+                        ],
+                        "sort-name": null,
+                        "name": null,
+                        "id": null
+                    }
+                }
+            ],
+            "quality": null,
+            "packaging-id": null,
+            "packaging": null,
+            "barcode": null,
+            "title": null,
+            "status-id": null,
+            "id": null,
+            "text-representation": {
+                "script": null,
+                "language": null
+            }
+        },
+        {
+            "disambiguation": null,
+            "media": [
+                {
+                    "format": null,
+                    "title": null,
+                    "position": null,
+                    "track-count": null,
+                    "format-id": null
+                }
+            ],
+            "date": null,
+            "status": null,
+            "country": null,
+            "release-events": [
+                {
+                    "date": null,
+                    "area": {
+                        "disambiguation": null,
+                        "sort-name": null,
+                        "id": null,
+                        "iso-3166-1-codes": [
+                            null
+                        ],
+                        "name": null
+                    }
+                }
+            ],
+            "quality": null,
+            "text-representation": {
+                "script": null,
+                "language": null
+            },
+            "packaging-id": null,
+            "packaging": null,
+            "barcode": null,
+            "title": null,
+            "status-id": null,
+            "id": null
+        },
+        {
+            "disambiguation": null,
+            "media": [
+                {
+                    "format": null,
+                    "format-id": null,
+                    "title": null,
+                    "track-count": null,
+                    "position": null
+                }
+            ],
+            "date": null,
+            "status": null,
+            "packaging-id": null,
+            "release-events": [
+                {
+                    "date": null,
+                    "area": {
+                        "disambiguation": null,
+                        "iso-3166-1-codes": [
+                            null
+                        ],
+                        "sort-name": null,
+                        "name": null,
+                        "id": null
+                    }
+                }
+            ],
+            "quality": null,
+            "country": null,
+            "packaging": null,
+            "barcode": null,
+            "title": null,
+            "status-id": null,
+            "id": null,
+            "text-representation": {
+                "script": null,
+                "language": null
+            }
+        },
+        {
+            "disambiguation": null,
+            "media": [
+                {
+                    "title": null,
+                    "position": null,
+                    "format": null,
+                    "track-count": null,
+                    "format-id": null
+                }
+            ],
+            "date": null,
+            "status": null,
+            "country": null,
+            "release-events": [
+                {
+                    "date": null,
+                    "area": {
+                        "disambiguation": null,
+                        "id": null,
+                        "sort-name": null,
+                        "name": null,
+                        "iso-3166-1-codes": [
+                            null
+                        ]
+                    }
+                }
+            ],
+            "quality": null,
+            "packaging-id": null,
+            "packaging": null,
+            "barcode": null,
+            "title": null,
+            "status-id": null,
+            "id": null,
+            "text-representation": {
+                "script": null,
+                "language": null
+            }
+        },
+        {
+            "disambiguation": null,
+            "media": [
+                {
+                    "format": null,
+                    "title": null,
+                    "format-id": null,
+                    "track-count": null,
+                    "position": null
+                }
+            ],
+            "date": null,
+            "status": null,
+            "packaging-id": null,
+            "release-events": [
+                {
+                    "date": null,
+                    "area": {
+                        "disambiguation": null,
+                        "sort-name": null,
+                        "iso-3166-1-codes": [
+                            null
+                        ],
+                        "id": null,
+                        "name": null
+                    }
+                }
+            ],
+            "quality": null,
+            "country": null,
+            "packaging": null,
+            "barcode": null,
+            "title": null,
+            "status-id": null,
+            "id": null,
+            "text-representation": {
+                "script": null,
+                "language": null
+            }
+        },
+        {
+            "disambiguation": null,
+            "media": [
+                {
+                    "format": null,
+                    "title": null,
+                    "position": null,
+                    "track-count": null,
+                    "format-id": null
+                }
+            ],
+            "date": null,
+            "status": null,
+            "country": null,
+            "release-events": [
+                {
+                    "date": null,
+                    "area": {
+                        "id": null,
+                        "disambiguation": null,
+                        "sort-name": null,
+                        "name": null,
+                        "iso-3166-1-codes": [
+                            null
+                        ]
+                    }
+                }
+            ],
+            "quality": null,
+            "text-representation": {
+                "script": null,
+                "language": null
+            },
+            "packaging-id": null,
+            "packaging": null,
+            "barcode": null,
+            "title": null,
+            "status-id": null,
+            "id": null
+        },
+        {
+            "disambiguation": null,
+            "media": [
+                {
+                    "format": null,
+                    "title": null,
+                    "format-id": null,
+                    "track-count": null,
+                    "position": null
+                }
+            ],
+            "date": null,
+            "status": null,
+            "country": null,
+            "release-events": [
+                {
+                    "date": null,
+                    "area": {
+                        "disambiguation": null,
+                        "sort-name": null,
+                        "iso-3166-1-codes": [
+                            null
+                        ],
+                        "id": null,
+                        "name": null
+                    }
+                }
+            ],
+            "quality": null,
+            "packaging-id": null,
+            "packaging": null,
+            "barcode": null,
+            "title": null,
+            "status-id": null,
+            "id": null,
+            "text-representation": {
+                "script": null,
+                "language": null
+            }
+        },
+        {
+            "disambiguation": null,
+            "media": [
+                {
+                    "format": null,
+                    "position": null,
+                    "title": null,
+                    "track-count": null,
+                    "format-id": null
+                }
+            ],
+            "date": null,
+            "status": null,
+            "country": null,
+            "release-events": [
+                {
+                    "date": null,
+                    "area": {
+                        "disambiguation": null,
+                        "sort-name": null,
+                        "id": null,
+                        "iso-3166-1-codes": [
+                            null
+                        ],
+                        "name": null
+                    }
+                }
+            ],
+            "quality": null,
+            "packaging-id": null,
+            "packaging": null,
+            "barcode": null,
+            "title": null,
+            "status-id": null,
+            "id": null,
+            "text-representation": {
+                "script": null,
+                "language": null
+            }
+        },
+        {
+            "disambiguation": null,
+            "media": [
+                {
+                    "format": null,
+                    "title": null,
+                    "position": null,
+                    "track-count": null,
+                    "format-id": null
+                }
+            ],
+            "date": null,
+            "status": null,
+            "country": null,
+            "release-events": [
+                {
+                    "date": null,
+                    "area": {
+                        "disambiguation": null,
+                        "sort-name": null,
+                        "iso-3166-1-codes": [
+                            null
+                        ],
+                        "id": null,
+                        "name": null
+                    }
+                }
+            ],
+            "quality": null,
+            "packaging-id": null,
+            "packaging": null,
+            "barcode": null,
+            "title": null,
+            "status-id": null,
+            "id": null,
+            "text-representation": {
+                "script": null,
+                "language": null
+            }
+        },
+        {
+            "disambiguation": null,
+            "media": [
+                {
+                    "title": null,
+                    "format-id": null,
+                    "format": null,
+                    "track-count": null,
+                    "position": null
+                }
+            ],
+            "date": null,
+            "status": null,
+            "country": null,
+            "release-events": [
+                {
+                    "date": null,
+                    "area": {
+                        "disambiguation": null,
+                        "sort-name": null,
+                        "iso-3166-1-codes": [
+                            null
+                        ],
+                        "id": null,
+                        "name": null
+                    }
+                }
+            ],
+            "quality": null,
+            "packaging-id": null,
+            "packaging": null,
+            "barcode": null,
+            "title": null,
+            "status-id": null,
+            "id": null,
+            "text-representation": {
+                "script": null,
+                "language": null
+            }
+        }
+    ],
+    "secondary-types": [],
+    "primary-type-id": null,
+    "title": null,
+    "secondary-type-ids": [],
+    "id": null,
+    "primary-type": null
+}

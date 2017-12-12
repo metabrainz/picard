@@ -1,33 +1,68 @@
 os: linux
 dist: trusty
 language: python
-python: 
-  - "3.5"
+sudo: required
+python:
   - "3.6"
+  - "3.5"
 cache:
   - apt
   - pip
 env:
   global:
-    - PIP_INSTALL="pip install"
+    - PIP_INSTALL="pip3 install"
     - DISCID="$PIP_INSTALL discid" MUTAGEN="$PIP_INSTALL mutagen>=1.37"
+    - BABEL="$PIP_INSTALL babel"
+    - NOSE="$PIP_INSTALL nose2"
+    - COVERAGE="$PIP_INSTALL nose-cov"
+    - CODACY="$PIP_INSTALL codacy-coverage"
   matrix:
-    - PYQT="$PIP_INSTALL pyqt5==5.7.1"
+    - PYQT="$PIP_INSTALL pyqt5==5.9"
     - PYQT="$PIP_INSTALL pyqt5==5.8"
-    - PYQT="$PIP_INSTALL pyqt5==5.8.1.1"
-    - PYQT="$PIP_INSTALL pyqt5==5.8.2"
+matrix:
+  include:
+    - os: osx
+      osx_image: xcode8.3
+      language: generic
+  allow_failures:
+    - os: osx
+  fast_finish: true
 before_install:
-  - sudo apt-get update -qq && sudo apt-get install -qq libdiscid0 libdiscid0-dev qt5-default
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get update -qq && sudo apt-get install -qq transifex-client libdiscid0 libdiscid0-dev qt5-default; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then bash scripts/setup-osx.sh; fi  
+  - $BABEL
   - $PYQT
   - $MUTAGEN
   - $DISCID
+  - $NOSE
+  - if [ ! -z "${CODACY_PROJECT_TOKEN}" ]; then $COVERAGE; fi
+  - touch ~/.transifexrc
+  - printf "[https://www.transifex.com]\nhostname = https://www.transifex.com\npassword = $TX_PASSWORD\ntoken =\nusername = $TX_USERNAME" > ~/.transifexrc
 install:
   # Set up Picard
-  - python setup.py build_ext -i
-  - python setup.py build_locales -i
+  - python3 setup.py clean
+  - python3 setup.py clean_ui
+  - python3 setup.py build_ui
+  - python3 setup.py build_ext -i
+  - python3 setup.py regen_pot_file
+  - 'if [ ! -z "${TX_PASSWORD}" ]; then python3 setup.py get_po_files; fi'
+  - 'if [ ! -z "${TX_PASSWORD}" ]; then python3 setup.py update_constants; fi'
+  - python3 setup.py build_locales -i
+  - python3 setup.py patch_version --platform=test
+  # Travis OSX image has a permission issue while installing. Thus using sudo for it.
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then sudo python3 setup.py install; fi 
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then python3 setup.py install; fi
 # Run the tests!
-script: "python setup.py test"
-
+script: "nose2 -v --with-coverage --coverage picard --coverage-report xml"
+after_success:
+  - 'if [ ! -z "${CODACY_PROJECT_TOKEN}" ]; then $CODACY; python-codacy-coverage -r coverage.xml; fi'
 # Tell people that tests were run
 notifications:
   irc: "chat.freenode.net#metabrainz"
+
+# Only build commits pushed to master or 1.4 dev branch. 
+# This avoid duplicate builds when we make a PR from the original repo
+branches:
+  only:
+    - master
+    - 1.4.x

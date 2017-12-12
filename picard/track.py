@@ -24,7 +24,7 @@ from picard import config, log
 from picard.metadata import Metadata, run_track_metadata_processors
 from picard.dataobj import DataObject
 from picard.util.textencoding import asciipunct
-from picard.mbxml import recording_to_metadata
+from picard.mbjson import recording_to_metadata
 from picard.script import ScriptParser
 from picard.const import VARIOUS_ARTISTS_ID, SILENCE_TRACK_TITLE, DATA_TRACK_TITLE
 from picard.ui.item import Item
@@ -33,23 +33,23 @@ import traceback
 
 
 _TRANSLATE_TAGS = {
-    "hip hop": u"Hip-Hop",
-    "synth-pop": u"Synthpop",
-    "electronica": u"Electronic",
+    "hip hop": "Hip-Hop",
+    "synth-pop": "Synthpop",
+    "electronica": "Electronic",
 }
 
 
 class TrackArtist(DataObject):
-    def __init__(self, id):
-        DataObject.__init__(self, id)
+    def __init__(self, ta_id):
+        DataObject.__init__(self, ta_id)
 
 
 class Track(DataObject, Item):
 
     metadata_images_changed = QtCore.pyqtSignal()
 
-    def __init__(self, id, album=None):
-        DataObject.__init__(self, id)
+    def __init__(self, track_id, album=None):
+        DataObject.__init__(self, track_id)
         self.album = album
         self.linked_files = []
         self.num_linked_files = 0
@@ -124,7 +124,7 @@ class Track(DataObject, Item):
         m = self.metadata
         if column == 'title':
             prefix = "%s-" % m['discnumber'] if m['discnumber'] and m['totaldiscs'] != "1" else ""
-            return u"%s%s  %s" % (prefix, m['tracknumber'].zfill(2), m['title'])
+            return "%s%s  %s" % (prefix, m['tracknumber'].zfill(2), m['title'])
         return m[column]
 
     def is_video(self):
@@ -150,10 +150,10 @@ class Track(DataObject, Item):
             return True
         return False
 
-    def append_track_artist(self, id):
+    def append_track_artist(self, ta_id):
         """Append artist id to the list of track artists
         and return an TrackArtist instance"""
-        track_artist = TrackArtist(id)
+        track_artist = TrackArtist(ta_id)
         self._track_artists.append(track_artist)
         return track_artist
 
@@ -241,8 +241,8 @@ class Track(DataObject, Item):
 
 class NonAlbumTrack(Track):
 
-    def __init__(self, id):
-        Track.__init__(self, id, self.tagger.nats)
+    def __init__(self, nat_id):
+        Track.__init__(self, nat_id, self.tagger.nats)
         self.callback = None
         self.loaded = False
 
@@ -256,7 +256,7 @@ class NonAlbumTrack(Track):
 
     def load(self, priority=False, refresh=False):
         self.metadata.copy(self.album.metadata)
-        self.metadata["title"] = u"[loading track information]"
+        self.metadata["title"] = "[loading track information]"
         self.loaded = False
         self.tagger.nats.update(True)
         mblogin = False
@@ -273,22 +273,21 @@ class NonAlbumTrack(Track):
         if config.setting["enable_ratings"]:
             mblogin = True
             inc += ["user-ratings"]
-        self.tagger.xmlws.get_track_by_id(self.id,
+        self.tagger.mb_api.get_track_by_id(self.id,
                                           partial(self._recording_request_finished),
                                           inc, mblogin=mblogin,
                                           priority=priority,
                                           refresh=refresh)
 
-    def _recording_request_finished(self, document, http, error):
+    def _recording_request_finished(self, recording, http, error):
         if error:
             log.error("%r", http.errorString())
             return
         try:
-            recording = document.metadata[0].recording[0]
             self._parse_recording(recording)
             for file in self.linked_files:
                 self.update_file_metadata(file)
-        except:
+        except Exception:
             log.error(traceback.format_exc())
 
     def _parse_recording(self, recording):

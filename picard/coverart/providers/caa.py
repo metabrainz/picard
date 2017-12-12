@@ -22,7 +22,6 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-import traceback
 from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtNetwork import QNetworkReply
 from picard import config, log
@@ -33,7 +32,6 @@ from picard.coverart.utils import CAA_TYPES, translate_caa_type
 from picard.ui.ui_provider_options_caa import Ui_CaaOptions
 from picard.ui.util import StandardButton
 from picard.util import webbrowser2, load_json
-from picard.ui.options import OptionsPage, OptionsCheckError, register_options_page
 
 
 _CAA_THUMBNAIL_SIZE_MAP = {
@@ -44,7 +42,9 @@ _CAA_THUMBNAIL_SIZE_MAP = {
 class CAATypesSelectorDialog(QtWidgets.QDialog):
     _columns = 4
 
-    def __init__(self, parent=None, types=[]):
+    def __init__(self, parent=None, types=None):
+        if types is None:
+            types = []
         super(CAATypesSelectorDialog, self).__init__(parent)
 
         self.setWindowTitle(_("Cover art types"))
@@ -114,11 +114,13 @@ class CAATypesSelectorDialog(QtWidgets.QDialog):
             if item.isChecked():
                 types.append(typ['name'])
         if not types:
-            return [u'front']
+            return ['front']
         return types
 
     @staticmethod
-    def run(parent=None, types=[]):
+    def run(parent=None, types=None):
+        if types is None:
+                types = []
         dialog = CAATypesSelectorDialog(parent, types)
         result = dialog.exec_()
         return (dialog.get_selected_types(), result == QtWidgets.QDialog.Accepted)
@@ -134,7 +136,7 @@ class ProviderOptionsCaa(ProviderOptions):
         config.BoolOption("setting", "caa_approved_only", False),
         config.BoolOption("setting", "caa_image_type_as_filename", False),
         config.IntOption("setting", "caa_image_size", 1),
-        config.ListOption("setting", "caa_image_types", [u"front"]),
+        config.ListOption("setting", "caa_image_types", ["front"]),
         config.BoolOption("setting", "caa_restrict_image_types", True),
     ]
 
@@ -183,7 +185,7 @@ class CoverArtProviderCaa(CoverArtProvider):
     """Get cover art from Cover Art Archive using release mbid"""
 
     NAME = "Cover Art Archive"
-    TITLE = N_(u'Cover Art Archive')
+    TITLE = N_('Cover Art Archive')
     OPTIONS = ProviderOptionsCaa
 
     ignore_json_not_found_error = False
@@ -200,24 +202,24 @@ class CoverArtProviderCaa(CoverArtProvider):
     def _has_suitable_artwork(self):
         # MB web service indicates if CAA has artwork
         # https://tickets.metabrainz.org/browse/MBS-4536
-        if 'cover_art_archive' not in self.release.children:
+        if 'cover-art-archive' not in self.release:
             log.debug("No Cover Art Archive information for %s"
-                      % self.release.id)
+                      % self.release['id'])
             return False
 
-        caa_node = self.release.children['cover_art_archive'][0]
-        caa_has_suitable_artwork = caa_node.artwork[0].text == 'true'
+        caa_node = self.release['cover-art-archive']
+        caa_has_suitable_artwork = caa_node['artwork']
 
         if not caa_has_suitable_artwork:
             log.debug("There are no images in the Cover Art Archive for %s"
-                      % self.release.id)
+                      % self.release['id'])
             return False
 
         if self.restrict_types:
             want_front = 'front' in self.caa_types
             want_back = 'back' in self.caa_types
-            caa_has_front = caa_node.front[0].text == 'true'
-            caa_has_back = caa_node.back[0].text == 'true'
+            caa_has_front = caa_node['front']
+            caa_has_back = caa_node['back']
 
             if self.len_caa_types == 2 and (want_front or want_back):
                 # The OR cases are there to still download and process the CAA
@@ -240,10 +242,10 @@ class CoverArtProviderCaa(CoverArtProvider):
 
         if not caa_has_suitable_artwork:
             log.debug("There are no suitable images in the Cover Art Archive for %s"
-                      % self.release.id)
+                      % self.release['id'])
         else:
             log.debug("There are suitable images in the Cover Art Archive for %s"
-                      % self.release.id)
+                      % self.release['id'])
 
         return caa_has_suitable_artwork
 
@@ -262,7 +264,7 @@ class CoverArtProviderCaa(CoverArtProvider):
         return "/release/%s/" % self.metadata["musicbrainz_albumid"]
 
     def queue_images(self):
-        self.album.tagger.xmlws.download(
+        self.album.tagger.webservice.download(
             CAA_HOST,
             CAA_PORT,
             self._caa_path,
@@ -279,7 +281,7 @@ class CoverArtProviderCaa(CoverArtProvider):
         self.album._requests -= 1
         if error:
             if not (error == QNetworkReply.ContentNotFoundError and self.ignore_json_not_found_error):
-                self.error(u'CAA JSON error: %s' % (http.errorString()))
+                self.error('CAA JSON error: %s' % (http.errorString()))
         else:
             try:
                 caa_data = load_json(data)
@@ -299,7 +301,7 @@ class CoverArtProviderCaa(CoverArtProvider):
                     # if image has no type set, we still want it to match
                     # pseudo type 'unknown'
                     if not image["types"]:
-                        image["types"] = [u"unknown"]
+                        image["types"] = ["unknown"]
                     else:
                         image["types"] = list(map(str.lower, image["types"]))
                     if self.restrict_types:

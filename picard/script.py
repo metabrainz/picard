@@ -24,10 +24,11 @@ import re
 import operator
 from functools import reduce
 from collections import namedtuple
-from inspect import getargspec
+from inspect import getfullargspec
 from picard.metadata import Metadata
 from picard.metadata import MULTI_VALUED_JOINER
 from picard.plugin import ExtensionPoint
+from picard.util import uniqify
 
 
 class ScriptError(Exception):
@@ -66,9 +67,9 @@ class ScriptVariable(object):
 
     def eval(self, state):
         name = self.name
-        if name.startswith(u"_"):
-            name = u"~" + name[1:]
-        return state.context.get(name, u"")
+        if name.startswith("_"):
+            name = "~" + name[1:]
+        return state.context.get(name, "")
 
 
 FunctionRegistryItem = namedtuple("FunctionRegistryItem",
@@ -292,7 +293,14 @@ def register_script_function(function, name=None, eval_args=True,
     If ``check_argcount`` is ``False`` the number of arguments passed to the
     function will not be verified."""
 
-    args, varargs, keywords, defaults = getargspec(function)
+    args, varargs, varkw, defaults, kwonlyargs, kwonlydefaults, annotations = getfullargspec(function)
+
+    required_kwonlyargs = len(kwonlyargs)
+    if kwonlydefaults is not None:
+        required_kwonlyargs -= len(kwonlydefaults.keys())
+    if required_kwonlyargs:
+        raise TypeError("Functions with required keyword-only parameters are not supported")
+
     args = len(args) - 1  # -1 for the parser
     varargs = varargs is not None
     defaults = len(defaults) if defaults else 0
@@ -315,6 +323,31 @@ def _compute_int(operation, *args):
 
 def _compute_logic(operation, *args):
     return operation(args)
+
+
+def _get_multi_values(parser, multi, separator):
+    if isinstance(separator, ScriptExpression):
+        separator = separator.eval(parser)
+
+    if separator == MULTI_VALUED_JOINER:
+        # Convert ScriptExpression containing only a single variable into variable
+        if (isinstance(multi, ScriptExpression) and
+                len(multi) == 1 and
+                isinstance(multi[0], ScriptVariable)):
+            multi = multi[0]
+
+        # If a variable, return multi-values
+        if isinstance(multi, ScriptVariable):
+            if multi.name.startswith("_"):
+                name = "~" + multi.name[1:]
+            else:
+                name = multi.name
+            return parser.context.getall(name)
+
+    # Fall-back to converting to a string and splitting if haystack is an expression
+    # or user has overridden the separator character.
+    multi = multi.eval(parser)
+    return multi.split(separator) if separator else [multi]
 
 
 def func_if(parser, _if, _then, _else=None):
@@ -388,9 +421,14 @@ def func_in(parser, text, needle):
         return ""
 
 
-def func_inmulti(parser, text, value, separator=MULTI_VALUED_JOINER):
-    """Splits ``text`` by ``separator``, and returns true if the resulting list contains ``value``."""
-    return func_in(parser, text.split(separator) if separator else [text], value)
+def func_inmulti(parser, haystack, needle, separator=MULTI_VALUED_JOINER):
+    """Searches for ``needle`` in ``haystack``, supporting a list variable for
+       ``haystack``. If a string is used instead, then a ``separator`` can be
+       used to split it. In both cases, it returns true if the resulting list
+       contains exactly ``needle`` as a member."""
+
+    needle = needle.eval(parser)
+    return func_in(parser, _get_multi_values(parser, haystack, separator), needle)
 
 
 def func_rreplace(parser, text, old, new):
@@ -404,7 +442,7 @@ def func_rsearch(parser, text, pattern):
             return match.group(1)
         except IndexError:
             return match.group(0)
-    return u""
+    return ""
 
 
 def func_num(parser, text, length):
@@ -457,7 +495,7 @@ def func_get(parser, name):
     """Returns the variable ``name`` (equivalent to ``%name%``)."""
     if name.startswith("_"):
         name = "~" + name[1:]
-    return parser.context.get(name, u"")
+    return parser.context.get(name, "")
 
 
 def func_copy(parser, new, old):
@@ -479,7 +517,7 @@ def func_copymerge(parser, new, old):
         old = "~" + old[1:]
     newvals = parser.context.getall(new)
     oldvals = parser.context.getall(old)
-    parser.context[new] = newvals + list(set(oldvals) - set(newvals))
+    parser.context[new] = uniqify(newvals + oldvals)
     return ""
 
 
@@ -637,6 +675,10 @@ def func_len(parser, text=""):
     return string_(len(text))
 
 
+def func_lenmulti(parser, multi, separator=MULTI_VALUED_JOINER):
+    return func_len(parser, _get_multi_values(parser, multi, separator))
+
+
 def func_performer(parser, pattern="", join=", "):
     values = []
     for name, value in parser.context.items():
@@ -675,7 +717,7 @@ def func_initials(parser, text=""):
 def func_firstwords(parser, text, length):
     try:
         length = int(length)
-    except ValueError as e:
+    except ValueError:
         length = 0
     if len(text) <= length:
         return text
@@ -820,10 +862,11 @@ register_script_function(func_lte, "lte")
 register_script_function(func_gt, "gt")
 register_script_function(func_gte, "gte")
 register_script_function(func_in, "in")
-register_script_function(func_inmulti, "inmulti")
+register_script_function(func_inmulti, "inmulti", eval_args=False)
 register_script_function(func_copy, "copy")
 register_script_function(func_copymerge, "copymerge")
 register_script_function(func_len, "len")
+register_script_function(func_lenmulti, "lenmulti", eval_args=False)
 register_script_function(func_performer, "performer")
 register_script_function(func_matchedtracks, "matchedtracks")
 register_script_function(func_is_complete, "is_complete")

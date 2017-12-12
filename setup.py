@@ -12,8 +12,8 @@ from io import StringIO
 
 from picard import __version__
 
-if sys.version_info < (2, 7):
-    print("*** You need Python 2.7 or higher to use Picard.")
+if sys.version_info < (3, 5):
+    sys.exit("ERROR: You need Python 3.5 or higher to use Picard.")
 
 
 args = {}
@@ -29,10 +29,13 @@ except ImportError:
 from distutils import log
 from distutils.command.build import build
 from distutils.command.install import install as install
-from distutils.core import setup, Command, Extension
 from distutils.dep_util import newer
 from distutils.dist import Distribution
 from distutils.spawn import find_executable
+from setuptools import setup, Command, Extension
+
+
+PACKAGE_NAME = "picard"
 
 ext_modules = [
     Extension('picard.util._astrcmp', sources=['picard/util/_astrcmp.c']),
@@ -263,8 +266,8 @@ class picard_build(build):
 
     def run(self):
         if 'bdist_nsis' not in sys.argv:  # somebody shoot me please
-            log.info('generating scripts/picard from scripts/picard.in')
-            generate_file('scripts/picard.in', 'scripts/picard', {'localedir': self.localedir, 'autoupdate': not self.disable_autoupdate})
+            log.info('generating scripts/%s from scripts/picard.in', PACKAGE_NAME)
+            generate_file('scripts/picard.in', 'scripts/' + PACKAGE_NAME, {'localedir': self.localedir, 'autoupdate': not self.disable_autoupdate})
         build.run(self)
 
 
@@ -332,8 +335,8 @@ class picard_build_ui(Command):
             uic.compileUi(uifile, tmp)
             source = tmp.getvalue()
             rc = re.compile(r'\n\n#.*?(?=\n\n)', re.MULTILINE|re.DOTALL)
-            comment = (u"\n\n# Automatically generated - don't edit.\n"
-                       u"# Use `python setup.py %s` to update it."
+            comment = ("\n\n# Automatically generated - don't edit.\n"
+                       "# Use `python setup.py %s` to update it."
                        % _get_option_name(self))
             for r in list(_translate_re):
                 source = r.sub(r'_(\1)', source)
@@ -366,7 +369,6 @@ class picard_clean_ui(Command):
         pass
 
     def run(self):
-        from PyQt5 import uic
         for uifile, pyfile in ui_files():
             try:
                 os.unlink(pyfile)
@@ -491,7 +493,7 @@ class picard_update_constants(Command):
 
         countries = dict()
         countries_potfile = os.path.join('po', 'countries', 'countries.pot')
-        isocode_comment = u'iso.code:'
+        isocode_comment = 'iso.code:'
         with open(countries_potfile, 'rb') as f:
             log.info('Parsing %s' % countries_potfile)
             po = pofile.read_po(f)
@@ -500,7 +502,7 @@ class picard_update_constants(Command):
                     continue
                 for comment in message.auto_comments:
                     if comment.startswith(isocode_comment):
-                        code = comment.replace(isocode_comment, u'')
+                        code = comment.replace(isocode_comment, '')
                         countries[code] = message.id
             if countries:
                 self.countries_py_file(countries)
@@ -510,10 +512,10 @@ class picard_update_constants(Command):
         attributes = dict()
         attributes_potfile = os.path.join('po', 'attributes', 'attributes.pot')
         extract_attributes = (
-            u'DB:cover_art_archive.art_type/name',
-            u'DB:medium_format/name',
-            u'DB:release_group_primary_type/name',
-            u'DB:release_group_secondary_type/name',
+            'DB:cover_art_archive.art_type/name',
+            'DB:medium_format/name',
+            'DB:release_group_primary_type/name',
+            'DB:release_group_secondary_type/name',
         )
         with open(attributes_potfile, 'rb') as f:
             log.info('Parsing %s' % attributes_potfile)
@@ -523,20 +525,20 @@ class picard_update_constants(Command):
                     continue
                 for loc, pos in message.locations:
                     if loc in extract_attributes:
-                        attributes[u"%s:%03d" % (loc, pos)] = message.id
+                        attributes["%s:%03d" % (loc, pos)] = message.id
             if attributes:
                 self.attributes_py_file(attributes)
             else:
                 sys.exit('Failed to extract any attribute !')
 
     def countries_py_file(self, countries):
-        header = (u"# -*- coding: utf-8 -*-\n"
-                  u"# Automatically generated - don't edit.\n"
-                  u"# Use `python setup.py {option}` to update it.\n"
-                  u"\n"
-                  u"RELEASE_COUNTRIES = {{\n")
-        line   =  u"    u'{code}': u'{name}',\n"
-        footer =  u"}}\n"
+        header = ("# -*- coding: utf-8 -*-\n"
+                  "# Automatically generated - don't edit.\n"
+                  "# Use `python setup.py {option}` to update it.\n"
+                  "\n"
+                  "RELEASE_COUNTRIES = {{\n")
+        line   =  "    '{code}': '{name}',\n"
+        footer =  "}}\n"
         filename = os.path.join('picard', 'const', 'countries.py')
         with open(filename, 'w') as countries_py:
             def write(s, **kwargs):
@@ -550,13 +552,13 @@ class picard_update_constants(Command):
                                                           len(countries)))
 
     def attributes_py_file(self, attributes):
-        header = (u"# -*- coding: utf-8 -*-\n"
-                  u"# Automatically generated - don't edit.\n"
-                  u"# Use `python setup.py {option}` to update it.\n"
-                  u"\n"
-                  u"MB_ATTRIBUTES = {{\n")
-        line   =  u"    u'{key}': u'{value}',\n"
-        footer =  u"}}\n"
+        header = ("# -*- coding: utf-8 -*-\n"
+                  "# Automatically generated - don't edit.\n"
+                  "# Use `python setup.py {option}` to update it.\n"
+                  "\n"
+                  "MB_ATTRIBUTES = {{\n")
+        line   =  "    '{key}': '{value}',\n"
+        footer =  "}}\n"
         filename = os.path.join('picard', 'const', 'attributes.py')
         with open(filename, 'w') as attributes_py:
             def write(s, **kwargs):
@@ -577,7 +579,7 @@ class picard_patch_version(Command):
     ]
 
     def initialize_options(self):
-        self.platform = 'unknown'
+        self.platform = sys.platform
 
     def finalize_options(self):
         pass
@@ -640,9 +642,10 @@ def _picard_packages():
 
 
 args2 = {
-    'name': 'picard',
+    'name': PACKAGE_NAME,
     'version': __version__,
     'description': 'The next generation MusicBrainz tagger',
+    'keywords': 'MusicBrainz metadata tagger picard',
     'url': 'https://picard.musicbrainz.org/',
     'package_dir': {'picard': 'picard'},
     'packages': _picard_packages(),
@@ -662,7 +665,19 @@ args2 = {
         'regen_pot_file': picard_regen_pot_file,
         'patch_version': picard_patch_version,
     },
-    'scripts': ['scripts/picard'],
+    'scripts': ['scripts/' + PACKAGE_NAME],
+    'install_requires': ['PyQt5', 'mutagen'],
+    'classifiers': [
+    'License :: OSI Approved :: GNU General Public License v2 or later (GPLv2+)',
+    'Development Status :: 3 - Alpha',
+    'Programming Language :: Python :: 3.5',
+    'Programming Language :: Python :: 3.6',
+    'Operating System :: Microsoft :: Windows',
+    'Operating System :: MacOS',
+    'Operating System :: POSIX :: Linux',
+    'Topic :: Multimedia :: Sound/Audio',
+    'Topic :: Multimedia :: Sound/Audio :: Analysis'
+    ]
 }
 args.update(args2)
 
@@ -779,6 +794,6 @@ if py2exe is None and do_py2app is False:
     args['data_files'].append(('share/icons/hicolor/256x256/apps', ['resources/images/256x256/picard.png']))
     args['data_files'].append(('share/icons/hicolor/scalable/apps', ['resources/img-src/picard.svg']))
     args['data_files'].append(('share/applications', ('picard.desktop',)))
-
+    args['data_files'].append('scripts/picard.in')
 
 setup(**args)

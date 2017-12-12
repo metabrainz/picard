@@ -20,9 +20,10 @@
 import re
 
 
-PICARD_APP_NAME = "Picard"
 PICARD_ORG_NAME = "MusicBrainz"
-PICARD_VERSION = (2, 0, 0, 'dev', 1)
+PICARD_APP_NAME = "Picard"
+PICARD_VERSION = (2, 0, 0, 'dev', 2)
+
 
 # optional build version
 # it should be in the form '<platform>_<YYMMDDHHMMSS>'
@@ -45,7 +46,6 @@ def version_to_string(version, short=False):
             n = int(p)
         except ValueError:
             n = p
-            pass
         _version.append(n)
     version = tuple(_version)
     if short and version[3] == 'final':
@@ -54,7 +54,7 @@ def version_to_string(version, short=False):
         else:
             version_str = '%d.%d.%d' % version[:3]
     else:
-        version_str = '%d.%d.%d%s%d' % version
+        version_str = '%d.%d.%d.%s%d' % version
     return version_str
 
 

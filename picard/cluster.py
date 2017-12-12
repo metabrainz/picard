@@ -167,8 +167,8 @@ class Cluster(QtCore.QObject, Item):
         self.lookup_task = None
 
         try:
-            releases = document.metadata[0].release_list[0].release
-        except (AttributeError, IndexError):
+            releases = document['releases']
+        except (KeyError, TypeError):
             releases = None
 
         mparms = {
@@ -201,7 +201,7 @@ class Cluster(QtCore.QObject, Item):
             mparms,
             timeout=3000
         )
-        self.tagger.move_files_to_album(self.files, match[1].id)
+        self.tagger.move_files_to_album(self.files, match[1]['id'])
 
     def lookup_metadata(self):
         """Try to identify the cluster using the existing metadata."""
@@ -211,7 +211,7 @@ class Cluster(QtCore.QObject, Item):
             N_("Looking up the metadata for cluster %(album)s..."),
             {'album': self.metadata['album']}
         )
-        self.lookup_task = self.tagger.xmlws.find_releases(self._lookup_finished,
+        self.lookup_task = self.tagger.mb_api.find_releases(self._lookup_finished,
             artist=self.metadata['albumartist'],
             release=self.metadata['album'],
             tracks=string_(len(self.files)),
@@ -219,7 +219,7 @@ class Cluster(QtCore.QObject, Item):
 
     def clear_lookup_task(self):
         if self.lookup_task:
-            self.tagger.xmlws.remove_task(self.lookup_task)
+            self.tagger.webservice.remove_task(self.lookup_task)
             self.lookup_task = None
 
     @staticmethod
@@ -248,8 +248,8 @@ class Cluster(QtCore.QObject, Item):
 
         # Arrange tracks into albums
         albums = {}
-        for i in range(len(tracks)):
-            cluster = album_cluster_engine.getClusterFromId(tracks[i][1])
+        for i, track in enumerate(tracks):
+            cluster = album_cluster_engine.getClusterFromId(track[1])
             if cluster is not None:
                 albums.setdefault(cluster, []).append(i)
 
@@ -272,7 +272,7 @@ class Cluster(QtCore.QObject, Item):
                     artist_hist[cluster] = cnt
 
             if artist_id is None:
-                artist_name = u"Various Artists"
+                artist_name = "Various Artists"
             else:
                 artist_name = artist_cluster_engine.getClusterTitle(artist_id)
 
@@ -287,7 +287,7 @@ class UnmatchedFiles(Cluster):
     """Special cluster for 'Unmatched Files' which have no PUID and have not been clustered."""
 
     def __init__(self):
-        super(UnmatchedFiles, self).__init__(_(u"Unmatched Files"), special=True)
+        super(UnmatchedFiles, self).__init__(_("Unmatched Files"), special=True)
 
     def add_files(self, files):
         Cluster.add_files(self, files)
@@ -365,8 +365,8 @@ class ClusterDict(object):
         return self.id
 
     def tokenize(self, word):
-        token = self.regexp.sub(u'', word.lower())
-        return token if token else self.spaces.sub(u'', word.lower())
+        token = self.regexp.sub('', word.lower())
+        return token if token else self.spaces.sub('', word.lower())
 
     def add(self, word):
         """
@@ -375,11 +375,11 @@ class ClusterDict(object):
         in the dictionary or -1 is the word is empty.
         """
 
-        if word == u'':
+        if word == '':
             return -1
 
         token = self.tokenize(word)
-        if token == u'':
+        if token == '':
             return -1
 
         try:
@@ -440,21 +440,21 @@ class ClusterEngine(object):
             print("[no such cluster]")
             return
 
-        bin = self.clusterBins[cluster]
-        print(cluster, " -> ", ", ".join([("'" + self.clusterDict.getWord(i) + "'") for i in bin]))
+        cluster_bin = self.clusterBins[cluster]
+        print(cluster, " -> ", ", ".join([("'" + self.clusterDict.getWord(i) + "'") for i in cluster_bin]))
 
     def getClusterTitle(self, cluster):
 
         if cluster < 0:
             return ""
 
-        max = 0
-        maxWord = u''
-        for id in self.clusterBins[cluster]:
-            word, count = self.clusterDict.getWordAndCount(id)
-            if count >= max:
+        cluster_max = 0
+        maxWord = ''
+        for cluster_bin in self.clusterBins[cluster]:
+            word, count = self.clusterDict.getWordAndCount(cluster_bin)
+            if count >= cluster_max:
                 maxWord = word
-                max = count
+                cluster_max = count
 
         return maxWord
 

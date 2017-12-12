@@ -19,7 +19,6 @@
 
 import os
 import re
-import traceback
 from picard import config
 from picard.coverart.providers import CoverArtProvider, ProviderOptions
 from picard.coverart.image import CoverArtImageFromFile
@@ -61,7 +60,7 @@ class CoverArtProviderLocal(CoverArtProvider):
     """Get cover art from local files"""
 
     NAME = "Local"
-    TITLE = N_(u"Local Files")
+    TITLE = N_("Local Files")
     OPTIONS = ProviderOptionsLocal
 
     _types_split_re = re.compile('[^a-z0-9]', re.IGNORECASE)
@@ -87,7 +86,7 @@ class CoverArtProviderLocal(CoverArtProvider):
                         continue
                     filepath = os.path.join(current_dir, root, filename)
                     if os.path.exists(filepath):
-                        types = self.get_types(m.group(1)) or [ u'front' ]
+                        types = self.get_types(m.group(1)) or [ 'front' ]
                         self.queue_put(CoverArtImageFromFile(filepath,
                                                              types=types,
                                                              support_types=True))
