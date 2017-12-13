@@ -71,7 +71,7 @@ class MP4File(File):
         # & https://forums.mp3tag.de/index.php?showtopic=21586
         "\xa9mvi": "movementnumber",
         "\xa9mvc": "movementtotal",
-        "shwm": "~movementshow",
+        "shwm": "movementshow",
     }
     __r_int_tags = dict([(v, k) for k, v in __int_tags.items()])
 
@@ -164,7 +164,7 @@ class MP4File(File):
                             data=value,
                         )
                     except CoverArtImageError as e:
-                        log.error('Cannot load image from %r: %s' %
+                        log.error('MP4: Cannot load image from %r: %s' %
                                   (filename, e))
                     else:
                         metadata.append_image(coverartimage)
@@ -199,7 +199,6 @@ class MP4File(File):
                         [int(value) for value in values],
                         filename,
                         e)
-                    pass
             elif name in self.__r_freeform_tags:
                 values = [v.encode("utf-8") for v in values]
                 tags[self.__r_freeform_tags[name]] = values

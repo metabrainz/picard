@@ -98,7 +98,7 @@ TAG_NAMES = {
     'movementtotal': N_('Movement Total (iTunes Classical)'),
     'itunesgrouping': N_('Grouping (iTunes Classical)'), # ID3 GRP1 introduced in iTunes 12.5.4.42 Dec 2016
     'ituneswork': N_('Work (iTunes Classical)'), # mp4 ©wrk introduced in iTunes 2016
-    '~movementshow': N_('Movement Show (iTunes Classical)'),
+    'movementshow': N_('Movement Show (iTunes Classical)'),
     '~workcomment': N_('Work Disambiguation'),
     '~movementcomment': N_('Movement Disambiguation (iTunes Classical)'),
 }

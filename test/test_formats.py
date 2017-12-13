@@ -746,7 +746,7 @@ class MP4Test(FormatsTest):
             metadata.delete('movementnumber')
             metadata.delete('movementtotal')
             metadata.delete('ituneswork')
-            metadata.delete('~movementshow')
+            metadata.delete('movementshow')
             new_metadata = save_and_load_metadata(self.filename, metadata)
 
             self.assertIn('work', original_metadata)
@@ -754,14 +754,14 @@ class MP4Test(FormatsTest):
             self.assertIn('movementnumber', original_metadata)
             self.assertIn('movementtotal', original_metadata)
             self.assertIn('ituneswork', original_metadata)
-            self.assertIn('~movementshow', original_metadata)
+            self.assertIn('movementshow', original_metadata)
 
             self.assertNotIn('work', new_metadata)
             self.assertNotIn('movementname', new_metadata)
             self.assertNotIn('movementnumber', new_metadata)
             self.assertNotIn('movementtotal', new_metadata)
             self.assertNotIn('itunesgrouping', new_metadata)
-            self.assertNotIn('~movementshow', new_metadata)
+            self.assertNotIn('movementshow', new_metadata)
 
     original = os.path.join('test', 'data', 'test.m4a')
     supports_ratings = False
@@ -833,7 +833,7 @@ class MP4Test(FormatsTest):
         'movementnumber': '1',
         'movementtotal': '2',
         'ituneswork': 'Foo',
-        '~movementshow': '1',
+        'movementshow': '1',
     }
 
 
