@@ -17,13 +17,12 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-import sys
 from functools import partial
-from PyQt4 import QtGui, QtCore
-from PyQt4.QtCore import pyqtSignal
+from PyQt5 import QtCore, QtWidgets
+from PyQt5.QtCore import pyqtSignal
 
 
-class SortableCheckboxListWidget(QtGui.QWidget):
+class SortableCheckboxListWidget(QtWidgets.QWidget):
     _CHECKBOX_POS = 0
     _BUTTON_UP = 1
     _BUTTON_DOWN = 2
@@ -33,7 +32,7 @@ class SortableCheckboxListWidget(QtGui.QWidget):
 
     def __init__(self, parent=None):
         super(SortableCheckboxListWidget, self).__init__(parent)
-        layout = QtGui.QGridLayout()
+        layout = QtWidgets.QGridLayout()
         layout.setHorizontalSpacing(5)
         layout.setVerticalSpacing(2)
         layout.setContentsMargins(0, 0, 0, 0)
@@ -85,12 +84,12 @@ class SortableCheckboxListWidget(QtGui.QWidget):
         self.__items.append(item)
         row = len(self.__items) - 1
         layout = self.layout()
-        layout.addWidget(QtGui.QCheckBox(), row, self._CHECKBOX_POS)
+        layout.addWidget(QtWidgets.QCheckBox(), row, self._CHECKBOX_POS)
         self.updateRow(row)
-        up_button = QtGui.QToolButton()
+        up_button = QtWidgets.QToolButton()
         up_button.setArrowType(QtCore.Qt.UpArrow)
         up_button.setMaximumSize(QtCore.QSize(16, 16))
-        down_button = QtGui.QToolButton()
+        down_button = QtWidgets.QToolButton()
         down_button.setArrowType(QtCore.Qt.DownArrow)
         down_button.setMaximumSize(QtCore.QSize(16, 16))
         layout.addWidget(up_button, row, self._BUTTON_UP)
@@ -114,7 +113,7 @@ class SortableCheckboxListWidget(QtGui.QWidget):
 
 class SortableCheckboxListItem(object):
 
-    def __init__(self, text=u'', checked=False, data=None):
+    def __init__(self, text='', checked=False, data=None):
         self._checked = checked
         self._text = text
         self._data = data

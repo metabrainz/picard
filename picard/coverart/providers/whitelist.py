@@ -22,9 +22,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-import traceback
 
-from picard import config, log
+from picard import log
 from picard.coverart.providers import CoverArtProvider
 from picard.coverart.image import CoverArtImage
 
@@ -35,7 +34,7 @@ class CoverArtProviderWhitelist(CoverArtProvider):
     cover art"""
 
     NAME = "Whitelist"
-    TITLE = N_(u'Whitelist')
+    TITLE = N_('Whitelist')
 
     def enabled(self):
         return (super(CoverArtProviderWhitelist, self).enabled()

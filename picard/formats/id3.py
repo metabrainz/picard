@@ -34,7 +34,7 @@ from picard.metadata import Metadata
 from picard.file import File
 from picard.formats.mutagenext import compatid3
 from picard.util import encode_filename, sanitize_date
-from urlparse import urlparse
+from urllib.parse import urlparse
 
 
 id3.TCMP = compatid3.TCMP
@@ -54,7 +54,7 @@ __ID3_IMAGE_TYPE_MAP = {
     "track": 6,
 }
 
-__ID3_REVERSE_IMAGE_TYPE_MAP = dict([(v, k) for k, v in __ID3_IMAGE_TYPE_MAP.iteritems()])
+__ID3_REVERSE_IMAGE_TYPE_MAP = dict([(v, k) for k, v in __ID3_IMAGE_TYPE_MAP.items()])
 
 
 def id3text(text, encoding):
@@ -76,7 +76,7 @@ def image_type_as_id3_num(texttype):
 
 
 def types_from_id3(id3type):
-    return [unicode(image_type_from_id3_num(id3type))]
+    return [string_(image_type_from_id3_num(id3type))]
 
 
 class ID3File(File):
@@ -123,13 +123,15 @@ class ID3File(File):
         'WCOP': 'license',
         'WOAR': 'website',
         'COMM': 'comment',
+        'TOAL': 'originalalbum',
+        'TOPE': 'originalartist',
 
         # The following are informal iTunes extensions to id3v2:
         'TCMP': 'compilation',
         'TSOC': 'composersort',
         'TSO2': 'albumartistsort',
     }
-    __rtranslate = dict([(v, k) for k, v in __translate.iteritems()])
+    __rtranslate = dict([(v, k) for k, v in __translate.items()])
 
     __translate_freetext = {
         'MusicBrainz Artist Id': 'musicbrainz_artistid',
@@ -142,6 +144,8 @@ class ID3File(File):
         'MusicBrainz Disc Id': 'musicbrainz_discid',
         'MusicBrainz Work Id': 'musicbrainz_workid',
         'MusicBrainz Release Group Id': 'musicbrainz_releasegroupid',
+        'MusicBrainz Original Album Id': 'musicbrainz_originalalbumid',
+        'MusicBrainz Original Artist Id': 'musicbrainz_originalartistid',
         'MusicBrainz Album Release Country': 'releasecountry',
         'MusicIP PUID': 'musicip_puid',
         'Acoustid Fingerprint': 'acoustid_fingerprint',
@@ -156,7 +160,7 @@ class ID3File(File):
         'Work': 'work',
         'Writer': 'writer',
     }
-    __rtranslate_freetext = dict([(v, k) for k, v in __translate_freetext.iteritems()])
+    __rtranslate_freetext = dict([(v, k) for k, v in __translate_freetext.items()])
     __translate_freetext['writer'] = 'writer'  # For backward compatibility of case
 
     _tipl_roles = {
@@ -166,7 +170,7 @@ class ID3File(File):
         'DJ-mix': 'djmixer',
         'mix': 'mixer',
     }
-    _rtipl_roles = dict([(v, k) for k, v in _tipl_roles.iteritems()])
+    _rtipl_roles = dict([(v, k) for k, v in _tipl_roles.items()])
 
     __other_supported_tags = ("discnumber", "tracknumber",
                               "totaldiscs", "totaltracks")
@@ -174,6 +178,16 @@ class ID3File(File):
         'TRCK': re.compile(r'^(?P<tracknumber>\d+)(?:/(?P<totaltracks>\d+))?$'),
         'TPOS': re.compile(r'^(?P<discnumber>\d+)(?:/(?P<totaldiscs>\d+))?$')
     }
+
+    def build_TXXX(self, encoding, desc, values):
+        """Construct and return a TXXX frame."""
+        # This is here so that plugins can customize the behavior of TXXX
+        # frames in particular via subclassing.
+        # discussion: https://github.com/metabrainz/picard/pull/634
+        # discussion: https://github.com/metabrainz/picard/pull/635
+        # Used in the plugin "Compatible TXXX frames"
+        # PR: https://github.com/metabrainz/picard-plugins/pull/83
+        return id3.TXXX(encoding=encoding, desc=desc, text=values)
 
     def _load(self, filename):
         log.debug("Loading file %r", filename)
@@ -192,13 +206,13 @@ class ID3File(File):
                 if frameid.startswith('T'):
                     for text in frame.text:
                         if text:
-                            metadata.add(name, unicode(text))
+                            metadata.add(name, string_(text))
                 elif frameid == 'COMM':
                     for text in frame.text:
                         if text:
-                            metadata.add('%s:%s' % (name, frame.desc), unicode(text))
+                            metadata.add('%s:%s' % (name, frame.desc), string_(text))
                 else:
-                    metadata.add(name, unicode(frame))
+                    metadata.add(name, string_(frame))
             elif frameid == "TMCL":
                 for role, name in frame.people:
                     if role or name:
@@ -226,18 +240,18 @@ class ID3File(File):
                     # ways.) Currently, the only tag in both is license.
                     name = '~id3:TXXX:' + name
                 for text in frame.text:
-                    metadata.add(name, unicode(text))
+                    metadata.add(name, string_(text))
             elif frameid == 'USLT':
                 name = 'lyrics'
                 if frame.desc:
                     name += ':%s' % frame.desc
-                metadata.add(name, unicode(frame.text))
+                metadata.add(name, string_(frame.text))
             elif frameid == 'UFID' and frame.owner == 'http://musicbrainz.org':
                 metadata['musicbrainz_recordingid'] = frame.data.decode('ascii', 'ignore')
             elif frameid in self.__tag_re_parse.keys():
                 m = self.__tag_re_parse[frameid].search(frame.text[0])
                 if m:
-                    for name, value in m.groupdict().iteritems():
+                    for name, value in m.groupdict().items():
                         if value is not None:
                             metadata[name] = value
                 else:
@@ -259,7 +273,7 @@ class ID3File(File):
             elif frameid == 'POPM':
                 # Rating in ID3 ranges from 0 to 255, normalize this to the range 0 to 5
                 if frame.email == config.setting['rating_user_email']:
-                    rating = unicode(int(round(frame.rating / 255.0 * (config.setting['rating_steps'] - 1))))
+                    rating = string_(int(round(frame.rating / 255.0 * (config.setting['rating_steps'] - 1))))
                     metadata.add('~rating', rating)
 
         if 'date' in metadata:
@@ -331,7 +345,7 @@ class ID3File(File):
                 desc = name.split(':', 1)[1]
                 if desc.lower()[:4] == "itun":
                     tags.delall('COMM:' + desc)
-                    tags.add(id3.COMM(encoding=0, desc=desc, lang='eng', text=[v + u'\x00' for v in values]))
+                    tags.add(id3.COMM(encoding=0, desc=desc, lang='eng', text=[v + b'\x00' for v in values]))
                 else:
                     tags.add(id3.COMM(encoding=encoding, desc=desc, lang='eng', text=values))
             elif name.startswith('lyrics:') or name == 'lyrics':
@@ -345,7 +359,7 @@ class ID3File(File):
                 for value in values:
                     tipl.people.append([self._rtipl_roles[name], value])
             elif name == 'musicbrainz_recordingid':
-                tags.add(id3.UFID(owner='http://musicbrainz.org', data=str(values[0])))
+                tags.add(id3.UFID(owner='http://musicbrainz.org', data=bytes(values[0], 'ascii')))
             elif name == '~rating':
                 # Search for an existing POPM frame to get the current playcount
                 for frame in tags.values():
@@ -365,7 +379,7 @@ class ID3File(File):
                     if frameid == 'WCOP':
                         # Only add WCOP if there is only one license URL, otherwise use TXXX:LICENSE
                         if len(values) > 1 or not valid_urls:
-                            tags.add(id3.TXXX(encoding=encoding, desc=self.__rtranslate_freetext[name], text=values))
+                            tags.add(self.build_TXXX(encoding, self.__rtranslate_freetext[name], values))
                         else:
                             tags.add(id3.WCOP(url=values[0]))
                     elif frameid == 'WOAR' and valid_urls:
@@ -374,7 +388,7 @@ class ID3File(File):
                 elif frameid.startswith('T'):
                     if config.setting['write_id3v23']:
                         if frameid == 'TMOO':
-                            tags.add(id3.TXXX(encoding=encoding, desc='mood', text=values))
+                            tags.add(self.build_TXXX(encoding, 'mood', values))
                     # No need to care about the TMOO tag being added again as it is
                     # automatically deleted by Mutagen if id2v23 is selected
                     tags.add(getattr(id3, frameid)(encoding=encoding, text=values))
@@ -385,18 +399,18 @@ class ID3File(File):
                     elif frameid == 'TSO2':
                         tags.delall('TXXX:ALBUMARTISTSORT')
             elif name in self.__rtranslate_freetext:
-                tags.add(id3.TXXX(encoding=encoding, desc=self.__rtranslate_freetext[name], text=values))
+                tags.add(self.build_TXXX(encoding, self.__rtranslate_freetext[name], values))
             elif name.startswith('~id3:'):
                 name = name[5:]
                 if name.startswith('TXXX:'):
-                    tags.add(id3.TXXX(encoding=encoding, desc=name[5:], text=values))
+                    tags.add(self.build_TXXX(encoding, name[5:], values))
                 else:
                     frameclass = getattr(id3, name[:4], None)
                     if frameclass:
                         tags.add(frameclass(encoding=encoding, text=values))
             # don't save private / already stored tags
             elif not name.startswith("~") and name not in self.__other_supported_tags:
-                tags.add(id3.TXXX(encoding=encoding, desc=name, text=values))
+                tags.add(self.build_TXXX(encoding, name, values))
 
         tags.add(tmcl)
         tags.add(tipl)
@@ -422,11 +436,11 @@ class ID3File(File):
                         if frame.FrameID in ('TMCL', 'TIPL', 'IPLS'):
                             for people in frame.people:
                                 if people[0] == role:
-                                    frame.people.remove(people)   
+                                    frame.people.remove(people)
                 elif name.startswith('comment:'):
                     desc = name.split(':', 1)[1]
                     if desc.lower()[:4] != 'itun':
-                        for key, frame in tags.items():
+                        for key, frame in list(tags.items()):
                             if frame.FrameID == 'COMM' and frame.desc == desc:
                                 del tags[key]
                 elif name.startswith('lyrics:') or name == 'lyrics':
@@ -434,7 +448,7 @@ class ID3File(File):
                         desc = name.split(':', 1)[1]
                     else:
                         desc = ''
-                    for key, frame in tags.items():
+                    for key, frame in list(tags.items()):
                         if frame.FrameID == desc:
                             del tags[key]
                 elif name in self._rtipl_roles:
@@ -443,28 +457,28 @@ class ID3File(File):
                         if frame.FrameID in ('TIPL', 'IPLS'):
                             for people in frame.people:
                                 if people[0] == role:
-                                    frame.people.remove(people)   
+                                    frame.people.remove(people)
                 elif name == 'musicbrainz_recordingid':
-                    for key, frame in tags.items():
+                    for key, frame in list(tags.items()):
                         if frame.FrameID == 'UFID' and frame.owner == 'http://musicbrainz.org':
                             del tags[key]
                 elif real_name == 'POPM':
-                    for key, frame in tags.items():
+                    for key, frame in list(tags.items()):
                         if frame.FrameID == 'POPM' and frame.email == config.setting['rating_user_email']:
                             del tags[key]
                 elif real_name in self.__translate:
                     del tags[real_name]
                 elif real_name in self.__translate_freetext:
-                    for key, frame in tags.items():
+                    for key, frame in list(tags.items()):
                         if frame.FrameID == 'TXXX' and frame.desc == real_name:
                             del tags[key]
                 elif not name.startswith("~") and name not in self.__other_supported_tags:
-                    for key, frame in tags.items():
+                    for key, frame in list(tags.items()):
                         if frame.FrameID == 'TXXX' and frame.desc == name:
                             del tags[key]
                 elif name.startswith("~"):
                     name = name[1:]
-                    for key, frame in tags.items():
+                    for key, frame in list(tags.items()):
                         if frame.FrameID == 'TXXX' and frame.desc == name:
                             del tags[key]
                 elif name in self.__other_supported_tags:

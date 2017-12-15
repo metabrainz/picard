@@ -19,14 +19,13 @@
 
 import os.path
 from functools import partial
-from PyQt4 import QtCore, QtGui
-from picard import config, log
+from PyQt5 import QtCore, QtWidgets
+from picard import config
 from picard.util import icontheme
 from picard.ui.options import OptionsPage, register_options_page
 from picard.ui.ui_options_interface import Ui_InterfaceOptionsPage
 from picard.ui.util import enabledSlot
 from picard.const import UI_LANGUAGES
-import operator
 import locale
 
 
@@ -37,54 +36,54 @@ class InterfaceOptionsPage(OptionsPage):
     PARENT = None
     SORT_ORDER = 80
     ACTIVE = True
-    SEPARATOR = u'—'*5
+    SEPARATOR = '—'*5
     TOOLBAR_BUTTONS = {
         'add_directory_action': {
-            'label': N_(u'Add Folder'),
+            'label': N_('Add Folder'),
             'icon': 'folder'
         },
        'add_files_action': {
-            'label': N_(u'Add Files'),
+            'label': N_('Add Files'),
             'icon': 'document-open'
         },
        'cluster_action': {
-            'label': N_(u'Cluster'),
+            'label': N_('Cluster'),
             'icon': 'picard-cluster'
         },
        'autotag_action': {
-            'label': N_(u'Lookup'),
+            'label': N_('Lookup'),
             'icon': 'picard-auto-tag'
         },
        'analyze_action': {
-            'label': N_(u'Scan'),
+            'label': N_('Scan'),
             'icon': 'picard-analyze'
         },
        'browser_lookup_action': {
-            'label': N_(u'Lookup in Browser'),
+            'label': N_('Lookup in Browser'),
             'icon': 'lookup-musicbrainz'
         },
        'save_action': {
-            'label': N_(u'Save'),
+            'label': N_('Save'),
             'icon': 'document-save'
         },
        'view_info_action': {
-            'label': N_(u'Info'),
+            'label': N_('Info'),
             'icon': 'picard-edit-tags'
         },
        'remove_action': {
-            'label': N_(u'Remove'),
+            'label': N_('Remove'),
             'icon': 'list-remove'
         },
        'submit_acoustid_action': {
-            'label': N_(u'Submit AcoustIDs'),
+            'label': N_('Submit AcoustIDs'),
             'icon': 'acoustid-fingerprinter'
         },
        'play_file_action': {
-            'label': N_(u'Open in Player'),
+            'label': N_('Open in Player'),
             'icon': 'play-music'
         },
        'cd_lookup_action': {
-            'label': N_(u'Lookup CD...'),
+            'label': N_('Lookup CD...'),
             'icon': 'media-optical'
         },
     }
@@ -95,9 +94,10 @@ class InterfaceOptionsPage(OptionsPage):
         config.BoolOption("setting", "builtin_search", False),
         config.BoolOption("setting", "use_adv_search_syntax", False),
         config.BoolOption("setting", "quit_confirmation", True),
-        config.TextOption("setting", "ui_language", u""),
+        config.TextOption("setting", "ui_language", ""),
         config.BoolOption("setting", "starting_directory", False),
         config.TextOption("setting", "starting_directory_path", ""),
+        config.TextOption("setting", "load_image_behavior", "append"),
         config.ListOption("setting", "toolbar_layout", [
             'add_directory_action',
             'add_files_action',
@@ -124,10 +124,10 @@ class InterfaceOptionsPage(OptionsPage):
         self.ui.setupUi(self)
         self.ui.ui_language.addItem(_('System default'), '')
         language_list = [(l[0], l[1], _(l[2])) for l in UI_LANGUAGES]
-        for lang_code, native, translation in sorted(language_list, key=operator.itemgetter(2),
-                                                     cmp=locale.strcoll):
+        fcmp = lambda x: locale.strxfrm(x[2])
+        for lang_code, native, translation in sorted(language_list, key=fcmp):
             if native and native != translation:
-                name = u'%s (%s)' % (translation, native)
+                name = '%s (%s)' % (translation, native)
             else:
                 name = translation
             self.ui.ui_language.addItem(name, lang_code)
@@ -150,7 +150,7 @@ class InterfaceOptionsPage(OptionsPage):
         self.ui.up_button.clicked.connect(partial(self.move_item, 1))
         self.ui.down_button.clicked.connect(partial(self.move_item, -1))
         self.ui.toolbar_layout_list.currentRowChanged.connect(self.update_buttons)
-        self.ui.toolbar_layout_list.setDragDropMode(QtGui.QAbstractItemView.DragDrop)
+        self.ui.toolbar_layout_list.setDragDropMode(QtWidgets.QAbstractItemView.DragDrop)
         self.ui.toolbar_layout_list.setDefaultDropAction(QtCore.Qt.MoveAction)
 
     def load(self):
@@ -177,15 +177,15 @@ class InterfaceOptionsPage(OptionsPage):
         new_language = self.ui.ui_language.itemData(self.ui.ui_language.currentIndex())
         if new_language != config.setting["ui_language"]:
             config.setting["ui_language"] = self.ui.ui_language.itemData(self.ui.ui_language.currentIndex())
-            dialog = QtGui.QMessageBox(
-                QtGui.QMessageBox.Information,
+            dialog = QtWidgets.QMessageBox(
+                QtWidgets.QMessageBox.Information,
                 _('Language changed'),
                 _('You have changed the interface language. You have to restart Picard in order for the change to take effect.'),
-                QtGui.QMessageBox.Ok,
+                QtWidgets.QMessageBox.Ok,
                 self)
             dialog.exec_()
         config.setting["starting_directory"] = self.ui.starting_directory.isChecked()
-        config.setting["starting_directory_path"] = os.path.normpath(unicode(self.ui.starting_directory_path.text()))
+        config.setting["starting_directory_path"] = os.path.normpath(self.ui.starting_directory_path.text())
         self.update_layout_config()
 
     def restore_defaults(self):
@@ -194,9 +194,9 @@ class InterfaceOptionsPage(OptionsPage):
 
     def starting_directory_browse(self):
         item = self.ui.starting_directory_path
-        path = QtGui.QFileDialog.getExistingDirectory(self, "", item.text())
+        path = QtWidgets.QFileDialog.getExistingDirectory(self, "", item.text())
         if path:
-            path = os.path.normpath(unicode(path))
+            path = os.path.normpath(path)
             item.setText(path)
 
     def _get_icon_from_name(self, name):
@@ -204,7 +204,7 @@ class InterfaceOptionsPage(OptionsPage):
 
     def _insert_item(self, action, index=None):
         list_item = ToolbarListItem(action)
-        list_item.setToolTip(_(u'Drag and Drop to re-order'))
+        list_item.setToolTip(_('Drag and Drop to re-order'))
         if action in self.TOOLBAR_BUTTONS:
             list_item.setText(_(self.TOOLBAR_BUTTONS[action]['label']))
             list_item.setIcon(icontheme.lookup(self._get_icon_from_name(action), icontheme.ICON_SIZE_MENU))
@@ -222,8 +222,7 @@ class InterfaceOptionsPage(OptionsPage):
 
     def _added_actions(self):
         actions = self._all_list_items()
-        actions = filter(lambda x: x != 'separator', actions)
-        return set(actions)
+        return set(action for action in actions if action != 'separator')
 
     def populate_action_list(self):
         self.ui.toolbar_layout_list.clear()
@@ -270,33 +269,34 @@ class InterfaceOptionsPage(OptionsPage):
 
     def _update_toolbar(self):
         widget = self.parent()
-        while not isinstance(widget, QtGui.QMainWindow):
+        while not isinstance(widget, QtWidgets.QMainWindow):
             widget = widget.parent()
         # Call the main window's create toolbar method
         widget.create_action_toolbar()
+        widget.set_tab_order()
 
 
-class ToolbarListItem(QtGui.QListWidgetItem):
+class ToolbarListItem(QtWidgets.QListWidgetItem):
     def __init__(self, action_name, *args, **kwargs):
         super(ToolbarListItem, self).__init__(*args, **kwargs)
         self.action_name = action_name
 
 
-class AddActionDialog(QtGui.QDialog):
+class AddActionDialog(QtWidgets.QDialog):
     def __init__(self, action_list, *args, **kwargs):
         super(AddActionDialog, self).__init__(*args, **kwargs)
 
-        layout = QtGui.QVBoxLayout(self)
+        layout = QtWidgets.QVBoxLayout(self)
 
         self.action_list = sorted([[_(self.parent().TOOLBAR_BUTTONS[action]['label']), action]
                                   for action in action_list])
 
-        self.combo_box = QtGui.QComboBox(self)
+        self.combo_box = QtWidgets.QComboBox(self)
         self.combo_box.addItems([label for label, action in self.action_list])
         layout.addWidget(self.combo_box)
 
-        buttons = QtGui.QDialogButtonBox(
-            QtGui.QDialogButtonBox.Ok | QtGui.QDialogButtonBox.Cancel,
+        buttons = QtWidgets.QDialogButtonBox(
+            QtWidgets.QDialogButtonBox.Ok | QtWidgets.QDialogButtonBox.Cancel,
             QtCore.Qt.Horizontal, self)
         buttons.accepted.connect(self.accept)
         buttons.rejected.connect(self.reject)
@@ -310,7 +310,7 @@ class AddActionDialog(QtGui.QDialog):
         dialog = AddActionDialog(action_list, parent)
         result = dialog.exec_()
         selected_action = dialog.selected_action()
-        return (selected_action, result == QtGui.QDialog.Accepted)
+        return (selected_action, result == QtWidgets.QDialog.Accepted)
 
 
 register_options_page(InterfaceOptionsPage)

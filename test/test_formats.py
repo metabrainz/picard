@@ -4,7 +4,7 @@ import picard.formats
 import unittest
 import shutil
 
-from PyQt4 import QtCore
+from PyQt5 import QtCore
 from picard import config, log
 from picard.coverart.image import CoverArtImage, TagCoverArtImage
 from picard.metadata import Metadata
@@ -52,11 +52,11 @@ class FakeTagger(QtCore.QObject):
 
 def save_and_load_metadata(filename, metadata):
     """Save new metadata to a file and load it again."""
-    f = picard.formats.open(filename)
+    f = picard.formats.open_(filename)
     loaded_metadata = f._load(filename)
     f._copy_loaded_metadata(loaded_metadata)
     f._save(filename, metadata)
-    f = picard.formats.open(filename)
+    f = picard.formats.open_(filename)
     loaded_metadata = f._load(filename)
     return loaded_metadata
 
@@ -84,10 +84,10 @@ class FormatsTest(unittest.TestCase):
         if not self.original:
             return
         metadata = Metadata()
-        for (key, value) in self.tags.iteritems():
+        for (key, value) in self.tags.items():
             metadata[key] = value
         loaded_metadata = save_and_load_metadata(self.filename, metadata)
-        for (key, value) in self.tags.iteritems():
+        for (key, value) in self.tags.items():
             # if key == 'comment:foo':
             #    print "%r" % loaded_metadata
             self.assertEqual(loaded_metadata[key], value, '%s: %r != %r' % (key, loaded_metadata[key], value))
@@ -96,7 +96,7 @@ class FormatsTest(unittest.TestCase):
         if not self.original:
             return
         metadata = Metadata()
-        for (key, value) in self.tags.iteritems():
+        for (key, value) in self.tags.items():
             metadata[key] = value
         if self.supports_ratings:
             metadata['~rating'] = 1
@@ -116,7 +116,7 @@ class FormatsTest(unittest.TestCase):
             return
         metadata = Metadata()
 
-        for (key, value) in self.tags.iteritems():
+        for (key, value) in self.tags.items():
             metadata[key] = value
 
         original_metadata = save_and_load_metadata(self.filename, metadata)
@@ -134,7 +134,7 @@ class FormatsTest(unittest.TestCase):
             return
         if 'performer:guest vocal' in self.tags:
             metadata = Metadata()
-            for (key, value) in self.tags.iteritems():
+            for (key, value) in self.tags.items():
                 metadata[key] = value
 
             metadata['performer:piano'] = 'Foo'
@@ -165,12 +165,12 @@ class FormatsTest(unittest.TestCase):
             self.addCleanup(os.unlink, temp_file)
             shutil.copy(self.original, temp_file)
             audio = picard.formats.guess_format(temp_file)
-            audio_original = picard.formats.open(self.filename)
+            audio_original = picard.formats.open_(self.filename)
             self.assertEqual(type(audio), type(audio_original))
 
     def test_split_ext(self):
         if self.original:
-            f = picard.formats.open(self.filename)
+            f = picard.formats.open_(self.filename)
             self.assertEqual(f._fixed_splitext(f.filename), os.path.splitext(f.filename))
             self.assertEqual(f._fixed_splitext(f.EXTENSIONS[0]), ('', f.EXTENSIONS[0]))
             self.assertEqual(f._fixed_splitext('.test'), os.path.splitext('.test'))
@@ -323,7 +323,7 @@ class ID3Test(FormatsTest):
         if not self.original:
             return
         metadata = Metadata()
-        for (key, value) in self.tags.iteritems():
+        for (key, value) in self.tags.items():
             metadata[key] = value
 
         metadata['Foo'] = 'Foo'
@@ -338,7 +338,7 @@ class ID3Test(FormatsTest):
         if not self.original:
             return
         metadata = Metadata()
-        for (key, value) in self.tags.iteritems():
+        for (key, value) in self.tags.items():
             metadata[key] = value
         metadata['musicbrainz_recordingid'] = "Foo"
         original_metadata = save_and_load_metadata(self.filename, metadata)
@@ -352,7 +352,7 @@ class ID3Test(FormatsTest):
         if not self.original:
             return
         metadata = Metadata()
-        for (key, value) in self.tags.iteritems():
+        for (key, value) in self.tags.items():
             metadata[key] = value
 
         metadata['Foo'] = 'Foo'
@@ -386,7 +386,7 @@ class ID3Test(FormatsTest):
             'performer:piano': 'Foo'
         }
 
-        for (key, value) in tags.iteritems():
+        for (key, value) in tags.items():
             metadata[key] = value
 
         original_metadata = save_and_load_metadata(self.filename, metadata)
@@ -398,7 +398,7 @@ class ID3Test(FormatsTest):
         if not self.original:
             return
         metadata = Metadata()
-        for (key, value) in self.tags.iteritems():
+        for (key, value) in self.tags.items():
             metadata[key] = value
         metadata['comment:bar'] = 'Foo'
         original_metadata = save_and_load_metadata(self.filename, metadata)
@@ -417,10 +417,10 @@ class ID3Test(FormatsTest):
         config.setting['write_id3v23'] = True
         self.addCleanup(reset_to_id3v24)
         metadata = Metadata()
-        for (key, value) in self.tags.iteritems():
+        for (key, value) in self.tags.items():
             metadata[key] = value
         loaded_metadata = save_and_load_metadata(self.filename, metadata)
-        for (key, value) in self.tags.iteritems():
+        for (key, value) in self.tags.items():
             # if key == 'comment:foo':
             #    print "%r" % loaded_metadata
             self.assertEqual(loaded_metadata[key], value, '%s: %r != %r' % (key, loaded_metadata[key], value))
@@ -1018,7 +1018,7 @@ class TestCoverArt(unittest.TestCase):
         tmp_files = []
         for t in tests:
             imgdata = tests[t]['data']
-            imgdata2 = imgdata + 'xxx'
+            imgdata2 = imgdata + b'xxx'
             # set data once
             coverartimage = CoverArtImage(
                 data=imgdata2
@@ -1124,15 +1124,15 @@ class TestCoverArt(unittest.TestCase):
             tests = {
                 'jpg': {
                     'mime': 'image/jpeg',
-                    'data': self.jpegdata + "a" * 1024 * 128
+                    'data': self.jpegdata + b"a" * 1024 * 128
                 },
                 'png': {
                     'mime': 'image/png',
-                    'data': self.pngdata + "a" * 1024 * 128
+                    'data': self.pngdata + b"a" * 1024 * 128
                 },
             }
             for t in tests:
-                f = picard.formats.open(self.filename)
+                f = picard.formats.open_(self.filename)
                 metadata = Metadata()
                 imgdata = tests[t]['data']
                 metadata.append_image(
@@ -1142,7 +1142,7 @@ class TestCoverArt(unittest.TestCase):
                 )
                 f._save(self.filename, metadata)
 
-                f = picard.formats.open(self.filename)
+                f = picard.formats.open_(self.filename)
                 loaded_metadata = f._load(self.filename)
                 image = loaded_metadata.images[0]
                 self.assertEqual(image.mimetype, tests[t]['mime'])
@@ -1157,7 +1157,7 @@ class TestCoverArt(unittest.TestCase):
             TagCoverArtImage(
                 file='a',
                 tag='a',
-                data=imgdata + 'a',
+                data=imgdata + b'a',
                 support_types=True,
                 types=[u'booklet', u'front'],
             )
@@ -1166,7 +1166,7 @@ class TestCoverArt(unittest.TestCase):
             TagCoverArtImage(
                 file='b',
                 tag='b',
-                data=imgdata + 'b',
+                data=imgdata + b'b',
                 support_types=True,
                 types=[u'back'],
             )
@@ -1175,7 +1175,7 @@ class TestCoverArt(unittest.TestCase):
             TagCoverArtImage(
                 file='c',
                 tag='c',
-                data=imgdata + 'c',
+                data=imgdata + b'c',
                 support_types=True,
                 types=[u'front'],
             )
@@ -1184,14 +1184,14 @@ class TestCoverArt(unittest.TestCase):
             TagCoverArtImage(
                 file='d',
                 tag='d',
-                data=imgdata + 'd',
+                data=imgdata + b'd',
             )
         )
         metadata.append_image(
             TagCoverArtImage(
                 file='e',
                 tag='e',
-                data=imgdata + 'e',
+                data=imgdata + b'e',
                 is_front=False
             )
         )
@@ -1199,7 +1199,7 @@ class TestCoverArt(unittest.TestCase):
             TagCoverArtImage(
                 file='f',
                 tag='f',
-                data=imgdata + 'f',
+                data=imgdata + b'f',
                 types=[u'front']
             )
         )
@@ -1207,7 +1207,7 @@ class TestCoverArt(unittest.TestCase):
             TagCoverArtImage(
                 file='g',
                 tag='g',
-                data=imgdata + 'g',
+                data=imgdata + b'g',
                 types=[u'back'],
                 is_front=True
             )
@@ -1229,11 +1229,12 @@ class TestCoverArt(unittest.TestCase):
 
     def _test_cover_art_types(self, filename, expect):
         self._set_up(filename)
+        expect = {ord(char) for char in expect}
         try:
-            f = picard.formats.open(self.filename)
+            f = picard.formats.open_(self.filename)
             f._save(self.filename, self._cover_metadata())
 
-            f = picard.formats.open(self.filename)
+            f = picard.formats.open_(self.filename)
             loaded_metadata = f._load(self.filename)
             found = set()
             for n, image in enumerate(loaded_metadata.images):
@@ -1244,11 +1245,12 @@ class TestCoverArt(unittest.TestCase):
 
     def _test_cover_art_types_only_front(self, filename, expect):
         self._set_up(filename, {'embed_only_one_front_image': True})
+        expect = {ord(char) for char in expect}
         try:
-            f = picard.formats.open(self.filename)
+            f = picard.formats.open_(self.filename)
             f._save(self.filename, self._cover_metadata())
 
-            f = picard.formats.open(self.filename)
+            f = picard.formats.open_(self.filename)
             loaded_metadata = f._load(self.filename)
             found = set()
             for n, image in enumerate(loaded_metadata.images):
@@ -1256,3 +1258,11 @@ class TestCoverArt(unittest.TestCase):
             self.assertEqual(expect, found)
         finally:
             self._tear_down()
+
+
+class WAVTest(unittest.TestCase):
+    filename = os.path.join('test', 'data', 'test.wav')
+
+    def test_can_open_and_save(self):
+        metadata = Metadata()
+        save_and_load_metadata(self.filename, metadata)

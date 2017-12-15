@@ -20,13 +20,13 @@
 
 import os
 import sys
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtWidgets
 from picard import config
 from picard.formats import supported_formats
 from picard.util import find_existing_path
 
 
-class FileBrowser(QtGui.QTreeView):
+class FileBrowser(QtWidgets.QTreeView):
 
     options = [
         config.TextOption("persist", "current_browser_path", ""),
@@ -34,18 +34,18 @@ class FileBrowser(QtGui.QTreeView):
     ]
 
     def __init__(self, parent):
-        QtGui.QTreeView.__init__(self, parent)
-        self.setSelectionMode(QtGui.QAbstractItemView.ExtendedSelection)
+        QtWidgets.QTreeView.__init__(self, parent)
+        self.setSelectionMode(QtWidgets.QAbstractItemView.ExtendedSelection)
         self.setDragEnabled(True)
-        self.move_files_here_action = QtGui.QAction(_("&Move Tagged Files Here"), self)
+        self.move_files_here_action = QtWidgets.QAction(_("&Move Tagged Files Here"), self)
         self.move_files_here_action.triggered.connect(self.move_files_here)
         self.addAction(self.move_files_here_action)
-        self.toggle_hidden_action = QtGui.QAction(_("Show &Hidden Files"), self)
+        self.toggle_hidden_action = QtWidgets.QAction(_("Show &Hidden Files"), self)
         self.toggle_hidden_action.setCheckable(True)
         self.toggle_hidden_action.setChecked(config.persist["show_hidden_files"])
         self.toggle_hidden_action.toggled.connect(self.show_hidden)
         self.addAction(self.toggle_hidden_action)
-        self.set_as_starting_directory_action = QtGui.QAction(_("&Set as starting directory"), self)
+        self.set_as_starting_directory_action = QtWidgets.QAction(_("&Set as starting directory"), self)
         self.set_as_starting_directory_action.triggered.connect(self.set_as_starting_directory)
         self.addAction(self.set_as_starting_directory_action)
         self.setContextMenuPolicy(QtCore.Qt.ActionsContextMenu)
@@ -53,7 +53,7 @@ class FileBrowser(QtGui.QTreeView):
         self._set_model()
 
     def _set_model(self):
-        self.model = QtGui.QFileSystemModel()
+        self.model = QtWidgets.QFileSystemModel()
         self.model.layoutChanged.connect(self._layout_changed)
         self.model.setRootPath("")
         self._set_model_filter()
@@ -71,15 +71,15 @@ class FileBrowser(QtGui.QTreeView):
         header.hideSection(1)
         header.hideSection(2)
         header.hideSection(3)
-        header.setResizeMode(QtGui.QHeaderView.ResizeToContents)
+        header.setSectionResizeMode(QtWidgets.QHeaderView.ResizeToContents)
         header.setStretchLastSection(False)
         header.setVisible(False)
 
     def _set_model_filter(self):
-        filter = QtCore.QDir.AllDirs | QtCore.QDir.Files | QtCore.QDir.Drives | QtCore.QDir.NoDotAndDotDot
+        model_filter = QtCore.QDir.AllDirs | QtCore.QDir.Files | QtCore.QDir.Drives | QtCore.QDir.NoDotAndDotDot
         if config.persist["show_hidden_files"]:
-            filter |= QtCore.QDir.Hidden
-        self.model.setFilter(filter)
+            model_filter |= QtCore.QDir.Hidden
+        self.model.setFilter(model_filter)
 
     def _layout_changed(self):
         def scroll():
@@ -96,12 +96,12 @@ class FileBrowser(QtGui.QTreeView):
     def mousePressEvent(self, event):
         index = self.indexAt(event.pos())
         if index.isValid():
-            self.selectionModel().setCurrentIndex(index, QtGui.QItemSelectionModel.NoUpdate)
-        QtGui.QTreeView.mousePressEvent(self, event)
+            self.selectionModel().setCurrentIndex(index, QtCore.QItemSelectionModel.NoUpdate)
+        QtWidgets.QTreeView.mousePressEvent(self, event)
 
     def focusInEvent(self, event):
         self.focused = True
-        QtGui.QTreeView.focusInEvent(self, event)
+        QtWidgets.QTreeView.focusInEvent(self, event)
 
     def show_hidden(self, state):
         config.persist["show_hidden_files"] = state
@@ -111,7 +111,7 @@ class FileBrowser(QtGui.QTreeView):
         indexes = self.selectedIndexes()
         if indexes:
             path = self.model.filePath(indexes[0])
-            config.persist["current_browser_path"] = os.path.normpath(unicode(path))
+            config.persist["current_browser_path"] = os.path.normpath(path)
 
     def restore_state(self):
         pass
@@ -119,18 +119,18 @@ class FileBrowser(QtGui.QTreeView):
     def _restore_state(self):
         if config.setting["starting_directory"]:
             path = config.setting["starting_directory_path"]
-            scrolltype = QtGui.QAbstractItemView.PositionAtTop
+            scrolltype = QtWidgets.QAbstractItemView.PositionAtTop
         else:
             path = config.persist["current_browser_path"]
-            scrolltype = QtGui.QAbstractItemView.PositionAtCenter
+            scrolltype = QtWidgets.QAbstractItemView.PositionAtCenter
         if path:
-            index = self.model.index(find_existing_path(unicode(path)))
+            index = self.model.index(find_existing_path(path))
             self.setCurrentIndex(index)
             self.expand(index)
             self.scrollTo(index, scrolltype)
 
     def _get_destination_from_path(self, path):
-        destination = os.path.normpath(unicode(path))
+        destination = os.path.normpath(path)
         if not os.path.isdir(destination):
             destination = os.path.dirname(destination)
         return destination

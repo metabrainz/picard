@@ -31,7 +31,7 @@ from functools import partial
 from picard import config, log
 from picard.coverart.image import (CoverArtImageIOError,
                                    CoverArtImageIdentificationError)
-from PyQt4.QtCore import QObject
+from PyQt5.QtCore import QObject
 
 
 class CoverArt:
@@ -78,11 +78,11 @@ class CoverArt:
                     coverartimage.imageinfo_as_string())
                 )
         except CoverArtImageIOError as e:
-            self.album.error_append(unicode(e))
+            self.album.error_append(e)
             self.album._finalize_loading(error=True)
             raise e
         except CoverArtImageIdentificationError as e:
-            self.album.error_append(unicode(e))
+            self.album.error_append(e)
 
 
     def _coverart_downloaded(self, coverartimage, data, http, error):
@@ -90,7 +90,7 @@ class CoverArt:
         self.album._requests -= 1
 
         if error:
-            self.album.error_append(u'Coverart error: %s' % (unicode(http.errorString())))
+            self.album.error_append('Coverart error: %s' % (http.errorString()))
         elif len(data) < 1000:
             log.warning("Not enough data, skipping %s" % coverartimage)
         else:
@@ -191,7 +191,7 @@ class CoverArt:
             echo=None
         )
         log.debug("Downloading %r" % coverartimage)
-        self.album.tagger.xmlws.download(
+        self.album.tagger.webservice.download(
             coverartimage.host,
             coverartimage.port,
             coverartimage.path,

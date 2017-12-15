@@ -38,30 +38,30 @@ def unpack_image(data):
     Description, null terminated UTF-16-LE string
     The image data in the given length
     """
-    (type, size) = struct.unpack_from("<bi", data)
+    (image_type, size) = struct.unpack_from("<bi", data)
     pos = 5
-    mime = ""
-    while data[pos:pos+2] != "\x00\x00":
+    mime = b""
+    while data[pos:pos+2] != b"\x00\x00":
         mime += data[pos:pos+2]
         pos += 2
     pos += 2
-    description = ""
-    while data[pos:pos+2] != "\x00\x00":
+    description = b""
+    while data[pos:pos+2] != b"\x00\x00":
         description += data[pos:pos+2]
         pos += 2
     pos += 2
     image_data = data[pos:pos+size]
-    return (mime.decode("utf-16-le"), image_data, type, description.decode("utf-16-le"))
+    return (mime.decode("utf-16-le"), image_data, image_type, description.decode("utf-16-le"))
 
 
-def pack_image(mime, data, type=3, description=""):
+def pack_image(mime, data, image_type=3, description=""):
     """
     Helper function to pack image data for a WM/Picture tag.
     See unpack_image for a description of the data format.
     """
-    tag_data = struct.pack("<bi", type, len(data))
-    tag_data += mime.encode("utf-16-le") + "\x00\x00"
-    tag_data += description.encode("utf-16-le") + "\x00\x00"
+    tag_data = struct.pack("<bi", image_type, len(data))
+    tag_data += mime.encode("utf-16-le") + b"\x00\x00"
+    tag_data += description.encode("utf-16-le") + b"\x00\x00"
     tag_data += data
     return tag_data
 
@@ -150,12 +150,12 @@ class ASFFile(File):
         for name, values in file.tags.items():
             if name == 'WM/Picture':
                 for image in values:
-                    (mime, data, type, description) = unpack_image(image.value)
+                    (mime, data, type_, description) = unpack_image(image.value)
                     try:
                         coverartimage = TagCoverArtImage(
                             file=filename,
                             tag=name,
-                            types=types_from_id3(type),
+                            types=types_from_id3(type_),
                             comment=description,
                             support_types=True,
                             data=data,
@@ -171,14 +171,14 @@ class ASFFile(File):
                 continue
             elif name == 'WM/SharedUserRating':
                 # Rating in WMA ranges from 0 to 99, normalize this to the range 0 to 5
-                values[0] = int(round(int(unicode(values[0])) / 99.0 * (config.setting['rating_steps'] - 1)))
+                values[0] = int(round(int(string_(values[0])) / 99.0 * (config.setting['rating_steps'] - 1)))
             elif name == 'WM/PartOfSet':
-                disc = unicode(values[0]).split("/")
+                disc = string_(values[0]).split("/")
                 if len(disc) > 1:
                     metadata["totaldiscs"] = disc[1]
                     values[0] = disc[0]
             name = self.__RTRANS[name]
-            values = filter(bool, map(unicode, values))
+            values = [string_(value) for value in values if value]
             if values:
                 metadata[name] = values
         self._info(metadata, file)
@@ -199,18 +199,17 @@ class ASFFile(File):
             cover.append(ASFByteArrayAttribute(tag_data))
         if cover:
             tags['WM/Picture'] = cover
-
         for name, values in metadata.rawitems():
             if name.startswith('lyrics:'):
                 name = 'lyrics'
             elif name == '~rating':
-                values[0] = int(values[0]) * 99 / (config.setting['rating_steps'] - 1)
+                values[0] = int(values[0]) * 99 // (config.setting['rating_steps'] - 1)
             elif name == 'discnumber' and 'totaldiscs' in metadata:
                 values[0] = '%s/%s' % (metadata['discnumber'], metadata['totaldiscs'])
             if name not in self.__TRANS:
                 continue
             name = self.__TRANS[name]
-            tags[name] = map(unicode, values)
+            tags[name] = values
 
         self._remove_deleted_tags(metadata, tags)
 
@@ -221,10 +220,7 @@ class ASFFile(File):
         for tag in metadata.deleted_tags:
             real_name = self._get_tag_name(tag)
             if real_name and real_name in tags:
-                if tag == 'totaldiscs':
-                    tags[real_name] = map(unicode, metadata['discnumber'])
-                else:
-                    del tags[real_name]
+                del tags[real_name]
 
     def supports_tag(self, name):
         return (name in self.__TRANS

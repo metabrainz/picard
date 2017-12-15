@@ -21,12 +21,12 @@
 import os.path
 import sys
 from functools import partial
-from PyQt4 import QtGui
-from PyQt4.QtGui import QPalette, QColor
+from PyQt5 import QtWidgets
+from PyQt5.QtGui import QPalette
 from picard import config
 from picard.const import PICARD_URLS
 from picard.file import File
-from picard.script import ScriptParser, SyntaxError, ScriptError, UnknownFunction
+from picard.script import ScriptParser, SyntaxError, ScriptError
 from picard.ui.options import OptionsPage, OptionsCheckError, register_options_page
 from picard.ui.ui_options_renaming import Ui_RenamingOptionsPage
 from picard.ui.util import enabledSlot
@@ -131,8 +131,8 @@ class RenamingOptionsPage(OptionsPage):
             'rename_files': self.ui.rename_files.isChecked(),
             'move_files': self.ui.move_files.isChecked(),
             'use_va_format': False,  # TODO remove
-            'file_naming_format': unicode(self.ui.file_naming_format.toPlainText()),
-            'move_files_to': os.path.normpath(unicode(self.ui.move_files_to.text()))
+            'file_naming_format': self.ui.file_naming_format.toPlainText(),
+            'move_files_to': os.path.normpath(self.ui.move_files_to.text())
         }
         try:
             if config.setting["enable_tagger_scripts"]:
@@ -172,7 +172,7 @@ class RenamingOptionsPage(OptionsPage):
         args = {
             "picard-doc-scripting-url": PICARD_URLS['doc_scripting'],
         }
-        text = _(u'<a href="%(picard-doc-scripting-url)s">Open Scripting'
+        text = _('<a href="%(picard-doc-scripting-url)s">Open Scripting'
                  ' Documentation in your browser</a>') % args
         self.ui.file_naming_format_documentation.setText(text)
         self.ui.move_files_to.setText(config.setting["move_files_to"])
@@ -184,29 +184,29 @@ class RenamingOptionsPage(OptionsPage):
 
     def check(self):
         self.check_format()
-        if self.ui.move_files.isChecked() and not unicode(self.ui.move_files_to.text()).strip():
+        if self.ui.move_files.isChecked() and not self.ui.move_files_to.text().strip():
             raise OptionsCheckError(_("Error"), _("The location to move files to must not be empty."))
 
     def check_format(self):
         parser = ScriptParser()
         try:
-            parser.eval(unicode(self.ui.file_naming_format.toPlainText()))
+            parser.eval(self.ui.file_naming_format.toPlainText())
         except Exception as e:
-            raise OptionsCheckError("", str(e))
+            raise OptionsCheckError("", string_(e))
         if self.ui.rename_files.isChecked():
-            if not unicode(self.ui.file_naming_format.toPlainText()).strip():
+            if not self.ui.file_naming_format.toPlainText().strip():
                 raise OptionsCheckError("", _("The file naming format must not be empty."))
 
     def save(self):
         config.setting["windows_compatibility"] = self.ui.windows_compatibility.isChecked()
         config.setting["ascii_filenames"] = self.ui.ascii_filenames.isChecked()
         config.setting["rename_files"] = self.ui.rename_files.isChecked()
-        config.setting["file_naming_format"] = unicode(self.ui.file_naming_format.toPlainText())
+        config.setting["file_naming_format"] = self.ui.file_naming_format.toPlainText()
         self.tagger.window.enable_renaming_action.setChecked(config.setting["rename_files"])
         config.setting["move_files"] = self.ui.move_files.isChecked()
-        config.setting["move_files_to"] = os.path.normpath(unicode(self.ui.move_files_to.text()))
+        config.setting["move_files_to"] = os.path.normpath(self.ui.move_files_to.text())
         config.setting["move_additional_files"] = self.ui.move_additional_files.isChecked()
-        config.setting["move_additional_files_pattern"] = unicode(self.ui.move_additional_files_pattern.text())
+        config.setting["move_additional_files_pattern"] = self.ui.move_additional_files_pattern.text()
         config.setting["delete_empty_dirs"] = self.ui.delete_empty_dirs.isChecked()
         self.tagger.window.enable_moving_action.setChecked(config.setting["move_files"])
 
@@ -247,38 +247,38 @@ class RenamingOptionsPage(OptionsPage):
     def example_2(self):
         file = File("track05.mp3")
         file.state = File.NORMAL
-        file.metadata['album'] = u"Coup d'État, Volume 1: Ku De Ta / Prologue"
-        file.metadata['title'] = u"I've Got to Learn the Mambo"
-        file.metadata['artist'] = u"Snowboy feat. James Hunter"
-        file.metadata['artistsort'] = u"Snowboy feat. Hunter, James"
+        file.metadata['album'] = "Coup d'État, Volume 1: Ku De Ta / Prologue"
+        file.metadata['title'] = "I've Got to Learn the Mambo"
+        file.metadata['artist'] = "Snowboy feat. James Hunter"
+        file.metadata['artistsort'] = "Snowboy feat. Hunter, James"
         file.metadata['albumartist'] = config.setting['va_name']
         file.metadata['albumartistsort'] = config.setting['va_name']
         file.metadata['tracknumber'] = '5'
         file.metadata['totaltracks'] = '13'
         file.metadata['discnumber'] = '2'
         file.metadata['totaldiscs'] = '2'
-        file.metadata['discsubtitle'] = u"Beat Up"
-        file.metadata['date'] = u'2005-07-04'
-        file.metadata['releasetype'] = [u'album', u'compilation']
-        file.metadata['~primaryreleasetype'] = u'album'
-        file.metadata['~secondaryreleasetype'] = u'compilation'
-        file.metadata['releasestatus'] = u'official'
-        file.metadata['releasecountry'] = u'AU'
+        file.metadata['discsubtitle'] = "Beat Up"
+        file.metadata['date'] = '2005-07-04'
+        file.metadata['releasetype'] = ['album', 'compilation']
+        file.metadata['~primaryreleasetype'] = 'album'
+        file.metadata['~secondaryreleasetype'] = 'compilation'
+        file.metadata['releasestatus'] = 'official'
+        file.metadata['releasecountry'] = 'AU'
         file.metadata['compilation'] = '1'
         file.metadata['~multiartist'] = '1'
         file.metadata['~extension'] = 'mp3'
-        file.metadata['musicbrainz_albumid'] = u'4b50c71e-0a07-46ac-82e4-cb85dc0c9bdd'
-        file.metadata['musicbrainz_recordingid'] = u'b3c487cb-0e55-477d-8df3-01ec6590f099'
-        file.metadata['musicbrainz_releasetrackid'] = u'f8649a05-da39-39ba-957c-7abf8f9012be'
-        file.metadata['musicbrainz_albumartistid'] = u'89ad4ac3-39f7-470e-963a-56509c546377'
-        file.metadata['musicbrainz_artistid'] = [u'7b593455-d207-482c-8c6f-19ce22c94679',
-                                                 u'9e082466-2390-40d1-891e-4803531f43fd']
+        file.metadata['musicbrainz_albumid'] = '4b50c71e-0a07-46ac-82e4-cb85dc0c9bdd'
+        file.metadata['musicbrainz_recordingid'] = 'b3c487cb-0e55-477d-8df3-01ec6590f099'
+        file.metadata['musicbrainz_releasetrackid'] = 'f8649a05-da39-39ba-957c-7abf8f9012be'
+        file.metadata['musicbrainz_albumartistid'] = '89ad4ac3-39f7-470e-963a-56509c546377'
+        file.metadata['musicbrainz_artistid'] = ['7b593455-d207-482c-8c6f-19ce22c94679',
+                                                 '9e082466-2390-40d1-891e-4803531f43fd']
         return file
 
     def move_files_to_browse(self):
-        path = QtGui.QFileDialog.getExistingDirectory(self, "", self.ui.move_files_to.text())
+        path = QtWidgets.QFileDialog.getExistingDirectory(self, "", self.ui.move_files_to.text())
         if path:
-            path = os.path.normpath(unicode(path))
+            path = os.path.normpath(path)
             self.ui.move_files_to.setText(path)
 
     def test(self):

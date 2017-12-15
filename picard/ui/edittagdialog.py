@@ -17,7 +17,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtWidgets
 from picard.util.tags import TAG_NAMES
 from picard.ui import PicardDialog
 from picard.ui.ui_edittagdialog import Ui_EditTagDialog
@@ -36,18 +36,18 @@ class EditTagDialog(PicardDialog):
         self.modified_tags = {}
         self.different = False
         self.default_tags = sorted(
-            set(TAG_NAMES.keys() + self.metadata_box.tag_diff.tag_names))
+            set(list(TAG_NAMES.keys()) + self.metadata_box.tag_diff.tag_names))
         if len(self.metadata_box.files) == 1:
             current_file = list(self.metadata_box.files)[0]
-            self.default_tags = filter(lambda x: current_file.supports_tag(x),
-                                       self.default_tags)
+            self.default_tags = list(filter(lambda x: current_file.supports_tag(x),
+                                            self.default_tags))
         tag_names = self.ui.tag_names
         tag_names.editTextChanged.connect(self.tag_changed)
         tag_names.addItem("")
         visible_tags = [tn for tn in self.default_tags if not tn.startswith("~")]
         tag_names.addItems(visible_tags)
-        self.completer = QtGui.QCompleter(visible_tags, tag_names)
-        self.completer.setCompletionMode(QtGui.QCompleter.PopupCompletion)
+        self.completer = QtWidgets.QCompleter(visible_tags, tag_names)
+        self.completer.setCompletionMode(QtWidgets.QCompleter.PopupCompletion)
         tag_names.setCompleter(self.completer)
         self.tag_changed(tag)
         self.value_selection_changed()
@@ -64,7 +64,7 @@ class EditTagDialog(PicardDialog):
 
     def add_value(self):
         self._modified_tag().append("")
-        item = QtGui.QListWidgetItem()
+        item = QtWidgets.QListWidgetItem()
         item.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsEditable)
         self.value_list.addItem(item)
         self.value_list.editItem(item)
@@ -98,7 +98,7 @@ class EditTagDialog(PicardDialog):
             tag_names.removeItem(tag_names.findText(self.tag, flags))
 
         row = tag_names.findText(tag, flags)
-        self.tag = unicode(tag)
+        self.tag = string_(tag)
         if row <= 0:
             if tag:
                 # add custom tags to the QComboBox immediately
@@ -124,13 +124,13 @@ class EditTagDialog(PicardDialog):
             self.ui.add_value.setEnabled(not self.different)
 
         self._add_value_items(values)
-        self.value_list.setCurrentItem(self.value_list.item(0), QtGui.QItemSelectionModel.SelectCurrent)
+        self.value_list.setCurrentItem(self.value_list.item(0), QtCore.QItemSelectionModel.SelectCurrent)
         tag_names.editTextChanged.connect(self.tag_changed)
 
     def _add_value_items(self, values):
         values = [v for v in values if v] or [""]
         for value in values:
-            item = QtGui.QListWidgetItem(value)
+            item = QtWidgets.QListWidgetItem(value)
             item.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsEditable)
             font = item.font()
             font.setItalic(self.different)
@@ -139,7 +139,7 @@ class EditTagDialog(PicardDialog):
 
     def value_edited(self, item):
         row = self.value_list.row(item)
-        value = unicode(item.text())
+        value = item.text()
         if row == 0 and self.different:
             self.modified_tags[self.tag] = [value]
             self.different = False
@@ -176,4 +176,4 @@ class EditTagDialog(PicardDialog):
             obj.update()
         self.window.ignore_selection_changes = False
         self.window.update_selection()
-        QtGui.QDialog.accept(self)
+        QtWidgets.QDialog.accept(self)

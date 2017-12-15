@@ -17,10 +17,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-import traceback
 
-from picard import config, log
-from picard.coverart.providers import CoverArtProvider
 from picard.coverart.providers.caa import CoverArtProviderCaa
 from picard.coverart.image import CaaCoverArtImage, CaaThumbnailCoverArtImage
 
@@ -38,7 +35,7 @@ class CoverArtProviderCaaReleaseGroup(CoverArtProviderCaa):
     """Use cover art from album release group"""
 
     NAME = "CaaReleaseGroup"
-    TITLE = N_(u"CAA Release Group")
+    TITLE = N_("CAA Release Group")
     # FIXME: caa release group uses the same options than caa
     OPTIONS = None
 

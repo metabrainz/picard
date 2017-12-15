@@ -17,7 +17,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-from PyQt4 import QtCore, QtNetwork
+from PyQt5 import QtCore, QtNetwork
 from picard import log, config
 
 
@@ -58,15 +58,15 @@ class BrowserIntegration(QtNetwork.QTcpServer):
 
     def _process_request(self):
         conn = self.sender()
-        line = str(conn.readLine())
-        conn.write("HTTP/1.1 200 OK\r\nCache-Control: max-age=0\r\n\r\nNothing to see here.")
+        line = string_(conn.readLine())
+        conn.write(b"HTTP/1.1 200 OK\r\nCache-Control: max-age=0\r\n\r\nNothing to see here.")
         conn.disconnectFromHost()
         line = line.split()
         log.debug("Browser integration request: %r", line)
         if line[0] == "GET" and "?" in line[1]:
             action, args = line[1].split("?")
             args = [a.split("=", 1) for a in args.split("&")]
-            args = dict((a, unicode(QtCore.QUrl.fromPercentEncoding(b))) for (a, b) in args)
+            args = dict((a, string_(QtCore.QUrl.fromPercentEncoding(b.encode('ascii')))) for (a, b) in args)
             self.tagger.bring_tagger_front()
             if action == "/openalbum":
                 self.tagger.load_album(args["id"])

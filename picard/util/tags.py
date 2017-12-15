@@ -88,6 +88,10 @@ TAG_NAMES = {
     '~rating': N_('Rating'),
     'artists': N_('Artists'),
     'work': N_('Work'),
+    'originalartist': N_('Original Artist'),
+    'musicbrainz_originalartistid': N_('MusicBrainz Original Artist Id'),
+    'originalalbum': N_('Original Album'),
+    'musicbrainz_originalalbumid': N_('MusicBrainz Original Release Id'),
 }
 
 PRESERVED_TAGS = [

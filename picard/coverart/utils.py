@@ -18,17 +18,17 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from picard.const import MB_ATTRIBUTES
-from picard.i18n import ugettext_attr
+from picard.i18n import gettext_attr
 
 # list of types from http://musicbrainz.org/doc/Cover_Art/Types
 # order of declaration is preserved in selection box
 CAA_TYPES = []
 for k, v in sorted(MB_ATTRIBUTES.items(), key=lambda k_v: k_v[0]):
-    if k.startswith(u'DB:cover_art_archive.art_type/name:'):
+    if k.startswith('DB:cover_art_archive.art_type/name:'):
         CAA_TYPES.append({'name': v.lower(), 'title': v})
 
 # pseudo type, used for the no type case
-CAA_TYPES.append({'name': "unknown", 'title': N_(u"Unknown")})
+CAA_TYPES.append({'name': "unknown", 'title': N_("Unknown")})
 
 CAA_TYPES_TR = {}
 for t in CAA_TYPES:
@@ -39,4 +39,4 @@ def translate_caa_type(name):
     if name == 'unknown':
         return _(CAA_TYPES_TR[name])
     else:
-        return ugettext_attr(CAA_TYPES_TR[name], u"cover_art_type")
+        return gettext_attr(CAA_TYPES_TR[name], "cover_art_type")

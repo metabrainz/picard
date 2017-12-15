@@ -75,26 +75,26 @@ def _re_any(iterable):
     return re.compile('([' + ''.join(iterable) + '])', re.UNICODE)
 
 _additional_compatibility = {
-    u"\u0276": u"Œ",  # LATIN LETTER SMALL CAPITAL OE
-    u"\u1D00": u"A",  # LATIN LETTER SMALL CAPITAL A
-    u"\u1D01": u"Æ",  # LATIN LETTER SMALL CAPITAL AE
-    u"\u1D04": u"C",  # LATIN LETTER SMALL CAPITAL C
-    u"\u1D05": u"D",  # LATIN LETTER SMALL CAPITAL D
-    u"\u1D07": u"E",  # LATIN LETTER SMALL CAPITAL E
-    u"\u1D0A": u"J",  # LATIN LETTER SMALL CAPITAL J
-    u"\u1D0B": u"K",  # LATIN LETTER SMALL CAPITAL K
-    u"\u1D0D": u"M",  # LATIN LETTER SMALL CAPITAL M
-    u"\u1D0F": u"O",  # LATIN LETTER SMALL CAPITAL O
-    u"\u1D18": u"P",  # LATIN LETTER SMALL CAPITAL P
-    u"\u1D1B": u"T",  # LATIN LETTER SMALL CAPITAL T
-    u"\u1D1C": u"U",  # LATIN LETTER SMALL CAPITAL U
-    u"\u1D20": u"V",  # LATIN LETTER SMALL CAPITAL V
-    u"\u1D21": u"W",  # LATIN LETTER SMALL CAPITAL W
-    u"\u1D22": u"Z",  # LATIN LETTER SMALL CAPITAL Z
-    u"\u3007": u"0",  # IDEOGRAPHIC NUMBER ZERO
-    u"\u00A0": u" ",  # NO-BREAK SPACE
-    u"\u3000": u" ",  # IDEOGRAPHIC SPACE (from ‹character-fallback›)
-    u"\u2033": u"”",  # DOUBLE PRIME
+    "\u0276": "Œ",  # LATIN LETTER SMALL CAPITAL OE
+    "\u1D00": "A",  # LATIN LETTER SMALL CAPITAL A
+    "\u1D01": "Æ",  # LATIN LETTER SMALL CAPITAL AE
+    "\u1D04": "C",  # LATIN LETTER SMALL CAPITAL C
+    "\u1D05": "D",  # LATIN LETTER SMALL CAPITAL D
+    "\u1D07": "E",  # LATIN LETTER SMALL CAPITAL E
+    "\u1D0A": "J",  # LATIN LETTER SMALL CAPITAL J
+    "\u1D0B": "K",  # LATIN LETTER SMALL CAPITAL K
+    "\u1D0D": "M",  # LATIN LETTER SMALL CAPITAL M
+    "\u1D0F": "O",  # LATIN LETTER SMALL CAPITAL O
+    "\u1D18": "P",  # LATIN LETTER SMALL CAPITAL P
+    "\u1D1B": "T",  # LATIN LETTER SMALL CAPITAL T
+    "\u1D1C": "U",  # LATIN LETTER SMALL CAPITAL U
+    "\u1D20": "V",  # LATIN LETTER SMALL CAPITAL V
+    "\u1D21": "W",  # LATIN LETTER SMALL CAPITAL W
+    "\u1D22": "Z",  # LATIN LETTER SMALL CAPITAL Z
+    "\u3007": "0",  # IDEOGRAPHIC NUMBER ZERO
+    "\u00A0": " ",  # NO-BREAK SPACE
+    "\u3000": " ",  # IDEOGRAPHIC SPACE (from ‹character-fallback›)
+    "\u2033": "”",  # DOUBLE PRIME
 }
 _re_additional_compatibility = _re_any(_additional_compatibility.keys())
 
@@ -105,74 +105,74 @@ def unicode_simplify_compatibility(string):
 
 
 _simplify_punctuation = {
-    u"\u013F": u"L",  # LATIN CAPITAL LETTER L WITH MIDDLE DOT (compat)
-    u"\u0140": u"l",  # LATIN SMALL LETTER L WITH MIDDLE DOT (compat)
-    u"\u2018": u"'",  # LEFT SINGLE QUOTATION MARK (from ‹character-fallback›)
-    u"\u2019": u"'",  # RIGHT SINGLE QUOTATION MARK (from ‹character-fallback›)
-    u"\u201A": u"'",  # SINGLE LOW-9 QUOTATION MARK (from ‹character-fallback›)
-    u"\u201B": u"'",  # SINGLE HIGH-REVERSED-9 QUOTATION MARK (from ‹character-fallback›)
-    u"\u201C": u"\"",  # LEFT DOUBLE QUOTATION MARK (from ‹character-fallback›)
-    u"\u201D": u"\"",  # RIGHT DOUBLE QUOTATION MARK (from ‹character-fallback›)
-    u"\u201E": u"\"",  # DOUBLE LOW-9 QUOTATION MARK (from ‹character-fallback›)
-    u"\u201F": u"\"",  # DOUBLE HIGH-REVERSED-9 QUOTATION MARK (from ‹character-fallback›)
-    u"\u2032": u"'",  # PRIME
-    u"\u2033": u"\"",  # DOUBLE PRIME
-    u"\u301D": u"\"",  # REVERSED DOUBLE PRIME QUOTATION MARK
-    u"\u301E": u"\"",  # DOUBLE PRIME QUOTATION MARK
-    u"\u00AB": u"<<",  # LEFT-POINTING DOUBLE ANGLE QUOTATION MARK (from ‹character-fallback›)
-    u"\u00BB": u">>",  # RIGHT-POINTING DOUBLE ANGLE QUOTATION MARK (from ‹character-fallback›)
-    u"\u2039": u"<",  # SINGLE LEFT-POINTING ANGLE QUOTATION MARK
-    u"\u203A": u">",  # SINGLE RIGHT-POINTING ANGLE QUOTATION MARK
-    u"\u00AD": u"",  # SOFT HYPHEN (from ‹character-fallback›)
-    u"\u2010": u"-",  # HYPHEN (from ‹character-fallback›)
-    u"\u2011": u"-",  # NON-BREAKING HYPHEN (from ‹character-fallback›)
-    u"\u2012": u"-",  # FIGURE DASH (from ‹character-fallback›)
-    u"\u2013": u"-",  # EN DASH (from ‹character-fallback›)
-    u"\u2014": u"-",  # EM DASH (from ‹character-fallback›)
-    u"\u2015": u"-",  # HORIZONTAL BAR (from ‹character-fallback›)
-    u"\uFE31": u"|",  # PRESENTATION FORM FOR VERTICAL EM DASH (compat)
-    u"\uFE32": u"|",  # PRESENTATION FORM FOR VERTICAL EN DASH (compat)
-    u"\uFE58": u"-",  # SMALL EM DASH (compat)
-    u"\u2016": u"||",  # DOUBLE VERTICAL LINE
-    u"\u2044": u"/",  # FRACTION SLASH (from ‹character-fallback›)
-    u"\u2045": u"[",  # LEFT SQUARE BRACKET WITH QUILL
-    u"\u2046": u"]",  # RIGHT SQUARE BRACKET WITH QUILL
-    u"\u204E": u"*",  # LOW ASTERISK
-    u"\u3008": u"<",  # LEFT ANGLE BRACKET
-    u"\u3009": u">",  # RIGHT ANGLE BRACKET
-    u"\u300A": u"<<",  # LEFT DOUBLE ANGLE BRACKET
-    u"\u300B": u">>",  # RIGHT DOUBLE ANGLE BRACKET
-    u"\u3014": u"[",  # LEFT TORTOISE SHELL BRACKET
-    u"\u3015": u"]",  # RIGHT TORTOISE SHELL BRACKET
-    u"\u3018": u"[",  # LEFT WHITE TORTOISE SHELL BRACKET
-    u"\u3019": u"]",  # RIGHT WHITE TORTOISE SHELL BRACKET
-    u"\u301A": u"[",  # LEFT WHITE SQUARE BRACKET
-    u"\u301B": u"]",  # RIGHT WHITE SQUARE BRACKET
-    u"\uFE11": u",",  # PRESENTATION FORM FOR VERTICAL IDEOGRAPHIC COMMA (compat)
-    u"\uFE12": u".",  # PRESENTATION FORM FOR VERTICAL IDEOGRAPHIC FULL STOP (compat)
-    u"\uFE39": u"[",  # PRESENTATION FORM FOR VERTICAL LEFT TORTOISE SHELL BRACKET (compat)
-    u"\uFE3A": u"]",  # PRESENTATION FORM FOR VERTICAL RIGHT TORTOISE SHELL BRACKET (compat)
-    u"\uFE3D": u"<<",  # PRESENTATION FORM FOR VERTICAL LEFT DOUBLE ANGLE BRACKET (compat)
-    u"\uFE3E": u">>",  # PRESENTATION FORM FOR VERTICAL RIGHT DOUBLE ANGLE BRACKET (compat)
-    u"\uFE3F": u"<",  # PRESENTATION FORM FOR VERTICAL LEFT ANGLE BRACKET (compat)
-    u"\uFE40": u">",  # PRESENTATION FORM FOR VERTICAL RIGHT ANGLE BRACKET (compat)
-    u"\uFE51": u",",  # SMALL IDEOGRAPHIC COMMA (compat)
-    u"\uFE5D": u"[",  # SMALL LEFT TORTOISE SHELL BRACKET (compat)
-    u"\uFE5E": u"]",  # SMALL RIGHT TORTOISE SHELL BRACKET (compat)
-    u"\uFF5F": u"((",  # FULLWIDTH LEFT WHITE PARENTHESIS (compat)(from ‹character-fallback›)
-    u"\uFF60": u"))",  # FULLWIDTH RIGHT WHITE PARENTHESIS (compat)(from ‹character-fallback›)
-    u"\uFF61": u".",  # HALFWIDTH IDEOGRAPHIC FULL STOP (compat)
-    u"\uFF64": u",",  # HALFWIDTH IDEOGRAPHIC COMMA (compat)
-    u"\u2212": u"-",  # MINUS SIGN (from ‹character-fallback›)
-    u"\u2215": u"/",  # DIVISION SLASH (from ‹character-fallback›)
-    u"\u2216": u"\\",  # SET MINUS (from ‹character-fallback›)
-    u"\u2223": u"|",  # DIVIDES (from ‹character-fallback›)
-    u"\u2225": u"||",  # PARALLEL TO (from ‹character-fallback›)
-    u"\u226A": u"<<",  # MUCH LESS-THAN
-    u"\u226B": u">>",  # MUCH GREATER-THAN
-    u"\u2985": u"((",  # LEFT WHITE PARENTHESIS
-    u"\u2986": u"))",  # RIGHT WHITE PARENTHESIS
-    u"\u200B": u"",  # Zero Width Space
+    "\u013F": "L",  # LATIN CAPITAL LETTER L WITH MIDDLE DOT (compat)
+    "\u0140": "l",  # LATIN SMALL LETTER L WITH MIDDLE DOT (compat)
+    "\u2018": "'",  # LEFT SINGLE QUOTATION MARK (from ‹character-fallback›)
+    "\u2019": "'",  # RIGHT SINGLE QUOTATION MARK (from ‹character-fallback›)
+    "\u201A": "'",  # SINGLE LOW-9 QUOTATION MARK (from ‹character-fallback›)
+    "\u201B": "'",  # SINGLE HIGH-REVERSED-9 QUOTATION MARK (from ‹character-fallback›)
+    "\u201C": "\"",  # LEFT DOUBLE QUOTATION MARK (from ‹character-fallback›)
+    "\u201D": "\"",  # RIGHT DOUBLE QUOTATION MARK (from ‹character-fallback›)
+    "\u201E": "\"",  # DOUBLE LOW-9 QUOTATION MARK (from ‹character-fallback›)
+    "\u201F": "\"",  # DOUBLE HIGH-REVERSED-9 QUOTATION MARK (from ‹character-fallback›)
+    "\u2032": "'",  # PRIME
+    "\u2033": "\"",  # DOUBLE PRIME
+    "\u301D": "\"",  # REVERSED DOUBLE PRIME QUOTATION MARK
+    "\u301E": "\"",  # DOUBLE PRIME QUOTATION MARK
+    "\u00AB": "<<",  # LEFT-POINTING DOUBLE ANGLE QUOTATION MARK (from ‹character-fallback›)
+    "\u00BB": ">>",  # RIGHT-POINTING DOUBLE ANGLE QUOTATION MARK (from ‹character-fallback›)
+    "\u2039": "<",  # SINGLE LEFT-POINTING ANGLE QUOTATION MARK
+    "\u203A": ">",  # SINGLE RIGHT-POINTING ANGLE QUOTATION MARK
+    "\u00AD": "",  # SOFT HYPHEN (from ‹character-fallback›)
+    "\u2010": "-",  # HYPHEN (from ‹character-fallback›)
+    "\u2011": "-",  # NON-BREAKING HYPHEN (from ‹character-fallback›)
+    "\u2012": "-",  # FIGURE DASH (from ‹character-fallback›)
+    "\u2013": "-",  # EN DASH (from ‹character-fallback›)
+    "\u2014": "-",  # EM DASH (from ‹character-fallback›)
+    "\u2015": "-",  # HORIZONTAL BAR (from ‹character-fallback›)
+    "\uFE31": "|",  # PRESENTATION FORM FOR VERTICAL EM DASH (compat)
+    "\uFE32": "|",  # PRESENTATION FORM FOR VERTICAL EN DASH (compat)
+    "\uFE58": "-",  # SMALL EM DASH (compat)
+    "\u2016": "||",  # DOUBLE VERTICAL LINE
+    "\u2044": "/",  # FRACTION SLASH (from ‹character-fallback›)
+    "\u2045": "[",  # LEFT SQUARE BRACKET WITH QUILL
+    "\u2046": "]",  # RIGHT SQUARE BRACKET WITH QUILL
+    "\u204E": "*",  # LOW ASTERISK
+    "\u3008": "<",  # LEFT ANGLE BRACKET
+    "\u3009": ">",  # RIGHT ANGLE BRACKET
+    "\u300A": "<<",  # LEFT DOUBLE ANGLE BRACKET
+    "\u300B": ">>",  # RIGHT DOUBLE ANGLE BRACKET
+    "\u3014": "[",  # LEFT TORTOISE SHELL BRACKET
+    "\u3015": "]",  # RIGHT TORTOISE SHELL BRACKET
+    "\u3018": "[",  # LEFT WHITE TORTOISE SHELL BRACKET
+    "\u3019": "]",  # RIGHT WHITE TORTOISE SHELL BRACKET
+    "\u301A": "[",  # LEFT WHITE SQUARE BRACKET
+    "\u301B": "]",  # RIGHT WHITE SQUARE BRACKET
+    "\uFE11": ",",  # PRESENTATION FORM FOR VERTICAL IDEOGRAPHIC COMMA (compat)
+    "\uFE12": ".",  # PRESENTATION FORM FOR VERTICAL IDEOGRAPHIC FULL STOP (compat)
+    "\uFE39": "[",  # PRESENTATION FORM FOR VERTICAL LEFT TORTOISE SHELL BRACKET (compat)
+    "\uFE3A": "]",  # PRESENTATION FORM FOR VERTICAL RIGHT TORTOISE SHELL BRACKET (compat)
+    "\uFE3D": "<<",  # PRESENTATION FORM FOR VERTICAL LEFT DOUBLE ANGLE BRACKET (compat)
+    "\uFE3E": ">>",  # PRESENTATION FORM FOR VERTICAL RIGHT DOUBLE ANGLE BRACKET (compat)
+    "\uFE3F": "<",  # PRESENTATION FORM FOR VERTICAL LEFT ANGLE BRACKET (compat)
+    "\uFE40": ">",  # PRESENTATION FORM FOR VERTICAL RIGHT ANGLE BRACKET (compat)
+    "\uFE51": ",",  # SMALL IDEOGRAPHIC COMMA (compat)
+    "\uFE5D": "[",  # SMALL LEFT TORTOISE SHELL BRACKET (compat)
+    "\uFE5E": "]",  # SMALL RIGHT TORTOISE SHELL BRACKET (compat)
+    "\uFF5F": "((",  # FULLWIDTH LEFT WHITE PARENTHESIS (compat)(from ‹character-fallback›)
+    "\uFF60": "))",  # FULLWIDTH RIGHT WHITE PARENTHESIS (compat)(from ‹character-fallback›)
+    "\uFF61": ".",  # HALFWIDTH IDEOGRAPHIC FULL STOP (compat)
+    "\uFF64": ",",  # HALFWIDTH IDEOGRAPHIC COMMA (compat)
+    "\u2212": "-",  # MINUS SIGN (from ‹character-fallback›)
+    "\u2215": "/",  # DIVISION SLASH (from ‹character-fallback›)
+    "\u2216": "\\",  # SET MINUS (from ‹character-fallback›)
+    "\u2223": "|",  # DIVIDES (from ‹character-fallback›)
+    "\u2225": "||",  # PARALLEL TO (from ‹character-fallback›)
+    "\u226A": "<<",  # MUCH LESS-THAN
+    "\u226B": ">>",  # MUCH GREATER-THAN
+    "\u2985": "((",  # LEFT WHITE PARENTHESIS
+    "\u2986": "))",  # RIGHT WHITE PARENTHESIS
+    "\u200B": "",  # Zero Width Space
 }
 _re_simplify_punctuation = _re_any(_simplify_punctuation.keys())
 
@@ -182,229 +182,229 @@ def unicode_simplify_punctuation(string):
 
 
 _simplify_combinations = {
-    u"\u00C6": u"AE",  # LATIN CAPITAL LETTER AE (from ‹character-fallback›)
-    u"\u00D0": u"D",  # LATIN CAPITAL LETTER ETH
-    u"\u00D8": u"OE",  # LATIN CAPITAL LETTER O WITH STROKE (see https://en.wikipedia.org/wiki/%C3%98)
-    u"\u00DE": u"TH",  # LATIN CAPITAL LETTER THORN
-    u"\u00DF": u"ss",  # LATIN SMALL LETTER SHARP S (from ‹character-fallback›)
-    u"\u00E6": u"ae",  # LATIN SMALL LETTER AE (from ‹character-fallback›)
-    u"\u00F0": u"d",  # LATIN SMALL LETTER ETH
-    u"\u00F8": u"oe",  # LATIN SMALL LETTER O WITH STROKE (see https://en.wikipedia.org/wiki/%C3%98)
-    u"\u00FE": u"th",  # LATIN SMALL LETTER THORN
-    u"\u0110": u"D",  # LATIN CAPITAL LETTER D WITH STROKE
-    u"\u0111": u"d",  # LATIN SMALL LETTER D WITH STROKE
-    u"\u0126": u"H",  # LATIN CAPITAL LETTER H WITH STROKE
-    u"\u0127": u"h",  # LATIN CAPITAL LETTER H WITH STROKE
-    u"\u0131": u"i",  # LATIN SMALL LETTER DOTLESS I
-    u"\u0138": u"q",  # LATIN SMALL LETTER KRA (collates with q in DUCET)
-    u"\u0141": u"L",  # LATIN CAPITAL LETTER L WITH STROKE
-    u"\u0142": u"l",  # LATIN SMALL LETTER L WITH STROKE
-    u"\u0149": u"'n",  # LATIN SMALL LETTER N PRECEDED BY APOSTROPHE (from ‹character-fallback›)
-    u"\u014A": u"N",  # LATIN CAPITAL LETTER ENG
-    u"\u014B": u"n",  # LATIN SMALL LETTER ENG
-    u"\u0152": u"OE",  # LATIN CAPITAL LIGATURE OE (from ‹character-fallback›)
-    u"\u0153": u"oe",  # LATIN SMALL LIGATURE OE (from ‹character-fallback›)
-    u"\u0166": u"T",  # LATIN CAPITAL LETTER T WITH STROKE
-    u"\u0167": u"t",  # LATIN SMALL LETTER T WITH STROKE
-    u"\u0180": u"b",  # LATIN SMALL LETTER B WITH STROKE
-    u"\u0181": u"B",  # LATIN CAPITAL LETTER B WITH HOOK
-    u"\u0182": u"B",  # LATIN CAPITAL LETTER B WITH TOPBAR
-    u"\u0183": u"b",  # LATIN SMALL LETTER B WITH TOPBAR
-    u"\u0187": u"C",  # LATIN CAPITAL LETTER C WITH HOOK
-    u"\u0188": u"c",  # LATIN SMALL LETTER C WITH HOOK
-    u"\u0189": u"D",  # LATIN CAPITAL LETTER AFRICAN D
-    u"\u018A": u"D",  # LATIN CAPITAL LETTER D WITH HOOK
-    u"\u018B": u"D",  # LATIN CAPITAL LETTER D WITH TOPBAR
-    u"\u018C": u"d",  # LATIN SMALL LETTER D WITH TOPBAR
-    u"\u0190": u"E",  # LATIN CAPITAL LETTER OPEN E
-    u"\u0191": u"F",  # LATIN CAPITAL LETTER F WITH HOOK
-    u"\u0192": u"f",  # LATIN SMALL LETTER F WITH HOOK
-    u"\u0193": u"G",  # LATIN CAPITAL LETTER G WITH HOOK
-    u"\u0195": u"hv",  # LATIN SMALL LETTER HV
-    u"\u0196": u"I",  # LATIN CAPITAL LETTER IOTA
-    u"\u0197": u"I",  # LATIN CAPITAL LETTER I WITH STROKE
-    u"\u0198": u"K",  # LATIN CAPITAL LETTER K WITH HOOK
-    u"\u0199": u"k",  # LATIN SMALL LETTER K WITH HOOK
-    u"\u019A": u"l",  # LATIN SMALL LETTER L WITH BAR
-    u"\u019D": u"N",  # LATIN CAPITAL LETTER N WITH LEFT HOOK
-    u"\u019E": u"n",  # LATIN SMALL LETTER N WITH LONG RIGHT LEG
-    u"\u01A2": u"GH",  # LATIN CAPITAL LETTER GHA (see http://unicode.org/notes/tn27/)
-    u"\u01A3": u"gh",  # LATIN SMALL LETTER GHA (see http://unicode.org/notes/tn27/)
-    u"\u01A4": u"P",  # LATIN CAPITAL LETTER P WITH HOOK
-    u"\u01A5": u"p",  # LATIN SMALL LETTER P WITH HOOK
-    u"\u01AB": u"t",  # LATIN SMALL LETTER T WITH PALATAL HOOK
-    u"\u01AC": u"T",  # LATIN CAPITAL LETTER T WITH HOOK
-    u"\u01AD": u"t",  # LATIN SMALL LETTER T WITH HOOK
-    u"\u01AE": u"T",  # LATIN CAPITAL LETTER T WITH RETROFLEX HOOK
-    u"\u01B2": u"V",  # LATIN CAPITAL LETTER V WITH HOOK
-    u"\u01B3": u"Y",  # LATIN CAPITAL LETTER Y WITH HOOK
-    u"\u01B4": u"y",  # LATIN SMALL LETTER Y WITH HOOK
-    u"\u01B5": u"Z",  # LATIN CAPITAL LETTER Z WITH STROKE
-    u"\u01B6": u"z",  # LATIN SMALL LETTER Z WITH STROKE
-    u"\u01C4": u"DZ",  # LATIN CAPITAL LETTER DZ WITH CARON (compat)
-    u"\u01C5": u"Dz",  # LATIN CAPITAL LETTER D WITH SMALL LETTER Z WITH CARON (compat)
-    u"\u01C6": u"dz",  # LATIN SMALL LETTER DZ WITH CARON (compat)
-    u"\u01E4": u"G",  # LATIN CAPITAL LETTER G WITH STROKE
-    u"\u01E5": u"g",  # LATIN SMALL LETTER G WITH STROKE
-    u"\u0221": u"d",  # LATIN SMALL LETTER D WITH CURL
-    u"\u0224": u"Z",  # LATIN CAPITAL LETTER Z WITH HOOK
-    u"\u0225": u"z",  # LATIN SMALL LETTER Z WITH HOOK
-    u"\u0234": u"l",  # LATIN SMALL LETTER L WITH CURL
-    u"\u0235": u"n",  # LATIN SMALL LETTER N WITH CURL
-    u"\u0236": u"t",  # LATIN SMALL LETTER T WITH CURL
-    u"\u0237": u"j",  # LATIN SMALL LETTER DOTLESS J
-    u"\u0238": u"db",  # LATIN SMALL LETTER DB DIGRAPH
-    u"\u0239": u"qp",  # LATIN SMALL LETTER QP DIGRAPH
-    u"\u023A": u"A",  # LATIN CAPITAL LETTER A WITH STROKE
-    u"\u023B": u"C",  # LATIN CAPITAL LETTER C WITH STROKE
-    u"\u023C": u"c",  # LATIN SMALL LETTER C WITH STROKE
-    u"\u023D": u"L",  # LATIN CAPITAL LETTER L WITH BAR
-    u"\u023E": u"T",  # LATIN CAPITAL LETTER T WITH DIAGONAL STROKE
-    u"\u023F": u"s",  # LATIN SMALL LETTER S WITH SWASH TAIL
-    u"\u0240": u"z",  # LATIN SMALL LETTER Z WITH SWASH TAIL
-    u"\u0243": u"B",  # LATIN CAPITAL LETTER B WITH STROKE
-    u"\u0244": u"U",  # LATIN CAPITAL LETTER U BAR
-    u"\u0246": u"E",  # LATIN CAPITAL LETTER E WITH STROKE
-    u"\u0247": u"e",  # LATIN SMALL LETTER E WITH STROKE
-    u"\u0248": u"J",  # LATIN CAPITAL LETTER J WITH STROKE
-    u"\u0249": u"j",  # LATIN SMALL LETTER J WITH STROKE
-    u"\u024C": u"R",  # LATIN CAPITAL LETTER R WITH STROKE
-    u"\u024D": u"r",  # LATIN SMALL LETTER R WITH STROKE
-    u"\u024E": u"Y",  # LATIN CAPITAL LETTER Y WITH STROKE
-    u"\u024F": u"y",  # LATIN SMALL LETTER Y WITH STROKE
-    u"\u0253": u"b",  # LATIN SMALL LETTER B WITH HOOK
-    u"\u0255": u"c",  # LATIN SMALL LETTER C WITH CURL
-    u"\u0256": u"d",  # LATIN SMALL LETTER D WITH TAIL
-    u"\u0257": u"d",  # LATIN SMALL LETTER D WITH HOOK
-    u"\u025B": u"e",  # LATIN SMALL LETTER OPEN E
-    u"\u025F": u"j",  # LATIN SMALL LETTER DOTLESS J WITH STROKE
-    u"\u0260": u"g",  # LATIN SMALL LETTER G WITH HOOK
-    u"\u0261": u"g",  # LATIN SMALL LETTER SCRIPT G
-    u"\u0262": u"G",  # LATIN LETTER SMALL CAPITAL G
-    u"\u0266": u"h",  # LATIN SMALL LETTER H WITH HOOK
-    u"\u0267": u"h",  # LATIN SMALL LETTER HENG WITH HOOK
-    u"\u0268": u"i",  # LATIN SMALL LETTER I WITH STROKE
-    u"\u026A": u"I",  # LATIN LETTER SMALL CAPITAL I
-    u"\u026B": u"l",  # LATIN SMALL LETTER L WITH MIDDLE TILDE
-    u"\u026C": u"l",  # LATIN SMALL LETTER L WITH BELT
-    u"\u026D": u"l",  # LATIN SMALL LETTER L WITH RETROFLEX HOOK
-    u"\u0271": u"m",  # LATIN SMALL LETTER M WITH HOOK
-    u"\u0272": u"n",  # LATIN SMALL LETTER N WITH LEFT HOOK
-    u"\u0273": u"n",  # LATIN SMALL LETTER N WITH RETROFLEX HOOK
-    u"\u0274": u"N",  # LATIN LETTER SMALL CAPITAL N
-    u"\u0276": u"OE",  # LATIN LETTER SMALL CAPITAL OE
-    u"\u027C": u"r",  # LATIN SMALL LETTER R WITH LONG LEG
-    u"\u027D": u"r",  # LATIN SMALL LETTER R WITH TAIL
-    u"\u027E": u"r",  # LATIN SMALL LETTER R WITH FISHHOOK
-    u"\u0280": u"R",  # LATIN LETTER SMALL CAPITAL R
-    u"\u0282": u"s",  # LATIN SMALL LETTER S WITH HOOK
-    u"\u0288": u"t",  # LATIN SMALL LETTER T WITH RETROFLEX HOOK
-    u"\u0289": u"u",  # LATIN SMALL LETTER U BAR
-    u"\u028B": u"v",  # LATIN SMALL LETTER V WITH HOOK
-    u"\u028F": u"Y",  # LATIN LETTER SMALL CAPITAL Y
-    u"\u0290": u"z",  # LATIN SMALL LETTER Z WITH RETROFLEX HOOK
-    u"\u0291": u"z",  # LATIN SMALL LETTER Z WITH CURL
-    u"\u0299": u"B",  # LATIN LETTER SMALL CAPITAL B
-    u"\u029B": u"G",  # LATIN LETTER SMALL CAPITAL G WITH HOOK
-    u"\u029C": u"H",  # LATIN LETTER SMALL CAPITAL H
-    u"\u029D": u"j",  # LATIN SMALL LETTER J WITH CROSSED-TAIL
-    u"\u029F": u"L",  # LATIN LETTER SMALL CAPITAL L
-    u"\u02A0": u"q",  # LATIN SMALL LETTER Q WITH HOOK
-    u"\u02A3": u"dz",  # LATIN SMALL LETTER DZ DIGRAPH
-    u"\u02A5": u"dz",  # LATIN SMALL LETTER DZ DIGRAPH WITH CURL
-    u"\u02A6": u"ts",  # LATIN SMALL LETTER TS DIGRAPH
-    u"\u02AA": u"ls",  # LATIN SMALL LETTER LS DIGRAPH
-    u"\u02AB": u"lz",  # LATIN SMALL LETTER LZ DIGRAPH
-    u"\u1D01": u"AE",  # LATIN LETTER SMALL CAPITAL AE
-    u"\u1D03": u"B",  # LATIN LETTER SMALL CAPITAL BARRED B
-    u"\u1D06": u"D",  # LATIN LETTER SMALL CAPITAL ETH
-    u"\u1D0C": u"L",  # LATIN LETTER SMALL CAPITAL L WITH STROKE
-    u"\u1D6B": u"ue",  # LATIN SMALL LETTER UE
-    u"\u1D6C": u"b",  # LATIN SMALL LETTER B WITH MIDDLE TILDE
-    u"\u1D6D": u"d",  # LATIN SMALL LETTER D WITH MIDDLE TILDE
-    u"\u1D6E": u"f",  # LATIN SMALL LETTER F WITH MIDDLE TILDE
-    u"\u1D6F": u"m",  # LATIN SMALL LETTER M WITH MIDDLE TILDE
-    u"\u1D70": u"n",  # LATIN SMALL LETTER N WITH MIDDLE TILDE
-    u"\u1D71": u"p",  # LATIN SMALL LETTER P WITH MIDDLE TILDE
-    u"\u1D72": u"r",  # LATIN SMALL LETTER R WITH MIDDLE TILDE
-    u"\u1D73": u"r",  # LATIN SMALL LETTER R WITH FISHHOOK AND MIDDLE TILDE
-    u"\u1D74": u"s",  # LATIN SMALL LETTER S WITH MIDDLE TILDE
-    u"\u1D75": u"t",  # LATIN SMALL LETTER T WITH MIDDLE TILDE
-    u"\u1D76": u"z",  # LATIN SMALL LETTER Z WITH MIDDLE TILDE
-    u"\u1D7A": u"th",  # LATIN SMALL LETTER TH WITH STRIKETHROUGH
-    u"\u1D7B": u"I",  # LATIN SMALL CAPITAL LETTER I WITH STROKE
-    u"\u1D7D": u"p",  # LATIN SMALL LETTER P WITH STROKE
-    u"\u1D7E": u"U",  # LATIN SMALL CAPITAL LETTER U WITH STROKE
-    u"\u1D80": u"b",  # LATIN SMALL LETTER B WITH PALATAL HOOK
-    u"\u1D81": u"d",  # LATIN SMALL LETTER D WITH PALATAL HOOK
-    u"\u1D82": u"f",  # LATIN SMALL LETTER F WITH PALATAL HOOK
-    u"\u1D83": u"g",  # LATIN SMALL LETTER G WITH PALATAL HOOK
-    u"\u1D84": u"k",  # LATIN SMALL LETTER K WITH PALATAL HOOK
-    u"\u1D85": u"l",  # LATIN SMALL LETTER L WITH PALATAL HOOK
-    u"\u1D86": u"m",  # LATIN SMALL LETTER M WITH PALATAL HOOK
-    u"\u1D87": u"n",  # LATIN SMALL LETTER N WITH PALATAL HOOK
-    u"\u1D88": u"p",  # LATIN SMALL LETTER P WITH PALATAL HOOK
-    u"\u1D89": u"r",  # LATIN SMALL LETTER R WITH PALATAL HOOK
-    u"\u1D8A": u"s",  # LATIN SMALL LETTER S WITH PALATAL HOOK
-    u"\u1D8C": u"v",  # LATIN SMALL LETTER V WITH PALATAL HOOK
-    u"\u1D8D": u"x",  # LATIN SMALL LETTER X WITH PALATAL HOOK
-    u"\u1D8E": u"z",  # LATIN SMALL LETTER Z WITH PALATAL HOOK
-    u"\u1D8F": u"a",  # LATIN SMALL LETTER A WITH RETROFLEX HOOK
-    u"\u1D91": u"d",  # LATIN SMALL LETTER D WITH HOOK AND TAIL
-    u"\u1D92": u"e",  # LATIN SMALL LETTER E WITH RETROFLEX HOOK
-    u"\u1D93": u"e",  # LATIN SMALL LETTER OPEN E WITH RETROFLEX HOOK
-    u"\u1D96": u"i",  # LATIN SMALL LETTER I WITH RETROFLEX HOOK
-    u"\u1D99": u"u",  # LATIN SMALL LETTER U WITH RETROFLEX HOOK
-    u"\u1E9A": u"a",  # LATIN SMALL LETTER A WITH RIGHT HALF RING
-    u"\u1E9C": u"s",  # LATIN SMALL LETTER LONG S WITH DIAGONAL STROKE
-    u"\u1E9D": u"s",  # LATIN SMALL LETTER LONG S WITH HIGH STROKE
-    u"\u1E9E": u"SS",  # LATIN CAPITAL LETTER SHARP S
-    u"\u1EFA": u"LL",  # LATIN CAPITAL LETTER MIDDLE-WELSH LL
-    u"\u1EFB": u"ll",  # LATIN SMALL LETTER MIDDLE-WELSH LL
-    u"\u1EFC": u"V",  # LATIN CAPITAL LETTER MIDDLE-WELSH V
-    u"\u1EFD": u"v",  # LATIN SMALL LETTER MIDDLE-WELSH V
-    u"\u1EFE": u"Y",  # LATIN CAPITAL LETTER Y WITH LOOP
-    u"\u1EFF": u"y",  # LATIN SMALL LETTER Y WITH LOOP
-    u"\u00A9": u"(C)",  # COPYRIGHT SIGN (from ‹character-fallback›)
-    u"\u00AE": u"(R)",  # REGISTERED SIGN (from ‹character-fallback›)
-    u"\u20A0": u"CE",  # EURO-CURRENCY SIGN (from ‹character-fallback›)
-    u"\u20A2": u"Cr",  # CRUZEIRO SIGN (from ‹character-fallback›)
-    u"\u20A3": u"Fr.",  # FRENCH FRANC SIGN (from ‹character-fallback›)
-    u"\u20A4": u"L.",  # LIRA SIGN (from ‹character-fallback›)
-    u"\u20A7": u"Pts",  # PESETA SIGN (from ‹character-fallback›)
-    u"\u20BA": u"TL",  # TURKISH LIRA SIGN (from ‹character-fallback›)
-    u"\u20B9": u"Rs",  # INDIAN RUPEE SIGN (from ‹character-fallback›)
-    u"\u211E": u"Rx",  # PRESCRIPTION TAKE (from ‹character-fallback›)
-    u"\u33A7": u"m/s",  # SQUARE M OVER S (compat) (from ‹character-fallback›)
-    u"\u33AE": u"rad/s",  # SQUARE RAD OVER S (compat) (from ‹character-fallback›)
-    u"\u33C6": u"C/kg",  # SQUARE C OVER KG (compat) (from ‹character-fallback›)
-    u"\u33DE": u"V/m",  # SQUARE V OVER M (compat) (from ‹character-fallback›)
-    u"\u33DF": u"A/m",  # SQUARE A OVER M (compat) (from ‹character-fallback›)
-    u"\u00BC": u" 1/4",  # VULGAR FRACTION ONE QUARTER (from ‹character-fallback›)
-    u"\u00BD": u" 1/2",  # VULGAR FRACTION ONE HALF (from ‹character-fallback›)
-    u"\u00BE": u" 3/4",  # VULGAR FRACTION THREE QUARTERS (from ‹character-fallback›)
-    u"\u2153": u" 1/3",  # VULGAR FRACTION ONE THIRD (from ‹character-fallback›)
-    u"\u2154": u" 2/3",  # VULGAR FRACTION TWO THIRDS (from ‹character-fallback›)
-    u"\u2155": u" 1/5",  # VULGAR FRACTION ONE FIFTH (from ‹character-fallback›)
-    u"\u2156": u" 2/5",  # VULGAR FRACTION TWO FIFTHS (from ‹character-fallback›)
-    u"\u2157": u" 3/5",  # VULGAR FRACTION THREE FIFTHS (from ‹character-fallback›)
-    u"\u2158": u" 4/5",  # VULGAR FRACTION FOUR FIFTHS (from ‹character-fallback›)
-    u"\u2159": u" 1/6",  # VULGAR FRACTION ONE SIXTH (from ‹character-fallback›)
-    u"\u215A": u" 5/6",  # VULGAR FRACTION FIVE SIXTHS (from ‹character-fallback›)
-    u"\u215B": u" 1/8",  # VULGAR FRACTION ONE EIGHTH (from ‹character-fallback›)
-    u"\u215C": u" 3/8",  # VULGAR FRACTION THREE EIGHTHS (from ‹character-fallback›)
-    u"\u215D": u" 5/8",  # VULGAR FRACTION FIVE EIGHTHS (from ‹character-fallback›)
-    u"\u215E": u" 7/8",  # VULGAR FRACTION SEVEN EIGHTHS (from ‹character-fallback›)
-    u"\u215F": u" 1/",  # FRACTION NUMERATOR ONE (from ‹character-fallback›)
-    u"\u3001": u",",  # IDEOGRAPHIC COMMA
-    u"\u3002": u".",  # IDEOGRAPHIC FULL STOP
-    u"\u00D7": u"x",  # MULTIPLICATION SIGN
-    u"\u00F7": u"/",  # DIVISION SIGN
-    u"\u00B7": u".",  # MIDDLE DOT
-    u"\u1E9F": u"dd",  # LATIN SMALL LETTER DELTA
-    u"\u0184": u"H",  # LATIN CAPITAL LETTER TONE SIX
-    u"\u0185": u"h",  # LATIN SMALL LETTER TONE SIX
-    u"\u01BE": u"ts",  # LATIN LETTER TS LIGATION (see http://unicode.org/notes/tn27/)
+    "\u00C6": "AE",  # LATIN CAPITAL LETTER AE (from ‹character-fallback›)
+    "\u00D0": "D",  # LATIN CAPITAL LETTER ETH
+    "\u00D8": "OE",  # LATIN CAPITAL LETTER O WITH STROKE (see https://en.wikipedia.org/wiki/%C3%98)
+    "\u00DE": "TH",  # LATIN CAPITAL LETTER THORN
+    "\u00DF": "ss",  # LATIN SMALL LETTER SHARP S (from ‹character-fallback›)
+    "\u00E6": "ae",  # LATIN SMALL LETTER AE (from ‹character-fallback›)
+    "\u00F0": "d",  # LATIN SMALL LETTER ETH
+    "\u00F8": "oe",  # LATIN SMALL LETTER O WITH STROKE (see https://en.wikipedia.org/wiki/%C3%98)
+    "\u00FE": "th",  # LATIN SMALL LETTER THORN
+    "\u0110": "D",  # LATIN CAPITAL LETTER D WITH STROKE
+    "\u0111": "d",  # LATIN SMALL LETTER D WITH STROKE
+    "\u0126": "H",  # LATIN CAPITAL LETTER H WITH STROKE
+    "\u0127": "h",  # LATIN CAPITAL LETTER H WITH STROKE
+    "\u0131": "i",  # LATIN SMALL LETTER DOTLESS I
+    "\u0138": "q",  # LATIN SMALL LETTER KRA (collates with q in DUCET)
+    "\u0141": "L",  # LATIN CAPITAL LETTER L WITH STROKE
+    "\u0142": "l",  # LATIN SMALL LETTER L WITH STROKE
+    "\u0149": "'n",  # LATIN SMALL LETTER N PRECEDED BY APOSTROPHE (from ‹character-fallback›)
+    "\u014A": "N",  # LATIN CAPITAL LETTER ENG
+    "\u014B": "n",  # LATIN SMALL LETTER ENG
+    "\u0152": "OE",  # LATIN CAPITAL LIGATURE OE (from ‹character-fallback›)
+    "\u0153": "oe",  # LATIN SMALL LIGATURE OE (from ‹character-fallback›)
+    "\u0166": "T",  # LATIN CAPITAL LETTER T WITH STROKE
+    "\u0167": "t",  # LATIN SMALL LETTER T WITH STROKE
+    "\u0180": "b",  # LATIN SMALL LETTER B WITH STROKE
+    "\u0181": "B",  # LATIN CAPITAL LETTER B WITH HOOK
+    "\u0182": "B",  # LATIN CAPITAL LETTER B WITH TOPBAR
+    "\u0183": "b",  # LATIN SMALL LETTER B WITH TOPBAR
+    "\u0187": "C",  # LATIN CAPITAL LETTER C WITH HOOK
+    "\u0188": "c",  # LATIN SMALL LETTER C WITH HOOK
+    "\u0189": "D",  # LATIN CAPITAL LETTER AFRICAN D
+    "\u018A": "D",  # LATIN CAPITAL LETTER D WITH HOOK
+    "\u018B": "D",  # LATIN CAPITAL LETTER D WITH TOPBAR
+    "\u018C": "d",  # LATIN SMALL LETTER D WITH TOPBAR
+    "\u0190": "E",  # LATIN CAPITAL LETTER OPEN E
+    "\u0191": "F",  # LATIN CAPITAL LETTER F WITH HOOK
+    "\u0192": "f",  # LATIN SMALL LETTER F WITH HOOK
+    "\u0193": "G",  # LATIN CAPITAL LETTER G WITH HOOK
+    "\u0195": "hv",  # LATIN SMALL LETTER HV
+    "\u0196": "I",  # LATIN CAPITAL LETTER IOTA
+    "\u0197": "I",  # LATIN CAPITAL LETTER I WITH STROKE
+    "\u0198": "K",  # LATIN CAPITAL LETTER K WITH HOOK
+    "\u0199": "k",  # LATIN SMALL LETTER K WITH HOOK
+    "\u019A": "l",  # LATIN SMALL LETTER L WITH BAR
+    "\u019D": "N",  # LATIN CAPITAL LETTER N WITH LEFT HOOK
+    "\u019E": "n",  # LATIN SMALL LETTER N WITH LONG RIGHT LEG
+    "\u01A2": "GH",  # LATIN CAPITAL LETTER GHA (see http://unicode.org/notes/tn27/)
+    "\u01A3": "gh",  # LATIN SMALL LETTER GHA (see http://unicode.org/notes/tn27/)
+    "\u01A4": "P",  # LATIN CAPITAL LETTER P WITH HOOK
+    "\u01A5": "p",  # LATIN SMALL LETTER P WITH HOOK
+    "\u01AB": "t",  # LATIN SMALL LETTER T WITH PALATAL HOOK
+    "\u01AC": "T",  # LATIN CAPITAL LETTER T WITH HOOK
+    "\u01AD": "t",  # LATIN SMALL LETTER T WITH HOOK
+    "\u01AE": "T",  # LATIN CAPITAL LETTER T WITH RETROFLEX HOOK
+    "\u01B2": "V",  # LATIN CAPITAL LETTER V WITH HOOK
+    "\u01B3": "Y",  # LATIN CAPITAL LETTER Y WITH HOOK
+    "\u01B4": "y",  # LATIN SMALL LETTER Y WITH HOOK
+    "\u01B5": "Z",  # LATIN CAPITAL LETTER Z WITH STROKE
+    "\u01B6": "z",  # LATIN SMALL LETTER Z WITH STROKE
+    "\u01C4": "DZ",  # LATIN CAPITAL LETTER DZ WITH CARON (compat)
+    "\u01C5": "Dz",  # LATIN CAPITAL LETTER D WITH SMALL LETTER Z WITH CARON (compat)
+    "\u01C6": "dz",  # LATIN SMALL LETTER DZ WITH CARON (compat)
+    "\u01E4": "G",  # LATIN CAPITAL LETTER G WITH STROKE
+    "\u01E5": "g",  # LATIN SMALL LETTER G WITH STROKE
+    "\u0221": "d",  # LATIN SMALL LETTER D WITH CURL
+    "\u0224": "Z",  # LATIN CAPITAL LETTER Z WITH HOOK
+    "\u0225": "z",  # LATIN SMALL LETTER Z WITH HOOK
+    "\u0234": "l",  # LATIN SMALL LETTER L WITH CURL
+    "\u0235": "n",  # LATIN SMALL LETTER N WITH CURL
+    "\u0236": "t",  # LATIN SMALL LETTER T WITH CURL
+    "\u0237": "j",  # LATIN SMALL LETTER DOTLESS J
+    "\u0238": "db",  # LATIN SMALL LETTER DB DIGRAPH
+    "\u0239": "qp",  # LATIN SMALL LETTER QP DIGRAPH
+    "\u023A": "A",  # LATIN CAPITAL LETTER A WITH STROKE
+    "\u023B": "C",  # LATIN CAPITAL LETTER C WITH STROKE
+    "\u023C": "c",  # LATIN SMALL LETTER C WITH STROKE
+    "\u023D": "L",  # LATIN CAPITAL LETTER L WITH BAR
+    "\u023E": "T",  # LATIN CAPITAL LETTER T WITH DIAGONAL STROKE
+    "\u023F": "s",  # LATIN SMALL LETTER S WITH SWASH TAIL
+    "\u0240": "z",  # LATIN SMALL LETTER Z WITH SWASH TAIL
+    "\u0243": "B",  # LATIN CAPITAL LETTER B WITH STROKE
+    "\u0244": "U",  # LATIN CAPITAL LETTER U BAR
+    "\u0246": "E",  # LATIN CAPITAL LETTER E WITH STROKE
+    "\u0247": "e",  # LATIN SMALL LETTER E WITH STROKE
+    "\u0248": "J",  # LATIN CAPITAL LETTER J WITH STROKE
+    "\u0249": "j",  # LATIN SMALL LETTER J WITH STROKE
+    "\u024C": "R",  # LATIN CAPITAL LETTER R WITH STROKE
+    "\u024D": "r",  # LATIN SMALL LETTER R WITH STROKE
+    "\u024E": "Y",  # LATIN CAPITAL LETTER Y WITH STROKE
+    "\u024F": "y",  # LATIN SMALL LETTER Y WITH STROKE
+    "\u0253": "b",  # LATIN SMALL LETTER B WITH HOOK
+    "\u0255": "c",  # LATIN SMALL LETTER C WITH CURL
+    "\u0256": "d",  # LATIN SMALL LETTER D WITH TAIL
+    "\u0257": "d",  # LATIN SMALL LETTER D WITH HOOK
+    "\u025B": "e",  # LATIN SMALL LETTER OPEN E
+    "\u025F": "j",  # LATIN SMALL LETTER DOTLESS J WITH STROKE
+    "\u0260": "g",  # LATIN SMALL LETTER G WITH HOOK
+    "\u0261": "g",  # LATIN SMALL LETTER SCRIPT G
+    "\u0262": "G",  # LATIN LETTER SMALL CAPITAL G
+    "\u0266": "h",  # LATIN SMALL LETTER H WITH HOOK
+    "\u0267": "h",  # LATIN SMALL LETTER HENG WITH HOOK
+    "\u0268": "i",  # LATIN SMALL LETTER I WITH STROKE
+    "\u026A": "I",  # LATIN LETTER SMALL CAPITAL I
+    "\u026B": "l",  # LATIN SMALL LETTER L WITH MIDDLE TILDE
+    "\u026C": "l",  # LATIN SMALL LETTER L WITH BELT
+    "\u026D": "l",  # LATIN SMALL LETTER L WITH RETROFLEX HOOK
+    "\u0271": "m",  # LATIN SMALL LETTER M WITH HOOK
+    "\u0272": "n",  # LATIN SMALL LETTER N WITH LEFT HOOK
+    "\u0273": "n",  # LATIN SMALL LETTER N WITH RETROFLEX HOOK
+    "\u0274": "N",  # LATIN LETTER SMALL CAPITAL N
+    "\u0276": "OE",  # LATIN LETTER SMALL CAPITAL OE
+    "\u027C": "r",  # LATIN SMALL LETTER R WITH LONG LEG
+    "\u027D": "r",  # LATIN SMALL LETTER R WITH TAIL
+    "\u027E": "r",  # LATIN SMALL LETTER R WITH FISHHOOK
+    "\u0280": "R",  # LATIN LETTER SMALL CAPITAL R
+    "\u0282": "s",  # LATIN SMALL LETTER S WITH HOOK
+    "\u0288": "t",  # LATIN SMALL LETTER T WITH RETROFLEX HOOK
+    "\u0289": "u",  # LATIN SMALL LETTER U BAR
+    "\u028B": "v",  # LATIN SMALL LETTER V WITH HOOK
+    "\u028F": "Y",  # LATIN LETTER SMALL CAPITAL Y
+    "\u0290": "z",  # LATIN SMALL LETTER Z WITH RETROFLEX HOOK
+    "\u0291": "z",  # LATIN SMALL LETTER Z WITH CURL
+    "\u0299": "B",  # LATIN LETTER SMALL CAPITAL B
+    "\u029B": "G",  # LATIN LETTER SMALL CAPITAL G WITH HOOK
+    "\u029C": "H",  # LATIN LETTER SMALL CAPITAL H
+    "\u029D": "j",  # LATIN SMALL LETTER J WITH CROSSED-TAIL
+    "\u029F": "L",  # LATIN LETTER SMALL CAPITAL L
+    "\u02A0": "q",  # LATIN SMALL LETTER Q WITH HOOK
+    "\u02A3": "dz",  # LATIN SMALL LETTER DZ DIGRAPH
+    "\u02A5": "dz",  # LATIN SMALL LETTER DZ DIGRAPH WITH CURL
+    "\u02A6": "ts",  # LATIN SMALL LETTER TS DIGRAPH
+    "\u02AA": "ls",  # LATIN SMALL LETTER LS DIGRAPH
+    "\u02AB": "lz",  # LATIN SMALL LETTER LZ DIGRAPH
+    "\u1D01": "AE",  # LATIN LETTER SMALL CAPITAL AE
+    "\u1D03": "B",  # LATIN LETTER SMALL CAPITAL BARRED B
+    "\u1D06": "D",  # LATIN LETTER SMALL CAPITAL ETH
+    "\u1D0C": "L",  # LATIN LETTER SMALL CAPITAL L WITH STROKE
+    "\u1D6B": "ue",  # LATIN SMALL LETTER UE
+    "\u1D6C": "b",  # LATIN SMALL LETTER B WITH MIDDLE TILDE
+    "\u1D6D": "d",  # LATIN SMALL LETTER D WITH MIDDLE TILDE
+    "\u1D6E": "f",  # LATIN SMALL LETTER F WITH MIDDLE TILDE
+    "\u1D6F": "m",  # LATIN SMALL LETTER M WITH MIDDLE TILDE
+    "\u1D70": "n",  # LATIN SMALL LETTER N WITH MIDDLE TILDE
+    "\u1D71": "p",  # LATIN SMALL LETTER P WITH MIDDLE TILDE
+    "\u1D72": "r",  # LATIN SMALL LETTER R WITH MIDDLE TILDE
+    "\u1D73": "r",  # LATIN SMALL LETTER R WITH FISHHOOK AND MIDDLE TILDE
+    "\u1D74": "s",  # LATIN SMALL LETTER S WITH MIDDLE TILDE
+    "\u1D75": "t",  # LATIN SMALL LETTER T WITH MIDDLE TILDE
+    "\u1D76": "z",  # LATIN SMALL LETTER Z WITH MIDDLE TILDE
+    "\u1D7A": "th",  # LATIN SMALL LETTER TH WITH STRIKETHROUGH
+    "\u1D7B": "I",  # LATIN SMALL CAPITAL LETTER I WITH STROKE
+    "\u1D7D": "p",  # LATIN SMALL LETTER P WITH STROKE
+    "\u1D7E": "U",  # LATIN SMALL CAPITAL LETTER U WITH STROKE
+    "\u1D80": "b",  # LATIN SMALL LETTER B WITH PALATAL HOOK
+    "\u1D81": "d",  # LATIN SMALL LETTER D WITH PALATAL HOOK
+    "\u1D82": "f",  # LATIN SMALL LETTER F WITH PALATAL HOOK
+    "\u1D83": "g",  # LATIN SMALL LETTER G WITH PALATAL HOOK
+    "\u1D84": "k",  # LATIN SMALL LETTER K WITH PALATAL HOOK
+    "\u1D85": "l",  # LATIN SMALL LETTER L WITH PALATAL HOOK
+    "\u1D86": "m",  # LATIN SMALL LETTER M WITH PALATAL HOOK
+    "\u1D87": "n",  # LATIN SMALL LETTER N WITH PALATAL HOOK
+    "\u1D88": "p",  # LATIN SMALL LETTER P WITH PALATAL HOOK
+    "\u1D89": "r",  # LATIN SMALL LETTER R WITH PALATAL HOOK
+    "\u1D8A": "s",  # LATIN SMALL LETTER S WITH PALATAL HOOK
+    "\u1D8C": "v",  # LATIN SMALL LETTER V WITH PALATAL HOOK
+    "\u1D8D": "x",  # LATIN SMALL LETTER X WITH PALATAL HOOK
+    "\u1D8E": "z",  # LATIN SMALL LETTER Z WITH PALATAL HOOK
+    "\u1D8F": "a",  # LATIN SMALL LETTER A WITH RETROFLEX HOOK
+    "\u1D91": "d",  # LATIN SMALL LETTER D WITH HOOK AND TAIL
+    "\u1D92": "e",  # LATIN SMALL LETTER E WITH RETROFLEX HOOK
+    "\u1D93": "e",  # LATIN SMALL LETTER OPEN E WITH RETROFLEX HOOK
+    "\u1D96": "i",  # LATIN SMALL LETTER I WITH RETROFLEX HOOK
+    "\u1D99": "u",  # LATIN SMALL LETTER U WITH RETROFLEX HOOK
+    "\u1E9A": "a",  # LATIN SMALL LETTER A WITH RIGHT HALF RING
+    "\u1E9C": "s",  # LATIN SMALL LETTER LONG S WITH DIAGONAL STROKE
+    "\u1E9D": "s",  # LATIN SMALL LETTER LONG S WITH HIGH STROKE
+    "\u1E9E": "SS",  # LATIN CAPITAL LETTER SHARP S
+    "\u1EFA": "LL",  # LATIN CAPITAL LETTER MIDDLE-WELSH LL
+    "\u1EFB": "ll",  # LATIN SMALL LETTER MIDDLE-WELSH LL
+    "\u1EFC": "V",  # LATIN CAPITAL LETTER MIDDLE-WELSH V
+    "\u1EFD": "v",  # LATIN SMALL LETTER MIDDLE-WELSH V
+    "\u1EFE": "Y",  # LATIN CAPITAL LETTER Y WITH LOOP
+    "\u1EFF": "y",  # LATIN SMALL LETTER Y WITH LOOP
+    "\u00A9": "(C)",  # COPYRIGHT SIGN (from ‹character-fallback›)
+    "\u00AE": "(R)",  # REGISTERED SIGN (from ‹character-fallback›)
+    "\u20A0": "CE",  # EURO-CURRENCY SIGN (from ‹character-fallback›)
+    "\u20A2": "Cr",  # CRUZEIRO SIGN (from ‹character-fallback›)
+    "\u20A3": "Fr.",  # FRENCH FRANC SIGN (from ‹character-fallback›)
+    "\u20A4": "L.",  # LIRA SIGN (from ‹character-fallback›)
+    "\u20A7": "Pts",  # PESETA SIGN (from ‹character-fallback›)
+    "\u20BA": "TL",  # TURKISH LIRA SIGN (from ‹character-fallback›)
+    "\u20B9": "Rs",  # INDIAN RUPEE SIGN (from ‹character-fallback›)
+    "\u211E": "Rx",  # PRESCRIPTION TAKE (from ‹character-fallback›)
+    "\u33A7": "m/s",  # SQUARE M OVER S (compat) (from ‹character-fallback›)
+    "\u33AE": "rad/s",  # SQUARE RAD OVER S (compat) (from ‹character-fallback›)
+    "\u33C6": "C/kg",  # SQUARE C OVER KG (compat) (from ‹character-fallback›)
+    "\u33DE": "V/m",  # SQUARE V OVER M (compat) (from ‹character-fallback›)
+    "\u33DF": "A/m",  # SQUARE A OVER M (compat) (from ‹character-fallback›)
+    "\u00BC": " 1/4",  # VULGAR FRACTION ONE QUARTER (from ‹character-fallback›)
+    "\u00BD": " 1/2",  # VULGAR FRACTION ONE HALF (from ‹character-fallback›)
+    "\u00BE": " 3/4",  # VULGAR FRACTION THREE QUARTERS (from ‹character-fallback›)
+    "\u2153": " 1/3",  # VULGAR FRACTION ONE THIRD (from ‹character-fallback›)
+    "\u2154": " 2/3",  # VULGAR FRACTION TWO THIRDS (from ‹character-fallback›)
+    "\u2155": " 1/5",  # VULGAR FRACTION ONE FIFTH (from ‹character-fallback›)
+    "\u2156": " 2/5",  # VULGAR FRACTION TWO FIFTHS (from ‹character-fallback›)
+    "\u2157": " 3/5",  # VULGAR FRACTION THREE FIFTHS (from ‹character-fallback›)
+    "\u2158": " 4/5",  # VULGAR FRACTION FOUR FIFTHS (from ‹character-fallback›)
+    "\u2159": " 1/6",  # VULGAR FRACTION ONE SIXTH (from ‹character-fallback›)
+    "\u215A": " 5/6",  # VULGAR FRACTION FIVE SIXTHS (from ‹character-fallback›)
+    "\u215B": " 1/8",  # VULGAR FRACTION ONE EIGHTH (from ‹character-fallback›)
+    "\u215C": " 3/8",  # VULGAR FRACTION THREE EIGHTHS (from ‹character-fallback›)
+    "\u215D": " 5/8",  # VULGAR FRACTION FIVE EIGHTHS (from ‹character-fallback›)
+    "\u215E": " 7/8",  # VULGAR FRACTION SEVEN EIGHTHS (from ‹character-fallback›)
+    "\u215F": " 1/",  # FRACTION NUMERATOR ONE (from ‹character-fallback›)
+    "\u3001": ",",  # IDEOGRAPHIC COMMA
+    "\u3002": ".",  # IDEOGRAPHIC FULL STOP
+    "\u00D7": "x",  # MULTIPLICATION SIGN
+    "\u00F7": "/",  # DIVISION SIGN
+    "\u00B7": ".",  # MIDDLE DOT
+    "\u1E9F": "dd",  # LATIN SMALL LETTER DELTA
+    "\u0184": "H",  # LATIN CAPITAL LETTER TONE SIX
+    "\u0185": "h",  # LATIN SMALL LETTER TONE SIX
+    "\u01BE": "ts",  # LATIN LETTER TS LIGATION (see http://unicode.org/notes/tn27/)
 }
 _re_simplify_combinations = _re_any(_simplify_combinations)
 
@@ -435,8 +435,8 @@ def replace_non_ascii(string, repl="_"):
     interim = unicode_simplify_punctuation(interim)
     interim = unicode_simplify_compatibility(interim)
 
-    def error_repl(e, repl=u"_"):
+    def error_repl(e, repl="_"):
         return(repl, e.start + 1)
-    codecs.register_error('repl', partial(error_repl, repl=unicode(repl)))
-
-    return interim.encode('ascii', 'repl')
+    codecs.register_error('repl', partial(error_repl, repl=repl))
+    # Decoding and encoding to allow replacements
+    return interim.encode('ascii', 'repl').decode('ascii')

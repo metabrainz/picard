@@ -1,0 +1,3 @@
+discid
+mutagen>=1.37
+PyQt5>=5.7.1

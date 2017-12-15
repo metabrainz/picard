@@ -22,9 +22,9 @@ from picard.util import LockableObject
 
 class DataObject(LockableObject):
 
-    def __init__(self, id):
+    def __init__(self, obj_id):
         LockableObject.__init__(self)
-        self.id = id
+        self.id = obj_id
         self.folksonomy_tags = {}
         self.item = None
 
@@ -33,5 +33,5 @@ class DataObject(LockableObject):
 
     @staticmethod
     def merge_folksonomy_tags(this, that):
-        for name, count in that.iteritems():
+        for name, count in that.items():
             this[name] = this.get(name, 0) + count

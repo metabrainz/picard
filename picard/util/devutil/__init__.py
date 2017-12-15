@@ -61,38 +61,38 @@ def printable_node(node, indent=0):
         )
     """
 
-    indentstr = u" "*4
+    indentstr = " "*4
     def indented(front, l, back, indent):
         ind0 = indentstr*indent
         ind1 = indentstr*(indent+1)
         if not l:
             return front + back
         if len(l) > 1:
-            return front + u"\n" + u',\n'.join([ind1 + x for x in l]) + u"\n" + ind0 + back
+            return front + "\n" + ',\n'.join([ind1 + x for x in l]) + "\n" + ind0 + back
         else:
             return front + l[0] + back
 
     el = []
     if node.text:
-        el.append(u'text=' + repr(node.text).decode('unicode-escape'))
+        el.append('text=' + repr(node.text).decode('unicode-escape'))
 
     if node.attribs:
         l = []
-        for k,v in node.attribs.iteritems():
-            l.append(repr(k).decode('unicode-escape') + u': ' + repr(v).decode('unicode-escape'))
-        el.append(indented(u'attribs={', l, u'}', indent+1))
+        for k,v in node.attribs.items():
+            l.append(repr(k).decode('unicode-escape') + ': ' + repr(v).decode('unicode-escape'))
+        el.append(indented('attribs={', l, '}', indent+1))
 
     if node.children:
         l = []
-        for k, v in node.children.iteritems():
+        for k, v in node.children.items():
             l.append(
                 indented(
-                    repr(k).decode('unicode-escape') + u': [',
+                    repr(k).decode('unicode-escape') + ': [',
                     [printable_node(x, indent+3) for x in v],
-                    u']',
+                    ']',
                     indent+2
                 )
             )
-        el.append(indented(u'children={', l, u'}', indent+1))
+        el.append(indented('children={', l, '}', indent+1))
 
-    return indented(u'XmlNode(', el, u')', indent)
+    return indented('XmlNode(', el, ')', indent)

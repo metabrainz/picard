@@ -17,24 +17,22 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-import json
 import time
 from functools import partial
-from PyQt4.QtNetwork import QNetworkRequest
-from PyQt4.QtCore import QUrl
+from PyQt5.QtNetwork import QNetworkRequest
+from PyQt5.QtCore import QUrl, QUrlQuery
 from picard import config, log
 from picard.const import (
-    MUSICBRAINZ_SERVERS,
     MUSICBRAINZ_OAUTH_CLIENT_ID,
     MUSICBRAINZ_OAUTH_CLIENT_SECRET,
 )
-from picard.util import build_qurl
+from picard.util import build_qurl, load_json
 
 
 class OAuthManager(object):
 
-    def __init__(self, xmlws):
-        self.xmlws = xmlws
+    def __init__(self, webservice):
+        self.webservice = webservice
 
     def is_authorized(self):
         return bool(config.persist["oauth_refresh_token"] and
@@ -74,8 +72,8 @@ class OAuthManager(object):
                   MUSICBRAINZ_OAUTH_CLIENT_ID, "redirect_uri":
                   "urn:ietf:wg:oauth:2.0:oob", "scope": scopes}
         url = build_qurl(host, port, path="/oauth2/authorize",
-                         queryargs=params, mblogin=True)
-        return str(url.toEncoded())
+                         queryargs=params)
+        return string_(url.toEncoded())
 
     def set_refresh_token(self, refresh_token, scopes):
         log.debug("OAuth: got refresh_token %s with scopes %s", refresh_token, scopes)
@@ -97,14 +95,16 @@ class OAuthManager(object):
         host, port = config.setting['server_host'], config.setting['server_port']
         path = "/oauth2/token"
         url = QUrl()
-        url.addQueryItem("grant_type", "refresh_token")
-        url.addQueryItem("refresh_token", refresh_token)
-        url.addQueryItem("client_id", MUSICBRAINZ_OAUTH_CLIENT_ID)
-        url.addQueryItem("client_secret", MUSICBRAINZ_OAUTH_CLIENT_SECRET)
-        data = str(url.encodedQuery())
-        self.xmlws.post(host, port, path, data,
+        url_query = QUrlQuery()
+        url_query.addQueryItem("grant_type", "refresh_token")
+        url_query.addQueryItem("refresh_token", refresh_token)
+        url_query.addQueryItem("client_id", MUSICBRAINZ_OAUTH_CLIENT_ID)
+        url_query.addQueryItem("client_secret", MUSICBRAINZ_OAUTH_CLIENT_SECRET)
+        url.setQuery(url_query.query(QUrl.FullyEncoded))
+        data = string_(url.query())
+        self.webservice.post(host, port, path, data,
                         partial(self.on_refresh_access_token_finished, callback),
-                        xml=False, mblogin=True, priority=True, important=True)
+                        parse_response_type=None, mblogin=True, priority=True, important=True)
 
     def on_refresh_access_token_finished(self, callback, data, http, error):
         access_token = None
@@ -112,11 +112,11 @@ class OAuthManager(object):
             if error:
                 log.error("OAuth: access_token refresh failed: %s", data)
                 if http.attribute(QNetworkRequest.HttpStatusCodeAttribute) == 400:
-                    response = json.loads(data)
+                    response = load_json(data)
                     if response["error"] == "invalid_grant":
                         self.forget_refresh_token()
             else:
-                response = json.loads(data)
+                response = load_json(data)
                 self.set_access_token(response["access_token"], response["expires_in"])
                 access_token = response["access_token"]
         finally:
@@ -127,15 +127,17 @@ class OAuthManager(object):
         host, port = config.setting['server_host'], config.setting['server_port']
         path = "/oauth2/token"
         url = QUrl()
-        url.addQueryItem("grant_type", "authorization_code")
-        url.addQueryItem("code", authorization_code)
-        url.addQueryItem("client_id", MUSICBRAINZ_OAUTH_CLIENT_ID)
-        url.addQueryItem("client_secret", MUSICBRAINZ_OAUTH_CLIENT_SECRET)
-        url.addQueryItem("redirect_uri", "urn:ietf:wg:oauth:2.0:oob")
-        data = str(url.encodedQuery())
-        self.xmlws.post(host, port, path, data,
+        url_query = QUrlQuery()
+        url_query.addQueryItem("grant_type", "authorization_code")
+        url_query.addQueryItem("code", authorization_code)
+        url_query.addQueryItem("client_id", MUSICBRAINZ_OAUTH_CLIENT_ID)
+        url_query.addQueryItem("client_secret", MUSICBRAINZ_OAUTH_CLIENT_SECRET)
+        url_query.addQueryItem("redirect_uri", "urn:ietf:wg:oauth:2.0:oob")
+        url.setQuery(url_query.query(QUrl.FullyEncoded))
+        data = string_(url.query())
+        self.webservice.post(host, port, path, data,
                         partial(self.on_exchange_authorization_code_finished, scopes, callback),
-                        xml=False, mblogin=True, priority=True, important=True)
+                        parse_response_type=None, mblogin=True, priority=True, important=True)
 
     def on_exchange_authorization_code_finished(self, scopes, callback, data, http, error):
         successful = False
@@ -143,7 +145,7 @@ class OAuthManager(object):
             if error:
                 log.error("OAuth: authorization_code exchange failed: %s", data)
             else:
-                response = json.loads(data)
+                response = load_json(data)
                 self.set_refresh_token(response["refresh_token"], scopes)
                 self.set_access_token(response["access_token"], response["expires_in"])
                 successful = True
@@ -154,9 +156,9 @@ class OAuthManager(object):
         log.debug("OAuth: fetching username")
         host, port = config.setting['server_host'], config.setting['server_port']
         path = "/oauth2/userinfo"
-        self.xmlws.get(host, port, path,
+        self.webservice.get(host, port, path,
                         partial(self.on_fetch_username_finished, callback),
-                        xml=False, mblogin=True, priority=True, important=True)
+                        parse_response_type=None, mblogin=True, priority=True, important=True)
 
     def on_fetch_username_finished(self, callback, data, http, error):
         successful = False
@@ -164,7 +166,7 @@ class OAuthManager(object):
             if error:
                 log.error("OAuth: username fetching failed: %s", data)
             else:
-                response = json.loads(data)
+                response = load_json(data)
                 self.set_username(response["sub"])
                 successful = True
         finally:

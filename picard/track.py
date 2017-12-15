@@ -19,37 +19,42 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from functools import partial
+from PyQt5 import QtCore
 from picard import config, log
 from picard.metadata import Metadata, run_track_metadata_processors
 from picard.dataobj import DataObject
 from picard.util.textencoding import asciipunct
-from picard.mbxml import recording_to_metadata
+from picard.mbjson import recording_to_metadata
 from picard.script import ScriptParser
 from picard.const import VARIOUS_ARTISTS_ID, SILENCE_TRACK_TITLE, DATA_TRACK_TITLE
 from picard.ui.item import Item
+from picard.util.imagelist import update_metadata_images
 import traceback
 
 
 _TRANSLATE_TAGS = {
-    "hip hop": u"Hip-Hop",
-    "synth-pop": u"Synthpop",
-    "electronica": u"Electronic",
+    "hip hop": "Hip-Hop",
+    "synth-pop": "Synthpop",
+    "electronica": "Electronic",
 }
 
 
 class TrackArtist(DataObject):
-    def __init__(self, id):
-        DataObject.__init__(self, id)
+    def __init__(self, ta_id):
+        DataObject.__init__(self, ta_id)
 
 
 class Track(DataObject, Item):
 
-    def __init__(self, id, album=None):
-        DataObject.__init__(self, id)
+    metadata_images_changed = QtCore.pyqtSignal()
+
+    def __init__(self, track_id, album=None):
+        DataObject.__init__(self, track_id)
         self.album = album
         self.linked_files = []
         self.num_linked_files = 0
         self.metadata = Metadata()
+        self.orig_metadata = Metadata()
         self._track_artists = []
 
     def __repr__(self):
@@ -61,6 +66,7 @@ class Track(DataObject, Item):
             self.num_linked_files += 1
         self.album._add_file(self, file)
         self.update_file_metadata(file)
+        file.metadata_images_changed.connect(self.update_orig_metadata_images)
 
     def update_file_metadata(self, file):
         if file not in self.linked_files:
@@ -78,11 +84,13 @@ class Track(DataObject, Item):
         self.num_linked_files -= 1
         file.copy_metadata(file.orig_metadata)
         self.album._remove_file(self, file)
+        file.metadata_images_changed.disconnect(self.update_orig_metadata_images)
         self.update()
 
     def update(self):
         if self.item:
             self.item.update()
+        self.update_orig_metadata_images()
 
     def iterfiles(self, save=False):
         for file in self.linked_files:
@@ -110,13 +118,13 @@ class Track(DataObject, Item):
         return True
 
     def can_view_info(self):
-        return self.num_linked_files == 1
+        return self.num_linked_files == 1 or self.metadata.images
 
     def column(self, column):
         m = self.metadata
         if column == 'title':
             prefix = "%s-" % m['discnumber'] if m['discnumber'] and m['totaldiscs'] != "1" else ""
-            return u"%s%s  %s" % (prefix, m['tracknumber'].zfill(2), m['title'])
+            return "%s%s  %s" % (prefix, m['tracknumber'].zfill(2), m['title'])
         return m[column]
 
     def is_video(self):
@@ -142,10 +150,10 @@ class Track(DataObject, Item):
             return True
         return False
 
-    def append_track_artist(self, id):
+    def append_track_artist(self, ta_id):
         """Append artist id to the list of track artists
         and return an TrackArtist instance"""
-        track_artist = TrackArtist(id)
+        track_artist = TrackArtist(ta_id)
         self._track_artists.append(track_artist)
         return track_artist
 
@@ -191,7 +199,7 @@ class Track(DataObject, Item):
         maxcount = max(tags.values())
         taglist = []
         for name, count in tags.items():
-            taglist.append((100 * count / maxcount, name))
+            taglist.append((100 * count // maxcount, name))
         taglist.sort(reverse=True)
         # And generate the genre metadata tag
         maxtags = config.setting['max_tags']
@@ -217,11 +225,24 @@ class Track(DataObject, Item):
             tags = [s.strip().lower() for s in ignore_tags.split(',')]
         return tags
 
+    def update_orig_metadata_images(self):
+        update_metadata_images(self)
+
+    def keep_original_images(self):
+        for file in self.linked_files:
+            file.keep_original_images()
+        if self.linked_files:
+            self.update_orig_metadata_images()
+            self.metadata.images = self.orig_metadata.images[:]
+        else:
+            self.metadata.images = []
+        self.update()
+
 
 class NonAlbumTrack(Track):
 
-    def __init__(self, id):
-        Track.__init__(self, id, self.tagger.nats)
+    def __init__(self, nat_id):
+        Track.__init__(self, nat_id, self.tagger.nats)
         self.callback = None
         self.loaded = False
 
@@ -235,7 +256,7 @@ class NonAlbumTrack(Track):
 
     def load(self, priority=False, refresh=False):
         self.metadata.copy(self.album.metadata)
-        self.metadata["title"] = u"[loading track information]"
+        self.metadata["title"] = "[loading track information]"
         self.loaded = False
         self.tagger.nats.update(True)
         mblogin = False
@@ -252,22 +273,21 @@ class NonAlbumTrack(Track):
         if config.setting["enable_ratings"]:
             mblogin = True
             inc += ["user-ratings"]
-        self.tagger.xmlws.get_track_by_id(self.id,
+        self.tagger.mb_api.get_track_by_id(self.id,
                                           partial(self._recording_request_finished),
                                           inc, mblogin=mblogin,
                                           priority=priority,
                                           refresh=refresh)
 
-    def _recording_request_finished(self, document, http, error):
+    def _recording_request_finished(self, recording, http, error):
         if error:
-            log.error("%r", unicode(http.errorString()))
+            log.error("%r", http.errorString())
             return
         try:
-            recording = document.metadata[0].recording[0]
             self._parse_recording(recording)
             for file in self.linked_files:
                 self.update_file_metadata(file)
-        except:
+        except Exception:
             log.error(traceback.format_exc())
 
     def _parse_recording(self, recording):

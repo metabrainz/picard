@@ -21,7 +21,6 @@ import wave
 from picard import log
 from picard.file import File
 from picard.metadata import Metadata
-from picard.util import encode_filename
 
 
 class WAVFile(File):
@@ -31,16 +30,15 @@ class WAVFile(File):
 
     def _load(self, filename):
         log.debug("Loading file %r", filename)
-        f = wave.open(encode_filename(filename), "rb")
+        f = wave.open(filename, "rb")
         metadata = Metadata()
         metadata['~channels'] = f.getnchannels()
         metadata['~bits_per_sample'] = f.getsampwidth() * 8
         metadata['~sample_rate'] = f.getframerate()
-        metadata.length = 1000 * f.getnframes() / f.getframerate()
+        metadata.length = 1000 * f.getnframes() // f.getframerate()
         metadata['~format'] = 'Microsoft WAVE'
         self._add_path_to_metadata(metadata)
         return metadata
 
     def _save(self, filename, metadata):
         log.debug("Saving file %r", filename)
-        pass

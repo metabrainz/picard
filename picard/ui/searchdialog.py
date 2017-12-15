@@ -17,17 +17,16 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-import json
-from PyQt4 import QtGui, QtCore, QtNetwork
+from PyQt5 import QtGui, QtCore, QtNetwork, QtWidgets
 from operator import itemgetter
 from functools import partial
 from collections import namedtuple
-from picard import config
+from picard import config, log
 from picard.file import File
 from picard.ui import PicardDialog
 from picard.ui.util import StandardButton, ButtonLineEdit
-from picard.util import format_time, icontheme
-from picard.mbxml import (
+from picard.util import icontheme, load_json
+from picard.mbjson import (
     artist_to_metadata,
     recording_to_metadata,
     release_to_metadata,
@@ -35,40 +34,39 @@ from picard.mbxml import (
     media_formats_from_node,
     country_list_from_node
 )
-from picard.i18n import ugettext_attr
 from picard.metadata import Metadata
-from picard.webservice import escape_lucene_query
+from picard.webservice.api_helpers import escape_lucene_query
 from picard.track import Track
 from picard.const import CAA_HOST, CAA_PORT, QUERY_LIMIT
 from picard.coverart.image import CaaThumbnailCoverArtImage
 
 
-class ResultTable(QtGui.QTableWidget):
+class ResultTable(QtWidgets.QTableWidget):
 
     def __init__(self, parent, column_titles):
-        QtGui.QTableWidget.__init__(self, 0, len(column_titles))
+        QtWidgets.QTableWidget.__init__(self, 0, len(column_titles))
         self.parent = parent
         self.setHorizontalHeaderLabels(column_titles)
         self.setSelectionMode(
-                QtGui.QAbstractItemView.SingleSelection)
+            QtWidgets.QAbstractItemView.SingleSelection)
         self.setSelectionBehavior(
-                QtGui.QAbstractItemView.SelectRows)
+            QtWidgets.QAbstractItemView.SelectRows)
         self.setEditTriggers(
-                QtGui.QAbstractItemView.NoEditTriggers)
+            QtWidgets.QAbstractItemView.NoEditTriggers)
         self.horizontalHeader().setStretchLastSection(True)
-        self.horizontalHeader().setResizeMode(
-                QtGui.QHeaderView.Stretch)
-        self.horizontalHeader().setResizeMode(
-                QtGui.QHeaderView.Interactive)
+        self.horizontalHeader().setSectionResizeMode(
+            QtWidgets.QHeaderView.Stretch)
+        self.horizontalHeader().setSectionResizeMode(
+            QtWidgets.QHeaderView.Interactive)
 
 
-class SearchBox(QtGui.QWidget):
+class SearchBox(QtWidgets.QWidget):
 
     def __init__(self, parent):
         self.parent = parent
-        QtGui.QWidget.__init__(self, parent)
-        self.search_action = QtGui.QAction(icontheme.lookup('system-search'),
-                _(u"Search"), self)
+        QtWidgets.QWidget.__init__(self, parent)
+        self.search_action = QtWidgets.QAction(icontheme.lookup('system-search'),
+                _("Search"), self)
         self.search_action.setEnabled(False)
         self.search_action.triggered.connect(self.search)
         self.setupUi()
@@ -82,9 +80,9 @@ class SearchBox(QtGui.QWidget):
         self.parent.accept_button.setEnabled(False)
 
     def setupUi(self):
-        self.layout = QtGui.QVBoxLayout(self)
-        self.search_row_widget = QtGui.QWidget(self)
-        self.search_row_layout = QtGui.QHBoxLayout(self.search_row_widget)
+        self.layout = QtWidgets.QVBoxLayout(self)
+        self.search_row_widget = QtWidgets.QWidget(self)
+        self.search_row_layout = QtWidgets.QHBoxLayout(self.search_row_widget)
         self.search_row_layout.setContentsMargins(1, 1, 1, 1)
         self.search_row_layout.setSpacing(1)
         self.search_edit = ButtonLineEdit(self.search_row_widget)
@@ -93,23 +91,23 @@ class SearchBox(QtGui.QWidget):
         self.search_edit.setFocusPolicy(QtCore.Qt.StrongFocus)
         self.search_edit.focusInEvent = self.focus_in_event
         self.search_row_layout.addWidget(self.search_edit)
-        self.search_button = QtGui.QToolButton(self.search_row_widget)
+        self.search_button = QtWidgets.QToolButton(self.search_row_widget)
         self.search_button.setAutoRaise(True)
         self.search_button.setDefaultAction(self.search_action)
         self.search_button.setIconSize(QtCore.QSize(22, 22))
         self.search_row_layout.addWidget(self.search_button)
         self.search_row_widget.setLayout(self.search_row_layout)
         self.layout.addWidget(self.search_row_widget)
-        self.adv_opt_row_widget = QtGui.QWidget(self)
-        self.adv_opt_row_layout = QtGui.QHBoxLayout(self.adv_opt_row_widget)
+        self.adv_opt_row_widget = QtWidgets.QWidget(self)
+        self.adv_opt_row_layout = QtWidgets.QHBoxLayout(self.adv_opt_row_widget)
         self.adv_opt_row_layout.setAlignment(QtCore.Qt.AlignLeft)
         self.adv_opt_row_layout.setContentsMargins(1, 1, 1, 1)
         self.adv_opt_row_layout.setSpacing(1)
-        self.use_adv_search_syntax = QtGui.QCheckBox(self.adv_opt_row_widget)
+        self.use_adv_search_syntax = QtWidgets.QCheckBox(self.adv_opt_row_widget)
         self.use_adv_search_syntax.setText(_("Use advanced query syntax"))
         self.use_adv_search_syntax.stateChanged.connect(self.update_advanced_syntax_setting)
         self.adv_opt_row_layout.addWidget(self.use_adv_search_syntax)
-        self.adv_syntax_help = QtGui.QLabel(self.adv_opt_row_widget)
+        self.adv_syntax_help = QtWidgets.QLabel(self.adv_opt_row_widget)
         self.adv_syntax_help.setOpenExternalLinks(True)
         self.adv_syntax_help.setText(_(
                 "&#160;(<a href='https://musicbrainz.org/doc/Indexed_Search_Syntax'>"
@@ -141,12 +139,12 @@ class SearchBox(QtGui.QWidget):
             self.search_action.trigger()
 
 
-class CoverArt(QtGui.QWidget):
+class CoverArt(QtWidgets.QWidget):
 
     def __init__(self, parent):
-        QtGui.QWidget.__init__(self, parent)
-        self.layout = QtGui.QVBoxLayout(self)
-        self.loading_gif_label = QtGui.QLabel(self)
+        QtWidgets.QWidget.__init__(self, parent)
+        self.layout = QtWidgets.QVBoxLayout(self)
+        self.loading_gif_label = QtWidgets.QLabel(self)
         self.loading_gif_label.setAlignment(QtCore.Qt.AlignCenter)
         loading_gif = QtGui.QMovie(":/images/loader.gif")
         self.loading_gif_label.setMovie(loading_gif)
@@ -157,7 +155,7 @@ class CoverArt(QtGui.QWidget):
         wid = self.layout.takeAt(0)
         if wid:
             wid.widget().deleteLater()
-        cover_label = QtGui.QLabel(self)
+        cover_label = QtWidgets.QLabel(self)
         cover_label.setPixmap(pixmap.scaled(100,
                                             100,
                                             QtCore.Qt.KeepAspectRatio,
@@ -184,29 +182,29 @@ class SearchDialog(PicardDialog):
         self.restore_state()
 
     def setupUi(self, accept_button_title):
-        self.verticalLayout = QtGui.QVBoxLayout(self)
-        self.verticalLayout.setObjectName("vertical_layout")
+        self.verticalLayout = QtWidgets.QVBoxLayout(self)
+        self.verticalLayout.setObjectName(_("vertical_layout"))
         self.search_box = SearchBox(self)
-        self.search_box.setObjectName("search_box")
+        self.search_box.setObjectName(_("search_box"))
         self.verticalLayout.addWidget(self.search_box)
-        self.center_widget = QtGui.QWidget(self)
-        self.center_widget.setObjectName("center_widget")
-        self.center_layout = QtGui.QVBoxLayout(self.center_widget)
-        self.center_layout.setObjectName("center_layout")
+        self.center_widget = QtWidgets.QWidget(self)
+        self.center_widget.setObjectName(_("center_widget"))
+        self.center_layout = QtWidgets.QVBoxLayout(self.center_widget)
+        self.center_layout.setObjectName(_("center_layout"))
         self.center_layout.setContentsMargins(1, 1, 1, 1)
         self.center_widget.setLayout(self.center_layout)
         self.verticalLayout.addWidget(self.center_widget)
-        self.buttonBox = QtGui.QDialogButtonBox(self)
-        self.accept_button = QtGui.QPushButton(
+        self.buttonBox = QtWidgets.QDialogButtonBox(self)
+        self.accept_button = QtWidgets.QPushButton(
             accept_button_title,
             self.buttonBox)
         self.accept_button.setEnabled(False)
         self.buttonBox.addButton(
                 self.accept_button,
-                QtGui.QDialogButtonBox.AcceptRole)
+                QtWidgets.QDialogButtonBox.AcceptRole)
         self.buttonBox.addButton(
                 StandardButton(StandardButton.CANCEL),
-                QtGui.QDialogButtonBox.RejectRole)
+                QtWidgets.QDialogButtonBox.RejectRole)
         self.buttonBox.accepted.connect(self.accept)
         self.buttonBox.rejected.connect(self.reject)
         self.verticalLayout.addWidget(self.buttonBox)
@@ -222,12 +220,12 @@ class SearchDialog(PicardDialog):
         self.center_layout.addWidget(widget)
 
     def show_progress(self):
-        self.progress_widget = QtGui.QWidget(self)
+        self.progress_widget = QtWidgets.QWidget(self)
         self.progress_widget.setObjectName("progress_widget")
-        layout = QtGui.QVBoxLayout(self.progress_widget)
-        text_label = QtGui.QLabel(_('<strong>Loading...</strong>'), self.progress_widget)
+        layout = QtWidgets.QVBoxLayout(self.progress_widget)
+        text_label = QtWidgets.QLabel(_('<strong>Loading...</strong>'), self.progress_widget)
         text_label.setAlignment(QtCore.Qt.AlignHCenter | QtCore.Qt.AlignBottom)
-        gif_label = QtGui.QLabel(self.progress_widget)
+        gif_label = QtWidgets.QLabel(self.progress_widget)
         movie = QtGui.QMovie(":/images/loader.gif")
         gif_label.setMovie(movie)
         movie.start()
@@ -245,20 +243,20 @@ class SearchDialog(PicardDialog):
             error -- Error string
             show_retry_button -- Whether to display retry button or not
         """
-        self.error_widget = QtGui.QWidget(self)
+        self.error_widget = QtWidgets.QWidget(self)
         self.error_widget.setObjectName("error_widget")
-        layout = QtGui.QVBoxLayout(self.error_widget)
-        error_label = QtGui.QLabel(error, self.error_widget)
+        layout = QtWidgets.QVBoxLayout(self.error_widget)
+        error_label = QtWidgets.QLabel(error, self.error_widget)
         error_label.setWordWrap(True)
         error_label.setAlignment(QtCore.Qt.AlignCenter)
         error_label.setTextInteractionFlags(QtCore.Qt.TextSelectableByMouse)
         layout.addWidget(error_label)
         if show_retry_button:
-            retry_widget = QtGui.QWidget(self.error_widget)
-            retry_layout = QtGui.QHBoxLayout(retry_widget)
-            retry_button = QtGui.QPushButton(_("Retry"), self.error_widget)
+            retry_widget = QtWidgets.QWidget(self.error_widget)
+            retry_layout = QtWidgets.QHBoxLayout(retry_widget)
+            retry_button = QtWidgets.QPushButton(_("Retry"), self.error_widget)
             retry_button.clicked.connect(self.retry)
-            retry_button.setSizePolicy(QtGui.QSizePolicy(QtGui.QSizePolicy.Maximum, QtGui.QSizePolicy.Fixed))
+            retry_button.setSizePolicy(QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Fixed))
             retry_layout.addWidget(retry_button)
             retry_layout.setAlignment(QtCore.Qt.AlignHCenter | QtCore.Qt.AlignTop)
             retry_widget.setLayout(retry_layout)
@@ -281,11 +279,11 @@ class SearchDialog(PicardDialog):
 
     def network_error(self, reply, error):
         error_msg = _("<strong>Following error occurred while fetching results:<br><br></strong>"
-                      "Network request error for %s:<br>%s (QT code %d, HTTP code %s)<br>" % (
+                      "Network request error for %s:<br>%s (QT code %d, HTTP code %s)<br>") % (
                           reply.request().url().toString(QtCore.QUrl.RemoveUserInfo),
                           reply.errorString(),
                           error,
-                          repr(reply.attribute(QtNetwork.QNetworkRequest.HttpStatusCodeAttribute)))
+                          repr(reply.attribute(QtNetwork.QNetworkRequest.HttpStatusCodeAttribute))
                       )
         self.show_error(error_msg, show_retry_button=True)
 
@@ -298,12 +296,11 @@ class SearchDialog(PicardDialog):
             row = self.table.selectionModel().selectedRows()[0].row()
             self.accept_event(row)
         self.save_state()
-        QtGui.QDialog.accept(self)
+        QtWidgets.QDialog.accept(self)
 
     def reject(self):
         self.save_state()
-        QtGui.QDialog.reject(self)
-
+        QtWidgets.QDialog.reject(self)
 
 
 class TrackSearchDialog(SearchDialog):
@@ -312,7 +309,6 @@ class TrackSearchDialog(SearchDialog):
         config.Option("persist", "tracksearchdialog_window_size", QtCore.QSize(720, 360)),
         config.Option("persist", "tracksearchdialog_header_state", QtCore.QByteArray())
     ]
-
 
     def __init__(self, parent):
         super(TrackSearchDialog, self).__init__(
@@ -335,7 +331,7 @@ class TrackSearchDialog(SearchDialog):
         self.retry_params = Retry(self.search, text)
         self.search_box.search_edit.setText(text)
         self.show_progress()
-        self.tagger.xmlws.find_tracks(self.handle_reply,
+        self.tagger.mb_api.find_tracks(self.handle_reply,
                 query=text,
                 search=True,
                 limit=QUERY_LIMIT)
@@ -352,7 +348,7 @@ class TrackSearchDialog(SearchDialog):
                 'release': metadata['album'],
                 'tnum': metadata['tracknumber'],
                 'tracks': metadata['totaltracks'],
-                'qdur': str(metadata.length / 2000),
+                'qdur': string_(metadata.length // 2000),
                 'isrc': metadata['isrc'],
         }
 
@@ -361,14 +357,14 @@ class TrackSearchDialog(SearchDialog):
         # advanced syntax style. Otherwise display only track title.
         if config.setting["use_adv_search_syntax"]:
             query_str = ' '.join(['%s:(%s)' % (item, escape_lucene_query(value))
-                                  for item, value in query.iteritems() if value])
+                                  for item, value in query.items() if value])
         else:
             query_str = query["track"]
 
         query["limit"] = QUERY_LIMIT
         self.search_box.search_edit.setText(query_str)
         self.show_progress()
-        self.tagger.xmlws.find_tracks(
+        self.tagger.mb_api.find_tracks(
                 self.handle_reply,
                 **query)
 
@@ -381,8 +377,8 @@ class TrackSearchDialog(SearchDialog):
             return
 
         try:
-            tracks = document.metadata[0].recording_list[0].recording
-        except (AttributeError, IndexError):
+            tracks = document['recordings']
+        except (KeyError, TypeError):
             self.no_results_found()
             return
 
@@ -397,14 +393,14 @@ class TrackSearchDialog(SearchDialog):
             tracks = [item[3] for item in sorted_results]
 
         del self.search_results[:]  # Clear existing data
-        self.parse_tracks_from_xml(tracks)
+        self.parse_tracks(tracks)
         self.display_results()
 
     def display_results(self):
         self.show_table(self.table_headers)
         for row, obj in enumerate(self.search_results):
             track = obj[0]
-            table_item = QtGui.QTableWidgetItem
+            table_item = QtWidgets.QTableWidgetItem
             self.table.insertRow(row)
             self.table.setItem(row, 0, table_item(track.get("title", "")))
             self.table.setItem(row, 1, table_item(track.get("~length", "")))
@@ -414,14 +410,14 @@ class TrackSearchDialog(SearchDialog):
             self.table.setItem(row, 5, table_item(track.get("country", "")))
             self.table.setItem(row, 6, table_item(track.get("releasetype", "")))
 
-    def parse_tracks_from_xml(self, tracks_xml):
-        for node in tracks_xml:
-            if "release_list" in node.children and "release" in node.release_list[0].children:
-                for rel_node in node.release_list[0].release:
+    def parse_tracks(self, tracks):
+        for node in tracks:
+            if "releases" in node:
+                for rel_node in node['releases']:
                     track = Metadata()
                     recording_to_metadata(node, track)
                     release_to_metadata(rel_node, track)
-                    rg_node = rel_node.release_group[0]
+                    rg_node = rel_node['release-group']
                     release_group_to_metadata(rg_node, track)
                     countries = country_list_from_node(rel_node)
                     if countries:
@@ -483,7 +479,7 @@ class TrackSearchDialog(SearchDialog):
         state = config.persist["tracksearchdialog_header_state"]
         if state:
             header.restoreState(state)
-        header.setResizeMode(QtGui.QHeaderView.Interactive)
+        header.setSectionResizeMode(QtWidgets.QHeaderView.Interactive)
 
     def save_state(self):
         if self.table:
@@ -529,7 +525,7 @@ class AlbumSearchDialog(SearchDialog):
         self.retry_params = Retry(self.search, text)
         self.search_box.search_edit.setText(text)
         self.show_progress()
-        self.tagger.xmlws.find_releases(self.handle_reply,
+        self.tagger.mb_api.find_releases(self.handle_reply,
                 query=text,
                 search=True,
                 limit=QUERY_LIMIT)
@@ -543,7 +539,7 @@ class AlbumSearchDialog(SearchDialog):
         query = {
             "artist": metadata["albumartist"],
             "release": metadata["album"],
-            "tracks": str(len(cluster.files))
+            "tracks": string_(len(cluster.files))
         }
 
         # Generate query to be displayed to the user (in search box).
@@ -551,14 +547,14 @@ class AlbumSearchDialog(SearchDialog):
         # advanced syntax style. Otherwise display only album title.
         if config.setting["use_adv_search_syntax"]:
             query_str = ' '.join(['%s:(%s)' % (item, escape_lucene_query(value))
-                                for item, value in query.iteritems() if value])
+                                for item, value in query.items() if value])
         else:
             query_str = query["release"]
 
         query["limit"] = QUERY_LIMIT
         self.search_box.search_edit.setText(query_str)
         self.show_progress()
-        self.tagger.xmlws.find_releases(
+        self.tagger.mb_api.find_releases(
             self.handle_reply,
             **query)
 
@@ -571,13 +567,13 @@ class AlbumSearchDialog(SearchDialog):
             return
 
         try:
-            releases = document.metadata[0].release_list[0].release
-        except (AttributeError, IndexError):
+            releases = document['releases']
+        except (KeyError, TypeError):
             self.no_results_found()
             return
 
         del self.search_results[:]
-        self.parse_releases_from_xml(releases)
+        self.parse_releases(releases)
         self.display_results()
         self.fetch_coverarts()
 
@@ -587,7 +583,7 @@ class AlbumSearchDialog(SearchDialog):
         """
         for row, release in enumerate(self.search_results):
             caa_path = "/release/%s" % release["musicbrainz_albumid"]
-            self.tagger.xmlws.download(
+            self.tagger.webservice.download(
                 CAA_HOST,
                 CAA_PORT,
                 caa_path,
@@ -609,7 +605,7 @@ class AlbumSearchDialog(SearchDialog):
             return
 
         try:
-            caa_data = json.loads(data)
+            caa_data = load_json(data)
         except ValueError:
             cover_cell.not_found()
             return
@@ -623,7 +619,7 @@ class AlbumSearchDialog(SearchDialog):
         if front:
             url = front["thumbnails"]["small"]
             coverartimage = CaaThumbnailCoverArtImage(url=url)
-            self.tagger.xmlws.download(
+            self.tagger.webservice.download(
                 coverartimage.host,
                 coverartimage.port,
                 coverartimage.path,
@@ -634,8 +630,8 @@ class AlbumSearchDialog(SearchDialog):
 
     def _cover_downloaded(self, row, data, http, error):
         """Handle cover art query reply from CAA server.
-        If server returns the cover image succesfully, update the cover art cell
-        of particular release.
+        If server returns the cover image successfully, update the cover art
+        cell of particular release.
 
         Args:
             row -- Album's row in results table
@@ -649,19 +645,20 @@ class AlbumSearchDialog(SearchDialog):
             try:
                 pixmap.loadFromData(data)
                 cover_cell.update(pixmap)
-            except:
+            except Exception as e:
                 cover_cell.not_found()
+                log.error(e)
 
-    def parse_releases_from_xml(self, release_xml):
-        for node in release_xml:
+    def parse_releases(self, releases):
+        for node in releases:
             release = Metadata()
             release_to_metadata(node, release)
-            rg_node = node.release_group[0]
+            rg_node = node['release-group']
             release_group_to_metadata(rg_node, release)
-            if "medium_list" in node.children:
-                medium_list = node.medium_list[0]
-                release["format"] = media_formats_from_node(medium_list)
-                release["tracks"] = medium_list.track_count[0].text
+            if "media" in node:
+                media = node['media']
+                release["format"] = media_formats_from_node(media)
+                release["tracks"] = node['track-count']
             countries = country_list_from_node(node)
             if countries:
                 release["country"] = ", ".join(countries)
@@ -671,7 +668,7 @@ class AlbumSearchDialog(SearchDialog):
         self.show_table(self.table_headers)
         self.table.verticalHeader().setDefaultSectionSize(100)
         for row, release in enumerate(self.search_results):
-            table_item = QtGui.QTableWidgetItem
+            table_item = QtWidgets.QTableWidgetItem
             self.table.insertRow(row)
             self.table.setItem(row, 0, table_item(release.get("album", "")))
             self.table.setItem(row, 1, table_item(release.get("albumartist", "")))
@@ -712,7 +709,7 @@ class AlbumSearchDialog(SearchDialog):
         state = config.persist["albumsearchdialog_header_state"]
         if state:
             header.restoreState(state)
-        header.setResizeMode(QtGui.QHeaderView.Interactive)
+        header.setSectionResizeMode(QtWidgets.QHeaderView.Interactive)
 
     def save_state(self):
         if self.table:
@@ -751,7 +748,7 @@ class ArtistSearchDialog(SearchDialog):
         self.retry_params = (self.search, text)
         self.search_box.search_edit.setText(text)
         self.show_progress()
-        self.tagger.xmlws.find_artists(self.handle_reply,
+        self.tagger.mb_api.find_artists(self.handle_reply,
                 query=text,
                 search=True,
                 limit=QUERY_LIMIT)
@@ -765,17 +762,17 @@ class ArtistSearchDialog(SearchDialog):
             return
 
         try:
-            artists = document.metadata[0].artist_list[0].artist
-        except (AttributeError, IndexError):
+            artists = document['artists']
+        except (KeyError, TypeError):
             self.no_results()
             return
 
         del self.search_results[:]
-        self.parse_artists_from_xml(artists)
+        self.parse_artists(artists)
         self.display_results()
 
-    def parse_artists_from_xml(self, artist_xml):
-        for node in artist_xml:
+    def parse_artists(self, artists):
+        for node in artists:
             artist = Metadata()
             artist_to_metadata(node, artist)
             self.search_results.append(artist)
@@ -783,7 +780,7 @@ class ArtistSearchDialog(SearchDialog):
     def display_results(self):
         self.show_table(self.table_headers)
         for row, artist in enumerate(self.search_results):
-            table_item = QtGui.QTableWidgetItem
+            table_item = QtWidgets.QTableWidgetItem
             self.table.insertRow(row)
             self.table.setItem(row, 0, table_item(artist.get("name", "")))
             self.table.setItem(row, 1, table_item(artist.get("type", "")))
@@ -811,7 +808,7 @@ class ArtistSearchDialog(SearchDialog):
         state = config.persist["artistsearchdialog_header_state"]
         if state:
             header.restoreState(state)
-        header.setResizeMode(QtGui.QHeaderView.Interactive)
+        header.setSectionResizeMode(QtWidgets.QHeaderView.Interactive)
 
     def save_state(self):
         if self.table:

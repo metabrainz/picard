@@ -18,7 +18,7 @@ def tryint(s):
 
 
 def natsort_key(s):
-    return [ tryint(c) for c in re.split('(\d+)', s) ]
+    return [ tryint(c) for c in re.split(r'(\d+)', s) ]
 
 
 def find_files(topdir, directory, patterns):
@@ -46,10 +46,10 @@ def main():
     if newimages:
         log.info("%d images newer than %s found" % (newimages, qrcfile))
         with open(qrcfile, 'wb+') as f:
-            f.write('<!DOCTYPE RCC><RCC version="1.0">\n<qresource>\n')
+            f.write(b'<!DOCTYPE RCC><RCC version="1.0">\n<qresource>\n')
             for filename in sorted(images, key=natsort_key):
-                f.write('    <file>%s</file>\n' % filename.replace('\\', '/'))
-            f.write('</qresource>\n</RCC>\n')
+                f.write(('    <file>%s</file>\n' % filename.replace('\\', '/')).encode())
+            f.write(b'</qresource>\n</RCC>\n')
             log.info("File %s written, %d images" % (qrcfile, len(images)))
 
 

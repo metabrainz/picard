@@ -19,7 +19,7 @@
 
 import sys
 import os.path
-from PyQt4 import QtGui
+from PyQt5 import QtGui
 
 if sys.platform == 'win32':
     _search_paths = []
@@ -34,8 +34,7 @@ _current_theme = None
 if 'XDG_CURRENT_DESKTOP' in os.environ:
     desktop = os.environ['XDG_CURRENT_DESKTOP'].lower()
     if desktop in ('gnome', 'unity'):
-        _current_theme = (os.popen('gconftool-2 -g /desktop/gnome/interface/icon_theme').read().strip()
-                          or os.popen('dconf read /org/gnome/desktop/interface/icon-theme').read().strip()[1:-1]
+        _current_theme = (os.popen('gsettings get org.gnome.desktop.interface icon-theme').read().strip()[1:-1]
                           or None)
 elif os.environ.get('KDE_FULL_SESSION'):
     _current_theme = (os.popen("kreadconfig --file kdeglobals --group Icons --key Theme --default crystalsvg").read().strip()

@@ -5,10 +5,10 @@ import sys
 import unittest
 from picard import util
 
-import __builtin__
+import builtins
 # ensure _() is defined
-if '_' not in __builtin__.__dict__:
-    __builtin__.__dict__['_'] = lambda a: a
+if '_' not in builtins.__dict__:
+    builtins.__dict__['_'] = lambda a: a
 
 
 class ReplaceWin32IncompatTest(unittest.TestCase):
@@ -154,7 +154,6 @@ class AlbumArtistFromPathTest(unittest.TestCase):
 
     def test_album_artist_from_path(self):
         aafp = util.album_artist_from_path
-        from picard.file import File
         file_1 = r"/10cc/Original Soundtrack/02 I'm Not in Love.mp3"
         file_2 = r"/10cc - Original Soundtrack/02 I'm Not in Love.mp3"
         file_3 = r"/Original Soundtrack/02 I'm Not in Love.mp3"
@@ -197,7 +196,7 @@ class ImageInfoTest(unittest.TestCase):
         with open(file, 'rb') as f:
             self.assertEqual(
                 imageinfo.identify(f.read()),
-                (140, 96, 'image/png', '.png', 11424)
+                (140, 96, 'image/png', '.png', 11137)
             )
 
     def test_jpeg(self):

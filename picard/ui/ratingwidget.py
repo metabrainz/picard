@@ -17,14 +17,14 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtGui, QtWidgets
 from picard import config
 
 
-class RatingWidget(QtGui.QWidget):
+class RatingWidget(QtWidgets.QWidget):
 
     def __init__(self, parent, track):
-        QtGui.QWidget.__init__(self, parent)
+        QtWidgets.QWidget.__init__(self, parent)
         self._track = track
         self._maximum = config.setting["rating_steps"] - 1
         self._rating = int(track.metadata["~rating"] or 0)
@@ -38,7 +38,7 @@ class RatingWidget(QtGui.QWidget):
         self._height = self._star_size + 6
         self.setMaximumSize(self._width, self._height)
         self.setMinimumSize(self._width, self._height)
-        self.setSizePolicy(QtGui.QSizePolicy(QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Fixed))
+        self.setSizePolicy(QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed))
         self.setMouseTracking(True)
 
     def sizeHint(self):
@@ -79,10 +79,10 @@ class RatingWidget(QtGui.QWidget):
 
     def _update_track(self):
         track = self._track
-        track.metadata["~rating"] = unicode(self._rating)
+        track.metadata["~rating"] = string_(self._rating)
         if config.setting["submit_ratings"]:
             ratings = {("recording", track.id): self._rating}
-            self.tagger.xmlws.submit_ratings(ratings, None)
+            self.tagger.mb_api.submit_ratings(ratings, None)
 
     def paintEvent(self, event=None):
         painter = QtGui.QPainter(self)

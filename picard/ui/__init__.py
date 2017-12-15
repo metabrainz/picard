@@ -18,12 +18,42 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from PyQt4 import QtCore, QtGui
+import uuid
+from PyQt5 import QtCore, QtWidgets
 
 
-class PicardDialog(QtGui.QDialog):
+class PicardDialog(QtWidgets.QDialog):
 
     flags = QtCore.Qt.WindowSystemMenuHint | QtCore.Qt.WindowTitleHint
 
     def __init__(self, parent=None):
-        QtGui.QDialog.__init__(self, parent, self.flags)
+        QtWidgets.QDialog.__init__(self, parent, self.flags)
+
+
+# With py3, QObjects are no longer hashable unless they have
+# an explicit __hash__ implemented.
+# See: http://python.6.x6.nabble.com/QTreeWidgetItem-is-not-hashable-in-Py3-td5212216.html
+class HashableTreeWidgetItem(QtWidgets.QTreeWidgetItem):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.id = uuid.uuid4()
+
+    def __eq__(self, other):
+        return self.id == other.id
+
+    def __hash__(self):
+        return hash(string_(self.id))
+
+
+class HashableListWidgetItem(QtWidgets.QListWidgetItem):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.id = uuid.uuid4()
+
+    def __eq__(self, other):
+        return self.id == other.id
+
+    def __hash__(self):
+        return hash(string_(self.id))

@@ -23,21 +23,19 @@
 import os.path
 import sys
 from functools import partial
-from PyQt4 import QtCore, QtGui
+from operator import attrgetter
+from PyQt5 import QtCore, QtGui, QtWidgets
 from picard import config, log
 from picard.const import (
     USER_PLUGIN_DIR,
     PLUGINS_API,
 )
+from picard.ui import HashableTreeWidgetItem
 from picard.ui.options import OptionsPage, register_options_page
 from picard.ui.ui_options_plugins import Ui_PluginsOptionsPage
 
 
-def cmp_plugins(a, b):
-    return cmp(a.name, b.name)
-
-
-class PluginTreeWidgetItem(QtGui.QTreeWidgetItem):
+class PluginTreeWidgetItem(HashableTreeWidgetItem):
 
     def __lt__(self, other):
         if (not isinstance(other, PluginTreeWidgetItem)):
@@ -98,8 +96,8 @@ class PluginsOptionsPage(OptionsPage):
         self.tagger.pluginmanager.plugin_installed.connect(self.plugin_installed)
         self.tagger.pluginmanager.plugin_updated.connect(self.plugin_updated)
         self.ui.plugins.header().setStretchLastSection(False)
-        self.ui.plugins.header().setResizeMode(0, QtGui.QHeaderView.Stretch)
-        self.ui.plugins.header().setResizeMode(1, QtGui.QHeaderView.Stretch)
+        self.ui.plugins.header().setSectionResizeMode(0, QtWidgets.QHeaderView.Stretch)
+        self.ui.plugins.header().setSectionResizeMode(1, QtWidgets.QHeaderView.Stretch)
         self.ui.plugins.header().resizeSection(2, 100)
         self.ui.plugins.setSortingEnabled(True)
 
@@ -134,7 +132,7 @@ class PluginsOptionsPage(OptionsPage):
     def _populate(self):
         self.ui.details.setText("<b>" + _("No plugins installed.") + "</b>")
         self._user_interaction(False)
-        plugins = sorted(self.tagger.pluginmanager.plugins, cmp=cmp_plugins)
+        plugins = sorted(self.tagger.pluginmanager.plugins, key=attrgetter('name'))
         enabled_plugins = config.setting["enabled_plugins"]
         available_plugins = dict([(p.module_name, p.version) for p in
                                   self.tagger.pluginmanager.available_plugins])
@@ -147,21 +145,20 @@ class PluginsOptionsPage(OptionsPage):
                 if latest.split('.') > plugin.version.split('.'):
                     plugin.new_version = latest
                     plugin.can_be_updated = True
-            item = self.add_plugin_item(plugin)
+            self.add_plugin_item(plugin)
             installed.append(plugin.module_name)
 
-        for plugin in sorted(self.tagger.pluginmanager.available_plugins, cmp=cmp_plugins):
+        for plugin in sorted(self.tagger.pluginmanager.available_plugins, key=attrgetter('name')):
             if plugin.module_name not in installed:
                 plugin.can_be_downloaded = True
-                item = self.add_plugin_item(plugin)
+                self.add_plugin_item(plugin)
 
         self._user_interaction(True)
 
     def _remove_all(self):
         for i, p in self.items.items():
             idx = self.ui.plugins.indexOfTopLevelItem(i)
-            item = self.ui.plugins.takeTopLevelItem(idx)
-            del item
+            self.ui.plugins.takeTopLevelItem(idx)
         self.items = {}
 
     def restore_defaults(self):
@@ -194,10 +191,10 @@ class PluginsOptionsPage(OptionsPage):
 
     def plugin_installed(self, plugin):
         if not plugin.compatible:
-            msgbox = QtGui.QMessageBox(self)
-            msgbox.setText(_(u"The plugin '%s' is not compatible with this version of Picard.") % plugin.name)
-            msgbox.setStandardButtons(QtGui.QMessageBox.Ok)
-            msgbox.setDefaultButton(QtGui.QMessageBox.Ok)
+            msgbox = QtWidgets.QMessageBox(self)
+            msgbox.setText(_("The plugin '%s' is not compatible with this version of Picard.") % plugin.name)
+            msgbox.setStandardButtons(QtWidgets.QMessageBox.Ok)
+            msgbox.setDefaultButton(QtWidgets.QMessageBox.Ok)
             msgbox.exec_()
             return
         plugin.new_version = ""
@@ -221,12 +218,12 @@ class PluginsOptionsPage(OptionsPage):
                 p.can_be_updated = False
                 p.can_be_downloaded = False
                 p.marked_for_update = True
-                msgbox = QtGui.QMessageBox(self)
+                msgbox = QtWidgets.QMessageBox(self)
                 msgbox.setText(
-                    _(u"The plugin '%s' will be upgraded to version %s on next run of Picard.")
+                    _("The plugin '%s' will be upgraded to version %s on next run of Picard.")
                     % (p.name, p.new_version))
-                msgbox.setStandardButtons(QtGui.QMessageBox.Ok)
-                msgbox.setDefaultButton(QtGui.QMessageBox.Ok)
+                msgbox.setStandardButtons(QtWidgets.QMessageBox.Ok)
+                msgbox.setDefaultButton(QtWidgets.QMessageBox.Ok)
                 msgbox.exec_()
                 self.add_plugin_item(p, item=i)
                 self.ui.plugins.setCurrentItem(i)
@@ -257,7 +254,7 @@ class PluginsOptionsPage(OptionsPage):
             item.setFlags(item.flags() ^ QtCore.Qt.ItemIsUserCheckable)
 
         if label is not None:
-            button = QtGui.QPushButton(label)
+            button = QtWidgets.QPushButton(label)
             button.setMaximumHeight(button.fontMetrics().boundingRect(label).height() + 7)
             self.ui.plugins.setItemWidget(item, 2, button)
 
@@ -271,16 +268,16 @@ class PluginsOptionsPage(OptionsPage):
                 label = _("Updated")
             else:
                 label = _("Installed")
-            self.ui.plugins.setItemWidget(item, 2, QtGui.QLabel(label))
+            self.ui.plugins.setItemWidget(item, 2, QtWidgets.QLabel(label))
         item.setSortData(2, label)
 
-        self.ui.plugins.header().resizeSections(QtGui.QHeaderView.ResizeToContents)
+        self.ui.plugins.header().resizeSections(QtWidgets.QHeaderView.ResizeToContents)
         self.items[item] = plugin
         return item
 
     def save(self):
         enabled_plugins = []
-        for item, plugin in self.items.iteritems():
+        for item, plugin in self.items.items():
             if item.checkState(0) == QtCore.Qt.Checked:
                 enabled_plugins.append(plugin.module_name)
         config.setting["enabled_plugins"] = enabled_plugins
@@ -309,11 +306,13 @@ class PluginsOptionsPage(OptionsPage):
         self.ui.details.setText("<p>%s</p>" % "<br/>\n".join(text))
 
     def open_plugins(self):
-        files = QtGui.QFileDialog.getOpenFileNames(self, "",
-                                                   QtCore.QDir.homePath(),
-                                                   "Picard plugin (*.py *.pyc *.zip)")
+        files, _filter = QtWidgets.QFileDialog.getOpenFileNames(
+            self,
+            "",
+            QtCore.QDir.homePath(),
+            "Picard plugin (*.py *.pyc *.zip)"
+        )
         if files:
-            files = map(unicode, files)
             for path in files:
                 self.tagger.pluginmanager.install_plugin(path)
 
@@ -321,12 +320,12 @@ class PluginsOptionsPage(OptionsPage):
         selected = self.ui.plugins.selectedItems()[0]
         plugin = self.items[selected]
 
-        self.tagger.xmlws.get(
+        self.tagger.webservice.get(
             PLUGINS_API['host'],
             PLUGINS_API['port'],
             PLUGINS_API['endpoint']['download'],
             partial(self.download_handler, plugin=plugin),
-            xml=False,
+            parse_response_type=None,
             priority=True,
             important=True,
             queryargs={"id": plugin.module_name}
@@ -334,11 +333,11 @@ class PluginsOptionsPage(OptionsPage):
 
     def download_handler(self, response, reply, error, plugin):
         if error:
-            msgbox = QtGui.QMessageBox(self)
-            msgbox.setText(_(u"The plugin '%s' could not be downloaded.") % plugin.module_name)
+            msgbox = QtWidgets.QMessageBox(self)
+            msgbox.setText(_("The plugin '%s' could not be downloaded.") % plugin.module_name)
             msgbox.setInformativeText(_("Please try again later."))
-            msgbox.setStandardButtons(QtGui.QMessageBox.Ok)
-            msgbox.setDefaultButton(QtGui.QMessageBox.Ok)
+            msgbox.setStandardButtons(QtWidgets.QMessageBox.Ok)
+            msgbox.setDefaultButton(QtWidgets.QMessageBox.Ok)
             msgbox.exec_()
             log.error("Error occurred while trying to download the plugin: '%s'" % plugin.module_name)
             return
@@ -360,7 +359,7 @@ class PluginsOptionsPage(OptionsPage):
         event.accept()
 
     def dropEvent(self, event):
-        for path in [os.path.normpath(unicode(u.toLocalFile())) for u in event.mimeData().urls()]:
+        for path in [os.path.normpath(u.toLocalFile()) for u in event.mimeData().urls()]:
             self.tagger.pluginmanager.install_plugin(path)
 
 

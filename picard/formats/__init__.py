@@ -17,8 +17,6 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-import sys
-from mutagen import _util
 from picard import log
 from picard.plugin import ExtensionPoint
 
@@ -26,15 +24,15 @@ _formats = ExtensionPoint()
 _extensions = {}
 
 
-def register_format(format):
-    _formats.register(format.__module__, format)
-    for ext in format.EXTENSIONS:
-        _extensions[ext[1:]] = format
+def register_format(file_format):
+    _formats.register(file_format.__module__, file_format)
+    for ext in file_format.EXTENSIONS:
+        _extensions[ext[1:]] = file_format
 
 
 def supported_formats():
     """Returns list of supported formats."""
-    return [(format.EXTENSIONS, format.NAME) for format in _formats]
+    return [(file_format.EXTENSIONS, file_format.NAME) for file_format in _formats]
 
 
 def supported_extensions():
@@ -47,7 +45,7 @@ def guess_format(filename, options=_formats):
     results = []
     # Since we are reading only 128 bytes and then immediately closing the file,
     # use unbuffered mode.
-    with file(filename, "rb", 0) as fileobj:
+    with open(filename, "rb", 0) as fileobj:
         header = fileobj.read(128)
         # Calls the score method of a particular format's associated filetype
         # and assigns a positive score depending on how closely the fileobj's header matches
@@ -65,7 +63,7 @@ def guess_format(filename, options=_formats):
     return None
 
 
-def open(filename):
+def open_(filename):
     """Open the specified file and return a File instance with the appropriate format handler, or None."""
     try:
         # First try to guess the format on the basis of file headers
@@ -82,109 +80,8 @@ def open(filename):
         # None is returned if both the methods fail
         return None
     except Exception as error:
-        log.error("Error occured:\n{}".format(error.message))
+        log.error("Error occurred:\n{}".format(error))
         return None
-
-
-def _insert_bytes_no_mmap(fobj, size, offset, BUFFER_SIZE=2**16):
-    """Insert size bytes of empty space starting at offset.
-
-    fobj must be an open file object, open rb+ or
-    equivalent. Mutagen tries to use mmap to resize the file, but
-    falls back to a significantly slower method if mmap fails.
-    """
-    assert 0 < size
-    assert 0 <= offset
-    locked = False
-    fobj.seek(0, 2)
-    filesize = fobj.tell()
-    movesize = filesize - offset
-    fobj.write('\x00' * size)
-    fobj.flush()
-    try:
-        locked = _win32_locking(fobj, filesize, msvcrt.LK_LOCK)
-        fobj.truncate(filesize)
-
-        fobj.seek(0, 2)
-        padsize = size
-        # Don't generate an enormous string if we need to pad
-        # the file out several megs.
-        while padsize:
-            addsize = min(BUFFER_SIZE, padsize)
-            fobj.write("\x00" * addsize)
-            padsize -= addsize
-
-        fobj.seek(filesize, 0)
-        while movesize:
-            # At the start of this loop, fobj is pointing at the end
-            # of the data we need to move, which is of movesize length.
-            thismove = min(BUFFER_SIZE, movesize)
-            # Seek back however much we're going to read this frame.
-            fobj.seek(-thismove, 1)
-            nextpos = fobj.tell()
-            # Read it, so we're back at the end.
-            data = fobj.read(thismove)
-            # Seek back to where we need to write it.
-            fobj.seek(-thismove + size, 1)
-            # Write it.
-            fobj.write(data)
-            # And seek back to the end of the unmoved data.
-            fobj.seek(nextpos)
-            movesize -= thismove
-
-        fobj.flush()
-    finally:
-        if locked:
-            _win32_locking(fobj, filesize, msvcrt.LK_UNLCK)
-
-
-def _delete_bytes_no_mmap(fobj, size, offset, BUFFER_SIZE=2**16):
-    """Delete size bytes of empty space starting at offset.
-
-    fobj must be an open file object, open rb+ or
-    equivalent. Mutagen tries to use mmap to resize the file, but
-    falls back to a significantly slower method if mmap fails.
-    """
-    locked = False
-    assert 0 < size
-    assert 0 <= offset
-    fobj.seek(0, 2)
-    filesize = fobj.tell()
-    movesize = filesize - offset - size
-    assert 0 <= movesize
-    try:
-        if movesize > 0:
-            fobj.flush()
-            locked = _win32_locking(fobj, filesize, msvcrt.LK_LOCK)
-            fobj.seek(offset + size)
-            buf = fobj.read(BUFFER_SIZE)
-            while buf:
-                fobj.seek(offset)
-                fobj.write(buf)
-                offset += len(buf)
-                fobj.seek(offset + size)
-                buf = fobj.read(BUFFER_SIZE)
-        fobj.truncate(filesize - size)
-        fobj.flush()
-    finally:
-        if locked:
-            _win32_locking(fobj, filesize, msvcrt.LK_UNLCK)
-
-
-def _win32_locking(fobj, nbytes, mode):
-    try:
-        fobj.seek(0)
-        msvcrt.locking(fobj.fileno(), mode, nbytes)
-    except IOError:
-        return False
-    else:
-        return True
-
-
-if sys.platform == 'win32':
-    import msvcrt
-    _util.insert_bytes = _insert_bytes_no_mmap
-    _util.delete_bytes = _delete_bytes_no_mmap
 
 
 from picard.formats.id3 import (

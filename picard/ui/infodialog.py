@@ -18,21 +18,23 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 import os.path
-import cgi
 import traceback
-from PyQt4 import QtGui, QtCore
+from PyQt5 import QtGui, QtCore, QtWidgets
 from picard import log
 from picard.file import File
 from picard.track import Track
+from picard.album import Album
 from picard.coverart.image import CoverArtImageIOError
-from picard.util import format_time, encode_filename, bytes2human, webbrowser2, union_sorted_lists
+from picard.util import (format_time, encode_filename,
+                         bytes2human, webbrowser2,
+                         union_sorted_lists, htmlescape)
 from picard.ui import PicardDialog
 from picard.ui.ui_infodialog import Ui_InfoDialog
 
 
-class ArtworkTable(QtGui.QTableWidget):
+class ArtworkTable(QtWidgets.QTableWidget):
     def __init__(self, display_existing_art):
-        QtGui.QTableWidget.__init__(self, 0, 2)
+        QtWidgets.QTableWidget.__init__(self, 0, 2)
         self.display_existing_art = display_existing_art
         h_header = self.horizontalHeader()
         v_header = self.verticalHeader()
@@ -54,11 +56,11 @@ class ArtworkTable(QtGui.QTableWidget):
 
     def get_coverart_widget(self, pixmap, text):
         """Return a QWidget that can be added to artwork column cell of ArtworkTable."""
-        coverart_widget = QtGui.QWidget()
-        image_label = QtGui.QLabel()
-        text_label = QtGui.QLabel()
-        layout = QtGui.QVBoxLayout()
-        image_label.setPixmap(pixmap.scaled(170,170,QtCore.Qt.KeepAspectRatio,
+        coverart_widget = QtWidgets.QWidget()
+        image_label = QtWidgets.QLabel()
+        text_label = QtWidgets.QLabel()
+        layout = QtWidgets.QVBoxLayout()
+        image_label.setPixmap(pixmap.scaled(170, 170, QtCore.Qt.KeepAspectRatio,
                                             QtCore.Qt.SmoothTransformation))
         image_label.setAlignment(QtCore.Qt.AlignCenter)
         text_label.setText(text)
@@ -74,14 +76,14 @@ class ArtworkTable(QtGui.QTableWidget):
         If both existing and new artwork are to be displayed, insert an arrow icon to make comparison
         obvious.
         """
-        type_widget = QtGui.QWidget()
-        type_label = QtGui.QLabel()
-        layout = QtGui.QVBoxLayout()
+        type_widget = QtWidgets.QWidget()
+        type_label = QtWidgets.QLabel()
+        layout = QtWidgets.QVBoxLayout()
         type_label.setText(type_text)
         type_label.setAlignment(QtCore.Qt.AlignCenter)
         type_label.setWordWrap(True)
         if self.display_existing_art:
-            arrow_label = QtGui.QLabel()
+            arrow_label = QtWidgets.QLabel()
             arrow_label.setPixmap(self.arrow_pixmap.scaled(170, 170, QtCore.Qt.KeepAspectRatio,
                                                            QtCore.Qt.SmoothTransformation))
             arrow_label.setAlignment(QtCore.Qt.AlignCenter)
@@ -98,14 +100,29 @@ class InfoDialog(PicardDialog):
     def __init__(self, obj, parent=None):
         PicardDialog.__init__(self, parent)
         self.obj = obj
+        self.images = []
+        self.existing_images = []
         self.ui = Ui_InfoDialog()
         self.display_existing_artwork = False
-        if isinstance(obj, File) and isinstance(obj.parent, Track) or \
-                isinstance(obj, Track):
-            # Display existing artwork only if selected object is track object
-            # or linked to a track object
-            self.display_existing_artwork = True
 
+        if (isinstance(obj, File) and
+                isinstance(obj.parent, Track) or
+                isinstance(obj, Track) or
+                (isinstance(obj, Album) and obj.get_num_total_files() > 0)):
+            # Display existing artwork only if selected object is track object
+            # or linked to a track object or it's an album with files
+            if (getattr(obj, 'orig_metadata', None) is not None and
+                    obj.orig_metadata.images and
+                    obj.orig_metadata.images != obj.metadata.images):
+                self.display_existing_artwork = True
+                self.existing_images = obj.orig_metadata.images
+
+        if obj.metadata.images:
+            self.images = obj.metadata.images
+        if not self.images and self.existing_images:
+            self.images = self.existing_images
+            self.existing_images = []
+            self.display_existing_artwork = False
         self.ui.setupUi(self)
         self.ui.buttonBox.accepted.connect(self.accept)
         self.ui.buttonBox.rejected.connect(self.reject)
@@ -150,14 +167,13 @@ class InfoDialog(PicardDialog):
                     try:
                         data = image.thumbnail.data
                     except CoverArtImageIOError as e:
-                        log.warning(unicode(e))
-                        pass
+                        log.warning(e)
                 else:
                     data = image.data
             except CoverArtImageIOError:
                 log.error(traceback.format_exc())
                 continue
-            item = QtGui.QTableWidgetItem()
+            item = QtWidgets.QTableWidgetItem()
             item.setData(QtCore.Qt.UserRole, image)
             pixmap = QtGui.QPixmap()
             if data is not None:
@@ -169,11 +185,11 @@ class InfoDialog(PicardDialog):
             infos = []
             if image.comment:
                 infos.append(image.comment)
-            infos.append(u"%s (%s)" %
+            infos.append("%s (%s)" %
                          (bytes2human.decimal(image.datalength),
                           bytes2human.binary(image.datalength)))
             if image.width and image.height:
-                infos.append(u"%d x %d" % (image.width, image.height))
+                infos.append("%d x %d" % (image.width, image.height))
             infos.append(image.mimetype)
 
             img_wgt = self.artwork_table.get_coverart_widget(pixmap, "\n".join(infos))
@@ -185,34 +201,26 @@ class InfoDialog(PicardDialog):
         """Display image type in Type column.
         If both existing covers and new covers are to be displayed, take union of both cover types list.
         """
-        types = [image.types_as_string() for image in self.obj.metadata.images]
+        types = [image.types_as_string() for image in self.images]
         if self.display_existing_artwork:
-            existing_types = [image.types_as_string() for image in self.obj.orig_metadata.images]
+            existing_types = [image.types_as_string() for image in self.existing_images]
             # Merge both types and existing types list in sorted order.
             types = union_sorted_lists(types, existing_types)
-        for row, type in enumerate(types):
+        for row, artwork_type in enumerate(types):
             self.artwork_table.insertRow(row)
-            type_wgt = self.artwork_table.get_type_widget(type)
-            item = QtGui.QTableWidgetItem()
-            item.setData(QtCore.Qt.UserRole, type)
+            type_wgt = self.artwork_table.get_type_widget(artwork_type)
+            item = QtWidgets.QTableWidgetItem()
+            item.setData(QtCore.Qt.UserRole, artwork_type)
             self.artwork_table.setCellWidget(row, self.artwork_table._type_col, type_wgt)
             self.artwork_table.setItem(row, self.artwork_table._type_col, item)
 
-    def arrange_images(self):
-        def get_image_type(image):
-            return image.types_as_string()
-        self.obj.metadata.images.sort(key=get_image_type)
-        if self.display_existing_artwork:
-            self.obj.orig_metadata.images.sort(key=get_image_type)
-
     def _display_artwork_tab(self):
-        if not self.obj.metadata.images:
+        if not self.images:
             self.tab_hide(self.ui.artwork_tab)
-        self.arrange_images()
         self._display_artwork_type()
-        self._display_artwork(self.obj.metadata.images, self.artwork_table._new_cover_col)
-        if self.display_existing_artwork:
-            self._display_artwork(self.obj.orig_metadata.images, self.artwork_table._existing_cover_col)
+        self._display_artwork(self.images, self.artwork_table._new_cover_col)
+        if self.existing_images:
+            self._display_artwork(self.existing_images, self.artwork_table._existing_cover_col)
         self.artwork_table.itemDoubleClicked.connect(self.show_item)
 
     def tab_hide(self, widget):
@@ -223,7 +231,7 @@ class InfoDialog(PicardDialog):
     def show_item(self, item):
         data = item.data(QtCore.Qt.UserRole)
         # Check if this function isn't triggered by cell in Type column
-        if isinstance(data, unicode):
+        if isinstance(data, str):
             return
         filename = data.tempfile_filename
         if filename:
@@ -236,8 +244,8 @@ class FileInfoDialog(InfoDialog):
         InfoDialog.__init__(self, file, parent)
         self.setWindowTitle(_("Info") + " - " + file.base_filename)
 
-    def _display_info_tab(self):
-        file = self.obj
+    @staticmethod
+    def format_file_info(file):
         info = []
         info.append((_('Filename:'), file.filename))
         if '~format' in file.orig_metadata:
@@ -255,7 +263,7 @@ class FileInfoDialog(InfoDialog):
         if '~sample_rate' in file.orig_metadata:
             info.append((_('Sample rate:'), '%s Hz' % file.orig_metadata['~sample_rate']))
         if '~bits_per_sample' in file.orig_metadata:
-            info.append((_('Bits per sample:'), str(file.orig_metadata['~bits_per_sample'])))
+            info.append((_('Bits per sample:'), string_(file.orig_metadata['~bits_per_sample'])))
         if '~channels' in file.orig_metadata:
             ch = file.orig_metadata['~channels']
             if ch == 1:
@@ -263,11 +271,15 @@ class FileInfoDialog(InfoDialog):
             elif ch == 2:
                 ch = _('Stereo')
             else:
-                ch = str(ch)
+                ch = string_(ch)
             info.append((_('Channels:'), ch))
-        text = '<br/>'.join(map(lambda i: '<b>%s</b><br/>%s' %
-                                (cgi.escape(i[0]),
-                                 cgi.escape(i[1])), info))
+        return '<br/>'.join(map(lambda i: '<b>%s</b><br/>%s' %
+                                (htmlescape(i[0]),
+                                 htmlescape(i[1])), info))
+
+    def _display_info_tab(self):
+        file = self.obj
+        text = FileInfoDialog.format_file_info(file)
         self.ui.info.setText(text)
 
 
@@ -285,7 +297,7 @@ class AlbumInfoDialog(InfoDialog):
         if album.errors:
             tabWidget.setTabText(tab_index, _("&Errors"))
             text = '<br />'.join(map(lambda s: '<font color="darkred">%s</font>' %
-                                     '<br />'.join(unicode(QtCore.Qt.escape(s))
+                                     '<br />'.join(htmlescape(s)
                                                    .replace('\t', ' ')
                                                    .replace(' ', '&nbsp;')
                                                    .splitlines()
@@ -295,6 +307,30 @@ class AlbumInfoDialog(InfoDialog):
         else:
             tabWidget.setTabText(tab_index, _("&Info"))
             self.tab_hide(tab)
+
+
+class TrackInfoDialog(FileInfoDialog):
+
+    def __init__(self, track, parent=None):
+        InfoDialog.__init__(self, track, parent)
+        self.setWindowTitle(_("Track Info"))
+
+    def _display_info_tab(self):
+        track = self.obj
+        tab = self.ui.info_tab
+        tabWidget = self.ui.tabWidget
+        tab_index = tabWidget.indexOf(tab)
+        if track.num_linked_files == 0:
+            tabWidget.setTabText(tab_index, _("&Info"))
+            self.tab_hide(tab)
+            return
+
+        tabWidget.setTabText(tab_index, _("&Info"))
+        text = ngettext("%i file in this track", "%i files in this track",
+                         track.num_linked_files) % track.num_linked_files
+        info_files = [FileInfoDialog.format_file_info(file) for file in track.linked_files]
+        text += '<hr />' + '<hr />'.join(info_files)
+        self.ui.info.setText(text)
 
 
 class ClusterInfoDialog(InfoDialog):
@@ -311,17 +347,17 @@ class ClusterInfoDialog(InfoDialog):
         tabWidget.setTabText(tab_index, _("&Info"))
         info = []
         info.append("<b>%s</b> %s" % (_('Album:'),
-                                      unicode(QtCore.Qt.escape(cluster.metadata["album"]))))
+                                      htmlescape(cluster.metadata["album"])))
         info.append("<b>%s</b> %s" % (_('Artist:'),
-                                      unicode(QtCore.Qt.escape(cluster.metadata["albumartist"]))))
+                                      htmlescape(cluster.metadata["albumartist"])))
         info.append("")
         lines = []
         for file in cluster.iterfiles(False):
             m = file.metadata
             artist = m["artist"] or m["albumartist"] or cluster.metadata["albumartist"]
-            lines.append(m["tracknumber"] + u" " +
+            lines.append(m["tracknumber"] + " " +
                          m["title"] + " - " + artist + " (" +
                          m["~length"] + ")")
         info.append("<b>%s</b><br />%s" % (_('Tracklist:'),
-                    '<br />'.join([unicode(QtCore.Qt.escape(s)).replace(' ', '&nbsp;') for s in lines])))
+                    '<br />'.join([htmlescape(s).replace(' ', '&nbsp;') for s in lines])))
         self.ui.info.setText('<br/>'.join(info))

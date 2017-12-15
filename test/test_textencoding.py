@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import print_function
-import os.path
 import unittest
 from picard import util
 #from picard.util import textencoding
@@ -103,7 +102,7 @@ combinations_to = (
     u"jLqdzdztslslzBDLuebdfmnprrstzthIpUbdfgklmnprsvx"
     u"zadeeiussSSLLllVvYy(C)(R)CECrFr.L.PtsTLRsRx,.x/.ddHhts"
     )
-ascii = u" !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~"
+ascii_chars = u" !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~"
 
 
 class CompatibilityTest(unittest.TestCase):
@@ -113,7 +112,7 @@ class CompatibilityTest(unittest.TestCase):
         self.assertEqual(util.textencoding.unicode_simplify_compatibility(compatibility_from), compatibility_to)
         self.assertEqual(util.textencoding.unicode_simplify_compatibility(punctuation_from), punctuation_from)
         self.assertEqual(util.textencoding.unicode_simplify_compatibility(combinations_from), combinations_from)
-        self.assertEqual(util.textencoding.unicode_simplify_compatibility(ascii), ascii)
+        self.assertEqual(util.textencoding.unicode_simplify_compatibility(ascii_chars), ascii_chars)
 
     def test_incorrect(self):
         pass
@@ -126,7 +125,7 @@ class PunctuationTest(unittest.TestCase):
         self.assertEqual(util.textencoding.unicode_simplify_punctuation(compatibility_from), compatibility_from)
         self.assertEqual(util.textencoding.unicode_simplify_punctuation(punctuation_from), punctuation_to)
         self.assertEqual(util.textencoding.unicode_simplify_punctuation(combinations_from), combinations_from)
-        self.assertEqual(util.textencoding.unicode_simplify_punctuation(ascii), ascii)
+        self.assertEqual(util.textencoding.unicode_simplify_punctuation(ascii_chars), ascii_chars)
 
     def test_incorrect(self):
         pass
@@ -139,7 +138,7 @@ class CombinationsTest(unittest.TestCase):
         self.assertEqual(util.textencoding.unicode_simplify_combinations(combinations_from), combinations_to)
         self.assertEqual(util.textencoding.unicode_simplify_combinations(compatibility_from), compatibility_from)
         self.assertEqual(util.textencoding.unicode_simplify_combinations(punctuation_from), punctuation_from)
-        self.assertEqual(util.textencoding.unicode_simplify_combinations(ascii), ascii)
+        self.assertEqual(util.textencoding.unicode_simplify_combinations(ascii_chars), ascii_chars)
 
     def test_incorrect(self):
         pass

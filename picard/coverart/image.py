@@ -27,7 +27,7 @@ import sys
 import tempfile
 
 from hashlib import md5
-from PyQt4.QtCore import QUrl, QObject, QMutex
+from PyQt5.QtCore import QUrl, QObject, QMutex
 from picard import config, log
 from picard.coverart.utils import translate_caa_type
 from picard.script import ScriptParser
@@ -66,6 +66,12 @@ class DataHash:
                 self._filename = _datafiles[self._hash]
         finally:
             _datafile_mutex.unlock()
+
+    def __eq__(self, other):
+        return self._hash == other._hash
+
+    def hash(self):
+        return self._hash
 
     def delete_file(self):
         if self._filename:
@@ -117,12 +123,15 @@ class CoverArtImage:
     is_front = None
     sourceprefix = "URL"
 
-    def __init__(self, url=None, types=[], comment='', data=None):
+    def __init__(self, url=None, types=None, comment='', data=None):
+        if types is None:
+            self.types = []
+        else:
+            self.types = types
         if url is not None:
             self.parse_url(url)
         else:
             self.url = None
-        self.types = types
         self.comment = comment
         self.datahash = None
         # thumbnail is used to link to another CoverArtImage, ie. for PDFs
@@ -135,18 +144,18 @@ class CoverArtImage:
 
     def parse_url(self, url):
         self.url = QUrl(url)
-        self.host = str(self.url.host())
+        self.host = string_(self.url.host())
         self.port = self.url.port(80)
-        self.path = str(self.url.encodedPath())
+        self.path = string_(self.url.path(QUrl.FullyEncoded))
         if self.url.hasQuery():
-            self.path += '?' + str(self.url.encodedQuery())
+            self.path += '?' + string_(self.url.query(QUrl.FullyEncoded))
 
     @property
     def source(self):
         if self.url is not None:
-            return u"%s: %s" % (self.sourceprefix, self.url.toString())
+            return "%s: %s" % (self.sourceprefix, self.url.toString())
         else:
-            return u"%s" % self.sourceprefix
+            return "%s" % self.sourceprefix
 
     def is_front_image(self):
         """Indicates if image is considered as a 'front' image.
@@ -161,7 +170,7 @@ class CoverArtImage:
             return False
         if self.is_front is not None:
             return self.is_front
-        if u'front' in self.types:
+        if 'front' in self.types:
             return True
         return (self.support_types is False)
 
@@ -187,18 +196,31 @@ class CoverArtImage:
             p.append("comment=%r" % self.comment)
         return "%s(%s)" % (self.__class__.__name__, ", ".join(p))
 
-    def __unicode__(self):
-        p = [u'Image']
-        if self.url is not None:
-            p.append(u"from %s" % self.url.toString())
-        if self.types:
-            p.append(u"of type %s" % u','.join(self.types))
-        if self.comment:
-            p.append(u"and comment '%s'" % self.comment)
-        return u' '.join(p)
-
     def __str__(self):
-        return unicode(self).encode('utf-8')
+        p = ['Image']
+        if self.url is not None:
+            p.append("from %s" % self.url.toString())
+        if self.types:
+            p.append("of type %s" % ','.join(self.types))
+        if self.comment:
+            p.append("and comment '%s'" % self.comment)
+        return ' '.join(p)
+
+    def __eq__(self, other):
+        if self and other:
+            if self.types and other.types:
+                return (self.datahash, self.types) == (other.datahash, other.types)
+            else:
+                return self.datahash == other.datahash
+        elif not self and not other:
+            return True
+        else:
+            return False
+
+    def __hash__(self):
+        if self.datahash is None:
+            return 0
+        return hash(self.datahash.hash())
 
     def set_data(self, data):
         """Store image data in a file, if data already exists in such file
@@ -226,15 +248,15 @@ class CoverArtImage:
         don't support multiple types for one image.
         Images coming from CAA can have multiple types (ie. 'front, booklet').
         """
-        if self.is_front_image() or not self.types or u'front' in self.types:
-            return u'front'
+        if self.is_front_image() or not self.types or 'front' in self.types:
+            return 'front'
         # TODO: do something better than randomly using the first in the list
         return self.types[0]
 
     def _make_image_filename(self, filename, dirname, metadata):
         filename = ScriptParser().eval(filename, metadata)
         if config.setting["ascii_filenames"]:
-            if isinstance(filename, unicode):
+            if isinstance(filename, str):
                 filename = unaccent(filename)
             filename = replace_non_ascii(filename)
         if not filename:
@@ -245,7 +267,8 @@ class CoverArtImage:
         if config.setting["windows_compatibility"] or sys.platform == "win32":
             filename = replace_win32_incompat(filename)
         # remove null characters
-        filename = filename.replace("\x00", "")
+        if isinstance(filename, bytes):
+            filename = filename.replace(b"\x00", "")
         return encode_filename(filename)
 
     def save(self, dirname, metadata, counters):
@@ -269,7 +292,7 @@ class CoverArtImage:
         filename = self._make_image_filename(filename, dirname, metadata)
 
         overwrite = config.setting["save_images_overwrite"]
-        ext = self.extension
+        ext = encode_filename(self.extension)
         image_filename = self._next_filename(filename, counters)
         while os.path.exists(image_filename + ext) and not overwrite:
             if not self._is_write_needed(image_filename + ext):
@@ -292,7 +315,7 @@ class CoverArtImage:
 
     def _next_filename(self, filename, counters):
         if counters[filename]:
-            new_filename = "%s (%d)" % (filename, counters[filename])
+            new_filename = b"%b (%d)" % (filename, counters[filename])
         else:
             new_filename = filename
         counters[filename] += 1
@@ -323,9 +346,9 @@ class CoverArtImage:
         if self.types:
             types = self.types
         elif self.is_front_image():
-            types = [u'front']
+            types = ['front']
         else:
-            types = [u'-']
+            types = ['-']
         if translate:
             types = [translate_caa_type(type) for type in types]
         return separator.join(types)
@@ -336,9 +359,9 @@ class CaaCoverArtImage(CoverArtImage):
     """Image from Cover Art Archive"""
 
     support_types = True
-    sourceprefix = u"CAA"
+    sourceprefix = "CAA"
 
-    def __init__(self, url, types=[], is_front=False, comment='', data=None):
+    def __init__(self, url, types=None, is_front=False, comment='', data=None):
         CoverArtImage.__init__(self, url=url, types=types, comment=comment,
                                data=data)
         self.is_front = is_front
@@ -349,7 +372,7 @@ class CaaThumbnailCoverArtImage(CaaCoverArtImage):
     """Used for thumbnails of CaaCoverArtImage objects, together with thumbnail
     property"""
 
-    def __init__(self, url, types=[], is_front=False, comment='', data=None):
+    def __init__(self, url, types=None, is_front=False, comment='', data=None):
         CaaCoverArtImage.__init__(self, url=url, types=types, comment=comment,
                                   data=data)
         self.is_front = False
@@ -362,7 +385,7 @@ class TagCoverArtImage(CoverArtImage):
 
     """Image from file tags"""
 
-    def __init__(self, file, tag=None, types=[], is_front=None,
+    def __init__(self, file, tag=None, types=None, is_front=None,
                  support_types=False, comment='', data=None):
         CoverArtImage.__init__(self, url=None, types=types, comment=comment,
                                data=data)
@@ -375,9 +398,9 @@ class TagCoverArtImage(CoverArtImage):
     @property
     def source(self):
         if self.tag:
-            return u'Tag %s from %s' % (self.tag, self.sourcefile)
+            return 'Tag %s from %s' % (self.tag, self.sourcefile)
         else:
-            return u'File %s' % (self.sourcefile)
+            return 'File %s' % (self.sourcefile)
 
     def __repr__(self):
         p = []
@@ -398,7 +421,7 @@ class CoverArtImageFromFile(CoverArtImage):
 
     sourceprefix = 'LOCAL'
 
-    def __init__(self, filepath, types=[], is_front=None,
+    def __init__(self, filepath, types=None, is_front=None,
                  support_types=False, comment='', data=None):
         CoverArtImage.__init__(self, url=None, types=types, comment=comment,
                                data=data)
@@ -409,7 +432,7 @@ class CoverArtImageFromFile(CoverArtImage):
 
     @property
     def source(self):
-        return u'%s %s' % (self.sourceprefix, self.filepath)
+        return '%s %s' % (self.sourceprefix, self.filepath)
 
     def __repr__(self):
         p = []

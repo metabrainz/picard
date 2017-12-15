@@ -19,7 +19,7 @@
 
 import re
 import os.path
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtWidgets
 from picard import config
 from picard.ui.util import StandardButton
 from picard.ui import PicardDialog
@@ -48,17 +48,17 @@ class TagsFromFileNamesDialog(PicardDialog):
             "%artist% - %album%/%tracknumber% %title%",
             "%artist% - %album%/%tracknumber% - %title%",
         ]
-        format = config.persist["tags_from_filenames_format"]
-        if format not in items:
+        tff_format = config.persist["tags_from_filenames_format"]
+        if tff_format not in items:
             selected_index = 0
-            if format:
-                items.insert(0, format)
+            if tff_format:
+                items.insert(0, tff_format)
         else:
-            selected_index = items.index(format)
+            selected_index = items.index(tff_format)
         self.ui.format.addItems(items)
         self.ui.format.setCurrentIndex(selected_index)
-        self.ui.buttonbox.addButton(StandardButton(StandardButton.OK), QtGui.QDialogButtonBox.AcceptRole)
-        self.ui.buttonbox.addButton(StandardButton(StandardButton.CANCEL), QtGui.QDialogButtonBox.RejectRole)
+        self.ui.buttonbox.addButton(StandardButton(StandardButton.OK), QtWidgets.QDialogButtonBox.AcceptRole)
+        self.ui.buttonbox.addButton(StandardButton(StandardButton.CANCEL), QtWidgets.QDialogButtonBox.RejectRole)
         self.ui.buttonbox.accepted.connect(self.accept)
         self.ui.buttonbox.rejected.connect(self.reject)
         self.ui.preview.clicked.connect(self.preview)
@@ -67,24 +67,24 @@ class TagsFromFileNamesDialog(PicardDialog):
         self.files = files
         self.items = []
         for file in files:
-            item = QtGui.QTreeWidgetItem(self.ui.files)
+            item = QtWidgets.QTreeWidgetItem(self.ui.files)
             item.setText(0, os.path.basename(file.filename))
             self.items.append(item)
-        self._tag_re = re.compile("(%\w+%)")
+        self._tag_re = re.compile(r"(%\w+%)")
         self.numeric_tags = ('tracknumber', 'totaltracks', 'discnumber', 'totaldiscs')
 
-    def parse_format(self):
-        format = unicode(self.ui.format.currentText())
+    def parse_response(self):
+        tff_format = self.ui.format.currentText()
         columns = []
         format_re = ['(?:^|/)']
-        for part in self._tag_re.split(format):
+        for part in self._tag_re.split(tff_format):
             if part.startswith('%') and part.endswith('%'):
                 name = part[1:-1]
                 columns.append(name)
                 if name in self.numeric_tags:
-                    format_re.append('(?P<' + name + '>\d+)')
+                    format_re.append('(?P<' + name + r'>\d+)')
                 elif name in ('date'):
-                    format_re.append('(?P<' + name + '>\d+(?:-\d+(?:-\d+)?)?)')
+                    format_re.append('(?P<' + name + r'>\d+(?:-\d+(?:-\d+)?)?)')
                 else:
                     format_re.append('(?P<' + name + '>[^/]*?)')
             else:
@@ -93,11 +93,11 @@ class TagsFromFileNamesDialog(PicardDialog):
         format_re = re.compile("".join(format_re))
         return format_re, columns
 
-    def match_file(self, file, format):
-        match = format.search(file.filename.replace('\\','/'))
+    def match_file(self, file, tff_format):
+        match = tff_format.search(file.filename.replace('\\','/'))
         if match:
             result = {}
-            for name, value in match.groupdict().iteritems():
+            for name, value in match.groupdict().items():
                 value = value.strip()
                 if name in self.numeric_tags:
                     value = value.lstrip("0")
@@ -109,30 +109,29 @@ class TagsFromFileNamesDialog(PicardDialog):
             return {}
 
     def preview(self):
-        format, columns = self.parse_format()
-        self.ui.files.setHeaderLabels([_("File Name")] + map(display_tag_name, columns))
+        tff_format, columns = self.parse_response()
+        self.ui.files.setHeaderLabels([_("File Name")] + list(map(display_tag_name, columns)))
         for item, file in zip(self.items, self.files):
-            matches = self.match_file(file, format)
-            for i in range(len(columns)):
-                value = matches.get(columns[i], '')
-                item.setText(i + 1, value)
-        self.ui.files.header().resizeSections(QtGui.QHeaderView.ResizeToContents)
+            matches = self.match_file(file, tff_format)
+            for i, column in enumerate(columns):
+                item.setText(i + 1, matches.get(column, ''))
+        self.ui.files.header().resizeSections(QtWidgets.QHeaderView.ResizeToContents)
         self.ui.files.header().setStretchLastSection(True)
 
     def accept(self):
-        format, columns = self.parse_format()
+        tff_format, columns = self.parse_response()
         for file in self.files:
-            metadata = self.match_file(file, format)
-            for name, value in metadata.iteritems():
+            metadata = self.match_file(file, tff_format)
+            for name, value in metadata.items():
                 file.metadata[name] = value
             file.update()
         config.persist["tags_from_filenames_format"] = self.ui.format.currentText()
         self.saveWindowState()
-        QtGui.QDialog.accept(self)
+        QtWidgets.QDialog.accept(self)
 
     def reject(self):
         self.saveWindowState()
-        QtGui.QDialog.reject(self)
+        QtWidgets.QDialog.reject(self)
 
     def closeEvent(self, event):
         self.saveWindowState()

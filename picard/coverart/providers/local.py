@@ -19,9 +19,7 @@
 
 import os
 import re
-import traceback
-from PyQt4 import QtCore, QtGui
-from picard import config, log
+from picard import config
 from picard.coverart.providers import CoverArtProvider, ProviderOptions
 from picard.coverart.image import CoverArtImageFromFile
 from picard.coverart.utils import CAA_TYPES
@@ -33,7 +31,7 @@ class ProviderOptionsLocal(ProviderOptions):
         Options for Local Files cover art provider
     """
 
-    _DEFAULT_LOCAL_COVER_ART_REGEX = '^(?:cover|folder|albumart)(.*)\.(?:jpe?g|png|gif|tiff?)$'
+    _DEFAULT_LOCAL_COVER_ART_REGEX = r'^(?:cover|folder|albumart)(.*)\.(?:jpe?g|png|gif|tiff?)$'
 
     options = [
         config.TextOption("setting", "local_cover_regex",
@@ -54,7 +52,7 @@ class ProviderOptionsLocal(ProviderOptions):
         self.ui.local_cover_regex_edit.setText(config.setting["local_cover_regex"])
 
     def save(self):
-        config.setting["local_cover_regex"] = unicode(self.ui.local_cover_regex_edit.text())
+        config.setting["local_cover_regex"] = self.ui.local_cover_regex_edit.text()
 
 
 class CoverArtProviderLocal(CoverArtProvider):
@@ -62,7 +60,7 @@ class CoverArtProviderLocal(CoverArtProvider):
     """Get cover art from local files"""
 
     NAME = "Local"
-    TITLE = N_(u"Local Files")
+    TITLE = N_("Local Files")
     OPTIONS = ProviderOptionsLocal
 
     _types_split_re = re.compile('[^a-z0-9]', re.IGNORECASE)
@@ -88,7 +86,7 @@ class CoverArtProviderLocal(CoverArtProvider):
                         continue
                     filepath = os.path.join(current_dir, root, filename)
                     if os.path.exists(filepath):
-                        types = self.get_types(m.group(1)) or [ u'front' ]
+                        types = self.get_types(m.group(1)) or [ 'front' ]
                         self.queue_put(CoverArtImageFromFile(filepath,
                                                              types=types,
                                                              support_types=True))

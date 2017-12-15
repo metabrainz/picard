@@ -18,7 +18,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from functools import partial
-from PyQt4 import QtCore
+from PyQt5 import QtCore
 from picard import config, log
 
 
@@ -27,8 +27,8 @@ user_collections = {}
 
 class Collection(QtCore.QObject):
 
-    def __init__(self, id, name, size):
-        self.id = id
+    def __init__(self, collection_id, name, size):
+        self.id = collection_id
         self.name = name
         self.pending = set()
         self.size = int(size)
@@ -41,14 +41,14 @@ class Collection(QtCore.QObject):
         ids = ids - self.pending
         if ids:
             self.pending.update(ids)
-            self.tagger.xmlws.put_to_collection(self.id, list(ids),
+            self.tagger.mb_api.put_to_collection(self.id, list(ids),
                 partial(self._add_finished, ids, callback))
 
     def remove_releases(self, ids, callback):
         ids = ids - self.pending
         if ids:
             self.pending.update(ids)
-            self.tagger.xmlws.delete_from_collection(self.id, list(ids),
+            self.tagger.mb_api.delete_from_collection(self.id, list(ids),
                 partial(self._remove_finished, ids, callback))
 
     def _add_finished(self, ids, callback, document, reply, error):
@@ -64,7 +64,7 @@ class Collection(QtCore.QObject):
             }
             log.debug('Added %(count)i releases to collection "%(name)s"' % mparms)
             self.tagger.window.set_statusbar_message(
-                ungettext('Added %(count)i release to collection "%(name)s"',
+                ngettext('Added %(count)i release to collection "%(name)s"',
                           'Added %(count)i releases to collection "%(name)s"',
                           count),
                 mparms,
@@ -86,7 +86,7 @@ class Collection(QtCore.QObject):
             log.debug('Removed %(count)i releases from collection "%(name)s"' %
                       mparms)
             self.tagger.window.set_statusbar_message(
-                ungettext('Removed %(count)i release from collection "%(name)s"',
+                ngettext('Removed %(count)i release from collection "%(name)s"',
                           'Removed %(count)i releases from collection "%(name)s"',
                           count),
                 mparms,
@@ -102,33 +102,34 @@ def load_user_collections(callback=None):
         if error:
             tagger.window.set_statusbar_message(
                 N_("Error loading collections: %(error)s"),
-                {'error': unicode(reply.errorString())},
+                {'error': reply.errorString()},
                 echo=log.error
             )
             return
-        collection_list = document.metadata[0].collection_list[0]
-        if "collection" in collection_list.children:
+        if document and "collections" in document:
+            collection_list = document['collections']
             new_collections = set()
 
-            for node in collection_list.collection:
-                if node.attribs.get(u"entity_type") != u"release":
+            for node in collection_list:
+                if node["entity-type"] != "release":
                     continue
-                new_collections.add(node.id)
-                collection = user_collections.get(node.id)
+                node_id = node['id']
+                new_collections.add(node_id)
+                collection = user_collections.get(node_id)
                 if collection is None:
-                    user_collections[node.id] = Collection(node.id, node.name[0].text, node.release_list[0].count)
+                    user_collections[node_id] = Collection(node_id, node['name'], node['release-count'])
                 else:
-                    collection.name = node.name[0].text
-                    collection.size = int(node.release_list[0].count)
+                    collection.name = node['name']
+                    collection.size = node['release-count']
 
-            for id in set(user_collections.iterkeys()) - new_collections:
-                del user_collections[id]
+            for collection_id in set(user_collections.keys()) - new_collections:
+                del user_collections[collection_id]
 
         if callback:
             callback()
 
-    if tagger.xmlws.oauth_manager.is_authorized():
-        tagger.xmlws.get_collection_list(partial(request_finished))
+    if tagger.webservice.oauth_manager.is_authorized():
+        tagger.mb_api.get_collection_list(partial(request_finished))
     else:
         user_collections.clear()
 
@@ -136,14 +137,13 @@ def load_user_collections(callback=None):
 def add_release_to_user_collections(release_node):
     """Add album to collections"""
     # Check for empy collection list
-    if ("collection_list" in release_node.children and
-        "collection" in release_node.collection_list[0].children):
+    if "collections" in release_node:
+        release_id = release_node['id']
         username = config.persist["oauth_username"].lower()
-        for node in release_node.collection_list[0].collection:
-            if node.editor[0].text.lower() == username:
-                if node.id not in user_collections:
-                    user_collections[node.id] = \
-                        Collection(node.id, node.name[0].text, node.release_list[0].count)
-                user_collections[node.id].releases.add(release_node.id)
-                log.debug("Adding release %r to %r" %
-                          (release_node.id, user_collections[node.id]))
+        for node in release_node['collections']:
+            node_id = node['id']
+            if node['editor'].lower() == username:
+                if node_id not in user_collections:
+                    user_collections[node_id] = Collection(node_id, node['name'], node['release-count'])
+                user_collections[node_id].releases.add(release_id)
+                log.debug("Adding release %r to %r", release_id, user_collections[node_id])

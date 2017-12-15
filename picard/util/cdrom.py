@@ -22,7 +22,7 @@ import sys
 if sys.platform == 'win32':
     from ctypes import windll
 
-from PyQt4.QtCore import QFile, QIODevice
+from PyQt5.QtCore import QFile, QIODevice
 
 from picard import config
 from picard.util import uniqify
@@ -63,7 +63,7 @@ def get_cdrom_drives():
 
     if sys.platform == 'win32':
         GetLogicalDrives = windll.kernel32.GetLogicalDrives
-        GetDriveType = windll.kernel32.GetDriveTypeA
+        GetDriveType = windll.kernel32.GetDriveTypeW
         DRIVE_CDROM = 5
         mask = GetLogicalDrives()
         for i in range(26):
@@ -78,7 +78,7 @@ def get_cdrom_drives():
         if cdinfo.open(QIODevice.ReadOnly | QIODevice.Text):
             drive_names = []
             drive_audio_caps = []
-            line = unicode(cdinfo.readLine())
+            line = string_(cdinfo.readLine())
             while line:
                 if ":" in line:
                     key, values = line.split(':')
@@ -87,11 +87,11 @@ def get_cdrom_drives():
                     elif key == 'Can play audio':
                         drive_audio_caps = [v == '1' for v in values.split()]
                         break  # no need to continue past this line
-                line = unicode(cdinfo.readLine())
+                line = string_(cdinfo.readLine())
             # Show only drives that are capable of playing audio
             for index, drive in enumerate(drive_names):
                 if drive_audio_caps[index]:
-                    device = u'/dev/%s' % drive
+                    device = '/dev/%s' % drive
                     symlink_target = QFile.symLinkTarget(device)
                     if symlink_target != '':
                         device = symlink_target
@@ -101,7 +101,7 @@ def get_cdrom_drives():
         for device in config.setting["cd_lookup_device"].split(","):
             # Need to filter out empty strings,
             # particularly if the device list is empty
-            if device.strip() != u'':
+            if device.strip() != '':
                 drives.append(device.strip())
 
     # make sure no drive is listed twice (given by multiple sources)

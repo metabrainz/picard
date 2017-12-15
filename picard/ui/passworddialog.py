@@ -18,7 +18,6 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from PyQt4 import QtCore
 from picard import config
 from picard.ui import PicardDialog
 from picard.ui.ui_passworddialog import Ui_PasswordDialog
@@ -39,8 +38,8 @@ class PasswordDialog(PicardDialog):
         self.ui.buttonbox.accepted.connect(self.set_new_password)
 
     def set_new_password(self):
-        self._authenticator.setUser(unicode(self.ui.username.text()))
-        self._authenticator.setPassword(unicode(self.ui.password.text()))
+        self._authenticator.setUser(self.ui.username.text())
+        self._authenticator.setPassword(self.ui.password.text())
         self.accept()
 
 
@@ -59,8 +58,8 @@ class ProxyDialog(PicardDialog):
         self.ui.buttonbox.accepted.connect(self.set_proxy_password)
 
     def set_proxy_password(self):
-        config.setting["proxy_username"] = unicode(self.ui.username.text())
-        config.setting["proxy_password"] = unicode(self.ui.password.text())
-        self._authenticator.setUser(unicode(self.ui.username.text()))
-        self._authenticator.setPassword(unicode(self.ui.password.text()))
+        config.setting["proxy_username"] = self.ui.username.text()
+        config.setting["proxy_password"] = self.ui.password.text()
+        self._authenticator.setUser(self.ui.username.text())
+        self._authenticator.setPassword(self.ui.password.text())
         self.accept()

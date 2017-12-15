@@ -1,0 +1,272 @@
+{
+    "label-info": [
+        {
+            "catalog-number": null,
+            "label": {
+                "disambiguation": null,
+                "label-code": null,
+                "sort-name": null,
+                "aliases": [
+                    {
+                        "begin": null,
+                        "sort-name": null,
+                        "type": null,
+                        "ended": null,
+                        "locale": null,
+                        "end": null,
+                        "type-id": null,
+                        "primary": null,
+                        "name": null
+                    }
+                ],
+                "name": null,
+                "id": null
+            }
+        }
+    ],
+    "status": null,
+    "country": null,
+    "asin": null,
+    "user-tags": [
+        {
+            "name": null
+        }
+    ],
+    "cover-art-archive": {
+        "front": null,
+        "back": null,
+        "artwork": null,
+        "darkened": null,
+        "count": null
+    },
+    "aliases": [],
+    "title": null,
+    "status-id": null,
+    "id": null,
+    "disambiguation": null,
+    "media": [
+        {
+            "format-id": null,
+            "track-offset": null,
+            "track-count": null,
+            "position": null,
+            "format": null,
+            "title": null
+        }
+    ],
+    "date": null,
+    "tags": [
+        {
+            "name": null,
+            "count": null
+        },
+        {
+            "name": null,
+            "count": null
+        }
+    ],
+    "packaging-id": null,
+    "release-group": {
+        "disambiguation": null,
+        "primary-type-id": null,
+        "first-release-date": null,
+        "aliases": [],
+        "artist-credit": [
+            {
+                "joinphrase": null,
+                "artist": {
+                    "disambiguation": null,
+                    "sort-name": null,
+                    "name": null,
+                    "id": null
+                },
+                "name": null
+            }
+        ],
+        "secondary-types": [],
+        "title": null,
+        "secondary-type-ids": [],
+        "id": null,
+        "primary-type": null
+    },
+    "relations": [
+        {
+            "attribute-values": {},
+            "target-credit": null,
+            "begin": null,
+            "attributes": [],
+            "type": null,
+            "artist": {
+                "disambiguation": null,
+                "sort-name": null,
+                "aliases": [],
+                "name": null,
+                "id": null
+            },
+            "type-id": null,
+            "target-type": null,
+            "direction": null,
+            "source-credit": null,
+            "ended": null,
+            "end": null
+        },
+        {
+            "attribute-values": {},
+            "target-credit": null,
+            "begin": null,
+            "attributes": [],
+            "type": null,
+            "artist": {
+                "disambiguation": null,
+                "sort-name": null,
+                "aliases": [],
+                "name": null,
+                "id": null
+            },
+            "type-id": null,
+            "target-type": null,
+            "direction": null,
+            "source-credit": null,
+            "ended": null,
+            "end": null
+        },
+        {
+            "attribute-values": {},
+            "target-credit": null,
+            "begin": null,
+            "attributes": [],
+            "source-credit": null,
+            "type": null,
+            "type-id": null,
+            "url": {
+                "resource": null,
+                "id": null
+            },
+            "target-type": null,
+            "direction": null,
+            "ended": null,
+            "end": null
+        },
+        {
+            "attribute-values": {},
+            "target-credit": null,
+            "begin": null,
+            "source-credit": null,
+            "type": null,
+            "artist": {
+                "disambiguation": null,
+                "aliases": [],
+                "sort-name": null,
+                "name": null,
+                "id": null
+            },
+            "type-id": null,
+            "target-type": null,
+            "direction": null,
+            "attributes": [],
+            "ended": null,
+            "end": null
+        }
+    ],
+    "release-events": [
+        {
+            "date": null,
+            "area": {
+                "disambiguation": null,
+                "sort-name": null,
+                "id": null,
+                "iso-3166-1-codes": [
+                    null
+                ],
+                "name": null
+            }
+        }
+    ],
+    "text-representation": {
+        "script": null,
+        "language": null
+    },
+    "quality": null,
+    "packaging": null,
+    "barcode": null,
+    "artist-credit": [
+        {
+            "joinphrase": null,
+            "artist": {
+                "disambiguation": null,
+                "sort-name": null,
+                "aliases": [
+                    {
+                        "begin": null,
+                        "ended": null,
+                        "type": null,
+                        "sort-name": null,
+                        "locale": null,
+                        "end": null,
+                        "name": null,
+                        "primary": null,
+                        "type-id": null
+                    },
+                    {
+                        "begin": null,
+                        "ended": null,
+                        "type": null,
+                        "sort-name": null,
+                        "locale": null,
+                        "end": null,
+                        "type-id": null,
+                        "primary": null,
+                        "name": null
+                    },
+                    {
+                        "begin": null,
+                        "ended": null,
+                        "type": null,
+                        "sort-name": null,
+                        "locale": null,
+                        "end": null,
+                        "type-id": null,
+                        "primary": null,
+                        "name": null
+                    },
+                    {
+                        "begin": null,
+                        "sort-name": null,
+                        "type": null,
+                        "ended": null,
+                        "locale": null,
+                        "end": null,
+                        "name": null,
+                        "primary": null,
+                        "type-id": null
+                    },
+                    {
+                        "begin": null,
+                        "ended": null,
+                        "type": null,
+                        "sort-name": null,
+                        "locale": null,
+                        "end": null,
+                        "name": null,
+                        "primary": null,
+                        "type-id": null
+                    },
+                    {
+                        "begin": null,
+                        "ended": null,
+                        "type": null,
+                        "sort-name": null,
+                        "locale": null,
+                        "end": null,
+                        "type-id": null,
+                        "primary": null,
+                        "name": null
+                    }
+                ],
+                "name": null,
+                "id": null
+            },
+            "name": null
+        }
+    ]
+}

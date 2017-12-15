@@ -17,7 +17,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-from PyQt4 import QtCore, QtGui
+from functools import partial
+from PyQt5 import QtCore, QtWidgets
 from picard import config
 from picard.ui.options import OptionsPage, register_options_page
 from picard.ui.ui_options_tags import Ui_TagsOptionsPage
@@ -51,8 +52,8 @@ class TagsOptionsPage(OptionsPage):
         self.ui = Ui_TagsOptionsPage()
         self.ui.setupUi(self)
         self.ui.write_id3v23.clicked.connect(self.update_encodings)
-        self.ui.write_id3v24.clicked.connect(self.update_encodings)
-        self.completer = QtGui.QCompleter(sorted(TAG_NAMES.keys()), self)
+        self.ui.write_id3v24.clicked.connect(partial(self.update_encodings, force_utf8=True))
+        self.completer = QtWidgets.QCompleter(sorted(TAG_NAMES.keys()), self)
         self.completer.setCaseSensitivity(QtCore.Qt.CaseInsensitive)
         self.completer.setWidget(self.ui.preserved_tags)
         self.ui.preserved_tags.textEdited.connect(self.preserved_tags_edited)
@@ -88,7 +89,7 @@ class TagsOptionsPage(OptionsPage):
             self.tagger.window.metadata_box.update()
         config.setting["write_id3v1"] = self.ui.write_id3v1.isChecked()
         config.setting["write_id3v23"] = self.ui.write_id3v23.isChecked()
-        config.setting["id3v23_join_with"] = unicode(self.ui.id3v23_join_with.currentText())
+        config.setting["id3v23_join_with"] = self.ui.id3v23_join_with.currentText()
         if self.ui.enc_iso88591.isChecked():
             config.setting["id3v2_encoding"] = "iso-8859-1"
         elif self.ui.enc_utf16.isChecked():
@@ -97,10 +98,10 @@ class TagsOptionsPage(OptionsPage):
             config.setting["id3v2_encoding"] = "utf-8"
         config.setting["remove_ape_from_mp3"] = self.ui.remove_ape_from_mp3.isChecked()
         config.setting["remove_id3_from_flac"] = self.ui.remove_id3_from_flac.isChecked()
-        config.setting["preserved_tags"] = unicode(self.ui.preserved_tags.text())
+        config.setting["preserved_tags"] = self.ui.preserved_tags.text()
         self.tagger.window.enable_tag_saving_action.setChecked(not config.setting["dont_write_tags"])
 
-    def update_encodings(self):
+    def update_encodings(self, force_utf8=False):
         if self.ui.write_id3v23.isChecked():
             if self.ui.enc_utf8.isChecked():
                 self.ui.enc_utf16.setChecked(True)
@@ -109,12 +110,13 @@ class TagsOptionsPage(OptionsPage):
             self.ui.id3v23_join_with.setEnabled(True)
         else:
             self.ui.enc_utf8.setEnabled(True)
-            self.ui.enc_utf8.setChecked(True)
+            if force_utf8:
+                self.ui.enc_utf8.setChecked(True)
             self.ui.label_id3v23_join_with.setEnabled(False)
             self.ui.id3v23_join_with.setEnabled(False)
 
     def preserved_tags_edited(self, text):
-        prefix = unicode(text)[:self.ui.preserved_tags.cursorPosition()].split(",")[-1]
+        prefix = text[:self.ui.preserved_tags.cursorPosition()].split(",")[-1]
         self.completer.setCompletionPrefix(prefix)
         if prefix:
             self.completer.complete()
@@ -122,12 +124,12 @@ class TagsOptionsPage(OptionsPage):
             self.completer.popup().hide()
 
     def completer_activated(self, text):
-        input = self.ui.preserved_tags
-        current = unicode(input.text())
-        i = input.cursorPosition()
+        input_field = self.ui.preserved_tags
+        current = input_field.text()
+        i = input_field.cursorPosition()
         p = len(self.completer.completionPrefix())
-        input.setText("%s%s %s" % (current[:i - p], text, current[i:]))
-        input.setCursorPosition(i - p + len(text) + 1)
+        input_field.setText("%s%s %s" % (current[:i - p], text, current[i:]))
+        input_field.setCursorPosition(i - p + len(text) + 1)
 
 
 register_options_page(TagsOptionsPage)

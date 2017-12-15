@@ -17,7 +17,6 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-from PyQt4 import QtCore
 from picard import config
 from picard.ui.options import OptionsPage, register_options_page
 from picard.ui.ui_options_network import Ui_NetworkOptionsPage
@@ -57,17 +56,15 @@ class NetworkOptionsPage(OptionsPage):
         self.ui.browser_integration_port.setValue(config.setting["browser_integration_port"])
         self.ui.browser_integration_localhost_only.setChecked(
             config.setting["browser_integration_localhost_only"])
-        QtCore.QObject.connect(self.ui.browser_integration_port,
-                               QtCore.SIGNAL('valueChanged(int)'),
-                               self.change_browser_integration_port)
+        self.ui.browser_integration_port.valueChanged.connect(self.change_browser_integration_port)
 
     def save(self):
         config.setting["use_proxy"] = self.ui.web_proxy.isChecked()
-        config.setting["proxy_server_host"] = unicode(self.ui.server_host.text())
+        config.setting["proxy_server_host"] = self.ui.server_host.text()
         config.setting["proxy_server_port"] = self.ui.server_port.value()
-        config.setting["proxy_username"] = unicode(self.ui.username.text())
-        config.setting["proxy_password"] = unicode(self.ui.password.text())
-        self.tagger.xmlws.setup_proxy()
+        config.setting["proxy_username"] = self.ui.username.text()
+        config.setting["proxy_password"] = self.ui.password.text()
+        self.tagger.webservice.setup_proxy()
         config.setting["browser_integration"] = self.ui.browser_integration.isChecked()
         config.setting["browser_integration_port"] = self.ui.browser_integration_port.value()
         config.setting["browser_integration_localhost_only"] = \
@@ -81,7 +78,7 @@ class NetworkOptionsPage(OptionsPage):
             self.tagger.browser_integration.stop()
 
     def change_browser_integration_port(self, port):
-        config.setting["browser_integration_port"] = self.ui.browser_integration_port.value()
+        config.setting["browser_integration_port"] = port
 
 
 register_options_page(NetworkOptionsPage)

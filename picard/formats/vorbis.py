@@ -48,7 +48,7 @@ class VCommentFile(File):
         "musicbrainz_trackid": "musicbrainz_recordingid",
         "musicbrainz_releasetrackid": "musicbrainz_trackid",
     }
-    __rtranslate = dict([(v, k) for k, v in __translate.iteritems()])
+    __rtranslate = dict([(v, k) for k, v in __translate.items()])
 
     def _load(self, filename):
         log.debug("Loading file %r", filename)
@@ -84,7 +84,7 @@ class VCommentFile(File):
                     if email != config.setting['rating_user_email']:
                         continue
                     name = '~rating'
-                    value = unicode(int(round((float(value) * (config.setting['rating_steps'] - 1)))))
+                    value = string_(int(round((float(value) * (config.setting['rating_steps'] - 1)))))
                 elif name == "fingerprint" and value.startswith("MusicMagic Fingerprint"):
                     name = "musicip_fingerprint"
                     value = value[22:]
@@ -132,7 +132,7 @@ class VCommentFile(File):
                 else:
                     metadata.append_image(coverartimage)
 
-        # Read the unofficial COVERART tags, for backward compatibillity only
+        # Read the unofficial COVERART tags, for backward compatibility only
         if "metadata_block_picture" not in file.tags:
             try:
                 for data in file["COVERART"]:
@@ -171,7 +171,7 @@ class VCommentFile(File):
                     name = 'rating:%s' % config.setting['rating_user_email']
                 else:
                     name = 'rating'
-                value = unicode(float(value) / (config.setting['rating_steps'] - 1))
+                value = string_(float(value) / (config.setting['rating_steps'] - 1))
             # don't save private tags
             elif name.startswith("~"):
                 continue
@@ -190,12 +190,12 @@ class VCommentFile(File):
                 value = "MusicMagic Fingerprint%s" % value
             elif name in self.__rtranslate:
                 name = self.__rtranslate[name]
-            tags.setdefault(name.upper().encode('utf-8'), []).append(value)
+            tags.setdefault(name.upper(), []).append(value)
 
         if "totaltracks" in metadata:
-            tags.setdefault(u"TRACKTOTAL", []).append(metadata["totaltracks"])
+            tags.setdefault("TRACKTOTAL", []).append(metadata["totaltracks"])
         if "totaldiscs" in metadata:
-            tags.setdefault(u"DISCTOTAL", []).append(metadata["totaldiscs"])
+            tags.setdefault("DISCTOTAL", []).append(metadata["totaldiscs"])
 
         for image in metadata.images_to_be_saved_to_tags:
             picture = mutagen.flac.Picture()
@@ -206,8 +206,8 @@ class VCommentFile(File):
             if self._File == mutagen.flac.FLAC:
                 file.add_picture(picture)
             else:
-                tags.setdefault(u"METADATA_BLOCK_PICTURE", []).append(
-                    base64.standard_b64encode(picture.write()))
+                tags.setdefault("METADATA_BLOCK_PICTURE", []).append(
+                    base64.b64encode(picture.write()).decode('ascii'))
 
         file.tags.update(tags)
 
@@ -227,7 +227,7 @@ class VCommentFile(File):
             real_name = self._get_tag_name(tag)
             if real_name and real_name in tags:
                 if real_name in ('performer', 'comment'):
-                    tag_type = "\(%s\)" % tag.split(':', 1)[1]
+                    tag_type = r"\(%s\)" % tag.split(':', 1)[1]
                     for item in tags.get(real_name):
                         if re.search(tag_type, item):
                             tags.get(real_name).remove(item)

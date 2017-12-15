@@ -20,7 +20,7 @@
 import os
 import re
 from functools import partial
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtGui, QtWidgets
 from picard import config, log
 from picard.album import Album, NatAlbum
 from picard.cluster import Cluster, ClusterList, UnclusteredFiles
@@ -32,12 +32,12 @@ from picard.ui.ratingwidget import RatingWidget
 from picard.ui.collectionmenu import CollectionMenu
 
 
-class BaseAction(QtGui.QAction):
+class BaseAction(QtWidgets.QAction):
     NAME = "Unknown"
     MENU = []
 
     def __init__(self):
-        QtGui.QAction.__init__(self, self.NAME, None)
+        QtWidgets.QAction.__init__(self, self.NAME, None)
         self.triggered.connect(self.__callback)
 
     def __callback(self):
@@ -84,7 +84,7 @@ def get_match_color(similarity, basecolor):
         c2[2] + (c1[2] - c2[2]) * similarity)
 
 
-class MainPanel(QtGui.QSplitter):
+class MainPanel(QtWidgets.QSplitter):
 
     options = [
         config.Option("persist", "splitter_state", QtCore.QByteArray()),
@@ -97,7 +97,7 @@ class MainPanel(QtGui.QSplitter):
     ]
 
     def __init__(self, window, parent=None):
-        QtGui.QSplitter.__init__(self, parent)
+        QtWidgets.QSplitter.__init__(self, parent)
         self.window = window
         self.create_icons()
         self.views = [FileTreeView(window, self), AlbumTreeView(window, self)]
@@ -133,8 +133,8 @@ class MainPanel(QtGui.QSplitter):
         self.restoreState(config.persist["splitter_state"])
 
     def create_icons(self):
-        if hasattr(QtGui.QStyle, 'SP_DirIcon'):
-            ClusterItem.icon_dir = self.style().standardIcon(QtGui.QStyle.SP_DirIcon)
+        if hasattr(QtWidgets.QStyle, 'SP_DirIcon'):
+            ClusterItem.icon_dir = self.style().standardIcon(QtWidgets.QStyle.SP_DirIcon)
         else:
             ClusterItem.icon_dir = icontheme.lookup('folder', icontheme.ICON_SIZE_MENU)
         AlbumItem.icon_cd = icontheme.lookup('media-optical', icontheme.ICON_SIZE_MENU)
@@ -211,7 +211,7 @@ class MainPanel(QtGui.QSplitter):
             self.update_current_view()
 
 
-class BaseTreeView(QtGui.QTreeWidget):
+class BaseTreeView(QtWidgets.QTreeWidget):
 
     options = [
         config.Option("setting", "color_modified", QtGui.QColor(QtGui.QPalette.WindowText)),
@@ -221,7 +221,7 @@ class BaseTreeView(QtGui.QTreeWidget):
     ]
 
     def __init__(self, window, parent=None):
-        QtGui.QTreeWidget.__init__(self, parent)
+        QtWidgets.QTreeWidget.__init__(self, parent)
         self.window = window
         self.panel = parent
 
@@ -232,7 +232,7 @@ class BaseTreeView(QtGui.QTreeWidget):
         self.setAcceptDrops(True)
         self.setDragEnabled(True)
         self.setDropIndicatorShown(True)
-        self.setSelectionMode(QtGui.QAbstractItemView.ExtendedSelection)
+        self.setSelectionMode(QtWidgets.QAbstractItemView.ExtendedSelection)
 
         # enable sorting, but don't actually use it by default
         # XXX it would be nice to be able to go to the 'no sort' mode, but the
@@ -240,13 +240,13 @@ class BaseTreeView(QtGui.QTreeWidget):
         self.header().setSortIndicator(-1, QtCore.Qt.AscendingOrder)
         self.setSortingEnabled(True)
 
-        self.expand_all_action = QtGui.QAction(_("&Expand all"), self)
+        self.expand_all_action = QtWidgets.QAction(_("&Expand all"), self)
         self.expand_all_action.triggered.connect(self.expandAll)
-        self.collapse_all_action = QtGui.QAction(_("&Collapse all"), self)
+        self.collapse_all_action = QtWidgets.QAction(_("&Collapse all"), self)
         self.collapse_all_action.triggered.connect(self.collapseAll)
-        self.select_all_action = QtGui.QAction(_("Select &all"), self)
+        self.select_all_action = QtWidgets.QAction(_("Select &all"), self)
         self.select_all_action.triggered.connect(self.selectAll)
-        self.select_all_action.setShortcut(QtGui.QKeySequence(_(u"Ctrl+A")))
+        self.select_all_action.setShortcut(QtGui.QKeySequence(_("Ctrl+A")))
         self.doubleClicked.connect(self.activate_item)
 
     def contextMenuEvent(self, event):
@@ -256,7 +256,7 @@ class BaseTreeView(QtGui.QTreeWidget):
         obj = item.obj
         plugin_actions = None
         can_view_info = self.window.view_info_action.isEnabled()
-        menu = QtGui.QMenu(self)
+        menu = QtWidgets.QMenu(self)
 
         if isinstance(obj, Track):
             if can_view_info:
@@ -312,7 +312,7 @@ class BaseTreeView(QtGui.QTreeWidget):
         bottom_separator = False
 
         if isinstance(obj, Album) and not isinstance(obj, NatAlbum) and obj.loaded:
-            releases_menu = QtGui.QMenu(_("&Other versions"), menu)
+            releases_menu = QtWidgets.QMenu(_("&Other versions"), menu)
             menu.addSeparator()
             menu.addMenu(releases_menu)
             loading = releases_menu.addAction(_('Loading...'))
@@ -369,7 +369,7 @@ class BaseTreeView(QtGui.QTreeWidget):
         if config.setting["enable_ratings"] and \
            len(self.window.selected_objects) == 1 and isinstance(obj, Track):
             menu.addSeparator()
-            action = QtGui.QWidgetAction(menu)
+            action = QtWidgets.QWidgetAction(menu)
             action.setDefaultWidget(RatingWidget(menu, obj))
             menu.addAction(action)
             menu.addSeparator()
@@ -383,7 +383,7 @@ class BaseTreeView(QtGui.QTreeWidget):
             menu.addMenu(CollectionMenu(selected_albums, _("Collections"), menu))
 
         if plugin_actions:
-            plugin_menu = QtGui.QMenu(_("P&lugins"), menu)
+            plugin_menu = QtWidgets.QMenu(_("P&lugins"), menu)
             plugin_menu.setIcon(self.panel.icon_plugins)
             menu.addSeparator()
             menu.addMenu(plugin_menu)
@@ -391,7 +391,7 @@ class BaseTreeView(QtGui.QTreeWidget):
             plugin_menus = {}
             for action in plugin_actions:
                 action_menu = plugin_menu
-                for index in xrange(1, len(action.MENU) + 1):
+                for index in range(1, len(action.MENU) + 1):
                     key = tuple(action.MENU[:index])
                     if key in plugin_menus:
                         action_menu = plugin_menus[key]
@@ -420,7 +420,7 @@ class BaseTreeView(QtGui.QTreeWidget):
 
     def save_state(self):
         cols = range(self.numHeaderSections - 1)
-        sizes = " ".join(str(self.header().sectionSize(i)) for i in cols)
+        sizes = " ".join(string_(self.header().sectionSize(i)) for i in cols)
         config.persist[self.view_sizes.name] = sizes
 
     def supportedDropActions(self):
@@ -443,7 +443,7 @@ class BaseTreeView(QtGui.QTreeWidget):
         if items:
             drag = QtGui.QDrag(self)
             drag.setMimeData(self.mimeData(items))
-            drag.start(supportedActions)
+            drag.exec_(QtCore.Qt.MoveAction)
 
     def mimeData(self, items):
         """Return MIME data for specified items."""
@@ -453,11 +453,11 @@ class BaseTreeView(QtGui.QTreeWidget):
         for item in items:
             obj = item.obj
             if isinstance(obj, Album):
-                album_ids.append(str(obj.id))
+                album_ids.append(string_(obj.id))
             elif obj.iterfiles:
                 files.extend([url(f.filename) for f in obj.iterfiles()])
         mimeData = QtCore.QMimeData()
-        mimeData.setData("application/picard.album-list", "\n".join(album_ids))
+        mimeData.setData("application/picard.album-list", "\n".join(album_ids).encode())
         if files:
             mimeData.setUrls(files)
         return mimeData
@@ -467,9 +467,9 @@ class BaseTreeView(QtGui.QTreeWidget):
         files = []
         new_files = []
         for url in urls:
+            log.debug("Dropped the URL: %r", url.toString(QtCore.QUrl.RemoveUserInfo))
             if url.scheme() == "file" or not url.scheme():
-                # Dropping a file from iTunes gives a filename with a NULL terminator
-                filename = os.path.normpath(os.path.realpath(unicode(url.toLocalFile()).rstrip("\0")))
+                filename = os.path.normpath(os.path.realpath(url.toLocalFile().rstrip("\0")))
                 file = BaseTreeView.tagger.files.get(filename)
                 if file:
                     files.append(file)
@@ -478,7 +478,7 @@ class BaseTreeView(QtGui.QTreeWidget):
                 else:
                     new_files.append(filename)
             elif url.scheme() in ("http", "https"):
-                path = unicode(url.path())
+                path = url.path()
                 match = re.search(r"/(release|recording)/([0-9a-z\-]{36})", path)
                 if match:
                     entity = match.group(1)
@@ -493,7 +493,7 @@ class BaseTreeView(QtGui.QTreeWidget):
             BaseTreeView.tagger.add_files(new_files, target=target)
 
     def dropEvent(self, event):
-        return QtGui.QTreeView.dropEvent(self, event)
+        return QtWidgets.QTreeView.dropEvent(self, event)
 
     def dropMimeData(self, parent, index, data, action):
         target = None
@@ -509,8 +509,6 @@ class BaseTreeView(QtGui.QTreeWidget):
         # text/uri-list
         urls = data.urls()
         if urls:
-            if target is None:
-                target = self.tagger.unclustered_files
             self.drop_urls(urls, target)
             handled = True
         # application/picard.album-list
@@ -518,7 +516,7 @@ class BaseTreeView(QtGui.QTreeWidget):
         if albums:
             if isinstance(self, FileTreeView) and target is None:
                 target = self.tagger.unclustered_files
-            albums = [self.tagger.load_album(id) for id in str(albums).split("\n")]
+            albums = [self.tagger.load_album(id) for id in string_(albums).split("\n")]
             self.tagger.move_files(self.tagger.get_files_from_objects(albums), target)
             handled = True
         return handled
@@ -541,11 +539,11 @@ class BaseTreeView(QtGui.QTreeWidget):
             cluster_item.add_files(cluster.files)
 
     def moveCursor(self, action, modifiers):
-        if action in (QtGui.QAbstractItemView.MoveUp, QtGui.QAbstractItemView.MoveDown):
+        if action in (QtWidgets.QAbstractItemView.MoveUp, QtWidgets.QAbstractItemView.MoveDown):
             item = self.currentItem()
             if item and not item.isSelected():
                 self.setCurrentItem(item)
-        return QtGui.QTreeWidget.moveCursor(self, action, modifiers)
+        return QtWidgets.QTreeWidget.moveCursor(self, action, modifiers)
 
 
 class FileTreeView(BaseTreeView):
@@ -558,10 +556,10 @@ class FileTreeView(BaseTreeView):
         self.setAccessibleDescription(_("Contains unmatched files and clusters"))
         self.unmatched_files = ClusterItem(self.tagger.unclustered_files, False, self)
         self.unmatched_files.update()
-        self.setItemExpanded(self.unmatched_files, True)
+        self.unmatched_files.setExpanded(True)
         self.clusters = ClusterItem(self.tagger.clusters, False, self)
         self.set_clusters_text()
-        self.setItemExpanded(self.clusters, True)
+        self.clusters.setExpanded(True)
         self.tagger.cluster_added.connect(self.add_file_cluster)
         self.tagger.cluster_removed.connect(self.remove_file_cluster)
 
@@ -575,7 +573,7 @@ class FileTreeView(BaseTreeView):
         self.set_clusters_text()
 
     def set_clusters_text(self):
-        self.clusters.setText(0, '%s (%d)' % (_(u"Clusters"), len(self.tagger.clusters)))
+        self.clusters.setText(0, '%s (%d)' % (_("Clusters"), len(self.tagger.clusters)))
 
 
 class AlbumTreeView(BaseTreeView):
@@ -604,12 +602,12 @@ class AlbumTreeView(BaseTreeView):
         self.takeTopLevelItem(self.indexOfTopLevelItem(album.item))
 
 
-class TreeItem(QtGui.QTreeWidgetItem):
+class TreeItem(QtWidgets.QTreeWidgetItem):
 
     __lt__ = lambda self, other: False
 
     def __init__(self, obj, sortable, *args):
-        QtGui.QTreeWidgetItem.__init__(self, *args)
+        QtWidgets.QTreeWidgetItem.__init__(self, *args)
         self.obj = obj
         if obj is not None:
             obj.item = self
@@ -670,11 +668,11 @@ class AlbumItem(TreeItem):
             oldnum = self.childCount() - 1
             newnum = len(album.tracks)
             if oldnum > newnum:  # remove old items
-                for i in xrange(oldnum - newnum):
+                for i in range(oldnum - newnum):
                     self.takeChild(newnum - 1)
                 oldnum = newnum
             # update existing items
-            for i in xrange(oldnum):
+            for i in range(oldnum):
                 item = self.child(i)
                 track = album.tracks[i]
                 item.obj = track
@@ -682,7 +680,7 @@ class AlbumItem(TreeItem):
                 item.update(update_album=False)
             if newnum > oldnum:  # add new items
                 items = []
-                for i in xrange(newnum - 1, oldnum - 1, -1):  # insertChildren is backwards
+                for i in range(newnum - 1, oldnum - 1, -1):  # insertChildren is backwards
                     item = TrackItem(album.tracks[i], False)
                     item.setHidden(False)  # Workaround to make sure the parent state gets updated
                     items.append(item)
@@ -741,10 +739,10 @@ class TrackItem(TreeItem):
                 oldnum = self.childCount()
                 newnum = track.num_linked_files
                 if oldnum > newnum:  # remove old items
-                    for i in xrange(oldnum - newnum):
+                    for i in range(oldnum - newnum):
                         self.takeChild(newnum - 1).obj.item = None
                     oldnum = newnum
-                for i in xrange(oldnum):  # update existing items
+                for i in range(oldnum):  # update existing items
                     item = self.child(i)
                     file = track.linked_files[i]
                     item.obj = file
@@ -752,7 +750,7 @@ class TrackItem(TreeItem):
                     item.update(update_track=False)
                 if newnum > oldnum:  # add new items
                     items = []
-                    for i in xrange(newnum - 1, oldnum - 1, -1):
+                    for i in range(newnum - 1, oldnum - 1, -1):
                         item = FileItem(track.linked_files[i], False)
                         item.update(update_track=False)
                         items.append(item)
