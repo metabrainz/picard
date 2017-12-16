@@ -530,7 +530,7 @@ class MainWindow(QtWidgets.QMainWindow):
     def get_selected_or_unmatched_files(self):
         files = self.tagger.get_files_from_objects(self.selected_objects)
         if not files:
-            files = self.tagger.unmatched_files.files
+            files = self.tagger.unclustered_files.files
         return files
 
     def open_tags_from_filenames(self):
@@ -1038,7 +1038,7 @@ class MainWindow(QtWidgets.QMainWindow):
     def paste(self):
         selected_objects = self.selected_objects
         if not selected_objects:
-            target = self.tagger.unmatched_files
+            target = self.tagger.unclustered_files
         else:
             target = selected_objects[0]
         self.tagger.paste_files(target)

@@ -59,6 +59,11 @@ class Cluster(QtCore.QObject, Item):
         self.lookup_task = None
 
     def __repr__(self):
+        if self.related_album:
+            return '<Cluster %s %r>' % (
+                self.related_album.id,
+                self.related_album.metadata[u"album"] + '/' + self.metadata['album']
+                )
         return '<Cluster %r>' % self.metadata['album']
 
     def __len__(self):
@@ -282,12 +287,12 @@ class Cluster(QtCore.QObject, Item):
         update_metadata_images(self)
 
 
-class UnmatchedFiles(Cluster):
+class UnclusteredFiles(Cluster):
 
     """Special cluster for 'Unmatched Files' which have no PUID and have not been clustered."""
 
     def __init__(self):
-        super(UnmatchedFiles, self).__init__(_("Unmatched Files"), special=True)
+        super(UnclusteredFiles, self).__init__(_("Unclustered Files"), special=True)
 
     def add_files(self, files):
         Cluster.add_files(self, files)

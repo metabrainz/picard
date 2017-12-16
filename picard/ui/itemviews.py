@@ -23,7 +23,7 @@ from functools import partial
 from PyQt5 import QtCore, QtGui, QtWidgets
 from picard import config, log
 from picard.album import Album, NatAlbum
-from picard.cluster import Cluster, ClusterList, UnmatchedFiles
+from picard.cluster import Cluster, ClusterList, UnclusteredFiles
 from picard.file import File
 from picard.track import Track, NonAlbumTrack
 from picard.util import encode_filename, icontheme
@@ -278,7 +278,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
             menu.addSeparator()
             menu.addAction(self.window.autotag_action)
             menu.addAction(self.window.analyze_action)
-            if isinstance(obj, UnmatchedFiles):
+            if isinstance(obj, UnclusteredFiles):
                 menu.addAction(self.window.cluster_action)
             else:
                 menu.addAction(self.window.album_search_action)
@@ -515,7 +515,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         albums = data.data("application/picard.album-list")
         if albums:
             if isinstance(self, FileTreeView) and target is None:
-                target = self.tagger.unmatched_files
+                target = self.tagger.unclustered_files
             albums = [self.tagger.load_album(id) for id in string_(albums).split("\n")]
             self.tagger.move_files(self.tagger.get_files_from_objects(albums), target)
             handled = True
@@ -554,7 +554,7 @@ class FileTreeView(BaseTreeView):
         BaseTreeView.__init__(self, window, parent)
         self.setAccessibleName(_("file view"))
         self.setAccessibleDescription(_("Contains unmatched files and clusters"))
-        self.unmatched_files = ClusterItem(self.tagger.unmatched_files, False, self)
+        self.unmatched_files = ClusterItem(self.tagger.unclustered_files, False, self)
         self.unmatched_files.update()
         self.unmatched_files.setExpanded(True)
         self.clusters = ClusterItem(self.tagger.clusters, False, self)
