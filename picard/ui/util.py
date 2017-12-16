@@ -104,7 +104,7 @@ class MultiDirsSelectDialog(QtWidgets.QFileDialog):
         super(MultiDirsSelectDialog, self).__init__(*args)
         self.setFileMode(self.Directory)
         self.setOption(self.ShowDirsOnly)
-        if sys.platform == "darwin":
+        if sys.platform in ["darwin", "win32"]:
             # The native dialog doesn't allow selecting >1 directory
             self.setOption(self.DontUseNativeDialog)
         for view in self.findChildren((QtWidgets.QListView, QtWidgets.QTreeView)):
