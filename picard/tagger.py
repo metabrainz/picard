@@ -615,7 +615,7 @@ class Tagger(QtWidgets.QApplication):
                     }
                 )
                 self.remove_album(obj)
-            elif isinstance(obj, UnmatchedFiles):
+            elif isinstance(obj, UnclusteredFiles):
                 files.extend(list(obj.files))
             elif isinstance(obj, Cluster):
                 self.remove_cluster(obj)
