@@ -32,6 +32,7 @@ class Ui_AboutOptionsPage(object):
         self.label.setText("")
         self.label.setAlignment(QtCore.Qt.AlignHCenter|QtCore.Qt.AlignTop)
         self.label.setWordWrap(True)
+        self.label.setTextInteractionFlags(QtCore.Qt.LinksAccessibleByMouse|QtCore.Qt.TextSelectableByKeyboard|QtCore.Qt.TextSelectableByMouse)
         self.label.setObjectName("label")
         self.verticalLayout.addWidget(self.label)
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
