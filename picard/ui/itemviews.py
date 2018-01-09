@@ -94,6 +94,7 @@ class MainPanel(QtWidgets.QSplitter):
         (N_('Title'), 'title'),
         (N_('Length'), '~length'),
         (N_('Artist'), 'artist'),
+        (N_('Album'), 'album'),
     ]
 
     def __init__(self, window, parent=None):
