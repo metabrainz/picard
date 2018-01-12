@@ -37,6 +37,7 @@ from picard.ui.infodialog import FileInfoDialog, AlbumInfoDialog, TrackInfoDialo
 from picard.ui.infostatus import InfoStatus
 from picard.ui.passworddialog import PasswordDialog, ProxyDialog
 from picard.ui.logview import LogView, HistoryView
+from picard.ui.filedialog import FileDialog
 from picard.ui.searchdialog import (
     TrackSearchDialog,
     AlbumSearchDialog)
@@ -729,7 +730,8 @@ class MainWindow(QtWidgets.QMainWindow):
         formats.sort()
         extensions.sort()
         formats.insert(0, _("All Supported Formats") + " (%s)" % " ".join(extensions))
-        files, _filter = QtWidgets.QFileDialog.getOpenFileNames(self, "", current_directory, ";;".join(formats))
+        #files, _filter = QtWidgets.QFileDialog.getOpenFileNames(self, "", current_directory, ";;".join(formats))
+        files = FileDialog().getFiles()
         if files:
             config.persist["current_directory"] = os.path.dirname(files[0])
             self.tagger.add_files(files)
