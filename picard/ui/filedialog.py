@@ -18,6 +18,3 @@ class FileDialog(PicardDialog):
         Yet to implement it
         """
 
-app = QtWidgets.QApplication(sys.argv)
-fi = FileDialog()
-sys.exit(app.exec_())
