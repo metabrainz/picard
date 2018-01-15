@@ -16,29 +16,6 @@
   <layout class="QGridLayout" name="gridLayout_2">
    <item row="0" column="0">
     <layout class="QGridLayout" name="gridLayout">
-     <item row="0" column="6">
-      <spacer name="horizontalSpacer_6">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>118</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item row="0" column="0" rowspan="3">
-      <widget class="QListView" name="recentList"/>
-     </item>
-     <item row="0" column="3">
-      <widget class="QLineEdit" name="searchLine">
-       <property name="text">
-        <string>search here</string>
-       </property>
-      </widget>
-     </item>
      <item row="0" column="4">
       <widget class="QPushButton" name="searchBtn">
        <property name="minimumSize">
@@ -52,37 +29,21 @@
        </property>
       </widget>
      </item>
-     <item row="4" column="6">
-      <spacer name="horizontalSpacer_7">
+     <item row="0" column="2">
+      <spacer name="horizontalSpacer_8">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
        <property name="sizeHint" stdset="0">
         <size>
-         <width>88</width>
+         <width>58</width>
          <height>20</height>
         </size>
        </property>
       </spacer>
      </item>
-     <item row="4" column="7">
-      <widget class="QComboBox" name="formatsCb"/>
-     </item>
-     <item row="2" column="1" colspan="7">
+     <item row="1" column="1" colspan="7">
       <widget class="QTreeView" name="fileTree"/>
-     </item>
-     <item row="4" column="0" colspan="4">
-      <spacer name="horizontalSpacer_4">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>618</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
      </item>
      <item row="0" column="5">
       <spacer name="horizontalSpacer_10">
@@ -97,14 +58,20 @@
        </property>
       </spacer>
      </item>
-     <item row="0" column="7">
-      <widget class="QPushButton" name="selectBtn">
-       <property name="text">
-        <string>Select</string>
+     <item row="3" column="0" colspan="4">
+      <spacer name="horizontalSpacer_4">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
        </property>
-      </widget>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>618</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
      </item>
-     <item row="3" column="0">
+     <item row="2" column="0">
       <spacer name="horizontalSpacer_9">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
@@ -117,18 +84,51 @@
        </property>
       </spacer>
      </item>
-     <item row="0" column="2">
-      <spacer name="horizontalSpacer_8">
+     <item row="0" column="3">
+      <widget class="QLineEdit" name="searchLine">
+       <property name="text">
+        <string>search here</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="7">
+      <widget class="QPushButton" name="selectBtn">
+       <property name="text">
+        <string>Select</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="7">
+      <widget class="QComboBox" name="formatsCb"/>
+     </item>
+     <item row="3" column="6">
+      <spacer name="horizontalSpacer_7">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
        <property name="sizeHint" stdset="0">
         <size>
-         <width>58</width>
+         <width>88</width>
          <height>20</height>
         </size>
        </property>
       </spacer>
+     </item>
+     <item row="0" column="6">
+      <spacer name="horizontalSpacer_6">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>118</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item row="0" column="0" rowspan="2">
+      <widget class="QListWidget" name="diskList"/>
      </item>
     </layout>
    </item>

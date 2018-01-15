@@ -1,7 +1,10 @@
 from picard.ui import PicardDialog
 from picard.ui.ui_filedialog import Ui_fileDialog
 from picard.formats import supported_extensions
-from PyQt5.QtWidgets import QFileSystemModel , QAbstractItemView
+from PyQt5.QtWidgets import (
+        QFileSystemModel , QAbstractItemView ,
+        QListWidgetItem)
+from PyQt5.QtCore import QStorageInfo, QDir, QSortFilterProxyModel , QRegExp
 import os,sys
 
 class FileDialog(PicardDialog):
@@ -23,12 +26,13 @@ class FileDialog(PicardDialog):
         self.model.setNameFilters(self.extensions)
         self.model.setNameFilterDisables(0)
         self.ui.fileTree.setModel(self.model)
-        self.ui.fileTree.setRootIndex(self.model.index('/home/vishi')) #temporary
+        self.ui.fileTree.setCurrentIndex(self.model.index(QDir.currentPath())) #temporary
         self.ui.fileTree.setColumnWidth(0,.7*self.ui.fileTree.width())
         self.ui.fileTree.setColumnWidth(1,.1*self.ui.fileTree.width())
         self.ui.fileTree.setColumnWidth(2,.1*self.ui.fileTree.width())
         self.ui.fileTree.setColumnWidth(3,.1*self.ui.fileTree.width())
         self.ui.fileTree.setSelectionMode(QAbstractItemView.ExtendedSelection)
+
         self.ui.formatsCb.addItem('All Supported Formats')
         self.ui.formatsCb.addItems(supported_extensions())
         self.ui.formatsCb.currentIndexChanged.connect(self.change_extension)
@@ -43,7 +47,6 @@ class FileDialog(PicardDialog):
         for indx in indexes:
             if os.path.isdir(self.model.filePath(indx)):
                 self.add_directory_recursively(self.model.filePath(indx))
-                pass
             else:
                 self.files.append(self.model.filePath(indx))
         self.hide()
@@ -65,4 +68,10 @@ class FileDialog(PicardDialog):
         else:
             self.extensions.append('*' + (self.ui.formatsCb.itemText(ext)))
         self.model.setNameFilters(self.extensions)
+
+    def search_action(self):
+        reg_text = self.searchLine.text()
+        """
+        needs to implement here
+        """
 
