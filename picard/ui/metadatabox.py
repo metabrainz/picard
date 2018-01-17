@@ -507,7 +507,6 @@ class MetadataBox(QtWidgets.QTableWidget):
         new_flags = orig_flags | QtCore.Qt.ItemIsEditable
 
         for i, name in enumerate(result.tag_names):
-            length = name == "~length"
             tag_item = self.item(i, 0)
             orig_item = self.item(i, 1)
             new_item = self.item(i, 2)
@@ -527,7 +526,10 @@ class MetadataBox(QtWidgets.QTableWidget):
                 self.setItem(i, 2, new_item)
             tag_item.setText(display_tag_name(name))
             self.set_item_value(orig_item, self.tag_diff.orig, name)
-            new_item.setFlags(orig_flags if length else new_flags)
+            if name == "~length":
+                new_item.setFlags(orig_flags)
+            else:
+                new_item.setFlags(new_flags)
             self.set_item_value(new_item, self.tag_diff.new, name)
 
             font = new_item.font()

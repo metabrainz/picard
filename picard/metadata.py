@@ -30,6 +30,18 @@ from picard.util.imagelist import ImageList
 
 MULTI_VALUED_JOINER = '; '
 
+# lengths difference over this number of milliseconds will give a score of 0.0
+# equal lengths will give a score of 1.0
+# example
+# a     b     score
+# 20000 0     0.333333333333
+# 20000 10000 0.666666666667
+# 20000 20000 1.0
+# 20000 30000 0.666666666667
+# 20000 40000 0.333333333333
+# 20000 50000 0.0
+LENGTH_SCORE_THRES_MS = 30000
+
 
 class Metadata(dict):
 
@@ -84,11 +96,16 @@ class Metadata(dict):
     def remove_image(self, index):
         self.images.pop(index)
 
+    @staticmethod
+    def length_score(a, b):
+        return (0.0 - min(abs(a - b), LENGTH_SCORE_THRES_MS) /
+                float(LENGTH_SCORE_THRES_MS))
+
     def compare(self, other):
         parts = []
 
         if self.length and other.length:
-            score = 1.0 - min(abs(self.length - other.length), 30000) / 30000.0
+            score = self.length_score(self.length, other.length)
             parts.append((score, 8))
 
         for name, weight in self.__weights:
@@ -201,7 +218,7 @@ class Metadata(dict):
         a = self.length
         if a > 0 and 'length' in track:
             b = track['length']
-            score = 1.0 - min(abs(a - b), 30000) / 30000.0
+            score = self.length_score(a, b)
             parts.append((score, weights["length"]))
 
         releases = []
