@@ -268,7 +268,7 @@ class MetadataBox(QtWidgets.QTableWidget):
     def contextMenuEvent(self, event):
         menu = QtWidgets.QMenu(self)
         if self.objects:
-            tags = self.selected_tags(discard=('~length'))
+            tags = self.selected_tags(discard=('~length',))
             if len(tags) == 1:
                 selected_tag = tags[0]
                 edit_tag_action = QtWidgets.QAction(_("Edit..."), self.parent)
@@ -345,7 +345,7 @@ class MetadataBox(QtWidgets.QTableWidget):
         EditTagDialog(self.parent, tag).exec_()
 
     def edit_selected_tag(self):
-        tags = self.selected_tags(discard=('~length'))
+        tags = self.selected_tags(discard=('~length',))
         if len(tags) == 1:
             self.edit_tag(tags[0])
 
@@ -368,7 +368,7 @@ class MetadataBox(QtWidgets.QTableWidget):
         self.set_tag_values(tag, [""])
 
     def remove_selected_tags(self):
-        for tag in self.selected_tags(discard=('~length')):
+        for tag in self.selected_tags(discard=('~length',)):
             if self.tag_is_removable(tag):
                 self.remove_tag(tag)
 
