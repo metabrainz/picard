@@ -110,3 +110,15 @@ class MetadataTest(unittest.TestCase):
         self.assertEqual(dict.items(self.metadata), self.metadata.rawitems())
         metadata_items = [(x, z) for (x, y) in dict.items(self.metadata) for z in y]
         self.assertEqual(metadata_items, list(self.metadata.items()))
+
+    def test_length_score(self):
+        results = [(20000, 0, 0.333333333333),
+                   (20000, 10000, 0.666666666667),
+                   (20000, 20000, 1.0),
+                   (20000, 30000, 0.666666666667),
+                   (20000, 40000, 0.333333333333),
+                   (20000, 50000, 0.0)]
+        for (a, b, expected) in results:
+            actual = Metadata.length_score(a, b)
+            self.assertAlmostEqual(expected, actual,
+                                   msg="a={a}, b={b}".format(a=a, b=b))
