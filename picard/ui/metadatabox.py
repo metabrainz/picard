@@ -96,18 +96,19 @@ class TagCounter(dict):
 
 class TagDiff(object):
 
-    __slots__ = ("tag_names", "new", "orig", "status", "objects")
+    __slots__ = ("tag_names", "new", "orig", "status", "objects", "max_length_delta_ms")
 
-    def __init__(self):
+    def __init__(self, max_length_diff=2):
         self.tag_names = []
         self.new = TagCounter(self)
         self.orig = TagCounter(self)
         self.status = defaultdict(lambda: 0)
         self.objects = 0
+        self.max_length_delta_ms = max_length_diff * 1000
 
     def __tag_ne(self, tag, orig, new):
         if tag == "~length":
-            return abs(float(orig) - float(new)) > 2000
+            return abs(float(orig) - float(new)) > self.max_length_delta_ms
         else:
             return orig != new
 
@@ -427,7 +428,7 @@ class MetadataBox(QtWidgets.QTableWidget):
         if not (files or tracks):
             return None
 
-        tag_diff = TagDiff()
+        tag_diff = TagDiff(max_length_diff=config.setting["ignore_track_duration_difference_under"])
         orig_tags = tag_diff.orig
         new_tags = tag_diff.new
         # existing_tags are orig_tags that would not be overwritten by
