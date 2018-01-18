@@ -66,6 +66,11 @@ class Ui_CaaOptions(object):
 
         self.retranslateUi(CaaOptions)
         QtCore.QMetaObject.connectSlotsByName(CaaOptions)
+        CaaOptions.setTabOrder(self.restrict_images_types, self.select_caa_types)
+        CaaOptions.setTabOrder(self.select_caa_types, self.cb_image_size)
+        CaaOptions.setTabOrder(self.cb_image_size, self.cb_save_single_front_image)
+        CaaOptions.setTabOrder(self.cb_save_single_front_image, self.cb_approved_only)
+        CaaOptions.setTabOrder(self.cb_approved_only, self.cb_type_as_filename)
 
     def retranslateUi(self, CaaOptions):
         _translate = QtCore.QCoreApplication.translate

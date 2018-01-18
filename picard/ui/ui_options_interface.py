@@ -103,6 +103,20 @@ class Ui_InterfaceOptionsPage(object):
 
         self.retranslateUi(InterfaceOptionsPage)
         QtCore.QMetaObject.connectSlotsByName(InterfaceOptionsPage)
+        InterfaceOptionsPage.setTabOrder(self.toolbar_show_labels, self.toolbar_multiselect)
+        InterfaceOptionsPage.setTabOrder(self.toolbar_multiselect, self.builtin_search)
+        InterfaceOptionsPage.setTabOrder(self.builtin_search, self.use_adv_search_syntax)
+        InterfaceOptionsPage.setTabOrder(self.use_adv_search_syntax, self.quit_confirmation)
+        InterfaceOptionsPage.setTabOrder(self.quit_confirmation, self.starting_directory)
+        InterfaceOptionsPage.setTabOrder(self.starting_directory, self.starting_directory_path)
+        InterfaceOptionsPage.setTabOrder(self.starting_directory_path, self.starting_directory_browse)
+        InterfaceOptionsPage.setTabOrder(self.starting_directory_browse, self.ui_language)
+        InterfaceOptionsPage.setTabOrder(self.ui_language, self.toolbar_layout_list)
+        InterfaceOptionsPage.setTabOrder(self.toolbar_layout_list, self.add_button)
+        InterfaceOptionsPage.setTabOrder(self.add_button, self.insert_separator_button)
+        InterfaceOptionsPage.setTabOrder(self.insert_separator_button, self.up_button)
+        InterfaceOptionsPage.setTabOrder(self.up_button, self.down_button)
+        InterfaceOptionsPage.setTabOrder(self.down_button, self.remove_button)
 
     def retranslateUi(self, InterfaceOptionsPage):
         _translate = QtCore.QCoreApplication.translate

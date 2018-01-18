@@ -1,7 +1,8 @@
-<ui version="4.0" >
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
  <class>TagsFromFileNamesDialog</class>
- <widget class="QDialog" name="TagsFromFileNamesDialog" >
-  <property name="geometry" >
+ <widget class="QDialog" name="TagsFromFileNamesDialog">
+  <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
@@ -9,64 +10,74 @@
     <height>368</height>
    </rect>
   </property>
-  <property name="windowTitle" >
+  <property name="windowTitle">
    <string>Convert File Names to Tags</string>
   </property>
-  <layout class="QGridLayout" >
-   <property name="margin" >
+  <layout class="QGridLayout">
+   <property name="margin">
     <number>9</number>
    </property>
-   <property name="spacing" >
+   <property name="spacing">
     <number>6</number>
    </property>
-   <item row="1" column="0" colspan="2" >
-    <widget class="QTreeWidget" name="files" >
-     <property name="alternatingRowColors" >
+   <item row="1" column="0" colspan="2">
+    <widget class="QTreeWidget" name="files">
+     <property name="alternatingRowColors">
       <bool>true</bool>
      </property>
-     <property name="rootIsDecorated" >
+     <property name="rootIsDecorated">
       <bool>false</bool>
      </property>
+     <column>
+      <property name="text">
+       <string notr="true">1</string>
+      </property>
+     </column>
     </widget>
    </item>
-   <item row="2" column="0" colspan="2" >
-    <widget class="QCheckBox" name="replace_underscores" >
-     <property name="text" >
+   <item row="2" column="0" colspan="2">
+    <widget class="QCheckBox" name="replace_underscores">
+     <property name="text">
       <string>Replace underscores with spaces</string>
      </property>
     </widget>
    </item>
-   <item row="3" column="0" colspan="2" >
-    <widget class="QDialogButtonBox" name="buttonbox" >
-     <property name="orientation" >
+   <item row="3" column="0" colspan="2">
+    <widget class="QDialogButtonBox" name="buttonbox">
+     <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
     </widget>
    </item>
-   <item row="0" column="1" >
-    <widget class="QPushButton" name="preview" >
-     <property name="text" >
+   <item row="0" column="1">
+    <widget class="QPushButton" name="preview">
+     <property name="text">
       <string>&amp;Preview</string>
      </property>
     </widget>
    </item>
-   <item row="0" column="0" >
-    <widget class="QComboBox" name="format" >
-     <property name="sizePolicy" >
-      <sizepolicy>
-       <hsizetype>7</hsizetype>
-       <vsizetype>0</vsizetype>
+   <item row="0" column="0">
+    <widget class="QComboBox" name="format">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
-     <property name="editable" >
+     <property name="editable">
       <bool>true</bool>
      </property>
     </widget>
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>format</tabstop>
+  <tabstop>preview</tabstop>
+  <tabstop>files</tabstop>
+  <tabstop>replace_underscores</tabstop>
+  <tabstop>buttonbox</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

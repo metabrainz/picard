@@ -94,9 +94,13 @@ class Ui_NetworkOptionsPage(object):
 
         self.retranslateUi(NetworkOptionsPage)
         QtCore.QMetaObject.connectSlotsByName(NetworkOptionsPage)
+        NetworkOptionsPage.setTabOrder(self.web_proxy, self.server_host)
         NetworkOptionsPage.setTabOrder(self.server_host, self.server_port)
         NetworkOptionsPage.setTabOrder(self.server_port, self.username)
         NetworkOptionsPage.setTabOrder(self.username, self.password)
+        NetworkOptionsPage.setTabOrder(self.password, self.browser_integration)
+        NetworkOptionsPage.setTabOrder(self.browser_integration, self.browser_integration_port)
+        NetworkOptionsPage.setTabOrder(self.browser_integration_port, self.browser_integration_localhost_only)
 
     def retranslateUi(self, NetworkOptionsPage):
         _translate = QtCore.QCoreApplication.translate

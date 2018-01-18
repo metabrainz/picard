@@ -233,6 +233,13 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>plugins</tabstop>
+  <tabstop>install_plugin</tabstop>
+  <tabstop>folder_open</tabstop>
+  <tabstop>reload_list_of_plugins</tabstop>
+  <tabstop>scrollArea</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

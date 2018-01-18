@@ -19,6 +19,7 @@ class Ui_Dialog(object):
         self.release_list = QtWidgets.QTreeWidget(Dialog)
         self.release_list.setRootIsDecorated(False)
         self.release_list.setObjectName("release_list")
+        self.release_list.headerItem().setText(0, "1")
         self.vboxlayout.addWidget(self.release_list)
         self.hboxlayout = QtWidgets.QHBoxLayout()
         self.hboxlayout.setContentsMargins(0, 0, 0, 0)
@@ -42,7 +43,9 @@ class Ui_Dialog(object):
         self.ok_button.clicked.connect(Dialog.accept)
         self.cancel_button.clicked.connect(Dialog.reject)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
-        Dialog.setTabOrder(self.ok_button, self.cancel_button)
+        Dialog.setTabOrder(self.release_list, self.ok_button)
+        Dialog.setTabOrder(self.ok_button, self.lookup_button)
+        Dialog.setTabOrder(self.lookup_button, self.cancel_button)
 
     def retranslateUi(self, Dialog):
         _translate = QtCore.QCoreApplication.translate

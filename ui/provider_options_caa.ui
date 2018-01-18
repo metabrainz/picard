@@ -145,6 +145,14 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>restrict_images_types</tabstop>
+  <tabstop>select_caa_types</tabstop>
+  <tabstop>cb_image_size</tabstop>
+  <tabstop>cb_save_single_front_image</tabstop>
+  <tabstop>cb_approved_only</tabstop>
+  <tabstop>cb_type_as_filename</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

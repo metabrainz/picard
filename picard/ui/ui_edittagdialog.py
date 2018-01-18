@@ -78,6 +78,11 @@ class Ui_EditTagDialog(object):
         self.buttonbox.accepted.connect(EditTagDialog.accept)
         self.buttonbox.rejected.connect(EditTagDialog.reject)
         QtCore.QMetaObject.connectSlotsByName(EditTagDialog)
+        EditTagDialog.setTabOrder(self.tag_names, self.value_list)
+        EditTagDialog.setTabOrder(self.value_list, self.edit_value)
+        EditTagDialog.setTabOrder(self.edit_value, self.add_value)
+        EditTagDialog.setTabOrder(self.add_value, self.remove_value)
+        EditTagDialog.setTabOrder(self.remove_value, self.buttonbox)
 
     def retranslateUi(self, EditTagDialog):
         _translate = QtCore.QCoreApplication.translate

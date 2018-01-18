@@ -9,7 +9,7 @@ class Ui_RenamingOptionsPage(object):
     def setupUi(self, RenamingOptionsPage):
         RenamingOptionsPage.setObjectName("RenamingOptionsPage")
         RenamingOptionsPage.setEnabled(True)
-        RenamingOptionsPage.resize(453, 465)
+        RenamingOptionsPage.resize(453, 540)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -113,9 +113,9 @@ class Ui_RenamingOptionsPage(object):
         self.verticalLayout_3.addWidget(self.file_naming_format_group)
         self.file_naming_format_documentation = QtWidgets.QLabel(self.rename_files)
         self.file_naming_format_documentation.setText("")
-        self.file_naming_format_documentation.setOpenExternalLinks(True)
         self.file_naming_format_documentation.setTextFormat(QtCore.Qt.RichText)
         self.file_naming_format_documentation.setWordWrap(True)
+        self.file_naming_format_documentation.setOpenExternalLinks(True)
         self.file_naming_format_documentation.setObjectName("file_naming_format_documentation")
         self.verticalLayout_3.addWidget(self.file_naming_format_documentation)
         self.verticalLayout_5.addWidget(self.rename_files)
@@ -144,6 +144,16 @@ class Ui_RenamingOptionsPage(object):
 
         self.retranslateUi(RenamingOptionsPage)
         QtCore.QMetaObject.connectSlotsByName(RenamingOptionsPage)
+        RenamingOptionsPage.setTabOrder(self.move_files, self.move_files_to)
+        RenamingOptionsPage.setTabOrder(self.move_files_to, self.move_files_to_browse)
+        RenamingOptionsPage.setTabOrder(self.move_files_to_browse, self.move_additional_files)
+        RenamingOptionsPage.setTabOrder(self.move_additional_files, self.move_additional_files_pattern)
+        RenamingOptionsPage.setTabOrder(self.move_additional_files_pattern, self.delete_empty_dirs)
+        RenamingOptionsPage.setTabOrder(self.delete_empty_dirs, self.rename_files)
+        RenamingOptionsPage.setTabOrder(self.rename_files, self.ascii_filenames)
+        RenamingOptionsPage.setTabOrder(self.ascii_filenames, self.windows_compatibility)
+        RenamingOptionsPage.setTabOrder(self.windows_compatibility, self.file_naming_format)
+        RenamingOptionsPage.setTabOrder(self.file_naming_format, self.file_naming_format_default)
 
     def retranslateUi(self, RenamingOptionsPage):
         _translate = QtCore.QCoreApplication.translate
@@ -159,8 +169,8 @@ class Ui_RenamingOptionsPage(object):
         self.file_naming_format.setHtml(_translate("RenamingOptionsPage", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'Monospace\'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:10pt;\"><br /></p></body></html>"))
+"</style></head><body style=\" font-family:\'Monospace\'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>"))
         self.file_naming_format_default.setText(_("Default"))
         self.groupBox.setTitle(_("Examples"))
 
