@@ -154,6 +154,14 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>tag_names</tabstop>
+  <tabstop>value_list</tabstop>
+  <tabstop>edit_value</tabstop>
+  <tabstop>add_value</tabstop>
+  <tabstop>remove_value</tabstop>
+  <tabstop>buttonbox</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>

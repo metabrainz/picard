@@ -32,6 +32,11 @@
      <property name="rootIsDecorated">
       <bool>false</bool>
      </property>
+     <column>
+      <property name="text">
+       <string notr="true">1</string>
+      </property>
+     </column>
     </widget>
    </item>
    <item>
@@ -84,7 +89,9 @@
   </layout>
  </widget>
  <tabstops>
+  <tabstop>release_list</tabstop>
   <tabstop>ok_button</tabstop>
+  <tabstop>lookup_button</tabstop>
   <tabstop>cancel_button</tabstop>
  </tabstops>
  <resources/>

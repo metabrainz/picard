@@ -138,16 +138,7 @@
       <item>
        <widget class="QWidget" name="edit_button_box" native="true">
         <layout class="QHBoxLayout" name="edit_box_layout">
-         <property name="leftMargin">
-          <number>0</number>
-         </property>
-         <property name="topMargin">
-          <number>0</number>
-         </property>
-         <property name="rightMargin">
-          <number>0</number>
-         </property>
-         <property name="bottomMargin">
+         <property name="margin">
           <number>0</number>
          </property>
          <item>
@@ -230,6 +221,23 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>toolbar_show_labels</tabstop>
+  <tabstop>toolbar_multiselect</tabstop>
+  <tabstop>builtin_search</tabstop>
+  <tabstop>use_adv_search_syntax</tabstop>
+  <tabstop>quit_confirmation</tabstop>
+  <tabstop>starting_directory</tabstop>
+  <tabstop>starting_directory_path</tabstop>
+  <tabstop>starting_directory_browse</tabstop>
+  <tabstop>ui_language</tabstop>
+  <tabstop>toolbar_layout_list</tabstop>
+  <tabstop>add_button</tabstop>
+  <tabstop>insert_separator_button</tabstop>
+  <tabstop>up_button</tabstop>
+  <tabstop>down_button</tabstop>
+  <tabstop>remove_button</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

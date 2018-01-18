@@ -82,6 +82,10 @@ class Ui_ScriptingOptionsPage(object):
 
         self.retranslateUi(ScriptingOptionsPage)
         QtCore.QMetaObject.connectSlotsByName(ScriptingOptionsPage)
+        ScriptingOptionsPage.setTabOrder(self.enable_tagger_scripts, self.add_script)
+        ScriptingOptionsPage.setTabOrder(self.add_script, self.script_list)
+        ScriptingOptionsPage.setTabOrder(self.script_list, self.script_name)
+        ScriptingOptionsPage.setTabOrder(self.script_name, self.tagger_script)
 
     def retranslateUi(self, ScriptingOptionsPage):
         _translate = QtCore.QCoreApplication.translate

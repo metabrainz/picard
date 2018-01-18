@@ -118,6 +118,10 @@ class Ui_PluginsOptionsPage(object):
 
         self.retranslateUi(PluginsOptionsPage)
         QtCore.QMetaObject.connectSlotsByName(PluginsOptionsPage)
+        PluginsOptionsPage.setTabOrder(self.plugins, self.install_plugin)
+        PluginsOptionsPage.setTabOrder(self.install_plugin, self.folder_open)
+        PluginsOptionsPage.setTabOrder(self.folder_open, self.reload_list_of_plugins)
+        PluginsOptionsPage.setTabOrder(self.reload_list_of_plugins, self.scrollArea)
 
     def retranslateUi(self, PluginsOptionsPage):
         _translate = QtCore.QCoreApplication.translate

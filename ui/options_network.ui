@@ -14,16 +14,7 @@
    <property name="spacing">
     <number>6</number>
    </property>
-   <property name="leftMargin">
-    <number>9</number>
-   </property>
-   <property name="topMargin">
-    <number>9</number>
-   </property>
-   <property name="rightMargin">
-    <number>9</number>
-   </property>
-   <property name="bottomMargin">
+   <property name="margin">
     <number>9</number>
    </property>
    <item>
@@ -35,16 +26,7 @@
       <bool>true</bool>
      </property>
      <layout class="QGridLayout">
-      <property name="leftMargin">
-       <number>9</number>
-      </property>
-      <property name="topMargin">
-       <number>9</number>
-      </property>
-      <property name="rightMargin">
-       <number>9</number>
-      </property>
-      <property name="bottomMargin">
+      <property name="margin">
        <number>9</number>
       </property>
       <property name="spacing">
@@ -210,10 +192,14 @@
   </layout>
  </widget>
  <tabstops>
+  <tabstop>web_proxy</tabstop>
   <tabstop>server_host</tabstop>
   <tabstop>server_port</tabstop>
   <tabstop>username</tabstop>
   <tabstop>password</tabstop>
+  <tabstop>browser_integration</tabstop>
+  <tabstop>browser_integration_port</tabstop>
+  <tabstop>browser_integration_localhost_only</tabstop>
  </tabstops>
  <resources/>
  <connections/>

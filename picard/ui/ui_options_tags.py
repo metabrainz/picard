@@ -8,7 +8,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_TagsOptionsPage(object):
     def setupUi(self, TagsOptionsPage):
         TagsOptionsPage.setObjectName("TagsOptionsPage")
-        TagsOptionsPage.resize(539, 425)
+        TagsOptionsPage.resize(539, 474)
         self.vboxlayout = QtWidgets.QVBoxLayout(TagsOptionsPage)
         self.vboxlayout.setObjectName("vboxlayout")
         self.write_tags = QtWidgets.QCheckBox(TagsOptionsPage)
