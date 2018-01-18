@@ -20,17 +20,91 @@
       <property name="spacing">
        <number>2</number>
       </property>
-      <item row="3" column="0">
-       <widget class="QLabel" name="regex_error">
+      <item row="5" column="0">
+       <widget class="QCheckBox" name="recursively_add_files">
         <property name="text">
-         <string/>
+         <string>Recursively add files and folders from directory</string>
         </property>
        </widget>
+      </item>
+      <item row="6" column="0" rowspan="2">
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <property name="sizeConstraint">
+         <enum>QLayout::SetDefaultConstraint</enum>
+        </property>
+        <item>
+         <widget class="QLabel" name="label_track_duration_diff">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>Ignore track duration difference under this number of seconds</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QSpinBox" name="ignore_track_duration_difference_under">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="buttonSymbols">
+           <enum>QAbstractSpinBox::UpDownArrows</enum>
+          </property>
+          <property name="accelerated">
+           <bool>true</bool>
+          </property>
+          <property name="suffix">
+           <string/>
+          </property>
+          <property name="minimum">
+           <number>1</number>
+          </property>
+          <property name="maximum">
+           <number>7200</number>
+          </property>
+          <property name="value">
+           <number>2</number>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::Expanding</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>4000</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
       </item>
       <item row="1" column="0">
        <widget class="QLabel" name="label_ignore_regex">
         <property name="text">
          <string>Ignore file paths matching the following regular expression:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="regex_error">
+        <property name="text">
+         <string/>
         </property>
        </widget>
       </item>
@@ -43,13 +117,6 @@
       </item>
       <item row="2" column="0">
        <widget class="QLineEdit" name="ignore_regex"/>
-      </item>
-      <item row="5" column="0">
-       <widget class="QCheckBox" name="recursively_add_files">
-        <property name="text">
-         <string>Recursively add files and folders from directory</string>
-        </property>
-       </widget>
       </item>
      </layout>
     </widget>
@@ -111,6 +178,13 @@
  </widget>
  <tabstops>
   <tabstop>ignore_regex</tabstop>
+  <tabstop>ignore_hidden_files</tabstop>
+  <tabstop>recursively_add_files</tabstop>
+  <tabstop>ignore_track_duration_difference_under</tabstop>
+  <tabstop>completeness_ignore_videos</tabstop>
+  <tabstop>completeness_ignore_pregap</tabstop>
+  <tabstop>completeness_ignore_data</tabstop>
+  <tabstop>completeness_ignore_silence</tabstop>
  </tabstops>
  <resources/>
  <connections/>
