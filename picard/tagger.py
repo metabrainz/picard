@@ -644,7 +644,8 @@ class Tagger(QtWidgets.QApplication):
         self.set_wait_cursor()
         thread.run_task(
             partial(disc.read, encode_filename(device)),
-            partial(self._lookup_disc, disc))
+            partial(self._lookup_disc, disc),
+            traceback=self._debug)
 
     @property
     def use_acoustid(self):
