@@ -46,9 +46,13 @@ class Disc(QtCore.QObject):
         if device is None:
             device = discid.get_default_device()
         log.debug("Reading CD using device: %r", device)
-        disc = discid.read(device)
-        self.id = disc.id
-        self.submission_url = disc.submission_url
+        try:
+            disc = discid.read(device)
+            self.id = disc.id
+            self.submission_url = disc.submission_url
+        except discid.disc.DiscError as e:
+            log.error("Error while reading %r: %s" % (device, str(e)))
+            raise
 
     def lookup(self):
         self.tagger.mb_api.lookup_discid(self.id, self._lookup_finished)

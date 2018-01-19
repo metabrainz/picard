@@ -36,26 +36,28 @@ class ProxyToMainEvent(QEvent):
 
 class Runnable(QRunnable):
 
-    def __init__(self, func, next_func):
+    def __init__(self, func, next_func, traceback=True):
         QRunnable.__init__(self)
         self.func = func
         self.next_func = next_func
+        self.traceback = traceback
 
     def run(self):
         try:
             result = self.func()
         except:
             from picard import log
-            log.error(traceback.format_exc())
+            if self.traceback:
+                log.error(traceback.format_exc())
             to_main(self.next_func, error=sys.exc_info()[1])
         else:
             to_main(self.next_func, result=result)
 
 
-def run_task(func, next_func, priority=0, thread_pool=None):
+def run_task(func, next_func, priority=0, thread_pool=None, traceback=True):
     if thread_pool is None:
         thread_pool = QCoreApplication.instance().thread_pool
-    thread_pool.start(Runnable(func, next_func), priority)
+    thread_pool.start(Runnable(func, next_func, traceback), priority)
 
 
 def to_main(func, *args, **kwargs):
