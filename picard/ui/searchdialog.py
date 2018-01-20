@@ -268,8 +268,6 @@ class SearchDialog(PicardDialog):
         self.table = ResultTable(self, self.table_headers)
         self.table.setObjectName("results_table")
         self.table.cellDoubleClicked.connect(self.accept)
-        self.table.horizontalHeader().sectionResized.connect(
-                self.save_table_header_state)
         self.restore_table_header_state()
         self.add_widget_to_center_layout(self.table)
         def enable_accept_button():
