@@ -302,12 +302,41 @@ class SearchDialog(PicardDialog):
         self.save_state()
         QtWidgets.QDialog.reject(self)
 
+    def restore_state(self):
+        size = config.persist[self.dialog_window_size]
+        if size:
+            self.resize(size)
+        self.search_box.restore_checkbox_state()
+        log.debug("restore_state: %s" % self.dialog_window_size)
+
+    def restore_table_header_state(self):
+        header = self.table.horizontalHeader()
+        state = config.persist[self.dialog_header_state]
+        if state:
+            header.restoreState(state)
+        header.setSectionResizeMode(QtWidgets.QHeaderView.Interactive)
+        log.debug("restore_state: %s" % self.dialog_header_state)
+
+    def save_state(self):
+        if self.table:
+            self.save_table_header_state()
+        config.persist[self.dialog_window_size] = self.size()
+        log.debug("save_state: %s" % self.dialog_window_size)
+
+    def save_table_header_state(self):
+        state = self.table.horizontalHeader().saveState()
+        config.persist[self.dialog_header_state] = state
+        log.debug("save_state: %s" % self.dialog_header_state)
+
 
 class TrackSearchDialog(SearchDialog):
 
+    dialog_window_size = "tracksearchdialog_window_size"
+    dialog_header_state = "tracksearchdialog_header_state"
+
     options = [
-        config.Option("persist", "tracksearchdialog_window_size", QtCore.QSize(720, 360)),
-        config.Option("persist", "tracksearchdialog_header_state", QtCore.QByteArray())
+        config.Option("persist", dialog_window_size, QtCore.QSize(720, 360)),
+        config.Option("persist", dialog_header_state, QtCore.QByteArray())
     ]
 
     def __init__(self, parent):
@@ -468,34 +497,15 @@ class TrackSearchDialog(SearchDialog):
             else:
                 self.tagger.load_nat(track["musicbrainz_recordingid"], node)
 
-    def restore_state(self):
-        size = config.persist["tracksearchdialog_window_size"]
-        if size:
-            self.resize(size)
-        self.search_box.restore_checkbox_state()
-
-    def restore_table_header_state(self):
-        header = self.table.horizontalHeader()
-        state = config.persist["tracksearchdialog_header_state"]
-        if state:
-            header.restoreState(state)
-        header.setSectionResizeMode(QtWidgets.QHeaderView.Interactive)
-
-    def save_state(self):
-        if self.table:
-            self.save_table_header_state()
-        config.persist["tracksearchdialog_window_size"] = self.size()
-
-    def save_table_header_state(self):
-        state = self.table.horizontalHeader().saveState()
-        config.persist["tracksearchdialog_header_state"] = state
-
 
 class AlbumSearchDialog(SearchDialog):
 
+    dialog_window_size = "albumsearchdialog_window_size"
+    dialog_header_state = "albumsearchdialog_header_state"
+
     options = [
-        config.Option("persist", "albumsearchdialog_window_size", QtCore.QSize(720, 360)),
-        config.Option("persist", "albumsearchdialog_header_state", QtCore.QByteArray())
+        config.Option("persist", dialog_window_size, QtCore.QSize(720, 360)),
+        config.Option("persist", dialog_header_state, QtCore.QByteArray())
     ]
 
     def __init__(self, parent):
@@ -698,34 +708,15 @@ class AlbumSearchDialog(SearchDialog):
             self.tagger.move_files_to_album(files, release["musicbrainz_albumid"],
                                             album)
 
-    def restore_state(self):
-        size = config.persist["albumsearchdialog_window_size"]
-        if size:
-            self.resize(size)
-        self.search_box.restore_checkbox_state()
-
-    def restore_table_header_state(self):
-        header = self.table.horizontalHeader()
-        state = config.persist["albumsearchdialog_header_state"]
-        if state:
-            header.restoreState(state)
-        header.setSectionResizeMode(QtWidgets.QHeaderView.Interactive)
-
-    def save_state(self):
-        if self.table:
-            self.save_table_header_state()
-        config.persist["albumsearchdialog_window_size"] = self.size()
-
-    def save_table_header_state(self):
-        state = self.table.horizontalHeader().saveState()
-        config.persist["albumsearchdialog_header_state"] = state
-
 
 class ArtistSearchDialog(SearchDialog):
 
+    dialog_window_size = "artistsearchdialog_window_size"
+    dialog_header_state = "artistsearchdialog_header_state"
+
     options = [
-        config.Option("persist", "artistsearchdialog_window_size", QtCore.QSize(720, 360)),
-        config.Option("persist", "artistsearchdialog_header_state", QtCore.QByteArray())
+        config.Option("persist", dialog_window_size, QtCore.QSize(720, 360)),
+        config.Option("persist", dialog_header_state, QtCore.QByteArray())
     ]
 
     def __init__(self, parent):
@@ -796,25 +787,3 @@ class ArtistSearchDialog(SearchDialog):
 
     def load_in_browser(self, row):
         self.tagger.search(self.search_results[row]["musicbrainz_artistid"], "artist")
-
-    def restore_state(self):
-        size = config.persist["artistsearchdialog_window_size"]
-        if size:
-            self.resize(size)
-        self.search_box.restore_checkbox_state()
-
-    def restore_table_header_state(self):
-        header = self.table.horizontalHeader()
-        state = config.persist["artistsearchdialog_header_state"]
-        if state:
-            header.restoreState(state)
-        header.setSectionResizeMode(QtWidgets.QHeaderView.Interactive)
-
-    def save_state(self):
-        if self.table:
-            self.save_table_header_state()
-        config.persist["artistsearchdialog_window_size"] = self.size()
-
-    def save_table_header_state(self):
-        state = self.table.horizontalHeader().saveState()
-        config.persist["artistsearchdialog_header_state"] = state
