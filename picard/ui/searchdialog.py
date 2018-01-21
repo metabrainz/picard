@@ -174,19 +174,22 @@ Retry = namedtuple("Retry", ["function", "query"])
 
 class SearchDialog(PicardDialog):
 
-    def __init__(self, parent, accept_button_title):
+    def __init__(self, parent, accept_button_title, show_search=True):
         PicardDialog.__init__(self, parent)
         self.search_results = []
         self.table = None
+        self.show_search = show_search
+        self.search_box = None
         self.setupUi(accept_button_title)
         self.restore_state()
 
     def setupUi(self, accept_button_title):
         self.verticalLayout = QtWidgets.QVBoxLayout(self)
         self.verticalLayout.setObjectName(_("vertical_layout"))
-        self.search_box = SearchBox(self)
-        self.search_box.setObjectName(_("search_box"))
-        self.verticalLayout.addWidget(self.search_box)
+        if self.show_search:
+            self.search_box = SearchBox(self)
+            self.search_box.setObjectName(_("search_box"))
+            self.verticalLayout.addWidget(self.search_box)
         self.center_widget = QtWidgets.QWidget(self)
         self.center_widget.setObjectName(_("center_widget"))
         self.center_layout = QtWidgets.QVBoxLayout(self.center_widget)
@@ -304,7 +307,8 @@ class SearchDialog(PicardDialog):
         size = config.persist[self.dialog_window_size]
         if size:
             self.resize(size)
-        self.search_box.restore_checkbox_state()
+        if self.show_search:
+            self.search_box.restore_checkbox_state()
         log.debug("restore_state: %s" % self.dialog_window_size)
 
     def restore_table_header_state(self):
@@ -325,6 +329,10 @@ class SearchDialog(PicardDialog):
         state = self.table.horizontalHeader().saveState()
         config.persist[self.dialog_header_state] = state
         log.debug("save_state: %s" % self.dialog_header_state)
+
+    def search_box_text(self, text):
+        if self.search_box:
+            self.search_box.search_edit.setText(text)
 
 
 class TrackSearchDialog(SearchDialog):
@@ -356,7 +364,7 @@ class TrackSearchDialog(SearchDialog):
     def search(self, text):
         """Perform search using query provided by the user."""
         self.retry_params = Retry(self.search, text)
-        self.search_box.search_edit.setText(text)
+        self.search_box_text(text)
         self.show_progress()
         self.tagger.mb_api.find_tracks(self.handle_reply,
                 query=text,
@@ -389,7 +397,7 @@ class TrackSearchDialog(SearchDialog):
             query_str = query["track"]
 
         query["limit"] = QUERY_LIMIT
-        self.search_box.search_edit.setText(query_str)
+        self.search_box_text(query_str)
         self.show_progress()
         self.tagger.mb_api.find_tracks(
                 self.handle_reply,
@@ -531,7 +539,7 @@ class AlbumSearchDialog(SearchDialog):
     def search(self, text):
         """Perform search using query provided by the user."""
         self.retry_params = Retry(self.search, text)
-        self.search_box.search_edit.setText(text)
+        self.search_box_text(text)
         self.show_progress()
         self.tagger.mb_api.find_releases(self.handle_reply,
                 query=text,
@@ -560,7 +568,7 @@ class AlbumSearchDialog(SearchDialog):
             query_str = query["release"]
 
         query["limit"] = QUERY_LIMIT
-        self.search_box.search_edit.setText(query_str)
+        self.search_box_text(query_str)
         self.show_progress()
         self.tagger.mb_api.find_releases(
             self.handle_reply,
@@ -735,7 +743,7 @@ class ArtistSearchDialog(SearchDialog):
 
     def search(self, text):
         self.retry_params = (self.search, text)
-        self.search_box.search_edit.setText(text)
+        self.search_box_text(text)
         self.show_progress()
         self.tagger.mb_api.find_artists(self.handle_reply,
                 query=text,
