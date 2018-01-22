@@ -267,7 +267,7 @@ class SearchDialog(PicardDialog):
         self.error_widget.setLayout(layout)
         self.add_widget_to_center_layout(self.error_widget)
 
-    def show_table(self, column_headers):
+    def show_table(self):
         self.table = ResultTable(self, self.table_headers)
         self.table.setObjectName("results_table")
         self.table.cellDoubleClicked.connect(self.accept)
@@ -432,7 +432,7 @@ class TrackSearchDialog(SearchDialog):
         self.display_results()
 
     def display_results(self):
-        self.show_table(self.table_headers)
+        self.show_table()
         for row, obj in enumerate(self.search_results):
             track = obj[0]
             table_item = QtWidgets.QTableWidgetItem
@@ -681,7 +681,7 @@ class AlbumSearchDialog(SearchDialog):
             self.search_results.append(release)
 
     def display_results(self):
-        self.show_table(self.table_headers)
+        self.show_table()
         self.table.verticalHeader().setDefaultSectionSize(100)
         for row, release in enumerate(self.search_results):
             table_item = QtWidgets.QTableWidgetItem
@@ -775,7 +775,7 @@ class ArtistSearchDialog(SearchDialog):
             self.search_results.append(artist)
 
     def display_results(self):
-        self.show_table(self.table_headers)
+        self.show_table()
         for row, artist in enumerate(self.search_results):
             table_item = QtWidgets.QTableWidgetItem
             self.table.insertRow(row)
