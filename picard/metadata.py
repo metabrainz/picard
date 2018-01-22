@@ -350,9 +350,9 @@ def register_track_metadata_processor(function, priority=PluginPriority.NORMAL):
     _track_metadata_processors.register(function.__module__, function, priority)
 
 
-def run_album_metadata_processors(tagger, metadata, release):
-    _album_metadata_processors.run(tagger, metadata, release)
+def run_album_metadata_processors(album_object, metadata, release):
+    _album_metadata_processors.run(album_object, metadata, release)
 
 
-def run_track_metadata_processors(tagger, metadata, release, track):
-    _track_metadata_processors.run(tagger, metadata, track, release)
+def run_track_metadata_processors(track_object, metadata, release, track):
+    _track_metadata_processors.run(track_object, metadata, track, release)
