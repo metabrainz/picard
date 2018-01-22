@@ -77,25 +77,14 @@ class ReleaseGroup(DataObject):
                 "id":      node['id'],
                 "year":    node['date'][:4] if "date" in node else "????",
                 "country": "+".join(countries) if countries
-                    else node['country'] if "country" in node
-                    else "??",
+                    else node.get('country', '') or "??",
                 "format":  media_formats_from_node(node['media']),
                 "label":  ", ".join([' '.join(x.split(' ')[:2]) for x in set(labels)]),
                 "catnum": ", ".join(set(catnums)),
                 "tracks":  "+".join([str(m['track-count']) for m in node['media']]),
-                "barcode":
-                    node['barcode']
-                    if "barcode" in node
-                    and node['barcode'] != ""
-                    else _("[no barcode]"),
-                "packaging":
-                    node['packaging']
-                    if "packaging" in node
-                    else None,
-                "disambiguation":
-                    node['disambiguation']
-                    if "disambiguation" in node
-                    else None,
+                "barcode": node.get('barcode', '') or _('[no barcode]'),
+                "packaging": node.get('packaging', '') or '??',
+                "disambiguation": node.get('disambiguation', ''),
                 "_disambiguate_name": list(),
                 "totaltracks": sum([m['track-count'] for m in node['media']]),
                 "countries": countries,
