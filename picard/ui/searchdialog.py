@@ -20,7 +20,7 @@
 from PyQt5 import QtGui, QtCore, QtNetwork, QtWidgets
 from operator import itemgetter
 from functools import partial
-from collections import namedtuple
+from collections import namedtuple, OrderedDict
 from picard import config, log
 from picard.file import File
 from picard.ui import PicardDialog
@@ -181,6 +181,23 @@ class SearchDialog(PicardDialog):
         self.search_box = None
         self.setupUi(accept_button_title)
         self.restore_state()
+        # self.columns has to be an ordered dict, with column name as keys, and
+        # matching label as values
+        self.columns = None
+
+    @property
+    def columns(self):
+        return self.__columns
+
+    @columns.setter
+    def columns(self, list_of_tuples):
+        if not list_of_tuples:
+            list_of_tuples = []
+        self.__columns = OrderedDict(list_of_tuples)
+
+    @property
+    def table_headers(self):
+        return list(self.columns.values())
 
     def setupUi(self, accept_button_title):
         self.verticalLayout = QtWidgets.QVBoxLayout(self)
@@ -352,14 +369,14 @@ class TrackSearchDialog(SearchDialog):
             accept_button_title=_("Load into Picard"))
         self.file_ = None
         self.setWindowTitle(_("Track Search Results"))
-        self.table_headers = [
-            _("Name"),
-            _("Length"),
-            _("Artist"),
-            _("Release"),
-            _("Date"),
-            _("Country"),
-            _("Type")
+        self.columns = [
+            ('name',    _("Name")),
+            ('length',  _("Length")),
+            ('artist',  _("Artist")),
+            ('release', _("Release")),
+            ('date',    _("Date")),
+            ('country', _("Country")),
+            ('type',    _("Type"))
         ]
 
     def search(self, text):
@@ -521,20 +538,20 @@ class AlbumSearchDialog(SearchDialog):
             accept_button_title=_("Load into Picard"))
         self.cluster = None
         self.setWindowTitle(_("Album Search Results"))
-        self.table_headers = [
-            _("Name"),
-            _("Artist"),
-            _("Format"),
-            _("Tracks"),
-            _("Date"),
-            _("Country"),
-            _("Labels"),
-            _("Catalog #s"),
-            _("Barcode"),
-            _("Language"),
-            _("Type"),
-            _("Status"),
-            _("Cover")
+        self.columns = [
+            ('name',     _("Name")),
+            ('artist',   _("Artist")),
+            ('format',   _("Format")),
+            ('tracks',   _("Tracks")),
+            ('date',     _("Date")),
+            ('country',  _("Country")),
+            ('labels',   _("Labels")),
+            ('catnums',  _("Catalog #s")),
+            ('barcode',  _("Barcode")),
+            ('language', _("Language")),
+            ('type',     _("Type")),
+            ('status',   _("Status")),
+            ('cover',    _("Cover")),
         ]
 
     def search(self, text):
@@ -731,15 +748,15 @@ class ArtistSearchDialog(SearchDialog):
             parent,
             accept_button_title=_("Show in browser"))
         self.setWindowTitle(_("Artist Search Dialog"))
-        self.table_headers = [
-            _("Name"),
-            _("Type"),
-            _("Gender"),
-            _("Area"),
-            _("Begin"),
-            _("Begin Area"),
-            _("End"),
-            _("End Area"),
+        self.columns = [
+            ('name',        _("Name")),
+            ('type',        _("Type")),
+            ('gender',      _("Gender")),
+            ('area',        _("Area")),
+            ('begindate',   _("Begin")),
+            ('beginarea',   _("Begin Area")),
+            ('enddate',     _("End")),
+            ('endarea',     _("End Area")),
         ]
 
     def search(self, text):
