@@ -138,7 +138,7 @@ class SearchBox(QtWidgets.QWidget):
             self.search_action.trigger()
 
 
-class CoverArt(QtWidgets.QWidget):
+class CoverWidget(QtWidgets.QWidget):
 
     def __init__(self, parent):
         super().__init__(parent)
@@ -699,7 +699,7 @@ class AlbumSearchDialog(SearchDialog):
             self.table.setItem(row, 9, table_item(release.get("~releaselanguage", "")))
             self.table.setItem(row, 10, table_item(release.get("releasetype", "")))
             self.table.setItem(row, 11, table_item(release.get("releasestatus", "")))
-            self.table.setCellWidget(row, 12, CoverArt(self.table))
+            self.table.setCellWidget(row, 12, CoverWidget(self.table))
 
     def accept_event(self, arg):
         self.load_selection(arg)
