@@ -140,7 +140,7 @@ class SearchBox(QtWidgets.QWidget):
 
 class CoverWidget(QtWidgets.QWidget):
 
-    def __init__(self, parent):
+    def __init__(self, parent, width=100, height=100):
         super().__init__(parent)
         self.layout = QtWidgets.QVBoxLayout(self)
         self.loading_gif_label = QtWidgets.QLabel(self)
@@ -149,14 +149,14 @@ class CoverWidget(QtWidgets.QWidget):
         self.loading_gif_label.setMovie(loading_gif)
         loading_gif.start()
         self.layout.addWidget(self.loading_gif_label)
+        self.size = QtCore.QSize(width, height)
 
     def set_pixmap(self, pixmap):
         wid = self.layout.takeAt(0)
         if wid:
             wid.widget().deleteLater()
         cover_label = QtWidgets.QLabel(self)
-        cover_label.setPixmap(pixmap.scaled(100,
-                                            100,
+        cover_label.setPixmap(pixmap.scaled(self.size,
                                             QtCore.Qt.KeepAspectRatio,
                                             QtCore.Qt.SmoothTransformation)
                               )
