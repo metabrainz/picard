@@ -461,7 +461,6 @@ class TrackSearchDialog(SearchDialog):
         self.show_table()
         for row, obj in enumerate(self.search_results):
             track = obj[0]
-            table_item = QtWidgets.QTableWidgetItem
             self.table.insertRow(row)
             self.set_table_item(row, 'name',    track, "title")
             self.set_table_item(row, 'length',  track, "~length")
@@ -803,7 +802,6 @@ class ArtistSearchDialog(SearchDialog):
     def display_results(self):
         self.show_table()
         for row, artist in enumerate(self.search_results):
-            table_item = QtWidgets.QTableWidgetItem
             self.table.insertRow(row)
             self.set_table_item(row, 'name',      artist, "name")
             self.set_table_item(row, 'type',      artist, "type")
