@@ -92,6 +92,15 @@ TAG_NAMES = {
     'musicbrainz_originalartistid': N_('MusicBrainz Original Artist Id'),
     'originalalbum': N_('Original Album'),
     'musicbrainz_originalalbumid': N_('MusicBrainz Original Release Id'),
+    'movementname': N_('Movement Name (iTunes Classical)'),
+    'musicbrainz_movementid': N_('MusicBrainz Movement Work Id'),
+    'movementnumber': N_('Movement Number (iTunes Classical)'),
+    'movementtotal': N_('Movement Total (iTunes Classical)'),
+    'itunesgrouping': N_('Grouping (iTunes Classical)'), # ID3 GRP1 introduced in iTunes 12.5.4.42 Dec 2016
+    'ituneswork': N_('Work (iTunes Classical)'), # mp4 ©wrk introduced in iTunes 2016
+    'movementshow': N_('Movement Show (iTunes Classical)'),
+    '~workcomment': N_('Work Disambiguation'),
+    '~movementcomment': N_('Movement Disambiguation (iTunes Classical)'),
 }
 
 PRESERVED_TAGS = [

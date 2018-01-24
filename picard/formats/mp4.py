@@ -51,6 +51,10 @@ class MP4File(File):
         "sosn": "showsort",
         "tvsh": "show",
         "purl": "podcasturl",
+        # Movement source information https://github.com/taglib/taglib/issues/758
+        # & https://forums.mp3tag.de/index.php?showtopic=21586
+        "\xa9mvn": "movementname",
+        "\xa9wrk": "ituneswork",
     }
     __r_text_tags = dict([(v, k) for k, v in __text_tags.items()])
 
@@ -63,6 +67,11 @@ class MP4File(File):
 
     __int_tags = {
         "tmpo": "bpm",
+        # Movement source information https://github.com/taglib/taglib/issues/758
+        # & https://forums.mp3tag.de/index.php?showtopic=21586
+        "\xa9mvi": "movementnumber",
+        "\xa9mvc": "movementtotal",
+        "shwm": "movementshow",
     }
     __r_int_tags = dict([(v, k) for k, v in __int_tags.items()])
 
@@ -78,6 +87,7 @@ class MP4File(File):
         "----:com.apple.iTunes:MusicBrainz Disc Id": "musicbrainz_discid",
         "----:com.apple.iTunes:MusicBrainz TRM Id": "musicbrainz_trmid",
         "----:com.apple.iTunes:MusicBrainz Work Id": "musicbrainz_workid",
+        "----:com.apple.iTunes:MusicBrainz Movement Work Id": "musicbrainz_movementid",
         "----:com.apple.iTunes:MusicBrainz Release Group Id": "musicbrainz_releasegroupid",
         "----:com.apple.iTunes:MusicBrainz Release Track Id": "musicbrainz_trackid",
         "----:com.apple.iTunes:Acoustid Fingerprint": "acoustid_fingerprint",
@@ -154,7 +164,7 @@ class MP4File(File):
                             data=value,
                         )
                     except CoverArtImageError as e:
-                        log.error('Cannot load image from %r: %s' %
+                        log.error('MP4: Cannot load image from %r: %s' %
                                   (filename, e))
                     else:
                         metadata.append_image(coverartimage)
@@ -182,8 +192,13 @@ class MP4File(File):
             elif name in self.__r_int_tags:
                 try:
                     tags[self.__r_int_tags[name]] = [int(value) for value in values]
-                except ValueError:
-                    pass
+                except (ValueError, TypeError) as e:
+                    log.error("MP4: Cannot save tag %s from %s as %r in %r: %s",
+                        self.__r_int_tags[name],
+                        name,
+                        [int(value) for value in values],
+                        filename,
+                        e)
             elif name in self.__r_freeform_tags:
                 values = [v.encode("utf-8") for v in values]
                 tags[self.__r_freeform_tags[name]] = values
