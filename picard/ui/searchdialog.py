@@ -167,6 +167,9 @@ class CoverWidget(QtWidgets.QWidget):
         shadow = QtGui.QPixmap(":/images/CoverArtShadow.png")
         self.set_pixmap(shadow)
 
+    def sizeHint(self):
+        return self.size
+
 
 Retry = namedtuple("Retry", ["function", "query"])
 
