@@ -639,7 +639,7 @@ class AlbumSearchDialog(SearchDialog):
         if not self.table:
             return
 
-        cover_cell = self.table.cellWidget(row, len(self.table_headers) - 1)
+        cover_cell = self.table.cellWidget(row, self.colpos('cover'))
 
         if error:
             cover_cell.not_found()
@@ -677,7 +677,7 @@ class AlbumSearchDialog(SearchDialog):
         Args:
             row -- Album's row in results table
         """
-        cover_cell = self.table.cellWidget(row, len(self.table_headers) - 1)
+        cover_cell = self.table.cellWidget(row, self.colpos('cover'))
 
         if error:
             cover_cell.not_found()
