@@ -280,7 +280,15 @@ class PluginsOptionsPage(OptionsPage):
         for item, plugin in self.items.items():
             if item.checkState(0) == QtCore.Qt.Checked:
                 enabled_plugins.append(plugin.module_name)
-        config.setting["enabled_plugins"] = enabled_plugins
+        if config.setting["enabled_plugins"] != enabled_plugins:
+            config.setting["enabled_plugins"] = enabled_plugins
+            dialog = QtWidgets.QMessageBox(
+                QtWidgets.QMessageBox.Information,
+                _('Plugins changed'),
+                _('Enabled plugins have been changed. Please restart Picard in order for the change to take effect.'),
+                QtWidgets.QMessageBox.Ok,
+                self)
+            dialog.exec_()
         self.save_state()
 
     def change_details(self):
