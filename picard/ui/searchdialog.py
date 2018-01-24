@@ -203,6 +203,10 @@ class SearchDialog(PicardDialog):
     def colpos(self, colname):
         return self.__colkeys.index(colname)
 
+    def set_table_item(self, row, colname, obj, key, default=""):
+        item = QtWidgets.QTableWidgetItem(obj.get(key, default))
+        self.table.setItem(row, self.colpos(colname), item)
+
     def setupUi(self, accept_button_title):
         self.verticalLayout = QtWidgets.QVBoxLayout(self)
         self.verticalLayout.setObjectName(_("vertical_layout"))
@@ -705,21 +709,21 @@ class AlbumSearchDialog(SearchDialog):
     def display_results(self):
         self.show_table()
         self.table.verticalHeader().setDefaultSectionSize(100)
+
         for row, release in enumerate(self.search_results):
-            table_item = QtWidgets.QTableWidgetItem
             self.table.insertRow(row)
-            self.table.setItem(row, self.colpos('name'), table_item(release.get("album", "")))
-            self.table.setItem(row, self.colpos('artist'), table_item(release.get("albumartist", "")))
-            self.table.setItem(row, self.colpos('format'), table_item(release.get("format", "")))
-            self.table.setItem(row, self.colpos('tracks'), table_item(release.get("tracks", "")))
-            self.table.setItem(row, self.colpos('date'), table_item(release.get("date", "")))
-            self.table.setItem(row, self.colpos('country'), table_item(release.get("country", "")))
-            self.table.setItem(row, self.colpos('labels'), table_item(release.get("label", "")))
-            self.table.setItem(row, self.colpos('catnums'), table_item(release.get("catalognumber", "")))
-            self.table.setItem(row, self.colpos('barcode'), table_item(release.get("barcode", "")))
-            self.table.setItem(row, self.colpos('language'), table_item(release.get("~releaselanguage", "")))
-            self.table.setItem(row, self.colpos('type'), table_item(release.get("releasetype", "")))
-            self.table.setItem(row, self.colpos('status'), table_item(release.get("releasestatus", "")))
+            self.set_table_item(row, 'name',     release, "album")
+            self.set_table_item(row, 'artist',   release, "albumartist")
+            self.set_table_item(row, 'format',   release, "format")
+            self.set_table_item(row, 'tracks',   release, "tracks")
+            self.set_table_item(row, 'date',     release, "date")
+            self.set_table_item(row, 'country',  release, "country")
+            self.set_table_item(row, 'labels',   release, "label")
+            self.set_table_item(row, 'catnums',  release, "catalognumber")
+            self.set_table_item(row, 'barcode',  release, "barcode")
+            self.set_table_item(row, 'language', release, "~releaselanguage")
+            self.set_table_item(row, 'type',     release, "releasetype")
+            self.set_table_item(row, 'status',   release, "releasestatus")
             self.table.setCellWidget(row, self.colpos('cover'), CoverWidget(self.table))
 
     def accept_event(self, arg):
