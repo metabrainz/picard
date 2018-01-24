@@ -463,13 +463,13 @@ class TrackSearchDialog(SearchDialog):
             track = obj[0]
             table_item = QtWidgets.QTableWidgetItem
             self.table.insertRow(row)
-            self.table.setItem(row, self.colpos('name'), table_item(track.get("title", "")))
-            self.table.setItem(row, self.colpos('length'), table_item(track.get("~length", "")))
-            self.table.setItem(row, self.colpos('artist'), table_item(track.get("artist", "")))
-            self.table.setItem(row, self.colpos('release'), table_item(track.get("album", "")))
-            self.table.setItem(row, self.colpos('date'), table_item(track.get("date", "")))
-            self.table.setItem(row, self.colpos('country'), table_item(track.get("country", "")))
-            self.table.setItem(row, self.colpos('type'), table_item(track.get("releasetype", "")))
+            self.set_table_item(row, 'name',    track, "title")
+            self.set_table_item(row, 'length',  track, "~length")
+            self.set_table_item(row, 'artist',  track, "artist")
+            self.set_table_item(row, 'release', track, "album")
+            self.set_table_item(row, 'date',    track, "date")
+            self.set_table_item(row, 'country', track, "country")
+            self.set_table_item(row, 'type',    track, "releasetype")
 
     def parse_tracks(self, tracks):
         for node in tracks:
