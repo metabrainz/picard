@@ -194,10 +194,14 @@ class SearchDialog(PicardDialog):
         if not list_of_tuples:
             list_of_tuples = []
         self.__columns = OrderedDict(list_of_tuples)
+        self.__colkeys = list(self.columns.keys())
 
     @property
     def table_headers(self):
         return list(self.columns.values())
+
+    def colpos(self, colname):
+        return self.__colkeys.index(colname)
 
     def setupUi(self, accept_button_title):
         self.verticalLayout = QtWidgets.QVBoxLayout(self)
