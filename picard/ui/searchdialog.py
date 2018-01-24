@@ -805,14 +805,14 @@ class ArtistSearchDialog(SearchDialog):
         for row, artist in enumerate(self.search_results):
             table_item = QtWidgets.QTableWidgetItem
             self.table.insertRow(row)
-            self.table.setItem(row, self.colpos('name'), table_item(artist.get("name", "")))
-            self.table.setItem(row, self.colpos('type'), table_item(artist.get("type", "")))
-            self.table.setItem(row, self.colpos('gender'), table_item(artist.get("gender", "")))
-            self.table.setItem(row, self.colpos('area'), table_item(artist.get("area", "")))
-            self.table.setItem(row, self.colpos('begindate'), table_item(artist.get("begindate", "")))
-            self.table.setItem(row, self.colpos('beginarea'), table_item(artist.get("beginarea", "")))
-            self.table.setItem(row, self.colpos('enddate'), table_item(artist.get("enddate", "")))
-            self.table.setItem(row, self.colpos('endarea'), table_item(artist.get("endarea", "")))
+            self.set_table_item(row, 'name',      artist, "name")
+            self.set_table_item(row, 'type',      artist, "type")
+            self.set_table_item(row, 'gender',    artist, "gender")
+            self.set_table_item(row, 'area',      artist, "area")
+            self.set_table_item(row, 'begindate', artist, "begindate")
+            self.set_table_item(row, 'beginarea', artist, "beginarea")
+            self.set_table_item(row, 'enddate',   artist, "enddate")
+            self.set_table_item(row, 'endarea',   artist, "endarea")
 
     def accept_event(self, row):
         self.load_in_browser(row)
