@@ -66,7 +66,7 @@ class SearchBox(QtWidgets.QWidget):
         self.parent = parent
         QtWidgets.QWidget.__init__(self, parent)
         self.search_action = QtWidgets.QAction(icontheme.lookup('system-search'),
-                _("Search"), self)
+                                               _("Search"), self)
         self.search_action.setEnabled(False)
         self.search_action.triggered.connect(self.search)
         self.setupUi()
@@ -110,8 +110,8 @@ class SearchBox(QtWidgets.QWidget):
         self.adv_syntax_help = QtWidgets.QLabel(self.adv_opt_row_widget)
         self.adv_syntax_help.setOpenExternalLinks(True)
         self.adv_syntax_help.setText(_(
-                "&#160;(<a href='https://musicbrainz.org/doc/Indexed_Search_Syntax'>"
-                "Syntax Help</a>)"))
+            "&#160;(<a href='https://musicbrainz.org/doc/Indexed_Search_Syntax'>"
+            "Syntax Help</a>)"))
         self.adv_opt_row_layout.addWidget(self.adv_syntax_help)
         self.adv_opt_row_widget.setLayout(self.adv_opt_row_layout)
         self.layout.addWidget(self.adv_opt_row_widget)
@@ -203,11 +203,11 @@ class SearchDialog(PicardDialog):
             self.buttonBox)
         self.accept_button.setEnabled(False)
         self.buttonBox.addButton(
-                self.accept_button,
-                QtWidgets.QDialogButtonBox.AcceptRole)
+            self.accept_button,
+            QtWidgets.QDialogButtonBox.AcceptRole)
         self.buttonBox.addButton(
-                StandardButton(StandardButton.CANCEL),
-                QtWidgets.QDialogButtonBox.RejectRole)
+            StandardButton(StandardButton.CANCEL),
+            QtWidgets.QDialogButtonBox.RejectRole)
         self.buttonBox.accepted.connect(self.accept)
         self.buttonBox.rejected.connect(self.reject)
         self.verticalLayout.addWidget(self.buttonBox)
@@ -273,10 +273,11 @@ class SearchDialog(PicardDialog):
         self.table.cellDoubleClicked.connect(self.accept)
         self.restore_table_header_state()
         self.add_widget_to_center_layout(self.table)
+
         def enable_accept_button():
             self.accept_button.setEnabled(True)
         self.table.itemSelectionChanged.connect(
-                enable_accept_button)
+            enable_accept_button)
 
     def network_error(self, reply, error):
         error_msg = _("<strong>Following error occurred while fetching results:<br><br></strong>"
@@ -284,8 +285,9 @@ class SearchDialog(PicardDialog):
                           reply.request().url().toString(QtCore.QUrl.RemoveUserInfo),
                           reply.errorString(),
                           error,
-                          repr(reply.attribute(QtNetwork.QNetworkRequest.HttpStatusCodeAttribute))
-                      )
+                          repr(reply.attribute(
+                              QtNetwork.QNetworkRequest.HttpStatusCodeAttribute))
+        )
         self.show_error(error_msg, show_retry_button=True)
 
     def no_results_found(self):
@@ -352,13 +354,13 @@ class TrackSearchDialog(SearchDialog):
         self.file_ = None
         self.setWindowTitle(_("Track Search Results"))
         self.table_headers = [
-                _("Name"),
-                _("Length"),
-                _("Artist"),
-                _("Release"),
-                _("Date"),
-                _("Country"),
-                _("Type")
+            _("Name"),
+            _("Length"),
+            _("Artist"),
+            _("Release"),
+            _("Date"),
+            _("Country"),
+            _("Type")
         ]
 
     def search(self, text):
@@ -367,9 +369,9 @@ class TrackSearchDialog(SearchDialog):
         self.search_box_text(text)
         self.show_progress()
         self.tagger.mb_api.find_tracks(self.handle_reply,
-                query=text,
-                search=True,
-                limit=QUERY_LIMIT)
+                                       query=text,
+                                       search=True,
+                                       limit=QUERY_LIMIT)
 
     def load_similar_tracks(self, file_):
         """Perform search using existing metadata information
@@ -378,13 +380,13 @@ class TrackSearchDialog(SearchDialog):
         self.file_ = file_
         metadata = file_.orig_metadata
         query = {
-                'track': metadata['title'],
-                'artist': metadata['artist'],
-                'release': metadata['album'],
-                'tnum': metadata['tracknumber'],
-                'tracks': metadata['totaltracks'],
-                'qdur': string_(metadata.length // 2000),
-                'isrc': metadata['isrc'],
+            'track': metadata['title'],
+            'artist': metadata['artist'],
+            'release': metadata['album'],
+            'tnum': metadata['tracknumber'],
+            'tracks': metadata['totaltracks'],
+            'qdur': string_(metadata.length // 2000),
+            'isrc': metadata['isrc'],
         }
 
         # Generate query to be displayed to the user (in search box).
@@ -400,8 +402,8 @@ class TrackSearchDialog(SearchDialog):
         self.search_box_text(query_str)
         self.show_progress()
         self.tagger.mb_api.find_tracks(
-                self.handle_reply,
-                **query)
+            self.handle_reply,
+            **query)
 
     def retry(self):
         self.retry_params.function(self.retry_params.query)
@@ -477,12 +479,12 @@ class TrackSearchDialog(SearchDialog):
 
         track, node = self.search_results[row]
         if track.get("musicbrainz_albumid"):
-        # The track is not an NAT
+            # The track is not an NAT
             self.tagger.get_release_group_by_id(track["musicbrainz_releasegroupid"]).loaded_albums.add(
-                    track["musicbrainz_albumid"])
+                track["musicbrainz_albumid"])
             if self.file_:
-            # Search is performed for a file.
-            # Have to move that file from its existing album to the new one.
+                # Search is performed for a file.
+                # Have to move that file from its existing album to the new one.
                 if isinstance(self.file_.parent, Track):
                     album = self.file_.parent.album
                     self.tagger.move_file_to_track(self.file_, track["musicbrainz_albumid"], track["musicbrainz_recordingid"])
@@ -492,7 +494,7 @@ class TrackSearchDialog(SearchDialog):
                 else:
                     self.tagger.move_file_to_track(self.file_, track["musicbrainz_albumid"], track["musicbrainz_recordingid"])
             else:
-            # No files associated. Just a normal search.
+                # No files associated. Just a normal search.
                 self.tagger.load_album(track["musicbrainz_albumid"])
         else:
             if self.file_:
@@ -521,19 +523,19 @@ class AlbumSearchDialog(SearchDialog):
         self.cluster = None
         self.setWindowTitle(_("Album Search Results"))
         self.table_headers = [
-                _("Name"),
-                _("Artist"),
-                _("Format"),
-                _("Tracks"),
-                _("Date"),
-                _("Country"),
-                _("Labels"),
-                _("Catalog #s"),
-                _("Barcode"),
-                _("Language"),
-                _("Type"),
-                _("Status"),
-                _("Cover")
+            _("Name"),
+            _("Artist"),
+            _("Format"),
+            _("Tracks"),
+            _("Date"),
+            _("Country"),
+            _("Labels"),
+            _("Catalog #s"),
+            _("Barcode"),
+            _("Language"),
+            _("Type"),
+            _("Status"),
+            _("Cover")
         ]
 
     def search(self, text):
@@ -542,9 +544,9 @@ class AlbumSearchDialog(SearchDialog):
         self.search_box_text(text)
         self.show_progress()
         self.tagger.mb_api.find_releases(self.handle_reply,
-                query=text,
-                search=True,
-                limit=QUERY_LIMIT)
+                                         query=text,
+                                         search=True,
+                                         limit=QUERY_LIMIT)
 
     def show_similar_albums(self, cluster):
         """Perform search by using existing metadata information
@@ -563,7 +565,7 @@ class AlbumSearchDialog(SearchDialog):
         # advanced syntax style. Otherwise display only album title.
         if config.setting["use_adv_search_syntax"]:
             query_str = ' '.join(['%s:(%s)' % (item, escape_lucene_query(value))
-                                for item, value in query.items() if value])
+                                  for item, value in query.items() if value])
         else:
             query_str = query["release"]
 
@@ -614,7 +616,7 @@ class AlbumSearchDialog(SearchDialog):
         if not self.table:
             return
 
-        cover_cell = self.table.cellWidget(row, len(self.table_headers)-1)
+        cover_cell = self.table.cellWidget(row, len(self.table_headers) - 1)
 
         if error:
             cover_cell.not_found()
@@ -652,7 +654,7 @@ class AlbumSearchDialog(SearchDialog):
         Args:
             row -- Album's row in results table
         """
-        cover_cell = self.table.cellWidget(row, len(self.table_headers)-1)
+        cover_cell = self.table.cellWidget(row, len(self.table_headers) - 1)
 
         if error:
             cover_cell.not_found()
@@ -731,14 +733,14 @@ class ArtistSearchDialog(SearchDialog):
             accept_button_title=_("Show in browser"))
         self.setWindowTitle(_("Artist Search Dialog"))
         self.table_headers = [
-                _("Name"),
-                _("Type"),
-                _("Gender"),
-                _("Area"),
-                _("Begin"),
-                _("Begin Area"),
-                _("End"),
-                _("End Area"),
+            _("Name"),
+            _("Type"),
+            _("Gender"),
+            _("Area"),
+            _("Begin"),
+            _("Begin Area"),
+            _("End"),
+            _("End Area"),
         ]
 
     def search(self, text):
@@ -746,9 +748,9 @@ class ArtistSearchDialog(SearchDialog):
         self.search_box_text(text)
         self.show_progress()
         self.tagger.mb_api.find_artists(self.handle_reply,
-                query=text,
-                search=True,
-                limit=QUERY_LIMIT)
+                                        query=text,
+                                        search=True,
+                                        limit=QUERY_LIMIT)
 
     def retry(self):
         self.retry_params[0](self.retry_params[1])
