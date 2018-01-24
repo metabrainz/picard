@@ -150,7 +150,7 @@ class CoverArt(QtWidgets.QWidget):
         loading_gif.start()
         self.layout.addWidget(self.loading_gif_label)
 
-    def update(self, pixmap):
+    def set_pixmap(self, pixmap):
         wid = self.layout.takeAt(0)
         if wid:
             wid.widget().deleteLater()
@@ -165,7 +165,7 @@ class CoverArt(QtWidgets.QWidget):
     def not_found(self):
         """Update the widget with a blank image."""
         shadow = QtGui.QPixmap(":/images/CoverArtShadow.png")
-        self.update(shadow)
+        self.set_pixmap(shadow)
 
 
 Retry = namedtuple("Retry", ["function", "query"])
@@ -661,7 +661,7 @@ class AlbumSearchDialog(SearchDialog):
             pixmap = QtGui.QPixmap()
             try:
                 pixmap.loadFromData(data)
-                cover_cell.update(pixmap)
+                cover_cell.set_pixmap(pixmap)
             except Exception as e:
                 cover_cell.not_found()
                 log.error(e)
