@@ -18,6 +18,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from PyQt5 import QtGui, QtCore, QtNetwork, QtWidgets
+from PyQt5.QtCore import pyqtSignal
 from operator import itemgetter
 from functools import partial
 from collections import namedtuple, OrderedDict
@@ -25,7 +26,7 @@ from picard import config, log
 from picard.file import File
 from picard.ui import PicardDialog
 from picard.ui.util import StandardButton, ButtonLineEdit
-from picard.util import icontheme, load_json
+from picard.util import icontheme, load_json, throttle
 from picard.mbjson import (
     artist_to_metadata,
     recording_to_metadata,
@@ -57,6 +58,11 @@ class ResultTable(QtWidgets.QTableWidget):
             QtWidgets.QHeaderView.Stretch)
         self.horizontalHeader().setSectionResizeMode(
             QtWidgets.QHeaderView.Interactive)
+        @throttle(1000)
+        def emit_scrolled(x):
+            parent.scrolled.emit()
+        self.horizontalScrollBar().valueChanged.connect(emit_scrolled)
+        self.verticalScrollBar().valueChanged.connect(emit_scrolled)
 
 
 class SearchBox(QtWidgets.QWidget):
@@ -175,6 +181,8 @@ Retry = namedtuple("Retry", ["function", "query"])
 
 
 class SearchDialog(PicardDialog):
+
+    scrolled = pyqtSignal()
 
     def __init__(self, parent, accept_button_title, show_search=True):
         super().__init__(parent)
@@ -548,6 +556,12 @@ class CoverCell:
             return None
         return self.parent.table.cellWidget(self.row, self.column)
 
+    def is_visible(self):
+        widget = self.widget()
+        if not widget:
+            return False
+        return not widget.visibleRegion().isEmpty()
+
     def set_pixmap(self, pixmap):
         widget = self.widget()
         if widget:
@@ -591,6 +605,8 @@ class AlbumSearchDialog(SearchDialog):
             ('cover',    _("Cover")),
         ]
         self.cover_cells = []
+        self.fetching = False
+        self.scrolled.connect(self.fetch_coverarts)
 
     def search(self, text):
         """Perform search using query provided by the user."""
@@ -650,10 +666,15 @@ class AlbumSearchDialog(SearchDialog):
         self.fetch_coverarts()
 
     def fetch_coverarts(self):
+        if self.fetching:
+            return
+        self.fetching = True
         for cell in self.cover_cells:
             if cell.fetched:
                 continue
-            self.fetch_coverart(cell)
+            if cell.is_visible():
+                self.fetch_coverart(cell)
+        self.fetching = False
 
     def fetch_coverart(self, cell):
         """Queue cover art jsons from CAA server for each album in search
