@@ -529,6 +529,33 @@ class TrackSearchDialog(SearchDialog):
                 self.tagger.load_nat(track["musicbrainz_recordingid"], node)
 
 
+class CoverCell:
+
+    def __init__(self, parent, release, row, colname):
+        self.parent = parent
+        self.release = release
+        self.fetched = False
+        self.fetch_task = None
+        self.row = row
+        self.column = self.parent.colpos(colname)
+        self.parent.table.setCellWidget(row, self.column, CoverWidget(self.parent.table))
+
+    def widget(self):
+        if not self.parent.table:
+            return None
+        return self.parent.table.cellWidget(self.row, self.column)
+
+    def set_pixmap(self, pixmap):
+        widget = self.widget()
+        if widget:
+            widget.set_pixmap(pixmap)
+
+    def not_found(self):
+        widget = self.widget()
+        if widget:
+            widget.not_found()
+
+
 class AlbumSearchDialog(SearchDialog):
 
     dialog_window_size = "albumsearchdialog_window_size"
@@ -560,6 +587,7 @@ class AlbumSearchDialog(SearchDialog):
             ('status',   _("Status")),
             ('cover',    _("Cover")),
         ]
+        self.cover_cells = []
 
     def search(self, text):
         """Perform search using query provided by the user."""
@@ -619,19 +647,25 @@ class AlbumSearchDialog(SearchDialog):
         self.fetch_coverarts()
 
     def fetch_coverarts(self):
+        for cell in self.cover_cells:
+            if cell.fetched:
+                continue
+            self.fetch_coverart(cell)
+
+    def fetch_coverart(self, cell):
         """Queue cover art jsons from CAA server for each album in search
         results.
         """
-        for row, release in enumerate(self.search_results):
-            caa_path = "/release/%s" % release["musicbrainz_albumid"]
-            self.tagger.webservice.download(
-                CAA_HOST,
-                CAA_PORT,
-                caa_path,
-                partial(self._caa_json_downloaded, row)
-            )
+        cell.fetched = True
+        caa_path = "/release/%s" % cell.release["musicbrainz_albumid"]
+        cell.fetch_task = self.tagger.webservice.download(
+            CAA_HOST,
+            CAA_PORT,
+            caa_path,
+            partial(self._caa_json_downloaded, cell)
+        )
 
-    def _caa_json_downloaded(self, row, data, http, error):
+    def _caa_json_downloaded(self, cover_cell, data, http, error):
         """Handle json reply from CAA server.
         If server replies without error, try to get small thumbnail of front
         coverart of the release.
@@ -639,7 +673,7 @@ class AlbumSearchDialog(SearchDialog):
         if not self.table:
             return
 
-        cover_cell = self.table.cellWidget(row, self.colpos('cover'))
+        cover_cell.fetch_task = None
 
         if error:
             cover_cell.not_found()
@@ -660,16 +694,16 @@ class AlbumSearchDialog(SearchDialog):
         if front:
             url = front["thumbnails"]["small"]
             coverartimage = CaaThumbnailCoverArtImage(url=url)
-            self.tagger.webservice.download(
+            cover_cell.fetch_task = self.tagger.webservice.download(
                 coverartimage.host,
                 coverartimage.port,
                 coverartimage.path,
-                partial(self._cover_downloaded, row),
+                partial(self._cover_downloaded, cover_cell),
             )
         else:
             cover_cell.not_found()
 
-    def _cover_downloaded(self, row, data, http, error):
+    def _cover_downloaded(self, cover_cell, data, http, error):
         """Handle cover art query reply from CAA server.
         If server returns the cover image successfully, update the cover art
         cell of particular release.
@@ -677,7 +711,10 @@ class AlbumSearchDialog(SearchDialog):
         Args:
             row -- Album's row in results table
         """
-        cover_cell = self.table.cellWidget(row, self.colpos('cover'))
+        if not self.table:
+            return
+
+        cover_cell.fetch_task = None
 
         if error:
             cover_cell.not_found()
@@ -689,6 +726,18 @@ class AlbumSearchDialog(SearchDialog):
             except Exception as e:
                 cover_cell.not_found()
                 log.error(e)
+
+    def fetch_cleanup(self):
+        for cell in self.cover_cells:
+            if cell.fetch_task is not None:
+                log.debug("Removing cover art fetch task for %s",
+                          cell.release['musicbrainz_albumid'])
+                self.tagger.webservice.remove_task(cell.fetch_task)
+
+    def closeEvent(self, event):
+        if self.cover_cells:
+            self.fetch_cleanup()
+        super().closeEvent(event)
 
     def parse_releases(self, releases):
         for node in releases:
@@ -708,7 +757,7 @@ class AlbumSearchDialog(SearchDialog):
     def display_results(self):
         self.show_table()
         self.table.verticalHeader().setDefaultSectionSize(100)
-
+        self.cover_cells = []
         for row, release in enumerate(self.search_results):
             self.table.insertRow(row)
             self.set_table_item(row, 'name',     release, "album")
@@ -723,7 +772,7 @@ class AlbumSearchDialog(SearchDialog):
             self.set_table_item(row, 'language', release, "~releaselanguage")
             self.set_table_item(row, 'type',     release, "releasetype")
             self.set_table_item(row, 'status',   release, "releasestatus")
-            self.table.setCellWidget(row, self.colpos('cover'), CoverWidget(self.table))
+            self.cover_cells.append(CoverCell(self, release, row, 'cover'))
 
     def accept_event(self, arg):
         self.load_selection(arg)
