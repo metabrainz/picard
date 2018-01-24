@@ -44,8 +44,7 @@ from picard.coverart.image import CaaThumbnailCoverArtImage
 class ResultTable(QtWidgets.QTableWidget):
 
     def __init__(self, parent, column_titles):
-        super().__init__(0, len(column_titles))
-        self.parent = parent
+        super().__init__(0, len(column_titles), parent)
         self.setHorizontalHeaderLabels(column_titles)
         self.setSelectionMode(
             QtWidgets.QAbstractItemView.SingleSelection)
@@ -63,7 +62,6 @@ class ResultTable(QtWidgets.QTableWidget):
 class SearchBox(QtWidgets.QWidget):
 
     def __init__(self, parent):
-        self.parent = parent
         super().__init__(parent)
         self.search_action = QtWidgets.QAction(icontheme.lookup('system-search'),
                                                _("Search"), self)
@@ -75,9 +73,10 @@ class SearchBox(QtWidgets.QWidget):
         # When focus is on search edit box (ButtonLineEdit), need to disable
         # dialog's accept button. This would avoid closing of dialog when user
         # hits enter.
-        if self.parent.table:
-            self.parent.table.clearSelection()
-        self.parent.accept_button.setEnabled(False)
+        parent = self.parent()
+        if parent.table:
+            parent.table.clearSelection()
+        parent.accept_button.setEnabled(False)
 
     def setupUi(self):
         self.layout = QtWidgets.QVBoxLayout(self)
@@ -120,7 +119,7 @@ class SearchBox(QtWidgets.QWidget):
         self.setMaximumHeight(60)
 
     def search(self):
-        self.parent.search(self.search_edit.text())
+        self.parent().search(self.search_edit.text())
 
     def restore_checkbox_state(self):
         self.use_adv_search_syntax.setChecked(config.setting["use_adv_search_syntax"])
