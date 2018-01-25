@@ -183,7 +183,6 @@ class FLACTest(FormatsTest):
     tags = {
         'album': 'Foo Bar',
         'title': 'Foo',
-        'artist': 'Foo',
         'albumartist': 'Foo',
         'date': '2004',
         'originaldate': '1980',
@@ -250,7 +249,6 @@ class WMATest(FormatsTest):
     tags = {
         'album': 'Foo Bar',
         'title': 'Foo',
-        'artist': 'Foo',
         'albumartist': 'Foo',
         'date': '2004',
         'originaldate': '1980-08-30',
@@ -430,7 +428,6 @@ class MP3Test(ID3Test):
     tags = {
         'album': 'Foo Bar',
         'title': 'Foo',
-        'artist': 'Foo',
         'albumartist': 'Foo',
         'date': '2004',
         'originaldate': '1980',
@@ -497,7 +494,6 @@ class TTATest(ID3Test):
     tags = {
         'album': 'Foo Bar',
         'title': 'Foo',
-        'artist': 'Foo',
         'albumartist': 'Foo',
         'date': '2004',
         'originaldate': '1980',
@@ -565,7 +561,6 @@ if picard.formats.AiffFile:
         tags = {
             'album': 'Foo Bar',
             'title': 'Foo',
-            'artist': 'Foo',
             'albumartist': 'Foo',
             'date': '2004',
             'originaldate': '1980',
@@ -632,7 +627,6 @@ class OggVorbisTest(FormatsTest):
     tags = {
         'album': 'Foo Bar',
         'title': 'Foo',
-        'artist': 'Foo',
         'albumartist': 'Foo',
         'date': '2004',
         'originaldate': '1980',
@@ -699,7 +693,6 @@ class MP4Test(FormatsTest):
     tags = {
         'album': 'Foo Bar',
         'title': 'Foo',
-        'artist': 'Foo',
         'albumartist': 'Foo',
         'date': '2004',
         #'originaldate': '1980',
@@ -767,7 +760,6 @@ class WavPackTest(FormatsTest):
     tags = {
         'album': 'Foo Bar',
         'title': 'Foo',
-        'artist': 'Foo',
         'albumartist': 'Foo',
         'date': '2004',
         #'originaldate': '1980',
@@ -834,7 +826,6 @@ class MusepackSV7Test(FormatsTest):
     tags = {
         'album': 'Foo Bar',
         'title': 'Foo',
-        'artist': 'Foo',
         'albumartist': 'Foo',
         'date': '2004',
         #'originaldate': '1980',
@@ -901,7 +892,6 @@ class MusepackSV8Test(FormatsTest):
     tags = {
         'album': 'Foo Bar',
         'title': 'Foo',
-        'artist': 'Foo',
         'albumartist': 'Foo',
         'date': '2004',
         #'originaldate': '1980',
