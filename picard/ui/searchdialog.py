@@ -152,23 +152,26 @@ class CoverWidget(QtWidgets.QWidget):
     def __init__(self, parent, width=100, height=100):
         super().__init__(parent)
         self.layout = QtWidgets.QVBoxLayout(self)
+        self.layout.setContentsMargins(0, 0, 0, 0)
+        self.layout.setAlignment(QtCore.Qt.AlignCenter)
         self.loading_gif_label = QtWidgets.QLabel(self)
         self.loading_gif_label.setAlignment(QtCore.Qt.AlignCenter)
         loading_gif = QtGui.QMovie(":/images/loader.gif")
         self.loading_gif_label.setMovie(loading_gif)
         loading_gif.start()
         self.layout.addWidget(self.loading_gif_label)
-        self.size = QtCore.QSize(width, height)
+        self.__sizehint = self.__size = QtCore.QSize(width, height)
+        self.setStyleSheet("padding: 0")
 
     def set_pixmap(self, pixmap):
         wid = self.layout.takeAt(0)
         if wid:
             wid.widget().deleteLater()
         cover_label = QtWidgets.QLabel(self)
-        cover_label.setPixmap(pixmap.scaled(self.size,
-                                            QtCore.Qt.KeepAspectRatio,
-                                            QtCore.Qt.SmoothTransformation)
-                              )
+        pixmap = pixmap.scaled(self.__size, QtCore.Qt.KeepAspectRatio,
+                               QtCore.Qt.SmoothTransformation)
+        self.__sizehint = pixmap.size()
+        cover_label.setPixmap(pixmap)
         self.layout.addWidget(cover_label)
 
     def not_found(self):
@@ -177,7 +180,7 @@ class CoverWidget(QtWidgets.QWidget):
         self.set_pixmap(shadow)
 
     def sizeHint(self):
-        return self.size
+        return self.__sizehint
 
     def showEvent(self, event):
         super().showEvent(event)
@@ -809,6 +812,7 @@ class AlbumSearchDialog(SearchDialog):
             self.set_table_item(row, 'status',   release, "releasestatus")
             self.cover_cells.append(CoverCell(self, release, row, 'cover',
                                               self.fetch_coverart))
+        self.table.resizeRowsToContents()
 
     def accept_event(self, arg):
         self.load_selection(arg)
