@@ -155,7 +155,7 @@ def upgrade_to_v1_4_0_dev_2():
 def upgrade_to_v1_4_0_dev_3():
     """Cover art providers options were moved to a list of tuples"""
     _s = config.setting
-    map = [
+    map_ca_provider = [
         ('ca_provider_use_amazon', 'Amazon'),
         ('ca_provider_use_caa', 'Cover Art Archive'),
         ('ca_provider_use_whitelist', 'Whitelist'),
@@ -163,7 +163,7 @@ def upgrade_to_v1_4_0_dev_3():
     ]
 
     newopts = []
-    for old, new in map:
+    for old, new in map_ca_provider:
         if old in _s:
             newopts.append((new, _s.value(old, config.BoolOption, True)))
     _s['ca_providers'] = newopts
