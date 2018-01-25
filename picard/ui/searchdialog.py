@@ -224,8 +224,15 @@ class SearchDialog(PicardDialog):
     def colpos(self, colname):
         return self.__colkeys.index(colname)
 
-    def set_table_item(self, row, colname, obj, key, default=""):
-        item = QtWidgets.QTableWidgetItem(obj.get(key, default))
+    def set_table_item(self, row, colname, obj, key, default="", conv=None):
+        item = QtWidgets.QTableWidgetItem()
+        # QVariant remembers the original type of the data
+        # matching comparison operator will be used when sorting
+        # get() will return a string, force conversion if asked to
+        value = obj.get(key, default)
+        if conv is not None:
+            value = conv(value)
+        item.setData(QtCore.Qt.EditRole, value)
         self.table.setItem(row, self.colpos(colname), item)
 
     def setupUi(self, accept_button_title):
@@ -312,8 +319,10 @@ class SearchDialog(PicardDialog):
         self.error_widget.setLayout(layout)
         self.add_widget_to_center_layout(self.error_widget)
 
-    def show_table(self):
+    def prepare_table(self):
         self.table = ResultTable(self, self.table_headers)
+        self.table.verticalHeader().setDefaultSectionSize(100)
+        self.table.setSortingEnabled(False)
         self.table.setObjectName("results_table")
         self.table.cellDoubleClicked.connect(self.accept)
         self.restore_table_header_state()
@@ -323,6 +332,13 @@ class SearchDialog(PicardDialog):
             self.accept_button.setEnabled(True)
         self.table.itemSelectionChanged.connect(
             enable_accept_button)
+
+    def show_table(self, sort_column=None, sort_order=QtCore.Qt.DescendingOrder):
+        self.table.setSortingEnabled(True)
+        if sort_column:
+            self.table.sortItems(self.colpos(sort_column), sort_order)
+        self.table.resizeColumnsToContents()
+        self.table.resizeRowsToContents()
 
     def network_error(self, reply, error):
         error_msg = _("<strong>Following error occurred while fetching results:<br><br></strong>"
@@ -405,7 +421,8 @@ class TrackSearchDialog(SearchDialog):
             ('release', _("Release")),
             ('date',    _("Date")),
             ('country', _("Country")),
-            ('type',    _("Type"))
+            ('type',    _("Type")),
+            ('score',   _("Score")),
         ]
 
     def search(self, text):
@@ -479,7 +496,7 @@ class TrackSearchDialog(SearchDialog):
         self.display_results()
 
     def display_results(self):
-        self.show_table()
+        self.prepare_table()
         for row, obj in enumerate(self.search_results):
             track = obj[0]
             self.table.insertRow(row)
@@ -490,6 +507,8 @@ class TrackSearchDialog(SearchDialog):
             self.set_table_item(row, 'date',    track, "date")
             self.set_table_item(row, 'country', track, "country")
             self.set_table_item(row, 'type',    track, "releasetype")
+            self.set_table_item(row, 'score',   track, "score", conv=int)
+        self.show_table(sort_column='score')
 
     def parse_tracks(self, tracks):
         for node in tracks:
@@ -497,6 +516,7 @@ class TrackSearchDialog(SearchDialog):
                 for rel_node in node['releases']:
                     track = Metadata()
                     recording_to_metadata(node, track)
+                    track['score'] = node['score']
                     release_to_metadata(rel_node, track)
                     rg_node = rel_node['release-group']
                     release_group_to_metadata(rg_node, track)
@@ -509,6 +529,7 @@ class TrackSearchDialog(SearchDialog):
                 # i.e. the track is an NAT
                 track = Metadata()
                 recording_to_metadata(node, track)
+                track['score'] = node['score']
                 track["album"] = _("Standalone Recording")
                 self.search_results.append((track, node))
 
@@ -616,6 +637,7 @@ class AlbumSearchDialog(SearchDialog):
             ('type',     _("Type")),
             ('status',   _("Status")),
             ('cover',    _("Cover")),
+            ('score',    _("Score")),
         ]
         self.cover_cells = []
         self.fetching = False
@@ -781,6 +803,7 @@ class AlbumSearchDialog(SearchDialog):
         for node in releases:
             release = Metadata()
             release_to_metadata(node, release)
+            release['score'] = node['score']
             rg_node = node['release-group']
             release_group_to_metadata(rg_node, release)
             if "media" in node:
@@ -793,8 +816,7 @@ class AlbumSearchDialog(SearchDialog):
             self.search_results.append(release)
 
     def display_results(self):
-        self.show_table()
-        self.table.verticalHeader().setDefaultSectionSize(100)
+        self.prepare_table()
         self.cover_cells = []
         for row, release in enumerate(self.search_results):
             self.table.insertRow(row)
@@ -810,9 +832,10 @@ class AlbumSearchDialog(SearchDialog):
             self.set_table_item(row, 'language', release, "~releaselanguage")
             self.set_table_item(row, 'type',     release, "releasetype")
             self.set_table_item(row, 'status',   release, "releasestatus")
+            self.set_table_item(row, 'score',    release, "score", conv=int)
             self.cover_cells.append(CoverCell(self, release, row, 'cover',
                                               self.fetch_coverart))
-        self.table.resizeRowsToContents()
+        self.show_table(sort_column='score')
 
     def accept_event(self, arg):
         self.load_selection(arg)
@@ -853,6 +876,7 @@ class ArtistSearchDialog(SearchDialog):
             ('beginarea',   _("Begin Area")),
             ('enddate',     _("End")),
             ('endarea',     _("End Area")),
+            ('score',       _("Score")),
         ]
 
     def search(self, text):
@@ -886,10 +910,11 @@ class ArtistSearchDialog(SearchDialog):
         for node in artists:
             artist = Metadata()
             artist_to_metadata(node, artist)
+            artist['score'] = node['score']
             self.search_results.append(artist)
 
     def display_results(self):
-        self.show_table()
+        self.prepare_table()
         for row, artist in enumerate(self.search_results):
             self.table.insertRow(row)
             self.set_table_item(row, 'name',      artist, "name")
@@ -900,6 +925,8 @@ class ArtistSearchDialog(SearchDialog):
             self.set_table_item(row, 'beginarea', artist, "beginarea")
             self.set_table_item(row, 'enddate',   artist, "enddate")
             self.set_table_item(row, 'endarea',   artist, "endarea")
+            self.set_table_item(row, 'score',     artist, "score", conv=int)
+        self.show_table(sort_column='score')
 
     def accept_event(self, row):
         self.load_in_browser(row)
