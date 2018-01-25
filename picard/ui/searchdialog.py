@@ -58,6 +58,7 @@ class ResultTable(QtWidgets.QTableWidget):
             QtWidgets.QHeaderView.Stretch)
         self.horizontalHeader().setSectionResizeMode(
             QtWidgets.QHeaderView.Interactive)
+        #only emit scrolled signal once per second
         @throttle(1000)
         def emit_scrolled(x):
             parent.scrolled.emit()
@@ -146,6 +147,8 @@ class SearchBox(QtWidgets.QWidget):
 
 class CoverWidget(QtWidgets.QWidget):
 
+    shown = pyqtSignal()
+
     def __init__(self, parent, width=100, height=100):
         super().__init__(parent)
         self.layout = QtWidgets.QVBoxLayout(self)
@@ -175,6 +178,10 @@ class CoverWidget(QtWidgets.QWidget):
 
     def sizeHint(self):
         return self.size
+
+    def showEvent(self, event):
+        super().showEvent(event)
+        self.shown.emit()
 
 
 Retry = namedtuple("Retry", ["function", "query"])
@@ -542,14 +549,17 @@ class TrackSearchDialog(SearchDialog):
 
 class CoverCell:
 
-    def __init__(self, parent, release, row, colname):
+    def __init__(self, parent, release, row, colname, on_show=None):
         self.parent = parent
         self.release = release
         self.fetched = False
         self.fetch_task = None
         self.row = row
         self.column = self.parent.colpos(colname)
-        self.parent.table.setCellWidget(row, self.column, CoverWidget(self.parent.table))
+        widget = CoverWidget(self.parent.table)
+        if on_show is not None:
+            widget.shown.connect(partial(on_show, self))
+        self.parent.table.setCellWidget(row, self.column, widget)
 
     def widget(self):
         if not self.parent.table:
@@ -670,16 +680,17 @@ class AlbumSearchDialog(SearchDialog):
             return
         self.fetching = True
         for cell in self.cover_cells:
-            if cell.fetched:
-                continue
-            if cell.is_visible():
-                self.fetch_coverart(cell)
+            self.fetch_coverart(cell)
         self.fetching = False
 
     def fetch_coverart(self, cell):
         """Queue cover art jsons from CAA server for each album in search
         results.
         """
+        if cell.fetched:
+            return
+        if not cell.is_visible():
+            return
         cell.fetched = True
         caa_path = "/release/%s" % cell.release["musicbrainz_albumid"]
         cell.fetch_task = self.tagger.webservice.download(
@@ -796,7 +807,8 @@ class AlbumSearchDialog(SearchDialog):
             self.set_table_item(row, 'language', release, "~releaselanguage")
             self.set_table_item(row, 'type',     release, "releasetype")
             self.set_table_item(row, 'status',   release, "releasestatus")
-            self.cover_cells.append(CoverCell(self, release, row, 'cover'))
+            self.cover_cells.append(CoverCell(self, release, row, 'cover',
+                                              self.fetch_coverart))
 
     def accept_event(self, arg):
         self.load_selection(arg)
