@@ -182,7 +182,6 @@ class FLACTest(FormatsTest):
     supports_ratings = True
     tags = {
         'album': 'Foo Bar',
-        'album': '1',
         'title': 'Foo',
         'artist': 'Foo',
         'albumartist': 'Foo',
@@ -250,7 +249,6 @@ class WMATest(FormatsTest):
     supports_ratings = True
     tags = {
         'album': 'Foo Bar',
-        'album': '1',
         'title': 'Foo',
         'artist': 'Foo',
         'albumartist': 'Foo',
@@ -431,7 +429,6 @@ class MP3Test(ID3Test):
     supports_ratings = True
     tags = {
         'album': 'Foo Bar',
-        'album': '1',
         'title': 'Foo',
         'artist': 'Foo',
         'albumartist': 'Foo',
@@ -499,7 +496,6 @@ class TTATest(ID3Test):
     supports_ratings = True
     tags = {
         'album': 'Foo Bar',
-        'album': '1',
         'title': 'Foo',
         'artist': 'Foo',
         'albumartist': 'Foo',
@@ -568,7 +564,6 @@ if picard.formats.AiffFile:
         supports_ratings = False
         tags = {
             'album': 'Foo Bar',
-            'album': '1',
             'title': 'Foo',
             'artist': 'Foo',
             'albumartist': 'Foo',
@@ -636,7 +631,6 @@ class OggVorbisTest(FormatsTest):
     supports_ratings = True
     tags = {
         'album': 'Foo Bar',
-        'album': '1',
         'title': 'Foo',
         'artist': 'Foo',
         'albumartist': 'Foo',
@@ -704,7 +698,6 @@ class MP4Test(FormatsTest):
     supports_ratings = False
     tags = {
         'album': 'Foo Bar',
-        'album': '1',
         'title': 'Foo',
         'artist': 'Foo',
         'albumartist': 'Foo',
@@ -773,7 +766,6 @@ class WavPackTest(FormatsTest):
     supports_ratings = False
     tags = {
         'album': 'Foo Bar',
-        'album': '1',
         'title': 'Foo',
         'artist': 'Foo',
         'albumartist': 'Foo',
@@ -841,7 +833,6 @@ class MusepackSV7Test(FormatsTest):
     supports_ratings = False
     tags = {
         'album': 'Foo Bar',
-        'album': '1',
         'title': 'Foo',
         'artist': 'Foo',
         'albumartist': 'Foo',
@@ -909,7 +900,6 @@ class MusepackSV8Test(FormatsTest):
     supports_ratings = False
     tags = {
         'album': 'Foo Bar',
-        'album': '1',
         'title': 'Foo',
         'artist': 'Foo',
         'albumartist': 'Foo',
