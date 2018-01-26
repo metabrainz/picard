@@ -31,7 +31,7 @@ class SortableCheckboxListWidget(QtWidgets.QWidget):
     changed = pyqtSignal(list)
 
     def __init__(self, parent=None):
-        super(SortableCheckboxListWidget, self).__init__(parent)
+        super().__init__(parent)
         layout = QtWidgets.QGridLayout()
         layout.setHorizontalSpacing(5)
         layout.setVerticalSpacing(2)

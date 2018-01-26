@@ -44,7 +44,7 @@ class MetadataOptionsPage(OptionsPage):
     ]
 
     def __init__(self, parent=None):
-        super(MetadataOptionsPage, self).__init__(parent)
+        super().__init__(parent)
         self.ui = Ui_MetadataOptionsPage()
         self.ui.setupUi(self)
         self.ui.va_name_default.clicked.connect(self.set_va_name_default)

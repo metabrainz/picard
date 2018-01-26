@@ -48,7 +48,7 @@ class GeneralOptionsPage(OptionsPage):
     ]
 
     def __init__(self, parent=None):
-        super(GeneralOptionsPage, self).__init__(parent)
+        super().__init__(parent)
         self.ui = Ui_GeneralOptionsPage()
         self.ui.setupUi(self)
         self.ui.server_host.addItems(MUSICBRAINZ_SERVERS)
@@ -90,7 +90,7 @@ class GeneralOptionsPage(OptionsPage):
                 authorization_code, scopes, self.on_authorization_finished)
 
     def restore_defaults(self):
-        super(GeneralOptionsPage, self).restore_defaults()
+        super().restore_defaults()
         self.logout()
 
     def on_authorization_finished(self, successful):

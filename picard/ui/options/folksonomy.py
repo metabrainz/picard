@@ -40,7 +40,7 @@ class FolksonomyOptionsPage(OptionsPage):
     ]
 
     def __init__(self, parent=None):
-        super(FolksonomyOptionsPage, self).__init__(parent)
+        super().__init__(parent)
         self.ui = Ui_FolksonomyOptionsPage()
         self.ui.setupUi(self)
 

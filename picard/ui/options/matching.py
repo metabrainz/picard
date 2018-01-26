@@ -39,7 +39,7 @@ class MatchingOptionsPage(OptionsPage):
     _release_type_sliders = {}
 
     def __init__(self, parent=None):
-        super(MatchingOptionsPage, self).__init__(parent)
+        super().__init__(parent)
         self.ui = Ui_MatchingOptionsPage()
         self.ui.setupUi(self)
 

@@ -38,7 +38,7 @@ class RatingsOptionsPage(OptionsPage):
     ]
 
     def __init__(self, parent=None):
-        super(RatingsOptionsPage, self).__init__(parent)
+        super().__init__(parent)
         self.ui = Ui_RatingsOptionsPage()
         self.ui.setupUi(self)
 

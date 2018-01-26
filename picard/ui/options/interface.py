@@ -119,7 +119,7 @@ class InterfaceOptionsPage(OptionsPage):
     ]
 
     def __init__(self, parent=None):
-        super(InterfaceOptionsPage, self).__init__(parent)
+        super().__init__(parent)
         self.ui = Ui_InterfaceOptionsPage()
         self.ui.setupUi(self)
         self.ui.ui_language.addItem(_('System default'), '')
@@ -189,7 +189,7 @@ class InterfaceOptionsPage(OptionsPage):
         self.update_layout_config()
 
     def restore_defaults(self):
-        super(InterfaceOptionsPage, self).restore_defaults()
+        super().restore_defaults()
         self.update_buttons()
 
     def starting_directory_browse(self):
@@ -278,13 +278,13 @@ class InterfaceOptionsPage(OptionsPage):
 
 class ToolbarListItem(QtWidgets.QListWidgetItem):
     def __init__(self, action_name, *args, **kwargs):
-        super(ToolbarListItem, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.action_name = action_name
 
 
 class AddActionDialog(QtWidgets.QDialog):
     def __init__(self, action_list, *args, **kwargs):
-        super(AddActionDialog, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
         layout = QtWidgets.QVBoxLayout(self)
 

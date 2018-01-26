@@ -45,7 +45,7 @@ class CAATypesSelectorDialog(QtWidgets.QDialog):
     def __init__(self, parent=None, types=None):
         if types is None:
             types = []
-        super(CAATypesSelectorDialog, self).__init__(parent)
+        super().__init__(parent)
 
         self.setWindowTitle(_("Cover art types"))
         self._items = {}
@@ -143,7 +143,7 @@ class ProviderOptionsCaa(ProviderOptions):
     _options_ui = Ui_CaaOptions
 
     def __init__(self, parent=None):
-        super(ProviderOptionsCaa, self).__init__(parent)
+        super().__init__(parent)
         self.ui.restrict_images_types.clicked.connect(self.update_caa_types)
         self.ui.select_caa_types.clicked.connect(self.select_caa_types)
 
@@ -251,7 +251,7 @@ class CoverArtProviderCaa(CoverArtProvider):
 
     def enabled(self):
         """Check if CAA artwork has to be downloaded"""
-        if not super(CoverArtProviderCaa, self).enabled() or \
+        if not super().enabled() or \
                 self.coverart.front_image_found:
             return False
         if self.restrict_types and not self.len_caa_types:

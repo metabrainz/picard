@@ -37,7 +37,7 @@ class CoverArtProviderWhitelist(CoverArtProvider):
     TITLE = N_('Whitelist')
 
     def enabled(self):
-        return (super(CoverArtProviderWhitelist, self).enabled()
+        return (super().enabled()
                 and not self.coverart.front_image_found)
 
     def queue_images(self):

@@ -39,7 +39,7 @@ class PluginTreeWidgetItem(HashableTreeWidgetItem):
 
     def __lt__(self, other):
         if (not isinstance(other, PluginTreeWidgetItem)):
-            return super(PluginTreeWidgetItem, self).__lt__(other)
+            return super().__lt__(other)
 
         tree = self.treeWidget()
         if not tree:
@@ -50,7 +50,7 @@ class PluginTreeWidgetItem(HashableTreeWidgetItem):
         return self.sortData(column) < other.sortData(column)
 
     def __init__(self, *args):
-        super(PluginTreeWidgetItem, self).__init__(*args)
+        super().__init__(*args)
         self._sortData = {}
 
     def sortData(self, column):
@@ -78,7 +78,7 @@ class PluginsOptionsPage(OptionsPage):
     ]
 
     def __init__(self, parent=None):
-        super(PluginsOptionsPage, self).__init__(parent)
+        super().__init__(parent)
         self.ui = Ui_PluginsOptionsPage()
         self.ui.setupUi(self)
         self.items = {}
@@ -168,7 +168,7 @@ class PluginsOptionsPage(OptionsPage):
         # Remove previous entries
         self._user_interaction(False)
         self._remove_all()
-        super(PluginsOptionsPage, self).restore_defaults()
+        super().restore_defaults()
 
     def load(self):
         self._populate()

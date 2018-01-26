@@ -48,7 +48,7 @@ class TagsOptionsPage(OptionsPage):
     ]
 
     def __init__(self, parent=None):
-        super(TagsOptionsPage, self).__init__(parent)
+        super().__init__(parent)
         self.ui = Ui_TagsOptionsPage()
         self.ui.setupUi(self)
         self.ui.write_id3v23.clicked.connect(self.update_encodings)

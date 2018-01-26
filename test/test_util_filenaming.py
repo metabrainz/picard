@@ -16,7 +16,7 @@ class ShortFilenameTest(unittest.TestCase):
             self.max_len = 255
         else:
             self.max_len = os.statvfs("/").f_namemax
-        super(ShortFilenameTest, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     @unittest.skipUnless(sys.platform in ("win32", "darwin"), "windows / os x test")
     def test_bmp_unicode_on_unicode_fs(self):

@@ -46,7 +46,7 @@ class CDLookupOptionsPage(OptionsPage):
     ]
 
     def __init__(self, parent=None):
-        super(CDLookupOptionsPage, self).__init__(parent)
+        super().__init__(parent)
         self.ui = Ui_CDLookupOptionsPage()
         self.ui.setupUi(self)
         if AUTO_DETECT_DRIVES:

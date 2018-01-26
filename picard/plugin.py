@@ -130,7 +130,7 @@ class ExtensionPoint(object):
 class PluginShared(object):
 
     def __init__(self):
-        super(PluginShared, self).__init__()
+        super().__init__()
         self.new_version = ""
         self.enabled = False
         self.can_be_updated = False
@@ -141,7 +141,7 @@ class PluginShared(object):
 class PluginWrapper(PluginShared):
 
     def __init__(self, module, plugindir, file=None, manifest_data=None):
-        super(PluginWrapper, self).__init__()
+        super().__init__()
         self.module = module
         self.compatible = False
         self.dir = plugindir
@@ -221,7 +221,7 @@ class PluginData(PluginShared):
     """Used to store plugin data from JSON API"""
     def __init__(self, d, module_name):
         self.__dict__ = d
-        super(PluginData, self).__init__()
+        super().__init__()
         self.module_name = module_name
 
     def __getattribute__(self, name):

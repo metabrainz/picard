@@ -573,7 +573,7 @@ class MP3File(ID3File):
         return mutagen.mp3.MP3(filename, ID3=compatid3.CompatID3)
 
     def _info(self, metadata, file):
-        super(MP3File, self)._info(metadata, file)
+        super()._info(metadata, file)
         id3version = ''
         if file.tags is not None and file.info.layer == 3:
             id3version = ' - ID3v%d.%d' % (file.tags.version[0], file.tags.version[1])
@@ -591,7 +591,7 @@ class TrueAudioFile(ID3File):
         return mutagen.trueaudio.TrueAudio(filename, ID3=compatid3.CompatID3)
 
     def _info(self, metadata, file):
-        super(TrueAudioFile, self)._info(metadata, file)
+        super()._info(metadata, file)
         metadata['~format'] = self.NAME
 
 
@@ -622,7 +622,7 @@ if mutagen.aiff:
                 tags.save(filename, v2_version=4)
 
         def _info(self, metadata, file):
-            super(AiffFile, self)._info(metadata, file)
+            super()._info(metadata, file)
             metadata['~format'] = self.NAME
 else:
     AiffFile = None
