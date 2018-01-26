@@ -479,6 +479,7 @@ class WebService(QtCore.QObject):
                      or error == 403
                     )
                ):
+                slow_down = True
                 retries = request.mark_for_retry()
                 log.debug("Retrying %s (#%d)", url, retries)
                 self.add_task(partial(self._start_request, request), request)
@@ -486,7 +487,8 @@ class WebService(QtCore.QObject):
             elif handler is not None:
                 handler(reply.readAll(), reply, error)
 
-            slow_down = True
+            slow_down = (slow_down or code >= 500)
+
         else:
             redirect = reply.attribute(QtNetwork.QNetworkRequest.RedirectionTargetAttribute)
             fromCache = reply.attribute(QtNetwork.QNetworkRequest.SourceIsFromCacheAttribute)
