@@ -61,7 +61,7 @@ class CompatID3(ID3):
             known_frames["XDOR"] = XDOR
             known_frames["XSOP"] = XSOP
             kwargs["known_frames"] = known_frames
-        super(CompatID3, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     def update_to_v23(self):
         # leave TSOP, TSOA and TSOT even though they are officially defined
@@ -69,6 +69,6 @@ class CompatID3(ID3):
         frames = []
         for key in ["TSOP", "TSOA", "TSOT", "TSST"]:
             frames.extend(self.getall(key))
-        super(CompatID3, self).update_to_v23()
+        super().update_to_v23()
         for frame in frames:
             self.add(frame)

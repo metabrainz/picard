@@ -51,7 +51,7 @@ class CoverOptionsPage(OptionsPage):
     ]
 
     def __init__(self, parent=None):
-        super(CoverOptionsPage, self).__init__(parent)
+        super().__init__(parent)
         self.ui = Ui_CoverOptionsPage()
         self.ui.setupUi(self)
         self.ui.save_images_to_files.clicked.connect(self.update_filename)
@@ -79,7 +79,7 @@ class CoverOptionsPage(OptionsPage):
     def restore_defaults(self):
         # Remove previous entries
         self.provider_list_widget.clear()
-        super(CoverOptionsPage, self).restore_defaults()
+        super().restore_defaults()
 
     def load(self):
         self.ui.save_images_to_tags.setChecked(config.setting["save_images_to_tags"])

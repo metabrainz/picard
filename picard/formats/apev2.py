@@ -216,7 +216,7 @@ class MusepackFile(APEv2File):
     _File = mutagen.musepack.Musepack
 
     def _info(self, metadata, file):
-        super(MusepackFile, self)._info(metadata, file)
+        super()._info(metadata, file)
         metadata['~format'] = "Musepack, SV%d" % file.info.version
 
 
@@ -228,7 +228,7 @@ class WavPackFile(APEv2File):
     _File = mutagen.wavpack.WavPack
 
     def _info(self, metadata, file):
-        super(WavPackFile, self)._info(metadata, file)
+        super()._info(metadata, file)
         metadata['~format'] = self.NAME
 
     def _save_and_rename(self, old_filename, metadata):
@@ -248,7 +248,7 @@ class OptimFROGFile(APEv2File):
     _File = mutagen.optimfrog.OptimFROG
 
     def _info(self, metadata, file):
-        super(OptimFROGFile, self)._info(metadata, file)
+        super()._info(metadata, file)
         if file.filename.lower().endswith(".ofs"):
             metadata['~format'] = "OptimFROG DualStream Audio"
         else:
@@ -263,7 +263,7 @@ class MonkeysAudioFile(APEv2File):
     _File = mutagen.monkeysaudio.MonkeysAudio
 
     def _info(self, metadata, file):
-        super(MonkeysAudioFile, self)._info(metadata, file)
+        super()._info(metadata, file)
         metadata['~format'] = self.NAME
 
 
@@ -275,5 +275,5 @@ class TAKFile(APEv2File):
     _File = tak.TAK
 
     def _info(self, metadata, file):
-        super(TAKFile, self)._info(metadata, file)
+        super()._info(metadata, file)
         metadata['~format'] = self.NAME

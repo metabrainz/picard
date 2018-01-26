@@ -97,7 +97,7 @@ class ActiveLabel(QtWidgets.QLabel):
 class CoverArtThumbnail(ActiveLabel):
 
     def __init__(self, active=False, drops=False, pixmap_cache=None, *args, **kwargs):
-        super(CoverArtThumbnail, self).__init__(active, drops, *args, **kwargs)
+        super().__init__(active, drops, *args, **kwargs)
         self.data = None
         self.has_common_images = None
         self.shadow = QtGui.QPixmap(":/images/CoverArtShadow.png")
@@ -329,7 +329,7 @@ class CoverArtBox(QtWidgets.QGroupBox):
 
     def show(self):
         self.update_display(True)
-        super(CoverArtBox, self).show()
+        super().show()
 
     def set_metadata(self, metadata, orig_metadata, item):
         if not metadata or not metadata.images:

@@ -96,7 +96,7 @@ class ReleasesOptionsPage(OptionsPage):
     ]
 
     def __init__(self, parent=None):
-        super(ReleasesOptionsPage, self).__init__(parent)
+        super().__init__(parent)
         self.ui = Ui_ReleasesOptionsPage()
         self.ui.setupUi(self)
 
@@ -143,7 +143,7 @@ class ReleasesOptionsPage(OptionsPage):
         self.ui.preferred_format_list.clear()
         self.ui.country_list.clear()
         self.ui.format_list.clear()
-        super(ReleasesOptionsPage, self).restore_defaults()
+        super().restore_defaults()
 
     def load(self):
         scores = dict(config.setting["release_type_scores"])

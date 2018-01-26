@@ -65,7 +65,7 @@ class RenamingOptionsPage(OptionsPage):
     ]
 
     def __init__(self, parent=None):
-        super(RenamingOptionsPage, self).__init__(parent)
+        super().__init__(parent)
         self.ui = Ui_RenamingOptionsPage()
         self.ui.setupUi(self)
 

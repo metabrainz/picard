@@ -41,7 +41,7 @@ class ProviderOptionsLocal(ProviderOptions):
     _options_ui = Ui_LocalOptions
 
     def __init__(self, parent=None):
-        super(ProviderOptionsLocal, self).__init__(parent)
+        super().__init__(parent)
         self.init_regex_checker(self.ui.local_cover_regex_edit, self.ui.local_cover_regex_error)
         self.ui.local_cover_regex_default.clicked.connect(self.set_local_cover_regex_default)
 

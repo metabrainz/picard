@@ -38,14 +38,14 @@ class LRUCache(dict):
     Traceback (most recent call last):
       File "<stdin>", line 1, in <module>
       File "lrucache.py", line 48, in __getitem__
-        return super(LRUCache, self).__getitem__(key)
+        return super().__getitem__(key)
     KeyError: 'item2'
     >>> cache['item5'] = 'This will push item3 out of the cache'
     >>> cache['item3']
     Traceback (most recent call last):
       File "<stdin>", line 1, in <module>
       File "lrucache.py", line 48, in __getitem__
-        return super(LRUCache, self).__getitem__(key)
+        return super().__getitem__(key)
     KeyError: 'item3'
     >>> cache['item1']
     'some value'
@@ -59,21 +59,21 @@ class LRUCache(dict):
         if key in self:
             self._ordered_keys.remove(key)
             self._ordered_keys.insert(0, key)
-        return super(LRUCache, self).__getitem__(key)
+        return super().__getitem__(key)
 
     def __setitem__(self, key, value):
         if key in self:
             self._ordered_keys.remove(key)
         self._ordered_keys.insert(0, key)
 
-        r = super(LRUCache, self).__setitem__(key, value)
+        r = super().__setitem__(key, value)
 
         if len(self) > self._max_size:
             item = self._ordered_keys.pop()
-            super(LRUCache, self).__delitem__(item)
+            super().__delitem__(item)
 
         return r
 
     def __delitem__(self, key):
         self._ordered_keys.remove(key)
-        super(LRUCache, self).__delitem__(key)
+        super().__delitem__(key)

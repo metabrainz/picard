@@ -58,7 +58,7 @@ class Metadata(dict):
     multi_valued_joiner = MULTI_VALUED_JOINER
 
     def __init__(self):
-        super(Metadata, self).__init__()
+        super().__init__()
         self.images = ImageList()
         self.deleted_tags = set()
         self.length = 0

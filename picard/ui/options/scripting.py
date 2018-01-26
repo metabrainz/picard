@@ -109,7 +109,7 @@ class AdvancedScriptItem(QtWidgets.QWidget):
     _BUTTON_OTHER = 4
 
     def __init__(self, name=None, state=True, parent=None):
-        super(AdvancedScriptItem, self).__init__(parent)
+        super().__init__(parent)
         layout = QtWidgets.QGridLayout()
         layout.setHorizontalSpacing(5)
         layout.setVerticalSpacing(2)
@@ -216,7 +216,7 @@ class ScriptingOptionsPage(OptionsPage):
     ]
 
     def __init__(self, parent=None):
-        super(ScriptingOptionsPage, self).__init__(parent)
+        super().__init__(parent)
         self.ui = Ui_ScriptingOptionsPage()
         self.ui.setupUi(self)
         self.highlighter = TaggerScriptSyntaxHighlighter(self.ui.tagger_script.document())
@@ -382,7 +382,7 @@ class ScriptingOptionsPage(OptionsPage):
         self.ui.script_list.clear()
         self.ui.script_name.setText("")
         self.ui.tagger_script.setText("")
-        super(ScriptingOptionsPage, self).restore_defaults()
+        super().restore_defaults()
 
     def load(self):
         self.ui.enable_tagger_scripts.setChecked(config.setting["enable_tagger_scripts"])

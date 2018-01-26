@@ -101,7 +101,7 @@ class MultiDirsSelectDialog(QtWidgets.QFileDialog):
     Depending on the platform, dialog may fallback on non-native.
     """
     def __init__(self, *args):
-        super(MultiDirsSelectDialog, self).__init__(*args)
+        super().__init__(*args)
         self.setFileMode(self.Directory)
         self.setOption(self.ShowDirsOnly)
         if sys.platform in ["darwin", "win32"]:

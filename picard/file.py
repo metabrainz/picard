@@ -76,7 +76,7 @@ class File(QtCore.QObject, Item):
     }
 
     def __init__(self, filename):
-        super(File, self).__init__()
+        super().__init__()
         self.filename = filename
         self.base_filename = os.path.basename(filename)
         self._state = File.UNDEFINED

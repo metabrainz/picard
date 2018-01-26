@@ -42,7 +42,7 @@ class FingerprintingOptionsPage(OptionsPage):
     ]
 
     def __init__(self, parent=None):
-        super(FingerprintingOptionsPage, self).__init__(parent)
+        super().__init__(parent)
         self._fpcalc_valid = True
         self.ui = Ui_FingerprintingOptionsPage()
         self.ui.setupUi(self)
