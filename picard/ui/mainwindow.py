@@ -37,9 +37,8 @@ from picard.ui.infodialog import FileInfoDialog, AlbumInfoDialog, TrackInfoDialo
 from picard.ui.infostatus import InfoStatus
 from picard.ui.passworddialog import PasswordDialog, ProxyDialog
 from picard.ui.logview import LogView, HistoryView
-from picard.ui.searchdialog import (
-    TrackSearchDialog,
-    AlbumSearchDialog)
+from picard.ui.searchdialog.track import TrackSearchDialog
+from picard.ui.searchdialog.album import AlbumSearchDialog
 from picard.ui.util import (
     find_starting_directory,
     ButtonLineEdit,

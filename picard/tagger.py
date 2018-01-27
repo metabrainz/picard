@@ -83,11 +83,10 @@ from picard.util import (
 )
 from picard.webservice import WebService
 from picard.webservice.api_helpers import MBAPIHelper, AcoustIdAPIHelper
-from picard.ui.searchdialog import (
-    TrackSearchDialog,
-    AlbumSearchDialog,
-    ArtistSearchDialog
-)
+from picard.ui.searchdialog.artist import ArtistSearchDialog
+from picard.ui.searchdialog.track import TrackSearchDialog
+from picard.ui.searchdialog.album import AlbumSearchDialog
+
 
 
 class Tagger(QtWidgets.QApplication):
