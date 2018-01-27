@@ -834,7 +834,7 @@ class AlbumSearchDialog(SearchDialog):
             self.set_table_item(row, 'status',   release, "releasestatus")
             self.set_table_item(row, 'score',    release, "score", conv=int)
             self.cover_cells.append(CoverCell(self, release, row, 'cover',
-                                              self.fetch_coverart))
+                                              on_show=self.fetch_coverart))
         self.show_table(sort_column='score')
 
     def accept_event(self, arg):
