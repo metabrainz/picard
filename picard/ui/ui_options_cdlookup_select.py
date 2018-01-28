@@ -3,7 +3,9 @@
 # Automatically generated - don't edit.
 # Use `python setup.py build_ui` to update it.
 
-from PyQt5 import QtCore, QtWidgets
+from PyQt5 import (QtCore,
+                   QtWidgets)
+
 
 class Ui_CDLookupOptionsPage(object):
     def setupUi(self, CDLookupOptionsPage):
@@ -29,11 +31,13 @@ class Ui_CDLookupOptionsPage(object):
         self.cd_lookup_device = QtWidgets.QComboBox(self.rename_files)
         self.cd_lookup_device.setObjectName("cd_lookup_device")
         self.hboxlayout.addWidget(self.cd_lookup_device)
-        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding,
+                                           QtWidgets.QSizePolicy.Minimum)
         self.hboxlayout.addItem(spacerItem)
         self.gridlayout.addLayout(self.hboxlayout, 1, 0, 1, 1)
         self.vboxlayout.addWidget(self.rename_files)
-        spacerItem1 = QtWidgets.QSpacerItem(161, 81, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        spacerItem1 = QtWidgets.QSpacerItem(161, 81, QtWidgets.QSizePolicy.Minimum,
+                                            QtWidgets.QSizePolicy.Expanding)
         self.vboxlayout.addItem(spacerItem1)
         self.cd_lookup_.setBuddy(self.cd_lookup_device)
 
@@ -44,4 +48,3 @@ class Ui_CDLookupOptionsPage(object):
         _translate = QtCore.QCoreApplication.translate
         self.rename_files.setTitle(_("CD Lookup"))
         self.cd_lookup_.setText(_("Default CD-ROM drive to use for lookups:"))
-

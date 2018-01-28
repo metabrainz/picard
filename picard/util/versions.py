@@ -20,7 +20,8 @@
 
 from collections import OrderedDict
 
-from PyQt5.QtCore import PYQT_VERSION_STR as pyqt_version, QT_VERSION_STR
+from PyQt5.QtCore import (PYQT_VERSION_STR as pyqt_version,
+                          QT_VERSION_STR)
 from mutagen import version_string as mutagen_version
 
 from picard import PICARD_FANCY_VERSION_STR
@@ -37,12 +38,12 @@ _versions = OrderedDict([
 ])
 
 _names = {
-    "version": "Picard",
-    "pyqt-version": "PyQt",
-    "qt-version": "Qt",
+    "version":         "Picard",
+    "pyqt-version":    "PyQt",
+    "qt-version":      "Qt",
     "mutagen-version": "Mutagen",
-    "discid-version": "Discid",
-    "astrcmp": "astrcmp",
+    "discid-version":  "Discid",
+    "astrcmp":         "astrcmp",
 }
 
 
@@ -60,7 +61,7 @@ def version_name(key):
 
 def as_dict(i18n=False):
     return OrderedDict([(key, _value_as_text(value, i18n)) for key,
-                        value in
+                                                               value in
                         _versions.items()])
 
 

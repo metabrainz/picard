@@ -16,7 +16,9 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5 import (QtCore,
+                   QtGui,
+                   QtWidgets)
 
 from picard.ui.ui_infostatus import Ui_InfoStatus
 from picard.util import icontheme

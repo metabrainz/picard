@@ -3,7 +3,9 @@
 # Automatically generated - don't edit.
 # Use `python setup.py build_ui` to update it.
 
-from PyQt5 import QtCore, QtWidgets
+from PyQt5 import (QtCore,
+                   QtWidgets)
+
 
 class Ui_MetadataOptionsPage(object):
     def setupUi(self, MetadataOptionsPage):
@@ -74,7 +76,8 @@ class Ui_MetadataOptionsPage(object):
         self.va_name.setObjectName("va_name")
         self.gridlayout.addWidget(self.va_name, 1, 0, 1, 1)
         self.verticalLayout.addWidget(self.custom_fields_groupbox)
-        spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.MinimumExpanding)
+        spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum,
+                                           QtWidgets.QSizePolicy.MinimumExpanding)
         self.verticalLayout.addItem(spacerItem)
         self.label_6.setBuddy(self.va_name_default)
         self.label_7.setBuddy(self.nat_name_default)
@@ -106,4 +109,3 @@ class Ui_MetadataOptionsPage(object):
         self.label_7.setText(_("Non-album tracks:"))
         self.nat_name_default.setText(_("Default"))
         self.va_name_default.setText(_("Default"))
-

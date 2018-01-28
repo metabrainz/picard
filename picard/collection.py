@@ -21,7 +21,8 @@ from functools import partial
 
 from PyQt5 import QtCore
 
-from picard import config, log
+from picard import (config,
+                    log)
 
 user_collections = {}
 
@@ -43,14 +44,14 @@ class Collection(QtCore.QObject):
         if ids:
             self.pending.update(ids)
             self.tagger.mb_api.put_to_collection(self.id, list(ids),
-                partial(self._add_finished, ids, callback))
+                                                 partial(self._add_finished, ids, callback))
 
     def remove_releases(self, ids, callback):
         ids = ids - self.pending
         if ids:
             self.pending.update(ids)
             self.tagger.mb_api.delete_from_collection(self.id, list(ids),
-                partial(self._remove_finished, ids, callback))
+                                                      partial(self._remove_finished, ids, callback))
 
     def _add_finished(self, ids, callback, document, reply, error):
         self.pending.difference_update(ids)
@@ -61,16 +62,16 @@ class Collection(QtCore.QObject):
             callback()
             mparms = {
                 'count': count,
-                'name': self.name
+                'name':  self.name
             }
             log.debug('Added %(count)i releases to collection "%(name)s"' % mparms)
             self.tagger.window.set_statusbar_message(
-                ngettext('Added %(count)i release to collection "%(name)s"',
-                          'Added %(count)i releases to collection "%(name)s"',
-                          count),
-                mparms,
-                translate=None,
-                echo=None
+                    ngettext('Added %(count)i release to collection "%(name)s"',
+                             'Added %(count)i releases to collection "%(name)s"',
+                             count),
+                    mparms,
+                    translate=None,
+                    echo=None
             )
 
     def _remove_finished(self, ids, callback, document, reply, error):
@@ -82,17 +83,17 @@ class Collection(QtCore.QObject):
             callback()
             mparms = {
                 'count': count,
-                'name': self.name
+                'name':  self.name
             }
             log.debug('Removed %(count)i releases from collection "%(name)s"' %
                       mparms)
             self.tagger.window.set_statusbar_message(
-                ngettext('Removed %(count)i release from collection "%(name)s"',
-                          'Removed %(count)i releases from collection "%(name)s"',
-                          count),
-                mparms,
-                translate=None,
-                echo=None
+                    ngettext('Removed %(count)i release from collection "%(name)s"',
+                             'Removed %(count)i releases from collection "%(name)s"',
+                             count),
+                    mparms,
+                    translate=None,
+                    echo=None
             )
 
 
@@ -102,9 +103,9 @@ def load_user_collections(callback=None):
     def request_finished(document, reply, error):
         if error:
             tagger.window.set_statusbar_message(
-                N_("Error loading collections: %(error)s"),
-                {'error': reply.errorString()},
-                echo=log.error
+                    N_("Error loading collections: %(error)s"),
+                    {'error': reply.errorString()},
+                    echo=log.error
             )
             return
         if document and "collections" in document:

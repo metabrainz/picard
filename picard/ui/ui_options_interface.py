@@ -3,7 +3,9 @@
 # Automatically generated - don't edit.
 # Use `python setup.py build_ui` to update it.
 
-from PyQt5 import QtCore, QtWidgets
+from PyQt5 import (QtCore,
+                   QtWidgets)
+
 
 class Ui_InterfaceOptionsPage(object):
     def setupUi(self, InterfaceOptionsPage):
@@ -53,12 +55,14 @@ class Ui_InterfaceOptionsPage(object):
         self.ui_language = QtWidgets.QComboBox(self.groupBox_2)
         self.ui_language.setObjectName("ui_language")
         self.horizontalLayout.addWidget(self.ui_language)
-        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding,
+                                           QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout.addItem(spacerItem)
         self.vboxlayout1.addLayout(self.horizontalLayout)
         self.vboxlayout.addWidget(self.groupBox_2)
         self.customize_toolbar_box = QtWidgets.QGroupBox(InterfaceOptionsPage)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.MinimumExpanding, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.MinimumExpanding,
+                                           QtWidgets.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.customize_toolbar_box.sizePolicy().hasHeightForWidth())
@@ -85,7 +89,8 @@ class Ui_InterfaceOptionsPage(object):
         self.insert_separator_button = QtWidgets.QPushButton(self.edit_button_box)
         self.insert_separator_button.setObjectName("insert_separator_button")
         self.edit_box_layout.addWidget(self.insert_separator_button)
-        spacerItem1 = QtWidgets.QSpacerItem(50, 20, QtWidgets.QSizePolicy.MinimumExpanding, QtWidgets.QSizePolicy.Minimum)
+        spacerItem1 = QtWidgets.QSpacerItem(50, 20, QtWidgets.QSizePolicy.MinimumExpanding,
+                                            QtWidgets.QSizePolicy.Minimum)
         self.edit_box_layout.addItem(spacerItem1)
         self.up_button = QtWidgets.QToolButton(self.edit_button_box)
         self.up_button.setArrowType(QtCore.Qt.UpArrow)
@@ -140,4 +145,3 @@ class Ui_InterfaceOptionsPage(object):
         self.down_button.setText(_("..."))
         self.remove_button.setToolTip(_("Remove button from toolbar"))
         self.remove_button.setText(_("Remove"))
-

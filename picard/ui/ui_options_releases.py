@@ -3,7 +3,9 @@
 # Automatically generated - don't edit.
 # Use `python setup.py build_ui` to update it.
 
-from PyQt5 import QtCore, QtWidgets
+from PyQt5 import (QtCore,
+                   QtWidgets)
+
 
 class Ui_ReleasesOptionsPage(object):
     def setupUi(self, ReleasesOptionsPage):
@@ -32,7 +34,8 @@ class Ui_ReleasesOptionsPage(object):
         self.horizontalLayout.addWidget(self.country_list)
         self.verticalLayout = QtWidgets.QVBoxLayout()
         self.verticalLayout.setObjectName("verticalLayout")
-        spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum,
+                                           QtWidgets.QSizePolicy.Expanding)
         self.verticalLayout.addItem(spacerItem)
         self.add_countries = QtWidgets.QPushButton(self.country_group)
         self.add_countries.setObjectName("add_countries")
@@ -40,7 +43,8 @@ class Ui_ReleasesOptionsPage(object):
         self.remove_countries = QtWidgets.QPushButton(self.country_group)
         self.remove_countries.setObjectName("remove_countries")
         self.verticalLayout.addWidget(self.remove_countries)
-        spacerItem1 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        spacerItem1 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum,
+                                            QtWidgets.QSizePolicy.Expanding)
         self.verticalLayout.addItem(spacerItem1)
         self.horizontalLayout.addLayout(self.verticalLayout)
         self.preferred_country_list = QtWidgets.QListWidget(self.country_group)
@@ -69,7 +73,8 @@ class Ui_ReleasesOptionsPage(object):
         self.horizontalLayout_2.addWidget(self.format_list)
         self.verticalLayout_2 = QtWidgets.QVBoxLayout()
         self.verticalLayout_2.setObjectName("verticalLayout_2")
-        spacerItem2 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        spacerItem2 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum,
+                                            QtWidgets.QSizePolicy.Expanding)
         self.verticalLayout_2.addItem(spacerItem2)
         self.add_formats = QtWidgets.QPushButton(self.format_group)
         self.add_formats.setObjectName("add_formats")
@@ -77,7 +82,8 @@ class Ui_ReleasesOptionsPage(object):
         self.remove_formats = QtWidgets.QPushButton(self.format_group)
         self.remove_formats.setObjectName("remove_formats")
         self.verticalLayout_2.addWidget(self.remove_formats)
-        spacerItem3 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        spacerItem3 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum,
+                                            QtWidgets.QSizePolicy.Expanding)
         self.verticalLayout_2.addItem(spacerItem3)
         self.horizontalLayout_2.addLayout(self.verticalLayout_2)
         self.preferred_format_list = QtWidgets.QListWidget(self.format_group)
@@ -104,4 +110,3 @@ class Ui_ReleasesOptionsPage(object):
         self.format_group.setTitle(_("Preferred release formats"))
         self.add_formats.setText(_(">"))
         self.remove_formats.setText(_("<"))
-

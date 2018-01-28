@@ -33,12 +33,13 @@ from functools import partial
 from PyQt5 import QtCore
 
 import picard.plugins
-from picard import (config,
+from picard import (VersionError,
+                    config,
                     log,
                     version_from_string,
-                    version_to_string,
-                    VersionError)
-from picard.const import USER_PLUGIN_DIR, PLUGINS_API
+                    version_to_string)
+from picard.const import (PLUGINS_API,
+                          USER_PLUGIN_DIR)
 from picard.util import load_json
 
 _suffixes = [s[0] for s in imp.get_suffixes()]
@@ -83,7 +84,7 @@ def load_manifest(archive_path):
 def zip_import(path):
     splitext = os.path.splitext(path)
     if (not os.path.isfile(path)
-        or not splitext[1] == '.zip'):
+            or not splitext[1] == '.zip'):
         return (None, None, None)
     try:
         importer = zipimport.zipimporter(path)
@@ -214,12 +215,12 @@ class PluginWrapper(PluginShared):
 
     @property
     def files_list(self):
-        return self.file[len(self.dir)+1:]
+        return self.file[len(self.dir) + 1:]
 
 
 class PluginData(PluginShared):
-
     """Used to store plugin data from JSON API"""
+
     def __init__(self, d, module_name):
         self.__dict__ = d
         super().__init__()
@@ -238,7 +239,6 @@ class PluginData(PluginShared):
 
 
 class PluginManager(QtCore.QObject):
-
     plugin_installed = QtCore.pyqtSignal(PluginWrapper, bool)
     plugin_updated = QtCore.pyqtSignal(str, bool)
 
@@ -257,9 +257,9 @@ class PluginManager(QtCore.QObject):
         if not os.path.isdir(plugindir):
             log.info("Plugin directory %r doesn't exist", plugindir)
             return
-        # first, handle eventual plugin updates
+        # first, handle eventual plugin updates
         for updatepath in [os.path.join(plugindir, file) for file in
-                     os.listdir(plugindir) if file.endswith('.update')]:
+                           os.listdir(plugindir) if file.endswith('.update')]:
             path = os.path.splitext(updatepath)[0]
             name = is_zip(path)
             if not name:
@@ -308,11 +308,11 @@ class PluginManager(QtCore.QObject):
             for i, p in enumerate(self.plugins):
                 if name == p.module_name:
                     log.warning("Module %r conflict: unregistering previously" \
-                              " loaded %r version %s from %r",
-                              p.module_name,
-                              p.name,
-                              p.version,
-                              p.file)
+                                " loaded %r version %s from %r",
+                                p.module_name,
+                                p.name,
+                                p.version,
+                                p.file)
                     _unregister_module_extensions(name)
                     index = i
                     break
@@ -324,7 +324,7 @@ class PluginManager(QtCore.QObject):
                                    file=module_pathname, manifest_data=manifest_data)
             versions = [version_from_string(v) for v in
                         list(plugin.api_versions)]
-            compatible_versions = list(set(versions) & self._api_versions)
+            compatible_versions = list(set(versions)&self._api_versions)
             if compatible_versions:
                 log.debug("Loading plugin %r version %s, compatible with API: %s",
                           plugin.name,
@@ -355,9 +355,9 @@ class PluginManager(QtCore.QObject):
             dirpath = None
         fileexts = ['.py', '.pyc', '.pyo', '.zip']
         filepaths = [os.path.join(USER_PLUGIN_DIR, f)
-                      for f in os.listdir(USER_PLUGIN_DIR)
-                      if f in [plugin_name + ext for ext in fileexts]
-                    ]
+                     for f in os.listdir(USER_PLUGIN_DIR)
+                     if f in [plugin_name + ext for ext in fileexts]
+                     ]
         return (dirpath, filepaths)
 
     def remove_plugin(self, plugin_name):
@@ -445,21 +445,21 @@ class PluginManager(QtCore.QObject):
 
     def query_available_plugins(self, callback=None):
         self.tagger.webservice.get(
-            PLUGINS_API['host'],
-            PLUGINS_API['port'],
-            PLUGINS_API['endpoint']['plugins'],
-            partial(self._plugins_json_loaded, callback=callback),
-            parse_response_type=None,
-            priority=True,
-            important=True
+                PLUGINS_API['host'],
+                PLUGINS_API['port'],
+                PLUGINS_API['endpoint']['plugins'],
+                partial(self._plugins_json_loaded, callback=callback),
+                parse_response_type=None,
+                priority=True,
+                important=True
         )
 
     def _plugins_json_loaded(self, response, reply, error, callback=None):
         if error:
             self.tagger.window.set_statusbar_message(
-                N_("Error loading plugins list: %(error)s"),
-                {'error': reply.errorString()},
-                echo=log.error
+                    N_("Error loading plugins list: %(error)s"),
+                    {'error': reply.errorString()},
+                    echo=log.error
             )
         else:
             self._available_plugins = [PluginData(data, key) for key, data in
@@ -472,7 +472,6 @@ class PluginManager(QtCore.QObject):
 
 
 class PluginPriority:
-
     """
     Define few priority values for plugin functions execution order
     Those with higher values are executed first
@@ -484,7 +483,6 @@ class PluginPriority:
 
 
 class PluginFunctions:
-
     """
     Store ExtensionPoint in a defaultdict with priority as key
     run() method will execute entries with higher priority value first

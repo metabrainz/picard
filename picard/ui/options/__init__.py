@@ -33,7 +33,6 @@ class OptionsCheckError(Exception):
 
 
 class OptionsPage(QtWidgets.QWidget):
-
     PARENT = None
     SORT_ORDER = 1000
     ACTIVE = True
@@ -67,7 +66,9 @@ class OptionsPage(QtWidgets.QWidget):
             config.setting[key] = old_options[key]
 
     def display_error(self, error):
-        dialog = QtWidgets.QMessageBox(QtWidgets.QMessageBox.Warning, error.title, error.info, QtWidgets.QMessageBox.Ok, self)
+        dialog = QtWidgets.QMessageBox(QtWidgets.QMessageBox.Warning, error.title, error.info,
+                                       QtWidgets.QMessageBox.Ok,
+                                       self)
         dialog.exec_()
 
     def init_regex_checker(self, regex_edit, regex_error):

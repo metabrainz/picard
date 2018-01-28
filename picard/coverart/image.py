@@ -27,16 +27,17 @@ import sys
 import tempfile
 from hashlib import md5
 
-from PyQt5.QtCore import QUrl, QObject, QMutex
+from PyQt5.QtCore import (QMutex,
+                          QObject,
+                          QUrl)
 
-from picard import config, log
+from picard import (config,
+                    log)
 from picard.coverart.utils import translate_caa_type
 from picard.script import ScriptParser
-from picard.util import (
-    encode_filename,
-    replace_win32_incompat,
-    imageinfo
-)
+from picard.util import (encode_filename,
+                         imageinfo,
+                         replace_win32_incompat)
 from picard.util.textencoding import (
     replace_non_ascii,
     unaccent,
@@ -113,7 +114,6 @@ class CoverArtImageIdentificationError(CoverArtImageError):
 
 
 class CoverArtImage:
-
     # Indicate if types are provided by the source, ie. CAA or certain file
     # formats may have types associated with cover art, but some other sources
     # don't provide such information
@@ -250,7 +250,7 @@ class CoverArtImage:
         """
         if self.is_front_image() or not self.types or 'front' in self.types:
             return 'front'
-        # TODO: do something better than randomly using the first in the list
+        # TODO: do something better than randomly using the first in the list
         return self.types[0]
 
     def _make_image_filename(self, filename, dirname, metadata):
@@ -282,7 +282,7 @@ class CoverArtImage:
         if not self.can_be_saved_to_disk:
             return
         if (config.setting["caa_image_type_as_filename"] and
-            not self.is_front_image()):
+                not self.is_front_image()):
             filename = self.maintype
             log.debug("Make cover filename from types: %r -> %r",
                       self.types, filename)
@@ -355,7 +355,6 @@ class CoverArtImage:
 
 
 class CaaCoverArtImage(CoverArtImage):
-
     """Image from Cover Art Archive"""
 
     support_types = True
@@ -368,7 +367,6 @@ class CaaCoverArtImage(CoverArtImage):
 
 
 class CaaThumbnailCoverArtImage(CaaCoverArtImage):
-
     """Used for thumbnails of CaaCoverArtImage objects, together with thumbnail
     property"""
 
@@ -382,7 +380,6 @@ class CaaThumbnailCoverArtImage(CaaCoverArtImage):
 
 
 class TagCoverArtImage(CoverArtImage):
-
     """Image from file tags"""
 
     def __init__(self, file, tag=None, types=None, is_front=None,
@@ -418,7 +415,6 @@ class TagCoverArtImage(CoverArtImage):
 
 
 class CoverArtImageFromFile(CoverArtImage):
-
     sourceprefix = 'LOCAL'
 
     def __init__(self, filepath, types=None, is_front=None,

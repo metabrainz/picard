@@ -3,7 +3,9 @@
 # Automatically generated - don't edit.
 # Use `python setup.py build_ui` to update it.
 
-from PyQt5 import QtCore, QtWidgets
+from PyQt5 import (QtCore,
+                   QtWidgets)
+
 
 class Ui_GeneralOptionsPage(object):
     def setupUi(self, GeneralOptionsPage):
@@ -46,7 +48,8 @@ class Ui_GeneralOptionsPage(object):
         self.login = QtWidgets.QPushButton(self.rename_files_2)
         self.login.setObjectName("login")
         self.gridlayout1.addWidget(self.login, 1, 0, 1, 1)
-        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding,
+                                           QtWidgets.QSizePolicy.Minimum)
         self.gridlayout1.addItem(spacerItem, 1, 2, 1, 1)
         self.logout = QtWidgets.QPushButton(self.rename_files_2)
         self.logout.setObjectName("logout")
@@ -67,7 +70,8 @@ class Ui_GeneralOptionsPage(object):
         self.ignore_file_mbids.setObjectName("ignore_file_mbids")
         self.verticalLayout.addWidget(self.ignore_file_mbids)
         self.vboxlayout.addWidget(self.groupBox_2)
-        spacerItem1 = QtWidgets.QSpacerItem(181, 21, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        spacerItem1 = QtWidgets.QSpacerItem(181, 21, QtWidgets.QSizePolicy.Minimum,
+                                            QtWidgets.QSizePolicy.Expanding)
         self.vboxlayout.addItem(spacerItem1)
 
         self.retranslateUi(GeneralOptionsPage)
@@ -85,4 +89,3 @@ class Ui_GeneralOptionsPage(object):
         self.groupBox_2.setTitle(_("General"))
         self.analyze_new_files.setText(_("Automatically scan all new files"))
         self.ignore_file_mbids.setText(_("Ignore MBIDs when loading new files"))
-

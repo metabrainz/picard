@@ -19,12 +19,11 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from picard import config
-from picard.ui.options import OptionsPage, register_options_page
-from picard.util.cdrom import (
-    get_cdrom_drives,
-    AUTO_DETECT_DRIVES,
-    DEFAULT_DRIVES
-)
+from picard.ui.options import (OptionsPage,
+                               register_options_page)
+from picard.util.cdrom import (AUTO_DETECT_DRIVES,
+                               DEFAULT_DRIVES,
+                               get_cdrom_drives)
 
 if AUTO_DETECT_DRIVES:
     from picard.ui.ui_options_cdlookup_select import Ui_CDLookupOptionsPage
@@ -33,7 +32,6 @@ else:
 
 
 class CDLookupOptionsPage(OptionsPage):
-
     NAME = "cdlookup"
     TITLE = N_("CD Lookup")
     PARENT = None
@@ -56,7 +54,8 @@ class CDLookupOptionsPage(OptionsPage):
     def load(self):
         if AUTO_DETECT_DRIVES:
             try:
-                self.ui.cd_lookup_device.setCurrentIndex(self.drives.index(config.setting["cd_lookup_device"]))
+                self.ui.cd_lookup_device.setCurrentIndex(
+                        self.drives.index(config.setting["cd_lookup_device"]))
             except ValueError:
                 pass
         else:

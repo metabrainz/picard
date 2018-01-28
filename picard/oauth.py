@@ -20,15 +20,18 @@
 import time
 from functools import partial
 
-from PyQt5.QtCore import QUrl, QUrlQuery
+from PyQt5.QtCore import (QUrl,
+                          QUrlQuery)
 from PyQt5.QtNetwork import QNetworkRequest
 
-from picard import config, log
+from picard import (config,
+                    log)
 from picard.const import (
     MUSICBRAINZ_OAUTH_CLIENT_ID,
     MUSICBRAINZ_OAUTH_CLIENT_SECRET,
 )
-from picard.util import build_qurl, load_json
+from picard.util import (build_qurl,
+                         load_json)
 
 
 class OAuthManager(object):
@@ -71,8 +74,8 @@ class OAuthManager(object):
     def get_authorization_url(self, scopes):
         host, port = config.setting['server_host'], config.setting['server_port']
         params = {"response_type": "code", "client_id":
-                  MUSICBRAINZ_OAUTH_CLIENT_ID, "redirect_uri":
-                  "urn:ietf:wg:oauth:2.0:oob", "scope": scopes}
+                                   MUSICBRAINZ_OAUTH_CLIENT_ID, "redirect_uri":
+                                   "urn:ietf:wg:oauth:2.0:oob", "scope": scopes}
         url = build_qurl(host, port, path="/oauth2/authorize",
                          queryargs=params)
         return string_(url.toEncoded())
@@ -105,8 +108,8 @@ class OAuthManager(object):
         url.setQuery(url_query.query(QUrl.FullyEncoded))
         data = string_(url.query())
         self.webservice.post(host, port, path, data,
-                        partial(self.on_refresh_access_token_finished, callback),
-                        parse_response_type=None, mblogin=True, priority=True, important=True)
+                             partial(self.on_refresh_access_token_finished, callback),
+                             parse_response_type=None, mblogin=True, priority=True, important=True)
 
     def on_refresh_access_token_finished(self, callback, data, http, error):
         access_token = None
@@ -138,8 +141,8 @@ class OAuthManager(object):
         url.setQuery(url_query.query(QUrl.FullyEncoded))
         data = string_(url.query())
         self.webservice.post(host, port, path, data,
-                        partial(self.on_exchange_authorization_code_finished, scopes, callback),
-                        parse_response_type=None, mblogin=True, priority=True, important=True)
+                             partial(self.on_exchange_authorization_code_finished, scopes, callback),
+                             parse_response_type=None, mblogin=True, priority=True, important=True)
 
     def on_exchange_authorization_code_finished(self, scopes, callback, data, http, error):
         successful = False
@@ -159,8 +162,8 @@ class OAuthManager(object):
         host, port = config.setting['server_host'], config.setting['server_port']
         path = "/oauth2/userinfo"
         self.webservice.get(host, port, path,
-                        partial(self.on_fetch_username_finished, callback),
-                        parse_response_type=None, mblogin=True, priority=True, important=True)
+                            partial(self.on_fetch_username_finished, callback),
+                            parse_response_type=None, mblogin=True, priority=True, important=True)
 
     def on_fetch_username_finished(self, callback, data, http, error):
         successful = False

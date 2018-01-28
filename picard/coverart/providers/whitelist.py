@@ -29,7 +29,6 @@ from picard.coverart.providers import CoverArtProvider
 
 
 class CoverArtProviderWhitelist(CoverArtProvider):
-
     """Use cover art link and has_cover_art_at MusicBrainz relationships to get
     cover art"""
 

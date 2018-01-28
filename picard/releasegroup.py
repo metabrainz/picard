@@ -24,7 +24,9 @@ from itertools import combinations
 
 from picard import log
 from picard.dataobj import DataObject
-from picard.mbjson import media_formats_from_node, label_info_from_node, country_list_from_node
+from picard.mbjson import (country_list_from_node,
+                           label_info_from_node,
+                           media_formats_from_node)
 from picard.metadata import Metadata
 from picard.util import uniqify
 
@@ -51,12 +53,12 @@ class ReleaseGroup(DataObject):
 
         namekeys = ("tracks", "year", "country", "format", "label", "catnum")
         headings = {
-            "tracks":   N_('Tracks'),
-            "year":     N_('Year'),
-            "country":  N_('Country'),
-            "format":   N_('Format'),
-            "label":    N_('Label'),
-            "catnum":   N_('Cat No'),
+            "tracks":  N_('Tracks'),
+            "year":    N_('Year'),
+            "country": N_('Country'),
+            "format":  N_('Format'),
+            "label":   N_('Label'),
+            "catnum":  N_('Cat No'),
         }
         extrakeys = ("packaging", "barcode", "disambiguation")
 
@@ -75,21 +77,21 @@ class ReleaseGroup(DataObject):
                 if "format" in medium:
                     formats.append(medium['format'])
             release = {
-                "id":      node['id'],
-                "year":    node['date'][:4] if "date" in node else "????",
-                "country": "+".join(countries) if countries
-                    else node.get('country', '') or "??",
-                "format":  media_formats_from_node(node['media']),
-                "label":  ", ".join([' '.join(x.split(' ')[:2]) for x in set(labels)]),
-                "catnum": ", ".join(set(catnums)),
-                "tracks":  "+".join([str(m['track-count']) for m in node['media']]),
-                "barcode": node.get('barcode', '') or _('[no barcode]'),
-                "packaging": node.get('packaging', '') or '??',
-                "disambiguation": node.get('disambiguation', ''),
+                "id":                 node['id'],
+                "year":               node['date'][:4] if "date" in node else "????",
+                "country":            "+".join(countries) if countries
+                                      else node.get('country', '') or "??",
+                "format":             media_formats_from_node(node['media']),
+                "label":              ", ".join([' '.join(x.split(' ')[:2]) for x in set(labels)]),
+                "catnum":             ", ".join(set(catnums)),
+                "tracks":             "+".join([str(m['track-count']) for m in node['media']]),
+                "barcode":            node.get('barcode', '') or _('[no barcode]'),
+                "packaging":          node.get('packaging', '') or '??',
+                "disambiguation":     node.get('disambiguation', ''),
                 "_disambiguate_name": list(),
-                "totaltracks": sum([m['track-count'] for m in node['media']]),
-                "countries": countries,
-                "formats": formats,
+                "totaltracks":        sum([m['track-count'] for m in node['media']]),
+                "countries":          countries,
+                "formats":            formats,
             }
             data.append(release)
 
@@ -113,11 +115,11 @@ class ReleaseGroup(DataObject):
                 dis = " / ".join(filter(None, uniqify(release['_disambiguate_name']))).replace("&", "&&")
                 disname = name if not dis else name + ' / ' + dis
                 version = {
-                    'id': release['id'],
-                    'name': disname,
+                    'id':          release['id'],
+                    'name':        disname,
                     'totaltracks': release['totaltracks'],
-                    'countries': release['countries'],
-                    'formats': release['formats'],
+                    'countries':   release['countries'],
+                    'formats':     release['formats'],
                 }
                 self.versions.append(version)
         self.version_headings = " / ".join(_(headings[k]) for k in namekeys)

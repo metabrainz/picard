@@ -23,19 +23,23 @@ from functools import partial
 
 from PyQt5 import QtCore
 
-from picard import config, log
-from picard.const import VARIOUS_ARTISTS_ID, SILENCE_TRACK_TITLE, DATA_TRACK_TITLE
+from picard import (config,
+                    log)
+from picard.const import (DATA_TRACK_TITLE,
+                          SILENCE_TRACK_TITLE,
+                          VARIOUS_ARTISTS_ID)
 from picard.dataobj import DataObject
 from picard.mbjson import recording_to_metadata
-from picard.metadata import Metadata, run_track_metadata_processors
+from picard.metadata import (Metadata,
+                             run_track_metadata_processors)
 from picard.script import ScriptParser
 from picard.ui.item import Item
 from picard.util.imagelist import update_metadata_images
 from picard.util.textencoding import asciipunct
 
 _TRANSLATE_TAGS = {
-    "hip hop": "Hip-Hop",
-    "synth-pop": "Synthpop",
+    "hip hop":     "Hip-Hop",
+    "synth-pop":   "Synthpop",
     "electronica": "Electronic",
 }
 
@@ -46,7 +50,6 @@ class TrackArtist(DataObject):
 
 
 class Track(DataObject, Item):
-
     metadata_images_changed = QtCore.pyqtSignal()
 
     def __init__(self, track_id, album=None):
@@ -145,9 +148,9 @@ class Track(DataObject, Item):
 
     def ignored_for_completeness(self):
         if (config.setting['completeness_ignore_videos'] and self.is_video()) \
-            or (config.setting['completeness_ignore_pregap'] and self.is_pregap()) \
-            or (config.setting['completeness_ignore_data'] and self.is_data()) \
-            or (config.setting['completeness_ignore_silence'] and self.is_silence()):
+                or (config.setting['completeness_ignore_pregap'] and self.is_pregap()) \
+                or (config.setting['completeness_ignore_data'] and self.is_data()) \
+                or (config.setting['completeness_ignore_silence'] and self.is_silence()):
             return True
         return False
 
@@ -275,10 +278,10 @@ class NonAlbumTrack(Track):
             mblogin = True
             inc += ["user-ratings"]
         self.tagger.mb_api.get_track_by_id(self.id,
-                                          partial(self._recording_request_finished),
-                                          inc, mblogin=mblogin,
-                                          priority=priority,
-                                          refresh=refresh)
+                                           partial(self._recording_request_finished),
+                                           inc, mblogin=mblogin,
+                                           priority=priority,
+                                           refresh=refresh)
 
     def _recording_request_finished(self, recording, http, error):
         if error:

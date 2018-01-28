@@ -21,7 +21,8 @@
 import os
 import sys
 
-from PyQt5 import QtCore, QtWidgets
+from PyQt5 import (QtCore,
+                   QtWidgets)
 
 from picard import config
 from picard.formats import supported_formats
@@ -29,7 +30,6 @@ from picard.util import find_existing_path
 
 
 class FileBrowser(QtWidgets.QTreeView):
-
     options = [
         config.TextOption("persist", "current_browser_path", ""),
         config.BoolOption("persist", "show_hidden_files", False),
@@ -78,7 +78,7 @@ class FileBrowser(QtWidgets.QTreeView):
         header.setVisible(False)
 
     def _set_model_filter(self):
-        model_filter = QtCore.QDir.AllDirs | QtCore.QDir.Files | QtCore.QDir.Drives | QtCore.QDir.NoDotAndDotDot
+        model_filter = QtCore.QDir.AllDirs|QtCore.QDir.Files|QtCore.QDir.Drives|QtCore.QDir.NoDotAndDotDot
         if config.persist["show_hidden_files"]:
             model_filter |= QtCore.QDir.Hidden
         self.model.setFilter(model_filter)
@@ -93,6 +93,7 @@ class FileBrowser(QtWidgets.QTreeView):
             if not self.focused:
                 self._restore_state()
             self.scrollTo(self.currentIndex())
+
         QtCore.QTimer.singleShot(0, scroll)
 
     def mousePressEvent(self, event):

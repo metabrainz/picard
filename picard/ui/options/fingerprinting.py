@@ -19,17 +19,20 @@
 
 import os
 
-from PyQt5 import QtCore, QtWidgets
+from PyQt5 import (QtCore,
+                   QtWidgets)
 
 from picard import config
 from picard.const import FPCALC_NAMES
-from picard.ui.options import OptionsPage, OptionsCheckError, register_options_page
+from picard.ui.options import (OptionsCheckError,
+                               OptionsPage,
+                               register_options_page)
 from picard.ui.ui_options_fingerprinting import Ui_FingerprintingOptionsPage
-from picard.util import webbrowser2, find_executable
+from picard.util import (find_executable,
+                         webbrowser2)
 
 
 class FingerprintingOptionsPage(OptionsPage):
-
     NAME = "fingerprinting"
     TITLE = N_("Fingerprinting")
     PARENT = None
@@ -62,7 +65,8 @@ class FingerprintingOptionsPage(OptionsPage):
             self.ui.disable_fingerprinting.setChecked(True)
         self.ui.acoustid_fpcalc.setText(config.setting["acoustid_fpcalc"])
         self.ui.acoustid_apikey.setText(config.setting["acoustid_apikey"])
-        self.ui.ignore_existing_acoustid_fingerprints.setChecked(config.setting["ignore_existing_acoustid_fingerprints"])
+        self.ui.ignore_existing_acoustid_fingerprints.setChecked(
+                config.setting["ignore_existing_acoustid_fingerprints"])
         self.update_groupboxes()
 
     def save(self):
@@ -72,7 +76,8 @@ class FingerprintingOptionsPage(OptionsPage):
             config.setting["fingerprinting_system"] = ""
         config.setting["acoustid_fpcalc"] = self.ui.acoustid_fpcalc.text()
         config.setting["acoustid_apikey"] = self.ui.acoustid_apikey.text()
-        config.setting["ignore_existing_acoustid_fingerprints"] = self.ui.ignore_existing_acoustid_fingerprints.isChecked()
+        config.setting[
+            "ignore_existing_acoustid_fingerprints"] = self.ui.ignore_existing_acoustid_fingerprints.isChecked()
 
     def update_groupboxes(self):
         if self.ui.use_acoustid.isChecked():
@@ -138,9 +143,11 @@ class FingerprintingOptionsPage(OptionsPage):
 
     def check(self):
         if not self._fpcalc_valid:
-            raise OptionsCheckError(_("Invalid fpcalc executable"), _("Please select a valid fpcalc executable."))
+            raise OptionsCheckError(_("Invalid fpcalc executable"),
+                                    _("Please select a valid fpcalc executable."))
 
     def display_error(self, error):
         pass
+
 
 register_options_page(FingerprintingOptionsPage)

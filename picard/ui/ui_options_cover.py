@@ -3,7 +3,9 @@
 # Automatically generated - don't edit.
 # Use `python setup.py build_ui` to update it.
 
-from PyQt5 import QtCore, QtWidgets
+from PyQt5 import (QtCore,
+                   QtWidgets)
+
 
 class Ui_CoverOptionsPage(object):
     def setupUi(self, CoverOptionsPage):
@@ -47,11 +49,13 @@ class Ui_CoverOptionsPage(object):
         self.ca_providers_layout.setObjectName("ca_providers_layout")
         self.ca_providers_list = QtWidgets.QHBoxLayout()
         self.ca_providers_list.setObjectName("ca_providers_list")
-        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding,
+                                           QtWidgets.QSizePolicy.Minimum)
         self.ca_providers_list.addItem(spacerItem)
         self.ca_providers_layout.addLayout(self.ca_providers_list)
         self.verticalLayout.addWidget(self.ca_providers_groupbox)
-        spacerItem1 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        spacerItem1 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum,
+                                            QtWidgets.QSizePolicy.Expanding)
         self.verticalLayout.addItem(spacerItem1)
 
         self.retranslateUi(CoverOptionsPage)
@@ -70,4 +74,3 @@ class Ui_CoverOptionsPage(object):
         self.label_use_filename.setText(_("Use the following file name for images:"))
         self.save_images_overwrite.setText(_("Overwrite the file if it already exists"))
         self.ca_providers_groupbox.setTitle(_("Cover Art Providers"))
-

@@ -20,6 +20,7 @@
 import mutagen.apev2
 import mutagen.mp3
 import mutagen.trueaudio
+
 try:
     import mutagen.aiff
 except ImportError:
@@ -28,30 +29,32 @@ except ImportError:
 import re
 from collections import defaultdict
 from mutagen import id3
-from picard import config, log
-from picard.coverart.image import TagCoverArtImage, CoverArtImageError
+from picard import (config,
+                    log)
+from picard.coverart.image import (TagCoverArtImage,
+                                   CoverArtImageError)
 from picard.metadata import Metadata
 from picard.file import File
 from picard.formats.mutagenext import compatid3
-from picard.util import encode_filename, sanitize_date
+from picard.util import (encode_filename,
+                         sanitize_date)
 from urllib.parse import urlparse
-
 
 id3.TCMP = compatid3.TCMP
 id3.TSO2 = compatid3.TSO2
 id3.TSOC = compatid3.TSOC
 
 __ID3_IMAGE_TYPE_MAP = {
-    "other": 0,
-    "obi": 0,
-    "tray": 0,
-    "spine": 0,
+    "other":   0,
+    "obi":     0,
+    "tray":    0,
+    "spine":   0,
     "sticker": 0,
-    "front": 3,
-    "back": 4,
+    "front":   3,
+    "back":    4,
     "booklet": 5,
-    "medium": 6,
-    "track": 6,
+    "medium":  6,
+    "track":   6,
 }
 
 __ID3_REVERSE_IMAGE_TYPE_MAP = dict([(v, k) for k, v in __ID3_IMAGE_TYPE_MAP.items()])
@@ -80,15 +83,14 @@ def types_from_id3(id3type):
 
 
 class ID3File(File):
-
     """Generic ID3-based file."""
     _IsMP3 = False
 
     __upgrade = {
-        'XSOP': 'TSOP',
+        'XSOP':                 'TSOP',
         'TXXX:ALBUMARTISTSORT': 'TSO2',
-        'TXXX:COMPOSERSORT': 'TSOC',
-        'TXXX:mood': 'TMOO',
+        'TXXX:COMPOSERSORT':    'TSOC',
+        'TXXX:mood':            'TMOO',
     }
 
     __translate = {
@@ -134,31 +136,31 @@ class ID3File(File):
     __rtranslate = dict([(v, k) for k, v in __translate.items()])
 
     __translate_freetext = {
-        'MusicBrainz Artist Id': 'musicbrainz_artistid',
-        'MusicBrainz Album Id': 'musicbrainz_albumid',
-        'MusicBrainz Album Artist Id': 'musicbrainz_albumartistid',
-        'MusicBrainz Album Type': 'releasetype',
-        'MusicBrainz Album Status': 'releasestatus',
-        'MusicBrainz TRM Id': 'musicbrainz_trmid',
-        'MusicBrainz Release Track Id': 'musicbrainz_trackid',
-        'MusicBrainz Disc Id': 'musicbrainz_discid',
-        'MusicBrainz Work Id': 'musicbrainz_workid',
-        'MusicBrainz Release Group Id': 'musicbrainz_releasegroupid',
-        'MusicBrainz Original Album Id': 'musicbrainz_originalalbumid',
-        'MusicBrainz Original Artist Id': 'musicbrainz_originalartistid',
+        'MusicBrainz Artist Id':             'musicbrainz_artistid',
+        'MusicBrainz Album Id':              'musicbrainz_albumid',
+        'MusicBrainz Album Artist Id':       'musicbrainz_albumartistid',
+        'MusicBrainz Album Type':            'releasetype',
+        'MusicBrainz Album Status':          'releasestatus',
+        'MusicBrainz TRM Id':                'musicbrainz_trmid',
+        'MusicBrainz Release Track Id':      'musicbrainz_trackid',
+        'MusicBrainz Disc Id':               'musicbrainz_discid',
+        'MusicBrainz Work Id':               'musicbrainz_workid',
+        'MusicBrainz Release Group Id':      'musicbrainz_releasegroupid',
+        'MusicBrainz Original Album Id':     'musicbrainz_originalalbumid',
+        'MusicBrainz Original Artist Id':    'musicbrainz_originalartistid',
         'MusicBrainz Album Release Country': 'releasecountry',
-        'MusicIP PUID': 'musicip_puid',
-        'Acoustid Fingerprint': 'acoustid_fingerprint',
-        'Acoustid Id': 'acoustid_id',
-        'SCRIPT': 'script',
-        'LICENSE': 'license',
-        'CATALOGNUMBER': 'catalognumber',
-        'BARCODE': 'barcode',
-        'ASIN': 'asin',
-        'MusicMagic Fingerprint': 'musicip_fingerprint',
-        'Artists': 'artists',
-        'Work': 'work',
-        'Writer': 'writer',
+        'MusicIP PUID':                      'musicip_puid',
+        'Acoustid Fingerprint':              'acoustid_fingerprint',
+        'Acoustid Id':                       'acoustid_id',
+        'SCRIPT':                            'script',
+        'LICENSE':                           'license',
+        'CATALOGNUMBER':                     'catalognumber',
+        'BARCODE':                           'barcode',
+        'ASIN':                              'asin',
+        'MusicMagic Fingerprint':            'musicip_fingerprint',
+        'Artists':                           'artists',
+        'Work':                              'work',
+        'Writer':                            'writer',
     }
     __rtranslate_freetext = dict([(v, k) for k, v in __translate_freetext.items()])
     __translate_freetext['writer'] = 'writer'  # For backward compatibility of case
@@ -167,8 +169,8 @@ class ID3File(File):
         'engineer': 'engineer',
         'arranger': 'arranger',
         'producer': 'producer',
-        'DJ-mix': 'djmixer',
-        'mix': 'mixer',
+        'DJ-mix':   'djmixer',
+        'mix':      'mixer',
     }
     _rtipl_roles = dict([(v, k) for k, v in _tipl_roles.items()])
 
@@ -230,7 +232,7 @@ class ID3File(File):
                 if name in self.__translate_freetext:
                     name = self.__translate_freetext[name]
                 elif ((name in self.__rtranslate) !=
-                        (name in self.__rtranslate_freetext)):
+                      (name in self.__rtranslate_freetext)):
                     # If the desc of a TXXX frame conflicts with the name of a
                     # Picard tag, load it into ~id3:TXXX:desc rather than desc.
                     #
@@ -259,12 +261,12 @@ class ID3File(File):
             elif frameid == 'APIC':
                 try:
                     coverartimage = TagCoverArtImage(
-                        file=filename,
-                        tag=frameid,
-                        types=types_from_id3(frame.type),
-                        comment=frame.desc,
-                        support_types=True,
-                        data=frame.data,
+                            file=filename,
+                            tag=frameid,
+                            types=types_from_id3(frame.type),
+                            comment=frame.desc,
+                            support_types=True,
+                            data=frame.data,
                     )
                 except CoverArtImageError as e:
                     log.error('Cannot load image from %r: %s' % (filename, e))
@@ -562,7 +564,6 @@ class ID3File(File):
 
 
 class MP3File(ID3File):
-
     """MP3 file."""
     EXTENSIONS = [".mp3", ".mp2", ".m2a"]
     NAME = "MPEG-1 Audio"
@@ -581,7 +582,6 @@ class MP3File(ID3File):
 
 
 class TrueAudioFile(ID3File):
-
     """TTA file."""
     EXTENSIONS = [".tta"]
     NAME = "The True Audio"

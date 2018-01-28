@@ -19,12 +19,12 @@
 
 from picard import config
 from picard.const import ALIAS_LOCALES
-from picard.ui.options import OptionsPage, register_options_page
+from picard.ui.options import (OptionsPage,
+                               register_options_page)
 from picard.ui.ui_options_metadata import Ui_MetadataOptionsPage
 
 
 class MetadataOptionsPage(OptionsPage):
-
     NAME = "metadata"
     TITLE = N_("Metadata")
     PARENT = None

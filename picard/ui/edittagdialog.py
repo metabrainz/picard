@@ -17,7 +17,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-from PyQt5 import QtCore, QtWidgets
+from PyQt5 import (QtCore,
+                   QtWidgets)
 
 from picard.ui import PicardDialog
 from picard.ui.ui_edittagdialog import Ui_EditTagDialog
@@ -37,7 +38,7 @@ class EditTagDialog(PicardDialog):
         self.modified_tags = {}
         self.different = False
         self.default_tags = sorted(
-            set(list(TAG_NAMES.keys()) + self.metadata_box.tag_diff.tag_names))
+                set(list(TAG_NAMES.keys()) + self.metadata_box.tag_diff.tag_names))
         if len(self.metadata_box.files) == 1:
             current_file = list(self.metadata_box.files)[0]
             self.default_tags = list(filter(lambda x: current_file.supports_tag(x),
@@ -66,7 +67,7 @@ class EditTagDialog(PicardDialog):
     def add_value(self):
         self._modified_tag().append("")
         item = QtWidgets.QListWidgetItem()
-        item.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsEditable)
+        item.setFlags(QtCore.Qt.ItemIsSelectable|QtCore.Qt.ItemIsEnabled|QtCore.Qt.ItemIsEditable)
         self.value_list.addItem(item)
         self.value_list.editItem(item)
 
@@ -91,7 +92,7 @@ class EditTagDialog(PicardDialog):
     def tag_changed(self, tag):
         tag_names = self.ui.tag_names
         tag_names.editTextChanged.disconnect(self.tag_changed)
-        flags = QtCore.Qt.MatchFixedString | QtCore.Qt.MatchCaseSensitive
+        flags = QtCore.Qt.MatchFixedString|QtCore.Qt.MatchCaseSensitive
 
         # if the previous tag was new and has no value, remove it from the QComboBox.
         # e.g. typing "XYZ" should not leave "X" or "XY" in the QComboBox.
@@ -132,7 +133,7 @@ class EditTagDialog(PicardDialog):
         values = [v for v in values if v] or [""]
         for value in values:
             item = QtWidgets.QListWidgetItem(value)
-            item.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsEditable)
+            item.setFlags(QtCore.Qt.ItemIsSelectable|QtCore.Qt.ItemIsEnabled|QtCore.Qt.ItemIsEditable)
             font = item.font()
             font.setItalic(self.different)
             item.setFont(font)
@@ -164,7 +165,7 @@ class EditTagDialog(PicardDialog):
 
     def _modified_tag(self):
         return self.modified_tags.setdefault(self.tag,
-               list(self.metadata_box.tag_diff.new[self.tag]) or [""])
+                                             list(self.metadata_box.tag_diff.new[self.tag]) or [""])
 
     def accept(self):
         self.window.ignore_selection_changes = True

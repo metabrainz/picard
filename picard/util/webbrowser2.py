@@ -33,7 +33,8 @@ def open(url):
     try:
         webbrowser.open(string_(url))
     except webbrowser.Error as e:
-        QtWidgets.QMessageBox.critical(None, _("Web Browser Error"), _("Error while launching a web browser:\n\n%s") % (e,))
+        QtWidgets.QMessageBox.critical(None, _("Web Browser Error"),
+                                       _("Error while launching a web browser:\n\n%s") % (e,))
 
 
 def goto(url_id):

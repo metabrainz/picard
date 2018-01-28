@@ -24,8 +24,10 @@ import re
 from PyQt5 import QtCore
 
 from picard import log
-from picard.const import PICARD_URLS, QUERY_LIMIT
-from picard.util import webbrowser2, build_qurl
+from picard.const import (PICARD_URLS,
+                          QUERY_LIMIT)
+from picard.util import (build_qurl,
+                         webbrowser2)
 
 
 class FileLookup(object):
@@ -105,9 +107,9 @@ class FileLookup(object):
 
     def tag_lookup(self, artist, release, track, trackNum, duration, filename):
         params = {
-            'artist': artist,
-            'release': release,
-            'track': track,
+            'artist':   artist,
+            'release':  release,
+            'track':    track,
             'tracknum': trackNum,
             'duration': duration,
             'filename': os.path.basename(filename),
@@ -122,7 +124,7 @@ class FileLookup(object):
             return True
         params = {
             'limit': QUERY_LIMIT,
-            'type': type_,
+            'type':  type_,
             'query': query,
         }
         if adv:

@@ -20,7 +20,9 @@
 import os.path
 import traceback
 
-from PyQt5 import QtGui, QtCore, QtWidgets
+from PyQt5 import (QtCore,
+                   QtGui,
+                   QtWidgets)
 
 from picard import log
 from picard.album import Album
@@ -29,9 +31,12 @@ from picard.file import File
 from picard.track import Track
 from picard.ui import PicardDialog
 from picard.ui.ui_infodialog import Ui_InfoDialog
-from picard.util import (format_time, encode_filename,
-                         bytes2human, webbrowser2,
-                         union_sorted_lists, htmlescape)
+from picard.util import (bytes2human,
+                         encode_filename,
+                         format_time,
+                         htmlescape,
+                         union_sorted_lists,
+                         webbrowser2)
 
 
 class ArtworkTable(QtWidgets.QTableWidget):
@@ -48,7 +53,7 @@ class ArtworkTable(QtWidgets.QTableWidget):
             self._new_cover_col = 2
             self.insertColumn(2)
             self.setHorizontalHeaderLabels([_("Existing Cover"), _("Type"),
-                _("New Cover")])
+                                            _("New Cover")])
             self.arrow_pixmap = QtGui.QPixmap(":/images/arrow.png")
         else:
             self._type_col = 0
@@ -181,9 +186,9 @@ class InfoDialog(PicardDialog):
             if data is not None:
                 pixmap.loadFromData(data)
                 item.setToolTip(
-                    _("Double-click to open in external viewer\n"
-                      "Temporary file: %s\n"
-                      "Source: %s") % (image.tempfile_filename, image.source))
+                        _("Double-click to open in external viewer\n"
+                          "Temporary file: %s\n"
+                          "Source: %s") % (image.tempfile_filename, image.source))
             infos = []
             if image.comment:
                 infos.append(image.comment)
@@ -276,8 +281,8 @@ class FileInfoDialog(InfoDialog):
                 ch = string_(ch)
             info.append((_('Channels:'), ch))
         return '<br/>'.join(map(lambda i: '<b>%s</b><br/>%s' %
-                                (htmlescape(i[0]),
-                                 htmlescape(i[1])), info))
+                                          (htmlescape(i[0]),
+                                           htmlescape(i[1])), info))
 
     def _display_info_tab(self):
         file = self.obj
@@ -299,11 +304,11 @@ class AlbumInfoDialog(InfoDialog):
         if album.errors:
             tabWidget.setTabText(tab_index, _("&Errors"))
             text = '<br />'.join(map(lambda s: '<font color="darkred">%s</font>' %
-                                     '<br />'.join(htmlescape(s)
-                                                   .replace('\t', ' ')
-                                                   .replace(' ', '&nbsp;')
-                                                   .splitlines()
-                                                   ), album.errors)
+                                               '<br />'.join(htmlescape(s)
+                                                             .replace('\t', ' ')
+                                                             .replace(' ', '&nbsp;')
+                                                             .splitlines()
+                                                             ), album.errors)
                                  )
             self.ui.info.setText(text + '<hr />')
         else:
@@ -329,7 +334,7 @@ class TrackInfoDialog(FileInfoDialog):
 
         tabWidget.setTabText(tab_index, _("&Info"))
         text = ngettext("%i file in this track", "%i files in this track",
-                         track.num_linked_files) % track.num_linked_files
+                        track.num_linked_files) % track.num_linked_files
         info_files = [FileInfoDialog.format_file_info(file) for file in track.linked_files]
         text += '<hr />' + '<hr />'.join(info_files)
         self.ui.info.setText(text)
@@ -361,5 +366,6 @@ class ClusterInfoDialog(InfoDialog):
                          m["title"] + " - " + artist + " (" +
                          m["~length"] + ")")
         info.append("<b>%s</b><br />%s" % (_('Tracklist:'),
-                    '<br />'.join([htmlescape(s).replace(' ', '&nbsp;') for s in lines])))
+                                           '<br />'.join(
+                                                   [htmlescape(s).replace(' ', '&nbsp;') for s in lines])))
         self.ui.info.setText('<br/>'.join(info))

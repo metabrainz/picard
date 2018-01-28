@@ -29,11 +29,16 @@ import os.path
 import platform
 import sys
 import time
-from collections import deque, defaultdict, namedtuple
+from collections import (defaultdict,
+                         deque,
+                         namedtuple)
 from functools import partial
 
-from PyQt5 import QtCore, QtNetwork
-from PyQt5.QtCore import QUrl, QStandardPaths, QUrlQuery
+from PyQt5 import (QtCore,
+                   QtNetwork)
+from PyQt5.QtCore import (QStandardPaths,
+                          QUrl,
+                          QUrlQuery)
 
 from picard import (PICARD_APP_NAME,
                     PICARD_ORG_NAME,
@@ -41,7 +46,8 @@ from picard import (PICARD_APP_NAME,
                     config,
                     log)
 from picard.oauth import OAuthManager
-from picard.util import build_qurl, parse_json
+from picard.util import (build_qurl,
+                         parse_json)
 from picard.util.xml import parse_xml
 
 COUNT_REQUESTS_DELAY_MS = 250
@@ -53,8 +59,8 @@ USER_AGENT_STRING = '%s-%s/%s (%s;%s-%s)' % (PICARD_ORG_NAME, PICARD_APP_NAME,
                                              platform.python_implementation(),
                                              platform.python_version())
 CLIENT_STRING = string_(QUrl.toPercentEncoding('%s %s-%s' % (PICARD_ORG_NAME,
-                                                         PICARD_APP_NAME,
-                                                         PICARD_VERSION_STR)))
+                                                             PICARD_APP_NAME,
+                                                             PICARD_VERSION_STR)))
 
 # ============================================================================
 # Throttling/congestion avoidance
@@ -92,7 +98,6 @@ CONGESTION_WINDOW_SIZE = defaultdict(lambda: 1.0)
 # slow start to congestion avoidance.  (See `_adjust_throttle`.)  Initialized
 # upon encountering a temporary error.
 CONGESTION_SSTHRESH = defaultdict(lambda: 0)
-
 
 DEFAULT_RESPONSE_PARSER_TYPE = "json"
 
@@ -169,10 +174,10 @@ class WSRequest(QtNetwork.QNetworkRequest):
         if self.mblogin:
             self.setPriority(QtNetwork.QNetworkRequest.HighPriority)
             self.setAttribute(QtNetwork.QNetworkRequest.CacheLoadControlAttribute,
-                                 QtNetwork.QNetworkRequest.AlwaysNetwork)
+                              QtNetwork.QNetworkRequest.AlwaysNetwork)
         elif self.cacheloadcontrol is not None:
             self.setAttribute(QtNetwork.QNetworkRequest.CacheLoadControlAttribute,
-                                 self.cacheloadcontrol)
+                              self.cacheloadcontrol)
 
         if self.parse_response_type:
             try:
@@ -184,7 +189,7 @@ class WSRequest(QtNetwork.QNetworkRequest):
                 self.setRawHeader(b"Accept", self.response_mimetype.encode('utf-8'))
 
         if self.data:
-                self.setHeader(QtNetwork.QNetworkRequest.ContentTypeHeader, "application/x-www-form-urlencoded")
+            self.setHeader(QtNetwork.QNetworkRequest.ContentTypeHeader, "application/x-www-form-urlencoded")
 
     def _update_authorization_header(self):
         if self.mblogin and self.access_token:
@@ -238,7 +243,7 @@ class WSGetRequest(WSRequest):
         if self.refresh:
             self.setPriority(QtNetwork.QNetworkRequest.HighPriority)
             self.setAttribute(QtNetwork.QNetworkRequest.CacheLoadControlAttribute,
-                                 QtNetwork.QNetworkRequest.AlwaysNetwork)
+                              QtNetwork.QNetworkRequest.AlwaysNetwork)
 
 
 class WSPutRequest(WSRequest):
@@ -270,11 +275,10 @@ class WSPostRequest(WSRequest):
         super()._init_headers()
         if self.host == config.setting["server_host"] and self.response_mimetype:
             self.setHeader(QtNetwork.QNetworkRequest.ContentTypeHeader,
-                            "%s; charset=utf-8" % self.response_mimetype)
+                           "%s; charset=utf-8" % self.response_mimetype)
 
 
 class WebService(QtCore.QObject):
-
     PARSERS = dict()
 
     def __init__(self, parent=None):
@@ -286,9 +290,9 @@ class WebService(QtCore.QObject):
         self.manager.finished.connect(self._process_reply)
         self._last_request_times = defaultdict(lambda: 0)
         self._request_methods = {
-            "GET": self.manager.get,
-            "POST": self.manager.post,
-            "PUT": self.manager.put,
+            "GET":    self.manager.get,
+            "POST":   self.manager.post,
+            "PUT":    self.manager.put,
             "DELETE": self.manager.deleteResource
         }
         self._init_queues()
@@ -337,6 +341,7 @@ class WebService(QtCore.QObject):
                 slow_down: `True` if we encountered intermittent server trouble
                 and need to slow down.
         """
+
         def in_backoff_phase(hostkey):
             return CONGESTION_UNACK[hostkey] > CONGESTION_WINDOW_SIZE[hostkey]
 
@@ -413,7 +418,7 @@ class WebService(QtCore.QObject):
             from QT 4.7
         """
         return leftUrl.port(80) == rightUrl.port(80) and \
-            leftUrl.toString(QUrl.RemovePort) == rightUrl.toString(QUrl.RemovePort)
+               leftUrl.toString(QUrl.RemovePort) == rightUrl.toString(QUrl.RemovePort)
 
     @staticmethod
     def url_port(url):
@@ -473,14 +478,14 @@ class WebService(QtCore.QObject):
             log.error("Network request error for %s: %s (QT code %d, HTTP code %d)",
                       url, errstr, error, code)
             if (not request.max_retries_reached()
-                and (code == 503
-                     or code == 429
-                     # Sometimes QT returns a http status code of 200 even when there
-                     # is a service unavailable error. But it returns a QT error code
-                     # of 403 when this happens
-                     or error == 403
+                    and (code == 503
+                         or code == 429
+                         # Sometimes QT returns a http status code of 200 even when there
+                         # is a service unavailable error. But it returns a QT error code
+                         # of 403 when this happens
+                         or error == 403
                     )
-               ):
+            ):
                 slow_down = True
                 retries = request.mark_for_retry()
                 log.debug("Retrying %s (#%d)", url, retries)
@@ -534,16 +539,16 @@ class WebService(QtCore.QObject):
             priority=False, important=False, mblogin=False, cacheloadcontrol=None, refresh=False,
             queryargs=None):
         request = WSGetRequest(host, port, path, handler, parse_response_type=parse_response_type,
-                            mblogin=mblogin, cacheloadcontrol=cacheloadcontrol, refresh=refresh,
-                            queryargs=queryargs, priority=priority, important=important)
+                               mblogin=mblogin, cacheloadcontrol=cacheloadcontrol, refresh=refresh,
+                               queryargs=queryargs, priority=priority, important=important)
         func = partial(self._start_request, request)
         return self.add_task(func, request)
 
     def post(self, host, port, path, data, handler, parse_response_type=DEFAULT_RESPONSE_PARSER_TYPE,
              priority=False, important=False, mblogin=True, queryargs=None):
         request = WSPostRequest(host, port, path, handler, parse_response_type=parse_response_type,
-                            data=data, mblogin=mblogin, queryargs=queryargs,
-                            priority=priority, important=important)
+                                data=data, mblogin=mblogin, queryargs=queryargs,
+                                priority=priority, important=important)
         log.debug("POST-DATA %r", data)
         func = partial(self._start_request, request)
         return self.add_task(func, request)
@@ -551,14 +556,14 @@ class WebService(QtCore.QObject):
     def put(self, host, port, path, data, handler, priority=True, important=False, mblogin=True,
             queryargs=None):
         request = WSPutRequest(host, port, path, handler, data=data, mblogin=mblogin,
-                            queryargs=queryargs, priority=priority, important=important)
+                               queryargs=queryargs, priority=priority, important=important)
         func = partial(self._start_request, request)
         return self.add_task(func, request)
 
     def delete(self, host, port, path, handler, priority=True, important=False, mblogin=True,
                queryargs=None):
         request = WSDeleteRequest(host, port, path, handler, mblogin=mblogin,
-                            queryargs=queryargs, priority=priority, important=important)
+                                  queryargs=queryargs, priority=priority, important=important)
         func = partial(self._start_request, request)
         return self.add_task(func, request)
 
@@ -627,13 +632,13 @@ class WebService(QtCore.QObject):
         for prio in sorted(self._queues.keys(), reverse=True):
             prio_queue = self._queues[prio]
             if not prio_queue:
-                del(self._queues[prio])
+                del (self._queues[prio])
                 continue
             for hostkey in sorted(prio_queue.keys(),
                                   key=lambda hostkey: REQUEST_DELAY[hostkey]):
                 queue = self._queues[prio][hostkey]
                 if not queue:
-                    del(self._queues[prio][hostkey])
+                    del (self._queues[prio][hostkey])
                     continue
                 wait, d = self._get_delay_to_next_request(hostkey)
                 if not wait:

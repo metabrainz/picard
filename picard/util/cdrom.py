@@ -19,10 +19,12 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 import sys
+
 if sys.platform == 'win32':
     from ctypes import windll
 
-from PyQt5.QtCore import QFile, QIODevice
+from PyQt5.QtCore import (QFile,
+                          QIODevice)
 
 from picard import config
 from picard.util import uniqify
@@ -34,7 +36,6 @@ except ImportError:
         import discid
     except ImportError:
         discid = None
-
 
 DEFAULT_DRIVES = []
 if discid is not None:
@@ -67,7 +68,7 @@ def get_cdrom_drives():
         DRIVE_CDROM = 5
         mask = GetLogicalDrives()
         for i in range(26):
-            if mask >> i & 1:
+            if mask>>i&1:
                 drive = chr(i + ord("A")) + ":"
                 if GetDriveType(drive) == DRIVE_CDROM:
                     drives.append(drive)
@@ -75,7 +76,7 @@ def get_cdrom_drives():
     elif sys.platform == 'linux2' and QFile.exists(LINUX_CDROM_INFO):
         # Read info from /proc/sys/dev/cdrom/info
         cdinfo = QFile(LINUX_CDROM_INFO)
-        if cdinfo.open(QIODevice.ReadOnly | QIODevice.Text):
+        if cdinfo.open(QIODevice.ReadOnly|QIODevice.Text):
             drive_names = []
             drive_audio_caps = []
             line = string_(cdinfo.readLine())

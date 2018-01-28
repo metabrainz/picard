@@ -61,10 +61,11 @@ def printable_node(node, indent=0):
         )
     """
 
-    indentstr = " "*4
+    indentstr = " " * 4
+
     def indented(front, l, back, indent):
-        ind0 = indentstr*indent
-        ind1 = indentstr*(indent+1)
+        ind0 = indentstr * indent
+        ind1 = indentstr * (indent + 1)
         if not l:
             return front + back
         if len(l) > 1:
@@ -78,21 +79,21 @@ def printable_node(node, indent=0):
 
     if node.attribs:
         l = []
-        for k,v in node.attribs.items():
+        for k, v in node.attribs.items():
             l.append(repr(k).decode('unicode-escape') + ': ' + repr(v).decode('unicode-escape'))
-        el.append(indented('attribs={', l, '}', indent+1))
+        el.append(indented('attribs={', l, '}', indent + 1))
 
     if node.children:
         l = []
         for k, v in node.children.items():
             l.append(
-                indented(
-                    repr(k).decode('unicode-escape') + ': [',
-                    [printable_node(x, indent+3) for x in v],
-                    ']',
-                    indent+2
-                )
+                    indented(
+                            repr(k).decode('unicode-escape') + ': [',
+                            [printable_node(x, indent + 3) for x in v],
+                            ']',
+                            indent + 2
+                    )
             )
-        el.append(indented('children={', l, '}', indent+1))
+        el.append(indented('children={', l, '}', indent + 1))
 
     return indented('XmlNode(', el, ')', indent)

@@ -18,7 +18,8 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from picard.coverart.image import CaaCoverArtImage, CaaThumbnailCoverArtImage
+from picard.coverart.image import (CaaCoverArtImage,
+                                   CaaThumbnailCoverArtImage)
 from picard.coverart.providers.caa import CoverArtProviderCaa
 
 
@@ -31,12 +32,11 @@ class CaaThumbnailCoverArtImageRg(CaaThumbnailCoverArtImage):
 
 
 class CoverArtProviderCaaReleaseGroup(CoverArtProviderCaa):
-
     """Use cover art from album release group"""
 
     NAME = "CaaReleaseGroup"
     TITLE = N_("CAA Release Group")
-    # FIXME: caa release group uses the same options than caa
+    # FIXME: caa release group uses the same options than caa
     OPTIONS = None
 
     ignore_json_not_found_error = True

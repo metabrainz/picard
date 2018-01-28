@@ -3,7 +3,9 @@
 # Automatically generated - don't edit.
 # Use `python setup.py build_ui` to update it.
 
-from PyQt5 import QtCore, QtWidgets
+from PyQt5 import (QtCore,
+                   QtWidgets)
+
 
 class Ui_PasswordDialog(object):
     def setupUi(self, PasswordDialog):
@@ -22,7 +24,8 @@ class Ui_PasswordDialog(object):
         self.info_text.setWordWrap(True)
         self.info_text.setObjectName("info_text")
         self.verticalLayout.addWidget(self.info_text)
-        spacerItem = QtWidgets.QSpacerItem(20, 60, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        spacerItem = QtWidgets.QSpacerItem(20, 60, QtWidgets.QSizePolicy.Minimum,
+                                           QtWidgets.QSizePolicy.Expanding)
         self.verticalLayout.addItem(spacerItem)
         self.label = QtWidgets.QLabel(PasswordDialog)
         self.label.setObjectName("label")
@@ -43,7 +46,8 @@ class Ui_PasswordDialog(object):
         self.password.setEchoMode(QtWidgets.QLineEdit.Password)
         self.password.setObjectName("password")
         self.verticalLayout.addWidget(self.password)
-        spacerItem1 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        spacerItem1 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum,
+                                            QtWidgets.QSizePolicy.Expanding)
         self.verticalLayout.addItem(spacerItem1)
         self.buttonbox = QtWidgets.QDialogButtonBox(PasswordDialog)
         self.buttonbox.setOrientation(QtCore.Qt.Horizontal)
@@ -60,4 +64,3 @@ class Ui_PasswordDialog(object):
         PasswordDialog.setWindowTitle(_("Authentication required"))
         self.label.setText(_("Username:"))
         self.label_2.setText(_("Password:"))
-

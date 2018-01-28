@@ -3,7 +3,9 @@
 # Automatically generated - don't edit.
 # Use `python setup.py build_ui` to update it.
 
-from PyQt5 import QtCore, QtWidgets
+from PyQt5 import (QtCore,
+                   QtWidgets)
+
 
 class Ui_EditTagDialog(object):
     def setupUi(self, EditTagDialog):
@@ -58,7 +60,8 @@ class Ui_EditTagDialog(object):
         self.remove_value.setAutoDefault(False)
         self.remove_value.setObjectName("remove_value")
         self.verticalLayout.addWidget(self.remove_value)
-        spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum,
+                                           QtWidgets.QSizePolicy.Expanding)
         self.verticalLayout.addItem(spacerItem)
         self.horizontalLayout.addLayout(self.verticalLayout)
         self.verticalLayout_2.addLayout(self.horizontalLayout)
@@ -90,4 +93,3 @@ class Ui_EditTagDialog(object):
         self.edit_value.setText(_("Edit value"))
         self.add_value.setText(_("Add value"))
         self.remove_value.setText(_("Remove value"))
-

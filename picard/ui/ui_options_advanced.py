@@ -3,7 +3,9 @@
 # Automatically generated - don't edit.
 # Use `python setup.py build_ui` to update it.
 
-from PyQt5 import QtCore, QtWidgets
+from PyQt5 import (QtCore,
+                   QtWidgets)
+
 
 class Ui_AdvancedOptionsPage(object):
     def setupUi(self, AdvancedOptionsPage):
@@ -28,14 +30,16 @@ class Ui_AdvancedOptionsPage(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.label_track_duration_diff.sizePolicy().hasHeightForWidth())
         self.label_track_duration_diff.setSizePolicy(sizePolicy)
-        self.label_track_duration_diff.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
+        self.label_track_duration_diff.setAlignment(
+                QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.label_track_duration_diff.setObjectName("label_track_duration_diff")
         self.horizontalLayout.addWidget(self.label_track_duration_diff)
         self.ignore_track_duration_difference_under = QtWidgets.QSpinBox(self.groupBox)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.ignore_track_duration_difference_under.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(
+                self.ignore_track_duration_difference_under.sizePolicy().hasHeightForWidth())
         self.ignore_track_duration_difference_under.setSizePolicy(sizePolicy)
         self.ignore_track_duration_difference_under.setButtonSymbols(QtWidgets.QAbstractSpinBox.UpDownArrows)
         self.ignore_track_duration_difference_under.setAccelerated(True)
@@ -45,7 +49,8 @@ class Ui_AdvancedOptionsPage(object):
         self.ignore_track_duration_difference_under.setProperty("value", 2)
         self.ignore_track_duration_difference_under.setObjectName("ignore_track_duration_difference_under")
         self.horizontalLayout.addWidget(self.ignore_track_duration_difference_under)
-        spacerItem = QtWidgets.QSpacerItem(4000, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        spacerItem = QtWidgets.QSpacerItem(4000, 20, QtWidgets.QSizePolicy.Expanding,
+                                           QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout.addItem(spacerItem)
         self.gridlayout.addLayout(self.horizontalLayout, 6, 0, 2, 1)
         self.label_ignore_regex = QtWidgets.QLabel(self.groupBox)
@@ -80,15 +85,18 @@ class Ui_AdvancedOptionsPage(object):
         self.completeness_ignore_silence.setObjectName("completeness_ignore_silence")
         self.verticalLayout_2.addWidget(self.completeness_ignore_silence)
         self.vboxlayout.addWidget(self.groupBox_completeness)
-        spacerItem1 = QtWidgets.QSpacerItem(181, 21, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        spacerItem1 = QtWidgets.QSpacerItem(181, 21, QtWidgets.QSizePolicy.Minimum,
+                                            QtWidgets.QSizePolicy.Expanding)
         self.vboxlayout.addItem(spacerItem1)
 
         self.retranslateUi(AdvancedOptionsPage)
         QtCore.QMetaObject.connectSlotsByName(AdvancedOptionsPage)
         AdvancedOptionsPage.setTabOrder(self.ignore_regex, self.ignore_hidden_files)
         AdvancedOptionsPage.setTabOrder(self.ignore_hidden_files, self.recursively_add_files)
-        AdvancedOptionsPage.setTabOrder(self.recursively_add_files, self.ignore_track_duration_difference_under)
-        AdvancedOptionsPage.setTabOrder(self.ignore_track_duration_difference_under, self.completeness_ignore_videos)
+        AdvancedOptionsPage.setTabOrder(self.recursively_add_files,
+                                        self.ignore_track_duration_difference_under)
+        AdvancedOptionsPage.setTabOrder(self.ignore_track_duration_difference_under,
+                                        self.completeness_ignore_videos)
         AdvancedOptionsPage.setTabOrder(self.completeness_ignore_videos, self.completeness_ignore_pregap)
         AdvancedOptionsPage.setTabOrder(self.completeness_ignore_pregap, self.completeness_ignore_data)
         AdvancedOptionsPage.setTabOrder(self.completeness_ignore_data, self.completeness_ignore_silence)
@@ -97,12 +105,13 @@ class Ui_AdvancedOptionsPage(object):
         _translate = QtCore.QCoreApplication.translate
         self.groupBox.setTitle(_("Advanced options"))
         self.recursively_add_files.setText(_("Recursively add files and folders from directory"))
-        self.label_track_duration_diff.setText(_("Ignore track duration difference under this number of seconds"))
+        self.label_track_duration_diff.setText(
+                _("Ignore track duration difference under this number of seconds"))
         self.label_ignore_regex.setText(_("Ignore file paths matching the following regular expression:"))
         self.ignore_hidden_files.setText(_("Ignore hidden files"))
-        self.groupBox_completeness.setTitle(_("Ignore the following tracks when determining whether a release is complete"))
+        self.groupBox_completeness.setTitle(
+                _("Ignore the following tracks when determining whether a release is complete"))
         self.completeness_ignore_videos.setText(_("Video tracks"))
         self.completeness_ignore_pregap.setText(_("Pregap tracks"))
         self.completeness_ignore_data.setText(_("Data tracks"))
         self.completeness_ignore_silence.setText(_("Silent tracks"))
-

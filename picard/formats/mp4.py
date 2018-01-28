@@ -17,10 +17,13 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-from mutagen.mp4 import MP4, MP4Cover
+from mutagen.mp4 import (MP4,
+                         MP4Cover)
 
-from picard import config, log
-from picard.coverart.image import TagCoverArtImage, CoverArtImageError
+from picard import (config,
+                    log)
+from picard.coverart.image import (CoverArtImageError,
+                                   TagCoverArtImage)
 from picard.file import File
 from picard.metadata import Metadata
 from picard.util import encode_filename
@@ -36,22 +39,22 @@ class MP4File(File):
         "\xa9nam": "title",
         "\xa9alb": "album",
         "\xa9wrt": "composer",
-        "aART": "albumartist",
+        "aART":    "albumartist",
         "\xa9grp": "grouping",
         "\xa9day": "date",
         "\xa9gen": "genre",
         "\xa9lyr": "lyrics",
         "\xa9cmt": "comment:",
         "\xa9too": "encodedby",
-        "cprt": "copyright",
-        "soal": "albumsort",
-        "soaa": "albumartistsort",
-        "soar": "artistsort",
-        "sonm": "titlesort",
-        "soco": "composersort",
-        "sosn": "showsort",
-        "tvsh": "show",
-        "purl": "podcasturl",
+        "cprt":    "copyright",
+        "soal":    "albumsort",
+        "soaa":    "albumartistsort",
+        "soar":    "artistsort",
+        "sonm":    "titlesort",
+        "soco":    "composersort",
+        "sosn":    "showsort",
+        "tvsh":    "show",
+        "purl":    "podcasturl",
     }
     __r_text_tags = dict([(v, k) for k, v in __text_tags.items()])
 
@@ -68,43 +71,43 @@ class MP4File(File):
     __r_int_tags = dict([(v, k) for k, v in __int_tags.items()])
 
     __freeform_tags = {
-        "----:com.apple.iTunes:MusicBrainz Track Id": "musicbrainz_recordingid",
-        "----:com.apple.iTunes:MusicBrainz Artist Id": "musicbrainz_artistid",
-        "----:com.apple.iTunes:MusicBrainz Album Id": "musicbrainz_albumid",
-        "----:com.apple.iTunes:MusicBrainz Album Artist Id": "musicbrainz_albumartistid",
-        "----:com.apple.iTunes:MusicIP PUID": "musicip_puid",
-        "----:com.apple.iTunes:MusicBrainz Album Status": "releasestatus",
+        "----:com.apple.iTunes:MusicBrainz Track Id":              "musicbrainz_recordingid",
+        "----:com.apple.iTunes:MusicBrainz Artist Id":             "musicbrainz_artistid",
+        "----:com.apple.iTunes:MusicBrainz Album Id":              "musicbrainz_albumid",
+        "----:com.apple.iTunes:MusicBrainz Album Artist Id":       "musicbrainz_albumartistid",
+        "----:com.apple.iTunes:MusicIP PUID":                      "musicip_puid",
+        "----:com.apple.iTunes:MusicBrainz Album Status":          "releasestatus",
         "----:com.apple.iTunes:MusicBrainz Album Release Country": "releasecountry",
-        "----:com.apple.iTunes:MusicBrainz Album Type": "releasetype",
-        "----:com.apple.iTunes:MusicBrainz Disc Id": "musicbrainz_discid",
-        "----:com.apple.iTunes:MusicBrainz TRM Id": "musicbrainz_trmid",
-        "----:com.apple.iTunes:MusicBrainz Work Id": "musicbrainz_workid",
-        "----:com.apple.iTunes:MusicBrainz Release Group Id": "musicbrainz_releasegroupid",
-        "----:com.apple.iTunes:MusicBrainz Release Track Id": "musicbrainz_trackid",
-        "----:com.apple.iTunes:Acoustid Fingerprint": "acoustid_fingerprint",
-        "----:com.apple.iTunes:Acoustid Id": "acoustid_id",
-        "----:com.apple.iTunes:ASIN": "asin",
-        "----:com.apple.iTunes:BARCODE": "barcode",
-        "----:com.apple.iTunes:PRODUCER": "producer",
-        "----:com.apple.iTunes:LYRICIST": "lyricist",
-        "----:com.apple.iTunes:CONDUCTOR": "conductor",
-        "----:com.apple.iTunes:ENGINEER": "engineer",
-        "----:com.apple.iTunes:MIXER": "mixer",
-        "----:com.apple.iTunes:DJMIXER": "djmixer",
-        "----:com.apple.iTunes:REMIXER": "remixer",
-        "----:com.apple.iTunes:ISRC": "isrc",
-        "----:com.apple.iTunes:MEDIA": "media",
-        "----:com.apple.iTunes:LABEL": "label",
-        "----:com.apple.iTunes:LICENSE": "license",
-        "----:com.apple.iTunes:CATALOGNUMBER": "catalognumber",
-        "----:com.apple.iTunes:SUBTITLE": "subtitle",
-        "----:com.apple.iTunes:DISCSUBTITLE": "discsubtitle",
-        "----:com.apple.iTunes:MOOD": "mood",
-        "----:com.apple.iTunes:SCRIPT": "script",
-        "----:com.apple.iTunes:LANGUAGE": "language",
-        "----:com.apple.iTunes:ARTISTS": "artists",
-        "----:com.apple.iTunes:WORK": "work",
-        "----:com.apple.iTunes:initialkey": "key",
+        "----:com.apple.iTunes:MusicBrainz Album Type":            "releasetype",
+        "----:com.apple.iTunes:MusicBrainz Disc Id":               "musicbrainz_discid",
+        "----:com.apple.iTunes:MusicBrainz TRM Id":                "musicbrainz_trmid",
+        "----:com.apple.iTunes:MusicBrainz Work Id":               "musicbrainz_workid",
+        "----:com.apple.iTunes:MusicBrainz Release Group Id":      "musicbrainz_releasegroupid",
+        "----:com.apple.iTunes:MusicBrainz Release Track Id":      "musicbrainz_trackid",
+        "----:com.apple.iTunes:Acoustid Fingerprint":              "acoustid_fingerprint",
+        "----:com.apple.iTunes:Acoustid Id":                       "acoustid_id",
+        "----:com.apple.iTunes:ASIN":                              "asin",
+        "----:com.apple.iTunes:BARCODE":                           "barcode",
+        "----:com.apple.iTunes:PRODUCER":                          "producer",
+        "----:com.apple.iTunes:LYRICIST":                          "lyricist",
+        "----:com.apple.iTunes:CONDUCTOR":                         "conductor",
+        "----:com.apple.iTunes:ENGINEER":                          "engineer",
+        "----:com.apple.iTunes:MIXER":                             "mixer",
+        "----:com.apple.iTunes:DJMIXER":                           "djmixer",
+        "----:com.apple.iTunes:REMIXER":                           "remixer",
+        "----:com.apple.iTunes:ISRC":                              "isrc",
+        "----:com.apple.iTunes:MEDIA":                             "media",
+        "----:com.apple.iTunes:LABEL":                             "label",
+        "----:com.apple.iTunes:LICENSE":                           "license",
+        "----:com.apple.iTunes:CATALOGNUMBER":                     "catalognumber",
+        "----:com.apple.iTunes:SUBTITLE":                          "subtitle",
+        "----:com.apple.iTunes:DISCSUBTITLE":                      "discsubtitle",
+        "----:com.apple.iTunes:MOOD":                              "mood",
+        "----:com.apple.iTunes:SCRIPT":                            "script",
+        "----:com.apple.iTunes:LANGUAGE":                          "language",
+        "----:com.apple.iTunes:ARTISTS":                           "artists",
+        "----:com.apple.iTunes:WORK":                              "work",
+        "----:com.apple.iTunes:initialkey":                        "key",
     }
     __r_freeform_tags = dict([(v, k) for k, v in __freeform_tags.items()])
 
@@ -150,9 +153,9 @@ class MP4File(File):
                         continue
                     try:
                         coverartimage = TagCoverArtImage(
-                            file=filename,
-                            tag=name,
-                            data=value,
+                                file=filename,
+                                tag=name,
+                                data=value,
                         )
                     except CoverArtImageError as e:
                         log.error('Cannot load image from %r: %s' %
@@ -189,7 +192,9 @@ class MP4File(File):
                 values = [v.encode("utf-8") for v in values]
                 tags[self.__r_freeform_tags[name]] = values
             elif name == "musicip_fingerprint":
-                tags["----:com.apple.iTunes:fingerprint"] = [b"MusicMagic Fingerprint%s" % v.encode('ascii') for v in values]
+                tags["----:com.apple.iTunes:fingerprint"] = [b"MusicMagic Fingerprint%s" % v.encode('ascii')
+                                                             for v in
+                                                             values]
 
         if "tracknumber" in metadata:
             if "totaltracks" in metadata:

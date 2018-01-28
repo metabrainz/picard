@@ -34,33 +34,33 @@ from picard.util import parse_amazon_url
 # Releases not sold on amazon.com, don't have a "01"-version of the image,
 # so we need to make sure we grab an existing image.
 AMAZON_SERVER = {
-    "amazon.jp": {
+    "amazon.jp":    {
         "server": "ec1.images-amazon.com",
-        "id": "09",
+        "id":     "09",
     },
     "amazon.co.jp": {
         "server": "ec1.images-amazon.com",
-        "id": "09",
+        "id":     "09",
     },
     "amazon.co.uk": {
         "server": "ec1.images-amazon.com",
-        "id": "02",
+        "id":     "02",
     },
-    "amazon.de": {
+    "amazon.de":    {
         "server": "ec2.images-amazon.com",
-        "id": "03",
+        "id":     "03",
     },
-    "amazon.com": {
+    "amazon.com":   {
         "server": "ec1.images-amazon.com",
-        "id": "01",
+        "id":     "01",
     },
-    "amazon.ca": {
+    "amazon.ca":    {
         "server": "ec1.images-amazon.com",
-        "id": "01",  # .com and .ca are identical
+        "id":     "01",  # .com and .ca are identical
     },
-    "amazon.fr": {
+    "amazon.fr":    {
         "server": "ec1.images-amazon.com",
-        "id": "08"
+        "id":     "08"
     },
 }
 
@@ -71,19 +71,18 @@ AMAZON_SIZES = (
     # huge size option is only available for items
     # that have a ZOOMing picture on its amazon web page
     # and it doesn't work for all of the domain names
-    #'_SCRM_',        # huge size
-    'LZZZZZZZ',      # large size, option format 1
-    #'_SCLZZZZZZZ_',  # large size, option format 3
-    'MZZZZZZZ',      # default image size, format 1
-    #'_SCMZZZZZZZ_',  # medium size, option format 3
-    #'TZZZZZZZ',      # medium image size, option format 1
-    #'_SCTZZZZZZZ_',  # small size, option format 3
-    #'THUMBZZZ',      # small size, option format 1
+    # '_SCRM_',        # huge size
+    'LZZZZZZZ',  # large size, option format 1
+    # '_SCLZZZZZZZ_',  # large size, option format 3
+    'MZZZZZZZ',  # default image size, format 1
+    # '_SCMZZZZZZZ_',  # medium size, option format 3
+    # 'TZZZZZZZ',      # medium image size, option format 1
+    # '_SCTZZZZZZZ_',  # small size, option format 3
+    # 'THUMBZZZ',      # small size, option format 1
 )
 
 
 class CoverArtProviderAmazon(CoverArtProvider):
-
     """Use Amazon ASIN Musicbrainz relationships to get cover art"""
 
     NAME = "Amazon"
@@ -111,8 +110,8 @@ class CoverArtProviderAmazon(CoverArtProvider):
         host = serverInfo['server']
         for size in AMAZON_SIZES:
             path = AMAZON_IMAGE_PATH % {
-                'asin': amz['asin'],
+                'asin':     amz['asin'],
                 'serverid': serverInfo['id'],
-                'size': size
+                'size':     size
             }
             self.queue_put(CoverArtImage("http://%s%s" % (host, path)))

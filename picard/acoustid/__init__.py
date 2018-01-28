@@ -22,7 +22,8 @@ from functools import partial
 
 from PyQt5 import QtCore
 
-from picard import config, log
+from picard import (config,
+                    log)
 from picard.acoustid.json_helpers import parse_recording
 from picard.const import FPCALC_NAMES
 from picard.util import find_executable
@@ -52,16 +53,16 @@ class AcoustIDClient(QtCore.QObject):
         doc = {}
         if error:
             mparms = {
-                'error': http.errorString(),
+                'error':    http.errorString(),
                 'filename': file.filename,
             }
             log.error(
-                "AcoustID: Lookup network error for '%(filename)s': %(error)r" %
-                mparms)
+                    "AcoustID: Lookup network error for '%(filename)s': %(error)r" %
+                    mparms)
             self.tagger.window.set_statusbar_message(
-                N_("AcoustID lookup network error for '%(filename)s'!"),
-                mparms,
-                echo=None
+                    N_("AcoustID lookup network error for '%(filename)s'!"),
+                    mparms,
+                    echo=None
             )
         else:
             recording_list = doc['recordings'] = []
@@ -79,16 +80,16 @@ class AcoustIDClient(QtCore.QObject):
                         log.debug("AcoustID: Lookup successful for '%s'", file.filename)
             else:
                 mparms = {
-                    'error': document['error']['message'],
+                    'error':    document['error']['message'],
                     'filename': file.filename
                 }
                 log.error(
-                    "AcoustID: Lookup error for '%(filename)s': %(error)r" %
-                    mparms)
+                        "AcoustID: Lookup error for '%(filename)s': %(error)r" %
+                        mparms)
                 self.tagger.window.set_statusbar_message(
-                    N_("AcoustID lookup failed for '%(filename)s'!"),
-                    mparms,
-                    echo=None
+                        N_("AcoustID lookup failed for '%(filename)s'!"),
+                        mparms,
+                        echo=None
                 )
 
         next_func(doc, http, error)
@@ -104,24 +105,24 @@ class AcoustIDClient(QtCore.QObject):
         }
         if not result:
             log.debug(
-                "AcoustID: lookup returned no result for file '%(filename)s'" %
-                mparms
+                    "AcoustID: lookup returned no result for file '%(filename)s'" %
+                    mparms
             )
             self.tagger.window.set_statusbar_message(
-                N_("AcoustID lookup returned no result for file '%(filename)s'"),
-                mparms,
-                echo=None
+                    N_("AcoustID lookup returned no result for file '%(filename)s'"),
+                    mparms,
+                    echo=None
             )
             file.clear_pending()
             return
         log.debug(
-            "AcoustID: looking up the fingerprint for file '%(filename)s'" %
-            mparms
+                "AcoustID: looking up the fingerprint for file '%(filename)s'" %
+                mparms
         )
         self.tagger.window.set_statusbar_message(
-            N_("Looking up the fingerprint for file '%(filename)s' ..."),
-            mparms,
-            echo=None
+                N_("Looking up the fingerprint for file '%(filename)s' ..."),
+                mparms,
+                echo=None
         )
         params = dict(meta='recordings releasegroups releases tracks compress')
         if result[0] == 'fingerprint':
@@ -163,10 +164,10 @@ class AcoustIDClient(QtCore.QObject):
                     result = 'fingerprint', fingerprint, duration
             else:
                 log.error(
-                    "Fingerprint calculator failed exit code = %r, exit status = %r, error = %s",
-                    exit_code,
-                    exit_status,
-                    process.errorString())
+                        "Fingerprint calculator failed exit code = %r, exit status = %r, error = %s",
+                        exit_code,
+                        exit_status,
+                        process.errorString())
         finally:
             next_func(result)
 

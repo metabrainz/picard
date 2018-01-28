@@ -20,12 +20,17 @@
 import os
 from functools import partial
 
-from PyQt5 import QtCore, QtGui, QtNetwork, QtWidgets
+from PyQt5 import (QtCore,
+                   QtGui,
+                   QtNetwork,
+                   QtWidgets)
 
-from picard import config, log
+from picard import (config,
+                    log)
 from picard.album import Album
 from picard.const import MAX_COVERS_TO_STACK
-from picard.coverart.image import CoverArtImage, CoverArtImageError
+from picard.coverart.image import (CoverArtImage,
+                                   CoverArtImageError)
 from picard.file import File
 from picard.track import Track
 from picard.util import imageinfo
@@ -109,7 +114,7 @@ class CoverArtThumbnail(ActiveLabel):
         self.shadow.setDevicePixelRatio(self.pixel_ratio)
         self.release = None
         self.setPixmap(self.shadow)
-        self.setAlignment(QtCore.Qt.AlignTop | QtCore.Qt.AlignHCenter)
+        self.setAlignment(QtCore.Qt.AlignTop|QtCore.Qt.AlignHCenter)
         self.clicked.connect(self.open_release_page)
         self.related_images = []
         self._pixmap_cache = pixmap_cache
@@ -216,7 +221,8 @@ class CoverArtThumbnail(ActiveLabel):
                     for k in range(5):
                         bgcolor.setAlpha(80 + k * 255 // 7)
                         painter.setPen(bgcolor)
-                        painter.drawLine(x + 121 + 2, y + 121 + 2 + k, x + 121 + border_length + 2, y + 121 + 2 + k)
+                        painter.drawLine(x + 121 + 2, y + 121 + 2 + k, x + 121 + border_length + 2,
+                                         y + 121 + 2 + k)
                 painter.end()
                 pixmap = pixmap.scaled(w, h, QtCore.Qt.KeepAspectRatio, QtCore.Qt.SmoothTransformation)
             self._pixmap_cache[key] = pixmap
@@ -282,13 +288,14 @@ class CoverArtBox(QtWidgets.QGroupBox):
         self.item = None
         self.pixmap_cache = LRUCache(40)
         self.cover_art_label = QtWidgets.QLabel('')
-        self.cover_art_label.setAlignment(QtCore.Qt.AlignTop | QtCore.Qt.AlignHCenter)
+        self.cover_art_label.setAlignment(QtCore.Qt.AlignTop|QtCore.Qt.AlignHCenter)
         self.cover_art = CoverArtThumbnail(False, True, self.pixmap_cache, parent)
         self.cover_art.image_dropped.connect(self.fetch_remote_image)
-        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Minimum,
+                                           QtWidgets.QSizePolicy.Expanding)
         self.orig_cover_art_label = QtWidgets.QLabel('')
         self.orig_cover_art = CoverArtThumbnail(False, False, self.pixmap_cache, parent)
-        self.orig_cover_art_label.setAlignment(QtCore.Qt.AlignTop | QtCore.Qt.AlignHCenter)
+        self.orig_cover_art_label.setAlignment(QtCore.Qt.AlignTop|QtCore.Qt.AlignHCenter)
         self.show_details_button = QtWidgets.QPushButton(_('Show more details'), self)
         self.layout.addWidget(self.cover_art_label)
         self.layout.addWidget(self.cover_art)
@@ -358,9 +365,10 @@ class CoverArtBox(QtWidgets.QGroupBox):
             else:
                 port = 80
             self.tagger.webservice.get(string_(url.encodedHost()), url.port(port), string_(path),
-                                  partial(self.on_remote_image_fetched, url, fallback_data=fallback_data),
-                                  parse_response_type=None,
-                                  priority=True, important=True)
+                                       partial(self.on_remote_image_fetched, url,
+                                               fallback_data=fallback_data),
+                                       parse_response_type=None,
+                                       priority=True, important=True)
         elif url.scheme() == 'file':
             path = os.path.normpath(os.path.realpath(url.toLocalFile().rstrip("\0")))
             if path and os.path.exists(path):
@@ -392,9 +400,9 @@ class CoverArtBox(QtWidgets.QGroupBox):
     def load_remote_image(self, url, mime, data):
         try:
             coverartimage = CoverArtImage(
-                url=url.toString(),
-                types=['front'],
-                data=data
+                    url=url.toString(),
+                    types=['front'],
+                    data=data
             )
         except CoverArtImageError as e:
             log.warning("Can't load image: %s" % e)
@@ -460,12 +468,14 @@ class CoverArtBox(QtWidgets.QGroupBox):
             menu.addSeparator()
 
         load_image_behavior_group = QtWidgets.QActionGroup(self.parent, exclusive=True)
-        action = load_image_behavior_group.addAction(QtWidgets.QAction(_('Replace front cover art on drop'), self.parent, checkable=True))
+        action = load_image_behavior_group.addAction(
+                QtWidgets.QAction(_('Replace front cover art on drop'), self.parent, checkable=True))
         action.triggered.connect(partial(self.set_load_image_behavior, behavior='replace'))
         if config.setting["load_image_behavior"] == 'replace':
             action.setChecked(True)
         menu.addAction(action)
-        action = load_image_behavior_group.addAction(QtWidgets.QAction(_('Append front cover art on drop'), self.parent, checkable=True))
+        action = load_image_behavior_group.addAction(
+                QtWidgets.QAction(_('Append front cover art on drop'), self.parent, checkable=True))
         action.triggered.connect(partial(self.set_load_image_behavior, behavior='append'))
         if config.setting["load_image_behavior"] == 'append':
             action.setChecked(True)

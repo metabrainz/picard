@@ -28,33 +28,35 @@ import mutagen.musepack
 import mutagen.optimfrog
 import mutagen.wavpack
 
-from picard import config, log
-from picard.coverart.image import TagCoverArtImage, CoverArtImageError
+from picard import (config,
+                    log)
+from picard.coverart.image import (CoverArtImageError,
+                                   TagCoverArtImage)
 from picard.file import File
 from picard.metadata import Metadata
-from picard.util import encode_filename, sanitize_date
+from picard.util import (encode_filename,
+                         sanitize_date)
 from .mutagenext import tak
 
 
 class APEv2File(File):
-
     """Generic APEv2-based file."""
     _File = None
 
     __translate = {
-        "Album Artist": "albumartist",
-        "MixArtist": "remixer",
-        "Weblink": "website",
-        "DiscSubtitle": "discsubtitle",
-        "BPM": "bpm",
-        "ISRC": "isrc",
-        "CatalogNumber": "catalognumber",
-        "Barcode": "barcode",
-        "EncodedBy": "encodedby",
-        "Language": "language",
-        "MUSICBRAINZ_ALBUMSTATUS": "releasestatus",
-        "MUSICBRAINZ_ALBUMTYPE": "releasetype",
-        "musicbrainz_trackid": "musicbrainz_recordingid",
+        "Album Artist":               "albumartist",
+        "MixArtist":                  "remixer",
+        "Weblink":                    "website",
+        "DiscSubtitle":               "discsubtitle",
+        "BPM":                        "bpm",
+        "ISRC":                       "isrc",
+        "CatalogNumber":              "catalognumber",
+        "Barcode":                    "barcode",
+        "EncodedBy":                  "encodedby",
+        "Language":                   "language",
+        "MUSICBRAINZ_ALBUMSTATUS":    "releasestatus",
+        "MUSICBRAINZ_ALBUMTYPE":      "releasetype",
+        "musicbrainz_trackid":        "musicbrainz_recordingid",
         "musicbrainz_releasetrackid": "musicbrainz_trackid",
     }
     __rtranslate = dict([(v, k) for k, v in __translate.items()])
@@ -70,9 +72,9 @@ class APEv2File(File):
                         descr, data = values.value.split(b'\0', 1)
                         try:
                             coverartimage = TagCoverArtImage(
-                                file=filename,
-                                tag=origname,
-                                data=data,
+                                    file=filename,
+                                    tag=origname,
+                                    data=data,
                             )
                         except CoverArtImageError as e:
                             log.error('Cannot load image from %r: %s' %
@@ -164,7 +166,9 @@ class APEv2File(File):
         for image in metadata.images_to_be_saved_to_tags:
             cover_filename = 'Cover Art (Front)'
             cover_filename += image.extension
-            tags['Cover Art (Front)'] = mutagen.apev2.APEValue(cover_filename.encode('ascii') + b'\0' + image.data, mutagen.apev2.BINARY)
+            tags['Cover Art (Front)'] = mutagen.apev2.APEValue(
+                    cover_filename.encode('ascii') + b'\0' + image.data,
+                    mutagen.apev2.BINARY)
             break
             # can't save more than one item with the same name
             # (mp3tags does this, but it's against the specs)
@@ -212,7 +216,6 @@ class APEv2File(File):
 
 
 class MusepackFile(APEv2File):
-
     """Musepack file."""
     EXTENSIONS = [".mpc", ".mp+"]
     NAME = "Musepack"
@@ -224,7 +227,6 @@ class MusepackFile(APEv2File):
 
 
 class WavPackFile(APEv2File):
-
     """WavPack file."""
     EXTENSIONS = [".wv"]
     NAME = "WavPack"
@@ -244,7 +246,6 @@ class WavPackFile(APEv2File):
 
 
 class OptimFROGFile(APEv2File):
-
     """OptimFROG file."""
     EXTENSIONS = [".ofr", ".ofs"]
     NAME = "OptimFROG"
@@ -259,7 +260,6 @@ class OptimFROGFile(APEv2File):
 
 
 class MonkeysAudioFile(APEv2File):
-
     """Monkey's Audio file."""
     EXTENSIONS = [".ape"]
     NAME = "Monkey's Audio"
@@ -271,7 +271,6 @@ class MonkeysAudioFile(APEv2File):
 
 
 class TAKFile(APEv2File):
-
     """TAK file."""
     EXTENSIONS = [".tak"]
     NAME = "Tom's lossless Audio Kompressor"

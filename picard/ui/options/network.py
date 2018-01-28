@@ -18,12 +18,12 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from picard import config
-from picard.ui.options import OptionsPage, register_options_page
+from picard.ui.options import (OptionsPage,
+                               register_options_page)
 from picard.ui.ui_options_network import Ui_NetworkOptionsPage
 
 
 class NetworkOptionsPage(OptionsPage):
-
     NAME = "network"
     TITLE = N_("Network")
     PARENT = "advanced"
@@ -55,7 +55,7 @@ class NetworkOptionsPage(OptionsPage):
         self.ui.browser_integration.setChecked(config.setting["browser_integration"])
         self.ui.browser_integration_port.setValue(config.setting["browser_integration_port"])
         self.ui.browser_integration_localhost_only.setChecked(
-            config.setting["browser_integration_localhost_only"])
+                config.setting["browser_integration_localhost_only"])
         self.ui.browser_integration_port.valueChanged.connect(self.change_browser_integration_port)
 
     def save(self):

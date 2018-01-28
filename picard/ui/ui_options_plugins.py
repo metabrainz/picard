@@ -3,7 +3,9 @@
 # Automatically generated - don't edit.
 # Use `python setup.py build_ui` to update it.
 
-from PyQt5 import QtCore, QtWidgets
+from PyQt5 import (QtCore,
+                   QtWidgets)
+
 
 class Ui_PluginsOptionsPage(object):
     def setupUi(self, PluginsOptionsPage):
@@ -22,7 +24,8 @@ class Ui_PluginsOptionsPage(object):
         self.vboxlayout1.setSpacing(2)
         self.vboxlayout1.setObjectName("vboxlayout1")
         self.plugins = QtWidgets.QTreeWidget(self.groupBox_2)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.MinimumExpanding, QtWidgets.QSizePolicy.Expanding)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.MinimumExpanding,
+                                           QtWidgets.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.plugins.sizePolicy().hasHeightForWidth())
@@ -133,4 +136,3 @@ class Ui_PluginsOptionsPage(object):
         self.folder_open.setText(_("Open plugin folder"))
         self.reload_list_of_plugins.setText(_("Reload List of Plugins"))
         self.groupBox.setTitle(_("Details"))
-

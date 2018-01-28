@@ -21,21 +21,21 @@
 import traceback
 from operator import itemgetter
 
-from PyQt5 import QtCore, QtNetwork
+from PyQt5 import (QtCore,
+                   QtNetwork)
 
-from picard import config, log
+from picard import (config,
+                    log)
 from picard.cluster import Cluster
 from picard.collection import add_release_to_user_collections
 from picard.const import VARIOUS_ARTISTS_ID
 from picard.coverart import coverart
 from picard.dataobj import DataObject
 from picard.file import File
-from picard.mbjson import (
-    release_group_to_metadata,
-    release_to_metadata,
-    medium_to_metadata,
-    track_to_metadata,
-)
+from picard.mbjson import (medium_to_metadata,
+                           release_group_to_metadata,
+                           release_to_metadata,
+                           track_to_metadata)
 from picard.metadata import (Metadata,
                              register_album_metadata_processor,
                              run_album_metadata_processors,
@@ -43,7 +43,8 @@ from picard.metadata import (Metadata,
 from picard.script import ScriptParser
 from picard.track import Track
 from picard.ui.item import Item
-from picard.util import format_time, mbid_validate
+from picard.util import (format_time,
+                         mbid_validate)
 from picard.util.imagelist import update_metadata_images
 from picard.util.textencoding import asciipunct
 
@@ -56,7 +57,6 @@ class AlbumArtist(DataObject):
 
 
 class Album(DataObject, Item):
-
     release_group_loaded = QtCore.pyqtSignal()
 
     def __init__(self, album_id, discid=None):
@@ -72,7 +72,8 @@ class Album(DataObject, Item):
         self._tracks_loaded = False
         self._discid = discid
         self._after_load_callbacks = []
-        self.unmatched_files = Cluster(_("Unmatched Files"), special=True, related_album=self, hide_if_empty=True)
+        self.unmatched_files = Cluster(_("Unmatched Files"), special=True, related_album=self,
+                                       hide_if_empty=True)
         self.errors = []
         self.status = None
         self._album_artists = []
@@ -236,7 +237,9 @@ class Album(DataObject, Item):
                 if "pregap" in medium_node:
                     discpregap = True
                     absolutetracknumber += 1
-                    track = self._finalize_loading_track(medium_node['pregap'], mm, artists, va, absolutetracknumber, discpregap)
+                    track = self._finalize_loading_track(medium_node['pregap'], mm, artists, va,
+                                                         absolutetracknumber,
+                                                         discpregap)
                     track.metadata['~pregap'] = "1"
 
                 track_count = medium_node['track-count']
@@ -244,12 +247,14 @@ class Album(DataObject, Item):
                     tracklist_node = medium_node['tracks']
                     for track_node in tracklist_node:
                         absolutetracknumber += 1
-                        track = self._finalize_loading_track(track_node, mm, artists, va, absolutetracknumber, discpregap)
+                        track = self._finalize_loading_track(track_node, mm, artists, va, absolutetracknumber,
+                                                             discpregap)
 
                 if "data-tracks" in medium_node:
                     for track_node in medium_node['data-tracks']:
                         absolutetracknumber += 1
-                        track = self._finalize_loading_track(track_node, mm, artists, va, absolutetracknumber, discpregap)
+                        track = self._finalize_loading_track(track_node, mm, artists, va, absolutetracknumber,
+                                                             discpregap)
                         track.metadata['~datatrack'] = "1"
 
             totalalbumtracks = string_(absolutetracknumber)
@@ -297,13 +302,13 @@ class Album(DataObject, Item):
             self.enable_update_metadata_images(True)
             self.update()
             self.tagger.window.set_statusbar_message(
-                N_('Album %(id)s loaded: %(artist)s - %(album)s'),
-                {
-                    'id': self.id,
-                    'artist': self.metadata['albumartist'],
-                    'album': self.metadata['album']
-                },
-                timeout=3000
+                    N_('Album %(id)s loaded: %(artist)s - %(album)s'),
+                    {
+                        'id':     self.id,
+                        'artist': self.metadata['albumartist'],
+                        'album':  self.metadata['album']
+                    },
+                    timeout=3000
             )
             for func in self._after_load_callbacks:
                 func()
@@ -340,8 +345,8 @@ class Album(DataObject, Item):
             log.info("Not reloading, some requests are still active.")
             return
         self.tagger.window.set_statusbar_message(
-            N_('Loading album %(id)s ...'),
-            {'id': self.id}
+                N_('Loading album %(id)s ...'),
+                {'id': self.id}
         )
         self.loaded = False
         self.status = _("[loading album information]")
@@ -372,8 +377,8 @@ class Album(DataObject, Item):
             require_authentication = True
             inc += ['user-ratings']
         self.load_task = self.tagger.mb_api.get_release_by_id(
-            self.id, self._release_request_finished, inc=inc,
-            mblogin=require_authentication, priority=priority, refresh=refresh)
+                self.id, self._release_request_finished, inc=inc,
+                mblogin=require_authentication, priority=priority, refresh=refresh)
 
     def run_when_loaded(self, func):
         if self.loaded:
@@ -545,10 +550,10 @@ class Album(DataObject, Item):
                 number_of_images = len(metadata.images)
                 if getattr(metadata, 'has_common_images', True):
                     text += ngettext("; %i image", "; %i images",
-                                      number_of_images) % number_of_images
+                                     number_of_images) % number_of_images
                 else:
                     text += ngettext("; %i image not in all tracks", "; %i different images among tracks",
-                                      number_of_images) % number_of_images
+                                     number_of_images) % number_of_images
                 return text + ')'
             else:
                 return title

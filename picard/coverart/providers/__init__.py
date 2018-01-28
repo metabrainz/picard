@@ -18,15 +18,16 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 import traceback
 
-from picard import log, config
+from picard import (config,
+                    log)
 from picard.plugin import ExtensionPoint
-from picard.ui.options import OptionsPage, register_options_page
+from picard.ui.options import (OptionsPage,
+                               register_options_page)
 
 _cover_art_providers = ExtensionPoint()
 
 
 class ProviderOptions(OptionsPage):
-
     """ Template class for provider's options
 
         It works like OptionsPage for the most (options, load, save)
@@ -73,7 +74,8 @@ def cover_art_providers():
         try:
             return order.index(p.NAME)
         except ValueError:
-            return 666 # move to the end
+            return 666  # move to the end
+
     providers = []
     for p in sorted(_cover_art_providers, key=_key_provider):
         providers.append(p)
@@ -130,9 +132,9 @@ class CoverArtProvider(object):
         return enabled
 
     def queue_images(self):
-        # this method has to return CoverArtProvider.FINISHED or
-        # CoverArtProvider.WAIT
-        old = getattr(self, 'queue_downloads') #compat with old plugins
+        # this method has to return CoverArtProvider.FINISHED or
+        # CoverArtProvider.WAIT
+        old = getattr(self, 'queue_downloads')  # compat with old plugins
         if callable(old):
             log.warning('CoverArtProvider: queue_downloads() was replaced by queue_images()')
             return old()
@@ -146,7 +148,7 @@ class CoverArtProvider(object):
         self.coverart.queue_put(what)
 
     def next_in_queue(self):
-        # must be called by provider if queue_images() returns WAIT
+        # must be called by provider if queue_images() returns WAIT
         self.coverart.next_in_queue()
 
     def match_url_relations(self, relation_types, func):

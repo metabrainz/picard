@@ -21,17 +21,25 @@ import os
 import re
 from functools import partial
 
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5 import (QtCore,
+                   QtGui,
+                   QtWidgets)
 
-from picard import config, log
-from picard.album import Album, NatAlbum
-from picard.cluster import Cluster, ClusterList, UnclusteredFiles
+from picard import (config,
+                    log)
+from picard.album import (Album,
+                          NatAlbum)
+from picard.cluster import (Cluster,
+                            ClusterList,
+                            UnclusteredFiles)
 from picard.file import File
 from picard.plugin import ExtensionPoint
-from picard.track import Track, NonAlbumTrack
+from picard.track import (NonAlbumTrack,
+                          Track)
 from picard.ui.collectionmenu import CollectionMenu
 from picard.ui.ratingwidget import RatingWidget
-from picard.util import encode_filename, icontheme
+from picard.util import (encode_filename,
+                         icontheme)
 
 
 class BaseAction(QtWidgets.QAction):
@@ -81,13 +89,12 @@ def get_match_color(similarity, basecolor):
     c1 = (basecolor.red(), basecolor.green(), basecolor.blue())
     c2 = (223, 125, 125)
     return QtGui.QColor(
-        c2[0] + (c1[0] - c2[0]) * similarity,
-        c2[1] + (c1[1] - c2[1]) * similarity,
-        c2[2] + (c1[2] - c2[2]) * similarity)
+            c2[0] + (c1[0] - c2[0]) * similarity,
+            c2[1] + (c1[1] - c2[1]) * similarity,
+            c2[2] + (c1[2] - c2[2]) * similarity)
 
 
 class MainPanel(QtWidgets.QSplitter):
-
     options = [
         config.Option("persist", "splitter_state", QtCore.QByteArray()),
     ]
@@ -114,16 +121,16 @@ class MainPanel(QtWidgets.QSplitter):
         TreeItem.text_color_secondary = self.palette() \
             .brush(QtGui.QPalette.Disabled, QtGui.QPalette.Text).color()
         TrackItem.track_colors = {
-            File.NORMAL: config.setting["color_saved"],
+            File.NORMAL:  config.setting["color_saved"],
             File.CHANGED: TreeItem.text_color,
             File.PENDING: config.setting["color_pending"],
-            File.ERROR: config.setting["color_error"],
+            File.ERROR:   config.setting["color_error"],
         }
         FileItem.file_colors = {
-            File.NORMAL: TreeItem.text_color,
+            File.NORMAL:  TreeItem.text_color,
             File.CHANGED: config.setting["color_modified"],
             File.PENDING: config.setting["color_pending"],
-            File.ERROR: config.setting["color_error"],
+            File.ERROR:   config.setting["color_error"],
         }
 
     def save_state(self):
@@ -182,7 +189,7 @@ class MainPanel(QtWidgets.QSplitter):
         self._selected_view = i
         self.views[j].clearSelection()
         self.window.update_selection(
-            [item.obj for item in self.views[i].selectedItems()])
+                [item.obj for item in self.views[i].selectedItems()])
 
     def update_selection_0(self):
         if not self._ignore_selection_changes:
@@ -214,7 +221,6 @@ class MainPanel(QtWidgets.QSplitter):
 
 
 class BaseTreeView(QtWidgets.QTreeWidget):
-
     options = [
         config.Option("setting", "color_modified", QtGui.QColor(QtGui.QPalette.WindowText)),
         config.Option("setting", "color_saved", QtGui.QColor(0, 128, 0)),
@@ -339,9 +345,11 @@ class BaseTreeView(QtWidgets.QTreeWidget):
                     priorities = {}
                     for version in versions:
                         priority = {
-                            "trackmatch": "0" if version['totaltracks'] == albumtracks else "?",
-                            "countrymatch": "0" if len(preferred_countries) == 0 or preferred_countries & set(version['countries']) else "?",
-                            "formatmatch": "0" if len(preferred_formats) == 0 or preferred_formats & set(version['formats']) else "?",
+                            "trackmatch":   "0" if version['totaltracks'] == albumtracks else "?",
+                            "countrymatch": "0" if len(preferred_countries) == 0 or preferred_countries&set(
+                                    version['countries']) else "?",
+                            "formatmatch":  "0" if len(preferred_formats) == 0 or preferred_formats&set(
+                                    version['formats']) else "?",
                         }
                         priorities[version['id']] = "".join(priority[k] for k in matches)
                     versions.sort(key=lambda version: priorities[version['id']] + version['name'])
@@ -369,7 +377,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
                 releases_menu.setEnabled(False)
 
         if config.setting["enable_ratings"] and \
-           len(self.window.selected_objects) == 1 and isinstance(obj, Track):
+                len(self.window.selected_objects) == 1 and isinstance(obj, Track):
             menu.addSeparator()
             action = QtWidgets.QWidgetAction(menu)
             action.setDefaultWidget(RatingWidget(menu, obj))
@@ -377,7 +385,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
             menu.addSeparator()
 
         # Using type here is intentional. isinstance will return true for the
-        # NatAlbum instance, which can't be part of a collection.
+        # NatAlbum instance, which can't be part of a collection.
         selected_albums = [a for a in self.window.selected_objects if type(a) == Album]
         if selected_albums:
             if not bottom_separator:
@@ -426,7 +434,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         config.persist[self.view_sizes.name] = sizes
 
     def supportedDropActions(self):
-        return QtCore.Qt.CopyAction | QtCore.Qt.MoveAction
+        return QtCore.Qt.CopyAction|QtCore.Qt.MoveAction
 
     def mimeTypes(self):
         """List of MIME types accepted by this view."""
@@ -549,7 +557,6 @@ class BaseTreeView(QtWidgets.QTreeWidget):
 
 
 class FileTreeView(BaseTreeView):
-
     view_sizes = config.TextOption("persist", "file_view_sizes", "250 40 100")
 
     def __init__(self, window, parent=None):
@@ -579,7 +586,6 @@ class FileTreeView(BaseTreeView):
 
 
 class AlbumTreeView(BaseTreeView):
-
     view_sizes = config.TextOption("persist", "album_view_sizes", "250 40 100")
 
     def __init__(self, window, parent=None):
@@ -605,7 +611,6 @@ class AlbumTreeView(BaseTreeView):
 
 
 class TreeItem(QtWidgets.QTreeWidgetItem):
-
     __lt__ = lambda self, other: False
 
     def __init__(self, obj, sortable, *args):
@@ -615,7 +620,7 @@ class TreeItem(QtWidgets.QTreeWidgetItem):
             obj.item = self
         if sortable:
             self.__lt__ = self._lt
-        self.setTextAlignment(1, QtCore.Qt.AlignRight | QtCore.Qt.AlignVCenter)
+        self.setTextAlignment(1, QtCore.Qt.AlignRight|QtCore.Qt.AlignVCenter)
 
     def _lt(self, other):
         column = self.treeWidget().sortColumn()
@@ -809,9 +814,9 @@ class FileItem(TreeItem):
         if isinstance(file.parent, Track):
             if file.state == File.NORMAL:
                 return N_("Track saved")
-            elif file.state == File.PENDING:   # unsure how to use int(file.similarity * 5 + 0.5)
+            elif file.state == File.PENDING:  # unsure how to use int(file.similarity * 5 + 0.5)
                 return N_("Pending")
-            else:   # returns description of the match ranging from bad to excellent
+            else:  # returns description of the match ranging from bad to excellent
                 return FileItem.match_icons_info[int(file.similarity * 5 + 0.5)]
         elif file.state == File.PENDING:
             return N_("Pending")

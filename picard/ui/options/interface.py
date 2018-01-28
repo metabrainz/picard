@@ -21,72 +21,73 @@ import locale
 import os.path
 from functools import partial
 
-from PyQt5 import QtCore, QtWidgets
+from PyQt5 import (QtCore,
+                   QtWidgets)
 
 from picard import config
 from picard.const import UI_LANGUAGES
-from picard.ui.options import OptionsPage, register_options_page
+from picard.ui.options import (OptionsPage,
+                               register_options_page)
 from picard.ui.ui_options_interface import Ui_InterfaceOptionsPage
 from picard.ui.util import enabledSlot
 from picard.util import icontheme
 
 
 class InterfaceOptionsPage(OptionsPage):
-
     NAME = "interface"
     TITLE = N_("User Interface")
     PARENT = None
     SORT_ORDER = 80
     ACTIVE = True
-    SEPARATOR = '—'*5
+    SEPARATOR = '—' * 5
     TOOLBAR_BUTTONS = {
-        'add_directory_action': {
+        'add_directory_action':   {
             'label': N_('Add Folder'),
-            'icon': 'folder'
+            'icon':  'folder'
         },
-       'add_files_action': {
+        'add_files_action':       {
             'label': N_('Add Files'),
-            'icon': 'document-open'
+            'icon':  'document-open'
         },
-       'cluster_action': {
+        'cluster_action':         {
             'label': N_('Cluster'),
-            'icon': 'picard-cluster'
+            'icon':  'picard-cluster'
         },
-       'autotag_action': {
+        'autotag_action':         {
             'label': N_('Lookup'),
-            'icon': 'picard-auto-tag'
+            'icon':  'picard-auto-tag'
         },
-       'analyze_action': {
+        'analyze_action':         {
             'label': N_('Scan'),
-            'icon': 'picard-analyze'
+            'icon':  'picard-analyze'
         },
-       'browser_lookup_action': {
+        'browser_lookup_action':  {
             'label': N_('Lookup in Browser'),
-            'icon': 'lookup-musicbrainz'
+            'icon':  'lookup-musicbrainz'
         },
-       'save_action': {
+        'save_action':            {
             'label': N_('Save'),
-            'icon': 'document-save'
+            'icon':  'document-save'
         },
-       'view_info_action': {
+        'view_info_action':       {
             'label': N_('Info'),
-            'icon': 'picard-edit-tags'
+            'icon':  'picard-edit-tags'
         },
-       'remove_action': {
+        'remove_action':          {
             'label': N_('Remove'),
-            'icon': 'list-remove'
+            'icon':  'list-remove'
         },
-       'submit_acoustid_action': {
+        'submit_acoustid_action': {
             'label': N_('Submit AcoustIDs'),
-            'icon': 'acoustid-fingerprinter'
+            'icon':  'acoustid-fingerprinter'
         },
-       'play_file_action': {
+        'play_file_action':       {
             'label': N_('Open in Player'),
-            'icon': 'play-music'
+            'icon':  'play-music'
         },
-       'cd_lookup_action': {
+        'cd_lookup_action':       {
             'label': N_('Lookup CD...'),
-            'icon': 'media-optical'
+            'icon':  'media-optical'
         },
     }
     ACTION_NAMES = set(TOOLBAR_BUTTONS.keys())
@@ -134,16 +135,16 @@ class InterfaceOptionsPage(OptionsPage):
                 name = translation
             self.ui.ui_language.addItem(name, lang_code)
         self.ui.starting_directory.stateChanged.connect(
-            partial(
-                enabledSlot,
-                self.ui.starting_directory_path.setEnabled
-            )
+                partial(
+                        enabledSlot,
+                        self.ui.starting_directory_path.setEnabled
+                )
         )
         self.ui.starting_directory.stateChanged.connect(
-            partial(
-                enabledSlot,
-                self.ui.starting_directory_browse.setEnabled
-            )
+                partial(
+                        enabledSlot,
+                        self.ui.starting_directory_browse.setEnabled
+                )
         )
         self.ui.starting_directory_browse.clicked.connect(self.starting_directory_browse)
         self.ui.add_button.clicked.connect(self.add_to_toolbar)
@@ -180,11 +181,12 @@ class InterfaceOptionsPage(OptionsPage):
         if new_language != config.setting["ui_language"]:
             config.setting["ui_language"] = self.ui.ui_language.itemData(self.ui.ui_language.currentIndex())
             dialog = QtWidgets.QMessageBox(
-                QtWidgets.QMessageBox.Information,
-                _('Language changed'),
-                _('You have changed the interface language. You have to restart Picard in order for the change to take effect.'),
-                QtWidgets.QMessageBox.Ok,
-                self)
+                    QtWidgets.QMessageBox.Information,
+                    _('Language changed'),
+                    _(
+                            'You have changed the interface language. You have to restart Picard in order for the change to take effect.'),
+                    QtWidgets.QMessageBox.Ok,
+                    self)
             dialog.exec_()
         config.setting["starting_directory"] = self.ui.starting_directory.isChecked()
         config.setting["starting_directory_path"] = os.path.normpath(self.ui.starting_directory_path.text())
@@ -291,15 +293,15 @@ class AddActionDialog(QtWidgets.QDialog):
         layout = QtWidgets.QVBoxLayout(self)
 
         self.action_list = sorted([[_(self.parent().TOOLBAR_BUTTONS[action]['label']), action]
-                                  for action in action_list])
+                                   for action in action_list])
 
         self.combo_box = QtWidgets.QComboBox(self)
         self.combo_box.addItems([label for label, action in self.action_list])
         layout.addWidget(self.combo_box)
 
         buttons = QtWidgets.QDialogButtonBox(
-            QtWidgets.QDialogButtonBox.Ok | QtWidgets.QDialogButtonBox.Cancel,
-            QtCore.Qt.Horizontal, self)
+                QtWidgets.QDialogButtonBox.Ok|QtWidgets.QDialogButtonBox.Cancel,
+                QtCore.Qt.Horizontal, self)
         buttons.accepted.connect(self.accept)
         buttons.rejected.connect(self.reject)
         layout.addWidget(buttons)

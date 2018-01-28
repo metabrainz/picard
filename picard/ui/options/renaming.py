@@ -28,21 +28,25 @@ from PyQt5.QtGui import QPalette
 from picard import config
 from picard.const import PICARD_URLS
 from picard.file import File
-from picard.script import ScriptParser, SyntaxError, ScriptError
-from picard.ui.options import OptionsPage, OptionsCheckError, register_options_page
+from picard.script import (ScriptError,
+                           ScriptParser,
+                           SyntaxError)
+from picard.ui.options import (OptionsCheckError,
+                               OptionsPage,
+                               register_options_page)
 from picard.ui.options.scripting import TaggerScriptSyntaxHighlighter
 from picard.ui.ui_options_renaming import Ui_RenamingOptionsPage
 from picard.ui.util import enabledSlot
 
 _DEFAULT_FILE_NAMING_FORMAT = "$if2(%albumartist%,%artist%)/" \
-    "$if($ne(%albumartist%,),%album%/,)" \
-    "$if($gt(%totaldiscs%,1),%discnumber%-,)" \
-    "$if($ne(%albumartist%,),$num(%tracknumber%,2) ,)" \
-    "$if(%_multiartist%,%artist% - ,)" \
-    "%title%"
+                              "$if($ne(%albumartist%,),%album%/,)" \
+                              "$if($gt(%totaldiscs%,1),%discnumber%-,)" \
+                              "$if($ne(%albumartist%,),$num(%tracknumber%,2) ,)" \
+                              "$if(%_multiartist%,%artist% - ,)" \
+                              "%title%"
+
 
 class RenamingOptionsPage(OptionsPage):
-
     NAME = "filerenaming"
     TITLE = N_("File Naming")
     PARENT = None
@@ -54,9 +58,9 @@ class RenamingOptionsPage(OptionsPage):
         config.BoolOption("setting", "ascii_filenames", False),
         config.BoolOption("setting", "rename_files", False),
         config.TextOption(
-            "setting",
-            "file_naming_format",
-            _DEFAULT_FILE_NAMING_FORMAT,
+                "setting",
+                "file_naming_format",
+                _DEFAULT_FILE_NAMING_FORMAT,
         ),
         config.BoolOption("setting", "move_files", False),
         config.TextOption("setting", "move_files_to", ""),
@@ -77,16 +81,16 @@ class RenamingOptionsPage(OptionsPage):
         self.ui.move_files_to.editingFinished.connect(self.update_examples)
 
         self.ui.move_files.toggled.connect(
-            partial(
-                enabledSlot,
-                self.toggle_file_moving
-            )
+                partial(
+                        enabledSlot,
+                        self.toggle_file_moving
+                )
         )
         self.ui.rename_files.toggled.connect(
-            partial(
-                enabledSlot,
-                self.toggle_file_renaming
-            )
+                partial(
+                        enabledSlot,
+                        self.toggle_file_renaming
+                )
         )
         self.ui.file_naming_format.textChanged.connect(self.check_formats)
         self.ui.file_naming_format_default.clicked.connect(self.set_file_naming_format_default)
@@ -120,7 +124,6 @@ class RenamingOptionsPage(OptionsPage):
         else:
             self.ui.file_naming_format.setPalette(self.textEditPaletteReadOnly)
 
-
     def check_formats(self):
         self.test()
         self.update_examples()
@@ -128,12 +131,12 @@ class RenamingOptionsPage(OptionsPage):
     def _example_to_filename(self, file):
         settings = {
             'windows_compatibility': self.ui.windows_compatibility.isChecked(),
-            'ascii_filenames': self.ui.ascii_filenames.isChecked(),
-            'rename_files': self.ui.rename_files.isChecked(),
-            'move_files': self.ui.move_files.isChecked(),
-            'use_va_format': False,  # TODO remove
-            'file_naming_format': self.ui.file_naming_format.toPlainText(),
-            'move_files_to': os.path.normpath(self.ui.move_files_to.text())
+            'ascii_filenames':       self.ui.ascii_filenames.isChecked(),
+            'rename_files':          self.ui.rename_files.isChecked(),
+            'move_files':            self.ui.move_files.isChecked(),
+            'use_va_format':         False,  # TODO remove
+            'file_naming_format':    self.ui.file_naming_format.toPlainText(),
+            'move_files_to':         os.path.normpath(self.ui.move_files_to.text())
         }
         try:
             if config.setting["enable_tagger_scripts"]:
@@ -216,7 +219,8 @@ class RenamingOptionsPage(OptionsPage):
 
     def set_file_naming_format_default(self):
         self.ui.file_naming_format.setText(self.options[3].default)
-#        self.ui.file_naming_format.setCursorPosition(0)
+
+    #        self.ui.file_naming_format.setCursorPosition(0)
 
     def example_1(self):
         file = File("ticket_to_ride.mp3")
@@ -291,5 +295,6 @@ class RenamingOptionsPage(OptionsPage):
             self.ui.renaming_error.setStyleSheet(self.STYLESHEET_ERROR)
             self.ui.renaming_error.setText(e.info)
             return
+
 
 register_options_page(RenamingOptionsPage)

@@ -21,68 +21,70 @@ import re
 
 from picard import config
 from picard.const import RELEASE_FORMATS
-from picard.util import (format_time, translate_from_sortname, parse_amazon_url,
-                         linear_combination_of_weights)
+from picard.util import (format_time,
+                         linear_combination_of_weights,
+                         parse_amazon_url,
+                         translate_from_sortname)
 
 _artist_rel_types = {
-    "composer": "composer",
-    "writer": "writer",
-    "conductor": "conductor",
-    "chorus master": "conductor",
+    "composer":             "composer",
+    "writer":               "writer",
+    "conductor":            "conductor",
+    "chorus master":        "conductor",
     "performing orchestra": "performer:orchestra",
-    "arranger": "arranger",
-    "orchestrator": "arranger",
-    "instrumentator": "arranger",
-    "lyricist": "lyricist",
-    "librettist": "lyricist",
-    "remixer": "remixer",
-    "producer": "producer",
-    "engineer": "engineer",
-    "audio": "engineer",
-    #"Mastering": "engineer",
-    "sound": "engineer",
-    "live sound": "engineer",
-    "mix": "mixer",
-    #"Recording": "engineer",
-    "mix-DJ": "djmixer",
+    "arranger":             "arranger",
+    "orchestrator":         "arranger",
+    "instrumentator":       "arranger",
+    "lyricist":             "lyricist",
+    "librettist":           "lyricist",
+    "remixer":              "remixer",
+    "producer":             "producer",
+    "engineer":             "engineer",
+    "audio":                "engineer",
+    # "Mastering": "engineer",
+    "sound":                "engineer",
+    "live sound":           "engineer",
+    "mix":                  "mixer",
+    # "Recording": "engineer",
+    "mix-DJ":               "djmixer",
 }
 
 _TRACK_TO_METADATA = {
-    'title': 'title',
+    'title':    'title',
     'position': 'tracknumber',
-    'number': '~musicbrainz_tracknumber',
+    'number':   '~musicbrainz_tracknumber',
 }
 
 _MEDIUM_TO_METADATA = {
-    'title': 'discsubtitle',
-    'position': 'discnumber',
+    'title':       'discsubtitle',
+    'position':    'discnumber',
     'track-count': 'totaltracks',
-    'format': 'media',
+    'format':      'media',
 }
 
 _RECORDING_TO_METADATA = {
-    'title': 'title',
+    'title':          'title',
     'disambiguation': '~recordingcomment',
 }
 
 _RELEASE_TO_METADATA = {
-    'title': 'album',
+    'title':          'album',
     'disambiguation': '~releasecomment',
-    'asin': 'asin',
-    'date': 'date',
-    'country': 'releasecountry',
-    'barcode': 'barcode'
+    'asin':           'asin',
+    'date':           'date',
+    'country':        'releasecountry',
+    'barcode':        'barcode'
 }
 
 _ARTIST_TO_METADATA = {
-    'name': 'name',
+    'name':   'name',
     'gender': 'gender',
-    'type': 'type',
+    'type':   'type',
 }
 
 _RELEASE_GROUP_TO_METADATA = {
-    'title': '~releasegroup',
-    'disambiguation': '~releasegroupcomment',
+    'title':              '~releasegroup',
+    'disambiguation':     '~releasegroupcomment',
     'first-release-date': 'originaldate',
 }
 

@@ -72,7 +72,7 @@ def open_(filename):
             i = filename.rfind(".")
             if i < 0:
                 return None
-            ext = filename[i+1:].lower()
+            ext = filename[i + 1:].lower()
             # Switch to extension based opening if guess_format fails
             audio_file = _extensions[ext](filename)
         return audio_file
@@ -89,6 +89,7 @@ from picard.formats.id3 import (
     MP3File,
     TrueAudioFile,
 )
+
 if AiffFile:
     register_format(AiffFile)
 register_format(MP3File)
@@ -101,6 +102,7 @@ from picard.formats.apev2 import (
     WavPackFile,
     TAKFile,
 )
+
 register_format(MusepackFile)
 register_format(WavPackFile)
 register_format(OptimFROGFile)
@@ -117,6 +119,7 @@ from picard.formats.vorbis import (
     OggOpusFile,
     with_opus,
 )
+
 register_format(FLACFile)
 register_format(OggFLACFile)
 register_format(OggSpeexFile)
@@ -128,15 +131,18 @@ register_format(OggVideoFile)
 
 try:
     from picard.formats.mp4 import MP4File
+
     register_format(MP4File)
 except ImportError:
     pass
 
 try:
     from picard.formats.asf import ASFFile
+
     register_format(ASFFile)
 except ImportError:
     pass
 
 from picard.formats.wav import WAVFile
+
 register_format(WAVFile)

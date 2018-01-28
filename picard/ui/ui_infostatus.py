@@ -3,7 +3,9 @@
 # Automatically generated - don't edit.
 # Use `python setup.py build_ui` to update it.
 
-from PyQt5 import QtCore, QtWidgets
+from PyQt5 import (QtCore,
+                   QtWidgets)
+
 
 class Ui_InfoStatus(object):
     def setupUi(self, InfoStatus):
@@ -89,4 +91,3 @@ class Ui_InfoStatus(object):
     def retranslateUi(self, InfoStatus):
         _translate = QtCore.QCoreApplication.translate
         InfoStatus.setWindowTitle(_("Form"))
-

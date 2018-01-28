@@ -74,10 +74,10 @@ class Logger(object):
 
 
 # main logger
-log_levels = LOG_INFO | LOG_WARNING | LOG_ERROR
+log_levels = LOG_INFO|LOG_WARNING|LOG_ERROR
 
 main_logger = Logger(50000)
-main_logger.log_level = lambda level: log_levels & level
+main_logger.log_level = lambda level: log_levels&level
 
 
 def debug(message, *args):
@@ -97,10 +97,10 @@ def error(message, *args):
 
 
 _log_prefixes = {
-    LOG_INFO: 'I',
+    LOG_INFO:    'I',
     LOG_WARNING: 'W',
-    LOG_ERROR: 'E',
-    LOG_DEBUG: 'D',
+    LOG_ERROR:   'E',
+    LOG_DEBUG:   'D',
 }
 
 
@@ -122,10 +122,9 @@ def _stderr_receiver(level, time, msg):
 
 main_logger.register_receiver(_stderr_receiver)
 
-
 # history of status messages
 history_logger = Logger(50000)
-history_logger.log_level = lambda level: log_levels & level
+history_logger.log_level = lambda level: log_levels&level
 
 
 def history_info(message, *args):

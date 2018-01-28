@@ -46,7 +46,8 @@ def _process_images(state, src_obj):
         else:
             if state.new_images != src_obj.metadata.images:
                 state.has_common_new_images = False
-                state.new_images.extend([image for image in src_obj.metadata.images if image not in state.new_images])
+                state.new_images.extend(
+                        [image for image in src_obj.metadata.images if image not in state.new_images])
 
     if state.update_orig_metadata and not isinstance(src_obj, Track):
         # Check orig images, but not for Tracks (which don't have a useful orig_metadata)
@@ -56,7 +57,8 @@ def _process_images(state, src_obj):
         else:
             if state.orig_images != src_obj.orig_metadata.images:
                 state.has_common_orig_images = False
-                state.orig_images.extend([image for image in src_obj.orig_metadata.images if image not in state.orig_images])
+                state.orig_images.extend(
+                        [image for image in src_obj.orig_metadata.images if image not in state.orig_images])
 
 
 class State:

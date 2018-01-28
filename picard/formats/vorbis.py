@@ -29,25 +29,30 @@ import mutagen.oggvorbis
 
 try:
     from mutagen.oggopus import OggOpus
+
     with_opus = True
 except ImportError:
     OggOpus = None
     with_opus = False
-from picard import config, log
-from picard.coverart.image import TagCoverArtImage, CoverArtImageError
+from picard import (config,
+                    log)
+from picard.coverart.image import (TagCoverArtImage,
+                                   CoverArtImageError)
 from picard.file import File
-from picard.formats.id3 import types_from_id3, image_type_as_id3_num
+from picard.formats.id3 import (types_from_id3,
+                                image_type_as_id3_num)
 from picard.metadata import Metadata
-from picard.util import encode_filename, sanitize_date
+from picard.util import (encode_filename,
+                         sanitize_date)
 from picard.formats import guess_format
 
-class VCommentFile(File):
 
+class VCommentFile(File):
     """Generic VComment-based file."""
     _File = None
 
     __translate = {
-        "musicbrainz_trackid": "musicbrainz_recordingid",
+        "musicbrainz_trackid":        "musicbrainz_recordingid",
         "musicbrainz_releasetrackid": "musicbrainz_trackid",
     }
     __rtranslate = dict([(v, k) for k, v in __translate.items()])
@@ -102,12 +107,12 @@ class VCommentFile(File):
                     image = mutagen.flac.Picture(base64.standard_b64decode(value))
                     try:
                         coverartimage = TagCoverArtImage(
-                            file=filename,
-                            tag=name,
-                            types=types_from_id3(image.type),
-                            comment=image.desc,
-                            support_types=True,
-                            data=image.data,
+                                file=filename,
+                                tag=name,
+                                types=types_from_id3(image.type),
+                                comment=image.desc,
+                                support_types=True,
+                                data=image.data,
                         )
                     except CoverArtImageError as e:
                         log.error('Cannot load image from %r: %s' % (filename, e))
@@ -122,12 +127,12 @@ class VCommentFile(File):
             for image in file.pictures:
                 try:
                     coverartimage = TagCoverArtImage(
-                        file=filename,
-                        tag='FLAC/PICTURE',
-                        types=types_from_id3(image.type),
-                        comment=image.desc,
-                        support_types=True,
-                        data=image.data,
+                            file=filename,
+                            tag='FLAC/PICTURE',
+                            types=types_from_id3(image.type),
+                            comment=image.desc,
+                            support_types=True,
+                            data=image.data,
                     )
                 except CoverArtImageError as e:
                     log.error('Cannot load image from %r: %s' % (filename, e))
@@ -140,9 +145,9 @@ class VCommentFile(File):
                 for data in file["COVERART"]:
                     try:
                         coverartimage = TagCoverArtImage(
-                            file=filename,
-                            tag='COVERART',
-                            data=base64.standard_b64decode(data)
+                                file=filename,
+                                tag='COVERART',
+                                data=base64.standard_b64decode(data)
                         )
                     except CoverArtImageError as e:
                         log.error('Cannot load image from %r: %s' % (filename, e))
@@ -209,7 +214,7 @@ class VCommentFile(File):
                 file.add_picture(picture)
             else:
                 tags.setdefault("METADATA_BLOCK_PICTURE", []).append(
-                    base64.b64encode(picture.write()).decode('ascii'))
+                        base64.b64encode(picture.write()).decode('ascii'))
 
         file.tags.update(tags)
 
@@ -267,7 +272,6 @@ class VCommentFile(File):
 
 
 class FLACFile(VCommentFile):
-
     """FLAC file."""
     EXTENSIONS = [".flac"]
     NAME = "FLAC"
@@ -279,7 +283,6 @@ class FLACFile(VCommentFile):
 
 
 class OggFLACFile(VCommentFile):
-
     """FLAC file."""
     EXTENSIONS = [".oggflac"]
     NAME = "Ogg FLAC"
@@ -291,7 +294,6 @@ class OggFLACFile(VCommentFile):
 
 
 class OggSpeexFile(VCommentFile):
-
     """Ogg Speex file."""
     EXTENSIONS = [".spx"]
     NAME = "Speex"
@@ -303,7 +305,6 @@ class OggSpeexFile(VCommentFile):
 
 
 class OggTheoraFile(VCommentFile):
-
     """Ogg Theora file."""
     EXTENSIONS = [".oggtheora"]
     NAME = "Ogg Theora"
@@ -315,7 +316,6 @@ class OggTheoraFile(VCommentFile):
 
 
 class OggVorbisFile(VCommentFile):
-
     """Ogg Vorbis file."""
     EXTENSIONS = [".ogg"]
     NAME = "Ogg Vorbis"
@@ -327,7 +327,6 @@ class OggVorbisFile(VCommentFile):
 
 
 class OggOpusFile(VCommentFile):
-
     """Ogg Opus file."""
     EXTENSIONS = [".opus"]
     NAME = "Ogg Opus"
@@ -342,6 +341,7 @@ def OggAudioFile(filename):
     """Generic Ogg audio file."""
     options = [OggFLACFile, OggSpeexFile, OggVorbisFile]
     return guess_format(filename, options)
+
 
 OggAudioFile.EXTENSIONS = [".oga"]
 OggAudioFile.NAME = "Ogg Audio"

@@ -75,6 +75,7 @@ from functools import partial
 def _re_any(iterable):
     return re.compile('([' + ''.join(iterable) + '])', re.UNICODE)
 
+
 _additional_compatibility = {
     "\u0276": "Œ",  # LATIN LETTER SMALL CAPITAL OE
     "\u1D00": "A",  # LATIN LETTER SMALL CAPITAL A
@@ -437,7 +438,8 @@ def replace_non_ascii(string, repl="_"):
     interim = unicode_simplify_compatibility(interim)
 
     def error_repl(e, repl="_"):
-        return(repl, e.start + 1)
+        return (repl, e.start + 1)
+
     codecs.register_error('repl', partial(error_repl, repl=repl))
     # Decoding and encoding to allow replacements
     return interim.encode('ascii', 'repl').decode('ascii')

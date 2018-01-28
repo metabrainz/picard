@@ -22,13 +22,13 @@ from PyQt5.QtWidgets import QInputDialog
 from picard import config
 from picard.collection import load_user_collections
 from picard.const import MUSICBRAINZ_SERVERS
-from picard.ui.options import OptionsPage, register_options_page
+from picard.ui.options import (OptionsPage,
+                               register_options_page)
 from picard.ui.ui_options_general import Ui_GeneralOptionsPage
 from picard.util import webbrowser2
 
 
 class GeneralOptionsPage(OptionsPage):
-
     NAME = "general"
     TITLE = N_("General")
     PARENT = None
@@ -85,10 +85,10 @@ class GeneralOptionsPage(OptionsPage):
         authorization_url = self.tagger.webservice.oauth_manager.get_authorization_url(scopes)
         webbrowser2.open(authorization_url)
         authorization_code, ok = QInputDialog.getText(self,
-            _("MusicBrainz Account"), _("Authorization code:"))
+                                                      _("MusicBrainz Account"), _("Authorization code:"))
         if ok:
             self.tagger.webservice.oauth_manager.exchange_authorization_code(
-                authorization_code, scopes, self.on_authorization_finished)
+                    authorization_code, scopes, self.on_authorization_finished)
 
     def restore_defaults(self):
         super().restore_defaults()
@@ -97,7 +97,7 @@ class GeneralOptionsPage(OptionsPage):
     def on_authorization_finished(self, successful):
         if successful:
             self.tagger.webservice.oauth_manager.fetch_username(
-                self.on_login_finished)
+                    self.on_login_finished)
 
     def on_login_finished(self, successful):
         self.update_login_logout()

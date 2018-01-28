@@ -17,20 +17,38 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-from PyQt5 import QtCore, QtWidgets
+from PyQt5 import (QtCore,
+                   QtWidgets)
 
 from picard import config
-from picard.ui import PicardDialog, HashableTreeWidgetItem
+from picard.ui import (HashableTreeWidgetItem,
+                       PicardDialog)
 from picard.ui.options import (
     OptionsCheckError,
-    _pages as page_classes
+    _pages as page_classes,
+    about,
+    advanced,
+    cdlookup,
+    cover,
+    fingerprinting,
+    folksonomy,
+    general,
+    interface,
+    matching,
+    metadata,
+    network,
+    plugins,
+    ratings,
+    releases,
+    renaming,
+    scripting,
+    tags,
 )
 from picard.ui.util import StandardButton
 from picard.util import webbrowser2
 
 
 class OptionsDialog(PicardDialog):
-
     options = [
         config.Option("persist", "options_position", QtCore.QPoint()),
         config.Option("persist", "options_size", QtCore.QSize(560, 400)),
@@ -71,7 +89,8 @@ class OptionsDialog(PicardDialog):
         ok = StandardButton(StandardButton.OK)
         ok.setText(_("Make It So!"))
         self.ui.buttonbox.addButton(ok, QtWidgets.QDialogButtonBox.AcceptRole)
-        self.ui.buttonbox.addButton(StandardButton(StandardButton.CANCEL), QtWidgets.QDialogButtonBox.RejectRole)
+        self.ui.buttonbox.addButton(StandardButton(StandardButton.CANCEL),
+                                    QtWidgets.QDialogButtonBox.RejectRole)
         self.ui.buttonbox.addButton(StandardButton(StandardButton.HELP), QtWidgets.QDialogButtonBox.HelpRole)
         self.ui.buttonbox.addButton(self.ui.reset_all_button, QtWidgets.QDialogButtonBox.ActionRole)
         self.ui.buttonbox.addButton(self.ui.reset_button, QtWidgets.QDialogButtonBox.ActionRole)
@@ -93,7 +112,7 @@ class OptionsDialog(PicardDialog):
 
         # work-around to set optimal option pane width
         self.ui.pages_tree.expandAll()
-        max_page_name = self.ui.pages_tree.sizeHintForColumn(0) + 2*self.ui.pages_tree.frameWidth()
+        max_page_name = self.ui.pages_tree.sizeHintForColumn(0) + 2 * self.ui.pages_tree.frameWidth()
         self.ui.pages_tree.collapseAll()
         self.ui.pages_tree.setMinimumWidth(max_page_name)
 
@@ -168,6 +187,6 @@ class OptionsDialog(PicardDialog):
         message_box.setWindowModality(QtCore.Qt.WindowModal)
         message_box.setWindowTitle(_("Confirm Reset"))
         message_box.setText(_("Are you sure?") + "\n\n" + msg)
-        message_box.setStandardButtons(QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
+        message_box.setStandardButtons(QtWidgets.QMessageBox.Yes|QtWidgets.QMessageBox.No)
         if message_box.exec_() == QtWidgets.QMessageBox.Yes:
             function()

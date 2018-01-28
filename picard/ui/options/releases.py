@@ -20,7 +20,8 @@
 from locale import strxfrm
 from operator import itemgetter
 
-from PyQt5 import QtCore, QtWidgets
+from PyQt5 import (QtCore,
+                   QtWidgets)
 
 from picard import config
 from picard.const import (RELEASE_COUNTRIES,
@@ -28,11 +29,13 @@ from picard.const import (RELEASE_COUNTRIES,
                           RELEASE_PRIMARY_GROUPS,
                           RELEASE_SECONDARY_GROUPS)
 from picard.i18n import gettext_attr
-from picard.ui.options import OptionsPage, register_options_page
+from picard.ui.options import (OptionsPage,
+                               register_options_page)
 from picard.ui.ui_options_releases import Ui_ReleasesOptionsPage
 
 _DEFAULT_SCORE = 0.5
-_release_type_scores = [(g, _DEFAULT_SCORE) for g in list(RELEASE_PRIMARY_GROUPS.keys()) + list(RELEASE_SECONDARY_GROUPS.keys())]
+_release_type_scores = [(g, _DEFAULT_SCORE) for g in
+                        list(RELEASE_PRIMARY_GROUPS.keys()) + list(RELEASE_SECONDARY_GROUPS.keys())]
 
 
 class ReleaseTypeScore:
@@ -63,7 +66,7 @@ class ReleaseTypeScore:
 class RowColIter:
 
     def __init__(self, max_cells, max_cols=6, step=2):
-        assert(max_cols % step == 0)
+        assert (max_cols % step == 0)
         self.step = step
         self.cols = max_cols
         self.rows = int((max_cells - 1) / (self.cols / step)) + 1
@@ -83,7 +86,6 @@ class RowColIter:
 
 
 class ReleasesOptionsPage(OptionsPage):
-
     NAME = "releases"
     TITLE = N_("Preferred Releases")
     PARENT = "metadata"

@@ -31,8 +31,8 @@ class PasswordDialog(PicardDialog):
         self.ui = Ui_PasswordDialog()
         self.ui.setupUi(self)
         self.ui.info_text.setText(
-            _("The server %s requires you to login. Please enter your username and password.") %
-            reply.url().host())
+                _("The server %s requires you to login. Please enter your username and password.") %
+                reply.url().host())
         self.ui.username.setText(reply.url().userName())
         self.ui.password.setText(reply.url().password())
         self.ui.buttonbox.accepted.connect(self.set_new_password)
@@ -51,8 +51,9 @@ class ProxyDialog(PicardDialog):
         self._proxy = proxy
         self.ui = Ui_PasswordDialog()
         self.ui.setupUi(self)
-        self.ui.info_text.setText(_("The proxy %s requires you to login. Please enter your username and password.")
-                                  % config.setting["proxy_server_host"])
+        self.ui.info_text.setText(
+                _("The proxy %s requires you to login. Please enter your username and password.")
+                % config.setting["proxy_server_host"])
         self.ui.username.setText(config.setting["proxy_username"])
         self.ui.password.setText(config.setting["proxy_password"])
         self.ui.buttonbox.accepted.connect(self.set_proxy_password)

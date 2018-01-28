@@ -3,7 +3,9 @@
 # Automatically generated - don't edit.
 # Use `python setup.py build_ui` to update it.
 
-from PyQt5 import QtCore, QtWidgets
+from PyQt5 import (QtCore,
+                   QtWidgets)
+
 
 class Ui_CaaOptions(object):
     def setupUi(self, CaaOptions):
@@ -16,7 +18,8 @@ class Ui_CaaOptions(object):
         self.restrict_images_types = QtWidgets.QCheckBox(CaaOptions)
         self.restrict_images_types.setObjectName("restrict_images_types")
         self.select_caa_types_group.addWidget(self.restrict_images_types)
-        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding,
+                                           QtWidgets.QSizePolicy.Minimum)
         self.select_caa_types_group.addItem(spacerItem)
         self.select_caa_types = QtWidgets.QPushButton(CaaOptions)
         self.select_caa_types.setEnabled(False)
@@ -33,7 +36,8 @@ class Ui_CaaOptions(object):
         self.label = QtWidgets.QLabel(CaaOptions)
         self.label.setObjectName("label")
         self.horizontalLayout.addWidget(self.label)
-        spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding,
+                                            QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout.addItem(spacerItem1)
         self.cb_image_size = QtWidgets.QComboBox(CaaOptions)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
@@ -61,7 +65,8 @@ class Ui_CaaOptions(object):
         self.cb_type_as_filename.setSizePolicy(sizePolicy)
         self.cb_type_as_filename.setObjectName("cb_type_as_filename")
         self.verticalLayout.addWidget(self.cb_type_as_filename)
-        spacerItem2 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        spacerItem2 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum,
+                                            QtWidgets.QSizePolicy.Expanding)
         self.verticalLayout.addItem(spacerItem2)
 
         self.retranslateUi(CaaOptions)
@@ -83,5 +88,6 @@ class Ui_CaaOptions(object):
         self.cb_image_size.setItemText(2, _("Full size"))
         self.cb_save_single_front_image.setText(_("Save only one front image as separate file"))
         self.cb_approved_only.setText(_("Download only approved images"))
-        self.cb_type_as_filename.setText(_("Use the first image type as the filename. This will not change the filename of front images."))
-
+        self.cb_type_as_filename.setText(
+                _(
+                        "Use the first image type as the filename. This will not change the filename of front images."))

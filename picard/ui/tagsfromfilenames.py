@@ -20,7 +20,8 @@
 import os.path
 import re
 
-from PyQt5 import QtCore, QtWidgets
+from PyQt5 import (QtCore,
+                   QtWidgets)
 
 from picard import config
 from picard.ui import PicardDialog
@@ -30,7 +31,6 @@ from picard.util.tags import display_tag_name
 
 
 class TagsFromFileNamesDialog(PicardDialog):
-
     options = [
         config.TextOption("persist", "tags_from_filenames_format", ""),
         config.Option("persist", "tags_from_filenames_position", QtCore.QPoint()),
@@ -60,7 +60,8 @@ class TagsFromFileNamesDialog(PicardDialog):
         self.ui.format.addItems(items)
         self.ui.format.setCurrentIndex(selected_index)
         self.ui.buttonbox.addButton(StandardButton(StandardButton.OK), QtWidgets.QDialogButtonBox.AcceptRole)
-        self.ui.buttonbox.addButton(StandardButton(StandardButton.CANCEL), QtWidgets.QDialogButtonBox.RejectRole)
+        self.ui.buttonbox.addButton(StandardButton(StandardButton.CANCEL),
+                                    QtWidgets.QDialogButtonBox.RejectRole)
         self.ui.buttonbox.accepted.connect(self.accept)
         self.ui.buttonbox.rejected.connect(self.reject)
         self.ui.preview.clicked.connect(self.preview)
@@ -96,7 +97,7 @@ class TagsFromFileNamesDialog(PicardDialog):
         return format_re, columns
 
     def match_file(self, file, tff_format):
-        match = tff_format.search(file.filename.replace('\\','/'))
+        match = tff_format.search(file.filename.replace('\\', '/'))
         if match:
             result = {}
             for name, value in match.groupdict().items():

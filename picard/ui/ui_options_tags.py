@@ -3,7 +3,9 @@
 # Automatically generated - don't edit.
 # Use `python setup.py build_ui` to update it.
 
-from PyQt5 import QtCore, QtWidgets
+from PyQt5 import (QtCore,
+                   QtWidgets)
+
 
 class Ui_TagsOptionsPage(object):
     def setupUi(self, TagsOptionsPage):
@@ -70,7 +72,8 @@ class Ui_TagsOptionsPage(object):
         self.label.setWordWrap(True)
         self.label.setObjectName("label")
         self.horizontalLayout.addWidget(self.label)
-        spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding,
+                                            QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout.addItem(spacerItem1)
         self.vboxlayout2.addWidget(self.id3v2_version)
         self.id3v2_text_encoding = QtWidgets.QGroupBox(self.tag_compatibility)
@@ -87,7 +90,8 @@ class Ui_TagsOptionsPage(object):
         self.enc_iso88591 = QtWidgets.QRadioButton(self.id3v2_text_encoding)
         self.enc_iso88591.setObjectName("enc_iso88591")
         self.horizontalLayout_2.addWidget(self.enc_iso88591)
-        spacerItem2 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        spacerItem2 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding,
+                                            QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout_2.addItem(spacerItem2)
         self.label_2 = QtWidgets.QLabel(self.id3v2_text_encoding)
         self.label_2.setText("")
@@ -125,7 +129,8 @@ class Ui_TagsOptionsPage(object):
         self.write_id3v1.setObjectName("write_id3v1")
         self.vboxlayout2.addWidget(self.write_id3v1)
         self.vboxlayout.addWidget(self.tag_compatibility)
-        spacerItem3 = QtWidgets.QSpacerItem(274, 41, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        spacerItem3 = QtWidgets.QSpacerItem(274, 41, QtWidgets.QSizePolicy.Minimum,
+                                            QtWidgets.QSizePolicy.Expanding)
         self.vboxlayout.addItem(spacerItem3)
 
         self.retranslateUi(TagsOptionsPage)
@@ -151,7 +156,8 @@ class Ui_TagsOptionsPage(object):
         self.clear_existing_tags.setText(_("Clear existing tags"))
         self.remove_id3_from_flac.setText(_("Remove ID3 tags from FLAC files"))
         self.remove_ape_from_mp3.setText(_("Remove APEv2 tags from MP3 files"))
-        self.preserved_tags_label.setText(_("Preserve these tags from being cleared or overwritten with MusicBrainz data:"))
+        self.preserved_tags_label.setText(
+                _("Preserve these tags from being cleared or overwritten with MusicBrainz data:"))
         self.preserved_tags_help.setText(_("Tags are separated by commas, and are case-sensitive."))
         self.tag_compatibility.setTitle(_("Tag Compatibility"))
         self.id3v2_version.setTitle(_("ID3v2 Version"))
@@ -162,6 +168,6 @@ class Ui_TagsOptionsPage(object):
         self.enc_utf16.setText(_("UTF-16"))
         self.enc_iso88591.setText(_("ISO-8859-1"))
         self.label_id3v23_join_with.setText(_("Join multiple ID3v2.3 tags with:"))
-        self.id3v23_join_with.setToolTip(_("<html><head/><body><p>Default is \'/\' to maintain compatibility with previous Picard releases.</p><p>New alternatives are \';_\' or \'_/_\' or type your own. </p></body></html>"))
+        self.id3v23_join_with.setToolTip(_(
+                "<html><head/><body><p>Default is \'/\' to maintain compatibility with previous Picard releases.</p><p>New alternatives are \';_\' or \'_/_\' or type your own. </p></body></html>"))
         self.write_id3v1.setText(_("Also include ID3v1 tags in the files"))
-

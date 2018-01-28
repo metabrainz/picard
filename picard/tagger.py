@@ -25,7 +25,9 @@ import sip
 sip.setapi("QString", 2)
 sip.setapi("QVariant", 2)
 
-from PyQt5 import QtGui, QtCore, QtWidgets
+from PyQt5 import (QtGui,
+                   QtCore,
+                   QtWidgets)
 
 import argparse
 import os.path
@@ -50,19 +52,26 @@ def _patched_shutil_copystat(src, dst, *, follow_symlinks=True):
 _orig_shutil_copystat = shutil.copystat
 shutil.copystat = _patched_shutil_copystat
 
-
 # Not an unused import, do not remove it!
 import picard.resources
-from picard import (PICARD_APP_NAME, PICARD_ORG_NAME, PICARD_FANCY_VERSION_STR,
-                    log, acoustid, config)
+from picard import (PICARD_APP_NAME,
+                    PICARD_ORG_NAME,
+                    PICARD_FANCY_VERSION_STR,
+                    log,
+                    acoustid,
+                    config)
 from picard.acoustid.manager import AcoustIDManager
-from picard.album import Album, NatAlbum
+from picard.album import (Album,
+                          NatAlbum)
 from picard.browser.browser import BrowserIntegration
 from picard.browser.filelookup import FileLookup
-from picard.cluster import Cluster, ClusterList, UnclusteredFiles
+from picard.cluster import (Cluster,
+                            ClusterList,
+                            UnclusteredFiles)
 from picard.collection import load_user_collections
 from picard.config_upgrade import upgrade_config
-from picard.const import USER_DIR, USER_PLUGIN_DIR
+from picard.const import (USER_DIR,
+                          USER_PLUGIN_DIR)
 from picard.dataobj import DataObject
 from picard.disc import Disc
 from picard.file import File
@@ -70,7 +79,8 @@ from picard.formats import open_ as open_file
 from picard.i18n import setup_gettext
 from picard.plugin import PluginManager
 from picard.releasegroup import ReleaseGroup
-from picard.track import Track, NonAlbumTrack
+from picard.track import (Track,
+                          NonAlbumTrack)
 from picard.ui.mainwindow import MainWindow
 from picard.ui.itemviews import BaseTreeView
 from picard.ui.searchdialog import (
@@ -89,11 +99,11 @@ from picard.util import (
     versions,
 )
 from picard.webservice import WebService
-from picard.webservice.api_helpers import MBAPIHelper, AcoustIdAPIHelper
+from picard.webservice.api_helpers import (MBAPIHelper,
+                                           AcoustIdAPIHelper)
 
 
 class Tagger(QtWidgets.QApplication):
-
     tagger_stats_changed = QtCore.pyqtSignal()
     listen_port_changed = QtCore.pyqtSignal(int)
     cluster_added = QtCore.pyqtSignal(Cluster)
@@ -234,11 +244,11 @@ class Tagger(QtWidgets.QApplication):
         if self._debug == debug:
             return
         if debug:
-            log.log_levels = log.log_levels | log.LOG_DEBUG
+            log.log_levels = log.log_levels|log.LOG_DEBUG
             log.debug("Debug mode on")
         else:
             log.debug("Debug mode off")
-            log.log_levels = log.log_levels & ~log.LOG_DEBUG
+            log.log_levels = log.log_levels&~log.LOG_DEBUG
         self._debug = debug
 
     def move_files_to_album(self, files, albumid=None, album=None):
@@ -411,19 +421,19 @@ class Tagger(QtWidgets.QApplication):
                 number_of_files = len(files)
                 if number_of_files:
                     mparms = {
-                        'count': number_of_files,
+                        'count':     number_of_files,
                         'directory': root,
                     }
                     log.debug("Adding %(count)d files from '%(directory)r'" %
                               mparms)
                     self.window.set_statusbar_message(
-                        ngettext(
-                            "Adding %(count)d file from '%(directory)s' ...",
-                            "Adding %(count)d files from '%(directory)s' ...",
-                            number_of_files),
-                        mparms,
-                        translate=None,
-                        echo=None
+                            ngettext(
+                                    "Adding %(count)d file from '%(directory)s' ...",
+                                    "Adding %(count)d files from '%(directory)s' ...",
+                                    number_of_files),
+                            mparms,
+                            translate=None,
+                            echo=None
                     )
                 return (os.path.join(root, f) for f in files)
 
@@ -444,19 +454,19 @@ class Tagger(QtWidgets.QApplication):
         number_of_files = len(files)
         if number_of_files:
             mparms = {
-                'count': number_of_files,
+                'count':     number_of_files,
                 'directory': path,
             }
             log.debug("Adding %(count)d files from '%(directory)r'" %
                       mparms)
             self.window.set_statusbar_message(
-                ngettext(
-                    "Adding %(count)d file from '%(directory)s' ...",
-                    "Adding %(count)d files from '%(directory)s' ...",
-                    number_of_files),
-                mparms,
-                translate=None,
-                echo=None
+                    ngettext(
+                            "Adding %(count)d file from '%(directory)s' ...",
+                            "Adding %(count)d files from '%(directory)s' ...",
+                            number_of_files),
+                    mparms,
+                    translate=None,
+                    echo=None
             )
             # Function call only if files exist
             self.add_files(files)
@@ -469,7 +479,8 @@ class Tagger(QtWidgets.QApplication):
 
     def copy_files(self, objects):
         mimeData = QtCore.QMimeData()
-        mimeData.setUrls([QtCore.QUrl.fromLocalFile(f.filename) for f in (self.get_files_from_objects(objects))])
+        mimeData.setUrls(
+                [QtCore.QUrl.fromLocalFile(f.filename) for f in (self.get_files_from_objects(objects))])
         self.clipboard().setMimeData(mimeData)
 
     def paste_files(self, target):
@@ -514,12 +525,12 @@ class Tagger(QtWidgets.QApplication):
                 lookup.album_lookup(itemid)
         else:
             lookup.tag_lookup(
-                metadata["albumartist"] if item.is_album_like() else metadata["artist"],
-                metadata["album"],
-                metadata["title"],
-                metadata["tracknumber"],
-                '' if item.is_album_like() else string_(metadata.length),
-                item.filename if isinstance(item, File) else '')
+                    metadata["albumartist"] if item.is_album_like() else metadata["artist"],
+                    metadata["album"],
+                    metadata["title"],
+                    metadata["tracknumber"],
+                    '' if item.is_album_like() else string_(metadata.length),
+                    item.filename if isinstance(item, File) else '')
 
     def get_files_from_objects(self, objects, save=False):
         """Return list of files from list of albums, clusters, tracks or files."""
@@ -609,12 +620,12 @@ class Tagger(QtWidgets.QApplication):
                 files.extend(obj.linked_files)
             elif isinstance(obj, Album):
                 self.window.set_statusbar_message(
-                    N_("Removing album %(id)s: %(artist)s - %(album)s"),
-                    {
-                        'id': obj.id,
-                        'artist': obj.metadata['albumartist'],
-                        'album': obj.metadata['album']
-                    }
+                        N_("Removing album %(id)s: %(artist)s - %(album)s"),
+                        {
+                            'id':     obj.id,
+                            'artist': obj.metadata['albumartist'],
+                            'album':  obj.metadata['album']
+                        }
                 )
                 self.remove_album(obj)
             elif isinstance(obj, UnclusteredFiles):
@@ -628,7 +639,7 @@ class Tagger(QtWidgets.QApplication):
         self.restore_cursor()
         if error is not None:
             QtWidgets.QMessageBox.critical(self.window, _("CD Lookup Error"),
-                                       _("Error while reading CD:\n\n%s") % error)
+                                           _("Error while reading CD:\n\n%s") % error)
         else:
             disc.lookup()
 
@@ -645,9 +656,9 @@ class Tagger(QtWidgets.QApplication):
         disc = Disc()
         self.set_wait_cursor()
         thread.run_task(
-            partial(disc.read, encode_filename(device)),
-            partial(self._lookup_disc, disc),
-            traceback=self._debug)
+                partial(disc.read, encode_filename(device)),
+                partial(self._lookup_disc, disc),
+                traceback=self._debug)
 
     @property
     def use_acoustid(self):
@@ -704,7 +715,7 @@ class Tagger(QtWidgets.QApplication):
     def set_wait_cursor(self):
         """Sets the waiting cursor."""
         QtWidgets.QApplication.setOverrideCursor(
-            QtGui.QCursor(QtCore.Qt.WaitCursor))
+                QtGui.QCursor(QtCore.Qt.WaitCursor))
 
     def restore_cursor(self):
         """Restores the cursor set by ``set_wait_cursor``."""
@@ -716,7 +727,8 @@ class Tagger(QtWidgets.QApplication):
                 obj.load(priority=True, refresh=True)
 
     def bring_tagger_front(self):
-        self.window.setWindowState(self.window.windowState() & ~QtCore.Qt.WindowMinimized | QtCore.Qt.WindowActive)
+        self.window.setWindowState(
+                self.window.windowState()&~QtCore.Qt.WindowMinimized|QtCore.Qt.WindowActive)
         self.window.raise_()
         self.window.activateWindow()
 
@@ -747,7 +759,7 @@ def longversion():
 
 def process_picard_args():
     parser = argparse.ArgumentParser(
-        epilog="If one of the filenames begins with a hyphen, use -- to separate the options from the filenames."
+            epilog="If one of the filenames begins with a hyphen, use -- to separate the options from the filenames."
     )
     parser.add_argument("-c", "--config-file", action='store',
                         default=None,

@@ -18,17 +18,16 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from picard import config
-from picard.coverart.providers import cover_art_providers, is_provider_enabled
-from picard.ui.options import OptionsPage, register_options_page
-from picard.ui.sortablecheckboxlist import (
-    SortableCheckboxListWidget,
-    SortableCheckboxListItem
-)
+from picard.coverart.providers import (cover_art_providers,
+                                       is_provider_enabled)
+from picard.ui.options import (OptionsPage,
+                               register_options_page)
+from picard.ui.sortablecheckboxlist import (SortableCheckboxListItem,
+                                            SortableCheckboxListWidget)
 from picard.ui.ui_options_cover import Ui_CoverOptionsPage
 
 
 class CoverOptionsPage(OptionsPage):
-
     NAME = "cover"
     TITLE = N_("Cover Art")
     PARENT = None
@@ -70,10 +69,12 @@ class CoverOptionsPage(OptionsPage):
             except AttributeError:
                 title = provider.NAME
             checked = is_provider_enabled(provider.NAME)
-            self.provider_list_widget.addItem(SortableCheckboxListItem(title, checked=checked, data=provider.NAME))
+            self.provider_list_widget.addItem(
+                    SortableCheckboxListItem(title, checked=checked, data=provider.NAME))
 
         def update_providers_options(items):
             self.ca_providers = [(item.data, item.checked) for item in items]
+
         self.provider_list_widget.changed.connect(update_providers_options)
 
     def restore_defaults(self):
@@ -111,5 +112,6 @@ class CoverOptionsPage(OptionsPage):
     def update_save_images_to_tags(self):
         enabled = self.ui.save_images_to_tags.isChecked()
         self.ui.cb_embed_front_only.setEnabled(enabled)
+
 
 register_options_page(CoverOptionsPage)

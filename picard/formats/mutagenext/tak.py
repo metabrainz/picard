@@ -18,7 +18,9 @@ and http://en.wikipedia.org/wiki/TAK_(audio_codec)
 
 __all__ = ["TAK", "Open", "delete"]
 
-from mutagen.apev2 import APEv2File, error, delete
+from mutagen.apev2 import (APEv2File,
+                           delete,
+                           error)
 
 
 class TAKHeaderError(error):
@@ -26,7 +28,6 @@ class TAKHeaderError(error):
 
 
 class TAKInfo(object):
-
     """TAK stream information.
 
     Attributes:
@@ -48,6 +49,8 @@ class TAK(APEv2File):
 
     def score(filename, fileobj, header):
         return header.startswith(b"tBaK") + filename.lower().endswith(".tak")
+
     score = staticmethod(score)
+
 
 Open = TAK

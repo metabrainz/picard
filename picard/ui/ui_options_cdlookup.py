@@ -3,7 +3,9 @@
 # Automatically generated - don't edit.
 # Use `python setup.py build_ui` to update it.
 
-from PyQt5 import QtCore, QtWidgets
+from PyQt5 import (QtCore,
+                   QtWidgets)
+
 
 class Ui_CDLookupOptionsPage(object):
     def setupUi(self, CDLookupOptionsPage):
@@ -26,7 +28,8 @@ class Ui_CDLookupOptionsPage(object):
         self.label_3.setObjectName("label_3")
         self.gridlayout.addWidget(self.label_3, 0, 0, 1, 1)
         self.vboxlayout.addWidget(self.rename_files)
-        spacerItem = QtWidgets.QSpacerItem(161, 81, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        spacerItem = QtWidgets.QSpacerItem(161, 81, QtWidgets.QSizePolicy.Minimum,
+                                           QtWidgets.QSizePolicy.Expanding)
         self.vboxlayout.addItem(spacerItem)
         self.label_3.setBuddy(self.cd_lookup_device)
 
@@ -37,4 +40,3 @@ class Ui_CDLookupOptionsPage(object):
         _translate = QtCore.QCoreApplication.translate
         self.rename_files.setTitle(_("CD Lookup"))
         self.label_3.setText(_("CD-ROM device to use for lookups:"))
-

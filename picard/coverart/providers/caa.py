@@ -22,22 +22,30 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-from PyQt5 import QtCore, QtWidgets
+from PyQt5 import (QtCore,
+                   QtWidgets)
 from PyQt5.QtNetwork import QNetworkReply
 
-from picard import config, log
-from picard.const import CAA_HOST, CAA_PORT
-from picard.coverart.image import CaaCoverArtImage, CaaThumbnailCoverArtImage
-from picard.coverart.providers import CoverArtProvider, ProviderOptions
-from picard.coverart.utils import CAA_TYPES, translate_caa_type
+from picard import (config,
+                    log)
+from picard.const import (CAA_HOST,
+                          CAA_PORT)
+from picard.coverart.image import (CaaCoverArtImage,
+                                   CaaThumbnailCoverArtImage)
+from picard.coverart.providers import (CoverArtProvider,
+                                       ProviderOptions)
+from picard.coverart.utils import (CAA_TYPES,
+                                   translate_caa_type)
 from picard.ui.ui_provider_options_caa import Ui_CaaOptions
 from picard.ui.util import StandardButton
-from picard.util import webbrowser2, load_json
+from picard.util import (load_json,
+                         webbrowser2)
 
 _CAA_THUMBNAIL_SIZE_MAP = {
     0: "small",
     1: "large",
 }
+
 
 class CAATypesSelectorDialog(QtWidgets.QDialog):
     _columns = 4
@@ -70,11 +78,11 @@ class CAATypesSelectorDialog(QtWidgets.QDialog):
         self.buttonbox = QtWidgets.QDialogButtonBox(self)
         self.buttonbox.setOrientation(QtCore.Qt.Horizontal)
         self.buttonbox.addButton(
-            StandardButton(StandardButton.OK), QtWidgets.QDialogButtonBox.AcceptRole)
+                StandardButton(StandardButton.OK), QtWidgets.QDialogButtonBox.AcceptRole)
         self.buttonbox.addButton(StandardButton(StandardButton.CANCEL),
                                  QtWidgets.QDialogButtonBox.RejectRole)
         self.buttonbox.addButton(
-            StandardButton(StandardButton.HELP), QtWidgets.QDialogButtonBox.HelpRole)
+                StandardButton(StandardButton.HELP), QtWidgets.QDialogButtonBox.HelpRole)
         self.buttonbox.accepted.connect(self.accept)
         self.buttonbox.rejected.connect(self.reject)
         self.buttonbox.helpRequested.connect(self.help)
@@ -86,7 +94,7 @@ class CAATypesSelectorDialog(QtWidgets.QDialog):
         for label, callback in extrabuttons:
             button = QtWidgets.QPushButton(_(label))
             button.setSizePolicy(
-                QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Expanding)
+                    QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Expanding)
             self.buttonbox.addButton(button, QtWidgets.QDialogButtonBox.ActionRole)
             button.clicked.connect(callback)
 
@@ -120,7 +128,7 @@ class CAATypesSelectorDialog(QtWidgets.QDialog):
     @staticmethod
     def run(parent=None, types=None):
         if types is None:
-                types = []
+            types = []
         dialog = CAATypesSelectorDialog(parent, types)
         result = dialog.exec_()
         return (dialog.get_selected_types(), result == QtWidgets.QDialog.Accepted)
@@ -153,7 +161,7 @@ class ProviderOptionsCaa(ProviderOptions):
         self.ui.cb_approved_only.setChecked(config.setting["caa_approved_only"])
         self.ui.cb_type_as_filename.setChecked(config.setting["caa_image_type_as_filename"])
         self.ui.restrict_images_types.setChecked(
-            config.setting["caa_restrict_image_types"])
+                config.setting["caa_restrict_image_types"])
         self.update_caa_types()
 
     def save(self):
@@ -174,14 +182,12 @@ class ProviderOptionsCaa(ProviderOptions):
 
     def select_caa_types(self):
         (types, ok) = CAATypesSelectorDialog.run(
-            self, config.setting["caa_image_types"])
+                self, config.setting["caa_image_types"])
         if ok:
             config.setting["caa_image_types"] = types
 
 
-
 class CoverArtProviderCaa(CoverArtProvider):
-
     """Get cover art from Cover Art Archive using release mbid"""
 
     NAME = "Cover Art Archive"
@@ -265,12 +271,12 @@ class CoverArtProviderCaa(CoverArtProvider):
 
     def queue_images(self):
         self.album.tagger.webservice.download(
-            CAA_HOST,
-            CAA_PORT,
-            self._caa_path,
-            self._caa_json_downloaded,
-            priority=True,
-            important=False
+                CAA_HOST,
+                CAA_PORT,
+                self._caa_path,
+                self._caa_json_downloaded,
+                priority=True,
+                important=False
         )
         self.album._requests += 1
         # we will call next_in_queue() after json parsing
@@ -299,7 +305,7 @@ class CoverArtProviderCaa(CoverArtProvider):
                                   image["image"])
                         continue
                     # if image has no type set, we still want it to match
-                    # pseudo type 'unknown'
+                    # pseudo type 'unknown'
                     if not image["types"]:
                         image["types"] = ["unknown"]
                     else:
@@ -307,7 +313,7 @@ class CoverArtProviderCaa(CoverArtProvider):
                     if self.restrict_types:
                         # only keep enabled caa types
                         types = set(image["types"]).intersection(
-                            set(self.caa_types))
+                                set(self.caa_types))
                     else:
                         types = True
                     if types:
@@ -316,19 +322,19 @@ class CoverArtProviderCaa(CoverArtProvider):
                         else:
                             url = image["thumbnails"][thumbsize]
                         coverartimage = self.coverartimage_class(
-                            url,
-                            types=image["types"],
-                            is_front=image['front'],
-                            comment=image["comment"],
+                                url,
+                                types=image["types"],
+                                is_front=image['front'],
+                                comment=image["comment"],
                         )
                         if is_pdf:
                             # thumbnail will be used to "display" PDF in info
                             # dialog
                             thumbnail = self.coverartimage_thumbnail_class(
-                                url=image["thumbnails"]['small'],
-                                types=image["types"],
-                                is_front=image['front'],
-                                comment=image["comment"],
+                                    url=image["thumbnails"]['small'],
+                                    types=image["types"],
+                                    is_front=image['front'],
+                                    comment=image["comment"],
                             )
                             self.queue_put(thumbnail)
                             coverartimage.thumbnail = thumbnail
@@ -338,6 +344,6 @@ class CoverArtProviderCaa(CoverArtProvider):
                         if config.setting["caa_save_single_front_image"] and \
                                 config.setting["save_images_to_files"] and \
                                 image["front"]:
-                                    break
+                            break
 
         self.next_in_queue()

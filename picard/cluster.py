@@ -23,7 +23,8 @@ from __future__ import print_function
 import ntpath
 import re
 import sys
-from heapq import heappush, heappop
+from heapq import (heappop,
+                   heappush)
 from operator import itemgetter
 
 from PyQt5 import QtCore
@@ -33,19 +34,19 @@ from picard.const import QUERY_LIMIT
 from picard.metadata import Metadata
 from picard.similarity import similarity
 from picard.ui.item import Item
-from picard.util import format_time, album_artist_from_path
+from picard.util import (album_artist_from_path,
+                         format_time)
 from picard.util.imagelist import update_metadata_images
 
 
 class Cluster(QtCore.QObject, Item):
-
     # Weights for different elements when comparing a cluster to a release
     comparison_weights = {
-        'album': 17,
-        'albumartist': 6,
-        'totaltracks': 5,
+        'album':          17,
+        'albumartist':    6,
+        'totaltracks':    5,
         'releasecountry': 2,
-        'format': 2,
+        'format':         2,
     }
 
     def __init__(self, name, artist="", special=False, related_album=None, hide_if_empty=False):
@@ -66,7 +67,7 @@ class Cluster(QtCore.QObject, Item):
             return '<Cluster %s %r>' % (
                 self.related_album.id,
                 self.related_album.metadata[u"album"] + '/' + self.metadata['album']
-                )
+            )
         return '<Cluster %r>' % self.metadata['album']
 
     def __len__(self):
@@ -186,28 +187,28 @@ class Cluster(QtCore.QObject, Item):
         # no matches
         if not releases:
             self.tagger.window.set_statusbar_message(
-                N_("No matching releases for cluster %(album)s"),
-                mparms,
-                timeout=3000
+                    N_("No matching releases for cluster %(album)s"),
+                    mparms,
+                    timeout=3000
             )
             return
 
         # multiple matches -- calculate similarities to each of them
         match = sorted((self.metadata.compare_to_release(
-            release, Cluster.comparison_weights) for release in releases),
-            reverse=True, key=itemgetter(0))[0]
+                release, Cluster.comparison_weights) for release in releases),
+                reverse=True, key=itemgetter(0))[0]
 
         if match[0] < config.setting['cluster_lookup_threshold']:
             self.tagger.window.set_statusbar_message(
-                N_("No matching releases for cluster %(album)s"),
-                mparms,
-                timeout=3000
+                    N_("No matching releases for cluster %(album)s"),
+                    mparms,
+                    timeout=3000
             )
             return
         self.tagger.window.set_statusbar_message(
-            N_("Cluster %(album)s identified!"),
-            mparms,
-            timeout=3000
+                N_("Cluster %(album)s identified!"),
+                mparms,
+                timeout=3000
         )
         self.tagger.move_files_to_album(self.files, match[1]['id'])
 
@@ -216,14 +217,14 @@ class Cluster(QtCore.QObject, Item):
         if self.lookup_task:
             return
         self.tagger.window.set_statusbar_message(
-            N_("Looking up the metadata for cluster %(album)s..."),
-            {'album': self.metadata['album']}
+                N_("Looking up the metadata for cluster %(album)s..."),
+                {'album': self.metadata['album']}
         )
         self.lookup_task = self.tagger.mb_api.find_releases(self._lookup_finished,
-            artist=self.metadata['albumartist'],
-            release=self.metadata['album'],
-            tracks=string_(len(self.files)),
-            limit=QUERY_LIMIT)
+                                                            artist=self.metadata['albumartist'],
+                                                            release=self.metadata['album'],
+                                                            tracks=string_(len(self.files)),
+                                                            limit=QUERY_LIMIT)
 
     def clear_lookup_task(self):
         if self.lookup_task:
@@ -271,7 +272,7 @@ class Cluster(QtCore.QObject, Item):
             artist_hist = {}
             for track_id in album:
                 cluster = artist_cluster_engine.getClusterFromId(
-                    tracks[track_id][0])
+                        tracks[track_id][0])
                 if cluster is not None:
                     cnt = artist_hist.get(cluster, 0) + 1
                     if cnt > artist_max:
@@ -291,7 +292,6 @@ class Cluster(QtCore.QObject, Item):
 
 
 class UnclusteredFiles(Cluster):
-
     """Special cluster for 'Unmatched Files' which have no PUID and have not been clustered."""
 
     def __init__(self):
@@ -326,7 +326,6 @@ class UnclusteredFiles(Cluster):
 
 
 class ClusterList(list, Item):
-
     """A list of clusters."""
 
     def __init__(self):

@@ -28,10 +28,12 @@ from functools import partial
 
 from PyQt5.QtCore import QObject
 
-from picard import config, log
+from picard import (config,
+                    log)
 from picard.coverart.image import (CoverArtImageIOError,
                                    CoverArtImageIdentificationError)
-from picard.coverart.providers import cover_art_providers, CoverArtProvider
+from picard.coverart.providers import (CoverArtProvider,
+                                       cover_art_providers)
 
 
 class CoverArt:
@@ -49,7 +51,7 @@ class CoverArt:
     def retrieve(self):
         """Retrieve available cover art images for the release"""
         if (not config.setting["save_images_to_tags"] and not
-                config.setting["save_images_to_files"]):
+        config.setting["save_images_to_files"]):
             log.debug("Cover art disabled by user options.")
             return
 
@@ -63,27 +65,26 @@ class CoverArt:
                 log.debug("Cover art image stored to metadata: %r [%s]" % (
                     coverartimage,
                     coverartimage.imageinfo_as_string())
-                )
+                          )
                 self.metadata.append_image(coverartimage)
                 for track in self.album._new_tracks:
                     track.metadata.append_image(coverartimage)
                 # If the image already was a front image,
-                # there might still be some other non-CAA front
-                # images in the queue - ignore them.
+                # there might still be some other non-CAA front
+                # images in the queue - ignore them.
                 if not self.front_image_found:
                     self.front_image_found = coverartimage.is_front_image()
             else:
                 log.debug("Thumbnail for cover art image: %r [%s]" % (
                     coverartimage,
                     coverartimage.imageinfo_as_string())
-                )
+                          )
         except CoverArtImageIOError as e:
             self.album.error_append(e)
             self.album._finalize_loading(error=True)
             raise e
         except CoverArtImageIdentificationError as e:
             self.album.error_append(e)
-
 
     def _coverart_downloaded(self, coverartimage, data, http, error):
         """Handle finished download, save it to metadata"""
@@ -95,13 +96,13 @@ class CoverArt:
             log.warning("Not enough data, skipping %s" % coverartimage)
         else:
             self._message(
-                N_("Cover art of type '%(type)s' downloaded for %(albumid)s from %(host)s"),
-                {
-                    'type': coverartimage.types_as_string(),
-                    'albumid': self.album.id,
-                    'host': coverartimage.host
-                },
-                echo=None
+                    N_("Cover art of type '%(type)s' downloaded for %(albumid)s from %(host)s"),
+                    {
+                        'type':    coverartimage.types_as_string(),
+                        'albumid': self.album.id,
+                        'host':    coverartimage.host
+                    },
+                    echo=None
             )
             try:
                 self._set_metadata(coverartimage, data)
@@ -182,22 +183,22 @@ class CoverArt:
 
         # on the web
         self._message(
-            N_("Downloading cover art of type '%(type)s' for %(albumid)s from %(host)s ..."),
-            {
-                'type': coverartimage.types_as_string(),
-                'albumid': self.album.id,
-                'host': coverartimage.host
-            },
-            echo=None
+                N_("Downloading cover art of type '%(type)s' for %(albumid)s from %(host)s ..."),
+                {
+                    'type':    coverartimage.types_as_string(),
+                    'albumid': self.album.id,
+                    'host':    coverartimage.host
+                },
+                echo=None
         )
         log.debug("Downloading %r" % coverartimage)
         self.album.tagger.webservice.download(
-            coverartimage.host,
-            coverartimage.port,
-            coverartimage.path,
-            partial(self._coverart_downloaded, coverartimage),
-            priority=True,
-            important=False
+                coverartimage.host,
+                coverartimage.port,
+                coverartimage.path,
+                partial(self._coverart_downloaded, coverartimage),
+                priority=True,
+                important=False
         )
         self.album._requests += 1
 

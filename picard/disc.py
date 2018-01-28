@@ -3,7 +3,7 @@
 # Picard, the next-generation MusicBrainz tagger
 # Copyright (C) 2007 Lukáš Lalinský
 # Copyright (C) 2006 Matthias Friedrich
-# Copyright (C) 2013 Laurent Monin
+# Copyright (C) 2013 Laurent Monin
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -20,11 +20,11 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 try:
-    # use python-libdiscid (http://pythonhosted.org/python-libdiscid/)
+    # use python-libdiscid (http://pythonhosted.org/python-libdiscid/)
     from libdiscid.compat import discid
 except ImportError:
     try:
-        # use python-discid (http://python-discid.readthedocs.org/en/latest/)
+        # use python-discid (http://python-discid.readthedocs.org/en/latest/)
         import discid
     except ImportError:
         discid = None

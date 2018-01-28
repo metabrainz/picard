@@ -22,7 +22,8 @@ import re
 
 from PyQt5 import QtWidgets
 
-from picard import (log, config)
+from picard import (config,
+                    log)
 
 
 # TO ADD AN UPGRADE HOOK:
@@ -38,14 +39,15 @@ def upgrade_to_v1_0_0_final_0():
     """In version 1.0, the file naming formats for single and various artist releases were merged.
     """
     _s = config.setting
+
     def remove_va_file_naming_format(merge=True):
         if merge:
             _s["file_naming_format"] = (
-                "$if($eq(%%compilation%%,1),\n$noop(Various Artist "
-                "albums)\n%s,\n$noop(Single Artist Albums)\n%s)" % (
-                    _s.value("va_file_naming_format", config.TextOption),
-                    _s["file_naming_format"]
-                ))
+                    "$if($eq(%%compilation%%,1),\n$noop(Various Artist "
+                    "albums)\n%s,\n$noop(Single Artist Albums)\n%s)" % (
+                        _s.value("va_file_naming_format", config.TextOption),
+                        _s["file_naming_format"]
+                    ))
         _s.remove("va_file_naming_format")
         _s.remove("use_va_format")
 
@@ -55,27 +57,27 @@ def upgrade_to_v1_0_0_final_0():
         if _s.value("use_va_format", config.BoolOption):
             remove_va_file_naming_format()
             msgbox.information(msgbox,
-                _("Various Artists file naming scheme removal"),
-                _("The separate file naming scheme for various artists "
-                    "albums has been removed in this version of Picard.\n"
-                    "Your file naming scheme has automatically been "
-                    "merged with that of single artist albums."),
-                QtWidgets.QMessageBox.Ok)
+                               _("Various Artists file naming scheme removal"),
+                               _("The separate file naming scheme for various artists "
+                                 "albums has been removed in this version of Picard.\n"
+                                 "Your file naming scheme has automatically been "
+                                 "merged with that of single artist albums."),
+                               QtWidgets.QMessageBox.Ok)
 
         elif (_s.value("va_file_naming_format", config.TextOption) !=
-                r"$if2(%albumartist%,%artist%)/%album%/$if($gt(%totaldis"
-                "cs%,1),%discnumber%-,)$num(%tracknumber%,2) %artist% - "
-                "%title%"):
+              r"$if2(%albumartist%,%artist%)/%album%/$if($gt(%totaldis"
+              "cs%,1),%discnumber%-,)$num(%tracknumber%,2) %artist% - "
+              "%title%"):
 
             answer = msgbox.question(msgbox,
-                _("Various Artists file naming scheme removal"),
-                _("The separate file naming scheme for various artists "
-                    "albums has been removed in this version of Picard.\n"
-                    "You currently do not use this option, but have a "
-                    "separate file naming scheme defined.\n"
-                    "Do you want to remove it or merge it with your file "
-                    "naming scheme for single artist albums?"),
-                _("Merge"), _("Remove"))
+                                     _("Various Artists file naming scheme removal"),
+                                     _("The separate file naming scheme for various artists "
+                                       "albums has been removed in this version of Picard.\n"
+                                       "You currently do not use this option, but have a "
+                                       "separate file naming scheme defined.\n"
+                                       "Do you want to remove it or merge it with your file "
+                                       "naming scheme for single artist albums?"),
+                                     _("Merge"), _("Remove"))
 
             if answer:
                 remove_va_file_naming_format(merge=False)
@@ -112,10 +114,10 @@ def upgrade_to_v1_3_0_dev_3():
     _s = config.setting
     option_separators = {
         "preferred_release_countries": "  ",
-        "preferred_release_formats": "  ",
-        "enabled_plugins": None,
-        "caa_image_types": None,
-        "metadata_box_sizes": None,
+        "preferred_release_formats":   "  ",
+        "enabled_plugins":             None,
+        "caa_image_types":             None,
+        "metadata_box_sizes":          None,
     }
     for (opt, sep) in option_separators.items():
         if opt in _s:
@@ -126,6 +128,7 @@ def upgrade_to_v1_3_0_dev_4():
     """Option "release_type_scores" is now a list of tuples
     """
     _s = config.setting
+
     def load_release_type_scores(setting):
         scores = []
         values = setting.split()
@@ -174,19 +177,19 @@ def upgrade_to_v1_4_0_dev_4():
     """Adds trailing comma to default file names for scripts"""
     _s = config.setting
     _DEFAULT_FILE_NAMING_FORMAT = "$if2(%albumartist%,%artist%)/" \
-        "$if($ne(%albumartist%,),%album%/)" \
-        "$if($gt(%totaldiscs%,1),%discnumber%-,)" \
-        "$if($ne(%albumartist%,),$num(%tracknumber%,2) ,)" \
-        "$if(%_multiartist%,%artist% - ,)" \
-        "%title%"
+                                  "$if($ne(%albumartist%,),%album%/)" \
+                                  "$if($gt(%totaldiscs%,1),%discnumber%-,)" \
+                                  "$if($ne(%albumartist%,),$num(%tracknumber%,2) ,)" \
+                                  "$if(%_multiartist%,%artist% - ,)" \
+                                  "%title%"
     if _s["file_naming_format"] == _DEFAULT_FILE_NAMING_FORMAT:
         _DEFAULT_FILE_NAMING_FORMAT = "$if2(%albumartist%,%artist%)/" \
-            "$if($ne(%albumartist%,),%album%/,)" \
-            "$if($gt(%totaldiscs%,1),%discnumber%-,)" \
-            "$if($ne(%albumartist%,),$num(%tracknumber%,2) ,)" \
-            "$if(%_multiartist%,%artist% - ,)" \
-            "%title%"
-        _s["file_naming_format"]  = _DEFAULT_FILE_NAMING_FORMAT
+                                      "$if($ne(%albumartist%,),%album%/,)" \
+                                      "$if($gt(%totaldiscs%,1),%discnumber%-,)" \
+                                      "$if($ne(%albumartist%,),$num(%tracknumber%,2) ,)" \
+                                      "$if(%_multiartist%,%artist% - ,)" \
+                                      "%title%"
+        _s["file_naming_format"] = _DEFAULT_FILE_NAMING_FORMAT
 
 
 def upgrade_to_v1_4_0_dev_5():
@@ -206,7 +209,8 @@ def upgrade_to_v1_4_0_dev_6():
     if old_script_text_option in _s:
         old_script_text = _s.value(old_script_text_option, config.TextOption, "")
         if old_script_text:
-            old_script = (0, _(DEFAULT_NUMBERED_SCRIPT_NAME) % 1, _s["enable_tagger_scripts"], old_script_text)
+            old_script = (
+                0, _(DEFAULT_NUMBERED_SCRIPT_NAME) % 1, _s["enable_tagger_scripts"], old_script_text)
             list_of_scripts.append(old_script)
     _s["list_of_scripts"] = list_of_scripts
     _s.remove(old_enabled_option)

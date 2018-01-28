@@ -3,7 +3,9 @@
 # Automatically generated - don't edit.
 # Use `python setup.py build_ui` to update it.
 
-from PyQt5 import QtCore, QtWidgets
+from PyQt5 import (QtCore,
+                   QtWidgets)
+
 
 class Ui_ScriptingOptionsPage(object):
     def setupUi(self, ScriptingOptionsPage):
@@ -35,7 +37,8 @@ class Ui_ScriptingOptionsPage(object):
         self.add_script = QtWidgets.QPushButton(self.groupBox)
         self.add_script.setObjectName("add_script")
         self.horizontalLayout.addWidget(self.add_script)
-        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding,
+                                           QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout.addItem(spacerItem)
         self.verticalLayout_3.addLayout(self.horizontalLayout)
         self.splitter = QtWidgets.QSplitter(self.groupBox)
@@ -93,4 +96,3 @@ class Ui_ScriptingOptionsPage(object):
         self.add_script.setToolTip(_("Add new script"))
         self.add_script.setText(_("Add new script"))
         self.script_name.setPlaceholderText(_("Display Name"))
-

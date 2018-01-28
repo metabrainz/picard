@@ -3,7 +3,9 @@
 # Automatically generated - don't edit.
 # Use `python setup.py build_ui` to update it.
 
-from PyQt5 import QtCore, QtWidgets
+from PyQt5 import (QtCore,
+                   QtWidgets)
+
 
 class Ui_MatchingOptionsPage(object):
     def setupUi(self, MatchingOptionsPage):
@@ -53,7 +55,8 @@ class Ui_MatchingOptionsPage(object):
         self.label_5.setObjectName("label_5")
         self.gridlayout.addWidget(self.label_5, 1, 0, 1, 1)
         self.vboxlayout.addWidget(self.rename_files)
-        spacerItem = QtWidgets.QSpacerItem(20, 41, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        spacerItem = QtWidgets.QSpacerItem(20, 41, QtWidgets.QSizePolicy.Minimum,
+                                           QtWidgets.QSizePolicy.Expanding)
         self.vboxlayout.addItem(spacerItem)
         self.label_6.setBuddy(self.file_lookup_threshold)
         self.label_4.setBuddy(self.file_lookup_threshold)
@@ -73,4 +76,3 @@ class Ui_MatchingOptionsPage(object):
         self.file_lookup_threshold.setSuffix(_(" %"))
         self.label_4.setText(_("Minimal similarity for file lookups:"))
         self.label_5.setText(_("Minimal similarity for cluster lookups:"))
-

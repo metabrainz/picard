@@ -3,7 +3,9 @@
 # Automatically generated - don't edit.
 # Use `python setup.py build_ui` to update it.
 
-from PyQt5 import QtCore, QtWidgets
+from PyQt5 import (QtCore,
+                   QtWidgets)
+
 
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
@@ -25,7 +27,8 @@ class Ui_Dialog(object):
         self.hboxlayout.setContentsMargins(0, 0, 0, 0)
         self.hboxlayout.setSpacing(6)
         self.hboxlayout.setObjectName("hboxlayout")
-        spacerItem = QtWidgets.QSpacerItem(111, 31, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        spacerItem = QtWidgets.QSpacerItem(111, 31, QtWidgets.QSizePolicy.Expanding,
+                                           QtWidgets.QSizePolicy.Minimum)
         self.hboxlayout.addItem(spacerItem)
         self.ok_button = QtWidgets.QPushButton(Dialog)
         self.ok_button.setEnabled(False)
@@ -54,4 +57,3 @@ class Ui_Dialog(object):
         self.ok_button.setText(_("OK"))
         self.lookup_button.setText(_("Lookup manually"))
         self.cancel_button.setText(_("Cancel"))
-

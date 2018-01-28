@@ -26,7 +26,6 @@ from picard import PICARD_APP_NAME
 # Install gettext "noop" function in case const.py gets imported directly.
 builtins.__dict__['N_'] = lambda a: a
 
-
 # Config directory
 if sys.platform == "win32":
     USER_DIR = os.environ.get("APPDATA", "~\\Application Data")
@@ -34,7 +33,7 @@ else:
     USER_DIR = os.environ.get("XDG_CONFIG_HOME", "~/.config")
 
 USER_DIR = os.path.join(
-    os.path.expanduser(USER_DIR), "MusicBrainz", PICARD_APP_NAME
+        os.path.expanduser(USER_DIR), "MusicBrainz", PICARD_APP_NAME
 )
 
 USER_PLUGIN_DIR = os.path.join(USER_DIR, "plugins")
@@ -55,18 +54,18 @@ CAA_PORT = 443
 
 # URLs
 PICARD_URLS = {
-    'documentation':    "https://picard.musicbrainz.org/docs/",
-    'troubleshooting':  "https://picard.musicbrainz.org/docs/troubleshooting/",
-    'home':             "https://picard.musicbrainz.org/",
-    'doc_options':      "https://picard.musicbrainz.org/docs/options/",
-    'doc_scripting':    "https://picard.musicbrainz.org/docs/scripting",
-    'plugins':          "https://picard.musicbrainz.org/plugins/",
-    'forum':            "https://community.metabrainz.org/c/picard",
-    'donate':           "https://metabrainz.org/donate",
-    'chromaprint':      "https://acoustid.org/chromaprint#download",
-    'acoustid_apikey':  "https://acoustid.org/api-key",
+    'documentation':       "https://picard.musicbrainz.org/docs/",
+    'troubleshooting':     "https://picard.musicbrainz.org/docs/troubleshooting/",
+    'home':                "https://picard.musicbrainz.org/",
+    'doc_options':         "https://picard.musicbrainz.org/docs/options/",
+    'doc_scripting':       "https://picard.musicbrainz.org/docs/scripting",
+    'plugins':             "https://picard.musicbrainz.org/plugins/",
+    'forum':               "https://community.metabrainz.org/c/picard",
+    'donate':              "https://metabrainz.org/donate",
+    'chromaprint':         "https://acoustid.org/chromaprint#download",
+    'acoustid_apikey':     "https://acoustid.org/api-key",
     'doc_cover_art_types': "https://musicbrainz.org/doc/Cover_Art/Types",
-    'acoustid_track': "https://acoustid.org/track/",
+    'acoustid_track':      "https://acoustid.org/track/",
 }
 
 # Various Artists MBID
@@ -78,6 +77,7 @@ DATA_TRACK_TITLE = '[data track]'
 
 # Release formats
 from picard.const.attributes import MB_ATTRIBUTES
+
 RELEASE_FORMATS = {}
 RELEASE_PRIMARY_GROUPS = {}
 RELEASE_SECONDARY_GROUPS = {}
@@ -106,10 +106,10 @@ MUSICBRAINZ_SERVERS = [
 
 # Plugins API
 PLUGINS_API = {
-    'host': 'picard.musicbrainz.org',
-    'port': 443,
+    'host':     'picard.musicbrainz.org',
+    'port':     443,
     'endpoint': {
-        'plugins': '/api/v2/plugins/',
+        'plugins':  '/api/v2/plugins/',
         'download': '/api/v2/download/'
     }
 }

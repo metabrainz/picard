@@ -25,15 +25,17 @@ import sys
 from functools import partial
 from operator import attrgetter
 
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5 import (QtCore,
+                   QtGui,
+                   QtWidgets)
 
-from picard import config, log
-from picard.const import (
-    USER_PLUGIN_DIR,
-    PLUGINS_API,
-)
+from picard import (config,
+                    log)
+from picard.const import (PLUGINS_API,
+                          USER_PLUGIN_DIR)
 from picard.ui import HashableTreeWidgetItem
-from picard.ui.options import OptionsPage, register_options_page
+from picard.ui.options import (OptionsPage,
+                               register_options_page)
 from picard.ui.ui_options_plugins import Ui_PluginsOptionsPage
 
 
@@ -63,7 +65,6 @@ class PluginTreeWidgetItem(HashableTreeWidgetItem):
 
 
 class PluginsOptionsPage(OptionsPage):
-
     NAME = "plugins"
     TITLE = N_("Plugins")
     PARENT = None
@@ -222,8 +223,8 @@ class PluginsOptionsPage(OptionsPage):
                 p.marked_for_update = True
                 msgbox = QtWidgets.QMessageBox(self)
                 msgbox.setText(
-                    _("The plugin '%s' will be upgraded to version %s on next run of Picard.")
-                    % (p.name, p.new_version))
+                        _("The plugin '%s' will be upgraded to version %s on next run of Picard.")
+                        % (p.name, p.new_version))
                 msgbox.setStandardButtons(QtWidgets.QMessageBox.Ok)
                 msgbox.setDefaultButton(QtWidgets.QMessageBox.Ok)
                 msgbox.exec_()
@@ -235,7 +236,7 @@ class PluginsOptionsPage(OptionsPage):
     def add_plugin_item(self, plugin, item=None):
         if item is None:
             item = PluginTreeWidgetItem(self.ui.plugins)
-        item.setFlags(item.flags() | QtCore.Qt.ItemIsUserCheckable)
+        item.setFlags(item.flags()|QtCore.Qt.ItemIsUserCheckable)
         item.setText(0, plugin.name)
         item.setSortData(0, plugin.name.lower())
         if plugin.enabled:
@@ -253,7 +254,7 @@ class PluginsOptionsPage(OptionsPage):
             label = _("Update")
         elif plugin.can_be_downloaded:
             label = _("Install")
-            item.setFlags(item.flags() ^ QtCore.Qt.ItemIsUserCheckable)
+            item.setFlags(item.flags()^QtCore.Qt.ItemIsUserCheckable)
 
         if label is not None:
             button = QtWidgets.QPushButton(label)
@@ -263,6 +264,7 @@ class PluginsOptionsPage(OptionsPage):
             def download_button_process():
                 self.ui.plugins.setCurrentItem(item)
                 self.download_plugin()
+
             button.released.connect(download_button_process)
         else:
             # Note: setText() don't work after it was set to a button
@@ -293,7 +295,8 @@ class PluginsOptionsPage(OptionsPage):
         text = []
         if plugin.new_version:
             if plugin.marked_for_update:
-                text.append("<b>" + _("Restart Picard to upgrade to new version") + ": " + plugin.new_version + "</b>")
+                text.append("<b>" + _(
+                        "Restart Picard to upgrade to new version") + ": " + plugin.new_version + "</b>")
             else:
                 text.append("<b>" + _("New version available") + ": " + plugin.new_version + "</b>")
         if plugin.description:
@@ -309,10 +312,10 @@ class PluginsOptionsPage(OptionsPage):
 
     def open_plugins(self):
         files, _filter = QtWidgets.QFileDialog.getOpenFileNames(
-            self,
-            "",
-            QtCore.QDir.homePath(),
-            "Picard plugin (*.py *.pyc *.zip)"
+                self,
+                "",
+                QtCore.QDir.homePath(),
+                "Picard plugin (*.py *.pyc *.zip)"
         )
         if files:
             for path in files:
@@ -323,14 +326,14 @@ class PluginsOptionsPage(OptionsPage):
         plugin = self.items[selected]
 
         self.tagger.webservice.get(
-            PLUGINS_API['host'],
-            PLUGINS_API['port'],
-            PLUGINS_API['endpoint']['download'],
-            partial(self.download_handler, plugin=plugin),
-            parse_response_type=None,
-            priority=True,
-            important=True,
-            queryargs={"id": plugin.module_name}
+                PLUGINS_API['host'],
+                PLUGINS_API['port'],
+                PLUGINS_API['endpoint']['download'],
+                partial(self.download_handler, plugin=plugin),
+                parse_response_type=None,
+                priority=True,
+                important=True,
+                queryargs={"id": plugin.module_name}
         )
 
     def download_handler(self, response, reply, error, plugin):
@@ -345,9 +348,9 @@ class PluginsOptionsPage(OptionsPage):
             return
 
         self.tagger.pluginmanager.install_plugin(
-            None,
-            plugin_name=plugin.module_name,
-            plugin_data=response
+                None,
+                plugin_name=plugin.module_name,
+                plugin_data=response
         )
 
     def open_plugin_dir(self):

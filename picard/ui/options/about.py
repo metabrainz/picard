@@ -19,13 +19,13 @@
 
 from picard.const import PICARD_URLS
 from picard.formats import supported_extensions
-from picard.ui.options import OptionsPage, register_options_page
+from picard.ui.options import (OptionsPage,
+                               register_options_page)
 from picard.ui.ui_options_about import Ui_AboutOptionsPage
 from picard.util import versions
 
 
 class AboutOptionsPage(OptionsPage):
-
     NAME = "about"
     TITLE = N_("About")
     PARENT = None
@@ -39,7 +39,7 @@ class AboutOptionsPage(OptionsPage):
 
     def load(self):
         args = {
-            "picard-doc-url": PICARD_URLS['home'],
+            "picard-doc-url":    PICARD_URLS['home'],
             "picard-donate-url": PICARD_URLS['donate'],
         }
         args.update(versions.as_dict(i18n=True))
@@ -50,7 +50,9 @@ class AboutOptionsPage(OptionsPage):
         args["translator-credits"] = _("translator-credits")
         if args["translator-credits"] != "translator-credits":
             # TR: Replace LANG with language you are translatig to.
-            args["translator-credits"] = _("<br/>Translated to LANG by %s") % args["translator-credits"].replace("\n", "<br/>")
+            args["translator-credits"] = _("<br/>Translated to LANG by %s") % args[
+                "translator-credits"].replace("\n",
+                                              "<br/>")
         else:
             args["translator-credits"] = ""
 

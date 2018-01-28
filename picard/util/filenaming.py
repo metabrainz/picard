@@ -23,7 +23,9 @@ import struct
 import sys
 import unicodedata
 
-from picard.util import _io_encoding, decode_filename, encode_filename
+from picard.util import (_io_encoding,
+                         decode_filename,
+                         encode_filename)
 
 
 def _get_utf16_length(text):
@@ -79,7 +81,10 @@ def _shorten_to_utf16_nfd_length(text, length):
         pass
     return unicodedata.normalize('NFC', newtext)
 
+
 _re_utf8 = re.compile(r'^utf([-_]?8)$', re.IGNORECASE)
+
+
 def _shorten_to_bytes_length(text, length):
     """Truncates a unicode object to the given number of bytes it would take
     when encoded in the "filesystem encoding".
@@ -98,7 +103,7 @@ def _shorten_to_bytes_length(text, length):
         i = length
         # a UTF-8 intermediate byte starts with the bits 10xxxxxx,
         # so ord(char) & 0b11000000 = 0b10000000
-        while i > 0 and (raw[i] & 0xC0) == 0x80:
+        while i > 0 and (raw[i]&0xC0) == 0x80:
             i -= 1
         return decode_filename(raw[:i])
     # finally, a brute force approach
@@ -114,6 +119,8 @@ def _shorten_to_bytes_length(text, length):
 
 
 SHORTEN_BYTES, SHORTEN_UTF16, SHORTEN_UTF16_NFD = 0, 1, 2
+
+
 def shorten_filename(filename, length, mode):
     """Truncates a filename to the given number of thingies,
     as implied by `mode`.
@@ -139,9 +146,9 @@ def shorten_path(path, length, mode):
     dirpath, filename = os.path.split(path)
     fileroot, ext = os.path.splitext(filename)
     return os.path.join(
-        os.path.join(*[shorten(node, length)
-                       for node in dirpath.split(os.path.sep)]),
-        shorten(fileroot, length - len(ext)) + ext
+            os.path.join(*[shorten(node, length)
+                           for node in dirpath.split(os.path.sep)]),
+            shorten(fileroot, length - len(ext)) + ext
     )
 
 
@@ -265,6 +272,7 @@ def _get_mount_point(target):
         mounts[target] = mount
     return mount
 
+
 # NOTE: this could be merged with the function above, and get all needed info
 # in a single call, returning the filesystem type as well. (but python's
 # posix.statvfs_result doesn't implement f_fsid)
@@ -308,7 +316,7 @@ def make_short_filename(basedir, relpath, win_compat=False, relative_to=""):
     if win_compat and relative_to:
         relative_to = os.path.abspath(relative_to)
         assert basedir.startswith(relative_to) and \
-            basedir.split(relative_to)[1][:1] in (os.path.sep, ''), \
+               basedir.split(relative_to)[1][:1] in (os.path.sep, ''), \
             "`relative_to` must be an ancestor of `basedir`"
     # always strip the relpath parts
     relpath = os.path.join(*[part.strip() for part in relpath.split(os.path.sep)])

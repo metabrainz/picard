@@ -23,8 +23,11 @@ from operator import itemgetter
 
 from PyQt5 import QtCore
 
-from picard import (PICARD_APP_NAME, PICARD_ORG_NAME, PICARD_VERSION,
-                    version_to_string, version_from_string)
+from picard import (PICARD_APP_NAME,
+                    PICARD_ORG_NAME,
+                    PICARD_VERSION,
+                    version_from_string,
+                    version_to_string)
 from picard.util import LockableObject
 
 
@@ -33,7 +36,6 @@ class ConfigUpgradeError(Exception):
 
 
 class ConfigSection(LockableObject):
-
     """Configuration section."""
 
     def __init__(self, config, name):
@@ -83,7 +85,6 @@ class ConfigSection(LockableObject):
 
 
 class Config(QtCore.QSettings):
-
     """Configuration."""
 
     def __init__(self):
@@ -168,20 +169,20 @@ class Config(QtCore.QSettings):
                 try:
                     if outputfunc and hook['func'].__doc__:
                         outputfunc("Config upgrade %s -> %s: %s" % (
-                                   version_to_string(self._version),
-                                   version_to_string(version),
-                                   hook['func'].__doc__.strip()))
+                            version_to_string(self._version),
+                            version_to_string(version),
+                            hook['func'].__doc__.strip()))
                     hook['func'](*hook['args'])
                 except:
                     import traceback
                     raise ConfigUpgradeError(
-                        "Error during config upgrade from version %s to %s "
-                        "using %s():\n%s" % (
-                            version_to_string(self._version),
-                            version_to_string(version),
-                            hook['func'].__name__,
-                            traceback.format_exc()
-                        ))
+                            "Error during config upgrade from version %s to %s "
+                            "using %s():\n%s" % (
+                                version_to_string(self._version),
+                                version_to_string(version),
+                                hook['func'].__name__,
+                                traceback.format_exc()
+                            ))
                 else:
                     hook['done'] = True
                     self._version = version
@@ -201,7 +202,6 @@ class Config(QtCore.QSettings):
 
 
 class Option(QtCore.QObject):
-
     """Generic option."""
 
     registry = {}
@@ -221,7 +221,6 @@ class Option(QtCore.QObject):
 
 
 class TextOption(Option):
-
     convert = str
 
 
@@ -238,17 +237,14 @@ class BoolOption(Option):
 
 
 class IntOption(Option):
-
     convert = int
 
 
 class FloatOption(Option):
-
     convert = float
 
 
 class ListOption(Option):
-
     convert = list
 
 

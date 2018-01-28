@@ -21,7 +21,8 @@ from PyQt5.QtCore import QObject
 
 from picard import config
 from picard.mbjson import artist_credit_from_node
-from picard.plugin import PluginFunctions, PluginPriority
+from picard.plugin import (PluginFunctions,
+                           PluginPriority)
 from picard.similarity import similarity2
 from picard.util import (
     linear_combination_of_weights,
@@ -45,7 +46,6 @@ LENGTH_SCORE_THRES_MS = 30000
 
 
 class Metadata(dict):
-
     """List of metadata items with dict-like access."""
 
     __weights = [

@@ -26,8 +26,8 @@ from collections import namedtuple
 from functools import reduce
 from inspect import getfullargspec
 
-from picard.metadata import MULTI_VALUED_JOINER
-from picard.metadata import Metadata
+from picard.metadata import (MULTI_VALUED_JOINER,
+                             Metadata)
 from picard.plugin import ExtensionPoint
 from picard.util import uniqify
 
@@ -89,14 +89,14 @@ class ScriptFunction(object):
                                      and (argnum_bound.upper is None
                                           or len(args) <= argnum_bound.upper)):
                 raise ScriptError(
-                    "Wrong number of arguments for $%s: Expected %s, got %i at position %i, line %i"
-                    % (name,
-                       string_(argnum_bound.lower)
-                        if argnum_bound.upper is None
-                        else "%i - %i" % (argnum_bound.lower, argnum_bound.upper),
-                       argcount,
-                       parser._x,
-                       parser._y))
+                        "Wrong number of arguments for $%s: Expected %s, got %i at position %i, line %i"
+                        % (name,
+                           string_(argnum_bound.lower)
+                           if argnum_bound.upper is None
+                           else "%i - %i" % (argnum_bound.lower, argnum_bound.upper),
+                           argcount,
+                           parser._x,
+                           parser._y))
         except KeyError:
             raise UnknownFunction("Unknown function '%s'" % name)
 
@@ -129,7 +129,6 @@ def isidentif(ch):
 
 
 class ScriptParser(object):
-
     r"""Tagger script parser.
 
 Grammar:
@@ -149,9 +148,9 @@ Grammar:
         raise EndOfFile("Unexpected end of script at position %d, line %d" % (self._x, self._y))
 
     def __raise_char(self, ch):
-        #line = self._text[self._line:].split("\n", 1)[0]
-        #cursor = " " * (self._pos - self._line - 1) + "^"
-        #raise SyntaxError("Unexpected character '%s' at position %d, line %d\n%s\n%s" % (ch, self._x, self._y, line, cursor))
+        # line = self._text[self._line:].split("\n", 1)[0]
+        # cursor = " " * (self._pos - self._line - 1) + "^"
+        # raise SyntaxError("Unexpected character '%s' at position %d, line %d\n%s\n%s" % (ch, self._x, self._y, line, cursor))
         raise SyntaxError("Unexpected character '%s' at position %d, line %d" % (ch, self._x, self._y))
 
     def read(self):
@@ -193,7 +192,7 @@ Grammar:
         while True:
             ch = self.read()
             if ch == '(':
-                name = self._text[start:self._pos-1]
+                name = self._text[start:self._pos - 1]
                 if name not in self.functions:
                     raise UnknownFunction("Unknown function '%s'" % name)
                 return ScriptFunction(name, self.parse_arguments(), self)
@@ -207,7 +206,7 @@ Grammar:
         while True:
             ch = self.read()
             if ch == '%':
-                return ScriptVariable(self._text[begin:self._pos-1])
+                return ScriptVariable(self._text[begin:self._pos - 1])
             elif ch is None:
                 self.__raise_eof()
             elif not isidentif(ch) and ch != ':':
@@ -311,11 +310,11 @@ def register_script_function(function, name=None, eval_args=True,
     if name is None:
         name = function.__name__
     ScriptParser._function_registry.register(function.__module__,
-        (name, FunctionRegistryItem(
-                    function, eval_args,
-                    argcount if argcount and check_argcount else False)
-         )
-    )
+                                             (name, FunctionRegistryItem(
+                                                     function, eval_args,
+                                                     argcount if argcount and check_argcount else False)
+                                              )
+                                             )
 
 
 def _compute_int(operation, *args):
@@ -696,7 +695,7 @@ def func_matchedtracks(parser, arg):
 
 def func_is_complete(parser):
     if (parser.file and parser.file.parent
-        and parser.file.parent.album.is_complete()):
+            and parser.file.parent.album.is_complete()):
         return "1"
     return "0"
 

@@ -3,7 +3,10 @@
 # Automatically generated - don't edit.
 # Use `python setup.py build_ui` to update it.
 
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5 import (QtCore,
+                   QtGui,
+                   QtWidgets)
+
 
 class Ui_LocalOptions(object):
     def setupUi(self, LocalOptions):
@@ -39,7 +42,8 @@ class Ui_LocalOptions(object):
         self.note.setWordWrap(True)
         self.note.setObjectName("note")
         self.verticalLayout.addWidget(self.note)
-        spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum,
+                                           QtWidgets.QSizePolicy.Expanding)
         self.verticalLayout.addItem(spacerItem)
 
         self.retranslateUi(LocalOptions)
@@ -48,7 +52,8 @@ class Ui_LocalOptions(object):
     def retranslateUi(self, LocalOptions):
         _translate = QtCore.QCoreApplication.translate
         LocalOptions.setWindowTitle(_("Form"))
-        self.local_cover_regex_label.setText(_("Local cover art files match the following regular expression:"))
+        self.local_cover_regex_label.setText(
+                _("Local cover art files match the following regular expression:"))
         self.local_cover_regex_default.setText(_("Default"))
-        self.note.setText(_("First group in the regular expression, if any, will be used as type, ie. cover-back-spine.jpg will be set as types Back + Spine. If no type is found, it will default to Front type."))
-
+        self.note.setText(_(
+                "First group in the regular expression, if any, will be used as type, ie. cover-back-spine.jpg will be set as types Back + Spine. If no type is found, it will default to Front type."))

@@ -17,13 +17,17 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5 import (QtCore,
+                   QtGui,
+                   QtWidgets)
 
 from picard import config
 from picard.const import PICARD_URLS
 from picard.script import ScriptParser
 from picard.ui import HashableListWidgetItem
-from picard.ui.options import OptionsPage, OptionsCheckError, register_options_page
+from picard.ui.options import (OptionsCheckError,
+                               OptionsPage,
+                               register_options_page)
 from picard.ui.ui_options_script import Ui_ScriptingOptionsPage
 
 DEFAULT_NUMBERED_SCRIPT_NAME = N_("My script %d")
@@ -186,6 +190,7 @@ class AdvancedScriptItem(QtWidgets.QWidget):
 
 class ScriptItem:
     """Holds a script's list and text widget properties and improves readability"""
+
     def __init__(self, pos, name=None, enabled=True, text=""):
         self.pos = pos
         if name is None:
@@ -201,7 +206,6 @@ class ScriptItem:
 
 
 class ScriptingOptionsPage(OptionsPage):
-
     NAME = "scripting"
     TITLE = N_("Scripting")
     PARENT = None
@@ -254,8 +258,10 @@ class ScriptingOptionsPage(OptionsPage):
     def setSignals(self, list_widget, item):
         list_widget.set_up_connection(lambda: self.move_script(self.ui.script_list.row(item), 1))
         list_widget.set_down_connection(lambda: self.move_script(self.ui.script_list.row(item), -1))
-        list_widget.set_remove_connection(lambda: self.remove_from_list_of_scripts(self.ui.script_list.row(item)))
-        list_widget.set_checkbox_connection(lambda: self.update_check_state(item, list_widget.checkbox_state()))
+        list_widget.set_remove_connection(
+                lambda: self.remove_from_list_of_scripts(self.ui.script_list.row(item)))
+        list_widget.set_checkbox_connection(
+                lambda: self.update_check_state(item, list_widget.checkbox_state()))
         list_widget.set_rename_connection(lambda: self.rename_script(item))
 
     def rename_script(self, item):

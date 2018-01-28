@@ -19,22 +19,24 @@
 
 import sys
 
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5 import (QtCore,
+                   QtGui,
+                   QtWidgets)
 
 from picard import config
-from picard.util import find_existing_path, icontheme
+from picard.util import (find_existing_path,
+                         icontheme)
 
 
 class StandardButton(QtWidgets.QPushButton):
-
     OK = 0
     CANCEL = 1
     HELP = 2
 
     __types = {
-        OK: (N_('&Ok'), 'SP_DialogOkButton'),
+        OK:     (N_('&Ok'), 'SP_DialogOkButton'),
         CANCEL: (N_('&Cancel'), 'SP_DialogCancelButton'),
-        HELP: (N_('&Help'), 'SP_DialogHelpButton'),
+        HELP:   (N_('&Help'), 'SP_DialogHelpButton'),
     }
 
     def __init__(self, btntype):
@@ -80,7 +82,7 @@ class ButtonLineEdit(QtWidgets.QLineEdit):
         self.clear_button.setIcon(QtGui.QIcon.fromTheme("edit-clear",
                                                         fallback_icon))
         self.clear_button.setStyleSheet(
-            "QToolButton { background: transparent; border: none;} QToolButton QWidget { color: black;}")
+                "QToolButton { background: transparent; border: none;} QToolButton QWidget { color: black;}")
         layout = QtWidgets.QHBoxLayout(self)
         layout.addWidget(self.clear_button, 0, QtCore.Qt.AlignRight)
 
@@ -97,11 +99,11 @@ class ButtonLineEdit(QtWidgets.QLineEdit):
 
 
 class MultiDirsSelectDialog(QtWidgets.QFileDialog):
-
     """Custom file selection dialog which allows the selection
     of multiple directories.
     Depending on the platform, dialog may fallback on non-native.
     """
+
     def __init__(self, *args):
         super().__init__(*args)
         self.setFileMode(self.Directory)

@@ -19,9 +19,12 @@
 
 import os.path
 
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5 import (QtCore,
+                   QtGui,
+                   QtWidgets)
 
-from picard import config, log
+from picard import (config,
+                    log)
 from picard.album import Album
 from picard.cluster import Cluster
 from picard.file import File
@@ -30,24 +33,30 @@ from picard.plugin import ExtensionPoint
 from picard.track import Track
 from picard.ui.coverartbox import CoverArtBox
 from picard.ui.filebrowser import FileBrowser
-from picard.ui.infodialog import FileInfoDialog, AlbumInfoDialog, TrackInfoDialog, ClusterInfoDialog
+from picard.ui.infodialog import (AlbumInfoDialog,
+                                  ClusterInfoDialog,
+                                  FileInfoDialog,
+                                  TrackInfoDialog)
 from picard.ui.infostatus import InfoStatus
 from picard.ui.itemviews import MainPanel
-from picard.ui.logview import LogView, HistoryView
+from picard.ui.logview import (HistoryView,
+                               LogView)
 from picard.ui.metadatabox import MetadataBox
 from picard.ui.options.dialog import OptionsDialog
-from picard.ui.passworddialog import PasswordDialog, ProxyDialog
-from picard.ui.searchdialog import (
-    TrackSearchDialog,
-    AlbumSearchDialog)
+from picard.ui.passworddialog import (PasswordDialog,
+                                      ProxyDialog)
+from picard.ui.searchdialog import (AlbumSearchDialog,
+                                    TrackSearchDialog)
 from picard.ui.tagsfromfilenames import TagsFromFileNamesDialog
-from picard.ui.util import (
-    find_starting_directory,
-    ButtonLineEdit,
-    MultiDirsSelectDialog
-)
-from picard.util import icontheme, webbrowser2, throttle, thread
-from picard.util.cdrom import discid, get_cdrom_drives
+from picard.ui.util import (ButtonLineEdit,
+                            MultiDirsSelectDialog,
+                            find_starting_directory)
+from picard.util import (icontheme,
+                         thread,
+                         throttle,
+                         webbrowser2)
+from picard.util.cdrom import (discid,
+                               get_cdrom_drives)
 
 ui_init = ExtensionPoint()
 
@@ -57,7 +66,6 @@ def register_ui_init(function):
 
 
 class MainWindow(QtWidgets.QMainWindow):
-
     selection_updated = QtCore.pyqtSignal(object)
 
     options = [
@@ -163,9 +171,9 @@ class MainWindow(QtWidgets.QMainWindow):
             msg.setWindowTitle(_("Unsaved Changes"))
             msg.setText(_("Are you sure you want to quit Picard?"))
             txt = ngettext(
-                "There is %d unsaved file. Closing Picard will lose all unsaved changes.",
-                "There are %d unsaved files. Closing Picard will lose all unsaved changes.",
-                unsaved_files) % unsaved_files
+                    "There is %d unsaved file. Closing Picard will lose all unsaved changes.",
+                    "There are %d unsaved files. Closing Picard will lose all unsaved changes.",
+                    unsaved_files) % unsaved_files
             msg.setInformativeText(txt)
             cancel = msg.addButton(QMessageBox.Cancel)
             msg.setDefaultButton(cancel)
@@ -179,7 +187,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def saveWindowState(self):
         config.persist["window_state"] = self.saveState()
-        isMaximized = int(self.windowState()) & QtCore.Qt.WindowMaximized != 0
+        isMaximized = int(self.windowState())&QtCore.Qt.WindowMaximized != 0
         if isMaximized:
             # FIXME: this doesn't include the window frame
             geom = self.normalGeometry()
@@ -205,8 +213,8 @@ class MainWindow(QtWidgets.QMainWindow):
         size = config.persist["window_size"]
         self._desktopgeo = self.tagger.desktop().screenGeometry()
         if (pos.x() > 0 and pos.y() > 0
-            and pos.x() + size.width() < self._desktopgeo.width()
-            and pos.y() + size.height() < self._desktopgeo.height()):
+                and pos.x() + size.width() < self._desktopgeo.width()
+                and pos.y() + size.height() < self._desktopgeo.height()):
             self.move(pos)
         if size.width() <= 0 or size.height() <= 0:
             size = QtCore.QSize(780, 560)
@@ -227,9 +235,9 @@ class MainWindow(QtWidgets.QMainWindow):
         self.listening_label = QtWidgets.QLabel()
         self.listening_label.setVisible(False)
         self.listening_label.setToolTip("<qt/>" + _(
-            "Picard listens on this port to integrate with your browser. When "
-            "you \"Search\" or \"Open in Browser\" from Picard, clicking the "
-            "\"Tagger\" button on the web page loads the release into Picard."
+                "Picard listens on this port to integrate with your browser. When "
+                "you \"Search\" or \"Open in Browser\" from Picard, clicking the "
+                "\"Tagger\" button on the web page loads the release into Picard."
         ))
         self.statusBar().addPermanentWidget(self.infostatus)
         self.statusBar().addPermanentWidget(self.listening_label)
@@ -276,11 +284,12 @@ class MainWindow(QtWidgets.QMainWindow):
         Empty messages are never passed to echo and history functions but they
         are sent to status bar (ie. to clear it).
         """
+
         def isdict(obj):
             return hasattr(obj, 'keys') and hasattr(obj, '__getitem__')
 
         echo = kwargs.get('echo', log.debug)
-        # _ is defined using builtins.__dict__, so setting it as default named argument
+        # _ is defined using builtins.__dict__, so setting it as default named argument
         # value doesn't work as expected
         translate = kwargs.get('translate', _)
         timeout = kwargs.get('timeout', 0)
@@ -305,22 +314,27 @@ class MainWindow(QtWidgets.QMainWindow):
         if self.tagger.use_acoustid:
             if not config.setting["acoustid_apikey"]:
                 QtWidgets.QMessageBox.warning(self,
-                    _("Submission Error"),
-                    _("You need to configure your AcoustID API key before you can submit fingerprints."))
+                                              _("Submission Error"),
+                                              _(
+                                                      "You need to configure your AcoustID API key before you can submit fingerprints."))
             else:
                 self.tagger.acoustidmanager.submit()
 
     def create_actions(self):
-        self.options_action = QtWidgets.QAction(icontheme.lookup('preferences-desktop'), _("&Options..."), self)
+        self.options_action = QtWidgets.QAction(icontheme.lookup('preferences-desktop'), _("&Options..."),
+                                                self)
         self.options_action.setMenuRole(QtWidgets.QAction.PreferencesRole)
         self.options_action.triggered.connect(self.show_options)
 
-        self.cut_action = QtWidgets.QAction(icontheme.lookup('edit-cut', icontheme.ICON_SIZE_MENU), _("&Cut"), self)
+        self.cut_action = QtWidgets.QAction(icontheme.lookup('edit-cut', icontheme.ICON_SIZE_MENU), _("&Cut"),
+                                            self)
         self.cut_action.setShortcut(QtGui.QKeySequence.Cut)
         self.cut_action.setEnabled(False)
         self.cut_action.triggered.connect(self.cut)
 
-        self.paste_action = QtWidgets.QAction(icontheme.lookup('edit-paste', icontheme.ICON_SIZE_MENU), _("&Paste"), self)
+        self.paste_action = QtWidgets.QAction(icontheme.lookup('edit-paste', icontheme.ICON_SIZE_MENU),
+                                              _("&Paste"),
+                                              self)
         self.paste_action.setShortcut(QtGui.QKeySequence.Paste)
         self.paste_action.setEnabled(False)
         self.paste_action.triggered.connect(self.paste)
@@ -361,7 +375,8 @@ class MainWindow(QtWidgets.QMainWindow):
         self.save_action.setEnabled(False)
         self.save_action.triggered.connect(self.save)
 
-        self.submit_acoustid_action = QtWidgets.QAction(icontheme.lookup('acoustid-fingerprinter'), _("S&ubmit AcoustIDs"), self)
+        self.submit_acoustid_action = QtWidgets.QAction(icontheme.lookup('acoustid-fingerprinter'),
+                                                        _("S&ubmit AcoustIDs"), self)
         self.submit_acoustid_action.setStatusTip(_("Submit acoustic fingerprints"))
         self.submit_acoustid_action.setEnabled(False)
         self.submit_acoustid_action.triggered.connect(self._on_submit_acoustid)
@@ -377,19 +392,25 @@ class MainWindow(QtWidgets.QMainWindow):
         self.remove_action.setEnabled(False)
         self.remove_action.triggered.connect(self.remove)
 
-        self.browser_lookup_action = QtWidgets.QAction(icontheme.lookup('lookup-musicbrainz'), _("Lookup in &Browser"), self)
+        self.browser_lookup_action = QtWidgets.QAction(icontheme.lookup('lookup-musicbrainz'),
+                                                       _("Lookup in &Browser"),
+                                                       self)
         self.browser_lookup_action.setStatusTip(_("Lookup selected item on MusicBrainz website"))
         self.browser_lookup_action.setEnabled(False)
         # TR: Keyboard shortcut for "Lookup in Browser"
         self.browser_lookup_action.setShortcut(QtGui.QKeySequence(_("Ctrl+Shift+L")))
         self.browser_lookup_action.triggered.connect(self.browser_lookup)
 
-        self.album_search_action = QtWidgets.QAction(icontheme.lookup('system-search'), _("Search for similar albums..."), self)
-        self.album_search_action.setStatusTip(_("View similar releases and optionally choose a different release"))
+        self.album_search_action = QtWidgets.QAction(icontheme.lookup('system-search'),
+                                                     _("Search for similar albums..."), self)
+        self.album_search_action.setStatusTip(
+                _("View similar releases and optionally choose a different release"))
         self.album_search_action.triggered.connect(self.show_more_albums)
 
-        self.track_search_action = QtWidgets.QAction(icontheme.lookup('system-search'), _("Search for similar tracks..."), self)
-        self.track_search_action.setStatusTip(_("View similar tracks and optionally choose a different release"))
+        self.track_search_action = QtWidgets.QAction(icontheme.lookup('system-search'),
+                                                     _("Search for similar tracks..."), self)
+        self.track_search_action.setStatusTip(
+                _("View similar tracks and optionally choose a different release"))
         self.track_search_action.triggered.connect(self.show_more_tracks)
 
         self.show_file_browser_action = QtWidgets.QAction(_("File &Browser"), self)
@@ -441,7 +462,8 @@ class MainWindow(QtWidgets.QMainWindow):
                         action.setShortcut(QtGui.QKeySequence(_("Ctrl+K")))
 
         self.analyze_action = QtWidgets.QAction(icontheme.lookup('picard-analyze'), _("&Scan"), self)
-        self.analyze_action.setStatusTip(_("Use AcoustID audio fingerprint to identify the files by the actual music, even if they have no metadata"))
+        self.analyze_action.setStatusTip(_(
+                "Use AcoustID audio fingerprint to identify the files by the actual music, even if they have no metadata"))
         self.analyze_action.setEnabled(False)
         self.analyze_action.setToolTip(_('Identify the file using its AcoustID audio fingerprint'))
         # TR: Keyboard shortcut for "Analyze"
@@ -470,7 +492,8 @@ class MainWindow(QtWidgets.QMainWindow):
         self.view_info_action.setShortcut(QtGui.QKeySequence(_("Ctrl+I")))
         self.view_info_action.triggered.connect(self.view_info)
 
-        self.refresh_action = QtWidgets.QAction(icontheme.lookup('view-refresh', icontheme.ICON_SIZE_MENU), _("&Refresh"), self)
+        self.refresh_action = QtWidgets.QAction(icontheme.lookup('view-refresh', icontheme.ICON_SIZE_MENU),
+                                                _("&Refresh"), self)
         self.refresh_action.setShortcut(QtGui.QKeySequence(_("Ctrl+R")))
         self.refresh_action.triggered.connect(self.refresh)
 
@@ -512,7 +535,8 @@ class MainWindow(QtWidgets.QMainWindow):
         self.play_file_action.setEnabled(False)
         self.play_file_action.triggered.connect(self.play_file)
 
-        self.open_folder_action = QtWidgets.QAction(icontheme.lookup('folder', icontheme.ICON_SIZE_MENU), _("Open Containing &Folder"), self)
+        self.open_folder_action = QtWidgets.QAction(icontheme.lookup('folder', icontheme.ICON_SIZE_MENU),
+                                                    _("Open Containing &Folder"), self)
         self.open_folder_action.setStatusTip(_("Open the containing folder in your file explorer"))
         self.open_folder_action.setEnabled(False)
         self.open_folder_action.triggered.connect(self.open_folder)
@@ -602,7 +626,6 @@ class MainWindow(QtWidgets.QMainWindow):
             self.toolbar.setToolButtonStyle(QtCore.Qt.ToolButtonTextUnderIcon)
         else:
             self.toolbar.setToolButtonStyle(QtCore.Qt.ToolButtonIconOnly)
-
 
     def create_toolbar(self):
         self.create_search_toolbar()
@@ -728,7 +751,8 @@ class MainWindow(QtWidgets.QMainWindow):
         formats.sort()
         extensions.sort()
         formats.insert(0, _("All Supported Formats") + " (%s)" % " ".join(extensions))
-        files, _filter = QtWidgets.QFileDialog.getOpenFileNames(self, "", current_directory, ";;".join(formats))
+        files, _filter = QtWidgets.QFileDialog.getOpenFileNames(self, "", current_directory,
+                                                                ";;".join(formats))
         if files:
             config.persist["current_directory"] = os.path.dirname(files[0])
             self.tagger.add_files(files)
@@ -753,13 +777,13 @@ class MainWindow(QtWidgets.QMainWindow):
             config.persist["current_directory"] = parent
             if dir_count > 1:
                 self.set_statusbar_message(
-                    N_("Adding multiple directories from '%(directory)s' ..."),
-                    {'directory': parent}
+                        N_("Adding multiple directories from '%(directory)s' ..."),
+                        {'directory': parent}
                 )
             else:
                 self.set_statusbar_message(
-                    N_("Adding directory: '%(directory)s' ..."),
-                    {'directory': dir_list[0]}
+                        N_("Adding directory: '%(directory)s' ..."),
+                        {'directory': dir_list[0]}
                 )
 
             for directory in dir_list:
@@ -810,7 +834,7 @@ class MainWindow(QtWidgets.QMainWindow):
                 return
         return self.tagger.analyze(self.selected_objects)
 
-    def _openUrl(self,url):
+    def _openUrl(self, url):
         # Resolves a bug in Qt opening remote URLs - QTBUG-13359
         # See https://bugreports.qt.io/browse/QTBUG-13359
         if url.startswith("\\\\") or url.startswith("//"):
@@ -831,10 +855,11 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def show_analyze_settings_info(self):
         ret = QtWidgets.QMessageBox.question(self,
-            _("Configuration Required"),
-            _("Audio fingerprinting is not yet configured. Would you like to configure it now?"),
-            QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,
-            QtWidgets.QMessageBox.Yes)
+                                             _("Configuration Required"),
+                                             _(
+                                                     "Audio fingerprinting is not yet configured. Would you like to configure it now?"),
+                                             QtWidgets.QMessageBox.Yes|QtWidgets.QMessageBox.No,
+                                             QtWidgets.QMessageBox.Yes)
         return ret == QtWidgets.QMessageBox.Yes
 
     def show_more_tracks(self):
@@ -946,7 +971,7 @@ class MainWindow(QtWidgets.QMainWindow):
                     msg = N_("%(filename)s (error: %(error)s)")
                     mparms = {
                         'filename': obj.filename,
-                        'error': obj.error
+                        'error':    obj.error
                     }
                 else:
                     msg = N_("%(filename)s")
@@ -962,14 +987,14 @@ class MainWindow(QtWidgets.QMainWindow):
                     if file.state == File.ERROR:
                         msg = N_("%(filename)s (%(similarity)d%%) (error: %(error)s)")
                         mparms = {
-                            'filename': file.filename,
+                            'filename':   file.filename,
                             'similarity': file.similarity * 100,
-                            'error': file.error
+                            'error':      file.error
                         }
                     else:
                         msg = N_("%(filename)s (%(similarity)d%%)")
                         mparms = {
-                            'filename': file.filename,
+                            'filename':   file.filename,
                             'similarity': file.similarity * 100,
                         }
                     self.set_statusbar_message(msg, mparms, echo=None,
@@ -1013,10 +1038,11 @@ class MainWindow(QtWidgets.QMainWindow):
     def show_password_dialog(self, reply, authenticator):
         if reply.url().host() == config.setting['server_host']:
             ret = QtWidgets.QMessageBox.question(self,
-                _("Authentication Required"),
-                _("Picard needs authorization to access your personal data on the MusicBrainz server. Would you like to log in now?"),
-                QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,
-                QtWidgets.QMessageBox.Yes)
+                                                 _("Authentication Required"),
+                                                 _(
+                                                         "Picard needs authorization to access your personal data on the MusicBrainz server. Would you like to log in now?"),
+                                                 QtWidgets.QMessageBox.Yes|QtWidgets.QMessageBox.No,
+                                                 QtWidgets.QMessageBox.Yes)
             if ret == QtWidgets.QMessageBox.Yes:
                 pass
         else:

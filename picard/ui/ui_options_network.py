@@ -3,7 +3,9 @@
 # Automatically generated - don't edit.
 # Use `python setup.py build_ui` to update it.
 
-from PyQt5 import QtCore, QtWidgets
+from PyQt5 import (QtCore,
+                   QtWidgets)
+
 
 class Ui_NetworkOptionsPage(object):
     def setupUi(self, NetworkOptionsPage):
@@ -86,7 +88,8 @@ class Ui_NetworkOptionsPage(object):
         self.browser_integration_localhost_only.setObjectName("browser_integration_localhost_only")
         self.verticalLayout_2.addWidget(self.browser_integration_localhost_only)
         self.vboxlayout.addWidget(self.browser_integration)
-        spacerItem = QtWidgets.QSpacerItem(101, 31, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        spacerItem = QtWidgets.QSpacerItem(101, 31, QtWidgets.QSizePolicy.Minimum,
+                                           QtWidgets.QSizePolicy.Expanding)
         self.vboxlayout.addItem(spacerItem)
         self.label_5.setBuddy(self.password)
         self.label_6.setBuddy(self.username)
@@ -112,4 +115,3 @@ class Ui_NetworkOptionsPage(object):
         self.browser_integration.setTitle(_("Browser Integration"))
         self.label_2.setText(_("Default listening port:"))
         self.browser_integration_localhost_only.setText(_("Listen only on localhost"))
-

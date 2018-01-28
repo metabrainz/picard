@@ -3,7 +3,9 @@
 # Automatically generated - don't edit.
 # Use `python setup.py build_ui` to update it.
 
-from PyQt5 import QtCore, QtWidgets
+from PyQt5 import (QtCore,
+                   QtWidgets)
+
 
 class Ui_FingerprintingOptionsPage(object):
     def setupUi(self, FingerprintingOptionsPage):
@@ -62,7 +64,8 @@ class Ui_FingerprintingOptionsPage(object):
         self.horizontalLayout.addWidget(self.acoustid_apikey_get)
         self.verticalLayout_2.addLayout(self.horizontalLayout)
         self.verticalLayout.addWidget(self.acoustid_settings)
-        spacerItem = QtWidgets.QSpacerItem(181, 21, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        spacerItem = QtWidgets.QSpacerItem(181, 21, QtWidgets.QSizePolicy.Minimum,
+                                           QtWidgets.QSizePolicy.Expanding)
         self.verticalLayout.addItem(spacerItem)
 
         self.retranslateUi(FingerprintingOptionsPage)
@@ -80,4 +83,3 @@ class Ui_FingerprintingOptionsPage(object):
         self.acoustid_fpcalc_download.setText(_("Download..."))
         self.label_2.setText(_("API key:"))
         self.acoustid_apikey_get.setText(_("Get API key..."))
-

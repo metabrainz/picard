@@ -20,12 +20,12 @@
 
 import uuid
 
-from PyQt5 import QtCore, QtWidgets
+from PyQt5 import (QtCore,
+                   QtWidgets)
 
 
 class PicardDialog(QtWidgets.QDialog):
-
-    flags = QtCore.Qt.WindowSystemMenuHint | QtCore.Qt.WindowTitleHint
+    flags = QtCore.Qt.WindowSystemMenuHint|QtCore.Qt.WindowTitleHint
 
     def __init__(self, parent=None):
         QtWidgets.QDialog.__init__(self, parent, self.flags)

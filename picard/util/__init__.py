@@ -37,7 +37,6 @@ from picard.const import MUSICBRAINZ_SERVERS
 
 
 class LockableObject(QtCore.QObject):
-
     """Read/write lockable object."""
 
     def __init__(self):
@@ -61,9 +60,9 @@ _io_encoding = sys.getfilesystemencoding()
 
 
 # The following was adapted from k3b's source code:
-#// On a glibc system the system locale defaults to ANSI_X3.4-1968
-#// It is very unlikely that one would set the locale to ANSI_X3.4-1968
-#// intentionally
+# // On a glibc system the system locale defaults to ANSI_X3.4-1968
+# // It is very unlikely that one would set the locale to ANSI_X3.4-1968
+# // intentionally
 def check_io_encoding():
     if _io_encoding == "ANSI_X3.4-1968":
         from picard import log
@@ -132,6 +131,8 @@ def sanitize_date(datestr):
 
 
 _re_win32_incompat = re.compile(r'["*:<>?|]', re.UNICODE)
+
+
 def replace_win32_incompat(string, repl="_"):
     """Replace win32 filename incompatible characters from ``string`` by
        ``repl``."""
@@ -144,12 +145,16 @@ def replace_win32_incompat(string, repl="_"):
 
 
 _re_non_alphanum = re.compile(r'\W+', re.UNICODE)
+
+
 def strip_non_alnum(string):
     """Remove all non-alphanumeric characters from ``string``."""
     return _re_non_alphanum.sub(" ", string).strip()
 
 
 _re_slashes = re.compile(r'[\\/]', re.UNICODE)
+
+
 def sanitize_filename(string, repl="_"):
     return _re_slashes.sub(repl, string)
 
@@ -207,6 +212,8 @@ def find_executable(*executables):
 
 _mbid_format = Template('$h{8}-$h$l-$h$l-$h$l-$h{12}').safe_substitute(h='[0-9a-fA-F]', l='{4}')
 _re_mbid_val = re.compile(_mbid_format)
+
+
 def mbid_validate(string):
     return _re_mbid_val.match(string)
 
@@ -215,7 +222,8 @@ def parse_amazon_url(url):
     """Extract host and asin from an amazon url.
     It returns a dict with host and asin keys on success, None else
     """
-    r = re.compile(r'^https?://(?:www.)?(?P<host>.*?)(?:\:[0-9]+)?/.*/(?P<asin>[0-9B][0-9A-Z]{9})(?:[^0-9A-Z]|$)')
+    r = re.compile(
+            r'^https?://(?:www.)?(?P<host>.*?)(?:\:[0-9]+)?/.*/(?P<asin>[0-9B][0-9A-Z]{9})(?:[^0-9A-Z]|$)')
     match = r.match(url)
     if match is not None:
         return match.groupdict()
@@ -246,7 +254,7 @@ def throttle(interval):
                 return
             mutex.lock()
             now = time()
-            r = interval - (now-decorator.prev)*1000.0
+            r = interval - (now - decorator.prev) * 1000.0
             if r <= 0:
                 func(*args, **kwargs)
                 decorator.prev = now
@@ -277,9 +285,9 @@ def uniqify(seq):
 _tracknum_regexps = (
     # search for explicit track number (prefix "track")
     r"track[\s_-]*(?:no|nr)?[\s_-]*(\d+)",
-    # search for 2-digit number at start of string
+    # search for 2-digit number at start of string
     r"^(\d{2})\D?",
-    # search for 2-digit number at end of string
+    # search for 2-digit number at end of string
     r"\D?(\d{2})$",
 )
 
@@ -322,7 +330,7 @@ def is_hidden(filepath):
     set on Windows."""
     name = os.path.basename(os.path.abspath(filepath))
     return (name.startswith('.') and sys.platform != 'win32') \
-        or _has_hidden_attribute(filepath)
+           or _has_hidden_attribute(filepath)
 
 
 def _has_hidden_attribute(filepath):
@@ -334,7 +342,7 @@ def _has_hidden_attribute(filepath):
     try:
         attrs = windll.kernel32.GetFileAttributesW(filepath)
         assert attrs != -1
-        return bool(attrs & 2)
+        return bool(attrs&2)
     except (AttributeError, AssertionError):
         return False
 
@@ -366,7 +374,7 @@ def album_artist_from_path(filename, album, artist):
     """If album is not set, try to extract album and artist from path
     """
     if not album:
-        dirs = os.path.dirname(filename).replace('\\','/').lstrip('/').split('/')
+        dirs = os.path.dirname(filename).replace('\\', '/').lstrip('/').split('/')
         if len(dirs) == 0:
             return album, artist
         # Strip disc subdirectory from list

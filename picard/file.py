@@ -31,8 +31,9 @@ from operator import itemgetter
 
 from PyQt5 import QtCore
 
-from picard import PICARD_APP_NAME
-from picard import config, log
+from picard import (PICARD_APP_NAME,
+                    config,
+                    log)
 from picard.const import QUERY_LIMIT
 from picard.metadata import Metadata
 from picard.script import ScriptParser
@@ -56,7 +57,6 @@ from picard.util.textencoding import (
 
 
 class File(QtCore.QObject, Item):
-
     metadata_images_changed = QtCore.pyqtSignal()
 
     UNDEFINED = -1
@@ -67,14 +67,14 @@ class File(QtCore.QObject, Item):
     REMOVED = 4
 
     comparison_weights = {
-        "title": 13,
-        "artist": 4,
-        "album": 5,
-        "length": 10,
-        "totaltracks": 4,
-        "releasetype": 20,
+        "title":          13,
+        "artist":         4,
+        "album":          5,
+        "length":         10,
+        "totaltracks":    4,
+        "releasetype":    20,
         "releasecountry": 2,
-        "format": 2,
+        "format":         2,
     }
 
     def __init__(self, filename):
@@ -103,9 +103,9 @@ class File(QtCore.QObject, Item):
 
     def load(self, callback):
         thread.run_task(
-            partial(self._load_check, self.filename),
-            partial(self._loading_finished, callback),
-            priority=1)
+                partial(self._load_check, self.filename),
+                partial(self._loading_finished, callback),
+                priority=1)
 
     def _load_check(self, filename):
         # Check that file has not been removed since thread was queued
@@ -132,7 +132,7 @@ class File(QtCore.QObject, Item):
             file_name, file_extension = os.path.splitext(self.base_filename)
             if file_extension not in supported_extensions():
                 self.remove()
-                log.error('Unsupported media file %r wrongly loaded. Removing ...',self)
+                log.error('Unsupported media file %r wrongly loaded. Removing ...', self)
                 return
         else:
             self.error = None
@@ -191,10 +191,10 @@ class File(QtCore.QObject, Item):
         metadata = Metadata()
         metadata.copy(self.metadata)
         thread.run_task(
-            partial(self._save_and_rename, self.filename, metadata),
-            self._saving_finished,
-            priority=2,
-            thread_pool=self.tagger.save_thread_pool)
+                partial(self._save_and_rename, self.filename, metadata),
+                self._saving_finished,
+                priority=2,
+                thread_pool=self.tagger.save_thread_pool)
 
     def _save_and_rename(self, old_filename, metadata):
         """Save the metadata."""
@@ -255,7 +255,7 @@ class File(QtCore.QObject, Item):
         # Handle file removed before save
         # Result is None if save was skipped
         if ((self.state == File.REMOVED or self.tagger.stopping)
-            and result is None):
+                and result is None):
             return
         old_filename = new_filename = self.filename
         if error is not None:
@@ -376,7 +376,7 @@ class File(QtCore.QObject, Item):
 
     def _rename(self, old_filename, metadata):
         new_filename, ext = os.path.splitext(
-            self._make_filename(old_filename, metadata))
+                self._make_filename(old_filename, metadata))
 
         if old_filename == new_filename + ext:
             return old_filename
@@ -488,7 +488,7 @@ class File(QtCore.QObject, Item):
                     break
         else:
             if (self.metadata.images and
-               self.orig_metadata.images != self.metadata.images):
+                    self.orig_metadata.images != self.metadata.images):
                 self.state = File.CHANGED
             else:
                 self.similarity = 1.0
@@ -577,7 +577,7 @@ class File(QtCore.QObject, Item):
             return
         if error:
             log.error("Network error encountered during the lookup for %s. Error code: %s",
-                       self.filename, error)
+                      self.filename, error)
         try:
             if lookuptype == "metadata":
                 tracks = document['recordings']
@@ -589,30 +589,30 @@ class File(QtCore.QObject, Item):
         # no matches
         if not tracks:
             self.tagger.window.set_statusbar_message(
-                N_("No matching tracks for file '%(filename)s'"),
-                {'filename': self.filename},
-                timeout=3000
+                    N_("No matching tracks for file '%(filename)s'"),
+                    {'filename': self.filename},
+                    timeout=3000
             )
             self.clear_pending()
             return
 
         # multiple matches -- calculate similarities to each of them
         match = sorted((self.metadata.compare_to_track(
-            track, self.comparison_weights) for track in tracks),
-            reverse=True, key=itemgetter(0))[0]
+                track, self.comparison_weights) for track in tracks),
+                reverse=True, key=itemgetter(0))[0]
         if lookuptype != 'acoustid' and match[0] < config.setting['file_lookup_threshold']:
             self.tagger.window.set_statusbar_message(
-                N_("No matching tracks above the threshold for file '%(filename)s'"),
-                {'filename': self.filename},
-                timeout=3000
+                    N_("No matching tracks above the threshold for file '%(filename)s'"),
+                    {'filename': self.filename},
+                    timeout=3000
             )
             self.clear_pending()
             return
 
         self.tagger.window.set_statusbar_message(
-            N_("File '%(filename)s' identified!"),
-            {'filename': self.filename},
-            timeout=3000
+                N_("File '%(filename)s' identified!"),
+                {'filename': self.filename},
+                timeout=3000
         )
 
         self.clear_pending()
@@ -631,21 +631,21 @@ class File(QtCore.QObject, Item):
         if self.lookup_task:
             return
         self.tagger.window.set_statusbar_message(
-            N_("Looking up the metadata for file %(filename)s ..."),
-            {'filename': self.filename}
+                N_("Looking up the metadata for file %(filename)s ..."),
+                {'filename': self.filename}
         )
         self.clear_lookup_task()
         metadata = self.metadata
         self.set_pending()
         self.lookup_task = self.tagger.mb_api.find_tracks(partial(self._lookup_finished, 'metadata'),
-            track=metadata['title'],
-            artist=metadata['artist'],
-            release=metadata['album'],
-            tnum=metadata['tracknumber'],
-            tracks=metadata['totaltracks'],
-            qdur=string_(metadata.length // 2000),
-            isrc=metadata['isrc'],
-            limit=QUERY_LIMIT)
+                                                          track=metadata['title'],
+                                                          artist=metadata['artist'],
+                                                          release=metadata['album'],
+                                                          tnum=metadata['tracknumber'],
+                                                          tracks=metadata['totaltracks'],
+                                                          qdur=string_(metadata.length // 2000),
+                                                          isrc=metadata['isrc'],
+                                                          limit=QUERY_LIMIT)
 
     def clear_lookup_task(self):
         if self.lookup_task:
@@ -672,6 +672,7 @@ class File(QtCore.QObject, Item):
             return self.metadata["tracknumber"]
         except:
             return 0
+
     tracknumber = property(_get_tracknumber, doc="The track number as an int.")
 
     def _get_discnumber(self):
@@ -679,4 +680,5 @@ class File(QtCore.QObject, Item):
             return self.metadata["discnumber"]
         except:
             return 0
+
     discnumber = property(_get_discnumber, doc="The disc number as an int.")

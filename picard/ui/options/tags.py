@@ -19,16 +19,17 @@
 
 from functools import partial
 
-from PyQt5 import QtCore, QtWidgets
+from PyQt5 import (QtCore,
+                   QtWidgets)
 
 from picard import config
-from picard.ui.options import OptionsPage, register_options_page
+from picard.ui.options import (OptionsPage,
+                               register_options_page)
 from picard.ui.ui_options_tags import Ui_TagsOptionsPage
 from picard.util.tags import TAG_NAMES
 
 
 class TagsOptionsPage(OptionsPage):
-
     NAME = "tags"
     TITLE = N_("Tags")
     PARENT = None

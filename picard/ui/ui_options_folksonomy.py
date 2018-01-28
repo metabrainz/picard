@@ -3,7 +3,9 @@
 # Automatically generated - don't edit.
 # Use `python setup.py build_ui` to update it.
 
-from PyQt5 import QtCore, QtWidgets
+from PyQt5 import (QtCore,
+                   QtWidgets)
+
 
 class Ui_FolksonomyOptionsPage(object):
     def setupUi(self, FolksonomyOptionsPage):
@@ -89,7 +91,8 @@ class Ui_FolksonomyOptionsPage(object):
         self.hboxlayout2.addWidget(self.join_tags)
         self.verticalLayout.addLayout(self.hboxlayout2)
         self.verticalLayout_2.addWidget(self.rename_files_3)
-        spacerItem = QtWidgets.QSpacerItem(181, 31, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        spacerItem = QtWidgets.QSpacerItem(181, 31, QtWidgets.QSizePolicy.Minimum,
+                                           QtWidgets.QSizePolicy.Expanding)
         self.verticalLayout_2.addItem(spacerItem)
         self.label_5.setBuddy(self.min_tag_usage)
         self.label_6.setBuddy(self.min_tag_usage)
@@ -102,11 +105,11 @@ class Ui_FolksonomyOptionsPage(object):
         self.rename_files_3.setTitle(_("Folksonomy Tags"))
         self.ignore_tags_2.setText(_("Ignore tags:"))
         self.only_my_tags.setText(_("Only use my tags"))
-        self.artists_tags.setText(_("Fall back on album\'s artists tags if no tags are found for the release or release group"))
+        self.artists_tags.setText(
+                _("Fall back on album\'s artists tags if no tags are found for the release or release group"))
         self.label_5.setText(_("Minimal tag usage:"))
         self.min_tag_usage.setSuffix(_(" %"))
         self.label_6.setText(_("Maximum number of tags:"))
         self.ignore_tags_4.setText(_("Join multiple tags with:"))
         self.join_tags.setItemText(1, _(" / "))
         self.join_tags.setItemText(2, _(", "))
-

@@ -3,7 +3,9 @@
 # Automatically generated - don't edit.
 # Use `python setup.py build_ui` to update it.
 
-from PyQt5 import QtCore, QtWidgets
+from PyQt5 import (QtCore,
+                   QtWidgets)
+
 
 class Ui_TagsFromFileNamesDialog(object):
     def setupUi(self, TagsFromFileNamesDialog):
@@ -51,4 +53,3 @@ class Ui_TagsFromFileNamesDialog(object):
         TagsFromFileNamesDialog.setWindowTitle(_("Convert File Names to Tags"))
         self.replace_underscores.setText(_("Replace underscores with spaces"))
         self.preview.setText(_("&Preview"))
-

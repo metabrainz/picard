@@ -19,9 +19,11 @@
 
 import locale
 
-from PyQt5 import QtCore, QtWidgets
+from PyQt5 import (QtCore,
+                   QtWidgets)
 
-from picard.collection import user_collections, load_user_collections
+from picard.collection import (load_user_collections,
+                               user_collections)
 
 
 class CollectionMenu(QtWidgets.QMenu):
@@ -34,8 +36,8 @@ class CollectionMenu(QtWidgets.QMenu):
     def update_collections(self):
         self.clear()
         for id_, collection in sorted(user_collections.items(),
-                                     key=lambda k_v:
-                                     (locale.strxfrm(string_(k_v[1])), k_v[0])):
+                                      key=lambda k_v:
+                                      (locale.strxfrm(string_(k_v[1])), k_v[0])):
             action = QtWidgets.QWidgetAction(self)
             action.setDefaultWidget(CollectionCheckBox(self, collection))
             self.addAction(action)
@@ -59,7 +61,7 @@ class CollectionCheckBox(QtWidgets.QCheckBox):
         self.collection = collection
         QtWidgets.QCheckBox.__init__(self, self.label())
 
-        releases = collection.releases & menu.ids
+        releases = collection.releases&menu.ids
         if len(releases) == len(menu.ids):
             self.setCheckState(QtCore.Qt.Checked)
         elif not releases:
@@ -69,14 +71,14 @@ class CollectionCheckBox(QtWidgets.QCheckBox):
 
     def nextCheckState(self):
         ids = self.menu.ids
-        if ids & self.collection.pending:
+        if ids&self.collection.pending:
             return
         diff = ids - self.collection.releases
         if diff:
             self.collection.add_releases(diff, self.updateText)
             self.setCheckState(QtCore.Qt.Checked)
         else:
-            self.collection.remove_releases(ids & self.collection.releases, self.updateText)
+            self.collection.remove_releases(ids&self.collection.releases, self.updateText)
             self.setCheckState(QtCore.Qt.Unchecked)
 
     def updateText(self):

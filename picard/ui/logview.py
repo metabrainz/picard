@@ -18,9 +18,12 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5 import (QtCore,
+                   QtGui,
+                   QtWidgets)
 
-from picard import config, log
+from picard import (config,
+                    log)
 from picard.ui import PicardDialog
 
 
@@ -56,10 +59,10 @@ class LogViewCommon(PicardDialog):
         self.textFormatError.setFont(font)
         self.textFormatError.setForeground(QtGui.QColor('red'))
         self.formats = {
-            log.LOG_INFO: self.textFormatInfo,
+            log.LOG_INFO:    self.textFormatInfo,
             log.LOG_WARNING: self.textFormatWarning,
-            log.LOG_ERROR: self.textFormatError,
-            log.LOG_DEBUG: self.textFormatDebug,
+            log.LOG_ERROR:   self.textFormatError,
+            log.LOG_DEBUG:   self.textFormatDebug,
         }
 
     def _format(self, level):
@@ -100,7 +103,6 @@ class LogViewCommon(PicardDialog):
 
 
 class LogView(LogViewCommon):
-
     options = [
         config.Option("persist", "logview_position", QtCore.QPoint()),
         config.Option("persist", "logview_size", QtCore.QSize(560, 400)),
@@ -125,7 +127,6 @@ class LogView(LogViewCommon):
 
 
 class HistoryView(LogViewCommon):
-
     options = [
         config.Option("persist", "historyview_position", QtCore.QPoint()),
         config.Option("persist", "historyview_size", QtCore.QSize(560, 400)),

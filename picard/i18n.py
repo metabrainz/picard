@@ -110,6 +110,8 @@ def setup_gettext(localedir, ui_language=None, logger=None):
 # strings due to that
 # This workaround is a hack until we get proper msgctxt support
 _CONTEXT_SEPARATOR = "\x04"
+
+
 def gettext_ctxt(gettext_, message, context=None):
     if context is None:
         return gettext_(message)
