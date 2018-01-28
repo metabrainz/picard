@@ -56,5 +56,5 @@ exe = EXE(pyz,
           upx=True,
           runtime_tmpdir=None,
           console=False,
-          icon=os.path.join('.', 'picard.ico'),
+          icon='picard.ico',
  )
