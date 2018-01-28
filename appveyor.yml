@@ -33,11 +33,9 @@ build_script:
 
     python setup.py build
 
-    python setup.py test
+    python setup.py test -v
 
     pyinstaller picard.spec
-test_script:
-- cmd: python setup.py test -v
 artifacts:
 - path: build\picard
 - path: dist/*.exe
