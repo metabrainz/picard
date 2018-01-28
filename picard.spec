@@ -3,6 +3,7 @@
 import os
 import glob
 
+
 def _picard_get_locale_files():
     locales = []
     path_domain = {
@@ -26,13 +27,15 @@ def get_locale_messages():
              os.path.join("locale", locale[1], "LC_MESSAGES")))
     return data_files
 
-block_cipher = None
 
+
+block_cipher = None
+data_files = get_locale_messages()
 
 a = Analysis(['tagger.py'],
              pathex=['picard'],
              binaries=[],
-             datas=get_locale_messages(),
+             datas=data_files,
              hiddenimports=[],
              hookspath=[],
              runtime_hooks=[],
