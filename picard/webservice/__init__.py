@@ -24,15 +24,17 @@
 Asynchronous web service.
 """
 
-import sys
-import time
+import math
 import os.path
 import platform
-import math
+import sys
+import time
 from collections import deque, defaultdict, namedtuple
 from functools import partial
+
 from PyQt5 import QtCore, QtNetwork
 from PyQt5.QtCore import QUrl, QStandardPaths, QUrlQuery
+
 from picard import (PICARD_APP_NAME,
                     PICARD_ORG_NAME,
                     PICARD_VERSION_STR,

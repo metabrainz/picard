@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 
 import unittest
+from unittest.mock import patch, MagicMock
+
 from picard import config
 from picard.webservice import WebService, UnknownResponseParserError, WSRequest
-from unittest.mock import patch, MagicMock
 
 PROXY_SETTINGS = {
     "use_proxy": True,

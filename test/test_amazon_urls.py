@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import unittest
+
 from picard.util import parse_amazon_url
 
 

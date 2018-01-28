@@ -18,12 +18,14 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from __future__ import print_function
-import sys
-import os
-from collections import deque
-from PyQt5 import QtCore
-from picard.util import thread
 
+import os
+import sys
+from collections import deque
+
+from PyQt5 import QtCore
+
+from picard.util import thread
 
 LOG_INFO = 1
 LOG_WARNING = 2

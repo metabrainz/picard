@@ -18,6 +18,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from mutagen.mp4 import MP4, MP4Cover
+
 from picard import config, log
 from picard.coverart.image import TagCoverArtImage, CoverArtImageError
 from picard.file import File

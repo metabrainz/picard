@@ -18,19 +18,22 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from __future__ import absolute_import
+
 import re
+from os.path import isfile
+
 import mutagen.apev2
 import mutagen.monkeysaudio
 import mutagen.musepack
-import mutagen.wavpack
 import mutagen.optimfrog
-from .mutagenext import tak
+import mutagen.wavpack
+
 from picard import config, log
 from picard.coverart.image import TagCoverArtImage, CoverArtImageError
 from picard.file import File
 from picard.metadata import Metadata
 from picard.util import encode_filename, sanitize_date
-from os.path import isfile
+from .mutagenext import tak
 
 
 class APEv2File(File):

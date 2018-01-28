@@ -18,8 +18,11 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from __future__ import print_function
+
 from operator import itemgetter
+
 from PyQt5 import QtCore
+
 from picard import (PICARD_APP_NAME, PICARD_ORG_NAME, PICARD_VERSION,
                     version_to_string, version_from_string)
 from picard.util import LockableObject

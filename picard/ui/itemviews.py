@@ -20,16 +20,18 @@
 import os
 import re
 from functools import partial
+
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 from picard import config, log
 from picard.album import Album, NatAlbum
 from picard.cluster import Cluster, ClusterList, UnclusteredFiles
 from picard.file import File
-from picard.track import Track, NonAlbumTrack
-from picard.util import encode_filename, icontheme
 from picard.plugin import ExtensionPoint
-from picard.ui.ratingwidget import RatingWidget
+from picard.track import Track, NonAlbumTrack
 from picard.ui.collectionmenu import CollectionMenu
+from picard.ui.ratingwidget import RatingWidget
+from picard.util import encode_filename, icontheme
 
 
 class BaseAction(QtWidgets.QAction):

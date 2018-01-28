@@ -21,10 +21,11 @@ import traceback
 from collections import defaultdict
 from functools import partial
 from itertools import combinations
+
 from picard import log
-from picard.metadata import Metadata
 from picard.dataobj import DataObject
 from picard.mbjson import media_formats_from_node, label_info_from_node, country_list_from_node
+from picard.metadata import Metadata
 from picard.util import uniqify
 
 

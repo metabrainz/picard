@@ -1,8 +1,11 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import print_function
+
 import unittest
+
 from picard import util
+
 #from picard.util import textencoding
 
 # Set the value to true below to show the coverage of Latin characters

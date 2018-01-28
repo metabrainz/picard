@@ -19,19 +19,22 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from __future__ import print_function
-import re
+
 import ntpath
+import re
 import sys
-from operator import itemgetter
 from heapq import heappush, heappop
+from operator import itemgetter
+
 from PyQt5 import QtCore
+
 from picard import config
+from picard.const import QUERY_LIMIT
 from picard.metadata import Metadata
 from picard.similarity import similarity
 from picard.ui.item import Item
 from picard.util import format_time, album_artist_from_path
 from picard.util.imagelist import update_metadata_images
-from picard.const import QUERY_LIMIT
 
 
 class Cluster(QtCore.QObject, Item):

@@ -19,6 +19,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from __future__ import print_function
+
 import sip
 
 sip.setapi("QString", 2)
@@ -49,28 +50,34 @@ def _patched_shutil_copystat(src, dst, *, follow_symlinks=True):
 _orig_shutil_copystat = shutil.copystat
 shutil.copystat = _patched_shutil_copystat
 
-import picard.resources
-from picard.i18n import setup_gettext
 
+# Not an unused import, do not remove it!
+import picard.resources
 from picard import (PICARD_APP_NAME, PICARD_ORG_NAME, PICARD_FANCY_VERSION_STR,
                     log, acoustid, config)
+from picard.acoustid.manager import AcoustIDManager
 from picard.album import Album, NatAlbum
 from picard.browser.browser import BrowserIntegration
 from picard.browser.filelookup import FileLookup
 from picard.cluster import Cluster, ClusterList, UnclusteredFiles
+from picard.collection import load_user_collections
+from picard.config_upgrade import upgrade_config
 from picard.const import USER_DIR, USER_PLUGIN_DIR
 from picard.dataobj import DataObject
 from picard.disc import Disc
 from picard.file import File
 from picard.formats import open_ as open_file
-from picard.track import Track, NonAlbumTrack
+from picard.i18n import setup_gettext
+from picard.plugin import PluginManager
 from picard.releasegroup import ReleaseGroup
-from picard.collection import load_user_collections
+from picard.track import Track, NonAlbumTrack
 from picard.ui.mainwindow import MainWindow
 from picard.ui.itemviews import BaseTreeView
-from picard.plugin import PluginManager
-from picard.acoustid.manager import AcoustIDManager
-from picard.config_upgrade import upgrade_config
+from picard.ui.searchdialog import (
+    TrackSearchDialog,
+    AlbumSearchDialog,
+    ArtistSearchDialog
+)
 from picard.util import (
     decode_filename,
     encode_filename,
@@ -83,11 +90,6 @@ from picard.util import (
 )
 from picard.webservice import WebService
 from picard.webservice.api_helpers import MBAPIHelper, AcoustIdAPIHelper
-from picard.ui.searchdialog import (
-    TrackSearchDialog,
-    AlbumSearchDialog,
-    ArtistSearchDialog
-)
 
 
 class Tagger(QtWidgets.QApplication):

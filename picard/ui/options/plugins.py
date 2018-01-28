@@ -24,7 +24,9 @@ import os.path
 import sys
 from functools import partial
 from operator import attrgetter
+
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 from picard import config, log
 from picard.const import (
     USER_PLUGIN_DIR,

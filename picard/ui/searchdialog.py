@@ -17,16 +17,17 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+from collections import namedtuple, OrderedDict
+from functools import partial
+from operator import itemgetter
+
 from PyQt5 import QtGui, QtCore, QtNetwork, QtWidgets
 from PyQt5.QtCore import pyqtSignal
-from operator import itemgetter
-from functools import partial
-from collections import namedtuple, OrderedDict
+
 from picard import config, log
+from picard.const import CAA_HOST, CAA_PORT, QUERY_LIMIT
+from picard.coverart.image import CaaThumbnailCoverArtImage
 from picard.file import File
-from picard.ui import PicardDialog
-from picard.ui.util import StandardButton, ButtonLineEdit
-from picard.util import icontheme, load_json, throttle
 from picard.mbjson import (
     artist_to_metadata,
     recording_to_metadata,
@@ -36,10 +37,11 @@ from picard.mbjson import (
     country_list_from_node
 )
 from picard.metadata import Metadata
-from picard.webservice.api_helpers import escape_lucene_query
 from picard.track import Track
-from picard.const import CAA_HOST, CAA_PORT, QUERY_LIMIT
-from picard.coverart.image import CaaThumbnailCoverArtImage
+from picard.ui import PicardDialog
+from picard.ui.util import StandardButton, ButtonLineEdit
+from picard.util import icontheme, load_json, throttle
+from picard.webservice.api_helpers import escape_lucene_query
 
 
 class ResultTable(QtWidgets.QTableWidget):

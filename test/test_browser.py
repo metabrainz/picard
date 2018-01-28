@@ -1,9 +1,9 @@
 import unittest
 from unittest.mock import patch
 from urllib.parse import urlparse, parse_qs
+
 from picard.browser.filelookup import FileLookup
 from picard.util import webbrowser2
-
 
 SERVER = 'musicbrainz.org'
 PORT = 443

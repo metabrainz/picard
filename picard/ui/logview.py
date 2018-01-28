@@ -19,6 +19,7 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 from picard import config, log
 from picard.ui import PicardDialog
 

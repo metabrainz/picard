@@ -17,13 +17,13 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+import builtins
 import os
 import sys
 
 from picard import PICARD_APP_NAME
 
 # Install gettext "noop" function in case const.py gets imported directly.
-import builtins
 builtins.__dict__['N_'] = lambda a: a
 
 

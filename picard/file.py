@@ -21,18 +21,22 @@
 import fnmatch
 import os
 import os.path
+import re
 import shutil
 import sys
-import re
 import unicodedata
+from collections import defaultdict
 from functools import partial
 from operator import itemgetter
-from collections import defaultdict
+
 from PyQt5 import QtCore
+
+from picard import PICARD_APP_NAME
 from picard import config, log
+from picard.const import QUERY_LIMIT
 from picard.metadata import Metadata
-from picard.ui.item import Item
 from picard.script import ScriptParser
+from picard.ui.item import Item
 from picard.util import (
     decode_filename,
     encode_filename,
@@ -43,14 +47,12 @@ from picard.util import (
     thread,
     tracknum_from_filename,
 )
+from picard.util.filenaming import make_short_filename
+from picard.util.tags import PRESERVED_TAGS
 from picard.util.textencoding import (
     replace_non_ascii,
     unaccent,
 )
-from picard.util.filenaming import make_short_filename
-from picard.util.tags import PRESERVED_TAGS
-from picard.const import QUERY_LIMIT
-from picard import PICARD_APP_NAME
 
 
 class File(QtCore.QObject, Item):

@@ -20,13 +20,14 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-import re
 import operator
-from functools import reduce
+import re
 from collections import namedtuple
+from functools import reduce
 from inspect import getfullargspec
-from picard.metadata import Metadata
+
 from picard.metadata import MULTI_VALUED_JOINER
+from picard.metadata import Metadata
 from picard.plugin import ExtensionPoint
 from picard.util import uniqify
 

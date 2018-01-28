@@ -19,6 +19,7 @@
 
 import sys
 import traceback
+
 from PyQt5.QtCore import QRunnable, QCoreApplication, QEvent
 
 

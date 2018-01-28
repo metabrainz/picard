@@ -19,11 +19,13 @@
 
 from collections import deque
 from functools import partial
+
 from PyQt5 import QtCore
+
 from picard import config, log
+from picard.acoustid.json_helpers import parse_recording
 from picard.const import FPCALC_NAMES
 from picard.util import find_executable
-from picard.acoustid.json_helpers import parse_recording
 
 
 class AcoustIDClient(QtCore.QObject):

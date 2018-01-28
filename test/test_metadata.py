@@ -4,7 +4,6 @@ import unittest
 from picard import config
 from picard.metadata import Metadata, MULTI_VALUED_JOINER
 
-
 settings = {
     'write_id3v23': False,
     'id3v23_join_with': '/',

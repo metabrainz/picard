@@ -20,7 +20,9 @@
 
 import os
 import sys
+
 from PyQt5 import QtCore, QtWidgets
+
 from picard import config
 from picard.formats import supported_formats
 from picard.util import find_existing_path

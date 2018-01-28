@@ -18,9 +18,11 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-from PyQt5 import QtCore
 import os.path
 import re
+
+from PyQt5 import QtCore
+
 from picard import log
 from picard.const import PICARD_URLS, QUERY_LIMIT
 from picard.util import webbrowser2, build_qurl

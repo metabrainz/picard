@@ -19,12 +19,14 @@
 
 import base64
 import re
+
 import mutagen.flac
 import mutagen.ogg
 import mutagen.oggflac
 import mutagen.oggspeex
 import mutagen.oggtheora
 import mutagen.oggvorbis
+
 try:
     from mutagen.oggopus import OggOpus
     with_opus = True

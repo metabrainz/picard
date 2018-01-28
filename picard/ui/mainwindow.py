@@ -17,29 +17,30 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-from PyQt5 import QtCore, QtGui, QtWidgets
-
 import os.path
+
+from PyQt5 import QtCore, QtGui, QtWidgets
 
 from picard import config, log
 from picard.album import Album
 from picard.cluster import Cluster
 from picard.file import File
-from picard.track import Track
 from picard.formats import supported_formats
+from picard.plugin import ExtensionPoint
+from picard.track import Track
 from picard.ui.coverartbox import CoverArtBox
-from picard.ui.itemviews import MainPanel
-from picard.ui.metadatabox import MetadataBox
 from picard.ui.filebrowser import FileBrowser
-from picard.ui.tagsfromfilenames import TagsFromFileNamesDialog
-from picard.ui.options.dialog import OptionsDialog
 from picard.ui.infodialog import FileInfoDialog, AlbumInfoDialog, TrackInfoDialog, ClusterInfoDialog
 from picard.ui.infostatus import InfoStatus
-from picard.ui.passworddialog import PasswordDialog, ProxyDialog
+from picard.ui.itemviews import MainPanel
 from picard.ui.logview import LogView, HistoryView
+from picard.ui.metadatabox import MetadataBox
+from picard.ui.options.dialog import OptionsDialog
+from picard.ui.passworddialog import PasswordDialog, ProxyDialog
 from picard.ui.searchdialog import (
     TrackSearchDialog,
     AlbumSearchDialog)
+from picard.ui.tagsfromfilenames import TagsFromFileNamesDialog
 from picard.ui.util import (
     find_starting_directory,
     ButtonLineEdit,
@@ -47,8 +48,6 @@ from picard.ui.util import (
 )
 from picard.util import icontheme, webbrowser2, throttle, thread
 from picard.util.cdrom import discid, get_cdrom_drives
-from picard.plugin import ExtensionPoint
-
 
 ui_init = ExtensionPoint()
 

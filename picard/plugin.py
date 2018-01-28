@@ -19,18 +19,20 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-from PyQt5 import QtCore
-from collections import defaultdict
-from functools import partial
-import json
 import imp
+import json
 import os.path
 import shutil
-import picard.plugins
 import tempfile
 import traceback
 import zipfile
 import zipimport
+from collections import defaultdict
+from functools import partial
+
+from PyQt5 import QtCore
+
+import picard.plugins
 from picard import (config,
                     log,
                     version_from_string,
@@ -38,7 +40,6 @@ from picard import (config,
                     VersionError)
 from picard.const import USER_PLUGIN_DIR, PLUGINS_API
 from picard.util import load_json
-
 
 _suffixes = [s[0] for s in imp.get_suffixes()]
 _package_entries = ["__init__.py", "__init__.pyc", "__init__.pyo"]

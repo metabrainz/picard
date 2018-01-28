@@ -18,11 +18,11 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 import re
+
 from picard import config
+from picard.const import RELEASE_FORMATS
 from picard.util import (format_time, translate_from_sortname, parse_amazon_url,
                          linear_combination_of_weights)
-from picard.const import RELEASE_FORMATS
-
 
 _artist_rel_types = {
     "composer": "composer",
