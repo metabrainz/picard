@@ -133,6 +133,28 @@ class SearchBox(QtWidgets.QWidget):
 Retry = namedtuple("Retry", ["function", "query"])
 
 
+BY_NUMBER, BY_DURATION = range(2)
+
+
+class SortableTableWidgetItem(QtWidgets.QTableWidgetItem):
+
+    def __init__(self, sort_key):
+        super().__init__()
+        self.sort_key = sort_key
+
+    def __lt__(self, other):
+        return self.sort_key < other.sort_key
+
+
+def to_seconds(timestr):
+    if not timestr:
+        return 0
+    seconds = 0
+    for part in timestr.split(':'):
+        seconds = seconds * 60 + int(part)
+    return seconds
+
+
 class SearchDialog(PicardDialog):
 
     scrolled = pyqtSignal()
@@ -149,7 +171,7 @@ class SearchDialog(PicardDialog):
         # matching label as values
         self.columns = None
         # FIXME: sorting is broken by design
-        self.sorting_enabled = False
+        self.sorting_enabled = True
 
     @property
     def columns(self):
@@ -169,16 +191,26 @@ class SearchDialog(PicardDialog):
     def colpos(self, colname):
         return self.__colkeys.index(colname)
 
-    def set_table_item(self, row, colname, obj, key, default="", conv=None):
-        item = QtWidgets.QTableWidgetItem()
+    def set_table_item(self, row, colname, obj, key, default="", sort=None):
         # QVariant remembers the original type of the data
         # matching comparison operator will be used when sorting
         # get() will return a string, force conversion if asked to
         value = obj.get(key, default)
-        if conv is not None:
-            value = conv(value)
-        item.setData(QtCore.Qt.EditRole, value)
-        self.table.setItem(row, self.colpos(colname), item)
+        if sort == BY_DURATION:
+            item = SortableTableWidgetItem(to_seconds(value))
+        elif sort == BY_NUMBER:
+            try:
+                sortkey = float(value)
+            except ValueError:
+                sortkey = 0.0
+            item = SortableTableWidgetItem(sortkey)
+        else:
+            item = QtWidgets.QTableWidgetItem()
+        item.setData(QtCore.Qt.DisplayRole, value)
+        pos = self.colpos(colname)
+        if pos == 0:
+            item.setData(QtCore.Qt.UserRole, row)
+        self.table.setItem(row, pos, item)
 
     def setupUi(self, accept_button_title):
         self.verticalLayout = QtWidgets.QVBoxLayout(self)

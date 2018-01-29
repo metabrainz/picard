@@ -33,7 +33,7 @@ from picard.metadata import Metadata
 from picard.webservice.api_helpers import escape_lucene_query
 from picard.const import CAA_HOST, CAA_PORT, QUERY_LIMIT
 from picard.coverart.image import CaaThumbnailCoverArtImage
-from picard.ui.searchdialog import SearchDialog, Retry
+from picard.ui.searchdialog import SearchDialog, Retry, BY_NUMBER
 
 
 class CoverWidget(QtWidgets.QWidget):
@@ -331,16 +331,16 @@ class AlbumSearchDialog(SearchDialog):
             self.set_table_item(row, 'name',     release, "album")
             self.set_table_item(row, 'artist',   release, "albumartist")
             self.set_table_item(row, 'format',   release, "format")
-            self.set_table_item(row, 'tracks',   release, "tracks")
+            self.set_table_item(row, 'tracks',   release, "tracks", sort=BY_NUMBER)
             self.set_table_item(row, 'date',     release, "date")
             self.set_table_item(row, 'country',  release, "country")
             self.set_table_item(row, 'labels',   release, "label")
             self.set_table_item(row, 'catnums',  release, "catalognumber")
-            self.set_table_item(row, 'barcode',  release, "barcode")
+            self.set_table_item(row, 'barcode',  release, "barcode", sort=BY_NUMBER)
             self.set_table_item(row, 'language', release, "~releaselanguage")
             self.set_table_item(row, 'type',     release, "releasetype")
             self.set_table_item(row, 'status',   release, "releasestatus")
-            self.set_table_item(row, 'score',    release, "score", conv=int)
+            self.set_table_item(row, 'score',    release, "score", sort=BY_NUMBER)
             self.cover_cells.append(CoverCell(self, release, row, 'cover',
                                               on_show=self.fetch_coverart))
         self.show_table(sort_column='score')
