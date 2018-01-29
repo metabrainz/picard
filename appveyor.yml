@@ -1,6 +1,11 @@
-version: 2.0.0.dev{build}
+version: 2.0.0.dev.2.{build}
 pull_requests:
   do_not_increment_build_number: true
+branches:
+  only:
+  - master
+skip_branch_with_pr: true
+image: Visual Studio 2015
 init:
 - cmd: >-
     ECHO %PYTHON% %PYTHON_VERSION% %PYTHON_ARCH%
@@ -10,28 +15,36 @@ environment:
   CHROMAPRINT_FPCALC_VERSION: 1.4.2
   DISCID_VERSION: 0.6.1
   matrix:
-  - PYTHON: C:\Python36
-    PYTHON_VERSION: 3.6.1
-    PYTHON_ARCH: 32
-  - PYTHON: C:\Python35
-    PYTHON_VERSION: 3.5.3
-    PYTHON_ARCH: 32
-build: off
-test_script:
+  - PYTHON: C:\Python35-x64
+    python_version: 3.5.3
+    python_arch: 64
+  - PYTHON: C:\Python36-x64
+    PYTHON_VERSION: 3.6.4
+    PYTHON_ARCH: 64
+build_script:
 - cmd: >-
     appveyor DownloadFile https://github.com/acoustid/chromaprint/releases/download/v%CHROMAPRINT_FPCALC_VERSION%/chromaprint-fpcalc-%CHROMAPRINT_FPCALC_VERSION%-windows-i686.zip -FileName fpcalc.zip
+
+    appveyor DownloadFile https://indy.fulgan.com/SSL/openssl-%OPENSSL_VERSION%-x64_86-win64.zip -FileName openssl.zip
 
     7z x fpcalc.zip -y
 
     copy /Y chromaprint-fpcalc-%CHROMAPRINT_FPCALC_VERSION%-windows-i686\fpcalc.exe %PYTHON%
 
-    appveyor DownloadFile http://ftp.musicbrainz.org/pub/musicbrainz/libdiscid/libdiscid-%DISCID_VERSION%-win32.zip -FileName libdiscid.zip
+    7z x openssl.zip -y
 
-    7z x libdiscid.zip -y
+    pip install pyqt5 mutagen pyinstaller
 
-    copy /Y libdiscid-%DISCID_VERSION%-win32\discid.dll %PYTHON%
-
-    pip install -r requirements.txt
+    python setup.py build
 
     python setup.py test -v
+
+    pyinstaller picard.spec
+
+    copy /Y ssleay32.dll dist
+
+    copy /Y libeay32.dll dist
+
+artifacts:
+- path: dist
 deploy: off
