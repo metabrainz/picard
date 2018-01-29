@@ -138,8 +138,7 @@ class PluginsOptionsPage(OptionsPage):
                                   self.tagger.pluginmanager.available_plugins])
         installed = []
         for plugin in plugins:
-            if plugin.module_name in enabled_plugins:
-                plugin.enabled = True
+            plugin.enabled = plugin.module_name in enabled_plugins
             if plugin.module_name in available_plugins.keys():
                 latest = available_plugins[plugin.module_name]
                 if latest.split('.') > plugin.version.split('.'):
