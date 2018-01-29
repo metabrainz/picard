@@ -2,7 +2,12 @@
 
 import unittest
 from picard import config
-from picard.webservice import WebService, UnknownResponseParserError, WSRequest
+from picard.webservice import (
+    WebService,
+    UnknownResponseParserError,
+    WSRequest,
+    ratecontrol,
+)
 from unittest.mock import patch, MagicMock
 
 PROXY_SETTINGS = {
@@ -126,7 +131,7 @@ class WebServiceTaskTest(unittest.TestCase):
 
         mock_task = MagicMock()
         mock_task2 = MagicMock()
-        delay_func = self.ws._get_delay_to_next_request = MagicMock()
+        delay_func = ratecontrol.get_delay_to_next_request = MagicMock()
 
         # Patching the get delay function to delay the 2nd task on queue to the next call
         delay_func.side_effect = [(False, 0), (True, 0), (False, 0), (False, 0), (False, 0), (False, 0)]
