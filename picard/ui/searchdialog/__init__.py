@@ -336,7 +336,8 @@ class SearchDialog(PicardDialog):
 
     def accept(self):
         if self.table:
-            row = self.table.selectionModel().selectedRows()[0].row()
+            idx = self.table.selectionModel().selectedRows()[0]
+            row = self.table.itemFromIndex(idx).data(QtCore.Qt.UserRole)
             self.accept_event(row)
         self.save_state()
         QtWidgets.QDialog.accept(self)
