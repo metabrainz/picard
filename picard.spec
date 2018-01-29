@@ -4,7 +4,6 @@ import os
 import glob
 import platform
 
-
 def _picard_get_locale_files():
     locales = []
     path_domain = {
@@ -70,3 +69,8 @@ exe = EXE(pyz,
           console=False,
           icon='picard.ico',
  )
+if platform.system() == 'Darwin':
+    app = BUNDLE(exe,
+                 name='MusicBrainz Picard.app',
+                 icon='picard.icns',
+                 bundle_identifier=None)
