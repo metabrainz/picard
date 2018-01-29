@@ -70,7 +70,16 @@ exe = EXE(pyz,
           icon='picard.ico',
  )
 if platform.system() == 'Darwin':
+    import plistlib
+    app_name = 'MusicBrainz Picard.app'
     app = BUNDLE(exe,
-                 name='MusicBrainz Picard.app',
+                 name=app_name,
                  icon='picard.icns',
                  bundle_identifier=None)
+    # We need to do the below changes to plist in order to enable High-DPI in
+    # our final packaged app
+    plist_path = os.path.join('dist', app_name, 'Contents', 'Info.plist')
+    values = plistlib.readPlist(plist_path)
+    values['NSPrincipalClass'] = 'NSApplication'
+    values['NSHighResolutionCapable'] = 'True'
+    plistlib.writePlist(values, plist_path)
