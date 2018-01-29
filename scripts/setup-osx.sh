@@ -6,4 +6,3 @@ brew install libdiscid
 pip3 install --upgrade pip setuptools wheel
 pip3 install virtualenv
 virtualenv -p python3 .
-source bin/activate
