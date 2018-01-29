@@ -148,6 +148,8 @@ class SearchDialog(PicardDialog):
         # self.columns has to be an ordered dict, with column name as keys, and
         # matching label as values
         self.columns = None
+        # FIXME: sorting is broken by design
+        self.sorting_enabled = False
 
     @property
     def columns(self):
@@ -277,9 +279,11 @@ class SearchDialog(PicardDialog):
             enable_accept_button)
 
     def show_table(self, sort_column=None, sort_order=QtCore.Qt.DescendingOrder):
-        self.table.setSortingEnabled(True)
-        if sort_column:
+        self.table.horizontalHeader().setSortIndicatorShown(self.sorting_enabled)
+        self.table.setSortingEnabled(self.sorting_enabled)
+        if self.sorting_enabled and sort_column:
             self.table.sortItems(self.colpos(sort_column), sort_order)
+
         self.table.resizeColumnsToContents()
         self.table.resizeRowsToContents()
 
