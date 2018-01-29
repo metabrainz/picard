@@ -102,6 +102,11 @@ class Tagger(QtWidgets.QApplication):
     __instance = None
 
     def __init__(self, picard_args, unparsed_args, localedir, autoupdate):
+
+        # Use the new fusion style from PyQt5 for a modern and consistent look
+        # across all OSes.
+        self.setStyle('Fusion')
+
         # Set the WM_CLASS to 'MusicBrainz-Picard' so desktop environments
         # can use it to look up the app
         QtWidgets.QApplication.__init__(self, ['MusicBrainz-Picard'] + unparsed_args)
