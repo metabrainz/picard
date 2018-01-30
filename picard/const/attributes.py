@@ -85,6 +85,8 @@ MB_ATTRIBUTES = {
     'DB:medium_format/name:068': 'DVDplus (DVD-Audio side)',
     'DB:medium_format/name:069': 'DVDplus (DVD-Video side)',
     'DB:medium_format/name:070': 'DVDplus (CD side)',
+    'DB:medium_format/name:071': '8" LaserDisc',
+    'DB:medium_format/name:072': '12" LaserDisc',
     'DB:release_group_primary_type/name:001': 'Album',
     'DB:release_group_primary_type/name:002': 'Single',
     'DB:release_group_primary_type/name:003': 'EP',
