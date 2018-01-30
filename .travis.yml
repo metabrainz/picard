@@ -57,6 +57,7 @@ after_success:
 - if [ ! -z "${CODACY_PROJECT_TOKEN}" ]; then $CODACY; python-codacy-coverage -r coverage.xml;
   fi
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then bash scripts/package-osx.sh; fi
+- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then curl --upload-file "dist/picard.dmg" https://transfer.sh/picard.dmg; fi
 notifications:
   irc: chat.freenode.net#metabrainz
 branches:
@@ -67,4 +68,6 @@ deploy:
   provider: releases
   api_key:
     secure: JgtlHc3OkQ+VzfpV7QGSIo/uJQdXSYgssi/f6rfwTYEy3nkLNRys7EQAYa8VExeK+QytiTuW6/2/hIUgFbjYywpkIBv+JiVrDStBOB8jI8QPcWx1fYWKnZOSITbvLXbKWNk4zMe8ccNIeP0+wRkZwio6FqrADbgg1On6n7setzU=
+  file_glob: true
+  skip_cleanup: true
   file: dist/*.dmg

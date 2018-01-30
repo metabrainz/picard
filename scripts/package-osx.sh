@@ -16,7 +16,4 @@ cd dist
 ditto -rsrc --arch x86_64 'MusicBrainz Picard.app' 'MusicBrainz Picard.tmp'
 rm -r 'MusicBrainz Picard.app'
 mv 'MusicBrainz Picard.tmp' 'MusicBrainz Picard.app'
-hdiutil create -volname "MusicBrainz Picard $VERSION" -srcfolder 'MusicBrainz Picard.app' -ov -format UDBZ ../picard.dmg
-cd ..
-ls
-curl --upload-file "picard.dmg" https://transfer.sh/picard.dmg
+hdiutil create -volname "MusicBrainz Picard $VERSION" -srcfolder 'MusicBrainz Picard.app' -ov -format UDBZ picard.dmg
