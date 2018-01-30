@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 if [ -z "$CI_BUILD_TAG" ]
 then
     python3 setup.py patch_version --platform=osx
