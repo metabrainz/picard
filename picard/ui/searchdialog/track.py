@@ -32,7 +32,7 @@ from picard.metadata import Metadata
 from picard.webservice.api_helpers import escape_lucene_query
 from picard.track import Track
 from picard.const import QUERY_LIMIT
-from picard.ui.searchdialog import SearchDialog, Retry
+from picard.ui.searchdialog import SearchDialog, Retry, BY_DURATION, BY_NUMBER
 
 
 class TrackSearchDialog(SearchDialog):
@@ -138,13 +138,13 @@ class TrackSearchDialog(SearchDialog):
             track = obj[0]
             self.table.insertRow(row)
             self.set_table_item(row, 'name',    track, "title")
-            self.set_table_item(row, 'length',  track, "~length")
+            self.set_table_item(row, 'length',  track, "~length", sort=BY_DURATION)
             self.set_table_item(row, 'artist',  track, "artist")
             self.set_table_item(row, 'release', track, "album")
             self.set_table_item(row, 'date',    track, "date")
             self.set_table_item(row, 'country', track, "country")
             self.set_table_item(row, 'type',    track, "releasetype")
-            self.set_table_item(row, 'score',   track, "score", conv=int)
+            self.set_table_item(row, 'score',   track, "score", sort=BY_NUMBER)
         self.show_table(sort_column='score')
 
     def parse_tracks(self, tracks):

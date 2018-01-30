@@ -23,7 +23,7 @@ from picard import config
 from picard.mbjson import artist_to_metadata
 from picard.metadata import Metadata
 from picard.const import QUERY_LIMIT
-from picard.ui.searchdialog import SearchDialog, Retry
+from picard.ui.searchdialog import SearchDialog, Retry, BY_NUMBER
 
 
 class ArtistSearchDialog(SearchDialog):
@@ -99,7 +99,7 @@ class ArtistSearchDialog(SearchDialog):
             self.set_table_item(row, 'beginarea', artist, "beginarea")
             self.set_table_item(row, 'enddate',   artist, "enddate")
             self.set_table_item(row, 'endarea',   artist, "endarea")
-            self.set_table_item(row, 'score',     artist, "score", conv=int)
+            self.set_table_item(row, 'score',     artist, "score", sort=BY_NUMBER)
         self.show_table(sort_column='score')
 
     def accept_event(self, row):
