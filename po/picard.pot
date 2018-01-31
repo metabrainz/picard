@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: picard 2.0.0.dev2\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2018-01-30 16:07+0100\n"
+"POT-Creation-Date: 2018-01-31 12:06+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2175,31 +2175,15 @@ msgid ""
 " Help</a>)"
 msgstr ""
 
-#: picard/ui/searchdialog/__init__.py:217
-msgid "vertical_layout"
-msgstr ""
-
-#: picard/ui/searchdialog/__init__.py:220
-msgid "search_box"
-msgstr ""
-
-#: picard/ui/searchdialog/__init__.py:223
-msgid "center_widget"
-msgstr ""
-
-#: picard/ui/searchdialog/__init__.py:225
-msgid "center_layout"
-msgstr ""
-
-#: picard/ui/searchdialog/__init__.py:258
+#: picard/ui/searchdialog/__init__.py:257
 msgid "<strong>Loading...</strong>"
 msgstr ""
 
-#: picard/ui/searchdialog/__init__.py:289
+#: picard/ui/searchdialog/__init__.py:288
 msgid "Retry"
 msgstr ""
 
-#: picard/ui/searchdialog/__init__.py:323
+#: picard/ui/searchdialog/__init__.py:322
 #, python-format
 msgid ""
 "<strong>Following error occurred while fetching "
@@ -2207,7 +2191,7 @@ msgid ""
 " HTTP code %s)<br>"
 msgstr ""
 
-#: picard/ui/searchdialog/__init__.py:334
+#: picard/ui/searchdialog/__init__.py:333
 msgid "<strong>No results found. Please try a different search query.</strong>"
 msgstr ""
 
