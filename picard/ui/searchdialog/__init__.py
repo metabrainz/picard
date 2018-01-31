@@ -170,7 +170,6 @@ class SearchDialog(PicardDialog):
         # self.columns has to be an ordered dict, with column name as keys, and
         # matching label as values
         self.columns = None
-        # FIXME: sorting is broken by design
         self.sorting_enabled = True
 
     @property
