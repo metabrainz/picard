@@ -23,13 +23,13 @@ environment:
     PYTHON_ARCH: 64
 build_script:
 - cmd: >-
-    appveyor DownloadFile https://github.com/acoustid/chromaprint/releases/download/v%CHROMAPRINT_FPCALC_VERSION%/chromaprint-fpcalc-%CHROMAPRINT_FPCALC_VERSION%-windows-i686.zip -FileName fpcalc.zip
+    appveyor DownloadFile https://github.com/acoustid/chromaprint/releases/download/v%CHROMAPRINT_FPCALC_VERSION%/chromaprint-fpcalc-%CHROMAPRINT_FPCALC_VERSION%-windows-x86_64.zip -FileName fpcalc.zip
 
     appveyor DownloadFile https://indy.fulgan.com/SSL/openssl-%OPENSSL_VERSION%-x64_86-win64.zip -FileName openssl.zip
 
     7z x fpcalc.zip -y
 
-    copy /Y chromaprint-fpcalc-%CHROMAPRINT_FPCALC_VERSION%-windows-i686\fpcalc.exe %PYTHON%
+    copy /Y chromaprint-fpcalc-%CHROMAPRINT_FPCALC_VERSION%-windows-x86_64\fpcalc.exe %PYTHON%
 
     7z x openssl.zip -y
 
