@@ -2,6 +2,7 @@
 
 import os
 import glob
+import platform
 
 
 def _picard_get_locale_files():
@@ -28,9 +29,17 @@ def get_locale_messages():
     return data_files
 
 
-
 block_cipher = None
 data_files = get_locale_messages()
+os_name = platform.system()
+fpcalc_name = 'fpcalc'
+
+if os_name == 'Windows':
+    fpcalc_name += '.exe'
+
+if os.path.isfile(fpcalc_name):
+    data_files += [(fpcalc_name, fpcalc_name)]
+
 
 a = Analysis(['tagger.py'],
              pathex=['picard'],
