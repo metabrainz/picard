@@ -6,10 +6,12 @@ import sys
 sys.path.insert(0, '.')
 
 from picard.tagger import main
+from picard.util import is_frozen, frozen_temp_path
+
 
 # This is needed to find resources when using pyinstaller
-if getattr(sys, 'frozen', False):
-    basedir = sys._MEIPASS
+if is_frozen:
+    basedir = frozen_temp_path
 else:
     basedir = os.path.dirname(os.path.abspath(__file__))
 
