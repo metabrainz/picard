@@ -197,6 +197,9 @@ def find_executable(*executables):
         executables = [e + '.exe' for e in executables]
     paths = [os.path.dirname(sys.executable)] if sys.executable else []
     paths += os.environ.get('PATH', '').split(os.pathsep)
+    # This is for searching for executables bundled in packaged builds
+    if getattr(sys, 'frozen', False):
+        paths += sys._MEIPASS
     for path in paths:
         for executable in executables:
             f = os.path.join(path, executable)
