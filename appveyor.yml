@@ -29,7 +29,7 @@ build_script:
 
     7z x fpcalc.zip -y
 
-    copy /Y chromaprint-fpcalc-%CHROMAPRINT_FPCALC_VERSION%-windows-x86_64\fpcalc.exe %PYTHON%
+    copy /Y chromaprint-fpcalc-%CHROMAPRINT_FPCALC_VERSION%-windows-x86_64\fpcalc.exe fpcalc.exe
 
     7z x openssl.zip -y
 

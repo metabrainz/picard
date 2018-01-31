@@ -30,20 +30,22 @@ def get_locale_messages():
 
 
 block_cipher = None
-data_files = get_locale_messages()
 os_name = platform.system()
-fpcalc_name = 'fpcalc'
+binaries = []
 
+data_files = get_locale_messages()
+
+fpcalc_name = 'fpcalc'
 if os_name == 'Windows':
     fpcalc_name = 'fpcalc.exe'
 
 if os.path.isfile(fpcalc_name):
-    data_files += [(fpcalc_name, fpcalc_name)]
+    binaries += [(fpcalc_name, '')]
 
 
 a = Analysis(['tagger.py'],
              pathex=['picard'],
-             binaries=[],
+             binaries=binaries,
              datas=data_files,
              hiddenimports=[],
              hookspath=[],
