@@ -22,7 +22,7 @@ from functools import partial
 from PyQt5 import QtCore
 from picard import config, log
 from picard.const import FPCALC_NAMES
-from picard.util import find_executable
+from picard.util import find_executable, is_frozen
 from picard.acoustid.json_helpers import parse_recording
 
 
@@ -34,7 +34,10 @@ class AcoustIDClient(QtCore.QObject):
         self._running = 0
         self._max_processes = 2
 
-        if not config.setting["acoustid_fpcalc"]:
+        # The second condition is checked because in case of a packaged build of picard
+        # the temp directory that pyinstaller decompresses picard into changes on every
+        # launch, thus we need to ignore the existing config values.
+        if not config.setting["acoustid_fpcalc"] or is_frozen:
             fpcalc_path = find_executable(*FPCALC_NAMES)
             if fpcalc_path:
                 config.setting["acoustid_fpcalc"] = fpcalc_path
