@@ -17,7 +17,6 @@ class Ui_Dialog(object):
         self.label.setObjectName("label")
         self.vboxlayout.addWidget(self.label)
         self.release_list = QtWidgets.QTreeWidget(Dialog)
-        self.release_list.setRootIsDecorated(False)
         self.release_list.setObjectName("release_list")
         self.release_list.headerItem().setText(0, "1")
         self.vboxlayout.addWidget(self.release_list)
