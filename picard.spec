@@ -38,6 +38,7 @@ data_files = get_locale_messages()
 fpcalc_name = 'fpcalc'
 if os_name == 'Windows':
     fpcalc_name = 'fpcalc.exe'
+    binaries += [('discid.dll', '')]
 
 if os.path.isfile(fpcalc_name):
     binaries += [(fpcalc_name, '')]

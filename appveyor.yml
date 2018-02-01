@@ -13,11 +13,12 @@ init:
     SET PATH=%PYTHON%;%PYTHON%\Scripts;%PATH%
 environment:
   CHROMAPRINT_FPCALC_VERSION: 1.4.2
-  DISCID_VERSION: 0.6.1
+  DISCID_VERSION: 0.6.2
+  OPENSSL_VERSION: 1.0.2n
   matrix:
   - PYTHON: C:\Python35-x64
-    python_version: 3.5.3
-    python_arch: 64
+    PYTHON_VERSION: 3.5.3
+    PYTHON_ARCH: 64
   - PYTHON: C:\Python36-x64
     PYTHON_VERSION: 3.6.4
     PYTHON_ARCH: 64
@@ -27,15 +28,25 @@ build_script:
 
     appveyor DownloadFile https://indy.fulgan.com/SSL/openssl-%OPENSSL_VERSION%-x64_86-win64.zip -FileName openssl.zip
 
+    appveyor DownloadFile https://github.com/metabrainz/libdiscid/releases/download/v%DISCID_VERSION%/libdiscid-%DISCID_VERSION%-win64.zip -FileName libdiscid.zip
+
     7z x fpcalc.zip -y
 
     copy /Y chromaprint-fpcalc-%CHROMAPRINT_FPCALC_VERSION%-windows-x86_64\fpcalc.exe fpcalc.exe
 
     7z x openssl.zip -y
 
-    pip install pyqt5 mutagen pyinstaller
+    7z x libdiscid.zip -y
+
+    copy /Y discid.dll %PYTHON%
+
+    pip install -r requirements.txt
+
+    pip install pyinstaller
 
     python setup.py build
+
+    python setup.py build_ext -i
 
     python setup.py test -v
 
@@ -44,7 +55,6 @@ build_script:
     copy /Y ssleay32.dll dist
 
     copy /Y libeay32.dll dist
-
 artifacts:
 - path: dist
 deploy: off
