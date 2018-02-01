@@ -257,10 +257,13 @@ class PluginsOptionsPage(OptionsPage):
             button.setMaximumHeight(button.fontMetrics().boundingRect(label).height() + 7)
             self.ui.plugins.setItemWidget(item, 2, button)
 
-            def download_button_process():
+            def download_button_process(action):
                 self.ui.plugins.setCurrentItem(item)
-                self.download_plugin()
-            button.released.connect(download_button_process)
+                self.download_plugin(action)
+            if label == _("Update"):
+                button.released.connect(partial(download_button_process, "update"))
+            else:
+                button.released.connect(partial(download_button_process, "install"))
         else:
             # Note: setText() don't work after it was set to a button
             if plugin.marked_for_update:
@@ -315,7 +318,7 @@ class PluginsOptionsPage(OptionsPage):
             for path in files:
                 self.tagger.pluginmanager.install_plugin(path)
 
-    def download_plugin(self):
+    def download_plugin(self, action):
         selected = self.ui.plugins.selectedItems()[0]
         plugin = self.items[selected]
 
@@ -323,14 +326,14 @@ class PluginsOptionsPage(OptionsPage):
             PLUGINS_API['host'],
             PLUGINS_API['port'],
             PLUGINS_API['endpoint']['download'],
-            partial(self.download_handler, plugin=plugin),
+            partial(self.download_handler, action, plugin=plugin),
             parse_response_type=None,
             priority=True,
             important=True,
             queryargs={"id": plugin.module_name}
         )
 
-    def download_handler(self, response, reply, error, plugin):
+    def download_handler(self, action, response, reply, error, plugin):
         if error:
             msgbox = QtWidgets.QMessageBox(self)
             msgbox.setText(_("The plugin '%s' could not be downloaded.") % plugin.module_name)
@@ -341,11 +344,18 @@ class PluginsOptionsPage(OptionsPage):
             log.error("Error occurred while trying to download the plugin: '%s'" % plugin.module_name)
             return
 
-        self.tagger.pluginmanager.install_plugin(
-            None,
-            plugin_name=plugin.module_name,
-            plugin_data=response
-        )
+        if action == "install":
+            self.tagger.pluginmanager.install_plugin(
+                None,
+                plugin_name=plugin.module_name,
+                plugin_data=response
+            )
+        else:
+            self.tagger.pluginmanager.update_plugin(
+                None,
+                plugin_name=plugin.module_name,
+                plugin_data=response
+            )
 
     def open_plugin_dir(self):
         QtGui.QDesktopServices.openUrl(QtCore.QUrl(self.loader % USER_PLUGIN_DIR, QtCore.QUrl.TolerantMode))
