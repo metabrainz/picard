@@ -257,6 +257,22 @@ def country_list_from_node(node):
         return country
 
 
+def release_dates_and_countries_from_node(node):
+    dates = []
+    countries = []
+    if "release-events" in node:
+        for release_event in node['release-events']:
+            dates.append(release_event['date'])
+            country_code = None
+            try:
+                country_code = release_event['area']['iso-3166-1-codes'][0]
+            # TypeError in case object is None
+            except (KeyError, IndexError, TypeError):
+                pass
+            countries.append(country_code)
+    return dates, countries
+
+
 def label_info_from_node(node):
     labels = []
     catalog_numbers = []

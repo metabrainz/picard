@@ -22,7 +22,11 @@ from PyQt5 import QtCore, QtWidgets
 from picard import config, log
 from picard.ui import PicardDialog
 from picard.ui.ui_cdlookup import Ui_Dialog
-from picard.mbjson import artist_credit_from_node, label_info_from_node
+from picard.mbjson import (
+    artist_credit_from_node,
+    label_info_from_node,
+    release_dates_and_countries_from_node,
+)
 
 
 class CDLookupDialog(PicardDialog):
@@ -41,22 +45,25 @@ class CDLookupDialog(PicardDialog):
         self.ui = Ui_Dialog()
         self.ui.setupUi(self)
         self.ui.release_list.setSortingEnabled(True)
+        self.ui.release_list.setAlternatingRowColors(True)
         self.ui.release_list.setHeaderLabels([_("Album"), _("Artist"), _("Date"), _("Country"),
                                               _("Labels"), _("Catalog #s"), _("Barcode")])
         self.restore_state()
         if self.releases:
+            def myjoin(l):
+                return "\n".join(l)
+
             for release in self.releases:
                 labels, catalog_numbers = label_info_from_node(release['label-info'])
-                date = release['date'] if "date" in release else ""
-                country = release['country'] if "country" in release else ""
+                dates, countries = release_dates_and_countries_from_node(release)
                 barcode = release['barcode'] if "barcode" in release else ""
                 item = QtWidgets.QTreeWidgetItem(self.ui.release_list)
                 item.setText(0, release['title'])
                 item.setText(1, artist_credit_from_node(release['artist-credit'])[0])
-                item.setText(2, date)
-                item.setText(3, country)
-                item.setText(4, ", ".join(labels))
-                item.setText(5, ", ".join(catalog_numbers))
+                item.setText(2, myjoin(dates))
+                item.setText(3, myjoin(countries))
+                item.setText(4, myjoin(labels))
+                item.setText(5, myjoin(catalog_numbers))
                 item.setText(6, barcode)
                 item.setData(0, QtCore.Qt.UserRole, release['id'])
             self.ui.release_list.setCurrentItem(self.ui.release_list.topLevelItem(0))
