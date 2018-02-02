@@ -34,6 +34,7 @@ from picard.ui import HashableTreeWidgetItem
 from picard.ui.options import OptionsPage, register_options_page
 from picard.ui.ui_options_plugins import Ui_PluginsOptionsPage
 
+PLUGIN_ACTION_NONE, PLUGIN_ACTION_UPDATE, PLUGIN_ACTION_INSTALL = range(3)
 
 class PluginTreeWidgetItem(HashableTreeWidgetItem):
 
@@ -245,14 +246,19 @@ class PluginsOptionsPage(OptionsPage):
         else:
             item.setText(1, plugin.version)
 
-        label = None
+        bt_action = PLUGIN_ACTION_NONE
         if plugin.can_be_updated:
-            label = _("Update")
+            bt_action = PLUGIN_ACTION_UPDATE
         elif plugin.can_be_downloaded:
-            label = _("Install")
+            bt_action = PLUGIN_ACTION_INSTALL
             item.setFlags(item.flags() ^ QtCore.Qt.ItemIsUserCheckable)
 
-        if label is not None:
+        if bt_action != PLUGIN_ACTION_NONE:
+            labels = {
+                PLUGIN_ACTION_UPDATE: N_("Update"),
+                PLUGIN_ACTION_INSTALL: N_("Install"),
+            }
+            label = _(labels[bt_action])
             button = QtWidgets.QPushButton(label)
             button.setMaximumHeight(button.fontMetrics().boundingRect(label).height() + 7)
             self.ui.plugins.setItemWidget(item, 2, button)
@@ -260,12 +266,11 @@ class PluginsOptionsPage(OptionsPage):
             def download_button_process(action):
                 self.ui.plugins.setCurrentItem(item)
                 self.download_plugin(action)
-            if label == _("Update"):
-                button.released.connect(partial(download_button_process, "update"))
-            else:
-                button.released.connect(partial(download_button_process, "install"))
+
+            button.released.connect(partial(download_button_process, bt_action))
         else:
             # Note: setText() don't work after it was set to a button
+            label = None
             if plugin.marked_for_update:
                 label = _("Updated")
             else:
@@ -344,18 +349,12 @@ class PluginsOptionsPage(OptionsPage):
             log.error("Error occurred while trying to download the plugin: '%s'" % plugin.module_name)
             return
 
-        if action == "install":
-            self.tagger.pluginmanager.install_plugin(
-                None,
-                plugin_name=plugin.module_name,
-                plugin_data=response
-            )
-        else:
-            self.tagger.pluginmanager.update_plugin(
-                None,
-                plugin_name=plugin.module_name,
-                plugin_data=response
-            )
+        self.tagger.pluginmanager.install_plugin(
+            None,
+            action,
+            plugin_name=plugin.module_name,
+            plugin_data=response,
+        )
 
     def open_plugin_dir(self):
         QtGui.QDesktopServices.openUrl(QtCore.QUrl(self.loader % USER_PLUGIN_DIR, QtCore.QUrl.TolerantMode))
