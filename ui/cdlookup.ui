@@ -29,9 +29,6 @@
    </item>
    <item>
     <widget class="QTreeWidget" name="release_list">
-     <property name="rootIsDecorated">
-      <bool>false</bool>
-     </property>
      <column>
       <property name="text">
        <string notr="true">1</string>
@@ -103,8 +100,8 @@
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>278</x>
-     <y>253</y>
+     <x>410</x>
+     <y>227</y>
     </hint>
     <hint type="destinationlabel">
      <x>96</x>
@@ -119,8 +116,8 @@
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>369</x>
-     <y>253</y>
+     <x>629</x>
+     <y>227</y>
     </hint>
     <hint type="destinationlabel">
      <x>179</x>
