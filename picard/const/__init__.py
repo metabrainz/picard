@@ -69,6 +69,9 @@ PICARD_URLS = {
     'acoustid_track': "https://acoustid.org/track/",
 }
 
+# Various option for plugin action
+PLUGIN_ACTION_NONE, PLUGIN_ACTION_UPDATE, PLUGIN_ACTION_INSTALL = range(3)
+
 # Various Artists MBID
 VARIOUS_ARTISTS_ID = '89ad4ac3-39f7-470e-963a-56509c546377'
 

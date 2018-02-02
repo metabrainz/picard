@@ -36,9 +36,8 @@ from picard import (config,
                     version_from_string,
                     version_to_string,
                     VersionError)
-from picard.const import USER_PLUGIN_DIR, PLUGINS_API
+from picard.const import USER_PLUGIN_DIR, PLUGINS_API, PLUGIN_ACTION_UPDATE
 from picard.util import load_json
-
 
 _suffixes = [s[0] for s in imp.get_suffixes()]
 _package_entries = ["__init__.py", "__init__.pyc", "__init__.pyo"]
@@ -376,7 +375,7 @@ class PluginManager(QtCore.QObject):
                 log.debug("Removing file %r", filepath)
                 os.remove(filepath)
 
-    def install_plugin(self, path, overwrite_confirm=None, plugin_name=None,
+    def install_plugin(self, path, action, overwrite_confirm=None, plugin_name=None,
                        plugin_data=None):
         """
             path is either:
@@ -394,13 +393,11 @@ class PluginManager(QtCore.QObject):
                 plugin_name = os.path.splitext(zip_plugin)[0]
         if plugin_name:
             try:
-                dirpath, filepaths = self._get_existing_paths(plugin_name)
-                update = dirpath or filepaths
                 if plugin_data and plugin_name:
                     # zipped module from download
                     zip_plugin = plugin_name + '.zip'
                     dst = os.path.join(USER_PLUGIN_DIR, zip_plugin)
-                    if update:
+                    if action == PLUGIN_ACTION_UPDATE:
                         dst += '.update'
                         if os.path.isfile(dst):
                             os.remove(dst)
@@ -421,19 +418,19 @@ class PluginManager(QtCore.QObject):
                         raise
                 elif os.path.isfile(path):
                     dst = os.path.join(USER_PLUGIN_DIR, os.path.basename(path))
-                    if update:
+                    if action == PLUGIN_ACTION_UPDATE:
                         dst += '.update'
                         if os.path.isfile(dst):
                             os.remove(dst)
                     shutil.copy2(path, dst)
                 elif os.path.isdir(path):
                     dst = os.path.join(USER_PLUGIN_DIR, plugin_name)
-                    if update:
+                    if action == PLUGIN_ACTION_UPDATE:
                         dst += '.update'
                         if os.path.isdir(dst):
                             shutil.rmtree(dst)
                     shutil.copytree(path, dst)
-                if not update:
+                if action != PLUGIN_ACTION_UPDATE:
                     installed_plugin = self.load_plugin(zip_plugin or plugin_name, USER_PLUGIN_DIR)
                     if installed_plugin is not None:
                         self.plugin_installed.emit(installed_plugin, False)
