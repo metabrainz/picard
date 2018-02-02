@@ -36,10 +36,8 @@ from picard import (config,
                     version_from_string,
                     version_to_string,
                     VersionError)
-from picard.const import USER_PLUGIN_DIR, PLUGINS_API
+from picard.const import USER_PLUGIN_DIR, PLUGINS_API, PLUGIN_ACTION_UPDATE
 from picard.util import load_json
-
-PLUGIN_ACTION_UPDATE = 1
 
 _suffixes = [s[0] for s in imp.get_suffixes()]
 _package_entries = ["__init__.py", "__init__.pyc", "__init__.pyo"]

@@ -29,12 +29,13 @@ from picard import config, log
 from picard.const import (
     USER_PLUGIN_DIR,
     PLUGINS_API,
+    PLUGIN_ACTION_NONE,
+    PLUGIN_ACTION_INSTALL,
+    PLUGIN_ACTION_UPDATE,
 )
 from picard.ui import HashableTreeWidgetItem
 from picard.ui.options import OptionsPage, register_options_page
 from picard.ui.ui_options_plugins import Ui_PluginsOptionsPage
-
-PLUGIN_ACTION_NONE, PLUGIN_ACTION_UPDATE, PLUGIN_ACTION_INSTALL = range(3)
 
 class PluginTreeWidgetItem(HashableTreeWidgetItem):
 
