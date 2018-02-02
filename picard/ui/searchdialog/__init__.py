@@ -317,6 +317,7 @@ class SearchDialog(PicardDialog):
 
         self.table.resizeColumnsToContents()
         self.table.resizeRowsToContents()
+        self.table.setAlternatingRowColors(True)
 
     def network_error(self, reply, error):
         error_msg = _("<strong>Following error occurred while fetching results:<br><br></strong>"
