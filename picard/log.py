@@ -30,11 +30,45 @@ LOG_ERROR = 4
 LOG_DEBUG = 8
 
 
+def _onestr2set(domains):
+    if isinstance(domains, str):
+        # this is a shortcut: allow one to pass a domains as sole
+        # argument, but use it as first argument of set
+        return set((str,))
+    else:
+        return set(domains)
+
+
+class LogMessage(object):
+
+    def __init__(self, level, time, message, domains):
+        self.level = level
+        self.time = time
+        self.message = message
+        self.domains = domains
+
+    def is_shown(self, show_set=None, hide_set=None):
+        if show_set:
+            show_set = _onestr2set(show_set)
+            if self.domains.isdisjoint(show_set):
+                return False
+        if hide_set:
+            hide_set = _onestr2set(hide_set)
+            if self.domains.intersection(self._hide):
+                return False
+        return True
+
+    def domains_as_string(self):
+        if not self.domains:
+            return ""
+        return "|".join(self.domains)
+
 class Logger(object):
 
     def __init__(self, maxlen=0):
         self._receivers = []
         self.maxlen = maxlen
+        self.known_domains = set()
         self.reset()
 
     def reset(self):
@@ -49,19 +83,23 @@ class Logger(object):
     def unregister_receiver(self, receiver):
         self._receivers.remove(receiver)
 
-    def message(self, level, message, *args):
+    def message(self, level, message, *args, domains=None):
         if not self.log_level(level):
             return
+        if domains is not None:
+            domains = _onestr2set(domains)
+            self.known_domains.update(domains)
         if not isinstance(message, str):
             message = repr(message)
         if args:
             message = message % args
         time = QtCore.QTime.currentTime()
         message = "%s" % (message,)
-        self.entries.append((level, time, message))
+        message_obj = LogMessage(level, time, message, domains)
+        self.entries.append(message_obj)
         for func in self._receivers:
             try:
-                thread.to_main(func, level, time, message)
+                thread.to_main(func, message_obj)
             except:
                 import traceback
                 traceback.print_exc()
@@ -77,20 +115,20 @@ main_logger = Logger(50000)
 main_logger.log_level = lambda level: log_levels & level
 
 
-def debug(message, *args):
-    main_logger.message(LOG_DEBUG, message, *args)
+def debug(message, *args, domains=None):
+    main_logger.message(LOG_DEBUG, message, *args, domains=domains)
 
 
-def info(message, *args):
-    main_logger.message(LOG_INFO, message, *args)
+def info(message, *args, domains=None):
+    main_logger.message(LOG_INFO, message, *args, domains=domains)
 
 
-def warning(message, *args):
-    main_logger.message(LOG_WARNING, message, *args)
+def warning(message, *args, domains=None):
+    main_logger.message(LOG_WARNING, message, *args, domains=domains)
 
 
-def error(message, *args):
-    main_logger.message(LOG_ERROR, message, *args)
+def error(message, *args, domains=None):
+    main_logger.message(LOG_ERROR, message, *args, domains=domains)
 
 
 _log_prefixes = {
@@ -101,20 +139,20 @@ _log_prefixes = {
 }
 
 
-def formatted_log_line(level, time, message, timefmt='hh:mm:ss',
+def formatted_log_line(message_obj, timefmt='hh:mm:ss',
                        level_prefixes=_log_prefixes, format='%s %s'):
-    msg = format % (time.toString(timefmt), message)
+    msg = format % (message_obj.time.toString(timefmt), message_obj.message)
     if level_prefixes:
-        return "%s: %s" % (level_prefixes[level], msg)
+        return "%s: %s" % (level_prefixes[message_obj.level], msg)
     else:
         return msg
 
 
-def _stderr_receiver(level, time, msg):
+def _stderr_receiver(message_obj):
     try:
-        sys.stderr.write(formatted_log_line(level, time, msg) + os.linesep)
+        sys.stderr.write(formatted_log_line(message_obj) + os.linesep)
     except (UnicodeDecodeError, UnicodeEncodeError):
-        sys.stderr.write(formatted_log_line(level, time, msg, format='%s %r') + os.linesep)
+        sys.stderr.write(formatted_log_line(message_obj, format='%s %r') + os.linesep)
 
 
 main_logger.register_receiver(_stderr_receiver)

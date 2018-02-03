@@ -66,20 +66,20 @@ class LogViewCommon(PicardDialog):
 
     def _display(self):
         self._setup_formats()
-        for level, time, msg in self.logger.entries:
-            self._add_entry(level, time, msg)
+        for message_obj in self.logger.entries:
+            self._add_entry(message_obj)
         self.logger.register_receiver(self._add_entry)
 
-    def _add_entry(self, level, time, msg):
+    def _add_entry(self, message_obj):
         self.textCursor.movePosition(QtGui.QTextCursor.End)
-        self.textCursor.insertText(self._formatted_log_line(level, time, msg),
-                                   self._format(level))
+        self.textCursor.insertText(self._formatted_log_line(message_obj),
+                                   self._format(message_obj.level))
         self.textCursor.insertBlock()
         sb = self.browser.verticalScrollBar()
         sb.setValue(sb.maximum())
 
-    def _formatted_log_line(self, level, time, msg):
-        return log.formatted_log_line(level, time, msg)
+    def _formatted_log_line(self, message_obj):
+        return log.formatted_log_line(message_obj)
 
     def closeEvent(self, event):
         self.logger.unregister_receiver(self._add_entry)

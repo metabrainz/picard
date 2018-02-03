@@ -74,7 +74,8 @@ LAST_REQUEST_TIMES = defaultdict(lambda: 0)
 
 
 def _dbug(message, hostkey, *args):
-    log.debug('ratecontrol: %s: '+ message, hostkey, *args)
+    log.debug('ratecontrol: %s: '+ message, hostkey, *args, domains = ('ws',
+                                                                       'ratecontrol'))
 
 
 def set_minimum_delay(hostkey, delay_ms):
