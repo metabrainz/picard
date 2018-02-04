@@ -136,8 +136,8 @@ class HistoryView(LogViewCommon):
         LogViewCommon.__init__(self, title, logger, parent=parent)
         self.restoreWindowState("historyview_position", "historyview_size")
 
-    def _formatted_log_line(self, level, time, msg):
-        return log.formatted_log_line(level, time, msg, level_prefixes=False)
+    def _formatted_log_line(self, message_obj):
+        return log.formatted_log_line(message_obj, level_prefixes=False)
 
     def closeEvent(self, event):
         self.saveWindowState("historyview_position", "historyview_size")
