@@ -208,6 +208,11 @@ class LogView(LogViewCommon):
         self.highlight_button = QtWidgets.QPushButton(_("Highlight"))
         self.hbox.addWidget(self.highlight_button)
         self.highlight_button.clicked.connect(self._highlight_do)
+
+        self.clear_log_button = QtWidgets.QPushButton(_("Clear Log"))
+        self.hbox.addWidget(self.clear_log_button)
+        self.clear_log_button.clicked.connect(self._clear_log_do)
+
         logger.domains_updated.connect(self.menu_domains_rebuild)
         self.display()
 
@@ -232,10 +237,14 @@ class LogView(LogViewCommon):
             act.triggered.connect(partial(self._show_only_domains_changed, domain))
             self.show_only_domains_menu.addAction(act)
 
-
     def show(self):
         self.menu_domains_rebuild()
         super().show()
+
+    def _clear_log_do(self):
+        self.logger.reset()
+        self.menu_domains_rebuild()
+        self.display()
 
     def _highlight_do(self):
         self.hl_text = self.highlight_text.text()
