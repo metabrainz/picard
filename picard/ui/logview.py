@@ -43,6 +43,7 @@ class LogViewCommon(PicardDialog):
         self.vbox.addWidget(self.browser)
         self._setup_formats()
         self.verbosity = self.default_verbosity
+        self.hidden_domains = set()
         self.hl_text = ''
 
     def _setup_formats(self):
@@ -84,7 +85,7 @@ class LogViewCommon(PicardDialog):
         self.logger.register_receiver(self._add_entry)
 
     def _add_entry(self, message_obj):
-        if message_obj.level not in self.verbosity:
+        if not message_obj.is_shown(verbosity=self.verbosity, hide_set=self.hidden_domains):
             return
         if self.hl_text:
             cursor = QtGui.QTextCursor(self.doc)
@@ -181,6 +182,9 @@ class LogView(LogViewCommon):
         self.verbosity_menu_button.setMenu(self.verbosity_menu)
         self.hbox.addWidget(self.verbosity_menu_button)
 
+        self.domains_menu_button = QtWidgets.QPushButton(_("Domains"))
+        self.hbox.addWidget(self.domains_menu_button)
+
         self.highlight_text = QtWidgets.QLineEdit()
         self.hbox.addWidget(self.highlight_text)
 
@@ -189,6 +193,24 @@ class LogView(LogViewCommon):
         self.highlight_button.clicked.connect(self._highlight_do)
 
         self.display()
+
+    def menu_domains(self):
+        # FIXME: since self.logger.known_domains is built dynamically, we have
+        # to update this menu dynamically, but not when it is displayed. At the
+        # moment user may need to close/open log window to have this menu
+        # updated
+        self.domains_menu = QtWidgets.QMenu(self)
+        for domain in sorted(self.logger.known_domains):
+            act = QtWidgets.QAction(domain, self.domains_menu)
+            act.setCheckable(True)
+            act.setChecked(domain not in self.hidden_domains)
+            act.triggered.connect(partial(self._domains_changed, domain))
+            self.domains_menu.addAction(act)
+        self.domains_menu_button.setMenu(self.domains_menu)
+
+    def show(self):
+        self.menu_domains()
+        super().show()
 
     def _highlight_do(self):
         self.hl_text = self.highlight_text.text()
@@ -209,6 +231,12 @@ class LogView(LogViewCommon):
             self.verbosity.discard(level)
         self.display()
 
+    def _domains_changed(self, domain, checked):
+        if checked:
+            self.hidden_domains.discard(domain)
+        else:
+            self.hidden_domains.add(domain)
+        self.display()
 
 class HistoryView(LogViewCommon):
 

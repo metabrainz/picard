@@ -34,7 +34,7 @@ def _onestr2set(domains):
     if isinstance(domains, str):
         # this is a shortcut: allow one to pass a domains as sole
         # argument, but use it as first argument of set
-        return set((str,))
+        return set((domains,))
     else:
         return set(domains)
 
@@ -47,21 +47,25 @@ class LogMessage(object):
         self.message = message
         self.domains = domains
 
-    def is_shown(self, show_set=None, hide_set=None):
-        if show_set:
-            show_set = _onestr2set(show_set)
-            if self.domains.isdisjoint(show_set):
-                return False
-        if hide_set:
-            hide_set = _onestr2set(hide_set)
-            if self.domains.intersection(self._hide):
-                return False
+    def is_shown(self, verbosity=None, show_set=None, hide_set=None):
+        if self.domains:
+            if show_set:
+                show_set = _onestr2set(show_set)
+                if self.domains.isdisjoint(show_set):
+                    return False
+            if hide_set:
+                hide_set = _onestr2set(hide_set)
+                if self.domains.intersection(hide_set):
+                    return False
+        if verbosity is not None and self.level not in verbosity:
+            return False
         return True
 
     def domains_as_string(self):
         if not self.domains:
             return ""
         return "|".join(self.domains)
+
 
 class Logger(object):
 
