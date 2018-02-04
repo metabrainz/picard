@@ -182,7 +182,14 @@ class LogView(LogViewCommon):
         self.verbosity_menu_button.setMenu(self.verbosity_menu)
         self.hbox.addWidget(self.verbosity_menu_button)
 
+        self.domains_menu_can_update = True
+
+        self.domains_menu = QtWidgets.QMenu(self)
         self.domains_menu_button = QtWidgets.QPushButton(_("Domains"))
+        self.domains_menu_button.setMenu(self.domains_menu)
+        self.domains_menu.aboutToShow.connect(partial(self.set_domains_menu_can_update, False))
+        self.domains_menu.aboutToHide.connect(partial(self.set_domains_menu_can_update, True))
+
         self.hbox.addWidget(self.domains_menu_button)
 
         self.highlight_text = QtWidgets.QLineEdit()
@@ -191,25 +198,25 @@ class LogView(LogViewCommon):
         self.highlight_button = QtWidgets.QPushButton(_("Highlight"))
         self.hbox.addWidget(self.highlight_button)
         self.highlight_button.clicked.connect(self._highlight_do)
-
+        logger.domains_updated.connect(self.menu_domains_rebuild)
         self.display()
 
-    def menu_domains(self):
-        # FIXME: since self.logger.known_domains is built dynamically, we have
-        # to update this menu dynamically, but not when it is displayed. At the
-        # moment user may need to close/open log window to have this menu
-        # updated
-        self.domains_menu = QtWidgets.QMenu(self)
+    def set_domains_menu_can_update(self, can_update):
+        self.domains_menu_can_update = can_update
+
+    def menu_domains_rebuild(self):
+        if not self.domains_menu_can_update:
+            return
+        self.domains_menu.clear()
         for domain in sorted(self.logger.known_domains):
             act = QtWidgets.QAction(domain, self.domains_menu)
             act.setCheckable(True)
             act.setChecked(domain not in self.hidden_domains)
             act.triggered.connect(partial(self._domains_changed, domain))
             self.domains_menu.addAction(act)
-        self.domains_menu_button.setMenu(self.domains_menu)
 
     def show(self):
-        self.menu_domains()
+        self.menu_domains_rebuild()
         super().show()
 
     def _highlight_do(self):

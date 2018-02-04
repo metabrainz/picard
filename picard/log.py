@@ -67,9 +67,11 @@ class LogMessage(object):
         return "|".join(self.domains)
 
 
-class Logger(object):
+class Logger(QtCore.QObject):
+    domains_updated = QtCore.pyqtSignal()
 
     def __init__(self, maxlen=0):
+        super().__init__()
         self._receivers = []
         self.maxlen = maxlen
         self.known_domains = set()
@@ -92,7 +94,10 @@ class Logger(object):
             return
         if domains is not None:
             domains = _onestr2set(domains)
+            count = len(self.known_domains)
             self.known_domains.update(domains)
+            if count != len(self.known_domains):
+                self.domains_updated.emit()
         if not isinstance(message, str):
             message = repr(message)
         if args:
