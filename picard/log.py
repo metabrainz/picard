@@ -149,8 +149,8 @@ _log_prefixes = {
 
 
 def formatted_log_line(message_obj, timefmt='hh:mm:ss',
-                       level_prefixes=None, format='%s %s'):
-    msg = format % (message_obj.time.toString(timefmt), message_obj.message)
+                       level_prefixes=None, fmt='%s %s'):
+    msg = fmt % (message_obj.time.toString(timefmt), message_obj.message)
     if level_prefixes is None:
         level_prefixes = _log_prefixes
     if level_prefixes:
@@ -163,7 +163,7 @@ def _stderr_receiver(message_obj):
     try:
         sys.stderr.write(formatted_log_line(message_obj) + os.linesep)
     except (UnicodeDecodeError, UnicodeEncodeError):
-        sys.stderr.write(formatted_log_line(message_obj, format='%s %r') + os.linesep)
+        sys.stderr.write(formatted_log_line(message_obj, fmt='%s %r') + os.linesep)
 
 
 main_logger.register_receiver(_stderr_receiver)
