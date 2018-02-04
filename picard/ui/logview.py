@@ -43,6 +43,7 @@ class LogViewCommon(PicardDialog):
         self.vbox.addWidget(self.browser)
         self._setup_formats()
         self.verbosity = self.default_verbosity
+        self.hl_text = ''
 
     def _setup_formats(self):
         font = QtGui.QFont()
@@ -78,17 +79,28 @@ class LogViewCommon(PicardDialog):
         self.textCursor.movePosition(QtGui.QTextCursor.Start)
         for message_obj in self.logger.entries:
             self._add_entry(message_obj)
+        if self.hl_text:
+            self.highlight(self.hl_text)
         self.logger.register_receiver(self._add_entry)
 
     def _add_entry(self, message_obj):
         if message_obj.level not in self.verbosity:
             return
+        if self.hl_text:
+            cursor = QtGui.QTextCursor(self.doc)
+            # FIXME: not sure about this, but -1 is needed
+            pos = max(0, self.textCursor.position()-1)
+            cursor.setPosition(pos)
+            cursor.setKeepPositionOnInsert(True)
+
         self.textCursor.movePosition(QtGui.QTextCursor.End)
         self.textCursor.insertText(self._formatted_log_line(message_obj),
                                    self._format(message_obj.level))
         self.textCursor.insertBlock()
         sb = self.browser.verticalScrollBar()
         sb.setValue(sb.maximum())
+        if self.hl_text:
+            self.highlight(self.hl_text, cursor)
 
     def _formatted_log_line(self, message_obj):
         return log.formatted_log_line(message_obj)
@@ -108,6 +120,24 @@ class LogViewCommon(PicardDialog):
         if pos.x() > 0 and pos.y() > 0:
             self.move(pos)
         self.resize(config.persist[size])
+
+    def highlight(self, searchString, cursor=None):
+        # adapted from http://doc.qt.io/qt-5/qtuitools-textfinder-example.html
+        if cursor:
+            highlightCursor = cursor
+        else:
+            highlightCursor = QtGui.QTextCursor(self.doc)
+
+        colorFormat = highlightCursor.charFormat()
+        colorFormat.setForeground(QtGui.QColor('green'))
+
+        while not highlightCursor.isNull() and not highlightCursor.atEnd():
+            highlightCursor = self.doc.find(searchString, highlightCursor)
+            if not highlightCursor.isNull():
+                highlightCursor.movePosition(QtGui.QTextCursor.WordRight,
+                                             QtGui.QTextCursor.KeepAnchor)
+                highlightCursor.mergeCharFormat(colorFormat)
+
 
 
 class LogView(LogViewCommon):
@@ -151,6 +181,17 @@ class LogView(LogViewCommon):
         self.verbosity_menu_button.setMenu(self.verbosity_menu)
         self.hbox.addWidget(self.verbosity_menu_button)
 
+        self.highlight_text = QtWidgets.QLineEdit()
+        self.hbox.addWidget(self.highlight_text)
+
+        self.highlight_button = QtWidgets.QPushButton(_("Highlight"))
+        self.hbox.addWidget(self.highlight_button)
+        self.highlight_button.clicked.connect(self._highlight_do)
+
+        self.display()
+
+    def _highlight_do(self):
+        self.hl_text = self.highlight_text.text()
         self.display()
 
     def toggleDebug(self, state):
