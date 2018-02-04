@@ -144,8 +144,10 @@ _log_prefixes = {
 
 
 def formatted_log_line(message_obj, timefmt='hh:mm:ss',
-                       level_prefixes=_log_prefixes, format='%s %s'):
+                       level_prefixes=None, format='%s %s'):
     msg = format % (message_obj.time.toString(timefmt), message_obj.message)
+    if level_prefixes is None:
+        level_prefixes = _log_prefixes
     if level_prefixes:
         return "%s: %s" % (level_prefixes[message_obj.level], msg)
     else:
