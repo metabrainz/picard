@@ -48,18 +48,21 @@ class LogMessage(object):
         self.domains = domains
 
     def is_shown(self, verbosity=None, show_set=None, hide_set=None):
-        if self.domains:
-            if show_set:
+        show = True
+        if show_set:
+            if not self.domains:
+                show = False
+            else:
                 show_set = _onestr2set(show_set)
                 if self.domains.isdisjoint(show_set):
-                    return False
-            if hide_set:
-                hide_set = _onestr2set(hide_set)
-                if self.domains.intersection(hide_set):
-                    return False
+                    show = False
+        if self.domains and hide_set:
+            hide_set = _onestr2set(hide_set)
+            if self.domains.intersection(hide_set):
+                return False
         if verbosity is not None and self.level not in verbosity:
             return False
-        return True
+        return show
 
     def domains_as_string(self):
         if not self.domains:

@@ -44,6 +44,7 @@ class LogViewCommon(PicardDialog):
         self._setup_formats()
         self.verbosity = self.default_verbosity
         self.hidden_domains = set()
+        self.show_only_domains = set()
         self.hl_text = ''
 
     def _setup_formats(self):
@@ -85,7 +86,9 @@ class LogViewCommon(PicardDialog):
         self.logger.register_receiver(self._add_entry)
 
     def _add_entry(self, message_obj):
-        if not message_obj.is_shown(verbosity=self.verbosity, hide_set=self.hidden_domains):
+        if not message_obj.is_shown(verbosity=self.verbosity,
+                                    hide_set=self.hidden_domains,
+                                    show_set=self.show_only_domains):
             return
         if self.hl_text:
             cursor = QtGui.QTextCursor(self.doc)
@@ -190,7 +193,14 @@ class LogView(LogViewCommon):
         self.domains_menu.aboutToShow.connect(partial(self.set_domains_menu_can_update, False))
         self.domains_menu.aboutToHide.connect(partial(self.set_domains_menu_can_update, True))
 
+        self.show_only_domains_menu = QtWidgets.QMenu(self)
+        self.show_only_domains_menu_button = QtWidgets.QPushButton(_("Show Only"))
+        self.show_only_domains_menu_button.setMenu(self.show_only_domains_menu)
+        self.show_only_domains_menu.aboutToShow.connect(partial(self.set_domains_menu_can_update, False))
+        self.show_only_domains_menu.aboutToHide.connect(partial(self.set_domains_menu_can_update, True))
+
         self.hbox.addWidget(self.domains_menu_button)
+        self.hbox.addWidget(self.show_only_domains_menu_button)
 
         self.highlight_text = QtWidgets.QLineEdit()
         self.hbox.addWidget(self.highlight_text)
@@ -208,12 +218,20 @@ class LogView(LogViewCommon):
         if not self.domains_menu_can_update:
             return
         self.domains_menu.clear()
+        self.show_only_domains_menu.clear()
         for domain in sorted(self.logger.known_domains):
             act = QtWidgets.QAction(domain, self.domains_menu)
             act.setCheckable(True)
             act.setChecked(domain not in self.hidden_domains)
             act.triggered.connect(partial(self._domains_changed, domain))
             self.domains_menu.addAction(act)
+
+            act = QtWidgets.QAction(domain, self.show_only_domains_menu)
+            act.setCheckable(True)
+            act.setChecked(domain in self.show_only_domains)
+            act.triggered.connect(partial(self._show_only_domains_changed, domain))
+            self.show_only_domains_menu.addAction(act)
+
 
     def show(self):
         self.menu_domains_rebuild()
@@ -236,6 +254,13 @@ class LogView(LogViewCommon):
             self.verbosity.add(level)
         else:
             self.verbosity.discard(level)
+        self.display()
+
+    def _show_only_domains_changed(self, domain, checked):
+        if not checked:
+            self.show_only_domains.discard(domain)
+        else:
+            self.show_only_domains.add(domain)
         self.display()
 
     def _domains_changed(self, domain, checked):
