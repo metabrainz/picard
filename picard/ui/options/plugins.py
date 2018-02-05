@@ -247,10 +247,9 @@ class PluginsOptionsPage(OptionsPage):
             item = self.ui.plugins.currentItem()
             plugin.is_uninstalled = True
             plugin.enabled = False
-            try:
+
+            if plugin.module_name in config.setting["enabled_plugins"]:
                 config.setting["enabled_plugins"].remove(plugin.module_name)
-            except:
-                pass
 
             self.ui.plugins.itemWidget(item, COLUMN_ACTION).setText(_("Uninstalled"))
             self.ui.plugins.itemWidget(item, COLUMN_ACTION).setEnabled(False)
