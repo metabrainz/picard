@@ -18,10 +18,8 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-import logging
 import os
 
-from collections import OrderedDict
 from functools import partial
 
 from PyQt5 import QtCore, QtGui, QtWidgets
@@ -120,7 +118,8 @@ class LogViewCommon(LogViewDialog):
         if self.hl_text:
             self.highlight(self.hl_text, cursor)
 
-    def _formatted_log_line(self, message_obj):
+    @staticmethod
+    def _formatted_log_line(message_obj):
         return log.formatted_log_line(message_obj)
 
     def closeEvent(self, event):
@@ -314,7 +313,8 @@ class HistoryView(LogViewCommon):
         self.restoreWindowState("historyview_position", "historyview_size")
         self.display()
 
-    def _formatted_log_line(self, message_obj):
+    @staticmethod
+    def _formatted_log_line(message_obj):
         return log.formatted_log_line(message_obj, level_prefixes=False)
 
     def closeEvent(self, event):
