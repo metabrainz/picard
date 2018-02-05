@@ -26,7 +26,9 @@ from picard.util import thread
 
 
 def _onestr2set(domains):
-    if isinstance(domains, str):
+    if not domains:
+        return set()
+    elif isinstance(domains, str):
         # this is a shortcut: allow one to pass a domains as sole
         # argument, but use it as first argument of set
         return set((domains,))
@@ -127,7 +129,7 @@ def debug_mode(enabled):
 
 def n_main_logger_wrapper(level, message, *args, domains=None):
     n_main_logger.log(level, message, *args,
-                      extra={'domains': domains})
+                      extra={'domains': _onestr2set(domains)})
 
 
 def debug(message, *args, domains=None):
@@ -172,7 +174,8 @@ def formatted_log_line(message_obj, timefmt='hh:mm:ss',
 # COMMON CLASSES
 
 
-TailLogTuple = namedtuple('TailLogTuple', ['pos', 'message'])
+TailLogTuple = namedtuple(
+    'TailLogTuple', ['pos', 'message', 'level', 'domains'])
 
 
 class TailLogHandler(logging.Handler):
@@ -184,17 +187,30 @@ class TailLogHandler(logging.Handler):
         self.pos = 0
 
     def emit(self, record):
-        self.log_queue.append(TailLogTuple(self.pos, self.format(record)))
+        domains = getattr(record, 'domains', None)
+        if domains and not domains.issubset(self.tail_logger.known_domains):
+            self.tail_logger.known_domains.update(domains)
+            self.tail_logger.domains_updated.emit()
+        self.log_queue.append(
+            TailLogTuple(
+                self.pos,
+                self.format(record),
+                record.levelno,
+                domains
+            )
+        )
         self.pos += 1
         self.tail_logger.updated.emit()
 
 
 class TailLogger(QtCore.QObject):
     updated = QtCore.pyqtSignal()
+    domains_updated = QtCore.pyqtSignal()
 
     def __init__(self, maxlen):
         super().__init__()
         self._log_queue = deque(maxlen=maxlen)
+        self.known_domains = set()
         self.log_handler = TailLogHandler(self._log_queue, self)
 
     def contents(self, prev=-1):
@@ -207,6 +223,14 @@ class TailLogger(QtCore.QObject):
 n_main_logger = logging.getLogger('main')
 
 n_main_logger.setLevel(logging.DEBUG)
+
+n_main_tail = TailLogger(100000)
+
+n_main_handler = n_main_tail.log_handler
+n_main_formatter = logging.Formatter('%(asctime)s %(message)s', '%H:%M:%S')
+n_main_handler.setFormatter(n_main_formatter)
+
+n_main_logger.addHandler(n_main_handler)
 
 n_main_console_handler = logging.StreamHandler()
 n_main_console_formatter = logging.Formatter(
