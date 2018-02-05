@@ -62,11 +62,14 @@ class LogViewCommon(PicardDialog):
     def _format(self, level):
         return self.formats[level]
 
-    def display(self):
+    def _unregister_add_entry(self):
         try:
             self.logger.unregister_receiver(self._add_entry)
         except ValueError:
             pass
+
+    def display(self):
+        self._unregister_add_entry()
         self.doc.clear()
         self.textCursor.movePosition(QtGui.QTextCursor.Start)
         for message_obj in self.logger.entries:
@@ -100,7 +103,7 @@ class LogViewCommon(PicardDialog):
         return log.formatted_log_line(message_obj)
 
     def closeEvent(self, event):
-        self.logger.unregister_receiver(self._add_entry)
+        self._unregister_add_entry()
         return QtWidgets.QDialog.closeEvent(self, event)
 
     def saveWindowState(self, position, size):
