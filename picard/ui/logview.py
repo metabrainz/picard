@@ -31,8 +31,6 @@ from picard.ui import PicardDialog
 
 class LogViewCommon(PicardDialog):
 
-    default_verbosity = {logging.INFO, logging.WARNING, logging.ERROR, logging.DEBUG}
-
     def __init__(self, title, logger, w=740, h=340, parent=None):
         PicardDialog.__init__(self, parent)
         self.logger = logger
@@ -46,7 +44,7 @@ class LogViewCommon(PicardDialog):
         self.vbox = QtWidgets.QVBoxLayout(self)
         self.vbox.addWidget(self.browser)
         self._setup_formats()
-        self.verbosity = self.default_verbosity
+        self.verbosity = set(log.levels_features)
         self.hidden_domains = set()
         self.show_only_domains = set()
         self.hl_text = ''
@@ -141,7 +139,7 @@ class LogView(LogViewCommon):
     options = [
         config.Option("persist", "logview_position", QtCore.QPoint()),
         config.Option("persist", "logview_size", QtCore.QSize(560, 400)),
-        config.Option("persist", "logview_verbosity", LogViewCommon.default_verbosity)
+        config.Option("persist", "logview_verbosity", set(log.levels_features)),
     ]
 
     def __init__(self, parent=None):
