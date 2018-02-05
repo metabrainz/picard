@@ -20,7 +20,7 @@
 import sys
 import os
 import logging
-from collections import deque
+from collections import deque, namedtuple, OrderedDict
 from PyQt5 import QtCore
 from picard.util import thread
 
@@ -141,21 +141,21 @@ def error(message, *args, domains=None):
     main_logger.message(logging.ERROR, message, *args, domains=domains)
 
 
-_log_prefixes = {
-    logging.INFO:    'I',
-    logging.WARNING: 'W',
-    logging.ERROR:   'E',
-    logging.DEBUG:   'D',
-}
+_feat = namedtuple('_feat', ['name', 'prefix', 'fgcolor'])
+
+levels_features = OrderedDict([
+    (logging.INFO,    _feat('Info',    'I', 'black')),
+    (logging.WARNING, _feat('Warning', 'W', 'darkorange')),
+    (logging.ERROR,   _feat('Error',   'E', 'red')),
+    (logging.DEBUG,   _feat('Debug',   'D', 'purple')),
+])
 
 
 def formatted_log_line(message_obj, timefmt='hh:mm:ss',
-                       level_prefixes=None, fmt='%s %s'):
+                       level_prefixes=True, fmt='%s %s'):
     msg = fmt % (message_obj.time.toString(timefmt), message_obj.message)
-    if level_prefixes is None:
-        level_prefixes = _log_prefixes
     if level_prefixes:
-        return "%s: %s" % (level_prefixes[message_obj.level], msg)
+        return "%s: %s" % (levels_features[message_obj.level].prefix, msg)
     else:
         return msg
 

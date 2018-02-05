@@ -52,26 +52,14 @@ class LogViewCommon(PicardDialog):
         self.hl_text = ''
 
     def _setup_formats(self):
+        self.formats = {}
         font = QtGui.QFont()
         font.setFamily("Monospace")
-        self.textFormatInfo = QtGui.QTextCharFormat()
-        self.textFormatInfo.setFont(font)
-        self.textFormatInfo.setForeground(QtGui.QColor('black'))
-        self.textFormatDebug = QtGui.QTextCharFormat()
-        self.textFormatDebug.setFont(font)
-        self.textFormatDebug.setForeground(QtGui.QColor('purple'))
-        self.textFormatWarning = QtGui.QTextCharFormat()
-        self.textFormatWarning.setFont(font)
-        self.textFormatWarning.setForeground(QtGui.QColor('darkorange'))
-        self.textFormatError = QtGui.QTextCharFormat()
-        self.textFormatError.setFont(font)
-        self.textFormatError.setForeground(QtGui.QColor('red'))
-        self.formats = {
-            logging.INFO: self.textFormatInfo,
-            logging.WARNING: self.textFormatWarning,
-            logging.ERROR: self.textFormatError,
-            logging.DEBUG: self.textFormatDebug,
-        }
+        for level, feat in log.levels_features.items():
+            text_fmt = QtGui.QTextCharFormat()
+            text_fmt.setFont(font)
+            text_fmt.setForeground(QtGui.QColor(feat.fgcolor))
+            self.formats[level] = text_fmt
 
     def _format(self, level):
         return self.formats[level]
@@ -156,13 +144,6 @@ class LogView(LogViewCommon):
         config.Option("persist", "logview_verbosity", LogViewCommon.default_verbosity)
     ]
 
-    _log_level_names = OrderedDict([
-        (logging.INFO,      N_('Info')),
-        (logging.WARNING,   N_('Warning')),
-        (logging.ERROR,     N_('Error')),
-        (logging.DEBUG,     N_('Debug')),
-    ])
-
     def __init__(self, parent=None):
         title = _("Log")
         logger = log.main_logger
@@ -178,8 +159,8 @@ class LogView(LogViewCommon):
         self.hbox.addWidget(cb)
 
         self.verbosity_menu = QtWidgets.QMenu(self)
-        for level, label in self._log_level_names.items():
-            act = QtWidgets.QAction(_(label), self.verbosity_menu)
+        for level, feat in log.levels_features.items():
+            act = QtWidgets.QAction(_(feat.name), self.verbosity_menu)
             act.setCheckable(True)
             act.setChecked(level in self.verbosity)
             act.triggered.connect(partial(self._verbosity_changed, level))
