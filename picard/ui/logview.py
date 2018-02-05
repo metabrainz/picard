@@ -29,11 +29,10 @@ from picard import config, log
 from picard.ui import PicardDialog
 
 
-class LogViewCommon(PicardDialog):
+class LogViewDialog(PicardDialog):
 
-    def __init__(self, title, logger, w=740, h=340, parent=None):
-        PicardDialog.__init__(self, parent)
-        self.logger = logger
+    def __init__(self, title, w, h, parent=None):
+        super().__init__(parent)
         self.setWindowFlags(QtCore.Qt.Window)
         self.resize(w, h)
         self.setWindowTitle(title)
@@ -43,6 +42,28 @@ class LogViewCommon(PicardDialog):
         self.browser.setDocument(self.doc)
         self.vbox = QtWidgets.QVBoxLayout(self)
         self.vbox.addWidget(self.browser)
+
+    def saveWindowState(self, position, size):
+        pos = self.pos()
+        if not pos.isNull():
+            config.persist[position] = pos
+        config.persist[size] = self.size()
+
+    def restoreWindowState(self, position, size):
+        pos = config.persist[position]
+        if pos.x() > 0 and pos.y() > 0:
+            self.move(pos)
+        self.resize(config.persist[size])
+
+    def closeEvent(self, event):
+        return super().closeEvent(event)
+
+
+class LogViewCommon(LogViewDialog):
+
+    def __init__(self, title, logger, w=740, h=340, parent=None):
+        super().__init__(title, w, h, parent=parent)
+        self.logger = logger
         self._setup_formats()
         self.verbosity = set(log.levels_features)
         self.hidden_domains = set()
@@ -104,19 +125,7 @@ class LogViewCommon(PicardDialog):
 
     def closeEvent(self, event):
         self._unregister_add_entry()
-        return QtWidgets.QDialog.closeEvent(self, event)
-
-    def saveWindowState(self, position, size):
-        pos = self.pos()
-        if not pos.isNull():
-            config.persist[position] = pos
-        config.persist[size] = self.size()
-
-    def restoreWindowState(self, position, size):
-        pos = config.persist[position]
-        if pos.x() > 0 and pos.y() > 0:
-            self.move(pos)
-        self.resize(config.persist[size])
+        super().closeEvent(event)
 
     def highlight(self, searchString, cursor=None):
         # adapted from http://doc.qt.io/qt-5/qtuitools-textfinder-example.html
@@ -148,7 +157,7 @@ class LogView(LogViewCommon):
     def __init__(self, parent=None):
         title = _("Log")
         logger = log.main_logger
-        LogViewCommon.__init__(self, title, logger, parent=parent)
+        super().__init__(title, logger, parent=parent)
         self.verbosity = config.persist['logview_verbosity']
         self.restoreWindowState("logview_position", "logview_size")
         self.hbox = QtWidgets.QHBoxLayout(self)
@@ -268,7 +277,7 @@ class LogView(LogViewCommon):
     def closeEvent(self, event):
         config.persist['logview_verbosity'] = self.verbosity
         self.saveWindowState("logview_position", "logview_size")
-        event.accept()
+        super().closeEvent(event)
 
     def _verbosity_changed(self, level, checked):
         if checked:
@@ -301,7 +310,7 @@ class HistoryView(LogViewCommon):
     def __init__(self, parent=None):
         title = _("Activity History")
         logger = log.history_logger
-        LogViewCommon.__init__(self, title, logger, parent=parent)
+        super().__init__(title, logger, parent=parent)
         self.restoreWindowState("historyview_position", "historyview_size")
         self.display()
 
@@ -310,4 +319,4 @@ class HistoryView(LogViewCommon):
 
     def closeEvent(self, event):
         self.saveWindowState("historyview_position", "historyview_size")
-        event.accept()
+        super().closeEvent(event)
