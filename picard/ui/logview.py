@@ -299,7 +299,8 @@ class LogView(LogViewCommon):
             self.hidden_domains.add(domain)
         self.display()
 
-class HistoryView(LogViewCommon):
+
+class HistoryView(LogViewDialog):
 
     options = [
         config.Option("persist", "historyview_position", QtCore.QPoint()),
@@ -308,15 +309,40 @@ class HistoryView(LogViewCommon):
 
     def __init__(self, parent=None):
         title = _("Activity History")
-        logger = log.history_logger
-        super().__init__(title, logger, parent=parent)
+        self.log_tail = log.history_tail
+        self.displaying = False
+        self.prev = -1
+        self.log_tail.updated.connect(self._updated)
+        super().__init__(title, w=740, h=340, parent=parent)
         self.restoreWindowState("historyview_position", "historyview_size")
-        self.display()
-
-    @staticmethod
-    def _formatted_log_line(message_obj):
-        return log.formatted_log_line(message_obj, level_prefixes=False)
 
     def closeEvent(self, event):
         self.saveWindowState("historyview_position", "historyview_size")
         super().closeEvent(event)
+
+    def show(self):
+        self.display(True)
+        super().show()
+
+    def _updated(self):
+        if self.displaying:
+            return
+        self.display()
+
+    def display(self, clear=False):
+        self.displaying = True
+        if clear:
+            self.prev = -1
+            self.doc.clear()
+            self.textCursor.movePosition(QtGui.QTextCursor.Start)
+        for x in self.log_tail.contents(self.prev):
+            self._add_entry(x.message)
+            self.prev = x.pos
+        self.displaying = False
+
+    def _add_entry(self, message):
+        self.textCursor.movePosition(QtGui.QTextCursor.End)
+        self.textCursor.insertText(message)
+        self.textCursor.insertBlock()
+        sb = self.browser.verticalScrollBar()
+        sb.setValue(sb.maximum())

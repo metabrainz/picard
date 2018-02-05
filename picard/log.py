@@ -170,10 +170,50 @@ def _stderr_receiver(message_obj):
 main_logger.register_receiver(_stderr_receiver)
 
 
-# history of status messages
-history_logger = Logger(50000)
-history_logger.log_level = logging.INFO
+
+
+# HISTORY LOGGING
+
+TailLogTuple = namedtuple('TailLogTuple', ['pos', 'message'])
+
+
+class TailLogHandler(logging.Handler):
+
+    def __init__(self, log_queue, tail_logger):
+        super().__init__()
+        self.log_queue = log_queue
+        self.tail_logger = tail_logger
+        self.pos = 0
+
+    def emit(self, record):
+        self.log_queue.append(TailLogTuple(self.pos, self.format(record)))
+        self.pos += 1
+        self.tail_logger.updated.emit()
+
+
+class TailLogger(QtCore.QObject):
+    updated = QtCore.pyqtSignal()
+
+    def __init__(self, maxlen):
+        super().__init__()
+        self._log_queue = deque(maxlen=maxlen)
+        self.log_handler = TailLogHandler(self._log_queue, self)
+
+    def contents(self, prev=-1):
+        return [x for x in self._log_queue if x.pos > prev]
+
+
+history_logger = logging.getLogger('history')
+history_logger.setLevel(logging.DEBUG)
+
+history_tail = TailLogger(100000)
+
+history_handler = history_tail.log_handler
+history_formatter = logging.Formatter('%(asctime)s - %(message)s')
+history_handler.setFormatter(history_formatter)
+
+history_logger.addHandler(history_handler)
 
 
 def history_info(message, *args):
-    history_logger.message(logging.INFO, message, *args)
+    history_logger.info(message, *args)
