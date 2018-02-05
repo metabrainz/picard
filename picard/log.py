@@ -25,7 +25,6 @@ from PyQt5 import QtCore
 from picard.util import thread
 
 
-
 def _onestr2set(domains):
     if isinstance(domains, str):
         # this is a shortcut: allow one to pass a domains as sole
@@ -118,6 +117,7 @@ class Logger(QtCore.QObject):
 main_logger = Logger(50000)
 main_logger.log_level = logging.INFO
 
+
 def debug_mode(enabled):
     if enabled:
         main_logger.log_level = logging.DEBUG
@@ -125,20 +125,29 @@ def debug_mode(enabled):
         main_logger.log_level = logging.INFO
 
 
+def n_main_logger_wrapper(level, message, *args, domains=None):
+    n_main_logger.log(level, message, *args,
+                      extra={'domains': domains})
+
+
 def debug(message, *args, domains=None):
     main_logger.message(logging.DEBUG, message, *args, domains=domains)
+    n_main_logger_wrapper(logging.DEBUG, message, *args, domains=domains)
 
 
 def info(message, *args, domains=None):
     main_logger.message(logging.INFO, message, *args, domains=domains)
+    n_main_logger_wrapper(logging.INFO, message, *args, domains=domains)
 
 
 def warning(message, *args, domains=None):
     main_logger.message(logging.WARNING, message, *args, domains=domains)
+    n_main_logger_wrapper(logging.WARNING, message, *args, domains=domains)
 
 
 def error(message, *args, domains=None):
     main_logger.message(logging.ERROR, message, *args, domains=domains)
+    n_main_logger_wrapper(logging.ERROR, message, *args, domains=domains)
 
 
 _feat = namedtuple('_feat', ['name', 'prefix', 'fgcolor'])
@@ -160,19 +169,8 @@ def formatted_log_line(message_obj, timefmt='hh:mm:ss',
         return msg
 
 
-def _stderr_receiver(message_obj):
-    try:
-        sys.stderr.write(formatted_log_line(message_obj) + os.linesep)
-    except (UnicodeDecodeError, UnicodeEncodeError):
-        sys.stderr.write(formatted_log_line(message_obj, fmt='%s %r') + os.linesep)
+# COMMON CLASSES
 
-
-main_logger.register_receiver(_stderr_receiver)
-
-
-
-
-# HISTORY LOGGING
 
 TailLogTuple = namedtuple('TailLogTuple', ['pos', 'message'])
 
@@ -201,6 +199,25 @@ class TailLogger(QtCore.QObject):
 
     def contents(self, prev=-1):
         return [x for x in self._log_queue if x.pos > prev]
+
+
+# MAIN LOGGER
+
+
+n_main_logger = logging.getLogger('main')
+
+n_main_logger.setLevel(logging.DEBUG)
+
+n_main_console_handler = logging.StreamHandler()
+n_main_console_formatter = logging.Formatter(
+    '%(levelname).1s: %(asctime)s,%(msecs)03d %(message)s',
+    '%H:%M:%S'
+)
+n_main_console_handler.setFormatter(n_main_console_formatter)
+
+n_main_logger.addHandler(n_main_console_handler)
+
+# HISTORY LOGGING
 
 
 history_logger = logging.getLogger('history')
