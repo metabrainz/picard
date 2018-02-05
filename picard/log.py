@@ -19,15 +19,11 @@
 
 import sys
 import os
+import logging
 from collections import deque
 from PyQt5 import QtCore
 from picard.util import thread
 
-
-LOG_INFO = 1
-LOG_WARNING = 2
-LOG_ERROR = 4
-LOG_DEBUG = 8
 
 
 def _onestr2set(domains):
@@ -93,7 +89,7 @@ class Logger(QtCore.QObject):
         self._receivers.remove(receiver)
 
     def message(self, level, message, *args, domains=None):
-        if not self.log_level(level):
+        if level < self.log_level:
             return
         if domains is not None:
             domains = _onestr2set(domains)
@@ -116,38 +112,40 @@ class Logger(QtCore.QObject):
                 import traceback
                 traceback.print_exc()
 
-    def log_level(self, level):
-        return True
-
 
 # main logger
-log_levels = LOG_INFO | LOG_WARNING | LOG_ERROR
 
 main_logger = Logger(50000)
-main_logger.log_level = lambda level: log_levels & level
+main_logger.log_level = logging.INFO
+
+def debug_mode(enabled):
+    if enabled:
+        main_logger.log_level = logging.DEBUG
+    else:
+        main_logger.log_level = logging.INFO
 
 
 def debug(message, *args, domains=None):
-    main_logger.message(LOG_DEBUG, message, *args, domains=domains)
+    main_logger.message(logging.DEBUG, message, *args, domains=domains)
 
 
 def info(message, *args, domains=None):
-    main_logger.message(LOG_INFO, message, *args, domains=domains)
+    main_logger.message(logging.INFO, message, *args, domains=domains)
 
 
 def warning(message, *args, domains=None):
-    main_logger.message(LOG_WARNING, message, *args, domains=domains)
+    main_logger.message(logging.WARNING, message, *args, domains=domains)
 
 
 def error(message, *args, domains=None):
-    main_logger.message(LOG_ERROR, message, *args, domains=domains)
+    main_logger.message(logging.ERROR, message, *args, domains=domains)
 
 
 _log_prefixes = {
-    LOG_INFO: 'I',
-    LOG_WARNING: 'W',
-    LOG_ERROR: 'E',
-    LOG_DEBUG: 'D',
+    logging.INFO:    'I',
+    logging.WARNING: 'W',
+    logging.ERROR:   'E',
+    logging.DEBUG:   'D',
 }
 
 
@@ -174,8 +172,8 @@ main_logger.register_receiver(_stderr_receiver)
 
 # history of status messages
 history_logger = Logger(50000)
-history_logger.log_level = lambda level: log_levels & level
+history_logger.log_level = logging.INFO
 
 
 def history_info(message, *args):
-    history_logger.message(LOG_INFO, message, *args)
+    history_logger.message(logging.INFO, message, *args)

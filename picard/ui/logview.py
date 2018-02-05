@@ -18,6 +18,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+import logging
 import os
 
 from collections import OrderedDict
@@ -30,7 +31,7 @@ from picard.ui import PicardDialog
 
 class LogViewCommon(PicardDialog):
 
-    default_verbosity = {log.LOG_INFO, log.LOG_WARNING, log.LOG_ERROR, log.LOG_DEBUG}
+    default_verbosity = {logging.INFO, logging.WARNING, logging.ERROR, logging.DEBUG}
 
     def __init__(self, title, logger, w=740, h=340, parent=None):
         PicardDialog.__init__(self, parent)
@@ -66,10 +67,10 @@ class LogViewCommon(PicardDialog):
         self.textFormatError.setFont(font)
         self.textFormatError.setForeground(QtGui.QColor('red'))
         self.formats = {
-            log.LOG_INFO: self.textFormatInfo,
-            log.LOG_WARNING: self.textFormatWarning,
-            log.LOG_ERROR: self.textFormatError,
-            log.LOG_DEBUG: self.textFormatDebug,
+            logging.INFO: self.textFormatInfo,
+            logging.WARNING: self.textFormatWarning,
+            logging.ERROR: self.textFormatError,
+            logging.DEBUG: self.textFormatDebug,
         }
 
     def _format(self, level):
@@ -156,10 +157,10 @@ class LogView(LogViewCommon):
     ]
 
     _log_level_names = OrderedDict([
-        (log.LOG_INFO,      N_('Info')),
-        (log.LOG_WARNING,   N_('Warning')),
-        (log.LOG_ERROR,     N_('Error')),
-        (log.LOG_DEBUG,     N_('Debug')),
+        (logging.INFO,      N_('Info')),
+        (logging.WARNING,   N_('Warning')),
+        (logging.ERROR,     N_('Error')),
+        (logging.DEBUG,     N_('Debug')),
     ])
 
     def __init__(self, parent=None):
