@@ -32,10 +32,13 @@ from picard.const import (
     PLUGIN_ACTION_NONE,
     PLUGIN_ACTION_INSTALL,
     PLUGIN_ACTION_UPDATE,
+    PLUGIN_ACTION_UNINSTALL,
 )
 from picard.ui import HashableTreeWidgetItem
 from picard.ui.options import OptionsPage, register_options_page
 from picard.ui.ui_options_plugins import Ui_PluginsOptionsPage
+
+COLUMN_NAME, COLUMN_VERSION, COLUMN_ACTION = range(3)
 
 class PluginTreeWidgetItem(HashableTreeWidgetItem):
 
@@ -98,9 +101,9 @@ class PluginsOptionsPage(OptionsPage):
         self.tagger.pluginmanager.plugin_installed.connect(self.plugin_installed)
         self.tagger.pluginmanager.plugin_updated.connect(self.plugin_updated)
         self.ui.plugins.header().setStretchLastSection(False)
-        self.ui.plugins.header().setSectionResizeMode(0, QtWidgets.QHeaderView.Stretch)
-        self.ui.plugins.header().setSectionResizeMode(1, QtWidgets.QHeaderView.Stretch)
-        self.ui.plugins.header().resizeSection(2, 100)
+        self.ui.plugins.header().setSectionResizeMode(COLUMN_NAME, QtWidgets.QHeaderView.Stretch)
+        self.ui.plugins.header().setSectionResizeMode(COLUMN_VERSION, QtWidgets.QHeaderView.Stretch)
+        self.ui.plugins.header().resizeSection(COLUMN_ACTION, 100)
         self.ui.plugins.setSortingEnabled(True)
 
     def save_state(self):
@@ -109,7 +112,7 @@ class PluginsOptionsPage(OptionsPage):
         config.persist["plugins_list_sort_section"] = header.sortIndicatorSection()
         config.persist["plugins_list_sort_order"] = header.sortIndicatorOrder()
         try:
-            selected = self.items[self.ui.plugins.selectedItems()[0]].module_name
+            selected = self.items[self.ui.plugins.selectedItems()[COLUMN_NAME]].module_name
         except IndexError:
             selected = ""
         config.persist["plugins_list_selected"] = selected
@@ -204,7 +207,7 @@ class PluginsOptionsPage(OptionsPage):
         plugin.can_be_downloaded = False
         for i, p in self.items.items():
             if plugin.module_name == p.module_name:
-                if i.checkState(0) == QtCore.Qt.Checked:
+                if i.checkState(COLUMN_NAME) == QtCore.Qt.Checked:
                     plugin.enabled = True
                 self.add_plugin_item(plugin, item=i)
                 self.ui.plugins.setCurrentItem(i)
@@ -219,6 +222,9 @@ class PluginsOptionsPage(OptionsPage):
                 p.can_be_updated = False
                 p.can_be_downloaded = False
                 p.marked_for_update = True
+                item = self.ui.plugins.currentItem()
+                self.ui.plugins.itemWidget(item, COLUMN_VERSION).setText(_("Updated"))
+                self.ui.plugins.itemWidget(item, COLUMN_VERSION).setEnabled(False)
                 msgbox = QtWidgets.QMessageBox(self)
                 msgbox.setText(
                     _("The plugin '%s' will be upgraded to version %s on next run of Picard.")
@@ -231,53 +237,90 @@ class PluginsOptionsPage(OptionsPage):
                 self.change_details()
                 break
 
+    def uninstall_plugin(self):
+        plugin = self.items[self.ui.plugins.selectedItems()[COLUMN_NAME]]
+        buttonReply = QtWidgets.QMessageBox.question(self, _("Uninstall plugin?"),
+                _("Do you really want to uninstall the plugin '%s' ?") % plugin.name,
+                QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No, QtWidgets.QMessageBox.No)
+        if buttonReply == QtWidgets.QMessageBox.Yes:
+            self.tagger.pluginmanager.remove_plugin(plugin.module_name)
+            item = self.ui.plugins.currentItem()
+            plugin.is_uninstalled = True
+            plugin.enabled = False
+            try:
+                config.setting["enabled_plugins"].remove(plugin.module_name)
+            except:
+                pass
+
+            self.ui.plugins.itemWidget(item, COLUMN_ACTION).setText(_("Uninstalled"))
+            self.ui.plugins.itemWidget(item, COLUMN_ACTION).setEnabled(False)
+            item.setCheckState(COLUMN_NAME, QtCore.Qt.Unchecked)
+            item.setFlags(item.flags() ^ QtCore.Qt.ItemIsUserCheckable)
+
     def add_plugin_item(self, plugin, item=None):
         if item is None:
             item = PluginTreeWidgetItem(self.ui.plugins)
         item.setFlags(item.flags() | QtCore.Qt.ItemIsUserCheckable)
-        item.setText(0, plugin.name)
-        item.setSortData(0, plugin.name.lower())
+        item.setText(COLUMN_NAME, plugin.name)
+        item.setSortData(COLUMN_NAME, plugin.name.lower())
         if plugin.enabled:
-            item.setCheckState(0, QtCore.Qt.Checked)
+            item.setCheckState(COLUMN_NAME, QtCore.Qt.Checked)
         else:
-            item.setCheckState(0, QtCore.Qt.Unchecked)
+            item.setCheckState(COLUMN_NAME, QtCore.Qt.Unchecked)
 
         if plugin.marked_for_update:
-            item.setText(1, plugin.new_version)
+            item.setText(COLUMN_VERSION, plugin.new_version)
         else:
-            item.setText(1, plugin.version)
+            item.setText(COLUMN_VERSION, plugin.version)
+
+        def download_processor(action):
+            self.ui.plugins.setCurrentItem(item)
+            self.download_plugin(action)
+
+        def uninstall_processor():
+            self.ui.plugins.setCurrentItem(item)
+            self.uninstall_plugin()
 
         bt_action = PLUGIN_ACTION_NONE
-        if plugin.can_be_updated:
-            bt_action = PLUGIN_ACTION_UPDATE
-        elif plugin.can_be_downloaded:
+        if plugin.is_uninstalled:
+            item.setFlags(item.flags() ^ QtCore.Qt.ItemIsUserCheckable)
+
+        if plugin.can_be_downloaded:
             bt_action = PLUGIN_ACTION_INSTALL
             item.setFlags(item.flags() ^ QtCore.Qt.ItemIsUserCheckable)
+        else:
+            bt_action = PLUGIN_ACTION_UNINSTALL
 
         if bt_action != PLUGIN_ACTION_NONE:
             labels = {
-                PLUGIN_ACTION_UPDATE: N_("Update"),
                 PLUGIN_ACTION_INSTALL: N_("Install"),
+                PLUGIN_ACTION_UNINSTALL: N_("Uninstall"),
             }
             label = _(labels[bt_action])
+            if plugin.is_uninstalled:
+                label = _("Uninstalled")
             button = QtWidgets.QPushButton(label)
             button.setMaximumHeight(button.fontMetrics().boundingRect(label).height() + 7)
-            self.ui.plugins.setItemWidget(item, 2, button)
+            self.ui.plugins.setItemWidget(item, COLUMN_ACTION, button)
+            if plugin.is_uninstalled:
+                button.setEnabled(False)
 
-            def download_button_process(action):
-                self.ui.plugins.setCurrentItem(item)
-                self.download_plugin(action)
+            if bt_action == PLUGIN_ACTION_INSTALL:
+                button.released.connect(partial(download_processor, bt_action))
+            else:
+                button.released.connect(uninstall_processor)
 
-            button.released.connect(partial(download_button_process, bt_action))
-        else:
-            # Note: setText() don't work after it was set to a button
-            label = None
+        if plugin.can_be_updated:
+            label = _("Upgrade from %s to %s" % (plugin.version, plugin.new_version))
             if plugin.marked_for_update:
                 label = _("Updated")
-            else:
-                label = _("Installed")
-            self.ui.plugins.setItemWidget(item, 2, QtWidgets.QLabel(label))
-        item.setSortData(2, label)
+            button = QtWidgets.QPushButton(label)
+            button.setMaximumHeight(button.fontMetrics().boundingRect(label).height() + 7)
+            self.ui.plugins.setItemWidget(item, COLUMN_VERSION, button)
+            if plugin.marked_for_update:
+                button.setEnabled(False)
+
+            button.released.connect(partial(download_processor, PLUGIN_ACTION_UPDATE))
 
         self.ui.plugins.header().resizeSections(QtWidgets.QHeaderView.ResizeToContents)
         self.items[item] = plugin
@@ -286,14 +329,14 @@ class PluginsOptionsPage(OptionsPage):
     def save(self):
         enabled_plugins = []
         for item, plugin in self.items.items():
-            if item.checkState(0) == QtCore.Qt.Checked:
+            if item.checkState(COLUMN_NAME) == QtCore.Qt.Checked:
                 enabled_plugins.append(plugin.module_name)
         config.setting["enabled_plugins"] = enabled_plugins
         self.save_state()
 
     def change_details(self):
         try:
-            plugin = self.items[self.ui.plugins.selectedItems()[0]]
+            plugin = self.items[self.ui.plugins.selectedItems()[COLUMN_NAME]]
         except IndexError:
             return
         text = []
@@ -325,7 +368,7 @@ class PluginsOptionsPage(OptionsPage):
                 self.tagger.pluginmanager.install_plugin(path)
 
     def download_plugin(self, action):
-        selected = self.ui.plugins.selectedItems()[0]
+        selected = self.ui.plugins.selectedItems()[COLUMN_NAME]
         plugin = self.items[selected]
 
         self.tagger.webservice.get(
