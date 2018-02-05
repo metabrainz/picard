@@ -17,6 +17,9 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+
+import os
+
 from collections import OrderedDict
 from functools import partial
 
@@ -213,8 +216,34 @@ class LogView(LogViewCommon):
         self.hbox.addWidget(self.clear_log_button)
         self.clear_log_button.clicked.connect(self._clear_log_do)
 
+        self.save_log_as_button = QtWidgets.QPushButton(_("Save As..."))
+        self.hbox.addWidget(self.save_log_as_button)
+        self.save_log_as_button.clicked.connect(self._save_log_as_do)
+
         logger.domains_updated.connect(self.menu_domains_rebuild)
         self.display()
+
+    def _save_log_as_do(self):
+        path, ok =  QtWidgets.QFileDialog.getSaveFileName(
+            self,
+            caption=_("Save Log View to File"),
+            filter=_("Text Files (*.txt *.TXT)"),
+            options=QtWidgets.QFileDialog.DontConfirmOverwrite
+        )
+        if ok and path:
+            if os.path.isfile(path):
+                reply = QtWidgets.QMessageBox.question(
+                    self,
+                    _("Save Log View to File"),
+                    _("File already exists, do you really want to save to this file?"),
+                     QtWidgets.QMessageBox.Yes |  QtWidgets.QMessageBox.No
+                )
+                if reply != QtWidgets.QMessageBox.Yes:
+                    return
+
+            writer = QtGui.QTextDocumentWriter(path)
+            success = writer.write(self.doc)
+            # FIXME: handle errors
 
     def set_domains_menu_can_update(self, can_update):
         self.domains_menu_can_update = can_update
