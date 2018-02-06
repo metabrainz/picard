@@ -232,17 +232,20 @@ main_logger.addFilter(name_filter)
 
 main_tail = TailLogger(_MAX_TAIL_LEN)
 
+main_fmt = '%(levelname).1s: %(asctime)s,%(msecs)03d %(name)s %(funcName)s(): %(message)s'
+main_time_fmt = '%H:%M:%S'
+main_inapp_fmt = main_fmt
+main_inapp_time_fmt = main_time_fmt
+
 main_handler = main_tail.log_handler
-main_formatter = logging.Formatter('%(asctime)s %(message)s', '%H:%M:%S')
+main_formatter = logging.Formatter(main_inapp_fmt, main_inapp_time_fmt)
 main_handler.setFormatter(main_formatter)
 
 main_logger.addHandler(main_handler)
 
 main_console_handler = logging.StreamHandler()
-main_console_formatter = logging.Formatter(
-    '%(levelname).1s: %(asctime)s,%(msecs)03d %(name)s %(funcName)s(): %(message)s',
-    '%H:%M:%S'
-)
+main_console_formatter = logging.Formatter(main_fmt, main_time_fmt)
+
 main_console_handler.setFormatter(main_console_formatter)
 
 main_logger.addHandler(main_console_handler)
