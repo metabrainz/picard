@@ -57,7 +57,6 @@ after_success:
 - if [ ! -z "${CODACY_PROJECT_TOKEN}" ]; then $CODACY; python-codacy-coverage -r coverage.xml;
   fi
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then bash scripts/package-osx.sh; fi
-- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then curl --upload-file "dist/picard.dmg" https://transfer.sh/picard.dmg; fi
 notifications:
   irc: chat.freenode.net#metabrainz
 branches:
