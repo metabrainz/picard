@@ -113,18 +113,24 @@ class LogView(LogViewCommon):
         self.restoreWindowState("logview_position", "logview_size")
 
         self._setup_formats()
-        self.verbosity = set(log.levels_features)
         self.hidden_domains = set()
         self.show_only_domains = set()
         self.hl_text = ''
+        self.filter_enabled = False
+        self.domains_menu_can_update = True
 
         self.hbox = QtWidgets.QHBoxLayout(self)
         self.vbox.addLayout(self.hbox)
 
+        # debug mode
         cb = QtWidgets.QCheckBox(_('Debug mode'), self)
         cb.setChecked(QtCore.QObject.tagger._debug)
         cb.stateChanged.connect(self.toggleDebug)
         self.hbox.addWidget(cb)
+
+        # Verbosity
+        self.verbosity_menu_button = QtWidgets.QPushButton(_("Verbosity"), self)
+        self.hbox.addWidget(self.verbosity_menu_button)
 
         self.verbosity_menu = QtWidgets.QMenu(self)
         for level, feat in log.levels_features.items():
@@ -133,49 +139,74 @@ class LogView(LogViewCommon):
             act.setChecked(level in self.verbosity)
             act.triggered.connect(partial(self._verbosity_changed, level))
             self.verbosity_menu.addAction(act)
-
-        self.verbosity_menu_button = QtWidgets.QPushButton(_("Verbosity"))
         self.verbosity_menu_button.setMenu(self.verbosity_menu)
-        self.hbox.addWidget(self.verbosity_menu_button)
 
-        self.domains_menu_can_update = True
-
+        # Domains
         self.domains_menu = QtWidgets.QMenu(self)
-        self.domains_menu_button = QtWidgets.QPushButton(_("Domains"))
+        self.domains_menu_button = QtWidgets.QPushButton(_("Domains"), self)
         self.domains_menu_button.setMenu(self.domains_menu)
         self.domains_menu.aboutToShow.connect(
             partial(self.set_domains_menu_can_update, False))
         self.domains_menu.aboutToHide.connect(
             partial(self.set_domains_menu_can_update, True))
+        self.hbox.addWidget(self.domains_menu_button)
 
+        # Show only
         self.show_only_domains_menu = QtWidgets.QMenu(self)
         self.show_only_domains_menu_button = QtWidgets.QPushButton(
-            _("Show Only"))
+            _("Show Only"), self)
         self.show_only_domains_menu_button.setMenu(self.show_only_domains_menu)
         self.show_only_domains_menu.aboutToShow.connect(
             partial(self.set_domains_menu_can_update, False))
         self.show_only_domains_menu.aboutToHide.connect(
             partial(self.set_domains_menu_can_update, True))
-
-        self.hbox.addWidget(self.domains_menu_button)
         self.hbox.addWidget(self.show_only_domains_menu_button)
 
-        self.highlight_text = QtWidgets.QLineEdit()
+        # highlight input
+        self.highlight_text = QtWidgets.QLineEdit(self)
+        self.highlight_text.setPlaceholderText(_("Words to highlight"))
+        self.highlight_text.textEdited.connect(self._highlight_text_edited)
         self.hbox.addWidget(self.highlight_text)
 
-        self.highlight_button = QtWidgets.QPushButton(_("Highlight"))
+        # higlight button
+        self.highlight_button = QtWidgets.QPushButton(_("Highlight"), self)
         self.hbox.addWidget(self.highlight_button)
+        self.highlight_button.setDefault(True)
+        self.highlight_button.setEnabled(False)
         self.highlight_button.clicked.connect(self._highlight_do)
 
-        self.clear_log_button = QtWidgets.QPushButton(_("Clear Log"))
+        self.highlight_text.returnPressed.connect(self.highlight_button.click)
+
+        self.clear_highlight_button = QtWidgets.QPushButton(_("Clear Highlight"), self)
+        self.hbox.addWidget(self.clear_highlight_button)
+        self.clear_highlight_button.clicked.connect(self._clear_highlight_do)
+
+        # clear log
+        self.clear_log_button = QtWidgets.QPushButton(_("Clear Log"), self)
         self.hbox.addWidget(self.clear_log_button)
         self.clear_log_button.clicked.connect(self._clear_log_do)
 
-        self.save_log_as_button = QtWidgets.QPushButton(_("Save As..."))
+        # save as
+        self.save_log_as_button = QtWidgets.QPushButton(_("Save As..."), self)
         self.hbox.addWidget(self.save_log_as_button)
         self.save_log_as_button.clicked.connect(self._save_log_as_do)
 
+        # ------
+
         self.log_tail.domains_updated.connect(self.menu_domains_rebuild)
+
+    def _clear_highlight_do(self):
+        self.hl_text = ''
+        self.highlight_text.setText('')
+        self.highlight_button.setEnabled(False)
+        self.display(clear=True)
+
+    def _highlight_text_edited(self, text):
+        if self.hl_text != text:
+            self.highlight_button.setEnabled(True)
+        else:
+            self.highlight_button.setEnabled(False)
+
 
     def _setup_formats(self):
         self.formats = {}
@@ -220,7 +251,11 @@ class LogView(LogViewCommon):
             return
         self.domains_menu.clear()
         self.show_only_domains_menu.clear()
-        for domain in sorted(self.log_tail.known_domains):
+        known_domains = sorted(self.log_tail.known_domains)
+        self.filter_enabled = bool(known_domains)
+        self.show_only_domains_menu_button.setEnabled(self.filter_enabled)
+        self.domains_menu_button.setEnabled(self.filter_enabled)
+        for domain in known_domains:
             act = QtWidgets.QAction(domain, self.domains_menu)
             act.setCheckable(True)
             act.setChecked(domain not in self.hidden_domains)
@@ -236,9 +271,18 @@ class LogView(LogViewCommon):
 
     def show(self):
         self.menu_domains_rebuild()
+        self.highlight_text.setFocus(QtCore.Qt.OtherFocusReason);
         super().show()
 
     def _clear_log_do(self):
+        reply = QtWidgets.QMessageBox.question(
+            self,
+            _("Clear Log"),
+            _("Are you sure you want to clear the log?"),
+            QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No
+        )
+        if reply != QtWidgets.QMessageBox.Yes:
+            return
         self.log_tail.clear()
         self.menu_domains_rebuild()
         self.display(clear=True)
@@ -282,6 +326,8 @@ class LogView(LogViewCommon):
         self.textCursor.setBlockCharFormat(fmt)
         if self.hl_text:
             self.highlight(self.hl_text, cursor)
+        if not self.filter_enabled:
+            self.menu_domains_rebuild()
 
     def toggleDebug(self, state):
         QtCore.QObject.tagger.debug(state == QtCore.Qt.Checked)
