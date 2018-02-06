@@ -28,6 +28,9 @@ from functools import partial, wraps
 from PyQt5 import QtCore
 
 
+_MAX_TAIL_LEN = 10**6
+
+
 def domain(*domains):
     def wrapper(f):
         @wraps(f)
@@ -223,7 +226,7 @@ def name_filter(record):
 
 main_logger.addFilter(name_filter)
 
-main_tail = TailLogger(100000)
+main_tail = TailLogger(_MAX_TAIL_LEN)
 
 main_handler = main_tail.log_handler
 main_formatter = logging.Formatter('%(asctime)s %(message)s', '%H:%M:%S')
@@ -253,7 +256,7 @@ error = main_logger.error
 history_logger = logging.getLogger('history')
 history_logger.setLevel(logging.INFO)
 
-history_tail = TailLogger(100000)
+history_tail = TailLogger(_MAX_TAIL_LEN)
 
 history_handler = history_tail.log_handler
 history_formatter = logging.Formatter('%(asctime)s - %(message)s')
