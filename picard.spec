@@ -40,6 +40,9 @@ if os_name == 'Windows':
     fpcalc_name = 'fpcalc.exe'
     binaries += [('discid.dll', '')]
 
+if os_name == 'Darwin':
+    binaries += [('libdiscid.0.dylib', '')]
+
 if os.path.isfile(fpcalc_name):
     binaries += [(fpcalc_name, '')]
 
