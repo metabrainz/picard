@@ -206,6 +206,10 @@ class TailLogger(QtCore.QObject):
     def contents(self, prev=-1):
         return [x for x in self._log_queue if x.pos > prev]
 
+    def clear(self):
+        self._log_queue.clear()
+        self.known_domains = set()
+
 
 # MAIN LOGGER
 

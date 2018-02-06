@@ -239,9 +239,9 @@ class LogView(LogViewCommon):
         super().show()
 
     def _clear_log_do(self):
-        self.logger.reset()
+        self.log_tail.clear()
         self.menu_domains_rebuild()
-        self.display()
+        self.display(clear=True)
 
     def _highlight_do(self):
         new_hl_text = self.highlight_text.text()
