@@ -17,28 +17,27 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-import sys
-import os
+import io
 import logging
+import os
+import sys
 
 from collections import deque, namedtuple, OrderedDict
 from functools import partial, wraps
 from PyQt5 import QtCore
-
-from picard.util import thread
 
 
 def domain(*domains):
     def wrapper(f):
         @wraps(f)
         def caller(*args, **kwargs):
-            extra = {'domains': set(domains)}
             log = sys.modules['picard.log']
             saved = {}
             methods = ('debug', 'info', 'error', 'warning')
             for method in methods:
                 saved[method] = getattr(log, method)
-                setattr(log, method, partial(saved[method], extra=extra))
+                setattr(log, method, partial(
+                    saved[method], domains=set(domains)))
             result = f(*args, **kwargs)
             for method in methods:
                 setattr(log, method, saved[method])
@@ -52,7 +51,6 @@ def debug_mode(enabled):
         main_logger.setLevel(logging.DEBUG)
     else:
         main_logger.setLevel(logging.INFO)
-
 
 
 _feat = namedtuple('_feat', ['name', 'prefix', 'fgcolor'])
@@ -70,6 +68,98 @@ levels_features = OrderedDict([
 
 TailLogTuple = namedtuple(
     'TailLogTuple', ['pos', 'message', 'level', 'domains'])
+
+
+def _DummyFn(*args, **kwargs):
+    """Placeholder function.
+
+    Raises:
+        NotImplementedError
+    """
+    _, _ = args, kwargs
+    raise NotImplementedError()
+
+
+# _srcfile is used when walking the stack to check when we've got the first
+# caller stack frame, by skipping frames whose filename is that of this
+# module's source. It therefore should contain the filename of this module's
+# source file.
+_srcfile = os.path.normcase(_DummyFn.__code__.co_filename)
+if hasattr(sys, '_getframe'):
+    def currentframe():
+        return sys._getframe(3)
+else:  # pragma: no cover
+    def currentframe():
+        """Return the frame object for the caller's stack frame."""
+        try:
+            raise Exception
+        except Exception:
+            return sys.exc_info()[2].tb_frame.f_back
+
+
+class OurLogger(logging.getLoggerClass()):
+
+    @staticmethod
+    def _fix_kwargs(kwargs):
+        key = 'domains'
+        if key in kwargs:
+            kv_dict = {key: kwargs[key]}
+            if 'extra' in kwargs:
+                kwargs['extra'].update(kv_dict)
+            else:
+                kwargs['extra'] = kv_dict
+            del kwargs[key]
+        return kwargs
+
+    def log(self, level, msg, *args, **kwargs):
+        kwargs = self._fix_kwargs(kwargs)
+        super().log(level, msg, *args, **kwargs)
+
+    def debug(self, msg, *args, **kwargs):
+        kwargs = self._fix_kwargs(kwargs)
+        super().debug(msg, *args, **kwargs)
+
+    def error(self, msg, *args, **kwargs):
+        kwargs = self._fix_kwargs(kwargs)
+        super().error(msg, *args, **kwargs)
+
+    def warning(self, msg, *args, **kwargs):
+        kwargs = self._fix_kwargs(kwargs)
+        super().warning(msg, *args, **kwargs)
+
+    def info(self, msg, *args, **kwargs):
+        kwargs = self._fix_kwargs(kwargs)
+        super().info(msg, *args, **kwargs)
+
+    def findCaller(self, stack_info=False):
+        """
+        Find the stack frame of the caller so that we can note the source
+        file name, line number and function name.
+        """
+        f = currentframe()
+        # On some versions of IronPython, currentframe() returns None if
+        # IronPython isn't run with -X:Frames.
+        if f is not None:
+            f = f.f_back
+        rv = "(unknown file)", 0, "(unknown function)", None
+        while hasattr(f, "f_code"):
+            co = f.f_code
+            filename = os.path.normcase(co.co_filename)
+            if filename == _srcfile:
+                f = f.f_back
+                continue
+            sinfo = None
+            if stack_info:
+                sio = io.StringIO()
+                sio.write('Stack (most recent call last):\n')
+                traceback.print_stack(f, file=sio)
+                sinfo = sio.getvalue()
+                if sinfo[-1] == '\n':
+                    sinfo = sinfo[:-1]
+                sio.close()
+            rv = (co.co_filename, f.f_lineno, co.co_name, sinfo)
+            break
+        return rv
 
 
 class TailLogHandler(logging.Handler):
@@ -113,10 +203,22 @@ class TailLogger(QtCore.QObject):
 
 # MAIN LOGGER
 
+logging.setLoggerClass(OurLogger)
 
 main_logger = logging.getLogger('main')
 
 main_logger.setLevel(logging.INFO)
+
+
+def name_filter(record):
+    # provide a significant name, because module sucks
+    logpydir = os.path.dirname(os.path.realpath(__file__))
+    pathname = os.path.realpath(record.pathname)
+    record.name, _ = os.path.splitext(os.path.relpath(pathname, logpydir))
+    return True
+
+
+main_logger.addFilter(name_filter)
 
 main_tail = TailLogger(100000)
 
@@ -128,7 +230,7 @@ main_logger.addHandler(main_handler)
 
 main_console_handler = logging.StreamHandler()
 main_console_formatter = logging.Formatter(
-    '%(levelname).1s: %(asctime)s,%(msecs)03d %(module)s %(funcName)s: %(message)s',
+    '%(levelname).1s: %(asctime)s,%(msecs)03d %(name)s %(funcName)s(): %(message)s',
     '%H:%M:%S'
 )
 main_console_handler.setFormatter(main_console_formatter)
