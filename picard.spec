@@ -65,8 +65,15 @@ exe = EXE(pyz,
           name='picard',
           debug=False,
           strip=False,
-          upx=True,
           runtime_tmpdir=None,
           console=False,
           icon='picard.ico',
  )
+if platform.system() == 'Darwin':
+    info_plist = {'NSHighResolutionCapable': 'True', 'NSPrincipalClass': 'NSApplication'}
+    app = BUNDLE(exe,
+                 name='MusicBrainz Picard.app',
+                 icon='picard.icns',
+                 bundle_identifier=None,
+                 info_plist=info_plist
+                )
