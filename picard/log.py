@@ -132,6 +132,8 @@ class OurLogger(logging.getLoggerClass()):
         kwargs = self._fix_kwargs(kwargs)
         super().info(msg, *args, **kwargs)
 
+    # copied from https://github.com/python/cpython/blob/3.5/Lib/logging/__init__.py#L1353-L1381
+    # see https://stackoverflow.com/questions/4957858/how-to-write-own-logging-methods-for-own-logging-levels
     def findCaller(self, stack_info=False):
         """
         Find the stack frame of the caller so that we can note the source
