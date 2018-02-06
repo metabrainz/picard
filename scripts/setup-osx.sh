@@ -5,6 +5,7 @@ brew link python3 --force
 brew install gettext
 brew link gettext --force
 brew install libdiscid
+cp /usr/local/Cellar/libdiscid/0.6.2/lib/libdiscid.0.dylib .
 pip3 install --upgrade pip setuptools wheel
 pip3 install virtualenv
 virtualenv -p python3 .
