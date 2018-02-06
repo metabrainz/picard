@@ -69,7 +69,7 @@ class LogViewCommon(LogViewDialog):
         super().__init__(*args, **kwargs)
 
     def show(self):
-        self.display(True)
+        self.display(clear=True)
         super().show()
 
     def _updated(self):
@@ -249,8 +249,8 @@ class LogView(LogViewCommon):
             self.hl_text = new_hl_text
             self.display()
 
-    def display(self, *args, **kwargs):
-        super().display(*args, **kwargs)
+    def display(self, clear=False):
+        super().display(clear=clear)
         if self.hl_text:
             self.highlight(self.hl_text)
 
