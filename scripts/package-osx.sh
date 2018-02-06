@@ -20,5 +20,7 @@ hdiutil create -volname "MusicBrainz Picard $VERSION" -srcfolder 'MusicBrainz Pi
 if [ -n "$UPLOAD_OSX" ]
 then
     curl --upload-file "MusicBrainz Picard $VERSION.dmg" https://transfer.sh/
+    # Required for a newline between the outputs
+    echo -e "\n"
     md5 -r "MusicBrainz Picard $VERSION.dmg"
 fi

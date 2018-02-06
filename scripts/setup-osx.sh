@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+brew update
 brew install python3
 brew link python3 --force
 brew install gettext
