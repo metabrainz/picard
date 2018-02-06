@@ -70,3 +70,5 @@ deploy:
   file_glob: true
   skip_cleanup: true
   file: dist/*.dmg
+  on:
+    tags: true
