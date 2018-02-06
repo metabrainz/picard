@@ -270,6 +270,7 @@ class WebService(QtCore.QObject):
         self._timer_count_pending_requests.setSingleShot(True)
         self._timer_count_pending_requests.timeout.connect(self._count_pending_requests)
 
+    @log.domain('ws', 'network_cache')
     def set_cache(self, cache_size_in_mb=100):
         cache = QtNetwork.QNetworkDiskCache()
         location = QStandardPaths.writableLocation(QStandardPaths.CacheLocation)
@@ -278,7 +279,7 @@ class WebService(QtCore.QObject):
         self.manager.setCache(cache)
         log.debug("NetworkDiskCache dir: %s", cache.cacheDirectory())
         log.debug("NetworkDiskCache size: %s / %s", cache.cacheSize(),
-                  cache.maximumCacheSize(), domains = ('ws', 'network_cache'))
+                  cache.maximumCacheSize())
 
     def setup_proxy(self):
         proxy = QtNetwork.QNetworkProxy()
@@ -323,15 +324,14 @@ class WebService(QtCore.QObject):
             return url.port(443)
         return url.port(80)
 
+    @log.domain('ws', 'queries')
     def _handle_redirect(self, reply, request, redirect):
         url = request.url()
         error = int(reply.error())
         # merge with base url (to cover the possibility of the URL being relative)
         redirect = url.resolved(redirect)
         if not WebService.urls_equivalent(redirect, reply.request().url()):
-            log.debug("Redirect to %s requested",
-                      redirect.toString(QUrl.RemoveUserInfo), domains = ('ws',
-                                                                         'queries'))
+            log.debug("Redirect to %s requested", redirect.toString(QUrl.RemoveUserInfo))
             redirect_host = string_(redirect.host())
             redirect_port = self.url_port(redirect)
             redirect_query = dict(QUrlQuery(redirect).queryItems(QUrl.FullyEncoded))
@@ -351,11 +351,11 @@ class WebService(QtCore.QObject):
                      cacheloadcontrol=request.attribute(QtNetwork.QNetworkRequest.CacheLoadControlAttribute))
         else:
             log.error("Redirect loop: %s",
-                      reply.request().url().toString(QUrl.RemoveUserInfo),
-                      domains = ('ws', 'queries')
+                      reply.request().url().toString(QUrl.RemoveUserInfo)
             )
             request.handler(reply.readAll(), reply, error)
 
+    @log.domain('ws', 'queries')
     def _handle_reply(self, reply, request):
         hostkey = request.get_host_key()
         ratecontrol.decrement_requests(hostkey)
@@ -372,7 +372,7 @@ class WebService(QtCore.QObject):
             errstr = reply.errorString()
             url = reply.request().url().toString(QUrl.RemoveUserInfo)
             log.error("Network request error for %s: %s (QT code %d, HTTP code %d)",
-                      url, errstr, error, code, domains = ('ws', 'queries'))
+                      url, errstr, error, code)
             if (not request.max_retries_reached()
                 and (code == 503
                      or code == 429
@@ -440,12 +440,13 @@ class WebService(QtCore.QObject):
         func = partial(self._start_request, request)
         return self.add_task(func, request)
 
+    @log.domain('ws', 'queries', 'post-data')
     def post(self, host, port, path, data, handler, parse_response_type=DEFAULT_RESPONSE_PARSER_TYPE,
              priority=False, important=False, mblogin=True, queryargs=None):
         request = WSPostRequest(host, port, path, handler, parse_response_type=parse_response_type,
                             data=data, mblogin=mblogin, queryargs=queryargs,
                             priority=priority, important=important)
-        log.debug("POST-DATA %r", data, domains = ('ws', 'post-data'))
+        log.debug("POST-DATA %r", data)
         func = partial(self._start_request, request)
         return self.add_task(func, request)
 

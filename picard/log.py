@@ -20,9 +20,31 @@
 import sys
 import os
 import logging
+
 from collections import deque, namedtuple, OrderedDict
+from functools import partial, wraps
 from PyQt5 import QtCore
+
 from picard.util import thread
+
+
+def domain(*domains):
+    def wrapper(f):
+        @wraps(f)
+        def caller(*args, **kwargs):
+            extra = {'domains': set(domains)}
+            log = sys.modules['picard.log']
+            saved = {}
+            methods = ('debug', 'info', 'error', 'warning')
+            for method in methods:
+                saved[method] = getattr(log, method)
+                setattr(log, method, partial(saved[method], extra=extra))
+            result = f(*args, **kwargs)
+            for method in methods:
+                setattr(log, method, saved[method])
+            return result
+        return caller
+    return wrapper
 
 
 def debug_mode(enabled):
@@ -31,34 +53,6 @@ def debug_mode(enabled):
     else:
         main_logger.setLevel(logging.INFO)
 
-
-def main_logger_wrapper(level, message, *args, domains=None):
-    if not domains:
-        domains = set()
-    elif isinstance(domains, str):
-        # this is a shortcut: allow one to pass a domains as sole
-        # argument, but use it as first argument of set
-        domains = set((domains,))
-    else:
-        domains = set(domains)
-    main_logger.log(level, message, *args,
-                    extra={'domains': domains})
-
-
-def debug(message, *args, domains=None):
-    main_logger_wrapper(logging.DEBUG, message, *args, domains=domains)
-
-
-def info(message, *args, domains=None):
-    main_logger_wrapper(logging.INFO, message, *args, domains=domains)
-
-
-def warning(message, *args, domains=None):
-    main_logger_wrapper(logging.WARNING, message, *args, domains=domains)
-
-
-def error(message, *args, domains=None):
-    main_logger_wrapper(logging.ERROR, message, *args, domains=domains)
 
 
 _feat = namedtuple('_feat', ['name', 'prefix', 'fgcolor'])
@@ -134,12 +128,19 @@ main_logger.addHandler(main_handler)
 
 main_console_handler = logging.StreamHandler()
 main_console_formatter = logging.Formatter(
-    '%(levelname).1s: %(asctime)s,%(msecs)03d %(message)s',
+    '%(levelname).1s: %(asctime)s,%(msecs)03d %(module)s %(funcName)s: %(message)s',
     '%H:%M:%S'
 )
 main_console_handler.setFormatter(main_console_formatter)
 
 main_logger.addHandler(main_console_handler)
+
+
+debug = main_logger.debug
+info = main_logger.info
+warning = main_logger.warning
+error = main_logger.error
+
 
 # HISTORY LOGGING
 

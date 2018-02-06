@@ -73,9 +73,9 @@ CONGESTION_SSTHRESH = defaultdict(lambda: 0)
 LAST_REQUEST_TIMES = defaultdict(lambda: 0)
 
 
+@log.domain('ws', 'ratecontrol')
 def _dbug(message, hostkey, *args):
-    log.debug('ratecontrol: %s: '+ message, hostkey, *args, domains = ('ws',
-                                                                       'ratecontrol'))
+    log.debug('%s: ' + message, hostkey, *args)
 
 
 def set_minimum_delay(hostkey, delay_ms):

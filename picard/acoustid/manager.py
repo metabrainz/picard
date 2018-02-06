@@ -74,7 +74,7 @@ class AcoustIDManager(QtCore.QObject):
         if not fingerprints:
             self._check_unsubmitted()
             return
-        log.debug("AcoustID: submitting ...", domains='acoustid')
+        log.debug("AcoustID: submitting ...")
         self.tagger.window.set_statusbar_message(
             N_('Submitting AcoustIDs ...'),
             echo=None
@@ -95,7 +95,7 @@ class AcoustIDManager(QtCore.QObject):
             }
             log.error(
                 "AcoustID: submission failed with error '%(error)s': %(message)s" %
-                mparms, domains='acoustid')
+                mparms)
             self.tagger.window.set_statusbar_message(
                 N_("AcoustID submission failed with error '%(error)s': %(message)s"),
                 mparms,
@@ -103,7 +103,7 @@ class AcoustIDManager(QtCore.QObject):
                 timeout=3000
             )
         else:
-            log.debug('AcoustID: successfully submitted', domains='acoustid')
+            log.debug('AcoustID: successfully submitted')
             self.tagger.window.set_statusbar_message(
                 N_('AcoustIDs successfully submitted.'),
                 echo=None,
