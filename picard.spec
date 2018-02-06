@@ -4,6 +4,7 @@ import os
 import glob
 import platform
 
+
 def _picard_get_locale_files():
     locales = []
     path_domain = {
@@ -64,22 +65,15 @@ exe = EXE(pyz,
           name='picard',
           debug=False,
           strip=False,
-          upx=True,
           runtime_tmpdir=None,
           console=False,
           icon='picard.ico',
  )
 if platform.system() == 'Darwin':
-    import plistlib
-    app_name = 'MusicBrainz Picard.app'
+    info_plist = {'NSHighResolutionCapable': 'True', 'NSPrincipalClass': 'NSApplication'}
     app = BUNDLE(exe,
-                 name=app_name,
+                 name='MusicBrainz Picard.app',
                  icon='picard.icns',
-                 bundle_identifier=None)
-    # We need to do the below changes to plist in order to enable High-DPI in
-    # our final packaged app
-    plist_path = os.path.join('dist', app_name, 'Contents', 'Info.plist')
-    values = plistlib.readPlist(plist_path)
-    values['NSPrincipalClass'] = 'NSApplication'
-    values['NSHighResolutionCapable'] = 'True'
-    plistlib.writePlist(values, plist_path)
+                 bundle_identifier=None,
+                 info_plist=info_plist
+                )
