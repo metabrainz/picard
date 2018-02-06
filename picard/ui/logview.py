@@ -58,107 +58,66 @@ class LogViewDialog(PicardDialog):
 
 
 class LogViewCommon(LogViewDialog):
+    WIDTH = 570
+    HEIGHT = 400
 
-    def __init__(self, title, logger, w=740, h=340, parent=None):
-        super().__init__(title, w, h, parent=parent)
-        self.logger = logger
-        self._setup_formats()
-        self.verbosity = set(log.levels_features)
-        self.hidden_domains = set()
-        self.show_only_domains = set()
-        self.hl_text = ''
+    def __init__(self, log_tail, *args, **kwargs):
+        self.displaying = False
+        self.prev = -1
+        self.log_tail = log_tail
+        self.log_tail.updated.connect(self._updated)
+        super().__init__(*args, **kwargs)
 
-    def _setup_formats(self):
-        self.formats = {}
-        font = QtGui.QFont()
-        font.setFamily("Monospace")
-        for level, feat in log.levels_features.items():
-            text_fmt = QtGui.QTextCharFormat()
-            text_fmt.setFont(font)
-            text_fmt.setForeground(QtGui.QColor(feat.fgcolor))
-            self.formats[level] = text_fmt
+    def show(self):
+        self.display(True)
+        super().show()
 
-    def _format(self, level):
-        return self.formats[level]
-
-    def _unregister_add_entry(self):
-        try:
-            self.logger.unregister_receiver(self._add_entry)
-        except ValueError:
-            pass
-
-    def display(self):
-        self._unregister_add_entry()
-        self.doc.clear()
-        self.textCursor.movePosition(QtGui.QTextCursor.Start)
-        for message_obj in self.logger.entries:
-            self._add_entry(message_obj)
-        if self.hl_text:
-            self.highlight(self.hl_text)
-        self.logger.register_receiver(self._add_entry)
-
-    def _add_entry(self, message_obj):
-        if not message_obj.is_shown(verbosity=self.verbosity,
-                                    hide_set=self.hidden_domains,
-                                    show_set=self.show_only_domains):
+    def _updated(self):
+        if self.displaying:
             return
-        if self.hl_text:
-            cursor = QtGui.QTextCursor(self.doc)
-            # FIXME: not sure about this, but -1 is needed
-            pos = max(0, self.textCursor.position()-1)
-            cursor.setPosition(pos)
-            cursor.setKeepPositionOnInsert(True)
+        self.display()
 
+    def display(self, clear=False):
+        self.displaying = True
+        if clear:
+            self.prev = -1
+            self.doc.clear()
+            self.textCursor.movePosition(QtGui.QTextCursor.Start)
+        for logitem in self.log_tail.contents(self.prev):
+            self._add_entry(logitem)
+            self.prev = logitem.pos
+        self.displaying = False
+
+    def _add_entry(self, logitem):
         self.textCursor.movePosition(QtGui.QTextCursor.End)
-        self.textCursor.insertText(self._formatted_log_line(message_obj),
-                                   self._format(message_obj.level))
+        self.textCursor.insertText(logitem.message)
         self.textCursor.insertBlock()
         sb = self.browser.verticalScrollBar()
         sb.setValue(sb.maximum())
-        if self.hl_text:
-            self.highlight(self.hl_text, cursor)
-
-    @staticmethod
-    def _formatted_log_line(message_obj):
-        return log.formatted_log_line(message_obj)
-
-    def closeEvent(self, event):
-        self._unregister_add_entry()
-        super().closeEvent(event)
-
-    def highlight(self, searchString, cursor=None):
-        # adapted from http://doc.qt.io/qt-5/qtuitools-textfinder-example.html
-        if cursor:
-            highlightCursor = cursor
-        else:
-            highlightCursor = QtGui.QTextCursor(self.doc)
-
-        colorFormat = highlightCursor.charFormat()
-        colorFormat.setForeground(QtGui.QColor('green'))
-
-        while not highlightCursor.isNull() and not highlightCursor.atEnd():
-            highlightCursor = self.doc.find(searchString, highlightCursor)
-            if not highlightCursor.isNull():
-                highlightCursor.movePosition(QtGui.QTextCursor.WordRight,
-                                             QtGui.QTextCursor.KeepAnchor)
-                highlightCursor.mergeCharFormat(colorFormat)
-
 
 
 class LogView(LogViewCommon):
 
     options = [
         config.Option("persist", "logview_position", QtCore.QPoint()),
-        config.Option("persist", "logview_size", QtCore.QSize(560, 400)),
-        config.Option("persist", "logview_verbosity", set(log.levels_features)),
+        config.Option("persist", "logview_size", QtCore.QSize(
+            LogViewCommon.WIDTH, LogViewCommon.HEIGHT)),
+        config.Option("persist", "logview_verbosity",
+                      set(log.levels_features)),
     ]
 
     def __init__(self, parent=None):
-        title = _("Log")
-        logger = log.main_logger
-        super().__init__(title, logger, parent=parent)
+        super().__init__(log.main_tail, _("Log"), w=self.WIDTH,
+                         h=self.HEIGHT, parent=parent)
         self.verbosity = config.persist['logview_verbosity']
         self.restoreWindowState("logview_position", "logview_size")
+
+        self._setup_formats()
+        self.verbosity = set(log.levels_features)
+        self.hidden_domains = set()
+        self.show_only_domains = set()
+        self.hl_text = ''
+
         self.hbox = QtWidgets.QHBoxLayout(self)
         self.vbox.addLayout(self.hbox)
 
@@ -184,14 +143,19 @@ class LogView(LogViewCommon):
         self.domains_menu = QtWidgets.QMenu(self)
         self.domains_menu_button = QtWidgets.QPushButton(_("Domains"))
         self.domains_menu_button.setMenu(self.domains_menu)
-        self.domains_menu.aboutToShow.connect(partial(self.set_domains_menu_can_update, False))
-        self.domains_menu.aboutToHide.connect(partial(self.set_domains_menu_can_update, True))
+        self.domains_menu.aboutToShow.connect(
+            partial(self.set_domains_menu_can_update, False))
+        self.domains_menu.aboutToHide.connect(
+            partial(self.set_domains_menu_can_update, True))
 
         self.show_only_domains_menu = QtWidgets.QMenu(self)
-        self.show_only_domains_menu_button = QtWidgets.QPushButton(_("Show Only"))
+        self.show_only_domains_menu_button = QtWidgets.QPushButton(
+            _("Show Only"))
         self.show_only_domains_menu_button.setMenu(self.show_only_domains_menu)
-        self.show_only_domains_menu.aboutToShow.connect(partial(self.set_domains_menu_can_update, False))
-        self.show_only_domains_menu.aboutToHide.connect(partial(self.set_domains_menu_can_update, True))
+        self.show_only_domains_menu.aboutToShow.connect(
+            partial(self.set_domains_menu_can_update, False))
+        self.show_only_domains_menu.aboutToHide.connect(
+            partial(self.set_domains_menu_can_update, True))
 
         self.hbox.addWidget(self.domains_menu_button)
         self.hbox.addWidget(self.show_only_domains_menu_button)
@@ -211,11 +175,23 @@ class LogView(LogViewCommon):
         self.hbox.addWidget(self.save_log_as_button)
         self.save_log_as_button.clicked.connect(self._save_log_as_do)
 
-        logger.domains_updated.connect(self.menu_domains_rebuild)
-        self.display()
+        self.log_tail.domains_updated.connect(self.menu_domains_rebuild)
+
+    def _setup_formats(self):
+        self.formats = {}
+        font = QtGui.QFont()
+        font.setFamily("Monospace")
+        for level, feat in log.levels_features.items():
+            text_fmt = QtGui.QTextCharFormat()
+            text_fmt.setFont(font)
+            text_fmt.setForeground(QtGui.QColor(feat.fgcolor))
+            self.formats[level] = text_fmt
+
+    def _format(self, level):
+        return self.formats[level]
 
     def _save_log_as_do(self):
-        path, ok =  QtWidgets.QFileDialog.getSaveFileName(
+        path, ok = QtWidgets.QFileDialog.getSaveFileName(
             self,
             caption=_("Save Log View to File"),
             filter=_("Text Files (*.txt *.TXT)"),
@@ -227,7 +203,7 @@ class LogView(LogViewCommon):
                     self,
                     _("Save Log View to File"),
                     _("File already exists, do you really want to save to this file?"),
-                     QtWidgets.QMessageBox.Yes |  QtWidgets.QMessageBox.No
+                    QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No
                 )
                 if reply != QtWidgets.QMessageBox.Yes:
                     return
@@ -244,7 +220,7 @@ class LogView(LogViewCommon):
             return
         self.domains_menu.clear()
         self.show_only_domains_menu.clear()
-        for domain in sorted(self.logger.known_domains):
+        for domain in sorted(self.log_tail.known_domains):
             act = QtWidgets.QAction(domain, self.domains_menu)
             act.setCheckable(True)
             act.setChecked(domain not in self.hidden_domains)
@@ -254,7 +230,8 @@ class LogView(LogViewCommon):
             act = QtWidgets.QAction(domain, self.show_only_domains_menu)
             act.setCheckable(True)
             act.setChecked(domain in self.show_only_domains)
-            act.triggered.connect(partial(self._show_only_domains_changed, domain))
+            act.triggered.connect(
+                partial(self._show_only_domains_changed, domain))
             self.show_only_domains_menu.addAction(act)
 
     def show(self):
@@ -267,8 +244,44 @@ class LogView(LogViewCommon):
         self.display()
 
     def _highlight_do(self):
-        self.hl_text = self.highlight_text.text()
-        self.display()
+        new_hl_text = self.highlight_text.text()
+        if new_hl_text != self.hl_text:
+            self.hl_text = new_hl_text
+            self.display()
+
+    def display(self, *args, **kwargs):
+        super().display(*args, **kwargs)
+        if self.hl_text:
+            self.highlight(self.hl_text)
+
+    def is_shown(self, logitem):
+        if logitem.level not in self.verbosity:
+            return False
+        show_set = self.show_only_domains
+        hide_set = self.hidden_domains
+        show = True
+        if show_set and (not logitem.domains or
+                         logitem.domains.isdisjoint(show_set)):
+            show = False
+        if hide_set and logitem.domains and logitem.domains.intersection(hide_set):
+            return False
+        return show
+
+    def _add_entry(self, logitem):
+        if not self.is_shown(logitem):
+            return
+        if self.hl_text:
+            cursor = QtGui.QTextCursor(self.doc)
+            # FIXME: not sure about this, but -1 is needed
+            pos = max(0, self.textCursor.position() - 1)
+            cursor.setPosition(pos)
+            cursor.setKeepPositionOnInsert(True)
+        fmt = self.textCursor.blockCharFormat()
+        self.textCursor.setBlockCharFormat(self._format(logitem.level))
+        super()._add_entry(logitem)
+        self.textCursor.setBlockCharFormat(fmt)
+        if self.hl_text:
+            self.highlight(self.hl_text, cursor)
 
     def toggleDebug(self, state):
         QtCore.QObject.tagger.debug(state == QtCore.Qt.Checked)
@@ -283,66 +296,52 @@ class LogView(LogViewCommon):
             self.verbosity.add(level)
         else:
             self.verbosity.discard(level)
-        self.display()
+        self.display(clear=True)
 
     def _show_only_domains_changed(self, domain, checked):
         if not checked:
             self.show_only_domains.discard(domain)
         else:
             self.show_only_domains.add(domain)
-        self.display()
+        self.display(clear=True)
 
     def _domains_changed(self, domain, checked):
         if checked:
             self.hidden_domains.discard(domain)
         else:
             self.hidden_domains.add(domain)
-        self.display()
+        self.display(clear=True)
+
+    def highlight(self, searchString, cursor=None):
+        # adapted from http://doc.qt.io/qt-5/qtuitools-textfinder-example.html
+        if cursor:
+            highlightCursor = cursor
+        else:
+            highlightCursor = QtGui.QTextCursor(self.doc)
+
+        colorFormat = highlightCursor.charFormat()
+        colorFormat.setForeground(QtGui.QColor('green'))
+
+        while not highlightCursor.isNull() and not highlightCursor.atEnd():
+            highlightCursor = self.doc.find(searchString, highlightCursor)
+            if not highlightCursor.isNull():
+                highlightCursor.movePosition(QtGui.QTextCursor.WordRight,
+                                             QtGui.QTextCursor.KeepAnchor)
+                highlightCursor.mergeCharFormat(colorFormat)
 
 
-class HistoryView(LogViewDialog):
-
+class HistoryView(LogViewCommon):
     options = [
         config.Option("persist", "historyview_position", QtCore.QPoint()),
-        config.Option("persist", "historyview_size", QtCore.QSize(560, 400)),
+        config.Option("persist", "historyview_size", QtCore.QSize(LogViewCommon.WIDTH,
+                                                                  LogViewCommon.HEIGHT)),
     ]
 
     def __init__(self, parent=None):
-        title = _("Activity History")
-        self.log_tail = log.history_tail
-        self.displaying = False
-        self.prev = -1
-        self.log_tail.updated.connect(self._updated)
-        super().__init__(title, w=740, h=340, parent=parent)
+        super().__init__(log.history_tail, _("Activity History"), w=self.WIDTH,
+                         h=self.HEIGHT, parent=parent)
         self.restoreWindowState("historyview_position", "historyview_size")
 
     def closeEvent(self, event):
         self.saveWindowState("historyview_position", "historyview_size")
         super().closeEvent(event)
-
-    def show(self):
-        self.display(True)
-        super().show()
-
-    def _updated(self):
-        if self.displaying:
-            return
-        self.display()
-
-    def display(self, clear=False):
-        self.displaying = True
-        if clear:
-            self.prev = -1
-            self.doc.clear()
-            self.textCursor.movePosition(QtGui.QTextCursor.Start)
-        for x in self.log_tail.contents(self.prev):
-            self._add_entry(x.message)
-            self.prev = x.pos
-        self.displaying = False
-
-    def _add_entry(self, message):
-        self.textCursor.movePosition(QtGui.QTextCursor.End)
-        self.textCursor.insertText(message)
-        self.textCursor.insertBlock()
-        sb = self.browser.verticalScrollBar()
-        sb.setValue(sb.maximum())
