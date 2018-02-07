@@ -230,9 +230,10 @@ main_logger.setLevel(logging.INFO)
 
 def name_filter(record):
     # provide a significant name, because module sucks
-    logpydir = os.path.dirname(os.path.realpath(__file__))
-    pathname = os.path.realpath(record.pathname)
-    record.name, _ = os.path.splitext(os.path.relpath(pathname, logpydir))
+    prefix = os.path.dirname(os.path.normpath(os.path.normcase(__file__)))
+    pathname = os.path.normpath(record.pathname)
+    record.name, _ = os.path.splitext(pathname[len(prefix) + 1:] if
+                                      pathname.startswith(prefix) else pathname)
     return True
 
 
