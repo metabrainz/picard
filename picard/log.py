@@ -37,7 +37,7 @@ def domain(*domains):
         def caller(*args, **kwargs):
             log = sys.modules['picard.log']
             saved = {}
-            methods = ('debug', 'info', 'error', 'warning')
+            methods = ('debug', 'info', 'error', 'warning', 'exception')
             for method in methods:
                 saved[method] = getattr(log, method)
                 setattr(log, method, partial(
@@ -134,6 +134,9 @@ class OurLogger(logging.getLoggerClass()):
     def info(self, msg, *args, **kwargs):
         kwargs = self._fix_kwargs(kwargs)
         super().info(msg, *args, **kwargs)
+
+    def exception(self, msg, *args, exc_info=True, **kwargs):
+        self.error(msg, *args, exc_info=exc_info, **kwargs)
 
     # copied from https://github.com/python/cpython/blob/3.5/Lib/logging/__init__.py#L1353-L1381
     # see https://stackoverflow.com/questions/4957858/how-to-write-own-logging-methods-for-own-logging-levels
@@ -255,6 +258,7 @@ debug = main_logger.debug
 info = main_logger.info
 warning = main_logger.warning
 error = main_logger.error
+exception = main_logger.exception
 
 
 # HISTORY LOGGING
