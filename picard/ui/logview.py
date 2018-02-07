@@ -96,6 +96,27 @@ class LogViewCommon(LogViewDialog):
         sb.setValue(sb.maximum())
 
 
+class Highlighter(QtGui.QSyntaxHighlighter):
+    def __init__(self, string, parent=None):
+        super().__init__(parent)
+
+        self.fmt = QtGui.QTextCharFormat()
+        self.fmt.setBackground(QtCore.Qt.lightGray)
+
+        self.reg = QtCore.QRegExp()
+        self.reg.setPatternSyntax(QtCore.QRegExp.Wildcard)
+        self.reg.setCaseSensitivity(QtCore.Qt.CaseInsensitive)
+        self.reg.setPattern(string)
+
+    def highlightBlock(self, text):
+        expression = self.reg
+        index = expression.indexIn(text)
+        while index >= 0:
+            length = expression.matchedLength()
+            self.setFormat(index, length, self.fmt)
+            index = expression.indexIn(text, index + length)
+
+
 class LogView(LogViewCommon):
 
     options = [
@@ -118,6 +139,7 @@ class LogView(LogViewCommon):
         self.hl_text = ''
         self.filter_enabled = False
         self.domains_menu_can_update = True
+        self.hl = None
 
         self.hbox = QtWidgets.QHBoxLayout(self)
         self.vbox.addLayout(self.hbox)
@@ -164,11 +186,11 @@ class LogView(LogViewCommon):
 
         # highlight input
         self.highlight_text = QtWidgets.QLineEdit(self)
-        self.highlight_text.setPlaceholderText(_("Words to highlight"))
+        self.highlight_text.setPlaceholderText(_("String to highlight"))
         self.highlight_text.textEdited.connect(self._highlight_text_edited)
         self.hbox.addWidget(self.highlight_text)
 
-        # higlight button
+        # highlight button
         self.highlight_button = QtWidgets.QPushButton(_("Highlight"), self)
         self.hbox.addWidget(self.highlight_button)
         self.highlight_button.setDefault(True)
@@ -177,8 +199,10 @@ class LogView(LogViewCommon):
 
         self.highlight_text.returnPressed.connect(self.highlight_button.click)
 
+        # clear highlight button
         self.clear_highlight_button = QtWidgets.QPushButton(_("Clear Highlight"), self)
         self.hbox.addWidget(self.clear_highlight_button)
+        self.clear_highlight_button.setEnabled(False)
         self.clear_highlight_button.clicked.connect(self._clear_highlight_do)
 
         # clear log
@@ -196,17 +220,28 @@ class LogView(LogViewCommon):
         self.log_tail.domains_updated.connect(self.menu_domains_rebuild)
 
     def _clear_highlight_do(self):
-        self.hl_text = ''
         self.highlight_text.setText('')
         self.highlight_button.setEnabled(False)
-        self.display(clear=True)
+        self._highlight_do()
 
     def _highlight_text_edited(self, text):
-        if self.hl_text != text:
+        if text and self.hl_text != text:
             self.highlight_button.setEnabled(True)
         else:
             self.highlight_button.setEnabled(False)
+        if not text:
+            self.clear_highlight_button.setEnabled(bool(self.hl))
 
+    def _highlight_do(self):
+        new_hl_text = self.highlight_text.text()
+        if new_hl_text != self.hl_text:
+            self.hl_text = new_hl_text
+            if self.hl is not None:
+                self.hl.setDocument(None)
+                self.hl = None
+            if self.hl_text:
+                self.hl = Highlighter(self.hl_text, parent=self.doc)
+            self.clear_highlight_button.setEnabled(bool(self.hl))
 
     def _setup_formats(self):
         self.formats = {}
@@ -287,17 +322,6 @@ class LogView(LogViewCommon):
         self.menu_domains_rebuild()
         self.display(clear=True)
 
-    def _highlight_do(self):
-        new_hl_text = self.highlight_text.text()
-        if new_hl_text != self.hl_text:
-            self.hl_text = new_hl_text
-            self.display()
-
-    def display(self, clear=False):
-        super().display(clear=clear)
-        if self.hl_text:
-            self.highlight(self.hl_text)
-
     def is_shown(self, logitem):
         if logitem.level not in self.verbosity:
             return False
@@ -314,18 +338,10 @@ class LogView(LogViewCommon):
     def _add_entry(self, logitem):
         if not self.is_shown(logitem):
             return
-        if self.hl_text:
-            cursor = QtGui.QTextCursor(self.doc)
-            # FIXME: not sure about this, but -1 is needed
-            pos = max(0, self.textCursor.position() - 1)
-            cursor.setPosition(pos)
-            cursor.setKeepPositionOnInsert(True)
         fmt = self.textCursor.blockCharFormat()
         self.textCursor.setBlockCharFormat(self._format(logitem.level))
         super()._add_entry(logitem)
         self.textCursor.setBlockCharFormat(fmt)
-        if self.hl_text:
-            self.highlight(self.hl_text, cursor)
         if not self.filter_enabled:
             self.menu_domains_rebuild()
 
@@ -357,23 +373,6 @@ class LogView(LogViewCommon):
         else:
             self.hidden_domains.add(domain)
         self.display(clear=True)
-
-    def highlight(self, searchString, cursor=None):
-        # adapted from http://doc.qt.io/qt-5/qtuitools-textfinder-example.html
-        if cursor:
-            highlightCursor = cursor
-        else:
-            highlightCursor = QtGui.QTextCursor(self.doc)
-
-        colorFormat = highlightCursor.charFormat()
-        colorFormat.setForeground(QtGui.QColor('green'))
-
-        while not highlightCursor.isNull() and not highlightCursor.atEnd():
-            highlightCursor = self.doc.find(searchString, highlightCursor)
-            if not highlightCursor.isNull():
-                highlightCursor.movePosition(QtGui.QTextCursor.WordRight,
-                                             QtGui.QTextCursor.KeepAnchor)
-                highlightCursor.mergeCharFormat(colorFormat)
 
 
 class HistoryView(LogViewCommon):
