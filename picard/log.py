@@ -241,7 +241,7 @@ main_logger.addFilter(name_filter)
 
 main_tail = TailLogger(_MAX_TAIL_LEN)
 
-main_fmt = '%(levelname).1s: %(asctime)s,%(msecs)03d %(name)s %(funcName)s(): %(message)s'
+main_fmt = '%(levelname).1s: %(asctime)s,%(msecs)03d %(name)s:%(lineno)d %(funcName)s(): %(message)s'
 main_time_fmt = '%H:%M:%S'
 main_inapp_fmt = main_fmt
 main_inapp_time_fmt = main_time_fmt
