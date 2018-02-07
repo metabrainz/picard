@@ -116,24 +116,29 @@ class OurLogger(logging.getLoggerClass()):
         return kwargs
 
     def log(self, level, msg, *args, **kwargs):
-        kwargs = self._fix_kwargs(kwargs)
-        super().log(level, msg, *args, **kwargs)
+        if self.isEnabledFor(level):
+            kwargs = self._fix_kwargs(kwargs)
+            super()._log(level, msg, args, **kwargs)
 
     def debug(self, msg, *args, **kwargs):
-        kwargs = self._fix_kwargs(kwargs)
-        super().debug(msg, *args, **kwargs)
+        if self.isEnabledFor(logging.DEBUG):
+            kwargs = self._fix_kwargs(kwargs)
+            super()._log(logging.DEBUG, msg, args, **kwargs)
 
     def error(self, msg, *args, **kwargs):
-        kwargs = self._fix_kwargs(kwargs)
-        super().error(msg, *args, **kwargs)
+        if self.isEnabledFor(logging.ERROR):
+            kwargs = self._fix_kwargs(kwargs)
+            super()._log(logging.ERROR, msg, args, **kwargs)
 
     def warning(self, msg, *args, **kwargs):
-        kwargs = self._fix_kwargs(kwargs)
-        super().warning(msg, *args, **kwargs)
+        if self.isEnabledFor(logging.WARNING):
+            kwargs = self._fix_kwargs(kwargs)
+            super()._log(logging.WARNING, msg, args, **kwargs)
 
     def info(self, msg, *args, **kwargs):
-        kwargs = self._fix_kwargs(kwargs)
-        super().info(msg, *args, **kwargs)
+        if self.isEnabledFor(logging.INFO):
+            kwargs = self._fix_kwargs(kwargs)
+            super()._log(logging.INFO, msg, args, **kwargs)
 
     def exception(self, msg, *args, exc_info=True, **kwargs):
         self.error(msg, *args, exc_info=exc_info, **kwargs)
