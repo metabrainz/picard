@@ -230,10 +230,11 @@ main_logger.setLevel(logging.INFO)
 
 def name_filter(record):
     # provide a significant name, because module sucks
-    prefix = os.path.dirname(os.path.normpath(os.path.normcase(__file__)))
-    pathname = os.path.normpath(record.pathname)
-    record.name, _ = os.path.splitext(pathname[len(prefix) + 1:] if
-                                      pathname.startswith(prefix) else pathname)
+    prefix = os.path.dirname(os.path.normcase(_srcfile))
+    name = record.pathname
+    if name.startswith(prefix):
+        name = name[len(prefix) + 1:].replace(os.path.sep, '.').replace('.__init__', '')
+    record.name, _ = os.path.splitext(name)
     return True
 
 
@@ -241,7 +242,7 @@ main_logger.addFilter(name_filter)
 
 main_tail = TailLogger(_MAX_TAIL_LEN)
 
-main_fmt = '%(levelname).1s: %(asctime)s,%(msecs)03d %(name)s:%(lineno)d %(funcName)s(): %(message)s'
+main_fmt = '%(levelname).1s: %(asctime)s,%(msecs)03d %(name)s.%(funcName)s:%(lineno)d: %(message)s'
 main_time_fmt = '%H:%M:%S'
 main_inapp_fmt = main_fmt
 main_inapp_time_fmt = main_time_fmt
