@@ -8,7 +8,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_PluginsOptionsPage(object):
     def setupUi(self, PluginsOptionsPage):
         PluginsOptionsPage.setObjectName("PluginsOptionsPage")
-        PluginsOptionsPage.resize(513, 312)
+        PluginsOptionsPage.resize(513, 315)
         self.vboxlayout = QtWidgets.QVBoxLayout(PluginsOptionsPage)
         self.vboxlayout.setObjectName("vboxlayout")
         self.plugins_container = QtWidgets.QSplitter(PluginsOptionsPage)
@@ -84,7 +84,7 @@ class Ui_PluginsOptionsPage(object):
         self.scrollArea.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.scrollArea.setObjectName("scrollArea")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 469, 76))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 477, 90))
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -128,7 +128,7 @@ class Ui_PluginsOptionsPage(object):
         self.groupBox_2.setTitle(_("Plugins"))
         self.plugins.headerItem().setText(0, _("Name"))
         self.plugins.headerItem().setText(1, _("Version"))
-        self.plugins.headerItem().setText(2, _("Status"))
+        self.plugins.headerItem().setText(2, _("Action"))
         self.install_plugin.setText(_("Install plugin..."))
         self.folder_open.setText(_("Open plugin folder"))
         self.reload_list_of_plugins.setText(_("Reload List of Plugins"))

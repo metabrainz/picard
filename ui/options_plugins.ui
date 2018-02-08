@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>513</width>
-    <height>312</height>
+    <height>315</height>
    </rect>
   </property>
   <layout class="QVBoxLayout">
@@ -59,7 +59,12 @@
          </column>
          <column>
           <property name="text">
-           <string>Status</string>
+           <string>Action</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string/>
           </property>
          </column>
         </widget>
@@ -157,8 +162,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>469</width>
-            <height>76</height>
+            <width>477</width>
+            <height>90</height>
            </rect>
           </property>
           <property name="sizePolicy">

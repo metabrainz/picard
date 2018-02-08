@@ -135,6 +135,7 @@ class PluginShared(object):
         self.can_be_updated = False
         self.can_be_downloaded = False
         self.marked_for_update = False
+        self.is_uninstalled = False
 
 
 class PluginWrapper(PluginShared):
