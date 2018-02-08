@@ -49,6 +49,7 @@ class ResultTable(QtWidgets.QTableWidget):
             parent.scrolled.emit()
         self.horizontalScrollBar().valueChanged.connect(emit_scrolled)
         self.verticalScrollBar().valueChanged.connect(emit_scrolled)
+        self.setHorizontalScrollMode(QtWidgets.QAbstractItemView.ScrollPerPixel)
 
 
 class SearchBox(QtWidgets.QWidget):
