@@ -19,6 +19,8 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+from collections import OrderedDict
+from functools import partial
 import os.path
 
 from picard import config, log
@@ -659,6 +661,28 @@ class MainWindow(QtWidgets.QMainWindow):
         self.search_button.setDefaultAction(self.search_action)
         self.search_button.setIconSize(QtCore.QSize(22, 22))
         self.search_button.setAttribute(QtCore.Qt.WA_MacShowFocusRect)
+
+        # search button contextual menu, shortcut to toggle search options
+        def search_button_menu(position):
+            menu = QtWidgets.QMenu()
+            opts = OrderedDict([
+                ('use_adv_search_syntax', N_("&Advanced search")),
+                ('builtin_search', N_("&Builtin search"))
+            ])
+
+            def toggle_opt(opt, checked):
+                config.setting[opt] = checked
+
+            for opt, label in opts.items():
+                action = QtWidgets.QAction(_(label), menu)
+                action.setCheckable(True)
+                action.setChecked(config.setting[opt])
+                action.triggered.connect(partial(toggle_opt, opt))
+                menu.addAction(action)
+            menu.exec_(self.search_button.mapToGlobal(position))
+
+        self.search_button.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
+        self.search_button.customContextMenuRequested.connect(search_button_menu)
         hbox.addWidget(self.search_button)
         toolbar.addWidget(search_panel)
 
