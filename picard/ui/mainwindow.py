@@ -710,11 +710,16 @@ class MainWindow(QtWidgets.QMainWindow):
         if self.search_action.isEnabled():
             self.search_action.trigger()
 
+    def search_mbid_found(self, entity, mbid):
+        self.search_edit.setText('%s:%s' % (entity, mbid))
+
     def search(self):
         """Search for album, artist or track on the MusicBrainz website."""
         text = self.search_edit.text()
-        type = self.search_combo.itemData(self.search_combo.currentIndex())
-        self.tagger.search(text, type, config.setting["use_adv_search_syntax"])
+        entity = self.search_combo.itemData(self.search_combo.currentIndex())
+        self.tagger.search(text, entity,
+                           config.setting["use_adv_search_syntax"],
+                           mbid_matched_callback=self.search_mbid_found)
 
     def add_files(self):
         """Add files to the tagger."""
