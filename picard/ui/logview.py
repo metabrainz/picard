@@ -325,15 +325,18 @@ class LogView(LogViewCommon):
     def is_shown(self, logitem):
         if logitem.level not in self.verbosity:
             return False
-        show_set = self.show_only_domains
-        hide_set = self.hidden_domains
-        show = True
-        if show_set and (not logitem.domains or
-                         logitem.domains.isdisjoint(show_set)):
-            show = False
-        if hide_set and logitem.domains and logitem.domains.intersection(hide_set):
-            return False
-        return show
+        shown = False
+        # show by default if items has no domains defined
+        if not logitem.domains:
+            shown = True
+        else:
+            # show if item has domains and they arent all in hidden domains
+            shown = not logitem.domains.intersection(self.hidden_domains)
+        # if shown and show_only_domains is non empty, check if at least one is
+        # in both sets
+        if shown and self.show_only_domains:
+            shown = logitem.domains and logitem.domains.intersection(self.show_only_domains)
+        return shown
 
     def _add_entry(self, logitem):
         if not self.is_shown(logitem):
