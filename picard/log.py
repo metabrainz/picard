@@ -17,113 +17,279 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-import sys
+import io
+import logging
 import os
-from collections import deque
+import sys
+import traceback
+
+from collections import deque, namedtuple, OrderedDict
+from functools import partial, wraps
 from PyQt5 import QtCore
-from picard.util import thread
 
 
-LOG_INFO = 1
-LOG_WARNING = 2
-LOG_ERROR = 4
-LOG_DEBUG = 8
+_MAX_TAIL_LEN = 10**6
 
 
-class Logger(object):
-
-    def __init__(self, maxlen=0):
-        self._receivers = []
-        self.maxlen = maxlen
-        self.reset()
-
-    def reset(self):
-        if self.maxlen > 0:
-            self.entries = deque(maxlen=self.maxlen)
-        else:
-            self.entries = []
-
-    def register_receiver(self, receiver):
-        self._receivers.append(receiver)
-
-    def unregister_receiver(self, receiver):
-        self._receivers.remove(receiver)
-
-    def message(self, level, message, *args):
-        if not self.log_level(level):
-            return
-        if not isinstance(message, str):
-            message = repr(message)
-        if args:
-            message = message % args
-        time = QtCore.QTime.currentTime()
-        message = "%s" % (message,)
-        self.entries.append((level, time, message))
-        for func in self._receivers:
-            try:
-                thread.to_main(func, level, time, message)
-            except:
-                import traceback
-                traceback.print_exc()
-
-    def log_level(self, level):
-        return True
+_log_methods = ('debug', 'info', 'error', 'warning', 'exception', 'log')
 
 
-# main logger
-log_levels = LOG_INFO | LOG_WARNING | LOG_ERROR
-
-main_logger = Logger(50000)
-main_logger.log_level = lambda level: log_levels & level
-
-
-def debug(message, *args):
-    main_logger.message(LOG_DEBUG, message, *args)
-
-
-def info(message, *args):
-    main_logger.message(LOG_INFO, message, *args)
-
-
-def warning(message, *args):
-    main_logger.message(LOG_WARNING, message, *args)
+def domain(*domains):
+    def wrapper(f):
+        @wraps(f)
+        def caller(*args, **kwargs):
+            log = sys.modules['picard.log']
+            normal = dict([(x, log.__dict__[x]) for x in _log_methods])
+            patched = dict([(x, partial(normal[x], _domains=set(domains))) for x in _log_methods])
+            log.__dict__.update(patched)
+            result = f(*args, **kwargs)
+            log.__dict__.update(normal)
+            return result
+        return caller
+    return wrapper
 
 
-def error(message, *args):
-    main_logger.message(LOG_ERROR, message, *args)
-
-
-_log_prefixes = {
-    LOG_INFO: 'I',
-    LOG_WARNING: 'W',
-    LOG_ERROR: 'E',
-    LOG_DEBUG: 'D',
-}
-
-
-def formatted_log_line(level, time, message, timefmt='hh:mm:ss',
-                       level_prefixes=_log_prefixes, format='%s %s'):
-    msg = format % (time.toString(timefmt), message)
-    if level_prefixes:
-        return "%s: %s" % (level_prefixes[level], msg)
+def debug_mode(enabled):
+    if enabled:
+        main_logger.setLevel(logging.DEBUG)
     else:
-        return msg
+        main_logger.setLevel(logging.INFO)
 
 
-def _stderr_receiver(level, time, msg):
-    try:
-        sys.stderr.write(formatted_log_line(level, time, msg) + os.linesep)
-    except (UnicodeDecodeError, UnicodeEncodeError):
-        sys.stderr.write(formatted_log_line(level, time, msg, format='%s %r') + os.linesep)
+_feat = namedtuple('_feat', ['name', 'prefix', 'fgcolor'])
+
+levels_features = OrderedDict([
+    (logging.INFO,    _feat('Info',    'I', 'black')),
+    (logging.WARNING, _feat('Warning', 'W', 'darkorange')),
+    (logging.ERROR,   _feat('Error',   'E', 'red')),
+    (logging.DEBUG,   _feat('Debug',   'D', 'purple')),
+])
 
 
-main_logger.register_receiver(_stderr_receiver)
+# COMMON CLASSES
 
 
-# history of status messages
-history_logger = Logger(50000)
-history_logger.log_level = lambda level: log_levels & level
+TailLogTuple = namedtuple(
+    'TailLogTuple', ['pos', 'message', 'level', 'domains'])
+
+
+def _DummyFn(*args, **kwargs):
+    """Placeholder function.
+
+    Raises:
+        NotImplementedError
+    """
+    _, _ = args, kwargs
+    raise NotImplementedError()
+
+
+# _srcfile is used when walking the stack to check when we've got the first
+# caller stack frame, by skipping frames whose filename is that of this
+# module's source. It therefore should contain the filename of this module's
+# source file.
+_srcfile = os.path.normcase(_DummyFn.__code__.co_filename)
+if hasattr(sys, '_getframe'):
+    def currentframe():
+        return sys._getframe(3)
+else:  # pragma: no cover
+    def currentframe():
+        """Return the frame object for the caller's stack frame."""
+        try:
+            raise Exception
+        except Exception:
+            return sys.exc_info()[2].tb_frame.f_back
+
+
+class OurLogger(logging.getLoggerClass()):
+
+    @staticmethod
+    def _fix_kwargs(kwargs):
+        key = 'domains'
+        has_domains_arg = key in kwargs
+        has_domains_decorator = '_domains' in kwargs
+        if has_domains_arg or has_domains_decorator:
+            if has_domains_decorator:
+                doms = kwargs['_domains']
+                del kwargs['_domains']
+            else:
+                doms = set()
+            if has_domains_arg:
+                doms = doms.union(kwargs[key])
+                del kwargs[key]
+            kv_dict = {key: doms}
+            if 'extra' in kwargs:
+                kwargs['extra'].update(kv_dict)
+            else:
+                kwargs['extra'] = kv_dict
+        return kwargs
+
+    def log(self, level, msg, *args, **kwargs):
+        if self.isEnabledFor(level):
+            kwargs = self._fix_kwargs(kwargs)
+            super()._log(level, msg, args, **kwargs)
+
+    def debug(self, msg, *args, **kwargs):
+        if self.isEnabledFor(logging.DEBUG):
+            kwargs = self._fix_kwargs(kwargs)
+            super()._log(logging.DEBUG, msg, args, **kwargs)
+
+    def error(self, msg, *args, **kwargs):
+        if self.isEnabledFor(logging.ERROR):
+            kwargs = self._fix_kwargs(kwargs)
+            super()._log(logging.ERROR, msg, args, **kwargs)
+
+    def warning(self, msg, *args, **kwargs):
+        if self.isEnabledFor(logging.WARNING):
+            kwargs = self._fix_kwargs(kwargs)
+            super()._log(logging.WARNING, msg, args, **kwargs)
+
+    def info(self, msg, *args, **kwargs):
+        if self.isEnabledFor(logging.INFO):
+            kwargs = self._fix_kwargs(kwargs)
+            super()._log(logging.INFO, msg, args, **kwargs)
+
+    def exception(self, msg, *args, exc_info=True, **kwargs):
+        self.error(msg, *args, exc_info=exc_info, **kwargs)
+
+    # copied from https://github.com/python/cpython/blob/3.5/Lib/logging/__init__.py#L1353-L1381
+    # see https://stackoverflow.com/questions/4957858/how-to-write-own-logging-methods-for-own-logging-levels
+    def findCaller(self, stack_info=False):
+        """
+        Find the stack frame of the caller so that we can note the source
+        file name, line number and function name.
+        """
+        f = currentframe()
+        # On some versions of IronPython, currentframe() returns None if
+        # IronPython isn't run with -X:Frames.
+        if f is not None:
+            f = f.f_back
+        rv = "(unknown file)", 0, "(unknown function)", None
+        while hasattr(f, "f_code"):
+            co = f.f_code
+            filename = os.path.normcase(co.co_filename)
+            if filename == _srcfile:
+                f = f.f_back
+                continue
+            sinfo = None
+            if stack_info:
+                sio = io.StringIO()
+                sio.write('Stack (most recent call last):\n')
+                traceback.print_stack(f, file=sio)
+                sinfo = sio.getvalue()
+                if sinfo[-1] == '\n':
+                    sinfo = sinfo[:-1]
+                sio.close()
+            rv = (co.co_filename, f.f_lineno, co.co_name, sinfo)
+            break
+        return rv
+
+
+class TailLogHandler(logging.Handler):
+
+    def __init__(self, log_queue, tail_logger):
+        super().__init__()
+        self.log_queue = log_queue
+        self.tail_logger = tail_logger
+        self.pos = 0
+
+    def emit(self, record):
+        domains = getattr(record, 'domains', None)
+        if domains and not domains.issubset(self.tail_logger.known_domains):
+            self.tail_logger.known_domains.update(domains)
+            self.tail_logger.domains_updated.emit()
+        self.log_queue.append(
+            TailLogTuple(
+                self.pos,
+                self.format(record),
+                record.levelno,
+                domains
+            )
+        )
+        self.pos += 1
+        self.tail_logger.updated.emit()
+
+
+class TailLogger(QtCore.QObject):
+    updated = QtCore.pyqtSignal()
+    domains_updated = QtCore.pyqtSignal()
+
+    def __init__(self, maxlen):
+        super().__init__()
+        self._log_queue = deque(maxlen=maxlen)
+        self.known_domains = set()
+        self.log_handler = TailLogHandler(self._log_queue, self)
+
+    def contents(self, prev=-1):
+        return [x for x in self._log_queue if x.pos > prev]
+
+    def clear(self):
+        self._log_queue.clear()
+        self.known_domains = set()
+
+
+# MAIN LOGGER
+
+logging.setLoggerClass(OurLogger)
+
+main_logger = logging.getLogger('main')
+
+main_logger.setLevel(logging.INFO)
+
+
+def name_filter(record):
+    # provide a significant name, because module sucks
+    prefix = os.path.dirname(os.path.normcase(_srcfile))
+    name = record.pathname
+    if name.startswith(prefix):
+        name = name[len(prefix) + 1:].replace(os.path.sep, '.').replace('.__init__', '')
+    record.name, _ = os.path.splitext(name)
+    return True
+
+
+main_logger.addFilter(name_filter)
+
+main_tail = TailLogger(_MAX_TAIL_LEN)
+
+main_fmt = '%(levelname).1s: %(asctime)s,%(msecs)03d %(name)s.%(funcName)s:%(lineno)d: %(message)s'
+main_time_fmt = '%H:%M:%S'
+main_inapp_fmt = main_fmt
+main_inapp_time_fmt = main_time_fmt
+
+main_handler = main_tail.log_handler
+main_formatter = logging.Formatter(main_inapp_fmt, main_inapp_time_fmt)
+main_handler.setFormatter(main_formatter)
+
+main_logger.addHandler(main_handler)
+
+main_console_handler = logging.StreamHandler()
+main_console_formatter = logging.Formatter(main_fmt, main_time_fmt)
+
+main_console_handler.setFormatter(main_console_formatter)
+
+main_logger.addHandler(main_console_handler)
+
+
+debug = main_logger.debug
+info = main_logger.info
+warning = main_logger.warning
+error = main_logger.error
+exception = main_logger.exception
+log = main_logger.log
+
+# HISTORY LOGGING
+
+
+history_logger = logging.getLogger('history')
+history_logger.setLevel(logging.INFO)
+
+history_tail = TailLogger(_MAX_TAIL_LEN)
+
+history_handler = history_tail.log_handler
+history_formatter = logging.Formatter('%(asctime)s - %(message)s')
+history_handler.setFormatter(history_formatter)
+
+history_logger.addHandler(history_handler)
 
 
 def history_info(message, *args):
-    history_logger.message(LOG_INFO, message, *args)
+    history_logger.info(message, *args)

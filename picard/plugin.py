@@ -48,6 +48,9 @@ _PLUGIN_PACKAGE_SUFFIX = ".picard"
 _PLUGIN_PACKAGE_SUFFIX_LEN = len(_PLUGIN_PACKAGE_SUFFIX)
 
 
+_domains = {'plugins'}
+
+
 def _plugin_name_from_path(path):
     path = os.path.normpath(path)
     file = os.path.basename(path)
@@ -228,7 +231,8 @@ class PluginData(PluginShared):
         try:
             return PluginShared.__getattribute__(self, name)
         except AttributeError:
-            log.debug('Attribute %r not found for plugin %r', name, self.module_name)
+            log.debug('Attribute %r not found for plugin %r', name,
+                      self.module_name, domains=_domains)
             return None
 
     @property
@@ -254,7 +258,8 @@ class PluginManager(QtCore.QObject):
     def load_plugindir(self, plugindir):
         plugindir = os.path.normpath(plugindir)
         if not os.path.isdir(plugindir):
-            log.info("Plugin directory %r doesn't exist", plugindir)
+            log.info("Plugin directory %r doesn't exist", plugindir,
+                     domains=_domains)
             return
         # first, handle eventual plugin updates
         for updatepath in [os.path.join(plugindir, file) for file in
@@ -266,9 +271,11 @@ class PluginManager(QtCore.QObject):
             if name:
                 self.remove_plugin(name)
                 os.rename(updatepath, path)
-                log.debug('Updating plugin %r (%r))', name, path)
+                log.debug('Updating plugin %r (%r))', name, path,
+                          domains=_domains)
             else:
-                log.error('Cannot get plugin name from %r', updatepath)
+                log.error('Cannot get plugin name from %r', updatepath,
+                          domains=_domains)
         # now load found plugins
         names = set()
         for path in [os.path.join(plugindir, file) for file in os.listdir(plugindir)]:
@@ -279,7 +286,8 @@ class PluginManager(QtCore.QObject):
                 names.add(name)
         log.debug("Looking for plugins in directory %r, %d names found",
                   plugindir,
-                  len(names))
+                  len(names),
+                  domains=_domains)
         for name in sorted(names):
             self.load_plugin(name, plugindir)
 
@@ -289,7 +297,7 @@ class PluginManager(QtCore.QObject):
         if importer:
             name = module_name
             if not importer.find_module(name):
-                log.error("Failed loading zipped plugin %r", name)
+                log.error("Failed loading zipped plugin %r", name, domains=_domains)
                 return None
             module_pathname = importer.get_filename(name)
         else:
@@ -298,7 +306,7 @@ class PluginManager(QtCore.QObject):
                 module_file = info[0]
                 module_pathname = info[1]
             except ImportError:
-                log.error("Failed loading plugin %r", name)
+                log.exception("Failed loading plugin %r", name, domains=_domains)
                 return None
 
         plugin = None
@@ -306,12 +314,15 @@ class PluginManager(QtCore.QObject):
             index = None
             for i, p in enumerate(self.plugins):
                 if name == p.module_name:
-                    log.warning("Module %r conflict: unregistering previously" \
-                              " loaded %r version %s from %r",
-                              p.module_name,
-                              p.name,
-                              p.version,
-                              p.file)
+                    log.warning(
+                        "Module %r conflict: unregistering previously" \
+                        " loaded %r version %s from %r",
+                        p.module_name,
+                        p.name,
+                        p.version,
+                        p.file,
+                        domains=_domains
+                    )
                     _unregister_module_extensions(name)
                     index = i
                     break
@@ -329,7 +340,7 @@ class PluginManager(QtCore.QObject):
                           plugin.name,
                           plugin.version,
                           ", ".join([version_to_string(v, short=True) for v in
-                                     sorted(compatible_versions)]))
+                                     sorted(compatible_versions)]), domains=_domains)
                 plugin.compatible = True
                 setattr(picard.plugins, name, plugin_module)
                 if index is not None:
@@ -338,12 +349,13 @@ class PluginManager(QtCore.QObject):
                     self.plugins.append(plugin)
             else:
                 log.warning("Plugin '%s' from '%s' is not compatible"
-                            " with this version of Picard."
-                            % (plugin.name, plugin.file))
+                            " with this version of Picard.",
+                            plugin.name, plugin.file, domains=_domains)
         except VersionError as e:
-            log.error("Plugin %r has an invalid API version string : %s", name, e)
-        except:
-            log.error("Plugin %r : %s", name, traceback.format_exc())
+            log.exception("Plugin %r has an invalid API version string : %s",
+                          name, e, domains=_domains)
+        except Exception as e:
+            log.exception("Plugin %r exception : %s", name, e, domains=_domains)
         if module_file is not None:
             module_file.close()
         return plugin
@@ -362,18 +374,18 @@ class PluginManager(QtCore.QObject):
     def remove_plugin(self, plugin_name):
         if plugin_name.endswith('.zip'):
             plugin_name = os.path.splitext(plugin_name)[0]
-        log.debug("Remove plugin files and dirs : %r", plugin_name)
+        log.debug("Remove plugin files and dirs : %r", plugin_name, domains=_domains)
         dirpath, filepaths = self._get_existing_paths(plugin_name)
         if dirpath:
             if os.path.islink(dirpath):
-                log.debug("Removing symlink %r", dirpath)
+                log.debug("Removing symlink %r", dirpath, domains=_domains)
                 os.remove(dirpath)
             elif os.path.isdir(dirpath):
-                log.debug("Removing directory %r", dirpath)
+                log.debug("Removing directory %r", dirpath, domains=_domains)
                 shutil.rmtree(dirpath)
         if filepaths:
             for filepath in filepaths:
-                log.debug("Removing file %r", filepath)
+                log.debug("Removing file %r", filepath, domains=_domains)
                 os.remove(filepath)
 
     def install_plugin(self, path, action, overwrite_confirm=None, plugin_name=None,
@@ -410,7 +422,7 @@ class PluginManager(QtCore.QObject):
                             zipfile.flush()
                             os.fsync(zipfile.fileno())
                         os.rename(ziptmp, dst)
-                        log.debug("Plugin saved to %r", dst)
+                        log.debug("Plugin saved to %r", dst, domains=_domains)
                     except:
                         try:
                             os.remove(ziptmp)
@@ -438,7 +450,8 @@ class PluginManager(QtCore.QObject):
                 else:
                     self.plugin_updated.emit(plugin_name, False)
             except (OSError, IOError):
-                log.warning("Unable to copy %s to plugin folder %s" % (path, USER_PLUGIN_DIR))
+                log.warning("Unable to copy %s to plugin folder %s",
+                            path, USER_PLUGIN_DIR, domains=_domains)
 
     def query_available_plugins(self, callback=None):
         self.tagger.webservice.get(

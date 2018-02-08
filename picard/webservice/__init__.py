@@ -270,6 +270,7 @@ class WebService(QtCore.QObject):
         self._timer_count_pending_requests.setSingleShot(True)
         self._timer_count_pending_requests.timeout.connect(self._count_pending_requests)
 
+    @log.domain('ws', 'network_cache')
     def set_cache(self, cache_size_in_mb=100):
         cache = QtNetwork.QNetworkDiskCache()
         location = QStandardPaths.writableLocation(QStandardPaths.CacheLocation)
@@ -323,6 +324,7 @@ class WebService(QtCore.QObject):
             return url.port(443)
         return url.port(80)
 
+    @log.domain('ws', 'queries')
     def _handle_redirect(self, reply, request, redirect):
         url = request.url()
         error = int(reply.error())
@@ -350,9 +352,10 @@ class WebService(QtCore.QObject):
         else:
             log.error("Redirect loop: %s",
                       reply.request().url().toString(QUrl.RemoveUserInfo)
-                      )
+            )
             request.handler(reply.readAll(), reply, error)
 
+    @log.domain('ws', 'queries')
     def _handle_reply(self, reply, request):
         hostkey = request.get_host_key()
         ratecontrol.decrement_requests(hostkey)
@@ -437,6 +440,7 @@ class WebService(QtCore.QObject):
         func = partial(self._start_request, request)
         return self.add_task(func, request)
 
+    @log.domain('ws', 'queries', 'post-data')
     def post(self, host, port, path, data, handler, parse_response_type=DEFAULT_RESPONSE_PARSER_TYPE,
              priority=False, important=False, mblogin=True, queryargs=None):
         request = WSPostRequest(host, port, path, handler, parse_response_type=parse_response_type,

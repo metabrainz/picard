@@ -26,6 +26,7 @@ from picard.util import find_executable, is_frozen
 from picard.acoustid.json_helpers import parse_recording
 
 
+
 class AcoustIDClient(QtCore.QObject):
 
     def __init__(self):
@@ -48,6 +49,7 @@ class AcoustIDClient(QtCore.QObject):
     def done(self):
         pass
 
+    @log.domain('acoustid')
     def _on_lookup_finished(self, next_func, file, document, http, error):
 
         doc = {}
