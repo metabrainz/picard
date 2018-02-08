@@ -115,7 +115,7 @@ class FileLookup(object):
     def collection_lookup(self, userid):
         return self._build_launch('/user/%s/collections' % userid)
 
-    def _search(self, type_, query, adv=False):
+    def search_entity(self, type_, query, adv=False):
         if self.mbid_lookup(query, type_):
             return True
         params = {
@@ -126,12 +126,3 @@ class FileLookup(object):
         if adv:
             params['adv'] = 'on'
         return self._build_launch('/search/textsearch', params)
-
-    def artist_search(self, query, adv=False):
-        return self._search('artist', query, adv)
-
-    def album_search(self, query, adv=False):
-        return self._search('release', query, adv)
-
-    def track_search(self, query, adv=False):
-        return self._search('recording', query, adv)
