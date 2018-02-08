@@ -31,20 +31,19 @@ from PyQt5 import QtCore
 _MAX_TAIL_LEN = 10**6
 
 
+_log_methods = ('debug', 'info', 'error', 'warning', 'exception', 'log')
+
+
 def domain(*domains):
     def wrapper(f):
         @wraps(f)
         def caller(*args, **kwargs):
             log = sys.modules['picard.log']
-            saved = {}
-            methods = ('debug', 'info', 'error', 'warning', 'exception')
-            for method in methods:
-                saved[method] = getattr(log, method)
-                setattr(log, method, partial(
-                    saved[method], domains=set(domains)))
+            normal = dict([(x, log.__dict__[x]) for x in _log_methods])
+            patched = dict([(x, partial(normal[x], _domains=set(domains))) for x in _log_methods])
+            log.__dict__.update(patched)
             result = f(*args, **kwargs)
-            for method in methods:
-                setattr(log, method, saved[method])
+            log.__dict__.update(normal)
             return result
         return caller
     return wrapper
@@ -106,13 +105,22 @@ class OurLogger(logging.getLoggerClass()):
     @staticmethod
     def _fix_kwargs(kwargs):
         key = 'domains'
-        if key in kwargs:
-            kv_dict = {key: kwargs[key]}
+        has_domains_arg = key in kwargs
+        has_domains_decorator = '_domains' in kwargs
+        if has_domains_arg or has_domains_decorator:
+            if has_domains_decorator:
+                doms = kwargs['_domains']
+                del kwargs['_domains']
+            else:
+                doms = set()
+            if has_domains_arg:
+                doms = doms.union(kwargs[key])
+                del kwargs[key]
+            kv_dict = {key: doms}
             if 'extra' in kwargs:
                 kwargs['extra'].update(kv_dict)
             else:
                 kwargs['extra'] = kv_dict
-            del kwargs[key]
         return kwargs
 
     def log(self, level, msg, *args, **kwargs):
@@ -266,7 +274,7 @@ info = main_logger.info
 warning = main_logger.warning
 error = main_logger.error
 exception = main_logger.exception
-
+log = main_logger.log
 
 # HISTORY LOGGING
 
