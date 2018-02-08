@@ -278,8 +278,10 @@ class Tagger(QtWidgets.QApplication):
             self.nats.update()
 
     def exit(self):
-        log.debug("Picard stopping")
+        if self.stopping:
+            return
         self.stopping = True
+        log.debug("Picard stopping")
         self._acoustid.done()
         self.thread_pool.waitForDone()
         self.save_thread_pool.waitForDone()

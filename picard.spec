@@ -40,6 +40,9 @@ if os_name == 'Windows':
     fpcalc_name = 'fpcalc.exe'
     binaries += [('discid.dll', '')]
 
+if os_name == 'Darwin':
+    binaries += [('libdiscid.0.dylib', '')]
+
 if os.path.isfile(fpcalc_name):
     binaries += [(fpcalc_name, '')]
 
@@ -65,8 +68,15 @@ exe = EXE(pyz,
           name='picard',
           debug=False,
           strip=False,
-          upx=True,
           runtime_tmpdir=None,
           console=False,
           icon='picard.ico',
  )
+if platform.system() == 'Darwin':
+    info_plist = {'NSHighResolutionCapable': 'True', 'NSPrincipalClass': 'NSApplication'}
+    app = BUNDLE(exe,
+                 name='MusicBrainz Picard.app',
+                 icon='picard.icns',
+                 bundle_identifier=None,
+                 info_plist=info_plist
+                )
