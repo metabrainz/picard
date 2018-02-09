@@ -232,15 +232,13 @@ class Tagger(QtWidgets.QApplication):
             f()
 
     def debug(self, debug):
-        if self._debug == debug:
-            return
+        self._debug = debug
         if debug:
-            log.log_levels = log.log_levels | log.LOG_DEBUG
+            log.debug_mode(True)
             log.debug("Debug mode on")
         else:
-            log.debug("Debug mode off")
-            log.log_levels = log.log_levels & ~log.LOG_DEBUG
-        self._debug = debug
+            log.info("Debug mode off")
+            log.debug_mode(False)
 
     def move_files_to_album(self, files, albumid=None, album=None):
         """Move `files` to tracks on album `albumid`."""
