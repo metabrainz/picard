@@ -144,13 +144,13 @@ class LogView(LogViewCommon):
         config.Option("persist", "logview_position", QtCore.QPoint()),
         config.Option("persist", "logview_size", QtCore.QSize(
             LogViewCommon.WIDTH, LogViewCommon.HEIGHT)),
-        config.Option("persist", "logview_verbosity", log.VERBOSITY_DEFAULT),
+        config.IntOption("setting", "log_verbosity", log.VERBOSITY_DEFAULT),
     ]
 
     def __init__(self, parent=None):
         super().__init__(log.main_tail, _("Log"), w=self.WIDTH,
                          h=self.HEIGHT, parent=parent)
-        self.verbosity = config.persist['logview_verbosity']
+        self.verbosity = config.setting['log_verbosity']
         self.restoreWindowState("logview_position", "logview_size")
 
         self._setup_formats()
@@ -296,12 +296,12 @@ class LogView(LogViewCommon):
         self.verbosity_menu.set_verbosity(self.verbosity)
 
     def closeEvent(self, event):
-        config.persist['logview_verbosity'] = self.verbosity
         self.saveWindowState("logview_position", "logview_size")
         super().closeEvent(event)
 
     def _verbosity_changed(self, level):
         if level != self.verbosity:
+            config.setting['log_verbosity'] = level
             QtCore.QObject.tagger.debug(level == logging.DEBUG)
             self.verbosity = level
             self.display(clear=True)

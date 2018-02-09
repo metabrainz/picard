@@ -26,6 +26,7 @@ sip.setapi("QVariant", 2)
 from PyQt5 import QtGui, QtCore, QtWidgets
 
 import argparse
+import logging
 import os.path
 import platform
 import re
@@ -99,6 +100,8 @@ class Tagger(QtWidgets.QApplication):
 
     __instance = None
 
+    _debug = False
+
     def __init__(self, picard_args, unparsed_args, localedir, autoupdate):
 
         # Use the new fusion style from PyQt5 for a modern and consistent look
@@ -117,7 +120,12 @@ class Tagger(QtWidgets.QApplication):
 
         self._cmdline_files = picard_args.FILE
         self._autoupdate = autoupdate
-        self._debug = False
+
+        self.debug(
+            picard_args.debug
+            or "PICARD_DEBUG" in os.environ
+            or config.setting['log_verbosity'] == logging.DEBUG
+        )
 
         # FIXME: Figure out what's wrong with QThreadPool.globalInstance().
         # It's a valid reference, but its start() method doesn't work.
@@ -152,7 +160,6 @@ class Tagger(QtWidgets.QApplication):
             signal.signal(signal.SIGTERM, self.signal)
 
         # Setup logging
-        self.debug(picard_args.debug or "PICARD_DEBUG" in os.environ)
         log.debug("Starting Picard from %r", os.path.abspath(__file__))
         log.debug("Platform: %s %s %s", platform.platform(),
                   platform.python_implementation(), platform.python_version())
