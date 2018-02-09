@@ -22,6 +22,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+from collections import OrderedDict, namedtuple
 from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtNetwork import QNetworkReply
 from picard import config, log
@@ -34,10 +35,51 @@ from picard.ui.util import StandardButton
 from picard.util import webbrowser2, load_json
 
 
-_CAA_THUMBNAIL_SIZE_MAP = {
-    0: "small",
-    1: "large",
+
+
+# note: caa_image_size option was storing index of a combobox item as size
+# therefore it depends on items order and/or number, which is bad
+# To keep the option as is, values >= 250 are stored for thumbnails and -1 is
+# used for full size. This trick avoids a hook for compatibility
+
+_CAA_SIZE_COMPAT = {
+    0: 250,
+    1: 500,
+    2: -1,
 }
+
+CaaSizeItem = namedtuple('CaaSizeItem', ['thumbnail', 'label'])
+
+_CAA_THUMBNAIL_SIZE_MAP = OrderedDict([
+    (250, CaaSizeItem('small', N_('250 px'))),
+    (500, CaaSizeItem('large', N_('500 px'))),
+    (1200, CaaSizeItem('1200', N_('1200 px'))),
+    (-1, CaaSizeItem(None, N_('Full size'))),
+])
+
+_CAA_IMAGE_SIZE_DEFAULT = 500
+
+
+def caa_url_fallback_list(desired_size, thumbnails):
+    """List of thumbnail urls equal or smaller than size, in size decreasing order
+    It is used for find the "best" thumbnail according to:
+        - user choice
+        - thumbnail availability
+    If user choice isn't matching an available thumbnail size, a fallback to
+    smaller thumbnails is possible
+    This function returns the list of possible urls, ordered from the biggest
+    matching the user choice to the smallest one.
+    Of course, if none are possible, the returned list may be empty.
+    """
+    reversed_map = OrderedDict(reversed(list(_CAA_THUMBNAIL_SIZE_MAP.items())))
+    urls = []
+    for item_id, item in reversed_map.items():
+        if item_id == -1 or item_id > desired_size:
+            continue
+        if item.thumbnail in thumbnails:
+            urls.append(thumbnails[item.thumbnail])
+    return urls
+
 
 class CAATypesSelectorDialog(QtWidgets.QDialog):
     _columns = 4
@@ -135,7 +177,8 @@ class ProviderOptionsCaa(ProviderOptions):
         config.BoolOption("setting", "caa_save_single_front_image", False),
         config.BoolOption("setting", "caa_approved_only", False),
         config.BoolOption("setting", "caa_image_type_as_filename", False),
-        config.IntOption("setting", "caa_image_size", 1),
+        config.IntOption("setting", "caa_image_size",
+                         _CAA_IMAGE_SIZE_DEFAULT),
         config.ListOption("setting", "caa_image_types", ["front"]),
         config.BoolOption("setting", "caa_restrict_image_types", True),
     ]
@@ -148,7 +191,18 @@ class ProviderOptionsCaa(ProviderOptions):
         self.ui.select_caa_types.clicked.connect(self.select_caa_types)
 
     def load(self):
-        self.ui.cb_image_size.setCurrentIndex(config.setting["caa_image_size"])
+        self.ui.cb_image_size.clear()
+        for item_id, item in _CAA_THUMBNAIL_SIZE_MAP.items():
+            self.ui.cb_image_size.addItem(_(item.label), userData=item_id)
+
+        size = config.setting["caa_image_size"]
+        if size in _CAA_SIZE_COMPAT:
+            size = _CAA_SIZE_COMPAT[size]
+        index = self.ui.cb_image_size.findData(size)
+        if index < 0:
+            index = self.ui.cb_image_size.findData(_CAA_IMAGE_SIZE_DEFAULT)
+        self.ui.cb_image_size.setCurrentIndex(index)
+
         self.ui.cb_save_single_front_image.setChecked(config.setting["caa_save_single_front_image"])
         self.ui.cb_approved_only.setChecked(config.setting["caa_approved_only"])
         self.ui.cb_type_as_filename.setChecked(config.setting["caa_image_type_as_filename"])
@@ -157,8 +211,8 @@ class ProviderOptionsCaa(ProviderOptions):
         self.update_caa_types()
 
     def save(self):
-        config.setting["caa_image_size"] = \
-            self.ui.cb_image_size.currentIndex()
+        size = self.ui.cb_image_size.currentData()
+        config.setting["caa_image_size"] = size
         config.setting["caa_save_single_front_image"] = \
             self.ui.cb_save_single_front_image.isChecked()
         config.setting["caa_approved_only"] = \
@@ -288,8 +342,6 @@ class CoverArtProviderCaa(CoverArtProvider):
             except ValueError:
                 self.error("Invalid JSON: %s" % (http.url().toString()))
             else:
-                imagesize = config.setting["caa_image_size"]
-                thumbsize = _CAA_THUMBNAIL_SIZE_MAP.get(imagesize, None)
                 for image in caa_data["images"]:
                     if config.setting["caa_approved_only"] and not image["approved"]:
                         continue
@@ -311,21 +363,24 @@ class CoverArtProviderCaa(CoverArtProvider):
                     else:
                         types = True
                     if types:
-                        if thumbsize is None or is_pdf:
+                        urls = caa_url_fallback_list(config.setting["caa_image_size"],
+                                                     image["thumbnails"])
+                        if not urls or is_pdf:
                             url = image["image"]
                         else:
-                            url = image["thumbnails"][thumbsize]
+                            #FIXME: try other urls in case of 404
+                            url = urls[0]
                         coverartimage = self.coverartimage_class(
                             url,
                             types=image["types"],
                             is_front=image['front'],
                             comment=image["comment"],
                         )
-                        if is_pdf:
+                        if urls and is_pdf:
                             # thumbnail will be used to "display" PDF in info
                             # dialog
                             thumbnail = self.coverartimage_thumbnail_class(
-                                url=image["thumbnails"]['small'],
+                                url=url[0],
                                 types=image["types"],
                                 is_front=image['front'],
                                 comment=image["comment"],
