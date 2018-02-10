@@ -35,11 +35,12 @@ class LogViewDialog(PicardDialog):
         self.setWindowFlags(QtCore.Qt.Window)
         self.resize(w, h)
         self.setWindowTitle(title)
-        self.doc = QtGui.QTextDocument(self)
+        self.doc = QtGui.QTextDocument()
         self.textCursor = QtGui.QTextCursor(self.doc)
-        self.browser = QtWidgets.QTextBrowser(self)
+        self.browser = QtWidgets.QTextBrowser()
         self.browser.setDocument(self.doc)
-        self.vbox = QtWidgets.QVBoxLayout(self)
+        self.vbox = QtWidgets.QVBoxLayout()
+        self.setLayout(self.vbox)
         self.vbox.addWidget(self.browser)
 
     def saveWindowState(self, position, size):
@@ -157,28 +158,28 @@ class LogView(LogViewCommon):
         self.hl_text = ''
         self.hl = None
 
-        self.hbox = QtWidgets.QHBoxLayout(self)
+        self.hbox = QtWidgets.QHBoxLayout()
         self.vbox.addLayout(self.hbox)
 
         # Verbosity
         if QtCore.QObject.tagger._debug:
             self.verbosity = logging.DEBUG
-        self.verbosity_menu_button = QtWidgets.QPushButton(_("Verbosity"), self)
+        self.verbosity_menu_button = QtWidgets.QPushButton(_("Verbosity"))
         self.hbox.addWidget(self.verbosity_menu_button)
 
-        self.verbosity_menu = VerbosityMenu(self)
+        self.verbosity_menu = VerbosityMenu()
         self.verbosity_menu.set_verbosity(self.verbosity)
         self.verbosity_menu.verbosity_changed.connect(self._verbosity_changed)
         self.verbosity_menu_button.setMenu(self.verbosity_menu)
 
         # highlight input
-        self.highlight_text = QtWidgets.QLineEdit(self)
+        self.highlight_text = QtWidgets.QLineEdit()
         self.highlight_text.setPlaceholderText(_("String to highlight"))
         self.highlight_text.textEdited.connect(self._highlight_text_edited)
         self.hbox.addWidget(self.highlight_text)
 
         # highlight button
-        self.highlight_button = QtWidgets.QPushButton(_("Highlight"), self)
+        self.highlight_button = QtWidgets.QPushButton(_("Highlight"))
         self.hbox.addWidget(self.highlight_button)
         self.highlight_button.setDefault(True)
         self.highlight_button.setEnabled(False)
@@ -187,22 +188,20 @@ class LogView(LogViewCommon):
         self.highlight_text.returnPressed.connect(self.highlight_button.click)
 
         # clear highlight button
-        self.clear_highlight_button = QtWidgets.QPushButton(_("Clear Highlight"), self)
+        self.clear_highlight_button = QtWidgets.QPushButton(_("Clear Highlight"))
         self.hbox.addWidget(self.clear_highlight_button)
         self.clear_highlight_button.setEnabled(False)
         self.clear_highlight_button.clicked.connect(self._clear_highlight_do)
 
         # clear log
-        self.clear_log_button = QtWidgets.QPushButton(_("Clear Log"), self)
+        self.clear_log_button = QtWidgets.QPushButton(_("Clear Log"))
         self.hbox.addWidget(self.clear_log_button)
         self.clear_log_button.clicked.connect(self._clear_log_do)
 
         # save as
-        self.save_log_as_button = QtWidgets.QPushButton(_("Save As..."), self)
+        self.save_log_as_button = QtWidgets.QPushButton(_("Save As..."))
         self.hbox.addWidget(self.save_log_as_button)
         self.save_log_as_button.clicked.connect(self._save_log_as_do)
-
-        # ------
 
 
     def _clear_highlight_do(self):
