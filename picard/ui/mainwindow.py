@@ -501,9 +501,13 @@ class MainWindow(QtWidgets.QMainWindow):
 
         self.view_log_action = QtWidgets.QAction(_("View Error/Debug &Log"), self)
         self.view_log_action.triggered.connect(self.show_log)
+        # TR: Keyboard shortcut for "View Error/Debug Log"
+        self.view_log_action.setShortcut(QtGui.QKeySequence(_("Ctrl+E")))
 
         self.view_history_action = QtWidgets.QAction(_("View Activity &History"), self)
         self.view_history_action.triggered.connect(self.show_history)
+        # TR: Keyboard shortcut for "View Activity History"
+        self.view_history_action.setShortcut(QtGui.QKeySequence(_("Ctrl+H")))
 
         webservice_manager = self.tagger.webservice.manager
         webservice_manager.authenticationRequired.connect(self.show_password_dialog)
