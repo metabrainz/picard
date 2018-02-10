@@ -480,24 +480,34 @@ class Tagger(QtWidgets.QApplication):
         if mimeData.hasUrls():
             BaseTreeView.drop_urls(mimeData.urls(), target)
 
-    def search(self, text, search_type, adv=False):
+    def search(self, text, search_type, adv=False, mbid_matched_callback=None):
         """Search on the MusicBrainz website."""
+        search_types = {
+            'track': {
+                'entity': 'recording',
+                'dialog': TrackSearchDialog
+            },
+            'album': {
+                'entity': 'release',
+                'dialog': AlbumSearchDialog
+            },
+            'artist': {
+                'entity': 'artist',
+                'dialog': ArtistSearchDialog
+            },
+        }
+        if search_type not in search_types:
+            return
+        search = search_types[search_type]
         lookup = self.get_file_lookup()
         if config.setting["builtin_search"]:
-            if search_type == "track" and not lookup.mbid_lookup(text, 'recording'):
-                dialog = TrackSearchDialog(self.window)
-                dialog.search(text)
-                dialog.exec_()
-            elif search_type == "album" and not lookup.mbid_lookup(text, 'release'):
-                dialog = AlbumSearchDialog(self.window)
-                dialog.search(text)
-                dialog.exec_()
-            elif search_type == "artist" and not lookup.mbid_lookup(text, 'artist'):
-                dialog = ArtistSearchDialog(self.window)
+            if not lookup.mbid_lookup(text, search['entity'],
+                                      mbid_matched_callback=mbid_matched_callback):
+                dialog = search['dialog'](self.window)
                 dialog.search(text)
                 dialog.exec_()
         else:
-            getattr(lookup, search_type + "_search")(text, adv)
+            lookup.search_entity(search['entity'], text, adv, mbid_matched_callback=mbid_matched_callback)
 
     def collection_lookup(self):
         """Lookup the users collections on the MusicBrainz website."""

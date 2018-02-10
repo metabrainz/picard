@@ -80,7 +80,7 @@ class FileLookup(object):
     def acoust_lookup(self, acoust_id):
         return self.launch(PICARD_URLS['acoustid_track'] + acoust_id)
 
-    def mbid_lookup(self, string, type_):
+    def mbid_lookup(self, string, type_, mbid_matched_callback=None):
         """Parses string for known entity type and mbid, open browser for it
         If entity type is 'release', it will load corresponding release if
         possible.
@@ -96,6 +96,8 @@ class FileLookup(object):
         else:
             entity = m.group(1).lower()
         mbid = m.group(2).lower()
+        if mbid_matched_callback:
+            mbid_matched_callback(entity, mbid)
         if entity == 'release':
             QtCore.QObject.tagger.load_album(mbid)
             return True
@@ -115,8 +117,8 @@ class FileLookup(object):
     def collection_lookup(self, userid):
         return self._build_launch('/user/%s/collections' % userid)
 
-    def _search(self, type_, query, adv=False):
-        if self.mbid_lookup(query, type_):
+    def search_entity(self, type_, query, adv=False, mbid_matched_callback=None):
+        if self.mbid_lookup(query, type_, mbid_matched_callback=mbid_matched_callback):
             return True
         params = {
             'limit': QUERY_LIMIT,
@@ -126,12 +128,3 @@ class FileLookup(object):
         if adv:
             params['adv'] = 'on'
         return self._build_launch('/search/textsearch', params)
-
-    def artist_search(self, query, adv=False):
-        return self._search('artist', query, adv)
-
-    def album_search(self, query, adv=False):
-        return self._search('release', query, adv)
-
-    def track_search(self, query, adv=False):
-        return self._search('recording', query, adv)
