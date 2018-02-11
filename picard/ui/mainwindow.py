@@ -499,7 +499,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.open_collection_in_browser_action.triggered.connect(self.open_collection_in_browser)
         self.open_collection_in_browser_action.setEnabled(config.setting["username"] != '')
 
-        self.view_log_action = QtWidgets.QAction(_("View Error/Debug &Log"), self)
+        self.view_log_action = QtWidgets.QAction(_("View &Error/Debug Log"), self)
         self.view_log_action.triggered.connect(self.show_log)
         # TR: Keyboard shortcut for "View Error/Debug Log"
         self.view_log_action.setShortcut(QtGui.QKeySequence(_("Ctrl+E")))
