@@ -248,6 +248,8 @@ class LogView(LogViewCommon):
             filter=_("Text Files (*.txt *.TXT)"),
             options=QtWidgets.QFileDialog.DontConfirmOverwrite
         )
+        if not path.endswith('.txt') and not path.endswith('.TXT'):
+            path = path + '.txt'
         if ok and path:
             if os.path.isfile(path):
                 reply = QtWidgets.QMessageBox.question(
