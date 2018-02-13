@@ -245,7 +245,6 @@ class LogView(LogViewCommon):
         path, ok = QtWidgets.QFileDialog.getSaveFileName(
             self,
             caption=_("Save Log View to File"),
-            filter=_("Text Files (*.txt *.TXT)"),
             options=QtWidgets.QFileDialog.DontConfirmOverwrite
         )
         if ok and path:
@@ -260,8 +259,14 @@ class LogView(LogViewCommon):
                     return
 
             writer = QtGui.QTextDocumentWriter(path)
+            writer.setFormat(b"plaintext")
             success = writer.write(self.doc)
-            # FIXME: handle errors
+            if not success:
+                QtWidgets.QMessageBox.critical(
+                    self,
+                    _("Failed to save Log View to file"),
+                    _("Something prevented data to be written to '%s'") % writer.fileName()
+                )
 
     def show(self):
         self.highlight_text.setFocus(QtCore.Qt.OtherFocusReason);
