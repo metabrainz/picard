@@ -19,7 +19,6 @@
 
 import logging
 import os
-import pathlib
 
 from collections import deque, namedtuple, OrderedDict
 from PyQt5 import QtCore
@@ -52,10 +51,6 @@ levels_features = OrderedDict([
 
 TailLogTuple = namedtuple(
     'TailLogTuple', ['pos', 'message', 'level'])
-
-
-class OurLogger(logging.getLoggerClass()):
-    pass
 
 
 class TailLogHandler(logging.Handler):
@@ -95,19 +90,20 @@ class TailLogger(QtCore.QObject):
 
 # MAIN LOGGER
 
-logging.setLoggerClass(OurLogger)
-
 main_logger = logging.getLogger('main')
 
 main_logger.setLevel(logging.INFO)
 
 
 def name_filter(record):
-    # provide a significant name, because module sucks
+    # provide a significant name from the filepath of the module
     name, _ = os.path.splitext(os.path.normpath(record.pathname))
     prefix = os.path.normpath(__package__)
+    # In case the module exists within picard, remove the picard prefix
+    # else, in case of something like a plugin, keep the path as it is.
     if name.startswith(prefix):
-        record.name = name[len(prefix) + 1:].replace(os.sep, ".").replace('.__init__', '')
+        name = name[len(prefix) + 1:].replace(os.sep, ".").replace('.__init__', '')
+    record.name = name
     return True
 
 
