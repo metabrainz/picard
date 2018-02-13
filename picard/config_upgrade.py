@@ -222,6 +222,25 @@ def upgrade_to_v1_4_0_dev_7():
         _s.remove(old_opt)
 
 
+def upgrade_to_v2_0_0_dev_3():
+    """Option "caa_image_size" value has different meaning."""
+    _s = config.setting
+    opt = "caa_image_size"
+    if opt in _s:
+        # caa_image_size option was storing index of a combobox item as size
+        # therefore it depends on items order and/or number, which is bad
+        # To keep the option as is, values >= 250 are stored for thumbnails and -1 is
+        # used for full size.
+        _CAA_SIZE_COMPAT = {
+            0: 250,
+            1: 500,
+            2: -1,
+        }
+        value = _s[opt]
+        if value in _CAA_SIZE_COMPAT:
+            _s[opt] = _CAA_SIZE_COMPAT[value]
+
+
 def upgrade_config():
     cfg = config.config
     cfg.register_upgrade_hook(upgrade_to_v1_0_0_final_0)
@@ -235,4 +254,5 @@ def upgrade_config():
     cfg.register_upgrade_hook(upgrade_to_v1_4_0_dev_5)
     cfg.register_upgrade_hook(upgrade_to_v1_4_0_dev_6)
     cfg.register_upgrade_hook(upgrade_to_v1_4_0_dev_7)
+    cfg.register_upgrade_hook(upgrade_to_v2_0_0_dev_3)
     cfg.run_upgrade_hooks(log.debug)

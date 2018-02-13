@@ -35,19 +35,6 @@ from picard.ui.util import StandardButton
 from picard.util import webbrowser2, load_json
 
 
-
-
-# note: caa_image_size option was storing index of a combobox item as size
-# therefore it depends on items order and/or number, which is bad
-# To keep the option as is, values >= 250 are stored for thumbnails and -1 is
-# used for full size. This trick avoids a hook for compatibility
-
-_CAA_SIZE_COMPAT = {
-    0: 250,
-    1: 500,
-    2: -1,
-}
-
 CaaSizeItem = namedtuple('CaaSizeItem', ['thumbnail', 'label'])
 
 _CAA_THUMBNAIL_SIZE_MAP = OrderedDict([
@@ -196,8 +183,6 @@ class ProviderOptionsCaa(ProviderOptions):
             self.ui.cb_image_size.addItem(_(item.label), userData=item_id)
 
         size = config.setting["caa_image_size"]
-        if size in _CAA_SIZE_COMPAT:
-            size = _CAA_SIZE_COMPAT[size]
         index = self.ui.cb_image_size.findData(size)
         if index < 0:
             index = self.ui.cb_image_size.findData(_CAA_IMAGE_SIZE_DEFAULT)
