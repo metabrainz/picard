@@ -213,8 +213,12 @@ class PluginWrapper(PluginShared):
 
     @property
     def files_list(self):
-        return self.file[len(self.dir)+1:]
-
+        path = os.path.join(USER_PLUGIN_DIR,self.module_name)
+        path = path + '.zip'
+        if os.path.isfile(path):
+            return ', '.join(zipfile.ZipFile(path).namelist())
+        else:
+            return self.module_name + '.py'
 
 class PluginData(PluginShared):
 
