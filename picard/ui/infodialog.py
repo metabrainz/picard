@@ -309,10 +309,10 @@ class AlbumInfoDialog(InfoDialog):
             self.tab_hide(tab)
 
 
-class TrackInfoDialog(FileInfoDialog):
+class TrackInfoDialog(InfoDialog):
 
     def __init__(self, track, parent=None):
-        InfoDialog.__init__(self, track, parent)
+        super().__init__(track, parent)
         self.setWindowTitle(_("Track Info"))
 
     def _display_info_tab(self):
