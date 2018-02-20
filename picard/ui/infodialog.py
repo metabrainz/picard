@@ -274,7 +274,7 @@ def format_file_info(file):
 class FileInfoDialog(InfoDialog):
 
     def __init__(self, file, parent=None):
-        InfoDialog.__init__(self, file, parent)
+        super().__init__(file, parent)
         self.setWindowTitle(_("Info") + " - " + file.base_filename)
 
     def _display_info_tab(self):
@@ -286,7 +286,7 @@ class FileInfoDialog(InfoDialog):
 class AlbumInfoDialog(InfoDialog):
 
     def __init__(self, album, parent=None):
-        InfoDialog.__init__(self, album, parent)
+        super().__init__(album, parent)
         self.setWindowTitle(_("Album Info"))
 
     def _display_info_tab(self):
@@ -336,7 +336,7 @@ class TrackInfoDialog(InfoDialog):
 class ClusterInfoDialog(InfoDialog):
 
     def __init__(self, cluster, parent=None):
-        InfoDialog.__init__(self, cluster, parent)
+        super().__init__(cluster, parent)
         self.setWindowTitle(_("Cluster Info"))
 
     def _display_info_tab(self):
