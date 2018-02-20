@@ -238,48 +238,48 @@ class InfoDialog(PicardDialog):
             webbrowser2.open("file://" + filename)
 
 
+def format_file_info(file):
+    info = []
+    info.append((_('Filename:'), file.filename))
+    if '~format' in file.orig_metadata:
+        info.append((_('Format:'), file.orig_metadata['~format']))
+    try:
+        size = os.path.getsize(encode_filename(file.filename))
+        sizestr = "%s (%s)" % (bytes1human.decimal(size), bytes2human.binary(size))
+        info.append((_('Size:'), sizestr))
+    except:
+        pass
+    if file.orig_metadata.length:
+        info.append((_('Length:'), format_time(file.orig_metadata.length)))
+    if '~bitrate' in file.orig_metadata:
+        info.append((_('Bitrate:'), '%s kbps' % file.orig_metadata['~bitrate']))
+    if '~sample_rate' in file.orig_metadata:
+        info.append((_('Sample rate:'), '%s Hz' % file.orig_metadata['~sample_rate']))
+    if '~bits_per_sample' in file.orig_metadata:
+        info.append((_('Bits per sample:'), string_(file.orig_metadata['~bits_per_sample'])))
+    if '~channels' in file.orig_metadata:
+        ch = file.orig_metadata['~channels']
+        if ch == 1:
+            ch = _('Mono')
+        elif ch == 2:
+            ch = _('Stereo')
+        else:
+            ch = string_(ch)
+        info.append((_('Channels:'), ch))
+    return '<br/>'.join(map(lambda i: '<b>%s</b><br/>%s' %
+                            (htmlescape(i[0]),
+                             htmlescape(i[1])), info))
+
+
 class FileInfoDialog(InfoDialog):
 
     def __init__(self, file, parent=None):
         InfoDialog.__init__(self, file, parent)
         self.setWindowTitle(_("Info") + " - " + file.base_filename)
 
-    @staticmethod
-    def format_file_info(file):
-        info = []
-        info.append((_('Filename:'), file.filename))
-        if '~format' in file.orig_metadata:
-            info.append((_('Format:'), file.orig_metadata['~format']))
-        try:
-            size = os.path.getsize(encode_filename(file.filename))
-            sizestr = "%s (%s)" % (bytes2human.decimal(size), bytes2human.binary(size))
-            info.append((_('Size:'), sizestr))
-        except:
-            pass
-        if file.orig_metadata.length:
-            info.append((_('Length:'), format_time(file.orig_metadata.length)))
-        if '~bitrate' in file.orig_metadata:
-            info.append((_('Bitrate:'), '%s kbps' % file.orig_metadata['~bitrate']))
-        if '~sample_rate' in file.orig_metadata:
-            info.append((_('Sample rate:'), '%s Hz' % file.orig_metadata['~sample_rate']))
-        if '~bits_per_sample' in file.orig_metadata:
-            info.append((_('Bits per sample:'), string_(file.orig_metadata['~bits_per_sample'])))
-        if '~channels' in file.orig_metadata:
-            ch = file.orig_metadata['~channels']
-            if ch == 1:
-                ch = _('Mono')
-            elif ch == 2:
-                ch = _('Stereo')
-            else:
-                ch = string_(ch)
-            info.append((_('Channels:'), ch))
-        return '<br/>'.join(map(lambda i: '<b>%s</b><br/>%s' %
-                                (htmlescape(i[0]),
-                                 htmlescape(i[1])), info))
-
     def _display_info_tab(self):
         file = self.obj
-        text = FileInfoDialog.format_file_info(file)
+        text = format_file_info(file)
         self.ui.info.setText(text)
 
 
@@ -328,7 +328,7 @@ class TrackInfoDialog(FileInfoDialog):
         tabWidget.setTabText(tab_index, _("&Info"))
         text = ngettext("%i file in this track", "%i files in this track",
                          track.num_linked_files) % track.num_linked_files
-        info_files = [FileInfoDialog.format_file_info(file) for file in track.linked_files]
+        info_files = [format_file_info(file) for file in track.linked_files]
         text += '<hr />' + '<hr />'.join(info_files)
         self.ui.info.setText(text)
 
