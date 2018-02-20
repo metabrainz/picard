@@ -78,6 +78,7 @@ class MainWindow(QtWidgets.QMainWindow):
         QtWidgets.QMainWindow.__init__(self, parent)
         self.selected_objects = []
         self.ignore_selection_changes = False
+        self.toolbar = None
         self.setupUi()
 
     def setupUi(self):
@@ -615,7 +616,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.create_action_toolbar()
 
     def create_action_toolbar(self):
-        if getattr(self, 'toolbar', None):
+        if self.toolbar:
             self.toolbar.clear()
             self.removeToolBar(self.toolbar)
         self.toolbar = toolbar = QtWidgets.QToolBar(_("Actions"))
