@@ -238,27 +238,27 @@ class InfoDialog(PicardDialog):
             webbrowser2.open("file://" + filename)
 
 
-def format_file_info(file):
+def format_file_info(file_):
     info = []
-    info.append((_('Filename:'), file.filename))
-    if '~format' in file.orig_metadata:
-        info.append((_('Format:'), file.orig_metadata['~format']))
+    info.append((_('Filename:'), file_.filename))
+    if '~format' in file_.orig_metadata:
+        info.append((_('Format:'), file_.orig_metadata['~format']))
     try:
-        size = os.path.getsize(encode_filename(file.filename))
+        size = os.path.getsize(encode_filename(file_.filename))
         sizestr = "%s (%s)" % (bytes1human.decimal(size), bytes2human.binary(size))
         info.append((_('Size:'), sizestr))
     except:
         pass
-    if file.orig_metadata.length:
-        info.append((_('Length:'), format_time(file.orig_metadata.length)))
-    if '~bitrate' in file.orig_metadata:
-        info.append((_('Bitrate:'), '%s kbps' % file.orig_metadata['~bitrate']))
-    if '~sample_rate' in file.orig_metadata:
-        info.append((_('Sample rate:'), '%s Hz' % file.orig_metadata['~sample_rate']))
-    if '~bits_per_sample' in file.orig_metadata:
-        info.append((_('Bits per sample:'), string_(file.orig_metadata['~bits_per_sample'])))
-    if '~channels' in file.orig_metadata:
-        ch = file.orig_metadata['~channels']
+    if file_.orig_metadata.length:
+        info.append((_('Length:'), format_time(file_.orig_metadata.length)))
+    if '~bitrate' in file_.orig_metadata:
+        info.append((_('Bitrate:'), '%s kbps' % file_.orig_metadata['~bitrate']))
+    if '~sample_rate' in file_.orig_metadata:
+        info.append((_('Sample rate:'), '%s Hz' % file_.orig_metadata['~sample_rate']))
+    if '~bits_per_sample' in file_.orig_metadata:
+        info.append((_('Bits per sample:'), string_(file_.orig_metadata['~bits_per_sample'])))
+    if '~channels' in file_.orig_metadata:
+        ch = file_.orig_metadata['~channels']
         if ch == 1:
             ch = _('Mono')
         elif ch == 2:
@@ -273,13 +273,13 @@ def format_file_info(file):
 
 class FileInfoDialog(InfoDialog):
 
-    def __init__(self, file, parent=None):
-        super().__init__(file, parent)
-        self.setWindowTitle(_("Info") + " - " + file.base_filename)
+    def __init__(self, file_, parent=None):
+        super().__init__(file_, parent)
+        self.setWindowTitle(_("Info") + " - " + file_.base_filename)
 
     def _display_info_tab(self):
-        file = self.obj
-        text = format_file_info(file)
+        file_ = self.obj
+        text = format_file_info(file_)
         self.ui.info.setText(text)
 
 
@@ -328,7 +328,7 @@ class TrackInfoDialog(InfoDialog):
         tabWidget.setTabText(tab_index, _("&Info"))
         text = ngettext("%i file in this track", "%i files in this track",
                          track.num_linked_files) % track.num_linked_files
-        info_files = [format_file_info(file) for file in track.linked_files]
+        info_files = [format_file_info(file_) for file_ in track.linked_files]
         text += '<hr />' + '<hr />'.join(info_files)
         self.ui.info.setText(text)
 
@@ -352,8 +352,8 @@ class ClusterInfoDialog(InfoDialog):
                                       htmlescape(cluster.metadata["albumartist"])))
         info.append("")
         lines = []
-        for file in cluster.iterfiles(False):
-            m = file.metadata
+        for file_ in cluster.iterfiles(False):
+            m = file_.metadata
             artist = m["artist"] or m["albumartist"] or cluster.metadata["albumartist"]
             lines.append(m["tracknumber"] + " " +
                          m["title"] + " - " + artist + " (" +
