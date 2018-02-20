@@ -447,14 +447,14 @@ def func_rsearch(parser, text, pattern):
 
 def func_num(parser, text, length):
     try:
-        format = "%%0%dd" % min(int(length), 20)
+        format_ = "%%0%dd" % min(int(length), 20)
     except ValueError:
         return ""
     try:
         value = int(text)
     except ValueError:
         value = 0
-    return format % value
+    return format_ % value
 
 
 def func_unset(parser, name):
