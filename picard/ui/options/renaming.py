@@ -26,7 +26,7 @@ from PyQt5.QtGui import QPalette
 from picard import config
 from picard.const import PICARD_URLS
 from picard.file import File
-from picard.script import ScriptParser, SyntaxError, ScriptError
+from picard.script import ScriptParser, ScriptSyntaxError, ScriptError
 from picard.ui.options import OptionsPage, OptionsCheckError, register_options_page
 from picard.ui.ui_options_renaming import Ui_RenamingOptionsPage
 from picard.ui.util import enabledSlot
@@ -144,7 +144,7 @@ class RenamingOptionsPage(OptionsPage):
             if not settings["move_files"]:
                 return os.path.basename(filename)
             return filename
-        except SyntaxError:
+        except ScriptSyntaxError:
             return ""
         except ScriptError:
             return ""

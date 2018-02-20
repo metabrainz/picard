@@ -35,19 +35,19 @@ class ScriptError(Exception):
     pass
 
 
-class ParseError(ScriptError):
+class ScriptParseError(ScriptError):
     pass
 
 
-class EndOfFile(ParseError):
+class ScriptEndOfFile(ScriptParseError):
     pass
 
 
-class SyntaxError(ParseError):
+class ScriptSyntaxError(ScriptParseError):
     pass
 
 
-class UnknownFunction(ScriptError):
+class ScriptUnknownFunction(ScriptError):
     pass
 
 
@@ -97,7 +97,7 @@ class ScriptFunction(object):
                        parser._x,
                        parser._y))
         except KeyError:
-            raise UnknownFunction("Unknown function '%s'" % name)
+            raise ScriptUnknownFunction("Unknown function '%s'" % name)
 
         self.name = name
         self.args = args
@@ -145,13 +145,13 @@ Grammar:
     _cache = {}
 
     def __raise_eof(self):
-        raise EndOfFile("Unexpected end of script at position %d, line %d" % (self._x, self._y))
+        raise ScriptEndOfFile("Unexpected end of script at position %d, line %d" % (self._x, self._y))
 
     def __raise_char(self, ch):
         #line = self._text[self._line:].split("\n", 1)[0]
         #cursor = " " * (self._pos - self._line - 1) + "^"
-        #raise SyntaxError("Unexpected character '%s' at position %d, line %d\n%s\n%s" % (ch, self._x, self._y, line, cursor))
-        raise SyntaxError("Unexpected character '%s' at position %d, line %d" % (ch, self._x, self._y))
+        #raise ScriptSyntaxError("Unexpected character '%s' at position %d, line %d\n%s\n%s" % (ch, self._x, self._y, line, cursor))
+        raise ScriptSyntaxError("Unexpected character '%s' at position %d, line %d" % (ch, self._x, self._y))
 
     def read(self):
         try:
@@ -194,7 +194,7 @@ Grammar:
             if ch == '(':
                 name = self._text[start:self._pos-1]
                 if name not in self.functions:
-                    raise UnknownFunction("Unknown function '%s'" % name)
+                    raise ScriptUnknownFunction("Unknown function '%s'" % name)
                 return ScriptFunction(name, self.parse_arguments(), self)
             elif ch is None:
                 self.__raise_eof()
