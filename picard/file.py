@@ -242,10 +242,10 @@ class File(QtCore.QObject, Item):
         return new_filename
 
     @staticmethod
-    def _rmdir(dir):
+    def _rmdir(path):
         junk_files = (".DS_Store", "desktop.ini", "Desktop.ini", "Thumbs.db")
-        if not set(os.listdir(dir)) - set(junk_files):
-            shutil.rmtree(dir, False)
+        if not set(os.listdir(path)) - set(junk_files):
+            shutil.rmtree(path, False)
         else:
             raise OSError
 
