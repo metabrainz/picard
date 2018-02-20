@@ -436,8 +436,8 @@ class ClusterEngine(object):
         # Index the word ids -> clusters
         self.idClusterIndex = {}
 
-    def getClusterFromId(self, id):
-        return self.idClusterIndex.get(id)
+    def getClusterFromId(self, clusterid):
+        return self.idClusterIndex.get(clusterid)
 
     def printCluster(self, cluster):
         if cluster < 0:
