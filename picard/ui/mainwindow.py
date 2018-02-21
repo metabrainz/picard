@@ -75,7 +75,7 @@ class MainWindow(QtWidgets.QMainWindow):
     ]
 
     def __init__(self, parent=None):
-        QtWidgets.QMainWindow.__init__(self, parent)
+        super().__init__(parent)
         self.selected_objects = []
         self.ignore_selection_changes = False
         self.toolbar = None

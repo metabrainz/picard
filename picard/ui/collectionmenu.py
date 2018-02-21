@@ -26,7 +26,7 @@ from picard.collection import user_collections, load_user_collections
 class CollectionMenu(QtWidgets.QMenu):
 
     def __init__(self, albums, *args):
-        QtWidgets.QMenu.__init__(self, *args)
+        super().__init__(*args)
         self.ids = set(a.id for a in albums)
         self.update_collections()
 
@@ -56,7 +56,7 @@ class CollectionCheckBox(QtWidgets.QCheckBox):
     def __init__(self, menu, collection):
         self.menu = menu
         self.collection = collection
-        QtWidgets.QCheckBox.__init__(self, self.label())
+        super().__init__(self.label())
 
         releases = collection.releases & menu.ids
         if len(releases) == len(menu.ids):

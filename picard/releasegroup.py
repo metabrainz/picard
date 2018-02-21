@@ -31,7 +31,7 @@ from picard.util import uniqify
 class ReleaseGroup(DataObject):
 
     def __init__(self, rg_id):
-        DataObject.__init__(self, rg_id)
+        super().__init__(rg_id)
         self.metadata = Metadata()
         self.loaded = False
         self.versions = []

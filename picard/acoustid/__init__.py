@@ -29,7 +29,7 @@ from picard.acoustid.json_helpers import parse_recording
 class AcoustIDClient(QtCore.QObject):
 
     def __init__(self):
-        QtCore.QObject.__init__(self)
+        super().__init__()
         self._queue = deque()
         self._running = 0
         self._max_processes = 2

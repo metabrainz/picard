@@ -45,7 +45,7 @@ class LockableObject(QtCore.QObject):
     """Read/write lockable object."""
 
     def __init__(self):
-        QtCore.QObject.__init__(self)
+        super().__init__()
         self.__lock = QtCore.QReadWriteLock()
 
     def lock_for_read(self):

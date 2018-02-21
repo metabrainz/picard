@@ -37,7 +37,7 @@ class ActiveLabel(QtWidgets.QLabel):
     image_dropped = QtCore.pyqtSignal(QtCore.QUrl, QtCore.QByteArray)
 
     def __init__(self, active=True, drops=False, *args):
-        QtWidgets.QLabel.__init__(self, *args)
+        super().__init__(*args)
         self.setMargin(0)
         self.setActive(active)
         self.setAcceptDrops(drops)
@@ -270,7 +270,7 @@ def set_image_append(obj, coverartimage):
 class CoverArtBox(QtWidgets.QGroupBox):
 
     def __init__(self, parent):
-        QtWidgets.QGroupBox.__init__(self, "")
+        super().__init__("")
         self.layout = QtWidgets.QVBoxLayout()
         self.layout.setSpacing(6)
         self.parent = parent

@@ -110,7 +110,7 @@ class Tagger(QtWidgets.QApplication):
 
         # Set the WM_CLASS to 'MusicBrainz-Picard' so desktop environments
         # can use it to look up the app
-        QtWidgets.QApplication.__init__(self, ['MusicBrainz-Picard'] + unparsed_args)
+        super().__init__(['MusicBrainz-Picard'] + unparsed_args)
         self.__class__.__instance = self
         config._setup(self, picard_args.config_file)
 

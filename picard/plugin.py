@@ -242,7 +242,7 @@ class PluginManager(QtCore.QObject):
     plugin_updated = QtCore.pyqtSignal(str, bool)
 
     def __init__(self):
-        QtCore.QObject.__init__(self)
+        super().__init__()
         self.plugins = []
         self._api_versions = set([version_from_string(v) for v in picard.api_versions])
         self._available_plugins = {}

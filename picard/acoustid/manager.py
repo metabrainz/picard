@@ -36,7 +36,7 @@ class Submission(object):
 class AcoustIDManager(QtCore.QObject):
 
     def __init__(self):
-        QtCore.QObject.__init__(self)
+        super().__init__()
         self._fingerprints = {}
 
     def add(self, file, recordingid):

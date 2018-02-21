@@ -38,7 +38,7 @@ from picard.ui.cdlookup import CDLookupDialog
 class Disc(QtCore.QObject):
 
     def __init__(self):
-        QtCore.QObject.__init__(self)
+        super().__init__()
         self.id = None
         self.submission_url = None
 

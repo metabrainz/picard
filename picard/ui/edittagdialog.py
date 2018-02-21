@@ -26,7 +26,7 @@ from picard.ui.ui_edittagdialog import Ui_EditTagDialog
 class EditTagDialog(PicardDialog):
 
     def __init__(self, window, tag):
-        PicardDialog.__init__(self, window)
+        super().__init__(window)
         self.ui = Ui_EditTagDialog()
         self.ui.setupUi(self)
         self.window = window

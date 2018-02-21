@@ -37,7 +37,7 @@ class BaseAction(QtWidgets.QAction):
     MENU = []
 
     def __init__(self):
-        QtWidgets.QAction.__init__(self, self.NAME, None)
+        super().__init__(self.NAME, None)
         self.triggered.connect(self.__callback)
 
     def __callback(self):
@@ -97,7 +97,7 @@ class MainPanel(QtWidgets.QSplitter):
     ]
 
     def __init__(self, window, parent=None):
-        QtWidgets.QSplitter.__init__(self, parent)
+        super().__init__(parent)
         self.window = window
         self.create_icons()
         self.views = [FileTreeView(window, self), AlbumTreeView(window, self)]
@@ -221,7 +221,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
     ]
 
     def __init__(self, window, parent=None):
-        QtWidgets.QTreeWidget.__init__(self, parent)
+        super().__init__(parent)
         self.window = window
         self.panel = parent
 
@@ -551,7 +551,7 @@ class FileTreeView(BaseTreeView):
     view_sizes = config.TextOption("persist", "file_view_sizes", "250 40 100")
 
     def __init__(self, window, parent=None):
-        BaseTreeView.__init__(self, window, parent)
+        super().__init__(window, parent)
         self.setAccessibleName(_("file view"))
         self.setAccessibleDescription(_("Contains unmatched files and clusters"))
         self.unmatched_files = ClusterItem(self.tagger.unclustered_files, False, self)
@@ -581,7 +581,7 @@ class AlbumTreeView(BaseTreeView):
     view_sizes = config.TextOption("persist", "album_view_sizes", "250 40 100")
 
     def __init__(self, window, parent=None):
-        BaseTreeView.__init__(self, window, parent)
+        super().__init__(window, parent)
         self.setAccessibleName(_("album view"))
         self.setAccessibleDescription(_("Contains albums and matched files"))
         self.tagger.album_added.connect(self.add_album)
@@ -607,7 +607,7 @@ class TreeItem(QtWidgets.QTreeWidgetItem):
     __lt__ = lambda self, other: False
 
     def __init__(self, obj, sortable, *args):
-        QtWidgets.QTreeWidgetItem.__init__(self, *args)
+        super().__init__(*args)
         self.obj = obj
         if obj is not None:
             obj.item = self
@@ -625,7 +625,7 @@ class TreeItem(QtWidgets.QTreeWidgetItem):
 class ClusterItem(TreeItem):
 
     def __init__(self, *args):
-        TreeItem.__init__(self, *args)
+        super().__init__(*args)
         self.setIcon(0, ClusterItem.icon_dir)
 
     def update(self):

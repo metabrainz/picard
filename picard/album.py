@@ -50,7 +50,7 @@ register_album_metadata_processor(coverart)
 
 class AlbumArtist(DataObject):
     def __init__(self, album_artist_id):
-        DataObject.__init__(self, album_artist_id)
+        super().__init__(album_artist_id)
 
 
 class Album(DataObject, Item):

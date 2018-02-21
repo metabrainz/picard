@@ -34,7 +34,7 @@ class FileBrowser(QtWidgets.QTreeView):
     ]
 
     def __init__(self, parent):
-        QtWidgets.QTreeView.__init__(self, parent)
+        super().__init__(parent)
         self.setSelectionMode(QtWidgets.QAbstractItemView.ExtendedSelection)
         self.setDragEnabled(True)
         self.move_files_here_action = QtWidgets.QAction(_("&Move Tagged Files Here"), self)
