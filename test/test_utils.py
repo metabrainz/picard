@@ -225,3 +225,34 @@ class ImageInfoTest(unittest.TestCase):
                           imageinfo.identify, data)
         self.assertRaises(imageinfo.UnrecognizedFormat,
                           imageinfo.identify, data)
+
+
+class TestEncodeFilename(unittest.TestCase):
+
+    @unittest.skipIf(os.path.supports_unicode_filenames , "unicode is supported")
+    def test_EncodeFilenames_Nosupport(self):
+        self.assertEqual(b'\xe5\xb0\x8f\xe5\xae\xa4', util.encode_filename("小室"))
+        self.assertEqual(b'\xe5\xb0\x8f', util.encode_filename('小'))
+
+    @unittest.skipUnless(os.path.supports_unicode_filenames and (sys.platform == 'darwin'), "requires unicode support and darwin os")
+    def test_EncodeFilenames_support_darwin(self):
+        self.assertEqual(b'\xe5\xb0\x8f\xe5\xae\xa4', util.encode_filename("小室"))
+
+    @unittest.skipUnless(os.path.supports_unicode_filenames and (sys.platform != 'darwin'), "requires unicode support and other than darwin os")
+    def test_EncodeFilenames_support(self):
+        self.assertEqual("小室", util.encode_filename("小室"))
+
+@unittest.skipIf(sys.getdefaultencoding()=='utf-8' , "requires utf-8 encoding")
+class TestDecodeFilename(unittest.TestCase):
+
+    def test_AnySystem(self):
+        self.assertEqual('Пётр Ильич Чайковский', util.decode_filename('Пётр Ильич Чайковский'))
+        self.assertEqual("小室哲哉", util.decode_filename("小室哲哉".encode()))
+
+    @unittest.skipUnless(os.path.supports_unicode_filenames , "unicode is not supported")
+    def test_WithUnicodeSupport(self):
+        self.assertEqual('遡abc' , util.decode_filename(b'\xe9\x81\xa1abc'))
+
+    @unittest.skipIf(os.path.supports_unicode_filenames , "unicode is supported")
+    def test_WithoutUnicodeScript(self):
+        self.assertEqual('\u9061abc', util.decode_filename(b'\xe9\x81\xa1abc'))
