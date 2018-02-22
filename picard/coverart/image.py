@@ -362,8 +362,7 @@ class CaaCoverArtImage(CoverArtImage):
     sourceprefix = "CAA"
 
     def __init__(self, url, types=None, is_front=False, comment='', data=None):
-        CoverArtImage.__init__(self, url=url, types=types, comment=comment,
-                               data=data)
+        super().__init__(url=url, types=types, comment=comment, data=data)
         self.is_front = is_front
 
 
@@ -373,8 +372,7 @@ class CaaThumbnailCoverArtImage(CaaCoverArtImage):
     property"""
 
     def __init__(self, url, types=None, is_front=False, comment='', data=None):
-        CaaCoverArtImage.__init__(self, url=url, types=types, comment=comment,
-                                  data=data)
+        super().__init__(url=url, types=types, comment=comment, data=data)
         self.is_front = False
         self.can_be_saved_to_disk = False
         self.can_be_saved_to_tags = False
@@ -387,8 +385,7 @@ class TagCoverArtImage(CoverArtImage):
 
     def __init__(self, file, tag=None, types=None, is_front=None,
                  support_types=False, comment='', data=None):
-        CoverArtImage.__init__(self, url=None, types=types, comment=comment,
-                               data=data)
+        super().__init__(url=None, types=types, comment=comment, data=data)
         self.sourcefile = file
         self.tag = tag
         self.support_types = support_types
@@ -423,8 +420,7 @@ class CoverArtImageFromFile(CoverArtImage):
 
     def __init__(self, filepath, types=None, is_front=None,
                  support_types=False, comment='', data=None):
-        CoverArtImage.__init__(self, url=None, types=types, comment=comment,
-                               data=data)
+        super().__init__(url=None, types=types, comment=comment, data=data)
         self.filepath = filepath
         self.support_types = support_types
         if is_front is not None:

@@ -43,7 +43,7 @@ class StandardButton(QtWidgets.QPushButton):
             if hasattr(QtWidgets.QStyle, iconname):
                 icon = self.tagger.style().standardIcon(getattr(QtWidgets.QStyle, iconname))
                 args = [icon, label]
-        QtWidgets.QPushButton.__init__(self, *args)
+        super().__init__(*args)
 
 
 # The following code is there to fix
@@ -68,7 +68,7 @@ def find_starting_directory():
 class ButtonLineEdit(QtWidgets.QLineEdit):
 
     def __init__(self, parent=None):
-        QtWidgets.QLineEdit.__init__(self, parent)
+        super().__init__(parent)
 
         self.clear_button = QtWidgets.QToolButton(self)
         self.clear_button.setVisible(False)

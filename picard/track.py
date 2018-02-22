@@ -41,7 +41,7 @@ _TRANSLATE_TAGS = {
 
 class TrackArtist(DataObject):
     def __init__(self, ta_id):
-        DataObject.__init__(self, ta_id)
+        super().__init__(ta_id)
 
 
 class Track(DataObject, Item):
@@ -242,7 +242,7 @@ class Track(DataObject, Item):
 class NonAlbumTrack(Track):
 
     def __init__(self, nat_id):
-        Track.__init__(self, nat_id, self.tagger.nats)
+        super().__init__(nat_id, self.tagger.nats)
         self.callback = None
         self.loaded = False
 

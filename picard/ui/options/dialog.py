@@ -73,7 +73,7 @@ class OptionsDialog(PicardDialog):
             self.default_item = items[0]
 
     def __init__(self, default_page=None, parent=None):
-        PicardDialog.__init__(self, parent)
+        super().__init__(parent)
 
         from picard.ui.ui_options import Ui_Dialog
         self.ui = Ui_Dialog()

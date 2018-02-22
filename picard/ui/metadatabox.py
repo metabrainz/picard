@@ -151,7 +151,7 @@ class MetadataBox(QtWidgets.QTableWidget):
     )
 
     def __init__(self, parent):
-        QtWidgets.QTableWidget.__init__(self, parent)
+        super().__init__(parent)
         self.parent = parent
         self.setAccessibleName(_("metadata view"))
         self.setAccessibleDescription(_("Displays original and new tags for the selected files"))

@@ -36,7 +36,7 @@ class TagsFromFileNamesDialog(PicardDialog):
     ]
 
     def __init__(self, files, parent=None):
-        PicardDialog.__init__(self, parent)
+        super().__init__(parent)
         self.ui = Ui_TagsFromFileNamesDialog()
         self.ui.setupUi(self)
         items = [

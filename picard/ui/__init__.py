@@ -27,7 +27,7 @@ class PicardDialog(QtWidgets.QDialog):
     flags = QtCore.Qt.WindowSystemMenuHint | QtCore.Qt.WindowTitleHint
 
     def __init__(self, parent=None):
-        QtWidgets.QDialog.__init__(self, parent, self.flags)
+        super().__init__(parent, self.flags)
 
 
 # With py3, QObjects are no longer hashable unless they have

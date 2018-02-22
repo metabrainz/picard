@@ -26,7 +26,7 @@ class BrowserIntegration(QtNetwork.QTcpServer):
     """Simple HTTP server for web browser integration."""
 
     def __init__(self, parent=None):
-        QtNetwork.QTcpServer.__init__(self, parent)
+        super().__init__(parent)
         self.newConnection.connect(self._accept_connection)
         self.port = 0
         self.host_address = None

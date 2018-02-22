@@ -25,7 +25,7 @@ from PyQt5.QtCore import QRunnable, QCoreApplication, QEvent
 class ProxyToMainEvent(QEvent):
 
     def __init__(self, func, *args, **kwargs):
-        QEvent.__init__(self, QEvent.User)
+        super().__init__(QEvent.User)
         self.func = func
         self.args = args
         self.kwargs = kwargs
@@ -37,7 +37,7 @@ class ProxyToMainEvent(QEvent):
 class Runnable(QRunnable):
 
     def __init__(self, func, next_func, traceback=True):
-        QRunnable.__init__(self)
+        super().__init__()
         self.func = func
         self.next_func = next_func
         self.traceback = traceback

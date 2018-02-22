@@ -232,7 +232,7 @@ class CoverArtProviderCaa(CoverArtProvider):
     coverartimage_thumbnail_class = CaaThumbnailCoverArtImage
 
     def __init__(self, coverart):
-        CoverArtProvider.__init__(self, coverart)
+        super().__init__(coverart)
         self.caa_types = list(map(str.lower, config.setting["caa_image_types"]))
         self.len_caa_types = len(self.caa_types)
         self.restrict_types = config.setting["caa_restrict_image_types"]

@@ -34,7 +34,7 @@ from picard.ui.ui_infodialog import Ui_InfoDialog
 
 class ArtworkTable(QtWidgets.QTableWidget):
     def __init__(self, display_existing_art):
-        QtWidgets.QTableWidget.__init__(self, 0, 2)
+        super().__init__(0, 2)
         self.display_existing_art = display_existing_art
         h_header = self.horizontalHeader()
         v_header = self.verticalHeader()
@@ -98,7 +98,7 @@ class ArtworkTable(QtWidgets.QTableWidget):
 class InfoDialog(PicardDialog):
 
     def __init__(self, obj, parent=None):
-        PicardDialog.__init__(self, parent)
+        super().__init__(parent)
         self.obj = obj
         self.images = []
         self.existing_images = []

@@ -39,7 +39,7 @@ class CDLookupDialog(PicardDialog):
     ]
 
     def __init__(self, releases, disc, parent=None):
-        PicardDialog.__init__(self, parent)
+        super().__init__(parent)
         self.releases = releases
         self.disc = disc
         self.ui = Ui_Dialog()
