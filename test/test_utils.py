@@ -242,7 +242,7 @@ class TestEncodeFilename(unittest.TestCase):
     def test_EncodeFilenames_support(self):
         self.assertEqual("小室", util.encode_filename("小室"))
 
-@unittest.skipUnless(sys.getdefaultencoding() == 'utf-8' , "requires utf-8 encoding")
+# @unittest.skipUnless(sys.getdefaultencoding() == 'utf-8' , "requires utf-8 encoding")
 class TestDecodeFilename(unittest.TestCase):
 
         def test_AnySystem(self):
@@ -256,4 +256,3 @@ class TestDecodeFilename(unittest.TestCase):
         @unittest.skipIf(os.path.supports_unicode_filenames , "unicode is supported")
         def test_WithoutUnicodeScript(self):
             self.assertEqual('\u9061abc', util.decode_filename(b'\xe9\x81\xa1abc'))
-
