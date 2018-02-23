@@ -242,18 +242,18 @@ class TestEncodeFilename(unittest.TestCase):
     def test_EncodeFilenames_support(self):
         self.assertEqual("小室", util.encode_filename("小室"))
 
-@unittest.skipUnless(sys.getdefaultencoding() == 'utf-8' , "requires utf-8 encoding")
+# @unittest.skipUnless(sys.getdefaultencoding() == 'utf-8' , "requires utf-8 encoding")
 class TestDecodeFilename(unittest.TestCase):
+    if sys.getdefaultencoding() == 'utf-8':
+        def test_AnySystem(self):
+            print(sys.getdefaultencoding())
+            self.assertEqual('Пётр Ильич Чайковский', util.decode_filename('Пётр Ильич Чайковский'))
+            self.assertEqual("小室哲哉", util.decode_filename("小室哲哉".encode()))
 
-    def test_AnySystem(self):
-        print(sys.getdefaultencoding())
-        self.assertEqual('Пётр Ильич Чайковский', util.decode_filename('Пётр Ильич Чайковский'))
-        self.assertEqual("小室哲哉", util.decode_filename("小室哲哉".encode()))
+        @unittest.skipUnless(os.path.supports_unicode_filenames , "unicode is not supported")
+        def test_WithUnicodeSupport(self):
+            self.assertEqual('遡abc' , util.decode_filename(b'\xe9\x81\xa1abc'))
 
-    @unittest.skipUnless(os.path.supports_unicode_filenames , "unicode is not supported")
-    def test_WithUnicodeSupport(self):
-        self.assertEqual('遡abc' , util.decode_filename(b'\xe9\x81\xa1abc'))
-
-    @unittest.skipIf(os.path.supports_unicode_filenames , "unicode is supported")
-    def test_WithoutUnicodeScript(self):
-        self.assertEqual('\u9061abc', util.decode_filename(b'\xe9\x81\xa1abc'))
+        @unittest.skipIf(os.path.supports_unicode_filenames , "unicode is supported")
+        def test_WithoutUnicodeScript(self):
+            self.assertEqual('\u9061abc', util.decode_filename(b'\xe9\x81\xa1abc'))
