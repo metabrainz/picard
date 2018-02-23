@@ -20,6 +20,7 @@
 import os.path
 from functools import partial
 from PyQt5 import QtCore, QtWidgets
+from PyQt5.QtCore import QStandardPaths
 from picard import config
 from picard.util import icontheme
 from picard.ui.options import OptionsPage, register_options_page
@@ -27,6 +28,9 @@ from picard.ui.ui_options_interface import Ui_InterfaceOptionsPage
 from picard.ui.util import enabledSlot
 from picard.const import UI_LANGUAGES
 import locale
+
+
+_default_starting_dir = QStandardPaths.writableLocation(QStandardPaths.HomeLocation)
 
 
 class InterfaceOptionsPage(OptionsPage):
@@ -96,7 +100,7 @@ class InterfaceOptionsPage(OptionsPage):
         config.BoolOption("setting", "quit_confirmation", True),
         config.TextOption("setting", "ui_language", ""),
         config.BoolOption("setting", "starting_directory", False),
-        config.TextOption("setting", "starting_directory_path", ""),
+        config.TextOption("setting", "starting_directory_path", _default_starting_dir),
         config.TextOption("setting", "load_image_behavior", "append"),
         config.ListOption("setting", "toolbar_layout", [
             'add_directory_action',
