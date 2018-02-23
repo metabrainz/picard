@@ -246,6 +246,7 @@ class TestEncodeFilename(unittest.TestCase):
 class TestDecodeFilename(unittest.TestCase):
 
     def test_AnySystem(self):
+        print(sys.getdefaultencoding())
         self.assertEqual('Пётр Ильич Чайковский', util.decode_filename('Пётр Ильич Чайковский'))
         self.assertEqual("小室哲哉", util.decode_filename("小室哲哉".encode()))
 
