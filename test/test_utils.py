@@ -234,15 +234,15 @@ class TestEncodeFilename(unittest.TestCase):
         self.assertEqual(b'\xe5\xb0\x8f\xe5\xae\xa4', util.encode_filename("小室"))
         self.assertEqual(b'\xe5\xb0\x8f', util.encode_filename('小'))
 
-    @unittest.skipUnless(os.path.supports_unicode_filenames and (sys.platform == 'darwin'), "requires unicode support and darwin os")
+    @unittest.skipUnless(os.path.supports_unicode_filenames and sys.platform == 'darwin', "requires unicode support and darwin os")
     def test_EncodeFilenames_support_darwin(self):
         self.assertEqual(b'\xe5\xb0\x8f\xe5\xae\xa4', util.encode_filename("小室"))
 
-    @unittest.skipUnless(os.path.supports_unicode_filenames and (sys.platform != 'darwin'), "requires unicode support and other than darwin os")
+    @unittest.skipUnless(os.path.supports_unicode_filenames and sys.platform != 'darwin', "requires unicode support and other than darwin os")
     def test_EncodeFilenames_support(self):
         self.assertEqual("小室", util.encode_filename("小室"))
 
-@unittest.skipIf(sys.getdefaultencoding()=='utf-8' , "requires utf-8 encoding")
+@unittest.skipUnless(sys.getdefaultencoding() == 'utf-8' , "requires utf-8 encoding")
 class TestDecodeFilename(unittest.TestCase):
 
     def test_AnySystem(self):
