@@ -129,18 +129,22 @@ TAGS = {
 
 class FormatsTest(unittest.TestCase):
 
-    original = None
+    testfile = None
+    testfile_ext = None
+    testfile_path = None
 
     def setUp(self):
-        if not self.original:
-            return
-        fd, self.filename = mkstemp(suffix=os.path.splitext(self.original)[1])
-        os.close(fd)
-        shutil.copy(self.original, self.filename)
-        config.setting = settings.copy()
-        QtCore.QObject.tagger = FakeTagger()
         self.tags = TAGS.copy()
         self.setup_tags()
+        config.setting = settings.copy()
+        QtCore.QObject.tagger = FakeTagger()
+        if not self.testfile:
+            return
+        self.testfile_ext = os.path.splitext(self.testfile)[1]
+        fd, self.filename = mkstemp(suffix=self.testfile_ext)
+        os.close(fd)
+        self.testfile_path = os.path.join('test', 'data', self.testfile)
+        shutil.copy(self.testfile_path, self.filename)
 
     def setup_tags(self):
         pass
@@ -154,13 +158,13 @@ class FormatsTest(unittest.TestCase):
             del self.tags[tag]
 
     def tearDown(self):
-        if not self.original:
+        if not self.testfile:
             return
         os.unlink(self.filename)
 
     def test_simple_tags(self):
-        if not self.original:
-            return
+        if not self.testfile:
+            raise unittest.SkipTest("No test file set")
         metadata = Metadata()
         for (key, value) in self.tags.items():
             metadata[key] = value
@@ -171,8 +175,8 @@ class FormatsTest(unittest.TestCase):
             self.assertEqual(loaded_metadata[key], value, '%s: %r != %r' % (key, loaded_metadata[key], value))
 
     def test_delete_simple_tags(self):
-        if not self.original:
-            return
+        if not self.testfile:
+           raise unittest.SkipTest("No test file set")
         metadata = Metadata()
         for (key, value) in self.tags.items():
             metadata[key] = value
@@ -190,8 +194,8 @@ class FormatsTest(unittest.TestCase):
             self.assertNotIn('~rating', new_metadata.keys())
 
     def test_delete_complex_tags(self):
-        if not self.original:
-            return
+        if not self.testfile:
+            raise unittest.SkipTest("No test file set")
         metadata = Metadata()
 
         for (key, value) in self.tags.items():
@@ -202,14 +206,14 @@ class FormatsTest(unittest.TestCase):
         new_metadata = save_and_load_metadata(self.filename, metadata)
 
         self.assertIn('totaldiscs', original_metadata)
-        if self.original.split(".")[1] == 'm4a':
+        if self.testfile_ext == '.m4a':
             self.assertEqual(u'0', new_metadata['totaldiscs'])
         else:
             self.assertNotIn('totaldiscs', new_metadata)
 
     def test_delete_performer(self):
-        if not self.original:
-            return
+        if not self.testfile:
+            raise unittest.SkipTest("No test file set")
         if 'performer:guest vocal' in self.tags:
             metadata = Metadata()
             for (key, value) in self.tags.items():
@@ -227,8 +231,10 @@ class FormatsTest(unittest.TestCase):
             self.assertNotIn('performer:piano', new_metadata)
 
     def test_ratings(self):
-        if not self.original or not self.supports_ratings:
-            return
+        if not self.testfile:
+            raise unittest.SkipTest("No test file set")
+        if not self.supports_ratings:
+            raise unittest.SkipTest("Ratings not supported")
         for rating in range(6):
             rating = 1
             metadata = Metadata()
@@ -237,22 +243,24 @@ class FormatsTest(unittest.TestCase):
             self.assertEqual(int(loaded_metadata['~rating']), rating, '~rating: %r != %r' % (loaded_metadata['~rating'], rating))
 
     def test_guess_format(self):
-        if self.original:
-            fd, temp_file = mkstemp()
-            os.close(fd)
-            self.addCleanup(os.unlink, temp_file)
-            shutil.copy(self.original, temp_file)
-            audio = picard.formats.guess_format(temp_file)
-            audio_original = picard.formats.open_(self.filename)
-            self.assertEqual(type(audio), type(audio_original))
+        if not self.testfile:
+            raise unittest.SkipTest("No test file set")
+        fd, temp_file = mkstemp()
+        os.close(fd)
+        self.addCleanup(os.unlink, temp_file)
+        shutil.copy(self.testfile_path, temp_file)
+        audio = picard.formats.guess_format(temp_file)
+        audio_original = picard.formats.open_(self.filename)
+        self.assertEqual(type(audio), type(audio_original))
 
     def test_split_ext(self):
-        if self.original:
-            f = picard.formats.open_(self.filename)
-            self.assertEqual(f._fixed_splitext(f.filename), os.path.splitext(f.filename))
-            self.assertEqual(f._fixed_splitext(f.EXTENSIONS[0]), ('', f.EXTENSIONS[0]))
-            self.assertEqual(f._fixed_splitext('.test'), os.path.splitext('.test'))
-            self.assertNotEqual(f._fixed_splitext(f.EXTENSIONS[0]), os.path.splitext(f.EXTENSIONS[0]))
+        if not self.testfile:
+            raise unittest.SkipTest("No test file set")
+        f = picard.formats.open_(self.filename)
+        self.assertEqual(f._fixed_splitext(f.filename), os.path.splitext(f.filename))
+        self.assertEqual(f._fixed_splitext(f.EXTENSIONS[0]), ('', f.EXTENSIONS[0]))
+        self.assertEqual(f._fixed_splitext('.test'), os.path.splitext('.test'))
+        self.assertNotEqual(f._fixed_splitext(f.EXTENSIONS[0]), os.path.splitext(f.EXTENSIONS[0]))
 
 
 class ID3Test(FormatsTest):
@@ -264,8 +272,8 @@ class ID3Test(FormatsTest):
         })
 
     def test_id3_freeform_delete(self):
-        if not self.original:
-            return
+        if not self.testfile:
+            raise unittest.SkipTest("No test file set")
         metadata = Metadata()
         for (key, value) in self.tags.items():
             metadata[key] = value
@@ -279,8 +287,8 @@ class ID3Test(FormatsTest):
         self.assertNotIn('Foo', new_metadata)
 
     def test_id3_ufid_delete(self):
-        if not self.original:
-            return
+        if not self.testfile:
+            raise unittest.SkipTest("No test file set")
         metadata = Metadata()
         for (key, value) in self.tags.items():
             metadata[key] = value
@@ -293,8 +301,8 @@ class ID3Test(FormatsTest):
         self.assertNotIn('musicbrainz_recordingid', new_metadata)
 
     def test_id3_multiple_freeform_delete(self):
-        if not self.original:
-            return
+        if not self.testfile:
+            raise unittest.SkipTest("No test file set")
         metadata = Metadata()
         for (key, value) in self.tags.items():
             metadata[key] = value
@@ -315,8 +323,8 @@ class ID3Test(FormatsTest):
         self.assertIn('FooBar', new_metadata)
 
     def test_performer_duplication(self):
-        if not self.original:
-            return
+        if not self.testfile:
+            raise unittest.SkipTest("No test file set")
 
         def reset_id3_ver(): config.setting['write_id3v23'] = False
 
@@ -339,8 +347,8 @@ class ID3Test(FormatsTest):
         self.assertEqual(len(new_metadata['performer:piano']), len(original_metadata['performer:piano']))
 
     def test_comment_delete(self):
-        if not self.original:
-            return
+        if not self.testfile:
+            raise unittest.SkipTest("No test file set")
         metadata = Metadata()
         for (key, value) in self.tags.items():
             metadata[key] = value
@@ -355,9 +363,10 @@ class ID3Test(FormatsTest):
         self.assertNotIn('comment:bar', new_metadata)
 
     def test_id3v23_simple_tags(self):
-        if not self.original:
-            return
-        def reset_to_id3v24(): config.setting['write_id3v23'] = False
+        if not self.testfile:
+            raise unittest.SkipTest("No test file set")
+        def reset_to_id3v24():
+            config.setting['write_id3v23'] = False
         config.setting['write_id3v23'] = True
         self.addCleanup(reset_to_id3v24)
         metadata = Metadata()
@@ -371,12 +380,12 @@ class ID3Test(FormatsTest):
 
 
 class FLACTest(FormatsTest):
-    original = os.path.join('test', 'data', 'test.flac')
+    testfile = 'test.flac'
     supports_ratings = True
 
 
 class WMATest(FormatsTest):
-    original = os.path.join('test', 'data', 'test.wma')
+    testfile = 'test.wma'
     supports_ratings = True
 
     def setup_tags(self):
@@ -394,18 +403,18 @@ class WMATest(FormatsTest):
         ])
 
 class MP3Test(ID3Test):
-    original = os.path.join('test', 'data', 'test.mp3')
+    testfile = 'test.mp3'
     supports_ratings = True
 
 
 class TTATest(ID3Test):
-    original = os.path.join('test', 'data', 'test.tta')
+    testfile = 'test.tta'
     supports_ratings = True
 
 
 if picard.formats.AiffFile:
     class AIFFTest(ID3Test):
-        original = os.path.join('test', 'data', 'test.aiff')
+        testfile = 'test.aiff'
         supports_ratings = False
 
         def setup_tags(self):
@@ -418,12 +427,12 @@ if picard.formats.AiffFile:
             ])
 
 class OggVorbisTest(FormatsTest):
-    original = os.path.join('test', 'data', 'test.ogg')
+    testfile = 'test.ogg'
     supports_ratings = True
 
 
 class MP4Test(FormatsTest):
-    original = os.path.join('test', 'data', 'test.m4a')
+    testfile = 'test.m4a'
     supports_ratings = False
 
     def setup_tags(self):
@@ -440,17 +449,17 @@ class MP4Test(FormatsTest):
 
 
 class WavPackTest(FormatsTest):
-    original = os.path.join('test', 'data', 'test.wv')
+    testfile = 'test.wv'
     supports_ratings = False
 
 
 class MusepackSV7Test(FormatsTest):
-    original = os.path.join('test', 'data', 'test-sv7.mpc')
+    testfile = 'test-sv7.mpc'
     supports_ratings = False
 
 
 class MusepackSV8Test(FormatsTest):
-    original = os.path.join('test', 'data', 'test-sv8.mpc')
+    testfile = 'test-sv8.mpc'
     supports_ratings = False
 
 
