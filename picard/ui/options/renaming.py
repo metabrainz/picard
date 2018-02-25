@@ -22,6 +22,7 @@ import os.path
 import sys
 from functools import partial
 from PyQt5 import QtWidgets
+from PyQt5.QtCore import QStandardPaths
 from PyQt5.QtGui import QPalette
 from picard import config
 from picard.const import PICARD_URLS
@@ -39,6 +40,10 @@ _DEFAULT_FILE_NAMING_FORMAT = "$if2(%albumartist%,%artist%)/" \
     "$if($ne(%albumartist%,),$num(%tracknumber%,2) ,)" \
     "$if(%_multiartist%,%artist% - ,)" \
     "%title%"
+
+
+_default_music_dir = QStandardPaths.writableLocation(QStandardPaths.MusicLocation)
+
 
 class RenamingOptionsPage(OptionsPage):
 
@@ -58,7 +63,7 @@ class RenamingOptionsPage(OptionsPage):
             _DEFAULT_FILE_NAMING_FORMAT,
         ),
         config.BoolOption("setting", "move_files", False),
-        config.TextOption("setting", "move_files_to", ""),
+        config.TextOption("setting", "move_files_to", _default_music_dir),
         config.BoolOption("setting", "move_additional_files", False),
         config.TextOption("setting", "move_additional_files_pattern", "*.jpg *.png"),
         config.BoolOption("setting", "delete_empty_dirs", True),
