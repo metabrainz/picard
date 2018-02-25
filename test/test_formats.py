@@ -126,265 +126,268 @@ TAGS = {
     'website': 'http://example.com',
 }
 
+# prevent unittest to run tests in those classes
+class CommonTests:
 
-class FormatsTest(unittest.TestCase):
+    class FormatsTest(unittest.TestCase):
 
-    testfile = None
-    testfile_ext = None
-    testfile_path = None
+        testfile = None
+        testfile_ext = None
+        testfile_path = None
 
-    def setUp(self):
-        self.tags = TAGS.copy()
-        self.setup_tags()
-        config.setting = settings.copy()
-        QtCore.QObject.tagger = FakeTagger()
-        if not self.testfile:
-            return
-        self.testfile_ext = os.path.splitext(self.testfile)[1]
-        fd, self.filename = mkstemp(suffix=self.testfile_ext)
-        os.close(fd)
-        self.testfile_path = os.path.join('test', 'data', self.testfile)
-        shutil.copy(self.testfile_path, self.filename)
+        def setUp(self):
+            self.tags = TAGS.copy()
+            self.setup_tags()
+            config.setting = settings.copy()
+            QtCore.QObject.tagger = FakeTagger()
+            if not self.testfile:
+                return
+            self.testfile_ext = os.path.splitext(self.testfile)[1]
+            fd, self.filename = mkstemp(suffix=self.testfile_ext)
+            os.close(fd)
+            self.testfile_path = os.path.join('test', 'data', self.testfile)
+            shutil.copy(self.testfile_path, self.filename)
 
-    def setup_tags(self):
-        pass
+        def setup_tags(self):
+            pass
 
-    def set_tags(self, dict_tag_value=None):
-        if dict_tag_value:
-            self.tags.update(dict_tag_value)
+        def set_tags(self, dict_tag_value=None):
+            if dict_tag_value:
+                self.tags.update(dict_tag_value)
 
-    def remove_tags(self, tag_list=None):
-        for tag in tag_list:
-            del self.tags[tag]
+        def remove_tags(self, tag_list=None):
+            for tag in tag_list:
+                del self.tags[tag]
 
-    def tearDown(self):
-        if not self.testfile:
-            return
-        os.unlink(self.filename)
+        def tearDown(self):
+            if not self.testfile:
+                return
+            os.unlink(self.filename)
 
-    def test_simple_tags(self):
-        if not self.testfile:
-            raise unittest.SkipTest("No test file set")
-        metadata = Metadata()
-        for (key, value) in self.tags.items():
-            metadata[key] = value
-        loaded_metadata = save_and_load_metadata(self.filename, metadata)
-        for (key, value) in self.tags.items():
-            # if key == 'comment:foo':
-            #    print "%r" % loaded_metadata
-            self.assertEqual(loaded_metadata[key], value, '%s: %r != %r' % (key, loaded_metadata[key], value))
+        def test_simple_tags(self):
+            if not self.testfile:
+                raise unittest.SkipTest("No test file set")
+            metadata = Metadata()
+            for (key, value) in self.tags.items():
+                metadata[key] = value
+            loaded_metadata = save_and_load_metadata(self.filename, metadata)
+            for (key, value) in self.tags.items():
+                # if key == 'comment:foo':
+                #    print "%r" % loaded_metadata
+                self.assertEqual(loaded_metadata[key], value, '%s: %r != %r' % (key, loaded_metadata[key], value))
 
-    def test_delete_simple_tags(self):
-        if not self.testfile:
-           raise unittest.SkipTest("No test file set")
-        metadata = Metadata()
-        for (key, value) in self.tags.items():
-            metadata[key] = value
-        if self.supports_ratings:
-            metadata['~rating'] = 1
-        original_metadata = save_and_load_metadata(self.filename, metadata)
-        metadata.delete('albumartist')
-        if self.supports_ratings:
-            metadata.delete('~rating')
-        new_metadata = save_and_load_metadata(self.filename, metadata)
-        self.assertIn('albumartist', original_metadata.keys())
-        self.assertNotIn('albumartist', new_metadata.keys())
-        if self.supports_ratings:
-            self.assertIn('~rating', original_metadata.keys())
-            self.assertNotIn('~rating', new_metadata.keys())
+        def test_delete_simple_tags(self):
+            if not self.testfile:
+                raise unittest.SkipTest("No test file set")
+            metadata = Metadata()
+            for (key, value) in self.tags.items():
+                metadata[key] = value
+            if self.supports_ratings:
+                metadata['~rating'] = 1
+            original_metadata = save_and_load_metadata(self.filename, metadata)
+            metadata.delete('albumartist')
+            if self.supports_ratings:
+                metadata.delete('~rating')
+            new_metadata = save_and_load_metadata(self.filename, metadata)
+            self.assertIn('albumartist', original_metadata.keys())
+            self.assertNotIn('albumartist', new_metadata.keys())
+            if self.supports_ratings:
+                self.assertIn('~rating', original_metadata.keys())
+                self.assertNotIn('~rating', new_metadata.keys())
 
-    def test_delete_complex_tags(self):
-        if not self.testfile:
-            raise unittest.SkipTest("No test file set")
-        metadata = Metadata()
+        def test_delete_complex_tags(self):
+            if not self.testfile:
+                raise unittest.SkipTest("No test file set")
+            metadata = Metadata()
 
-        for (key, value) in self.tags.items():
-            metadata[key] = value
+            for (key, value) in self.tags.items():
+                metadata[key] = value
 
-        original_metadata = save_and_load_metadata(self.filename, metadata)
-        metadata.delete('totaldiscs')
-        new_metadata = save_and_load_metadata(self.filename, metadata)
+            original_metadata = save_and_load_metadata(self.filename, metadata)
+            metadata.delete('totaldiscs')
+            new_metadata = save_and_load_metadata(self.filename, metadata)
 
-        self.assertIn('totaldiscs', original_metadata)
-        if self.testfile_ext == '.m4a':
-            self.assertEqual(u'0', new_metadata['totaldiscs'])
-        else:
-            self.assertNotIn('totaldiscs', new_metadata)
+            self.assertIn('totaldiscs', original_metadata)
+            if self.testfile_ext == '.m4a':
+                self.assertEqual(u'0', new_metadata['totaldiscs'])
+            else:
+                self.assertNotIn('totaldiscs', new_metadata)
 
-    def test_delete_performer(self):
-        if not self.testfile:
-            raise unittest.SkipTest("No test file set")
-        if 'performer:guest vocal' in self.tags:
+        def test_delete_performer(self):
+            if not self.testfile:
+                raise unittest.SkipTest("No test file set")
+            if 'performer:guest vocal' in self.tags:
+                metadata = Metadata()
+                for (key, value) in self.tags.items():
+                    metadata[key] = value
+
+                metadata['performer:piano'] = 'Foo'
+
+                original_metadata = save_and_load_metadata(self.filename, metadata)
+                metadata.delete('performer:piano')
+                new_metadata = save_and_load_metadata(self.filename, metadata)
+
+                self.assertIn('performer:guest vocal', original_metadata)
+                self.assertIn('performer:guest vocal', new_metadata)
+                self.assertIn('performer:piano', original_metadata)
+                self.assertNotIn('performer:piano', new_metadata)
+
+        def test_ratings(self):
+            if not self.testfile:
+                raise unittest.SkipTest("No test file set")
+            if not self.supports_ratings:
+                raise unittest.SkipTest("Ratings not supported")
+            for rating in range(6):
+                rating = 1
+                metadata = Metadata()
+                metadata['~rating'] = rating
+                loaded_metadata = save_and_load_metadata(self.filename, metadata)
+                self.assertEqual(int(loaded_metadata['~rating']), rating, '~rating: %r != %r' % (loaded_metadata['~rating'], rating))
+
+        def test_guess_format(self):
+            if not self.testfile:
+                raise unittest.SkipTest("No test file set")
+            fd, temp_file = mkstemp()
+            os.close(fd)
+            self.addCleanup(os.unlink, temp_file)
+            shutil.copy(self.testfile_path, temp_file)
+            audio = picard.formats.guess_format(temp_file)
+            audio_original = picard.formats.open_(self.filename)
+            self.assertEqual(type(audio), type(audio_original))
+
+        def test_split_ext(self):
+            if not self.testfile:
+                raise unittest.SkipTest("No test file set")
+            f = picard.formats.open_(self.filename)
+            self.assertEqual(f._fixed_splitext(f.filename), os.path.splitext(f.filename))
+            self.assertEqual(f._fixed_splitext(f.EXTENSIONS[0]), ('', f.EXTENSIONS[0]))
+            self.assertEqual(f._fixed_splitext('.test'), os.path.splitext('.test'))
+            self.assertNotEqual(f._fixed_splitext(f.EXTENSIONS[0]), os.path.splitext(f.EXTENSIONS[0]))
+
+
+    class ID3Test(FormatsTest):
+
+        def setup_tags(self):
+            # Note: in ID3v23, the original date can only be stored as a year.
+            self.set_tags({
+                'originaldate': '1980'
+            })
+
+        def test_id3_freeform_delete(self):
+            if not self.testfile:
+                raise unittest.SkipTest("No test file set")
             metadata = Metadata()
             for (key, value) in self.tags.items():
                 metadata[key] = value
 
-            metadata['performer:piano'] = 'Foo'
-
+            metadata['Foo'] = 'Foo'
             original_metadata = save_and_load_metadata(self.filename, metadata)
-            metadata.delete('performer:piano')
+            metadata.delete('Foo')
             new_metadata = save_and_load_metadata(self.filename, metadata)
 
-            self.assertIn('performer:guest vocal', original_metadata)
-            self.assertIn('performer:guest vocal', new_metadata)
-            self.assertIn('performer:piano', original_metadata)
-            self.assertNotIn('performer:piano', new_metadata)
+            self.assertIn('Foo', original_metadata)
+            self.assertNotIn('Foo', new_metadata)
 
-    def test_ratings(self):
-        if not self.testfile:
-            raise unittest.SkipTest("No test file set")
-        if not self.supports_ratings:
-            raise unittest.SkipTest("Ratings not supported")
-        for rating in range(6):
-            rating = 1
+        def test_id3_ufid_delete(self):
+            if not self.testfile:
+                raise unittest.SkipTest("No test file set")
             metadata = Metadata()
-            metadata['~rating'] = rating
+            for (key, value) in self.tags.items():
+                metadata[key] = value
+            metadata['musicbrainz_recordingid'] = "Foo"
+            original_metadata = save_and_load_metadata(self.filename, metadata)
+            metadata.delete('musicbrainz_recordingid')
+            new_metadata = save_and_load_metadata(self.filename, metadata)
+
+            self.assertIn('musicbrainz_recordingid', original_metadata)
+            self.assertNotIn('musicbrainz_recordingid', new_metadata)
+
+        def test_id3_multiple_freeform_delete(self):
+            if not self.testfile:
+                raise unittest.SkipTest("No test file set")
+            metadata = Metadata()
+            for (key, value) in self.tags.items():
+                metadata[key] = value
+
+            metadata['Foo'] = 'Foo'
+            metadata['Bar'] = 'Foo'
+            metadata['FooBar'] = 'Foo'
+            original_metadata = save_and_load_metadata(self.filename, metadata)
+            metadata.delete('Foo')
+            metadata.delete('Bar')
+            new_metadata = save_and_load_metadata(self.filename, metadata)
+
+            self.assertIn('Foo', original_metadata)
+            self.assertIn('Bar', original_metadata)
+            self.assertIn('FooBar', original_metadata)
+            self.assertNotIn('Foo', new_metadata)
+            self.assertNotIn('Bar', new_metadata)
+            self.assertIn('FooBar', new_metadata)
+
+        def test_performer_duplication(self):
+            if not self.testfile:
+                raise unittest.SkipTest("No test file set")
+
+            def reset_id3_ver(): config.setting['write_id3v23'] = False
+
+            self.addCleanup(reset_id3_ver)
+            config.setting['write_id3v23'] = True
+            metadata = Metadata()
+            tags = {
+                'album': 'Foo',
+                'artist': 'Foo',
+                'performer:piano': 'Foo',
+                'title': 'Foo',
+            }
+
+            for (key, value) in tags.items():
+                metadata[key] = value
+
+            original_metadata = save_and_load_metadata(self.filename, metadata)
+            new_metadata = save_and_load_metadata(self.filename, original_metadata)
+
+            self.assertEqual(len(new_metadata['performer:piano']), len(original_metadata['performer:piano']))
+
+        def test_comment_delete(self):
+            if not self.testfile:
+                raise unittest.SkipTest("No test file set")
+            metadata = Metadata()
+            for (key, value) in self.tags.items():
+                metadata[key] = value
+            metadata['comment:bar'] = 'Foo'
+            original_metadata = save_and_load_metadata(self.filename, metadata)
+            metadata.delete('comment:bar')
+            new_metadata = save_and_load_metadata(self.filename, metadata)
+
+            self.assertIn('comment:foo', original_metadata)
+            self.assertIn('comment:bar', original_metadata)
+            self.assertIn('comment:foo', new_metadata)
+            self.assertNotIn('comment:bar', new_metadata)
+
+        def test_id3v23_simple_tags(self):
+            if not self.testfile:
+                raise unittest.SkipTest("No test file set")
+
+            def reset_to_id3v24():
+                config.setting['write_id3v23'] = False
+            config.setting['write_id3v23'] = True
+            self.addCleanup(reset_to_id3v24)
+            metadata = Metadata()
+            for (key, value) in self.tags.items():
+                metadata[key] = value
             loaded_metadata = save_and_load_metadata(self.filename, metadata)
-            self.assertEqual(int(loaded_metadata['~rating']), rating, '~rating: %r != %r' % (loaded_metadata['~rating'], rating))
-
-    def test_guess_format(self):
-        if not self.testfile:
-            raise unittest.SkipTest("No test file set")
-        fd, temp_file = mkstemp()
-        os.close(fd)
-        self.addCleanup(os.unlink, temp_file)
-        shutil.copy(self.testfile_path, temp_file)
-        audio = picard.formats.guess_format(temp_file)
-        audio_original = picard.formats.open_(self.filename)
-        self.assertEqual(type(audio), type(audio_original))
-
-    def test_split_ext(self):
-        if not self.testfile:
-            raise unittest.SkipTest("No test file set")
-        f = picard.formats.open_(self.filename)
-        self.assertEqual(f._fixed_splitext(f.filename), os.path.splitext(f.filename))
-        self.assertEqual(f._fixed_splitext(f.EXTENSIONS[0]), ('', f.EXTENSIONS[0]))
-        self.assertEqual(f._fixed_splitext('.test'), os.path.splitext('.test'))
-        self.assertNotEqual(f._fixed_splitext(f.EXTENSIONS[0]), os.path.splitext(f.EXTENSIONS[0]))
+            for (key, value) in self.tags.items():
+                # if key == 'comment:foo':
+                #    print "%r" % loaded_metadata
+                self.assertEqual(loaded_metadata[key], value, '%s: %r != %r' % (key, loaded_metadata[key], value))
 
 
-class ID3Test(FormatsTest):
-
-    def setup_tags(self):
-        #Note: in ID3v23, the original date can only be stored as a year.
-        self.set_tags({
-            'originaldate': '1980'
-        })
-
-    def test_id3_freeform_delete(self):
-        if not self.testfile:
-            raise unittest.SkipTest("No test file set")
-        metadata = Metadata()
-        for (key, value) in self.tags.items():
-            metadata[key] = value
-
-        metadata['Foo'] = 'Foo'
-        original_metadata = save_and_load_metadata(self.filename, metadata)
-        metadata.delete('Foo')
-        new_metadata = save_and_load_metadata(self.filename, metadata)
-
-        self.assertIn('Foo', original_metadata)
-        self.assertNotIn('Foo', new_metadata)
-
-    def test_id3_ufid_delete(self):
-        if not self.testfile:
-            raise unittest.SkipTest("No test file set")
-        metadata = Metadata()
-        for (key, value) in self.tags.items():
-            metadata[key] = value
-        metadata['musicbrainz_recordingid'] = "Foo"
-        original_metadata = save_and_load_metadata(self.filename, metadata)
-        metadata.delete('musicbrainz_recordingid')
-        new_metadata = save_and_load_metadata(self.filename, metadata)
-
-        self.assertIn('musicbrainz_recordingid', original_metadata)
-        self.assertNotIn('musicbrainz_recordingid', new_metadata)
-
-    def test_id3_multiple_freeform_delete(self):
-        if not self.testfile:
-            raise unittest.SkipTest("No test file set")
-        metadata = Metadata()
-        for (key, value) in self.tags.items():
-            metadata[key] = value
-
-        metadata['Foo'] = 'Foo'
-        metadata['Bar'] = 'Foo'
-        metadata['FooBar'] = 'Foo'
-        original_metadata = save_and_load_metadata(self.filename, metadata)
-        metadata.delete('Foo')
-        metadata.delete('Bar')
-        new_metadata = save_and_load_metadata(self.filename, metadata)
-
-        self.assertIn('Foo', original_metadata)
-        self.assertIn('Bar', original_metadata)
-        self.assertIn('FooBar', original_metadata)
-        self.assertNotIn('Foo', new_metadata)
-        self.assertNotIn('Bar', new_metadata)
-        self.assertIn('FooBar', new_metadata)
-
-    def test_performer_duplication(self):
-        if not self.testfile:
-            raise unittest.SkipTest("No test file set")
-
-        def reset_id3_ver(): config.setting['write_id3v23'] = False
-
-        self.addCleanup(reset_id3_ver)
-        config.setting['write_id3v23'] = True
-        metadata = Metadata()
-        tags = {
-            'album': 'Foo',
-            'artist': 'Foo',
-            'performer:piano': 'Foo',
-            'title': 'Foo',
-        }
-
-        for (key, value) in tags.items():
-            metadata[key] = value
-
-        original_metadata = save_and_load_metadata(self.filename, metadata)
-        new_metadata = save_and_load_metadata(self.filename, original_metadata)
-
-        self.assertEqual(len(new_metadata['performer:piano']), len(original_metadata['performer:piano']))
-
-    def test_comment_delete(self):
-        if not self.testfile:
-            raise unittest.SkipTest("No test file set")
-        metadata = Metadata()
-        for (key, value) in self.tags.items():
-            metadata[key] = value
-        metadata['comment:bar'] = 'Foo'
-        original_metadata = save_and_load_metadata(self.filename, metadata)
-        metadata.delete('comment:bar')
-        new_metadata = save_and_load_metadata(self.filename, metadata)
-
-        self.assertIn('comment:foo', original_metadata)
-        self.assertIn('comment:bar', original_metadata)
-        self.assertIn('comment:foo', new_metadata)
-        self.assertNotIn('comment:bar', new_metadata)
-
-    def test_id3v23_simple_tags(self):
-        if not self.testfile:
-            raise unittest.SkipTest("No test file set")
-        def reset_to_id3v24():
-            config.setting['write_id3v23'] = False
-        config.setting['write_id3v23'] = True
-        self.addCleanup(reset_to_id3v24)
-        metadata = Metadata()
-        for (key, value) in self.tags.items():
-            metadata[key] = value
-        loaded_metadata = save_and_load_metadata(self.filename, metadata)
-        for (key, value) in self.tags.items():
-            # if key == 'comment:foo':
-            #    print "%r" % loaded_metadata
-            self.assertEqual(loaded_metadata[key], value, '%s: %r != %r' % (key, loaded_metadata[key], value))
-
-
-class FLACTest(FormatsTest):
+class FLACTest(CommonTests.FormatsTest):
     testfile = 'test.flac'
     supports_ratings = True
 
 
-class WMATest(FormatsTest):
+class WMATest(CommonTests.FormatsTest):
     testfile = 'test.wma'
     supports_ratings = True
 
@@ -402,18 +405,19 @@ class WMATest(FormatsTest):
             'totaltracks',
         ])
 
-class MP3Test(ID3Test):
+
+class MP3Test(CommonTests.ID3Test):
     testfile = 'test.mp3'
     supports_ratings = True
 
 
-class TTATest(ID3Test):
+class TTATest(CommonTests.ID3Test):
     testfile = 'test.tta'
     supports_ratings = True
 
 
 if picard.formats.AiffFile:
-    class AIFFTest(ID3Test):
+    class AIFFTest(CommonTests.ID3Test):
         testfile = 'test.aiff'
         supports_ratings = False
 
@@ -426,12 +430,13 @@ if picard.formats.AiffFile:
                 'titlesort',
             ])
 
-class OggVorbisTest(FormatsTest):
+
+class OggVorbisTest(CommonTests.FormatsTest):
     testfile = 'test.ogg'
     supports_ratings = True
 
 
-class MP4Test(FormatsTest):
+class MP4Test(CommonTests.FormatsTest):
     testfile = 'test.m4a'
     supports_ratings = False
 
@@ -447,18 +452,17 @@ class MP4Test(FormatsTest):
         ])
 
 
-
-class WavPackTest(FormatsTest):
+class WavPackTest(CommonTests.FormatsTest):
     testfile = 'test.wv'
     supports_ratings = False
 
 
-class MusepackSV7Test(FormatsTest):
+class MusepackSV7Test(CommonTests.FormatsTest):
     testfile = 'test-sv7.mpc'
     supports_ratings = False
 
 
-class MusepackSV8Test(FormatsTest):
+class MusepackSV8Test(CommonTests.FormatsTest):
     testfile = 'test-sv8.mpc'
     supports_ratings = False
 
