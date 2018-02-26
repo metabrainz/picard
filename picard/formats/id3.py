@@ -625,6 +625,10 @@ class DSFFile(ID3File):
             tags.update_to_v24()
             tags.save(filename, v2_version=4)
 
+    def supports_tag(self, name):
+        return (super().supports_tag(name)
+                and name not in ['albumsort', 'artistsort', 'discsubtitle', 'titlesort'])
+
 
 if mutagen.aiff:
     class AiffFile(ID3File):
