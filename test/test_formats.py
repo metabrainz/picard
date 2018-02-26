@@ -61,115 +61,199 @@ def save_and_load_metadata(filename, metadata):
     return loaded_metadata
 
 
-class FormatsTest(unittest.TestCase):
+TAGS = {
+    'albumartist': 'Foo',
+    'albumartistsort': 'Foo',
+    'album': 'Foo Bar',
+    'albumsort': 'Foo',
+    'arranger': 'Foo',
+    'artist': 'Foo',
+    'artistsort': 'Foo',
+    'asin': 'Foo',
+    'barcode': 'Foo',
+    'bpm': '80',
+    'catalognumber': 'Foo',
+    'comment:': 'Foo',
+    'comment:foo': 'Foo',
+    'compilation': '1',
+    'composer': 'Foo',
+    'composersort': 'Foo',
+    'conductor': 'Foo',
+    'copyright': 'Foo',
+    'date': '2004',
+    'discnumber': '1',
+    'discsubtitle': 'Foo',
+    'djmixer': 'Foo',
+    'encodedby': 'Foo',
+    'encodersettings': 'Foo',
+    'engineer': 'Foo',
+    'gapless': '1',
+    'genre': 'Foo',
+    'grouping': 'Foo',
+    'isrc': 'Foo',
+    'key': 'E#m',
+    'label': 'Foo',
+    'lyricist': 'Foo',
+    'lyrics': 'Foo',
+    'media': 'Foo',
+    'mixer': 'Foo',
+    'mood': 'Foo',
+    'musicbrainz_albumartistid': 'Foo',
+    'musicbrainz_albumid': 'Foo',
+    'musicbrainz_artistid': 'Foo',
+    'musicbrainz_discid': 'Foo',
+    'musicbrainz_trackid': 'Foo',
+    'musicbrainz_trmid': 'Foo',
+    'musicip_fingerprint': 'Foo',
+    'musicip_puid': 'Foo',
+    'originaldate': '1980-01-20',
+    'originalyear': '1980',
+    'performer:guest vocal': 'Foo',
+    'podcast': '1',
+    'podcasturl': 'Foo',
+    'producer': 'Foo',
+    'releasestatus': 'Foo',
+    'releasetype': 'Foo',
+    'remixer': 'Foo',
+    'show': 'Foo',
+    'showsort': 'Foo',
+    'subtitle': 'Foo',
+    'title': 'Foo',
+    'titlesort': 'Foo',
+    'totaldiscs': '2',
+    'totaltracks': '10',
+    'tracknumber': '2',
+    'website': 'http://example.com',
+}
 
-    original = None
-    tags = []
 
-    def setUp(self):
-        if not self.original:
-            return
-        fd, self.filename = mkstemp(suffix=os.path.splitext(self.original)[1])
-        os.close(fd)
-        shutil.copy(self.original, self.filename)
-        config.setting = settings.copy()
-        QtCore.QObject.tagger = FakeTagger()
+def skipUnlessTestfile(func):
+    def _decorator(self, *args, **kwargs):
+        if not self.testfile:
+            raise unittest.SkipTest("No test file set")
+        func(self, *args, **kwargs)
+    return _decorator
 
-    def tearDown(self):
-        if not self.original:
-            return
-        os.unlink(self.filename)
 
-    def test_simple_tags(self):
-        if not self.original:
-            return
-        metadata = Metadata()
-        for (key, value) in self.tags.items():
-            metadata[key] = value
-        loaded_metadata = save_and_load_metadata(self.filename, metadata)
-        for (key, value) in self.tags.items():
-            # if key == 'comment:foo':
-            #    print "%r" % loaded_metadata
-            self.assertEqual(loaded_metadata[key], value, '%s: %r != %r' % (key, loaded_metadata[key], value))
+# prevent unittest to run tests in those classes
+class CommonTests:
 
-    def test_delete_simple_tags(self):
-        if not self.original:
-            return
-        metadata = Metadata()
-        for (key, value) in self.tags.items():
-            metadata[key] = value
-        if self.supports_ratings:
-            metadata['~rating'] = 1
-        original_metadata = save_and_load_metadata(self.filename, metadata)
-        metadata.delete('albumartist')
-        if self.supports_ratings:
-            metadata.delete('~rating')
-        new_metadata = save_and_load_metadata(self.filename, metadata)
-        self.assertIn('albumartist', original_metadata.keys())
-        self.assertNotIn('albumartist', new_metadata.keys())
-        if self.supports_ratings:
-            self.assertIn('~rating', original_metadata.keys())
-            self.assertNotIn('~rating', new_metadata.keys())
+    class FormatsTest(unittest.TestCase):
 
-    def test_delete_complex_tags(self):
-        if not self.original:
-            return
-        metadata = Metadata()
+        testfile = None
+        testfile_ext = None
+        testfile_path = None
 
-        for (key, value) in self.tags.items():
-            metadata[key] = value
+        def setUp(self):
+            self.tags = TAGS.copy()
+            self.setup_tags()
+            config.setting = settings.copy()
+            QtCore.QObject.tagger = FakeTagger()
+            if self.testfile:
+                self.testfile_path = os.path.join('test', 'data', self.testfile)
+                self.testfile_ext = os.path.splitext(self.testfile)[1]
+                self.filename = self.copy_of_original_testfile()
 
-        original_metadata = save_and_load_metadata(self.filename, metadata)
-        metadata.delete('totaldiscs')
-        new_metadata = save_and_load_metadata(self.filename, metadata)
+        def copy_of_original_testfile(self):
+            fd, copy = mkstemp(suffix=self.testfile_ext)
+            self.addCleanup(os.unlink, copy)
+            os.close(fd)
+            shutil.copy(self.testfile_path, copy)
+            return copy
 
-        self.assertIn('totaldiscs', original_metadata)
-        if self.original.split(".")[1] == 'm4a':
-            self.assertEqual(u'0', new_metadata['totaldiscs'])
-        else:
-            self.assertNotIn('totaldiscs', new_metadata)
+        def setup_tags(self):
+            pass
 
-    def test_delete_performer(self):
-        if not self.original:
-            return
-        if 'performer:guest vocal' in self.tags:
+        def set_tags(self, dict_tag_value=None):
+            if dict_tag_value:
+                self.tags.update(dict_tag_value)
+
+        def remove_tags(self, tag_list=None):
+            for tag in tag_list:
+                del self.tags[tag]
+
+        @skipUnlessTestfile
+        def test_simple_tags(self):
             metadata = Metadata()
             for (key, value) in self.tags.items():
                 metadata[key] = value
+            loaded_metadata = save_and_load_metadata(self.filename, metadata)
+            for (key, value) in self.tags.items():
+                self.assertEqual(loaded_metadata[key], value, '%s: %r != %r' % (key, loaded_metadata[key], value))
 
-            metadata['performer:piano'] = 'Foo'
+        @skipUnlessTestfile
+        def test_delete_simple_tags(self):
+            metadata = Metadata()
+            for (key, value) in self.tags.items():
+                metadata[key] = value
+            if self.supports_ratings:
+                metadata['~rating'] = 1
+            original_metadata = save_and_load_metadata(self.filename, metadata)
+            metadata.delete('albumartist')
+            if self.supports_ratings:
+                metadata.delete('~rating')
+            new_metadata = save_and_load_metadata(self.filename, metadata)
+            self.assertIn('albumartist', original_metadata.keys())
+            self.assertNotIn('albumartist', new_metadata.keys())
+            if self.supports_ratings:
+                self.assertIn('~rating', original_metadata.keys())
+                self.assertNotIn('~rating', new_metadata.keys())
+
+        @skipUnlessTestfile
+        def test_delete_complex_tags(self):
+            metadata = Metadata()
+
+            for (key, value) in self.tags.items():
+                metadata[key] = value
 
             original_metadata = save_and_load_metadata(self.filename, metadata)
-            metadata.delete('performer:piano')
+            metadata.delete('totaldiscs')
             new_metadata = save_and_load_metadata(self.filename, metadata)
 
-            self.assertIn('performer:guest vocal', original_metadata)
-            self.assertIn('performer:guest vocal', new_metadata)
-            self.assertIn('performer:piano', original_metadata)
-            self.assertNotIn('performer:piano', new_metadata)
+            self.assertIn('totaldiscs', original_metadata)
+            if self.testfile_ext == '.m4a':
+                self.assertEqual(u'0', new_metadata['totaldiscs'])
+            else:
+                self.assertNotIn('totaldiscs', new_metadata)
 
-    def test_ratings(self):
-        if not self.original or not self.supports_ratings:
-            return
-        for rating in range(6):
-            rating = 1
-            metadata = Metadata()
-            metadata['~rating'] = rating
-            loaded_metadata = save_and_load_metadata(self.filename, metadata)
-            self.assertEqual(int(loaded_metadata['~rating']), rating, '~rating: %r != %r' % (loaded_metadata['~rating'], rating))
+        @skipUnlessTestfile
+        def test_delete_performer(self):
+            if 'performer:guest vocal' in self.tags:
+                metadata = Metadata()
+                for (key, value) in self.tags.items():
+                    metadata[key] = value
 
-    def test_guess_format(self):
-        if self.original:
-            fd, temp_file = mkstemp()
-            os.close(fd)
-            self.addCleanup(os.unlink, temp_file)
-            shutil.copy(self.original, temp_file)
+                metadata['performer:piano'] = 'Foo'
+
+                original_metadata = save_and_load_metadata(self.filename, metadata)
+                metadata.delete('performer:piano')
+                new_metadata = save_and_load_metadata(self.filename, metadata)
+
+                self.assertIn('performer:guest vocal', original_metadata)
+                self.assertIn('performer:guest vocal', new_metadata)
+                self.assertIn('performer:piano', original_metadata)
+                self.assertNotIn('performer:piano', new_metadata)
+
+        @skipUnlessTestfile
+        def test_ratings(self):
+            if not self.supports_ratings:
+                raise unittest.SkipTest("Ratings not supported")
+            for rating in range(6):
+                rating = 1
+                metadata = Metadata()
+                metadata['~rating'] = rating
+                loaded_metadata = save_and_load_metadata(self.filename, metadata)
+                self.assertEqual(int(loaded_metadata['~rating']), rating, '~rating: %r != %r' % (loaded_metadata['~rating'], rating))
+
+        @skipUnlessTestfile
+        def test_guess_format(self):
+            temp_file = self.copy_of_original_testfile()
             audio = picard.formats.guess_format(temp_file)
             audio_original = picard.formats.open_(self.filename)
             self.assertEqual(type(audio), type(audio_original))
 
-    def test_split_ext(self):
-        if self.original:
+        @skipUnlessTestfile
+        def test_split_ext(self):
             f = picard.formats.open_(self.filename)
             self.assertEqual(f._fixed_splitext(f.filename), os.path.splitext(f.filename))
             self.assertEqual(f._fixed_splitext(f.EXTENSIONS[0]), ('', f.EXTENSIONS[0]))
@@ -177,779 +261,199 @@ class FormatsTest(unittest.TestCase):
             self.assertNotEqual(f._fixed_splitext(f.EXTENSIONS[0]), os.path.splitext(f.EXTENSIONS[0]))
 
 
-class FLACTest(FormatsTest):
-    original = os.path.join('test', 'data', 'test.flac')
+    class ID3Test(FormatsTest):
+
+        def setup_tags(self):
+            # Note: in ID3v23, the original date can only be stored as a year.
+            self.set_tags({
+                'originaldate': '1980'
+            })
+
+        @skipUnlessTestfile
+        def test_id3_freeform_delete(self):
+            metadata = Metadata()
+            for (key, value) in self.tags.items():
+                metadata[key] = value
+
+            metadata['Foo'] = 'Foo'
+            original_metadata = save_and_load_metadata(self.filename, metadata)
+            metadata.delete('Foo')
+            new_metadata = save_and_load_metadata(self.filename, metadata)
+
+            self.assertIn('Foo', original_metadata)
+            self.assertNotIn('Foo', new_metadata)
+
+        @skipUnlessTestfile
+        def test_id3_ufid_delete(self):
+            metadata = Metadata()
+            for (key, value) in self.tags.items():
+                metadata[key] = value
+            metadata['musicbrainz_recordingid'] = "Foo"
+            original_metadata = save_and_load_metadata(self.filename, metadata)
+            metadata.delete('musicbrainz_recordingid')
+            new_metadata = save_and_load_metadata(self.filename, metadata)
+
+            self.assertIn('musicbrainz_recordingid', original_metadata)
+            self.assertNotIn('musicbrainz_recordingid', new_metadata)
+
+        @skipUnlessTestfile
+        def test_id3_multiple_freeform_delete(self):
+            metadata = Metadata()
+            for (key, value) in self.tags.items():
+                metadata[key] = value
+
+            metadata['Foo'] = 'Foo'
+            metadata['Bar'] = 'Foo'
+            metadata['FooBar'] = 'Foo'
+            original_metadata = save_and_load_metadata(self.filename, metadata)
+            metadata.delete('Foo')
+            metadata.delete('Bar')
+            new_metadata = save_and_load_metadata(self.filename, metadata)
+
+            self.assertIn('Foo', original_metadata)
+            self.assertIn('Bar', original_metadata)
+            self.assertIn('FooBar', original_metadata)
+            self.assertNotIn('Foo', new_metadata)
+            self.assertNotIn('Bar', new_metadata)
+            self.assertIn('FooBar', new_metadata)
+
+        @skipUnlessTestfile
+        def test_performer_duplication(self):
+
+            def reset_id3_ver():
+                config.setting['write_id3v23'] = False
+
+            self.addCleanup(reset_id3_ver)
+            config.setting['write_id3v23'] = True
+            metadata = Metadata()
+            tags = {
+                'album': 'Foo',
+                'artist': 'Foo',
+                'performer:piano': 'Foo',
+                'title': 'Foo',
+            }
+
+            for (key, value) in tags.items():
+                metadata[key] = value
+
+            original_metadata = save_and_load_metadata(self.filename, metadata)
+            new_metadata = save_and_load_metadata(self.filename, original_metadata)
+
+            self.assertEqual(len(new_metadata['performer:piano']), len(original_metadata['performer:piano']))
+
+        @skipUnlessTestfile
+        def test_comment_delete(self):
+            metadata = Metadata()
+            for (key, value) in self.tags.items():
+                metadata[key] = value
+            metadata['comment:bar'] = 'Foo'
+            original_metadata = save_and_load_metadata(self.filename, metadata)
+            metadata.delete('comment:bar')
+            new_metadata = save_and_load_metadata(self.filename, metadata)
+
+            self.assertIn('comment:foo', original_metadata)
+            self.assertIn('comment:bar', original_metadata)
+            self.assertIn('comment:foo', new_metadata)
+            self.assertNotIn('comment:bar', new_metadata)
+
+        @skipUnlessTestfile
+        def test_id3v23_simple_tags(self):
+
+            def reset_to_id3v24():
+                config.setting['write_id3v23'] = False
+            config.setting['write_id3v23'] = True
+            self.addCleanup(reset_to_id3v24)
+            metadata = Metadata()
+            for (key, value) in self.tags.items():
+                metadata[key] = value
+            loaded_metadata = save_and_load_metadata(self.filename, metadata)
+            for (key, value) in self.tags.items():
+                self.assertEqual(loaded_metadata[key], value, '%s: %r != %r' % (key, loaded_metadata[key], value))
+
+
+class FLACTest(CommonTests.FormatsTest):
+    testfile = 'test.flac'
     supports_ratings = True
-    tags = {
-        'albumartist': 'Foo',
-        'albumartistsort': 'Foo',
-        'album': 'Foo Bar',
-        'albumsort': 'Foo',
-        'arranger': 'Foo',
-        'artist': 'Foo',
-        'artistsort': 'Foo',
-        'asin': 'Foo',
-        'barcode': 'Foo',
-        'bpm': '80',
-        'catalognumber': 'Foo',
-        'comment:': 'Foo',
-        'comment:foo': 'Foo',
-        'compilation': '1',
-        'composer': 'Foo',
-        'composersort': 'Foo',
-        'conductor': 'Foo',
-        'copyright': 'Foo',
-        'date': '2004',
-        'discnumber': '1',
-        'discsubtitle': 'Foo',
-        'djmixer': 'Foo',
-        'encodedby': 'Foo',
-        'engineer': 'Foo',
-        #'gapless': '1',
-        'genre': 'Foo',
-        'grouping': 'Foo',
-        'isrc': 'Foo',
-        'key': 'E#m',
-        'label': 'Foo',
-        'lyricist': 'Foo',
-        'lyrics': 'Foo',
-        'media': 'Foo',
-        'mixer': 'Foo',
-        'mood': 'Foo',
-        'musicbrainz_albumartistid': 'Foo',
-        'musicbrainz_albumid': 'Foo',
-        'musicbrainz_artistid': 'Foo',
-        'musicbrainz_discid': 'Foo',
-        'musicbrainz_trackid': 'Foo',
-        'musicbrainz_trmid': 'Foo',
-        'musicip_fingerprint': 'Foo',
-        'musicip_puid': 'Foo',
-        'originaldate': '1980',
-        'performer:guest vocal': 'Foo',
-        #'podcast': '1',
-        #'podcasturl': 'Foo',
-        'producer': 'Foo',
-        'releasestatus': 'Foo',
-        'releasetype': 'Foo',
-        'remixer': 'Foo',
-        #'show': 'Foo',
-        #'showsort': 'Foo',
-        'subtitle': 'Foo',
-        'title': 'Foo',
-        'titlesort': 'Foo',
-        'totaldiscs': '2',
-        'totaltracks': '10',
-        'tracknumber': '2',
-    }
 
 
-class WMATest(FormatsTest):
-    original = os.path.join('test', 'data', 'test.wma')
+class WMATest(CommonTests.FormatsTest):
+    testfile = 'test.wma'
     supports_ratings = True
-    tags = {
-        'albumartist': 'Foo',
-        'albumartistsort': 'Foo',
-        'album': 'Foo Bar',
-        'albumsort': 'Foo',
-        #'arranger': 'Foo',
-        'artist': 'Foo',
-        'artistsort': 'Foo',
-        'asin': 'Foo',
-        'barcode': 'Foo',
-        'bpm': '80',
-        'catalognumber': 'Foo',
-        'comment:': 'Foo',
-        # FIXME: comment:foo is unsupported in our WMA implementation
-        #'comment:foo': 'Foo',
-        'compilation': '1',
-        'composer': 'Foo',
-        'composersort': 'Foo',
-        'conductor': 'Foo',
-        'copyright': 'Foo',
-        'date': '2004',
-        'discnumber': '1',
-        'discsubtitle': 'Foo',
-        'djmixer': 'Foo',
-        'encodedby': 'Foo',
-        'encodersettings': 'Foo',
-        'engineer': 'Foo',
-        #'gapless': '1',
-        'genre': 'Foo',
-        'grouping': 'Foo',
-        'isrc': 'Foo',
-        'key': 'E#m',
-        'label': 'Foo',
-        'lyricist': 'Foo',
-        'lyrics': 'Foo',
-        'media': 'Foo',
-        'mixer': 'Foo',
-        'mood': 'Foo',
-        'musicbrainz_albumartistid': 'Foo',
-        'musicbrainz_albumid': 'Foo',
-        'musicbrainz_artistid': 'Foo',
-        'musicbrainz_discid': 'Foo',
-        'musicbrainz_trackid': 'Foo',
-        'musicbrainz_trmid': 'Foo',
-        #'musicip_fingerprint': 'Foo',
-        'musicip_puid': 'Foo',
-        'originaldate': '1980-08-30',
-        'originalyear': '1980',
-        #'performer:guest vocal': 'Foo',
-        #'podcast': '1',
-        #'podcasturl': 'Foo',
-        'producer': 'Foo',
-        'releasestatus': 'Foo',
-        'releasetype': 'Foo',
-        'remixer': 'Foo',
-        #'show': 'Foo',
-        #'showsort': 'Foo',
-        'subtitle': 'Foo',
-        'title': 'Foo',
-        'titlesort': 'Foo',
-        'totaldiscs': '2',
-        #'totaltracks': '10',
-        'tracknumber': '2',
-        'website': 'http://example.com',
-    }
+
+    def setup_tags(self):
+        self.remove_tags([
+            'comment:foo',
+            'performer:guest vocal',
+            'podcasturl',
+            'gapless',
+            'showsort',
+            'show',
+            'arranger',
+            'musicip_fingerprint',
+            'podcast',
+            'totaltracks',
+        ])
 
 
-class ID3Test(FormatsTest):
-
-    def test_id3_freeform_delete(self):
-        if not self.original:
-            return
-        metadata = Metadata()
-        for (key, value) in self.tags.items():
-            metadata[key] = value
-
-        metadata['Foo'] = 'Foo'
-        original_metadata = save_and_load_metadata(self.filename, metadata)
-        metadata.delete('Foo')
-        new_metadata = save_and_load_metadata(self.filename, metadata)
-
-        self.assertIn('Foo', original_metadata)
-        self.assertNotIn('Foo', new_metadata)
-
-    def test_id3_ufid_delete(self):
-        if not self.original:
-            return
-        metadata = Metadata()
-        for (key, value) in self.tags.items():
-            metadata[key] = value
-        metadata['musicbrainz_recordingid'] = "Foo"
-        original_metadata = save_and_load_metadata(self.filename, metadata)
-        metadata.delete('musicbrainz_recordingid')
-        new_metadata = save_and_load_metadata(self.filename, metadata)
-
-        self.assertIn('musicbrainz_recordingid', original_metadata)
-        self.assertNotIn('musicbrainz_recordingid', new_metadata)
-
-    def test_id3_multiple_freeform_delete(self):
-        if not self.original:
-            return
-        metadata = Metadata()
-        for (key, value) in self.tags.items():
-            metadata[key] = value
-
-        metadata['Foo'] = 'Foo'
-        metadata['Bar'] = 'Foo'
-        metadata['FooBar'] = 'Foo'
-        original_metadata = save_and_load_metadata(self.filename, metadata)
-        metadata.delete('Foo')
-        metadata.delete('Bar')
-        new_metadata = save_and_load_metadata(self.filename, metadata)
-
-        self.assertIn('Foo', original_metadata)
-        self.assertIn('Bar', original_metadata)
-        self.assertIn('FooBar', original_metadata)
-        self.assertNotIn('Foo', new_metadata)
-        self.assertNotIn('Bar', new_metadata)
-        self.assertIn('FooBar', new_metadata)
-
-    def test_performer_duplication(self):
-        if not self.original:
-            return
-
-        def reset_id3_ver(): config.setting['write_id3v23'] = False
-
-        self.addCleanup(reset_id3_ver)
-        config.setting['write_id3v23'] = True
-        metadata = Metadata()
-        tags = {
-            'album': 'Foo',
-            'artist': 'Foo',
-            'performer:piano': 'Foo',
-            'title': 'Foo',
-        }
-
-        for (key, value) in tags.items():
-            metadata[key] = value
-
-        original_metadata = save_and_load_metadata(self.filename, metadata)
-        new_metadata = save_and_load_metadata(self.filename, original_metadata)
-
-        self.assertEqual(len(new_metadata['performer:piano']), len(original_metadata['performer:piano']))
-
-    def test_comment_delete(self):
-        if not self.original:
-            return
-        metadata = Metadata()
-        for (key, value) in self.tags.items():
-            metadata[key] = value
-        metadata['comment:bar'] = 'Foo'
-        original_metadata = save_and_load_metadata(self.filename, metadata)
-        metadata.delete('comment:bar')
-        new_metadata = save_and_load_metadata(self.filename, metadata)
-
-        self.assertIn('comment:foo', original_metadata)
-        self.assertIn('comment:bar', original_metadata)
-        self.assertIn('comment:foo', new_metadata)
-        self.assertNotIn('comment:bar', new_metadata)
-
-    def test_id3v23_simple_tags(self):
-        if not self.original:
-            return
-        def reset_to_id3v24(): config.setting['write_id3v23'] = False
-        config.setting['write_id3v23'] = True
-        self.addCleanup(reset_to_id3v24)
-        metadata = Metadata()
-        for (key, value) in self.tags.items():
-            metadata[key] = value
-        loaded_metadata = save_and_load_metadata(self.filename, metadata)
-        for (key, value) in self.tags.items():
-            # if key == 'comment:foo':
-            #    print "%r" % loaded_metadata
-            self.assertEqual(loaded_metadata[key], value, '%s: %r != %r' % (key, loaded_metadata[key], value))
-
-
-class MP3Test(ID3Test):
-    original = os.path.join('test', 'data', 'test.mp3')
+class MP3Test(CommonTests.ID3Test):
+    testfile = 'test.mp3'
     supports_ratings = True
-    tags = {
-        'albumartist': 'Foo',
-        'albumartistsort': 'Foo',
-        'album': 'Foo Bar',
-        'albumsort': 'Foo',
-        'arranger': 'Foo',
-        'artist': 'Foo',
-        'artistsort': 'Foo',
-        'asin': 'Foo',
-        'barcode': 'Foo',
-        'bpm': '80',
-        'catalognumber': 'Foo',
-        'comment:': 'Foo',
-        'comment:foo': 'Foo',
-        'compilation': '1',
-        'composer': 'Foo',
-        'composersort': 'Foo',
-        'conductor': 'Foo',
-        'copyright': 'Foo',
-        'date': '2004',
-        'discnumber': '1',
-        'discsubtitle': 'Foo',
-        'djmixer': 'Foo',
-        'encodedby': 'Foo',
-        'engineer': 'Foo',
-        #'gapless': '1',
-        'genre': 'Foo',
-        'grouping': 'Foo',
-        'isrc': 'Foo',
-        'key': 'E#m',
-        'label': 'Foo',
-        'lyricist': 'Foo',
-        'lyrics': 'Foo',
-        'media': 'Foo',
-        'mixer': 'Foo',
-        'mood': 'Foo',
-        'musicbrainz_albumartistid': 'Foo',
-        'musicbrainz_albumid': 'Foo',
-        'musicbrainz_artistid': 'Foo',
-        'musicbrainz_discid': 'Foo',
-        'musicbrainz_trackid': 'Foo',
-        'musicbrainz_trmid': 'Foo',
-        'musicip_fingerprint': 'Foo',
-        'musicip_puid': 'Foo',
-        'originaldate': '1980',
-        'performer:guest vocal': 'Foo',
-        #'podcast': '1',
-        #'podcasturl': 'Foo',
-        'producer': 'Foo',
-        'releasestatus': 'Foo',
-        'releasetype': 'Foo',
-        'remixer': 'Foo',
-        #'show': 'Foo',
-        #'showsort': 'Foo',
-        'subtitle': 'Foo',
-        'title': 'Foo',
-        'titlesort': 'Foo',
-        'totaldiscs': '2',
-        'totaltracks': '10',
-        'tracknumber': '2',
-    }
 
 
-class TTATest(ID3Test):
-    original = os.path.join('test', 'data', 'test.tta')
+class TTATest(CommonTests.ID3Test):
+    testfile = 'test.tta'
     supports_ratings = True
-    tags = {
-        'albumartist': 'Foo',
-        'albumartistsort': 'Foo',
-        'album': 'Foo Bar',
-        'albumsort': 'Foo',
-        'arranger': 'Foo',
-        'artist': 'Foo',
-        'artistsort': 'Foo',
-        'asin': 'Foo',
-        'barcode': 'Foo',
-        'bpm': '80',
-        'catalognumber': 'Foo',
-        'comment:': 'Foo',
-        'comment:foo': 'Foo',
-        'compilation': '1',
-        'composer': 'Foo',
-        'composersort': 'Foo',
-        'conductor': 'Foo',
-        'copyright': 'Foo',
-        'date': '2004',
-        'discnumber': '1',
-        'discsubtitle': 'Foo',
-        'djmixer': 'Foo',
-        'encodedby': 'Foo',
-        'engineer': 'Foo',
-        #'gapless': '1',
-        'genre': 'Foo',
-        'grouping': 'Foo',
-        'isrc': 'Foo',
-        'key': 'E#m',
-        'label': 'Foo',
-        'lyricist': 'Foo',
-        'lyrics': 'Foo',
-        'media': 'Foo',
-        'mixer': 'Foo',
-        'mood': 'Foo',
-        'musicbrainz_albumartistid': 'Foo',
-        'musicbrainz_albumid': 'Foo',
-        'musicbrainz_artistid': 'Foo',
-        'musicbrainz_discid': 'Foo',
-        'musicbrainz_trackid': 'Foo',
-        'musicbrainz_trmid': 'Foo',
-        'musicip_fingerprint': 'Foo',
-        'musicip_puid': 'Foo',
-        'originaldate': '1980',
-        'performer:guest vocal': 'Foo',
-        #'podcast': '1',
-        #'podcasturl': 'Foo',
-        'producer': 'Foo',
-        'releasestatus': 'Foo',
-        'releasetype': 'Foo',
-        'remixer': 'Foo',
-        #'show': 'Foo',
-        #'showsort': 'Foo',
-        'subtitle': 'Foo',
-        'title': 'Foo',
-        'titlesort': 'Foo',
-        'totaldiscs': '2',
-        'totaltracks': '10',
-        'tracknumber': '2',
-    }
 
 
 if picard.formats.AiffFile:
-    class AIFFTest(ID3Test):
-        original = os.path.join('test', 'data', 'test.aiff')
+    class AIFFTest(CommonTests.ID3Test):
+        testfile = 'test.aiff'
         supports_ratings = False
-        tags = {
-            'albumartist': 'Foo',
-            'albumartistsort': 'Foo',
-            'album': 'Foo Bar',
-            # 'albumsort': 'Foo',
-            'arranger': 'Foo',
-            'artist': 'Foo',
-            # 'artistsort': 'Foo',
-            'asin': 'Foo',
-            'barcode': 'Foo',
-            'bpm': '80',
-            'catalognumber': 'Foo',
-            'comment:': 'Foo',
-            'comment:foo': 'Foo',
-            'compilation': '1',
-            'composer': 'Foo',
-            'composersort': 'Foo',
-            'conductor': 'Foo',
-            'copyright': 'Foo',
-            'date': '2004',
-            'discnumber': '1',
-            # 'discsubtitle': 'Foo',
-            'djmixer': 'Foo',
-            'encodedby': 'Foo',
-            'engineer': 'Foo',
-            #'gapless': '1',
-            'genre': 'Foo',
-            'grouping': 'Foo',
-            'isrc': 'Foo',
-            'key': 'E#m',
-            'label': 'Foo',
-            'lyricist': 'Foo',
-            'lyrics': 'Foo',
-            'media': 'Foo',
-            'mixer': 'Foo',
-            'mood': 'Foo',
-            'musicbrainz_albumartistid': 'Foo',
-            'musicbrainz_albumid': 'Foo',
-            'musicbrainz_artistid': 'Foo',
-            'musicbrainz_discid': 'Foo',
-            'musicbrainz_trackid': 'Foo',
-            'musicbrainz_trmid': 'Foo',
-            'musicip_fingerprint': 'Foo',
-            'musicip_puid': 'Foo',
-            'originaldate': '1980',
-            'performer:guest vocal': 'Foo',
-            #'podcast': '1',
-            #'podcasturl': 'Foo',
-            'producer': 'Foo',
-            'releasestatus': 'Foo',
-            'releasetype': 'Foo',
-            'remixer': 'Foo',
-            #'show': 'Foo',
-            #'showsort': 'Foo',
-            'subtitle': 'Foo',
-            'title': 'Foo',
-            # 'titlesort': 'Foo',
-            'totaldiscs': '2',
-            'totaltracks': '10',
-            'tracknumber': '2',
-        }
+
+        def setup_tags(self):
+            super().setup_tags()
+            self.remove_tags([
+                'albumsort',
+                'artistsort',
+                'discsubtitle',
+                'titlesort',
+            ])
 
 
-class OggVorbisTest(FormatsTest):
-    original = os.path.join('test', 'data', 'test.ogg')
+class OggVorbisTest(CommonTests.FormatsTest):
+    testfile = 'test.ogg'
     supports_ratings = True
-    tags = {
-        'albumartist': 'Foo',
-        'albumartistsort': 'Foo',
-        'album': 'Foo Bar',
-        'albumsort': 'Foo',
-        'arranger': 'Foo',
-        'artist': 'Foo',
-        'artistsort': 'Foo',
-        'asin': 'Foo',
-        'barcode': 'Foo',
-        'bpm': '80',
-        'catalognumber': 'Foo',
-        'comment:': 'Foo',
-        'comment:foo': 'Foo',
-        'compilation': '1',
-        'composer': 'Foo',
-        'composersort': 'Foo',
-        'conductor': 'Foo',
-        'copyright': 'Foo',
-        'date': '2004',
-        'discnumber': '1',
-        'discsubtitle': 'Foo',
-        'djmixer': 'Foo',
-        'encodedby': 'Foo',
-        'engineer': 'Foo',
-        #'gapless': '1',
-        'genre': 'Foo',
-        'grouping': 'Foo',
-        'isrc': 'Foo',
-        'key': 'E#m',
-        'label': 'Foo',
-        'lyricist': 'Foo',
-        'lyrics': 'Foo',
-        'media': 'Foo',
-        'mixer': 'Foo',
-        'mood': 'Foo',
-        'musicbrainz_albumartistid': 'Foo',
-        'musicbrainz_albumid': 'Foo',
-        'musicbrainz_artistid': 'Foo',
-        'musicbrainz_discid': 'Foo',
-        'musicbrainz_trackid': 'Foo',
-        'musicbrainz_trmid': 'Foo',
-        'musicip_fingerprint': 'Foo',
-        'musicip_puid': 'Foo',
-        'originaldate': '1980',
-        'performer:guest vocal': 'Foo',
-        #'podcast': '1',
-        #'podcasturl': 'Foo',
-        'producer': 'Foo',
-        'releasestatus': 'Foo',
-        'releasetype': 'Foo',
-        'remixer': 'Foo',
-        #'show': 'Foo',
-        #'showsort': 'Foo',
-        'subtitle': 'Foo',
-        'title': 'Foo',
-        'titlesort': 'Foo',
-        'totaldiscs': '2',
-        'totaltracks': '10',
-        'tracknumber': '2',
-    }
 
 
-class MP4Test(FormatsTest):
-    original = os.path.join('test', 'data', 'test.m4a')
+class MP4Test(CommonTests.FormatsTest):
+    testfile = 'test.m4a'
     supports_ratings = False
-    tags = {
-        'albumartist': 'Foo',
-        'albumartistsort': 'Foo',
-        'album': 'Foo Bar',
-        'albumsort': 'Foo',
-        #'arranger': 'Foo',
-        'artist': 'Foo',
-        'artistsort': 'Foo',
-        'asin': 'Foo',
-        'barcode': 'Foo',
-        'bpm': '80',
-        'catalognumber': 'Foo',
-        'comment:': 'Foo',
-        #'comment:foo': 'Foo',
-        'compilation': '1',
-        'composer': 'Foo',
-        'composersort': 'Foo',
-        'conductor': 'Foo',
-        'copyright': 'Foo',
-        'date': '2004',
-        'discnumber': '1',
-        'discsubtitle': 'Foo',
-        'djmixer': 'Foo',
-        'encodedby': 'Foo',
-        'engineer': 'Foo',
-        # FIXME: comment:foo is unsupported in our MP4 implementation
-        'gapless': '1',
-        'genre': 'Foo',
-        'grouping': 'Foo',
-        'isrc': 'Foo',
-        'key': 'E#m',
-        'label': 'Foo',
-        'lyricist': 'Foo',
-        'lyrics': 'Foo',
-        'media': 'Foo',
-        'mixer': 'Foo',
-        'mood': 'Foo',
-        'musicbrainz_albumartistid': 'Foo',
-        'musicbrainz_albumid': 'Foo',
-        'musicbrainz_artistid': 'Foo',
-        'musicbrainz_discid': 'Foo',
-        'musicbrainz_trackid': 'Foo',
-        'musicbrainz_trmid': 'Foo',
-        'musicip_fingerprint': 'Foo',
-        'musicip_puid': 'Foo',
-        #'originaldate': '1980',
-        #'performer:guest vocal': 'Foo',
-        'podcast': '1',
-        'podcasturl': 'Foo',
-        'producer': 'Foo',
-        'releasestatus': 'Foo',
-        'releasetype': 'Foo',
-        'remixer': 'Foo',
-        'show': 'Foo',
-        'showsort': 'Foo',
-        'subtitle': 'Foo',
-        'title': 'Foo',
-        'titlesort': 'Foo',
-        'totaldiscs': '2',
-        'totaltracks': '10',
-        'tracknumber': '2',
-    }
+
+    def setup_tags(self):
+        self.remove_tags([
+            'arranger',
+            'comment:foo',
+            'encodersettings',
+            'originaldate',
+            'originalyear',
+            'performer:guest vocal',
+            'website',
+        ])
 
 
-class WavPackTest(FormatsTest):
-    original = os.path.join('test', 'data', 'test.wv')
+class WavPackTest(CommonTests.FormatsTest):
+    testfile = 'test.wv'
     supports_ratings = False
-    tags = {
-        'albumartist': 'Foo',
-        'albumartistsort': 'Foo',
-        'album': 'Foo Bar',
-        'albumsort': 'Foo',
-        'arranger': 'Foo',
-        'artist': 'Foo',
-        'artistsort': 'Foo',
-        'asin': 'Foo',
-        'barcode': 'Foo',
-        'bpm': '80',
-        'catalognumber': 'Foo',
-        'comment:': 'Foo',
-        'comment:foo': 'Foo',
-        'compilation': '1',
-        'composer': 'Foo',
-        'composersort': 'Foo',
-        'conductor': 'Foo',
-        'copyright': 'Foo',
-        'date': '2004',
-        'discnumber': '1',
-        'discsubtitle': 'Foo',
-        'djmixer': 'Foo',
-        'encodedby': 'Foo',
-        'engineer': 'Foo',
-        #'gapless': '1',
-        'genre': 'Foo',
-        'grouping': 'Foo',
-        'isrc': 'Foo',
-        'key': 'E#m',
-        'label': 'Foo',
-        'lyricist': 'Foo',
-        'lyrics': 'Foo',
-        'media': 'Foo',
-        'mixer': 'Foo',
-        'mood': 'Foo',
-        'musicbrainz_albumartistid': 'Foo',
-        'musicbrainz_albumid': 'Foo',
-        'musicbrainz_artistid': 'Foo',
-        'musicbrainz_discid': 'Foo',
-        'musicbrainz_trackid': 'Foo',
-        'musicbrainz_trmid': 'Foo',
-        #'musicip_fingerprint': 'Foo',
-        'musicip_puid': 'Foo',
-        #'originaldate': '1980',
-        'performer:guest vocal': 'Foo',
-        #'podcast': '1',
-        #'podcasturl': 'Foo',
-        'producer': 'Foo',
-        'releasestatus': 'Foo',
-        'releasetype': 'Foo',
-        'remixer': 'Foo',
-        #'show': 'Foo',
-        #'showsort': 'Foo',
-        'subtitle': 'Foo',
-        'title': 'Foo',
-        'titlesort': 'Foo',
-        'totaldiscs': '2',
-        'totaltracks': '10',
-        'tracknumber': '2',
-    }
 
 
-class MusepackSV7Test(FormatsTest):
-    original = os.path.join('test', 'data', 'test-sv7.mpc')
+class MusepackSV7Test(CommonTests.FormatsTest):
+    testfile = 'test-sv7.mpc'
     supports_ratings = False
-    tags = {
-        'albumartist': 'Foo',
-        'albumartistsort': 'Foo',
-        'album': 'Foo Bar',
-        'albumsort': 'Foo',
-        'arranger': 'Foo',
-        'artist': 'Foo',
-        'artistsort': 'Foo',
-        'asin': 'Foo',
-        'barcode': 'Foo',
-        'bpm': '80',
-        'catalognumber': 'Foo',
-        'comment:': 'Foo',
-        'comment:foo': 'Foo',
-        'compilation': '1',
-        'composer': 'Foo',
-        'composersort': 'Foo',
-        'conductor': 'Foo',
-        'copyright': 'Foo',
-        'date': '2004',
-        'discnumber': '1',
-        'discsubtitle': 'Foo',
-        'djmixer': 'Foo',
-        'encodedby': 'Foo',
-        'engineer': 'Foo',
-        #'gapless': '1',
-        'genre': 'Foo',
-        'grouping': 'Foo',
-        'isrc': 'Foo',
-        'key': 'E#m',
-        'label': 'Foo',
-        'lyricist': 'Foo',
-        'lyrics': 'Foo',
-        'media': 'Foo',
-        'mixer': 'Foo',
-        'mood': 'Foo',
-        'musicbrainz_albumartistid': 'Foo',
-        'musicbrainz_albumid': 'Foo',
-        'musicbrainz_artistid': 'Foo',
-        'musicbrainz_discid': 'Foo',
-        'musicbrainz_trackid': 'Foo',
-        'musicbrainz_trmid': 'Foo',
-        #'musicip_fingerprint': 'Foo',
-        'musicip_puid': 'Foo',
-        #'originaldate': '1980',
-        'performer:guest vocal': 'Foo',
-        #'podcast': '1',
-        #'podcasturl': 'Foo',
-        'producer': 'Foo',
-        'releasestatus': 'Foo',
-        'releasetype': 'Foo',
-        'remixer': 'Foo',
-        #'show': 'Foo',
-        #'showsort': 'Foo',
-        'subtitle': 'Foo',
-        'title': 'Foo',
-        'titlesort': 'Foo',
-        'totaldiscs': '2',
-        'totaltracks': '10',
-        'tracknumber': '2',
-    }
 
 
-class MusepackSV8Test(FormatsTest):
-    original = os.path.join('test', 'data', 'test-sv8.mpc')
+class MusepackSV8Test(CommonTests.FormatsTest):
+    testfile = 'test-sv8.mpc'
     supports_ratings = False
-    tags = {
-        'albumartist': 'Foo',
-        'albumartistsort': 'Foo',
-        'album': 'Foo Bar',
-        'albumsort': 'Foo',
-        'arranger': 'Foo',
-        'artist': 'Foo',
-        'artistsort': 'Foo',
-        'asin': 'Foo',
-        'barcode': 'Foo',
-        'bpm': '80',
-        'catalognumber': 'Foo',
-        'comment:': 'Foo',
-        'comment:foo': 'Foo',
-        'compilation': '1',
-        'composer': 'Foo',
-        'composersort': 'Foo',
-        'conductor': 'Foo',
-        'copyright': 'Foo',
-        'date': '2004',
-        'discnumber': '1',
-        'discsubtitle': 'Foo',
-        'djmixer': 'Foo',
-        'encodedby': 'Foo',
-        'engineer': 'Foo',
-        #'gapless': '1',
-        'genre': 'Foo',
-        'grouping': 'Foo',
-        'isrc': 'Foo',
-        'key': 'E#m',
-        'label': 'Foo',
-        'lyricist': 'Foo',
-        'lyrics': 'Foo',
-        'media': 'Foo',
-        'mixer': 'Foo',
-        'mood': 'Foo',
-        'musicbrainz_albumartistid': 'Foo',
-        'musicbrainz_albumid': 'Foo',
-        'musicbrainz_artistid': 'Foo',
-        'musicbrainz_discid': 'Foo',
-        'musicbrainz_trackid': 'Foo',
-        'musicbrainz_trmid': 'Foo',
-        #'musicip_fingerprint': 'Foo',
-        'musicip_puid': 'Foo',
-        #'originaldate': '1980',
-        'performer:guest vocal': 'Foo',
-        #'podcast': '1',
-        #'podcasturl': 'Foo',
-        'producer': 'Foo',
-        'releasestatus': 'Foo',
-        'releasetype': 'Foo',
-        'remixer': 'Foo',
-        #'show': 'Foo',
-        #'showsort': 'Foo',
-        'subtitle': 'Foo',
-        'title': 'Foo',
-        'titlesort': 'Foo',
-        'totaldiscs': '2',
-        'totaltracks': '10',
-        'tracknumber': '2',
-    }
 
 
 cover_settings = {
