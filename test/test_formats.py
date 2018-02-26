@@ -154,12 +154,9 @@ class CommonTests:
                 self.testfile_ext = os.path.splitext(self.testfile)[1]
                 self.filename = self.copy_of_original_testfile()
 
-        def _unlink_copy(self, copy):
-            os.unlink(copy)
-
         def copy_of_original_testfile(self):
             fd, copy = mkstemp(suffix=self.testfile_ext)
-            self.addCleanup(self._unlink_copy, copy)
+            self.addCleanup(os.unlink, copy)
             os.close(fd)
             shutil.copy(self.testfile_path, copy)
             return copy
