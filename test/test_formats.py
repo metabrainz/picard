@@ -405,6 +405,19 @@ class TTATest(CommonTests.ID3Test):
     supports_ratings = True
 
 
+class DSFTest(CommonTests.ID3Test):
+    testfile = 'test.dsf'
+    supports_ratings = True
+
+    def setup_tags(self):
+        super().setup_tags()
+        self.remove_tags([
+            'albumsort',
+            'artistsort',
+            'discsubtitle',
+            'titlesort',
+        ])
+
 if picard.formats.AiffFile:
     class AIFFTest(CommonTests.ID3Test):
         testfile = 'test.aiff'
