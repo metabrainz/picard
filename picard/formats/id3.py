@@ -18,6 +18,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 import mutagen.apev2
+import mutagen.dsf
 import mutagen.mp3
 import mutagen.trueaudio
 try:
@@ -593,6 +594,36 @@ class TrueAudioFile(ID3File):
     def _info(self, metadata, file):
         super()._info(metadata, file)
         metadata['~format'] = self.NAME
+
+
+class DSFFile(ID3File):
+
+    """DSF file."""
+    EXTENSIONS = [".dsf", '.dff']
+    NAME = "DSF"
+    _File = mutagen.dsf.DSF
+
+    def _get_file(self, filename):
+        return mutagen.dsf.DSF(filename)
+
+    def _info(self, metadata, file):
+        super()._info(metadata, file)
+        metadata['~format'] = self.NAME
+
+    def _get_tags(self, filename):
+        file = self._get_file(filename)
+        if file.tags is None:
+            file.add_tags()
+        return file.tags
+
+    def _save_tags(self, tags, filename):
+        if config.setting['write_id3v23']:
+            tags.update_to_v23()
+            separator = config.setting['id3v23_join_with']
+            tags.save(filename, v2_version=3, v23_sep=separator)
+        else:
+            tags.update_to_v24()
+            tags.save(filename, v2_version=4)
 
 
 if mutagen.aiff:

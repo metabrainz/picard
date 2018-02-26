@@ -86,11 +86,13 @@ def open_(filename):
 
 from picard.formats.id3 import (
     AiffFile,
+    DSFFile,
     MP3File,
     TrueAudioFile,
 )
 if AiffFile:
     register_format(AiffFile)
+register_format(DSFFile)
 register_format(MP3File)
 register_format(TrueAudioFile)
 
