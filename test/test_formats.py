@@ -126,6 +126,15 @@ TAGS = {
     'website': 'http://example.com',
 }
 
+
+def skipUnlessTestfile(func):
+    def _decorator(self, *args, **kwargs):
+        if not self.testfile:
+            raise unittest.SkipTest("No test file set")
+        func(self, *args, **kwargs)
+    return _decorator
+
+
 # prevent unittest to run tests in those classes
 class CommonTests:
 
@@ -166,9 +175,8 @@ class CommonTests:
             for tag in tag_list:
                 del self.tags[tag]
 
+        @skipUnlessTestfile
         def test_simple_tags(self):
-            if not self.testfile:
-                raise unittest.SkipTest("No test file set")
             metadata = Metadata()
             for (key, value) in self.tags.items():
                 metadata[key] = value
@@ -176,9 +184,8 @@ class CommonTests:
             for (key, value) in self.tags.items():
                 self.assertEqual(loaded_metadata[key], value, '%s: %r != %r' % (key, loaded_metadata[key], value))
 
+        @skipUnlessTestfile
         def test_delete_simple_tags(self):
-            if not self.testfile:
-                raise unittest.SkipTest("No test file set")
             metadata = Metadata()
             for (key, value) in self.tags.items():
                 metadata[key] = value
@@ -195,9 +202,8 @@ class CommonTests:
                 self.assertIn('~rating', original_metadata.keys())
                 self.assertNotIn('~rating', new_metadata.keys())
 
+        @skipUnlessTestfile
         def test_delete_complex_tags(self):
-            if not self.testfile:
-                raise unittest.SkipTest("No test file set")
             metadata = Metadata()
 
             for (key, value) in self.tags.items():
@@ -213,9 +219,8 @@ class CommonTests:
             else:
                 self.assertNotIn('totaldiscs', new_metadata)
 
+        @skipUnlessTestfile
         def test_delete_performer(self):
-            if not self.testfile:
-                raise unittest.SkipTest("No test file set")
             if 'performer:guest vocal' in self.tags:
                 metadata = Metadata()
                 for (key, value) in self.tags.items():
@@ -232,9 +237,8 @@ class CommonTests:
                 self.assertIn('performer:piano', original_metadata)
                 self.assertNotIn('performer:piano', new_metadata)
 
+        @skipUnlessTestfile
         def test_ratings(self):
-            if not self.testfile:
-                raise unittest.SkipTest("No test file set")
             if not self.supports_ratings:
                 raise unittest.SkipTest("Ratings not supported")
             for rating in range(6):
@@ -244,17 +248,15 @@ class CommonTests:
                 loaded_metadata = save_and_load_metadata(self.filename, metadata)
                 self.assertEqual(int(loaded_metadata['~rating']), rating, '~rating: %r != %r' % (loaded_metadata['~rating'], rating))
 
+        @skipUnlessTestfile
         def test_guess_format(self):
-            if not self.testfile:
-                raise unittest.SkipTest("No test file set")
             temp_file = self.copy_of_original_testfile()
             audio = picard.formats.guess_format(temp_file)
             audio_original = picard.formats.open_(self.filename)
             self.assertEqual(type(audio), type(audio_original))
 
+        @skipUnlessTestfile
         def test_split_ext(self):
-            if not self.testfile:
-                raise unittest.SkipTest("No test file set")
             f = picard.formats.open_(self.filename)
             self.assertEqual(f._fixed_splitext(f.filename), os.path.splitext(f.filename))
             self.assertEqual(f._fixed_splitext(f.EXTENSIONS[0]), ('', f.EXTENSIONS[0]))
@@ -270,9 +272,8 @@ class CommonTests:
                 'originaldate': '1980'
             })
 
+        @skipUnlessTestfile
         def test_id3_freeform_delete(self):
-            if not self.testfile:
-                raise unittest.SkipTest("No test file set")
             metadata = Metadata()
             for (key, value) in self.tags.items():
                 metadata[key] = value
@@ -285,9 +286,8 @@ class CommonTests:
             self.assertIn('Foo', original_metadata)
             self.assertNotIn('Foo', new_metadata)
 
+        @skipUnlessTestfile
         def test_id3_ufid_delete(self):
-            if not self.testfile:
-                raise unittest.SkipTest("No test file set")
             metadata = Metadata()
             for (key, value) in self.tags.items():
                 metadata[key] = value
@@ -299,9 +299,8 @@ class CommonTests:
             self.assertIn('musicbrainz_recordingid', original_metadata)
             self.assertNotIn('musicbrainz_recordingid', new_metadata)
 
+        @skipUnlessTestfile
         def test_id3_multiple_freeform_delete(self):
-            if not self.testfile:
-                raise unittest.SkipTest("No test file set")
             metadata = Metadata()
             for (key, value) in self.tags.items():
                 metadata[key] = value
@@ -321,11 +320,11 @@ class CommonTests:
             self.assertNotIn('Bar', new_metadata)
             self.assertIn('FooBar', new_metadata)
 
+        @skipUnlessTestfile
         def test_performer_duplication(self):
-            if not self.testfile:
-                raise unittest.SkipTest("No test file set")
 
-            def reset_id3_ver(): config.setting['write_id3v23'] = False
+            def reset_id3_ver():
+                config.setting['write_id3v23'] = False
 
             self.addCleanup(reset_id3_ver)
             config.setting['write_id3v23'] = True
@@ -345,9 +344,8 @@ class CommonTests:
 
             self.assertEqual(len(new_metadata['performer:piano']), len(original_metadata['performer:piano']))
 
+        @skipUnlessTestfile
         def test_comment_delete(self):
-            if not self.testfile:
-                raise unittest.SkipTest("No test file set")
             metadata = Metadata()
             for (key, value) in self.tags.items():
                 metadata[key] = value
@@ -361,9 +359,8 @@ class CommonTests:
             self.assertIn('comment:foo', new_metadata)
             self.assertNotIn('comment:bar', new_metadata)
 
+        @skipUnlessTestfile
         def test_id3v23_simple_tags(self):
-            if not self.testfile:
-                raise unittest.SkipTest("No test file set")
 
             def reset_to_id3v24():
                 config.setting['write_id3v23'] = False
