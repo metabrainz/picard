@@ -140,13 +140,20 @@ class CommonTests:
             self.setup_tags()
             config.setting = settings.copy()
             QtCore.QObject.tagger = FakeTagger()
-            if not self.testfile:
-                return
-            self.testfile_ext = os.path.splitext(self.testfile)[1]
-            fd, self.filename = mkstemp(suffix=self.testfile_ext)
+            if self.testfile:
+                self.testfile_path = os.path.join('test', 'data', self.testfile)
+                self.testfile_ext = os.path.splitext(self.testfile)[1]
+                self.filename = self.copy_of_original_testfile()
+
+        def _unlink_copy(self, copy):
+            os.unlink(copy)
+
+        def copy_of_original_testfile(self):
+            fd, copy = mkstemp(suffix=self.testfile_ext)
+            self.addCleanup(self._unlink_copy, copy)
             os.close(fd)
-            self.testfile_path = os.path.join('test', 'data', self.testfile)
-            shutil.copy(self.testfile_path, self.filename)
+            shutil.copy(self.testfile_path, copy)
+            return copy
 
         def setup_tags(self):
             pass
@@ -158,11 +165,6 @@ class CommonTests:
         def remove_tags(self, tag_list=None):
             for tag in tag_list:
                 del self.tags[tag]
-
-        def tearDown(self):
-            if not self.testfile:
-                return
-            os.unlink(self.filename)
 
         def test_simple_tags(self):
             if not self.testfile:
@@ -245,10 +247,7 @@ class CommonTests:
         def test_guess_format(self):
             if not self.testfile:
                 raise unittest.SkipTest("No test file set")
-            fd, temp_file = mkstemp()
-            os.close(fd)
-            self.addCleanup(os.unlink, temp_file)
-            shutil.copy(self.testfile_path, temp_file)
+            temp_file = self.copy_of_original_testfile()
             audio = picard.formats.guess_format(temp_file)
             audio_original = picard.formats.open_(self.filename)
             self.assertEqual(type(audio), type(audio_original))
