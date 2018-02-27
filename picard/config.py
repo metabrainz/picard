@@ -33,7 +33,7 @@ class ConfigSection(LockableObject):
     """Configuration section."""
 
     def __init__(self, config, name):
-        LockableObject.__init__(self)
+        super().__init__()
         self.__config = config
         self.__name = name
 

@@ -328,7 +328,7 @@ class Tagger(QtWidgets.QApplication):
             # cause the event's sender to get a -9874 error, so
             # apparently there's some magic inside QFileOpenEvent...
             return 1
-        return QtWidgets.QApplication.event(self, event)
+        return super().event(event)
 
     def _file_loaded(self, file, target=None):
         if file is not None and not file.has_error():
@@ -723,12 +723,12 @@ class Tagger(QtWidgets.QApplication):
 
     def set_wait_cursor(self):
         """Sets the waiting cursor."""
-        QtWidgets.QApplication.setOverrideCursor(
+        super().setOverrideCursor(
             QtGui.QCursor(QtCore.Qt.WaitCursor))
 
     def restore_cursor(self):
         """Restores the cursor set by ``set_wait_cursor``."""
-        QtWidgets.QApplication.restoreOverrideCursor()
+        super().restoreOverrideCursor()
 
     def refresh(self, objs):
         for obj in objs:

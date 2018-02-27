@@ -65,7 +65,7 @@ class TagCounter(dict):
         self.different = set()
 
     def __getitem__(self, tag):
-        return dict.get(self, tag, [""])
+        return super().get(tag, [""])
 
     def add(self, tag, values):
         if tag not in self.different:
@@ -237,7 +237,7 @@ class MetadataBox(QtWidgets.QTableWidget):
             else:
                 self.editing = item
                 item.setText(values[0])
-                return QtWidgets.QTableWidget.edit(self, index, trigger, event)
+                return super().edit(index, trigger, event)
         return False
 
     def event(self, e):
@@ -252,10 +252,10 @@ class MetadataBox(QtWidgets.QTableWidget):
                     self.clipboard = list(self.tag_diff.new[tag])
             elif e.key() == QtCore.Qt.Key_V and column == 2 and tag != "~length":
                 self.set_tag_values(tag, list(self.clipboard))
-        return QtWidgets.QTableWidget.event(self, e)
+        return super().event(e)
 
     def closeEditor(self, editor, hint):
-        QtWidgets.QTableWidget.closeEditor(self, editor, hint)
+        super().closeEditor(editor, hint)
         tag = self.tag_diff.tag_names[self.editing.row()]
         old = self.tag_diff.new[tag]
         new = [editor.text()]

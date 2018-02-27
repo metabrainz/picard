@@ -257,16 +257,16 @@ class Metadata(dict):
             self.pop(tag, None)
 
     def clear(self):
-        dict.clear(self)
+        super().clear()
         self.images = ImageList()
         self.length = 0
         self.deleted_tags = set()
 
     def getall(self, name):
-        return dict.get(self, name, [])
+        return super().get(name, [])
 
     def get(self, name, default=None):
-        values = dict.get(self, name, None)
+        values = super().get(name, None)
         if values:
             return self.multi_valued_joiner.join(values)
         else:
@@ -276,7 +276,7 @@ class Metadata(dict):
         return self.get(name, '')
 
     def set(self, name, values):
-        dict.__setitem__(self, name, values)
+        super().__setitem__(name, values)
         if name in self.deleted_tags:
             self.deleted_tags.remove(name)
 
@@ -305,7 +305,7 @@ class Metadata(dict):
         self.deleted_tags.add(name)
 
     def items(self):
-        for name, values in dict.items(self):
+        for name, values in super().items():
             for value in values:
                 yield name, value
 

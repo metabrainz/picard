@@ -141,11 +141,11 @@ class MainWindow(QtWidgets.QMainWindow):
             else:
                 self.remove()
         else:
-            QtWidgets.QMainWindow.keyPressEvent(self, event)
+            super().keyPressEvent(event)
 
     def show(self):
         self.restoreWindowState()
-        QtWidgets.QMainWindow.show(self)
+        super().show()
         self.metadata_box.restore_state()
 
     def closeEvent(self, event):
