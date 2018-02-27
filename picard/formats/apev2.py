@@ -204,8 +204,22 @@ class APEv2File(File):
         else:
             return name.title()
 
-    def supports_tag(self, name):
-        return bool(name)
+    @classmethod
+    def supports_tag(cls, name):
+        unsupported_tags = {
+            'podcasturl',
+            'gapless',
+            'showsort',
+            'show',
+            'arranger',
+            'musicip_fingerprint',
+            'podcast',
+            'totaltracks'}
+        return (bool(name)
+                and name not in unsupported_tags
+                and not name.startswith('performer:')
+                and not name.startswith('comment:')
+                )
 
 
 class MusepackFile(APEv2File):

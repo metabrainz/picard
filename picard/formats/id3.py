@@ -487,7 +487,8 @@ class ID3File(File):
             except KeyError:
                 pass
 
-    def supports_tag(self, name):
+    @classmethod
+    def supports_tag(cls, name):
         return ((name and not name.startswith("~"))
                 or name in ("~rating", "~length")
                 or name.startswith("~id3"))
@@ -625,13 +626,17 @@ class DSFFile(ID3File):
             tags.update_to_v24()
             tags.save(filename, v2_version=4)
 
-    def supports_tag(self, name):
+    @classmethod
+    def supports_tag(cls, name):
         return (super().supports_tag(name)
-                and name not in ['albumsort', 'artistsort', 'discsubtitle', 'titlesort'])
+                and name not in {'albumsort',
+                                 'artistsort',
+                                 'discsubtitle',
+                                 'titlesort'})
 
 
 if mutagen.aiff:
-    class AiffFile(ID3File):
+    class AiffFile(DSFFile):
 
         """AIFF file."""
         EXTENSIONS = [".aiff", ".aif", ".aifc"]
@@ -641,23 +646,5 @@ if mutagen.aiff:
         def _get_file(self, filename):
             return mutagen.aiff.AIFF(filename)
 
-        def _get_tags(self, filename):
-            file = self._get_file(filename)
-            if file.tags is None:
-                file.add_tags()
-            return file.tags
-
-        def _save_tags(self, tags, filename):
-            if config.setting['write_id3v23']:
-                tags.update_to_v23()
-                separator = config.setting['id3v23_join_with']
-                tags.save(filename, v2_version=3, v23_sep=separator)
-            else:
-                tags.update_to_v24()
-                tags.save(filename, v2_version=4)
-
-        def _info(self, metadata, file):
-            super()._info(metadata, file)
-            metadata['~format'] = self.NAME
 else:
     AiffFile = None
