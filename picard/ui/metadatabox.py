@@ -26,7 +26,7 @@ from picard.album import Album
 from picard.cluster import Cluster
 from picard.track import Track
 from picard.file import File
-from picard.util import format_time, throttle, thread, uniqify
+from picard.util import format_time, throttle, thread, uniqify, restore_method
 from picard.util.tags import display_tag_name
 from picard.ui.edittagdialog import EditTagDialog
 from picard.metadata import MULTI_VALUED_JOINER
@@ -553,6 +553,7 @@ class MetadataBox(QtWidgets.QTableWidget):
         font.setItalic(italic)
         item.setFont(font)
 
+    @restore_method
     def restore_state(self):
         state = config.persist["metadatabox_header_state"]
         header = self.horizontalHeader()

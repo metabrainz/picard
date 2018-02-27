@@ -489,5 +489,10 @@ def load_json(data):
 def parse_json(reply):
     return load_json(reply.readAll())
 
+def restore_method(func):
+    def func_wrapper(*args, **kwargs):
+       if not QtCore.QObject.tagger._no_restore:
+           return func(*args, **kwargs)
+    return func_wrapper
 
 builtins.__dict__['string_'] = convert_to_string

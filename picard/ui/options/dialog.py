@@ -19,7 +19,7 @@
 
 from PyQt5 import QtCore, QtWidgets
 from picard import config
-from picard.util import webbrowser2
+from picard.util import webbrowser2, restore_method
 from picard.ui import PicardDialog, HashableTreeWidgetItem
 from picard.ui.util import StandardButton
 from picard.ui.options import (
@@ -157,6 +157,7 @@ class OptionsDialog(PicardDialog):
         config.persist["options_size"] = self.size()
         config.persist["options_splitter"] = self.ui.splitter.saveState()
 
+    @restore_method
     def restoreWindowState(self):
         pos = config.persist["options_position"]
         if pos.x() > 0 and pos.y() > 0:

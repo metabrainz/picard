@@ -24,7 +24,7 @@ from collections import namedtuple, OrderedDict
 from picard import config, log
 from picard.ui import PicardDialog
 from picard.ui.util import StandardButton, ButtonLineEdit
-from picard.util import icontheme, throttle
+from picard.util import icontheme, throttle, restore_method
 
 
 class ResultTable(QtWidgets.QTableWidget):
@@ -347,6 +347,7 @@ class SearchDialog(PicardDialog):
         self.save_state()
         QtWidgets.QDialog.reject(self)
 
+    @restore_method
     def restore_state(self):
         size = config.persist[self.dialog_window_size]
         if size:
@@ -355,6 +356,7 @@ class SearchDialog(PicardDialog):
             self.search_box.restore_checkbox_state()
         log.debug("restore_state: %s" % self.dialog_window_size)
 
+    @restore_method
     def restore_table_header_state(self):
         header = self.table.horizontalHeader()
         state = config.persist[self.dialog_header_state]
