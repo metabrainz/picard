@@ -111,7 +111,8 @@ class OptionsDialog(PicardDialog):
         self.ui.pages_tree.expandAll()
         max_page_name = self.ui.pages_tree.sizeHintForColumn(0) + 2*self.ui.pages_tree.frameWidth()
         self.ui.pages_tree.collapseAll()
-        self.ui.pages_tree.setMinimumWidth(max_page_name)
+        self.ui.splitter.setSizes([max_page_name,
+                                   self.geometry().width() - max_page_name])
 
         self.ui.pages_tree.setHeaderLabels([""])
         self.ui.pages_tree.header().hide()
