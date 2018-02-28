@@ -226,7 +226,7 @@ class PluginData(PluginShared):
 
     def __getattribute__(self, name):
         try:
-            return PluginShared.__getattribute__(self, name)
+            return super().__getattribute__(name)
         except AttributeError:
             log.debug('Attribute %r not found for plugin %r', name, self.module_name)
             return None

@@ -101,11 +101,11 @@ class FileBrowser(QtWidgets.QTreeView):
         index = self.indexAt(event.pos())
         if index.isValid():
             self.selectionModel().setCurrentIndex(index, QtCore.QItemSelectionModel.NoUpdate)
-        QtWidgets.QTreeView.mousePressEvent(self, event)
+        super().mousePressEvent(event)
 
     def focusInEvent(self, event):
         self.focused = True
-        QtWidgets.QTreeView.focusInEvent(self, event)
+        super().focusInEvent(event)
 
     def show_hidden(self, state):
         config.persist["show_hidden_files"] = state

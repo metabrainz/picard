@@ -599,7 +599,7 @@ class Album(DataObject, Item):
 class NatAlbum(Album):
 
     def __init__(self):
-        Album.__init__(self, "NATS")
+        super().__init__("NATS")
         self.loaded = True
         self.update()
 
@@ -611,7 +611,7 @@ class NatAlbum(Album):
             for file in track.linked_files:
                 track.update_file_metadata(file)
         self.enable_update_metadata_images(True)
-        Album.update(self, update_tracks)
+        super().update(update_tracks)
 
     def _finalize_loading(self, error):
         self.update()

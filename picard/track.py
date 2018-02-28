@@ -252,7 +252,7 @@ class NonAlbumTrack(Track):
     def column(self, column):
         if column == "title":
             return self.metadata["title"]
-        return Track.column(self, column)
+        return super().column(column)
 
     def load(self, priority=False, refresh=False):
         self.metadata.copy(self.album.metadata)
