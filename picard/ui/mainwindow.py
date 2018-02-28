@@ -46,7 +46,7 @@ from picard.ui.util import (
     ButtonLineEdit,
     MultiDirsSelectDialog
 )
-from picard.util import icontheme, webbrowser2, throttle, thread
+from picard.util import icontheme, webbrowser2, throttle, thread, restore_method
 from picard.util.cdrom import discid, get_cdrom_drives
 from picard.plugin import ExtensionPoint
 
@@ -202,6 +202,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.panel.save_state()
         self.metadata_box.save_state()
 
+    @restore_method
     def restoreWindowState(self):
         self.restoreState(config.persist["window_state"])
         pos = config.persist["window_position"]

@@ -27,6 +27,7 @@ from picard.mbjson import (
     label_info_from_node,
     release_dates_and_countries_from_node,
 )
+from picard.util import restore_method
 
 
 class CDLookupDialog(PicardDialog):
@@ -94,12 +95,14 @@ class CDLookupDialog(PicardDialog):
         self.save_state()
         QtWidgets.QDialog.reject(self)
 
+    @restore_method
     def restore_state(self):
         size = config.persist[self.dialog_window_size]
         if size:
             self.resize(size)
             log.debug("restore_state: %s" % self.dialog_window_size)
 
+    @restore_method
     def restore_header_state(self):
         header = self.ui.release_list.header()
         state = config.persist[self.dialog_header_state]

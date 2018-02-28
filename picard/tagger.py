@@ -101,6 +101,7 @@ class Tagger(QtWidgets.QApplication):
     __instance = None
 
     _debug = False
+    _no_restore = False
 
     def __init__(self, picard_args, unparsed_args, localedir, autoupdate):
 
@@ -120,6 +121,7 @@ class Tagger(QtWidgets.QApplication):
 
         self._cmdline_files = picard_args.FILE
         self._autoupdate = autoupdate
+        self._no_restore = picard_args.no_restore
 
         self.debug(
             picard_args.debug
@@ -772,6 +774,8 @@ def process_picard_args():
                         help="location of the configuration file")
     parser.add_argument("-d", "--debug", action='store_true',
                         help="enable debug-level logging")
+    parser.add_argument("-N", "--no-restore", action='store_true',
+                        help="do not restore positions and/or sizes")
     parser.add_argument('-v', '--version', action='store_true',
                         help="display version information and exit")
     parser.add_argument("-V", "--long-version", action='store_true',
