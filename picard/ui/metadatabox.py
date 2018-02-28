@@ -290,38 +290,39 @@ class MetadataBox(QtWidgets.QTableWidget):
             removals = []
             useorigs = []
             item = self.currentItem()
-            column = item.column()
-            for tag in tags:
-                if tag in self.lookup_tags().keys():
-                    if (column == 1 or column == 2) and len(tags) == 1 and item.text():
-                        if column == 1:
-                            values = self.tag_diff.orig[tag]
-                        else:
-                            values = self.tag_diff.new[tag]
-                        lookup_action = QtWidgets.QAction(_("Lookup in &Browser"), self.parent)
-                        lookup_action.triggered.connect(partial(self.open_link, values, tag))
-                        menu.addAction(lookup_action)
-                if self.tag_is_removable(tag):
-                    removals.append(partial(self.remove_tag, tag))
-                status = self.tag_diff.status[tag] & TagStatus.Changed
-                if status == TagStatus.Changed or status == TagStatus.Removed:
-                    for file in self.files:
-                        objects = [file]
-                        if file.parent in self.tracks and len(self.files & set(file.parent.linked_files)) == 1:
-                            objects.append(file.parent)
-                        orig_values = list(file.orig_metadata.getall(tag)) or [""]
-                        useorigs.append(partial(self.set_tag_values, tag, orig_values, objects))
-            if removals:
-                remove_tag_action = QtWidgets.QAction(_("Remove"), self.parent)
-                remove_tag_action.triggered.connect(lambda: [f() for f in removals])
-                remove_tag_action.setShortcut(self.remove_tag_shortcut.key())
-                menu.addAction(remove_tag_action)
-            if useorigs:
-                name = ngettext("Use Original Value", "Use Original Values", len(useorigs))
-                use_orig_value_action = QtWidgets.QAction(name, self.parent)
-                use_orig_value_action.triggered.connect(lambda: [f() for f in useorigs])
-                menu.addAction(use_orig_value_action)
-                menu.addSeparator()
+            if item:
+                column = item.column()
+                for tag in tags:
+                    if tag in self.lookup_tags().keys():
+                        if (column == 1 or column == 2) and len(tags) == 1 and item.text():
+                            if column == 1:
+                                values = self.tag_diff.orig[tag]
+                            else:
+                                values = self.tag_diff.new[tag]
+                            lookup_action = QtWidgets.QAction(_("Lookup in &Browser"), self.parent)
+                            lookup_action.triggered.connect(partial(self.open_link, values, tag))
+                            menu.addAction(lookup_action)
+                    if self.tag_is_removable(tag):
+                        removals.append(partial(self.remove_tag, tag))
+                    status = self.tag_diff.status[tag] & TagStatus.Changed
+                    if status == TagStatus.Changed or status == TagStatus.Removed:
+                        for file in self.files:
+                            objects = [file]
+                            if file.parent in self.tracks and len(self.files & set(file.parent.linked_files)) == 1:
+                                objects.append(file.parent)
+                            orig_values = list(file.orig_metadata.getall(tag)) or [""]
+                            useorigs.append(partial(self.set_tag_values, tag, orig_values, objects))
+                if removals:
+                    remove_tag_action = QtWidgets.QAction(_("Remove"), self.parent)
+                    remove_tag_action.triggered.connect(lambda: [f() for f in removals])
+                    remove_tag_action.setShortcut(self.remove_tag_shortcut.key())
+                    menu.addAction(remove_tag_action)
+                if useorigs:
+                    name = ngettext("Use Original Value", "Use Original Values", len(useorigs))
+                    use_orig_value_action = QtWidgets.QAction(name, self.parent)
+                    use_orig_value_action.triggered.connect(lambda: [f() for f in useorigs])
+                    menu.addAction(use_orig_value_action)
+                    menu.addSeparator()
             if len(tags) == 1 or removals or useorigs:
                 menu.addSeparator()
             menu.addAction(self.add_tag_action)
