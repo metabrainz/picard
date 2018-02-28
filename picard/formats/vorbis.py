@@ -260,7 +260,8 @@ class VCommentFile(File):
         else:
             return name
 
-    def supports_tag(self, name):
+    @classmethod
+    def supports_tag(cls, name):
         return bool(name)
 
 

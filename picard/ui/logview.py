@@ -26,6 +26,7 @@ from functools import partial
 from PyQt5 import QtCore, QtGui, QtWidgets
 from picard import config, log
 from picard.ui import PicardDialog
+from picard.util import restore_method
 
 
 class LogViewDialog(PicardDialog):
@@ -49,6 +50,7 @@ class LogViewDialog(PicardDialog):
             config.persist[position] = pos
         config.persist[size] = self.size()
 
+    @restore_method
     def restoreWindowState(self, position, size):
         pos = config.persist[position]
         if pos.x() > 0 and pos.y() > 0:

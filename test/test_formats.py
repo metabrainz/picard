@@ -8,6 +8,7 @@ from PyQt5 import QtCore
 from picard import config, log
 from picard.coverart.image import CoverArtImage, TagCoverArtImage
 from picard.metadata import Metadata
+from picard.formats import ext_to_format
 from tempfile import mkstemp
 
 
@@ -146,13 +147,14 @@ class CommonTests:
 
         def setUp(self):
             self.tags = TAGS.copy()
-            self.setup_tags()
+            _name, self.testfile_ext = os.path.splitext(self.testfile)
             config.setting = settings.copy()
             QtCore.QObject.tagger = FakeTagger()
             if self.testfile:
                 self.testfile_path = os.path.join('test', 'data', self.testfile)
                 self.testfile_ext = os.path.splitext(self.testfile)[1]
                 self.filename = self.copy_of_original_testfile()
+            self.setup_tags()
 
         def copy_of_original_testfile(self):
             fd, copy = mkstemp(suffix=self.testfile_ext)
@@ -162,7 +164,8 @@ class CommonTests:
             return copy
 
         def setup_tags(self):
-            pass
+            supports_tag = ext_to_format(self.testfile_ext[1:]).supports_tag
+            self.remove_tags([tag for tag in self.tags if not supports_tag(tag)])
 
         def set_tags(self, dict_tag_value=None):
             if dict_tag_value:
@@ -265,6 +268,7 @@ class CommonTests:
 
         def setup_tags(self):
             # Note: in ID3v23, the original date can only be stored as a year.
+            super().setup_tags()
             self.set_tags({
                 'originaldate': '1980'
             })
@@ -380,20 +384,6 @@ class WMATest(CommonTests.FormatsTest):
     testfile = 'test.wma'
     supports_ratings = True
 
-    def setup_tags(self):
-        self.remove_tags([
-            'comment:foo',
-            'performer:guest vocal',
-            'podcasturl',
-            'gapless',
-            'showsort',
-            'show',
-            'arranger',
-            'musicip_fingerprint',
-            'podcast',
-            'totaltracks',
-        ])
-
 
 class MP3Test(CommonTests.ID3Test):
     testfile = 'test.mp3'
@@ -409,28 +399,11 @@ class DSFTest(CommonTests.ID3Test):
     testfile = 'test.dsf'
     supports_ratings = True
 
-    def setup_tags(self):
-        super().setup_tags()
-        self.remove_tags([
-            'albumsort',
-            'artistsort',
-            'discsubtitle',
-            'titlesort',
-        ])
 
 if picard.formats.AiffFile:
     class AIFFTest(CommonTests.ID3Test):
         testfile = 'test.aiff'
         supports_ratings = False
-
-        def setup_tags(self):
-            super().setup_tags()
-            self.remove_tags([
-                'albumsort',
-                'artistsort',
-                'discsubtitle',
-                'titlesort',
-            ])
 
 
 class OggVorbisTest(CommonTests.FormatsTest):
@@ -441,17 +414,6 @@ class OggVorbisTest(CommonTests.FormatsTest):
 class MP4Test(CommonTests.FormatsTest):
     testfile = 'test.m4a'
     supports_ratings = False
-
-    def setup_tags(self):
-        self.remove_tags([
-            'arranger',
-            'comment:foo',
-            'encodersettings',
-            'originaldate',
-            'originalyear',
-            'performer:guest vocal',
-            'website',
-        ])
 
 
 class WavPackTest(CommonTests.FormatsTest):

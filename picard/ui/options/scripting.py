@@ -24,6 +24,7 @@ from picard.script import ScriptParser
 from picard.ui import HashableListWidgetItem
 from picard.ui.options import OptionsPage, OptionsCheckError, register_options_page
 from picard.ui.ui_options_script import Ui_ScriptingOptionsPage
+from picard.util import restore_method
 
 
 DEFAULT_NUMBERED_SCRIPT_NAME = N_("My script %d")
@@ -402,8 +403,7 @@ class ScriptingOptionsPage(OptionsPage):
         if last_selected_script:
             last_selected_script.setSelected(True)
 
-        # Preserve previous splitter position
-        self.ui.splitter.restoreState(config.persist["scripting_splitter"])
+        self.restore_state()
 
         args = {
             "picard-doc-scripting-url": PICARD_URLS['doc_scripting'],
@@ -411,6 +411,11 @@ class ScriptingOptionsPage(OptionsPage):
         text = _('<a href="%(picard-doc-scripting-url)s">Open Scripting'
                  ' Documentation in your browser</a>') % args
         self.ui.scripting_doc_link.setText(text)
+
+    @restore_method
+    def restore_state(self):
+        # Preserve previous splitter position
+        self.ui.splitter.restoreState(config.persist["scripting_splitter"])
 
     def save(self):
         config.setting["enable_tagger_scripts"] = self.ui.enable_tagger_scripts.isChecked()

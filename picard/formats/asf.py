@@ -222,8 +222,9 @@ class ASFFile(File):
             if real_name and real_name in tags:
                 del tags[real_name]
 
-    def supports_tag(self, name):
-        return (name in self.__TRANS
+    @classmethod
+    def supports_tag(cls, name):
+        return (name in cls.__TRANS
                 or name in ('~rating', '~length', 'totaldiscs')
                 or name.startswith('lyrics'))
 

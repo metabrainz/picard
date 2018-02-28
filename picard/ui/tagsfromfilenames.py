@@ -24,6 +24,7 @@ from picard import config
 from picard.ui.util import StandardButton
 from picard.ui import PicardDialog
 from picard.ui.ui_tagsfromfilenames import Ui_TagsFromFileNamesDialog
+from picard.util import restore_method
 from picard.util.tags import display_tag_name
 
 
@@ -143,6 +144,7 @@ class TagsFromFileNamesDialog(PicardDialog):
             config.persist["tags_from_filenames_position"] = pos
         config.persist["tags_from_filenames_size"] = self.size()
 
+    @restore_method
     def restoreWindowState(self):
         pos = config.persist["tags_from_filenames_position"]
         if pos.x() > 0 and pos.y() > 0:

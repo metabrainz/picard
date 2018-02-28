@@ -26,7 +26,7 @@ from picard.album import Album, NatAlbum
 from picard.cluster import Cluster, ClusterList, UnclusteredFiles
 from picard.file import File
 from picard.track import Track, NonAlbumTrack
-from picard.util import encode_filename, icontheme
+from picard.util import encode_filename, icontheme, restore_method
 from picard.plugin import ExtensionPoint
 from picard.ui.ratingwidget import RatingWidget
 from picard.ui.collectionmenu import CollectionMenu
@@ -129,6 +129,7 @@ class MainPanel(QtWidgets.QSplitter):
         for view in self.views:
             view.save_state()
 
+    @restore_method
     def restore_state(self):
         self.restoreState(config.persist["splitter_state"])
 
@@ -408,6 +409,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         menu.exec_(event.globalPos())
         event.accept()
 
+    @restore_method
     def restore_state(self):
         sizes = config.persist[self.view_sizes.name]
         header = self.header()
