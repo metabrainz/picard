@@ -225,11 +225,12 @@ class MP4File(File):
                 if tag not in ("totaltracks", "totaldiscs"):
                     del tags[real_name]
 
-    def supports_tag(self, name):
-        return (name in self.__r_text_tags
-                or name in self.__r_bool_tags
-                or name in self.__r_freeform_tags
-                or name in self.__other_supported_tags
+    @classmethod
+    def supports_tag(cls, name):
+        return (name in cls.__r_text_tags
+                or name in cls.__r_bool_tags
+                or name in cls.__r_freeform_tags
+                or name in cls.__other_supported_tags
                 or name.startswith('lyrics:')
                 or name in ('~length', 'musicip_fingerprint'))
 
