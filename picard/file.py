@@ -461,7 +461,8 @@ class File(QtCore.QObject, Item):
             self.parent = parent
             self.tagger.acoustidmanager.update(self, self.metadata['musicbrainz_recordingid'])
 
-    def supports_tag(self, name):
+    @classmethod
+    def supports_tag(cls, name):
         """Returns whether tag ``name`` can be saved to the file."""
         return True
 
