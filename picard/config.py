@@ -38,23 +38,15 @@ class ConfigSection(LockableObject):
         self.__config = {}
         self.__name = name
         self.load_keys()
-        self.__qt_config.parent().register_cleanup(self.dump_keys)
 
     def __qt_keys(self):
-        return filter(lambda key: key.startswith('%s/' % self.__name),
+        prefix = self.__name + '/'
+        return filter(lambda key: key.startswith(prefix),
                       self.__qt_config.allKeys())
 
     def load_keys(self):
         for key in self.__qt_keys():
             self.__config[key] = self.__qt_config.value(key)
-
-    def dump_keys(self):
-        log.debug('Dumping config(%s) to file.', self.__name)
-        for key in self.__qt_keys():
-            if key not in self.__config:
-                self.__qt_config.remove(key)
-        for key, value in self.__config.items():
-            self.__qt_config.setValue(key, value)
 
     def __getitem__(self, name):
         opt = Option.get(self.__name, name)
@@ -63,9 +55,11 @@ class ConfigSection(LockableObject):
         return self.value(name, opt, opt.default)
 
     def __setitem__(self, name, value):
+        key = "%s/%s" % (self.__name, name)
         self.lock_for_write()
         try:
-            self.__config["%s/%s" % (self.__name, name)] = value
+            self.__config[key] = value
+            self.__qt_config.setValue(key, value)
         finally:
             self.unlock()
 
@@ -75,8 +69,13 @@ class ConfigSection(LockableObject):
 
     def remove(self, key):
         key = "%s/%s" % (self.__name, key)
-        if key in self.__config:
-            self.__config.pop(key)
+        self.lock_for_write()
+        try:
+            if key in self.__config:
+                self.__config.pop(key)
+                self.__qt_config.remove(key)
+        finally:
+            self.unlock()
 
     def raw_value(self, key):
         """Return an option value without any type conversion."""
