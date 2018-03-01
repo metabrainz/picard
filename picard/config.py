@@ -20,7 +20,7 @@
 from operator import itemgetter
 from PyQt5 import QtCore
 from picard import (PICARD_APP_NAME, PICARD_ORG_NAME, PICARD_VERSION,
-                    version_to_string, version_from_string)
+                    version_to_string, version_from_string, log)
 from picard.util import LockableObject
 
 
@@ -67,15 +67,16 @@ class ConfigSection(LockableObject):
     def value(self, name, option_type, default=None):
         """Return an option value converted to the given Option type."""
         key = "%s/%s" % (self.__name, name)
+        result = default
         self.lock_for_read()
         try:
             if self.__config.contains(key):
-                return option_type.convert(self.raw_value(name))
-            return default
-        except:
-            return default
+                result = option_type.convert(self.raw_value(name))
+        except Exception as e:
+            log.error('Unable to fetch value for key: %s, error occured: %s', name, e)
         finally:
             self.unlock()
+        return result
 
 
 class Config(QtCore.QSettings):
