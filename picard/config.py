@@ -37,14 +37,14 @@ class ConfigSection(LockableObject):
         self.__qt_config = config
         self.__config = {}
         self.__name = name
-        self.load_keys()
+        self.__load_keys()
 
     def __qt_keys(self):
         prefix = self.__name + '/'
         return filter(lambda key: key.startswith(prefix),
                       self.__qt_config.allKeys())
 
-    def load_keys(self):
+    def __load_keys(self):
         for key in self.__qt_keys():
             self.__config[key] = self.__qt_config.value(key)
 
@@ -63,12 +63,12 @@ class ConfigSection(LockableObject):
         finally:
             self.unlock()
 
-    def __contains__(self, key):
-        key = "%s/%s" % (self.__name, key)
+    def __contains__(self, name):
+        key = self.__name + '/' + name
         return key in self.__config
 
-    def remove(self, key):
-        key = "%s/%s" % (self.__name, key)
+    def remove(self, name):
+        key = self.__name + '/' + name
         self.lock_for_write()
         try:
             if key in self.__config:
@@ -77,14 +77,14 @@ class ConfigSection(LockableObject):
         finally:
             self.unlock()
 
-    def raw_value(self, key):
+    def raw_value(self, name):
         """Return an option value without any type conversion."""
-        value = self.__config["%s/%s" % (self.__name, key)]
+        value = self.__config[self.__name + '/' + name]
         return value
 
     def value(self, name, option_type, default=None):
         """Return an option value converted to the given Option type."""
-        key = "%s/%s" % (self.__name, name)
+        key = self.__name + '/' + name
         self.lock_for_read()
         try:
             if key in self.__config:
