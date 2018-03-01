@@ -40,13 +40,17 @@ class ConfigSection(LockableObject):
         self.load_keys()
         self.__qt_config.parent().register_cleanup(self.dump_keys)
 
+    def __qt_keys(self):
+        return filter(lambda key: key.startswith('%s/' % self.__name),
+                      self.__qt_config.allKeys())
+
     def load_keys(self):
-        for key in self.__qt_config.allKeys():
+        for key in self.__qt_keys():
             self.__config[key] = self.__qt_config.value(key)
 
     def dump_keys(self):
         log.debug('Dumping config(%s) to file.', self.__name)
-        for key in self.__qt_config.allKeys():
+        for key in self.__qt_keys():
             if key not in self.__config:
                 self.__qt_config.remove(key)
         for key, value in self.__config.items():
