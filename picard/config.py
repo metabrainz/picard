@@ -34,8 +34,19 @@ class ConfigSection(LockableObject):
 
     def __init__(self, config, name):
         super().__init__()
-        self.__config = config
+        self.__qt_config = config
+        self.__config = {}
         self.__name = name
+        self.__load_keys()
+
+    def __qt_keys(self):
+        prefix = self.__name + '/'
+        return filter(lambda key: key.startswith(prefix),
+                      self.__qt_config.allKeys())
+
+    def __load_keys(self):
+        for key in self.__qt_keys():
+            self.__config[key] = self.__qt_config.value(key)
 
     def __getitem__(self, name):
         opt = Option.get(self.__name, name)
@@ -44,35 +55,42 @@ class ConfigSection(LockableObject):
         return self.value(name, opt, opt.default)
 
     def __setitem__(self, name, value):
+        key = "%s/%s" % (self.__name, name)
         self.lock_for_write()
         try:
-            self.__config.setValue("%s/%s" % (self.__name, name), value)
+            self.__config[key] = value
+            self.__qt_config.setValue(key, value)
         finally:
             self.unlock()
 
-    def __contains__(self, key):
-        key = "%s/%s" % (self.__name, key)
-        return self.__config.contains(key)
+    def __contains__(self, name):
+        key = self.__name + '/' + name
+        return key in self.__config
 
-    def remove(self, key):
-        key = "%s/%s" % (self.__name, key)
-        if self.__config.contains(key):
-            self.__config.remove(key)
+    def remove(self, name):
+        key = self.__name + '/' + name
+        self.lock_for_write()
+        try:
+            if key in self.__config:
+                self.__config.pop(key)
+                self.__qt_config.remove(key)
+        finally:
+            self.unlock()
 
-    def raw_value(self, key):
+    def raw_value(self, name):
         """Return an option value without any type conversion."""
-        value = self.__config.value("%s/%s" % (self.__name, key))
+        value = self.__config[self.__name + '/' + name]
         return value
 
     def value(self, name, option_type, default=None):
         """Return an option value converted to the given Option type."""
-        key = "%s/%s" % (self.__name, name)
+        key = self.__name + '/' + name
         self.lock_for_read()
         try:
-            if self.__config.contains(key):
+            if key in self.__config:
                 return option_type.convert(self.raw_value(name))
             return default
-        except:
+        except Exception:
             return default
         finally:
             self.unlock()
