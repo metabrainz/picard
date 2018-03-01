@@ -34,8 +34,23 @@ class ConfigSection(LockableObject):
 
     def __init__(self, config, name):
         super().__init__()
-        self.__config = config
+        self.__qt_config = config
+        self.__config = {}
         self.__name = name
+        self.load_keys()
+        self.__qt_config.parent().register_cleanup(self.dump_keys)
+
+    def load_keys(self):
+        for key in self.__qt_config.allKeys():
+            self.__config[key] = self.__qt_config.value(key)
+
+    def dump_keys(self):
+        log.debug('Dumping config(%s) to file.', self.__name)
+        for key in self.__qt_config.allKeys():
+            if key not in self.__config:
+                self.__qt_config.remove(key)
+        for key, value in self.__config.items():
+            self.__qt_config.setValue(key, value)
 
     def __getitem__(self, name):
         opt = Option.get(self.__name, name)
@@ -46,22 +61,22 @@ class ConfigSection(LockableObject):
     def __setitem__(self, name, value):
         self.lock_for_write()
         try:
-            self.__config.setValue("%s/%s" % (self.__name, name), value)
+            self.__config["%s/%s" % (self.__name, name)] = value
         finally:
             self.unlock()
 
     def __contains__(self, key):
         key = "%s/%s" % (self.__name, key)
-        return self.__config.contains(key)
+        return key in self.__config
 
     def remove(self, key):
         key = "%s/%s" % (self.__name, key)
-        if self.__config.contains(key):
-            self.__config.remove(key)
+        if key in self.__config:
+            self.__config.pop(key)
 
     def raw_value(self, key):
         """Return an option value without any type conversion."""
-        value = self.__config.value("%s/%s" % (self.__name, key))
+        value = self.__config["%s/%s" % (self.__name, key)]
         return value
 
     def value(self, name, option_type, default=None):
@@ -69,10 +84,10 @@ class ConfigSection(LockableObject):
         key = "%s/%s" % (self.__name, name)
         self.lock_for_read()
         try:
-            if self.__config.contains(key):
+            if key in self.__config:
                 return option_type.convert(self.raw_value(name))
             return default
-        except:
+        except Exception:
             return default
         finally:
             self.unlock()
