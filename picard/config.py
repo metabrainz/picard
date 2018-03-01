@@ -55,7 +55,7 @@ class ConfigSection(LockableObject):
         return self.value(name, opt, opt.default)
 
     def __setitem__(self, name, value):
-        key = "%s/%s" % (self.__name, name)
+        key = self.__name + '/' + name
         self.lock_for_write()
         try:
             self.__config[key] = value
