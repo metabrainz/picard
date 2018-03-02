@@ -20,14 +20,14 @@
 import os.path
 import traceback
 from PyQt5 import QtGui, QtCore, QtWidgets
-from picard import log
+from picard import config, log
 from picard.file import File
 from picard.track import Track
 from picard.album import Album
 from picard.coverart.image import CoverArtImageIOError
 from picard.util import (format_time, encode_filename,
                          bytes2human, webbrowser2,
-                         union_sorted_lists, htmlescape)
+                         union_sorted_lists, htmlescape, restore_method)
 from picard.ui import PicardDialog
 from picard.ui.ui_infodialog import Ui_InfoDialog
 
@@ -97,6 +97,8 @@ class ArtworkTable(QtWidgets.QTableWidget):
 
 class InfoDialog(PicardDialog):
 
+    defaultdialogsize = QtCore.QSize(665, 436)
+
     def __init__(self, obj, parent=None):
         super().__init__(parent)
         self.obj = obj
@@ -131,14 +133,15 @@ class InfoDialog(PicardDialog):
         self.ui.artwork_table = ArtworkTable(self.display_existing_artwork)
         self.ui.artwork_table.setObjectName("artwork_table")
         self.ui.vboxlayout1.addWidget(self.ui.artwork_table)
-        if self.display_existing_artwork:
-            self.resize(665, 436)
         self.setTabOrder(self.ui.tabWidget, self.ui.artwork_table)
         self.setTabOrder(self.ui.artwork_table, self.ui.buttonBox)
 
         self.setWindowTitle(_("Info"))
         self.artwork_table = self.ui.artwork_table
         self._display_tabs()
+        self.resize(self.defaultdialogsize)
+        self.restore_state()
+        self.finished.connect(self.save_state)
 
     def _display_tabs(self):
         self._display_info_tab()
@@ -237,6 +240,17 @@ class InfoDialog(PicardDialog):
         if filename:
             webbrowser2.open("file://" + filename)
 
+    @restore_method
+    def restore_state(self):
+        opt_geometry = self.dialog_window_geometry
+        geometry = config.persist[opt_geometry]
+        if not geometry.isNull():
+            self.restoreGeometry(geometry)
+
+    def save_state(self):
+        opt_geometry = self.dialog_window_geometry
+        config.persist[opt_geometry] = self.saveGeometry()
+
 
 def format_file_info(file_):
     info = []
@@ -273,6 +287,12 @@ def format_file_info(file_):
 
 class FileInfoDialog(InfoDialog):
 
+    dialog_window_geometry = "fileinfodialog_window_geometry"
+
+    options = [
+        config.Option("persist", dialog_window_geometry, QtCore.QByteArray()),
+    ]
+
     def __init__(self, file_, parent=None):
         super().__init__(file_, parent)
         self.setWindowTitle(_("Info") + " - " + file_.base_filename)
@@ -284,6 +304,12 @@ class FileInfoDialog(InfoDialog):
 
 
 class AlbumInfoDialog(InfoDialog):
+
+    dialog_window_geometry = "albuminfodialog_window_geometry"
+
+    options = [
+        config.Option("persist", dialog_window_geometry, QtCore.QByteArray()),
+    ]
 
     def __init__(self, album, parent=None):
         super().__init__(album, parent)
@@ -311,6 +337,12 @@ class AlbumInfoDialog(InfoDialog):
 
 class TrackInfoDialog(InfoDialog):
 
+    dialog_window_geometry = "trackinfodialog_window_geometry"
+
+    options = [
+        config.Option("persist", dialog_window_geometry, QtCore.QByteArray()),
+    ]
+
     def __init__(self, track, parent=None):
         super().__init__(track, parent)
         self.setWindowTitle(_("Track Info"))
@@ -334,6 +366,12 @@ class TrackInfoDialog(InfoDialog):
 
 
 class ClusterInfoDialog(InfoDialog):
+
+    dialog_window_geometry = "clusterinfodialog_window_geometry"
+
+    options = [
+        config.Option("persist", dialog_window_geometry, QtCore.QByteArray()),
+    ]
 
     def __init__(self, cluster, parent=None):
         super().__init__(cluster, parent)
