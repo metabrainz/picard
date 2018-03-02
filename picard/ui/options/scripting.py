@@ -320,7 +320,8 @@ class ScriptingOptionsPage(OptionsPage):
                         current_item.setSelected(True)
                     else:
                         item = self.ui.script_list.item(0)
-                        item.setSelected(True)
+                        if item:
+                            item.setSelected(True)
             elif row < self.last_selected_script_pos:
                 self.last_selected_script_pos -= 1
 
