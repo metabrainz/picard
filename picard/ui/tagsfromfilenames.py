@@ -24,16 +24,15 @@ from picard import config
 from picard.ui.util import StandardButton
 from picard.ui import PicardDialog
 from picard.ui.ui_tagsfromfilenames import Ui_TagsFromFileNamesDialog
-from picard.util import restore_method
 from picard.util.tags import display_tag_name
 
 
 class TagsFromFileNamesDialog(PicardDialog):
 
+    defaultsize = QtCore.QSize(560, 400)
+
     options = [
         config.TextOption("persist", "tags_from_filenames_format", ""),
-        config.Option("persist", "tags_from_filenames_position", QtCore.QPoint()),
-        config.Option("persist", "tags_from_filenames_size", QtCore.QSize(560, 400)),
     ]
 
     def __init__(self, files, parent=None):
@@ -64,7 +63,6 @@ class TagsFromFileNamesDialog(PicardDialog):
         self.ui.buttonbox.rejected.connect(self.reject)
         self.ui.preview.clicked.connect(self.preview)
         self.ui.files.setHeaderLabels([_("File Name")])
-        self.restoreWindowState()
         self.files = files
         self.items = []
         for file in files:
@@ -127,26 +125,4 @@ class TagsFromFileNamesDialog(PicardDialog):
                 file.metadata[name] = value
             file.update()
         config.persist["tags_from_filenames_format"] = self.ui.format.currentText()
-        self.saveWindowState()
-        QtWidgets.QDialog.accept(self)
-
-    def reject(self):
-        self.saveWindowState()
-        QtWidgets.QDialog.reject(self)
-
-    def closeEvent(self, event):
-        self.saveWindowState()
-        event.accept()
-
-    def saveWindowState(self):
-        pos = self.pos()
-        if not pos.isNull():
-            config.persist["tags_from_filenames_position"] = pos
-        config.persist["tags_from_filenames_size"] = self.size()
-
-    @restore_method
-    def restoreWindowState(self):
-        pos = config.persist["tags_from_filenames_position"]
-        if pos.x() > 0 and pos.y() > 0:
-            self.move(pos)
-        self.resize(config.persist["tags_from_filenames_size"])
+        super().accept()

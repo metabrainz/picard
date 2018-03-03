@@ -117,11 +117,9 @@ class CoverCell:
 
 class AlbumSearchDialog(SearchDialog):
 
-    dialog_window_size = "albumsearchdialog_window_size"
     dialog_header_state = "albumsearchdialog_header_state"
 
     options = [
-        config.Option("persist", dialog_window_size, QtCore.QSize(720, 360)),
         config.Option("persist", dialog_header_state, QtCore.QByteArray())
     ]
 

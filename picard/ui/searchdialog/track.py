@@ -37,11 +37,9 @@ from picard.ui.searchdialog import SearchDialog, Retry, BY_DURATION, BY_NUMBER
 
 class TrackSearchDialog(SearchDialog):
 
-    dialog_window_size = "tracksearchdialog_window_size"
     dialog_header_state = "tracksearchdialog_header_state"
 
     options = [
-        config.Option("persist", dialog_window_size, QtCore.QSize(720, 360)),
         config.Option("persist", dialog_header_state, QtCore.QByteArray())
     ]
 

@@ -31,11 +31,12 @@ from picard.util import restore_method
 
 
 class CDLookupDialog(PicardDialog):
-    dialog_window_size = "cdlookupdialog_window_size"
+
+    defaultsize = QtCore.QSize(720, 360)
+    autorestore = False
     dialog_header_state = "cdlookupdialog_header_state"
 
     options = [
-        config.Option("persist", dialog_window_size, QtCore.QSize(720, 360)),
         config.Option("persist", dialog_header_state, QtCore.QByteArray())
     ]
 
@@ -49,7 +50,6 @@ class CDLookupDialog(PicardDialog):
         self.ui.release_list.setAlternatingRowColors(True)
         self.ui.release_list.setHeaderLabels([_("Album"), _("Artist"), _("Date"), _("Country"),
                                               _("Labels"), _("Catalog #s"), _("Barcode")])
-        self.restore_state()
         if self.releases:
             def myjoin(l):
                 return "\n".join(l)
@@ -75,48 +75,31 @@ class CDLookupDialog(PicardDialog):
         self.ui.release_list.sortByColumn(3, QtCore.Qt.AscendingOrder)
         self.ui.release_list.sortByColumn(2, QtCore.Qt.DescendingOrder)
         self.ui.lookup_button.clicked.connect(self.lookup)
+        self.restore_geometry()
         self.restore_header_state()
-
-    def save_and_accept(self):
-        self.save_state()
-        QtWidgets.QDialog.accept(self)
+        self.finished.connect(self.save_header_state)
 
     def accept(self):
         release_id = self.ui.release_list.currentItem().data(0, QtCore.Qt.UserRole)
         self.tagger.load_album(release_id, discid=self.disc.id)
-        self.save_and_accept()
+        super().accept()
 
     def lookup(self):
         lookup = self.tagger.get_file_lookup()
         lookup.disc_lookup(self.disc.submission_url)
-        self.save_and_accept()
-
-    def reject(self):
-        self.save_state()
-        QtWidgets.QDialog.reject(self)
-
-    @restore_method
-    def restore_state(self):
-        size = config.persist[self.dialog_window_size]
-        if size:
-            self.resize(size)
-            log.debug("restore_state: %s" % self.dialog_window_size)
+        super().accept()
 
     @restore_method
     def restore_header_state(self):
-        header = self.ui.release_list.header()
-        state = config.persist[self.dialog_header_state]
-        if state:
-            header.restoreState(state)
-            log.debug("restore_state: %s" % self.dialog_header_state)
-
-    def save_state(self):
         if self.ui.release_list:
-            self.save_header_state()
-            log.debug("save_state: %s" % self.dialog_window_size)
-        config.persist[self.dialog_window_size] = self.size()
+            header = self.ui.release_list.header()
+            state = config.persist[self.dialog_header_state]
+            if state:
+                header.restoreState(state)
+                log.debug("restore_state: %s" % self.dialog_header_state)
 
     def save_header_state(self):
-        state = self.ui.release_list.header().saveState()
-        config.persist[self.dialog_header_state] = state
-        log.debug("save_state: %s" % self.dialog_header_state)
+        if self.ui.release_list:
+            state = self.ui.release_list.header().saveState()
+            config.persist[self.dialog_header_state] = state
+            log.debug("save_state: %s" % self.dialog_header_state)

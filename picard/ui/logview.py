@@ -26,15 +26,14 @@ from functools import partial
 from PyQt5 import QtCore, QtGui, QtWidgets
 from picard import config, log
 from picard.ui import PicardDialog
-from picard.util import restore_method
 
 
 class LogViewDialog(PicardDialog):
+    defaultsize = QtCore.QSize(570, 400)
 
-    def __init__(self, title, w, h, parent=None):
+    def __init__(self, title, parent=None):
         super().__init__(parent)
         self.setWindowFlags(QtCore.Qt.Window)
-        self.resize(w, h)
         self.setWindowTitle(title)
         self.doc = QtGui.QTextDocument()
         self.textCursor = QtGui.QTextCursor(self.doc)
@@ -44,26 +43,8 @@ class LogViewDialog(PicardDialog):
         self.setLayout(self.vbox)
         self.vbox.addWidget(self.browser)
 
-    def saveWindowState(self, position, size):
-        pos = self.pos()
-        if not pos.isNull():
-            config.persist[position] = pos
-        config.persist[size] = self.size()
-
-    @restore_method
-    def restoreWindowState(self, position, size):
-        pos = config.persist[position]
-        if pos.x() > 0 and pos.y() > 0:
-            self.move(pos)
-        self.resize(config.persist[size])
-
-    def closeEvent(self, event):
-        return super().closeEvent(event)
-
 
 class LogViewCommon(LogViewDialog):
-    WIDTH = 570
-    HEIGHT = 400
 
     def __init__(self, log_tail, *args, **kwargs):
         self.displaying = False
@@ -144,17 +125,12 @@ class VerbosityMenu(QtWidgets.QMenu):
 class LogView(LogViewCommon):
 
     options = [
-        config.Option("persist", "logview_position", QtCore.QPoint()),
-        config.Option("persist", "logview_size", QtCore.QSize(
-            LogViewCommon.WIDTH, LogViewCommon.HEIGHT)),
         config.IntOption("setting", "log_verbosity", log.VERBOSITY_DEFAULT),
     ]
 
     def __init__(self, parent=None):
-        super().__init__(log.main_tail, _("Log"), w=self.WIDTH,
-                         h=self.HEIGHT, parent=parent)
+        super().__init__(log.main_tail, _("Log"), parent=parent)
         self.verbosity = config.setting['log_verbosity']
-        self.restoreWindowState("logview_position", "logview_size")
 
         self._setup_formats()
         self.hl_text = ''
@@ -301,10 +277,6 @@ class LogView(LogViewCommon):
         self.verbosity = level
         self.verbosity_menu.set_verbosity(self.verbosity)
 
-    def closeEvent(self, event):
-        self.saveWindowState("logview_position", "logview_size")
-        super().closeEvent(event)
-
     def _verbosity_changed(self, level):
         if level != self.verbosity:
             config.setting['log_verbosity'] = level
@@ -314,17 +286,6 @@ class LogView(LogViewCommon):
 
 
 class HistoryView(LogViewCommon):
-    options = [
-        config.Option("persist", "historyview_position", QtCore.QPoint()),
-        config.Option("persist", "historyview_size", QtCore.QSize(LogViewCommon.WIDTH,
-                                                                  LogViewCommon.HEIGHT)),
-    ]
 
     def __init__(self, parent=None):
-        super().__init__(log.history_tail, _("Activity History"), w=self.WIDTH,
-                         h=self.HEIGHT, parent=parent)
-        self.restoreWindowState("historyview_position", "historyview_size")
-
-    def closeEvent(self, event):
-        self.saveWindowState("historyview_position", "historyview_size")
-        super().closeEvent(event)
+        super().__init__(log.history_tail, _("Activity History"), parent=parent)

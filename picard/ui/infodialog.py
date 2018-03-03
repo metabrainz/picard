@@ -97,6 +97,9 @@ class ArtworkTable(QtWidgets.QTableWidget):
 
 class InfoDialog(PicardDialog):
 
+    defaultsize = QtCore.QSize(665, 436)
+    autorestore = False
+
     def __init__(self, obj, parent=None):
         super().__init__(parent)
         self.obj = obj
@@ -131,14 +134,13 @@ class InfoDialog(PicardDialog):
         self.ui.artwork_table = ArtworkTable(self.display_existing_artwork)
         self.ui.artwork_table.setObjectName("artwork_table")
         self.ui.vboxlayout1.addWidget(self.ui.artwork_table)
-        if self.display_existing_artwork:
-            self.resize(665, 436)
         self.setTabOrder(self.ui.tabWidget, self.ui.artwork_table)
         self.setTabOrder(self.ui.artwork_table, self.ui.buttonBox)
 
         self.setWindowTitle(_("Info"))
         self.artwork_table = self.ui.artwork_table
         self._display_tabs()
+        self.restore_geometry()
 
     def _display_tabs(self):
         self._display_info_tab()

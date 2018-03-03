@@ -19,10 +19,39 @@
 
 
 import uuid
+from picard import config
 from PyQt5 import QtCore, QtWidgets
+from picard.util import restore_method
 
 
-class PicardDialog(QtWidgets.QDialog):
+class PreserveGeometry:
+
+    defaultsize = None
+    autorestore = True
+
+    def __init__(self):
+        config.Option("persist", self.opt_name(), QtCore.QByteArray())
+        if self.autorestore:
+            self.restore_geometry()
+        if getattr(self, 'finished', None):
+            self.finished.connect(self.save_geometry)
+
+    def opt_name(self):
+        return 'geometry_' + self.__class__.__name__
+
+    @restore_method
+    def restore_geometry(self):
+        geometry = config.persist[self.opt_name()]
+        if not geometry.isNull():
+            self.restoreGeometry(geometry)
+        elif self.defaultsize:
+            self.resize(self.defaultsize)
+
+    def save_geometry(self):
+        config.persist[self.opt_name()] = self.saveGeometry()
+
+
+class PicardDialog(QtWidgets.QDialog, PreserveGeometry):
 
     flags = QtCore.Qt.WindowSystemMenuHint | QtCore.Qt.WindowTitleHint
 

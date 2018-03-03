@@ -28,11 +28,9 @@ from picard.ui.searchdialog import SearchDialog, Retry, BY_NUMBER
 
 class ArtistSearchDialog(SearchDialog):
 
-    dialog_window_size = "artistsearchdialog_window_size"
     dialog_header_state = "artistsearchdialog_header_state"
 
     options = [
-        config.Option("persist", dialog_window_size, QtCore.QSize(720, 360)),
         config.Option("persist", dialog_header_state, QtCore.QByteArray())
     ]
 
