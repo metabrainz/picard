@@ -24,6 +24,7 @@ from PyQt5.QtCore import PYQT_VERSION_STR as pyqt_version, QT_VERSION_STR
 from picard import PICARD_FANCY_VERSION_STR
 from picard.disc import discid_version
 from picard.util.astrcmp import astrcmp_implementation
+from PyQt5.QtNetwork import QSslSocket
 
 
 _versions = OrderedDict([
@@ -33,6 +34,7 @@ _versions = OrderedDict([
     ("mutagen-version", mutagen_version),
     ("discid-version", discid_version),
     ("astrcmp", astrcmp_implementation),
+    ("SSL", QSslSocket.sslLibraryVersionString())
 ])
 
 _names = {
@@ -42,6 +44,7 @@ _names = {
     "mutagen-version": "Mutagen",
     "discid-version": "Discid",
     "astrcmp": "astrcmp",
+    "SSL": "SSL",
 }
 
 
