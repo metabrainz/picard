@@ -29,6 +29,7 @@ from picard.cluster import Cluster
 from picard.file import File
 from picard.track import Track
 from picard.formats import supported_formats
+from picard.ui import PreserveGeometry
 from picard.ui.coverartbox import CoverArtBox
 from picard.ui.itemviews import MainPanel
 from picard.ui.metadatabox import MetadataBox
@@ -58,14 +59,14 @@ def register_ui_init(function):
     ui_init.register(function.__module__, function)
 
 
-class MainWindow(QtWidgets.QMainWindow):
+class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
+    defaultsize = QtCore.QSize(780, 560)
+    autorestore = False
     selection_updated = QtCore.pyqtSignal(object)
 
     options = [
         config.Option("persist", "window_state", QtCore.QByteArray()),
-        config.Option("persist", "window_position", QtCore.QPoint()),
-        config.Option("persist", "window_size", QtCore.QSize(780, 560)),
         config.Option("persist", "bottom_splitter_state", QtCore.QByteArray()),
         config.BoolOption("persist", "window_maximized", False),
         config.BoolOption("persist", "view_cover_art", True),
@@ -183,16 +184,7 @@ class MainWindow(QtWidgets.QMainWindow):
     def saveWindowState(self):
         config.persist["window_state"] = self.saveState()
         isMaximized = int(self.windowState()) & QtCore.Qt.WindowMaximized != 0
-        if isMaximized:
-            # FIXME: this doesn't include the window frame
-            geom = self.normalGeometry()
-            config.persist["window_position"] = geom.topLeft()
-            config.persist["window_size"] = geom.size()
-        else:
-            pos = self.pos()
-            if not pos.isNull():
-                config.persist["window_position"] = pos
-            config.persist["window_size"] = self.size()
+        self.save_geometry()
         config.persist["window_maximized"] = isMaximized
         config.persist["view_cover_art"] = self.show_cover_art_action.isChecked()
         config.persist["view_toolbar"] = self.show_toolbar_action.isChecked()
@@ -205,16 +197,7 @@ class MainWindow(QtWidgets.QMainWindow):
     @restore_method
     def restoreWindowState(self):
         self.restoreState(config.persist["window_state"])
-        pos = config.persist["window_position"]
-        size = config.persist["window_size"]
-        self._desktopgeo = self.tagger.desktop().screenGeometry()
-        if (pos.x() > 0 and pos.y() > 0
-            and pos.x() + size.width() < self._desktopgeo.width()
-            and pos.y() + size.height() < self._desktopgeo.height()):
-            self.move(pos)
-        if size.width() <= 0 or size.height() <= 0:
-            size = QtCore.QSize(780, 560)
-        self.resize(size)
+        self.restore_geometry()
         if config.persist["window_maximized"]:
             self.setWindowState(QtCore.Qt.WindowMaximized)
         bottom_splitter_state = config.persist["bottom_splitter_state"]

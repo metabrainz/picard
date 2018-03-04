@@ -158,6 +158,8 @@ def to_seconds(timestr):
 
 class SearchDialog(PicardDialog):
 
+    defaultsize = QtCore.QSize(720, 360)
+    autorestore = False
     scrolled = pyqtSignal()
 
     def __init__(self, parent, accept_button_title, show_search=True):
@@ -172,6 +174,7 @@ class SearchDialog(PicardDialog):
         # matching label as values
         self.columns = None
         self.sorting_enabled = True
+        self.finished.connect(self.save_state)
 
     @property
     def columns(self):
@@ -340,21 +343,13 @@ class SearchDialog(PicardDialog):
             idx = self.table.selectionModel().selectedRows()[0]
             row = self.table.itemFromIndex(idx).data(QtCore.Qt.UserRole)
             self.accept_event(row)
-        self.save_state()
-        QtWidgets.QDialog.accept(self)
-
-    def reject(self):
-        self.save_state()
-        QtWidgets.QDialog.reject(self)
+        super().accept()
 
     @restore_method
     def restore_state(self):
-        size = config.persist[self.dialog_window_size]
-        if size:
-            self.resize(size)
+        self.restore_geometry()
         if self.show_search:
             self.search_box.restore_checkbox_state()
-        log.debug("restore_state: %s" % self.dialog_window_size)
 
     @restore_method
     def restore_table_header_state(self):
@@ -368,8 +363,6 @@ class SearchDialog(PicardDialog):
     def save_state(self):
         if self.table:
             self.save_table_header_state()
-        config.persist[self.dialog_window_size] = self.size()
-        log.debug("save_state: %s" % self.dialog_window_size)
 
     def save_table_header_state(self):
         state = self.table.horizontalHeader().saveState()

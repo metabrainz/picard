@@ -25,6 +25,9 @@ from picard.ui.ui_edittagdialog import Ui_EditTagDialog
 
 class EditTagDialog(PicardDialog):
 
+    defaultsize = None
+    autorestore = False
+
     def __init__(self, window, tag):
         super().__init__(window)
         self.ui = Ui_EditTagDialog()
@@ -55,6 +58,7 @@ class EditTagDialog(PicardDialog):
         self.ui.remove_value.clicked.connect(self.remove_value)
         self.value_list.itemChanged.connect(self.value_edited)
         self.value_list.itemSelectionChanged.connect(self.value_selection_changed)
+        self.restore_geometry()
 
     def edit_value(self):
         item = self.value_list.currentItem()
@@ -175,4 +179,4 @@ class EditTagDialog(PicardDialog):
             obj.update()
         self.window.ignore_selection_changes = False
         self.window.update_selection()
-        QtWidgets.QDialog.accept(self)
+        super().accept()

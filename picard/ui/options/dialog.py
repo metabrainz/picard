@@ -47,9 +47,10 @@ from picard.ui.options import (
 
 class OptionsDialog(PicardDialog):
 
+    defaultsize = QtCore.QSize(560, 400)
+    autorestore = False
+
     options = [
-        config.Option("persist", "options_position", QtCore.QPoint()),
-        config.Option("persist", "options_size", QtCore.QSize(560, 400)),
         config.Option("persist", "options_splitter", QtCore.QByteArray()),
     ]
 
@@ -119,6 +120,7 @@ class OptionsDialog(PicardDialog):
         self.ui.pages_tree.itemSelectionChanged.connect(self.switch_page)
 
         self.restoreWindowState()
+        self.finished.connect(self.saveWindowState)
 
         for page in self.pages:
             page.load()
@@ -143,26 +145,14 @@ class OptionsDialog(PicardDialog):
                 return
         for page in self.pages:
             page.save()
-        self.saveWindowState()
-        QtWidgets.QDialog.accept(self)
-
-    def closeEvent(self, event):
-        self.saveWindowState()
-        event.accept()
+        super().accept()
 
     def saveWindowState(self):
-        pos = self.pos()
-        if not pos.isNull():
-            config.persist["options_position"] = pos
-        config.persist["options_size"] = self.size()
         config.persist["options_splitter"] = self.ui.splitter.saveState()
 
     @restore_method
     def restoreWindowState(self):
-        pos = config.persist["options_position"]
-        if pos.x() > 0 and pos.y() > 0:
-            self.move(pos)
-        self.resize(config.persist["options_size"])
+        self.restore_geometry()
         self.ui.splitter.restoreState(config.persist["options_splitter"])
 
     def restore_all_defaults(self):
