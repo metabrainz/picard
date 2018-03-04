@@ -32,6 +32,30 @@ from picard.ui import PicardDialog
 from picard.ui.ui_infodialog import Ui_InfoDialog
 
 
+class ArtworkCoverWidget(QtWidgets.QWidget):
+    """A QWidget that can be added to artwork column cell of ArtworkTable."""
+
+    def __init__(self, pixmap=None, text=None, parent=None):
+        super().__init__(parent=parent)
+        layout = QtWidgets.QVBoxLayout()
+
+        if pixmap is not None:
+            image_label = QtWidgets.QLabel()
+            image_label.setPixmap(pixmap.scaled(170, 170, QtCore.Qt.KeepAspectRatio,
+                                            QtCore.Qt.SmoothTransformation))
+            image_label.setAlignment(QtCore.Qt.AlignCenter)
+            layout.addWidget(image_label)
+
+        if text is not None:
+            text_label = QtWidgets.QLabel()
+            text_label.setText(text)
+            text_label.setAlignment(QtCore.Qt.AlignCenter)
+            text_label.setWordWrap(True)
+            layout.addWidget(text_label)
+
+        self.setLayout(layout)
+
+
 class ArtworkTable(QtWidgets.QTableWidget):
     def __init__(self, display_existing_art):
         super().__init__(0, 2)
@@ -47,52 +71,11 @@ class ArtworkTable(QtWidgets.QTableWidget):
             self.insertColumn(2)
             self.setHorizontalHeaderLabels([_("Existing Cover"), _("Type"),
                 _("New Cover")])
-            self.arrow_pixmap = QtGui.QPixmap(":/images/arrow.png")
         else:
             self._type_col = 0
             self._new_cover_col = 1
             self.setHorizontalHeaderLabels([_("Type"), _("Cover")])
             self.setColumnWidth(self._type_col, 140)
-
-    def get_coverart_widget(self, pixmap, text):
-        """Return a QWidget that can be added to artwork column cell of ArtworkTable."""
-        coverart_widget = QtWidgets.QWidget()
-        image_label = QtWidgets.QLabel()
-        text_label = QtWidgets.QLabel()
-        layout = QtWidgets.QVBoxLayout()
-        image_label.setPixmap(pixmap.scaled(170, 170, QtCore.Qt.KeepAspectRatio,
-                                            QtCore.Qt.SmoothTransformation))
-        image_label.setAlignment(QtCore.Qt.AlignCenter)
-        text_label.setText(text)
-        text_label.setAlignment(QtCore.Qt.AlignCenter)
-        text_label.setWordWrap(True)
-        layout.addWidget(image_label)
-        layout.addWidget(text_label)
-        coverart_widget.setLayout(layout)
-        return coverart_widget
-
-    def get_type_widget(self, type_text):
-        """Return a QWidget that can be added to type column cell of ArtworkTable.
-        If both existing and new artwork are to be displayed, insert an arrow icon to make comparison
-        obvious.
-        """
-        type_widget = QtWidgets.QWidget()
-        type_label = QtWidgets.QLabel()
-        layout = QtWidgets.QVBoxLayout()
-        type_label.setText(type_text)
-        type_label.setAlignment(QtCore.Qt.AlignCenter)
-        type_label.setWordWrap(True)
-        if self.display_existing_art:
-            arrow_label = QtWidgets.QLabel()
-            arrow_label.setPixmap(self.arrow_pixmap.scaled(170, 170, QtCore.Qt.KeepAspectRatio,
-                                                           QtCore.Qt.SmoothTransformation))
-            arrow_label.setAlignment(QtCore.Qt.AlignCenter)
-            layout.addWidget(arrow_label)
-            layout.addWidget(type_label)
-        else:
-            layout.addWidget(type_label)
-        type_widget.setLayout(layout)
-        return type_widget
 
 
 class InfoDialog(PicardDialog):
@@ -194,7 +177,7 @@ class InfoDialog(PicardDialog):
                 infos.append("%d x %d" % (image.width, image.height))
             infos.append(image.mimetype)
 
-            img_wgt = self.artwork_table.get_coverart_widget(pixmap, "\n".join(infos))
+            img_wgt = ArtworkCoverWidget(pixmap=pixmap, text="\n".join(infos))
             self.artwork_table.setCellWidget(row, col, img_wgt)
             self.artwork_table.setItem(row, col, item)
             row += 1
@@ -208,11 +191,14 @@ class InfoDialog(PicardDialog):
             existing_types = [image.types_as_string() for image in self.existing_images]
             # Merge both types and existing types list in sorted order.
             types = union_sorted_lists(types, existing_types)
+            pixmap_arrow = QtGui.QPixmap(":/images/arrow.png")
+        else:
+            pixmap_arrow = None
         for row, artwork_type in enumerate(types):
             self.artwork_table.insertRow(row)
-            type_wgt = self.artwork_table.get_type_widget(artwork_type)
             item = QtWidgets.QTableWidgetItem()
             item.setData(QtCore.Qt.UserRole, artwork_type)
+            type_wgt = ArtworkCoverWidget(pixmap=pixmap_arrow, text=artwork_type)
             self.artwork_table.setCellWidget(row, self.artwork_table._type_col, type_wgt)
             self.artwork_table.setItem(row, self.artwork_table._type_col, item)
 
