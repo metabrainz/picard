@@ -35,14 +35,17 @@ from picard.ui.ui_infodialog import Ui_InfoDialog
 class ArtworkCoverWidget(QtWidgets.QWidget):
     """A QWidget that can be added to artwork column cell of ArtworkTable."""
 
+    SIZE = 170
+
     def __init__(self, pixmap=None, text=None, parent=None):
         super().__init__(parent=parent)
         layout = QtWidgets.QVBoxLayout()
 
         if pixmap is not None:
             image_label = QtWidgets.QLabel()
-            image_label.setPixmap(pixmap.scaled(170, 170, QtCore.Qt.KeepAspectRatio,
-                                            QtCore.Qt.SmoothTransformation))
+            image_label.setPixmap(pixmap.scaled(self.SIZE, self.SIZE,
+                                                QtCore.Qt.KeepAspectRatio,
+                                                QtCore.Qt.SmoothTransformation))
             image_label.setAlignment(QtCore.Qt.AlignCenter)
             layout.addWidget(image_label)
 
