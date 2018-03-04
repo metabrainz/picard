@@ -210,6 +210,7 @@ class InfoDialog(PicardDialog):
         if self.existing_images:
             self._display_artwork(self.existing_images, self.artwork_table._existing_cover_col)
         self.artwork_table.itemDoubleClicked.connect(self.show_item)
+        self.artwork_table.verticalHeader().resizeSections(QtWidgets.QHeaderView.ResizeToContents)
 
     def tab_hide(self, widget):
         tab = self.ui.tabWidget
