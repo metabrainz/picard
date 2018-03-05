@@ -30,7 +30,7 @@ from picard.metadata import (Metadata,
 from picard.dataobj import DataObject
 from picard.file import File
 from picard.track import Track
-from picard.script import ScriptParser
+from picard.script import ScriptParser, enabled_tagger_scripts_texts
 from picard.ui.item import Item
 from picard.util import format_time, mbid_validate
 from picard.util.imagelist import update_metadata_images
@@ -265,24 +265,21 @@ class Album(DataObject, Item):
 
             self.enable_update_metadata_images(False)
             # Prepare parser for user's script
-            if config.setting["enable_tagger_scripts"]:
-                for s_pos, s_name, s_enabled, s_text in config.setting["list_of_scripts"]:
-                    if s_enabled and s_text:
-                        parser = ScriptParser()
-                        for track in self._new_tracks:
-                            # Run tagger script for each track
-                            try:
-                                parser.eval(s_text, track.metadata)
-                            except:
-                                self.error_append(traceback.format_exc())
-                            # Strip leading/trailing whitespace
-                            track.metadata.strip_whitespace()
-                        # Run tagger script for the album itself
-                        try:
-                            parser.eval(s_text, self._new_metadata)
-                        except:
-                            self.error_append(traceback.format_exc())
-                        self._new_metadata.strip_whitespace()
+            for s_name, s_text in enabled_tagger_scripts_texts():
+                parser = ScriptParser()
+                for track in self._new_tracks:
+                    # Run tagger script for each track
+                    try:
+                        parser.eval(s_text, track.metadata)
+                    except:
+                        log.exception("Failed to run tagger script %s on track", s_name)
+                    track.metadata.strip_whitespace()
+                # Run tagger script for the album itself
+                try:
+                    parser.eval(s_text, self._new_metadata)
+                except:
+                    log.exception("Failed to run tagger script %s on album", s_name)
+                self._new_metadata.strip_whitespace()
 
             for track in self.tracks:
                 track.metadata_images_changed.connect(self.update_metadata_images)
