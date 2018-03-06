@@ -30,6 +30,7 @@ from picard.util import (format_time, encode_filename,
                          union_sorted_lists, htmlescape)
 from picard.ui import PicardDialog
 from picard.ui.ui_infodialog import Ui_InfoDialog
+from picard.ui.util import StandardButton
 
 
 class ArtworkCoverWidget(QtWidgets.QWidget):
@@ -113,8 +114,9 @@ class InfoDialog(PicardDialog):
             self.existing_images = []
             self.display_existing_artwork = False
         self.ui.setupUi(self)
+        self.ui.buttonBox.addButton(
+            StandardButton(StandardButton.CLOSE), QtWidgets.QDialogButtonBox.AcceptRole)
         self.ui.buttonBox.accepted.connect(self.accept)
-        self.ui.buttonBox.rejected.connect(self.reject)
 
         # Add the ArtworkTable to the ui
         self.ui.artwork_table = ArtworkTable(self.display_existing_artwork)
