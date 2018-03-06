@@ -28,11 +28,13 @@ class StandardButton(QtWidgets.QPushButton):
     OK = 0
     CANCEL = 1
     HELP = 2
+    CLOSE = 4
 
     __types = {
         OK: (N_('&Ok'), 'SP_DialogOkButton'),
         CANCEL: (N_('&Cancel'), 'SP_DialogCancelButton'),
         HELP: (N_('&Help'), 'SP_DialogHelpButton'),
+        CLOSE: (N_('Clos&e'), 'SP_DialogCloseButton'),
     }
 
     def __init__(self, btntype):
