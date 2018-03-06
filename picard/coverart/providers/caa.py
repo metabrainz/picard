@@ -104,9 +104,6 @@ class CAATypesSelectorDialog(QtWidgets.QDialog):
                                  QtWidgets.QDialogButtonBox.RejectRole)
         self.buttonbox.addButton(
             StandardButton(StandardButton.HELP), QtWidgets.QDialogButtonBox.HelpRole)
-        self.buttonbox.accepted.connect(self.accept)
-        self.buttonbox.rejected.connect(self.reject)
-        self.buttonbox.helpRequested.connect(self.help)
 
         extrabuttons = [
             (N_("Chec&k all"), self.checkall),
@@ -123,6 +120,7 @@ class CAATypesSelectorDialog(QtWidgets.QDialog):
 
         self.buttonbox.accepted.connect(self.accept)
         self.buttonbox.rejected.connect(self.reject)
+        self.buttonbox.helpRequested.connect(self.help)
 
     def help(self):
         webbrowser2.goto('doc_cover_art_types')
@@ -138,13 +136,8 @@ class CAATypesSelectorDialog(QtWidgets.QDialog):
             item.setChecked(value)
 
     def get_selected_types(self):
-        types = []
-        for item, typ in self._items.items():
-            if item.isChecked():
-                types.append(typ['name'])
-        if not types:
-            return ['front']
-        return types
+        return [typ['name'] for item, typ in self._items.items() if
+                item.isChecked()] or ['front']
 
     @staticmethod
     def run(parent=None, types=None):
