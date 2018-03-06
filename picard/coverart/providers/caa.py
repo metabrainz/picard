@@ -136,13 +136,8 @@ class CAATypesSelectorDialog(QtWidgets.QDialog):
             item.setChecked(value)
 
     def get_selected_types(self):
-        types = []
-        for item, typ in self._items.items():
-            if item.isChecked():
-                types.append(typ['name'])
-        if not types:
-            return ['front']
-        return types
+        return [typ['name'] for item, typ in self._items.items() if
+                item.isChecked()] or ['front']
 
     @staticmethod
     def run(parent=None, types=None):
