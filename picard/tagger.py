@@ -118,6 +118,9 @@ class Tagger(QtWidgets.QApplication):
         # Allow High DPI Support
         self.setAttribute(QtCore.Qt.AA_UseHighDpiPixmaps)
         self.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling)
+        super().setStyleSheet(
+            'QGroupBox::title { /* PICARD-1206, Qt bug workaround */ }'
+        )
 
         self._cmdline_files = picard_args.FILE
         self._autoupdate = autoupdate
