@@ -1,6 +1,6 @@
 # Translators:
 # Translators:
-# yoktur <aptaling@msn.com>, 2015
+# Kerem Kuralay, 2015
 # ym syserror <cilek.kocak@gmail.com>, 2012
 # Nikolai Prokoschenko <nikolai@prokoschenko.de>, 2011
 # secgin <secgink.57@gmail.com>, 2014
@@ -10,8 +10,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2015-11-20 12:18+0000\n"
-"Last-Translator: yoktur <aptaling@msn.com>\n"
+"PO-Revision-Date: 2017-09-19 12:54+0000\n"
+"Last-Translator: Kerem Kuralay\n"
 "Language-Team: Turkish (http://www.transifex.com/musicbrainz/musicbrainz/language/tr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"

@@ -1,15 +1,16 @@
-# Translators:
+# 
 # Translators:
 # Bai yun-xi <myhouse472@gmail.com>, 2016
 # Shen-Ta Hsieh(BestSteve) <ibmibmibm.tw@gmail.com>, 2014,2016
 # Koala Bear <koalaleaves@openmailbox.org>, 2016
 # Shen-Ta Hsieh(BestSteve) <ibmibmibm.tw@gmail.com>, 2016
 # Shen-Ta Hsieh(BestSteve) <ibmibmibm.tw@gmail.com>, 2016
+# riotism, 2017
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2017-01-16 20:46+0000\n"
-"Last-Translator: Laurent Monin <i18n@norz.org>\n"
+"PO-Revision-Date: 2018-02-09 13:02+0000\n"
+"Last-Translator: yvanz\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/musicbrainz/musicbrainz/language/zh_TW/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -23,14 +24,14 @@ msgid ""
 "\"Motet\" is a term that applies to different types of (usually "
 "unaccompanied) choral works. What exactly is a motet depends quite a bit on "
 "the period."
-msgstr "「經文歌」這個詞彙可套用到不同種類的(通常為無伴奏的)聲樂作品。經文歌的精確定義依據年代而不同。"
+msgstr "「經文歌」可套用到不同種類的（通常為無伴奏的）聲樂作品。經文歌的精確定義依據年代而不同。"
 
 #: DB:work_type/description:5
 msgctxt "work_type"
 msgid ""
 "\"Sonata\" is a general term used to describe small scale (very often solo "
 "or solo + keyboard) instrumental works, initially in baroque music."
-msgstr "「奏鳴曲」這個常見的詞彙是用來描述從巴洛克音樂開始出現，小型的(通常為獨奏，或是獨奏加上鍵盤樂器) 樂器作品。"
+msgstr "「奏鳴曲」這個常見的詞彙是用來描述從巴洛克音樂開始出現，小型的 (通常為獨奏，或是獨奏加上鍵盤樂器) 樂器作品。"
 
 #: DB:medium_format/name:54
 msgctxt "medium_format"
@@ -40,7 +41,12 @@ msgstr "10英吋蟲膠唱片"
 #: DB:medium_format/name:30
 msgctxt "medium_format"
 msgid "10\" Vinyl"
-msgstr "10英寸黑膠唱片"
+msgstr "10英吋黑膠唱片"
+
+#: DB:medium_format/name:72
+msgctxt "medium_format"
+msgid "12\" LaserDisc"
+msgstr "12英吋雷射影碟"
 
 #: DB:medium_format/name:55
 msgctxt "medium_format"
@@ -50,12 +56,12 @@ msgstr "12英吋蟲膠唱片"
 #: DB:medium_format/name:31
 msgctxt "medium_format"
 msgid "12\" Vinyl"
-msgstr "12英寸黑膠唱片"
+msgstr "12英吋黑膠唱片"
 
 #: DB:medium_format/name:49
 msgctxt "medium_format"
 msgid "3.5\" Floppy Disk"
-msgstr "3.5吋磁片"
+msgstr "3.5英吋磁片"
 
 #: DB:medium_format/name:52
 msgctxt "medium_format"
@@ -70,7 +76,12 @@ msgstr "7英吋蟲膠唱片"
 #: DB:medium_format/name:29
 msgctxt "medium_format"
 msgid "7\" Vinyl"
-msgstr "7英寸黑膠唱片"
+msgstr "7英吋黑膠唱片"
+
+#: DB:medium_format/name:71
+msgctxt "medium_format"
+msgid "8\" LaserDisc"
+msgstr "8英吋雷射影碟"
 
 #: DB:medium_format/name:34
 msgctxt "medium_format"
@@ -87,24 +98,24 @@ msgctxt "medium_format"
 msgid ""
 "90 rpm, vertical-cut shellac discs, produced by the Pathé label from 1906 to"
 " 1932."
-msgstr "每分鐘90轉，垂直切割的蟲膠唱片，於1906至1932由Pathé label發行。"
+msgstr "每分鐘90轉，垂直切割的蟲膠唱片，於1906年至1932年間由Pathé label發行。"
 
 #: DB:work_attribute_type_allowed_value/value:794
 msgctxt "work_attribute_type_allowed_value"
 msgid "A Dorian"
-msgstr "A 多里安"
+msgstr "A多里安"
 
 #: DB:work_attribute_type_allowed_value/value:806
 msgctxt "work_attribute_type_allowed_value"
 msgid "A Mixolydian"
-msgstr "A 米索利地安"
+msgstr "A米索利地安"
 
 #: DB:work_type/description:2
 msgctxt "work_type"
 msgid ""
 "A ballet is music composed to be used, together with a choreography, for a "
 "ballet dance production."
-msgstr ""
+msgstr "芭蕾是為舞蹈設計與芭蕾舞而創作的音樂。"
 
 #: DB:work_type/description:3
 msgctxt "work_type"
@@ -117,7 +128,7 @@ msgstr ""
 msgctxt "work_type"
 msgid ""
 "A concerto is a musical work for soloist(s) accompanied by an orchestra."
-msgstr ""
+msgstr "協奏曲是為一名或數名獨奏家和管弦樂團伴奏而創作的樂章。"
 
 #: DB:event_type/description:4
 msgctxt "event_type"
@@ -125,7 +136,7 @@ msgid ""
 "A convention, expo or trade fair is an event which is not typically "
 "orientated around music performances, but can include them as side "
 "activities."
-msgstr ""
+msgstr "大型會議、展覽會或貿易會通常不以音樂表演為主要內容的活動，但可以音樂表演為次要活動。"
 
 #: DB:release_status/description:2
 msgctxt "release_status"
@@ -133,7 +144,7 @@ msgid ""
 "A give-away release or a release intended to promote an upcoming official "
 "release (e.g. pre-release versions, releases included with a magazine, "
 "versions supplied to radio DJs for air-play)."
-msgstr ""
+msgstr "一個免費的發行品，或為了宣傳將近上市的官方發行品而製作的發行品（如非上市版、雜誌贈送的發行品、為電台 DJ 在節目上播放的版本等）。"
 
 #: DB:work_attribute_type_allowed_value/value:28
 msgctxt "work_attribute_type_allowed_value"
@@ -173,6 +184,11 @@ msgctxt "event_type"
 msgid ""
 "A party, reception or other event held specifically for the launch of a "
 "release."
+msgstr "為發表新發行品而設的派對、酒會或其他活動。"
+
+#: DB:release_packaging/description:17
+msgctxt "release_packaging"
+msgid "A perfect bound book with a sleeve at the end to hold a CD"
 msgstr ""
 
 #: DB:place_type/description:5
@@ -181,21 +197,21 @@ msgid ""
 "A place consisting of a large enclosed area with a central event space "
 "surrounded by tiered seating for spectators, which can be used for indoor "
 "sports, concerts and other entertainment events."
-msgstr ""
+msgstr "一個大型室內場地，可舉行室內運動、演唱會或其他娛樂活動。在場地中央設有活動空間，四周設有觀眾席。"
 
 #: DB:place_type/description:1
 msgctxt "place_type"
 msgid ""
 "A place designed for non-live production of music, typically a recording "
 "studio."
-msgstr ""
+msgstr "為非現場音樂製作而設的場地（例如：錄音室）。"
 
 #: DB:place_type/description:2
 msgctxt "place_type"
 msgid ""
 "A place that has live artistic performances as one of its primary functions,"
 " such as a concert hall."
-msgstr ""
+msgstr "主要為現場藝術表演而設的場地（例如：音樂廳）。"
 
 #: DB:place_type/description:6
 msgctxt "place_type"
@@ -203,7 +219,7 @@ msgid ""
 "A place that has worship or religious studies as its main function. "
 "Religious buildings often host concerts and serve as recording locations, "
 "especially for classical music."
-msgstr ""
+msgstr "主要為崇拜或宗教導修而設的場地。宗教建築經常被用作演唱會和錄音的場地，特別是經典音樂之表演和錄音場所。"
 
 #: DB:place_type/description:4
 msgctxt "place_type"
@@ -211,7 +227,7 @@ msgid ""
 "A place whose main purpose is to host outdoor sport events, typically "
 "consisting of a pitch surrounded by a structure for spectators with no roof,"
 " or a roof which can be retracted."
-msgstr ""
+msgstr "主要為戶外體育活動建立的場地。在這些場地的中央位置，通常會設有球場，邊緣設有觀眾席。大部分的觀眾席雖然不設頂部，但有些場所卻會安裝可收縮的頂部。"
 
 #: DB:work_type/description:28
 msgctxt "work_type"
@@ -219,7 +235,7 @@ msgid ""
 "A play is a form of literature usually consisting of scripted dialogue "
 "between characters, and intended for theatrical performance rather than just"
 " reading."
-msgstr ""
+msgstr "話劇是一類為舞台表演而創作的文學，以角色間的對話組成主要內容。"
 
 #: DB:work_type/description:21
 msgctxt "work_type"
@@ -239,35 +255,42 @@ msgctxt "series_type"
 msgid "A recurring festival, usually happening annually in the same location."
 msgstr ""
 
+#: DB:place_type/description:7
+msgctxt "place_type"
+msgid ""
+"A school, university or other similar educational institution (especially, "
+"but not only, one where music is taught)"
+msgstr ""
+
 #: DB:series_type/description:6
 msgctxt "series_type"
 msgid "A series of events."
-msgstr "一系列的活動。"
+msgstr "一系列活動。"
 
 #: DB:series_type/description:9
 msgctxt "series_type"
 msgid "A series of performances of the same show at the same venue."
-msgstr "一系列的演出，在同一個場地的同一場表演。"
+msgstr "一系列演出，在同一個場地的同一場表演。"
 
 #: DB:series_type/description:3
 msgctxt "series_type"
 msgid "A series of recordings."
-msgstr "一系列的錄音。"
+msgstr "一系列錄音。"
 
 #: DB:series_type/description:7
 msgctxt "series_type"
 msgid "A series of related concerts by an artist in different locations."
-msgstr "一系列互相關聯的演奏會，由同一作者在不同地方舉行。"
+msgstr "一系列互相關聯的演奏會，由同一創作者在不同地方舉行。"
 
 #: DB:series_type/description:1
 msgctxt "series_type"
 msgid "A series of release groups."
-msgstr "一系列的作品組。"
+msgstr "一系列發行組。"
 
 #: DB:series_type/description:2
 msgctxt "series_type"
 msgid "A series of releases."
-msgstr "一系列的作品。"
+msgstr "一系列發行品。"
 
 #: DB:series_type/description:5
 msgctxt "series_type"
@@ -324,7 +347,7 @@ msgctxt "work_type"
 msgid ""
 "A symphony is an extended composition, almost always scored for orchestra "
 "without soloists."
-msgstr ""
+msgstr "交響曲是一種較長的樂章，通常為管弦樂團創作，並不包含獨奏的部分。"
 
 #: DB:release_packaging/description:2
 msgctxt "release_packaging"
@@ -637,7 +660,7 @@ msgstr ""
 #: DB:editor_collection_type/name:5
 msgctxt "collection_type"
 msgid "Attending"
-msgstr ""
+msgstr "會出席"
 
 #: DB:work_type/name:25
 msgctxt "work_type"
@@ -779,6 +802,11 @@ msgctxt "work_attribute_type"
 msgid "BMI ID"
 msgstr "BMI ID"
 
+#: DB:work_attribute_type/name:26
+msgctxt "work_attribute_type"
+msgid "BUMA/STEMRA ID"
+msgstr ""
+
 #: DB:cover_art_archive.art_type/name:2
 msgctxt "cover_art_type"
 msgid "Back"
@@ -824,7 +852,7 @@ msgctxt "work_type"
 msgid ""
 "Beijing opera is a form of traditional Chinese theatre which combines music,"
 " vocal performance, mime, dance, and acrobatics."
-msgstr "京劇是傳統中國戲曲的一種形式，結合了音樂、聲樂表演、默劇、舞蹈與特技。"
+msgstr "京劇是中國傳統戲曲的一種形式，結合了音樂、聲樂表演、默劇、舞蹈與特技。"
 
 #: DB:work_attribute_type_allowed_value/value:697
 msgctxt "work_attribute_type_allowed_value"
@@ -889,7 +917,7 @@ msgstr ""
 #: DB:medium_format/name:24
 msgctxt "medium_format"
 msgid "Betamax"
-msgstr "Betamax錄影帶"
+msgstr "Betamax 錄影帶"
 
 #: DB:work_attribute_type_allowed_value/value:329
 msgctxt "work_attribute_type_allowed_value"
@@ -969,7 +997,7 @@ msgstr ""
 #: DB:medium_format/name:20
 msgctxt "medium_format"
 msgid "Blu-ray"
-msgstr "Blu-ray"
+msgstr "藍光光碟"
 
 #: DB:medium_format/name:35
 msgctxt "medium_format"
@@ -994,11 +1022,16 @@ msgstr "盜版"
 #: DB:label_type/name:5
 msgctxt "label_type"
 msgid "Bootleg Production"
-msgstr "盜版產品"
+msgstr "盜版製作"
 
 #: DB:work_attribute_type_allowed_value/value:607
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bozlak"
+msgstr ""
+
+#: DB:instrument_alias_type/name:3
+msgctxt "alias_type"
+msgid "Brand name"
 msgstr ""
 
 #: DB:release_group_primary_type/name:12
@@ -1119,7 +1152,7 @@ msgstr "CDV"
 #: DB:medium_format/name:60
 msgctxt "medium_format"
 msgid "CED"
-msgstr ""
+msgstr "CED"
 
 #: DB:work_attribute_type_allowed_value/value:63
 msgctxt "work_attribute_type_allowed_value"
@@ -1164,12 +1197,12 @@ msgstr ""
 #: DB:medium_format/name:8
 msgctxt "medium_format"
 msgid "Cassette"
-msgstr ""
+msgstr "卡式錄音帶"
 
 #: DB:release_packaging/name:8
 msgctxt "release_packaging"
 msgid "Cassette Case"
-msgstr ""
+msgstr "卡帶盒"
 
 #: DB:series_type/name:5
 msgctxt "series_type"
@@ -1199,7 +1232,7 @@ msgstr "角色"
 #: DB:artist_type/name:6
 msgctxt "artist_type"
 msgid "Choir"
-msgstr ""
+msgstr "合唱團"
 
 #: DB:work_attribute_type_allowed_value/value:71
 msgctxt "work_attribute_type_allowed_value"
@@ -1220,7 +1253,7 @@ msgstr "城市"
 msgctxt "area_type"
 msgid ""
 "City is used for settlements of any size, including towns and villages."
-msgstr "城市用於任何大小的居住區，包含城鎮與村莊。"
+msgstr "城市指任何大小的居住區，包含城鎮與村莊。"
 
 #: DB:release_group_secondary_type/name:1
 msgctxt "release_group_secondary_type"
@@ -1240,7 +1273,7 @@ msgstr "協奏曲"
 #: DB:event_type/name:4
 msgctxt "event_type"
 msgid "Convention/Expo"
-msgstr ""
+msgstr "大型會議或展覽會"
 
 #: DB:medium_format/name:61
 msgctxt "medium_format"
@@ -1254,7 +1287,7 @@ msgid ""
 "containing software that is ostensibly designed to prevent the CD from being"
 " ripped. There are a number of software variants: the most well-known are "
 "Macrovision's Cactus Data Shield (CDS) and SunnComm's MediaMax."
-msgstr ""
+msgstr "Copy Control CD（CCCD）為2001年至2006年間發行，含防盜軟件的CD。市面上有多種防盜軟件，其中Macrovision的Cactus Data Shield（CDS）與SunnComm的MediaMax被廣泛使用。"
 
 #: DB:area_type/name:1
 msgctxt "area_type"
@@ -1266,7 +1299,7 @@ msgctxt "area_type"
 msgid ""
 "Country is used for areas included (or previously included) in ISO 3166-1, "
 "e.g. United States."
-msgstr "國家用於所有在(或曾在)ISO 3166-1內的區域。如：美國。"
+msgstr "地區為ISO 3166-1標準曾經或現在涵蓋的國家，如美國。"
 
 #: DB:area_type/name:7
 msgctxt "area_type"
@@ -1310,12 +1343,12 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:790
 msgctxt "work_attribute_type_allowed_value"
 msgid "D Dorian"
-msgstr "D 多里安"
+msgstr "D多里安"
 
 #: DB:work_attribute_type_allowed_value/value:802
 msgctxt "work_attribute_type_allowed_value"
 msgid "D Mixolydian"
-msgstr "D 米索利地安"
+msgstr "D米索利地安"
 
 #: DB:work_attribute_type_allowed_value/value:8
 msgctxt "work_attribute_type_allowed_value"
@@ -1385,17 +1418,17 @@ msgstr "DVDplus"
 #: DB:medium_format/name:70
 msgctxt "medium_format"
 msgid "DVDplus (CD side)"
-msgstr "DVDplus (CD 面)"
+msgstr "DVDplus（CD 面）"
 
 #: DB:medium_format/name:68
 msgctxt "medium_format"
 msgid "DVDplus (DVD-Audio side)"
-msgstr "DVDplus (DVD-Audio 面)"
+msgstr "DVDplus（DVD-Audio 面）"
 
 #: DB:medium_format/name:69
 msgctxt "medium_format"
 msgid "DVDplus (DVD-Video side)"
-msgstr "DVDplus (DVD-Video 面)"
+msgstr "DVDplus（DVD-Video 面）"
 
 #: DB:work_attribute_type_allowed_value/value:343
 msgctxt "work_attribute_type_allowed_value"
@@ -1445,7 +1478,7 @@ msgstr ""
 #: DB:medium_format/name:43
 msgctxt "medium_format"
 msgid "Data CD"
-msgstr "資料 CD"
+msgstr "資料CD"
 
 #: DB:release_group_secondary_type/name:10
 msgctxt "release_group_secondary_type"
@@ -1537,6 +1570,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Dhēnuka"
 msgstr ""
 
+#: DB:release_packaging/name:17
+msgctxt "release_packaging"
+msgid "Digibook"
+msgstr ""
+
 #: DB:release_packaging/name:3
 msgctxt "release_packaging"
 msgid "Digipak"
@@ -1605,7 +1643,7 @@ msgstr "區域"
 #: DB:area_type/description:5
 msgctxt "area_type"
 msgid "District is used for a division of a large city, e.g. Queens."
-msgstr "區用於分割大城市。如皇后區。"
+msgstr "區域用於分割大城市，如紐約市皇后區。"
 
 #: DB:work_attribute_type_allowed_value/value:611
 msgctxt "work_attribute_type_allowed_value"
@@ -1625,17 +1663,17 @@ msgstr "DualDisc"
 #: DB:medium_format/name:67
 msgctxt "medium_format"
 msgid "DualDisc (CD side)"
-msgstr "DualDisc (CD 面)"
+msgstr "DualDisc（CD面）"
 
 #: DB:medium_format/name:65
 msgctxt "medium_format"
 msgid "DualDisc (DVD-Audio side)"
-msgstr "DualDisc (DVD-Audio 面)"
+msgstr "DualDisc（DVD-Audio面）"
 
 #: DB:medium_format/name:66
 msgctxt "medium_format"
 msgid "DualDisc (DVD-Video side)"
-msgstr "DualDisc (DVD-Video 面)"
+msgstr "DualDisc（DVD-Video面）"
 
 #: DB:work_attribute_type_allowed_value/value:612
 msgctxt "work_attribute_type_allowed_value"
@@ -1725,12 +1763,12 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:791
 msgctxt "work_attribute_type_allowed_value"
 msgid "E Dorian"
-msgstr "E 多里安"
+msgstr "E多里安"
 
 #: DB:work_attribute_type_allowed_value/value:803
 msgctxt "work_attribute_type_allowed_value"
 msgid "E Mixolydian"
-msgstr "E 米索利地安"
+msgstr "E米索利地安"
 
 #: DB:work_attribute_type_allowed_value/value:13
 msgctxt "work_attribute_type_allowed_value"
@@ -1765,6 +1803,11 @@ msgstr "EP"
 #: DB:medium_format/name:50
 msgctxt "medium_format"
 msgid "Edison Diamond Disc"
+msgstr ""
+
+#: DB:place_type/name:7
+msgctxt "place_type"
+msgid "Educational institution"
 msgstr ""
 
 #: DB:instrument_type/name:4
@@ -1870,12 +1913,12 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:792
 msgctxt "work_attribute_type_allowed_value"
 msgid "F Dorian"
-msgstr "F 多里安"
+msgstr "F多里安"
 
 #: DB:work_attribute_type_allowed_value/value:804
 msgctxt "work_attribute_type_allowed_value"
 msgid "F Mixolydian"
-msgstr "F 米索利地安"
+msgstr "F米索利地安"
 
 #: DB:work_attribute_type_allowed_value/value:17
 msgctxt "work_attribute_type_allowed_value"
@@ -2028,12 +2071,12 @@ msgstr "正面"
 #: DB:work_attribute_type_allowed_value/value:793
 msgctxt "work_attribute_type_allowed_value"
 msgid "G Dorian"
-msgstr "G 多里安"
+msgstr "G多里安"
 
 #: DB:work_attribute_type_allowed_value/value:805
 msgctxt "work_attribute_type_allowed_value"
 msgid "G Mixolydian"
-msgstr "G 米索利地安"
+msgstr "G米索利地安"
 
 #: DB:work_attribute_type_allowed_value/value:22
 msgctxt "work_attribute_type_allowed_value"
@@ -2433,7 +2476,7 @@ msgstr ""
 #: DB:label_type/name:2
 msgctxt "label_type"
 msgid "Holding"
-msgstr ""
+msgstr "控股公司"
 
 #: DB:work_attribute_type_allowed_value/value:414
 msgctxt "work_attribute_type_allowed_value"
@@ -2473,12 +2516,12 @@ msgstr "Hybrid SACD"
 #: DB:medium_format/name:63
 msgctxt "medium_format"
 msgid "Hybrid SACD (CD layer)"
-msgstr "Hybrid SACD (CD 層)"
+msgstr "Hybrid SACD（CD層）"
 
 #: DB:medium_format/name:64
 msgctxt "medium_format"
 msgid "Hybrid SACD (SACD layer)"
-msgstr "Hybrid SACD (SACD 層)"
+msgstr "Hybrid SACD（SACD層）"
 
 #: DB:work_attribute_type_allowed_value/value:418
 msgctxt "work_attribute_type_allowed_value"
@@ -2530,6 +2573,31 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Hēmavati"
 msgstr ""
 
+#: DB:work_attribute_type/name:29
+msgctxt "work_attribute_type"
+msgid "ICE ID"
+msgstr ""
+
+#: DB:work_attribute_type/description:28
+msgctxt "work_attribute_type"
+msgid "ID for the Belgian rights society SABAM"
+msgstr ""
+
+#: DB:work_attribute_type/description:29
+msgctxt "work_attribute_type"
+msgid "ID for the International Copyright Enterprise"
+msgstr ""
+
+#: DB:work_attribute_type/description:27
+msgctxt "work_attribute_type"
+msgid "ID for the Mexican rights society SACM"
+msgstr ""
+
+#: DB:work_attribute_type/description:30
+msgctxt "work_attribute_type"
+msgid "ID for the Polish rights society ZAiKS"
+msgstr ""
+
 #: DB:work_attribute_type/name:14
 msgctxt "work_attribute_type"
 msgid "Identifiers"
@@ -2538,7 +2606,7 @@ msgstr ""
 #: DB:label_type/name:9
 msgctxt "label_type"
 msgid "Imprint"
-msgstr ""
+msgstr "廠牌"
 
 #: DB:work_type/name:30
 msgctxt "work_type"
@@ -2555,7 +2623,7 @@ msgstr ""
 #: DB:place_type/name:5
 msgctxt "place_type"
 msgid "Indoor arena"
-msgstr ""
+msgstr "室內場館"
 
 #: DB:editor_collection_type/name:9
 msgctxt "collection_type"
@@ -2570,12 +2638,12 @@ msgstr "樂器名稱"
 #: DB:release_group_secondary_type/name:4
 msgctxt "release_group_secondary_type"
 msgid "Interview"
-msgstr ""
+msgstr "採訪"
 
 #: DB:work_attribute_type_allowed_value/value:427
 msgctxt "work_attribute_type_allowed_value"
 msgid "Irak"
-msgstr "伊拉克"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:428
 msgctxt "work_attribute_type_allowed_value"
@@ -2863,7 +2931,7 @@ msgstr ""
 #: DB:release_packaging/name:6
 msgctxt "release_packaging"
 msgid "Keep Case"
-msgstr "保留大小寫"
+msgstr ""
 
 #: DB:work_attribute_type/name:1
 msgctxt "work_attribute_type"
@@ -3018,12 +3086,12 @@ msgstr ""
 #: DB:editor_collection_type/name:10
 msgctxt "collection_type"
 msgid "Label"
-msgstr "標籤"
+msgstr "商標"
 
 #: DB:label_alias_type/name:1
 msgctxt "alias_type"
 msgid "Label name"
-msgstr "標籤名稱"
+msgstr "商標名稱"
 
 #: DB:work_attribute_type_allowed_value/value:445
 msgctxt "work_attribute_type_allowed_value"
@@ -3053,7 +3121,7 @@ msgstr ""
 #: DB:event_type/name:3
 msgctxt "event_type"
 msgid "Launch event"
-msgstr "發起活動"
+msgstr "首發活動"
 
 #: DB:work_attribute_type_allowed_value/value:160
 msgctxt "work_attribute_type_allowed_value"
@@ -3078,7 +3146,7 @@ msgstr ""
 #: DB:release_group_secondary_type/name:6
 msgctxt "release_group_secondary_type"
 msgid "Live"
-msgstr "演唱會"
+msgstr "現場錄音"
 
 #: DB:work_attribute_type_allowed_value/value:636
 msgctxt "work_attribute_type_allowed_value"
@@ -3213,7 +3281,7 @@ msgstr ""
 #: DB:editor_collection_type/name:6
 msgctxt "collection_type"
 msgid "Maybe attending"
-msgstr ""
+msgstr "可能出席"
 
 #: DB:work_attribute_type_allowed_value/value:175
 msgctxt "work_attribute_type_allowed_value"
@@ -3411,14 +3479,14 @@ msgstr ""
 #: DB:work_type/name:29
 msgctxt "work_type"
 msgid "Musical"
-msgstr ""
+msgstr "音樂劇"
 
 #: DB:work_type/description:29
 msgctxt "work_type"
 msgid ""
 "Musical theatre is a form of theatrical performance that combines songs, "
 "spoken dialogue, acting, and dance."
-msgstr ""
+msgstr "音樂劇是彙集歌曲、對話、戲劇與舞蹈的一種舞臺表演。"
 
 #: DB:work_attribute_type_allowed_value/value:748
 msgctxt "work_attribute_type_allowed_value"
@@ -3805,6 +3873,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Nīlāṁbari"
 msgstr ""
 
+#: DB:work_attribute_type/name:25
+msgctxt "work_attribute_type"
+msgid "OSA ID"
+msgstr ""
+
 #: DB:cover_art_archive.art_type/name:5
 msgctxt "cover_art_type"
 msgid "Obi"
@@ -3838,7 +3911,7 @@ msgstr "樂團"
 #: DB:label_type/name:4
 msgctxt "label_type"
 msgid "Original Production"
-msgstr ""
+msgstr "原創製作"
 
 #: DB:artist_type/name:3
 msgctxt "artist_type"
@@ -3938,7 +4011,7 @@ msgstr ""
 #: DB:instrument_type/name:3
 msgctxt "instrument_type"
 msgid "Percussion instrument"
-msgstr ""
+msgstr "打擊樂器"
 
 #: DB:work_attribute_type_allowed_value/value:496
 msgctxt "work_attribute_type_allowed_value"
@@ -3988,7 +4061,7 @@ msgstr "地點名稱"
 #: DB:work_type/name:28
 msgctxt "work_type"
 msgid "Play"
-msgstr ""
+msgstr "話劇"
 
 #: DB:medium_format/name:45
 msgctxt "medium_format"
@@ -4008,12 +4081,12 @@ msgstr ""
 #: DB:cover_art_archive.art_type/name:11
 msgctxt "cover_art_type"
 msgid "Poster"
-msgstr ""
+msgstr "海報"
 
 #: DB:label_type/name:3
 msgctxt "label_type"
 msgid "Production"
-msgstr ""
+msgstr "製作公司"
 
 #: DB:release_status/name:2
 msgctxt "release_status"
@@ -4028,7 +4101,7 @@ msgstr ""
 #: DB:release_status/name:4
 msgctxt "release_status"
 msgid "Pseudo-Release"
-msgstr "假成品"
+msgstr "假發行品"
 
 #: DB:label_type/name:7
 msgctxt "label_type"
@@ -4073,7 +4146,7 @@ msgstr ""
 #: DB:work_type/name:14
 msgctxt "work_type"
 msgid "Quartet"
-msgstr ""
+msgstr "四重奏"
 
 #: DB:work_attribute_type_allowed_value/value:500
 msgctxt "work_attribute_type_allowed_value"
@@ -4218,37 +4291,37 @@ msgstr ""
 #: DB:editor_collection_type/name:1
 msgctxt "collection_type"
 msgid "Release"
-msgstr "成品"
+msgstr "發行品"
 
 #: DB:series_type/name:2
 msgctxt "series_type"
 msgid "Release"
-msgstr "成品"
+msgstr "發行品"
 
 #: DB:editor_collection_type/name:13
 msgctxt "collection_type"
 msgid "Release group"
-msgstr "成品組"
+msgstr "發行組"
 
 #: DB:series_type/name:1
 msgctxt "series_type"
 msgid "Release group"
-msgstr "成品組"
+msgstr "發行組"
 
 #: DB:release_group_alias_type/name:1
 msgctxt "alias_type"
 msgid "Release group name"
-msgstr "成品組名稱"
+msgstr "發行組名稱"
 
 #: DB:release_alias_type/name:1
 msgctxt "alias_type"
 msgid "Release name"
-msgstr "成品名稱"
+msgstr "發行品名稱"
 
 #: DB:place_type/name:6
 msgctxt "place_type"
 msgid "Religious building"
-msgstr "宗教建築物"
+msgstr "宗教建築"
 
 #: DB:work_attribute_type_allowed_value/value:765
 msgctxt "work_attribute_type_allowed_value"
@@ -4278,7 +4351,7 @@ msgstr ""
 #: DB:label_type/name:8
 msgctxt "label_type"
 msgid "Rights Society"
-msgstr ""
+msgstr "著作權機構"
 
 #: DB:work_attribute_type_allowed_value/value:222
 msgctxt "work_attribute_type_allowed_value"
@@ -4365,6 +4438,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Rūpaka"
 msgstr ""
 
+#: DB:work_attribute_type/name:28
+msgctxt "work_attribute_type"
+msgid "SABAM ID"
+msgstr ""
+
 #: DB:medium_format/name:3
 msgctxt "medium_format"
 msgid "SACD"
@@ -4375,6 +4453,11 @@ msgctxt "work_attribute_type"
 msgid "SACEM ID"
 msgstr "SACEM ID"
 
+#: DB:work_attribute_type/name:27
+msgctxt "work_attribute_type"
+msgid "SACM ID"
+msgstr ""
+
 #: DB:work_attribute_type/name:24
 msgctxt "work_attribute_type"
 msgid "SADAIC ID"
@@ -4383,7 +4466,7 @@ msgstr "SADAIC ID"
 #: DB:medium_format/name:62
 msgctxt "medium_format"
 msgid "SD Card"
-msgstr "SD 卡"
+msgstr "SD卡"
 
 #: DB:work_attribute_type/name:8
 msgctxt "work_attribute_type"
@@ -4682,22 +4765,22 @@ msgstr "原聲音樂"
 #: DB:cover_art_archive.art_type/name:6
 msgctxt "cover_art_type"
 msgid "Spine"
-msgstr ""
+msgstr "書脊"
 
 #: DB:release_group_secondary_type/name:3
 msgctxt "release_group_secondary_type"
 msgid "Spokenword"
-msgstr ""
+msgstr "會話"
 
 #: DB:place_type/name:4
 msgctxt "place_type"
 msgid "Stadium"
-msgstr ""
+msgstr "大型運動場"
 
 #: DB:cover_art_archive.art_type/name:10
 msgctxt "cover_art_type"
 msgid "Sticker"
-msgstr ""
+msgstr "標籤"
 
 #: DB:instrument_type/name:2
 msgctxt "instrument_type"
@@ -4720,7 +4803,7 @@ msgid ""
 "Subdivision is used for the main administrative divisions of a country, e.g."
 " California, Ontario, Okinawa. These are considered when displaying the "
 "parent areas for a given area."
-msgstr ""
+msgstr "行政區劃用於一個國家的主要行政分區，如美國加州、加拿大安大略省和日本沖繩縣等。行政區劃將會顯示為一地區的母地區。"
 
 #: DB:work_attribute_type_allowed_value/value:244
 msgctxt "work_attribute_type_allowed_value"
@@ -4785,7 +4868,7 @@ msgstr ""
 #: DB:release_packaging/name:16
 msgctxt "release_packaging"
 msgid "Super Jewel Box"
-msgstr "大型塑膠透明CD盒"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:252
 msgctxt "work_attribute_type_allowed_value"
@@ -4967,21 +5050,21 @@ msgctxt "medium_format"
 msgid ""
 "The CD layer of a DVDplus. The DVD layer should be added as a separate "
 "medium."
-msgstr "DVDplus 的 CD 層。DVD 層應新增為別的媒體。"
+msgstr "DVDplus的CD層。DVD層應新增為別的媒體。"
 
 #: DB:medium_format/description:67
 msgctxt "medium_format"
 msgid ""
 "The CD layer of a DualDisc. The DVD layer should be added as a separate "
 "medium."
-msgstr "DualDisc 的 CD 層。DVD 層應新增為別的媒體。"
+msgstr "DualDisc的CD層。DVD層應新增為別的媒體。"
 
 #: DB:medium_format/description:63
 msgctxt "medium_format"
 msgid ""
 "The CD layer of a hybrid SACD. The SACD layer should be added as a separate "
 "medium."
-msgstr "hybird SACD 的 CD 層。SACD 層應新增為別的媒體。"
+msgstr "Hybrid SACD的CD層。SACD層應新增為別的媒體。"
 
 #: DB:medium_format/description:60
 msgctxt "medium_format"
@@ -4997,28 +5080,28 @@ msgctxt "medium_format"
 msgid ""
 "The DVD (audio) layer of a DVDplus. The CD layer should be added as a "
 "separate medium."
-msgstr "DVDplus 的 DVD (音訊) 層。CD 層應新增為別的媒體。"
+msgstr "DVDplus的DVD（音訊）層。CD層應新增為別的媒體。"
 
 #: DB:medium_format/description:65
 msgctxt "medium_format"
 msgid ""
 "The DVD (audio) layer of a DualDisc. The CD layer should be added as a "
 "separate medium."
-msgstr "DualDisc 的 DVD (音訊) 層。CD 層應新增為別的媒體。"
+msgstr "DualDisc的DVD（音訊）層。CD層應新增為別的媒體。"
 
 #: DB:medium_format/description:66
 msgctxt "medium_format"
 msgid ""
 "The DVD (video) layer of a DualDisc. The CD layer should be added as a "
 "separate medium."
-msgstr "DualDisc 的 DVD (視訊) 層。CD 層應新增為別的媒體。"
+msgstr "DualDisc的DVD（視訊）層。CD層應新增為別的媒體。"
 
 #: DB:medium_format/description:64
 msgctxt "medium_format"
 msgid ""
 "The SACD layer of a hybrid SACD. The CD layer should be added as a separate "
 "medium."
-msgstr "hybird SACD 的 SACD 層。CD 層應新增為別的媒體。"
+msgstr "Hybrid SACD的SACD層。CD層應新增為別的媒體。"
 
 #: DB:work_type/description:7
 msgctxt "work_type"
@@ -5038,7 +5121,7 @@ msgstr ""
 #: DB:release_packaging/description:1
 msgctxt "release_packaging"
 msgid "The traditional CD case, made of hard, brittle plastic."
-msgstr "傳統的CD盒，由堅硬，易碎的塑膠製成。"
+msgstr "傳統的CD盒，由堅硬易碎的塑膠製成。"
 
 #: DB:work_type/description:23
 msgctxt "work_type"
@@ -5066,7 +5149,7 @@ msgstr ""
 #: DB:series_type/name:7
 msgctxt "series_type"
 msgid "Tour"
-msgstr ""
+msgstr "巡迴演唱會"
 
 #: DB:cover_art_archive.art_type/name:7
 msgctxt "cover_art_type"
@@ -5076,7 +5159,7 @@ msgstr "音軌"
 #: DB:cover_art_archive.art_type/name:9
 msgctxt "cover_art_type"
 msgid "Tray"
-msgstr ""
+msgstr "盤子"
 
 #: DB:work_attribute_type_allowed_value/value:775
 msgctxt "work_attribute_type_allowed_value"
@@ -5126,7 +5209,7 @@ msgstr ""
 #: DB:medium_format/name:26
 msgctxt "medium_format"
 msgid "USB Flash Drive"
-msgstr ""
+msgstr "USB隨身碟"
 
 #: DB:work_attribute_type_allowed_value/value:258
 msgctxt "work_attribute_type_allowed_value"
@@ -5278,7 +5361,7 @@ msgstr "黑膠唱片"
 #: DB:medium_format/name:48
 msgctxt "medium_format"
 msgid "VinylDisc"
-msgstr ""
+msgstr "VinylDisc"
 
 #: DB:work_attribute_type_allowed_value/value:259
 msgctxt "work_attribute_type_allowed_value"
@@ -5379,6 +5462,11 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:779
 msgctxt "work_attribute_type_allowed_value"
 msgid "Yürüksofyan"
+msgstr ""
+
+#: DB:work_attribute_type/name:30
+msgctxt "work_attribute_type"
+msgid "ZAiKS ID"
 msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:780

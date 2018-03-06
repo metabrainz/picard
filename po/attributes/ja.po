@@ -1,7 +1,8 @@
-# Translators:
+# 
 # Translators:
 # nikki, 2014
 # Keshav Kini <keshav.kini@gmail.com>, 2013
+# ktu0457, 2017
 # mai inoue, 2015
 # mai inoue, 2015
 # Mitsuharu Kurita, 2016
@@ -11,14 +12,15 @@
 # Osamu Takahashi, 2014
 # Osamu Takahashi, 2014
 # PATATE12, 2014
-# Shunsuke Shimizu <grafi@grafi.jp>, 2016
+# 赤沼栄 <sakaeakanuma@gmail.com>, 2017
+# Shunsuke Shimizu <grafi@grafi.jp>, 2016-2017
 # th1rtyf0ur, 2013
 # th1rtyf0ur, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2017-01-16 20:46+0000\n"
-"Last-Translator: Laurent Monin <i18n@norz.org>\n"
+"PO-Revision-Date: 2018-02-09 13:02+0000\n"
+"Last-Translator: yvanz\n"
 "Language-Team: Japanese (http://www.transifex.com/musicbrainz/musicbrainz/language/ja/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -39,7 +41,7 @@ msgctxt "work_type"
 msgid ""
 "\"Sonata\" is a general term used to describe small scale (very often solo "
 "or solo + keyboard) instrumental works, initially in baroque music."
-msgstr ""
+msgstr "”ソナタ”とは、最初はバロック音楽の小規模な(しばしばソロまたはソロ+キーボードの)演奏作品を表す一般的な用語です。"
 
 #: DB:medium_format/name:54
 msgctxt "medium_format"
@@ -50,6 +52,11 @@ msgstr "10インチシェラック盤"
 msgctxt "medium_format"
 msgid "10\" Vinyl"
 msgstr "10インチビニール盤"
+
+#: DB:medium_format/name:72
+msgctxt "medium_format"
+msgid "12\" LaserDisc"
+msgstr "12インチレーザーディスク"
 
 #: DB:medium_format/name:55
 msgctxt "medium_format"
@@ -80,6 +87,11 @@ msgstr "7インチシェラック盤"
 msgctxt "medium_format"
 msgid "7\" Vinyl"
 msgstr "7インチビニール盤"
+
+#: DB:medium_format/name:71
+msgctxt "medium_format"
+msgid "8\" LaserDisc"
+msgstr "8インチレーザーディスク"
 
 #: DB:medium_format/name:34
 msgctxt "medium_format"
@@ -184,6 +196,11 @@ msgid ""
 "release."
 msgstr ""
 
+#: DB:release_packaging/description:17
+msgctxt "release_packaging"
+msgid "A perfect bound book with a sleeve at the end to hold a CD"
+msgstr ""
+
 #: DB:place_type/description:5
 msgctxt "place_type"
 msgid ""
@@ -246,6 +263,13 @@ msgstr ""
 #: DB:series_type/description:8
 msgctxt "series_type"
 msgid "A recurring festival, usually happening annually in the same location."
+msgstr ""
+
+#: DB:place_type/description:7
+msgctxt "place_type"
+msgid ""
+"A school, university or other similar educational institution (especially, "
+"but not only, one where music is taught)"
 msgstr ""
 
 #: DB:series_type/description:6
@@ -366,7 +390,7 @@ msgstr "嬰イ短調"
 #: DB:work_attribute_type/name:23
 msgctxt "work_attribute_type"
 msgid "AKM ID"
-msgstr ""
+msgstr "AKM ID"
 
 #: DB:work_attribute_type/name:13
 msgctxt "work_attribute_type"
@@ -788,6 +812,11 @@ msgctxt "work_attribute_type"
 msgid "BMI ID"
 msgstr "BMI ID"
 
+#: DB:work_attribute_type/name:26
+msgctxt "work_attribute_type"
+msgid "BUMA/STEMRA ID"
+msgstr ""
+
 #: DB:cover_art_archive.art_type/name:2
 msgctxt "cover_art_type"
 msgid "Back"
@@ -833,7 +862,7 @@ msgctxt "work_type"
 msgid ""
 "Beijing opera is a form of traditional Chinese theatre which combines music,"
 " vocal performance, mime, dance, and acrobatics."
-msgstr ""
+msgstr "京劇は音楽、声楽、芝居、舞踊、曲芸を組み合わせた、中国の伝統的な劇の一様式です。"
 
 #: DB:work_attribute_type_allowed_value/value:697
 msgctxt "work_attribute_type_allowed_value"
@@ -1008,6 +1037,11 @@ msgstr "海賊版作品"
 #: DB:work_attribute_type_allowed_value/value:607
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bozlak"
+msgstr ""
+
+#: DB:instrument_alias_type/name:3
+msgctxt "alias_type"
+msgid "Brand name"
 msgstr ""
 
 #: DB:release_group_primary_type/name:12
@@ -1229,7 +1263,7 @@ msgstr "市"
 msgctxt "area_type"
 msgid ""
 "City is used for settlements of any size, including towns and villages."
-msgstr ""
+msgstr "市は、町や村も含むどんな大きさの居住地区にも用いられます。"
 
 #: DB:release_group_secondary_type/name:1
 msgctxt "release_group_secondary_type"
@@ -1324,7 +1358,7 @@ msgstr "ニ調ドリア"
 #: DB:work_attribute_type_allowed_value/value:802
 msgctxt "work_attribute_type_allowed_value"
 msgid "D Mixolydian"
-msgstr ""
+msgstr " ニ調ミクソリディア"
 
 #: DB:work_attribute_type_allowed_value/value:8
 msgctxt "work_attribute_type_allowed_value"
@@ -1546,6 +1580,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Dhēnuka"
 msgstr ""
 
+#: DB:release_packaging/name:17
+msgctxt "release_packaging"
+msgid "Digibook"
+msgstr ""
+
 #: DB:release_packaging/name:3
 msgctxt "release_packaging"
 msgid "Digipak"
@@ -1734,12 +1773,12 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:791
 msgctxt "work_attribute_type_allowed_value"
 msgid "E Dorian"
-msgstr ""
+msgstr " ホ調ドリア "
 
 #: DB:work_attribute_type_allowed_value/value:803
 msgctxt "work_attribute_type_allowed_value"
 msgid "E Mixolydian"
-msgstr ""
+msgstr " ホ調ミクソリディア"
 
 #: DB:work_attribute_type_allowed_value/value:13
 msgctxt "work_attribute_type_allowed_value"
@@ -1775,6 +1814,11 @@ msgstr "EP"
 msgctxt "medium_format"
 msgid "Edison Diamond Disc"
 msgstr "エジソンダイヤモンドディスク"
+
+#: DB:place_type/name:7
+msgctxt "place_type"
+msgid "Educational institution"
+msgstr ""
 
 #: DB:instrument_type/name:4
 msgctxt "instrument_type"
@@ -1884,7 +1928,7 @@ msgstr "ヘ調ドリア"
 #: DB:work_attribute_type_allowed_value/value:804
 msgctxt "work_attribute_type_allowed_value"
 msgid "F Mixolydian"
-msgstr ""
+msgstr " ヘ調ミクソリディア"
 
 #: DB:work_attribute_type_allowed_value/value:17
 msgctxt "work_attribute_type_allowed_value"
@@ -2042,7 +2086,7 @@ msgstr "ト調ドリア"
 #: DB:work_attribute_type_allowed_value/value:805
 msgctxt "work_attribute_type_allowed_value"
 msgid "G Mixolydian"
-msgstr ""
+msgstr " ト調ミクソリディア"
 
 #: DB:work_attribute_type_allowed_value/value:22
 msgctxt "work_attribute_type_allowed_value"
@@ -2482,12 +2526,12 @@ msgstr "ハイブリッドSACD"
 #: DB:medium_format/name:63
 msgctxt "medium_format"
 msgid "Hybrid SACD (CD layer)"
-msgstr ""
+msgstr " ハイブリッドSACD (CD部)"
 
 #: DB:medium_format/name:64
 msgctxt "medium_format"
 msgid "Hybrid SACD (SACD layer)"
-msgstr ""
+msgstr " ハイブリッドSACD (SACD部)"
 
 #: DB:work_attribute_type_allowed_value/value:418
 msgctxt "work_attribute_type_allowed_value"
@@ -2537,6 +2581,31 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:109
 msgctxt "work_attribute_type_allowed_value"
 msgid "Hēmavati"
+msgstr ""
+
+#: DB:work_attribute_type/name:29
+msgctxt "work_attribute_type"
+msgid "ICE ID"
+msgstr ""
+
+#: DB:work_attribute_type/description:28
+msgctxt "work_attribute_type"
+msgid "ID for the Belgian rights society SABAM"
+msgstr ""
+
+#: DB:work_attribute_type/description:29
+msgctxt "work_attribute_type"
+msgid "ID for the International Copyright Enterprise"
+msgstr ""
+
+#: DB:work_attribute_type/description:27
+msgctxt "work_attribute_type"
+msgid "ID for the Mexican rights society SACM"
+msgstr ""
+
+#: DB:work_attribute_type/description:30
+msgctxt "work_attribute_type"
+msgid "ID for the Polish rights society ZAiKS"
 msgstr ""
 
 #: DB:work_attribute_type/name:14
@@ -2634,7 +2703,7 @@ msgstr ""
 #: DB:area_type/name:6
 msgctxt "area_type"
 msgid "Island"
-msgstr ""
+msgstr "島"
 
 #: DB:area_type/description:6
 msgctxt "area_type"
@@ -3814,6 +3883,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Nīlāṁbari"
 msgstr ""
 
+#: DB:work_attribute_type/name:25
+msgctxt "work_attribute_type"
+msgid "OSA ID"
+msgstr ""
+
 #: DB:cover_art_archive.art_type/name:5
 msgctxt "cover_art_type"
 msgid "Obi"
@@ -3997,7 +4071,7 @@ msgstr ""
 #: DB:work_type/name:28
 msgctxt "work_type"
 msgid "Play"
-msgstr ""
+msgstr "演奏"
 
 #: DB:medium_format/name:45
 msgctxt "medium_format"
@@ -4327,7 +4401,7 @@ msgstr ""
 #: DB:work_attribute_type/name:4
 msgctxt "work_attribute_type"
 msgid "Rāga (Carnatic)"
-msgstr ""
+msgstr "ラーガ（カルナータカ音楽）"
 
 #: DB:work_attribute_type_allowed_value/value:210
 msgctxt "work_attribute_type_allowed_value"
@@ -4374,6 +4448,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Rūpaka"
 msgstr ""
 
+#: DB:work_attribute_type/name:28
+msgctxt "work_attribute_type"
+msgid "SABAM ID"
+msgstr ""
+
 #: DB:medium_format/name:3
 msgctxt "medium_format"
 msgid "SACD"
@@ -4384,15 +4463,20 @@ msgctxt "work_attribute_type"
 msgid "SACEM ID"
 msgstr "SACEM ID"
 
+#: DB:work_attribute_type/name:27
+msgctxt "work_attribute_type"
+msgid "SACM ID"
+msgstr ""
+
 #: DB:work_attribute_type/name:24
 msgctxt "work_attribute_type"
 msgid "SADAIC ID"
-msgstr ""
+msgstr "SADAIC ID"
 
 #: DB:medium_format/name:62
 msgctxt "medium_format"
 msgid "SD Card"
-msgstr ""
+msgstr "SDメモリーカード"
 
 #: DB:work_attribute_type/name:8
 msgctxt "work_attribute_type"
@@ -4604,7 +4688,7 @@ msgctxt "medium_format"
 msgid ""
 "Shellac records were the most predominant type of gramophone record during "
 "the first half of the 20th century."
-msgstr ""
+msgstr "シェラック盤はグラモフォン盤の一種であり、20世紀前半において支配的な地位を占めていました。"
 
 #: DB:work_attribute_type_allowed_value/value:236
 msgctxt "work_attribute_type_allowed_value"
@@ -4721,7 +4805,7 @@ msgstr "スタジオ"
 #: DB:area_type/name:2
 msgctxt "area_type"
 msgid "Subdivision"
-msgstr "区分"
+msgstr "区域"
 
 #: DB:area_type/description:2
 msgctxt "area_type"
@@ -4729,7 +4813,7 @@ msgid ""
 "Subdivision is used for the main administrative divisions of a country, e.g."
 " California, Ontario, Okinawa. These are considered when displaying the "
 "parent areas for a given area."
-msgstr ""
+msgstr "区域は、カリフォルニア、オンタリオ、沖縄といった、国の主要な行政区分を表すために用いられます。ある地域の上位となる地域を表示する際に利用されます。"
 
 #: DB:work_attribute_type_allowed_value/value:244
 msgctxt "work_attribute_type_allowed_value"
@@ -5322,7 +5406,7 @@ msgstr ""
 #: DB:cover_art_archive.art_type/name:13
 msgctxt "cover_art_type"
 msgid "Watermark"
-msgstr ""
+msgstr "著作権表示"
 
 #: DB:medium_format/name:14
 msgctxt "medium_format"
@@ -5388,6 +5472,11 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:779
 msgctxt "work_attribute_type_allowed_value"
 msgid "Yürüksofyan"
+msgstr ""
+
+#: DB:work_attribute_type/name:30
+msgctxt "work_attribute_type"
+msgid "ZAiKS ID"
 msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:780

@@ -1,13 +1,16 @@
-# Translators:
+# 
 # Translators:
 # Alex Luís Silva <alex.mooca@hotmail.com>, 2015
 # Daniel Biasotto <biasotto@tuta.io>, 2017
 # Eduardo Bastos <eduardorochacg@gmail.com>, 2012
+# Jaide Ambrosio <jaide.sp@gmail.com>, 2018
 # Jefferson Gomes <jefferson.mg2@hotmail.com>, 2016
 # João Miguel Soares <joaomiguel32@live.com>, 2016
+# João Munhoz <jmunhoz@outlook.com>, 2017
 # lampih <lampih@gmail.com>, 2012
 # Lucas de Jesus <lucasdj98@gmail.com>, 2016
 # Lucas Gomes <x8lucas8x@gmail.com>, 2012
+# Luciano Frota <lucianofrota@gmail.com>, 2017
 # Marco Costa <mmarcottulio@gmail.com>, 2012
 # Marcus Vinícius Marques, 2014
 # Marco Costa <mmarcottulio@gmail.com>, 2012
@@ -17,8 +20,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2017-02-11 04:56+0000\n"
-"Last-Translator: Marco Costa <mmarcottulio@gmail.com>\n"
+"PO-Revision-Date: 2018-03-01 16:21+0000\n"
+"Last-Translator: Jaide Ambrosio <jaide.sp@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/musicbrainz/musicbrainz/language/pt_BR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -51,6 +54,11 @@ msgctxt "medium_format"
 msgid "10\" Vinyl"
 msgstr "Vinil de 10 polegadas"
 
+#: DB:medium_format/name:72
+msgctxt "medium_format"
+msgid "12\" LaserDisc"
+msgstr "12\" CD"
+
 #: DB:medium_format/name:55
 msgctxt "medium_format"
 msgid "12\" Shellac"
@@ -80,6 +88,11 @@ msgstr "Goma-laca 7\""
 msgctxt "medium_format"
 msgid "7\" Vinyl"
 msgstr "Vinil de 7 polegadas"
+
+#: DB:medium_format/name:71
+msgctxt "medium_format"
+msgid "8\" LaserDisc"
+msgstr "8\" CD"
 
 #: DB:medium_format/name:34
 msgctxt "medium_format"
@@ -113,7 +126,7 @@ msgctxt "work_type"
 msgid ""
 "A ballet is music composed to be used, together with a choreography, for a "
 "ballet dance production."
-msgstr ""
+msgstr "O balé é uma música composta para ser usada junto a uma coreografia, para uma produção de dança de bale."
 
 #: DB:work_type/description:3
 msgctxt "work_type"
@@ -184,6 +197,11 @@ msgid ""
 "release."
 msgstr ""
 
+#: DB:release_packaging/description:17
+msgctxt "release_packaging"
+msgid "A perfect bound book with a sleeve at the end to hold a CD"
+msgstr ""
+
 #: DB:place_type/description:5
 msgctxt "place_type"
 msgid ""
@@ -248,6 +266,13 @@ msgctxt "series_type"
 msgid "A recurring festival, usually happening annually in the same location."
 msgstr "Um festival recorrente, geralmente acontecendo anualmente no mesmo local."
 
+#: DB:place_type/description:7
+msgctxt "place_type"
+msgid ""
+"A school, university or other similar educational institution (especially, "
+"but not only, one where music is taught)"
+msgstr ""
+
 #: DB:series_type/description:6
 msgctxt "series_type"
 msgid "A series of events."
@@ -310,7 +335,7 @@ msgctxt "work_type"
 msgid ""
 "A soundtrack is the music that accompanies a film, TV program, videogame, or"
 " even book."
-msgstr ""
+msgstr "Uma trilha sonora é a música presente num filme, programa de TV, videogame ou até mesmo livro."
 
 #: DB:work_type/description:6
 msgctxt "work_type"
@@ -456,7 +481,7 @@ msgstr "Álbum"
 #: DB:series_ordering_type/description:2
 msgctxt "series_ordering_type"
 msgid "Allows for manually setting the position of each item in the series."
-msgstr ""
+msgstr "Permite configurar manualmente a posição de cada item na série."
 
 #: DB:work_attribute_type_allowed_value/value:40
 msgctxt "work_attribute_type_allowed_value"
@@ -556,7 +581,7 @@ msgctxt "release_status"
 msgid ""
 "Any release officially sanctioned by the artist and/or their record company."
 " Most releases will fit into this category."
-msgstr ""
+msgstr "Qualquer lançamento oficialmente sancionado pelo artista e/ou por sua gravadora. Muitos lançamentos entram nesta categoria."
 
 #: DB:work_attribute_type_allowed_value/value:311
 msgctxt "work_attribute_type_allowed_value"
@@ -661,7 +686,7 @@ msgstr "Audiobook"
 #: DB:series_ordering_type/name:1
 msgctxt "series_ordering_type"
 msgid "Automatic"
-msgstr ""
+msgstr "Automático"
 
 #: DB:work_attribute_type_allowed_value/value:694
 msgctxt "work_attribute_type_allowed_value"
@@ -788,10 +813,15 @@ msgctxt "work_attribute_type"
 msgid "BMI ID"
 msgstr ""
 
+#: DB:work_attribute_type/name:26
+msgctxt "work_attribute_type"
+msgid "BUMA/STEMRA ID"
+msgstr ""
+
 #: DB:cover_art_archive.art_type/name:2
 msgctxt "cover_art_type"
 msgid "Back"
-msgstr ""
+msgstr "Voltar"
 
 #: DB:work_attribute_type_allowed_value/value:323
 msgctxt "work_attribute_type_allowed_value"
@@ -826,14 +856,14 @@ msgstr ""
 #: DB:work_type/name:26
 msgctxt "work_type"
 msgid "Beijing opera"
-msgstr ""
+msgstr "Ópera de Pequim"
 
 #: DB:work_type/description:26
 msgctxt "work_type"
 msgid ""
 "Beijing opera is a form of traditional Chinese theatre which combines music,"
 " vocal performance, mime, dance, and acrobatics."
-msgstr ""
+msgstr "A ópera de Pequim é uma forma de teatro Chinês tradicional que combina música, performance vocal, mímica, dança e acrobacias."
 
 #: DB:work_attribute_type_allowed_value/value:697
 msgctxt "work_attribute_type_allowed_value"
@@ -993,7 +1023,7 @@ msgstr "Livro"
 #: DB:cover_art_archive.art_type/name:3
 msgctxt "cover_art_type"
 msgid "Booklet"
-msgstr ""
+msgstr "Encarte"
 
 #: DB:release_status/name:3
 msgctxt "release_status"
@@ -1010,10 +1040,15 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Bozlak"
 msgstr ""
 
+#: DB:instrument_alias_type/name:3
+msgctxt "alias_type"
+msgid "Brand name"
+msgstr "Nome da marca"
+
 #: DB:release_group_primary_type/name:12
 msgctxt "release_group_primary_type"
 msgid "Broadcast"
-msgstr ""
+msgstr "Transmissão"
 
 #: DB:work_attribute_type_allowed_value/value:62
 msgctxt "work_attribute_type_allowed_value"
@@ -1239,7 +1274,7 @@ msgstr "Compilação"
 #: DB:event_type/name:1
 msgctxt "event_type"
 msgid "Concert"
-msgstr ""
+msgstr "Concerto"
 
 #: DB:work_type/name:4
 msgctxt "work_type"
@@ -1249,12 +1284,12 @@ msgstr "Concerto"
 #: DB:event_type/name:4
 msgctxt "event_type"
 msgid "Convention/Expo"
-msgstr ""
+msgstr "Convenção/Exposição"
 
 #: DB:medium_format/name:61
 msgctxt "medium_format"
 msgid "Copy Control CD"
-msgstr ""
+msgstr "Controle Anticópia do CD"
 
 #: DB:medium_format/description:61
 msgctxt "medium_format"
@@ -1263,7 +1298,7 @@ msgid ""
 "containing software that is ostensibly designed to prevent the CD from being"
 " ripped. There are a number of software variants: the most well-known are "
 "Macrovision's Cactus Data Shield (CDS) and SunnComm's MediaMax."
-msgstr ""
+msgstr "Controle Anticópia de CD (CCCD em inglês) é uma sigla para CDs lançados entre 2001 e 2006 que continham um software especificamente projetado para prevenir cópias. Havia uma variedade de softwares: entre os mais cinhecidos estão o Cactus Data Shield (CDS) da Macrovision e o MediaMax da SunnComm."
 
 #: DB:area_type/name:1
 msgctxt "area_type"
@@ -1280,7 +1315,7 @@ msgstr ""
 #: DB:area_type/name:7
 msgctxt "area_type"
 msgid "County"
-msgstr ""
+msgstr "País"
 
 #: DB:area_type/description:7
 msgctxt "area_type"
@@ -1546,6 +1581,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Dhēnuka"
 msgstr ""
 
+#: DB:release_packaging/name:17
+msgctxt "release_packaging"
+msgid "Digibook"
+msgstr ""
+
 #: DB:release_packaging/name:3
 msgctxt "release_packaging"
 msgid "Digipak"
@@ -1776,10 +1816,15 @@ msgctxt "medium_format"
 msgid "Edison Diamond Disc"
 msgstr ""
 
+#: DB:place_type/name:7
+msgctxt "place_type"
+msgid "Educational institution"
+msgstr ""
+
 #: DB:instrument_type/name:4
 msgctxt "instrument_type"
 msgid "Electronic instrument"
-msgstr ""
+msgstr "Instrumento eletrônico"
 
 #: DB:medium_format/name:42
 msgctxt "medium_format"
@@ -2539,6 +2584,31 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Hēmavati"
 msgstr ""
 
+#: DB:work_attribute_type/name:29
+msgctxt "work_attribute_type"
+msgid "ICE ID"
+msgstr ""
+
+#: DB:work_attribute_type/description:28
+msgctxt "work_attribute_type"
+msgid "ID for the Belgian rights society SABAM"
+msgstr ""
+
+#: DB:work_attribute_type/description:29
+msgctxt "work_attribute_type"
+msgid "ID for the International Copyright Enterprise"
+msgstr ""
+
+#: DB:work_attribute_type/description:27
+msgctxt "work_attribute_type"
+msgid "ID for the Mexican rights society SACM"
+msgstr ""
+
+#: DB:work_attribute_type/description:30
+msgctxt "work_attribute_type"
+msgid "ID for the Polish rights society ZAiKS"
+msgstr ""
+
 #: DB:work_attribute_type/name:14
 msgctxt "work_attribute_type"
 msgid "Identifiers"
@@ -2552,14 +2622,14 @@ msgstr ""
 #: DB:work_type/name:30
 msgctxt "work_type"
 msgid "Incidental music"
-msgstr ""
+msgstr "Música incidental"
 
 #: DB:work_type/description:30
 msgctxt "work_type"
 msgid ""
 "Incidental music is music written as background for (usually) a theatre "
 "play."
-msgstr ""
+msgstr "Música incidental é a música composta para tocar ao fundo de, geralmente, peças de teatro."
 
 #: DB:place_type/name:5
 msgctxt "place_type"
@@ -2677,7 +2747,7 @@ msgstr ""
 #: DB:release_packaging/name:1
 msgctxt "release_packaging"
 msgid "Jewel Case"
-msgstr ""
+msgstr "Capa acrílica"
 
 #: DB:work_attribute_type_allowed_value/value:119
 msgctxt "work_attribute_type_allowed_value"
@@ -3192,7 +3262,7 @@ msgstr ""
 #: DB:work_type/name:8
 msgctxt "work_type"
 msgid "Mass"
-msgstr ""
+msgstr "Missa"
 
 #: DB:event_type/name:5
 msgctxt "event_type"
@@ -3814,6 +3884,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Nīlāṁbari"
 msgstr ""
 
+#: DB:work_attribute_type/name:25
+msgctxt "work_attribute_type"
+msgid "OSA ID"
+msgstr ""
+
 #: DB:cover_art_archive.art_type/name:5
 msgctxt "cover_art_type"
 msgid "Obi"
@@ -4207,7 +4282,7 @@ msgstr ""
 #: DB:medium_format/name:10
 msgctxt "medium_format"
 msgid "Reel-to-reel"
-msgstr ""
+msgstr "Gravador de rolo"
 
 #: DB:work_attribute_type_allowed_value/value:514
 msgctxt "work_attribute_type_allowed_value"
@@ -4374,6 +4449,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Rūpaka"
 msgstr ""
 
+#: DB:work_attribute_type/name:28
+msgctxt "work_attribute_type"
+msgid "SABAM ID"
+msgstr ""
+
 #: DB:medium_format/name:3
 msgctxt "medium_format"
 msgid "SACD"
@@ -4384,6 +4464,11 @@ msgctxt "work_attribute_type"
 msgid "SACEM ID"
 msgstr ""
 
+#: DB:work_attribute_type/name:27
+msgctxt "work_attribute_type"
+msgid "SACM ID"
+msgstr ""
+
 #: DB:work_attribute_type/name:24
 msgctxt "work_attribute_type"
 msgid "SADAIC ID"
@@ -4392,7 +4477,7 @@ msgstr ""
 #: DB:medium_format/name:62
 msgctxt "medium_format"
 msgid "SD Card"
-msgstr ""
+msgstr "Cartão SD"
 
 #: DB:work_attribute_type/name:8
 msgctxt "work_attribute_type"
@@ -5388,6 +5473,11 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:779
 msgctxt "work_attribute_type_allowed_value"
 msgid "Yürüksofyan"
+msgstr ""
+
+#: DB:work_attribute_type/name:30
+msgctxt "work_attribute_type"
+msgid "ZAiKS ID"
 msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:780

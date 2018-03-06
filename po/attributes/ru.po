@@ -1,6 +1,7 @@
-# Translators:
+# 
 # Translators:
 # Anton Karpuzikov <karpuzikovanton@gmail.com>, 2015
+# Dmitr Y, 2017
 # greycat <greycat.na.kor@gmail.com>, 2012
 # Nikolai Prokoschenko <nikolai@prokoschenko.de>, 2011
 # dubwai <o0wd8jx@lavabit.com>, 2012
@@ -8,13 +9,15 @@
 # Александр Жибарь <santer1986@gmail.com>, 2016
 # Алексеев Денис <happy.den89@gmail.com>, 2015
 # Дмитрий <sema19689@gmail.com>, 2014
+# Дмитрий Титов <gtdsocial@icloud.com>, 2018
 # Екатерина Тишина <ekaterina.tishina@gmail.com>, 2016
 # Иван Стасюк <brokeyourbike@gmail.com>, 2016
+# Петр Москвин <peter.moskvin@outlook.com>, 2017
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2017-01-16 20:46+0000\n"
-"Last-Translator: Laurent Monin <i18n@norz.org>\n"
+"PO-Revision-Date: 2018-02-09 13:02+0000\n"
+"Last-Translator: yvanz\n"
 "Language-Team: Russian (http://www.transifex.com/musicbrainz/musicbrainz/language/ru/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -28,88 +31,98 @@ msgid ""
 "\"Motet\" is a term that applies to different types of (usually "
 "unaccompanied) choral works. What exactly is a motet depends quite a bit on "
 "the period."
-msgstr "1\"Мотет\""
+msgstr "Мотет – термин, который применяется к различным типам хоровых произведений (обычно без аккомпанемента). Музыкальная формата мотета меняется в разные временные эпохи. "
 
 #: DB:work_type/description:5
 msgctxt "work_type"
 msgid ""
 "\"Sonata\" is a general term used to describe small scale (very often solo "
 "or solo + keyboard) instrumental works, initially in baroque music."
-msgstr "2 \"Соната"
+msgstr "Соната – общий термин, используемый для описания небольших инструментальных сочинений (очень часто соло или соло + клавишные), изначально в музыке эпохи барокко."
 
 #: DB:medium_format/name:54
 msgctxt "medium_format"
 msgid "10\" Shellac"
-msgstr "10\"Винил(78 об.)"
+msgstr "10\" винил (78 об/мин)"
 
 #: DB:medium_format/name:30
 msgctxt "medium_format"
 msgid "10\" Vinyl"
-msgstr "10\" Винил"
+msgstr "10\" винил"
+
+#: DB:medium_format/name:72
+msgctxt "medium_format"
+msgid "12\" LaserDisc"
+msgstr "12\" LaserDisc"
 
 #: DB:medium_format/name:55
 msgctxt "medium_format"
 msgid "12\" Shellac"
-msgstr "12\"Винил(78 об.)"
+msgstr "12\" винил (78 об/мин)"
 
 #: DB:medium_format/name:31
 msgctxt "medium_format"
 msgid "12\" Vinyl"
-msgstr "12\" Винил"
+msgstr "12\" винил"
 
 #: DB:medium_format/name:49
 msgctxt "medium_format"
 msgid "3.5\" Floppy Disk"
-msgstr "3.5\" Дискета"
+msgstr "3.5\" дискета"
 
 #: DB:medium_format/name:52
 msgctxt "medium_format"
 msgid "7\" Flexi-disc"
-msgstr "7\"Флекси-диск"
+msgstr "7\" гибкая пластинка"
 
 #: DB:medium_format/name:56
 msgctxt "medium_format"
 msgid "7\" Shellac"
-msgstr "7\"Винил(78 об.)"
+msgstr "7\" винил (78 об/мин)"
 
 #: DB:medium_format/name:29
 msgctxt "medium_format"
 msgid "7\" Vinyl"
 msgstr "7\" винил"
 
+#: DB:medium_format/name:71
+msgctxt "medium_format"
+msgid "8\" LaserDisc"
+msgstr "8\" LaserDisc"
+
 #: DB:medium_format/name:34
 msgctxt "medium_format"
 msgid "8cm CD"
-msgstr "8 см CD"
+msgstr "8-см CD"
 
 #: DB:medium_format/name:40
 msgctxt "medium_format"
 msgid "8cm CD+G"
-msgstr "8cm CD+G"
+msgstr "8-см CD+G"
 
 #: DB:medium_format/description:58
 msgctxt "medium_format"
 msgid ""
 "90 rpm, vertical-cut shellac discs, produced by the Pathé label from 1906 to"
 " 1932."
-msgstr "90 об / мин, вертикальный-рез лаковых дисков, произведенные на лейбле \"Pathé\" с 1906 по 1932 год."
+msgstr "Виниловые диски 90 об/мин с вертикальной нарезкой, выпускавшиеся на лейбле Pathé с 1906 по 1932 год."
 
 #: DB:work_attribute_type_allowed_value/value:794
 msgctxt "work_attribute_type_allowed_value"
 msgid "A Dorian"
-msgstr ""
+msgstr "Ля Дориан"
 
 #: DB:work_attribute_type_allowed_value/value:806
 msgctxt "work_attribute_type_allowed_value"
 msgid "A Mixolydian"
-msgstr ""
+msgstr "Ля Миксолидийское"
 
 #: DB:work_type/description:2
 msgctxt "work_type"
 msgid ""
 "A ballet is music composed to be used, together with a choreography, for a "
 "ballet dance production."
-msgstr "Балетная музыка предназначена для использование вместе с хореографией, для \t\nпостановка балета."
+msgstr "Музыка для использования с хореографией в балетных постановках."
 
 #: DB:work_type/description:3
 msgctxt "work_type"
@@ -138,12 +151,12 @@ msgid ""
 "A give-away release or a release intended to promote an upcoming official "
 "release (e.g. pre-release versions, releases included with a magazine, "
 "versions supplied to radio DJs for air-play)."
-msgstr ""
+msgstr "Народная раздача или релиз, предназначенный для продвижения предстоящего официального релиза (например, предварительные версии, выпуски, включенные в журнал, версии, поставляемые радио-ведущим для эфирного воспроизведения)."
 
 #: DB:work_attribute_type_allowed_value/value:28
 msgctxt "work_attribute_type_allowed_value"
 msgid "A major"
-msgstr "Мажор"
+msgstr "Ля мажор"
 
 #: DB:work_type/description:8
 msgctxt "work_type"
@@ -151,7 +164,7 @@ msgid ""
 "A mass is a choral composition that sets the invariable portions of the "
 "Christian Eucharistic liturgy (Kyrie - Gloria - Credo - Sanctus - Benedictus"
 " - Agnus Dei, with other portions sometimes added) to music."
-msgstr ""
+msgstr "Месса - это хоровая композиция, представляющая собой ординарий - неизменяемых текст христианской Евхаристической литургии (Kyrie - Gloria - Credo - Sanctus - Benedictus - Agnus Dei, и другие части, иногда добавляемые к музыке)."
 
 #: DB:event_type/description:5
 msgctxt "event_type"
@@ -159,26 +172,31 @@ msgid ""
 "A masterclass or clinic is an event where an artist meets with a small to "
 "medium-sized audience and instructs them individually and/or takes questions"
 " intended to improve the audience members' playing skills."
-msgstr ""
+msgstr "Мастер-класс - это мероприятие, на котором артист встречается с небольшой или средней аудиторией и обучает ее индивидуально и/или задает вопросы, направленные на повышение музыкальных навыков участников."
 
 #: DB:work_attribute_type_allowed_value/value:29
 msgctxt "work_attribute_type_allowed_value"
 msgid "A minor"
-msgstr "Минор"
+msgstr "Ля минор"
 
 #: DB:work_type/description:13
 msgctxt "work_type"
 msgid ""
 "A partita is an instrumental piece composed of a series of variations, and "
 "it's by its current definition very similar to a suite."
-msgstr ""
+msgstr "Партита - инструментальная часть, состоящая из ряда вариаций, и по ее нынешнему определению очень похожа на сюиту."
 
 #: DB:event_type/description:3
 msgctxt "event_type"
 msgid ""
 "A party, reception or other event held specifically for the launch of a "
 "release."
-msgstr ""
+msgstr "Вечеринку, прием или другое мероприятие, проводимое специально в поддержку релиза."
+
+#: DB:release_packaging/description:17
+msgctxt "release_packaging"
+msgid "A perfect bound book with a sleeve at the end to hold a CD"
+msgstr "Книга с рукавом в конце для компакт-диска"
 
 #: DB:place_type/description:5
 msgctxt "place_type"
@@ -186,21 +204,21 @@ msgid ""
 "A place consisting of a large enclosed area with a central event space "
 "surrounded by tiered seating for spectators, which can be used for indoor "
 "sports, concerts and other entertainment events."
-msgstr ""
+msgstr "Место, состоящее из большой закрытой зоны с центральным пространством для проведения мероприятий, окруженным многоуровневыми рядами кресел для зрителей, которые могут быть использованы для проведения спортивных, концертных и других развлекательных мероприятий."
 
 #: DB:place_type/description:1
 msgctxt "place_type"
 msgid ""
 "A place designed for non-live production of music, typically a recording "
 "studio."
-msgstr "Место,созданное не для музицирования,типичная звукозаписывающая студия"
+msgstr "Место для не концертного исполнения музыки, обычно это студия звукозаписи."
 
 #: DB:place_type/description:2
 msgctxt "place_type"
 msgid ""
 "A place that has live artistic performances as one of its primary functions,"
 " such as a concert hall."
-msgstr ""
+msgstr "Место, используемое, в первую очередь, для живых выступлений артистов, например концертный зал."
 
 #: DB:place_type/description:6
 msgctxt "place_type"
@@ -208,7 +226,7 @@ msgid ""
 "A place that has worship or religious studies as its main function. "
 "Religious buildings often host concerts and serve as recording locations, "
 "especially for classical music."
-msgstr ""
+msgstr "Место, используемое, в первую очередь, для поклонения религии. Религиозные здания часто проводят концерты и служат местом записи, особенно, для классической музыки."
 
 #: DB:place_type/description:4
 msgctxt "place_type"
@@ -216,7 +234,7 @@ msgid ""
 "A place whose main purpose is to host outdoor sport events, typically "
 "consisting of a pitch surrounded by a structure for spectators with no roof,"
 " or a roof which can be retracted."
-msgstr ""
+msgstr "Место, используемое, в первую очередь, для проведение спортивных мероприятий на открытом воздухе. Как правило, состоит из поля, окруженного конструкцией для зрителей без крыши, или с крышей, которая может быть убрана."
 
 #: DB:work_type/description:28
 msgctxt "work_type"
@@ -224,7 +242,7 @@ msgid ""
 "A play is a form of literature usually consisting of scripted dialogue "
 "between characters, and intended for theatrical performance rather than just"
 " reading."
-msgstr ""
+msgstr "Пьеса - это форма литературы, обычно состоящая из сценарного диалога между персонажами и предназначенная для театрального представления, а не просто чтения."
 
 #: DB:work_type/description:21
 msgctxt "work_type"
@@ -244,10 +262,17 @@ msgctxt "series_type"
 msgid "A recurring festival, usually happening annually in the same location."
 msgstr ""
 
+#: DB:place_type/description:7
+msgctxt "place_type"
+msgid ""
+"A school, university or other similar educational institution (especially, "
+"but not only, one where music is taught)"
+msgstr ""
+
 #: DB:series_type/description:6
 msgctxt "series_type"
 msgid "A series of events."
-msgstr "Серия событий"
+msgstr "Серия событий."
 
 #: DB:series_type/description:9
 msgctxt "series_type"
@@ -257,7 +282,7 @@ msgstr ""
 #: DB:series_type/description:3
 msgctxt "series_type"
 msgid "A series of recordings."
-msgstr "Серия записей"
+msgstr "Серия записей."
 
 #: DB:series_type/description:7
 msgctxt "series_type"
@@ -306,7 +331,7 @@ msgctxt "work_type"
 msgid ""
 "A soundtrack is the music that accompanies a film, TV program, videogame, or"
 " even book."
-msgstr "Саундтрек-это музыка,сопровождающая фильм,телепередачу,видеоигру или книгу"
+msgstr "Саундтрек – это музыка, сопровождающая фильм, телепередачу, видеоигру или книгу."
 
 #: DB:work_type/description:6
 msgctxt "work_type"
@@ -347,17 +372,17 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:26
 msgctxt "work_attribute_type_allowed_value"
 msgid "A-flat major"
-msgstr ""
+msgstr "Ля бемоль мажор"
 
 #: DB:work_attribute_type_allowed_value/value:27
 msgctxt "work_attribute_type_allowed_value"
 msgid "A-flat minor"
-msgstr ""
+msgstr "Ля бемоль минор"
 
 #: DB:work_attribute_type_allowed_value/value:30
 msgctxt "work_attribute_type_allowed_value"
 msgid "A-sharp minor"
-msgstr ""
+msgstr "Ля диез минор"
 
 #: DB:work_attribute_type/name:23
 msgctxt "work_attribute_type"
@@ -752,36 +777,41 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:795
 msgctxt "work_attribute_type_allowed_value"
 msgid "B Dorian"
-msgstr ""
+msgstr "Си Дориан"
 
 #: DB:work_attribute_type_allowed_value/value:807
 msgctxt "work_attribute_type_allowed_value"
 msgid "B Mixolydian"
-msgstr ""
+msgstr "Си Миксолидийское"
 
 #: DB:work_attribute_type_allowed_value/value:33
 msgctxt "work_attribute_type_allowed_value"
 msgid "B major"
-msgstr ""
+msgstr "Си мажор"
 
 #: DB:work_attribute_type_allowed_value/value:34
 msgctxt "work_attribute_type_allowed_value"
 msgid "B minor"
-msgstr ""
+msgstr "Си минор"
 
 #: DB:work_attribute_type_allowed_value/value:31
 msgctxt "work_attribute_type_allowed_value"
 msgid "B-flat major"
-msgstr ""
+msgstr "Си бемоль мажор"
 
 #: DB:work_attribute_type_allowed_value/value:32
 msgctxt "work_attribute_type_allowed_value"
 msgid "B-flat minor"
-msgstr ""
+msgstr "Си бемоль минор"
 
 #: DB:work_attribute_type/name:7
 msgctxt "work_attribute_type"
 msgid "BMI ID"
+msgstr ""
+
+#: DB:work_attribute_type/name:26
+msgctxt "work_attribute_type"
+msgid "BUMA/STEMRA ID"
 msgstr ""
 
 #: DB:cover_art_archive.art_type/name:2
@@ -1006,6 +1036,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Bozlak"
 msgstr ""
 
+#: DB:instrument_alias_type/name:3
+msgctxt "alias_type"
+msgid "Brand name"
+msgstr ""
+
 #: DB:release_group_primary_type/name:12
 msgctxt "release_group_primary_type"
 msgid "Broadcast"
@@ -1069,27 +1104,27 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:2
 msgctxt "work_attribute_type_allowed_value"
 msgid "C major"
-msgstr "C major"
+msgstr "До мажор"
 
 #: DB:work_attribute_type_allowed_value/value:3
 msgctxt "work_attribute_type_allowed_value"
 msgid "C minor"
-msgstr "C minor"
+msgstr "До минор"
 
 #: DB:work_attribute_type_allowed_value/value:1
 msgctxt "work_attribute_type_allowed_value"
 msgid "C-flat major"
-msgstr "C-flat major"
+msgstr "До бемоль мажор"
 
 #: DB:work_attribute_type_allowed_value/value:4
 msgctxt "work_attribute_type_allowed_value"
 msgid "C-sharp major"
-msgstr "C-sharp major"
+msgstr "До диез мажор"
 
 #: DB:work_attribute_type_allowed_value/value:5
 msgctxt "work_attribute_type_allowed_value"
 msgid "C-sharp minor"
-msgstr "C-sharp minor"
+msgstr "До диез минор"
 
 #: DB:work_attribute_type/name:19
 msgctxt "work_attribute_type"
@@ -1315,37 +1350,37 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:790
 msgctxt "work_attribute_type_allowed_value"
 msgid "D Dorian"
-msgstr "D Dorian"
+msgstr "Ре Дориан"
 
 #: DB:work_attribute_type_allowed_value/value:802
 msgctxt "work_attribute_type_allowed_value"
 msgid "D Mixolydian"
-msgstr ""
+msgstr "Ре Миксолидийское"
 
 #: DB:work_attribute_type_allowed_value/value:8
 msgctxt "work_attribute_type_allowed_value"
 msgid "D major"
-msgstr "D major"
+msgstr "Ре мажор"
 
 #: DB:work_attribute_type_allowed_value/value:9
 msgctxt "work_attribute_type_allowed_value"
 msgid "D minor"
-msgstr "D minor"
+msgstr "Ре минор"
 
 #: DB:work_attribute_type_allowed_value/value:6
 msgctxt "work_attribute_type_allowed_value"
 msgid "D-flat major"
-msgstr "D-flat major"
+msgstr "Ре бемоль мажор"
 
 #: DB:work_attribute_type_allowed_value/value:7
 msgctxt "work_attribute_type_allowed_value"
 msgid "D-flat minor"
-msgstr "D-flat minor"
+msgstr "Ре бемоль минор"
 
 #: DB:work_attribute_type_allowed_value/value:10
 msgctxt "work_attribute_type_allowed_value"
 msgid "D-sharp minor"
-msgstr "D-sharp minor"
+msgstr "Ре диез минор"
 
 #: DB:medium_format/name:11
 msgctxt "medium_format"
@@ -1360,7 +1395,7 @@ msgstr "DCC"
 #: DB:release_group_secondary_type/name:8
 msgctxt "release_group_secondary_type"
 msgid "DJ-mix"
-msgstr "DJ-mix"
+msgstr "Диджей-микс"
 
 #: DB:medium_format/name:44
 msgctxt "medium_format"
@@ -1450,7 +1485,7 @@ msgstr ""
 #: DB:medium_format/name:43
 msgctxt "medium_format"
 msgid "Data CD"
-msgstr "Диск с данными"
+msgstr "CD с данными"
 
 #: DB:release_group_secondary_type/name:10
 msgctxt "release_group_secondary_type"
@@ -1540,6 +1575,11 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:83
 msgctxt "work_attribute_type_allowed_value"
 msgid "Dhēnuka"
+msgstr ""
+
+#: DB:release_packaging/name:17
+msgctxt "release_packaging"
+msgid "Digibook"
 msgstr ""
 
 #: DB:release_packaging/name:3
@@ -1730,37 +1770,37 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:791
 msgctxt "work_attribute_type_allowed_value"
 msgid "E Dorian"
-msgstr "E Dorian"
+msgstr "Ми Дориан"
 
 #: DB:work_attribute_type_allowed_value/value:803
 msgctxt "work_attribute_type_allowed_value"
 msgid "E Mixolydian"
-msgstr ""
+msgstr "Ми Миксолидийское"
 
 #: DB:work_attribute_type_allowed_value/value:13
 msgctxt "work_attribute_type_allowed_value"
 msgid "E major"
-msgstr "E major"
+msgstr "Ми мажор"
 
 #: DB:work_attribute_type_allowed_value/value:14
 msgctxt "work_attribute_type_allowed_value"
 msgid "E minor"
-msgstr "E minor"
+msgstr "Ми минор"
 
 #: DB:work_attribute_type_allowed_value/value:11
 msgctxt "work_attribute_type_allowed_value"
 msgid "E-flat major"
-msgstr "E-flat major"
+msgstr "Ми бемоль мажор"
 
 #: DB:work_attribute_type_allowed_value/value:12
 msgctxt "work_attribute_type_allowed_value"
 msgid "E-flat minor"
-msgstr "E-flat minor"
+msgstr "Ми бемоль минор"
 
 #: DB:work_attribute_type_allowed_value/value:15
 msgctxt "work_attribute_type_allowed_value"
 msgid "E-sharp minor"
-msgstr "E-sharp minor"
+msgstr "Ми диез минор"
 
 #: DB:release_group_primary_type/name:3
 msgctxt "release_group_primary_type"
@@ -1770,6 +1810,11 @@ msgstr "EP"
 #: DB:medium_format/name:50
 msgctxt "medium_format"
 msgid "Edison Diamond Disc"
+msgstr ""
+
+#: DB:place_type/name:7
+msgctxt "place_type"
+msgid "Educational institution"
 msgstr ""
 
 #: DB:instrument_type/name:4
@@ -1875,37 +1920,37 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:792
 msgctxt "work_attribute_type_allowed_value"
 msgid "F Dorian"
-msgstr ""
+msgstr "Фа Дориан"
 
 #: DB:work_attribute_type_allowed_value/value:804
 msgctxt "work_attribute_type_allowed_value"
 msgid "F Mixolydian"
-msgstr ""
+msgstr "Фа Миксолидийское"
 
 #: DB:work_attribute_type_allowed_value/value:17
 msgctxt "work_attribute_type_allowed_value"
 msgid "F major"
-msgstr ""
+msgstr "Фа мажор"
 
 #: DB:work_attribute_type_allowed_value/value:18
 msgctxt "work_attribute_type_allowed_value"
 msgid "F minor"
-msgstr ""
+msgstr "Фа минор"
 
 #: DB:work_attribute_type_allowed_value/value:16
 msgctxt "work_attribute_type_allowed_value"
 msgid "F-flat major"
-msgstr ""
+msgstr "Фа бемоль мажор"
 
 #: DB:work_attribute_type_allowed_value/value:19
 msgctxt "work_attribute_type_allowed_value"
 msgid "F-sharp major"
-msgstr ""
+msgstr "Фа диез мажор"
 
 #: DB:work_attribute_type_allowed_value/value:20
 msgctxt "work_attribute_type_allowed_value"
 msgid "F-sharp minor"
-msgstr ""
+msgstr "Фа диез минор"
 
 #: DB:work_attribute_type_allowed_value/value:731
 msgctxt "work_attribute_type_allowed_value"
@@ -2033,37 +2078,37 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:793
 msgctxt "work_attribute_type_allowed_value"
 msgid "G Dorian"
-msgstr ""
+msgstr "Соль Дориан"
 
 #: DB:work_attribute_type_allowed_value/value:805
 msgctxt "work_attribute_type_allowed_value"
 msgid "G Mixolydian"
-msgstr ""
+msgstr "Соль Миксолидийское"
 
 #: DB:work_attribute_type_allowed_value/value:22
 msgctxt "work_attribute_type_allowed_value"
 msgid "G major"
-msgstr ""
+msgstr "Соль мажор"
 
 #: DB:work_attribute_type_allowed_value/value:23
 msgctxt "work_attribute_type_allowed_value"
 msgid "G minor"
-msgstr ""
+msgstr "Соль минор"
 
 #: DB:work_attribute_type_allowed_value/value:21
 msgctxt "work_attribute_type_allowed_value"
 msgid "G-flat major"
-msgstr ""
+msgstr "Соль бемоль мажор"
 
 #: DB:work_attribute_type_allowed_value/value:24
 msgctxt "work_attribute_type_allowed_value"
 msgid "G-sharp major"
-msgstr ""
+msgstr "Соль диез мажор"
 
 #: DB:work_attribute_type_allowed_value/value:25
 msgctxt "work_attribute_type_allowed_value"
 msgid "G-sharp minor"
-msgstr ""
+msgstr "Соль диез минор"
 
 #: DB:work_attribute_type/name:9
 msgctxt "work_attribute_type"
@@ -2533,6 +2578,31 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:109
 msgctxt "work_attribute_type_allowed_value"
 msgid "Hēmavati"
+msgstr ""
+
+#: DB:work_attribute_type/name:29
+msgctxt "work_attribute_type"
+msgid "ICE ID"
+msgstr ""
+
+#: DB:work_attribute_type/description:28
+msgctxt "work_attribute_type"
+msgid "ID for the Belgian rights society SABAM"
+msgstr ""
+
+#: DB:work_attribute_type/description:29
+msgctxt "work_attribute_type"
+msgid "ID for the International Copyright Enterprise"
+msgstr ""
+
+#: DB:work_attribute_type/description:27
+msgctxt "work_attribute_type"
+msgid "ID for the Mexican rights society SACM"
+msgstr ""
+
+#: DB:work_attribute_type/description:30
+msgctxt "work_attribute_type"
+msgid "ID for the Polish rights society ZAiKS"
 msgstr ""
 
 #: DB:work_attribute_type/name:14
@@ -3810,6 +3880,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Nīlāṁbari"
 msgstr ""
 
+#: DB:work_attribute_type/name:25
+msgctxt "work_attribute_type"
+msgid "OSA ID"
+msgstr ""
+
 #: DB:cover_art_archive.art_type/name:5
 msgctxt "cover_art_type"
 msgid "Obi"
@@ -3833,17 +3908,17 @@ msgstr "Оперетта"
 #: DB:work_type/name:11
 msgctxt "work_type"
 msgid "Oratorio"
-msgstr ""
+msgstr "Оратория"
 
 #: DB:artist_type/name:5
 msgctxt "artist_type"
 msgid "Orchestra"
-msgstr ""
+msgstr "Оркестр"
 
 #: DB:label_type/name:4
 msgctxt "label_type"
 msgid "Original Production"
-msgstr "Оригинальная Продукция"
+msgstr "Оригинальная продукция"
 
 #: DB:artist_type/name:3
 msgctxt "artist_type"
@@ -3918,7 +3993,7 @@ msgstr "Партита"
 #: DB:medium_format/name:58
 msgctxt "medium_format"
 msgid "Pathé disc"
-msgstr ""
+msgstr "Диск Pathé"
 
 #: DB:work_attribute_type_allowed_value/value:204
 msgctxt "work_attribute_type_allowed_value"
@@ -3988,7 +4063,7 @@ msgstr "Место"
 #: DB:place_alias_type/name:1
 msgctxt "alias_type"
 msgid "Place name"
-msgstr "Название Места"
+msgstr "Название места"
 
 #: DB:work_type/name:28
 msgctxt "work_type"
@@ -4003,7 +4078,7 @@ msgstr ""
 #: DB:work_type/name:21
 msgctxt "work_type"
 msgid "Poem"
-msgstr "Поэма"
+msgstr "Стих"
 
 #: DB:work_attribute_type_allowed_value/value:655
 msgctxt "work_attribute_type_allowed_value"
@@ -4018,12 +4093,12 @@ msgstr "Плакат"
 #: DB:label_type/name:3
 msgctxt "label_type"
 msgid "Production"
-msgstr "Продакшн"
+msgstr "Продукция"
 
 #: DB:release_status/name:2
 msgctxt "release_status"
 msgid "Promotion"
-msgstr "Промоушен"
+msgstr "Продвижение"
 
 #: DB:work_type/name:23
 msgctxt "work_type"
@@ -4248,7 +4323,7 @@ msgstr "Название Релиз группы"
 #: DB:release_alias_type/name:1
 msgctxt "alias_type"
 msgid "Release name"
-msgstr "Название Релиза"
+msgstr "Название релиза"
 
 #: DB:place_type/name:6
 msgctxt "place_type"
@@ -4370,6 +4445,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Rūpaka"
 msgstr ""
 
+#: DB:work_attribute_type/name:28
+msgctxt "work_attribute_type"
+msgid "SABAM ID"
+msgstr ""
+
 #: DB:medium_format/name:3
 msgctxt "medium_format"
 msgid "SACD"
@@ -4379,6 +4459,11 @@ msgstr "SACD"
 msgctxt "work_attribute_type"
 msgid "SACEM ID"
 msgstr "SACEM ID"
+
+#: DB:work_attribute_type/name:27
+msgctxt "work_attribute_type"
+msgid "SACM ID"
+msgstr ""
 
 #: DB:work_attribute_type/name:24
 msgctxt "work_attribute_type"
@@ -4408,7 +4493,7 @@ msgstr "SHM-CD"
 #: DB:medium_format/name:57
 msgctxt "medium_format"
 msgid "SHM-SACD"
-msgstr ""
+msgstr "SHM-SACD"
 
 #: DB:work_attribute_type/name:10
 msgctxt "work_attribute_type"
@@ -4518,7 +4603,7 @@ msgstr ""
 #: DB:event_alias_type/name:2
 msgctxt "alias_type"
 msgid "Search hint"
-msgstr "Поиск подсказки"
+msgstr "Поисковая подсказка"
 
 #: DB:work_attribute_type_allowed_value/value:528
 msgctxt "work_attribute_type_allowed_value"
@@ -4583,7 +4668,7 @@ msgstr "Серия"
 #: DB:series_alias_type/name:1
 msgctxt "alias_type"
 msgid "Series name"
-msgstr "Название Серии"
+msgstr "Название серии"
 
 #: DB:work_attribute_type_allowed_value/value:663
 msgctxt "work_attribute_type_allowed_value"
@@ -4593,7 +4678,7 @@ msgstr ""
 #: DB:medium_format/name:53
 msgctxt "medium_format"
 msgid "Shellac"
-msgstr ""
+msgstr "Шеллак"
 
 #: DB:medium_format/description:53
 msgctxt "medium_format"
@@ -4640,7 +4725,7 @@ msgstr ""
 #: DB:release_packaging/name:2
 msgctxt "release_packaging"
 msgid "Slim Jewel Case"
-msgstr "Тонкая CD коробка"
+msgstr "Тонкая коробка для диска"
 
 #: DB:release_packaging/name:11
 msgctxt "release_packaging"
@@ -5283,7 +5368,7 @@ msgstr "Винил"
 #: DB:medium_format/name:48
 msgctxt "medium_format"
 msgid "VinylDisc"
-msgstr ""
+msgstr "Виниловый диск"
 
 #: DB:work_attribute_type_allowed_value/value:259
 msgctxt "work_attribute_type_allowed_value"
@@ -5348,7 +5433,7 @@ msgstr "Работа"
 #: DB:work_alias_type/name:1
 msgctxt "alias_type"
 msgid "Work name"
-msgstr "Название Работы"
+msgstr "Название работы"
 
 #: DB:work_attribute_type_allowed_value/value:277
 msgctxt "work_attribute_type_allowed_value"
@@ -5384,6 +5469,11 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:779
 msgctxt "work_attribute_type_allowed_value"
 msgid "Yürüksofyan"
+msgstr ""
+
+#: DB:work_attribute_type/name:30
+msgctxt "work_attribute_type"
+msgid "ZAiKS ID"
 msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:780

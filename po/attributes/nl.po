@@ -1,15 +1,15 @@
-# Translators:
+# 
 # Translators:
 # reneweesp <bmom43@hotmail.com>, 2017
 # Maurits Meulenbelt <email address hidden>, 2012
 # Maurits Meulenbelt <mfmeulenbelt@gmail.com>, 2012
-# Maurits Meulenbelt <mfmeulenbelt@gmail.com>, 2013-2017
+# Maurits Meulenbelt <mfmeulenbelt@gmail.com>, 2013-2018
 # Nikolai Prokoschenko <email address hidden>, 2011
 # Nikolai Prokoschenko <nikolai@prokoschenko.de>, 2011
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2017-02-19 11:15+0000\n"
+"PO-Revision-Date: 2018-02-09 16:15+0000\n"
 "Last-Translator: Maurits Meulenbelt <mfmeulenbelt@gmail.com>\n"
 "Language-Team: Dutch (http://www.transifex.com/musicbrainz/musicbrainz/language/nl/)\n"
 "MIME-Version: 1.0\n"
@@ -43,6 +43,11 @@ msgctxt "medium_format"
 msgid "10\" Vinyl"
 msgstr "10″ vinyl"
 
+#: DB:medium_format/name:72
+msgctxt "medium_format"
+msgid "12\" LaserDisc"
+msgstr "12″ LaserDisc"
+
 #: DB:medium_format/name:55
 msgctxt "medium_format"
 msgid "12\" Shellac"
@@ -72,6 +77,11 @@ msgstr "7″ schellak"
 msgctxt "medium_format"
 msgid "7\" Vinyl"
 msgstr "7″ vinyl"
+
+#: DB:medium_format/name:71
+msgctxt "medium_format"
+msgid "8\" LaserDisc"
+msgstr "8″ LaserDisc"
 
 #: DB:medium_format/name:34
 msgctxt "medium_format"
@@ -118,7 +128,7 @@ msgstr "Een cantate is een vocale compositie (vaak voor een koor) met een instru
 msgctxt "work_type"
 msgid ""
 "A concerto is a musical work for soloist(s) accompanied by an orchestra."
-msgstr "Een concerto is een compositie voor een of meerdere soloisten, begeleid door een orkest."
+msgstr "Een concerto is een compositie voor een of meerdere solisten, begeleid door een orkest."
 
 #: DB:event_type/description:4
 msgctxt "event_type"
@@ -126,7 +136,7 @@ msgid ""
 "A convention, expo or trade fair is an event which is not typically "
 "orientated around music performances, but can include them as side "
 "activities."
-msgstr "Een conventie, expo of handelsbeurs is een evenement dat meestal niet draait om muziekoptredens, maar die wel als extra activiteit kunnen hebben."
+msgstr "Een conventie, expo of handelsbeurs is een evenement dat meestal niet draait om muziekoptredens, maar dat wel muziek als extra activiteit kan hebben."
 
 #: DB:release_status/description:2
 msgctxt "release_status"
@@ -176,6 +186,11 @@ msgid ""
 "release."
 msgstr "Een feest, receptie of ander evenement dat speciaal wordt gehouden voor het lanceren van een uitgave."
 
+#: DB:release_packaging/description:17
+msgctxt "release_packaging"
+msgid "A perfect bound book with a sleeve at the end to hold a CD"
+msgstr "Een gelijmd gebonden boek met achterin een hoesje voor een cd."
+
 #: DB:place_type/description:5
 msgctxt "place_type"
 msgid ""
@@ -220,7 +235,7 @@ msgid ""
 "A play is a form of literature usually consisting of scripted dialogue "
 "between characters, and intended for theatrical performance rather than just"
 " reading."
-msgstr "Een toneelstuk is een vorm van literatuur die meestal bestaat uit uitgeschreven dialogen tussen personages, en is bedoeld voor theatervoorstellingen in plaats van om te lezen."
+msgstr "Een toneelstuk is een vorm van literatuur en bestaat meestal uit uitgeschreven dialogen tussen personages. Toneelstukken zijn bedoeld voor theatervoorstellingen in plaats van om te lezen."
 
 #: DB:work_type/description:21
 msgctxt "work_type"
@@ -239,6 +254,13 @@ msgstr "Een kwartet is een compositie die voor vier stemmen of instrumenten word
 msgctxt "series_type"
 msgid "A recurring festival, usually happening annually in the same location."
 msgstr "Een terugkerend festival dat meestal jaarlijks op dezelfde plek wordt gehouden."
+
+#: DB:place_type/description:7
+msgctxt "place_type"
+msgid ""
+"A school, university or other similar educational institution (especially, "
+"but not only, one where music is taught)"
+msgstr "Een school, conservatorium of ander soortgelijk onderwijsinstituut (vooral, maar niet alleen, een plek waar onderwijs in de muziek wordt gegeven)"
 
 #: DB:series_type/description:6
 msgctxt "series_type"
@@ -286,7 +308,7 @@ msgid ""
 "A song cycle is a group of songs designed to be performed in a sequence as a"
 " single entity. In most cases, all of the songs are by the same composer, "
 "and often use words from the same poet or lyricist."
-msgstr "Een liedcyclus is een groep liederen die bedoeld is om in een reeks of als één stuk te worden opgevoerd. Meestal zijn alle liederen geschreven door dezelfde componist en er worden vaak gedichten gebruikt van dezelfde dichter of tekstschrijver."
+msgstr "Een liedcyclus is een groep liederen die bedoeld is om in een reeks of als één stuk te worden opgevoerd. Meestal zijn alle liederen geschreven door dezelfde componist en er worden vaak teksten gebruikt van dezelfde dichter of tekstschrijver."
 
 #: DB:work_type/description:17
 msgctxt "work_type"
@@ -295,14 +317,14 @@ msgid ""
 "with or without instruments, performed by singing. This is the most common "
 "form by far in folk and popular music, but also fairly common in a classical"
 " context (\"art songs\")."
-msgstr "Een lied is van origine (en nog steeds meestal) een compositie voor de stem, met of zonder instrumenten, dat wordt gezongen. Dit is veruit de meest voorkomende vorm in volksmuziek en populaire muziek, maar komt ook vrij veel voor in een klassieke context."
+msgstr "Een lied is van origine (en nog steeds meestal) een compositie voor de stem, met of zonder instrumenten, die wordt gezongen. Dit is veruit de meest voorkomende vorm in volksmuziek en populaire muziek, maar komt ook vrij veel voor in een klassieke context."
 
 #: DB:work_type/description:22
 msgctxt "work_type"
 msgid ""
 "A soundtrack is the music that accompanies a film, TV program, videogame, or"
 " even book."
-msgstr "Een soundtrack is muziek die een film televisieprogramma, computerspel of zelfs boek begeleidt."
+msgstr "Een soundtrack is muziek die een film, televisieprogramma, computerspel of zelfs boek begeleidt."
 
 #: DB:work_type/description:6
 msgctxt "work_type"
@@ -474,21 +496,21 @@ msgid ""
 "An aria is a self-contained piece for one voice usually with orchestral "
 "accompaniment. They are most common inside operas, but also appear in "
 "cantatas, oratorios and even on their own (concert arias)."
-msgstr "Een aria is een op zichzelf staande eenstemmige compositie die meestal door een orkest begeleid wordt. Ze komen meestal voor in opera’s, maar ook in cantates, oratoria of zelfs op zichzelf (bijvoorbeeld in ariaconcerten)."
+msgstr "Een aria is een op zichzelf staande eenstemmige compositie die meestal door een orkest wordt begeleid. Aria’s komen meestal voor in opera’s, maar ook in cantates, oratoria of zelfs op zichzelf (bijvoorbeeld in ariaconcerten)."
 
 #: DB:work_type/description:25
 msgctxt "work_type"
 msgid ""
 "An audio drama is a dramatized, purely acoustic performance, broadcast on "
 "radio or published on an audio medium (tape, CD, etc.)."
-msgstr "Een hoorspel is een gedramatiseerde, puur akoestieke voorstelling die op radio wordt uitgezonden of op een audiomedium (cassette, cd, etc.) wordt uitgebracht."
+msgstr "Een hoorspel is een gedramatiseerde, puur akoestieke voorstelling die op de radio wordt uitgezonden of op een audiomedium (cassette, cd, etc.) wordt uitgebracht."
 
 #: DB:event_type/description:2
 msgctxt "event_type"
 msgid ""
 "An event where a number of different acts perform across the course of the "
 "day. Larger festivals may be spread across multiple days."
-msgstr "Een evenement waarbij een aantal verschillende artiesten gedurende de dag optreden. Grotere festivals kunnen meerdere dagen duren."
+msgstr "Een evenement waarbij een aantal verschillende artiesten gedurende de dag optreedt. Grotere festivals kunnen meerdere dagen duren."
 
 #: DB:event_type/description:1
 msgctxt "event_type"
@@ -780,10 +802,15 @@ msgctxt "work_attribute_type"
 msgid "BMI ID"
 msgstr "BMI-ID"
 
+#: DB:work_attribute_type/name:26
+msgctxt "work_attribute_type"
+msgid "BUMA/STEMRA ID"
+msgstr "BUMA/STEMRA-ID"
+
 #: DB:cover_art_archive.art_type/name:2
 msgctxt "cover_art_type"
 msgid "Back"
-msgstr "Achterkant"
+msgstr "achterkant"
 
 #: DB:work_attribute_type_allowed_value/value:323
 msgctxt "work_attribute_type_allowed_value"
@@ -985,7 +1012,7 @@ msgstr "Boek"
 #: DB:cover_art_archive.art_type/name:3
 msgctxt "cover_art_type"
 msgid "Booklet"
-msgstr "Boekje"
+msgstr "boekje"
 
 #: DB:release_status/name:3
 msgctxt "release_status"
@@ -1001,6 +1028,11 @@ msgstr "Onofficiële (bootleg) productie"
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bozlak"
 msgstr "Bozlak"
+
+#: DB:instrument_alias_type/name:3
+msgctxt "alias_type"
+msgid "Brand name"
+msgstr "Merknaam"
 
 #: DB:release_group_primary_type/name:12
 msgctxt "release_group_primary_type"
@@ -1538,6 +1570,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Dhēnuka"
 msgstr "Dhēnuka"
 
+#: DB:release_packaging/name:17
+msgctxt "release_packaging"
+msgid "Digibook"
+msgstr "Digibook"
+
 #: DB:release_packaging/name:3
 msgctxt "release_packaging"
 msgid "Digipak"
@@ -1546,7 +1583,7 @@ msgstr "Digipak"
 #: DB:medium_format/name:12
 msgctxt "medium_format"
 msgid "Digital Media"
-msgstr "Digitale media"
+msgstr "digitale media"
 
 #: DB:work_attribute_type_allowed_value/value:345
 msgctxt "work_attribute_type_allowed_value"
@@ -1767,6 +1804,11 @@ msgstr "EP"
 msgctxt "medium_format"
 msgid "Edison Diamond Disc"
 msgstr "Edison Diamond Disc"
+
+#: DB:place_type/name:7
+msgctxt "place_type"
+msgid "Educational institution"
+msgstr "Onderwijsinstituut"
 
 #: DB:instrument_type/name:4
 msgctxt "instrument_type"
@@ -2024,7 +2066,7 @@ msgstr "Frengçin"
 #: DB:cover_art_archive.art_type/name:1
 msgctxt "cover_art_type"
 msgid "Front"
-msgstr "Voorkant"
+msgstr "voorkant"
 
 #: DB:work_attribute_type_allowed_value/value:793
 msgctxt "work_attribute_type_allowed_value"
@@ -2531,6 +2573,31 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Hēmavati"
 msgstr "Hēmavati"
 
+#: DB:work_attribute_type/name:29
+msgctxt "work_attribute_type"
+msgid "ICE ID"
+msgstr "ICE-ID"
+
+#: DB:work_attribute_type/description:28
+msgctxt "work_attribute_type"
+msgid "ID for the Belgian rights society SABAM"
+msgstr "Identificatiecode voor de Belgische auteursrechtenorganisatie SABAM"
+
+#: DB:work_attribute_type/description:29
+msgctxt "work_attribute_type"
+msgid "ID for the International Copyright Enterprise"
+msgstr "Identificatiecode voor de International Copyright Enterprise"
+
+#: DB:work_attribute_type/description:27
+msgctxt "work_attribute_type"
+msgid "ID for the Mexican rights society SACM"
+msgstr "Identificatiecode voor de Mexicaanse auteursrechtenorganisatie SACM"
+
+#: DB:work_attribute_type/description:30
+msgctxt "work_attribute_type"
+msgid "ID for the Polish rights society ZAiKS"
+msgstr "Identificatiecode voor de Poolse auteursrechtenorganisatie ZAiKS"
+
 #: DB:work_attribute_type/name:14
 msgctxt "work_attribute_type"
 msgid "Identifiers"
@@ -2556,7 +2623,7 @@ msgstr "Toneelmuziek is achtergrondmuziek die wordt geschreven voor toneel of an
 #: DB:place_type/name:5
 msgctxt "place_type"
 msgid "Indoor arena"
-msgstr "Indoor arena"
+msgstr "Indoorarena"
 
 #: DB:editor_collection_type/name:9
 msgctxt "collection_type"
@@ -3074,7 +3141,7 @@ msgstr "Lenk Fahte"
 #: DB:cover_art_archive.art_type/name:12
 msgctxt "cover_art_type"
 msgid "Liner"
-msgstr "Voering"
+msgstr "voering"
 
 #: DB:release_group_secondary_type/name:6
 msgctxt "release_group_secondary_type"
@@ -3244,7 +3311,7 @@ msgstr "Medhal"
 #: DB:cover_art_archive.art_type/name:4
 msgctxt "cover_art_type"
 msgid "Medium"
-msgstr "Medium"
+msgstr "medium"
 
 #: DB:work_attribute_type_allowed_value/value:176
 msgctxt "work_attribute_type_allowed_value"
@@ -3419,7 +3486,7 @@ msgctxt "work_type"
 msgid ""
 "Musical theatre is a form of theatrical performance that combines songs, "
 "spoken dialogue, acting, and dance."
-msgstr "Een musical is een vorm van theater waarin liedjes, gesproken dialogen, acteerwerk en dans gecombineerd worden."
+msgstr "Een musical is een vorm van theater waarin liedjes, gesproken dialogen, acteerwerk en dans worden gecombineerd."
 
 #: DB:work_attribute_type_allowed_value/value:748
 msgctxt "work_attribute_type_allowed_value"
@@ -3806,10 +3873,15 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Nīlāṁbari"
 msgstr "Nīlāṁbari"
 
+#: DB:work_attribute_type/name:25
+msgctxt "work_attribute_type"
+msgid "OSA ID"
+msgstr "OSA-ID"
+
 #: DB:cover_art_archive.art_type/name:5
 msgctxt "cover_art_type"
 msgid "Obi"
-msgstr "Obi"
+msgstr "obi"
 
 #: DB:release_status/name:1
 msgctxt "release_status"
@@ -3849,7 +3921,7 @@ msgstr "Overig"
 #: DB:cover_art_archive.art_type/name:8
 msgctxt "cover_art_type"
 msgid "Other"
-msgstr "Overig"
+msgstr "overig"
 
 #: DB:gender/name:3
 msgctxt "gender"
@@ -4009,7 +4081,7 @@ msgstr "Pop şarkısı"
 #: DB:cover_art_archive.art_type/name:11
 msgctxt "cover_art_type"
 msgid "Poster"
-msgstr "Poster"
+msgstr "poster"
 
 #: DB:label_type/name:3
 msgctxt "label_type"
@@ -4366,6 +4438,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Rūpaka"
 msgstr "Rūpaka"
 
+#: DB:work_attribute_type/name:28
+msgctxt "work_attribute_type"
+msgid "SABAM ID"
+msgstr "SABAM-ID"
+
 #: DB:medium_format/name:3
 msgctxt "medium_format"
 msgid "SACD"
@@ -4375,6 +4452,11 @@ msgstr "sacd"
 msgctxt "work_attribute_type"
 msgid "SACEM ID"
 msgstr "SACEM-ID"
+
+#: DB:work_attribute_type/name:27
+msgctxt "work_attribute_type"
+msgid "SACM ID"
+msgstr "SACM-ID"
 
 #: DB:work_attribute_type/name:24
 msgctxt "work_attribute_type"
@@ -4574,7 +4656,7 @@ msgstr "Serbest"
 #: DB:editor_collection_type/name:14
 msgctxt "collection_type"
 msgid "Series"
-msgstr "Series"
+msgstr "Serie"
 
 #: DB:series_alias_type/name:1
 msgctxt "alias_type"
@@ -4683,7 +4765,7 @@ msgstr "Soundtrack"
 #: DB:cover_art_archive.art_type/name:6
 msgctxt "cover_art_type"
 msgid "Spine"
-msgstr "Rug"
+msgstr "rug"
 
 #: DB:release_group_secondary_type/name:3
 msgctxt "release_group_secondary_type"
@@ -4698,7 +4780,7 @@ msgstr "Stadion"
 #: DB:cover_art_archive.art_type/name:10
 msgctxt "cover_art_type"
 msgid "Sticker"
-msgstr "Sticker"
+msgstr "sticker"
 
 #: DB:instrument_type/name:2
 msgctxt "instrument_type"
@@ -4982,7 +5064,7 @@ msgctxt "medium_format"
 msgid ""
 "The CD layer of a hybrid SACD. The SACD layer should be added as a separate "
 "medium."
-msgstr "De cd-laag van een hybride sacd. De dvd-laag moet als een apart medium worden toegevoegd."
+msgstr "De cd-laag van een hybride sacd. De sacd-laag moet als een apart medium worden toegevoegd."
 
 #: DB:medium_format/description:60
 msgctxt "medium_format"
@@ -5072,12 +5154,12 @@ msgstr "Tournee"
 #: DB:cover_art_archive.art_type/name:7
 msgctxt "cover_art_type"
 msgid "Track"
-msgstr "Nummer"
+msgstr "nummer"
 
 #: DB:cover_art_archive.art_type/name:9
 msgctxt "cover_art_type"
 msgid "Tray"
-msgstr "Houder"
+msgstr "houder"
 
 #: DB:work_attribute_type_allowed_value/value:775
 msgctxt "work_attribute_type_allowed_value"
@@ -5274,7 +5356,7 @@ msgstr "Vijayaśrī"
 #: DB:medium_format/name:7
 msgctxt "medium_format"
 msgid "Vinyl"
-msgstr "Vinyl"
+msgstr "vinyl"
 
 #: DB:medium_format/name:48
 msgctxt "medium_format"
@@ -5314,7 +5396,7 @@ msgstr "Vīra vasantaṁ"
 #: DB:cover_art_archive.art_type/name:13
 msgctxt "cover_art_type"
 msgid "Watermark"
-msgstr "Watermerk"
+msgstr "watermerk"
 
 #: DB:medium_format/name:14
 msgctxt "medium_format"
@@ -5381,6 +5463,11 @@ msgstr "Yürüksemai II"
 msgctxt "work_attribute_type_allowed_value"
 msgid "Yürüksofyan"
 msgstr "Yürüksofyan"
+
+#: DB:work_attribute_type/name:30
+msgctxt "work_attribute_type"
+msgid "ZAiKS ID"
+msgstr "ZAiKS-ID"
 
 #: DB:work_attribute_type_allowed_value/value:780
 msgctxt "work_attribute_type_allowed_value"

@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2015-04-13 17:59+0000\n"
+"PO-Revision-Date: 2017-09-19 23:13+0000\n"
 "Last-Translator: Xosé <xosecalvo@gmail.com>\n"
 "Language-Team: Galician (http://www.transifex.com/musicbrainz/musicbrainz/language/gl/)\n"
 "MIME-Version: 1.0\n"

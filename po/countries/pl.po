@@ -4,6 +4,7 @@
 #      Alastair McKinstry, <mckinstry@debian.org>, 2004
 #      Andrzej M. Krzysztofowicz <ankry@mif.pg.gda.pl>, 2007
 # czaja <krzysztof@czajkowski.edu.pl>, 2011
+# Formbi Chiss <formbi@interia.pl>, 2017
 # Debeat <krystian4842@gmail.com>, 2014-2015
 # Łukasz Sumera <sumera.lukasz@gmail.com>, 2015
 # Marcin Rataj <lidel@lidel.org>, 2011, 2012
@@ -14,14 +15,14 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2015-05-18 14:55+0000\n"
-"Last-Translator: Łukasz Sumera <sumera.lukasz@gmail.com>\n"
+"PO-Revision-Date: 2017-09-23 18:13+0000\n"
+"Last-Translator: Formbi Chiss <formbi@interia.pl>\n"
 "Language-Team: Polish (http://www.transifex.com/musicbrainz/musicbrainz/language/pl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: pl\n"
-"Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n%100<12 || n%100>=14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
+"Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
 
 #. iso.code:AF
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:1
@@ -451,7 +452,7 @@ msgstr "Gambia"
 #. iso.code:GE
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:80
 msgid "Georgia"
-msgstr "Georgia"
+msgstr "Gruzja"
 
 #. iso.code:DE
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:81
@@ -526,7 +527,7 @@ msgstr "Haiti"
 #. iso.code:HM
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:94
 msgid "Heard Island and McDonald Islands"
-msgstr "Wyspa Heard i McDonalda"
+msgstr "Wyspy Heard i McDonalda"
 
 #. iso.code:HN
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:95
@@ -951,7 +952,7 @@ msgstr "Rosja"
 #. iso.code:RW
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:177
 msgid "Rwanda"
-msgstr "Ruanda"
+msgstr "Rwanda"
 
 #. iso.code:RE
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:174
@@ -1091,7 +1092,7 @@ msgstr "Sudan Południowy"
 #. iso.code:SU
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:243
 msgid "Soviet Union"
-msgstr "Związek Socjalistycznych Republik Radzieckich"
+msgstr "Związek Radziecki"
 
 #. iso.code:ES
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:194
@@ -1201,7 +1202,7 @@ msgstr "Turkmenistan"
 #. iso.code:TC
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:216
 msgid "Turks and Caicos Islands"
-msgstr "Wyspy Turks i Caicos"
+msgstr "Turks i Caicos"
 
 #. iso.code:TV
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:217

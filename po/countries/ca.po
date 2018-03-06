@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2015-08-05 14:26+0000\n"
+"PO-Revision-Date: 2017-09-19 13:06+0000\n"
 "Last-Translator: Aniol\n"
 "Language-Team: Catalan (http://www.transifex.com/musicbrainz/musicbrainz/language/ca/)\n"
 "MIME-Version: 1.0\n"

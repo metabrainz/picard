@@ -3,7 +3,7 @@
 #  <>, 2002, 2001, Inc, 2003, 2007, 2008, 2009, 2010, 2011, 2000,�s�, 2012
 #   Alastair McKinstry <mckinstry@computer.org>, 2002
 # Alastair McKinstry <mckinstry@computer.org>, 2001
-# Clay Cheng <clay1994@mail.hfut.edu.cn>, 2016-2017
+# Claybiokiller <clay1994@mail.hfut.edu.cn>, 2016-2017
 #   Free Software Foundation, Inc., 2002, 2003, 2007, 2008
 # RedHotHeat <gbonner@iol.ie>, 2012
 # RedHotHeat <gbonner@iol.ie>, 2012
@@ -16,8 +16,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2017-03-27 14:33+0000\n"
-"Last-Translator: Clay Cheng <clay1994@mail.hfut.edu.cn>\n"
+"PO-Revision-Date: 2017-09-19 12:54+0000\n"
+"Last-Translator: Claybiokiller <clay1994@mail.hfut.edu.cn>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/musicbrainz/musicbrainz/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"

@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2015-11-21 11:19+0000\n"
+"PO-Revision-Date: 2017-09-19 23:13+0000\n"
 "Last-Translator: Никола Крстевски <nikola.krstevski@gmail.com>\n"
 "Language-Team: Serbian (http://www.transifex.com/musicbrainz/musicbrainz/language/sr/)\n"
 "MIME-Version: 1.0\n"

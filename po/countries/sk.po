@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2015-03-27 11:32+0000\n"
+"PO-Revision-Date: 2017-09-19 12:56+0000\n"
 "Last-Translator: Ian McEwen <ianmcorvidae@ianmcorvidae.net>\n"
 "Language-Team: Slovak (http://www.transifex.com/musicbrainz/musicbrainz/language/sk/)\n"
 "MIME-Version: 1.0\n"

@@ -1,4 +1,4 @@
-# Translators:
+# 
 # Translators:
 # French language coordinator <french.coordinator@rbox.me>, 2013
 # murdos <aurelien.mino@gmail.com>, 2015
@@ -10,7 +10,7 @@
 #   <email address hidden>, 2012
 # French language coordinator <french.coordinator@rbox.me>, 2013,2015
 # kmartin <coldfuzion@ckoisa.net>, 2013
-# Laurent Monin <i18n@norz.org>, 2014
+# Laurent Monin <i18n@norz.org>, 2014,2018
 # Lotheric <lotheric@gmail.com>, 2011-2012
 # murdos <aurelien.mino@gmail.com>, 2011-2012,2015
 # murdos <email address hidden>, 2011
@@ -22,11 +22,12 @@
 # French language coordinator <french.coordinator@rbox.me>, 2013-2015
 # yvanz, 2016-2017
 # yvanz, 2016
+# yvanz, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2017-01-16 20:46+0000\n"
-"Last-Translator: Laurent Monin <i18n@norz.org>\n"
+"PO-Revision-Date: 2018-02-09 13:02+0000\n"
+"Last-Translator: yvanz\n"
 "Language-Team: French (http://www.transifex.com/musicbrainz/musicbrainz/language/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -40,7 +41,7 @@ msgid ""
 "\"Motet\" is a term that applies to different types of (usually "
 "unaccompanied) choral works. What exactly is a motet depends quite a bit on "
 "the period."
-msgstr "« Motet » est un terme s’appliquant à différents types d’œuvres chorales (généralement sans accompagnement)."
+msgstr "« Motet » est un terme s’appliquant à différents types d’œuvres chorales (généralement sans accompagnement). La définitiion exacte dépend de la période."
 
 #: DB:work_type/description:5
 msgctxt "work_type"
@@ -58,6 +59,11 @@ msgstr "Shellac 25 cm (10 po)"
 msgctxt "medium_format"
 msgid "10\" Vinyl"
 msgstr "Vinyle 25 cm (10 po)"
+
+#: DB:medium_format/name:72
+msgctxt "medium_format"
+msgid "12\" LaserDisc"
+msgstr "LaserDisc 30 cm (12 po)"
 
 #: DB:medium_format/name:55
 msgctxt "medium_format"
@@ -88,6 +94,11 @@ msgstr "Shellac 18 cm (7 po)"
 msgctxt "medium_format"
 msgid "7\" Vinyl"
 msgstr "Vinyle 18 cm (7 po)"
+
+#: DB:medium_format/name:71
+msgctxt "medium_format"
+msgid "8\" LaserDisc"
+msgstr "LaserDisc 20 cm (8 po)"
 
 #: DB:medium_format/name:34
 msgctxt "medium_format"
@@ -192,6 +203,11 @@ msgid ""
 "release."
 msgstr "Une fête, une réception ou autre événement tenu spécialement pour le lancement d’une parution."
 
+#: DB:release_packaging/description:17
+msgctxt "release_packaging"
+msgid "A perfect bound book with a sleeve at the end to hold a CD"
+msgstr "Un livre parfaitement relié avec une pochette à la fin pour tenir un CD "
+
 #: DB:place_type/description:5
 msgctxt "place_type"
 msgid ""
@@ -236,7 +252,7 @@ msgid ""
 "A play is a form of literature usually consisting of scripted dialogue "
 "between characters, and intended for theatrical performance rather than just"
 " reading."
-msgstr "Une pièce est une forme de littérature consistant habituellement d’un dialogue préparé entre des personnages et destinée à l’interprétation théâtrale plutôt qu’à la lecture. "
+msgstr "Une pièce de théâtre est une forme de littérature consistant habituellement d’un dialogue préparé entre des personnages et destinée à l’interprétation théâtrale plutôt qu’à la lecture. "
 
 #: DB:work_type/description:21
 msgctxt "work_type"
@@ -255,6 +271,13 @@ msgstr "Un quartette est une composition musicale arrangée pour quatre voix et 
 msgctxt "series_type"
 msgid "A recurring festival, usually happening annually in the same location."
 msgstr "Un festival récurrent organisé habituellement tous les ans au même endroit."
+
+#: DB:place_type/description:7
+msgctxt "place_type"
+msgid ""
+"A school, university or other similar educational institution (especially, "
+"but not only, one where music is taught)"
+msgstr "Une école, université, ou tout autre type d’établissement scolaire (en particulier, mais pas uniquement, un où la musique est enseignée)."
 
 #: DB:series_type/description:6
 msgctxt "series_type"
@@ -497,7 +520,7 @@ msgctxt "work_type"
 msgid ""
 "An audio drama is a dramatized, purely acoustic performance, broadcast on "
 "radio or published on an audio medium (tape, CD, etc.)."
-msgstr "Une dramatique sonore est une interprétation théâtrale purement acoustique, diffusée à la radio ou publiée sur des supports (cassette, CD, etc.)."
+msgstr "Une pièce de théâtre audiophonique est une pièce de théâtre adaptée à la diffusion par un média purement audio, que ce soit à la radio ou sur des supports physiques (cassette, CD, etc.)."
 
 #: DB:event_type/description:2
 msgctxt "event_type"
@@ -659,7 +682,7 @@ msgstr "Présent"
 #: DB:work_type/name:25
 msgctxt "work_type"
 msgid "Audio drama"
-msgstr "Pièce de théâtre"
+msgstr "Pièce de théâtre audiophonique"
 
 #: DB:release_group_secondary_type/name:5
 msgctxt "release_group_secondary_type"
@@ -795,6 +818,11 @@ msgstr "Si♭ mineur"
 msgctxt "work_attribute_type"
 msgid "BMI ID"
 msgstr "ID BMI"
+
+#: DB:work_attribute_type/name:26
+msgctxt "work_attribute_type"
+msgid "BUMA/STEMRA ID"
+msgstr "ID BUMA/STEMRA"
 
 #: DB:cover_art_archive.art_type/name:2
 msgctxt "cover_art_type"
@@ -1017,6 +1045,11 @@ msgstr "Production pirate"
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bozlak"
 msgstr "Bozlak"
+
+#: DB:instrument_alias_type/name:3
+msgctxt "alias_type"
+msgid "Brand name"
+msgstr "Nom de marque"
 
 #: DB:release_group_primary_type/name:12
 msgctxt "release_group_primary_type"
@@ -1554,6 +1587,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Dhēnuka"
 msgstr "Dhēnuka"
 
+#: DB:release_packaging/name:17
+msgctxt "release_packaging"
+msgid "Digibook"
+msgstr "Digibook"
+
 #: DB:release_packaging/name:3
 msgctxt "release_packaging"
 msgid "Digipak"
@@ -1783,6 +1821,11 @@ msgstr "EP"
 msgctxt "medium_format"
 msgid "Edison Diamond Disc"
 msgstr "Disque diamant Edison"
+
+#: DB:place_type/name:7
+msgctxt "place_type"
+msgid "Educational institution"
+msgstr "Établissement scolaire"
 
 #: DB:instrument_type/name:4
 msgctxt "instrument_type"
@@ -2546,6 +2589,31 @@ msgstr "Hüzzam-ı Cedid"
 msgctxt "work_attribute_type_allowed_value"
 msgid "Hēmavati"
 msgstr "Hēmavati"
+
+#: DB:work_attribute_type/name:29
+msgctxt "work_attribute_type"
+msgid "ICE ID"
+msgstr "ID ICE"
+
+#: DB:work_attribute_type/description:28
+msgctxt "work_attribute_type"
+msgid "ID for the Belgian rights society SABAM"
+msgstr "ID pour la SABAM, société belge de gestion des droits d'auteur"
+
+#: DB:work_attribute_type/description:29
+msgctxt "work_attribute_type"
+msgid "ID for the International Copyright Enterprise"
+msgstr "ID pour l’ICE, entreprise internationale de gestion des droits d'auteur"
+
+#: DB:work_attribute_type/description:27
+msgctxt "work_attribute_type"
+msgid "ID for the Mexican rights society SACM"
+msgstr "ID pour la SACM, société mexicaine de gestion des droits d'auteur"
+
+#: DB:work_attribute_type/description:30
+msgctxt "work_attribute_type"
+msgid "ID for the Polish rights society ZAiKS"
+msgstr ""
 
 #: DB:work_attribute_type/name:14
 msgctxt "work_attribute_type"
@@ -3822,6 +3890,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Nīlāṁbari"
 msgstr "Nīlāṁbari"
 
+#: DB:work_attribute_type/name:25
+msgctxt "work_attribute_type"
+msgid "OSA ID"
+msgstr "ID OSA"
+
 #: DB:cover_art_archive.art_type/name:5
 msgctxt "cover_art_type"
 msgid "Obi"
@@ -4005,7 +4078,7 @@ msgstr "Nom du lieu"
 #: DB:work_type/name:28
 msgctxt "work_type"
 msgid "Play"
-msgstr "Pièce"
+msgstr "Pièce de théâtre"
 
 #: DB:medium_format/name:45
 msgctxt "medium_format"
@@ -4045,7 +4118,7 @@ msgstr "Prose"
 #: DB:release_status/name:4
 msgctxt "release_status"
 msgid "Pseudo-Release"
-msgstr "Pseudo-Release"
+msgstr "Pseudo-parution"
 
 #: DB:label_type/name:7
 msgctxt "label_type"
@@ -4382,6 +4455,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Rūpaka"
 msgstr "Rūpaka"
 
+#: DB:work_attribute_type/name:28
+msgctxt "work_attribute_type"
+msgid "SABAM ID"
+msgstr "ID SABAM"
+
 #: DB:medium_format/name:3
 msgctxt "medium_format"
 msgid "SACD"
@@ -4391,6 +4469,11 @@ msgstr "SACD"
 msgctxt "work_attribute_type"
 msgid "SACEM ID"
 msgstr "ID SACEM"
+
+#: DB:work_attribute_type/name:27
+msgctxt "work_attribute_type"
+msgid "SACM ID"
+msgstr "ID SACM"
 
 #: DB:work_attribute_type/name:24
 msgctxt "work_attribute_type"
@@ -5398,6 +5481,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Yürüksofyan"
 msgstr "Yürüksofyan"
 
+#: DB:work_attribute_type/name:30
+msgctxt "work_attribute_type"
+msgid "ZAiKS ID"
+msgstr ""
+
 #: DB:work_attribute_type_allowed_value/value:780
 msgctxt "work_attribute_type_allowed_value"
 msgid "Zafer"
@@ -5468,7 +5556,7 @@ msgstr "Zirefkend"
 #: DB:work_attribute_type_allowed_value/value:681
 msgctxt "work_attribute_type_allowed_value"
 msgid "ambiguous"
-msgstr " "
+msgstr " ambigu"
 
 #: DB:medium_format/name:27
 msgctxt "medium_format"

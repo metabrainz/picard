@@ -1,21 +1,22 @@
-# Translators:
+# 
 # Translators:
 # Jaakko Perttilä <email address hidden>, 2012
-# Jaakko Perttilä <jormangeud@gmail.com>, 2012-2014
+# Jaakko Perttilä <jormangeud@gmail.com>, 2012-2014,2017
 # Jaakko Perttilä <jormangeud@gmail.com>, 2014
 # Kai Kasurinen <kai.kasurinen@iki.fi>, 2014
 # ListMyCDs.com Martikainen <email address hidden>, 2012
 # Timo Martikainen <musicbrainz@listmycds.com>, 2012
 # phonebox, 2014
 # phonebox, 2014-2015
+# Sami Korkalainen, 2017
 # Timo Martikainen <>, 2012
 # Timo Martikainen <email address hidden>, 2012
 # Timo Martikainen <musicbrainz@listmycds.com>, 2012-2014
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2017-01-16 20:46+0000\n"
-"Last-Translator: Laurent Monin <i18n@norz.org>\n"
+"PO-Revision-Date: 2018-02-09 13:02+0000\n"
+"Last-Translator: yvanz\n"
 "Language-Team: Finnish (http://www.transifex.com/musicbrainz/musicbrainz/language/fi/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -29,54 +30,64 @@ msgid ""
 "\"Motet\" is a term that applies to different types of (usually "
 "unaccompanied) choral works. What exactly is a motet depends quite a bit on "
 "the period."
-msgstr ""
+msgstr "”Motetti” on termi, joka koskee erityyppisiä (yleensä säestämättömiä) kuoroteoksia. Tarkka määritelmä riippuu aikakaudesta."
 
 #: DB:work_type/description:5
 msgctxt "work_type"
 msgid ""
 "\"Sonata\" is a general term used to describe small scale (very often solo "
 "or solo + keyboard) instrumental works, initially in baroque music."
-msgstr ""
+msgstr "”Sonaatti” on yleinen termi, jota käytetään kuvaamaan pienimuotoisia (usein soolo tai soolo + koskettimet) instrumentaalisia teoksia, alunperin barokki-musiikissa."
 
 #: DB:medium_format/name:54
 msgctxt "medium_format"
 msgid "10\" Shellac"
-msgstr ""
+msgstr "10″ sellakka"
 
 #: DB:medium_format/name:30
 msgctxt "medium_format"
 msgid "10\" Vinyl"
-msgstr "10\" Vinyyli"
+msgstr "10″ vinyyli"
+
+#: DB:medium_format/name:72
+msgctxt "medium_format"
+msgid "12\" LaserDisc"
+msgstr ""
 
 #: DB:medium_format/name:55
 msgctxt "medium_format"
 msgid "12\" Shellac"
-msgstr ""
+msgstr "12″ sellakka"
 
 #: DB:medium_format/name:31
 msgctxt "medium_format"
 msgid "12\" Vinyl"
-msgstr "12\" Vinyyli"
+msgstr "12″ vinyyli"
 
 #: DB:medium_format/name:49
 msgctxt "medium_format"
 msgid "3.5\" Floppy Disk"
-msgstr ""
+msgstr "3,5″ levyke"
 
 #: DB:medium_format/name:52
 msgctxt "medium_format"
 msgid "7\" Flexi-disc"
-msgstr ""
+msgstr "7″ flexi-levy"
 
 #: DB:medium_format/name:56
 msgctxt "medium_format"
 msgid "7\" Shellac"
-msgstr ""
+msgstr "7″ sellakka"
 
 #: DB:medium_format/name:29
 msgctxt "medium_format"
 msgid "7\" Vinyl"
-msgstr "7\" Vinyyli"
+msgstr "7″ vinyyli"
+
+#: DB:medium_format/name:71
+msgctxt "medium_format"
+msgid "8\" LaserDisc"
+msgstr ""
 
 #: DB:medium_format/name:34
 msgctxt "medium_format"
@@ -93,37 +104,37 @@ msgctxt "medium_format"
 msgid ""
 "90 rpm, vertical-cut shellac discs, produced by the Pathé label from 1906 to"
 " 1932."
-msgstr ""
+msgstr "90 rpm, pystysuuntaisesti leikatut sellakkalevyt, jotka Pathé-levymerkki tuotti vuodesta 1906 vuoteen 1932."
 
 #: DB:work_attribute_type_allowed_value/value:794
 msgctxt "work_attribute_type_allowed_value"
 msgid "A Dorian"
-msgstr ""
+msgstr "A-doorinen"
 
 #: DB:work_attribute_type_allowed_value/value:806
 msgctxt "work_attribute_type_allowed_value"
 msgid "A Mixolydian"
-msgstr ""
+msgstr "A-miksolyydinen"
 
 #: DB:work_type/description:2
 msgctxt "work_type"
 msgid ""
 "A ballet is music composed to be used, together with a choreography, for a "
 "ballet dance production."
-msgstr ""
+msgstr "Baletti on musiikkia, jota käytetään yhdessä koreografian kanssa balettitanssituotannossa."
 
 #: DB:work_type/description:3
 msgctxt "work_type"
 msgid ""
 "A cantata is a vocal (often choral) composition with an instrumental "
 "(usually orchestral) accompaniment, typically in several movements."
-msgstr ""
+msgstr "Kantaatti on laulullinen sävellys (usein kuorolle) instrumentaalisella (yleensä orkestrisella) säestyksellä, tyypillisesti useissa osissa."
 
 #: DB:work_type/description:4
 msgctxt "work_type"
 msgid ""
 "A concerto is a musical work for soloist(s) accompanied by an orchestra."
-msgstr ""
+msgstr "Konsertto on (yhdelle tai usealle) solistille ja orkesterille tehty musiikillinen teos."
 
 #: DB:event_type/description:4
 msgctxt "event_type"
@@ -131,7 +142,7 @@ msgid ""
 "A convention, expo or trade fair is an event which is not typically "
 "orientated around music performances, but can include them as side "
 "activities."
-msgstr ""
+msgstr "Kokous, näyttely tai messu on tapahtuma, joka ei tyypillisesti kohdistu musiikkiesitysten ympärille, vaan voi sisältää niitä sivuaktiviteetteina."
 
 #: DB:release_status/description:2
 msgctxt "release_status"
@@ -139,7 +150,7 @@ msgid ""
 "A give-away release or a release intended to promote an upcoming official "
 "release (e.g. pre-release versions, releases included with a magazine, "
 "versions supplied to radio DJs for air-play)."
-msgstr ""
+msgstr "Vapaasti jaettava julkaisu, tai tulevan virallisen julkaisun markkinointiin tarkoitettu julkaisu (esim. esijulkaisuversiot, lehtien mukana tulevat julkaisut, radiosoittoa varten jaetut julkaisut)"
 
 #: DB:work_attribute_type_allowed_value/value:28
 msgctxt "work_attribute_type_allowed_value"
@@ -152,7 +163,7 @@ msgid ""
 "A mass is a choral composition that sets the invariable portions of the "
 "Christian Eucharistic liturgy (Kyrie - Gloria - Credo - Sanctus - Benedictus"
 " - Agnus Dei, with other portions sometimes added) to music."
-msgstr ""
+msgstr "Messu on kristillisen eukaristisen liturgian muuttumattomiin osiin (Kyrie, Gloria, Credo, Sanctus ja Agnus Dei, joskus muitakin osioita) perustuva kuorosävellys."
 
 #: DB:event_type/description:5
 msgctxt "event_type"
@@ -172,13 +183,18 @@ msgctxt "work_type"
 msgid ""
 "A partita is an instrumental piece composed of a series of variations, and "
 "it's by its current definition very similar to a suite."
-msgstr ""
+msgstr "Sarja on instrumentaalinen kappale, joka koostuu joukosta muunnelmia, ja se on sen nykyisessä määritelmässä hyvin samanlainen kuin sviitti."
 
 #: DB:event_type/description:3
 msgctxt "event_type"
 msgid ""
 "A party, reception or other event held specifically for the launch of a "
 "release."
+msgstr "Juhla, vastaanotto tai muu tapahtuma, joka pidetään erityisesti julkaisun juhlimiseksi."
+
+#: DB:release_packaging/description:17
+msgctxt "release_packaging"
+msgid "A perfect bound book with a sleeve at the end to hold a CD"
 msgstr ""
 
 #: DB:place_type/description:5
@@ -187,21 +203,21 @@ msgid ""
 "A place consisting of a large enclosed area with a central event space "
 "surrounded by tiered seating for spectators, which can be used for indoor "
 "sports, concerts and other entertainment events."
-msgstr ""
+msgstr "Paikka, joka koostuu suuresta suljetusta alueesta, jolla on keskeinen tapahtuma-alue ja jota ympäröi kerrostettu katsomo. Siellä voidaan järjestää sisäurheilua, konsertteja ja muita viihdetapahtumia."
 
 #: DB:place_type/description:1
 msgctxt "place_type"
 msgid ""
 "A place designed for non-live production of music, typically a recording "
 "studio."
-msgstr ""
+msgstr "Paikka, joka on suunniteltu musiikin tuotantoon ei-livenä, tyypillisesti äänitystudio."
 
 #: DB:place_type/description:2
 msgctxt "place_type"
 msgid ""
 "A place that has live artistic performances as one of its primary functions,"
 " such as a concert hall."
-msgstr ""
+msgstr "Paikka, jonka yhtenä tärkeimmistä tehtävistä on toimia taiteellisten esitysten näyttämönä, esimerkiksi konserttisali."
 
 #: DB:place_type/description:6
 msgctxt "place_type"
@@ -209,7 +225,7 @@ msgid ""
 "A place that has worship or religious studies as its main function. "
 "Religious buildings often host concerts and serve as recording locations, "
 "especially for classical music."
-msgstr ""
+msgstr "Paikka, jota käytetään pääosin palvontaan tai uskonnollisiin opintoihin. Uskonnolliset rakennukset järjestävät usein konsertteja ja toimivat (erityisesti klassisen musiikin) tallennuspaikoina."
 
 #: DB:place_type/description:4
 msgctxt "place_type"
@@ -217,7 +233,7 @@ msgid ""
 "A place whose main purpose is to host outdoor sport events, typically "
 "consisting of a pitch surrounded by a structure for spectators with no roof,"
 " or a roof which can be retracted."
-msgstr ""
+msgstr "Paikka, jonka päätehtävä on järjestää urheilutapahtumia ulkona. Koostuu tyypillisesti nurmesta, jota ympäröi rakennelma katsojille. Tässä rakennelmassa voi olla sisäänvedettävä katto tai ei kattoa lainkaan."
 
 #: DB:work_type/description:28
 msgctxt "work_type"
@@ -225,30 +241,37 @@ msgid ""
 "A play is a form of literature usually consisting of scripted dialogue "
 "between characters, and intended for theatrical performance rather than just"
 " reading."
-msgstr ""
+msgstr "Näytelmä on kirjallisuuden muoto, joka yleensä koostuu käsikirjoitetusta hahmojen välisestä vuoropuhelusta ja joka on tarkoitettu teatteriesitykseen eikä pelkästään lukemiseen."
 
 #: DB:work_type/description:21
 msgctxt "work_type"
 msgid ""
 "A poem is a literary piece, generally short and in verse, where words are "
 "usually chosen for their sound and for the images and ideas they suggest."
-msgstr ""
+msgstr "Runo on kirjallinen teos, joka on yleensä lyhyt ja jakeessa. Runojen sanat sanat valitaan yleensä niiden ääntämisen tai niiden luomien mielikuvien perusteella."
 
 #: DB:work_type/description:14
 msgctxt "work_type"
 msgid ""
 "A quartet is a musical composition scored for four voices or instruments."
-msgstr ""
+msgstr "Kvartetto on neljälle äänelle tai soittimelle koostettu sävellys."
 
 #: DB:series_type/description:8
 msgctxt "series_type"
 msgid "A recurring festival, usually happening annually in the same location."
+msgstr "Toistuva festivaali, joka yleensä järjestetään vuosittain samassa paikassa."
+
+#: DB:place_type/description:7
+msgctxt "place_type"
+msgid ""
+"A school, university or other similar educational institution (especially, "
+"but not only, one where music is taught)"
 msgstr ""
 
 #: DB:series_type/description:6
 msgctxt "series_type"
 msgid "A series of events."
-msgstr ""
+msgstr "Tapahtumien sarja."
 
 #: DB:series_type/description:9
 msgctxt "series_type"
@@ -258,32 +281,32 @@ msgstr ""
 #: DB:series_type/description:3
 msgctxt "series_type"
 msgid "A series of recordings."
-msgstr ""
+msgstr "Äänitteiden sarja."
 
 #: DB:series_type/description:7
 msgctxt "series_type"
 msgid "A series of related concerts by an artist in different locations."
-msgstr ""
+msgstr "Sarja artistin eri paikoissa pidettyjä toisiinsa liittyviä konsertteja."
 
 #: DB:series_type/description:1
 msgctxt "series_type"
 msgid "A series of release groups."
-msgstr ""
+msgstr "Julkaisuryhmien sarja."
 
 #: DB:series_type/description:2
 msgctxt "series_type"
 msgid "A series of releases."
-msgstr ""
+msgstr "Julkaisujen sarja."
 
 #: DB:series_type/description:5
 msgctxt "series_type"
 msgid "A series of works which form a catalogue of classical compositions."
-msgstr ""
+msgstr "Sarja teoksia, jotka muodostavat luettelon klassisista sävellyksistä."
 
 #: DB:series_type/description:4
 msgctxt "series_type"
 msgid "A series of works."
-msgstr ""
+msgstr "Teosten sarja."
 
 #: DB:work_type/description:15
 msgctxt "work_type"
@@ -291,7 +314,7 @@ msgid ""
 "A song cycle is a group of songs designed to be performed in a sequence as a"
 " single entity. In most cases, all of the songs are by the same composer, "
 "and often use words from the same poet or lyricist."
-msgstr ""
+msgstr "Laulusarja on sarja kappaleita, jotka on suunniteltu esitettäväksi järjestyksessä yhtenä kokonaisuutena. Useimmissa tapauksissa kaikki kappaleet ovat samalta säveltäjältä ja käyttävät usein saman runoilijan tai sanoittajan sanoja."
 
 #: DB:work_type/description:17
 msgctxt "work_type"
@@ -300,14 +323,14 @@ msgid ""
 "with or without instruments, performed by singing. This is the most common "
 "form by far in folk and popular music, but also fairly common in a classical"
 " context (\"art songs\")."
-msgstr ""
+msgstr "Laulu on alunperin (ja vieläkin useimmissa tapauksissa) säestetty tai säestämätön sävellys, joka esitetään laulaen. Tämä on tähän mennessä yleisin muoto kansanmusiikissa ja populaarimusiikissa, mutta melko yleinen myös klassisessa yhteydessä (”taidelaulut”)."
 
 #: DB:work_type/description:22
 msgctxt "work_type"
 msgid ""
 "A soundtrack is the music that accompanies a film, TV program, videogame, or"
 " even book."
-msgstr ""
+msgstr "Ääniraita on elokuvaan, tv-ohjelmaan, videopeliin tai jopa kirjaan liittyvä musiikki."
 
 #: DB:work_type/description:6
 msgctxt "work_type"
@@ -315,7 +338,7 @@ msgid ""
 "A suite is an ordered set of instrumental or orchestral pieces normally "
 "performed in a concert setting. They may be extracts from a ballet or opera,"
 " or entirely original movements."
-msgstr ""
+msgstr "Sarja on järjestetty kokoelma instrumentaali- tai orkesterikappaleita, jotka tavallisesti esitetään konsertissa. Ne voivat olla otteita baletista tai oopperasta tai täysin alkuperäisistä osista."
 
 #: DB:work_type/description:18
 msgctxt "work_type"
@@ -753,12 +776,12 @@ msgstr "Aṭṭa"
 #: DB:work_attribute_type_allowed_value/value:795
 msgctxt "work_attribute_type_allowed_value"
 msgid "B Dorian"
-msgstr ""
+msgstr "B-doorinen"
 
 #: DB:work_attribute_type_allowed_value/value:807
 msgctxt "work_attribute_type_allowed_value"
 msgid "B Mixolydian"
-msgstr ""
+msgstr "B-miksolyydinen"
 
 #: DB:work_attribute_type_allowed_value/value:33
 msgctxt "work_attribute_type_allowed_value"
@@ -784,6 +807,11 @@ msgstr "b-molli"
 msgctxt "work_attribute_type"
 msgid "BMI ID"
 msgstr "BMI-tunniste"
+
+#: DB:work_attribute_type/name:26
+msgctxt "work_attribute_type"
+msgid "BUMA/STEMRA ID"
+msgstr ""
 
 #: DB:cover_art_archive.art_type/name:2
 msgctxt "cover_art_type"
@@ -1007,6 +1035,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Bozlak"
 msgstr ""
 
+#: DB:instrument_alias_type/name:3
+msgctxt "alias_type"
+msgid "Brand name"
+msgstr ""
+
 #: DB:release_group_primary_type/name:12
 msgctxt "release_group_primary_type"
 msgid "Broadcast"
@@ -1060,12 +1093,12 @@ msgstr "Bṛndāvani"
 #: DB:work_attribute_type_allowed_value/value:789
 msgctxt "work_attribute_type_allowed_value"
 msgid "C Dorian"
-msgstr ""
+msgstr "C-doorinen"
 
 #: DB:work_attribute_type_allowed_value/value:801
 msgctxt "work_attribute_type_allowed_value"
 msgid "C Mixolydian"
-msgstr ""
+msgstr "C-miksolyydinen"
 
 #: DB:work_attribute_type_allowed_value/value:2
 msgctxt "work_attribute_type_allowed_value"
@@ -1316,12 +1349,12 @@ msgstr "Cāyātarangiṇi"
 #: DB:work_attribute_type_allowed_value/value:790
 msgctxt "work_attribute_type_allowed_value"
 msgid "D Dorian"
-msgstr ""
+msgstr "D-doorinen"
 
 #: DB:work_attribute_type_allowed_value/value:802
 msgctxt "work_attribute_type_allowed_value"
 msgid "D Mixolydian"
-msgstr ""
+msgstr "D-miksolyydinen"
 
 #: DB:work_attribute_type_allowed_value/value:8
 msgctxt "work_attribute_type_allowed_value"
@@ -1543,6 +1576,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Dhēnuka"
 msgstr "Dhēnuka"
 
+#: DB:release_packaging/name:17
+msgctxt "release_packaging"
+msgid "Digibook"
+msgstr ""
+
 #: DB:release_packaging/name:3
 msgctxt "release_packaging"
 msgid "Digipak"
@@ -1731,12 +1769,12 @@ msgstr "Dīpāḷi"
 #: DB:work_attribute_type_allowed_value/value:791
 msgctxt "work_attribute_type_allowed_value"
 msgid "E Dorian"
-msgstr ""
+msgstr "E-doorinen"
 
 #: DB:work_attribute_type_allowed_value/value:803
 msgctxt "work_attribute_type_allowed_value"
 msgid "E Mixolydian"
-msgstr ""
+msgstr "E-miksolyydinen"
 
 #: DB:work_attribute_type_allowed_value/value:13
 msgctxt "work_attribute_type_allowed_value"
@@ -1771,6 +1809,11 @@ msgstr "EP"
 #: DB:medium_format/name:50
 msgctxt "medium_format"
 msgid "Edison Diamond Disc"
+msgstr ""
+
+#: DB:place_type/name:7
+msgctxt "place_type"
+msgid "Educational institution"
 msgstr ""
 
 #: DB:instrument_type/name:4
@@ -1876,12 +1919,12 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:792
 msgctxt "work_attribute_type_allowed_value"
 msgid "F Dorian"
-msgstr ""
+msgstr "F-doorinen"
 
 #: DB:work_attribute_type_allowed_value/value:804
 msgctxt "work_attribute_type_allowed_value"
 msgid "F Mixolydian"
-msgstr ""
+msgstr "F-miksolyydinen"
 
 #: DB:work_attribute_type_allowed_value/value:17
 msgctxt "work_attribute_type_allowed_value"
@@ -2029,17 +2072,17 @@ msgstr ""
 #: DB:cover_art_archive.art_type/name:1
 msgctxt "cover_art_type"
 msgid "Front"
-msgstr "Kansi"
+msgstr "Etukansi"
 
 #: DB:work_attribute_type_allowed_value/value:793
 msgctxt "work_attribute_type_allowed_value"
 msgid "G Dorian"
-msgstr ""
+msgstr "G-doorinen"
 
 #: DB:work_attribute_type_allowed_value/value:805
 msgctxt "work_attribute_type_allowed_value"
 msgid "G Mixolydian"
-msgstr ""
+msgstr "G-miksolyydinen"
 
 #: DB:work_attribute_type_allowed_value/value:22
 msgctxt "work_attribute_type_allowed_value"
@@ -2535,6 +2578,31 @@ msgstr ""
 msgctxt "work_attribute_type_allowed_value"
 msgid "Hēmavati"
 msgstr "Hēmavati"
+
+#: DB:work_attribute_type/name:29
+msgctxt "work_attribute_type"
+msgid "ICE ID"
+msgstr ""
+
+#: DB:work_attribute_type/description:28
+msgctxt "work_attribute_type"
+msgid "ID for the Belgian rights society SABAM"
+msgstr ""
+
+#: DB:work_attribute_type/description:29
+msgctxt "work_attribute_type"
+msgid "ID for the International Copyright Enterprise"
+msgstr ""
+
+#: DB:work_attribute_type/description:27
+msgctxt "work_attribute_type"
+msgid "ID for the Mexican rights society SACM"
+msgstr ""
+
+#: DB:work_attribute_type/description:30
+msgctxt "work_attribute_type"
+msgid "ID for the Polish rights society ZAiKS"
+msgstr ""
 
 #: DB:work_attribute_type/name:14
 msgctxt "work_attribute_type"
@@ -3811,6 +3879,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Nīlāṁbari"
 msgstr "Nīlāṁbari"
 
+#: DB:work_attribute_type/name:25
+msgctxt "work_attribute_type"
+msgid "OSA ID"
+msgstr ""
+
 #: DB:cover_art_archive.art_type/name:5
 msgctxt "cover_art_type"
 msgid "Obi"
@@ -4371,6 +4444,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Rūpaka"
 msgstr "Rūpaka"
 
+#: DB:work_attribute_type/name:28
+msgctxt "work_attribute_type"
+msgid "SABAM ID"
+msgstr ""
+
 #: DB:medium_format/name:3
 msgctxt "medium_format"
 msgid "SACD"
@@ -4379,6 +4457,11 @@ msgstr "Super Audio CD"
 #: DB:work_attribute_type/name:21
 msgctxt "work_attribute_type"
 msgid "SACEM ID"
+msgstr ""
+
+#: DB:work_attribute_type/name:27
+msgctxt "work_attribute_type"
+msgid "SACM ID"
 msgstr ""
 
 #: DB:work_attribute_type/name:24
@@ -5385,6 +5468,11 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:779
 msgctxt "work_attribute_type_allowed_value"
 msgid "Yürüksofyan"
+msgstr ""
+
+#: DB:work_attribute_type/name:30
+msgctxt "work_attribute_type"
+msgid "ZAiKS ID"
 msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:780
