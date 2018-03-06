@@ -258,7 +258,7 @@ def format_file_info(file_):
         else:
             ch = string_(ch)
         info.append((_('Channels:'), ch))
-    return '<br/>'.join(map(lambda i: '<b>%s</b><br/>%s' %
+    return '<br/>'.join(map(lambda i: '<b>%s</b> %s' %
                             (htmlescape(i[0]),
                              htmlescape(i[1])), info))
 
