@@ -25,6 +25,7 @@ import operator
 from functools import reduce
 from collections import namedtuple
 from inspect import getfullargspec
+from picard import config
 from picard.metadata import Metadata
 from picard.metadata import MULTI_VALUED_JOINER
 from picard.plugin import ExtensionPoint
@@ -282,6 +283,13 @@ Grammar:
         if key not in ScriptParser._cache:
             ScriptParser._cache[key] = self.parse(script, True)
         return ScriptParser._cache[key].eval(self)
+
+def enabled_tagger_scripts_texts():
+    """Returns an iterator over the enabled tagger scripts.
+    For each script, you'll get a tuple consisting of the script name and text"""
+    if not config.setting["enable_tagger_scripts"]:
+        return []
+    return [ (s_name, s_text) for _s_pos, s_name, s_enabled, s_text in config.setting["list_of_scripts"] if s_enabled and s_text]
 
 
 def register_script_function(function, name=None, eval_args=True,
