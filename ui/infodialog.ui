@@ -35,7 +35,7 @@
             <x>0</x>
             <y>0</y>
             <width>493</width>
-            <height>334</height>
+            <height>358</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="verticalLayoutLabel">
@@ -65,15 +65,14 @@
       <attribute name="title">
        <string>A&amp;rtwork</string>
       </attribute>
-      <layout class="QVBoxLayout">
-      </layout>
+      <layout class="QVBoxLayout"/>
      </widget>
     </widget>
    </item>
    <item>
     <widget class="QDialogButtonBox" name="buttonBox">
      <property name="standardButtons">
-      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+      <set>QDialogButtonBox::NoButton</set>
      </property>
     </widget>
    </item>
