@@ -143,6 +143,36 @@ class TagDiff(object):
         return TagStatus.NoChange
 
 
+class PreservedTags:
+
+    opt_name = 'preserved_tags'
+
+    def __init__(self):
+        self._tags = self._from_config()
+
+    def _to_config(self):
+        config.setting[self.opt_name] =  ", ".join(sorted(self._tags))
+
+    def _from_config(self):
+        return set(
+            [tag for tag in map(lambda x: x.strip(),
+                                config.setting[self.opt_name].split(','))
+                    if tag != ""
+            ]
+        )
+
+    def add(self, name):
+        self._tags.add(name)
+        self._to_config()
+
+    def discard(self, name):
+        self._tags.discard(name)
+        self._to_config()
+
+    def __contains__(self, key):
+        return key in self._tags
+
+
 class MetadataBox(QtWidgets.QTableWidget):
 
     options = (
@@ -194,6 +224,7 @@ class MetadataBox(QtWidgets.QTableWidget):
         self.edit_tag_shortcut = QtWidgets.QShortcut(QtGui.QKeySequence(_("Alt+Shift+E")), self, partial(self.edit_selected_tag))
         # TR: Keyboard shortcut for "Remove" (tag)
         self.remove_tag_shortcut = QtWidgets.QShortcut(QtGui.QKeySequence(_("Alt+Shift+R")), self, self.remove_selected_tags)
+        self.preserved_tags = PreservedTags()
 
     def get_file_lookup(self):
         """Return a FileLookup object."""
@@ -276,16 +307,13 @@ class MetadataBox(QtWidgets.QTableWidget):
                 edit_tag_action.triggered.connect(partial(self.edit_tag, selected_tag))
                 edit_tag_action.setShortcut(self.edit_tag_shortcut.key())
                 menu.addAction(edit_tag_action)
-                preserved_tags = [tag for tag in
-                                  map(lambda x: x.strip(), config.setting['preserved_tags'].split(','))
-                                  if tag != ""]
-                if selected_tag not in preserved_tags:
+                if selected_tag not in self.preserved_tags:
                     add_to_preserved_tags_action = QtWidgets.QAction(_("Add to 'Preserve Tags' List"), self.parent)
-                    add_to_preserved_tags_action.triggered.connect(partial(self.add_to_preserved_tags, selected_tag, preserved_tags))
+                    add_to_preserved_tags_action.triggered.connect(partial(self.preserved_tags.add, selected_tag))
                     menu.addAction(add_to_preserved_tags_action)
                 else:
                     remove_from_preserved_tags_action = QtWidgets.QAction(_("Remove from 'Preserve Tags' List"), self.parent)
-                    remove_from_preserved_tags_action.triggered.connect(partial(self.remove_from_preserved_tags, selected_tag, preserved_tags))
+                    remove_from_preserved_tags_action.triggered.connect(partial(self.preserved_tags.discard, selected_tag))
                     menu.addAction(remove_from_preserved_tags_action)
             removals = []
             useorigs = []
@@ -330,18 +358,6 @@ class MetadataBox(QtWidgets.QTableWidget):
         menu.addAction(self.changes_first_action)
         menu.exec_(event.globalPos())
         event.accept()
-
-    @staticmethod
-    def _save_preserved_tags(preserved_tags):
-        config.setting['preserved_tags'] = ", ".join(uniqify(preserved_tags))
-
-    def add_to_preserved_tags(self, name, preserved_tags):
-        preserved_tags.append(name)
-        self._save_preserved_tags(preserved_tags)
-
-    def remove_from_preserved_tags(self, name, preserved_tags):
-        preserved_tags = [tag for tag in preserved_tags if tag != name]
-        self._save_preserved_tags(preserved_tags)
 
     def edit_tag(self, tag):
         EditTagDialog(self.parent, tag).exec_()
