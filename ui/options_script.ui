@@ -81,10 +81,16 @@
            </property>
            <widget class="QListWidget" name="script_list">
             <property name="sizePolicy">
-             <sizepolicy hsizetype="Ignored" vsizetype="Expanding">
+             <sizepolicy hsizetype="MinimumExpanding" vsizetype="Expanding">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>80</width>
+              <height>0</height>
+             </size>
             </property>
            </widget>
            <widget class="QWidget" name="formWidget" native="true">
