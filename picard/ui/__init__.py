@@ -53,7 +53,7 @@ class PreserveGeometry:
 
 class PicardDialog(QtWidgets.QDialog, PreserveGeometry):
 
-    flags = QtCore.Qt.WindowSystemMenuHint | QtCore.Qt.WindowTitleHint
+    flags = QtCore.Qt.WindowSystemMenuHint | QtCore.Qt.WindowTitleHint | QtCore.Qt.WindowCloseButtonHint
 
     def __init__(self, parent=None):
         super().__init__(parent, self.flags)
