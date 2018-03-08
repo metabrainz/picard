@@ -154,12 +154,8 @@ class PreservedTags:
         config.setting[self.opt_name] =  ", ".join(sorted(self._tags))
 
     def _from_config(self):
-        return set(
-            [tag for tag in map(lambda x: x.strip(),
-                                config.setting[self.opt_name].split(','))
-                    if tag != ""
-            ]
-        )
+        tags = config.setting[self.opt_name].split(',')
+        return set(filter(bool, map(str.strip, tags)))
 
     def add(self, name):
         self._tags.add(name)
