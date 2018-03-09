@@ -687,22 +687,6 @@ def generate_file(infilename, outfilename, variables):
             f_out.write(f_in.read() % variables)
 
 
-def contrib_plugin_files():
-    plugin_files = {}
-    dist_root = os.path.join("contrib", "plugins")
-    for root, dirs, files in os.walk(dist_root):
-        file_root = os.path.join('plugins', os.path.relpath(root, dist_root)) \
-            if root != dist_root else 'plugins'
-        for file in files:
-            if file.endswith(".py"):
-                if file_root in plugin_files:
-                    plugin_files[file_root].append(os.path.join(root, file))
-                else:
-                    plugin_files[file_root] = [os.path.join(root, file)]
-    data_files = [(x, sorted(y)) for x, y in plugin_files.items()]
-    return sorted(data_files, key=lambda x: x[0])
-
-
 try:
     from py2exe.build_exe import py2exe
 
@@ -722,7 +706,6 @@ try:
                                   find_file_in_path("PyQt5/plugins/imageformats/qtiff4.dll")]))
             self.distribution.data_files.append(
                 ("accessible", [find_file_in_path("PyQt5/plugins/accessible/qtaccessiblewidgets4.dll")]))
-            self.distribution.data_files += contrib_plugin_files()
 
             py2exe.run(self)
             print("*** creating the NSIS setup script ***")
