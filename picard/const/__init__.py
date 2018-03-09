@@ -20,6 +20,7 @@
 import os
 import sys
 
+from PyQt5.QtCore import QStandardPaths
 from picard import PICARD_APP_NAME
 
 # Install gettext "noop" function in case const.py gets imported directly.
@@ -28,15 +29,8 @@ builtins.__dict__['N_'] = lambda a: a
 
 
 # Config directory
-if sys.platform == "win32":
-    USER_DIR = os.environ.get("APPDATA", "~\\Application Data")
-else:
-    USER_DIR = os.environ.get("XDG_CONFIG_HOME", "~/.config")
-
-USER_DIR = os.path.join(
-    os.path.expanduser(USER_DIR), "MusicBrainz", PICARD_APP_NAME
-)
-
+_appconfiglocation = QStandardPaths.writableLocation(QStandardPaths.AppConfigLocation)
+USER_DIR = os.path.join(_appconfiglocation, "MusicBrainz", PICARD_APP_NAME)
 USER_PLUGIN_DIR = os.path.join(USER_DIR, "plugins")
 
 # AcoustID client API key

@@ -171,18 +171,6 @@ class Tagger(QtWidgets.QApplication):
         log.debug("Versions: %s", versions.as_string())
         log.debug("Configuration file path: %r", config.config.fileName())
 
-        # TODO remove this before the final release
-        if sys.platform == "win32":
-            olduserdir = "~\\Local Settings\\Application Data\\MusicBrainz Picard"
-        else:
-            olduserdir = "~/.picard"
-        olduserdir = os.path.expanduser(olduserdir)
-        if os.path.isdir(olduserdir):
-            log.info("Moving %r to %r", olduserdir, USER_DIR)
-            try:
-                shutil.move(olduserdir, USER_DIR)
-            except:
-                pass
         log.debug("User directory: %r", os.path.abspath(USER_DIR))
 
         # for compatibility with pre-1.3 plugins
