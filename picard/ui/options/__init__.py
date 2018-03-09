@@ -36,6 +36,11 @@ class OptionsPage(QtWidgets.QWidget):
     SORT_ORDER = 1000
     ACTIVE = True
     STYLESHEET_ERROR = "QWidget { background-color: #f55; color: white; font-weight:bold }"
+    STYLESHEET = "QLabel { qproperty-wordWrap: true; }"
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.setStyleSheet(self.STYLESHEET)
 
     def info(self):
         raise NotImplementedError
