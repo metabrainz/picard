@@ -203,7 +203,6 @@ class Tagger(QtWidgets.QApplication):
         else:
             mydir = os.path.dirname(os.path.abspath(__file__))
             self.pluginmanager.load_plugindir(os.path.join(mydir, "plugins"))
-            self.pluginmanager.load_plugindir(os.path.join(mydir, os.pardir, "contrib", "plugins"))
 
         if not os.path.exists(USER_PLUGIN_DIR):
             os.makedirs(USER_PLUGIN_DIR)
