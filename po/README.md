@@ -25,18 +25,18 @@ $ python setup.py regen_pot_file
 Transifex will _automatically_ pick `picard.pot` from [Picard git repository master branch](https://github.com/metabrainz/picard/tree/master) once per day.
 
 
-`picard/countries.py` strings
------------------------------
+Attributes and countries strings
+--------------------------------
 
-Their translations are handled at https://www.transifex.com/projects/p/musicbrainz/resource/countries/
+Their translations are handled at https://www.transifex.com/projects/p/musicbrainz/resource/attributes/ and https://www.transifex.com/projects/p/musicbrainz/resource/countries/
 
-`countries.pot` is updated by [musicbrainz-server project](https://bitbucket.org/metabrainz/musicbrainz-server/), outside the Picard project.
+`attributes.pot` and `countries.pot` are updated by [musicbrainz-server project](https://bitbucket.org/metabrainz/musicbrainz-server/), outside the Picard project.
 
-Picard maintainers can regenerate `picard/countries.py`, which is using `countries.pot` as base, using the command:
+Picard maintainers can regenerate `picard/const/attributes.py` and `picard/const/countries.py`, which are using `attributes.pot` and `countries.pot` as base, using the command:
 ```bash
-$ python setup.py update_countries
+$ python setup.py update_constants
 ```
-It will retrieve and parse latest `countries.pot` to rebuild `picard/countries.py`.
+It will retrieve and parse latest `attributes.pot` and `countries.pot` to rebuild `picard/const/attributes.py` and `picard/const/countries.py`.
 
 
 To fetch latest translations from Transifex
