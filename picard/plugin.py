@@ -275,6 +275,9 @@ class PluginManager(QtCore.QObject):
             name = is_zip(path)
             if not name:
                 name = _plugin_name_from_path(path)
+                # check for symlink
+                if os.path.islink(path):
+                    name = os.path.realpath(path)
             if name:
                 names.add(name)
         log.debug("Looking for plugins in directory %r, %d names found",
