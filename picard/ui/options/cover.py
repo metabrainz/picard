@@ -71,6 +71,7 @@ class CoverOptionsPage(OptionsPage):
                 title = provider.NAME
             checked = is_provider_enabled(provider.NAME)
             self.provider_list_widget.addItem(SortableCheckboxListItem(title, checked=checked, data=provider.NAME))
+        self.provider_list_widget.disable_last_down_btn()
 
         def update_providers_options(items):
             self.ca_providers = [(item.data, item.checked) for item in items]

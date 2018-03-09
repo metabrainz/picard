@@ -51,6 +51,8 @@ class SortableCheckboxListWidget(QtWidgets.QWidget):
         checkbox.stateChanged.connect(partial(self.checkbox_toggled, row))
         up.clicked.connect(partial(self.move_button_clicked, row, up=True))
         down.clicked.connect(partial(self.move_button_clicked, row, up=False))
+        if row == 0:
+            up.setEnabled(False)
 
     def moveItem(self, from_row, to_row):
         to_row = to_row % len(self.__items)
@@ -109,6 +111,9 @@ class SortableCheckboxListWidget(QtWidgets.QWidget):
         self.layout().itemAtPosition(row, self._CHECKBOX_POS).widget().setParent(None)
         self.layout().itemAtPosition(row, self._BUTTON_UP).widget().setParent(None)
         self.layout().itemAtPosition(row, self._BUTTON_DOWN).widget().setParent(None)
+
+    def disable_last_down_btn(self):
+        self.layout().itemAtPosition(len(self.__items) - 1, self._BUTTON_DOWN).widget().setEnabled(False)
 
 
 class SortableCheckboxListItem(object):
