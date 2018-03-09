@@ -94,8 +94,7 @@ from picard.formats.id3 import (
     MP3File,
     TrueAudioFile,
 )
-if AiffFile:
-    register_format(AiffFile)
+register_format(AiffFile)
 register_format(DSFFile)
 register_format(MP3File)
 register_format(TrueAudioFile)
@@ -121,28 +120,20 @@ from picard.formats.vorbis import (
     OggAudioFile,
     OggVideoFile,
     OggOpusFile,
-    with_opus,
 )
 register_format(FLACFile)
 register_format(OggFLACFile)
 register_format(OggSpeexFile)
 register_format(OggVorbisFile)
-if with_opus:
-    register_format(OggOpusFile)
+register_format(OggOpusFile)
 register_format(OggAudioFile)
 register_format(OggVideoFile)
 
-try:
-    from picard.formats.mp4 import MP4File
-    register_format(MP4File)
-except ImportError:
-    pass
+from picard.formats.mp4 import MP4File
+register_format(MP4File)
 
-try:
-    from picard.formats.asf import ASFFile
-    register_format(ASFFile)
-except ImportError:
-    pass
+from picard.formats.asf import ASFFile
+register_format(ASFFile)
 
 from picard.formats.wav import WAVFile
 register_format(WAVFile)
