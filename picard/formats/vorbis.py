@@ -25,12 +25,8 @@ import mutagen.oggflac
 import mutagen.oggspeex
 import mutagen.oggtheora
 import mutagen.oggvorbis
-try:
-    from mutagen.oggopus import OggOpus
-    with_opus = True
-except ImportError:
-    OggOpus = None
-    with_opus = False
+import mutagen.oggopus
+
 from picard import config, log
 from picard.coverart.image import TagCoverArtImage, CoverArtImageError
 from picard.file import File
@@ -330,7 +326,7 @@ class OggOpusFile(VCommentFile):
     """Ogg Opus file."""
     EXTENSIONS = [".opus"]
     NAME = "Ogg Opus"
-    _File = OggOpus
+    _File = mutagen.oggopus.OggOpus
 
     def _info(self, metadata, file):
         super()._info(metadata, file)

@@ -21,10 +21,7 @@ import mutagen.apev2
 import mutagen.dsf
 import mutagen.mp3
 import mutagen.trueaudio
-try:
-    import mutagen.aiff
-except ImportError:
-    mutagen.aiff = None
+import mutagen.aiff
 
 import re
 from collections import defaultdict
@@ -635,16 +632,12 @@ class DSFFile(ID3File):
                                  'titlesort'})
 
 
-if mutagen.aiff:
-    class AiffFile(DSFFile):
+class AiffFile(DSFFile):
 
-        """AIFF file."""
-        EXTENSIONS = [".aiff", ".aif", ".aifc"]
-        NAME = "Audio Interchange File Format (AIFF)"
-        _File = mutagen.aiff.AIFF
+    """AIFF file."""
+    EXTENSIONS = [".aiff", ".aif", ".aifc"]
+    NAME = "Audio Interchange File Format (AIFF)"
+    _File = mutagen.aiff.AIFF
 
-        def _get_file(self, filename):
-            return mutagen.aiff.AIFF(filename)
-
-else:
-    AiffFile = None
+    def _get_file(self, filename):
+        return mutagen.aiff.AIFF(filename)
