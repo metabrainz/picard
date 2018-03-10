@@ -23,6 +23,7 @@ from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtCore import QStandardPaths
 from picard import config
 from picard.util import icontheme
+from picard.ui.moveable_list_view import MoveableListView
 from picard.ui.options import OptionsPage, register_options_page
 from picard.ui.ui_options_interface import Ui_InterfaceOptionsPage
 from picard.ui.util import enabledSlot
@@ -151,11 +152,9 @@ class InterfaceOptionsPage(OptionsPage):
         self.ui.add_button.clicked.connect(self.add_to_toolbar)
         self.ui.insert_separator_button.clicked.connect(self.insert_separator)
         self.ui.remove_button.clicked.connect(self.remove_action)
-        self.ui.up_button.clicked.connect(partial(self.move_item, 1))
-        self.ui.down_button.clicked.connect(partial(self.move_item, -1))
-        self.ui.toolbar_layout_list.currentRowChanged.connect(self.update_buttons)
-        self.ui.toolbar_layout_list.setDragDropMode(QtWidgets.QAbstractItemView.DragDrop)
-        self.ui.toolbar_layout_list.setDefaultDropAction(QtCore.Qt.MoveAction)
+        self.move_view = MoveableListView(self.ui.toolbar_layout_list, self.ui.up_button,
+                                          self.ui.down_button, self)
+        self.update_buttons = self.move_view.update_buttons
 
     def load(self):
         self.ui.toolbar_show_labels.setChecked(config.setting["toolbar_show_labels"])
@@ -234,11 +233,8 @@ class InterfaceOptionsPage(OptionsPage):
             if name in self.ACTION_NAMES or name == 'separator':
                 self._insert_item(name)
 
-    def update_buttons(self):
+    def update_action_buttons(self):
         self.ui.add_button.setEnabled(self._added_actions() != self.ACTION_NAMES)
-        current_row = self.ui.toolbar_layout_list.currentRow()
-        self.ui.up_button.setEnabled(current_row > 0)
-        self.ui.down_button.setEnabled(current_row < self.ui.toolbar_layout_list.count() - 1)
 
     def add_to_toolbar(self):
         display_list = set.difference(self.ACTION_NAMES, self._added_actions())
@@ -251,16 +247,6 @@ class InterfaceOptionsPage(OptionsPage):
     def insert_separator(self):
         insert_index = self.ui.toolbar_layout_list.currentRow() + 1
         self._insert_item('separator', insert_index)
-
-    def move_item(self, offset):
-        current_index = self.ui.toolbar_layout_list.currentRow()
-        offset_index = current_index - offset
-        offset_item = self.ui.toolbar_layout_list.item(offset_index)
-        if offset_item:
-            current_item = self.ui.toolbar_layout_list.takeItem(current_index)
-            self.ui.toolbar_layout_list.insertItem(offset_index, current_item)
-            self.ui.toolbar_layout_list.setCurrentItem(current_item)
-            self.update_buttons()
 
     def remove_action(self):
         item = self.ui.toolbar_layout_list.takeItem(self.ui.toolbar_layout_list.currentRow())
