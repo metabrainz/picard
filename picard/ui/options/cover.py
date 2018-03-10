@@ -21,10 +21,8 @@ from picard import config
 from picard.ui.options import OptionsPage, register_options_page
 from picard.ui.ui_options_cover import Ui_CoverOptionsPage
 from picard.coverart.providers import cover_art_providers, is_provider_enabled
-from picard.ui.sortablecheckboxlist import (
-    SortableCheckboxListWidget,
-    SortableCheckboxListItem
-)
+from picard.ui.moveable_list_view import MoveableListView
+from picard.ui.checkbox_list_item import CheckboxListItem
 
 
 class CoverOptionsPage(OptionsPage):
@@ -56,9 +54,8 @@ class CoverOptionsPage(OptionsPage):
         self.ui.setupUi(self)
         self.ui.save_images_to_files.clicked.connect(self.update_filename)
         self.ui.save_images_to_tags.clicked.connect(self.update_save_images_to_tags)
-        self.provider_list_widget = SortableCheckboxListWidget()
-        self.ui.ca_providers_list.insertWidget(0, self.provider_list_widget)
-        self.ca_providers = []
+        self.move_view = MoveableListView(self.ui.ca_providers_list, self.ui.up_button,
+                                          self.ui.down_button)
 
     def load_cover_art_providers(self):
         """Load available providers, initialize provider-specific options, restore state of each
@@ -70,16 +67,19 @@ class CoverOptionsPage(OptionsPage):
             except AttributeError:
                 title = provider.NAME
             checked = is_provider_enabled(provider.NAME)
-            self.provider_list_widget.addItem(SortableCheckboxListItem(title, checked=checked, data=provider.NAME))
-
-        def update_providers_options(items):
-            self.ca_providers = [(item.data, item.checked) for item in items]
-        self.provider_list_widget.changed.connect(update_providers_options)
+            self.ui.ca_providers_list.addItem(CheckboxListItem(title, checked=checked, data=provider.NAME))
 
     def restore_defaults(self):
         # Remove previous entries
         self.provider_list_widget.clear()
         super().restore_defaults()
+
+    def ca_providers(self):
+        items = []
+        for i in range(self.ui.ca_providers_list.count()):
+            item = self.ui.ca_providers_list.item(i)
+            items.append((item.data, item.checked))
+        return items
 
     def load(self):
         self.ui.save_images_to_tags.setChecked(config.setting["save_images_to_tags"])
@@ -87,8 +87,8 @@ class CoverOptionsPage(OptionsPage):
         self.ui.save_images_to_files.setChecked(config.setting["save_images_to_files"])
         self.ui.cover_image_filename.setText(config.setting["cover_image_filename"])
         self.ui.save_images_overwrite.setChecked(config.setting["save_images_overwrite"])
-        self.ca_providers = config.setting["ca_providers"]
         self.load_cover_art_providers()
+        self.ui.ca_providers_list.setCurrentRow(0)
         self.update_all()
 
     def save(self):
@@ -97,7 +97,7 @@ class CoverOptionsPage(OptionsPage):
         config.setting["save_images_to_files"] = self.ui.save_images_to_files.isChecked()
         config.setting["cover_image_filename"] = self.ui.cover_image_filename.text()
         config.setting["save_images_overwrite"] = self.ui.save_images_overwrite.isChecked()
-        config.setting["ca_providers"] = self.ca_providers
+        config.setting["ca_providers"] = self.ca_providers()
 
     def update_all(self):
         self.update_filename()
