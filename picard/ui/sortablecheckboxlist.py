@@ -37,27 +37,24 @@ class SortableCheckboxListWidget(QtWidgets.QWidget):
         layout.setVerticalSpacing(2)
         layout.setContentsMargins(0, 0, 0, 0)
         self.setLayout(layout)
+        self._layout = layout
         self.__items = []
 
-    def addItems(self, items):
-        for item in items:
-            self.addItem(item)
+    def widgetAtPos(self, row, kind):
+        return self._layout.itemAtPosition(row, kind).widget()
 
-    def setSignals(self, row):
-        layout = self.layout()
-        checkbox = layout.itemAtPosition(row, self._CHECKBOX_POS).widget()
-        up = layout.itemAtPosition(row, self._BUTTON_UP).widget()
-        down = layout.itemAtPosition(row, self._BUTTON_DOWN).widget()
-        checkbox.stateChanged.connect(partial(self.checkbox_toggled, row))
-        up.clicked.connect(partial(self.move_button_clicked, row, up=True))
-        down.clicked.connect(partial(self.move_button_clicked, row, up=False))
+    def addItems(self, items):
+        if items:
+            self.__no_emit = True
+            for item in items:
+                self.addItem(item)
+            self.__no_emit = False
+            self._emit_changed()
 
     def moveItem(self, from_row, to_row):
         to_row = to_row % len(self.__items)
         self.__items[to_row], self.__items[from_row] = \
             self.__items[from_row], self.__items[to_row]
-        self.updateRow(to_row)
-        self.updateRow(from_row)
         self._emit_changed()
 
     def checkbox_toggled(self, row, state):
@@ -71,44 +68,50 @@ class SortableCheckboxListWidget(QtWidgets.QWidget):
             to = row + 1
         self.moveItem(row, to)
 
-    def updateRow(self, row):
-        self.__no_emit = True
-        item = self.__items[row]
-        layout = self.layout()
-        checkbox = layout.itemAtPosition(row, self._CHECKBOX_POS).widget()
-        checkbox.setText(item.text)
-        checkbox.setChecked(item.checked)
-        self.__no_emit = False
+    def _update(self):
+        length = len(self.__items)
+        for row in range(0, length):
+            self.widgetAtPos(row, self._BUTTON_UP).setEnabled(row != 0)
+            self.widgetAtPos(row, self._BUTTON_DOWN).setEnabled(row != length - 1)
+            item = self.__items[row]
+            checkbox = self.widgetAtPos(row, self._CHECKBOX_POS)
+            checkbox.setText(item.text)
+            checkbox.setChecked(item.checked)
 
     def addItem(self, item):
         self.__items.append(item)
         row = len(self.__items) - 1
-        layout = self.layout()
-        layout.addWidget(QtWidgets.QCheckBox(), row, self._CHECKBOX_POS)
-        self.updateRow(row)
+
+        checkbox = QtWidgets.QCheckBox()
+        checkbox.stateChanged.connect(partial(self.checkbox_toggled, row))
+        self._layout.addWidget(checkbox, row, self._CHECKBOX_POS)
+
         up_button = QtWidgets.QToolButton()
+        up_button.clicked.connect(partial(self.move_button_clicked, row, up=True))
         up_button.setArrowType(QtCore.Qt.UpArrow)
         up_button.setMaximumSize(QtCore.QSize(16, 16))
+        self._layout.addWidget(up_button, row, self._BUTTON_UP)
+
         down_button = QtWidgets.QToolButton()
+        down_button.clicked.connect(partial(self.move_button_clicked, row, up=False))
         down_button.setArrowType(QtCore.Qt.DownArrow)
         down_button.setMaximumSize(QtCore.QSize(16, 16))
-        layout.addWidget(up_button, row, self._BUTTON_UP)
-        layout.addWidget(down_button, row, self._BUTTON_DOWN)
-        self.setSignals(row)
+        self._layout.addWidget(down_button, row, self._BUTTON_DOWN)
+
+        self._emit_changed()
 
     def _emit_changed(self):
         if not self.__no_emit:
+            self._update()
             self.changed.emit(self.__items)
 
     def clear(self):
-        for i in reversed(range(len(self.__items))):
-            self._remove(i)
+        for row in reversed(range(len(self.__items))):
+            self.widgetAtPos(row, self._CHECKBOX_POS).setParent(None)
+            self.widgetAtPos(row, self._BUTTON_UP).setParent(None)
+            self.widgetAtPos(row, self._BUTTON_DOWN).setParent(None)
         self.__items = []
-
-    def _remove(self, row):
-        self.layout().itemAtPosition(row, self._CHECKBOX_POS).widget().setParent(None)
-        self.layout().itemAtPosition(row, self._BUTTON_UP).widget().setParent(None)
-        self.layout().itemAtPosition(row, self._BUTTON_DOWN).widget().setParent(None)
+        self._emit_changed()
 
 
 class SortableCheckboxListItem(object):
