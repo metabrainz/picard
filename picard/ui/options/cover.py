@@ -16,8 +16,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
-from functools import partial
-from PyQt5 import QtWidgets, QtCore
+
 from picard import config
 from picard.ui.options import OptionsPage, register_options_page
 from picard.ui.ui_options_cover import Ui_CoverOptionsPage
@@ -56,7 +55,7 @@ class CoverOptionsPage(OptionsPage):
         self.ui.save_images_to_files.clicked.connect(self.update_filename)
         self.ui.save_images_to_tags.clicked.connect(self.update_save_images_to_tags)
         self.move_view = MoveableListView(self.ui.ca_providers_list, self.ui.up_button,
-                                          self.ui.down_button, self)
+                                          self.ui.down_button)
 
     def load_cover_art_providers(self):
         """Load available providers, initialize provider-specific options, restore state of each
@@ -80,15 +79,14 @@ class CoverOptionsPage(OptionsPage):
         for i in range(self.ui.ca_providers_list.count()):
             item = self.ui.ca_providers_list.item(i)
             items.append((item.data, item.checked))
-        return items     
-                
+        return items
+
     def load(self):
         self.ui.save_images_to_tags.setChecked(config.setting["save_images_to_tags"])
         self.ui.cb_embed_front_only.setChecked(config.setting["embed_only_one_front_image"])
         self.ui.save_images_to_files.setChecked(config.setting["save_images_to_files"])
         self.ui.cover_image_filename.setText(config.setting["cover_image_filename"])
         self.ui.save_images_overwrite.setChecked(config.setting["save_images_overwrite"])
-        self.ca_providers = config.setting["ca_providers"]
         self.load_cover_art_providers()
         self.ui.ca_providers_list.setCurrentRow(0)
         self.update_all()

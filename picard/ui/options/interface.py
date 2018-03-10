@@ -153,7 +153,7 @@ class InterfaceOptionsPage(OptionsPage):
         self.ui.insert_separator_button.clicked.connect(self.insert_separator)
         self.ui.remove_button.clicked.connect(self.remove_action)
         self.move_view = MoveableListView(self.ui.toolbar_layout_list, self.ui.up_button,
-                                          self.ui.down_button, self)
+                                          self.ui.down_button, self.update_action_buttons)
         self.update_buttons = self.move_view.update_buttons
 
     def load(self):

@@ -16,16 +16,17 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+
 from functools import partial
 from PyQt5 import QtWidgets, QtCore
 
 class MoveableListView:
 
-    def __init__(self, list_widget, up_button, down_button, parent):
+    def __init__(self, list_widget, up_button, down_button, callback=None):
         self.list_widget = list_widget
         self.up_button = up_button
         self.down_button = down_button
-        self.parent = parent
+        self.update_callback = callback
         self.up_button.clicked.connect(partial(self.move_item, 1))
         self.down_button.clicked.connect(partial(self.move_item, -1))
         self.list_widget.currentRowChanged.connect(self.update_buttons)
@@ -40,13 +41,11 @@ class MoveableListView:
             current_item = self.list_widget.takeItem(current_index)
             self.list_widget.insertItem(offset_index, current_item)
             self.list_widget.setCurrentItem(current_item)
-            self.update_buttons()       
+            self.update_buttons()
 
     def update_buttons(self):
         current_row = self.list_widget.currentRow()
         self.up_button.setEnabled(current_row > 0)
         self.down_button.setEnabled(current_row < self.list_widget.count() - 1)
-        try:
-            self.parent.update_action_buttons()     
-        except (AttributeError, TypeError):
-            pass       
+        if self.update_callback:
+            self.update_callback()
