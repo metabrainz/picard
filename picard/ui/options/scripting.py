@@ -232,6 +232,14 @@ class ScriptingOptionsPage(OptionsPage):
         self.last_selected_script_pos = 0
         self.ui.splitter.setStretchFactor(0, 1)
         self.ui.splitter.setStretchFactor(1, 2)
+        self.delete_shortcut = QtWidgets.QShortcut(self.ui.script_list)
+        self.delete_shortcut.setKey(QtGui.QKeySequence.Delete)
+        self.delete_shortcut.activated.connect(self.delete_selected_script)
+
+    def delete_selected_script(self):
+        items = self.ui.script_list.selectedItems()
+        if items:
+            self.remove_from_list_of_scripts(self.ui.script_list.row(items[0]))
 
     def script_name_changed(self):
         items = self.ui.script_list.selectedItems()
