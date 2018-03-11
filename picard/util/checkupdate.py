@@ -52,9 +52,9 @@ def get_latest_version_number():
             if matches:
                 latest_version = matches[0]
             else:
-                log.debug("Unable to get the latest version information from", PICARD_URLS['home'])
+                log.warning("Unable to get the latest version information from %s" % PICARD_URLS['home'])
         except Exception as e:
-            log.debug("Exception while getting the latest version information from %s: %s", (PICARD_URLS['home'], e))
+            log.error("Exception while getting the latest version information from %s: %s" % (PICARD_URLS['home'], e,))
     return latest_version
 
 
