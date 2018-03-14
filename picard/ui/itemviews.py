@@ -339,8 +339,8 @@ class BaseTreeView(QtWidgets.QTreeWidget):
                     for version in versions:
                         priority = {
                             "trackmatch": "0" if version['totaltracks'] == albumtracks else "?",
-                            "countrymatch": "0" if len(preferred_countries) == 0 or preferred_countries & set(version['countries']) else "?",
-                            "formatmatch": "0" if len(preferred_formats) == 0 or preferred_formats & set(version['formats']) else "?",
+                            "countrymatch": "0" if len(preferred_countries) == 0 or preferred_countries & set(version['countries'] or '') else "?",
+                            "formatmatch": "0" if len(preferred_formats) == 0 or preferred_formats & set(version['formats'] or '') else "?",
                         }
                         priorities[version['id']] = "".join(priority[k] for k in matches)
                     versions.sort(key=lambda version: priorities[version['id']] + version['name'])
