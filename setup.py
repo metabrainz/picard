@@ -266,7 +266,7 @@ class picard_build(build):
     def run(self):
         if 'bdist_nsis' not in sys.argv:  # somebody shoot me please
             log.info('generating scripts/%s from scripts/picard.in', PACKAGE_NAME)
-            generate_file('scripts/picard.in', 'scripts/' + PACKAGE_NAME, {'localedir': self.localedir, 'autoupdate': not self.disable_autoupdate})
+            generate_file('scripts/picard.in', 'scripts/' + PACKAGE_NAME, {'localedir': self.localedir, 'autoupdate': not self.disable_autoupdate, 'python': sys.executable})
         build.run(self)
 
 
