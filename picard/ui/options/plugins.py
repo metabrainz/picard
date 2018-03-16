@@ -86,6 +86,8 @@ class PluginsOptionsPage(OptionsPage):
         super().__init__(parent)
         self.ui = Ui_PluginsOptionsPage()
         self.ui.setupUi(self)
+        #fix for PICARD-1226, QT bug (https://bugreports.qt.io/browse/QTBUG-22572) workaround
+        self.ui.plugins.setStyleSheet('')
         self.items = {}
         self.ui.plugins.itemSelectionChanged.connect(self.change_details)
         self.ui.plugins.mimeTypes = self.mimeTypes
