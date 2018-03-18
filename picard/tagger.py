@@ -173,11 +173,6 @@ class Tagger(QtWidgets.QApplication):
 
         log.debug("User directory: %r", os.path.abspath(USER_DIR))
 
-        # for compatibility with pre-1.3 plugins
-        QtCore.QObject.tagger = self
-        QtCore.QObject.config = config
-        QtCore.QObject.log = log
-
         check_io_encoding()
 
         # Must be before config upgrade because upgrade dialogs need to be
