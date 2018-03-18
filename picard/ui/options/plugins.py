@@ -366,7 +366,7 @@ class PluginsOptionsPage(OptionsPage):
         )
         if files:
             for path in files:
-                self.tagger.pluginmanager.install_plugin(path)
+                self.tagger.pluginmanager.install_plugin(path, action=PLUGIN_ACTION_INSTALL)
 
     def download_plugin(self, action):
         selected = self.ui.plugins.selectedItems()[COLUMN_NAME]
@@ -413,7 +413,7 @@ class PluginsOptionsPage(OptionsPage):
 
     def dropEvent(self, event):
         for path in [os.path.normpath(u.toLocalFile()) for u in event.mimeData().urls()]:
-            self.tagger.pluginmanager.install_plugin(path)
+            self.tagger.pluginmanager.install_plugin(path, action=PLUGIN_ACTION_INSTALL)
 
 
 register_options_page(PluginsOptionsPage)
