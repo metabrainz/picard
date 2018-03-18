@@ -318,7 +318,7 @@ class UnclusteredFiles(Cluster):
         return False
 
     def can_remove(self):
-        return True
+        return len(self.files) > 0
 
 
 class ClusterList(list, Item):
