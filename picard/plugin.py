@@ -281,7 +281,10 @@ class PluginManager(QtCore.QObject):
                   plugindir,
                   len(names))
         for name in sorted(names):
-            self.load_plugin(name, plugindir)
+            try:
+                self.load_plugin(name, plugindir)
+            except Exception as e:
+                log.error('Unable to load plugin: %s.\nError occured: %s', name, e)
 
     def load_plugin(self, name, plugindir):
         module_file = None
@@ -432,7 +435,12 @@ class PluginManager(QtCore.QObject):
                             shutil.rmtree(dst)
                     shutil.copytree(path, dst)
                 if action != PLUGIN_ACTION_UPDATE:
-                    installed_plugin = self.load_plugin(zip_plugin or plugin_name, USER_PLUGIN_DIR)
+                    try:
+                        installed_plugin = self.load_plugin(zip_plugin or plugin_name, USER_PLUGIN_DIR)
+                    except Exception as e:
+                        log.error('Unable to load plugin: %s.\nError occured: %s', name, e)
+                        installed_plugin = None
+
                     if installed_plugin is not None:
                         self.plugin_installed.emit(installed_plugin, False)
                 else:
