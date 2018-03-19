@@ -15,22 +15,12 @@ if sys.version_info < (3, 5):
     sys.exit("ERROR: You need Python 3.5 or higher to use Picard.")
 
 
-args = {}
-
-try:
-    from py2app.build_app import py2app
-    do_py2app = True
-except ImportError:
-    do_py2app = False
-
-# this must be imported *after* py2app, because py2app imports setuptools
-# which "patches" (read: screws up) the Extension class
 from distutils import log
 from distutils.command.build import build
 from distutils.command.install import install as install
 from distutils.dep_util import newer
-from distutils.dist import Distribution
 from distutils.spawn import find_executable
+from setuptools.dist import Distribution
 from setuptools import setup, Command, Extension
 
 
@@ -39,58 +29,6 @@ PACKAGE_NAME = "picard"
 ext_modules = [
     Extension('picard.util._astrcmp', sources=['picard/util/_astrcmp.c']),
 ]
-
-py2app_exclude_modules = [
-    'pydoc',
-    'PyQt5.QtDeclarative', 'PyQt5.QtDesigner', 'PyQt5.QtHelp', 'PyQt5.QtMultimedia',
-    'PyQt5.QtOpenGL', 'PyQt5.QtScript', 'PyQt5.QtScriptTools', 'PyQt5.QtSql', 'PyQt5.QtSvg',
-    'PyQt5.QtTest', 'PyQt5.QtWebKit', 'PyQt5.QtXml', 'PyQt5.QtXmlPatterns', 'PyQt5.phonon'
-]
-
-# sockets module, however not excluded from py2exe should not be used in Picard. Instead
-# the QtNetwork module should be used. sockets module was removed from the excluded list
-# to support bundled plugins on platforms it is not available.
-py2exe_exclude_modules = [
-    'select',
-]
-
-exclude_modules = [
-    'ssl', 'bz2',
-    'distutils', 'unittest',
-    'bdb', 'calendar', 'difflib', 'doctest', 'dummy_thread', 'gzip',
-    'optparse', 'pdb', 'plistlib', 'pyexpat', 'quopri', 'repr',
-    'stringio', 'tarfile', 'uu'
-]
-
-if do_py2app:
-    args['app'] = ['tagger.py']
-    args['name'] = 'Picard'
-    args['options'] = { 'py2app' :
-        {
-            'optimize'       : 2,
-            'argv_emulation' : True,
-            'iconfile'       : 'picard.icns',
-            'frameworks'     : ['libiconv.2.dylib', 'libdiscid.0.dylib'],
-            'resources'      : ['locale'],
-            'includes'       : ['json', 'sip', 'PyQt5', 'ntpath'] + [e.name for e in ext_modules],
-            'excludes'  : exclude_modules + py2app_exclude_modules,
-            'plist'     : { 'CFBundleName' : 'MusicBrainz Picard',
-                            'CFBundleGetInfoString' : 'Picard, the next generation MusicBrainz tagger (see https://picard.musicbrainz.org/)',
-                            'CFBundleIdentifier':'org.musicbrainz.picard',
-                            'CFBundleShortVersionString':__version__,
-                            'CFBundleVersion': 'Picard ' + __version__,
-                            'LSMinimumSystemVersion':'10.4.3',
-                            'LSMultipleInstancesProhibited':'true',
-                            # RAK: It biffed when I tried to include your accented characters, luks. :-(
-                            'NSHumanReadableCopyright':'Copyright 2008 Lukas Lalinsky, Robert Kaye',
-                          },
-            'qt_plugins': ['imageformats/libqgif.dylib',
-                           'imageformats/libqjpeg.dylib',
-                           'imageformats/libqtiff.dylib',
-                           'accessible/libqtaccessiblewidgets.dylib']
-        },
-    }
-
 
 tx_executable = find_executable('tx')
 
@@ -640,7 +578,7 @@ def _picard_packages():
     return tuple(sorted(packages))
 
 
-args2 = {
+args = {
     'name': PACKAGE_NAME,
     'version': __version__,
     'description': 'The next generation MusicBrainz tagger',
@@ -678,7 +616,6 @@ args2 = {
     'Topic :: Multimedia :: Sound/Audio :: Analysis'
     ]
 }
-args.update(args2)
 
 
 def generate_file(infilename, outfilename, variables):
@@ -686,96 +623,22 @@ def generate_file(infilename, outfilename, variables):
         with open(outfilename, "wt") as f_out:
             f_out.write(f_in.read() % variables)
 
-
-try:
-    from py2exe.build_exe import py2exe
-
-    class bdist_nsis(py2exe):
-
-        def run(self):
-            generate_file('scripts/picard.py2exe.in', 'scripts/picard', {})
-            self.distribution.data_files.append(
-                ("", ["discid.dll", "fpcalc.exe", "msvcr90.dll", "msvcp90.dll"]))
-            for locale in self.distribution.locales:
-                self.distribution.data_files.append(
-                    ("locale/" + locale[1] + "/LC_MESSAGES",
-                     ["build/locale/" + locale[1] + "/LC_MESSAGES/" + locale[0] + ".mo"]))
-            self.distribution.data_files.append(
-                ("imageformats", [find_file_in_path("PyQt5/plugins/imageformats/qgif4.dll"),
-                                  find_file_in_path("PyQt5/plugins/imageformats/qjpeg4.dll"),
-                                  find_file_in_path("PyQt5/plugins/imageformats/qtiff4.dll")]))
-            self.distribution.data_files.append(
-                ("accessible", [find_file_in_path("PyQt5/plugins/accessible/qtaccessiblewidgets4.dll")]))
-
-            py2exe.run(self)
-            print("*** creating the NSIS setup script ***")
-            pathname = r"installer\picard-setup.nsi"
-            generate_file(pathname + ".in", pathname,
-                          {'name': 'MusicBrainz Picard',
-                           'version': __version__,
-                           'description': 'The next generation MusicBrainz tagger.',
-                           'url': 'https://picard.musicbrainz.org/', })
-            print("*** compiling the NSIS setup script ***")
-            subprocess.call([self.find_nsis(), pathname])
-
-        def find_nsis(self):
-            import _winreg
-            with _winreg.OpenKey(_winreg.HKEY_LOCAL_MACHINE, "Software\\NSIS") as reg_key:
-                nsis_path = _winreg.QueryValueEx(reg_key, "")[0]
-                return os.path.join(nsis_path, "makensis.exe")
-
-    args['cmdclass']['bdist_nsis'] = bdist_nsis
-    args['windows'] = [{
-        'script': 'scripts/picard',
-        'icon_resources': [(1, 'picard.ico')],
-    }]
-    args['options'] = {
-        'bdist_nsis': {
-            # mimetypes is necessary for the videotools plugin
-            'includes': ['json', 'sip', 'mimetypes'] + [e.name for e in ext_modules],
-            'excludes': exclude_modules + py2exe_exclude_modules,
-            'optimize': 2,
-        },
-    }
-except ImportError:
-    py2exe = None
-
-
 def find_file_in_path(filename):
     for include_path in sys.path:
         file_path = os.path.join(include_path, filename)
         if os.path.exists(file_path):
             return file_path
 
-if do_py2app:
-    from py2app.util import copy_file, find_app
-    from PyQt5 import QtCore
-
-    class BuildAPP(py2app):
-
-        def run(self):
-            py2app.run(self)
-
-            # XXX Find and bundle fpcalc, since py2app can't.
-            fpcalc = find_app("fpcalc")
-            if fpcalc:
-                dest_fpcalc = os.path.abspath("dist/MusicBrainz Picard.app/Contents/MacOS/fpcalc")
-                copy_file(fpcalc, dest_fpcalc)
-                os.chmod(dest_fpcalc, 0o755)
-
-    args['scripts'] = ['tagger.py']
-    args['cmdclass']['py2app'] = BuildAPP
-
-# FIXME: this should check for the actual command ('install' vs. 'bdist_nsis', 'py2app', ...), not installed libraries
-if py2exe is None and do_py2app is False:
-    args['data_files'].append(('share/icons/hicolor/16x16/apps', ['resources/images/16x16/picard.png']))
-    args['data_files'].append(('share/icons/hicolor/24x24/apps', ['resources/images/24x24/picard.png']))
-    args['data_files'].append(('share/icons/hicolor/32x32/apps', ['resources/images/32x32/picard.png']))
-    args['data_files'].append(('share/icons/hicolor/48x48/apps', ['resources/images/48x48/picard.png']))
-    args['data_files'].append(('share/icons/hicolor/128x128/apps', ['resources/images/128x128/picard.png']))
-    args['data_files'].append(('share/icons/hicolor/256x256/apps', ['resources/images/256x256/picard.png']))
-    args['data_files'].append(('share/icons/hicolor/scalable/apps', ['resources/img-src/picard.svg']))
-    args['data_files'].append(('share/applications', ('picard.desktop',)))
-    args['data_files'].append('scripts/picard.in')
+args['data_files'] = [
+    ('share/icons/hicolor/16x16/apps', ['resources/images/16x16/picard.png']),
+    ('share/icons/hicolor/24x24/apps', ['resources/images/24x24/picard.png']),
+    ('share/icons/hicolor/32x32/apps', ['resources/images/32x32/picard.png']),
+    ('share/icons/hicolor/48x48/apps', ['resources/images/48x48/picard.png']),
+    ('share/icons/hicolor/128x128/apps', ['resources/images/128x128/picard.png']),
+    ('share/icons/hicolor/256x256/apps', ['resources/images/256x256/picard.png']),
+    ('share/icons/hicolor/scalable/apps', ['resources/img-src/picard.svg']),
+    ('share/applications', ('picard.desktop',)),
+    'scripts/picard.in',
+]
 
 setup(**args)
