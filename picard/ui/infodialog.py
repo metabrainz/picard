@@ -17,6 +17,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+from collections import namedtuple
 import os.path
 import traceback
 from PyQt5 import QtGui, QtCore, QtWidgets
@@ -345,13 +346,20 @@ class ClusterInfoDialog(InfoDialog):
         info.append("<b>%s</b> %s" % (_('Artist:'),
                                       htmlescape(cluster.metadata["albumartist"])))
         info.append("")
-        lines = []
+        TrackListItem = namedtuple('TrackListItem', 'tracknumber, title, artist, length')
+        tracklist = []
         for file_ in cluster.iterfiles(False):
             m = file_.metadata
             artist = m["artist"] or m["albumartist"] or cluster.metadata["albumartist"]
-            lines.append(m["tracknumber"] + " " +
-                         m["title"] + " - " + artist + " (" +
-                         m["~length"] + ")")
+            tracklist.append(TrackListItem(m["tracknumber"], m["title"], artist,
+                                           m["~length"]))
+        def sorttracknum(item):
+            try:
+                return int(item.tracknumber)
+            except:
+                return item.tracknumber
+
+        lines = ["%s %s - %s (%s)" % item for item in sorted(tracklist, key=sorttracknum)]
         info.append("<b>%s</b><br />%s" % (_('Tracklist:'),
                     '<br />'.join([htmlescape(s).replace(' ', '&nbsp;') for s in lines])))
         self.ui.info.setText('<br/>'.join(info))
