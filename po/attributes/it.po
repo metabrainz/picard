@@ -5,14 +5,14 @@
 # Gioele  <email address hidden>, 2012
 # Gioele <gioele@svario.it>, 2012
 # leofiore <leofiore@libero.it>, 2012
-# Luca Salini <salo.rock@gmail.com>, 2016-2017
+# Luca Salini <salo.rock@gmail.com>, 2016-2018
 # Luca Salini <salo.rock@gmail.com>, 2013-2015
 # Luca Salini <salo.rock@gmail.com>, 2012
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2018-02-09 13:02+0000\n"
-"Last-Translator: yvanz\n"
+"PO-Revision-Date: 2018-03-08 00:56+0000\n"
+"Last-Translator: Luca Salini <salo.rock@gmail.com>\n"
 "Language-Team: Italian (http://www.transifex.com/musicbrainz/musicbrainz/language/it/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -262,7 +262,7 @@ msgctxt "place_type"
 msgid ""
 "A school, university or other similar educational institution (especially, "
 "but not only, one where music is taught)"
-msgstr ""
+msgstr "Una scuola, università o altra simile istituzione di istruzione (in particolare, ma non solo, dove si insegna musica)"
 
 #: DB:series_type/description:6
 msgctxt "series_type"
@@ -1810,7 +1810,7 @@ msgstr "Edison Diamond Disc"
 #: DB:place_type/name:7
 msgctxt "place_type"
 msgid "Educational institution"
-msgstr ""
+msgstr "Istituzione di istruzione"
 
 #: DB:instrument_type/name:4
 msgctxt "instrument_type"
@@ -2578,27 +2578,27 @@ msgstr "Hēmavati"
 #: DB:work_attribute_type/name:29
 msgctxt "work_attribute_type"
 msgid "ICE ID"
-msgstr ""
+msgstr "ID ICE"
 
 #: DB:work_attribute_type/description:28
 msgctxt "work_attribute_type"
 msgid "ID for the Belgian rights society SABAM"
-msgstr ""
+msgstr "ID per la società di diritti belga SABAM"
 
 #: DB:work_attribute_type/description:29
 msgctxt "work_attribute_type"
 msgid "ID for the International Copyright Enterprise"
-msgstr ""
+msgstr "ID per l'International Copyright Enterprise"
 
 #: DB:work_attribute_type/description:27
 msgctxt "work_attribute_type"
 msgid "ID for the Mexican rights society SACM"
-msgstr ""
+msgstr "ID per la società di diritti messicana SACM"
 
 #: DB:work_attribute_type/description:30
 msgctxt "work_attribute_type"
 msgid "ID for the Polish rights society ZAiKS"
-msgstr ""
+msgstr "ID per la società di diritti polacca ZAiKS"
 
 #: DB:work_attribute_type/name:14
 msgctxt "work_attribute_type"
@@ -4443,7 +4443,7 @@ msgstr "Rūpaka"
 #: DB:work_attribute_type/name:28
 msgctxt "work_attribute_type"
 msgid "SABAM ID"
-msgstr ""
+msgstr "ID SABAM"
 
 #: DB:medium_format/name:3
 msgctxt "medium_format"
@@ -4458,7 +4458,7 @@ msgstr "ID SACEM"
 #: DB:work_attribute_type/name:27
 msgctxt "work_attribute_type"
 msgid "SACM ID"
-msgstr ""
+msgstr "ID SACM"
 
 #: DB:work_attribute_type/name:24
 msgctxt "work_attribute_type"
@@ -5469,7 +5469,7 @@ msgstr "Yürüksofyan"
 #: DB:work_attribute_type/name:30
 msgctxt "work_attribute_type"
 msgid "ZAiKS ID"
-msgstr ""
+msgstr "ID ZAiKS"
 
 #: DB:work_attribute_type_allowed_value/value:780
 msgctxt "work_attribute_type_allowed_value"

@@ -8,6 +8,7 @@
 # João Miguel Soares <joaomiguel32@live.com>, 2016
 # João Munhoz <jmunhoz@outlook.com>, 2017
 # lampih <lampih@gmail.com>, 2012
+# Leonardo Pacheco <lpacheco@pobox.com>, 2018
 # Lucas de Jesus <lucasdj98@gmail.com>, 2016
 # Lucas Gomes <x8lucas8x@gmail.com>, 2012
 # Luciano Frota <lucianofrota@gmail.com>, 2017
@@ -20,8 +21,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2018-03-01 16:21+0000\n"
-"Last-Translator: Jaide Ambrosio <jaide.sp@gmail.com>\n"
+"PO-Revision-Date: 2018-03-13 06:45+0000\n"
+"Last-Translator: Leonardo Pacheco <lpacheco@pobox.com>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/musicbrainz/musicbrainz/language/pt_BR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -195,7 +196,7 @@ msgctxt "event_type"
 msgid ""
 "A party, reception or other event held specifically for the launch of a "
 "release."
-msgstr ""
+msgstr "Uma festa, recepção ou outro evento promovido especificamente para um lançamento"
 
 #: DB:release_packaging/description:17
 msgctxt "release_packaging"
@@ -230,7 +231,7 @@ msgid ""
 "A place that has worship or religious studies as its main function. "
 "Religious buildings often host concerts and serve as recording locations, "
 "especially for classical music."
-msgstr ""
+msgstr "Um lugar cuja principal função é o culto ou estudo religioso. Edifícios religiosos freqüentemente abrigam concertos e servem como local para gravações, especialmente para música clássica."
 
 #: DB:place_type/description:4
 msgctxt "place_type"
@@ -271,7 +272,7 @@ msgctxt "place_type"
 msgid ""
 "A school, university or other similar educational institution (especially, "
 "but not only, one where music is taught)"
-msgstr ""
+msgstr "Uma escola, universidade ou outra instituição de ensino similar (especialmente, mas não apenas, uma onde se ensine música)"
 
 #: DB:series_type/description:6
 msgctxt "series_type"
@@ -3132,7 +3133,7 @@ msgstr ""
 #: DB:event_type/name:3
 msgctxt "event_type"
 msgid "Launch event"
-msgstr ""
+msgstr "Evento de lançamento"
 
 #: DB:work_attribute_type_allowed_value/value:160
 msgctxt "work_attribute_type_allowed_value"
@@ -3497,7 +3498,7 @@ msgctxt "work_type"
 msgid ""
 "Musical theatre is a form of theatrical performance that combines songs, "
 "spoken dialogue, acting, and dance."
-msgstr ""
+msgstr "Teatro musical é uma forma de performance teatral que combina canções, diálogo, atuação e dança."
 
 #: DB:work_attribute_type_allowed_value/value:748
 msgctxt "work_attribute_type_allowed_value"
@@ -4022,7 +4023,7 @@ msgstr ""
 #: DB:instrument_type/name:3
 msgctxt "instrument_type"
 msgid "Percussion instrument"
-msgstr ""
+msgstr "Instrumento de percursão"
 
 #: DB:work_attribute_type_allowed_value/value:496
 msgctxt "work_attribute_type_allowed_value"
@@ -4032,7 +4033,7 @@ msgstr ""
 #: DB:artist_type/name:1
 msgctxt "artist_type"
 msgid "Person"
-msgstr ""
+msgstr "Pessoa"
 
 #: DB:work_attribute_type_allowed_value/value:497
 msgctxt "work_attribute_type_allowed_value"
@@ -4267,12 +4268,12 @@ msgstr ""
 #: DB:editor_collection_type/name:12
 msgctxt "collection_type"
 msgid "Recording"
-msgstr ""
+msgstr "Gravação"
 
 #: DB:series_type/name:3
 msgctxt "series_type"
 msgid "Recording"
-msgstr ""
+msgstr "Gravação"
 
 #: DB:recording_alias_type/name:1
 msgctxt "alias_type"
@@ -4332,7 +4333,7 @@ msgstr "Nome do álbum"
 #: DB:place_type/name:6
 msgctxt "place_type"
 msgid "Religious building"
-msgstr ""
+msgstr "Edifício religioso"
 
 #: DB:work_attribute_type_allowed_value/value:765
 msgctxt "work_attribute_type_allowed_value"
