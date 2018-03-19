@@ -247,7 +247,7 @@ class LogView(LogViewCommon):
                 )
 
     def show(self):
-        self.highlight_text.setFocus(QtCore.Qt.OtherFocusReason);
+        self.highlight_text.setFocus(QtCore.Qt.OtherFocusReason)
         super().show()
 
     def _clear_log_do(self):

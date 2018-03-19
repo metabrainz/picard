@@ -309,7 +309,7 @@ class PluginManager(QtCore.QObject):
             index = None
             for i, p in enumerate(self.plugins):
                 if name == p.module_name:
-                    log.warning("Module %r conflict: unregistering previously" \
+                    log.warning("Module %r conflict: unregistering previously"
                               " loaded %r version %s from %r",
                               p.module_name,
                               p.name,
