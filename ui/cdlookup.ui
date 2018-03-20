@@ -37,7 +37,7 @@
     </widget>
    </item>
    <item>
-    <layout class="QHBoxLayout">
+    <layout class="QHBoxLayout" name="hboxlayout">
      <property name="spacing">
       <number>6</number>
      </property>
@@ -45,7 +45,7 @@
       <number>0</number>
      </property>
      <item>
-      <spacer>
+      <spacer name="hspacer">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
@@ -63,21 +63,21 @@
         <bool>false</bool>
        </property>
        <property name="text">
-        <string>OK</string>
+        <string>&amp;Load into Picard</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QPushButton" name="lookup_button">
        <property name="text">
-        <string>Lookup manually</string>
+        <string>Lookup in &amp;Browser</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QPushButton" name="cancel_button">
        <property name="text">
-        <string>Cancel</string>
+        <string>&amp;Cancel</string>
        </property>
       </widget>
      </item>
