@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: picard 2.0.0.dev5\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2018-03-19 18:26+0100\n"
+"POT-Creation-Date: 2018-03-20 13:28+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -884,6 +884,7 @@ msgid "Remove selected files/albums"
 msgstr ""
 
 #: picard/ui/mainwindow.py:367 picard/ui/metadatabox.py:326
+#: picard/ui/ui_cdlookup.py:54
 msgid "Lookup in &Browser"
 msgstr ""
 
@@ -1249,15 +1250,11 @@ msgid "The following releases on MusicBrainz match the CD:"
 msgstr ""
 
 #: picard/ui/ui_cdlookup.py:53
-msgid "OK"
+msgid "&Load into Picard"
 msgstr ""
 
-#: picard/ui/ui_cdlookup.py:54
-msgid "Lookup manually"
-msgstr ""
-
-#: picard/ui/ui_cdlookup.py:55
-msgid "Cancel"
+#: picard/ui/ui_cdlookup.py:55 picard/ui/util.py:35
+msgid "&Cancel"
 msgstr ""
 
 #: picard/ui/ui_edittagdialog.py:89
@@ -1901,10 +1898,6 @@ msgstr ""
 
 #: picard/ui/util.py:34
 msgid "&Ok"
-msgstr ""
-
-#: picard/ui/util.py:35
-msgid "&Cancel"
 msgstr ""
 
 #: picard/ui/util.py:37
