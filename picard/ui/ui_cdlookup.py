@@ -50,7 +50,7 @@ class Ui_Dialog(object):
         _translate = QtCore.QCoreApplication.translate
         Dialog.setWindowTitle(_("CD Lookup"))
         self.label.setText(_("The following releases on MusicBrainz match the CD:"))
-        self.ok_button.setText(_("OK"))
-        self.lookup_button.setText(_("Lookup manually"))
-        self.cancel_button.setText(_("Cancel"))
+        self.ok_button.setText(_("&Load into Picard"))
+        self.lookup_button.setText(_("Lookup in &Browser"))
+        self.cancel_button.setText(_("&Cancel"))
 
