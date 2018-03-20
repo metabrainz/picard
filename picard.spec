@@ -69,7 +69,7 @@ exe = EXE(pyz,
           debug=False,
           strip=False,
           runtime_tmpdir=None,
-          console=False,
+          console=True,
           icon='picard.ico',
  )
 if platform.system() == 'Darwin':
