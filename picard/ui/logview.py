@@ -31,8 +31,8 @@ from picard.ui import PicardDialog
 class LogViewDialog(PicardDialog):
     defaultsize = QtCore.QSize(570, 400)
 
-    def __init__(self, title, parent=None):
-        super().__init__(parent)
+    def __init__(self, title):
+        super().__init__(parent=None)
         self.setWindowFlags(QtCore.Qt.Window)
         self.setWindowTitle(title)
         self.doc = QtGui.QTextDocument()
@@ -180,7 +180,6 @@ class LogView(LogViewCommon):
         self.save_log_as_button = QtWidgets.QPushButton(_("Save As..."))
         self.hbox.addWidget(self.save_log_as_button)
         self.save_log_as_button.clicked.connect(self._save_log_as_do)
-
 
     def _clear_highlight_do(self):
         self.highlight_text.setText('')
