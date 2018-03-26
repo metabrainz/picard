@@ -52,7 +52,7 @@ class CDLookupDialog(PicardDialog):
                                               _("Labels"), _("Catalog #s"), _("Barcode")])
         if self.releases:
             def myjoin(l):
-                return "\n".join(l)
+                return "\n".join(filter(None,l))
 
             for release in self.releases:
                 labels, catalog_numbers = label_info_from_node(release['label-info'])
