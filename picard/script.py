@@ -789,7 +789,8 @@ def _delete_prefix(parser, text, *prefixes):
     if not prefixes:
         prefixes = ('A', 'The')
     text = text.strip()
-    match = re.match('(' + r'\s+)|('.join(prefixes) + r'\s+)', text)
+    rx = '(' + r'\s+)|('.join(map(re.escape, prefixes)) + r'\s+)'
+    match = re.match(rx, text)
     if match:
         pref = match.group()
         return text[len(pref):], pref.strip()
