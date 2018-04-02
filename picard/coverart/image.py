@@ -32,6 +32,7 @@ from picard import config, log
 from picard.coverart.utils import translate_caa_type
 from picard.script import ScriptParser
 from picard.util import (
+    decode_filename,
     encode_filename,
     replace_win32_incompat,
     imageinfo
@@ -315,11 +316,11 @@ class CoverArtImage:
 
     def _next_filename(self, filename, counters):
         if counters[filename]:
-            new_filename = b"%b (%d)" % (filename, counters[filename])
+            new_filename = "%s (%d)" % (decode_filename(filename), counters[filename])
         else:
             new_filename = filename
         counters[filename] += 1
-        return new_filename
+        return encode_filename(new_filename)
 
     def _is_write_needed(self, filename):
         if (os.path.exists(filename)
