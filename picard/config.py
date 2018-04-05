@@ -22,7 +22,7 @@ from PyQt5 import QtCore
 from picard import (PICARD_APP_NAME, PICARD_ORG_NAME, PICARD_VERSION,
                     version_to_string, version_from_string)
 from picard.util import LockableObject
-
+from picard import log
 
 class ConfigUpgradeError(Exception):
     pass
@@ -46,7 +46,14 @@ class ConfigSection(LockableObject):
 
     def __load_keys(self):
         for key in self.__qt_keys():
-            self.__config[key] = self.__qt_config.value(key)
+            try:
+                self.__config[key] = self.__qt_config.value(key)
+            except TypeError:
+                # Related to PICARD-1255, Unable to load the object into
+                # Python at all. Something weird with the way it is read and converted
+                # via the Qt C++ API. Simply ignore the key and it will be reset to
+                # default whenever the user opens Picard options
+                log.error('Unable to load config value: %s', key)
 
     def __getitem__(self, name):
         opt = Option.get(self.__name, name)
