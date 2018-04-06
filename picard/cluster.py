@@ -295,15 +295,18 @@ class UnclusteredFiles(Cluster):
 
     def add_files(self, files):
         Cluster.add_files(self, files)
-        self.tagger.window.enable_cluster(self.get_num_files() > 0)
+        self.enable_cluster()
 
     def add_file(self, file):
         Cluster.add_file(self, file)
-        self.tagger.window.enable_cluster(self.get_num_files() > 0)
+        self.enable_cluster()
 
     def remove_file(self, file):
         Cluster.remove_file(self, file)
-        self.tagger.window.enable_cluster(self.get_num_files() > 0)
+        self.enable_cluster()
+
+    def enable_cluster(self):
+        self.tagger.window.enable_cluster(self.get_num_files() > 1)
 
     def lookup_metadata(self):
         self.tagger.autotag(self.files)
