@@ -86,7 +86,8 @@ class TagCounter(dict):
             if tag == "~length":
                 msg = format_time(self.get(tag, 0))
             else:
-                msg = MULTI_VALUED_JOINER.join(self[tag])
+                # ensure values are strings, e.g. 'ISRC' tag can be a dict
+                msg = MULTI_VALUED_JOINER.join([str(x) for x in self[tag]])
 
             if count > 0 and missing > 0:
                 return (msg + " " + (ngettext("(missing from %d item)", "(missing from %d items)", missing) % missing), True)
