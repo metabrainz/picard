@@ -80,3 +80,4 @@ deploy:
   file: dist/*.dmg
   on:
     tags: true
+    all_branches: true
