@@ -22,8 +22,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2018-02-24 15:20+0000\n"
-"Last-Translator: Claybiokiller <clay1994@mail.hfut.edu.cn>\n"
+"PO-Revision-Date: 2018-05-08 10:34+0000\n"
+"Last-Translator: yvanz\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/musicbrainz/musicbrainz/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -96,6 +96,11 @@ msgctxt "medium_format"
 msgid "8\" LaserDisc"
 msgstr "8寸激光影碟"
 
+#: DB:medium_format/name:78
+msgctxt "medium_format"
+msgid "8-Track Cartridge"
+msgstr ""
+
 #: DB:medium_format/name:34
 msgctxt "medium_format"
 msgid "8cm CD"
@@ -159,6 +164,13 @@ msgid ""
 "versions supplied to radio DJs for air-play)."
 msgstr "赠送式发行版或用于用于推广将发行正式版的发行版(如预发行版，随杂志发行版，电台DJ播放版)。"
 
+#: DB:instrument_type/description:7
+msgctxt "instrument_type"
+msgid ""
+"A grouping of related but different instruments, like the different violin-"
+"like instruments"
+msgstr ""
+
 #: DB:work_attribute_type_allowed_value/value:28
 msgctxt "work_attribute_type_allowed_value"
 msgid "A major"
@@ -203,6 +215,12 @@ msgstr "专门为发行启动而举办的聚会，招待会或其他活动。"
 msgctxt "release_packaging"
 msgid "A perfect bound book with a sleeve at the end to hold a CD"
 msgstr "底页带有 CD 袋的胶订书"
+
+#: DB:place_type/description:8
+msgctxt "place_type"
+msgid ""
+"A place (generally a factory) at which physical media are manufactured."
+msgstr ""
 
 #: DB:place_type/description:5
 msgctxt "place_type"
@@ -339,6 +357,13 @@ msgid ""
 " even book."
 msgstr "原声是指电影、电视节目、游戏或书籍所伴有的音乐。"
 
+#: DB:instrument_type/description:6
+msgctxt "instrument_type"
+msgid ""
+"A standard grouping of instruments often played together, like a string "
+"quartet"
+msgstr ""
+
 #: DB:work_type/description:6
 msgctxt "work_type"
 msgid ""
@@ -384,6 +409,11 @@ msgstr "降A大调"
 msgctxt "work_attribute_type_allowed_value"
 msgid "A-flat minor"
 msgstr "降A小调"
+
+#: DB:work_attribute_type_allowed_value/value:817
+msgctxt "work_attribute_type_allowed_value"
+msgid "A-sharp major"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:30
 msgctxt "work_attribute_type_allowed_value"
@@ -810,6 +840,16 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "B-flat minor"
 msgstr "降B小调"
 
+#: DB:work_attribute_type_allowed_value/value:818
+msgctxt "work_attribute_type_allowed_value"
+msgid "B-sharp major"
+msgstr ""
+
+#: DB:work_attribute_type_allowed_value/value:819
+msgctxt "work_attribute_type_allowed_value"
+msgid "B-sharp minor"
+msgstr ""
+
 #: DB:work_attribute_type/name:7
 msgctxt "work_attribute_type"
 msgid "BMI ID"
@@ -1122,6 +1162,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "C-flat major"
 msgstr "降C大调"
 
+#: DB:work_attribute_type_allowed_value/value:812
+msgctxt "work_attribute_type_allowed_value"
+msgid "C-flat minor"
+msgstr ""
+
 #: DB:work_attribute_type_allowed_value/value:4
 msgctxt "work_attribute_type_allowed_value"
 msgid "C-sharp major"
@@ -1382,6 +1427,11 @@ msgstr "降D大调"
 msgctxt "work_attribute_type_allowed_value"
 msgid "D-flat minor"
 msgstr "降D小调"
+
+#: DB:work_attribute_type_allowed_value/value:813
+msgctxt "work_attribute_type_allowed_value"
+msgid "D-sharp major"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:10
 msgctxt "work_attribute_type_allowed_value"
@@ -1799,9 +1849,15 @@ msgid "E-flat major"
 msgstr "降E大调"
 
 #: DB:work_attribute_type_allowed_value/value:12
+#: DB:work_attribute_type_allowed_value/value:815
 msgctxt "work_attribute_type_allowed_value"
 msgid "E-flat minor"
 msgstr "降E小调"
+
+#: DB:work_attribute_type_allowed_value/value:814
+msgctxt "work_attribute_type_allowed_value"
+msgid "E-sharp major"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:15
 msgctxt "work_attribute_type_allowed_value"
@@ -1832,6 +1888,11 @@ msgstr "电子乐器"
 msgctxt "medium_format"
 msgid "Enhanced CD"
 msgstr "增强CD"
+
+#: DB:instrument_type/name:6
+msgctxt "instrument_type"
+msgid "Ensemble"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:356
 msgctxt "work_attribute_type_allowed_value"
@@ -1963,6 +2024,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Fahte"
 msgstr "法赫特"
 
+#: DB:instrument_type/name:7
+msgctxt "instrument_type"
+msgid "Family"
+msgstr ""
+
 #: DB:work_attribute_type_allowed_value/value:615
 msgctxt "work_attribute_type_allowed_value"
 msgid "Fantezi"
@@ -2048,6 +2114,13 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Fireng-i Fer"
 msgstr "菲棱仪菲尔"
 
+#: DB:medium_format/description:73
+msgctxt "medium_format"
+msgid ""
+"Flat discs with grooves used in phonographs/gramophones. For shellac and "
+"vinyl records, use that specifically"
+msgstr ""
+
 #: DB:medium_format/name:51
 msgctxt "medium_format"
 msgid "Flexi-disc"
@@ -2060,6 +2133,11 @@ msgid ""
 " a molded-in groove, designed to be playable on a normal phonograph "
 "turntable."
 msgstr "软唱片是由较薄，可弯曲塑胶片通过模压刻上音轨的留声机唱片，可使用常规留声机播放。"
+
+#: DB:medium_format/name:76
+msgctxt "medium_format"
+msgid "Floppy Disk"
+msgstr ""
 
 #: DB:work_attribute_type/name:16
 msgctxt "work_attribute_type"
@@ -2105,6 +2183,11 @@ msgstr "G 小调"
 msgctxt "work_attribute_type_allowed_value"
 msgid "G-flat major"
 msgstr "降 G 大调"
+
+#: DB:work_attribute_type_allowed_value/value:816
+msgctxt "work_attribute_type_allowed_value"
+msgid "G-flat minor"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:24
 msgctxt "work_attribute_type_allowed_value"
@@ -2355,6 +2438,11 @@ msgstr "赫伏特加"
 msgctxt "work_attribute_type_allowed_value"
 msgid "Hezeç"
 msgstr "赫泽奇"
+
+#: DB:medium_format/name:75
+msgctxt "medium_format"
+msgid "HiPac"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:391
 msgctxt "work_attribute_type_allowed_value"
@@ -3251,6 +3339,11 @@ msgctxt "series_ordering_type"
 msgid "Manual"
 msgstr "手册"
 
+#: DB:label_type/name:10
+msgctxt "label_type"
+msgid "Manufacturer"
+msgstr ""
+
 #: DB:work_attribute_type_allowed_value/value:172
 msgctxt "work_attribute_type_allowed_value"
 msgid "Manōranjani"
@@ -3271,11 +3364,6 @@ msgctxt "event_type"
 msgid "Masterclass/Clinic"
 msgstr "大师课程/诊断"
 
-#: DB:work_attribute_type_allowed_value/value:452
-msgctxt "work_attribute_type_allowed_value"
-msgid "Mate"
-msgstr "协奏者"
-
 #: DB:work_attribute_type_allowed_value/value:449
 msgctxt "work_attribute_type_allowed_value"
 msgid "Maver"
@@ -3295,6 +3383,11 @@ msgstr "马维拉文内希尔"
 msgctxt "collection_type"
 msgid "Maybe attending"
 msgstr "可能参加"
+
+#: DB:work_attribute_type_allowed_value/value:452
+msgctxt "work_attribute_type_allowed_value"
+msgid "Maye"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:175
 msgctxt "work_attribute_type_allowed_value"
@@ -3484,6 +3577,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Murabba"
 msgstr "木拉巴"
 
+#: DB:work_attribute_type_allowed_value/value:811
+msgctxt "work_attribute_type_allowed_value"
+msgid "Murabba Beste "
+msgstr ""
+
 #: DB:medium_format/name:46
 msgctxt "medium_format"
 msgid "Music Card"
@@ -3615,6 +3713,21 @@ msgstr "纳特"
 msgctxt "work_attribute_type_allowed_value"
 msgid "Nakış"
 msgstr "纳克什"
+
+#: DB:work_attribute_type_allowed_value/value:809
+msgctxt "work_attribute_type_allowed_value"
+msgid "Nakış Ağırsemai"
+msgstr ""
+
+#: DB:work_attribute_type_allowed_value/value:808
+msgctxt "work_attribute_type_allowed_value"
+msgid "Nakış Beste"
+msgstr ""
+
+#: DB:work_attribute_type_allowed_value/value:810
+msgctxt "work_attribute_type_allowed_value"
+msgid "Nakış Yürüksemai"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:468
 msgctxt "work_attribute_type_allowed_value"
@@ -4056,6 +4169,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Peşrev"
 msgstr "佩什雷夫"
 
+#: DB:medium_format/name:73
+msgctxt "medium_format"
+msgid "Phonograph record"
+msgstr ""
+
 #: DB:medium_format/name:15
 msgctxt "medium_format"
 msgid "Piano Roll"
@@ -4076,6 +4194,11 @@ msgctxt "work_type"
 msgid "Play"
 msgstr "播放"
 
+#: DB:medium_format/name:74
+msgctxt "medium_format"
+msgid "PlayTape"
+msgstr ""
+
 #: DB:medium_format/name:45
 msgctxt "medium_format"
 msgid "Playbutton"
@@ -4095,6 +4218,11 @@ msgstr "土耳其流行歌曲"
 msgctxt "cover_art_type"
 msgid "Poster"
 msgstr "海报"
+
+#: DB:place_type/name:8
+msgctxt "place_type"
+msgid "Pressing plant"
+msgstr ""
 
 #: DB:label_type/name:3
 msgctxt "label_type"
@@ -5541,6 +5669,11 @@ msgstr "泽伊贝克"
 msgctxt "work_attribute_type_allowed_value"
 msgid "Zilkeş"
 msgstr "齐尔克什"
+
+#: DB:medium_format/name:77
+msgctxt "medium_format"
+msgid "Zip Disk"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:599
 msgctxt "work_attribute_type_allowed_value"

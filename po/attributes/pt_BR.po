@@ -21,8 +21,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2018-03-13 06:45+0000\n"
-"Last-Translator: Leonardo Pacheco <lpacheco@pobox.com>\n"
+"PO-Revision-Date: 2018-05-08 10:34+0000\n"
+"Last-Translator: yvanz\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/musicbrainz/musicbrainz/language/pt_BR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -95,6 +95,11 @@ msgctxt "medium_format"
 msgid "8\" LaserDisc"
 msgstr "8\" CD"
 
+#: DB:medium_format/name:78
+msgctxt "medium_format"
+msgid "8-Track Cartridge"
+msgstr ""
+
 #: DB:medium_format/name:34
 msgctxt "medium_format"
 msgid "8cm CD"
@@ -158,6 +163,13 @@ msgid ""
 "versions supplied to radio DJs for air-play)."
 msgstr ""
 
+#: DB:instrument_type/description:7
+msgctxt "instrument_type"
+msgid ""
+"A grouping of related but different instruments, like the different violin-"
+"like instruments"
+msgstr ""
+
 #: DB:work_attribute_type_allowed_value/value:28
 msgctxt "work_attribute_type_allowed_value"
 msgid "A major"
@@ -201,6 +213,12 @@ msgstr "Uma festa, recepção ou outro evento promovido especificamente para um 
 #: DB:release_packaging/description:17
 msgctxt "release_packaging"
 msgid "A perfect bound book with a sleeve at the end to hold a CD"
+msgstr ""
+
+#: DB:place_type/description:8
+msgctxt "place_type"
+msgid ""
+"A place (generally a factory) at which physical media are manufactured."
 msgstr ""
 
 #: DB:place_type/description:5
@@ -338,6 +356,13 @@ msgid ""
 " even book."
 msgstr "Uma trilha sonora é a música presente num filme, programa de TV, videogame ou até mesmo livro."
 
+#: DB:instrument_type/description:6
+msgctxt "instrument_type"
+msgid ""
+"A standard grouping of instruments often played together, like a string "
+"quartet"
+msgstr ""
+
 #: DB:work_type/description:6
 msgctxt "work_type"
 msgid ""
@@ -383,6 +408,11 @@ msgstr "Lá bemol maior"
 msgctxt "work_attribute_type_allowed_value"
 msgid "A-flat minor"
 msgstr "Lá bemol menor"
+
+#: DB:work_attribute_type_allowed_value/value:817
+msgctxt "work_attribute_type_allowed_value"
+msgid "A-sharp major"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:30
 msgctxt "work_attribute_type_allowed_value"
@@ -809,6 +839,16 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "B-flat minor"
 msgstr "Si bemol menor"
 
+#: DB:work_attribute_type_allowed_value/value:818
+msgctxt "work_attribute_type_allowed_value"
+msgid "B-sharp major"
+msgstr ""
+
+#: DB:work_attribute_type_allowed_value/value:819
+msgctxt "work_attribute_type_allowed_value"
+msgid "B-sharp minor"
+msgstr ""
+
 #: DB:work_attribute_type/name:7
 msgctxt "work_attribute_type"
 msgid "BMI ID"
@@ -1121,6 +1161,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "C-flat major"
 msgstr "Dó bemol maior"
 
+#: DB:work_attribute_type_allowed_value/value:812
+msgctxt "work_attribute_type_allowed_value"
+msgid "C-flat minor"
+msgstr ""
+
 #: DB:work_attribute_type_allowed_value/value:4
 msgctxt "work_attribute_type_allowed_value"
 msgid "C-sharp major"
@@ -1381,6 +1426,11 @@ msgstr "Ré bemol maior"
 msgctxt "work_attribute_type_allowed_value"
 msgid "D-flat minor"
 msgstr "Ré bemol menor"
+
+#: DB:work_attribute_type_allowed_value/value:813
+msgctxt "work_attribute_type_allowed_value"
+msgid "D-sharp major"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:10
 msgctxt "work_attribute_type_allowed_value"
@@ -1798,9 +1848,15 @@ msgid "E-flat major"
 msgstr "Mi bemol maior"
 
 #: DB:work_attribute_type_allowed_value/value:12
+#: DB:work_attribute_type_allowed_value/value:815
 msgctxt "work_attribute_type_allowed_value"
 msgid "E-flat minor"
 msgstr "Mi bemol menor"
+
+#: DB:work_attribute_type_allowed_value/value:814
+msgctxt "work_attribute_type_allowed_value"
+msgid "E-sharp major"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:15
 msgctxt "work_attribute_type_allowed_value"
@@ -1830,6 +1886,11 @@ msgstr "Instrumento eletrônico"
 #: DB:medium_format/name:42
 msgctxt "medium_format"
 msgid "Enhanced CD"
+msgstr ""
+
+#: DB:instrument_type/name:6
+msgctxt "instrument_type"
+msgid "Ensemble"
 msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:356
@@ -1962,6 +2023,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Fahte"
 msgstr ""
 
+#: DB:instrument_type/name:7
+msgctxt "instrument_type"
+msgid "Family"
+msgstr ""
+
 #: DB:work_attribute_type_allowed_value/value:615
 msgctxt "work_attribute_type_allowed_value"
 msgid "Fantezi"
@@ -2047,6 +2113,13 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Fireng-i Fer"
 msgstr ""
 
+#: DB:medium_format/description:73
+msgctxt "medium_format"
+msgid ""
+"Flat discs with grooves used in phonographs/gramophones. For shellac and "
+"vinyl records, use that specifically"
+msgstr ""
+
 #: DB:medium_format/name:51
 msgctxt "medium_format"
 msgid "Flexi-disc"
@@ -2058,6 +2131,11 @@ msgid ""
 "Flexi-discs are phonograph records made of a thin, flexible vinyl sheet with"
 " a molded-in groove, designed to be playable on a normal phonograph "
 "turntable."
+msgstr ""
+
+#: DB:medium_format/name:76
+msgctxt "medium_format"
+msgid "Floppy Disk"
 msgstr ""
 
 #: DB:work_attribute_type/name:16
@@ -2104,6 +2182,11 @@ msgstr "Sol menor"
 msgctxt "work_attribute_type_allowed_value"
 msgid "G-flat major"
 msgstr "Sol bemol maior"
+
+#: DB:work_attribute_type_allowed_value/value:816
+msgctxt "work_attribute_type_allowed_value"
+msgid "G-flat minor"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:24
 msgctxt "work_attribute_type_allowed_value"
@@ -2353,6 +2436,11 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:738
 msgctxt "work_attribute_type_allowed_value"
 msgid "Hezeç"
+msgstr ""
+
+#: DB:medium_format/name:75
+msgctxt "medium_format"
+msgid "HiPac"
 msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:391
@@ -3250,6 +3338,11 @@ msgctxt "series_ordering_type"
 msgid "Manual"
 msgstr ""
 
+#: DB:label_type/name:10
+msgctxt "label_type"
+msgid "Manufacturer"
+msgstr ""
+
 #: DB:work_attribute_type_allowed_value/value:172
 msgctxt "work_attribute_type_allowed_value"
 msgid "Manōranjani"
@@ -3270,11 +3363,6 @@ msgctxt "event_type"
 msgid "Masterclass/Clinic"
 msgstr ""
 
-#: DB:work_attribute_type_allowed_value/value:452
-msgctxt "work_attribute_type_allowed_value"
-msgid "Mate"
-msgstr ""
-
 #: DB:work_attribute_type_allowed_value/value:449
 msgctxt "work_attribute_type_allowed_value"
 msgid "Maver"
@@ -3293,6 +3381,11 @@ msgstr ""
 #: DB:editor_collection_type/name:6
 msgctxt "collection_type"
 msgid "Maybe attending"
+msgstr ""
+
+#: DB:work_attribute_type_allowed_value/value:452
+msgctxt "work_attribute_type_allowed_value"
+msgid "Maye"
 msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:175
@@ -3483,6 +3576,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Murabba"
 msgstr ""
 
+#: DB:work_attribute_type_allowed_value/value:811
+msgctxt "work_attribute_type_allowed_value"
+msgid "Murabba Beste "
+msgstr ""
+
 #: DB:medium_format/name:46
 msgctxt "medium_format"
 msgid "Music Card"
@@ -3613,6 +3711,21 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:648
 msgctxt "work_attribute_type_allowed_value"
 msgid "Nakış"
+msgstr ""
+
+#: DB:work_attribute_type_allowed_value/value:809
+msgctxt "work_attribute_type_allowed_value"
+msgid "Nakış Ağırsemai"
+msgstr ""
+
+#: DB:work_attribute_type_allowed_value/value:808
+msgctxt "work_attribute_type_allowed_value"
+msgid "Nakış Beste"
+msgstr ""
+
+#: DB:work_attribute_type_allowed_value/value:810
+msgctxt "work_attribute_type_allowed_value"
+msgid "Nakış Yürüksemai"
 msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:468
@@ -4055,6 +4168,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Peşrev"
 msgstr ""
 
+#: DB:medium_format/name:73
+msgctxt "medium_format"
+msgid "Phonograph record"
+msgstr ""
+
 #: DB:medium_format/name:15
 msgctxt "medium_format"
 msgid "Piano Roll"
@@ -4075,6 +4193,11 @@ msgctxt "work_type"
 msgid "Play"
 msgstr ""
 
+#: DB:medium_format/name:74
+msgctxt "medium_format"
+msgid "PlayTape"
+msgstr ""
+
 #: DB:medium_format/name:45
 msgctxt "medium_format"
 msgid "Playbutton"
@@ -4093,6 +4216,11 @@ msgstr ""
 #: DB:cover_art_archive.art_type/name:11
 msgctxt "cover_art_type"
 msgid "Poster"
+msgstr ""
+
+#: DB:place_type/name:8
+msgctxt "place_type"
+msgid "Pressing plant"
 msgstr ""
 
 #: DB:label_type/name:3
@@ -5539,6 +5667,11 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:598
 msgctxt "work_attribute_type_allowed_value"
 msgid "Zilkeş"
+msgstr ""
+
+#: DB:medium_format/name:77
+msgctxt "medium_format"
+msgid "Zip Disk"
 msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:599

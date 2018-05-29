@@ -20,14 +20,14 @@
 # Paul Tremberth <agigaday@gmail.com>, 2013
 # French language coordinator <french.coordinator@rbox.me>, 2015
 # French language coordinator <french.coordinator@rbox.me>, 2013-2015
-# yvanz, 2016-2017
+# yvanz, 2016-2018
 # yvanz, 2016
 # yvanz, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2018-03-20 12:31+0000\n"
-"Last-Translator: Laurent Monin <i18n@norz.org>\n"
+"PO-Revision-Date: 2018-05-08 10:37+0000\n"
+"Last-Translator: yvanz\n"
 "Language-Team: French (http://www.transifex.com/musicbrainz/musicbrainz/language/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -100,6 +100,11 @@ msgctxt "medium_format"
 msgid "8\" LaserDisc"
 msgstr "LaserDisc 20 cm (8 po)"
 
+#: DB:medium_format/name:78
+msgctxt "medium_format"
+msgid "8-Track Cartridge"
+msgstr "Cartouche 8 pistes"
+
 #: DB:medium_format/name:34
 msgctxt "medium_format"
 msgid "8cm CD"
@@ -163,6 +168,13 @@ msgid ""
 "versions supplied to radio DJs for air-play)."
 msgstr "Une parution cadeau ou dédiée à la promotion de la parution officielle à venir (p. ex. des versions en avant-première, ou des parutions proposées avec un magazine, des versions fournies aux DJ pour la diffusion à la radio)."
 
+#: DB:instrument_type/description:7
+msgctxt "instrument_type"
+msgid ""
+"A grouping of related but different instruments, like the different violin-"
+"like instruments"
+msgstr "Un groupe d’instruments par similarité, par exemple la famille des violons qui regroupe violon, alto, violoncelle et contrebasse."
+
 #: DB:work_attribute_type_allowed_value/value:28
 msgctxt "work_attribute_type_allowed_value"
 msgid "A major"
@@ -207,6 +219,12 @@ msgstr "Une fête, une réception ou autre événement tenu spécialement pour l
 msgctxt "release_packaging"
 msgid "A perfect bound book with a sleeve at the end to hold a CD"
 msgstr "Un livre parfaitement relié avec une pochette à la fin pour tenir un CD "
+
+#: DB:place_type/description:8
+msgctxt "place_type"
+msgid ""
+"A place (generally a factory) at which physical media are manufactured."
+msgstr "Un lieu (généralement une usine) où les supports physiques sont fabriqués."
 
 #: DB:place_type/description:5
 msgctxt "place_type"
@@ -343,6 +361,13 @@ msgid ""
 " even book."
 msgstr "Une bande son est la musique accompagnant un film, une émission de télévision, un jeu vidéo ou même un livre."
 
+#: DB:instrument_type/description:6
+msgctxt "instrument_type"
+msgid ""
+"A standard grouping of instruments often played together, like a string "
+"quartet"
+msgstr "Une formation de plusieurs instruments souvent joués ensemble, par exemple le quatuor à cordes qui est composé de deux violons, d’un alto et d’un violoncelle."
+
 #: DB:work_type/description:6
 msgctxt "work_type"
 msgid ""
@@ -388,6 +413,11 @@ msgstr "La♭ majeur"
 msgctxt "work_attribute_type_allowed_value"
 msgid "A-flat minor"
 msgstr "La♭ mineur"
+
+#: DB:work_attribute_type_allowed_value/value:817
+msgctxt "work_attribute_type_allowed_value"
+msgid "A-sharp major"
+msgstr "La♯ majeur"
 
 #: DB:work_attribute_type_allowed_value/value:30
 msgctxt "work_attribute_type_allowed_value"
@@ -814,6 +844,16 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "B-flat minor"
 msgstr "Si♭ mineur"
 
+#: DB:work_attribute_type_allowed_value/value:818
+msgctxt "work_attribute_type_allowed_value"
+msgid "B-sharp major"
+msgstr "Si♯ majeur"
+
+#: DB:work_attribute_type_allowed_value/value:819
+msgctxt "work_attribute_type_allowed_value"
+msgid "B-sharp minor"
+msgstr "Si♯ mineur"
+
 #: DB:work_attribute_type/name:7
 msgctxt "work_attribute_type"
 msgid "BMI ID"
@@ -1126,6 +1166,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "C-flat major"
 msgstr "Do♭ majeur"
 
+#: DB:work_attribute_type_allowed_value/value:812
+msgctxt "work_attribute_type_allowed_value"
+msgid "C-flat minor"
+msgstr "Do♭ mineur"
+
 #: DB:work_attribute_type_allowed_value/value:4
 msgctxt "work_attribute_type_allowed_value"
 msgid "C-sharp major"
@@ -1386,6 +1431,11 @@ msgstr "Ré♭ majeur"
 msgctxt "work_attribute_type_allowed_value"
 msgid "D-flat minor"
 msgstr "Ré♭ mineur"
+
+#: DB:work_attribute_type_allowed_value/value:813
+msgctxt "work_attribute_type_allowed_value"
+msgid "D-sharp major"
+msgstr "Ré♯ majeur"
 
 #: DB:work_attribute_type_allowed_value/value:10
 msgctxt "work_attribute_type_allowed_value"
@@ -1803,9 +1853,15 @@ msgid "E-flat major"
 msgstr "Mi♭ majeur"
 
 #: DB:work_attribute_type_allowed_value/value:12
+#: DB:work_attribute_type_allowed_value/value:815
 msgctxt "work_attribute_type_allowed_value"
 msgid "E-flat minor"
 msgstr "Mi♭ mineur"
+
+#: DB:work_attribute_type_allowed_value/value:814
+msgctxt "work_attribute_type_allowed_value"
+msgid "E-sharp major"
+msgstr "Mi♯ majeur"
 
 #: DB:work_attribute_type_allowed_value/value:15
 msgctxt "work_attribute_type_allowed_value"
@@ -1836,6 +1892,11 @@ msgstr "Instrument électronique"
 msgctxt "medium_format"
 msgid "Enhanced CD"
 msgstr "CD-Extra"
+
+#: DB:instrument_type/name:6
+msgctxt "instrument_type"
+msgid "Ensemble"
+msgstr "Ensemble"
 
 #: DB:work_attribute_type_allowed_value/value:356
 msgctxt "work_attribute_type_allowed_value"
@@ -1967,6 +2028,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Fahte"
 msgstr "Fahte"
 
+#: DB:instrument_type/name:7
+msgctxt "instrument_type"
+msgid "Family"
+msgstr "Famille"
+
 #: DB:work_attribute_type_allowed_value/value:615
 msgctxt "work_attribute_type_allowed_value"
 msgid "Fantezi"
@@ -2052,6 +2118,13 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Fireng-i Fer"
 msgstr "Fireng-i Fer"
 
+#: DB:medium_format/description:73
+msgctxt "medium_format"
+msgid ""
+"Flat discs with grooves used in phonographs/gramophones. For shellac and "
+"vinyl records, use that specifically"
+msgstr "Disques plats à sillon pouvant être lus par un gramophone ou un tourne-disque, plus spécifiquement fabriqués en gomme-laque shellac ou en vinyle."
+
 #: DB:medium_format/name:51
 msgctxt "medium_format"
 msgid "Flexi-disc"
@@ -2064,6 +2137,11 @@ msgid ""
 " a molded-in groove, designed to be playable on a normal phonograph "
 "turntable."
 msgstr "Les flexi-disques sont des disques pour électrophone fabriqués dans une fine feuille souple de vinyle avec un sillon moulé et conçus pour être lus sur un électrophone traditionnel.\n "
+
+#: DB:medium_format/name:76
+msgctxt "medium_format"
+msgid "Floppy Disk"
+msgstr "Disquette"
 
 #: DB:work_attribute_type/name:16
 msgctxt "work_attribute_type"
@@ -2109,6 +2187,11 @@ msgstr "Sol mineur"
 msgctxt "work_attribute_type_allowed_value"
 msgid "G-flat major"
 msgstr "Sol♭ majeur"
+
+#: DB:work_attribute_type_allowed_value/value:816
+msgctxt "work_attribute_type_allowed_value"
+msgid "G-flat minor"
+msgstr "Sol♭ mineur"
 
 #: DB:work_attribute_type_allowed_value/value:24
 msgctxt "work_attribute_type_allowed_value"
@@ -2359,6 +2442,11 @@ msgstr "Heftgah"
 msgctxt "work_attribute_type_allowed_value"
 msgid "Hezeç"
 msgstr "Hezeç"
+
+#: DB:medium_format/name:75
+msgctxt "medium_format"
+msgid "HiPac"
+msgstr "HiPac"
 
 #: DB:work_attribute_type_allowed_value/value:391
 msgctxt "work_attribute_type_allowed_value"
@@ -3255,6 +3343,11 @@ msgctxt "series_ordering_type"
 msgid "Manual"
 msgstr "Manuel"
 
+#: DB:label_type/name:10
+msgctxt "label_type"
+msgid "Manufacturer"
+msgstr "Fabricant"
+
 #: DB:work_attribute_type_allowed_value/value:172
 msgctxt "work_attribute_type_allowed_value"
 msgid "Manōranjani"
@@ -3275,11 +3368,6 @@ msgctxt "event_type"
 msgid "Masterclass/Clinic"
 msgstr "Cours de maître/atelier"
 
-#: DB:work_attribute_type_allowed_value/value:452
-msgctxt "work_attribute_type_allowed_value"
-msgid "Mate"
-msgstr "Mate"
-
 #: DB:work_attribute_type_allowed_value/value:449
 msgctxt "work_attribute_type_allowed_value"
 msgid "Maver"
@@ -3299,6 +3387,11 @@ msgstr "Maveraünnehir"
 msgctxt "collection_type"
 msgid "Maybe attending"
 msgstr "Sera peut-être présent"
+
+#: DB:work_attribute_type_allowed_value/value:452
+msgctxt "work_attribute_type_allowed_value"
+msgid "Maye"
+msgstr "Maye"
 
 #: DB:work_attribute_type_allowed_value/value:175
 msgctxt "work_attribute_type_allowed_value"
@@ -3488,6 +3581,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Murabba"
 msgstr "Murabba"
 
+#: DB:work_attribute_type_allowed_value/value:811
+msgctxt "work_attribute_type_allowed_value"
+msgid "Murabba Beste "
+msgstr "Murabba Beste "
+
 #: DB:medium_format/name:46
 msgctxt "medium_format"
 msgid "Music Card"
@@ -3619,6 +3717,21 @@ msgstr "Naat"
 msgctxt "work_attribute_type_allowed_value"
 msgid "Nakış"
 msgstr "Nakış"
+
+#: DB:work_attribute_type_allowed_value/value:809
+msgctxt "work_attribute_type_allowed_value"
+msgid "Nakış Ağırsemai"
+msgstr "Nakış Ağırsemai"
+
+#: DB:work_attribute_type_allowed_value/value:808
+msgctxt "work_attribute_type_allowed_value"
+msgid "Nakış Beste"
+msgstr "Nakış Beste"
+
+#: DB:work_attribute_type_allowed_value/value:810
+msgctxt "work_attribute_type_allowed_value"
+msgid "Nakış Yürüksemai"
+msgstr "Nakış Yürüksemai"
 
 #: DB:work_attribute_type_allowed_value/value:468
 msgctxt "work_attribute_type_allowed_value"
@@ -4060,6 +4173,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Peşrev"
 msgstr "Peşrev"
 
+#: DB:medium_format/name:73
+msgctxt "medium_format"
+msgid "Phonograph record"
+msgstr "Disque phonographique"
+
 #: DB:medium_format/name:15
 msgctxt "medium_format"
 msgid "Piano Roll"
@@ -4080,6 +4198,11 @@ msgctxt "work_type"
 msgid "Play"
 msgstr "Pièce de théâtre"
 
+#: DB:medium_format/name:74
+msgctxt "medium_format"
+msgid "PlayTape"
+msgstr "PlayTape"
+
 #: DB:medium_format/name:45
 msgctxt "medium_format"
 msgid "Playbutton"
@@ -4099,6 +4222,11 @@ msgstr "Pop şarkısı"
 msgctxt "cover_art_type"
 msgid "Poster"
 msgstr "Affiche"
+
+#: DB:place_type/name:8
+msgctxt "place_type"
+msgid "Pressing plant"
+msgstr "Usine de pressage"
 
 #: DB:label_type/name:3
 msgctxt "label_type"
@@ -5545,6 +5673,11 @@ msgstr "Zeybek"
 msgctxt "work_attribute_type_allowed_value"
 msgid "Zilkeş"
 msgstr "Zilkeş"
+
+#: DB:medium_format/name:77
+msgctxt "medium_format"
+msgid "Zip Disk"
+msgstr "Disque ZIP"
 
 #: DB:work_attribute_type_allowed_value/value:599
 msgctxt "work_attribute_type_allowed_value"

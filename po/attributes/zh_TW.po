@@ -1,16 +1,20 @@
 # 
 # Translators:
+# Bai yun-xi <email address hidden>, 2016
 # Bai yun-xi <myhouse472@gmail.com>, 2016
 # Shen-Ta Hsieh(BestSteve) <ibmibmibm.tw@gmail.com>, 2014,2016
+# Koala Bear <email address hidden>, 2016
 # Koala Bear <koalaleaves@openmailbox.org>, 2016
+# riotism, 2017
 # Shen-Ta Hsieh(BestSteve) <ibmibmibm.tw@gmail.com>, 2016
-# Shen-Ta Hsieh(BestSteve) <ibmibmibm.tw@gmail.com>, 2016
+# Shen-Ta Hsieh(BestSteve) <email address hidden>, 2014,2016,2018
+# Shen-Ta Hsieh(BestSteve) <ibmibmibm.tw@gmail.com>, 2016,2018
 # riotism, 2017
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2018-02-09 13:02+0000\n"
-"Last-Translator: yvanz\n"
+"PO-Revision-Date: 2018-05-26 14:56+0000\n"
+"Last-Translator: Shen-Ta Hsieh(BestSteve) <ibmibmibm.tw@gmail.com>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/musicbrainz/musicbrainz/language/zh_TW/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -83,6 +87,11 @@ msgctxt "medium_format"
 msgid "8\" LaserDisc"
 msgstr "8英吋雷射影碟"
 
+#: DB:medium_format/name:78
+msgctxt "medium_format"
+msgid "8-Track Cartridge"
+msgstr ""
+
 #: DB:medium_format/name:34
 msgctxt "medium_format"
 msgid "8cm CD"
@@ -122,7 +131,7 @@ msgctxt "work_type"
 msgid ""
 "A cantata is a vocal (often choral) composition with an instrumental "
 "(usually orchestral) accompaniment, typically in several movements."
-msgstr ""
+msgstr "清唱套曲是一種人聲（通常為和聲）與樂器（通常為管絃樂）的組合，通常包含許多樂章。"
 
 #: DB:work_type/description:4
 msgctxt "work_type"
@@ -146,6 +155,13 @@ msgid ""
 "versions supplied to radio DJs for air-play)."
 msgstr "一個免費的發行品，或為了宣傳將近上市的官方發行品而製作的發行品（如非上市版、雜誌贈送的發行品、為電台 DJ 在節目上播放的版本等）。"
 
+#: DB:instrument_type/description:7
+msgctxt "instrument_type"
+msgid ""
+"A grouping of related but different instruments, like the different violin-"
+"like instruments"
+msgstr ""
+
 #: DB:work_attribute_type_allowed_value/value:28
 msgctxt "work_attribute_type_allowed_value"
 msgid "A major"
@@ -157,7 +173,7 @@ msgid ""
 "A mass is a choral composition that sets the invariable portions of the "
 "Christian Eucharistic liturgy (Kyrie - Gloria - Credo - Sanctus - Benedictus"
 " - Agnus Dei, with other portions sometimes added) to music."
-msgstr ""
+msgstr "彌撒曲是合唱曲，是基督教的聖餐禮中使用的音樂。包含垂憐經、光榮頌、信經、聖三頌、迎主曲、羔羊颂，與有時加入的其他部分。"
 
 #: DB:event_type/description:5
 msgctxt "event_type"
@@ -165,7 +181,7 @@ msgid ""
 "A masterclass or clinic is an event where an artist meets with a small to "
 "medium-sized audience and instructs them individually and/or takes questions"
 " intended to improve the audience members' playing skills."
-msgstr ""
+msgstr "大師課程或顧問課程是創作者與中少人數參與者的聚會，並對參與者個別指導或解答，來增強參與者的演奏技巧。"
 
 #: DB:work_attribute_type_allowed_value/value:29
 msgctxt "work_attribute_type_allowed_value"
@@ -177,7 +193,7 @@ msgctxt "work_type"
 msgid ""
 "A partita is an instrumental piece composed of a series of variations, and "
 "it's by its current definition very similar to a suite."
-msgstr ""
+msgstr "變奏段是指由一系列不同的樂器音樂組成的一段音樂，而且根據此定義來說變奏段很像組曲。"
 
 #: DB:event_type/description:3
 msgctxt "event_type"
@@ -189,6 +205,12 @@ msgstr "為發表新發行品而設的派對、酒會或其他活動。"
 #: DB:release_packaging/description:17
 msgctxt "release_packaging"
 msgid "A perfect bound book with a sleeve at the end to hold a CD"
+msgstr "書尾附有 CD 袋的書"
+
+#: DB:place_type/description:8
+msgctxt "place_type"
+msgid ""
+"A place (generally a factory) at which physical media are manufactured."
 msgstr ""
 
 #: DB:place_type/description:5
@@ -204,14 +226,14 @@ msgctxt "place_type"
 msgid ""
 "A place designed for non-live production of music, typically a recording "
 "studio."
-msgstr "為非現場音樂製作而設的場地（例如：錄音室）。"
+msgstr "為非現場音樂製作而設的場地，一般指錄音室。"
 
 #: DB:place_type/description:2
 msgctxt "place_type"
 msgid ""
 "A place that has live artistic performances as one of its primary functions,"
 " such as a concert hall."
-msgstr "主要為現場藝術表演而設的場地（例如：音樂廳）。"
+msgstr "主要為現場藝術表演而設的場地，如音樂廳。"
 
 #: DB:place_type/description:6
 msgctxt "place_type"
@@ -219,7 +241,7 @@ msgid ""
 "A place that has worship or religious studies as its main function. "
 "Religious buildings often host concerts and serve as recording locations, "
 "especially for classical music."
-msgstr "主要為崇拜或宗教導修而設的場地。宗教建築經常被用作演唱會和錄音的場地，特別是經典音樂之表演和錄音場所。"
+msgstr "主要為崇拜或宗教導修而設的場地。宗教建築經常被用作演唱會和錄音的場地，特別是古典音樂。"
 
 #: DB:place_type/description:4
 msgctxt "place_type"
@@ -227,7 +249,7 @@ msgid ""
 "A place whose main purpose is to host outdoor sport events, typically "
 "consisting of a pitch surrounded by a structure for spectators with no roof,"
 " or a roof which can be retracted."
-msgstr "主要為戶外體育活動建立的場地。在這些場地的中央位置，通常會設有球場，邊緣設有觀眾席。大部分的觀眾席雖然不設頂部，但有些場所卻會安裝可收縮的頂部。"
+msgstr "主要為戶外體育活動建立的場地。在這些場地的中央位置，通常會設有球場，而外圍設有無屋頂，或是可收縮屋頂的觀眾席。"
 
 #: DB:work_type/description:28
 msgctxt "work_type"
@@ -235,32 +257,32 @@ msgid ""
 "A play is a form of literature usually consisting of scripted dialogue "
 "between characters, and intended for theatrical performance rather than just"
 " reading."
-msgstr "話劇是一類為舞台表演而創作的文學，以角色間的對話組成主要內容。"
+msgstr "話劇是一類為舞台表演而非閱讀所創作的文學，以角色間的對話組成主要內容。"
 
 #: DB:work_type/description:21
 msgctxt "work_type"
 msgid ""
 "A poem is a literary piece, generally short and in verse, where words are "
 "usually chosen for their sound and for the images and ideas they suggest."
-msgstr ""
+msgstr "詩是一種文學，通常很短且以韻文型式撰寫，其選字通常依據其發音和其代表的視覺含意。"
 
 #: DB:work_type/description:14
 msgctxt "work_type"
 msgid ""
 "A quartet is a musical composition scored for four voices or instruments."
-msgstr ""
+msgstr "四重奏是四個人聲或樂器的組合。"
 
 #: DB:series_type/description:8
 msgctxt "series_type"
 msgid "A recurring festival, usually happening annually in the same location."
-msgstr ""
+msgstr "重複舉行的音樂節慶，通常每年在同一位置舉辦。"
 
 #: DB:place_type/description:7
 msgctxt "place_type"
 msgid ""
 "A school, university or other similar educational institution (especially, "
 "but not only, one where music is taught)"
-msgstr ""
+msgstr "學校、大學或其他類似的教育機構（通常但不限於指音樂教育機構）"
 
 #: DB:series_type/description:6
 msgctxt "series_type"
@@ -308,7 +330,7 @@ msgid ""
 "A song cycle is a group of songs designed to be performed in a sequence as a"
 " single entity. In most cases, all of the songs are by the same composer, "
 "and often use words from the same poet or lyricist."
-msgstr ""
+msgstr "聯篇歌曲是是一組被設計來按依順序演奏的歌曲。在多數情形，所有歌曲都是由同一作曲家所作，且時常使用同一首詩的詞，或由同一作詞家所作。"
 
 #: DB:work_type/description:17
 msgctxt "work_type"
@@ -317,7 +339,7 @@ msgid ""
 "with or without instruments, performed by singing. This is the most common "
 "form by far in folk and popular music, but also fairly common in a classical"
 " context (\"art songs\")."
-msgstr "歌曲是指原本是為了演唱而作曲(且多數音樂後來仍維持)，包含或不包含樂器。這是目前流行音樂的主流形式，而且也常見於古典音樂中(藝術歌曲)。"
+msgstr "歌曲是指最初是為了演唱（且大多數仍是）而作曲，包含或不包含樂器，由人歌唱。這是目前流行音樂的主流形式，而且也常見於古典音樂中（藝術歌曲）。"
 
 #: DB:work_type/description:22
 msgctxt "work_type"
@@ -325,6 +347,13 @@ msgid ""
 "A soundtrack is the music that accompanies a film, TV program, videogame, or"
 " even book."
 msgstr "原聲音樂是指伴隨著電影、電視影集、電子遊戲或書籍的音樂。"
+
+#: DB:instrument_type/description:6
+msgctxt "instrument_type"
+msgid ""
+"A standard grouping of instruments often played together, like a string "
+"quartet"
+msgstr ""
 
 #: DB:work_type/description:6
 msgctxt "work_type"
@@ -371,6 +400,11 @@ msgstr "降A大調"
 msgctxt "work_attribute_type_allowed_value"
 msgid "A-flat minor"
 msgstr "降A小調"
+
+#: DB:work_attribute_type_allowed_value/value:817
+msgctxt "work_attribute_type_allowed_value"
+msgid "A-sharp major"
+msgstr "升A大調"
 
 #: DB:work_attribute_type_allowed_value/value:30
 msgctxt "work_attribute_type_allowed_value"
@@ -488,7 +522,7 @@ msgid ""
 "An alternate version of a release where the titles have been changed. These "
 "don't correspond to any real release and should be linked to the original "
 "release using the transl(iter)ation relationship."
-msgstr ""
+msgstr "實際發行品的標題修改版本。將不會對應到實際存在的發行品，而且必須要與原來的發行品建立翻譯關係。"
 
 #: DB:work_type/description:1
 msgctxt "work_type"
@@ -496,7 +530,7 @@ msgid ""
 "An aria is a self-contained piece for one voice usually with orchestral "
 "accompaniment. They are most common inside operas, but also appear in "
 "cantatas, oratorios and even on their own (concert arias)."
-msgstr ""
+msgstr "詠唱調是獨立的單一人聲作品，通常有管弦樂伴奏。常常出現在歌劇內，但有時也會出現在清唱套曲、神劇，或是單獨出現（音樂會詠唱調）。"
 
 #: DB:work_type/description:25
 msgctxt "work_type"
@@ -635,17 +669,17 @@ msgstr "區域名稱"
 #: DB:work_type/name:1
 msgctxt "work_type"
 msgid "Aria"
-msgstr "詠嘆調"
+msgstr "詠唱調"
 
 #: DB:editor_collection_type/name:8
 msgctxt "collection_type"
 msgid "Artist"
-msgstr "藝術家"
+msgstr "創作者"
 
 #: DB:artist_alias_type/name:1
 msgctxt "alias_type"
 msgid "Artist name"
-msgstr "藝術家名稱"
+msgstr "創作者名稱"
 
 #: DB:work_attribute_type_allowed_value/value:693
 msgctxt "work_attribute_type_allowed_value"
@@ -796,6 +830,16 @@ msgstr "降B大調"
 msgctxt "work_attribute_type_allowed_value"
 msgid "B-flat minor"
 msgstr "降B小調"
+
+#: DB:work_attribute_type_allowed_value/value:818
+msgctxt "work_attribute_type_allowed_value"
+msgid "B-sharp major"
+msgstr "升B大調"
+
+#: DB:work_attribute_type_allowed_value/value:819
+msgctxt "work_attribute_type_allowed_value"
+msgid "B-sharp minor"
+msgstr "升B小調"
 
 #: DB:work_attribute_type/name:7
 msgctxt "work_attribute_type"
@@ -1109,6 +1153,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "C-flat major"
 msgstr "降C大調"
 
+#: DB:work_attribute_type_allowed_value/value:812
+msgctxt "work_attribute_type_allowed_value"
+msgid "C-flat minor"
+msgstr "降C小調"
+
 #: DB:work_attribute_type_allowed_value/value:4
 msgctxt "work_attribute_type_allowed_value"
 msgid "C-sharp major"
@@ -1177,7 +1226,7 @@ msgstr ""
 #: DB:work_type/name:3
 msgctxt "work_type"
 msgid "Cantata"
-msgstr ""
+msgstr "清唱套曲"
 
 #: DB:release_packaging/name:4
 msgctxt "release_packaging"
@@ -1369,6 +1418,11 @@ msgstr "降D大調"
 msgctxt "work_attribute_type_allowed_value"
 msgid "D-flat minor"
 msgstr "降D小調"
+
+#: DB:work_attribute_type_allowed_value/value:813
+msgctxt "work_attribute_type_allowed_value"
+msgid "D-sharp major"
+msgstr "升D大調"
 
 #: DB:work_attribute_type_allowed_value/value:10
 msgctxt "work_attribute_type_allowed_value"
@@ -1786,9 +1840,15 @@ msgid "E-flat major"
 msgstr "降E大調"
 
 #: DB:work_attribute_type_allowed_value/value:12
+#: DB:work_attribute_type_allowed_value/value:815
 msgctxt "work_attribute_type_allowed_value"
 msgid "E-flat minor"
 msgstr "降E小調"
+
+#: DB:work_attribute_type_allowed_value/value:814
+msgctxt "work_attribute_type_allowed_value"
+msgid "E-sharp major"
+msgstr "升E大調"
 
 #: DB:work_attribute_type_allowed_value/value:15
 msgctxt "work_attribute_type_allowed_value"
@@ -1808,7 +1868,7 @@ msgstr ""
 #: DB:place_type/name:7
 msgctxt "place_type"
 msgid "Educational institution"
-msgstr ""
+msgstr "教育機構"
 
 #: DB:instrument_type/name:4
 msgctxt "instrument_type"
@@ -1818,6 +1878,11 @@ msgstr "電子樂器"
 #: DB:medium_format/name:42
 msgctxt "medium_format"
 msgid "Enhanced CD"
+msgstr ""
+
+#: DB:instrument_type/name:6
+msgctxt "instrument_type"
+msgid "Ensemble"
 msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:356
@@ -1950,6 +2015,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Fahte"
 msgstr ""
 
+#: DB:instrument_type/name:7
+msgctxt "instrument_type"
+msgid "Family"
+msgstr "家族"
+
 #: DB:work_attribute_type_allowed_value/value:615
 msgctxt "work_attribute_type_allowed_value"
 msgid "Fantezi"
@@ -2003,12 +2073,12 @@ msgstr ""
 #: DB:event_type/name:2
 msgctxt "event_type"
 msgid "Festival"
-msgstr ""
+msgstr "音樂節"
 
 #: DB:series_type/name:8
 msgctxt "series_type"
 msgid "Festival"
-msgstr ""
+msgstr "音樂節"
 
 #: DB:work_attribute_type_allowed_value/value:372
 msgctxt "work_attribute_type_allowed_value"
@@ -2035,6 +2105,13 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Fireng-i Fer"
 msgstr ""
 
+#: DB:medium_format/description:73
+msgctxt "medium_format"
+msgid ""
+"Flat discs with grooves used in phonographs/gramophones. For shellac and "
+"vinyl records, use that specifically"
+msgstr ""
+
 #: DB:medium_format/name:51
 msgctxt "medium_format"
 msgid "Flexi-disc"
@@ -2046,6 +2123,11 @@ msgid ""
 "Flexi-discs are phonograph records made of a thin, flexible vinyl sheet with"
 " a molded-in groove, designed to be playable on a normal phonograph "
 "turntable."
+msgstr ""
+
+#: DB:medium_format/name:76
+msgctxt "medium_format"
+msgid "Floppy Disk"
 msgstr ""
 
 #: DB:work_attribute_type/name:16
@@ -2092,6 +2174,11 @@ msgstr "G小調"
 msgctxt "work_attribute_type_allowed_value"
 msgid "G-flat major"
 msgstr "降G大調"
+
+#: DB:work_attribute_type_allowed_value/value:816
+msgctxt "work_attribute_type_allowed_value"
+msgid "G-flat minor"
+msgstr "降G小調"
 
 #: DB:work_attribute_type_allowed_value/value:24
 msgctxt "work_attribute_type_allowed_value"
@@ -2341,6 +2428,11 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:738
 msgctxt "work_attribute_type_allowed_value"
 msgid "Hezeç"
+msgstr ""
+
+#: DB:medium_format/name:75
+msgctxt "medium_format"
+msgid "HiPac"
 msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:391
@@ -2611,7 +2703,7 @@ msgstr "廠牌"
 #: DB:work_type/name:30
 msgctxt "work_type"
 msgid "Incidental music"
-msgstr ""
+msgstr "伴奏"
 
 #: DB:work_type/description:30
 msgctxt "work_type"
@@ -3238,6 +3330,11 @@ msgctxt "series_ordering_type"
 msgid "Manual"
 msgstr ""
 
+#: DB:label_type/name:10
+msgctxt "label_type"
+msgid "Manufacturer"
+msgstr ""
+
 #: DB:work_attribute_type_allowed_value/value:172
 msgctxt "work_attribute_type_allowed_value"
 msgid "Manōranjani"
@@ -3251,17 +3348,12 @@ msgstr ""
 #: DB:work_type/name:8
 msgctxt "work_type"
 msgid "Mass"
-msgstr ""
+msgstr "彌撒曲"
 
 #: DB:event_type/name:5
 msgctxt "event_type"
 msgid "Masterclass/Clinic"
-msgstr ""
-
-#: DB:work_attribute_type_allowed_value/value:452
-msgctxt "work_attribute_type_allowed_value"
-msgid "Mate"
-msgstr ""
+msgstr "大師課程／顧問課程"
 
 #: DB:work_attribute_type_allowed_value/value:449
 msgctxt "work_attribute_type_allowed_value"
@@ -3282,6 +3374,11 @@ msgstr ""
 msgctxt "collection_type"
 msgid "Maybe attending"
 msgstr "可能出席"
+
+#: DB:work_attribute_type_allowed_value/value:452
+msgctxt "work_attribute_type_allowed_value"
+msgid "Maye"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:175
 msgctxt "work_attribute_type_allowed_value"
@@ -3471,6 +3568,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Murabba"
 msgstr ""
 
+#: DB:work_attribute_type_allowed_value/value:811
+msgctxt "work_attribute_type_allowed_value"
+msgid "Murabba Beste "
+msgstr ""
+
 #: DB:medium_format/name:46
 msgctxt "medium_format"
 msgid "Music Card"
@@ -3601,6 +3703,21 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:648
 msgctxt "work_attribute_type_allowed_value"
 msgid "Nakış"
+msgstr ""
+
+#: DB:work_attribute_type_allowed_value/value:809
+msgctxt "work_attribute_type_allowed_value"
+msgid "Nakış Ağırsemai"
+msgstr ""
+
+#: DB:work_attribute_type_allowed_value/value:808
+msgctxt "work_attribute_type_allowed_value"
+msgid "Nakış Beste"
+msgstr ""
+
+#: DB:work_attribute_type_allowed_value/value:810
+msgctxt "work_attribute_type_allowed_value"
+msgid "Nakış Yürüksemai"
 msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:468
@@ -3981,7 +4098,7 @@ msgstr ""
 #: DB:work_type/name:13
 msgctxt "work_type"
 msgid "Partita"
-msgstr ""
+msgstr "變奏段"
 
 #: DB:medium_format/name:58
 msgctxt "medium_format"
@@ -4043,6 +4160,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Peşrev"
 msgstr ""
 
+#: DB:medium_format/name:73
+msgctxt "medium_format"
+msgid "Phonograph record"
+msgstr ""
+
 #: DB:medium_format/name:15
 msgctxt "medium_format"
 msgid "Piano Roll"
@@ -4063,6 +4185,11 @@ msgctxt "work_type"
 msgid "Play"
 msgstr "話劇"
 
+#: DB:medium_format/name:74
+msgctxt "medium_format"
+msgid "PlayTape"
+msgstr ""
+
 #: DB:medium_format/name:45
 msgctxt "medium_format"
 msgid "Playbutton"
@@ -4082,6 +4209,11 @@ msgstr ""
 msgctxt "cover_art_type"
 msgid "Poster"
 msgstr "海報"
+
+#: DB:place_type/name:8
+msgctxt "place_type"
+msgid "Pressing plant"
+msgstr ""
 
 #: DB:label_type/name:3
 msgctxt "label_type"
@@ -5527,6 +5659,11 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:598
 msgctxt "work_attribute_type_allowed_value"
 msgid "Zilkeş"
+msgstr ""
+
+#: DB:medium_format/name:77
+msgctxt "medium_format"
+msgid "Zip Disk"
 msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:599

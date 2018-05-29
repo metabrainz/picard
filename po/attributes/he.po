@@ -1,17 +1,18 @@
 # 
 # Translators:
 # Avi Markovitz <avi.markovitz@gmail.com>, 2018
+# Avi Markovitz <avi.markovitz@gmail.com>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2018-04-02 12:29+0000\n"
+"PO-Revision-Date: 2018-05-22 13:04+0000\n"
 "Last-Translator: Avi Markovitz <avi.markovitz@gmail.com>\n"
 "Language-Team: Hebrew (http://www.transifex.com/musicbrainz/musicbrainz/language/he/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: he\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n == 2 && n % 1 == 0) ? 1: (n % 10 == 0 && n % 1 == 0 && n > 10) ? 2 : 3;\n"
 
 #: DB:work_type/description:9
 msgctxt "work_type"
@@ -78,6 +79,11 @@ msgctxt "medium_format"
 msgid "8\" LaserDisc"
 msgstr "דיסק לייזר \"8"
 
+#: DB:medium_format/name:78
+msgctxt "medium_format"
+msgid "8-Track Cartridge"
+msgstr "מחסנית 8 רצועות"
+
 #: DB:medium_format/name:34
 msgctxt "medium_format"
 msgid "8cm CD"
@@ -123,7 +129,7 @@ msgstr "להקנטטה היא קומפוזיציה ווקאלית (לעתים ק
 msgctxt "work_type"
 msgid ""
 "A concerto is a musical work for soloist(s) accompanied by an orchestra."
-msgstr ""
+msgstr "קונצ 'רטו היא יצירה מוסיקלית של סולן(ים) בליווי תזמורת."
 
 #: DB:event_type/description:4
 msgctxt "event_type"
@@ -131,7 +137,7 @@ msgid ""
 "A convention, expo or trade fair is an event which is not typically "
 "orientated around music performances, but can include them as side "
 "activities."
-msgstr ""
+msgstr "כנס, expo או יריד מסחר, הם אירועים שאינם מכוונים בדרך כלל סביב הופעות מוסיקה, אבל יכולים לכלול אותם כפעילויות צד."
 
 #: DB:release_status/description:2
 msgctxt "release_status"
@@ -139,7 +145,14 @@ msgid ""
 "A give-away release or a release intended to promote an upcoming official "
 "release (e.g. pre-release versions, releases included with a magazine, "
 "versions supplied to radio DJs for air-play)."
-msgstr ""
+msgstr "מהדורת מתנה או מהדורה המיועדת לקדם מהדורה רשמית עתידית (למשל, גרסאות טרום מהדורה, מהדורות הכלולות במגזין, מהדורות שסופקו לתקליטני רדיו להשמעות בשידור)."
+
+#: DB:instrument_type/description:7
+msgctxt "instrument_type"
+msgid ""
+"A grouping of related but different instruments, like the different violin-"
+"like instruments"
+msgstr "קיבוץ של כלים קרובים אך שונים, כמו כלים שונים דמויי כינור"
 
 #: DB:work_attribute_type_allowed_value/value:28
 msgctxt "work_attribute_type_allowed_value"
@@ -152,7 +165,7 @@ msgid ""
 "A mass is a choral composition that sets the invariable portions of the "
 "Christian Eucharistic liturgy (Kyrie - Gloria - Credo - Sanctus - Benedictus"
 " - Agnus Dei, with other portions sometimes added) to music."
-msgstr ""
+msgstr "מסה היא קומפוזיציה מקהלתית המכילה את האלמנטים הבלתי-נמנעים מהליטורגיה הנוצרית (קירי - גלוריה - קרדו - סנקטוס - בנדיקטוס - אגנוס דיי, עם רכיבים אחרים שנוספות לפעמים) למוסיקה."
 
 #: DB:event_type/description:5
 msgctxt "event_type"
@@ -160,7 +173,7 @@ msgid ""
 "A masterclass or clinic is an event where an artist meets with a small to "
 "medium-sized audience and instructs them individually and/or takes questions"
 " intended to improve the audience members' playing skills."
-msgstr ""
+msgstr "סדנת יצירה או קורס יצירה הוא אירוע שבו אמן פוגש קהל קטן עד בינוני, מנחה את המשתתפים בנפרד ו / או עונה לשאלות שנועדו לשפר את כישורי המשחק של הקהל."
 
 #: DB:work_attribute_type_allowed_value/value:29
 msgctxt "work_attribute_type_allowed_value"
@@ -172,19 +185,25 @@ msgctxt "work_type"
 msgid ""
 "A partita is an instrumental piece composed of a series of variations, and "
 "it's by its current definition very similar to a suite."
-msgstr ""
+msgstr "פַּרְטִיטָה היא יצירה אינסטרומנטלית המורכבת מסדרת וריאציות, על פי ההגדרה הנוכחית שלה דומה מאוד לסוויטה."
 
 #: DB:event_type/description:3
 msgctxt "event_type"
 msgid ""
 "A party, reception or other event held specifically for the launch of a "
 "release."
-msgstr ""
+msgstr "מסיבה, קבלת פנים או אירוע אחר שנערך במיוחד עבור השקת מהדורה."
 
 #: DB:release_packaging/description:17
 msgctxt "release_packaging"
 msgid "A perfect bound book with a sleeve at the end to hold a CD"
-msgstr ""
+msgstr "חיבור מושלם של ספר עם שרוול בקצהו שנועד להחזיק תקליטור"
+
+#: DB:place_type/description:8
+msgctxt "place_type"
+msgid ""
+"A place (generally a factory) at which physical media are manufactured."
+msgstr "מקום (בדרך כלל מפעל) שבו מייצרים מדיה גשמית."
 
 #: DB:place_type/description:5
 msgctxt "place_type"
@@ -192,21 +211,21 @@ msgid ""
 "A place consisting of a large enclosed area with a central event space "
 "surrounded by tiered seating for spectators, which can be used for indoor "
 "sports, concerts and other entertainment events."
-msgstr ""
+msgstr "מקום בעל אזור סגור גדול ושטח לאירוע מרכזי, מוקף מושבים מדורגים לצופים, אשר יכול לשמש לארוע ספורט מקורה, קונצרטים ואירועי בילוי אחרים."
 
 #: DB:place_type/description:1
 msgctxt "place_type"
 msgid ""
 "A place designed for non-live production of music, typically a recording "
 "studio."
-msgstr ""
+msgstr "מקום המיועד להפקה של מוסיקה מוקלטת מראש, בדרך כלל אולפן הקלטות."
 
 #: DB:place_type/description:2
 msgctxt "place_type"
 msgid ""
 "A place that has live artistic performances as one of its primary functions,"
 " such as a concert hall."
-msgstr ""
+msgstr "מקום שאחד מתפקידיו העיקריים הוא קיום הופעות אמנותיות חיות, כגון אולם קונצרטים."
 
 #: DB:place_type/description:6
 msgctxt "place_type"
@@ -214,7 +233,7 @@ msgid ""
 "A place that has worship or religious studies as its main function. "
 "Religious buildings often host concerts and serve as recording locations, "
 "especially for classical music."
-msgstr ""
+msgstr "מקום שמטרתו העיקרית לשמש לפולחן או ללימודי דת. בתי תפילה, לעיתם מארחים קונצרטים ומשמשים גם להקלטות, במיוחד של מוסיקה קלאסית."
 
 #: DB:place_type/description:4
 msgctxt "place_type"
@@ -222,7 +241,7 @@ msgid ""
 "A place whose main purpose is to host outdoor sport events, typically "
 "consisting of a pitch surrounded by a structure for spectators with no roof,"
 " or a roof which can be retracted."
-msgstr ""
+msgstr "מקום שמטרתו העיקרית היא לארח אירועי ספורט חוצות, בדרך כלל מגרש אם איזור ישיבה לצופים, לא מקורה, או גג אשר ניתן להסגה."
 
 #: DB:work_type/description:28
 msgctxt "work_type"
@@ -230,32 +249,32 @@ msgid ""
 "A play is a form of literature usually consisting of scripted dialogue "
 "between characters, and intended for theatrical performance rather than just"
 " reading."
-msgstr ""
+msgstr "מחזה הוא צורה של ספרות שבדרך כלל מורכבת מדיאלוג בין דמויות, הוא מיועדת להופעה תיאטרלית ולא רק לקריאה."
 
 #: DB:work_type/description:21
 msgctxt "work_type"
 msgid ""
 "A poem is a literary piece, generally short and in verse, where words are "
 "usually chosen for their sound and for the images and ideas they suggest."
-msgstr ""
+msgstr "פואמה היא יצירה ספרותית, קצרה בדרך כלל ובחרוזים, בה לרוב המילים נבחרות על פי הצלילהן על הדימויים והרעיונות שהן מציעות."
 
 #: DB:work_type/description:14
 msgctxt "work_type"
 msgid ""
 "A quartet is a musical composition scored for four voices or instruments."
-msgstr ""
+msgstr "רביעייה היא הרכב מוסיקלי מורכב ארבעה קולות או כלים."
 
 #: DB:series_type/description:8
 msgctxt "series_type"
 msgid "A recurring festival, usually happening annually in the same location."
-msgstr ""
+msgstr "פסטיבל מחזורי, בדרך כלל קורה מדי שנה באותו מקום."
 
 #: DB:place_type/description:7
 msgctxt "place_type"
 msgid ""
 "A school, university or other similar educational institution (especially, "
 "but not only, one where music is taught)"
-msgstr ""
+msgstr "בית ספר, אוניברסיטה או מוסד חינוכי דומה אחר (במיוחד, אך לא רק, שבו מלמדים מוסיקה)"
 
 #: DB:series_type/description:6
 msgctxt "series_type"
@@ -265,7 +284,7 @@ msgstr "סדרת ארועים."
 #: DB:series_type/description:9
 msgctxt "series_type"
 msgid "A series of performances of the same show at the same venue."
-msgstr ""
+msgstr "סדרת הופעות מאותה תוכנית באותו מקום."
 
 #: DB:series_type/description:3
 msgctxt "series_type"
@@ -275,7 +294,7 @@ msgstr "סדרת הקלטות."
 #: DB:series_type/description:7
 msgctxt "series_type"
 msgid "A series of related concerts by an artist in different locations."
-msgstr ""
+msgstr "סדרה של קונצרטים קשורים לאמן במקומות שונים."
 
 #: DB:series_type/description:1
 msgctxt "series_type"
@@ -290,7 +309,7 @@ msgstr "סידרת מהדורות."
 #: DB:series_type/description:5
 msgctxt "series_type"
 msgid "A series of works which form a catalogue of classical compositions."
-msgstr ""
+msgstr "סדרת יצירות המהוות קטלוג של קוֹמפּוֹזִיצִיות קלאסיות."
 
 #: DB:series_type/description:4
 msgctxt "series_type"
@@ -303,7 +322,7 @@ msgid ""
 "A song cycle is a group of songs designed to be performed in a sequence as a"
 " single entity. In most cases, all of the songs are by the same composer, "
 "and often use words from the same poet or lyricist."
-msgstr ""
+msgstr "מחזור שירים הוא קבוצה של שירים שנועדו להתבצע ברצף כישות אחת. ברוב המקרים, כל השירים הם פרי יצירתו של אותו מלחין, ולעתים קרובות גם המילים הם של משורר אחד."
 
 #: DB:work_type/description:17
 msgctxt "work_type"
@@ -312,14 +331,21 @@ msgid ""
 "with or without instruments, performed by singing. This is the most common "
 "form by far in folk and popular music, but also fairly common in a classical"
 " context (\"art songs\")."
-msgstr ""
+msgstr "שיר במקורו (ועדיין ברוב המקרים) הוא יצירה קולית, עם או בלי כלי נגינה, המבוצעת בשירה. זהו הצורה הנפוצה ביותר במוזיקה עממית ופופולרית, אך גם שכיחה למדי בהקשר קלאסי (\"שירי אמנות\")."
 
 #: DB:work_type/description:22
 msgctxt "work_type"
 msgid ""
 "A soundtrack is the music that accompanies a film, TV program, videogame, or"
 " even book."
-msgstr ""
+msgstr "פסקול הוא המוסיקה המלווה סרט, תוכנית טלוויזיה, משחק וידאו, או אפילו ספר."
+
+#: DB:instrument_type/description:6
+msgctxt "instrument_type"
+msgid ""
+"A standard grouping of instruments often played together, like a string "
+"quartet"
+msgstr "מקבץ סטנדרטי של כלים, לעתים קרובות מנגנים יחד, כגון רביעיית מיתרים"
 
 #: DB:work_type/description:6
 msgctxt "work_type"
@@ -366,6 +392,11 @@ msgstr "לה במול מז'ור"
 msgctxt "work_attribute_type_allowed_value"
 msgid "A-flat minor"
 msgstr "לה במול מינור"
+
+#: DB:work_attribute_type_allowed_value/value:817
+msgctxt "work_attribute_type_allowed_value"
+msgid "A-sharp major"
+msgstr "לה דיאז מז'ור"
 
 #: DB:work_attribute_type_allowed_value/value:30
 msgctxt "work_attribute_type_allowed_value"
@@ -520,7 +551,7 @@ msgid ""
 "An opera is a dramatised work (text + musical score) for singers and "
 "orchestra/ensemble. In true operas all dialog is sung, through arias and "
 "recitatives, but some styles of opera include spoken dialogue."
-msgstr ""
+msgstr "אופרה היא יצירה דרמטית (טקסט + ביצוע מוסיקלי) לזמרים ולתזמורת/להרכב. באופרות אמיתיות כל הדיאלוגים מושרים, באמצעות אריות רצ'יטטיבים, אבל כמה סגנונות של אופרה כוללות גם דיאלוג מדובר."
 
 #: DB:work_type/description:11
 msgctxt "work_type"
@@ -675,7 +706,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:694
 msgctxt "work_attribute_type_allowed_value"
 msgid "Aydın"
-msgstr ""
+msgstr "אידין"
 
 #: DB:work_attribute_type_allowed_value/value:695
 msgctxt "work_attribute_type_allowed_value"
@@ -760,7 +791,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:289
 msgctxt "work_attribute_type_allowed_value"
 msgid "Aṭṭa"
-msgstr ""
+msgstr "אטה"
 
 #: DB:work_attribute_type_allowed_value/value:795
 msgctxt "work_attribute_type_allowed_value"
@@ -791,6 +822,16 @@ msgstr "סי במול מז'ור"
 msgctxt "work_attribute_type_allowed_value"
 msgid "B-flat minor"
 msgstr "סי במול מינור"
+
+#: DB:work_attribute_type_allowed_value/value:818
+msgctxt "work_attribute_type_allowed_value"
+msgid "B-sharp major"
+msgstr "סי-דיאז מז'ור"
+
+#: DB:work_attribute_type_allowed_value/value:819
+msgctxt "work_attribute_type_allowed_value"
+msgid "B-sharp minor"
+msgstr "סי-דיאז מינור"
 
 #: DB:work_attribute_type/name:7
 msgctxt "work_attribute_type"
@@ -882,7 +923,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:606
 msgctxt "work_attribute_type_allowed_value"
 msgid "Beste"
-msgstr ""
+msgstr "בסטה"
 
 #: DB:work_attribute_type_allowed_value/value:702
 msgctxt "work_attribute_type_allowed_value"
@@ -1103,6 +1144,11 @@ msgstr "דו מינור"
 msgctxt "work_attribute_type_allowed_value"
 msgid "C-flat major"
 msgstr "דו במול מז'ור"
+
+#: DB:work_attribute_type_allowed_value/value:812
+msgctxt "work_attribute_type_allowed_value"
+msgid "C-flat minor"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:4
 msgctxt "work_attribute_type_allowed_value"
@@ -1364,6 +1410,11 @@ msgstr "רה במול מז'ור"
 msgctxt "work_attribute_type_allowed_value"
 msgid "D-flat minor"
 msgstr "רה במול מינור"
+
+#: DB:work_attribute_type_allowed_value/value:813
+msgctxt "work_attribute_type_allowed_value"
+msgid "D-sharp major"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:10
 msgctxt "work_attribute_type_allowed_value"
@@ -1628,27 +1679,27 @@ msgstr ""
 #: DB:label_type/name:1
 msgctxt "label_type"
 msgid "Distributor"
-msgstr ""
+msgstr "מפיץ"
 
 #: DB:area_type/name:5
 msgctxt "area_type"
 msgid "District"
-msgstr ""
+msgstr "רובע"
 
 #: DB:area_type/description:5
 msgctxt "area_type"
 msgid "District is used for a division of a large city, e.g. Queens."
-msgstr ""
+msgstr "רובע משמש לחלוקה של עיר גדולה, למשל קווינס."
 
 #: DB:work_attribute_type_allowed_value/value:611
 msgctxt "work_attribute_type_allowed_value"
 msgid "Divan"
-msgstr ""
+msgstr "דיבאן"
 
 #: DB:work_attribute_type_allowed_value/value:725
 msgctxt "work_attribute_type_allowed_value"
 msgid "Dolap"
-msgstr ""
+msgstr "דולאפ"
 
 #: DB:medium_format/name:4
 msgctxt "medium_format"
@@ -1683,7 +1734,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:86
 msgctxt "work_attribute_type_allowed_value"
 msgid "Durga"
-msgstr ""
+msgstr "דורגא"
 
 #: DB:work_attribute_type_allowed_value/value:87
 msgctxt "work_attribute_type_allowed_value"
@@ -1758,37 +1809,43 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:791
 msgctxt "work_attribute_type_allowed_value"
 msgid "E Dorian"
-msgstr ""
+msgstr "מי דוריאן"
 
 #: DB:work_attribute_type_allowed_value/value:803
 msgctxt "work_attribute_type_allowed_value"
 msgid "E Mixolydian"
-msgstr ""
+msgstr "מי מיקסולידיאן"
 
 #: DB:work_attribute_type_allowed_value/value:13
 msgctxt "work_attribute_type_allowed_value"
 msgid "E major"
-msgstr ""
+msgstr "מי מז'ור"
 
 #: DB:work_attribute_type_allowed_value/value:14
 msgctxt "work_attribute_type_allowed_value"
 msgid "E minor"
-msgstr ""
+msgstr "מי מינור"
 
 #: DB:work_attribute_type_allowed_value/value:11
 msgctxt "work_attribute_type_allowed_value"
 msgid "E-flat major"
-msgstr ""
+msgstr "מי במול מז'ור"
 
 #: DB:work_attribute_type_allowed_value/value:12
+#: DB:work_attribute_type_allowed_value/value:815
 msgctxt "work_attribute_type_allowed_value"
 msgid "E-flat minor"
+msgstr "מי במול מינור"
+
+#: DB:work_attribute_type_allowed_value/value:814
+msgctxt "work_attribute_type_allowed_value"
+msgid "E-sharp major"
 msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:15
 msgctxt "work_attribute_type_allowed_value"
 msgid "E-sharp minor"
-msgstr ""
+msgstr "מי דיאז מינור"
 
 #: DB:release_group_primary_type/name:3
 msgctxt "release_group_primary_type"
@@ -1813,6 +1870,11 @@ msgstr ""
 #: DB:medium_format/name:42
 msgctxt "medium_format"
 msgid "Enhanced CD"
+msgstr "תקליטור משופר"
+
+#: DB:instrument_type/name:6
+msgctxt "instrument_type"
+msgid "Ensemble"
 msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:356
@@ -1945,6 +2007,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Fahte"
 msgstr ""
 
+#: DB:instrument_type/name:7
+msgctxt "instrument_type"
+msgid "Family"
+msgstr "משפחה"
+
 #: DB:work_attribute_type_allowed_value/value:615
 msgctxt "work_attribute_type_allowed_value"
 msgid "Fantezi"
@@ -2030,6 +2097,13 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Fireng-i Fer"
 msgstr ""
 
+#: DB:medium_format/description:73
+msgctxt "medium_format"
+msgid ""
+"Flat discs with grooves used in phonographs/gramophones. For shellac and "
+"vinyl records, use that specifically"
+msgstr ""
+
 #: DB:medium_format/name:51
 msgctxt "medium_format"
 msgid "Flexi-disc"
@@ -2041,6 +2115,11 @@ msgid ""
 "Flexi-discs are phonograph records made of a thin, flexible vinyl sheet with"
 " a molded-in groove, designed to be playable on a normal phonograph "
 "turntable."
+msgstr ""
+
+#: DB:medium_format/name:76
+msgctxt "medium_format"
+msgid "Floppy Disk"
 msgstr ""
 
 #: DB:work_attribute_type/name:16
@@ -2087,6 +2166,11 @@ msgstr "סול מינור"
 msgctxt "work_attribute_type_allowed_value"
 msgid "G-flat major"
 msgstr "סול במול מז'ור"
+
+#: DB:work_attribute_type_allowed_value/value:816
+msgctxt "work_attribute_type_allowed_value"
+msgid "G-flat minor"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:24
 msgctxt "work_attribute_type_allowed_value"
@@ -2338,6 +2422,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Hezeç"
 msgstr ""
 
+#: DB:medium_format/name:75
+msgctxt "medium_format"
+msgid "HiPac"
+msgstr ""
+
 #: DB:work_attribute_type_allowed_value/value:391
 msgctxt "work_attribute_type_allowed_value"
 msgid "Hicaz"
@@ -2571,7 +2660,7 @@ msgstr ""
 #: DB:work_attribute_type/name:29
 msgctxt "work_attribute_type"
 msgid "ICE ID"
-msgstr ""
+msgstr "מזהה ICE"
 
 #: DB:work_attribute_type/description:28
 msgctxt "work_attribute_type"
@@ -2596,17 +2685,17 @@ msgstr ""
 #: DB:work_attribute_type/name:14
 msgctxt "work_attribute_type"
 msgid "Identifiers"
-msgstr ""
+msgstr "מזהים"
 
 #: DB:label_type/name:9
 msgctxt "label_type"
 msgid "Imprint"
-msgstr ""
+msgstr "חרות"
 
 #: DB:work_type/name:30
 msgctxt "work_type"
 msgid "Incidental music"
-msgstr ""
+msgstr "מוזיקה אקראית"
 
 #: DB:work_type/description:30
 msgctxt "work_type"
@@ -2618,12 +2707,12 @@ msgstr ""
 #: DB:place_type/name:5
 msgctxt "place_type"
 msgid "Indoor arena"
-msgstr ""
+msgstr "זירה מקורה"
 
 #: DB:editor_collection_type/name:9
 msgctxt "collection_type"
 msgid "Instrument"
-msgstr ""
+msgstr "כלי נגינה"
 
 #: DB:instrument_alias_type/name:1
 msgctxt "alias_type"
@@ -2633,7 +2722,7 @@ msgstr ""
 #: DB:release_group_secondary_type/name:4
 msgctxt "release_group_secondary_type"
 msgid "Interview"
-msgstr ""
+msgstr "ראיון"
 
 #: DB:work_attribute_type_allowed_value/value:427
 msgctxt "work_attribute_type_allowed_value"
@@ -2653,7 +2742,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:429
 msgctxt "work_attribute_type_allowed_value"
 msgid "Isfahan"
-msgstr ""
+msgstr "איספאהן"
 
 #: DB:work_attribute_type_allowed_value/value:430
 msgctxt "work_attribute_type_allowed_value"
@@ -2688,7 +2777,7 @@ msgstr ""
 #: DB:area_type/name:6
 msgctxt "area_type"
 msgid "Island"
-msgstr ""
+msgstr "אי"
 
 #: DB:area_type/description:6
 msgctxt "area_type"
@@ -2931,7 +3020,7 @@ msgstr ""
 #: DB:work_attribute_type/name:1
 msgctxt "work_attribute_type"
 msgid "Key"
-msgstr ""
+msgstr "מפתח"
 
 #: DB:work_attribute_type_allowed_value/value:282
 msgctxt "work_attribute_type_allowed_value"
@@ -3233,6 +3322,11 @@ msgctxt "series_ordering_type"
 msgid "Manual"
 msgstr ""
 
+#: DB:label_type/name:10
+msgctxt "label_type"
+msgid "Manufacturer"
+msgstr ""
+
 #: DB:work_attribute_type_allowed_value/value:172
 msgctxt "work_attribute_type_allowed_value"
 msgid "Manōranjani"
@@ -3253,11 +3347,6 @@ msgctxt "event_type"
 msgid "Masterclass/Clinic"
 msgstr ""
 
-#: DB:work_attribute_type_allowed_value/value:452
-msgctxt "work_attribute_type_allowed_value"
-msgid "Mate"
-msgstr ""
-
 #: DB:work_attribute_type_allowed_value/value:449
 msgctxt "work_attribute_type_allowed_value"
 msgid "Maver"
@@ -3276,6 +3365,11 @@ msgstr ""
 #: DB:editor_collection_type/name:6
 msgctxt "collection_type"
 msgid "Maybe attending"
+msgstr ""
+
+#: DB:work_attribute_type_allowed_value/value:452
+msgctxt "work_attribute_type_allowed_value"
+msgid "Maye"
 msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:175
@@ -3466,6 +3560,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Murabba"
 msgstr ""
 
+#: DB:work_attribute_type_allowed_value/value:811
+msgctxt "work_attribute_type_allowed_value"
+msgid "Murabba Beste "
+msgstr ""
+
 #: DB:medium_format/name:46
 msgctxt "medium_format"
 msgid "Music Card"
@@ -3596,6 +3695,21 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:648
 msgctxt "work_attribute_type_allowed_value"
 msgid "Nakış"
+msgstr ""
+
+#: DB:work_attribute_type_allowed_value/value:809
+msgctxt "work_attribute_type_allowed_value"
+msgid "Nakış Ağırsemai"
+msgstr ""
+
+#: DB:work_attribute_type_allowed_value/value:808
+msgctxt "work_attribute_type_allowed_value"
+msgid "Nakış Beste"
+msgstr ""
+
+#: DB:work_attribute_type_allowed_value/value:810
+msgctxt "work_attribute_type_allowed_value"
+msgid "Nakış Yürüksemai"
 msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:468
@@ -4038,6 +4152,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Peşrev"
 msgstr ""
 
+#: DB:medium_format/name:73
+msgctxt "medium_format"
+msgid "Phonograph record"
+msgstr ""
+
 #: DB:medium_format/name:15
 msgctxt "medium_format"
 msgid "Piano Roll"
@@ -4058,6 +4177,11 @@ msgctxt "work_type"
 msgid "Play"
 msgstr ""
 
+#: DB:medium_format/name:74
+msgctxt "medium_format"
+msgid "PlayTape"
+msgstr ""
+
 #: DB:medium_format/name:45
 msgctxt "medium_format"
 msgid "Playbutton"
@@ -4076,6 +4200,11 @@ msgstr ""
 #: DB:cover_art_archive.art_type/name:11
 msgctxt "cover_art_type"
 msgid "Poster"
+msgstr ""
+
+#: DB:place_type/name:8
+msgctxt "place_type"
+msgid "Pressing plant"
 msgstr ""
 
 #: DB:label_type/name:3
@@ -4953,7 +5082,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:573
 msgctxt "work_attribute_type_allowed_value"
 msgid "Tahir"
-msgstr ""
+msgstr "תאהיר"
 
 #: DB:work_attribute_type_allowed_value/value:574
 msgctxt "work_attribute_type_allowed_value"
@@ -4963,7 +5092,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:667
 msgctxt "work_attribute_type_allowed_value"
 msgid "Taksim"
-msgstr ""
+msgstr "תאקסים"
 
 #: DB:work_attribute_type_allowed_value/value:255
 msgctxt "work_attribute_type_allowed_value"
@@ -4973,7 +5102,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:668
 msgctxt "work_attribute_type_allowed_value"
 msgid "Tango"
-msgstr ""
+msgstr "טאנגו"
 
 #: DB:work_attribute_type_allowed_value/value:575
 msgctxt "work_attribute_type_allowed_value"
@@ -5149,12 +5278,12 @@ msgstr ""
 #: DB:cover_art_archive.art_type/name:7
 msgctxt "cover_art_type"
 msgid "Track"
-msgstr ""
+msgstr "רצועה"
 
 #: DB:cover_art_archive.art_type/name:9
 msgctxt "cover_art_type"
 msgid "Tray"
-msgstr ""
+msgstr "מגש"
 
 #: DB:work_attribute_type_allowed_value/value:775
 msgctxt "work_attribute_type_allowed_value"
@@ -5244,17 +5373,17 @@ msgstr ""
 #: DB:medium_format/name:22
 msgctxt "medium_format"
 msgid "VCD"
-msgstr ""
+msgstr "VCD"
 
 #: DB:medium_format/name:59
 msgctxt "medium_format"
 msgid "VHD"
-msgstr ""
+msgstr "VHD"
 
 #: DB:medium_format/name:21
 msgctxt "medium_format"
 msgid "VHS"
-msgstr ""
+msgstr "VHS"
 
 #: DB:work_attribute_type_allowed_value/value:261
 msgctxt "work_attribute_type_allowed_value"
@@ -5351,7 +5480,7 @@ msgstr ""
 #: DB:medium_format/name:7
 msgctxt "medium_format"
 msgid "Vinyl"
-msgstr ""
+msgstr "ויניל"
 
 #: DB:medium_format/name:48
 msgctxt "medium_format"
@@ -5391,7 +5520,7 @@ msgstr ""
 #: DB:cover_art_archive.art_type/name:13
 msgctxt "cover_art_type"
 msgid "Watermark"
-msgstr ""
+msgstr "סימן מים"
 
 #: DB:medium_format/name:14
 msgctxt "medium_format"
@@ -5406,22 +5535,22 @@ msgstr ""
 #: DB:editor_collection_type/name:3
 msgctxt "collection_type"
 msgid "Wishlist"
-msgstr ""
+msgstr "רשימת משאלות"
 
 #: DB:editor_collection_type/name:15
 msgctxt "collection_type"
 msgid "Work"
-msgstr ""
+msgstr "יצירה"
 
 #: DB:series_type/name:4
 msgctxt "series_type"
 msgid "Work"
-msgstr ""
+msgstr "יצירה"
 
 #: DB:work_alias_type/name:1
 msgctxt "alias_type"
 msgid "Work name"
-msgstr ""
+msgstr "שם יצירה"
 
 #: DB:work_attribute_type_allowed_value/value:277
 msgctxt "work_attribute_type_allowed_value"
@@ -5522,6 +5651,11 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:598
 msgctxt "work_attribute_type_allowed_value"
 msgid "Zilkeş"
+msgstr ""
+
+#: DB:medium_format/name:77
+msgctxt "medium_format"
+msgid "Zip Disk"
 msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:599

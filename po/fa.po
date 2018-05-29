@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2018-03-20 13:28+0100\n"
+"POT-Creation-Date: 2018-04-02 17:15+0200\n"
 "PO-Revision-Date: 2018-03-20 13:41+0000\n"
 "Last-Translator: Michael Wiencek <mwtuea@gmail.com>\n"
 "Language-Team: Persian (http://www.transifex.com/musicbrainz/musicbrainz/language/fa/)\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.5.3\n"
 "Language: fa\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #: picard/album.py:73
 msgid "Unmatched Files"
@@ -48,12 +48,14 @@ msgstr ""
 msgid "; %i image"
 msgid_plural "; %i images"
 msgstr[0] "; %iعکس ها"
+msgstr[1] "; %iعکس ها"
 
 #: picard/album.py:548
 #, python-format
 msgid "; %i image not in all tracks"
 msgid_plural "; %i different images among tracks"
 msgstr[0] ""
+msgstr[1] ""
 
 #: picard/cluster.py:185 picard/cluster.py:198
 #, python-format
@@ -79,12 +81,14 @@ msgstr ""
 msgid "Added %(count)i release to collection \"%(name)s\""
 msgid_plural "Added %(count)i releases to collection \"%(name)s\""
 msgstr[0] ""
+msgstr[1] ""
 
 #: picard/collection.py:89
 #, python-format
 msgid "Removed %(count)i release from collection \"%(name)s\""
 msgid_plural "Removed %(count)i releases from collection \"%(name)s\""
 msgstr[0] ""
+msgstr[1] ""
 
 #: picard/collection.py:104
 #, python-format
@@ -185,6 +189,7 @@ msgstr "بدون اطلاعات انتشار"
 msgid "Adding %(count)d file from '%(directory)s' ..."
 msgid_plural "Adding %(count)d files from '%(directory)s' ..."
 msgstr[0] ""
+msgstr[1] ""
 
 #: picard/tagger.py:617
 #, python-format
@@ -396,6 +401,7 @@ msgstr "بروزرسانی لیست"
 msgid "%s (%i release)"
 msgid_plural "%s (%i releases)"
 msgstr[0] ""
+msgstr[1] ""
 
 #: picard/ui/coverartbox.py:242
 msgid "View release on MusicBrainz"
@@ -543,6 +549,7 @@ msgstr ""
 msgid "%i file in this track"
 msgid_plural "%i files in this track"
 msgstr[0] ""
+msgstr[1] ""
 
 #: picard/ui/infodialog.py:335
 msgid "Cluster Info"
@@ -761,6 +768,7 @@ msgid ""
 msgid_plural ""
 "There are %d unsaved files. Closing Picard will lose all unsaved changes."
 msgstr[0] "%d پرونده ذخیره نشده اند. بستن پیکارد به از بین رفتن همه اطلاعات ذخیره نشده منجر می شود."
+msgstr[1] "%d پرونده ذخیره نشده اند. بستن پیکارد به از بین رفتن همه اطلاعات ذخیره نشده منجر می شود."
 
 #: picard/ui/mainwindow.py:176
 msgid "&Quit Picard"
@@ -1147,12 +1155,14 @@ msgstr ""
 msgid "(different across %d item)"
 msgid_plural "(different across %d items)"
 msgstr[0] ""
+msgstr[1] ""
 
 #: picard/ui/metadatabox.py:92
 #, python-format
 msgid "(missing from %d item)"
 msgid_plural "(missing from %d items)"
 msgstr[0] ""
+msgstr[1] ""
 
 #: picard/ui/metadatabox.py:182
 msgid "metadata view"
@@ -1210,6 +1220,7 @@ msgstr ""
 msgid "Use Original Value"
 msgid_plural "Use Original Values"
 msgstr[0] ""
+msgstr[1] ""
 
 #: picard/ui/passworddialog.py:34
 #, python-format

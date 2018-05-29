@@ -9,7 +9,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2018-02-09 16:15+0000\n"
+"PO-Revision-Date: 2018-05-23 10:40+0000\n"
 "Last-Translator: Maurits Meulenbelt <mfmeulenbelt@gmail.com>\n"
 "Language-Team: Dutch (http://www.transifex.com/musicbrainz/musicbrainz/language/nl/)\n"
 "MIME-Version: 1.0\n"
@@ -83,6 +83,11 @@ msgctxt "medium_format"
 msgid "8\" LaserDisc"
 msgstr "8″ LaserDisc"
 
+#: DB:medium_format/name:78
+msgctxt "medium_format"
+msgid "8-Track Cartridge"
+msgstr "8-sporencassette"
+
 #: DB:medium_format/name:34
 msgctxt "medium_format"
 msgid "8cm CD"
@@ -146,6 +151,13 @@ msgid ""
 "versions supplied to radio DJs for air-play)."
 msgstr "Een uitgave die wordt weggegeven of bedoeld is om een officiële uitgave te promoten (bijv. prerelease-uitgaves, uitgaves die met een tijdschrift gebundeld zijn of versies die aan radio-dj’s worden gegeven om te draaien)."
 
+#: DB:instrument_type/description:7
+msgctxt "instrument_type"
+msgid ""
+"A grouping of related but different instruments, like the different violin-"
+"like instruments"
+msgstr "Een groep verwante maar verschillende instrumenten, zoals de verschillende violen."
+
 #: DB:work_attribute_type_allowed_value/value:28
 msgctxt "work_attribute_type_allowed_value"
 msgid "A major"
@@ -170,7 +182,7 @@ msgstr "Een masterclass of clinic is een evenement waarbij een artiest een klein
 #: DB:work_attribute_type_allowed_value/value:29
 msgctxt "work_attribute_type_allowed_value"
 msgid "A minor"
-msgstr "A kleine terts"
+msgstr "a kleine terts"
 
 #: DB:work_type/description:13
 msgctxt "work_type"
@@ -190,6 +202,12 @@ msgstr "Een feest, receptie of ander evenement dat speciaal wordt gehouden voor 
 msgctxt "release_packaging"
 msgid "A perfect bound book with a sleeve at the end to hold a CD"
 msgstr "Een gelijmd gebonden boek met achterin een hoesje voor een cd."
+
+#: DB:place_type/description:8
+msgctxt "place_type"
+msgid ""
+"A place (generally a factory) at which physical media are manufactured."
+msgstr "Een plaats (meestal een fabriek) waar fysieke media worden gefabriceerd."
 
 #: DB:place_type/description:5
 msgctxt "place_type"
@@ -326,6 +344,13 @@ msgid ""
 " even book."
 msgstr "Een soundtrack is muziek die een film, televisieprogramma, computerspel of zelfs boek begeleidt."
 
+#: DB:instrument_type/description:6
+msgctxt "instrument_type"
+msgid ""
+"A standard grouping of instruments often played together, like a string "
+"quartet"
+msgstr "Een standaardgroep van instrumenten die vaak samen worden bespeeld, zoals een strijkkwartet."
+
 #: DB:work_type/description:6
 msgctxt "work_type"
 msgid ""
@@ -370,12 +395,17 @@ msgstr "As grote terts"
 #: DB:work_attribute_type_allowed_value/value:27
 msgctxt "work_attribute_type_allowed_value"
 msgid "A-flat minor"
-msgstr "As kleine terts"
+msgstr "as kleine terts"
+
+#: DB:work_attribute_type_allowed_value/value:817
+msgctxt "work_attribute_type_allowed_value"
+msgid "A-sharp major"
+msgstr "Aïs grote terts"
 
 #: DB:work_attribute_type_allowed_value/value:30
 msgctxt "work_attribute_type_allowed_value"
 msgid "A-sharp minor"
-msgstr "Ais kleine terts"
+msgstr "aïs kleine terts"
 
 #: DB:work_attribute_type/name:23
 msgctxt "work_attribute_type"
@@ -785,7 +815,7 @@ msgstr "B grote terts"
 #: DB:work_attribute_type_allowed_value/value:34
 msgctxt "work_attribute_type_allowed_value"
 msgid "B minor"
-msgstr "B kleine terts"
+msgstr "b kleine terts"
 
 #: DB:work_attribute_type_allowed_value/value:31
 msgctxt "work_attribute_type_allowed_value"
@@ -795,7 +825,17 @@ msgstr "Bes grote terts"
 #: DB:work_attribute_type_allowed_value/value:32
 msgctxt "work_attribute_type_allowed_value"
 msgid "B-flat minor"
-msgstr "Bes kleine terts"
+msgstr "bes kleine terts"
+
+#: DB:work_attribute_type_allowed_value/value:818
+msgctxt "work_attribute_type_allowed_value"
+msgid "B-sharp major"
+msgstr "Bis grote terts"
+
+#: DB:work_attribute_type_allowed_value/value:819
+msgctxt "work_attribute_type_allowed_value"
+msgid "B-sharp minor"
+msgstr "bis kleine terts"
 
 #: DB:work_attribute_type/name:7
 msgctxt "work_attribute_type"
@@ -1102,12 +1142,17 @@ msgstr "C grote terts"
 #: DB:work_attribute_type_allowed_value/value:3
 msgctxt "work_attribute_type_allowed_value"
 msgid "C minor"
-msgstr "C kleine terts"
+msgstr "c kleine terts"
 
 #: DB:work_attribute_type_allowed_value/value:1
 msgctxt "work_attribute_type_allowed_value"
 msgid "C-flat major"
 msgstr "Ces grote terts"
+
+#: DB:work_attribute_type_allowed_value/value:812
+msgctxt "work_attribute_type_allowed_value"
+msgid "C-flat minor"
+msgstr "ces kleine terts"
 
 #: DB:work_attribute_type_allowed_value/value:4
 msgctxt "work_attribute_type_allowed_value"
@@ -1117,7 +1162,7 @@ msgstr "Cis grote terts"
 #: DB:work_attribute_type_allowed_value/value:5
 msgctxt "work_attribute_type_allowed_value"
 msgid "C-sharp minor"
-msgstr "Cis kleine terts"
+msgstr "cis kleine terts"
 
 #: DB:work_attribute_type/name:19
 msgctxt "work_attribute_type"
@@ -1358,7 +1403,7 @@ msgstr "D grote terts"
 #: DB:work_attribute_type_allowed_value/value:9
 msgctxt "work_attribute_type_allowed_value"
 msgid "D minor"
-msgstr "D kleine terts"
+msgstr "d kleine terts"
 
 #: DB:work_attribute_type_allowed_value/value:6
 msgctxt "work_attribute_type_allowed_value"
@@ -1368,12 +1413,17 @@ msgstr "Des grote terts"
 #: DB:work_attribute_type_allowed_value/value:7
 msgctxt "work_attribute_type_allowed_value"
 msgid "D-flat minor"
-msgstr "Des kleine terts"
+msgstr "des kleine terts"
+
+#: DB:work_attribute_type_allowed_value/value:813
+msgctxt "work_attribute_type_allowed_value"
+msgid "D-sharp major"
+msgstr "Dis grote terts"
 
 #: DB:work_attribute_type_allowed_value/value:10
 msgctxt "work_attribute_type_allowed_value"
 msgid "D-sharp minor"
-msgstr "Dis kleine terts"
+msgstr "dis kleine terts"
 
 #: DB:medium_format/name:11
 msgctxt "medium_format"
@@ -1778,7 +1828,7 @@ msgstr "E grote terts"
 #: DB:work_attribute_type_allowed_value/value:14
 msgctxt "work_attribute_type_allowed_value"
 msgid "E minor"
-msgstr "E kleine terts"
+msgstr "e kleine terts"
 
 #: DB:work_attribute_type_allowed_value/value:11
 msgctxt "work_attribute_type_allowed_value"
@@ -1786,14 +1836,20 @@ msgid "E-flat major"
 msgstr "Es grote terts"
 
 #: DB:work_attribute_type_allowed_value/value:12
+#: DB:work_attribute_type_allowed_value/value:815
 msgctxt "work_attribute_type_allowed_value"
 msgid "E-flat minor"
-msgstr "Es kleine terts"
+msgstr "es kleine terts"
+
+#: DB:work_attribute_type_allowed_value/value:814
+msgctxt "work_attribute_type_allowed_value"
+msgid "E-sharp major"
+msgstr "Eïs grote terts"
 
 #: DB:work_attribute_type_allowed_value/value:15
 msgctxt "work_attribute_type_allowed_value"
 msgid "E-sharp minor"
-msgstr "Eis kleine terts"
+msgstr "eïs kleine terts"
 
 #: DB:release_group_primary_type/name:3
 msgctxt "release_group_primary_type"
@@ -1819,6 +1875,11 @@ msgstr "Elektronisch instrument"
 msgctxt "medium_format"
 msgid "Enhanced CD"
 msgstr "Enhanced CD"
+
+#: DB:instrument_type/name:6
+msgctxt "instrument_type"
+msgid "Ensemble"
+msgstr "Ensemble"
 
 #: DB:work_attribute_type_allowed_value/value:356
 msgctxt "work_attribute_type_allowed_value"
@@ -1928,7 +1989,7 @@ msgstr "F grote terts"
 #: DB:work_attribute_type_allowed_value/value:18
 msgctxt "work_attribute_type_allowed_value"
 msgid "F minor"
-msgstr "F kleine terts"
+msgstr "f kleine terts"
 
 #: DB:work_attribute_type_allowed_value/value:16
 msgctxt "work_attribute_type_allowed_value"
@@ -1943,12 +2004,17 @@ msgstr "Fis grote terts"
 #: DB:work_attribute_type_allowed_value/value:20
 msgctxt "work_attribute_type_allowed_value"
 msgid "F-sharp minor"
-msgstr "Fis kleine terts"
+msgstr "fis kleine terts"
 
 #: DB:work_attribute_type_allowed_value/value:731
 msgctxt "work_attribute_type_allowed_value"
 msgid "Fahte"
 msgstr "Fahte"
+
+#: DB:instrument_type/name:7
+msgctxt "instrument_type"
+msgid "Family"
+msgstr "Familie"
 
 #: DB:work_attribute_type_allowed_value/value:615
 msgctxt "work_attribute_type_allowed_value"
@@ -2035,6 +2101,13 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Fireng-i Fer"
 msgstr "Fireng-i Fer"
 
+#: DB:medium_format/description:73
+msgctxt "medium_format"
+msgid ""
+"Flat discs with grooves used in phonographs/gramophones. For shellac and "
+"vinyl records, use that specifically"
+msgstr "Platte schijven met groeven die met een platenspeler worden afgespeeld. Gebruik een specifieker medium, zoals schellak of vinyl, als je weet wat het is."
+
 #: DB:medium_format/name:51
 msgctxt "medium_format"
 msgid "Flexi-disc"
@@ -2047,6 +2120,11 @@ msgid ""
 " a molded-in groove, designed to be playable on a normal phonograph "
 "turntable."
 msgstr "Flexidiscs zijn grammofoonplaten die zijn gemaakt van een dun, flexibel vel plastic met dezelfde groeven als normale grammofoonplaten, waardoor ze op een normale platenspeler kunnen worden afgespeeld."
+
+#: DB:medium_format/name:76
+msgctxt "medium_format"
+msgid "Floppy Disk"
+msgstr "Floppy"
 
 #: DB:work_attribute_type/name:16
 msgctxt "work_attribute_type"
@@ -2086,12 +2164,17 @@ msgstr "G grote terts"
 #: DB:work_attribute_type_allowed_value/value:23
 msgctxt "work_attribute_type_allowed_value"
 msgid "G minor"
-msgstr "G kleine terts"
+msgstr "g kleine terts"
 
 #: DB:work_attribute_type_allowed_value/value:21
 msgctxt "work_attribute_type_allowed_value"
 msgid "G-flat major"
 msgstr "Ges grote terts"
+
+#: DB:work_attribute_type_allowed_value/value:816
+msgctxt "work_attribute_type_allowed_value"
+msgid "G-flat minor"
+msgstr "ges kleine terts"
 
 #: DB:work_attribute_type_allowed_value/value:24
 msgctxt "work_attribute_type_allowed_value"
@@ -2101,7 +2184,7 @@ msgstr "Gis grote terts"
 #: DB:work_attribute_type_allowed_value/value:25
 msgctxt "work_attribute_type_allowed_value"
 msgid "G-sharp minor"
-msgstr "Gis kleine terts"
+msgstr "gis kleine terts"
 
 #: DB:work_attribute_type/name:9
 msgctxt "work_attribute_type"
@@ -2342,6 +2425,11 @@ msgstr "Heftgah"
 msgctxt "work_attribute_type_allowed_value"
 msgid "Hezeç"
 msgstr "Hezeç"
+
+#: DB:medium_format/name:75
+msgctxt "medium_format"
+msgid "HiPac"
+msgstr "HiPac"
 
 #: DB:work_attribute_type_allowed_value/value:391
 msgctxt "work_attribute_type_allowed_value"
@@ -3238,6 +3326,11 @@ msgctxt "series_ordering_type"
 msgid "Manual"
 msgstr "Handmatig"
 
+#: DB:label_type/name:10
+msgctxt "label_type"
+msgid "Manufacturer"
+msgstr "Fabrikant"
+
 #: DB:work_attribute_type_allowed_value/value:172
 msgctxt "work_attribute_type_allowed_value"
 msgid "Manōranjani"
@@ -3258,11 +3351,6 @@ msgctxt "event_type"
 msgid "Masterclass/Clinic"
 msgstr "Masterclass/Clinic"
 
-#: DB:work_attribute_type_allowed_value/value:452
-msgctxt "work_attribute_type_allowed_value"
-msgid "Mate"
-msgstr "Mate"
-
 #: DB:work_attribute_type_allowed_value/value:449
 msgctxt "work_attribute_type_allowed_value"
 msgid "Maver"
@@ -3282,6 +3370,11 @@ msgstr "Maveraünnehir"
 msgctxt "collection_type"
 msgid "Maybe attending"
 msgstr "Ga ik misschien heen"
+
+#: DB:work_attribute_type_allowed_value/value:452
+msgctxt "work_attribute_type_allowed_value"
+msgid "Maye"
+msgstr "Maye"
 
 #: DB:work_attribute_type_allowed_value/value:175
 msgctxt "work_attribute_type_allowed_value"
@@ -3471,6 +3564,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Murabba"
 msgstr "Murabba"
 
+#: DB:work_attribute_type_allowed_value/value:811
+msgctxt "work_attribute_type_allowed_value"
+msgid "Murabba Beste "
+msgstr "Murabba Beste "
+
 #: DB:medium_format/name:46
 msgctxt "medium_format"
 msgid "Music Card"
@@ -3602,6 +3700,21 @@ msgstr "Naat"
 msgctxt "work_attribute_type_allowed_value"
 msgid "Nakış"
 msgstr "Nakış"
+
+#: DB:work_attribute_type_allowed_value/value:809
+msgctxt "work_attribute_type_allowed_value"
+msgid "Nakış Ağırsemai"
+msgstr "Nakış Ağırsemai"
+
+#: DB:work_attribute_type_allowed_value/value:808
+msgctxt "work_attribute_type_allowed_value"
+msgid "Nakış Beste"
+msgstr "Nakış Beste"
+
+#: DB:work_attribute_type_allowed_value/value:810
+msgctxt "work_attribute_type_allowed_value"
+msgid "Nakış Yürüksemai"
+msgstr "Nakış Yürüksemai"
 
 #: DB:work_attribute_type_allowed_value/value:468
 msgctxt "work_attribute_type_allowed_value"
@@ -4043,6 +4156,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Peşrev"
 msgstr "Peşrev"
 
+#: DB:medium_format/name:73
+msgctxt "medium_format"
+msgid "Phonograph record"
+msgstr "grammofoonplaat"
+
 #: DB:medium_format/name:15
 msgctxt "medium_format"
 msgid "Piano Roll"
@@ -4063,6 +4181,11 @@ msgctxt "work_type"
 msgid "Play"
 msgstr "Toneelstuk"
 
+#: DB:medium_format/name:74
+msgctxt "medium_format"
+msgid "PlayTape"
+msgstr "PlayTape"
+
 #: DB:medium_format/name:45
 msgctxt "medium_format"
 msgid "Playbutton"
@@ -4082,6 +4205,11 @@ msgstr "Pop şarkısı"
 msgctxt "cover_art_type"
 msgid "Poster"
 msgstr "poster"
+
+#: DB:place_type/name:8
+msgctxt "place_type"
+msgid "Pressing plant"
+msgstr "Perserij"
 
 #: DB:label_type/name:3
 msgctxt "label_type"
@@ -5528,6 +5656,11 @@ msgstr "Zeybek"
 msgctxt "work_attribute_type_allowed_value"
 msgid "Zilkeş"
 msgstr "Zilkeş"
+
+#: DB:medium_format/name:77
+msgctxt "medium_format"
+msgid "Zip Disk"
+msgstr "zipdisk"
 
 #: DB:work_attribute_type_allowed_value/value:599
 msgctxt "work_attribute_type_allowed_value"

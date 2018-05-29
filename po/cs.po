@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2018-03-20 13:28+0100\n"
+"POT-Creation-Date: 2018-04-02 17:15+0200\n"
 "PO-Revision-Date: 2018-03-20 13:41+0000\n"
 "Last-Translator: Michael Wiencek <mwtuea@gmail.com>\n"
 "Language-Team: Czech (http://www.transifex.com/musicbrainz/musicbrainz/language/cs/)\n"
@@ -20,7 +20,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.5.3\n"
 "Language: cs\n"
-"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+"Plural-Forms: nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n >= 2 && n <= 4 && n % 1 == 0) ? 1: (n % 1 != 0 ) ? 2 : 3;\n"
 
 #: picard/album.py:73
 msgid "Unmatched Files"
@@ -52,6 +52,7 @@ msgid_plural "; %i images"
 msgstr[0] "; %i obrázek"
 msgstr[1] "; %i obrázky"
 msgstr[2] "; %i obrázků"
+msgstr[3] "; %i obrázků"
 
 #: picard/album.py:548
 #, python-format
@@ -60,6 +61,7 @@ msgid_plural "; %i different images among tracks"
 msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
+msgstr[3] ""
 
 #: picard/cluster.py:185 picard/cluster.py:198
 #, python-format
@@ -87,6 +89,7 @@ msgid_plural "Added %(count)i releases to collection \"%(name)s\""
 msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
+msgstr[3] ""
 
 #: picard/collection.py:89
 #, python-format
@@ -95,6 +98,7 @@ msgid_plural "Removed %(count)i releases from collection \"%(name)s\""
 msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
+msgstr[3] ""
 
 #: picard/collection.py:104
 #, python-format
@@ -197,6 +201,7 @@ msgid_plural "Adding %(count)d files from '%(directory)s' ..."
 msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
+msgstr[3] ""
 
 #: picard/tagger.py:617
 #, python-format
@@ -410,6 +415,7 @@ msgid_plural "%s (%i releases)"
 msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
+msgstr[3] ""
 
 #: picard/ui/coverartbox.py:242
 msgid "View release on MusicBrainz"
@@ -559,6 +565,7 @@ msgid_plural "%i files in this track"
 msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
+msgstr[3] ""
 
 #: picard/ui/infodialog.py:335
 msgid "Cluster Info"
@@ -779,6 +786,7 @@ msgid_plural ""
 msgstr[0] "Je zde %d neuložený soubor. Uzavřením Picardu se ztratí všechny neuložené změny."
 msgstr[1] "Jsou zde %d neuložené soubory. Uzavřením Picardu se ztratí všechny neuložené změny."
 msgstr[2] "Je zde %d neuložených souborů. Uzavřením Picardu se ztratí všechny neuložené změny."
+msgstr[3] "Je zde %d neuložených souborů. Uzavřením Picardu se ztratí všechny neuložené změny."
 
 #: picard/ui/mainwindow.py:176
 msgid "&Quit Picard"
@@ -1167,6 +1175,7 @@ msgid_plural "(different across %d items)"
 msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
+msgstr[3] ""
 
 #: picard/ui/metadatabox.py:92
 #, python-format
@@ -1175,6 +1184,7 @@ msgid_plural "(missing from %d items)"
 msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
+msgstr[3] ""
 
 #: picard/ui/metadatabox.py:182
 msgid "metadata view"
@@ -1234,6 +1244,7 @@ msgid_plural "Use Original Values"
 msgstr[0] ""
 msgstr[1] ""
 msgstr[2] "Použít původní hodnotu"
+msgstr[3] "Použít původní hodnotu"
 
 #: picard/ui/passworddialog.py:34
 #, python-format

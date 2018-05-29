@@ -13,8 +13,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2018-03-20 13:28+0100\n"
-"PO-Revision-Date: 2018-04-02 15:09+0000\n"
+"POT-Creation-Date: 2018-04-02 17:15+0200\n"
+"PO-Revision-Date: 2018-04-13 13:30+0000\n"
 "Last-Translator: Avi Markovitz <avi.markovitz@gmail.com>\n"
 "Language-Team: Hebrew (http://www.transifex.com/musicbrainz/musicbrainz/language/he/)\n"
 "MIME-Version: 1.0\n"
@@ -22,7 +22,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.5.3\n"
 "Language: he\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n == 2 && n % 1 == 0) ? 1: (n % 10 == 0 && n % 1 == 0 && n > 10) ? 2 : 3;\n"
 
 #: picard/album.py:73
 msgid "Unmatched Files"
@@ -41,7 +41,7 @@ msgstr "אלבום %(id)s נטען %(artist)s - %(album)s"
 #: picard/album.py:341
 #, python-format
 msgid "Loading album %(id)s ..."
-msgstr "טוען אלבום %(id)s..."
+msgstr "טוען אלבום %(id)s‮..."
 
 #: picard/album.py:345
 msgid "[loading album information]"
@@ -53,6 +53,8 @@ msgid "; %i image"
 msgid_plural "; %i images"
 msgstr[0] ";%i תמונה"
 msgstr[1] ";%i תמונות"
+msgstr[2] ";%i תמונות"
+msgstr[3] ";%i תמונות"
 
 #: picard/album.py:548
 #, python-format
@@ -60,6 +62,8 @@ msgid "; %i image not in all tracks"
 msgid_plural "; %i different images among tracks"
 msgstr[0] "; %i תמונה לא בכל הרצועות"
 msgstr[1] "; %i תמונות שונות בין רצועות"
+msgstr[2] "; %i תמונות שונות בין רצועות"
+msgstr[3] "; %i תמונות שונות בין רצועות"
 
 #: picard/cluster.py:185 picard/cluster.py:198
 #, python-format
@@ -86,6 +90,8 @@ msgid "Added %(count)i release to collection \"%(name)s\""
 msgid_plural "Added %(count)i releases to collection \"%(name)s\""
 msgstr[0] "נוספה %(count)i מהדורה לאוסף \"%(name)s\""
 msgstr[1] "נוספו %(count)i מהדורות לאוסף \"%(name)s\""
+msgstr[2] "נוספו %(count)i מהדורות לאוסף \"%(name)s\""
+msgstr[3] "נוספו %(count)i מהדורות לאוסף \"%(name)s\""
 
 #: picard/collection.py:89
 #, python-format
@@ -93,6 +99,8 @@ msgid "Removed %(count)i release from collection \"%(name)s\""
 msgid_plural "Removed %(count)i releases from collection \"%(name)s\""
 msgstr[0] "הוסרה %(count)i מהדורה מאוסף \"%(name)s\""
 msgstr[1] "הוסרו %(count)i מהדורות מאוסף \"%(name)s\""
+msgstr[2] "הוסרו %(count)i מהדורות מאוסף \"%(name)s\""
+msgstr[3] "הוסרו %(count)i מהדורות מאוסף \"%(name)s\""
 
 #: picard/collection.py:104
 #, python-format
@@ -107,14 +115,14 @@ msgstr "הסרת סְכֶמָת שמות קבצים אמנים שונים"
 msgid ""
 "The separate file naming scheme for various artists albums has been removed in this version of Picard.\n"
 "Your file naming scheme has automatically been merged with that of single artist albums."
-msgstr "סְכֶמָת שמות קבצים יחודית עבור אלבומים בעלי אמנים שונים הוסרה בגירסה זו של Picard.\nסְכֶמָת שמות קבצים שלך מוזגה באופן אוטומטי עם זו של אלבומי אמנים בודדים."
+msgstr "סְכֶמָת שמות קבצים יחודית עבור אלבומים בעלי אמנים שונים הוסרה בגירסה זו של Picard.\nסְכֶמָת שמות קבצים הקודמת מוזגה באופן אוטומטי עם זו של אלבומי אמנים בודדים."
 
 #: picard/config_upgrade.py:71
 msgid ""
 "The separate file naming scheme for various artists albums has been removed in this version of Picard.\n"
 "You currently do not use this option, but have a separate file naming scheme defined.\n"
 "Do you want to remove it or merge it with your file naming scheme for single artist albums?"
-msgstr "סְכֶמָת שמות קבצים יחודית עבור אלבומים בעלי אמנים שונים הוסרה בגירסה זו של Picard.\nבשלב זה אינך משתמש באפשרות זו, אך הוגדרה סְכֶמָת שמות קבצים יחודית \nהאם ברצונך להסיר אותה או למזגה עם ערכת שמות הקבצים עבור אלבומי אמנים בודדים?"
+msgstr "סְכֶמָת שמות קבצים יחודית עבור אלבומים בעלי אמנים שונים הוסרה בגירסה זו של Picard.\nבשלב זה אינך משתמש באפשרות זו, אך סְכֶמָת שמות קבצים יחודית הוגדרה\nהאם ברצונך להסיר אותה או למזגה עם סְכֶמָת שמות הקבצים עבור אלבומי אמנים בודדים?"
 
 #: picard/config_upgrade.py:77
 msgid "Merge"
@@ -153,7 +161,7 @@ msgstr "מחפש במטה-נתונים אחר קובץ %(filename)s..."
 #: picard/plugin.py:465
 #, python-format
 msgid "Error loading plugins list: %(error)s"
-msgstr "שגיאה בטעינת רשימת מִתְקָעים: %(error)s"
+msgstr "‮שגיאה בטעינת רשימת מִתְקָעים: %(error)s"
 
 #: picard/releasegroup.py:53 picard/ui/searchdialog/album.py:136
 msgid "Tracks"
@@ -174,7 +182,7 @@ msgstr "מבנה"
 
 #: picard/releasegroup.py:57
 msgid "Label"
-msgstr "מותג"
+msgstr "חברת תקליטים"
 
 #: picard/releasegroup.py:58
 msgid "Cat No"
@@ -194,6 +202,8 @@ msgid "Adding %(count)d file from '%(directory)s' ..."
 msgid_plural "Adding %(count)d files from '%(directory)s' ..."
 msgstr[0] "מוסיף %(count)d קובץ מ '%(directory)s'..."
 msgstr[1] " מוסיף %(count)d קבצים מ '%(directory)s'..."
+msgstr[2] " מוסיף %(count)d קבצים מ '%(directory)s'..."
+msgstr[3] " מוסיף %(count)d קבצים מ '%(directory)s'..."
 
 #: picard/tagger.py:617
 #, python-format
@@ -215,17 +225,17 @@ msgstr "שגיאה בקריאת תקליטור:\n\n%s"
 #: picard/acoustid/__init__.py:63
 #, python-format
 msgid "AcoustID lookup network error for '%(filename)s'!"
-msgstr "שגיאת רשת בחיפוש מזהה שמע עבור '%(filename)s'!"
+msgstr "שגיאת רשת AcoustID בחיפוש '%(filename)s'!"
 
 #: picard/acoustid/__init__.py:90
 #, python-format
 msgid "AcoustID lookup failed for '%(filename)s'!"
-msgstr "חיפוש מזהה שמע נכשל עבור '%(filename)s'!"
+msgstr "חיפוש AcoustID נכשל עבור '%(filename)s'!"
 
 #: picard/acoustid/__init__.py:112
 #, python-format
 msgid "AcoustID lookup returned no result for file '%(filename)s'"
-msgstr " לא נמצאו תוצאות חיפוש מזהה שמע לקובץ '%(filename)s'"
+msgstr " לא נמצאו תוצאות חיפוש AcoustID לקובץ '%(filename)s'"
 
 #: picard/acoustid/__init__.py:123
 #, python-format
@@ -234,7 +244,7 @@ msgstr " מחפש טביעת אצבע לקובץ '%(filename)s'..."
 
 #: picard/acoustid/manager.py:79
 msgid "Submitting AcoustIDs ..."
-msgstr " מגיש AcoustIDs..."
+msgstr " מוסר AcoustIDs..."
 
 #: picard/acoustid/manager.py:100
 #, python-format
@@ -243,7 +253,7 @@ msgstr "הַגָּשָׁת AcoustID כשלה עם שגיאה '%(error)s': %(mess
 
 #: picard/acoustid/manager.py:108
 msgid "AcoustIDs successfully submitted."
-msgstr "AcoustIDs הוגשו בהצלחה."
+msgstr "AcoustIDs נמסרו בהצלחה."
 
 #: picard/const/languages.py:31
 msgid "Danish"
@@ -358,7 +368,7 @@ msgstr "ארכיב תמונות עטיפה"
 
 #: picard/coverart/providers/caa_release_group.py:38
 msgid "CAA Release Group"
-msgstr "הרכב מהדורה CAA"
+msgstr "‮קבוצת מהדורה ‭CAA"
 
 #: picard/coverart/providers/local.py:63
 msgid "Local Files"
@@ -406,10 +416,12 @@ msgid "%s (%i release)"
 msgid_plural "%s (%i releases)"
 msgstr[0] "%s (%i מהדורה)"
 msgstr[1] "%s (%i מהדורות)"
+msgstr[2] "%s (%i מהדורות)"
+msgstr[3] "%s (%i מהדורות)"
 
 #: picard/ui/coverartbox.py:242
 msgid "View release on MusicBrainz"
-msgstr "MusicBrainzהצג מהדורה ב "
+msgstr "‮הצג מהדורה ב ‭MusicBrainz"
 
 #: picard/ui/coverartbox.py:248
 msgid "Common images on all tracks"
@@ -433,7 +445,7 @@ msgstr "תמונת עטיפה  מקורית"
 
 #: picard/ui/coverartbox.py:446
 msgid "Show more details..."
-msgstr "...הצג פרטים נוספים"
+msgstr "הצג פרטים נוספים‮..."
 
 #: picard/ui/coverartbox.py:452
 msgid "Keep original cover art"
@@ -554,6 +566,8 @@ msgid "%i file in this track"
 msgid_plural "%i files in this track"
 msgstr[0] "%i קובץ ברצועה זו"
 msgstr[1] "%i קבצים ברצועה זו"
+msgstr[2] "%i קבצים ברצועה זו"
+msgstr[3] "%i קבצים ברצועה זו"
 
 #: picard/ui/infodialog.py:335
 msgid "Cluster Info"
@@ -642,7 +656,7 @@ msgstr "&גרסאות אחרות"
 
 #: picard/ui/itemviews.py:319
 msgid "Loading..."
-msgstr "...טוען"
+msgstr "טוען‮..."
 
 #: picard/ui/itemviews.py:384
 msgid "Collections"
@@ -726,7 +740,7 @@ msgstr "נקה לוג"
 
 #: picard/ui/logview.py:180
 msgid "Save As..."
-msgstr "...שמור בשם"
+msgstr "שמור בשם‮..."
 
 #: picard/ui/logview.py:225 picard/ui/logview.py:232
 msgid "Save Log View to File"
@@ -773,6 +787,8 @@ msgid_plural ""
 "There are %d unsaved files. Closing Picard will lose all unsaved changes."
 msgstr[0] " %d קובץ לא נשמר. סגירת Picard יגרום לאבדן כל השינויים שלא נשמרו."
 msgstr[1] "%d קבצים לא נשמרו. סגירת Picard יגרום לאבדן כל השינויים שלא נשמרו."
+msgstr[2] "%d קבצים לא נשמרו. סגירת Picard יגרום לאבדן כל השינויים שלא נשמרו."
+msgstr[3] "%d קבצים לא נשמרו. סגירת Picard יגרום לאבדן כל השינויים שלא נשמרו."
 
 #: picard/ui/mainwindow.py:176
 msgid "&Quit Picard"
@@ -792,7 +808,7 @@ msgstr "Picard \"מקשיב לפִּתְחָה זו בכדי להשתלב עם �
 #: picard/ui/mainwindow.py:239
 #, python-format
 msgid " Listening on port %(port)d "
-msgstr "מאזין בפִּתְחָה %(port)d "
+msgstr "מאזין לפִּתְחָה %(port)d "
 
 #: picard/ui/mainwindow.py:295
 msgid "Submission Error"
@@ -802,11 +818,11 @@ msgstr "שגיאה הַגָּשָׁה"
 msgid ""
 "You need to configure your AcoustID API key before you can submit "
 "fingerprints."
-msgstr "נדרש להגדיר מפתח API עבור AcoustID לפני שתוכל לשלוח טביעות אצבע."
+msgstr "נדרש להגדיר מפתח API ל AcoustID לפני שיתאפשר למסור טביעות אצבע."
 
 #: picard/ui/mainwindow.py:301
 msgid "&Options..."
-msgstr "...א&פשרויות"
+msgstr "א&פשרויות‮..."
 
 #: picard/ui/mainwindow.py:305
 msgid "&Cut"
@@ -818,27 +834,27 @@ msgstr "ה&דבק"
 
 #: picard/ui/mainwindow.py:315
 msgid "&Help..."
-msgstr "...ע&זרה"
+msgstr "ע&זרה‮..."
 
 #: picard/ui/mainwindow.py:319
 msgid "&About..."
-msgstr "...&אודות"
+msgstr "&אודות‮..."
 
 #: picard/ui/mainwindow.py:323
 msgid "&Donate..."
-msgstr "...&תרום"
+msgstr "&תרום‮..."
 
 #: picard/ui/mainwindow.py:326
 msgid "&Report a Bug..."
-msgstr "...&דווח תקלה"
+msgstr "&דווח תקלה‮..."
 
 #: picard/ui/mainwindow.py:329
 msgid "&Support Forum..."
-msgstr "...פו&רום תמיכה"
+msgstr "פו&רום תמיכה‮..."
 
 #: picard/ui/mainwindow.py:332
 msgid "&Add Files..."
-msgstr "...הוסף &קבצים"
+msgstr "הוסף &קבצים‮‮..."
 
 #: picard/ui/mainwindow.py:333
 msgid "Add files to the tagger"
@@ -846,7 +862,7 @@ msgstr "הוסף קבצים למתייג"
 
 #: picard/ui/mainwindow.py:338
 msgid "A&dd Folder..."
-msgstr "...הו&סף תיקיה"
+msgstr "הו&סף תיקיה‮‮..."
 
 #: picard/ui/mainwindow.py:339
 msgid "Add a folder to the tagger"
@@ -862,7 +878,7 @@ msgstr "&שמור"
 
 #: picard/ui/mainwindow.py:345
 msgid "Save selected files"
-msgstr "שמור קבצים נבחרים"
+msgstr "שמור קבצים שנבחרו"
 
 #: picard/ui/mainwindow.py:351
 msgid "S&ubmit AcoustIDs"
@@ -870,7 +886,7 @@ msgstr "AcoustID ה&גש"
 
 #: picard/ui/mainwindow.py:352
 msgid "Submit acoustic fingerprints"
-msgstr " הגש טביעות אצבע שמע"
+msgstr " מסור טביעות-אצבע-שמע"
 
 #: picard/ui/mainwindow.py:356
 msgid "E&xit"
@@ -886,7 +902,7 @@ msgstr "ה&סר"
 
 #: picard/ui/mainwindow.py:363
 msgid "Remove selected files/albums"
-msgstr "הסר קבצים/אלבומים נבחרים"
+msgstr "הסר קבצים/אלבומים שנבחרו"
 
 #: picard/ui/mainwindow.py:367 picard/ui/metadatabox.py:326
 #: picard/ui/ui_cdlookup.py:54
@@ -895,7 +911,7 @@ msgstr "חפש בד&פדפן"
 
 #: picard/ui/mainwindow.py:368
 msgid "Lookup selected item on MusicBrainz website"
-msgstr "MusicBrainz חפש פריטים נבחרים באתר"
+msgstr "חפש פריטים שנבחרו באתר MusicBrainz"
 
 #: picard/ui/mainwindow.py:371
 msgid "Ctrl+Shift+L"
@@ -903,7 +919,7 @@ msgstr "Ctrl+Shift+L"
 
 #: picard/ui/mainwindow.py:374
 msgid "Search for similar albums..."
-msgstr "...חפש אלבומים דומים"
+msgstr "חפש אלבומים דומים‮..."
 
 #: picard/ui/mainwindow.py:375
 msgid "View similar releases and optionally choose a different release"
@@ -911,7 +927,7 @@ msgstr "הצג מהדורות דומות ובחר במהדורה חלופית א
 
 #: picard/ui/mainwindow.py:378
 msgid "Search for similar tracks..."
-msgstr "...חפש רצועות דומות"
+msgstr "חפש רצועות דומות‮..."
 
 #: picard/ui/mainwindow.py:379
 msgid "View similar tracks and optionally choose a different release"
@@ -940,7 +956,7 @@ msgstr "חיפוש"
 
 #: picard/ui/mainwindow.py:405 picard/ui/mainwindow.py:411
 msgid "Lookup &CD..."
-msgstr "...אַתֵר &תקליטור"
+msgstr "אַתֵר &תקליטור‮..."
 
 #: picard/ui/mainwindow.py:406
 msgid "Lookup the details of the CD in your drive"
@@ -962,7 +978,7 @@ msgstr "השתמש טביעת אצבע אודיו AcoustID כדי לזהות א�
 
 #: picard/ui/mainwindow.py:433
 msgid "Identify the file using its AcoustID audio fingerprint"
-msgstr "זהה את הקובץ תוך שימוש בטביעת אצבע שמע של AcoustID"
+msgstr "‮זהה את הקובץ בעזרת טביעת-אצבע-שמע  ‮AcoustID"
 
 #: picard/ui/mainwindow.py:435
 msgid "Ctrl+Y"
@@ -982,11 +998,11 @@ msgstr "Ctrl+U"
 
 #: picard/ui/mainwindow.py:445
 msgid "&Lookup"
-msgstr "&אתר"
+msgstr "&אַתֵר"
 
 #: picard/ui/mainwindow.py:446
 msgid "Lookup selected items in MusicBrainz"
-msgstr "MusicBrainzאתר פרטים שנבחרו ב"
+msgstr "אתר פרטים שנבחרו ב MusicBrainz"
 
 #: picard/ui/mainwindow.py:451
 msgid "Ctrl+L"
@@ -994,7 +1010,7 @@ msgstr "Ctrl+L"
 
 #: picard/ui/mainwindow.py:454
 msgid "&Info..."
-msgstr "...&מידע"
+msgstr "&מידע‮..."
 
 #: picard/ui/mainwindow.py:457
 msgid "Ctrl+I"
@@ -1018,11 +1034,11 @@ msgstr "ה&עבר קבצים"
 
 #: picard/ui/mainwindow.py:474
 msgid "Save &Tags"
-msgstr "שמור &תגיות"
+msgstr "שמור &תגים"
 
 #: picard/ui/mainwindow.py:479
 msgid "Tags From &File Names..."
-msgstr "...תגיות מ&שמות קבצים"
+msgstr "תגים מ&שמות קבצים‮..."
 
 #: picard/ui/mainwindow.py:483
 msgid "&Open My Collections in Browser"
@@ -1107,12 +1123,12 @@ msgstr "כל סוגי התבניות הנתמכות"
 #: picard/ui/mainwindow.py:774
 #, python-format
 msgid "Adding multiple directories from '%(directory)s' ..."
-msgstr "...'%(directory)s' מוסיף ספריות מרובות מ"
+msgstr "מוסיף ספריות מרובות מ '%(directory)s'..."
 
 #: picard/ui/mainwindow.py:779
 #, python-format
 msgid "Adding directory: '%(directory)s' ..."
-msgstr "  ...'%(directory)s' :מוסיף סִפְרִיָּה"
+msgstr "  מוסיף סִפְרִיָּה: '%(directory)s'..."
 
 #: picard/ui/mainwindow.py:852
 msgid "Configuration Required"
@@ -1160,6 +1176,8 @@ msgid "(different across %d item)"
 msgid_plural "(different across %d items)"
 msgstr[0] "(שונה ב %d פריט)"
 msgstr[1] "(שונה ב %d פריטים)"
+msgstr[2] "(שונה ב %d פריטים)"
+msgstr[3] "(שונה ב %d פריטים)"
 
 #: picard/ui/metadatabox.py:92
 #, python-format
@@ -1167,6 +1185,8 @@ msgid "(missing from %d item)"
 msgid_plural "(missing from %d items)"
 msgstr[0] "(חסר מפריט %d)"
 msgstr[1] "(חסרים מ %d פריטים)"
+msgstr[2] "(חסרים מ %d פריטים)"
+msgstr[3] "(חסרים מ %d פריטים)"
 
 #: picard/ui/metadatabox.py:182
 msgid "metadata view"
@@ -1178,7 +1198,7 @@ msgstr "מציג תגים מקוריים וחדשים עבור הקבצים שנ
 
 #: picard/ui/metadatabox.py:185
 msgid "Tag"
-msgstr "תגית"
+msgstr "תג"
 
 #: picard/ui/metadatabox.py:185
 msgid "Original Value"
@@ -1190,7 +1210,7 @@ msgstr "ערך חדש"
 
 #: picard/ui/metadatabox.py:209
 msgid "Add New Tag..."
-msgstr "...הוסף תג חדש"
+msgstr "הוסף תג חדש‮..."
 
 #: picard/ui/metadatabox.py:211
 msgid "Show Changes First"
@@ -1210,7 +1230,7 @@ msgstr "Alt+Shift+R"
 
 #: picard/ui/metadatabox.py:302
 msgid "Edit..."
-msgstr "...ערוך"
+msgstr "ערוך‮..."
 
 #: picard/ui/metadatabox.py:307
 msgid "Add to 'Preserve Tags' List"
@@ -1225,13 +1245,15 @@ msgid "Use Original Value"
 msgid_plural "Use Original Values"
 msgstr[0] "השתמש בערך מקורי"
 msgstr[1] "השתמש בערכים מקוריים"
+msgstr[2] "השתמש בערכים מקוריים"
+msgstr[3] "השתמש בערכים מקוריים"
 
 #: picard/ui/passworddialog.py:34
 #, python-format
 msgid ""
 "The server %s requires you to login. Please enter your username and "
 "password."
-msgstr "השרת %s דורש פרטי הזדהות. נא הזן שם משתמש וסיסמה."
+msgstr "השרת %s דורש פרטי הזדהות. להתחבר נא הזן שם משתמש וסיסמה."
 
 #: picard/ui/passworddialog.py:54
 #, python-format
@@ -1247,7 +1269,7 @@ msgstr "שם קובץ"
 #: picard/ui/ui_options_cdlookup.py:38
 #: picard/ui/ui_options_cdlookup_select.py:45
 msgid "CD Lookup"
-msgstr "אתר תקליטור"
+msgstr "אַתֵר תקליטור"
 
 #: picard/ui/ui_cdlookup.py:52
 msgid "The following releases on MusicBrainz match the CD:"
@@ -1263,7 +1285,7 @@ msgstr "&בטל"
 
 #: picard/ui/ui_edittagdialog.py:89
 msgid "Edit Tag"
-msgstr "ערוך תגית"
+msgstr "ערוך תג"
 
 #: picard/ui/ui_edittagdialog.py:90
 msgid "Edit value"
@@ -1279,7 +1301,7 @@ msgstr "הסר ערך"
 
 #: picard/ui/ui_infodialog.py:59
 msgid "A&rtwork"
-msgstr "תמונת &עתיפה"
+msgstr "תמונת &עטיפה"
 
 #: picard/ui/ui_infostatus.py:91 picard/ui/ui_provider_options_caa.py:79
 #: picard/ui/ui_provider_options_local.py:50
@@ -1296,11 +1318,11 @@ msgstr "אפשרויות מתקדמות"
 
 #: picard/ui/ui_options_advanced.py:103
 msgid "Recursively add files and folders from directory"
-msgstr "הוסף בנסיגה קבצים ותיקיות מספריות"
+msgstr "הוסף רֵקוּרְסִיבִית קבצים ותיקיות מספריות"
 
 #: picard/ui/ui_options_advanced.py:104
 msgid "Ignore track duration difference under this number of seconds"
-msgstr "התעלם מהפרש במשך הרצועה במספר שניות שלהלן"
+msgstr "התעלם מפער באורך הרצועה במספר שניות שלהלן"
 
 #: picard/ui/ui_options_advanced.py:105
 msgid "Ignore file paths matching the following regular expression:"
@@ -1313,7 +1335,7 @@ msgstr "התעלם מקבצים מוסתרים"
 #: picard/ui/ui_options_advanced.py:107
 msgid ""
 "Ignore the following tracks when determining whether a release is complete"
-msgstr "התעלם מהרצועות הבאות בעת קביעה האם מהדורה הושלמה"
+msgstr "בקביעה האם מהדורה הושלמה, התעלם מהרצועות הבאות "
 
 #: picard/ui/ui_options_advanced.py:108
 msgid "Video tracks"
@@ -1333,7 +1355,7 @@ msgstr "רצועות שקט"
 
 #: picard/ui/ui_options_cdlookup.py:39
 msgid "CD-ROM device to use for lookups:"
-msgstr "התקן תקליטורים המשמש לחיפושים:"
+msgstr "כונן תקליטורים לחיפוש:"
 
 #: picard/ui/ui_options_cdlookup_select.py:46
 msgid "Default CD-ROM drive to use for lookups:"
@@ -1345,7 +1367,7 @@ msgstr "מיקום"
 
 #: picard/ui/ui_options_cover.py:87
 msgid "Embed cover images into tags"
-msgstr "הטמע את תמונות העטיפה בתגיות"
+msgstr "שבץ תמונות עטיפה בתגים"
 
 #: picard/ui/ui_options_cover.py:88
 msgid "Only embed a front image"
@@ -1357,15 +1379,15 @@ msgstr "שמור תמונות עטיפה כקבצים נפרדים"
 
 #: picard/ui/ui_options_cover.py:90
 msgid "Use the following file name for images:"
-msgstr "לתמונות, השתמש בשם הקובץ הבא:"
+msgstr "השתמש בשם הקובץ הבא לשמירת תמונות:"
 
 #: picard/ui/ui_options_cover.py:91
 msgid "Overwrite the file if it already exists"
-msgstr "שכתב קובץ במידה והוא כבר קיים"
+msgstr "שכתב קובץ קיים"
 
 #: picard/ui/ui_options_cover.py:92
 msgid "Cover Art Providers"
-msgstr "ספקי תמונת עטיפה"
+msgstr "מקורות לתמונת עטיפה"
 
 #: picard/ui/ui_options_cover.py:93
 msgid "Reorder Priority: "
@@ -1381,15 +1403,15 @@ msgstr "העבר פריטים שנבחרו מטה"
 
 #: picard/ui/ui_options_fingerprinting.py:73
 msgid "Audio Fingerprinting"
-msgstr "טביעת-אצבע שמע"
+msgstr "טביעת-אצבע-שמע"
 
 #: picard/ui/ui_options_fingerprinting.py:74
 msgid "Do not use audio fingerprinting"
-msgstr "אל תשתמש בטביעת-אצבע שמע"
+msgstr "אל תשתמש בטביעת-אצבע-שמע"
 
 #: picard/ui/ui_options_fingerprinting.py:75
 msgid "Use AcoustID"
-msgstr "השתמש ב AcoustID"
+msgstr "‮השתמש ב ‭AcoustID"
 
 #: picard/ui/ui_options_fingerprinting.py:76
 msgid "AcoustID Settings"
@@ -1397,7 +1419,7 @@ msgstr "AcoustID הגדרות"
 
 #: picard/ui/ui_options_fingerprinting.py:77
 msgid "Ignore existing AcoustID fingerprints"
-msgstr "התעלם מטביעות אצבע AcoustID קימות"
+msgstr "‮התעלם מטביעות אצבע ‮קימות ב ‭     AcoustID"
 
 #: picard/ui/ui_options_fingerprinting.py:78
 msgid "Fingerprint calculator:"
@@ -1406,11 +1428,11 @@ msgstr "מחשבון טביעת אצבע:"
 #: picard/ui/ui_options_fingerprinting.py:79
 #: picard/ui/ui_options_interface.py:130 picard/ui/ui_options_renaming.py:162
 msgid "Browse..."
-msgstr "...דפדף"
+msgstr "דפדף‮..."
 
 #: picard/ui/ui_options_fingerprinting.py:80
 msgid "Download..."
-msgstr "...הורד"
+msgstr "הורד‮..."
 
 #: picard/ui/ui_options_fingerprinting.py:81
 msgid "API key:"
@@ -1418,15 +1440,15 @@ msgstr "מפתח API:"
 
 #: picard/ui/ui_options_fingerprinting.py:82
 msgid "Get API key..."
-msgstr "...API קבל מפתח"
+msgstr "‮קבל מפתח ‭...API"
 
 #: picard/ui/options/folksonomy.py:28 picard/ui/ui_options_folksonomy.py:102
 msgid "Folksonomy Tags"
-msgstr "תגים פולקסונומיות"
+msgstr "תגים פולקסונומים"
 
 #: picard/ui/ui_options_folksonomy.py:103
 msgid "Ignore tags:"
-msgstr "התעלם תגים:"
+msgstr "התעלם מתגים:"
 
 #: picard/ui/ui_options_folksonomy.py:104
 msgid "Only use my tags"
@@ -1440,7 +1462,7 @@ msgstr "השתמש בתגי אמן האלבום אם לא נמצאו תגים ע
 
 #: picard/ui/ui_options_folksonomy.py:106
 msgid "Minimal tag usage:"
-msgstr "שימוש מזערי תגים:"
+msgstr "שימוש תגים מזערי:"
 
 #: picard/ui/ui_options_folksonomy.py:107 picard/ui/ui_options_matching.py:71
 #: picard/ui/ui_options_matching.py:72 picard/ui/ui_options_matching.py:73
@@ -1453,7 +1475,7 @@ msgstr "מספר תגים מירבי:"
 
 #: picard/ui/ui_options_folksonomy.py:109
 msgid "Join multiple tags with:"
-msgstr "אחד ריבוי תגיו עם:"
+msgstr "אחד ריבוי תגים בתו:"
 
 #: picard/ui/ui_options_folksonomy.py:110
 msgid " / "
@@ -1465,7 +1487,7 @@ msgstr ", "
 
 #: picard/ui/ui_options_general.py:79
 msgid "MusicBrainz Server"
-msgstr "MusicBrainz שרת"
+msgstr "‮שרת ‭MusicBrainz"
 
 #: picard/ui/ui_options_general.py:80 picard/ui/ui_options_network.py:110
 msgid "Port:"
@@ -1477,15 +1499,15 @@ msgstr "כתובת שרת:"
 
 #: picard/ui/options/general.py:87 picard/ui/ui_options_general.py:82
 msgid "MusicBrainz Account"
-msgstr "MusicBrainz חשבון"
+msgstr "‮חשבון ‭MusicBrainz"
 
 #: picard/ui/ui_options_general.py:83
 msgid "Log in"
-msgstr "כניסה למערכת"
+msgstr "התחבר למערכת"
 
 #: picard/ui/ui_options_general.py:84
 msgid "Log out"
-msgstr "יציאה מהמערכת"
+msgstr "התנתק מהמערכת"
 
 #: picard/ui/options/general.py:32 picard/ui/ui_options_general.py:85
 msgid "General"
@@ -1493,11 +1515,11 @@ msgstr "כללי"
 
 #: picard/ui/ui_options_general.py:86
 msgid "Automatically scan all new files"
-msgstr "סרוק אוטומטית את כל הקבצים החדשים"
+msgstr "סרוק אוטומטית קבצים החדשים"
 
 #: picard/ui/ui_options_general.py:87
 msgid "Ignore MBIDs when loading new files"
-msgstr "התעלם מ MBIDs בטעינה של קבצים חדשים"
+msgstr "‮בטעינת קבצים חדשים, התעלם מ ‭MBIDs"
 
 #: picard/ui/ui_options_interface.py:123
 msgid "Miscellaneous"
@@ -1505,11 +1527,11 @@ msgstr "שונות"
 
 #: picard/ui/ui_options_interface.py:124
 msgid "Show text labels under icons"
-msgstr "הצג תוויות טקסט מתחת צלמיות"
+msgstr "הצג תוויות טקסט מתחת לצלמיות"
 
 #: picard/ui/ui_options_interface.py:125
 msgid "Allow selection of multiple directories"
-msgstr "אפשר בחירת תיקיות מרובות"
+msgstr "אפשר בחירת ספריות מרובות"
 
 #: picard/ui/ui_options_interface.py:126
 msgid "Use builtin search rather than looking in browser"
@@ -1525,15 +1547,15 @@ msgstr "הצג תיבת דו-שיח לאישור לשינויים שלא נשמ�
 
 #: picard/ui/ui_options_interface.py:129
 msgid "Begin browsing in the following directory:"
-msgstr "התחל עיון מהסִפְרִיָּה הבאה:"
+msgstr "‮התחל עיון מהסִפְרִיָּה הבאה‭:"
 
 #: picard/ui/ui_options_interface.py:131
 msgid "User interface language:"
-msgstr "שפת מנשק משתמש:"
+msgstr "שפת ממשק משתמש:"
 
 #: picard/ui/ui_options_interface.py:132
 msgid "Customize Action Toolbar"
-msgstr "התאם אישית סרגל כלים 'פעולה'"
+msgstr "התאם אישית סרגל כלים פעולה"
 
 #: picard/ui/ui_options_interface.py:133
 msgid "Add a new button to Toolbar"
@@ -1577,11 +1599,11 @@ msgstr "הקבלה מזערית בחיפושי אשכול:"
 
 #: picard/ui/options/metadata.py:29 picard/ui/ui_options_metadata.py:97
 msgid "Metadata"
-msgstr "מֵטָא דָאטָה"
+msgstr "מטה-נתונים"
 
 #: picard/ui/ui_options_metadata.py:98
 msgid "Translate artist names to this locale where possible:"
-msgstr "תרגם שמות של אמנים למיקום זה במידת האפשר:"
+msgstr "‮תרגם שמות אמנים לשפה זו ככל שיתאפשר‭:"
 
 #: picard/ui/ui_options_metadata.py:99
 msgid "Use standardized artist names"
@@ -1589,7 +1611,7 @@ msgstr "השתמש בשמות אמן מְתוּקנָנים"
 
 #: picard/ui/ui_options_metadata.py:100
 msgid "Convert Unicode punctuation characters to ASCII"
-msgstr "המר תווי פיסוק Unicode ל ASCII"
+msgstr "‮המר תווי פיסוק ‭Unicode ל ASCII"
 
 #: picard/ui/ui_options_metadata.py:101
 msgid "Use release relationships"
@@ -1601,7 +1623,7 @@ msgstr "השתמש בקשרי רצוע"
 
 #: picard/ui/ui_options_metadata.py:103
 msgid "Use folksonomy tags as genre"
-msgstr "השתמש פולקסונומיה בתור סִגְנוֹן"
+msgstr "השתמש בפולקסונומיה בתור סִגְנוֹן"
 
 #: picard/ui/ui_options_metadata.py:104
 msgid "Custom Fields"
@@ -1665,7 +1687,7 @@ msgstr "פעולה"
 
 #: picard/ui/ui_options_plugins.py:132
 msgid "Install plugin..."
-msgstr "...התקן מִתְקָע"
+msgstr "‮התקן מִתְקָע‭..."
 
 #: picard/ui/ui_options_plugins.py:133
 msgid "Open plugin folder"
@@ -1681,7 +1703,7 @@ msgstr "פרטים"
 
 #: picard/ui/ui_options_ratings.py:45
 msgid "Enable track ratings"
-msgstr "אפשר דירוג רצועה"
+msgstr "אפשר דרוג רצועת"
 
 #: picard/ui/ui_options_ratings.py:46
 msgid ""
@@ -1689,7 +1711,7 @@ msgid ""
 "user who did the rating. That way different ratings for different users can "
 "be stored in the files. Please specify the e-mail you want to use to save "
 "your ratings."
-msgstr "פיקארד שומר את הדירוגים בצרוף כתובת דוא\"ל המשמש לזיהוי המשתמש שביצע את הדרוג. בדרך זו, נשמרים  בקבצים, דרוגים שונים עבור משתמשים שונים. נא ספק כתובת דוא\"ל לשמירת הדירוגים שלך."
+msgstr "Picard ‮שומר את הדרוג בצרוף כתובת דוא\"ל המשמש לזיהוי המשתמש שביצע את הדרוג. בדרך זו, נשמרים  בקבצים, דרוגים שונים עבור משתמשים שונים. נא ספק כתובת דוא\"ל לשמירת הדרוגים שלך."
 
 #: picard/ui/ui_options_ratings.py:47
 msgid "E-mail:"
@@ -1697,7 +1719,7 @@ msgstr "דוא\"ל:"
 
 #: picard/ui/ui_options_ratings.py:48
 msgid "Submit ratings to MusicBrainz"
-msgstr "MusicBrainzהגש דרוגים ל"
+msgstr "העבר דרוג ל MusicBrainz"
 
 #: picard/ui/ui_options_releases.py:100
 msgid "Preferred release types"
@@ -1721,7 +1743,7 @@ msgstr "מבנה מועדף להצגת תאריכי מהדורה"
 
 #: picard/ui/ui_options_renaming.py:160
 msgid "Move files when saving"
-msgstr "העבר קבצים בזמן שמירה"
+msgstr "העבר קבצים במהלך השמירה"
 
 #: picard/ui/ui_options_renaming.py:161
 msgid "Destination directory:"
@@ -1729,7 +1751,7 @@ msgstr "סִפְרִיָּת יעד:"
 
 #: picard/ui/ui_options_renaming.py:163
 msgid "Move additional files (case insensitive):"
-msgstr "העבר קבצים נוספים (לא תלוית ראשיות):"
+msgstr "‮העבר קבצים נוספים (לא תלוי רישיות)‭:"
 
 #: picard/ui/ui_options_renaming.py:164
 msgid "Delete empty directories"
@@ -1741,15 +1763,15 @@ msgstr "שנה שמות קובץ בשמירה"
 
 #: picard/ui/ui_options_renaming.py:166
 msgid "Replace non-ASCII characters"
-msgstr "החלף תווים שאינם ASCII"
+msgstr "‮החלף תווים שאינם ‭ASCII"
 
 #: picard/ui/ui_options_renaming.py:167
 msgid "Windows compatibility"
-msgstr "תאימות Windows "
+msgstr "‮תאימות ל ‭Windows "
 
 #: picard/ui/ui_options_renaming.py:168
 msgid "Name files like this"
-msgstr "תן שם לקבצים באופן זה"
+msgstr "כנה קבצים באופן הבא"
 
 #: picard/ui/ui_options_renaming.py:175
 msgid "Examples"
@@ -1757,7 +1779,7 @@ msgstr "דוגמאות"
 
 #: picard/ui/ui_options_script.py:93
 msgid "Tagger Script(s)"
-msgstr "סקריפט(י) מתייג"
+msgstr "סקריפט(ים) מתייג"
 
 #: picard/ui/ui_options_script.py:94 picard/ui/ui_options_script.py:95
 msgid "Add new script"
@@ -1773,7 +1795,7 @@ msgstr "כתוב תגים לקבצים"
 
 #: picard/ui/ui_options_tags.py:149
 msgid "Preserve timestamps of tagged files"
-msgstr "שמר חותמות זמן של קבצים מתוייגים"
+msgstr "שמר חותמות זמן בקבצים מתוייגים"
 
 #: picard/ui/ui_options_tags.py:150
 msgid "Before Tagging"
@@ -1785,16 +1807,16 @@ msgstr "מחק תגים קיימים"
 
 #: picard/ui/ui_options_tags.py:152
 msgid "Remove ID3 tags from FLAC files"
-msgstr "הסר תגי ID3 מקבצי FLAC"
+msgstr "‮הסר תגי 3DI מקבצי CALF"
 
 #: picard/ui/ui_options_tags.py:153
 msgid "Remove APEv2 tags from MP3 files"
-msgstr "הסר תגי APEv2 מקבצי MP3"
+msgstr "‮הסר תגי 2vEPA מקבצי 3PM"
 
 #: picard/ui/ui_options_tags.py:154
 msgid ""
 "Preserve these tags from being cleared or overwritten with MusicBrainz data:"
-msgstr "MusicBrainz :אל תנקה או תחליף תגים אלה בנתונים מ"
+msgstr "אל תנקה או תחליף תגים אלה בנתונים מ: MusicBrainz"
 
 #: picard/ui/ui_options_tags.py:155
 msgid "Tags are separated by commas, and are case-sensitive."
@@ -1806,7 +1828,7 @@ msgstr "תאימות תגים"
 
 #: picard/ui/ui_options_tags.py:157
 msgid "ID3v2 Version"
-msgstr "גירסת ID3v2"
+msgstr "ג‮ירסת ‭ID3v2"
 
 #: picard/ui/ui_options_tags.py:158
 msgid "2.4"
@@ -1818,7 +1840,7 @@ msgstr "2.3"
 
 #: picard/ui/ui_options_tags.py:160
 msgid "ID3v2 Text Encoding"
-msgstr "קידוד טקסט ID3v2"
+msgstr "‮קידוד טקסט ‭ID3v2"
 
 #: picard/ui/ui_options_tags.py:161
 msgid "UTF-8"
@@ -1834,7 +1856,7 @@ msgstr "ISO-8859-1"
 
 #: picard/ui/ui_options_tags.py:164
 msgid "Join multiple ID3v2.3 tags with:"
-msgstr "אחד תגי מולטימדיה ID3v2.3 עם:"
+msgstr "אחד תגי מולטימדיה ID3v2.3 בתו:"
 
 #: picard/ui/ui_options_tags.py:165
 msgid ""
@@ -1845,7 +1867,7 @@ msgstr "</ h> <body> <body> <p> ברירת המחדל היא '/' בכדי לשמ
 
 #: picard/ui/ui_options_tags.py:166
 msgid "Also include ID3v1 tags in the files"
-msgstr "כלול בקבצים גם תגי ID3V1"
+msgstr "‮כלול בקבצים גם תגי ‭ID3v1"
 
 #: picard/ui/ui_passworddialog.py:60
 msgid "Authentication required"
@@ -1853,11 +1875,11 @@ msgstr "נדרשת הזדהות"
 
 #: picard/ui/ui_provider_options_caa.py:80
 msgid "Download only cover art images matching selected types"
-msgstr "הורד רק קובצי תמונת עטיפה התואמים סוגים נבחרים"
+msgstr "הורד רק קובצי תמונת עטיפה התואמים לסוגים שנבחרו"
 
 #: picard/ui/ui_provider_options_caa.py:81
 msgid "Select types..."
-msgstr "...בחר סוגים"
+msgstr "בחר סוגים‮..."
 
 #: picard/ui/ui_provider_options_caa.py:82
 msgid "Only use images of the following size:"
@@ -1875,18 +1897,18 @@ msgstr "הורד תמונות שאושרו בלבד"
 msgid ""
 "Use the first image type as the filename. This will not change the filename "
 "of front images."
-msgstr "שתמש בסוג התמונה הראשון כשם הקובץ. פעולה זו לא תשנה את שם הקובץ של התמונות הקדמיות."
+msgstr "ה‮שתמש בסוג התמונה הראשון כשם הקובץ. פעולה זו לא תשנה את שם הקובץ של התמונות הקדמיות‭."
 
 #: picard/ui/ui_provider_options_local.py:51
 msgid "Local cover art files match the following regular expression:"
-msgstr "קבצי תמונת עטיפה מקומיים תואמים את הביטויים הסדירים הבאים: "
+msgstr "קובצי תמונת עטיפה מקומיים תואמים את הביטוי הסדיר הבא: "
 
 #: picard/ui/ui_provider_options_local.py:53
 msgid ""
 "First group in the regular expression, if any, will be used as type, ie. "
 "cover-back-spine.jpg will be set as types Back + Spine. If no type is found,"
 " it will default to Front type."
-msgstr "הקבוצה הראשונה בביטוי סדיר (regex), אם קיים, ישמש כסוג, כלומר, cover-back-spine.jpg יוגדר כסוגים Back + Spine. אם לא נמצא סוג, הוא יהיה ברירת המחדל לסוג  Front."
+msgstr "הקבוצה הראשונה בביטוי סדיר (regex), ככל שקיים, ישמש כסוג, כלומר, cover-back-spine.jpg יוגדר כסוגים Back + Spine. אם לא נמצא סוג, ברירת המחדל לסוג יהיה  Front."
 
 #: picard/ui/ui_tagsfromfilenames.py:51
 msgid "Convert File Names to Tags"
@@ -1951,7 +1973,7 @@ msgid ""
 "from <a href=\"www.flaticon.com\">www.flaticon.com</a>\n"
 "</small></p>\n"
 "<p align=\"center\"><strong>Official website</strong><br/><a href=\"%(picard-doc-url)s\">%(picard-doc-url)s</a></p>\n"
-msgstr "<p align=\"center\"><span style=\"font-size:15px;font-weight:bold;\">MusicBrainz Picard</span><br/>Version %(version)s</p><p align=\"center\"><small>%(third_parties_versions)s</small></p><p align=\"center\"><strong>Supported formats</strong><br/>%(formats)s</p><p align=\"center\"><strong>Please donate</strong><br/>תודה לך על השימוש ב- Picard .Picard מתבסס על מסד הנתונים MusicBrainz, המופעל על ידי ממסד MetaBrainz בעזרת אלפי מתנדבים. אם אתה אוהב את היישום הזה שקול בבקשה לתרום ל MetaBrainz על מנת להבטיח המשכיות השירות.</p><p align=\"center\"><a href=\"%(picard-donate-url)s\">Donate now!</a></p><p align=\"center\"><strong>Credits</strong><br/><small>Copyright © 2004-2017 Robert Kaye, Lukáš Lalinský, Laurent Monin, Sambhav Kothari and others%(translator-credits)s</small></p><p align=\"center\"><small>Icons made by Sambhav Kothari <sambhavs.email@gmail.com>and <a href=\"http://www.flaticon.com/authors/madebyoliver\">Madebyoliver</a>,<a href=\"http://www.flaticon.com/authors/pixel-buddha\">Pixel Buddha</a>,<a href=\"http://www.flaticon.com/authors/nikita-golubev\">Nikita Golubev</a>,<a href=\"http://www.flaticon.com/authors/maxim-basinski\">Maxim Basinski</a>from <a href=\"www.flaticon.com\">www.flaticon.com</a></small></p><p align=\"center\"><strong>Official website</strong><br/><a href=\"%(picard-doc-url)s\">%(picard-doc-url)s</a></p>\n"
+msgstr "<p align=\"center\"><span style=\"font-size:15px;font-weight:bold;\">MusicBrainz Picard</span><br/>גרסה <span dir=\"ltr\">%(version)s</span></p>\n<p align=\"center\"><small>\n%(third_parties_versions)s\n</small></p><p align=\"center\"><strong>תבניות נתמכות </strong><br/>%(formats)s</p>\n<p align=\"center\"><strong>תרום בבקשה</strong><br/>\nמודים לכם על השימוש ב <span dir=\"ltr\">Picard</span> . <span dir=\"ltr\">Picard</span> מתבסס על מסד הנתונים של <span dir=\"ltr\">MusicBrainz</span>, המופעל על ידי ממסד <span dir=\"ltr\">MetaBrainz</span> בעזרתם של אלפי מתנדבים. אם אתם אוהבים את היישום הזה, שקולו בבקשה לתרום ל <span dir=\"ltr\">MetaBrainz</span> על מנת להבטיח המשכיות השירות.\n</p><p align=\"center\"><a href=\"%(picard-donate-url)s\">תרום כעת<span dir=\"ltr\">!</span></a></p>\n<p align=\"center\"><strong>מִזְכֶּה</strong><br/>\n<small>זכויות יוצרים © <span dir=\"ltr\">Robert Kaye, Lukáš Lalinský, Laurent Monin, Sambhav Kothari ואחרים%(translator-credits)s</span> 2004-2017 </small></p>\n<p align=\"center\"><small> <span dir=\"ltr\">Sambhav Kothari <sambhavs.email@gmail.com></span> צלמיות על ידי \nו <a href=\"http://www.flaticon.com/authors/madebyoliver\">Madebyoliver</a>,\n<a href=\"http://www.flaticon.com/authors/pixel-buddha\">Pixel Buddha</a>,\n<a href=\"http://www.flaticon.com/authors/nikita-golubev\">Nikita Golubev</a>,\n<a href=\"http://www.flaticon.com/authors/maxim-basinski\">Maxim Basinski</a>\nמ <a href=\"www.flaticon.com\">www.flaticon.com</a>\n</small></p>\n<p align=\"center\"><strong>אתר רשמי</strong><br/><a href=\"%(picard-doc-url)s\">%(picard-doc-url)s</a></p>\n"
 
 #: picard/ui/options/advanced.py:28
 msgid "Advanced"
@@ -2053,7 +2075,7 @@ msgstr "שמור"
 
 #: picard/ui/options/interface.py:83
 msgid "Submit AcoustIDs"
-msgstr "AcoustIDs הגש"
+msgstr "‮מסור ‭AcoustIDs"
 
 #: picard/ui/options/interface.py:87
 msgid "Open in Player"
@@ -2061,7 +2083,7 @@ msgstr "פתח בנגן"
 
 #: picard/ui/options/interface.py:91
 msgid "Lookup CD..."
-msgstr "אתר תקליטור..."
+msgstr "אַתֵר תקליטור‮..."
 
 #: picard/ui/options/interface.py:130
 msgid "System default"
@@ -2075,7 +2097,7 @@ msgstr "שפה השתנתה"
 msgid ""
 "You have changed the interface language. You have to restart Picard in order"
 " for the change to take effect."
-msgstr "שפת מנשק המשתמש השתנתה, על מנת שהשנויים יכנסו לתוקף, יש לאתחל את Picard."
+msgstr "שפת ממשק המשתמש השתנתה, על מנת שהשנויים יכנסו לתוקף, יש לאתחל את Picard."
 
 #: picard/ui/options/interface.py:210
 msgid "Drag and Drop to re-order"
@@ -2083,11 +2105,11 @@ msgstr "גרור ושחרר למיון"
 
 #: picard/ui/options/interface.py:212 picard/ui/options/interface.py:281
 msgid "label"
-msgstr "מותג"
+msgstr "חברת תקליטים"
 
 #: picard/ui/options/matching.py:28
 msgid "Matching"
-msgstr "תואם"
+msgstr "התאמה"
 
 #: picard/ui/options/network.py:28
 msgid "Network"
@@ -2244,7 +2266,7 @@ msgstr "&#160;(<a href='https://musicbrainz.org/doc/Indexed_Search_Syntax'>Synta
 
 #: picard/ui/searchdialog/__init__.py:261
 msgid "<strong>Loading...</strong>"
-msgstr "<strong>...טוען</strong>"
+msgstr "<strong>טוען‮...</strong>"
 
 #: picard/ui/searchdialog/__init__.py:292
 msgid "Retry"
@@ -2506,7 +2528,7 @@ msgstr "רמיקס"
 
 #: picard/util/tags.py:55
 msgid "MusicBrainz Recording Id"
-msgstr "מזהה הקלטה MusicBrainz"
+msgstr "‮מזהה הקלטה ‭MusicBrainz"
 
 #: picard/util/tags.py:56
 msgid "MusicBrainz Track Id"
@@ -2518,7 +2540,7 @@ msgstr "מזהה מהדורה  MusicBrainz"
 
 #: picard/util/tags.py:58
 msgid "MusicBrainz Artist Id"
-msgstr "מזהה אמן MusicBrainz"
+msgstr "‮מזהה אמן ‭MusicBrainz"
 
 #: picard/util/tags.py:59
 msgid "MusicBrainz Release Artist Id"
