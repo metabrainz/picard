@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: picard 2.0.0.dev6\n"
+"Project-Id-Version: picard 2.0.0.dev7\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2018-04-02 17:15+0200\n"
+"POT-Creation-Date: 2018-05-29 09:44+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -301,6 +301,10 @@ msgstr ""
 
 #: picard/const/languages.py:70
 msgid "Swedish"
+msgstr ""
+
+#: picard/const/languages.py:75
+msgid "Traditional Chinese"
 msgstr ""
 
 #: picard/coverart/__init__.py:98
