@@ -198,7 +198,7 @@ class Metadata(dict):
             score = 0.0
             other_score = type_scores.get('Other', 0.5)
             if 'release-group' in release and 'primary-type' in release['release-group']:
-                types_found = release['release-group']['primary-type']
+                types_found = [release['release-group']['primary-type']]
                 if 'secondary-types' in release['release-group']:
                     types_found += release['release-group']['secondary-types']
                 for release_type in types_found:
