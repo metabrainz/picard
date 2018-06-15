@@ -638,7 +638,6 @@ args['data_files'] = [
     ('share/icons/hicolor/256x256/apps', ['resources/images/256x256/picard.png']),
     ('share/icons/hicolor/scalable/apps', ['resources/img-src/picard.svg']),
     ('share/applications', ('picard.desktop',)),
-    'scripts/picard.in',
 ]
 
 setup(**args)
