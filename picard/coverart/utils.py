@@ -39,4 +39,5 @@ def translate_caa_type(name):
     if name == 'unknown':
         return _(CAA_TYPES_TR[name])
     else:
-        return gettext_attr(CAA_TYPES_TR[name], "cover_art_type")
+        title = CAA_TYPES_TR.get(name, name)
+        return gettext_attr(title, "cover_art_type")
