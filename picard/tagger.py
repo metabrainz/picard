@@ -81,7 +81,7 @@ from picard.webservice.api_helpers import MBAPIHelper, AcoustIdAPIHelper
 from picard.ui.searchdialog.artist import ArtistSearchDialog
 from picard.ui.searchdialog.track import TrackSearchDialog
 from picard.ui.searchdialog.album import AlbumSearchDialog
-
+from picard.util.checkupdate import UpdateCheckManager
 
 
 class Tagger(QtWidgets.QApplication):
@@ -217,6 +217,10 @@ class Tagger(QtWidgets.QApplication):
         self.window = MainWindow()
         self.exit_cleanup = []
         self.stopping = False
+
+        # Load release version information
+        self.updatecheckmanager = UpdateCheckManager()
+        self.updatecheckmanager.query_available_updates()
 
     def register_cleanup(self, func):
         self.exit_cleanup.append(func)

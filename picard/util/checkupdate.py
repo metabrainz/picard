@@ -17,66 +17,104 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-from picard import (PICARD_VERSION_STR_SHORT, log)
-from picard.const import PICARD_URLS
+from picard import tagger
+from picard import (PICARD_VERSION, PICARD_VERSION_STR_SHORT, log, version_from_string, version_to_string)
 import picard.util.webbrowser2 as wb2
+from PyQt5 import QtCore
 from PyQt5.QtWidgets import QMessageBox
-#from PyQt5 import QtCore, QtGui, QtWidgets
-#from PyQt5.QtGui import QIcon
-import urllib.request
+from picard.util import load_json, compare_version_tuples
+from functools import partial
 import re
 
-_RE_TEST = r'.*infoText\s*=\s*\"v([0-9\.]*)'
 
-_NOTICE_TEXT = '''
-A new version of Picard is available.
-
-Your version: v%s
-New version: v%s
-
-Would you like to download the new version?
-'''
-
-latest_version = ""
-''' Use a module-level variable to store the latest release information
-    to avoid multiple calls to the web site in a single Picard session. '''
+# Used to strip leading and trailing text from version string.
+_RE_CLEAN_VERSION = re.compile('^[^0-9]*(.*)[^0-9]*$', re.IGNORECASE)
 
 
-def get_latest_version_number():
-    '''Scrapes the Picard home page to extract the latest release version number.'''
-    global latest_version
-    if not latest_version:
-        try:
-            page = urllib.request.urlopen(PICARD_URLS['home'])
-            matches = re.findall(_RE_TEST, page.read().decode('utf-8'), re.M | re.I)
-            if matches:
-                latest_version = matches[0]
-            else:
-                log.warning("Unable to get the latest version information from %s" % PICARD_URLS['home'])
-        except Exception as e:
-            log.error("Exception while getting the latest version information from %s: %s" % (PICARD_URLS['home'], e,))
-    return latest_version
+# GitHub API
+GITHUB_API = {
+    'host': 'api.github.com',
+    'port': 443,
+    'endpoint': {
+        'releases': '/repos/metabrainz/picard/releases',
+        'tags': '/repos/metabrainz/picard/git/refs/tags'
+    }
+}
 
 
-def check_update(show_always=False):
-    '''Checks if an update is available.
+class UpdateCheckManager(QtCore.QObject):
 
-    Compares the version number of the currently running instance of Picard
-    and displays a dialog box informing the user  if an update is available,
-    with an option of opening the Picard site in the browser to download the
-    update.  If there is no update available, no dialog will be shown unless
-    the "show_always" parameter has been set to True.  This allows for silent
-    checking during startup if so configured.
-    '''
-    latest_version = get_latest_version_number()
-    msg_title = "Picard Update"
-    if latest_version > PICARD_VERSION_STR_SHORT:
-        msg_text = _NOTICE_TEXT % (PICARD_VERSION_STR_SHORT, latest_version)
-        if QMessageBox.information(None, msg_title, msg_text, QMessageBox.Ok | QMessageBox.Cancel,
-                                   QMessageBox.Cancel) == QMessageBox.Ok:
-            wb2.goto("home")
-    else:
-        if show_always:
-            msg_text = "There is no update currently available.  The latest release is %s." % (
-                'v' + latest_version if latest_version else 'Unknown',)
-            QMessageBox.information(None, msg_title, msg_text, QMessageBox.Ok, QMessageBox.Ok)
+    def __init__(self):
+        super().__init__()
+
+        ''' str.key: ( str.version, ( int.major, int.minor, int.micro, str.type, int.development ), str.title, str.url ) '''
+        self._available_versions = {
+            'stable': ('', (0, 0, 0, 'dev', 0), '', ''),
+            'beta': ('', (0, 0, 0, 'dev', 0), '', ''),
+            'dev': ('', (0, 0, 0, 'dev', 0), '', ''),
+        }
+
+    def check_update(self, show_always=False, update_level='dev'):
+        '''Checks if an update is available.
+
+        Compares the version number of the currently running instance of Picard
+        and displays a dialog box informing the user  if an update is available,
+        with an option of opening the Picard site in the browser to download the
+        update.  If there is no update available, no dialog will be shown unless
+        the "show_always" parameter has been set to True.  This allows for silent
+        checking during startup if so configured.
+        '''
+        msg_title = _("Picard Update")
+        if (compare_version_tuples(PICARD_VERSION, self._available_versions['stable'][1]) > 0) | (
+                    (compare_version_tuples(PICARD_VERSION, self._available_versions['beta'][1]) > 0) & (update_level == 'dev')):
+            key = 'beta' if (compare_version_tuples(self._available_versions['stable'][1],
+                                              self._available_versions['beta'][1]) > 0) & (update_level == 'dev') else 'stable'
+            msg_text = _("A new version of Picard is available.\n\nNew version: %s (%s)\n\n"
+                         "Would you like to download the new version?") % (self._available_versions[key][2],
+                                                                           self._available_versions[key][0])
+            if QMessageBox.information(None, msg_title, msg_text, QMessageBox.Ok | QMessageBox.Cancel,
+                                       QMessageBox.Cancel) == QMessageBox.Ok:
+                wb2.open(self._available_versions[key][3])
+        else:
+            if show_always:
+                msg_text = _("There is no update currently available.")
+                QMessageBox.information(None, msg_title, msg_text, QMessageBox.Ok, QMessageBox.Ok)
+
+    @property
+    def available_versions(self):
+        return self._available_versions
+
+    def query_available_updates(self, callback=None):
+        '''Gets list of releases from GitHub website api.'''
+        txt = _("Getting release information from GitHub.")
+        log.debug(txt)
+        self.tagger.webservice.get(
+            GITHUB_API['host'],
+            GITHUB_API['port'],
+            GITHUB_API['endpoint']['releases'],
+            partial(self._releases_json_loaded, callback=callback),
+            parse_response_type=None,
+            priority=True,
+            important=True
+        )
+
+    def _releases_json_loaded(self, response, reply, error, callback=None):
+        if error:
+            tagger.window.set_statusbar_message(
+                N_("Error loading releases list: %(error)s"),
+                {'error': reply.errorString()},
+                echo=log.error
+            )
+        else:
+            releases = load_json(response)
+
+            for release in releases:
+                ver = version_from_string(_RE_CLEAN_VERSION.findall(release['tag_name'])[0])
+                key = 'beta' if release['prerelease'] else 'stable'
+                if compare_version_tuples(self._available_versions[key][1], ver) > 0:
+                    temp_version = (version_to_string(ver, short=True), ver, release['name'], release['html_url'],)
+                    self._available_versions[key] = (version_to_string(ver, short=True), ver, release['name'], release['html_url'],)
+            for key in self._available_versions.keys():
+                log.debug("Version key '%s' --> %s" % (key, self._available_versions[key],))
+        if callback:
+            callback()
