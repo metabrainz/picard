@@ -22,7 +22,7 @@ from picard import (PICARD_VERSION, PICARD_VERSION_STR_SHORT, log, version_from_
 import picard.util.webbrowser2 as wb2
 from PyQt5 import QtCore
 from PyQt5.QtWidgets import QMessageBox
-from picard.util import load_json
+from picard.util import load_json, compare_version_tuples
 from functools import partial
 import re
 
@@ -65,9 +65,9 @@ class UpdateCheckManager(QtCore.QObject):
         checking during startup if so configured.
         '''
         msg_title = _("Picard Update")
-        if (compare_versions(PICARD_VERSION, self._available_versions['stable'][1]) > 0) | (
-                    (compare_versions(PICARD_VERSION, self._available_versions['beta'][1]) > 0) & (update_level == 'dev')):
-            key = 'beta' if (compare_versions(self._available_versions['stable'][1],
+        if (compare_version_tuples(PICARD_VERSION, self._available_versions['stable'][1]) > 0) | (
+                    (compare_version_tuples(PICARD_VERSION, self._available_versions['beta'][1]) > 0) & (update_level == 'dev')):
+            key = 'beta' if (compare_version_tuples(self._available_versions['stable'][1],
                                               self._available_versions['beta'][1]) > 0) & (update_level == 'dev') else 'stable'
             msg_text = _("A new version of Picard is available.\n\nNew version: %s (%s)\n\n"
                          "Would you like to download the new version?") % (self._available_versions[key][2],
@@ -111,36 +111,10 @@ class UpdateCheckManager(QtCore.QObject):
             for release in releases:
                 ver = version_from_string(_RE_CLEAN_VERSION.findall(release['tag_name'])[0])
                 key = 'beta' if release['prerelease'] else 'stable'
-                if compare_versions(self._available_versions[key][1], ver) > 0:
+                if compare_version_tuples(self._available_versions[key][1], ver) > 0:
                     temp_version = (version_to_string(ver, short=True), ver, release['name'], release['html_url'],)
                     self._available_versions[key] = (version_to_string(ver, short=True), ver, release['name'], release['html_url'],)
             for key in self._available_versions.keys():
                 log.debug("Version key '%s' --> %s" % (key, self._available_versions[key],))
         if callback:
             callback()
-
-
-def compare_versions(version1, version2):
-    '''Compare Versions
-
-    Compares two Picard version tuples to determine whether the second tuple
-    contains a higher version number than the first tuple.
-
-    Returns:  -1 if version2 is lower than version1
-               0 if version2 is the same as version1
-               1 if version2 is higher than version1
-    '''
-
-    # Create test copies that can be modified
-    test1 = list(version1)
-    test2 = list(version2)
-
-    # Set sort order for release type element
-    test1[3] = 1 if test1[3] == 'final' else 0
-    test2[3] = 1 if test2[3] == 'final' else 0
-
-    # Compare elements in order
-    for x in range(0, 5):
-        if test1[x] != test2[x]:
-            return 1 if test1[x] < test2[x] else -1
-    return 0
