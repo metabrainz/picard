@@ -218,9 +218,7 @@ class Tagger(QtWidgets.QApplication):
         self.exit_cleanup = []
         self.stopping = False
 
-        # Load release version information
         self.updatecheckmanager = UpdateCheckManager()
-        self.updatecheckmanager.query_available_updates()
 
     def register_cleanup(self, func):
         self.exit_cleanup.append(func)
