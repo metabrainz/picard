@@ -515,10 +515,10 @@ def compare_version_tuples(version1, version2):
 
     # Set sort order for release type element
     test1[3] = 1 if test1[3] == 'final' else 0
-    if test1[3] != 0:
+    if test1[3]:
         test1[4] = 0
     test2[3] = 1 if test2[3] == 'final' else 0
-    if test2[3] != 0:
+    if test2[3]:
         test2[4] = 0
 
     # Compare elements in order
