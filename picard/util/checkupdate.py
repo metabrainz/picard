@@ -17,8 +17,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-from picard import (PICARD_VERSION, PICARD_VERSION_STR_SHORT, tagger,
-                    log, version_from_string, version_to_string)
+from picard import (PICARD_VERSION, tagger, log, version_from_string, version_to_string)
 import picard.util.webbrowser2 as wb2
 from PyQt5 import QtCore
 from PyQt5.QtWidgets import QMessageBox
@@ -47,7 +46,7 @@ class UpdateCheckManager(QtCore.QObject):
     def __init__(self):
         super().__init__()
 
-        ''' str.key: ( str.version, ( int.major, int.minor, int.micro, str.type, int.development ), str.title, str.url ) '''
+        # Version tuple format:  str.key: ( str.version, ( int.major, int.minor, int.micro, str.type, int.development ), str.title, str.url )
         self._available_versions = {
             'stable': ('', (0, 0, 0, 'dev', 0), '', ''),
             'beta': ('', (0, 0, 0, 'dev', 0), '', ''),
@@ -69,7 +68,7 @@ class UpdateCheckManager(QtCore.QObject):
         Args:
             show_always: Boolean value indicating whether the results dialog
                 should be shown even when there is no update available.
-            update_level: Determines what type of updates to check.  If set to 
+            update_level: Determines what type of updates to check.  If set to
                 'final' only stable release versions are checked.  If set to
                 'dev' both beta and stable releases are checked.
             callback: Optional callback function.
@@ -83,7 +82,7 @@ class UpdateCheckManager(QtCore.QObject):
         self._show_always = show_always
         self._update_level = update_level
 
-        '''Gets list of releases from GitHub website api.'''
+        # Gets list of releases from GitHub website api.
         output_text = _("Getting release information from GitHub.")
         log.debug(output_text)
         self.tagger.webservice.get(
@@ -139,7 +138,7 @@ class UpdateCheckManager(QtCore.QObject):
                 log.debug("Version key '%s' --> %s" %
                           (key, self._available_versions[key],))
 
-        '''Display results to user.'''
+        # Display results to user.
         msg_title = _("Picard Update")
         if (compare_version_tuples(PICARD_VERSION, self._available_versions['stable'][1]) > 0) | (
                 (compare_version_tuples(PICARD_VERSION, self._available_versions['beta'][1]) > 0) & (self._update_level == 'dev')):

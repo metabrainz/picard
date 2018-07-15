@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-import sys
 import unittest
 from picard.util import compare_version_tuples
 
