@@ -31,7 +31,7 @@ import re
 _RE_CLEAN_VERSION = re.compile('^[^0-9]*(.*)[^0-9]*$', re.IGNORECASE)
 
 
-# GitHub API
+# GitHub API information
 GITHUB_API = {
     'host': 'api.github.com',
     'port': 443,
@@ -63,6 +63,20 @@ class UpdateCheckManager(QtCore.QObject):
         update.  If there is no update available, no dialog will be shown unless
         the "show_always" parameter has been set to True.  This allows for silent
         checking during startup if so configured.
+
+        Args:
+            show_always: Boolean value indicating whether the results dialog
+                should be shown even when there is no update available.
+            update_level: Determines what type of updates to check.  If set to 
+                'final' only stable release versions are checked.  If set to
+                'dev' both beta and stable releases are checked.
+            callback: Optional callback function.
+
+        Returns:
+            none.
+
+        Raises:
+            none.
         '''
         msg_title = _("Picard Update")
         if (compare_version_tuples(PICARD_VERSION, self._available_versions['stable'][1]) > 0) | (
@@ -82,6 +96,7 @@ class UpdateCheckManager(QtCore.QObject):
 
     @property
     def available_versions(self):
+        '''Provide a list of the latest version tuples for each type.'''
         return self._available_versions
 
     def query_available_updates(self, callback=None):
