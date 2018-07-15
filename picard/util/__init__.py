@@ -504,9 +504,18 @@ def compare_version_tuples(version1, version2):
     Compares two Picard version tuples to determine whether the second tuple
     contains a higher version number than the first tuple.
 
-    Returns:  -1 if version2 is lower than version1
-               0 if version2 is the same as version1
-               1 if version2 is higher than version1
+    Args:
+        version1: The first version tuple to compare.  This will be used as
+                  the base for the comparison.
+        version2: The version tuple to be compared to the base version.
+
+    Returns:
+        -1 if version2 is lower than version1
+        0 if version2 is the same as version1
+        1 if version2 is higher than version1
+
+    Raises:
+        none
     '''
 
     # Create test copies that can be modified
