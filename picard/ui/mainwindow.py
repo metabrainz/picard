@@ -148,8 +148,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     def show(self):
         self.restoreWindowState()
         super().show()
-        if config.setting['check_for_updates'] and
-                datetime.date.today().toordinal() >= config.persist['last_update_check'] + config.setting['update_check_days']:
+        if config.setting['check_for_updates'] and datetime.date.today().toordinal() >= config.persist['last_update_check'] + config.setting['update_check_days']:
             log.debug(_("Initiating start-up check for program updates."))
             self.tagger.updatecheckmanager.check_update(show_always=False, update_level='dev' if config.setting["include_beta_versions"] else 'final')
         self.metadata_box.restore_state()
