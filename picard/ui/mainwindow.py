@@ -50,7 +50,7 @@ from picard.ui.util import (
 from picard.util import icontheme, webbrowser2, throttle, thread, restore_method, checkupdate
 from picard.util.cdrom import discid, get_cdrom_drives
 from picard.plugin import ExtensionPoint
-
+import datetime
 
 ui_init = ExtensionPoint()
 
@@ -147,6 +147,9 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     def show(self):
         self.restoreWindowState()
         super().show()
+        if config.setting['check_for_updates'] and datetime.date.today().toordinal() >= config.persist['last_update_check'] + config.setting['update_check_days']:
+            log.debug(_("Initiating start-up check for program updates."))
+            self.tagger.updatecheckmanager.check_update(show_always=False, update_level='dev' if config.setting["include_beta_versions"] else 'final')
         self.metadata_box.restore_state()
 
     def closeEvent(self, event):
@@ -1067,4 +1070,4 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.paste_action.setEnabled(False)
 
     def check_for_update(self):
-        self.tagger.updatecheckmanager.check_update(show_always=True, update_level='dev')
+        self.tagger.updatecheckmanager.check_update(show_always=True, update_level='dev' if config.setting["include_beta_versions"] else 'final')

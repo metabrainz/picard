@@ -17,14 +17,14 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-from picard import tagger
-from picard import (PICARD_VERSION, PICARD_VERSION_STR_SHORT, log, version_from_string, version_to_string)
+from picard import (PICARD_VERSION, tagger, log, version_from_string, version_to_string, config)
 import picard.util.webbrowser2 as wb2
 from PyQt5 import QtCore
 from PyQt5.QtWidgets import QMessageBox
 from picard.util import load_json, compare_version_tuples
 from functools import partial
 import re
+import datetime
 
 
 # Used to strip leading and trailing text from version string.
@@ -47,14 +47,16 @@ class UpdateCheckManager(QtCore.QObject):
     def __init__(self):
         super().__init__()
 
-        ''' str.key: ( str.version, ( int.major, int.minor, int.micro, str.type, int.development ), str.title, str.url ) '''
+        # Version tuple format:  str.key: ( str.version, ( int.major, int.minor, int.micro, str.type, int.development ), str.title, str.url )
         self._available_versions = {
             'stable': ('', (0, 0, 0, 'dev', 0), '', ''),
             'beta': ('', (0, 0, 0, 'dev', 0), '', ''),
             'dev': ('', (0, 0, 0, 'dev', 0), '', ''),
         }
+        self._show_always = False
+        self._update_level = 'dev'
 
-    def check_update(self, show_always=False, update_level='dev'):
+    def check_update(self, show_always=False, update_level='dev', callback=None):
         '''Checks if an update is available.
 
         Compares the version number of the currently running instance of Picard
@@ -67,7 +69,7 @@ class UpdateCheckManager(QtCore.QObject):
         Args:
             show_always: Boolean value indicating whether the results dialog
                 should be shown even when there is no update available.
-            update_level: Determines what type of updates to check.  If set to 
+            update_level: Determines what type of updates to check.  If set to
                 'final' only stable release versions are checked.  If set to
                 'dev' both beta and stable releases are checked.
             callback: Optional callback function.
@@ -78,21 +80,21 @@ class UpdateCheckManager(QtCore.QObject):
         Raises:
             none.
         '''
-        msg_title = _("Picard Update")
-        if (compare_version_tuples(PICARD_VERSION, self._available_versions['stable'][1]) > 0) | (
-                    (compare_version_tuples(PICARD_VERSION, self._available_versions['beta'][1]) > 0) & (update_level == 'dev')):
-            key = 'beta' if (compare_version_tuples(self._available_versions['stable'][1],
-                                              self._available_versions['beta'][1]) > 0) & (update_level == 'dev') else 'stable'
-            msg_text = _("A new version of Picard is available.\n\nNew version: %s (%s)\n\n"
-                         "Would you like to download the new version?") % (self._available_versions[key][2],
-                                                                           self._available_versions[key][0])
-            if QMessageBox.information(None, msg_title, msg_text, QMessageBox.Ok | QMessageBox.Cancel,
-                                       QMessageBox.Cancel) == QMessageBox.Ok:
-                wb2.open(self._available_versions[key][3])
-        else:
-            if show_always:
-                msg_text = _("There is no update currently available.")
-                QMessageBox.information(None, msg_title, msg_text, QMessageBox.Ok, QMessageBox.Ok)
+        self._show_always = show_always
+        self._update_level = update_level
+
+        # Gets list of releases from GitHub website api.
+        output_text = _("Getting release information from GitHub.")
+        log.debug(output_text)
+        self.tagger.webservice.get(
+            GITHUB_API['host'],
+            GITHUB_API['port'],
+            GITHUB_API['endpoint']['releases'],
+            partial(self._releases_json_loaded, callback=callback),
+            parse_response_type=None,
+            priority=True,
+            important=True
+        )
 
     @property
     def available_versions(self):
@@ -101,8 +103,8 @@ class UpdateCheckManager(QtCore.QObject):
 
     def query_available_updates(self, callback=None):
         '''Gets list of releases from GitHub website api.'''
-        txt = _("Getting release information from GitHub.")
-        log.debug(txt)
+        output_text = _("Getting release information from GitHub.")
+        log.debug(output_text)
         self.tagger.webservice.get(
             GITHUB_API['host'],
             GITHUB_API['port'],
@@ -114,6 +116,7 @@ class UpdateCheckManager(QtCore.QObject):
         )
 
     def _releases_json_loaded(self, response, reply, error, callback=None):
+        '''Processes response from GitHub api query.'''
         if error:
             tagger.window.set_statusbar_message(
                 N_("Error loading releases list: %(error)s"),
@@ -121,15 +124,36 @@ class UpdateCheckManager(QtCore.QObject):
                 echo=log.error
             )
         else:
+            config.persist['last_update_check'] = datetime.date.today().toordinal()
             releases = load_json(response)
 
             for release in releases:
-                ver = version_from_string(_RE_CLEAN_VERSION.findall(release['tag_name'])[0])
+                ver = version_from_string(
+                    _RE_CLEAN_VERSION.findall(release['tag_name'])[0])
                 key = 'beta' if release['prerelease'] else 'stable'
                 if compare_version_tuples(self._available_versions[key][1], ver) > 0:
-                    temp_version = (version_to_string(ver, short=True), ver, release['name'], release['html_url'],)
-                    self._available_versions[key] = (version_to_string(ver, short=True), ver, release['name'], release['html_url'],)
+                    self._available_versions[key] = (version_to_string(
+                        ver, short=True), ver, release['name'], release['html_url'],)
             for key in self._available_versions.keys():
-                log.debug("Version key '%s' --> %s" % (key, self._available_versions[key],))
+                log.debug("Version key '%s' --> %s" %
+                          (key, self._available_versions[key],))
+
+        # Display results to user.
+        msg_title = _("Picard Update")
+        if (compare_version_tuples(PICARD_VERSION, self._available_versions['stable'][1]) > 0) | (
+                (compare_version_tuples(PICARD_VERSION, self._available_versions['beta'][1]) > 0) & (self._update_level == 'dev')):
+            key = 'beta' if (compare_version_tuples(self._available_versions['stable'][1],
+                                                    self._available_versions['beta'][1]) > 0) & (self._update_level == 'dev') else 'stable'
+            msg_text = _("A new version of Picard is available.\n\nNew version: %s (%s)\n\n"
+                         "Would you like to download the new version?") % (self._available_versions[key][2],
+                                                                           self._available_versions[key][0])
+            if QMessageBox.information(None, msg_title, msg_text, QMessageBox.Ok | QMessageBox.Cancel,
+                                       QMessageBox.Cancel) == QMessageBox.Ok:
+                wb2.open(self._available_versions[key][3])
+        else:
+            if self._show_always:
+                msg_text = _("There is no update currently available.")
+                QMessageBox.information(
+                    None, msg_title, msg_text, QMessageBox.Ok, QMessageBox.Ok)
         if callback:
             callback()
