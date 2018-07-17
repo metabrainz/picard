@@ -97,6 +97,8 @@ from picard.ui.searchdialog.album import AlbumSearchDialog
 from picard.ui.searchdialog.artist import ArtistSearchDialog
 from picard.ui.searchdialog.track import TrackSearchDialog
 
+from picard.util.checkupdate import UpdateCheckManager
+
 
 # A "fix" for https://bugs.python.org/issue1438480
 def _patched_shutil_copystat(src, dst, *, follow_symlinks=True):
@@ -243,6 +245,9 @@ class Tagger(QtWidgets.QApplication):
         self.window = MainWindow()
         self.exit_cleanup = []
         self.stopping = False
+
+        # Load release version information
+        self.updatecheckmanager = UpdateCheckManager()
 
     def register_cleanup(self, func):
         self.exit_cleanup.append(func)
