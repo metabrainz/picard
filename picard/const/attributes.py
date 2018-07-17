@@ -16,6 +16,7 @@ MB_ATTRIBUTES = {
     'DB:cover_art_archive.art_type/name:011': 'Poster',
     'DB:cover_art_archive.art_type/name:012': 'Liner',
     'DB:cover_art_archive.art_type/name:013': 'Watermark',
+    'DB:cover_art_archive.art_type/name:014': 'Raw/Unedited',
     'DB:medium_format/name:001': 'CD',
     'DB:medium_format/name:002': 'DVD',
     'DB:medium_format/name:003': 'SACD',
