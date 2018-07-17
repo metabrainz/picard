@@ -47,7 +47,7 @@ from picard.ui.util import (
     ButtonLineEdit,
     MultiDirsSelectDialog
 )
-from picard.util import icontheme, webbrowser2, throttle, thread, restore_method, checkupdate
+from picard.util import icontheme, webbrowser2, throttle, thread, restore_method
 from picard.util.cdrom import discid, get_cdrom_drives
 from picard.plugin import ExtensionPoint
 import datetime
