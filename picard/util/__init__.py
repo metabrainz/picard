@@ -496,3 +496,42 @@ def restore_method(func):
     return func_wrapper
 
 builtins.__dict__['string_'] = convert_to_string
+
+
+def compare_version_tuples(version1, version2):
+    '''Compare Versions
+
+    Compares two Picard version tuples to determine whether the second tuple
+    contains a higher version number than the first tuple.
+
+    Args:
+        version1: The first version tuple to compare.  This will be used as
+                  the base for the comparison.
+        version2: The version tuple to be compared to the base version.
+
+    Returns:
+        -1 if version2 is lower than version1
+        0 if version2 is the same as version1
+        1 if version2 is higher than version1
+
+    Raises:
+        none
+    '''
+
+    # Create test copies that can be modified
+    test1 = list(version1)
+    test2 = list(version2)
+
+    # Set sort order for release type element
+    test1[3] = 1 if test1[3] == 'final' else 0
+    if test1[3]:
+        test1[4] = 0
+    test2[3] = 1 if test2[3] == 'final' else 0
+    if test2[3]:
+        test2[4] = 0
+
+    # Compare elements in order
+    for x in range(0, 5):
+        if test1[x] != test2[x]:
+            return 1 if test1[x] < test2[x] else -1
+    return 0

@@ -50,7 +50,7 @@ from picard.ui.util import (
 from picard.util import icontheme, webbrowser2, throttle, thread, restore_method
 from picard.util.cdrom import discid, get_cdrom_drives
 from picard.plugin import ExtensionPoint
-
+import datetime
 
 ui_init = ExtensionPoint()
 
@@ -147,6 +147,9 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     def show(self):
         self.restoreWindowState()
         super().show()
+        if config.setting['check_for_updates'] and datetime.date.today().toordinal() >= config.persist['last_update_check'] + config.setting['update_check_days']:
+            log.debug(_("Initiating start-up check for program updates."))
+            self.tagger.updatecheckmanager.check_update(show_always=False, update_level='dev' if config.setting["include_beta_versions"] else 'final')
         self.metadata_box.restore_state()
 
     def closeEvent(self, event):
@@ -508,6 +511,9 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.open_folder_action.setEnabled(False)
         self.open_folder_action.triggered.connect(self.open_folder)
 
+        self.check_update_action = QtWidgets.QAction(_("&Check for Update"), self)
+        self.check_update_action.triggered.connect(self.check_for_update)
+
     def toggle_rename_files(self, checked):
         config.setting["rename_files"] = checked
 
@@ -580,6 +586,8 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         menu.addAction(self.help_action)
         menu.addSeparator()
         menu.addAction(self.view_history_action)
+        menu.addSeparator()
+        menu.addAction(self.check_update_action)
         menu.addSeparator()
         menu.addAction(self.support_forum_action)
         menu.addAction(self.report_bug_action)
@@ -1060,3 +1068,6 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             target = selected_objects[0]
         self.tagger.paste_files(target)
         self.paste_action.setEnabled(False)
+
+    def check_for_update(self):
+        self.tagger.updatecheckmanager.check_update(show_always=True, update_level='dev' if config.setting["include_beta_versions"] else 'final')
