@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 brew update
+brew tap samj1912/core
+brew tap-pin samj1912/core
 brew install python3
 brew link python3 --force
 brew install gettext
