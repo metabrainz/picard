@@ -13,8 +13,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2018-05-26 14:56+0000\n"
-"Last-Translator: Shen-Ta Hsieh(BestSteve) <ibmibmibm.tw@gmail.com>\n"
+"PO-Revision-Date: 2018-06-30 10:21+0000\n"
+"Last-Translator: yvanz\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/musicbrainz/musicbrainz/language/zh_TW/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -669,7 +669,7 @@ msgstr "區域名稱"
 #: DB:work_type/name:1
 msgctxt "work_type"
 msgid "Aria"
-msgstr "詠唱調"
+msgstr "詠嘆調"
 
 #: DB:editor_collection_type/name:8
 msgctxt "collection_type"
@@ -2673,22 +2673,22 @@ msgstr ""
 #: DB:work_attribute_type/description:28
 msgctxt "work_attribute_type"
 msgid "ID for the Belgian rights society SABAM"
-msgstr ""
+msgstr "比利時維權協會 SABAM 的 ID"
 
 #: DB:work_attribute_type/description:29
 msgctxt "work_attribute_type"
 msgid "ID for the International Copyright Enterprise"
-msgstr ""
+msgstr "International Copyright Enterprise 的 ID"
 
 #: DB:work_attribute_type/description:27
 msgctxt "work_attribute_type"
 msgid "ID for the Mexican rights society SACM"
-msgstr ""
+msgstr "墨西哥維權協會 SACM 的 ID"
 
 #: DB:work_attribute_type/description:30
 msgctxt "work_attribute_type"
 msgid "ID for the Polish rights society ZAiKS"
-msgstr ""
+msgstr "波蘭維權協會 ZAiKS 的 ID"
 
 #: DB:work_attribute_type/name:14
 msgctxt "work_attribute_type"
@@ -2735,7 +2735,7 @@ msgstr "採訪"
 #: DB:work_attribute_type_allowed_value/value:427
 msgctxt "work_attribute_type_allowed_value"
 msgid "Irak"
-msgstr ""
+msgstr "伊拉克"
 
 #: DB:work_attribute_type_allowed_value/value:428
 msgctxt "work_attribute_type_allowed_value"
@@ -3023,12 +3023,12 @@ msgstr ""
 #: DB:release_packaging/name:6
 msgctxt "release_packaging"
 msgid "Keep Case"
-msgstr ""
+msgstr "保留大小寫"
 
 #: DB:work_attribute_type/name:1
 msgctxt "work_attribute_type"
 msgid "Key"
-msgstr ""
+msgstr "調"
 
 #: DB:work_attribute_type_allowed_value/value:282
 msgctxt "work_attribute_type_allowed_value"
@@ -3328,7 +3328,7 @@ msgstr ""
 #: DB:series_ordering_type/name:2
 msgctxt "series_ordering_type"
 msgid "Manual"
-msgstr ""
+msgstr "手動"
 
 #: DB:label_type/name:10
 msgctxt "label_type"
@@ -3408,7 +3408,7 @@ msgstr ""
 #: DB:cover_art_archive.art_type/name:4
 msgctxt "cover_art_type"
 msgid "Medium"
-msgstr ""
+msgstr "媒介"
 
 #: DB:work_attribute_type_allowed_value/value:176
 msgctxt "work_attribute_type_allowed_value"
@@ -3993,7 +3993,7 @@ msgstr ""
 #: DB:work_attribute_type/name:25
 msgctxt "work_attribute_type"
 msgid "OSA ID"
-msgstr ""
+msgstr "OSA ID"
 
 #: DB:cover_art_archive.art_type/name:5
 msgctxt "cover_art_type"
@@ -4385,6 +4385,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Ravicandrika"
 msgstr ""
 
+#: DB:cover_art_archive.art_type/name:14
+msgctxt "cover_art_type"
+msgid "Raw/Unedited"
+msgstr ""
+
 #: DB:editor_collection_type/name:12
 msgctxt "collection_type"
 msgid "Recording"
@@ -4588,7 +4593,7 @@ msgstr "SACEM ID"
 #: DB:work_attribute_type/name:27
 msgctxt "work_attribute_type"
 msgid "SACM ID"
-msgstr ""
+msgstr "SACM ID"
 
 #: DB:work_attribute_type/name:24
 msgctxt "work_attribute_type"
@@ -5000,7 +5005,7 @@ msgstr ""
 #: DB:release_packaging/name:16
 msgctxt "release_packaging"
 msgid "Super Jewel Box"
-msgstr ""
+msgstr "大型塑膠透明CD盒"
 
 #: DB:work_attribute_type_allowed_value/value:252
 msgctxt "work_attribute_type_allowed_value"
@@ -5348,6 +5353,13 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Udaya ravicandrika"
 msgstr ""
 
+#: DB:cover_art_archive.art_type/description:14
+msgctxt "cover_art_type"
+msgid ""
+"Use for images that need work to be used for tagging (but can possibly "
+"already be used for reference)"
+msgstr ""
+
 #: DB:work_attribute_type/name:17
 msgctxt "work_attribute_type"
 msgid "Usul (Ottoman, Turkish)"
@@ -5599,7 +5611,7 @@ msgstr ""
 #: DB:work_attribute_type/name:30
 msgctxt "work_attribute_type"
 msgid "ZAiKS ID"
-msgstr ""
+msgstr "ZAiKS ID"
 
 #: DB:work_attribute_type_allowed_value/value:780
 msgctxt "work_attribute_type_allowed_value"

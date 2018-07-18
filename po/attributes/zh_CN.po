@@ -22,7 +22,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2018-05-08 10:34+0000\n"
+"PO-Revision-Date: 2018-06-30 10:21+0000\n"
 "Last-Translator: yvanz\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/musicbrainz/musicbrainz/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
@@ -4394,6 +4394,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Ravicandrika"
 msgstr "拉维昌德利卡"
 
+#: DB:cover_art_archive.art_type/name:14
+msgctxt "cover_art_type"
+msgid "Raw/Unedited"
+msgstr ""
+
 #: DB:editor_collection_type/name:12
 msgctxt "collection_type"
 msgid "Recording"
@@ -5356,6 +5361,13 @@ msgstr "闪存盘"
 msgctxt "work_attribute_type_allowed_value"
 msgid "Udaya ravicandrika"
 msgstr "乌达亚拉维昌德利卡"
+
+#: DB:cover_art_archive.art_type/description:14
+msgctxt "cover_art_type"
+msgid ""
+"Use for images that need work to be used for tagging (but can possibly "
+"already be used for reference)"
+msgstr ""
 
 #: DB:work_attribute_type/name:17
 msgctxt "work_attribute_type"

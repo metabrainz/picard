@@ -15,9 +15,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2018-04-02 17:15+0200\n"
-"PO-Revision-Date: 2018-03-20 13:41+0000\n"
-"Last-Translator: Michael Wiencek <mwtuea@gmail.com>\n"
+"POT-Creation-Date: 2018-05-29 09:44+0200\n"
+"PO-Revision-Date: 2018-06-14 00:32+0000\n"
+"Last-Translator: Jaakko Perttilä <jormangeud@gmail.com>\n"
 "Language-Team: Finnish (http://www.transifex.com/musicbrainz/musicbrainz/language/fi/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -289,7 +289,7 @@ msgstr "Italia"
 
 #: picard/const/languages.py:57
 msgid "Norwegian Bokmal"
-msgstr "Kirjanorja"
+msgstr "Norjan bokmål"
 
 #: picard/const/languages.py:59
 msgid "Dutch"
@@ -301,11 +301,15 @@ msgstr "Puola"
 
 #: picard/const/languages.py:63
 msgid "Brazilian Portuguese"
-msgstr "Portugali (Brasilia)"
+msgstr "Brasilianportugali"
 
 #: picard/const/languages.py:70
 msgid "Swedish"
 msgstr "Ruotsi"
+
+#: picard/const/languages.py:75
+msgid "Traditional Chinese"
+msgstr "Perinteinen kiina"
 
 #: picard/coverart/__init__.py:98
 #, python-format
@@ -1257,7 +1261,7 @@ msgstr "Seuraavat julkaisut MusicBrainzissa vastaavat CD-levyä:"
 
 #: picard/ui/ui_cdlookup.py:53
 msgid "&Load into Picard"
-msgstr ""
+msgstr "&Lataa Picardiin"
 
 #: picard/ui/ui_cdlookup.py:55 picard/ui/util.py:35
 msgid "&Cancel"
@@ -1371,7 +1375,7 @@ msgstr "Kansitaidepalvelut"
 
 #: picard/ui/ui_options_cover.py:93
 msgid "Reorder Priority: "
-msgstr ""
+msgstr "Muuta tärkeysjärjestystä: "
 
 #: picard/ui/ui_options_cover.py:94 picard/ui/ui_options_interface.py:137
 msgid "Move selected item up"
@@ -1908,7 +1912,7 @@ msgstr "O&K"
 
 #: picard/ui/util.py:37
 msgid "Clos&e"
-msgstr ""
+msgstr "&Sulje"
 
 #: picard/ui/util.py:88
 msgid "Clear entry"

@@ -21,9 +21,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2018-04-02 17:15+0200\n"
-"PO-Revision-Date: 2018-03-20 13:41+0000\n"
-"Last-Translator: Michael Wiencek <mwtuea@gmail.com>\n"
+"POT-Creation-Date: 2018-05-29 09:44+0200\n"
+"PO-Revision-Date: 2018-05-30 11:39+0000\n"
+"Last-Translator: Daniel Biasotto <biasotto@tuta.io>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/musicbrainz/musicbrainz/language/pt_BR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -312,6 +312,10 @@ msgstr "Português brasileiro"
 #: picard/const/languages.py:70
 msgid "Swedish"
 msgstr "Sueco"
+
+#: picard/const/languages.py:75
+msgid "Traditional Chinese"
+msgstr ""
 
 #: picard/coverart/__init__.py:98
 #, python-format

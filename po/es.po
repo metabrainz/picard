@@ -7,6 +7,7 @@
 # Antonio Larrosa <antonio.larrosa@gmail.com>, 2017
 # Emerson Posadas <toxickore@toxickore.net>, 2006, 2011
 # Fabien Guilleminot <bielperello1973@gmail.com>, 2018
+# Fermin Rodriguez <cosmos.fermin@gmail.com>, 2018
 # Ismael Olea <ismael@olea.org>, 2011-2015
 # Jaime Marquínez Ferrándiz, 2018
 # Nicolás Tamargo <reosarevok@gmail.com>, 2012
@@ -15,9 +16,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2018-04-02 17:15+0200\n"
-"PO-Revision-Date: 2018-03-20 13:41+0000\n"
-"Last-Translator: Michael Wiencek <mwtuea@gmail.com>\n"
+"POT-Creation-Date: 2018-05-29 09:44+0200\n"
+"PO-Revision-Date: 2018-07-09 18:44+0000\n"
+"Last-Translator: Fermin Rodriguez <cosmos.fermin@gmail.com>\n"
 "Language-Team: Spanish (http://www.transifex.com/musicbrainz/musicbrainz/language/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -289,7 +290,7 @@ msgstr "Italiano"
 
 #: picard/const/languages.py:57
 msgid "Norwegian Bokmal"
-msgstr ""
+msgstr "Bokmal noruego"
 
 #: picard/const/languages.py:59
 msgid "Dutch"
@@ -306,6 +307,10 @@ msgstr "Portugués de Brasil"
 #: picard/const/languages.py:70
 msgid "Swedish"
 msgstr "Sueco"
+
+#: picard/const/languages.py:75
+msgid "Traditional Chinese"
+msgstr "Chino tradicional"
 
 #: picard/coverart/__init__.py:98
 #, python-format
@@ -360,7 +365,7 @@ msgstr "Archivo de carátulas"
 
 #: picard/coverart/providers/caa_release_group.py:38
 msgid "CAA Release Group"
-msgstr ""
+msgstr "Grupo de lanzamiento CAA"
 
 #: picard/coverart/providers/local.py:63
 msgid "Local Files"
@@ -2324,7 +2329,7 @@ msgstr ""
 
 #: picard/ui/searchdialog/track.py:56
 msgid "Release"
-msgstr ""
+msgstr "Publicación"
 
 #: picard/ui/searchdialog/track.py:168
 msgid "Standalone Recording"
@@ -2460,7 +2465,7 @@ msgstr "BPM"
 
 #: picard/util/tags.py:42
 msgid "Key"
-msgstr ""
+msgstr "Tonalidad"
 
 #: picard/util/tags.py:43
 msgid "Copyright"

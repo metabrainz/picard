@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2018-04-02 17:15+0200\n"
-"PO-Revision-Date: 2018-04-05 12:29+0000\n"
+"POT-Creation-Date: 2018-05-29 09:44+0200\n"
+"PO-Revision-Date: 2018-05-30 11:39+0000\n"
 "Last-Translator: Maurits Meulenbelt <mfmeulenbelt@gmail.com>\n"
 "Language-Team: Dutch (http://www.transifex.com/musicbrainz/musicbrainz/language/nl/)\n"
 "MIME-Version: 1.0\n"
@@ -303,6 +303,10 @@ msgstr "Braziliaans-Portugees"
 #: picard/const/languages.py:70
 msgid "Swedish"
 msgstr "Zweeds"
+
+#: picard/const/languages.py:75
+msgid "Traditional Chinese"
+msgstr "Traditioneel Chinees"
 
 #: picard/coverart/__init__.py:98
 #, python-format

@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2018-04-02 17:15+0200\n"
-"PO-Revision-Date: 2018-05-27 13:44+0000\n"
+"POT-Creation-Date: 2018-05-29 09:44+0200\n"
+"PO-Revision-Date: 2018-05-30 15:26+0000\n"
 "Last-Translator: Shen-Ta Hsieh(BestSteve) <ibmibmibm.tw@gmail.com>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/musicbrainz/musicbrainz/language/zh_TW/)\n"
 "MIME-Version: 1.0\n"
@@ -297,6 +297,10 @@ msgstr "巴西葡萄牙語"
 #: picard/const/languages.py:70
 msgid "Swedish"
 msgstr "瑞典語"
+
+#: picard/const/languages.py:75
+msgid "Traditional Chinese"
+msgstr ""
 
 #: picard/coverart/__init__.py:98
 #, python-format

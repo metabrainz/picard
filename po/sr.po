@@ -10,9 +10,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2018-04-02 17:15+0200\n"
-"PO-Revision-Date: 2018-03-20 13:41+0000\n"
-"Last-Translator: Michael Wiencek <mwtuea@gmail.com>\n"
+"POT-Creation-Date: 2018-05-29 09:44+0200\n"
+"PO-Revision-Date: 2018-05-30 11:39+0000\n"
+"Last-Translator: Никола Крстевски <nikola.krstevski@gmail.com>\n"
 "Language-Team: Serbian (http://www.transifex.com/musicbrainz/musicbrainz/language/sr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -306,6 +306,10 @@ msgstr "Бразилски португалски"
 #: picard/const/languages.py:70
 msgid "Swedish"
 msgstr "Шведски"
+
+#: picard/const/languages.py:75
+msgid "Traditional Chinese"
+msgstr ""
 
 #: picard/coverart/__init__.py:98
 #, python-format
@@ -1669,7 +1673,7 @@ msgstr ""
 
 #: picard/ui/ui_options_plugins.py:131
 msgid "Action"
-msgstr ""
+msgstr "Акција"
 
 #: picard/ui/ui_options_plugins.py:132
 msgid "Install plugin..."

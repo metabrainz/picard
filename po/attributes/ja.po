@@ -8,7 +8,7 @@
 # Mitsuharu Kurita, 2016
 # nikki, 2013-2014
 # Nozomu Kurasawa <email address hidden>, 2012
-# Nozomu Kurasawa <nabetaro@caldron.jp>, 2012-2014
+# Nozomu KURASAWA <nabetaro@caldron.jp>, 2012-2014
 # Osamu Takahashi, 2014
 # Osamu Takahashi, 2014
 # PATATE12, 2014
@@ -20,7 +20,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2018-05-08 10:34+0000\n"
+"PO-Revision-Date: 2018-06-30 10:21+0000\n"
 "Last-Translator: yvanz\n"
 "Language-Team: Japanese (http://www.transifex.com/musicbrainz/musicbrainz/language/ja/)\n"
 "MIME-Version: 1.0\n"
@@ -3035,7 +3035,7 @@ msgstr "キープケース"
 #: DB:work_attribute_type/name:1
 msgctxt "work_attribute_type"
 msgid "Key"
-msgstr ""
+msgstr "キー"
 
 #: DB:work_attribute_type_allowed_value/value:282
 msgctxt "work_attribute_type_allowed_value"
@@ -4392,10 +4392,15 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Ravicandrika"
 msgstr ""
 
+#: DB:cover_art_archive.art_type/name:14
+msgctxt "cover_art_type"
+msgid "Raw/Unedited"
+msgstr ""
+
 #: DB:editor_collection_type/name:12
 msgctxt "collection_type"
 msgid "Recording"
-msgstr ""
+msgstr "レコーディング"
 
 #: DB:series_type/name:3
 msgctxt "series_type"
@@ -5353,6 +5358,13 @@ msgstr "USBフラッシュドライブ"
 #: DB:work_attribute_type_allowed_value/value:258
 msgctxt "work_attribute_type_allowed_value"
 msgid "Udaya ravicandrika"
+msgstr ""
+
+#: DB:cover_art_archive.art_type/description:14
+msgctxt "cover_art_type"
+msgid ""
+"Use for images that need work to be used for tagging (but can possibly "
+"already be used for reference)"
 msgstr ""
 
 #: DB:work_attribute_type/name:17

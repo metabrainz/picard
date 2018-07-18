@@ -8,7 +8,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2018-05-08 10:34+0000\n"
+"PO-Revision-Date: 2018-06-30 10:21+0000\n"
 "Last-Translator: yvanz\n"
 "Language-Team: Norwegian Bokmål (http://www.transifex.com/musicbrainz/musicbrainz/language/nb/)\n"
 "MIME-Version: 1.0\n"
@@ -1056,12 +1056,12 @@ msgstr "Hefte"
 #: DB:release_status/name:3
 msgctxt "release_status"
 msgid "Bootleg"
-msgstr ""
+msgstr "Ulovlig"
 
 #: DB:label_type/name:5
 msgctxt "label_type"
 msgid "Bootleg Production"
-msgstr ""
+msgstr "Ulovlig produksjon"
 
 #: DB:work_attribute_type_allowed_value/value:607
 msgctxt "work_attribute_type_allowed_value"
@@ -1226,7 +1226,7 @@ msgstr "Kantate"
 #: DB:release_packaging/name:4
 msgctxt "release_packaging"
 msgid "Cardboard/Paper Sleeve"
-msgstr ""
+msgstr "Kortbord/Papirarm"
 
 #: DB:medium_format/name:9
 msgctxt "medium_format"
@@ -4380,6 +4380,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Ravicandrika"
 msgstr "Ravicandrika"
 
+#: DB:cover_art_archive.art_type/name:14
+msgctxt "cover_art_type"
+msgid "Raw/Unedited"
+msgstr ""
+
 #: DB:editor_collection_type/name:12
 msgctxt "collection_type"
 msgid "Recording"
@@ -5342,6 +5347,13 @@ msgstr "USB Minnepinne"
 msgctxt "work_attribute_type_allowed_value"
 msgid "Udaya ravicandrika"
 msgstr "Udaya ravicandrika"
+
+#: DB:cover_art_archive.art_type/description:14
+msgctxt "cover_art_type"
+msgid ""
+"Use for images that need work to be used for tagging (but can possibly "
+"already be used for reference)"
+msgstr ""
 
 #: DB:work_attribute_type/name:17
 msgctxt "work_attribute_type"

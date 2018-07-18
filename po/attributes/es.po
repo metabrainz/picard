@@ -7,6 +7,7 @@
 # Alfredo Briones <alfredobriones@hotmail.com>, 2016
 # Antony Duran <hackshd2015@gmail.com>, 2017
 #   <email address hidden>, 2012
+# Fermin Rodriguez <cosmos.fermin@gmail.com>, 2018
 # Francisco Godoy <francisco.godoy@openmailbox.org>, 2018
 # Fran Martín <frankiepd@gmail.com>, 2016
 # gr0uch0mars <email address hidden>, 2011
@@ -31,8 +32,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2018-05-08 10:34+0000\n"
-"Last-Translator: yvanz\n"
+"PO-Revision-Date: 2018-07-09 18:29+0000\n"
+"Last-Translator: Fermin Rodriguez <cosmos.fermin@gmail.com>\n"
 "Language-Team: Spanish (http://www.transifex.com/musicbrainz/musicbrainz/language/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -108,7 +109,7 @@ msgstr "8\" LaserDisc"
 #: DB:medium_format/name:78
 msgctxt "medium_format"
 msgid "8-Track Cartridge"
-msgstr ""
+msgstr "Cartucho de 8 pistas"
 
 #: DB:medium_format/name:34
 msgctxt "medium_format"
@@ -178,7 +179,7 @@ msgctxt "instrument_type"
 msgid ""
 "A grouping of related but different instruments, like the different violin-"
 "like instruments"
-msgstr ""
+msgstr "Una agrupación de instrumentos relacionados pero diferentes, como los diferentes instrumentos similares al violín"
 
 #: DB:work_attribute_type_allowed_value/value:28
 msgctxt "work_attribute_type_allowed_value"
@@ -229,7 +230,7 @@ msgstr "Un libro encuadernado perfecto con una funda al final para guardar un CD
 msgctxt "place_type"
 msgid ""
 "A place (generally a factory) at which physical media are manufactured."
-msgstr ""
+msgstr "Un lugar (generalmente una fábrica) en el que se fabrican medios físicos."
 
 #: DB:place_type/description:5
 msgctxt "place_type"
@@ -371,7 +372,7 @@ msgctxt "instrument_type"
 msgid ""
 "A standard grouping of instruments often played together, like a string "
 "quartet"
-msgstr ""
+msgstr "Una agrupación estándar de instrumentos que a menudo se tocan juntos, como un cuarteto de cuerdas"
 
 #: DB:work_type/description:6
 msgctxt "work_type"
@@ -422,7 +423,7 @@ msgstr "la bemol menor"
 #: DB:work_attribute_type_allowed_value/value:817
 msgctxt "work_attribute_type_allowed_value"
 msgid "A-sharp major"
-msgstr ""
+msgstr "La sostenido mayor"
 
 #: DB:work_attribute_type_allowed_value/value:30
 msgctxt "work_attribute_type_allowed_value"
@@ -852,12 +853,12 @@ msgstr "si bemol menor"
 #: DB:work_attribute_type_allowed_value/value:818
 msgctxt "work_attribute_type_allowed_value"
 msgid "B-sharp major"
-msgstr ""
+msgstr "Si sostenido mayor"
 
 #: DB:work_attribute_type_allowed_value/value:819
 msgctxt "work_attribute_type_allowed_value"
 msgid "B-sharp minor"
-msgstr ""
+msgstr "Si sostenido menor"
 
 #: DB:work_attribute_type/name:7
 msgctxt "work_attribute_type"
@@ -1174,7 +1175,7 @@ msgstr "do bemol mayor"
 #: DB:work_attribute_type_allowed_value/value:812
 msgctxt "work_attribute_type_allowed_value"
 msgid "C-flat minor"
-msgstr ""
+msgstr "Do bemol menor"
 
 #: DB:work_attribute_type_allowed_value/value:4
 msgctxt "work_attribute_type_allowed_value"
@@ -1440,7 +1441,7 @@ msgstr "re bemol menor"
 #: DB:work_attribute_type_allowed_value/value:813
 msgctxt "work_attribute_type_allowed_value"
 msgid "D-sharp major"
-msgstr ""
+msgstr "Re sostenido mayor"
 
 #: DB:work_attribute_type_allowed_value/value:10
 msgctxt "work_attribute_type_allowed_value"
@@ -1866,7 +1867,7 @@ msgstr "mi bemol menor"
 #: DB:work_attribute_type_allowed_value/value:814
 msgctxt "work_attribute_type_allowed_value"
 msgid "E-sharp major"
-msgstr ""
+msgstr "Mi sostenido mayor"
 
 #: DB:work_attribute_type_allowed_value/value:15
 msgctxt "work_attribute_type_allowed_value"
@@ -1901,7 +1902,7 @@ msgstr "CD mejorado"
 #: DB:instrument_type/name:6
 msgctxt "instrument_type"
 msgid "Ensemble"
-msgstr ""
+msgstr "Ensamble"
 
 #: DB:work_attribute_type_allowed_value/value:356
 msgctxt "work_attribute_type_allowed_value"
@@ -2036,7 +2037,7 @@ msgstr "Fahte"
 #: DB:instrument_type/name:7
 msgctxt "instrument_type"
 msgid "Family"
-msgstr ""
+msgstr "Familia"
 
 #: DB:work_attribute_type_allowed_value/value:615
 msgctxt "work_attribute_type_allowed_value"
@@ -2128,7 +2129,7 @@ msgctxt "medium_format"
 msgid ""
 "Flat discs with grooves used in phonographs/gramophones. For shellac and "
 "vinyl records, use that specifically"
-msgstr ""
+msgstr "Discos planos con surcos utilizados en fonógrafos/gramófonos. Para discos de goma laca y vinilo, use eso específicamente"
 
 #: DB:medium_format/name:51
 msgctxt "medium_format"
@@ -2146,7 +2147,7 @@ msgstr "Los discos flexibles son registros fonográficos hechos de una lámina d
 #: DB:medium_format/name:76
 msgctxt "medium_format"
 msgid "Floppy Disk"
-msgstr ""
+msgstr "Disquete"
 
 #: DB:work_attribute_type/name:16
 msgctxt "work_attribute_type"
@@ -2196,7 +2197,7 @@ msgstr "sol bemol mayor"
 #: DB:work_attribute_type_allowed_value/value:816
 msgctxt "work_attribute_type_allowed_value"
 msgid "G-flat minor"
-msgstr ""
+msgstr "Sol bemol menor"
 
 #: DB:work_attribute_type_allowed_value/value:24
 msgctxt "work_attribute_type_allowed_value"
@@ -2451,7 +2452,7 @@ msgstr "Hezeç"
 #: DB:medium_format/name:75
 msgctxt "medium_format"
 msgid "HiPac"
-msgstr ""
+msgstr "HiPac"
 
 #: DB:work_attribute_type_allowed_value/value:391
 msgctxt "work_attribute_type_allowed_value"
@@ -3351,7 +3352,7 @@ msgstr "Manual"
 #: DB:label_type/name:10
 msgctxt "label_type"
 msgid "Manufacturer"
-msgstr ""
+msgstr "Fabricante"
 
 #: DB:work_attribute_type_allowed_value/value:172
 msgctxt "work_attribute_type_allowed_value"
@@ -3396,7 +3397,7 @@ msgstr "Tal vez asista"
 #: DB:work_attribute_type_allowed_value/value:452
 msgctxt "work_attribute_type_allowed_value"
 msgid "Maye"
-msgstr ""
+msgstr "Maye"
 
 #: DB:work_attribute_type_allowed_value/value:175
 msgctxt "work_attribute_type_allowed_value"
@@ -3589,7 +3590,7 @@ msgstr "Murabba"
 #: DB:work_attribute_type_allowed_value/value:811
 msgctxt "work_attribute_type_allowed_value"
 msgid "Murabba Beste "
-msgstr ""
+msgstr "Murabba Beste"
 
 #: DB:medium_format/name:46
 msgctxt "medium_format"
@@ -3726,17 +3727,17 @@ msgstr "Nakış"
 #: DB:work_attribute_type_allowed_value/value:809
 msgctxt "work_attribute_type_allowed_value"
 msgid "Nakış Ağırsemai"
-msgstr ""
+msgstr "Nakış Ağırsemai"
 
 #: DB:work_attribute_type_allowed_value/value:808
 msgctxt "work_attribute_type_allowed_value"
 msgid "Nakış Beste"
-msgstr ""
+msgstr "Nakış Beste"
 
 #: DB:work_attribute_type_allowed_value/value:810
 msgctxt "work_attribute_type_allowed_value"
 msgid "Nakış Yürüksemai"
-msgstr ""
+msgstr "Nakış Yürüksemai"
 
 #: DB:work_attribute_type_allowed_value/value:468
 msgctxt "work_attribute_type_allowed_value"
@@ -4181,7 +4182,7 @@ msgstr "Peşrev"
 #: DB:medium_format/name:73
 msgctxt "medium_format"
 msgid "Phonograph record"
-msgstr ""
+msgstr "Registro fonográfico"
 
 #: DB:medium_format/name:15
 msgctxt "medium_format"
@@ -4206,7 +4207,7 @@ msgstr "Obra"
 #: DB:medium_format/name:74
 msgctxt "medium_format"
 msgid "PlayTape"
-msgstr ""
+msgstr "PlayTape"
 
 #: DB:medium_format/name:45
 msgctxt "medium_format"
@@ -4231,7 +4232,7 @@ msgstr "Póster"
 #: DB:place_type/name:8
 msgctxt "place_type"
 msgid "Pressing plant"
-msgstr ""
+msgstr "Planta de prensado"
 
 #: DB:label_type/name:3
 msgctxt "label_type"
@@ -4402,6 +4403,11 @@ msgstr "Ratipati priya"
 msgctxt "work_attribute_type_allowed_value"
 msgid "Ravicandrika"
 msgstr "Ravicandrika"
+
+#: DB:cover_art_archive.art_type/name:14
+msgctxt "cover_art_type"
+msgid "Raw/Unedited"
+msgstr "Sin procesar/Sin editar"
 
 #: DB:editor_collection_type/name:12
 msgctxt "collection_type"
@@ -5366,6 +5372,13 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Udaya ravicandrika"
 msgstr "Udaya ravicandrika"
 
+#: DB:cover_art_archive.art_type/description:14
+msgctxt "cover_art_type"
+msgid ""
+"Use for images that need work to be used for tagging (but can possibly "
+"already be used for reference)"
+msgstr "Úselo para imágenes que necesitan trabajo para ser usadas para etiquetar (pero posiblemente ya se pueden usar como referencia)"
+
 #: DB:work_attribute_type/name:17
 msgctxt "work_attribute_type"
 msgid "Usul (Ottoman, Turkish)"
@@ -5682,7 +5695,7 @@ msgstr "Zilkeş"
 #: DB:medium_format/name:77
 msgctxt "medium_format"
 msgid "Zip Disk"
-msgstr ""
+msgstr "Disco Zip"
 
 #: DB:work_attribute_type_allowed_value/value:599
 msgctxt "work_attribute_type_allowed_value"

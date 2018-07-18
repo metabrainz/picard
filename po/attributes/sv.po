@@ -10,7 +10,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2018-05-08 10:34+0000\n"
+"PO-Revision-Date: 2018-06-30 10:21+0000\n"
 "Last-Translator: yvanz\n"
 "Language-Team: Swedish (http://www.transifex.com/musicbrainz/musicbrainz/language/sv/)\n"
 "MIME-Version: 1.0\n"
@@ -656,7 +656,7 @@ msgstr ""
 #: DB:editor_collection_type/name:7
 msgctxt "collection_type"
 msgid "Area"
-msgstr ""
+msgstr "Område"
 
 #: DB:area_alias_type/name:1
 msgctxt "alias_type"
@@ -1900,12 +1900,12 @@ msgstr ""
 #: DB:editor_collection_type/name:4
 msgctxt "collection_type"
 msgid "Event"
-msgstr ""
+msgstr "Händelse"
 
 #: DB:series_type/name:6
 msgctxt "series_type"
 msgid "Event"
-msgstr ""
+msgstr "Händelse"
 
 #: DB:event_alias_type/name:1
 msgctxt "alias_type"
@@ -2075,7 +2075,7 @@ msgstr "Festival"
 #: DB:series_type/name:8
 msgctxt "series_type"
 msgid "Festival"
-msgstr ""
+msgstr "Festival"
 
 #: DB:work_attribute_type_allowed_value/value:372
 msgctxt "work_attribute_type_allowed_value"
@@ -2690,7 +2690,7 @@ msgstr ""
 #: DB:work_attribute_type/name:14
 msgctxt "work_attribute_type"
 msgid "Identifiers"
-msgstr ""
+msgstr "Identifierare"
 
 #: DB:label_type/name:9
 msgctxt "label_type"
@@ -2717,7 +2717,7 @@ msgstr ""
 #: DB:editor_collection_type/name:9
 msgctxt "collection_type"
 msgid "Instrument"
-msgstr ""
+msgstr "Instrument"
 
 #: DB:instrument_alias_type/name:1
 msgctxt "alias_type"
@@ -3025,7 +3025,7 @@ msgstr "DVD-fodral"
 #: DB:work_attribute_type/name:1
 msgctxt "work_attribute_type"
 msgid "Key"
-msgstr ""
+msgstr "Nyckel"
 
 #: DB:work_attribute_type_allowed_value/value:282
 msgctxt "work_attribute_type_allowed_value"
@@ -3175,7 +3175,7 @@ msgstr ""
 #: DB:editor_collection_type/name:10
 msgctxt "collection_type"
 msgid "Label"
-msgstr ""
+msgstr "Skivbolag"
 
 #: DB:label_alias_type/name:1
 msgctxt "alias_type"
@@ -4050,7 +4050,7 @@ msgstr "Annan"
 #: DB:place_type/name:3
 msgctxt "place_type"
 msgid "Other"
-msgstr ""
+msgstr "Övrigt"
 
 #: DB:release_group_primary_type/name:11
 msgctxt "release_group_primary_type"
@@ -4170,7 +4170,7 @@ msgstr "Pianorulle"
 #: DB:editor_collection_type/name:11
 msgctxt "collection_type"
 msgid "Place"
-msgstr ""
+msgstr "Plats"
 
 #: DB:place_alias_type/name:1
 msgctxt "alias_type"
@@ -4380,6 +4380,11 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:218
 msgctxt "work_attribute_type_allowed_value"
 msgid "Ravicandrika"
+msgstr ""
+
+#: DB:cover_art_archive.art_type/name:14
+msgctxt "cover_art_type"
+msgid "Raw/Unedited"
 msgstr ""
 
 #: DB:editor_collection_type/name:12
@@ -5343,6 +5348,13 @@ msgstr "USB-flashminne"
 #: DB:work_attribute_type_allowed_value/value:258
 msgctxt "work_attribute_type_allowed_value"
 msgid "Udaya ravicandrika"
+msgstr ""
+
+#: DB:cover_art_archive.art_type/description:14
+msgctxt "cover_art_type"
+msgid ""
+"Use for images that need work to be used for tagging (but can possibly "
+"already be used for reference)"
 msgstr ""
 
 #: DB:work_attribute_type/name:17

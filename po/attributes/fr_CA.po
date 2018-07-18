@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2018-05-08 10:34+0000\n"
+"PO-Revision-Date: 2018-06-30 10:21+0000\n"
 "Last-Translator: yvanz\n"
 "Language-Team: French (Canada) (http://www.transifex.com/musicbrainz/musicbrainz/language/fr_CA/)\n"
 "MIME-Version: 1.0\n"
@@ -660,7 +660,7 @@ msgstr ""
 #: DB:editor_collection_type/name:7
 msgctxt "collection_type"
 msgid "Area"
-msgstr ""
+msgstr "Région"
 
 #: DB:area_alias_type/name:1
 msgctxt "alias_type"
@@ -1342,7 +1342,7 @@ msgstr ""
 #: DB:area_type/name:1
 msgctxt "area_type"
 msgid "Country"
-msgstr ""
+msgstr "Pays"
 
 #: DB:area_type/description:1
 msgctxt "area_type"
@@ -1904,12 +1904,12 @@ msgstr ""
 #: DB:editor_collection_type/name:4
 msgctxt "collection_type"
 msgid "Event"
-msgstr ""
+msgstr "Événement"
 
 #: DB:series_type/name:6
 msgctxt "series_type"
 msgid "Event"
-msgstr ""
+msgstr "Événement"
 
 #: DB:event_alias_type/name:1
 msgctxt "alias_type"
@@ -2721,7 +2721,7 @@ msgstr "Aréna intérieur"
 #: DB:editor_collection_type/name:9
 msgctxt "collection_type"
 msgid "Instrument"
-msgstr ""
+msgstr "Instrument"
 
 #: DB:instrument_alias_type/name:1
 msgctxt "alias_type"
@@ -3179,7 +3179,7 @@ msgstr ""
 #: DB:editor_collection_type/name:10
 msgctxt "collection_type"
 msgid "Label"
-msgstr ""
+msgstr "Label"
 
 #: DB:label_alias_type/name:1
 msgctxt "alias_type"
@@ -3224,7 +3224,7 @@ msgstr ""
 #: DB:artist_alias_type/name:2
 msgctxt "alias_type"
 msgid "Legal name"
-msgstr ""
+msgstr "Nom legal"
 
 #: DB:work_attribute_type_allowed_value/value:744
 msgctxt "work_attribute_type_allowed_value"
@@ -3409,7 +3409,7 @@ msgstr ""
 #: DB:cover_art_archive.art_type/name:4
 msgctxt "cover_art_type"
 msgid "Medium"
-msgstr ""
+msgstr "Support"
 
 #: DB:work_attribute_type_allowed_value/value:176
 msgctxt "work_attribute_type_allowed_value"
@@ -3929,7 +3929,7 @@ msgstr ""
 #: DB:release_packaging/name:7
 msgctxt "release_packaging"
 msgid "None"
-msgstr ""
+msgstr "Aucun"
 
 #: DB:work_attribute_type_allowed_value/value:491
 msgctxt "work_attribute_type_allowed_value"
@@ -4034,37 +4034,37 @@ msgstr ""
 #: DB:artist_type/name:3
 msgctxt "artist_type"
 msgid "Other"
-msgstr ""
+msgstr "Autre"
 
 #: DB:cover_art_archive.art_type/name:8
 msgctxt "cover_art_type"
 msgid "Other"
-msgstr ""
+msgstr "Autre"
 
 #: DB:gender/name:3
 msgctxt "gender"
 msgid "Other"
-msgstr ""
+msgstr "Autre"
 
 #: DB:medium_format/name:13
 msgctxt "medium_format"
 msgid "Other"
-msgstr ""
+msgstr "Autre"
 
 #: DB:place_type/name:3
 msgctxt "place_type"
 msgid "Other"
-msgstr ""
+msgstr "Autre"
 
 #: DB:release_group_primary_type/name:11
 msgctxt "release_group_primary_type"
 msgid "Other"
-msgstr ""
+msgstr "Autre"
 
 #: DB:release_packaging/name:5
 msgctxt "release_packaging"
 msgid "Other"
-msgstr ""
+msgstr "Autre"
 
 #: DB:instrument_type/name:5
 msgctxt "instrument_type"
@@ -4174,7 +4174,7 @@ msgstr ""
 #: DB:editor_collection_type/name:11
 msgctxt "collection_type"
 msgid "Place"
-msgstr ""
+msgstr "Lieu"
 
 #: DB:place_alias_type/name:1
 msgctxt "alias_type"
@@ -4386,6 +4386,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Ravicandrika"
 msgstr ""
 
+#: DB:cover_art_archive.art_type/name:14
+msgctxt "cover_art_type"
+msgid "Raw/Unedited"
+msgstr ""
+
 #: DB:editor_collection_type/name:12
 msgctxt "collection_type"
 msgid "Recording"
@@ -4424,22 +4429,22 @@ msgstr ""
 #: DB:editor_collection_type/name:1
 msgctxt "collection_type"
 msgid "Release"
-msgstr ""
+msgstr "Parution"
 
 #: DB:series_type/name:2
 msgctxt "series_type"
 msgid "Release"
-msgstr ""
+msgstr "Parution"
 
 #: DB:editor_collection_type/name:13
 msgctxt "collection_type"
 msgid "Release group"
-msgstr ""
+msgstr "Groupe de parution"
 
 #: DB:series_type/name:1
 msgctxt "series_type"
 msgid "Release group"
-msgstr ""
+msgstr "Groupe de parution"
 
 #: DB:release_group_alias_type/name:1
 msgctxt "alias_type"
@@ -4789,7 +4794,7 @@ msgstr ""
 #: DB:editor_collection_type/name:14
 msgctxt "collection_type"
 msgid "Series"
-msgstr ""
+msgstr "Série"
 
 #: DB:series_alias_type/name:1
 msgctxt "alias_type"
@@ -5287,7 +5292,7 @@ msgstr "Tournée"
 #: DB:cover_art_archive.art_type/name:7
 msgctxt "cover_art_type"
 msgid "Track"
-msgstr ""
+msgstr "Piste"
 
 #: DB:cover_art_archive.art_type/name:9
 msgctxt "cover_art_type"
@@ -5347,6 +5352,13 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:258
 msgctxt "work_attribute_type_allowed_value"
 msgid "Udaya ravicandrika"
+msgstr ""
+
+#: DB:cover_art_archive.art_type/description:14
+msgctxt "cover_art_type"
+msgid ""
+"Use for images that need work to be used for tagging (but can possibly "
+"already be used for reference)"
 msgstr ""
 
 #: DB:work_attribute_type/name:17
@@ -5549,12 +5561,12 @@ msgstr ""
 #: DB:editor_collection_type/name:15
 msgctxt "collection_type"
 msgid "Work"
-msgstr ""
+msgstr "Œuvre"
 
 #: DB:series_type/name:4
 msgctxt "series_type"
 msgid "Work"
-msgstr ""
+msgstr "Œuvre"
 
 #: DB:work_alias_type/name:1
 msgctxt "alias_type"

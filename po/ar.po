@@ -9,9 +9,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2018-04-02 17:15+0200\n"
-"PO-Revision-Date: 2018-03-20 13:41+0000\n"
-"Last-Translator: Michael Wiencek <mwtuea@gmail.com>\n"
+"POT-Creation-Date: 2018-05-29 09:44+0200\n"
+"PO-Revision-Date: 2018-05-30 11:38+0000\n"
+"Last-Translator: صفا الفليج <safaalfulaij@hotmail.com>\n"
 "Language-Team: Arabic (http://www.transifex.com/musicbrainz/musicbrainz/language/ar/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -320,6 +320,10 @@ msgstr "البرتغالية البرازيلية"
 #: picard/const/languages.py:70
 msgid "Swedish"
 msgstr "السويدية"
+
+#: picard/const/languages.py:75
+msgid "Traditional Chinese"
+msgstr ""
 
 #: picard/coverart/__init__.py:98
 #, python-format
@@ -1741,7 +1745,7 @@ msgstr "أرسِل التقييمات إلى MusicBrainz"
 
 #: picard/ui/ui_options_releases.py:100
 msgid "Preferred release types"
-msgstr ""
+msgstr "أنواع الإصدار المفضلة"
 
 #: picard/ui/ui_options_releases.py:101
 msgid "Preferred release countries"

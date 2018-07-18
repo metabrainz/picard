@@ -1,6 +1,7 @@
 # 
 # Translators:
 # Alex Luís Silva <alex.mooca@hotmail.com>, 2015
+# Ayrton Albuquerque <ayrtonalbuaguiar@gmail.com>, 2018
 # Daniel Biasotto <biasotto@tuta.io>, 2017
 # Eduardo Bastos <eduardorochacg@gmail.com>, 2012
 # Jaide Ambrosio <jaide.sp@gmail.com>, 2018
@@ -21,7 +22,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2018-05-08 10:34+0000\n"
+"PO-Revision-Date: 2018-06-30 10:21+0000\n"
 "Last-Translator: yvanz\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/musicbrainz/musicbrainz/language/pt_BR/)\n"
 "MIME-Version: 1.0\n"
@@ -315,7 +316,7 @@ msgstr "Uma série de shows relacionados de um artista em diferentes locais."
 #: DB:series_type/description:1
 msgctxt "series_type"
 msgid "A series of release groups."
-msgstr ""
+msgstr "Permite configurar manualmente a posição de cada item na série."
 
 #: DB:series_type/description:2
 msgctxt "series_type"
@@ -389,7 +390,7 @@ msgstr ""
 #: DB:release_packaging/description:2
 msgctxt "release_packaging"
 msgid "A thinner jewel case, commonly used for CD singles."
-msgstr ""
+msgstr "Uma caixa de joia mais fina, comumente usada para singles de CD."
 
 #: DB:work_type/description:19
 msgctxt "work_type"
@@ -667,7 +668,7 @@ msgstr ""
 #: DB:editor_collection_type/name:7
 msgctxt "collection_type"
 msgid "Area"
-msgstr ""
+msgstr "Área"
 
 #: DB:area_alias_type/name:1
 msgctxt "alias_type"
@@ -1911,12 +1912,12 @@ msgstr ""
 #: DB:editor_collection_type/name:4
 msgctxt "collection_type"
 msgid "Event"
-msgstr ""
+msgstr "Evento"
 
 #: DB:series_type/name:6
 msgctxt "series_type"
 msgid "Event"
-msgstr ""
+msgstr "Evento"
 
 #: DB:event_alias_type/name:1
 msgctxt "alias_type"
@@ -2718,7 +2719,7 @@ msgctxt "work_type"
 msgid ""
 "Incidental music is music written as background for (usually) a theatre "
 "play."
-msgstr "Música incidental é a música composta para tocar ao fundo de, geralmente, peças de teatro."
+msgstr "Música incidental é música escrita como fundo para (geralmente) uma peça de teatro."
 
 #: DB:place_type/name:5
 msgctxt "place_type"
@@ -3036,7 +3037,7 @@ msgstr ""
 #: DB:work_attribute_type/name:1
 msgctxt "work_attribute_type"
 msgid "Key"
-msgstr ""
+msgstr "Tom"
 
 #: DB:work_attribute_type_allowed_value/value:282
 msgctxt "work_attribute_type_allowed_value"
@@ -4393,6 +4394,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Ravicandrika"
 msgstr ""
 
+#: DB:cover_art_archive.art_type/name:14
+msgctxt "cover_art_type"
+msgid "Raw/Unedited"
+msgstr ""
+
 #: DB:editor_collection_type/name:12
 msgctxt "collection_type"
 msgid "Recording"
@@ -5354,6 +5360,13 @@ msgstr "Unidade flash USB"
 #: DB:work_attribute_type_allowed_value/value:258
 msgctxt "work_attribute_type_allowed_value"
 msgid "Udaya ravicandrika"
+msgstr ""
+
+#: DB:cover_art_archive.art_type/description:14
+msgctxt "cover_art_type"
+msgid ""
+"Use for images that need work to be used for tagging (but can possibly "
+"already be used for reference)"
 msgstr ""
 
 #: DB:work_attribute_type/name:17

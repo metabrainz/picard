@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2018-05-22 13:04+0000\n"
+"PO-Revision-Date: 2018-07-17 15:34+0000\n"
 "Last-Translator: Avi Markovitz <avi.markovitz@gmail.com>\n"
 "Language-Team: Hebrew (http://www.transifex.com/musicbrainz/musicbrainz/language/he/)\n"
 "MIME-Version: 1.0\n"
@@ -353,7 +353,7 @@ msgid ""
 "A suite is an ordered set of instrumental or orchestral pieces normally "
 "performed in a concert setting. They may be extracts from a ballet or opera,"
 " or entirely original movements."
-msgstr ""
+msgstr "סוויטה היא קבוצה סדורה של יצירות אינסטרומנטליות או תזמורתיות המבוצעות בדרך כלל בקונצרט. הן עשוית להיות תמציות מתוך בלט או אופרה, או יצירות מקוריות לחלוטין."
 
 #: DB:work_type/description:18
 msgctxt "work_type"
@@ -368,7 +368,7 @@ msgctxt "work_type"
 msgid ""
 "A symphony is an extended composition, almost always scored for orchestra "
 "without soloists."
-msgstr ""
+msgstr "סימפוניה היא קומפוזיציה מורחבת, כמעט תמיד מולחנת עבור תזמורת ללא סולנים."
 
 #: DB:release_packaging/description:2
 msgctxt "release_packaging"
@@ -646,7 +646,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:319
 msgctxt "work_attribute_type_allowed_value"
 msgid "Arazbarek"
-msgstr ""
+msgstr "ארזברק"
 
 #: DB:editor_collection_type/name:7
 msgctxt "collection_type"
@@ -686,22 +686,22 @@ msgstr ""
 #: DB:editor_collection_type/name:5
 msgctxt "collection_type"
 msgid "Attending"
-msgstr ""
+msgstr "משתתף"
 
 #: DB:work_type/name:25
 msgctxt "work_type"
 msgid "Audio drama"
-msgstr ""
+msgstr "דרמת שמע"
 
 #: DB:release_group_secondary_type/name:5
 msgctxt "release_group_secondary_type"
 msgid "Audiobook"
-msgstr ""
+msgstr "ספר שמע"
 
 #: DB:series_ordering_type/name:1
 msgctxt "series_ordering_type"
 msgid "Automatic"
-msgstr ""
+msgstr "אוטונומי"
 
 #: DB:work_attribute_type_allowed_value/value:694
 msgctxt "work_attribute_type_allowed_value"
@@ -786,7 +786,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:45
 msgctxt "work_attribute_type_allowed_value"
 msgid "Aṭāna"
-msgstr ""
+msgstr "אטנה"
 
 #: DB:work_attribute_type_allowed_value/value:289
 msgctxt "work_attribute_type_allowed_value"
@@ -851,7 +851,7 @@ msgstr "אחורה"
 #: DB:work_attribute_type_allowed_value/value:323
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bahr-ı Nazik"
-msgstr ""
+msgstr "באהר אי נזיק"
 
 #: DB:work_attribute_type_allowed_value/value:47
 msgctxt "work_attribute_type_allowed_value"
@@ -866,12 +866,12 @@ msgstr ""
 #: DB:work_type/name:2
 msgctxt "work_type"
 msgid "Ballet"
-msgstr ""
+msgstr "בלט"
 
 #: DB:work_attribute_type_allowed_value/value:49
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bauḷi"
-msgstr ""
+msgstr "באולי"
 
 #: DB:work_attribute_type_allowed_value/value:51
 msgctxt "work_attribute_type_allowed_value"
@@ -888,7 +888,7 @@ msgctxt "work_type"
 msgid ""
 "Beijing opera is a form of traditional Chinese theatre which combines music,"
 " vocal performance, mime, dance, and acrobatics."
-msgstr ""
+msgstr "האופרה בבייג'ינג היא סוג של תיאטרון סיני מסורתי המשלב מוסיקה, ביצועים קוליים, פנטומימה, ריקוד ואקרובטיקה."
 
 #: DB:work_attribute_type_allowed_value/value:697
 msgctxt "work_attribute_type_allowed_value"
@@ -913,7 +913,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:324
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bend-i Hisar"
-msgstr ""
+msgstr "בנד אי היסאר"
 
 #: DB:work_attribute_type_allowed_value/value:701
 msgctxt "work_attribute_type_allowed_value"
@@ -933,12 +933,12 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:325
 msgctxt "work_attribute_type_allowed_value"
 msgid "Beste Hicaz"
-msgstr ""
+msgstr "בסטה היקאז"
 
 #: DB:work_attribute_type_allowed_value/value:326
 msgctxt "work_attribute_type_allowed_value"
 msgid "Beste Hisar"
-msgstr ""
+msgstr "בסטה היסר"
 
 #: DB:work_attribute_type_allowed_value/value:327
 msgctxt "work_attribute_type_allowed_value"
@@ -948,7 +948,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:328
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bestenigar"
-msgstr ""
+msgstr "בסטהניגר"
 
 #: DB:medium_format/name:24
 msgctxt "medium_format"
@@ -958,7 +958,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:329
 msgctxt "work_attribute_type_allowed_value"
 msgid "Beyati"
-msgstr ""
+msgstr "בייאטי"
 
 #: DB:work_attribute_type_allowed_value/value:331
 msgctxt "work_attribute_type_allowed_value"
@@ -1053,7 +1053,7 @@ msgstr "ספרון"
 #: DB:release_status/name:3
 msgctxt "release_status"
 msgid "Bootleg"
-msgstr ""
+msgstr "הקלטה לא חוקית"
 
 #: DB:label_type/name:5
 msgctxt "label_type"
@@ -1088,7 +1088,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:336
 msgctxt "work_attribute_type_allowed_value"
 msgid "Buselik"
-msgstr ""
+msgstr "בוסליק"
 
 #: DB:work_attribute_type_allowed_value/value:337
 msgctxt "work_attribute_type_allowed_value"
@@ -1273,7 +1273,7 @@ msgstr "תו"
 #: DB:artist_type/name:6
 msgctxt "artist_type"
 msgid "Choir"
-msgstr ""
+msgstr "מקהלה"
 
 #: DB:work_attribute_type_allowed_value/value:71
 msgctxt "work_attribute_type_allowed_value"
@@ -1299,7 +1299,7 @@ msgstr ""
 #: DB:release_group_secondary_type/name:1
 msgctxt "release_group_secondary_type"
 msgid "Compilation"
-msgstr ""
+msgstr "קוֹמְפִּילַצְיָה"
 
 #: DB:event_type/name:1
 msgctxt "event_type"
@@ -1314,7 +1314,7 @@ msgstr "קוֹנְצֶ'רְטוֹ"
 #: DB:event_type/name:4
 msgctxt "event_type"
 msgid "Convention/Expo"
-msgstr ""
+msgstr "כנס/תערוכה"
 
 #: DB:medium_format/name:61
 msgctxt "medium_format"
@@ -1328,19 +1328,19 @@ msgid ""
 "containing software that is ostensibly designed to prevent the CD from being"
 " ripped. There are a number of software variants: the most well-known are "
 "Macrovision's Cactus Data Shield (CDS) and SunnComm's MediaMax."
-msgstr ""
+msgstr " בקרת העתקת תקליטור (CCCD) הוא מונח מטריה עבור תקליטורים שפורסמו בשנים 2001-2006, התקליטורים הכילו תוכנה שנועדה למנוע לכאורה פערים (קרעים) בנתונים שהכילו. ישנן מספר גירסאות תוכנה כאלו, הידועים שבהם: Macrovision של Cactus Data Shield  ו SunmComm של MediaMax."
 
 #: DB:area_type/name:1
 msgctxt "area_type"
 msgid "Country"
-msgstr ""
+msgstr "מדינה"
 
 #: DB:area_type/description:1
 msgctxt "area_type"
 msgid ""
 "Country is used for areas included (or previously included) in ISO 3166-1, "
 "e.g. United States."
-msgstr ""
+msgstr "מדינה משמשת עבור אזורים שנכללו (או נכללו קודם לכן) ב- ISO 3166-1, למשל ארצות הברית."
 
 #: DB:area_type/name:7
 msgctxt "area_type"
@@ -1354,7 +1354,7 @@ msgid ""
 "not the main administrative divisions but are also not municipalities, e.g. "
 "counties in the USA. These are not considered when displaying the parent "
 "areas for a given area."
-msgstr ""
+msgstr "מחוז משמש לחלוקה מינהלית קטנה יותר של מדינה, מחוזות אינם ישויות מנהליות ראשיות אבל הם גם לא עיריות. למשל, מחוזות בארה\"ב. מחוזות אינם נחשבים בעת הצגת אזורי האב עבור אזור נתון."
 
 #: DB:work_attribute_type_allowed_value/value:608
 msgctxt "work_attribute_type_allowed_value"
@@ -1414,7 +1414,7 @@ msgstr "רה במול מינור"
 #: DB:work_attribute_type_allowed_value/value:813
 msgctxt "work_attribute_type_allowed_value"
 msgid "D-sharp major"
-msgstr ""
+msgstr "רה-דיאז-מז'ור"
 
 #: DB:work_attribute_type_allowed_value/value:10
 msgctxt "work_attribute_type_allowed_value"
@@ -1875,7 +1875,7 @@ msgstr "תקליטור משופר"
 #: DB:instrument_type/name:6
 msgctxt "instrument_type"
 msgid "Ensemble"
-msgstr ""
+msgstr "להקה"
 
 #: DB:work_attribute_type_allowed_value/value:356
 msgctxt "work_attribute_type_allowed_value"
@@ -2170,7 +2170,7 @@ msgstr "סול במול מז'ור"
 #: DB:work_attribute_type_allowed_value/value:816
 msgctxt "work_attribute_type_allowed_value"
 msgid "G-flat minor"
-msgstr ""
+msgstr "סול-במול מינור"
 
 #: DB:work_attribute_type_allowed_value/value:24
 msgctxt "work_attribute_type_allowed_value"
@@ -2350,17 +2350,17 @@ msgstr ""
 #: DB:medium_format/name:17
 msgctxt "medium_format"
 msgid "HD-DVD"
-msgstr ""
+msgstr "HD-DVD"
 
 #: DB:medium_format/name:25
 msgctxt "medium_format"
 msgid "HDCD"
-msgstr ""
+msgstr "HDCD"
 
 #: DB:medium_format/name:37
 msgctxt "medium_format"
 msgid "HQCD"
-msgstr ""
+msgstr "HQCD"
 
 #: DB:work_attribute_type_allowed_value/value:736
 msgctxt "work_attribute_type_allowed_value"
@@ -2545,7 +2545,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:411
 msgctxt "work_attribute_type_allowed_value"
 msgid "Hisar"
-msgstr ""
+msgstr "היסאר"
 
 #: DB:work_attribute_type_allowed_value/value:412
 msgctxt "work_attribute_type_allowed_value"
@@ -2555,7 +2555,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:413
 msgctxt "work_attribute_type_allowed_value"
 msgid "Hisarbuselik"
-msgstr ""
+msgstr "היסארבוסליק"
 
 #: DB:label_type/name:2
 msgctxt "label_type"
@@ -2790,7 +2790,7 @@ msgstr ""
 #: DB:work_attribute_type/name:3
 msgctxt "work_attribute_type"
 msgid "JASRAC ID"
-msgstr ""
+msgstr "מזהה JASRAC"
 
 #: DB:work_attribute_type_allowed_value/value:114
 msgctxt "work_attribute_type_allowed_value"
@@ -3170,7 +3170,7 @@ msgstr ""
 #: DB:editor_collection_type/name:10
 msgctxt "collection_type"
 msgid "Label"
-msgstr ""
+msgstr "חברת תקליטים"
 
 #: DB:label_alias_type/name:1
 msgctxt "alias_type"
@@ -4377,6 +4377,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Ravicandrika"
 msgstr ""
 
+#: DB:cover_art_archive.art_type/name:14
+msgctxt "cover_art_type"
+msgid "Raw/Unedited"
+msgstr ""
+
 #: DB:editor_collection_type/name:12
 msgctxt "collection_type"
 msgid "Recording"
@@ -4415,12 +4420,12 @@ msgstr ""
 #: DB:editor_collection_type/name:1
 msgctxt "collection_type"
 msgid "Release"
-msgstr ""
+msgstr "מהדורה"
 
 #: DB:series_type/name:2
 msgctxt "series_type"
 msgid "Release"
-msgstr ""
+msgstr "מהדורה"
 
 #: DB:editor_collection_type/name:13
 msgctxt "collection_type"
@@ -5338,6 +5343,13 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:258
 msgctxt "work_attribute_type_allowed_value"
 msgid "Udaya ravicandrika"
+msgstr ""
+
+#: DB:cover_art_archive.art_type/description:14
+msgctxt "cover_art_type"
+msgid ""
+"Use for images that need work to be used for tagging (but can possibly "
+"already be used for reference)"
 msgstr ""
 
 #: DB:work_attribute_type/name:17

@@ -7,14 +7,14 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2008
 # ynbaranetz <hatzahit@gmail.com>, 2014
 # Itamar Shoham, 2016
-# Itamar Shoham, 2016
+# ItamarS, 2016
 # ynbaranetz <hatzahit@gmail.com>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2018-04-02 17:15+0200\n"
-"PO-Revision-Date: 2018-04-13 13:30+0000\n"
+"POT-Creation-Date: 2018-05-29 09:44+0200\n"
+"PO-Revision-Date: 2018-05-30 11:39+0000\n"
 "Last-Translator: Avi Markovitz <avi.markovitz@gmail.com>\n"
 "Language-Team: Hebrew (http://www.transifex.com/musicbrainz/musicbrainz/language/he/)\n"
 "MIME-Version: 1.0\n"
@@ -314,6 +314,10 @@ msgstr "פורטוגזית ברזילאית"
 #: picard/const/languages.py:70
 msgid "Swedish"
 msgstr "שוודית"
+
+#: picard/const/languages.py:75
+msgid "Traditional Chinese"
+msgstr "סינית מסורתית"
 
 #: picard/coverart/__init__.py:98
 #, python-format

@@ -12,9 +12,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2018-04-02 17:15+0200\n"
-"PO-Revision-Date: 2018-03-20 13:41+0000\n"
-"Last-Translator: Michael Wiencek <mwtuea@gmail.com>\n"
+"POT-Creation-Date: 2018-05-29 09:44+0200\n"
+"PO-Revision-Date: 2018-05-30 11:39+0000\n"
+"Last-Translator: yvanz\n"
 "Language-Team: Estonian (http://www.transifex.com/musicbrainz/musicbrainz/language/et/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -303,6 +303,10 @@ msgstr "Portugali (Brasiilia)"
 #: picard/const/languages.py:70
 msgid "Swedish"
 msgstr "Rootsi"
+
+#: picard/const/languages.py:75
+msgid "Traditional Chinese"
+msgstr ""
 
 #: picard/coverart/__init__.py:98
 #, python-format
@@ -2305,7 +2309,7 @@ msgstr ""
 
 #: picard/ui/searchdialog/artist.py:48
 msgid "Begin Area"
-msgstr ""
+msgstr "Alguspiirkond"
 
 #: picard/ui/searchdialog/artist.py:49
 msgid "End"
@@ -2313,7 +2317,7 @@ msgstr ""
 
 #: picard/ui/searchdialog/artist.py:50
 msgid "End Area"
-msgstr ""
+msgstr "Lõpp-piirkond"
 
 #: picard/ui/searchdialog/track.py:51
 msgid "Track Search Results"
@@ -2457,7 +2461,7 @@ msgstr "BPM"
 
 #: picard/util/tags.py:42
 msgid "Key"
-msgstr ""
+msgstr "Võti"
 
 #: picard/util/tags.py:43
 msgid "Copyright"
