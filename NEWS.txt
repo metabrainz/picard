@@ -1,5 +1,89 @@
+
+Version 2.0 - 2018-07-18
+** Bug-fix
+    * [PICARD-153] - Non-configuration data is saved in Picard.conf
+    * [PICARD-173] - ID3 tag TSOP appears to be stored blank
+    * [PICARD-340] - Cover art embedding will overwrite existing ones
+    * [PICARD-405] - Save stopped working
+    * [PICARD-817] - On high-resolution / high DPI displays, Picard's GUI is scaled wrong
+    * [PICARD-1047] - Incompatible plugins are loaded with picard 2.0
+    * [PICARD-1051] - Searching for similar tracks causes coredumps
+    * [PICARD-1052] - Not disabled Search for similar tracks can cause coredumps
+    * [PICARD-1056] - Crash when viewing file info dialog
+    * [PICARD-1058] - Saving images as files doesn't work
+    * [PICARD-1062] - Picard crashes when moving files on release
+    * [PICARD-1063] - After #689 unit tests fail if astrcmp is not compiled
+    * [PICARD-1064] - python setup.py test -v doesn't work
+    * [PICARD-1065] - python setup.py patch_version doesn't work
+    * [PICARD-1066] - python setup.py update_constants doesn't work
+    * [PICARD-1067] - Visual bug after un-checking an installed plugin
+    * [PICARD-1073] - "Add New Tag" crashes picard
+    * [PICARD-1084] - Picard 2 doesn't find DVD drive
+    * [PICARD-1085] - Multi-Dir Add Folder not working
+    * [PICARD-1105] - Crashes when using the edit tag dialog
+    * [PICARD-1106] - cancel plugin installation file dialog results in crash
+    * [PICARD-1114] - Cannot submit ratings in Picard 2.0 dev
+    * [PICARD-1119] - picard sets "Disc Subtitle" to the track title
+    * [PICARD-1123] - Multiple work languages are collapsed
+    * [PICARD-1126] - Unhelpful error message logged on network request errors
+    * [PICARD-1135] - Picard is not able to save on MTP devices
+    * [PICARD-1138] - Search crashes due to AttributeError
+    * [PICARD-1143] - Wrong amount of songs from added files
+    * [PICARD-1147] - FYI, Can't load "Alan Parsons" album "On air" in Picard 1.2
+    * [PICARD-1153] - "Lookup in Browser" and "Search" fail silently if artist name contains umlaut
+    * [PICARD-1156] - Picard fails to start when trying to upgrade plugin which is a symlink
+    * [PICARD-1159] - Can't open WAV files
+    * [PICARD-1161] - Dragging artwork from Chrome pages doesn't work
+    * [PICARD-1171] - Text of "About" can't be selected
+    * [PICARD-1179] - Error while searching for alt. releases
+    * [PICARD-1181] - In-app search dialog excessive slow down
+    * [PICARD-1188] - Picard chooses incorrect value for language tag
+    * [PICARD-1199] - Crash when right-clicking album
+    * [PICARD-1202] - Right click on tag listing causes exception and crash
+    * [PICARD-1203] - Hide unsupported tags from the tag diff in UI
+    * [PICARD-1204] - Picard freezes on unchecking show diff tags first
+    * [PICARD-1206] - Text is not displaying properly in some fields. 
+    * [PICARD-1210] - Long lines in the option dialogue don’t wrap
+    * [PICARD-1213] - Wrong Movement of coverart providers 
+    * [PICARD-1215] - Does not use config / ini file specified on command line
+    * [PICARD-1221] - Picard 2.0 won't start on Windows 10
+    * [PICARD-1226] - Different fonts in the plugins dialog
+    * [PICARD-1230] - Looking up CD crashes Picard
+    * [PICARD-1234] - Crash when loading plugin from local directory
+    * [PICARD-1252] - Crash on pasting invalid naming script
+    * [PICARD-1253] - Crash on image saving
+    * [PICARD-1255] - Crash on startup - no GUI
+    * [PICARD-1265] - Can't "Lookup in Browser": UnicodeEncodeError: 'latin-1' codec can't encode characters in position 0-7: ordinal not in range(256)
+    * [PICARD-1270] - Corruption of saved audio files located on a network share
+    * [PICARD-1271] - Artist credit saved in tags sometimes loses closing parenthesis
+    * [PICARD-1277] - Picard crashes on unknown cover art types
+
+** New Feature
+    * [PICARD-1187] - Add DSF file support
+    * [PICARD-1220] - Add keyboard shortcut for deleting scripts from options > scripting page
+
+** Task
+    * [PICARD-960] - Migrate to PyQt5
+    * [PICARD-1186] - Support only 64 bit Picard builds from 2.0
+
+** Improvement
+    * [PICARD-259] - Make file-specific variables available to tagger script
+    * [PICARD-581] - Picard XML processing should use lxml module rather than QXmlStreamReader
+    * [PICARD-588] - Picard 2.0 based on Python 3
+    * [PICARD-807] - Retry release fetch on MB server overload
+    * [PICARD-922] - Make multi-value script functions work correctly
+    * [PICARD-976] - Reimplement the picard WS code to accommodate future versions of MBWS
+    * [PICARD-978] - Distinguish in UI between unclustered and release unmatched files
+    * [PICARD-1075] - Add unit tests for Metadata object variables
+    * [PICARD-1087] - Improvements to UI for Lookup CD
+    * [PICARD-1100] - Error when running confined in a snap because of gconf
+    * [PICARD-1174] - Option to tolerate differences in track times
+    * [PICARD-1200] - In Options dialog, tree pane on the left cannot be resized
+    * [PICARD-1201] - Add a command-line option to not restore persisted UI sizes or positions
+    * [PICARD-1211] - The “X” close button doesn’t work on the options dialogue
+
 Version 1.4.2 - 2017-05-08
-** Bug
+** Bug-fix
     * [PICARD-1053] - Picard does not stop analyzer while moving
     * [PICARD-1055] - picard hangs with: RuntimeError: maximum recursion depth exceeded in cmp
     * [PICARD-1070] - The "Convert Unicode punctuation characters to ASCII" function only works in certain tags
