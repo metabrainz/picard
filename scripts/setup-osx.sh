@@ -13,6 +13,9 @@ cd "libdiscid-$DISCID_VERSION"
 make install
 cd ..
 cp "$HOME/libdiscid/lib/libdiscid.0.dylib" .
+wget "https://github.com/acoustid/chromaprint/releases/download/v$FPCALC_VERSION/chromaprint-fpcalc-$FPCALC_VERSION-macos-x86_64.tar.gz"
+tar -xf "chromaprint-fpcalc-$FPCALC_VERSION-macos-x86_64.tar.gz"
+cp "chromaprint-fpcalc-$FPCALC_VERSION-macos-x86_64/fpcalc" .
 pip3 install --upgrade pip setuptools wheel
 pip3 install virtualenv
 virtualenv -p python3 .
