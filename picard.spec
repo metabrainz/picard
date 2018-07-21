@@ -38,7 +38,7 @@ data_files = get_locale_messages()
 fpcalc_name = 'fpcalc'
 if os_name == 'Windows':
     fpcalc_name = 'fpcalc.exe'
-    binaries += [('discid.dll', '')]
+    binaries += [('discid.dll', ''), ('ssleay32.dll', ''), ('libeay32.dll', '')]
 
 if os_name == 'Darwin':
     binaries += [('libdiscid.0.dylib', '')]

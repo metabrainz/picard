@@ -26,15 +26,23 @@ build_script:
 - cmd: >-
     appveyor DownloadFile https://github.com/acoustid/chromaprint/releases/download/v%CHROMAPRINT_FPCALC_VERSION%/chromaprint-fpcalc-%CHROMAPRINT_FPCALC_VERSION%-windows-x86_64.zip -FileName fpcalc.zip
 
+    appveyor DownloadFile http://ftp.musicbrainz.org/pub/musicbrainz/misc/openssl-1.0.2o-x64_86-win64.zip -FileName openssl.zip
+
     appveyor DownloadFile https://github.com/metabrainz/libdiscid/releases/download/v%DISCID_VERSION%/libdiscid-%DISCID_VERSION%-win64.zip -FileName libdiscid.zip
 
     7z x fpcalc.zip -y
 
     copy /Y chromaprint-fpcalc-%CHROMAPRINT_FPCALC_VERSION%-windows-x86_64\fpcalc.exe fpcalc.exe
 
+    7z x openssl.zip -y
+
     7z x libdiscid.zip -y
 
     copy /Y discid.dll %PYTHON%
+
+    copy /Y ssleay32.dll %PYTHON%
+
+    copy /Y libeay32.dll %PYTHON%
 
     pip install -r requirements.txt
 
@@ -49,5 +57,5 @@ build_script:
     pyinstaller picard.spec
 
 artifacts:
-- path: dist/*.exe
+- path: dist
 deploy: off
