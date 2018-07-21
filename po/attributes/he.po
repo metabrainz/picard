@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2018-07-17 15:34+0000\n"
+"PO-Revision-Date: 2018-07-18 13:33+0000\n"
 "Last-Translator: Avi Markovitz <avi.markovitz@gmail.com>\n"
 "Language-Team: Hebrew (http://www.transifex.com/musicbrainz/musicbrainz/language/he/)\n"
 "MIME-Version: 1.0\n"
@@ -361,7 +361,7 @@ msgid ""
 "A symphonic poem is a piece of programmatic orchestral music, usually in a "
 "single movement, that evokes a painting, a landscape, the content of a poem,"
 " a story or novel, or other non-musical source."
-msgstr ""
+msgstr "פואמה סימפונית הינה קטע של מוזיקה פרוגרמטית מתוזמרת , בדרך כלל בתנועה אחת, המשרה: ציור, נוף, תוכן של פואמה, סיפור או רומן, או מקור אחר שאינו מוזיקלי."
 
 #: DB:work_type/description:16
 msgctxt "work_type"
@@ -2107,7 +2107,7 @@ msgstr ""
 #: DB:medium_format/name:51
 msgctxt "medium_format"
 msgid "Flexi-disc"
-msgstr ""
+msgstr "דיסק גמיש"
 
 #: DB:medium_format/description:51
 msgctxt "medium_format"
@@ -2120,7 +2120,7 @@ msgstr ""
 #: DB:medium_format/name:76
 msgctxt "medium_format"
 msgid "Floppy Disk"
-msgstr ""
+msgstr "דיסקט"
 
 #: DB:work_attribute_type/name:16
 msgctxt "work_attribute_type"
