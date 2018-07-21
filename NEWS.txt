@@ -1,3 +1,10 @@
+Version 2.0.1 - 2018-07-21
+** Bug-fix
+    * [PICARD-1283] - Fingerprinting not working on macOS in Picard 2.0
+    * [PICARD-1286] - Error creating SSL context on Windows
+
+** Improvement
+    * [PICARD-1290] - Improve slow start up times by moving to a non single file exe
 
 Version 2.0 - 2018-07-18
 ** Bug-fix
