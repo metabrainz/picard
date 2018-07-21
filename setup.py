@@ -4,9 +4,9 @@
 import datetime
 import glob
 import os
+import platform
 import re
 import sys
-import subprocess
 from io import StringIO
 
 from picard import __version__
@@ -205,6 +205,11 @@ class picard_build(build):
         if 'bdist_nsis' not in sys.argv:  # somebody shoot me please
             log.info('generating scripts/%s from scripts/picard.in', PACKAGE_NAME)
             generate_file('scripts/picard.in', 'scripts/' + PACKAGE_NAME, {'localedir': self.localedir, 'autoupdate': not self.disable_autoupdate})
+        if platform.system() == 'Windows':
+            # Temporarily setting it to this value to generate a nice name for Windows app
+            args['name'] = 'MusicBrainz Picard'
+            generate_file('installer/picard-setup.nsi.in', 'installer/picard-setup.nsi', args)
+            args['name'] = 'picard'
         build.run(self)
 
 
