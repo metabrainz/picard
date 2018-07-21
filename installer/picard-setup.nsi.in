@@ -10,7 +10,7 @@
 !define PRODUCT_UNINST_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}"
 !define PRODUCT_UNINST_ROOT_KEY "HKLM"
 
-SetCompressor /FINAL /SOLID LZMA 
+SetCompressor /FINAL /SOLID LZMA
 Name "${PRODUCT_NAME} ${PRODUCT_VERSION}"
 OutFile "picard-setup-${PRODUCT_VERSION}.exe"
 ShowInstDetails show
@@ -70,7 +70,7 @@ UninstPage custom un.RemoveSettingsPage
 
 ; Reserve files
 ReserveFile "removeSettings.ini"
-ReserveFile "${NSISDIR}\Plugins\InstallOptions.dll"
+ReserveFile "${NSISDIR}\Plugins\x86-unicode\InstallOptions.dll"
 
 ; Language files
 !insertmacro MUI_LANGUAGE "English"
@@ -89,18 +89,15 @@ Section !Required req
   SectionIn RO
     SetOutPath "$INSTDIR"
     SetOverwrite on
-        
+
     ; Files
-    File "${PROJECT_PATH}\dist\"
-    
-    RMDir "$INSTDIR\imageformats"
-    CreateDirectory "$INSTDIR\imageformats"
-    SetOutPath "$INSTDIR\imageformats"
-    File /r "${PROJECT_PATH}\dist\imageformats\"
+
+    File "${PROJECT_PATH}\dist\picard\"
+    File /r "${PROJECT_PATH}\dist\picard\PyQt5"
 
     ; Write the installation path into the registry
     WriteRegStr HKLM "Software\MusicBrainz\${PRODUCT_NAME}" "InstallDir" "$INSTDIR"
-  
+
     ; Create uninstaller
     WriteUninstaller "$INSTDIR\uninst.exe"
     WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "DisplayName" "${PRODUCT_NAME}"
@@ -114,44 +111,29 @@ Section !Required req
 
 SectionEnd
 
-Section "" imgs
-  SectionIn RO
-  RMDir "$INSTDIR\imageformats"
-  CreateDirectory "$INSTDIR\imageformats"
-  SetOutPath "$INSTDIR\imageformats"
-  File /r "${PROJECT_PATH}\dist\imageformats\"
-SectionEnd
-
-;Section "Phonon" phonon
-;  RMDir "$INSTDIR\phonon_backend"
-;  CreateDirectory "$INSTDIR\phonon_backend"
-;  SetOutPath "$INSTDIR\phonon_backend"
-;  File /r "${PROJECT_PATH}\dist\phonon_backend\"
-;SectionEnd
-
 Section "Languages" lang
   RMDir "$INSTDIR\locale"
   CreateDirectory "$INSTDIR\locale"
   SetOutPath "$INSTDIR\locale"
-  File /r "${PROJECT_PATH}\dist\locale\"
+  File /r "${PROJECT_PATH}\dist\picard\locale\"
 SectionEnd
 
 SubSection "Shortcuts" shortcuts
-  
+
   Section "Startmenu" startmenu
     SetShellVarContext all
     SetOutPath "$INSTDIR"
     CreateShortCut "$SMPROGRAMS\${PRODUCT_NAME}.lnk" "$INSTDIR\picard.exe" \
       "" "" "" SW_SHOWNORMAL "" "${PRODUCT_DESCRIPTION}"
   SectionEnd
-  
+
   Section "Desktop" desktop
     SetShellVarContext all
     SetOutPath "$INSTDIR"
     CreateShortCut "$DESKTOP\${PRODUCT_NAME}.lnk" "$INSTDIR\picard.exe" \
       "" "" "" SW_SHOWNORMAL "" "${PRODUCT_DESCRIPTION}"
   SectionEnd
-  
+
   Section "Quick Launch" quicklaunch
     SetShellVarContext all
     SetOutPath "$INSTDIR"
@@ -160,12 +142,6 @@ SubSection "Shortcuts" shortcuts
   SectionEnd
 
 SubSectionEnd
-
-Section "Plugins" plugins
-  CreateDirectory "$INSTDIR\plugins"
-  SetOutPath "$INSTDIR\plugins"
-  File /r "${PROJECT_PATH}\dist\plugins\"
-SectionEnd
 
 ; Uninstall
 Function un.RemoveSettingsPage
@@ -178,30 +154,27 @@ FunctionEnd
 
 Section Uninstall
 
-  ;!insertmacro MUI_STARTMENU_GETFOLDER "Application" $ICONS_GROUP
-  
   RMDir /r "$INSTDIR"
-  
+
   SetShellVarContext all
   Delete "$DESKTOP\${PRODUCT_NAME}.lnk"
-  
+
   SetShellVarContext all
   Delete "$SMPROGRAMS\${PRODUCT_NAME}.lnk"
-  
+
   SetShellVarContext all
   Delete "$QUICKLAUNCH\${PRODUCT_NAME}.lnk"
 
   DeleteRegKey ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}"
   DeleteRegKey HKLM "Software\MusicBrainz\${PRODUCT_NAME}"
-  
+
   !insertmacro INSTALLOPTIONS_READ $R0 "removeSettings.ini" "Field 1" "State"
   StrCmp $R0 "1" 0 +2
     ; Even more attempts
     DeleteRegKey HKCU "Software\MusicBrainz\Picard\persist"
     DeleteRegKey HKCU "Software\MusicBrainz\Picard\setting"
     DeleteRegKey HKCU "Software\MusicBrainz\Picard"
-    ;RMDir "$APPDATA\MusicBrainz\Picard\plugins"
-    
+
 SectionEnd
 
 ; Checks whether program is running.
@@ -221,16 +194,13 @@ Function .onInit
     MessageBox MB_ICONSTOP|MB_OK "The application you are trying to install is running. Close it and try again."
     Abort
   continueInstall:
-  !insertmacro UnselectSection ${plugins}
-  !insertmacro UnselectSection ${desktop} 
-  !insertmacro UnselectSection ${quicklaunch} 
+  !insertmacro UnselectSection ${desktop}
+  !insertmacro UnselectSection ${quicklaunch}
 FunctionEnd
 
 !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
   !insertmacro MUI_DESCRIPTION_TEXT ${req} "Installs ${PRODUCT_NAME} along with the necessary files for it run."
- ; !insertmacro MUI_DESCRIPTION_TEXT ${phonon} "Installs support for limited music playback in ${PRODUCT_NAME}."
   !insertmacro MUI_DESCRIPTION_TEXT ${lang} "Installs translations of ${PRODUCT_NAME} in different languages."
-  !insertmacro MUI_DESCRIPTION_TEXT ${plugins} "Installs all of the plugins that are bundled with this release."
   !insertmacro MUI_DESCRIPTION_TEXT ${desktop} "Installs a shortcut on the desktop."
   !insertmacro MUI_DESCRIPTION_TEXT ${startmenu} "Installs a shortcut in the Start Menu."
   !insertmacro MUI_DESCRIPTION_TEXT ${quicklaunch} "Installs a shortcut in the quicklaunch bar."
