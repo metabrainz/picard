@@ -58,25 +58,38 @@ a = Analysis(['tagger.py'],
              win_no_prefer_redirects=False,
              win_private_assemblies=False,
              cipher=block_cipher)
+
+
 pyz = PYZ(a.pure, a.zipped_data,
              cipher=block_cipher)
+
+
 exe = EXE(pyz,
           a.scripts,
-          a.binaries,
-          a.zipfiles,
-          a.datas,
+          exclude_binaries=True,
           name='picard',
           debug=False,
           strip=False,
-          runtime_tmpdir=None,
-          console=False,
+          upx=False,
           icon='picard.ico',
- )
+          console=False)
+
+
+coll = COLLECT(exe,
+               a.binaries,
+               a.zipfiles,
+               a.datas,
+               strip=False,
+               upx=False,
+               name='picard')
+
+
 if platform.system() == 'Darwin':
-    info_plist = {'NSHighResolutionCapable': 'True', 'NSPrincipalClass': 'NSApplication'}
-    app = BUNDLE(exe,
+    info_plist = {'NSHighResolutionCapable': 'True',
+                  'NSPrincipalClass': 'NSApplication'}
+    app = BUNDLE(coll,
                  name='MusicBrainz Picard.app',
                  icon='picard.icns',
                  bundle_identifier=None,
                  info_plist=info_plist
-                )
+                 )
