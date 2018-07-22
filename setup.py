@@ -610,15 +610,15 @@ args = {
     'scripts': ['scripts/' + PACKAGE_NAME],
     'install_requires': ['PyQt5', 'mutagen'],
     'classifiers': [
-    'License :: OSI Approved :: GNU General Public License v2 or later (GPLv2+)',
-    'Development Status :: 3 - Alpha',
-    'Programming Language :: Python :: 3.5',
-    'Programming Language :: Python :: 3.6',
-    'Operating System :: Microsoft :: Windows',
-    'Operating System :: MacOS',
-    'Operating System :: POSIX :: Linux',
-    'Topic :: Multimedia :: Sound/Audio',
-    'Topic :: Multimedia :: Sound/Audio :: Analysis'
+        'License :: OSI Approved :: GNU General Public License v2 or later (GPLv2+)',
+        'Development Status :: 3 - Alpha',
+        'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.6',
+        'Operating System :: Microsoft :: Windows',
+        'Operating System :: MacOS',
+        'Operating System :: POSIX :: Linux',
+        'Topic :: Multimedia :: Sound/Audio',
+        'Topic :: Multimedia :: Sound/Audio :: Analysis'
     ]
 }
 
