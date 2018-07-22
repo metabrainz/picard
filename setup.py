@@ -20,6 +20,7 @@ from distutils.command.build import build
 from distutils.command.install import install as install
 from distutils.dep_util import newer
 from distutils.spawn import find_executable
+from os import path
 from setuptools.dist import Distribution
 from setuptools import setup, Command, Extension
 
@@ -583,11 +584,17 @@ def _picard_packages():
     return tuple(sorted(packages))
 
 
+this_directory = path.abspath(path.dirname(__file__))
+with open(path.join(this_directory, 'README.md'), encoding='utf-8') as f:
+    long_description = f.read()
+
 args = {
     'name': PACKAGE_NAME,
     'version': __version__,
     'description': 'The next generation MusicBrainz tagger',
     'keywords': 'MusicBrainz metadata tagger picard',
+    'long_description': long_description,
+    'long_description_content_type': 'text/markdown',
     'url': 'https://picard.musicbrainz.org/',
     'package_dir': {'picard': 'picard'},
     'packages': _picard_packages(),
@@ -610,15 +617,17 @@ args = {
     'scripts': ['scripts/' + PACKAGE_NAME],
     'install_requires': ['PyQt5', 'mutagen'],
     'classifiers': [
-    'License :: OSI Approved :: GNU General Public License v2 or later (GPLv2+)',
-    'Development Status :: 3 - Alpha',
-    'Programming Language :: Python :: 3.5',
-    'Programming Language :: Python :: 3.6',
-    'Operating System :: Microsoft :: Windows',
-    'Operating System :: MacOS',
-    'Operating System :: POSIX :: Linux',
-    'Topic :: Multimedia :: Sound/Audio',
-    'Topic :: Multimedia :: Sound/Audio :: Analysis'
+        'License :: OSI Approved :: GNU General Public License v2 or later (GPLv2+)',
+        'Development Status :: 5 - Production/Stable',
+        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3 :: Only',
+        'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.6',
+        'Operating System :: Microsoft :: Windows',
+        'Operating System :: MacOS',
+        'Operating System :: POSIX :: Linux',
+        'Topic :: Multimedia :: Sound/Audio',
+        'Topic :: Multimedia :: Sound/Audio :: Analysis'
     ]
 }
 
@@ -628,11 +637,13 @@ def generate_file(infilename, outfilename, variables):
         with open(outfilename, "wt") as f_out:
             f_out.write(f_in.read() % variables)
 
+
 def find_file_in_path(filename):
     for include_path in sys.path:
         file_path = os.path.join(include_path, filename)
         if os.path.exists(file_path):
             return file_path
+
 
 args['data_files'] = [
     ('share/icons/hicolor/16x16/apps', ['resources/images/16x16/picard.png']),
