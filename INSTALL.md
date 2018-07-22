@@ -84,4 +84,5 @@ Picard supports packaging binaries and uploading them to PyPi.
 
 To submit a package run:
 
-    python setup.py sdist upload -r pypi
+    python3 setup.py sdist
+    twine upload dist/*
