@@ -46,8 +46,14 @@ class ScriptsMenu(QtWidgets.QMenu):
             try:
                 parser.eval(s_text, obj.metadata)
                 obj.update()
-            except ScriptError:
-                log.exception("Failed to run tagger script %s on object %r", s_name, obj)
+            except ScriptError as e:
+                log.exception('Error running tagger script "%s" on object %r', s_name, obj)
+                msg = N_('Script error in "%(script)s": %(message)s)')
+                mparms = {
+                    'script': s_name,
+                    'message': string_(e),
+                }
+                self.tagger.window.set_statusbar_message(msg, mparms)
 
     def _get_unique_metadata_objects(self):
         objs = self._get_metadata_objects(self.tagger.window.selected_objects)
