@@ -24,7 +24,7 @@ from picard import log
 from picard.album import Album
 from picard.cluster import Cluster, ClusterList
 from picard.track import Track
-from picard.script import ScriptParser
+from picard.script import ScriptParser, ScriptError
 from picard.util import uniqify
 
 
@@ -46,7 +46,7 @@ class ScriptsMenu(QtWidgets.QMenu):
             try:
                 parser.eval(s_text, obj.metadata)
                 obj.update()
-            except:
+            except ScriptError:
                 log.exception("Failed to run tagger script %s on object %r", s_name, obj)
 
     def _get_unique_metadata_objects(self):
