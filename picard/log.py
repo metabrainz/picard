@@ -19,10 +19,9 @@
 
 import logging
 import os
+from collections import OrderedDict, deque, namedtuple
 
-from collections import deque, namedtuple, OrderedDict
 from PyQt5 import QtCore
-
 
 _MAX_TAIL_LEN = 10**6
 

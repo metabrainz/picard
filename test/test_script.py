@@ -1,7 +1,8 @@
 import unittest
+
 from picard import config
-from picard.script import ScriptParser, ScriptError, register_script_function
 from picard.metadata import Metadata
+from picard.script import ScriptError, ScriptParser, register_script_function
 from picard.ui.options.renaming import _DEFAULT_FILE_NAMING_FORMAT
 
 

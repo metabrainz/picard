@@ -1,16 +1,16 @@
 # -*- coding: utf-8 -*-
 import os.path
-import picard.formats
-import unittest
 import shutil
-
-from PyQt5 import QtCore
-from picard import config, log
-from picard.coverart.image import CoverArtImage, TagCoverArtImage
-from picard.metadata import Metadata
-from picard.formats import ext_to_format
+import unittest
 from tempfile import mkstemp
 
+from PyQt5 import QtCore
+
+import picard.formats
+from picard import config, log
+from picard.coverart.image import CoverArtImage, TagCoverArtImage
+from picard.formats import ext_to_format
+from picard.metadata import Metadata
 
 settings = {
     'clear_existing_tags': False,

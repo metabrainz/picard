@@ -18,10 +18,9 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 import traceback
 
-from picard import log, config
+from picard import config, log
 from picard.plugin import ExtensionPoint
 from picard.ui.options import OptionsPage, register_options_page
-
 
 _cover_art_providers = ExtensionPoint()
 

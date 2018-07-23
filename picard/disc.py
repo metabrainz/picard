@@ -30,7 +30,9 @@ except ImportError:
         discid = None
 
 import traceback
+
 from PyQt5 import QtCore
+
 from picard import log
 from picard.ui.cdlookup import CDLookupDialog
 

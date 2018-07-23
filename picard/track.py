@@ -18,19 +18,20 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+import traceback
 from functools import partial
+
 from PyQt5 import QtCore
+
 from picard import config, log
-from picard.metadata import Metadata, run_track_metadata_processors
+from picard.const import DATA_TRACK_TITLE, SILENCE_TRACK_TITLE, VARIOUS_ARTISTS_ID
 from picard.dataobj import DataObject
-from picard.util.textencoding import asciipunct
 from picard.mbjson import recording_to_metadata
+from picard.metadata import Metadata, run_track_metadata_processors
 from picard.script import ScriptParser, enabled_tagger_scripts_texts
-from picard.const import VARIOUS_ARTISTS_ID, SILENCE_TRACK_TITLE, DATA_TRACK_TITLE
 from picard.ui.item import Item
 from picard.util.imagelist import update_metadata_images
-import traceback
-
+from picard.util.textencoding import asciipunct
 
 _TRANSLATE_TAGS = {
     "hip hop": "Hip-Hop",

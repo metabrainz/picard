@@ -17,13 +17,15 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-import re
 import os.path
+import re
+
 from PyQt5 import QtCore, QtWidgets
+
 from picard import config
-from picard.ui.util import StandardButton
 from picard.ui import PicardDialog
 from picard.ui.ui_tagsfromfilenames import Ui_TagsFromFileNamesDialog
+from picard.ui.util import StandardButton
 from picard.util.tags import display_tag_name
 
 

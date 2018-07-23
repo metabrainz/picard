@@ -24,10 +24,9 @@
 
 
 from picard import log
-from picard.util import parse_amazon_url
-from picard.coverart.providers import CoverArtProvider
 from picard.coverart.image import CoverArtImage
-
+from picard.coverart.providers import CoverArtProvider
+from picard.util import parse_amazon_url
 
 # amazon image file names are unique on all servers and constructed like
 # <ASIN>.<ServerNumber>.[SML]ZZZZZZZ.jpg

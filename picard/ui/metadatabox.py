@@ -18,21 +18,22 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-from PyQt5 import QtCore, QtGui, QtWidgets
 from collections import defaultdict
 from functools import partial
+
+from PyQt5 import QtCore, QtGui, QtWidgets
+
 from picard import config
 from picard.album import Album
-from picard.cluster import Cluster
-from picard.track import Track
-from picard.file import File
-from picard.util import format_time, throttle, thread, uniqify, restore_method
-from picard.util.tags import display_tag_name
-from picard.ui.edittagdialog import EditTagDialog
-from picard.metadata import MULTI_VALUED_JOINER
-from picard.browser.filelookup import FileLookup
 from picard.browser.browser import BrowserIntegration
-
+from picard.browser.filelookup import FileLookup
+from picard.cluster import Cluster
+from picard.file import File
+from picard.metadata import MULTI_VALUED_JOINER
+from picard.track import Track
+from picard.ui.edittagdialog import EditTagDialog
+from picard.util import format_time, restore_method, thread, throttle
+from picard.util.tags import display_tag_name
 
 COMMON_TAGS = [
     "title",

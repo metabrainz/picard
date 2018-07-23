@@ -17,40 +17,35 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-from PyQt5 import QtCore, QtGui, QtWidgets
-
+import os.path
 from collections import OrderedDict
 from functools import partial
-import os.path
+
+from PyQt5 import QtCore, QtGui, QtWidgets
 
 from picard import config, log
 from picard.album import Album
 from picard.cluster import Cluster
 from picard.file import File
-from picard.track import Track
 from picard.formats import supported_formats
+from picard.plugin import ExtensionPoint
+from picard.track import Track
 from picard.ui import PreserveGeometry
 from picard.ui.coverartbox import CoverArtBox
-from picard.ui.itemviews import MainPanel
-from picard.ui.metadatabox import MetadataBox
 from picard.ui.filebrowser import FileBrowser
-from picard.ui.tagsfromfilenames import TagsFromFileNamesDialog
-from picard.ui.options.dialog import OptionsDialog
-from picard.ui.infodialog import FileInfoDialog, AlbumInfoDialog, TrackInfoDialog, ClusterInfoDialog
+from picard.ui.infodialog import AlbumInfoDialog, ClusterInfoDialog, FileInfoDialog, TrackInfoDialog
 from picard.ui.infostatus import InfoStatus
+from picard.ui.itemviews import MainPanel
+from picard.ui.logview import HistoryView, LogView
+from picard.ui.metadatabox import MetadataBox
+from picard.ui.options.dialog import OptionsDialog
 from picard.ui.passworddialog import PasswordDialog, ProxyDialog
-from picard.ui.logview import LogView, HistoryView
-from picard.ui.searchdialog.track import TrackSearchDialog
 from picard.ui.searchdialog.album import AlbumSearchDialog
-from picard.ui.util import (
-    find_starting_directory,
-    ButtonLineEdit,
-    MultiDirsSelectDialog
-)
-from picard.util import icontheme, webbrowser2, throttle, thread, restore_method
+from picard.ui.searchdialog.track import TrackSearchDialog
+from picard.ui.tagsfromfilenames import TagsFromFileNamesDialog
+from picard.ui.util import (ButtonLineEdit, MultiDirsSelectDialog, find_starting_directory)
+from picard.util import icontheme, restore_method, thread, throttle, webbrowser2
 from picard.util.cdrom import discid, get_cdrom_drives
-from picard.plugin import ExtensionPoint
-
 
 ui_init = ExtensionPoint()
 

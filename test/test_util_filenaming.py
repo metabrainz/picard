@@ -2,8 +2,9 @@
 
 import os
 import os.path
-import unittest
 import sys
+import unittest
+
 from picard.util.filenaming import make_short_filename
 
 

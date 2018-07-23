@@ -20,10 +20,10 @@
 
 import logging
 import os
-
 from functools import partial
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 from picard import config, log
 from picard.ui import PicardDialog
 

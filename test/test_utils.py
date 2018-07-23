@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
 
+import builtins
 import os.path
 import sys
 import unittest
+
 from picard import util
 
-import builtins
 # ensure _() is defined
 if '_' not in builtins.__dict__:
     builtins.__dict__['_'] = lambda a: a

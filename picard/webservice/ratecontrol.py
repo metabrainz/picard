@@ -20,11 +20,11 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-import sys
 import math
+import sys
 import time
-
 from collections import defaultdict
+
 from picard import log
 
 # ============================================================================

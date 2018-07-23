@@ -19,9 +19,10 @@
 
 import os
 import re
+
 from picard import config
-from picard.coverart.providers import CoverArtProvider, ProviderOptions
 from picard.coverart.image import CoverArtImageFromFile
+from picard.coverart.providers import CoverArtProvider, ProviderOptions
 from picard.coverart.utils import CAA_TYPES
 from picard.ui.ui_provider_options_local import Ui_LocalOptions
 

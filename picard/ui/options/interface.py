@@ -17,19 +17,20 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+import locale
 import os.path
 from functools import partial
+
 from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtCore import QStandardPaths
+
 from picard import config
-from picard.util import icontheme
+from picard.const import UI_LANGUAGES
 from picard.ui.moveable_list_view import MoveableListView
 from picard.ui.options import OptionsPage, register_options_page
 from picard.ui.ui_options_interface import Ui_InterfaceOptionsPage
 from picard.ui.util import enabledSlot
-from picard.const import UI_LANGUAGES
-import locale
-
+from picard.util import icontheme
 
 _default_starting_dir = QStandardPaths.writableLocation(QStandardPaths.HomeLocation)
 

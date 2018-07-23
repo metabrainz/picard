@@ -18,21 +18,21 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-from PyQt5 import QtCore
 from operator import itemgetter
+
+from PyQt5 import QtCore
+
 from picard import config
-from picard.file import File
-from picard.mbjson import (
-    recording_to_metadata,
-    release_to_metadata,
-    release_group_to_metadata,
-    country_list_from_node
-)
-from picard.metadata import Metadata
-from picard.webservice.api_helpers import escape_lucene_query
-from picard.track import Track
 from picard.const import QUERY_LIMIT
-from picard.ui.searchdialog import SearchDialog, Retry, BY_DURATION, BY_NUMBER
+from picard.file import File
+from picard.mbjson import (country_list_from_node,
+                           recording_to_metadata,
+                           release_group_to_metadata,
+                           release_to_metadata)
+from picard.metadata import Metadata
+from picard.track import Track
+from picard.ui.searchdialog import BY_DURATION, BY_NUMBER, Retry, SearchDialog
+from picard.webservice.api_helpers import escape_lucene_query
 
 
 class TrackSearchDialog(SearchDialog):
