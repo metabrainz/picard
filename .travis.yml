@@ -12,11 +12,11 @@ env:
   global:
   - PIP_INSTALL="pip3 install"
   - DISCID="$PIP_INSTALL discid" MUTAGEN="$PIP_INSTALL mutagen>=1.37"
-  - BABEL="$PIP_INSTALL babel"
   - NOSE="$PIP_INSTALL nose2"
   - COVERAGE="$PIP_INSTALL nose-cov"
   - CODACY="$PIP_INSTALL codacy-coverage"
   matrix:
+  - PYQT="$PIP_INSTALL pyqt5==5.10"
   - PYQT="$PIP_INSTALL pyqt5==5.9"
   - PYQT="$PIP_INSTALL pyqt5==5.8"
 matrix:
@@ -29,11 +29,10 @@ matrix:
   fast_finish: true
 before_install:
 - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get update -qq && sudo apt-get
-  install -qq transifex-client libdiscid0 libdiscid0-dev qt5-default; fi
+  install -qq libdiscid0 libdiscid0-dev qt5-default; fi
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then bash scripts/setup-osx.sh; fi
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export LD_LIBRARY_PATH=`pwd`:$LD_LIBRARY_PATH; fi
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then source bin/activate; fi
-- "$BABEL"
 - "$PYQT"
 - "$MUTAGEN"
 - "$DISCID"
