@@ -51,8 +51,8 @@ class GeneralOptionsPage(OptionsPage):
         config.IntOption("persist", "oauth_access_token_expires", 0),
         config.TextOption("persist", "oauth_username", ""),
         config.BoolOption("setting", "check_for_updates", False),
-        config.BoolOption("setting", "include_beta_versions", False),
         config.IntOption("setting", "update_check_days", 0),
+        config.IntOption("setting", "update_level", 0),
         config.IntOption("persist", "last_update_check", 0),
     ]
 
@@ -71,7 +71,7 @@ class GeneralOptionsPage(OptionsPage):
         self.ui.analyze_new_files.setChecked(config.setting["analyze_new_files"])
         self.ui.ignore_file_mbids.setChecked(config.setting["ignore_file_mbids"])
         self.ui.check_for_updates.setChecked(config.setting["check_for_updates"])
-        self.ui.include_beta_versions.setChecked(config.setting["include_beta_versions"])
+        self.ui.update_level.setCurrentIndex(config.setting["update_level"])
         self.ui.update_check_days.setValue(config.setting["update_check_days"])
 
     def save(self):
@@ -80,7 +80,7 @@ class GeneralOptionsPage(OptionsPage):
         config.setting["analyze_new_files"] = self.ui.analyze_new_files.isChecked()
         config.setting["ignore_file_mbids"] = self.ui.ignore_file_mbids.isChecked()
         config.setting["check_for_updates"] = self.ui.check_for_updates.isChecked()
-        config.setting["include_beta_versions"] = self.ui.include_beta_versions.isChecked()
+        config.setting["update_level"] = self.ui.update_level.currentIndex()
         config.setting["update_check_days"] = self.ui.update_check_days.value()
 
     def update_login_logout(self):
