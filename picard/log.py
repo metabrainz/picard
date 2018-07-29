@@ -22,7 +22,7 @@ import os
 
 from collections import deque, namedtuple, OrderedDict
 from PyQt5 import QtCore
-
+from threading import Lock
 
 _MAX_TAIL_LEN = 10**6
 
@@ -55,21 +55,23 @@ TailLogTuple = namedtuple(
 
 class TailLogHandler(logging.Handler):
 
-    def __init__(self, log_queue, tail_logger):
+    def __init__(self, log_queue, tail_logger, log_queue_lock):
         super().__init__()
         self.log_queue = log_queue
         self.tail_logger = tail_logger
+        self.log_queue_lock = log_queue_lock
         self.pos = 0
 
     def emit(self, record):
-        self.log_queue.append(
-            TailLogTuple(
-                self.pos,
-                self.format(record),
-                record.levelno
+        with self.log_queue_lock:
+            self.log_queue.append(
+                TailLogTuple(
+                    self.pos,
+                    self.format(record),
+                    record.levelno
+                )
             )
-        )
-        self.pos += 1
+            self.pos += 1
         self.tail_logger.updated.emit()
 
 
@@ -79,13 +81,17 @@ class TailLogger(QtCore.QObject):
     def __init__(self, maxlen):
         super().__init__()
         self._log_queue = deque(maxlen=maxlen)
-        self.log_handler = TailLogHandler(self._log_queue, self)
+        self._queue_lock = Lock()
+        self.log_handler = TailLogHandler(self._log_queue, self, self._queue_lock)
 
     def contents(self, prev=-1):
-        return [x for x in self._log_queue if x.pos > prev]
+        with self._queue_lock:
+            contents = [x for x in self._log_queue if x.pos > prev]
+        return contents
 
     def clear(self):
-        self._log_queue.clear()
+        with self.log_queue_lock:
+            self._log_queue.clear()
 
 
 # MAIN LOGGER
