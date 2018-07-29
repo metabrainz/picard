@@ -1,11 +1,10 @@
 #!/usr/bin/env bash
 brew update
-brew tap samj1912/core
-brew tap-pin samj1912/core
-brew install python3
-brew link python3 --force
 brew install gettext
 brew link gettext --force
+wget "https://www.python.org/ftp/python/3.6.6/python-3.6.6-macosx10.9.pkg"
+sudo installer -pkg python-3.6.6-macosx10.9.pkg -target /
+sudo python3 -m ensurepip
 wget "ftp://ftp.musicbrainz.org/pub/musicbrainz/libdiscid/libdiscid-$DISCID_VERSION.tar.gz"
 tar -xf "libdiscid-$DISCID_VERSION.tar.gz"
 cd "libdiscid-$DISCID_VERSION"
@@ -18,4 +17,4 @@ tar -xf "chromaprint-fpcalc-$FPCALC_VERSION-macos-x86_64.tar.gz"
 cp "chromaprint-fpcalc-$FPCALC_VERSION-macos-x86_64/fpcalc" .
 pip3 install --upgrade pip setuptools wheel
 pip3 install virtualenv
-virtualenv -p python3 .
+python3 -m virtualenv -p python3 .
