@@ -17,8 +17,9 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from picard.util import icontheme
+
 from picard.ui.ui_infostatus import Ui_InfoStatus
+from picard.util import icontheme
 
 
 class InfoStatus(QtWidgets.QWidget, Ui_InfoStatus):

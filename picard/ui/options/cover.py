@@ -18,11 +18,11 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from picard import config
+from picard.coverart.providers import cover_art_providers, is_provider_enabled
+from picard.ui.checkbox_list_item import CheckboxListItem
+from picard.ui.moveable_list_view import MoveableListView
 from picard.ui.options import OptionsPage, register_options_page
 from picard.ui.ui_options_cover import Ui_CoverOptionsPage
-from picard.coverart.providers import cover_art_providers, is_provider_enabled
-from picard.ui.moveable_list_view import MoveableListView
-from picard.ui.checkbox_list_item import CheckboxListItem
 
 
 class CoverOptionsPage(OptionsPage):

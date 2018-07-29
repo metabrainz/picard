@@ -3,7 +3,7 @@
 import os.path
 from distutils import log
 from distutils.dep_util import newer
-from distutils.spawn import find_executable, spawn, DistutilsExecError
+from distutils.spawn import DistutilsExecError, find_executable, spawn
 
 
 def main():

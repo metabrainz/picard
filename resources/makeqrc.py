@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
-import os, fnmatch
+import fnmatch
+import os
 import re
 from distutils import log
 from distutils.dep_util import newer

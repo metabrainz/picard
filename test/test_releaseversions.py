@@ -1,13 +1,13 @@
 import json
 import os.path
-import unittest
 import shutil
 import sys
 import tempfile
-from picard import config
-from picard.releasegroup import ReleaseGroup
-from picard.i18n import setup_gettext
+import unittest
 
+from picard import config
+from picard.i18n import setup_gettext
+from picard.releasegroup import ReleaseGroup
 
 settings = {
     "standardize_tracks": False,

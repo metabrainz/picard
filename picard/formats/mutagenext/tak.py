@@ -18,7 +18,7 @@ and http://en.wikipedia.org/wiki/TAK_(audio_codec)
 
 __all__ = ["TAK", "Open", "delete"]
 
-from mutagen.apev2 import APEv2File, error, delete
+from mutagen.apev2 import APEv2File, delete, error
 
 
 class TAKHeaderError(error):

@@ -24,16 +24,16 @@ import os.path
 import sys
 from functools import partial
 from operator import attrgetter
+
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 from picard import config, log
-from picard.const import (
-    USER_PLUGIN_DIR,
-    PLUGINS_API,
-    PLUGIN_ACTION_NONE,
-    PLUGIN_ACTION_INSTALL,
-    PLUGIN_ACTION_UPDATE,
-    PLUGIN_ACTION_UNINSTALL,
-)
+from picard.const import (PLUGINS_API,
+                          PLUGIN_ACTION_INSTALL,
+                          PLUGIN_ACTION_NONE,
+                          PLUGIN_ACTION_UNINSTALL,
+                          PLUGIN_ACTION_UPDATE,
+                          USER_PLUGIN_DIR)
 from picard.ui import HashableTreeWidgetItem
 from picard.ui.options import OptionsPage, register_options_page
 from picard.ui.ui_options_plugins import Ui_PluginsOptionsPage

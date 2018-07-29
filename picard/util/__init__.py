@@ -17,20 +17,22 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+import builtins
 import html
 import json
-import os
 import ntpath
+import os
 import re
 import sys
 import unicodedata
-import builtins
+from string import Template
+from time import time
+
 if sys.platform == 'win32':
     from ctypes import windll
 
-from time import time
 from PyQt5 import QtCore
-from string import Template
+
 # Required for compatibility with lastfmplus which imports this from here rather than loading it direct.
 from picard.const import MUSICBRAINZ_SERVERS
 

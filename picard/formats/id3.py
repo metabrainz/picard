@@ -17,23 +17,23 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+import re
+from collections import defaultdict
+from urllib.parse import urlparse
+
+import mutagen.aiff
 import mutagen.apev2
 import mutagen.dsf
 import mutagen.mp3
 import mutagen.trueaudio
-import mutagen.aiff
-
-import re
-from collections import defaultdict
 from mutagen import id3
+
 from picard import config, log
-from picard.coverart.image import TagCoverArtImage, CoverArtImageError
-from picard.metadata import Metadata
+from picard.coverart.image import CoverArtImageError, TagCoverArtImage
 from picard.file import File
 from picard.formats.mutagenext import compatid3
+from picard.metadata import Metadata
 from picard.util import encode_filename, sanitize_date
-from urllib.parse import urlparse
-
 
 id3.TCMP = compatid3.TCMP
 id3.TSO2 = compatid3.TSO2

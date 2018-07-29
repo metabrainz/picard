@@ -20,12 +20,13 @@
 
 import os
 import sys
+
 from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtCore import QStandardPaths
+
 from picard import config
 from picard.formats import supported_formats
 from picard.util import find_existing_path
-
 
 _default_current_browser_path = QStandardPaths.writableLocation(QStandardPaths.HomeLocation)
 

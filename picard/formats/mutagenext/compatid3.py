@@ -18,7 +18,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-from mutagen.id3 import ID3, Frames, Frames_2_2, TextFrame
+from mutagen.id3 import Frames, Frames_2_2, ID3, TextFrame
 
 
 class TCMP(TextFrame):

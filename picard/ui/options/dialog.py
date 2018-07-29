@@ -18,31 +18,15 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from PyQt5 import QtCore, QtWidgets
+
 from picard import config
-from picard.util import webbrowser2, restore_method
-from picard.ui import PicardDialog, HashableTreeWidgetItem
-from picard.ui.util import StandardButton
+from picard.ui import HashableTreeWidgetItem, PicardDialog
 from picard.ui.options import (
-    about,
-    advanced,
-    cdlookup,
-    cover,
-    general,
-    interface,
-    folksonomy,
-    ratings,
-    matching,
-    metadata,
-    releases,
-    renaming,
-    plugins,
-    network,
-    scripting,
-    tags,
-    fingerprinting,
     OptionsCheckError,
     _pages as page_classes
 )
+from picard.ui.util import StandardButton
+from picard.util import restore_method, webbrowser2
 
 
 class OptionsDialog(PicardDialog):

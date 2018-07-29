@@ -18,12 +18,13 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from PyQt5.QtWidgets import QInputDialog
+
 from picard import config
-from picard.util import webbrowser2
+from picard.collection import load_user_collections
+from picard.const import MUSICBRAINZ_SERVERS
 from picard.ui.options import OptionsPage, register_options_page
 from picard.ui.ui_options_general import Ui_GeneralOptionsPage
-from picard.const import MUSICBRAINZ_SERVERS
-from picard.collection import load_user_collections
+from picard.util import webbrowser2
 
 
 class GeneralOptionsPage(OptionsPage):

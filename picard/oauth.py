@@ -19,8 +19,10 @@
 
 import time
 from functools import partial
-from PyQt5.QtNetwork import QNetworkRequest
+
 from PyQt5.QtCore import QUrl, QUrlQuery
+from PyQt5.QtNetwork import QNetworkRequest
+
 from picard import config, log
 from picard.const import (
     MUSICBRAINZ_OAUTH_CLIENT_ID,

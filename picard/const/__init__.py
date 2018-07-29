@@ -17,14 +17,14 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-import os
-import sys
-
-from PyQt5.QtCore import QStandardPaths
-from picard import PICARD_APP_NAME
-
 # Install gettext "noop" function in case const.py gets imported directly.
 import builtins
+import os
+
+from PyQt5.QtCore import QStandardPaths
+
+from picard import PICARD_APP_NAME
+
 builtins.__dict__['N_'] = lambda a: a
 
 

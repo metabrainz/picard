@@ -20,13 +20,13 @@
 from PyQt5 import QtCore, QtWidgets
 
 from picard import config, log
-from picard.ui import PicardDialog
-from picard.ui.ui_cdlookup import Ui_Dialog
 from picard.mbjson import (
     artist_credit_from_node,
     label_info_from_node,
     release_dates_and_countries_from_node,
 )
+from picard.ui import PicardDialog
+from picard.ui.ui_cdlookup import Ui_Dialog
 from picard.util import restore_method
 
 

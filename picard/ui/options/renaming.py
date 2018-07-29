@@ -21,18 +21,19 @@
 import os.path
 import sys
 from functools import partial
+
 from PyQt5 import QtWidgets
 from PyQt5.QtCore import QStandardPaths
 from PyQt5.QtGui import QPalette
+
 from picard import config
 from picard.const import PICARD_URLS
 from picard.file import File
-from picard.script import ScriptParser, ScriptSyntaxError, ScriptError
-from picard.ui.options import OptionsPage, OptionsCheckError, register_options_page
+from picard.script import ScriptError, ScriptParser, ScriptSyntaxError
+from picard.ui.options import OptionsCheckError, OptionsPage, register_options_page
+from picard.ui.options.scripting import TaggerScriptSyntaxHighlighter
 from picard.ui.ui_options_renaming import Ui_RenamingOptionsPage
 from picard.ui.util import enabledSlot
-from picard.ui.options.scripting import TaggerScriptSyntaxHighlighter
-
 
 _DEFAULT_FILE_NAMING_FORMAT = "$if2(%albumartist%,%artist%)/" \
     "$if($ne(%albumartist%,),%album%/,)" \

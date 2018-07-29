@@ -22,6 +22,7 @@ import re
 import struct
 import sys
 import unicodedata
+
 from picard.util import _io_encoding, decode_filename, encode_filename
 
 

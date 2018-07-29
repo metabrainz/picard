@@ -25,23 +25,18 @@ import os
 import shutil
 import sys
 import tempfile
-
 from hashlib import md5
-from PyQt5.QtCore import QUrl, QObject, QMutex
+
+from PyQt5.QtCore import QMutex, QObject, QUrl
+
 from picard import config, log
 from picard.coverart.utils import translate_caa_type
 from picard.script import ScriptParser
-from picard.util import (
-    decode_filename,
-    encode_filename,
-    replace_win32_incompat,
-    imageinfo
-)
+from picard.util import (decode_filename, encode_filename, imageinfo, replace_win32_incompat)
 from picard.util.textencoding import (
     replace_non_ascii,
     unaccent,
 )
-
 
 _datafiles = dict()
 _datafile_mutex = QMutex(QMutex.Recursive)
