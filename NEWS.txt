@@ -1,5 +1,17 @@
-Version 2.0.1 - 2018-07-21
+Version 2.0.2 - 2018-07-30
+** Sub-task
+    * [PICARD-1296] - Code sign Picard for macOS
+
+** Task
+    * [PICARD-1301] - Use PyQT 5.10 for macOS
+
 ** Bug
+    * [PICARD-342] - Picard is not properly signed for Mac OS X Gatekeeper
+    * [PICARD-1212] - Picard 2.0.0dev4 crashing at startup
+    * [PICARD-1300] - Picard crashes when logging lots of events
+
+Version 2.0.1 - 2018-07-21
+** Bug-fix
     * [PICARD-1283] - Fingerprinting not working on macOS in Picard 2.0
     * [PICARD-1286] - Error creating SSL context on Windows
 
@@ -50,9 +62,9 @@ Version 2.0 - 2018-07-18
     * [PICARD-1202] - Right click on tag listing causes exception and crash
     * [PICARD-1203] - Hide unsupported tags from the tag diff in UI
     * [PICARD-1204] - Picard freezes on unchecking show diff tags first
-    * [PICARD-1206] - Text is not displaying properly in some fields. 
+    * [PICARD-1206] - Text is not displaying properly in some fields.
     * [PICARD-1210] - Long lines in the option dialogue don’t wrap
-    * [PICARD-1213] - Wrong Movement of coverart providers 
+    * [PICARD-1213] - Wrong Movement of coverart providers
     * [PICARD-1215] - Does not use config / ini file specified on command line
     * [PICARD-1221] - Picard 2.0 won't start on Windows 10
     * [PICARD-1226] - Different fonts in the plugins dialog
