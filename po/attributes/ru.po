@@ -3,6 +3,7 @@
 # Anton Karpuzikov <karpuzikovanton@gmail.com>, 2015
 # Dmitr Y, 2017
 # greycat <greycat.na.kor@gmail.com>, 2012
+# Nikita P <nik-p13@yandex.ru>, 2018
 # Nikolai Prokoschenko <nikolai@prokoschenko.de>, 2011
 # dubwai <o0wd8jx@lavabit.com>, 2012
 # odinvolk <odinwolk@gmail.com>, 2018
@@ -14,11 +15,12 @@
 # Екатерина Тишина <ekaterina.tishina@gmail.com>, 2016
 # Иван Стасюк <brokeyourbike@gmail.com>, 2016
 # Петр Москвин <peter.moskvin@outlook.com>, 2017
+# Светлана Ширикалова <shirikalova@list.ru>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2018-07-04 00:06+0000\n"
-"Last-Translator: odinvolk <odinwolk@gmail.com>\n"
+"PO-Revision-Date: 2018-07-28 08:51+0000\n"
+"Last-Translator: Nikita P <nik-p13@yandex.ru>\n"
 "Language-Team: Russian (http://www.transifex.com/musicbrainz/musicbrainz/language/ru/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -838,7 +840,7 @@ msgstr "Си бемоль минор"
 #: DB:work_attribute_type_allowed_value/value:818
 msgctxt "work_attribute_type_allowed_value"
 msgid "B-sharp major"
-msgstr ""
+msgstr "Си-диез мажор"
 
 #: DB:work_attribute_type_allowed_value/value:819
 msgctxt "work_attribute_type_allowed_value"
@@ -893,7 +895,7 @@ msgstr ""
 #: DB:work_type/name:26
 msgctxt "work_type"
 msgid "Beijing opera"
-msgstr ""
+msgstr "Пекинская опера"
 
 #: DB:work_type/description:26
 msgctxt "work_type"
@@ -1736,7 +1738,7 @@ msgstr "DualDisc (DVD-Video сторона)"
 #: DB:work_attribute_type_allowed_value/value:612
 msgctxt "work_attribute_type_allowed_value"
 msgid "Durak"
-msgstr ""
+msgstr "Стоп"
 
 #: DB:work_attribute_type_allowed_value/value:726
 msgctxt "work_attribute_type_allowed_value"
@@ -3592,7 +3594,7 @@ msgctxt "work_type"
 msgid ""
 "Musical theatre is a form of theatrical performance that combines songs, "
 "spoken dialogue, acting, and dance."
-msgstr ""
+msgstr "Музыкальный театр - это форма театрального представления, в котором сочетаются песни, разговорный диалог, актерское мастерство и танец."
 
 #: DB:work_attribute_type_allowed_value/value:748
 msgctxt "work_attribute_type_allowed_value"
@@ -4132,7 +4134,7 @@ msgstr ""
 #: DB:instrument_type/name:3
 msgctxt "instrument_type"
 msgid "Percussion instrument"
-msgstr ""
+msgstr "Ударный инструмент"
 
 #: DB:work_attribute_type_allowed_value/value:496
 msgctxt "work_attribute_type_allowed_value"
@@ -4926,7 +4928,7 @@ msgstr "Стикер"
 #: DB:instrument_type/name:2
 msgctxt "instrument_type"
 msgid "String instrument"
-msgstr ""
+msgstr "Струнный инструмент"
 
 #: DB:place_type/name:1
 msgctxt "place_type"
@@ -5554,7 +5556,7 @@ msgstr ""
 #: DB:instrument_type/name:1
 msgctxt "instrument_type"
 msgid "Wind instrument"
-msgstr ""
+msgstr "Духовой инструмент"
 
 #: DB:editor_collection_type/name:3
 msgctxt "collection_type"

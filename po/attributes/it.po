@@ -11,8 +11,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2018-06-30 10:21+0000\n"
-"Last-Translator: yvanz\n"
+"PO-Revision-Date: 2018-07-22 16:00+0000\n"
+"Last-Translator: Luca Salini <salo.rock@gmail.com>\n"
 "Language-Team: Italian (http://www.transifex.com/musicbrainz/musicbrainz/language/it/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -88,7 +88,7 @@ msgstr "LaserDisc 8\""
 #: DB:medium_format/name:78
 msgctxt "medium_format"
 msgid "8-Track Cartridge"
-msgstr ""
+msgstr "Cartuccia Stereo 8"
 
 #: DB:medium_format/name:34
 msgctxt "medium_format"
@@ -209,7 +209,7 @@ msgstr "Un libro con rilegatura perfetta (perfect bind) e una custodia per CD al
 msgctxt "place_type"
 msgid ""
 "A place (generally a factory) at which physical media are manufactured."
-msgstr ""
+msgstr "Un luogo (solitamente una fabbrica) in cui vengono prodotti i supporti fisici."
 
 #: DB:place_type/description:5
 msgctxt "place_type"
@@ -402,7 +402,7 @@ msgstr "La bemolle minore"
 #: DB:work_attribute_type_allowed_value/value:817
 msgctxt "work_attribute_type_allowed_value"
 msgid "A-sharp major"
-msgstr ""
+msgstr "La diesis maggiore"
 
 #: DB:work_attribute_type_allowed_value/value:30
 msgctxt "work_attribute_type_allowed_value"
@@ -832,12 +832,12 @@ msgstr "Si bemolle minore"
 #: DB:work_attribute_type_allowed_value/value:818
 msgctxt "work_attribute_type_allowed_value"
 msgid "B-sharp major"
-msgstr ""
+msgstr "Si diesis maggiore"
 
 #: DB:work_attribute_type_allowed_value/value:819
 msgctxt "work_attribute_type_allowed_value"
 msgid "B-sharp minor"
-msgstr ""
+msgstr "Si diesis minore"
 
 #: DB:work_attribute_type/name:7
 msgctxt "work_attribute_type"
@@ -1154,7 +1154,7 @@ msgstr "Do bemolle maggiore"
 #: DB:work_attribute_type_allowed_value/value:812
 msgctxt "work_attribute_type_allowed_value"
 msgid "C-flat minor"
-msgstr ""
+msgstr "Do bemolle minore"
 
 #: DB:work_attribute_type_allowed_value/value:4
 msgctxt "work_attribute_type_allowed_value"
@@ -1420,7 +1420,7 @@ msgstr "Re bemolle minore"
 #: DB:work_attribute_type_allowed_value/value:813
 msgctxt "work_attribute_type_allowed_value"
 msgid "D-sharp major"
-msgstr ""
+msgstr "Re diesis maggiore"
 
 #: DB:work_attribute_type_allowed_value/value:10
 msgctxt "work_attribute_type_allowed_value"
@@ -1846,7 +1846,7 @@ msgstr "Mi bemolle minore"
 #: DB:work_attribute_type_allowed_value/value:814
 msgctxt "work_attribute_type_allowed_value"
 msgid "E-sharp major"
-msgstr ""
+msgstr "Mi diesis maggiore"
 
 #: DB:work_attribute_type_allowed_value/value:15
 msgctxt "work_attribute_type_allowed_value"
@@ -2126,7 +2126,7 @@ msgstr "I flexi-disc sono dischi per fonografo realizzati con un foglio di vinil
 #: DB:medium_format/name:76
 msgctxt "medium_format"
 msgid "Floppy Disk"
-msgstr ""
+msgstr "Floppy disk"
 
 #: DB:work_attribute_type/name:16
 msgctxt "work_attribute_type"
@@ -2176,7 +2176,7 @@ msgstr "Sol bemolle maggiore"
 #: DB:work_attribute_type_allowed_value/value:816
 msgctxt "work_attribute_type_allowed_value"
 msgid "G-flat minor"
-msgstr ""
+msgstr "Sol bemolle minore"
 
 #: DB:work_attribute_type_allowed_value/value:24
 msgctxt "work_attribute_type_allowed_value"
@@ -2431,7 +2431,7 @@ msgstr "Hezeç"
 #: DB:medium_format/name:75
 msgctxt "medium_format"
 msgid "HiPac"
-msgstr ""
+msgstr "HiPac"
 
 #: DB:work_attribute_type_allowed_value/value:391
 msgctxt "work_attribute_type_allowed_value"
@@ -3331,7 +3331,7 @@ msgstr "Manuale"
 #: DB:label_type/name:10
 msgctxt "label_type"
 msgid "Manufacturer"
-msgstr ""
+msgstr "Fabbricante"
 
 #: DB:work_attribute_type_allowed_value/value:172
 msgctxt "work_attribute_type_allowed_value"
@@ -3569,7 +3569,7 @@ msgstr "Murabba"
 #: DB:work_attribute_type_allowed_value/value:811
 msgctxt "work_attribute_type_allowed_value"
 msgid "Murabba Beste "
-msgstr ""
+msgstr "Murabba Beste "
 
 #: DB:medium_format/name:46
 msgctxt "medium_format"
@@ -3706,17 +3706,17 @@ msgstr "Nakış"
 #: DB:work_attribute_type_allowed_value/value:809
 msgctxt "work_attribute_type_allowed_value"
 msgid "Nakış Ağırsemai"
-msgstr ""
+msgstr "Nakış Ağırsemai"
 
 #: DB:work_attribute_type_allowed_value/value:808
 msgctxt "work_attribute_type_allowed_value"
 msgid "Nakış Beste"
-msgstr ""
+msgstr "Nakış Beste"
 
 #: DB:work_attribute_type_allowed_value/value:810
 msgctxt "work_attribute_type_allowed_value"
 msgid "Nakış Yürüksemai"
-msgstr ""
+msgstr "Nakış Yürüksemai"
 
 #: DB:work_attribute_type_allowed_value/value:468
 msgctxt "work_attribute_type_allowed_value"
@@ -4186,7 +4186,7 @@ msgstr "Rappresentazione teatrale"
 #: DB:medium_format/name:74
 msgctxt "medium_format"
 msgid "PlayTape"
-msgstr ""
+msgstr "PlayTape"
 
 #: DB:medium_format/name:45
 msgctxt "medium_format"
@@ -4211,7 +4211,7 @@ msgstr "Poster"
 #: DB:place_type/name:8
 msgctxt "place_type"
 msgid "Pressing plant"
-msgstr ""
+msgstr "Impianto di pressatura"
 
 #: DB:label_type/name:3
 msgctxt "label_type"
@@ -4386,7 +4386,7 @@ msgstr "Ravicandrika"
 #: DB:cover_art_archive.art_type/name:14
 msgctxt "cover_art_type"
 msgid "Raw/Unedited"
-msgstr ""
+msgstr "Grezza/non editata"
 
 #: DB:editor_collection_type/name:12
 msgctxt "collection_type"
@@ -5356,7 +5356,7 @@ msgctxt "cover_art_type"
 msgid ""
 "Use for images that need work to be used for tagging (but can possibly "
 "already be used for reference)"
-msgstr ""
+msgstr "Usalo per immagini che richiedono lavorazione per essere utilizzabili per il tagging (ma che possono già essere usate come riferimento)"
 
 #: DB:work_attribute_type/name:17
 msgctxt "work_attribute_type"
@@ -5674,7 +5674,7 @@ msgstr "Zilkeş"
 #: DB:medium_format/name:77
 msgctxt "medium_format"
 msgid "Zip Disk"
-msgstr ""
+msgstr "Unità Zip"
 
 #: DB:work_attribute_type_allowed_value/value:599
 msgctxt "work_attribute_type_allowed_value"

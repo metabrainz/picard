@@ -10,14 +10,15 @@
 #   LI Daobing <lidaobing@gmail.com>, 2007, 2008, 2009, 2010, 2011
 # LI Daobing <lidaobing@gmail.com>, 2007, 2008, 2009, 2010
 # 毛瑞盈 <mry_33@163.com>, 2014
+# taxigps <taxigps@sina.com>, 2018
 #   Tobias Toedter <t.toedter@gmx.net>, 2007
 #   - Wang Jian <lark@linux.net.cn>, 2000
 # YunQiang Su <wzssyqa@gmail.com>, 2011
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2017-09-19 12:54+0000\n"
-"Last-Translator: Clay Cheng <clay1994@mail.hfut.edu.cn>\n"
+"PO-Revision-Date: 2018-07-26 08:13+0000\n"
+"Last-Translator: taxigps <taxigps@sina.com>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/musicbrainz/musicbrainz/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -538,7 +539,7 @@ msgstr "洪都拉斯"
 #. iso.code:HK
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:96
 msgid "Hong Kong"
-msgstr "香港"
+msgstr "香港（中国）"
 
 #. iso.code:HU
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:97
@@ -688,7 +689,7 @@ msgstr "卢森堡"
 #. iso.code:MO
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:125
 msgid "Macao"
-msgstr "澳门"
+msgstr "澳门（中国）"
 
 #. iso.code:MK
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:126
@@ -1143,7 +1144,7 @@ msgstr "叙利亚"
 #. iso.code:TW
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:205
 msgid "Taiwan"
-msgstr "台湾"
+msgstr "台湾（中国）"
 
 #. iso.code:TJ
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:206
