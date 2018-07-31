@@ -357,7 +357,7 @@ class ClusterInfoDialog(InfoDialog):
             try:
                 return int(item.tracknumber)
             except:
-                return item.tracknumber
+                return item.tracknumber or 0
 
         lines = ["%s %s - %s (%s)" % item for item in sorted(tracklist, key=sorttracknum)]
         info.append("<b>%s</b><br />%s" % (_('Tracklist:'),
