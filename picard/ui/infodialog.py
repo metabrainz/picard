@@ -357,12 +357,12 @@ class ClusterInfoDialog(InfoDialog):
         def sorttracknum(item):
             try:
                 return int(item.tracknumber)
-            except:
+            except ValueError:
                 try:
                     # This allows to parse values like '3' but also '3/10'
                     m = re.search('^\d+', item.tracknumber)
                     return int(m.group(0))
-                except:
+                except AttributeError:
                     return 0
 
         lines = ["%s %s - %s (%s)" % item for item in sorted(tracklist, key=sorttracknum)]
