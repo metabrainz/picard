@@ -150,10 +150,13 @@ class Metadata(dict):
         except (ValueError, KeyError):
             pass
         else:
-            if "title" in weights:
-                b = release['media'][0]['track-count']
-            else:
-                b = release['track-count']
+            try:
+                if "title" in weights:
+                    b = release['media'][0]['track-count']
+                else:
+                    b = release['track-count']
+            except KeyError:
+                b = 0
             score = 0.0 if a > b else 0.3 if a < b else 1.0
             parts.append((score, weights["totaltracks"]))
 
@@ -172,7 +175,7 @@ class Metadata(dict):
             parts.append((score, weights["releasecountry"]))
 
         total_formats = len(preferred_formats)
-        if total_formats:
+        if total_formats and 'media' in release:
             score = 0.0
             subtotal = 0
             for medium in release['media']:

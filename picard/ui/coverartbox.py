@@ -355,7 +355,7 @@ class CoverArtBox(QtWidgets.QGroupBox):
                 port = 443
             else:
                 port = 80
-            self.tagger.webservice.get(string_(url.encodedHost()), url.port(port), string_(path),
+            self.tagger.webservice.get(url.host(), url.port(port), string_(path),
                                   partial(self.on_remote_image_fetched, url, fallback_data=fallback_data),
                                   parse_response_type=None,
                                   priority=True, important=True)
@@ -369,11 +369,12 @@ class CoverArtBox(QtWidgets.QGroupBox):
 
     def on_remote_image_fetched(self, url, data, reply, error, fallback_data=None):
         mime = reply.header(QtNetwork.QNetworkRequest.ContentTypeHeader)
+        url_query = QtCore.QUrlQuery(url.query())
         if mime in ('image/jpeg', 'image/png'):
             self.load_remote_image(url, mime, data)
-        elif url.hasQueryItem("imgurl"):
+        elif url_query.hasQueryItem("imgurl"):
             # This may be a google images result, try to get the URL which is encoded in the query
-            url = QtCore.QUrl(url.queryItemValue("imgurl"))
+            url = QtCore.QUrl(url_query.queryItemValue("imgurl"))
             self.fetch_remote_image(url)
         else:
             log.warning("Can't load remote image with MIME-Type %s", mime)
