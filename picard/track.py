@@ -25,7 +25,7 @@ from picard.metadata import Metadata, run_track_metadata_processors
 from picard.dataobj import DataObject
 from picard.util.textencoding import asciipunct
 from picard.mbjson import recording_to_metadata
-from picard.script import ScriptParser, enabled_tagger_scripts_texts
+from picard.script import ScriptParser, ScriptError, enabled_tagger_scripts_texts
 from picard.const import VARIOUS_ARTISTS_ID, SILENCE_TRACK_TITLE, DATA_TRACK_TITLE
 from picard.ui.item import Item
 from picard.util.imagelist import update_metadata_images
@@ -81,7 +81,7 @@ class Track(DataObject, Item):
             try:
                 parser.eval(s_text, file.metadata)
                 parser.eval(s_text, self.metadata)
-            except:
+            except ScriptError:
                 log.exception("Failed to run tagger script %s on file", s_name)
             file.metadata.strip_whitespace()
             self.metadata.strip_whitespace()
@@ -109,7 +109,7 @@ class Track(DataObject, Item):
             parser = ScriptParser()
             try:
                 parser.eval(s_text, self.metadata)
-            except:
+            except ScriptError:
                 log.exception("Failed to run tagger script %s on track", s_name)
             self.metadata.strip_whitespace()
 

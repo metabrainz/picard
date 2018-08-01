@@ -30,7 +30,7 @@ from picard.metadata import (Metadata,
 from picard.dataobj import DataObject
 from picard.file import File
 from picard.track import Track
-from picard.script import ScriptParser, enabled_tagger_scripts_texts
+from picard.script import ScriptParser, ScriptError, enabled_tagger_scripts_texts
 from picard.ui.item import Item
 from picard.util import format_time, mbid_validate
 from picard.util.imagelist import update_metadata_images
@@ -271,13 +271,13 @@ class Album(DataObject, Item):
                     # Run tagger script for each track
                     try:
                         parser.eval(s_text, track.metadata)
-                    except:
+                    except ScriptError:
                         log.exception("Failed to run tagger script %s on track", s_name)
                     track.metadata.strip_whitespace()
                 # Run tagger script for the album itself
                 try:
                     parser.eval(s_text, self._new_metadata)
-                except:
+                except ScriptError:
                     log.exception("Failed to run tagger script %s on album", s_name)
                 self._new_metadata.strip_whitespace()
 
