@@ -30,6 +30,7 @@ from picard.util import encode_filename, icontheme, restore_method
 from picard.plugin import ExtensionPoint
 from picard.ui.ratingwidget import RatingWidget
 from picard.ui.collectionmenu import CollectionMenu
+from picard.ui.scriptsmenu import ScriptsMenu
 
 
 class BaseAction(QtWidgets.QAction):
@@ -383,10 +384,14 @@ class BaseTreeView(QtWidgets.QTreeWidget):
                 menu.addSeparator()
             menu.addMenu(CollectionMenu(selected_albums, _("Collections"), menu))
 
+        scripts = config.setting["list_of_scripts"]
+
+        if plugin_actions or scripts:
+            menu.addSeparator()
+
         if plugin_actions:
             plugin_menu = QtWidgets.QMenu(_("P&lugins"), menu)
             plugin_menu.setIcon(self.panel.icon_plugins)
-            menu.addSeparator()
             menu.addMenu(plugin_menu)
 
             plugin_menus = {}
@@ -399,6 +404,11 @@ class BaseTreeView(QtWidgets.QTreeWidget):
                     else:
                         action_menu = plugin_menus[key] = action_menu.addMenu(key[-1])
                 action_menu.addAction(action)
+
+        if scripts:
+            scripts_menu = ScriptsMenu(scripts, _("&Run scripts"), menu)
+            scripts_menu.setIcon(self.panel.icon_plugins)
+            menu.addMenu(scripts_menu)
 
         if isinstance(obj, Cluster) or isinstance(obj, ClusterList) or isinstance(obj, Album):
             menu.addSeparator()
