@@ -206,12 +206,11 @@ class File(QtCore.QObject, Item):
             return None
         new_filename = old_filename
         if not config.setting["dont_write_tags"]:
-            encoded_old_filename = encode_filename(old_filename)
-            info = os.stat(encoded_old_filename)
+            info = os.stat(old_filename)
             self._save(old_filename, metadata)
             if config.setting["preserve_timestamps"]:
                 try:
-                    os.utime(encoded_old_filename, (info.st_atime, info.st_mtime))
+                    os.utime(old_filename, (info.st_atime, info.st_mtime))
                 except OSError:
                     log.warning("Couldn't preserve timestamp for %r", old_filename)
         # Rename files
@@ -222,7 +221,7 @@ class File(QtCore.QObject, Item):
             self._move_additional_files(old_filename, new_filename)
         # Delete empty directories
         if config.setting["delete_empty_dirs"]:
-            dirname = encode_filename(os.path.dirname(old_filename))
+            dirname = os.path.dirname(old_filename)
             try:
                 self._rmdir(dirname)
                 head, tail = os.path.split(dirname)
@@ -380,17 +379,17 @@ class File(QtCore.QObject, Item):
             return old_filename
 
         new_dirname = os.path.dirname(new_filename)
-        if not os.path.isdir(encode_filename(new_dirname)):
+        if not os.path.isdir(new_dirname):
             os.makedirs(new_dirname)
         tmp_filename = new_filename
         i = 1
         while (not pathcmp(old_filename, new_filename + ext) and
-               os.path.exists(encode_filename(new_filename + ext))):
+               os.path.exists(new_filename + ext)):
             new_filename = "%s (%d)" % (tmp_filename, i)
             i += 1
         new_filename = new_filename + ext
         log.debug("Moving file %r => %r", old_filename, new_filename)
-        shutil.move(encode_filename(old_filename), encode_filename(new_filename))
+        shutil.move(old_filename, new_filename)
         return new_filename
 
     def _save_images(self, dirname, metadata):
@@ -408,18 +407,18 @@ class File(QtCore.QObject, Item):
 
     def _move_additional_files(self, old_filename, new_filename):
         """Move extra files, like playlists..."""
-        old_path = encode_filename(os.path.dirname(old_filename))
-        new_path = encode_filename(os.path.dirname(new_filename))
-        patterns = encode_filename(config.setting["move_additional_files_pattern"])
+        old_path = os.path.dirname(old_filename)
+        new_path = os.path.dirname(new_filename)
+        patterns = config.setting["move_additional_files_pattern"]
         patterns = [string_(p.strip()) for p in patterns.split() if p.strip()]
         try:
-            names = list(map(encode_filename, os.listdir(old_path)))
+            names = os.listdir(old_path)
         except os.error:
             log.error("Error: {} directory not found".naming_format(old_path))
             return
         filtered_names = [name for name in names if name[0] != "."]
         for pattern in patterns:
-            pattern_regex = re.compile(encode_filename(fnmatch.translate(pattern)), re.IGNORECASE)
+            pattern_regex = re.compile(fnmatch.translate(pattern), re.IGNORECASE)
             file_names = names
             if pattern[0] != '.':
                 file_names = filtered_names
