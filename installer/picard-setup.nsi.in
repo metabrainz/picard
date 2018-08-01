@@ -20,7 +20,7 @@ BrandingText " "
 RequestExecutionLevel admin
 
 ; The default installation directory
-InstallDir "$PROGRAMFILES\${PRODUCT_NAME}"
+InstallDir "$PROGRAMFILES64\${PRODUCT_NAME}"
 
 ; The default installation directory
 InstallDirRegKey HKLM "Software\MusicBrainz\${PRODUCT_NAME}" "InstallDir"
