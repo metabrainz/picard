@@ -19,6 +19,7 @@
 
 from collections import namedtuple
 import os.path
+import re
 import traceback
 from PyQt5 import QtGui, QtCore, QtWidgets
 from picard import log
@@ -357,7 +358,12 @@ class ClusterInfoDialog(InfoDialog):
             try:
                 return int(item.tracknumber)
             except:
-                return item.tracknumber or 0
+                try:
+                    # This allows to parse values like '3' but also '3/10'
+                    m = re.search('^\d+', item.tracknumber)
+                    return int(m.group(0))
+                except:
+                    return 0
 
         lines = ["%s %s - %s (%s)" % item for item in sorted(tracklist, key=sorttracknum)]
         info.append("<b>%s</b><br />%s" % (_('Tracklist:'),
