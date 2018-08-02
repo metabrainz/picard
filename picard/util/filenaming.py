@@ -23,6 +23,7 @@ import struct
 import sys
 import unicodedata
 from picard.util import _io_encoding, decode_filename, encode_filename
+from PyQt5.QtCore import QStandardPaths
 
 
 def _get_utf16_length(text):
@@ -301,7 +302,12 @@ def make_short_filename(basedir, relpath, win_compat=False, relative_to=""):
     """
     # only deal with absolute paths. it saves a lot of grief,
     # and is the right thing to do, even for renames.
-    basedir = os.path.abspath(basedir)
+    try:
+        basedir = os.path.abspath(basedir)
+    except FileNotFoundError:
+        # os.path.abspath raises an exception if basedir is a relative path and
+        # cwd doesn't exist anymore
+        basedir = QStandardPaths.writableLocation(QStandardPaths.MusicLocation)
     # also, make sure the relative path is clean
     relpath = os.path.normpath(relpath)
     if win_compat and relative_to:

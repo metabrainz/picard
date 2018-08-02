@@ -369,7 +369,13 @@ class File(QtCore.QObject, Item):
                 if sys.platform == "darwin":
                     new_filename = unicodedata.normalize("NFD", new_filename)
 
-        return os.path.realpath(os.path.join(new_dirname, new_filename))
+        new_path = os.path.join(new_dirname, new_filename)
+        try:
+            return os.path.realpath(new_path)
+        except FileNotFoundError:
+            # os.path.realpath can fail if cwd doesn't exist
+            return new_path
+
 
     def _rename(self, old_filename, metadata):
         new_filename, ext = os.path.splitext(
