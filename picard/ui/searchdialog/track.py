@@ -197,10 +197,11 @@ class TrackSearchDialog(SearchDialog):
                 # No files associated. Just a normal search.
                 self.tagger.load_album(track["musicbrainz_albumid"])
         else:
-            if self.file_:
+            if self.file_ and getattr(self.file_.parent, 'album', None):
                 album = self.file_.parent.album
-                self.tagger.move_file_to_nat(track["musicbrainz_recordingid"])
+                self.tagger.move_file_to_nat(self.file_, track["musicbrainz_recordingid"], node)
                 if album._files == 0:
                     self.tagger.remove_album(album)
             else:
                 self.tagger.load_nat(track["musicbrainz_recordingid"], node)
+                self.tagger.move_file_to_nat(self.file_, track["musicbrainz_recordingid"], node)
