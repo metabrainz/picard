@@ -8,7 +8,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_GeneralOptionsPage(object):
     def setupUi(self, GeneralOptionsPage):
         GeneralOptionsPage.setObjectName("GeneralOptionsPage")
-        GeneralOptionsPage.resize(283, 435)
+        GeneralOptionsPage.resize(304, 435)
         self.vboxlayout = QtWidgets.QVBoxLayout(GeneralOptionsPage)
         self.vboxlayout.setObjectName("vboxlayout")
         self.groupBox = QtWidgets.QGroupBox(GeneralOptionsPage)
@@ -98,6 +98,7 @@ class Ui_GeneralOptionsPage(object):
         sizePolicy.setHeightForWidth(self.update_check_days.sizePolicy().hasHeightForWidth())
         self.update_check_days.setSizePolicy(sizePolicy)
         self.update_check_days.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.update_check_days.setMinimum(1)
         self.update_check_days.setObjectName("update_check_days")
         self.gridLayout.addWidget(self.update_check_days, 0, 1, 1, 1)
         self.verticalLayout_2.addLayout(self.gridLayout)
