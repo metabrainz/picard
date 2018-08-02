@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>283</width>
+    <width>304</width>
     <height>435</height>
    </rect>
   </property>
@@ -182,6 +182,9 @@
           </property>
           <property name="alignment">
            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+          </property>
+          <property name="minimum">
+           <number>1</number>
           </property>
          </widget>
         </item>

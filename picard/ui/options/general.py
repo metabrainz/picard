@@ -17,9 +17,13 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+from PyQt5 import QtCore
 from PyQt5.QtWidgets import QInputDialog
 
-from picard import config
+from picard import (
+    config,
+    PROGRAM_UPDATE_LEVELS,
+)
 from picard.collection import load_user_collections
 from picard.const import MUSICBRAINZ_SERVERS
 from picard.util import webbrowser2
@@ -50,8 +54,8 @@ class GeneralOptionsPage(OptionsPage):
         config.TextOption("persist", "oauth_access_token", ""),
         config.IntOption("persist", "oauth_access_token_expires", 0),
         config.TextOption("persist", "oauth_username", ""),
-        config.BoolOption("setting", "check_for_updates", False),
-        config.IntOption("setting", "update_check_days", 0),
+        config.BoolOption("setting", "check_for_updates", True),
+        config.IntOption("setting", "update_check_days", 7),
         config.IntOption("setting", "update_level", 0),
         config.IntOption("persist", "last_update_check", 0),
     ]
@@ -71,7 +75,15 @@ class GeneralOptionsPage(OptionsPage):
         self.ui.analyze_new_files.setChecked(config.setting["analyze_new_files"])
         self.ui.ignore_file_mbids.setChecked(config.setting["ignore_file_mbids"])
         self.ui.check_for_updates.setChecked(config.setting["check_for_updates"])
-        self.ui.update_level.setCurrentIndex(config.setting["update_level"])
+        self.ui.update_level.clear()
+        index = 0
+        for key in PROGRAM_UPDATE_LEVELS.keys():
+            self.ui.update_level.addItem(
+                _(PROGRAM_UPDATE_LEVELS[key]['title']),
+                PROGRAM_UPDATE_LEVELS[key]['level'])
+            if PROGRAM_UPDATE_LEVELS[key]['level'] == config.setting["update_level"]:
+                self.ui.update_level.setCurrentIndex(index)
+            index += 1
         self.ui.update_check_days.setValue(config.setting["update_check_days"])
 
     def save(self):
@@ -80,7 +92,7 @@ class GeneralOptionsPage(OptionsPage):
         config.setting["analyze_new_files"] = self.ui.analyze_new_files.isChecked()
         config.setting["ignore_file_mbids"] = self.ui.ignore_file_mbids.isChecked()
         config.setting["check_for_updates"] = self.ui.check_for_updates.isChecked()
-        config.setting["update_level"] = self.ui.update_level.currentIndex()
+        config.setting["update_level"] = self.ui.update_level.currentData(QtCore.Qt.UserRole)
         config.setting["update_check_days"] = self.ui.update_check_days.value()
 
     def update_login_logout(self):

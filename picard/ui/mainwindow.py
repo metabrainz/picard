@@ -31,6 +31,7 @@ from PyQt5 import (
 from picard import (
     config,
     log,
+    PROGRAM_UPDATE_LEVELS,
 )
 from picard.album import Album
 from picard.cluster import Cluster
@@ -175,9 +176,19 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     def show(self):
         self.restoreWindowState()
         super().show()
-        if config.setting['check_for_updates'] and datetime.date.today().toordinal() >= config.persist['last_update_check'] + config.setting['update_check_days']:
-            log.debug(_("Initiating start-up check for program updates."))
-            self.tagger.updatecheckmanager.check_update(show_always=False, update_level=config.setting["update_level"])
+        for key in PROGRAM_UPDATE_LEVELS.keys():
+            if PROGRAM_UPDATE_LEVELS[key]['level'] == config.setting["update_level"]:
+                update_level_text = key
+        do_auto_update_check = config.setting['check_for_updates'] and config.setting['update_check_days'] > 0 and datetime.date.today().toordinal() >= config.persist['last_update_check'] + config.setting['update_check_days']
+        log.debug(_("{check_status} start-up check for program updates.  Today: {today_date}, Last check: {last_check} (Check interval: {check_interval} days), Update level: {update_level}".format(
+            check_status='Initiating' if do_auto_update_check else 'Skipping',
+            today_date=datetime.date.today(),
+            last_check=str(datetime.date.fromordinal(config.persist['last_update_check'])) if config.persist['last_update_check'] > 0 else 'never',
+            check_interval=config.setting['update_check_days'],
+            update_level=update_level_text if update_level_text else 'unknown',
+            )))
+        if do_auto_update_check:
+            self.tagger.updatecheckmanager.check_update(show_always=False, update_level=config.setting["update_level"], callback=update_last_check_date)
         self.metadata_box.restore_state()
 
     def closeEvent(self, event):
@@ -1098,4 +1109,9 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.paste_action.setEnabled(False)
 
     def check_for_update(self):
-        self.tagger.updatecheckmanager.check_update(show_always=True, update_level=config.setting["update_level"])
+        self.tagger.updatecheckmanager.check_update(show_always=True, update_level=config.setting["update_level"], callback=update_last_check_date)
+
+def update_last_check_date(is_success):
+    log.debug('Processing update_last_check_date callback with argument: %s' % (is_success,))
+    if is_success:
+        config.persist['last_update_check'] = datetime.date.today().toordinal()
