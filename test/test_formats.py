@@ -39,6 +39,7 @@ class FakeTagger(QtCore.QObject):
         QtCore.QObject.log = log
         self.tagger_stats_changed.connect(self.emit)
         self.exit_cleanup = []
+        self.files = {}
 
     def register_cleanup(self, func):
         self.exit_cleanup.append(func)
