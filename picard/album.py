@@ -260,9 +260,6 @@ class Album(DataObject, Item):
             self._tracks_loaded = True
 
         if not self._requests:
-            for track in self._new_tracks:
-                track.orig_metadata.copy(track.metadata)
-
             self.enable_update_metadata_images(False)
             # Prepare parser for user's script
             for s_name, s_text in enabled_tagger_scripts_texts():
