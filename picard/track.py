@@ -71,21 +71,8 @@ class Track(DataObject, Item):
     def update_file_metadata(self, file):
         if file not in self.linked_files:
             return
-        file.copy_metadata(self.orig_metadata)
+        file.copy_metadata(self.metadata)
         file.metadata['~extension'] = file.orig_metadata['~extension']
-        self.metadata.copy(file.metadata)
-
-        # Re-run tagger scripts with updated metadata
-        for s_name, s_text in enabled_tagger_scripts_texts():
-            parser = ScriptParser()
-            try:
-                parser.eval(s_text, file.metadata)
-                parser.eval(s_text, self.metadata)
-            except ScriptError:
-                log.exception("Failed to run tagger script %s on file", s_name)
-            file.metadata.strip_whitespace()
-            self.metadata.strip_whitespace()
-
         file.metadata.changed = True
         file.update(signal=False)
         self.update()
@@ -98,21 +85,6 @@ class Track(DataObject, Item):
         file.copy_metadata(file.orig_metadata)
         self.album._remove_file(self, file)
         file.metadata_images_changed.disconnect(self.update_orig_metadata_images)
-
-        if self.num_linked_files > 0:
-            self.metadata.copy(self.linked_files[-1].orig_metadata)
-        else:
-            self.metadata.copy(self.orig_metadata)
-
-        # Restore to non-associated state
-        for s_name, s_text in enabled_tagger_scripts_texts():
-            parser = ScriptParser()
-            try:
-                parser.eval(s_text, self.metadata)
-            except ScriptError:
-                log.exception("Failed to run tagger script %s on track", s_name)
-            self.metadata.strip_whitespace()
-
         self.update()
 
     def update(self):
@@ -323,7 +295,13 @@ class NonAlbumTrack(Track):
         recording_to_metadata(recording, m, self)
         self._customize_metadata()
         run_track_metadata_processors(self.album, m, None, recording)
-        self.orig_metadata.copy(m)
+        for s_name, s_text in enable_tagger_scripts_texts():
+            parser = ScriptParser()
+            try:
+                parser.eval(s_text, m)
+            except ScriptError:
+                log.exception("Failed to run tagger script %s on track", s_name)
+            m.strip_whitespace()
 
         self.loaded = True
         if self.callback:
