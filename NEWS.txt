@@ -1,3 +1,25 @@
+Version 2.0.3 - 2018-08-10
+** Bug-fix
+    * [PICARD-1122] - Preffered release type settings are exclusive and should be inclusive
+    * [PICARD-1207] - Move additional files feature fails when source directory contains non-ascii characters
+    * [PICARD-1247] - Not all "preserved" tags are preserved
+    * [PICARD-1305] - Search dialog crashes picard when record doesn't have an album
+    * [PICARD-1306] - picard crashes when opening the options dialog if the cwd doesn't exist
+
+** New Feature
+    * [PICARD-1289] - Allow manually running any tagger script
+
+
+** Improvement
+    * [PICARD-1292] - MusicBrainz Picard 2.01 64-bit for windows installs to "C:\Program Files (x86)" by default
+    * [PICARD-1302] - Dropping an image from Google image crashes picard
+    * [PICARD-1303] - picard crashes when matching a cluster with a release with no tracks
+    * [PICARD-1304] - Info dialog for album crashes because track doesn't have a tracknumber
+
+** Regression
+    * [PICARD-259] - Make file-specific variables available to tagger script
+
+
 Version 2.0.2 - 2018-07-30
 ** Sub-task
     * [PICARD-1296] - Code sign Picard for macOS
@@ -5,7 +27,7 @@ Version 2.0.2 - 2018-07-30
 ** Task
     * [PICARD-1301] - Use PyQT 5.10 for macOS
 
-** Bug
+** Bug-fix
     * [PICARD-342] - Picard is not properly signed for Mac OS X Gatekeeper
     * [PICARD-1212] - Picard 2.0.0dev4 crashing at startup
     * [PICARD-1300] - Picard crashes when logging lots of events
