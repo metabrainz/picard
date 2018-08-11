@@ -48,7 +48,7 @@ class ScriptsMenu(QtWidgets.QMenu):
                 obj.update()
             except ScriptError as e:
                 log.exception('Error running tagger script "%s" on object %r', s_name, obj)
-                msg = N_('Script error in "%(script)s": %(message)s)')
+                msg = N_('Script error in "%(script)s": %(message)s')
                 mparms = {
                     'script': s_name,
                     'message': string_(e),
