@@ -95,11 +95,20 @@ def caa_url_fallback_list(desired_size, thumbnails):
 
 
 class CAATypesSelectorDialog(QtWidgets.QDialog):
-    _columns = 4
+    _columns = 3        # Number of main display columns
+    _subcolumns = 3     # Number of columns comprising a main display column (i.e.: label, combobox, spacer)
+    _spacer_width = 35  # Width of the spacer columns in pixels
 
-    def __init__(self, parent=None, types=None):
-        if types is None:
-            types = []
+    # Combo box index definitions
+    IDX_INCLUDE_TYPE = 0
+    IDX_IGNORE_TYPE = 1
+    IDX_EXCLUDE_TYPE = 2
+
+    def __init__(self, parent=None, types_include=None, types_exclude=None):
+        if types_include is None:
+            types_include = []
+        if types_exclude is None:
+            types_exclude = []
         super().__init__(parent)
 
         self.setWindowTitle(_("Cover art types"))
@@ -108,15 +117,29 @@ class CAATypesSelectorDialog(QtWidgets.QDialog):
 
         grid = QtWidgets.QWidget()
         gridlayout = QtWidgets.QGridLayout()
+        # Set up spacer columns between type selection columns
+        spacer_column_index = self._subcolumns - 1  # index of first spacer column
+        while spacer_column_index < self._columns * self._subcolumns - 1:
+            gridlayout.setColumnMinimumWidth(spacer_column_index, self._spacer_width)
+            spacer_column_index += self._subcolumns
         grid.setLayout(gridlayout)
 
         for index, caa_type in enumerate(CAA_TYPES):
             row = index // self._columns
-            column = index % self._columns
+            column = (index % self._columns) * self._subcolumns
             name = caa_type["name"]
-            text = translate_caa_type(name)
-            item = QtWidgets.QCheckBox(text)
-            item.setChecked(name in types)
+            item = QtWidgets.QLabel()
+            item.setText(translate_caa_type(name))
+            gridlayout.addWidget(item, row, column)
+            column += 1
+            item = QtWidgets.QComboBox()
+            item.addItems([ _('Include'), _('Ignore'), _('Exclude'),])
+            if name in types_include:
+                item.setCurrentIndex(self.IDX_INCLUDE_TYPE) # Include coverart type
+            elif name in types_exclude:
+                item.setCurrentIndex(self.IDX_EXCLUDE_TYPE) # Exclude coverart type
+            else:
+                item.setCurrentIndex(self.IDX_IGNORE_TYPE)  # Ignore coverart type
             self._items[item] = caa_type
             gridlayout.addWidget(item, row, column)
 
@@ -132,8 +155,9 @@ class CAATypesSelectorDialog(QtWidgets.QDialog):
             StandardButton(StandardButton.HELP), QtWidgets.QDialogButtonBox.HelpRole)
 
         extrabuttons = [
-            (N_("Chec&k all"), self.checkall),
-            (N_("&Uncheck all"), self.uncheckall),
+            (N_("I&nclude all"), self.checkall),
+            (N_("E&xclude all"), self.uncheckall),
+            (N_("I&gnore all"), self.ignoreall),
         ]
         for label, callback in extrabuttons:
             button = QtWidgets.QPushButton(_(label))
@@ -152,26 +176,35 @@ class CAATypesSelectorDialog(QtWidgets.QDialog):
         webbrowser2.goto('doc_cover_art_types')
 
     def uncheckall(self):
-        self._set_checked_all(False)
+        self._set_checked_all(2)
 
     def checkall(self):
-        self._set_checked_all(True)
+        self._set_checked_all(0)
+
+    def ignoreall(self):
+        self._set_checked_all(1)
 
     def _set_checked_all(self, value):
         for item in self._items.keys():
-            item.setChecked(value)
+            item.setCurrentIndex(value)
 
-    def get_selected_types(self):
+    def get_selected_types_include(self):
         return [typ['name'] for item, typ in self._items.items() if
-                item.isChecked()] or ['front']
+                item.currentIndex() == self.IDX_INCLUDE_TYPE] or ['front']
+
+    def get_selected_types_exclude(self):
+        return [typ['name'] for item, typ in self._items.items() if
+                item.currentIndex() == self.IDX_EXCLUDE_TYPE] or ['none']
 
     @staticmethod
-    def run(parent=None, types=None):
-        if types is None:
-                types = []
-        dialog = CAATypesSelectorDialog(parent, types)
+    def run(parent=None, types_include=None, types_exclude=None):
+        if types_include is None:
+            types_include = []
+        if types_exclude is None:
+            types_exclude = []
+        dialog = CAATypesSelectorDialog(parent, types_include, types_exclude)
         result = dialog.exec_()
-        return (dialog.get_selected_types(), result == QtWidgets.QDialog.Accepted)
+        return (dialog.get_selected_types_include(), dialog.get_selected_types_exclude(), result == QtWidgets.QDialog.Accepted)
 
 
 class ProviderOptionsCaa(ProviderOptions):
@@ -187,6 +220,7 @@ class ProviderOptionsCaa(ProviderOptions):
                          _CAA_IMAGE_SIZE_DEFAULT),
         config.ListOption("setting", "caa_image_types", ["front"]),
         config.BoolOption("setting", "caa_restrict_image_types", True),
+        config.ListOption("setting", "caa_image_types_to_omit", ["raw/unedited"]),
     ]
 
     _options_ui = Ui_CaaOptions
@@ -231,10 +265,11 @@ class ProviderOptionsCaa(ProviderOptions):
         self.ui.select_caa_types.setEnabled(enabled)
 
     def select_caa_types(self):
-        (types, ok) = CAATypesSelectorDialog.run(
-            self, config.setting["caa_image_types"])
+        (types, types_to_omit, ok) = CAATypesSelectorDialog.run(
+            self, config.setting["caa_image_types"], config.setting["caa_image_types_to_omit"])
         if ok:
             config.setting["caa_image_types"] = types
+            config.setting["caa_image_types_to_omit"] = types_to_omit
 
 
 
@@ -253,6 +288,7 @@ class CoverArtProviderCaa(CoverArtProvider):
     def __init__(self, coverart):
         super().__init__(coverart)
         self.caa_types = list(map(str.lower, config.setting["caa_image_types"]))
+        self.caa_types_to_omit = list(map(str.lower, config.setting["caa_image_types_to_omit"]))
         self.len_caa_types = len(self.caa_types)
         self.restrict_types = config.setting["caa_restrict_image_types"]
 
@@ -346,6 +382,8 @@ class CoverArtProviderCaa(CoverArtProvider):
             except ValueError:
                 self.error("Invalid JSON: %s" % (http.url().toString()))
             else:
+                if self.restrict_types:
+                    log.debug('CAA types: included: %s, excluded: %s' % (self.caa_types, self.caa_types_to_omit,))
                 for image in caa_data["images"]:
                     if config.setting["caa_approved_only"] and not image["approved"]:
                         continue
@@ -364,6 +402,10 @@ class CoverArtProviderCaa(CoverArtProvider):
                         # only keep enabled caa types
                         types = set(image["types"]).intersection(
                             set(self.caa_types))
+                        if types and self.caa_types_to_omit:
+                            types = not set(image["types"]).intersection(
+                                set(self.caa_types_to_omit))
+                        log.debug('CAA Image %s: %s  %s' % ('accepted' if types else 'rejected', image['image'], image['types'],))
                     else:
                         types = True
                     if types:
