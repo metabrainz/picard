@@ -97,6 +97,8 @@ class ASFFile(File):
         'artist': 'Author',
         'albumartist': 'WM/AlbumArtist',
         'date': 'WM/Year',
+        'originalalbum': 'WM/OriginalAlbumTitle',
+        'originalartist': 'WM/OriginalArtist',
         'originaldate': 'WM/OriginalReleaseTime',
         'originalyear': 'WM/OriginalReleaseYear',
         'composer': 'WM/Composer',
