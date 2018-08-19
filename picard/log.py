@@ -90,7 +90,7 @@ class TailLogger(QtCore.QObject):
         return contents
 
     def clear(self):
-        with self.log_queue_lock:
+        with self._queue_lock:
             self._log_queue.clear()
 
 
