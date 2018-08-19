@@ -10,6 +10,8 @@ As most of the other projects written in Python, we use the [PEP 8](https://www.
 
 The general idea is to make the code within a project consistent and easy to interpret (for humans).
 
+To fix or preserve imports style, one can use `isort -rc .` command (requires `isort` tool, see `.isort.cfg`).
+
 ### Docstrings
 
 Unless the function is easy to understand quickly, it should probably have a docstring describing what it does, how it does it, what the arguments are, and what the expected output is.

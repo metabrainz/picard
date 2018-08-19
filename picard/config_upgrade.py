@@ -18,11 +18,14 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+import re
+
 from PyQt5 import QtWidgets
 
-import re
-from picard import (log, config)
-
+from picard import (
+    config,
+    log,
+)
 
 # TO ADD AN UPGRADE HOOK:
 # ----------------------

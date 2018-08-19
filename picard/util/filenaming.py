@@ -22,8 +22,14 @@ import re
 import struct
 import sys
 import unicodedata
-from picard.util import _io_encoding, decode_filename, encode_filename
+
 from PyQt5.QtCore import QStandardPaths
+
+from picard.util import (
+    _io_encoding,
+    decode_filename,
+    encode_filename,
+)
 
 
 def _get_utf16_length(text):

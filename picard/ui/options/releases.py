@@ -17,18 +17,28 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-from operator import itemgetter
 from locale import strxfrm
-from PyQt5 import QtCore, QtWidgets
+from operator import itemgetter
+
+from PyQt5 import (
+    QtCore,
+    QtWidgets,
+)
+
 from picard import config
-from picard.ui.options import OptionsPage, register_options_page
-from picard.ui.ui_options_releases import Ui_ReleasesOptionsPage
-from picard.const import (RELEASE_COUNTRIES,
-                          RELEASE_FORMATS,
-                          RELEASE_PRIMARY_GROUPS,
-                          RELEASE_SECONDARY_GROUPS)
+from picard.const import (
+    RELEASE_COUNTRIES,
+    RELEASE_FORMATS,
+    RELEASE_PRIMARY_GROUPS,
+    RELEASE_SECONDARY_GROUPS,
+)
 from picard.i18n import gettext_attr
 
+from picard.ui.options import (
+    OptionsPage,
+    register_options_page,
+)
+from picard.ui.ui_options_releases import Ui_ReleasesOptionsPage
 
 _DEFAULT_SCORE = 0.5
 _release_type_scores = [(g, _DEFAULT_SCORE) for g in list(RELEASE_PRIMARY_GROUPS.keys()) + list(RELEASE_SECONDARY_GROUPS.keys())]

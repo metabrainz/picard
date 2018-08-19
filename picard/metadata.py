@@ -18,15 +18,17 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
 # USA.
 from PyQt5.QtCore import QObject
+
 from picard import config
-from picard.plugin import PluginFunctions, PluginPriority
-from picard.similarity import similarity2
-from picard.util import (
-    linear_combination_of_weights,
-)
-from picard.util.tags import PRESERVED_TAGS
 from picard.mbjson import artist_credit_from_node
+from picard.plugin import (
+    PluginFunctions,
+    PluginPriority,
+)
+from picard.similarity import similarity2
+from picard.util import linear_combination_of_weights
 from picard.util.imagelist import ImageList
+from picard.util.tags import PRESERVED_TAGS
 
 MULTI_VALUED_JOINER = '; '
 

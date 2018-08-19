@@ -1,15 +1,15 @@
 # -*- coding: utf-8 -*-
-import os.path
-import picard.formats
-import unittest
-import shutil
 from contextlib import suppress
-
-from PyQt5 import QtCore
-from picard import config
+import os.path
+import shutil
 from tempfile import mkdtemp
 from test.test_formats import FakeTagger
+import unittest
 
+from PyQt5 import QtCore
+
+from picard import config
+import picard.formats
 
 settings = {
     'enabled_plugins': '',

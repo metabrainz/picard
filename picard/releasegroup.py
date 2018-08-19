@@ -17,14 +17,19 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-import traceback
 from collections import defaultdict
 from functools import partial
 from itertools import combinations
+import traceback
+
 from picard import log
-from picard.metadata import Metadata
 from picard.dataobj import DataObject
-from picard.mbjson import media_formats_from_node, label_info_from_node, country_list_from_node
+from picard.mbjson import (
+    country_list_from_node,
+    label_info_from_node,
+    media_formats_from_node,
+)
+from picard.metadata import Metadata
 from picard.util import uniqify
 
 

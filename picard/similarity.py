@@ -18,6 +18,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 import re
+
 from picard.util import strip_non_alnum
 from picard.util.astrcmp import astrcmp
 

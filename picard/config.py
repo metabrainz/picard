@@ -18,11 +18,19 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from operator import itemgetter
+
 from PyQt5 import QtCore
-from picard import (PICARD_APP_NAME, PICARD_ORG_NAME, PICARD_VERSION,
-                    version_to_string, version_from_string)
+
+from picard import (
+    PICARD_APP_NAME,
+    PICARD_ORG_NAME,
+    PICARD_VERSION,
+    log,
+    version_from_string,
+    version_to_string,
+)
 from picard.util import LockableObject
-from picard import log
+
 
 class ConfigUpgradeError(Exception):
     pass

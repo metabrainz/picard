@@ -19,11 +19,15 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from picard import config
-from picard.ui.options import OptionsPage, register_options_page
 from picard.util.cdrom import (
-    get_cdrom_drives,
     AUTO_DETECT_DRIVES,
-    DEFAULT_DRIVES
+    DEFAULT_DRIVES,
+    get_cdrom_drives,
+)
+
+from picard.ui.options import (
+    OptionsPage,
+    register_options_page,
 )
 
 if AUTO_DETECT_DRIVES:

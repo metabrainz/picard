@@ -18,7 +18,12 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from functools import partial
-from PyQt5 import QtWidgets, QtCore
+
+from PyQt5 import (
+    QtCore,
+    QtWidgets,
+)
+
 
 class MoveableListView:
 

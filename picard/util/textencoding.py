@@ -60,10 +60,10 @@
 #   4. replace remaining non-ascii or non-ISO-8859-1 characters with a default character
 # This module also provides an extension infrastructure to allow translation and / or transliteration plugins to be added.
 
-import re
-import unicodedata
 import codecs
 from functools import partial
+import re
+import unicodedata
 
 #########################  LATIN SIMPLIFICATION ###########################
 # The translation tables for punctuation and latin combined-characters are taken from

@@ -1,11 +1,13 @@
 # -*- coding: utf-8 -*-
 
+import builtins
 import os.path
 import sys
 import unittest
-from picard import util
 
-import builtins
+from picard import util
+from picard.util import imageinfo
+
 # ensure _() is defined
 if '_' not in builtins.__dict__:
     builtins.__dict__['_'] = lambda a: a
@@ -176,7 +178,6 @@ class AlbumArtistFromPathTest(unittest.TestCase):
         self.assertEqual(aafp(file_4, 'album', 'artist'), ('album', 'artist'))
 
 
-from picard.util import imageinfo
 
 
 class ImageInfoTest(unittest.TestCase):

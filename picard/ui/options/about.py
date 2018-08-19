@@ -19,9 +19,13 @@
 
 from picard.const import PICARD_URLS
 from picard.formats import supported_extensions
-from picard.ui.options import OptionsPage, register_options_page
-from picard.ui.ui_options_about import Ui_AboutOptionsPage
 from picard.util import versions
+
+from picard.ui.options import (
+    OptionsPage,
+    register_options_page,
+)
+from picard.ui.ui_options_about import Ui_AboutOptionsPage
 
 
 class AboutOptionsPage(OptionsPage):

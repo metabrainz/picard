@@ -19,13 +19,18 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 import sys
-if sys.platform == 'win32':
-    from ctypes import windll
 
-from PyQt5.QtCore import QFile, QIODevice
+from PyQt5.QtCore import (
+    QFile,
+    QIODevice,
+)
 
 from picard import config
 from picard.util import uniqify
+
+if sys.platform == 'win32':
+    from ctypes import windll
+
 
 try:
     from libdiscid.compat import discid

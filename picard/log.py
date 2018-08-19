@@ -17,12 +17,16 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+from collections import (
+    OrderedDict,
+    deque,
+    namedtuple,
+)
 import logging
 import os
-
-from collections import deque, namedtuple, OrderedDict
-from PyQt5 import QtCore
 from threading import Lock
+
+from PyQt5 import QtCore
 
 _MAX_TAIL_LEN = 10**6
 

@@ -3,10 +3,14 @@
 import os.path
 import sys
 
+from picard.tagger import main
+from picard.util import (
+    frozen_temp_path,
+    is_frozen,
+)
+
 sys.path.insert(0, '.')
 
-from picard.tagger import main
-from picard.util import is_frozen, frozen_temp_path
 
 
 # This is needed to find resources when using pyinstaller

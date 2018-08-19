@@ -17,9 +17,19 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-from mutagen.mp4 import MP4, MP4Cover
-from picard import config, log
-from picard.coverart.image import TagCoverArtImage, CoverArtImageError
+from mutagen.mp4 import (
+    MP4,
+    MP4Cover,
+)
+
+from picard import (
+    config,
+    log,
+)
+from picard.coverart.image import (
+    CoverArtImageError,
+    TagCoverArtImage,
+)
 from picard.file import File
 from picard.metadata import Metadata
 from picard.util import encode_filename

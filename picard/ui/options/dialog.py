@@ -17,32 +17,43 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-from PyQt5 import QtCore, QtWidgets
+from PyQt5 import (
+    QtCore,
+    QtWidgets,
+)
+
 from picard import config
-from picard.util import webbrowser2, restore_method
-from picard.ui import PicardDialog, HashableTreeWidgetItem
-from picard.ui.util import StandardButton
+from picard.util import (
+    restore_method,
+    webbrowser2,
+)
+
+from picard.ui import (
+    HashableTreeWidgetItem,
+    PicardDialog,
+)
 from picard.ui.options import (
+    OptionsCheckError,
+    _pages as page_classes,
     about,
     advanced,
     cdlookup,
     cover,
+    fingerprinting,
+    folksonomy,
     general,
     interface,
-    folksonomy,
-    ratings,
     matching,
     metadata,
+    network,
+    plugins,
+    ratings,
     releases,
     renaming,
-    plugins,
-    network,
     scripting,
     tags,
-    fingerprinting,
-    OptionsCheckError,
-    _pages as page_classes
 )
+from picard.ui.util import StandardButton
 
 
 class OptionsDialog(PicardDialog):

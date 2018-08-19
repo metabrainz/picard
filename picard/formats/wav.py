@@ -18,6 +18,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 import wave
+
 from picard import log
 from picard.file import File
 from picard.metadata import Metadata

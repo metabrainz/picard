@@ -19,21 +19,35 @@
 
 import base64
 import re
+
 import mutagen.flac
 import mutagen.ogg
 import mutagen.oggflac
+import mutagen.oggopus
 import mutagen.oggspeex
 import mutagen.oggtheora
 import mutagen.oggvorbis
-import mutagen.oggopus
 
-from picard import config, log
-from picard.coverart.image import TagCoverArtImage, CoverArtImageError
+from picard import (
+    config,
+    log,
+)
+from picard.coverart.image import (
+    CoverArtImageError,
+    TagCoverArtImage,
+)
 from picard.file import File
-from picard.formats.id3 import types_from_id3, image_type_as_id3_num
-from picard.metadata import Metadata
-from picard.util import encode_filename, sanitize_date
 from picard.formats import guess_format
+from picard.formats.id3 import (
+    image_type_as_id3_num,
+    types_from_id3,
+)
+from picard.metadata import Metadata
+from picard.util import (
+    encode_filename,
+    sanitize_date,
+)
+
 
 class VCommentFile(File):
 

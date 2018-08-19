@@ -18,14 +18,20 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 import re
-from PyQt5.QtCore import QUrl
-from picard import config, PICARD_VERSION_STR
-from picard.const import (ACOUSTID_KEY,
-                          ACOUSTID_HOST,
-                          ACOUSTID_PORT,
-                          CAA_HOST,
-                          CAA_PORT)
 
+from PyQt5.QtCore import QUrl
+
+from picard import (
+    PICARD_VERSION_STR,
+    config,
+)
+from picard.const import (
+    ACOUSTID_HOST,
+    ACOUSTID_KEY,
+    ACOUSTID_PORT,
+    CAA_HOST,
+    CAA_PORT,
+)
 from picard.webservice import (
     CLIENT_STRING,
     DEFAULT_RESPONSE_PARSER_TYPE,

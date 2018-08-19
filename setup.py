@@ -2,28 +2,30 @@
 # -*- coding: utf-8 -*-
 
 import datetime
-import glob
-import os
-import platform
-import re
-import sys
-from io import StringIO
-
-from picard import __version__
-
-if sys.version_info < (3, 5):
-    sys.exit("ERROR: You need Python 3.5 or higher to use Picard.")
-
-
 from distutils import log
 from distutils.command.build import build
 from distutils.command.install import install as install
 from distutils.dep_util import newer
 from distutils.spawn import find_executable
+import glob
+from io import StringIO
+import os
 from os import path
-from setuptools.dist import Distribution
-from setuptools import setup, Command, Extension
+import platform
+import re
+import sys
 
+from setuptools import (
+    Command,
+    Extension,
+    setup,
+)
+from setuptools.dist import Distribution
+
+from picard import __version__
+
+if sys.version_info < (3, 5):
+    sys.exit("ERROR: You need Python 3.5 or higher to use Picard.")
 
 PACKAGE_NAME = "picard"
 

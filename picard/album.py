@@ -18,32 +18,50 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-import traceback
 from operator import itemgetter
-from PyQt5 import QtCore, QtNetwork
-from picard import config, log
-from picard.coverart import coverart
-from picard.metadata import (Metadata,
-                             register_album_metadata_processor,
-                             run_album_metadata_processors,
-                             run_track_metadata_processors)
-from picard.dataobj import DataObject
-from picard.file import File
-from picard.track import Track
-from picard.script import ScriptParser, ScriptError, enabled_tagger_scripts_texts
-from picard.ui.item import Item
-from picard.util import format_time, mbid_validate
-from picard.util.imagelist import update_metadata_images
-from picard.util.textencoding import asciipunct
+import traceback
+
+from PyQt5 import (
+    QtCore,
+    QtNetwork,
+)
+
+from picard import (
+    config,
+    log,
+)
 from picard.cluster import Cluster
 from picard.collection import add_release_to_user_collections
+from picard.const import VARIOUS_ARTISTS_ID
+from picard.coverart import coverart
+from picard.dataobj import DataObject
+from picard.file import File
 from picard.mbjson import (
+    medium_to_metadata,
     release_group_to_metadata,
     release_to_metadata,
-    medium_to_metadata,
     track_to_metadata,
 )
-from picard.const import VARIOUS_ARTISTS_ID
+from picard.metadata import (
+    Metadata,
+    register_album_metadata_processor,
+    run_album_metadata_processors,
+    run_track_metadata_processors,
+)
+from picard.script import (
+    ScriptError,
+    ScriptParser,
+    enabled_tagger_scripts_texts,
+)
+from picard.track import Track
+from picard.util import (
+    format_time,
+    mbid_validate,
+)
+from picard.util.imagelist import update_metadata_images
+from picard.util.textencoding import asciipunct
+
+from picard.ui.item import Item
 
 register_album_metadata_processor(coverart)
 

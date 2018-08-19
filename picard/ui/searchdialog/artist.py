@@ -19,11 +19,17 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from PyQt5 import QtCore
+
 from picard import config
+from picard.const import QUERY_LIMIT
 from picard.mbjson import artist_to_metadata
 from picard.metadata import Metadata
-from picard.const import QUERY_LIMIT
-from picard.ui.searchdialog import SearchDialog, Retry, BY_NUMBER
+
+from picard.ui.searchdialog import (
+    BY_NUMBER,
+    Retry,
+    SearchDialog,
+)
 
 
 class ArtistSearchDialog(SearchDialog):

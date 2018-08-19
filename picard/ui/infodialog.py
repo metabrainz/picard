@@ -21,15 +21,27 @@ from collections import namedtuple
 import os.path
 import re
 import traceback
-from PyQt5 import QtGui, QtCore, QtWidgets
+
+from PyQt5 import (
+    QtCore,
+    QtGui,
+    QtWidgets,
+)
+
 from picard import log
-from picard.file import File
-from picard.track import Track
 from picard.album import Album
 from picard.coverart.image import CoverArtImageIOError
-from picard.util import (format_time, encode_filename,
-                         bytes2human, webbrowser2,
-                         union_sorted_lists, htmlescape)
+from picard.file import File
+from picard.track import Track
+from picard.util import (
+    bytes2human,
+    encode_filename,
+    format_time,
+    htmlescape,
+    union_sorted_lists,
+    webbrowser2,
+)
+
 from picard.ui import PicardDialog
 from picard.ui.ui_infodialog import Ui_InfoDialog
 from picard.ui.util import StandardButton

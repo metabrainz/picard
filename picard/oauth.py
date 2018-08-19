@@ -17,16 +17,27 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-import time
 from functools import partial
+import time
+
+from PyQt5.QtCore import (
+    QUrl,
+    QUrlQuery,
+)
 from PyQt5.QtNetwork import QNetworkRequest
-from PyQt5.QtCore import QUrl, QUrlQuery
-from picard import config, log
+
+from picard import (
+    config,
+    log,
+)
 from picard.const import (
     MUSICBRAINZ_OAUTH_CLIENT_ID,
     MUSICBRAINZ_OAUTH_CLIENT_SECRET,
 )
-from picard.util import build_qurl, load_json
+from picard.util import (
+    build_qurl,
+    load_json,
+)
 
 
 class OAuthManager(object):

@@ -20,6 +20,7 @@
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QListWidgetItem
 
+
 class CheckboxListItem(QListWidgetItem):
 
     def __init__(self, text='', checked=False, data=None):
