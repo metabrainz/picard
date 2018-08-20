@@ -26,8 +26,10 @@ from collections import (
     OrderedDict,
     namedtuple,
 )
+from functools import partial
 
 from PyQt5 import (
+    Qt,
     QtCore,
     QtWidgets,
 )
@@ -72,60 +74,8 @@ _CAA_THUMBNAIL_SIZE_MAP = OrderedDict([
 
 _CAA_IMAGE_SIZE_DEFAULT = 500
 
-_CAA_IMAGE_TYPE_DEFAULT_INCLUDE = [ 'front', ]
-_CAA_IMAGE_TYPE_DEFAULT_EXCLUDE = [ 'raw/unedited', 'watermark', ]
-
-
-def make_list_box():
-    """Make standard list box for CAA image type selection dialog."""
-    list_box = QtWidgets.QListWidget()
-    list_box.setFixedSize(QtCore.QSize(150, 250))
-    list_box.setSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
-    list_box.setSortingEnabled(True)
-    list_box.setSelectionMode(QtWidgets.QAbstractItemView.ExtendedSelection)
-    return list_box
-
-def make_arrow_button(label, command):
-    """Make standard arrow button for CAA image type selection dialog."""
-    item = QtWidgets.QPushButton(label)
-    item.clicked.connect(command)
-    item.setFixedSize(QtCore.QSize(35, 20))
-    return item
-
-def make_arrows_column(list_add, list_add_all, list_remove, list_remove_all, reverse=False):
-    """Make standard arrow buttons column for CAA image type selection dialog."""
-    _spacer_item = QtWidgets.QSpacerItem(20, 20, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
-    arrows = QtWidgets.QWidget()
-    arrows_layout = QtWidgets.QVBoxLayout()
-    arrows.setLayout(arrows_layout)
-    arrows_layout.addItem(QtWidgets.QSpacerItem(_spacer_item))
-    arrows_layout.addWidget(make_arrow_button('>' if reverse else '<', list_add))
-    arrows_layout.addWidget(make_arrow_button('>>' if reverse else '<<', list_add_all))
-    arrows_layout.addWidget(make_arrow_button('<' if reverse else '>', list_remove))
-    arrows_layout.addWidget(make_arrow_button('<<' if reverse else '>>', list_remove_all))
-    arrows_layout.addItem(QtWidgets.QSpacerItem(_spacer_item))
-    return arrows
-
-def move_item(item, list1, list2):
-    """Move the specified item from one listbox to another.  Used in the CAA image type selection dialog."""
-    clone = item.clone()
-    list2.addItem(clone)
-    list1.takeItem(list1.row(item))
-
-def move_selected_items(list1, list2):
-    """Move the selected item from one listbox to another.  Used in the CAA image type selection dialog."""
-    for item in list1.selectedItems():
-        move_item(item, list1, list2)
-
-def move_all_items(list1, list2):
-    """Move all items from one listbox to another.  Used in the CAA image type selection dialog."""
-    while list1.count():
-        item = list1.item(0)
-        move_item(item, list1, list2)
-
-def clear_listbox_focus(list_to_clear):
-    """Clear all item selections in the specified listbox."""
-    list_to_clear.clearSelection()
+_CAA_IMAGE_TYPE_DEFAULT_INCLUDE = ['front',]
+_CAA_IMAGE_TYPE_DEFAULT_EXCLUDE = ['raw/unedited', 'watermark',]
 
 
 def caa_url_fallback_list(desired_size, thumbnails):
@@ -149,44 +99,138 @@ def caa_url_fallback_list(desired_size, thumbnails):
     return urls
 
 
-class CAATypesSelectorDialog(QtWidgets.QDialog):
-    """Display dialog box to select the CAA image types to include and exclude from download and use."""
+class ArrowButton(QtWidgets.QPushButton):
+    """Standard arrow button for CAA image type selection dialog.
 
-    # Dictionary of standard image type names by translated image type title
-    #   key:    image type title displayed in list boxes (translated by i18n)
-    #   value:  standard image type name
-    #
-    # This is used to return the include and exclude lists containing standard image
-    # type names based on the titles displayed in the list boxes in the dialog.
-    image_types_by_display_title = {}
+    Keyword Arguments:
+        label {string} -- Label to display on the button
+        command {command} -- Command to execute when the button is clicked (default: {None})
+        parent {[type]} -- Parent of the QPushButton object being created (default: {None})
+    """
+
+    ARROW_BUTTON_WIDTH = 35
+    ARROW_BUTTON_HEIGHT = 20
+
+    def __init__(self, label, command=None, parent=None):
+        if label is None:
+            label = '.'
+        super().__init__(label, parent=parent)
+        if command is not None:
+            self.clicked.connect(command)
+        self.setFixedSize(QtCore.QSize(self.ARROW_BUTTON_WIDTH, self.ARROW_BUTTON_HEIGHT))
+
+
+class ArrowsColumn(QtWidgets.QWidget):
+    """Standard arrow buttons column for CAA image type selection dialog.
+
+    Keyword Arguments:
+        selection_list {ListBox} -- ListBox of selected items associated with this arrow column
+        ignore_list {ListBox} -- ListBox of unselected items associated with this arrow column
+        callback {command} -- Command to execute after items are moved between lists (default: {None})
+        reverse {bool} -- Determines whether the arrow directions should be reversed (default: {False})
+        parent {[type]} -- Parent of the QWidget object being created (default: {None})
+    """
+
+    def __init__(self, selection_list, ignore_list, callback=None, reverse=False, parent=None):
+        super().__init__(parent=parent)
+        self.selection_list = selection_list
+        self.ignore_list = ignore_list
+        self.callback = callback
+        spacer_item = QtWidgets.QSpacerItem(20, 20, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        arrows_layout = QtWidgets.QVBoxLayout()
+        arrows_layout.addItem(QtWidgets.QSpacerItem(spacer_item))
+        self.button_add = ArrowButton('>' if reverse else '<', self.move_from_ignore)
+        arrows_layout.addWidget(self.button_add)
+        self.button_add_all = ArrowButton('>>' if reverse else '<<', self.move_all_from_ignore)
+        arrows_layout.addWidget(self.button_add_all)
+        self.button_remove = ArrowButton('<' if reverse else '>', self.move_to_ignore)
+        arrows_layout.addWidget(self.button_remove)
+        self.button_remove_all = ArrowButton('<<' if reverse else '>>', self.move_all_to_ignore)
+        arrows_layout.addWidget(self.button_remove_all)
+        arrows_layout.addItem(QtWidgets.QSpacerItem(spacer_item))
+        self.setLayout(arrows_layout)
+
+    def move_from_ignore(self):
+        self.ignore_list.move_selected_items(self.selection_list, callback=self.callback)
+
+    def move_all_from_ignore(self):
+        self.ignore_list.move_all_items(self.selection_list, callback=self.callback)
+
+    def move_to_ignore(self):
+        self.selection_list.move_selected_items(self.ignore_list, callback=self.callback)
+
+    def move_all_to_ignore(self):
+        self.selection_list.move_all_items(self.ignore_list, callback=self.callback)
+
+
+class ListBox(QtWidgets.QListWidget):
+    """Standard list box for CAA image type selection dialog.
+
+    Keyword Arguments:
+        parent {[type]} -- Parent of the QListWidget object being created (default: {None})
+    """
+
+    LISTBOX_WIDTH = 150
+    LISTBOX_HEIGHT = 250
+
+    def __init__(self, parent=None):
+        super().__init__(parent=parent)
+        self.setFixedSize(QtCore.QSize(self.LISTBOX_WIDTH, self.LISTBOX_HEIGHT))
+        self.setSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        self.setSortingEnabled(True)
+        self.setSelectionMode(QtWidgets.QAbstractItemView.ExtendedSelection)
+
+    def move_item(self, item, target_list):
+        """Move the specified item to another listbox."""
+        self.takeItem(self.row(item))
+        target_list.addItem(item)
+
+    def move_selected_items(self, target_list, callback=None):
+        """Move the selected item to another listbox."""
+        for item in self.selectedItems():
+            self.move_item(item, target_list)
+        if callback:
+            callback()
+
+    def move_all_items(self, target_list, callback=None):
+        """Move all items to another listbox."""
+        while self.count():
+            self.move_item(self.item(0), target_list)
+        if callback:
+            callback()
+
+
+class CAATypesSelectorDialog(QtWidgets.QDialog):
+    """Display dialog box to select the CAA image types to include and exclude from download and use.
+
+    Keyword Arguments:
+        parent {[type]} -- Parent of the QDialog object being created (default: {None})
+        types_include {[string]} -- List of CAA image types to include (default: {None})
+        types_exclude {[string]} -- List of CAA image types to exclude (default: {None})
+    """
 
     def __init__(self, parent=None, types_include=None, types_exclude=None):
+        super().__init__(parent)
         if types_include is None:
             types_include = []
         if types_exclude is None:
             types_exclude = []
-        super().__init__(parent)
 
         self.setWindowTitle(_("Cover art types"))
         self.layout = QtWidgets.QVBoxLayout(self)
 
-        # Populate display title / standard name dictionary
-        for caa_type in CAA_TYPES:
-            name = caa_type['name']
-            title = _(caa_type['title'])
-            self.image_types_by_display_title[title] = name
-
         # Create list boxes for dialog
-        self.list_include = make_list_box()
-        self.list_exclude = make_list_box()
-        self.list_ignore = make_list_box()
+        self.list_include = ListBox()
+        self.list_exclude = ListBox()
+        self.list_ignore = ListBox()
 
         # Populate list boxes from current settings
         self.fill_lists(types_include, types_exclude)
 
-        self.list_include.clicked.connect(self.focus_set_include)
-        self.list_exclude.clicked.connect(self.focus_set_exclude)
-        self.list_ignore.clicked.connect(self.focus_set_ignore)
+        # Set triggers when the lists receive the current focus
+        self.list_include.clicked.connect(partial(self.clear_focus, [self.list_ignore, self.list_exclude,]))
+        self.list_exclude.clicked.connect(partial(self.clear_focus, [self.list_ignore, self.list_include,]))
+        self.list_ignore.clicked.connect(partial(self.clear_focus, [self.list_include, self.list_exclude,]))
 
         # Add instructions to the dialog box
         instructions = QtWidgets.QLabel()
@@ -215,14 +259,23 @@ class CAATypesSelectorDialog(QtWidgets.QDialog):
         gridlayout.addWidget(self.list_include, row, column)
 
         column = 1
-        self.arrows_include = make_arrows_column(self.add_include, self.add_include_all, self.remove_include, self.remove_include_all)
+        self.arrows_include = ArrowsColumn(
+            self.list_include,
+            self.list_ignore,
+            callback=self.set_buttons_enabled_state,
+        )
         gridlayout.addWidget(self.arrows_include, row, column)
 
         column = 2
         gridlayout.addWidget(self.list_ignore, row, column)
 
         column = 3
-        self.arrows_exclude = make_arrows_column(self.add_exclude, self.add_exclude_all, self.remove_exclude, self.remove_exclude_all, reverse=True)
+        self.arrows_exclude = ArrowsColumn(
+            self.list_exclude,
+            self.list_ignore,
+            callback=self.set_buttons_enabled_state,
+            reverse=True
+        )
         gridlayout.addWidget(self.arrows_exclude, row, column)
 
         column = 4
@@ -253,13 +306,13 @@ class CAATypesSelectorDialog(QtWidgets.QDialog):
             StandardButton(StandardButton.HELP), QtWidgets.QDialogButtonBox.HelpRole)
 
         extrabuttons = [
-            (N_("I&nclude all"), self.include_all),
-            (N_("E&xclude all"), self.exclude_all),
-            (N_("C&lear all"), self.clear_all),
+            (N_("I&nclude all"), self.move_all_to_include_list),
+            (N_("E&xclude all"), self.move_all_to_exclude_list),
+            (N_("C&lear all"), self.move_all_to_ignore_list),
             (N_("Restore &Defaults"), self.reset_to_defaults),
         ]
         for label, callback in extrabuttons:
-            button = QtWidgets.QPushButton(label)
+            button = QtWidgets.QPushButton(_(label))
             button.setSizePolicy(
                 QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Expanding)
             self.buttonbox.addButton(button, QtWidgets.QDialogButtonBox.ActionRole)
@@ -271,14 +324,29 @@ class CAATypesSelectorDialog(QtWidgets.QDialog):
         self.buttonbox.rejected.connect(self.reject)
         self.buttonbox.helpRequested.connect(self.help)
 
-        self.fix_buttons()
+        self.set_buttons_enabled_state()
+
+    def move_all_to_include_list(self):
+        self.list_ignore.move_all_items(self.list_include)
+        self.list_exclude.move_all_items(self.list_include)
+        self.set_buttons_enabled_state()
+
+    def move_all_to_exclude_list(self):
+        self.list_ignore.move_all_items(self.list_exclude)
+        self.list_include.move_all_items(self.list_exclude)
+        self.set_buttons_enabled_state()
+
+    def move_all_to_ignore_list(self):
+        self.list_include.move_all_items(self.list_ignore)
+        self.list_exclude.move_all_items(self.list_ignore)
+        self.set_buttons_enabled_state()
 
     def fill_lists(self, includes, excludes):
         """Fill dialog listboxes.
 
         First clears the contents of the three listboxes, and then populates the listboxes
-        from the dictionary of translated standard CAA types, using the provided 'includes'
-        and 'excludes' lists to determine the appropriate list for each type.
+        from the dictionary of standard CAA types, using the provided 'includes' and
+        'excludes' lists to determine the appropriate list for each type.
 
         Arguments:
             includes -- list of standard image types to place in the "Include" listbox
@@ -287,118 +355,56 @@ class CAATypesSelectorDialog(QtWidgets.QDialog):
         self.list_include.clear()
         self.list_exclude.clear()
         self.list_ignore.clear()
-        for title in self.image_types_by_display_title:
-            name = self.image_types_by_display_title[title]
+        for caa_type in CAA_TYPES:
+            name = caa_type['name']
+            title = translate_caa_type(caa_type['title'])
+            item = Qt.QListWidgetItem(title)
+            item.setData(QtCore.Qt.UserRole, name)
             if name in includes:
-                self.list_include.addItem(title)
+                self.list_include.addItem(item)
             elif name in excludes:
-                self.list_exclude.addItem(title)
+                self.list_exclude.addItem(item)
             else:
-                self.list_ignore.addItem(title)
+                self.list_ignore.addItem(item)
 
     def help(self):
         webbrowser2.goto('doc_cover_art_types')
 
-    def add_include(self):
-        move_selected_items(self.list_ignore, self.list_include)
-        self.fix_buttons()
-
-    def remove_include(self):
-        move_selected_items(self.list_include, self.list_ignore)
-        self.fix_buttons()
-
-    def add_include_all(self):
-        move_all_items(self.list_ignore, self.list_include)
-        self.fix_buttons()
-
-    def remove_include_all(self):
-        move_all_items(self.list_include, self.list_ignore)
-        self.fix_buttons()
-
-    def add_exclude(self):
-        move_selected_items(self.list_ignore, self.list_exclude)
-        self.fix_buttons()
-
-    def remove_exclude(self):
-        move_selected_items(self.list_exclude, self.list_ignore)
-        self.fix_buttons()
-
-    def add_exclude_all(self):
-        move_all_items(self.list_ignore, self.list_exclude)
-        self.fix_buttons()
-
-    def remove_exclude_all(self):
-        move_all_items(self.list_exclude, self.list_ignore)
-        self.fix_buttons()
-
-    def include_all(self):
-        move_all_items(self.list_ignore, self.list_include)
-        move_all_items(self.list_exclude, self.list_include)
-        self.fix_buttons()
-
-    def exclude_all(self):
-        move_all_items(self.list_ignore, self.list_exclude)
-        move_all_items(self.list_include, self.list_exclude)
-        self.fix_buttons()
-
-    def clear_all(self):
-        move_all_items(self.list_include, self.list_ignore)
-        move_all_items(self.list_exclude, self.list_ignore)
-        self.fix_buttons()
-
     def get_selected_types_include(self):
-        return [self.image_types_by_display_title[self.list_include.item(index).text()] for index in range(self.list_include.count())] or ['front']
+        return [self.list_include.item(index).data(QtCore.Qt.UserRole) for index in range(self.list_include.count())] or ['front']
 
     def get_selected_types_exclude(self):
-        return [self.image_types_by_display_title[self.list_exclude.item(index).text()] for index in range(self.list_exclude.count())] or ['none']
+        return [self.list_exclude.item(index).data(QtCore.Qt.UserRole) for index in range(self.list_exclude.count())] or ['none']
 
-    def focus_set_include(self):
-        clear_listbox_focus(self.list_exclude)
-        clear_listbox_focus(self.list_ignore)
-        self.fix_buttons()
-
-    def focus_set_exclude(self):
-        clear_listbox_focus(self.list_include)
-        clear_listbox_focus(self.list_ignore)
-        self.fix_buttons()
-
-    def focus_set_ignore(self):
-        clear_listbox_focus(self.list_include)
-        clear_listbox_focus(self.list_exclude)
-        self.fix_buttons()
-
-    def focus_clear_all(self):
-        clear_listbox_focus(self.list_include)
-        clear_listbox_focus(self.list_exclude)
-        clear_listbox_focus(self.list_ignore)
-        self.fix_buttons()
+    def clear_focus(self, lists):
+        for temp_list in lists:
+            temp_list.clearSelection()
+        self.set_buttons_enabled_state()
 
     def reset_to_defaults(self):
         self.fill_lists(_CAA_IMAGE_TYPE_DEFAULT_INCLUDE, _CAA_IMAGE_TYPE_DEFAULT_EXCLUDE)
-        self.fix_buttons()
+        self.set_buttons_enabled_state()
 
-    def fix_buttons(self):
+    def set_buttons_enabled_state(self):
         has_items_include = self.list_include.count()
         has_items_exclude = self.list_exclude.count()
         has_items_ignore = self.list_ignore.count()
 
-        has_selected_include = True if self.list_include.selectedItems() else False
-        has_selected_exclude = True if self.list_exclude.selectedItems() else False
-        has_selected_ignore = True if self.list_ignore.selectedItems() else False
+        has_selected_include = bool(self.list_include.selectedItems())
+        has_selected_exclude = bool(self.list_exclude.selectedItems())
+        has_selected_ignore = bool(self.list_ignore.selectedItems())
 
         # "Include" list buttons
-        buttons = self.arrows_include.findChildren(QtWidgets.QPushButton)
-        buttons[0].setEnabled(has_items_ignore and has_selected_ignore)     # '<'
-        buttons[1].setEnabled(has_items_ignore)                             # '<<'
-        buttons[2].setEnabled(has_items_include and has_selected_include)   # '>'
-        buttons[3].setEnabled(has_items_include)                            # '>>'
+        self.arrows_include.button_add.setEnabled(has_items_ignore and has_selected_ignore)
+        self.arrows_include.button_add_all.setEnabled(has_items_ignore)
+        self.arrows_include.button_remove.setEnabled(has_items_include and has_selected_include)
+        self.arrows_include.button_remove_all.setEnabled(has_items_include)
 
         # "Exclude" list buttons
-        buttons = self.arrows_exclude.findChildren(QtWidgets.QPushButton)
-        buttons[0].setEnabled(has_items_ignore and has_selected_ignore)     # '>'
-        buttons[1].setEnabled(has_items_ignore)                             # '>>'
-        buttons[2].setEnabled(has_items_exclude and has_selected_exclude)   # '<'
-        buttons[3].setEnabled(has_items_exclude)                            # '<<'
+        self.arrows_exclude.button_add.setEnabled(has_items_ignore and has_selected_ignore)
+        self.arrows_exclude.button_add_all.setEnabled(has_items_ignore)
+        self.arrows_exclude.button_remove.setEnabled(has_items_exclude and has_selected_exclude)
+        self.arrows_exclude.button_remove_all.setEnabled(has_items_exclude)
 
     @staticmethod
     def run(parent=None, types_include=None, types_exclude=None):
@@ -420,8 +426,7 @@ class ProviderOptionsCaa(ProviderOptions):
         config.BoolOption("setting", "caa_save_single_front_image", False),
         config.BoolOption("setting", "caa_approved_only", False),
         config.BoolOption("setting", "caa_image_type_as_filename", False),
-        config.IntOption("setting", "caa_image_size",
-                         _CAA_IMAGE_SIZE_DEFAULT),
+        config.IntOption("setting", "caa_image_size", _CAA_IMAGE_SIZE_DEFAULT),
         config.ListOption("setting", "caa_image_types", _CAA_IMAGE_TYPE_DEFAULT_INCLUDE),
         config.BoolOption("setting", "caa_restrict_image_types", True),
         config.ListOption("setting", "caa_image_types_to_omit", _CAA_IMAGE_TYPE_DEFAULT_EXCLUDE),
@@ -476,7 +481,6 @@ class ProviderOptionsCaa(ProviderOptions):
             config.setting["caa_image_types_to_omit"] = types_to_omit
 
 
-
 class CoverArtProviderCaa(CoverArtProvider):
 
     """Get cover art from Cover Art Archive using release mbid"""
@@ -501,16 +505,14 @@ class CoverArtProviderCaa(CoverArtProvider):
         # MB web service indicates if CAA has artwork
         # https://tickets.metabrainz.org/browse/MBS-4536
         if 'cover-art-archive' not in self.release:
-            log.debug("No Cover Art Archive information for %s"
-                      % self.release['id'])
+            log.debug('No Cover Art Archive information for {release_id}'.format(release_id=self.release['id']))
             return False
 
         caa_node = self.release['cover-art-archive']
         caa_has_suitable_artwork = caa_node['artwork']
 
         if not caa_has_suitable_artwork:
-            log.debug("There are no images in the Cover Art Archive for %s"
-                      % self.release['id'])
+            log.debug('There are no images in the Cover Art Archive for {release_id}'.format(release_id=self.release['id']))
             return False
 
         if self.restrict_types:
@@ -539,11 +541,9 @@ class CoverArtProviderCaa(CoverArtProvider):
                 caa_has_suitable_artwork = front_in_caa or back_in_caa
 
         if not caa_has_suitable_artwork:
-            log.debug("There are no suitable images in the Cover Art Archive for %s"
-                      % self.release['id'])
+            log.debug('There are no suitable images in the Cover Art Archive for {release_id}'.format(release_id=self.release['id']))
         else:
-            log.debug("There are suitable images in the Cover Art Archive for %s"
-                      % self.release['id'])
+            log.debug('There are suitable images in the Cover Art Archive for {release_id}'.format(release_id=self.release['id']))
 
         return caa_has_suitable_artwork
 
@@ -553,7 +553,7 @@ class CoverArtProviderCaa(CoverArtProvider):
                 self.coverart.front_image_found:
             return False
         if self.restrict_types and not self.len_caa_types:
-            log.debug("User disabled all Cover Art Archive types")
+            log.debug('User disabled all Cover Art Archive types')
             return False
         return self._has_suitable_artwork
 
@@ -609,12 +609,15 @@ class CoverArtProviderCaa(CoverArtProvider):
                         if types and self.caa_types_to_omit:
                             types = not set(image["types"]).intersection(
                                 set(self.caa_types_to_omit))
-                        log.debug('CAA image %s: %s  %s' % ('accepted' if types else 'rejected', image['image'], image['types'],))
+                        log.debug('CAA image {status}: {image_name}  {image_types}'.format(
+                            status=('accepted' if types else 'rejected'),
+                            image_name=image['image'],
+                            image_types=image['types'],)
+                        )
                     else:
                         types = True
                     if types:
-                        urls = caa_url_fallback_list(config.setting["caa_image_size"],
-                                                     image["thumbnails"])
+                        urls = caa_url_fallback_list(config.setting["caa_image_size"], image["thumbnails"])
                         if not urls or is_pdf:
                             url = image["image"]
                         else:
