@@ -333,7 +333,7 @@ class Metadata(dict):
     def apply_func(self, func):
         for key, values in self.rawitems():
             if key not in PRESERVED_TAGS:
-                self[key] = [func(value) for value in values]
+                super().__setitem__(key, [func(value) for value in values])
 
     def strip_whitespace(self):
         """Strip leading/trailing whitespace.
