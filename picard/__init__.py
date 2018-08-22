@@ -24,25 +24,11 @@ PICARD_ORG_NAME = "MusicBrainz"
 PICARD_APP_NAME = "Picard"
 PICARD_VERSION = (2, 0, 4, 'dev', 1)
 
+
 # optional build version
 # it should be in the form '<platform>_<YYMMDDHHMMSS>'
 # ie. win32_20140415091256
 PICARD_BUILD_VERSION_STR = ""
-
-PROGRAM_UPDATE_LEVELS = {
-    'stable': {
-        'level': 0,
-        'title': 'Stable releases only',
-    },
-    'beta': {
-        'level': 1,
-        'title': 'Stable and Beta releases',
-    },
-    'dev': {
-        'level': 2,
-        'title': 'Stable, Beta and Dev releases',
-    },
-}
 
 
 class VersionError(Exception):

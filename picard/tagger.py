@@ -83,6 +83,7 @@ from picard.util import (
     uniqify,
     versions,
 )
+from picard.util.checkupdate import UpdateCheckManager
 from picard.webservice import WebService
 from picard.webservice.api_helpers import (
     AcoustIdAPIHelper,
@@ -96,8 +97,6 @@ from picard.ui.mainwindow import MainWindow
 from picard.ui.searchdialog.album import AlbumSearchDialog
 from picard.ui.searchdialog.artist import ArtistSearchDialog
 from picard.ui.searchdialog.track import TrackSearchDialog
-
-from picard.util.checkupdate import UpdateCheckManager
 
 
 # A "fix" for https://bugs.python.org/issue1438480

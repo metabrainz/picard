@@ -20,12 +20,12 @@
 from PyQt5 import QtCore
 from PyQt5.QtWidgets import QInputDialog
 
-from picard import (
-    config,
+from picard import config
+from picard.collection import load_user_collections
+from picard.const import (
+    MUSICBRAINZ_SERVERS,
     PROGRAM_UPDATE_LEVELS,
 )
-from picard.collection import load_user_collections
-from picard.const import MUSICBRAINZ_SERVERS
 from picard.util import webbrowser2
 
 from picard.ui.options import (
@@ -76,14 +76,9 @@ class GeneralOptionsPage(OptionsPage):
         self.ui.ignore_file_mbids.setChecked(config.setting["ignore_file_mbids"])
         self.ui.check_for_updates.setChecked(config.setting["check_for_updates"])
         self.ui.update_level.clear()
-        index = 0
-        for key in PROGRAM_UPDATE_LEVELS.keys():
-            self.ui.update_level.addItem(
-                _(PROGRAM_UPDATE_LEVELS[key]['title']),
-                PROGRAM_UPDATE_LEVELS[key]['level'])
-            if PROGRAM_UPDATE_LEVELS[key]['level'] == config.setting["update_level"]:
-                self.ui.update_level.setCurrentIndex(index)
-            index += 1
+        for level, description in PROGRAM_UPDATE_LEVELS.items():
+            self.ui.update_level.addItem(_(description['title']), level)
+        self.ui.update_level.setCurrentIndex(self.ui.update_level.findData(config.setting["update_level"]))
         self.ui.update_check_days.setValue(config.setting["update_check_days"])
 
     def save(self):
