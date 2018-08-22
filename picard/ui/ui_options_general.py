@@ -8,7 +8,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_GeneralOptionsPage(object):
     def setupUi(self, GeneralOptionsPage):
         GeneralOptionsPage.setObjectName("GeneralOptionsPage")
-        GeneralOptionsPage.resize(304, 435)
+        GeneralOptionsPage.resize(283, 435)
         self.vboxlayout = QtWidgets.QVBoxLayout(GeneralOptionsPage)
         self.vboxlayout.setObjectName("vboxlayout")
         self.groupBox = QtWidgets.QGroupBox(GeneralOptionsPage)
@@ -116,9 +116,6 @@ class Ui_GeneralOptionsPage(object):
         self.update_level.setSizePolicy(sizePolicy)
         self.update_level.setEditable(False)
         self.update_level.setObjectName("update_level")
-        self.update_level.addItem("")
-        self.update_level.addItem("")
-        self.update_level.addItem("")
         self.gridLayout_2.addWidget(self.update_level, 0, 1, 1, 1)
         self.verticalLayout_2.addLayout(self.gridLayout_2)
         self.vboxlayout.addWidget(self.groupBox_3)
@@ -126,7 +123,6 @@ class Ui_GeneralOptionsPage(object):
         self.vboxlayout.addItem(spacerItem1)
 
         self.retranslateUi(GeneralOptionsPage)
-        self.update_level.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(GeneralOptionsPage)
         GeneralOptionsPage.setTabOrder(self.server_host, self.server_port)
 
@@ -145,7 +141,4 @@ class Ui_GeneralOptionsPage(object):
         self.check_for_updates.setText(_("Check for updates during start-up"))
         self.label_2.setText(_("Days between checks:"))
         self.label_3.setText(_("Updates to check:"))
-        self.update_level.setItemText(0, _("Stable releases only"))
-        self.update_level.setItemText(1, _("Stable and Beta releases"))
-        self.update_level.setItemText(2, _("Stable, Beta and Dev releases"))
 

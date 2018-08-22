@@ -17,25 +17,25 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-from picard import (PICARD_VERSION, PICARD_FANCY_VERSION_STR, PROGRAM_UPDATE_LEVELS, log)
-import picard.util.webbrowser2 as wb2
+from functools import partial
+
 from PyQt5 import QtCore
 from PyQt5.QtWidgets import QMessageBox
-from picard.util import load_json, compare_version_tuples
-from functools import partial
-import re
 
-
-# Used to strip leading and trailing text from version string.
-_RE_CLEAN_VERSION = re.compile('^[^0-9]*(.*)[^0-9]*$', re.IGNORECASE)
-
-
-# GitHub API information
-VERSIONS_API = {
-    'host': 'picard.musicbrainz.org',
-    'port': 443,
-    'endpoint': '/api/releases'
-}
+from picard import (
+    PICARD_FANCY_VERSION_STR,
+    PICARD_VERSION,
+    log,
+)
+from picard.const import (
+    PLUGINS_API,
+    PROGRAM_UPDATE_LEVELS,
+)
+from picard.util import (
+    compare_version_tuples,
+    load_json,
+    webbrowser2,
+)
 
 
 class UpdateCheckManager(QtCore.QObject):
@@ -43,21 +43,7 @@ class UpdateCheckManager(QtCore.QObject):
     def __init__(self, parent=None):
         super().__init__(parent=parent)
         self._parent = parent
-
-        # PICARD_VERSIONS dictionary valid keys are: 'stable', 'beta' and 'dev'.
-        # Each of these keys contains a dictionary with the keys: 'tag' (string),
-        # 'version' (tuple) and 'urls' (dictionary).  The 'version' tuple comprises
-        # major (int), minor (int), micro (int), type (str) and development (int)
-        # as defined in PEP-440.  The Picard developers have standardized on using
-        # only 'dev' or 'final' as the str_type segment of the version tuple.  Each
-        # key in the 'urls' dictionary contains a string with the specified url.
-        # Valid keys include: 'download' and 'changelog'.  The only required key in
-        # the 'urls' dictionary is 'download'.
-
-        # Initialize empty dictionary for 'stable' key
-        self._available_versions = {
-            'stable': { 'tag': '', 'version': (0, 0, 0, 'dev', 0), 'urls': {'download': ''} },
-        }
+        self._available_versions = {}
         self._show_always = False
         self._update_level = 0
 
@@ -88,25 +74,20 @@ class UpdateCheckManager(QtCore.QObject):
         self._show_always = show_always
         self._update_level = update_level
 
-        if self._available_versions['stable']['tag']:
+        if self._available_versions:
             # Release information already acquired from specified website api.
             self._display_results()
         else:
             # Gets list of releases from specified website api.
             self._query_available_updates(callback=callback)
 
-    @property
-    def available_versions(self):
-        '''Provide a list of the latest version tuples for each update type.'''
-        return self._available_versions
-
     def _query_available_updates(self, callback=None):
         '''Gets list of releases from specified website api.'''
-        log.debug(_("Getting release information from {host_url}.".format(host_url=VERSIONS_API['host'],)))
+        log.debug("Getting Picard release information from {host_url}".format(host_url=PLUGINS_API['host'],))
         self.tagger.webservice.get(
-            VERSIONS_API['host'],
-            VERSIONS_API['port'],
-            VERSIONS_API['endpoint'],
+            PLUGINS_API['host'],
+            PLUGINS_API['port'],
+            PLUGINS_API['endpoint']['releases'],
             partial(self._releases_json_loaded, callback=callback),
             parse_response_type=None,
             priority=True,
@@ -116,16 +97,19 @@ class UpdateCheckManager(QtCore.QObject):
     def _releases_json_loaded(self, response, reply, error, callback=None):
         '''Processes response from specified website api query.'''
         if error:
-            log.error(N_("Error loading releases list: {error_message}".format(error_message=reply.errorString(),)))
+            log.error(_("Error loading Picard releases list: {error_message}").format(error_message=reply.errorString(),))
             if self._show_always:
                 QMessageBox.information(
                     self._parent,
                     _("Picard Update"),
-                    _("Unable to retrieve the latest version information."),
+                    _("Unable to retrieve the latest version information from the website.\n(https://{url}{endpoint})").format(
+                        url=PLUGINS_API['host'],
+                        endpoint=PLUGINS_API['endpoint']['releases'],
+                    ),
                     QMessageBox.Ok, QMessageBox.Ok)
         else:
             self._available_versions = load_json(response)['versions']
-            for key in self._available_versions.keys():
+            for key in self._available_versions:
                 log.debug("Version key '{version_key}' --> {version_information}".format(
                     version_key=key, version_information=self._available_versions[key],))
             self._display_results()
@@ -136,16 +120,17 @@ class UpdateCheckManager(QtCore.QObject):
         # Display results to user.
         key = ''
         high_version = PICARD_VERSION
-        for test_key in PROGRAM_UPDATE_LEVELS.keys():
-            if self._update_level >= PROGRAM_UPDATE_LEVELS[test_key]['level'] and  compare_version_tuples(high_version, self._available_versions[test_key]['version']) > 0:
-                key = test_key
-                high_version = self._available_versions[test_key]['version']
+        for test_key in PROGRAM_UPDATE_LEVELS:
+            test_version = self._available_versions[PROGRAM_UPDATE_LEVELS[test_key]['name']]['version']
+            if self._update_level >= test_key and  compare_version_tuples(high_version, test_version) > 0:
+                key = PROGRAM_UPDATE_LEVELS[test_key]['name']
+                high_version = test_version
         if key:
             if QMessageBox.information(
                 self._parent,
                 _("Picard Update"),
                 _("A new version of Picard is available.\n\n"
-                  "Old version: {picard_old_version}\n"
+                  "This version: {picard_old_version}\n"
                   "New version: {picard_new_version}\n\n"
                   "Would you like to download the new version?").format(
                       picard_old_version=PICARD_FANCY_VERSION_STR,
@@ -154,18 +139,15 @@ class UpdateCheckManager(QtCore.QObject):
                 QMessageBox.Ok | QMessageBox.Cancel,
                 QMessageBox.Cancel
             ) == QMessageBox.Ok:
-                wb2.open(self._available_versions[key]['urls']['download'])
+                webbrowser2.open(self._available_versions[key]['urls']['download'])
         else:
             if self._show_always:
-                for key in PROGRAM_UPDATE_LEVELS.keys():
-                    if self._update_level == PROGRAM_UPDATE_LEVELS[key]['level']:
-                        update_level_text = PROGRAM_UPDATE_LEVELS[key]['title']
                 QMessageBox.information(
                     self._parent,
                     _("Picard Update"),
                     _("There is no update currently available for your subscribed update level: {update_level}\n\n"
                       "Your version: {picard_old_version}\n").format(
-                        update_level=_(update_level_text if update_level_text else 'unknown'),
+                        update_level=_(PROGRAM_UPDATE_LEVELS[self._update_level]['title']) if self._update_level in PROGRAM_UPDATE_LEVELS else _('unknown'),
                         picard_old_version=PICARD_FANCY_VERSION_STR,
                       ),
                     QMessageBox.Ok, QMessageBox.Ok

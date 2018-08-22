@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>304</width>
+    <width>283</width>
     <height>435</height>
    </rect>
   </property>
@@ -213,24 +213,6 @@
           <property name="editable">
            <bool>false</bool>
           </property>
-          <property name="currentIndex">
-           <number>0</number>
-          </property>
-          <item>
-           <property name="text">
-            <string>Stable releases only</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Stable and Beta releases</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Stable, Beta and Dev releases</string>
-           </property>
-          </item>
          </widget>
         </item>
        </layout>
