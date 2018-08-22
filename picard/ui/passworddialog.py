@@ -19,6 +19,7 @@
 
 
 from picard import config
+
 from picard.ui import PicardDialog
 from picard.ui.ui_passworddialog import Ui_PasswordDialog
 

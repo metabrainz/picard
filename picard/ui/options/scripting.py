@@ -17,15 +17,24 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5 import (
+    QtCore,
+    QtGui,
+    QtWidgets,
+)
+
 from picard import config
 from picard.const import PICARD_URLS
 from picard.script import ScriptParser
-from picard.ui import HashableListWidgetItem
-from picard.ui.options import OptionsPage, OptionsCheckError, register_options_page
-from picard.ui.ui_options_script import Ui_ScriptingOptionsPage
 from picard.util import restore_method
 
+from picard.ui import HashableListWidgetItem
+from picard.ui.options import (
+    OptionsCheckError,
+    OptionsPage,
+    register_options_page,
+)
+from picard.ui.ui_options_script import Ui_ScriptingOptionsPage
 
 DEFAULT_NUMBERED_SCRIPT_NAME = N_("My script %d")
 DEFAULT_SCRIPT_NAME = N_("My script")

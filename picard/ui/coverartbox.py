@@ -17,17 +17,30 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-import os
 from functools import partial
-from PyQt5 import QtCore, QtGui, QtNetwork, QtWidgets
-from picard import config, log
+import os
+
+from PyQt5 import (
+    QtCore,
+    QtGui,
+    QtNetwork,
+    QtWidgets,
+)
+
+from picard import (
+    config,
+    log,
+)
 from picard.album import Album
-from picard.coverart.image import CoverArtImage, CoverArtImageError
-from picard.track import Track
+from picard.const import MAX_COVERS_TO_STACK
+from picard.coverart.image import (
+    CoverArtImage,
+    CoverArtImageError,
+)
 from picard.file import File
+from picard.track import Track
 from picard.util import imageinfo
 from picard.util.lrucache import LRUCache
-from picard.const import MAX_COVERS_TO_STACK
 
 
 class ActiveLabel(QtWidgets.QLabel):

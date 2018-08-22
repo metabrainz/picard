@@ -18,13 +18,20 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from functools import partial
+
 from PyQt5 import QtWidgets
 
 from picard import log
 from picard.album import Album
-from picard.cluster import Cluster, ClusterList
+from picard.cluster import (
+    Cluster,
+    ClusterList,
+)
+from picard.script import (
+    ScriptError,
+    ScriptParser,
+)
 from picard.track import Track
-from picard.script import ScriptParser, ScriptError
 from picard.util import uniqify
 
 

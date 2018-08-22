@@ -19,8 +19,15 @@
 
 import locale
 
-from PyQt5 import QtCore, QtWidgets
-from picard.collection import user_collections, load_user_collections
+from PyQt5 import (
+    QtCore,
+    QtWidgets,
+)
+
+from picard.collection import (
+    load_user_collections,
+    user_collections,
+)
 
 
 class CollectionMenu(QtWidgets.QMenu):

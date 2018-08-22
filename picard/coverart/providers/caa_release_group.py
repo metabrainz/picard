@@ -18,8 +18,11 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+from picard.coverart.image import (
+    CaaCoverArtImage,
+    CaaThumbnailCoverArtImage,
+)
 from picard.coverart.providers.caa import CoverArtProviderCaa
-from picard.coverart.image import CaaCoverArtImage, CaaThumbnailCoverArtImage
 
 
 class CaaCoverArtImageRg(CaaCoverArtImage):

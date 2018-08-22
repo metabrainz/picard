@@ -18,13 +18,21 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+from functools import partial
 import logging
 import os
 
-from functools import partial
+from PyQt5 import (
+    QtCore,
+    QtGui,
+    QtWidgets,
+)
 
-from PyQt5 import QtCore, QtGui, QtWidgets
-from picard import config, log
+from picard import (
+    config,
+    log,
+)
+
 from picard.ui import PicardDialog
 
 

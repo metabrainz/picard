@@ -18,8 +18,11 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 import webbrowser
+
 from PyQt5 import QtWidgets
+
 from picard.const import PICARD_URLS
+
 
 """
 A webbrowser extension for Picard. It handles and displays errors

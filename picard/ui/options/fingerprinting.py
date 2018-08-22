@@ -18,11 +18,24 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 import os
-from PyQt5 import QtCore, QtWidgets
+
+from PyQt5 import (
+    QtCore,
+    QtWidgets,
+)
+
 from picard import config
-from picard.util import webbrowser2, find_executable
 from picard.const import FPCALC_NAMES
-from picard.ui.options import OptionsPage, OptionsCheckError, register_options_page
+from picard.util import (
+    find_executable,
+    webbrowser2,
+)
+
+from picard.ui.options import (
+    OptionsCheckError,
+    OptionsPage,
+    register_options_page,
+)
 from picard.ui.ui_options_fingerprinting import Ui_FingerprintingOptionsPage
 
 

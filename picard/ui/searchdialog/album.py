@@ -18,22 +18,40 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-from PyQt5 import QtGui, QtCore, QtWidgets
-from PyQt5.QtCore import pyqtSignal
 from functools import partial
-from picard import config, log
-from picard.util import load_json
+
+from PyQt5 import (
+    QtCore,
+    QtGui,
+    QtWidgets,
+)
+from PyQt5.QtCore import pyqtSignal
+
+from picard import (
+    config,
+    log,
+)
+from picard.const import (
+    CAA_HOST,
+    CAA_PORT,
+    QUERY_LIMIT,
+)
+from picard.coverart.image import CaaThumbnailCoverArtImage
 from picard.mbjson import (
-    release_to_metadata,
-    release_group_to_metadata,
+    country_list_from_node,
     media_formats_from_node,
-    country_list_from_node
+    release_group_to_metadata,
+    release_to_metadata,
 )
 from picard.metadata import Metadata
+from picard.util import load_json
 from picard.webservice.api_helpers import escape_lucene_query
-from picard.const import CAA_HOST, CAA_PORT, QUERY_LIMIT
-from picard.coverart.image import CaaThumbnailCoverArtImage
-from picard.ui.searchdialog import SearchDialog, Retry, BY_NUMBER
+
+from picard.ui.searchdialog import (
+    BY_NUMBER,
+    Retry,
+    SearchDialog,
+)
 
 
 class CoverWidget(QtWidgets.QWidget):

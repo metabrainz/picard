@@ -19,13 +19,18 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from collections import OrderedDict
+
 from mutagen import version_string as mutagen_version
-from PyQt5.QtCore import PYQT_VERSION_STR as pyqt_version, QT_VERSION_STR
+
+from PyQt5.QtCore import (
+    PYQT_VERSION_STR as pyqt_version,
+    QT_VERSION_STR,
+)
+from PyQt5.QtNetwork import QSslSocket
+
 from picard import PICARD_FANCY_VERSION_STR
 from picard.disc import discid_version
 from picard.util.astrcmp import astrcmp_implementation
-from PyQt5.QtNetwork import QSslSocket
-
 
 _versions = OrderedDict([
     ("version", PICARD_FANCY_VERSION_STR),

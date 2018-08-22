@@ -17,11 +17,11 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+import builtins
 import gettext
 import locale
 import os.path
 import sys
-import builtins
 
 builtins.__dict__['N_'] = lambda a: a
 

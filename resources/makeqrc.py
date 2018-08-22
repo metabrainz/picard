@@ -1,9 +1,11 @@
 #!/usr/bin/env python
 
-import os, fnmatch
-import re
 from distutils import log
 from distutils.dep_util import newer
+import fnmatch
+import os
+import re
+
 
 """Build a Qt resources file with all png images found under images/
 It will update qrc file only if images newer than it are found

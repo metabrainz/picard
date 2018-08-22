@@ -18,21 +18,30 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+from functools import partial
 import os.path
 import sys
-from functools import partial
+
 from PyQt5 import QtWidgets
 from PyQt5.QtCore import QStandardPaths
 from PyQt5.QtGui import QPalette
+
 from picard import config
 from picard.const import PICARD_URLS
 from picard.file import File
-from picard.script import ScriptParser, ScriptError
-from picard.ui.options import OptionsPage, OptionsCheckError, register_options_page
+from picard.script import (
+    ScriptError,
+    ScriptParser,
+)
+
+from picard.ui.options import (
+    OptionsCheckError,
+    OptionsPage,
+    register_options_page,
+)
+from picard.ui.options.scripting import TaggerScriptSyntaxHighlighter
 from picard.ui.ui_options_renaming import Ui_RenamingOptionsPage
 from picard.ui.util import enabledSlot
-from picard.ui.options.scripting import TaggerScriptSyntaxHighlighter
-
 
 _DEFAULT_FILE_NAMING_FORMAT = "$if2(%albumartist%,%artist%)/" \
     "$if($ne(%albumartist%,),%album%/,)" \

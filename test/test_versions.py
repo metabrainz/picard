@@ -2,10 +2,12 @@
 
 import sys
 import unittest
-from picard import (version_to_string,
-                    version_from_string,
-                    VersionError)
 
+from picard import (
+    VersionError,
+    version_from_string,
+    version_to_string,
+)
 
 # assertLess is available since 2.7 only
 if sys.version_info[:2] == (2, 6):

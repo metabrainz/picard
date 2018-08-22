@@ -17,17 +17,24 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-from PyQt5 import QtCore, QtWidgets
+from PyQt5 import (
+    QtCore,
+    QtWidgets,
+)
 
-from picard import config, log
-from picard.ui import PicardDialog
-from picard.ui.ui_cdlookup import Ui_Dialog
+from picard import (
+    config,
+    log,
+)
 from picard.mbjson import (
     artist_credit_from_node,
     label_info_from_node,
     release_dates_and_countries_from_node,
 )
 from picard.util import restore_method
+
+from picard.ui import PicardDialog
+from picard.ui.ui_cdlookup import Ui_Dialog
 
 
 class CDLookupDialog(PicardDialog):

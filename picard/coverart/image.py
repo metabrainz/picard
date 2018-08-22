@@ -21,27 +21,34 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+from hashlib import md5
 import os
 import shutil
 import sys
 import tempfile
 
-from hashlib import md5
-from PyQt5.QtCore import QUrl, QObject, QMutex
-from picard import config, log
+from PyQt5.QtCore import (
+    QMutex,
+    QObject,
+    QUrl,
+)
+
+from picard import (
+    config,
+    log,
+)
 from picard.coverart.utils import translate_caa_type
 from picard.script import ScriptParser
 from picard.util import (
     decode_filename,
     encode_filename,
+    imageinfo,
     replace_win32_incompat,
-    imageinfo
 )
 from picard.util.textencoding import (
     replace_non_ascii,
     unaccent,
 )
-
 
 _datafiles = dict()
 _datafile_mutex = QMutex(QMutex.Recursive)

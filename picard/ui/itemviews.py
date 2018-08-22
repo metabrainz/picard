@@ -17,19 +17,43 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+from functools import partial
 import os
 import re
-from functools import partial
-from PyQt5 import QtCore, QtGui, QtWidgets
-from picard import config, log
-from picard.album import Album, NatAlbum
-from picard.cluster import Cluster, ClusterList, UnclusteredFiles
+
+from PyQt5 import (
+    QtCore,
+    QtGui,
+    QtWidgets,
+)
+
+from picard import (
+    config,
+    log,
+)
+from picard.album import (
+    Album,
+    NatAlbum,
+)
+from picard.cluster import (
+    Cluster,
+    ClusterList,
+    UnclusteredFiles,
+)
 from picard.file import File
-from picard.track import Track, NonAlbumTrack
-from picard.util import encode_filename, icontheme, restore_method
 from picard.plugin import ExtensionPoint
-from picard.ui.ratingwidget import RatingWidget
+from picard.track import (
+    NonAlbumTrack,
+    Track,
+)
+from picard.util import (
+    encode_filename,
+    icontheme,
+    restore_method,
+)
+
 from picard.ui.collectionmenu import CollectionMenu
+from picard.ui.ratingwidget import RatingWidget
 from picard.ui.scriptsmenu import ScriptsMenu
 
 

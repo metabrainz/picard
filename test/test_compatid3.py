@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
 
 import unittest
+
 from mutagen import id3
-from picard.formats.mutagenext import compatid3
+
 from picard.formats.id3 import id3text
+from picard.formats.mutagenext import compatid3
 
 
 class UpdateToV23Test(unittest.TestCase):

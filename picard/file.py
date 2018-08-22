@@ -18,20 +18,26 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+from collections import defaultdict
 import fnmatch
-import os
-import os.path
-import shutil
-import sys
-import re
-import unicodedata
 from functools import partial
 from operator import itemgetter
-from collections import defaultdict
+import os
+import os.path
+import re
+import shutil
+import sys
+import unicodedata
+
 from PyQt5 import QtCore
-from picard import config, log
+
+from picard import (
+    PICARD_APP_NAME,
+    config,
+    log,
+)
+from picard.const import QUERY_LIMIT
 from picard.metadata import Metadata
-from picard.ui.item import Item
 from picard.script import ScriptParser
 from picard.util import (
     decode_filename,
@@ -43,14 +49,14 @@ from picard.util import (
     thread,
     tracknum_from_filename,
 )
+from picard.util.filenaming import make_short_filename
+from picard.util.tags import PRESERVED_TAGS
 from picard.util.textencoding import (
     replace_non_ascii,
     unaccent,
 )
-from picard.util.filenaming import make_short_filename
-from picard.util.tags import PRESERVED_TAGS
-from picard.const import QUERY_LIMIT
-from picard import PICARD_APP_NAME
+
+from picard.ui.item import Item
 
 
 class File(QtCore.QObject, Item):
