@@ -38,6 +38,7 @@ from picard import (
     log,
 )
 from picard.coverart.utils import translate_caa_type
+from picard.metadata import Metadata
 from picard.script import ScriptParser
 from picard.util import (
     decode_filename,
@@ -261,7 +262,15 @@ class CoverArtImage:
         # TODO: do something better than randomly using the first in the list
         return self.types[0]
 
-    def _make_image_filename(self, filename, dirname, metadata):
+    def _make_image_filename(self, filename, dirname, _metadata):
+        metadata = Metadata()
+        metadata.copy(_metadata)
+        metadata["coverart_maintype"] = self.maintype
+        metadata["coverart_comment"] = self.comment
+        if self.is_front:
+            metadata.add_unique("coverart_types", "front")
+        for cover_type in self.types:
+            metadata.add_unique("coverart_types", cover_type)
         filename = ScriptParser().eval(filename, metadata)
         if config.setting["ascii_filenames"]:
             if isinstance(filename, str):
