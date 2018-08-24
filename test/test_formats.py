@@ -32,6 +32,7 @@ settings = {
     'save_images_to_tags': True,
     'write_id3v1': True,
     'write_id3v23': False,
+    'itunes_compatible_grouping': False,
 }
 
 
@@ -380,6 +381,71 @@ class CommonTests:
             loaded_metadata = save_and_load_metadata(self.filename, metadata)
             for (key, value) in self.tags.items():
                 self.assertEqual(loaded_metadata[key], value, '%s: %r != %r' % (key, loaded_metadata[key], value))
+
+        @skipUnlessTestfile
+        def test_standard_grouping(self):
+            metadata = Metadata()
+            metadata['grouping'] = 'The Grouping'
+            metadata['work'] = 'The Work'
+            loaded_metadata = save_and_load_metadata(self.filename, metadata)
+            self.assertEqual(loaded_metadata['grouping'], metadata['grouping'])
+            self.assertEqual(loaded_metadata['work'], metadata['work'])
+
+        @skipUnlessTestfile
+        def test_itunes_compatible_grouping(self):
+
+            def reset_itunes_compatible_grouping():
+                config.setting['itunes_compatible_grouping'] = False
+            config.setting['itunes_compatible_grouping'] = True
+            self.addCleanup(reset_itunes_compatible_grouping)
+            metadata = Metadata()
+            metadata['grouping'] = 'The Grouping'
+            metadata['work'] = 'The Work'
+            loaded_metadata = save_and_load_metadata(self.filename, metadata)
+            self.assertEqual(loaded_metadata['grouping'], metadata['grouping'])
+            self.assertEqual(loaded_metadata['work'], metadata['work'])
+
+        @skipUnlessTestfile
+        def test_always_read_grp1(self):
+
+            def reset_itunes_compatible_grouping():
+                config.setting['itunes_compatible_grouping'] = False
+            self.addCleanup(reset_itunes_compatible_grouping)
+            metadata = Metadata()
+            metadata['grouping'] = 'The Grouping'
+            metadata['work'] = 'The Work'
+            config.setting['itunes_compatible_grouping'] = True
+            f = picard.formats.open_(self.filename)
+            f._save(self.filename, metadata)
+
+            config.setting['itunes_compatible_grouping'] = False
+            f = picard.formats.open_(self.filename)
+            loaded_metadata = f._load(self.filename)
+
+            self.assertIn(metadata['grouping'], loaded_metadata['grouping'])
+            self.assertIn(metadata['work'], loaded_metadata['grouping'])
+            self.assertEqual(loaded_metadata['work'], '')
+
+        @skipUnlessTestfile
+        def test_always_read_txxx_work(self):
+
+            def reset_itunes_compatible_grouping():
+                config.setting['itunes_compatible_grouping'] = False
+            self.addCleanup(reset_itunes_compatible_grouping)
+            metadata = Metadata()
+            metadata['grouping'] = 'The Grouping'
+            metadata['work'] = 'The Work'
+            config.setting['itunes_compatible_grouping'] = False
+            f = picard.formats.open_(self.filename)
+            f._save(self.filename, metadata)
+
+            config.setting['itunes_compatible_grouping'] = True
+            f = picard.formats.open_(self.filename)
+            loaded_metadata = f._load(self.filename)
+
+            self.assertIn(metadata['grouping'], loaded_metadata['work'])
+            self.assertIn(metadata['work'], loaded_metadata['work'])
+            self.assertEqual(loaded_metadata['grouping'], '')
 
 
 class FLACTest(CommonTests.FormatsTest):
