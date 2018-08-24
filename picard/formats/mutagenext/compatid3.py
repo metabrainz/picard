@@ -26,6 +26,10 @@ from mutagen.id3 import (
 )
 
 
+class GRP1(TextFrame):
+    pass
+
+
 class TCMP(TextFrame):
     pass
 
@@ -60,6 +64,7 @@ class CompatID3(ID3):
         if args:
             known_frames = dict(Frames)
             known_frames.update(dict(Frames_2_2))
+            known_frames["GRP1"] = GRP1
             known_frames["TCMP"] = TCMP
             known_frames["TSO2"] = TSO2
             known_frames["TSOC"] = TSOC

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>539</width>
-    <height>474</height>
+    <height>476</height>
    </rect>
   </property>
   <layout class="QVBoxLayout">
@@ -282,6 +282,13 @@
          </widget>
         </item>
        </layout>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="itunes_compatible_grouping">
+        <property name="text">
+         <string>Save iTunes compatible grouping and work</string>
+        </property>
+       </widget>
       </item>
       <item>
        <widget class="QCheckBox" name="write_id3v1">
