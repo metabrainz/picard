@@ -332,10 +332,6 @@ class CommonTests:
         @skipUnlessTestfile
         def test_performer_duplication(self):
 
-            def reset_id3_ver():
-                config.setting['write_id3v23'] = False
-
-            self.addCleanup(reset_id3_ver)
             config.setting['write_id3v23'] = True
             metadata = Metadata()
             tags = {
@@ -371,10 +367,7 @@ class CommonTests:
         @skipUnlessTestfile
         def test_id3v23_simple_tags(self):
 
-            def reset_to_id3v24():
-                config.setting['write_id3v23'] = False
             config.setting['write_id3v23'] = True
-            self.addCleanup(reset_to_id3v24)
             metadata = Metadata()
             for (key, value) in self.tags.items():
                 metadata[key] = value
@@ -394,10 +387,7 @@ class CommonTests:
         @skipUnlessTestfile
         def test_itunes_compatible_grouping(self):
 
-            def reset_itunes_compatible_grouping():
-                config.setting['itunes_compatible_grouping'] = False
             config.setting['itunes_compatible_grouping'] = True
-            self.addCleanup(reset_itunes_compatible_grouping)
             metadata = Metadata()
             metadata['grouping'] = 'The Grouping'
             metadata['work'] = 'The Work'
@@ -408,9 +398,6 @@ class CommonTests:
         @skipUnlessTestfile
         def test_always_read_grp1(self):
 
-            def reset_itunes_compatible_grouping():
-                config.setting['itunes_compatible_grouping'] = False
-            self.addCleanup(reset_itunes_compatible_grouping)
             metadata = Metadata()
             metadata['grouping'] = 'The Grouping'
             metadata['work'] = 'The Work'
@@ -429,9 +416,6 @@ class CommonTests:
         @skipUnlessTestfile
         def test_always_read_txxx_work(self):
 
-            def reset_itunes_compatible_grouping():
-                config.setting['itunes_compatible_grouping'] = False
-            self.addCleanup(reset_itunes_compatible_grouping)
             metadata = Metadata()
             metadata['grouping'] = 'The Grouping'
             metadata['work'] = 'The Work'
