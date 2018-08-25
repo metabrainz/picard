@@ -59,14 +59,23 @@ class FakeTagger(QtCore.QObject):
         pass
 
 
+def save_metadata(filename, metadata):
+    f = picard.formats.open_(filename)
+    f._save(filename, metadata)
+
+
+def load_metadata(filename):
+    f = picard.formats.open_(filename)
+    return f._load(filename)
+
+
 def save_and_load_metadata(filename, metadata):
     """Save new metadata to a file and load it again."""
     f = picard.formats.open_(filename)
     loaded_metadata = f._load(filename)
     f._copy_loaded_metadata(loaded_metadata)
     f._save(filename, metadata)
-    f = picard.formats.open_(filename)
-    loaded_metadata = f._load(filename)
+    loaded_metadata = load_metadata(filename)
     return loaded_metadata
 
 
@@ -366,7 +375,6 @@ class CommonTests:
 
         @skipUnlessTestfile
         def test_id3v23_simple_tags(self):
-
             config.setting['write_id3v23'] = True
             metadata = Metadata()
             for (key, value) in self.tags.items():
@@ -375,39 +383,41 @@ class CommonTests:
             for (key, value) in self.tags.items():
                 self.assertEqual(loaded_metadata[key], value, '%s: %r != %r' % (key, loaded_metadata[key], value))
 
-        @skipUnlessTestfile
-        def test_standard_grouping(self):
+        @property
+        def itunes_grouping_metadata(self):
             metadata = Metadata()
             metadata['grouping'] = 'The Grouping'
             metadata['work'] = 'The Work'
+            return metadata
+
+        @skipUnlessTestfile
+        def test_standard_grouping(self):
+            metadata = self.itunes_grouping_metadata
+
+            config.setting['itunes_compatible_grouping'] = False
             loaded_metadata = save_and_load_metadata(self.filename, metadata)
+
             self.assertEqual(loaded_metadata['grouping'], metadata['grouping'])
             self.assertEqual(loaded_metadata['work'], metadata['work'])
 
         @skipUnlessTestfile
         def test_itunes_compatible_grouping(self):
+            metadata = self.itunes_grouping_metadata
 
             config.setting['itunes_compatible_grouping'] = True
-            metadata = Metadata()
-            metadata['grouping'] = 'The Grouping'
-            metadata['work'] = 'The Work'
             loaded_metadata = save_and_load_metadata(self.filename, metadata)
+
             self.assertEqual(loaded_metadata['grouping'], metadata['grouping'])
             self.assertEqual(loaded_metadata['work'], metadata['work'])
 
         @skipUnlessTestfile
         def test_always_read_grp1(self):
+            metadata = self.itunes_grouping_metadata
 
-            metadata = Metadata()
-            metadata['grouping'] = 'The Grouping'
-            metadata['work'] = 'The Work'
             config.setting['itunes_compatible_grouping'] = True
-            f = picard.formats.open_(self.filename)
-            f._save(self.filename, metadata)
-
+            save_metadata(self.filename, metadata)
             config.setting['itunes_compatible_grouping'] = False
-            f = picard.formats.open_(self.filename)
-            loaded_metadata = f._load(self.filename)
+            loaded_metadata = load_metadata(self.filename)
 
             self.assertIn(metadata['grouping'], loaded_metadata['grouping'])
             self.assertIn(metadata['work'], loaded_metadata['grouping'])
@@ -415,17 +425,12 @@ class CommonTests:
 
         @skipUnlessTestfile
         def test_always_read_txxx_work(self):
+            metadata = self.itunes_grouping_metadata
 
-            metadata = Metadata()
-            metadata['grouping'] = 'The Grouping'
-            metadata['work'] = 'The Work'
             config.setting['itunes_compatible_grouping'] = False
-            f = picard.formats.open_(self.filename)
-            f._save(self.filename, metadata)
-
+            save_metadata(self.filename, metadata)
             config.setting['itunes_compatible_grouping'] = True
-            f = picard.formats.open_(self.filename)
-            loaded_metadata = f._load(self.filename)
+            loaded_metadata = load_metadata(self.filename)
 
             self.assertIn(metadata['grouping'], loaded_metadata['work'])
             self.assertIn(metadata['work'], loaded_metadata['work'])
