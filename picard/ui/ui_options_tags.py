@@ -8,7 +8,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_TagsOptionsPage(object):
     def setupUi(self, TagsOptionsPage):
         TagsOptionsPage.setObjectName("TagsOptionsPage")
-        TagsOptionsPage.resize(539, 474)
+        TagsOptionsPage.resize(539, 476)
         self.vboxlayout = QtWidgets.QVBoxLayout(TagsOptionsPage)
         self.vboxlayout.setObjectName("vboxlayout")
         self.write_tags = QtWidgets.QCheckBox(TagsOptionsPage)
@@ -121,6 +121,9 @@ class Ui_TagsOptionsPage(object):
         self.id3v23_join_with.setItemText(2, " / ")
         self.hbox_id3v23_join_with.addWidget(self.id3v23_join_with)
         self.vboxlayout2.addLayout(self.hbox_id3v23_join_with)
+        self.itunes_compatible_grouping = QtWidgets.QCheckBox(self.tag_compatibility)
+        self.itunes_compatible_grouping.setObjectName("itunes_compatible_grouping")
+        self.vboxlayout2.addWidget(self.itunes_compatible_grouping)
         self.write_id3v1 = QtWidgets.QCheckBox(self.tag_compatibility)
         self.write_id3v1.setObjectName("write_id3v1")
         self.vboxlayout2.addWidget(self.write_id3v1)
@@ -163,5 +166,6 @@ class Ui_TagsOptionsPage(object):
         self.enc_iso88591.setText(_("ISO-8859-1"))
         self.label_id3v23_join_with.setText(_("Join multiple ID3v2.3 tags with:"))
         self.id3v23_join_with.setToolTip(_("<html><head/><body><p>Default is \'/\' to maintain compatibility with previous Picard releases.</p><p>New alternatives are \';_\' or \'_/_\' or type your own. </p></body></html>"))
+        self.itunes_compatible_grouping.setText(_("Save iTunes compatible grouping and work"))
         self.write_id3v1.setText(_("Also include ID3v1 tags in the files"))
 

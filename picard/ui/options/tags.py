@@ -52,6 +52,7 @@ class TagsOptionsPage(OptionsPage):
         config.BoolOption("setting", "remove_id3_from_flac", False),
         config.BoolOption("setting", "remove_ape_from_mp3", False),
         config.BoolOption("setting", "tpe2_albumartist", False),
+        config.BoolOption("setting", "itunes_compatible_grouping", False),
         config.BoolOption("setting", "dont_write_tags", False),
         config.BoolOption("setting", "preserve_timestamps", False),
     ]
@@ -86,6 +87,7 @@ class TagsOptionsPage(OptionsPage):
         self.ui.id3v23_join_with.setEditText(config.setting["id3v23_join_with"])
         self.ui.remove_ape_from_mp3.setChecked(config.setting["remove_ape_from_mp3"])
         self.ui.remove_id3_from_flac.setChecked(config.setting["remove_id3_from_flac"])
+        self.ui.itunes_compatible_grouping.setChecked(config.setting["itunes_compatible_grouping"])
         self.ui.preserved_tags.setText(config.setting["preserved_tags"])
         self.update_encodings()
 
@@ -107,6 +109,7 @@ class TagsOptionsPage(OptionsPage):
             config.setting["id3v2_encoding"] = "utf-8"
         config.setting["remove_ape_from_mp3"] = self.ui.remove_ape_from_mp3.isChecked()
         config.setting["remove_id3_from_flac"] = self.ui.remove_id3_from_flac.isChecked()
+        config.setting["itunes_compatible_grouping"] = self.ui.itunes_compatible_grouping.isChecked()
         config.setting["preserved_tags"] = self.ui.preserved_tags.text()
         self.tagger.window.enable_tag_saving_action.setChecked(not config.setting["dont_write_tags"])
 

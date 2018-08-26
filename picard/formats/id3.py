@@ -100,7 +100,7 @@ class ID3File(File):
 
     __translate = {
         # In same sequence as defined at http://id3.org/id3v2.4.0-frames
-        'TIT1': 'grouping',
+        # 'TIT1': 'grouping', # Depends on itunes_compatible_grouping
         'TIT2': 'title',
         'TIT3': 'subtitle',
         'TALB': 'album',
@@ -139,6 +139,7 @@ class ID3File(File):
         'TSO2': 'albumartistsort',
     }
     __rtranslate = dict([(v, k) for k, v in __translate.items()])
+    __translate['GRP1'] = 'grouping' # Always read, but writing depends on itunes_compatible_grouping
 
     __translate_freetext = {
         'MusicBrainz Artist Id': 'musicbrainz_artistid',
@@ -164,10 +165,11 @@ class ID3File(File):
         'ASIN': 'asin',
         'MusicMagic Fingerprint': 'musicip_fingerprint',
         'Artists': 'artists',
-        'Work': 'work',
+        # 'Work': 'work',
         'Writer': 'writer',
     }
     __rtranslate_freetext = dict([(v, k) for k, v in __translate_freetext.items()])
+    __translate_freetext['Work'] = 'work' # Always read, but writing depends on itunes_compatible_grouping
     __translate_freetext['writer'] = 'writer'  # For backward compatibility of case
 
     _tipl_roles = {
@@ -210,7 +212,7 @@ class ID3File(File):
             frameid = frame.FrameID
             if frameid in self.__translate:
                 name = self.__translate[frameid]
-                if frameid.startswith('T'):
+                if frameid.startswith('T') or frameid == 'GRP1':
                     for text in frame.text:
                         if text:
                             metadata.add(name, string_(text))
@@ -220,6 +222,12 @@ class ID3File(File):
                             metadata.add('%s:%s' % (name, frame.desc), string_(text))
                 else:
                     metadata.add(name, string_(frame))
+            elif frameid == 'TIT1':
+                itunes_compatible = config.setting['itunes_compatible_grouping']
+                name = 'work' if itunes_compatible else 'grouping'
+                for text in frame.text:
+                    if text:
+                        metadata.add(name, string_(text))
             elif frameid == "TMCL":
                 for role, name in frame.people:
                     if role or name:
@@ -379,6 +387,17 @@ class ID3File(File):
                 # Convert rating to range between 0 and 255
                 rating = int(round(float(values[0]) * 255 / (config.setting['rating_steps'] - 1)))
                 tags.add(id3.POPM(email=config.setting['rating_user_email'], rating=rating, count=count))
+            elif name == 'grouping':
+                if config.setting['itunes_compatible_grouping']:
+                    tags.add(id3.GRP1(encoding=encoding, text=values))
+                else:
+                    tags.add(id3.TIT1(encoding=encoding, text=values))
+            elif name == 'work':
+                if config.setting['itunes_compatible_grouping']:
+                    tags.add(id3.TIT1(encoding=encoding, text=values))
+                    tags.delall('TXXX:Work')
+                else:
+                    tags.add(self.build_TXXX(encoding, 'Work', values))
             elif name in self.__rtranslate:
                 frameid = self.__rtranslate[name]
                 if frameid.startswith('W'):
