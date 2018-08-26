@@ -29,7 +29,6 @@ from collections import (
 from functools import partial
 
 from PyQt5 import (
-    Qt,
     QtCore,
     QtWidgets,
 )
@@ -199,6 +198,10 @@ class ListBox(QtWidgets.QListWidget):
         if callback:
             callback()
 
+    def all_items_data(self, role=QtCore.Qt.UserRole):
+        for index in range(self.count()):
+            yield self.item(index).data(role)
+
 
 class CAATypesSelectorDialog(QtWidgets.QDialog):
     """Display dialog box to select the CAA image types to include and exclude from download and use.
@@ -243,43 +246,31 @@ class CAATypesSelectorDialog(QtWidgets.QDialog):
         gridlayout = QtWidgets.QGridLayout()
         grid.setLayout(gridlayout)
 
-        row = 0
-        column = 0
-        item = QtWidgets.QLabel()
-        item.setText(_("Include types list"))
-        gridlayout.addWidget(item, row, column)
-
-        column = 4
-        item = QtWidgets.QLabel()
-        item.setText(_("Exclude types list"))
-        gridlayout.addWidget(item, row, column)
-
-        row = 1
-        column = 0
-        gridlayout.addWidget(self.list_include, row, column)
-
-        column = 1
         self.arrows_include = ArrowsColumn(
             self.list_include,
             self.list_ignore,
             callback=self.set_buttons_enabled_state,
         )
-        gridlayout.addWidget(self.arrows_include, row, column)
 
-        column = 2
-        gridlayout.addWidget(self.list_ignore, row, column)
-
-        column = 3
         self.arrows_exclude = ArrowsColumn(
             self.list_exclude,
             self.list_ignore,
             callback=self.set_buttons_enabled_state,
             reverse=True
         )
-        gridlayout.addWidget(self.arrows_exclude, row, column)
 
-        column = 4
-        gridlayout.addWidget(self.list_exclude, row, column)
+        def add_widget(row=0, column=0, widget=None):
+             gridlayout.addWidget(widget, row, column)
+
+        add_widget(row=0, column=0, widget=QtWidgets.QLabel(_("Include types list")))
+        add_widget(row=1, column=0, widget=self.list_include)
+
+        add_widget(row=1, column=1, widget=self.arrows_include)
+        add_widget(row=1, column=2, widget=self.list_ignore)
+        add_widget(row=1, column=3, widget=self.arrows_exclude)
+
+        add_widget(row=0, column=4, widget=QtWidgets.QLabel(_("Exclude types list")))
+        add_widget(row=1, column=4, widget=self.list_exclude)
 
         self.layout.addWidget(grid)
 
@@ -358,7 +349,7 @@ class CAATypesSelectorDialog(QtWidgets.QDialog):
         for caa_type in CAA_TYPES:
             name = caa_type['name']
             title = translate_caa_type(caa_type['title'])
-            item = Qt.QListWidgetItem(title)
+            item = QtWidgets.QListWidgetItem(title)
             item.setData(QtCore.Qt.UserRole, name)
             if name in includes:
                 self.list_include.addItem(item)
@@ -371,10 +362,10 @@ class CAATypesSelectorDialog(QtWidgets.QDialog):
         webbrowser2.goto('doc_cover_art_types')
 
     def get_selected_types_include(self):
-        return [self.list_include.item(index).data(QtCore.Qt.UserRole) for index in range(self.list_include.count())] or ['front']
+        return list(self.list_include.all_items_data()) or ['front']
 
     def get_selected_types_exclude(self):
-        return [self.list_exclude.item(index).data(QtCore.Qt.UserRole) for index in range(self.list_exclude.count())] or ['none']
+        return list(self.list_exclude.all_items_data()) or ['none']
 
     def clear_focus(self, lists):
         for temp_list in lists:
