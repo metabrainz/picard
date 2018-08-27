@@ -128,6 +128,10 @@ class PunctuationTest(unittest.TestCase):
         self.assertEqual(util.textencoding.unicode_simplify_punctuation(combinations_from), combinations_from)
         self.assertEqual(util.textencoding.unicode_simplify_punctuation(ascii_chars), ascii_chars)
 
+    def test_pathsave(self):
+        self.assertEqual(util.textencoding.unicode_simplify_punctuation('\u2215', True), '_')
+        self.assertEqual(util.textencoding.unicode_simplify_punctuation('/\\\u2215', True), '/\\_')
+
     def test_incorrect(self):
         pass
 
@@ -140,6 +144,10 @@ class CombinationsTest(unittest.TestCase):
         self.assertEqual(util.textencoding.unicode_simplify_combinations(compatibility_from), compatibility_from)
         self.assertEqual(util.textencoding.unicode_simplify_combinations(punctuation_from), punctuation_from)
         self.assertEqual(util.textencoding.unicode_simplify_combinations(ascii_chars), ascii_chars)
+
+    def test_pathsave(self):
+        self.assertEqual(util.textencoding.unicode_simplify_combinations('8½', True), '8 1_2')
+        self.assertEqual(util.textencoding.unicode_simplify_combinations('8/\\½', True), '8/\\ 1_2')
 
     def test_incorrect(self):
         pass
@@ -190,6 +198,9 @@ class ReplaceNonAsciiTest(unittest.TestCase):
         self.assertEqual(util.textencoding.replace_non_ascii(u"⑴⑵⑶"), u"(1)(2)(3)") # Parenthesised numbers
         self.assertEqual(util.textencoding.replace_non_ascii(u"⒈ ⒉ ⒊"), u"1. 2. 3.") # Digit full stop
         self.assertEqual(util.textencoding.replace_non_ascii(u"１２３"), u"123") # Fullwidth digits
+
+    def test_pathsave(self):
+        self.assertEqual(util.textencoding.replace_non_ascii('\u2044/8½\\', pathsave=True), '_/8 1_2\\')
 
     def test_incorrect(self):
         self.assertNotEqual(util.textencoding.replace_non_ascii(u"Lukáš"), u"Lukáš")
