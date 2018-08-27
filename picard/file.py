@@ -314,9 +314,7 @@ class File(QtCore.QObject, Item):
         naming_format = naming_format.replace("\t", "").replace("\n", "")
         filename = ScriptParser().eval(naming_format, metadata, self)
         if settings["ascii_filenames"]:
-            if isinstance(filename, str):
-                filename = unaccent(filename)
-            filename = replace_non_ascii(filename)
+            filename = replace_non_ascii(filename, pathsave=True)
         # replace incompatible characters
         if settings["windows_compatibility"] or sys.platform == "win32":
             filename = replace_win32_incompat(filename)
