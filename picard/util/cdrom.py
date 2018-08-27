@@ -47,7 +47,7 @@ LINUX_CDROM_INFO = '/proc/sys/dev/cdrom/info'
 # if get_cdrom_drives() lists ALL drives available on the machine
 if sys.platform == 'win32':
     AUTO_DETECT_DRIVES = True
-elif sys.platform == 'linux2' and QFile.exists(LINUX_CDROM_INFO):
+elif sys.platform == 'linux' and QFile.exists(LINUX_CDROM_INFO):
     AUTO_DETECT_DRIVES = True
 else:
     # There might be more drives we couldn't detect
@@ -72,7 +72,7 @@ def get_cdrom_drives():
                 if GetDriveType(drive) == DRIVE_CDROM:
                     drives.append(drive)
 
-    elif sys.platform == 'linux2' and QFile.exists(LINUX_CDROM_INFO):
+    elif sys.platform == 'linux' and QFile.exists(LINUX_CDROM_INFO):
         # Read info from /proc/sys/dev/cdrom/info
         cdinfo = QFile(LINUX_CDROM_INFO)
         if cdinfo.open(QIODevice.ReadOnly | QIODevice.Text):
