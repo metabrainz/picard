@@ -1,8 +1,20 @@
 # -*- mode: python -*-
 
-import os
 import glob
+import os
 import platform
+import sys
+
+
+# Get the version
+# and build a CFBundleVersion compatible version of it according to Apple dev documentation
+sys.path.append('.')
+from picard import PICARD_VERSION
+pv = [str(x) for x in PICARD_VERSION]
+macos_picard_version = '.'.join(pv[:3])
+macos_picard_short_version = macos_picard_version
+if pv[3] != 'final':
+	macos_picard_version += pv[3][0] + ''.join(pv[4:])
 
 
 def _picard_get_locale_files():
@@ -24,7 +36,7 @@ def get_locale_messages():
     data_files = []
     for locale in _picard_get_locale_files():
         data_files.append(
-            (os.path.join("build", "locale", locale[1], "LC_MESSAGES" , locale[0] + ".mo"),
+            (os.path.join("build", "locale", locale[1], "LC_MESSAGES", locale[0] + ".mo"),
              os.path.join("locale", locale[1], "LC_MESSAGES")))
     return data_files
 
@@ -38,7 +50,11 @@ data_files = get_locale_messages()
 fpcalc_name = 'fpcalc'
 if os_name == 'Windows':
     fpcalc_name = 'fpcalc.exe'
-    binaries += [('discid.dll', ''), ('ssleay32.dll', ''), ('libeay32.dll', '')]
+    binaries += [
+        ('discid.dll', ''),
+        ('ssleay32.dll', ''),
+        ('libeay32.dll', ''),
+    ]
 
 if os_name == 'Darwin':
     binaries += [('libdiscid.0.dylib', '')]
@@ -61,7 +77,7 @@ a = Analysis(['tagger.py'],
 
 
 pyz = PYZ(a.pure, a.zipped_data,
-             cipher=block_cipher)
+          cipher=block_cipher)
 
 
 exe = EXE(pyz,
@@ -85,8 +101,16 @@ coll = COLLECT(exe,
 
 
 if platform.system() == 'Darwin':
-    info_plist = {'NSHighResolutionCapable': 'True',
-                  'NSPrincipalClass': 'NSApplication'}
+    info_plist = {
+        'NSHighResolutionCapable': 'True',
+        'NSPrincipalClass': 'NSApplication',
+        'CFBundleName': 'Picard',
+        'CFBundleDisplayName': 'MusicBrainz Picard',
+        'CFBundleGetInfoString': 'Audio file tagger',
+        'CFBundleIdentifier': 'org.musicbrainz.picard',
+        'CFBundleVersion': macos_picard_version,
+        'CFBundleShortVersionString': macos_picard_short_version,
+    }
     app = BUNDLE(coll,
                  name='MusicBrainz Picard.app',
                  icon='picard.icns',
