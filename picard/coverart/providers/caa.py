@@ -111,8 +111,6 @@ class ArrowButton(QtWidgets.QPushButton):
     ARROW_BUTTON_HEIGHT = 20
 
     def __init__(self, label, command=None, parent=None):
-        if label is None:
-            label = '.'
         super().__init__(label, parent=parent)
         if command is not None:
             self.clicked.connect(command)
