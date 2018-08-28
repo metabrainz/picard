@@ -32,39 +32,39 @@ def setup_gettext(localedir, ui_language=None, logger=None):
         logger = lambda *a, **b: None  # noop
     current_locale = ''
     if ui_language:
-        os.environ['LANGUAGE'] = ''
-        os.environ['LANG'] = ui_language
         try:
             current_locale = locale.normalize(ui_language + '.' + locale.getpreferredencoding())
             locale.setlocale(locale.LC_ALL, current_locale)
-        except:
-            pass
-    if sys.platform == "win32":
-        from ctypes import windll
-        try:
-            current_locale = locale.windows_locale[windll.kernel32.GetUserDefaultUILanguage()]
-            locale.setlocale(locale.LC_ALL, current_locale)
-        except KeyError:
-            os.environ["LANG"] = locale.getdefaultlocale()[0]
+        except Exception as e:
+            logger(e)
+    else:
+        if sys.platform == 'win32':
+            from ctypes import windll
             try:
-                current_locale = locale.setlocale(locale.LC_ALL, "")
-            except:
-                pass
-        except:
-            pass
-    elif not ui_language:
-        if sys.platform == "darwin":
+                current_locale = locale.windows_locale[windll.kernel32.GetUserDefaultUILanguage()]
+                current_locale += '.' + locale.getpreferredencoding()
+                locale.setlocale(locale.LC_ALL, current_locale)
+            except KeyError:
+                try:
+                    current_locale = locale.setlocale(locale.LC_ALL, '')
+                except Exception as e:
+                    logger(e)
+            except Exception as e:
+                logger(e)
+        elif sys.platform == 'darwin':
             try:
                 import Foundation
                 defaults = Foundation.NSUserDefaults.standardUserDefaults()
-                os.environ["LANG"] = \
-                    defaults.objectForKey_("AppleLanguages")[0]
-            except:
-                pass
-        try:
-            current_locale = locale.setlocale(locale.LC_ALL, "")
-        except:
-            pass
+                current_locale = defaults.objectForKey_('AppleLanguages')[0]
+                locale.setlocale(locale.LC_ALL, current_locale)
+            except Exception as e:
+                logger(e)
+        else:
+            try:
+                current_locale = locale.setlocale(locale.LC_ALL, '')
+            except Exception as e:
+                logger(e)
+    os.environ['LANGUAGE'] = os.environ['LANG'] = current_locale
     logger("Using locale %r", current_locale)
     try:
         logger("Loading gettext translation, localedir=%r", localedir)
