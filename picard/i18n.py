@@ -43,15 +43,16 @@ def setup_gettext(localedir, ui_language=None, logger=None):
         from ctypes import windll
         try:
             current_locale = locale.windows_locale[windll.kernel32.GetUserDefaultUILanguage()]
+            current_locale += '.' + locale.getpreferredencoding()
             locale.setlocale(locale.LC_ALL, current_locale)
-        except KeyError:
+        except KeyError as e:
             os.environ["LANG"] = locale.getdefaultlocale()[0]
             try:
                 current_locale = locale.setlocale(locale.LC_ALL, "")
-            except:
-                pass
-        except:
-            pass
+            except Exception as e:
+                logger(e)
+        except Exception as e:
+            logger(e)
     elif not ui_language:
         if sys.platform == "darwin":
             try:
@@ -64,7 +65,7 @@ def setup_gettext(localedir, ui_language=None, logger=None):
         try:
             current_locale = locale.setlocale(locale.LC_ALL, "")
         except:
-            pass
+            logger(e)
     logger("Using locale %r", current_locale)
     try:
         logger("Loading gettext translation, localedir=%r", localedir)
