@@ -257,9 +257,7 @@ class CoverArtImage:
     def _make_image_filename(self, filename, dirname, metadata):
         filename = ScriptParser().eval(filename, metadata)
         if config.setting["ascii_filenames"]:
-            if isinstance(filename, str):
-                filename = unaccent(filename)
-            filename = replace_non_ascii(filename)
+            filename = replace_non_ascii(filename, pathsave=True)
         if not filename:
             filename = "cover"
         if not os.path.isabs(filename):
