@@ -170,6 +170,10 @@ class ProviderOptionsCaa(ProviderOptions):
         self.ui.restrict_images_types.clicked.connect(self.update_caa_types)
         self.ui.select_caa_types.clicked.connect(self.select_caa_types)
 
+    def restore_defaults(self):
+        self.caa_image_types = ["front"]
+        super().restore_defaults()
+
     def load(self):
         self.ui.cb_image_size.clear()
         for item_id, item in _CAA_THUMBNAIL_SIZE_MAP.items():
@@ -186,6 +190,7 @@ class ProviderOptionsCaa(ProviderOptions):
         self.ui.cb_type_as_filename.setChecked(config.setting["caa_image_type_as_filename"])
         self.ui.restrict_images_types.setChecked(
             config.setting["caa_restrict_image_types"])
+        self.caa_image_types = config.setting["caa_image_types"]
         self.update_caa_types()
 
     def save(self):
@@ -199,6 +204,7 @@ class ProviderOptionsCaa(ProviderOptions):
             self.ui.cb_type_as_filename.isChecked()
         config.setting["caa_restrict_image_types"] = \
             self.ui.restrict_images_types.isChecked()
+        config.setting["caa_image_types"] = self.caa_image_types
 
     def update_caa_types(self):
         enabled = self.ui.restrict_images_types.isChecked()
@@ -206,9 +212,9 @@ class ProviderOptionsCaa(ProviderOptions):
 
     def select_caa_types(self):
         (types, ok) = CAATypesSelectorDialog.run(
-            self, config.setting["caa_image_types"])
+            self, self.caa_image_types)
         if ok:
-            config.setting["caa_image_types"] = types
+            self.caa_image_types = types
 
 
 
