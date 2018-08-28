@@ -109,7 +109,7 @@ PLUGINS_API = {
     'endpoint': {
         'plugins': '/api/v2/plugins/',
         'download': '/api/v2/download/',
-        'releases': '/api/releases',
+        'releases': '/api/v2/releases',
     }
 }
 
