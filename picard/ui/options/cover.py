@@ -71,7 +71,7 @@ class CoverOptionsPage(OptionsPage):
 
     def restore_defaults(self):
         # Remove previous entries
-        self.provider_list_widget.clear()
+        self.ui.ca_providers_list.clear()
         super().restore_defaults()
 
     def ca_providers(self):
