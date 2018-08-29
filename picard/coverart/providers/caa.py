@@ -428,6 +428,11 @@ class ProviderOptionsCaa(ProviderOptions):
         self.ui.restrict_images_types.clicked.connect(self.update_caa_types)
         self.ui.select_caa_types.clicked.connect(self.select_caa_types)
 
+    def restore_defaults(self):
+        self.caa_image_types = _CAA_IMAGE_TYPE_DEFAULT_INCLUDE
+        self.caa_image_types_to_omit = _CAA_IMAGE_TYPE_DEFAULT_EXCLUDE
+        super().restore_defaults()
+
     def load(self):
         self.ui.cb_image_size.clear()
         for item_id, item in _CAA_THUMBNAIL_SIZE_MAP.items():
@@ -444,6 +449,8 @@ class ProviderOptionsCaa(ProviderOptions):
         self.ui.cb_type_as_filename.setChecked(config.setting["caa_image_type_as_filename"])
         self.ui.restrict_images_types.setChecked(
             config.setting["caa_restrict_image_types"])
+        self.caa_image_types = config.setting["caa_image_types"]
+        self.caa_image_types_to_omit = config.setting["caa_image_types_to_omit"]
         self.update_caa_types()
 
     def save(self):
@@ -457,6 +464,8 @@ class ProviderOptionsCaa(ProviderOptions):
             self.ui.cb_type_as_filename.isChecked()
         config.setting["caa_restrict_image_types"] = \
             self.ui.restrict_images_types.isChecked()
+        config.setting["caa_image_types"] = self.caa_image_types
+        config.setting["caa_image_types_to_omit"] = self.caa_image_types_to_omit
 
     def update_caa_types(self):
         enabled = self.ui.restrict_images_types.isChecked()
@@ -464,10 +473,10 @@ class ProviderOptionsCaa(ProviderOptions):
 
     def select_caa_types(self):
         (types, types_to_omit, ok) = CAATypesSelectorDialog.run(
-            self, config.setting["caa_image_types"], config.setting["caa_image_types_to_omit"])
+            self, self.caa_image_types, self.caa_image_types_to_omit)
         if ok:
-            config.setting["caa_image_types"] = types
-            config.setting["caa_image_types_to_omit"] = types_to_omit
+            self.caa_image_types = types
+            self.caa_image_types_to_omit = types_to_omit
 
 
 class CoverArtProviderCaa(CoverArtProvider):
