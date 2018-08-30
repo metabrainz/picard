@@ -18,6 +18,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from collections import OrderedDict
+import datetime
 from functools import partial
 import os.path
 
@@ -33,6 +34,7 @@ from picard import (
 )
 from picard.album import Album
 from picard.cluster import Cluster
+from picard.const import PROGRAM_UPDATE_LEVELS
 from picard.file import File
 from picard.formats import supported_formats
 from picard.plugin import ExtensionPoint
@@ -174,6 +176,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     def show(self):
         self.restoreWindowState()
         super().show()
+        self.auto_update_check()
         self.metadata_box.restore_state()
 
     def closeEvent(self, event):
@@ -535,6 +538,9 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.open_folder_action.setEnabled(False)
         self.open_folder_action.triggered.connect(self.open_folder)
 
+        self.check_update_action = QtWidgets.QAction(_("&Check for Update"), self)
+        self.check_update_action.triggered.connect(self.do_update_check)
+
     def toggle_rename_files(self, checked):
         config.setting["rename_files"] = checked
 
@@ -607,6 +613,8 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         menu.addAction(self.help_action)
         menu.addSeparator()
         menu.addAction(self.view_history_action)
+        menu.addSeparator()
+        menu.addAction(self.check_update_action)
         menu.addSeparator()
         menu.addAction(self.support_forum_action)
         menu.addAction(self.report_bug_action)
@@ -1087,3 +1095,37 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             target = selected_objects[0]
         self.tagger.paste_files(target)
         self.paste_action.setEnabled(False)
+
+    def do_update_check(self):
+        self.check_for_update(True)
+
+    def auto_update_check(self):
+        check_for_updates = config.setting['check_for_updates']
+        update_check_days = config.setting['update_check_days']
+        last_update_check = config.persist['last_update_check']
+        update_level = config.setting['update_level']
+        today = datetime.date.today().toordinal()
+        do_auto_update_check = check_for_updates and update_check_days > 0 and today >= last_update_check + update_check_days
+        log.debug('{check_status} start-up check for program updates.  Today: {today_date}, Last check: {last_check} (Check interval: {check_interval} days), Update level: {update_level} ({update_level_name})'.format(
+            check_status='Initiating' if do_auto_update_check else 'Skipping',
+            today_date=datetime.date.today(),
+            last_check=str(datetime.date.fromordinal(last_update_check)) if last_update_check > 0 else 'never',
+            check_interval=update_check_days,
+            update_level=update_level,
+            update_level_name=PROGRAM_UPDATE_LEVELS[update_level]['name'] if update_level in PROGRAM_UPDATE_LEVELS else 'unknown',
+        ))
+        if do_auto_update_check:
+            self.check_for_update(False)
+
+    def check_for_update(self, show_always):
+        self.tagger.updatecheckmanager.check_update(
+            show_always=show_always,
+            update_level=config.setting['update_level'],
+            callback=update_last_check_date
+        )
+
+def update_last_check_date(is_success):
+    if is_success:
+        config.persist['last_update_check'] = datetime.date.today().toordinal()
+    else:
+        log.debug('The update check was unsuccessful. The last update date will not be changed.')

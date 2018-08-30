@@ -83,6 +83,7 @@ from picard.util import (
     uniqify,
     versions,
 )
+from picard.util.checkupdate import UpdateCheckManager
 from picard.webservice import WebService
 from picard.webservice.api_helpers import (
     AcoustIdAPIHelper,
@@ -243,6 +244,9 @@ class Tagger(QtWidgets.QApplication):
         self.window = MainWindow()
         self.exit_cleanup = []
         self.stopping = False
+
+        # Load release version information
+        self.updatecheckmanager = UpdateCheckManager(parent=self.window)
 
     def register_cleanup(self, func):
         self.exit_cleanup.append(func)

@@ -17,6 +17,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+from collections import OrderedDict
 import os
 import sys
 
@@ -101,13 +102,14 @@ MUSICBRAINZ_SERVERS = [
     'beta.musicbrainz.org',
 ]
 
-# Plugins API
+# Plugins and Release Versions API
 PLUGINS_API = {
     'host': 'picard.musicbrainz.org',
     'port': 443,
     'endpoint': {
         'plugins': '/api/v2/plugins/',
-        'download': '/api/v2/download/'
+        'download': '/api/v2/download/',
+        'releases': '/api/v2/releases',
     }
 }
 
@@ -116,3 +118,27 @@ QUERY_LIMIT = 25
 
 # Maximum number of covers to draw in a stack in CoverArtThumbnail
 MAX_COVERS_TO_STACK = 4
+
+# Update levels available for automatic checking
+PROGRAM_UPDATE_LEVELS = OrderedDict(
+    [
+        (
+            0, {
+            'name': 'stable',
+            'title': N_('Stable releases only'),
+            }
+        ),
+        (
+            1, {
+            'name': 'beta',
+            'title': N_('Stable and Beta releases'),
+            }
+        ),
+        (
+            2, {
+            'name': 'dev',
+            'title': N_('Stable, Beta and Dev releases'),
+            }
+        ),
+    ]
+)
