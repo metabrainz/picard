@@ -380,6 +380,13 @@ class FLACTest(CommonTests.FormatsTest):
     testfile = 'test.flac'
     supports_ratings = True
 
+    def test_preserve_waveformatextensible_channel_mask(self):
+        config.setting['clear_existing_tags'] = True
+        original_metadata = load_metadata(self.filename)
+        self.assertEqual(original_metadata['~waveformatextensible_channel_mask'], '0x3')
+        new_metadata = save_and_load_metadata(self.filename, original_metadata)
+        self.assertEqual(new_metadata['~waveformatextensible_channel_mask'], '0x3')
+
 
 class WMATest(CommonTests.FormatsTest):
     testfile = 'test.wma'
