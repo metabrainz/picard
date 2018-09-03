@@ -39,7 +39,7 @@ class TAKInfo(object):
 
     def __init__(self, fileobj):
         header = fileobj.read(4)
-        if len(header) != 4 or not header.startswith("tBaK"):
+        if len(header) != 4 or not header.startswith(b"tBaK"):
             raise TAKHeaderError("not a TAK file")
 
     def pprint(self):
