@@ -454,6 +454,11 @@ class WMATest(CommonTests.FormatsTest):
     supports_ratings = True
 
 
+class ASFTest(CommonTests.FormatsTest):
+    testfile = 'test.asf'
+    supports_ratings = True
+
+
 class MP3Test(CommonTests.ID3Test):
     testfile = 'test.mp3'
     supports_ratings = True
@@ -480,6 +485,16 @@ class OggVorbisTest(CommonTests.FormatsTest):
     supports_ratings = True
 
 
+class OggSpxTest(CommonTests.FormatsTest):
+    testfile = 'test.spx'
+    supports_ratings = True
+
+
+class OggOpusTest(CommonTests.FormatsTest):
+    testfile = 'test.spx'
+    supports_ratings = True
+
+
 class MP4Test(CommonTests.FormatsTest):
     testfile = 'test.m4a'
     supports_ratings = False
@@ -497,6 +512,11 @@ class MusepackSV7Test(CommonTests.FormatsTest):
 
 class MusepackSV8Test(CommonTests.FormatsTest):
     testfile = 'test-sv8.mpc'
+    supports_ratings = False
+
+
+class MonkeysAudioTest(CommonTests.FormatsTest):
+    testfile = 'test.ape'
     supports_ratings = False
 
 
