@@ -432,6 +432,11 @@ class MusepackSV8Test(CommonTests.FormatsTest):
     supports_ratings = False
 
 
+class TAKTest(CommonTests.FormatsTest):
+    testfile = 'test.tak'
+    supports_ratings = False
+
+
 cover_settings = {
     'embed_only_one_front_image': True,
 }
