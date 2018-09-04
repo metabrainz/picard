@@ -453,6 +453,16 @@ class TAKTest(CommonTests.FormatsTest):
     supports_ratings = False
 
 
+class OptimFROGLosslessTest(CommonTests.FormatsTest):
+    testfile = 'test.ofr'
+    supports_ratings = False
+
+
+class OptimFROGDUalStreamTest(CommonTests.FormatsTest):
+    testfile = 'test.ofs'
+    supports_ratings = False
+
+
 cover_settings = {
     'embed_only_one_front_image': True,
 }
