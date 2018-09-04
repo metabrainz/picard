@@ -436,6 +436,15 @@ class CommonTests:
             self.assertIn(metadata['work'], loaded_metadata['work'])
             self.assertEqual(loaded_metadata['grouping'], '')
 
+        @skipUnlessTestfile
+        def test_save_itunnorm_tag(self):
+            config.setting['clear_existing_tags'] = True
+            iTunNORM = '00001E86 00001E86 0000A2A3 0000A2A3 000006A6 000006A6 000078FA 000078FA 00000211 00000211'
+            metadata = Metadata()
+            metadata['comment:iTunNORM'] = iTunNORM
+            new_metadata = save_and_load_metadata(self.filename, metadata)
+            self.assertEqual(new_metadata['comment:iTunNORM'], iTunNORM)
+
 
 class FLACTest(CommonTests.FormatsTest):
     testfile = 'test.flac'
