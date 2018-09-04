@@ -301,7 +301,7 @@ class Metadata(dict):
         values = [string_(value) for value in values if value]
         if len(values):
             self.set(name, values)
-        else:
+        elif name in self:
             self.delete(name)
 
     def add(self, name, value):

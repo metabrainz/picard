@@ -36,7 +36,7 @@ class MetadataTest(unittest.TestCase):
     def tearDown(self):
         pass
 
-    def test_metadata_set(self):
+    def test_metadata_setitem(self):
         self.assertEqual(["single1-value"], dict.get(self.metadata,"single1"))
         self.assertEqual(["single2-value"], dict.get(self.metadata,"single2"))
         self.assertEqual(self.multi1, dict.get(self.metadata,"multi1"))
@@ -66,9 +66,30 @@ class MetadataTest(unittest.TestCase):
         self.assertNotIn("single1", self.metadata)
         self.assertIn("single1", self.metadata.deleted_tags)
 
+    def test_metadata_implicit_delete(self):
         self.metadata["single2"] = ""
         self.assertNotIn("single2", self.metadata)
         self.assertIn("single2", self.metadata.deleted_tags)
+
+        self.metadata["unknown"] = ""
+        self.assertNotIn("unknown", self.metadata)
+        self.assertNotIn("unknown", self.metadata.deleted_tags)
+
+    def test_metadata_set_explicit_empty(self):
+        self.metadata.delete("single1")
+        self.metadata.set("single1", [])
+        self.assertIn("single1", self.metadata)
+        self.assertNotIn("single1", self.metadata.deleted_tags)
+        self.assertEqual([], self.metadata.getall("single1"))
+
+    def test_metadata_undelete(self):
+        self.metadata.delete("single1")
+        self.assertNotIn("single1", self.metadata)
+        self.assertIn("single1", self.metadata.deleted_tags)
+
+        self.metadata["single1"] = "value1"
+        self.assertIn("single1", self.metadata)
+        self.assertNotIn("single1", self.metadata.deleted_tags)
 
     def test_metadata_update(self):
         m = Metadata()
