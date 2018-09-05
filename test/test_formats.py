@@ -534,6 +534,24 @@ class TAKTest(CommonTests.FormatsTest):
     supports_ratings = False
 
 
+class OptimFROGLosslessTest(CommonTests.FormatsTest):
+    testfile = 'test.ofr'
+    supports_ratings = False
+
+    def test_format(self):
+        metadata = load_metadata(self.filename)
+        self.assertEqual(metadata['~format'], 'OptimFROG Lossless Audio')
+
+
+class OptimFROGDUalStreamTest(CommonTests.FormatsTest):
+    testfile = 'test.ofs'
+    supports_ratings = False
+
+    def test_format(self):
+        metadata = load_metadata(self.filename)
+        self.assertEqual(metadata['~format'], 'OptimFROG DualStream Audio')
+
+
 cover_settings = {
     'embed_only_one_front_image': True,
 }
