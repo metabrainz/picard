@@ -25,9 +25,11 @@ from mutagen.id3 import (
     TextFrame,
 )
 
-
-class GRP1(TextFrame):
-    pass
+try:
+    from mutagen.id3 import GRP1
+except ImportError:
+    class GRP1(TextFrame):
+        pass
 
 
 class TCMP(TextFrame):
@@ -50,6 +52,16 @@ class XSOP(TextFrame):
     pass
 
 
+known_frames = dict(Frames)
+known_frames.update(dict(Frames_2_2))
+known_frames["GRP1"] = GRP1
+known_frames["TCMP"] = TCMP
+known_frames["TSO2"] = TSO2
+known_frames["TSOC"] = TSOC
+known_frames["XDOR"] = XDOR
+known_frames["XSOP"] = XSOP
+
+
 class CompatID3(ID3):
 
     """
@@ -62,14 +74,6 @@ class CompatID3(ID3):
 
     def __init__(self, *args, **kwargs):
         if args:
-            known_frames = dict(Frames)
-            known_frames.update(dict(Frames_2_2))
-            known_frames["GRP1"] = GRP1
-            known_frames["TCMP"] = TCMP
-            known_frames["TSO2"] = TSO2
-            known_frames["TSOC"] = TSOC
-            known_frames["XDOR"] = XDOR
-            known_frames["XSOP"] = XSOP
             kwargs["known_frames"] = known_frames
         super().__init__(*args, **kwargs)
 

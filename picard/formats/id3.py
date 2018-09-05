@@ -44,6 +44,7 @@ from picard.util import (
     sanitize_date,
 )
 
+id3.GRP1 = compatid3.GRP1
 id3.TCMP = compatid3.TCMP
 id3.TSO2 = compatid3.TSO2
 id3.TSOC = compatid3.TSOC
@@ -630,7 +631,7 @@ class DSFFile(ID3File):
     _File = mutagen.dsf.DSF
 
     def _get_file(self, filename):
-        return mutagen.dsf.DSF(filename)
+        return mutagen.dsf.DSF(filename, known_frames=compatid3.known_frames)
 
     def _info(self, metadata, file):
         super()._info(metadata, file)
@@ -668,4 +669,4 @@ class AiffFile(DSFFile):
     _File = mutagen.aiff.AIFF
 
     def _get_file(self, filename):
-        return mutagen.aiff.AIFF(filename)
+        return mutagen.aiff.AIFF(filename, known_frames=compatid3.known_frames)
