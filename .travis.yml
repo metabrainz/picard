@@ -21,6 +21,7 @@ env:
   - PYQT="$PIP_INSTALL pyqt5==5.10"
   - PYQT="$PIP_INSTALL pyqt5==5.9"
   - PYQT="$PIP_INSTALL pyqt5==5.8"
+  - PYQT="$PIP_INSTALL pyqt5==5.8" MUTAGEN="$PIP_INSTALL mutagen==1.37"
 matrix:
   include:
   - os: osx
