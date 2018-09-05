@@ -18,13 +18,34 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-from PyQt5 import QtGui, QtCore, QtNetwork, QtWidgets
+from collections import (
+    OrderedDict,
+    namedtuple,
+)
+
+from PyQt5 import (
+    QtCore,
+    QtGui,
+    QtNetwork,
+    QtWidgets,
+)
 from PyQt5.QtCore import pyqtSignal
-from collections import namedtuple, OrderedDict
-from picard import config, log
+
+from picard import (
+    config,
+    log,
+)
+from picard.util import (
+    icontheme,
+    restore_method,
+    throttle,
+)
+
 from picard.ui import PicardDialog
-from picard.ui.util import StandardButton, ButtonLineEdit
-from picard.util import icontheme, throttle, restore_method
+from picard.ui.util import (
+    ButtonLineEdit,
+    StandardButton,
+)
 
 
 class ResultTable(QtWidgets.QTableWidget):

@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import unittest
+
 from picard.util import compare_version_tuples
 
 
@@ -214,4 +215,3 @@ class CompareVersionsTest(unittest.TestCase):
     def test_compare_version_52(self):
         a, b, r = (1, 0, 0, 'final', 0), (1, 0, 0, 'dev', 1), -1
         self.assertEqual(compare_version_tuples(a, b), r)
-

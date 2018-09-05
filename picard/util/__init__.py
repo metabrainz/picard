@@ -17,22 +17,25 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+import builtins
 import html
 import json
-import os
 import ntpath
+import os
 import re
+from string import Template
 import sys
+from time import time
 import unicodedata
-import builtins
+
+from PyQt5 import QtCore
+
+# Required for compatibility with lastfmplus which imports this from here rather than loading it direct.
+from picard.const import MUSICBRAINZ_SERVERS
+
 if sys.platform == 'win32':
     from ctypes import windll
 
-from time import time
-from PyQt5 import QtCore
-from string import Template
-# Required for compatibility with lastfmplus which imports this from here rather than loading it direct.
-from picard.const import MUSICBRAINZ_SERVERS
 
 # These variables are set by pyinstaller if running from a packaged build
 # See http://pyinstaller.readthedocs.io/en/stable/runtime-information.html

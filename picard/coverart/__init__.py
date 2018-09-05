@@ -23,15 +23,23 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+from functools import partial
 import traceback
 
-from picard.coverart.providers import cover_art_providers, CoverArtProvider
-
-from functools import partial
-from picard import config, log
-from picard.coverart.image import (CoverArtImageIOError,
-                                   CoverArtImageIdentificationError)
 from PyQt5.QtCore import QObject
+
+from picard import (
+    config,
+    log,
+)
+from picard.coverart.image import (
+    CoverArtImageIdentificationError,
+    CoverArtImageIOError,
+)
+from picard.coverart.providers import (
+    CoverArtProvider,
+    cover_art_providers,
+)
 
 
 class CoverArt:
