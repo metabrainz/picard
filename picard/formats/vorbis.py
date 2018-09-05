@@ -43,6 +43,7 @@ class VCommentFile(File):
     __translate = {
         "musicbrainz_trackid": "musicbrainz_recordingid",
         "musicbrainz_releasetrackid": "musicbrainz_trackid",
+        "waveformatextensible_channel_mask": "~waveformatextensible_channel_mask",
     }
     __rtranslate = dict([(v, k) for k, v in __translate.items()])
 
@@ -155,7 +156,10 @@ class VCommentFile(File):
         if file.tags is None:
             file.add_tags()
         if config.setting["clear_existing_tags"]:
+            channel_mask = file.tags.get('waveformatextensible_channel_mask', None)
             file.tags.clear()
+            if channel_mask:
+                file.tags['waveformatextensible_channel_mask'] = channel_mask
         if (is_flac and (config.setting["clear_existing_tags"] or
                          metadata.images_to_be_saved_to_tags)):
             file.clear_pictures()
