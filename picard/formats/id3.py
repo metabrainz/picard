@@ -631,7 +631,7 @@ class DSFFile(ID3File):
     _File = mutagen.dsf.DSF
 
     def _get_file(self, filename):
-        return mutagen.dsf.DSF(filename)
+        return mutagen.dsf.DSF(filename, known_frames=compatid3.known_frames)
 
     def _info(self, metadata, file):
         super()._info(metadata, file)
@@ -669,4 +669,4 @@ class AiffFile(DSFFile):
     _File = mutagen.aiff.AIFF
 
     def _get_file(self, filename):
-        return mutagen.aiff.AIFF(filename)
+        return mutagen.aiff.AIFF(filename, known_frames=compatid3.known_frames)

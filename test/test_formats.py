@@ -483,10 +483,9 @@ class DSFTest(CommonTests.ID3Test):
     supports_ratings = True
 
 
-if picard.formats.AiffFile:
-    class AIFFTest(CommonTests.ID3Test):
-        testfile = 'test.aiff'
-        supports_ratings = False
+class AIFFTest(CommonTests.ID3Test):
+    testfile = 'test.aiff'
+    supports_ratings = False
 
 
 class OggVorbisTest(CommonTests.FormatsTest):
