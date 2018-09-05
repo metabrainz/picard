@@ -341,9 +341,9 @@ class ID3File(File):
                     tmcl.people.append([role, value])
             elif name.startswith('comment:'):
                 desc = name.split(':', 1)[1]
-                if desc.lower()[:4] == "itun":
+                if desc.lower()[:4] == 'itun':
                     tags.delall('COMM:' + desc)
-                    tags.add(id3.COMM(encoding=0, desc=desc, lang='eng', text=[v + b'\x00' for v in values]))
+                    tags.add(id3.COMM(encoding=0, desc=desc, lang='eng', text=[v + '\x00' for v in values]))
                 else:
                     tags.add(id3.COMM(encoding=encoding, desc=desc, lang='eng', text=values))
             elif name.startswith('lyrics:') or name == 'lyrics':
