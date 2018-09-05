@@ -1,3 +1,24 @@
+Version 2.0.4 - 2018-09-05
+** Bug-fix
+    * [PICARD-803] - tagging "8½ Minutes" with "replace with non-ascii characters" results in a directory being created
+    * [PICARD-1216] - Does not display version information
+    * [PICARD-1267] - 2.0.0dev6 crash in debug mode on Windows April Update (1803)
+    * [PICARD-1281] - Picard has wrong version string
+    * [PICARD-1294] - Crashes every time Picard connects to MB server.
+    * [PICARD-1310] - Picard crashes on clearing log
+    * [PICARD-1318] - RuntimeError: dictionary changed size during iteration
+    * [PICARD-1321] - CD drive selection not working on Linux
+    * [PICARD-1322] - Crash in options on "Restore defaults"
+    * [PICARD-1323] - Restore defaults does not restore CAA types
+    * [PICARD-1324] - Default locale not working reliable
+    * [PICARD-1326] - Picard Save Changes 5.1 Mix Type
+    * [PICARD-1327] - Loading TAK files fails
+    * [PICARD-1328] - Loading OptimFROG files fails
+    * [PICARD-1329] - Picard fails saving ID3 tags with iTunNORM tag
+    * [PICARD-1331] - Picard crashes on error during plugin install
+
+
+
 Version 2.0.3 - 2018-08-10
 ** Bug-fix
     * [PICARD-1122] - Preffered release type settings are exclusive and should be inclusive
