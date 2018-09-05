@@ -19,8 +19,13 @@
 
 
 import uuid
+
+from PyQt5 import (
+    QtCore,
+    QtWidgets,
+)
+
 from picard import config
-from PyQt5 import QtCore, QtWidgets
 from picard.util import restore_method
 
 

@@ -24,22 +24,40 @@
 Asynchronous web service.
 """
 
-import sys
-import time
+from collections import (
+    defaultdict,
+    deque,
+    namedtuple,
+)
+from functools import partial
+import math
 import os.path
 import platform
-import math
-from collections import deque, defaultdict, namedtuple
-from functools import partial
-from PyQt5 import QtCore, QtNetwork
-from PyQt5.QtCore import QUrl, QStandardPaths, QUrlQuery
-from picard import (PICARD_APP_NAME,
-                    PICARD_ORG_NAME,
-                    PICARD_VERSION_STR,
-                    config,
-                    log)
+import sys
+import time
+
+from PyQt5 import (
+    QtCore,
+    QtNetwork,
+)
+from PyQt5.QtCore import (
+    QStandardPaths,
+    QUrl,
+    QUrlQuery,
+)
+
+from picard import (
+    PICARD_APP_NAME,
+    PICARD_ORG_NAME,
+    PICARD_VERSION_STR,
+    config,
+    log,
+)
 from picard.oauth import OAuthManager
-from picard.util import build_qurl, parse_json
+from picard.util import (
+    build_qurl,
+    parse_json,
+)
 from picard.util.xml import parse_xml
 from picard.webservice import ratecontrol
 
