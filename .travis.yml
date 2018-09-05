@@ -54,7 +54,7 @@ notifications:
 branches:
   only:
   - master
-  - \d\.[0-9x](\.[0-9x])?
+  - /\d\.[0-9x](\.[0-9x])?/
 deploy:
   provider: releases
   api_key:
