@@ -9,8 +9,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2018-06-30 10:21+0000\n"
-"Last-Translator: yvanz\n"
+"PO-Revision-Date: 2018-08-21 08:26+0000\n"
+"Last-Translator: Maurits Meulenbelt <mfmeulenbelt@gmail.com>\n"
 "Language-Team: Dutch (http://www.transifex.com/musicbrainz/musicbrainz/language/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -4384,7 +4384,7 @@ msgstr "Ravicandrika"
 #: DB:cover_art_archive.art_type/name:14
 msgctxt "cover_art_type"
 msgid "Raw/Unedited"
-msgstr ""
+msgstr "Onbewerkt"
 
 #: DB:editor_collection_type/name:12
 msgctxt "collection_type"
@@ -5354,7 +5354,7 @@ msgctxt "cover_art_type"
 msgid ""
 "Use for images that need work to be used for tagging (but can possibly "
 "already be used for reference)"
-msgstr ""
+msgstr "Gebruik deze eigenschap voor afbeeldingen die bewerkt moeten worden voordat ze voor het taggen kunnen worden gebruikt (maar die misschien al als referentie kunnen worden gebruikt)"
 
 #: DB:work_attribute_type/name:17
 msgctxt "work_attribute_type"
