@@ -25,9 +25,11 @@ from mutagen.id3 import (
     TextFrame,
 )
 
-
-class GRP1(TextFrame):
-    pass
+try:
+    from mutagen.id3 import GRP1
+except ImportError:
+    class GRP1(TextFrame):
+        pass
 
 
 class TCMP(TextFrame):
