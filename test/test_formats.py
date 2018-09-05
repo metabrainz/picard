@@ -436,6 +436,15 @@ class CommonTests:
             self.assertIn(metadata['work'], loaded_metadata['work'])
             self.assertEqual(loaded_metadata['grouping'], '')
 
+        @skipUnlessTestfile
+        def test_save_itunnorm_tag(self):
+            config.setting['clear_existing_tags'] = True
+            iTunNORM = '00001E86 00001E86 0000A2A3 0000A2A3 000006A6 000006A6 000078FA 000078FA 00000211 00000211'
+            metadata = Metadata()
+            metadata['comment:iTunNORM'] = iTunNORM
+            new_metadata = save_and_load_metadata(self.filename, metadata)
+            self.assertEqual(new_metadata['comment:iTunNORM'], iTunNORM)
+
 
 class FLACTest(CommonTests.FormatsTest):
     testfile = 'test.flac'
@@ -451,6 +460,11 @@ class FLACTest(CommonTests.FormatsTest):
 
 class WMATest(CommonTests.FormatsTest):
     testfile = 'test.wma'
+    supports_ratings = True
+
+
+class ASFTest(CommonTests.FormatsTest):
+    testfile = 'test.asf'
     supports_ratings = True
 
 
@@ -480,6 +494,16 @@ class OggVorbisTest(CommonTests.FormatsTest):
     supports_ratings = True
 
 
+class OggSpxTest(CommonTests.FormatsTest):
+    testfile = 'test.spx'
+    supports_ratings = True
+
+
+class OggOpusTest(CommonTests.FormatsTest):
+    testfile = 'test.spx'
+    supports_ratings = True
+
+
 class MP4Test(CommonTests.FormatsTest):
     testfile = 'test.m4a'
     supports_ratings = False
@@ -497,6 +521,11 @@ class MusepackSV7Test(CommonTests.FormatsTest):
 
 class MusepackSV8Test(CommonTests.FormatsTest):
     testfile = 'test-sv8.mpc'
+    supports_ratings = False
+
+
+class MonkeysAudioTest(CommonTests.FormatsTest):
+    testfile = 'test.ape'
     supports_ratings = False
 
 
