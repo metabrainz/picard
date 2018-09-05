@@ -52,14 +52,18 @@ class FakeTagger(QtCore.QObject):
         pass
 
 
+def load_metadata(filename):
+    f = picard.formats.open_(filename)
+    return f._load(filename)
+
+
 def save_and_load_metadata(filename, metadata):
     """Save new metadata to a file and load it again."""
     f = picard.formats.open_(filename)
     loaded_metadata = f._load(filename)
     f._copy_loaded_metadata(loaded_metadata)
     f._save(filename, metadata)
-    f = picard.formats.open_(filename)
-    loaded_metadata = f._load(filename)
+    loaded_metadata = load_metadata(filename)
     return loaded_metadata
 
 
@@ -451,6 +455,24 @@ class MusepackSV8Test(CommonTests.FormatsTest):
 class TAKTest(CommonTests.FormatsTest):
     testfile = 'test.tak'
     supports_ratings = False
+
+
+class OptimFROGLosslessTest(CommonTests.FormatsTest):
+    testfile = 'test.ofr'
+    supports_ratings = False
+
+    def test_format(self):
+        metadata = load_metadata(self.filename)
+        self.assertEqual(metadata['~format'], 'OptimFROG Lossless Audio')
+
+
+class OptimFROGDUalStreamTest(CommonTests.FormatsTest):
+    testfile = 'test.ofs'
+    supports_ratings = False
+
+    def test_format(self):
+        metadata = load_metadata(self.filename)
+        self.assertEqual(metadata['~format'], 'OptimFROG DualStream Audio')
 
 
 cover_settings = {
