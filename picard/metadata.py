@@ -275,6 +275,9 @@ class Metadata(dict):
         super().clear()
         self.images = ImageList()
         self.length = 0
+        self.clear_deleted()
+
+    def clear_deleted(self):
         self.deleted_tags = set()
 
     def getall(self, name):

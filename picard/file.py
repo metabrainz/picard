@@ -274,11 +274,15 @@ class File(QtCore.QObject, Item):
             for info in ('~bitrate', '~sample_rate', '~channels',
                          '~bits_per_sample', '~format'):
                 temp_info[info] = self.orig_metadata[info]
-            # Data is copied from New to Original because New may be a subclass to handle id3v23
+            # Data is copied from New to Original because New may be
+            # a subclass to handle id3v23
             if config.setting["clear_existing_tags"]:
                 self.orig_metadata.copy(self.new_metadata)
             else:
                 self.orig_metadata.update(self.new_metadata)
+            # After saving deleted tags should no longer be marked deleted
+            self.new_metadata.clear_deleted()
+            self.orig_metadata.clear_deleted()
             self.orig_metadata.length = length
             self.orig_metadata['~length'] = format_time(length)
             for k, v in temp_info.items():

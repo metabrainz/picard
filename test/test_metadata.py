@@ -114,6 +114,12 @@ class MetadataTest(unittest.TestCase):
         self.metadata.clear()
         self.assertEqual(0, len(self.metadata))
 
+    def test_metadata_clear_deleted(self):
+        self.metadata.delete("single1")
+        self.assertIn("single1", self.metadata.deleted_tags)
+        self.metadata.clear_deleted()
+        self.assertNotIn("single1", self.metadata.deleted_tags)
+
     def test_metadata_applyfunc(self):
         func = lambda x: x[1:]
         self.metadata.apply_func(func)
