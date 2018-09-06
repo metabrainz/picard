@@ -139,7 +139,7 @@ class AcoustIDClient(QtCore.QObject):
             file.acoustid_length = length
             self.tagger.acoustidmanager.add(file, None)
             params['fingerprint'] = fingerprint
-            params['duration'] = string_(length)
+            params['duration'] = str(length)
         else:
             fp_type, recordingid = result
             params['recordingid'] = recordingid
@@ -157,7 +157,7 @@ class AcoustIDClient(QtCore.QObject):
             self._run_next_task()
             process = self.sender()
             if exit_code == 0 and exit_status == 0:
-                output = string_(process.readAllStandardOutput())
+                output = bytes(process.readAllStandardOutput()).decode()
                 duration = None
                 fingerprint = None
                 for line in output.splitlines():

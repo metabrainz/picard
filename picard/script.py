@@ -94,7 +94,7 @@ class ScriptFunction(object):
                 raise ScriptError(
                     "Wrong number of arguments for $%s: Expected %s, got %i at position %i, line %i"
                     % (name,
-                       string_(argnum_bound.lower)
+                       str(argnum_bound.lower)
                         if argnum_bound.upper is None
                         else "%i - %i" % (argnum_bound.lower, argnum_bound.upper),
                        argcount,
@@ -329,7 +329,7 @@ def register_script_function(function, name=None, eval_args=True,
 
 
 def _compute_int(operation, *args):
-    return string_(reduce(operation, map(int, args)))
+    return str(reduce(operation, map(int, args)))
 
 
 def _compute_logic(operation, *args):
@@ -683,7 +683,7 @@ def func_gte(parser, x, y):
 
 
 def func_len(parser, text=""):
-    return string_(len(text))
+    return str(len(text))
 
 
 def func_lenmulti(parser, multi, separator=MULTI_VALUED_JOINER):
@@ -700,7 +700,7 @@ def func_performer(parser, pattern="", join=", "):
 
 def func_matchedtracks(parser, arg):
     if parser.file and parser.file.parent:
-        return string_(parser.file.parent.album.get_num_matched_tracks())
+        return str(parser.file.parent.album.get_num_matched_tracks())
     return "0"
 
 

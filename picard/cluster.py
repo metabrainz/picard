@@ -227,7 +227,7 @@ class Cluster(QtCore.QObject, Item):
         self.lookup_task = self.tagger.mb_api.find_releases(self._lookup_finished,
             artist=self.metadata['albumartist'],
             release=self.metadata['album'],
-            tracks=string_(len(self.files)),
+            tracks=str(len(self.files)),
             limit=QUERY_LIMIT)
 
     def clear_lookup_task(self):

@@ -130,7 +130,7 @@ class File(QtCore.QObject, Item):
         if self.state != File.PENDING or self.tagger.stopping:
             return
         if error is not None:
-            self.error = string_(error)
+            self.error = str(error)
             self.state = self.ERROR
             from picard.formats import supported_extensions
             file_name, file_extension = os.path.splitext(self.base_filename)
@@ -153,7 +153,7 @@ class File(QtCore.QObject, Item):
         if 'tracknumber' not in metadata:
             tracknumber = tracknum_from_filename(self.base_filename)
             if tracknumber != -1:
-                tracknumber = string_(tracknumber)
+                tracknumber = str(tracknumber)
                 metadata['tracknumber'] = tracknumber
                 if metadata['title'] == filename:
                     stripped_filename = filename.lstrip('0')
@@ -264,7 +264,7 @@ class File(QtCore.QObject, Item):
             return
         old_filename = new_filename = self.filename
         if error is not None:
-            self.error = string_(error)
+            self.error = str(error)
             self.set_state(File.ERROR, update=True)
         else:
             self.filename = new_filename = result
@@ -425,8 +425,9 @@ class File(QtCore.QObject, Item):
         """Move extra files, like playlists..."""
         old_path = os.path.dirname(old_filename)
         new_path = os.path.dirname(new_filename)
-        patterns = config.setting["move_additional_files_pattern"]
-        patterns = [string_(p.strip()) for p in patterns.split() if p.strip()]
+        patterns = [p for p in [p.strip() for p in
+                                config.setting["move_additional_files_pattern"].split()]
+                    if p]
         try:
             names = os.listdir(old_path)
         except os.error:
@@ -658,7 +659,7 @@ class File(QtCore.QObject, Item):
             release=metadata['album'],
             tnum=metadata['tracknumber'],
             tracks=metadata['totaltracks'],
-            qdur=string_(metadata.length // 2000),
+            qdur=str(metadata.length // 2000),
             isrc=metadata['isrc'],
             limit=QUERY_LIMIT)
 

@@ -106,7 +106,7 @@ class EditTagDialog(PicardDialog):
             tag_names.removeItem(tag_names.findText(self.tag, flags))
 
         row = tag_names.findText(tag, flags)
-        self.tag = string_(tag)
+        self.tag = tag
         if row <= 0:
             if tag:
                 # add custom tags to the QComboBox immediately

@@ -71,7 +71,7 @@ def parse_xml(response):
 
             for i in range(attrs.count()):
                 attr = attrs.at(i)
-                node.attribs[_node_name(attr.name())] = string_(attr.value())
+                node.attribs[_node_name(attr.name())] = attr.value()
 
             current_node.append_child(_node_name(stream.name()), node)
             path.append(current_node)
