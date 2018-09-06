@@ -222,12 +222,13 @@ class Metadata(dict):
 
         if 'title' in self:
             a = self['title']
-            b = track['title']
+            b = track.get('title', '')
             parts.append((similarity2(a, b), weights["title"]))
 
         if 'artist' in self:
             a = self['artist']
-            b = artist_credit_from_node(track['artist-credit'])[0]
+            artist_credits = track.get('artist-credit', [])
+            b = artist_credit_from_node(artist_credits)[0]
             parts.append((similarity2(a, b), weights["artist"]))
 
         a = self.length

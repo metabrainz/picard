@@ -67,15 +67,21 @@ def _make_artist_credit_node(artists):
 
 
 def parse_recording(recording):
-    if 'title' not in recording:  # we have no metadata for this recording
+    if 'id' not in recording:  # we have no metadata for this recording
         return
 
     recording_mb = {
-        'id': recording['id'],
-        'title': recording['title'],
-        'artist-credit': _make_artist_credit_node(recording['artists']),
-        'releases': _make_releases_node(recording)
+        'id': recording['id']
     }
+
+    if 'title' in recording:
+        recording_mb['title'] = recording['title']
+
+    if 'artists' in recording:
+        recording_mb['artist-credit'] = _make_artist_credit_node(recording['artists'])
+
+    if 'releasegroups' in recording:
+        recording_mb['releases'] = _make_releases_node(recording)
 
     if 'duration' in recording:
         try:

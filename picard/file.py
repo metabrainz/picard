@@ -634,7 +634,8 @@ class File(QtCore.QObject, Item):
             self.tagger.get_release_group_by_id(rg['id']).loaded_albums.add(release['id'])
             self.tagger.move_file_to_track(self, release['id'], track['id'])
         else:
-            self.tagger.move_file_to_nat(self, track['id'], node=track)
+            node = track if 'title' in track else None
+            self.tagger.move_file_to_nat(self, track['id'], node=node)
 
     def lookup_metadata(self):
         """Try to identify the file using the existing metadata."""
