@@ -89,7 +89,6 @@ class Track(DataObject, Item):
             return
         file.copy_metadata(self.metadata)
         file.metadata['~extension'] = file.orig_metadata['~extension']
-        file.metadata.changed = True
         file.update(signal=False)
         self.update()
 
@@ -98,7 +97,7 @@ class Track(DataObject, Item):
             return
         self.linked_files.remove(file)
         self.num_linked_files -= 1
-        file.copy_metadata(file.orig_metadata)
+        file.copy_metadata(file.orig_metadata, preserve_deleted=False)
         self.album._remove_file(self, file)
         file.metadata_images_changed.disconnect(self.update_orig_metadata_images)
         self.update()

@@ -163,7 +163,7 @@ class File(QtCore.QObject, Item):
         self.orig_metadata = metadata
         self.metadata.copy(metadata)
 
-    def copy_metadata(self, metadata):
+    def copy_metadata(self, metadata, preserve_deleted=True):
         acoustid = self.metadata["acoustid_id"]
         preserve = config.setting["preserved_tags"].strip()
         saved_metadata = {}
@@ -174,7 +174,9 @@ class File(QtCore.QObject, Item):
                 saved_metadata[tag] = values
         deleted_tags = self.metadata.deleted_tags
         self.metadata.copy(metadata)
-        self.metadata.deleted_tags = deleted_tags
+        if preserve_deleted:
+            for tag in deleted_tags:
+                self.metadata.delete(tag)
         for tag, values in saved_metadata.items():
             self.metadata.set(tag, values)
 
