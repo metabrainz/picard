@@ -240,6 +240,7 @@ class MP4File(File):
         return (name in cls.__r_text_tags
                 or name in cls.__r_bool_tags
                 or name in cls.__r_freeform_tags
+                or name in cls.__r_int_tags
                 or name in cls.__other_supported_tags
                 or name.startswith('lyrics:')
                 or name in ('~length', 'musicip_fingerprint'))
