@@ -32,7 +32,7 @@ class BrowserLookupTest(unittest.TestCase):
         for i, type_ in enumerate(lookups):
             lookups[type_]['function']("123")
 
-            url = urlparse(string_(mock_open.call_args[0][0]))
+            url = urlparse(mock_open.call_args[0][0])
             path = url.path.split('/')[1:]
             query_args = parse_qs(url.query)
 

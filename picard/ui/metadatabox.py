@@ -479,7 +479,7 @@ class MetadataBox(QtWidgets.QTableWidget):
                 tag_diff.add(name, orig_values, new_values, True, removed)
 
             tag_diff.add("~length",
-                         string_(orig_metadata.length), string_(new_metadata.length), False)
+                         str(orig_metadata.length), str(new_metadata.length), False)
 
         for track in tracks:
             if track.num_linked_files == 0:
@@ -487,7 +487,7 @@ class MetadataBox(QtWidgets.QTableWidget):
                     if not name.startswith("~"):
                         tag_diff.add(name, values, values, True)
 
-                length = string_(track.metadata.length)
+                length = str(track.metadata.length)
                 tag_diff.add("~length", length, length, False)
 
                 tag_diff.objects += 1

@@ -186,7 +186,7 @@ class AlbumSearchDialog(SearchDialog):
         query = {
             "artist": metadata["albumartist"],
             "release": metadata["album"],
-            "tracks": string_(len(cluster.files))
+            "tracks": str(len(cluster.files))
         }
 
         # Generate query to be displayed to the user (in search box).

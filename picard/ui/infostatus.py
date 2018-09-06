@@ -67,13 +67,13 @@ class InfoStatus(QtWidgets.QWidget, Ui_InfoStatus):
         self.label4.setToolTip(t4)
 
     def setFiles(self, num):
-        self.val1.setText(string_(num))
+        self.val1.setText(str(num))
 
     def setAlbums(self, num):
-        self.val2.setText(string_(num))
+        self.val2.setText(str(num))
 
     def setPendingFiles(self, num):
-        self.val3.setText(string_(num))
+        self.val3.setText(str(num))
 
     def setPendingRequests(self, num):
         if num <= 0:
@@ -81,4 +81,4 @@ class InfoStatus(QtWidgets.QWidget, Ui_InfoStatus):
         else:
             enabled = QtGui.QIcon.Normal
         self.label4.setPixmap(self.icon_download.pixmap(self._size, enabled))
-        self.val4.setText(string_(num))
+        self.val4.setText(str(num))

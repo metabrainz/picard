@@ -83,8 +83,10 @@ def get_cdrom_drives():
         if cdinfo.open(QIODevice.ReadOnly | QIODevice.Text):
             drive_names = []
             drive_audio_caps = []
-            line = string_(cdinfo.readLine())
-            while line:
+            while True:
+                line = bytes(cdinfo.readLine()).decode()
+                if not line:
+                    break
                 if ":" in line:
                     key, values = line.split(':')
                     if key == 'drive name':
@@ -92,7 +94,6 @@ def get_cdrom_drives():
                     elif key == 'Can play audio':
                         drive_audio_caps = [v == '1' for v in values.split()]
                         break  # no need to continue past this line
-                line = string_(cdinfo.readLine())
             # Show only drives that are capable of playing audio
             for index, drive in enumerate(drive_names):
                 if drive_audio_caps[index]:

@@ -204,7 +204,7 @@ class RenamingOptionsPage(OptionsPage):
         try:
             parser.eval(self.ui.file_naming_format.toPlainText())
         except Exception as e:
-            raise OptionsCheckError("", string_(e))
+            raise OptionsCheckError("", str(e))
         if self.ui.rename_files.isChecked():
             if not self.ui.file_naming_format.toPlainText().strip():
                 raise OptionsCheckError("", _("The file naming format must not be empty."))

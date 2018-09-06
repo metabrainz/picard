@@ -169,7 +169,7 @@ class APEv2File(File):
                 name = name.title()
             temp.setdefault(name, []).append(value)
         for name, values in temp.items():
-            tags[string_(name)] = values
+            tags[str(name)] = values
         for image in metadata.images_to_be_saved_to_tags:
             cover_filename = 'Cover Art (Front)'
             cover_filename += image.extension
@@ -185,7 +185,7 @@ class APEv2File(File):
     def _remove_deleted_tags(self, metadata, tags):
         """Remove the tags from the file that were deleted in the UI"""
         for tag in metadata.deleted_tags:
-            real_name = string_(self._get_tag_name(tag))
+            real_name = self._get_tag_name(tag)
             if real_name in ('Lyrics', 'Comment', 'Performer'):
                 tag_type = re.compile(r"\(%s\)" % tag.split(':', 1)[1])
                 for item in tags.get(real_name):
@@ -276,7 +276,10 @@ class OptimFROGFile(APEv2File):
     def _info(self, metadata, file):
         super()._info(metadata, file)
         # mutagen.File.filename can be either a bytes or str object
-        if string_(file.filename.lower()).endswith(".ofs"):
+        filename = file.filename
+        if isinstance(filename, bytes):
+            filename = filename.decode()
+        if filename.lower().endswith(".ofs"):
             metadata['~format'] = "OptimFROG DualStream Audio"
         else:
             metadata['~format'] = "OptimFROG Lossless Audio"

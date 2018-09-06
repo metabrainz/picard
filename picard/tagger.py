@@ -337,8 +337,7 @@ class Tagger(QtWidgets.QApplication):
         if isinstance(event, thread.ProxyToMainEvent):
             event.run()
         elif event.type() == QtCore.QEvent.FileOpen:
-            f = string_(event.file())
-            self.add_files([f])
+            self.add_files([event.file()])
             # We should just return True here, except that seems to
             # cause the event's sender to get a -9874 error, so
             # apparently there's some magic inside QFileOpenEvent...
@@ -553,7 +552,7 @@ class Tagger(QtWidgets.QApplication):
                 metadata["album"],
                 metadata["title"],
                 metadata["tracknumber"],
-                '' if item.is_album_like() else string_(metadata.length),
+                '' if item.is_album_like() else str(metadata.length),
                 item.filename if isinstance(item, File) else '')
 
     def get_files_from_objects(self, objects, save=False):

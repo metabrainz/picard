@@ -418,7 +418,7 @@ def build_qurl(host, port=80, path=None, queryargs=None):
     if queryargs is not None:
         url_query = QtCore.QUrlQuery()
         for k, v in queryargs.items():
-            url_query.addQueryItem(k, string_(v))
+            url_query.addQueryItem(k, str(v))
         url.setQuery(url_query)
     return url
 

@@ -58,7 +58,7 @@ class ScriptsMenu(QtWidgets.QMenu):
                 msg = N_('Script error in "%(script)s": %(message)s')
                 mparms = {
                     'script': s_name,
-                    'message': string_(e),
+                    'message': str(e),
                 }
                 self.tagger.window.set_statusbar_message(msg, mparms)
 
