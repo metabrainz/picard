@@ -33,6 +33,7 @@ _artist_rel_types = {
     "audio": "engineer",
     "chorus master": "conductor",
     "composer": "composer",
+    "concertmaster": "performer:concertmaster",
     "conductor": "conductor",
     "engineer": "engineer",
     "instrumentator": "arranger",
