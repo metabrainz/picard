@@ -71,7 +71,7 @@ _RECORDING_TO_METADATA = {
 
 _RELEASE_TO_METADATA = {
     'asin': 'asin',
-    'barcode': 'barcode'
+    'barcode': 'barcode',
     'country': 'releasecountry',
     'date': 'date',
     'disambiguation': '~releasecomment',
