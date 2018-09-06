@@ -425,16 +425,16 @@ class File(QtCore.QObject, Item):
         """Move extra files, like playlists..."""
         old_path = os.path.dirname(old_filename)
         new_path = os.path.dirname(new_filename)
-        patterns = [p for p in [p.strip() for p in
-                                config.setting["move_additional_files_pattern"].split()]
-                    if p]
         try:
             names = os.listdir(old_path)
         except os.error:
             log.error("Error: {} directory not found".naming_format(old_path))
             return
         filtered_names = [name for name in names if name[0] != "."]
-        for pattern in patterns:
+        for pattern in config.setting["move_additional_files_pattern"].split():
+            pattern = pattern.strip()
+            if not pattern:
+                continue
             pattern_regex = re.compile(fnmatch.translate(pattern), re.IGNORECASE)
             file_names = names
             if pattern[0] != '.':
