@@ -267,12 +267,10 @@ def format_file_info(file_):
         info.append((_('Bits per sample:'), string_(file_.orig_metadata['~bits_per_sample'])))
     if '~channels' in file_.orig_metadata:
         ch = file_.orig_metadata['~channels']
-        if ch == 1:
+        if ch == '1':
             ch = _('Mono')
-        elif ch == 2:
+        elif ch == '2':
             ch = _('Stereo')
-        else:
-            ch = string_(ch)
         info.append((_('Channels:'), ch))
     return '<br/>'.join(map(lambda i: '<b>%s</b> %s' %
                             (htmlescape(i[0]),
