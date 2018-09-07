@@ -29,65 +29,66 @@ from picard.util import (
 )
 
 _artist_rel_types = {
-    "composer": "composer",
-    "writer": "writer",
-    "conductor": "conductor",
-    "chorus master": "conductor",
-    "performing orchestra": "performer:orchestra",
     "arranger": "arranger",
-    "orchestrator": "arranger",
-    "instrumentator": "arranger",
-    "lyricist": "lyricist",
-    "librettist": "lyricist",
-    "remixer": "remixer",
-    "producer": "producer",
-    "engineer": "engineer",
     "audio": "engineer",
-    #"Mastering": "engineer",
-    "sound": "engineer",
+    "chorus master": "conductor",
+    "composer": "composer",
+    "concertmaster": "performer:concertmaster",
+    "conductor": "conductor",
+    "engineer": "engineer",
+    "instrumentator": "arranger",
+    "librettist": "lyricist",
     "live sound": "engineer",
-    "mix": "mixer",
-    #"Recording": "engineer",
+    "lyricist": "lyricist",
+    # "mastering": "engineer",
     "mix-DJ": "djmixer",
+    "mix": "mixer",
+    "orchestrator": "arranger",
+    "performing orchestra": "performer:orchestra",
+    "producer": "producer",
+    # "recording": "engineer",
+    "remixer": "remixer",
+    "sound": "engineer",
+    "writer": "writer",
 }
 
 _TRACK_TO_METADATA = {
-    'title': 'title',
-    'position': 'tracknumber',
     'number': '~musicbrainz_tracknumber',
+    'position': 'tracknumber',
+    'title': 'title',
 }
 
 _MEDIUM_TO_METADATA = {
-    'title': 'discsubtitle',
-    'position': 'discnumber',
-    'track-count': 'totaltracks',
     'format': 'media',
+    'position': 'discnumber',
+    'title': 'discsubtitle',
+    'track-count': 'totaltracks',
 }
 
 _RECORDING_TO_METADATA = {
-    'title': 'title',
     'disambiguation': '~recordingcomment',
+    'title': 'title',
 }
 
 _RELEASE_TO_METADATA = {
-    'title': 'album',
-    'disambiguation': '~releasecomment',
     'asin': 'asin',
-    'date': 'date',
+    'barcode': 'barcode',
     'country': 'releasecountry',
-    'barcode': 'barcode'
+    'date': 'date',
+    'disambiguation': '~releasecomment',
+    'title': 'album',
 }
 
 _ARTIST_TO_METADATA = {
-    'name': 'name',
     'gender': 'gender',
+    'name': 'name',
     'type': 'type',
 }
 
 _RELEASE_GROUP_TO_METADATA = {
-    'title': '~releasegroup',
     'disambiguation': '~releasegroupcomment',
     'first-release-date': 'originaldate',
+    'title': '~releasegroup',
 }
 
 
