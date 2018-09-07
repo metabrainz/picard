@@ -453,7 +453,7 @@ def union_sorted_lists(list1, list2):
     return union
 
 
-def convert_to_string(obj):
+def __convert_to_string(obj):
     """Appropriately converts the input `obj` to a string.
 
     Args:
@@ -471,6 +471,15 @@ def convert_to_string(obj):
         return str(obj)
 
 
+def convert_to_string(obj):
+    from picard import log
+    log.warning("string_() and convert_to_string() are deprecated, do not use")
+    return __convert_to_string(obj)
+
+
+builtins.__dict__['string_'] = convert_to_string
+
+
 def htmlescape(string):
     return html.escape(string, quote=False)
 
@@ -486,7 +495,7 @@ def load_json(data):
         dict: Response data as a python dict
 
     """
-    return json.loads(convert_to_string(data))
+    return json.loads(__convert_to_string(data))
 
 
 def parse_json(reply):
@@ -498,7 +507,6 @@ def restore_method(func):
            return func(*args, **kwargs)
     return func_wrapper
 
-builtins.__dict__['string_'] = convert_to_string
 
 
 def compare_version_tuples(version1, version2):
