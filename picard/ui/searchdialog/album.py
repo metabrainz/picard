@@ -263,21 +263,25 @@ class AlbumSearchDialog(SearchDialog):
             return
 
         front = None
-        for image in data["images"]:
-            if image["front"]:
-                front = image
-                break
+        try:
+            for image in data["images"]:
+                if image["front"]:
+                    front = image
+                    break
 
-        if front:
-            url = front["thumbnails"]["small"]
-            coverartimage = CaaThumbnailCoverArtImage(url=url)
-            cover_cell.fetch_task = self.tagger.webservice.download(
-                coverartimage.host,
-                coverartimage.port,
-                coverartimage.path,
-                partial(self._cover_downloaded, cover_cell)
-            )
-        else:
+            if front:
+                url = front["thumbnails"]["small"]
+                coverartimage = CaaThumbnailCoverArtImage(url=url)
+                cover_cell.fetch_task = self.tagger.webservice.download(
+                    coverartimage.host,
+                    coverartimage.port,
+                    coverartimage.path,
+                    partial(self._cover_downloaded, cover_cell)
+                )
+            else:
+                cover_cell.not_found()
+        except (AttributeError, KeyError, TypeError):
+            log.error("Error reading CAA response", exc_info=True)
             cover_cell.not_found()
 
     def _cover_downloaded(self, cover_cell, data, http, error):
