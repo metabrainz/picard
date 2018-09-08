@@ -114,6 +114,8 @@ class Cluster(QtCore.QObject, Item):
         self.item.remove_file(file)
         if not self.special and self.get_num_files() == 0:
             self.tagger.remove_cluster(self)
+
+    def finalize_remove_files(self):
         self.update_metadata_images()
         self._update_related_album()
 

@@ -100,6 +100,8 @@ class Track(DataObject, Item):
         file.copy_metadata(file.orig_metadata, preserve_deleted=False)
         self.album._remove_file(self, file)
         file.metadata_images_changed.disconnect(self.update_orig_metadata_images)
+
+    def finalize_remove_files(self):
         self.update()
 
     def update(self):
