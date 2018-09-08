@@ -264,7 +264,7 @@ def format_file_info(file_):
     if '~sample_rate' in file_.orig_metadata:
         info.append((_('Sample rate:'), '%s Hz' % file_.orig_metadata['~sample_rate']))
     if '~bits_per_sample' in file_.orig_metadata:
-        info.append((_('Bits per sample:'), string_(file_.orig_metadata['~bits_per_sample'])))
+        info.append((_('Bits per sample:'), str(file_.orig_metadata['~bits_per_sample'])))
     if '~channels' in file_.orig_metadata:
         ch = file_.orig_metadata['~channels']
         if ch == '1':

@@ -77,7 +77,7 @@ class HashableTreeWidgetItem(QtWidgets.QTreeWidgetItem):
         return self.id == other.id
 
     def __hash__(self):
-        return hash(string_(self.id))
+        return hash(str(self.id))
 
 
 class HashableListWidgetItem(QtWidgets.QListWidgetItem):
@@ -90,4 +90,4 @@ class HashableListWidgetItem(QtWidgets.QListWidgetItem):
         return self.id == other.id
 
     def __hash__(self):
-        return hash(string_(self.id))
+        return hash(str(self.id))

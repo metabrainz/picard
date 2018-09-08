@@ -84,7 +84,7 @@ class RatingWidget(QtWidgets.QWidget):
 
     def _update_track(self):
         track = self._track
-        track.metadata["~rating"] = string_(self._rating)
+        track.metadata["~rating"] = str(self._rating)
         if config.setting["submit_ratings"]:
             ratings = {("recording", track.id): self._rating}
             self.tagger.mb_api.submit_ratings(ratings, None)

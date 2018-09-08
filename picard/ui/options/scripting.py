@@ -394,7 +394,7 @@ class ScriptingOptionsPage(OptionsPage):
         try:
             parser.eval(self.ui.tagger_script.toPlainText())
         except Exception as e:
-            raise OptionsCheckError(_("Script Error"), string_(e))
+            raise OptionsCheckError(_("Script Error"), str(e))
 
     def restore_defaults(self):
         # Remove existing scripts

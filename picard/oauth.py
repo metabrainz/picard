@@ -84,7 +84,7 @@ class OAuthManager(object):
                   "urn:ietf:wg:oauth:2.0:oob", "scope": scopes}
         url = build_qurl(host, port, path="/oauth2/authorize",
                          queryargs=params)
-        return string_(url.toEncoded())
+        return bytes(url.toEncoded()).decode()
 
     def set_refresh_token(self, refresh_token, scopes):
         log.debug("OAuth: got refresh_token %s with scopes %s", refresh_token, scopes)
@@ -112,7 +112,7 @@ class OAuthManager(object):
         url_query.addQueryItem("client_id", MUSICBRAINZ_OAUTH_CLIENT_ID)
         url_query.addQueryItem("client_secret", MUSICBRAINZ_OAUTH_CLIENT_SECRET)
         url.setQuery(url_query.query(QUrl.FullyEncoded))
-        data = string_(url.query())
+        data = url.query()
         self.webservice.post(host, port, path, data,
                         partial(self.on_refresh_access_token_finished, callback),
                         parse_response_type=None, mblogin=True, priority=True, important=True)
@@ -145,7 +145,7 @@ class OAuthManager(object):
         url_query.addQueryItem("client_secret", MUSICBRAINZ_OAUTH_CLIENT_SECRET)
         url_query.addQueryItem("redirect_uri", "urn:ietf:wg:oauth:2.0:oob")
         url.setQuery(url_query.query(QUrl.FullyEncoded))
-        data = string_(url.query())
+        data = url.query()
         self.webservice.post(host, port, path, data,
                         partial(self.on_exchange_authorization_code_finished, scopes, callback),
                         parse_response_type=None, mblogin=True, priority=True, important=True)

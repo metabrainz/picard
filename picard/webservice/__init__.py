@@ -69,9 +69,9 @@ USER_AGENT_STRING = '%s-%s/%s (%s;%s-%s)' % (PICARD_ORG_NAME, PICARD_APP_NAME,
                                              platform.platform(),
                                              platform.python_implementation(),
                                              platform.python_version())
-CLIENT_STRING = string_(QUrl.toPercentEncoding('%s %s-%s' % (PICARD_ORG_NAME,
-                                                         PICARD_APP_NAME,
-                                                         PICARD_VERSION_STR)))
+CLIENT_STRING = bytes(QUrl.toPercentEncoding('%s %s-%s' % (PICARD_ORG_NAME,
+                                                           PICARD_APP_NAME,
+                                                           PICARD_VERSION_STR))).decode()
 
 
 
@@ -169,7 +169,7 @@ class WSRequest(QtNetwork.QNetworkRequest):
 
     def _update_authorization_header(self):
         if self.mblogin and self.access_token:
-            self.setRawHeader(b"Authorization", ("Bearer %s" % string_(self.access_token)).encode('utf-8'))
+            self.setRawHeader(b"Authorization", ("Bearer %s" % self.access_token).encode('utf-8'))
         else:
             self.setRawHeader(b"Authorization", b"")
 
@@ -348,12 +348,12 @@ class WebService(QtCore.QObject):
         redirect = url.resolved(redirect)
         if not WebService.urls_equivalent(redirect, reply.request().url()):
             log.debug("Redirect to %s requested", redirect.toString(QUrl.RemoveUserInfo))
-            redirect_host = string_(redirect.host())
+            redirect_host = redirect.host()
             redirect_port = self.url_port(redirect)
             redirect_query = dict(QUrlQuery(redirect).queryItems(QUrl.FullyEncoded))
             redirect_path = redirect.path()
 
-            original_host = string_(url.host())
+            original_host = url.host()
             original_port = self.url_port(url)
             original_host_key = (original_host, original_port)
             redirect_host_key = (redirect_host, redirect_port)

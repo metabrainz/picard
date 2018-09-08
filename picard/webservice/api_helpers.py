@@ -150,8 +150,8 @@ class MBAPIHelper(APIHelper):
             filters.append(("query", query))
         queryargs = {}
         for name, value in filters:
-            value = QUrl.toPercentEncoding(string_(value))
-            queryargs[string_(name)] = value
+            queryargs[name] = bytes(QUrl.toPercentEncoding(str(value))).decode()
+
         path_list = [entitytype]
         return self.get(path_list, handler, queryargs=queryargs,
                             priority=True, important=True, mblogin=False,
@@ -236,8 +236,8 @@ class AcoustIdAPIHelper(APIHelper):
         args['clientversion'] = PICARD_VERSION_STR
         args['format'] = format_
         for name, value in args.items():
-            value = string_(QUrl.toPercentEncoding(value))
-            filters.append('%s=%s' % (string_(name), value))
+            value = bytes(QUrl.toPercentEncoding(value)).decode()
+            filters.append('%s=%s' % (name, value))
         return '&'.join(filters)
 
     def query_acoustid(self, handler, **args):
@@ -249,10 +249,10 @@ class AcoustIdAPIHelper(APIHelper):
         path_list = ['submit']
         args = {'user': config.setting["acoustid_apikey"]}
         for i, submission in enumerate(submissions):
-            args['fingerprint.%d' % i] = string_(submission.fingerprint)
-            args['duration.%d' % i] = string_(submission.duration)
-            args['mbid.%d' % i] = string_(submission.recordingid)
+            args['fingerprint.%d' % i] = submission.fingerprint
+            args['duration.%d' % i] = str(submission.duration)
+            args['mbid.%d' % i] = submission.recordingid
             if submission.puid:
-                args['puid.%d' % i] = string_(submission.puid)
+                args['puid.%d' % i] = submission.puid
         body = self._encode_acoustid_args(args, format_='json')
         return self.post(path_list, body, handler, priority=True, important=False, mblogin=False)

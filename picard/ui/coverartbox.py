@@ -368,7 +368,7 @@ class CoverArtBox(QtWidgets.QGroupBox):
                 port = 443
             else:
                 port = 80
-            self.tagger.webservice.get(url.host(), url.port(port), string_(path),
+            self.tagger.webservice.get(url.host(), url.port(port), path,
                                   partial(self.on_remote_image_fetched, url, fallback_data=fallback_data),
                                   parse_response_type=None,
                                   priority=True, important=True)
