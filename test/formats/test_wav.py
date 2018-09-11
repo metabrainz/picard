@@ -19,28 +19,42 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+from picard.formats import WAVFile
+
 from .common import (
     REPLAYGAIN_TAGS,
     TAGS,
     CommonTests,
     skipUnlessTestfile,
 )
+from .test_id3 import CommonId3Tests
 
 
-class WAVTest(CommonTests.SimpleFormatsTestCase):
-    testfile = 'test.wav'
-    expected_info = {
-        'length': 82,
-        '~channels': '2',
-        '~sample_rate': '44100',
-        '~bits_per_sample': '16',
-    }
-    unexpected_info = ['~video']
+expected_info = {
+    'length': 82,
+    '~channels': '2',
+    '~sample_rate': '44100',
+    '~bits_per_sample': '16',
+}
 
-    def setUp(self):
-        super().setUp()
-        self.unsupported_tags = {**TAGS, **REPLAYGAIN_TAGS}
+if WAVFile.supports_tag('artist'):
+    class WAVTest(CommonId3Tests.Id3TestCase):
+        testfile = 'test.wav'
+        expected_info = {**expected_info, **{
+            '~bitrate': '352.8',
+        }}
+        unexpected_info = ['~video']
+        supports_ratings = True
+else:
+    class WAVTest(CommonTests.SimpleFormatsTestCase):
+        testfile = 'test.wav'
+        expected_info = expected_info
+        unexpected_info = ['~video']
 
-    @skipUnlessTestfile
-    def test_unsupported_tags(self):
-        self._test_unsupported_tags(self.unsupported_tags)
+        def setUp(self):
+            super().setUp()
+            self.unsupported_tags = {**TAGS, **REPLAYGAIN_TAGS}
+
+        @skipUnlessTestfile
+        def test_unsupported_tags(self):
+            self._test_unsupported_tags(self.unsupported_tags)
