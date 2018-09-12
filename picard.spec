@@ -51,16 +51,16 @@ fpcalc_name = 'fpcalc'
 if os_name == 'Windows':
     fpcalc_name = 'fpcalc.exe'
     binaries += [
-        ('discid.dll', ''),
-        ('ssleay32.dll', ''),
-        ('libeay32.dll', ''),
+        ('discid.dll', '.'),
+        ('ssleay32.dll', '.'),
+        ('libeay32.dll', '.'),
     ]
 
 if os_name == 'Darwin':
-    binaries += [('libdiscid.0.dylib', '')]
+    binaries += [('libdiscid.0.dylib', '.')]
 
 if os.path.isfile(fpcalc_name):
-    binaries += [(fpcalc_name, '')]
+    binaries += [(fpcalc_name, '.')]
 
 
 a = Analysis(['tagger.py'],
