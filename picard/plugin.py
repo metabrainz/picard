@@ -227,6 +227,7 @@ class PluginWrapper(PluginShared):
 class PluginData(PluginShared):
 
     """Used to store plugin data from JSON API"""
+
     def __init__(self, d, module_name):
         self.__dict__ = d
         super().__init__()
@@ -367,7 +368,7 @@ class PluginManager(QtCore.QObject):
         filepaths = [os.path.join(USER_PLUGIN_DIR, f)
                       for f in os.listdir(USER_PLUGIN_DIR)
                       if f in [plugin_name + ext for ext in fileexts]
-                    ]
+                     ]
         return (dirpath, filepaths)
 
     def remove_plugin(self, plugin_name):

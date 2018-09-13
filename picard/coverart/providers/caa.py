@@ -73,8 +73,8 @@ _CAA_THUMBNAIL_SIZE_MAP = OrderedDict([
 
 _CAA_IMAGE_SIZE_DEFAULT = 500
 
-_CAA_IMAGE_TYPE_DEFAULT_INCLUDE = ['front',]
-_CAA_IMAGE_TYPE_DEFAULT_EXCLUDE = ['raw/unedited', 'watermark',]
+_CAA_IMAGE_TYPE_DEFAULT_INCLUDE = ['front']
+_CAA_IMAGE_TYPE_DEFAULT_EXCLUDE = ['raw/unedited', 'watermark']
 
 
 def caa_url_fallback_list(desired_size, thumbnails):
@@ -229,9 +229,9 @@ class CAATypesSelectorDialog(QtWidgets.QDialog):
         self.fill_lists(types_include, types_exclude)
 
         # Set triggers when the lists receive the current focus
-        self.list_include.clicked.connect(partial(self.clear_focus, [self.list_ignore, self.list_exclude,]))
-        self.list_exclude.clicked.connect(partial(self.clear_focus, [self.list_ignore, self.list_include,]))
-        self.list_ignore.clicked.connect(partial(self.clear_focus, [self.list_include, self.list_exclude,]))
+        self.list_include.clicked.connect(partial(self.clear_focus, [self.list_ignore, self.list_exclude]))
+        self.list_exclude.clicked.connect(partial(self.clear_focus, [self.list_ignore, self.list_include]))
+        self.list_ignore.clicked.connect(partial(self.clear_focus, [self.list_include, self.list_exclude]))
 
         # Add instructions to the dialog box
         instructions = QtWidgets.QLabel()
@@ -258,7 +258,7 @@ class CAATypesSelectorDialog(QtWidgets.QDialog):
         )
 
         def add_widget(row=0, column=0, widget=None):
-             gridlayout.addWidget(widget, row, column)
+            gridlayout.addWidget(widget, row, column)
 
         add_widget(row=0, column=0, widget=QtWidgets.QLabel(_("Include types list")))
         add_widget(row=1, column=0, widget=self.list_include)
@@ -644,6 +644,6 @@ class CoverArtProviderCaa(CoverArtProvider):
                         if config.setting["caa_save_single_front_image"] and \
                                 config.setting["save_images_to_files"] and \
                                 image["front"]:
-                                    break
+                            break
 
         self.next_in_queue()

@@ -189,7 +189,6 @@ class LogView(LogViewCommon):
         self.hbox.addWidget(self.save_log_as_button)
         self.save_log_as_button.clicked.connect(self._save_log_as_do)
 
-
     def _clear_highlight_do(self):
         self.highlight_text.setText('')
         self.highlight_button.setEnabled(False)

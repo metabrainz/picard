@@ -629,7 +629,6 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         else:
             self.toolbar.setToolButtonStyle(QtCore.Qt.ToolButtonIconOnly)
 
-
     def create_toolbar(self):
         self.create_search_toolbar()
         self.create_action_toolbar()
@@ -863,7 +862,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                 return
         return self.tagger.analyze(self.selected_objects)
 
-    def _openUrl(self,url):
+    def _openUrl(self, url):
         # Resolves a bug in Qt opening remote URLs - QTBUG-13359
         # See https://bugreports.qt.io/browse/QTBUG-13359
         if url.startswith("\\\\") or url.startswith("//"):
@@ -1123,6 +1122,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             update_level=config.setting['update_level'],
             callback=update_last_check_date
         )
+
 
 def update_last_check_date(is_success):
     if is_success:

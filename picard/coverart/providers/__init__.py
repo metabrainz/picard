@@ -74,7 +74,7 @@ def cover_art_providers():
         try:
             return order.index(p.NAME)
         except ValueError:
-            return 666 # move to the end
+            return 666  # move to the end
     providers = []
     for p in sorted(_cover_art_providers, key=_key_provider):
         providers.append(p)
@@ -133,7 +133,7 @@ class CoverArtProvider(object):
     def queue_images(self):
         # this method has to return CoverArtProvider.FINISHED or
         # CoverArtProvider.WAIT
-        old = getattr(self, 'queue_downloads') #compat with old plugins
+        old = getattr(self, 'queue_downloads')  # compat with old plugins
         if callable(old):
             log.warning('CoverArtProvider: queue_downloads() was replaced by queue_images()')
             return old()

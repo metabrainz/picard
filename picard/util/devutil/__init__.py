@@ -78,7 +78,7 @@ def printable_node(node, indent=0):
 
     if node.attribs:
         l = []
-        for k,v in node.attribs.items():
+        for k, v in node.attribs.items():
             l.append(repr(k).decode('unicode-escape') + ': ' + repr(v).decode('unicode-escape'))
         el.append(indented('attribs={', l, '}', indent+1))
 

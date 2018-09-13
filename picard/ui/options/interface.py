@@ -55,47 +55,47 @@ class InterfaceOptionsPage(OptionsPage):
             'label': N_('Add Folder'),
             'icon': 'folder'
         },
-       'add_files_action': {
+        'add_files_action': {
             'label': N_('Add Files'),
             'icon': 'document-open'
         },
-       'cluster_action': {
+        'cluster_action': {
             'label': N_('Cluster'),
             'icon': 'picard-cluster'
         },
-       'autotag_action': {
+        'autotag_action': {
             'label': N_('Lookup'),
             'icon': 'picard-auto-tag'
         },
-       'analyze_action': {
+        'analyze_action': {
             'label': N_('Scan'),
             'icon': 'picard-analyze'
         },
-       'browser_lookup_action': {
+        'browser_lookup_action': {
             'label': N_('Lookup in Browser'),
             'icon': 'lookup-musicbrainz'
         },
-       'save_action': {
+        'save_action': {
             'label': N_('Save'),
             'icon': 'document-save'
         },
-       'view_info_action': {
+        'view_info_action': {
             'label': N_('Info'),
             'icon': 'picard-edit-tags'
         },
-       'remove_action': {
+        'remove_action': {
             'label': N_('Remove'),
             'icon': 'list-remove'
         },
-       'submit_acoustid_action': {
+        'submit_acoustid_action': {
             'label': N_('Submit AcoustIDs'),
             'icon': 'acoustid-fingerprinter'
         },
-       'play_file_action': {
+        'play_file_action': {
             'label': N_('Open in Player'),
             'icon': 'play-music'
         },
-       'cd_lookup_action': {
+        'cd_lookup_action': {
             'label': N_('Lookup CD...'),
             'icon': 'media-optical'
         },
@@ -137,7 +137,8 @@ class InterfaceOptionsPage(OptionsPage):
         self.ui.setupUi(self)
         self.ui.ui_language.addItem(_('System default'), '')
         language_list = [(l[0], l[1], _(l[2])) for l in UI_LANGUAGES]
-        fcmp = lambda x: locale.strxfrm(x[2])
+
+        def fcmp(x): return locale.strxfrm(x[2])
         for lang_code, native, translation in sorted(language_list, key=fcmp):
             if native and native != translation:
                 name = '%s (%s)' % (translation, native)

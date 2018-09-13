@@ -208,7 +208,8 @@ class ReleasesOptionsPage(OptionsPage):
                            in source.items()]
         else:
             source_list = [(c[0], _(c[1])) for c in source.items()]
-        fcmp = lambda x: strxfrm(x[1])
+
+        def fcmp(x): return strxfrm(x[1])
         source_list.sort(key=fcmp)
         saved_data = config.setting[setting]
         move = []

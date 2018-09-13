@@ -124,20 +124,20 @@ PROGRAM_UPDATE_LEVELS = OrderedDict(
     [
         (
             0, {
-            'name': 'stable',
-            'title': N_('Stable releases only'),
+                'name': 'stable',
+                'title': N_('Stable releases only'),
             }
         ),
         (
             1, {
-            'name': 'beta',
-            'title': N_('Stable and Beta releases'),
+                'name': 'beta',
+                'title': N_('Stable and Beta releases'),
             }
         ),
         (
             2, {
-            'name': 'dev',
-            'title': N_('Stable, Beta and Dev releases'),
+                'name': 'dev',
+                'title': N_('Stable, Beta and Dev releases'),
             }
         ),
     ]

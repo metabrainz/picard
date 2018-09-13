@@ -376,7 +376,7 @@ def album_artist_from_path(filename, album, artist):
     """If album is not set, try to extract album and artist from path
     """
     if not album:
-        dirs = os.path.dirname(filename).replace('\\','/').lstrip('/').split('/')
+        dirs = os.path.dirname(filename).replace('\\', '/').lstrip('/').split('/')
         if len(dirs) == 0:
             return album, artist
         # Strip disc subdirectory from list
@@ -501,12 +501,12 @@ def load_json(data):
 def parse_json(reply):
     return load_json(reply.readAll())
 
+
 def restore_method(func):
     def func_wrapper(*args, **kwargs):
-       if not QtCore.QObject.tagger._no_restore:
-           return func(*args, **kwargs)
+        if not QtCore.QObject.tagger._no_restore:
+            return func(*args, **kwargs)
     return func_wrapper
-
 
 
 def compare_version_tuples(version1, version2):

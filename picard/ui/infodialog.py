@@ -364,6 +364,7 @@ class ClusterInfoDialog(InfoDialog):
             artist = m["artist"] or m["albumartist"] or cluster.metadata["albumartist"]
             tracklist.append(TrackListItem(m["tracknumber"], m["title"], artist,
                                            m["~length"]))
+
         def sorttracknum(item):
             try:
                 return int(item.tracknumber)

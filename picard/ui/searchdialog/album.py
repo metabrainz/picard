@@ -96,7 +96,6 @@ class CoverWidget(QtWidgets.QWidget):
         self.shown.emit()
 
 
-
 class CoverCell:
 
     def __init__(self, parent, release, row, colname, on_show=None):

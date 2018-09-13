@@ -80,7 +80,7 @@ class ShortFilenameTest(unittest.TestCase):
         root = os.path.join(self.root, "w" * 10, "x" * 10, "y" * 9, "z" * 9)
         fn = make_short_filename(
             root, os.path.join("b" * 200, "c" * 200, "d" * 200 + ".ext"),
-            win_compat=True, relative_to = self.root)
+            win_compat=True, relative_to=self.root)
         self.assertEqual(fn, os.path.join("b" * 100, "c" * 100, "d" * 7 + ".ext"))
 
     def test_windows_node_maxlength_shortening(self):

@@ -640,8 +640,6 @@ class AlbumTreeView(BaseTreeView):
 
 class TreeItem(QtWidgets.QTreeWidgetItem):
 
-    __lt__ = lambda self, other: False
-
     def __init__(self, obj, sortable, *args):
         super().__init__(*args)
         self.obj = obj
@@ -656,6 +654,9 @@ class TreeItem(QtWidgets.QTreeWidgetItem):
         if column == 1:
             return (self.obj.metadata.length or 0) < (other.obj.metadata.length or 0)
         return self.text(column).lower() < other.text(column).lower()
+
+    def __lt__(self, other):
+        return False
 
 
 class ClusterItem(TreeItem):

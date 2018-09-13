@@ -99,7 +99,7 @@ class TagsFromFileNamesDialog(PicardDialog):
         return format_re, columns
 
     def match_file(self, file, tff_format):
-        match = tff_format.search(file.filename.replace('\\','/'))
+        match = tff_format.search(file.filename.replace('\\', '/'))
         if match:
             result = {}
             for name, value in match.groupdict().items():
