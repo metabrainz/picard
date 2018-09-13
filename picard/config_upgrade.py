@@ -40,6 +40,7 @@ def upgrade_to_v1_0_0_final_0():
     """In version 1.0, the file naming formats for single and various artist releases were merged.
     """
     _s = config.setting
+
     def remove_va_file_naming_format(merge=True):
         if merge:
             _s["file_naming_format"] = (
@@ -128,6 +129,7 @@ def upgrade_to_v1_3_0_dev_4():
     """Option "release_type_scores" is now a list of tuples
     """
     _s = config.setting
+
     def load_release_type_scores(setting):
         scores = []
         values = setting.split()
@@ -188,7 +190,7 @@ def upgrade_to_v1_4_0_dev_4():
             "$if($ne(%albumartist%,),$num(%tracknumber%,2) ,)" \
             "$if(%_multiartist%,%artist% - ,)" \
             "%title%"
-        _s["file_naming_format"]  = _DEFAULT_FILE_NAMING_FORMAT
+        _s["file_naming_format"] = _DEFAULT_FILE_NAMING_FORMAT
 
 
 def upgrade_to_v1_4_0_dev_5():

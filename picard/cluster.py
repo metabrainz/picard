@@ -71,7 +71,7 @@ class Cluster(QtCore.QObject, Item):
             return '<Cluster %s %r>' % (
                 self.related_album.id,
                 self.related_album.metadata[u"album"] + '/' + self.metadata['album']
-                )
+            )
         return '<Cluster %r>' % self.metadata['album']
 
     def __len__(self):

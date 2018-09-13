@@ -178,8 +178,6 @@ class AlbumArtistFromPathTest(unittest.TestCase):
         self.assertEqual(aafp(file_4, 'album', 'artist'), ('album', 'artist'))
 
 
-
-
 class ImageInfoTest(unittest.TestCase):
 
     def test_gif(self):

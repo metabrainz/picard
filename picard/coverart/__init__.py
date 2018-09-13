@@ -92,7 +92,6 @@ class CoverArt:
         except CoverArtImageIdentificationError as e:
             self.album.error_append(e)
 
-
     def _coverart_downloaded(self, coverartimage, data, http, error):
         """Handle finished download, save it to metadata"""
         self.album._requests -= 1

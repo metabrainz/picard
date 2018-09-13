@@ -133,7 +133,6 @@ class RenamingOptionsPage(OptionsPage):
         else:
             self.ui.file_naming_format.setPalette(self.textEditPaletteReadOnly)
 
-
     def check_formats(self):
         self.test()
         self.update_examples()
@@ -302,5 +301,6 @@ class RenamingOptionsPage(OptionsPage):
             self.ui.renaming_error.setStyleSheet(self.STYLESHEET_ERROR)
             self.ui.renaming_error.setText(e.info)
             return
+
 
 register_options_page(RenamingOptionsPage)

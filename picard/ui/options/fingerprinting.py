@@ -154,4 +154,5 @@ class FingerprintingOptionsPage(OptionsPage):
     def display_error(self, error):
         pass
 
+
 register_options_page(FingerprintingOptionsPage)

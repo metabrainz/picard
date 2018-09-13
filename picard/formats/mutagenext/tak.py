@@ -54,4 +54,5 @@ class TAK(APEv2File):
         return header.startswith(b"tBaK") + filename.lower().endswith(".tak")
     score = staticmethod(score)
 
+
 Open = TAK

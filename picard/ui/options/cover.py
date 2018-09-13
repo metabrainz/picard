@@ -119,4 +119,5 @@ class CoverOptionsPage(OptionsPage):
         enabled = self.ui.save_images_to_tags.isChecked()
         self.ui.cb_embed_front_only.setEnabled(enabled)
 
+
 register_options_page(CoverOptionsPage)

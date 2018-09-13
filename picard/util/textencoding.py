@@ -76,6 +76,7 @@ from picard.util import sanitize_filename
 def _re_any(iterable):
     return re.compile('([' + ''.join(iterable) + '])', re.UNICODE)
 
+
 _additional_compatibility = {
     "\u0276": "Œ",  # LATIN LETTER SMALL CAPITAL OE
     "\u1D00": "A",  # LATIN LETTER SMALL CAPITAL A
@@ -178,6 +179,7 @@ _simplify_punctuation = {
 }
 _re_simplify_punctuation = _re_any(_simplify_punctuation.keys())
 _pathsave_simplify_punctuation = {k: sanitize_filename(v) for k, v in _simplify_punctuation.items()}
+
 
 def unicode_simplify_punctuation(string, pathsave=False):
     punctuation = _pathsave_simplify_punctuation if pathsave else _simplify_punctuation

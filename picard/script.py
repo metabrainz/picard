@@ -322,8 +322,8 @@ def register_script_function(function, name=None, eval_args=True,
         name = function.__name__
     ScriptParser._function_registry.register(function.__module__,
         (name, FunctionRegistryItem(
-                    function, eval_args,
-                    argcount if argcount and check_argcount else False)
+            function, eval_args,
+            argcount if argcount and check_argcount else False)
          )
     )
 

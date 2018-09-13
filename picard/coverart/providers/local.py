@@ -91,7 +91,7 @@ class CoverArtProviderLocal(CoverArtProvider):
                         continue
                     filepath = os.path.join(current_dir, root, filename)
                     if os.path.exists(filepath):
-                        types = self.get_types(m.group(1)) or [ 'front' ]
+                        types = self.get_types(m.group(1)) or ['front']
                         self.queue_put(CoverArtImageFromFile(filepath,
                                                              types=types,
                                                              support_types=True))

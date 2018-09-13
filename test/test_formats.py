@@ -280,7 +280,6 @@ class CommonTests:
             self.assertEqual(f._fixed_splitext('.test'), os.path.splitext('.test'))
             self.assertNotEqual(f._fixed_splitext(f.EXTENSIONS[0]), os.path.splitext(f.EXTENSIONS[0]))
 
-
     class ID3Test(FormatsTest):
 
         def setup_tags(self):

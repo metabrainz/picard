@@ -53,6 +53,7 @@ from picard.ui.ui_options_plugins import Ui_PluginsOptionsPage
 
 COLUMN_NAME, COLUMN_VERSION, COLUMN_ACTION = range(3)
 
+
 class PluginTreeWidgetItem(HashableTreeWidgetItem):
 
     def __lt__(self, other):
@@ -254,9 +255,13 @@ class PluginsOptionsPage(OptionsPage):
 
     def uninstall_plugin(self):
         plugin = self.items[self.ui.plugins.selectedItems()[COLUMN_NAME]]
-        buttonReply = QtWidgets.QMessageBox.question(self, _("Uninstall plugin?"),
-                _("Do you really want to uninstall the plugin '%s' ?") % plugin.name,
-                QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No, QtWidgets.QMessageBox.No)
+        buttonReply = QtWidgets.QMessageBox.question(
+            self,
+            _("Uninstall plugin?"),
+            _("Do you really want to uninstall the plugin '%s' ?") % plugin.name,
+            QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,
+            QtWidgets.QMessageBox.No
+        )
         if buttonReply == QtWidgets.QMessageBox.Yes:
             self.tagger.pluginmanager.remove_plugin(plugin.module_name)
             item = self.ui.plugins.currentItem()
