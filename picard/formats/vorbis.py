@@ -298,10 +298,6 @@ class OggFLACFile(VCommentFile):
     NAME = "Ogg FLAC"
     _File = mutagen.oggflac.OggFLAC
 
-    def _info(self, metadata, file):
-        super()._info(metadata, file)
-        metadata['~format'] = self.NAME
-
 
 class OggSpeexFile(VCommentFile):
 
@@ -309,10 +305,6 @@ class OggSpeexFile(VCommentFile):
     EXTENSIONS = [".spx"]
     NAME = "Speex"
     _File = mutagen.oggspeex.OggSpeex
-
-    def _info(self, metadata, file):
-        super()._info(metadata, file)
-        metadata['~format'] = self.NAME
 
 
 class OggTheoraFile(VCommentFile):
@@ -322,10 +314,6 @@ class OggTheoraFile(VCommentFile):
     NAME = "Ogg Theora"
     _File = mutagen.oggtheora.OggTheora
 
-    def _info(self, metadata, file):
-        super()._info(metadata, file)
-        metadata['~format'] = self.NAME
-
 
 class OggVorbisFile(VCommentFile):
 
@@ -334,10 +322,6 @@ class OggVorbisFile(VCommentFile):
     NAME = "Ogg Vorbis"
     _File = mutagen.oggvorbis.OggVorbis
 
-    def _info(self, metadata, file):
-        super()._info(metadata, file)
-        metadata['~format'] = self.NAME
-
 
 class OggOpusFile(VCommentFile):
 
@@ -345,10 +329,6 @@ class OggOpusFile(VCommentFile):
     EXTENSIONS = [".opus"]
     NAME = "Ogg Opus"
     _File = mutagen.oggopus.OggOpus
-
-    def _info(self, metadata, file):
-        super()._info(metadata, file)
-        metadata['~format'] = self.NAME
 
 
 def OggAudioFile(filename):

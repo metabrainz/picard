@@ -63,6 +63,8 @@ class File(QtCore.QObject, Item):
 
     metadata_images_changed = QtCore.pyqtSignal()
 
+    NAME = None
+
     UNDEFINED = -1
     PENDING = 0
     NORMAL = 1
@@ -550,7 +552,10 @@ class File(QtCore.QObject, Item):
             metadata['~channels'] = file.info.channels
         if hasattr(file.info, 'bits_per_sample') and file.info.bits_per_sample:
             metadata['~bits_per_sample'] = file.info.bits_per_sample
-        metadata['~format'] = self.__class__.__name__.replace('File', '')
+        if self.NAME:
+            metadata['~format'] = self.NAME
+        else:
+            metadata['~format'] = self.__class__.__name__.replace('File', '')
         self._add_path_to_metadata(metadata)
 
     def _add_path_to_metadata(self, metadata):
