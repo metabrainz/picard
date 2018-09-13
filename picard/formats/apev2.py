@@ -253,10 +253,6 @@ class WavPackFile(APEv2File):
     NAME = "WavPack"
     _File = mutagen.wavpack.WavPack
 
-    def _info(self, metadata, file):
-        super()._info(metadata, file)
-        metadata['~format'] = self.NAME
-
     def _save_and_rename(self, old_filename, metadata):
         """Includes an additional check for WavPack correction files"""
         wvc_filename = old_filename.replace(".wv", ".wvc")
@@ -292,10 +288,6 @@ class MonkeysAudioFile(APEv2File):
     NAME = "Monkey's Audio"
     _File = mutagen.monkeysaudio.MonkeysAudio
 
-    def _info(self, metadata, file):
-        super()._info(metadata, file)
-        metadata['~format'] = self.NAME
-
 
 class TAKFile(APEv2File):
 
@@ -303,7 +295,3 @@ class TAKFile(APEv2File):
     EXTENSIONS = [".tak"]
     NAME = "Tom's lossless Audio Kompressor"
     _File = tak.TAK
-
-    def _info(self, metadata, file):
-        super()._info(metadata, file)
-        metadata['~format'] = self.NAME

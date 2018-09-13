@@ -598,7 +598,7 @@ class MP3File(ID3File):
     _File = mutagen.mp3.MP3
 
     def _get_file(self, filename):
-        return mutagen.mp3.MP3(filename, ID3=compatid3.CompatID3)
+        return self._File(filename, ID3=compatid3.CompatID3)
 
     def _info(self, metadata, file):
         super()._info(metadata, file)
@@ -616,11 +616,7 @@ class TrueAudioFile(ID3File):
     _File = mutagen.trueaudio.TrueAudio
 
     def _get_file(self, filename):
-        return mutagen.trueaudio.TrueAudio(filename, ID3=compatid3.CompatID3)
-
-    def _info(self, metadata, file):
-        super()._info(metadata, file)
-        metadata['~format'] = self.NAME
+        return self._File(filename, ID3=compatid3.CompatID3)
 
 
 class DSFFile(ID3File):
@@ -631,11 +627,7 @@ class DSFFile(ID3File):
     _File = mutagen.dsf.DSF
 
     def _get_file(self, filename):
-        return mutagen.dsf.DSF(filename, known_frames=compatid3.known_frames)
-
-    def _info(self, metadata, file):
-        super()._info(metadata, file)
-        metadata['~format'] = self.NAME
+        return self._File(filename, known_frames=compatid3.known_frames)
 
     def _get_tags(self, filename):
         file = self._get_file(filename)
@@ -667,6 +659,3 @@ class AiffFile(DSFFile):
     EXTENSIONS = [".aiff", ".aif", ".aifc"]
     NAME = "Audio Interchange File Format (AIFF)"
     _File = mutagen.aiff.AIFF
-
-    def _get_file(self, filename):
-        return mutagen.aiff.AIFF(filename, known_frames=compatid3.known_frames)
