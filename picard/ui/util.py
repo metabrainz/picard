@@ -111,6 +111,7 @@ class MultiDirsSelectDialog(QtWidgets.QFileDialog):
     of multiple directories.
     Depending on the platform, dialog may fallback on non-native.
     """
+
     def __init__(self, *args):
         super().__init__(*args)
         self.setFileMode(self.Directory)

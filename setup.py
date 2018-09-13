@@ -97,6 +97,7 @@ class picard_build_locales(Command):
             self.mkpath(path)
             self.spawn(['msgfmt', '-o', mo, po])
 
+
 Distribution.locales = None
 
 
@@ -123,7 +124,7 @@ class picard_install_locales(Command):
                                    ('install_locales', 'install_dir'),
                                    ('force', 'force'),
                                    ('skip_build', 'skip_build'),
-                                  )
+                                   )
 
     def run(self):
         if not self.skip_build:
@@ -279,7 +280,7 @@ class picard_build_ui(Command):
             tmp = StringIO()
             uic.compileUi(uifile, tmp)
             source = tmp.getvalue()
-            rc = re.compile(r'\n\n#.*?(?=\n\n)', re.MULTILINE|re.DOTALL)
+            rc = re.compile(r'\n\n#.*?(?=\n\n)', re.MULTILINE | re.DOTALL)
             comment = ("\n\n# Automatically generated - don't edit.\n"
                        "# Use `python setup.py %s` to update it."
                        % _get_option_name(self))
@@ -401,8 +402,8 @@ except ImportError:
 def _get_option_name(obj):
     """Returns the name of the option for specified Command object"""
     for name, klass in obj.distribution.cmdclass.items():
-            if obj.__class__ == klass:
-                return name
+        if obj.__class__ == klass:
+            return name
     raise Exception("No such command class")
 
 
@@ -571,7 +572,7 @@ def _explode_path(path):
     """Return a list of components of the path (ie. "/a/b" -> ["a", "b"])"""
     components = []
     while True:
-        (path,tail) = os.path.split(path)
+        (path, tail) = os.path.split(path)
         if tail == "":
             components.reverse()
             return components

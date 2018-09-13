@@ -140,7 +140,7 @@ class ID3File(File):
         'TSO2': 'albumartistsort',
     }
     __rtranslate = dict([(v, k) for k, v in __translate.items()])
-    __translate['GRP1'] = 'grouping' # Always read, but writing depends on itunes_compatible_grouping
+    __translate['GRP1'] = 'grouping'  # Always read, but writing depends on itunes_compatible_grouping
 
     __translate_freetext = {
         'MusicBrainz Artist Id': 'musicbrainz_artistid',
@@ -170,7 +170,7 @@ class ID3File(File):
         'Writer': 'writer',
     }
     __rtranslate_freetext = dict([(v, k) for k, v in __translate_freetext.items()])
-    __translate_freetext['Work'] = 'work' # Always read, but writing depends on itunes_compatible_grouping
+    __translate_freetext['Work'] = 'work'  # Always read, but writing depends on itunes_compatible_grouping
     __translate_freetext['writer'] = 'writer'  # For backward compatibility of case
 
     _tipl_roles = {

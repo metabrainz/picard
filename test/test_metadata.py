@@ -37,12 +37,12 @@ class MetadataTest(unittest.TestCase):
         pass
 
     def test_metadata_setitem(self):
-        self.assertEqual(["single1-value"], dict.get(self.metadata,"single1"))
-        self.assertEqual(["single2-value"], dict.get(self.metadata,"single2"))
-        self.assertEqual(self.multi1, dict.get(self.metadata,"multi1"))
-        self.assertEqual(self.multi2, dict.get(self.metadata,"multi2"))
-        self.assertEqual(self.multi3, dict.get(self.metadata,"multi3"))
-        self.assertEqual(["hidden-value"], dict.get(self.metadata,"~hidden"))
+        self.assertEqual(["single1-value"], dict.get(self.metadata, "single1"))
+        self.assertEqual(["single2-value"], dict.get(self.metadata, "single2"))
+        self.assertEqual(self.multi1, dict.get(self.metadata, "multi1"))
+        self.assertEqual(self.multi2, dict.get(self.metadata, "multi2"))
+        self.assertEqual(self.multi3, dict.get(self.metadata, "multi3"))
+        self.assertEqual(["hidden-value"], dict.get(self.metadata, "~hidden"))
 
     def test_metadata_get(self):
         self.assertEqual("single1-value", self.metadata["single1"])
@@ -121,7 +121,7 @@ class MetadataTest(unittest.TestCase):
         self.assertNotIn("single1", self.metadata.deleted_tags)
 
     def test_metadata_applyfunc(self):
-        func = lambda x: x[1:]
+        def func(x): return x[1:]
         self.metadata.apply_func(func)
 
         self.assertEqual("ingle1-value", self.metadata["single1"])

@@ -138,7 +138,7 @@ class File(QtCore.QObject, Item):
             file_name, file_extension = os.path.splitext(self.base_filename)
             if file_extension not in supported_extensions():
                 self.remove()
-                log.error('Unsupported media file %r wrongly loaded. Removing ...',self)
+                log.error('Unsupported media file %r wrongly loaded. Removing ...', self)
                 return
         else:
             self.error = None
@@ -387,7 +387,6 @@ class File(QtCore.QObject, Item):
         except FileNotFoundError:
             # os.path.realpath can fail if cwd doesn't exist
             return new_path
-
 
     def _rename(self, old_filename, metadata):
         new_filename, ext = os.path.splitext(

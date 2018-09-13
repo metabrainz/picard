@@ -122,7 +122,7 @@ class UpdateCheckManager(QtCore.QObject):
         high_version = PICARD_VERSION
         for test_key in PROGRAM_UPDATE_LEVELS:
             test_version = self._available_versions[PROGRAM_UPDATE_LEVELS[test_key]['name']]['version']
-            if self._update_level >= test_key and  compare_version_tuples(high_version, test_version) > 0:
+            if self._update_level >= test_key and compare_version_tuples(high_version, test_version) > 0:
                 key = PROGRAM_UPDATE_LEVELS[test_key]['name']
                 high_version = test_version
         if key:
@@ -135,7 +135,7 @@ class UpdateCheckManager(QtCore.QObject):
                   "Would you like to download the new version?").format(
                       picard_old_version=PICARD_FANCY_VERSION_STR,
                       picard_new_version=self._available_versions[key]['tag']
-                    ),
+                ),
                 QMessageBox.Ok | QMessageBox.Cancel,
                 QMessageBox.Cancel
             ) == QMessageBox.Ok:
@@ -149,6 +149,6 @@ class UpdateCheckManager(QtCore.QObject):
                       "Your version: {picard_old_version}\n").format(
                         update_level=_(PROGRAM_UPDATE_LEVELS[self._update_level]['title']) if self._update_level in PROGRAM_UPDATE_LEVELS else _('unknown'),
                         picard_old_version=PICARD_FANCY_VERSION_STR,
-                      ),
+                    ),
                     QMessageBox.Ok, QMessageBox.Ok
                 )

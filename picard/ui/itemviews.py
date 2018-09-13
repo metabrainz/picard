@@ -640,18 +640,17 @@ class AlbumTreeView(BaseTreeView):
 
 class TreeItem(QtWidgets.QTreeWidgetItem):
 
-    __lt__ = lambda self, other: False
-
     def __init__(self, obj, sortable, *args):
         super().__init__(*args)
         self.obj = obj
         if obj is not None:
             obj.item = self
-        if sortable:
-            self.__lt__ = self._lt
+        self.sortable = sortable
         self.setTextAlignment(1, QtCore.Qt.AlignRight | QtCore.Qt.AlignVCenter)
 
-    def _lt(self, other):
+    def __lt__(self, other):
+        if not self.sortable:
+            return False
         column = self.treeWidget().sortColumn()
         if column == 1:
             return (self.obj.metadata.length or 0) < (other.obj.metadata.length or 0)

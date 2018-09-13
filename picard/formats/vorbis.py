@@ -336,6 +336,7 @@ def OggAudioFile(filename):
     options = [OggFLACFile, OggSpeexFile, OggVorbisFile]
     return guess_format(filename, options)
 
+
 OggAudioFile.EXTENSIONS = [".oga"]
 OggAudioFile.NAME = "Ogg Audio"
 
