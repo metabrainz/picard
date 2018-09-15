@@ -486,6 +486,18 @@ def func_unset(parser, name):
     return ""
 
 
+def func_delete(parser, name):
+    """
+    Deletes the variable ``name``.
+    This will unset the tag with the given name and also mark the tag for
+    deletion on save.
+    """
+    if name.startswith("_"):
+        name = "~" + name[1:]
+    parser.context.delete(name)
+    return ""
+
+
 def func_set(parser, name, value):
     """Sets the variable ``name`` to ``value``."""
     if value:
@@ -855,6 +867,7 @@ register_script_function(func_rreplace, "rreplace")
 register_script_function(func_rsearch, "rsearch")
 register_script_function(func_num, "num")
 register_script_function(func_unset, "unset")
+register_script_function(func_delete, "delete")
 register_script_function(func_set, "set")
 register_script_function(func_setmulti, "setmulti")
 register_script_function(func_get, "get")
