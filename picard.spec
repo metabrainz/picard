@@ -106,7 +106,6 @@ if platform.system() == 'Darwin':
         'NSPrincipalClass': 'NSApplication',
         'CFBundleName': 'Picard',
         'CFBundleDisplayName': 'MusicBrainz Picard',
-        'CFBundleGetInfoString': 'Audio file tagger',
         'CFBundleIdentifier': 'org.musicbrainz.picard',
         'CFBundleVersion': macos_picard_version,
         'CFBundleShortVersionString': macos_picard_short_version,
