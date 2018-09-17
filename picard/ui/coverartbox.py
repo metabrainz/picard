@@ -47,7 +47,7 @@ class ActiveLabel(QtWidgets.QLabel):
     """Clickable QLabel."""
 
     clicked = QtCore.pyqtSignal()
-    image_dropped = QtCore.pyqtSignal(QtCore.QUrl, QtCore.QByteArray)
+    image_dropped = QtCore.pyqtSignal(QtCore.QUrl, bytes)
 
     def __init__(self, active=True, drops=False, *args):
         super().__init__(*args)
@@ -75,23 +75,28 @@ class ActiveLabel(QtWidgets.QLabel):
         # is useful for Google Images, where the url links to the page that contains the image
         # so we use it if the downloaded url is not an image.
         mime_data = event.mimeData()
-        dropped_data = mime_data.data('application/octet-stream')
+        dropped_data = bytes(mime_data.data('application/octet-stream'))
 
         if not dropped_data:
-            dropped_data = mime_data.data('application/x-qt-image')
+            dropped_data = bytes(mime_data.data('application/x-qt-image'))
 
-        try:
-            mime = imageinfo.identify(dropped_data)[2]
-            if mime in ('image/jpeg', 'image/png'):
-                accepted = True
-                self.image_dropped.emit(QtCore.QUrl(''), dropped_data)
-        except imageinfo.IdentificationError:
-            pass
+        if dropped_data:
+            try:
+                mime = imageinfo.identify(dropped_data)[2]
+                if mime in ('image/jpeg', 'image/png'):
+                    accepted = True
+                    log.debug("Dropped %s mime data (%d bytes)", mime,
+                              len(dropped_data or ''))
+                    self.image_dropped.emit(QtCore.QUrl(''), dropped_data)
+            except imageinfo.IdentificationError:
+                pass
 
         if not accepted:
             for url in event.mimeData().urls():
                 if url.scheme() in ('https', 'http', 'file'):
                     accepted = True
+                    log.debug("Dropped %s url (with %d bytes of data)",
+                              url.toString(), len(dropped_data or ''))
                     self.image_dropped.emit(url, dropped_data)
 
         if not accepted:
@@ -99,9 +104,11 @@ class ActiveLabel(QtWidgets.QLabel):
                 image_bytes = QtCore.QByteArray()
                 image_buffer = QtCore.QBuffer(image_bytes)
                 mime_data.imageData().save(image_buffer, 'JPEG')
+                dropped_data = bytes(image_bytes)
 
                 accepted = True
-                self.image_dropped.emit(QtCore.QUrl(''), image_bytes)
+                log.debug("Dropped %d bytes of Qt image data", len(dropped_data))
+                self.image_dropped.emit(QtCore.QUrl(''), dropped_data)
 
         if accepted:
             event.acceptProposedAction()
@@ -357,7 +364,7 @@ class CoverArtBox(QtWidgets.QGroupBox):
         if self.item is None:
             return
 
-        if fallback_data is not None:
+        if fallback_data:
             self.load_remote_image(url, None, fallback_data)
 
         if url.scheme() in ('http', 'https'):
@@ -381,6 +388,7 @@ class CoverArtBox(QtWidgets.QGroupBox):
                 self.load_remote_image(url, mime, data)
 
     def on_remote_image_fetched(self, url, data, reply, error, fallback_data=None):
+        data = bytes(data)
         mime = reply.header(QtNetwork.QNetworkRequest.ContentTypeHeader)
         url_query = QtCore.QUrlQuery(url.query())
         if mime in ('image/jpeg', 'image/png'):
@@ -398,8 +406,8 @@ class CoverArtBox(QtWidgets.QGroupBox):
                 except imageinfo.IdentificationError as e:
                     log.error("Unable to identify dropped data format: %s" % e)
                 else:
-                    log.debug("Trying the dropped %s data", mime)
                     self.load_remote_image(url, mime, fallback_data)
+                    log.debug("Trying the dropped %s data", mime)
 
     def load_remote_image(self, url, mime, data):
         try:
@@ -414,10 +422,14 @@ class CoverArtBox(QtWidgets.QGroupBox):
 
         if config.setting["load_image_behavior"] == 'replace':
             set_image = set_image_replace
+            debug_info = "Replacing with dropped %r in %r"
         else:
             set_image = set_image_append
+            debug_info = "Appending dropped %r to %r"
 
+        update = True
         if isinstance(self.item, Album):
+            log.debug(debug_info, coverartimage, self.item)
             album = self.item
             album.enable_update_metadata_images(False)
             set_image(album, coverartimage)
@@ -432,6 +444,7 @@ class CoverArtBox(QtWidgets.QGroupBox):
             album.update_metadata_images()
             album.update(False)
         elif isinstance(self.item, Track):
+            log.debug(debug_info, coverartimage, self.item)
             track = self.item
             track.album.enable_update_metadata_images(False)
             set_image(track, coverartimage)
@@ -444,12 +457,18 @@ class CoverArtBox(QtWidgets.QGroupBox):
             track.album.update_metadata_images()
             track.album.update(False)
         elif isinstance(self.item, File):
+            log.debug(debug_info, coverartimage, self.item)
             file = self.item
             set_image(file, coverartimage)
             file.metadata_images_changed.emit()
             file.update()
-        self.cover_art.set_metadata(self.item.metadata)
-        self.show()
+        else:
+            log.warning("Dropping %r to %r is not handled", coverartimage, self.item)
+            update = False
+
+        if update:
+            self.cover_art.set_metadata(self.item.metadata)
+            self.show()
 
     def set_load_image_behavior(self, behavior):
         config.setting["load_image_behavior"] = behavior
