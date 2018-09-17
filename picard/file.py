@@ -442,6 +442,7 @@ class File(QtCore.QObject, Item):
                 file_names = filtered_names
             for old_file in file_names:
                 if pattern_regex.match(old_file):
+                    file_names.remove(old_file)
                     new_file = os.path.join(new_path, old_file)
                     old_file = os.path.join(old_path, old_file)
                     # FIXME we shouldn't do this from a thread!
