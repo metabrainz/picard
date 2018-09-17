@@ -61,6 +61,12 @@ class ScriptText(str):
         return self
 
 
+def normalize_tagname(name):
+    if name.startswith('_'):
+        return "~" + name[1:]
+    return name
+
+
 class ScriptVariable(object):
 
     def __init__(self, name):
@@ -70,10 +76,7 @@ class ScriptVariable(object):
         return '<ScriptVariable %%%s%%>' % self.name
 
     def eval(self, state):
-        name = self.name
-        if name.startswith("_"):
-            name = "~" + name[1:]
-        return state.context.get(name, "")
+        return state.context.get(normalize_tagname(self.name), "")
 
 
 FunctionRegistryItem = namedtuple("FunctionRegistryItem",
@@ -349,11 +352,7 @@ def _get_multi_values(parser, multi, separator):
 
         # If a variable, return multi-values
         if isinstance(multi, ScriptVariable):
-            if multi.name.startswith("_"):
-                name = "~" + multi.name[1:]
-            else:
-                name = multi.name
-            return parser.context.getall(name)
+            return parser.context.getall(normalize_tagname(multi.name))
 
     # Fall-back to converting to a string and splitting if haystack is an expression
     # or user has overridden the separator character.
@@ -470,8 +469,7 @@ def func_num(parser, text, length):
 
 def func_unset(parser, name):
     """Unsets the variable ``name``."""
-    if name.startswith("_"):
-        name = "~" + name[1:]
+    name = normalize_tagname(name)
     # Allow wild-card unset for certain keys
     if name in ('performer:*', 'comment:*', 'lyrics:*'):
         name = name[:-1]
@@ -492,18 +490,14 @@ def func_delete(parser, name):
     This will unset the tag with the given name and also mark the tag for
     deletion on save.
     """
-    if name.startswith("_"):
-        name = "~" + name[1:]
-    parser.context.delete(name)
+    parser.context.delete(normalize_tagname(name))
     return ""
 
 
 def func_set(parser, name, value):
     """Sets the variable ``name`` to ``value``."""
     if value:
-        if name.startswith("_"):
-            name = "~" + name[1:]
-        parser.context[name] = value
+        parser.context[normalize_tagname(name)] = value
     else:
         func_unset(parser, name)
     return ""
@@ -516,17 +510,13 @@ def func_setmulti(parser, name, value, separator=MULTI_VALUED_JOINER):
 
 def func_get(parser, name):
     """Returns the variable ``name`` (equivalent to ``%name%``)."""
-    if name.startswith("_"):
-        name = "~" + name[1:]
-    return parser.context.get(name, "")
+    return parser.context.get(normalize_tagname(name), "")
 
 
 def func_copy(parser, new, old):
     """Copies content of variable ``old`` to variable ``new``."""
-    if new.startswith("_"):
-        new = "~" + new[1:]
-    if old.startswith("_"):
-        old = "~" + old[1:]
+    new = normalize_tagname(new)
+    old = normalize_tagname(old)
     parser.context[new] = parser.context.getall(old)[:]
     return ""
 
@@ -534,10 +524,8 @@ def func_copy(parser, new, old):
 def func_copymerge(parser, new, old):
     """Copies content of variable ``old`` and appends it into variable ``new``, removing duplicates. This is normally
     used to merge a multi-valued variable into another, existing multi-valued variable."""
-    if new.startswith("_"):
-        new = "~" + new[1:]
-    if old.startswith("_"):
-        old = "~" + old[1:]
+    new = normalize_tagname(new)
+    old = normalize_tagname(old)
     newvals = parser.context.getall(new)
     oldvals = parser.context.getall(old)
     parser.context[new] = uniqify(newvals + oldvals)
