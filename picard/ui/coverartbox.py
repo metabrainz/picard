@@ -368,16 +368,19 @@ class CoverArtBox(QtWidgets.QGroupBox):
             self.load_remote_image(url, None, fallback_data)
 
         if url.scheme() in ('http', 'https'):
-            path = url.path(QtCore.QUrl.FullyEncoded)
+            path = url.path()
             if url.hasQuery():
-                path += '?' + url.query(QtCore.QUrl.FullyEncoded)
+                query = QtCore.QUrlQuery(url.query())
+                queryargs = {k:v for k, v in query.queryItems()}
+            else:
+                queryargs = {}
             if url.scheme() == 'https':
                 port = 443
             else:
                 port = 80
             self.tagger.webservice.get(url.host(), url.port(port), path,
                                   partial(self.on_remote_image_fetched, url, fallback_data=fallback_data),
-                                  parse_response_type=None,
+                                  parse_response_type=None, queryargs=queryargs,
                                   priority=True, important=True)
         elif url.scheme() == 'file':
             path = os.path.normpath(os.path.realpath(url.toLocalFile().rstrip("\0")))
@@ -395,7 +398,7 @@ class CoverArtBox(QtWidgets.QGroupBox):
             self.load_remote_image(url, mime, data)
         elif url_query.hasQueryItem("imgurl"):
             # This may be a google images result, try to get the URL which is encoded in the query
-            url = QtCore.QUrl(url_query.queryItemValue("imgurl"))
+            url = QtCore.QUrl(url_query.queryItemValue("imgurl", QtCore.QUrl.FullyDecoded))
             self.fetch_remote_image(url)
         else:
             log.warning("Can't load remote image with MIME-Type %s", mime)
