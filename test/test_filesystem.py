@@ -87,3 +87,15 @@ class TestFileSystem(unittest.TestCase):
 
         self.assertTrue(os.path.isfile(new_additional_filename))
         self.assertFalse(os.path.isfile(old_additional_filename))
+
+    def test_move_additional_files_duplicate_patterns(self):
+        files = self._prepare_files()
+        (old_filename, old_additional_filename, new_filename, new_additional_filename) = files
+
+        config.setting['move_additional_files_pattern'] = 'cover.jpg *.jpg'
+
+        f = picard.formats.open_(old_filename)
+        f._move_additional_files(old_filename, new_filename)
+
+        self.assertTrue(os.path.isfile(new_additional_filename))
+        self.assertFalse(os.path.isfile(old_additional_filename))
