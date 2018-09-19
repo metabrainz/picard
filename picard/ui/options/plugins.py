@@ -114,8 +114,9 @@ class PluginsOptionsPage(OptionsPage):
         self.ui.install_plugin.clicked.connect(self.open_plugins)
         self.ui.folder_open.clicked.connect(self.open_plugin_dir)
         self.ui.reload_list_of_plugins.clicked.connect(self.reload_list_of_plugins)
-        self.tagger.pluginmanager.plugin_installed.connect(self.plugin_installed)
-        self.tagger.pluginmanager.plugin_updated.connect(self.plugin_updated)
+        self.manager = self.tagger.pluginmanager
+        self.manager.plugin_installed.connect(self.plugin_installed)
+        self.manager.plugin_updated.connect(self.plugin_updated)
         self.ui.plugins.header().setStretchLastSection(False)
         self.ui.plugins.header().setSectionResizeMode(COLUMN_NAME, QtWidgets.QHeaderView.Stretch)
         self.ui.plugins.header().setSectionResizeMode(COLUMN_VERSION, QtWidgets.QHeaderView.Stretch)
@@ -153,10 +154,10 @@ class PluginsOptionsPage(OptionsPage):
     def _populate(self):
         self.ui.details.setText("<b>" + _("No plugins installed.") + "</b>")
         self._user_interaction(False)
-        plugins = sorted(self.tagger.pluginmanager.plugins, key=attrgetter('name'))
+        plugins = sorted(self.manager.plugins, key=attrgetter('name'))
         enabled_plugins = config.setting["enabled_plugins"]
         available_plugins = dict([(p.module_name, p.version) for p in
-                                  self.tagger.pluginmanager.available_plugins])
+                                  self.manager.available_plugins])
         installed = []
         for plugin in plugins:
             plugin.enabled = plugin.module_name in enabled_plugins
@@ -168,7 +169,7 @@ class PluginsOptionsPage(OptionsPage):
             self.add_plugin_item(plugin)
             installed.append(plugin.module_name)
 
-        for plugin in sorted(self.tagger.pluginmanager.available_plugins, key=attrgetter('name')):
+        for plugin in sorted(self.manager.available_plugins, key=attrgetter('name')):
             if plugin.module_name not in installed:
                 plugin.can_be_downloaded = True
                 self.add_plugin_item(plugin)
@@ -183,7 +184,7 @@ class PluginsOptionsPage(OptionsPage):
 
     def restore_defaults(self):
         # Plugin manager has to be updated
-        for plugin in self.tagger.pluginmanager.plugins:
+        for plugin in self.manager.plugins:
             plugin.enabled = False
         # Remove previous entries
         self._user_interaction(False)
@@ -207,7 +208,7 @@ class PluginsOptionsPage(OptionsPage):
         self._user_interaction(False)
         self.save_state()
         self._remove_all()
-        self.tagger.pluginmanager.query_available_plugins(callback=self._reload)
+        self.manager.query_available_plugins(callback=self._reload)
 
     def plugin_installed(self, plugin):
         if not plugin.compatible:
@@ -263,7 +264,7 @@ class PluginsOptionsPage(OptionsPage):
             QtWidgets.QMessageBox.No
         )
         if buttonReply == QtWidgets.QMessageBox.Yes:
-            self.tagger.pluginmanager.remove_plugin(plugin.module_name)
+            self.manager.remove_plugin(plugin.module_name)
             item = self.ui.plugins.currentItem()
             plugin.is_uninstalled = True
             plugin.enabled = False
@@ -384,7 +385,7 @@ class PluginsOptionsPage(OptionsPage):
         )
         if files:
             for path in files:
-                self.tagger.pluginmanager.install_plugin(path, action=PLUGIN_ACTION_INSTALL)
+                self.manager.install_plugin(path, action=PLUGIN_ACTION_INSTALL)
 
     def download_plugin(self, action):
         selected = self.ui.plugins.selectedItems()[COLUMN_NAME]
@@ -412,7 +413,7 @@ class PluginsOptionsPage(OptionsPage):
             log.error("Error occurred while trying to download the plugin: '%s'" % plugin.module_name)
             return
 
-        self.tagger.pluginmanager.install_plugin(
+        self.manager.install_plugin(
             None,
             action,
             plugin_name=plugin.module_name,
@@ -431,7 +432,7 @@ class PluginsOptionsPage(OptionsPage):
 
     def dropEvent(self, event):
         for path in [os.path.normpath(u.toLocalFile()) for u in event.mimeData().urls()]:
-            self.tagger.pluginmanager.install_plugin(path, action=PLUGIN_ACTION_INSTALL)
+            self.manager.install_plugin(path, action=PLUGIN_ACTION_INSTALL)
 
 
 register_options_page(PluginsOptionsPage)
