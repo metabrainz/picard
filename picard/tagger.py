@@ -147,6 +147,7 @@ class Tagger(QtWidgets.QApplication):
         self._cmdline_files = picard_args.FILE
         self._autoupdate = autoupdate
         self._no_restore = picard_args.no_restore
+        self._no_plugins = picard_args.no_plugins
 
         self.debug(
             picard_args.debug
@@ -220,16 +221,17 @@ class Tagger(QtWidgets.QApplication):
 
         # Load plugins
         self.pluginmanager = PluginManager()
-        if hasattr(sys, "frozen"):
-            self.pluginmanager.load_plugindir(os.path.join(os.path.dirname(sys.argv[0]), "plugins"))
-        else:
-            mydir = os.path.dirname(os.path.abspath(__file__))
-            self.pluginmanager.load_plugindir(os.path.join(mydir, "plugins"))
+        if not self._no_plugins:
+            if hasattr(sys, "frozen"):
+                self.pluginmanager.load_plugindir(os.path.join(os.path.dirname(sys.argv[0]), "plugins"))
+            else:
+                mydir = os.path.dirname(os.path.abspath(__file__))
+                self.pluginmanager.load_plugindir(os.path.join(mydir, "plugins"))
 
-        if not os.path.exists(USER_PLUGIN_DIR):
-            os.makedirs(USER_PLUGIN_DIR)
-        self.pluginmanager.load_plugindir(USER_PLUGIN_DIR)
-        self.pluginmanager.query_available_plugins()
+            if not os.path.exists(USER_PLUGIN_DIR):
+                os.makedirs(USER_PLUGIN_DIR)
+            self.pluginmanager.load_plugindir(USER_PLUGIN_DIR)
+            self.pluginmanager.query_available_plugins()
 
         self.acoustidmanager = AcoustIDManager()
         self.browser_integration = BrowserIntegration()
@@ -795,6 +797,8 @@ def process_picard_args():
                         help="enable debug-level logging")
     parser.add_argument("-N", "--no-restore", action='store_true',
                         help="do not restore positions and/or sizes")
+    parser.add_argument("-P", "--no-plugins", action='store_true',
+                        help="do not load any plugins")
     parser.add_argument('-v', '--version', action='store_true',
                         help="display version information and exit")
     parser.add_argument("-V", "--long-version", action='store_true',
