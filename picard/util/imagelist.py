@@ -35,48 +35,51 @@ class ImageList(list):
             return result
 
 
-def _process_images(state, src_obj):
-    from picard.track import Track
-
-    # Check new images
-    if state.update_new_metadata:
-        if state.first_new_obj:
-            state.new_images = src_obj.metadata.images[:]
-            state.first_new_obj = False
-        else:
-            if state.new_images != src_obj.metadata.images:
-                state.has_common_new_images = False
-                state.new_images.extend([image for image in src_obj.metadata.images if image not in state.new_images])
-
-    if state.update_orig_metadata and not isinstance(src_obj, Track):
-        # Check orig images, but not for Tracks (which don't have a useful orig_metadata)
-        if state.first_orig_obj:
-            state.orig_images = src_obj.orig_metadata.images[:]
-            state.first_orig_obj = False
-        else:
-            if state.orig_images != src_obj.orig_metadata.images:
-                state.has_common_orig_images = False
-                state.orig_images.extend([image for image in src_obj.orig_metadata.images if image not in state.orig_images])
-
-
 class State:
     def __init__(self):
-        self.new_images = ImageList()
-        self.orig_images = ImageList()
+        self.new_images = set()
+        self.orig_images = set()
         self.has_common_new_images = True
         self.has_common_orig_images = True
-        self.first_new_obj = True
-        self.first_orig_obj = True
         # The next variables specify what will be updated
         self.update_new_metadata = False
         self.update_orig_metadata = False
 
 
+def _process_images(state, src_obj):
+    from picard.track import Track
+
+    # Check new images
+    if state.update_new_metadata:
+        if state.new_images != set(src_obj.metadata.images):
+            state.has_common_new_images = False
+            state.new_images = state.new_images.union(src_obj.metadata.images)
+
+    if state.update_orig_metadata and not isinstance(src_obj, Track):
+        # Check orig images, but not for Tracks (which don't have a useful orig_metadata)
+        if state.orig_images != set(src_obj.orig_metadata.images):
+            state.has_common_orig_images = False
+            state.orig_images = state.orig_images.union(src_obj.orig_metadata.images)
+
+
+def _update_state(obj, state, sources):
+    for src_obj in sources:
+        _process_images(state, src_obj)
+
+    if state.update_new_metadata:
+        obj.metadata.images = ImageList(state.new_images)
+        obj.metadata.has_common_images = state.has_common_new_images
+
+    if state.update_orig_metadata:
+        obj.orig_metadata.images = ImageList(state.orig_images)
+        obj.orig_metadata.has_common_images = state.has_common_orig_images
+
+
 # TODO: use functools.singledispatch when py3 is supported
 def update_metadata_images(obj):
-    from picard.track import Track
-    from picard.cluster import Cluster
     from picard.album import Album
+    from picard.cluster import Cluster
+    from picard.track import Track
 
     state = State()
 
@@ -95,13 +98,4 @@ def update_metadata_images(obj):
         sources = obj.files
         state.update_new_metadata = True
 
-    for src_obj in sources:
-        _process_images(state, src_obj)
-
-    if state.update_new_metadata:
-        obj.metadata.images = state.new_images
-        obj.metadata.has_common_images = state.has_common_new_images
-
-    if state.update_orig_metadata:
-        obj.orig_metadata.images = state.orig_images
-        obj.orig_metadata.has_common_images = state.has_common_orig_images
+    _update_state(obj, state, sources)
