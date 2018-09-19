@@ -432,7 +432,6 @@ class CoverArtBox(QtWidgets.QGroupBox):
 
         update = True
         if isinstance(self.item, Album):
-            log.debug(debug_info, coverartimage, self.item)
             album = self.item
             album.enable_update_metadata_images(False)
             set_image(album, coverartimage)
@@ -447,7 +446,6 @@ class CoverArtBox(QtWidgets.QGroupBox):
             album.update_metadata_images()
             album.update(False)
         elif isinstance(self.item, Track):
-            log.debug(debug_info, coverartimage, self.item)
             track = self.item
             track.album.enable_update_metadata_images(False)
             set_image(track, coverartimage)
@@ -460,14 +458,15 @@ class CoverArtBox(QtWidgets.QGroupBox):
             track.album.update_metadata_images()
             track.album.update(False)
         elif isinstance(self.item, File):
-            log.debug(debug_info, coverartimage, self.item)
             file = self.item
             set_image(file, coverartimage)
             file.metadata_images_changed.emit()
             file.update()
         else:
-            log.warning("Dropping %r to %r is not handled", coverartimage, self.item)
+            debug_info = "Dropping %r to %r is not handled"
             update = False
+
+        log.debug(debug_info, coverartimage, self.item)
 
         if update:
             self.cover_art.set_metadata(self.item.metadata)
