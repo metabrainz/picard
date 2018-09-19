@@ -371,7 +371,7 @@ class CoverArtBox(QtWidgets.QGroupBox):
             path = url.path()
             if url.hasQuery():
                 query = QtCore.QUrlQuery(url.query())
-                queryargs = {k:v for k, v in query.queryItems()}
+                queryargs = dict(query.queryItems())
             else:
                 queryargs = {}
             if url.scheme() == 'https':
