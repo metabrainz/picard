@@ -427,11 +427,11 @@ class File(QtCore.QObject, Item):
         old_path = os.path.dirname(old_filename)
         new_path = os.path.dirname(new_filename)
         try:
-            names = os.listdir(old_path)
+            names = set(os.listdir(old_path))
         except os.error:
             log.error("Error: {} directory not found".naming_format(old_path))
             return
-        filtered_names = [name for name in names if name[0] != "."]
+        filtered_names = {name for name in names if name[0] != "."}
         for pattern in config.setting["move_additional_files_pattern"].split():
             pattern = pattern.strip()
             if not pattern:
@@ -440,8 +440,10 @@ class File(QtCore.QObject, Item):
             file_names = names
             if pattern[0] != '.':
                 file_names = filtered_names
-            for old_file in file_names:
+            for old_file in set(file_names):
                 if pattern_regex.match(old_file):
+                    names.discard(old_file)
+                    filtered_names.discard(old_file)
                     new_file = os.path.join(new_path, old_file)
                     old_file = os.path.join(old_path, old_file)
                     # FIXME we shouldn't do this from a thread!
