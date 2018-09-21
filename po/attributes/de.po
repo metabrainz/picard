@@ -5,23 +5,32 @@
 # Daniel Schury <Daniel.Schury@physik.uni-giessen.de>, 2011
 # Daniel Schury <email address hidden>, 2011
 # Elmar Stichnoth, 2017
+# Elmar Stichnoth, 2017
 #   <email address hidden>, 2012
 # Ettore Atalan <atalanttore@googlemail.com>, 2014
 # Felix Kugler <relgukxilef@gmail.com>, 2015
 # Frank Matthiae <senax79@gmail.com>, 2015
+# Frank Matthiae <senax79@gmail.com>, 2015
 # Hans-Peter Braun <hape.braun@icloud.com>, 2017
+# happykraut, 2017
+# J L <inactive+j_rg@transifex.com>, 2018
 # J L <inactive+j_rg@transifex.com>, 2018
 # Jod isnotmyname <beebeebeethats3bees@aaathats3as.com>, 2017
 # happykraut, 2017
 # Leo_Verto <leotheverto@googlemail.com>, 2017
+# Leo_Verto <leotheverto@googlemail.com>, 2017
 # Mineo <email address hidden>, 2011
 # Wieland Hoffmann <themineo+transifex@googlemail.com>, 2011
+# nikki, 2013-2014
+# nikki2 <b4931048@nwldx.com>, 2012
 # Nikolai Prokoschenko <email address hidden>, 2011
 # Nikolai Prokoschenko <nikolai@prokoschenko.de>, 2011
 # nikki, 2013
 # Patrick <patrick.rein@gmail.com>, 2015
 # Philipp Wolfer <ph.wolfer@gmail.com>, 2012
+# Philipp Wolfer <ph.wolfer@gmail.com>, 2012
 # S.Brandt <s.brandt@mixxx.org>, 2014-2016
+# Shepard, 2011
 # Shepard <email address hidden>, 2011
 # Shepard, 2011
 # Shepard, 2013-2014
@@ -29,6 +38,7 @@
 # Tobias Quathamer <email address hidden>, 2007
 # Tobias Quathamer <toddy@debian.org>, 2007
 # Ulrich Klauer <ulrich@chirlu.de>, 2015-2016
+# Wieland Hoffmann <themineo+transifex@googlemail.com>, 2011
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"

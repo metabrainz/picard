@@ -1,6 +1,6 @@
 # 
 # Translators:
-# French language coordinator <french.coordinator@rbox.me>, 2013
+# AO <ao@localizationlab.org>, 2013
 # murdos <aurelien.mino@gmail.com>, 2015
 # Benjamin <email address hidden>, 2011
 # Benjamin Sonntag <benjamin@octopuce.fr>, 2011-2012
@@ -8,7 +8,7 @@
 # Dibou <doc@boudon.nom.fr>, 2012
 # Dibou  <email address hidden>, 2012
 #   <email address hidden>, 2012
-# French language coordinator <french.coordinator@rbox.me>, 2013,2015
+# AO <ao@localizationlab.org>, 2013,2015
 # kmartin <coldfuzion@ckoisa.net>, 2013
 # Laurent Monin <i18n@norz.org>, 2014,2018
 # Lotheric <lotheric@gmail.com>, 2011-2012
@@ -18,15 +18,15 @@
 # Paul TREHIOU <paul.trehiou@gmail.com>, 2015
 # Paul Tremberth <agigaday@gmail.com>, 2013
 # Paul Tremberth <agigaday@gmail.com>, 2013
-# French language coordinator <french.coordinator@rbox.me>, 2015
-# French language coordinator <french.coordinator@rbox.me>, 2013-2015
+# AO <ao@localizationlab.org>, 2015
+# AO <ao@localizationlab.org>, 2013-2015
 # yvanz, 2016-2018
 # yvanz, 2016
 # yvanz, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2018-06-30 10:21+0000\n"
+"PO-Revision-Date: 2018-08-13 11:05+0000\n"
 "Last-Translator: yvanz\n"
 "Language-Team: French (http://www.transifex.com/musicbrainz/musicbrainz/language/fr/)\n"
 "MIME-Version: 1.0\n"
@@ -4401,7 +4401,7 @@ msgstr "Ravicandrika"
 #: DB:cover_art_archive.art_type/name:14
 msgctxt "cover_art_type"
 msgid "Raw/Unedited"
-msgstr ""
+msgstr "Brute / Non-modifiée"
 
 #: DB:editor_collection_type/name:12
 msgctxt "collection_type"
@@ -5371,7 +5371,7 @@ msgctxt "cover_art_type"
 msgid ""
 "Use for images that need work to be used for tagging (but can possibly "
 "already be used for reference)"
-msgstr ""
+msgstr "Pour les images qui manquent de finition pour être utilisables comme illustration (mais qui sont déjà utilisables comme référence)"
 
 #: DB:work_attribute_type/name:17
 msgctxt "work_attribute_type"
