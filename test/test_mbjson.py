@@ -24,6 +24,7 @@ settings = {
     "standardize_artists": False,
     "standardize_releases": False,
     "translate_artist_names": True,
+    "use_instrument_credits": False,
     "artist_locale": 'en'
 }
 
@@ -103,13 +104,22 @@ class RecordingTest(MBJSONTest):
         self.assertEqual(m['musicbrainz_recordingid'], 'cb2cc207-8125-445c-9ef9-6ea44eee959a')
         self.assertEqual(m['musicbrainz_workid'], 'dc469dc8-198e-42e5-b5a7-6be2f0a95ac0')
         self.assertEqual(m['performer:'], 'Ed Sheeran')
-        self.assertEqual(m['performer:vocals'], 'Ed Sheeran')
+        self.assertEqual(m['performer:lead vocals'], 'Ed Sheeran')
+        self.assertEqual(m['performer:guitar family'], 'Ed Sheeran')
         self.assertEqual(m['title'], 'Thinking Out Loud')
         self.assertEqual(m['work'], 'Thinking Out Loud')
         self.assertEqual(m['writer'], 'Ed Sheeran; Amy Wadge')
         self.assertEqual(m['~artists_sort'], 'Sheeran, Ed')
         self.assertEqual(m['~length'], '4:41')
         self.assertEqual(m['~recordingtitle'], 'Thinking Out Loud')
+
+    def test_recording_instrument_credits(self):
+        m = Metadata()
+        t = Track("1")
+        config.setting["use_instrument_credits"] = True
+        recording_to_metadata(self.json_doc, m, t)
+        self.assertEqual(m['performer:vocals'], 'Ed Sheeran')
+        self.assertEqual(m['performer:acoustic guitar'], 'Ed Sheeran')
 
 
 class NullRecordingTest(MBJSONTest):

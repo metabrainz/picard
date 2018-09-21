@@ -622,8 +622,40 @@
             },
             "begin":null,
             "attributes":[
-
+                "lead vocals"
             ],
+            "attribute-credits":{
+                "lead vocals": "vocals"
+            },
+            "target-credit":""
+        },
+        {
+            "source-credit":"",
+            "type":"instrument",
+            "target-type":"artist",
+            "end":null,
+            "ended":false,
+            "direction":"backward",
+            "type-id":"59054b12-01ac-43ee-a618-285fd397e461",
+            "attribute-values":{
+
+            },
+            "artist":{
+                "aliases":[
+
+                ],
+                "id":"b8a7c51f-362c-4dcb-a259-bc6e0095f0a6",
+                "disambiguation":"famous UK singer-songwriter",
+                "sort-name":"Sheeran, Ed",
+                "name":"Ed Sheeran"
+            },
+            "begin":null,
+            "attributes":[
+                "guitar family"
+            ],
+            "attribute-credits":{
+                "guitar family": "acoustic guitar"
+            },
             "target-credit":""
         }
     ],

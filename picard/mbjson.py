@@ -101,8 +101,15 @@ _EXTRA_ATTRS = ['guest', 'additional', 'minor', 'solo']
 _BLANK_SPECIAL_RELTYPES = {'vocal': 'vocals'}
 
 
-def _parse_attributes(attrs, reltype):
-    attrs = [_decamelcase(_REPLACE_MAP.get(a, a)) for a in attrs]
+def _transform_attribute(attr, credits):
+    if attr in credits:
+        return credits[attr]
+    else:
+        return _decamelcase(_REPLACE_MAP.get(attr, attr))
+
+
+def _parse_attributes(attrs, reltype, credits):
+    attrs = [_transform_attribute(a, credits) for a in attrs]
     prefix = ' '.join([a for a in attrs if a in _EXTRA_ATTRS])
     attrs = [a for a in attrs if a not in _EXTRA_ATTRS]
     len_attrs = len(attrs)
@@ -131,7 +138,11 @@ def _relations_to_metadata(relations, m):
             if 'attributes' in relation:
                 attribs = [a for a in relation['attributes']]
             if reltype in ('vocal', 'instrument', 'performer'):
-                name = 'performer:' + _parse_attributes(attribs, reltype)
+                if config.setting['use_instrument_credits']:
+                    credits = relation.get('attribute-credits', {})
+                else:
+                    credits = {}
+                name = 'performer:' + _parse_attributes(attribs, reltype, credits)
             elif reltype == 'mix-DJ' and len(attribs) > 0:
                 if not hasattr(m, "_djmix_ars"):
                     m._djmix_ars = {}
