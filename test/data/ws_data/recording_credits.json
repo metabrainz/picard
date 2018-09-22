@@ -1,0 +1,183 @@
+{
+  "relations": [{
+    "ended": false,
+    "direction": "backward",
+    "begin": null,
+    "target-credit": "",
+    "source-credit": "",
+    "target-type": "artist",
+    "type": "arranger",
+    "type-id": "22661fb8-cdb7-4f67-8385-b2a8be6c9f0d",
+    "attributes": [],
+    "attribute-values": {},
+    "artist": {
+      "sort-name": "Andersson, Benny",
+      "disambiguation": "ABBA",
+      "id": "2f031686-3f01-4f33-a4fc-fb3944532efa",
+      "name": "Benny Andersson"
+    },
+    "end": null
+  }, {
+    "direction": "backward",
+    "ended": false,
+    "begin": null,
+    "attributes": [],
+    "type-id": "22661fb8-cdb7-4f67-8385-b2a8be6c9f0d",
+    "type": "arranger",
+    "target-credit": "",
+    "source-credit": "",
+    "target-type": "artist",
+    "artist": {
+      "disambiguation": "",
+      "sort-name": "Ulvaeus, Björn",
+      "id": "ffb77292-9712-4d03-94aa-bdb1d4771d38",
+      "name": "Björn Ulvaeus"
+    },
+    "end": null,
+    "attribute-values": {}
+  }, {
+    "ended": false,
+    "direction": "backward",
+    "begin": null,
+    "source-credit": "",
+    "target-type": "artist",
+    "target-credit": "",
+    "attributes": [],
+    "type-id": "5dcc52af-7064-4051-8d62-7d80f4c3c907",
+    "type": "engineer",
+    "attribute-values": {},
+    "end": null,
+    "artist": {
+      "sort-name": "Tretow, Michael B.",
+      "disambiguation": "",
+      "id": "429e13d1-a1f9-427f-ac95-8ffe1902bba8",
+      "name": "Michael B. Tretow"
+    }
+  }, {
+    "begin": null,
+    "ended": false,
+    "direction": "backward",
+    "attribute-values": {},
+    "artist": {
+      "name": "Lasse Wellander",
+      "id": "14ef7610-3dce-44c3-8af7-d13fd7d9a6c9",
+      "sort-name": "Wellander, Lasse",
+      "disambiguation": ""
+    },
+    "attribute-credits": {},
+    "end": null,
+    "target-credit": "",
+    "source-credit": "",
+    "target-type": "artist",
+    "type-id": "59054b12-01ac-43ee-a618-285fd397e461",
+    "type": "instrument",
+    "attributes": ["electric guitar"]
+  }, {
+    "end": null,
+    "attribute-credits": {},
+    "artist": {
+      "disambiguation": "",
+      "sort-name": "Gunnarsson, Rutger",
+      "id": "3bdb6ac9-5425-429e-a485-fab6b3584618",
+      "name": "Rutger Gunnarsson"
+    },
+    "attribute-values": {},
+    "type": "instrument",
+    "type-id": "59054b12-01ac-43ee-a618-285fd397e461",
+    "attributes": ["bass"],
+    "target-type": "artist",
+    "source-credit": "",
+    "target-credit": "",
+    "begin": null,
+    "direction": "backward",
+    "ended": false
+  }, {
+    "begin": null,
+    "ended": false,
+    "direction": "backward",
+    "attribute-values": {},
+    "end": null,
+    "attribute-credits": {},
+    "artist": {
+      "id": "a071177f-d44e-4595-be37-74e3ff129b13",
+      "name": "Ola Brunkert",
+      "disambiguation": "",
+      "sort-name": "Brunkert, Ola"
+    },
+    "target-type": "artist",
+    "source-credit": "",
+    "target-credit": "",
+    "type-id": "59054b12-01ac-43ee-a618-285fd397e461",
+    "type": "instrument",
+    "attributes": ["membranophone"]
+  }, {
+    "attributes": [],
+    "type": "producer",
+    "type-id": "5c0ceac3-feb4-41f0-868d-dc06f6e27fc0",
+    "target-credit": "",
+    "target-type": "artist",
+    "source-credit": "",
+    "artist": {
+      "disambiguation": "ABBA",
+      "sort-name": "Andersson, Benny",
+      "id": "2f031686-3f01-4f33-a4fc-fb3944532efa",
+      "name": "Benny Andersson"
+    },
+    "end": null,
+    "attribute-values": {},
+    "direction": "backward",
+    "ended": false,
+    "begin": null
+  }, {
+    "end": null,
+    "artist": {
+      "sort-name": "Ulvaeus, Björn",
+      "disambiguation": "",
+      "name": "Björn Ulvaeus",
+      "id": "ffb77292-9712-4d03-94aa-bdb1d4771d38"
+    },
+    "attribute-values": {},
+    "type": "producer",
+    "type-id": "5c0ceac3-feb4-41f0-868d-dc06f6e27fc0",
+    "attributes": [],
+    "source-credit": "",
+    "target-type": "artist",
+    "target-credit": "",
+    "begin": null,
+    "direction": "backward",
+    "ended": false
+  }, {
+    "begin": null,
+    "ended": false,
+    "direction": "backward",
+    "attribute-values": {},
+    "end": null,
+    "artist": {
+      "sort-name": "Lyngstad, Anni-Frid",
+      "disambiguation": "",
+      "name": "Anni-Frid Lyngstad",
+      "id": "042c35d3-0756-4804-b2c2-be57a683efa2"
+    },
+    "source-credit": "",
+    "target-type": "artist",
+    "target-credit": "Frida",
+    "attributes": ["solo"],
+    "type": "vocal",
+    "type-id": "0fdbe3c6-7700-4a31-ae54-b53f06ae1cfa"
+  }],
+  "length": 242640,
+  "id": "2d40c8b2-7524-49e3-af44-ebb924c5b023",
+  "artist-credit": [{
+    "artist": {
+      "id": "d87e52c5-bb8d-4da8-b941-9f4928627dc8",
+      "name": "ABBA",
+      "sort-name": "ABBA",
+      "disambiguation": "Swedish pop group"
+    },
+    "name": "ABBA",
+    "joinphrase": ""
+  }],
+  "disambiguation": "",
+  "title": "Knowing Me, Knowing You",
+  "video": false
+}
