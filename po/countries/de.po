@@ -4,12 +4,16 @@
 # Daniel Schury <Daniel.Schury@physik.uni-giessen.de>, 2011
 # Ettore Atalan <atalanttore@googlemail.com>, 2014
 # lorenzpressler <lorenz.pressler@gmail.com>, 2012
+# lorenzpressler <lorenz.pressler@gmail.com>, 2012
 # Wieland Hoffmann <themineo+transifex@googlemail.com>, 2011
+# nikki, 2013-2014
 # Nikolai Prokoschenko <nikolai@prokoschenko.de>, 2011
 # nikki, 2013
 # S.Brandt <s.brandt@mixxx.org>, 2015
 # Shepard, 2011
+# Shepard, 2011
 # Tobias Quathamer <toddy@debian.org>, 2007
+# Wieland Hoffmann <themineo+transifex@googlemail.com>, 2011
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"

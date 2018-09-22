@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2018-07-18 13:33+0000\n"
+"PO-Revision-Date: 2018-09-07 15:10+0000\n"
 "Last-Translator: Avi Markovitz <avi.markovitz@gmail.com>\n"
 "Language-Team: Hebrew (http://www.transifex.com/musicbrainz/musicbrainz/language/he/)\n"
 "MIME-Version: 1.0\n"
@@ -116,7 +116,7 @@ msgctxt "work_type"
 msgid ""
 "A ballet is music composed to be used, together with a choreography, for a "
 "ballet dance production."
-msgstr "בלט היא מוסיקה שהולחנה לשמוש יחד עם כוריאוגרפיה, להפקת ריקוד בלט."
+msgstr "בלט הוא יצירה מוזיקלית שהולחנה לשמש יחד עם כוראוגרפיה, להפקת ריקוד בלט."
 
 #: DB:work_type/description:3
 msgctxt "work_type"
@@ -137,7 +137,7 @@ msgid ""
 "A convention, expo or trade fair is an event which is not typically "
 "orientated around music performances, but can include them as side "
 "activities."
-msgstr "כנס, expo או יריד מסחר, הם אירועים שאינם מכוונים בדרך כלל סביב הופעות מוסיקה, אבל יכולים לכלול אותם כפעילויות צד."
+msgstr "כנס, תערוכה או יריד מסחר, הם אירועים שאינם מכוונים בדרך כלל סביב הופעות מוזיקה, אבל יכולים לכלול אותם כפעילויות צד."
 
 #: DB:release_status/description:2
 msgctxt "release_status"
@@ -165,7 +165,7 @@ msgid ""
 "A mass is a choral composition that sets the invariable portions of the "
 "Christian Eucharistic liturgy (Kyrie - Gloria - Credo - Sanctus - Benedictus"
 " - Agnus Dei, with other portions sometimes added) to music."
-msgstr "מסה היא קומפוזיציה מקהלתית המכילה את האלמנטים הבלתי-נמנעים מהליטורגיה הנוצרית (קירי - גלוריה - קרדו - סנקטוס - בנדיקטוס - אגנוס דיי, עם רכיבים אחרים שנוספות לפעמים) למוסיקה."
+msgstr "מסה היא קומפוזיציה מקהלתית המכילה את האלמנטים הבלתי-נמנעים מהליטורגיה הנוצרית (קירי - גלוריה - קרדו - סנקטוס - בנדיקטוס - אגנוס דיי, עם רכיבים אחרים שנוספות לפעמים) למוזיקה."
 
 #: DB:event_type/description:5
 msgctxt "event_type"
@@ -218,7 +218,7 @@ msgctxt "place_type"
 msgid ""
 "A place designed for non-live production of music, typically a recording "
 "studio."
-msgstr "מקום המיועד להפקה של מוסיקה מוקלטת מראש, בדרך כלל אולפן הקלטות."
+msgstr "מקום המיועד להפקה של מוזיקה מוקלטת מראש, בדרך כלל אולפן הקלטות."
 
 #: DB:place_type/description:2
 msgctxt "place_type"
@@ -233,7 +233,7 @@ msgid ""
 "A place that has worship or religious studies as its main function. "
 "Religious buildings often host concerts and serve as recording locations, "
 "especially for classical music."
-msgstr "מקום שמטרתו העיקרית לשמש לפולחן או ללימודי דת. בתי תפילה, לעיתם מארחים קונצרטים ומשמשים גם להקלטות, במיוחד של מוסיקה קלאסית."
+msgstr "מקום שמטרתו העיקרית לשמש לפולחן או ללימודי דת. בתי תפילה, לעיתם מארחים קונצרטים ומשמשים גם להקלטות, במיוחד של מוזיקה קלאסית."
 
 #: DB:place_type/description:4
 msgctxt "place_type"
@@ -274,7 +274,7 @@ msgctxt "place_type"
 msgid ""
 "A school, university or other similar educational institution (especially, "
 "but not only, one where music is taught)"
-msgstr "בית ספר, אוניברסיטה או מוסד חינוכי דומה אחר (במיוחד, אך לא רק, שבו מלמדים מוסיקה)"
+msgstr "בית ספר, אוניברסיטה או מוסד חינוכי דומה אחר (במיוחד, אך לא רק, שבו מלמדים מוזיקה)"
 
 #: DB:series_type/description:6
 msgctxt "series_type"
@@ -338,7 +338,7 @@ msgctxt "work_type"
 msgid ""
 "A soundtrack is the music that accompanies a film, TV program, videogame, or"
 " even book."
-msgstr "פסקול הוא המוסיקה המלווה סרט, תוכנית טלוויזיה, משחק וידאו, או אפילו ספר."
+msgstr "פסקול הוא המוזיקה המלווה סרט, תוכנית טלוויזיה, משחק וידאו, או אפילו ספר."
 
 #: DB:instrument_type/description:6
 msgctxt "instrument_type"
@@ -373,7 +373,7 @@ msgstr "סימפוניה היא קומפוזיציה מורחבת, כמעט תמ
 #: DB:release_packaging/description:2
 msgctxt "release_packaging"
 msgid "A thinner jewel case, commonly used for CD singles."
-msgstr ""
+msgstr "קופסת תקליטור דקה, משמשת לרוב לאחסון תקליטורי סינגל."
 
 #: DB:work_type/description:19
 msgctxt "work_type"
@@ -381,7 +381,7 @@ msgid ""
 "A zarzuela is a Spanish lyric-dramatic work that alternates between spoken "
 "and sung scenes, the latter incorporating operatic and popular song, as well"
 " as dance."
-msgstr ""
+msgstr "זארזואלה היא יצירה לירית-דרמטית ספרדית אשר בה מתחלפות סצנות מדוברות וסצנות מושרות, האחרונה אף משלבת שיר אופראי ופופולארי, כמו גם ריקוד."
 
 #: DB:work_attribute_type_allowed_value/value:26
 msgctxt "work_attribute_type_allowed_value"
@@ -496,7 +496,7 @@ msgstr "אלבום"
 #: DB:series_ordering_type/description:2
 msgctxt "series_ordering_type"
 msgid "Allows for manually setting the position of each item in the series."
-msgstr ""
+msgstr "מאפשר להגדיר ידנית את המיקום של כל פריט בסדרה."
 
 #: DB:work_attribute_type_allowed_value/value:40
 msgctxt "work_attribute_type_allowed_value"
@@ -589,7 +589,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:310
 msgctxt "work_attribute_type_allowed_value"
 msgid "Anberefşan"
-msgstr ""
+msgstr "אנברפשאן"
 
 #: DB:release_status/description:1
 msgctxt "release_status"
@@ -611,7 +611,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:313
 msgctxt "work_attribute_type_allowed_value"
 msgid "Arabankurdi"
-msgstr ""
+msgstr "אראבאנקורדי"
 
 #: DB:work_attribute_type_allowed_value/value:314
 msgctxt "work_attribute_type_allowed_value"
@@ -626,7 +626,7 @@ msgstr "אראם אי דיל"
 #: DB:work_attribute_type_allowed_value/value:604
 msgctxt "work_attribute_type_allowed_value"
 msgid "Aranağme"
-msgstr ""
+msgstr "אראנאג'מה"
 
 #: DB:work_attribute_type_allowed_value/value:316
 msgctxt "work_attribute_type_allowed_value"
@@ -888,7 +888,7 @@ msgctxt "work_type"
 msgid ""
 "Beijing opera is a form of traditional Chinese theatre which combines music,"
 " vocal performance, mime, dance, and acrobatics."
-msgstr "האופרה בבייג'ינג היא סוג של תיאטרון סיני מסורתי המשלב מוסיקה, ביצועים קוליים, פנטומימה, ריקוד ואקרובטיקה."
+msgstr "האופרה בבייג'ינג היא סוג של תיאטרון סיני מסורתי המשלב מוזיקה, ביצועים קוליים, פנטומימה, ריקוד ואקרובטיקה."
 
 #: DB:work_attribute_type_allowed_value/value:697
 msgctxt "work_attribute_type_allowed_value"
@@ -953,7 +953,7 @@ msgstr "בסטהניגר"
 #: DB:medium_format/name:24
 msgctxt "medium_format"
 msgid "Betamax"
-msgstr ""
+msgstr "בטאמקס"
 
 #: DB:work_attribute_type_allowed_value/value:329
 msgctxt "work_attribute_type_allowed_value"
@@ -988,7 +988,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:335
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bezm-i Tarab"
-msgstr ""
+msgstr "בזם-אי-טאראב"
 
 #: DB:work_attribute_type_allowed_value/value:52
 msgctxt "work_attribute_type_allowed_value"
@@ -1063,7 +1063,7 @@ msgstr "ייצור בוטלג"
 #: DB:work_attribute_type_allowed_value/value:607
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bozlak"
-msgstr ""
+msgstr "בוזלק"
 
 #: DB:instrument_alias_type/name:3
 msgctxt "alias_type"
@@ -1098,7 +1098,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:338
 msgctxt "work_attribute_type_allowed_value"
 msgid "Büzürk"
-msgstr ""
+msgstr "בוזורק"
 
 #: DB:work_attribute_type_allowed_value/value:46
 msgctxt "work_attribute_type_allowed_value"
@@ -1108,7 +1108,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:50
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bēgaḍa"
-msgstr ""
+msgstr "בגדה"
 
 #: DB:work_attribute_type_allowed_value/value:60
 msgctxt "work_attribute_type_allowed_value"
@@ -1364,7 +1364,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:705
 msgctxt "work_attribute_type_allowed_value"
 msgid "Curcuna"
-msgstr ""
+msgstr "קורקונה"
 
 #: DB:work_attribute_type_allowed_value/value:67
 msgctxt "work_attribute_type_allowed_value"
@@ -1434,7 +1434,7 @@ msgstr "DCC"
 #: DB:release_group_secondary_type/name:8
 msgctxt "release_group_secondary_type"
 msgid "DJ-mix"
-msgstr ""
+msgstr "די.ג'י מיקס"
 
 #: DB:medium_format/name:44
 msgctxt "medium_format"
@@ -1464,17 +1464,17 @@ msgstr "DVD פלוס"
 #: DB:medium_format/name:70
 msgctxt "medium_format"
 msgid "DVDplus (CD side)"
-msgstr ""
+msgstr "DVD פלוס (תקליטור)"
 
 #: DB:medium_format/name:68
 msgctxt "medium_format"
 msgid "DVDplus (DVD-Audio side)"
-msgstr ""
+msgstr "DVD פלוס (שמע)"
 
 #: DB:medium_format/name:69
 msgctxt "medium_format"
 msgid "DVDplus (DVD-Video side)"
-msgstr ""
+msgstr "DVD פלוס (וידאו)"
 
 #: DB:work_attribute_type_allowed_value/value:343
 msgctxt "work_attribute_type_allowed_value"
@@ -1714,12 +1714,12 @@ msgstr ""
 #: DB:medium_format/name:65
 msgctxt "medium_format"
 msgid "DualDisc (DVD-Audio side)"
-msgstr ""
+msgstr "דיסק כפול (DVD שמע)"
 
 #: DB:medium_format/name:66
 msgctxt "medium_format"
 msgid "DualDisc (DVD-Video side)"
-msgstr ""
+msgstr "דיסק כפול (DVD וידאו)"
 
 #: DB:work_attribute_type_allowed_value/value:612
 msgctxt "work_attribute_type_allowed_value"
@@ -5179,14 +5179,14 @@ msgctxt "medium_format"
 msgid ""
 "The CD layer of a DVDplus. The DVD layer should be added as a separate "
 "medium."
-msgstr ""
+msgstr "שכבת תקליטורים של DVD פלוס. יש להוסיף שכבה זו כתווך נפרד."
 
 #: DB:medium_format/description:67
 msgctxt "medium_format"
 msgid ""
 "The CD layer of a DualDisc. The DVD layer should be added as a separate "
 "medium."
-msgstr ""
+msgstr "שכבת תקליטורים של דיסק כפול. יש להוסיף שכבה זו כתווך נפרד."
 
 #: DB:medium_format/description:63
 msgctxt "medium_format"
@@ -5209,21 +5209,21 @@ msgctxt "medium_format"
 msgid ""
 "The DVD (audio) layer of a DVDplus. The CD layer should be added as a "
 "separate medium."
-msgstr ""
+msgstr "שכבת DVD (שמע). יש להוסיף שכבה זו כתווך נפרד."
 
 #: DB:medium_format/description:65
 msgctxt "medium_format"
 msgid ""
 "The DVD (audio) layer of a DualDisc. The CD layer should be added as a "
 "separate medium."
-msgstr ""
+msgstr "שכבת DVD (שמע) של דיסק כפול. יש להוסיף שכבה זו כתווך נפרד."
 
 #: DB:medium_format/description:66
 msgctxt "medium_format"
 msgid ""
 "The DVD (video) layer of a DualDisc. The CD layer should be added as a "
 "separate medium."
-msgstr ""
+msgstr "שכבת DVD (וידאו) של דיסק כפול. יש להוסיף שכבה זו כתווך נפרד."
 
 #: DB:medium_format/description:64
 msgctxt "medium_format"
@@ -5613,7 +5613,7 @@ msgstr ""
 #: DB:work_type/name:19
 msgctxt "work_type"
 msgid "Zarzuela"
-msgstr ""
+msgstr "זארזואלה"
 
 #: DB:work_attribute_type_allowed_value/value:591
 msgctxt "work_attribute_type_allowed_value"
