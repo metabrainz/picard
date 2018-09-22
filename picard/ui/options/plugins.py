@@ -172,6 +172,7 @@ class PluginsOptionsPage(OptionsPage):
         for plugin in sorted(self.manager.available_plugins, key=attrgetter('name')):
             if plugin.module_name not in installed:
                 plugin.can_be_downloaded = True
+                plugin.enabled = plugin.module_name in enabled_plugins
                 self.add_plugin_item(plugin)
 
         self._user_interaction(True)
@@ -219,13 +220,11 @@ class PluginsOptionsPage(OptionsPage):
             msgbox.exec_()
             return
         plugin.new_version = ""
-        plugin.enabled = False
+        plugin.enabled = True
         plugin.can_be_updated = False
         plugin.can_be_downloaded = False
         for i, p in self.items.items():
             if plugin.module_name == p.module_name:
-                if i.checkState(COLUMN_NAME) == QtCore.Qt.Checked:
-                    plugin.enabled = True
                 self.add_plugin_item(plugin, item=i)
                 self.ui.plugins.setCurrentItem(i)
                 self.change_details()
@@ -280,18 +279,27 @@ class PluginsOptionsPage(OptionsPage):
     def add_plugin_item(self, plugin, item=None):
         if item is None:
             item = PluginTreeWidgetItem(self.ui.plugins)
+        item.setData(COLUMN_NAME, QtCore.Qt.UserRole, plugin)
         item.setFlags(item.flags() | QtCore.Qt.ItemIsUserCheckable)
         item.setText(COLUMN_NAME, plugin.name)
         item.setSortData(COLUMN_NAME, plugin.name.lower())
-        if plugin.enabled:
-            item.setCheckState(COLUMN_NAME, QtCore.Qt.Checked)
-        else:
-            item.setCheckState(COLUMN_NAME, QtCore.Qt.Unchecked)
+
+        def update_checkbox(item, enabled=None):
+            plugin = item.data(COLUMN_NAME, QtCore.Qt.UserRole)
+            if enabled is not None:
+                plugin.enabled = bool(enabled)
+            if plugin.enabled:
+                item.setCheckState(COLUMN_NAME, QtCore.Qt.Checked)
+            else:
+                item.setCheckState(COLUMN_NAME, QtCore.Qt.Unchecked)
+
+        update_checkbox(item)
 
         if plugin.marked_for_update:
-            item.setText(COLUMN_VERSION, plugin.new_version)
+            version = plugin.new_version
         else:
-            item.setText(COLUMN_VERSION, plugin.version)
+            version = plugin.version
+        item.setText(COLUMN_VERSION, version)
 
         def download_processor(action):
             self.ui.plugins.setCurrentItem(item)
@@ -304,10 +312,12 @@ class PluginsOptionsPage(OptionsPage):
         bt_action = PLUGIN_ACTION_NONE
         if plugin.is_uninstalled:
             item.setFlags(item.flags() ^ QtCore.Qt.ItemIsUserCheckable)
+            update_checkbox(item, enabled=False)
 
         if plugin.can_be_downloaded:
             bt_action = PLUGIN_ACTION_INSTALL
             item.setFlags(item.flags() ^ QtCore.Qt.ItemIsUserCheckable)
+            update_checkbox(item, enabled=False)
         else:
             bt_action = PLUGIN_ACTION_UNINSTALL
 
