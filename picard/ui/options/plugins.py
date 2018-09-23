@@ -31,6 +31,8 @@ from PyQt5 import (
     QtWidgets,
 )
 
+from PyQt5.QtWidgets import QTreeWidgetItemIterator
+
 from picard import (
     config,
     log,
@@ -102,7 +104,6 @@ class PluginsOptionsPage(OptionsPage):
         self.ui.setupUi(self)
         #fix for PICARD-1226, QT bug (https://bugreports.qt.io/browse/QTBUG-22572) workaround
         self.ui.plugins.setStyleSheet('')
-        self.items = {}
         self.ui.plugins.itemSelectionChanged.connect(self.change_details)
         self.ui.plugins.mimeTypes = self.mimeTypes
         self.ui.plugins.dropEvent = self.dropEvent
@@ -123,14 +124,36 @@ class PluginsOptionsPage(OptionsPage):
         self.ui.plugins.header().resizeSection(COLUMN_ACTION, 100)
         self.ui.plugins.setSortingEnabled(True)
 
+    def items(self):
+        iterator = QTreeWidgetItemIterator(self.ui.plugins, QTreeWidgetItemIterator.All)
+        while iterator.value():
+            item = iterator.value()
+            iterator += 1
+            plugin = item.data(COLUMN_NAME, QtCore.Qt.UserRole)
+            yield (item, plugin)
+
+    def find_by_name(self, plugin_name):
+        for i, p in self.items():
+            if plugin_name == p.module_name:
+                return (i, p)
+        return (None, None)
+
+    def selected_plugin(self):
+        try:
+            item = self.ui.plugins.selectedItems()[0]
+            return item.data(COLUMN_NAME, QtCore.Qt.UserRole)
+        except IndexError:
+            return None
+
     def save_state(self):
         header = self.ui.plugins.header()
         config.persist["plugins_list_state"] = header.saveState()
         config.persist["plugins_list_sort_section"] = header.sortIndicatorSection()
         config.persist["plugins_list_sort_order"] = header.sortIndicatorOrder()
-        try:
-            selected = self.items[self.ui.plugins.selectedItems()[COLUMN_NAME]].module_name
-        except IndexError:
+        plugin = self.selected_plugin()
+        if plugin:
+            selected = plugin.module_name
+        else:
             selected = ""
         config.persist["plugins_list_selected"] = selected
 
@@ -143,11 +166,10 @@ class PluginsOptionsPage(OptionsPage):
         self.ui.plugins.sortByColumn(idx, order)
         selected = restore_selection and config.persist["plugins_list_selected"]
         if selected:
-            for i, p in self.items.items():
-                if selected == p.module_name:
-                    self.ui.plugins.setCurrentItem(i)
-                    self.ui.plugins.scrollToItem(i)
-                    break
+            i, _unused_ = self.find_by_name(selected)
+            if i:
+                self.ui.plugins.setCurrentItem(i)
+                self.ui.plugins.scrollToItem(i)
         else:
             self.ui.plugins.setCurrentItem(self.ui.plugins.topLevelItem(0))
 
@@ -178,10 +200,9 @@ class PluginsOptionsPage(OptionsPage):
         self._user_interaction(True)
 
     def _remove_all(self):
-        for i, p in self.items.items():
+        for i, p in self.items():
             idx = self.ui.plugins.indexOfTopLevelItem(i)
             self.ui.plugins.takeTopLevelItem(idx)
-        self.items = {}
 
     def restore_defaults(self):
         # Plugin manager has to be updated
@@ -223,38 +244,38 @@ class PluginsOptionsPage(OptionsPage):
         plugin.enabled = True
         plugin.can_be_updated = False
         plugin.can_be_downloaded = False
-        for i, p in self.items.items():
-            if plugin.module_name == p.module_name:
-                self.add_plugin_item(plugin, item=i)
-                self.ui.plugins.setCurrentItem(i)
-                self.change_details()
-                break
+        item, _unused_ = self.find_by_name(plugin.module_name)
+        if item:
+            self.add_plugin_item(plugin, item=item)
+            self.ui.plugins.setCurrentItem(item)
+            self.change_details()
         else:
             self.add_plugin_item(plugin)
 
     def plugin_updated(self, plugin_name):
-        for i, p in self.items.items():
-            if plugin_name == p.module_name:
-                p.can_be_updated = False
-                p.can_be_downloaded = False
-                p.marked_for_update = True
-                item = self.ui.plugins.currentItem()
-                self.ui.plugins.itemWidget(item, COLUMN_VERSION).setText(_("Updated"))
-                self.ui.plugins.itemWidget(item, COLUMN_VERSION).setEnabled(False)
-                msgbox = QtWidgets.QMessageBox(self)
-                msgbox.setText(
-                    _("The plugin '%s' will be upgraded to version %s on next run of Picard.")
-                    % (p.name, p.new_version))
-                msgbox.setStandardButtons(QtWidgets.QMessageBox.Ok)
-                msgbox.setDefaultButton(QtWidgets.QMessageBox.Ok)
-                msgbox.exec_()
-                self.add_plugin_item(p, item=i)
-                self.ui.plugins.setCurrentItem(i)
-                self.change_details()
-                break
+        i, p = self.find_by_name(plugin_name)
+        if i:
+            p.can_be_updated = False
+            p.can_be_downloaded = False
+            p.marked_for_update = True
+            item = self.ui.plugins.currentItem()
+            self.ui.plugins.itemWidget(item, COLUMN_VERSION).setText(_("Updated"))
+            self.ui.plugins.itemWidget(item, COLUMN_VERSION).setEnabled(False)
+            msgbox = QtWidgets.QMessageBox(self)
+            msgbox.setText(
+                _("The plugin '%s' will be upgraded to version %s on next run of Picard.")
+                % (p.name, p.new_version))
+            msgbox.setStandardButtons(QtWidgets.QMessageBox.Ok)
+            msgbox.setDefaultButton(QtWidgets.QMessageBox.Ok)
+            msgbox.exec_()
+            self.add_plugin_item(p, item=i)
+            self.ui.plugins.setCurrentItem(i)
+            self.change_details()
 
     def uninstall_plugin(self):
-        plugin = self.items[self.ui.plugins.selectedItems()[COLUMN_NAME]]
+        plugin = self.selected_plugin()
+        if not plugin:
+            return
         buttonReply = QtWidgets.QMessageBox.question(
             self,
             _("Uninstall plugin?"),
@@ -353,21 +374,19 @@ class PluginsOptionsPage(OptionsPage):
             button.released.connect(partial(download_processor, PLUGIN_ACTION_UPDATE))
 
         self.ui.plugins.header().resizeSections(QtWidgets.QHeaderView.ResizeToContents)
-        self.items[item] = plugin
         return item
 
     def save(self):
         enabled_plugins = []
-        for item, plugin in self.items.items():
+        for item, plugin in self.items():
             if item.checkState(COLUMN_NAME) == QtCore.Qt.Checked:
                 enabled_plugins.append(plugin.module_name)
         config.setting["enabled_plugins"] = enabled_plugins
         self.save_state()
 
     def change_details(self):
-        try:
-            plugin = self.items[self.ui.plugins.selectedItems()[COLUMN_NAME]]
-        except IndexError:
+        plugin = self.selected_plugin()
+        if not plugin:
             return
         text = []
         if plugin.new_version:
@@ -398,8 +417,9 @@ class PluginsOptionsPage(OptionsPage):
                 self.manager.install_plugin(path, action=PLUGIN_ACTION_INSTALL)
 
     def download_plugin(self, action):
-        selected = self.ui.plugins.selectedItems()[COLUMN_NAME]
-        plugin = self.items[selected]
+        plugin = self.selected_plugin()
+        if not plugin:
+            return
 
         self.tagger.webservice.get(
             PLUGINS_API['host'],
