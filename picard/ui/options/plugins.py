@@ -232,6 +232,11 @@ class PluginsOptionsPage(OptionsPage):
         self._remove_all()
         self.manager.query_available_plugins(callback=self._reload)
 
+    def update_item(self, item, plugin):
+        self.add_plugin_item(plugin, item=item)
+        self.ui.plugins.setCurrentItem(item)
+        self.change_details()
+
     def plugin_installed(self, plugin):
         if not plugin.compatible:
             msgbox = QtWidgets.QMessageBox(self)
@@ -255,12 +260,6 @@ class PluginsOptionsPage(OptionsPage):
     def plugin_updated(self, plugin_name):
         item, plugin = self.find_by_name(plugin_name)
         if item:
-            plugin.can_be_updated = False
-            plugin.can_be_downloaded = False
-            plugin.marked_for_update = True
-            col_version = self.ui.plugins.itemWidget(item, COLUMN_VERSION)
-            col_version.setText(_("Updated"))
-            col_version.setEnabled(False)
             msgbox = QtWidgets.QMessageBox(self)
             msgbox.setText(
                 _("The plugin '%s' will be upgraded to version %s on next run of Picard.")
@@ -268,9 +267,11 @@ class PluginsOptionsPage(OptionsPage):
             msgbox.setStandardButtons(QtWidgets.QMessageBox.Ok)
             msgbox.setDefaultButton(QtWidgets.QMessageBox.Ok)
             msgbox.exec_()
-            self.add_plugin_item(plugin, item=item)
-            self.ui.plugins.setCurrentItem(item)
-            self.change_details()
+
+            plugin.can_be_updated = False
+            plugin.can_be_downloaded = False
+            plugin.marked_for_update = True
+            self.update_item(item, plugin)
 
     def uninstall_plugin(self):
         plugin = self.selected_plugin()
@@ -292,11 +293,7 @@ class PluginsOptionsPage(OptionsPage):
             if plugin.module_name in config.setting["enabled_plugins"]:
                 config.setting["enabled_plugins"].remove(plugin.module_name)
 
-            col_action = self.ui.plugins.itemWidget(item, COLUMN_ACTION)
-            col_action.setText(_("Uninstalled"))
-            col_action.setEnabled(False)
-            item.setCheckState(COLUMN_NAME, QtCore.Qt.Unchecked)
-            item.setFlags(item.flags() ^ QtCore.Qt.ItemIsUserCheckable)
+            self.add_plugin_item(plugin, item=item)
 
     def add_plugin_item(self, plugin, item=None):
         if item is None:
@@ -354,7 +351,7 @@ class PluginsOptionsPage(OptionsPage):
             button = QtWidgets.QPushButton(label)
             button.setMaximumHeight(button.fontMetrics().boundingRect(label).height() + 7)
             self.ui.plugins.setItemWidget(item, COLUMN_ACTION, button)
-            if plugin.is_uninstalled:
+            if plugin.is_uninstalled or plugin.marked_for_update:
                 button.setEnabled(False)
 
             if bt_action == PLUGIN_ACTION_INSTALL:
@@ -362,14 +359,14 @@ class PluginsOptionsPage(OptionsPage):
             else:
                 button.released.connect(uninstall_processor)
 
-        if plugin.can_be_updated:
+        if plugin.can_be_updated or plugin.marked_for_update:
             label = _("Upgrade from %s to %s" % (plugin.version, plugin.new_version))
             if plugin.marked_for_update:
                 label = _("Updated")
             button = QtWidgets.QPushButton(label)
             button.setMaximumHeight(button.fontMetrics().boundingRect(label).height() + 7)
             self.ui.plugins.setItemWidget(item, COLUMN_VERSION, button)
-            if plugin.marked_for_update:
+            if plugin.is_uninstalled or plugin.marked_for_update:
                 button.setEnabled(False)
 
             button.released.connect(partial(download_processor, PLUGIN_ACTION_UPDATE))
