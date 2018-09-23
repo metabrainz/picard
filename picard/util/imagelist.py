@@ -35,7 +35,7 @@ class ImageList(list):
             return result
 
 
-class State:
+class ImageListState:
     def __init__(self):
         self.new_images = set()
         self.orig_images = set()
@@ -81,7 +81,7 @@ def update_metadata_images(obj):
     from picard.cluster import Cluster
     from picard.track import Track
 
-    state = State()
+    state = ImageListState()
 
     if isinstance(obj, Album):
         sources = []
