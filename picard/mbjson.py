@@ -97,7 +97,7 @@ def _decamelcase(text):
 
 
 _REPLACE_MAP = {}
-_EXTRA_ATTRS = ['guest', 'additional', 'minor']
+_EXTRA_ATTRS = ['guest', 'additional', 'minor', 'solo']
 _BLANK_SPECIAL_RELTYPES = {'vocal': 'vocals'}
 
 

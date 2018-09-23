@@ -124,6 +124,27 @@ class NullRecordingTest(MBJSONTest):
         self.assertEqual(m, {})
 
 
+class RecordingCreditsTest(MBJSONTest):
+
+    def setUp(self):
+        self.init_test('recording_credits.json')
+
+    def test_recording_solo_vocals(self):
+        m = Metadata()
+        t = Track("1")
+        recording_to_metadata(self.json_doc, m, t)
+        self.assertTrue('performer:solo' not in m)
+        self.assertEqual(m['performer:solo vocals'], 'Frida')
+
+    def test_recording_standardize_artist_credits(self):
+        m = Metadata()
+        t = Track("1")
+        config.setting["standardize_artists"] = True
+        recording_to_metadata(self.json_doc, m, t)
+        self.assertTrue('performer:solo' not in m)
+        self.assertEqual(m['performer:solo vocals'], 'Anni-Frid Lyngstad')
+
+
 class TrackTest(MBJSONTest):
 
     def setUp(self):
