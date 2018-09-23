@@ -133,9 +133,9 @@ class PluginsOptionsPage(OptionsPage):
             yield (item, plugin)
 
     def find_by_name(self, plugin_name):
-        for i, p in self.items():
-            if plugin_name == p.module_name:
-                return (i, p)
+        for item, plugin in self.items():
+            if plugin_name == plugin.module_name:
+                return (item, plugin)
         return (None, None)
 
     def selected_plugin(self):
@@ -166,10 +166,10 @@ class PluginsOptionsPage(OptionsPage):
         self.ui.plugins.sortByColumn(idx, order)
         selected = restore_selection and config.persist["plugins_list_selected"]
         if selected:
-            i, _unused_ = self.find_by_name(selected)
-            if i:
-                self.ui.plugins.setCurrentItem(i)
-                self.ui.plugins.scrollToItem(i)
+            item, _unused_ = self.find_by_name(selected)
+            if item:
+                self.ui.plugins.setCurrentItem(item)
+                self.ui.plugins.scrollToItem(item)
         else:
             self.ui.plugins.setCurrentItem(self.ui.plugins.topLevelItem(0))
 
@@ -200,8 +200,8 @@ class PluginsOptionsPage(OptionsPage):
         self._user_interaction(True)
 
     def _remove_all(self):
-        for i, p in self.items():
-            idx = self.ui.plugins.indexOfTopLevelItem(i)
+        for item, _unused_ in self.items():
+            idx = self.ui.plugins.indexOfTopLevelItem(item)
             self.ui.plugins.takeTopLevelItem(idx)
 
     def restore_defaults(self):
@@ -253,23 +253,23 @@ class PluginsOptionsPage(OptionsPage):
             self.add_plugin_item(plugin)
 
     def plugin_updated(self, plugin_name):
-        i, p = self.find_by_name(plugin_name)
-        if i:
-            p.can_be_updated = False
-            p.can_be_downloaded = False
-            p.marked_for_update = True
+        item, plugin = self.find_by_name(plugin_name)
+        if item:
+            plugin.can_be_updated = False
+            plugin.can_be_downloaded = False
+            plugin.marked_for_update = True
             item = self.ui.plugins.currentItem()
             self.ui.plugins.itemWidget(item, COLUMN_VERSION).setText(_("Updated"))
             self.ui.plugins.itemWidget(item, COLUMN_VERSION).setEnabled(False)
             msgbox = QtWidgets.QMessageBox(self)
             msgbox.setText(
                 _("The plugin '%s' will be upgraded to version %s on next run of Picard.")
-                % (p.name, p.new_version))
+                % (plugin.name, plugin.new_version))
             msgbox.setStandardButtons(QtWidgets.QMessageBox.Ok)
             msgbox.setDefaultButton(QtWidgets.QMessageBox.Ok)
             msgbox.exec_()
-            self.add_plugin_item(p, item=i)
-            self.ui.plugins.setCurrentItem(i)
+            self.add_plugin_item(plugin, item=item)
+            self.ui.plugins.setCurrentItem(item)
             self.change_details()
 
     def uninstall_plugin(self):
