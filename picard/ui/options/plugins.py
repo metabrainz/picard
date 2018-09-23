@@ -258,9 +258,9 @@ class PluginsOptionsPage(OptionsPage):
             plugin.can_be_updated = False
             plugin.can_be_downloaded = False
             plugin.marked_for_update = True
-            item = self.ui.plugins.currentItem()
-            self.ui.plugins.itemWidget(item, COLUMN_VERSION).setText(_("Updated"))
-            self.ui.plugins.itemWidget(item, COLUMN_VERSION).setEnabled(False)
+            col_version = self.ui.plugins.itemWidget(item, COLUMN_VERSION)
+            col_version.setText(_("Updated"))
+            col_version.setEnabled(False)
             msgbox = QtWidgets.QMessageBox(self)
             msgbox.setText(
                 _("The plugin '%s' will be upgraded to version %s on next run of Picard.")
@@ -292,8 +292,9 @@ class PluginsOptionsPage(OptionsPage):
             if plugin.module_name in config.setting["enabled_plugins"]:
                 config.setting["enabled_plugins"].remove(plugin.module_name)
 
-            self.ui.plugins.itemWidget(item, COLUMN_ACTION).setText(_("Uninstalled"))
-            self.ui.plugins.itemWidget(item, COLUMN_ACTION).setEnabled(False)
+            col_action = self.ui.plugins.itemWidget(item, COLUMN_ACTION)
+            col_action.setText(_("Uninstalled"))
+            col_action.setEnabled(False)
             item.setCheckState(COLUMN_NAME, QtCore.Qt.Unchecked)
             item.setFlags(item.flags() ^ QtCore.Qt.ItemIsUserCheckable)
 
