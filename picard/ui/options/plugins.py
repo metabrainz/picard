@@ -226,9 +226,32 @@ class PluginsOptionsPage(OptionsPage):
         self._populate()
         self.restore_state()
 
+    def _preserve_plugins_states(self):
+        self._preserve = {}
+        self._preserve_selected = None
+        for item, plugin in self.items():
+            self._preserve[plugin.module_name] = plugin.states
+        selected = self.selected_plugin()
+        if selected:
+            self._preserve_selected = selected.module_name
+        else:
+            self._preserve_selected = None
+
+    def _restore_plugins_states(self):
+        found_selected = False
+        for item, plugin in self.items():
+            if plugin.module_name in self._preserve:
+                plugin.states = self._preserve[plugin.module_name]
+                if self._preserve_selected == plugin.module_name:
+                    self.ui.plugins.setCurrentItem(item)
+                    self.ui.plugins.scrollToItem(item)
+                    found_selected = True
+        if not found_selected:
+            self.ui.plugins.setCurrentItem(self.ui.plugins.topLevelItem(0))
+
     def _reload(self):
         self._populate()
-        self.restore_state(restore_selection=True)
+        self._restore_plugins_states()
 
     def _user_interaction(self, enabled):
         self.ui.plugins.blockSignals(not enabled)
@@ -237,7 +260,7 @@ class PluginsOptionsPage(OptionsPage):
     def reload_list_of_plugins(self):
         self.ui.details.setText("")
         self._user_interaction(False)
-        self.save_state()
+        self._preserve_plugins_states()
         self._remove_all()
         self.manager.query_available_plugins(callback=self._reload)
 
