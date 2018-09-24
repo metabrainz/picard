@@ -171,7 +171,7 @@ class PluginsOptionsPage(OptionsPage):
         if scroll:
             self.ui.plugins.scrollToItem(item)
         self.ui.plugins.setCurrentItem(item)
-        self.change_details()
+        self.refresh_details(self.item_plugin(item))
 
 
     def restore_state(self):
@@ -423,10 +423,7 @@ class PluginsOptionsPage(OptionsPage):
         config.setting["enabled_plugins"] = enabled_plugins
         self.save_state()
 
-    def change_details(self):
-        plugin = self.selected_plugin()
-        if not plugin:
-            return
+    def refresh_details(self, plugin):
         text = []
         if plugin.new_version:
             if plugin.has_state(PS_MARKED_FOR_UPDATE):
@@ -443,6 +440,12 @@ class PluginsOptionsPage(OptionsPage):
             text.append("<b>" + _("License") + "</b>: " + plugin.license)
         text.append("<b>" + _("Files") + "</b>: " + plugin.files_list)
         self.ui.details.setText("<p>%s</p>" % "<br/>\n".join(text))
+
+    def change_details(self):
+        plugin = self.selected_plugin()
+        if not plugin:
+            return
+        self.refresh_details(plugin)
 
     def open_plugins(self):
         files, _filter = QtWidgets.QFileDialog.getOpenFileNames(
