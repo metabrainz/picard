@@ -131,7 +131,8 @@ class PluginsOptionsPage(OptionsPage):
         self.ui.plugins.header().resizeSection(COLUMN_ACTION, 100)
         self.ui.plugins.setSortingEnabled(True)
 
-    def item_plugin(self, item):
+    @staticmethod
+    def item_plugin(item):
         return item.data(COLUMN_NAME, QtCore.Qt.UserRole)
 
     def items(self):
