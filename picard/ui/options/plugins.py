@@ -164,6 +164,13 @@ class PluginsOptionsPage(OptionsPage):
             selected = ""
         config.persist["plugins_list_selected"] = selected
 
+    def set_current_item(self, item, scroll=False):
+        if scroll:
+            self.ui.plugins.scrollToItem(item)
+        self.ui.plugins.setCurrentItem(item)
+        self.change_details()
+
+
     def restore_state(self):
         header = self.ui.plugins.header()
         header.restoreState(config.persist["plugins_list_state"])
@@ -172,13 +179,13 @@ class PluginsOptionsPage(OptionsPage):
         header.setSortIndicator(idx, order)
         self.ui.plugins.sortByColumn(idx, order)
         selected = config.persist["plugins_list_selected"]
+        item = None
         if selected:
             item, _unused_ = self.find_by_name(selected)
-            if item:
-                self.ui.plugins.setCurrentItem(item)
-                self.ui.plugins.scrollToItem(item)
-        else:
-            self.ui.plugins.setCurrentItem(self.ui.plugins.topLevelItem(0))
+        if not item:
+            item = self.ui.plugins.topLevelItem(0)
+        if item:
+            self.set_current_item(item, scroll=True)
 
     def _populate(self):
         self.ui.details.setText("<b>" + _("No plugins installed.") + "</b>")
@@ -239,15 +246,17 @@ class PluginsOptionsPage(OptionsPage):
 
     def _restore_plugins_states(self):
         found_selected = False
+        current = None
         for item, plugin in self.items():
             if plugin.module_name in self._preserve:
                 plugin.states = self._preserve[plugin.module_name]
                 if self._preserve_selected == plugin.module_name:
-                    self.ui.plugins.setCurrentItem(item)
-                    self.ui.plugins.scrollToItem(item)
-                    found_selected = True
-        if not found_selected:
-            self.ui.plugins.setCurrentItem(self.ui.plugins.topLevelItem(0))
+                    current = item
+
+        if not current:
+            current = self.ui.plugins.topLevelItem(0)
+        if current:
+            self.set_current_item(current, scroll=True)
 
     def _reload(self):
         self._populate()
@@ -348,11 +357,11 @@ class PluginsOptionsPage(OptionsPage):
         item.setText(COLUMN_VERSION, version)
 
         def download_processor(action):
-            self.ui.plugins.setCurrentItem(item)
+            self.set_current_item(item)
             self.download_plugin(action)
 
         def uninstall_processor():
-            self.ui.plugins.setCurrentItem(item)
+            self.set_current_item(item)
             self.uninstall_plugin()
 
         bt_action = PLUGIN_ACTION_NONE
@@ -399,8 +408,7 @@ class PluginsOptionsPage(OptionsPage):
         self.ui.plugins.header().resizeSections(QtWidgets.QHeaderView.ResizeToContents)
 
         if make_current:
-            self.ui.plugins.setCurrentItem(item)
-            self.change_details()
+            self.set_current_item(item)
 
         return item
 
