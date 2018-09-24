@@ -310,10 +310,8 @@ class PluginsOptionsPage(OptionsPage):
             plugin.set_state(PS_MARKED_FOR_UPDATE)
             self.update_plugin_item(item, plugin, make_current=True)
 
-    def uninstall_plugin(self):
-        plugin = self.selected_plugin()
-        if not plugin:
-            return
+    def uninstall_plugin(self, item):
+        plugin = self.item_plugin(item)
         buttonReply = QtWidgets.QMessageBox.question(
             self,
             _("Uninstall plugin?"),
@@ -323,7 +321,6 @@ class PluginsOptionsPage(OptionsPage):
         )
         if buttonReply == QtWidgets.QMessageBox.Yes:
             self.manager.remove_plugin(plugin.module_name)
-            item = self.ui.plugins.currentItem()
             plugin.set_state(PS_IS_UNINSTALLED)
             plugin.set_state(PS_ENABLED, False)
 
@@ -364,8 +361,7 @@ class PluginsOptionsPage(OptionsPage):
             self.download_plugin(action)
 
         def uninstall_processor():
-            self.set_current_item(item)
-            self.uninstall_plugin()
+            self.uninstall_plugin(item)
 
         bt_action = PLUGIN_ACTION_NONE
         if is_uninstalled:
