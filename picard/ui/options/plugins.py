@@ -357,8 +357,7 @@ class PluginsOptionsPage(OptionsPage):
         item.setText(COLUMN_VERSION, version)
 
         def download_processor(action):
-            self.set_current_item(item)
-            self.download_plugin(action)
+            self.download_plugin(item, action)
 
         def uninstall_processor():
             self.uninstall_plugin(item)
@@ -454,10 +453,8 @@ class PluginsOptionsPage(OptionsPage):
             for path in files:
                 self.manager.install_plugin(path, action=PLUGIN_ACTION_INSTALL)
 
-    def download_plugin(self, action):
-        plugin = self.selected_plugin()
-        if not plugin:
-            return
+    def download_plugin(self, item, action):
+        plugin = self.item_plugin(item)
 
         self.tagger.webservice.get(
             PLUGINS_API['host'],
