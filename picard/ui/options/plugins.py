@@ -183,7 +183,7 @@ class PluginsOptionsPage(OptionsPage):
         installed = []
         for plugin in plugins:
             plugin.enabled = plugin.module_name in enabled_plugins
-            if plugin.module_name in available_plugins.keys():
+            if plugin.module_name in available_plugins:
                 latest = available_plugins[plugin.module_name]
                 if latest.split('.') > plugin.version.split('.'):
                     plugin.new_version = latest
