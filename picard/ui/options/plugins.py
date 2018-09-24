@@ -188,14 +188,14 @@ class PluginsOptionsPage(OptionsPage):
                 if latest.split('.') > plugin.version.split('.'):
                     plugin.new_version = latest
                     plugin.can_be_updated = True
-            self.add_plugin_item(plugin)
+            self.add_new_plugin_item(plugin)
             installed.append(plugin.module_name)
 
         for plugin in sorted(self.manager.available_plugins, key=attrgetter('name')):
             if plugin.module_name not in installed:
                 plugin.can_be_downloaded = True
                 plugin.enabled = plugin.module_name in enabled_plugins
-                self.add_plugin_item(plugin)
+                self.add_new_plugin_item(plugin)
 
         self._user_interaction(True)
 
@@ -232,11 +232,6 @@ class PluginsOptionsPage(OptionsPage):
         self._remove_all()
         self.manager.query_available_plugins(callback=self._reload)
 
-    def update_item(self, item, plugin):
-        self.add_plugin_item(plugin, item=item)
-        self.ui.plugins.setCurrentItem(item)
-        self.change_details()
-
     def plugin_installed(self, plugin):
         if not plugin.compatible:
             msgbox = QtWidgets.QMessageBox(self)
@@ -251,11 +246,9 @@ class PluginsOptionsPage(OptionsPage):
         plugin.can_be_downloaded = False
         item, _unused_ = self.find_by_name(plugin.module_name)
         if item:
-            self.add_plugin_item(plugin, item=item)
-            self.ui.plugins.setCurrentItem(item)
-            self.change_details()
+            self.update_plugin_item(item, plugin, make_current=True)
         else:
-            self.add_plugin_item(plugin)
+            self.add_new_plugin_item(plugin, make_current=True)
 
     def plugin_updated(self, plugin_name):
         item, plugin = self.find_by_name(plugin_name)
@@ -271,7 +264,7 @@ class PluginsOptionsPage(OptionsPage):
             plugin.can_be_updated = False
             plugin.can_be_downloaded = False
             plugin.marked_for_update = True
-            self.update_item(item, plugin)
+            self.update_plugin_item(item, plugin, make_current=True)
 
     def uninstall_plugin(self):
         plugin = self.selected_plugin()
@@ -293,11 +286,13 @@ class PluginsOptionsPage(OptionsPage):
             if plugin.module_name in config.setting["enabled_plugins"]:
                 config.setting["enabled_plugins"].remove(plugin.module_name)
 
-            self.add_plugin_item(plugin, item=item)
+            self.update_plugin_item(item, plugin, make_current=True)
 
-    def add_plugin_item(self, plugin, item=None):
-        if item is None:
-            item = PluginTreeWidgetItem(self.ui.plugins)
+    def add_new_plugin_item(self, plugin, make_current=False):
+        item = PluginTreeWidgetItem(self.ui.plugins)
+        self.update_plugin_item(item, plugin, make_current=make_current)
+
+    def update_plugin_item(self, item, plugin, make_current=False):
         item.setData(COLUMN_NAME, QtCore.Qt.UserRole, plugin)
         item.setFlags(item.flags() | QtCore.Qt.ItemIsUserCheckable)
         item.setText(COLUMN_NAME, plugin.name)
@@ -372,6 +367,11 @@ class PluginsOptionsPage(OptionsPage):
             button.released.connect(partial(download_processor, PLUGIN_ACTION_UPDATE))
 
         self.ui.plugins.header().resizeSections(QtWidgets.QHeaderView.ResizeToContents)
+
+        if make_current:
+            self.ui.plugins.setCurrentItem(item)
+            self.change_details()
+
         return item
 
     def save(self):
