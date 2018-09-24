@@ -55,12 +55,12 @@ from picard.ui.ui_options_plugins import Ui_PluginsOptionsPage
 
 COLUMN_NAME, COLUMN_VERSION, COLUMN_ACTION = range(3)
 
-(PS_ENABLED,
- PS_CAN_BE_DOWNLOADED,
- PS_CAN_BE_UPDATED,
- PS_MARKED_FOR_UPDATE,
- PS_IS_UNINSTALLED,
-) = range(5)
+(
+    PS_CAN_BE_DOWNLOADED,
+    PS_CAN_BE_UPDATED,
+    PS_MARKED_FOR_UPDATE,
+    PS_IS_UNINSTALLED,
+) = range(4)
 
 
 class PluginTreeWidgetItem(HashableTreeWidgetItem):
@@ -86,6 +86,22 @@ class PluginTreeWidgetItem(HashableTreeWidgetItem):
 
     def setSortData(self, column, data):
         self._sortData[column] = data
+
+    def is_enabled(self):
+        return self.checkState(COLUMN_NAME) == QtCore.Qt.Checked
+
+    def enable(self, boolean):
+        if boolean:
+            self.setCheckState(COLUMN_NAME, QtCore.Qt.Checked)
+        else:
+            self.setCheckState(COLUMN_NAME, QtCore.Qt.Unchecked)
+
+    def checkable(self, boolean):
+        if boolean:
+            self.setFlags(self.flags() | QtCore.Qt.ItemIsUserCheckable)
+        else:
+            self.setFlags(self.flags() ^ QtCore.Qt.ItemIsUserCheckable)
+
 
 
 class PluginsOptionsPage(OptionsPage):
@@ -192,31 +208,30 @@ class PluginsOptionsPage(OptionsPage):
         if item:
             self.set_current_item(item, scroll=True)
 
+    @staticmethod
+    def is_plugin_enabled(plugin):
+        return bool(plugin.module_name in config.setting["enabled_plugins"])
+
     def _populate(self):
         self.ui.details.setText("<b>" + _("No plugins installed.") + "</b>")
         self._user_interaction(False)
         plugins = sorted(self.manager.plugins, key=attrgetter('name'))
-        enabled_plugins = config.setting["enabled_plugins"]
         available_plugins = dict([(p.module_name, p.version) for p in
                                   self.manager.available_plugins])
         installed = []
         for plugin in plugins:
-            enabled = plugin.module_name in enabled_plugins
-            plugin.set_state(PS_ENABLED, enabled)
             if plugin.module_name in available_plugins:
                 latest = available_plugins[plugin.module_name]
                 if latest.split('.') > plugin.version.split('.'):
                     plugin.new_version = latest
                     plugin.set_state(PS_CAN_BE_UPDATED)
-            self.add_new_plugin_item(plugin)
+            self.add_new_plugin_item(plugin, enabled=self.is_plugin_enabled(plugin))
             installed.append(plugin.module_name)
 
         for plugin in sorted(self.manager.available_plugins, key=attrgetter('name')):
             if plugin.module_name not in installed:
                 plugin.set_state(PS_CAN_BE_DOWNLOADED)
-                enabled = plugin.module_name in enabled_plugins
-                plugin.set_state(PS_ENABLED, enabled)
-                self.add_new_plugin_item(plugin)
+                self.add_new_plugin_item(plugin, enabled=self.is_plugin_enabled(plugin))
 
         self._user_interaction(True)
 
@@ -226,11 +241,8 @@ class PluginsOptionsPage(OptionsPage):
             self.ui.plugins.takeTopLevelItem(idx)
 
     def restore_defaults(self):
-        # Plugin manager has to be updated
-        for plugin in self.manager.plugins:
-            plugin.set_state(PS_ENABLED, False)
-        # Remove previous entries
         self._user_interaction(False)
+        self.set_current_item(self.ui.plugins.topLevelItem(0), scroll=True)
         self._remove_all()
         super().restore_defaults()
 
@@ -287,14 +299,14 @@ class PluginsOptionsPage(OptionsPage):
             msgbox.exec_()
             return
         plugin.new_version = ""
-        plugin.set_state(PS_ENABLED)
         plugin.set_state(PS_CAN_BE_DOWNLOADED, False)
         plugin.set_state(PS_CAN_BE_UPDATED, False)
         item, _unused_ = self.find_by_name(plugin.module_name)
         if item:
-            self.update_plugin_item(item, plugin, make_current=True)
+            self.update_plugin_item(item, plugin, make_current=True,
+                                    enabled=True)
         else:
-            self.add_new_plugin_item(plugin, make_current=True)
+            self.add_new_plugin_item(plugin, make_current=True, enabled=True)
 
     def plugin_updated(self, plugin_name):
         item, plugin = self.find_by_name(plugin_name)
@@ -324,28 +336,22 @@ class PluginsOptionsPage(OptionsPage):
         if buttonReply == QtWidgets.QMessageBox.Yes:
             self.manager.remove_plugin(plugin.module_name)
             plugin.set_state(PS_IS_UNINSTALLED)
-            plugin.set_state(PS_ENABLED, False)
+            self.update_plugin_item(item, plugin, make_current=True,
+                                    enabled=False)
 
-            if plugin.module_name in config.setting["enabled_plugins"]:
-                config.setting["enabled_plugins"].remove(plugin.module_name)
-
-            self.update_plugin_item(item, plugin, make_current=True)
-
-    def add_new_plugin_item(self, plugin, make_current=False):
+    def add_new_plugin_item(self, plugin, make_current=False, enabled=None):
         item = PluginTreeWidgetItem(self.ui.plugins)
-        self.update_plugin_item(item, plugin, make_current=make_current)
+        self.update_plugin_item(item, plugin, make_current=make_current,
+                                enabled=enabled)
 
-    def update_plugin_item(self, item, plugin, make_current=False):
+    def update_plugin_item(self, item, plugin, make_current=False, enabled=None):
         item.setData(COLUMN_NAME, QtCore.Qt.UserRole, plugin)
-        item.setFlags(item.flags() | QtCore.Qt.ItemIsUserCheckable)
         item.setText(COLUMN_NAME, plugin.name)
         item.setSortData(COLUMN_NAME, plugin.name.lower())
-
-        if plugin.has_state(PS_ENABLED):
-            item.setCheckState(COLUMN_NAME, QtCore.Qt.Checked)
-        else:
-            item.setCheckState(COLUMN_NAME, QtCore.Qt.Unchecked)
-
+        if enabled is not None:
+            item.enable(enabled)
+            if enabled:
+                item.checkable(True)
 
         marked_for_update = plugin.has_state(PS_MARKED_FOR_UPDATE)
         is_uninstalled = plugin.has_state(PS_IS_UNINSTALLED)
@@ -366,11 +372,12 @@ class PluginsOptionsPage(OptionsPage):
 
         bt_action = PLUGIN_ACTION_NONE
         if is_uninstalled:
-            item.setFlags(item.flags() ^ QtCore.Qt.ItemIsUserCheckable)
+            item.enable(False)
+            item.checkable(False)
 
         if can_be_downloaded:
             bt_action = PLUGIN_ACTION_INSTALL
-            item.setFlags(item.flags() ^ QtCore.Qt.ItemIsUserCheckable)
+            item.checkable(False)
         else:
             bt_action = PLUGIN_ACTION_UNINSTALL
 
@@ -415,7 +422,7 @@ class PluginsOptionsPage(OptionsPage):
     def save(self):
         enabled_plugins = []
         for item, plugin in self.items():
-            if item.checkState(COLUMN_NAME) == QtCore.Qt.Checked:
+            if item.is_enabled():
                 enabled_plugins.append(plugin.module_name)
         config.setting["enabled_plugins"] = enabled_plugins
         self.save_state()
