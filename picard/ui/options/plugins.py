@@ -55,6 +55,13 @@ from picard.ui.ui_options_plugins import Ui_PluginsOptionsPage
 
 COLUMN_NAME, COLUMN_VERSION, COLUMN_ACTION = range(3)
 
+(PS_ENABLED,
+ PS_CAN_BE_DOWNLOADED,
+ PS_CAN_BE_UPDATED,
+ PS_MARKED_FOR_UPDATE,
+ PS_IS_UNINSTALLED,
+) = range(5)
+
 
 class PluginTreeWidgetItem(HashableTreeWidgetItem):
 
@@ -182,19 +189,21 @@ class PluginsOptionsPage(OptionsPage):
                                   self.manager.available_plugins])
         installed = []
         for plugin in plugins:
-            plugin.enabled = plugin.module_name in enabled_plugins
+            enabled = plugin.module_name in enabled_plugins
+            plugin.set_state(PS_ENABLED, enabled)
             if plugin.module_name in available_plugins:
                 latest = available_plugins[plugin.module_name]
                 if latest.split('.') > plugin.version.split('.'):
                     plugin.new_version = latest
-                    plugin.can_be_updated = True
+                    plugin.set_state(PS_CAN_BE_UPDATED)
             self.add_new_plugin_item(plugin)
             installed.append(plugin.module_name)
 
         for plugin in sorted(self.manager.available_plugins, key=attrgetter('name')):
             if plugin.module_name not in installed:
-                plugin.can_be_downloaded = True
-                plugin.enabled = plugin.module_name in enabled_plugins
+                plugin.set_state(PS_CAN_BE_DOWNLOADED)
+                enabled = plugin.module_name in enabled_plugins
+                plugin.set_state(PS_ENABLED, enabled)
                 self.add_new_plugin_item(plugin)
 
         self._user_interaction(True)
@@ -207,7 +216,7 @@ class PluginsOptionsPage(OptionsPage):
     def restore_defaults(self):
         # Plugin manager has to be updated
         for plugin in self.manager.plugins:
-            plugin.enabled = False
+            plugin.set_state(PS_ENABLED, False)
         # Remove previous entries
         self._user_interaction(False)
         self._remove_all()
@@ -241,9 +250,9 @@ class PluginsOptionsPage(OptionsPage):
             msgbox.exec_()
             return
         plugin.new_version = ""
-        plugin.enabled = True
-        plugin.can_be_updated = False
-        plugin.can_be_downloaded = False
+        plugin.set_state(PS_ENABLED)
+        plugin.set_state(PS_CAN_BE_DOWNLOADED, False)
+        plugin.set_state(PS_CAN_BE_UPDATED, False)
         item, _unused_ = self.find_by_name(plugin.module_name)
         if item:
             self.update_plugin_item(item, plugin, make_current=True)
@@ -261,9 +270,9 @@ class PluginsOptionsPage(OptionsPage):
             msgbox.setDefaultButton(QtWidgets.QMessageBox.Ok)
             msgbox.exec_()
 
-            plugin.can_be_updated = False
-            plugin.can_be_downloaded = False
-            plugin.marked_for_update = True
+            plugin.set_state(PS_CAN_BE_DOWNLOADED, False)
+            plugin.set_state(PS_CAN_BE_UPDATED, False)
+            plugin.set_state(PS_MARKED_FOR_UPDATE)
             self.update_plugin_item(item, plugin, make_current=True)
 
     def uninstall_plugin(self):
@@ -280,8 +289,8 @@ class PluginsOptionsPage(OptionsPage):
         if buttonReply == QtWidgets.QMessageBox.Yes:
             self.manager.remove_plugin(plugin.module_name)
             item = self.ui.plugins.currentItem()
-            plugin.is_uninstalled = True
-            plugin.enabled = False
+            plugin.set_state(PS_IS_UNINSTALLED)
+            plugin.set_state(PS_ENABLED, False)
 
             if plugin.module_name in config.setting["enabled_plugins"]:
                 config.setting["enabled_plugins"].remove(plugin.module_name)
@@ -298,18 +307,18 @@ class PluginsOptionsPage(OptionsPage):
         item.setText(COLUMN_NAME, plugin.name)
         item.setSortData(COLUMN_NAME, plugin.name.lower())
 
-        def update_checkbox(item, enabled=None):
-            plugin = item.data(COLUMN_NAME, QtCore.Qt.UserRole)
-            if enabled is not None:
-                plugin.enabled = bool(enabled)
-            if plugin.enabled:
-                item.setCheckState(COLUMN_NAME, QtCore.Qt.Checked)
-            else:
-                item.setCheckState(COLUMN_NAME, QtCore.Qt.Unchecked)
+        if plugin.has_state(PS_ENABLED):
+            item.setCheckState(COLUMN_NAME, QtCore.Qt.Checked)
+        else:
+            item.setCheckState(COLUMN_NAME, QtCore.Qt.Unchecked)
 
-        update_checkbox(item)
 
-        if plugin.marked_for_update:
+        marked_for_update = plugin.has_state(PS_MARKED_FOR_UPDATE)
+        is_uninstalled = plugin.has_state(PS_IS_UNINSTALLED)
+        can_be_downloaded = plugin.has_state(PS_CAN_BE_DOWNLOADED)
+        can_be_updated = plugin.has_state(PS_CAN_BE_UPDATED)
+
+        if marked_for_update:
             version = plugin.new_version
         else:
             version = plugin.version
@@ -324,14 +333,12 @@ class PluginsOptionsPage(OptionsPage):
             self.uninstall_plugin()
 
         bt_action = PLUGIN_ACTION_NONE
-        if plugin.is_uninstalled:
+        if is_uninstalled:
             item.setFlags(item.flags() ^ QtCore.Qt.ItemIsUserCheckable)
-            update_checkbox(item, enabled=False)
 
-        if plugin.can_be_downloaded:
+        if can_be_downloaded:
             bt_action = PLUGIN_ACTION_INSTALL
             item.setFlags(item.flags() ^ QtCore.Qt.ItemIsUserCheckable)
-            update_checkbox(item, enabled=False)
         else:
             bt_action = PLUGIN_ACTION_UNINSTALL
 
@@ -341,12 +348,12 @@ class PluginsOptionsPage(OptionsPage):
                 PLUGIN_ACTION_UNINSTALL: N_("Uninstall"),
             }
             label = _(labels[bt_action])
-            if plugin.is_uninstalled:
+            if is_uninstalled:
                 label = _("Uninstalled")
             button = QtWidgets.QPushButton(label)
             button.setMaximumHeight(button.fontMetrics().boundingRect(label).height() + 7)
             self.ui.plugins.setItemWidget(item, COLUMN_ACTION, button)
-            if plugin.is_uninstalled or plugin.marked_for_update:
+            if is_uninstalled or marked_for_update:
                 button.setEnabled(False)
 
             if bt_action == PLUGIN_ACTION_INSTALL:
@@ -354,14 +361,14 @@ class PluginsOptionsPage(OptionsPage):
             else:
                 button.released.connect(uninstall_processor)
 
-        if plugin.can_be_updated or plugin.marked_for_update:
+        if can_be_updated or marked_for_update:
             label = _("Upgrade from %s to %s" % (plugin.version, plugin.new_version))
-            if plugin.marked_for_update:
+            if marked_for_update:
                 label = _("Updated")
             button = QtWidgets.QPushButton(label)
             button.setMaximumHeight(button.fontMetrics().boundingRect(label).height() + 7)
             self.ui.plugins.setItemWidget(item, COLUMN_VERSION, button)
-            if plugin.is_uninstalled or plugin.marked_for_update:
+            if is_uninstalled or marked_for_update:
                 button.setEnabled(False)
 
             button.released.connect(partial(download_processor, PLUGIN_ACTION_UPDATE))
@@ -388,7 +395,7 @@ class PluginsOptionsPage(OptionsPage):
             return
         text = []
         if plugin.new_version:
-            if plugin.marked_for_update:
+            if plugin.has_state(PS_MARKED_FOR_UPDATE):
                 text.append("<b>" + _("Restart Picard to upgrade to new version") + ": " + plugin.new_version + "</b>")
             else:
                 text.append("<b>" + _("New version available") + ": " + plugin.new_version + "</b>")

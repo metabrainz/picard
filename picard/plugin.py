@@ -139,11 +139,16 @@ class PluginShared(object):
     def __init__(self):
         super().__init__()
         self.new_version = ""
-        self.enabled = False
-        self.can_be_updated = False
-        self.can_be_downloaded = False
-        self.marked_for_update = False
-        self.is_uninstalled = False
+        self.states = set()
+
+    def set_state(self, state, boolean=True):
+        if boolean:
+            self.states.add(state)
+        else:
+            self.states.discard(state)
+
+    def has_state(self, state):
+        return state in self.states
 
 
 class PluginWrapper(PluginShared):
