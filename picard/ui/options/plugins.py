@@ -125,10 +125,11 @@ class PluginsOptionsPage(OptionsPage):
         self.manager = self.tagger.pluginmanager
         self.manager.plugin_installed.connect(self.plugin_installed)
         self.manager.plugin_updated.connect(self.plugin_updated)
-        self.ui.plugins.header().setStretchLastSection(False)
-        self.ui.plugins.header().setSectionResizeMode(COLUMN_NAME, QtWidgets.QHeaderView.Stretch)
-        self.ui.plugins.header().setSectionResizeMode(COLUMN_VERSION, QtWidgets.QHeaderView.Stretch)
-        self.ui.plugins.header().resizeSection(COLUMN_ACTION, 100)
+        header = self.ui.plugins.header()
+        header.setStretchLastSection(False)
+        header.setSectionResizeMode(COLUMN_NAME, QtWidgets.QHeaderView.Stretch)
+        header.setSectionResizeMode(COLUMN_VERSION, QtWidgets.QHeaderView.Stretch)
+        header.resizeSection(COLUMN_ACTION, 100)
         self.ui.plugins.setSortingEnabled(True)
 
     @staticmethod
