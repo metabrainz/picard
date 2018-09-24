@@ -164,14 +164,14 @@ class PluginsOptionsPage(OptionsPage):
             selected = ""
         config.persist["plugins_list_selected"] = selected
 
-    def restore_state(self, restore_selection=False):
+    def restore_state(self):
         header = self.ui.plugins.header()
         header.restoreState(config.persist["plugins_list_state"])
         idx = config.persist["plugins_list_sort_section"]
         order = config.persist["plugins_list_sort_order"]
         header.setSortIndicator(idx, order)
         self.ui.plugins.sortByColumn(idx, order)
-        selected = restore_selection and config.persist["plugins_list_selected"]
+        selected = config.persist["plugins_list_selected"]
         if selected:
             item, _unused_ = self.find_by_name(selected)
             if item:
