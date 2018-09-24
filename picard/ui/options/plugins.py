@@ -131,12 +131,15 @@ class PluginsOptionsPage(OptionsPage):
         self.ui.plugins.header().resizeSection(COLUMN_ACTION, 100)
         self.ui.plugins.setSortingEnabled(True)
 
+    def item_plugin(self, item):
+        return item.data(COLUMN_NAME, QtCore.Qt.UserRole)
+
     def items(self):
         iterator = QTreeWidgetItemIterator(self.ui.plugins, QTreeWidgetItemIterator.All)
         while iterator.value():
             item = iterator.value()
             iterator += 1
-            plugin = item.data(COLUMN_NAME, QtCore.Qt.UserRole)
+            plugin = self.item_plugin(item)
             yield (item, plugin)
 
     def find_by_name(self, plugin_name):
@@ -148,7 +151,7 @@ class PluginsOptionsPage(OptionsPage):
     def selected_plugin(self):
         try:
             item = self.ui.plugins.selectedItems()[0]
-            return item.data(COLUMN_NAME, QtCore.Qt.UserRole)
+            return self.item_plugin(item)
         except IndexError:
             return None
 
