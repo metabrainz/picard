@@ -2,6 +2,7 @@
 #
 # Picard, the next-generation MusicBrainz tagger
 # Copyright (C) 2017 Antonio Larrosa <alarrosa@suse.com>
+# Copyright (C) 2018 Philipp Wolfer <ph.wolfer@gmail.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -41,6 +42,8 @@ class ImageListState:
         self.orig_images = set()
         self.has_common_new_images = True
         self.has_common_orig_images = True
+        self.first_new_obj = True
+        self.first_orig_obj = True
         # The next variables specify what will be updated
         self.update_new_metadata = False
         self.update_orig_metadata = False
@@ -52,17 +55,24 @@ def _process_images(state, src_obj):
     # Check new images
     if state.update_new_metadata:
         if state.new_images != set(src_obj.metadata.images):
-            state.has_common_new_images = False
+            if not state.first_new_obj:
+                state.has_common_new_images = False
             state.new_images = state.new_images.union(src_obj.metadata.images)
+        if state.first_new_obj:
+            state.first_new_obj = False
 
     if state.update_orig_metadata and not isinstance(src_obj, Track):
         # Check orig images, but not for Tracks (which don't have a useful orig_metadata)
         if state.orig_images != set(src_obj.orig_metadata.images):
-            state.has_common_orig_images = False
+            if not state.first_orig_obj:
+                state.has_common_orig_images = False
             state.orig_images = state.orig_images.union(src_obj.orig_metadata.images)
+        if state.first_orig_obj:
+            state.first_orig_obj = False
 
 
 def _update_state(obj, state, sources):
+    is_first = True
     for src_obj in sources:
         _process_images(state, src_obj)
 
