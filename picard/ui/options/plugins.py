@@ -154,11 +154,11 @@ class PluginsOptionsPage(OptionsPage):
         while iterator.value():
             item = iterator.value()
             iterator += 1
-            yield (item, item.plugin)
+            yield item
 
     def find_item_by_plugin_name(self, plugin_name):
-        for item, plugin in self.items():
-            if plugin_name == plugin.module_name:
+        for item in self.items():
+            if plugin_name == item.plugin.module_name:
                 return item
         return None
 
@@ -253,7 +253,7 @@ class PluginsOptionsPage(OptionsPage):
         self._user_interaction(True)
 
     def _remove_all(self):
-        for item, _unused_ in self.items():
+        for item in self.items():
             idx = self.ui.plugins.indexOfTopLevelItem(item)
             self.ui.plugins.takeTopLevelItem(idx)
 
@@ -270,8 +270,9 @@ class PluginsOptionsPage(OptionsPage):
     def _preserve_plugins_states(self):
         self._preserve = {}
         self._preserve_selected = None
-        for item, plugin in self.items():
-            self._preserve[plugin.module_name] = plugin.states
+        for item in self.items():
+            #FIXME: no more plugin states
+            self._preserve[plugin.module_name] = item.plugin.states
         selected = self.selected_plugin()
         if selected:
             self._preserve_selected = selected.module_name
@@ -281,7 +282,8 @@ class PluginsOptionsPage(OptionsPage):
     def _restore_plugins_states(self):
         found_selected = False
         current = None
-        for item, plugin in self.items():
+        for item in self.items():
+            plugin = item.plugin
             if plugin.module_name in self._preserve:
                 plugin.states = self._preserve[plugin.module_name]
                 if self._preserve_selected == plugin.module_name:
@@ -441,9 +443,9 @@ class PluginsOptionsPage(OptionsPage):
 
     def save(self):
         enabled_plugins = []
-        for item, plugin in self.items():
+        for item in self.items():
             if item.is_enabled():
-                enabled_plugins.append(plugin.module_name)
+                enabled_plugins.append(item.plugin.module_name)
         config.setting["enabled_plugins"] = enabled_plugins
         self.save_state()
 
