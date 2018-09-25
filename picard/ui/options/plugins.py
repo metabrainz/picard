@@ -269,10 +269,7 @@ class PluginsOptionsPage(OptionsPage):
                                     )
 
         for plugin in self.installable_plugins():
-            self.update_plugin_item(None, plugin,
-                                    enabled=self.is_plugin_enabled(plugin),
-                                    can_be_downloaded=True
-                                    )
+            self.update_plugin_item(None, plugin, enabled=False, can_be_downloaded=True)
 
         self._user_interaction(True)
 
@@ -340,12 +337,7 @@ class PluginsOptionsPage(OptionsPage):
             msgbox.exec_()
             return
         item = self.find_item_by_plugin_name(plugin.module_name)
-        self.update_plugin_item(item, plugin,
-                                make_current=True,
-                                enabled=True,
-                                can_be_downloaded=False,
-                                can_be_updated=False,
-                                )
+        self.update_plugin_item(item, plugin, make_current=True, enabled=True)
 
     def plugin_updated(self, plugin_name):
         item = self.find_item_by_plugin_name(plugin_name)
@@ -359,10 +351,7 @@ class PluginsOptionsPage(OptionsPage):
             msgbox.setDefaultButton(QtWidgets.QMessageBox.Ok)
             msgbox.exec_()
 
-            self.update_plugin_item(item, plugin, make_current=True,
-                                    can_be_downloaded=False,
-                                    can_be_updated=False,
-                                    marked_for_update=True)
+            self.update_plugin_item(item, plugin, make_current=True, marked_for_update=True)
 
     def uninstall_plugin(self, item):
         plugin = item.plugin
