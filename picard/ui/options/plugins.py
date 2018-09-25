@@ -56,14 +56,18 @@ from picard.ui.ui_options_plugins import Ui_PluginsOptionsPage
 COLUMN_NAME, COLUMN_VERSION, COLUMN_ACTION = range(3)
 
 (
-    PS_CAN_BE_DOWNLOADED,
     PS_CAN_BE_UPDATED,
     PS_MARKED_FOR_UPDATE,
     PS_IS_UNINSTALLED,
-) = range(4)
+) = range(3)
 
 
 class PluginTreeWidgetItem(HashableTreeWidgetItem):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self._sortData = {}
+        self.can_be_downloaded = False
 
     def __lt__(self, other):
         if (not isinstance(other, PluginTreeWidgetItem)):
@@ -76,10 +80,6 @@ class PluginTreeWidgetItem(HashableTreeWidgetItem):
             column = tree.sortColumn()
 
         return self.sortData(column) < other.sortData(column)
-
-    def __init__(self, *args):
-        super().__init__(*args)
-        self._sortData = {}
 
     def sortData(self, column):
         return self._sortData.get(column, self.text(column))
@@ -230,8 +230,10 @@ class PluginsOptionsPage(OptionsPage):
 
         for plugin in sorted(self.manager.available_plugins, key=attrgetter('name')):
             if plugin.module_name not in installed:
-                plugin.set_state(PS_CAN_BE_DOWNLOADED)
-                self.update_plugin_item(None, plugin, enabled=self.is_plugin_enabled(plugin))
+                self.update_plugin_item(None, plugin,
+                                        enabled=self.is_plugin_enabled(plugin),
+                                        can_be_downloaded=True
+                                       )
 
         self._user_interaction(True)
 
@@ -299,12 +301,11 @@ class PluginsOptionsPage(OptionsPage):
             msgbox.exec_()
             return
         plugin.new_version = ""
-        plugin.set_state(PS_CAN_BE_DOWNLOADED, False)
         plugin.set_state(PS_CAN_BE_UPDATED, False)
         item, _unused_ = self.find_by_name(plugin.module_name)
         if item:
             self.update_plugin_item(item, plugin, make_current=True,
-                                    enabled=True)
+                                    enabled=True, can_be_downloaded=False)
         else:
             self.update_plugin_item(None, plugin, make_current=True, enabled=True)
 
@@ -319,10 +320,10 @@ class PluginsOptionsPage(OptionsPage):
             msgbox.setDefaultButton(QtWidgets.QMessageBox.Ok)
             msgbox.exec_()
 
-            plugin.set_state(PS_CAN_BE_DOWNLOADED, False)
             plugin.set_state(PS_CAN_BE_UPDATED, False)
             plugin.set_state(PS_MARKED_FOR_UPDATE)
-            self.update_plugin_item(item, plugin, make_current=True)
+            self.update_plugin_item(item, plugin, make_current=True,
+                                    can_be_downloaded=False)
 
     def uninstall_plugin(self, item):
         plugin = self.item_plugin(item)
@@ -339,12 +340,17 @@ class PluginsOptionsPage(OptionsPage):
             self.update_plugin_item(item, plugin, make_current=True,
                                     enabled=False)
 
-    def update_plugin_item(self, item, plugin, make_current=False, enabled=None):
+    def update_plugin_item(self, item, plugin,
+                           make_current=False,
+                           enabled=None,
+                           can_be_downloaded=False
+                          ):
         if item is None:
             item = PluginTreeWidgetItem(self.ui.plugins)
         item.setData(COLUMN_NAME, QtCore.Qt.UserRole, plugin)
         item.setText(COLUMN_NAME, plugin.name)
         item.setSortData(COLUMN_NAME, plugin.name.lower())
+        item.can_be_downloaded = can_be_downloaded
         if enabled is not None:
             item.enable(enabled)
             if enabled:
@@ -352,7 +358,6 @@ class PluginsOptionsPage(OptionsPage):
 
         marked_for_update = plugin.has_state(PS_MARKED_FOR_UPDATE)
         is_uninstalled = plugin.has_state(PS_IS_UNINSTALLED)
-        can_be_downloaded = plugin.has_state(PS_CAN_BE_DOWNLOADED)
         can_be_updated = plugin.has_state(PS_CAN_BE_UPDATED)
 
         if marked_for_update:
@@ -372,7 +377,7 @@ class PluginsOptionsPage(OptionsPage):
             item.enable(False)
             item.checkable(False)
 
-        if can_be_downloaded:
+        if item.can_be_downloaded:
             bt_action = PLUGIN_ACTION_INSTALL
             item.checkable(False)
         else:
