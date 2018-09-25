@@ -129,7 +129,8 @@ class Tagger(QtWidgets.QApplication):
 
         # Use the new fusion style from PyQt5 for a modern and consistent look
         # across all OSes.
-        self.setStyle('Fusion')
+        if sys.platform != "darwin":
+            self.setStyle('Fusion')
 
         # Set the WM_CLASS to 'MusicBrainz-Picard' so desktop environments
         # can use it to look up the app
@@ -186,6 +187,10 @@ class Tagger(QtWidgets.QApplication):
             signal.signal(signal.SIGHUP, self.signal)
             signal.signal(signal.SIGINT, self.signal)
             signal.signal(signal.SIGTERM, self.signal)
+
+        if sys.platform == "darwin":
+            # On macOS it is not common that the global menu shows icons
+            self.setAttribute(QtCore.Qt.AA_DontShowIconsInMenus)
 
         # Setup logging
         log.debug("Starting Picard from %r", os.path.abspath(__file__))
