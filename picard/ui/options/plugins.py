@@ -225,13 +225,13 @@ class PluginsOptionsPage(OptionsPage):
                 if latest.split('.') > plugin.version.split('.'):
                     plugin.new_version = latest
                     plugin.set_state(PS_CAN_BE_UPDATED)
-            self.add_new_plugin_item(plugin, enabled=self.is_plugin_enabled(plugin))
+            self.update_plugin_item(None, plugin, enabled=self.is_plugin_enabled(plugin))
             installed.append(plugin.module_name)
 
         for plugin in sorted(self.manager.available_plugins, key=attrgetter('name')):
             if plugin.module_name not in installed:
                 plugin.set_state(PS_CAN_BE_DOWNLOADED)
-                self.add_new_plugin_item(plugin, enabled=self.is_plugin_enabled(plugin))
+                self.update_plugin_item(None, plugin, enabled=self.is_plugin_enabled(plugin))
 
         self._user_interaction(True)
 
@@ -306,7 +306,7 @@ class PluginsOptionsPage(OptionsPage):
             self.update_plugin_item(item, plugin, make_current=True,
                                     enabled=True)
         else:
-            self.add_new_plugin_item(plugin, make_current=True, enabled=True)
+            self.update_plugin_item(None, plugin, make_current=True, enabled=True)
 
     def plugin_updated(self, plugin_name):
         item, plugin = self.find_by_name(plugin_name)
@@ -339,12 +339,9 @@ class PluginsOptionsPage(OptionsPage):
             self.update_plugin_item(item, plugin, make_current=True,
                                     enabled=False)
 
-    def add_new_plugin_item(self, plugin, make_current=False, enabled=None):
-        item = PluginTreeWidgetItem(self.ui.plugins)
-        self.update_plugin_item(item, plugin, make_current=make_current,
-                                enabled=enabled)
-
     def update_plugin_item(self, item, plugin, make_current=False, enabled=None):
+        if item is None:
+            item = PluginTreeWidgetItem(self.ui.plugins)
         item.setData(COLUMN_NAME, QtCore.Qt.UserRole, plugin)
         item.setText(COLUMN_NAME, plugin.name)
         item.setSortData(COLUMN_NAME, plugin.name.lower())
