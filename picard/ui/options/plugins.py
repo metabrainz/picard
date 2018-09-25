@@ -271,29 +271,20 @@ class PluginsOptionsPage(OptionsPage):
         self.restore_state()
 
     def _preserve_plugins_states(self):
-        self._preserve = {}
-        self._preserve_selected = None
-        for item in self.items():
-            self._preserve[item.plugin.module_name] = item.save_state()
-        selected = self.selected_plugin()
-        if selected:
-            self._preserve_selected = selected.module_name
+        self._preserve = {item.plugin.module_name: item.save_state() for item in self.items()}
+        item = self.selected_item()
+        if item:
+            self._preserve_selected = item.plugin.module_name
         else:
             self._preserve_selected = None
 
     def _restore_plugins_states(self):
-        found_selected = False
-        current = None
         for item in self.items():
             plugin = item.plugin
             if plugin.module_name in self._preserve:
                 item.restore_state(self._preserve[plugin.module_name])
                 if self._preserve_selected == plugin.module_name:
-                    current = item
-        if not current:
-            current = self.ui.plugins.topLevelItem(0)
-        if current:
-            self.set_current_item(current, scroll=True)
+                    self.set_current_item(item, scroll=True)
 
     def _reload(self):
         self._populate()
