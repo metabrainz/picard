@@ -155,11 +155,11 @@ class PluginsOptionsPage(OptionsPage):
             plugin = self.item_plugin(item)
             yield (item, plugin)
 
-    def find_by_name(self, plugin_name):
+    def find_item_by_plugin_name(self, plugin_name):
         for item, plugin in self.items():
             if plugin_name == plugin.module_name:
-                return (item, plugin)
-        return (None, None)
+                return item
+        return None
 
     def selected_item(self):
         try:
@@ -202,7 +202,7 @@ class PluginsOptionsPage(OptionsPage):
         selected = config.persist["plugins_list_selected"]
         item = None
         if selected:
-            item, _unused_ = self.find_by_name(selected)
+            item = self.find_item_by_plugin_name(selected)
         if not item:
             item = self.ui.plugins.topLevelItem(0)
         if item:
@@ -314,7 +314,7 @@ class PluginsOptionsPage(OptionsPage):
             msgbox.setDefaultButton(QtWidgets.QMessageBox.Ok)
             msgbox.exec_()
             return
-        item, _unused_ = self.find_by_name(plugin.module_name)
+        item = self.find_item_by_plugin_name(plugin.module_name)
         self.update_plugin_item(item, plugin,
                                 make_current=True,
                                 enabled=True,
@@ -323,8 +323,9 @@ class PluginsOptionsPage(OptionsPage):
                                 )
 
     def plugin_updated(self, plugin_name):
-        item, plugin = self.find_by_name(plugin_name)
+        item = self.find_item_by_plugin_name(plugin_name)
         if item:
+            plugin = self.item_plugin(item)
             msgbox = QtWidgets.QMessageBox(self)
             msgbox.setText(
                 _("The plugin '%s' will be upgraded to version %s on next run of Picard.")
