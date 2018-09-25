@@ -55,10 +55,6 @@ from picard.ui.ui_options_plugins import Ui_PluginsOptionsPage
 
 COLUMN_NAME, COLUMN_VERSION, COLUMN_ACTION = range(3)
 
-(
-    PS_IS_UNINSTALLED,
-) = range(1)
-
 
 class PluginTreeWidgetItem(HashableTreeWidgetItem):
 
@@ -345,16 +341,16 @@ class PluginsOptionsPage(OptionsPage):
         )
         if buttonReply == QtWidgets.QMessageBox.Yes:
             self.manager.remove_plugin(plugin.module_name)
-            plugin.set_state(PS_IS_UNINSTALLED)
             self.update_plugin_item(item, plugin, make_current=True,
-                                    enabled=False)
+                                    enabled=False, is_uninstalled=True)
 
     def update_plugin_item(self, item, plugin,
                            make_current=False,
                            enabled=None,
                            can_be_downloaded=False,
                            can_be_updated=False,
-                           marked_for_update=False
+                           marked_for_update=False,
+                           is_uninstalled=False
                           ):
         if item is None:
             item = PluginTreeWidgetItem(self.ui.plugins)
@@ -364,12 +360,11 @@ class PluginsOptionsPage(OptionsPage):
         item.can_be_downloaded = can_be_downloaded
         item.can_be_updated = can_be_updated
         item.marked_for_update = marked_for_update
+        item.is_uninstalled = is_uninstalled
         if enabled is not None:
             item.enable(enabled)
             if enabled:
                 item.checkable(True)
-
-        is_uninstalled = plugin.has_state(PS_IS_UNINSTALLED)
 
         if item.marked_for_update:
             version = plugin.new_version
@@ -384,7 +379,7 @@ class PluginsOptionsPage(OptionsPage):
             self.uninstall_plugin(item)
 
         bt_action = PLUGIN_ACTION_NONE
-        if is_uninstalled:
+        if item.is_uninstalled:
             item.enable(False)
             item.checkable(False)
 
@@ -400,12 +395,12 @@ class PluginsOptionsPage(OptionsPage):
                 PLUGIN_ACTION_UNINSTALL: N_("Uninstall"),
             }
             label = _(labels[bt_action])
-            if is_uninstalled:
+            if item.is_uninstalled:
                 label = _("Uninstalled")
             button = QtWidgets.QPushButton(label)
             button.setMaximumHeight(button.fontMetrics().boundingRect(label).height() + 7)
             self.ui.plugins.setItemWidget(item, COLUMN_ACTION, button)
-            if is_uninstalled or item.marked_for_update:
+            if item.is_uninstalled or item.marked_for_update:
                 button.setEnabled(False)
 
             if bt_action == PLUGIN_ACTION_INSTALL:
@@ -420,7 +415,7 @@ class PluginsOptionsPage(OptionsPage):
             button = QtWidgets.QPushButton(label)
             button.setMaximumHeight(button.fontMetrics().boundingRect(label).height() + 7)
             self.ui.plugins.setItemWidget(item, COLUMN_VERSION, button)
-            if is_uninstalled or item.marked_for_update:
+            if item.is_uninstalled or item.marked_for_update:
                 button.setEnabled(False)
 
             button.released.connect(partial(download_processor, PLUGIN_ACTION_UPDATE))
