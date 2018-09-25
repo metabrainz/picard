@@ -214,14 +214,26 @@ class PluginsOptionsPage(OptionsPage):
     def is_plugin_enabled(plugin):
         return bool(plugin.module_name in config.setting["enabled_plugins"])
 
+    def available_plugins_name_version(self):
+        return dict([(p.module_name, p.version) for p in self.manager.available_plugins])
+
+    def installable_plugins(self):
+        installed_plugins = [plugin.module_name for plugin in
+                             self.installed_plugins()]
+        for plugin in sorted(self.manager.available_plugins,
+                             key=attrgetter('name')):
+            if plugin.module_name not in installed_plugins:
+                yield plugin
+
+    def installed_plugins(self):
+        return sorted(self.manager.plugins, key=attrgetter('name'))
+
     def _populate(self):
         self.ui.details.setText("<b>" + _("No plugins installed.") + "</b>")
         self._user_interaction(False)
-        plugins = sorted(self.manager.plugins, key=attrgetter('name'))
-        available_plugins = dict([(p.module_name, p.version) for p in
-                                  self.manager.available_plugins])
-        installed = []
-        for plugin in plugins:
+        available_plugins = self.available_plugins_name_version()
+
+        for plugin in self.installed_plugins():
             new_version = ''
             if plugin.module_name in available_plugins:
                 latest = available_plugins[plugin.module_name]
@@ -232,14 +244,12 @@ class PluginsOptionsPage(OptionsPage):
                                     can_be_updated=bool(new_version),
                                     new_version=new_version
                                    )
-            installed.append(plugin.module_name)
 
-        for plugin in sorted(self.manager.available_plugins, key=attrgetter('name')):
-            if plugin.module_name not in installed:
-                self.update_plugin_item(None, plugin,
-                                        enabled=self.is_plugin_enabled(plugin),
-                                        can_be_downloaded=True
-                                       )
+        for plugin in self.installable_plugins():
+            self.update_plugin_item(None, plugin,
+                                    enabled=self.is_plugin_enabled(plugin),
+                                    can_be_downloaded=True
+                                    )
 
         self._user_interaction(True)
 
