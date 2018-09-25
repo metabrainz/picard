@@ -133,11 +133,6 @@ class PluginsOptionsPage(OptionsPage):
         plugins.dropEvent = self.dropEvent
         plugins.dragEnterEvent = self.dragEnterEvent
 
-        if sys.platform == "win32":
-            self.loader = "file:///%s"
-        else:
-            self.loader = "file://%s"
-
         self.ui.install_plugin.clicked.connect(self.open_plugins)
         self.ui.folder_open.clicked.connect(self.open_plugin_dir)
         self.ui.reload_list_of_plugins.clicked.connect(self.reload_list_of_plugins)
@@ -518,8 +513,13 @@ class PluginsOptionsPage(OptionsPage):
             plugin_data=response,
         )
 
-    def open_plugin_dir(self):
-        QtGui.QDesktopServices.openUrl(QtCore.QUrl(self.loader % USER_PLUGIN_DIR, QtCore.QUrl.TolerantMode))
+    @staticmethod
+    def open_plugin_dir():
+        if sys.platform == 'win32':
+            url = 'file:///' + USER_PLUGIN_DIR
+        else:
+            url = 'file://' + USER_PLUGIN_DIR
+        QtGui.QDesktopServices.openUrl(QtCore.QUrl(url, QtCore.QUrl.TolerantMode))
 
     def mimeTypes(self):
         return ["text/uri-list"]
