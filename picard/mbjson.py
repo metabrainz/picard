@@ -97,26 +97,39 @@ def _decamelcase(text):
 
 
 _REPLACE_MAP = {}
-_EXTRA_ATTRS = ['guest', 'additional', 'minor', 'solo']
+_PREFIX_ATTRS = ['guest', 'additional', 'minor', 'solo']
 _BLANK_SPECIAL_RELTYPES = {'vocal': 'vocals'}
 
 
-def _parse_attributes(attrs, reltype):
-    attrs = [_decamelcase(_REPLACE_MAP.get(a, a)) for a in attrs]
-    prefix = ' '.join([a for a in attrs if a in _EXTRA_ATTRS])
-    attrs = [a for a in attrs if a not in _EXTRA_ATTRS]
-    len_attrs = len(attrs)
-    if len_attrs > 1:
-        attrs = '%s and %s' % (', '.join(attrs[:-1]), attrs[-1:][0])
-    elif len_attrs == 1:
-        attrs = attrs[0]
+def _transform_attribute(attr, attr_credits):
+    if attr in attr_credits:
+        return attr_credits[attr]
     else:
-        attrs = _BLANK_SPECIAL_RELTYPES.get(reltype, '')
-    return ' '.join([prefix, attrs]).strip().lower()
+        return _decamelcase(_REPLACE_MAP.get(attr, attr))
+
+
+def _parse_attributes(attrs, reltype, attr_credits):
+    prefixes = []
+    nouns = []
+    for attr in attrs:
+        attr = _transform_attribute(attr, attr_credits)
+        if attr in _PREFIX_ATTRS:
+            prefixes.append(attr)
+        else:
+            nouns.append(attr)
+    prefix = ' '.join(prefixes)
+    if len(nouns) > 1:
+        result = '%s and %s' % (', '.join(nouns[:-1]), nouns[-1:][0])
+    elif len(nouns) == 1:
+        result = nouns[0]
+    else:
+        result = _BLANK_SPECIAL_RELTYPES.get(reltype, '')
+    return ' '.join([prefix, result]).strip().lower()
 
 
 def _relations_to_metadata(relations, m):
-    use_credited_as = not config.setting["standardize_artists"]
+    use_credited_as = not config.setting['standardize_artists']
+    use_instrument_credits = not config.setting['standardize_instruments']
     for relation in relations:
         if relation['target-type'] == 'artist':
             artist = relation['artist']
@@ -131,7 +144,11 @@ def _relations_to_metadata(relations, m):
             if 'attributes' in relation:
                 attribs = [a for a in relation['attributes']]
             if reltype in ('vocal', 'instrument', 'performer'):
-                name = 'performer:' + _parse_attributes(attribs, reltype)
+                if use_instrument_credits:
+                    attr_credits = relation.get('attribute-credits', {})
+                else:
+                    attr_credits = {}
+                name = 'performer:' + _parse_attributes(attribs, reltype, attr_credits)
             elif reltype == 'mix-DJ' and len(attribs) > 0:
                 if not hasattr(m, "_djmix_ars"):
                     m._djmix_ars = {}

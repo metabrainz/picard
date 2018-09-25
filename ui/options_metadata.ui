@@ -50,6 +50,13 @@
        </widget>
       </item>
       <item>
+       <widget class="QCheckBox" name="standardize_instruments">
+        <property name="text">
+         <string>Use standardized instrument and vocal credits</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QCheckBox" name="convert_punctuation">
         <property name="text">
          <string>Convert Unicode punctuation characters to ASCII</string>
