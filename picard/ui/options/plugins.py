@@ -64,6 +64,27 @@ class PluginTreeWidgetItem(HashableTreeWidgetItem):
         self.can_be_downloaded = False
         self.can_be_updated = False
         self.marked_for_update = False
+        self.is_uninstalled = False
+        self.new_version = ''
+
+    def save_state(self):
+        return {
+            'is_enabled': self.is_enabled(),
+            'can_be_downloaded': self.can_be_downloaded,
+            'can_be_updated': self.can_be_updated,
+            'marked_for_update': self.marked_for_update,
+            'is_uninstalled': self.is_uninstalled,
+            'new_version': '',
+
+        }
+
+    def restore_state(self, states):
+        self.can_be_downloaded = states['can_be_downloaded']
+        self.can_be_updated = states['can_be_updated']
+        self.marked_for_update = states['marked_for_update']
+        self.is_uninstalled = states['is_uninstalled']
+        self.new_version = states['new_version']
+        self.enable(states['is_enabled'])
 
     def __lt__(self, other):
         if (not isinstance(other, PluginTreeWidgetItem)):
@@ -274,8 +295,7 @@ class PluginsOptionsPage(OptionsPage):
         self._preserve = {}
         self._preserve_selected = None
         for item in self.items():
-            #FIXME: no more plugin states
-            self._preserve[plugin.module_name] = item.plugin.states
+            self._preserve[item.plugin.module_name] = item.save_state()
         selected = self.selected_plugin()
         if selected:
             self._preserve_selected = selected.module_name
@@ -288,10 +308,9 @@ class PluginsOptionsPage(OptionsPage):
         for item in self.items():
             plugin = item.plugin
             if plugin.module_name in self._preserve:
-                plugin.states = self._preserve[plugin.module_name]
+                item.restore_state(self._preserve[plugin.module_name])
                 if self._preserve_selected == plugin.module_name:
                     current = item
-
         if not current:
             current = self.ui.plugins.topLevelItem(0)
         if current:
