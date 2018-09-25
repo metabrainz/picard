@@ -98,6 +98,7 @@ class PluginTreeWidgetItem(HashableTreeWidgetItem):
         else:
             self.setFlags(self.flags() ^ QtCore.Qt.ItemIsUserCheckable)
 
+    @property
     def plugin(self):
         return self.data(COLUMN_NAME, QtCore.Qt.UserRole)
 
@@ -153,7 +154,7 @@ class PluginsOptionsPage(OptionsPage):
         while iterator.value():
             item = iterator.value()
             iterator += 1
-            yield (item, item.plugin())
+            yield (item, item.plugin)
 
     def find_item_by_plugin_name(self, plugin_name):
         for item, plugin in self.items():
@@ -170,7 +171,7 @@ class PluginsOptionsPage(OptionsPage):
     def selected_plugin(self):
         item = self.selected_item()
         if item:
-            return item.plugin()
+            return item.plugin
         else:
             return None
 
@@ -325,7 +326,7 @@ class PluginsOptionsPage(OptionsPage):
     def plugin_updated(self, plugin_name):
         item = self.find_item_by_plugin_name(plugin_name)
         if item:
-            plugin = item.plugin()
+            plugin = item.plugin
             msgbox = QtWidgets.QMessageBox(self)
             msgbox.setText(
                 _("The plugin '%s' will be upgraded to version %s on next run of Picard.")
@@ -340,7 +341,7 @@ class PluginsOptionsPage(OptionsPage):
                                     marked_for_update=True)
 
     def uninstall_plugin(self, item):
-        plugin = item.plugin()
+        plugin = item.plugin
         buttonReply = QtWidgets.QMessageBox.question(
             self,
             _("Uninstall plugin?"),
@@ -447,7 +448,7 @@ class PluginsOptionsPage(OptionsPage):
         self.save_state()
 
     def refresh_details(self, item):
-        plugin = item.plugin()
+        plugin = item.plugin
         text = []
         if item.new_version:
             if item.marked_for_update:
@@ -483,7 +484,7 @@ class PluginsOptionsPage(OptionsPage):
                 self.manager.install_plugin(path, action=PLUGIN_ACTION_INSTALL)
 
     def download_plugin(self, item, action):
-        plugin = item.plugin()
+        plugin = item.plugin
 
         self.tagger.webservice.get(
             PLUGINS_API['host'],
