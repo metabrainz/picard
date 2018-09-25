@@ -451,9 +451,10 @@ class PluginsOptionsPage(OptionsPage):
         text = []
         if item.new_version:
             if item.marked_for_update:
-                text.append("<b>" + _("Restart Picard to upgrade to new version") + ": " + item.new_version + "</b>")
+                label = _("Restart Picard to upgrade to new version")
             else:
-                text.append("<b>" + _("New version available") + ": " + item.new_version + "</b>")
+                label = _("New version available")
+            text.append("<b>" + label + ": " + item.new_version + "</b>")
         if plugin.description:
             text.append(plugin.description + "<hr width='90%'/>")
         if plugin.name:
