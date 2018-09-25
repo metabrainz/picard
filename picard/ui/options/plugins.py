@@ -397,8 +397,11 @@ class PluginsOptionsPage(OptionsPage):
             version = plugin.version
         item.setText(COLUMN_VERSION, version)
 
-        def download_processor(action):
-            self.download_plugin(item, action)
+        def download_and_install():
+            self.download_plugin(item)
+
+        def download_and_update():
+            self.download_plugin(item, update=True)
 
         def uninstall_processor():
             self.uninstall_plugin(item)
@@ -429,7 +432,7 @@ class PluginsOptionsPage(OptionsPage):
                 button.setEnabled(False)
 
             if bt_action == PLUGIN_ACTION_INSTALL:
-                button.released.connect(partial(download_processor, bt_action))
+                button.released.connect(download_and_install)
             else:
                 button.released.connect(uninstall_processor)
 
@@ -443,7 +446,7 @@ class PluginsOptionsPage(OptionsPage):
             if item.is_uninstalled or item.marked_for_update:
                 button.setEnabled(False)
 
-            button.released.connect(partial(download_processor, PLUGIN_ACTION_UPDATE))
+            button.released.connect(download_and_update)
 
         self.ui.plugins.header().resizeSections(QtWidgets.QHeaderView.ResizeToContents)
 
@@ -490,23 +493,23 @@ class PluginsOptionsPage(OptionsPage):
         )
         if files:
             for path in files:
-                self.manager.install_plugin(path, action=PLUGIN_ACTION_INSTALL)
+                self.manager.install_plugin(path)
 
-    def download_plugin(self, item, action):
+    def download_plugin(self, item, update=False):
         plugin = item.plugin
 
         self.tagger.webservice.get(
             PLUGINS_API['host'],
             PLUGINS_API['port'],
             PLUGINS_API['endpoint']['download'],
-            partial(self.download_handler, action, plugin=plugin),
+            partial(self.download_handler, update, plugin=plugin),
             parse_response_type=None,
             priority=True,
             important=True,
             queryargs={"id": plugin.module_name}
         )
 
-    def download_handler(self, action, response, reply, error, plugin):
+    def download_handler(self, update, response, reply, error, plugin):
         if error:
             msgbox = QtWidgets.QMessageBox(self)
             msgbox.setText(_("The plugin '%s' could not be downloaded.") % plugin.module_name)
@@ -519,7 +522,7 @@ class PluginsOptionsPage(OptionsPage):
 
         self.manager.install_plugin(
             None,
-            action,
+            update=update,
             plugin_name=plugin.module_name,
             plugin_data=response,
         )
@@ -541,7 +544,7 @@ class PluginsOptionsPage(OptionsPage):
 
     def dropEvent(self, event):
         for path in [os.path.normpath(u.toLocalFile()) for u in event.mimeData().urls()]:
-            self.manager.install_plugin(path, action=PLUGIN_ACTION_INSTALL)
+            self.manager.install_plugin(path)
 
 
 register_options_page(PluginsOptionsPage)

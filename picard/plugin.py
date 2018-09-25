@@ -40,7 +40,6 @@ from picard import (
     version_to_string,
 )
 from picard.const import (
-    PLUGIN_ACTION_UPDATE,
     PLUGINS_API,
     USER_PLUGIN_DIR,
 )
@@ -386,7 +385,7 @@ class PluginManager(QtCore.QObject):
                     log.debug("Removing file %r", update)
                     os.remove(update)
 
-    def install_plugin(self, path, action, overwrite_confirm=None, plugin_name=None,
+    def install_plugin(self, path, update=False, overwrite_confirm=None, plugin_name=None,
                        plugin_data=None):
         """
             path is either:
@@ -408,7 +407,7 @@ class PluginManager(QtCore.QObject):
                     # zipped module from download
                     zip_plugin = plugin_name + '.zip'
                     dst = os.path.join(USER_PLUGIN_DIR, zip_plugin)
-                    if action == PLUGIN_ACTION_UPDATE:
+                    if update:
                         dst += '.update'
                         if os.path.isfile(dst):
                             os.remove(dst)
@@ -429,19 +428,19 @@ class PluginManager(QtCore.QObject):
                         raise
                 elif os.path.isfile(path):
                     dst = os.path.join(USER_PLUGIN_DIR, os.path.basename(path))
-                    if action == PLUGIN_ACTION_UPDATE:
+                    if update:
                         dst += '.update'
                         if os.path.isfile(dst):
                             os.remove(dst)
                     shutil.copy2(path, dst)
                 elif os.path.isdir(path):
                     dst = os.path.join(USER_PLUGIN_DIR, plugin_name)
-                    if action == PLUGIN_ACTION_UPDATE:
+                    if update:
                         dst += '.update'
                         if os.path.isdir(dst):
                             shutil.rmtree(dst)
                     shutil.copytree(path, dst)
-                if action != PLUGIN_ACTION_UPDATE:
+                if not update:
                     try:
                         installed_plugin = self.load_plugin(zip_plugin or plugin_name, USER_PLUGIN_DIR)
                     except Exception as e:
