@@ -138,7 +138,6 @@ class PluginShared(object):
 
     def __init__(self):
         super().__init__()
-        self.new_version = ""
 
 
 class PluginWrapper(PluginShared):

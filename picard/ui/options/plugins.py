@@ -222,15 +222,15 @@ class PluginsOptionsPage(OptionsPage):
                                   self.manager.available_plugins])
         installed = []
         for plugin in plugins:
-            can_be_updated = False
+            new_version = ''
             if plugin.module_name in available_plugins:
                 latest = available_plugins[plugin.module_name]
                 if latest.split('.') > plugin.version.split('.'):
-                    plugin.new_version = latest
-                    can_be_updated = True
+                    new_version = latest
             self.update_plugin_item(None, plugin,
                                     enabled=self.is_plugin_enabled(plugin),
-                                    can_be_updated=can_be_updated
+                                    can_be_updated=bool(new_version),
+                                    new_version=new_version
                                    )
             installed.append(plugin.module_name)
 
@@ -306,13 +306,13 @@ class PluginsOptionsPage(OptionsPage):
             msgbox.setDefaultButton(QtWidgets.QMessageBox.Ok)
             msgbox.exec_()
             return
-        plugin.new_version = ""
         item, _unused_ = self.find_by_name(plugin.module_name)
         self.update_plugin_item(item, plugin,
                                 make_current=True,
                                 enabled=True,
                                 can_be_downloaded=False,
-                                can_be_updated=False)
+                                can_be_updated=False,
+                               )
 
     def plugin_updated(self, plugin_name):
         item, plugin = self.find_by_name(plugin_name)
@@ -320,7 +320,7 @@ class PluginsOptionsPage(OptionsPage):
             msgbox = QtWidgets.QMessageBox(self)
             msgbox.setText(
                 _("The plugin '%s' will be upgraded to version %s on next run of Picard.")
-                % (plugin.name, plugin.new_version))
+                % (plugin.name, item.new_version))
             msgbox.setStandardButtons(QtWidgets.QMessageBox.Ok)
             msgbox.setDefaultButton(QtWidgets.QMessageBox.Ok)
             msgbox.exec_()
@@ -350,7 +350,8 @@ class PluginsOptionsPage(OptionsPage):
                            can_be_downloaded=False,
                            can_be_updated=False,
                            marked_for_update=False,
-                           is_uninstalled=False
+                           is_uninstalled=False,
+                           new_version=''
                           ):
         if item is None:
             item = PluginTreeWidgetItem(self.ui.plugins)
@@ -361,13 +362,14 @@ class PluginsOptionsPage(OptionsPage):
         item.can_be_updated = can_be_updated
         item.marked_for_update = marked_for_update
         item.is_uninstalled = is_uninstalled
+        item.new_version = new_version
         if enabled is not None:
             item.enable(enabled)
             if enabled:
                 item.checkable(True)
 
         if item.marked_for_update:
-            version = plugin.new_version
+            version = item.new_version
         else:
             version = plugin.version
         item.setText(COLUMN_VERSION, version)
@@ -409,7 +411,7 @@ class PluginsOptionsPage(OptionsPage):
                 button.released.connect(uninstall_processor)
 
         if item.can_be_updated or item.marked_for_update:
-            label = _("Upgrade from %s to %s" % (plugin.version, plugin.new_version))
+            label = _("Upgrade from %s to %s" % (plugin.version, item.new_version))
             if item.marked_for_update:
                 label = _("Updated")
             button = QtWidgets.QPushButton(label)
@@ -438,11 +440,11 @@ class PluginsOptionsPage(OptionsPage):
     def refresh_details(self, item):
         plugin = self.item_plugin(item)
         text = []
-        if plugin.new_version:
+        if item.new_version:
             if item.marked_for_update:
-                text.append("<b>" + _("Restart Picard to upgrade to new version") + ": " + plugin.new_version + "</b>")
+                text.append("<b>" + _("Restart Picard to upgrade to new version") + ": " + item.new_version + "</b>")
             else:
-                text.append("<b>" + _("New version available") + ": " + plugin.new_version + "</b>")
+                text.append("<b>" + _("New version available") + ": " + item.new_version + "</b>")
         if plugin.description:
             text.append(plugin.description + "<hr width='90%'/>")
         if plugin.name:
