@@ -56,10 +56,9 @@ from picard.ui.ui_options_plugins import Ui_PluginsOptionsPage
 COLUMN_NAME, COLUMN_VERSION, COLUMN_ACTION = range(3)
 
 (
-    PS_CAN_BE_UPDATED,
     PS_MARKED_FOR_UPDATE,
     PS_IS_UNINSTALLED,
-) = range(3)
+) = range(2)
 
 
 class PluginTreeWidgetItem(HashableTreeWidgetItem):
@@ -68,6 +67,7 @@ class PluginTreeWidgetItem(HashableTreeWidgetItem):
         super().__init__(*args, **kwargs)
         self._sortData = {}
         self.can_be_downloaded = False
+        self.can_be_updated = False
 
     def __lt__(self, other):
         if (not isinstance(other, PluginTreeWidgetItem)):
@@ -220,12 +220,16 @@ class PluginsOptionsPage(OptionsPage):
                                   self.manager.available_plugins])
         installed = []
         for plugin in plugins:
+            can_be_updated = False
             if plugin.module_name in available_plugins:
                 latest = available_plugins[plugin.module_name]
                 if latest.split('.') > plugin.version.split('.'):
                     plugin.new_version = latest
-                    plugin.set_state(PS_CAN_BE_UPDATED)
-            self.update_plugin_item(None, plugin, enabled=self.is_plugin_enabled(plugin))
+                    can_be_updated = True
+            self.update_plugin_item(None, plugin,
+                                    enabled=self.is_plugin_enabled(plugin),
+                                    can_be_updated=can_be_updated
+                                   )
             installed.append(plugin.module_name)
 
         for plugin in sorted(self.manager.available_plugins, key=attrgetter('name')):
@@ -301,13 +305,12 @@ class PluginsOptionsPage(OptionsPage):
             msgbox.exec_()
             return
         plugin.new_version = ""
-        plugin.set_state(PS_CAN_BE_UPDATED, False)
         item, _unused_ = self.find_by_name(plugin.module_name)
-        if item:
-            self.update_plugin_item(item, plugin, make_current=True,
-                                    enabled=True, can_be_downloaded=False)
-        else:
-            self.update_plugin_item(None, plugin, make_current=True, enabled=True)
+        self.update_plugin_item(item, plugin,
+                                make_current=True,
+                                enabled=True,
+                                can_be_downloaded=False,
+                                can_be_updated=False)
 
     def plugin_updated(self, plugin_name):
         item, plugin = self.find_by_name(plugin_name)
@@ -320,10 +323,9 @@ class PluginsOptionsPage(OptionsPage):
             msgbox.setDefaultButton(QtWidgets.QMessageBox.Ok)
             msgbox.exec_()
 
-            plugin.set_state(PS_CAN_BE_UPDATED, False)
             plugin.set_state(PS_MARKED_FOR_UPDATE)
             self.update_plugin_item(item, plugin, make_current=True,
-                                    can_be_downloaded=False)
+                                    can_be_downloaded=False, can_be_update=False)
 
     def uninstall_plugin(self, item):
         plugin = self.item_plugin(item)
@@ -343,7 +345,8 @@ class PluginsOptionsPage(OptionsPage):
     def update_plugin_item(self, item, plugin,
                            make_current=False,
                            enabled=None,
-                           can_be_downloaded=False
+                           can_be_downloaded=False,
+                           can_be_updated=False
                           ):
         if item is None:
             item = PluginTreeWidgetItem(self.ui.plugins)
@@ -351,6 +354,7 @@ class PluginsOptionsPage(OptionsPage):
         item.setText(COLUMN_NAME, plugin.name)
         item.setSortData(COLUMN_NAME, plugin.name.lower())
         item.can_be_downloaded = can_be_downloaded
+        item.can_be_updated = can_be_updated
         if enabled is not None:
             item.enable(enabled)
             if enabled:
@@ -358,7 +362,6 @@ class PluginsOptionsPage(OptionsPage):
 
         marked_for_update = plugin.has_state(PS_MARKED_FOR_UPDATE)
         is_uninstalled = plugin.has_state(PS_IS_UNINSTALLED)
-        can_be_updated = plugin.has_state(PS_CAN_BE_UPDATED)
 
         if marked_for_update:
             version = plugin.new_version
@@ -402,7 +405,7 @@ class PluginsOptionsPage(OptionsPage):
             else:
                 button.released.connect(uninstall_processor)
 
-        if can_be_updated or marked_for_update:
+        if item.can_be_updated or marked_for_update:
             label = _("Upgrade from %s to %s" % (plugin.version, plugin.new_version))
             if marked_for_update:
                 label = _("Updated")
