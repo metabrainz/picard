@@ -64,7 +64,13 @@ class TipSlider(QtWidgets.QSlider):
         self.setTickInterval(self._step)
         self.setPageStep(self._pagestep)
 
+    def showEvent(self, event):
+        super().showEvent(event)
         self.valueChanged.connect(self.show_tip)
+
+    def hideEvent(self, event):
+        super().hideEvent(event)
+        self.valueChanged.disconnect(self.show_tip)
 
     def show_tip(self, value):
         self.round_value(value)
