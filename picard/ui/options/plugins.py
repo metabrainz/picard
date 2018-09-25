@@ -185,7 +185,7 @@ class PluginsOptionsPage(OptionsPage):
 
     def selected_item(self):
         try:
-            return self.ui.plugins.selectedItems()[0]
+            return self.ui.plugins.selectedItems()[COLUMN_NAME]
         except IndexError:
             return None
 
