@@ -381,6 +381,10 @@ class PluginManager(QtCore.QObject):
             for filepath in filepaths:
                 log.debug("Removing file %r", filepath)
                 os.remove(filepath)
+                update = filepath + '.update'
+                if os.path.isfile(update):
+                    log.debug("Removing file %r", update)
+                    os.remove(update)
 
     def install_plugin(self, path, action, overwrite_confirm=None, plugin_name=None,
                        plugin_data=None):

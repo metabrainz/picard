@@ -402,7 +402,7 @@ class PluginsOptionsPage(OptionsPage):
             button = QtWidgets.QPushButton(label)
             button.setMaximumHeight(button.fontMetrics().boundingRect(label).height() + 7)
             self.ui.plugins.setItemWidget(item, COLUMN_ACTION, button)
-            if item.is_uninstalled or item.marked_for_update:
+            if item.is_uninstalled:
                 button.setEnabled(False)
 
             if bt_action == PLUGIN_ACTION_INSTALL:
