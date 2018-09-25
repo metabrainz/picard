@@ -50,9 +50,9 @@
        </widget>
       </item>
       <item>
-       <widget class="QCheckBox" name="use_instrument_credits">
+       <widget class="QCheckBox" name="standardize_instruments">
         <property name="text">
-         <string>Use instrument and vocal credits</string>
+         <string>Use standardized instrument and vocal credits</string>
         </property>
        </widget>
       </item>

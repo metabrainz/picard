@@ -24,7 +24,7 @@ settings = {
     "standardize_artists": False,
     "standardize_releases": False,
     "translate_artist_names": True,
-    "use_instrument_credits": False,
+    "standardize_instruments": True,
     "artist_locale": 'en'
 }
 
@@ -93,7 +93,7 @@ class RecordingTest(MBJSONTest):
 
     def test_recording(self):
         m = Metadata()
-        t = Track("1")
+        t = Track('1')
         recording_to_metadata(self.json_doc, m, t)
         self.assertEqual(m['artist'], 'Ed Sheeran')
         self.assertEqual(m['artists'], 'Ed Sheeran')
@@ -115,8 +115,8 @@ class RecordingTest(MBJSONTest):
 
     def test_recording_instrument_credits(self):
         m = Metadata()
-        t = Track("1")
-        config.setting["use_instrument_credits"] = True
+        t = Track('1')
+        config.setting['standardize_instruments'] = False
         recording_to_metadata(self.json_doc, m, t)
         self.assertEqual(m['performer:vocals'], 'Ed Sheeran')
         self.assertEqual(m['performer:acoustic guitar'], 'Ed Sheeran')
