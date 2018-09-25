@@ -227,6 +227,9 @@ class PluginsOptionsPage(OptionsPage):
     def installed_plugins(self):
         return sorted(self.manager.plugins, key=attrgetter('name'))
 
+    def enabled_plugins(self):
+        return [item.plugin.module_name for item in self.items() if item.is_enabled()]
+
     def _populate(self):
         self.ui.details.setText("<b>" + _("No plugins installed.") + "</b>")
         self._user_interaction(False)
@@ -442,11 +445,7 @@ class PluginsOptionsPage(OptionsPage):
         return item
 
     def save(self):
-        enabled_plugins = []
-        for item in self.items():
-            if item.is_enabled():
-                enabled_plugins.append(item.plugin.module_name)
-        config.setting["enabled_plugins"] = enabled_plugins
+        config.setting["enabled_plugins"] = self.enabled_plugins()
         self.save_state()
 
     def refresh_details(self, item):
