@@ -382,6 +382,11 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.add_directory_action.setShortcut(QtGui.QKeySequence(_("Ctrl+D")))
         self.add_directory_action.triggered.connect(self.add_directory)
 
+        if sys.platform == "darwin":
+            self.close_window_action = QtWidgets.QAction(_("Close Window"), self)
+            self.close_window_action.setShortcut(QtGui.QKeySequence(_("Ctrl+W")))
+            self.close_window_action.triggered.connect(self.close_active_window)
+
         self.save_action = QtWidgets.QAction(icontheme.lookup('document-save'), _("&Save"), self)
         self.save_action.setStatusTip(_("Save selected files"))
         # TR: Keyboard shortcut for "Save"
@@ -580,6 +585,8 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         menu = self.menuBar().addMenu(_("&File"))
         menu.addAction(self.add_directory_action)
         menu.addAction(self.add_files_action)
+        if sys.platform == "darwin":
+            menu.addAction(self.close_window_action)
         menu.addSeparator()
         menu.addAction(self.play_file_action)
         menu.addAction(self.open_folder_action)
@@ -827,6 +834,10 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
             for directory in dir_list:
                 self.tagger.add_directory(directory)
+
+    def close_active_window(self):
+        print("close_active_window")
+        self.tagger.activeWindow().close()
 
     def show_about(self):
         self.show_options("about")
