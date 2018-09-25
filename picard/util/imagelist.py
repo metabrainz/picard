@@ -40,6 +40,7 @@ class ImageListState:
     def __init__(self):
         self.new_images = set()
         self.orig_images = set()
+        self.sources = []
         self.has_common_new_images = True
         self.has_common_orig_images = True
         self.first_new_obj = True
@@ -71,9 +72,9 @@ def _process_images(state, src_obj):
             state.first_orig_obj = False
 
 
-def _update_state(obj, state, sources):
+def _update_state(obj, state):
     is_first = True
-    for src_obj in sources:
+    for src_obj in state.sources:
         _process_images(state, src_obj)
 
     if state.update_new_metadata:
@@ -86,7 +87,7 @@ def _update_state(obj, state, sources):
 
 
 # TODO: use functools.singledispatch when py3 is supported
-def update_metadata_images(obj):
+def _get_state(obj):
     from picard.album import Album
     from picard.cluster import Cluster
     from picard.track import Track
@@ -94,18 +95,62 @@ def update_metadata_images(obj):
     state = ImageListState()
 
     if isinstance(obj, Album):
-        sources = []
         for track in obj.tracks:
-            sources.append(track)
-            sources += track.linked_files
-        sources += obj.unmatched_files.files
+            state.sources.append(track)
+            state.sources += track.linked_files
+        state.sources += obj.unmatched_files.files
         state.update_new_metadata = True
         state.update_orig_metadata = True
     elif isinstance(obj, Track):
-        sources = obj.linked_files
+        state.sources = obj.linked_files
         state.update_orig_metadata = True
     elif isinstance(obj, Cluster):
-        sources = obj.files
+        state.sources = obj.files
         state.update_new_metadata = True
 
-    _update_state(obj, state, sources)
+    return state
+
+
+def update_metadata_images(obj):
+    state = _get_state(obj)
+
+    _update_state(obj, state)
+
+
+def _remove_images(metadata, sources, removed_images):
+    if len(metadata.images) == 0 or len(removed_images) == 0:
+        return
+
+    if len(sources) == 0:
+        metadata.images = ImageList()
+        metadata.has_common_images = True
+        return
+
+    current_images = set(metadata.images)
+
+    if metadata.has_common_images and current_images == removed_images:
+        return
+
+    common_images = True
+    previous_images = None
+    for source in sources:
+        source_images = set(source.metadata.images)
+        if previous_images and common_images and previous_images != source_images:
+            common_images = False
+        previous_images = set(source.metadata.images)
+        removed_images = removed_images.difference(source_images)
+        if len(removed_images) == 0 and common_images == False:
+            return
+
+    metadata.images = ImageList(current_images.difference(removed_images))
+    metadata.has_common_images = common_images
+
+
+def remove_metadata_images(obj, removed_sources):
+    state = _get_state(obj)
+
+    if state.update_new_metadata:
+        removed_images = set()
+        for s in removed_sources:
+            removed_images = removed_images.union(s.metadata.images)
+        _remove_images(obj.metadata, state.sources, removed_images)

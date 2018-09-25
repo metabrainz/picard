@@ -10,6 +10,7 @@ from picard.coverart.image import CoverArtImage
 from picard.track import Track
 from picard.file import File
 from picard.util.imagelist import (
+    remove_metadata_images,
     update_metadata_images
 )
 
@@ -109,3 +110,49 @@ class UpdateMetadataImagesTest(unittest.TestCase):
         update_metadata_images(album)
         self.assertEqual(set(self.test_images[1:]), set(album.orig_metadata.images))
         self.assertTrue(album.orig_metadata.has_common_images)
+
+
+class RemoveMetadataImagesTest(unittest.TestCase):
+
+    def setUp(self):
+        self.test_images = [
+            CoverArtImage(url='file://file1', data=create_fake_png(b'a')),
+            CoverArtImage(url='file://file2', data=create_fake_png(b'b')),
+        ]
+        self.test_files = [
+            File('test1.flac'),
+            File('test2.flac'),
+            File('test2.flac')
+        ]
+        self.test_files[0].metadata.append_image(self.test_images[0])
+        self.test_files[1].metadata.append_image(self.test_images[1])
+        self.test_files[2].metadata.append_image(self.test_images[1])
+        self.test_files[0].orig_metadata.append_image(self.test_images[0])
+        self.test_files[1].orig_metadata.append_image(self.test_images[1])
+        self.test_files[2].orig_metadata.append_image(self.test_images[1])
+
+    def test_remove_from_cluster(self):
+        cluster = Cluster('Test')
+        cluster.files = list(self.test_files)
+        update_metadata_images(cluster)
+        cluster.files.remove(self.test_files[0])
+        remove_metadata_images(cluster, [self.test_files[0]])
+        self.assertEqual(set(self.test_images[1:]), set(cluster.metadata.images))
+        self.assertTrue(cluster.metadata.has_common_images)
+
+    def test_remove_from_cluster_with_common_images(self):
+        cluster = Cluster('Test')
+        cluster.files = list(self.test_files[1:])
+        update_metadata_images(cluster)
+        cluster.files.remove(self.test_files[1])
+        remove_metadata_images(cluster, [self.test_files[1]])
+        self.assertEqual(set(self.test_images[1:]), set(cluster.metadata.images))
+        self.assertTrue(cluster.metadata.has_common_images)
+
+    def test_remove_from_empty_cluster(self):
+        cluster = Cluster('Test')
+        cluster.files.append(File('test1.flac'))
+        update_metadata_images(cluster)
+        remove_metadata_images(cluster, [cluster.files[0]])
+        self.assertEqual(set(), set(cluster.metadata.images))
+        self.assertTrue(cluster.metadata.has_common_images)

@@ -37,7 +37,10 @@ from picard.util import (
     album_artist_from_path,
     format_time,
 )
-from picard.util.imagelist import update_metadata_images
+from picard.util.imagelist import (
+    remove_metadata_images,
+    update_metadata_images
+)
 
 from picard.ui.item import Item
 
@@ -114,7 +117,7 @@ class Cluster(QtCore.QObject, Item):
         self.item.remove_file(file)
         if not self.special and self.get_num_files() == 0:
             self.tagger.remove_cluster(self)
-        self.update_metadata_images()
+        remove_metadata_images(self, [file])
         self._update_related_album()
 
     def update(self):
