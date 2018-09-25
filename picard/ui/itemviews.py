@@ -479,6 +479,11 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         if items:
             drag = QtGui.QDrag(self)
             drag.setMimeData(self.mimeData(items))
+            # Render the first selected element as drag representation
+            rectangle = self.visualItemRect(items[0])
+            pixmap = QtGui.QPixmap(rectangle.width(), rectangle.height())
+            self.viewport().render(pixmap, QtCore.QPoint(), QtGui.QRegion(rectangle))
+            drag.setPixmap(pixmap)
             drag.exec_(QtCore.Qt.MoveAction)
 
     def mimeData(self, items):
