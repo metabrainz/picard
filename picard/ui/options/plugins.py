@@ -185,13 +185,6 @@ class PluginsOptionsPage(OptionsPage):
         except IndexError:
             return None
 
-    def selected_plugin(self):
-        item = self.selected_item()
-        if item:
-            return item.plugin
-        else:
-            return None
-
     def save_state(self):
         header = self.ui.plugins.header()
         config.persist["plugins_list_state"] = header.saveState()
