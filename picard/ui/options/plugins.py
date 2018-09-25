@@ -135,7 +135,6 @@ class PluginsOptionsPage(OptionsPage):
         config.Option("persist", "plugins_list_sort_section", 0),
         config.Option("persist", "plugins_list_sort_order",
                       QtCore.Qt.AscendingOrder),
-        config.Option("persist", "plugins_list_selected", ""),
     ]
 
     def __init__(self, parent=None):
@@ -198,12 +197,6 @@ class PluginsOptionsPage(OptionsPage):
         config.persist["plugins_list_state"] = header.saveState()
         config.persist["plugins_list_sort_section"] = header.sortIndicatorSection()
         config.persist["plugins_list_sort_order"] = header.sortIndicatorOrder()
-        plugin = self.selected_plugin()
-        if plugin:
-            selected = plugin.module_name
-        else:
-            selected = ""
-        config.persist["plugins_list_selected"] = selected
 
     def set_current_item(self, item, scroll=False):
         if scroll:
@@ -218,14 +211,6 @@ class PluginsOptionsPage(OptionsPage):
         order = config.persist["plugins_list_sort_order"]
         header.setSortIndicator(idx, order)
         self.ui.plugins.sortByColumn(idx, order)
-        selected = config.persist["plugins_list_selected"]
-        item = None
-        if selected:
-            item = self.find_item_by_plugin_name(selected)
-        if not item:
-            item = self.ui.plugins.topLevelItem(0)
-        if item:
-            self.set_current_item(item, scroll=True)
 
     @staticmethod
     def is_plugin_enabled(plugin):
