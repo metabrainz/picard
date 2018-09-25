@@ -99,7 +99,6 @@ class PluginTreeWidgetItem(HashableTreeWidgetItem):
             self.setFlags(self.flags() ^ QtCore.Qt.ItemIsUserCheckable)
 
 
-
 class PluginsOptionsPage(OptionsPage):
 
     NAME = "plugins"
@@ -121,7 +120,7 @@ class PluginsOptionsPage(OptionsPage):
         super().__init__(parent)
         self.ui = Ui_PluginsOptionsPage()
         self.ui.setupUi(self)
-        #fix for PICARD-1226, QT bug (https://bugreports.qt.io/browse/QTBUG-22572) workaround
+        # fix for PICARD-1226, QT bug (https://bugreports.qt.io/browse/QTBUG-22572) workaround
         self.ui.plugins.setStyleSheet('')
         self.ui.plugins.itemSelectionChanged.connect(self.change_details)
         self.ui.plugins.mimeTypes = self.mimeTypes
@@ -193,7 +192,6 @@ class PluginsOptionsPage(OptionsPage):
         self.ui.plugins.setCurrentItem(item)
         self.refresh_details(item)
 
-
     def restore_state(self):
         header = self.ui.plugins.header()
         header.restoreState(config.persist["plugins_list_state"])
@@ -243,7 +241,7 @@ class PluginsOptionsPage(OptionsPage):
                                     enabled=self.is_plugin_enabled(plugin),
                                     can_be_updated=bool(new_version),
                                     new_version=new_version
-                                   )
+                                    )
 
         for plugin in self.installable_plugins():
             self.update_plugin_item(None, plugin,
@@ -322,7 +320,7 @@ class PluginsOptionsPage(OptionsPage):
                                 enabled=True,
                                 can_be_downloaded=False,
                                 can_be_updated=False,
-                               )
+                                )
 
     def plugin_updated(self, plugin_name):
         item, plugin = self.find_by_name(plugin_name)
@@ -362,7 +360,7 @@ class PluginsOptionsPage(OptionsPage):
                            marked_for_update=False,
                            is_uninstalled=False,
                            new_version=''
-                          ):
+                           ):
         if item is None:
             item = PluginTreeWidgetItem(self.ui.plugins)
         item.setData(COLUMN_NAME, QtCore.Qt.UserRole, plugin)
