@@ -123,28 +123,35 @@ class PluginsOptionsPage(OptionsPage):
         super().__init__(parent)
         self.ui = Ui_PluginsOptionsPage()
         self.ui.setupUi(self)
+        plugins = self.ui.plugins
+
         # fix for PICARD-1226, QT bug (https://bugreports.qt.io/browse/QTBUG-22572) workaround
-        self.ui.plugins.setStyleSheet('')
-        self.ui.plugins.itemSelectionChanged.connect(self.change_details)
-        self.ui.plugins.mimeTypes = self.mimeTypes
-        self.ui.plugins.dropEvent = self.dropEvent
-        self.ui.plugins.dragEnterEvent = self.dragEnterEvent
+        plugins.setStyleSheet('')
+
+        plugins.itemSelectionChanged.connect(self.change_details)
+        plugins.mimeTypes = self.mimeTypes
+        plugins.dropEvent = self.dropEvent
+        plugins.dragEnterEvent = self.dragEnterEvent
+
         if sys.platform == "win32":
             self.loader = "file:///%s"
         else:
             self.loader = "file://%s"
+
         self.ui.install_plugin.clicked.connect(self.open_plugins)
         self.ui.folder_open.clicked.connect(self.open_plugin_dir)
         self.ui.reload_list_of_plugins.clicked.connect(self.reload_list_of_plugins)
+
         self.manager = self.tagger.pluginmanager
         self.manager.plugin_installed.connect(self.plugin_installed)
         self.manager.plugin_updated.connect(self.plugin_updated)
+
         header = self.ui.plugins.header()
         header.setStretchLastSection(False)
         header.setSectionResizeMode(COLUMN_NAME, QtWidgets.QHeaderView.Stretch)
         header.setSectionResizeMode(COLUMN_VERSION, QtWidgets.QHeaderView.Stretch)
         header.resizeSection(COLUMN_ACTION, 100)
-        self.ui.plugins.setSortingEnabled(True)
+        plugins.setSortingEnabled(True)
 
     def items(self):
         iterator = QTreeWidgetItemIterator(self.ui.plugins, QTreeWidgetItemIterator.All)
