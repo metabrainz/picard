@@ -38,10 +38,6 @@ from picard import (
     log,
 )
 from picard.const import (
-    PLUGIN_ACTION_INSTALL,
-    PLUGIN_ACTION_NONE,
-    PLUGIN_ACTION_UNINSTALL,
-    PLUGIN_ACTION_UPDATE,
     PLUGINS_API,
     USER_PLUGIN_DIR,
 )
@@ -54,6 +50,7 @@ from picard.ui.options import (
 from picard.ui.ui_options_plugins import Ui_PluginsOptionsPage
 
 COLUMN_NAME, COLUMN_VERSION, COLUMN_ACTION = range(3)
+PLUGIN_ACTION_NONE, PLUGIN_ACTION_UPDATE, PLUGIN_ACTION_INSTALL, PLUGIN_ACTION_UNINSTALL = range(4)
 
 
 class PluginTreeWidgetItem(HashableTreeWidgetItem):
