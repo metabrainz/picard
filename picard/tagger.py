@@ -129,7 +129,8 @@ class Tagger(QtWidgets.QApplication):
 
         # Use the new fusion style from PyQt5 for a modern and consistent look
         # across all OSes.
-        self.setStyle('Fusion')
+        if sys.platform != "darwin":
+            self.setStyle('Fusion')
 
         # Set the WM_CLASS to 'MusicBrainz-Picard' so desktop environments
         # can use it to look up the app

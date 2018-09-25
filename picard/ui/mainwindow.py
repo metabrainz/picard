@@ -21,6 +21,7 @@ from collections import OrderedDict
 import datetime
 from functools import partial
 import os.path
+import sys
 
 from PyQt5 import (
     QtCore,
@@ -126,6 +127,11 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.create_statusbar()
         self.create_toolbar()
         self.create_menus()
+
+        if sys.platform == "darwin":
+            self.setUnifiedTitleAndToolBarOnMac(True)
+            self.toolbar.setMovable(False)
+            self.search_toolbar.setMovable(False)
 
         mainLayout = QtWidgets.QSplitter(QtCore.Qt.Vertical)
         mainLayout.setContentsMargins(0, 0, 0, 0)
