@@ -394,15 +394,6 @@ class PluginsOptionsPage(OptionsPage):
             version = plugin.version
         item.setText(COLUMN_VERSION, version)
 
-        def download_and_install():
-            self.download_plugin(item)
-
-        def download_and_update():
-            self.download_plugin(item, update=True)
-
-        def uninstall_processor():
-            self.uninstall_plugin(item)
-
         bt_action = PLUGIN_ACTION_NONE
         if item.is_uninstalled:
             item.enable(False)
@@ -429,8 +420,14 @@ class PluginsOptionsPage(OptionsPage):
                 button.setEnabled(False)
 
             if bt_action == PLUGIN_ACTION_INSTALL:
+                def download_and_install():
+                    self.download_plugin(item)
+
                 button.released.connect(download_and_install)
             else:
+                def uninstall_processor():
+                    self.uninstall_plugin(item)
+
                 button.released.connect(uninstall_processor)
 
         if item.can_be_updated or item.marked_for_update:
@@ -442,6 +439,9 @@ class PluginsOptionsPage(OptionsPage):
             self.ui.plugins.setItemWidget(item, COLUMN_VERSION, button)
             if item.is_uninstalled or item.marked_for_update:
                 button.setEnabled(False)
+
+            def download_and_update():
+                self.download_plugin(item, update=True)
 
             button.released.connect(download_and_update)
 
