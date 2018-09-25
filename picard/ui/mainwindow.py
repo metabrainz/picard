@@ -171,7 +171,12 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             function(self)
 
     def keyPressEvent(self, event):
-        if event.matches(QtGui.QKeySequence.Delete):
+        # On macOS Command+Backspace triggers the so called "Forward Delete".
+        # It should be treated the same as the Delete button.
+        is_forward_delete = sys.platform == 'darwin' and \
+            event.key() == QtCore.Qt.Key_Backspace and \
+            event.modifiers() & QtCore.Qt.ControlModifier
+        if event.matches(QtGui.QKeySequence.Delete) or is_forward_delete:
             if self.metadata_box.hasFocus():
                 self.metadata_box.remove_selected_tags()
             else:
