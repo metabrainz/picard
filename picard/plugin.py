@@ -242,6 +242,7 @@ class PluginManager(QtCore.QObject):
 
     plugin_installed = QtCore.pyqtSignal(PluginWrapper, bool)
     plugin_updated = QtCore.pyqtSignal(str, bool)
+    plugin_removed = QtCore.pyqtSignal(str, bool)
 
     def __init__(self):
         super().__init__()
@@ -266,7 +267,7 @@ class PluginManager(QtCore.QObject):
             if not name:
                 name = _plugin_name_from_path(path)
             if name:
-                self.remove_plugin(name)
+                self._remove_plugin(name)
                 os.rename(updatepath, path)
                 log.debug('Updating plugin %r (%r))', name, path)
             else:
@@ -364,7 +365,7 @@ class PluginManager(QtCore.QObject):
                      ]
         return (dirpath, filepaths)
 
-    def remove_plugin(self, plugin_name, with_update=False):
+    def _remove_plugin(self, plugin_name, with_update=False):
         if plugin_name.endswith('.zip'):
             plugin_name = os.path.splitext(plugin_name)[0]
         log.debug("Remove plugin files and dirs : %r", plugin_name)
@@ -385,6 +386,10 @@ class PluginManager(QtCore.QObject):
                     if os.path.isfile(update):
                         log.debug("Removing file %r", update)
                         os.remove(update)
+
+    def remove_plugin(self, plugin_name, with_update=False):
+        self._remove_plugin(plugin_name, with_update=with_update)
+        self.plugin_removed.emit(plugin_name, False)
 
     def install_plugin(self, path, update=False, overwrite_confirm=None, plugin_name=None,
                        plugin_data=None):

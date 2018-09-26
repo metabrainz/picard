@@ -58,12 +58,10 @@ class PluginTreeWidgetItem(HashableTreeWidgetItem):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self._sortData = {}
-        self.can_be_downloaded = False
-        self.can_be_updated = False
-        self.marked_for_update = False
-        self.is_uninstalled = False
-        self.new_version = ''
+        self.upgrade_to_version = None
+        self.new_version = None
         self.is_enabled = False
+        self.is_installed = False
 
         self.buttons = QtWidgets.QWidget()
 
@@ -94,7 +92,7 @@ class PluginTreeWidgetItem(HashableTreeWidgetItem):
         button.setIcon(button.style().standardIcon(getattr(QtWidgets.QStyle, stdicon)))
 
     def show_install(self):
-        if not self.new_version:
+        if self.new_version is None:
             self.button_install.setToolTip(_("Install plugin"))
             self.set_icon(self.button_install, 'SP_ArrowLeft')
         else:
@@ -104,21 +102,16 @@ class PluginTreeWidgetItem(HashableTreeWidgetItem):
     def save_state(self):
         return {
             'is_enabled': self.is_enabled,
-            'can_be_downloaded': self.can_be_downloaded,
-            'can_be_updated': self.can_be_updated,
-            'marked_for_update': self.marked_for_update,
-            'is_uninstalled': self.is_uninstalled,
-            'new_version': '',
-
+            'upgrade_to_version': self.upgrade_to_version,
+            'new_version': self.new_version,
+            'is_installed': self.is_installed,
         }
 
     def restore_state(self, states):
-        self.can_be_downloaded = states['can_be_downloaded']
-        self.can_be_updated = states['can_be_updated']
-        self.marked_for_update = states['marked_for_update']
-        self.is_uninstalled = states['is_uninstalled']
+        self.upgrade_to_version = states['upgrade_to_version']
         self.new_version = states['new_version']
         self.is_enabled = states['is_enabled']
+        self.is_installed = states['is_installed']
 
     def __lt__(self, other):
         if (not isinstance(other, PluginTreeWidgetItem)):
@@ -142,14 +135,17 @@ class PluginTreeWidgetItem(HashableTreeWidgetItem):
     def plugin(self):
         return self.data(COLUMN_NAME, QtCore.Qt.UserRole)
 
-    def enable(self, boolean):
-        if boolean:
+    def enable(self, boolean, greyout=None):
+        if boolean is not None:
+            self.is_enabled = boolean
+        if self.is_enabled:
             self.button_enable.setToolTip(_("Enabled"))
             self.set_icon(self.button_enable, 'SP_DialogApplyButton')
         else:
             self.button_enable.setToolTip(_("Disabled"))
             self.set_icon(self.button_enable, 'SP_DialogCancelButton')
-        self.is_enabled = boolean
+        if greyout is not None:
+             self.button_enable.setEnabled(not greyout)
 
 class PluginsOptionsPage(OptionsPage):
 
@@ -188,6 +184,7 @@ class PluginsOptionsPage(OptionsPage):
         self.manager = self.tagger.pluginmanager
         self.manager.plugin_installed.connect(self.plugin_installed)
         self.manager.plugin_updated.connect(self.plugin_updated)
+        self.manager.plugin_removed.connect(self.plugin_removed)
 
         plugins.setSortingEnabled(True)
 
@@ -257,19 +254,20 @@ class PluginsOptionsPage(OptionsPage):
         available_plugins = self.available_plugins_name_version()
 
         for plugin in self.installed_plugins():
-            new_version = ''
+            new_version = None
             if plugin.module_name in available_plugins:
                 latest = available_plugins[plugin.module_name]
                 if latest.split('.') > plugin.version.split('.'):
                     new_version = latest
             self.update_plugin_item(None, plugin,
                                     enabled=self.is_plugin_enabled(plugin),
-                                    can_be_updated=bool(new_version),
-                                    new_version=new_version
+                                    new_version=new_version,
+                                    is_installed=True
                                     )
 
         for plugin in self.installable_plugins():
-            self.update_plugin_item(None, plugin, enabled=False, can_be_downloaded=True)
+            self.update_plugin_item(None, plugin, enabled=False,
+                                    is_installed=False)
 
         self._user_interaction(True)
 
@@ -320,6 +318,7 @@ class PluginsOptionsPage(OptionsPage):
         self.manager.query_available_plugins(callback=self._reload)
 
     def plugin_installed(self, plugin):
+        log.debug("Plugin %r installed", plugin.name)
         if not plugin.compatible:
             msgbox = QtWidgets.QMessageBox(self)
             msgbox.setText(_("The plugin '%s' is not compatible with this version of Picard.") % plugin.name)
@@ -328,9 +327,13 @@ class PluginsOptionsPage(OptionsPage):
             msgbox.exec_()
             return
         item = self.find_item_by_plugin_name(plugin.module_name)
-        self.update_plugin_item(item, plugin, make_current=True, enabled=True)
+        if item:
+            self.update_plugin_item(item, plugin, make_current=True,
+                                    enabled=True, is_installed=True)
+            self.refresh_details(item)
 
     def plugin_updated(self, plugin_name):
+        log.debug("Plugin %r updated", plugin_name)
         item = self.find_item_by_plugin_name(plugin_name)
         if item:
             plugin = item.plugin
@@ -342,7 +345,17 @@ class PluginsOptionsPage(OptionsPage):
             msgbox.setDefaultButton(QtWidgets.QMessageBox.Ok)
             msgbox.exec_()
 
-            self.update_plugin_item(item, plugin, make_current=True, marked_for_update=True)
+            item.upgrade_to_version = item.new_version
+            self.update_plugin_item(item, plugin, make_current=True)
+            self.refresh_details(item)
+
+    def plugin_removed(self, plugin_name):
+        log.debug("Plugin %r removed", plugin_name)
+        item = self.find_item_by_plugin_name(plugin_name)
+        if item:
+            self.update_plugin_item(item, None, make_current=True,
+                                    is_installed=False)
+            self.refresh_details(item)
 
     def uninstall_plugin(self, item):
         plugin = item.plugin
@@ -355,47 +368,36 @@ class PluginsOptionsPage(OptionsPage):
         )
         if buttonReply == QtWidgets.QMessageBox.Yes:
             self.manager.remove_plugin(plugin.module_name, with_update=True)
-            self.update_plugin_item(item, plugin, make_current=True,
-                                    enabled=False, is_uninstalled=True)
 
     def update_plugin_item(self, item, plugin,
                            make_current=False,
                            enabled=None,
-                           can_be_downloaded=False,
-                           can_be_updated=False,
-                           marked_for_update=False,
-                           is_uninstalled=False,
-                           new_version=''
+                           new_version=None,
+                           is_installed=None
                            ):
         if item is None:
             item = PluginTreeWidgetItem(self.ui.plugins)
-
-        item.setData(COLUMN_NAME, QtCore.Qt.UserRole, plugin)
+        if plugin is not None:
+            item.setData(COLUMN_NAME, QtCore.Qt.UserRole, plugin)
+        else:
+            plugin = item.plugin
         item.setSortData(COLUMN_NAME, plugin.name.lower())
-        item.can_be_downloaded = can_be_downloaded
-        item.can_be_updated = can_be_updated
-        item.marked_for_update = marked_for_update
-        item.is_uninstalled = is_uninstalled
-        item.new_version = new_version
-        if enabled is not None:
-            item.enable(enabled)
+        if new_version is not None:
+            item.new_version = new_version
+        if is_installed is not None:
+            item.is_installed = is_installed
 
-        if item.new_version:
+        if enabled is not None:
+            item.enable(enabled, greyout=not item.is_installed)
+
+        if item.new_version is not None:
             version = "%s → %s" % (plugin.version, item.new_version)
         else:
             version = plugin.version
         item.setText(COLUMN_NAME, "%s (%s)" % (plugin.name, version))
 
         def toggle_enable():
-            item.enable(not item.is_enabled)
-
-        def download_and_install():
-            self.download_plugin(item)
-            item.enable(True)
-            item.button_enable.setEnabled(True)
-
-        def uninstall_processor():
-            self.uninstall_plugin(item)
+            item.enable(not item.is_enabled, greyout=not item.is_installed)
 
         def reconnect(signal, newhandler=None, oldhandler=None):
             while True:
@@ -411,30 +413,40 @@ class PluginsOptionsPage(OptionsPage):
 
         reconnect(item.button_enable.pressed, toggle_enable)
 
-        item.button_uninstall.setEnabled(False)
+        install_enabled = not item.is_installed or bool(item.new_version)
+        if item.upgrade_to_version:
+            if item.upgrade_to_version != item.new_version:
+                # case when a new version is known after a plugin was marked for update
+                install_enabled = True
+            else:
+                install_enabled = False
 
-        if item.is_uninstalled:
-            item.enable(False)
-            item.button_enable.setEnabled(False)
+        item.show_install()
+        item.button_install.setEnabled(install_enabled)
 
-        if item.can_be_downloaded or item.is_uninstalled:
-            item.show_install()
-            item.button_install.setEnabled(True)
-            item.button_enable.setEnabled(False)
-            reconnect(item.button_install.pressed, download_and_install)
-        else:
-            item.button_install.setEnabled(False)
+        def uninstall_processor():
+            self.uninstall_plugin(item)
+
+        reconnect(item.button_uninstall.pressed, uninstall_processor)
+
+        if install_enabled:
+            if item.new_version is not None:
+                def download_and_update():
+                    self.download_plugin(item, update=True)
+
+                reconnect(item.button_install.pressed, download_and_update)
+            else:
+                def download_and_install():
+                    self.download_plugin(item)
+
+                reconnect(item.button_install.pressed, download_and_install)
+
+        if item.is_installed:
             item.button_uninstall.setEnabled(True)
-            reconnect(item.button_uninstall.pressed, uninstall_processor)
-
-        if item.can_be_updated:
-            def download_and_update():
-                self.download_plugin(item, update=True)
-                item.button_install.setEnabled(False)
-
-            item.show_install()
-            item.button_install.setEnabled(True)
-            reconnect(item.button_install.pressed, download_and_update)
+            item.enable(None, greyout=False)
+        else:
+            item.button_uninstall.setEnabled(False)
+            item.enable(None, greyout=True)
 
         self.ui.plugins.header().resizeSections(QtWidgets.QHeaderView.ResizeToContents)
 
@@ -450,8 +462,8 @@ class PluginsOptionsPage(OptionsPage):
     def refresh_details(self, item):
         plugin = item.plugin
         text = []
-        if item.new_version:
-            if item.marked_for_update:
+        if item.new_version is not None:
+            if item.upgrade_to_version:
                 label = _("Restart Picard to upgrade to new version")
             else:
                 label = _("New version available")
