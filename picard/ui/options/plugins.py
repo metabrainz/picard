@@ -70,21 +70,36 @@ class PluginTreeWidgetItem(HashableTreeWidgetItem):
         layout = QtWidgets.QHBoxLayout()
         layout.setContentsMargins(0, 0, 0, 0)
 
+        layout.addStretch(2)
         self.button_enable = QtWidgets.QToolButton()
-        self.button_enable.setText("Disabled")
+        self.enable(False)
         layout.addWidget(self.button_enable)
 
         self.button_install = QtWidgets.QToolButton()
-        self.button_install.setText("Install")
+        self.show_install()
+
         layout.addWidget(self.button_install)
 
         self.button_uninstall = QtWidgets.QToolButton()
-        self.button_uninstall.setText("Uninstall")
+        self.button_uninstall.setToolTip(_("Uninstall plugin"))
+        self.set_icon(self.button_uninstall, 'SP_TrashIcon')
         layout.addWidget(self.button_uninstall)
 
         self.buttons.setLayout(layout)
 
         self.treeWidget().setItemWidget(self, COLUMN_ACTIONS, self.buttons)
+
+    @staticmethod
+    def set_icon(button, stdicon):
+        button.setIcon(button.style().standardIcon(getattr(QtWidgets.QStyle, stdicon)))
+
+    def show_install(self):
+        if not self.new_version:
+            self.button_install.setToolTip(_("Install plugin"))
+            self.set_icon(self.button_install, 'SP_ArrowLeft')
+        else:
+            self.button_install.setToolTip(_("Upgrade plugin to version %s") % self.new_version)
+            self.set_icon(self.button_install, 'SP_BrowserReload')
 
     def save_state(self):
         return {
@@ -129,9 +144,11 @@ class PluginTreeWidgetItem(HashableTreeWidgetItem):
 
     def enable(self, boolean):
         if boolean:
-            self.button_enable.setText(_("Enabled"))
+            self.button_enable.setToolTip(_("Enabled"))
+            self.set_icon(self.button_enable, 'SP_DialogApplyButton')
         else:
-            self.button_enable.setText(_("Disabled"))
+            self.button_enable.setToolTip(_("Disabled"))
+            self.set_icon(self.button_enable, 'SP_DialogCancelButton')
         self.is_enabled = boolean
 
 class PluginsOptionsPage(OptionsPage):
@@ -401,7 +418,7 @@ class PluginsOptionsPage(OptionsPage):
             item.button_enable.setEnabled(False)
 
         if item.can_be_downloaded or item.is_uninstalled:
-            item.button_install.setText(_('Install'))
+            item.show_install()
             item.button_install.setEnabled(True)
             item.button_enable.setEnabled(False)
             reconnect(item.button_install.pressed, download_and_install)
@@ -413,10 +430,9 @@ class PluginsOptionsPage(OptionsPage):
         if item.can_be_updated:
             def download_and_update():
                 self.download_plugin(item, update=True)
-                item.button_install.setText(_('Upgraded'))
                 item.button_install.setEnabled(False)
 
-            item.button_install.setText(_('Upgrade'))
+            item.show_install()
             item.button_install.setEnabled(True)
             reconnect(item.button_install.pressed, download_and_update)
 
