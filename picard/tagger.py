@@ -610,17 +610,12 @@ class Tagger(QtWidgets.QApplication):
 
     def remove_files(self, files, from_parent=True):
         """Remove files from the tagger."""
-        parents = set()
         for file in files:
             if file.filename in self.files:
                 file.clear_lookup_task()
                 self._acoustid.stop_analyze(file)
                 del self.files[file.filename]
                 file.remove(from_parent)
-                parents.add(file.parent)
-        if from_parent:
-            for parent in parents:
-                parent.finalize_remove_files()
 
     def remove_album(self, album):
         """Remove the specified album."""
