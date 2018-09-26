@@ -235,7 +235,7 @@ class PluginsOptionsPage(OptionsPage):
         return [item.plugin.module_name for item in self.items() if item.is_enabled]
 
     def _populate(self):
-        self.ui.details.setText("<b>" + _("No plugins installed.") + "</b>")
+        self.ui.details.setText("")
         self._user_interaction(False)
         available_plugins = self.available_plugins_name_version()
 
