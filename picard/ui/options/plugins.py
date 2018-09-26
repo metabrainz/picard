@@ -62,6 +62,9 @@ class PluginTreeWidgetItem(HashableTreeWidgetItem):
         self.new_version = None
         self.is_enabled = False
         self.is_installed = False
+        self.installed_font = None
+        self.enabled_font = None
+        self.available_font = None
 
         self.buttons = QtWidgets.QWidget()
 
@@ -390,14 +393,35 @@ class PluginsOptionsPage(OptionsPage):
         if enabled is not None:
             item.enable(enabled, greyout=not item.is_installed)
 
-        if item.new_version is not None:
-            version = "%s → %s" % (plugin.version, item.new_version)
-        else:
-            version = plugin.version
-        item.setText(COLUMN_NAME, "%s (%s)" % (plugin.name, version))
+        def update_text():
+            if item.new_version is not None:
+                version = "%s → %s" % (plugin.version, item.new_version)
+            else:
+                version = plugin.version
+
+            if item.installed_font is None:
+                item.installed_font = item.font(COLUMN_NAME)
+            if item.enabled_font is None:
+                item.enabled_font = QtGui.QFont(item.installed_font)
+                item.enabled_font.setBold(True)
+            if item.available_font is None:
+                item.available_font = QtGui.QFont(item.installed_font)
+                item.available_font.setItalic(True)
+
+            if item.is_enabled:
+                item.setFont(COLUMN_NAME, item.enabled_font)
+            else:
+                if item.is_installed:
+                    item.setFont(COLUMN_NAME, item.installed_font)
+                else:
+                    item.setFont(COLUMN_NAME, item.available_font)
+
+            item.setText(COLUMN_NAME, "%s (%s)" % (plugin.name, version))
 
         def toggle_enable():
             item.enable(not item.is_enabled, greyout=not item.is_installed)
+            log.debug("Plugin %r enabled: %r", item.plugin.name, item.is_enabled)
+            update_text()
 
         def reconnect(signal, newhandler=None, oldhandler=None):
             while True:
@@ -447,6 +471,8 @@ class PluginsOptionsPage(OptionsPage):
         else:
             item.button_uninstall.setEnabled(False)
             item.enable(False, greyout=True)
+
+        update_text()
 
         self.ui.plugins.header().resizeSections(QtWidgets.QHeaderView.ResizeToContents)
 
