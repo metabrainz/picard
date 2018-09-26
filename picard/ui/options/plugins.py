@@ -446,7 +446,7 @@ class PluginsOptionsPage(OptionsPage):
             item.enable(None, greyout=False)
         else:
             item.button_uninstall.setEnabled(False)
-            item.enable(None, greyout=True)
+            item.enable(False, greyout=True)
 
         self.ui.plugins.header().resizeSections(QtWidgets.QHeaderView.ResizeToContents)
 
