@@ -263,9 +263,9 @@ class PluginsOptionsPage(OptionsPage):
 
     def restore_defaults(self):
         self._user_interaction(False)
-        self.set_current_item(self.ui.plugins.topLevelItem(0), scroll=True)
         self._remove_all()
         super().restore_defaults()
+        self.set_current_item(self.ui.plugins.topLevelItem(0), scroll=True)
 
     def load(self):
         self._populate()
