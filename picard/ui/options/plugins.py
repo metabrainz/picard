@@ -307,6 +307,7 @@ class PluginsOptionsPage(OptionsPage):
                     self.set_current_item(item, scroll=True)
 
     def _reload(self):
+        self._remove_all()
         self._populate()
         self._restore_plugins_states()
 
@@ -315,10 +316,9 @@ class PluginsOptionsPage(OptionsPage):
         self.ui.plugins_container.setEnabled(enabled)
 
     def reload_list_of_plugins(self):
-        self.ui.details.setText("")
+        self.ui.details.setText(_("Reloading list of available plugins..."))
         self._user_interaction(False)
         self._preserve_plugins_states()
-        self._remove_all()
         self.manager.query_available_plugins(callback=self._reload)
 
     def plugin_loading_error(self, plugin_name, error):
