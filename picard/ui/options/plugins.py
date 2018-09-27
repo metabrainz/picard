@@ -442,7 +442,7 @@ class PluginsOptionsPage(OptionsPage):
             if newhandler is not None:
                 signal.connect(newhandler)
 
-        reconnect(item.button_enable.pressed, toggle_enable)
+        reconnect(item.button_enable.clicked, toggle_enable)
 
         install_enabled = not item.is_installed or bool(item.new_version)
         if item.upgrade_to_version:
@@ -458,19 +458,19 @@ class PluginsOptionsPage(OptionsPage):
         def uninstall_processor():
             self.uninstall_plugin(item)
 
-        reconnect(item.button_uninstall.pressed, uninstall_processor)
+        reconnect(item.button_uninstall.clicked, uninstall_processor)
 
         if install_enabled:
             if item.new_version is not None:
                 def download_and_update():
                     self.download_plugin(item, update=True)
 
-                reconnect(item.button_install.pressed, download_and_update)
+                reconnect(item.button_install.clicked, download_and_update)
             else:
                 def download_and_install():
                     self.download_plugin(item)
 
-                reconnect(item.button_install.pressed, download_and_install)
+                reconnect(item.button_install.clicked, download_and_install)
 
         if item.is_installed:
             item.button_uninstall.setEnabled(True)
