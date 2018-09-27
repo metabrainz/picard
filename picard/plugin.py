@@ -249,7 +249,7 @@ class PluginManager(QtCore.QObject):
         super().__init__()
         self.plugins = []
         self._api_versions = set([version_from_string(v) for v in picard.api_versions])
-        self._available_plugins = {}
+        self._available_plugins = None #  None=never loaded, [] = empty
 
     @property
     def available_plugins(self):
@@ -489,6 +489,7 @@ class PluginManager(QtCore.QObject):
                 {'error': reply.errorString()},
                 echo=log.error
             )
+            self._available_plugins = []
         else:
             self._available_plugins = [PluginData(data, key) for key, data in
                                        load_json(response)['plugins'].items()]

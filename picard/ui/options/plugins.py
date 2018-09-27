@@ -194,6 +194,9 @@ class PluginsOptionsPage(OptionsPage):
 
         plugins.setSortingEnabled(True)
 
+        self._preserve = {}
+        self._preserve_selected = None
+
     def items(self):
         iterator = QTreeWidgetItemIterator(self.ui.plugins, QTreeWidgetItemIterator.All)
         while iterator.value():
@@ -241,12 +244,13 @@ class PluginsOptionsPage(OptionsPage):
         return dict([(p.module_name, p.version) for p in self.manager.available_plugins])
 
     def installable_plugins(self):
-        installed_plugins = [plugin.module_name for plugin in
-                             self.installed_plugins()]
-        for plugin in sorted(self.manager.available_plugins,
-                             key=attrgetter('name')):
-            if plugin.module_name not in installed_plugins:
-                yield plugin
+        if self.manager.available_plugins is not None:
+            installed_plugins = [plugin.module_name for plugin in
+                                 self.installed_plugins()]
+            for plugin in sorted(self.manager.available_plugins,
+                                 key=attrgetter('name')):
+                if plugin.module_name not in installed_plugins:
+                    yield plugin
 
     def installed_plugins(self):
         return sorted(self.manager.plugins, key=attrgetter('name'))
@@ -255,9 +259,14 @@ class PluginsOptionsPage(OptionsPage):
         return [item.plugin.module_name for item in self.items() if item.is_enabled]
 
     def _populate(self):
-        self.ui.details.setText("")
         self._user_interaction(False)
-        available_plugins = self.available_plugins_name_version()
+        if self.manager.available_plugins is None:
+            available_plugins = {}
+            self.manager.query_available_plugins(self._reload)
+        else:
+            available_plugins = self.available_plugins_name_version()
+
+        self.ui.details.setText("")
 
         for plugin in self.installed_plugins():
             new_version = None
