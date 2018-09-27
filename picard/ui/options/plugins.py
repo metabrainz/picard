@@ -341,7 +341,6 @@ class PluginsOptionsPage(OptionsPage):
         if item:
             self.update_plugin_item(item, plugin, make_current=True,
                                     enabled=True, is_installed=True)
-            self.refresh_details(item)
 
     def plugin_updated(self, plugin_name):
         log.debug("Plugin %r updated", plugin_name)
@@ -357,7 +356,6 @@ class PluginsOptionsPage(OptionsPage):
 
             item.upgrade_to_version = item.new_version
             self.update_plugin_item(item, plugin, make_current=True)
-            self.refresh_details(item)
 
     def plugin_removed(self, plugin_name):
         log.debug("Plugin %r removed", plugin_name)
@@ -365,7 +363,6 @@ class PluginsOptionsPage(OptionsPage):
         if item:
             self.update_plugin_item(item, None, make_current=True,
                                     is_installed=False)
-            self.refresh_details(item)
 
     def uninstall_plugin(self, item):
         plugin = item.plugin
