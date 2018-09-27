@@ -546,3 +546,23 @@ def compare_version_tuples(version1, version2):
         if test1[x] != test2[x]:
             return 1 if test1[x] < test2[x] else -1
     return 0
+
+
+def reconnect(signal, newhandler=None, oldhandler=None):
+    """
+    Reconnect an handler to a signal
+
+    It disconnects all previous handlers before connecting new one
+
+    Credits: https://stackoverflow.com/a/21589403
+    """
+    while True:
+        try:
+            if oldhandler is not None:
+                signal.disconnect(oldhandler)
+            else:
+                signal.disconnect()
+        except TypeError:
+            break
+    if newhandler is not None:
+        signal.connect(newhandler)

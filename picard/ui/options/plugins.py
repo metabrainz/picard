@@ -42,6 +42,8 @@ from picard.const import (
     USER_PLUGIN_DIR,
 )
 
+from picard.util import reconnect
+
 from picard.ui import HashableTreeWidgetItem
 from picard.ui.options import (
     OptionsPage,
@@ -426,18 +428,6 @@ class PluginsOptionsPage(OptionsPage):
             item.enable(not item.is_enabled, greyout=not item.is_installed)
             log.debug("Plugin %r enabled: %r", item.plugin.name, item.is_enabled)
             update_text()
-
-        def reconnect(signal, newhandler=None, oldhandler=None):
-            while True:
-                try:
-                    if oldhandler is not None:
-                        signal.disconnect(oldhandler)
-                    else:
-                        signal.disconnect()
-                except TypeError:
-                    break
-            if newhandler is not None:
-                signal.connect(newhandler)
 
         reconnect(item.button_enable.clicked, toggle_enable)
 
