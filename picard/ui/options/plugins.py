@@ -324,17 +324,18 @@ class PluginsOptionsPage(OptionsPage):
     def plugin_loading_error(self, plugin_name, error):
         QtWidgets.QMessageBox.critical(
             self,
-            _("Plugin loading error - %s") % plugin_name,
-            error)
+            _("Plugin '%s'") % plugin_name,
+            _("An error occured while loading the plugin '%s':\n\n%s") % (plugin_name, error)
+        )
 
     def plugin_installed(self, plugin):
         log.debug("Plugin %r installed", plugin.name)
         if not plugin.compatible:
-            msgbox = QtWidgets.QMessageBox(self)
-            msgbox.setText(_("The plugin '%s' is not compatible with this version of Picard.") % plugin.name)
-            msgbox.setStandardButtons(QtWidgets.QMessageBox.Ok)
-            msgbox.setDefaultButton(QtWidgets.QMessageBox.Ok)
-            msgbox.exec_()
+            QtWidgets.QMessageBox.warning(
+                self,
+                _("Plugin '%s'") % plugin.name,
+                _("The plugin '%s' is not compatible with this version of Picard.") % plugin.name
+            )
             return
         item = self.find_item_by_plugin_name(plugin.module_name)
         if item:
@@ -347,13 +348,12 @@ class PluginsOptionsPage(OptionsPage):
         item = self.find_item_by_plugin_name(plugin_name)
         if item:
             plugin = item.plugin
-            msgbox = QtWidgets.QMessageBox(self)
-            msgbox.setText(
+            QtWidgets.QMessageBox.information(
+                self,
+                _("Plugin '%s'") % plugin_name,
                 _("The plugin '%s' will be upgraded to version %s on next run of Picard.")
-                % (plugin.name, item.new_version))
-            msgbox.setStandardButtons(QtWidgets.QMessageBox.Ok)
-            msgbox.setDefaultButton(QtWidgets.QMessageBox.Ok)
-            msgbox.exec_()
+                % (plugin.name, item.new_version)
+            )
 
             item.upgrade_to_version = item.new_version
             self.update_plugin_item(item, plugin, make_current=True)
@@ -371,7 +371,7 @@ class PluginsOptionsPage(OptionsPage):
         plugin = item.plugin
         buttonReply = QtWidgets.QMessageBox.question(
             self,
-            _("Uninstall plugin?"),
+            _("Uninstall plugin '%s'?") % plugin.name,
             _("Do you really want to uninstall the plugin '%s' ?") % plugin.name,
             QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,
             QtWidgets.QMessageBox.No
