@@ -442,11 +442,6 @@ class PluginsOptionsPage(OptionsPage):
         item.show_install()
         item.button_install.setEnabled(install_enabled)
 
-        def uninstall_processor():
-            self.uninstall_plugin(item)
-
-        reconnect(item.button_uninstall.clicked, uninstall_processor)
-
         if install_enabled:
             if item.new_version is not None:
                 def download_and_update():
@@ -462,6 +457,10 @@ class PluginsOptionsPage(OptionsPage):
         if item.is_installed:
             item.button_uninstall.setEnabled(True)
             item.enable(None, greyout=False)
+            def uninstall_processor():
+                self.uninstall_plugin(item)
+
+            reconnect(item.button_uninstall.clicked, uninstall_processor)
         else:
             item.button_uninstall.setEnabled(False)
             item.enable(False, greyout=True)
