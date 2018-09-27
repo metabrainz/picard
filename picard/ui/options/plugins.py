@@ -188,6 +188,7 @@ class PluginsOptionsPage(OptionsPage):
         self.manager.plugin_installed.connect(self.plugin_installed)
         self.manager.plugin_updated.connect(self.plugin_updated)
         self.manager.plugin_removed.connect(self.plugin_removed)
+        self.manager.plugin_errored.connect(self.plugin_loading_error)
 
         plugins.setSortingEnabled(True)
 
@@ -319,6 +320,12 @@ class PluginsOptionsPage(OptionsPage):
         self._preserve_plugins_states()
         self._remove_all()
         self.manager.query_available_plugins(callback=self._reload)
+
+    def plugin_loading_error(self, plugin_name, error):
+        QtWidgets.QMessageBox.critical(
+            self,
+            _("Plugin loading error - %s") % plugin_name,
+            error)
 
     def plugin_installed(self, plugin):
         log.debug("Plugin %r installed", plugin.name)
