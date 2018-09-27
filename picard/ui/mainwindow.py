@@ -123,6 +123,8 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         icon.addFile(":/images/256x256/picard.png", QtCore.QSize(256, 256))
         self.setWindowIcon(icon)
 
+        self.show_close_window = sys.platform == "darwin"
+
         self.create_actions()
         self.create_statusbar()
         self.create_toolbar()
@@ -377,7 +379,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.add_directory_action.setShortcut(QtGui.QKeySequence(_("Ctrl+D")))
         self.add_directory_action.triggered.connect(self.add_directory)
 
-        if sys.platform == "darwin":
+        if self.show_close_window:
             self.close_window_action = QtWidgets.QAction(_("Close Window"), self)
             self.close_window_action.setShortcut(QtGui.QKeySequence(_("Ctrl+W")))
             self.close_window_action.triggered.connect(self.close_active_window)
@@ -580,7 +582,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         menu = self.menuBar().addMenu(_("&File"))
         menu.addAction(self.add_directory_action)
         menu.addAction(self.add_files_action)
-        if sys.platform == "darwin":
+        if self.show_close_window:
             menu.addAction(self.close_window_action)
         menu.addSeparator()
         menu.addAction(self.play_file_action)
@@ -831,7 +833,6 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                 self.tagger.add_directory(directory)
 
     def close_active_window(self):
-        print("close_active_window")
         self.tagger.activeWindow().close()
 
     def show_about(self):
