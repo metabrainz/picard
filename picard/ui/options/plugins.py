@@ -480,6 +480,7 @@ class PluginsOptionsPage(OptionsPage):
             item.enable(None, greyout=False)
             item.button_install.hide()
             item.button_enable.show()
+            item.button_uninstall.show()
             def uninstall_processor():
                 self.uninstall_plugin(item)
 
