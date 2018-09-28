@@ -192,8 +192,6 @@ class PluginsOptionsPage(OptionsPage):
         self.manager.plugin_removed.connect(self.plugin_removed)
         self.manager.plugin_errored.connect(self.plugin_loading_error)
 
-        plugins.setSortingEnabled(True)
-
         self._preserve = {}
         self._preserve_selected = None
 
@@ -268,6 +266,7 @@ class PluginsOptionsPage(OptionsPage):
 
         self.ui.details.setText("")
 
+        self.ui.plugins.setSortingEnabled(False)
         for plugin in self.installed_plugins():
             new_version = None
             if plugin.module_name in available_plugins:
@@ -284,6 +283,7 @@ class PluginsOptionsPage(OptionsPage):
             self.update_plugin_item(None, plugin, enabled=False,
                                     is_installed=False)
 
+        self.ui.plugins.setSortingEnabled(True)
         self._user_interaction(True)
 
     def _remove_all(self):
