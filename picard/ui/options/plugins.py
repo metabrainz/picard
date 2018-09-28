@@ -54,6 +54,28 @@ from picard.ui.ui_options_plugins import Ui_PluginsOptionsPage
 COLUMN_NAME, COLUMN_ACTIONS = range(2)
 
 
+class PluginActionButton(QtWidgets.QToolButton):
+
+    def __init__(self, icon=None, tooltip=None, retain_space=False,
+                 switch_method=None, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if tooltip is not None:
+            self.setToolTip(tooltip)
+
+        if icon is not None:
+            self.set_icon(self, icon)
+
+        if retain_space is True:
+            sp_retain = self.sizePolicy();
+            sp_retain.setRetainSizeWhenHidden(True)
+            self.setSizePolicy(sp_retain);
+        if switch_method is not None:
+            self.switch_method = switch_method
+
+    def mode(self, mode):
+        if self.switch_method is not None:
+            self.switch_method(self, mode)
+
 class PluginTreeWidgetItem(HashableTreeWidgetItem):
 
 
@@ -68,48 +90,76 @@ class PluginTreeWidgetItem(HashableTreeWidgetItem):
         self.enabled_font = None
         self.available_font = None
 
-        self.buttons = QtWidgets.QWidget()
+        self.buttons = {}
+        self.buttons_widget = QtWidgets.QWidget()
 
         layout = QtWidgets.QHBoxLayout()
         layout.setContentsMargins(0, 0, 5, 0)
         layout.addStretch(1)
 
-        def retain_space(widget):
-            sp_retain = widget.sizePolicy();
-            sp_retain.setRetainSizeWhenHidden(True)
-            widget.setSizePolicy(sp_retain);
+        button = PluginActionButton(switch_method=self.show_update)
+        button.mode('hide')
+        layout.addWidget(button)
+        self.buttons['update'] = button
 
-        self.button_uninstall = QtWidgets.QToolButton()
-        self.button_uninstall.setToolTip(_("Uninstall plugin"))
-        self.set_icon(self.button_uninstall, 'SP_TrashIcon')
+        button = PluginActionButton(switch_method=self.show_uninstall)
+        button.mode('hide')
+        layout.addWidget(button)
+        self.buttons['uninstall'] = button
 
-        retain_space(self.button_uninstall)
-        layout.addWidget(self.button_uninstall)
+        button = PluginActionButton(switch_method=self.show_enable)
+        layout.addWidget(button)
+        self.buttons['enable'] = button
+        button.mode('hide')
 
-        self.button_enable = QtWidgets.QToolButton()
-        self.enable(False)
-        layout.addWidget(self.button_enable)
+        button = PluginActionButton(switch_method=self.show_install)
+        button.mode('hide')
+        layout.addWidget(button)
+        self.buttons['install'] = button
+        self.buttons_widget.setLayout(layout)
 
-        self.button_install = QtWidgets.QToolButton()
-        self.show_install()
-
-        layout.addWidget(self.button_install)
-
-        self.buttons.setLayout(layout)
-
-        self.treeWidget().setItemWidget(self, COLUMN_ACTIONS, self.buttons)
+        self.treeWidget().setItemWidget(self, COLUMN_ACTIONS,
+                                        self.buttons_widget)
 
     @staticmethod
     def set_icon(button, stdicon):
         button.setIcon(button.style().standardIcon(getattr(QtWidgets.QStyle, stdicon)))
 
-    def show_install(self):
-        if self.new_version is None:
-            self.button_install.setToolTip(_("Install plugin"))
-            self.set_icon(self.button_install, 'SP_ArrowLeft')
+    def show_install(self, button, mode):
+        if mode == 'hide':
+            button.hide()
         else:
-            self.button_install.setToolTip(_("Upgrade plugin to version %s") % self.new_version)
-            self.set_icon(self.button_install, 'SP_BrowserReload')
+            button.show()
+            button.setToolTip(_("Download and install plugin"))
+            self.set_icon(button, 'SP_ArrowLeft')
+
+    def show_update(self, button, mode):
+        if mode == 'hide':
+            button.hide()
+        else:
+            button.show()
+            button.setToolTip(_("Download and upgrade plugin to version %s") % self.new_version)
+            self.set_icon(button, 'SP_BrowserReload')
+
+    def show_enable(self, button, mode):
+        if mode == 'enabled':
+            button.show()
+            button.setToolTip(_("Enabled"))
+            self.set_icon(button, 'SP_DialogApplyButton')
+        elif mode == 'disabled':
+            button.show()
+            button.setToolTip(_("Disabled"))
+            self.set_icon(button, 'SP_DialogCancelButton')
+        else:
+            button.hide()
+
+    def show_uninstall(self, button, mode):
+        if mode == 'hide':
+            button.hide()
+        else:
+            button.show()
+            button.setToolTip(_("Uninstall plugin"))
+            self.set_icon(button, 'SP_TrashIcon')
 
     def save_state(self):
         return {
@@ -151,13 +201,11 @@ class PluginTreeWidgetItem(HashableTreeWidgetItem):
         if boolean is not None:
             self.is_enabled = boolean
         if self.is_enabled:
-            self.button_enable.setToolTip(_("Enabled"))
-            self.set_icon(self.button_enable, 'SP_DialogApplyButton')
+            self.buttons['enable'].mode('enabled')
         else:
-            self.button_enable.setToolTip(_("Disabled"))
-            self.set_icon(self.button_enable, 'SP_DialogCancelButton')
+            self.buttons['enable'].mode('disabled')
         if greyout is not None:
-             self.button_enable.setEnabled(not greyout)
+             self.buttons['enable'].setEnabled(not greyout)
 
 class PluginsOptionsPage(OptionsPage):
 
@@ -416,9 +464,8 @@ class PluginsOptionsPage(OptionsPage):
             item.new_version = new_version
         if is_installed is not None:
             item.is_installed = is_installed
-
-        if enabled is not None:
-            item.enable(enabled, greyout=not item.is_installed)
+        if enabled is None:
+            enabled = item.is_enabled
 
         def update_text():
             if item.new_version is not None:
@@ -450,7 +497,7 @@ class PluginsOptionsPage(OptionsPage):
             log.debug("Plugin %r enabled: %r", item.plugin.name, item.is_enabled)
             update_text()
 
-        reconnect(item.button_enable.clicked, toggle_enable)
+        reconnect(item.buttons['enable'].clicked, toggle_enable)
 
         install_enabled = not item.is_installed or bool(item.new_version)
         if item.upgrade_to_version:
@@ -460,37 +507,32 @@ class PluginsOptionsPage(OptionsPage):
             else:
                 install_enabled = False
 
-        item.show_install()
-        item.button_install.setEnabled(install_enabled)
-
         if install_enabled:
             if item.new_version is not None:
                 def download_and_update():
                     self.download_plugin(item, update=True)
 
-                reconnect(item.button_install.clicked, download_and_update)
+                reconnect(item.buttons['update'].clicked, download_and_update)
+                item.buttons['install'].mode('hide')
+                item.buttons['update'].mode('show')
             else:
                 def download_and_install():
                     self.download_plugin(item)
 
-                reconnect(item.button_install.clicked, download_and_install)
+                reconnect(item.buttons['install'].clicked, download_and_install)
+                item.buttons['install'].mode('show')
+                item.buttons['update'].mode('hide')
 
         if item.is_installed:
-            item.button_uninstall.setEnabled(True)
-            item.enable(None, greyout=False)
-            item.button_install.hide()
-            item.button_enable.show()
-            item.button_uninstall.show()
+            item.buttons['uninstall'].mode('show')
+            item.enable(enabled, greyout=False)
             def uninstall_processor():
                 self.uninstall_plugin(item)
 
-            reconnect(item.button_uninstall.clicked, uninstall_processor)
+            reconnect(item.buttons['uninstall'].clicked, uninstall_processor)
         else:
-            item.button_uninstall.setEnabled(False)
-            item.enable(False, greyout=True)
-            item.button_enable.hide()
-            item.button_install.show()
-            item.button_uninstall.hide()
+            item.buttons['uninstall'].mode('hide')
+            item.buttons['enable'].mode('hide')
 
         update_text()
 
