@@ -72,6 +72,17 @@ class PluginTreeWidgetItem(HashableTreeWidgetItem):
 
         layout = QtWidgets.QHBoxLayout()
         layout.setContentsMargins(0, 0, 0, 0)
+        def retain_space(widget):
+            sp_retain = widget.sizePolicy();
+            sp_retain.setRetainSizeWhenHidden(True)
+            widget.setSizePolicy(sp_retain);
+
+        self.button_uninstall = QtWidgets.QToolButton()
+        self.button_uninstall.setToolTip(_("Uninstall plugin"))
+        self.set_icon(self.button_uninstall, 'SP_TrashIcon')
+
+        retain_space(self.button_uninstall)
+        layout.addWidget(self.button_uninstall)
 
         layout.addStretch(2)
         self.button_enable = QtWidgets.QToolButton()
@@ -82,11 +93,6 @@ class PluginTreeWidgetItem(HashableTreeWidgetItem):
         self.show_install()
 
         layout.addWidget(self.button_install)
-
-        self.button_uninstall = QtWidgets.QToolButton()
-        self.button_uninstall.setToolTip(_("Uninstall plugin"))
-        self.set_icon(self.button_uninstall, 'SP_TrashIcon')
-        layout.addWidget(self.button_uninstall)
 
         self.buttons.setLayout(layout)
 
@@ -477,6 +483,7 @@ class PluginsOptionsPage(OptionsPage):
             item.enable(False, greyout=True)
             item.button_enable.hide()
             item.button_install.show()
+            item.button_uninstall.hide()
 
         update_text()
 
