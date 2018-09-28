@@ -71,7 +71,9 @@ class PluginTreeWidgetItem(HashableTreeWidgetItem):
         self.buttons = QtWidgets.QWidget()
 
         layout = QtWidgets.QHBoxLayout()
-        layout.setContentsMargins(0, 0, 0, 0)
+        layout.setContentsMargins(0, 0, 5, 0)
+        layout.addStretch(1)
+
         def retain_space(widget):
             sp_retain = widget.sizePolicy();
             sp_retain.setRetainSizeWhenHidden(True)
@@ -84,7 +86,6 @@ class PluginTreeWidgetItem(HashableTreeWidgetItem):
         retain_space(self.button_uninstall)
         layout.addWidget(self.button_uninstall)
 
-        layout.addStretch(2)
         self.button_enable = QtWidgets.QToolButton()
         self.enable(False)
         layout.addWidget(self.button_enable)
@@ -291,6 +292,11 @@ class PluginsOptionsPage(OptionsPage):
 
         self.ui.plugins.setSortingEnabled(True)
         self._user_interaction(True)
+        header = self.ui.plugins.header()
+        header.setStretchLastSection(False)
+        header.setSectionResizeMode(QtWidgets.QHeaderView.Fixed)
+        header.setSectionResizeMode(COLUMN_NAME, QtWidgets.QHeaderView.Stretch)
+        header.setSectionResizeMode(COLUMN_ACTIONS, QtWidgets.QHeaderView.ResizeToContents)
 
     def _remove_all(self):
         for item in self.items():
@@ -486,8 +492,6 @@ class PluginsOptionsPage(OptionsPage):
             item.button_uninstall.hide()
 
         update_text()
-
-        self.ui.plugins.header().resizeSections(QtWidgets.QHeaderView.ResizeToContents)
 
         if make_current:
             self.set_current_item(item)
