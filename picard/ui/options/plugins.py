@@ -131,7 +131,7 @@ class PluginTreeWidgetItem(HashableTreeWidgetItem):
         else:
             button.show()
             button.setToolTip(_("Download and install plugin"))
-            self.set_icon(button, 'SP_ArrowLeft')
+            self.set_icon(button, 'SP_ArrowDown')
 
     def show_update(self, button, mode):
         if mode == 'hide':
