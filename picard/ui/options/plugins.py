@@ -51,7 +51,7 @@ from picard.ui.options import (
 )
 from picard.ui.ui_options_plugins import Ui_PluginsOptionsPage
 
-COLUMN_NAME, COLUMN_ACTIONS = range(2)
+COLUMN_NAME, COLUMN_VERSION, COLUMN_ACTIONS = range(3)
 
 
 class PluginActionButton(QtWidgets.QToolButton):
@@ -344,6 +344,7 @@ class PluginsOptionsPage(OptionsPage):
         header.setStretchLastSection(False)
         header.setSectionResizeMode(QtWidgets.QHeaderView.Fixed)
         header.setSectionResizeMode(COLUMN_NAME, QtWidgets.QHeaderView.Stretch)
+        header.setSectionResizeMode(COLUMN_VERSION, QtWidgets.QHeaderView.ResizeToContents)
         header.setSectionResizeMode(COLUMN_ACTIONS, QtWidgets.QHeaderView.ResizeToContents)
 
     def _remove_all(self):
@@ -490,7 +491,8 @@ class PluginsOptionsPage(OptionsPage):
                 else:
                     item.setFont(COLUMN_NAME, item.available_font)
 
-            item.setText(COLUMN_NAME, "%s (%s)" % (plugin.name, version))
+            item.setText(COLUMN_NAME, plugin.name)
+            item.setText(COLUMN_VERSION, version)
 
         def toggle_enable():
             item.enable(not item.is_enabled, greyout=not item.is_installed)

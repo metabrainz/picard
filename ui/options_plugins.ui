@@ -49,7 +49,12 @@
          </property>
          <column>
           <property name="text">
-           <string>Name/Version</string>
+           <string>Name</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Version</string>
           </property>
          </column>
          <column>
@@ -160,8 +165,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>653</width>
-            <height>91</height>
+            <width>655</width>
+            <height>82</height>
            </rect>
           </property>
           <property name="sizePolicy">
