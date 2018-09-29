@@ -525,6 +525,7 @@ class PluginsOptionsPage(OptionsPage):
                 item.buttons['update'].mode('hide')
 
         if item.is_installed:
+            item.buttons['install'].mode('hide')
             item.buttons['uninstall'].mode('show')
             item.enable(enabled, greyout=False)
             def uninstall_processor():
