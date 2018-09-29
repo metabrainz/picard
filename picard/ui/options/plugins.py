@@ -481,7 +481,6 @@ class PluginsOptionsPage(OptionsPage):
                 item.enabled_font.setBold(True)
             if item.available_font is None:
                 item.available_font = QtGui.QFont(item.installed_font)
-                item.available_font.setItalic(True)
 
             if item.is_enabled:
                 item.setFont(COLUMN_NAME, item.enabled_font)
