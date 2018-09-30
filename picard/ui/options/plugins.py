@@ -451,7 +451,6 @@ class PluginsOptionsPage(OptionsPage):
             item.setData(COLUMN_NAME, QtCore.Qt.UserRole, plugin)
         else:
             plugin = item.plugin
-        item.setSortData(COLUMN_NAME, plugin.name.lower())
         if new_version is not None:
             item.new_version = new_version
         if is_installed is not None:
@@ -531,6 +530,17 @@ class PluginsOptionsPage(OptionsPage):
 
         if make_current:
             self.set_current_item(item)
+
+        actions_sort_score = 1
+        if item.is_installed:
+            if item.is_enabled:
+                actions_sort_score = 3
+            else:
+                actions_sort_score = 2
+
+        item.setSortData(COLUMN_ACTIONS, actions_sort_score)
+        item.setSortData(COLUMN_NAME, plugin.name.lower())
+        item.setSortData(COLUMN_VERSION, tuple(int(e) for e in plugin.version.split('.')))
 
         return item
 
