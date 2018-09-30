@@ -96,27 +96,18 @@ class PluginTreeWidgetItem(HashableTreeWidgetItem):
         layout = QtWidgets.QHBoxLayout()
         layout.setContentsMargins(0, 0, 5, 0)
         layout.addStretch(1)
-
-        button = PluginActionButton(switch_method=self.show_update)
-        button.mode('hide')
-        layout.addWidget(button)
-        self.buttons['update'] = button
-
-        button = PluginActionButton(switch_method=self.show_uninstall)
-        button.mode('hide')
-        layout.addWidget(button)
-        self.buttons['uninstall'] = button
-
-        button = PluginActionButton(switch_method=self.show_enable)
-        layout.addWidget(button)
-        self.buttons['enable'] = button
-        button.mode('hide')
-
-        button = PluginActionButton(switch_method=self.show_install)
-        button.mode('hide')
-        layout.addWidget(button)
-        self.buttons['install'] = button
         self.buttons_widget.setLayout(layout)
+
+        def add_button(name, method):
+            button = PluginActionButton(switch_method=method)
+            layout.addWidget(button)
+            self.buttons[name] = button
+            button.mode('hide')
+
+        add_button('update', self.show_update)
+        add_button('uninstall', self.show_uninstall)
+        add_button('enable', self.show_enable)
+        add_button('install', self.show_install)
 
         self.treeWidget().setItemWidget(self, COLUMN_ACTIONS,
                                         self.buttons_widget)
