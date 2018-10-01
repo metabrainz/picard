@@ -540,7 +540,13 @@ class PluginsOptionsPage(OptionsPage):
 
         item.setSortData(COLUMN_ACTIONS, actions_sort_score)
         item.setSortData(COLUMN_NAME, plugin.name.lower())
-        item.setSortData(COLUMN_VERSION, tuple(int(e) for e in plugin.version.split('.')))
+
+        def v2int(elem):
+            try:
+                return int(elem)
+            except ValueError:
+                return 0
+        item.setSortData(COLUMN_VERSION, tuple(v2int(e) for e in plugin.version.split('.')))
 
         return item
 
