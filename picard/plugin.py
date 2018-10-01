@@ -398,6 +398,8 @@ class PluginManager(QtCore.QObject):
                         log.debug("Removing file %r", update)
                         os.remove(update)
 
+        self.plugins = [ p for p in self.plugins if p.module_name != plugin_name]
+
     def remove_plugin(self, plugin_name, with_update=False):
         self._remove_plugin(plugin_name, with_update=with_update)
         self.plugin_removed.emit(plugin_name, False)
