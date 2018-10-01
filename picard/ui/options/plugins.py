@@ -531,12 +531,12 @@ class PluginsOptionsPage(OptionsPage):
         if make_current:
             self.set_current_item(item)
 
-        actions_sort_score = 1
+        actions_sort_score = 2
         if item.is_installed:
             if item.is_enabled:
-                actions_sort_score = 3
+                actions_sort_score = 0
             else:
-                actions_sort_score = 2
+                actions_sort_score = 1
 
         item.setSortData(COLUMN_ACTIONS, actions_sort_score)
         item.setSortData(COLUMN_NAME, plugin.name.lower())
