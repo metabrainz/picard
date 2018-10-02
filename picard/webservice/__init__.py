@@ -290,8 +290,8 @@ class WebService(QtCore.QObject):
         cache.setCacheDirectory(os.path.join(location, 'picard'))
         cache.setMaximumCacheSize(cache_size_in_mb * 1024 * 1024)
         self.manager.setCache(cache)
-        log.debug("NetworkDiskCache dir: %s", cache.cacheDirectory())
-        log.debug("NetworkDiskCache size: %s / %s", cache.cacheSize(),
+        log.debug("NetworkDiskCache dir: %r size: %s / %s",
+                  cache.cacheDirectory(), cache.cacheSize(),
                   cache.maximumCacheSize())
 
     def setup_proxy(self):
