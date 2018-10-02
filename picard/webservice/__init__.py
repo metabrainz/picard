@@ -168,10 +168,10 @@ class WSRequest(QtNetwork.QNetworkRequest):
                 self.setHeader(QtNetwork.QNetworkRequest.ContentTypeHeader, "application/x-www-form-urlencoded")
 
     def _update_authorization_header(self):
+        bearer = b""
         if self.mblogin and self.access_token:
-            self.setRawHeader(b"Authorization", ("Bearer %s" % self.access_token).encode('utf-8'))
-        else:
-            self.setRawHeader(b"Authorization", b"")
+            bearer = ("Bearer %s" % self.access_token).encode('utf-8')
+        self.setRawHeader(b"Authorization", bearer)
 
     @property
     def access_token(self):
