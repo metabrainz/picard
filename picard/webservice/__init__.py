@@ -400,7 +400,7 @@ class WebService(QtCore.QObject):
                 slow_down = True
                 retries = request.mark_for_retry()
                 log.debug("Retrying %s (#%d)", url, retries)
-                self.add_task(partial(self._start_request, request), request)
+                self.add_request(request)
 
             elif handler is not None:
                 handler(reply.readAll(), reply, error)
@@ -452,8 +452,7 @@ class WebService(QtCore.QObject):
         request = WSGetRequest(host, port, path, handler, parse_response_type=parse_response_type,
                             mblogin=mblogin, cacheloadcontrol=cacheloadcontrol, refresh=refresh,
                             queryargs=queryargs, priority=priority, important=important)
-        func = partial(self._start_request, request)
-        return self.add_task(func, request)
+        return self.add_request(request)
 
     def post(self, host, port, path, data, handler, parse_response_type=DEFAULT_RESPONSE_PARSER_TYPE,
              priority=False, important=False, mblogin=True, queryargs=None):
@@ -461,22 +460,19 @@ class WebService(QtCore.QObject):
                             data=data, mblogin=mblogin, queryargs=queryargs,
                             priority=priority, important=important)
         log.debug("POST-DATA %r", data)
-        func = partial(self._start_request, request)
-        return self.add_task(func, request)
+        return self.add_request(request)
 
     def put(self, host, port, path, data, handler, priority=True, important=False, mblogin=True,
             queryargs=None):
         request = WSPutRequest(host, port, path, handler, data=data, mblogin=mblogin,
                             queryargs=queryargs, priority=priority, important=important)
-        func = partial(self._start_request, request)
-        return self.add_task(func, request)
+        return self.add_request(request)
 
     def delete(self, host, port, path, handler, priority=True, important=False, mblogin=True,
                queryargs=None):
         request = WSDeleteRequest(host, port, path, handler, mblogin=mblogin,
                             queryargs=queryargs, priority=priority, important=important)
-        func = partial(self._start_request, request)
-        return self.add_task(func, request)
+        return self.add_request(request)
 
     def download(self, host, port, path, handler, priority=False,
                  important=False, cacheloadcontrol=None, refresh=False,
@@ -487,7 +483,7 @@ class WebService(QtCore.QObject):
                         queryargs=queryargs)
 
     def stop(self):
-        for reply in list(self._active_requests.keys()):
+        for reply in self._active_requests:
             reply.abort()
         self._init_queues()
 
@@ -539,6 +535,9 @@ class WebService(QtCore.QObject):
             self._timer_count_pending_requests.start(0)
 
         return (hostkey, func, prio)
+
+    def add_request(self, request):
+        return self.add_task(partial(self._start_request, request), request)
 
     def remove_task(self, task):
         hostkey, func, prio = task
