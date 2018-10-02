@@ -259,7 +259,7 @@ class WebService(QtCore.QObject):
     PARSERS = dict()
 
     def __init__(self, parent=None):
-        QtCore.QObject.__init__(self, parent)
+        super().__init__(parent)
         self.manager = QtNetwork.QNetworkAccessManager()
         self.oauth_manager = OAuthManager(self)
         self.set_cache()
