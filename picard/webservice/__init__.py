@@ -46,6 +46,10 @@ from PyQt5.QtCore import (
     QUrlQuery,
 )
 
+from PyQt5.QtNetwork import (
+    QNetworkRequest,
+)
+
 from picard import (
     PICARD_APP_NAME,
     PICARD_ORG_NAME,
@@ -87,7 +91,7 @@ class UnknownResponseParserError(Exception):
         super().__init__(message)
 
 
-class WSRequest(QtNetwork.QNetworkRequest):
+class WSRequest(QNetworkRequest):
     """Represents a single HTTP request."""
 
     def __init__(self, method, host, port, path, handler, parse_response_type=None, data=None,
@@ -145,14 +149,14 @@ class WSRequest(QtNetwork.QNetworkRequest):
         self._init_headers()
 
     def _init_headers(self):
-        self.setHeader(QtNetwork.QNetworkRequest.UserAgentHeader, USER_AGENT_STRING)
+        self.setHeader(QNetworkRequest.UserAgentHeader, USER_AGENT_STRING)
 
         if self.mblogin:
-            self.setPriority(QtNetwork.QNetworkRequest.HighPriority)
-            self.setAttribute(QtNetwork.QNetworkRequest.CacheLoadControlAttribute,
-                                 QtNetwork.QNetworkRequest.AlwaysNetwork)
+            self.setPriority(QNetworkRequest.HighPriority)
+            self.setAttribute(QNetworkRequest.CacheLoadControlAttribute,
+                                 QNetworkRequest.AlwaysNetwork)
         elif self.cacheloadcontrol is not None:
-            self.setAttribute(QtNetwork.QNetworkRequest.CacheLoadControlAttribute,
+            self.setAttribute(QNetworkRequest.CacheLoadControlAttribute,
                                  self.cacheloadcontrol)
 
         if self.parse_response_type:
@@ -165,7 +169,7 @@ class WSRequest(QtNetwork.QNetworkRequest):
                 self.setRawHeader(b"Accept", self.response_mimetype.encode('utf-8'))
 
         if self.data:
-                self.setHeader(QtNetwork.QNetworkRequest.ContentTypeHeader, "application/x-www-form-urlencoded")
+                self.setHeader(QNetworkRequest.ContentTypeHeader, "application/x-www-form-urlencoded")
 
     def _update_authorization_header(self):
         bearer = b""
@@ -214,12 +218,12 @@ class WSGetRequest(WSRequest):
 
     def _init_headers(self):
         super()._init_headers()
-        self.setAttribute(QtNetwork.QNetworkRequest.HttpPipeliningAllowedAttribute,
+        self.setAttribute(QNetworkRequest.HttpPipeliningAllowedAttribute,
                           True)
         if self.refresh:
-            self.setPriority(QtNetwork.QNetworkRequest.HighPriority)
-            self.setAttribute(QtNetwork.QNetworkRequest.CacheLoadControlAttribute,
-                                 QtNetwork.QNetworkRequest.AlwaysNetwork)
+            self.setPriority(QNetworkRequest.HighPriority)
+            self.setAttribute(QNetworkRequest.CacheLoadControlAttribute,
+                                 QNetworkRequest.AlwaysNetwork)
 
 
 class WSPutRequest(WSRequest):
@@ -229,7 +233,7 @@ class WSPutRequest(WSRequest):
 
     def _init_headers(self):
         super()._init_headers()
-        self.setPriority(QtNetwork.QNetworkRequest.HighPriority)
+        self.setPriority(QNetworkRequest.HighPriority)
 
 
 class WSDeleteRequest(WSRequest):
@@ -239,7 +243,7 @@ class WSDeleteRequest(WSRequest):
 
     def _init_headers(self):
         super()._init_headers()
-        self.setPriority(QtNetwork.QNetworkRequest.HighPriority)
+        self.setPriority(QNetworkRequest.HighPriority)
 
 
 class WSPostRequest(WSRequest):
@@ -250,7 +254,7 @@ class WSPostRequest(WSRequest):
     def _init_headers(self):
         super()._init_headers()
         if self.host == config.setting["server_host"] and self.response_mimetype:
-            self.setHeader(QtNetwork.QNetworkRequest.ContentTypeHeader,
+            self.setHeader(QNetworkRequest.ContentTypeHeader,
                             "%s; charset=utf-8" % self.response_mimetype)
 
 
@@ -364,7 +368,7 @@ class WebService(QtCore.QObject):
                      redirect_path,
                      request.handler, request.parse_response_type, priority=True, important=True,
                      refresh=request.refresh, queryargs=redirect_query,
-                     cacheloadcontrol=request.attribute(QtNetwork.QNetworkRequest.CacheLoadControlAttribute))
+                     cacheloadcontrol=request.attribute(QNetworkRequest.CacheLoadControlAttribute))
         else:
             log.error("Redirect loop: %s",
                       reply.request().url().toString(QUrl.RemoveUserInfo)
@@ -382,7 +386,7 @@ class WebService(QtCore.QObject):
         error = int(reply.error())
         handler = request.handler
         if error:
-            code = reply.attribute(QtNetwork.QNetworkRequest.HttpStatusCodeAttribute)
+            code = reply.attribute(QNetworkRequest.HttpStatusCodeAttribute)
             code = int(code) if code else 0
             errstr = reply.errorString()
             url = reply.request().url().toString(QUrl.RemoveUserInfo)
@@ -408,13 +412,13 @@ class WebService(QtCore.QObject):
             slow_down = (slow_down or code >= 500)
 
         else:
-            redirect = reply.attribute(QtNetwork.QNetworkRequest.RedirectionTargetAttribute)
-            fromCache = reply.attribute(QtNetwork.QNetworkRequest.SourceIsFromCacheAttribute)
+            redirect = reply.attribute(QNetworkRequest.RedirectionTargetAttribute)
+            fromCache = reply.attribute(QNetworkRequest.SourceIsFromCacheAttribute)
             cached = ' (CACHED)' if fromCache else ''
             log.debug("Received reply for %s: HTTP %d (%s) %s",
                       reply.request().url().toString(QUrl.RemoveUserInfo),
-                      reply.attribute(QtNetwork.QNetworkRequest.HttpStatusCodeAttribute),
-                      reply.attribute(QtNetwork.QNetworkRequest.HttpReasonPhraseAttribute),
+                      reply.attribute(QNetworkRequest.HttpStatusCodeAttribute),
+                      reply.attribute(QNetworkRequest.HttpReasonPhraseAttribute),
                       cached
                       )
             if handler is not None:
