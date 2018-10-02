@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>513</width>
-    <height>315</height>
+    <width>697</width>
+    <height>441</height>
    </rect>
   </property>
   <layout class="QVBoxLayout">
@@ -59,7 +59,10 @@
          </column>
          <column>
           <property name="text">
-           <string>Action</string>
+           <string>Actions</string>
+          </property>
+          <property name="textAlignment">
+           <set>AlignCenter</set>
           </property>
          </column>
          <column>
@@ -162,8 +165,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>477</width>
-            <height>90</height>
+            <width>655</width>
+            <height>82</height>
            </rect>
           </property>
           <property name="sizePolicy">

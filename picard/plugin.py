@@ -40,7 +40,6 @@ from picard import (
     version_to_string,
 )
 from picard.const import (
-    PLUGIN_ACTION_UPDATE,
     PLUGINS_API,
     USER_PLUGIN_DIR,
 )
@@ -138,12 +137,6 @@ class PluginShared(object):
 
     def __init__(self):
         super().__init__()
-        self.new_version = ""
-        self.enabled = False
-        self.can_be_updated = False
-        self.can_be_downloaded = False
-        self.marked_for_update = False
-        self.is_uninstalled = False
 
 
 class PluginWrapper(PluginShared):
@@ -249,16 +242,24 @@ class PluginManager(QtCore.QObject):
 
     plugin_installed = QtCore.pyqtSignal(PluginWrapper, bool)
     plugin_updated = QtCore.pyqtSignal(str, bool)
+    plugin_removed = QtCore.pyqtSignal(str, bool)
+    plugin_errored = QtCore.pyqtSignal(str, str, bool)
 
     def __init__(self):
         super().__init__()
         self.plugins = []
         self._api_versions = set([version_from_string(v) for v in picard.api_versions])
-        self._available_plugins = {}
+        self._available_plugins = None #  None=never loaded, [] = empty
 
     @property
     def available_plugins(self):
         return self._available_plugins
+
+    def plugin_error(self, name, error, log_func=None):
+        if log_func is None:
+            log_func = log.error
+        log_func(error)
+        self.plugin_errored.emit(name, error, False)
 
     def load_plugindir(self, plugindir):
         plugindir = os.path.normpath(plugindir)
@@ -273,7 +274,7 @@ class PluginManager(QtCore.QObject):
             if not name:
                 name = _plugin_name_from_path(path)
             if name:
-                self.remove_plugin(name)
+                self._remove_plugin(name)
                 os.rename(updatepath, path)
                 log.debug('Updating plugin %r (%r))', name, path)
             else:
@@ -301,7 +302,8 @@ class PluginManager(QtCore.QObject):
         if importer:
             name = module_name
             if not importer.find_module(name):
-                log.error("Failed loading zipped plugin %r", name)
+                error = _("Failed loading zipped plugin %r") % name
+                self.plugin_error(name, error)
                 return None
             module_pathname = importer.get_filename(name)
         else:
@@ -310,7 +312,8 @@ class PluginManager(QtCore.QObject):
                 module_file = info[0]
                 module_pathname = info[1]
             except ImportError:
-                log.error("Failed loading plugin %r", name)
+                error = _("Failed loading plugin %r") % name
+                self.plugin_error(name, error)
                 return None
 
         plugin = None
@@ -349,13 +352,15 @@ class PluginManager(QtCore.QObject):
                 else:
                     self.plugins.append(plugin)
             else:
-                log.warning("Plugin '%s' from '%s' is not compatible"
-                            " with this version of Picard."
-                            % (plugin.name, plugin.file))
+                error = _("Plugin '%s' from '%s' is not compatible with this "
+                          "version of Picard.") % (plugin.name, plugin.file)
+                self.plugin_error(plugin.name, error, log_func=log.warning)
         except VersionError as e:
-            log.error("Plugin %r has an invalid API version string : %s", name, e)
+            error = _("Plugin %r has an invalid API version string : %s") % (name, e)
+            self.plugin_error(name, error)
         except:
-            log.error("Plugin %r : %s", name, traceback.format_exc())
+            error = _("Plugin %r : %s") % (name, traceback.format_exc())
+            self.plugin_error(name, error)
         if module_file is not None:
             module_file.close()
         return plugin
@@ -371,7 +376,7 @@ class PluginManager(QtCore.QObject):
                      ]
         return (dirpath, filepaths)
 
-    def remove_plugin(self, plugin_name):
+    def _remove_plugin(self, plugin_name, with_update=False):
         if plugin_name.endswith('.zip'):
             plugin_name = os.path.splitext(plugin_name)[0]
         log.debug("Remove plugin files and dirs : %r", plugin_name)
@@ -387,8 +392,19 @@ class PluginManager(QtCore.QObject):
             for filepath in filepaths:
                 log.debug("Removing file %r", filepath)
                 os.remove(filepath)
+                if with_update:
+                    update = filepath + '.update'
+                    if os.path.isfile(update):
+                        log.debug("Removing file %r", update)
+                        os.remove(update)
 
-    def install_plugin(self, path, action, overwrite_confirm=None, plugin_name=None,
+        self.plugins = [ p for p in self.plugins if p.module_name != plugin_name]
+
+    def remove_plugin(self, plugin_name, with_update=False):
+        self._remove_plugin(plugin_name, with_update=with_update)
+        self.plugin_removed.emit(plugin_name, False)
+
+    def install_plugin(self, path, update=False, overwrite_confirm=None, plugin_name=None,
                        plugin_data=None):
         """
             path is either:
@@ -410,7 +426,7 @@ class PluginManager(QtCore.QObject):
                     # zipped module from download
                     zip_plugin = plugin_name + '.zip'
                     dst = os.path.join(USER_PLUGIN_DIR, zip_plugin)
-                    if action == PLUGIN_ACTION_UPDATE:
+                    if update:
                         dst += '.update'
                         if os.path.isfile(dst):
                             os.remove(dst)
@@ -431,19 +447,19 @@ class PluginManager(QtCore.QObject):
                         raise
                 elif os.path.isfile(path):
                     dst = os.path.join(USER_PLUGIN_DIR, os.path.basename(path))
-                    if action == PLUGIN_ACTION_UPDATE:
+                    if update:
                         dst += '.update'
                         if os.path.isfile(dst):
                             os.remove(dst)
                     shutil.copy2(path, dst)
                 elif os.path.isdir(path):
                     dst = os.path.join(USER_PLUGIN_DIR, plugin_name)
-                    if action == PLUGIN_ACTION_UPDATE:
+                    if update:
                         dst += '.update'
                         if os.path.isdir(dst):
                             shutil.rmtree(dst)
                     shutil.copytree(path, dst)
-                if action != PLUGIN_ACTION_UPDATE:
+                if not update:
                     try:
                         installed_plugin = self.load_plugin(zip_plugin or plugin_name, USER_PLUGIN_DIR)
                     except Exception as e:
@@ -475,6 +491,7 @@ class PluginManager(QtCore.QObject):
                 {'error': reply.errorString()},
                 echo=log.error
             )
+            self._available_plugins = []
         else:
             self._available_plugins = [PluginData(data, key) for key, data in
                                        load_json(response)['plugins'].items()]
