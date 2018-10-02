@@ -148,16 +148,14 @@ class WSRequest(QNetworkRequest):
         self.access_token = None
         self._init_headers()
 
-    def _init_headers(self):
+    def _init_headers(self, high_prio_no_cache=False):
         self.setHeader(QNetworkRequest.UserAgentHeader, USER_AGENT_STRING)
 
-        if self.mblogin:
+        if self.mblogin or high_prio_no_cache:
             self.setPriority(QNetworkRequest.HighPriority)
-            self.setAttribute(QNetworkRequest.CacheLoadControlAttribute,
-                                 QNetworkRequest.AlwaysNetwork)
+            self.setAttribute(QNetworkRequest.CacheLoadControlAttribute, QNetworkRequest.AlwaysNetwork)
         elif self.cacheloadcontrol is not None:
-            self.setAttribute(QNetworkRequest.CacheLoadControlAttribute,
-                                 self.cacheloadcontrol)
+            self.setAttribute(QNetworkRequest.CacheLoadControlAttribute, self.cacheloadcontrol)
 
         if self.parse_response_type:
             try:
@@ -217,13 +215,9 @@ class WSGetRequest(WSRequest):
         super().__init__("GET", *args, **kwargs)
 
     def _init_headers(self):
-        super()._init_headers()
+        super()._init_headers(high_prio_no_cache=self.refresh)
         self.setAttribute(QNetworkRequest.HttpPipeliningAllowedAttribute,
                           True)
-        if self.refresh:
-            self.setPriority(QNetworkRequest.HighPriority)
-            self.setAttribute(QNetworkRequest.CacheLoadControlAttribute,
-                                 QNetworkRequest.AlwaysNetwork)
 
 
 class WSPutRequest(WSRequest):
@@ -232,8 +226,7 @@ class WSPutRequest(WSRequest):
         super().__init__("PUT", *args, **kwargs)
 
     def _init_headers(self):
-        super()._init_headers()
-        self.setPriority(QNetworkRequest.HighPriority)
+        super()._init_headers(high_prio_no_cache=True)
 
 
 class WSDeleteRequest(WSRequest):
@@ -242,8 +235,7 @@ class WSDeleteRequest(WSRequest):
         super().__init__("DELETE", *args, **kwargs)
 
     def _init_headers(self):
-        super()._init_headers()
-        self.setPriority(QNetworkRequest.HighPriority)
+        super()._init_headers(high_prio_no_cache=True)
 
 
 class WSPostRequest(WSRequest):
@@ -252,7 +244,7 @@ class WSPostRequest(WSRequest):
         super().__init__("POST", *args, **kwargs)
 
     def _init_headers(self):
-        super()._init_headers()
+        super()._init_headers(high_prio_no_cache=True)
         if self.host == config.setting["server_host"] and self.response_mimetype:
             self.setHeader(QNetworkRequest.ContentTypeHeader,
                             "%s; charset=utf-8" % self.response_mimetype)
