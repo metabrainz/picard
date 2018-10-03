@@ -27,6 +27,9 @@ from picard import (
     log,
 )
 
+OK_RESP = b"HTTP/1.1 200 OK\r\nCache-Control: max-age=0\r\n\r\nNothing to see here."
+ERR_RESP = b"HTTP/1.1 500 Internal Server Error\r\nCache-Control: max-age=0\r\n\r\nNothing to see here."
+
 
 class BrowserIntegration(QtNetwork.QTcpServer):
 
@@ -69,9 +72,9 @@ class BrowserIntegration(QtNetwork.QTcpServer):
         log.debug("Browser integration request: %r", rawline)
         try:
             line = rawline.decode()
-            conn.write(b"HTTP/1.1 200 OK\r\nCache-Control: max-age=0\r\n\r\nNothing to see here.")
+            conn.write(OK_RESP)
         except UnicodeDecodeError as e:
-            conn.write(b"HTTP/1.1 500 Internal Server Error\r\nCache-Control: max-age=0\r\n\r\nNothing to see here.")
+            conn.write(ERR_RESP)
             log.error(e)
             return
         finally:
