@@ -65,12 +65,13 @@ class BrowserIntegration(QtNetwork.QTcpServer):
 
     def _process_request(self):
         conn = self.sender()
-        conn.write(b"HTTP/1.1 200 OK\r\nCache-Control: max-age=0\r\n\r\nNothing to see here.")
         rawline = conn.readLine().data()
         log.debug("Browser integration request: %r", rawline)
         try:
             line = rawline.decode()
+            conn.write(b"HTTP/1.1 200 OK\r\nCache-Control: max-age=0\r\n\r\nNothing to see here.")
         except UnicodeDecodeError as e:
+            conn.write(b"HTTP/1.1 500 Internal Server Error\r\nCache-Control: max-age=0\r\n\r\nNothing to see here.")
             log.error(e)
             return
         finally:
