@@ -27,8 +27,23 @@ from picard import (
     log,
 )
 
-OK_RESP = b"HTTP/1.1 200 OK\r\nCache-Control: max-age=0\r\n\r\nNothing to see here."
-ERR_RESP = b"HTTP/1.1 500 Internal Server Error\r\nCache-Control: max-age=0\r\n\r\nNothing to see here."
+from picard.util import (
+    mbid_validate,
+)
+
+
+def response(code):
+    if code == 200:
+        resp = '200 OK'
+    elif code == 400:
+        resp = '400 Bad Request'
+    else:
+        resp = '500 Internal Server Error'
+    return bytearray(
+        'HTTP/1.1 {}\r\n'
+        'Cache-Control: max-age=0\r\n'
+        '\r\n'
+        'Nothing to see here.\r\n'.format(resp), 'ascii')
 
 
 class BrowserIntegration(QtNetwork.QTcpServer):
@@ -70,28 +85,38 @@ class BrowserIntegration(QtNetwork.QTcpServer):
         conn = self.sender()
         rawline = conn.readLine().data()
         log.debug("Browser integration request: %r", rawline)
+
+        def parse_line(line):
+            line = line.split()
+            if line[0] == "GET" and "?" in line[1]:
+                action, args = line[1].split("?")
+                args = [a.split("=", 1) for a in args.split("&")]
+                args = dict((a, QtCore.QUrl.fromPercentEncoding(b.encode('ascii'))) for (a, b) in args)
+                mbid = args['id']
+                if mbid_validate(mbid):
+                    def load_it(loader, mbid):
+                        self.tagger.bring_tagger_front()
+                        loader(mbid)
+                        return True
+                    if action == '/openalbum':
+                        return load_it(self.tagger.load_album, mbid)
+                    elif action == '/opennat':
+                        return load_it(self.tagger.load_nat, mbid)
+            return False
+
         try:
             line = rawline.decode()
-            conn.write(OK_RESP)
+            if parse_line(line):
+                conn.write(response(200))
+            else:
+                conn.write(response(400))
+                log.error("Unknown browser integration request: %r", line)
         except UnicodeDecodeError as e:
-            conn.write(ERR_RESP)
+            conn.write(response(500))
             log.error(e)
             return
         finally:
             conn.disconnectFromHost()
-
-        line = line.split()
-        if line[0] == "GET" and "?" in line[1]:
-            action, args = line[1].split("?")
-            args = [a.split("=", 1) for a in args.split("&")]
-            args = dict((a, QtCore.QUrl.fromPercentEncoding(b.encode('ascii'))) for (a, b) in args)
-            self.tagger.bring_tagger_front()
-            if action == "/openalbum":
-                self.tagger.load_album(args["id"])
-            elif action == "/opennat":
-                self.tagger.load_nat(args["id"])
-            else:
-                log.error("Unknown browser integration request: %r", action)
 
     def _accept_connection(self):
         conn = self.nextPendingConnection()
