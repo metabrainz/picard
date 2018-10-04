@@ -474,7 +474,7 @@ class Album(DataObject, Item):
         return True
 
     def can_analyze(self):
-        return False
+        return any([_track.can_analyze() for _track in self.tracks])
 
     def can_autotag(self):
         return False

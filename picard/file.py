@@ -531,7 +531,7 @@ class File(QtCore.QObject, Item):
 
     def can_analyze(self):
         """Return if this object can be fingerprinted."""
-        return True
+        return not bool(self.metadata["acoustid_id"])
 
     def can_autotag(self):
         return True

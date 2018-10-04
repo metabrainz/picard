@@ -253,6 +253,9 @@ class Track(DataObject, Item):
             self.metadata.images = []
         self.update()
 
+    def can_analyze(self):
+        return any([_file.can_analyze() for _file in self.linked_files])
+
 
 class NonAlbumTrack(Track):
 
