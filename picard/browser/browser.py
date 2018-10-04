@@ -17,6 +17,11 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+from urllib.parse import (
+    parse_qs,
+    urlparse,
+)
+
 from PyQt5 import (
     QtCore,
     QtNetwork,
@@ -91,15 +96,18 @@ class BrowserIntegration(QtNetwork.QTcpServer):
             try:
                 line = line.split()
                 if line[0] == "GET" and "?" in line[1]:
-                    action, args = line[1].split("?")
-                    args = [a.split("=", 1) for a in args.split("&")]
-                    args = dict((a, QtCore.QUrl.fromPercentEncoding(b.encode('ascii'))) for (a, b) in args)
-                    mbid = args['id']
-                    if mbid_validate(mbid):
+                    parsed = urlparse(line[1])
+                    args = parse_qs(parsed.query)
+                    if 'id' in args and args['id']:
+                        mbid = args['id'][0]
+                        if not mbid_validate(mbid):
+                            log.error("Browser integration failed: bad mbid %r", mbid)
+                            return False
                         def load_it(loader):
                             self.tagger.bring_tagger_front()
                             loader(mbid)
                             return True
+                        action = parsed.path
                         if action == '/openalbum':
                             return load_it(self.tagger.load_album)
                         elif action == '/opennat':
