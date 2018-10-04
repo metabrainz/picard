@@ -87,21 +87,27 @@ class BrowserIntegration(QtNetwork.QTcpServer):
         log.debug("Browser integration request: %r", rawline)
 
         def parse_line(line):
-            line = line.split()
-            if line[0] == "GET" and "?" in line[1]:
-                action, args = line[1].split("?")
-                args = [a.split("=", 1) for a in args.split("&")]
-                args = dict((a, QtCore.QUrl.fromPercentEncoding(b.encode('ascii'))) for (a, b) in args)
-                mbid = args['id']
-                if mbid_validate(mbid):
-                    def load_it(loader, mbid):
-                        self.tagger.bring_tagger_front()
-                        loader(mbid)
-                        return True
-                    if action == '/openalbum':
-                        return load_it(self.tagger.load_album, mbid)
-                    elif action == '/opennat':
-                        return load_it(self.tagger.load_nat, mbid)
+            orig_line = line
+            try:
+                line = line.split()
+                if line[0] == "GET" and "?" in line[1]:
+                    action, args = line[1].split("?")
+                    args = [a.split("=", 1) for a in args.split("&")]
+                    args = dict((a, QtCore.QUrl.fromPercentEncoding(b.encode('ascii'))) for (a, b) in args)
+                    mbid = args['id']
+                    if mbid_validate(mbid):
+                        def load_it(loader):
+                            self.tagger.bring_tagger_front()
+                            loader(mbid)
+                            return True
+                        if action == '/openalbum':
+                            return load_it(self.tagger.load_album)
+                        elif action == '/opennat':
+                            return load_it(self.tagger.load_nat)
+            except Exception as e:
+                log.error("Browser integration failed with %r on line %r", e, orig_line)
+                return False
+            log.error("Browser integration failed: cannot parse %r", orig_line)
             return False
 
         try:
@@ -110,7 +116,6 @@ class BrowserIntegration(QtNetwork.QTcpServer):
                 conn.write(response(200))
             else:
                 conn.write(response(400))
-                log.error("Unknown browser integration request: %r", line)
         except UnicodeDecodeError as e:
             conn.write(response(500))
             log.error(e)
