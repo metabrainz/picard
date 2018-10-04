@@ -55,6 +55,7 @@ if os_name == 'Windows':
         ('ssleay32.dll', '.'),
         ('libeay32.dll', '.'),
     ]
+    data_files.append((os.path.join('resources', 'win10', '*'), '.'))
 
 if os_name == 'Darwin':
     binaries += [('libdiscid.0.dylib', '.')]
