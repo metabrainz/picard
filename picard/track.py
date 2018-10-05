@@ -44,6 +44,7 @@ from picard.script import (
     enabled_tagger_scripts_texts,
 )
 from picard.util.imagelist import (
+    add_metadata_images,
     remove_metadata_images,
     update_metadata_images
 )
@@ -83,8 +84,9 @@ class Track(DataObject, Item):
         if file not in self.linked_files:
             self.linked_files.append(file)
             self.num_linked_files += 1
-        self.album._add_file(self, file)
         self.update_file_metadata(file)
+        add_metadata_images(self, [file])
+        self.album._add_file(self, file)
         file.metadata_images_changed.connect(self.update_orig_metadata_images)
 
     def update_file_metadata(self, file):
@@ -94,7 +96,6 @@ class Track(DataObject, Item):
         file.metadata['~extension'] = file.orig_metadata['~extension']
         file.update(signal=False)
         self.update()
-        self.update_orig_metadata_images()
 
     def remove_file(self, file):
         if file not in self.linked_files:
@@ -250,13 +251,12 @@ class Track(DataObject, Item):
     def keep_original_images(self):
         for file in self.linked_files:
             file.keep_original_images()
+        self.update_orig_metadata_images()
         if self.linked_files:
-            self.update_orig_metadata_images()
             self.metadata.images = self.orig_metadata.images[:]
         else:
             self.metadata.images = []
         self.update()
-        self.update_orig_metadata_images()
 
 
 class NonAlbumTrack(Track):

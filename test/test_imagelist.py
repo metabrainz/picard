@@ -10,6 +10,7 @@ from picard.coverart.image import CoverArtImage
 from picard.track import Track
 from picard.file import File
 from picard.util.imagelist import (
+    add_metadata_images,
     remove_metadata_images,
     update_metadata_images
 )
@@ -20,24 +21,29 @@ def create_fake_png(extra):
     return b'\x89PNG\x0D\x0A\x1A\x0A' + (b'a' * 4) + b'IHDR' + struct.pack('>LL', 100, 100) + extra
 
 
+def create_test_files():
+    test_images = [
+        CoverArtImage(url='file://file1', data=create_fake_png(b'a')),
+        CoverArtImage(url='file://file2', data=create_fake_png(b'b')),
+    ]
+    test_files = [
+        File('test1.flac'),
+        File('test2.flac'),
+        File('test2.flac')
+    ]
+    test_files[0].metadata.append_image(test_images[0])
+    test_files[1].metadata.append_image(test_images[1])
+    test_files[2].metadata.append_image(test_images[1])
+    test_files[0].orig_metadata.append_image(test_images[0])
+    test_files[1].orig_metadata.append_image(test_images[1])
+    test_files[2].orig_metadata.append_image(test_images[1])
+    return (test_images, test_files)
+
+
 class UpdateMetadataImagesTest(unittest.TestCase):
 
     def setUp(self):
-        self.test_images = [
-            CoverArtImage(data=create_fake_png(b'a')),
-            CoverArtImage(data=create_fake_png(b'b')),
-        ]
-        self.test_files = [
-            File('test1.flac'),
-            File('test2.flac'),
-            File('test2.flac')
-        ]
-        self.test_files[0].metadata.append_image(self.test_images[0])
-        self.test_files[1].metadata.append_image(self.test_images[1])
-        self.test_files[2].metadata.append_image(self.test_images[1])
-        self.test_files[0].orig_metadata.append_image(self.test_images[0])
-        self.test_files[1].orig_metadata.append_image(self.test_images[1])
-        self.test_files[2].orig_metadata.append_image(self.test_images[1])
+        (self.test_images, self.test_files) = create_test_files()
 
     def test_update_cluster_images(self):
         cluster = Cluster('Test')
@@ -115,21 +121,7 @@ class UpdateMetadataImagesTest(unittest.TestCase):
 class RemoveMetadataImagesTest(unittest.TestCase):
 
     def setUp(self):
-        self.test_images = [
-            CoverArtImage(url='file://file1', data=create_fake_png(b'a')),
-            CoverArtImage(url='file://file2', data=create_fake_png(b'b')),
-        ]
-        self.test_files = [
-            File('test1.flac'),
-            File('test2.flac'),
-            File('test2.flac')
-        ]
-        self.test_files[0].metadata.append_image(self.test_images[0])
-        self.test_files[1].metadata.append_image(self.test_images[1])
-        self.test_files[2].metadata.append_image(self.test_images[1])
-        self.test_files[0].orig_metadata.append_image(self.test_images[0])
-        self.test_files[1].orig_metadata.append_image(self.test_images[1])
-        self.test_files[2].orig_metadata.append_image(self.test_images[1])
+        (self.test_images, self.test_files) = create_test_files()
 
     def test_remove_from_cluster(self):
         cluster = Cluster('Test')
@@ -214,3 +206,18 @@ class RemoveMetadataImagesTest(unittest.TestCase):
         self.assertEqual(set(), set(album.orig_metadata.images))
         self.assertTrue(album.metadata.has_common_images)
         self.assertTrue(album.orig_metadata.has_common_images)
+
+
+class AddMetadataImagesTest(unittest.TestCase):
+
+    def setUp(self):
+        (self.test_images, self.test_files) = create_test_files()
+
+    def test_add_to_cluster(self):
+        cluster = Cluster('Test')
+        cluster.files = [self.test_files[0]]
+        update_metadata_images(cluster)
+        cluster.files += self.test_files[1:]
+        add_metadata_images(cluster, self.test_files[1:])
+        self.assertEqual(set(self.test_images), set(cluster.metadata.images))
+        self.assertFalse(cluster.metadata.has_common_images)

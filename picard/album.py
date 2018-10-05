@@ -59,6 +59,7 @@ from picard.util import (
     mbid_validate,
 )
 from picard.util.imagelist import (
+    add_metadata_images,
     remove_metadata_images,
     update_metadata_images
 )
@@ -409,8 +410,8 @@ class Album(DataObject, Item):
     def _add_file(self, track, file):
         self._files += 1
         self.update(update_tracks=False)
+        add_metadata_images(self, [file])
         file.metadata_images_changed.connect(self.update_metadata_images)
-        self.update_metadata_images()
 
     def _remove_file(self, track, file):
         self._files -= 1

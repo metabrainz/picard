@@ -111,8 +111,41 @@ def _get_state(obj):
     return state
 
 
+def _get_metadata_images(state, sources):
+    new_images = set()
+    orig_images = set()
+    for s in sources:
+        if state.update_new_metadata:
+            new_images = new_images.union(s.metadata.images)
+        if state.update_orig_metadata:
+            orig_images = orig_images.union(s.orig_metadata.images)
+    return (new_images, orig_images)
+
+
 def update_metadata_images(obj):
     _update_state(obj, _get_state(obj))
+
+
+def _add_images(metadata, added_images):
+    if not added_images:
+        return
+
+    current_images = set(metadata.images)
+    if added_images == current_images:
+        return
+    else:
+        metadata.images = ImageList(current_images.union(added_images))
+        metadata.has_common_images = False
+
+
+def add_metadata_images(obj, added_sources):
+    state = _get_state(obj)
+    (added_new_images, added_orig_images) = _get_metadata_images(state, added_sources)
+
+    if state.update_new_metadata:
+        _add_images(obj.metadata, added_new_images)
+    if state.update_orig_metadata:
+        _add_images(obj.orig_metadata, added_orig_images)
 
 
 def _remove_images(metadata, sources, removed_images):
@@ -148,12 +181,8 @@ def remove_metadata_images(obj, removed_sources):
     from picard.track import Track
 
     state = _get_state(obj)
+    (removed_new_images, removed_orig_images) = _get_metadata_images(state, removed_sources)
 
-    removed_new_images = set()
-    removed_orig_images = set()
-    for s in removed_sources:
-        removed_new_images = removed_new_images.union(s.metadata.images)
-        removed_orig_images = removed_orig_images.union(s.orig_metadata.images)
     if state.update_new_metadata:
         sources = [s.metadata for s in state.sources]
         _remove_images(obj.metadata, sources, removed_new_images)
