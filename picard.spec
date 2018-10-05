@@ -88,6 +88,7 @@ exe = EXE(pyz,
           strip=False,
           upx=False,
           icon='picard.ico',
+          version='win-version-info.txt',
           console=False)
 
 
