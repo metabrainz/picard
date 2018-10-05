@@ -19,6 +19,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from collections import OrderedDict
+from platform import python_version
 
 from mutagen import version_string as mutagen_version
 
@@ -34,6 +35,7 @@ from picard.util.astrcmp import astrcmp_implementation
 
 _versions = OrderedDict([
     ("version", PICARD_FANCY_VERSION_STR),
+    ("python-version", python_version()),
     ("pyqt-version", pyqt_version),
     ("qt-version", QT_VERSION_STR),
     ("mutagen-version", mutagen_version),
@@ -44,6 +46,7 @@ _versions = OrderedDict([
 
 _names = {
     "version": "Picard",
+    "python-version": "Python",
     "pyqt-version": "PyQt",
     "qt-version": "Qt",
     "mutagen-version": "Mutagen",
