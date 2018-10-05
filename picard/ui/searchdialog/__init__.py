@@ -376,7 +376,8 @@ class SearchDialog(PicardDialog):
         self.show_error(error_msg)
 
     def search_browser(self):
-        self.tagger.search(self.search_box.query, self.search_type, force_browser=True)
+        self.tagger.search(self.search_box.query, self.search_type,
+            adv=config.setting["use_adv_search_syntax"], force_browser=True)
 
     def accept(self):
         if self.table:
