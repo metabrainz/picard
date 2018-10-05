@@ -43,7 +43,10 @@ from picard.script import (
     ScriptParser,
     enabled_tagger_scripts_texts,
 )
-from picard.util.imagelist import update_metadata_images
+from picard.util.imagelist import (
+    remove_metadata_images,
+    update_metadata_images
+)
 from picard.util.textencoding import asciipunct
 
 from picard.ui.item import Item
@@ -91,6 +94,7 @@ class Track(DataObject, Item):
         file.metadata['~extension'] = file.orig_metadata['~extension']
         file.update(signal=False)
         self.update()
+        self.update_orig_metadata_images()
 
     def remove_file(self, file):
         if file not in self.linked_files:
@@ -98,14 +102,14 @@ class Track(DataObject, Item):
         self.linked_files.remove(file)
         self.num_linked_files -= 1
         file.copy_metadata(file.orig_metadata, preserve_deleted=False)
-        self.album._remove_file(self, file)
         file.metadata_images_changed.disconnect(self.update_orig_metadata_images)
+        self.album._remove_file(self, file)
+        remove_metadata_images(self, [file])
         self.update()
 
     def update(self):
         if self.item:
             self.item.update()
-        self.update_orig_metadata_images()
 
     def iterfiles(self, save=False):
         for file in self.linked_files:
@@ -252,6 +256,7 @@ class Track(DataObject, Item):
         else:
             self.metadata.images = []
         self.update()
+        self.update_orig_metadata_images()
 
 
 class NonAlbumTrack(Track):

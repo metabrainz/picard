@@ -156,3 +156,61 @@ class RemoveMetadataImagesTest(unittest.TestCase):
         remove_metadata_images(cluster, [cluster.files[0]])
         self.assertEqual(set(), set(cluster.metadata.images))
         self.assertTrue(cluster.metadata.has_common_images)
+
+    def test_remove_from_track(self):
+        track = Track('00000000-0000-0000-0000-000000000000')
+        track.linked_files = list(self.test_files)
+        update_metadata_images(track)
+        track.linked_files.remove(self.test_files[0])
+        remove_metadata_images(track, [self.test_files[0]])
+        self.assertEqual(set(self.test_images[1:]), set(track.orig_metadata.images))
+        self.assertTrue(track.orig_metadata.has_common_images)
+
+    def test_remove_from_track_with_common_images(self):
+        track = Track('00000000-0000-0000-0000-000000000000')
+        track.linked_files = list(self.test_files[1:])
+        update_metadata_images(track)
+        track.linked_files.remove(self.test_files[1])
+        remove_metadata_images(track, [self.test_files[1]])
+        self.assertEqual(set(self.test_images[1:]), set(track.orig_metadata.images))
+        self.assertTrue(track.orig_metadata.has_common_images)
+
+    def test_remove_from_empty_track(self):
+        track = Track('00000000-0000-0000-0000-000000000000')
+        track.linked_files.append(File('test1.flac'))
+        update_metadata_images(track)
+        remove_metadata_images(track, [track.linked_files[0]])
+        self.assertEqual(set(), set(track.orig_metadata.images))
+        self.assertTrue(track.orig_metadata.has_common_images)
+
+    def test_remove_from_album(self):
+        album = Album('00000000-0000-0000-0000-000000000000')
+        album.unmatched_files.files = list(self.test_files)
+        update_metadata_images(album)
+        album.unmatched_files.files.remove(self.test_files[0])
+        remove_metadata_images(album, [self.test_files[0]])
+        self.assertEqual(set(self.test_images[1:]), set(album.metadata.images))
+        self.assertEqual(set(self.test_images[1:]), set(album.orig_metadata.images))
+        self.assertTrue(album.metadata.has_common_images)
+        self.assertTrue(album.orig_metadata.has_common_images)
+
+    def test_remove_from_album_with_common_images(self):
+        album = Album('00000000-0000-0000-0000-000000000000')
+        album.unmatched_files.files = list(self.test_files[1:])
+        update_metadata_images(album)
+        album.unmatched_files.files.remove(self.test_files[1])
+        remove_metadata_images(album, [self.test_files[1]])
+        self.assertEqual(set(self.test_images[1:]), set(album.metadata.images))
+        self.assertEqual(set(self.test_images[1:]), set(album.orig_metadata.images))
+        self.assertTrue(album.metadata.has_common_images)
+        self.assertTrue(album.orig_metadata.has_common_images)
+
+    def test_remove_from_empty_album(self):
+        album = Album('00000000-0000-0000-0000-000000000000')
+        album.unmatched_files.files.append(File('test1.flac'))
+        update_metadata_images(album)
+        remove_metadata_images(album, [album.unmatched_files.files[0]])
+        self.assertEqual(set(), set(album.metadata.images))
+        self.assertEqual(set(), set(album.orig_metadata.images))
+        self.assertTrue(album.metadata.has_common_images)
+        self.assertTrue(album.orig_metadata.has_common_images)

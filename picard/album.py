@@ -58,7 +58,10 @@ from picard.util import (
     format_time,
     mbid_validate,
 )
-from picard.util.imagelist import update_metadata_images
+from picard.util.imagelist import (
+    remove_metadata_images,
+    update_metadata_images
+)
 from picard.util.textencoding import asciipunct
 
 from picard.ui.item import Item
@@ -413,7 +416,7 @@ class Album(DataObject, Item):
         self._files -= 1
         self.update(update_tracks=False)
         file.metadata_images_changed.disconnect(self.update_metadata_images)
-        self.update_metadata_images()
+        remove_metadata_images(self, [file])
 
     def match_files(self, files, use_recordingid=True):
         """Match files to tracks on this album, based on metadata similarity or recordingid."""
