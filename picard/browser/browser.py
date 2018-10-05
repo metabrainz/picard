@@ -17,6 +17,11 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+from urllib.parse import (
+    parse_qs,
+    urlparse,
+)
+
 from PyQt5 import (
     QtCore,
     QtNetwork,
@@ -26,6 +31,24 @@ from picard import (
     config,
     log,
 )
+
+from picard.util import (
+    mbid_validate,
+)
+
+
+def response(code):
+    if code == 200:
+        resp = '200 OK'
+    elif code == 400:
+        resp = '400 Bad Request'
+    else:
+        resp = '500 Internal Server Error'
+    return bytearray(
+        'HTTP/1.1 {}\r\n'
+        'Cache-Control: max-age=0\r\n'
+        '\r\n'
+        'Nothing to see here.\r\n'.format(resp), 'ascii')
 
 
 class BrowserIntegration(QtNetwork.QTcpServer):
@@ -65,22 +88,48 @@ class BrowserIntegration(QtNetwork.QTcpServer):
 
     def _process_request(self):
         conn = self.sender()
-        line = bytes(conn.readLine()).decode()
-        conn.write(b"HTTP/1.1 200 OK\r\nCache-Control: max-age=0\r\n\r\nNothing to see here.")
-        conn.disconnectFromHost()
-        line = line.split()
-        log.debug("Browser integration request: %r", line)
-        if line[0] == "GET" and "?" in line[1]:
-            action, args = line[1].split("?")
-            args = [a.split("=", 1) for a in args.split("&")]
-            args = dict((a, QtCore.QUrl.fromPercentEncoding(b.encode('ascii'))) for (a, b) in args)
-            self.tagger.bring_tagger_front()
-            if action == "/openalbum":
-                self.tagger.load_album(args["id"])
-            elif action == "/opennat":
-                self.tagger.load_nat(args["id"])
+        rawline = conn.readLine().data()
+        log.debug("Browser integration request: %r", rawline)
+
+        def parse_line(line):
+            orig_line = line
+            try:
+                line = line.split()
+                if line[0] == "GET" and "?" in line[1]:
+                    parsed = urlparse(line[1])
+                    args = parse_qs(parsed.query)
+                    if 'id' in args and args['id']:
+                        mbid = args['id'][0]
+                        if not mbid_validate(mbid):
+                            log.error("Browser integration failed: bad mbid %r", mbid)
+                            return False
+                        def load_it(loader):
+                            self.tagger.bring_tagger_front()
+                            loader(mbid)
+                            return True
+                        action = parsed.path
+                        if action == '/openalbum':
+                            return load_it(self.tagger.load_album)
+                        elif action == '/opennat':
+                            return load_it(self.tagger.load_nat)
+            except Exception as e:
+                log.error("Browser integration failed with %r on line %r", e, orig_line)
+                return False
+            log.error("Browser integration failed: cannot parse %r", orig_line)
+            return False
+
+        try:
+            line = rawline.decode()
+            if parse_line(line):
+                conn.write(response(200))
             else:
-                log.error("Unknown browser integration request: %r", action)
+                conn.write(response(400))
+        except UnicodeDecodeError as e:
+            conn.write(response(500))
+            log.error(e)
+            return
+        finally:
+            conn.disconnectFromHost()
 
     def _accept_connection(self):
         conn = self.nextPendingConnection()
