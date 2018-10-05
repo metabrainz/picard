@@ -12,8 +12,10 @@ init:
     ECHO %PYTHON% %PYTHON_VERSION% %PYTHON_ARCH%
 
     SET PATH=%PYTHON%;%PYTHON%\Scripts;%PATH%
+
+    SET PYTHON_SITE=%PYTHON%\lib\site-packages
 environment:
-  CHROMAPRINT_FPCALC_VERSION: 1.4.2
+  CHROMAPRINT_FPCALC_VERSION: 1.4.3
   DISCID_VERSION: 0.6.2
   OPENSSL_VERSION: 1.0.2n
   matrix:
@@ -30,27 +32,23 @@ build_script:
 - cmd: >-
     appveyor DownloadFile https://github.com/acoustid/chromaprint/releases/download/v%CHROMAPRINT_FPCALC_VERSION%/chromaprint-fpcalc-%CHROMAPRINT_FPCALC_VERSION%-windows-x86_64.zip -FileName fpcalc.zip
 
-    appveyor DownloadFile http://ftp.musicbrainz.org/pub/musicbrainz/misc/openssl-1.0.2o-x64_86-win64.zip -FileName openssl.zip
-
     appveyor DownloadFile https://github.com/metabrainz/libdiscid/releases/download/v%DISCID_VERSION%/libdiscid-%DISCID_VERSION%-win64.zip -FileName libdiscid.zip
 
     7z x fpcalc.zip -y
 
     copy /Y chromaprint-fpcalc-%CHROMAPRINT_FPCALC_VERSION%-windows-x86_64\fpcalc.exe fpcalc.exe
 
-    7z x openssl.zip -y
-
     7z x libdiscid.zip -y
 
     copy /Y discid.dll %PYTHON%
 
-    copy /Y ssleay32.dll %PYTHON%
-
-    copy /Y libeay32.dll %PYTHON%
-
     pip install -r requirements.txt
 
-    pip install pyinstaller
+    copy /Y %PYTHON_SITE%\PyQt5\Qt\bin\ssleay32.dll .
+
+    copy /Y %PYTHON_SITE%\PyQt5\Qt\bin\libeay32.dll .
+
+    pip install pyinstaller>=3.4
 
     python setup.py build
 
