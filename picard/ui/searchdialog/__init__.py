@@ -133,7 +133,7 @@ class SearchBox(QtWidgets.QWidget):
         self.setMaximumHeight(60)
 
     def search(self):
-        self.parent().search(self.search_edit.text())
+        self.parent().search(self.query)
 
     def restore_checkbox_state(self):
         self.use_adv_search_syntax.setChecked(config.setting["use_adv_search_syntax"])
@@ -142,7 +142,7 @@ class SearchBox(QtWidgets.QWidget):
         config.setting["use_adv_search_syntax"] = self.use_adv_search_syntax.isChecked()
 
     def enable_search(self):
-        if self.search_edit.text():
+        if self.query:
             self.search_action.setEnabled(True)
         else:
             self.search_action.setEnabled(False)
@@ -150,6 +150,14 @@ class SearchBox(QtWidgets.QWidget):
     def trigger_search_action(self):
         if self.search_action.isEnabled():
             self.search_action.trigger()
+
+    def get_query(self):
+        return self.search_edit.text()
+
+    def set_query(self, query):
+        return self.search_edit.setText(query)
+
+    query = property(get_query, set_query)
 
 
 Retry = namedtuple("Retry", ["function", "query"])
@@ -183,11 +191,12 @@ class SearchDialog(PicardDialog):
     autorestore = False
     scrolled = pyqtSignal()
 
-    def __init__(self, parent, accept_button_title, show_search=True):
+    def __init__(self, parent, accept_button_title, show_search=True, search_type=None):
         super().__init__(parent)
         self.search_results = []
         self.table = None
         self.show_search = show_search
+        self.search_type = search_type
         self.search_box = None
         self.setupUi(accept_button_title)
         self.restore_state()
@@ -251,6 +260,13 @@ class SearchDialog(PicardDialog):
         self.center_widget.setLayout(self.center_layout)
         self.verticalLayout.addWidget(self.center_widget)
         self.buttonBox = QtWidgets.QDialogButtonBox(self)
+        if self.show_search and self.search_type:
+            self.search_browser_button = QtWidgets.QPushButton(
+                _("Search in browser"), self.buttonBox)
+            self.buttonBox.addButton(
+                self.search_browser_button,
+                QtWidgets.QDialogButtonBox.ActionRole)
+            self.search_browser_button.clicked.connect(self.search_browser)
         self.accept_button = QtWidgets.QPushButton(
             accept_button_title,
             self.buttonBox)
@@ -359,6 +375,9 @@ class SearchDialog(PicardDialog):
         error_msg = _("<strong>No results found. Please try a different search query.</strong>")
         self.show_error(error_msg)
 
+    def search_browser(self):
+        self.tagger.search(self.search_box.query, self.search_type, force_browser=True)
+
     def accept(self):
         if self.table:
             idx = self.table.selectionModel().selectedRows()[0]
@@ -392,4 +411,4 @@ class SearchDialog(PicardDialog):
 
     def search_box_text(self, text):
         if self.search_box:
-            self.search_box.search_edit.setText(text)
+            self.search_box.query = text

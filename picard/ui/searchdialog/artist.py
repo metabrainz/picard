@@ -43,7 +43,8 @@ class ArtistSearchDialog(SearchDialog):
     def __init__(self, parent):
         super().__init__(
             parent,
-            accept_button_title=_("Show in browser"))
+            accept_button_title=_("Show in browser"),
+            search_type="artist")
         self.setWindowTitle(_("Artist Search Dialog"))
         self.columns = [
             ('name',        _("Name")),

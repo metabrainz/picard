@@ -54,7 +54,8 @@ class TrackSearchDialog(SearchDialog):
     def __init__(self, parent):
         super().__init__(
             parent,
-            accept_button_title=_("Load into Picard"))
+            accept_button_title=_("Load into Picard"),
+            search_type="track")
         self.file_ = None
         self.setWindowTitle(_("Track Search Results"))
         self.columns = [
