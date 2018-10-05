@@ -118,10 +118,10 @@ def update_metadata_images(obj):
 
 
 def _remove_images(metadata, sources, removed_images):
-    if len(metadata.images) == 0 or len(removed_images) == 0:
+    if not metadata.images or not removed_images:
         return
 
-    if len(sources) == 0:
+    if not sources:
         metadata.images = ImageList()
         metadata.has_common_images = True
         return
@@ -139,7 +139,7 @@ def _remove_images(metadata, sources, removed_images):
             common_images = False
         previous_images = set(source.metadata.images)
         removed_images = removed_images.difference(source_images)
-        if len(removed_images) == 0 and common_images == False:
+        if not removed_images and not common_images:
             return
 
     metadata.images = ImageList(current_images.difference(removed_images))
