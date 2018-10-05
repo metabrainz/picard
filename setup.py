@@ -22,7 +22,7 @@ from setuptools import (
 )
 from setuptools.dist import Distribution
 
-from picard import __version__
+from picard import PICARD_VERSION, __version__
 
 if sys.version_info < (3, 5):
     sys.exit("ERROR: You need Python 3.5 or higher to use Picard.")
@@ -213,6 +213,12 @@ class picard_build(build):
             # Temporarily setting it to this value to generate a nice name for Windows app
             args['name'] = 'MusicBrainz Picard'
             generate_file('installer/picard-setup.nsi.in', 'installer/picard-setup.nsi', args)
+            version = str(PICARD_VERSION[0:3] + PICARD_VERSION[4:])
+            version_args = {
+                'filevers': version,
+                'prodvers': version,
+            }
+            generate_file('win-version-info.txt.in', 'win-version-info.txt', {**args, **version_args})
             args['name'] = 'picard'
         build.run(self)
 
