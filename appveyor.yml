@@ -42,13 +42,13 @@ build_script:
 
     copy /Y discid.dll %PYTHON%
 
-    pip install -r requirements.txt
+    pip install -r requirements-build.txt
+
+    pip install -r requirements-prod.txt
 
     copy /Y %PYTHON_SITE%\PyQt5\Qt\bin\ssleay32.dll .
 
     copy /Y %PYTHON_SITE%\PyQt5\Qt\bin\libeay32.dll .
-
-    pip install pyinstaller>=3.4
 
     python setup.py build
 
