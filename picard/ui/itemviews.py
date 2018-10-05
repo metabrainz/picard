@@ -294,6 +294,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
                 menu.addAction(self.window.track_search_action)
                 plugin_actions.extend(_file_actions)
             menu.addAction(self.window.browser_lookup_action)
+            menu.addAction(self.window.analyze_action)
             menu.addSeparator()
             if isinstance(obj, NonAlbumTrack):
                 menu.addAction(self.window.refresh_action)
@@ -330,6 +331,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
             menu.addAction(self.window.browser_lookup_action)
             menu.addSeparator()
             menu.addAction(self.window.refresh_action)
+            menu.addAction(self.window.analyze_action)
             plugin_actions = list(_album_actions)
 
         menu.addAction(self.window.save_action)
