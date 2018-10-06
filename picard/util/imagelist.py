@@ -73,7 +73,6 @@ def _process_images(state, src_obj):
 
 
 def _update_state(obj, state):
-    is_first = True
     for src_obj in state.sources:
         _process_images(state, src_obj)
 
@@ -131,9 +130,7 @@ def _add_images(metadata, added_images):
         return
 
     current_images = set(metadata.images)
-    if added_images == current_images:
-        return
-    else:
+    if added_images != current_images:
         metadata.images = ImageList(current_images.union(added_images))
         metadata.has_common_images = False
 
