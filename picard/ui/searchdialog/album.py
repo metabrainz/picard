@@ -143,7 +143,8 @@ class AlbumSearchDialog(SearchDialog):
     def __init__(self, parent):
         super().__init__(
             parent,
-            accept_button_title=_("Load into Picard"))
+            accept_button_title=_("Load into Picard"),
+            search_type="album")
         self.cluster = None
         self.setWindowTitle(_("Album Search Results"))
         self.columns = [

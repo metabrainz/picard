@@ -507,7 +507,7 @@ class Tagger(QtWidgets.QApplication):
         if mimeData.hasUrls():
             BaseTreeView.drop_urls(mimeData.urls(), target)
 
-    def search(self, text, search_type, adv=False, mbid_matched_callback=None):
+    def search(self, text, search_type, adv=False, mbid_matched_callback=None, force_browser=False):
         """Search on the MusicBrainz website."""
         search_types = {
             'track': {
@@ -527,7 +527,7 @@ class Tagger(QtWidgets.QApplication):
             return
         search = search_types[search_type]
         lookup = self.get_file_lookup()
-        if config.setting["builtin_search"]:
+        if config.setting["builtin_search"] and not force_browser:
             if not lookup.mbid_lookup(text, search['entity'],
                                       mbid_matched_callback=mbid_matched_callback):
                 dialog = search['dialog'](self.window)
