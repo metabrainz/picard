@@ -19,7 +19,6 @@
 
 
 from functools import partial
-import logging
 import os
 
 from PyQt5 import (
@@ -138,7 +137,7 @@ class LogView(LogViewCommon):
 
     def __init__(self, parent=None):
         super().__init__(log.main_tail, _("Log"), parent=parent)
-        self.verbosity = config.setting['log_verbosity']
+        self.verbosity = log.get_effective_level()
 
         self._setup_formats()
         self.hl_text = ''
@@ -147,9 +146,6 @@ class LogView(LogViewCommon):
         self.hbox = QtWidgets.QHBoxLayout()
         self.vbox.addLayout(self.hbox)
 
-        # Verbosity
-        if QtCore.QObject.tagger._debug:
-            self.verbosity = logging.DEBUG
         self.verbosity_menu_button = QtWidgets.QPushButton(_("Verbosity"))
         self.hbox.addWidget(self.verbosity_menu_button)
 
@@ -287,7 +283,7 @@ class LogView(LogViewCommon):
     def _verbosity_changed(self, level):
         if level != self.verbosity:
             config.setting['log_verbosity'] = level
-            QtCore.QObject.tagger.debug(level == logging.DEBUG)
+            QtCore.QObject.tagger.set_log_level(level)
             self.verbosity = level
             self.display(clear=True)
 
