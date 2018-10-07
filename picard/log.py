@@ -33,11 +33,12 @@ _MAX_TAIL_LEN = 10**6
 VERBOSITY_DEFAULT = logging.WARNING
 
 
-def debug_mode(enabled):
-    if enabled:
-        main_logger.setLevel(logging.DEBUG)
-    else:
-        main_logger.setLevel(VERBOSITY_DEFAULT)
+def set_level(level):
+    main_logger.setLevel(level)
+
+
+def get_effective_level():
+    return main_logger.getEffectiveLevel()
 
 
 _feat = namedtuple('_feat', ['name', 'prefix', 'fgcolor'])
