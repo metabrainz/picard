@@ -28,7 +28,6 @@ import mutagen.musepack
 import mutagen.optimfrog
 import mutagen.wavpack
 
-from .mutagenext import tak
 from picard import (
     config,
     log,
@@ -43,6 +42,8 @@ from picard.util import (
     encode_filename,
     sanitize_date,
 )
+
+from .mutagenext import tak
 
 
 class APEv2File(File):

@@ -30,7 +30,6 @@ from PyQt5 import (
     QtGui,
     QtWidgets,
 )
-
 from PyQt5.QtWidgets import QTreeWidgetItemIterator
 
 from picard import (
@@ -41,7 +40,6 @@ from picard.const import (
     PLUGINS_API,
     USER_PLUGIN_DIR,
 )
-
 from picard.util import reconnect
 
 from picard.ui import HashableTreeWidgetItem
@@ -524,6 +522,7 @@ class PluginsOptionsPage(OptionsPage):
             reconnect(item.buttons['uninstall'].clicked, uninstall_processor)
         else:
             item.buttons['uninstall'].mode('hide')
+            item.enable(False)
             item.buttons['enable'].mode('hide')
 
         update_text()

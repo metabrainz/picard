@@ -150,11 +150,10 @@ class Tagger(QtWidgets.QApplication):
         self._no_restore = picard_args.no_restore
         self._no_plugins = picard_args.no_plugins
 
-        self.debug(
-            picard_args.debug
-            or "PICARD_DEBUG" in os.environ
-            or config.setting['log_verbosity'] == logging.DEBUG
-        )
+        self.set_log_level(config.setting['log_verbosity'])
+
+        if picard_args.debug or "PICARD_DEBUG" in os.environ:
+            self.set_log_level(logging.DEBUG)
 
         # FIXME: Figure out what's wrong with QThreadPool.globalInstance().
         # It's a valid reference, but its start() method doesn't work.
@@ -261,14 +260,9 @@ class Tagger(QtWidgets.QApplication):
         for f in self.exit_cleanup:
             f()
 
-    def debug(self, debug):
-        self._debug = debug
-        if debug:
-            log.debug_mode(True)
-            log.debug("Debug mode on")
-        else:
-            log.info("Debug mode off")
-            log.debug_mode(False)
+    def set_log_level(self, level):
+        self._debug = level == logging.DEBUG
+        log.set_level(level)
 
     def move_files_to_album(self, files, albumid=None, album=None):
         """Move `files` to tracks on album `albumid`."""

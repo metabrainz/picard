@@ -206,9 +206,8 @@ class picard_build(build):
             self.sub_commands.append(('build_locales', None))
 
     def run(self):
-        if 'bdist_nsis' not in sys.argv:  # somebody shoot me please
-            log.info('generating scripts/%s from scripts/picard.in', PACKAGE_NAME)
-            generate_file('scripts/picard.in', 'scripts/' + PACKAGE_NAME, {'localedir': self.localedir, 'autoupdate': not self.disable_autoupdate})
+        log.info('generating scripts/%s from scripts/picard.in', PACKAGE_NAME)
+        generate_file('scripts/picard.in', 'scripts/' + PACKAGE_NAME, {'localedir': self.localedir, 'autoupdate': not self.disable_autoupdate})
         if platform.system() == 'Windows':
             # Temporarily setting it to this value to generate a nice name for Windows app
             args['name'] = 'MusicBrainz Picard'

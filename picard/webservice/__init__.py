@@ -45,10 +45,7 @@ from PyQt5.QtCore import (
     QUrl,
     QUrlQuery,
 )
-
-from PyQt5.QtNetwork import (
-    QNetworkRequest,
-)
+from PyQt5.QtNetwork import QNetworkRequest
 
 from picard import (
     PICARD_APP_NAME,
