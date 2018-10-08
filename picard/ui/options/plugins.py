@@ -522,6 +522,7 @@ class PluginsOptionsPage(OptionsPage):
             reconnect(item.buttons['uninstall'].clicked, uninstall_processor)
         else:
             item.buttons['uninstall'].mode('hide')
+            item.enable(False)
             item.buttons['enable'].mode('hide')
 
         update_text()
