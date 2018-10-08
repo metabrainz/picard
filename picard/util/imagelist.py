@@ -122,6 +122,18 @@ def _get_metadata_images(state, sources):
 
 
 def update_metadata_images(obj):
+    """Update the metadata images `obj` based on its children.
+
+    Based on the type of `obj` this will update `obj.metadata.images` to
+    represent the metadata images of all children (`Track` or `File` objects).
+
+    This method will iterate over all children and completely rebuild
+    `obj.metadata.images`. Whenever possible the more specific functions
+    `add_metadata_images` or `remove_metadata_images` should be used.
+
+    Args:
+        obj: A `Cluster`, `Album` or `Track` object with `metadata` property
+    """
     _update_state(obj, _get_state(obj))
 
 
@@ -136,6 +148,12 @@ def _add_images(metadata, added_images):
 
 
 def add_metadata_images(obj, added_sources):
+    """Add the images in the metadata of `added_sources` to the metadata of `obj`.
+
+    Args:
+        obj: A `Cluster`, `Album` or `Track` object with `metadata` property
+        added_sources: List of child objects (`Track` or `File`) which's metadata images should be added to `obj`
+    """
     state = _get_state(obj)
     (added_new_images, added_orig_images) = _get_metadata_images(state, added_sources)
 
@@ -146,6 +164,13 @@ def add_metadata_images(obj, added_sources):
 
 
 def _remove_images(metadata, sources, removed_images):
+    """Removes `removed_images` from metadata `images`, but only if they are not included in `sources`.
+
+    Args:
+        metadata: `Metadata` object from which images should be removed
+        sources: List of source `Metadata` objects
+        removed_images: Set of `CoverArt` proposed for removal from `metadata`
+    """
     if not metadata.images or not removed_images:
         return
 
@@ -159,22 +184,32 @@ def _remove_images(metadata, sources, removed_images):
     if metadata.has_common_images and current_images == removed_images:
         return
 
-    common_images = True
+    common_images = True  # True, if all children share the same images
     previous_images = None
+
+    # Iterate over all sources and check whether the images proposed to be
+    # removed are used in any sources. Images used in existing sources
+    # must not be removed.
     for source_metadata in sources:
         source_images = set(source_metadata.images)
         if previous_images and common_images and previous_images != source_images:
             common_images = False
-        previous_images = set(source_metadata.images)
+        previous_images = set(source_metadata.images)  # Remember for next iteration
         removed_images = removed_images.difference(source_images)
         if not removed_images and not common_images:
-            return
+            return  # No images left to remove, abort immediatelly
 
     metadata.images = ImageList(current_images.difference(removed_images))
     metadata.has_common_images = common_images
 
 
 def remove_metadata_images(obj, removed_sources):
+    """Remove the images in the metadata of `removed_sources` from the metadata of `obj`.
+
+    Args:
+        obj: A `Cluster`, `Album` or `Track` object with `metadata` property
+        removed_sources: List of child objects (`Track` or `File`) which's metadata images should be removed from `obj`
+    """
     from picard.track import Track
 
     state = _get_state(obj)
