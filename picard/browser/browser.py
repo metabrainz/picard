@@ -31,10 +31,7 @@ from picard import (
     config,
     log,
 )
-
-from picard.util import (
-    mbid_validate,
-)
+from picard.util import mbid_validate
 
 
 def response(code):

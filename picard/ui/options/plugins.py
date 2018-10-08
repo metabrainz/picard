@@ -30,7 +30,6 @@ from PyQt5 import (
     QtGui,
     QtWidgets,
 )
-
 from PyQt5.QtWidgets import QTreeWidgetItemIterator
 
 from picard import (
@@ -41,7 +40,6 @@ from picard.const import (
     PLUGINS_API,
     USER_PLUGIN_DIR,
 )
-
 from picard.util import reconnect
 
 from picard.ui import HashableTreeWidgetItem
