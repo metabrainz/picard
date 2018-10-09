@@ -62,6 +62,7 @@ class Metadata(dict):
     def __init__(self):
         super().__init__()
         self.images = ImageList()
+        self.has_common_images = True
         self.deleted_tags = set()
         self.length = 0
 

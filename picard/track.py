@@ -43,7 +43,11 @@ from picard.script import (
     ScriptParser,
     enabled_tagger_scripts_texts,
 )
-from picard.util.imagelist import update_metadata_images
+from picard.util.imagelist import (
+    add_metadata_images,
+    remove_metadata_images,
+    update_metadata_images
+)
 from picard.util.textencoding import asciipunct
 
 from picard.ui.item import Item
@@ -80,8 +84,9 @@ class Track(DataObject, Item):
         if file not in self.linked_files:
             self.linked_files.append(file)
             self.num_linked_files += 1
-        self.album._add_file(self, file)
         self.update_file_metadata(file)
+        add_metadata_images(self, [file])
+        self.album._add_file(self, file)
         file.metadata_images_changed.connect(self.update_orig_metadata_images)
 
     def update_file_metadata(self, file):
@@ -98,14 +103,14 @@ class Track(DataObject, Item):
         self.linked_files.remove(file)
         self.num_linked_files -= 1
         file.copy_metadata(file.orig_metadata, preserve_deleted=False)
-        self.album._remove_file(self, file)
         file.metadata_images_changed.disconnect(self.update_orig_metadata_images)
+        self.album._remove_file(self, file)
+        remove_metadata_images(self, [file])
         self.update()
 
     def update(self):
         if self.item:
             self.item.update()
-        self.update_orig_metadata_images()
 
     def iterfiles(self, save=False):
         for file in self.linked_files:
@@ -246,8 +251,8 @@ class Track(DataObject, Item):
     def keep_original_images(self):
         for file in self.linked_files:
             file.keep_original_images()
+        self.update_orig_metadata_images()
         if self.linked_files:
-            self.update_orig_metadata_images()
             self.metadata.images = self.orig_metadata.images[:]
         else:
             self.metadata.images = []
