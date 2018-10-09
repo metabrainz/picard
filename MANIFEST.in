@@ -2,6 +2,9 @@ graft po
 
 recursive-include scripts *.in
 
+graft ui
+recursive-include resources *.py
+
 recursive-include test *.aiff
 recursive-include test *.ape
 recursive-include test *.asf
