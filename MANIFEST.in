@@ -32,3 +32,6 @@ recursive-include test *.wv
 
 include tagger.py
 include *.in
+
+include *.md
+include *.txt
