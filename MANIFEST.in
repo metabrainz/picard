@@ -26,3 +26,5 @@ recursive-include test *.tta
 recursive-include test *.wav
 recursive-include test *.wma
 recursive-include test *.wv
+
+include tagger.py
