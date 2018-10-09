@@ -1,3 +1,28 @@
 graft po
 
 recursive-include scripts *.in
+
+recursive-include test *.aiff
+recursive-include test *.ape
+recursive-include test *.asf
+recursive-include test *.dat
+recursive-include test *.dsf
+recursive-include test *.flac
+recursive-include test *.gif
+recursive-include test *.jpg
+recursive-include test *.json
+recursive-include test *.m4a
+recursive-include test *.mp3
+recursive-include test *.mpc
+recursive-include test *.ofr
+recursive-include test *.ofs
+recursive-include test *.ogg
+recursive-include test *.opus
+recursive-include test *.png
+recursive-include test *.py
+recursive-include test *.spx
+recursive-include test *.tak
+recursive-include test *.tta
+recursive-include test *.wav
+recursive-include test *.wma
+recursive-include test *.wv
