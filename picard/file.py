@@ -41,7 +41,6 @@ from picard.metadata import Metadata
 from picard.script import ScriptParser
 from picard.util import (
     decode_filename,
-    encode_filename,
     format_time,
     pathcmp,
     replace_win32_incompat,
@@ -53,7 +52,6 @@ from picard.util.filenaming import make_short_filename
 from picard.util.tags import PRESERVED_TAGS
 from picard.util.textencoding import (
     replace_non_ascii,
-    unaccent,
 )
 
 from picard.ui.item import Item
