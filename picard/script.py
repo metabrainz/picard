@@ -445,7 +445,7 @@ def func_rreplace(parser, text, old, new):
     try:
         return re.sub(old, new, text)
     except re.error:
-        return ""
+        return text
 
 
 def func_rsearch(parser, text, pattern):
