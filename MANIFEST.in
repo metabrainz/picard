@@ -35,3 +35,5 @@ include *.in
 
 include *.md
 include *.txt
+
+recursive-include resources/images *.png
