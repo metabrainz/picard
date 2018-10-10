@@ -48,7 +48,6 @@ from picard.util import (
 )
 from picard.util.textencoding import (
     replace_non_ascii,
-    unaccent,
 )
 
 _datafiles = dict()

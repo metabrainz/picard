@@ -23,7 +23,6 @@ from urllib.parse import (
 )
 
 from PyQt5 import (
-    QtCore,
     QtNetwork,
 )
 
