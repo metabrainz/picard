@@ -442,11 +442,17 @@ def func_inmulti(parser, haystack, needle, separator=MULTI_VALUED_JOINER):
 
 
 def func_rreplace(parser, text, old, new):
-    return re.sub(old, new, text)
+    try:
+        return re.sub(old, new, text)
+    except re.error:
+        return text
 
 
 def func_rsearch(parser, text, pattern):
-    match = re.search(pattern, text)
+    try:
+        match = re.search(pattern, text)
+    except re.error:
+        return ""
     if match:
         try:
             return match.group(1)
