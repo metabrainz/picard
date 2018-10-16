@@ -28,7 +28,10 @@ matrix:
   - os: osx
     osx_image: xcode6.4
     language: generic
-    env: INSTALL_DEPS="$PIP_INSTALL -r requirements-macos.txt"
+    env:
+    - DISCID_VERSION=0.6.2
+    - FPCALC_VERSION=1.4.3
+    - INSTALL_DEPS="$PIP_INSTALL -r requirements-macos.txt"
   - python: "3.7"
     dist: xenial
     sudo: true
