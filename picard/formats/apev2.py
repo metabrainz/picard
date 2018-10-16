@@ -189,17 +189,18 @@ class APEv2File(File):
             real_name = self._get_tag_name(tag)
             if real_name in ('Lyrics', 'Comment', 'Performer'):
                 tag_type = re.compile(r"\(%s\)" % tag.split(':', 1)[1])
-                for item in tags.get(real_name):
-                    if tag_type.search(item):
-                        tags.get(real_name).remove(item)
+                existing_tags = tags.get(real_name)
+                if existing_tags:
+                    for item in existing_tags:
+                        if tag_type.search(item):
+                            tags.get(real_name).remove(item)
             elif tag in ('totaltracks', 'totaldiscs'):
                 tagstr = real_name.lower() + 'number'
-                try:
+                if tagstr in metadata:
                     tags[real_name] = metadata[tagstr]
-                except KeyError:
-                    pass
             else:
-                del tags[real_name]
+                if real_name in tags:
+                    del tags[real_name]
 
     def _get_tag_name(self, name):
         if name.startswith('lyrics:'):
