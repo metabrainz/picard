@@ -32,6 +32,13 @@ matrix:
     - DISCID_VERSION=0.6.2
     - FPCALC_VERSION=1.4.3
     - INSTALL_DEPS="$PIP_INSTALL -r requirements-macos.txt"
+  - os: osx
+    osx_image: xcode7.3
+    language: generic
+    env:
+    - DISCID_VERSION=0.6.2
+    - FPCALC_VERSION=1.4.3
+    - INSTALL_DEPS="$PIP_INSTALL pyqt5==5.11.3 mutagen discid"
   - python: "3.7"
     dist: xenial
     sudo: true
