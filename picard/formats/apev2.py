@@ -142,18 +142,13 @@ class APEv2File(File):
         for name, value in metadata.items():
             if name.startswith("~"):
                 continue
-            if name.startswith('lyrics:'):
-                name = 'Lyrics'
-            elif name == "date":
-                name = "Year"
+            real_name = self._get_tag_name(name)
             # tracknumber/totaltracks => Track
-            elif name == 'tracknumber':
-                name = 'Track'
+            if name == 'tracknumber':
                 if 'totaltracks' in metadata:
                     value = '%s/%s' % (value, metadata['totaltracks'])
             # discnumber/totaldiscs => Disc
             elif name == 'discnumber':
-                name = 'Disc'
                 if 'totaldiscs' in metadata:
                     value = '%s/%s' % (value, metadata['totaldiscs'])
             elif name in ('totaltracks', 'totaldiscs'):
@@ -161,16 +156,11 @@ class APEv2File(File):
             # "performer:Piano=Joe Barr" => "Performer=Joe Barr (Piano)"
             elif name.startswith('performer:') or name.startswith('comment:'):
                 name, desc = name.split(':', 1)
-                name = name.title()
                 if desc:
                     value += ' (%s)' % desc
-            elif name in self.__rtranslate:
-                name = self.__rtranslate[name]
-            else:
-                name = name.title()
-            temp.setdefault(name, []).append(value)
+            temp.setdefault(real_name, []).append(value)
         for name, values in temp.items():
-            tags[str(name)] = values
+            tags[name] = values
         for image in metadata.images_to_be_saved_to_tags:
             cover_filename = 'Cover Art (Front)'
             cover_filename += image.extension
@@ -180,7 +170,6 @@ class APEv2File(File):
             # (mp3tags does this, but it's against the specs)
 
         self._remove_deleted_tags(metadata, tags)
-
         tags.save(encode_filename(filename))
 
     def _remove_deleted_tags(self, metadata, tags):
