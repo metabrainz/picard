@@ -28,13 +28,11 @@ matrix:
   - os: osx
     osx_image: xcode6.4
     language: generic
-    env: INSTALL_DEPS="$PIP_INSTALL -r requirements-prod.txt"
+    env: INSTALL_DEPS="$PIP_INSTALL -r requirements-macos.txt"
   - python: "3.7"
     dist: xenial
     sudo: true
     env: LIBDISCID="libdiscid0 libdiscid-dev"
-  allow_failures:
-  - os: osx
   fast_finish: true
 before_install:
 - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get update -qq && sudo apt-get
