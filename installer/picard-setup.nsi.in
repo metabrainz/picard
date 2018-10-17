@@ -134,13 +134,6 @@ SubSection "Shortcuts" shortcuts
       "" "" "" SW_SHOWNORMAL "" "${PRODUCT_DESCRIPTION}"
   SectionEnd
 
-  Section "Quick Launch" quicklaunch
-    SetShellVarContext all
-    SetOutPath "$INSTDIR"
-    CreateShortCut "$QUICKLAUNCH\${PRODUCT_NAME}.lnk" "$INSTDIR\picard.exe" \
-      "" "" "" SW_SHOWNORMAL "" "${PRODUCT_DESCRIPTION}"
-  SectionEnd
-
 SubSectionEnd
 
 ; Uninstall
@@ -195,7 +188,6 @@ Function .onInit
     Abort
   continueInstall:
   !insertmacro UnselectSection ${desktop}
-  !insertmacro UnselectSection ${quicklaunch}
 FunctionEnd
 
 !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
@@ -203,5 +195,4 @@ FunctionEnd
   !insertmacro MUI_DESCRIPTION_TEXT ${lang} "Installs translations of ${PRODUCT_NAME} in different languages."
   !insertmacro MUI_DESCRIPTION_TEXT ${desktop} "Installs a shortcut on the desktop."
   !insertmacro MUI_DESCRIPTION_TEXT ${startmenu} "Installs a shortcut in the Start Menu."
-  !insertmacro MUI_DESCRIPTION_TEXT ${quicklaunch} "Installs a shortcut in the quicklaunch bar."
 !insertmacro MUI_FUNCTION_DESCRIPTION_END
