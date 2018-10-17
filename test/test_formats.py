@@ -220,6 +220,17 @@ class CommonTests:
                 self.assertNotIn('~rating', new_metadata.keys())
 
         @skipUnlessTestfile
+        def test_delete_non_existant_tags(self):
+            metadata = Metadata()
+            metadata.delete('albumartist')
+            metadata.delete('performer:drums')
+            metadata.delete('totaltracks')
+            new_metadata = save_and_load_metadata(self.filename, metadata)
+            self.assertNotIn('albumartist', new_metadata.keys())
+            self.assertNotIn('performer:drums', new_metadata.keys())
+            self.assertNotIn('totaltracks', new_metadata.keys())
+
+        @skipUnlessTestfile
         def test_delete_complex_tags(self):
             metadata = Metadata()
 
