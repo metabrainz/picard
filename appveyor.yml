@@ -44,7 +44,7 @@ build_script:
 
     pip install -r requirements-build.txt
 
-    pip install -r requirements-prod.txt
+    pip install -r requirements-win.txt
 
     copy /Y %PYTHON_SITE%\PyQt5\Qt\bin\ssleay32.dll .
 
