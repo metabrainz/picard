@@ -94,6 +94,7 @@ class Cluster(QtCore.QObject, Item):
             self.metadata.length += file.metadata.length
             file._move(self)
             file.update(signal=False)
+            file.metadata_images_changed.connect(self.update_metadata_images)
         self.files.extend(files)
         self.metadata['totaltracks'] = len(self.files)
         self.item.add_files(files)
@@ -106,6 +107,7 @@ class Cluster(QtCore.QObject, Item):
         self.metadata['totaltracks'] = len(self.files)
         file._move(self)
         file.update(signal=False)
+        file.metadata_images_changed.connect(self.update_metadata_images)
         add_metadata_images(self, [file])
         self.item.add_file(file)
         self._update_related_album(added_files=[file])
@@ -117,6 +119,7 @@ class Cluster(QtCore.QObject, Item):
         self.item.remove_file(file)
         if not self.special and self.get_num_files() == 0:
             self.tagger.remove_cluster(self)
+        file.metadata_images_changed.disconnect(self.update_metadata_images)
         remove_metadata_images(self, [file])
         self._update_related_album(removed_files=[file])
 
