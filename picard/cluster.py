@@ -94,11 +94,13 @@ class Cluster(QtCore.QObject, Item):
             self.metadata.length += file.metadata.length
             file._move(self)
             file.update(signal=False)
-            file.metadata_images_changed.connect(self.update_metadata_images)
+            if self.can_show_coverart:
+                file.metadata_images_changed.connect(self.update_metadata_images)
         self.files.extend(files)
         self.metadata['totaltracks'] = len(self.files)
         self.item.add_files(files)
-        add_metadata_images(self, files)
+        if self.can_show_coverart:
+            add_metadata_images(self, files)
         self._update_related_album(added_files=files)
 
     def add_file(self, file):
@@ -107,8 +109,9 @@ class Cluster(QtCore.QObject, Item):
         self.metadata['totaltracks'] = len(self.files)
         file._move(self)
         file.update(signal=False)
-        file.metadata_images_changed.connect(self.update_metadata_images)
-        add_metadata_images(self, [file])
+        if self.can_show_coverart:
+            file.metadata_images_changed.connect(self.update_metadata_images)
+            add_metadata_images(self, [file])
         self.item.add_file(file)
         self._update_related_album(added_files=[file])
 
@@ -119,8 +122,9 @@ class Cluster(QtCore.QObject, Item):
         self.item.remove_file(file)
         if not self.special and self.get_num_files() == 0:
             self.tagger.remove_cluster(self)
-        file.metadata_images_changed.disconnect(self.update_metadata_images)
-        remove_metadata_images(self, [file])
+        if self.can_show_coverart:
+            file.metadata_images_changed.disconnect(self.update_metadata_images)
+            remove_metadata_images(self, [file])
         self._update_related_album(removed_files=[file])
 
     def update(self):
@@ -167,6 +171,11 @@ class Cluster(QtCore.QObject, Item):
             return True
         else:
             return False
+
+    @property
+    def can_show_coverart(self):
+        """Return if this object supports cover art."""
+        return True
 
     def is_album_like(self):
         return True
@@ -298,7 +307,8 @@ class Cluster(QtCore.QObject, Item):
             yield album_name, artist_name, (files[i] for i in album)
 
     def update_metadata_images(self):
-        update_metadata_images(self)
+        if self.can_show_coverart:
+            update_metadata_images(self)
 
 
 class UnclusteredFiles(Cluster):
@@ -334,6 +344,10 @@ class UnclusteredFiles(Cluster):
 
     def can_remove(self):
         return len(self.files) > 0
+
+    @property
+    def can_show_coverart(self):
+        return False
 
 
 class ClusterList(list, Item):
