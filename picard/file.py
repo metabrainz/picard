@@ -468,7 +468,7 @@ class File(QtCore.QObject, Item):
                 self.parent.remove_file(self)
             self.parent = parent
             self.parent.add_file(self)
-            self.tagger.acoustidmanager.update(self, self.metadata['musicbrainz_recordingid'])
+            self._acoustid_update()
 
     def _move(self, parent):
         if parent != self.parent:
@@ -476,7 +476,14 @@ class File(QtCore.QObject, Item):
             if self.parent:
                 self.parent.remove_file(self)
             self.parent = parent
-            self.tagger.acoustidmanager.update(self, self.metadata['musicbrainz_recordingid'])
+            self._acoustid_update()
+
+    def _acoustid_update(self):
+        if self.parent and hasattr(self.parent, 'orig_metadata'):
+            recording_id = self.parent.orig_metadata['musicbrainz_recordingid']
+        else:
+            recording_id = self.metadata['musicbrainz_recordingid']
+        self.tagger.acoustidmanager.update(self, recording_id)
 
     @classmethod
     def supports_tag(cls, name):
