@@ -22,8 +22,8 @@
  *
  * Approximate string comparison
  *
- * This work is based on the Levenshtein Metric or "edit distance", which is 
- * well known, simple, and seems to be unencumbered by any usage restrictions. 
+ * This work is based on the Levenshtein Metric or "edit distance", which is
+ * well known, simple, and seems to be unencumbered by any usage restrictions.
  * For more information on the Levenshtein Distance you can refer to the web,
  * e.g. http://www.merriampark.com/ld.htm
  *
@@ -112,10 +112,10 @@ float LevenshteinDistance(const Py_UNICODE * s1, int len1,
 
 			/* Step 6a */
 			/* Also cover transposition. This step is taken from:
-			   Berghel, Hal ; Roach, David : "An Extension of Ukkonen's 
+			   Berghel, Hal ; Roach, David : "An Extension of Ukkonen's
 			   Enhanced Dynamic Programming ASM Algorithm"
 			   (http://berghel.net/publications/asm/asm.php) */
-			
+
 			if (index1 > 2 && index2 > 2)
 			{
 				int trans = MATRIX(index1 - 2, index2 - 2) + 1;
@@ -156,8 +156,8 @@ astrcmp(PyObject *self, PyObject *args)
 
 	us1 = PyUnicode_AS_UNICODE(s1);
 	us2 = PyUnicode_AS_UNICODE(s2);
-	len1 = PyUnicode_GetSize(s1);
-	len2 = PyUnicode_GetSize(s2);
+	len1 = PyUnicode_GetLength(s1);
+	len2 = PyUnicode_GetLength(s2);
 
 	Py_UNBLOCK_THREADS
 	d = LevenshteinDistance(us1, len1, us2, len2);
@@ -179,7 +179,7 @@ static struct PyModuleDef AstrcmpModule =
     AstrcmpMethods
 };
 
-PyMODINIT_FUNC 
+PyMODINIT_FUNC
 PyInit__astrcmp(void)
 {
     return PyModule_Create(&AstrcmpModule);
