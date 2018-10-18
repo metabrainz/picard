@@ -88,6 +88,7 @@ float LevenshteinDistance(int k1, const void * s1, Py_ssize_t len1,
 
 	for (index1 = 1; index1 <= len1; index1++)
 	{
+		Py_UCS4 s1_previous = 0;
 		Py_UCS4 s1_current = PyUnicode_READ(k1, s1, index1 - 1);
 
 		/* Step 4 */
@@ -95,6 +96,7 @@ float LevenshteinDistance(int k1, const void * s1, Py_ssize_t len1,
 
 		for (index2 = 1; index2 <= len2; index2++)
 		{
+			Py_UCS4 s2_previous = 0;
 			Py_UCS4 s2_current = PyUnicode_READ(k2, s2, index2 - 1);
 
 			/* Step 5 */
@@ -120,16 +122,19 @@ float LevenshteinDistance(int k1, const void * s1, Py_ssize_t len1,
 			if (index1 > 2 && index2 > 2)
 			{
 				int trans = MATRIX(index1 - 2, index2 - 2) + 1;
-				if (PyUnicode_READ(k1, s1, index1 - 2) != s2_current)
+				if (s1_previous != s2_current)
 					trans++;
-				if (s1_current != PyUnicode_READ(k2, s2, index2 - 2))
+				if (s1_current != s2_previous)
 					trans++;
 				if (cell > trans)
 					cell = trans;
 			}
 
 			MATRIX(index1, index2) = cell;
+			s2_previous = s2_current;
 		}
+
+		s1_previous = s1_current;
 	}
 
 
