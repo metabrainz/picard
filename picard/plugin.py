@@ -397,7 +397,7 @@ class PluginManager(QtCore.QObject):
                     if os.path.isfile(update):
                         log.debug("Removing file %r", update)
                         os.remove(update)
-
+        _unregister_module_extensions(plugin_name)
         self.plugins = [ p for p in self.plugins if p.module_name != plugin_name]
 
     def remove_plugin(self, plugin_name, with_update=False):
