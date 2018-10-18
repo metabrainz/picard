@@ -57,8 +57,8 @@
 #define MAX(x, y) (((x) > (y)) ? (x) : (y))
 #define MATRIX(a, b) matrix[(b) * (len1 + 1) + (a)]
 
-float LevenshteinDistance(int k1, const void * s1, Py_ssize_t len1,
-	                        int k2, const void * s2, Py_ssize_t len2)
+float LevenshteinDistance(const Py_UCS4 * s1, Py_ssize_t len1,
+                          const Py_UCS4 * s2, Py_ssize_t len2)
 {
 	int *matrix, index1, index2;
 	float result;
@@ -88,16 +88,14 @@ float LevenshteinDistance(int k1, const void * s1, Py_ssize_t len1,
 
 	for (index1 = 1; index1 <= len1; index1++)
 	{
-		Py_UCS4 s1_previous = 0;
-		Py_UCS4 s1_current = PyUnicode_READ(k1, s1, index1 - 1);
+		Py_UCS4 s1_current = s1[index1 - 1];
 
 		/* Step 4 */
 		/* Loop through second string */
 
 		for (index2 = 1; index2 <= len2; index2++)
 		{
-			Py_UCS4 s2_previous = 0;
-			Py_UCS4 s2_current = PyUnicode_READ(k2, s2, index2 - 1);
+			Py_UCS4 s2_current = s2[index2 - 1];
 
 			/* Step 5 */
 			/* Calculate cost of this iteration
@@ -122,19 +120,16 @@ float LevenshteinDistance(int k1, const void * s1, Py_ssize_t len1,
 			if (index1 > 2 && index2 > 2)
 			{
 				int trans = MATRIX(index1 - 2, index2 - 2) + 1;
-				if (s1_previous != s2_current)
+				if (s1[index1 - 2] != s2_current)
 					trans++;
-				if (s1_current != s2_previous)
+				if (s1_current != s2[index2 - 2])
 					trans++;
 				if (cell > trans)
 					cell = trans;
 			}
 
 			MATRIX(index1, index2) = cell;
-			s2_previous = s2_current;
 		}
-
-		s1_previous = s1_current;
 	}
 
 
@@ -153,8 +148,7 @@ astrcmp(PyObject *self, PyObject *args)
 {
 	PyObject *s1, *s2;
 	float d;
-	const void *ud1, *ud2;
-	int k1, k2;
+	Py_UCS4 *us1, *us2;
 	Py_ssize_t len1, len2;
 	PyThreadState *_save;
 
@@ -164,16 +158,18 @@ astrcmp(PyObject *self, PyObject *args)
 	if (PyUnicode_READY(s1) == -1 || PyUnicode_READY(s2) == -1)
 		return NULL;
 
-	k1 = PyUnicode_KIND(s1);
-	k2 = PyUnicode_KIND(s2);
-	ud1 = PyUnicode_DATA(s1);
-	ud2 = PyUnicode_DATA(s2);
 	len1 = PyUnicode_GetLength(s1);
 	len2 = PyUnicode_GetLength(s2);
+	us1 = PyUnicode_AsUCS4Copy(s1);
+	us2 = PyUnicode_AsUCS4Copy(s2);
 
 	Py_UNBLOCK_THREADS
-	d = LevenshteinDistance(k1, ud1, len1, k2, ud2, len2);
+	d = LevenshteinDistance(us1, len1, us2, len2);
 	Py_BLOCK_THREADS
+
+	PyMem_Free(us1);
+	PyMem_Free(us2);
+
 	return Py_BuildValue("f", d);
 }
 
