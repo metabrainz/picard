@@ -172,11 +172,6 @@ class Cluster(QtCore.QObject, Item):
         else:
             return False
 
-    @property
-    def can_show_coverart(self):
-        """Return if this object supports cover art."""
-        return True
-
     def is_album_like(self):
         return True
 
