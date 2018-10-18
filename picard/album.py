@@ -456,7 +456,7 @@ class Album(DataObject, Item):
         tracknumber = file.metadata['tracknumber']
         discnumber = file.metadata['discnumber']
         for track in self.tracks:
-            tm = track.metadata
+            tm = track.orig_metadata
             if recordingid == tm['musicbrainz_recordingid']:
                 if tracknumber == tm['tracknumber']:
                     if discnumber == tm['discnumber']:
