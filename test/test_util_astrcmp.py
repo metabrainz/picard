@@ -29,7 +29,7 @@ class AstrcmpCTest(AstrcmpBase, unittest.TestCase):
 
     @unittest.skipIf(astrcmp_c is None, "The _astrcmp C extension module has not been compiled")
     def test_astrcmp(self):
-        super()
+        super().test_astrcmp()
 
 
 class AstrcmpPyTest(AstrcmpBase, unittest.TestCase):
