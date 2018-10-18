@@ -47,6 +47,11 @@ class Item(object):
     def can_view_info(self):
         return False
 
+    @property
+    def can_show_coverart(self):
+        """Return if this object supports cover art."""
+        return self.can_edit_tags()
+
     def can_browser_lookup(self):
         return True
 

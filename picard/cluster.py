@@ -38,6 +38,7 @@ from picard.util import (
     format_time,
 )
 from picard.util.imagelist import (
+    add_metadata_images,
     remove_metadata_images,
     update_metadata_images
 )
@@ -80,9 +81,12 @@ class Cluster(QtCore.QObject, Item):
     def __len__(self):
         return len(self.files)
 
-    def _update_related_album(self):
+    def _update_related_album(self, added_files=None, removed_files=None):
         if self.related_album:
-            self.related_album.update_metadata_images()
+            if added_files:
+                add_metadata_images(self.related_album, added_files)
+            if removed_files:
+                remove_metadata_images(self.related_album, removed_files)
             self.related_album.update()
 
     def add_files(self, files):
@@ -90,13 +94,14 @@ class Cluster(QtCore.QObject, Item):
             self.metadata.length += file.metadata.length
             file._move(self)
             file.update(signal=False)
-            cover = file.metadata.get_single_front_image()
-            if cover and cover[0] not in self.metadata.images:
-                self.metadata.append_image(cover[0])
+            if self.can_show_coverart:
+                file.metadata_images_changed.connect(self.update_metadata_images)
         self.files.extend(files)
         self.metadata['totaltracks'] = len(self.files)
         self.item.add_files(files)
-        self._update_related_album()
+        if self.can_show_coverart:
+            add_metadata_images(self, files)
+        self._update_related_album(added_files=files)
 
     def add_file(self, file):
         self.metadata.length += file.metadata.length
@@ -104,11 +109,11 @@ class Cluster(QtCore.QObject, Item):
         self.metadata['totaltracks'] = len(self.files)
         file._move(self)
         file.update(signal=False)
-        cover = file.metadata.get_single_front_image()
-        if cover and cover[0] not in self.metadata.images:
-            self.metadata.append_image(cover[0])
+        if self.can_show_coverart:
+            file.metadata_images_changed.connect(self.update_metadata_images)
+            add_metadata_images(self, [file])
         self.item.add_file(file)
-        self._update_related_album()
+        self._update_related_album(added_files=[file])
 
     def remove_file(self, file):
         self.metadata.length -= file.metadata.length
@@ -117,8 +122,10 @@ class Cluster(QtCore.QObject, Item):
         self.item.remove_file(file)
         if not self.special and self.get_num_files() == 0:
             self.tagger.remove_cluster(self)
-        remove_metadata_images(self, [file])
-        self._update_related_album()
+        if self.can_show_coverart:
+            file.metadata_images_changed.disconnect(self.update_metadata_images)
+            remove_metadata_images(self, [file])
+        self._update_related_album(removed_files=[file])
 
     def update(self):
         if self.item:
@@ -295,7 +302,8 @@ class Cluster(QtCore.QObject, Item):
             yield album_name, artist_name, (files[i] for i in album)
 
     def update_metadata_images(self):
-        update_metadata_images(self)
+        if self.can_show_coverart:
+            update_metadata_images(self)
 
 
 class UnclusteredFiles(Cluster):
@@ -331,6 +339,10 @@ class UnclusteredFiles(Cluster):
 
     def can_remove(self):
         return len(self.files) > 0
+
+    @property
+    def can_show_coverart(self):
+        return False
 
 
 class ClusterList(list, Item):

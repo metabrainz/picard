@@ -1052,7 +1052,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             elif isinstance(obj, Album):
                 metadata = obj.metadata
                 orig_metadata = obj.orig_metadata
-            elif obj.can_edit_tags():
+            elif obj.can_show_coverart:
                 metadata = obj.metadata
 
         self.metadata_box.selection_dirty = True
