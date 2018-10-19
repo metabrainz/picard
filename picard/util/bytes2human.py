@@ -80,7 +80,7 @@ def short_string(number, multiple, scale=1):
     else:
         fmt = '%%0.%df' % scale
         num = nr
-    fmtnum = locale.format(fmt, num)
+    fmtnum = locale.format_string(fmt, num)
     return _("%s " + unit) % fmtnum
 
 
