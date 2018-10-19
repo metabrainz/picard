@@ -1,6 +1,5 @@
 import json
 import os
-import unittest
 
 from picard import config
 from picard.album import Album
@@ -18,6 +17,7 @@ from picard.mbjson import (
 from picard.metadata import Metadata
 from picard.releasegroup import ReleaseGroup
 from picard.track import Track
+from test.picardtestcase import PicardTestCase
 
 settings = {
     "standardize_tracks": False,
@@ -29,7 +29,10 @@ settings = {
 }
 
 
-class MBJSONTest(unittest.TestCase):
+class MBJSONTest(PicardTestCase):
+    def setUp(self):
+        super(MBJSONTest, self).setUp()
+        self.init_test(self.filename)
 
     def init_test(self, filename):
         config.setting = settings
@@ -40,8 +43,7 @@ class MBJSONTest(unittest.TestCase):
 
 class ReleaseTest(MBJSONTest):
 
-    def setUp(self):
-        self.init_test('release.json')
+    filename = 'release.json'
 
     def test_release(self):
         m = Metadata()
@@ -72,8 +74,7 @@ class ReleaseTest(MBJSONTest):
 
 class NullReleaseTest(MBJSONTest):
 
-    def setUp(self):
-        self.init_test('release_null.json')
+    filename = 'release_null.json'
 
     def test_release(self):
         m = Metadata()
@@ -88,8 +89,7 @@ class NullReleaseTest(MBJSONTest):
 
 class RecordingTest(MBJSONTest):
 
-    def setUp(self):
-        self.init_test('recording.json')
+    filename = 'recording.json'
 
     def test_recording(self):
         m = Metadata()
@@ -124,8 +124,7 @@ class RecordingTest(MBJSONTest):
 
 class NullRecordingTest(MBJSONTest):
 
-    def setUp(self):
-        self.init_test('recording_null.json')
+    filename = 'recording_null.json'
 
     def test_recording(self):
         m = Metadata()
@@ -136,13 +135,13 @@ class NullRecordingTest(MBJSONTest):
 
 class RecordingCreditsTest(MBJSONTest):
 
-    def setUp(self):
-        self.init_test('recording_credits.json')
+    filename = 'recording_credits.json'
 
     def test_recording_solo_vocals(self):
         m = Metadata()
         t = Track("1")
         recording_to_metadata(self.json_doc, m, t)
+        config.setting["standardize_artists"] = False
         self.assertTrue('performer:solo' not in m)
         self.assertEqual(m['performer:solo vocals'], 'Frida')
 
@@ -157,8 +156,7 @@ class RecordingCreditsTest(MBJSONTest):
 
 class TrackTest(MBJSONTest):
 
-    def setUp(self):
-        self.init_test('track.json')
+    filename = 'track.json'
 
     def test_track(self):
         t = Track("1")
@@ -177,8 +175,7 @@ class TrackTest(MBJSONTest):
 
 class NullTrackTest(MBJSONTest):
 
-    def setUp(self):
-        self.init_test('track_null.json')
+    filename = 'track_null.json'
 
     def test_track(self):
         t = Track("1")
@@ -189,8 +186,7 @@ class NullTrackTest(MBJSONTest):
 
 class MediaTest(MBJSONTest):
 
-    def setUp(self):
-        self.init_test('media.json')
+    filename = 'media.json'
 
     def test_track(self):
         m = Metadata()
@@ -202,8 +198,7 @@ class MediaTest(MBJSONTest):
 
 class NullMediaTest(MBJSONTest):
 
-    def setUp(self):
-        self.init_test('media_null.json')
+    filename = 'media_null.json'
 
     def test_track(self):
         m = Metadata()
@@ -213,8 +208,7 @@ class NullMediaTest(MBJSONTest):
 
 class ArtistTest(MBJSONTest):
 
-    def setUp(self):
-        self.init_test('artist.json')
+    filename = 'artist.json'
 
     def test_artist(self):
         m = Metadata()
@@ -230,8 +224,7 @@ class ArtistTest(MBJSONTest):
 
 class NullArtistTest(MBJSONTest):
 
-    def setUp(self):
-        self.init_test('artist_null.json')
+    filename = 'artist_null.json'
 
     def test_artist(self):
         m = Metadata()
@@ -241,8 +234,7 @@ class NullArtistTest(MBJSONTest):
 
 class ReleaseGroupTest(MBJSONTest):
 
-    def setUp(self):
-        self.init_test('release_group.json')
+    filename = 'release_group.json'
 
     def test_release_group(self):
         m = Metadata()
@@ -259,8 +251,7 @@ class ReleaseGroupTest(MBJSONTest):
 
 class NullReleaseGroupTest(MBJSONTest):
 
-    def setUp(self):
-        self.init_test('release_group_null.json')
+    filename = 'release_group_null.json'
 
     def test_release_group(self):
         m = Metadata()
@@ -271,8 +262,7 @@ class NullReleaseGroupTest(MBJSONTest):
 
 class CountryListTest(MBJSONTest):
 
-    def setUp(self):
-        self.init_test('country.json')
+    filename = 'country.json'
 
     def test_country_from_node(self):
         country_list = country_list_from_node(self.json_doc)
@@ -281,8 +271,7 @@ class CountryListTest(MBJSONTest):
 
 class NullCountryListTest(MBJSONTest):
 
-    def setUp(self):
-        self.init_test('country_null.json')
+    filename = 'country_null.json'
 
     def test_country_from_node(self):
         country_list = country_list_from_node(self.json_doc)
@@ -291,8 +280,7 @@ class NullCountryListTest(MBJSONTest):
 
 class LabelInfoTest(MBJSONTest):
 
-    def setUp(self):
-        self.init_test('label_info.json')
+    filename = 'label_info.json'
 
     def _label_info(self, n):
         return label_info_from_node(self.json_doc['releases'][n]['label-info'])
@@ -312,8 +300,7 @@ class LabelInfoTest(MBJSONTest):
 
 class NullLabelInfoTest(MBJSONTest):
 
-    def setUp(self):
-        self.init_test('label_info_null.json')
+    filename = 'label_info_null.json'
 
     def test_label_info_from_node_0(self):
         label_info = label_info_from_node(self.json_doc['releases'][0]['label-info'])
