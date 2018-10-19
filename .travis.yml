@@ -13,8 +13,7 @@ env:
   global:
   - PIP_INSTALL="pip3 install"
   - INSTALL_DEPS="$PIP_INSTALL -r requirements.txt"
-  - NOSE="$PIP_INSTALL nose2"
-  - COVERAGE="$PIP_INSTALL nose-cov"
+  - PYTEST="$PIP_INSTALL pytest pytest-randomly pytest-cov"
   - CODACY="$PIP_INSTALL codacy-coverage"
   - LIBDISCID="libdiscid0 libdiscid0-dev"
   matrix:
@@ -51,9 +50,8 @@ before_install:
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export LD_LIBRARY_PATH=`pwd`:$LD_LIBRARY_PATH; fi
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then source bin/activate; fi
 - "$INSTALL_DEPS"
-- "$NOSE"
-- if [ ! -z "${CODACY_PROJECT_TOKEN}" ]; then $COVERAGE; fi
-script: nose2 -v --with-coverage --coverage picard --coverage-report xml
+- "$PYTEST"
+script: py.test -v --cov=picard --cov-report xml:coverage.xml
 after_success:
 - if [ ! -z "${CODACY_PROJECT_TOKEN}" ]; then $CODACY; python-codacy-coverage -r coverage.xml;
   fi
