@@ -15,6 +15,10 @@ from picard.util.imagelist import (
 )
 
 
+from PyQt5 import QtCore
+from test.test_formats import FakeTagger
+
+
 def create_fake_png(extra):
     """Creates fake PNG data that satisfies Picard's internal image type detection"""
     return b'\x89PNG\x0D\x0A\x1A\x0A' + (b'a' * 4) + b'IHDR' + struct.pack('>LL', 100, 100) + extra
@@ -42,6 +46,7 @@ def create_test_files():
 class UpdateMetadataImagesTest(unittest.TestCase):
 
     def setUp(self):
+        QtCore.QObject.tagger = FakeTagger()
         (self.test_images, self.test_files) = create_test_files()
 
     def test_update_cluster_images(self):
