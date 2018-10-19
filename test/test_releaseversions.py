@@ -37,7 +37,7 @@ class ReleaseTest(unittest.TestCase):
             shutil.rmtree(self.tmp_path)
 
     def test_1(self):
-        config.setting = settings
+        config.setting = settings.copy()
         rlist = self.load_data('release_group_2.json')
         r = ReleaseGroup(1)
         r._parse_versions(rlist)
@@ -49,7 +49,7 @@ class ReleaseTest(unittest.TestCase):
                          '5 / 2009 / GB / CD / label A / cat 123 / Digipak / specialx')
 
     def test_2(self):
-        config.setting = settings
+        config.setting = settings.copy()
         rlist = self.load_data('release_group_3.json')
         r = ReleaseGroup(1)
         r._parse_versions(rlist)
@@ -59,7 +59,7 @@ class ReleaseTest(unittest.TestCase):
                          '5 / 2011 / FR / CD / label A / cat 123')
 
     def test_3(self):
-        config.setting = settings
+        config.setting = settings.copy()
         rlist = self.load_data('release_group_4.json')
         r = ReleaseGroup(1)
         r._parse_versions(rlist)
