@@ -31,3 +31,4 @@ class FakeTagger(QtCore.QObject):
 class PicardTestCase(unittest.TestCase):
     def setUp(self):
         QtCore.QObject.tagger = FakeTagger()
+        config.setting = {}
