@@ -15,8 +15,7 @@ from picard.util.imagelist import (
 )
 
 
-from PyQt5 import QtCore
-from test.test_formats import FakeTagger
+from test.picardtestcase import PicardTestCase
 
 
 def create_fake_png(extra):
@@ -43,10 +42,10 @@ def create_test_files():
     return (test_images, test_files)
 
 
-class UpdateMetadataImagesTest(unittest.TestCase):
+class UpdateMetadataImagesTest(PicardTestCase):
 
     def setUp(self):
-        QtCore.QObject.tagger = FakeTagger()
+        super(UpdateMetadataImagesTest, self).setUp()
         (self.test_images, self.test_files) = create_test_files()
 
     def test_update_cluster_images(self):
@@ -122,9 +121,10 @@ class UpdateMetadataImagesTest(unittest.TestCase):
         self.assertTrue(album.orig_metadata.has_common_images)
 
 
-class RemoveMetadataImagesTest(unittest.TestCase):
+class RemoveMetadataImagesTest(PicardTestCase):
 
     def setUp(self):
+        super(RemoveMetadataImagesTest, self).setUp()
         (self.test_images, self.test_files) = create_test_files()
 
     def test_remove_from_cluster(self):
@@ -212,9 +212,10 @@ class RemoveMetadataImagesTest(unittest.TestCase):
         self.assertTrue(album.orig_metadata.has_common_images)
 
 
-class AddMetadataImagesTest(unittest.TestCase):
+class AddMetadataImagesTest(PicardTestCase):
 
     def setUp(self):
+        super(AddMetadataImagesTest, self).setUp()
         (self.test_images, self.test_files) = create_test_files()
 
     def test_add_to_cluster(self):

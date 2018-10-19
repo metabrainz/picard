@@ -3,13 +3,11 @@ from contextlib import suppress
 import os.path
 import shutil
 from tempfile import mkdtemp
-from test.test_formats import FakeTagger
-import unittest
 
-from PyQt5 import QtCore
 
 from picard import config
 import picard.formats
+from test.picardtestcase import PicardTestCase
 
 settings = {
     'enabled_plugins': '',
@@ -19,12 +17,12 @@ settings = {
 }
 
 
-class TestFileSystem(unittest.TestCase):
+class TestFileSystem(PicardTestCase):
 
     def setUp(self):
+        super(TestFileSystem, self).setUp()
         self.src_directory = mkdtemp()
         self.tgt_directory = mkdtemp()
-        QtCore.QObject.tagger = FakeTagger()
         config.setting = settings.copy()
 
     def tearDown(self):
