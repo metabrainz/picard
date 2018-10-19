@@ -1,11 +1,10 @@
 # -*- coding: utf-8 -*-
-
-import unittest
+from test.picardtestcase import PicardTestCase
 
 from picard.util import compare_version_tuples
 
 
-class CompareVersionsTest(unittest.TestCase):
+class CompareVersionsTest(PicardTestCase):
     '''Unit tests for compare_version_tuples() function.'''
 
     def test_compare_version_01(self):

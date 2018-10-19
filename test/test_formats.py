@@ -2,13 +2,12 @@
 import os.path
 import shutil
 from tempfile import mkstemp
+from test.picardtestcase import PicardTestCase
 import unittest
 
 from PyQt5 import QtCore
 
-from picard import (
-    config,
-)
+from picard import config
 from picard.coverart.image import (
     CoverArtImage,
     TagCoverArtImage,
@@ -16,7 +15,6 @@ from picard.coverart.image import (
 import picard.formats
 from picard.formats import ext_to_format
 from picard.metadata import Metadata
-from test.picardtestcase import PicardTestCase
 
 settings = {
     'clear_existing_tags': False,
@@ -140,7 +138,7 @@ class CommonTests:
         testfile_path = None
 
         def setUp(self):
-            super(CommonTests.FormatsTest, self).setUp()
+            super().setUp()
             self.tags = TAGS.copy()
             _name, self.testfile_ext = os.path.splitext(self.testfile)
             config.setting = settings.copy()
@@ -556,7 +554,7 @@ cover_settings = {
 class TestCoverArt(PicardTestCase):
 
     def setUp(self):
-        super(TestCoverArt, self).setUp()
+        super().setUp()
         with open(os.path.join('test', 'data', 'mb.jpg'), 'rb') as f:
             self.jpegdata = f.read()
         with open(os.path.join('test', 'data', 'mb.png'), 'rb') as f:
@@ -840,7 +838,7 @@ class WAVTest(PicardTestCase):
     filename = os.path.join('test', 'data', 'test.wav')
 
     def setUp(self):
-        super(WAVTest, self).setUp()
+        super().setUp()
         config.setting = settings.copy()
 
     def test_can_open_and_save(self):

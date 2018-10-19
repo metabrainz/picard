@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import unittest
+from test.picardtestcase import PicardTestCase
 
 from picard import config
 from picard.metadata import (
@@ -13,12 +13,13 @@ settings = {
 }
 
 
-class MetadataTest(unittest.TestCase):
+class MetadataTest(PicardTestCase):
 
     original = None
     tags = []
 
     def setUp(self):
+        super().setUp()
         config.setting = settings.copy()
         self.metadata = Metadata()
         self.metadata["single1"] = "single1-value"

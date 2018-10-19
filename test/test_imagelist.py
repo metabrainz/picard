@@ -1,21 +1,19 @@
 # -*- coding: utf-8 -*-
 
 import struct
+from test.picardtestcase import PicardTestCase
 import unittest
 
 from picard.album import Album
 from picard.cluster import Cluster
 from picard.coverart.image import CoverArtImage
-from picard.track import Track
 from picard.file import File
+from picard.track import Track
 from picard.util.imagelist import (
     add_metadata_images,
     remove_metadata_images,
-    update_metadata_images
+    update_metadata_images,
 )
-
-
-from test.picardtestcase import PicardTestCase
 
 
 def create_fake_png(extra):
@@ -45,7 +43,7 @@ def create_test_files():
 class UpdateMetadataImagesTest(PicardTestCase):
 
     def setUp(self):
-        super(UpdateMetadataImagesTest, self).setUp()
+        super().setUp()
         (self.test_images, self.test_files) = create_test_files()
 
     def test_update_cluster_images(self):
@@ -124,7 +122,7 @@ class UpdateMetadataImagesTest(PicardTestCase):
 class RemoveMetadataImagesTest(PicardTestCase):
 
     def setUp(self):
-        super(RemoveMetadataImagesTest, self).setUp()
+        super().setUp()
         (self.test_images, self.test_files) = create_test_files()
 
     def test_remove_from_cluster(self):
@@ -215,7 +213,7 @@ class RemoveMetadataImagesTest(PicardTestCase):
 class AddMetadataImagesTest(PicardTestCase):
 
     def setUp(self):
-        super(AddMetadataImagesTest, self).setUp()
+        super().setUp()
         (self.test_images, self.test_files) = create_test_files()
 
     def test_add_to_cluster(self):

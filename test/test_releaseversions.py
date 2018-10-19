@@ -3,7 +3,7 @@ import os.path
 import shutil
 import sys
 import tempfile
-import unittest
+from test.picardtestcase import PicardTestCase
 
 from picard import config
 from picard.i18n import setup_gettext
@@ -17,7 +17,7 @@ settings = {
 }
 
 
-class ReleaseTest(unittest.TestCase):
+class ReleaseTest(PicardTestCase):
 
     @staticmethod
     def load_data(filename):
@@ -25,6 +25,7 @@ class ReleaseTest(unittest.TestCase):
             return json.load(f)
 
     def setUp(self):
+        super().setUp()
         # we are using temporary locales for tests
         self.tmp_path = tempfile.mkdtemp()
         if sys.hexversion >= 0x020700F0:

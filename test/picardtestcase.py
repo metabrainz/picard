@@ -1,8 +1,12 @@
 # -*- coding: utf-8 -*-
 import unittest
 
-from picard import (config, log)
 from PyQt5 import QtCore
+
+from picard import (
+    config,
+    log,
+)
 
 
 class FakeTagger(QtCore.QObject):

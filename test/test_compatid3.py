@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import unittest
+from test.picardtestcase import PicardTestCase
 
 from mutagen import id3
 
@@ -8,7 +8,7 @@ from picard.formats.id3 import id3text
 from picard.formats.mutagenext import compatid3
 
 
-class UpdateToV23Test(unittest.TestCase):
+class UpdateToV23Test(PicardTestCase):
 
     def test_id3text(self):
         self.assertEqual(id3text(u"\u1234", 0), u"?")

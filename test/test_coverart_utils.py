@@ -3,14 +3,15 @@
 import os.path
 import shutil
 import tempfile
-import unittest
+from test.picardtestcase import PicardTestCase
 
 from picard.coverart.utils import translate_caa_type
 from picard.i18n import setup_gettext
 
 
-class CaaTypeTranslationTest(unittest.TestCase):
+class CaaTypeTranslationTest(PicardTestCase):
     def setUp(self):
+        super().setUp()
         # we are using temporary locales for tests
         self.tmp_path = tempfile.mkdtemp()
         self.localedir = os.path.join(self.tmp_path, 'locale')

@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-
-import sys
-import unittest
+from test.picardtestcase import PicardTestCase
 
 from picard import (
     VersionError,
@@ -9,16 +7,8 @@ from picard import (
     version_to_string,
 )
 
-# assertLess is available since 2.7 only
-if sys.version_info[:2] == (2, 6):
-    def assertLess(self, a, b, msg=None):
-        if not a < b:
-            self.fail('%s not less than %s' % (repr(a), repr(b)))
 
-    unittest.TestCase.assertLess = assertLess
-
-
-class VersionsTest(unittest.TestCase):
+class VersionsTest(PicardTestCase):
 
     def test_version_conv_1(self):
         l, s = (0, 0, 1, 'dev', 1), '0.0.1.dev1'

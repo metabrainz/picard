@@ -3,11 +3,10 @@ from contextlib import suppress
 import os.path
 import shutil
 from tempfile import mkdtemp
-
+from test.picardtestcase import PicardTestCase
 
 from picard import config
 import picard.formats
-from test.picardtestcase import PicardTestCase
 
 settings = {
     'enabled_plugins': '',
@@ -20,7 +19,7 @@ settings = {
 class TestFileSystem(PicardTestCase):
 
     def setUp(self):
-        super(TestFileSystem, self).setUp()
+        super().setUp()
         self.src_directory = mkdtemp()
         self.tgt_directory = mkdtemp()
         config.setting = settings.copy()

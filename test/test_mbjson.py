@@ -1,5 +1,6 @@
 import json
 import os
+from test.picardtestcase import PicardTestCase
 
 from picard import config
 from picard.album import Album
@@ -17,7 +18,6 @@ from picard.mbjson import (
 from picard.metadata import Metadata
 from picard.releasegroup import ReleaseGroup
 from picard.track import Track
-from test.picardtestcase import PicardTestCase
 
 settings = {
     "standardize_tracks": False,
@@ -31,7 +31,7 @@ settings = {
 
 class MBJSONTest(PicardTestCase):
     def setUp(self):
-        super(MBJSONTest, self).setUp()
+        super().setUp()
         self.init_test(self.filename)
 
     def init_test(self, filename):
