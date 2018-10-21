@@ -19,7 +19,8 @@ settings = {
 
 class AcoustIDTest(PicardTestCase):
     def setUp(self):
-        super(AcoustIDTest, self).setUp()
+        super().setUp()
+        self.init_test(self.filename)
 
     def init_test(self, filename):
         config.setting = settings.copy()
@@ -29,10 +30,7 @@ class AcoustIDTest(PicardTestCase):
 
 
 class RecordingTest(AcoustIDTest):
-
-    def setUp(self):
-        super(RecordingTest, self).setUp()
-        self.init_test('acoustid.json')
+    filename = 'acoustid.json'
 
     def test_recording(self):
         parsed_recording = parse_recording(self.json_doc)
@@ -53,10 +51,7 @@ class RecordingTest(AcoustIDTest):
 
 
 class NullRecordingTest(AcoustIDTest):
-
-    def setUp(self):
-        super(NullRecordingTest, self).setUp()
-        self.init_test('acoustid_null.json')
+    filename = 'acoustid_null.json'
 
     def test_recording(self):
         m = Metadata()
