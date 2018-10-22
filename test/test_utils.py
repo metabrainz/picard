@@ -225,3 +225,18 @@ class ImageInfoTest(PicardTestCase):
                           imageinfo.identify, data)
         self.assertRaises(imageinfo.UnrecognizedFormat,
                           imageinfo.identify, data)
+
+class CompareBarcodesTest(unittest.TestCase):
+
+    def test_same(self):
+        self.assertTrue(util.compare_barcodes('0727361379704', '0727361379704'))
+        self.assertTrue(util.compare_barcodes('727361379704', '727361379704'))
+        self.assertTrue(util.compare_barcodes('727361379704', '0727361379704'))
+        self.assertTrue(util.compare_barcodes('0727361379704', '727361379704'))
+        self.assertTrue(util.compare_barcodes(None, None))
+
+    def test_not_same(self):
+        self.assertFalse(util.compare_barcodes('0727361379704', '0727361379705'))
+        self.assertFalse(util.compare_barcodes('727361379704', '1727361379704'))
+        self.assertFalse(util.compare_barcodes('0727361379704', None))
+        self.assertFalse(util.compare_barcodes(None, '0727361379704'))

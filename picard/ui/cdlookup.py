@@ -31,7 +31,10 @@ from picard.mbjson import (
     label_info_from_node,
     release_dates_and_countries_from_node,
 )
-from picard.util import restore_method
+from picard.util import (
+    compare_barcodes,
+    restore_method,
+)
 
 from picard.ui import PicardDialog
 from picard.ui.ui_cdlookup import Ui_Dialog
@@ -61,11 +64,14 @@ class CDLookupDialog(PicardDialog):
             def myjoin(l):
                 return "\n".join(l)
 
+            selected = None
             for release in self.releases:
                 labels, catalog_numbers = label_info_from_node(release['label-info'])
                 dates, countries = release_dates_and_countries_from_node(release)
                 barcode = release['barcode'] if "barcode" in release else ""
                 item = QtWidgets.QTreeWidgetItem(self.ui.release_list)
+                if disc.mcn and compare_barcodes(barcode, disc.mcn):
+                    selected = item
                 item.setText(0, release['title'])
                 item.setText(1, artist_credit_from_node(release['artist-credit'])[0])
                 item.setText(2, myjoin(dates))
@@ -74,7 +80,7 @@ class CDLookupDialog(PicardDialog):
                 item.setText(5, myjoin(catalog_numbers))
                 item.setText(6, barcode)
                 item.setData(0, QtCore.Qt.UserRole, release['id'])
-            self.ui.release_list.setCurrentItem(self.ui.release_list.topLevelItem(0))
+            self.ui.release_list.setCurrentItem(selected or self.ui.release_list.topLevelItem(0))
             self.ui.ok_button.setEnabled(True)
         for i in range(self.ui.release_list.columnCount() - 1):
             self.ui.release_list.resizeColumnToContents(i)

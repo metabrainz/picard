@@ -43,6 +43,7 @@ class Disc(QtCore.QObject):
     def __init__(self):
         super().__init__()
         self.id = None
+        self.mcn = None
         self.submission_url = None
 
     def read(self, device=None):
@@ -50,9 +51,11 @@ class Disc(QtCore.QObject):
             device = discid.get_default_device()
         log.debug("Reading CD using device: %r", device)
         try:
-            disc = discid.read(device)
+            disc = discid.read(device, features=['mcn'])
             self.id = disc.id
+            self.mcn = disc.mcn
             self.submission_url = disc.submission_url
+            log.debug("Read disc ID %s with MCN %s", self.id, self.mcn)
         except discid.disc.DiscError as e:
             log.error("Error while reading %r: %s" % (device, str(e)))
             raise
