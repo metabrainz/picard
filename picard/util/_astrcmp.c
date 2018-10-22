@@ -1,5 +1,6 @@
 /*
  * Picard, the next-generation MusicBrainz tagger
+ * Copyright (C) 2018 Philipp Wolfer
  * Copyright (C) 2006 Lukáš Lalinský
  * Copyright (C) 2003 Benbuck Nason
  *
@@ -22,8 +23,8 @@
  *
  * Approximate string comparison
  *
- * This work is based on the Levenshtein Metric or "edit distance", which is 
- * well known, simple, and seems to be unencumbered by any usage restrictions. 
+ * This work is based on the Levenshtein Metric or "edit distance", which is
+ * well known, simple, and seems to be unencumbered by any usage restrictions.
  * For more information on the Levenshtein Distance you can refer to the web,
  * e.g. http://www.merriampark.com/ld.htm
  *
@@ -56,8 +57,8 @@
 #define MAX(x, y) (((x) > (y)) ? (x) : (y))
 #define MATRIX(a, b) matrix[(b) * (len1 + 1) + (a)]
 
-float LevenshteinDistance(const Py_UNICODE * s1, int len1,
-	                      const Py_UNICODE * s2, int len2)
+float LevenshteinDistance(const Py_UCS4 * s1, Py_ssize_t len1,
+                          const Py_UCS4 * s2, Py_ssize_t len2)
 {
 	int *matrix, index1, index2;
 	float result;
@@ -87,14 +88,14 @@ float LevenshteinDistance(const Py_UNICODE * s1, int len1,
 
 	for (index1 = 1; index1 <= len1; index1++)
 	{
-		Py_UNICODE s1_current = s1[index1 - 1];
+		Py_UCS4 s1_current = s1[index1 - 1];
 
 		/* Step 4 */
 		/* Loop through second string */
 
 		for (index2 = 1; index2 <= len2; index2++)
 		{
-			Py_UNICODE s2_current = s2[index2 - 1];
+			Py_UCS4 s2_current = s2[index2 - 1];
 
 			/* Step 5 */
 			/* Calculate cost of this iteration
@@ -112,10 +113,10 @@ float LevenshteinDistance(const Py_UNICODE * s1, int len1,
 
 			/* Step 6a */
 			/* Also cover transposition. This step is taken from:
-			   Berghel, Hal ; Roach, David : "An Extension of Ukkonen's 
+			   Berghel, Hal ; Roach, David : "An Extension of Ukkonen's
 			   Enhanced Dynamic Programming ASM Algorithm"
 			   (http://berghel.net/publications/asm/asm.php) */
-			
+
 			if (index1 > 2 && index2 > 2)
 			{
 				int trans = MATRIX(index1 - 2, index2 - 2) + 1;
@@ -147,21 +148,28 @@ astrcmp(PyObject *self, PyObject *args)
 {
 	PyObject *s1, *s2;
 	float d;
-	const Py_UNICODE *us1, *us2;
-	int len1, len2;
+	Py_UCS4 *us1, *us2;
+	Py_ssize_t len1, len2;
 	PyThreadState *_save;
 
 	if (!PyArg_ParseTuple(args, "UU", &s1, &s2))
 		return NULL;
 
-	us1 = PyUnicode_AS_UNICODE(s1);
-	us2 = PyUnicode_AS_UNICODE(s2);
-	len1 = PyUnicode_GetSize(s1);
-	len2 = PyUnicode_GetSize(s2);
+	if (PyUnicode_READY(s1) == -1 || PyUnicode_READY(s2) == -1)
+		return NULL;
+
+	len1 = PyUnicode_GetLength(s1);
+	len2 = PyUnicode_GetLength(s2);
+	us1 = PyUnicode_AsUCS4Copy(s1);
+	us2 = PyUnicode_AsUCS4Copy(s2);
 
 	Py_UNBLOCK_THREADS
 	d = LevenshteinDistance(us1, len1, us2, len2);
 	Py_BLOCK_THREADS
+
+	PyMem_Free(us1);
+	PyMem_Free(us2);
+
 	return Py_BuildValue("f", d);
 }
 
@@ -179,7 +187,7 @@ static struct PyModuleDef AstrcmpModule =
     AstrcmpMethods
 };
 
-PyMODINIT_FUNC 
+PyMODINIT_FUNC
 PyInit__astrcmp(void)
 {
     return PyModule_Create(&AstrcmpModule);
