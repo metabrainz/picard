@@ -579,8 +579,4 @@ def compare_barcodes(barcode1, barcode2):
         return True
     if not barcode1 or not barcode2:
         return False
-    if len(barcode1) == 12:
-        barcode1 = '0' + barcode1
-    if len(barcode2) == 12:
-        barcode2 = '0' + barcode2
-    return barcode1 == barcode2
+    return barcode1.zfill(13) == barcode2.zfill(13)
