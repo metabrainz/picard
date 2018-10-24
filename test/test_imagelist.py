@@ -1,17 +1,18 @@
 # -*- coding: utf-8 -*-
 
 import struct
+from test.picardtestcase import PicardTestCase
 import unittest
 
 from picard.album import Album
 from picard.cluster import Cluster
 from picard.coverart.image import CoverArtImage
-from picard.track import Track
 from picard.file import File
+from picard.track import Track
 from picard.util.imagelist import (
     add_metadata_images,
     remove_metadata_images,
-    update_metadata_images
+    update_metadata_images,
 )
 
 
@@ -39,9 +40,10 @@ def create_test_files():
     return (test_images, test_files)
 
 
-class UpdateMetadataImagesTest(unittest.TestCase):
+class UpdateMetadataImagesTest(PicardTestCase):
 
     def setUp(self):
+        super().setUp()
         (self.test_images, self.test_files) = create_test_files()
 
     def test_update_cluster_images(self):
@@ -117,9 +119,10 @@ class UpdateMetadataImagesTest(unittest.TestCase):
         self.assertTrue(album.orig_metadata.has_common_images)
 
 
-class RemoveMetadataImagesTest(unittest.TestCase):
+class RemoveMetadataImagesTest(PicardTestCase):
 
     def setUp(self):
+        super().setUp()
         (self.test_images, self.test_files) = create_test_files()
 
     def test_remove_from_cluster(self):
@@ -207,9 +210,10 @@ class RemoveMetadataImagesTest(unittest.TestCase):
         self.assertTrue(album.orig_metadata.has_common_images)
 
 
-class AddMetadataImagesTest(unittest.TestCase):
+class AddMetadataImagesTest(PicardTestCase):
 
     def setUp(self):
+        super().setUp()
         (self.test_images, self.test_files) = create_test_files()
 
     def test_add_to_cluster(self):

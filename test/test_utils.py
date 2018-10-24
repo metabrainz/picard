@@ -3,6 +3,7 @@
 import builtins
 import os.path
 import sys
+from test.picardtestcase import PicardTestCase
 import unittest
 
 from picard import util
@@ -13,7 +14,7 @@ if '_' not in builtins.__dict__:
     builtins.__dict__['_'] = lambda a: a
 
 
-class ReplaceWin32IncompatTest(unittest.TestCase):
+class ReplaceWin32IncompatTest(PicardTestCase):
 
     @unittest.skipUnless(sys.platform == "win32", "windows test")
     def test_correct_absolute_win32(self):
@@ -40,7 +41,7 @@ class ReplaceWin32IncompatTest(unittest.TestCase):
                              "c:\\test\\te\"st2")
 
 
-class SanitizeDateTest(unittest.TestCase):
+class SanitizeDateTest(PicardTestCase):
 
     def test_correct(self):
         self.assertEqual(util.sanitize_date("2006--"), "2006")
@@ -55,7 +56,7 @@ class SanitizeDateTest(unittest.TestCase):
         self.assertNotEqual(util.sanitize_date("2006.03.02"), "2006-03-02")
 
 
-class TranslateArtistTest(unittest.TestCase):
+class TranslateArtistTest(PicardTestCase):
 
     def test_latin(self):
         self.assertEqual(u"Jean Michel Jarre", util.translate_from_sortname(u"Jean Michel Jarre", u"Jarre, Jean Michel"))
@@ -77,7 +78,7 @@ class TranslateArtistTest(unittest.TestCase):
         self.assertNotEqual(u"Пётр Ильич Чайковский", util.translate_from_sortname(u"Пётр Ильич Чайковский", u"Tchaikovsky, Pyotr Ilyich"))
 
 
-class FormatTimeTest(unittest.TestCase):
+class FormatTimeTest(PicardTestCase):
 
     def test(self):
         self.assertEqual("?:??", util.format_time(0))
@@ -86,7 +87,7 @@ class FormatTimeTest(unittest.TestCase):
         self.assertEqual("2:59", util.format_time(179499))
 
 
-class HiddenFileTest(unittest.TestCase):
+class HiddenFileTest(PicardTestCase):
 
     @unittest.skipUnless(sys.platform != "win32", "non-windows test")
     def test(self):
@@ -95,7 +96,7 @@ class HiddenFileTest(unittest.TestCase):
         self.assertFalse(util.is_hidden('/a/.b/c.mp3'))
 
 
-class TagsTest(unittest.TestCase):
+class TagsTest(PicardTestCase):
 
     def test_display_tag_name(self):
         dtn = util.tags.display_tag_name
@@ -109,7 +110,7 @@ class TagsTest(unittest.TestCase):
         self.assertEqual(dtn(''), '')
 
 
-class LinearCombinationTest(unittest.TestCase):
+class LinearCombinationTest(PicardTestCase):
 
     def test_0(self):
         parts = []
@@ -152,7 +153,7 @@ class LinearCombinationTest(unittest.TestCase):
         self.assertRaises(TypeError, util.linear_combination_of_weights, parts)
 
 
-class AlbumArtistFromPathTest(unittest.TestCase):
+class AlbumArtistFromPathTest(PicardTestCase):
 
     def test_album_artist_from_path(self):
         aafp = util.album_artist_from_path
@@ -178,7 +179,7 @@ class AlbumArtistFromPathTest(unittest.TestCase):
         self.assertEqual(aafp(file_4, 'album', 'artist'), ('album', 'artist'))
 
 
-class ImageInfoTest(unittest.TestCase):
+class ImageInfoTest(PicardTestCase):
 
     def test_gif(self):
         file = os.path.join('test', 'data', 'mb.gif')

@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
-
-import unittest
+from test.picardtestcase import PicardTestCase
 from unittest.mock import (
     MagicMock,
     patch,
@@ -23,9 +22,10 @@ PROXY_SETTINGS = {
 }
 
 
-class WebServiceTest(unittest.TestCase):
+class WebServiceTest(PicardTestCase):
 
     def setUp(self):
+        super().setUp()
         config.setting = {'use_proxy': False, 'server_host': ''}
         self.ws = WebService()
 
@@ -60,9 +60,10 @@ class WebServiceTest(unittest.TestCase):
         self.assertEqual(5, mock_add_task.call_count)
 
 
-class WebServiceTaskTest(unittest.TestCase):
+class WebServiceTaskTest(PicardTestCase):
 
     def setUp(self):
+        super().setUp()
         config.setting = {'use_proxy': False}
         self.ws = WebService()
 
@@ -174,9 +175,10 @@ class WebServiceTaskTest(unittest.TestCase):
         self.assertNotIn(key, self.ws._queues[0])
 
 
-class WebServiceProxyTest(unittest.TestCase):
+class WebServiceProxyTest(PicardTestCase):
 
     def setUp(self):
+        super().setUp()
         config.setting = PROXY_SETTINGS.copy()
         self.ws = WebService()
         self.proxy = self.ws.manager.proxy()
@@ -193,7 +195,7 @@ class WebServiceProxyTest(unittest.TestCase):
         self.assertEqual(self.proxy.port(), PROXY_SETTINGS['proxy_server_port'])
 
 
-class ParserHookTest(unittest.TestCase):
+class ParserHookTest(PicardTestCase):
 
     def test_parser_hook(self):
         WebService.add_parser('A', 'mime', 'parser')

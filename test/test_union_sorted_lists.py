@@ -1,11 +1,10 @@
 # -*- coding: utf-8 -*-
-
-import unittest
+from test.picardtestcase import PicardTestCase
 
 from picard.util import union_sorted_lists
 
 
-class UnionSortedListsTest(unittest.TestCase):
+class UnionSortedListsTest(PicardTestCase):
 
     def test_1(self):
         list1 = [1, 2, 3]

@@ -1,9 +1,9 @@
-import unittest
+from test.picardtestcase import PicardTestCase
 
 from picard.similarity import similarity
 
 
-class SimilarityTest(unittest.TestCase):
+class SimilarityTest(PicardTestCase):
 
     def test_correct(self):
         self.assertEqual(similarity(u"K!", u"K!"), 1.0)

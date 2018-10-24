@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-
+from test.picardtestcase import PicardTestCase
 import unittest
 
 from picard.util.astrcmp import astrcmp_py
@@ -24,7 +24,7 @@ class AstrcmpBase(object):
         self.assertAlmostEqual(0.7083333333333333, astrcmp(u"The Great Gig in the Sky", u"Great Gig In The sky"))
 
 
-class AstrcmpCTest(AstrcmpBase, unittest.TestCase):
+class AstrcmpCTest(AstrcmpBase, PicardTestCase):
     func = astrcmp_c
 
     @unittest.skipIf(astrcmp_c is None, "The _astrcmp C extension module has not been compiled")
@@ -32,5 +32,5 @@ class AstrcmpCTest(AstrcmpBase, unittest.TestCase):
         super().test_astrcmp()
 
 
-class AstrcmpPyTest(AstrcmpBase, unittest.TestCase):
+class AstrcmpPyTest(AstrcmpBase, PicardTestCase):
     func = astrcmp_py

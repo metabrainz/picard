@@ -1,4 +1,4 @@
-import unittest
+from test.picardtestcase import PicardTestCase
 from unittest.mock import patch
 from urllib.parse import (
     parse_qs,
@@ -13,9 +13,10 @@ PORT = 443
 LOCAL_PORT = "8000"
 
 
-class BrowserLookupTest(unittest.TestCase):
+class BrowserLookupTest(PicardTestCase):
 
     def setUp(self):
+        super().setUp()
         self.lookup = FileLookup(None, SERVER, PORT, LOCAL_PORT)
 
     @patch.object(webbrowser2, 'open')
