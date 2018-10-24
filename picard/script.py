@@ -846,6 +846,16 @@ def func_ne_any(parser, x, *args):
     """
     return func_not(parser, func_eq_all(parser, x, *args))
 
+def func_title(parser, text):
+    if not text:
+        return ""
+    words = text.split()
+    capital = [text[0].capitalize()]
+    words.remove(words[0])
+    for i in words:
+        capital.append(i.capitalize())
+    return " ".join(capital)
+
 
 register_script_function(func_if, "if", eval_args=False)
 register_script_function(func_if2, "if2", eval_args=False)
@@ -901,3 +911,4 @@ register_script_function(func_eq_any, "eq_any", check_argcount=False)
 register_script_function(func_ne_all, "ne_all", check_argcount=False)
 register_script_function(func_eq_all, "eq_all", check_argcount=False)
 register_script_function(func_ne_any, "ne_any", check_argcount=False)
+register_script_function(func_title, "title")
