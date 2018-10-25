@@ -847,7 +847,11 @@ def func_ne_any(parser, x, *args):
     return func_not(parser, func_eq_all(parser, x, *args))
 
 def func_title(parser, text):
-    """ Title-case a text """
+    """
+    Title-case a text - capitalizes first letter of every word
+    like: from "Lost in the Supermarket" to "Lost In The Supermarket"
+    Example: $set(album,$title(%album%))
+    """
     if not text:
         return ""
     words = text.split()
