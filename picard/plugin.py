@@ -484,6 +484,9 @@ class PluginManager(QtCore.QObject):
             important=True
         )
 
+    def is_available(self, plugin_name):
+        return any(p.module_name == plugin_name for p in self._available_plugins)
+
     def _plugins_json_loaded(self, response, reply, error, callback=None):
         if error:
             self.tagger.window.set_statusbar_message(

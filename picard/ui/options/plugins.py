@@ -402,6 +402,11 @@ class PluginsOptionsPage(OptionsPage):
         if item:
             self.update_plugin_item(item, plugin, make_current=True,
                                     enabled=True, is_installed=True)
+        else:
+            self._reload()
+            item = self.find_item_by_plugin_name(plugin.module_name)
+            if item:
+                self.set_current_item(item, scroll=True)
 
     def plugin_updated(self, plugin_name):
         log.debug("Plugin %r updated", plugin_name)
@@ -422,8 +427,12 @@ class PluginsOptionsPage(OptionsPage):
         log.debug("Plugin %r removed", plugin_name)
         item = self.find_item_by_plugin_name(plugin_name)
         if item:
-            self.update_plugin_item(item, None, make_current=True,
-                                    is_installed=False)
+            if self.manager.is_available(plugin_name):
+                self.update_plugin_item(item, None, make_current=True,
+                                        is_installed=False)
+            else:  # Remove local plugin
+                self.ui.plugins.invisibleRootItem().removeChild(item)
+
 
     def uninstall_plugin(self, item):
         plugin = item.plugin
