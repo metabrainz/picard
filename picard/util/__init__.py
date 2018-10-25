@@ -575,6 +575,8 @@ def compare_barcodes(barcode1, barcode2):
     Tries to normalize UPC barcodes to EAN barcodes so e.g. "727361379704"
     and "0727361379704" are considered the same.
     """
+    barcode1 = barcode1 or ''
+    barcode2 = barcode2 or ''
     if barcode1 == barcode2:
         return True
     if not barcode1 or not barcode2:
