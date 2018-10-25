@@ -1,4 +1,4 @@
-import unittest
+from test.picardtestcase import PicardTestCase
 
 from picard import config
 from picard.metadata import Metadata
@@ -11,9 +11,10 @@ from picard.script import (
 from picard.ui.options.renaming import _DEFAULT_FILE_NAMING_FORMAT
 
 
-class ScriptParserTest(unittest.TestCase):
+class ScriptParserTest(PicardTestCase):
 
     def setUp(self):
+        super().setUp()
         config.setting = {
             'enabled_plugins': '',
         }

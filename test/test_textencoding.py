@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
-
-import unittest
+from test.picardtestcase import PicardTestCase
 
 from picard import util
 
@@ -106,7 +105,7 @@ combinations_to = (
 ascii_chars = u" !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~"
 
 
-class CompatibilityTest(unittest.TestCase):
+class CompatibilityTest(PicardTestCase):
 
     def test_correct(self):
         self.maxDiff = None
@@ -119,7 +118,7 @@ class CompatibilityTest(unittest.TestCase):
         pass
 
 
-class PunctuationTest(unittest.TestCase):
+class PunctuationTest(PicardTestCase):
 
     def test_correct(self):
         self.maxDiff = None
@@ -136,7 +135,7 @@ class PunctuationTest(unittest.TestCase):
         pass
 
 
-class CombinationsTest(unittest.TestCase):
+class CombinationsTest(PicardTestCase):
 
     def test_correct(self):
         self.maxDiff = None
@@ -153,7 +152,7 @@ class CombinationsTest(unittest.TestCase):
         pass
 
 
-class AsciiPunctTest(unittest.TestCase):
+class AsciiPunctTest(PicardTestCase):
 
     def test_correct(self):
         self.assertEqual(util.textencoding.asciipunct(u"‘Test’"), u"'Test'") # Quotations
@@ -165,7 +164,7 @@ class AsciiPunctTest(unittest.TestCase):
         pass
 
 
-class UnaccentTest(unittest.TestCase):
+class UnaccentTest(PicardTestCase):
 
     def test_correct(self):
         self.assertEqual(util.textencoding.unaccent(u"Lukáš"), u"Lukas")
@@ -180,7 +179,7 @@ class UnaccentTest(unittest.TestCase):
         self.assertNotEqual(util.textencoding.unaccent(u"ænima"), u"aenima")
 
 
-class ReplaceNonAsciiTest(unittest.TestCase):
+class ReplaceNonAsciiTest(PicardTestCase):
 
     def test_correct(self):
         self.assertEqual(util.textencoding.replace_non_ascii(u"Lukáš"), u"Lukas")

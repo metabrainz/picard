@@ -2,14 +2,15 @@ import os.path
 import shutil
 import sys
 import tempfile
-import unittest
+from test.picardtestcase import PicardTestCase
 
 from picard.i18n import setup_gettext
 from picard.util import bytes2human
 
 
-class Testbytes2human(unittest.TestCase):
+class Testbytes2human(PicardTestCase):
     def setUp(self):
+        super().setUp()
         # we are using temporary locales for tests
         self.tmp_path = tempfile.mkdtemp()
         if sys.hexversion >= 0x020700F0:
