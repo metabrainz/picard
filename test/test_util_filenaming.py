@@ -3,12 +3,13 @@
 import os
 import os.path
 import sys
+from test.picardtestcase import PicardTestCase
 import unittest
 
 from picard.util.filenaming import make_short_filename
 
 
-class ShortFilenameTest(unittest.TestCase):
+class ShortFilenameTest(PicardTestCase):
 
     def __init__(self, *args, **kwargs):
         self.maxDiff = None

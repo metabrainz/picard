@@ -2,14 +2,12 @@
 import os.path
 import shutil
 from tempfile import mkstemp
+from test.picardtestcase import PicardTestCase
 import unittest
 
 from PyQt5 import QtCore
 
-from picard import (
-    config,
-    log,
-)
+from picard import config
 from picard.coverart.image import (
     CoverArtImage,
     TagCoverArtImage,
@@ -34,29 +32,6 @@ settings = {
     'write_id3v23': False,
     'itunes_compatible_grouping': False,
 }
-
-
-class FakeTagger(QtCore.QObject):
-
-    tagger_stats_changed = QtCore.pyqtSignal()
-
-    def __init__(self):
-        QtCore.QObject.__init__(self)
-        QtCore.QObject.config = config
-        QtCore.QObject.log = log
-        self.tagger_stats_changed.connect(self.emit)
-        self.exit_cleanup = []
-        self.files = {}
-
-    def register_cleanup(self, func):
-        self.exit_cleanup.append(func)
-
-    def run_cleanup(self):
-        for f in self.exit_cleanup:
-            f()
-
-    def emit(self, *args):
-        pass
 
 
 def save_metadata(filename, metadata):
@@ -156,17 +131,17 @@ def skipUnlessTestfile(func):
 # prevent unittest to run tests in those classes
 class CommonTests:
 
-    class FormatsTest(unittest.TestCase):
+    class FormatsTest(PicardTestCase):
 
         testfile = None
         testfile_ext = None
         testfile_path = None
 
         def setUp(self):
+            super().setUp()
             self.tags = TAGS.copy()
             _name, self.testfile_ext = os.path.splitext(self.testfile)
             config.setting = settings.copy()
-            QtCore.QObject.tagger = FakeTagger()
             if self.testfile:
                 self.testfile_path = os.path.join('test', 'data', self.testfile)
                 self.testfile_ext = os.path.splitext(self.testfile)[1]
@@ -576,9 +551,10 @@ cover_settings = {
 }
 
 
-class TestCoverArt(unittest.TestCase):
+class TestCoverArt(PicardTestCase):
 
     def setUp(self):
+        super().setUp()
         with open(os.path.join('test', 'data', 'mb.jpg'), 'rb') as f:
             self.jpegdata = f.read()
         with open(os.path.join('test', 'data', 'mb.png'), 'rb') as f:
@@ -588,7 +564,6 @@ class TestCoverArt(unittest.TestCase):
         config.setting = settings.copy()
         if extra is not None:
             config.setting.update(extra)
-        QtCore.QObject.tagger = FakeTagger()
 
     def _set_up(self, original, extra=None):
         fd, self.filename = mkstemp(suffix=os.path.splitext(original)[1])
@@ -859,8 +834,12 @@ class TestCoverArt(unittest.TestCase):
             self._tear_down()
 
 
-class WAVTest(unittest.TestCase):
+class WAVTest(PicardTestCase):
     filename = os.path.join('test', 'data', 'test.wav')
+
+    def setUp(self):
+        super().setUp()
+        config.setting = settings.copy()
 
     def test_can_open_and_save(self):
         metadata = Metadata()
