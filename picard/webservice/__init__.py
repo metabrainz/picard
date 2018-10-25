@@ -476,7 +476,7 @@ class WebService(QtCore.QObject):
                         queryargs=queryargs)
 
     def stop(self):
-        for reply in self._active_requests:
+        for reply in list(self._active_requests):
             reply.abort()
         self._init_queues()
 
