@@ -317,6 +317,12 @@ class ScriptParserTest(PicardTestCase):
         self.assertScriptResultEquals("$ne_any(abc,abc,abc,abc)", "")
         self.assertScriptResultEquals("$ne_any(abc,abc,def,ghi)", "1")
 
+    def test_cmd_title(self):
+        self.assertScriptResultEquals("$title(abc Def g)", "Abc Def G")
+        self.assertScriptResultEquals("$title(Abc Def G)", "Abc Def G")
+        self.assertScriptResultEquals("$title(abc def g)", "Abc Def G")
+        self.assertScriptResultEquals("$title(#1abc 4def - g)", "#1abc 4def - G")
+
     def test_cmd_swapprefix(self):
         self.assertScriptResultEquals("$swapprefix(A stitch in time)", "stitch in time, A")
         self.assertScriptResultEquals("$swapprefix(The quick brown fox)", "quick brown fox, The")
