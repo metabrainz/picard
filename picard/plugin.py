@@ -187,7 +187,7 @@ class PluginWrapper(PluginShared):
     @property
     def api_versions(self):
         try:
-            return self.data['PLUGIN_API_VERSIONS'] # This is the version of Picard's API used by the plugin. Please differentiate it with the PLUGIN_VERSION
+            return self.data['PLUGIN_API_VERSIONS'] # Picard's version you wanted this plugin to run with. For more information, please see Plugin API documentation page on Picard website
         except KeyError:
             return []
 
