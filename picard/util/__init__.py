@@ -566,3 +566,19 @@ def reconnect(signal, newhandler=None, oldhandler=None):
             break
     if newhandler is not None:
         signal.connect(newhandler)
+
+
+def compare_barcodes(barcode1, barcode2):
+    """
+    Compares two barcodes. Returns True if they are the same, False otherwise.
+
+    Tries to normalize UPC barcodes to EAN barcodes so e.g. "727361379704"
+    and "0727361379704" are considered the same.
+    """
+    barcode1 = barcode1 or ''
+    barcode2 = barcode2 or ''
+    if barcode1 == barcode2:
+        return True
+    if not barcode1 or not barcode2:
+        return False
+    return barcode1.zfill(13) == barcode2.zfill(13)
