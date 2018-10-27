@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>org.musicbrainz.Picard</id>
+  <project_license>GPL-2.0+</project_license>
+  <metadata_license>CC0-1.0</metadata_license>
+  <name>Picard</name>
+  <summary>MusicBrainz's music tagger</summary>
+
+  <description>
+    <p>
+      Do you need to clean up your music library? Picard is an open-source
+      cross-platform music tagger by MusicBrainz. It has the ability to
+      identify audio files without any metadata.
+    </p>
+    <p>
+      A variety of plugins are available and you can even write your own.
+      Picard supports a wide range of audio formats and can also lookup an
+      entire CD for you.
+    </p>
+    <p>
+      Tagging audio files has never been easier.
+    </p>
+  </description>
+
+  <launchable type="desktop-id">org.musicbrainz.Picard.desktop</launchable>
+
+  <screenshots>
+    <screenshot type="default">https://www.daitauha.fr/static/screenshots/picard/main.png</screenshot>
+  </screenshots>
+
+  <url type="homepage">https://picard.musicbrainz.org/</url>
+  <url type="bugtracker">https://tickets.metabrainz.org/projects/PICARD/issues/</url>
+  <url type="faq">https://picard.musicbrainz.org/docs/faq/</url>
+  <url type="help">https://community.metabrainz.org/c/picard</help>
+
+  <content_rating type="oars-1.1">
+    <content_attribute id="violence-cartoon">none</content_attribute>
+    <content_attribute id="violence-fantasy">none</content_attribute>
+    <content_attribute id="violence-realistic">none</content_attribute>
+    <content_attribute id="violence-bloodshed">none</content_attribute>
+    <content_attribute id="violence-sexual">none</content_attribute>
+    <content_attribute id="violence-desecration">none</content_attribute>
+    <content_attribute id="violence-slavery">none</content_attribute>
+    <content_attribute id="violence-worship">none</content_attribute>
+    <content_attribute id="drugs-alcohol">none</content_attribute>
+    <content_attribute id="drugs-narcotics">none</content_attribute>
+    <content_attribute id="drugs-tobacco">none</content_attribute>
+    <content_attribute id="sex-nudity">none</content_attribute>
+    <content_attribute id="sex-themes">none</content_attribute>
+    <content_attribute id="sex-homosexuality">none</content_attribute>
+    <content_attribute id="sex-prostitution">none</content_attribute>
+    <content_attribute id="sex-adultery">none</content_attribute>
+    <content_attribute id="sex-appearance">none</content_attribute>
+    <content_attribute id="language-profanity">none</content_attribute>
+    <content_attribute id="language-humor">none</content_attribute>
+    <content_attribute id="language-discrimination">none</content_attribute>
+    <content_attribute id="social-chat">none</content_attribute>
+    <content_attribute id="social-info">none</content_attribute>
+    <content_attribute id="social-audio">none</content_attribute>
+    <content_attribute id="social-location">none</content_attribute>
+    <content_attribute id="social-contacts">none</content_attribute>
+    <content_attribute id="money-purchasing">none</content_attribute>
+    <content_attribute id="money-gambling">none</content_attribute>
+  </content_rating>
+
+  <releases>
+    <release date="2018-09-05" version="2.0.4"/>
+    <release date="2018-08-10" version="2.0.3"/>
+    <release date="2018-07-30" version="2.0.2"/>
+    <release date="2017-06-20" version="1.4.2"/>
+    <release date="2017-04-15" version="1.4.1"/>
+  </releases>
+</component>
