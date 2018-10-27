@@ -322,6 +322,8 @@ class ScriptParserTest(PicardTestCase):
         self.assertScriptResultEquals("$title(Abc Def G)", "Abc Def G")
         self.assertScriptResultEquals("$title(abc def g)", "Abc Def G")
         self.assertScriptResultEquals("$title(#1abc 4def - g)", "#1abc 4def - G")
+        self.assertScriptResultEquals("$title(abcd \\(efg hi jkl mno\\))","Abcd (Efg Hi Jkl Mno)")
+        self.assertScriptResultEquals("$title(...abcd)", "...Abcd")
 
     def test_cmd_swapprefix(self):
         self.assertScriptResultEquals("$swapprefix(A stitch in time)", "stitch in time, A")
