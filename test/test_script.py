@@ -180,6 +180,21 @@ class ScriptParserTest(unittest.TestCase):
     def test_cmd_upper(self):
         self.assertScriptResultEquals("$upper(AbeCeDA)", "ABECEDA")
 
+    def test_cmd_pad(self):
+        self.assertScriptResultEquals("$pad(abc de,10,-)", "----abc de")
+        self.assertScriptResultEquals("$pad(abc de,e,-)", "")
+        self.assertScriptResultEquals("$pad(abc de,6,-)", "abc de")
+        self.assertScriptResultEquals("$pad(abc de,3,-)", "abc de")
+        self.assertScriptResultEquals("$pad(abc de,0,-)", "abc de")
+        self.assertScriptResultEquals("$pad(abc de,-3,-)", "abc de")
+
+
+    def test_cmd_replace(self):
+        self.assertScriptResultEquals("$replace(abc ab abd a,ab,test)", "testc test testd a")
+
+    def test_cmd_strip(self):
+        self.assertScriptResultEquals("$strip(  \t abc  de \n f  )", "abc de f")
+
     def test_cmd_rreplace(self):
         self.assertScriptResultEquals(r'''$rreplace(test \(disc 1\),\\s\\\(disc \\d+\\\),)''', "test")
 
