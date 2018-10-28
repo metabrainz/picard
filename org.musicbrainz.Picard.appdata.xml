@@ -31,7 +31,7 @@
   <url type="homepage">https://picard.musicbrainz.org/</url>
   <url type="bugtracker">https://tickets.metabrainz.org/projects/PICARD/issues/</url>
   <url type="faq">https://picard.musicbrainz.org/docs/faq/</url>
-  <url type="help">https://community.metabrainz.org/c/picard</help>
+  <url type="help">https://picard.musicbrainz.org/docs/</url>
 
   <content_rating type="oars-1.1">
     <content_attribute id="violence-cartoon">none</content_attribute>
