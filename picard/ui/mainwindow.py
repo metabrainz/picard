@@ -1,5 +1,5 @@
-﻿# -*- coding: utf-8 -*-
 #
+# -*- coding: utf-8 -*-
 # Picard, the next-generation MusicBrainz tagger
 # Copyright (C) 2006 Lukáš Lalinský
 #
