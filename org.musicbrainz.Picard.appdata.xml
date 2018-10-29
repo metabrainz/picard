@@ -25,7 +25,21 @@
   <launchable type="desktop-id">org.musicbrainz.Picard.desktop</launchable>
 
   <screenshots>
-    <screenshot type="default">https://www.daitauha.fr/static/screenshots/picard/main.png</screenshot>
+    <screenshot type="default">
+	<image>https://picard.musicbrainz.org/static/img/screenshots/picard-main-windows.png</image>
+    </screenshot>
+    <screenshot>
+	<image>https://picard.musicbrainz.org/static/img/screenshots/picard-options-about.png</image>
+    </screenshot>
+    <screenshot>
+	<image>https://picard.musicbrainz.org/static/img/screenshots/picard-options-plugins.png</image>
+    </screenshot>
+    <screenshot>
+	<image>https://picard.musicbrainz.org/static/img/screenshots/picard-options-lookup.png</image>
+    </screenshot>
+    <screenshot>
+	<image>https://picard.musicbrainz.org/static/img/screenshots/picard-cover-art.png</image>
+    </screenshot>
   </screenshots>
 
   <url type="homepage">https://picard.musicbrainz.org/</url>
