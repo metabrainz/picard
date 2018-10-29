@@ -25,6 +25,8 @@ from functools import reduce
 from inspect import getfullargspec
 import operator
 import re
+import unicodedata
+
 
 from picard import config
 from picard.metadata import (
@@ -846,6 +848,39 @@ def func_ne_any(parser, x, *args):
     """
     return func_not(parser, func_eq_all(parser, x, *args))
 
+def func_title(parser, text):
+    # GPL 2.0 licensed code by Javier Kohen, Sambhav Kothari
+    # from https://github.com/metabrainz/picard-plugins/blob/2.0/plugins/titlecase/titlecase.py
+    """
+    Title-case a text - capitalizes first letter of every word
+    like: from "Lost in the Supermarket" to "Lost In The Supermarket"
+    Example: $set(album,$title(%album%))
+    """
+    if not text:
+        return ""
+    capitalized = text[0].capitalize()
+    capital = False
+    for i in range(1, len(text)):
+        t = text[i]
+        if t in "’'" and text[i-1].isalpha():
+            capital = False
+        elif iswbound(t) :
+            capital = True
+        elif capital and t.isalpha():
+            capital = False
+            t = t.capitalize()
+        else:
+            capital = False
+        capitalized += t
+    return capitalized
+
+def iswbound(char):
+    # GPL 2.0 licensed code by Javier Kohen, Sambhav Kothari
+    # from https://github.com/metabrainz/picard-plugins/blob/2.0/plugins/titlecase/titlecase.py
+    """ Checks whether the given character is a word boundary """
+    category = unicodedata.category(char)
+    return "Zs" == unicodedata.category(char) or "Sk" == unicodedata.category(char) or "P" == unicodedata.category(char)[0]
+
 
 register_script_function(func_if, "if", eval_args=False)
 register_script_function(func_if2, "if2", eval_args=False)
@@ -901,3 +936,4 @@ register_script_function(func_eq_any, "eq_any", check_argcount=False)
 register_script_function(func_ne_all, "ne_all", check_argcount=False)
 register_script_function(func_eq_all, "eq_all", check_argcount=False)
 register_script_function(func_ne_any, "ne_any", check_argcount=False)
+register_script_function(func_title, "title")
