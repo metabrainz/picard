@@ -73,7 +73,7 @@
     <content_attribute id="social-audio">none</content_attribute>
     <content_attribute id="social-location">none</content_attribute>
     <content_attribute id="social-contacts">none</content_attribute>
-    <content_attribute id="money-purchasing">none</content_attribute>
+    <content_attribute id="money-purchasing">mild</content_attribute>
     <content_attribute id="money-gambling">none</content_attribute>
   </content_rating>
 
