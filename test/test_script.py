@@ -1,4 +1,5 @@
 from test.picardtestcase import PicardTestCase
+from unittest.mock import MagicMock
 
 from picard import config
 from picard.metadata import Metadata
@@ -26,7 +27,7 @@ class ScriptParserTest(PicardTestCase):
 
         register_script_function(func_noargstest, "noargstest")
 
-    def assertScriptResultEquals(self, script, expected, context=None):
+    def assertScriptResultEquals(self, script, expected, context=None, file=None):
         """Asserts that evaluating `script` returns `expected`.
 
 
@@ -35,7 +36,7 @@ class ScriptParserTest(PicardTestCase):
             expected: The expected result
             context: A Metadata object with pre-set tags or None
         """
-        actual = self.parser.eval(script, context=context)
+        actual = self.parser.eval(script, context=context, file=file)
         self.assertEqual(actual,
                          expected,
                          "'%s' evaluated to '%s', expected '%s'"
@@ -480,6 +481,14 @@ class ScriptParserTest(PicardTestCase):
         self.assertScriptResultEquals("$lenmulti(%foo%,:)", "4", context)
         self.assertScriptResultEquals("$lenmulti(%bar%,:)", "4", context)
         self.assertScriptResultEquals("$lenmulti(%foo%.,:)", "4", context)
+
+    def test_matchedtracks(self):
+        file = MagicMock()
+        file.parent.album.get_num_matched_tracks.return_value = 42
+        self.assertScriptResultEquals("$matchedtracks()", "42", file=file)
+        self.assertScriptResultEquals("$matchedtracks()", "0")
+        # The following only is possible for backward compatibility, arg is unused
+        self.assertScriptResultEquals("$matchedtracks(arg)", "0")
 
     def test_required_kwonly_parameters(self):
         def func(a, *, required_kwarg):
