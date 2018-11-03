@@ -18,3 +18,8 @@ Support and issue reporting
 ---------------------------
 
 Please report all bugs and feature requests in the [MusicBrainz issue tracker](https://tickets.metabrainz.org/browse/PICARD). If you need support in using Picard please read the [documentation](https://picard.musicbrainz.org/docs/) first and have a look at the [MusicBrainz community forums](https://community.metabrainz.org/c/picard).
+
+Installing
+---------------------------
+
+[INSTALL.md has instructions on building this codebase.](INSTALL.md)
