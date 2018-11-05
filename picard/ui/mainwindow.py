@@ -189,7 +189,8 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     def show(self):
         self.restoreWindowState()
         super().show()
-        self.auto_update_check()
+        if self.tagger.autoupdate_enabled:
+            self.auto_update_check()
         self.metadata_box.restore_state()
 
     def closeEvent(self, event):
@@ -556,8 +557,9 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.open_folder_action.setEnabled(False)
         self.open_folder_action.triggered.connect(self.open_folder)
 
-        self.check_update_action = QtWidgets.QAction(_("&Check for Update"), self)
-        self.check_update_action.triggered.connect(self.do_update_check)
+        if self.tagger.autoupdate_enabled:
+            self.check_update_action = QtWidgets.QAction(_("&Check for Update"), self)
+            self.check_update_action.triggered.connect(self.do_update_check)
 
     def toggle_rename_files(self, checked):
         config.setting["rename_files"] = checked
@@ -634,8 +636,9 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         menu.addSeparator()
         menu.addAction(self.view_history_action)
         menu.addSeparator()
-        menu.addAction(self.check_update_action)
-        menu.addSeparator()
+        if self.tagger.autoupdate_enabled:
+            menu.addAction(self.check_update_action)
+            menu.addSeparator()
         menu.addAction(self.support_forum_action)
         menu.addAction(self.report_bug_action)
         menu.addAction(self.view_log_action)

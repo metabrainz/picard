@@ -146,7 +146,7 @@ class Tagger(QtWidgets.QApplication):
         )
 
         self._cmdline_files = picard_args.FILE
-        self._autoupdate = autoupdate
+        self.autoupdate_enabled = autoupdate
         self._no_restore = picard_args.no_restore
         self._no_plugins = picard_args.no_plugins
 
@@ -251,7 +251,8 @@ class Tagger(QtWidgets.QApplication):
         self.stopping = False
 
         # Load release version information
-        self.updatecheckmanager = UpdateCheckManager(parent=self.window)
+        if self.autoupdate_enabled:
+            self.updatecheckmanager = UpdateCheckManager(parent=self.window)
 
     def register_cleanup(self, func):
         self.exit_cleanup.append(func)

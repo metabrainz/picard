@@ -144,7 +144,7 @@ class picard_install(install):
         ('install-locales=', None,
          "installation directory for locales"),
         ('localedir=', None, ''),
-        ('disable-autoupdate', None, ''),
+        ('disable-autoupdate', None, 'disable update checking and hide settings for it'),
         ('disable-locales', None, ''),
     ]
 
@@ -181,7 +181,7 @@ class picard_build(build):
     user_options = build.user_options + [
         ('build-locales=', 'd', "build directory for locale files"),
         ('localedir=', None, ''),
-        ('disable-autoupdate', None, ''),
+        ('disable-autoupdate', None, 'disable update checking and hide settings for it'),
         ('disable-locales', None, ''),
     ]
 
