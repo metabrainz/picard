@@ -157,7 +157,8 @@ class CommonTests:
 
         def setup_tags(self):
             supports_tag = ext_to_format(self.testfile_ext[1:]).supports_tag
-            self.remove_tags([tag for tag in self.tags if not supports_tag(tag)])
+            self.unsupported_tags = {tag : val for tag, val in self.tags.items() if not supports_tag(tag)}
+            self.remove_tags(self.unsupported_tags.keys())
 
         def set_tags(self, dict_tag_value=None):
             if dict_tag_value:
@@ -175,6 +176,15 @@ class CommonTests:
             loaded_metadata = save_and_load_metadata(self.filename, metadata)
             for (key, value) in self.tags.items():
                 self.assertEqual(loaded_metadata[key], value, '%s: %r != %r' % (key, loaded_metadata[key], value))
+
+        @skipUnlessTestfile
+        def test_unsupported_tags(self):
+            metadata = Metadata()
+            for (key, value) in self.unsupported_tags.items():
+                metadata[key] = value
+            loaded_metadata = save_and_load_metadata(self.filename, metadata)
+            for tag in self.unsupported_tags:
+                self.assertTrue(tag not in loaded_metadata, '%s: %r != None' % (tag, loaded_metadata[tag]))
 
         @skipUnlessTestfile
         def test_delete_simple_tags(self):

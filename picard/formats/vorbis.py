@@ -187,7 +187,7 @@ class VCommentFile(File):
                     name = 'rating'
                 value = str(float(value) / (config.setting['rating_steps'] - 1))
             # don't save private tags
-            elif name.startswith("~"):
+            elif name.startswith("~") or not self.supports_tag(name):
                 continue
             elif name.startswith('lyrics:'):
                 name = 'lyrics'

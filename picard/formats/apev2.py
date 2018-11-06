@@ -140,7 +140,7 @@ class APEv2File(File):
                     del tags[name]
         temp = {}
         for name, value in metadata.items():
-            if name.startswith("~"):
+            if name.startswith("~") or not self.supports_tag(name):
                 continue
             real_name = self._get_tag_name(name)
             # tracknumber/totaltracks => Track
@@ -210,19 +210,14 @@ class APEv2File(File):
     @classmethod
     def supports_tag(cls, name):
         unsupported_tags = {
-            'podcasturl',
             'gapless',
-            'showsort',
-            'show',
-            'arranger',
             'musicip_fingerprint',
             'podcast',
-            'totaltracks'}
-        return (bool(name)
-                and name not in unsupported_tags
-                and not name.startswith('performer:')
-                and not name.startswith('comment:')
-                )
+            'podcasturl',
+            'show',
+            'showsort',
+            }
+        return bool(name) and name not in unsupported_tags
 
 
 class MusepackFile(APEv2File):

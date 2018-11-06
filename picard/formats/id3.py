@@ -353,7 +353,9 @@ class ID3File(File):
             values = [id3text(v, encoding) for v in values]
             name = id3text(name, encoding)
 
-            if name.startswith('performer:'):
+            if not self.supports_tag(name):
+                continue
+            elif name.startswith('performer:'):
                 role = name.split(':', 1)[1]
                 for value in values:
                     tmcl.people.append([role, value])
