@@ -315,8 +315,8 @@ class File(QtCore.QObject, Item):
             metadata.update(file_metadata)
         # make sure every metadata can safely be used in a path name
         for name in metadata.keys():
-            if isinstance(metadata[name], str):
-                metadata[name] = sanitize_filename(metadata[name])
+            values = [sanitize_filename(str(v)) for v in metadata.getall(name)]
+            metadata.set(name, values)
         naming_format = naming_format.replace("\t", "").replace("\n", "")
         filename = ScriptParser().eval(naming_format, metadata, self)
         if settings["ascii_filenames"]:
