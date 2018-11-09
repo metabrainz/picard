@@ -418,8 +418,10 @@ class WebService(QtCore.QObject):
                     try:
                         document = request.response_parser(reply)
                     except Exception as e:
-                        log.error("Unable to parse the response. %s", e)
+                        url = reply.request().url().toString(QUrl.RemoveUserInfo)
+                        log.error("Unable to parse the response for %s: %s", url, e)
                         document = reply.readAll()
+                        error = e
                     finally:
                         handler(document, reply, error)
                 else:
