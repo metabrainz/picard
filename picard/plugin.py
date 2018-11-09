@@ -44,7 +44,6 @@ from picard.const import (
     USER_PLUGIN_DIR,
 )
 import picard.plugins
-from picard.util import load_json
 
 _suffixes = [s[0] for s in imp.get_suffixes()]
 _package_entries = ["__init__.py", "__init__.pyc", "__init__.pyo"]
@@ -479,7 +478,6 @@ class PluginManager(QtCore.QObject):
             PLUGINS_API['port'],
             PLUGINS_API['endpoint']['plugins'],
             partial(self._plugins_json_loaded, callback=callback),
-            parse_response_type=None,
             priority=True,
             important=True
         )
@@ -496,8 +494,11 @@ class PluginManager(QtCore.QObject):
             )
             self._available_plugins = []
         else:
-            self._available_plugins = [PluginData(data, key) for key, data in
-                                       load_json(response)['plugins'].items()]
+            try:
+                self._available_plugins = [PluginData(data, key) for key, data in
+                                           response['plugins'].items()]
+            except (AttributeError, KeyError, TypeError):
+                self._available_plugins = []
         if callback:
             callback()
 

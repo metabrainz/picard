@@ -54,10 +54,7 @@ from picard.coverart.utils import (
     CAA_TYPES,
     translate_caa_type,
 )
-from picard.util import (
-    load_json,
-    webbrowser2,
-)
+from picard.util import webbrowser2
 
 from picard.ui.ui_provider_options_caa import Ui_CaaOptions
 from picard.ui.util import StandardButton
@@ -560,7 +557,7 @@ class CoverArtProviderCaa(CoverArtProvider):
         return "/release/%s/" % self.metadata["musicbrainz_albumid"]
 
     def queue_images(self):
-        self.album.tagger.webservice.download(
+        self.album.tagger.webservice.get(
             CAA_HOST,
             CAA_PORT,
             self._caa_path,
@@ -579,71 +576,66 @@ class CoverArtProviderCaa(CoverArtProvider):
             if not (error == QNetworkReply.ContentNotFoundError and self.ignore_json_not_found_error):
                 self.error('CAA JSON error: %s' % (http.errorString()))
         else:
-            try:
-                caa_data = load_json(data)
-            except ValueError:
-                self.error("Invalid JSON: %s" % (http.url().toString()))
-            else:
+            if self.restrict_types:
+                log.debug('CAA types: included: %s, excluded: %s' % (self.caa_types, self.caPICARD-1338a_types_to_omit,))
+            for image in data["images"]:
+                if config.setting["caa_approved_only"] and not image["approved"]:
+                    continue
+                is_pdf = image["image"].endswith('.pdf')
+                if is_pdf and not config.setting["save_images_to_files"]:
+                    log.debug("Skipping pdf cover art : %s" %
+                              image["image"])
+                    continue
+                # if image has no type set, we still want it to match
+                # pseudo type 'unknown'
+                if not image["types"]:
+                    image["types"] = ["unknown"]
+                else:
+                    image["types"] = list(map(str.lower, image["types"]))
                 if self.restrict_types:
-                    log.debug('CAA types: included: %s, excluded: %s' % (self.caa_types, self.caa_types_to_omit,))
-                for image in caa_data["images"]:
-                    if config.setting["caa_approved_only"] and not image["approved"]:
-                        continue
-                    is_pdf = image["image"].endswith('.pdf')
-                    if is_pdf and not config.setting["save_images_to_files"]:
-                        log.debug("Skipping pdf cover art : %s" %
-                                  image["image"])
-                        continue
-                    # if image has no type set, we still want it to match
-                    # pseudo type 'unknown'
-                    if not image["types"]:
-                        image["types"] = ["unknown"]
+                    # only keep enabled caa types
+                    types = set(image["types"]).intersection(
+                        set(self.caa_types))
+                    if types and self.caa_types_to_omit:
+                        types = not set(image["types"]).intersection(
+                            set(self.caa_types_to_omit))
+                    log.debug('CAA image {status}: {image_name}  {image_types}'.format(
+                        status=('accepted' if types else 'rejected'),
+                        image_name=image['image'],
+                        image_types=image['types'],)
+                    )
+                else:
+                    types = True
+                if types:
+                    urls = caa_url_fallback_list(config.setting["caa_image_size"], image["thumbnails"])
+                    if not urls or is_pdf:
+                        url = image["image"]
                     else:
-                        image["types"] = list(map(str.lower, image["types"]))
-                    if self.restrict_types:
-                        # only keep enabled caa types
-                        types = set(image["types"]).intersection(
-                            set(self.caa_types))
-                        if types and self.caa_types_to_omit:
-                            types = not set(image["types"]).intersection(
-                                set(self.caa_types_to_omit))
-                        log.debug('CAA image {status}: {image_name}  {image_types}'.format(
-                            status=('accepted' if types else 'rejected'),
-                            image_name=image['image'],
-                            image_types=image['types'],)
-                        )
-                    else:
-                        types = True
-                    if types:
-                        urls = caa_url_fallback_list(config.setting["caa_image_size"], image["thumbnails"])
-                        if not urls or is_pdf:
-                            url = image["image"]
-                        else:
-                            #FIXME: try other urls in case of 404
-                            url = urls[0]
-                        coverartimage = self.coverartimage_class(
-                            url,
+                        #FIXME: try other urls in case of 404
+                        url = urls[0]
+                    coverartimage = self.coverartimage_class(
+                        url,
+                        types=image["types"],
+                        is_front=image['front'],
+                        comment=image["comment"],
+                    )
+                    if urls and is_pdf:
+                        # thumbnail will be used to "display" PDF in info
+                        # dialog
+                        thumbnail = self.coverartimage_thumbnail_class(
+                            url=url[0],
                             types=image["types"],
                             is_front=image['front'],
                             comment=image["comment"],
                         )
-                        if urls and is_pdf:
-                            # thumbnail will be used to "display" PDF in info
-                            # dialog
-                            thumbnail = self.coverartimage_thumbnail_class(
-                                url=url[0],
-                                types=image["types"],
-                                is_front=image['front'],
-                                comment=image["comment"],
-                            )
-                            self.queue_put(thumbnail)
-                            coverartimage.thumbnail = thumbnail
-                            # PDFs cannot be saved to tags (as 2014/05/29)
-                            coverartimage.can_be_saved_to_tags = False
-                        self.queue_put(coverartimage)
-                        if config.setting["caa_save_single_front_image"] and \
-                                config.setting["save_images_to_files"] and \
-                                image["front"]:
-                            break
+                        self.queue_put(thumbnail)
+                        coverartimage.thumbnail = thumbnail
+                        # PDFs cannot be saved to tags (as 2014/05/29)
+                        coverartimage.can_be_saved_to_tags = False
+                    self.queue_put(coverartimage)
+                    if config.setting["caa_save_single_front_image"] and \
+                            config.setting["save_images_to_files"] and \
+                            image["front"]:
+                        break
 
         self.next_in_queue()

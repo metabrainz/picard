@@ -34,10 +34,7 @@ from picard.const import (
     MUSICBRAINZ_OAUTH_CLIENT_ID,
     MUSICBRAINZ_OAUTH_CLIENT_SECRET,
 )
-from picard.util import (
-    build_qurl,
-    load_json,
-)
+from picard.util import build_qurl
 
 
 class OAuthManager(object):
@@ -115,7 +112,7 @@ class OAuthManager(object):
         data = url.query()
         self.webservice.post(host, port, path, data,
                         partial(self.on_refresh_access_token_finished, callback),
-                        parse_response_type=None, mblogin=True, priority=True, important=True)
+                        mblogin=True, priority=True, important=True)
 
     def on_refresh_access_token_finished(self, callback, data, http, error):
         access_token = None
@@ -123,13 +120,11 @@ class OAuthManager(object):
             if error:
                 log.error("OAuth: access_token refresh failed: %s", data)
                 if http.attribute(QNetworkRequest.HttpStatusCodeAttribute) == 400:
-                    response = load_json(data)
-                    if response["error"] == "invalid_grant":
+                    if data["error"] == "invalid_grant":
                         self.forget_refresh_token()
             else:
-                response = load_json(data)
-                self.set_access_token(response["access_token"], response["expires_in"])
-                access_token = response["access_token"]
+                self.set_access_token(data["access_token"], data["expires_in"])
+                access_token = data["access_token"]
         finally:
             callback(access_token)
 
@@ -148,7 +143,7 @@ class OAuthManager(object):
         data = url.query()
         self.webservice.post(host, port, path, data,
                         partial(self.on_exchange_authorization_code_finished, scopes, callback),
-                        parse_response_type=None, mblogin=True, priority=True, important=True)
+                        mblogin=True, priority=True, important=True)
 
     def on_exchange_authorization_code_finished(self, scopes, callback, data, http, error):
         successful = False
@@ -156,9 +151,8 @@ class OAuthManager(object):
             if error:
                 log.error("OAuth: authorization_code exchange failed: %s", data)
             else:
-                response = load_json(data)
-                self.set_refresh_token(response["refresh_token"], scopes)
-                self.set_access_token(response["access_token"], response["expires_in"])
+                self.set_refresh_token(data["refresh_token"], scopes)
+                self.set_access_token(data["access_token"], data["expires_in"])
                 successful = True
         finally:
             callback(successful)
@@ -169,7 +163,7 @@ class OAuthManager(object):
         path = "/oauth2/userinfo"
         self.webservice.get(host, port, path,
                         partial(self.on_fetch_username_finished, callback),
-                        parse_response_type=None, mblogin=True, priority=True, important=True)
+                        mblogin=True, priority=True, important=True)
 
     def on_fetch_username_finished(self, callback, data, http, error):
         successful = False
@@ -177,8 +171,7 @@ class OAuthManager(object):
             if error:
                 log.error("OAuth: username fetching failed: %s", data)
             else:
-                response = load_json(data)
-                self.set_username(response["sub"])
+                self.set_username(data["sub"])
                 successful = True
         finally:
             callback(successful)
