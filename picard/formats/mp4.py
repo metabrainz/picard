@@ -62,6 +62,7 @@ class MP4File(File):
         "tvsh": "show",
         "purl": "podcasturl",
         "\xa9mvn": "movement",
+        "\xa9wrk": "work",
     }
     __r_text_tags = dict([(v, k) for k, v in __text_tags.items()])
 

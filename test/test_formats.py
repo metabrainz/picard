@@ -125,6 +125,7 @@ TAGS = {
     'totaltracks': '10',
     'tracknumber': '2',
     'website': 'http://example.com',
+    'work': 'Foo'
 }
 
 
