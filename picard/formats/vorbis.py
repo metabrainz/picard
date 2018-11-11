@@ -276,7 +276,8 @@ class VCommentFile(File):
 
     @classmethod
     def supports_tag(cls, name):
-        return bool(name)
+        unsupported_tags = {'showmovement'}
+        return bool(name) and name not in unsupported_tags
 
 
 class FLACFile(VCommentFile):

@@ -527,7 +527,8 @@ class ID3File(File):
 
     @classmethod
     def supports_tag(cls, name):
-        return ((name and not name.startswith("~"))
+        unsupported_tags = {'showmovement'}
+        return ((name and not name.startswith("~") and name not in unsupported_tags)
                 or name in ("~rating", "~length")
                 or name.startswith("~id3"))
 
