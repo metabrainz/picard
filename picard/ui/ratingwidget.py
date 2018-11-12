@@ -32,7 +32,10 @@ class RatingWidget(QtWidgets.QWidget):
         super().__init__(parent)
         self._track = track
         self._maximum = config.setting["rating_steps"] - 1
-        self._rating = int(track.metadata["~rating"] or 0)
+        try:
+            self._rating = int(track.metadata["~rating"] or 0)
+        except ValueError:
+            self._rating = 0
         self._highlight = 0
         self._star_pixmap = QtGui.QPixmap(":/images/star.png")
         self._star_gray_pixmap = QtGui.QPixmap(":/images/star-gray.png")
