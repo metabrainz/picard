@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import logging
 import os.path
 import shutil
 from tempfile import mkstemp
@@ -7,7 +8,10 @@ import unittest
 
 from PyQt5 import QtCore
 
-from picard import config
+from picard import (
+    config,
+    log,
+)
 from picard.coverart.image import (
     CoverArtImage,
     TagCoverArtImage,
@@ -486,6 +490,14 @@ class AIFFTest(CommonTests.ID3Test):
 class OggVorbisTest(CommonTests.FormatsTest):
     testfile = 'test.ogg'
     supports_ratings = True
+
+    def test_invalid_rating(self):
+        filename = os.path.join('test', 'data', 'test-invalid-rating.ogg')
+        old_log_level = log.get_effective_level()
+        log.set_level(logging.ERROR)
+        metadata = load_metadata(filename)
+        log.set_level(old_log_level)
+        self.assertEqual(metadata["~rating"], "THERATING")
 
 
 class OggSpxTest(CommonTests.FormatsTest):
