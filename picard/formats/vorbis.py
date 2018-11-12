@@ -95,7 +95,10 @@ class VCommentFile(File):
                     if email != config.setting['rating_user_email']:
                         continue
                     name = '~rating'
-                    value = str(int(round((float(value) * (config.setting['rating_steps'] - 1)))))
+                    try:
+                        value = str(round((float(value) * (config.setting['rating_steps'] - 1))))
+                    except ValueError:
+                        log.warning('Invalid rating value in %r: %s', filename, value)
                 elif name == "fingerprint" and value.startswith("MusicMagic Fingerprint"):
                     name = "musicip_fingerprint"
                     value = value[22:]
