@@ -61,6 +61,7 @@ class MP4File(File):
         "sosn": "showsort",
         "tvsh": "show",
         "purl": "podcasturl",
+        "\xa9mvn": "movement",
     }
     __r_text_tags = dict([(v, k) for k, v in __text_tags.items()])
 
@@ -73,6 +74,9 @@ class MP4File(File):
 
     __int_tags = {
         "tmpo": "bpm",
+        "\xa9mvi": "movementnumber",
+        "\xa9mvc": "movementtotal",
+        "shwm": "showmovement",
     }
     __r_int_tags = dict([(v, k) for k, v in __int_tags.items()])
 

@@ -138,6 +138,7 @@ class ID3File(File):
         'TCMP': 'compilation',
         'TSOC': 'composersort',
         'TSO2': 'albumartistsort',
+        'MVNM': 'movement'
     }
     __rtranslate = dict([(v, k) for k, v in __translate.items()])
     __translate['GRP1'] = 'grouping'  # Always read, but writing depends on itunes_compatible_grouping
@@ -183,10 +184,12 @@ class ID3File(File):
     _rtipl_roles = dict([(v, k) for k, v in _tipl_roles.items()])
 
     __other_supported_tags = ("discnumber", "tracknumber",
-                              "totaldiscs", "totaltracks")
+                              "totaldiscs", "totaltracks",
+                              "movementnumber", "movementtotal")
     __tag_re_parse = {
         'TRCK': re.compile(r'^(?P<tracknumber>\d+)(?:/(?P<totaltracks>\d+))?$'),
-        'TPOS': re.compile(r'^(?P<discnumber>\d+)(?:/(?P<totaldiscs>\d+))?$')
+        'TPOS': re.compile(r'^(?P<discnumber>\d+)(?:/(?P<totaldiscs>\d+))?$'),
+        'MVIN': re.compile(r'^(?P<movementnumber>\d+)(?:/(?P<movementtotal>\d+))?$')
     }
 
     def build_TXXX(self, encoding, desc, values):
@@ -213,7 +216,7 @@ class ID3File(File):
             frameid = frame.FrameID
             if frameid in self.__translate:
                 name = self.__translate[frameid]
-                if frameid.startswith('T') or frameid == 'GRP1':
+                if frameid.startswith('T') or frameid in ["GRP1", "MVNM"]:
                     for text in frame.text:
                         if text:
                             metadata.add(name, str(text))
@@ -326,6 +329,13 @@ class ID3File(File):
                 text = metadata['discnumber']
             tags.add(id3.TPOS(encoding=0, text=id3text(text, 0)))
 
+        if 'movementnumber' in metadata:
+            if 'movementtotal' in metadata:
+                text = '%s/%s' % (metadata['movementnumber'], metadata['movementtotal'])
+            else:
+                text = metadata['movementnumber']
+            tags.add(id3.MVIN(encoding=0, text=id3text(text, 0)))
+
         # This is necessary because mutagens HashKey for APIC frames only
         # includes the FrameID (APIC) and description - it's basically
         # impossible to save two images, even of different types, without
@@ -414,7 +424,7 @@ class ID3File(File):
                     elif frameid == 'WOAR' and valid_urls:
                         for url in values:
                             tags.add(id3.WOAR(url=url))
-                elif frameid.startswith('T'):
+                elif frameid.startswith('T') or frameid == 'MVNM':
                     if config.setting['write_id3v23']:
                         if frameid == 'TMOO':
                             tags.add(self.build_TXXX(encoding, 'mood', values))
@@ -517,7 +527,8 @@ class ID3File(File):
 
     @classmethod
     def supports_tag(cls, name):
-        return ((name and not name.startswith("~"))
+        unsupported_tags = {'showmovement'}
+        return ((name and not name.startswith("~") and name not in unsupported_tags)
                 or name in ("~rating", "~length")
                 or name.startswith("~id3"))
 
@@ -532,6 +543,8 @@ class ID3File(File):
             return 'TRCK'
         elif name == 'discnumber':
             return 'TPOS'
+        elif name == 'movementnumber':
+            return 'MVIN'
         else:
             return None
 
