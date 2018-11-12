@@ -176,7 +176,7 @@ p, li { white-space: pre-wrap; }
             <number>20</number>
            </property>
            <property name="acceptRichText">
-            <bool>true</bool>
+            <bool>false</bool>
            </property>
            <property name="textInteractionFlags">
             <set>Qt::TextEditorInteraction</set>

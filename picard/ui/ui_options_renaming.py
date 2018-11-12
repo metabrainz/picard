@@ -88,7 +88,7 @@ class Ui_RenamingOptionsPage(object):
         self.file_naming_format.setTabChangesFocus(False)
         self.file_naming_format.setLineWrapMode(QtWidgets.QTextEdit.NoWrap)
         self.file_naming_format.setTabStopWidth(20)
-        self.file_naming_format.setAcceptRichText(True)
+        self.file_naming_format.setAcceptRichText(False)
         self.file_naming_format.setTextInteractionFlags(QtCore.Qt.TextEditorInteraction)
         self.file_naming_format.setObjectName("file_naming_format")
         self.verticalLayout_2.addWidget(self.file_naming_format)

@@ -64,6 +64,7 @@ class Ui_ScriptingOptionsPage(object):
         self.script_name.setObjectName("script_name")
         self.verticalLayout_2.addWidget(self.script_name)
         self.tagger_script = QtWidgets.QTextEdit(self.formWidget)
+        self.tagger_script.setAcceptRichText(False)
         self.tagger_script.setObjectName("tagger_script")
         self.verticalLayout_2.addWidget(self.tagger_script)
         self.verticalLayout_3.addWidget(self.splitter)
