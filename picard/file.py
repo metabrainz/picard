@@ -501,7 +501,7 @@ class File(QtCore.QObject, Item):
         for name in names:
             if not name.startswith('~') and self.supports_tag(name):
                 new_values = new_metadata.getall(name)
-                if not (new_values or clear_existing_tags):
+                if not (new_values or clear_existing_tags or new_metadata.deleted_tags):
                     continue
                 orig_values = self.orig_metadata.getall(name)
                 if orig_values != new_values:
