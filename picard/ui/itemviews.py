@@ -144,7 +144,7 @@ class MainPanel(QtWidgets.QSplitter):
         }
         FileItem.file_colors = {
             File.NORMAL: TreeItem.text_color,
-            File.CHANGED: config.setting["color_modified"],
+            File.CHANGED: TreeItem.text_color,
             File.PENDING: config.setting["color_pending"],
             File.ERROR: config.setting["color_error"],
         }
@@ -240,7 +240,6 @@ class MainPanel(QtWidgets.QSplitter):
 class BaseTreeView(QtWidgets.QTreeWidget):
 
     options = [
-        config.Option("setting", "color_modified", QtGui.QColor(QtGui.QPalette.WindowText)),
         config.Option("setting", "color_saved", QtGui.QColor(0, 128, 0)),
         config.Option("setting", "color_error", QtGui.QColor(200, 0, 0)),
         config.Option("setting", "color_pending", QtGui.QColor(128, 128, 128)),
