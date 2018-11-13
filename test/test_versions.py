@@ -106,7 +106,7 @@ class VersionsTest(PicardTestCase):
 
         len_api_versions = len(api_versions)
         if len_api_versions > 1:
-            for i in xrange(len_api_versions - 1):
+            for i in range(len_api_versions - 1):
                 a = version_from_string(api_versions[i])
                 b = version_from_string(api_versions[i+1])
                 self.assertLess(a, b)

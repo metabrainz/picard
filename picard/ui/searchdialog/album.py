@@ -44,7 +44,6 @@ from picard.mbjson import (
     release_to_metadata,
 )
 from picard.metadata import Metadata
-from picard.util import load_json
 from picard.webservice.api_helpers import escape_lucene_query
 
 from picard.ui.searchdialog import (
@@ -242,7 +241,7 @@ class AlbumSearchDialog(SearchDialog):
             return
         cell.fetched = True
         caa_path = "/release/%s" % cell.release["musicbrainz_albumid"]
-        cell.fetch_task = self.tagger.webservice.download(
+        cell.fetch_task = self.tagger.webservice.get(
             CAA_HOST,
             CAA_PORT,
             caa_path,
@@ -263,28 +262,26 @@ class AlbumSearchDialog(SearchDialog):
             cover_cell.not_found()
             return
 
-        try:
-            caa_data = load_json(data)
-        except ValueError:
-            cover_cell.not_found()
-            return
-
         front = None
-        for image in caa_data["images"]:
-            if image["front"]:
-                front = image
-                break
+        try:
+            for image in data["images"]:
+                if image["front"]:
+                    front = image
+                    break
 
-        if front:
-            url = front["thumbnails"]["small"]
-            coverartimage = CaaThumbnailCoverArtImage(url=url)
-            cover_cell.fetch_task = self.tagger.webservice.download(
-                coverartimage.host,
-                coverartimage.port,
-                coverartimage.path,
-                partial(self._cover_downloaded, cover_cell),
-            )
-        else:
+            if front:
+                url = front["thumbnails"]["small"]
+                coverartimage = CaaThumbnailCoverArtImage(url=url)
+                cover_cell.fetch_task = self.tagger.webservice.download(
+                    coverartimage.host,
+                    coverartimage.port,
+                    coverartimage.path,
+                    partial(self._cover_downloaded, cover_cell)
+                )
+            else:
+                cover_cell.not_found()
+        except (AttributeError, KeyError, TypeError):
+            log.error("Error reading CAA response", exc_info=True)
             cover_cell.not_found()
 
     def _cover_downloaded(self, cover_cell, data, http, error):

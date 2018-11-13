@@ -67,18 +67,20 @@ class APIHelper(object):
                  refresh=refresh, queryargs=queryargs, parse_response_type=parse_response_type)
 
     def post(self, path_list, data, handler, priority=False, important=False,
-                 mblogin=True, queryargs=None, parse_response_type=DEFAULT_RESPONSE_PARSER_TYPE):
+                 mblogin=True, queryargs=None, parse_response_type=DEFAULT_RESPONSE_PARSER_TYPE,
+                 request_mimetype=None):
         path = self.api_path + "/".join(path_list)
         return self._webservice.post(self.host, self.port, path, data, handler,
                   priority=priority, important=important, mblogin=mblogin,
-                  queryargs=queryargs, parse_response_type=parse_response_type)
+                  queryargs=queryargs, parse_response_type=parse_response_type,
+                  request_mimetype=request_mimetype)
 
     def put(self, path_list, data, handler, priority=True, important=False,
-                mblogin=True, queryargs=None):
+                mblogin=True, queryargs=None, request_mimetype=None):
         path = self.api_path + "/".join(path_list)
         return self._webservice.put(self.host, self.port, path, data, handler,
                  priority=priority, important=important, mblogin=mblogin,
-                 queryargs=queryargs)
+                 queryargs=queryargs, request_mimetype=request_mimetype)
 
     def delete(self, path_list, handler, priority=True, important=False,
                    mblogin=True, queryargs=None):
@@ -243,7 +245,8 @@ class AcoustIdAPIHelper(APIHelper):
     def query_acoustid(self, handler, **args):
         path_list = ['lookup']
         body = self._encode_acoustid_args(args)
-        return self.post(path_list, body, handler, priority=False, important=False, mblogin=False)
+        return self.post(path_list, body, handler, priority=False, important=False,
+                         mblogin=False, request_mimetype="application/x-www-form-urlencoded")
 
     def submit_acoustid_fingerprints(self, submissions, handler):
         path_list = ['submit']
@@ -255,4 +258,5 @@ class AcoustIdAPIHelper(APIHelper):
             if submission.puid:
                 args['puid.%d' % i] = submission.puid
         body = self._encode_acoustid_args(args, format_='json')
-        return self.post(path_list, body, handler, priority=True, important=False, mblogin=False)
+        return self.post(path_list, body, handler, priority=True, important=False,
+                         mblogin=False, request_mimetype="application/x-www-form-urlencoded")

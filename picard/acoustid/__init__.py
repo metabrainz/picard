@@ -57,7 +57,6 @@ class AcoustIDClient(QtCore.QObject):
         pass
 
     def _on_lookup_finished(self, next_func, file, document, http, error):
-
         doc = {}
         if error:
             mparms = {
@@ -73,32 +72,36 @@ class AcoustIDClient(QtCore.QObject):
                 echo=None
             )
         else:
-            recording_list = doc['recordings'] = []
-            status = document['status']
-            if status == 'ok':
-                results = document['results']
-                if results:
-                    result = results[0]
-                    file.metadata['acoustid_id'] = result['id']
-                    if 'recordings' in result:
-                        for recording in result['recordings']:
-                            parsed_recording = parse_recording(recording)
-                            if parsed_recording is not None:
-                                recording_list.append(parsed_recording)
-                        log.debug("AcoustID: Lookup successful for '%s'", file.filename)
-            else:
-                mparms = {
-                    'error': document['error']['message'],
-                    'filename': file.filename
-                }
-                log.error(
-                    "AcoustID: Lookup error for '%(filename)s': %(error)r" %
-                    mparms)
-                self.tagger.window.set_statusbar_message(
-                    N_("AcoustID lookup failed for '%(filename)s'!"),
-                    mparms,
-                    echo=None
-                )
+            try:
+                recording_list = doc['recordings'] = []
+                status = document['status']
+                if status == 'ok':
+                    results = document['results']
+                    if results:
+                        result = results[0]
+                        file.metadata['acoustid_id'] = result['id']
+                        if 'recordings' in result:
+                            for recording in result['recordings']:
+                                parsed_recording = parse_recording(recording)
+                                if parsed_recording is not None:
+                                    recording_list.append(parsed_recording)
+                            log.debug("AcoustID: Lookup successful for '%s'", file.filename)
+                else:
+                    mparms = {
+                        'error': document['error']['message'],
+                        'filename': file.filename
+                    }
+                    log.error(
+                        "AcoustID: Lookup error for '%(filename)s': %(error)r" %
+                        mparms)
+                    self.tagger.window.set_statusbar_message(
+                        N_("AcoustID lookup failed for '%(filename)s'!"),
+                        mparms,
+                        echo=None
+                    )
+            except (AttributeError, KeyError, TypeError) as e:
+                log.error("AcoustID: Error reading response", exc_info=True)
+                error = e
 
         next_func(doc, http, error)
 

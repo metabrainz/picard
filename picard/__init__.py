@@ -86,4 +86,5 @@ else:
 # Keep those ordered
 api_versions = [
     "2.0",
+    "2.1"
 ]

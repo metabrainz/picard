@@ -33,7 +33,6 @@ from picard.const import (
 )
 from picard.util import (
     compare_version_tuples,
-    load_json,
     webbrowser2,
 )
 
@@ -89,7 +88,6 @@ class UpdateCheckManager(QtCore.QObject):
             PLUGINS_API['port'],
             PLUGINS_API['endpoint']['releases'],
             partial(self._releases_json_loaded, callback=callback),
-            parse_response_type=None,
             priority=True,
             important=True
         )
@@ -108,7 +106,10 @@ class UpdateCheckManager(QtCore.QObject):
                     ),
                     QMessageBox.Ok, QMessageBox.Ok)
         else:
-            self._available_versions = load_json(response)['versions']
+            if response and 'versions' in response:
+                self._available_versions = response['versions']
+            else:
+                self._available_versions = {}
             for key in self._available_versions:
                 log.debug("Version key '{version_key}' --> {version_information}".format(
                     version_key=key, version_information=self._available_versions[key],))
@@ -121,8 +122,9 @@ class UpdateCheckManager(QtCore.QObject):
         key = ''
         high_version = PICARD_VERSION
         for test_key in PROGRAM_UPDATE_LEVELS:
-            test_version = self._available_versions[PROGRAM_UPDATE_LEVELS[test_key]['name']]['version']
-            if self._update_level >= test_key and compare_version_tuples(high_version, test_version) > 0:
+            update_level = PROGRAM_UPDATE_LEVELS[test_key]['name']
+            test_version = self._available_versions.get(update_level, {}).get('version', (0, 0, 0, ''))
+            if self._update_level >= test_key and  compare_version_tuples(high_version, test_version) > 0:
                 key = PROGRAM_UPDATE_LEVELS[test_key]['name']
                 high_version = test_version
         if key:

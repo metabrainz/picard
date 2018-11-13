@@ -115,7 +115,8 @@ class OAuthManager(object):
         data = url.query()
         self.webservice.post(host, port, path, data,
                         partial(self.on_refresh_access_token_finished, callback),
-                        parse_response_type=None, mblogin=True, priority=True, important=True)
+                        mblogin=True, priority=True, important=True,
+                        request_mimetype="application/x-www-form-urlencoded")
 
     def on_refresh_access_token_finished(self, callback, data, http, error):
         access_token = None
@@ -127,9 +128,10 @@ class OAuthManager(object):
                     if response["error"] == "invalid_grant":
                         self.forget_refresh_token()
             else:
-                response = load_json(data)
-                self.set_access_token(response["access_token"], response["expires_in"])
-                access_token = response["access_token"]
+                self.set_access_token(data["access_token"], data["expires_in"])
+                access_token = data["access_token"]
+        except Exception as e:
+            log.error('OAuth: Unexpected error handling access token response: %r', e)
         finally:
             callback(access_token)
 
@@ -148,7 +150,8 @@ class OAuthManager(object):
         data = url.query()
         self.webservice.post(host, port, path, data,
                         partial(self.on_exchange_authorization_code_finished, scopes, callback),
-                        parse_response_type=None, mblogin=True, priority=True, important=True)
+                        mblogin=True, priority=True, important=True,
+                        request_mimetype="application/x-www-form-urlencoded")
 
     def on_exchange_authorization_code_finished(self, scopes, callback, data, http, error):
         successful = False
@@ -156,10 +159,11 @@ class OAuthManager(object):
             if error:
                 log.error("OAuth: authorization_code exchange failed: %s", data)
             else:
-                response = load_json(data)
-                self.set_refresh_token(response["refresh_token"], scopes)
-                self.set_access_token(response["access_token"], response["expires_in"])
+                self.set_refresh_token(data["refresh_token"], scopes)
+                self.set_access_token(data["access_token"], data["expires_in"])
                 successful = True
+        except Exception as e:
+            log.error('OAuth: Unexpected error handling authorization code response: %r', e)
         finally:
             callback(successful)
 
@@ -169,7 +173,7 @@ class OAuthManager(object):
         path = "/oauth2/userinfo"
         self.webservice.get(host, port, path,
                         partial(self.on_fetch_username_finished, callback),
-                        parse_response_type=None, mblogin=True, priority=True, important=True)
+                        mblogin=True, priority=True, important=True)
 
     def on_fetch_username_finished(self, callback, data, http, error):
         successful = False
@@ -177,8 +181,9 @@ class OAuthManager(object):
             if error:
                 log.error("OAuth: username fetching failed: %s", data)
             else:
-                response = load_json(data)
-                self.set_username(response["sub"])
+                self.set_username(data["sub"])
                 successful = True
+        except Exception as e:
+            log.error('OAuth: Unexpected error handling username fetch response: %r', e)
         finally:
             callback(successful)

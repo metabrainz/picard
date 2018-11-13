@@ -93,7 +93,8 @@ class WSRequest(QNetworkRequest):
 
     def __init__(self, method, host, port, path, handler, parse_response_type=None, data=None,
                  mblogin=False, cacheloadcontrol=None, refresh=False,
-                 queryargs=None, priority=False, important=False):
+                 queryargs=None, priority=False, important=False,
+                 request_mimetype=None):
         """
         Args:
             method: HTTP method.  One of ``GET``, ``POST``, ``PUT``, or ``DELETE``.
@@ -115,6 +116,7 @@ class WSRequest(QNetworkRequest):
             retries: Current retry attempt number.
             priority: Indicates that this is a high priority request.
             important: Indicates that this is an important request.
+            request_mimetype: Set the Content-Type header.
         """
         url = build_qurl(host, port, path=path, queryargs=queryargs)
         super().__init__(url)
@@ -134,6 +136,7 @@ class WSRequest(QNetworkRequest):
         self.parse_response_type = parse_response_type
         self.response_parser = None
         self.response_mimetype = None
+        self.request_mimetype = request_mimetype
         self.data = data
         self.mblogin = mblogin
         self.cacheloadcontrol = cacheloadcontrol
@@ -164,7 +167,9 @@ class WSRequest(QNetworkRequest):
                 self.setRawHeader(b"Accept", self.response_mimetype.encode('utf-8'))
 
         if self.data:
-                self.setHeader(QNetworkRequest.ContentTypeHeader, "application/x-www-form-urlencoded")
+            if not self.request_mimetype:
+                self.request_mimetype = self.response_mimetype or "application/x-www-form-urlencoded"
+            self.setHeader(QNetworkRequest.ContentTypeHeader, self.request_mimetype)
 
     def _update_authorization_header(self):
         authorization = b""
@@ -242,9 +247,6 @@ class WSPostRequest(WSRequest):
 
     def _init_headers(self):
         super()._init_headers(high_prio_no_cache=True)
-        if self.host == config.setting["server_host"] and self.response_mimetype:
-            self.setHeader(QNetworkRequest.ContentTypeHeader,
-                            "%s; charset=utf-8" % self.response_mimetype)
 
 
 class WebService(QtCore.QObject):
@@ -418,8 +420,10 @@ class WebService(QtCore.QObject):
                     try:
                         document = request.response_parser(reply)
                     except Exception as e:
-                        log.error("Unable to parse the response. %s", e)
+                        url = reply.request().url().toString(QUrl.RemoveUserInfo)
+                        log.error("Unable to parse the response for %s: %s", url, e)
                         document = reply.readAll()
+                        error = e
                     finally:
                         handler(document, reply, error)
                 else:
@@ -448,17 +452,19 @@ class WebService(QtCore.QObject):
         return self.add_request(request)
 
     def post(self, host, port, path, data, handler, parse_response_type=DEFAULT_RESPONSE_PARSER_TYPE,
-             priority=False, important=False, mblogin=True, queryargs=None):
+             priority=False, important=False, mblogin=True, queryargs=None, request_mimetype=None):
         request = WSPostRequest(host, port, path, handler, parse_response_type=parse_response_type,
                             data=data, mblogin=mblogin, queryargs=queryargs,
-                            priority=priority, important=important)
+                            priority=priority, important=important,
+                            request_mimetype=request_mimetype)
         log.debug("POST-DATA %r", data)
         return self.add_request(request)
 
     def put(self, host, port, path, data, handler, priority=True, important=False, mblogin=True,
-            queryargs=None):
+            queryargs=None, request_mimetype=None):
         request = WSPutRequest(host, port, path, handler, data=data, mblogin=mblogin,
-                            queryargs=queryargs, priority=priority, important=important)
+                               queryargs=queryargs, priority=priority,
+                               important=important, request_mimetype=request_mimetype)
         return self.add_request(request)
 
     def delete(self, host, port, path, handler, priority=True, important=False, mblogin=True,

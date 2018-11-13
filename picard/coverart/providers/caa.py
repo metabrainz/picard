@@ -54,10 +54,7 @@ from picard.coverart.utils import (
     CAA_TYPES,
     translate_caa_type,
 )
-from picard.util import (
-    load_json,
-    webbrowser2,
-)
+from picard.util import webbrowser2
 
 from picard.ui.ui_provider_options_caa import Ui_CaaOptions
 from picard.ui.util import StandardButton
@@ -560,7 +557,7 @@ class CoverArtProviderCaa(CoverArtProvider):
         return "/release/%s/" % self.metadata["musicbrainz_albumid"]
 
     def queue_images(self):
-        self.album.tagger.webservice.download(
+        self.album.tagger.webservice.get(
             CAA_HOST,
             CAA_PORT,
             self._caa_path,
@@ -579,14 +576,10 @@ class CoverArtProviderCaa(CoverArtProvider):
             if not (error == QNetworkReply.ContentNotFoundError and self.ignore_json_not_found_error):
                 self.error('CAA JSON error: %s' % (http.errorString()))
         else:
+            if self.restrict_types:
+                log.debug('CAA types: included: %s, excluded: %s' % (self.caa_types, self.caa_types_to_omit,))
             try:
-                caa_data = load_json(data)
-            except ValueError:
-                self.error("Invalid JSON: %s" % (http.url().toString()))
-            else:
-                if self.restrict_types:
-                    log.debug('CAA types: included: %s, excluded: %s' % (self.caa_types, self.caa_types_to_omit,))
-                for image in caa_data["images"]:
+                for image in data["images"]:
                     if config.setting["caa_approved_only"] and not image["approved"]:
                         continue
                     is_pdf = image["image"].endswith('.pdf')
@@ -645,5 +638,7 @@ class CoverArtProviderCaa(CoverArtProvider):
                                 config.setting["save_images_to_files"] and \
                                 image["front"]:
                             break
+            except (AttributeError, KeyError, TypeError) as e:
+                self.error('CAA JSON error: %s' % e)
 
         self.next_in_queue()
