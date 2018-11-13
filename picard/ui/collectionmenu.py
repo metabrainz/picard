@@ -95,9 +95,12 @@ class CollectionMenuItem(QtWidgets.QWidget):
     def _setup_layout(self, menu, collection):
         layout = QtWidgets.QVBoxLayout(self)
         style = self.style()
-        lmargin = style.pixelMetric(QtWidgets.QStyle.PM_LayoutLeftMargin)
-        rmargin = style.pixelMetric(QtWidgets.QStyle.PM_LayoutRightMargin)
-        layout.setContentsMargins(lmargin, 0, rmargin, 0)
+        layout.setContentsMargins(
+            style.pixelMetric(QtWidgets.QStyle.PM_LayoutLeftMargin),
+            style.pixelMetric(QtWidgets.QStyle.PM_FocusFrameVMargin),
+            style.pixelMetric(QtWidgets.QStyle.PM_LayoutRightMargin),
+            style.pixelMetric(QtWidgets.QStyle.PM_FocusFrameVMargin),
+            )
         self.checkbox = CollectionCheckBox(self, menu, collection)
         layout.addWidget(self.checkbox)
 
