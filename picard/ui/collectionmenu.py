@@ -89,8 +89,8 @@ class CollectionMenuItem(QtWidgets.QWidget):
     def __init__(self, menu, collection):
         super().__init__()
         self.menu = menu
+        self.active = False
         self._setup_layout(menu, collection)
-        self._setup_colors()
 
     def _setup_layout(self, menu, collection):
         layout = QtWidgets.QVBoxLayout(self)
@@ -99,31 +99,30 @@ class CollectionMenuItem(QtWidgets.QWidget):
             style.pixelMetric(QtWidgets.QStyle.PM_LayoutLeftMargin),
             style.pixelMetric(QtWidgets.QStyle.PM_FocusFrameVMargin),
             style.pixelMetric(QtWidgets.QStyle.PM_LayoutRightMargin),
-            style.pixelMetric(QtWidgets.QStyle.PM_FocusFrameVMargin),
-            )
+            style.pixelMetric(QtWidgets.QStyle.PM_FocusFrameVMargin))
         self.checkbox = CollectionCheckBox(self, menu, collection)
         layout.addWidget(self.checkbox)
 
-    def _setup_colors(self):
-        palette = QtGui.QPalette()
-        bgcolor = self.palette().highlight().color()
-        self.textColor = palette.text().color()
-        self.highlightColor = palette.highlightedText().color()
-        palette.setColor(QtGui.QPalette.Background, bgcolor)
-        self.setPalette(palette)
-
     def set_active(self, active):
-        self.setAutoFillBackground(active)
-        palette = self.palette()
-        textcolor = self.highlightColor if active else self.textColor
-        palette.setColor(QtGui.QPalette.WindowText, textcolor)
-        self.checkbox.setPalette(palette)
+        self.active = active
 
     def enterEvent(self, e):
         self.menu.update_active_action_for_widget(self)
 
     def leaveEvent(self, e):
         self.set_active(False)
+
+    def paintEvent(self, e):
+        painter = QtWidgets.QStylePainter(self)
+        option = QtWidgets.QStyleOptionMenuItem()
+        option.initFrom(self)
+        option.state =  QtWidgets.QStyle.State_None
+        if self.isEnabled():
+            option.state |= QtWidgets.QStyle.State_Enabled
+        if self.active:
+            option.state |= QtWidgets.QStyle.State_Selected
+        option.text = self.checkbox.label()
+        painter.drawControl(QtWidgets.QStyle.CE_MenuItem, option)
 
 
 class CollectionCheckBox(QtWidgets.QCheckBox):
@@ -159,3 +158,10 @@ class CollectionCheckBox(QtWidgets.QCheckBox):
     def label(self):
         c = self.collection
         return ngettext("%s (%i release)", "%s (%i releases)", c.size) % (c.name, c.size)
+
+    def paintEvent(self, e):
+        painter = QtWidgets.QStylePainter(self)
+        option = QtWidgets.QStyleOptionButton()
+        self.initStyleOption(option)
+        option.text = None
+        painter.drawControl(QtWidgets.QStyle.CE_CheckBox, option)
