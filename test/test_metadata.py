@@ -152,3 +152,38 @@ class MetadataTest(PicardTestCase):
             actual = Metadata.length_score(a, b)
             self.assertAlmostEqual(expected, actual,
                                    msg="a={a}, b={b}".format(a=a, b=b))
+
+    def test_compare_is_equal(self):
+        m1 = Metadata()
+        m1["title"] = "title1"
+        m1["tracknumber"] = "2"
+        m1.length = 360
+        m2 = Metadata()
+        m2["title"] = "title1"
+        m2["tracknumber"] = "2"
+        m2.length = 360
+        self.assertEqual(m1.compare(m2), m2.compare(m1))
+        self.assertEqual(m1.compare(m2), 1)
+
+    def test_compare_lengths(self):
+        m1 = Metadata()
+        m1.length = 360
+        m2 = Metadata()
+        m2.length = 300
+        self.assertAlmostEqual(m1.compare(m2), 0.998)
+
+    def test_compare_tracknumber_difference(self):
+        m1 = Metadata()
+        m1["tracknumber"] = "1"
+        m2 = Metadata()
+        m2["tracknumber"] = "2"
+        self.assertEqual(m1.compare(m2), 0)
+
+    def test_compare_deleted(self):
+        m1 = Metadata()
+        m1["artist"] = "TheArtist"
+        m1["title"] = "title1"
+        m2 = Metadata()
+        m2["artist"] = "TheArtist"
+        m2.delete("title")
+        self.assertTrue(m1.compare(m2) < 1)

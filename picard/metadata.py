@@ -126,7 +126,9 @@ class Metadata(dict):
                 else:
                     score = similarity2(a, b)
                 parts.append((score, weight))
-
+            elif (a and name in other.deleted_tags
+                  or b and name in self.deleted_tags):
+                parts.append((0, weight))
         return linear_combination_of_weights(parts)
 
     def compare_to_release(self, release, weights):
