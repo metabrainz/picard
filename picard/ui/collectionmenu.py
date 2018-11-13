@@ -21,6 +21,7 @@ import locale
 
 from PyQt5 import (
     QtCore,
+    QtGui,
     QtWidgets,
 )
 
@@ -39,14 +40,17 @@ class CollectionMenu(QtWidgets.QMenu):
 
     def update_collections(self):
         self.clear()
+        self.actions = []
         for id_, collection in sorted(user_collections.items(),
                                      key=lambda k_v:
                                      (locale.strxfrm(str(k_v[1])), k_v[0])):
             action = QtWidgets.QWidgetAction(self)
-            action.setDefaultWidget(CollectionCheckBox(self, collection))
+            action.setDefaultWidget(CollectionMenuItem(self, collection))
             self.addAction(action)
+            self.actions.append(action)
         self.addSeparator()
         self.refresh_action = self.addAction(_("Refresh List"))
+        self.hovered.connect(self.update_highlight)
 
     def refresh_list(self):
         self.refresh_action.setEnabled(False)
@@ -57,13 +61,64 @@ class CollectionMenu(QtWidgets.QMenu):
         if self.actionAt(event.pos()) == self.refresh_action and self.refresh_action.isEnabled():
             self.refresh_list()
 
+    def update_highlight(self, action):
+        for a in self.actions:
+            a.defaultWidget().set_active(a == action)
+
+    def update_active_action_for_widget(self, widget):
+        for action in self.actions:
+            action_widget = action.defaultWidget()
+            is_active = action_widget ==  widget
+            if is_active:
+                self.setActiveAction(action)
+            action_widget.set_active(is_active)
+
+
+class CollectionMenuItem(QtWidgets.QWidget):
+
+    def __init__(self, menu, collection):
+        super().__init__()
+        self.menu = menu
+        self._setup_layout(menu, collection)
+        self._setup_colors()
+
+    def _setup_layout(self, menu, collection):
+        layout = QtWidgets.QVBoxLayout(self)
+        style = self.style()
+        lmargin = style.pixelMetric(QtWidgets.QStyle.PM_LayoutLeftMargin)
+        rmargin = style.pixelMetric(QtWidgets.QStyle.PM_LayoutRightMargin)
+        layout.setContentsMargins(lmargin, 0, rmargin, 0)
+        self.checkbox = CollectionCheckBox(self, menu, collection)
+        layout.addWidget(self.checkbox)
+
+    def _setup_colors(self):
+        palette = QtGui.QPalette()
+        bgcolor = self.palette().highlight().color()
+        self.textColor = palette.text().color()
+        self.highlightColor = palette.highlightedText().color()
+        palette.setColor(QtGui.QPalette.Background, bgcolor)
+        self.setPalette(palette)
+
+    def set_active(self, active):
+        self.setAutoFillBackground(active)
+        palette = self.palette()
+        textcolor = self.highlightColor if active else self.textColor
+        palette.setColor(QtGui.QPalette.WindowText, textcolor)
+        self.checkbox.setPalette(palette)
+
+    def enterEvent(self, e):
+        self.menu.update_active_action_for_widget(self)
+
+    def leaveEvent(self, e):
+        self.set_active(False)
+
 
 class CollectionCheckBox(QtWidgets.QCheckBox):
 
-    def __init__(self, menu, collection):
+    def __init__(self, parent, menu, collection):
         self.menu = menu
         self.collection = collection
-        super().__init__(self.label())
+        super().__init__(self.label(), parent)
 
         releases = collection.releases & menu.ids
         if len(releases) == len(menu.ids):
