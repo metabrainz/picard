@@ -2,6 +2,7 @@
 #
 # Picard, the next-generation MusicBrainz tagger
 # Copyright (C) 2013 Michael Wiencek
+# Copyright (C) 2018 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -36,9 +37,11 @@ class CollectionMenu(QtWidgets.QMenu):
     def __init__(self, albums, *args):
         super().__init__(*args)
         self.ids = set(a.id for a in albums)
+        self._ignore_update = False
         self.update_collections()
 
     def update_collections(self):
+        self._ignore_update = True
         self.clear()
         self.actions = []
         for id_, collection in sorted(user_collections.items(),
@@ -48,6 +51,7 @@ class CollectionMenu(QtWidgets.QMenu):
             action.setDefaultWidget(CollectionMenuItem(self, collection))
             self.addAction(action)
             self.actions.append(action)
+        self._ignore_update = False
         self.addSeparator()
         self.refresh_action = self.addAction(_("Refresh List"))
         self.hovered.connect(self.update_highlight)
@@ -62,15 +66,21 @@ class CollectionMenu(QtWidgets.QMenu):
             self.refresh_list()
 
     def update_highlight(self, action):
+        if self._ignore_update:
+            return
         for a in self.actions:
             a.defaultWidget().set_active(a == action)
 
     def update_active_action_for_widget(self, widget):
+        if self._ignore_update:
+            return
         for action in self.actions:
             action_widget = action.defaultWidget()
             is_active = action_widget ==  widget
             if is_active:
+                self._ignore_hover = True
                 self.setActiveAction(action)
+                self._ignore_hover = False
             action_widget.set_active(is_active)
 
 
