@@ -62,6 +62,10 @@ class APEv2File(File):
         "Barcode": "barcode",
         "EncodedBy": "encodedby",
         "Language": "language",
+        "MOVEMENT": "movementnumber",
+        "MOVEMENTNAME": "movement",
+        "MOVEMENTTOTAL": "movementtotal",
+        "SHOWMOVEMENT": "showmovement",
         "MUSICBRAINZ_ALBUMSTATUS": "releasestatus",
         "MUSICBRAINZ_ALBUMTYPE": "releasetype",
         "musicbrainz_trackid": "musicbrainz_recordingid",
@@ -212,14 +216,10 @@ class APEv2File(File):
     def supports_tag(cls, name):
         unsupported_tags = {
             'gapless',
-            'movement',
-            'movementnumber',
-            'movementtotal',
             'musicip_fingerprint',
             'podcast',
             'podcasturl',
             'show',
-            'showmovement',
             'showsort',
             }
         return bool(name) and name not in unsupported_tags

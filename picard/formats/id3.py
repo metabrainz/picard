@@ -169,6 +169,7 @@ class ID3File(File):
         'Artists': 'artists',
         # 'Work': 'work',
         'Writer': 'writer',
+        'SHOWMOVEMENT': 'showmovement',
     }
     __rtranslate_freetext = dict([(v, k) for k, v in __translate_freetext.items()])
     __translate_freetext['Work'] = 'work'  # Always read, but writing depends on itunes_compatible_grouping
@@ -527,7 +528,7 @@ class ID3File(File):
 
     @classmethod
     def supports_tag(cls, name):
-        unsupported_tags = {'showmovement'}
+        unsupported_tags = {}
         return ((name and not name.startswith("~") and name not in unsupported_tags)
                 or name in ("~rating", "~length")
                 or name.startswith("~id3"))

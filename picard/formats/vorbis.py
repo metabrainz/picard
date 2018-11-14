@@ -55,8 +55,10 @@ class VCommentFile(File):
     _File = None
 
     __translate = {
-        "musicbrainz_trackid": "musicbrainz_recordingid",
+        "movement": "movementnumber",
+        "movementname": "movement",
         "musicbrainz_releasetrackid": "musicbrainz_trackid",
+        "musicbrainz_trackid": "musicbrainz_recordingid",
         "waveformatextensible_channel_mask": "~waveformatextensible_channel_mask",
     }
     __rtranslate = dict([(v, k) for k, v in __translate.items()])
@@ -279,12 +281,7 @@ class VCommentFile(File):
 
     @classmethod
     def supports_tag(cls, name):
-        unsupported_tags = {
-            'movement',
-            'movementnumber',
-            'movementtotal',
-            'showmovement',
-            }
+        unsupported_tags = {}
         return bool(name) and name not in unsupported_tags
 
 
