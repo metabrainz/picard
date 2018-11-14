@@ -303,7 +303,7 @@ class AlbumInfoDialog(InfoDialog):
         if album.errors:
             tabWidget.setTabText(tab_index, _("&Errors"))
             text = '<br />'.join(map(lambda s: '<font color="darkred">%s</font>' %
-                                     '<br />'.join(htmlescape(s)
+                                     '<br />'.join(htmlescape(str(s))
                                                    .replace('\t', ' ')
                                                    .replace(' ', '&nbsp;')
                                                    .splitlines()
