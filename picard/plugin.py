@@ -34,6 +34,7 @@ from PyQt5 import QtCore
 
 from picard import (
     VersionError,
+    api_versions,
     config,
     log,
     version_from_string,
@@ -494,9 +495,11 @@ class PluginManager(QtCore.QObject):
             )
             self._available_plugins = []
         else:
+            supported_versions = set(api_versions)
             try:
                 self._available_plugins = [PluginData(data, key) for key, data in
-                                           response['plugins'].items()]
+                                           response['plugins'].items()
+                                           if supported_versions.intersection(data['api_versions'])]
             except (AttributeError, KeyError, TypeError):
                 self._available_plugins = []
         if callback:
