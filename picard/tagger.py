@@ -816,5 +816,16 @@ def main(localedir=None, autoupdate=True):
         return longversion()
 
     tagger = Tagger(picard_args, unparsed_args, localedir, autoupdate)
+
+    # Initialize Qt default translations
+    translator = QtCore.QTranslator()
+    locale = QtCore.QLocale()
+    translation_path = QtCore.QLibraryInfo.location(QtCore.QLibraryInfo.TranslationsPath)
+    log.debug("Looking for Qt locale %s in %s", locale.name(), translation_path)
+    if translator.load(locale, "qt_", directory=translation_path):
+        tagger.installTranslator(translator)
+    else:
+        log.warning('Error loading Qt locale %s', locale.name())
+
     tagger.startTimer(1000)
     sys.exit(tagger.run())

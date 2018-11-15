@@ -23,6 +23,8 @@ import locale
 import os.path
 import sys
 
+from PyQt5.QtCore import QLocale
+
 builtins.__dict__['N_'] = lambda a: a
 
 
@@ -65,6 +67,7 @@ def setup_gettext(localedir, ui_language=None, logger=None):
             except Exception as e:
                 logger(e)
     os.environ['LANGUAGE'] = os.environ['LANG'] = current_locale
+    QLocale.setDefault(QLocale(current_locale))
     logger("Using locale %r", current_locale)
     try:
         logger("Loading gettext translation, localedir=%r", localedir)
