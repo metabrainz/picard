@@ -94,6 +94,7 @@ MB_ATTRIBUTES = {
     'DB:medium_format/name:076': 'Floppy Disk',
     'DB:medium_format/name:077': 'Zip Disk',
     'DB:medium_format/name:078': '8-Track Cartridge',
+    'DB:medium_format/name:079': 'Blu-ray-R',
     'DB:release_group_primary_type/name:001': 'Album',
     'DB:release_group_primary_type/name:002': 'Single',
     'DB:release_group_primary_type/name:003': 'EP',
