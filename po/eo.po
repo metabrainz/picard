@@ -1,7 +1,7 @@
 # Translations template for picard.
 # Copyright (C) 2018 ORGANIZATION
 # This file is distributed under the same license as the picard project.
-# 
+#
 # Translators:
 # Alex Mauer <hawke@hawkesnest.net>, 2016
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2009
@@ -635,7 +635,7 @@ msgstr ""
 
 #: picard/ui/itemviews.py:275
 msgid "Ctrl+A"
-msgstr "Stir+A"
+msgstr "Ctrl+A"
 
 #: picard/ui/itemviews.py:341
 msgid "&Other versions"
@@ -859,7 +859,7 @@ msgstr ""
 
 #: picard/ui/mainwindow.py:368
 msgid "Ctrl+D"
-msgstr "Stir+D"
+msgstr "Ctrl+D"
 
 #: picard/ui/mainwindow.py:371
 msgid "&Save"
@@ -883,7 +883,7 @@ msgstr ""
 
 #: picard/ui/mainwindow.py:386
 msgid "Ctrl+Q"
-msgstr "Stir+Q"
+msgstr "Ctrl+Q"
 
 #: picard/ui/mainwindow.py:389
 msgid "&Remove"
@@ -904,7 +904,7 @@ msgstr ""
 
 #: picard/ui/mainwindow.py:398
 msgid "Ctrl+Shift+L"
-msgstr "Stir+Maj+L"
+msgstr "Ctrl+Shift+L"
 
 #: picard/ui/mainwindow.py:401
 msgid "Search for similar albums..."
@@ -928,7 +928,7 @@ msgstr ""
 
 #: picard/ui/mainwindow.py:413
 msgid "Ctrl+B"
-msgstr "Stir+B"
+msgstr "Ctrl+B"
 
 #: picard/ui/mainwindow.py:416
 msgid "&Cover Art"
@@ -953,7 +953,7 @@ msgstr ""
 
 #: picard/ui/mainwindow.py:435 picard/ui/mainwindow.py:455
 msgid "Ctrl+K"
-msgstr "Stir+K"
+msgstr "Ctrl+K"
 
 #: picard/ui/mainwindow.py:457
 msgid "&Scan"
@@ -971,7 +971,7 @@ msgstr ""
 
 #: picard/ui/mainwindow.py:462
 msgid "Ctrl+Y"
-msgstr "Stir+Y"
+msgstr "Ctrl+Y"
 
 #: picard/ui/mainwindow.py:465
 msgid "Cl&uster"
@@ -983,7 +983,7 @@ msgstr ""
 
 #: picard/ui/mainwindow.py:469
 msgid "Ctrl+U"
-msgstr "Stir+U"
+msgstr "Ctrl+U"
 
 #: picard/ui/mainwindow.py:472
 msgid "&Lookup"
@@ -995,7 +995,7 @@ msgstr ""
 
 #: picard/ui/mainwindow.py:478
 msgid "Ctrl+L"
-msgstr "Stir+L"
+msgstr "Ctrl+L"
 
 #: picard/ui/mainwindow.py:481
 msgid "&Info..."
@@ -1003,7 +1003,7 @@ msgstr ""
 
 #: picard/ui/mainwindow.py:484
 msgid "Ctrl+I"
-msgstr "Stir+I"
+msgstr "Ctrl+I"
 
 #: picard/ui/mainwindow.py:487
 msgid "&Refresh"
@@ -1011,7 +1011,7 @@ msgstr ""
 
 #: picard/ui/mainwindow.py:488
 msgid "Ctrl+R"
-msgstr "Stir+R"
+msgstr "Ctrl+R"
 
 #: picard/ui/mainwindow.py:491
 msgid "&Rename Files"
@@ -1039,7 +1039,7 @@ msgstr ""
 
 #: picard/ui/mainwindow.py:517
 msgid "Ctrl+E"
-msgstr "Stir+E"
+msgstr "Ctrl+E"
 
 #: picard/ui/mainwindow.py:519
 msgid "View Activity &History"
@@ -1047,7 +1047,7 @@ msgstr ""
 
 #: picard/ui/mainwindow.py:522
 msgid "Ctrl+H"
-msgstr "Stir+H"
+msgstr "Ctrl+H"
 
 #: picard/ui/mainwindow.py:528
 msgid "Open in &Player"
@@ -1203,15 +1203,15 @@ msgstr ""
 
 #: picard/ui/metadatabox.py:228
 msgid "Alt+Shift+A"
-msgstr "Alt+Maj+A"
+msgstr "Alt+Shift+A"
 
 #: picard/ui/metadatabox.py:231
 msgid "Alt+Shift+E"
-msgstr "Alt+Maj+E"
+msgstr "Alt+Shift+E"
 
 #: picard/ui/metadatabox.py:233
 msgid "Alt+Shift+R"
-msgstr "Alt+Maj+R"
+msgstr "Alt+Shift+R"
 
 #: picard/ui/metadatabox.py:313
 msgid "Edit..."
