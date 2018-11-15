@@ -72,7 +72,7 @@ Version %(version)s</p>
 Thank you for using Picard. Picard relies on the MusicBrainz database, which is operated by the MetaBrainz Foundation with the help of thousands of volunteers. If you like this application please consider donating to the MetaBrainz Foundation to keep the service running.</p>
 <p align="center"><a href="%(picard-donate-url)s">Donate now!</a></p>
 <p align="center"><strong>Credits</strong><br/>
-<small>Copyright © 2004-2017 Robert Kaye, Lukáš Lalinský, Laurent Monin, Sambhav Kothari and others%(translator-credits)s</small></p>
+<small>Copyright © 2004-2018 Robert Kaye, Lukáš Lalinský, Laurent Monin, Sambhav Kothari, Philipp Wolfer and others%(translator-credits)s</small></p>
 <p align="center"><small>Icons made by Sambhav Kothari <sambhavs.email@gmail.com>
 and <a href="http://www.flaticon.com/authors/madebyoliver">Madebyoliver</a>,
 <a href="http://www.flaticon.com/authors/pixel-buddha">Pixel Buddha</a>,
