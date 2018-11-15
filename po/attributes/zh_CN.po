@@ -22,8 +22,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2018-06-30 10:21+0000\n"
-"Last-Translator: yvanz\n"
+"PO-Revision-Date: 2018-10-15 16:10+0000\n"
+"Last-Translator: Michael Wiencek <mwtuea@gmail.com>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/musicbrainz/musicbrainz/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1052,6 +1052,11 @@ msgctxt "medium_format"
 msgid "Blu-ray"
 msgstr "蓝光"
 
+#: DB:medium_format/name:79
+msgctxt "medium_format"
+msgid "Blu-ray-R"
+msgstr ""
+
 #: DB:medium_format/name:35
 msgctxt "medium_format"
 msgid "Blu-spec CD"
@@ -1914,15 +1919,15 @@ msgctxt "collection_type"
 msgid "Event"
 msgstr "事件"
 
-#: DB:series_type/name:6
-msgctxt "series_type"
-msgid "Event"
-msgstr "事件"
-
 #: DB:event_alias_type/name:1
 msgctxt "alias_type"
 msgid "Event name"
 msgstr "事件名称"
+
+#: DB:series_type/name:6
+msgctxt "series_type"
+msgid "Event series"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:729
 msgctxt "work_attribute_type_allowed_value"
@@ -4404,15 +4409,15 @@ msgctxt "collection_type"
 msgid "Recording"
 msgstr "录制"
 
-#: DB:series_type/name:3
-msgctxt "series_type"
-msgid "Recording"
-msgstr "录制"
-
 #: DB:recording_alias_type/name:1
 msgctxt "alias_type"
 msgid "Recording name"
 msgstr "录制时名称"
+
+#: DB:series_type/name:3
+msgctxt "series_type"
+msgid "Recording series"
+msgstr ""
 
 #: DB:medium_format/name:10
 msgctxt "medium_format"
@@ -4439,30 +4444,30 @@ msgctxt "collection_type"
 msgid "Release"
 msgstr "发行版"
 
-#: DB:series_type/name:2
-msgctxt "series_type"
-msgid "Release"
-msgstr "发行版"
-
 #: DB:editor_collection_type/name:13
 msgctxt "collection_type"
 msgid "Release group"
 msgstr "发行团"
-
-#: DB:series_type/name:1
-msgctxt "series_type"
-msgid "Release group"
-msgstr "发行团名称"
 
 #: DB:release_group_alias_type/name:1
 msgctxt "alias_type"
 msgid "Release group name"
 msgstr "发行团名称"
 
+#: DB:series_type/name:1
+msgctxt "series_type"
+msgid "Release group series"
+msgstr ""
+
 #: DB:release_alias_type/name:1
 msgctxt "alias_type"
 msgid "Release name"
 msgstr "发行版名称"
+
+#: DB:series_type/name:2
+msgctxt "series_type"
+msgid "Release series"
+msgstr ""
 
 #: DB:place_type/name:6
 msgctxt "place_type"
@@ -5571,15 +5576,15 @@ msgctxt "collection_type"
 msgid "Work"
 msgstr "作品"
 
-#: DB:series_type/name:4
-msgctxt "series_type"
-msgid "Work"
-msgstr "作品"
-
 #: DB:work_alias_type/name:1
 msgctxt "alias_type"
 msgid "Work name"
 msgstr "艺名"
+
+#: DB:series_type/name:4
+msgctxt "series_type"
+msgid "Work series"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:277
 msgctxt "work_attribute_type_allowed_value"

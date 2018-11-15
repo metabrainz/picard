@@ -4,6 +4,7 @@
 # nikki2 <b4931048@nwldx.com>, 2012
 # Daniel Schury <Daniel.Schury@physik.uni-giessen.de>, 2011
 # Daniel Schury <email address hidden>, 2011
+# Eckhard Henkel <eckhard.henkel@t-online.de>, 2018
 # Elmar Stichnoth, 2017
 # Elmar Stichnoth, 2017
 #   <email address hidden>, 2012
@@ -42,8 +43,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2018-06-30 10:21+0000\n"
-"Last-Translator: yvanz\n"
+"PO-Revision-Date: 2018-10-15 16:09+0000\n"
+"Last-Translator: Michael Wiencek <mwtuea@gmail.com>\n"
 "Language-Team: German (http://www.transifex.com/musicbrainz/musicbrainz/language/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -119,7 +120,7 @@ msgstr "8\"-LaserDisc"
 #: DB:medium_format/name:78
 msgctxt "medium_format"
 msgid "8-Track Cartridge"
-msgstr ""
+msgstr "8-Spur-Kassette"
 
 #: DB:medium_format/name:34
 msgctxt "medium_format"
@@ -1072,6 +1073,11 @@ msgctxt "medium_format"
 msgid "Blu-ray"
 msgstr "Blu-ray"
 
+#: DB:medium_format/name:79
+msgctxt "medium_format"
+msgid "Blu-ray-R"
+msgstr ""
+
 #: DB:medium_format/name:35
 msgctxt "medium_format"
 msgid "Blu-spec CD"
@@ -1934,15 +1940,15 @@ msgctxt "collection_type"
 msgid "Event"
 msgstr "Veranstaltung"
 
-#: DB:series_type/name:6
-msgctxt "series_type"
-msgid "Event"
-msgstr "Veranstaltung"
-
 #: DB:event_alias_type/name:1
 msgctxt "alias_type"
 msgid "Event name"
 msgstr "Veranstaltungsname"
+
+#: DB:series_type/name:6
+msgctxt "series_type"
+msgid "Event series"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:729
 msgctxt "work_attribute_type_allowed_value"
@@ -4424,15 +4430,15 @@ msgctxt "collection_type"
 msgid "Recording"
 msgstr "Aufnahme"
 
-#: DB:series_type/name:3
-msgctxt "series_type"
-msgid "Recording"
-msgstr "Aufnahme"
-
 #: DB:recording_alias_type/name:1
 msgctxt "alias_type"
 msgid "Recording name"
 msgstr "Name der Aufnahme"
+
+#: DB:series_type/name:3
+msgctxt "series_type"
+msgid "Recording series"
+msgstr ""
 
 #: DB:medium_format/name:10
 msgctxt "medium_format"
@@ -4459,18 +4465,8 @@ msgctxt "collection_type"
 msgid "Release"
 msgstr "Veröffentlichung"
 
-#: DB:series_type/name:2
-msgctxt "series_type"
-msgid "Release"
-msgstr "Veröffentlichung"
-
 #: DB:editor_collection_type/name:13
 msgctxt "collection_type"
-msgid "Release group"
-msgstr "Veröffentlichungsgruppe"
-
-#: DB:series_type/name:1
-msgctxt "series_type"
 msgid "Release group"
 msgstr "Veröffentlichungsgruppe"
 
@@ -4479,10 +4475,20 @@ msgctxt "alias_type"
 msgid "Release group name"
 msgstr "Name der Veröffentlichungsgruppe"
 
+#: DB:series_type/name:1
+msgctxt "series_type"
+msgid "Release group series"
+msgstr ""
+
 #: DB:release_alias_type/name:1
 msgctxt "alias_type"
 msgid "Release name"
 msgstr "Name der Veröffentlichung"
+
+#: DB:series_type/name:2
+msgctxt "series_type"
+msgid "Release series"
+msgstr ""
 
 #: DB:place_type/name:6
 msgctxt "place_type"
@@ -5591,15 +5597,15 @@ msgctxt "collection_type"
 msgid "Work"
 msgstr "Werk"
 
-#: DB:series_type/name:4
-msgctxt "series_type"
-msgid "Work"
-msgstr "Werk"
-
 #: DB:work_alias_type/name:1
 msgctxt "alias_type"
 msgid "Work name"
 msgstr "Werkname"
+
+#: DB:series_type/name:4
+msgctxt "series_type"
+msgid "Work series"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:277
 msgctxt "work_attribute_type_allowed_value"

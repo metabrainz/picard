@@ -3,15 +3,15 @@
 # A. Regnander <anton_r_3@hotmail.com>, 2017
 # Filip Bengtsson, 2018
 # Jonatan Nyberg, 2017
-# Kristoffer Grundström <kristoffer.grundstrom1983@gmail.com>, 2016
+# Kristoffer Grundström <hamnisdude@gmail.com>, 2016
 # Killinstinct <myaku@msn.com>, 2015
 # Robin Björnsvik <robin@bjornsvik.se>, 2013
 # Staffan Vilcans, 2015
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2018-09-14 12:17+0000\n"
-"Last-Translator: Filip Bengtsson\n"
+"PO-Revision-Date: 2018-10-15 16:10+0000\n"
+"Last-Translator: Michael Wiencek <mwtuea@gmail.com>\n"
 "Language-Team: Swedish (http://www.transifex.com/musicbrainz/musicbrainz/language/sv/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1040,6 +1040,11 @@ msgctxt "medium_format"
 msgid "Blu-ray"
 msgstr "Blu-ray"
 
+#: DB:medium_format/name:79
+msgctxt "medium_format"
+msgid "Blu-ray-R"
+msgstr ""
+
 #: DB:medium_format/name:35
 msgctxt "medium_format"
 msgid "Blu-spec CD"
@@ -1902,14 +1907,14 @@ msgctxt "collection_type"
 msgid "Event"
 msgstr "Händelse"
 
-#: DB:series_type/name:6
-msgctxt "series_type"
-msgid "Event"
-msgstr "Händelse"
-
 #: DB:event_alias_type/name:1
 msgctxt "alias_type"
 msgid "Event name"
+msgstr ""
+
+#: DB:series_type/name:6
+msgctxt "series_type"
+msgid "Event series"
 msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:729
@@ -4392,15 +4397,15 @@ msgctxt "collection_type"
 msgid "Recording"
 msgstr "Inspelning"
 
-#: DB:series_type/name:3
-msgctxt "series_type"
-msgid "Recording"
-msgstr "Inspelning"
-
 #: DB:recording_alias_type/name:1
 msgctxt "alias_type"
 msgid "Recording name"
 msgstr "Inspelningsnamn"
+
+#: DB:series_type/name:3
+msgctxt "series_type"
+msgid "Recording series"
+msgstr ""
 
 #: DB:medium_format/name:10
 msgctxt "medium_format"
@@ -4427,18 +4432,8 @@ msgctxt "collection_type"
 msgid "Release"
 msgstr "Utgivning"
 
-#: DB:series_type/name:2
-msgctxt "series_type"
-msgid "Release"
-msgstr "Utgivning"
-
 #: DB:editor_collection_type/name:13
 msgctxt "collection_type"
-msgid "Release group"
-msgstr "Utgivningsgrupp"
-
-#: DB:series_type/name:1
-msgctxt "series_type"
 msgid "Release group"
 msgstr "Utgivningsgrupp"
 
@@ -4447,10 +4442,20 @@ msgctxt "alias_type"
 msgid "Release group name"
 msgstr "Utgivningsgruppnamn"
 
+#: DB:series_type/name:1
+msgctxt "series_type"
+msgid "Release group series"
+msgstr ""
+
 #: DB:release_alias_type/name:1
 msgctxt "alias_type"
 msgid "Release name"
 msgstr "Utgivningsnamn"
+
+#: DB:series_type/name:2
+msgctxt "series_type"
+msgid "Release series"
+msgstr ""
 
 #: DB:place_type/name:6
 msgctxt "place_type"
@@ -5559,15 +5564,15 @@ msgctxt "collection_type"
 msgid "Work"
 msgstr "Verk"
 
-#: DB:series_type/name:4
-msgctxt "series_type"
-msgid "Work"
-msgstr "Verk"
-
 #: DB:work_alias_type/name:1
 msgctxt "alias_type"
 msgid "Work name"
 msgstr "Arbetsnamn"
+
+#: DB:series_type/name:4
+msgctxt "series_type"
+msgid "Work series"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:277
 msgctxt "work_attribute_type_allowed_value"

@@ -8,13 +8,14 @@
 # riotism, 2017-2018
 # Zhou Chenming <2528308387@qq.com>, 2018
 # 毛瑞盈 <mry_33@163.com>, 2014
+# 郭云鹤(Guo Yunhe)🇨🇳 <guoyunhebrave@gmail.com>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2018-08-26 13:44+0200\n"
-"PO-Revision-Date: 2018-08-26 13:22+0000\n"
-"Last-Translator: Michael Wiencek <mwtuea@gmail.com>\n"
+"PO-Revision-Date: 2018-09-23 11:06+0000\n"
+"Last-Translator: 郭云鹤(Guo Yunhe)🇨🇳 <guoyunhebrave@gmail.com>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/musicbrainz/musicbrainz/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -301,7 +302,7 @@ msgstr "瑞典语"
 
 #: picard/const/languages.py:75
 msgid "Traditional Chinese"
-msgstr ""
+msgstr "繁体中文"
 
 #: picard/coverart/__init__.py:98
 #, python-format
@@ -332,7 +333,7 @@ msgstr "500 像素"
 
 #: picard/coverart/providers/caa.py:69
 msgid "1200 px"
-msgstr ""
+msgstr "1200 像素"
 
 #: picard/coverart/providers/caa.py:70
 msgid "Full size"
@@ -344,11 +345,11 @@ msgstr "封面类型"
 
 #: picard/coverart/providers/caa.py:135
 msgid "Chec&k all"
-msgstr "全& 选"
+msgstr "勾选全部(&K)"
 
 #: picard/coverart/providers/caa.py:136
 msgid "&Uncheck all"
-msgstr "&反选"
+msgstr "取消勾选全部(&U)"
 
 #: picard/coverart/providers/caa.py:246
 msgid "Cover Art Archive"
@@ -446,15 +447,15 @@ msgstr "拖放来附加正面封面图像"
 
 #: picard/ui/filebrowser.py:48
 msgid "&Move Tagged Files Here"
-msgstr "从此处移动已写入标签信息的文件&"
+msgstr "从此处移动已写入标签信息的文件(&M)"
 
 #: picard/ui/filebrowser.py:51
 msgid "Show &Hidden Files"
-msgstr "显示＆隐藏文件"
+msgstr "显示隐藏文件(&H)"
 
 #: picard/ui/filebrowser.py:56
 msgid "&Set as starting directory"
-msgstr "&设置为起始目录"
+msgstr "设置为起始目录(&S)"
 
 #: picard/ui/infodialog.py:90
 msgid "Existing Cover"
@@ -618,15 +619,15 @@ msgstr "匹配度极好"
 
 #: picard/ui/itemviews.py:269
 msgid "&Expand all"
-msgstr "&展开全部"
+msgstr "展开全部(&E)"
 
 #: picard/ui/itemviews.py:271
 msgid "&Collapse all"
-msgstr "&折叠全部"
+msgstr "折叠全部(&C)"
 
 #: picard/ui/itemviews.py:273
 msgid "Select &all"
-msgstr "选择 &全部"
+msgstr "选择全部(&A)"
 
 #: picard/ui/itemviews.py:275
 msgid "Ctrl+A"
@@ -634,7 +635,7 @@ msgstr "Ctrl+A "
 
 #: picard/ui/itemviews.py:341
 msgid "&Other versions"
-msgstr "&其余版本"
+msgstr "其它版本(&O)"
 
 #: picard/ui/itemviews.py:344
 msgid "Loading..."
@@ -646,11 +647,11 @@ msgstr "歌曲集"
 
 #: picard/ui/itemviews.py:417
 msgid "P&lugins"
-msgstr "插 &件"
+msgstr "插件(&L)"
 
 #: picard/ui/itemviews.py:433
 msgid "&Run scripts"
-msgstr ""
+msgstr "运行脚本(&R)"
 
 #: picard/ui/itemviews.py:591
 msgid "file view"
@@ -706,48 +707,48 @@ msgstr "日志"
 
 #: picard/ui/logview.py:153
 msgid "Verbosity"
-msgstr ""
+msgstr "冗长度"
 
 #: picard/ui/logview.py:163
 msgid "String to highlight"
-msgstr ""
+msgstr "要高亮的字符串"
 
 #: picard/ui/logview.py:168
 msgid "Highlight"
-msgstr ""
+msgstr "高亮"
 
 #: picard/ui/logview.py:177
 msgid "Clear Highlight"
-msgstr ""
+msgstr "清除高亮"
 
 #: picard/ui/logview.py:183 picard/ui/logview.py:264
 msgid "Clear Log"
-msgstr ""
+msgstr "清除日志"
 
 #: picard/ui/logview.py:188
 msgid "Save As..."
-msgstr ""
+msgstr "另存为..."
 
 #: picard/ui/logview.py:233 picard/ui/logview.py:240
 msgid "Save Log View to File"
-msgstr ""
+msgstr "保存日志视图到文件"
 
 #: picard/ui/logview.py:241
 msgid "File already exists, do you really want to save to this file?"
-msgstr ""
+msgstr "文件已存在，您真地想保存此文件吗？"
 
 #: picard/ui/logview.py:253
 msgid "Failed to save Log View to file"
-msgstr ""
+msgstr "保存视图到文件失败"
 
 #: picard/ui/logview.py:254
 #, python-format
 msgid "Something prevented data to be written to '%s'"
-msgstr ""
+msgstr "写入数据到“%s”被阻止"
 
 #: picard/ui/logview.py:265
 msgid "Are you sure you want to clear the log?"
-msgstr ""
+msgstr "您确定要清除日志吗？"
 
 #: picard/ui/logview.py:299
 msgid "Activity History"
@@ -775,7 +776,7 @@ msgstr[0] "有 %d 未保存的文件。关闭 Picard 会丢失所有未保存的
 
 #: picard/ui/mainwindow.py:203
 msgid "&Quit Picard"
-msgstr "&退出 Picard"
+msgstr "退出 Picard (&Q)"
 
 #: picard/ui/mainwindow.py:239
 msgid "Ready"
@@ -829,11 +830,11 @@ msgstr "捐赠(&D)..."
 
 #: picard/ui/mainwindow.py:353
 msgid "&Report a Bug..."
-msgstr "＆报告错误"
+msgstr "报告错误(&R)..."
 
 #: picard/ui/mainwindow.py:356
 msgid "&Support Forum..."
-msgstr "＆支持论坛"
+msgstr "支持论坛(&S)..."
 
 #: picard/ui/mainwindow.py:359
 msgid "&Add Files..."
@@ -857,7 +858,7 @@ msgstr "Ctrl+D"
 
 #: picard/ui/mainwindow.py:371
 msgid "&Save"
-msgstr "＆保存"
+msgstr "保存(&S)"
 
 #: picard/ui/mainwindow.py:372
 msgid "Save selected files"
@@ -865,7 +866,7 @@ msgstr "保存选中的文件"
 
 #: picard/ui/mainwindow.py:378
 msgid "S&ubmit AcoustIDs"
-msgstr "提&交 AcoustID"
+msgstr "提交 AcoustID (&U)"
 
 #: picard/ui/mainwindow.py:379
 msgid "Submit acoustic fingerprints"
@@ -890,7 +891,7 @@ msgstr "移除选中的文件/专辑"
 #: picard/ui/mainwindow.py:394 picard/ui/metadatabox.py:337
 #: picard/ui/ui_cdlookup.py:54
 msgid "Lookup in &Browser"
-msgstr "在浏览器中搜索"
+msgstr "在浏览器中搜索(&B)"
 
 #: picard/ui/mainwindow.py:395
 msgid "Lookup selected item on MusicBrainz website"
@@ -926,7 +927,7 @@ msgstr "Ctrl+B"
 
 #: picard/ui/mainwindow.py:416
 msgid "&Cover Art"
-msgstr "封面图像(&A)"
+msgstr "封面图像(&C)"
 
 #: picard/ui/mainwindow.py:422
 msgid "&Actions"
@@ -969,7 +970,7 @@ msgstr "Ctrl+Y"
 
 #: picard/ui/mainwindow.py:465
 msgid "Cl&uster"
-msgstr "集&群"
+msgstr "聚集(&U)"
 
 #: picard/ui/mainwindow.py:466
 msgid "Cluster files into album clusters"
@@ -981,7 +982,7 @@ msgstr "Ctrl+U"
 
 #: picard/ui/mainwindow.py:472
 msgid "&Lookup"
-msgstr "&查询"
+msgstr "查找(&L)"
 
 #: picard/ui/mainwindow.py:473
 msgid "Lookup selected items in MusicBrainz"
@@ -993,7 +994,7 @@ msgstr "Ctrl+L"
 
 #: picard/ui/mainwindow.py:481
 msgid "&Info..."
-msgstr "& 信息..."
+msgstr "信息(&I)..."
 
 #: picard/ui/mainwindow.py:484
 msgid "Ctrl+I"
@@ -1013,11 +1014,11 @@ msgstr "重命名(&R)"
 
 #: picard/ui/mainwindow.py:496
 msgid "&Move Files"
-msgstr "& 移动文件..."
+msgstr "移动文件(&M)..."
 
 #: picard/ui/mainwindow.py:501
 msgid "Save &Tags"
-msgstr "保存 &标签"
+msgstr "保存标签(&T)"
 
 #: picard/ui/mainwindow.py:506
 msgid "Tags From &File Names..."
@@ -1025,27 +1026,27 @@ msgstr "将文件名转变标签(&F)..."
 
 #: picard/ui/mainwindow.py:510
 msgid "&Open My Collections in Browser"
-msgstr "&在浏览器中打开我的歌曲集"
+msgstr "在浏览器中打开我的收藏(&O)"
 
 #: picard/ui/mainwindow.py:514
 msgid "View &Error/Debug Log"
-msgstr ""
+msgstr "查看错误/调试日志(&E)"
 
 #: picard/ui/mainwindow.py:517
 msgid "Ctrl+E"
-msgstr ""
+msgstr "Ctrl+E"
 
 #: picard/ui/mainwindow.py:519
 msgid "View Activity &History"
-msgstr "查看活动 &历史"
+msgstr "查看活动历史(&H)"
 
 #: picard/ui/mainwindow.py:522
 msgid "Ctrl+H"
-msgstr ""
+msgstr "Ctrl+H"
 
 #: picard/ui/mainwindow.py:528
 msgid "Open in &Player"
-msgstr "在 &播放器中打开"
+msgstr "在播放器中打开(&P)"
 
 #: picard/ui/mainwindow.py:529
 msgid "Play the file in your default media player"
@@ -1053,7 +1054,7 @@ msgstr "在默认多媒体播放器上播放文件"
 
 #: picard/ui/mainwindow.py:533
 msgid "Open Containing &Folder"
-msgstr "打开包含的 &文件夹"
+msgstr "打开包含的文件夹(&F)"
 
 #: picard/ui/mainwindow.py:534
 msgid "Open the containing folder in your file explorer"
@@ -1093,11 +1094,11 @@ msgstr "音轨"
 
 #: picard/ui/mainwindow.py:685
 msgid "&Advanced search"
-msgstr ""
+msgstr "高级搜索(&A)"
 
 #: picard/ui/mainwindow.py:686
 msgid "&Builtin search"
-msgstr ""
+msgstr "内置搜索(&B)"
 
 #: picard/ui/mainwindow.py:775
 msgid "All Supported Formats"
@@ -1238,7 +1239,7 @@ msgstr "代理服务器 %s 要求你登录。请输入你的用户名和密码�
 #: picard/ui/scriptsmenu.py:58
 #, python-format
 msgid "Script error in \"%(script)s\": %(message)s"
-msgstr ""
+msgstr "脚本错误“%(script)s”：%(message)s"
 
 #: picard/ui/tagsfromfilenames.py:71 picard/ui/tagsfromfilenames.py:118
 msgid "File Name"
@@ -1256,7 +1257,7 @@ msgstr "MusicBrainz 的以下信息发布匹配 CD："
 
 #: picard/ui/ui_cdlookup.py:53
 msgid "&Load into Picard"
-msgstr ""
+msgstr "加载到 Picard (&L)"
 
 #: picard/ui/ui_cdlookup.py:55 picard/ui/util.py:44
 msgid "&Cancel"
@@ -1301,7 +1302,7 @@ msgstr "从目录中的文件夹递归添加文件"
 
 #: picard/ui/ui_options_advanced.py:104
 msgid "Ignore track duration difference under this number of seconds"
-msgstr ""
+msgstr "忽略小于此长度(秒)的曲目时长"
 
 #: picard/ui/ui_options_advanced.py:105
 msgid "Ignore file paths matching the following regular expression:"
@@ -1370,7 +1371,7 @@ msgstr "封面提供者"
 
 #: picard/ui/ui_options_cover.py:93
 msgid "Reorder Priority: "
-msgstr ""
+msgstr "重排优先级："
 
 #: picard/ui/ui_options_cover.py:94 picard/ui/ui_options_interface.py:137
 msgid "Move selected item up"
@@ -1662,7 +1663,7 @@ msgstr "版本"
 
 #: picard/ui/ui_options_plugins.py:131
 msgid "Action"
-msgstr ""
+msgstr "动作"
 
 #: picard/ui/ui_options_plugins.py:132
 msgid "Install plugin..."
@@ -1846,7 +1847,7 @@ msgstr "<html><head/><body><p>默认为 '/' 以保持跟之前的 Picard 版本�
 
 #: picard/ui/ui_options_tags.py:169
 msgid "Save iTunes compatible grouping and work"
-msgstr ""
+msgstr "保存兼容 iTunes 的分组和作品"
 
 #: picard/ui/ui_options_tags.py:170
 msgid "Also include ID3v1 tags in the files"
@@ -1911,7 +1912,7 @@ msgstr "确定(&O)"
 
 #: picard/ui/util.py:46
 msgid "Clos&e"
-msgstr ""
+msgstr "关闭(&E)"
 
 #: picard/ui/util.py:97
 msgid "Clear entry"
@@ -1956,7 +1957,7 @@ msgid ""
 "from <a href=\"www.flaticon.com\">www.flaticon.com</a>\n"
 "</small></p>\n"
 "<p align=\"center\"><strong>Official website</strong><br/><a href=\"%(picard-doc-url)s\">%(picard-doc-url)s</a></p>\n"
-msgstr ""
+msgstr "<p align=\"center\"><span style=\"font-size:15px;font-weight:bold;\">MusicBrainz Picard</span><br/>\n版本 %(version)s</p>\n<p align=\"center\"><small>\n%(third_parties_versions)s\n</small></p>\n<p align=\"center\"><strong>支持格式</strong><br/>%(formats)s</p>\n<p align=\"center\"><strong>恳请捐助</strong><br/>\n感谢您使用 Picard。Picard 依赖于 MusicBrainz 数据库，它是由 MetaBrainz 基金会和成千上万志愿者运营的。如果您喜欢这个应用程序，请考虑向 MetaBrainz 基金会捐款，以支持它继续运营。</p>\n<p align=\"center\"><a href=\"%(picard-donate-url)s\">立即捐款！</a></p>\n<p align=\"center\"><strong>致谢</strong><br/>\n<small>版权 © 2004-2017 Robert Kaye, Lukáš Lalinský, Laurent Monin, Sambhav Kothari and others%(translator-credits)s</small></p>\n<p align=\"center\"><small>图标作者：Sambhav Kothari <sambhavs.email@gmail.com>\n和 <a href=\"http://www.flaticon.com/authors/madebyoliver\">Madebyoliver</a>,\n<a href=\"http://www.flaticon.com/authors/pixel-buddha\">Pixel Buddha</a>,\n<a href=\"http://www.flaticon.com/authors/nikita-golubev\">Nikita Golubev</a>,\n<a href=\"http://www.flaticon.com/authors/maxim-basinski\">Maxim Basinski</a>\n来自 <a href=\"www.flaticon.com\">www.flaticon.com</a>\n</small></p>\n<p align=\"center\"><strong>官方网站</strong><br/><a href=\"%(picard-doc-url)s\">%(picard-doc-url)s</a></p>\n"
 
 #: picard/ui/options/advanced.py:32
 msgid "Advanced"
@@ -1968,7 +1969,7 @@ msgstr "封面图像"
 
 #: picard/ui/options/dialog.py:94
 msgid "&Restore all Defaults"
-msgstr "& 还原所有内容到默认"
+msgstr "还原所有内容到默认(&R)"
 
 #: picard/ui/options/dialog.py:95
 msgid "Reset all of Picard's settings"
@@ -1976,7 +1977,7 @@ msgstr "重置所有 Picard 的设置"
 
 #: picard/ui/options/dialog.py:96
 msgid "Restore &Defaults"
-msgstr "& 还原默认"
+msgstr "还原默认(&D)"
 
 #: picard/ui/options/dialog.py:97
 msgid "Reset all settings for current option page"
@@ -2118,16 +2119,16 @@ msgstr "插件 %s 会在 Picard 下次启动时被更新到版本 %s 。"
 
 #: picard/ui/options/plugins.py:257
 msgid "Uninstall plugin?"
-msgstr ""
+msgstr "卸载插件？"
 
 #: picard/ui/options/plugins.py:258
 #, python-format
 msgid "Do you really want to uninstall the plugin '%s' ?"
-msgstr ""
+msgstr "您真地想要卸载插件“%s”吗？"
 
 #: picard/ui/options/plugins.py:269 picard/ui/options/plugins.py:315
 msgid "Uninstalled"
-msgstr ""
+msgstr "已卸载"
 
 #: picard/ui/options/plugins.py:310
 msgid "Install"
@@ -2135,12 +2136,12 @@ msgstr "安装"
 
 #: picard/ui/options/plugins.py:311
 msgid "Uninstall"
-msgstr ""
+msgstr "卸载"
 
 #: picard/ui/options/plugins.py:328
 #, python-format
 msgid "Upgrade from %s to %s"
-msgstr ""
+msgstr "从 %s 升级到 %s"
 
 #: picard/ui/options/plugins.py:359
 msgid "Restart Picard to upgrade to new version"
@@ -2655,7 +2656,7 @@ msgstr "原专辑"
 
 #: picard/util/tags.py:94
 msgid "MusicBrainz Original Release Id"
-msgstr ""
+msgstr "MusicBrainz 原始发行 ID"
 
 #: picard/util/versions.py:58
 msgid "is not installed"

@@ -7,6 +7,7 @@
 # nikki2 <b4931048@nwldx.com>, 2012
 # Björn Krombholz <fox.box@gmail.com>, 2006
 # Wildwatz <daniel@theis-internet.de>, 2017
+# Eckhard Henkel <eckhard.henkel@t-online.de>, 2018
 # Ettore Atalan <atalanttore@googlemail.com>, 2014
 # Felix Kugler <relgukxilef@gmail.com>, 2015
 # Frank Matthiae <senax79@gmail.com>, 2017
@@ -23,6 +24,7 @@
 # Philipp Wolfer <ph.wolfer@gmail.com>, 2014,2017
 # S.Brandt <s.brandt@mixxx.org>, 2014-2015,2017-2018
 # Shepard, 2012
+# Simon Legner <simon.legner@gmail.com>, 2018
 # Shepard, 2013-2014
 # Shepard, 2012
 # Wieland Hoffmann <themineo+transifex@googlemail.com>, 2012
@@ -35,8 +37,8 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2018-08-26 13:44+0200\n"
-"PO-Revision-Date: 2018-09-21 05:56+0000\n"
-"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
+"PO-Revision-Date: 2018-10-25 13:51+0000\n"
+"Last-Translator: Simon Legner <simon.legner@gmail.com>\n"
 "Language-Team: German (http://www.transifex.com/musicbrainz/musicbrainz/language/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -99,7 +101,7 @@ msgstr "Frage Metadaten für Gruppierung %(album)s ab …"
 
 #: picard/cluster.py:303
 msgid "Unclustered Files"
-msgstr ""
+msgstr "Dateien ohne Gruppierung"
 
 #: picard/collection.py:71
 #, python-format
@@ -328,7 +330,7 @@ msgstr "Schwedisch"
 
 #: picard/const/languages.py:75
 msgid "Traditional Chinese"
-msgstr ""
+msgstr "Traditionelles Chinesisch"
 
 #: picard/coverart/__init__.py:98
 #, python-format
@@ -454,7 +456,7 @@ msgstr "Neues Cover-Art"
 
 #: picard/ui/coverartbox.py:341
 msgid "Original Cover Art"
-msgstr "Original Cover-Art"
+msgstr "Ursprüngliches Cover-Art"
 
 #: picard/ui/coverartbox.py:460
 msgid "Show more details..."
@@ -462,11 +464,11 @@ msgstr "Mehr Details anzeigen ..."
 
 #: picard/ui/coverartbox.py:466
 msgid "Keep original cover art"
-msgstr "Original Cover-Art behalten"
+msgstr "Ursprüngliches Cover-Art behalten"
 
 #: picard/ui/coverartbox.py:475
 msgid "Replace front cover art on drop"
-msgstr "Vorderes Coverbild durch ablegen ersetzen"
+msgstr "Vorderes Coverbild durch Ablegen ersetzen"
 
 #: picard/ui/coverartbox.py:480
 msgid "Append front cover art on drop"
@@ -679,7 +681,7 @@ msgstr "&Plugins"
 
 #: picard/ui/itemviews.py:433
 msgid "&Run scripts"
-msgstr ""
+msgstr "Skripte ausführen"
 
 #: picard/ui/itemviews.py:591
 msgid "file view"
@@ -739,7 +741,7 @@ msgstr "Ausführlichkeit"
 
 #: picard/ui/logview.py:163
 msgid "String to highlight"
-msgstr ""
+msgstr "Text hervorzuheben"
 
 #: picard/ui/logview.py:168
 msgid "Highlight"
@@ -759,7 +761,7 @@ msgstr "Speichern als..."
 
 #: picard/ui/logview.py:233 picard/ui/logview.py:240
 msgid "Save Log View to File"
-msgstr ""
+msgstr "Protokoll in Datei speichern"
 
 #: picard/ui/logview.py:241
 msgid "File already exists, do you really want to save to this file?"
@@ -767,16 +769,16 @@ msgstr "Datei existiert bereits, willst du wirklich in dieser Datei speichern?"
 
 #: picard/ui/logview.py:253
 msgid "Failed to save Log View to file"
-msgstr ""
+msgstr "Fehler beim Speichern des Protokolls als Datei"
 
 #: picard/ui/logview.py:254
 #, python-format
 msgid "Something prevented data to be written to '%s'"
-msgstr ""
+msgstr "Etwas verhinderte, dass Daten nach '%s'  geschrieben werden konnten."
 
 #: picard/ui/logview.py:265
 msgid "Are you sure you want to clear the log?"
-msgstr ""
+msgstr "Bist du sicher, dass das Protokoll geleert werden soll?"
 
 #: picard/ui/logview.py:299
 msgid "Activity History"
@@ -1127,7 +1129,7 @@ msgstr "&Erweiterte Suche"
 
 #: picard/ui/mainwindow.py:686
 msgid "&Builtin search"
-msgstr ""
+msgstr "Eingebaute Suche"
 
 #: picard/ui/mainwindow.py:775
 msgid "All Supported Formats"
@@ -1271,7 +1273,7 @@ msgstr "Der Proxy-Server %s erfordert eine Authentifizierung. Bitte gib deinen B
 #: picard/ui/scriptsmenu.py:58
 #, python-format
 msgid "Script error in \"%(script)s\": %(message)s"
-msgstr ""
+msgstr "Skript-Fehler in \"%(script)s\": %(message)s"
 
 #: picard/ui/tagsfromfilenames.py:71 picard/ui/tagsfromfilenames.py:118
 msgid "File Name"
@@ -1289,7 +1291,7 @@ msgstr "Die folgenden Veröffentlichungen auf MusicBrainz stimmen mit der CD üb
 
 #: picard/ui/ui_cdlookup.py:53
 msgid "&Load into Picard"
-msgstr ""
+msgstr "In Picard laden"
 
 #: picard/ui/ui_cdlookup.py:55 picard/ui/util.py:44
 msgid "&Cancel"
@@ -1399,11 +1401,11 @@ msgstr "Überschreibe ggf. existierende Dateien"
 
 #: picard/ui/ui_options_cover.py:92
 msgid "Cover Art Providers"
-msgstr "Cover-Art Anbieter"
+msgstr "Cover-Art-Anbieter"
 
 #: picard/ui/ui_options_cover.py:93
 msgid "Reorder Priority: "
-msgstr ""
+msgstr "Priorität zum Umsortieren:"
 
 #: picard/ui/ui_options_cover.py:94 picard/ui/ui_options_interface.py:137
 msgid "Move selected item up"
@@ -1879,7 +1881,7 @@ msgstr "<html><head/><body><p>Der Standard ist '/', um die Kompatibilität mit f
 
 #: picard/ui/ui_options_tags.py:169
 msgid "Save iTunes compatible grouping and work"
-msgstr ""
+msgstr "iTunes-kompatible Gruppe und Werk schreiben"
 
 #: picard/ui/ui_options_tags.py:170
 msgid "Also include ID3v1 tags in the files"
@@ -2676,19 +2678,19 @@ msgstr "Werk"
 
 #: picard/util/tags.py:91
 msgid "Original Artist"
-msgstr ""
+msgstr "Original-Künstler"
 
 #: picard/util/tags.py:92
 msgid "MusicBrainz Original Artist Id"
-msgstr ""
+msgstr "MusicBrainz-Original-Künstler-Id"
 
 #: picard/util/tags.py:93
 msgid "Original Album"
-msgstr ""
+msgstr "Originales Album"
 
 #: picard/util/tags.py:94
 msgid "MusicBrainz Original Release Id"
-msgstr ""
+msgstr "MusicBrainz-Erstveröffentlichungs-Id"
 
 #: picard/util/versions.py:58
 msgid "is not installed"

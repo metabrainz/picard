@@ -2,6 +2,7 @@
 # Translators:
 # Alex Luís Silva <alex.mooca@hotmail.com>, 2015
 # Ayrton Albuquerque <ayrtonalbuaguiar@gmail.com>, 2018
+# Brunno Hofmann <brunno.hofmann@gmail.com>, 2018
 # Daniel Biasotto <biasotto@tuta.io>, 2017
 # Eduardo Bastos <eduardorochacg@gmail.com>, 2012
 # Jaide Ambrosio <jaide.sp@gmail.com>, 2018
@@ -19,11 +20,12 @@
 # rafaelbrandao <rblcin@gmail.com>, 2012
 # davitf <transifex@davitf.com>, 2012
 # Lucas Gomes <x8lucas8x@gmail.com>, 2012
+# Zgamer72 Zombie <Thiferreira16@gmail.com>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2018-06-30 10:21+0000\n"
-"Last-Translator: yvanz\n"
+"PO-Revision-Date: 2018-11-09 21:32+0000\n"
+"Last-Translator: Zgamer72 Zombie <Thiferreira16@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/musicbrainz/musicbrainz/language/pt_BR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -99,7 +101,7 @@ msgstr "8\" CD"
 #: DB:medium_format/name:78
 msgctxt "medium_format"
 msgid "8-Track Cartridge"
-msgstr ""
+msgstr "Cartucho de 8 trilhas"
 
 #: DB:medium_format/name:34
 msgctxt "medium_format"
@@ -162,14 +164,14 @@ msgid ""
 "A give-away release or a release intended to promote an upcoming official "
 "release (e.g. pre-release versions, releases included with a magazine, "
 "versions supplied to radio DJs for air-play)."
-msgstr ""
+msgstr "Um lançamento ou lançamento destinado a promover um próximo lançamento oficial (por exemplo, versões de pré-lançamento, lançamentos incluídos em uma revista, versões fornecidas a DJs de rádio para jogos aéreos)."
 
 #: DB:instrument_type/description:7
 msgctxt "instrument_type"
 msgid ""
 "A grouping of related but different instruments, like the different violin-"
 "like instruments"
-msgstr ""
+msgstr "Um grupo de instrumentos diferentes, mas relacionados, como os diferentes instrumentos semelhantes ao violino."
 
 #: DB:work_attribute_type_allowed_value/value:28
 msgctxt "work_attribute_type_allowed_value"
@@ -182,7 +184,7 @@ msgid ""
 "A mass is a choral composition that sets the invariable portions of the "
 "Christian Eucharistic liturgy (Kyrie - Gloria - Credo - Sanctus - Benedictus"
 " - Agnus Dei, with other portions sometimes added) to music."
-msgstr ""
+msgstr "Uma missa é uma composição coral que define as porções invariáveis ​​da liturgia eucarística cristã (Kyrie - Gloria - Credo - Sanctus - Benedictus - Agnus Dei, com outras partes às vezes acrescentadas) à música."
 
 #: DB:event_type/description:5
 msgctxt "event_type"
@@ -190,7 +192,7 @@ msgid ""
 "A masterclass or clinic is an event where an artist meets with a small to "
 "medium-sized audience and instructs them individually and/or takes questions"
 " intended to improve the audience members' playing skills."
-msgstr ""
+msgstr "Uma masteclasse ou clinica é um evento onde um artista encontra-se com uma audiência de pequeno a médio porte e os intrui individualmente e/ou faz perguntas, com intuito de melhorar  as habilidades dos membros."
 
 #: DB:work_attribute_type_allowed_value/value:29
 msgctxt "work_attribute_type_allowed_value"
@@ -202,7 +204,7 @@ msgctxt "work_type"
 msgid ""
 "A partita is an instrumental piece composed of a series of variations, and "
 "it's by its current definition very similar to a suite."
-msgstr ""
+msgstr "A partita é uma peça instrumental composta de uma série de variações, sua atual definição é muito similar a uma suite."
 
 #: DB:event_type/description:3
 msgctxt "event_type"
@@ -220,7 +222,7 @@ msgstr ""
 msgctxt "place_type"
 msgid ""
 "A place (generally a factory) at which physical media are manufactured."
-msgstr ""
+msgstr "Um lugar (geralmente uma fábrica) onde a mídia física é manufaturada."
 
 #: DB:place_type/description:5
 msgctxt "place_type"
@@ -1052,6 +1054,11 @@ msgctxt "medium_format"
 msgid "Blu-ray"
 msgstr "Blu-ray"
 
+#: DB:medium_format/name:79
+msgctxt "medium_format"
+msgid "Blu-ray-R"
+msgstr ""
+
 #: DB:medium_format/name:35
 msgctxt "medium_format"
 msgid "Blu-spec CD"
@@ -1285,7 +1292,7 @@ msgstr ""
 #: DB:artist_type/name:4
 msgctxt "artist_type"
 msgid "Character"
-msgstr ""
+msgstr "Personagem"
 
 #: DB:artist_type/name:6
 msgctxt "artist_type"
@@ -1706,7 +1713,7 @@ msgstr "Distrito"
 #: DB:area_type/description:5
 msgctxt "area_type"
 msgid "District is used for a division of a large city, e.g. Queens."
-msgstr ""
+msgstr "Distrito é usado para divisões em uma grande cidade. Ex.: Queens"
 
 #: DB:work_attribute_type_allowed_value/value:611
 msgctxt "work_attribute_type_allowed_value"
@@ -1877,7 +1884,7 @@ msgstr ""
 #: DB:place_type/name:7
 msgctxt "place_type"
 msgid "Educational institution"
-msgstr ""
+msgstr "Instituição Educacional"
 
 #: DB:instrument_type/name:4
 msgctxt "instrument_type"
@@ -1914,14 +1921,14 @@ msgctxt "collection_type"
 msgid "Event"
 msgstr "Evento"
 
-#: DB:series_type/name:6
-msgctxt "series_type"
-msgid "Event"
-msgstr "Evento"
-
 #: DB:event_alias_type/name:1
 msgctxt "alias_type"
 msgid "Event name"
+msgstr ""
+
+#: DB:series_type/name:6
+msgctxt "series_type"
+msgid "Event series"
 msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:729
@@ -4404,14 +4411,14 @@ msgctxt "collection_type"
 msgid "Recording"
 msgstr "Gravação"
 
-#: DB:series_type/name:3
-msgctxt "series_type"
-msgid "Recording"
-msgstr "Gravação"
-
 #: DB:recording_alias_type/name:1
 msgctxt "alias_type"
 msgid "Recording name"
+msgstr ""
+
+#: DB:series_type/name:3
+msgctxt "series_type"
+msgid "Recording series"
 msgstr ""
 
 #: DB:medium_format/name:10
@@ -4439,18 +4446,8 @@ msgctxt "collection_type"
 msgid "Release"
 msgstr "Álbum"
 
-#: DB:series_type/name:2
-msgctxt "series_type"
-msgid "Release"
-msgstr "Álbum"
-
 #: DB:editor_collection_type/name:13
 msgctxt "collection_type"
-msgid "Release group"
-msgstr ""
-
-#: DB:series_type/name:1
-msgctxt "series_type"
 msgid "Release group"
 msgstr ""
 
@@ -4459,10 +4456,20 @@ msgctxt "alias_type"
 msgid "Release group name"
 msgstr ""
 
+#: DB:series_type/name:1
+msgctxt "series_type"
+msgid "Release group series"
+msgstr ""
+
 #: DB:release_alias_type/name:1
 msgctxt "alias_type"
 msgid "Release name"
 msgstr "Nome do álbum"
+
+#: DB:series_type/name:2
+msgctxt "series_type"
+msgid "Release series"
+msgstr ""
 
 #: DB:place_type/name:6
 msgctxt "place_type"
@@ -5255,7 +5262,7 @@ msgid ""
 "The madrigal is a type of secular vocal music composition. In its original "
 "form, it had no instrumental accompaniment, although accompaniment is much "
 "more common in later madrigals."
-msgstr ""
+msgstr "Madrigal é um tipo de composição de música vocal secular. Em sua forma original não possuia acompanhamento musical, ainda que o acompanhamento seja mais comum em madrigais posteriores."
 
 #: DB:work_type/description:24
 msgctxt "work_type"
@@ -5267,7 +5274,7 @@ msgstr ""
 #: DB:release_packaging/description:1
 msgctxt "release_packaging"
 msgid "The traditional CD case, made of hard, brittle plastic."
-msgstr ""
+msgstr "A caixa tradicional de CD, feita de plástico."
 
 #: DB:work_type/description:23
 msgctxt "work_type"
@@ -5367,7 +5374,7 @@ msgctxt "cover_art_type"
 msgid ""
 "Use for images that need work to be used for tagging (but can possibly "
 "already be used for reference)"
-msgstr ""
+msgstr "Use para imagens que precisam de edição para serem usadas para marcação (mas possivelmente já podem ser usadas para referência)"
 
 #: DB:work_attribute_type/name:17
 msgctxt "work_attribute_type"
@@ -5571,14 +5578,14 @@ msgctxt "collection_type"
 msgid "Work"
 msgstr "Obra"
 
-#: DB:series_type/name:4
-msgctxt "series_type"
-msgid "Work"
-msgstr "Obra"
-
 #: DB:work_alias_type/name:1
 msgctxt "alias_type"
 msgid "Work name"
+msgstr ""
+
+#: DB:series_type/name:4
+msgctxt "series_type"
+msgid "Work series"
 msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:277

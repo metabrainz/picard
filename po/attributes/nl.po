@@ -9,7 +9,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2018-08-21 08:26+0000\n"
+"PO-Revision-Date: 2018-10-15 19:50+0000\n"
 "Last-Translator: Maurits Meulenbelt <mfmeulenbelt@gmail.com>\n"
 "Language-Team: Dutch (http://www.transifex.com/musicbrainz/musicbrainz/language/nl/)\n"
 "MIME-Version: 1.0\n"
@@ -1039,6 +1039,11 @@ msgctxt "medium_format"
 msgid "Blu-ray"
 msgstr "blu-ray"
 
+#: DB:medium_format/name:79
+msgctxt "medium_format"
+msgid "Blu-ray-R"
+msgstr "Blu-ray-R"
+
 #: DB:medium_format/name:35
 msgctxt "medium_format"
 msgid "Blu-spec CD"
@@ -1901,15 +1906,15 @@ msgctxt "collection_type"
 msgid "Event"
 msgstr "Evenement"
 
-#: DB:series_type/name:6
-msgctxt "series_type"
-msgid "Event"
-msgstr "Evenement"
-
 #: DB:event_alias_type/name:1
 msgctxt "alias_type"
 msgid "Event name"
 msgstr "Naam van het evenement"
+
+#: DB:series_type/name:6
+msgctxt "series_type"
+msgid "Event series"
+msgstr "Serie evenementen"
 
 #: DB:work_attribute_type_allowed_value/value:729
 msgctxt "work_attribute_type_allowed_value"
@@ -4391,15 +4396,15 @@ msgctxt "collection_type"
 msgid "Recording"
 msgstr "Opnames"
 
-#: DB:series_type/name:3
-msgctxt "series_type"
-msgid "Recording"
-msgstr "Opname"
-
 #: DB:recording_alias_type/name:1
 msgctxt "alias_type"
 msgid "Recording name"
 msgstr "Naam van de opname"
+
+#: DB:series_type/name:3
+msgctxt "series_type"
+msgid "Recording series"
+msgstr "Serie opnames"
 
 #: DB:medium_format/name:10
 msgctxt "medium_format"
@@ -4426,30 +4431,30 @@ msgctxt "collection_type"
 msgid "Release"
 msgstr "Uitgave"
 
-#: DB:series_type/name:2
-msgctxt "series_type"
-msgid "Release"
-msgstr "Uitgave"
-
 #: DB:editor_collection_type/name:13
 msgctxt "collection_type"
 msgid "Release group"
 msgstr "Uitgavegroepen"
-
-#: DB:series_type/name:1
-msgctxt "series_type"
-msgid "Release group"
-msgstr "Uitgavegroep"
 
 #: DB:release_group_alias_type/name:1
 msgctxt "alias_type"
 msgid "Release group name"
 msgstr "Naam van de uitgavegroep"
 
+#: DB:series_type/name:1
+msgctxt "series_type"
+msgid "Release group series"
+msgstr "Serie uitgavegroepen"
+
 #: DB:release_alias_type/name:1
 msgctxt "alias_type"
 msgid "Release name"
 msgstr "Naam van de uitgave"
+
+#: DB:series_type/name:2
+msgctxt "series_type"
+msgid "Release series"
+msgstr "Serie uitgaves"
 
 #: DB:place_type/name:6
 msgctxt "place_type"
@@ -5399,7 +5404,7 @@ msgstr "VHD"
 #: DB:medium_format/name:21
 msgctxt "medium_format"
 msgid "VHS"
-msgstr "VHS (Videoband)"
+msgstr "VHS (videoband)"
 
 #: DB:work_attribute_type_allowed_value/value:261
 msgctxt "work_attribute_type_allowed_value"
@@ -5558,15 +5563,15 @@ msgctxt "collection_type"
 msgid "Work"
 msgstr "Composities"
 
-#: DB:series_type/name:4
-msgctxt "series_type"
-msgid "Work"
-msgstr "Compositie"
-
 #: DB:work_alias_type/name:1
 msgctxt "alias_type"
 msgid "Work name"
 msgstr "Naam van de compositie"
+
+#: DB:series_type/name:4
+msgctxt "series_type"
+msgid "Work series"
+msgstr "Serie composities"
 
 #: DB:work_attribute_type_allowed_value/value:277
 msgctxt "work_attribute_type_allowed_value"

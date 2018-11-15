@@ -13,8 +13,8 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2018-08-26 13:44+0200\n"
-"PO-Revision-Date: 2018-08-26 13:22+0000\n"
-"Last-Translator: Michael Wiencek <mwtuea@gmail.com>\n"
+"PO-Revision-Date: 2018-10-08 00:07+0000\n"
+"Last-Translator: Luca Salini <salo.rock@gmail.com>\n"
 "Language-Team: Italian (http://www.transifex.com/musicbrainz/musicbrainz/language/it/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1857,7 +1857,7 @@ msgstr "<html><head/><body><p>L'impostazione predefinita è '/' per mantenere la
 
 #: picard/ui/ui_options_tags.py:169
 msgid "Save iTunes compatible grouping and work"
-msgstr ""
+msgstr "Salva raggruppamento e opera compatibile con iTunes"
 
 #: picard/ui/ui_options_tags.py:170
 msgid "Also include ID3v1 tags in the files"
@@ -1902,7 +1902,7 @@ msgid ""
 "First group in the regular expression, if any, will be used as type, ie. "
 "cover-back-spine.jpg will be set as types Back + Spine. If no type is found,"
 " it will default to Front type."
-msgstr "Il primo gruppo nell'espressione regolare, se ve ne sono, sarà usato come tipo, cioè copertina-retro-dorso.jpg imposterà i tipi Retro + Dorso. Se nessun tipo è trovato, il tipo di default sarà Fronte."
+msgstr "Il primo gruppo nell'espressione regolare, se ve ne sono, sarà usato come tipo, per es. copertina-retro-dorso.jpg imposterà i tipi Retro + Dorso. Se nessun tipo è trovato, il tipo predefinito sarà Fronte."
 
 #: picard/ui/ui_tagsfromfilenames.py:51
 msgid "Convert File Names to Tags"
@@ -1979,7 +1979,7 @@ msgstr "Copertine"
 
 #: picard/ui/options/dialog.py:94
 msgid "&Restore all Defaults"
-msgstr "&Ripristina tutte le impostazioni di default"
+msgstr "&Ripristina tutte le impostazioni predefinite"
 
 #: picard/ui/options/dialog.py:95
 msgid "Reset all of Picard's settings"
@@ -1987,7 +1987,7 @@ msgstr "Reimposta tutte le impostazioni di Picard"
 
 #: picard/ui/options/dialog.py:96
 msgid "Restore &Defaults"
-msgstr "Ripristina &default"
+msgstr "Ripristina &predefiniti"
 
 #: picard/ui/options/dialog.py:97
 msgid "Reset all settings for current option page"

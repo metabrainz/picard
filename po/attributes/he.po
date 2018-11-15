@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2018-09-07 15:10+0000\n"
+"PO-Revision-Date: 2018-11-04 08:01+0000\n"
 "Last-Translator: Avi Markovitz <avi.markovitz@gmail.com>\n"
 "Language-Team: Hebrew (http://www.transifex.com/musicbrainz/musicbrainz/language/he/)\n"
 "MIME-Version: 1.0\n"
@@ -1035,6 +1035,11 @@ msgctxt "medium_format"
 msgid "Blu-ray"
 msgstr "בלו ריי"
 
+#: DB:medium_format/name:79
+msgctxt "medium_format"
+msgid "Blu-ray-R"
+msgstr ""
+
 #: DB:medium_format/name:35
 msgctxt "medium_format"
 msgid "Blu-spec CD"
@@ -1897,14 +1902,14 @@ msgctxt "collection_type"
 msgid "Event"
 msgstr "ארוע"
 
-#: DB:series_type/name:6
-msgctxt "series_type"
-msgid "Event"
-msgstr "ארוע"
-
 #: DB:event_alias_type/name:1
 msgctxt "alias_type"
 msgid "Event name"
+msgstr ""
+
+#: DB:series_type/name:6
+msgctxt "series_type"
+msgid "Event series"
 msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:729
@@ -4387,14 +4392,14 @@ msgctxt "collection_type"
 msgid "Recording"
 msgstr ""
 
-#: DB:series_type/name:3
-msgctxt "series_type"
-msgid "Recording"
-msgstr ""
-
 #: DB:recording_alias_type/name:1
 msgctxt "alias_type"
 msgid "Recording name"
+msgstr ""
+
+#: DB:series_type/name:3
+msgctxt "series_type"
+msgid "Recording series"
 msgstr ""
 
 #: DB:medium_format/name:10
@@ -4422,18 +4427,8 @@ msgctxt "collection_type"
 msgid "Release"
 msgstr "מהדורה"
 
-#: DB:series_type/name:2
-msgctxt "series_type"
-msgid "Release"
-msgstr "מהדורה"
-
 #: DB:editor_collection_type/name:13
 msgctxt "collection_type"
-msgid "Release group"
-msgstr ""
-
-#: DB:series_type/name:1
-msgctxt "series_type"
 msgid "Release group"
 msgstr ""
 
@@ -4442,9 +4437,19 @@ msgctxt "alias_type"
 msgid "Release group name"
 msgstr ""
 
+#: DB:series_type/name:1
+msgctxt "series_type"
+msgid "Release group series"
+msgstr ""
+
 #: DB:release_alias_type/name:1
 msgctxt "alias_type"
 msgid "Release name"
+msgstr ""
+
+#: DB:series_type/name:2
+msgctxt "series_type"
+msgid "Release series"
 msgstr ""
 
 #: DB:place_type/name:6
@@ -5554,15 +5559,15 @@ msgctxt "collection_type"
 msgid "Work"
 msgstr "יצירה"
 
-#: DB:series_type/name:4
-msgctxt "series_type"
-msgid "Work"
-msgstr "יצירה"
-
 #: DB:work_alias_type/name:1
 msgctxt "alias_type"
 msgid "Work name"
 msgstr "שם יצירה"
+
+#: DB:series_type/name:4
+msgctxt "series_type"
+msgid "Work series"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:277
 msgctxt "work_attribute_type_allowed_value"

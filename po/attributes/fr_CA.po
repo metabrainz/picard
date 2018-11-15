@@ -14,8 +14,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2018-06-30 10:21+0000\n"
-"Last-Translator: yvanz\n"
+"PO-Revision-Date: 2018-10-15 16:10+0000\n"
+"Last-Translator: Michael Wiencek <mwtuea@gmail.com>\n"
 "Language-Team: French (Canada) (http://www.transifex.com/musicbrainz/musicbrainz/language/fr_CA/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1044,6 +1044,11 @@ msgctxt "medium_format"
 msgid "Blu-ray"
 msgstr ""
 
+#: DB:medium_format/name:79
+msgctxt "medium_format"
+msgid "Blu-ray-R"
+msgstr ""
+
 #: DB:medium_format/name:35
 msgctxt "medium_format"
 msgid "Blu-spec CD"
@@ -1906,14 +1911,14 @@ msgctxt "collection_type"
 msgid "Event"
 msgstr "Événement"
 
-#: DB:series_type/name:6
-msgctxt "series_type"
-msgid "Event"
-msgstr "Événement"
-
 #: DB:event_alias_type/name:1
 msgctxt "alias_type"
 msgid "Event name"
+msgstr ""
+
+#: DB:series_type/name:6
+msgctxt "series_type"
+msgid "Event series"
 msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:729
@@ -4396,14 +4401,14 @@ msgctxt "collection_type"
 msgid "Recording"
 msgstr "Enregistrement"
 
-#: DB:series_type/name:3
-msgctxt "series_type"
-msgid "Recording"
-msgstr "Enregistrement"
-
 #: DB:recording_alias_type/name:1
 msgctxt "alias_type"
 msgid "Recording name"
+msgstr ""
+
+#: DB:series_type/name:3
+msgctxt "series_type"
+msgid "Recording series"
 msgstr ""
 
 #: DB:medium_format/name:10
@@ -4431,18 +4436,8 @@ msgctxt "collection_type"
 msgid "Release"
 msgstr "Parution"
 
-#: DB:series_type/name:2
-msgctxt "series_type"
-msgid "Release"
-msgstr "Parution"
-
 #: DB:editor_collection_type/name:13
 msgctxt "collection_type"
-msgid "Release group"
-msgstr "Groupe de parution"
-
-#: DB:series_type/name:1
-msgctxt "series_type"
 msgid "Release group"
 msgstr "Groupe de parution"
 
@@ -4451,9 +4446,19 @@ msgctxt "alias_type"
 msgid "Release group name"
 msgstr ""
 
+#: DB:series_type/name:1
+msgctxt "series_type"
+msgid "Release group series"
+msgstr ""
+
 #: DB:release_alias_type/name:1
 msgctxt "alias_type"
 msgid "Release name"
+msgstr ""
+
+#: DB:series_type/name:2
+msgctxt "series_type"
+msgid "Release series"
 msgstr ""
 
 #: DB:place_type/name:6
@@ -5563,14 +5568,14 @@ msgctxt "collection_type"
 msgid "Work"
 msgstr "Œuvre"
 
-#: DB:series_type/name:4
-msgctxt "series_type"
-msgid "Work"
-msgstr "Œuvre"
-
 #: DB:work_alias_type/name:1
 msgctxt "alias_type"
 msgid "Work name"
+msgstr ""
+
+#: DB:series_type/name:4
+msgctxt "series_type"
+msgid "Work series"
 msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:277

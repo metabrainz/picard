@@ -11,8 +11,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2018-07-22 16:00+0000\n"
-"Last-Translator: Luca Salini <salo.rock@gmail.com>\n"
+"PO-Revision-Date: 2018-10-15 16:09+0000\n"
+"Last-Translator: Michael Wiencek <mwtuea@gmail.com>\n"
 "Language-Team: Italian (http://www.transifex.com/musicbrainz/musicbrainz/language/it/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1041,6 +1041,11 @@ msgctxt "medium_format"
 msgid "Blu-ray"
 msgstr "Blu-ray"
 
+#: DB:medium_format/name:79
+msgctxt "medium_format"
+msgid "Blu-ray-R"
+msgstr ""
+
 #: DB:medium_format/name:35
 msgctxt "medium_format"
 msgid "Blu-spec CD"
@@ -1903,15 +1908,15 @@ msgctxt "collection_type"
 msgid "Event"
 msgstr "Evento"
 
-#: DB:series_type/name:6
-msgctxt "series_type"
-msgid "Event"
-msgstr "Evento"
-
 #: DB:event_alias_type/name:1
 msgctxt "alias_type"
 msgid "Event name"
 msgstr "Nome evento"
+
+#: DB:series_type/name:6
+msgctxt "series_type"
+msgid "Event series"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:729
 msgctxt "work_attribute_type_allowed_value"
@@ -4393,15 +4398,15 @@ msgctxt "collection_type"
 msgid "Recording"
 msgstr "Registrazione"
 
-#: DB:series_type/name:3
-msgctxt "series_type"
-msgid "Recording"
-msgstr "Registrazione"
-
 #: DB:recording_alias_type/name:1
 msgctxt "alias_type"
 msgid "Recording name"
 msgstr "Nome della registrazione"
+
+#: DB:series_type/name:3
+msgctxt "series_type"
+msgid "Recording series"
+msgstr ""
 
 #: DB:medium_format/name:10
 msgctxt "medium_format"
@@ -4428,18 +4433,8 @@ msgctxt "collection_type"
 msgid "Release"
 msgstr "Pubblicazione"
 
-#: DB:series_type/name:2
-msgctxt "series_type"
-msgid "Release"
-msgstr "Pubblicazione"
-
 #: DB:editor_collection_type/name:13
 msgctxt "collection_type"
-msgid "Release group"
-msgstr "Gruppo di pubblicazioni"
-
-#: DB:series_type/name:1
-msgctxt "series_type"
 msgid "Release group"
 msgstr "Gruppo di pubblicazioni"
 
@@ -4448,10 +4443,20 @@ msgctxt "alias_type"
 msgid "Release group name"
 msgstr "Nome del gruppo di pubblicazioni"
 
+#: DB:series_type/name:1
+msgctxt "series_type"
+msgid "Release group series"
+msgstr ""
+
 #: DB:release_alias_type/name:1
 msgctxt "alias_type"
 msgid "Release name"
 msgstr "Nome della pubblicazione"
+
+#: DB:series_type/name:2
+msgctxt "series_type"
+msgid "Release series"
+msgstr ""
 
 #: DB:place_type/name:6
 msgctxt "place_type"
@@ -5560,15 +5565,15 @@ msgctxt "collection_type"
 msgid "Work"
 msgstr "Opera"
 
-#: DB:series_type/name:4
-msgctxt "series_type"
-msgid "Work"
-msgstr "Opera"
-
 #: DB:work_alias_type/name:1
 msgctxt "alias_type"
 msgid "Work name"
 msgstr "Nome opera"
+
+#: DB:series_type/name:4
+msgctxt "series_type"
+msgid "Work series"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:277
 msgctxt "work_attribute_type_allowed_value"

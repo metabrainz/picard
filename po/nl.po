@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2018-08-26 13:44+0200\n"
-"PO-Revision-Date: 2018-09-04 19:43+0000\n"
+"PO-Revision-Date: 2018-10-09 10:04+0000\n"
 "Last-Translator: Maurits Meulenbelt <mfmeulenbelt@gmail.com>\n"
 "Language-Team: Dutch (http://www.transifex.com/musicbrainz/musicbrainz/language/nl/)\n"
 "MIME-Version: 1.0\n"
@@ -1093,7 +1093,7 @@ msgstr "&Help"
 
 #: picard/ui/mainwindow.py:633
 msgid "Actions"
-msgstr "&Acties"
+msgstr "Acties"
 
 #: picard/ui/mainwindow.py:669
 msgid "Track"
@@ -2029,7 +2029,7 @@ msgstr "Ongeldig uitvoerbaar bestand voor fpcalc"
 #: picard/ui/options/general.py:78
 #, python-format
 msgid "Logged in as <b>%s</b>."
-msgstr "Aangemeld als <b>%s</b>."
+msgstr "Aangemeld als <b>%s</b>"
 
 #: picard/ui/options/general.py:92
 msgid "Authorization code:"

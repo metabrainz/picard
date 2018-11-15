@@ -5,6 +5,7 @@
 # Translators:
 # DoomHammer <deha@irc.pl>, 2006
 # Formbi Chiss <formbi@interia.pl>, 2017
+# Jarek . <jarek83@gmail.com>, 2018
 # Debeat <krystian4842@gmail.com>, 2014-2015
 # Marcin Rataj <lidel@lidel.org>, 2012,2014
 # Marco Oliver Grunwald <m@mgrvnwald.com>, 2015
@@ -14,8 +15,8 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2018-08-26 13:44+0200\n"
-"PO-Revision-Date: 2018-08-26 13:22+0000\n"
-"Last-Translator: Michael Wiencek <mwtuea@gmail.com>\n"
+"PO-Revision-Date: 2018-09-27 19:09+0000\n"
+"Last-Translator: Jarek . <jarek83@gmail.com>\n"
 "Language-Team: Polish (http://www.transifex.com/musicbrainz/musicbrainz/language/pl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -297,7 +298,7 @@ msgstr "włoski"
 
 #: picard/const/languages.py:57
 msgid "Norwegian Bokmal"
-msgstr ""
+msgstr "norweski Bokmål"
 
 #: picard/const/languages.py:59
 msgid "Dutch"
@@ -317,7 +318,7 @@ msgstr "szwedzki"
 
 #: picard/const/languages.py:75
 msgid "Traditional Chinese"
-msgstr ""
+msgstr "Chińskie pismo tradycyjne"
 
 #: picard/coverart/__init__.py:98
 #, python-format
@@ -348,7 +349,7 @@ msgstr "500 px"
 
 #: picard/coverart/providers/caa.py:69
 msgid "1200 px"
-msgstr ""
+msgstr "1200 px"
 
 #: picard/coverart/providers/caa.py:70
 msgid "Full size"
@@ -672,7 +673,7 @@ msgstr "W&tyczki"
 
 #: picard/ui/itemviews.py:433
 msgid "&Run scripts"
-msgstr ""
+msgstr "U&ruchom skrypty"
 
 #: picard/ui/itemviews.py:591
 msgid "file view"
@@ -732,27 +733,27 @@ msgstr ""
 
 #: picard/ui/logview.py:163
 msgid "String to highlight"
-msgstr ""
+msgstr "Ciąg znaków do zaznaczenia"
 
 #: picard/ui/logview.py:168
 msgid "Highlight"
-msgstr ""
+msgstr "Zaznaczenie"
 
 #: picard/ui/logview.py:177
 msgid "Clear Highlight"
-msgstr ""
+msgstr "Wyczyść zaznaczenie"
 
 #: picard/ui/logview.py:183 picard/ui/logview.py:264
 msgid "Clear Log"
-msgstr ""
+msgstr "Wyczyść dziennik zdarzeń"
 
 #: picard/ui/logview.py:188
 msgid "Save As..."
-msgstr ""
+msgstr "Zapisz jako..."
 
 #: picard/ui/logview.py:233 picard/ui/logview.py:240
 msgid "Save Log View to File"
-msgstr ""
+msgstr "Zapisz widok dziennika do pliku"
 
 #: picard/ui/logview.py:241
 msgid "File already exists, do you really want to save to this file?"
@@ -760,7 +761,7 @@ msgstr ""
 
 #: picard/ui/logview.py:253
 msgid "Failed to save Log View to file"
-msgstr ""
+msgstr "Nie udało się zapisać widoku dziennika do pliku"
 
 #: picard/ui/logview.py:254
 #, python-format
@@ -769,7 +770,7 @@ msgstr ""
 
 #: picard/ui/logview.py:265
 msgid "Are you sure you want to clear the log?"
-msgstr ""
+msgstr "Czy na pewno chcesz wyczyścić dziennik zdarzeń?"
 
 #: picard/ui/logview.py:299
 msgid "Activity History"
@@ -935,7 +936,7 @@ msgstr ""
 
 #: picard/ui/mainwindow.py:405
 msgid "Search for similar tracks..."
-msgstr ""
+msgstr "Szukaj podobnych utworów..."
 
 #: picard/ui/mainwindow.py:406
 msgid "View similar tracks and optionally choose a different release"
@@ -986,7 +987,7 @@ msgstr "Użyj odcisku AcoustID, aby zidentyfikować pliki nawet gdy nie mają me
 
 #: picard/ui/mainwindow.py:460
 msgid "Identify the file using its AcoustID audio fingerprint"
-msgstr ""
+msgstr "Zidentyfikuj plik używając znacznika AcoustID"
 
 #: picard/ui/mainwindow.py:462
 msgid "Ctrl+Y"
@@ -1058,7 +1059,7 @@ msgstr ""
 
 #: picard/ui/mainwindow.py:517
 msgid "Ctrl+E"
-msgstr ""
+msgstr "Ctrl+E"
 
 #: picard/ui/mainwindow.py:519
 msgid "View Activity &History"
@@ -1066,7 +1067,7 @@ msgstr "Wyświetl &historię aktywności"
 
 #: picard/ui/mainwindow.py:522
 msgid "Ctrl+H"
-msgstr ""
+msgstr "Ctrl+H"
 
 #: picard/ui/mainwindow.py:528
 msgid "Open in &Player"
@@ -1118,11 +1119,11 @@ msgstr "Utwór"
 
 #: picard/ui/mainwindow.py:685
 msgid "&Advanced search"
-msgstr ""
+msgstr "Wyszukiwanie z&aawansowane"
 
 #: picard/ui/mainwindow.py:686
 msgid "&Builtin search"
-msgstr ""
+msgstr "W&budowane wyszukiwanie"
 
 #: picard/ui/mainwindow.py:775
 msgid "All Supported Formats"
@@ -1352,15 +1353,15 @@ msgstr ""
 
 #: picard/ui/ui_options_advanced.py:108
 msgid "Video tracks"
-msgstr ""
+msgstr "Ścieżki wideo"
 
 #: picard/ui/ui_options_advanced.py:109
 msgid "Pregap tracks"
-msgstr ""
+msgstr "Przerwy przed ścieżkami"
 
 #: picard/ui/ui_options_advanced.py:110
 msgid "Data tracks"
-msgstr ""
+msgstr "Ścieżki danych"
 
 #: picard/ui/ui_options_advanced.py:111
 msgid "Silent tracks"
@@ -1400,7 +1401,7 @@ msgstr "Nadpisz plik jeżeli istnieje"
 
 #: picard/ui/ui_options_cover.py:92
 msgid "Cover Art Providers"
-msgstr ""
+msgstr "Dostawcy okładek "
 
 #: picard/ui/ui_options_cover.py:93
 msgid "Reorder Priority: "
@@ -1548,7 +1549,7 @@ msgstr "Pozwól na zaznaczanie wielu katalogów"
 
 #: picard/ui/ui_options_interface.py:126
 msgid "Use builtin search rather than looking in browser"
-msgstr ""
+msgstr "Używaj wbudowanej wyszukiwarki zamiast szukać w przeglądarce"
 
 #: picard/ui/searchdialog/__init__.py:99 picard/ui/ui_options_interface.py:127
 msgid "Use advanced query syntax"
@@ -1696,7 +1697,7 @@ msgstr "Wersja"
 
 #: picard/ui/ui_options_plugins.py:131
 msgid "Action"
-msgstr ""
+msgstr "Akcja"
 
 #: picard/ui/ui_options_plugins.py:132
 msgid "Install plugin..."
@@ -1904,7 +1905,7 @@ msgstr "Używaj tylko obrazów następujących wielkości:"
 
 #: picard/ui/ui_provider_options_caa.py:83
 msgid "Save only one front image as separate file"
-msgstr ""
+msgstr "Jako oddzielny plik zapisuj tylko jedną przednią okładkę"
 
 #: picard/ui/ui_provider_options_caa.py:84
 msgid "Download only approved images"
@@ -1945,7 +1946,7 @@ msgstr "&OK"
 
 #: picard/ui/util.py:46
 msgid "Clos&e"
-msgstr ""
+msgstr "&Zamknij"
 
 #: picard/ui/util.py:97
 msgid "Clear entry"
@@ -2092,7 +2093,7 @@ msgstr "Zapisz"
 
 #: picard/ui/options/interface.py:91
 msgid "Submit AcoustIDs"
-msgstr ""
+msgstr "Wyślij AcoustIDs"
 
 #: picard/ui/options/interface.py:95
 msgid "Open in Player"
@@ -2100,7 +2101,7 @@ msgstr "Otwórz w Odtwarzaczu"
 
 #: picard/ui/options/interface.py:99
 msgid "Lookup CD..."
-msgstr ""
+msgstr "Wyszukiwanie CD..."
 
 #: picard/ui/options/interface.py:138
 msgid "System default"
@@ -2122,7 +2123,7 @@ msgstr "Przeciągnij i upuść, aby zmienić kolejność"
 
 #: picard/ui/options/interface.py:220 picard/ui/options/interface.py:289
 msgid "label"
-msgstr ""
+msgstr "wytwórnia"
 
 #: picard/ui/options/matching.py:32
 msgid "Matching"
@@ -2152,16 +2153,16 @@ msgstr "Wtyczka '%s' zostanie uaktualniona do wersji %s przy następnym uruchomi
 
 #: picard/ui/options/plugins.py:257
 msgid "Uninstall plugin?"
-msgstr ""
+msgstr "Czy odinstalować wtyczkę?"
 
 #: picard/ui/options/plugins.py:258
 #, python-format
 msgid "Do you really want to uninstall the plugin '%s' ?"
-msgstr ""
+msgstr "Czy na pewno chcesz odinstalować wtyczkę „%s”?"
 
 #: picard/ui/options/plugins.py:269 picard/ui/options/plugins.py:315
 msgid "Uninstalled"
-msgstr ""
+msgstr "Odinstalowano"
 
 #: picard/ui/options/plugins.py:310
 msgid "Install"
@@ -2169,12 +2170,12 @@ msgstr "Instaluj"
 
 #: picard/ui/options/plugins.py:311
 msgid "Uninstall"
-msgstr ""
+msgstr "Odinstaluj"
 
 #: picard/ui/options/plugins.py:328
 #, python-format
 msgid "Upgrade from %s to %s"
-msgstr ""
+msgstr "Zaktualizuj z %sdo %s"
 
 #: picard/ui/options/plugins.py:359
 msgid "Restart Picard to upgrade to new version"
@@ -2308,7 +2309,7 @@ msgstr "Załaduj do Picarda"
 
 #: picard/ui/searchdialog/album.py:149
 msgid "Album Search Results"
-msgstr ""
+msgstr "Wyniki wyszukiwania albumu"
 
 #: picard/ui/searchdialog/album.py:160 picard/util/tags.py:85
 msgid "Language"
@@ -2321,15 +2322,15 @@ msgstr "Status"
 #: picard/ui/searchdialog/album.py:164 picard/ui/searchdialog/artist.py:57
 #: picard/ui/searchdialog/track.py:68
 msgid "Score"
-msgstr ""
+msgstr "Wynik"
 
 #: picard/ui/searchdialog/artist.py:46
 msgid "Show in browser"
-msgstr ""
+msgstr "Obejrzyj w przeglądarce"
 
 #: picard/ui/searchdialog/artist.py:47
 msgid "Artist Search Dialog"
-msgstr ""
+msgstr "Okno wyszukiwania artysty"
 
 #: picard/ui/searchdialog/artist.py:51
 msgid "Gender"
@@ -2341,7 +2342,7 @@ msgstr "Rejon"
 
 #: picard/ui/searchdialog/artist.py:53
 msgid "Begin"
-msgstr ""
+msgstr "Początek"
 
 #: picard/ui/searchdialog/artist.py:54
 msgid "Begin Area"
@@ -2349,7 +2350,7 @@ msgstr "Rejon rozpoczęcia"
 
 #: picard/ui/searchdialog/artist.py:55
 msgid "End"
-msgstr ""
+msgstr "Koniec"
 
 #: picard/ui/searchdialog/artist.py:56
 msgid "End Area"
@@ -2365,7 +2366,7 @@ msgstr "Wydanie"
 
 #: picard/ui/searchdialog/track.py:176
 msgid "Standalone Recording"
-msgstr ""
+msgstr "Samodzielne nagranie"
 
 #: picard/util/bytes2human.py:33
 #, python-format

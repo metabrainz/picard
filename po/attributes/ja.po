@@ -1,6 +1,7 @@
 # 
 # Translators:
 # nikki, 2014
+# john doe, 2018
 # Keshav Kini <keshav.kini@gmail.com>, 2013
 # ktu0457, 2017
 # mai inoue, 2015
@@ -20,8 +21,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2018-06-30 10:21+0000\n"
-"Last-Translator: yvanz\n"
+"PO-Revision-Date: 2018-10-31 07:04+0000\n"
+"Last-Translator: john doe\n"
 "Language-Team: Japanese (http://www.transifex.com/musicbrainz/musicbrainz/language/ja/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -114,7 +115,7 @@ msgctxt "medium_format"
 msgid ""
 "90 rpm, vertical-cut shellac discs, produced by the Pathé label from 1906 to"
 " 1932."
-msgstr ""
+msgstr "90 rpm、縦溝式 (Vertical-cut) のシェラック盤、Pathé レーベルが1906年～1932年に製作。"
 
 #: DB:work_attribute_type_allowed_value/value:794
 msgctxt "work_attribute_type_allowed_value"
@@ -1050,6 +1051,11 @@ msgctxt "medium_format"
 msgid "Blu-ray"
 msgstr "Blu-ray"
 
+#: DB:medium_format/name:79
+msgctxt "medium_format"
+msgid "Blu-ray-R"
+msgstr ""
+
 #: DB:medium_format/name:35
 msgctxt "medium_format"
 msgid "Blu-spec CD"
@@ -1183,7 +1189,7 @@ msgstr "CASH ID"
 #: DB:work_attribute_type/name:22
 msgctxt "work_attribute_type"
 msgid "CCLI ID"
-msgstr ""
+msgstr "CCLI ID"
 
 #: DB:medium_format/name:1
 msgctxt "medium_format"
@@ -1912,15 +1918,15 @@ msgctxt "collection_type"
 msgid "Event"
 msgstr "イベント"
 
-#: DB:series_type/name:6
-msgctxt "series_type"
-msgid "Event"
-msgstr "イベント"
-
 #: DB:event_alias_type/name:1
 msgctxt "alias_type"
 msgid "Event name"
 msgstr "イベント名"
+
+#: DB:series_type/name:6
+msgctxt "series_type"
+msgid "Event series"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:729
 msgctxt "work_attribute_type_allowed_value"
@@ -2675,7 +2681,7 @@ msgstr ""
 #: DB:work_attribute_type/name:29
 msgctxt "work_attribute_type"
 msgid "ICE ID"
-msgstr ""
+msgstr "ICE ID"
 
 #: DB:work_attribute_type/description:28
 msgctxt "work_attribute_type"
@@ -3605,7 +3611,7 @@ msgstr ""
 #: DB:work_attribute_type/name:12
 msgctxt "work_attribute_type"
 msgid "MÜST ID"
-msgstr ""
+msgstr "MÜST ID"
 
 #: DB:work_attribute_type_allowed_value/value:463
 msgctxt "work_attribute_type_allowed_value"
@@ -4000,7 +4006,7 @@ msgstr ""
 #: DB:work_attribute_type/name:25
 msgctxt "work_attribute_type"
 msgid "OSA ID"
-msgstr ""
+msgstr "OSA ID"
 
 #: DB:cover_art_archive.art_type/name:5
 msgctxt "cover_art_type"
@@ -4402,15 +4408,15 @@ msgctxt "collection_type"
 msgid "Recording"
 msgstr "レコーディング"
 
-#: DB:series_type/name:3
-msgctxt "series_type"
-msgid "Recording"
-msgstr "レコーディング"
-
 #: DB:recording_alias_type/name:1
 msgctxt "alias_type"
 msgid "Recording name"
 msgstr "レコーディング名"
+
+#: DB:series_type/name:3
+msgctxt "series_type"
+msgid "Recording series"
+msgstr ""
 
 #: DB:medium_format/name:10
 msgctxt "medium_format"
@@ -4437,18 +4443,8 @@ msgctxt "collection_type"
 msgid "Release"
 msgstr "リリース"
 
-#: DB:series_type/name:2
-msgctxt "series_type"
-msgid "Release"
-msgstr "リリース"
-
 #: DB:editor_collection_type/name:13
 msgctxt "collection_type"
-msgid "Release group"
-msgstr "リリースグループ"
-
-#: DB:series_type/name:1
-msgctxt "series_type"
 msgid "Release group"
 msgstr "リリースグループ"
 
@@ -4457,10 +4453,20 @@ msgctxt "alias_type"
 msgid "Release group name"
 msgstr "リリースグループ名"
 
+#: DB:series_type/name:1
+msgctxt "series_type"
+msgid "Release group series"
+msgstr ""
+
 #: DB:release_alias_type/name:1
 msgctxt "alias_type"
 msgid "Release name"
 msgstr "リリース名"
+
+#: DB:series_type/name:2
+msgctxt "series_type"
+msgid "Release series"
+msgstr ""
 
 #: DB:place_type/name:6
 msgctxt "place_type"
@@ -4585,7 +4591,7 @@ msgstr ""
 #: DB:work_attribute_type/name:28
 msgctxt "work_attribute_type"
 msgid "SABAM ID"
-msgstr ""
+msgstr "SABAM ID"
 
 #: DB:medium_format/name:3
 msgctxt "medium_format"
@@ -4600,7 +4606,7 @@ msgstr "SACEM ID"
 #: DB:work_attribute_type/name:27
 msgctxt "work_attribute_type"
 msgid "SACM ID"
-msgstr ""
+msgstr "SACM ID"
 
 #: DB:work_attribute_type/name:24
 msgctxt "work_attribute_type"
@@ -5569,15 +5575,15 @@ msgctxt "collection_type"
 msgid "Work"
 msgstr "作品"
 
-#: DB:series_type/name:4
-msgctxt "series_type"
-msgid "Work"
-msgstr "ワーク"
-
 #: DB:work_alias_type/name:1
 msgctxt "alias_type"
 msgid "Work name"
 msgstr "ワーク名"
+
+#: DB:series_type/name:4
+msgctxt "series_type"
+msgid "Work series"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:277
 msgctxt "work_attribute_type_allowed_value"
@@ -5618,7 +5624,7 @@ msgstr ""
 #: DB:work_attribute_type/name:30
 msgctxt "work_attribute_type"
 msgid "ZAiKS ID"
-msgstr ""
+msgstr "ZAiKS ID"
 
 #: DB:work_attribute_type_allowed_value/value:780
 msgctxt "work_attribute_type_allowed_value"
