@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: picard 2.0.5.dev1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2018-11-15 14:13+0100\n"
+"POT-Creation-Date: 2018-11-18 22:51+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -148,32 +148,32 @@ msgstr ""
 msgid "Looking up the metadata for file %(filename)s ..."
 msgstr ""
 
-#: picard/plugin.py:304
+#: picard/plugin.py:305
 #, python-format
 msgid "Failed loading zipped plugin %r"
 msgstr ""
 
-#: picard/plugin.py:314
+#: picard/plugin.py:315
 #, python-format
 msgid "Failed loading plugin %r"
 msgstr ""
 
-#: picard/plugin.py:354
+#: picard/plugin.py:355
 #, python-format
 msgid "Plugin '%s' from '%s' is not compatible with this version of Picard."
 msgstr ""
 
-#: picard/plugin.py:358
+#: picard/plugin.py:359
 #, python-format
 msgid "Plugin %r has an invalid API version string : %s"
 msgstr ""
 
-#: picard/plugin.py:361
+#: picard/plugin.py:362
 #, python-format
 msgid "Plugin %r : %s"
 msgstr ""
 
-#: picard/plugin.py:491
+#: picard/plugin.py:492
 #, python-format
 msgid "Error loading plugins list: %(error)s"
 msgstr ""
@@ -2095,7 +2095,21 @@ msgstr ""
 msgid "<br/>Translated to LANG by %s"
 msgstr ""
 
-#: picard/ui/options/about.py:65
+#: picard/ui/options/about.py:73
+msgid ""
+"Icons made by Sambhav Kothari <sambhavs.email@gmail.com>\n"
+"and <a "
+"href=\"http://www.flaticon.com/authors/madebyoliver\">Madebyoliver</a>,\n"
+"<a href=\"http://www.flaticon.com/authors/pixel-buddha\">Pixel "
+"Buddha</a>,\n"
+"<a href=\"http://www.flaticon.com/authors/nikita-golubev\">Nikita "
+"Golubev</a>,\n"
+"<a href=\"http://www.flaticon.com/authors/maxim-basinski\">Maxim "
+"Basinski</a>\n"
+"from <a href=\"www.flaticon.com\">www.flaticon.com</a>"
+msgstr ""
+
+#: picard/ui/options/about.py:80
 #, python-format
 msgid ""
 "<p align=\"center\"><span style=\"font-size:15px;font-"
@@ -2114,21 +2128,9 @@ msgid ""
 "<p align=\"center\"><a href=\"%(picard-donate-url)s\">Donate now!</a></p>"
 "\n"
 "<p align=\"center\"><strong>Credits</strong><br/>\n"
-"<small>Copyright © 2004-2018 Robert Kaye, Lukáš Lalinský, Laurent Monin, "
-"Sambhav Kothari, Philipp Wolfer and others%(translator-"
-"credits)s</small></p>\n"
-"<p align=\"center\"><small>Icons made by Sambhav Kothari "
-"<sambhavs.email@gmail.com>\n"
-"and <a "
-"href=\"http://www.flaticon.com/authors/madebyoliver\">Madebyoliver</a>,\n"
-"<a href=\"http://www.flaticon.com/authors/pixel-buddha\">Pixel "
-"Buddha</a>,\n"
-"<a href=\"http://www.flaticon.com/authors/nikita-golubev\">Nikita "
-"Golubev</a>,\n"
-"<a href=\"http://www.flaticon.com/authors/maxim-basinski\">Maxim "
-"Basinski</a>\n"
-"from <a href=\"www.flaticon.com\">www.flaticon.com</a>\n"
-"</small></p>\n"
+"<small>Copyright © %(copyright-years)s %(authors-credits)s and others"
+"%(translator-credits)s</small></p>\n"
+"<p align=\"center\"><small>%(icons-credits)s</small></p>\n"
 "<p align=\"center\"><strong>Official website</strong><br/><a href"
 "=\"%(picard-doc-url)s\">%(picard-doc-url)s</a></p>\n"
 msgstr ""
