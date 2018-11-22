@@ -10,7 +10,7 @@
     <p>
       Do you need to clean up your music library? Picard is an open-source
       cross-platform music tagger by MusicBrainz. It has the ability to
-      identify audio files without any metadata.
+      identify audio files even without any existing metadata.
     </p>
     <p>
       A variety of plugins are available and you can even write your own.
@@ -20,9 +20,46 @@
     <p>
       Tagging audio files has never been easier.
     </p>
+    <p>Features:</p>
+    <ul>
+      <li>
+        Multiple formats: Picard supports all popular music formats,
+        including MP3, FLAC, OGG, M4A, WMA, WAV, and more.
+      </li>
+      <li>
+        AcoustID: Picard uses AcoustID audio fingerprints, allowing files
+        to be identified by the actual music, even if they have no metadata.
+      </li>
+      <li>
+        Comprehensive database: Picard uses the open and
+        community-maintained MusicBrainz database to provide accurate
+        information about millions of music releases.
+      </li>
+      <li>
+        CD lookups: Picard can lookup entire music CDs with a click.
+      </li>
+      <li>
+        Plugin support: If you need a particular feature, you can choose
+        from a selection of available plugins or write your own.
+      </li>
+      <li>
+        Scripting: A flexible but easy to learn scripting language allows
+        you to exactly specify how your music files will be named and how the
+        tags will look like.
+      </li>
+      <li>
+        Open Source: Picard is licensed under the GNU General Public License 2.0
+        or later, and is hosted on GitHub where it is actively
+        developed by some awesome developers.
+      </li>
+    </ul>
   </description>
 
   <launchable type="desktop-id">org.musicbrainz.Picard.desktop</launchable>
+
+  <provides>
+    <binary>picard</binary>
+  </provides>
 
   <screenshots>
     <screenshot type="default">
@@ -46,6 +83,10 @@
   <url type="bugtracker">https://tickets.metabrainz.org/projects/PICARD/issues/</url>
   <url type="faq">https://picard.musicbrainz.org/docs/faq/</url>
   <url type="help">https://picard.musicbrainz.org/docs/</url>
+  <url type="translate">https://www.transifex.com/musicbrainz/musicbrainz/picard/</url>
+
+  <translation type="gettext">picard</translation>
+  <developer_name>MetaBrainz Foundation</developer_name>
 
   <content_rating type="oars-1.1">
     <content_attribute id="money-purchasing">mild</content_attribute>
@@ -55,7 +96,10 @@
     <release date="2018-09-05" version="2.0.4"/>
     <release date="2018-08-10" version="2.0.3"/>
     <release date="2018-07-30" version="2.0.2"/>
+    <release date="2018-07-21" version="2.0.1"/>
+    <release date="2018-07-18" version="2.0.0"/>
     <release date="2017-06-20" version="1.4.2"/>
     <release date="2017-04-15" version="1.4.1"/>
+    <release date="2017-02-14" version="1.4.0"/>
   </releases>
 </component>
