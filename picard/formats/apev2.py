@@ -212,6 +212,9 @@ class APEv2File(File):
     def supports_tag(cls, name):
         unsupported_tags = {
             'gapless',
+            'movement',
+            'movementnumber',
+            'movementtotal',
             'musicip_fingerprint',
             'podcast',
             'podcasturl',

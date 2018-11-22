@@ -279,7 +279,12 @@ class VCommentFile(File):
 
     @classmethod
     def supports_tag(cls, name):
-        unsupported_tags = {'showmovement'}
+        unsupported_tags = {
+            'movement',
+            'movementnumber',
+            'movementtotal',
+            'showmovement',
+            }
         return bool(name) and name not in unsupported_tags
 
 
