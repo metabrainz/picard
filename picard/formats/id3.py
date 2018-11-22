@@ -167,16 +167,16 @@ class ID3File(File):
         'ASIN': 'asin',
         'MusicMagic Fingerprint': 'musicip_fingerprint',
         'ARTISTS': 'artists',
-        # 'Work': 'work',
+        'WORK': 'work',
         'Writer': 'writer',
     }
     __rtranslate_freetext = dict([(v, k) for k, v in __translate_freetext.items()])
-    __translate_freetext['Work'] = 'work'  # Always read, but writing depends on itunes_compatible_grouping
     __translate_freetext['writer'] = 'writer'  # For backward compatibility of case
 
     # Obsolete tag names which will still be loaded, but will get renamed on saving
     __rename_freetext = {
-        'Artists': 'ARTISTS'
+        'Artists': 'ARTISTS',
+        'Work': 'WORK',
     }
     __rrename_freetext = dict([(v, k) for k, v in __rename_freetext.items()])
 
@@ -413,12 +413,9 @@ class ID3File(File):
                     tags.add(id3.GRP1(encoding=encoding, text=values))
                 else:
                     tags.add(id3.TIT1(encoding=encoding, text=values))
-            elif name == 'work':
-                if config.setting['itunes_compatible_grouping']:
-                    tags.add(id3.TIT1(encoding=encoding, text=values))
-                    tags.delall('TXXX:Work')
-                else:
-                    tags.add(self.build_TXXX(encoding, 'Work', values))
+            elif name == 'work' and config.setting['itunes_compatible_grouping']:
+                tags.add(id3.TIT1(encoding=encoding, text=values))
+                tags.delall('TXXX:Work')
             elif name in self.__rtranslate:
                 frameid = self.__rtranslate[name]
                 if frameid.startswith('W'):

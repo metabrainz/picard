@@ -461,6 +461,8 @@ class CommonTests:
             raw_metadata = load_raw(filename)
             self.assertTrue('TXXX:Artists' in raw_metadata)
             self.assertFalse('TXXX:ARTISTS' in raw_metadata)
+            self.assertTrue('TXXX:Work' in raw_metadata)
+            self.assertFalse('TXXX:WORK' in raw_metadata)
             metadata = load_metadata(filename)
             self.assertEqual(metadata['artists'], 'Artist1; Artist2')
             self.assertFalse('Artists' in metadata)
@@ -470,6 +472,8 @@ class CommonTests:
             raw_metadata = load_raw(filename)
             self.assertFalse('TXXX:Artists' in raw_metadata)
             self.assertTrue('TXXX:ARTISTS' in raw_metadata)
+            self.assertFalse('TXXX:Work' in raw_metadata)
+            self.assertTrue('TXXX:WORK' in raw_metadata)
 
 
 class FLACTest(CommonTests.FormatsTest):
