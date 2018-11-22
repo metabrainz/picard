@@ -1,9 +1,9 @@
 os: linux
-dist: trusty
+dist: xenial
 language: python
 sudo: required
 python:
-# - '3.7'
+- '3.7'
 - '3.6'
 - '3.5'
 cache:
@@ -15,7 +15,7 @@ env:
   - INSTALL_DEPS="$PIP_INSTALL -r requirements.txt"
   - PYTEST="$PIP_INSTALL pytest pytest-randomly pytest-cov"
   - CODACY="$PIP_INSTALL codacy-coverage"
-  - LIBDISCID="libdiscid0 libdiscid0-dev"
+  - LIBDISCID="libdiscid0 libdiscid-dev"
   matrix:
   - INSTALL_DEPS="$PIP_INSTALL pyqt5==5.11.3 mutagen       discid"
   - INSTALL_DEPS="$PIP_INSTALL pyqt5==5.10   mutagen       discid"
@@ -38,10 +38,6 @@ matrix:
     - DISCID_VERSION=0.6.2
     - FPCALC_VERSION=1.4.3
     - INSTALL_DEPS="$PIP_INSTALL pyqt5==5.11.3 mutagen discid"
-  - python: "3.7"
-    dist: xenial
-    sudo: true
-    env: LIBDISCID="libdiscid0 libdiscid-dev"
   fast_finish: true
 before_install:
 - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get update -qq && sudo apt-get
