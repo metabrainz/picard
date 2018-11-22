@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import logging
+import mutagen
 import os.path
 import shutil
 from tempfile import mkstemp
@@ -57,6 +58,8 @@ def save_and_load_metadata(filename, metadata):
     loaded_metadata = load_metadata(filename)
     return loaded_metadata
 
+def load_raw(filename):
+    return mutagen.File(filename)
 
 TAGS = {
     'albumartist': 'Foo',
@@ -158,10 +161,13 @@ class CommonTests:
             self.setup_tags()
 
         def copy_of_original_testfile(self):
-            fd, copy = mkstemp(suffix=self.testfile_ext)
+            return self.copy_file_tmp(self.testfile_path, self.testfile_ext)
+
+        def copy_file_tmp(self, filename, ext):
+            fd, copy = mkstemp(suffix=ext)
             self.addCleanup(os.unlink, copy)
             os.close(fd)
-            shutil.copy(self.testfile_path, copy)
+            shutil.copy(filename, copy)
             return copy
 
         def setup_tags(self):
@@ -448,6 +454,22 @@ class CommonTests:
             metadata['comment:iTunNORM'] = iTunNORM
             new_metadata = save_and_load_metadata(self.filename, metadata)
             self.assertEqual(new_metadata['comment:iTunNORM'], iTunNORM)
+
+        def test_rename_txxx_tags(self):
+            file_path = os.path.join('test', 'data', 'test-id3-rename-tags.mp3')
+            filename = self.copy_file_tmp(file_path, 'mp3')
+            raw_metadata = load_raw(filename)
+            self.assertTrue('TXXX:Artists' in raw_metadata)
+            self.assertFalse('TXXX:ARTISTS' in raw_metadata)
+            metadata = load_metadata(filename)
+            self.assertEqual(metadata['artists'], 'Artist1; Artist2')
+            self.assertFalse('Artists' in metadata)
+            self.assertEqual(metadata['work'], 'The Work')
+            self.assertFalse('Work' in metadata)
+            save_metadata(filename, metadata)
+            raw_metadata = load_raw(filename)
+            self.assertFalse('TXXX:Artists' in raw_metadata)
+            self.assertTrue('TXXX:ARTISTS' in raw_metadata)
 
 
 class FLACTest(CommonTests.FormatsTest):

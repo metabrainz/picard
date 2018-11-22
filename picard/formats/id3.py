@@ -166,13 +166,19 @@ class ID3File(File):
         'BARCODE': 'barcode',
         'ASIN': 'asin',
         'MusicMagic Fingerprint': 'musicip_fingerprint',
-        'Artists': 'artists',
+        'ARTISTS': 'artists',
         # 'Work': 'work',
         'Writer': 'writer',
     }
     __rtranslate_freetext = dict([(v, k) for k, v in __translate_freetext.items()])
     __translate_freetext['Work'] = 'work'  # Always read, but writing depends on itunes_compatible_grouping
     __translate_freetext['writer'] = 'writer'  # For backward compatibility of case
+
+    # Obsolete tag names which will still be loaded, but will get renamed on saving
+    __rename_freetext = {
+        'Artists': 'ARTISTS'
+    }
+    __rrename_freetext = dict([(v, k) for k, v in __rename_freetext.items()])
 
     _tipl_roles = {
         'engineer': 'engineer',
@@ -246,6 +252,8 @@ class ID3File(File):
                         metadata.add('performer:%s' % role, name)
             elif frameid == 'TXXX':
                 name = frame.desc
+                if name in self.__rename_freetext:
+                    name = self.__rename_freetext[name]
                 if name in self.__translate_freetext:
                     name = self.__translate_freetext[name]
                 elif ((name in self.__rtranslate) !=
@@ -438,7 +446,10 @@ class ID3File(File):
                     elif frameid == 'TSO2':
                         tags.delall('TXXX:ALBUMARTISTSORT')
             elif name in self.__rtranslate_freetext:
-                tags.add(self.build_TXXX(encoding, self.__rtranslate_freetext[name], values))
+                description = self.__rtranslate_freetext[name]
+                if description in self.__rrename_freetext:
+                    tags.delall('TXXX:' + self.__rrename_freetext[description])
+                tags.add(self.build_TXXX(encoding, description, values))
             elif name.startswith('~id3:'):
                 name = name[5:]
                 if name.startswith('TXXX:'):
