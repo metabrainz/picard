@@ -219,6 +219,8 @@ class picard_build(build):
             }
             generate_file('win-version-info.txt.in', 'win-version-info.txt', {**args, **version_args})
             args['name'] = 'picard'
+        elif platform.system() == 'Linux':
+            self.run_command('build_appdata')
         build.run(self)
 
 
@@ -332,6 +334,53 @@ class picard_clean_ui(Command):
             log.info("removing %s", pyfile)
         except OSError:
             log.warn("'%s' does not exist -- can't clean it", pyfile)
+
+
+class picard_build_appdata(Command):
+    description = 'Build appdata metadata file'
+    user_options = []
+
+    def initialize_options(self):
+        pass
+
+    def finalize_options(self):
+        pass
+
+    def run(self):
+        self.spawn([
+            'msgfmt', '--xml',
+            '--template=org.musicbrainz.Picard.appdata.xml.in',
+            '-d', 'po/appstream',
+            '-o', 'org.musicbrainz.Picard.appdata.xml',
+        ])
+
+
+class picard_regen_appdata_pot_file(Command):
+    description = 'Regenerate translations from appdata metadata template'
+    user_options = []
+
+    def initialize_options(self):
+        pass
+
+    def finalize_options(self):
+        pass
+
+    def run(self):
+        output_dir = 'po/appstream/'
+        pot_file = os.path.join(output_dir, 'picard-appstream.pot')
+        self.spawn([
+            'xgettext',
+            '--output', pot_file,
+            '--language=appdata',
+            'org.musicbrainz.Picard.appdata.xml.in',
+        ])
+        for filepath in glob.glob(os.path.join(output_dir, '*.po')):
+            self.spawn([
+                'msgmerge',
+                '--update',
+                filepath,
+                pot_file
+            ])
 
 
 class picard_get_po_files(Command):
@@ -615,6 +664,8 @@ args = {
         'build_locales': picard_build_locales,
         'build_ui': picard_build_ui,
         'clean_ui': picard_clean_ui,
+        'build_appdata': picard_build_appdata,
+        'regen_appdata_pot_file': picard_regen_appdata_pot_file,
         'install': picard_install,
         'install_locales': picard_install_locales,
         'update_constants': picard_update_constants,

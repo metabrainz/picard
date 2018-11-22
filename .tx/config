@@ -7,6 +7,12 @@ source_file = po/picard.pot
 source_lang = en
 type = PO
 
+[musicbrainz.picard_appstream]
+file_filter = po/appstream/<lang>.po
+source_file = po/appstream/picard-appstream.pot
+source_lang = en
+type = PO
+
 [musicbrainz.countries]
 file_filter = po/countries/<lang>.po
 source_file = po/countries/countries.pot
