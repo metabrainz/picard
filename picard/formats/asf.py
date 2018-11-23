@@ -142,6 +142,8 @@ class ASFFile(File):
         'musicbrainz_discid': 'MusicBrainz/Disc Id',
         'musicbrainz_workid': 'MusicBrainz/Work Id',
         'musicbrainz_releasegroupid': 'MusicBrainz/Release Group Id',
+        'musicbrainz_originalalbumid': 'MusicBrainz/Original Album Id',
+        'musicbrainz_originalartistid': 'MusicBrainz/Original Artist Id',
         'musicip_puid': 'MusicIP/PUID',
         'releasestatus': 'MusicBrainz/Album Status',
         'releasetype': 'MusicBrainz/Album Type',
