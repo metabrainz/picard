@@ -21,7 +21,7 @@ class DataObjectTest(PicardTestCase):
         inc = []
         config.setting['use_genres'] = True
         config.setting['folksonomy_tags'] = False
-        config.setting['only_my_tags'] = False
+        config.setting['only_my_genres'] = False
         require_auth = self.obj.set_genre_inc_params(inc)
         self.assertIn('genres', inc)
         self.assertFalse(require_auth)
@@ -30,7 +30,7 @@ class DataObjectTest(PicardTestCase):
         inc = []
         config.setting['use_genres'] = True
         config.setting['folksonomy_tags'] = False
-        config.setting['only_my_tags'] = True
+        config.setting['only_my_genres'] = True
         require_auth = self.obj.set_genre_inc_params(inc)
         self.assertIn('user-genres', inc)
         self.assertTrue(require_auth)
@@ -39,7 +39,7 @@ class DataObjectTest(PicardTestCase):
         inc = []
         config.setting['use_genres'] = True
         config.setting['folksonomy_tags'] = True
-        config.setting['only_my_tags'] = False
+        config.setting['only_my_genres'] = False
         require_auth = self.obj.set_genre_inc_params(inc)
         self.assertIn('tags', inc)
         self.assertFalse(require_auth)
@@ -48,7 +48,7 @@ class DataObjectTest(PicardTestCase):
         inc = []
         config.setting['use_genres'] = True
         config.setting['folksonomy_tags'] = True
-        config.setting['only_my_tags'] = True
+        config.setting['only_my_genres'] = True
         require_auth = self.obj.set_genre_inc_params(inc)
         self.assertIn('user-tags', inc)
         self.assertTrue(require_auth)

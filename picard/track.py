@@ -203,7 +203,7 @@ class Track(DataObject, Item):
         self.merge_folksonomy_tags(tags, self.album.folksonomy_tags)
         if self.album.release_group:
             self.merge_folksonomy_tags(tags, self.album.release_group.folksonomy_tags)
-        if not tags and config.setting['artists_tags']:
+        if not tags and config.setting['artists_genres']:
             # For compilations use each track's artists to look up tags
             if self.metadata['musicbrainz_albumartistid'] == VARIOUS_ARTISTS_ID:
                 for artist in self._track_artists:
@@ -222,27 +222,27 @@ class Track(DataObject, Item):
             taglist.append((100 * count // maxcount, name))
         taglist.sort(reverse=True)
         # And generate the genre metadata tag
-        maxtags = config.setting['max_tags']
-        minusage = config.setting['min_tag_usage']
-        ignore_tags = self._get_ignored_folksonomy_tags()
+        maxtags = config.setting['max_genres']
+        minusage = config.setting['min_genre_usage']
+        ignore_genres = self._get_ignored_folksonomy_tags()
         genre = []
         for usage, name in taglist[:maxtags]:
-            if name.lower() in ignore_tags:
+            if name.lower() in ignore_genres:
                 continue
             if usage < minusage:
                 break
             name = _TRANSLATE_TAGS.get(name, name.title())
             genre.append(name)
-        join_tags = config.setting['join_tags']
-        if join_tags:
-            genre = [join_tags.join(genre)]
+        join_genres = config.setting['join_genres']
+        if join_genres:
+            genre = [join_genres.join(genre)]
         self.metadata['genre'] = genre
 
     def _get_ignored_folksonomy_tags(self):
         tags = []
-        ignore_tags = config.setting['ignore_tags']
-        if ignore_tags:
-            tags = [s.strip().lower() for s in ignore_tags.split(',')]
+        ignore_genres = config.setting['ignore_genres']
+        if ignore_genres:
+            tags = [s.strip().lower() for s in ignore_genres.split(',')]
         return tags
 
     def update_orig_metadata_images(self):

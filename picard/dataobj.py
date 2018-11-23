@@ -36,7 +36,7 @@ class DataObject(LockableObject):
         require_authentication = False
         if config.setting['use_genres']:
             use_folksonomy = config.setting['folksonomy_tags']
-            if config.setting['only_my_tags']:
+            if config.setting['only_my_genres']:
                 require_authentication = True
                 inc += ['user-tags'] if use_folksonomy else ['user-genres']
             else:

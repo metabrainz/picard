@@ -36,12 +36,12 @@ class GenresOptionsPage(OptionsPage):
 
     options = [
         config.BoolOption("setting", "use_genres", False),
-        config.IntOption("setting", "max_tags", 5),
-        config.IntOption("setting", "min_tag_usage", 90),
-        config.TextOption("setting", "ignore_tags", "seen live,favorites,fixme,owned"),
-        config.TextOption("setting", "join_tags", ""),
-        config.BoolOption("setting", "only_my_tags", False),
-        config.BoolOption("setting", "artists_tags", False),
+        config.IntOption("setting", "max_genres", 5),
+        config.IntOption("setting", "min_genre_usage", 90),
+        config.TextOption("setting", "ignore_genres", "seen live,favorites,fixme,owned"),
+        config.TextOption("setting", "join_genres", ""),
+        config.BoolOption("setting", "only_my_genres", False),
+        config.BoolOption("setting", "artists_genres", False),
         config.BoolOption("setting", "folksonomy_tags", False),
     ]
 
@@ -52,22 +52,22 @@ class GenresOptionsPage(OptionsPage):
 
     def load(self):
         self.ui.use_genres.setChecked(config.setting["use_genres"])
-        self.ui.max_tags.setValue(config.setting["max_tags"])
-        self.ui.min_tag_usage.setValue(config.setting["min_tag_usage"])
-        self.ui.join_tags.setEditText(config.setting["join_tags"])
-        self.ui.ignore_tags.setText(config.setting["ignore_tags"])
-        self.ui.only_my_tags.setChecked(config.setting["only_my_tags"])
-        self.ui.artists_tags.setChecked(config.setting["artists_tags"])
+        self.ui.max_genres.setValue(config.setting["max_genres"])
+        self.ui.min_genre_usage.setValue(config.setting["min_genre_usage"])
+        self.ui.join_genres.setEditText(config.setting["join_genres"])
+        self.ui.ignore_genres.setText(config.setting["ignore_genres"])
+        self.ui.only_my_genres.setChecked(config.setting["only_my_genres"])
+        self.ui.artists_genres.setChecked(config.setting["artists_genres"])
         self.ui.folksonomy_tags.setChecked(config.setting["folksonomy_tags"])
 
     def save(self):
         config.setting["use_genres"] = self.ui.use_genres.isChecked()
-        config.setting["max_tags"] = self.ui.max_tags.value()
-        config.setting["min_tag_usage"] = self.ui.min_tag_usage.value()
-        config.setting["join_tags"] = self.ui.join_tags.currentText()
-        config.setting["ignore_tags"] = self.ui.ignore_tags.text()
-        config.setting["only_my_tags"] = self.ui.only_my_tags.isChecked()
-        config.setting["artists_tags"] = self.ui.artists_tags.isChecked()
+        config.setting["max_genres"] = self.ui.max_genres.value()
+        config.setting["min_genre_usage"] = self.ui.min_genre_usage.value()
+        config.setting["join_genres"] = self.ui.join_genres.currentText()
+        config.setting["ignore_genres"] = self.ui.ignore_genres.text()
+        config.setting["only_my_genres"] = self.ui.only_my_genres.isChecked()
+        config.setting["artists_genres"] = self.ui.artists_genres.isChecked()
         config.setting["folksonomy_tags"] = self.ui.folksonomy_tags.isChecked()
 
 
