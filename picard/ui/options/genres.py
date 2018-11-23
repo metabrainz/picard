@@ -23,13 +23,13 @@ from picard.ui.options import (
     OptionsPage,
     register_options_page,
 )
-from picard.ui.ui_options_folksonomy import Ui_FolksonomyOptionsPage
+from picard.ui.ui_options_genres import Ui_GenresOptionsPage
 
 
-class FolksonomyOptionsPage(OptionsPage):
+class GenresOptionsPage(OptionsPage):
 
-    NAME = "folsonomy"
-    TITLE = N_("Folksonomy Tags")
+    NAME = "genres"
+    TITLE = N_("Genres")
     PARENT = "metadata"
     SORT_ORDER = 20
     ACTIVE = True
@@ -45,7 +45,7 @@ class FolksonomyOptionsPage(OptionsPage):
 
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.ui = Ui_FolksonomyOptionsPage()
+        self.ui = Ui_GenresOptionsPage()
         self.ui.setupUi(self)
 
     def load(self):
@@ -65,4 +65,4 @@ class FolksonomyOptionsPage(OptionsPage):
         config.setting["artists_tags"] = self.ui.artists_tags.isChecked()
 
 
-register_options_page(FolksonomyOptionsPage)
+register_options_page(GenresOptionsPage)

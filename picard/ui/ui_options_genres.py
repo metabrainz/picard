@@ -5,13 +5,13 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
-class Ui_FolksonomyOptionsPage(object):
-    def setupUi(self, FolksonomyOptionsPage):
-        FolksonomyOptionsPage.setObjectName("FolksonomyOptionsPage")
-        FolksonomyOptionsPage.resize(590, 304)
-        self.verticalLayout_2 = QtWidgets.QVBoxLayout(FolksonomyOptionsPage)
+class Ui_GenresOptionsPage(object):
+    def setupUi(self, GenresOptionsPage):
+        GenresOptionsPage.setObjectName("GenresOptionsPage")
+        GenresOptionsPage.resize(590, 304)
+        self.verticalLayout_2 = QtWidgets.QVBoxLayout(GenresOptionsPage)
         self.verticalLayout_2.setObjectName("verticalLayout_2")
-        self.rename_files_3 = QtWidgets.QGroupBox(FolksonomyOptionsPage)
+        self.rename_files_3 = QtWidgets.QGroupBox(GenresOptionsPage)
         self.rename_files_3.setObjectName("rename_files_3")
         self.verticalLayout = QtWidgets.QVBoxLayout(self.rename_files_3)
         self.verticalLayout.setObjectName("verticalLayout")
@@ -94,10 +94,10 @@ class Ui_FolksonomyOptionsPage(object):
         self.label_5.setBuddy(self.min_tag_usage)
         self.label_6.setBuddy(self.min_tag_usage)
 
-        self.retranslateUi(FolksonomyOptionsPage)
-        QtCore.QMetaObject.connectSlotsByName(FolksonomyOptionsPage)
+        self.retranslateUi(GenresOptionsPage)
+        QtCore.QMetaObject.connectSlotsByName(GenresOptionsPage)
 
-    def retranslateUi(self, FolksonomyOptionsPage):
+    def retranslateUi(self, GenresOptionsPage):
         _translate = QtCore.QCoreApplication.translate
         self.rename_files_3.setTitle(_("Folksonomy Tags"))
         self.ignore_tags_2.setText(_("Ignore tags:"))
