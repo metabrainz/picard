@@ -45,6 +45,13 @@
        </widget>
       </item>
       <item>
+       <widget class="QCheckBox" name="folksonomy_tags">
+        <property name="text">
+         <string>Use folksonomy tags as genre</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <layout class="QHBoxLayout">
         <property name="spacing">
          <number>6</number>

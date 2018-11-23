@@ -41,6 +41,7 @@ class GenresOptionsPage(OptionsPage):
         config.TextOption("setting", "join_tags", ""),
         config.BoolOption("setting", "only_my_tags", False),
         config.BoolOption("setting", "artists_tags", False),
+        config.BoolOption("setting", "folksonomy_tags", False),
     ]
 
     def __init__(self, parent=None):
@@ -55,6 +56,7 @@ class GenresOptionsPage(OptionsPage):
         self.ui.ignore_tags.setText(config.setting["ignore_tags"])
         self.ui.only_my_tags.setChecked(config.setting["only_my_tags"])
         self.ui.artists_tags.setChecked(config.setting["artists_tags"])
+        self.ui.folksonomy_tags.setChecked(config.setting["folksonomy_tags"])
 
     def save(self):
         config.setting["max_tags"] = self.ui.max_tags.value()
@@ -63,6 +65,7 @@ class GenresOptionsPage(OptionsPage):
         config.setting["ignore_tags"] = self.ui.ignore_tags.text()
         config.setting["only_my_tags"] = self.ui.only_my_tags.isChecked()
         config.setting["artists_tags"] = self.ui.artists_tags.isChecked()
+        config.setting["folksonomy_tags"] = self.ui.folksonomy_tags.isChecked()
 
 
 register_options_page(GenresOptionsPage)

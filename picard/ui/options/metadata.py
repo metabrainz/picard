@@ -42,7 +42,6 @@ class MetadataOptionsPage(OptionsPage):
         config.BoolOption("setting", "translate_artist_names", False),
         config.BoolOption("setting", "release_ars", True),
         config.BoolOption("setting", "track_ars", False),
-        config.BoolOption("setting", "folksonomy_tags", False),
         config.BoolOption("setting", "convert_punctuation", True),
         config.BoolOption("setting", "standardize_artists", False),
         config.BoolOption("setting", "standardize_instruments", True),
@@ -71,7 +70,6 @@ class MetadataOptionsPage(OptionsPage):
         self.ui.convert_punctuation.setChecked(config.setting["convert_punctuation"])
         self.ui.release_ars.setChecked(config.setting["release_ars"])
         self.ui.track_ars.setChecked(config.setting["track_ars"])
-        self.ui.folksonomy_tags.setChecked(config.setting["folksonomy_tags"])
         self.ui.va_name.setText(config.setting["va_name"])
         self.ui.nat_name.setText(config.setting["nat_name"])
         self.ui.standardize_artists.setChecked(config.setting["standardize_artists"])
@@ -83,7 +81,6 @@ class MetadataOptionsPage(OptionsPage):
         config.setting["convert_punctuation"] = self.ui.convert_punctuation.isChecked()
         config.setting["release_ars"] = self.ui.release_ars.isChecked()
         config.setting["track_ars"] = self.ui.track_ars.isChecked()
-        config.setting["folksonomy_tags"] = self.ui.folksonomy_tags.isChecked()
         config.setting["va_name"] = self.ui.va_name.text()
         nat_name = self.ui.nat_name.text()
         if nat_name != config.setting["nat_name"]:
