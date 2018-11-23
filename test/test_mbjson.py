@@ -65,7 +65,9 @@ class ReleaseTest(MBJSONTest):
         self.assertEqual(m['~albumartists'], 'Pink Floyd')
         self.assertEqual(m['~albumartists_sort'], 'Pink Floyd')
         self.assertEqual(m['~releaselanguage'], 'eng')
-        self.assertEqual(a.folksonomy_tags, {'test2': 3, 'test': 6})
+        self.assertEqual(a.folksonomy_tags, {
+            'genre1': 6, 'genre2': 3,
+            'tag1': 6, 'tag2': 3 })
 
     def test_media_formats_from_node(self):
         formats = media_formats_from_node(self.json_doc['media'])

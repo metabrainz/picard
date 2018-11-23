@@ -35,6 +35,7 @@ class GenresOptionsPage(OptionsPage):
     ACTIVE = True
 
     options = [
+        config.BoolOption("setting", "use_genres", False),
         config.IntOption("setting", "max_tags", 5),
         config.IntOption("setting", "min_tag_usage", 90),
         config.TextOption("setting", "ignore_tags", "seen live,favorites,fixme,owned"),
@@ -50,6 +51,7 @@ class GenresOptionsPage(OptionsPage):
         self.ui.setupUi(self)
 
     def load(self):
+        self.ui.use_genres.setChecked(config.setting["use_genres"])
         self.ui.max_tags.setValue(config.setting["max_tags"])
         self.ui.min_tag_usage.setValue(config.setting["min_tag_usage"])
         self.ui.join_tags.setEditText(config.setting["join_tags"])
@@ -59,6 +61,7 @@ class GenresOptionsPage(OptionsPage):
         self.ui.folksonomy_tags.setChecked(config.setting["folksonomy_tags"])
 
     def save(self):
+        config.setting["use_genres"] = self.ui.use_genres.isChecked()
         config.setting["max_tags"] = self.ui.max_tags.value()
         config.setting["min_tag_usage"] = self.ui.min_tag_usage.value()
         config.setting["join_tags"] = self.ui.join_tags.currentText()

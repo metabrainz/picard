@@ -12,35 +12,31 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>
-    <widget class="QGroupBox" name="rename_files_3">
+    <widget class="QGroupBox" name="use_genres">
      <property name="title">
-      <string>Folksonomy Tags</string>
+      <string>Use genres from MusicBrainz</string>
+     </property>
+     <property name="flat">
+      <bool>false</bool>
+     </property>
+     <property name="checkable">
+      <bool>true</bool>
+     </property>
+     <property name="checked">
+      <bool>false</bool>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
-       <widget class="QLabel" name="ignore_tags_2">
-        <property name="text">
-         <string>Ignore tags:</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLineEdit" name="ignore_tags"/>
-      </item>
-      <item>
        <widget class="QCheckBox" name="only_my_tags">
         <property name="text">
-         <string>Only use my tags</string>
+         <string>Only use my genres</string>
         </property>
        </widget>
       </item>
       <item>
        <widget class="QCheckBox" name="artists_tags">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
         <property name="text">
-         <string>Fall back on album's artists tags if no tags are found for the release or release group</string>
+         <string>Fall back on album's artists genres if no genres are found for the release or release group</string>
         </property>
        </widget>
       </item>
@@ -50,6 +46,16 @@
          <string>Use folksonomy tags as genre</string>
         </property>
        </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="ignore_tags_2">
+        <property name="text">
+         <string>Ignore genres:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="ignore_tags"/>
       </item>
       <item>
        <layout class="QHBoxLayout">
@@ -77,7 +83,7 @@
            </sizepolicy>
           </property>
           <property name="text">
-           <string>Minimal tag usage:</string>
+           <string>Minimal genre usage:</string>
           </property>
           <property name="buddy">
            <cstring>min_tag_usage</cstring>
@@ -122,7 +128,7 @@
            </sizepolicy>
           </property>
           <property name="text">
-           <string>Maximum number of tags:</string>
+           <string>Maximum number of genres:</string>
           </property>
           <property name="buddy">
            <cstring>min_tag_usage</cstring>
@@ -164,7 +170,7 @@
            </sizepolicy>
           </property>
           <property name="text">
-           <string>Join multiple tags with:</string>
+           <string>Join multiple genres with:</string>
           </property>
          </widget>
         </item>

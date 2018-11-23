@@ -190,7 +190,7 @@ class Track(DataObject, Item):
         if tm['title'] == SILENCE_TRACK_TITLE:
             tm['~silence'] = '1'
 
-        if config.setting['folksonomy_tags']:
+        if config.setting['use_genres']:
             self._convert_folksonomy_tags_to_genre()
 
         # Convert Unicode punctuation
@@ -284,12 +284,7 @@ class NonAlbumTrack(Track):
         if config.setting["track_ars"]:
             inc += ["artist-rels", "url-rels", "recording-rels",
                     "work-rels", "work-level-rels"]
-        if config.setting["folksonomy_tags"]:
-            if config.setting["only_my_tags"]:
-                mblogin = True
-                inc += ["user-tags"]
-            else:
-                inc += ["tags"]
+        mblogin = self.set_genre_inc_params(inc)
         if config.setting["enable_ratings"]:
             mblogin = True
             inc += ["user-ratings"]

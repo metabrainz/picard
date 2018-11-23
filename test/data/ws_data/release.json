@@ -1,10 +1,17 @@
 {
+    "genres": [
+        {"name": "genre1", "count": 5},
+        {"name": "genre2", "count": 3}
+    ],
+    "user-genres": [
+        {"name": "genre1"}
+    ],
     "tags": [
-        {"name": "test", "count": 5},
-        {"name": "test2", "count": 3}
+        {"name": "tag1", "count": 5},
+        {"name": "tag2", "count": 3}
     ],
     "user-tags": [
-        {"name": "test"}
+        {"name": "tag1"}
     ],
     "release-group": {
         "first-release-date": "1973-03-24",
@@ -25,18 +32,18 @@
         "title": "The Dark Side of the Moon",
         "disambiguation": "",
         "secondary-type-ids": [
-            
+
         ],
         "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
         "secondary-types": [
-            
+
         ],
         "aliases": [
-            
+
         ]
     },
     "aliases": [
-        
+
     ],
     "cover-art-archive": {
         "front": true,
@@ -163,14 +170,14 @@
     "relations": [
         {
             "attributes": [
-                
+
             ],
             "target-credit": "George Hardie N.T.A.",
             "source-credit": "",
             "target-type": "artist",
             "type": "design/illustration",
             "attribute-values": {
-                
+
             },
             "begin": null,
             "type-id": "307e95dd-88b5-419b-8223-b146d4a0d439",
@@ -179,7 +186,7 @@
             "artist": {
                 "id": "89931942-3182-4448-8e63-0c2ce90f1f81",
                 "aliases": [
-                    
+
                 ],
                 "sort-name": "Hardie, George",
                 "disambiguation": "",
@@ -189,14 +196,14 @@
         },
         {
             "attributes": [
-                
+
             ],
             "target-credit": "",
             "source-credit": "",
             "type": "design/illustration",
             "target-type": "artist",
             "attribute-values": {
-                
+
             },
             "begin": null,
             "type-id": "307e95dd-88b5-419b-8223-b146d4a0d439",
@@ -207,7 +214,7 @@
                 "name": "Hipgnosis",
                 "id": "fd1a4572-59ca-40f2-8f55-b82be28bb0ff",
                 "aliases": [
-                    
+
                 ],
                 "sort-name": "Hipgnosis",
                 "disambiguation": "UK art design group"
@@ -227,16 +234,16 @@
             "target-type": "url",
             "type": "discogs",
             "attributes": [
-                
+
             ],
             "attribute-values": {
-                
+
             },
             "begin": null
         },
         {
             "attribute-values": {
-                
+
             },
             "begin": null,
             "type": "photography",
@@ -244,14 +251,14 @@
             "target-credit": "",
             "source-credit": "",
             "attributes": [
-                
+
             ],
             "ended": false,
             "artist": {
                 "id": "fd1a4572-59ca-40f2-8f55-b82be28bb0ff",
                 "sort-name": "Hipgnosis",
                 "aliases": [
-                    
+
                 ],
                 "disambiguation": "UK art design group",
                 "name": "Hipgnosis"

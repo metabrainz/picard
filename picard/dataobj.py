@@ -17,6 +17,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+from picard import config
 from picard.util import LockableObject
 
 
@@ -30,6 +31,17 @@ class DataObject(LockableObject):
 
     def add_folksonomy_tag(self, name, count):
         self.folksonomy_tags[name] = self.folksonomy_tags.get(name, 0) + count
+
+    def set_genre_inc_params(self, inc):
+        require_authentication = False
+        if config.setting['use_genres']:
+            use_folksonomy = config.setting['folksonomy_tags']
+            if config.setting['only_my_tags']:
+                require_authentication = True
+                inc += ['user-tags'] if use_folksonomy else ['user-genres']
+            else:
+                inc += ['tags'] if use_folksonomy else ['genres']
+        return require_authentication
 
     @staticmethod
     def merge_folksonomy_tags(this, that):

@@ -369,10 +369,10 @@ def recording_to_metadata(node, m, track=None):
                     track.append_track_artist(artist['artist']['id'])
         elif key == 'relations':
             _relations_to_metadata(value, m)
-        elif key == 'tags' and track:
-            add_folksonomy_tags(value, track)
-        elif key == 'user-tags' and track:
-            add_user_folksonomy_tags(value, track)
+        elif key in ('genres', 'tags') and track:
+            add_genres(value, track)
+        elif key in ('user-genres', 'user-tags') and track:
+            add_user_genres(value, track)
         elif key == 'isrcs':
             add_isrcs_to_metadata(value, m)
         elif key == 'video' and value:
@@ -458,10 +458,10 @@ def release_to_metadata(node, m, album=None):
                 m['~releaselanguage'] = value['language']
             if 'script' in value:
                 m['script'] = value['script']
-        elif key == 'tags':
-            add_folksonomy_tags(value, album)
-        elif key == 'user-tags':
-            add_user_folksonomy_tags(value, album)
+        elif key in ('genres', 'tags'):
+            add_genres(value, album)
+        elif key in ('user-genres', 'user-tags'):
+            add_user_genres(value, album)
 
 
 def release_group_to_metadata(node, m, release_group=None):
@@ -472,10 +472,10 @@ def release_group_to_metadata(node, m, release_group=None):
             continue
         if key in _RELEASE_GROUP_TO_METADATA:
             m[_RELEASE_GROUP_TO_METADATA[key]] = value
-        elif key == 'tags':
-            add_folksonomy_tags(value, release_group)
-        elif key == 'user-tags':
-            add_user_folksonomy_tags(value, release_group)
+        elif key in ('genres', 'tags'):
+            add_genres(value, release_group)
+        elif key in ('user-genres', 'user-tags'):
+            add_user_genres(value, release_group)
         elif key == 'primary-type':
             m['~primaryreleasetype'] = value.lower()
         elif key == 'secondary-types':
@@ -490,7 +490,7 @@ def add_secondary_release_types(node, m):
         m.add_unique('~secondaryreleasetype', secondary_type.lower())
 
 
-def add_folksonomy_tags(node, obj):
+def add_genres(node, obj):
     if obj is not None:
         for tag in node:
             key = tag['name']
@@ -499,7 +499,7 @@ def add_folksonomy_tags(node, obj):
                 obj.add_folksonomy_tag(key, count)
 
 
-def add_user_folksonomy_tags(node, obj):
+def add_user_genres(node, obj):
     if obj is not None:
         for tag in node:
             key = tag['name']

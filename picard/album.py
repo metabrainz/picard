@@ -379,12 +379,7 @@ class Album(DataObject, Item):
             inc += ['artist-rels', 'release-rels', 'url-rels', 'recording-rels', 'work-rels']
             if config.setting['track_ars']:
                 inc += ['recording-level-rels', 'work-level-rels']
-        if config.setting['folksonomy_tags']:
-            if config.setting['only_my_tags']:
-                require_authentication = True
-                inc += ['user-tags']
-            else:
-                inc += ['tags']
+        require_authentication = self.set_genre_inc_params(inc)
         if config.setting['enable_ratings']:
             require_authentication = True
             inc += ['user-ratings']
