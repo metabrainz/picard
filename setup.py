@@ -705,7 +705,6 @@ def find_file_in_path(filename):
 
 
 args['data_files'] = [
-    ('share/metainfo', ['org.musicbrainz.Picard.appdata.xml']),
     ('share/icons/hicolor/16x16/apps', ['resources/images/16x16/org.musicbrainz.Picard.png']),
     ('share/icons/hicolor/24x24/apps', ['resources/images/24x24/org.musicbrainz.Picard.png']),
     ('share/icons/hicolor/32x32/apps', ['resources/images/32x32/org.musicbrainz.Picard.png']),
@@ -715,5 +714,8 @@ args['data_files'] = [
     ('share/icons/hicolor/scalable/apps', ['resources/img-src/org.musicbrainz.Picard.svg']),
     ('share/applications', ('org.musicbrainz.Picard.desktop',)),
 ]
+
+if platform.system() == 'Linux':
+    args['data_files'].append(('share/metainfo', ['org.musicbrainz.Picard.appdata.xml']))
 
 setup(**args)
