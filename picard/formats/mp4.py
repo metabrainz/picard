@@ -95,6 +95,8 @@ class MP4File(File):
         "----:com.apple.iTunes:MusicBrainz Work Id": "musicbrainz_workid",
         "----:com.apple.iTunes:MusicBrainz Release Group Id": "musicbrainz_releasegroupid",
         "----:com.apple.iTunes:MusicBrainz Release Track Id": "musicbrainz_trackid",
+        "----:com.apple.iTunes:MusicBrainz Original Album Id": "musicbrainz_originalalbumid",
+        "----:com.apple.iTunes:MusicBrainz Original Artist Id": "musicbrainz_originalartistid",
         "----:com.apple.iTunes:Acoustid Fingerprint": "acoustid_fingerprint",
         "----:com.apple.iTunes:Acoustid Id": "acoustid_id",
         "----:com.apple.iTunes:ASIN": "asin",
