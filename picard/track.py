@@ -199,18 +199,18 @@ class Track(DataObject, Item):
 
     def _convert_folksonomy_tags_to_genre(self):
         # Combine release and track tags
-        tags = dict(self.folksonomy_tags)
-        self.merge_folksonomy_tags(tags, self.album.folksonomy_tags)
+        tags = dict(self.genres)
+        self.merge_genres(tags, self.album.genres)
         if self.album.release_group:
-            self.merge_folksonomy_tags(tags, self.album.release_group.folksonomy_tags)
+            self.merge_genres(tags, self.album.release_group.genres)
         if not tags and config.setting['artists_genres']:
             # For compilations use each track's artists to look up tags
             if self.metadata['musicbrainz_albumartistid'] == VARIOUS_ARTISTS_ID:
                 for artist in self._track_artists:
-                    self.merge_folksonomy_tags(tags, artist.folksonomy_tags)
+                    self.merge_genres(tags, artist.genres)
             else:
                 for artist in self.album.get_album_artists():
-                    self.merge_folksonomy_tags(tags, artist.folksonomy_tags)
+                    self.merge_genres(tags, artist.genres)
         # Ignore tags with zero or lower score
         tags = dict((name, count) for name, count in tags.items() if count > 0)
         if not tags:

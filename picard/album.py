@@ -364,9 +364,9 @@ class Album(DataObject, Item):
         self.status = _("[loading album information]")
         if self.release_group:
             self.release_group.loaded = False
-            self.release_group.folksonomy_tags.clear()
+            self.release_group.genres.clear()
         self.metadata.clear()
-        self.folksonomy_tags.clear()
+        self.genres.clear()
         self.update()
         self._new_metadata = Metadata()
         self._new_tracks = []

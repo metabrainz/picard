@@ -26,11 +26,11 @@ class DataObject(LockableObject):
     def __init__(self, obj_id):
         super().__init__()
         self.id = obj_id
-        self.folksonomy_tags = {}
+        self.genres = {}
         self.item = None
 
-    def add_folksonomy_tag(self, name, count):
-        self.folksonomy_tags[name] = self.folksonomy_tags.get(name, 0) + count
+    def add_genre(self, name, count):
+        self.genres[name] = self.genres.get(name, 0) + count
 
     def set_genre_inc_params(self, inc):
         require_authentication = False
@@ -44,6 +44,6 @@ class DataObject(LockableObject):
         return require_authentication
 
     @staticmethod
-    def merge_folksonomy_tags(this, that):
+    def merge_genres(this, that):
         for name, count in that.items():
             this[name] = this.get(name, 0) + count

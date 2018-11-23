@@ -65,7 +65,7 @@ class ReleaseTest(MBJSONTest):
         self.assertEqual(m['~albumartists'], 'Pink Floyd')
         self.assertEqual(m['~albumartists_sort'], 'Pink Floyd')
         self.assertEqual(m['~releaselanguage'], 'eng')
-        self.assertEqual(a.folksonomy_tags, {
+        self.assertEqual(a.genres, {
             'genre1': 6, 'genre2': 3,
             'tag1': 6, 'tag2': 3 })
 
@@ -248,7 +248,7 @@ class ReleaseGroupTest(MBJSONTest):
         self.assertEqual(m['releasetype'], 'album')
         self.assertEqual(m['~primaryreleasetype'], 'album')
         self.assertEqual(m['~releasegroup'], 'The Dark Side of the Moon')
-        self.assertEqual(r.folksonomy_tags, {'test2': 3, 'test': 6})
+        self.assertEqual(r.genres, {'test2': 3, 'test': 6})
 
 
 class NullReleaseGroupTest(MBJSONTest):
