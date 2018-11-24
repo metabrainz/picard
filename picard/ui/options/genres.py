@@ -38,7 +38,7 @@ class GenresOptionsPage(OptionsPage):
         config.BoolOption("setting", "use_genres", False),
         config.IntOption("setting", "max_genres", 5),
         config.IntOption("setting", "min_genre_usage", 90),
-        config.TextOption("setting", "ignore_genres", "seen live,favorites,fixme,owned"),
+        config.TextOption("setting", "ignore_genres", "seen live, favorites, fixme, owned"),
         config.TextOption("setting", "join_genres", ""),
         config.BoolOption("setting", "only_my_genres", False),
         config.BoolOption("setting", "artists_genres", False),
