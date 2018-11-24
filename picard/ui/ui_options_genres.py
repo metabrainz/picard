@@ -108,7 +108,7 @@ class Ui_GenresOptionsPage(object):
         self.only_my_genres.setText(_("Only use my genres"))
         self.artists_genres.setText(_("Fall back on album\'s artists genres if no genres are found for the release or release group"))
         self.folksonomy_tags.setText(_("Use folksonomy tags as genre"))
-        self.ignore_genres_2.setText(_("Ignore genres:"))
+        self.ignore_genres_2.setText(_("Genres or folksonomy tags to exclude (comma-separated list):"))
         self.label_5.setText(_("Minimal genre usage:"))
         self.min_genre_usage.setSuffix(_(" %"))
         self.label_6.setText(_("Maximum number of genres:"))

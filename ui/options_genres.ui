@@ -50,7 +50,7 @@
       <item>
        <widget class="QLabel" name="ignore_genres_2">
         <property name="text">
-         <string>Ignore genres:</string>
+         <string>Genres or folksonomy tags to exclude (comma-separated list):</string>
         </property>
        </widget>
       </item>
