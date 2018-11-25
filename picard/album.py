@@ -375,6 +375,9 @@ class Album(DataObject, Item):
         require_authentication = False
         inc = ['release-groups', 'media', 'recordings', 'artist-credits',
                'artists', 'aliases', 'labels', 'isrcs', 'collections']
+        if self.tagger.webservice.oauth_manager.is_authorized():
+            require_authentication = True
+            inc += ['user-collections']
         if config.setting['release_ars'] or config.setting['track_ars']:
             inc += ['artist-rels', 'release-rels', 'url-rels', 'recording-rels', 'work-rels']
             if config.setting['track_ars']:
