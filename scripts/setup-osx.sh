@@ -2,8 +2,8 @@
 brew update
 brew install gettext
 brew link gettext --force
-wget "https://www.python.org/ftp/python/3.6.6/python-3.6.6-macosx10.9.pkg"
-sudo installer -pkg python-3.6.6-macosx10.9.pkg -target /
+wget "https://www.python.org/ftp/python/${PYTHON_VERSION}/python-${PYTHON_VERSION}-macosx10.9.pkg"
+sudo installer -pkg python-${PYTHON_VERSION}-macosx10.9.pkg -target /
 sudo python3 -m ensurepip
 wget "ftp://ftp.musicbrainz.org/pub/musicbrainz/libdiscid/libdiscid-$DISCID_VERSION.tar.gz"
 tar -xf "libdiscid-$DISCID_VERSION.tar.gz"
