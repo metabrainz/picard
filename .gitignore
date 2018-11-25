@@ -13,6 +13,9 @@ locale
 *.exe
 .DS_Store
 *~
+Thumbs.db
+Thumbs.db:encryptable
+installer/picard-setup.nsi
 po/countries/countries.pot
 po/attributes/attributes.pot
 scripts/picard
