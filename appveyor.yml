@@ -26,7 +26,7 @@ environment:
     PYTHON_VERSION: 3.6.6
     PYTHON_ARCH: 64
   - PYTHON: C:\Python37-x64
-    PYTHON_VERSION: 3.7.0
+    PYTHON_VERSION: 3.7.1
     PYTHON_ARCH: 64
 build_script:
 - cmd: >-
