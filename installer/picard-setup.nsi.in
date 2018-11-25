@@ -27,6 +27,7 @@ InstallDirRegKey HKLM "Software\MusicBrainz\${PRODUCT_NAME}" "InstallDir"
 
 !include "MUI2.nsh"
 !include "InstallOptions.nsh"
+!include "x64.nsh"
 
 ; MUI Settings
 
@@ -181,7 +182,13 @@ Function un.onInit
     Abort
   continueInstall:
 FunctionEnd
+
 Function .onInit
+  ${IfNot} ${RunningX64}
+    MessageBox MB_ICONSTOP|MB_OK "This version of ${PRODUCT_NAME} requires a 64-bit Windows system."
+    Abort
+  ${EndIf}
+
   FindWindow $0 "${WNDCLASS}" "${WNDTITLE}"
   StrCmp $0 0 continueInstall
     MessageBox MB_ICONSTOP|MB_OK "The application you are trying to install is running. Close it and try again."
