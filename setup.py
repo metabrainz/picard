@@ -160,8 +160,9 @@ class picard_install(install):
     def finalize_options(self):
         install.finalize_options(self)
         if self.install_locales is None:
-            self.install_locales = '$base/share/locale'
-            self._expand_attrs(['install_locales'])
+            self.install_locales = os.path.join(self.install_data, 'share', 'locale')
+            if self.root and self.install_locales.startswith(self.root):
+                self.install_locales = self.install_locales[len(self.root):]
         self.install_locales = os.path.normpath(self.install_locales)
         self.localedir = self.install_locales
         # can't use set_undefined_options :/
