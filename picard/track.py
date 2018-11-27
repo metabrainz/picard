@@ -190,7 +190,7 @@ class Track(DataObject, Item):
         if tm['title'] == SILENCE_TRACK_TITLE:
             tm['~silence'] = '1'
 
-        if config.setting['folksonomy_tags']:
+        if config.setting['use_genres']:
             self._convert_folksonomy_tags_to_genre()
 
         # Convert Unicode punctuation
@@ -199,18 +199,18 @@ class Track(DataObject, Item):
 
     def _convert_folksonomy_tags_to_genre(self):
         # Combine release and track tags
-        tags = dict(self.folksonomy_tags)
-        self.merge_folksonomy_tags(tags, self.album.folksonomy_tags)
+        tags = dict(self.genres)
+        self.merge_genres(tags, self.album.genres)
         if self.album.release_group:
-            self.merge_folksonomy_tags(tags, self.album.release_group.folksonomy_tags)
-        if not tags and config.setting['artists_tags']:
+            self.merge_genres(tags, self.album.release_group.genres)
+        if not tags and config.setting['artists_genres']:
             # For compilations use each track's artists to look up tags
             if self.metadata['musicbrainz_albumartistid'] == VARIOUS_ARTISTS_ID:
                 for artist in self._track_artists:
-                    self.merge_folksonomy_tags(tags, artist.folksonomy_tags)
+                    self.merge_genres(tags, artist.genres)
             else:
                 for artist in self.album.get_album_artists():
-                    self.merge_folksonomy_tags(tags, artist.folksonomy_tags)
+                    self.merge_genres(tags, artist.genres)
         # Ignore tags with zero or lower score
         tags = dict((name, count) for name, count in tags.items() if count > 0)
         if not tags:
@@ -222,27 +222,27 @@ class Track(DataObject, Item):
             taglist.append((100 * count // maxcount, name))
         taglist.sort(reverse=True)
         # And generate the genre metadata tag
-        maxtags = config.setting['max_tags']
-        minusage = config.setting['min_tag_usage']
-        ignore_tags = self._get_ignored_folksonomy_tags()
+        maxtags = config.setting['max_genres']
+        minusage = config.setting['min_genre_usage']
+        ignore_genres = self._get_ignored_folksonomy_tags()
         genre = []
         for usage, name in taglist[:maxtags]:
-            if name.lower() in ignore_tags:
+            if name.lower() in ignore_genres:
                 continue
             if usage < minusage:
                 break
             name = _TRANSLATE_TAGS.get(name, name.title())
             genre.append(name)
-        join_tags = config.setting['join_tags']
-        if join_tags:
-            genre = [join_tags.join(genre)]
+        join_genres = config.setting['join_genres']
+        if join_genres:
+            genre = [join_genres.join(genre)]
         self.metadata['genre'] = genre
 
     def _get_ignored_folksonomy_tags(self):
         tags = []
-        ignore_tags = config.setting['ignore_tags']
-        if ignore_tags:
-            tags = [s.strip().lower() for s in ignore_tags.split(',')]
+        ignore_genres = config.setting['ignore_genres']
+        if ignore_genres:
+            tags = [s.strip().lower() for s in ignore_genres.split(',')]
         return tags
 
     def update_orig_metadata_images(self):
@@ -284,12 +284,7 @@ class NonAlbumTrack(Track):
         if config.setting["track_ars"]:
             inc += ["artist-rels", "url-rels", "recording-rels",
                     "work-rels", "work-level-rels"]
-        if config.setting["folksonomy_tags"]:
-            if config.setting["only_my_tags"]:
-                mblogin = True
-                inc += ["user-tags"]
-            else:
-                inc += ["tags"]
+        mblogin = self.set_genre_inc_params(inc)
         if config.setting["enable_ratings"]:
             mblogin = True
             inc += ["user-ratings"]

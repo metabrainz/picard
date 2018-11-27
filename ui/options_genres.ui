@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>FolksonomyOptionsPage</class>
- <widget class="QWidget" name="FolksonomyOptionsPage">
+ <class>GenresOptionsPage</class>
+ <widget class="QWidget" name="GenresOptionsPage">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -12,44 +12,66 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>
-    <widget class="QGroupBox" name="rename_files_3">
+    <widget class="QGroupBox" name="use_genres">
      <property name="title">
-      <string>Folksonomy Tags</string>
+      <string>Use genres from MusicBrainz</string>
+     </property>
+     <property name="flat">
+      <bool>false</bool>
+     </property>
+     <property name="checkable">
+      <bool>true</bool>
+     </property>
+     <property name="checked">
+      <bool>false</bool>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
-       <widget class="QLabel" name="ignore_tags_2">
+       <widget class="QCheckBox" name="only_my_genres">
         <property name="text">
-         <string>Ignore tags:</string>
+         <string>Only use my genres</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QLineEdit" name="ignore_tags"/>
-      </item>
-      <item>
-       <widget class="QCheckBox" name="only_my_tags">
+       <widget class="QCheckBox" name="artists_genres">
         <property name="text">
-         <string>Only use my tags</string>
+         <string>Fall back on album's artists genres if no genres are found for the release or release group</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QCheckBox" name="artists_tags">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
+       <widget class="QCheckBox" name="folksonomy_tags">
         <property name="text">
-         <string>Fall back on album's artists tags if no tags are found for the release or release group</string>
+         <string>Use folksonomy tags as genre</string>
         </property>
        </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="ignore_genres_2">
+        <property name="text">
+         <string>Genres or folksonomy tags to exclude (comma-separated list):</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="ignore_genres"/>
       </item>
       <item>
        <layout class="QHBoxLayout">
         <property name="spacing">
          <number>6</number>
         </property>
-        <property name="margin">
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
          <number>0</number>
         </property>
         <item>
@@ -61,15 +83,15 @@
            </sizepolicy>
           </property>
           <property name="text">
-           <string>Minimal tag usage:</string>
+           <string>Minimal genre usage:</string>
           </property>
           <property name="buddy">
-           <cstring>min_tag_usage</cstring>
+           <cstring>min_genre_usage</cstring>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QSpinBox" name="min_tag_usage">
+         <widget class="QSpinBox" name="min_genre_usage">
           <property name="suffix">
            <string> %</string>
           </property>
@@ -85,7 +107,16 @@
         <property name="spacing">
          <number>6</number>
         </property>
-        <property name="margin">
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
          <number>0</number>
         </property>
         <item>
@@ -97,15 +128,15 @@
            </sizepolicy>
           </property>
           <property name="text">
-           <string>Maximum number of tags:</string>
+           <string>Maximum number of genres:</string>
           </property>
           <property name="buddy">
-           <cstring>min_tag_usage</cstring>
+           <cstring>min_genre_usage</cstring>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QSpinBox" name="max_tags">
+         <widget class="QSpinBox" name="max_genres">
           <property name="maximum">
            <number>100</number>
           </property>
@@ -118,11 +149,20 @@
         <property name="spacing">
          <number>6</number>
         </property>
-        <property name="margin">
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
          <number>0</number>
         </property>
         <item>
-         <widget class="QLabel" name="ignore_tags_4">
+         <widget class="QLabel" name="ignore_genres_4">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
             <horstretch>4</horstretch>
@@ -130,12 +170,12 @@
            </sizepolicy>
           </property>
           <property name="text">
-           <string>Join multiple tags with:</string>
+           <string>Join multiple genres with:</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QComboBox" name="join_tags">
+         <widget class="QComboBox" name="join_genres">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
             <horstretch>1</horstretch>

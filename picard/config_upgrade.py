@@ -95,9 +95,7 @@ def upgrade_to_v1_3_0_dev_1():
     _s = config.setting
     old_opt = "windows_compatible_filenames"
     new_opt = "windows_compatibility"
-    if old_opt in _s:
-        _s[new_opt] = _s.value(old_opt, config.BoolOption, True)
-        _s.remove(old_opt)
+    rename_option(old_opt, new_opt, config.BoolOption, True)
 
 
 def upgrade_to_v1_3_0_dev_2():
@@ -219,12 +217,9 @@ def upgrade_to_v1_4_0_dev_6():
 
 def upgrade_to_v1_4_0_dev_7():
     """Option "save_only_front_images_to_tags" was renamed to "embed_only_one_front_image"."""
-    _s = config.setting
     old_opt = "save_only_front_images_to_tags"
     new_opt = "embed_only_one_front_image"
-    if old_opt in _s:
-        _s[new_opt] = _s.value(old_opt, config.BoolOption, True)
-        _s.remove(old_opt)
+    rename_option(old_opt, new_opt, config.BoolOption, True)
 
 
 def upgrade_to_v2_0_0_dev_3():
@@ -246,6 +241,26 @@ def upgrade_to_v2_0_0_dev_3():
             _s[opt] = _CAA_SIZE_COMPAT[value]
 
 
+def upgrade_to_v2_1_0_dev_1():
+    """Upgrade genre related options"""
+    _s = config.setting
+    if _s.get("folksonomy_tags"):
+        _s["use_genres"] = True
+    rename_option("max_tags",      "max_genres",      config.IntOption,  5)
+    rename_option("min_tag_usage", "min_genre_usage", config.IntOption,  90)
+    rename_option("ignore_tags",   "ignore_genres",   config.TextOption, "")
+    rename_option("join_tags",     "join_genres",     config.TextOption, "")
+    rename_option("only_my_tags",  "only_my_genres",  config.BoolOption, False)
+    rename_option("artists_tags",  "artists_genres",  config.BoolOption, False)
+
+
+def rename_option(old_opt, new_opt, option_type, default):
+    _s = config.setting
+    if old_opt in _s:
+        _s[new_opt] = _s.value(old_opt, option_type, default)
+        _s.remove(old_opt)
+
+
 def upgrade_config():
     cfg = config.config
     cfg.register_upgrade_hook(upgrade_to_v1_0_0_final_0)
@@ -260,4 +275,5 @@ def upgrade_config():
     cfg.register_upgrade_hook(upgrade_to_v1_4_0_dev_6)
     cfg.register_upgrade_hook(upgrade_to_v1_4_0_dev_7)
     cfg.register_upgrade_hook(upgrade_to_v2_0_0_dev_3)
+    cfg.register_upgrade_hook(upgrade_to_v2_1_0_dev_1)
     cfg.run_upgrade_hooks(log.debug)
