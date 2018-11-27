@@ -244,7 +244,7 @@ def upgrade_to_v2_0_0_dev_3():
 def upgrade_to_v2_1_0_dev_1():
     """Upgrade genre related options"""
     _s = config.setting
-    if _s.get("folksonomy_tags"):
+    if "folksonomy_tags" in _s and _s["folksonomy_tags"]:
         _s["use_genres"] = True
     rename_option("max_tags",      "max_genres",      config.IntOption,  5)
     rename_option("min_tag_usage", "min_genre_usage", config.IntOption,  90)
