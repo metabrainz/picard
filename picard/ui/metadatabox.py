@@ -382,7 +382,12 @@ class MetadataBox(QtWidgets.QTableWidget):
         if objects is None:
             objects = self.objects
         self.parent.ignore_selection_changes = True
-        if values != [""] or self.tag_is_removable(tag):
+        if values == [""]:
+            values = []
+        if not values and self.tag_is_removable(tag):
+            for obj in objects:
+                obj.metadata.delete(tag)
+        elif values:
             for obj in objects:
                 obj.metadata[tag] = values
                 obj.update()
@@ -390,7 +395,7 @@ class MetadataBox(QtWidgets.QTableWidget):
         self.parent.ignore_selection_changes = False
 
     def remove_tag(self, tag):
-        self.set_tag_values(tag, [""])
+        self.set_tag_values(tag, [])
 
     def remove_selected_tags(self):
         for tag in self.selected_tags(discard=('~length',)):
