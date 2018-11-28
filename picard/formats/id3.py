@@ -416,6 +416,7 @@ class ID3File(File):
             elif name == 'work' and config.setting['itunes_compatible_grouping']:
                 tags.add(id3.TIT1(encoding=encoding, text=values))
                 tags.delall('TXXX:Work')
+                tags.delall('TXXX:WORK')
             elif name in self.__rtranslate:
                 frameid = self.__rtranslate[name]
                 if frameid.startswith('W'):
@@ -516,18 +517,14 @@ class ID3File(File):
                 elif real_name in self.__translate:
                     del tags[real_name]
                 elif real_name in self.__translate_freetext:
-                    for key, frame in list(tags.items()):
-                        if frame.FrameID == 'TXXX' and frame.desc == real_name:
-                            del tags[key]
+                    tags.delall('TXXX:' + real_name)
+                    if real_name in self.__rrename_freetext:
+                         tags.delall('TXXX:' + self.__rrename_freetext[real_name])
                 elif not name.startswith("~") and name not in self.__other_supported_tags:
-                    for key, frame in list(tags.items()):
-                        if frame.FrameID == 'TXXX' and frame.desc == name:
-                            del tags[key]
+                    tags.delall('TXXX:' + name)
                 elif name.startswith("~"):
                     name = name[1:]
-                    for key, frame in list(tags.items()):
-                        if frame.FrameID == 'TXXX' and frame.desc == name:
-                            del tags[key]
+                    tags.delall('TXXX:' + name)
                 elif name in self.__other_supported_tags:
                     del tags[real_name]
             except KeyError:
