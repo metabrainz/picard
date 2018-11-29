@@ -80,10 +80,12 @@ class AcoustIDClient(QtCore.QObject):
                     if results:
                         result = results[0]
                         file.metadata['acoustid_id'] = result['id']
-                        if 'recordings' in result:
+                        if 'recordings' in result and result['recordings']:
+                            max_sources = max([r['sources'] for r in result['recordings']])
                             for recording in result['recordings']:
                                 parsed_recording = parse_recording(recording)
                                 if parsed_recording is not None:
+                                    parsed_recording['score'] = recording['sources'] / max_sources * 100
                                     recording_list.append(parsed_recording)
                             log.debug("AcoustID: Lookup successful for '%s'", file.filename)
                 else:
@@ -135,7 +137,7 @@ class AcoustIDClient(QtCore.QObject):
             mparms,
             echo=None
         )
-        params = dict(meta='recordings releasegroups releases tracks compress')
+        params = dict(meta='recordings releasegroups releases tracks compress sources')
         if result[0] == 'fingerprint':
             fp_type, fingerprint, length = result
             file.acoustid_fingerprint = fingerprint
