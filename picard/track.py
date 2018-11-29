@@ -284,7 +284,7 @@ class NonAlbumTrack(Track):
         if config.setting["track_ars"]:
             inc += ["artist-rels", "url-rels", "recording-rels",
                     "work-rels", "work-level-rels"]
-        mblogin = self.set_genre_inc_params(inc)
+        mblogin = self.set_genre_inc_params(inc) or mblogin
         if config.setting["enable_ratings"]:
             mblogin = True
             inc += ["user-ratings"]
