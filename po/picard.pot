@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: picard 2.0.5.dev1\n"
+"Project-Id-Version: picard 2.1.0.dev1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2018-11-18 22:51+0100\n"
+"POT-Creation-Date: 2018-11-29 16:53+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -40,14 +40,14 @@ msgstr ""
 msgid "[loading album information]"
 msgstr ""
 
-#: picard/album.py:564
+#: picard/album.py:562
 #, python-format
 msgid "; %i image"
 msgid_plural "; %i images"
 msgstr[0] ""
 msgstr[1] ""
 
-#: picard/album.py:567
+#: picard/album.py:565
 #, python-format
 msgid "; %i image not in all tracks"
 msgid_plural "; %i different images among tracks"
@@ -123,7 +123,7 @@ msgstr ""
 msgid "Remove"
 msgstr ""
 
-#: picard/config_upgrade.py:204 picard/ui/options/scripting.py:39
+#: picard/config_upgrade.py:202 picard/ui/options/scripting.py:39
 #, python-format
 msgid "My script %d"
 msgstr ""
@@ -1565,49 +1565,6 @@ msgstr ""
 msgid "Get API key..."
 msgstr ""
 
-#: picard/ui/options/folksonomy.py:32 picard/ui/ui_options_folksonomy.py:102
-msgid "Folksonomy Tags"
-msgstr ""
-
-#: picard/ui/ui_options_folksonomy.py:103
-msgid "Ignore tags:"
-msgstr ""
-
-#: picard/ui/ui_options_folksonomy.py:104
-msgid "Only use my tags"
-msgstr ""
-
-#: picard/ui/ui_options_folksonomy.py:105
-msgid ""
-"Fall back on album's artists tags if no tags are found for the release or"
-" release group"
-msgstr ""
-
-#: picard/ui/ui_options_folksonomy.py:106
-msgid "Minimal tag usage:"
-msgstr ""
-
-#: picard/ui/ui_options_folksonomy.py:107 picard/ui/ui_options_matching.py:71
-#: picard/ui/ui_options_matching.py:72 picard/ui/ui_options_matching.py:73
-msgid " %"
-msgstr ""
-
-#: picard/ui/ui_options_folksonomy.py:108
-msgid "Maximum number of tags:"
-msgstr ""
-
-#: picard/ui/ui_options_folksonomy.py:109
-msgid "Join multiple tags with:"
-msgstr ""
-
-#: picard/ui/ui_options_folksonomy.py:110
-msgid " / "
-msgstr ""
-
-#: picard/ui/ui_options_folksonomy.py:111
-msgid ", "
-msgstr ""
-
 #: picard/ui/ui_options_general.py:132
 msgid "MusicBrainz Server"
 msgstr ""
@@ -1658,6 +1615,53 @@ msgstr ""
 
 #: picard/ui/ui_options_general.py:144
 msgid "Updates to check:"
+msgstr ""
+
+#: picard/ui/ui_options_genres.py:107
+msgid "Use genres from MusicBrainz"
+msgstr ""
+
+#: picard/ui/ui_options_genres.py:108
+msgid "Only use my genres"
+msgstr ""
+
+#: picard/ui/ui_options_genres.py:109
+msgid ""
+"Fall back on album's artists genres if no genres are found for the "
+"release or release group"
+msgstr ""
+
+#: picard/ui/ui_options_genres.py:110
+msgid "Use folksonomy tags as genre"
+msgstr ""
+
+#: picard/ui/ui_options_genres.py:111
+msgid "Genres or folksonomy tags to exclude (comma-separated list):"
+msgstr ""
+
+#: picard/ui/ui_options_genres.py:112
+msgid "Minimal genre usage:"
+msgstr ""
+
+#: picard/ui/ui_options_genres.py:113 picard/ui/ui_options_matching.py:71
+#: picard/ui/ui_options_matching.py:72 picard/ui/ui_options_matching.py:73
+msgid " %"
+msgstr ""
+
+#: picard/ui/ui_options_genres.py:114
+msgid "Maximum number of genres:"
+msgstr ""
+
+#: picard/ui/ui_options_genres.py:115
+msgid "Join multiple genres with:"
+msgstr ""
+
+#: picard/ui/ui_options_genres.py:116
+msgid " / "
+msgstr ""
+
+#: picard/ui/ui_options_genres.py:117
+msgid ", "
 msgstr ""
 
 #: picard/ui/ui_options_interface.py:123
@@ -1736,51 +1740,47 @@ msgstr ""
 msgid "Minimal similarity for cluster lookups:"
 msgstr ""
 
-#: picard/ui/options/metadata.py:33 picard/ui/ui_options_metadata.py:100
+#: picard/ui/options/metadata.py:33 picard/ui/ui_options_metadata.py:96
 msgid "Metadata"
 msgstr ""
 
-#: picard/ui/ui_options_metadata.py:101
+#: picard/ui/ui_options_metadata.py:97
 msgid "Translate artist names to this locale where possible:"
 msgstr ""
 
-#: picard/ui/ui_options_metadata.py:102
+#: picard/ui/ui_options_metadata.py:98
 msgid "Use standardized artist names"
 msgstr ""
 
-#: picard/ui/ui_options_metadata.py:103
+#: picard/ui/ui_options_metadata.py:99
 msgid "Use standardized instrument and vocal credits"
 msgstr ""
 
-#: picard/ui/ui_options_metadata.py:104
+#: picard/ui/ui_options_metadata.py:100
 msgid "Convert Unicode punctuation characters to ASCII"
 msgstr ""
 
-#: picard/ui/ui_options_metadata.py:105
+#: picard/ui/ui_options_metadata.py:101
 msgid "Use release relationships"
 msgstr ""
 
-#: picard/ui/ui_options_metadata.py:106
+#: picard/ui/ui_options_metadata.py:102
 msgid "Use track relationships"
 msgstr ""
 
-#: picard/ui/ui_options_metadata.py:107
-msgid "Use folksonomy tags as genre"
-msgstr ""
-
-#: picard/ui/ui_options_metadata.py:108
+#: picard/ui/ui_options_metadata.py:103
 msgid "Custom Fields"
 msgstr ""
 
-#: picard/ui/ui_options_metadata.py:109
+#: picard/ui/ui_options_metadata.py:104
 msgid "Various artists:"
 msgstr ""
 
-#: picard/ui/ui_options_metadata.py:110
+#: picard/ui/ui_options_metadata.py:105
 msgid "Non-album tracks:"
 msgstr ""
 
-#: picard/ui/ui_options_metadata.py:111 picard/ui/ui_options_metadata.py:112
+#: picard/ui/ui_options_metadata.py:106 picard/ui/ui_options_metadata.py:107
 #: picard/ui/ui_options_renaming.py:174
 #: picard/ui/ui_provider_options_local.py:52
 msgid "Default"
@@ -2199,6 +2199,10 @@ msgstr ""
 
 #: picard/ui/options/general.py:113
 msgid "Authorization code:"
+msgstr ""
+
+#: picard/ui/options/genres.py:32
+msgid "Genres"
 msgstr ""
 
 #: picard/ui/options/interface.py:48
