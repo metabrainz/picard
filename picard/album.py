@@ -382,7 +382,7 @@ class Album(DataObject, Item):
             inc += ['artist-rels', 'release-rels', 'url-rels', 'recording-rels', 'work-rels']
             if config.setting['track_ars']:
                 inc += ['recording-level-rels', 'work-level-rels']
-        require_authentication = self.set_genre_inc_params(inc)
+        require_authentication = self.set_genre_inc_params(inc) or require_authentication
         if config.setting['enable_ratings']:
             require_authentication = True
             inc += ['user-ratings']
