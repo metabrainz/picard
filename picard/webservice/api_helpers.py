@@ -188,7 +188,9 @@ class MBAPIHelper(APIHelper):
             (i[1], j*20) for i, j in ratings.items() if i[0] == 'recording']))
 
         data = _wrap_xml_metadata('<recording-list>%s</recording-list>' % recordings)
-        return self.post(path_list, data, handler, priority=True, queryargs=params, parse_response_type="xml")
+        return self.post(path_list, data, handler, priority=True,
+            queryargs=params, parse_response_type="xml",
+            request_mimetype="application/xml; charset=utf-8")
 
     def get_collection(self, collection_id, handler, limit=100, offset=0):
         path_list = ["collection"]
