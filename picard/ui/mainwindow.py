@@ -1091,10 +1091,13 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                 QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,
                 QtWidgets.QMessageBox.Yes)
             if ret == QtWidgets.QMessageBox.Yes:
-                pass
+                self.tagger.mb_login(self.on_mb_login_finished)
         else:
             dialog = PasswordDialog(authenticator, reply, parent=self)
             dialog.exec_()
+
+    def on_mb_login_finished(self, successful):
+        log.debug('MusicBrainz authentication finished: %s', successful)
 
     def show_proxy_dialog(self, proxy, authenticator):
         dialog = ProxyDialog(authenticator, proxy, parent=self)

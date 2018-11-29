@@ -82,6 +82,7 @@ from picard.util import (
     thread,
     uniqify,
     versions,
+    webbrowser2,
 )
 from picard.util.checkupdate import UpdateCheckManager
 from picard.webservice import WebService
@@ -264,6 +265,33 @@ class Tagger(QtWidgets.QApplication):
     def set_log_level(self, level):
         self._debug = level == logging.DEBUG
         log.set_level(level)
+
+    def mb_login(self, callback, parent=None):
+        scopes = "profile tag rating collection submit_isrc submit_barcode"
+        authorization_url = self.webservice.oauth_manager.get_authorization_url(scopes)
+        webbrowser2.open(authorization_url)
+        if not parent:
+            parent = self.window
+        authorization_code, ok = QtWidgets.QInputDialog.getText(parent,
+            _("MusicBrainz Account"), _("Authorization code:"))
+        if ok:
+            self.webservice.oauth_manager.exchange_authorization_code(
+                authorization_code, scopes,
+                partial(self.on_mb_authorization_finished, callback))
+
+    def on_mb_authorization_finished(self, callback, successful):
+        if successful:
+            self.webservice.oauth_manager.fetch_username(
+                partial(self.on_mb_login_finished, callback))
+
+    def on_mb_login_finished(self, callback, successful):
+        if successful:
+            load_user_collections()
+        callback(successful)
+
+    def mb_logout(self):
+        self.webservice.oauth_manager.revoke_tokens()
+        load_user_collections()
 
     def move_files_to_album(self, files, albumid=None, album=None):
         """Move `files` to tracks on album `albumid`."""
