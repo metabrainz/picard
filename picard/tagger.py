@@ -278,11 +278,15 @@ class Tagger(QtWidgets.QApplication):
             self.webservice.oauth_manager.exchange_authorization_code(
                 authorization_code, scopes,
                 partial(self.on_mb_authorization_finished, callback))
+        else:
+            callback(False)
 
     def on_mb_authorization_finished(self, callback, successful):
         if successful:
             self.webservice.oauth_manager.fetch_username(
                 partial(self.on_mb_login_finished, callback))
+        else:
+            callback(False)
 
     def on_mb_login_finished(self, callback, successful):
         if successful:
