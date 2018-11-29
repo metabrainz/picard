@@ -377,7 +377,11 @@ class ID3File(File):
             elif name.startswith('performer:'):
                 role = name.split(':', 1)[1]
                 for value in values:
-                    tmcl.people.append([role, value])
+                    if config.setting['write_id3v23']:
+                        # TIPL will be upgraded to IPLS
+                        tipl.people.append([role, value])
+                    else:
+                        tmcl.people.append([role, value])
             elif name.startswith('comment:'):
                 desc = name.split(':', 1)[1]
                 if desc.lower()[:4] == 'itun':
