@@ -124,7 +124,7 @@ class UpdateCheckManager(QtCore.QObject):
         for test_key in PROGRAM_UPDATE_LEVELS:
             update_level = PROGRAM_UPDATE_LEVELS[test_key]['name']
             test_version = self._available_versions.get(update_level, {}).get('version', (0, 0, 0, ''))
-            if self._update_level >= test_key and  compare_version_tuples(high_version, test_version) > 0:
+            if self._update_level >= test_key and compare_version_tuples(high_version, test_version) > 0:
                 key = PROGRAM_UPDATE_LEVELS[test_key]['name']
                 high_version = test_version
         if key:

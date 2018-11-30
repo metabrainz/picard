@@ -292,12 +292,13 @@ Grammar:
             ScriptParser._cache[key] = self.parse(script, True)
         return ScriptParser._cache[key].eval(self)
 
+
 def enabled_tagger_scripts_texts():
     """Returns an iterator over the enabled tagger scripts.
     For each script, you'll get a tuple consisting of the script name and text"""
     if not config.setting["enable_tagger_scripts"]:
         return []
-    return [ (s_name, s_text) for _s_pos, s_name, s_enabled, s_text in config.setting["list_of_scripts"] if s_enabled and s_text]
+    return [(s_name, s_text) for _s_pos, s_name, s_enabled, s_text in config.setting["list_of_scripts"] if s_enabled and s_text]
 
 
 def register_script_function(function, name=None, eval_args=True,
@@ -715,7 +716,7 @@ def func_matchedtracks(parser, *args):
 
 def func_is_complete(parser):
     if (parser.file and parser.file.parent
-        and parser.file.parent.album.is_complete()):
+            and parser.file.parent.album.is_complete()):
         return "1"
     return "0"
 
@@ -849,6 +850,7 @@ def func_ne_any(parser, x, *args):
     """
     return func_not(parser, func_eq_all(parser, x, *args))
 
+
 def func_title(parser, text):
     # GPL 2.0 licensed code by Javier Kohen, Sambhav Kothari
     # from https://github.com/metabrainz/picard-plugins/blob/2.0/plugins/titlecase/titlecase.py
@@ -865,7 +867,7 @@ def func_title(parser, text):
         t = text[i]
         if t in "’'" and text[i-1].isalpha():
             capital = False
-        elif iswbound(t) :
+        elif iswbound(t):
             capital = True
         elif capital and t.isalpha():
             capital = False
@@ -874,6 +876,7 @@ def func_title(parser, text):
             capital = False
         capitalized += t
     return capitalized
+
 
 def iswbound(char):
     # GPL 2.0 licensed code by Javier Kohen, Sambhav Kothari

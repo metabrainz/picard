@@ -88,7 +88,7 @@ class ArtworkTable(QtWidgets.QTableWidget):
             self._new_cover_col = 2
             self.insertColumn(2)
             self.setHorizontalHeaderLabels([_("Existing Cover"), _("Type"),
-                _("New Cover")])
+                                            _("New Cover")])
         else:
             self._type_col = 0
             self._new_cover_col = 1
@@ -333,7 +333,7 @@ class TrackInfoDialog(InfoDialog):
 
         tabWidget.setTabText(tab_index, _("&Info"))
         text = ngettext("%i file in this track", "%i files in this track",
-                         track.num_linked_files) % track.num_linked_files
+                        track.num_linked_files) % track.num_linked_files
         info_files = [format_file_info(file_) for file_ in track.linked_files]
         text += '<hr />' + '<hr />'.join(info_files)
         self.ui.info.setText(text)

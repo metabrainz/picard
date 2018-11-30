@@ -260,7 +260,7 @@ class File(QtCore.QObject, Item):
         # Handle file removed before save
         # Result is None if save was skipped
         if ((self.state == File.REMOVED or self.tagger.stopping)
-            and result is None):
+                and result is None):
             return
         old_filename = new_filename = self.filename
         if error is not None:
@@ -511,7 +511,7 @@ class File(QtCore.QObject, Item):
                     break
         else:
             if (self.metadata.images and
-               self.orig_metadata.images != self.metadata.images):
+                    self.orig_metadata.images != self.metadata.images):
                 self.state = File.CHANGED
             else:
                 self.similarity = 1.0
@@ -603,7 +603,7 @@ class File(QtCore.QObject, Item):
             return
         if error:
             log.error("Network error encountered during the lookup for %s. Error code: %s",
-                       self.filename, error)
+                      self.filename, error)
         try:
             if lookuptype == "metadata":
                 tracks = document['recordings']

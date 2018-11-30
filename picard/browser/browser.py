@@ -99,6 +99,7 @@ class BrowserIntegration(QtNetwork.QTcpServer):
                         if not mbid_validate(mbid):
                             log.error("Browser integration failed: bad mbid %r", mbid)
                             return False
+
                         def load_it(loader):
                             self.tagger.bring_tagger_front()
                             loader(mbid)

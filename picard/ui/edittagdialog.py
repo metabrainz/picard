@@ -171,7 +171,7 @@ class EditTagDialog(PicardDialog):
 
     def _modified_tag(self):
         return self.modified_tags.setdefault(self.tag,
-               list(self.metadata_box.tag_diff.new[self.tag]) or [""])
+                                             list(self.metadata_box.tag_diff.new[self.tag]) or [""])
 
     def accept(self):
         self.window.ignore_selection_changes = True
