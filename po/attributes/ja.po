@@ -17,7 +17,7 @@
 # Shunsuke Shimizu <grafi@grafi.jp>, 2016-2017
 # th1rtyf0ur, 2013
 # th1rtyf0ur, 2013
-# wa2c <entry@wa2c.com>, 2018
+# 和田篤（wa2c） <entry@wa2c.com>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"

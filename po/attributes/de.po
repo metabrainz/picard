@@ -28,7 +28,7 @@
 # Nikolai Prokoschenko <nikolai@prokoschenko.de>, 2011
 # nikki, 2013
 # Patrick <patrick.rein@gmail.com>, 2015
-# Philipp Wolfer <ph.wolfer@gmail.com>, 2012
+# Philipp Wolfer <ph.wolfer@gmail.com>, 2012,2018
 # Philipp Wolfer <ph.wolfer@gmail.com>, 2012
 # S.Brandt <s.brandt@mixxx.org>, 2014-2016
 # Shepard, 2011
@@ -43,8 +43,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2018-10-15 16:09+0000\n"
-"Last-Translator: Michael Wiencek <mwtuea@gmail.com>\n"
+"PO-Revision-Date: 2018-11-29 16:13+0000\n"
+"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: German (http://www.transifex.com/musicbrainz/musicbrainz/language/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -869,7 +869,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:819
 msgctxt "work_attribute_type_allowed_value"
 msgid "B-sharp minor"
-msgstr ""
+msgstr "bis-Moll"
 
 #: DB:work_attribute_type/name:7
 msgctxt "work_attribute_type"

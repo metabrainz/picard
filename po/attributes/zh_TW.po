@@ -1,7 +1,7 @@
 # 
 # Translators:
 # Bai yun-xi <email address hidden>, 2016
-# Bai yun-xi <myhouse472@gmail.com>, 2016
+# byx <myhouse472@gmail.com>, 2016
 # Shen-Ta Hsieh(BestSteve) <ibmibmibm.tw@gmail.com>, 2014,2016
 # Koala Bear <email address hidden>, 2016
 # Koala Bear <koalaleaves@openmailbox.org>, 2016

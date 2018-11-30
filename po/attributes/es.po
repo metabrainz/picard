@@ -11,10 +11,11 @@
 # Francisco Godoy <francisco.godoy@openmailbox.org>, 2018
 # Fran Martín <frankiepd@gmail.com>, 2016
 # gr0uch0mars <email address hidden>, 2011
-# gr0uch0mars <miguel.herrerobaena@gmail.com>, 2011
+# 3b2b9b2970dff2223d07f096c7a072f3, 2011
 # Héctor Arroyo <churruka@hangar18.cc>, 2012,2015
 # Héctor Arroyo <email address hidden>, 2012
 # Ismael Olea <ismael@olea.org>, 2013-2015
+# Jeremias Brown <comercialspam@gmail.com>, 2018
 # Juan Acuña <jmacuna0@gmail.com>, 2016
 # Kevin Doncam Demian López Brante <kevin@kddlb.cl>, 2016
 # Kevin López Brante <kelopez.cl@gmail.com>, 2015
@@ -32,8 +33,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2018-10-15 16:09+0000\n"
-"Last-Translator: Michael Wiencek <mwtuea@gmail.com>\n"
+"PO-Revision-Date: 2018-11-26 09:59+0000\n"
+"Last-Translator: Jeremias Brown <comercialspam@gmail.com>\n"
 "Language-Team: Spanish (http://www.transifex.com/musicbrainz/musicbrainz/language/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -59,7 +60,7 @@ msgstr "Sonata es un término general usado para describir pequeñas piezas inst
 #: DB:medium_format/name:54
 msgctxt "medium_format"
 msgid "10\" Shellac"
-msgstr "Goma laca 10\""
+msgstr "Surco ancho 10\""
 
 #: DB:medium_format/name:30
 msgctxt "medium_format"
@@ -69,12 +70,12 @@ msgstr "Vinilo 10\""
 #: DB:medium_format/name:72
 msgctxt "medium_format"
 msgid "12\" LaserDisc"
-msgstr "12\" LaserDisc"
+msgstr " LaserDisc 12\""
 
 #: DB:medium_format/name:55
 msgctxt "medium_format"
 msgid "12\" Shellac"
-msgstr "Goma laca 12\""
+msgstr "Surco ancho 12\""
 
 #: DB:medium_format/name:31
 msgctxt "medium_format"
@@ -1065,7 +1066,7 @@ msgstr "Blu-ray"
 #: DB:medium_format/name:79
 msgctxt "medium_format"
 msgid "Blu-ray-R"
-msgstr ""
+msgstr "Blu-ray-R"
 
 #: DB:medium_format/name:35
 msgctxt "medium_format"
@@ -1937,7 +1938,7 @@ msgstr "Nombre del evento"
 #: DB:series_type/name:6
 msgctxt "series_type"
 msgid "Event series"
-msgstr ""
+msgstr "Serie de eventos"
 
 #: DB:work_attribute_type_allowed_value/value:729
 msgctxt "work_attribute_type_allowed_value"
@@ -4427,7 +4428,7 @@ msgstr "Nombre de la grabación"
 #: DB:series_type/name:3
 msgctxt "series_type"
 msgid "Recording series"
-msgstr ""
+msgstr "Serie de grabaciones"
 
 #: DB:medium_format/name:10
 msgctxt "medium_format"
@@ -4467,7 +4468,7 @@ msgstr "Nombre de grupo de publicaciones"
 #: DB:series_type/name:1
 msgctxt "series_type"
 msgid "Release group series"
-msgstr ""
+msgstr "Serie de grupos de titulos "
 
 #: DB:release_alias_type/name:1
 msgctxt "alias_type"
@@ -5594,7 +5595,7 @@ msgstr "Nombre de obra"
 #: DB:series_type/name:4
 msgctxt "series_type"
 msgid "Work series"
-msgstr ""
+msgstr "Serie de trabajos"
 
 #: DB:work_attribute_type_allowed_value/value:277
 msgctxt "work_attribute_type_allowed_value"

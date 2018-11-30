@@ -1,6 +1,7 @@
 # Translators:
 # Translators:
 # Arto Astala, 2016
+# Arto Astala, 2016
 # Jaakko Perttilä <jormangeud@gmail.com>, 2012,2015
 # Kai Kasurinen <kai.kasurinen@iki.fi>, 2014
 # Muz <transifex@mustaqila.li>, 2012

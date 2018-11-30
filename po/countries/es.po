@@ -2,9 +2,10 @@
 # Translators:
 # Adolfo Jayme-Barrientos, 2016
 # Alexander Dupuy <alex.dupuy@mac.com>, 2012
-# gr0uch0mars <miguel.herrerobaena@gmail.com>, 2011
+# 3b2b9b2970dff2223d07f096c7a072f3, 2011
 # Héctor Arroyo <churruka@hangar18.cc>, 2012
 # Ismael Olea <ismael@olea.org>, 2014-2015
+# Jeremias Brown <comercialspam@gmail.com>, 2018
 # Nicolás Tamargo <reosarevok@gmail.com>, 2011, 2012
 # Kevin Doncam Demian López Brante <kevin@kddlb.cl>, 2012
 #   Tobias Quathamer <toddy@debian.org>, 2007
@@ -12,8 +13,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2017-09-19 12:56+0000\n"
-"Last-Translator: Adolfo Jayme-Barrientos\n"
+"PO-Revision-Date: 2018-11-26 07:21+0000\n"
+"Last-Translator: Jeremias Brown <comercialspam@gmail.com>\n"
 "Language-Team: Spanish (http://www.transifex.com/musicbrainz/musicbrainz/language/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"

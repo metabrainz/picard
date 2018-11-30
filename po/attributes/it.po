@@ -11,8 +11,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2018-10-15 16:09+0000\n"
-"Last-Translator: Michael Wiencek <mwtuea@gmail.com>\n"
+"PO-Revision-Date: 2018-11-19 00:03+0000\n"
+"Last-Translator: Luca Salini <salo.rock@gmail.com>\n"
 "Language-Team: Italian (http://www.transifex.com/musicbrainz/musicbrainz/language/it/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1044,7 +1044,7 @@ msgstr "Blu-ray"
 #: DB:medium_format/name:79
 msgctxt "medium_format"
 msgid "Blu-ray-R"
-msgstr ""
+msgstr "Blu-ray-R"
 
 #: DB:medium_format/name:35
 msgctxt "medium_format"
@@ -1916,7 +1916,7 @@ msgstr "Nome evento"
 #: DB:series_type/name:6
 msgctxt "series_type"
 msgid "Event series"
-msgstr ""
+msgstr "Serie di eventi"
 
 #: DB:work_attribute_type_allowed_value/value:729
 msgctxt "work_attribute_type_allowed_value"
@@ -4406,7 +4406,7 @@ msgstr "Nome della registrazione"
 #: DB:series_type/name:3
 msgctxt "series_type"
 msgid "Recording series"
-msgstr ""
+msgstr "Serie di registrazioni"
 
 #: DB:medium_format/name:10
 msgctxt "medium_format"
@@ -4446,7 +4446,7 @@ msgstr "Nome del gruppo di pubblicazioni"
 #: DB:series_type/name:1
 msgctxt "series_type"
 msgid "Release group series"
-msgstr ""
+msgstr "Serie di gruppi di pubblicazioni"
 
 #: DB:release_alias_type/name:1
 msgctxt "alias_type"
@@ -4456,7 +4456,7 @@ msgstr "Nome della pubblicazione"
 #: DB:series_type/name:2
 msgctxt "series_type"
 msgid "Release series"
-msgstr ""
+msgstr "Serie di pubblicazioni"
 
 #: DB:place_type/name:6
 msgctxt "place_type"
@@ -5573,7 +5573,7 @@ msgstr "Nome opera"
 #: DB:series_type/name:4
 msgctxt "series_type"
 msgid "Work series"
-msgstr ""
+msgstr "Serie di opere"
 
 #: DB:work_attribute_type_allowed_value/value:277
 msgctxt "work_attribute_type_allowed_value"

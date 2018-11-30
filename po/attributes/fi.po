@@ -1,7 +1,7 @@
 # 
 # Translators:
 # Jaakko Perttilä <email address hidden>, 2012
-# Jaakko Perttilä <jormangeud@gmail.com>, 2012-2014,2017
+# Jaakko Perttilä <jormangeud@gmail.com>, 2012-2014,2017-2018
 # Jaakko Perttilä <jormangeud@gmail.com>, 2014
 # Kai Kasurinen <kai.kasurinen@iki.fi>, 2014
 # ListMyCDs.com Martikainen <email address hidden>, 2012
@@ -9,14 +9,15 @@
 # phonebox, 2014
 # phonebox, 2014-2015,2018
 # Sami Korkalainen, 2017
+# Sami Korkalainen, 2017
 # Timo Martikainen <>, 2012
 # Timo Martikainen <email address hidden>, 2012
 # Timo Martikainen <musicbrainz@listmycds.com>, 2012-2014
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2018-10-15 16:09+0000\n"
-"Last-Translator: Michael Wiencek <mwtuea@gmail.com>\n"
+"PO-Revision-Date: 2018-11-25 17:06+0000\n"
+"Last-Translator: Jaakko Perttilä <jormangeud@gmail.com>\n"
 "Language-Team: Finnish (http://www.transifex.com/musicbrainz/musicbrainz/language/fi/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -92,7 +93,7 @@ msgstr "8\" LaserDisc"
 #: DB:medium_format/name:78
 msgctxt "medium_format"
 msgid "8-Track Cartridge"
-msgstr ""
+msgstr "8-raita kasetti"
 
 #: DB:medium_format/name:34
 msgctxt "medium_format"
@@ -162,7 +163,7 @@ msgctxt "instrument_type"
 msgid ""
 "A grouping of related but different instruments, like the different violin-"
 "like instruments"
-msgstr ""
+msgstr "Ryhmä samansukuisia, mutta erilaisia soittimia, kuten erilaiset viulun-kaltaiset soittimet"
 
 #: DB:work_attribute_type_allowed_value/value:28
 msgctxt "work_attribute_type_allowed_value"
@@ -183,7 +184,7 @@ msgid ""
 "A masterclass or clinic is an event where an artist meets with a small to "
 "medium-sized audience and instructs them individually and/or takes questions"
 " intended to improve the audience members' playing skills."
-msgstr ""
+msgstr "Mestariluokka tai -klinikka on tapahtuma, jossa artisti tapaa pienestä keskisuureen yleisön kanssa ja ohjeistaa heitä yksilöllisesti ja/tai vastaa kysymyksiin, joilla on tarkoitus parantaa yleisön jäsenten soittotaitoja."
 
 #: DB:work_attribute_type_allowed_value/value:29
 msgctxt "work_attribute_type_allowed_value"
@@ -207,13 +208,13 @@ msgstr "Juhla, vastaanotto tai muu tapahtuma, joka pidetään erityisesti julkai
 #: DB:release_packaging/description:17
 msgctxt "release_packaging"
 msgid "A perfect bound book with a sleeve at the end to hold a CD"
-msgstr ""
+msgstr "Sidottu kirja, jossa tasku CD:tä varten"
 
 #: DB:place_type/description:8
 msgctxt "place_type"
 msgid ""
 "A place (generally a factory) at which physical media are manufactured."
-msgstr ""
+msgstr "Paikka (yleensä tehdas), jossa fyysisiä tallenteita valmistetaan."
 
 #: DB:place_type/description:5
 msgctxt "place_type"
@@ -284,7 +285,7 @@ msgctxt "place_type"
 msgid ""
 "A school, university or other similar educational institution (especially, "
 "but not only, one where music is taught)"
-msgstr ""
+msgstr "Koulu, yliopisto tai muu vastaava koulutuslaitos (erityisesti, mutta ei pelkästään sellainen, jossa musiikkia opetetaan)"
 
 #: DB:series_type/description:6
 msgctxt "series_type"
@@ -294,7 +295,7 @@ msgstr "Tapahtumien sarja."
 #: DB:series_type/description:9
 msgctxt "series_type"
 msgid "A series of performances of the same show at the same venue."
-msgstr ""
+msgstr "Sarja esityksiä samasta esityksestä samassa paikassa."
 
 #: DB:series_type/description:3
 msgctxt "series_type"
@@ -355,7 +356,7 @@ msgctxt "instrument_type"
 msgid ""
 "A standard grouping of instruments often played together, like a string "
 "quartet"
-msgstr ""
+msgstr "Vakioryhmä soittimia joita soitetaan usein yhdessä, kuten jousikvartetti"
 
 #: DB:work_type/description:6
 msgctxt "work_type"
@@ -371,19 +372,19 @@ msgid ""
 "A symphonic poem is a piece of programmatic orchestral music, usually in a "
 "single movement, that evokes a painting, a landscape, the content of a poem,"
 " a story or novel, or other non-musical source."
-msgstr ""
+msgstr "Sinfoninen runo on orkestraalista ohjelmamusiikkia, yleensä yhdessä osassa, joka pyrkii kuvaamaan ulkomusiikillisia asioita kuten maalauksia, maisemia, runoja, tarinoita tai romaaneja."
 
 #: DB:work_type/description:16
 msgctxt "work_type"
 msgid ""
 "A symphony is an extended composition, almost always scored for orchestra "
 "without soloists."
-msgstr ""
+msgstr "Sinfonia on pidempi sävellys, lähes aina nuotitetu orkesterille ilman sooloja."
 
 #: DB:release_packaging/description:2
 msgctxt "release_packaging"
 msgid "A thinner jewel case, commonly used for CD singles."
-msgstr ""
+msgstr "Ohuempi Jewel Case, yleensä CD-singleille."
 
 #: DB:work_type/description:19
 msgctxt "work_type"
@@ -1083,7 +1084,7 @@ msgstr ""
 #: DB:instrument_alias_type/name:3
 msgctxt "alias_type"
 msgid "Brand name"
-msgstr ""
+msgstr "Brandin nimi"
 
 #: DB:release_group_primary_type/name:12
 msgctxt "release_group_primary_type"
@@ -1309,7 +1310,7 @@ msgstr "Kaupunki"
 msgctxt "area_type"
 msgid ""
 "City is used for settlements of any size, including towns and villages."
-msgstr ""
+msgstr "Kaupunkia käytetään kaikenkokoisille asutuskeskuksille kylistä alkaen."
 
 #: DB:release_group_secondary_type/name:1
 msgctxt "release_group_secondary_type"
@@ -1704,7 +1705,7 @@ msgstr "Kaupunginosa"
 #: DB:area_type/description:5
 msgctxt "area_type"
 msgid "District is used for a division of a large city, e.g. Queens."
-msgstr ""
+msgstr "Kaupunginosaa käytetään osalle isoa kaupunkia, esimerkiksi Queens."
 
 #: DB:work_attribute_type_allowed_value/value:611
 msgctxt "work_attribute_type_allowed_value"
@@ -1890,7 +1891,7 @@ msgstr ""
 #: DB:instrument_type/name:6
 msgctxt "instrument_type"
 msgid "Ensemble"
-msgstr ""
+msgstr "Ensemble"
 
 #: DB:work_attribute_type_allowed_value/value:356
 msgctxt "work_attribute_type_allowed_value"
@@ -1915,7 +1916,7 @@ msgstr "Tapahtuma"
 #: DB:event_alias_type/name:1
 msgctxt "alias_type"
 msgid "Event name"
-msgstr ""
+msgstr "Tapahtuman nimi"
 
 #: DB:series_type/name:6
 msgctxt "series_type"
@@ -2025,7 +2026,7 @@ msgstr ""
 #: DB:instrument_type/name:7
 msgctxt "instrument_type"
 msgid "Family"
-msgstr ""
+msgstr "Ryhmä"
 
 #: DB:work_attribute_type_allowed_value/value:615
 msgctxt "work_attribute_type_allowed_value"
@@ -3340,7 +3341,7 @@ msgstr "Käsintehty"
 #: DB:label_type/name:10
 msgctxt "label_type"
 msgid "Manufacturer"
-msgstr ""
+msgstr "Valmistaja"
 
 #: DB:work_attribute_type_allowed_value/value:172
 msgctxt "work_attribute_type_allowed_value"
@@ -4405,7 +4406,7 @@ msgstr "Äänite"
 #: DB:recording_alias_type/name:1
 msgctxt "alias_type"
 msgid "Recording name"
-msgstr ""
+msgstr "Äänitteen nimi"
 
 #: DB:series_type/name:3
 msgctxt "series_type"
@@ -4445,7 +4446,7 @@ msgstr "Julkaisuryhmä"
 #: DB:release_group_alias_type/name:1
 msgctxt "alias_type"
 msgid "Release group name"
-msgstr ""
+msgstr "Julkaisuryhmän nimi"
 
 #: DB:series_type/name:1
 msgctxt "series_type"
@@ -4455,7 +4456,7 @@ msgstr ""
 #: DB:release_alias_type/name:1
 msgctxt "alias_type"
 msgid "Release name"
-msgstr ""
+msgstr "Julkaisun nimi"
 
 #: DB:series_type/name:2
 msgctxt "series_type"
