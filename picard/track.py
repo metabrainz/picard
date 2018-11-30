@@ -278,7 +278,7 @@ class NonAlbumTrack(Track):
         self.metadata.copy(self.album.metadata)
         self.metadata["title"] = "[loading track information]"
         self.loaded = False
-        self.tagger.nats.update(True)
+        self.album.update(True)
         mblogin = False
         inc = ["artist-credits", "artists", "aliases"]
         if config.setting["track_ars"]:
@@ -322,7 +322,11 @@ class NonAlbumTrack(Track):
         if self.callback:
             self.callback()
             self.callback = None
-        self.tagger.nats.update(True)
+        self.album.update(True)
+
+    def _customize_metadata(self):
+        super()._customize_metadata()
+        self.metadata['album'] = self.album.metadata['album']
 
     def run_when_loaded(self, func):
         if self.loaded:

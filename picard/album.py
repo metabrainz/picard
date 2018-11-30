@@ -624,9 +624,11 @@ class NatAlbum(Album):
 
     def update(self, update_tracks=True):
         self.enable_update_metadata_images(False)
+        old_album_title = self.metadata["album"]
         self.metadata["album"] = config.setting["nat_name"]
         for track in self.tracks:
-            track.metadata["album"] = self.metadata["album"]
+            if old_album_title == track.metadata["album"]:
+                track.metadata["album"] = self.metadata["album"]
             for file in track.linked_files:
                 track.update_file_metadata(file)
         self.enable_update_metadata_images(True)
