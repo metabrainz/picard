@@ -27,7 +27,6 @@ import operator
 import re
 import unicodedata
 
-
 from picard import config
 from picard.metadata import (
     MULTI_VALUED_JOINER,

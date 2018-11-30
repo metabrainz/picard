@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
 import logging
-import mutagen
 import os.path
 import shutil
 from tempfile import mkstemp
 from test.picardtestcase import PicardTestCase
 import unittest
+
+import mutagen
 
 from PyQt5 import QtCore
 

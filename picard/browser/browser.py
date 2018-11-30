@@ -22,9 +22,7 @@ from urllib.parse import (
     urlparse,
 )
 
-from PyQt5 import (
-    QtNetwork,
-)
+from PyQt5 import QtNetwork
 
 from picard import (
     config,
