@@ -85,7 +85,7 @@ class DataHash:
         if self._filename:
             try:
                 os.unlink(self._filename)
-            except:
+            except BaseException:
                 pass
             else:
                 _datafile_mutex.lock()

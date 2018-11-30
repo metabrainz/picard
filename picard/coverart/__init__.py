@@ -149,7 +149,7 @@ class CoverArt:
                     else:
                         log.debug("Skipping cover art provider %s ..." %
                                   provider.NAME)
-                except:
+                except BaseException:
                     log.error(traceback.format_exc())
                     raise
                 finally:

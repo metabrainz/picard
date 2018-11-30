@@ -50,7 +50,7 @@ class Runnable(QRunnable):
     def run(self):
         try:
             result = self.func()
-        except:
+        except BaseException:
             from picard import log
             if self.traceback:
                 log.error(traceback.format_exc())

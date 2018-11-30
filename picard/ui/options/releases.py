@@ -261,7 +261,7 @@ class ReleasesOptionsPage(OptionsPage):
             try:
                 i = saved_data.index(data)
                 move.append((i, item))
-            except:
+            except BaseException:
                 list1.addItem(item)
         move.sort(key=itemgetter(0))
         for i, item in move:

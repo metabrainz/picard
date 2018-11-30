@@ -133,7 +133,7 @@ class ReleaseGroup(DataObject):
             else:
                 try:
                     self._parse_versions(document)
-                except:
+                except BaseException:
                     error = True
                     log.error(traceback.format_exc())
         finally:

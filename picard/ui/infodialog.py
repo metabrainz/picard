@@ -255,7 +255,7 @@ def format_file_info(file_):
         size = os.path.getsize(encode_filename(file_.filename))
         sizestr = "%s (%s)" % (bytes1human.decimal(size), bytes2human.binary(size))
         info.append((_('Size:'), sizestr))
-    except:
+    except BaseException:
         pass
     if file_.orig_metadata.length:
         info.append((_('Length:'), format_time(file_.orig_metadata.length)))

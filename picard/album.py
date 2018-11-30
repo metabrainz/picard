@@ -173,7 +173,7 @@ class Album(DataObject, Item):
         # Run album metadata plugins
         try:
             run_album_metadata_processors(self, m, release_node)
-        except:
+        except BaseException:
             self.error_append(traceback.format_exc())
 
         self._release_node = release_node
@@ -347,7 +347,7 @@ class Album(DataObject, Item):
         # Run track metadata plugins
         try:
             run_track_metadata_processors(self, tm, self._release_node, track_node)
-        except:
+        except BaseException:
             self.error_append(traceback.format_exc())
 
         return track

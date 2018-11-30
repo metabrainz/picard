@@ -513,12 +513,12 @@ class ClusterEngine(object):
 
             try:
                 match0 = self.idClusterIndex[pair[0]]
-            except:
+            except BaseException:
                 match0 = -1
 
             try:
                 match1 = self.idClusterIndex[pair[1]]
-            except:
+            except BaseException:
                 match1 = -1
 
             # if neither item is in a cluster, make a new cluster
