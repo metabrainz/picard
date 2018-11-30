@@ -377,7 +377,11 @@ class ID3File(File):
             elif name.startswith('performer:'):
                 role = name.split(':', 1)[1]
                 for value in values:
-                    tmcl.people.append([role, value])
+                    if config.setting['write_id3v23']:
+                        # TIPL will be upgraded to IPLS
+                        tipl.people.append([role, value])
+                    else:
+                        tmcl.people.append([role, value])
             elif name.startswith('comment:'):
                 desc = name.split(':', 1)[1]
                 if desc.lower()[:4] == 'itun':
@@ -461,8 +465,10 @@ class ID3File(File):
             elif not name.startswith("~") and name not in self.__other_supported_tags:
                 tags.add(self.build_TXXX(encoding, name, values))
 
-        tags.add(tmcl)
-        tags.add(tipl)
+        if tmcl.people:
+            tags.add(tmcl)
+        if tipl.people:
+            tags.add(tipl)
 
         self._remove_deleted_tags(metadata, tags)
 

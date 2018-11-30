@@ -480,6 +480,21 @@ class CommonTests:
             self.assertFalse('TXXX:Work' in raw_metadata)
             self.assertTrue('TXXX:WORK' in raw_metadata)
 
+        @skipUnlessTestfile
+        def test_preserve_performance_tags(self):
+            metadata = Metadata()
+            metadata['engineer'] = 'Foo'
+            metadata['performer:drums'] = 'Foo'
+            save_and_load_metadata(self.filename, metadata)
+            new_metadata = save_and_load_metadata(self.filename, Metadata())
+            self.assertEqual('Foo', new_metadata['engineer'])
+            self.assertEqual('Foo', new_metadata['performer:drums'])
+
+        @skipUnlessTestfile
+        def test_preserve_performance_tags_v23(self):
+            config.setting['write_id3v23'] = True
+            self.test_preserve_performance_tags()
+
 
 class FLACTest(CommonTests.FormatsTest):
     testfile = 'test.flac'
