@@ -288,6 +288,7 @@ class Tagger(QtWidgets.QApplication):
         else:
             callback(False)
 
+    @classmethod
     def on_mb_login_finished(self, callback, successful):
         if successful:
             load_user_collections()

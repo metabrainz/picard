@@ -1096,6 +1096,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             dialog = PasswordDialog(authenticator, reply, parent=self)
             dialog.exec_()
 
+    @classmethod
     def on_mb_login_finished(self, successful):
         log.debug('MusicBrainz authentication finished: %s', successful)
 
