@@ -18,6 +18,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+from functools import partial
 from operator import itemgetter
 import traceback
 
@@ -79,7 +80,7 @@ class Album(DataObject, Item):
 
     release_group_loaded = QtCore.pyqtSignal()
 
-    def __init__(self, album_id, discid=None):
+    def __init__(self, album_id):
         DataObject.__init__(self, album_id)
         self.metadata = Metadata()
         self.orig_metadata = Metadata()
@@ -90,7 +91,7 @@ class Album(DataObject, Item):
         self._files = 0
         self._requests = 0
         self._tracks_loaded = False
-        self._discid = discid
+        self._discid = None
         self._after_load_callbacks = []
         self.unmatched_files = Cluster(_("Unmatched Files"), special=True, related_album=self, hide_if_empty=True)
         self.errors = []
@@ -123,7 +124,7 @@ class Album(DataObject, Item):
         """Returns the list of album artists (as AlbumArtist objects)"""
         return self._album_artists
 
-    def _parse_release(self, release_node):
+    def _parse_release(self, release_node, discid=None):
         log.debug("Loading release %r ...", self.id)
         self._tracks_loaded = False
         release_id = release_node['id']
@@ -154,9 +155,6 @@ class Album(DataObject, Item):
         m.copy(rg.metadata)
         release_to_metadata(release_node, m, album=self)
 
-        if self._discid:
-            m['musicbrainz_discid'] = self._discid
-
         # Custom VA name
         if m['musicbrainz_albumartistid'] == VARIOUS_ARTISTS_ID:
             m['albumartistsort'] = m['albumartist'] = config.setting['va_name']
@@ -177,9 +175,10 @@ class Album(DataObject, Item):
             self.error_append(traceback.format_exc())
 
         self._release_node = release_node
+        self._discid = discid
         return True
 
-    def _release_request_finished(self, document, http, error):
+    def _release_request_finished(self, discid, document, http, error):
         if self.load_task is None:
             return
         self.load_task = None
@@ -203,7 +202,7 @@ class Album(DataObject, Item):
                         error = False
             else:
                 try:
-                    parsed = self._parse_release(document)
+                    parsed = self._parse_release(document, discid)
                 except Exception:
                     error = True
                     self.error_append(traceback.format_exc())
@@ -252,6 +251,13 @@ class Album(DataObject, Item):
 
                 for dj in djmix_ars.get(mm["discnumber"], []):
                     mm.add("djmixer", dj)
+
+                discid = self._discid
+                if discid and 'discs' in medium_node:
+                    for disc in medium_node['discs']:
+                        if disc.get('id') == discid:
+                            mm['musicbrainz_discid'] = discid
+                            break
 
                 if "pregap" in medium_node:
                     discpregap = True
@@ -354,7 +360,7 @@ class Album(DataObject, Item):
 
         return track
 
-    def load(self, priority=False, refresh=False):
+    def load(self, priority=False, refresh=False, discid=None):
         if self._requests:
             log.info("Not reloading, some requests are still active.")
             return
@@ -375,7 +381,7 @@ class Album(DataObject, Item):
         self._requests = 1
         self.errors = []
         require_authentication = False
-        inc = ['release-groups', 'media', 'recordings', 'artist-credits',
+        inc = ['release-groups', 'media', 'discids', 'recordings', 'artist-credits',
                'artists', 'aliases', 'labels', 'isrcs', 'collections']
         if self.tagger.webservice.oauth_manager.is_authorized():
             require_authentication = True
@@ -389,7 +395,7 @@ class Album(DataObject, Item):
             require_authentication = True
             inc += ['user-ratings']
         self.load_task = self.tagger.mb_api.get_release_by_id(
-            self.id, self._release_request_finished, inc=inc,
+            self.id, partial(self._release_request_finished, discid), inc=inc,
             mblogin=require_authentication, priority=priority, refresh=refresh)
 
     def run_when_loaded(self, func):
