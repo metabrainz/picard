@@ -358,7 +358,7 @@ class PluginManager(QtCore.QObject):
         except VersionError as e:
             error = _("Plugin %r has an invalid API version string : %s") % (name, e)
             self.plugin_error(name, error)
-        except:
+        except BaseException:
             error = _("Plugin %r : %s") % (name, traceback.format_exc())
             self.plugin_error(name, error)
         if module_file is not None:
@@ -439,7 +439,7 @@ class PluginManager(QtCore.QObject):
                             os.fsync(zipfile.fileno())
                         os.rename(ziptmp, dst)
                         log.debug("Plugin saved to %r", dst)
-                    except:
+                    except BaseException:
                         try:
                             os.remove(ziptmp)
                         except (IOError, OSError):

@@ -89,7 +89,7 @@ class AcoustIDManager(QtCore.QObject):
             try:
                 error = load_json(document)
                 message = error["error"]["message"]
-            except:
+            except BaseException:
                 message = ""
             mparms = {
                 'error': http.errorString(),

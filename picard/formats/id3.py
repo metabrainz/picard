@@ -477,7 +477,7 @@ class ID3File(File):
         if self._IsMP3 and config.setting["remove_ape_from_mp3"]:
             try:
                 mutagen.apev2.delete(encode_filename(filename))
-            except:
+            except BaseException:
                 pass
 
     def _remove_deleted_tags(self, metadata, tags):

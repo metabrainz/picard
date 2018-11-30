@@ -238,7 +238,7 @@ class File(QtCore.QObject, Item):
                 while head and tail:
                     try:
                         self._rmdir(head)
-                    except:
+                    except BaseException:
                         break
                     head, tail = os.path.split(head)
             except EnvironmentError:
@@ -697,13 +697,13 @@ class File(QtCore.QObject, Item):
     def _get_tracknumber(self):
         try:
             return int(self.metadata["tracknumber"])
-        except:
+        except BaseException:
             return 0
     tracknumber = property(_get_tracknumber, doc="The track number as an int.")
 
     def _get_discnumber(self):
         try:
             return int(self.metadata["discnumber"])
-        except:
+        except BaseException:
             return 0
     discnumber = property(_get_discnumber, doc="The disc number as an int.")
