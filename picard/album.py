@@ -341,6 +341,8 @@ class Album(DataObject, Item):
         artists.add(tm["artist"])
         if va:
             tm["compilation"] = "1"
+        else:
+            tm.delete("compilation")
         if discpregap:
             tm["~discpregap"] = "1"
 

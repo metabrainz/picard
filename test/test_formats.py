@@ -207,6 +207,16 @@ class CommonTests:
                 self.assertTrue(tag not in loaded_metadata, '%s: %r != None' % (tag, loaded_metadata[tag]))
 
         @skipUnlessTestfile
+        def test_preserve_unchanged_tags(self):
+            metadata = Metadata()
+            for (key, value) in self.tags.items():
+                metadata[key] = value
+            save_metadata(self.filename, metadata)
+            loaded_metadata = save_and_load_metadata(self.filename, Metadata())
+            for (key, value) in self.tags.items():
+                self.assertEqual(loaded_metadata[key], value, '%s: %r != %r' % (key, loaded_metadata[key], value))
+
+        @skipUnlessTestfile
         def test_delete_simple_tags(self):
             metadata = Metadata()
             for (key, value) in self.tags.items():
@@ -480,20 +490,9 @@ class CommonTests:
             self.assertFalse('TXXX:Work' in raw_metadata)
             self.assertTrue('TXXX:WORK' in raw_metadata)
 
-        @skipUnlessTestfile
-        def test_preserve_performance_tags(self):
-            metadata = Metadata()
-            metadata['engineer'] = 'Foo'
-            metadata['performer:drums'] = 'Foo'
-            save_and_load_metadata(self.filename, metadata)
-            new_metadata = save_and_load_metadata(self.filename, Metadata())
-            self.assertEqual('Foo', new_metadata['engineer'])
-            self.assertEqual('Foo', new_metadata['performer:drums'])
-
-        @skipUnlessTestfile
-        def test_preserve_performance_tags_v23(self):
+        def test_preserve_unchanged_tags_v23(self):
             config.setting['write_id3v23'] = True
-            self.test_preserve_performance_tags()
+            self.test_preserve_unchanged_tags()
 
 
 class FLACTest(CommonTests.FormatsTest):
