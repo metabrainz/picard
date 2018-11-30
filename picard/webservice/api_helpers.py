@@ -60,41 +60,41 @@ class APIHelper(object):
         self._webservice = webservice
 
     def get(self, path_list, handler, priority=False, important=False, mblogin=False,
-                cacheloadcontrol=None, refresh=False, queryargs=None, parse_response_type=DEFAULT_RESPONSE_PARSER_TYPE):
+            cacheloadcontrol=None, refresh=False, queryargs=None, parse_response_type=DEFAULT_RESPONSE_PARSER_TYPE):
         path = self.api_path + "/".join(path_list)
         return self._webservice.get(self.host, self.port, path, handler,
-                 priority=priority, important=important, mblogin=mblogin,
-                 refresh=refresh, queryargs=queryargs, parse_response_type=parse_response_type)
+                                    priority=priority, important=important, mblogin=mblogin,
+                                    refresh=refresh, queryargs=queryargs, parse_response_type=parse_response_type)
 
     def post(self, path_list, data, handler, priority=False, important=False,
-                 mblogin=True, queryargs=None, parse_response_type=DEFAULT_RESPONSE_PARSER_TYPE,
-                 request_mimetype=None):
+             mblogin=True, queryargs=None, parse_response_type=DEFAULT_RESPONSE_PARSER_TYPE,
+             request_mimetype=None):
         path = self.api_path + "/".join(path_list)
         return self._webservice.post(self.host, self.port, path, data, handler,
-                  priority=priority, important=important, mblogin=mblogin,
-                  queryargs=queryargs, parse_response_type=parse_response_type,
-                  request_mimetype=request_mimetype)
+                                     priority=priority, important=important, mblogin=mblogin,
+                                     queryargs=queryargs, parse_response_type=parse_response_type,
+                                     request_mimetype=request_mimetype)
 
     def put(self, path_list, data, handler, priority=True, important=False,
-                mblogin=True, queryargs=None, request_mimetype=None):
+            mblogin=True, queryargs=None, request_mimetype=None):
         path = self.api_path + "/".join(path_list)
         return self._webservice.put(self.host, self.port, path, data, handler,
-                 priority=priority, important=important, mblogin=mblogin,
-                 queryargs=queryargs, request_mimetype=request_mimetype)
+                                    priority=priority, important=important, mblogin=mblogin,
+                                    queryargs=queryargs, request_mimetype=request_mimetype)
 
     def delete(self, path_list, handler, priority=True, important=False,
-                   mblogin=True, queryargs=None):
+               mblogin=True, queryargs=None):
         path = self.api_path + "/".join(path_list)
         return self._webservice.delete(self.host, self.port, path, handler,
-                 priority=priority, important=important, mblogin=mblogin,
-                 queryargs=queryargs)
+                                       priority=priority, important=important, mblogin=mblogin,
+                                       queryargs=queryargs)
 
 
 class MBAPIHelper(APIHelper):
 
     def __init__(self, webservice):
         super().__init__(config.setting['server_host'], config.setting['server_port'],
-                                  "/ws/2/", webservice)
+                         "/ws/2/", webservice)
 
     def _get_by_id(self, entitytype, entityid, handler, inc=None, queryargs=None,
                    priority=False, important=False, mblogin=False, refresh=False):
@@ -156,8 +156,8 @@ class MBAPIHelper(APIHelper):
 
         path_list = [entitytype]
         return self.get(path_list, handler, queryargs=queryargs,
-                            priority=True, important=True, mblogin=False,
-                            refresh=False)
+                        priority=True, important=True, mblogin=False,
+                        refresh=False)
 
     def find_releases(self, handler, **kwargs):
         return self._find('release', handler, **kwargs)
@@ -174,8 +174,8 @@ class MBAPIHelper(APIHelper):
         if inc:
             queryargs["inc"] = "+".join(inc)
         return self.get(path_list, handler, queryargs=queryargs,
-                            priority=True, important=True, mblogin=False,
-                            refresh=False)
+                        priority=True, important=True, mblogin=False,
+                        refresh=False)
 
     def browse_releases(self, handler, **kwargs):
         inc = ["media", "labels"]
@@ -189,8 +189,8 @@ class MBAPIHelper(APIHelper):
 
         data = _wrap_xml_metadata('<recording-list>%s</recording-list>' % recordings)
         return self.post(path_list, data, handler, priority=True,
-            queryargs=params, parse_response_type="xml",
-            request_mimetype="application/xml; charset=utf-8")
+                         queryargs=params, parse_response_type="xml",
+                         request_mimetype="application/xml; charset=utf-8")
 
     def get_collection(self, collection_id, handler, limit=100, offset=0):
         path_list = ["collection"]
@@ -203,7 +203,7 @@ class MBAPIHelper(APIHelper):
             queryargs["limit"] = limit
             queryargs["offset"] = offset
         return self.get(path_list, handler, priority=True, important=True,
-                            mblogin=True, queryargs=queryargs)
+                        mblogin=True, queryargs=queryargs)
 
     def get_collection_list(self, handler):
         return self.get_collection(None, handler)
@@ -232,7 +232,7 @@ class AcoustIdAPIHelper(APIHelper):
 
     def __init__(self, webservice):
         super().__init__(ACOUSTID_HOST, ACOUSTID_PORT,
-                                    '/v2/', webservice)
+                         '/v2/', webservice)
 
     def _encode_acoustid_args(self, args, format_='json'):
         filters = []

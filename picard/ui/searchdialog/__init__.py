@@ -64,7 +64,8 @@ class ResultTable(QtWidgets.QTableWidget):
             QtWidgets.QHeaderView.Stretch)
         self.horizontalHeader().setSectionResizeMode(
             QtWidgets.QHeaderView.Interactive)
-        #only emit scrolled signal once per second
+        # only emit scrolled signal once per second
+
         @throttle(1000)
         def emit_scrolled(x):
             parent.scrolled.emit()
@@ -377,7 +378,7 @@ class SearchDialog(PicardDialog):
 
     def search_browser(self):
         self.tagger.search(self.search_box.query, self.search_type,
-            adv=config.setting["use_adv_search_syntax"], force_browser=True)
+                           adv=config.setting["use_adv_search_syntax"], force_browser=True)
 
     def accept(self):
         if self.table:

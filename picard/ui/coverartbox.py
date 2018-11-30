@@ -379,9 +379,9 @@ class CoverArtBox(QtWidgets.QGroupBox):
             else:
                 port = 80
             self.tagger.webservice.get(url.host(), url.port(port), path,
-                                  partial(self.on_remote_image_fetched, url, fallback_data=fallback_data),
-                                  parse_response_type=None, queryargs=queryargs,
-                                  priority=True, important=True)
+                                       partial(self.on_remote_image_fetched, url, fallback_data=fallback_data),
+                                       parse_response_type=None, queryargs=queryargs,
+                                       priority=True, important=True)
         elif url.scheme() == 'file':
             path = os.path.normpath(os.path.realpath(url.toLocalFile().rstrip("\0")))
             if path and os.path.exists(path):

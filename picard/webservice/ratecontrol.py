@@ -214,7 +214,7 @@ def _out_of_backoff(hostkey):
         cws += 1
 
     if (REQUEST_DELAY[hostkey] != delay
-        or CONGESTION_WINDOW_SIZE[hostkey] != cws):
+            or CONGESTION_WINDOW_SIZE[hostkey] != cws):
         log.debug(
             '%s: oobackoff; delay: %dms -> %dms; %s; window size %.3f -> %.3f',
             hostkey,

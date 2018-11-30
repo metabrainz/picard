@@ -75,7 +75,6 @@ CLIENT_STRING = bytes(QUrl.toPercentEncoding('%s %s-%s' % (PICARD_ORG_NAME,
                                                            PICARD_VERSION_STR))).decode()
 
 
-
 DEFAULT_RESPONSE_PARSER_TYPE = "json"
 
 Parser = namedtuple('Parser', 'mimetype parser')
@@ -303,7 +302,6 @@ class WebService(QtCore.QObject):
             proxy.setPassword(config.setting["proxy_password"])
         self.manager.setProxy(proxy)
 
-
     def _send_request(self, request, access_token=None):
         hostkey = request.get_host_key()
         ratecontrol.increment_requests(hostkey)
@@ -384,14 +382,14 @@ class WebService(QtCore.QObject):
             log.error("Network request error for %s: %s (QT code %d, HTTP code %d)",
                       url, errstr, error, code)
             if (not request.max_retries_reached()
-                and (code == 503
-                     or code == 429
-                     # Sometimes QT returns a http status code of 200 even when there
-                     # is a service unavailable error. But it returns a QT error code
-                     # of 403 when this happens
-                     or error == 403
-                    )
-               ):
+                        and (code == 503
+                             or code == 429
+                             # Sometimes QT returns a http status code of 200 even when there
+                             # is a service unavailable error. But it returns a QT error code
+                             # of 403 when this happens
+                             or error == 403
+                             )
+                    ):
                 slow_down = True
                 retries = request.mark_for_retry()
                 log.debug("Retrying %s (#%d)", url, retries)
@@ -447,16 +445,16 @@ class WebService(QtCore.QObject):
             priority=False, important=False, mblogin=False, cacheloadcontrol=None, refresh=False,
             queryargs=None):
         request = WSGetRequest(host, port, path, handler, parse_response_type=parse_response_type,
-                            mblogin=mblogin, cacheloadcontrol=cacheloadcontrol, refresh=refresh,
-                            queryargs=queryargs, priority=priority, important=important)
+                               mblogin=mblogin, cacheloadcontrol=cacheloadcontrol, refresh=refresh,
+                               queryargs=queryargs, priority=priority, important=important)
         return self.add_request(request)
 
     def post(self, host, port, path, data, handler, parse_response_type=DEFAULT_RESPONSE_PARSER_TYPE,
              priority=False, important=False, mblogin=True, queryargs=None, request_mimetype=None):
         request = WSPostRequest(host, port, path, handler, parse_response_type=parse_response_type,
-                            data=data, mblogin=mblogin, queryargs=queryargs,
-                            priority=priority, important=important,
-                            request_mimetype=request_mimetype)
+                                data=data, mblogin=mblogin, queryargs=queryargs,
+                                priority=priority, important=important,
+                                request_mimetype=request_mimetype)
         log.debug("POST-DATA %r", data)
         return self.add_request(request)
 
@@ -470,7 +468,7 @@ class WebService(QtCore.QObject):
     def delete(self, host, port, path, handler, priority=True, important=False, mblogin=True,
                queryargs=None):
         request = WSDeleteRequest(host, port, path, handler, mblogin=mblogin,
-                            queryargs=queryargs, priority=priority, important=important)
+                                  queryargs=queryargs, priority=priority, important=important)
         return self.add_request(request)
 
     def download(self, host, port, path, handler, priority=False,

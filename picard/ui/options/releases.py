@@ -87,6 +87,7 @@ class TipSlider(QtWidgets.QSlider):
         if step > 1:
             super().setValue(int(value / step) * step)
 
+
 class ReleaseTypeScore:
 
     def __init__(self, group, layout, label, cell):

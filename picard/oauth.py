@@ -114,9 +114,9 @@ class OAuthManager(object):
         url.setQuery(url_query.query(QUrl.FullyEncoded))
         data = url.query()
         self.webservice.post(host, port, path, data,
-                        partial(self.on_refresh_access_token_finished, callback),
-                        mblogin=True, priority=True, important=True,
-                        request_mimetype="application/x-www-form-urlencoded")
+                             partial(self.on_refresh_access_token_finished, callback),
+                             mblogin=True, priority=True, important=True,
+                             request_mimetype="application/x-www-form-urlencoded")
 
     def on_refresh_access_token_finished(self, callback, data, http, error):
         access_token = None
@@ -149,9 +149,9 @@ class OAuthManager(object):
         url.setQuery(url_query.query(QUrl.FullyEncoded))
         data = url.query()
         self.webservice.post(host, port, path, data,
-                        partial(self.on_exchange_authorization_code_finished, scopes, callback),
-                        mblogin=True, priority=True, important=True,
-                        request_mimetype="application/x-www-form-urlencoded")
+                             partial(self.on_exchange_authorization_code_finished, scopes, callback),
+                             mblogin=True, priority=True, important=True,
+                             request_mimetype="application/x-www-form-urlencoded")
 
     def on_exchange_authorization_code_finished(self, scopes, callback, data, http, error):
         successful = False
@@ -172,8 +172,8 @@ class OAuthManager(object):
         host, port = config.setting['server_host'], config.setting['server_port']
         path = "/oauth2/userinfo"
         self.webservice.get(host, port, path,
-                        partial(self.on_fetch_username_finished, callback),
-                        mblogin=True, priority=True, important=True)
+                            partial(self.on_fetch_username_finished, callback),
+                            mblogin=True, priority=True, important=True)
 
     def on_fetch_username_finished(self, callback, data, http, error):
         successful = False

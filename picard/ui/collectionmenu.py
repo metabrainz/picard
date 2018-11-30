@@ -45,8 +45,8 @@ class CollectionMenu(QtWidgets.QMenu):
         self.clear()
         self.actions = []
         for id_, collection in sorted(user_collections.items(),
-                                     key=lambda k_v:
-                                     (locale.strxfrm(str(k_v[1])), k_v[0])):
+                                      key=lambda k_v:
+                                      (locale.strxfrm(str(k_v[1])), k_v[0])):
             action = QtWidgets.QWidgetAction(self)
             action.setDefaultWidget(CollectionMenuItem(self, collection))
             self.addAction(action)
@@ -76,7 +76,7 @@ class CollectionMenu(QtWidgets.QMenu):
             return
         for action in self.actions:
             action_widget = action.defaultWidget()
-            is_active = action_widget ==  widget
+            is_active = action_widget == widget
             if is_active:
                 self._ignore_hover = True
                 self.setActiveAction(action)
@@ -126,7 +126,7 @@ class CollectionMenuItem(QtWidgets.QWidget):
         painter = QtWidgets.QStylePainter(self)
         option = QtWidgets.QStyleOptionMenuItem()
         option.initFrom(self)
-        option.state =  QtWidgets.QStyle.State_None
+        option.state = QtWidgets.QStyle.State_None
         if self.isEnabled():
             option.state |= QtWidgets.QStyle.State_Enabled
         if self.active:

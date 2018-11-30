@@ -69,8 +69,8 @@ class Collection(QtCore.QObject):
             log.debug('Added %(count)i releases to collection "%(name)s"' % mparms)
             self.tagger.window.set_statusbar_message(
                 ngettext('Added %(count)i release to collection "%(name)s"',
-                          'Added %(count)i releases to collection "%(name)s"',
-                          count),
+                         'Added %(count)i releases to collection "%(name)s"',
+                         count),
                 mparms,
                 translate=None,
                 echo=None
@@ -91,8 +91,8 @@ class Collection(QtCore.QObject):
                       mparms)
             self.tagger.window.set_statusbar_message(
                 ngettext('Removed %(count)i release from collection "%(name)s"',
-                          'Removed %(count)i releases from collection "%(name)s"',
-                          count),
+                         'Removed %(count)i releases from collection "%(name)s"',
+                         count),
                 mparms,
                 translate=None,
                 echo=None

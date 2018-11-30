@@ -612,7 +612,7 @@ class CoverArtProviderCaa(CoverArtProvider):
                         if not urls or is_pdf:
                             url = image["image"]
                         else:
-                            #FIXME: try other urls in case of 404
+                            # FIXME: try other urls in case of 404
                             url = urls[0]
                         coverartimage = self.coverartimage_class(
                             url,

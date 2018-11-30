@@ -560,10 +560,10 @@ class Album(DataObject, Item):
                 number_of_images = len(metadata.images)
                 if getattr(metadata, 'has_common_images', True):
                     text += ngettext("; %i image", "; %i images",
-                                      number_of_images) % number_of_images
+                                     number_of_images) % number_of_images
                 else:
                     text += ngettext("; %i image not in all tracks", "; %i different images among tracks",
-                                      number_of_images) % number_of_images
+                                     number_of_images) % number_of_images
                 return text + ')'
             else:
                 return title

@@ -88,7 +88,7 @@ def load_manifest(archive_path):
 def zip_import(path):
     splitext = os.path.splitext(path)
     if (not os.path.isfile(path)
-        or not splitext[1] == '.zip'):
+            or not splitext[1] == '.zip'):
         return (None, None, None)
     try:
         importer = zipimport.zipimporter(path)
@@ -249,7 +249,7 @@ class PluginManager(QtCore.QObject):
         super().__init__()
         self.plugins = []
         self._api_versions = set([version_from_string(v) for v in picard.api_versions])
-        self._available_plugins = None #  None=never loaded, [] = empty
+        self._available_plugins = None  # None=never loaded, [] = empty
 
     @property
     def available_plugins(self):
@@ -268,7 +268,7 @@ class PluginManager(QtCore.QObject):
             return
         # first, handle eventual plugin updates
         for updatepath in [os.path.join(plugindir, file) for file in
-                     os.listdir(plugindir) if file.endswith('.update')]:
+                           os.listdir(plugindir) if file.endswith('.update')]:
             path = os.path.splitext(updatepath)[0]
             name = is_zip(path)
             if not name:
@@ -322,11 +322,11 @@ class PluginManager(QtCore.QObject):
             for i, p in enumerate(self.plugins):
                 if name == p.module_name:
                     log.warning("Module %r conflict: unregistering previously"
-                              " loaded %r version %s from %r",
-                              p.module_name,
-                              p.name,
-                              p.version,
-                              p.file)
+                                " loaded %r version %s from %r",
+                                p.module_name,
+                                p.name,
+                                p.version,
+                                p.file)
                     _unregister_module_extensions(name)
                     index = i
                     break
@@ -371,8 +371,8 @@ class PluginManager(QtCore.QObject):
             dirpath = None
         fileexts = ['.py', '.pyc', '.pyo', '.zip']
         filepaths = [os.path.join(USER_PLUGIN_DIR, f)
-                      for f in os.listdir(USER_PLUGIN_DIR)
-                      if f in [plugin_name + ext for ext in fileexts]
+                     for f in os.listdir(USER_PLUGIN_DIR)
+                     if f in [plugin_name + ext for ext in fileexts]
                      ]
         return (dirpath, filepaths)
 
@@ -398,7 +398,7 @@ class PluginManager(QtCore.QObject):
                         log.debug("Removing file %r", update)
                         os.remove(update)
         _unregister_module_extensions(plugin_name)
-        self.plugins = [ p for p in self.plugins if p.module_name != plugin_name]
+        self.plugins = [p for p in self.plugins if p.module_name != plugin_name]
 
     def remove_plugin(self, plugin_name, with_update=False):
         self._remove_plugin(plugin_name, with_update=with_update)

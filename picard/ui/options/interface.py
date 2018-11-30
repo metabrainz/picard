@@ -288,7 +288,7 @@ class AddActionDialog(QtWidgets.QDialog):
         layout = QtWidgets.QVBoxLayout(self)
 
         self.action_list = sorted([[_(self.parent().TOOLBAR_BUTTONS[action]['label']), action]
-                                  for action in action_list])
+                                   for action in action_list])
 
         self.combo_box = QtWidgets.QComboBox(self)
         self.combo_box.addItems([label for label, action in self.action_list])

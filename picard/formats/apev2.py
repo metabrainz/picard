@@ -221,7 +221,7 @@ class APEv2File(File):
             'podcasturl',
             'show',
             'showsort',
-            }
+        }
         return bool(name) and name not in unsupported_tags
 
 

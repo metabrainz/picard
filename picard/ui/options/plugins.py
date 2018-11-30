@@ -64,9 +64,9 @@ class PluginActionButton(QtWidgets.QToolButton):
             self.set_icon(self, icon)
 
         if retain_space is True:
-            sp_retain = self.sizePolicy();
+            sp_retain = self.sizePolicy()
             sp_retain.setRetainSizeWhenHidden(True)
-            self.setSizePolicy(sp_retain);
+            self.setSizePolicy(sp_retain)
         if switch_method is not None:
             self.switch_method = switch_method
 
@@ -74,8 +74,8 @@ class PluginActionButton(QtWidgets.QToolButton):
         if self.switch_method is not None:
             self.switch_method(self, mode)
 
-class PluginTreeWidgetItem(HashableTreeWidgetItem):
 
+class PluginTreeWidgetItem(HashableTreeWidgetItem):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -194,7 +194,8 @@ class PluginTreeWidgetItem(HashableTreeWidgetItem):
         else:
             self.buttons['enable'].mode('disabled')
         if greyout is not None:
-             self.buttons['enable'].setEnabled(not greyout)
+            self.buttons['enable'].setEnabled(not greyout)
+
 
 class PluginsOptionsPage(OptionsPage):
 
@@ -433,7 +434,6 @@ class PluginsOptionsPage(OptionsPage):
             else:  # Remove local plugin
                 self.ui.plugins.invisibleRootItem().removeChild(item)
 
-
     def uninstall_plugin(self, item):
         plugin = item.plugin
         buttonReply = QtWidgets.QMessageBox.question(
@@ -525,6 +525,7 @@ class PluginsOptionsPage(OptionsPage):
             item.buttons['install'].mode('hide')
             item.buttons['uninstall'].mode('show')
             item.enable(enabled, greyout=False)
+
             def uninstall_processor():
                 self.uninstall_plugin(item)
 
