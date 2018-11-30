@@ -46,9 +46,7 @@ from picard.util import (
     imageinfo,
     replace_win32_incompat,
 )
-from picard.util.textencoding import (
-    replace_non_ascii,
-)
+from picard.util.textencoding import replace_non_ascii
 
 _datafiles = dict()
 _datafile_mutex = QMutex(QMutex.Recursive)

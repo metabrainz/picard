@@ -61,7 +61,7 @@ from picard.util import (
 from picard.util.imagelist import (
     add_metadata_images,
     remove_metadata_images,
-    update_metadata_images
+    update_metadata_images,
 )
 from picard.util.textencoding import asciipunct
 

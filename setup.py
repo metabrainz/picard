@@ -22,7 +22,10 @@ from setuptools import (
 )
 from setuptools.dist import Distribution
 
-from picard import PICARD_VERSION, __version__
+from picard import (
+    PICARD_VERSION,
+    __version__,
+)
 
 if sys.version_info < (3, 5):
     sys.exit("ERROR: You need Python 3.5 or higher to use Picard.")

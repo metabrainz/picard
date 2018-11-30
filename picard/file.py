@@ -50,9 +50,7 @@ from picard.util import (
 )
 from picard.util.filenaming import make_short_filename
 from picard.util.tags import PRESERVED_TAGS
-from picard.util.textencoding import (
-    replace_non_ascii,
-)
+from picard.util.textencoding import replace_non_ascii
 
 from picard.ui.item import Item
 
