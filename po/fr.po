@@ -29,8 +29,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2018-11-29 16:53+0100\n"
-"PO-Revision-Date: 2018-11-30 11:49+0000\n"
+"POT-Creation-Date: 2018-11-30 12:53+0100\n"
+"PO-Revision-Date: 2018-11-30 12:01+0000\n"
 "Last-Translator: Laurent Monin <i18n@norz.org>\n"
 "Language-Team: French (http://www.transifex.com/musicbrainz/musicbrainz/language/fr/)\n"
 "MIME-Version: 1.0\n"
@@ -54,23 +54,23 @@ msgstr "[impossible de charger l’album %s]"
 msgid "Album %(id)s loaded: %(artist)s - %(album)s"
 msgstr "Album %(id)s chargé : %(artist)s - %(album)s"
 
-#: picard/album.py:360
+#: picard/album.py:362
 #, python-format
 msgid "Loading album %(id)s ..."
 msgstr "Chargement de l’album %(id)s..."
 
-#: picard/album.py:364
+#: picard/album.py:366
 msgid "[loading album information]"
 msgstr "[chargement des informations de l’album]"
 
-#: picard/album.py:562
+#: picard/album.py:564
 #, python-format
 msgid "; %i image"
 msgid_plural "; %i images"
 msgstr[0] "; %i image"
 msgstr[1] "; %i images"
 
-#: picard/album.py:565
+#: picard/album.py:567
 #, python-format
 msgid "; %i image not in all tracks"
 msgid_plural "; %i different images among tracks"
@@ -146,22 +146,22 @@ msgstr "Retirer"
 msgid "My script %d"
 msgstr "Mon script %d"
 
-#: picard/file.py:618
+#: picard/file.py:616
 #, python-format
 msgid "No matching tracks for file '%(filename)s'"
 msgstr "Aucune piste correspondante pour le fichier « %(filename)s »"
 
-#: picard/file.py:631
+#: picard/file.py:629
 #, python-format
 msgid "No matching tracks above the threshold for file '%(filename)s'"
 msgstr "Aucune piste correspondante au-dessus du seuil pour le fichier « %(filename)s »"
 
-#: picard/file.py:639
+#: picard/file.py:637
 #, python-format
 msgid "File '%(filename)s' identified!"
 msgstr "Le fichier « %(filename)s » a été identifié !"
 
-#: picard/file.py:661
+#: picard/file.py:659
 #, python-format
 msgid "Looking up the metadata for file %(filename)s ..."
 msgstr "Recherche des métadonnées pour le fichier « %(filename)s »..."
@@ -229,23 +229,31 @@ msgstr "[pas de code-barres]"
 msgid "[no release info]"
 msgstr "[aucune information de parution]"
 
-#: picard/tagger.py:445 picard/tagger.py:478
+#: picard/tagger.py:276 picard/ui/ui_options_general.py:135
+msgid "MusicBrainz Account"
+msgstr "Compte MusicBrainz"
+
+#: picard/tagger.py:276
+msgid "Authorization code:"
+msgstr " Code d’autorisation : "
+
+#: picard/tagger.py:478 picard/tagger.py:511
 #, python-format
 msgid "Adding %(count)d file from '%(directory)s' ..."
 msgid_plural "Adding %(count)d files from '%(directory)s' ..."
 msgstr[0] "Ajout d’%(count)d fichier de « %(directory)s »..."
 msgstr[1] "Ajout de %(count)d fichiers de « %(directory)s »..."
 
-#: picard/tagger.py:647
+#: picard/tagger.py:680
 #, python-format
 msgid "Removing album %(id)s: %(artist)s - %(album)s"
 msgstr "Suppression de l’album %(id)s : %(artist)s - %(album)s"
 
-#: picard/tagger.py:665
+#: picard/tagger.py:698
 msgid "CD Lookup Error"
 msgstr "Erreur lors de la recherche du CD"
 
-#: picard/tagger.py:666
+#: picard/tagger.py:699
 #, python-format
 msgid ""
 "Error while reading CD:\n"
@@ -715,7 +723,7 @@ msgstr "Artiste : "
 msgid "Tracklist:"
 msgstr "Liste de pistes :"
 
-#: picard/ui/infostatus.py:56 picard/ui/options/plugins.py:582
+#: picard/ui/infostatus.py:56 picard/ui/options/plugins.py:583
 msgid "Files"
 msgstr "Fichiers"
 
@@ -1090,7 +1098,7 @@ msgid "&Actions"
 msgstr "&Actions"
 
 #: picard/ui/mainwindow.py:450 picard/ui/mainwindow.py:691
-#: picard/ui/searchdialog/__init__.py:81
+#: picard/ui/searchdialog/__init__.py:82
 msgid "Search"
 msgstr "Rechercher"
 
@@ -1597,10 +1605,6 @@ msgstr "Port :"
 msgid "Server address:"
 msgstr "Adresse du serveur :"
 
-#: picard/ui/options/general.py:113 picard/ui/ui_options_general.py:135
-msgid "MusicBrainz Account"
-msgstr "Compte MusicBrainz"
-
 #: picard/ui/ui_options_general.py:136
 msgid "Log in"
 msgstr "Connexion"
@@ -1609,7 +1613,7 @@ msgstr "Connexion"
 msgid "Log out"
 msgstr "Déconnexion"
 
-#: picard/ui/options/general.py:41 picard/ui/ui_options_general.py:138
+#: picard/ui/options/general.py:39 picard/ui/ui_options_general.py:138
 msgid "General"
 msgstr "Général"
 
@@ -1700,7 +1704,7 @@ msgstr "Autoriser la sélection de plusieurs répertoires"
 msgid "Use builtin search rather than looking in browser"
 msgstr "Utiliser la recherche intégrée au lieu du navigateur"
 
-#: picard/ui/searchdialog/__init__.py:120
+#: picard/ui/searchdialog/__init__.py:121
 #: picard/ui/ui_options_interface.py:127
 msgid "Use advanced query syntax"
 msgstr "Utiliser la syntaxe évoluée de requête"
@@ -1831,11 +1835,11 @@ msgstr "Port d’écoute par défaut :"
 msgid "Listen only on localhost"
 msgstr "Écouter seulement sur localhost"
 
-#: picard/ui/options/plugins.py:202 picard/ui/ui_options_plugins.py:129
+#: picard/ui/options/plugins.py:203 picard/ui/ui_options_plugins.py:129
 msgid "Plugins"
 msgstr "Greffons"
 
-#: picard/ui/options/plugins.py:577 picard/ui/searchdialog/album.py:150
+#: picard/ui/options/plugins.py:578 picard/ui/searchdialog/album.py:150
 #: picard/ui/searchdialog/artist.py:50 picard/ui/searchdialog/track.py:62
 #: picard/ui/ui_options_plugins.py:130
 msgid "Name"
@@ -2141,7 +2145,7 @@ msgid ""
 "<small>Copyright © %(copyright-years)s %(authors-credits)s and others%(translator-credits)s</small></p>\n"
 "<p align=\"center\"><small>%(icons-credits)s</small></p>\n"
 "<p align=\"center\"><strong>Official website</strong><br/><a href=\"%(picard-doc-url)s\">%(picard-doc-url)s</a></p>\n"
-msgstr "<p align=\"center\"><span style=\"font-size:15px;font-weight:bold;\">MusicBrainz Picard</span><br/>\nVersion %(version)s</p>\n<p align=\"center\"><small>\n%(third_parties_versions)s\n</small></p>\n<p align=\"center\"><strong>Formats pris en charge</strong><br/>%(formats)s</p>\n<p align=\"center\"><strong>Veuillez faire un don</strong><br/>\nMerci d’utiliser Picard. Picard s’appuie sur la base de données de MusicBrainz qui est gérée par la fondation MetaBrainz avec l’aide de milliers de volontaires. Si vous aimez cette application, nous vous encourageons à faire un don à la Fondation MetaBrainz afin de maintenir le service.</p>\n<p align=\"center\"><a href=\"%(picard-donate-url)s\">Faire un don maintenant !</a></p>\n<p align=\"center\"><strong>Crédits</strong><br/>\n<small>Copyright © %(copyright-years)s %(authors-credits)s et d’autres%(translator-credits)s</small></p>\n<p align=\"center\"><small>%(icons-credits)s</small></p>\n<p align=\"center\"><strong>Site officiel</strong><br/><a href=\"%(picard-doc-url)s\">%(picard-doc-url)s</a></p>\n"
+msgstr "<p align=\"center\"><span style=\"font-size:15px;font-weight:bold;\">MusicBrainz Picard</span><br/>\nVersion %(version)s</p>\n<p align=\"center\"><small>\n%(third_parties_versions)s\n</small></p>\n<p align=\"center\"><strong>Formats pris en charge</strong><br/>%(formats)s</p>\n<p align=\"center\"><strong>Veuillez faire un don</strong><br/>\nMerci d’utiliser Picard. Picard s’appuie sur la base de données de MusicBrainz qui est gérée par la Fondation MetaBrainz avec l’aide de milliers de volontaires. Si vous aimez cette application, nous vous encourageons à faire un don à la Fondation MetaBrainz afin de maintenir le service.</p>\n<p align=\"center\"><a href=\"%(picard-donate-url)s\">Faire un don maintenant !</a></p>\n<p align=\"center\"><strong>Crédits</strong><br/>\n<small>Copyright © %(copyright-years)s %(authors-credits)s et d’autres%(translator-credits)s</small></p>\n<p align=\"center\"><small>%(icons-credits)s</small></p>\n<p align=\"center\"><strong>Site Web officiel</strong><br/><a href=\"%(picard-doc-url)s\">%(picard-doc-url)s</a></p>\n"
 
 #: picard/ui/options/advanced.py:32
 msgid "Advanced"
@@ -2196,18 +2200,14 @@ msgstr "Merci de choisir un exécutable fpcalc valide. "
 msgid "Invalid fpcalc executable"
 msgstr "Exécutable fpcalc invalide"
 
-#: picard/ui/options/general.py:81 picard/util/checkupdate.py:152
+#: picard/ui/options/general.py:79 picard/util/checkupdate.py:152
 msgid "title"
 msgstr "titre"
 
-#: picard/ui/options/general.py:99
+#: picard/ui/options/general.py:97
 #, python-format
 msgid "Logged in as <b>%s</b>."
 msgstr "Connecté en tant que <b>%s</b>."
-
-#: picard/ui/options/general.py:113
-msgid "Authorization code:"
-msgstr " Code d’autorisation : "
 
 #: picard/ui/options/genres.py:32
 msgid "Genres"
@@ -2308,17 +2308,17 @@ msgstr "Désactivé"
 msgid "Uninstall plugin"
 msgstr "Désinstaller le greffon"
 
-#: picard/ui/options/plugins.py:380
+#: picard/ui/options/plugins.py:381
 msgid "Reloading list of available plugins..."
 msgstr "Rechargement de la liste des greffons disponibles…"
 
-#: picard/ui/options/plugins.py:388 picard/ui/options/plugins.py:397
-#: picard/ui/options/plugins.py:418
+#: picard/ui/options/plugins.py:389 picard/ui/options/plugins.py:398
+#: picard/ui/options/plugins.py:419
 #, python-format
 msgid "Plugin '%s'"
 msgstr "Greffon '%s'"
 
-#: picard/ui/options/plugins.py:389
+#: picard/ui/options/plugins.py:390
 #, python-format
 msgid ""
 "An error occured while loading the plugin '%s':\n"
@@ -2326,12 +2326,12 @@ msgid ""
 "%s"
 msgstr "Une erreur est survenue lors du chargement du greffon '%s':\n\n%s"
 
-#: picard/ui/options/plugins.py:398
+#: picard/ui/options/plugins.py:399
 #, python-format
 msgid "The plugin '%s' is not compatible with this version of Picard."
 msgstr "Le greffon « %s » n’est pas compatible avec cette version de Picard."
 
-#: picard/ui/options/plugins.py:419
+#: picard/ui/options/plugins.py:420
 #, python-format
 msgid "The plugin '%s' will be upgraded to version %s on next run of Picard."
 msgstr "Le greffon « %s » sera mis à jour vers la version %s au prochain démarrage de Picard."
@@ -2346,28 +2346,28 @@ msgstr "Désinstaller le greffon '%s' ?"
 msgid "Do you really want to uninstall the plugin '%s' ?"
 msgstr "Voulez-vous vraiment désinstaller le greffon «%s» ?"
 
-#: picard/ui/options/plugins.py:570
+#: picard/ui/options/plugins.py:571
 msgid "Restart Picard to upgrade to new version"
 msgstr "Redémarrer Picard pour mettre à jour vers la nouvelle version"
 
-#: picard/ui/options/plugins.py:572
+#: picard/ui/options/plugins.py:573
 msgid "New version available"
 msgstr "Nouvelle version disponible"
 
-#: picard/ui/options/plugins.py:579
+#: picard/ui/options/plugins.py:580
 msgid "Authors"
 msgstr "Auteurs"
 
-#: picard/ui/options/plugins.py:581 picard/util/tags.py:44
+#: picard/ui/options/plugins.py:582 picard/util/tags.py:44
 msgid "License"
 msgstr "Licence"
 
-#: picard/ui/options/plugins.py:618
+#: picard/ui/options/plugins.py:619
 #, python-format
 msgid "The plugin '%s' could not be downloaded."
 msgstr "Le greffon « %s » n’a pu être téléchargé."
 
-#: picard/ui/options/plugins.py:619
+#: picard/ui/options/plugins.py:620
 msgid "Please try again later."
 msgstr "Merci d’essayer à nouveau plus tard."
 
@@ -2375,11 +2375,11 @@ msgstr "Merci d’essayer à nouveau plus tard."
 msgid "Ratings"
 msgstr "Évaluations"
 
-#: picard/ui/options/releases.py:138
+#: picard/ui/options/releases.py:139
 msgid "Preferred Releases"
 msgstr "Parutions préférées"
 
-#: picard/ui/options/releases.py:172
+#: picard/ui/options/releases.py:173
 msgid "Reset all"
 msgstr "Tout réinitialiser"
 
@@ -2445,25 +2445,25 @@ msgstr "Erreur de script"
 msgid "Tags"
 msgstr "Balises"
 
-#: picard/ui/searchdialog/__init__.py:125
+#: picard/ui/searchdialog/__init__.py:126
 msgid ""
 "&#160;(<a href='https://musicbrainz.org/doc/Indexed_Search_Syntax'>Syntax "
 "Help</a>)"
 msgstr "&#160;(<a href='https://musicbrainz.org/doc/Indexed_Search_Syntax'>Aide de la syntaxe</a>)"
 
-#: picard/ui/searchdialog/__init__.py:265
+#: picard/ui/searchdialog/__init__.py:266
 msgid "Search in browser"
 msgstr "Chercher dans le navigateur"
 
-#: picard/ui/searchdialog/__init__.py:298
+#: picard/ui/searchdialog/__init__.py:299
 msgid "<strong>Loading...</strong>"
 msgstr "<strong>Chargement...</strong>"
 
-#: picard/ui/searchdialog/__init__.py:329
+#: picard/ui/searchdialog/__init__.py:330
 msgid "Retry"
 msgstr "Essayer à nouveau"
 
-#: picard/ui/searchdialog/__init__.py:364
+#: picard/ui/searchdialog/__init__.py:365
 #, python-format
 msgid ""
 "<strong>Following error occurred while fetching "
@@ -2471,7 +2471,7 @@ msgid ""
 "HTTP code %s)<br>"
 msgstr "<strong>L’erreur suivante s’est produite pendant la récupération des résultats :<br><br></strong>Erreur de requête réseau pour %s :<br>%s (code QT %d, code HTTP %s)<br>"
 
-#: picard/ui/searchdialog/__init__.py:375
+#: picard/ui/searchdialog/__init__.py:376
 msgid ""
 "<strong>No results found. Please try a different search query.</strong>"
 msgstr "<strong>Aucun résultat de trouvé. Essayez en affinant votre requête de recherche.</strong>"
