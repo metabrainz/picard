@@ -178,7 +178,7 @@ class File(QtCore.QObject, Item):
         for tag, values in saved_metadata.items():
             self.metadata.set(tag, values)
 
-        if acoustid:
+        if acoustid and not "acoustid_id" in metadata.deleted_tags:
             self.metadata["acoustid_id"] = acoustid
         self.metadata_images_changed.emit()
 
