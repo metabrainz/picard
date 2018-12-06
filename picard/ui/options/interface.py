@@ -218,8 +218,10 @@ class InterfaceOptionsPage(OptionsPage):
         list_item = ToolbarListItem(action)
         list_item.setToolTip(_('Drag and Drop to re-order'))
         if action in self.TOOLBAR_BUTTONS:
-            temp_text = self.TOOLBAR_BUTTONS[action]['label']
-            list_item.setText(_(temp_text))
+            # TODO: Remove temporary workaround once https://github.com/python-babel/babel/issues/415 has been resolved.
+            babel_415_workaround = self.TOOLBAR_BUTTONS[action]['label']
+            list_item.setText(_(babel_415_workaround))
+            #list_item.setText(self.TOOLBAR_BUTTONS[action]['label'])
             list_item.setIcon(icontheme.lookup(self._get_icon_from_name(action), icontheme.ICON_SIZE_MENU))
         else:
             list_item.setText(self.SEPARATOR)
@@ -288,12 +290,14 @@ class AddActionDialog(QtWidgets.QDialog):
 
         layout = QtWidgets.QVBoxLayout(self)
 
-        temp_list = []
+        # TODO: Remove temporary workaround once https://github.com/python-babel/babel/issues/415 has been resolved.
+        babel_415_workaround_list = []
         for action in action_list:
-            temp_text = self.parent().TOOLBAR_BUTTONS[action]['label']
-            temp_list.append([_(temp_text), action])
-
-        self.action_list = sorted(temp_list)
+            babel_415_workaround = self.parent().TOOLBAR_BUTTONS[action]['label']
+            temp_list.append([_(babel_415_workaround), action])
+        self.action_list = sorted(babel_415_workaround_list)
+        #self.action_list = sorted([[self.parent().TOOLBAR_BUTTONS[action]['label'], action]
+        #                           for action in action_list])
 
         self.combo_box = QtWidgets.QComboBox(self)
         self.combo_box.addItems([label for label, action in self.action_list])
