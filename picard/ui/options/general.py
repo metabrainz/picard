@@ -76,7 +76,8 @@ class GeneralOptionsPage(OptionsPage):
             self.ui.check_for_updates.setChecked(config.setting["check_for_updates"])
             self.ui.update_level.clear()
             for level, description in PROGRAM_UPDATE_LEVELS.items():
-                self.ui.update_level.addItem(description['title'], level)
+                temp_text = description['title']
+                self.ui.update_level.addItem(_(temp_text), level)
             self.ui.update_level.setCurrentIndex(self.ui.update_level.findData(config.setting["update_level"]))
             self.ui.update_check_days.setValue(config.setting["update_check_days"])
         else:

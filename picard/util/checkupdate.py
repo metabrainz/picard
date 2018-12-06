@@ -144,12 +144,13 @@ class UpdateCheckManager(QtCore.QObject):
                 webbrowser2.open(self._available_versions[key]['urls']['download'])
         else:
             if self._show_always:
+                update_level_text = PROGRAM_UPDATE_LEVELS[self._update_level]['title'] if self._update_level in PROGRAM_UPDATE_LEVELS else 'unknown'
                 QMessageBox.information(
                     self._parent,
                     _("Picard Update"),
                     _("There is no update currently available for your subscribed update level: {update_level}\n\n"
                       "Your version: {picard_old_version}\n").format(
-                        update_level=PROGRAM_UPDATE_LEVELS[self._update_level]['title'] if self._update_level in PROGRAM_UPDATE_LEVELS else _('unknown'),
+                        update_level=_(update_level_text),
                         picard_old_version=PICARD_FANCY_VERSION_STR,
                     ),
                     QMessageBox.Ok, QMessageBox.Ok
