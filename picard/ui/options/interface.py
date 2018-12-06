@@ -218,7 +218,7 @@ class InterfaceOptionsPage(OptionsPage):
         list_item = ToolbarListItem(action)
         list_item.setToolTip(_('Drag and Drop to re-order'))
         if action in self.TOOLBAR_BUTTONS:
-            list_item.setText(_(self.TOOLBAR_BUTTONS[action]['label']))
+            list_item.setText(self.TOOLBAR_BUTTONS[action]['label'])
             list_item.setIcon(icontheme.lookup(self._get_icon_from_name(action), icontheme.ICON_SIZE_MENU))
         else:
             list_item.setText(self.SEPARATOR)
@@ -287,7 +287,7 @@ class AddActionDialog(QtWidgets.QDialog):
 
         layout = QtWidgets.QVBoxLayout(self)
 
-        self.action_list = sorted([[_(self.parent().TOOLBAR_BUTTONS[action]['label']), action]
+        self.action_list = sorted([[self.parent().TOOLBAR_BUTTONS[action]['label'], action]
                                    for action in action_list])
 
         self.combo_box = QtWidgets.QComboBox(self)
