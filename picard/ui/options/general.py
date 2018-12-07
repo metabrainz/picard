@@ -79,7 +79,6 @@ class GeneralOptionsPage(OptionsPage):
                 # TODO: Remove temporary workaround once https://github.com/python-babel/babel/issues/415 has been resolved.
                 babel_415_workaround = description['title']
                 self.ui.update_level.addItem(_(babel_415_workaround), level)
-                #self.ui.update_level.addItem(description['title'], level)
             self.ui.update_level.setCurrentIndex(self.ui.update_level.findData(config.setting["update_level"]))
             self.ui.update_check_days.setValue(config.setting["update_check_days"])
         else:
