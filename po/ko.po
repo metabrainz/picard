@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2018-11-30 12:53+0100\n"
-"PO-Revision-Date: 2018-11-30 01:14+0000\n"
+"POT-Creation-Date: 2018-12-08 13:30+0100\n"
+"PO-Revision-Date: 2018-12-08 12:35+0000\n"
 "Last-Translator: Michael Wiencek <mwtuea@gmail.com>\n"
 "Language-Team: Korean (http://www.transifex.com/musicbrainz/musicbrainz/language/ko/)\n"
 "MIME-Version: 1.0\n"
@@ -2169,11 +2169,7 @@ msgstr "올바른 fpcalc 실행 파일을 선택하십시오."
 msgid "Invalid fpcalc executable"
 msgstr "잘못된 fpcalc 실행 파일"
 
-#: picard/ui/options/general.py:79 picard/util/checkupdate.py:152
-msgid "title"
-msgstr ""
-
-#: picard/ui/options/general.py:97
+#: picard/ui/options/general.py:99
 #, python-format
 msgid "Logged in as <b>%s</b>."
 msgstr "<b>%s</b> (으)로 접속됨."
@@ -2243,10 +2239,6 @@ msgstr "인터페이스 언어가 변경되었습니다. 변경사항을 적용�
 #: picard/ui/options/interface.py:219
 msgid "Drag and Drop to re-order"
 msgstr "드래그 앤 드롭으로 순서를 바꿀 수 있습니다"
-
-#: picard/ui/options/interface.py:221 picard/ui/options/interface.py:290
-msgid "label"
-msgstr "레이블"
 
 #: picard/ui/options/matching.py:32
 msgid "Matching"
@@ -2575,7 +2567,7 @@ msgid "Error loading Picard releases list: {error_message}"
 msgstr ""
 
 #: picard/util/checkupdate.py:102 picard/util/checkupdate.py:133
-#: picard/util/checkupdate.py:149
+#: picard/util/checkupdate.py:153
 msgid "Picard Update"
 msgstr ""
 
@@ -2596,14 +2588,14 @@ msgid ""
 msgstr ""
 
 #: picard/util/checkupdate.py:150
+msgid "unknown"
+msgstr ""
+
+#: picard/util/checkupdate.py:154
 msgid ""
 "There is no update currently available for your subscribed update level: {update_level}\n"
 "\n"
 "Your version: {picard_old_version}\n"
-msgstr ""
-
-#: picard/util/checkupdate.py:152
-msgid "unknown"
 msgstr ""
 
 #: picard/util/tags.py:25

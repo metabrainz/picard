@@ -19,8 +19,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2018-11-30 12:53+0100\n"
-"PO-Revision-Date: 2018-11-30 01:14+0000\n"
+"POT-Creation-Date: 2018-12-08 13:30+0100\n"
+"PO-Revision-Date: 2018-12-08 12:35+0000\n"
 "Last-Translator: Michael Wiencek <mwtuea@gmail.com>\n"
 "Language-Team: Japanese (http://www.transifex.com/musicbrainz/musicbrainz/language/ja/)\n"
 "MIME-Version: 1.0\n"
@@ -2179,11 +2179,7 @@ msgstr "有効な fpcalc 実行ファイルを選択してください"
 msgid "Invalid fpcalc executable"
 msgstr "無効な fpcalc 実行ファイル"
 
-#: picard/ui/options/general.py:79 picard/util/checkupdate.py:152
-msgid "title"
-msgstr "タイトル"
-
-#: picard/ui/options/general.py:97
+#: picard/ui/options/general.py:99
 #, python-format
 msgid "Logged in as <b>%s</b>."
 msgstr "<b>%s</b>でログイン中"
@@ -2253,10 +2249,6 @@ msgstr "インターフェースの言語を変更しました。変更を適用
 #: picard/ui/options/interface.py:219
 msgid "Drag and Drop to re-order"
 msgstr "ドラッグ&ドロップで並べ替え"
-
-#: picard/ui/options/interface.py:221 picard/ui/options/interface.py:290
-msgid "label"
-msgstr "レーベル"
 
 #: picard/ui/options/matching.py:32
 msgid "Matching"
@@ -2585,7 +2577,7 @@ msgid "Error loading Picard releases list: {error_message}"
 msgstr "Picardリリース一覧の読み込み中にエラーが発生しました: {error_message}"
 
 #: picard/util/checkupdate.py:102 picard/util/checkupdate.py:133
-#: picard/util/checkupdate.py:149
+#: picard/util/checkupdate.py:153
 msgid "Picard Update"
 msgstr "Picard のアップデート"
 
@@ -2606,15 +2598,15 @@ msgid ""
 msgstr "Picardの新しいバージョンが利用可能です。\n\n現在のバージョン：{picard_old_version}\n新しいバージョン：{picard_new_version}\n\n新しいバージョンをダウンロードしますか？"
 
 #: picard/util/checkupdate.py:150
+msgid "unknown"
+msgstr "不明"
+
+#: picard/util/checkupdate.py:154
 msgid ""
 "There is no update currently available for your subscribed update level: {update_level}\n"
 "\n"
 "Your version: {picard_old_version}\n"
 msgstr ""
-
-#: picard/util/checkupdate.py:152
-msgid "unknown"
-msgstr "不明"
 
 #: picard/util/tags.py:25
 msgid "Original Release Date"

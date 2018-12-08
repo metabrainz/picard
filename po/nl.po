@@ -12,9 +12,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2018-11-30 12:53+0100\n"
-"PO-Revision-Date: 2018-11-30 01:14+0000\n"
-"Last-Translator: Maurits Meulenbelt <mfmeulenbelt@gmail.com>\n"
+"POT-Creation-Date: 2018-12-08 13:30+0100\n"
+"PO-Revision-Date: 2018-12-08 12:35+0000\n"
+"Last-Translator: Michael Wiencek <mwtuea@gmail.com>\n"
 "Language-Team: Dutch (http://www.transifex.com/musicbrainz/musicbrainz/language/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -152,27 +152,27 @@ msgstr "Metadata voor het bestand %(filename)s wordt opgezocht …"
 #: picard/plugin.py:305
 #, python-format
 msgid "Failed loading zipped plugin %r"
-msgstr "Zip module %r laden mislukt"
+msgstr "Het laden van het pluginarchief %r is mislukt."
 
 #: picard/plugin.py:315
 #, python-format
 msgid "Failed loading plugin %r"
-msgstr "Het laden van module %r mislukt"
+msgstr "Het laden van de plugin %r is mislukt"
 
 #: picard/plugin.py:355
 #, python-format
 msgid "Plugin '%s' from '%s' is not compatible with this version of Picard."
-msgstr "Module %s van %s is niet verenigbaar met deze versie van Picard."
+msgstr "Plugin ‘%s’ van ‘%s’ is niet geschikt voor deze versie van Picard."
 
 #: picard/plugin.py:359
 #, python-format
 msgid "Plugin %r has an invalid API version string : %s"
-msgstr "Module %r heeft een ongeldige API versie reeks : %s"
+msgstr "De plugin %r heeft een ongeldige API-versie: %s"
 
 #: picard/plugin.py:362
 #, python-format
 msgid "Plugin %r : %s"
-msgstr "Module %r : %s"
+msgstr "Plugin %r: %s"
 
 #: picard/plugin.py:492
 #, python-format
@@ -451,15 +451,15 @@ msgstr "Afbeeldingtypes"
 #: picard/coverart/providers/caa.py:235
 msgid ""
 "Please select the contents of the image type 'Include' and 'Exclude' lists."
-msgstr "Selecteer de inhoud van het afbeeldingstype 'inclusief' en 'exclusief' lijsten."
+msgstr "Selecteer welke types afbeeldingen wel en niet moeten worden gebruikt."
 
 #: picard/coverart/providers/caa.py:260
 msgid "Include types list"
-msgstr "Inclusief typenlijst"
+msgstr "Wel gebruiken"
 
 #: picard/coverart/providers/caa.py:267
 msgid "Exclude types list"
-msgstr "Exclusief typenlijst"
+msgstr "Niet gebruiken"
 
 #: picard/coverart/providers/caa.py:274
 msgid ""
@@ -469,19 +469,19 @@ msgid ""
 "types not appearing in the 'Include' or 'Exclude' lists will not be "
 "considered when determining whether or not to download and use a CAA "
 "image.\n"
-msgstr "CAA-afbeeldingen met een afbeeldingstype in de lijst 'Opnemen' worden opgehaald en gebruikt TENZIJ ze ook een afbeeldingstype hebben gevonden in de lijst 'Uitsluiten'. Afbeeldingen met typen in de lijst 'Uitsluiten' worden NOOIT gebruikt. Afbeeldingstypen die niet voorkomen in de lijsten 'Opnemen' of 'Uitsluiten' worden niet meegenomen bij het bepalen of een CAA-afbeelding wel of niet wordt opgehaalden gebruikt.\n"
+msgstr "Afbeeldingen met een type in de lijst ‘wel gebruiken’ zullen worden gedownload en gebruikt, tenzij de afbeeldingen een type hebben dat in de lijst ‘niet gebruiken’ staat. Afbeeldingen waarvan een of meer types in de lijst ‘niet gebruiken’ staan, zullen nooit worden gebruikt. Afbeeldingen met types in geen van beide lijsten worden niet meegenomen bij het bepalen of de afbeelding wordt gedownload of gebruikt.\n"
 
 #: picard/coverart/providers/caa.py:295
 msgid "I&nclude all"
-msgstr "I&nclusief alles"
+msgstr "&Alles gebruiken"
 
 #: picard/coverart/providers/caa.py:296
 msgid "E&xclude all"
-msgstr "E&xclusief alles"
+msgstr "&Niets gebruiken"
 
 #: picard/coverart/providers/caa.py:297
 msgid "C&lear all"
-msgstr "Wis a&lles"
+msgstr "A&lles wissen"
 
 #: picard/coverart/providers/caa.py:298 picard/ui/options/dialog.py:96
 msgid "Restore &Defaults"
@@ -997,7 +997,7 @@ msgstr "Ctrl+D"
 
 #: picard/ui/mainwindow.py:389
 msgid "Close Window"
-msgstr "Sluit scherm"
+msgstr "Vester sluiten"
 
 #: picard/ui/mainwindow.py:390
 msgid "Ctrl+W"
@@ -1245,11 +1245,11 @@ msgstr "Nummer"
 
 #: picard/ui/mainwindow.py:715
 msgid "&Advanced search"
-msgstr "Ge&avanceerd zoeken"
+msgstr "Ge&avanceerde zoekfunctie"
 
 #: picard/ui/mainwindow.py:716
 msgid "&Builtin search"
-msgstr "Inge&bouwde zoekopdracht"
+msgstr "Inge&bouwde zoekfunctie"
 
 #: picard/ui/mainwindow.py:805
 msgid "All Supported Formats"
@@ -1626,17 +1626,17 @@ msgstr "Zoek naar de volgende versies:"
 
 #: picard/ui/ui_options_genres.py:107
 msgid "Use genres from MusicBrainz"
-msgstr ""
+msgstr "Genres van MusicBrainz gebruiken"
 
 #: picard/ui/ui_options_genres.py:108
 msgid "Only use my genres"
-msgstr ""
+msgstr "Alleen mijn genres gebruiken"
 
 #: picard/ui/ui_options_genres.py:109
 msgid ""
 "Fall back on album's artists genres if no genres are found for the release "
 "or release group"
-msgstr ""
+msgstr "Op de genres van de albumartiest teruggrijpen als er voor de uitgave(groep) geen genres zijn gevonden"
 
 #: picard/ui/ui_options_genres.py:110
 msgid "Use folksonomy tags as genre"
@@ -1644,11 +1644,11 @@ msgstr "Folksonomietags als genre gebruiken"
 
 #: picard/ui/ui_options_genres.py:111
 msgid "Genres or folksonomy tags to exclude (comma-separated list):"
-msgstr ""
+msgstr "Genres of folksonomietags die moeten worden uitgesloten (door komma’s gescheiden):"
 
 #: picard/ui/ui_options_genres.py:112
 msgid "Minimal genre usage:"
-msgstr ""
+msgstr "Minimaal gebruik van het genre:"
 
 #: picard/ui/ui_options_genres.py:113 picard/ui/ui_options_matching.py:71
 #: picard/ui/ui_options_matching.py:72 picard/ui/ui_options_matching.py:73
@@ -1657,11 +1657,11 @@ msgstr " %"
 
 #: picard/ui/ui_options_genres.py:114
 msgid "Maximum number of genres:"
-msgstr ""
+msgstr "Maximumaantal genres:"
 
 #: picard/ui/ui_options_genres.py:115
 msgid "Join multiple genres with:"
-msgstr ""
+msgstr "Meerdere genres samenvoegen met:"
 
 #: picard/ui/ui_options_genres.py:116
 msgid " / "
@@ -1762,7 +1762,7 @@ msgstr "Gestandaardiseerde artiestennamen gebruiken"
 
 #: picard/ui/ui_options_metadata.py:99
 msgid "Use standardized instrument and vocal credits"
-msgstr "Gebruik gestandaardiseerde instrument- en vocale erkenning"
+msgstr "Gebruik gestandaardiseerde instrumentnamen en stemsoorten"
 
 #: picard/ui/ui_options_metadata.py:100
 msgid "Convert Unicode punctuation characters to ASCII"
@@ -2014,7 +2014,7 @@ msgstr "<html><head/><body><p>Standaard is ‘/’ om compatibiliteit te behoude
 
 #: picard/ui/ui_options_tags.py:169
 msgid "Save iTunes compatible grouping and work"
-msgstr "iTunes-compatibele groepering en werk bewaren"
+msgstr "ITunes-groeperingen en -composities opslaan"
 
 #: picard/ui/ui_options_tags.py:170
 msgid "Also include ID3v1 tags in the files"
@@ -2183,11 +2183,7 @@ msgstr "Selecteer een geldig uitvoerbaar bestand voor fpcalc."
 msgid "Invalid fpcalc executable"
 msgstr "Ongeldig uitvoerbaar bestand voor fpcalc"
 
-#: picard/ui/options/general.py:79 picard/util/checkupdate.py:152
-msgid "title"
-msgstr "titel"
-
-#: picard/ui/options/general.py:97
+#: picard/ui/options/general.py:99
 #, python-format
 msgid "Logged in as <b>%s</b>."
 msgstr "Aangemeld als <b>%s</b>"
@@ -2258,10 +2254,6 @@ msgstr "Je hebt de weergavetaal veranderd. Je moet Picard herstarten om de nieuw
 msgid "Drag and Drop to re-order"
 msgstr "Je kan elementen slepen om de volgorde te veranderen"
 
-#: picard/ui/options/interface.py:221 picard/ui/options/interface.py:290
-msgid "label"
-msgstr "label"
-
 #: picard/ui/options/matching.py:32
 msgid "Matching"
 msgstr "Overeenkomsten"
@@ -2272,34 +2264,34 @@ msgstr "Netwerk"
 
 #: picard/ui/options/plugins.py:122
 msgid "Download and install plugin"
-msgstr "Ophalen en installeren module"
+msgstr "Plugin downloaden en installeren"
 
 #: picard/ui/options/plugins.py:130
 #, python-format
 msgid "Download and upgrade plugin to version %s"
-msgstr "Module ophalen en opwaarderen naar versie %s"
+msgstr "Plugin downloaden en bijwerken naar versie %s"
 
 #: picard/ui/options/plugins.py:136
 msgid "Enabled"
-msgstr "Aangezet"
+msgstr "Ingeschakeld"
 
 #: picard/ui/options/plugins.py:140
 msgid "Disabled"
-msgstr "Uitgezet"
+msgstr "Uitgeschakeld"
 
 #: picard/ui/options/plugins.py:150
 msgid "Uninstall plugin"
-msgstr "Deinstalleren module"
+msgstr "Plugin verwijderen"
 
 #: picard/ui/options/plugins.py:381
 msgid "Reloading list of available plugins..."
-msgstr "Lijst herladen van alle beschikbare modules..."
+msgstr "De lijst met beschikbare plugins wordt opnieuw geladen"
 
 #: picard/ui/options/plugins.py:389 picard/ui/options/plugins.py:398
 #: picard/ui/options/plugins.py:419
 #, python-format
 msgid "Plugin '%s'"
-msgstr "Module%s"
+msgstr "Plugin ‘%s’"
 
 #: picard/ui/options/plugins.py:390
 #, python-format
@@ -2307,7 +2299,7 @@ msgid ""
 "An error occured while loading the plugin '%s':\n"
 "\n"
 "%s"
-msgstr "Er is een fout opgetreden tijdens het laden van module '%s':\n\n%s\n\n(occurred) two r in that word there are more English typos!"
+msgstr "Tijdens het laden van de plugin ‘%s’ is een fout opgetreden:\n\n%s"
 
 #: picard/ui/options/plugins.py:399
 #, python-format
@@ -2322,7 +2314,7 @@ msgstr "De volgende keer dat Picard wordt opgestart, wordt de plugin ‘%s’ bi
 #: picard/ui/options/plugins.py:441
 #, python-format
 msgid "Uninstall plugin '%s'?"
-msgstr "De-installeren module %s?"
+msgstr "Plugin ‘%s’ verwijderen?"
 
 #: picard/ui/options/plugins.py:442
 #, python-format
@@ -2436,7 +2428,7 @@ msgstr "&#160;(<a href='https://musicbrainz.org/doc/Indexed_Search_Syntax'>Hulp 
 
 #: picard/ui/searchdialog/__init__.py:266
 msgid "Search in browser"
-msgstr "Zoek in browser"
+msgstr "In de browser zoeken"
 
 #: picard/ui/searchdialog/__init__.py:299
 msgid "<strong>Loading...</strong>"
@@ -2586,12 +2578,12 @@ msgstr "%s "
 
 #: picard/util/checkupdate.py:98
 msgid "Error loading Picard releases list: {error_message}"
-msgstr "Fout bij laden van de Picard-uitgave lijst: {error_message}"
+msgstr "Fout bij het laden van beschikbare Picard-versies: {error_message}"
 
 #: picard/util/checkupdate.py:102 picard/util/checkupdate.py:133
-#: picard/util/checkupdate.py:149
+#: picard/util/checkupdate.py:153
 msgid "Picard Update"
-msgstr "Picard opwaarderen"
+msgstr "Nieuwe versie"
 
 #: picard/util/checkupdate.py:103
 msgid ""
@@ -2610,15 +2602,15 @@ msgid ""
 msgstr "Er is een nieuwe versie van Picard beschikbaar.\n\nHuidige versie: {picard_old_version}\nNieuwe versie: {picard_new_version}\n\nWil je de nieuwe versie downloaden?"
 
 #: picard/util/checkupdate.py:150
+msgid "unknown"
+msgstr "onbekend"
+
+#: picard/util/checkupdate.py:154
 msgid ""
 "There is no update currently available for your subscribed update level: {update_level}\n"
 "\n"
 "Your version: {picard_old_version}\n"
-msgstr "Er is momenteel geen opwaardering beschikbaar voor uw geabonneerde opwaardeer niveau: {update_level}\n\nJouw versie: {picard_old_version}\n"
-
-#: picard/util/checkupdate.py:152
-msgid "unknown"
-msgstr "onbekend"
+msgstr "Er is nu geen nieuwe versie beschikbaar voor de niveaus waar je op bent geabonneerd: {update_level}\n\nJouw versie: {picard_old_version}\n"
 
 #: picard/util/tags.py:25
 msgid "Original Release Date"
@@ -2870,19 +2862,19 @@ msgstr "Compositie"
 
 #: picard/util/tags.py:91
 msgid "Movement"
-msgstr "Voortgang"
+msgstr "Deel"
 
 #: picard/util/tags.py:92
 msgid "Movement Number"
-msgstr "Voortgang nummer"
+msgstr "Nummer van het deel"
 
 #: picard/util/tags.py:93
 msgid "Movement Count"
-msgstr "Voortgang aantal"
+msgstr "Aantal delen"
 
 #: picard/util/tags.py:94
 msgid "Show Work & Movement"
-msgstr "Toon werk & voortgang\nBuiltin or built in!"
+msgstr "Compositie en deel tonen"
 
 #: picard/util/tags.py:95
 msgid "Original Artist"
@@ -2894,7 +2886,7 @@ msgstr "MusicBrainz-ID originele artiest"
 
 #: picard/util/tags.py:97
 msgid "Original Album"
-msgstr "Origineel album"
+msgstr "Oorspronkelijke album"
 
 #: picard/util/tags.py:98
 msgid "MusicBrainz Original Release Id"

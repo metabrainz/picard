@@ -10,8 +10,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2018-11-27 14:46+0000\n"
-"Last-Translator: Niko Strijbol <strijbol.niko@gmail.com>\n"
+"PO-Revision-Date: 2018-12-06 14:41+0000\n"
+"Last-Translator: Maurits Meulenbelt <mfmeulenbelt@gmail.com>\n"
 "Language-Team: Dutch (http://www.transifex.com/musicbrainz/musicbrainz/language/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -216,7 +216,7 @@ msgid ""
 "A place consisting of a large enclosed area with a central event space "
 "surrounded by tiered seating for spectators, which can be used for indoor "
 "sports, concerts and other entertainment events."
-msgstr "Een plaats die bestaat uit een grote ruimte die ingesloten wordt door rijen zitplaatsen voor toeschouwers. Een overdekte arena kan worden gebruikt voor indoorsporten, concerten en andere evenementen."
+msgstr "Een plaats die bestaat uit een grote ruimte die wordt ingesloten door rijen zitplaatsen voor toeschouwers. Een overdekte arena kan worden gebruikt voor indoorsporten, concerten en andere evenementen."
 
 #: DB:place_type/description:1
 msgctxt "place_type"
@@ -589,7 +589,7 @@ msgid ""
 "An étude is an instrumental musical composition, most commonly of "
 "considerable difficulty, usually designed to provide practice material for "
 "perfecting a particular technical skill."
-msgstr "Een etude is een instrumentale compositie die gecomponeerd wordt om een bepaalde techniek te oefenen. Etudes zijn daarom meestal moeilijk om te spelen."
+msgstr "Een etude is een instrumentale compositie die wordt gecomponeerd om een bepaalde techniek te oefenen. Etudes zijn daarom meestal moeilijk om te spelen."
 
 #: DB:work_attribute_type_allowed_value/value:310
 msgctxt "work_attribute_type_allowed_value"

@@ -12,9 +12,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2018-11-30 12:53+0100\n"
-"PO-Revision-Date: 2018-11-30 01:14+0000\n"
-"Last-Translator: Luca Salini <salo.rock@gmail.com>\n"
+"POT-Creation-Date: 2018-12-08 13:30+0100\n"
+"PO-Revision-Date: 2018-12-08 12:35+0000\n"
+"Last-Translator: Michael Wiencek <mwtuea@gmail.com>\n"
 "Language-Team: Italian (http://www.transifex.com/musicbrainz/musicbrainz/language/it/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1513,7 +1513,7 @@ msgstr "Salva le immagini di copertina come file separati"
 
 #: picard/ui/ui_options_cover.py:90
 msgid "Use the following file name for images:"
-msgstr "Utilizza il seguente nome file per le immagini:"
+msgstr "Usa il seguente nome file per le immagini:"
 
 #: picard/ui/ui_options_cover.py:91
 msgid "Overwrite the file if it already exists"
@@ -1541,7 +1541,7 @@ msgstr "Impronte digitali audio"
 
 #: picard/ui/ui_options_fingerprinting.py:74
 msgid "Do not use audio fingerprinting"
-msgstr "Non utilizzare impronte digitali audio"
+msgstr "Non usare impronte digitali audio"
 
 #: picard/ui/ui_options_fingerprinting.py:75
 msgid "Use AcoustID"
@@ -1626,17 +1626,17 @@ msgstr "Aggiornamenti da controllare:"
 
 #: picard/ui/ui_options_genres.py:107
 msgid "Use genres from MusicBrainz"
-msgstr ""
+msgstr "Usa generi da MusicBrainz"
 
 #: picard/ui/ui_options_genres.py:108
 msgid "Only use my genres"
-msgstr ""
+msgstr "Usa solo i miei generi"
 
 #: picard/ui/ui_options_genres.py:109
 msgid ""
 "Fall back on album's artists genres if no genres are found for the release "
 "or release group"
-msgstr ""
+msgstr "Ripiega sui generi degli artisti dell'album se non trovi generi per la pubblicazione o il gruppo di pubblicazioni"
 
 #: picard/ui/ui_options_genres.py:110
 msgid "Use folksonomy tags as genre"
@@ -1644,11 +1644,11 @@ msgstr "Usa i tag di folksonomia come genere"
 
 #: picard/ui/ui_options_genres.py:111
 msgid "Genres or folksonomy tags to exclude (comma-separated list):"
-msgstr ""
+msgstr "Generi o tag di folksonomia da escludere (elenco separato da virgole):"
 
 #: picard/ui/ui_options_genres.py:112
 msgid "Minimal genre usage:"
-msgstr ""
+msgstr "Utilizzo minimo del genere:"
 
 #: picard/ui/ui_options_genres.py:113 picard/ui/ui_options_matching.py:71
 #: picard/ui/ui_options_matching.py:72 picard/ui/ui_options_matching.py:73
@@ -1657,11 +1657,11 @@ msgstr " %"
 
 #: picard/ui/ui_options_genres.py:114
 msgid "Maximum number of genres:"
-msgstr ""
+msgstr "Numero massimo di generi:"
 
 #: picard/ui/ui_options_genres.py:115
 msgid "Join multiple genres with:"
-msgstr ""
+msgstr "Unisci più generi con:"
 
 #: picard/ui/ui_options_genres.py:116
 msgid " / "
@@ -2034,7 +2034,7 @@ msgstr "Seleziona tipi..."
 
 #: picard/ui/ui_provider_options_caa.py:82
 msgid "Only use images of the following size:"
-msgstr "Utilizza solo immagini della seguente dimensione:"
+msgstr "Usa solo immagini della seguente dimensione:"
 
 #: picard/ui/ui_provider_options_caa.py:83
 msgid "Save only one front image as separate file"
@@ -2048,7 +2048,7 @@ msgstr "Scarica solo immagini approvate"
 msgid ""
 "Use the first image type as the filename. This will not change the filename "
 "of front images."
-msgstr "Utilizza il primo tipo di immagine come nome del file. Questo non cambierà il nome del file delle copertine frontali."
+msgstr "Usa il primo tipo di immagine come nome del file. Questo non cambierà il nome del file delle copertine frontali."
 
 #: picard/ui/ui_provider_options_local.py:51
 msgid "Local cover art files match the following regular expression:"
@@ -2183,11 +2183,7 @@ msgstr "Seleziona un eseguibile fpcalc valido."
 msgid "Invalid fpcalc executable"
 msgstr "Eseguibile fpcalc non valido"
 
-#: picard/ui/options/general.py:79 picard/util/checkupdate.py:152
-msgid "title"
-msgstr "titolo"
-
-#: picard/ui/options/general.py:97
+#: picard/ui/options/general.py:99
 #, python-format
 msgid "Logged in as <b>%s</b>."
 msgstr "Accesso effettuato come <b>%s</b>."
@@ -2257,10 +2253,6 @@ msgstr "Hai cambiato la lingua dell'interfaccia. Riavvia Picard affinché la mod
 #: picard/ui/options/interface.py:219
 msgid "Drag and Drop to re-order"
 msgstr "Trascina per riordinare"
-
-#: picard/ui/options/interface.py:221 picard/ui/options/interface.py:290
-msgid "label"
-msgstr "etichetta"
 
 #: picard/ui/options/matching.py:32
 msgid "Matching"
@@ -2589,7 +2581,7 @@ msgid "Error loading Picard releases list: {error_message}"
 msgstr "Errore nel caricamento dell'elenco di versioni di Picard: {error_message}"
 
 #: picard/util/checkupdate.py:102 picard/util/checkupdate.py:133
-#: picard/util/checkupdate.py:149
+#: picard/util/checkupdate.py:153
 msgid "Picard Update"
 msgstr "Aggiornamento di Picard"
 
@@ -2610,15 +2602,15 @@ msgid ""
 msgstr "È disponibile una nuova versione di Picard.\n\nQuesta versione: {picard_old_version}\nNuova versione: {picard_new_version}\n\nVuoi scaricare la nuova versione?"
 
 #: picard/util/checkupdate.py:150
+msgid "unknown"
+msgstr "sconosciuto"
+
+#: picard/util/checkupdate.py:154
 msgid ""
 "There is no update currently available for your subscribed update level: {update_level}\n"
 "\n"
 "Your version: {picard_old_version}\n"
 msgstr "Al momento non è disponibile nessun aggiornamento per il livello di aggiornamento che hai impostato: {update_level}\n\nLa tua versione: {picard_old_version}\n"
-
-#: picard/util/checkupdate.py:152
-msgid "unknown"
-msgstr "sconosciuto"
 
 #: picard/util/tags.py:25
 msgid "Original Release Date"

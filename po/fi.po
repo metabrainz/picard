@@ -15,9 +15,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2018-11-30 12:53+0100\n"
-"PO-Revision-Date: 2018-11-30 07:17+0000\n"
-"Last-Translator: Jaakko Perttilä <jormangeud@gmail.com>\n"
+"POT-Creation-Date: 2018-12-08 13:30+0100\n"
+"PO-Revision-Date: 2018-12-08 12:35+0000\n"
+"Last-Translator: Michael Wiencek <mwtuea@gmail.com>\n"
 "Language-Team: Finnish (http://www.transifex.com/musicbrainz/musicbrainz/language/fi/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -2186,11 +2186,7 @@ msgstr "Valitse ohjelman fpcalc suoritustiedosto."
 msgid "Invalid fpcalc executable"
 msgstr "Epäkelpo suoritustiedosto ohjelmalle fpcalc"
 
-#: picard/ui/options/general.py:79 picard/util/checkupdate.py:152
-msgid "title"
-msgstr "nimi"
-
-#: picard/ui/options/general.py:97
+#: picard/ui/options/general.py:99
 #, python-format
 msgid "Logged in as <b>%s</b>."
 msgstr "Kirjautuneena sisään tunnuksella <b>%s</b>."
@@ -2260,10 +2256,6 @@ msgstr "Olet vaihtanut käyttöliittymän kielen. Käynnistä Picard uudelleen s
 #: picard/ui/options/interface.py:219
 msgid "Drag and Drop to re-order"
 msgstr "Raahaa ja pudota järjestääksesi"
-
-#: picard/ui/options/interface.py:221 picard/ui/options/interface.py:290
-msgid "label"
-msgstr "otsikko"
 
 #: picard/ui/options/matching.py:32
 msgid "Matching"
@@ -2592,7 +2584,7 @@ msgid "Error loading Picard releases list: {error_message}"
 msgstr "Virhe ladattaessa Picardin julkaisujen listaa: {error_message}"
 
 #: picard/util/checkupdate.py:102 picard/util/checkupdate.py:133
-#: picard/util/checkupdate.py:149
+#: picard/util/checkupdate.py:153
 msgid "Picard Update"
 msgstr "Picardin päivitys"
 
@@ -2613,15 +2605,15 @@ msgid ""
 msgstr "Picardista on saatavilla uusi versio.\n\nNykyinen versio: {picard_old_version}\nUusi versio: {picard_new_version}\n\nLadataanko uusi versio?"
 
 #: picard/util/checkupdate.py:150
+msgid "unknown"
+msgstr "tuntematon"
+
+#: picard/util/checkupdate.py:154
 msgid ""
 "There is no update currently available for your subscribed update level: {update_level}\n"
 "\n"
 "Your version: {picard_old_version}\n"
 msgstr "Valitsemallesi julkaisuhaaralle ei ole uudempaa versiota: {update_level}\n\nNykyinen versio: {picard_old_version}\n"
-
-#: picard/util/checkupdate.py:152
-msgid "unknown"
-msgstr "tuntematon"
 
 #: picard/util/tags.py:25
 msgid "Original Release Date"

@@ -29,9 +29,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2018-11-30 12:53+0100\n"
-"PO-Revision-Date: 2018-11-30 12:01+0000\n"
-"Last-Translator: Laurent Monin <i18n@norz.org>\n"
+"POT-Creation-Date: 2018-12-08 13:30+0100\n"
+"PO-Revision-Date: 2018-12-08 12:35+0000\n"
+"Last-Translator: Michael Wiencek <mwtuea@gmail.com>\n"
 "Language-Team: French (http://www.transifex.com/musicbrainz/musicbrainz/language/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -2200,11 +2200,7 @@ msgstr "Merci de choisir un exécutable fpcalc valide. "
 msgid "Invalid fpcalc executable"
 msgstr "Exécutable fpcalc invalide"
 
-#: picard/ui/options/general.py:79 picard/util/checkupdate.py:152
-msgid "title"
-msgstr "titre"
-
-#: picard/ui/options/general.py:97
+#: picard/ui/options/general.py:99
 #, python-format
 msgid "Logged in as <b>%s</b>."
 msgstr "Connecté en tant que <b>%s</b>."
@@ -2274,10 +2270,6 @@ msgstr "Vous avez changé la langue de l’interface. Vous devez redémarrer Pic
 #: picard/ui/options/interface.py:219
 msgid "Drag and Drop to re-order"
 msgstr "Glisser-déplacer pour réordonner"
-
-#: picard/ui/options/interface.py:221 picard/ui/options/interface.py:290
-msgid "label"
-msgstr "intitulé"
 
 #: picard/ui/options/matching.py:32
 msgid "Matching"
@@ -2606,7 +2598,7 @@ msgid "Error loading Picard releases list: {error_message}"
 msgstr "Erreur lors chargement de la liste des parutions de Picard : {error_message}"
 
 #: picard/util/checkupdate.py:102 picard/util/checkupdate.py:133
-#: picard/util/checkupdate.py:149
+#: picard/util/checkupdate.py:153
 msgid "Picard Update"
 msgstr "Mise à jour de Picard"
 
@@ -2627,15 +2619,15 @@ msgid ""
 msgstr "Une nouvelle version de Picard est disponible.\n\nCette version: {picard_old_version}\nNouvelle version: {picard_new_version}\n\nSouhaitez-vous télécharger la nouvelle version ?"
 
 #: picard/util/checkupdate.py:150
+msgid "unknown"
+msgstr "inconnu"
+
+#: picard/util/checkupdate.py:154
 msgid ""
 "There is no update currently available for your subscribed update level: {update_level}\n"
 "\n"
 "Your version: {picard_old_version}\n"
 msgstr "Il n’y a aucune mise à jour disponible en ce moment pour le niveau de mises à jour que vous avez souscrit : {update_level}\n\nVotre version: {picard_old_version}\n"
-
-#: picard/util/checkupdate.py:152
-msgid "unknown"
-msgstr "inconnu"
 
 #: picard/util/tags.py:25
 msgid "Original Release Date"

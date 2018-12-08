@@ -13,9 +13,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2018-11-30 12:53+0100\n"
-"PO-Revision-Date: 2018-12-01 20:51+0000\n"
-"Last-Translator: Avi Markovitz <avi.markovitz@gmail.com>\n"
+"POT-Creation-Date: 2018-12-08 13:30+0100\n"
+"PO-Revision-Date: 2018-12-08 12:35+0000\n"
+"Last-Translator: Michael Wiencek <mwtuea@gmail.com>\n"
 "Language-Team: Hebrew (http://www.transifex.com/musicbrainz/musicbrainz/language/he/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -2206,11 +2206,7 @@ msgstr "בחירת בקובץ הפעלה fpcalc תקין."
 msgid "Invalid fpcalc executable"
 msgstr " קובץ הפעלה fpcalc לא תקין"
 
-#: picard/ui/options/general.py:79 picard/util/checkupdate.py:152
-msgid "title"
-msgstr "כותרת"
-
-#: picard/ui/options/general.py:97
+#: picard/ui/options/general.py:99
 #, python-format
 msgid "Logged in as <b>%s</b>."
 msgstr "מחובר כ <b>%s</b>."
@@ -2280,10 +2276,6 @@ msgstr "שפת ממשק המשתמש השתנתה, על מנת שהשנויים 
 #: picard/ui/options/interface.py:219
 msgid "Drag and Drop to re-order"
 msgstr "גרור ושחרר למיון"
-
-#: picard/ui/options/interface.py:221 picard/ui/options/interface.py:290
-msgid "label"
-msgstr "חברת תקליטים"
 
 #: picard/ui/options/matching.py:32
 msgid "Matching"
@@ -2612,7 +2604,7 @@ msgid "Error loading Picard releases list: {error_message}"
 msgstr "שגיאה בטעינת רשימת מהדורות פיקארד: {error_message}"
 
 #: picard/util/checkupdate.py:102 picard/util/checkupdate.py:133
-#: picard/util/checkupdate.py:149
+#: picard/util/checkupdate.py:153
 msgid "Picard Update"
 msgstr "עדכון פיקארד"
 
@@ -2633,15 +2625,15 @@ msgid ""
 msgstr "זמינה גרסה חדשה של פיקארד.\n\nגרסה נוכחית: {picard_old_version}\nגרסה חדשה: {picard_new_version}\n\nהאם להוריד את הגרסה החדשה?"
 
 #: picard/util/checkupdate.py:150
+msgid "unknown"
+msgstr "לא ידוע"
+
+#: picard/util/checkupdate.py:154
 msgid ""
 "There is no update currently available for your subscribed update level: {update_level}\n"
 "\n"
 "Your version: {picard_old_version}\n"
 msgstr "לא נמצאו עדכונים זמינים לרמת מנוי העדכונים שלך: {update_level}\n\nהגרסה שלך: {picard_old_version}\n"
-
-#: picard/util/checkupdate.py:152
-msgid "unknown"
-msgstr "לא ידוע"
 
 #: picard/util/tags.py:25
 msgid "Original Release Date"

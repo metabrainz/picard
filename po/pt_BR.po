@@ -21,8 +21,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2018-11-30 12:53+0100\n"
-"PO-Revision-Date: 2018-11-30 01:14+0000\n"
+"POT-Creation-Date: 2018-12-08 13:30+0100\n"
+"PO-Revision-Date: 2018-12-08 12:35+0000\n"
 "Last-Translator: Michael Wiencek <mwtuea@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/musicbrainz/musicbrainz/language/pt_BR/)\n"
 "MIME-Version: 1.0\n"
@@ -2192,11 +2192,7 @@ msgstr "Por favor selecione um executável fpcalc válido."
 msgid "Invalid fpcalc executable"
 msgstr "Executável fpcalc inválido"
 
-#: picard/ui/options/general.py:79 picard/util/checkupdate.py:152
-msgid "title"
-msgstr ""
-
-#: picard/ui/options/general.py:97
+#: picard/ui/options/general.py:99
 #, python-format
 msgid "Logged in as <b>%s</b>."
 msgstr "Logado como <b>%s</b>."
@@ -2266,10 +2262,6 @@ msgstr "Você mudou o idioma. Você precisa reiniciar o Picard para que as mudan
 #: picard/ui/options/interface.py:219
 msgid "Drag and Drop to re-order"
 msgstr "Arraste e Solte para reordenar"
-
-#: picard/ui/options/interface.py:221 picard/ui/options/interface.py:290
-msgid "label"
-msgstr "Gravadora"
 
 #: picard/ui/options/matching.py:32
 msgid "Matching"
@@ -2598,7 +2590,7 @@ msgid "Error loading Picard releases list: {error_message}"
 msgstr ""
 
 #: picard/util/checkupdate.py:102 picard/util/checkupdate.py:133
-#: picard/util/checkupdate.py:149
+#: picard/util/checkupdate.py:153
 msgid "Picard Update"
 msgstr ""
 
@@ -2619,14 +2611,14 @@ msgid ""
 msgstr ""
 
 #: picard/util/checkupdate.py:150
+msgid "unknown"
+msgstr ""
+
+#: picard/util/checkupdate.py:154
 msgid ""
 "There is no update currently available for your subscribed update level: {update_level}\n"
 "\n"
 "Your version: {picard_old_version}\n"
-msgstr ""
-
-#: picard/util/checkupdate.py:152
-msgid "unknown"
 msgstr ""
 
 #: picard/util/tags.py:25

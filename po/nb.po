@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2018-11-30 12:53+0100\n"
-"PO-Revision-Date: 2018-11-30 01:14+0000\n"
+"POT-Creation-Date: 2018-12-08 13:30+0100\n"
+"PO-Revision-Date: 2018-12-08 12:35+0000\n"
 "Last-Translator: Michael Wiencek <mwtuea@gmail.com>\n"
 "Language-Team: Norwegian Bokmål (http://www.transifex.com/musicbrainz/musicbrainz/language/nb/)\n"
 "MIME-Version: 1.0\n"
@@ -2183,11 +2183,7 @@ msgstr "Velg en gyldig fpcalc programfil."
 msgid "Invalid fpcalc executable"
 msgstr "Ugyldig fpcalc programfil"
 
-#: picard/ui/options/general.py:79 picard/util/checkupdate.py:152
-msgid "title"
-msgstr ""
-
-#: picard/ui/options/general.py:97
+#: picard/ui/options/general.py:99
 #, python-format
 msgid "Logged in as <b>%s</b>."
 msgstr "Logget inn som <b>%s</b>."
@@ -2257,10 +2253,6 @@ msgstr "Du har endret grensesnittspråk. Picard må startes på nytt for at endr
 #: picard/ui/options/interface.py:219
 msgid "Drag and Drop to re-order"
 msgstr "Dra og slipp for å endre rekkefølgen"
-
-#: picard/ui/options/interface.py:221 picard/ui/options/interface.py:290
-msgid "label"
-msgstr "plateselskap"
 
 #: picard/ui/options/matching.py:32
 msgid "Matching"
@@ -2589,7 +2581,7 @@ msgid "Error loading Picard releases list: {error_message}"
 msgstr ""
 
 #: picard/util/checkupdate.py:102 picard/util/checkupdate.py:133
-#: picard/util/checkupdate.py:149
+#: picard/util/checkupdate.py:153
 msgid "Picard Update"
 msgstr ""
 
@@ -2610,14 +2602,14 @@ msgid ""
 msgstr ""
 
 #: picard/util/checkupdate.py:150
+msgid "unknown"
+msgstr ""
+
+#: picard/util/checkupdate.py:154
 msgid ""
 "There is no update currently available for your subscribed update level: {update_level}\n"
 "\n"
 "Your version: {picard_old_version}\n"
-msgstr ""
-
-#: picard/util/checkupdate.py:152
-msgid "unknown"
 msgstr ""
 
 #: picard/util/tags.py:25
