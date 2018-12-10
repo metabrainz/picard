@@ -855,7 +855,7 @@ def main(localedir=None, autoupdate=True):
     locale = QtCore.QLocale()
     translation_path = QtCore.QLibraryInfo.location(QtCore.QLibraryInfo.TranslationsPath)
     log.debug("Looking for Qt locale %s in %s", locale.name(), translation_path)
-    if translator.load(locale, "qt_", directory=translation_path):
+    if translator.load(locale, "qtbase_", directory=translation_path):
         tagger.installTranslator(translator)
     else:
         log.warning('Error loading Qt locale %s', locale.name())
