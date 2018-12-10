@@ -38,19 +38,16 @@ from picard import (
 )
 from picard.const import QUERY_LIMIT
 from picard.metadata import Metadata
-from picard.script import ScriptParser
 from picard.util import (
     decode_filename,
     format_time,
     pathcmp,
-    replace_win32_incompat,
-    sanitize_filename,
     thread,
     tracknum_from_filename,
 )
 from picard.util.filenaming import make_short_filename
+from picard.util.scripttofilename import script_to_filename
 from picard.util.tags import PRESERVED_TAGS
-from picard.util.textencoding import replace_non_ascii
 
 from picard.ui.item import Item
 
@@ -303,29 +300,13 @@ class File(QtCore.QObject, Item):
         raise NotImplementedError
 
     def _script_to_filename(self, naming_format, file_metadata, settings=None):
-        if settings is None:
-            settings = config.setting
         metadata = Metadata()
         if config.setting["clear_existing_tags"]:
             metadata.copy(file_metadata)
         else:
             metadata.copy(self.orig_metadata)
             metadata.update(file_metadata)
-        # make sure every metadata can safely be used in a path name
-        for name in metadata.keys():
-            values = [sanitize_filename(str(v)) for v in metadata.getall(name)]
-            metadata.set(name, values)
-        naming_format = naming_format.replace("\t", "").replace("\n", "")
-        filename = ScriptParser().eval(naming_format, metadata, self)
-        if settings["ascii_filenames"]:
-            filename = replace_non_ascii(filename, pathsave=True)
-        # replace incompatible characters
-        if settings["windows_compatibility"] or sys.platform == "win32":
-            filename = replace_win32_incompat(filename)
-        # remove null characters
-        if isinstance(filename, (bytes, bytearray)):
-            filename = filename.replace(b"\x00", "")
-        return filename
+        return script_to_filename(naming_format, metadata, file=self, settings=settings)
 
     def _fixed_splitext(self, filename):
         # In case the filename is blank and only has the extension
