@@ -24,7 +24,6 @@
 from hashlib import md5
 import os
 import shutil
-import sys
 import tempfile
 
 from PyQt5.QtCore import (
@@ -39,14 +38,12 @@ from picard import (
 )
 from picard.coverart.utils import translate_caa_type
 from picard.metadata import Metadata
-from picard.script import ScriptParser
 from picard.util import (
     decode_filename,
     encode_filename,
     imageinfo,
-    replace_win32_incompat,
 )
-from picard.util.textencoding import replace_non_ascii
+from picard.util.scripttofilename import script_to_filename
 
 _datafiles = dict()
 _datafile_mutex = QMutex(QMutex.Recursive)
@@ -268,19 +265,11 @@ class CoverArtImage:
             metadata.add_unique("coverart_types", "front")
         for cover_type in self.types:
             metadata.add_unique("coverart_types", cover_type)
-        filename = ScriptParser().eval(filename, metadata)
-        if config.setting["ascii_filenames"]:
-            filename = replace_non_ascii(filename, pathsave=True)
+        filename = script_to_filename(filename, metadata)
         if not filename:
             filename = "cover"
         if not os.path.isabs(filename):
             filename = os.path.join(dirname, filename)
-        # replace incompatible characters
-        if config.setting["windows_compatibility"] or sys.platform == "win32":
-            filename = replace_win32_incompat(filename)
-        # remove null characters
-        if isinstance(filename, bytes):
-            filename = filename.replace(b"\x00", "")
         return encode_filename(filename)
 
     def save(self, dirname, metadata, counters):
