@@ -18,28 +18,36 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from mutagen.aac import AAC
+from mutagen.apev2 import (
+    APENoHeaderError,
+    APEv2,
+    error as APEError,
+)
 
-from picard import log
-from picard.file import File
-from picard.metadata import Metadata
-from picard.util import encode_filename
+from picard.formats.apev2 import APEv2File
 
 
-class AACFile(File):
+class AACAPEv2(AAC):
+    def load(self, filething):
+        super().load(filething)
+        try:
+            self.tags = APEv2(filething)
+        except APENoHeaderError:
+            self.tags = None
+
+    def add_tags(self):
+        if self.tags is None:
+            self.tags = APEv2()
+        else:
+            raise APEError("%r already has tags: %r" % (self, self.tags))
+
+
+class AACFile(APEv2File):
     EXTENSIONS = [".aac"]
     NAME = "AAC"
-    _File = AAC
+    _File = AACAPEv2
 
-    def _load(self, filename):
-        log.debug("Loading file %r", filename)
-        metadata = Metadata()
-        file = self._File(encode_filename(filename))
-        self._info(metadata, file)
-        return metadata
-
-    def _save(self, filename, metadata):
-        log.debug("Saving file %r", filename)
-
-    @classmethod
-    def supports_tag(cls, name):
-        return False
+    def _info(self, metadata, file):
+        super()._info(metadata, file)
+        if file.tags:
+            metadata['~format'] = "%s (APEv2)" % self.NAME

@@ -919,6 +919,11 @@ class AACTest(PicardTestCase):
         save_and_load_metadata(self.filename, metadata)
 
 
+class AACWithAPETest(CommonTests.FormatsTest):
+    testfile = 'test-apev2.aac'
+    supports_ratings = False
+
+
 class WAVTest(PicardTestCase):
     filename = os.path.join('test', 'data', 'test.wav')
 
