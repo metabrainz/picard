@@ -34,7 +34,7 @@ def script_to_filename(naming_format, metadata, file=None, settings=None):
     if settings is None:
         settings = config.setting
     # make sure every metadata can safely be used in a path name
-    for name in metadata.keys():
+    for name in metadata:
         values = [sanitize_filename(str(v)) for v in metadata.getall(name)]
         metadata.set(name, values)
     naming_format = naming_format.replace("\t", "").replace("\n", "")
