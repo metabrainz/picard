@@ -917,3 +917,15 @@ class WAVTest(PicardTestCase):
     def test_can_open_and_save(self):
         metadata = Metadata()
         save_and_load_metadata(self.filename, metadata)
+
+
+class MIDITest(PicardTestCase):
+    filename = os.path.join('test', 'data', 'test.mid')
+
+    def setUp(self):
+        super().setUp()
+        config.setting = settings.copy()
+
+    def test_can_open_and_save(self):
+        metadata = Metadata()
+        save_and_load_metadata(self.filename, metadata)

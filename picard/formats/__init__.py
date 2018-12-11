@@ -137,3 +137,6 @@ register_format(ASFFile)
 
 from picard.formats.wav import WAVFile
 register_format(WAVFile)
+
+from picard.formats.midi import MIDIFile
+register_format(MIDIFile)
