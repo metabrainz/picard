@@ -72,3 +72,8 @@ class ScriptToFilenameTest(PicardTestCase):
         settings['windows_compatibility'] = True
         filename = script_to_filename('%artist%?', metadata, settings=settings)
         self.assertEqual(expect_compat, filename)
+
+    def test_remove_null_chars(self):
+        metadata = Metadata()
+        filename = script_to_filename('a\x00b\x00', metadata)
+        self.assertEqual('ab', filename)

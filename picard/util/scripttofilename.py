@@ -45,6 +45,5 @@ def script_to_filename(naming_format, metadata, file=None, settings=None):
     if settings["windows_compatibility"] or sys.platform == "win32":
         filename = replace_win32_incompat(filename)
     # remove null characters
-    if isinstance(filename, (bytes, bytearray)):
-        filename = filename.replace(b"\x00", "")
+    filename = filename.replace("\x00", "")
     return filename
