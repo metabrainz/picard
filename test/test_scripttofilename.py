@@ -77,3 +77,14 @@ class ScriptToFilenameTest(PicardTestCase):
         metadata = Metadata()
         filename = script_to_filename('a\x00b\x00', metadata)
         self.assertEqual('ab', filename)
+
+    def test_remove_tabs_and_linebreaks_chars(self):
+        metadata = Metadata()
+        filename = script_to_filename('a\tb\nc', metadata)
+        self.assertEqual('abc', filename)
+
+    def test_preserve_leading_and_trailing_whitespace(self):
+        metadata = Metadata()
+        metadata['artist'] = 'The Artist'
+        filename = script_to_filename(' %artist% ', metadata)
+        self.assertEqual(' The Artist ', filename)
