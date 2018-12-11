@@ -907,6 +907,18 @@ class TestCoverArt(PicardTestCase):
             self._tear_down()
 
 
+class AACTest(PicardTestCase):
+    filename = os.path.join('test', 'data', 'test.aac')
+
+    def setUp(self):
+        super().setUp()
+        config.setting = settings.copy()
+
+    def test_can_open_and_save(self):
+        metadata = Metadata()
+        save_and_load_metadata(self.filename, metadata)
+
+
 class WAVTest(PicardTestCase):
     filename = os.path.join('test', 'data', 'test.wav')
 
