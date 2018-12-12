@@ -140,3 +140,6 @@ register_format(WAVFile)
 
 from picard.formats.midi import MIDIFile
 register_format(MIDIFile)
+
+from picard.formats.aac import AACFile
+register_format(AACFile)
