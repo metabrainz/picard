@@ -1,2 +1,2 @@
-babel==2.6
+Babel==2.6
 PyInstaller==3.4
