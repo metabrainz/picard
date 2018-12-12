@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-if [ -z "$CI_BUILD_TAG" ]
+if [ -z "$TRAVIS_TAG" ]
 then
-    python3 setup.py patch_version --platform=osx
+    python3 setup.py patch_version --platform=osx_$TRAVIS_OSX_IMAGE
 fi
 VERSION=$(python3 -c 'import picard; print(picard.__version__)')
 

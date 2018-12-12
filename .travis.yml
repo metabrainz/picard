@@ -70,3 +70,4 @@ deploy:
   on:
     tags: true
     all_branches: true
+    condition: $TRAVIS_OSX_IMAGE = xcode6.4
