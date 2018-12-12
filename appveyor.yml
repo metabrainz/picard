@@ -68,7 +68,7 @@ deploy:
   auth_token:
     secure: bEUedqYteaHx/e64i8Wy16O/o/2WE/O0VNkTAgWCDTYeuiQvkZa3UqyaFaO2k8vk
   repository: metabrainz/picard
-  artifact: installer/*.exe
+  artifact: installer\*.exe
   force_update: true
   on:
     APPVEYOR_REPO_TAG: true
