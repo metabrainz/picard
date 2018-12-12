@@ -1,4 +1,4 @@
-version: 2.0.0.dev.2.{build}
+version: 2.1.0.dev.2.{build}
 pull_requests:
   do_not_increment_build_number: true
 branches:
@@ -50,6 +50,8 @@ build_script:
 
     copy /Y %PYTHON_SITE%\PyQt5\Qt\bin\libeay32.dll .
 
+    IF "%APPVEYOR_REPO_TAG%" == "true" python setup.py patch_version --platform=win_python$PYTHON_VERSION
+
     python setup.py build
 
     python setup.py build_ext -i
@@ -62,4 +64,13 @@ build_script:
 
 artifacts:
 - path: installer/*.exe
-deploy: off
+deploy:
+- provider: GitHub
+  auth_token:
+    secure: bEUedqYteaHx/e64i8Wy16O/o/2WE/O0VNkTAgWCDTYeuiQvkZa3UqyaFaO2k8vk
+  repository: metabrainz/picard
+  artifact: installer/*.exe
+  force_update: true
+  on:
+    APPVEYOR_REPO_TAG: true
+    PYTHON_VERSION: 3.7.1
