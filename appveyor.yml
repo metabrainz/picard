@@ -17,7 +17,6 @@ init:
 environment:
   CHROMAPRINT_FPCALC_VERSION: 1.4.3
   DISCID_VERSION: 0.6.2
-  OPENSSL_VERSION: 1.0.2n
   matrix:
   - PYTHON: C:\Python35-x64
     PYTHON_VERSION: 3.5.6
