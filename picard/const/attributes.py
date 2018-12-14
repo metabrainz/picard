@@ -110,4 +110,5 @@ MB_ATTRIBUTES = {
     'DB:release_group_secondary_type/name:008': 'DJ-mix',
     'DB:release_group_secondary_type/name:009': 'Mixtape/Street',
     'DB:release_group_secondary_type/name:010': 'Demo',
+    'DB:release_group_secondary_type/name:011': 'Audio play',
 }
