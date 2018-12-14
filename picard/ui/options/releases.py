@@ -166,7 +166,7 @@ class ReleasesOptionsPage(OptionsPage):
                               len(RELEASE_SECONDARY_GROUPS) + 1)  # +1 for Reset button
         for name in RELEASE_PRIMARY_GROUPS:
             add_slider(name, griditer, context='release_group_primary_type')
-        for name in RELEASE_SECONDARY_GROUPS:
+        for name in sorted(RELEASE_SECONDARY_GROUPS):
             add_slider(name, griditer, context='release_group_secondary_type')
 
         self.reset_preferred_types_btn = QtWidgets.QPushButton(self.ui.type_group)
