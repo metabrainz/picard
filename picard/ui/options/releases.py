@@ -19,6 +19,7 @@
 
 from locale import strxfrm
 from operator import itemgetter
+import sys
 
 from PyQt5 import (
     QtCore,
@@ -66,11 +67,13 @@ class TipSlider(QtWidgets.QSlider):
 
     def showEvent(self, event):
         super().showEvent(event)
-        self.valueChanged.connect(self.show_tip)
+        if sys.platform != 'win32':
+            self.valueChanged.connect(self.show_tip)
 
     def hideEvent(self, event):
         super().hideEvent(event)
-        self.valueChanged.disconnect(self.show_tip)
+        if sys.platform != 'win32':
+            self.valueChanged.disconnect(self.show_tip)
 
     def show_tip(self, value):
         self.round_value(value)
