@@ -535,7 +535,7 @@ class PluginFunctions:
         self.functions[priority].register(module, item)
 
     def run(self, *args, **kwargs):
-        "Execute registered functions with passed parameters honouring priority"
+        """Execute registered functions with passed parameters honouring priority"""
         for priority, functions in sorted(self.functions.items(),
                                           key=lambda i: i[0],
                                           reverse=True):

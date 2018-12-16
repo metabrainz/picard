@@ -309,7 +309,7 @@ def tracknum_from_filename(base_filename):
     # 4-digit or more numbers are very unlikely to be a track number
     # smaller number is preferred in any case
     numbers = sorted([int(n) for n in re.findall(r'\d+', filename) if
-                      int(n) <= 99 and int(n) > 0])
+                      0 < int(n) <= 99])
     if numbers:
         return numbers[0]
     return -1
@@ -407,7 +407,7 @@ def build_qurl(host, port=80, path=None, queryargs=None):
     url.setHost(host)
     url.setPort(port)
 
-    if (host in MUSICBRAINZ_SERVERS or port == 443):
+    if host in MUSICBRAINZ_SERVERS or port == 443:
         url.setScheme("https")
         url.setPort(443)
     else:
@@ -510,7 +510,7 @@ def restore_method(func):
 
 
 def compare_version_tuples(version1, version2):
-    '''Compare Versions
+    """Compare Versions
 
     Compares two Picard version tuples to determine whether the second tuple
     contains a higher version number than the first tuple.
@@ -527,7 +527,7 @@ def compare_version_tuples(version1, version2):
 
     Raises:
         none
-    '''
+    """
 
     # Create test copies that can be modified
     test1 = list(version1)

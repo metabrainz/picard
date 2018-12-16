@@ -95,7 +95,7 @@ class TaggerScriptSyntaxHighlighter(QtGui.QSyntaxHighlighter):
             elif (next_index > -1) and text[next_index] == ')':
                 open_brackets -= 1
 
-            if (next_index > -1):
+            if next_index > -1:
                 self.setFormat(index, next_index - index + 1, self.noop_fmt)
             elif (next_index == -1) and (open_brackets > 0):
                 self.setFormat(index, len(text) - index, self.noop_fmt)

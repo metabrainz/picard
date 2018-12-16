@@ -13,8 +13,9 @@ class ShortFilenameTest(PicardTestCase):
 
     def __init__(self, *args, **kwargs):
         self.maxDiff = None
-        self.root = os.path.join(sys.platform == "win32" and "X:\\" or "/", "x" * 10)
-        if sys.platform in ("win32"):
+        is_win32 = sys.platform == "win32"
+        self.root = os.path.join(is_win32 and "X:\\" or "/", "x" * 10)
+        if is_win32:
             self.max_len = 255
         else:
             self.max_len = os.statvfs("/").f_namemax
