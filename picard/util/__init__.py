@@ -309,7 +309,7 @@ def tracknum_from_filename(base_filename):
     # 4-digit or more numbers are very unlikely to be a track number
     # smaller number is preferred in any case
     numbers = sorted([int(n) for n in re.findall(r'\d+', filename) if
-                      int(n) <= 99 and int(n) > 0])
+                      0 < int(n) <= 99])
     if numbers:
         return numbers[0]
     return -1
