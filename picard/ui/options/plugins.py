@@ -165,7 +165,7 @@ class PluginTreeWidgetItem(HashableTreeWidgetItem):
         self.is_installed = states['is_installed']
 
     def __lt__(self, other):
-        if (not isinstance(other, PluginTreeWidgetItem)):
+        if not isinstance(other, PluginTreeWidgetItem):
             return super().__lt__(other)
 
         tree = self.treeWidget()

@@ -407,7 +407,7 @@ def build_qurl(host, port=80, path=None, queryargs=None):
     url.setHost(host)
     url.setPort(port)
 
-    if (host in MUSICBRAINZ_SERVERS or port == 443):
+    if host in MUSICBRAINZ_SERVERS or port == 443:
         url.setScheme("https")
         url.setPort(443)
     else:

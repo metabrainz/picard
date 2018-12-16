@@ -52,7 +52,7 @@ def upgrade_to_v1_0_0_final_0():
         _s.remove("va_file_naming_format")
         _s.remove("use_va_format")
 
-    if ("va_file_naming_format" in _s and "use_va_format" in _s):
+    if "va_file_naming_format" in _s and "use_va_format" in _s:
         msgbox = QtWidgets.QMessageBox()
 
         if _s.value("use_va_format", config.BoolOption):
