@@ -47,7 +47,7 @@ class UpdateCheckManager(QtCore.QObject):
         self._update_level = 0
 
     def check_update(self, show_always=False, update_level=0, callback=None):
-        '''Checks if an update is available.
+        """Checks if an update is available.
 
         Compares the version number of the currently running instance of Picard
         and displays a dialog box informing the user  if an update is available,
@@ -69,7 +69,7 @@ class UpdateCheckManager(QtCore.QObject):
 
         Raises:
             none.
-        '''
+        """
         self._show_always = show_always
         self._update_level = update_level
 
@@ -81,7 +81,7 @@ class UpdateCheckManager(QtCore.QObject):
             self._query_available_updates(callback=callback)
 
     def _query_available_updates(self, callback=None):
-        '''Gets list of releases from specified website api.'''
+        """Gets list of releases from specified website api."""
         log.debug("Getting Picard release information from {host_url}".format(host_url=PLUGINS_API['host'],))
         self.tagger.webservice.get(
             PLUGINS_API['host'],
@@ -93,7 +93,7 @@ class UpdateCheckManager(QtCore.QObject):
         )
 
     def _releases_json_loaded(self, response, reply, error, callback=None):
-        '''Processes response from specified website api query.'''
+        """Processes response from specified website api query."""
         if error:
             log.error(_("Error loading Picard releases list: {error_message}").format(error_message=reply.errorString(),))
             if self._show_always:

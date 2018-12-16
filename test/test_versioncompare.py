@@ -5,7 +5,7 @@ from picard.util import compare_version_tuples
 
 
 class CompareVersionsTest(PicardTestCase):
-    '''Unit tests for compare_version_tuples() function.'''
+    """Unit tests for compare_version_tuples() function."""
 
     def test_compare_version_01(self):
         a, b, r = (0, 0, 1, 'dev', 1), (0, 0, 1, 'dev', 1), 0

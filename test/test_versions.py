@@ -101,7 +101,7 @@ class VersionsTest(PicardTestCase):
         self.assertRaises(VersionError, version_from_string, '123.')
 
     def test_api_versions_1(self):
-        "Check api versions format and order (from oldest to newest)"
+        """Check api versions format and order (from oldest to newest)"""
         from picard import api_versions
 
         len_api_versions = len(api_versions)

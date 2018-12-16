@@ -510,7 +510,7 @@ def restore_method(func):
 
 
 def compare_version_tuples(version1, version2):
-    '''Compare Versions
+    """Compare Versions
 
     Compares two Picard version tuples to determine whether the second tuple
     contains a higher version number than the first tuple.
@@ -527,7 +527,7 @@ def compare_version_tuples(version1, version2):
 
     Raises:
         none
-    '''
+    """
 
     # Create test copies that can be modified
     test1 = list(version1)

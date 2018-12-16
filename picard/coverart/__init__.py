@@ -209,20 +209,20 @@ class CoverArt:
         self.album._requests += 1
 
     def queue_put(self, coverartimage):
-        "Add an image to queue"
+        """Add an image to queue"""
         log.debug("Queuing cover art image %r", coverartimage)
         self.__queue.append(coverartimage)
 
     def _queue_get(self):
-        "Get next image and remove it from queue"
+        """Get next image and remove it from queue"""
         return self.__queue.pop(0)
 
     def _queue_empty(self):
-        "Returns True if the queue is empty"
+        """Returns True if the queue is empty"""
         return not self.__queue
 
     def _queue_new(self):
-        "Initialize the queue"
+        """Initialize the queue"""
         self.__queue = []
 
     def _message(self, *args, **kwargs):

@@ -638,7 +638,7 @@ def _explode_path(path):
 
 
 def _picard_packages():
-    "Build a tuple containing each module under picard/"
+    """Build a tuple containing each module under picard/"""
     packages = []
     for subdir, dirs, files in os.walk("picard"):
         packages.append(".".join(_explode_path(subdir)))
