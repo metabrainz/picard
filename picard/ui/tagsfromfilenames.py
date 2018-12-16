@@ -88,7 +88,7 @@ class TagsFromFileNamesDialog(PicardDialog):
                 columns.append(name)
                 if name in self.numeric_tags:
                     format_re.append('(?P<' + name + r'>\d+)')
-                elif name in ('date'):
+                elif name == 'date':
                     format_re.append('(?P<' + name + r'>\d+(?:-\d+(?:-\d+)?)?)')
                 else:
                     format_re.append('(?P<' + name + '>[^/]*?)')
