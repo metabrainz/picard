@@ -1,3 +1,111 @@
+Version 2.1.0 - 2018-12-20
+
+** Bug-fix
+    * [PICARD-105] - Picard won't load non-album tracks from fingerprints
+    * [PICARD-421] - Releases in private collections are not shown as being in them
+    * [PICARD-518] - Sliders without labels in "Options - Metadata - Preferred Releases"
+    * [PICARD-637] - $matchedtracks is broken
+    * [PICARD-875] - AIFF does not support any of the compatid3 tags
+    * [PICARD-949] - Track can be placed in the incorrect spot on the release after using Scan
+    * [PICARD-1013] - False file save error in specific circumstances
+    * [PICARD-1060] - Collections menu not displayed correctly anymore
+    * [PICARD-1112] - Cannot save tags that were previously deleted from file
+    * [PICARD-1133] - Plugins list doesn't load automatically after setting proxy
+    * [PICARD-1162] - Solo vocals are tagged wrong
+    * [PICARD-1219] - Picard creating empty ID3 TIPL / TMCL / IPLS frames
+    * [PICARD-1245] - Set field "Grouping" doesn't work as expected
+    * [PICARD-1275] - After uninstalling a plugin Picard needs to be restarted for it to be reinstalled
+    * [PICARD-1281] - Picard has wrong version string on macOS
+    * [PICARD-1320] - Black text on a dark theme
+    * [PICARD-1332] - Deleted tags for matched files stay deleted
+    * [PICARD-1336] - MP4 reports "bpm" as unsupported tag
+    * [PICARD-1339] - Removing unclustered files can be very slow
+    * [PICARD-1340] - File info doesn't display Mono / Stereo in Channels field anymore
+    * [PICARD-1341] - Cluster track order misinterprets disc/track numbers
+    * [PICARD-1346] - Move additional files fails if multiple patterns match
+    * [PICARD-1348] - Keyboard shortcuts broken due to localization
+    * [PICARD-1350] - Drag and drop on cover image box does not always work as expected
+    * [PICARD-1355] - Setting or unsetting album for non-album tracks does not work
+    * [PICARD-1359] - Crash with tagger integration when using DuckDuckGo Privacy Essentials
+    * [PICARD-1364] - picard.exe has no version tag
+    * [PICARD-1368] - Info messages are not shown on logging level Info
+    * [PICARD-1369] - Crash on Python 3.7.0 opening URLs
+    * [PICARD-1370] - Windows installer to add "Quick Launch" icon no longer supported on Win10
+    * [PICARD-1371] - Windows installer does not warn when installing on 32 bit system
+    * [PICARD-1373] - Source distributions are unusable
+    * [PICARD-1374] - Picard crashes while typing a regular expression in some cases
+    * [PICARD-1375] - Metadata sanitation before move-script execution fails
+    * [PICARD-1376] - Error saving Ape files with tag marked for deletion that does not exist
+    * [PICARD-1381] - Test results depend on execution order of tests
+    * [PICARD-1397] - Do not save tags marked as unsupported
+    * [PICARD-1398] - Snap package is missing locale files
+    * [PICARD-1405] - Pasting formatted text into scripting window shows formatting
+    * [PICARD-1410] - Loading Vorbis file with invalid rating value fails
+    * [PICARD-1412] - Deleting tag counts not as important metadata change
+    * [PICARD-1414] - Image errors lead to crash in info dialog
+    * [PICARD-1415] - Open Containing Folder and Open with MusicPlayer does nothing for UNC paths
+    * [PICARD-1418] - Display localized default dialogs and keyboard shortcut hints
+    * [PICARD-1420] - Can not save wma file. TypeError: sequence item 0
+    * [PICARD-1428] - Removing tags which are only in original file metadata not possible
+    * [PICARD-1430] - "Authentication required" dialog does not trigger authentication
+    * [PICARD-1431] - Some ID3 frames gets deleted even if the corresponding tags are shown as unchanged
+    * [PICARD-1434] - Tag acoustid_id can not be removed or deleted in script
+    * [PICARD-1436] - Text extraction of "title" and "label" for translation.
+    * [PICARD-1437] - After reload file is being shown as changed
+    * [PICARD-1438] - Message box buttons Yes/No aren't translated
+    * [PICARD-1439] - Newline character in cover art naming script causes exception on saving
+
+** New Feature
+    * [PICARD-490] - Allow tagging AAC/ADTS files with APEv2 tags
+    * [PICARD-1043] - Support reading & writing iTunes Classical tags
+    * [PICARD-1045] - Check for new version
+    * [PICARD-1268] - Support concertmaster recording relationships as performer:concertmaster
+    * [PICARD-1273] - Add an option to exclude new cover art type "Raw / Unedited"
+    * [PICARD-1319] - Provide cover art metadata to cover image naming script
+    * [PICARD-1344] - Add $delete function
+    * [PICARD-1352] - Add a command-line option to skip plugin loading
+    * [PICARD-1354] - Allow using vocals and instruments as credited
+    * [PICARD-1367] - Allow opening searches in browser when using search dialogs
+    * [PICARD-1384] - Add AppStream data
+    * [PICARD-1386] - Add $title function
+    * [PICARD-1395] - Support genres from MusicBrainz
+    * [PICARD-1440] - Support loading and renaming Standard MIDI Files (SMF)
+
+** Task
+    * [PICARD-1333] - Run CI tests agaist oldest supported mutagen
+    * [PICARD-1347] - Refactor script.py to avoid code duplication
+    * [PICARD-1365] - Allow building with PyQt 5.11 or later
+    * [PICARD-1442] - Support new Audio Play secondary type
+
+** Sub-task
+    * [PICARD-1407] - Save originalalbum / originalartist to ASF/WMA
+    * [PICARD-1408] - Save originalalbum / originalartist to APE
+
+** Improvement
+    * [PICARD-664] - When dragging a recording, show the actual file name instead of the path
+    * [PICARD-792] - Package a start menu tile for Windows 10 on the windows version
+    * [PICARD-1039] - Use forward delete instead of delete button on macOS
+    * [PICARD-1049] - Picard should use TXXX:WORK rather than TXXX:Work
+    * [PICARD-1068] - Picard should use MP4 ©wrk for Work rather than generic text field
+    * [PICARD-1244] - Refresh list of plugins after uninstalling or installing a local plugin
+    * [PICARD-1285] - There is no Close menu item in Picard 2.0 on macOS
+    * [PICARD-1313] - Refactor plugin UI
+    * [PICARD-1325] - Allow disabling new version update checking for packagers
+    * [PICARD-1338] - Picard should be more resilient if it gets invalid responses from servers
+    * [PICARD-1358] - Use macOS style widgets in the user interface of the macOS version of Picard
+    * [PICARD-1363] - AcoustId submission for matched files is impossible when musicbrainz_recordingid is unset
+    * [PICARD-1366] - Show Python version in about
+    * [PICARD-1379] - Port astrcmp to new Python C Unicode API
+    * [PICARD-1383] - Use MCN / barcode read from disc to improve DiscId lookup
+    * [PICARD-1393] - Change the application ID
+    * [PICARD-1416] - Should store ID3 Artists field as TXXX:ARTISTS not TXXX:Artists 
+    * [PICARD-1417] - Only show plugins with compatible API version
+    * [PICARD-1424] - Translate AppStream data
+    * [PICARD-1425] - Support all movement tags for APE, Vorbis and MP3
+    * [PICARD-1426] - Map musicbrainz_originalalbumid and musicbrainz_originalartistid to MP4 and WMA
+    * [PICARD-1443] - Sort secondary release types in UI alphabetically
+
+
 Version 2.0.4 - 2018-09-05
 ** Bug-fix
     * [PICARD-803] - tagging "8½ Minutes" with "replace with non-ascii characters" results in a directory being created
