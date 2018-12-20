@@ -43,8 +43,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2018-12-11 06:03+0000\n"
-"Last-Translator: yvanz\n"
+"PO-Revision-Date: 2018-12-18 09:34+0000\n"
+"Last-Translator: nikki\n"
 "Language-Team: German (http://www.transifex.com/musicbrainz/musicbrainz/language/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -771,15 +771,15 @@ msgctxt "collection_type"
 msgid "Attending"
 msgstr ""
 
+#: DB:release_group_secondary_type/name:11
+msgctxt "release_group_secondary_type"
+msgid "Audio drama"
+msgstr "Hörspiel"
+
 #: DB:work_type/name:25
 msgctxt "work_type"
 msgid "Audio drama"
 msgstr "Hörspiel"
-
-#: DB:release_group_secondary_type/name:11
-msgctxt "release_group_secondary_type"
-msgid "Audio play"
-msgstr ""
 
 #: DB:release_group_secondary_type/name:5
 msgctxt "release_group_secondary_type"
@@ -5285,7 +5285,7 @@ msgstr ""
 #: DB:release_group_secondary_type/name:7
 msgctxt "release_group_secondary_type"
 msgid "Remix"
-msgstr "Neumischung"
+msgstr "Remix"
 
 #: DB:work_attribute_type_allowed_value/value:516
 msgctxt "work_attribute_type_allowed_value"

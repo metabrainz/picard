@@ -14,8 +14,8 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2018-12-08 13:30+0100\n"
-"PO-Revision-Date: 2018-12-08 12:35+0000\n"
-"Last-Translator: Michael Wiencek <mwtuea@gmail.com>\n"
+"PO-Revision-Date: 2018-12-19 15:33+0000\n"
+"Last-Translator: Avi Markovitz <avi.markovitz@gmail.com>\n"
 "Language-Team: Hebrew (http://www.transifex.com/musicbrainz/musicbrainz/language/he/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -531,7 +531,7 @@ msgstr "תאריך"
 
 #: picard/ui/cdlookup.py:62 picard/ui/searchdialog/album.py:156
 msgid "Labels"
-msgstr "תוויות"
+msgstr "חברת תקליטים"
 
 #: picard/ui/cdlookup.py:62 picard/ui/searchdialog/album.py:157
 msgid "Catalog #s"
@@ -2657,7 +2657,7 @@ msgstr "סך כל רצועות"
 
 #: picard/util/tags.py:30
 msgid "Disc Number"
-msgstr "תקליטור מספר"
+msgstr "מספר תקליטור"
 
 #: picard/util/tags.py:31
 msgid "Total Discs"
@@ -2701,7 +2701,7 @@ msgstr "אווירה"
 
 #: picard/util/tags.py:41
 msgid "BPM"
-msgstr "BPM"
+msgstr "סיביות לשניה"
 
 #: picard/util/tags.py:42
 msgid "Key"
@@ -2753,7 +2753,7 @@ msgstr "רמיקסר"
 
 #: picard/util/tags.py:55
 msgid "MusicBrainz Recording Id"
-msgstr "‮מזהה הקלטה ‭MusicBrainz"
+msgstr "‮מזהה הקלטה ‮‭MusicBrainz"
 
 #: picard/util/tags.py:56
 msgid "MusicBrainz Track Id"
@@ -2761,19 +2761,19 @@ msgstr "מזהה רצועה MusicBrainz"
 
 #: picard/util/tags.py:57
 msgid "MusicBrainz Release Id"
-msgstr "מזהה מהדורה  MusicBrainz"
+msgstr "מזהה מהדורה ‮‭MusicBrainz‮"
 
 #: picard/util/tags.py:58
 msgid "MusicBrainz Artist Id"
-msgstr "‮מזהה אמן ‭MusicBrainz"
+msgstr "‮מזהה אמן ‮‭MusicBrainz"
 
 #: picard/util/tags.py:59
 msgid "MusicBrainz Release Artist Id"
-msgstr "מזהה אמן מהדורה MusicBrainz"
+msgstr "מזהה אמן מהדורה ‮‭‭‭MusicBrainz‮‮"
 
 #: picard/util/tags.py:60
 msgid "MusicBrainz Work Id"
-msgstr "מזהה יצירה MusicBrainz"
+msgstr "מזהה יצירה ‮MusicBrainz"
 
 #: picard/util/tags.py:61
 msgid "MusicBrainz Release Group Id"
@@ -2809,7 +2809,7 @@ msgstr "אתר האמן"
 
 #: picard/util/tags.py:69
 msgid "Compilation (iTunes)"
-msgstr "קוֹמְפִּילַצְיָה (iTunes)"
+msgstr "קוֹמְפִּילַצְיָה ‮(iTunes)"
 
 #: picard/util/tags.py:70
 msgid "Comment"
@@ -2845,7 +2845,7 @@ msgstr "מדינת המהדורה"
 
 #: picard/util/tags.py:78
 msgid "Record Label"
-msgstr "חברת תקליטים"
+msgstr "חברת תקליטים תקליט"
 
 #: picard/util/tags.py:80
 msgid "Catalog Number"
@@ -2869,7 +2869,7 @@ msgstr "מערבל"
 
 #: picard/util/tags.py:86
 msgid "Script"
-msgstr "תַּסְרִיט"
+msgstr "כתב"
 
 #: picard/util/tags.py:88
 msgid "Rating"

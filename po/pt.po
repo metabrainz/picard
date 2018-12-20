@@ -3,7 +3,7 @@
 # This file is distributed under the same license as the picard project.
 # 
 # Translators:
-# Felipe Lima <filipizaum@gmail.com>, 2016
+# Felipe Araújo Nunes de Lima <filipizaum@gmail.com>, 2016
 # pingo.mister <joao.lnsa@netcabo.pt>, 2013
 # Rui Mesquita <rpedro78@gmail.com>, 2006
 msgid ""
