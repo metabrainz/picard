@@ -8,7 +8,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2018-12-11 06:03+0000\n"
+"PO-Revision-Date: 2018-12-18 09:34+0000\n"
 "Last-Translator: yvanz\n"
 "Language-Team: Greek (http://www.transifex.com/musicbrainz/musicbrainz/language/el/)\n"
 "MIME-Version: 1.0\n"
@@ -736,14 +736,14 @@ msgctxt "collection_type"
 msgid "Attending"
 msgstr ""
 
-#: DB:work_type/name:25
-msgctxt "work_type"
+#: DB:release_group_secondary_type/name:11
+msgctxt "release_group_secondary_type"
 msgid "Audio drama"
 msgstr ""
 
-#: DB:release_group_secondary_type/name:11
-msgctxt "release_group_secondary_type"
-msgid "Audio play"
+#: DB:work_type/name:25
+msgctxt "work_type"
+msgid "Audio drama"
 msgstr ""
 
 #: DB:release_group_secondary_type/name:5

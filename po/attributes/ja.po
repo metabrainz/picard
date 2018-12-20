@@ -21,8 +21,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2018-12-11 06:03+0000\n"
-"Last-Translator: yvanz\n"
+"PO-Revision-Date: 2018-12-18 09:34+0000\n"
+"Last-Translator: Shunsuke Shimizu <grafi@grafi.jp>\n"
 "Language-Team: Japanese (http://www.transifex.com/musicbrainz/musicbrainz/language/ja/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -749,15 +749,15 @@ msgctxt "collection_type"
 msgid "Attending"
 msgstr "どこから書きはじめればいいかわからないくらい多くの労力をCAcertに注ぎました。彼は Christian がドラフト状態までにした CPS をなんとか仕上げ、数えきれない時間を使って、人々を保証したり、"
 
+#: DB:release_group_secondary_type/name:11
+msgctxt "release_group_secondary_type"
+msgid "Audio drama"
+msgstr "オーディオドラマ"
+
 #: DB:work_type/name:25
 msgctxt "work_type"
 msgid "Audio drama"
 msgstr "オーディオドラマ"
-
-#: DB:release_group_secondary_type/name:11
-msgctxt "release_group_secondary_type"
-msgid "Audio play"
-msgstr ""
 
 #: DB:release_group_secondary_type/name:5
 msgctxt "release_group_secondary_type"

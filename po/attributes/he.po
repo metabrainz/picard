@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2018-12-12 13:00+0000\n"
+"PO-Revision-Date: 2018-12-19 15:54+0000\n"
 "Last-Translator: Avi Markovitz <avi.markovitz@gmail.com>\n"
 "Language-Team: Hebrew (http://www.transifex.com/musicbrainz/musicbrainz/language/he/)\n"
 "MIME-Version: 1.0\n"
@@ -733,15 +733,15 @@ msgctxt "collection_type"
 msgid "Attending"
 msgstr "משתתף"
 
+#: DB:release_group_secondary_type/name:11
+msgctxt "release_group_secondary_type"
+msgid "Audio drama"
+msgstr "דרמת שמע"
+
 #: DB:work_type/name:25
 msgctxt "work_type"
 msgid "Audio drama"
 msgstr "דרמת שמע"
-
-#: DB:release_group_secondary_type/name:11
-msgctxt "release_group_secondary_type"
-msgid "Audio play"
-msgstr ""
 
 #: DB:release_group_secondary_type/name:5
 msgctxt "release_group_secondary_type"
@@ -3720,7 +3720,7 @@ msgstr "חברת תקליטים"
 #: DB:label_alias_type/name:1
 msgctxt "alias_type"
 msgid "Label name"
-msgstr ""
+msgstr " שם חברת תקליטים"
 
 #: DB:work_attribute_type_allowed_value/value:956
 msgctxt "work_attribute_type_allowed_value"
@@ -5001,7 +5001,7 @@ msgstr ""
 #: DB:label_type/name:7
 msgctxt "label_type"
 msgid "Publisher"
-msgstr ""
+msgstr "מוציא לאור"
 
 #: DB:work_attribute_type_allowed_value/value:999
 msgctxt "work_attribute_type_allowed_value"
