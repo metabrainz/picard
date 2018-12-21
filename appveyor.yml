@@ -72,4 +72,4 @@ deploy:
   force_update: true
   on:
     APPVEYOR_REPO_TAG: true
-    PYTHON_VERSION: 3.7.1
+    PYTHON_VERSION: 3.7.0
