@@ -71,6 +71,6 @@ UI_LANGUAGES = [
     #(u'ta', u'தமிழ்', N_(u'Tamil')),
     (u'tr', u'Türkçe', N_(u'Turkish')),
     (u'uk', u'Украї́нська мо́ва', N_(u'Ukrainian')),
-    (u'zh_CN', u'中文', N_(u'Chinese')),
-    (u'zh_TW', u'傳統中文', N_(u'Traditional Chinese')),
+    (u'zh_CN', u'中文（中国大陆）', N_(u'Chinese (China)')),
+    (u'zh_TW', u'中文（台灣）', N_(u'Chinese (Taiwan)')),
 ]
