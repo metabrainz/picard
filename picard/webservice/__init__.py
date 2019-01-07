@@ -356,7 +356,7 @@ class WebService(QtCore.QObject):
                      redirect_port,
                      redirect_path,
                      request.handler, request.parse_response_type, priority=True, important=True,
-                     refresh=request.refresh, queryargs=redirect_query,
+                     refresh=request.refresh, queryargs=redirect_query, mblogin=request.mblogin,
                      cacheloadcontrol=request.attribute(QNetworkRequest.CacheLoadControlAttribute))
         else:
             log.error("Redirect loop: %s",
