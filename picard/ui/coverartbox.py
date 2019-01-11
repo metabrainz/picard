@@ -69,6 +69,9 @@ class ActiveLabel(QtWidgets.QLabel):
     def dragEnterEvent(self, event):
         event.acceptProposedAction()
 
+    def dragMoveEvent(self, event):
+        event.acceptProposedAction()
+
     def dropEvent(self, event):
         accepted = False
         # Chromium includes the actual data of the dragged image in the drop event. This
