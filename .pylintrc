@@ -165,7 +165,8 @@ enable=consider-using-enumerate,
        signature-differs,
        duplicate-except,
        abstract-class-instantiated,
-       binary-op-exception
+       binary-op-exception,
+       undefined-variable
 
 
 
