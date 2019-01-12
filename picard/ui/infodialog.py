@@ -253,7 +253,7 @@ def format_file_info(file_):
         info.append((_('Format:'), file_.orig_metadata['~format']))
     try:
         size = os.path.getsize(encode_filename(file_.filename))
-        sizestr = "%s (%s)" % (bytes1human.decimal(size), bytes2human.binary(size))
+        sizestr = "%s (%s)" % (bytes2human.decimal(size), bytes2human.binary(size))
         info.append((_('Size:'), sizestr))
     except BaseException:
         pass
