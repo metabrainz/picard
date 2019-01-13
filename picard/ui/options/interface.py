@@ -293,7 +293,7 @@ class AddActionDialog(QtWidgets.QDialog):
         babel_415_workaround_list = []
         for action in action_list:
             babel_415_workaround = self.parent().TOOLBAR_BUTTONS[action]['label']
-            temp_list.append([_(babel_415_workaround), action])
+            babel_415_workaround_list.append([_(babel_415_workaround), action])
         self.action_list = sorted(babel_415_workaround_list)
 
         self.combo_box = QtWidgets.QComboBox(self)
