@@ -91,7 +91,7 @@ from picard.webservice.api_helpers import (
     MBAPIHelper,
 )
 
-import picard.resources
+import picard.resources  # pylint: disable=unused-import
 
 from picard.ui.itemviews import BaseTreeView
 from picard.ui.mainwindow import MainWindow

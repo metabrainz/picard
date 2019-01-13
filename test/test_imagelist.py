@@ -2,7 +2,6 @@
 
 import struct
 from test.picardtestcase import PicardTestCase
-import unittest
 
 from picard.album import Album
 from picard.cluster import Cluster

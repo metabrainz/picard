@@ -32,7 +32,7 @@ from picard.ui import (
     HashableTreeWidgetItem,
     PicardDialog,
 )
-from picard.ui.options import (
+from picard.ui.options import (  # pylint: disable=unused-import
     OptionsCheckError,
     _pages as page_classes,
     about,
