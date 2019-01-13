@@ -66,7 +66,12 @@ class ActiveLabel(QtWidgets.QLabel):
         if self.active and event.button() == QtCore.Qt.LeftButton:
             self.clicked.emit()
 
-    def dragEnterEvent(self, event):
+    @staticmethod
+    def dragEnterEvent(event):
+        event.acceptProposedAction()
+
+    @staticmethod
+    def dragMoveEvent(event):
         event.acceptProposedAction()
 
     def dropEvent(self, event):
