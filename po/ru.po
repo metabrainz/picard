@@ -21,14 +21,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2018-12-08 13:30+0100\n"
+"POT-Creation-Date: 2018-12-20 17:56+0100\n"
 "PO-Revision-Date: 2018-12-08 12:35+0000\n"
 "Last-Translator: Michael Wiencek <mwtuea@gmail.com>\n"
 "Language-Team: Russian (http://www.transifex.com/musicbrainz/musicbrainz/language/ru/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.6.0\n"
+"Generated-By: Babel 2.0\n"
 "Language: ru\n"
 "Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);\n"
 
@@ -137,7 +137,7 @@ msgid "Merge"
 msgstr "Объединить"
 
 #: picard/config_upgrade.py:81 picard/ui/metadatabox.py:351
-#: picard/ui/options/interface.py:87 picard/ui/ui_options_interface.py:142
+#: picard/ui/ui_options_interface.py:142 picard/ui/options/interface.py:87
 msgid "Remove"
 msgstr "Удалить"
 
@@ -146,22 +146,22 @@ msgstr "Удалить"
 msgid "My script %d"
 msgstr "Новый скрипт %d"
 
-#: picard/file.py:616
+#: picard/file.py:598
 #, python-format
 msgid "No matching tracks for file '%(filename)s'"
 msgstr "Нет соответствующих треков для файла '%(filename)s'"
 
-#: picard/file.py:629
+#: picard/file.py:611
 #, python-format
 msgid "No matching tracks above the threshold for file '%(filename)s'"
 msgstr "Нет совпадения треков для файла '%(filename)s'"
 
-#: picard/file.py:637
+#: picard/file.py:619
 #, python-format
 msgid "File '%(filename)s' identified!"
 msgstr "Файл '%(filename)s' идентифицирован!"
 
-#: picard/file.py:659
+#: picard/file.py:641
 #, python-format
 msgid "Looking up the metadata for file %(filename)s ..."
 msgstr "Просмотр метаданных для файла %(filename)s..."
@@ -1430,9 +1430,8 @@ msgstr ""
 msgid "File Name"
 msgstr "Имя файла"
 
-#: picard/ui/options/cdlookup.py:42 picard/ui/ui_cdlookup.py:51
-#: picard/ui/ui_options_cdlookup.py:38
-#: picard/ui/ui_options_cdlookup_select.py:45
+#: picard/ui/ui_cdlookup.py:51 picard/ui/ui_options_cdlookup.py:38
+#: picard/ui/ui_options_cdlookup_select.py:45 picard/ui/options/cdlookup.py:42
 msgid "CD Lookup"
 msgstr "Поиск CD"
 
@@ -1627,7 +1626,7 @@ msgstr "Войти"
 msgid "Log out"
 msgstr "Выйти"
 
-#: picard/ui/options/general.py:39 picard/ui/ui_options_general.py:138
+#: picard/ui/ui_options_general.py:138 picard/ui/options/general.py:39
 msgid "General"
 msgstr "Основные"
 
@@ -1718,8 +1717,8 @@ msgstr "Разрешить выбор нескольких каталогов"
 msgid "Use builtin search rather than looking in browser"
 msgstr "Использовать встроенный поиск вместо поиска в браузере"
 
-#: picard/ui/searchdialog/__init__.py:121
 #: picard/ui/ui_options_interface.py:127
+#: picard/ui/searchdialog/__init__.py:121
 msgid "Use advanced query syntax"
 msgstr "Использовать расширенный синтаксис запросов"
 
@@ -1779,7 +1778,7 @@ msgstr "Минимальное сходство при опознавании ф
 msgid "Minimal similarity for cluster lookups:"
 msgstr "Минимальное сходство при опознавании кластеров:"
 
-#: picard/ui/options/metadata.py:33 picard/ui/ui_options_metadata.py:96
+#: picard/ui/ui_options_metadata.py:96 picard/ui/options/metadata.py:33
 msgid "Metadata"
 msgstr "Метаданные"
 
@@ -1849,13 +1848,13 @@ msgstr "Порт для прослушивания:"
 msgid "Listen only on localhost"
 msgstr "Слушать только на localhost"
 
-#: picard/ui/options/plugins.py:203 picard/ui/ui_options_plugins.py:129
+#: picard/ui/ui_options_plugins.py:129 picard/ui/options/plugins.py:203
 msgid "Plugins"
 msgstr "Плагины"
 
-#: picard/ui/options/plugins.py:578 picard/ui/searchdialog/album.py:150
-#: picard/ui/searchdialog/artist.py:50 picard/ui/searchdialog/track.py:62
-#: picard/ui/ui_options_plugins.py:130
+#: picard/ui/ui_options_plugins.py:130 picard/ui/options/plugins.py:578
+#: picard/ui/searchdialog/album.py:150 picard/ui/searchdialog/artist.py:50
+#: picard/ui/searchdialog/track.py:62
 msgid "Name"
 msgstr "Имя"
 
@@ -2381,11 +2380,11 @@ msgstr "Пожалуйста, попробуйте позже."
 msgid "Ratings"
 msgstr "Рейтинги"
 
-#: picard/ui/options/releases.py:139
+#: picard/ui/options/releases.py:142
 msgid "Preferred Releases"
 msgstr "Предпочтенные альбомы"
 
-#: picard/ui/options/releases.py:173
+#: picard/ui/options/releases.py:177
 msgid "Reset all"
 msgstr "Сбросить всё"
 

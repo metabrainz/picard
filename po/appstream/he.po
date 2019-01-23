@@ -79,7 +79,7 @@ msgid ""
 " releases."
 msgstr ""
 "מסד נתונים מקיף: פיקארד משתמש במסד הנתונים הפתוח המתוחזק על ידי קהילת "
-"MusicBrainz על מנת לספק מידע מדויק על מיליוני מהדורות מוזיקה."
+"MusicBrainz על מנת לספק מידע מדויק על מיליוני הוצאות מוזיקה."
 
 #: org.musicbrainz.Picard.appdata.xml.in:38
 msgid "CD lookups: Picard can lookup entire music CDs with a click."

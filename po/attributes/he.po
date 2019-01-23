@@ -1,12 +1,12 @@
 # 
 # Translators:
-# Avi Markovitz <avi.markovitz@gmail.com>, 2018
+# Avi Markovitz <avi.markovitz@gmail.com>, 2018-2019
 # Avi Markovitz <avi.markovitz@gmail.com>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2018-12-19 15:54+0000\n"
-"Last-Translator: Avi Markovitz <avi.markovitz@gmail.com>\n"
+"PO-Revision-Date: 2019-01-22 20:58+0000\n"
+"Last-Translator: yvanz\n"
 "Language-Team: Hebrew (http://www.transifex.com/musicbrainz/musicbrainz/language/he/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -145,7 +145,7 @@ msgid ""
 "A give-away release or a release intended to promote an upcoming official "
 "release (e.g. pre-release versions, releases included with a magazine, "
 "versions supplied to radio DJs for air-play)."
-msgstr "מהדורת מתנה או מהדורה המיועדת לקדם מהדורה רשמית עתידית (למשל, גרסאות טרום מהדורה, מהדורות הכלולות במגזין, מהדורות שסופקו לתקליטני רדיו להשמעות בשידור)."
+msgstr "מהדורת מתנה או הוצאה המיועדת לקדם הוצאה רשמית עתידית (למשל, גרסאות טרום הוצאה, הוצאות הכלולות במגזין, הוצאות שסופקו לתקליטני רדיו להשמעות בשידור)."
 
 #: DB:instrument_type/description:7
 msgctxt "instrument_type"
@@ -192,7 +192,7 @@ msgctxt "event_type"
 msgid ""
 "A party, reception or other event held specifically for the launch of a "
 "release."
-msgstr "מסיבה, קבלת פנים או אירוע אחר שנערך במיוחד עבור השקת מהדורה."
+msgstr "מסיבה, קבלת פנים או אירוע אחר שנערך במיוחד עבור השקת הוצאה."
 
 #: DB:release_packaging/description:17
 msgctxt "release_packaging"
@@ -262,7 +262,7 @@ msgstr "פואמה היא יצירה ספרותית, קצרה בדרך כלל ו
 msgctxt "work_type"
 msgid ""
 "A quartet is a musical composition scored for four voices or instruments."
-msgstr "רביעייה היא הרכב מוסיקלי מורכב ארבעה קולות או כלים."
+msgstr "רביעייה היא קבוצת מוסיקלי מורכב ארבעה קולות או כלים."
 
 #: DB:series_type/description:8
 msgctxt "series_type"
@@ -299,12 +299,12 @@ msgstr "סדרה של קונצרטים קשורים לאמן במקומות שו
 #: DB:series_type/description:1
 msgctxt "series_type"
 msgid "A series of release groups."
-msgstr "סדרה של הרכבי מהדורה."
+msgstr "סדרה של קבוצות הוצאה."
 
 #: DB:series_type/description:2
 msgctxt "series_type"
 msgid "A series of releases."
-msgstr "סידרת מהדורות."
+msgstr "סידרת הוצאות."
 
 #: DB:series_type/description:5
 msgctxt "series_type"
@@ -554,7 +554,7 @@ msgid ""
 "An alternate version of a release where the titles have been changed. These "
 "don't correspond to any real release and should be linked to the original "
 "release using the transl(iter)ation relationship."
-msgstr "גרסה חלופית של מהדורה שבה הכותרות השתנו. היא אינה תואמת לגרסה אמיתית וצריכה להיות מקושרת למהדורה המקורית תוך שימוש ביחסי תרגום."
+msgstr "גרסה חלופית של הוצאה שבה הכותרות השתנו. היא אינה תואמת לגרסה אמיתית וצריכה להיות מקושרת להוצאה המקורית תוך שימוש ביחסי תרגום."
 
 #: DB:work_type/description:1
 msgctxt "work_type"
@@ -616,7 +616,7 @@ msgid ""
 "An unofficial/underground release that was not sanctioned by the artist "
 "and/or the record company. This includes unofficial live recordings and "
 "pirated releases."
-msgstr "מהדורה לא רשמית/מחתרתית, שלא אושרה על ידי האמן ו/או חברת התקליטים. בכלל זה הקלטה חיה לא רשמית ומהדורות פיראטיות."
+msgstr "הוצאה לא רשמית/מחתרתית, שלא אושרה על ידי האמן ו/או חברת התקליטים. בכלל זה הקלטה חיה לא רשמית והוצאות פיראטיות."
 
 #: DB:work_type/description:20
 msgctxt "work_type"
@@ -636,7 +636,7 @@ msgctxt "release_status"
 msgid ""
 "Any release officially sanctioned by the artist and/or their record company."
 " Most releases will fit into this category."
-msgstr "כל מהדורה שאושרה רשמית על ידי האמן ו/או חברת התקליטים. רוב המהדורות יתאימו לקטגוריה זו."
+msgstr "כל הוצאה שאושרה רשמית על ידי האמן ו/או חברת התקליטים. רוב ההוצאות יתאימו לקטגוריה זו."
 
 #: DB:work_attribute_type_allowed_value/value:311
 msgctxt "work_attribute_type_allowed_value"
@@ -2413,6 +2413,13 @@ msgctxt "medium_format"
 msgid "Floppy Disk"
 msgstr "דיסקט"
 
+#: DB:gender/description:4
+msgctxt "gender"
+msgid ""
+"For cases where gender just doesn't apply at all (like companies entered as "
+"artists)."
+msgstr ""
+
 #: DB:work_attribute_type/name:16
 msgctxt "work_attribute_type"
 msgid "Form (Ottoman, Turkish)"
@@ -2596,7 +2603,7 @@ msgstr ""
 #: DB:artist_type/name:2
 msgctxt "artist_type"
 msgid "Group"
-msgstr "הרכב"
+msgstr "קבוצה"
 
 #: DB:work_attribute_type_allowed_value/value:916
 msgctxt "work_attribute_type_allowed_value"
@@ -2961,7 +2968,7 @@ msgstr ""
 #: DB:medium_format/name:38
 msgctxt "medium_format"
 msgid "Hybrid SACD"
-msgstr ""
+msgstr "Hybrid SACD"
 
 #: DB:medium_format/name:63
 msgctxt "medium_format"
@@ -4647,6 +4654,11 @@ msgctxt "release_packaging"
 msgid "None"
 msgstr "ללא"
 
+#: DB:gender/name:4
+msgctxt "gender"
+msgid "Not applicable"
+msgstr ""
+
 #: DB:work_attribute_type_allowed_value/value:491
 msgctxt "work_attribute_type_allowed_value"
 msgid "Nuşingül"
@@ -5207,12 +5219,12 @@ msgstr ""
 #: DB:editor_collection_type/name:1
 msgctxt "collection_type"
 msgid "Release"
-msgstr "מהדורה"
+msgstr "הוצאה"
 
 #: DB:editor_collection_type/name:13
 msgctxt "collection_type"
 msgid "Release group"
-msgstr ""
+msgstr "‮קבוצת הוצאה"
 
 #: DB:release_group_alias_type/name:1
 msgctxt "alias_type"
@@ -5247,7 +5259,7 @@ msgstr ""
 #: DB:release_group_secondary_type/name:7
 msgctxt "release_group_secondary_type"
 msgid "Remix"
-msgstr "רמיקס"
+msgstr "עריכה מחדש"
 
 #: DB:work_attribute_type_allowed_value/value:516
 msgctxt "work_attribute_type_allowed_value"
@@ -5393,7 +5405,7 @@ msgstr ""
 #: DB:medium_format/name:3
 msgctxt "medium_format"
 msgid "SACD"
-msgstr ""
+msgstr "SACD"
 
 #: DB:work_attribute_type/name:21
 msgctxt "work_attribute_type"
@@ -5448,7 +5460,7 @@ msgstr ""
 #: DB:medium_format/name:23
 msgctxt "medium_format"
 msgid "SVCD"
-msgstr ""
+msgstr "SVCD"
 
 #: DB:work_attribute_type_allowed_value/value:522
 msgctxt "work_attribute_type_allowed_value"
@@ -5569,7 +5581,7 @@ msgstr ""
 #: DB:event_alias_type/name:2
 msgctxt "alias_type"
 msgid "Search hint"
-msgstr ""
+msgstr "רמיזת חפוש"
 
 #: DB:work_attribute_type_allowed_value/value:528
 msgctxt "work_attribute_type_allowed_value"
@@ -5707,7 +5719,7 @@ msgstr ""
 #: DB:release_packaging/name:2
 msgctxt "release_packaging"
 msgid "Slim Jewel Case"
-msgstr ""
+msgstr "מארז תקליטור דק"
 
 #: DB:release_packaging/name:11
 msgctxt "release_packaging"
@@ -5744,12 +5756,12 @@ msgstr ""
 #: DB:release_group_secondary_type/name:2
 msgctxt "release_group_secondary_type"
 msgid "Soundtrack"
-msgstr ""
+msgstr "רצועת שמע"
 
 #: DB:work_type/name:22
 msgctxt "work_type"
 msgid "Soundtrack"
-msgstr ""
+msgstr "רצועת שמע"
 
 #: DB:cover_art_archive.art_type/name:6
 msgctxt "cover_art_type"
@@ -6170,7 +6182,7 @@ msgctxt "work_type"
 msgid ""
 "The operetta is a genre of light opera, in terms both of music and subject "
 "matter. Operettas are generally short and include spoken parts."
-msgstr ""
+msgstr "האופרטה היא סוגה של אופרה קלה, הן מבחינת המוסיקה והן מבחינת הנושא. אופרטות הן בדרך כלל קצרות וכוללות חלקים מדובררים."
 
 #: DB:release_packaging/description:1
 msgctxt "release_packaging"

@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2018-12-18 09:34+0000\n"
+"PO-Revision-Date: 2019-01-22 20:58+0000\n"
 "Last-Translator: yvanz\n"
 "Language-Team: English (United Kingdom) (http://www.transifex.com/musicbrainz/musicbrainz/language/en_GB/)\n"
 "MIME-Version: 1.0\n"
@@ -2413,6 +2413,13 @@ msgctxt "medium_format"
 msgid "Floppy Disk"
 msgstr ""
 
+#: DB:gender/description:4
+msgctxt "gender"
+msgid ""
+"For cases where gender just doesn't apply at all (like companies entered as "
+"artists)."
+msgstr ""
+
 #: DB:work_attribute_type/name:16
 msgctxt "work_attribute_type"
 msgid "Form (Ottoman, Turkish)"
@@ -4646,6 +4653,11 @@ msgstr ""
 msgctxt "release_packaging"
 msgid "None"
 msgstr "None"
+
+#: DB:gender/name:4
+msgctxt "gender"
+msgid "Not applicable"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:491
 msgctxt "work_attribute_type_allowed_value"

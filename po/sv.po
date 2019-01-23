@@ -17,14 +17,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2018-12-08 13:30+0100\n"
-"PO-Revision-Date: 2018-12-08 12:35+0000\n"
-"Last-Translator: Michael Wiencek <mwtuea@gmail.com>\n"
+"POT-Creation-Date: 2018-12-20 17:56+0100\n"
+"PO-Revision-Date: 2018-12-29 07:43+0000\n"
+"Last-Translator: Jonatan Nyberg\n"
 "Language-Team: Swedish (http://www.transifex.com/musicbrainz/musicbrainz/language/sv/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.6.0\n"
+"Generated-By: Babel 2.0\n"
 "Language: sv\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
@@ -125,7 +125,7 @@ msgid "Merge"
 msgstr "Sammanfoga"
 
 #: picard/config_upgrade.py:81 picard/ui/metadatabox.py:351
-#: picard/ui/options/interface.py:87 picard/ui/ui_options_interface.py:142
+#: picard/ui/ui_options_interface.py:142 picard/ui/options/interface.py:87
 msgid "Remove"
 msgstr "Radera"
 
@@ -134,22 +134,22 @@ msgstr "Radera"
 msgid "My script %d"
 msgstr "Mitt skript %d"
 
-#: picard/file.py:616
+#: picard/file.py:598
 #, python-format
 msgid "No matching tracks for file '%(filename)s'"
 msgstr "Ingen matchande spår för fil '%(filename)s'"
 
-#: picard/file.py:629
+#: picard/file.py:611
 #, python-format
 msgid "No matching tracks above the threshold for file '%(filename)s'"
 msgstr ""
 
-#: picard/file.py:637
+#: picard/file.py:619
 #, python-format
 msgid "File '%(filename)s' identified!"
 msgstr "Fil '%(filename)s' identifierad!"
 
-#: picard/file.py:659
+#: picard/file.py:641
 #, python-format
 msgid "Looking up the metadata for file %(filename)s ..."
 msgstr "Letar upp metadata för file %(filename)s ..."
@@ -182,7 +182,7 @@ msgstr ""
 #: picard/plugin.py:492
 #, python-format
 msgid "Error loading plugins list: %(error)s"
-msgstr "Fel vid laddning av insticksmodullista: %(error)s"
+msgstr "Fel vid inläsning av insticksmodullista: %(error)s"
 
 #: picard/releasegroup.py:58 picard/ui/searchdialog/album.py:153
 msgid "Tracks"
@@ -239,7 +239,7 @@ msgstr "Tar bort album %(id)s: %(artist)s - %(album)s"
 
 #: picard/tagger.py:698
 msgid "CD Lookup Error"
-msgstr "Fel vid uppslagning av cd"
+msgstr "Fel vid uppslagning av CD"
 
 #: picard/tagger.py:699
 #, python-format
@@ -247,7 +247,7 @@ msgid ""
 "Error while reading CD:\n"
 "\n"
 "%s"
-msgstr "Fel vid läsning av cd:\n\n%s"
+msgstr "Fel vid läsning av CD:\n\n%s"
 
 #: picard/acoustid/__init__.py:70
 #, python-format
@@ -494,7 +494,7 @@ msgstr "Återställ standardvärden"
 
 #: picard/coverart/providers/caa.py:484
 msgid "Cover Art Archive"
-msgstr "Cover Art Archive"
+msgstr "Omslagsarkiv"
 
 #: picard/coverart/providers/caa_release_group.py:41
 msgid "CAA Release Group"
@@ -931,7 +931,7 @@ msgid ""
 "Picard listens on this port to integrate with your browser. When you "
 "\"Search\" or \"Open in Browser\" from Picard, clicking the \"Tagger\" "
 "button on the web page loads the release into Picard."
-msgstr "Picard lyssnar på den här porten för att integrera med din webbläsare. När du använder \"Sök\" eller \"Öppna i webbläsare\" från Picard, klickar du på \"Taggrt\"-knappen på webbsidan laddas uppsättningen i Picard."
+msgstr "Picard lyssnar på den här porten för att integrera med din webbläsare. När du använder \"Sök\" eller \"Öppna i webbläsare\" från Picard, klickar du på \"Tagger\"-knappen på webbsidan laddas uppsättningen i Picard."
 
 #: picard/ui/mainwindow.py:283
 #, python-format
@@ -1404,15 +1404,14 @@ msgstr "Skriptfel i \"%(script)s\": %(message)s"
 msgid "File Name"
 msgstr "Filnamn"
 
-#: picard/ui/options/cdlookup.py:42 picard/ui/ui_cdlookup.py:51
-#: picard/ui/ui_options_cdlookup.py:38
-#: picard/ui/ui_options_cdlookup_select.py:45
+#: picard/ui/ui_cdlookup.py:51 picard/ui/ui_options_cdlookup.py:38
+#: picard/ui/ui_options_cdlookup_select.py:45 picard/ui/options/cdlookup.py:42
 msgid "CD Lookup"
 msgstr "CD-uppslagning"
 
 #: picard/ui/ui_cdlookup.py:52
 msgid "The following releases on MusicBrainz match the CD:"
-msgstr "Följande utgåvor på MusicBrainz matchar cd:n:"
+msgstr "Följande utgåvor på MusicBrainz matchar CD:n:"
 
 #: picard/ui/ui_cdlookup.py:53
 msgid "&Load into Picard"
@@ -1494,11 +1493,11 @@ msgstr "Tysta spår"
 
 #: picard/ui/ui_options_cdlookup.py:39
 msgid "CD-ROM device to use for lookups:"
-msgstr "Cd-romenhet för uppslagningar:"
+msgstr "CD-romenhet för uppslagningar:"
 
 #: picard/ui/ui_options_cdlookup_select.py:46
 msgid "Default CD-ROM drive to use for lookups:"
-msgstr "Standardenhet för uppslagning av cd:"
+msgstr "Standardenhet för uppslagning av CD:"
 
 #: picard/ui/ui_options_cover.py:86
 msgid "Location"
@@ -1601,7 +1600,7 @@ msgstr "Logga in"
 msgid "Log out"
 msgstr "Logga ut"
 
-#: picard/ui/options/general.py:39 picard/ui/ui_options_general.py:138
+#: picard/ui/ui_options_general.py:138 picard/ui/options/general.py:39
 msgid "General"
 msgstr "Allmänt"
 
@@ -1611,7 +1610,7 @@ msgstr "Skanna automatiskt alla nya filer"
 
 #: picard/ui/ui_options_general.py:140
 msgid "Ignore MBIDs when loading new files"
-msgstr "Ignorera MBID vid laddning av nya filer"
+msgstr "Ignorera MBID vid inläsning av nya filer"
 
 #: picard/ui/ui_options_general.py:141
 msgid "Update Checking"
@@ -1692,8 +1691,8 @@ msgstr "Tillåt markering av flera kataloger"
 msgid "Use builtin search rather than looking in browser"
 msgstr "Använd inbyggd sökning i stället för att titta i webbläsaren"
 
-#: picard/ui/searchdialog/__init__.py:121
 #: picard/ui/ui_options_interface.py:127
+#: picard/ui/searchdialog/__init__.py:121
 msgid "Use advanced query syntax"
 msgstr "Använd avancerad frågesyntax"
 
@@ -1753,7 +1752,7 @@ msgstr "Minsta överensstämmelse för uppslagning av fil:"
 msgid "Minimal similarity for cluster lookups:"
 msgstr "Minsta överensstämmelse för uppslagning av kluster:"
 
-#: picard/ui/options/metadata.py:33 picard/ui/ui_options_metadata.py:96
+#: picard/ui/ui_options_metadata.py:96 picard/ui/options/metadata.py:33
 msgid "Metadata"
 msgstr "Metadata"
 
@@ -1823,13 +1822,13 @@ msgstr "Standard lyssnarport:"
 msgid "Listen only on localhost"
 msgstr "Lyssna endast på localhost"
 
-#: picard/ui/options/plugins.py:203 picard/ui/ui_options_plugins.py:129
+#: picard/ui/ui_options_plugins.py:129 picard/ui/options/plugins.py:203
 msgid "Plugins"
 msgstr "Insticksmoduler"
 
-#: picard/ui/options/plugins.py:578 picard/ui/searchdialog/album.py:150
-#: picard/ui/searchdialog/artist.py:50 picard/ui/searchdialog/track.py:62
-#: picard/ui/ui_options_plugins.py:130
+#: picard/ui/ui_options_plugins.py:130 picard/ui/options/plugins.py:578
+#: picard/ui/searchdialog/album.py:150 picard/ui/searchdialog/artist.py:50
+#: picard/ui/searchdialog/track.py:62
 msgid "Name"
 msgstr "Namn"
 
@@ -1980,7 +1979,7 @@ msgstr "Taggkompatibilitet"
 
 #: picard/ui/ui_options_tags.py:160
 msgid "ID3v2 Version"
-msgstr "ID3v2 version"
+msgstr "ID3v2-version"
 
 #: picard/ui/ui_options_tags.py:161
 msgid "2.4"
@@ -1992,7 +1991,7 @@ msgstr "2.3"
 
 #: picard/ui/ui_options_tags.py:163
 msgid "ID3v2 Text Encoding"
-msgstr "ID3v2 textkodning"
+msgstr "ID3v2-textkodning"
 
 #: picard/ui/ui_options_tags.py:164
 msgid "UTF-8"
@@ -2355,11 +2354,11 @@ msgstr "Vänligen försök igen senare."
 msgid "Ratings"
 msgstr "Betyg"
 
-#: picard/ui/options/releases.py:139
+#: picard/ui/options/releases.py:142
 msgid "Preferred Releases"
 msgstr "Föredragna releaser"
 
-#: picard/ui/options/releases.py:173
+#: picard/ui/options/releases.py:177
 msgid "Reset all"
 msgstr "Återställ allt"
 

@@ -12,14 +12,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2018-12-08 13:30+0100\n"
+"POT-Creation-Date: 2018-12-20 17:56+0100\n"
 "PO-Revision-Date: 2018-12-12 17:31+0000\n"
 "Last-Translator: Maurits Meulenbelt <mfmeulenbelt@gmail.com>\n"
 "Language-Team: Dutch (http://www.transifex.com/musicbrainz/musicbrainz/language/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.6.0\n"
+"Generated-By: Babel 2.0\n"
 "Language: nl\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
@@ -120,7 +120,7 @@ msgid "Merge"
 msgstr "Samenvoegen"
 
 #: picard/config_upgrade.py:81 picard/ui/metadatabox.py:351
-#: picard/ui/options/interface.py:87 picard/ui/ui_options_interface.py:142
+#: picard/ui/ui_options_interface.py:142 picard/ui/options/interface.py:87
 msgid "Remove"
 msgstr "Verwijderen"
 
@@ -129,22 +129,22 @@ msgstr "Verwijderen"
 msgid "My script %d"
 msgstr "Mijn script %d"
 
-#: picard/file.py:616
+#: picard/file.py:598
 #, python-format
 msgid "No matching tracks for file '%(filename)s'"
 msgstr "Geen overeenkomende nummers voor bestand ‘%(filename)s’"
 
-#: picard/file.py:629
+#: picard/file.py:611
 #, python-format
 msgid "No matching tracks above the threshold for file '%(filename)s'"
 msgstr "Geen bijpassende tracks boven de limiet voor bestand ‘%(filename)s’"
 
-#: picard/file.py:637
+#: picard/file.py:619
 #, python-format
 msgid "File '%(filename)s' identified!"
 msgstr "Bestand ‘%(filename)s’ geïdentificeerd!"
 
-#: picard/file.py:659
+#: picard/file.py:641
 #, python-format
 msgid "Looking up the metadata for file %(filename)s ..."
 msgstr "Metadata voor het bestand %(filename)s wordt opgezocht …"
@@ -1399,9 +1399,8 @@ msgstr "Scriptfout in “%(script)s”: %(message)s"
 msgid "File Name"
 msgstr "Bestandsnaam"
 
-#: picard/ui/options/cdlookup.py:42 picard/ui/ui_cdlookup.py:51
-#: picard/ui/ui_options_cdlookup.py:38
-#: picard/ui/ui_options_cdlookup_select.py:45
+#: picard/ui/ui_cdlookup.py:51 picard/ui/ui_options_cdlookup.py:38
+#: picard/ui/ui_options_cdlookup_select.py:45 picard/ui/options/cdlookup.py:42
 msgid "CD Lookup"
 msgstr "Cd opzoeken"
 
@@ -1596,7 +1595,7 @@ msgstr "Aanmelden"
 msgid "Log out"
 msgstr "Afmelden"
 
-#: picard/ui/options/general.py:39 picard/ui/ui_options_general.py:138
+#: picard/ui/ui_options_general.py:138 picard/ui/options/general.py:39
 msgid "General"
 msgstr "Algemeen"
 
@@ -1687,8 +1686,8 @@ msgstr "Het selecteren van meerdere mappen toestaan"
 msgid "Use builtin search rather than looking in browser"
 msgstr "De ingebouwde zoekfunctie in plaats van de browser gebruiken"
 
-#: picard/ui/searchdialog/__init__.py:121
 #: picard/ui/ui_options_interface.py:127
+#: picard/ui/searchdialog/__init__.py:121
 msgid "Use advanced query syntax"
 msgstr "Geavanceerde zoeksyntaxis gebruiken"
 
@@ -1748,7 +1747,7 @@ msgstr "Minimale overeenkomst voor het opzoeken van bestanden:"
 msgid "Minimal similarity for cluster lookups:"
 msgstr "Minimale overeenkomst voor het opzoeken van clusters:"
 
-#: picard/ui/options/metadata.py:33 picard/ui/ui_options_metadata.py:96
+#: picard/ui/ui_options_metadata.py:96 picard/ui/options/metadata.py:33
 msgid "Metadata"
 msgstr "Metadata"
 
@@ -1818,13 +1817,13 @@ msgstr "Standaard luisterpoort:"
 msgid "Listen only on localhost"
 msgstr "Alleen op localhost luisteren"
 
-#: picard/ui/options/plugins.py:203 picard/ui/ui_options_plugins.py:129
+#: picard/ui/ui_options_plugins.py:129 picard/ui/options/plugins.py:203
 msgid "Plugins"
 msgstr "Plugins"
 
-#: picard/ui/options/plugins.py:578 picard/ui/searchdialog/album.py:150
-#: picard/ui/searchdialog/artist.py:50 picard/ui/searchdialog/track.py:62
-#: picard/ui/ui_options_plugins.py:130
+#: picard/ui/ui_options_plugins.py:130 picard/ui/options/plugins.py:578
+#: picard/ui/searchdialog/album.py:150 picard/ui/searchdialog/artist.py:50
+#: picard/ui/searchdialog/track.py:62
 msgid "Name"
 msgstr "Naam"
 
@@ -2350,11 +2349,11 @@ msgstr "Probeer het later nog eens."
 msgid "Ratings"
 msgstr "Waarderingen"
 
-#: picard/ui/options/releases.py:139
+#: picard/ui/options/releases.py:142
 msgid "Preferred Releases"
 msgstr "Bepaalde uitgaves voorrang geven"
 
-#: picard/ui/options/releases.py:173
+#: picard/ui/options/releases.py:177
 msgid "Reset all"
 msgstr "Alles terugzetten"
 
