@@ -1,5 +1,13 @@
-Version 2.1.1 - 2019-01-29
+Version 2.1.2 - 2019-01-29
 
+** Bug-fix
+    * [PICARD-1382] - macOS packaging script ignores all errors
+
+** Task
+    * [PICARD-1456] - macOS packaging fails due to PIP bug
+
+
+Version 2.1.1 - 2019-01-29
 
 ** Bug-fix
     * [PICARD-1451] - Redirects of authenticated requests fail with 401 error
@@ -113,7 +121,7 @@ Version 2.1.0 - 2018-12-20
     * [PICARD-1379] - Port astrcmp to new Python C Unicode API
     * [PICARD-1383] - Use MCN / barcode read from disc to improve DiscId lookup
     * [PICARD-1393] - Change the application ID
-    * [PICARD-1416] - Should store ID3 Artists field as TXXX:ARTISTS not TXXX:Artists 
+    * [PICARD-1416] - Should store ID3 Artists field as TXXX:ARTISTS not TXXX:Artists
     * [PICARD-1417] - Only show plugins with compatible API version
     * [PICARD-1424] - Translate AppStream data
     * [PICARD-1425] - Support all movement tags for APE, Vorbis and MP3
