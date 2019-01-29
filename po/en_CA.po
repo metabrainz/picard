@@ -1,5 +1,5 @@
 # Translations template for picard.
-# Copyright (C) 2018 ORGANIZATION
+# Copyright (C) 2019 ORGANIZATION
 # This file is distributed under the same license as the picard project.
 # 
 # Translators:
@@ -12,14 +12,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2018-12-20 17:56+0100\n"
-"PO-Revision-Date: 2018-12-08 12:35+0000\n"
+"POT-Creation-Date: 2019-01-23 11:57+0100\n"
+"PO-Revision-Date: 2019-01-23 13:16+0000\n"
 "Last-Translator: Michael Wiencek <mwtuea@gmail.com>\n"
 "Language-Team: English (Canada) (http://www.transifex.com/musicbrainz/musicbrainz/language/en_CA/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.0\n"
+"Generated-By: Babel 2.6.0\n"
 "Language: en_CA\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
@@ -120,7 +120,7 @@ msgid "Merge"
 msgstr "Merge"
 
 #: picard/config_upgrade.py:81 picard/ui/metadatabox.py:351
-#: picard/ui/ui_options_interface.py:142 picard/ui/options/interface.py:87
+#: picard/ui/options/interface.py:87 picard/ui/ui_options_interface.py:142
 msgid "Remove"
 msgstr "Remove"
 
@@ -402,11 +402,11 @@ msgid "Ukrainian"
 msgstr ""
 
 #: picard/const/languages.py:74
-msgid "Chinese"
+msgid "Chinese (China)"
 msgstr ""
 
 #: picard/const/languages.py:75
-msgid "Traditional Chinese"
+msgid "Chinese (Taiwan)"
 msgstr ""
 
 #: picard/coverart/__init__.py:105
@@ -542,43 +542,43 @@ msgid_plural "%s (%i releases)"
 msgstr[0] "%s (%i release)"
 msgstr[1] "%s (%i releases)"
 
-#: picard/ui/coverartbox.py:262
+#: picard/ui/coverartbox.py:267
 msgid "View release on MusicBrainz"
 msgstr "View release on MusicBrainz"
 
-#: picard/ui/coverartbox.py:268
+#: picard/ui/coverartbox.py:273
 msgid "Common images on all tracks"
 msgstr ""
 
-#: picard/ui/coverartbox.py:270
+#: picard/ui/coverartbox.py:275
 msgid "Tracks contain different images"
 msgstr ""
 
-#: picard/ui/coverartbox.py:310
+#: picard/ui/coverartbox.py:315
 msgid "Show more details"
 msgstr ""
 
-#: picard/ui/coverartbox.py:347
+#: picard/ui/coverartbox.py:352
 msgid "New Cover Art"
 msgstr ""
 
-#: picard/ui/coverartbox.py:348
+#: picard/ui/coverartbox.py:353
 msgid "Original Cover Art"
 msgstr ""
 
-#: picard/ui/coverartbox.py:481
+#: picard/ui/coverartbox.py:486
 msgid "Show more details..."
 msgstr ""
 
-#: picard/ui/coverartbox.py:487
+#: picard/ui/coverartbox.py:492
 msgid "Keep original cover art"
 msgstr ""
 
-#: picard/ui/coverartbox.py:496
+#: picard/ui/coverartbox.py:501
 msgid "Replace front cover art on drop"
 msgstr ""
 
-#: picard/ui/coverartbox.py:501
+#: picard/ui/coverartbox.py:506
 msgid "Append front cover art on drop"
 msgstr ""
 
@@ -1399,8 +1399,9 @@ msgstr ""
 msgid "File Name"
 msgstr "File Name"
 
-#: picard/ui/ui_cdlookup.py:51 picard/ui/ui_options_cdlookup.py:38
-#: picard/ui/ui_options_cdlookup_select.py:45 picard/ui/options/cdlookup.py:42
+#: picard/ui/options/cdlookup.py:42 picard/ui/ui_cdlookup.py:51
+#: picard/ui/ui_options_cdlookup.py:38
+#: picard/ui/ui_options_cdlookup_select.py:45
 msgid "CD Lookup"
 msgstr "CD Lookup"
 
@@ -1595,7 +1596,7 @@ msgstr "Log in"
 msgid "Log out"
 msgstr "Log out"
 
-#: picard/ui/ui_options_general.py:138 picard/ui/options/general.py:39
+#: picard/ui/options/general.py:38 picard/ui/ui_options_general.py:138
 msgid "General"
 msgstr "General"
 
@@ -1686,8 +1687,8 @@ msgstr "Allow selection of multiple directories"
 msgid "Use builtin search rather than looking in browser"
 msgstr ""
 
-#: picard/ui/ui_options_interface.py:127
 #: picard/ui/searchdialog/__init__.py:121
+#: picard/ui/ui_options_interface.py:127
 msgid "Use advanced query syntax"
 msgstr "Use advanced query syntax"
 
@@ -1747,7 +1748,7 @@ msgstr "Minimal similarity for file lookups:"
 msgid "Minimal similarity for cluster lookups:"
 msgstr "Minimal similarity for cluster lookups:"
 
-#: picard/ui/ui_options_metadata.py:96 picard/ui/options/metadata.py:33
+#: picard/ui/options/metadata.py:33 picard/ui/ui_options_metadata.py:96
 msgid "Metadata"
 msgstr "Metadata"
 
@@ -1817,13 +1818,13 @@ msgstr "Default listening port:"
 msgid "Listen only on localhost"
 msgstr "Listen only on localhost"
 
-#: picard/ui/ui_options_plugins.py:129 picard/ui/options/plugins.py:203
+#: picard/ui/options/plugins.py:203 picard/ui/ui_options_plugins.py:129
 msgid "Plugins"
 msgstr "Plugins"
 
-#: picard/ui/ui_options_plugins.py:130 picard/ui/options/plugins.py:578
-#: picard/ui/searchdialog/album.py:150 picard/ui/searchdialog/artist.py:50
-#: picard/ui/searchdialog/track.py:62
+#: picard/ui/options/plugins.py:578 picard/ui/searchdialog/album.py:150
+#: picard/ui/searchdialog/artist.py:50 picard/ui/searchdialog/track.py:62
+#: picard/ui/ui_options_plugins.py:130
 msgid "Name"
 msgstr "Name"
 
@@ -2182,7 +2183,7 @@ msgstr ""
 msgid "Invalid fpcalc executable"
 msgstr ""
 
-#: picard/ui/options/general.py:99
+#: picard/ui/options/general.py:98
 #, python-format
 msgid "Logged in as <b>%s</b>."
 msgstr "Logged in as <b>%s</b>."
