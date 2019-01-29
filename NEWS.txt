@@ -1,3 +1,18 @@
+Version 2.1.1 - 2019-01-29
+
+
+** Bug-fix
+    * [PICARD-1451] - Redirects of authenticated requests fail with 401 error
+    * [PICARD-1454] - Crashes when adding action to toolbar in options
+
+
+** Task
+    * [PICARD-1452] - Appveyor auto-deploy not working
+
+** Improvement
+    * [PICARD-1450] - Fix language label for zh_CN and zh_TW
+
+
 Version 2.1.0 - 2018-12-20
 
 ** Bug-fix
