@@ -49,11 +49,11 @@ before_install:
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then source bin/activate; fi
 - "$INSTALL_DEPS"
 - "$PYTEST"
+- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then bash scripts/package-osx.sh; fi
 script: py.test -v --cov=picard --cov-report xml:coverage.xml
 after_success:
 - if [ ! -z "${CODACY_PROJECT_TOKEN}" ]; then $CODACY; python-codacy-coverage -r coverage.xml;
   fi
-- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then bash scripts/package-osx.sh; fi
 notifications:
   irc: chat.freenode.net#metabrainz
 branches:
