@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+set -e
+
 if [ -z "$TRAVIS_TAG" ]
 then
     python3 setup.py patch_version --platform=osx_$TRAVIS_OSX_IMAGE
