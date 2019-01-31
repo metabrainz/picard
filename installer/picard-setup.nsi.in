@@ -172,7 +172,7 @@ Section Uninstall
 SectionEnd
 
 ; Checks whether program is running.
-!define WNDCLASS "QWidget"
+!define WNDCLASS "Qt5QWindowIcon"
 !define WNDTITLE "${PRODUCT_NAME}"
 Function un.onInit
   !insertmacro INSTALLOPTIONS_EXTRACT "removeSettings.ini"
