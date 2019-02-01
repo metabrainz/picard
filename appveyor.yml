@@ -7,31 +7,39 @@ branches:
   - /\d\.[0-9x](\.[0-9x])?/
 skip_branch_with_pr: true
 image: Visual Studio 2015
-init:
-- cmd: >-
-    ECHO %PYTHON% %PYTHON_VERSION% %PYTHON_ARCH%
-
-    SET PATH=%PYTHON%;%PYTHON%\Scripts;%PATH%
-
-    SET PYTHON_SITE=%PYTHON%\lib\site-packages
 environment:
   CHROMAPRINT_FPCALC_VERSION: 1.4.3
   DISCID_VERSION: 0.6.2
   matrix:
-  - PYTHON: C:\Python35-x64
-    PYTHON_VERSION: 3.5.6
-    PYTHON_ARCH: 64
-  - PYTHON: C:\Python36-x64
-    PYTHON_VERSION: 3.6.6
-    PYTHON_ARCH: 64
-  - PYTHON: C:\Python37-x64
-    PYTHON_VERSION: 3.7.1
-    PYTHON_ARCH: 64
+  - PYTHON_VERSION: 3.7.2
+    PYTHON: C:\Python37-x64
+  - PYTHON_VERSION: 3.6.8
+    PYTHON: C:\Python36-x64
+  - PYTHON_VERSION: 3.5.4
+    PYTHON: C:\Python35-x64
+init:
+- cmd: >-
+    ECHO %PYTHON% %PYTHON_VERSION%
+
+    SET PATH=%PYTHON%;%PYTHON%\Scripts;%PATH%
+
+    SET PYTHON_SITE=%PYTHON%\lib\site-packages
+install:
+- cmd: >-
+    appveyor DownloadFile https://www.python.org/ftp/python/%PYTHON_VERSION%/python-%PYTHON_VERSION%-amd64.exe -FileName python-amd64.exe
+
+    python-amd64.exe /quiet InstallAllUsers=1 TargetDir=%PYTHON% Include_doc=0 Include_tcltk=0 Include_test=0
+
+    python -m ensurepip
+
+    python --version
+
+    pip3 --version
 build_script:
 - cmd: >-
-    appveyor DownloadFile https://github.com/acoustid/chromaprint/releases/download/v%CHROMAPRINT_FPCALC_VERSION%/chromaprint-fpcalc-%CHROMAPRINT_FPCALC_VERSION%-windows-x86_64.zip -FileName fpcalc.zip
-
     appveyor DownloadFile https://github.com/metabrainz/libdiscid/releases/download/v%DISCID_VERSION%/libdiscid-%DISCID_VERSION%-win64.zip -FileName libdiscid.zip
+
+    appveyor DownloadFile https://github.com/acoustid/chromaprint/releases/download/v%CHROMAPRINT_FPCALC_VERSION%/chromaprint-fpcalc-%CHROMAPRINT_FPCALC_VERSION%-windows-x86_64.zip -FileName fpcalc.zip
 
     7z x fpcalc.zip -y
 
@@ -41,9 +49,9 @@ build_script:
 
     copy /Y discid.dll %PYTHON%
 
-    pip install -r requirements-build.txt
+    pip3 install -r requirements-build.txt
 
-    pip install -r requirements-win.txt
+    pip3 install -r requirements-win.txt
 
     copy /Y %PYTHON_SITE%\PyQt5\Qt\bin\ssleay32.dll .
 
@@ -72,4 +80,4 @@ deploy:
   force_update: true
   on:
     APPVEYOR_REPO_TAG: true
-    PYTHON_VERSION: 3.7.1
+    PYTHON_VERSION: 3.7.2
