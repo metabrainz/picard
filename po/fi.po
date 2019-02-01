@@ -16,7 +16,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2019-01-23 11:57+0100\n"
-"PO-Revision-Date: 2019-01-24 14:50+0000\n"
+"PO-Revision-Date: 2019-01-29 11:09+0000\n"
 "Last-Translator: Jaakko Perttilä <jormangeud@gmail.com>\n"
 "Language-Team: Finnish (http://www.transifex.com/musicbrainz/musicbrainz/language/fi/)\n"
 "MIME-Version: 1.0\n"
@@ -454,7 +454,7 @@ msgstr "Kansitaidelajit"
 #: picard/coverart/providers/caa.py:235
 msgid ""
 "Please select the contents of the image type 'Include' and 'Exclude' lists."
-msgstr "Valitse sisältö 'kelpuutettavien' ja 'kelpaamattomien' kuvatyyppien listoille."
+msgstr "Valitse sisältö 'kelpaavien' ja 'kelpaamattomien' kuvatyyppien listoille."
 
 #: picard/coverart/providers/caa.py:260
 msgid "Include types list"
@@ -472,7 +472,7 @@ msgid ""
 "types not appearing in the 'Include' or 'Exclude' lists will not be "
 "considered when determining whether or not to download and use a CAA "
 "image.\n"
-msgstr "Kansitaidekuvat, joiden kuvatyyppi löytyy 'kelpuutettavien' listasta, tullaan lataamaan ja käyttämään, ELLEI niillä ole kuvatyyppiä, joka on myös 'kelpaamattomien' listalla. Kuvia, joiden kuvatyyppi on 'kelpaamattomien' listalla, ei tulla IKINÄ käyttämään. Kuvatyyppejä, joita ei ole määritetty kummallekaan listalle, ei käytetä kun määritellään tullaanko kansitaidekuvaa lataamaan ja käyttämään.\n"
+msgstr "Kansitaidekuva, jonka kuvatyyppi on 'kelpaavien' listalla, ladataan ja otetaan käyttöön, ELLEI kuvalla ole myös tyyppiä, joka on 'kelpaamattomien' listalla. Kuvia, joiden kuvatyyppi on 'kelpaamattomien' listalla, ei tulla IKINÄ käyttämään. Kuvatyyppejä, joita ei ole määritetty kummallekaan listalle, ei käytetä määriteltäessä ladataanko ja otetaanko kuva käyttöön.\n"
 
 #: picard/coverart/providers/caa.py:295
 msgid "I&nclude all"
@@ -2062,7 +2062,7 @@ msgid ""
 "First group in the regular expression, if any, will be used as type, ie. "
 "cover-back-spine.jpg will be set as types Back + Spine. If no type is found,"
 " it will default to Front type."
-msgstr "Säännöllisen lausekkeen mahdollista ensimmäistä ryhmää käytetään kansitaiteen määrittelynä, eli tiedostolle cover-back-spine.jpg määrittelyksi tulee takakansi (back) ja selkäosa (spine).Jos määrittelyä ei löydy, käytetään määrittelyä etukansi."
+msgstr "Säännöllisen lausekkeen mahdollista ensimmäistä ryhmää käytetään kansitaiteen määrittelynä, eli tiedostolle cover-back-spine.jpg määrittelyksi tulee takakansi (back) ja selkäosa (spine). Jos määrittelyä ei löydy, käytetään määrittelyä etukansi."
 
 #: picard/ui/ui_tagsfromfilenames.py:51
 msgid "Convert File Names to Tags"

@@ -1,7 +1,7 @@
 # Translations template for picard.
 # Copyright (C) 2019 ORGANIZATION
 # This file is distributed under the same license as the picard project.
-# 
+#
 # Translators:
 # Andriu Haynes <tengolapajara@gmail.com>, 2017-2018
 # Antonio Larrosa <antonio.larrosa@gmail.com>, 2017
@@ -10,17 +10,19 @@
 # Fermin Rodriguez <cosmos.fermin@gmail.com>, 2018
 # Ismael Olea <ismael@olea.org>, 2011-2015
 # Jaime Marquínez Ferrándiz, 2018
+# Jaime Marquínez Ferrándiz, 2019
 # Jeremias Brown <comercialspam@gmail.com>, 2018
 # Nicolás Tamargo <reosarevok@gmail.com>, 2012
 # Peter Cuevas H <peter.cuevas6@gmail.com>, 2017
+# Philipp Wolfer <ph.wolfer@gmail.com>, 2019
 # Robert Schneider <robertschv@gmail.com>, 2019
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2019-01-23 11:57+0100\n"
-"PO-Revision-Date: 2019-01-23 13:16+0000\n"
-"Last-Translator: Michael Wiencek <mwtuea@gmail.com>\n"
+"PO-Revision-Date: 2019-02-01 07:25+0000\n"
+"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Spanish (http://www.transifex.com/musicbrainz/musicbrainz/language/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -409,11 +411,11 @@ msgstr "Ucraniano"
 
 #: picard/const/languages.py:74
 msgid "Chinese (China)"
-msgstr ""
+msgstr "Chino (China)"
 
 #: picard/const/languages.py:75
 msgid "Chinese (Taiwan)"
-msgstr ""
+msgstr "Chino (Taiwan)"
 
 #: picard/coverart/__init__.py:105
 #, python-format
@@ -2134,7 +2136,7 @@ msgid ""
 "<small>Copyright © %(copyright-years)s %(authors-credits)s and others%(translator-credits)s</small></p>\n"
 "<p align=\"center\"><small>%(icons-credits)s</small></p>\n"
 "<p align=\"center\"><strong>Official website</strong><br/><a href=\"%(picard-doc-url)s\">%(picard-doc-url)s</a></p>\n"
-msgstr "<p align=\"center\"><span style=\"font-size:15px;font-weight:bold;\">MusicBrainz Picard</span><br/>\nVersión%(version)s</p>\n<p align=\"center\"><small>\n%(third_parties_versions)s\n</small></p>\n<p align=\"center\"><strong>Formatos compatibles</strong><br/>%(formats)s</p>\n<p align=\"center\"><strong>Por favor, haga una donación</strong><br/>\nGracias por usar Picard. Picard se basa en la base de datos MusicBrainz, que es operada por la Fundación MetaBrainz con la ayuda de miles de voluntarios. Si le gusta esta aplicación, por favor considere hacer una donación a la Fundación MetaBrainz para mantener el servicio en ejecución.</p>\n<p align=\"center\"><a href=\"%(picard-donate-url)s\">¡Done ahora!</a></p>\n<p align=\"center\"><strong>Créditos</strong><br/>\n<small>Copyright © %(copyright-years)s %(autores-créditos)s y otros%(traductores-créditos)s</small></p>\n<p align=\"center\"><small>%(iconos-créditos)s</small></p>\n<p align=\"center\"><strong>Sitio web oficial</strong><br/><a href=\"%(picard-doc-url)s\">% (picard-doc-url)s</a></p>\n"
+msgstr "<p align=\"center\"><span style=\"font-size:15px;font-weight:bold;\">MusicBrainz Picard</span><br/>\nVersión%(version)s</p>\n<p align=\"center\"><small>\n%(third_parties_versions)s\n</small></p>\n<p align=\"center\"><strong>Formatos compatibles</strong><br/>%(formats)s</p>\n<p align=\"center\"><strong>Por favor, haga una donación</strong><br/>\nGracias por usar Picard. Picard se basa en la base de datos MusicBrainz, que es operada por la Fundación MetaBrainz con la ayuda de miles de voluntarios. Si le gusta esta aplicación, por favor considere hacer una donación a la Fundación MetaBrainz para mantener el servicio en ejecución.</p>\n<p align=\"center\"><a href=\"%(picard-donate-url)s\">¡Done ahora!</a></p>\n<p align=\"center\"><strong>Créditos</strong><br/>\n<small>Copyright © %(copyright-years)s %(authors-credits)s y otros%(translator-credits)s</small></p>\n<p align=\"center\"><small>%(icons-credits)s</small></p>\n<p align=\"center\"><strong>Sitio web oficial</strong><br/><a href=\"%(picard-doc-url)s\">%(picard-doc-url)s</a></p>\n"
 
 #: picard/ui/options/advanced.py:32
 msgid "Advanced"
