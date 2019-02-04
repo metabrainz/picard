@@ -8,14 +8,15 @@
 # ynbaranetz <hatzahit@gmail.com>, 2014
 # Itamar Shoham, 2016
 # Itamar Shoham, 2016
+# Philipp Wolfer <ph.wolfer@gmail.com>, 2019
 # ynbaranetz <hatzahit@gmail.com>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2019-01-23 11:57+0100\n"
-"PO-Revision-Date: 2019-01-23 13:16+0000\n"
-"Last-Translator: Michael Wiencek <mwtuea@gmail.com>\n"
+"POT-Creation-Date: 2019-02-01 21:17+0100\n"
+"PO-Revision-Date: 2019-02-04 07:59+0000\n"
+"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Hebrew (http://www.transifex.com/musicbrainz/musicbrainz/language/he/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -2146,12 +2147,12 @@ msgid ""
 "<p align=\"center\"><strong>Supported formats</strong><br/>%(formats)s</p>\n"
 "<p align=\"center\"><strong>Please donate</strong><br/>\n"
 "Thank you for using Picard. Picard relies on the MusicBrainz database, which is operated by the MetaBrainz Foundation with the help of thousands of volunteers. If you like this application please consider donating to the MetaBrainz Foundation to keep the service running.</p>\n"
-"<p align=\"center\"><a href=\"%(picard-donate-url)s\">Donate now!</a></p>\n"
+"<p align=\"center\"><a href=\"%(picard_donate_url)s\">Donate now!</a></p>\n"
 "<p align=\"center\"><strong>Credits</strong><br/>\n"
-"<small>Copyright © %(copyright-years)s %(authors-credits)s and others%(translator-credits)s</small></p>\n"
-"<p align=\"center\"><small>%(icons-credits)s</small></p>\n"
-"<p align=\"center\"><strong>Official website</strong><br/><a href=\"%(picard-doc-url)s\">%(picard-doc-url)s</a></p>\n"
-msgstr "<p align=\"center\"><span style=\"font-size:15px;font-weight:bold;\">MusicBrainz פיקארד </span><br/>\nגרסה %(version)s</p>\n<p align=\"center\"><small>\n%(third_parties_versions)s\n</small></p>\n<p align=\"center\"><strong>תבניות נתמכות </strong><br/>%(formats)s</p>\n<p align=\"center\"><strong>נא תירמו </strong><br/>\nמודים לכם על השימוש ב פיקארד. פיקארד מתבסס על מסד הנתונים של MusicBrainz, המופעל על ידי ממסד MetaBrainz בעזרתם של אלפי מתנדבים. אם אתם אוהבים את היישום הזה, שקולו בבקשה לתרום ל MetaBrainz על מנת להבטיח המשכיות השירות.</p>\n<p align=\"center\"><a href=\"%(picard-donate-url)s\">תירמו כעת!</a></p>\n<p align=\"center\"><strong>מִזְכֶּה</strong><br/>\n<small>זכויות יוצרים © %(copyright-years)s %(authors-credits)s and others%(translator-credits)s</small></p>\n<p align=\"center\"><small>%(icons-credits)s</small></p>\n<p align=\"center\"><strong>אתר רישמי</strong><br/><a href=\"%(picard-doc-url)s\">%(picard-doc-url)s</a></p>\n"
+"<small>Copyright © %(copyright_years)s %(authors_credits)s and others%(translator_credits)s</small></p>\n"
+"<p align=\"center\"><small>%(icons_credits)s</small></p>\n"
+"<p align=\"center\"><strong>Official website</strong><br/><a href=\"%(picard_doc_url)s\">%(picard_doc_url)s</a></p>\n"
+msgstr "<p align=\"center\"><span style=\"font-size:15px;font-weight:bold;\">MusicBrainz פיקארד </span><br/>\nגרסה %(version)s</p>\n<p align=\"center\"><small>\n%(third_parties_versions)s\n</small></p>\n<p align=\"center\"><strong>תבניות נתמכות </strong><br/>%(formats)s</p>\n<p align=\"center\"><strong>נא תירמו </strong><br/>\nמודים לכם על השימוש ב פיקארד. פיקארד מתבסס על מסד הנתונים של MusicBrainz, המופעל על ידי ממסד MetaBrainz בעזרתם של אלפי מתנדבים. אם אתם אוהבים את היישום הזה, שקולו בבקשה לתרום ל MetaBrainz על מנת להבטיח המשכיות השירות.</p>\n<p align=\"center\"><a href=\"%(picard_donate_url)s\">תירמו כעת!</a></p>\n<p align=\"center\"><strong>מִזְכֶּה</strong><br/>\n<small>זכויות יוצרים © %(copyright_years)s %(authors_credits)s ואחרים%(translator_credits)s</small></p>\n<p align=\"center\"><small>%(icons_credits)s</small></p>\n<p align=\"center\"><strong>אתר רישמי</strong><br/><a href=\"%(picard_doc_url)s\">%(picard_doc_url)s</a></p>\n"
 
 #: picard/ui/options/advanced.py:32
 msgid "Advanced"

@@ -10,6 +10,7 @@
 # mai inoue, 2015
 # Mitsuharu Kurita, 2016
 # Nozomu KURASAWA <nabetaro@caldron.jp>, 2012
+# Philipp Wolfer <ph.wolfer@gmail.com>, 2019
 # Shunsuke Shimizu <grafi@grafi.jp>, 2016
 # th1rtyf0ur, 2013
 # 和田篤（wa2c） <entry@wa2c.com>, 2018
@@ -19,9 +20,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2019-01-23 11:57+0100\n"
-"PO-Revision-Date: 2019-01-23 13:16+0000\n"
-"Last-Translator: Michael Wiencek <mwtuea@gmail.com>\n"
+"POT-Creation-Date: 2019-02-01 21:17+0100\n"
+"PO-Revision-Date: 2019-02-04 08:01+0000\n"
+"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Japanese (http://www.transifex.com/musicbrainz/musicbrainz/language/ja/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -2119,12 +2120,12 @@ msgid ""
 "<p align=\"center\"><strong>Supported formats</strong><br/>%(formats)s</p>\n"
 "<p align=\"center\"><strong>Please donate</strong><br/>\n"
 "Thank you for using Picard. Picard relies on the MusicBrainz database, which is operated by the MetaBrainz Foundation with the help of thousands of volunteers. If you like this application please consider donating to the MetaBrainz Foundation to keep the service running.</p>\n"
-"<p align=\"center\"><a href=\"%(picard-donate-url)s\">Donate now!</a></p>\n"
+"<p align=\"center\"><a href=\"%(picard_donate_url)s\">Donate now!</a></p>\n"
 "<p align=\"center\"><strong>Credits</strong><br/>\n"
-"<small>Copyright © %(copyright-years)s %(authors-credits)s and others%(translator-credits)s</small></p>\n"
-"<p align=\"center\"><small>%(icons-credits)s</small></p>\n"
-"<p align=\"center\"><strong>Official website</strong><br/><a href=\"%(picard-doc-url)s\">%(picard-doc-url)s</a></p>\n"
-msgstr "<p align=\"center\"><span style=\"font-size:15px;font-weight:bold;\">MusicBrainz Picard</span><br/>\nバージョン %(version)s</p>\n<p align=\"center\"><small>\n%(third_parties_versions)s\n</small></p>\n<p align=\"center\"><strong>対応フォーマット</strong><br/>%(formats)s</p>\n<p align=\"center\"><strong>寄付のお願い</strong><br/>\nPicardをご利用いただきありがとうございます。Picardは数千ものボランティアの助けを借り、MetaBrainz財団が運営しているMusicBrainzデータベースを利用しています。このアプリケーションがお気に召しましたら、サービスを維持していくため、MetaBrainz財団への寄付をご検討ください。</p>\n<p align=\"center\"><a href=\"%(picard-donate-url)s\">寄付はこちらから！</a></p>\n<p align=\"center\"><strong>クレジット</strong><br/>\n<small>Copyright © %(copyright-years)s %(authors-credits)s and others%(translator-credits)s</small></p>\n<p align=\"center\"><small>%(icons-credits)s</small></p>\n<p align=\"center\"><strong>公式サイト</strong><br/><a href=\"%(picard-doc-url)s\">%(picard-doc-url)s</a></p>\n"
+"<small>Copyright © %(copyright_years)s %(authors_credits)s and others%(translator_credits)s</small></p>\n"
+"<p align=\"center\"><small>%(icons_credits)s</small></p>\n"
+"<p align=\"center\"><strong>Official website</strong><br/><a href=\"%(picard_doc_url)s\">%(picard_doc_url)s</a></p>\n"
+msgstr "<p align=\"center\"><span style=\"font-size:15px;font-weight:bold;\">MusicBrainz Picard</span><br/>\nバージョン %(version)s</p>\n<p align=\"center\"><small>\n%(third_parties_versions)s\n</small></p>\n<p align=\"center\"><strong>対応フォーマット</strong><br/>%(formats)s</p>\n<p align=\"center\"><strong>寄付のお願い</strong><br/>\nPicardをご利用いただきありがとうございます。Picardは数千ものボランティアの助けを借り、MetaBrainz財団が運営しているMusicBrainzデータベースを利用しています。このアプリケーションがお気に召しましたら、サービスを維持していくため、MetaBrainz財団への寄付をご検討ください。</p>\n<p align=\"center\"><a href=\"%(picard_donate_url)s\">寄付はこちらから！</a></p>\n<p align=\"center\"><strong>クレジット</strong><br/>\n<small>Copyright © %(copyright_years)s %(authors_credits)s and others%(translator_credits)s</small></p>\n<p align=\"center\"><small>%(icons_credits)s</small></p>\n<p align=\"center\"><strong>公式サイト</strong><br/><a href=\"%(picard_doc_url)s\">%(picard_doc_url)s</a></p>\n"
 
 #: picard/ui/options/advanced.py:32
 msgid "Advanced"

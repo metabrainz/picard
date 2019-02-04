@@ -21,7 +21,7 @@
 # nikki, 2013
 # nikki2 <b4931048@nwldx.com>, 2012
 # nikki, 2013
-# Philipp Wolfer <ph.wolfer@gmail.com>, 2014,2017-2018
+# Philipp Wolfer <ph.wolfer@gmail.com>, 2014,2017-2019
 # S.Brandt <s.brandt@mixxx.org>, 2014-2015,2017-2018
 # Shepard, 2012
 # Simon Legner <simon.legner@gmail.com>, 2018
@@ -36,9 +36,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2019-01-23 11:57+0100\n"
-"PO-Revision-Date: 2019-01-23 13:16+0000\n"
-"Last-Translator: Michael Wiencek <mwtuea@gmail.com>\n"
+"POT-Creation-Date: 2019-02-01 21:17+0100\n"
+"PO-Revision-Date: 2019-02-04 07:48+0000\n"
+"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: German (http://www.transifex.com/musicbrainz/musicbrainz/language/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -2147,12 +2147,12 @@ msgid ""
 "<p align=\"center\"><strong>Supported formats</strong><br/>%(formats)s</p>\n"
 "<p align=\"center\"><strong>Please donate</strong><br/>\n"
 "Thank you for using Picard. Picard relies on the MusicBrainz database, which is operated by the MetaBrainz Foundation with the help of thousands of volunteers. If you like this application please consider donating to the MetaBrainz Foundation to keep the service running.</p>\n"
-"<p align=\"center\"><a href=\"%(picard-donate-url)s\">Donate now!</a></p>\n"
+"<p align=\"center\"><a href=\"%(picard_donate_url)s\">Donate now!</a></p>\n"
 "<p align=\"center\"><strong>Credits</strong><br/>\n"
-"<small>Copyright © %(copyright-years)s %(authors-credits)s and others%(translator-credits)s</small></p>\n"
-"<p align=\"center\"><small>%(icons-credits)s</small></p>\n"
-"<p align=\"center\"><strong>Official website</strong><br/><a href=\"%(picard-doc-url)s\">%(picard-doc-url)s</a></p>\n"
-msgstr "<p align=\"center\"><span style=\"font-size:15px;font-weight:bold;\">MusicBrainz Picard</span><br/>\nVersion %(version)s</p>\n<p align=\"center\"><small>\n%(third_parties_versions)s\n</small></p>\n<p align=\"center\"><strong>Unterstützte Formate</strong><br/>%(formats)s</p>\n<p align=\"center\"><strong>Bitte spenden</strong><br/>\nDanke für die Nutzung von Picard. Picard baut auf der MusicBrainz Datenbank auf, die von der MetaBrainz Foundation mit Hilfe von tausenden Freiwilligen erstellt wird. Wenn dir dieses Programm gefällt, ziehe eine Spende an die MetaBrainz Foundation in Betracht, um den Dienst am Laufen zu halten.</p>\n<p align=\"center\"><a href=\"%(picard-donate-url)s\">Jetzt spenden!</a></p>\n<p align=\"center\"><strong>Beteiligte Personen</strong><br/>\n<small>Copyright © %(copyright-years)s %(authors-credits)s and andere%(translator-credits)s</small></p>\n<p align=\"center\"><small>%(icons-credits)s</small></p>\n<p align=\"center\"><strong>Offizielle Website</strong><br/><a href=\"%(picard-doc-url)s\">%(picard-doc-url)s</a></p>\n"
+"<small>Copyright © %(copyright_years)s %(authors_credits)s and others%(translator_credits)s</small></p>\n"
+"<p align=\"center\"><small>%(icons_credits)s</small></p>\n"
+"<p align=\"center\"><strong>Official website</strong><br/><a href=\"%(picard_doc_url)s\">%(picard_doc_url)s</a></p>\n"
+msgstr "<p align=\"center\"><span style=\"font-size:15px;font-weight:bold;\">MusicBrainz Picard</span><br/>\nVersion %(version)s</p>\n<p align=\"center\"><small>\n%(third_parties_versions)s\n</small></p>\n<p align=\"center\"><strong>Unterstützte Formate</strong><br/>%(formats)s</p>\n<p align=\"center\"><strong>Bitte spenden</strong><br/>\nDanke für die Nutzung von Picard. Picard baut auf der MusicBrainz Datenbank auf, die von der MetaBrainz Foundation mit Hilfe von tausenden Freiwilligen erstellt wird. Wenn dir dieses Programm gefällt, ziehe eine Spende an die MetaBrainz Foundation in Betracht, um den Dienst am Laufen zu halten.</p>\n<p align=\"center\"><a href=\"%(picard_donate_url)s\">Jetzt spenden!</a></p>\n<p align=\"center\"><strong>Beteiligte Personen</strong><br/>\n<small>Copyright © %(copyright_years)s %(authors_credits)s and andere%(translator_credits)s</small></p>\n<p align=\"center\"><small>%(icons_credits)s</small></p>\n<p align=\"center\"><strong>Offizielle Website</strong><br/><a href=\"%(picard_doc_url)s\">%(picard_doc_url)s</a></p>\n"
 
 #: picard/ui/options/advanced.py:32
 msgid "Advanced"
