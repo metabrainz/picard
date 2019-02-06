@@ -558,7 +558,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.open_folder_action.triggered.connect(self.open_folder)
 
         if self.tagger.autoupdate_enabled:
-            self.check_update_action = QtWidgets.QAction(_("&Check for Update"), self)
+            self.check_update_action = QtWidgets.QAction(_("&Check for Update…"), self)
             self.check_update_action.triggered.connect(self.do_update_check)
 
     def toggle_rename_files(self, checked):
