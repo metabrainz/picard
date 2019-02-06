@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: picard 2.1.3.dev1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2019-02-01 21:17+0100\n"
+"POT-Creation-Date: 2019-02-06 10:19+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1205,7 +1205,7 @@ msgid "Open the containing folder in your file explorer"
 msgstr ""
 
 #: picard/ui/mainwindow.py:561
-msgid "&Check for Update"
+msgid "&Check for Update…"
 msgstr ""
 
 #: picard/ui/mainwindow.py:589
