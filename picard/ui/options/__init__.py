@@ -44,9 +44,6 @@ class OptionsPage(QtWidgets.QWidget):
         super().__init__(*args, **kwargs)
         self.setStyleSheet(self.STYLESHEET)
 
-    def info(self):
-        raise NotImplementedError
-
     def check(self):
         pass
 
