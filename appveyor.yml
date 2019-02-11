@@ -11,22 +11,19 @@ environment:
   CHROMAPRINT_FPCALC_VERSION: 1.4.3
   DISCID_VERSION: 0.6.2
   matrix:
-  - PYTHON_VERSION: 3.7.2
-    PYTHON: C:\Python37-x64
+  - PYTHON: C:\Python37-x64
     DEPLOY: true
-  - PYTHON_VERSION: 3.6.8
-    PYTHON: C:\Python36-x64
-  - PYTHON_VERSION: 3.5.4
-    PYTHON: C:\Python35-x64
+  - PYTHON: C:\Python36-x64
+  - PYTHON: C:\Python35-x64
 init:
 - cmd: >-
-    ECHO %PYTHON% %PYTHON_VERSION%
-
     SET PATH=%PYTHON%;%PYTHON%\Scripts;%PATH%
 
     SET PYTHON_SITE=%PYTHON%\lib\site-packages
-install:
-- ps: .\scripts\win-update-python.ps1
+
+    FOR /F "tokens=*" %%a IN ('python -c "import sys;print('%%s.%%s.%%s' %% sys.version_info[0:3])"') do (SET PYTHON_VERSION=%%a)
+
+    ECHO %PYTHON% %PYTHON_VERSION%
 
 build_script:
 - cmd: >-
