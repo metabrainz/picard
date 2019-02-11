@@ -26,16 +26,8 @@ init:
 
     SET PYTHON_SITE=%PYTHON%\lib\site-packages
 install:
-- cmd: >-
-    appveyor DownloadFile https://www.python.org/ftp/python/%PYTHON_VERSION%/python-%PYTHON_VERSION%-amd64.exe -FileName python-amd64.exe
+- ps: .\scripts\win-update-python.ps1
 
-    python-amd64.exe /quiet InstallAllUsers=1 TargetDir=%PYTHON% Include_doc=0 Include_tcltk=0 Include_test=0
-
-    python -m ensurepip
-
-    python --version
-
-    pip3 --version
 build_script:
 - cmd: >-
     appveyor DownloadFile https://github.com/metabrainz/libdiscid/releases/download/v%DISCID_VERSION%/libdiscid-%DISCID_VERSION%-win64.zip -FileName libdiscid.zip
