@@ -13,6 +13,7 @@ environment:
   matrix:
   - PYTHON_VERSION: 3.7.2
     PYTHON: C:\Python37-x64
+    DEPLOY: true
   - PYTHON_VERSION: 3.6.8
     PYTHON: C:\Python36-x64
   - PYTHON_VERSION: 3.5.4
@@ -80,4 +81,4 @@ deploy:
   force_update: true
   on:
     APPVEYOR_REPO_TAG: true
-    PYTHON_VERSION: 3.7.2
+    DEPLOY: true
