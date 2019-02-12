@@ -11,6 +11,7 @@ Version 2.1.1 - 2019-01-29
 
 ** Bug-fix
     * [PICARD-1451] - Redirects of authenticated requests fail with 401 error
+    * [PICARD-1453] - Dropping events do not work in CoverArtBox
     * [PICARD-1454] - Crashes when adding action to toolbar in options
 
 
