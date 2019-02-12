@@ -16,7 +16,7 @@
         "name":"United Kingdom",
         "sort-name":"United Kingdom"
     },
-    "begin_area":{
+    "begin-area":{
         "disambiguation":"",
         "id":"3bad79a2-895a-49ff-8277-fe683fade6b2",
         "name":"Hebden Bridge",
@@ -26,7 +26,7 @@
     "disambiguation":"famous UK singer-songwriter",
     "name":"Ed Sheeran",
     "sort-name":"Sheeran, Ed",
-    "end_area":null,
+    "end-area":null,
     "isnis":[
         "0000000364434564"
     ],

@@ -427,9 +427,9 @@ def artist_to_metadata(node, m):
                 ended = value['ended']
                 if ended and "end" in value:
                     m["enddate"] = value['end']
-        elif key == "begin_area":
+        elif key == "begin-area":
             m["beginarea"] = value['name']
-        elif key == "end_area":
+        elif key == "end-area":
             m["endarea"] = value['name']
 
 
