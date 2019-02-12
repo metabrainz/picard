@@ -858,7 +858,7 @@ def main(localedir=None, autoupdate=True):
     if translator.load(locale, "qtbase_", directory=translation_path):
         tagger.installTranslator(translator)
     else:
-        log.warning('Error loading Qt locale %s', locale.name())
+        log.debug('Qt locale %s not available', locale.name())
 
     tagger.startTimer(1000)
     sys.exit(tagger.run())
