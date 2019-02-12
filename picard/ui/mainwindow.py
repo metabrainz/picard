@@ -559,6 +559,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
         if self.tagger.autoupdate_enabled:
             self.check_update_action = QtWidgets.QAction(_("&Check for Update…"), self)
+            self.check_update_action.setMenuRole(QtWidgets.QAction.ApplicationSpecificRole)
             self.check_update_action.triggered.connect(self.do_update_check)
 
     def toggle_rename_files(self, checked):
