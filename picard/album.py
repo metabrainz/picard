@@ -79,7 +79,7 @@ class Album(DataObject, Item):
 
     release_group_loaded = QtCore.pyqtSignal()
 
-    def __init__(self, album_id):
+    def __init__(self, album_id, discid=None):
         DataObject.__init__(self, album_id)
         self.metadata = Metadata()
         self.orig_metadata = Metadata()
@@ -91,6 +91,8 @@ class Album(DataObject, Item):
         self._requests = 0
         self._tracks_loaded = False
         self._discids = set()
+        if discid:
+            self._discids.add(discid)
         self._after_load_callbacks = []
         self.unmatched_files = Cluster(_("Unmatched Files"), special=True, related_album=self, hide_if_empty=True)
         self.errors = []
@@ -370,7 +372,7 @@ class Album(DataObject, Item):
 
         return track
 
-    def load(self, priority=False, refresh=False, discid=None):
+    def load(self, priority=False, refresh=False):
         if self._requests:
             log.info("Not reloading, some requests are still active.")
             return
@@ -390,8 +392,6 @@ class Album(DataObject, Item):
         self._new_tracks = []
         self._requests = 1
         self.errors = []
-        if discid:
-            self._discids.add(discid)
         require_authentication = False
         inc = ['release-groups', 'media', 'discids', 'recordings', 'artist-credits',
                'artists', 'aliases', 'labels', 'isrcs', 'collections']

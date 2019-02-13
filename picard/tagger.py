@@ -606,10 +606,10 @@ class Tagger(QtWidgets.QApplication):
             log.debug("Album %s already loaded.", album_id)
             album.add_discid(discid)
             return album
-        album = Album(album_id)
+        album = Album(album_id, discid=discid)
         self.albums[album_id] = album
         self.album_added.emit(album)
-        album.load(discid=discid)
+        album.load()
         return album
 
     def load_nat(self, nat_id, node=None):
