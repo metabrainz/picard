@@ -30,7 +30,7 @@ matrix:
     env:
     - DISCID_VERSION=0.6.2
     - FPCALC_VERSION=1.4.3
-    - PYTHON_VERSION=3.7.1
+    - PYTHON_VERSION=3.7.2
     - INSTALL_DEPS="$PIP_INSTALL -r requirements-macos.txt"
   - os: osx
     osx_image: xcode7.3
@@ -38,7 +38,7 @@ matrix:
     env:
     - DISCID_VERSION=0.6.2
     - FPCALC_VERSION=1.4.3
-    - PYTHON_VERSION=3.7.1
+    - PYTHON_VERSION=3.7.2
     - INSTALL_DEPS="$PIP_INSTALL pyqt5==5.11.3 mutagen discid"
   fast_finish: true
 before_install:
