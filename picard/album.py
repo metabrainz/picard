@@ -70,6 +70,17 @@ from picard.ui.item import Item
 register_album_metadata_processor(coverart)
 
 
+def _create_artist_node_dict(source_node):
+    return {x['artist']['id']: x['artist'] for x in source_node['artist-credit']}
+
+
+def _copy_artist_nodes(source, target_node):
+    for credit in target_node['artist-credit']:
+        artist_node = source.get(credit['artist']['id'])
+        if artist_node:
+            credit['artist'] = artist_node
+
+
 class AlbumArtist(DataObject):
     def __init__(self, album_artist_id):
         super().__init__(album_artist_id)
@@ -141,6 +152,14 @@ class Album(DataObject, Item):
                 self.tagger.albums[release_id] = self
                 self.id = release_id
 
+        # Make the release artist nodes available, since they may
+        # contain supplementary data (aliases, tags, genres, ratings)
+        # which aren't present in the release group, track, or
+        # recording artist nodes. We can copy them into those places
+        # wherever the IDs match, so that the data is shared and
+        # available for use in mbjson.py and external plugins.
+        self._release_artist_nodes = _create_artist_node_dict(release_node)
+
         # Get release metadata
         m = self._new_metadata
         m.length = 0
@@ -150,6 +169,7 @@ class Album(DataObject, Item):
         rg.loaded_albums.add(self.id)
         rg.refcount += 1
 
+        _copy_artist_nodes(self._release_artist_nodes, rg_node)
         release_group_to_metadata(rg_node, rg.metadata, rg)
         m.copy(rg.metadata)
         release_to_metadata(release_node, m, album=self)
@@ -279,6 +299,7 @@ class Album(DataObject, Item):
                 if len(artists) > 1:
                     track.metadata["~multiartist"] = "1"
             del self._release_node
+            del self._release_artist_nodes
             self._tracks_loaded = True
 
         if not self._requests:
@@ -327,6 +348,15 @@ class Album(DataObject, Item):
             self._after_load_callbacks = []
 
     def _finalize_loading_track(self, track_node, metadata, artists, va, absolutetracknumber, discpregap):
+        # As noted in `_parse_release` above, the release artist nodes
+        # may contain supplementary data that isn't present in track
+        # artist nodes. Similarly, the track artists may contain
+        # information which the recording artists don't. Copy this
+        # information across to wherever the artist IDs match.
+        _copy_artist_nodes(self._release_artist_nodes, track_node)
+        _copy_artist_nodes(self._release_artist_nodes, track_node['recording'])
+        _copy_artist_nodes(_create_artist_node_dict(track_node), track_node['recording'])
+
         track = Track(track_node['recording']['id'], self)
         self._new_tracks.append(track)
 

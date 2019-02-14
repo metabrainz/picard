@@ -3,7 +3,7 @@
     "gender": null,
     "gender-id": null,
     "country": null,
-    "begin_area": {
+    "begin-area": {
         "disambiguation": null,
         "sort-name": null,
         "name": null,
@@ -15,7 +15,7 @@
     ],
     "type": null,
     "sort-name": null,
-    "end_area": null,
+    "end-area": null,
     "area": {
         "disambiguation": null,
         "sort-name": null,
