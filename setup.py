@@ -344,6 +344,8 @@ class picard_build_appdata(Command):
     description = 'Build appdata metadata file'
     user_options = []
 
+    re_release = re.compile('Version (\d+(?:\.\d+){1,2}) - (\d{4}-\d{2}-\d{2})')
+
     def initialize_options(self):
         pass
 
@@ -351,12 +353,24 @@ class picard_build_appdata(Command):
         pass
 
     def run(self):
+        tmp_file = 'org.musicbrainz.Picard.appdata.xml.tmp'
         self.spawn([
             'msgfmt', '--xml',
             '--template=org.musicbrainz.Picard.appdata.xml.in',
             '-d', 'po/appstream',
-            '-o', 'org.musicbrainz.Picard.appdata.xml',
+            '-o', tmp_file,
         ])
+        self.add_release_list(tmp_file)
+        os.unlink(tmp_file)
+
+    def add_release_list(self, source_file):
+        with open('NEWS.txt', 'r') as newsfile:
+            news = newsfile.read()
+        releases = []
+        for (version, date) in self.re_release.findall(news):
+            releases.append('<release date="%s" version="%s"/>' % (date, version))
+        args = {'releases': '\n    '.join(releases)}
+        generate_file(source_file, 'org.musicbrainz.Picard.appdata.xml', args)
 
 
 class picard_regen_appdata_pot_file(Command):
