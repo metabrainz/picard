@@ -101,7 +101,9 @@ class Album(DataObject, Item):
         self._files = 0
         self._requests = 0
         self._tracks_loaded = False
-        self._discid = discid
+        self._discids = set()
+        if discid:
+            self._discids.add(discid)
         self._after_load_callbacks = []
         self.unmatched_files = Cluster(_("Unmatched Files"), special=True, related_album=self, hide_if_empty=True)
         self.errors = []
@@ -129,6 +131,20 @@ class Album(DataObject, Item):
         album_artist = AlbumArtist(album_artist_id)
         self._album_artists.append(album_artist)
         return album_artist
+
+    def add_discid(self, discid):
+        if not discid:
+            return
+        self._discids.add(discid)
+        for track in self.tracks:
+            medium_discids = track.metadata.getall('~musicbrainz_discids')
+            track_discids = list(self._discids.intersection(medium_discids))
+            if track_discids:
+                track.metadata['musicbrainz_discid'] = track_discids
+                track.update()
+                for file in track.linked_files:
+                    file.metadata['musicbrainz_discid'] = track_discids
+                    file.update()
 
     def get_album_artists(self):
         """Returns the list of album artists (as AlbumArtist objects)"""
@@ -173,9 +189,6 @@ class Album(DataObject, Item):
         release_group_to_metadata(rg_node, rg.metadata, rg)
         m.copy(rg.metadata)
         release_to_metadata(release_node, m, album=self)
-
-        if self._discid:
-            m['musicbrainz_discid'] = self._discid
 
         # Custom VA name
         if m['musicbrainz_albumartistid'] == VARIOUS_ARTISTS_ID:
@@ -272,6 +285,11 @@ class Album(DataObject, Item):
 
                 for dj in djmix_ars.get(mm["discnumber"], []):
                     mm.add("djmixer", dj)
+
+                if 'discs' in medium_node:
+                    discids = [disc.get('id') for disc in medium_node['discs']]
+                    mm['~musicbrainz_discids'] = discids
+                    mm['musicbrainz_discid'] = list(self._discids.intersection(discids))
 
                 if "pregap" in medium_node:
                     discpregap = True
@@ -405,7 +423,7 @@ class Album(DataObject, Item):
         self._requests = 1
         self.errors = []
         require_authentication = False
-        inc = ['release-groups', 'media', 'recordings', 'artist-credits',
+        inc = ['release-groups', 'media', 'discids', 'recordings', 'artist-credits',
                'artists', 'aliases', 'labels', 'isrcs', 'collections']
         if self.tagger.webservice.oauth_manager.is_authorized():
             require_authentication = True

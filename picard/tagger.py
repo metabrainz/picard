@@ -604,6 +604,7 @@ class Tagger(QtWidgets.QApplication):
         album = self.albums.get(album_id)
         if album:
             log.debug("Album %s already loaded.", album_id)
+            album.add_discid(discid)
             return album
         album = Album(album_id, discid=discid)
         self.albums[album_id] = album
