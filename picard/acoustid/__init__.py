@@ -61,10 +61,11 @@ class AcoustIDClient(QtCore.QObject):
         if error:
             mparms = {
                 'error': http.errorString(),
+                'body': document,
                 'filename': file.filename,
             }
             log.error(
-                "AcoustID: Lookup network error for '%(filename)s': %(error)r" %
+                "AcoustID: Lookup network error for '%(filename)s': %(error)r, %(body)s" %
                 mparms)
             self.tagger.window.set_statusbar_message(
                 N_("AcoustID lookup network error for '%(filename)s'!"),
