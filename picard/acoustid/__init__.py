@@ -216,7 +216,8 @@ class AcoustIDClient(QtCore.QObject):
             # use cached fingerprint
             fingerprints = file.metadata.getall('acoustid_fingerprint')
             if fingerprints:
-                fpcalc_next(result=('fingerprint', fingerprints[0], 0))
+                length = int(file.metadata.length / 1000)
+                fpcalc_next(result=('fingerprint', fingerprints[0], length))
                 return
         # calculate the fingerprint
         task = (file, fpcalc_next)
