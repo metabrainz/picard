@@ -14,6 +14,7 @@ from os import path
 import platform
 import re
 import sys
+import tempfile
 
 from setuptools import (
     Command,
@@ -344,6 +345,8 @@ class picard_build_appdata(Command):
     description = 'Build appdata metadata file'
     user_options = []
 
+    re_release = re.compile('Version (?P<version>\d+(?:\.\d+){1,2}) - (?P<date>\d{4}-\d{2}-\d{2})')
+
     def initialize_options(self):
         pass
 
@@ -351,12 +354,23 @@ class picard_build_appdata(Command):
         pass
 
     def run(self):
-        self.spawn([
-            'msgfmt', '--xml',
-            '--template=org.musicbrainz.Picard.appdata.xml.in',
-            '-d', 'po/appstream',
-            '-o', 'org.musicbrainz.Picard.appdata.xml',
-        ])
+        with tempfile.NamedTemporaryFile(prefix='org.musicbrainz.Picard.appdata.',
+                                         suffix='.xml') as tmp_file:
+            self.spawn([
+                'msgfmt', '--xml',
+                '--template=org.musicbrainz.Picard.appdata.xml.in',
+                '-d', 'po/appstream',
+                '-o', tmp_file.name,
+            ])
+            self.add_release_list(tmp_file.name)
+
+    def add_release_list(self, source_file):
+        template = '<release date="{date}" version="{version}"/>'
+        with open('NEWS.txt', 'r') as newsfile:
+            news = newsfile.read()
+            releases = [template.format(**m.groupdict()) for m in self.re_release.finditer(news)]
+            args = {'releases': '\n    '.join(releases)}
+            generate_file(source_file, 'org.musicbrainz.Picard.appdata.xml', args)
 
 
 class picard_regen_appdata_pot_file(Command):
