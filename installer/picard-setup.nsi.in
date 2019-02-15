@@ -211,6 +211,13 @@ Function .onInit
   ClearErrors
   Exec $R0
 
+  ; Check if previous install location was inside $PROGRAMFILES32
+  ReadRegStr $R0 HKLM "Software\MusicBrainz\${PRODUCT_NAME}" "InstallDir"
+  StrLen $R1 $PROGRAMFILES32
+  StrCpy $R2 $R0 $R1
+  StrCmp $R2 $PROGRAMFILES32 0 skipUninstall
+    StrCpy $INSTDIR "$PROGRAMFILES64\${PRODUCT_NAME}"
+
   skipUninstall:
   !insertmacro UnselectSection ${desktop}
 FunctionEnd
