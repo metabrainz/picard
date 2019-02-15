@@ -17,6 +17,7 @@ env:
   - CODACY="$PIP_INSTALL codacy-coverage"
   - LIBDISCID="libdiscid0 libdiscid-dev"
   matrix:
+  - INSTALL_DEPS="$PIP_INSTALL -r requirements.txt"
   - INSTALL_DEPS="$PIP_INSTALL pyqt5==5.11.3 mutagen       discid"
   - INSTALL_DEPS="$PIP_INSTALL pyqt5==5.10   mutagen       discid"
   - INSTALL_DEPS="$PIP_INSTALL pyqt5==5.9    mutagen       discid"
