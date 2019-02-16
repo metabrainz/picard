@@ -137,7 +137,10 @@ class Metadata(dict):
         linear combination of weights that the metadata matches a certain album.
         """
         parts = self.compare_to_release_parts(release, weights)
-        return (linear_combination_of_weights(parts), release)
+        sim = linear_combination_of_weights(parts)
+        if 'score' in release:
+            sim *= release['score'] / 100
+        return (sim, release)
 
     def compare_to_release_parts(self, release, weights):
         parts = []
@@ -253,6 +256,8 @@ class Metadata(dict):
         for release in releases:
             release_parts = self.compare_to_release_parts(release, weights)
             sim = linear_combination_of_weights(parts + release_parts)
+            if 'score' in track:
+                sim *= track['score'] / 100
             if sim > result[0]:
                 rg = release['release-group'] if "release-group" in release else None
                 result = (sim, rg, release, track)
