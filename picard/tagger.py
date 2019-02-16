@@ -160,6 +160,12 @@ class Tagger(QtWidgets.QApplication):
         # It's a valid reference, but its start() method doesn't work.
         self.thread_pool = QtCore.QThreadPool(self)
 
+        # Provide a separate thread pool for operations that should not be
+        # delayed by longer background processing tasks, e.g. because the user
+        # expects instant feedback instead of waiting for a long list of
+        # operations to finish.
+        self.priority_thread_pool = QtCore.QThreadPool(self)
+
         # Use a separate thread pool for file saving, with a thread count of 1,
         # to avoid race conditions in File._save_and_rename.
         self.save_thread_pool = QtCore.QThreadPool(self)
@@ -341,6 +347,7 @@ class Tagger(QtWidgets.QApplication):
         self._acoustid.done()
         self.thread_pool.waitForDone()
         self.save_thread_pool.waitForDone()
+        self.priority_thread_pool.waitForDone()
         self.browser_integration.stop()
         self.webservice.stop()
         self.run_cleanup()

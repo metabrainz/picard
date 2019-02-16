@@ -446,7 +446,8 @@ class MetadataBox(QtWidgets.QTableWidget):
             return
         if self.selection_dirty:
             self._update_selection()
-        thread.run_task(self._update_tags, self._update_items)
+        thread.run_task(self._update_tags, self._update_items,
+            thread_pool=self.tagger.priority_thread_pool)
 
     def _update_tags(self):
         self.selection_mutex.lock()
