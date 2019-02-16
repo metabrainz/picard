@@ -148,7 +148,7 @@ class CoverArtImage:
     def parse_url(self, url):
         self.url = QUrl(url)
         self.host = self.url.host()
-        self.port = self.url.port(80)
+        self.port = self.url.port(443 if self.url.scheme() == 'https' else 80)
         self.path = self.url.path(QUrl.FullyEncoded)
         if self.url.hasQuery():
             self.path += '?' + self.url.query(QUrl.FullyEncoded)
