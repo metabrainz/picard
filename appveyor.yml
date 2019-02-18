@@ -57,7 +57,7 @@ build_script:
 
     pyinstaller --noconfirm picard.spec
 
-    makensis.exe installer\picard-setup.nsi
+    makensis.exe /INPUTCHARSET UTF8 installer\picard-setup.nsi
 
 artifacts:
 - path: installer/*.exe
