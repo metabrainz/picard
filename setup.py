@@ -216,11 +216,12 @@ class picard_build(build):
         if platform.system() == 'Windows':
             # Temporarily setting it to this value to generate a nice name for Windows app
             args['name'] = 'MusicBrainz Picard'
+            file_version = PICARD_VERSION[0:3] + PICARD_VERSION[4:]
+            args['file_version'] = '.'.join([str(v) for v in file_version])
             generate_file('installer/picard-setup.nsi.in', 'installer/picard-setup.nsi', args)
-            version = str(PICARD_VERSION[0:3] + PICARD_VERSION[4:])
             version_args = {
-                'filevers': version,
-                'prodvers': version,
+                'filevers': str(file_version),
+                'prodvers': str(file_version),
             }
             generate_file('win-version-info.txt.in', 'win-version-info.txt', {**args, **version_args})
             args['name'] = 'picard'

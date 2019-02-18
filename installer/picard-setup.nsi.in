@@ -77,13 +77,14 @@ ReserveFile "${NSISDIR}\Plugins\x86-unicode\InstallOptions.dll"
 !insertmacro MUI_LANGUAGE "English"
 
 ; Adds info to installer
-VIProductVersion "0.12.0.0"
+VIProductVersion "%(file_version)s"
 VIAddVersionKey /LANG=${LANG_ENGLISH} "ProductName" "${PRODUCT_NAME}"
 VIAddVersionKey /LANG=${LANG_ENGLISH} "Comments" "${PRODUCT_DESCRIPTION}"
 VIAddVersionKey /LANG=${LANG_ENGLISH} "CompanyName" "${PRODUCT_PUBLISHER}"
 VIAddVersionKey /LANG=${LANG_ENGLISH} "LegalCopyright" "© ${PRODUCT_PUBLISHER} under the GNU GPLv2."
 VIAddVersionKey /LANG=${LANG_ENGLISH} "FileDescription" "Installation for ${PRODUCT_NAME}"
 VIAddVersionKey /LANG=${LANG_ENGLISH} "FileVersion" "%(version)s"
+VIAddVersionKey /LANG=${LANG_ENGLISH} "ProductVersion" "%(version)s"
 
 ; Install
 Section !Required req
