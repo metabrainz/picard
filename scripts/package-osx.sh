@@ -45,7 +45,7 @@ hdiutil create -volname "MusicBrainz Picard $VERSION" -srcfolder 'MusicBrainz Pi
 [ "$codesign" = '1' ] && codesign --keychain picard.keychain --verify --verbose --sign 'Developer ID Application: MetaBrainz Foundation Inc.' "$dmg"
 if [ -n "$UPLOAD_OSX" ]
 then
-    curl -v --fail --upload-file "$dmg" https://transfer.sh/
+    curl -v --retry 6 --retry-delay 10 --upload-file "$dmg" https://transfer.sh/
     # Required for a newline between the outputs
     echo -e "\n"
     md5 -r "$dmg"
