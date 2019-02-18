@@ -761,6 +761,7 @@ class TrackItem(TreeItem):
             icon = FileItem.decide_file_icon(file)
             self.setToolTip(0, _(FileItem.decide_file_icon_info(file)))
             self.takeChildren()
+            self.setExpanded(False)
         else:
             self.setToolTip(0, "")
             if track.ignored_for_completeness():
