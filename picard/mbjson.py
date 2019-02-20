@@ -365,9 +365,10 @@ def recording_to_metadata(node, m, track=None):
             artist_credit_to_metadata(value, m)
             # set tags from artists
             if track:
-                for artist in value:
-                    artist_obj = track.append_track_artist(artist['artist']['id'])
-                    add_genres_from_node(artist['artist'], artist_obj)
+                for credit in value:
+                    artist = credit['artist']
+                    artist_obj = track.append_track_artist(artist['id'])
+                    add_genres_from_node(artist, artist_obj)
         elif key == 'relations':
             _relations_to_metadata(value, m)
         elif key in ('genres', 'tags') and track:
@@ -448,9 +449,10 @@ def release_to_metadata(node, m, album=None):
             artist_credit_to_metadata(value, m, release=True)
             # set tags from artists
             if album is not None:
-                for artist in value:
-                    artist_obj = album.append_album_artist(artist['artist']['id'])
-                    add_genres_from_node(artist['artist'], artist_obj)
+                for credit in value:
+                    artist = credit['artist']
+                    artist_obj = album.append_album_artist(artist['id'])
+                    add_genres_from_node(artist, artist_obj)
         elif key == 'relations':
             _relations_to_metadata(value, m)
         elif key == 'label-info':
