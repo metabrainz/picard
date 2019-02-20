@@ -75,6 +75,7 @@ class Track(DataObject, Item):
         self.num_linked_files = 0
         self.metadata = Metadata()
         self.orig_metadata = Metadata()
+        self.error = None
         self._track_artists = []
 
     def __repr__(self):
@@ -281,6 +282,7 @@ class NonAlbumTrack(Track):
     def load(self, priority=False, refresh=False):
         self.metadata.copy(self.album.metadata)
         self.status = _("[loading recording information]")
+        self.error = None
         self.loaded = False
         self.album.update(True)
         mblogin = False
@@ -315,6 +317,7 @@ class NonAlbumTrack(Track):
     def _set_error(self, error):
         log.error("%r", error)
         self.status = _("[could not load recording %s]") % self.id
+        self.error = error
         self.album.update(True)
 
     def _parse_recording(self, recording):
