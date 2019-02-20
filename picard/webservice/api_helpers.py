@@ -54,10 +54,18 @@ def _wrap_xml_metadata(data):
 class APIHelper(object):
 
     def __init__(self, host, port, api_path, webservice):
-        self.host = host
-        self.port = port
+        self._host = host
+        self._port = port
         self.api_path = api_path
         self._webservice = webservice
+
+    @property
+    def host(self):
+        return self._host
+
+    @property
+    def port(self):
+        return self._port
 
     def get(self, path_list, handler, priority=False, important=False, mblogin=False,
             cacheloadcontrol=None, refresh=False, queryargs=None, parse_response_type=DEFAULT_RESPONSE_PARSER_TYPE):
@@ -93,8 +101,15 @@ class APIHelper(object):
 class MBAPIHelper(APIHelper):
 
     def __init__(self, webservice):
-        super().__init__(config.setting['server_host'], config.setting['server_port'],
-                         "/ws/2/", webservice)
+        super().__init__(None, None, "/ws/2/", webservice)
+
+    @property
+    def host(self):
+        return config.setting['server_host']
+
+    @property
+    def port(self):
+        return config.setting['server_port']
 
     def _get_by_id(self, entitytype, entityid, handler, inc=None, queryargs=None,
                    priority=False, important=False, mblogin=False, refresh=False):
