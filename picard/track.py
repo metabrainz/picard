@@ -298,6 +298,9 @@ class NonAlbumTrack(Track):
                                            priority=priority,
                                            refresh=refresh)
 
+    def can_remove(self):
+        return True
+
     def _recording_request_finished(self, recording, http, error):
         if error:
             self._set_error(http.errorString())

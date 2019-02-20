@@ -708,11 +708,12 @@ class AlbumItem(TreeItem):
             newnum = len(album.tracks)
             if oldnum > newnum:  # remove old items
                 for i in range(oldnum - newnum):
-                    self.takeChild(newnum - 1)
+                    self.takeChild(newnum)
                 oldnum = newnum
             # update existing items
             for i in range(oldnum):
                 item = self.child(i)
+                item.setSelected(False)
                 track = album.tracks[i]
                 item.obj = track
                 track.item = item
