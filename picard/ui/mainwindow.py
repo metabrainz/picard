@@ -476,19 +476,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         if discid is None:
             log.warning("CDROM: discid library not found - Lookup CD functionality disabled")
         else:
-            drives = get_cdrom_drives()
-            if not drives:
-                log.warning("CDROM: No CD-ROM drives found - Lookup CD functionality disabled")
-            else:
-                shortcut_drive = config.setting["cd_lookup_device"].split(",")[0] if len(drives) > 1 else ""
-                self.cd_lookup_action.setEnabled(True)
-                for drive in drives:
-                    action = self.cd_lookup_menu.addAction(drive)
-                    action.setData(drive)
-                    if drive == shortcut_drive:
-                        # Clear existing shortcode on main action and assign it to sub-action
-                        self.cd_lookup_action.setShortcut(QtGui.QKeySequence())
-                        action.setShortcut(QtGui.QKeySequence(_("Ctrl+K")))
+            thread.run_task(get_cdrom_drives, self._update_cd_lookup_actions)
 
         self.analyze_action = QtWidgets.QAction(icontheme.lookup('picard-analyze'), _("&Scan"), self)
         self.analyze_action.setStatusTip(_("Use AcoustID audio fingerprint to identify the files by the actual music, even if they have no metadata"))
@@ -575,6 +563,23 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             self.check_update_action = QtWidgets.QAction(_("&Check for Update…"), self)
             self.check_update_action.setMenuRole(QtWidgets.QAction.ApplicationSpecificRole)
             self.check_update_action.triggered.connect(self.do_update_check)
+
+    def _update_cd_lookup_actions(self, result=None, error=None):
+        drives = result
+        if error:
+            log.error("CDROM: Error on CD-ROM drive detection: %r", error)
+        elif not drives:
+            log.warning("CDROM: No CD-ROM drives found - Lookup CD functionality disabled")
+        else:
+            shortcut_drive = config.setting["cd_lookup_device"].split(",")[0] if len(drives) > 1 else ""
+            self.cd_lookup_action.setEnabled(True)
+            for drive in drives:
+                action = self.cd_lookup_menu.addAction(drive)
+                action.setData(drive)
+                if drive == shortcut_drive:
+                    # Clear existing shortcode on main action and assign it to sub-action
+                    self.cd_lookup_action.setShortcut(QtGui.QKeySequence())
+                    action.setShortcut(QtGui.QKeySequence(_("Ctrl+K")))
 
     def toggle_rename_files(self, checked):
         config.setting["rename_files"] = checked
