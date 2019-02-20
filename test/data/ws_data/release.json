@@ -138,6 +138,13 @@
                         "name": "핑크 플로이드"
                     }
                 ],
+                "tags": [{
+                  "name": "british",
+                  "count": 2
+                }, {
+                  "count": 10,
+                  "name": "progressive rock"
+                }],
                 "sort-name": "Pink Floyd",
                 "name": "Pink Floyd"
             },
