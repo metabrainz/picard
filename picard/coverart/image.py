@@ -121,6 +121,8 @@ class CoverArtImage:
     # formats may have types associated with cover art, but some other sources
     # don't provide such information
     support_types = False
+    # Indicates that the source supports multiple types per image.
+    support_multi_types = False
     # `is_front` has to be explicitly set, it is used to handle CAA is_front
     # indicator
     is_front = None
@@ -211,8 +213,11 @@ class CoverArtImage:
 
     def __eq__(self, other):
         if self and other:
-            if self.types and other.types:
-                return (self.datahash, self.types) == (other.datahash, other.types)
+            if self.support_types and other.support_types:
+                if self.support_multi_types and other.support_multi_types:
+                    return (self.datahash, self.types) == (other.datahash, other.types)
+                else:
+                    return (self.datahash, self.maintype) == (other.datahash, other.maintype)
             else:
                 return self.datahash == other.datahash
         elif not self and not other:
@@ -360,6 +365,7 @@ class CaaCoverArtImage(CoverArtImage):
     """Image from Cover Art Archive"""
 
     support_types = True
+    support_multi_types = True
     sourceprefix = "CAA"
 
     def __init__(self, url, types=None, is_front=False, comment='', data=None):
@@ -385,11 +391,13 @@ class TagCoverArtImage(CoverArtImage):
     """Image from file tags"""
 
     def __init__(self, file, tag=None, types=None, is_front=None,
-                 support_types=False, comment='', data=None):
+                 support_types=False, comment='', data=None,
+                 support_multi_types=False):
         super().__init__(url=None, types=types, comment=comment, data=data)
         self.sourcefile = file
         self.tag = tag
         self.support_types = support_types
+        self.support_multi_types = support_multi_types
         if is_front is not None:
             self.is_front = is_front
 
@@ -420,10 +428,12 @@ class CoverArtImageFromFile(CoverArtImage):
     sourceprefix = 'LOCAL'
 
     def __init__(self, filepath, types=None, is_front=None,
-                 support_types=False, comment='', data=None):
+                 support_types=False, comment='', data=None,
+                 support_multi_types=False):
         super().__init__(url=None, types=types, comment=comment, data=data)
         self.filepath = filepath
         self.support_types = support_types
+        self.support_multi_types = support_multi_types
         if is_front is not None:
             self.is_front = is_front
 

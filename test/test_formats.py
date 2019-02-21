@@ -766,34 +766,24 @@ class TestCoverArt(PicardTestCase):
     def _test_cover_art(self, filename):
         self._set_up(filename)
         try:
+            source_types = ["front", "booklet"]
             # Use reasonable large data > 64kb.
             # This checks a mutagen error with ASF files.
-            tests = {
-                'jpg': {
-                    'mime': 'image/jpeg',
-                    'data': self.jpegdata + b"a" * 1024 * 128
-                },
-                'png': {
-                    'mime': 'image/png',
-                    'data': self.pngdata + b"a" * 1024 * 128
-                },
-            }
-            for t in tests:
+            tests = [
+                CoverArtImage(data=self.jpegdata + b"a" * 1024 * 128, types=source_types),
+                CoverArtImage(data=self.pngdata + b"a" * 1024 * 128, types=source_types),
+            ]
+            for test in tests:
                 f = picard.formats.open_(self.filename)
                 metadata = Metadata()
-                imgdata = tests[t]['data']
-                metadata.append_image(
-                    CoverArtImage(
-                        data=imgdata
-                    )
-                )
+                metadata.append_image(test)
                 f._save(self.filename, metadata)
 
                 f = picard.formats.open_(self.filename)
                 loaded_metadata = f._load(self.filename)
                 image = loaded_metadata.images[0]
-                self.assertEqual(image.mimetype, tests[t]['mime'])
-                self.assertEqual(image.data, imgdata)
+                self.assertEqual(test.mimetype, image.mimetype)
+                self.assertEqual(test, image)
         finally:
             self._tear_down()
 
