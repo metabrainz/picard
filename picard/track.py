@@ -75,6 +75,7 @@ class Track(DataObject, Item):
         self.num_linked_files = 0
         self.metadata = Metadata()
         self.orig_metadata = Metadata()
+        self.error = None
         self._track_artists = []
 
     def __repr__(self):
@@ -265,18 +266,23 @@ class NonAlbumTrack(Track):
         super().__init__(nat_id, self.tagger.nats)
         self.callback = None
         self.loaded = False
+        self.status = None
 
     def can_refresh(self):
         return True
 
     def column(self, column):
         if column == "title":
-            return self.metadata["title"]
+            if self.status is not None:
+                return self.status
+            else:
+                return self.metadata['title']
         return super().column(column)
 
     def load(self, priority=False, refresh=False):
         self.metadata.copy(self.album.metadata)
-        self.metadata["title"] = "[loading track information]"
+        self.status = _("[loading recording information]")
+        self.error = None
         self.loaded = False
         self.album.update(True)
         mblogin = False
@@ -294,16 +300,25 @@ class NonAlbumTrack(Track):
                                            priority=priority,
                                            refresh=refresh)
 
+    def can_remove(self):
+        return True
+
     def _recording_request_finished(self, recording, http, error):
         if error:
-            log.error("%r", http.errorString())
+            self._set_error(http.errorString())
             return
         try:
             self._parse_recording(recording)
             for file in self.linked_files:
                 self.update_file_metadata(file)
         except Exception:
-            log.error(traceback.format_exc())
+            self._set_error(traceback.format_exc())
+
+    def _set_error(self, error):
+        log.error("%r", error)
+        self.status = _("[could not load recording %s]") % self.id
+        self.error = error
+        self.album.update(True)
 
     def _parse_recording(self, recording):
         m = self.metadata
@@ -319,6 +334,7 @@ class NonAlbumTrack(Track):
             m.strip_whitespace()
 
         self.loaded = True
+        self.status = None
         if self.callback:
             self.callback()
             self.callback = None

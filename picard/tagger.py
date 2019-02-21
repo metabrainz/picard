@@ -329,6 +329,7 @@ class Tagger(QtWidgets.QApplication):
             self.nats = NatAlbum()
             self.albums["NATS"] = self.nats
             self.album_added.emit(self.nats)
+            self.nats.item.setExpanded(True)
         return self.nats
 
     def move_file_to_nat(self, file, recordingid, node=None):
@@ -664,6 +665,16 @@ class Tagger(QtWidgets.QApplication):
             self.nats = None
         self.album_removed.emit(album)
 
+    def remove_nat(self, track):
+        """Remove the specified non-album track."""
+        log.debug("Removing %r", track)
+        self.remove_files(self.get_files_from_objects([track]))
+        self.nats.tracks.remove(track)
+        if not self.nats.tracks:
+            self.remove_album(self.nats)
+        else:
+            self.nats.update(True)
+
     def remove_cluster(self, cluster):
         """Remove the specified cluster."""
         if not cluster.special:
@@ -681,6 +692,8 @@ class Tagger(QtWidgets.QApplication):
         for obj in objects:
             if isinstance(obj, File):
                 files.append(obj)
+            elif isinstance(obj, NonAlbumTrack):
+                self.remove_nat(obj)
             elif isinstance(obj, Track):
                 files.extend(obj.linked_files)
             elif isinstance(obj, Album):

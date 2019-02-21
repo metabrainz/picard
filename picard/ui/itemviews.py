@@ -172,6 +172,7 @@ class MainPanel(QtWidgets.QSplitter):
         TrackItem.icon_audio = QtGui.QIcon(":/images/track-audio.png")
         TrackItem.icon_video = QtGui.QIcon(":/images/track-video.png")
         TrackItem.icon_data = QtGui.QIcon(":/images/track-data.png")
+        TrackItem.icon_error = icontheme.lookup('dialog-error', icontheme.ICON_SIZE_MENU)
         FileItem.icon_file = QtGui.QIcon(":/images/file.png")
         FileItem.icon_file_pending = QtGui.QIcon(":/images/file-pending.png")
         FileItem.icon_error = icontheme.lookup('dialog-error', icontheme.ICON_SIZE_MENU)
@@ -708,11 +709,12 @@ class AlbumItem(TreeItem):
             newnum = len(album.tracks)
             if oldnum > newnum:  # remove old items
                 for i in range(oldnum - newnum):
-                    self.takeChild(newnum - 1)
+                    self.takeChild(newnum)
                 oldnum = newnum
             # update existing items
             for i in range(oldnum):
                 item = self.child(i)
+                item.setSelected(False)
                 track = album.tracks[i]
                 item.obj = track
                 track.item = item
@@ -796,7 +798,11 @@ class TrackItem(TreeItem):
                         items.append(item)
                     self.addChildren(items)
             self.setExpanded(True)
-        self.setIcon(0, icon)
+        if track.error:
+            self.setIcon(0, TrackItem.icon_error)
+            self.setToolTip(0, track.error)
+        else:
+            self.setIcon(0, icon)
         for i, column in enumerate(MainPanel.columns):
             self.setText(i, track.column(column[1]))
             self.setForeground(i, color)
