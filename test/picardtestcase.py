@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import struct
 import unittest
 
 from PyQt5 import QtCore
@@ -36,3 +37,8 @@ class PicardTestCase(unittest.TestCase):
     def setUp(self):
         QtCore.QObject.tagger = FakeTagger()
         config.setting = {}
+
+
+def create_fake_png(extra):
+    """Creates fake PNG data that satisfies Picard's internal image type detection"""
+    return b'\x89PNG\x0D\x0A\x1A\x0A' + (b'a' * 4) + b'IHDR' + struct.pack('>LL', 100, 100) + extra

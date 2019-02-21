@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 
-import struct
-from test.picardtestcase import PicardTestCase
+from test.picardtestcase import (
+    PicardTestCase,
+    create_fake_png,
+)
 
 from picard.album import Album
 from picard.cluster import Cluster
@@ -13,11 +15,6 @@ from picard.util.imagelist import (
     remove_metadata_images,
     update_metadata_images,
 )
-
-
-def create_fake_png(extra):
-    """Creates fake PNG data that satisfies Picard's internal image type detection"""
-    return b'\x89PNG\x0D\x0A\x1A\x0A' + (b'a' * 4) + b'IHDR' + struct.pack('>LL', 100, 100) + extra
 
 
 def create_test_files():
