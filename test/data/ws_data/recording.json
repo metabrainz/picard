@@ -20,13 +20,20 @@
     ],
     "artist-credit":[
         {
-            "name":"Ed Sheeran",
-            "joinphrase":"",
-            "artist":{
+            "name": "Ed Sheeran",
+            "joinphrase": "",
+            "artist": {
                 "disambiguation":"famous UK singer-songwriter",
                 "name":"Ed Sheeran",
                 "sort-name":"Sheeran, Ed",
-                "id":"b8a7c51f-362c-4dcb-a259-bc6e0095f0a6"
+                "id":"b8a7c51f-362c-4dcb-a259-bc6e0095f0a6",
+                "tags": [{
+                  "name": "dance-pop",
+                  "count": 1
+                }, {
+                  "name": "guitarist",
+                  "count": 0
+                }]
             }
         }
     ],
@@ -659,6 +666,13 @@
             "target-credit":""
         }
     ],
+    "tags": [{
+      "name": "blue-eyed soul",
+      "count": 1
+    }, {
+      "count": 3,
+      "name": "pop"
+    }],
     "length":281000,
     "title":"Thinking Out Loud"
 }

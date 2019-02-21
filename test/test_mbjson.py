@@ -68,6 +68,10 @@ class ReleaseTest(MBJSONTest):
         self.assertEqual(a.genres, {
             'genre1': 6, 'genre2': 3,
             'tag1': 6, 'tag2': 3 })
+        for artist in a._album_artists:
+            self.assertEqual(artist.genres, {
+                'british': 2,
+                'progressive rock': 10 })
 
     def test_media_formats_from_node(self):
         formats = media_formats_from_node(self.json_doc['media'])
@@ -114,6 +118,13 @@ class RecordingTest(MBJSONTest):
         self.assertEqual(m['~artists_sort'], 'Sheeran, Ed')
         self.assertEqual(m['~length'], '4:41')
         self.assertEqual(m['~recordingtitle'], 'Thinking Out Loud')
+        self.assertEqual(t.genres, {
+            'blue-eyed soul': 1,
+            'pop': 3 })
+        for artist in t._track_artists:
+            self.assertEqual(artist.genres, {
+                'dance-pop': 1,
+                'guitarist': 0 })
 
     def test_recording_instrument_credits(self):
         m = Metadata()

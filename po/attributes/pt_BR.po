@@ -5,6 +5,7 @@
 # Brunno Hofmann <brunno.hofmann@gmail.com>, 2018
 # Daniel Biasotto <biasotto@tuta.io>, 2017
 # Eduardo Bastos <eduardorochacg@gmail.com>, 2012
+# Erlandy Lopez <erlandy6@gmail.com>, 2019
 # Jaide Ambrosio <jaide.sp@gmail.com>, 2018
 # Jefferson Gomes <jefferson.mg2@hotmail.com>, 2016
 # João Miguel Soares <joaomiguel32@live.com>, 2016
@@ -24,8 +25,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2019-01-22 20:58+0000\n"
-"Last-Translator: yvanz\n"
+"PO-Revision-Date: 2019-02-11 13:33+0000\n"
+"Last-Translator: Erlandy Lopez <erlandy6@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/musicbrainz/musicbrainz/language/pt_BR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -268,7 +269,7 @@ msgid ""
 "A play is a form of literature usually consisting of scripted dialogue "
 "between characters, and intended for theatrical performance rather than just"
 " reading."
-msgstr ""
+msgstr "Uma peça é uma forma de literatura que geralmente consiste em diálogo roteirizado entre os personagens, e destinada à performance teatral, e não apenas à leitura."
 
 #: DB:work_type/description:21
 msgctxt "work_type"
@@ -341,7 +342,7 @@ msgid ""
 "A song cycle is a group of songs designed to be performed in a sequence as a"
 " single entity. In most cases, all of the songs are by the same composer, "
 "and often use words from the same poet or lyricist."
-msgstr ""
+msgstr "Um ciclo musical é um grupo de músicas feito para ser executado em uma sequência como uma só. Na maioria dos casos, todas as músicas são do mesmo compositor, e muitas vezes usam palavras do mesmo poeta ou letrista."
 
 #: DB:work_type/description:17
 msgctxt "work_type"
@@ -364,7 +365,7 @@ msgctxt "instrument_type"
 msgid ""
 "A standard grouping of instruments often played together, like a string "
 "quartet"
-msgstr ""
+msgstr "Um conjunto padrão de instrumentos geralmente tocado juntos, como uma orquestra"
 
 #: DB:work_type/description:6
 msgctxt "work_type"
@@ -387,7 +388,7 @@ msgctxt "work_type"
 msgid ""
 "A symphony is an extended composition, almost always scored for orchestra "
 "without soloists."
-msgstr ""
+msgstr "Uma sinfonia é uma composição estendida, quase sempre marcada para orquestra sem solistas."
 
 #: DB:release_packaging/description:2
 msgctxt "release_packaging"
@@ -400,7 +401,7 @@ msgid ""
 "A zarzuela is a Spanish lyric-dramatic work that alternates between spoken "
 "and sung scenes, the latter incorporating operatic and popular song, as well"
 " as dance."
-msgstr ""
+msgstr "A zarzuela é uma obra lírico-dramática espanhola que alterna entre cenas faladas e cantadas, a última incorporando música operística e popular, assim como a dança."
 
 #: DB:work_attribute_type_allowed_value/value:26
 msgctxt "work_attribute_type_allowed_value"

@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2019-02-01 21:17+0100\n"
-"PO-Revision-Date: 2019-02-02 01:01+0000\n"
+"POT-Creation-Date: 2019-02-06 10:19+0100\n"
+"PO-Revision-Date: 2019-02-06 13:38+0000\n"
 "Last-Translator: Michael Wiencek <mwtuea@gmail.com>\n"
 "Language-Team: Persian (http://www.transifex.com/musicbrainz/musicbrainz/language/fa/)\n"
 "MIME-Version: 1.0\n"
@@ -1205,7 +1205,7 @@ msgid "Open the containing folder in your file explorer"
 msgstr ""
 
 #: picard/ui/mainwindow.py:561
-msgid "&Check for Update"
+msgid "&Check for Update…"
 msgstr ""
 
 #: picard/ui/mainwindow.py:589

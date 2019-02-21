@@ -365,8 +365,10 @@ def recording_to_metadata(node, m, track=None):
             artist_credit_to_metadata(value, m)
             # set tags from artists
             if track:
-                for artist in value:
-                    track.append_track_artist(artist['artist']['id'])
+                for credit in value:
+                    artist = credit['artist']
+                    artist_obj = track.append_track_artist(artist['id'])
+                    add_genres_from_node(artist, artist_obj)
         elif key == 'relations':
             _relations_to_metadata(value, m)
         elif key in ('genres', 'tags') and track:
@@ -447,8 +449,10 @@ def release_to_metadata(node, m, album=None):
             artist_credit_to_metadata(value, m, release=True)
             # set tags from artists
             if album is not None:
-                for artist in value:
-                    album.append_album_artist(artist['artist']['id'])
+                for credit in value:
+                    artist = credit['artist']
+                    artist_obj = album.append_album_artist(artist['id'])
+                    add_genres_from_node(artist, artist_obj)
         elif key == 'relations':
             _relations_to_metadata(value, m)
         elif key == 'label-info':
@@ -458,10 +462,7 @@ def release_to_metadata(node, m, album=None):
                 m['~releaselanguage'] = value['language']
             if 'script' in value:
                 m['script'] = value['script']
-        elif key in ('genres', 'tags'):
-            add_genres(value, album)
-        elif key in ('user-genres', 'user-tags'):
-            add_user_genres(value, album)
+    add_genres_from_node(node, album)
 
 
 def release_group_to_metadata(node, m, release_group=None):
@@ -472,14 +473,11 @@ def release_group_to_metadata(node, m, release_group=None):
             continue
         if key in _RELEASE_GROUP_TO_METADATA:
             m[_RELEASE_GROUP_TO_METADATA[key]] = value
-        elif key in ('genres', 'tags'):
-            add_genres(value, release_group)
-        elif key in ('user-genres', 'user-tags'):
-            add_user_genres(value, release_group)
         elif key == 'primary-type':
             m['~primaryreleasetype'] = value.lower()
         elif key == 'secondary-types':
             add_secondary_release_types(value, m)
+    add_genres_from_node(node, release_group)
     if m['originaldate']:
         m['originalyear'] = m['originaldate'][:4]
     m['releasetype'] = m.getall('~primaryreleasetype') + m.getall('~secondaryreleasetype')
@@ -490,21 +488,32 @@ def add_secondary_release_types(node, m):
         m.add_unique('~secondaryreleasetype', secondary_type.lower())
 
 
+def add_genres_from_node(node, obj):
+    if obj is None:
+        return
+    if 'genres' in node:
+        add_genres(node['genres'], obj)
+    if 'tags' in node:
+        add_genres(node['tags'], obj)
+    if 'user-genres' in node:
+        add_user_genres(node['user-genres'], obj)
+    if 'user-tags' in node:
+        add_user_genres(node['user-tags'], obj)
+
+
 def add_genres(node, obj):
-    if obj is not None:
-        for tag in node:
-            key = tag['name']
-            count = tag['count']
-            if key:
-                obj.add_genre(key, count)
+    for tag in node:
+        key = tag['name']
+        count = tag['count']
+        if key:
+            obj.add_genre(key, count)
 
 
 def add_user_genres(node, obj):
-    if obj is not None:
-        for tag in node:
-            key = tag['name']
-            if key:
-                obj.add_genre(key, 1)
+    for tag in node:
+        key = tag['name']
+        if key:
+            obj.add_genre(key, 1)
 
 
 def add_isrcs_to_metadata(node, metadata):

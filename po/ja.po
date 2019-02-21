@@ -20,9 +20,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2019-02-01 21:17+0100\n"
-"PO-Revision-Date: 2019-02-04 08:01+0000\n"
-"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
+"POT-Creation-Date: 2019-02-06 10:19+0100\n"
+"PO-Revision-Date: 2019-02-06 13:38+0000\n"
+"Last-Translator: Michael Wiencek <mwtuea@gmail.com>\n"
 "Language-Team: Japanese (http://www.transifex.com/musicbrainz/musicbrainz/language/ja/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1208,8 +1208,8 @@ msgid "Open the containing folder in your file explorer"
 msgstr "含んでいるフォルダをエクスプローラで開く"
 
 #: picard/ui/mainwindow.py:561
-msgid "&Check for Update"
-msgstr "更新を確認 (&C)"
+msgid "&Check for Update…"
+msgstr ""
 
 #: picard/ui/mainwindow.py:589
 msgid "&File"

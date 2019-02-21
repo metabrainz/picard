@@ -15,8 +15,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2019-02-01 21:17+0100\n"
-"PO-Revision-Date: 2019-02-02 20:37+0000\n"
+"POT-Creation-Date: 2019-02-06 10:19+0100\n"
+"PO-Revision-Date: 2019-02-08 23:40+0000\n"
 "Last-Translator: Jaakko Perttilä <jormangeud@gmail.com>\n"
 "Language-Team: Finnish (http://www.transifex.com/musicbrainz/musicbrainz/language/fi/)\n"
 "MIME-Version: 1.0\n"
@@ -1211,8 +1211,8 @@ msgid "Open the containing folder in your file explorer"
 msgstr "Avaa tiedoston kansio tiedostojen selaimessa"
 
 #: picard/ui/mainwindow.py:561
-msgid "&Check for Update"
-msgstr "&Etsi päivitystä"
+msgid "&Check for Update…"
+msgstr "&Etsi päivitystä…"
 
 #: picard/ui/mainwindow.py:589
 msgid "&File"
