@@ -195,6 +195,8 @@ class CoverArtImage:
             p.append("url=%r" % self.url.toString())
         if self.types:
             p.append("types=%r" % self.types)
+        p.append('support_types=%r' % self.support_types)
+        p.append('support_multi_types=%r' % self.support_types)
         if self.is_front is not None:
             p.append("is_front=%r" % self.is_front)
         if self.comment:
@@ -423,32 +425,13 @@ class TagCoverArtImage(CoverArtImage):
         return "%s(%s)" % (self.__class__.__name__, ", ".join(p))
 
 
-class CoverArtImageFromFile(CoverArtImage):
+class LocalFileCoverArtImage(CoverArtImage):
 
     sourceprefix = 'LOCAL'
 
-    def __init__(self, filepath, types=None, is_front=None,
-                 support_types=False, comment='', data=None,
-                 support_multi_types=False):
-        super().__init__(url=None, types=types, comment=comment, data=data)
-        self.filepath = filepath
+    def __init__(self, filepath, types=None, comment='',
+                 support_types=False, support_multi_types=False):
+        url = 'file://' + filepath
+        super().__init__(url=url, types=types, comment=comment)
         self.support_types = support_types
         self.support_multi_types = support_multi_types
-        if is_front is not None:
-            self.is_front = is_front
-
-    @property
-    def source(self):
-        return '%s %s' % (self.sourceprefix, self.filepath)
-
-    def __repr__(self):
-        p = []
-        p.append('%r' % self.filepath)
-        if self.types:
-            p.append("types=%r" % self.types)
-        if self.is_front is not None:
-            p.append("is_front=%r" % self.is_front)
-        p.append('support_types=%r' % self.support_types)
-        if self.comment:
-            p.append("comment=%r" % self.comment)
-        return "%s(%s)" % (self.__class__.__name__, ", ".join(p))

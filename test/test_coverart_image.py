@@ -5,7 +5,10 @@ from test.picardtestcase import (
     create_fake_png,
 )
 
-from picard.coverart.image import CoverArtImage
+from picard.coverart.image import (
+    CoverArtImage,
+    LocalFileCoverArtImage,
+)
 
 
 def create_image(extra_data, types=None, support_types=False,
@@ -78,3 +81,22 @@ class CoverArtImageTest(PicardTestCase):
         self.assertNotEqual(image1, image2)
         self.assertEqual(image2, image3)
         self.assertNotEqual(image2, image4)
+
+
+class LocalFileCoverArtImageTest(PicardTestCase):
+    def test_set_file_url(self):
+        path = '/some/path/image.jpeg'
+        image = LocalFileCoverArtImage(path)
+        self.assertEqual(image.url.toString(), 'file://' + path)
+
+    def test_support_types(self):
+        path = '/some/path/image.jpeg'
+        image = LocalFileCoverArtImage(path)
+        self.assertFalse(image.support_types)
+        self.assertFalse(image.support_multi_types)
+        image = LocalFileCoverArtImage(path, support_types=True)
+        self.assertTrue(image.support_types)
+        self.assertFalse(image.support_multi_types)
+        image = LocalFileCoverArtImage(path, support_multi_types=True)
+        self.assertFalse(image.support_types)
+        self.assertTrue(image.support_multi_types)

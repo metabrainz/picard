@@ -172,14 +172,15 @@ class CoverArt:
             return
 
         # local files
-        if hasattr(coverartimage, 'filepath'):
+        if coverartimage.url and coverartimage.url.scheme() == 'file':
             try:
-                with open(coverartimage.filepath, 'rb') as file:
+                path = coverartimage.url.path()
+                with open(path, 'rb') as file:
                     self._set_metadata(coverartimage, file.read())
             except IOError as ioexcept:
                 (errnum, errmsg) = ioexcept.args
                 log.error("Failed to read %r: %s (%d)" %
-                          (coverartimage.from_file, errmsg, errnum))
+                          (path, errmsg, errnum))
             except CoverArtImageIOError:
                 # It doesn't make sense to store/download more images if we can't
                 # save them in the temporary folder, abort.
