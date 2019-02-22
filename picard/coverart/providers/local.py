@@ -21,7 +21,7 @@ import os
 import re
 
 from picard import config
-from picard.coverart.image import CoverArtImageFromFile
+from picard.coverart.image import LocalFileCoverArtImage
 from picard.coverart.providers import (
     CoverArtProvider,
     ProviderOptions,
@@ -92,9 +92,11 @@ class CoverArtProviderLocal(CoverArtProvider):
                     filepath = os.path.join(current_dir, root, filename)
                     if os.path.exists(filepath):
                         types = self.get_types(m.group(1)) or ['front']
-                        self.queue_put(CoverArtImageFromFile(filepath,
-                                                             types=types,
-                                                             support_types=True))
+                        self.queue_put(
+                            LocalFileCoverArtImage(filepath,
+                                                   types=types,
+                                                   support_types=True,
+                                                   support_multi_types=True))
         return CoverArtProvider.FINISHED
 
     def get_types(self, string):
