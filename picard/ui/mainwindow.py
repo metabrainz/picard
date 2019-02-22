@@ -77,7 +77,6 @@ from picard.ui.searchdialog.album import AlbumSearchDialog
 from picard.ui.searchdialog.track import TrackSearchDialog
 from picard.ui.tagsfromfilenames import TagsFromFileNamesDialog
 from picard.ui.util import (
-    ButtonLineEdit,
     MultiDirsSelectDialog,
     find_starting_directory,
 )
@@ -699,7 +698,8 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.search_combo.addItem(_("Artist"), "artist")
         self.search_combo.addItem(_("Track"), "track")
         hbox.addWidget(self.search_combo, 0)
-        self.search_edit = ButtonLineEdit(search_panel)
+        self.search_edit = QtWidgets.QLineEdit(search_panel)
+        self.search_edit.setClearButtonEnabled(True)
         self.search_edit.returnPressed.connect(self.trigger_search_action)
         self.search_edit.textChanged.connect(self.enable_search)
         hbox.addWidget(self.search_edit, 0)
