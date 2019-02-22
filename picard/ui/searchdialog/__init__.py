@@ -43,7 +43,6 @@ from picard.util import (
 
 from picard.ui import PicardDialog
 from picard.ui.util import (
-    ButtonLineEdit,
     StandardButton,
 )
 
@@ -85,7 +84,7 @@ class SearchBox(QtWidgets.QWidget):
         self.setupUi()
 
     def focus_in_event(self, event):
-        # When focus is on search edit box (ButtonLineEdit), need to disable
+        # When focus is on search edit box, need to disable
         # dialog's accept button. This would avoid closing of dialog when user
         # hits enter.
         parent = self.parent()
@@ -99,7 +98,8 @@ class SearchBox(QtWidgets.QWidget):
         self.search_row_layout = QtWidgets.QHBoxLayout(self.search_row_widget)
         self.search_row_layout.setContentsMargins(1, 1, 1, 1)
         self.search_row_layout.setSpacing(1)
-        self.search_edit = ButtonLineEdit(self.search_row_widget)
+        self.search_edit = QtWidgets.QLineEdit(self.search_row_widget)
+        self.search_edit.setClearButtonEnabled(True)
         self.search_edit.returnPressed.connect(self.trigger_search_action)
         self.search_edit.textChanged.connect(self.enable_search)
         self.search_edit.setFocusPolicy(QtCore.Qt.StrongFocus)
