@@ -59,8 +59,10 @@ def save_and_load_metadata(filename, metadata):
     loaded_metadata = load_metadata(filename)
     return loaded_metadata
 
+
 def load_raw(filename):
     return mutagen.File(filename)
+
 
 TAGS = {
     'albumartist': 'Foo',
@@ -763,6 +765,24 @@ class TestCoverArt(PicardTestCase):
             os.path.join('test', 'data', 'test.flac'),
             set('a'))
 
+    def test_flac_set_picture_dimensions(self):
+        self._set_up(os.path.join('test', 'data', 'test.flac'))
+        try:
+            tests = [
+                CoverArtImage(data=self.jpegdata),
+                CoverArtImage(data=self.pngdata),
+            ]
+            for test in tests:
+                self._file_save_image(self.filename, test)
+                raw_metadata = load_raw(self.filename)
+                pic = raw_metadata.pictures[0]
+                self.assertNotEqual(pic.width, 0)
+                self.assertEqual(pic.width, test.width)
+                self.assertNotEqual(pic.height, 0)
+                self.assertEqual(pic.height, test.height)
+        finally:
+            self._tear_down()
+
     def _test_cover_art(self, filename):
         self._set_up(filename)
         try:
@@ -774,11 +794,7 @@ class TestCoverArt(PicardTestCase):
                 CoverArtImage(data=self.pngdata + b"a" * 1024 * 128, types=source_types),
             ]
             for test in tests:
-                f = picard.formats.open_(self.filename)
-                metadata = Metadata()
-                metadata.append_image(test)
-                f._save(self.filename, metadata)
-
+                self._file_save_image(self.filename, test)
                 f = picard.formats.open_(self.filename)
                 loaded_metadata = f._load(self.filename)
                 image = loaded_metadata.images[0]
@@ -786,6 +802,13 @@ class TestCoverArt(PicardTestCase):
                 self.assertEqual(test, image)
         finally:
             self._tear_down()
+
+    @staticmethod
+    def _file_save_image(filename, image):
+        f = picard.formats.open_(filename)
+        metadata = Metadata()
+        metadata.append_image(image)
+        f._save(filename, metadata)
 
     def _cover_metadata(self):
         imgdata = self.jpegdata
