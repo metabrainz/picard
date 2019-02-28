@@ -322,7 +322,8 @@ class Tagger(QtWidgets.QApplication):
         """Move `file` to recording `recordingid` on album `albumid`."""
         album = self.load_album(albumid)
         file.move(album.unmatched_files)
-        album.run_when_loaded(partial(album.match_file, file, recordingid))
+        album.run_when_loaded(partial(album.match_files, [file],
+                                      recordingid=recordingid))
 
     def create_nats(self):
         if self.nats is None:
