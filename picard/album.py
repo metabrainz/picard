@@ -467,54 +467,52 @@ class Album(DataObject, Item):
         file.metadata_images_changed.disconnect(self.update_metadata_images)
         remove_metadata_images(self, [file])
 
-    def match_files(self, files, use_recordingid=True):
+    def _match_files(self, files, recordingid=None, threshold=0):
         """Match files to tracks on this album, based on metadata similarity or recordingid."""
+        moves = []
+
         for file in list(files):
             if file.state == File.REMOVED:
                 continue
-            matches = []
-            recordingid = file.metadata['musicbrainz_recordingid']
-            if use_recordingid and mbid_validate(recordingid):
-                matches = self._get_recordingid_matches(file, recordingid)
-            if not matches:
+
+            best_track = None
+            best_score = -1
+
+            def best_match(score, track):
+                nonlocal best_score, best_track
+                if score > best_score:
+                    best_track, best_score = track, score
+
+            recid = recordingid or file.metadata['musicbrainz_recordingid']
+            if mbid_validate(recid):
+                tracknumber = file.metadata['tracknumber']
+                discnumber = file.metadata['discnumber']
+                for track in self.tracks:
+                    tm = track.orig_metadata
+                    if recid == tm['musicbrainz_recordingid']:
+                        if tracknumber == tm['tracknumber']:
+                            if discnumber == tm['discnumber']:
+                                best_match(4.0, track)
+                                break
+                            else:
+                                best_match(3.0, track)
+                        else:
+                            best_match(2.0, track)
+            if best_track is None:
                 for track in self.tracks:
                     sim = track.metadata.compare(file.orig_metadata)
-                    if sim >= config.setting['track_matching_threshold']:
-                        matches.append((sim, track))
-            if matches:
-                matches.sort(key=itemgetter(0), reverse=True)
-                file.move(matches[0][1])
-            else:
-                file.move(self.unmatched_files)
+                    if sim >= threshold:
+                        best_match(sim, track)
+            moves.append((file, best_track or self.unmatched_files))
+        return moves
 
-    def match_file(self, file, recordingid=None):
-        """Match the file on a track on this album, based on recordingid or metadata similarity."""
-        if file.state == File.REMOVED:
-            return
-        if recordingid is not None:
-            matches = self._get_recordingid_matches(file, recordingid)
-            if matches:
-                matches.sort(key=itemgetter(0), reverse=True)
-                file.move(matches[0][1])
-                return
-        self.match_files([file], use_recordingid=False)
-
-    def _get_recordingid_matches(self, file, recordingid):
-        matches = []
-        tracknumber = file.metadata['tracknumber']
-        discnumber = file.metadata['discnumber']
-        for track in self.tracks:
-            tm = track.orig_metadata
-            if recordingid == tm['musicbrainz_recordingid']:
-                if tracknumber == tm['tracknumber']:
-                    if discnumber == tm['discnumber']:
-                        matches.append((4.0, track))
-                        break
-                    else:
-                        matches.append((3.0, track))
-                else:
-                    matches.append((2.0, track))
-        return matches
+    def match_files(self, files, recordingid=None):
+        """Match and move files to tracks on this album, based on metadata similarity or recordingid."""
+        moves = self._match_files(files,
+                                  recordingid=recordingid,
+                                  threshold=config.setting['track_matching_threshold'])
+        for file, target in moves:
+            file.move(target)
 
     def can_save(self):
         return self._files > 0
