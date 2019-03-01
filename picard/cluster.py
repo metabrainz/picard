@@ -314,15 +314,15 @@ class UnclusteredFiles(Cluster):
         super().__init__(_("Unclustered Files"), special=True)
 
     def add_files(self, files):
-        Cluster.add_files(self, files)
+        super().add_files(files)
         self.tagger.window.enable_cluster(self.get_num_files() > 0)
 
     def add_file(self, file):
-        Cluster.add_file(self, file)
+        super().add_file(file)
         self.tagger.window.enable_cluster(self.get_num_files() > 0)
 
     def remove_file(self, file):
-        Cluster.remove_file(self, file)
+        super().remove_file(file)
         self.tagger.window.enable_cluster(self.get_num_files() > 0)
 
     def lookup_metadata(self):
