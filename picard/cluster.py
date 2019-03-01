@@ -429,7 +429,7 @@ class ClusterDict(object):
             pass
         return word
 
-    def getToken(self, index):
+    def get_token(self, index):
         token = None
         try:
             word, token = self.ids[index]
@@ -494,8 +494,8 @@ class ClusterEngine(object):
         for y in range(self.cluster_dict.getSize()):
             for x in range(y):
                 if x != y:
-                    c = similarity(self.cluster_dict.getToken(x).lower(),
-                                   self.cluster_dict.getToken(y).lower())
+                    c = similarity(self.cluster_dict.get_token(x).lower(),
+                                   self.cluster_dict.get_token(y).lower())
                     if c >= threshold:
                         heappush(heap, ((1.0 - c), [x, y]))
             QtCore.QCoreApplication.processEvents()
