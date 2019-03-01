@@ -472,6 +472,18 @@ class Album(DataObject, Item):
         """Match files to tracks on this album, based on metadata similarity or recordingid."""
         moves = []
         tracks_cache = defaultdict(lambda: None)
+
+        def build_tracks_cache():
+            for track in self.tracks:
+                tm_recordingid = track.orig_metadata['musicbrainz_recordingid']
+                tm_tracknumber = track.orig_metadata['tracknumber']
+                tm_discnumber = track.orig_metadata['discnumber']
+                for tup in (
+                    (tm_recordingid, tm_tracknumber, tm_discnumber),
+                    (tm_recordingid, tm_tracknumber),
+                    (tm_recordingid, )):
+                    tracks_cache[tup] = track
+
         for file in list(files):
             if file.state == File.REMOVED:
                 continue
@@ -479,15 +491,7 @@ class Album(DataObject, Item):
             recid = recordingid or file.metadata['musicbrainz_recordingid']
             if recid and mbid_validate(recid):
                 if not tracks_cache:
-                    for track in self.tracks:
-                        tm_recordingid = track.orig_metadata['musicbrainz_recordingid']
-                        tm_tracknumber = track.orig_metadata['tracknumber']
-                        tm_discnumber = track.orig_metadata['discnumber']
-                        for tup in (
-                            (tm_recordingid, tm_tracknumber, tm_discnumber),
-                            (tm_recordingid, tm_tracknumber),
-                            (tm_recordingid, )):
-                            tracks_cache[tup] = track
+                    build_tracks_cache()
                 tracknumber = file.metadata['tracknumber']
                 discnumber = file.metadata['discnumber']
                 track = (tracks_cache[(recid, tracknumber, discnumber)]
