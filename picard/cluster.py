@@ -454,7 +454,7 @@ class ClusterEngine(object):
         # the cluster dictionary we're using
         self.cluster_dict = cluster_dict
         # keeps track of unique cluster index
-        self.clusterCount = 0
+        self.cluster_count = 0
         # Keeps track of the clusters we've created
         self.clusterBins = {}
         # Index the word ids -> clusters
@@ -503,9 +503,9 @@ class ClusterEngine(object):
         for i in range(self.cluster_dict.getSize()):
             word, count = self.cluster_dict.getWordAndCount(i)
             if word and count > 1:
-                self.clusterBins[self.clusterCount] = [i]
-                self.idClusterIndex[i] = self.clusterCount
-                self.clusterCount = self.clusterCount + 1
+                self.clusterBins[self.cluster_count] = [i]
+                self.idClusterIndex[i] = self.cluster_count
+                self.cluster_count = self.cluster_count + 1
 
         for i in range(len(heap)):
             c, pair = heappop(heap)
@@ -523,10 +523,10 @@ class ClusterEngine(object):
 
             # if neither item is in a cluster, make a new cluster
             if match0 == -1 and match1 == -1:
-                self.clusterBins[self.clusterCount] = [pair[0], pair[1]]
-                self.idClusterIndex[pair[0]] = self.clusterCount
-                self.idClusterIndex[pair[1]] = self.clusterCount
-                self.clusterCount = self.clusterCount + 1
+                self.clusterBins[self.cluster_count] = [pair[0], pair[1]]
+                self.idClusterIndex[pair[0]] = self.cluster_count
+                self.idClusterIndex[pair[1]] = self.cluster_count
+                self.cluster_count = self.cluster_count + 1
                 continue
 
             # If cluster0 is in a bin, stick the other match into that bin
