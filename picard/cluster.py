@@ -247,26 +247,27 @@ class Cluster(QtCore.QObject, Item):
 
     @staticmethod
     def cluster(files, threshold):
-        artistDict = ClusterDict()
-        albumDict = ClusterDict()
+        win_compat = config.setting["windows_compatibility"] or sys.platform == "win32"
+        artist_dict = ClusterDict()
+        album_dict = ClusterDict()
         tracks = []
         for file in files:
             artist = file.metadata["albumartist"] or file.metadata["artist"]
             album = file.metadata["album"]
             # Improve clustering from directory structure if no existing tags
             # Only used for grouping and to provide cluster title / artist - not added to file tags.
-            filename = file.filename
-            if config.setting["windows_compatibility"] or sys.platform == "win32":
-                filename = ntpath.splitdrive(filename)[1]
+            if win_compat:
+                filename = ntpath.splitdrive(file.filename)[1]
+            else:
+                filename = file.filename
             album, artist = album_artist_from_path(filename, album, artist)
             # For each track, record the index of the artist and album within the clusters
-            tracks.append((artistDict.add(artist),
-                           albumDict.add(album)))
+            tracks.append((artist_dict.add(artist), album_dict.add(album)))
 
-        artist_cluster_engine = ClusterEngine(artistDict)
+        artist_cluster_engine = ClusterEngine(artist_dict)
         artist_cluster_engine.cluster(threshold)
 
-        album_cluster_engine = ClusterEngine(albumDict)
+        album_cluster_engine = ClusterEngine(album_dict)
         album_cluster_engine.cluster(threshold)
 
         # Arrange tracks into albums
@@ -285,8 +286,7 @@ class Cluster(QtCore.QObject, Item):
             artist_id = None
             artist_hist = {}
             for track_id in album:
-                cluster = artist_cluster_engine.getClusterFromId(
-                    tracks[track_id][0])
+                cluster = artist_cluster_engine.getClusterFromId(tracks[track_id][0])
                 if cluster is not None:
                     cnt = artist_hist.get(cluster, 0) + 1
                     if cnt > artist_max:
