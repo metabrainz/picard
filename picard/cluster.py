@@ -273,7 +273,7 @@ class Cluster(QtCore.QObject, Item):
         # Arrange tracks into albums
         albums = {}
         for i, track in enumerate(tracks):
-            cluster = album_cluster_engine.getClusterFromId(track[1])
+            cluster = album_cluster_engine.get_cluster_from_id(track[1])
             if cluster is not None:
                 albums.setdefault(cluster, []).append(i)
 
@@ -286,7 +286,7 @@ class Cluster(QtCore.QObject, Item):
             artist_id = None
             artist_hist = {}
             for track_id in album:
-                cluster = artist_cluster_engine.getClusterFromId(tracks[track_id][0])
+                cluster = artist_cluster_engine.get_cluster_from_id(tracks[track_id][0])
                 if cluster is not None:
                     cnt = artist_hist.get(cluster, 0) + 1
                     if cnt > artist_max:
@@ -460,7 +460,7 @@ class ClusterEngine(object):
         # Index the word ids -> clusters
         self.index_id_cluster = {}
 
-    def getClusterFromId(self, clusterid):
+    def get_cluster_from_id(self, clusterid):
         return self.index_id_cluster.get(clusterid)
 
     def printCluster(self, cluster):
