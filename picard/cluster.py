@@ -463,14 +463,6 @@ class ClusterEngine(object):
     def get_cluster_from_id(self, clusterid):
         return self.index_id_cluster.get(clusterid)
 
-    def printCluster(self, cluster):
-        if cluster < 0:
-            print("[no such cluster]")
-            return
-
-        cluster_bin = self.cluster_bins[cluster]
-        print(cluster, " -> ", ", ".join([("'" + self.cluster_dict.get_word(i) + "'") for i in cluster_bin]))
-
     def get_cluster_title(self, cluster):
 
         if cluster < 0:
