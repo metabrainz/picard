@@ -421,7 +421,7 @@ class ClusterDict(object):
 
         return index
 
-    def getWord(self, index):
+    def get_word(self, index):
         word = None
         try:
             word, token = self.ids[index]
@@ -469,7 +469,7 @@ class ClusterEngine(object):
             return
 
         cluster_bin = self.cluster_bins[cluster]
-        print(cluster, " -> ", ", ".join([("'" + self.cluster_dict.getWord(i) + "'") for i in cluster_bin]))
+        print(cluster, " -> ", ", ".join([("'" + self.cluster_dict.get_word(i) + "'") for i in cluster_bin]))
 
     def get_cluster_title(self, cluster):
 
