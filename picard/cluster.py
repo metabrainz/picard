@@ -18,6 +18,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+from collections import defaultdict
 from heapq import (
     heappop,
     heappush,
@@ -381,9 +382,9 @@ class ClusterDict(object):
 
     def __init__(self):
         # word -> id index
-        self.words = {}
+        self.words = defaultdict(lambda: (-1, 0))
         # id -> word, token index
-        self.ids = {}
+        self.ids = defaultdict(lambda: (None, None))
         # counter for new id generation
         self.id = 0
         self.regexp = re.compile(r'\W', re.UNICODE)
@@ -410,41 +411,26 @@ class ClusterDict(object):
         if token == '':
             return -1
 
-        try:
-            index, count = self.words[word]
-            self.words[word] = (index, count + 1)
-        except KeyError:
+        index, count = self.words[word]
+        if index == -1:
             index = self.id
-            self.words[word] = (self.id, 1)
             self.ids[index] = (word, token)
             self.id = self.id + 1
+        self.words[word] = (index, count + 1)
 
         return index
 
     def get_word(self, index):
-        word = None
-        try:
-            word, token = self.ids[index]
-        except KeyError:
-            pass
+        word, token = self.ids[index]
         return word
 
     def get_token(self, index):
-        token = None
-        try:
-            word, token = self.ids[index]
-        except KeyError:
-            pass
+        word, token = self.ids[index]
         return token
 
     def get_word_and_count(self, index):
-        word = None
-        count = 0
-        try:
-            word, token = self.ids[index]
-            index, count = self.words[word]
-        except KeyError:
-            pass
+        word, unused = self.ids[index]
+        unused, count = self.words[word]
         return word, count
 
 
