@@ -389,7 +389,7 @@ class ClusterDict(object):
         self.regexp = re.compile(r'\W', re.UNICODE)
         self.spaces = re.compile(r'\s', re.UNICODE)
 
-    def getSize(self):
+    def get_size(self):
         return self.id
 
     def tokenize(self, word):
@@ -491,7 +491,7 @@ class ClusterEngine(object):
         # Keep the matches sorted in a heap
         heap = []
 
-        for y in range(self.cluster_dict.getSize()):
+        for y in range(self.cluster_dict.get_size()):
             for x in range(y):
                 if x != y:
                     c = similarity(self.cluster_dict.get_token(x).lower(),
@@ -500,7 +500,7 @@ class ClusterEngine(object):
                         heappush(heap, ((1.0 - c), [x, y]))
             QtCore.QCoreApplication.processEvents()
 
-        for i in range(self.cluster_dict.getSize()):
+        for i in range(self.cluster_dict.get_size()):
             word, count = self.cluster_dict.get_word_and_count(i)
             if word and count > 1:
                 self.cluster_bins[self.cluster_count] = [i]
