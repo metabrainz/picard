@@ -394,8 +394,9 @@ class ClusterDict(object):
         return self.id
 
     def tokenize(self, word):
-        token = self.regexp.sub('', word.lower())
-        return token if token else self.spaces.sub('', word.lower())
+        word = word.lower()
+        token = self.regexp.sub('', word)
+        return token if token else self.spaces.sub('', word)
 
     def add(self, word):
         """
