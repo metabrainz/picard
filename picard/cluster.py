@@ -456,7 +456,7 @@ class ClusterEngine(object):
         # keeps track of unique cluster index
         self.cluster_count = 0
         # Keeps track of the clusters we've created
-        self.clusterBins = {}
+        self.cluster_bins = {}
         # Index the word ids -> clusters
         self.idClusterIndex = {}
 
@@ -468,7 +468,7 @@ class ClusterEngine(object):
             print("[no such cluster]")
             return
 
-        cluster_bin = self.clusterBins[cluster]
+        cluster_bin = self.cluster_bins[cluster]
         print(cluster, " -> ", ", ".join([("'" + self.cluster_dict.getWord(i) + "'") for i in cluster_bin]))
 
     def getClusterTitle(self, cluster):
@@ -478,7 +478,7 @@ class ClusterEngine(object):
 
         cluster_max = 0
         maxWord = ''
-        for cluster_bin in self.clusterBins[cluster]:
+        for cluster_bin in self.cluster_bins[cluster]:
             word, count = self.cluster_dict.getWordAndCount(cluster_bin)
             if count >= cluster_max:
                 maxWord = word
@@ -503,7 +503,7 @@ class ClusterEngine(object):
         for i in range(self.cluster_dict.getSize()):
             word, count = self.cluster_dict.getWordAndCount(i)
             if word and count > 1:
-                self.clusterBins[self.cluster_count] = [i]
+                self.cluster_bins[self.cluster_count] = [i]
                 self.idClusterIndex[i] = self.cluster_count
                 self.cluster_count = self.cluster_count + 1
 
@@ -523,7 +523,7 @@ class ClusterEngine(object):
 
             # if neither item is in a cluster, make a new cluster
             if match0 == -1 and match1 == -1:
-                self.clusterBins[self.cluster_count] = [pair[0], pair[1]]
+                self.cluster_bins[self.cluster_count] = [pair[0], pair[1]]
                 self.idClusterIndex[pair[0]] = self.cluster_count
                 self.idClusterIndex[pair[1]] = self.cluster_count
                 self.cluster_count = self.cluster_count + 1
@@ -531,22 +531,22 @@ class ClusterEngine(object):
 
             # If cluster0 is in a bin, stick the other match into that bin
             if match0 >= 0 and match1 < 0:
-                self.clusterBins[match0].append(pair[1])
+                self.cluster_bins[match0].append(pair[1])
                 self.idClusterIndex[pair[1]] = match0
                 continue
 
             # If cluster1 is in a bin, stick the other match into that bin
             if match1 >= 0 and match0 < 0:
-                self.clusterBins[match1].append(pair[0])
+                self.cluster_bins[match1].append(pair[0])
                 self.idClusterIndex[pair[0]] = match1
                 continue
 
             # If both matches are already in two different clusters, merge the clusters
             if match1 != match0:
-                self.clusterBins[match0].extend(self.clusterBins[match1])
-                for match in self.clusterBins[match1]:
+                self.cluster_bins[match0].extend(self.cluster_bins[match1])
+                for match in self.cluster_bins[match1]:
                     self.idClusterIndex[match] = match0
-                del self.clusterBins[match1]
+                del self.cluster_bins[match1]
 
     def can_refresh(self):
         return False
