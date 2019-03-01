@@ -450,9 +450,9 @@ class ClusterDict(object):
 
 class ClusterEngine(object):
 
-    def __init__(self, clusterDict):
+    def __init__(self, cluster_dict):
         # the cluster dictionary we're using
-        self.clusterDict = clusterDict
+        self.cluster_dict = cluster_dict
         # keeps track of unique cluster index
         self.clusterCount = 0
         # Keeps track of the clusters we've created
@@ -469,7 +469,7 @@ class ClusterEngine(object):
             return
 
         cluster_bin = self.clusterBins[cluster]
-        print(cluster, " -> ", ", ".join([("'" + self.clusterDict.getWord(i) + "'") for i in cluster_bin]))
+        print(cluster, " -> ", ", ".join([("'" + self.cluster_dict.getWord(i) + "'") for i in cluster_bin]))
 
     def getClusterTitle(self, cluster):
 
@@ -479,7 +479,7 @@ class ClusterEngine(object):
         cluster_max = 0
         maxWord = ''
         for cluster_bin in self.clusterBins[cluster]:
-            word, count = self.clusterDict.getWordAndCount(cluster_bin)
+            word, count = self.cluster_dict.getWordAndCount(cluster_bin)
             if count >= cluster_max:
                 maxWord = word
                 cluster_max = count
@@ -491,17 +491,17 @@ class ClusterEngine(object):
         # Keep the matches sorted in a heap
         heap = []
 
-        for y in range(self.clusterDict.getSize()):
+        for y in range(self.cluster_dict.getSize()):
             for x in range(y):
                 if x != y:
-                    c = similarity(self.clusterDict.getToken(x).lower(),
-                                   self.clusterDict.getToken(y).lower())
+                    c = similarity(self.cluster_dict.getToken(x).lower(),
+                                   self.cluster_dict.getToken(y).lower())
                     if c >= threshold:
                         heappush(heap, ((1.0 - c), [x, y]))
             QtCore.QCoreApplication.processEvents()
 
-        for i in range(self.clusterDict.getSize()):
-            word, count = self.clusterDict.getWordAndCount(i)
+        for i in range(self.cluster_dict.getSize()):
+            word, count = self.cluster_dict.getWordAndCount(i)
             if word and count > 1:
                 self.clusterBins[self.clusterCount] = [i]
                 self.idClusterIndex[i] = self.clusterCount
