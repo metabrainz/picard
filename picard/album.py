@@ -19,6 +19,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from operator import itemgetter
+from collections import defaultdict
 import traceback
 
 from PyQt5 import (
@@ -470,39 +471,40 @@ class Album(DataObject, Item):
     def _match_files(self, files, recordingid=None, threshold=0):
         """Match files to tracks on this album, based on metadata similarity or recordingid."""
         moves = []
-
+        tracks_cache = defaultdict(lambda: None)
         for file in list(files):
             if file.state == File.REMOVED:
                 continue
-
-            best_track = None
-            best_score = -1
-
-            def best_match(score, track):
-                nonlocal best_score, best_track
-                if score > best_score:
-                    best_track, best_score = track, score
-
+            # if we have a recordingid to match against, use that in priority
             recid = recordingid or file.metadata['musicbrainz_recordingid']
-            if mbid_validate(recid):
+            if recid and mbid_validate(recid):
+                if not tracks_cache:
+                    for track in self.tracks:
+                        tm_recordingid = track.orig_metadata['musicbrainz_recordingid']
+                        tm_tracknumber = track.orig_metadata['tracknumber']
+                        tm_discnumber = track.orig_metadata['discnumber']
+                        for tup in (
+                            (tm_recordingid, tm_tracknumber, tm_discnumber),
+                            (tm_recordingid, tm_tracknumber),
+                            (tm_recordingid, )):
+                            tracks_cache[tup] = track
                 tracknumber = file.metadata['tracknumber']
                 discnumber = file.metadata['discnumber']
-                for track in self.tracks:
-                    tm = track.orig_metadata
-                    if recid == tm['musicbrainz_recordingid']:
-                        if tracknumber == tm['tracknumber']:
-                            if discnumber == tm['discnumber']:
-                                best_match(4.0, track)
-                                break
-                            else:
-                                best_match(3.0, track)
-                        else:
-                            best_match(2.0, track)
-            if best_track is None:
-                for track in self.tracks:
-                    sim = track.metadata.compare(file.orig_metadata)
-                    if sim >= threshold:
-                        best_match(sim, track)
+                track = (tracks_cache[(recid, tracknumber, discnumber)]
+                         or tracks_cache[(recid, tracknumber)]
+                         or tracks_cache[(recid, )])
+                if track:
+                    moves.append((file, track))
+                    continue
+            # try to match by similarity
+            # TODO: find a way to speed up this part, it needs to iterate all
+            # tracks for each file, and metadata.compare() is rather complex
+            best_track = None
+            best_score = -1
+            for track in self.tracks:
+                sim = track.metadata.compare(file.orig_metadata)
+                if sim >= threshold and sim > best_score:
+                    best_track, best_score = track, sim
             moves.append((file, best_track or self.unmatched_files))
         return moves
 
