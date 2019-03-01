@@ -280,7 +280,7 @@ class Cluster(QtCore.QObject, Item):
         # Now determine the most prominent names in the cluster and build the
         # final cluster list
         for album_id, album in albums.items():
-            album_name = album_cluster_engine.getClusterTitle(album_id)
+            album_name = album_cluster_engine.get_cluster_title(album_id)
 
             artist_max = 0
             artist_id = None
@@ -297,7 +297,7 @@ class Cluster(QtCore.QObject, Item):
             if artist_id is None:
                 artist_name = "Various Artists"
             else:
-                artist_name = artist_cluster_engine.getClusterTitle(artist_id)
+                artist_name = artist_cluster_engine.get_cluster_title(artist_id)
 
             yield album_name, artist_name, (files[i] for i in album)
 
@@ -471,7 +471,7 @@ class ClusterEngine(object):
         cluster_bin = self.cluster_bins[cluster]
         print(cluster, " -> ", ", ".join([("'" + self.cluster_dict.getWord(i) + "'") for i in cluster_bin]))
 
-    def getClusterTitle(self, cluster):
+    def get_cluster_title(self, cluster):
 
         if cluster < 0:
             return ""
