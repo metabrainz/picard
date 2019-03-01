@@ -437,7 +437,7 @@ class ClusterDict(object):
             pass
         return token
 
-    def getWordAndCount(self, index):
+    def get_word_and_count(self, index):
         word = None
         count = 0
         try:
@@ -479,7 +479,7 @@ class ClusterEngine(object):
         cluster_max = 0
         maxWord = ''
         for cluster_bin in self.cluster_bins[cluster]:
-            word, count = self.cluster_dict.getWordAndCount(cluster_bin)
+            word, count = self.cluster_dict.get_word_and_count(cluster_bin)
             if count >= cluster_max:
                 maxWord = word
                 cluster_max = count
@@ -501,7 +501,7 @@ class ClusterEngine(object):
             QtCore.QCoreApplication.processEvents()
 
         for i in range(self.cluster_dict.getSize()):
-            word, count = self.cluster_dict.getWordAndCount(i)
+            word, count = self.cluster_dict.get_word_and_count(i)
             if word and count > 1:
                 self.cluster_bins[self.cluster_count] = [i]
                 self.index_id_cluster[i] = self.cluster_count
