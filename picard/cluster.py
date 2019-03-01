@@ -408,12 +408,11 @@ class ClusterDict(object):
         if word == '':
             return -1
 
-        token = self.tokenize(word)
-        if token == '':
-            return -1
-
         index, count = self.words[word]
         if index == -1:
+            token = self.tokenize(word)
+            if token == '':
+                return -1
             index = self.id
             self.ids[index] = (word, token)
             self.id = self.id + 1
