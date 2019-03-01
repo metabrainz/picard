@@ -470,10 +470,11 @@ class ClusterEngine(object):
         heap = []
 
         for y in range(self.cluster_dict.get_size()):
+            token_y = self.cluster_dict.get_token(y).lower()
             for x in range(y):
                 if x != y:
-                    c = similarity(self.cluster_dict.get_token(x).lower(),
-                                   self.cluster_dict.get_token(y).lower())
+                    token_x = self.cluster_dict.get_token(x).lower()
+                    c = similarity(token_x, token_y)
                     if c >= threshold:
                         heappush(heap, ((1.0 - c), [x, y]))
             QtCore.QCoreApplication.processEvents()
