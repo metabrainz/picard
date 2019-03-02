@@ -65,6 +65,9 @@ class File(QtCore.QObject, Item):
     ERROR = 3
     REMOVED = 4
 
+    LOOKUP_METADATA = 1
+    LOOKUP_ACOUSTID = 2
+
     comparison_weights = {
         "title": 13,
         "artist": 4,
@@ -619,7 +622,7 @@ class File(QtCore.QObject, Item):
                 best_match = match
                 best_sim = best_match[0]
         sim, rg, release, track = best_match
-        if lookuptype != 'acoustid' and sim < config.setting['file_lookup_threshold']:
+        if lookuptype != File.LOOKUP_ACOUSTID and sim < config.setting['file_lookup_threshold']:
             self.tagger.window.set_statusbar_message(
                 N_("No matching tracks above the threshold for file '%(filename)s'"),
                 {'filename': self.filename},
@@ -636,7 +639,7 @@ class File(QtCore.QObject, Item):
 
         self.clear_pending()
 
-        if lookuptype == 'acoustid':
+        if lookuptype == File.LOOKUP_ACOUSTID:
             self.tagger.acoustidmanager.add(self, track['id'])
         if release:
             self.tagger.get_release_group_by_id(rg['id']).loaded_albums.add(release['id'])
@@ -656,7 +659,8 @@ class File(QtCore.QObject, Item):
         self.clear_lookup_task()
         metadata = self.metadata
         self.set_pending()
-        self.lookup_task = self.tagger.mb_api.find_tracks(partial(self._lookup_finished, 'metadata'),
+        self.lookup_task = self.tagger.mb_api.find_tracks(
+            partial(self._lookup_finished, File.LOOKUP_METADATA),
             track=metadata['title'],
             artist=metadata['artist'],
             release=metadata['album'],
