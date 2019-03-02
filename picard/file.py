@@ -622,7 +622,7 @@ class File(QtCore.QObject, Item):
                 best_match = match
                 best_sim = best_match[0]
         sim, rg, release, track = best_match
-        if lookuptype != File.LOOKUP_ACOUSTID and sim < config.setting['file_lookup_threshold']:
+        if lookuptype == File.LOOKUP_METADATA and sim < config.setting['file_lookup_threshold']:
             self.tagger.window.set_statusbar_message(
                 N_("No matching tracks above the threshold for file '%(filename)s'"),
                 {'filename': self.filename},
