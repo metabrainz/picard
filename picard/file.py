@@ -597,10 +597,7 @@ class File(QtCore.QObject, Item):
             log.error("Network error encountered during the lookup for %s. Error code: %s",
                       self.filename, error)
         try:
-            if lookuptype == "metadata":
-                tracks = document['recordings']
-            elif lookuptype == "acoustid":
-                tracks = document['recordings']
+            tracks = document['recordings']
         except (KeyError, TypeError):
             tracks = None
 
