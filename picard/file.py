@@ -400,35 +400,47 @@ class File(QtCore.QObject, Item):
             image.save(dirname, metadata, counters)
 
     def _move_additional_files(self, old_filename, new_filename):
-        """Move extra files, like playlists..."""
-        old_path = os.path.dirname(old_filename)
-        new_path = os.path.dirname(new_filename)
-        try:
-            names = set(os.listdir(old_path))
-        except os.error:
-            log.error("Error: {} directory not found".naming_format(old_path))
-            return
-        filtered_names = {name for name in names if name[0] != "."}
-        for pattern in config.setting["move_additional_files_pattern"].split():
+        """Move extra files, like images, playlists..."""
+        patterns = config.setting["move_additional_files_pattern"]
+        pattern_regexes = set()
+        for pattern in patterns.split():
             pattern = pattern.strip()
             if not pattern:
                 continue
             pattern_regex = re.compile(fnmatch.translate(pattern), re.IGNORECASE)
-            file_names = names
-            if pattern[0] != '.':
-                file_names = filtered_names
-            for old_file in set(file_names):
-                if pattern_regex.match(old_file):
-                    names.discard(old_file)
-                    filtered_names.discard(old_file)
-                    new_file = os.path.join(new_path, old_file)
-                    old_file = os.path.join(old_path, old_file)
-                    # FIXME we shouldn't do this from a thread!
-                    if self.tagger.files.get(decode_filename(old_file)):
-                        log.debug("File loaded in the tagger, not moving %r", old_file)
+            match_hidden = pattern.startswith('.')
+            pattern_regexes.add((pattern_regex, match_hidden))
+        if not pattern_regexes:
+            return
+        new_path = os.path.dirname(new_filename)
+        old_path = os.path.dirname(old_filename)
+        moves = set()
+        try:
+            # TODO: use with statement with python 3.6+
+            for entry in os.scandir(old_path):
+                is_hidden = entry.name.startswith('.')
+                for pattern_regex, match_hidden in pattern_regexes:
+                    if is_hidden and not match_hidden:
                         continue
-                    log.debug("Moving %r to %r", old_file, new_file)
-                    shutil.move(old_file, new_file)
+                    if pattern_regex.match(entry.name):
+                        new_file_path = os.path.join(new_path, entry.name)
+                        moves.add((entry.path, new_file_path))
+                        break  # we are done with this file
+        except OSError as why:
+            log.error("Failed to scan %r: %s", old_path, why)
+            return
+
+        for old_file_path, new_file_path in moves:
+            # FIXME we shouldn't do this from a thread!
+            if self.tagger.files.get(decode_filename(old_file_path)):
+                log.debug("File loaded in the tagger, not moving %r", old_file_path)
+                continue
+            log.debug("Moving %r to %r", old_file_path, new_file_path)
+            try:
+                shutil.move(old_file_path, new_file_path)
+            except OSError as why:
+                log.error("Failed to move %r to %r: %s", old_file_path,
+                          new_file_path, why)
 
     def remove(self, from_parent=True):
         if from_parent and self.parent:
