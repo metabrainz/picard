@@ -615,10 +615,14 @@ class File(QtCore.QObject, Item):
             return
 
         # multiple matches -- calculate similarities to each of them
-        match = sorted((self.metadata.compare_to_track(
-            track, self.comparison_weights) for track in tracks),
-            reverse=True, key=itemgetter(0))[0]
-        if lookuptype != 'acoustid' and match[0] < config.setting['file_lookup_threshold']:
+        best_sim = -1
+        for track in tracks:
+            match = self.metadata.compare_to_track(track, self.comparison_weights)
+            if match[0] > best_sim:
+                best_match = match
+                best_sim = best_match[0]
+        sim, rg, release, track = best_match
+        if lookuptype != 'acoustid' and sim < config.setting['file_lookup_threshold']:
             self.tagger.window.set_statusbar_message(
                 N_("No matching tracks above the threshold for file '%(filename)s'"),
                 {'filename': self.filename},
@@ -635,7 +639,6 @@ class File(QtCore.QObject, Item):
 
         self.clear_pending()
 
-        rg, release, track = match[1:]
         if lookuptype == 'acoustid':
             self.tagger.acoustidmanager.add(self, track['id'])
         if release:
