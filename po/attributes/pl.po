@@ -9,13 +9,14 @@
 # Nikolai Prokoschenko <nikolai@prokoschenko.de>, 2011
 # Piotr Myśliński <piotr.myslinski@gmail.com>, 2013
 # Rafał Nawrot <rafalnawrot49@gmail.com>, 2016
+# rawrower <rawrower@gmail.com>, 2019
 # szczepaxn pax <szczepaxn@gmail.com>, 2016
 #   Tobias Toedter <t.toedter@gmx.net>, 2007
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2019-01-22 20:58+0000\n"
-"Last-Translator: yvanz\n"
+"PO-Revision-Date: 2019-02-24 14:31+0000\n"
+"Last-Translator: rawrower <rawrower@gmail.com>\n"
 "Language-Team: Polish (http://www.transifex.com/musicbrainz/musicbrainz/language/pl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -91,7 +92,7 @@ msgstr "8-calowy LaserDisc"
 #: DB:medium_format/name:78
 msgctxt "medium_format"
 msgid "8-Track Cartridge"
-msgstr ""
+msgstr "Kaseta 8-ścieżkowa"
 
 #: DB:medium_format/name:34
 msgctxt "medium_format"
@@ -125,7 +126,7 @@ msgctxt "work_type"
 msgid ""
 "A ballet is music composed to be used, together with a choreography, for a "
 "ballet dance production."
-msgstr "Balet to utwór napisany specjalnie dla widowiska baletowego"
+msgstr "Balet to utwór napisany do użytku w połączeniu z choreografią w widowisku baletowym."
 
 #: DB:work_type/description:3
 msgctxt "work_type"

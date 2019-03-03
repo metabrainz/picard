@@ -5,6 +5,7 @@
 # 
 # Translators:
 # Wieland Hoffmann <themineo+transifex@googlemail.com>, 2018
+# Philipp Wolfer <ph.wolfer@gmail.com>, 2018
 # Laurent Monin <i18n@norz.org>, 2018
 # 
 #, fuzzy
@@ -114,7 +115,7 @@ msgid ""
 "later, and is hosted on GitHub where it is actively developed by some "
 "awesome developers."
 msgstr ""
-"Open Source: Picard ist unter der GNU General Public License 2.0  (oder "
+"Open Source: Picard ist unter der GNU General Public License 2.0 (oder "
 "höher) lizenziert und wird auf GitHub von großartigen Entwicklern "
 "weiterentwickelt."
 
