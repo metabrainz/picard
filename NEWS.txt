@@ -1,3 +1,37 @@
+Version 2.1.3 - 2019-03-03
+
+** Bug-fix
+    * [PICARD-323] - Only the discid of the first disc in a release is written to tags
+    * [PICARD-455] - Picard setting cover art height, width and depth to 0 for FLAC files --> breaks libFLAC
+    * [PICARD-729] - Tracks get stuck at "[loading track information]" on Bad Gateway errors
+    * [PICARD-938] - Need two left-arrow key presses to go from track with file to album
+    * [PICARD-1178] - Images tagged with extra types that the user has chosen to ignore should not be shown as 'modified'
+    * [PICARD-1288] - Folskonomy tags / genre fallback on album artists tags not working
+    * [PICARD-1422] - Windows: Uninstall 32 bit Picard before upgrade
+    * [PICARD-1447] - When releasing a new version, appdata should also be updated
+    * [PICARD-1460] - Windows installer does not detect running instance
+    * [PICARD-1461] - Crash when running with Spanish language
+    * [PICARD-1463] - Picard crashes on startup on Windows
+    * [PICARD-1469] - Force close when adding songs to larger albums
+    * [PICARD-1471] - Artist searches do not show begin and end area
+    * [PICARD-1473] - AcoustId lookup fails if fingerprint already in tags
+    * [PICARD-1474] - Windows installer shows outdated version string in file properties
+    * [PICARD-1475] - Cover art sources do not support HTTPS
+    * [PICARD-1476] - Filled up thread pool prevents metadata box updates
+    * [PICARD-1478] - Changing MB server requires a restart
+    * [PICARD-1480] - Search line input clear button icon is too small
+
+** Task
+    * [PICARD-1459] - Remove OptionsPage.info method
+    * [PICARD-1472] - macOS code signing on Travis CI fails for xcode7.3 image
+
+** Improvement
+    * [PICARD-1242] - Consider the number of AcoustID sources for linked recordings
+    * [PICARD-1457] - "Check for Update" should be in the Picard menu
+    * [PICARD-1458] - "Check for Update" should have an ellipsis at the end
+    * [PICARD-1470] - Make warning about Qt locale loading less prominent
+
+
 Version 2.1.2 - 2019-01-29
 
 ** Bug-fix
