@@ -243,3 +243,19 @@ class CompareBarcodesTest(unittest.TestCase):
         self.assertFalse(util.compare_barcodes('727361379704', '1727361379704'))
         self.assertFalse(util.compare_barcodes('0727361379704', None))
         self.assertFalse(util.compare_barcodes(None, '0727361379704'))
+
+
+class MbidValidateTest(unittest.TestCase):
+
+    def test_ok(self):
+        self.assertTrue(util.mbid_validate('2944824d-4c26-476f-a981-be849081942f'))
+        self.assertTrue(util.mbid_validate('2944824D-4C26-476F-A981-be849081942f'))
+        self.assertFalse(util.mbid_validate(''))
+        self.assertFalse(util.mbid_validate('Z944824d-4c26-476f-a981-be849081942f'))
+        self.assertFalse(util.mbid_validate('22944824d-4c26-476f-a981-be849081942f'))
+        self.assertFalse(util.mbid_validate('2944824d-4c26-476f-a981-be849081942ff'))
+        self.assertFalse(util.mbid_validate('2944824d-4c26.476f-a981-be849081942f'))
+
+    def test_not_ok(self):
+        self.assertRaises(TypeError, util.mbid_validate, 123)
+        self.assertRaises(TypeError, util.mbid_validate, None)
