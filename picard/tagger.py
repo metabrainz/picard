@@ -387,25 +387,26 @@ class Tagger(QtWidgets.QApplication):
         return super().event(event)
 
     def _file_loaded(self, file, target=None):
-        if file is not None and not file.has_error():
-            recordingid = file.metadata.getall('musicbrainz_recordingid')[0] \
-                if 'musicbrainz_recordingid' in file.metadata else ''
-            if target is not None:
-                self.move_files([file], target)
-            elif not config.setting["ignore_file_mbids"]:
-                albumid = file.metadata.getall('musicbrainz_albumid')[0] \
-                    if 'musicbrainz_albumid' in file.metadata else ''
-                if mbid_validate(albumid):
-                    if mbid_validate(recordingid):
-                        self.move_file_to_track(file, albumid, recordingid)
-                    else:
-                        self.move_file_to_album(file, albumid)
-                elif mbid_validate(recordingid):
-                    self.move_file_to_nat(file, recordingid)
-                elif config.setting['analyze_new_files'] and file.can_analyze():
-                    self.analyze([file])
+        if file is None or file.has_error():
+            return
+        recordingid = file.metadata.getall('musicbrainz_recordingid')[0] \
+            if 'musicbrainz_recordingid' in file.metadata else ''
+        if target is not None:
+            self.move_files([file], target)
+        elif not config.setting["ignore_file_mbids"]:
+            albumid = file.metadata.getall('musicbrainz_albumid')[0] \
+                if 'musicbrainz_albumid' in file.metadata else ''
+            if mbid_validate(albumid):
+                if mbid_validate(recordingid):
+                    self.move_file_to_track(file, albumid, recordingid)
+                else:
+                    self.move_file_to_album(file, albumid)
+            elif mbid_validate(recordingid):
+                self.move_file_to_nat(file, recordingid)
             elif config.setting['analyze_new_files'] and file.can_analyze():
                 self.analyze([file])
+        elif config.setting['analyze_new_files'] and file.can_analyze():
+            self.analyze([file])
 
     def move_files(self, files, target):
         if target is None:
