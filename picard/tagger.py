@@ -401,16 +401,20 @@ class Tagger(QtWidgets.QApplication):
             albumid = file.metadata['musicbrainz_albumid']
             is_valid_albumid = mbid_validate(albumid)
 
+            if is_valid_albumid and is_valid_recordingid:
+                self.move_file_to_track(file, albumid, recordingid)
+                return
+
             if is_valid_albumid:
-                if is_valid_recordingid:
-                    self.move_file_to_track(file, albumid, recordingid)
-                else:
-                    self.move_file_to_album(file, albumid)
-            elif is_valid_recordingid:
+                self.move_file_to_album(file, albumid)
+                return
+
+            if is_valid_recordingid:
                 self.move_file_to_nat(file, recordingid)
-            elif config.setting['analyze_new_files'] and file.can_analyze():
-                self.analyze([file])
-        elif config.setting['analyze_new_files'] and file.can_analyze():
+                return
+
+        # fallback on analyze if nothing else worked
+        if config.setting['analyze_new_files'] and file.can_analyze():
             self.analyze([file])
 
     def move_files(self, files, target):
