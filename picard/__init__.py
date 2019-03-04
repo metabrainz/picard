@@ -21,7 +21,7 @@ import re
 
 PICARD_ORG_NAME = "MusicBrainz"
 PICARD_APP_NAME = "Picard"
-PICARD_VERSION = (2, 1, 3, 'final', 0)
+PICARD_VERSION = (2, 2, 0, 'dev', 1)
 
 
 # optional build version
