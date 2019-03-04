@@ -23,7 +23,6 @@ import json
 import ntpath
 import os
 import re
-from string import Template
 import sys
 from time import time
 import unicodedata
@@ -215,10 +214,12 @@ def find_executable(*executables):
                 return f
 
 
-_mbid_format = Template('$h{8}-$h$l-$h$l-$h$l-$h{12}').safe_substitute(h='[0-9a-fA-F]', l='{4}')
-_re_mbid_val = re.compile(_mbid_format)
+_mbid_format = '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'
+_re_mbid_val = re.compile(_mbid_format, re.IGNORECASE)
 def mbid_validate(string):
-    return _re_mbid_val.match(string)
+    """Test if passed string is a valid mbid
+    """
+    return _re_mbid_val.match(string) is not None
 
 
 def parse_amazon_url(url):
