@@ -744,11 +744,12 @@ class Tagger(QtWidgets.QApplication):
 
     def analyze(self, objs):
         """Analyze the file(s)."""
+        if not self.use_acoustid:
+            return
         files = self.get_files_from_objects(objs)
         for file in files:
             file.set_pending()
-            if self.use_acoustid:
-                self._acoustid.analyze(file, partial(file._lookup_finished, 'acoustid'))
+            self._acoustid.analyze(file, partial(file._lookup_finished, 'acoustid'))
 
     # =======================================================================
     #  Metadata-based lookups
