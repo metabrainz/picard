@@ -389,10 +389,13 @@ class Tagger(QtWidgets.QApplication):
     def _file_loaded(self, file, target=None):
         if file is None or file.has_error():
             return
-        recordingid = file.metadata['musicbrainz_recordingid']
+
         if target is not None:
             self.move_files([file], target)
-        elif not config.setting["ignore_file_mbids"]:
+            return
+
+        recordingid = file.metadata['musicbrainz_recordingid']
+        if not config.setting["ignore_file_mbids"]:
             albumid = file.metadata['musicbrainz_albumid']
             if mbid_validate(albumid):
                 if mbid_validate(recordingid):
