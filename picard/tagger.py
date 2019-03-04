@@ -394,8 +394,8 @@ class Tagger(QtWidgets.QApplication):
             self.move_files([file], target)
             return
 
-        recordingid = file.metadata['musicbrainz_recordingid']
         if not config.setting["ignore_file_mbids"]:
+            recordingid = file.metadata['musicbrainz_recordingid']
             albumid = file.metadata['musicbrainz_albumid']
             if mbid_validate(albumid):
                 if mbid_validate(recordingid):
