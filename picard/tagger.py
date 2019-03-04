@@ -396,13 +396,17 @@ class Tagger(QtWidgets.QApplication):
 
         if not config.setting["ignore_file_mbids"]:
             recordingid = file.metadata['musicbrainz_recordingid']
+            is_valid_recordingid = mbid_validate(recordingid)
+
             albumid = file.metadata['musicbrainz_albumid']
-            if mbid_validate(albumid):
-                if mbid_validate(recordingid):
+            is_valid_albumid = mbid_validate(albumid)
+
+            if is_valid_albumid:
+                if is_valid_recordingid:
                     self.move_file_to_track(file, albumid, recordingid)
                 else:
                     self.move_file_to_album(file, albumid)
-            elif mbid_validate(recordingid):
+            elif is_valid_recordingid:
                 self.move_file_to_nat(file, recordingid)
             elif config.setting['analyze_new_files'] and file.can_analyze():
                 self.analyze([file])
