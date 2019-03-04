@@ -470,7 +470,6 @@ class Album(DataObject, Item):
 
     def _match_files(self, files, recordingid=None, threshold=0):
         """Match files to tracks on this album, based on metadata similarity or recordingid."""
-        moves = []
         tracks_cache = defaultdict(lambda: None)
 
         def build_tracks_cache():
@@ -498,7 +497,7 @@ class Album(DataObject, Item):
                          or tracks_cache[(recid, tracknumber)]
                          or tracks_cache[(recid, )])
                 if track:
-                    moves.append((file, track))
+                    yield (file, track)
                     continue
             # try to match by similarity
             # TODO: find a way to speed up this part, it needs to iterate all
@@ -509,8 +508,7 @@ class Album(DataObject, Item):
                 sim = track.metadata.compare(file.orig_metadata)
                 if sim >= threshold and sim > best_score:
                     best_track, best_score = track, sim
-            moves.append((file, best_track or self.unmatched_files))
-        return moves
+            yield (file, best_track or self.unmatched_files)
 
     def match_files(self, files, recordingid=None):
         """Match and move files to tracks on this album, based on metadata similarity or recordingid."""
