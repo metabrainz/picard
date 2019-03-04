@@ -402,19 +402,26 @@ class Tagger(QtWidgets.QApplication):
             is_valid_albumid = mbid_validate(albumid)
 
             if is_valid_albumid and is_valid_recordingid:
+                log.debug("%r has release (%s) and recording (%s) MBIDs, moving to track...",
+                          file, albumid, recordingid)
                 self.move_file_to_track(file, albumid, recordingid)
                 return
 
             if is_valid_albumid:
+                log.debug("%r has only release MBID (%s), moving to album...",
+                          file, albumid)
                 self.move_file_to_album(file, albumid)
                 return
 
             if is_valid_recordingid:
+                log.debug("%r has only recording MBID (%s), moving to non-album track...",
+                          file, recordingid)
                 self.move_file_to_nat(file, recordingid)
                 return
 
         # fallback on analyze if nothing else worked
         if config.setting['analyze_new_files'] and file.can_analyze():
+            log.debug("Trying to analyze %r ...", file)
             self.analyze([file])
 
     def move_files(self, files, target):
