@@ -8,6 +8,7 @@ from test.picardtestcase import PicardTestCase
 from picard import config
 import picard.formats
 
+
 settings = {
     'enabled_plugins': '',
     'move_files': True,
@@ -47,13 +48,14 @@ class TestFileSystem(PicardTestCase):
         # .../<src_rel_path>/test.mp3
         # .../<src_rel_path>/cover.jpg
 
-        old_filename = self._set_up_src_file(os.path.join('test', 'data', 'test.mp3'),
-                                             os.path.join(src_rel_path, 'test.mp3'))
-        old_additional_filename = self._set_up_src_file(os.path.join('test', 'data', 'mb.jpg'),
-                                                        os.path.join(src_rel_path, 'cover.jpg'))
-        old_additional_filename_hidden = self._set_up_src_file(os.path.join('test', 'data', 'mb.jpg'),
-                                                               os.path.join(src_rel_path,
-                                                                            '.hidden.jpg'))
+        files = dict()
+        files['old_mp3'] = self._set_up_src_file(os.path.join('test', 'data', 'test.mp3'),
+                                                 os.path.join(src_rel_path, 'test.mp3'))
+        files['old_img'] = self._set_up_src_file(os.path.join('test', 'data', 'mb.jpg'),
+                                                 os.path.join(src_rel_path, 'cover.jpg'))
+        files['old_hidden_img'] = self._set_up_src_file(os.path.join('test', 'data', 'mb.jpg'),
+                                                        os.path.join(src_rel_path,
+                                                                     '.hidden.jpg'))
 
         with suppress(FileExistsError):
             os.mkdir(os.path.join(self.tgt_directory, tgt_rel_path))
@@ -62,78 +64,64 @@ class TestFileSystem(PicardTestCase):
         # .../<tgt_rel_path>/test.mp3
         # .../<tgt_rel_path>/cover.jpg
 
-        new_filename = self._set_up_tgt_filename(
+        files['new_mp3'] = self._set_up_tgt_filename(
             os.path.join(tgt_rel_path, 'test.mp3'))
 
-        new_additional_filename = self._set_up_tgt_filename(
+        files['new_img'] = self._set_up_tgt_filename(
             os.path.join(tgt_rel_path, 'cover.jpg'))
 
-        new_additional_filename_hidden = self._set_up_tgt_filename(
+        files['new_hidden_img'] = self._set_up_tgt_filename(
             os.path.join(tgt_rel_path, '.hidden.jpg'))
 
-        return (old_filename, old_additional_filename, new_filename,
-                new_additional_filename, old_additional_filename_hidden,
-                new_additional_filename_hidden)
+        return files
 
     def test_move_additional_files_source_unicode(self):
         files = self._prepare_files(src_rel_path='música')
-        (old_filename, old_additional_filename, new_filename,
-         new_additional_filename) = files[:4]
 
-        f = picard.formats.open_(old_filename)
-        f._move_additional_files(old_filename, new_filename)
+        f = picard.formats.open_(files['old_mp3'])
+        f._move_additional_files(files['old_mp3'], files['new_mp3'])
 
-        self.assertTrue(os.path.isfile(new_additional_filename))
-        self.assertFalse(os.path.isfile(old_additional_filename))
+        self.assertTrue(os.path.isfile(files['new_img']))
+        self.assertFalse(os.path.isfile(files['old_img']))
 
     def test_move_additional_files_target_unicode(self):
         files = self._prepare_files(tgt_rel_path='música')
-        (old_filename, old_additional_filename, new_filename,
-         new_additional_filename) = files[:4]
 
-        f = picard.formats.open_(old_filename)
-        f._move_additional_files(old_filename, new_filename)
+        f = picard.formats.open_(files['old_mp3'])
+        f._move_additional_files(files['old_mp3'], files['new_mp3'])
 
-        self.assertTrue(os.path.isfile(new_additional_filename))
-        self.assertFalse(os.path.isfile(old_additional_filename))
+        self.assertTrue(os.path.isfile(files['new_img']))
+        self.assertFalse(os.path.isfile(files['old_img']))
 
     def test_move_additional_files_duplicate_patterns(self):
         files = self._prepare_files()
-        (old_filename, old_additional_filename, new_filename,
-         new_additional_filename) = files[:4]
 
         config.setting['move_additional_files_pattern'] = 'cover.jpg *.jpg'
 
-        f = picard.formats.open_(old_filename)
-        f._move_additional_files(old_filename, new_filename)
+        f = picard.formats.open_(files['old_mp3'])
+        f._move_additional_files(files['old_mp3'], files['new_mp3'])
 
-        self.assertTrue(os.path.isfile(new_additional_filename))
-        self.assertFalse(os.path.isfile(old_additional_filename))
+        self.assertTrue(os.path.isfile(files['new_img']))
+        self.assertFalse(os.path.isfile(files['old_img']))
 
     def test_move_additional_files_hidden_nopattern(self):
         files = self._prepare_files()
-        (old_filename, old_additional_filename, new_filename,
-         new_additional_filename, old_additional_filename_hidden,
-         new_additional_filename_hidden) = files
 
         config.setting['move_additional_files_pattern'] = '*.jpg'
 
-        f = picard.formats.open_(old_filename)
-        f._move_additional_files(old_filename, new_filename)
+        f = picard.formats.open_(files['old_mp3'])
+        f._move_additional_files(files['old_mp3'], files['new_mp3'])
 
-        self.assertFalse(os.path.isfile(new_additional_filename_hidden))
-        self.assertTrue(os.path.isfile(old_additional_filename_hidden))
+        self.assertFalse(os.path.isfile(files['new_hidden_img']))
+        self.assertTrue(os.path.isfile(files['old_hidden_img']))
 
     def test_move_additional_files_hidden_pattern(self):
         files = self._prepare_files()
-        (old_filename, old_additional_filename, new_filename,
-         new_additional_filename, old_additional_filename_hidden,
-         new_additional_filename_hidden) = files
 
         config.setting['move_additional_files_pattern'] = '*.jpg .*.jpg'
 
-        f = picard.formats.open_(old_filename)
-        f._move_additional_files(old_filename, new_filename)
+        f = picard.formats.open_(files['old_mp3'])
+        f._move_additional_files(files['old_mp3'], files['new_mp3'])
 
-        self.assertTrue(os.path.isfile(new_additional_filename_hidden))
-        self.assertFalse(os.path.isfile(old_additional_filename_hidden))
+        self.assertTrue(os.path.isfile(files['new_hidden_img']))
+        self.assertFalse(os.path.isfile(files['old_hidden_img']))
