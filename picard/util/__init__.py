@@ -32,6 +32,8 @@ from PyQt5 import QtCore
 # Required for compatibility with lastfmplus which imports this from here rather than loading it direct.
 from picard.const import MUSICBRAINZ_SERVERS
 from picard.const.sys import (
+    FROZEN_TEMP_PATH,
+    IS_FROZEN,
     IS_MACOS,
     IS_WIN,
 )
@@ -39,12 +41,6 @@ from picard.const.sys import (
 
 if IS_WIN:
     from ctypes import windll
-
-
-# These variables are set by pyinstaller if running from a packaged build
-# See http://pyinstaller.readthedocs.io/en/stable/runtime-information.html
-is_frozen = getattr(sys, 'frozen', False)
-frozen_temp_path = getattr(sys, '_MEIPASS', '')
 
 
 class LockableObject(QtCore.QObject):
@@ -210,8 +206,8 @@ def find_executable(*executables):
     paths = [os.path.dirname(sys.executable)] if sys.executable else []
     paths += os.environ.get('PATH', '').split(os.pathsep)
     # This is for searching for executables bundled in packaged builds
-    if is_frozen:
-        paths += [frozen_temp_path]
+    if IS_FROZEN:
+        paths += [FROZEN_TEMP_PATH]
     for path in paths:
         for executable in executables:
             f = os.path.join(path, executable)

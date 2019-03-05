@@ -22,3 +22,8 @@ import sys
 IS_WIN = sys.platform == 'win32'
 IS_LINUX = sys.platform == 'linux'
 IS_MACOS = sys.platform == 'darwin'
+
+# These variables are set by pyinstaller if running from a packaged build
+# See http://pyinstaller.readthedocs.io/en/stable/runtime-information.html
+IS_FROZEN = getattr(sys, 'frozen', False)
+FROZEN_TEMP_PATH = getattr(sys, '_MEIPASS', '')

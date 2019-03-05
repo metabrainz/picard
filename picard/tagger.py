@@ -59,6 +59,7 @@ from picard.cluster import (
 from picard.collection import load_user_collections
 from picard.config_upgrade import upgrade_config
 from picard.const.sys import (
+    IS_FROZEN,
     IS_MACOS,
     IS_WIN,
 )
@@ -237,7 +238,7 @@ class Tagger(QtWidgets.QApplication):
         # Load plugins
         self.pluginmanager = PluginManager()
         if not self._no_plugins:
-            if hasattr(sys, "frozen"):
+            if IS_FROZEN:
                 self.pluginmanager.load_plugindir(os.path.join(os.path.dirname(sys.argv[0]), "plugins"))
             else:
                 mydir = os.path.dirname(os.path.abspath(__file__))
