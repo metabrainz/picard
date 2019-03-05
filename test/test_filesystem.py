@@ -75,42 +75,36 @@ class TestFileSystem(PicardTestCase):
 
         return files
 
-    def test_move_additional_files_source_unicode(self):
-        files = self._prepare_files(src_rel_path='música')
-
+    def _move_additional_files(self, files):
         f = picard.formats.open_(files['old_mp3'])
         f._move_additional_files(files['old_mp3'], files['new_mp3'])
 
         self.assertTrue(os.path.isfile(files['new_img']))
         self.assertFalse(os.path.isfile(files['old_img']))
+
+    def test_move_additional_files_source_unicode(self):
+        files = self._prepare_files(src_rel_path='música')
+
+        self._move_additional_files(files)
 
     def test_move_additional_files_target_unicode(self):
         files = self._prepare_files(tgt_rel_path='música')
 
-        f = picard.formats.open_(files['old_mp3'])
-        f._move_additional_files(files['old_mp3'], files['new_mp3'])
-
-        self.assertTrue(os.path.isfile(files['new_img']))
-        self.assertFalse(os.path.isfile(files['old_img']))
+        self._move_additional_files(files)
 
     def test_move_additional_files_duplicate_patterns(self):
         files = self._prepare_files()
 
         config.setting['move_additional_files_pattern'] = 'cover.jpg *.jpg'
 
-        f = picard.formats.open_(files['old_mp3'])
-        f._move_additional_files(files['old_mp3'], files['new_mp3'])
-
-        self.assertTrue(os.path.isfile(files['new_img']))
-        self.assertFalse(os.path.isfile(files['old_img']))
+        self._move_additional_files(files)
 
     def test_move_additional_files_hidden_nopattern(self):
         files = self._prepare_files()
 
         config.setting['move_additional_files_pattern'] = '*.jpg'
 
-        f = picard.formats.open_(files['old_mp3'])
-        f._move_additional_files(files['old_mp3'], files['new_mp3'])
+        self._move_additional_files(files)
 
         self.assertFalse(os.path.isfile(files['new_hidden_img']))
         self.assertTrue(os.path.isfile(files['old_hidden_img']))
@@ -120,8 +114,7 @@ class TestFileSystem(PicardTestCase):
 
         config.setting['move_additional_files_pattern'] = '*.jpg .*.jpg'
 
-        f = picard.formats.open_(files['old_mp3'])
-        f._move_additional_files(files['old_mp3'], files['new_mp3'])
+        self._move_additional_files(files)
 
         self.assertTrue(os.path.isfile(files['new_hidden_img']))
         self.assertFalse(os.path.isfile(files['old_hidden_img']))
