@@ -29,16 +29,6 @@ class TestFileSystem(PicardTestCase):
         shutil.rmtree(self.src_directory)
         shutil.rmtree(self.tgt_directory)
 
-    def _set_up_src_file(self, filename, src_rel_path):
-        """Copy filename to the src directory under src_rel_path."""
-        path = os.path.join(self.src_directory, src_rel_path)
-        shutil.copy(filename, path)
-        return path
-
-    def _set_up_tgt_filename(self, tgt_rel_path):
-        """Return the absolute path to tgt_rel_path in the tgt directory."""
-        return os.path.join(self.tgt_directory, tgt_rel_path)
-
     def _prepare_files(self, src_rel_path='', tgt_rel_path=''):
         """Prepare src files and tgt filenames for a test."""
         with suppress(FileExistsError):
@@ -48,14 +38,22 @@ class TestFileSystem(PicardTestCase):
         # .../<src_rel_path>/test.mp3
         # .../<src_rel_path>/cover.jpg
 
+        def src_file(name, sample_name=None):
+            """Copy file from samples and returns path to temporary file to be
+            used as source.
+            If sample_name isn't provided, it will use name for it
+            """
+            if sample_name is None:
+                sample_name = name
+            sample = os.path.join('test', 'data', sample_name)
+            copy_to = os.path.join(self.src_directory, src_rel_path, name)
+            shutil.copy(sample, copy_to)
+            return copy_to
+
         files = dict()
-        files['old_mp3'] = self._set_up_src_file(os.path.join('test', 'data', 'test.mp3'),
-                                                 os.path.join(src_rel_path, 'test.mp3'))
-        files['old_img'] = self._set_up_src_file(os.path.join('test', 'data', 'mb.jpg'),
-                                                 os.path.join(src_rel_path, 'cover.jpg'))
-        files['old_hidden_img'] = self._set_up_src_file(os.path.join('test', 'data', 'mb.jpg'),
-                                                        os.path.join(src_rel_path,
-                                                                     '.hidden.jpg'))
+        files['old_mp3'] = src_file('test.mp3')
+        files['old_img'] = src_file('cover.jpg', 'mb.jpg')
+        files['old_hidden_img'] = src_file('.hidden.jpg', 'mb.jpg')
 
         with suppress(FileExistsError):
             os.mkdir(os.path.join(self.tgt_directory, tgt_rel_path))
@@ -64,14 +62,13 @@ class TestFileSystem(PicardTestCase):
         # .../<tgt_rel_path>/test.mp3
         # .../<tgt_rel_path>/cover.jpg
 
-        files['new_mp3'] = self._set_up_tgt_filename(
-            os.path.join(tgt_rel_path, 'test.mp3'))
+        def tgt_file(name):
+            """Returns path to temporary target file"""
+            return os.path.join(self.tgt_directory, tgt_rel_path, name)
 
-        files['new_img'] = self._set_up_tgt_filename(
-            os.path.join(tgt_rel_path, 'cover.jpg'))
-
-        files['new_hidden_img'] = self._set_up_tgt_filename(
-            os.path.join(tgt_rel_path, '.hidden.jpg'))
+        files['new_mp3'] = tgt_file('test.mp3')
+        files['new_img'] = tgt_file('cover.jpg')
+        files['new_hidden_img'] = tgt_file('.hidden.jpg')
 
         return files
 
