@@ -323,6 +323,7 @@ class NonAlbumTrack(Track):
     def _parse_recording(self, recording):
         m = self.metadata
         recording_to_metadata(recording, m, self)
+        self.orig_metadata.copy(m)
         self._customize_metadata()
         run_track_metadata_processors(self.album, m, None, recording)
         for s_name, s_text in enabled_tagger_scripts_texts():

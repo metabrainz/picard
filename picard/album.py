@@ -383,7 +383,8 @@ class Album(DataObject, Item):
         tm = track.metadata
         tm.copy(metadata)
         track_to_metadata(track_node, track)
-        track.metadata["~absolutetracknumber"] = absolutetracknumber
+        tm["~absolutetracknumber"] = absolutetracknumber
+        track.orig_metadata.copy(tm)
         track._customize_metadata()
 
         self._new_metadata.length += tm.length
