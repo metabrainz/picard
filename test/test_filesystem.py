@@ -72,12 +72,18 @@ class TestFileSystem(PicardTestCase):
 
         return files
 
+    def _assertFile(self, path):
+        self.assertTrue(os.path.isfile(path))
+
+    def _assertNoFile(self, path):
+        self.assertFalse(os.path.isfile(path))
+
     def _move_additional_files(self, files):
         f = picard.formats.open_(files['old_mp3'])
         f._move_additional_files(files['old_mp3'], files['new_mp3'])
 
-        self.assertTrue(os.path.isfile(files['new_img']))
-        self.assertFalse(os.path.isfile(files['old_img']))
+        self._assertFile(files['new_img'])
+        self._assertNoFile(files['old_img'])
 
     def test_move_additional_files_source_unicode(self):
         files = self._prepare_files(src_rel_path='música')
@@ -103,8 +109,8 @@ class TestFileSystem(PicardTestCase):
 
         self._move_additional_files(files)
 
-        self.assertFalse(os.path.isfile(files['new_hidden_img']))
-        self.assertTrue(os.path.isfile(files['old_hidden_img']))
+        self._assertNoFile(files['new_hidden_img'])
+        self._assertFile(files['old_hidden_img'])
 
     def test_move_additional_files_hidden_pattern(self):
         files = self._prepare_files()
@@ -113,5 +119,5 @@ class TestFileSystem(PicardTestCase):
 
         self._move_additional_files(files)
 
-        self.assertTrue(os.path.isfile(files['new_hidden_img']))
-        self.assertFalse(os.path.isfile(files['old_hidden_img']))
+        self._assertFile(files['new_hidden_img'])
+        self._assertNoFile(files['old_hidden_img'])
