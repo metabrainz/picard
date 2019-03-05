@@ -473,9 +473,10 @@ class File(QtCore.QObject, Item):
             self._acoustid_update()
 
     def _acoustid_update(self):
+        recording_id= None
         if self.parent and hasattr(self.parent, 'orig_metadata'):
             recording_id = self.parent.orig_metadata['musicbrainz_recordingid']
-        else:
+        if not recording_id:
             recording_id = self.metadata['musicbrainz_recordingid']
         self.tagger.acoustidmanager.update(self, recording_id)
 

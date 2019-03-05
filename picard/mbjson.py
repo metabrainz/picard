@@ -346,7 +346,6 @@ def track_to_metadata(node, track):
             artist_credit_to_metadata(value, m)
     if m.length:
         m['~length'] = format_time(m.length)
-    track.orig_metadata.copy(m)
 
 
 def recording_to_metadata(node, m, track=None):
