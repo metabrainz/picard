@@ -18,17 +18,19 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-import sys
-
 from PyQt5.QtCore import (
     QFile,
     QIODevice,
 )
 
 from picard import config
+from picard.const.sys import (
+    IS_LINUX,
+    IS_WIN,
+)
 from picard.util import uniqify
 
-if sys.platform == 'win32':
+if IS_WIN:
     from ctypes import windll
 
 
@@ -50,9 +52,9 @@ if discid is not None:
 LINUX_CDROM_INFO = '/proc/sys/dev/cdrom/info'
 
 # if get_cdrom_drives() lists ALL drives available on the machine
-if sys.platform == 'win32':
+if IS_WIN:
     AUTO_DETECT_DRIVES = True
-elif sys.platform == 'linux' and QFile.exists(LINUX_CDROM_INFO):
+elif IS_LINUX and QFile.exists(LINUX_CDROM_INFO):
     AUTO_DETECT_DRIVES = True
 else:
     # There might be more drives we couldn't detect
@@ -66,7 +68,7 @@ def get_cdrom_drives():
     # add default drive from libdiscid to the list
     drives = list(DEFAULT_DRIVES)
 
-    if sys.platform == 'win32':
+    if IS_WIN:
         GetLogicalDrives = windll.kernel32.GetLogicalDrives
         GetDriveType = windll.kernel32.GetDriveTypeW
         DRIVE_CDROM = 5
@@ -77,7 +79,7 @@ def get_cdrom_drives():
                 if GetDriveType(drive) == DRIVE_CDROM:
                     drives.append(drive)
 
-    elif sys.platform == 'linux' and QFile.exists(LINUX_CDROM_INFO):
+    elif IS_LINUX and QFile.exists(LINUX_CDROM_INFO):
         # Read info from /proc/sys/dev/cdrom/info
         cdinfo = QFile(LINUX_CDROM_INFO)
         if cdinfo.open(QIODevice.ReadOnly | QIODevice.Text):

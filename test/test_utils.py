@@ -2,11 +2,11 @@
 
 import builtins
 import os.path
-import sys
 from test.picardtestcase import PicardTestCase
 import unittest
 
 from picard import util
+from picard.const.sys import IS_WIN
 from picard.util import imageinfo
 
 # ensure _() is defined
@@ -16,14 +16,14 @@ if '_' not in builtins.__dict__:
 
 class ReplaceWin32IncompatTest(PicardTestCase):
 
-    @unittest.skipUnless(sys.platform == "win32", "windows test")
+    @unittest.skipUnless(IS_WIN, "windows test")
     def test_correct_absolute_win32(self):
         self.assertEqual(util.replace_win32_incompat("c:\\test\\te\"st/2"),
                              "c:\\test\\te_st/2")
         self.assertEqual(util.replace_win32_incompat("c:\\test\\d:/2"),
                              "c:\\test\\d_/2")
 
-    @unittest.skipUnless(sys.platform != "win32", "non-windows test")
+    @unittest.skipUnless(not IS_WIN, "non-windows test")
     def test_correct_absolute_non_win32(self):
         self.assertEqual(util.replace_win32_incompat("/test/te\"st/2"),
                              "/test/te_st/2")
@@ -89,7 +89,7 @@ class FormatTimeTest(PicardTestCase):
 
 class HiddenFileTest(PicardTestCase):
 
-    @unittest.skipUnless(sys.platform != "win32", "non-windows test")
+    @unittest.skipUnless(not IS_WIN, "non-windows test")
     def test(self):
         self.assertTrue(util.is_hidden('/a/b/.c.mp3'))
         self.assertTrue(util.is_hidden('/a/.b/.c.mp3'))

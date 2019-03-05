@@ -26,7 +26,6 @@ import os
 import os.path
 import re
 import shutil
-import sys
 import unicodedata
 
 from PyQt5 import QtCore
@@ -37,6 +36,10 @@ from picard import (
     log,
 )
 from picard.const import QUERY_LIMIT
+from picard.const.sys import (
+    IS_MACOS,
+    IS_WIN,
+)
 from picard.metadata import Metadata
 from picard.util import (
     decode_filename,
@@ -351,14 +354,14 @@ class File(QtCore.QObject, Item):
                 # TODO: move following logic under util.filenaming
                 # (and reconsider its necessity)
                 # win32 compatibility fixes
-                if settings['windows_compatibility'] or sys.platform == 'win32':
+                if settings['windows_compatibility'] or IS_WIN:
                     new_filename = new_filename.replace('./', '_/').replace('.\\', '_\\')
                 # replace . at the beginning of file and directory names
                 new_filename = new_filename.replace('/.', '/_').replace('\\.', '\\_')
                 if new_filename and new_filename[0] == '.':
                     new_filename = '_' + new_filename[1:]
                 # Fix for precomposed characters on OSX
-                if sys.platform == "darwin":
+                if IS_MACOS:
                     new_filename = unicodedata.normalize("NFD", new_filename)
 
         new_path = os.path.join(new_dirname, new_filename)

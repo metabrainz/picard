@@ -58,6 +58,10 @@ from picard.cluster import (
 )
 from picard.collection import load_user_collections
 from picard.config_upgrade import upgrade_config
+from picard.const.sys import (
+    IS_MACOS,
+    IS_WIN,
+)
 from picard.const import (
     USER_DIR,
     USER_PLUGIN_DIR,
@@ -130,7 +134,7 @@ class Tagger(QtWidgets.QApplication):
 
         # Use the new fusion style from PyQt5 for a modern and consistent look
         # across all OSes.
-        if sys.platform != "darwin":
+        if not IS_MACOS:
             self.setStyle('Fusion')
 
         # Set the WM_CLASS to 'MusicBrainz-Picard' so desktop environments
@@ -171,7 +175,7 @@ class Tagger(QtWidgets.QApplication):
         self.save_thread_pool = QtCore.QThreadPool(self)
         self.save_thread_pool.setMaxThreadCount(1)
 
-        if not sys.platform == "win32":
+        if not IS_WIN:
             # Set up signal handling
             # It's not possible to call all available functions from signal
             # handlers, therefore we need to set up a QSocketNotifier to listen
@@ -194,7 +198,7 @@ class Tagger(QtWidgets.QApplication):
             signal.signal(signal.SIGINT, self.signal)
             signal.signal(signal.SIGTERM, self.signal)
 
-        if sys.platform == "darwin":
+        if IS_MACOS:
             # On macOS it is not common that the global menu shows icons
             self.setAttribute(QtCore.Qt.AA_DontShowIconsInMenus)
 

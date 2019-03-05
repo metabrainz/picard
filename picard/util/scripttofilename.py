@@ -19,9 +19,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-import sys
-
 from picard import config
+from picard.const.sys import IS_WIN
 from picard.script import ScriptParser
 from picard.util import (
     replace_win32_incompat,
@@ -42,7 +41,7 @@ def script_to_filename(naming_format, metadata, file=None, settings=None):
     if settings["ascii_filenames"]:
         filename = replace_non_ascii(filename, pathsave=True)
     # replace incompatible characters
-    if settings["windows_compatibility"] or sys.platform == "win32":
+    if settings["windows_compatibility"] or IS_WIN:
         filename = replace_win32_incompat(filename)
     # remove null characters
     filename = filename.replace("\x00", "")

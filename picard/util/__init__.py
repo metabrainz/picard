@@ -31,8 +31,13 @@ from PyQt5 import QtCore
 
 # Required for compatibility with lastfmplus which imports this from here rather than loading it direct.
 from picard.const import MUSICBRAINZ_SERVERS
+from picard.const.sys import (
+    IS_MACOS,
+    IS_WIN,
+)
 
-if sys.platform == 'win32':
+
+if IS_WIN:
     from ctypes import windll
 
 
@@ -142,7 +147,7 @@ def replace_win32_incompat(string, repl="_"):
     """Replace win32 filename incompatible characters from ``string`` by
        ``repl``."""
     # Don't replace : with _ for windows drive
-    if sys.platform == "win32" and os.path.isabs(string):
+    if IS_WIN and os.path.isabs(string):
         drive, rest = ntpath.splitdrive(string)
         return drive + _re_win32_incompat.sub(repl, rest)
     else:
@@ -200,7 +205,7 @@ def find_existing_path(path):
 
 
 def find_executable(*executables):
-    if sys.platform == 'win32':
+    if IS_WIN:
         executables = [e + '.exe' for e in executables]
     paths = [os.path.dirname(sys.executable)] if sys.executable else []
     paths += os.environ.get('PATH', '').split(os.pathsep)
@@ -317,7 +322,7 @@ def tracknum_from_filename(base_filename):
 
 
 # Provide os.path.samefile equivalent which is missing in Python under Windows
-if sys.platform == 'win32':
+if IS_WIN:
     def os_path_samefile(p1, p2):
         ap1 = os.path.abspath(p1)
         ap2 = os.path.abspath(p2)
@@ -332,12 +337,12 @@ def is_hidden(filepath):
     on non-Windows systems or if it has the "hidden" flag
     set on Windows."""
     name = os.path.basename(os.path.abspath(filepath))
-    return (name.startswith('.') and sys.platform != 'win32') \
+    return (not IS_WIN and name.startswith('.')) \
         or _has_hidden_attribute(filepath)
 
 
 def _has_hidden_attribute(filepath):
-    if sys.platform != 'win32':
+    if not IS_WIN:
         return False
     # FIXME: On OSX detecting hidden files involves more
     # than just checking for dot files, see
