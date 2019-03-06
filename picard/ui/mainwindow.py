@@ -21,7 +21,6 @@ from collections import OrderedDict
 import datetime
 from functools import partial
 import os.path
-import sys
 
 from PyQt5 import (
     QtCore,
@@ -36,6 +35,9 @@ from picard import (
 from picard.album import Album
 from picard.cluster import Cluster
 from picard.const import PROGRAM_UPDATE_LEVELS
+from picard.const.sys import (
+    IS_MACOS,
+)
 from picard.file import File
 from picard.formats import supported_formats
 from picard.plugin import ExtensionPoint
@@ -122,14 +124,14 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         icon.addFile(":/images/256x256/org.musicbrainz.Picard.png", QtCore.QSize(256, 256))
         self.setWindowIcon(icon)
 
-        self.show_close_window = sys.platform == "darwin"
+        self.show_close_window = IS_MACOS
 
         self.create_actions()
         self.create_statusbar()
         self.create_toolbar()
         self.create_menus()
 
-        if sys.platform == "darwin":
+        if IS_MACOS:
             self.setUnifiedTitleAndToolBarOnMac(True)
             self.toolbar.setMovable(False)
             self.search_toolbar.setMovable(False)
@@ -174,7 +176,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     def keyPressEvent(self, event):
         # On macOS Command+Backspace triggers the so called "Forward Delete".
         # It should be treated the same as the Delete button.
-        is_forward_delete = sys.platform == 'darwin' and \
+        is_forward_delete = IS_MACOS and \
             event.key() == QtCore.Qt.Key_Backspace and \
             event.modifiers() & QtCore.Qt.ControlModifier
         if event.matches(QtGui.QKeySequence.Delete) or is_forward_delete:

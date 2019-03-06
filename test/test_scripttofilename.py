@@ -1,8 +1,7 @@
-import sys
-
 from test.picardtestcase import PicardTestCase
 
 from picard import config
+from picard.const.sys import IS_WIN
 from picard.file import File
 from picard.metadata import Metadata
 from picard.script import register_script_function
@@ -68,7 +67,7 @@ class ScriptToFilenameTest(PicardTestCase):
         expect_orig = '*:?'
         expect_compat = '___'
         filename = script_to_filename('%artist%?', metadata, settings=settings)
-        self.assertEqual(expect_compat if sys.platform == 'win32' else expect_orig, filename)
+        self.assertEqual(expect_compat if IS_WIN else expect_orig, filename)
         settings['windows_compatibility'] = True
         filename = script_to_filename('%artist%?', metadata, settings=settings)
         self.assertEqual(expect_compat, filename)

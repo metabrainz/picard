@@ -26,12 +26,12 @@ from heapq import (
 import ntpath
 from operator import itemgetter
 import re
-import sys
 
 from PyQt5 import QtCore
 
 from picard import config
 from picard.const import QUERY_LIMIT
+from picard.const.sys import IS_WIN
 from picard.metadata import Metadata
 from picard.similarity import similarity
 from picard.util import (
@@ -248,7 +248,7 @@ class Cluster(QtCore.QObject, Item):
 
     @staticmethod
     def cluster(files, threshold):
-        win_compat = config.setting["windows_compatibility"] or sys.platform == "win32"
+        win_compat = config.setting["windows_compatibility"] or IS_WIN
         artist_dict = ClusterDict()
         album_dict = ClusterDict()
         tracks = []

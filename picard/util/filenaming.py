@@ -25,6 +25,10 @@ import unicodedata
 
 from PyQt5.QtCore import QStandardPaths
 
+from picard.const.sys import (
+    IS_MACOS,
+    IS_WIN,
+)
 from picard.util import (
     _io_encoding,
     decode_filename,
@@ -324,7 +328,7 @@ def make_short_filename(basedir, relpath, win_compat=False, relative_to=""):
     # always strip the relpath parts
     relpath = os.path.join(*[part.strip() for part in relpath.split(os.path.sep)])
     # if we're on windows, delegate the work to a windows-specific function
-    if sys.platform == "win32":
+    if IS_WIN:
         reserved = len(basedir)
         if not basedir.endswith(os.path.sep):
             reserved += 1
@@ -345,7 +349,7 @@ def make_short_filename(basedir, relpath, win_compat=False, relative_to=""):
         relpath = _make_win_short_filename(relpath, reserved)
     # on *nix we can consider there is no path limit, but there is
     # a filename length limit.
-    if sys.platform == "darwin":
+    if IS_MACOS:
         # on OS X (i.e. HFS+), this is expressed in UTF-16 code points,
         # in NFD normalization form
         relpath = shorten_path(relpath, 255, mode=SHORTEN_UTF16_NFD)

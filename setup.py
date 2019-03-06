@@ -11,7 +11,6 @@ import glob
 from io import StringIO
 import os
 from os import path
-import platform
 import re
 import sys
 import tempfile
@@ -27,6 +26,11 @@ from picard import (
     PICARD_VERSION,
     __version__,
 )
+from picard.const.sys import (
+    IS_LINUX,
+    IS_WIN,
+)
+
 
 if sys.version_info < (3, 5):
     sys.exit("ERROR: You need Python 3.5 or higher to use Picard.")
@@ -213,7 +217,7 @@ class picard_build(build):
     def run(self):
         log.info('generating scripts/%s from scripts/picard.in', PACKAGE_NAME)
         generate_file('scripts/picard.in', 'scripts/' + PACKAGE_NAME, {'localedir': self.localedir, 'autoupdate': not self.disable_autoupdate})
-        if platform.system() == 'Windows':
+        if IS_WIN:
             # Temporarily setting it to this value to generate a nice name for Windows app
             args['name'] = 'MusicBrainz Picard'
             file_version = PICARD_VERSION[0:3] + PICARD_VERSION[4:]
@@ -225,7 +229,7 @@ class picard_build(build):
             }
             generate_file('win-version-info.txt.in', 'win-version-info.txt', {**args, **version_args})
             args['name'] = 'picard'
-        elif platform.system() == 'Linux':
+        elif IS_LINUX:
             self.run_command('build_appdata')
         build.run(self)
 
@@ -734,7 +738,7 @@ args['data_files'] = [
     ('share/applications', ('org.musicbrainz.Picard.desktop',)),
 ]
 
-if platform.system() == 'Linux':
+if IS_LINUX:
     args['data_files'].append(('share/metainfo', ['org.musicbrainz.Picard.appdata.xml']))
 
 setup(**args)

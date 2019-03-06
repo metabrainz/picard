@@ -19,7 +19,6 @@
 
 from locale import strxfrm
 from operator import itemgetter
-import sys
 
 from PyQt5 import (
     QtCore,
@@ -27,12 +26,14 @@ from PyQt5 import (
 )
 
 from picard import config
+
 from picard.const import (
     RELEASE_COUNTRIES,
     RELEASE_FORMATS,
     RELEASE_PRIMARY_GROUPS,
     RELEASE_SECONDARY_GROUPS,
 )
+from picard.const.sys import IS_WIN
 from picard.i18n import gettext_attr
 
 from picard.ui.options import (
@@ -67,12 +68,12 @@ class TipSlider(QtWidgets.QSlider):
 
     def showEvent(self, event):
         super().showEvent(event)
-        if sys.platform != 'win32':
+        if not IS_WIN:
             self.valueChanged.connect(self.show_tip)
 
     def hideEvent(self, event):
         super().hideEvent(event)
-        if sys.platform != 'win32':
+        if not IS_WIN:
             self.valueChanged.disconnect(self.show_tip)
 
     def show_tip(self, value):

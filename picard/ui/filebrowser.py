@@ -19,7 +19,6 @@
 #
 
 import os
-import sys
 
 from PyQt5 import (
     QtCore,
@@ -28,6 +27,7 @@ from PyQt5 import (
 from PyQt5.QtCore import QStandardPaths
 
 from picard import config
+from picard.const.sys import IS_MACOS
 from picard.formats import supported_formats
 from picard.util import find_existing_path
 
@@ -73,7 +73,7 @@ class FileBrowser(QtWidgets.QTreeView):
         self.model.setNameFilterDisables(False)
         self.model.sort(0, QtCore.Qt.AscendingOrder)
         self.setModel(self.model)
-        if sys.platform == "darwin":
+        if IS_MACOS:
             self.setRootIndex(self.model.index("/Volumes"))
         header = self.header()
         header.hideSection(1)

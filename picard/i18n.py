@@ -21,9 +21,13 @@ import builtins
 import gettext
 import locale
 import os.path
-import sys
 
 from PyQt5.QtCore import QLocale
+
+from picard.const.sys import (
+    IS_MACOS,
+    IS_WIN,
+)
 
 builtins.__dict__['N_'] = lambda a: a
 
@@ -40,7 +44,7 @@ def setup_gettext(localedir, ui_language=None, logger=None):
         except Exception as e:
             logger(e)
     else:
-        if sys.platform == 'win32':
+        if IS_WIN:
             from ctypes import windll
             try:
                 current_locale = locale.windows_locale[windll.kernel32.GetUserDefaultUILanguage()]
@@ -53,7 +57,7 @@ def setup_gettext(localedir, ui_language=None, logger=None):
                     logger(e)
             except Exception as e:
                 logger(e)
-        elif sys.platform == 'darwin':
+        elif IS_MACOS:
             try:
                 import Foundation
                 defaults = Foundation.NSUserDefaults.standardUserDefaults()

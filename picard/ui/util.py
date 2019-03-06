@@ -17,8 +17,6 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-import sys
-
 from PyQt5 import (
     QtCore,
     QtGui,
@@ -26,6 +24,10 @@ from PyQt5 import (
 )
 
 from picard import config
+from picard.const.sys import (
+    IS_MACOS,
+    IS_WIN,
+)
 from picard.util import (
     find_existing_path,
     icontheme,
@@ -49,7 +51,7 @@ class StandardButton(QtWidgets.QPushButton):
     def __init__(self, btntype):
         label = _(self.__types[btntype][0])
         args = [label]
-        if sys.platform != 'win32' and sys.platform != 'darwin':
+        if not IS_WIN and not IS_MACOS:
             iconname = self.__types[btntype][1]
             if hasattr(QtWidgets.QStyle, iconname):
                 icon = self.tagger.style().standardIcon(getattr(QtWidgets.QStyle, iconname))
@@ -87,7 +89,7 @@ class MultiDirsSelectDialog(QtWidgets.QFileDialog):
         super().__init__(*args)
         self.setFileMode(self.Directory)
         self.setOption(self.ShowDirsOnly)
-        if sys.platform in ["darwin", "win32"]:
+        if IS_WIN or IS_MACOS:
             # The native dialog doesn't allow selecting >1 directory
             self.setOption(self.DontUseNativeDialog)
         for view in self.findChildren((QtWidgets.QListView, QtWidgets.QTreeView)):

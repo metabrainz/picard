@@ -23,7 +23,6 @@
 from functools import partial
 from operator import attrgetter
 import os.path
-import sys
 
 from PyQt5 import (
     QtCore,
@@ -36,10 +35,12 @@ from picard import (
     config,
     log,
 )
+
 from picard.const import (
     PLUGINS_API,
     USER_PLUGIN_DIR,
 )
+from picard.const.sys import IS_WIN
 from picard.util import reconnect
 
 from picard.ui import HashableTreeWidgetItem
@@ -633,7 +634,7 @@ class PluginsOptionsPage(OptionsPage):
 
     @staticmethod
     def open_plugin_dir():
-        if sys.platform == 'win32':
+        if IS_WIN:
             url = 'file:///' + USER_PLUGIN_DIR
         else:
             url = 'file://' + USER_PLUGIN_DIR

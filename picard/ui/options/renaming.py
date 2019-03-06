@@ -20,7 +20,6 @@
 
 from functools import partial
 import os.path
-import sys
 
 from PyQt5 import QtWidgets
 from PyQt5.QtCore import QStandardPaths
@@ -28,6 +27,7 @@ from PyQt5.QtGui import QPalette
 
 from picard import config
 from picard.const import PICARD_URLS
+from picard.const.sys import IS_WIN
 from picard.file import File
 from picard.script import (
     ScriptError,
@@ -125,7 +125,7 @@ class RenamingOptionsPage(OptionsPage):
         self.ui.file_naming_format_default.setEnabled(state)
         self.ui.ascii_filenames.setEnabled(state)
         self.ui.file_naming_format_group.setEnabled(state)
-        if not sys.platform == "win32":
+        if not IS_WIN:
             self.ui.windows_compatibility.setEnabled(state)
 
         if self.ui.file_naming_format.isEnabled():
@@ -171,7 +171,7 @@ class RenamingOptionsPage(OptionsPage):
         self.ui.example_filename_va.setText(example2)
 
     def load(self):
-        if sys.platform == "win32":
+        if IS_WIN:
             self.ui.windows_compatibility.setChecked(True)
             self.ui.windows_compatibility.setEnabled(False)
         else:
