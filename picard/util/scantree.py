@@ -49,8 +49,8 @@ def scantree(path, ignore_hidden=True, recursive=False, follow_symlinks=True, _s
     if p.is_symlink():
         if not follow_symlinks:
             return
-        path = str(p.resolve())
-    for entry in os.scandir(path):
+        path = p.resolve()
+    for entry in os.scandir(str(path)):
         try:
             if ignore_hidden and _is_hidden(entry):
                 continue
