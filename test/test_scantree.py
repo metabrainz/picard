@@ -101,8 +101,6 @@ class TestFileSystem(PicardTestCase):
         files['topdir'] = topdir
         files['subdir'] = subdir
 
-        # TODO: test symlink to file
-        # TODO: test symlink to subdir
         # TODO: test subdir starting with a dot
         # TODO: test subdir with win hidden attribute
 
@@ -162,3 +160,175 @@ class TestFileSystem(PicardTestCase):
         self.assertFalse(files['subdir'] in l)
 
         self.assertEqual(len(l), 6)
+
+    def test_scantree_symlink_to_file_same_dir(self):
+        # /D/S -> /D/F
+        files = self._prepare_files(src_rel_path='música')
+
+        src = files['mp3']
+        dst = files['mp3'] + '.symlink'
+        os.symlink(src, dst)
+
+        l = list(scantree(files['topdir']))
+
+        self.assertTrue(files['mp3'] in l)
+        self.assertTrue(files['img'] in l)
+
+        self.assertFalse(files['hidden_img'] in l)
+        self.assertFalse(files['subdir'] in l)
+
+        self.assertEqual(len(l), 2)
+
+    def test_scantree_broken_symlink_to_file_same_dir(self):
+        # /D/S -> nothing
+        files = self._prepare_files(src_rel_path='música')
+
+        src = "do_not_exist"
+        dst = files['mp3'] + '.symlink'
+        os.symlink(src, dst)
+
+        l = list(scantree(files['topdir']))
+
+        self.assertTrue(files['mp3'] in l)
+        self.assertTrue(files['img'] in l)
+
+        self.assertFalse(files['hidden_img'] in l)
+        self.assertFalse(files['subdir'] in l)
+
+        self.assertEqual(len(l), 2)
+
+    def test_scantree_symlink_to_file_in_subdir(self):
+        # /D/S -> /D/DD/F
+        files = self._prepare_files(src_rel_path='música')
+
+        src = files['sub_mp3']
+        dst = files['mp3'] + '.symlink'
+        os.symlink(src, dst)
+
+        l = list(scantree(files['topdir']))
+
+        self.assertTrue(files['mp3'] in l)
+        self.assertTrue(files['img'] in l)
+
+        self.assertFalse(files['hidden_img'] in l)
+        self.assertFalse(files['subdir'] in l)
+
+        self.assertEqual(len(l), 2)
+
+
+    def test_scantree_symlink_to_file_in_subdir_recursive(self):
+        # /D/S -> /D/DD/F
+        files = self._prepare_files(src_rel_path='música')
+
+        src = files['sub_mp3']
+        dst = files['mp3'] + '.symlink'
+        os.symlink(src, dst)
+
+        l = list(scantree(files['topdir'], recursive=True))
+
+        self.assertTrue(files['mp3'] in l)
+        self.assertTrue(files['img'] in l)
+        self.assertTrue(files['sub_mp3'] in l)
+        self.assertTrue(files['sub_img'] in l)
+
+        self.assertFalse(files['hidden_img'] in l)
+        self.assertFalse(files['sub_hidden_img'] in l)
+
+        self.assertFalse(files['subdir'] in l)
+
+        self.assertEqual(len(l), 4)
+
+
+
+    def test_scantree_symlink_to_file_in_extdir(self):
+        # /D1/S -> /D2/F
+        files = self._prepare_files(src_rel_path='música')
+
+        # create another subdir
+        subdir2 = os.path.join(files['topdir'], 'subdir2')
+        with suppress(FileExistsError):
+            os.mkdir(subdir2)
+
+        testfile = os.path.join(subdir2, 'test')
+        shutil.copy(files['sub_mp3'], testfile)
+        src = testfile
+        dst = files['sub_mp3'] + '.symlink'
+        os.symlink(src, dst)
+
+        l = list(scantree(files['subdir']))
+
+        self.assertTrue(files['sub_mp3'] in l)
+        self.assertTrue(files['sub_img'] in l)
+        self.assertTrue(testfile in l)
+
+        self.assertEqual(len(l), 3)
+
+    def test_scantree_symlink_to_file_in_extdir_recursive(self):
+        # /D1/S -> /D2/F
+        files = self._prepare_files(src_rel_path='música')
+
+        # create another subdir
+        subdir2 = os.path.join(files['topdir'], 'subdir2')
+        with suppress(FileExistsError):
+            os.mkdir(subdir2)
+
+        testfile = os.path.join(subdir2, 'test')
+        shutil.copy(files['sub_mp3'], testfile)
+        src = testfile
+        dst = files['sub_mp3'] + '.symlink'
+        os.symlink(src, dst)
+
+        l = list(scantree(files['subdir'], recursive=True))
+
+        self.assertTrue(files['sub_mp3'] in l)
+        self.assertTrue(files['sub_img'] in l)
+        self.assertTrue(testfile in l)
+
+        self.assertEqual(len(l), 3)
+
+    def test_scantree_symlink_to_dir_recursive(self):
+        # /D/S -> /D/DD
+        files = self._prepare_files(src_rel_path='música')
+
+        # create another subdir
+        subdir2 = os.path.join(files['topdir'], 'subdir2')
+        with suppress(FileExistsError):
+            os.mkdir(subdir2)
+
+        testfile = os.path.join(subdir2, 'test')
+        shutil.copy(files['sub_mp3'], testfile)
+        src = subdir2
+        dst = os.path.join(files['subdir'], 'symlink')
+        os.symlink(src, dst)
+
+        l = list(scantree(files['subdir'], recursive=True))
+
+        self.assertTrue(files['sub_mp3'] in l)
+        self.assertTrue(files['sub_img'] in l)
+        self.assertTrue(testfile in l)
+
+        self.assertEqual(len(l), 3)
+
+
+    def test_scantree_symlink_to_dir_loop_recursive(self):
+        # /D/S -> /D/DD -> /D/DD/S2 -> /D
+        files = self._prepare_files(src_rel_path='música')
+
+        # create another subdir
+        subdir2 = os.path.join(files['topdir'], 'subdir2')
+        with suppress(FileExistsError):
+            os.mkdir(subdir2)
+
+        testfile = os.path.join(subdir2, 'test')
+        shutil.copy(files['sub_mp3'], testfile)
+        src = subdir2
+        dst = os.path.join(files['subdir'], 'symlink')
+        os.symlink(src, dst)
+
+        os.symlink(files['subdir'], os.path.join(subdir2, 'symlink_loop'))
+
+        l = list(scantree(files['subdir'], recursive=True))
+
+        self.assertEqual(len(l), 5)
+        self.assertEqual(len(set(l)), 3)
+

@@ -19,6 +19,7 @@
 
 
 import os
+from pathlib import Path
 import stat
 
 from picard.const.sys import IS_WIN
@@ -33,18 +34,59 @@ else:
         return (entry.name[0] == '.')
 
 
-def scantree(path, ignore_hidden=True, recursive=False):
+def is_relative(what, to_path):
+    try:
+        unused = what.relative_to(to_path)
+        return True
+    except ValueError:
+        return False
+
+
+def scantree(path, ignore_hidden=True, recursive=False, follow_symlinks=True, _seen_symlinks=None):
+    if _seen_symlinks is None:
+        _seen_symlinks = set()
+    path = Path(path).resolve()
     for entry in os.scandir(path):
         try:
             if ignore_hidden and _is_hidden(entry):
                 continue
-            if entry.is_file():
+            if entry.is_symlink():
+                symlink = Path(entry.path)
+                target = symlink.resolve()
+                if target in _seen_symlinks:
+                    # ignore loops, preventing infinite recursion
+                    continue
+                _seen_symlinks.add(target)
+                #print("symlink %s -> %s" % (entry.path, target))
+                if target.parent == path:
+                    # ignore symlink pointing to a file in same dir
+                    continue
+                if is_relative(target, path):
+                    # ignore symlink pointing to a file in a subdirectory
+                    continue
+                if recursive and target.is_dir():
+                    # follow symlink pointing to a directory
+                    yield from scantree(
+                        target,
+                        ignore_hidden=ignore_hidden,
+                        recursive=recursive,
+                        follow_symlinks=follow_symlinks,
+                        _seen_symlinks=_seen_symlinks
+                    )
+                    continue
+                if not target.is_file():
+                    # ignore symlinks to anything but files
+                    continue
+                yield str(target)
+            elif entry.is_file():
                 yield entry.path
-            if recursive and entry.is_dir():
+            elif recursive and entry.is_dir():
                 yield from scantree(
                     entry.path,
                     ignore_hidden=ignore_hidden,
-                    recursive=recursive
+                    recursive=recursive,
+                    follow_symlinks=follow_symlinks,
+                    _seen_symlinks=_seen_symlinks
                 )
         except OSError:
             continue
