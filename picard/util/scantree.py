@@ -45,7 +45,7 @@ def is_relative(what, to_path):
 def scantree(path, ignore_hidden=True, recursive=False, follow_symlinks=True, _seen_symlinks=None):
     if _seen_symlinks is None:
         _seen_symlinks = set()
-    path = Path(path).resolve()
+    path = str(Path(path).resolve())
     for entry in os.scandir(path):
         try:
             if ignore_hidden and _is_hidden(entry):
