@@ -133,6 +133,13 @@ class TestFileSystem(PicardTestCase):
 
         self.assertEqual(len(l), 2)
 
+    def test_scantree_fileparam(self):
+        def myfunc():
+            files = self._prepare_files(src_rel_path='música')
+            return list(scantree(files['mp3']))
+
+        self.assertRaises(NotADirectoryError, myfunc)
+
     def test_scantree_hidden(self):
         files = self._prepare_files(src_rel_path='música')
         l = list(scantree(files['topdir'], ignore_hidden=False))
