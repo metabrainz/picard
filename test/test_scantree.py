@@ -118,6 +118,21 @@ class TestFileSystem(PicardTestCase):
 
         self.assertEqual(len(l), 2)
 
+    def test_scantree_symlink(self):
+        files = self._prepare_files(src_rel_path='música')
+        symlink = files['topdir'] + '.symlink'
+
+        os.symlink(files['topdir'], symlink)
+        l = list(scantree(symlink))
+
+        self.assertTrue(files['mp3'] in l)
+        self.assertTrue(files['img'] in l)
+
+        self.assertFalse(files['hidden_img'] in l)
+        self.assertFalse(files['subdir'] in l)
+
+        self.assertEqual(len(l), 2)
+
     def test_scantree_hidden(self):
         files = self._prepare_files(src_rel_path='música')
         l = list(scantree(files['topdir'], ignore_hidden=False))
@@ -262,6 +277,29 @@ class TestFileSystem(PicardTestCase):
         self.assertTrue(testfile in l)
 
         self.assertEqual(len(l), 3)
+
+    def test_scantree_symlink_to_file_in_extdir_no_follow(self):
+        # /D1/S -> /D2/F
+        files = self._prepare_files(src_rel_path='música')
+
+        # create another subdir
+        subdir2 = os.path.join(files['topdir'], 'subdir2')
+        with suppress(FileExistsError):
+            os.mkdir(subdir2)
+
+        testfile = os.path.join(subdir2, 'test')
+        shutil.copy(files['sub_mp3'], testfile)
+        src = testfile
+        dst = files['sub_mp3'] + '.symlink'
+        os.symlink(src, dst)
+
+        l = list(scantree(files['subdir'], follow_symlinks=False))
+
+        self.assertTrue(files['sub_mp3'] in l)
+        self.assertTrue(files['sub_img'] in l)
+        self.assertFalse(testfile in l)
+
+        self.assertEqual(len(l), 2)
 
     def test_scantree_symlink_to_file_in_extdir_recursive(self):
         # /D1/S -> /D2/F
