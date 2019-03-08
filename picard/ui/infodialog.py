@@ -109,15 +109,15 @@ class InfoDialog(PicardDialog):
         self.ui = Ui_InfoDialog()
         self.display_existing_artwork = False
 
-        if (isinstance(obj, File) and
-                isinstance(obj.parent, Track) or
-                isinstance(obj, Track) or
-                (isinstance(obj, Album) and obj.get_num_total_files() > 0)):
+        if (isinstance(obj, File)
+                and isinstance(obj.parent, Track)
+                or isinstance(obj, Track)
+                or (isinstance(obj, Album) and obj.get_num_total_files() > 0)):
             # Display existing artwork only if selected object is track object
             # or linked to a track object or it's an album with files
-            if (getattr(obj, 'orig_metadata', None) is not None and
-                    obj.orig_metadata.images and
-                    obj.orig_metadata.images != obj.metadata.images):
+            if (getattr(obj, 'orig_metadata', None) is not None
+                    and obj.orig_metadata.images
+                    and obj.orig_metadata.images != obj.metadata.images):
                 self.display_existing_artwork = True
                 self.existing_images = obj.orig_metadata.images
 
@@ -371,7 +371,7 @@ class ClusterInfoDialog(InfoDialog):
             except ValueError:
                 try:
                     # This allows to parse values like '3' but also '3/10'
-                    m = re.search('^\d+', item.tracknumber)
+                    m = re.search(r'^\d+', item.tracknumber)
                     return int(m.group(0))
                 except AttributeError:
                     return 0

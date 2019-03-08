@@ -181,7 +181,7 @@ class File(QtCore.QObject, Item):
         for tag, values in saved_metadata.items():
             self.metadata.set(tag, values)
 
-        if acoustid and not "acoustid_id" in metadata.deleted_tags:
+        if acoustid and "acoustid_id" not in metadata.deleted_tags:
             self.metadata["acoustid_id"] = acoustid
         self.metadata_images_changed.emit()
 
@@ -383,8 +383,8 @@ class File(QtCore.QObject, Item):
             os.makedirs(new_dirname)
         tmp_filename = new_filename
         i = 1
-        while (not pathcmp(old_filename, new_filename + ext) and
-               os.path.exists(new_filename + ext)):
+        while (not pathcmp(old_filename, new_filename + ext)
+               and os.path.exists(new_filename + ext)):
             new_filename = "%s (%d)" % (tmp_filename, i)
             i += 1
         new_filename = new_filename + ext
@@ -476,7 +476,7 @@ class File(QtCore.QObject, Item):
             self._acoustid_update()
 
     def _acoustid_update(self):
-        recording_id= None
+        recording_id = None
         if self.parent and hasattr(self.parent, 'orig_metadata'):
             recording_id = self.parent.orig_metadata['musicbrainz_recordingid']
         if not recording_id:
@@ -499,8 +499,8 @@ class File(QtCore.QObject, Item):
         for name in names:
             if not name.startswith('~') and self.supports_tag(name):
                 new_values = new_metadata.getall(name)
-                if not (new_values or clear_existing_tags or
-                    name in new_metadata.deleted_tags):
+                if not (new_values or clear_existing_tags
+                        or name in new_metadata.deleted_tags):
                     continue
                 orig_values = self.orig_metadata.getall(name)
                 if orig_values != new_values:
@@ -509,8 +509,8 @@ class File(QtCore.QObject, Item):
                         self.state = File.CHANGED
                     break
         else:
-            if (self.metadata.images and
-                    self.orig_metadata.images != self.metadata.images):
+            if (self.metadata.images
+                    and self.orig_metadata.images != self.metadata.images):
                 self.state = File.CHANGED
             else:
                 self.similarity = 1.0

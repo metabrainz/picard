@@ -481,7 +481,7 @@ class Album(DataObject, Item):
                 for tup in (
                     (tm_recordingid, tm_tracknumber, tm_discnumber),
                     (tm_recordingid, tm_tracknumber),
-                    (tm_recordingid, )):
+                        (tm_recordingid, )):
                     tracks_cache[tup] = track
 
         for file in list(files):
