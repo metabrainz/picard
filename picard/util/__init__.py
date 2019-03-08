@@ -116,8 +116,14 @@ def format_time(ms):
     ms = float(ms)
     if ms == 0:
         return "?:??"
+    duration_seconds = round(ms / 1000)
+    if duration_seconds < 3600:
+        minutes, seconds = divmod(duration_seconds, 60)
+        return "%d:%02d" % (minutes, seconds)
     else:
-        return "%d:%02d" % (round(ms / 1000.0) / 60, round(ms / 1000.0) % 60)
+        hours, remainder = divmod(duration_seconds, 3600)
+        minutes, seconds = divmod(remainder, 60)
+        return "%d:%02d:%02d" % (hours, minutes, seconds)
 
 
 def sanitize_date(datestr):
