@@ -26,7 +26,7 @@ except ImportError:
     try:
         # use python-discid (http://python-discid.readthedocs.org/en/latest/)
         import discid
-    except ImportError:
+    except (ImportError, OSError):
         discid = None
 
 import traceback
