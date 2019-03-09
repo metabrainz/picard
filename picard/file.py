@@ -407,6 +407,11 @@ class File(QtCore.QObject, Item):
 
     def _move_additional_files(self, old_filename, new_filename):
         """Move extra files, like images, playlists..."""
+        new_path = os.path.dirname(new_filename)
+        old_path = os.path.dirname(old_filename)
+        if new_path == old_path:
+            # skip, same directory, nothing to move
+            return
         patterns = config.setting["move_additional_files_pattern"]
         pattern_regexes = set()
         for pattern in patterns.split():
@@ -418,8 +423,6 @@ class File(QtCore.QObject, Item):
             pattern_regexes.add((pattern_regex, match_hidden))
         if not pattern_regexes:
             return
-        new_path = os.path.dirname(new_filename)
-        old_path = os.path.dirname(old_filename)
         moves = set()
         try:
             # TODO: use with statement with python 3.6+
