@@ -39,7 +39,7 @@ try:
 except ImportError:
     try:
         import discid
-    except ImportError:
+    except (ImportError, OSError):
         discid = None
 
 
