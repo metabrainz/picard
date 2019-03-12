@@ -100,3 +100,8 @@ class LocalFileCoverArtImageTest(PicardTestCase):
         image = LocalFileCoverArtImage(path, support_multi_types=True)
         self.assertFalse(image.support_types)
         self.assertTrue(image.support_multi_types)
+
+    def test_windows_path(self):
+        path = 'C:\\Music\\somefile.mp3'
+        image = LocalFileCoverArtImage(path)
+        self.assertEqual(image.url.toLocalFile(), 'C:/Music/somefile.mp3')

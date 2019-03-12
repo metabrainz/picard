@@ -431,7 +431,7 @@ class LocalFileCoverArtImage(CoverArtImage):
 
     def __init__(self, filepath, types=None, comment='',
                  support_types=False, support_multi_types=False):
-        url = 'file://' + filepath
+        url = QUrl.fromLocalFile(filepath).toString()
         super().__init__(url=url, types=types, comment=comment)
         self.support_types = support_types
         self.support_multi_types = support_multi_types
