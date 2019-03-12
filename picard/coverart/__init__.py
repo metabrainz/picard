@@ -174,7 +174,7 @@ class CoverArt:
         # local files
         if coverartimage.url and coverartimage.url.scheme() == 'file':
             try:
-                path = coverartimage.url.path()
+                path = coverartimage.url.toLocalFile()
                 with open(path, 'rb') as file:
                     self._set_metadata(coverartimage, file.read())
             except IOError as ioexcept:
