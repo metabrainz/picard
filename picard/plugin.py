@@ -336,9 +336,7 @@ class PluginManager(QtCore.QObject):
                 plugin_module = importer.load_module(_PLUGIN_MODULE_PREFIX + name)
             plugin = PluginWrapper(plugin_module, plugindir,
                                    file=module_pathname, manifest_data=manifest_data)
-            versions = [version_from_string(v) for v in
-                        list(plugin.api_versions)]
-            compatible_versions = list(set(versions) & self._api_versions)
+            compatible_versions = self._compatible_api_versions(plugin.api_versions)
             if compatible_versions:
                 log.debug("Loading plugin %r version %s, compatible with API: %s",
                           plugin.name,
@@ -364,6 +362,10 @@ class PluginManager(QtCore.QObject):
         if module_file is not None:
             module_file.close()
         return plugin
+
+    def _compatible_api_versions(self, api_versions):
+        versions = [version_from_string(v) for v in list(api_versions)]
+        return set(versions) & self._api_versions
 
     def _get_existing_paths(self, plugin_name):
         dirpath = os.path.join(USER_PLUGIN_DIR, plugin_name)
@@ -495,11 +497,10 @@ class PluginManager(QtCore.QObject):
             )
             self._available_plugins = []
         else:
-            supported_versions = set(api_versions)
             try:
                 self._available_plugins = [PluginData(data, key) for key, data in
                                            response['plugins'].items()
-                                           if supported_versions.intersection(data['api_versions'])]
+                                           if self._compatible_api_versions(data['api_versions'])]
             except (AttributeError, KeyError, TypeError):
                 self._available_plugins = []
         if callback:
