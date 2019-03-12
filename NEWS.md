@@ -1,0 +1,1163 @@
+# Version 2.1.3 - 2019-03-03
+## Bug-fix
+- [PICARD-323] - Only the discid of the first disc in a release is written to tags
+- [PICARD-455] - Picard setting cover art height, width and depth to 0 for FLAC files --> breaks libFLAC
+- [PICARD-729] - Tracks get stuck at "[loading track information]" on Bad Gateway errors
+- [PICARD-938] - Need two left-arrow key presses to go from track with file to album
+- [PICARD-1178] - Images tagged with extra types that the user has chosen to ignore should not be shown as 'modified'
+- [PICARD-1288] - Folskonomy tags / genre fallback on album artists tags not working
+- [PICARD-1422] - Windows: Uninstall 32 bit Picard before upgrade
+- [PICARD-1447] - When releasing a new version, appdata should also be updated
+- [PICARD-1460] - Windows installer does not detect running instance
+- [PICARD-1461] - Crash when running with Spanish language
+- [PICARD-1463] - Picard crashes on startup on Windows
+- [PICARD-1469] - Force close when adding songs to larger albums
+- [PICARD-1471] - Artist searches do not show begin and end area
+- [PICARD-1473] - AcoustId lookup fails if fingerprint already in tags
+- [PICARD-1474] - Windows installer shows outdated version string in file properties
+- [PICARD-1475] - Cover art sources do not support HTTPS
+- [PICARD-1476] - Filled up thread pool prevents metadata box updates
+- [PICARD-1478] - Changing MB server requires a restart
+- [PICARD-1480] - Search line input clear button icon is too small
+
+## Task
+- [PICARD-1459] - Remove OptionsPage.info method
+- [PICARD-1472] - macOS code signing on Travis CI fails for xcode7.3 image
+
+## Improvement
+- [PICARD-1242] - Consider the number of AcoustID sources for linked recordings
+- [PICARD-1457] - "Check for Update" should be in the Picard menu
+- [PICARD-1458] - "Check for Update" should have an ellipsis at the end
+- [PICARD-1470] - Make warning about Qt locale loading less prominent
+
+
+# Version 2.1.2 - 2019-01-29
+## Bug-fix
+- [PICARD-1382] - macOS packaging script ignores all errors
+
+## Task
+- [PICARD-1456] - macOS packaging fails due to PIP bug
+
+
+# Version 2.1.1 - 2019-01-29
+## Bug-fix
+- [PICARD-1451] - Redirects of authenticated requests fail with 401 error
+- [PICARD-1453] - Dropping events do not work in CoverArtBox
+- [PICARD-1454] - Crashes when adding action to toolbar in options
+
+
+## Task
+- [PICARD-1452] - Appveyor auto-deploy not working
+
+## Improvement
+- [PICARD-1450] - Fix language label for zh_CN and zh_TW
+
+
+# Version 2.1.0 - 2018-12-20
+## Bug-fix
+- [PICARD-105] - Picard won't load non-album tracks from fingerprints
+- [PICARD-421] - Releases in private collections are not shown as being in them
+- [PICARD-518] - Sliders without labels in "Options - Metadata - Preferred Releases"
+- [PICARD-637] - $matchedtracks is broken
+- [PICARD-875] - AIFF does not support any of the compatid3 tags
+- [PICARD-949] - Track can be placed in the incorrect spot on the release after using Scan
+- [PICARD-1013] - False file save error in specific circumstances
+- [PICARD-1060] - Collections menu not displayed correctly anymore
+- [PICARD-1112] - Cannot save tags that were previously deleted from file
+- [PICARD-1133] - Plugins list doesn't load automatically after setting proxy
+- [PICARD-1162] - Solo vocals are tagged wrong
+- [PICARD-1219] - Picard creating empty ID3 TIPL / TMCL / IPLS frames
+- [PICARD-1245] - Set field "Grouping" doesn't work as expected
+- [PICARD-1275] - After uninstalling a plugin Picard needs to be restarted for it to be reinstalled
+- [PICARD-1281] - Picard has wrong version string on macOS
+- [PICARD-1320] - Black text on a dark theme
+- [PICARD-1332] - Deleted tags for matched files stay deleted
+- [PICARD-1336] - MP4 reports "bpm" as unsupported tag
+- [PICARD-1339] - Removing unclustered files can be very slow
+- [PICARD-1340] - File info doesn't display Mono / Stereo in Channels field anymore
+- [PICARD-1341] - Cluster track order misinterprets disc/track numbers
+- [PICARD-1346] - Move additional files fails if multiple patterns match
+- [PICARD-1348] - Keyboard shortcuts broken due to localization
+- [PICARD-1350] - Drag and drop on cover image box does not always work as expected
+- [PICARD-1355] - Setting or unsetting album for non-album tracks does not work
+- [PICARD-1359] - Crash with tagger integration when using DuckDuckGo Privacy Essentials
+- [PICARD-1364] - picard.exe has no version tag
+- [PICARD-1368] - Info messages are not shown on logging level Info
+- [PICARD-1369] - Crash on Python 3.7.0 opening URLs
+- [PICARD-1370] - Windows installer to add "Quick Launch" icon no longer supported on Win10
+- [PICARD-1371] - Windows installer does not warn when installing on 32 bit system
+- [PICARD-1373] - Source distributions are unusable
+- [PICARD-1374] - Picard crashes while typing a regular expression in some cases
+- [PICARD-1375] - Metadata sanitation before move-script execution fails
+- [PICARD-1376] - Error saving Ape files with tag marked for deletion that does not exist
+- [PICARD-1381] - Test results depend on execution order of tests
+- [PICARD-1397] - Do not save tags marked as unsupported
+- [PICARD-1398] - Snap package is missing locale files
+- [PICARD-1405] - Pasting formatted text into scripting window shows formatting
+- [PICARD-1410] - Loading Vorbis file with invalid rating value fails
+- [PICARD-1412] - Deleting tag counts not as important metadata change
+- [PICARD-1414] - Image errors lead to crash in info dialog
+- [PICARD-1415] - Open Containing Folder and Open with MusicPlayer does nothing for UNC paths
+- [PICARD-1418] - Display localized default dialogs and keyboard shortcut hints
+- [PICARD-1420] - Can not save wma file. TypeError: sequence item 0
+- [PICARD-1428] - Removing tags which are only in original file metadata not possible
+- [PICARD-1430] - "Authentication required" dialog does not trigger authentication
+- [PICARD-1431] - Some ID3 frames gets deleted even if the corresponding tags are shown as unchanged
+- [PICARD-1434] - Tag acoustid_id can not be removed or deleted in script
+- [PICARD-1436] - Text extraction of "title" and "label" for translation.
+- [PICARD-1437] - After reload file is being shown as changed
+- [PICARD-1438] - Message box buttons Yes/No aren't translated
+- [PICARD-1439] - Newline character in cover art naming script causes exception on saving
+
+## New Feature
+- [PICARD-490] - Allow tagging AAC/ADTS files with APEv2 tags
+- [PICARD-1043] - Support reading & writing iTunes Classical tags
+- [PICARD-1045] - Check for new version
+- [PICARD-1268] - Support concertmaster recording relationships as performer:concertmaster
+- [PICARD-1273] - Add an option to exclude new cover art type "Raw / Unedited"
+- [PICARD-1319] - Provide cover art metadata to cover image naming script
+- [PICARD-1344] - Add $delete function
+- [PICARD-1352] - Add a command-line option to skip plugin loading
+- [PICARD-1354] - Allow using vocals and instruments as credited
+- [PICARD-1367] - Allow opening searches in browser when using search dialogs
+- [PICARD-1384] - Add AppStream data
+- [PICARD-1386] - Add $title function
+- [PICARD-1395] - Support genres from MusicBrainz
+- [PICARD-1440] - Support loading and renaming Standard MIDI Files (SMF)
+
+## Task
+- [PICARD-1333] - Run CI tests agaist oldest supported mutagen
+- [PICARD-1347] - Refactor script.py to avoid code duplication
+- [PICARD-1365] - Allow building with PyQt 5.11 or later
+- [PICARD-1442] - Support new Audio Play secondary type
+
+## Sub-task
+- [PICARD-1407] - Save originalalbum / originalartist to ASF/WMA
+- [PICARD-1408] - Save originalalbum / originalartist to APE
+
+## Improvement
+- [PICARD-664] - When dragging a recording, show the actual file name instead of the path
+- [PICARD-792] - Package a start menu tile for Windows 10 on the windows version
+- [PICARD-1039] - Use forward delete instead of delete button on macOS
+- [PICARD-1049] - Picard should use TXXX:WORK rather than TXXX:Work
+- [PICARD-1068] - Picard should use MP4 ©wrk for Work rather than generic text field
+- [PICARD-1244] - Refresh list of plugins after uninstalling or installing a local plugin
+- [PICARD-1285] - There is no Close menu item in Picard 2.0 on macOS
+- [PICARD-1313] - Refactor plugin UI
+- [PICARD-1325] - Allow disabling new version update checking for packagers
+- [PICARD-1338] - Picard should be more resilient if it gets invalid responses from servers
+- [PICARD-1358] - Use macOS style widgets in the user interface of the macOS version of Picard
+- [PICARD-1363] - AcoustId submission for matched files is impossible when musicbrainz_recordingid is unset
+- [PICARD-1366] - Show Python version in about
+- [PICARD-1379] - Port astrcmp to new Python C Unicode API
+- [PICARD-1383] - Use MCN / barcode read from disc to improve DiscId lookup
+- [PICARD-1393] - Change the application ID
+- [PICARD-1416] - Should store ID3 Artists field as TXXX:ARTISTS not TXXX:Artists
+- [PICARD-1417] - Only show plugins with compatible API version
+- [PICARD-1424] - Translate AppStream data
+- [PICARD-1425] - Support all movement tags for APE, Vorbis and MP3
+- [PICARD-1426] - Map musicbrainz_originalalbumid and musicbrainz_originalartistid to MP4 and WMA
+- [PICARD-1443] - Sort secondary release types in UI alphabetically
+
+
+# Version 2.0.4 - 2018-09-05
+## Bug-fix
+- [PICARD-803] - tagging "8½ Minutes" with "replace with non-ascii characters" results in a directory being created
+- [PICARD-1216] - Does not display version information
+- [PICARD-1267] - 2.0.0dev6 crash in debug mode on Windows April Update (1803)
+- [PICARD-1281] - Picard has wrong version string
+- [PICARD-1294] - Crashes every time Picard connects to MB server.
+- [PICARD-1310] - Picard crashes on clearing log
+- [PICARD-1318] - RuntimeError: dictionary changed size during iteration
+- [PICARD-1321] - CD drive selection not working on Linux
+- [PICARD-1322] - Crash in options on "Restore defaults"
+- [PICARD-1323] - Restore defaults does not restore CAA types
+- [PICARD-1324] - Default locale not working reliable
+- [PICARD-1326] - Picard Save Changes 5.1 Mix Type
+- [PICARD-1327] - Loading TAK files fails
+- [PICARD-1328] - Loading OptimFROG files fails
+- [PICARD-1329] - Picard fails saving ID3 tags with iTunNORM tag
+- [PICARD-1331] - Picard crashes on error during plugin install
+
+
+
+# Version 2.0.3 - 2018-08-10
+## Bug-fix
+- [PICARD-1122] - Preffered release type settings are exclusive and should be inclusive
+- [PICARD-1207] - Move additional files feature fails when source directory contains non-ascii characters
+- [PICARD-1247] - Not all "preserved" tags are preserved
+- [PICARD-1305] - Search dialog crashes picard when record doesn't have an album
+- [PICARD-1306] - picard crashes when opening the options dialog if the cwd doesn't exist
+
+## New Feature
+- [PICARD-1289] - Allow manually running any tagger script
+
+
+## Improvement
+- [PICARD-1292] - MusicBrainz Picard 2.01 64-bit for windows installs to "C:\Program Files (x86)" by default
+- [PICARD-1302] - Dropping an image from Google image crashes picard
+- [PICARD-1303] - picard crashes when matching a cluster with a release with no tracks
+- [PICARD-1304] - Info dialog for album crashes because track doesn't have a tracknumber
+
+## Regression
+- [PICARD-259] - Make file-specific variables available to tagger script
+
+
+# Version 2.0.2 - 2018-07-30
+## Sub-task
+- [PICARD-1296] - Code sign Picard for macOS
+
+## Task
+- [PICARD-1301] - Use PyQT 5.10 for macOS
+
+## Bug-fix
+- [PICARD-342] - Picard is not properly signed for Mac OS X Gatekeeper
+- [PICARD-1212] - Picard 2.0.0dev4 crashing at startup
+- [PICARD-1300] - Picard crashes when logging lots of events
+
+# Version 2.0.1 - 2018-07-21
+## Bug-fix
+- [PICARD-1283] - Fingerprinting not working on macOS in Picard 2.0
+- [PICARD-1286] - Error creating SSL context on Windows
+
+## Improvement
+- [PICARD-1290] - Improve slow start up times by moving to a non single file exe
+- [PICARD-1291] - Use an installer for Picard 2.x windows exe
+
+# Version 2.0 - 2018-07-18
+## Bug-fix
+- [PICARD-153] - Non-configuration data is saved in Picard.conf
+- [PICARD-173] - ID3 tag TSOP appears to be stored blank
+- [PICARD-340] - Cover art embedding will overwrite existing ones
+- [PICARD-405] - Save stopped working
+- [PICARD-817] - On high-resolution / high DPI displays, Picard's GUI is scaled wrong
+- [PICARD-1047] - Incompatible plugins are loaded with picard 2.0
+- [PICARD-1051] - Searching for similar tracks causes coredumps
+- [PICARD-1052] - Not disabled Search for similar tracks can cause coredumps
+- [PICARD-1056] - Crash when viewing file info dialog
+- [PICARD-1058] - Saving images as files doesn't work
+- [PICARD-1062] - Picard crashes when moving files on release
+- [PICARD-1063] - After #689 unit tests fail if astrcmp is not compiled
+- [PICARD-1064] - python setup.py test -v doesn't work
+- [PICARD-1065] - python setup.py patch_version doesn't work
+- [PICARD-1066] - python setup.py update_constants doesn't work
+- [PICARD-1067] - Visual bug after un-checking an installed plugin
+- [PICARD-1073] - "Add New Tag" crashes picard
+- [PICARD-1084] - Picard 2 doesn't find DVD drive
+- [PICARD-1085] - Multi-Dir Add Folder not working
+- [PICARD-1105] - Crashes when using the edit tag dialog
+- [PICARD-1106] - cancel plugin installation file dialog results in crash
+- [PICARD-1114] - Cannot submit ratings in Picard 2.0 dev
+- [PICARD-1119] - picard sets "Disc Subtitle" to the track title
+- [PICARD-1123] - Multiple work languages are collapsed
+- [PICARD-1126] - Unhelpful error message logged on network request errors
+- [PICARD-1135] - Picard is not able to save on MTP devices
+- [PICARD-1138] - Search crashes due to AttributeError
+- [PICARD-1143] - Wrong amount of songs from added files
+- [PICARD-1147] - FYI, Can't load "Alan Parsons" album "On air" in Picard 1.2
+- [PICARD-1153] - "Lookup in Browser" and "Search" fail silently if artist name contains umlaut
+- [PICARD-1156] - Picard fails to start when trying to upgrade plugin which is a symlink
+- [PICARD-1159] - Can't open WAV files
+- [PICARD-1161] - Dragging artwork from Chrome pages doesn't work
+- [PICARD-1171] - Text of "About" can't be selected
+- [PICARD-1179] - Error while searching for alt. releases
+- [PICARD-1181] - In-app search dialog excessive slow down
+- [PICARD-1188] - Picard chooses incorrect value for language tag
+- [PICARD-1199] - Crash when right-clicking album
+- [PICARD-1202] - Right click on tag listing causes exception and crash
+- [PICARD-1203] - Hide unsupported tags from the tag diff in UI
+- [PICARD-1204] - Picard freezes on unchecking show diff tags first
+- [PICARD-1206] - Text is not displaying properly in some fields.
+- [PICARD-1210] - Long lines in the option dialogue don’t wrap
+- [PICARD-1213] - Wrong Movement of coverart providers
+- [PICARD-1215] - Does not use config / ini file specified on command line
+- [PICARD-1221] - Picard 2.0 won't start on Windows 10
+- [PICARD-1226] - Different fonts in the plugins dialog
+- [PICARD-1230] - Looking up CD crashes Picard
+- [PICARD-1234] - Crash when loading plugin from local directory
+- [PICARD-1252] - Crash on pasting invalid naming script
+- [PICARD-1253] - Crash on image saving
+- [PICARD-1255] - Crash on startup - no GUI
+- [PICARD-1265] - Can't "Lookup in Browser": UnicodeEncodeError: 'latin-1' codec can't encode characters in position 0-7: ordinal not in range(256)
+- [PICARD-1270] - Corruption of saved audio files located on a network share
+- [PICARD-1271] - Artist credit saved in tags sometimes loses closing parenthesis
+- [PICARD-1277] - Picard crashes on unknown cover art types
+
+## New Feature
+- [PICARD-1187] - Add DSF file support
+- [PICARD-1220] - Add keyboard shortcut for deleting scripts from options > scripting page
+
+## Task
+- [PICARD-960] - Migrate to PyQt5
+- [PICARD-1186] - Support only 64 bit Picard builds from 2.0
+
+## Improvement
+- [PICARD-259] - Make file-specific variables available to tagger script
+- [PICARD-581] - Picard XML processing should use lxml module rather than QXmlStreamReader
+- [PICARD-588] - Picard 2.0 based on Python 3
+- [PICARD-807] - Retry release fetch on MB server overload
+- [PICARD-922] - Make multi-value script functions work correctly
+- [PICARD-976] - Reimplement the picard WS code to accommodate future versions of MBWS
+- [PICARD-978] - Distinguish in UI between unclustered and release unmatched files
+- [PICARD-1075] - Add unit tests for Metadata object variables
+- [PICARD-1087] - Improvements to UI for Lookup CD
+- [PICARD-1100] - Error when running confined in a snap because of gconf
+- [PICARD-1174] - Option to tolerate differences in track times
+- [PICARD-1200] - In Options dialog, tree pane on the left cannot be resized
+- [PICARD-1201] - Add a command-line option to not restore persisted UI sizes or positions
+- [PICARD-1211] - The “X” close button doesn’t work on the options dialogue
+
+# Version 1.4.2 - 2017-05-08
+## Bug-fix
+- [PICARD-1053] - Picard does not stop analyzer while moving
+- [PICARD-1055] - picard hangs with: RuntimeError: maximum recursion depth exceeded in cmp
+- [PICARD-1070] - The "Convert Unicode punctuation characters to ASCII" function only works in certain tags
+- [PICARD-1077] - ID3v2.4 text encoding settings are not saved correctly
+
+## Improvement
+- [PICARD-969] - Search dialog webservices get queued behind matched album requests
+- [PICARD-1034] - Picard not seeing TOPE and TOAL
+
+# Version 1.4.1 - 2017-04-01
+## Bug-fix
+- [PICARD-953] - Album shown matched even if extra unmatched files
+- [PICARD-972] - Removing album with saves pending does not remove pending saves
+- [PICARD-973] - Pending log messages not flushed to stderr on quit
+- [PICARD-988] - Drag & Drop not working
+- [PICARD-990] - Picard violating ID3 standard for TXXX frames
+- [PICARD-996] - Disabling the cover art box and enabling it again doesn't bring it back
+- [PICARD-998] - Disabling the action toolbar sometimes doesn't work
+- [PICARD-1005] - If a cluster is moved to the album side of the main window it gets moved to unmatched files
+- [PICARD-1006] - Drag and drop for cover arts doesnt work on OSX
+- [PICARD-1010] - Unsetting View/Cover Art doesn't work permanently
+- [PICARD-1011] - Toolbar tab order incorrect after PICARD-908
+- [PICARD-1014] - Number of images in release info is calculated incorrectly
+- [PICARD-1015] - Artwork tab of the Track Info DIalog doesn't show changes anymore
+- [PICARD-1018] - CoverArtBox doesn't show new/removed images after unmatched files are added/removed to the album
+- [PICARD-1023] - Directory persistence for Add Directory needs tweaking
+- [PICARD-1029] - Fix ~artists_sort metadata variable
+- [PICARD-1042] - Missing import for PICARD_APP_NAME
+
+## New Feature
+- [PICARD-258] - Visual feedback for changes to artwork in before-after pane.
+- [PICARD-1000] - Implement artwork diff for albums
+
+## Task
+- [PICARD-943] - Remove monkey patching of file write methods in picard formats
+- [PICARD-1041] - Replace Ok button text by Make It So! in Options dialog
+
+## Improvement
+- [PICARD-223] - Remove should work when Unmatched Files is selected
+- [PICARD-951] - Always use HTTPS for musicbrainz.org
+- [PICARD-952] - Use Cover Art Archive over HTTPS
+- [PICARD-961] - Mention AcoustID on Scan button too
+- [PICARD-980] - Drag&drop cover art doesn't work for images from amazon/google images/https links
+- [PICARD-1012] - Buttons on the "User Interface" and "Scripting" pages are smaller than buttons in other places
+- [PICARD-1016] - Multiple images in related tracks confusing
+- [PICARD-1021] - Picard loads all pending files before quitting
+- [PICARD-1024] - Allow specifying a configuration file path
+- [PICARD-1030] - Allow to add/replace cover art images and keep existing cover art
+
+
+# Version 1.4 - 2017-02-14
+## Bug-fix
+- AcoustID submission fails with code 299 (PICARD-82)
+- Ignoring "hip hop rap" folksonomy tags also ignores "rap", "hip hop", etc. (PICARD-335)
+- Picard downloads multiple 'front' images instead of just first one. (PICARD-350)
+- Saving hidden file with only an extension drops the extension (PICARD-357)
+- Add directory opens in "wrong" dir (PICARD-366)
+- Picard should de-duplicate work lists (PICARD-375)
+- Tree selector in Options window is partially obscured, pane too narrow (PICARD-408)
+- tag acoustid_id can not be removed or deleted in script, renaming or plugin (PICARD-419)
+- Can't remove value from field (PICARD-546)
+- Can't open Options (PICARD-592)
+- "Tags from filenames" action stays enabled even if it is unavailable. (PICARD-688)
+- Using the first image type as filename changes the name of front images (PICARD-701)
+- Fingerprint Submission Failes if AcoustID tags are present and/or invalid (PICARD-706)
+- Picard moves into the selected folder (PICARD-726)
+- Picard does not support (recording) relationship credits (PICARD-730)
+- Picard repeats/duplicates field data (PICARD-748)
+- Number of pending web requests is not decremented on exceptions in the handler (PICARD-751)
+- Divide by zero error in `_convert_folksonomy_tags_to_genre` when no tag at the release/release group level (  PICARD-753)
+- Directory tree (file browser) not sorted for non-system drives under Windows (PICARD-754)
+- Crash when loading release with only zero count tags (PICARD-759)
+- No name and no window grouping in gnome-shell Alt-Tab app switcher (PICARD-761)
+- Lookup in Browser does not and can not load HTTPS version of musicbrainz.org (PICARD-764)
+- Unable to login using oauth via Picard options with Server Port set to 443 (PICARD-766)
+- "AttributeError: 'MetadataBox' object has no attribute 'resize_columns'" when enabling the cover art box (  PICARD-775)
+- Pre-gap tracks are not counted in absolutetracknumber (PICARD-778)
+- CAA cover art provider runs even if cover art has already been loaded (PICARD-780)
+- Toggling Embed Cover Art in Tags and restarting doesn't have the expected behavior (PICARD-782)
+- XMLWS redirects incorrectly (PICARD-788)
+- Handle empty collection-list in web server response (PICARD-798)
+- Amazon Cover Art provider does not work (and does not have a lot of debug logging enabled) (PICARD-799)
+- Cover Art from CAA release group is skipped even though it exists (PICARD-801)
+- Multiple instances of history and log dialogs (PICARD-804)
+- Empty string lookup (PICARD-805)
+- Will not load album information on any albums (PICARD-811)
+- Redirect URL is not encoded which leads to http 400 error. (PICARD-814)
+- Not compatible with latest Mutagen (PICARD-833)
+- Can't save any files.  Get: "error: invalid literal for int() with base 10" (PICARD-834)
+- Picard 1.3.2 shows cleartext username & password on status line when errors occur (PICARD-839)
+- Cannot fetch cover art from amazon link contains https scheme. (PICARD-848)
+- media-optical-modified.png icon still displayed after release save when two files match one track (PICARD-851)
+- Release that Picard will not load (due to disc with just data track?) (PICARD-853)
+- ValueError in metadata.py (PICARD-855)
+- Improper detection of Gnome as a desktop environment and no support for gnome 3 (PICARD-857)
+- Apparent non-functional tagger button (PICARD-858)
+- Picard does not read Ogg/Opus files with an ".ogg" file exension (PICARD-859)
+- Setting a large value in in $num function as length causes picard to become unresponsive (PICARD-865)
+- id3 deletion needs to be improved (PICARD-867)
+- id3v2.3 does not properly handle TMOO ( mood tag) (PICARD-868)
+- Coverart providers duplicates on reset (PICARD-870)
+- Restore defaults broken for plugins page and tagger scripts page (PICARD-873)
+- Coverart providers erroneous save (PICARD-874)
+- The metadatabox doesn't correctly show the tag selected  (PICARD-876)
+- Length tag for ID3 is no longer displayed in the metadata box (PICARD-881)
+- Removed tags are not removed from the metadatabox after saving the file (PICARD-882)
+- File Browser pane doesn't check for path type( file or folder) when setting home path/move files here (  PICARD-884)
+- mov files return a +ve score for mp4 container leading to errors (PICARD-885)
+- "Restore defaults" doesn't log out the user (PICARD-888)
+- Broken 'Restore Defaults' (PICARD-907)
+- Messagebox wraps and displays title inappropriately (PICARD-911)
+- An “empty” track shouldn’t get an “excellent match” tooltip. (PICARD-914)
+- In plugins list, some plugins don't show description (PICARD-915)
+- Plugin restore defaults broken (PICARD-916)
+- Does not use UI language but locale on Windows (PICARD-917)
+- Preserve scripting splitter position (PICARD-925)
+- Having trouble submitting AcoustIDs (PICARD-926)
+- Cluster double‐click opens the Info… panel (PICARD-931)
+- Status bar not cleared when selection changed (PICARD-937)
+- Open containing folder not working for shared files over network  (PICARD-942)
+- Warning: Plugin directory '…/python2.7/site-packages/contrib/plugins' doesn't exist (PICARD-945)
+- Additionnal files aren't moved anymore (PICARD-946)
+- Search window error message does not appear translated (PICARD-947)
+- Open Containing Folder duplicates (PICARD-950)
+- Errors when directory / file names contain unicode characters (PICARD-958)
+
+## New Feature
+- AIF support (ID3) (PICARD-42)
+- Test and integrate support for "local" cover art into Picard (PICARD-137)
+- Display infos (album, artist, tracklist) for clusters without release match (PICARD-680)
+- Add download plugin functionality to existing UI (PICARD-691)
+- Fallback on album artist's tags if no tags are found for album (PICARD-738)
+- Add m2a as a supported extension (PICARD-743)
+- MusicBrainz/AcoustID entities should be hyperlinked in Picard (PICARD-756)
+- Support key tag (PICARD-769)
+- Export / import settings (PICARD-901)
+- Search releases from within a Picard dialog (PICARD-927)
+- Searching tracks and displaying similar tracks in a dialog box (PICARD-928)
+- Search for artists from dialog (PICARD-929)
+
+## Task
+- Picard default name files script refinement (PICARD-717)
+- Update Picard logo/icons (PICARD-760)
+- Link to the Scripting documentation on the Scripting options page (PICARD-779)
+- Remove contrib/plugins from the repository (PICARD-835)
+- Raise the required mutagen version to 1.22 (PICARD-841)
+- Renaming save_only_front_images_to_tags option to something more appropriate  (PICARD-861)
+- Allow translators to finalize translations before releasing Picard 1.4 (PICARD-895)
+- Raise the required Python version to 2.7. (PICARD-904)
+- Bump Picard’s copyright date (PICARD-912)
+- Add Norwegian to UI languages (PICARD-982)
+- Provide ~video variable for video tracks (PICARD-652)
+- Improve error logging on AcoustId submission (PICARD-708)
+
+## Improvement
+- Link to Picard Scripting page under 'File Naming' (PICARD-22)
+- Restore default settings button/s (PICARD-116)
+- Speed of Ogg tag writing/updating (PICARD-133)
+- Allow adding/removing tags to be preserved from context menu in the tag diff pane (PICARD-207)
+- Make it easier to remove everything currently loaded in Picard (PICARD-210)
+- Bring back keyboard shortcuts for editing tags (PICARD-222)
+- Case sensitivity for "Move additional files" option (PICARD-229)
+- Metadata comparison box shows that it intends to write (and has written) tags unsupported by   underlyingfile format (PICARD-253)
+- Add more descriptive tooltips to buttons (PICARD-267)
+- Allow musicip_puid and acoustid_id to be cleared from tags (PICARD-268)
+- Make it possible to remove existing tags without clearing all tags (PICARD-287)
+- Disable recurse subdirectories should be added (PICARD-291)
+- display how many "pending files" left on lookup (PICARD-305)
+- Handle MP3 TSST/TIT3 (subtitle) tags better with ID3v2.3 (PICARD-307)
+- Customisable toolbars (PICARD-353)
+- Ignore file extension and try to read anyway (PICARD-359)
+- Make it possible to unset all performer (etc) tags (PICARD-384)
+- Progress tracking (PICARD-388)
+- Add ability to handle multiple tagger scripts (PICARD-404)
+- the option "select all" to save (PICARD-476)
+- Option to load only audio tracks, i.e. not DVD-Video, CD-ROM tracks (PICARD-514)
+- Picard should use OAuth for authentication (PICARD-615)
+- Improvements to WMA tags (PICARD-648)
+- Only ask to "log in now" once per session (PICARD-678)
+- Show codec info for MP4 files (PICARD-683)
+- "Play File" button should be renamed to "Open in Player" (PICARD-692)
+- ID3 padding not reduced can result in large files (PICARD-695)
+- Set option 'caa_approved_only' disabled by default (PICARD-705)
+- Validate fpcalc executable in options (PICARD-707)
+- Improve File Naming options (PICARD-733)
+- Add --long-version/-V option, outputting third parties libs versions as well as Picard version PICARD-734)
+- missing info in the help file (PICARD-740)
+- Pass command-line arguments to QtApplication (PICARD-773)
+- Use the more detailed icons in more places on windows (PICARD-777)
+- Use .ini configuration file on all platforms (PICARD-794)
+- Use python2 shebang as of PEP 0394 (PICARD-806)
+- Display existing covers in File Info dialog (PICARD-808)
+- Use HTTPS for external links (PICARD-818)
+- Install a scalable icon (PICARD-838)
+- Use HTTPS for requests to the plugins API on picard.musicbrainz.org (PICARD-852)
+- Use magic numbers to determine the audio file types instead of relying on extensions (PICARD-864)
+- Multi-scripting UI is very basic (PICARD-883)
+- Allow scripting functions to have arbitrary number of arguments (PICARD-887)
+- The "Restore defaults" confirmation buttons should follow the quit confirmation dialog in style PICARD-890)
+- Replace submit icon with AcoustID logo (PICARD-896)
+- Rename "Submit" button to "Submit AcoustIDs" (PICARD-897)
+- Use UTF-8 for ID3v2.4 by default instead of UTF-16 (PICARD-898)
+- Restore defaults is slightly broken for tags option page (PICARD-902)
+- Rearrange the action toolbar icons from left to right according to the expected user-flow (PICARD-908)
+- Add tooltips to “Restore all Defaults” and “Restore Defaults” (PICARD-913)
+- Make PICARD-883 UI have adjustable widths for list of scripts and script content (PICARD-918)
+- Move Options/Advanced/Scripting to Options/Scripting (PICARD-919)
+- Move UI options page up the options tree (PICARD-921)
+- Add $startswith and $endswith string functions (PICARD-923)
+- Make list of scripts smaller than script text by default (PICARD-924)
+- Wait for save thread pool to be finished before exit  (PICARD-944)
+- New guess format functionality should use explicit buffer size (PICARD-970)
+
+
+# Version 1.3.2 - 2015-01-07
+  - Bugfix: Fixed tags from filename dialog not opening on new installations
+
+
+# Version 1.3.1 - 2014-12-20
+## Bug Fixes
+- Picard should use the correct Accept header when talking to web services. (PICARD-273)
+- Picard refuses to load files if any path component happens to be hidden (PICARD-589)
+- ConfigUpgradeError: Error during config upgrade from version 0.0.0dev0 to 1.0.0final0 (PICARD-642)
+- Windows installer sets working directory to %PROGRAMFILES%\MusicBrainz Picard\locale (PICARD-649)
+- Last.fm plus tooltip help elements are all messed up (PICARD-655)
+- Regression: Tagger script for cover art filename does not work anymore (PICARD-661)
+- Retrieving collections causes AttributeError: release_list (PICARD-662)
+- Artist name makes it impossible to save (PICARD-663)
+
+## Improvements
+- Support the new pregap and data tracks (PICARD-658)
+- Set the originalyear tag when loading a release (PICARD-659)
+- Web service calls to ports 80 and 443 do not need explicit port specification. 443 should be automatically made https. (PICARD-665)
+
+
+# Version 1.3 - 2014-10-20
+- The "About" window now displays the versions of libraries used by Picard
+- Picard now correctly handles matching of MP3 files saved in ID3v2.3 tags
+  (which is the version that Microsoft Windows and iTunes both use).
+  Note: You may need to re-save your tags once to get them to match in future.
+- A sort tags plugin is now provided as tag data is no longer displayed sorted by default.
+- A new tag, musicbrainz_releasetrackid, containing the MusicBrainz Track MBID
+  introduced in the May 2013 schema change release, is now written to files.
+- Add `%_recordingtitle%` (PICARD-515)
+- Fix plugin install bugs (PICARD-444)
+- Fix Options / File naming examples to handle primary/secondary release types (PICARD-516)
+- A new advanced option is available to permanently set the starting directory
+  for the file browser and "Add files/folder" buttons.
+- Requests to Musicbrainz against your own account e.g. for collections are now handled through SSL (PICARD-337)
+- Refresh of Albums using Ctrl-R and selection of Other Releases are now more responsive during batch lookups.
+- Main window is now emitting a "selection_updated" signal, plugin api version bumps to 1.3.0
+- Append system information to user-agent string
+- Compilation tag/variable functionality (for tagging & file naming) has been split into two:
+  - `%compilation%` is now aligned with iTunes, and set only for Various Artists type compilations
+  - `%_multiartist%` variable now indicates whether this release has tracks by multiple artists
+    (in order to prepend the artist name to the filename as shown in the default file naming script)
+- autodetect the CD drive on Mac OS X (PICARD-123)
+- Ignore directories and files while indexing when show_hidden_files option is set to False (PICARD-528)
+- Add ignore_regex option which allows one to ignore matching paths, can be set in Options > Advanced (PICARD-528)
+- Added an "artists" multi-value tag to track metadata, based on the one in Jaikoz, which contains the individual
+  artist names from the artist credit. Also useful in scripts (joining phrases like 'feat:' are omitted) and plugins.
+- Added `%_artists_sort%`, `%_albumartists%`, `%_albumartists_sort%` variables for scripts and plugins.
+- Made Picard use the country names also used on the MusicBrainz website (PICARD-205)
+- New setup.py command `get_po_files` (Retrieve po files from transifex)
+- New setup.py command `regen_pot_file` (Regenerate po/picard.pot)
+- New Work tag (which for Classical music is often different from the track title) saved as ID3 TOAL tag.
+- New Composer Sort Order tag (variable `%composersort%`).
+- Improve the Other Releases list to prioritise and separate releases which match the correct number of tracks
+  and your Options / Metadata / Preferred Releases settings for Country and Format.
+- New `%_absolutetracknumber%` variable numbering tracks sequentially regardless of disc structure
+  (so you can numbers tracks on multi-disc releases without a disc number)
+- Support dropping image directly from Google image results to cover art box
+- Add `%_musicbrainz_tracknumber%` to hold track # as shown on MusicBrainz release
+  web-page e.g. vinyl/cassette style A1, A2, B1, B2
+- Show the ID3 version of the file in the Info... dialog (Ctrl-I) (PICARD-218)
+- Fixed a bug where Picard crashed if a MP3 file had malformed TRCK or TPOS tags (PICARD-112)
+- Add --files option to setup.py build_ui, used to force .ui to .py regeneration (PICARD-566)
+- New setup.py command `update_constants` (Regenerate countries.py and attributes.py)
+- Made Picard use release groups, medium formats and cover art types also used on the MusicBrainz website
+- Use MusicBrainz Server translations for release groups, medium formats and cover art types
+- Add checkbox to toggle debug at runtime in log/debug view dialog
+- Add a plugin to add Artist Official Homepage relationships to the website tag (ID3 WOAR tag)
+- Add integrated functions `$eq_any`, `$ne_all`, `$eq_all`, `$ne_any`, `$swapprefix` and `$delprefix`.
+- Add `%_performance_attributes%`, containing performance attributes for the work
+  e.g. live, cover, medley etc.
+  Use `$inmulti` in file naming scripts i.e.
+  `$if($inmulti(%_performance_attributes%,medley), (Medley),)`
+- Add optional `priority` parameter to `register_album_metadata_processor()` and
+  `register_track_metadata_processor()`
+  Default priority is `PluginPriority.NORMAL`, plugins registered with
+  `PluginPriority.HIGH` will be run first, plugins registered with
+  `PluginPriority.LOW` will run last
+- Add Standardise Performers plugin to convert e.g. Performer [piano and guitar] into
+  Performer [piano] and Performer [guitar].
+- Add support for release group cover art fallback (PICARD-418, PICARD-53)
+- Add a clear button to search box
+- Honour preferred release formats when matching AcoustIds (PICARD-631)
+- Prevent ZeroDivisionError in some rare cases (PICARD-630)
+
+
+# Version 1.2 - 2013-03-30
+- Picard now requires at least Python 2.6
+- Removed support for AmpliFIND/PUIDs
+- Add support for the Ogg Opus file format
+- It's now possible to download cover images without any plugin. Cover Art Archive images can be downloaded by image type
+- Improved directory scanning performance
+- Prefer already-loaded releases of the same RG when matching files
+- Allow dropping new files onto specific targets
+- Add basic collections management support (PICARD-84)
+- Allow adding custom tags in the tag editing dialog (PICARD-349)
+- Fix replacing of Windows-incompatible characters (PICARD-393)
+- Save both primary and secondary release types (PICARD-240)
+- Handle errors from the AcoustID service better (PICARD-391)
+- Accept HTTPS URLs on drag-and-drop (PICARD-378)
+
+
+# Version 1.1 - 2012-09-03
+- Always show basic tags in metadata comparison box, even if empty (title,
+  artist, album, tracknumber, ~length, date) (PICARD-201)
+- Fixed AcoustID submission failure after removing files from Picard (PICARD-82)
+- Allow multi-select in new MetaDataBox for delete/remove tags (PICARD-194)
+- File browser remembers last directory/no longer crashes on OS X (PICARD-104)
+- Removed the "Run Picard" option from the Windows installer (PICARD-11)
+- Refreshing a non-album track correctly clears previous track metadata (PICARD-220)
+- Fixed the preserved tags setting for tags with uppercase characters (PICARD-217)
+- Added a completion box to the preserved tags setting, and clarified how it works
+- Store lyrics language in tags instead of text representation language (PICARD-242)
+- Fix various oddities in the metadata comparison box (PICARD-255, PICARD-256)
+
+
+# Version 1.0 - 2012-06-02
+- New UI: Extended comparison of existing vs. MB metadata & tags (PICARD-43)
+- Merged the renaming and moving options pages
+- Removed the VA file naming format option (there is now a single format option) (PICARD-159)
+- Add `%license%` tag
+- Made `%writer%` available to tagger scripts and plugins with contents of songwriter (PICARD-21)
+- Allow two multi-valued variables to be merged in tagger scripting (PICARD-139)
+- Allow multi-valued variables to be transformed in tagger script and then set back in tags as multi-valued (PICARD-147)
+- Fix `$copy` not preserving multi-value variables as documented (PICARD-138)
+- Load/save free-text tags for ID3 as TXXX frames (PICARD-148)
+- Fix writing of MusicBrainz Work Id / musicbrainz_workid to tags (PICARD-88)
+- Handle mimetype for embedding cover art from EXIF jpegs (PICARD-27)
+- Change cover art box to open MusicBrainz release rather than Amazon
+- Support manual drag-and-drop of cover art onto a release via cover art box
+- Only open browser on left-click of cover art box (PICARD-190)
+- Fix Lookup in Browser (previously 'tag lookup') for clusters (PICARD-186)
+- Lookup in Browser will now not use MBIDs to lookup unmatched files/clusters
+- Add Date/Country to CD Lookup results dialog (PICARD-198)
+- Fix/reset album folksonomy tag counts while refreshing releases (PICARD-4)
+- Plugins actions can now create sub-menus using the MENU class attribute
+- New plugin hook `register_clusterlist_action`
+- Display the port Picard is listening on at bottom right status bar (PICARD-191)
+- Make album drops from right hand pane to left default to "unmatched files" again (PICARD-33)
+- Remove .DS_Store, desktop.ini, and Thumbs.db from otherwise empty directories (PICARD-75)
+- Update artist translation to use new alias features (primary flag, sort names) (PICARD-200)
+- Deleted tags aren't indicated as changes (PICARD-165)
+- Picard log entries have inaccurate timestamp (PICARD-45)
+- Interface doesn't allow keyboard only management (PICARD-103)
+- Added option to preserve timestamps of tagged files (PICARD-31)
+- Added keyboard shortcut to reload release (PICARD-99)
+- Medium formats weren't listed in order in the "Other versions" menu (PICARD-91)
+- Couldn't select multiple directories in "Add Folder" window on OS X (PICARD-74)
+
+
+# Version 0.16 - 2011-10-23
+- Added AcoustID support.
+- Fixed track metadata plugins.
+- Added new internal `%_totalalbumtracks%` tag field. (PICARD-16)
+- Track metadata plugins now run also on non-album tracks. (PICARD-7)
+- Fixed custom Various Artists name on the %albumartist% field. (PICARD-5)
+- Album artist is now correctly "translated". (PICARD-1)
+- Unicode punctuation is now converted to ASCII by default.
+- WavPack correction files are moved together with the main files. (PICARD-15)
+- Unicode filename normalization on OS X.
+- Original release date is now saved into %originaldate%.
+- Allow tagging with localized artist aliases (PICARD-17)
+- Added a quit confirmation dialog. (PICARD-46)
+- Standalone recordings can be tagged with relationships now. (PICARD-10)
+- Refreshing an album will refresh its "other versions" listing. (PICARD-8)
+- "Unicode punctuation to ASCII" now works on album-level metadata. (PICARD-50)
+- DJ-mix tags should only be written to the medium where they apply. (PICARD-20)
+- Support URL redirects in web service/network request module (PICARD-54)
+- Jamendo and Archive.org cover art is displayed on web page, but not loaded by Picard plugin (PICARD-52)
+- Edits to metadata in "Details..." menu not reflected in UI (PICARD-13)
+- The status bar/new metadata box is updated when a selected file/track is changed. (PICARD-14)
+
+
+# Version 0.15.1 - 2011-07-31
+- "Other versions" menu now displays release labels and catalog numbers.
+- Added CD-R, 8cm CD to the format mapping.
+- Picard no longer fails to load releases with new or unknown media formats.
+- Threading issues that could occasionally cause Picard to stop loading files have been fixed.
+- Fixed album metadata processor plugins not working (#5960)
+- Fixed loading of standalone recordings (#5961)
+- Fixed requests stopping at midnight (#5963)
+- Stopped using QDateTime for timing requests (for Qt 4.6 compatibility) (#5967)
+- Fixed display of ampersands in the "other versions" menu. (#5969)
+- Fixed use of numerical functions in advanced scripting.
+
+
+# Version 0.15 - 2011-07-17
+- Added options for using standardized track, release, and artist metadata.
+- Added preferred release format support.
+- Expanded preferred release country support to allow multiple countries.
+- Added support for tagging non-album tracks (standalone recordings).
+- Plugins can now be installed via drag and drop, or a file browser.
+- Added several new tags: `%_originaldate%`, `%_recordingcomment%`, and `%_releasecomment%`
+- Changes to request queuing: added separate high and low priority queues for each host.
+- Tagger scripts now run after metadata plugins finish (#5850)
+- The "compilation" tag can now be $unset or modified via tagger script.
+- Added a shortcut (Ctrl+I) for Edit->Details.
+- Miscellaneous bug fixes.
+
+
+# Version 0.15beta1 - 2011-05-29
+- Support for the NGS web service
+
+
+# Version 0.14 - 2011-05-15
+- Fixed a problem with network operations hanging after a network error (#5794, #5884)
+- ID3v2.3 with UTF-16 is now the default ID3 version
+- Option to set preferred release types for improved album matching
+- Added support for sorting the album/file lists (#75)
+- Fixed OptimFROG tag reading (#5859)
+- Fixed colors for a white-on-black color scheme (#5846)
+- Added an option to replace non-ASCII punctuation (#5834)
+- Support for writing release group and work IDs, currently unused (#5805)
+- Fixed saving of the release event format tag (#5250)
+- Added support for the language and script tags (#943)
+- Plugins can now use track-track relationships (#5849)
+- Allowed external drives to be visible in the file browser panel on OS X (#5308)
+
+
+# Version 0.13 - 2011-03-06
+- Changed Picard icon license to CC by-sa
+- Small UI consistency changes
+- Albums with tracks linked to more than one file are never marked as
+  "completed".
+- Fixed matching of scanned files to tracks while the album is still loading.
+- Support for properly embedded FLAC pictures
+- Existing embedded images in APE and ASF files are removed only if there
+  are new images to replace them.
+- More strict tagger script validation.
+- Fixed the $truncate tagger script function.
+- Proper rounding of track durations.
+- Fixed a bug with saving images larger than 64k to WMA files.
+- Added a `$swapprefix` tagger script function.
+- Release events with a date are preferred over the ones without a date.
+- Files that are being saved as marked as pending.
+- Updated .desktop file to allow opening Picard with multiple files.
+- Handle the "open file" event on Mac OS X.
+- Added timeouts to the HTTP web service client.
+- Fixed a bug with albums missing the expand/collapse icons
+
+
+# Version 0.12.1 - 2009-11-01
+- Fixed deletion of all COMM frames in ID3, which was introduced with the
+  iTunNORM fix in Picard 0.12.0.
+- Restored native add folder dialog.
+
+
+# Version 0.12 - 2009-10-25
+- Live syntax checking for tagger script and naming strings.
+  (Nikolai Prokoschenko)
+- Support ratings. (Philipp Wolfer)
+- Support for user folskonomy tags. (Lukáš Lalinský)
+- Embed cover art into APEv2 tags. (Lukáš Lalinský)
+- Embed cover art into WMA tags. (Philipp Wolfer)
+- New high quality application icon (Carlin Mangar)
+- Support for originaldate tag. (Philipp Wolfer)
+- Restructured file naming options. (Nikolai Prokoschenko)
+- Added option to select the user interface language. (Philipp Wolfer)
+- Highlight fully matched albums. (Nikolai Prokoschenko)
+- New script functions `$matchedtracks()`, `$initials()`, `$firstalphachar()`,
+  `$truncate()` and `$firstwords()`
+- CD drive dropdown selection on Linux. (Philipp Wolfer)
+- Add disc ID to album metadata if loaded via disc lookup. (Philipp Wolfer)
+- Add expand/collapse all actions to tree views. (Philipp Wolfer)
+- Added DCC media format.
+- Removed unncecessary and confusing PUID lookup threshold. (Philipp Wolfer)
+- Fixed saving of copyright in ASF metadata. (#5419, Philipp Wolfer)
+- Write TRACKTOTAL and DISCTOTAL to vorbis files. (#4088, Philipp Wolfer)
+- Added keyboard shortcut to toggle file browser (#3954, Philipp Wolfer)
+- Write ISRCs from MusicBrainz into tags (Philipp Wolfer)
+- UI improvements on cover art box and icons (Carlin Mangar)
+- New Windows installer (Carlin Mangar)
+- New plugin extension point ui_init (Gary van der Merwe)
+- Updated plugin options page (Carlin Mangar)
+- Python 2.6 fixes. (Gary van der Merwe)
+- Fix PUID generation on big endian machines. (Jon Hermansen)
+- Fix lookup encoding for non latin characters. (#5233, Philip Jägenstedt)
+- Fix infinite loop when using Qt 4.5. (Lukáš Lalinský)
+- Ensure 16-byte memory alignment for avcodec, fixes issues with enabled SSE2
+  instructions. (#5263, Philipp Wolfer)
+- Use default CD device for disc ID lookups if no device was specified.
+  (Philipp Wolfer)
+- Preserve file information (bitrate, extension etc.) on saving.
+  (#3236, Philipp Wolfer)
+- Allow empty release events (#4818, Philipp Wolfer)
+- Respect the option "clear existing tags" when saving WMA files.
+  (Philipp Wolfer)
+- Detect image format of cover images. (#4863, Philipp Wolfer)
+- Don't load CD stubs. (#4251, Philipp Wolfer)
+- Set match background color relative to the base color. (#4740, Philipp Wolfer)
+- Fix infinite loop when using Qt 4.5. (Lukáš Lalinský)
+- Fixed various issues with the PUID submission button. (Philipp Wolfer)
+- Fixed copy and paste (#5428, Philipp Wolfer)
+- Fixed loading of files with corrupted PUIDs (#5331, Carlin Mangar)
+- Fixed redirection handling (Lukáš Lalinský)
+- Fixed writng of iTunNORM tags in ID3 (Carlin Mangar)
+- Always restore window position so that the window is visible (Carlin Mangar)
+- Updated translations.
+
+
+# Version 0.11 - 2008-12-02
+- Support for new FFmpeg install locations
+- Automatically remove whitespaces from MB hostname in options
+- Release date from MB is now optional
+- Fixed per-track folksonomy tag support
+- Evaluate tagger script for album metadata
+- Show donation info in the about dialog
+- Support for .oga files (Ogg FLAC, Ogg Speex or Ogg Vorbis)
+- Fixed loading of performer tags from Vorbis Comments
+- Load embedded cover art from COVERART/COVERARTMIME Vorbis Comments
+- Allow setting the "Move Files To" location from the internal file browser
+- Copy&paste support in the file details dialog
+- Correct handling of "; " as a separator for sort names
+- Minimal support for TAK files
+- Fixed parsing of the "Pseudo-Release" release status
+- Fixed reading performers with empty role from ID3 tags
+- Don't allow empty file naming formats
+- Interactive password dialog
+- Fixed checking for non-Latin characters when using sort name as the main
+  artist name
+
+
+# Version 0.10 - 2008-07-27
+- Fixed crash when reading CD TOC on 64-bit systems
+- Fixed handling of MP4 files with no metadata
+- Change the hotkey for help to the right key for OS X
+- Replace special characters after tagger script evaluation to allow
+  special characters being replaced by tagger script
+- Actually ignore 'ignored (folksonomy) tags'
+- Remove dependency on Mutagen 1.13, version 1.11 is enough now
+- Escape ampersand in release selection (#3748)
+
+
+# Version 0.10.0rc1 - 2008-05-25
+- Stop analyzing files that have been removed. (#3352, Gary van der Merwe)
+- Automatically disable CD lookup if no CD device is specified.
+  (Will Holcomb)
+- Don't abort directory reading on invalid filename. (#2829, amckinle)
+- Add an option to select multiple directories from the 'Add Directory'
+  window. (#3541, Will Holcomb)
+- Avoid scanning files that had been removed from the tagger.
+  (#3352, Gary van der Merwe)
+- Folksonomy tags/genre support. (Lukáš Lalinský)
+- Added menu items (with keyboard shortcuts) for CD lookup / Scan /
+  Lookup / Cluster. (Lukáš Lalinský)
+- Add taggerscript function $performer(). (Lukáš Lalinský)
+- Lower the default PUID lookup threshold to 10%. (Lukáš Lalinský)
+- Compare tracknumber and totaltracks as numbers, not strings.
+  (Lukáš Lalinský)
+- Correctly escape special Lucene characters for searches/lookups.
+  (#3448, Lukáš Lalinský)
+- Use MusicIP Mixer "archived analysis" to speed up PUID lookups.
+  (Lukáš Lalinský)
+- Add language and script to variables. (#3635, Nikki)
+- Option to initiate searches with advanced query syntax on by default.
+  (#3526, Lukáš Lalinský)
+- "Save Tags" item in options menu. (#3519, Lukáš Lalinský)
+- Create empty "plugins" directory by default on installation.
+  (#3529, Lukáš Lalinský)
+- Added default release country option. (#3452, Philipp Wolfer)
+- Added release format type to release selection. (#3074, Philipp Wolfer)
+- Convert Vorbis tag "tracktotal" to "totaltracks" on load. (Philipp Wolfer)
+- Save 'arranger' to ID3 tags. (Lukáš Lalinský)
+- Store cover art in Ogg and FLAC files. (#3647, Hendrik van Antwerpen)
+- Album title not updated when related 'Unkown files' are modified.
+  (#3682, Hendrik van Antwerpen)
+- Match selected release event to existing files.
+  (#3687, Hendrik van Antwerpen)
+- Allow multiple files to be linked to a single track.
+  (#3729, Gary van der Merwe)
+- Don't use mmap to resize files on Windows. (Lukáš Lalinský)
+
+
+# Version 0.9.0 - 2007-12-16
+- More custom tags in MP4 files (compatible with MediaMonkey and Jaikoz) (#3379)
+- Fixed MP4 fingerprinting on Windows. (#3454, #3374)
+- Fixed CD lookups on Windows. (#3462, #3362, #3386)
+- Set the `%compilation%` tag correctly. (#3263)
+- Fixed location of saved cover art files. (#3345)
+- The Picard window now won't start as hidden. (#2104, #2429)
+- Fixed reading of length of MP3 files with VBRI headers. (#3409)
+- Fixed WMA saving. (#3417)
+- Fixed saving of comment to ID3 tags. (#3418)
+- New mapping of "chorus master" AR to "conductor" tag.
+- Fixed system-wide plugin path on Linux. (#3430)
+- Use the earliest release date by default. (#3456)
+
+
+# Version 0.9.0beta1 - 2007-10-28
+- Save ASIN to MP4 files.
+- Add a `--disable-locales` option to `setup.py build`. (Santiago M. Mola)
+- New threading code, should make Picard crash less and be faster.
+- Replace initial dot in file and directory names. (#3204, Philipp Wolfer)
+- Fixed caps in the default cover art image. (#3242, Bogdan Butnaru)
+- Fixed broken naming preview. (#3214, Daniel Bumke)
+- Re-enable the drag/drop target indicators. (#3106)
+- Fix adding files and directories from the command line. (#3075)
+- Don't show the cover art box by default.
+- Lookup files individually for "Unmatched Files", not as a cluster.
+
+
+# Version 0.9.0alpha14 - 2007-08-05
+- Fixed PUID submissions.
+- Fixed drag&drop from Finder to Picard on Mac OS X.
+- Don't save files from "Unmatched Files" when saving an album.
+- Renamed "Analyze" to "Scan", to avoid confusion with MusicIP Mixer analysis.
+- Added plugin API versioning. Plugins now need to define constant
+  `PLUGIN_API_VERSIONS`, otherwise they won't be loaded.
+- Added option to overwrite cover art by default.
+- Never wait more than second for the next HTTP request.
+- Fixed setting of the "Move Tagged Files To" folder, if the name contains
+  non-ASCII characters.
+
+
+# Version 0.9.0alpha13 - 2007-07-29
+## Bug Fixes
+- Fixed drag&drop issue on Windows Vista.
+  http://forums.musicbrainz.org/viewtopic.php?id=693
+
+
+# Version 0.9.0alpha12 - 2007-07-29
+## Changes
+- "User directory" location changed:
+  - On Windows from "%HOMEPATH%\Local Settings\Application Data\MusicBrainz Picard"
+    to "%HOMEPATH%\Application Data\MusicBrainz\Picard"
+  - On UNIX from "~/.picard" to "$XDG_CONFIG_HOME/MusicBrainz/Picard"
+    (usually "~/.config/MusicBrainz/Picard")
+- Picard no longer logs every action and doesn't saves the logs. To enable
+  more debug logging, use command line argument "-d" or "--debug" or
+  environment variable "PICARD_DEBUG".
+- For plugins:
+  - `metadata["~#length"]` is now `metadata.length`
+  - `metadata["~#artwork"]` is now `metadata.images`
+
+## New Features
+- Save embedded images to MP4 files.
+- Added option to select release events for albums.
+- Added internal log viewer.
+- Track and file context menu hooks for plugins.
+
+## Bug Fixes
+- Deleting files from clusters increments total time rather than
+  decrementing it. (#2965)
+- Update metadata boxes and cover art for selected items. (#2498)
+- Display error message for tracks.
+- Fixed drag-and-drop bugs on Mac OS X.
+- Added `%releasecountry%` to the file renaming preview.
+- Cluster multi-disc albums identified by tags, not (disc x). (#2555)
+
+
+# Version 0.9.0alpha11 - 2007-05-27
+## New Features
+- Added "Edit" button to the tag editor.
+
+## Bug Fixes
+- Fixed initialization of gettext translations.
+
+
+# Version 0.9.0alpha10 - 2007-05-27
+## New Features
+- New TaggerScript function `$len(text)`. (#2843)
+- Don't compress huge ID3 frames. (#2850)
+- Move "Add Cluster As Release" to a plugin.
+- Allow horizontal scrollbar in the file browser panel. (#2856)
+- Removed "Basic" tab from the "Details" window, "Advanced" tab renamed to "Metadata".
+- The tag editor can be used to edit multiple files. (#2893)
+
+## Bug Fixes
+- F1 for Help instead of CTRL+H on Windows and Linux. (#2485, Nikolai Prokoschenko)
+- Tabbing focus transition from search isn't as expected. (#2546, Nikolai Prokoschenko)
+- Display an error message if launching a web browser failed.
+- Fixed web-service error caused PUID submissions.
+- Change function `$gt()`, `$gte()`, `$lt()`, `$lte()` to compare numbers, not strings. (#2848)
+- Fixed kfmclient launching under KDE/Python 2.5.
+- Fixed similarity calculation of non-latin texts. (#2891)
+- Don't try to auto-analyze files with "loading" errors. (#2862)
+
+
+# Version 0.9.0alpha9 - 2007-05-12
+## New Features
+- The tag editor now accepts free-text tag names.
+- Load 'DJ-mixed by' AR data to `%djmixer%` tag.
+- Load 'Mixed by' AR data to `%mixer%` tag.
+- Delay the webservice client to do max. 1 request per second.
+- Sort files in clusters by disc number, track number and file name. (#2547)
+- Support for any text frame in special variable `%_id3:%`.
+- Ignore empty ID3 text values.
+- Windows installer:
+  - Removed DirectX-based decoder.
+  - FFmpeg compiled with AAC (faad2) support.
+
+## Bug Fixes
+- Save XSOP frame to ID3v2.3 tags. (#2484)
+- Use attributes like 'guest' or 'additional' also from generic performer ARs.
+- Fixed capitalization of `%releasetype%` in file naming preview. (#2762)
+- Fixed 'python setup.py build_ext' if py2app and setuptools are loaded.
+- ID3v2.3 frame TDAT should be written in format DDMM, not MMDD. (#2770)
+- Don't display an error on Ogg and FLAC files with no tags.
+- Remove video files from the list of supported formats.
+- Always use musicbrainz.org for PUID submissions. (#2764)
+- Files/Pending Files count not reset/recalculated after removing files. (#2541)
+- Removed files still get processed during fingerprinting. (#2738)
+- Read only text values from APEv2 tags. (#2828)
+
+
+# Version 0.9.0alpha8 - 2007-04-15
+## New Features
+- Notification of changed files in releases. (#2632, #2702)
+
+## Bug Fixes
+- Don't open the file for analyzing twice. (#2733, #2734)
+- Save ASIN and release country to ID3 tags. (#2484, #2456)
+- Variable `%country%` renamed to `%releasecountry%`.
+- Save release country to MP4 and WMA tags.
+- Don't take unsupported tags into account when checking if the
+  tags are 'complete' and the file should have 100% match. This
+  fixes problems with showing the green check-marks for file
+  with limited tag formats, like MP4 or WMA.
+- Ignore missing tag in `$unset()`.
+
+
+# Version 0.9.0alpha7 - 2007-04-14
+## New Features
+- Remember location in the file browser. (#2618)
+- Added FFmpeg support on Windows (MP3, Vorbis,
+  FLAC, WavPack and many other audio formats).
+- Lowercase the extension on file renaming/moving. (#2701)
+- TaggerScript function `$copy(new,old)` to copy metadata from
+  variable `old` to `new`. The difference between `$set(new,%old%)`
+  is that `$copy(new,old)` copies multi-value variables without
+  flattening them.
+- Added special purpose TaggerScript variable `%_id3:%` for direct
+  setting of ID3 frames. Currently it supports only TXXX frames in format
+  `%_id3:TXXX:<description>%`, for example:
+  `$copy(_id3:TXXX:PERFORMERSORTORDER,artistsort)`.
+- Support for WAV files. (#2537)
+- Removed GStreamer-based decoder.
+- Implemented `python setup.py install_locales`.
+
+## Bug Fixes
+- Failed PUID submission deactivates the submit button. (#2673)
+- Unable to specify album art file name mask. (#2655)
+- Fixed incorrect copying of album metadata to tracks. (#2698)
+- Added options to un-hide toolbars. (#2631)
+- Fixed problem with saving extra performer FLAC tags
+  containing non-ASCII characters. (#2719)
+- Read only the first date from ID3v2.3 tags. (#2460)
+- If the remembered directory for add dialogs and file browser was
+  removed, try to find an existing directory in the same path.
+
+
+# Version 0.9.0alpha6 - 2007-04-04
+## New Features
+- Added option --disable-autoupdate for 'build' and 'install' commands
+  of the setup script. (#2551)
+- Automatically parse track numbers from file names like 01.flac for better
+  cluster->album matching with untagged files.
+- Support for the new sorting tags in MP4 tags from iTunes 7.1.
+- Strip white-space from directory names. (#2558)
+- When replacing characters with their ascii equivalent, 'ß' should be
+  replaced by 'ss'. (#2610)
+- Track level performer ARs. (#2561)
+- Remove leading and trailing whitespace from tags on file saving.
+  (#892, #2665)
+- Support for labels, catalog numbers and barcodes.
+
+## Bug Fixes
+- Artist names from ARs should be translated, too.
+- Freeze after answering no to "download the new version" prompt. (#2542)
+- `%musicbrainz_albumid%` not working in file renaming. (#2543)
+- Track time appears to display incorrectly if it's unknown on
+     MusicBrainz. (#2548)
+- Fixed problem with removing albums/files after submitting PUIDs (#2556)
+- The user's script should be applied also to album metadata.
+- Fixed moving of additional files from paths with "special" characters.
+
+## Internals
+- The browser integration HTTP server rewritten using QTcpServer.
+
+
+# Version 0.9.0alpha5 - 2007-03-18
+## New Features
+- Replace Æ with AE in file/directory names. (#2512)
+- "Add cluster as release" (#1049)
+- Text labels under icon buttons. (#2476)
+
+## Bug Fixes
+- Fixed fileId generator (caused problems with drag&drop
+  if files with multiple formats are used).
+- Original Metadata not greyed out when no tracks are attached. (#2461)
+- Better detecting of the default Windows browser, with fallback to
+  Internet Explorer. (#2502)
+- Better album/track lookup. (#2521)
+- File browser stays 'hidden' after first time use. (#2480)
+- Track length changed in Original Metadata after save. (#2510)
+- "Send PUIDs" button not disabled after albums are removed. (#2506)
+- The Windows package now includes JPEG loader to show cover art
+  images correctly. (#2478)
+
+
+# Version 0.9.0alpha4 - 2007-03-09
+## Bug Fixes
+- Fixed case-insentive file renaming. (#2457, #2513)
+
+
+# Version 0.9.0alpha3 - 2007-03-08
+## New Features
+- Using of 'performed by' AR types (without instrument or vocal).
+- The "Replace non-ASCII characters" option will try to remove
+  accents first. (#2466)
+- Added option to auto-analyze all files. (#2465)
+
+## Bug Fixes
+- Fixed file clustering.
+- Added `%albumartistsort%`, `%releasetype%` and `%releasestatus%` to the
+  file naming example (#2458)
+- Sanitize dates from ID3 tags. (#2460)
+- Fixed page switching in the options window on error. (#2455)
+- Correct case-insensitive file renaming on Windows (#1003, #2457)
+- Relative paths in the "Move files to" option are relative to the
+  current path of the file. (#2454)
+- Added a .desktop file. (#2470)
+- Release type and status should be in lower case. (#2489)
+
+
+# Version 0.9.0alpha2 - 2007-03-04
+## New Features
+- New variable `%_extension%` (#2447)
+- File naming format tester. (#2448)
+- Added automatic checking for new versions.
+
+## Bug Fixes
+- Fixed window position saving/restoring. (#2449)
+- Fixed iTunes compilation flag saving. (#2450)
+
+
+# Version 0.9.0alpha1 - 2007-03-03
+- First release.
