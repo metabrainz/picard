@@ -1,10 +1,12 @@
 #!/usr/bin/env python
 # coding: utf-8
+import unittest
+
 from test.picardtestcase import (
     PicardTestCase,
     create_fake_png,
 )
-
+from picard.const.sys import IS_WIN
 from picard.coverart.image import (
     CoverArtImage,
     LocalFileCoverArtImage,
@@ -101,6 +103,7 @@ class LocalFileCoverArtImageTest(PicardTestCase):
         self.assertFalse(image.support_types)
         self.assertTrue(image.support_multi_types)
 
+    @unittest.skipUnless(IS_WIN, "windows test")
     def test_windows_path(self):
         path = 'C:\\Music\\somefile.mp3'
         image = LocalFileCoverArtImage(path)
