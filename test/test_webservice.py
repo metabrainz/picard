@@ -5,6 +5,10 @@ from unittest.mock import (
     patch,
 )
 
+from PyQt5.QtCore import (
+    QUrl,
+)
+
 from picard import config
 from picard.webservice import (
     UnknownResponseParserError,
@@ -80,9 +84,8 @@ class WebServiceTaskTest(PicardTestCase):
         mock_timer1 = self.ws._timer_run_next_task
         mock_timer2 = self.ws._timer_count_pending_requests
 
-        host = "abc.xyz"
-        port = 80
-        request = WSRequest("", host, port, "", None)
+        url = QUrl("http://abc.xyz/")
+        request = WSRequest("", url)
         key = request.get_host_key()
 
         self.ws.add_task(0, request)
@@ -109,9 +112,8 @@ class WebServiceTaskTest(PicardTestCase):
         self.assertEqual(self.ws._queues[0][key][0], 1)
 
     def test_remove_task(self):
-        host = "abc.xyz"
-        port = 80
-        request = WSRequest("", host, port, "", None)
+        url = QUrl("http://abc.xyz/")
+        request = WSRequest("", url)
         key = request.get_host_key()
 
         # Add a task and check for its existance
@@ -129,9 +131,8 @@ class WebServiceTaskTest(PicardTestCase):
         self.ws.remove_task(non_existing_task)
 
     def test_run_task(self):
-        host = "abc.xyz"
-        port = 80
-        request = WSRequest("", host, port, "", None)
+        url = QUrl("http://abc.xyz/")
+        request = WSRequest("", url)
         key = request.get_host_key()
 
         mock_task = MagicMock()
