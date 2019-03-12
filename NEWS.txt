@@ -906,12 +906,12 @@ Version 0.9.0alpha14 - 2007-08-05
    non-ASCII characters.
 
 Version 0.9.0alpha13 - 2007-07-29
- * Bug Fixes:
+** Bug Fixes:
    * Fixed drag&drop issue on Windows Vista.
      http://forums.musicbrainz.org/viewtopic.php?id=693
 
 Version 0.9.0alpha12 - 2007-07-29
- * Changes:
+** Changes:
    * "User directory" location changed:
      - On Windows from "%HOMEPATH%\Local Settings\Application Data\MusicBrainz Picard"
        to "%HOMEPATH%\Application Data\MusicBrainz\Picard"
@@ -923,12 +923,12 @@ Version 0.9.0alpha12 - 2007-07-29
    * For plugins:
      - metadata["~#length"] is now metadata.length
      - metadata["~#artwork"] is now metadata.images
- * New Features:
+** New Features:
    * Save embedded images to MP4 files.
    * Added option to select release events for albums.
    * Added internal log viewer.
    * Track and file context menu hooks for plugins.
- * Bug Fixes:
+** Bug Fixes:
    * Deleting files from clusters increments total time rather than
      decrementing it. (#2965)
    * Update metadata boxes and cover art for selected items. (#2498)
@@ -938,20 +938,20 @@ Version 0.9.0alpha12 - 2007-07-29
    * Cluster multi-disc albums identified by tags, not (disc x). (#2555)
 
 Version 0.9.0alpha11 - 2007-05-27
- * New Features:
+** New Features:
    * Added "Edit" button to the tag editor.
- * Bug Fixes:
+** Bug Fixes:
    * Fixed initialization of gettext translations.
 
 Version 0.9.0alpha10 - 2007-05-27
- * New Features:
+** New Features:
    * New TaggerScript function $len(text). (#2843)
    * Don't compress huge ID3 frames. (#2850)
    * Move "Add Cluster As Release" to a plugin.
    * Allow horizontal scrollbar in the file browser panel. (#2856)
    * Removed "Basic" tab from the "Details" window, "Advanced" tab renamed to "Metadata".
    * The tag editor can be used to edit multiple files. (#2893)
- * Bug Fixes:
+** Bug Fixes:
    * F1 for Help instead of CTRL+H on Windows and Linux. (#2485, Nikolai Prokoschenko)
    * Tabbing focus transition from search isn't as expected. (#2546, Nikolai Prokoschenko)
    * Display an error message if launching a web browser failed.
@@ -962,7 +962,7 @@ Version 0.9.0alpha10 - 2007-05-27
    * Don't try to auto-analyze files with "loading" errors. (#2862)
 
 Version 0.9.0alpha9 - 2007-05-12
- * New Features:
+** New Features:
    * The tag editor now accepts free-text tag names.
    * Load 'DJ-mixed by' AR data to %djmixer% tag.
    * Load 'Mixed by' AR data to %mixer% tag.
@@ -973,7 +973,7 @@ Version 0.9.0alpha9 - 2007-05-12
    * Windows installer:
      * Removed DirectX-based decoder.
      * FFmpeg compiled with AAC (faad2) support.
- * Bug Fixes:
+** Bug Fixes:
    * Save XSOP frame to ID3v2.3 tags. (#2484)
    * Use attributes like 'guest' or 'additional' also from generic performer ARs.
    * Fixed capitalization of %releasetype% in file naming preview. (#2762)
@@ -987,7 +987,7 @@ Version 0.9.0alpha9 - 2007-05-12
    * Read only text values from APEv2 tags. (#2828)
 
 Version 0.9.0alpha8 - 2007-04-15
- * New Features:
+** New Features:
    * Notification of changed files in releases. (#2632, #2702)
  * Bux Fixes:
    * Don't open the file for analyzing twice. (#2733, #2734)
@@ -1017,7 +1017,7 @@ Version 0.9.0alpha7 - 2007-04-14
    * Support for WAV files. (#2537)
    * Removed GStreamer-based decoder.
    * Implemented `python setup.py install_locales`.
- * Bug Fixes:
+** Bug Fixes:
    * Failed PUID submission deactivates the submit button. (#2673)
    * Unable to specify album art file name mask. (#2655)
    * Fixed incorrect copying of album metadata to tracks. (#2698)
@@ -1029,7 +1029,7 @@ Version 0.9.0alpha7 - 2007-04-14
      removed, try to find an existing directory in the same path.
 
 Version 0.9.0alpha6 - 2007-04-04
- * New Features:
+** New Features:
    * Added option --disable-autoupdate for 'build' and 'install' commands
      of the setup script. (#2551)
    * Automatically parse track numbers from file names like 01.flac for better
@@ -1042,7 +1042,7 @@ Version 0.9.0alpha6 - 2007-04-04
    * Remove leading and trailing whitespace from tags on file saving.
      (#892, #2665)
    * Support for labels, catalog numbers and barcodes.
- * Bug Fixes:
+** Bug Fixes:
    * Artist names from ARs should be translated, too.
    * Freeze after answering no to "download the new version" prompt. (#2542)
    * %musicbrainz_albumid% not working in file renaming. (#2543)
@@ -1055,11 +1055,11 @@ Version 0.9.0alpha6 - 2007-04-04
    * The browser integration HTTP server rewritten using QTcpServer.
 
 Version 0.9.0alpha5 - 2007-03-18
- * New Features:
+** New Features:
    * Replace Æ with AE in file/directory names. (#2512)
    * "Add cluster as release" (#1049)
    * Text labels under icon buttons. (#2476)
- * Bug Fixes:
+** Bug Fixes:
    * Fixed fileId generator (caused problems with drag&drop
      if files with multiple formats are used).
    * Original Metadata not greyed out when no tracks are attached. (#2461)
@@ -1073,16 +1073,16 @@ Version 0.9.0alpha5 - 2007-03-18
      images correctly. (#2478)
 
 Version 0.9.0alpha4 - 2007-03-09
- * Bug Fixes:
+** Bug Fixes:
    * Fixed case-insentive file renaming. (#2457, #2513)
 
 Version 0.9.0alpha3 - 2007-03-08
- * New Features:
+** New Features:
    * Using of 'performed by' AR types (without instrument or vocal).
    * The "Replace non-ASCII characters" option will try to remove
      accents first. (#2466)
    * Added option to auto-analyze all files. (#2465)
- * Bug Fixes:
+** Bug Fixes:
    * Fixed file clustering.
    * Added %albumartistsort%, %releasetype% and %releasestatus% to the
      file naming example (#2458)
@@ -1095,11 +1095,11 @@ Version 0.9.0alpha3 - 2007-03-08
    * Release type and status should be in lower case. (#2489)
 
 Version 0.9.0alpha2 - 2007-03-04
- * New Features:
+** New Features:
    * New variable %_extension% (#2447)
    * File naming format tester. (#2448)
    * Added automatic checking for new versions.
- * Bug Fixes:
+** Bug Fixes:
    * Fixed window position saving/restoring. (#2449)
    * Fixed iTunes compilation flag saving. (#2450)
 
