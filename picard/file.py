@@ -26,6 +26,7 @@ import os
 import os.path
 import re
 import shutil
+from time import time
 import unicodedata
 
 from PyQt5 import QtCore
@@ -71,6 +72,8 @@ class File(QtCore.QObject, Item):
     LOOKUP_METADATA = 1
     LOOKUP_ACOUSTID = 2
 
+    UPDATE_INTERVAL = 250
+
     comparison_weights = {
         "title": 13,
         "artist": 4,
@@ -108,6 +111,8 @@ class File(QtCore.QObject, Item):
 
         self.lookup_task = None
         self.item = None
+        self.last_update = -1
+        self.update_delayed = False
 
     def __repr__(self):
         return '<File %r>' % self.base_filename
@@ -540,6 +545,21 @@ class File(QtCore.QObject, Item):
         return self.similarity == 1.0 and self.state == File.NORMAL
 
     def update(self, signal=True):
+        now = time()
+        if self.last_update != -1:
+            time_since_last_update = (now - self.last_update) * 1000.0
+        else:
+            time_since_last_update = self.UPDATE_INTERVAL
+        self.last_update = now
+        if not self.update_delayed:
+            delay = self.UPDATE_INTERVAL - time_since_last_update
+            if delay > 0:
+                later = partial(self.update, signal)
+                log.debug("Delaying update of %r by %f ms", self, delay)
+                self.update_delayed = True
+                QtCore.QTimer.singleShot(delay, later)
+                return
+        self.update_delayed = False
         new_metadata = self.new_metadata
         names = set(new_metadata.keys())
         names.update(self.orig_metadata.keys())
