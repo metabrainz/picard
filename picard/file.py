@@ -306,8 +306,10 @@ class File(QtCore.QObject, Item):
         raise NotImplementedError
 
     def _script_to_filename(self, naming_format, file_metadata, settings=None):
+        if settings is None:
+            settings = config.setting
         metadata = Metadata()
-        if config.setting["clear_existing_tags"]:
+        if settings["clear_existing_tags"]:
             metadata.copy(file_metadata)
         else:
             metadata.copy(self.orig_metadata)
