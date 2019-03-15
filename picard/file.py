@@ -349,8 +349,7 @@ class File(QtCore.QObject, Item):
                 if not settings['move_files']:
                     new_filename = os.path.basename(new_filename)
                 new_filename = make_short_filename(new_dirname, new_filename,
-                                                   config.setting['windows_compatibility'],
-                                                   config.setting['windows_compatibility_drive_root'])
+                                                   settings['windows_compatibility'])
                 # TODO: move following logic under util.filenaming
                 # (and reconsider its necessity)
                 # win32 compatibility fixes
