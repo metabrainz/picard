@@ -324,6 +324,7 @@ class File(QtCore.QObject, Item):
         return new_filename, ext
 
     def _format_filename(self, new_dirname, new_filename, metadata, settings):
+        # TODO: tests !!
         new_filename, ext = self._fixed_splitext(new_filename)
         ext = ext.lower()
         new_filename = new_filename + ext
@@ -345,6 +346,7 @@ class File(QtCore.QObject, Item):
             if win_compat:
                 new_filename = new_filename.replace('./', '_/').replace('.\\', '_\\')
             # replace . at the beginning of file and directory names
+            # FIXME: even on non-win platforms ???
             new_filename = new_filename.replace('/.', '/_').replace('\\.', '\\_')
             if new_filename.startswith('.'):
                 new_filename = '_' + new_filename[1:]
