@@ -346,7 +346,7 @@ class File(QtCore.QObject, Item):
                 new_filename = new_filename.replace('./', '_/').replace('.\\', '_\\')
             # replace . at the beginning of file and directory names
             new_filename = new_filename.replace('/.', '/_').replace('\\.', '\\_')
-            if new_filename and new_filename[0] == '.':
+            if new_filename.startswith('.'):
                 new_filename = '_' + new_filename[1:]
             # Fix for precomposed characters on OSX
             if IS_MACOS:
