@@ -330,7 +330,7 @@ class File(QtCore.QObject, Item):
 
         # expand the naming format
         naming_format = settings['file_naming_format']
-        if len(naming_format) > 0:
+        if naming_format:
             new_filename = self._script_to_filename(naming_format, metadata, settings)
             # NOTE: the _script_to_filename strips the extension away
             new_filename = new_filename + ext
