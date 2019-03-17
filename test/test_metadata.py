@@ -38,28 +38,31 @@ class MetadataTest(PicardTestCase):
         pass
 
     def test_metadata_setitem(self):
-        self.assertEqual(["single1-value"], dict.get(self.metadata, "single1"))
-        self.assertEqual(["single2-value"], dict.get(self.metadata, "single2"))
-        self.assertEqual(self.multi1, dict.get(self.metadata, "multi1"))
-        self.assertEqual(self.multi2, dict.get(self.metadata, "multi2"))
-        self.assertEqual(self.multi3, dict.get(self.metadata, "multi3"))
-        self.assertEqual(["hidden-value"], dict.get(self.metadata, "~hidden"))
+        self.assertEqual(["single1-value"], self.metadata.getraw("single1"))
+        self.assertEqual(["single2-value"], self.metadata.getraw("single2"))
+        self.assertEqual(self.multi1, self.metadata.getraw("multi1"))
+        self.assertEqual(self.multi2, self.metadata.getraw("multi2"))
+        self.assertEqual(self.multi3, self.metadata.getraw("multi3"))
+        self.assertEqual(["hidden-value"], self.metadata.getraw("~hidden"))
 
     def test_metadata_get(self):
         self.assertEqual("single1-value", self.metadata["single1"])
         self.assertEqual("single1-value", self.metadata.get("single1"))
         self.assertEqual(["single1-value"], self.metadata.getall("single1"))
+        self.assertEqual(["single1-value"], self.metadata.getraw("single1"))
 
         self.assertEqual(MULTI_VALUED_JOINER.join(self.multi1), self.metadata["multi1"])
         self.assertEqual(MULTI_VALUED_JOINER.join(self.multi1), self.metadata.get("multi1"))
         self.assertEqual(self.multi1, self.metadata.getall("multi1"))
+        self.assertEqual(self.multi1, self.metadata.getraw("multi1"))
 
         self.assertEqual("", self.metadata["nonexistent"])
         self.assertEqual(None, self.metadata.get("nonexistent"))
         self.assertEqual([], self.metadata.getall("nonexistent"))
+        self.assertRaises(KeyError, self.metadata.getraw, "nonexistent")
 
-        self.assertEqual(dict.items(self.metadata), self.metadata.rawitems())
-        metadata_items = [(x, z) for (x, y) in dict.items(self.metadata) for z in y]
+        self.assertEqual(self.metadata._store.items(), self.metadata.rawitems())
+        metadata_items = [(x, z) for (x, y) in self.metadata.rawitems() for z in y]
         self.assertEqual(metadata_items, list(self.metadata.items()))
 
     def test_metadata_delete(self):
@@ -104,12 +107,12 @@ class MetadataTest(PicardTestCase):
         self.assertEqual(self.metadata.deleted_tags, m.deleted_tags)
 
         self.metadata["old"] = "old-value"
-        for (key, value) in dict.items(self.metadata):
+        for (key, value) in self.metadata.rawitems():
             self.assertIn(key, m)
-            self.assertEqual(value, dict.get(m, key))
-        for (key, value) in dict.items(m):
+            self.assertEqual(value, m.getraw(key))
+        for (key, value) in m.rawitems():
             self.assertIn(key, self.metadata)
-            self.assertEqual(value, dict.get(self.metadata, key))
+            self.assertEqual(value, self.metadata.getraw(key))
 
     def test_metadata_clear(self):
         self.metadata.clear()
@@ -132,14 +135,6 @@ class MetadataTest(PicardTestCase):
         self.assertEqual(MULTI_VALUED_JOINER.join(map(func, self.multi1)), self.metadata["multi1"])
         self.assertEqual(MULTI_VALUED_JOINER.join(map(func, self.multi1)), self.metadata.get("multi1"))
         self.assertEqual(list(map(func, self.multi1)), self.metadata.getall("multi1"))
-
-        self.assertEqual("", self.metadata["nonexistent"])
-        self.assertEqual(None, self.metadata.get("nonexistent"))
-        self.assertEqual([], self.metadata.getall("nonexistent"))
-
-        self.assertEqual(dict.items(self.metadata), self.metadata.rawitems())
-        metadata_items = [(x, z) for (x, y) in dict.items(self.metadata) for z in y]
-        self.assertEqual(metadata_items, list(self.metadata.items()))
 
     def test_length_score(self):
         results = [(20000, 0, 0.333333333333),
@@ -187,3 +182,65 @@ class MetadataTest(PicardTestCase):
         m2["artist"] = "TheArtist"
         m2.delete("title")
         self.assertTrue(m1.compare(m2) < 1)
+
+    def test_metadata_mapping_init(self):
+        d = {'a': 'b', 'c': 2, 'd': ['x', 'y'], 'x': ''}
+        deleted_tags = set('c')
+        m = Metadata(d, deleted_tags=deleted_tags, length=1234)
+        self.assertTrue('a' in m)
+        self.assertEqual(m.getraw('a'), ['b'])
+        self.assertEqual(m['d'], MULTI_VALUED_JOINER.join(d['d']))
+        self.assertNotIn('c', m)
+        self.assertIn('c', m.deleted_tags)
+        self.assertEqual(m.length, 1234)
+
+    def test_metadata_mapping_del(self):
+        d = {'a': 'b', 'c': 2, 'd': ['x', 'y'], 'x': ''}
+        m = Metadata(d)
+        self.assertEqual(m.getraw('a'), ['b'])
+        self.assertNotIn('a', m.deleted_tags)
+        del m['a']
+        self.assertRaises(KeyError, m.getraw, 'a')
+        self.assertIn('a', m.deleted_tags)
+
+    def test_metadata_mapping_iter(self):
+        d = {'a': 'b', 'c': 2, 'd': ['x', 'y'], 'x': ''}
+        m = Metadata(d)
+        l = set(m)
+        self.assertEqual(l, {'a', 'c', 'd'})
+
+    def test_metadata_mapping_keys(self):
+        d = {'a': 'b', 'c': 2, 'd': ['x', 'y'], 'x': ''}
+        m = Metadata(d)
+        l = set(m.keys())
+        self.assertEqual(l, {'a', 'c', 'd'})
+
+    def test_metadata_mapping_values(self):
+        d = {'a': 'b', 'c': 2, 'd': ['x', 'y'], 'x': ''}
+        m = Metadata(d)
+        l = set(m.values())
+        self.assertEqual(l, {'b', '2', 'x; y'})
+
+    def test_metadata_mapping_len(self):
+        d = {'a': 'b', 'c': 2, 'd': ['x', 'y'], 'x': ''}
+        m = Metadata(d)
+        self.assertEqual(len(m), 3)
+        del m['x']
+        self.assertEqual(len(m), 3)
+        del m['c']
+        self.assertEqual(len(m), 2)
+        #TODO: test with cover art images
+
+    def test_metadata_mapping_update(self):
+        d = {'a': 'b', 'c': 2, 'd': ['x', 'y'], 'x': 'z'}
+        m = Metadata(d)
+
+        d2 = {'c': 3, 'd': ['u', 'w'], 'x': ''}
+        m2 = Metadata(d2)
+
+        m.update(d2)
+        self.assertEqual(m['a'], 'b')
+        self.assertEqual(m['c'], '3')
+        self.assertEqual(m.getraw('d'), ['u', 'w'])
+        self.assertNotIn('x', m)
+        self.assertIn('x', m.deleted_tags)

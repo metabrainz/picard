@@ -17,6 +17,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
 # USA.
+from collections.abc import MutableMapping
+
 from PyQt5.QtCore import QObject
 
 from picard import config
@@ -45,7 +47,7 @@ MULTI_VALUED_JOINER = '; '
 LENGTH_SCORE_THRES_MS = 30000
 
 
-class Metadata(dict):
+class Metadata(MutableMapping):
 
     """List of metadata items with dict-like access."""
 
@@ -59,15 +61,30 @@ class Metadata(dict):
 
     multi_valued_joiner = MULTI_VALUED_JOINER
 
-    def __init__(self):
-        super().__init__()
-        self.images = ImageList()
-        self.has_common_images = True
+    def __init__(self, *args, deleted_tags=None, images=None, length=None, **kwargs):
+        self._store = dict()
         self.deleted_tags = set()
         self.length = 0
+        self.images = ImageList()
+        self.has_common_images = True
+
+        d = dict(*args, **kwargs)
+        for k, v in d.items():
+            self[k] = v
+        if images is not None:
+            for image in images:
+                self.images.append(image)
+        if deleted_tags is not None:
+            for tag in deleted_tags:
+                del self[tag]
+        if length is not None:
+            self.length = int(length)
 
     def __bool__(self):
-        return bool(len(self) or len(self.images))
+        return bool(len(self))
+
+    def __len__(self):
+        return len(self._store) + len(self.images)
 
     def append_image(self, coverartimage):
         self.images.append(coverartimage)
@@ -268,20 +285,23 @@ class Metadata(dict):
         self.update(other)
 
     def update(self, other):
-        for key in other.keys():
-            self.set(key, other.getall(key)[:])
-        if other.images:
-            self.images = other.images[:]
-        if other.length:
-            self.length = other.length
+        if isinstance(other, self.__class__):
+            for k, v in other._store.items():
+                self._store[k] = v[:]
+            if other.images:
+                self.images = other.images[:]
+            if other.length:
+                self.length = other.length
 
-        self.deleted_tags.update(other.deleted_tags)
-        # Remove deleted tags from UI on save
-        for tag in other.deleted_tags:
-            self.pop(tag, None)
+            # Remove deleted tags from UI on save
+            for tag in other.deleted_tags:
+                del self[tag]
+        elif isinstance(other, dict):
+            for k, v in other.items():
+                self[k] = v
 
     def clear(self):
-        super().clear()
+        self._store.clear()
         self.images = ImageList()
         self.length = 0
         self.clear_deleted()
@@ -290,49 +310,62 @@ class Metadata(dict):
         self.deleted_tags = set()
 
     def getall(self, name):
-        return super().get(name, [])
+        return self._store.get(name, [])
+
+    def getraw(self, name):
+        return self._store[name]
 
     def get(self, name, default=None):
-        values = super().get(name, None)
+        values = self._store.get(name, None)
         if values:
             return self.multi_valued_joiner.join(values)
         else:
             return default
 
+    def __contains__(self, name):
+        return self._store.__contains__(name)
+
     def __getitem__(self, name):
         return self.get(name, '')
 
     def set(self, name, values):
-        super().__setitem__(name, values)
-        if name in self.deleted_tags:
-            self.deleted_tags.remove(name)
+        self._store[name] = values
+        self.deleted_tags.discard(name)
 
     def __setitem__(self, name, values):
         if not isinstance(values, list):
             values = [values]
         values = [str(value) for value in values if value]
-        if len(values):
+        if values:
             self.set(name, values)
-        elif name in self:
-            self.delete(name)
+        elif name in self._store:
+            del self[name]
+
+    def __delitem__(self, name):
+        try:
+            del self._store[name]
+        except KeyError:
+            pass
+        finally:
+            self.deleted_tags.add(name)
 
     def add(self, name, value):
         if value or value == 0:
-            self.setdefault(name, []).append(value)
-            if name in self.deleted_tags:
-                self.deleted_tags.remove(name)
+            self._store.setdefault(name, []).append(value)
+            self.deleted_tags.discard(name)
 
     def add_unique(self, name, value):
         if value not in self.getall(name):
             self.add(name, value)
 
     def delete(self, name):
-        if name in self:
-            self.pop(name, None)
-        self.deleted_tags.add(name)
+        del self[name]
+
+    def __iter__(self):
+        return iter(self._store)
 
     def items(self):
-        for name, values in super().items():
+        for name, values in self._store.items():
             for value in values:
                 yield name, value
 
@@ -342,12 +375,12 @@ class Metadata(dict):
         >>> m.rawitems()
         [("key1", ["value1", "value2"]), ("key2", ["value3"])]
         """
-        return dict.items(self)
+        return self._store.items()
 
     def apply_func(self, func):
-        for key, values in self.rawitems():
-            if key not in PRESERVED_TAGS:
-                super().__setitem__(key, [func(value) for value in values])
+        for name, values in self.rawitems():
+            if name not in PRESERVED_TAGS:
+                self[name] = [func(value) for value in values]
 
     def strip_whitespace(self):
         """Strip leading/trailing whitespace.
@@ -361,6 +394,12 @@ class Metadata(dict):
         "bar"
         """
         self.apply_func(lambda s: s.strip())
+
+    def __repr__(self):
+        return "%s(%r, deleted_tags=%r, length=%r, images=%r)" % (self.__class__.__name__, self._store, self.deleted_tags, self.length, self.images)
+
+    def __str__(self):
+        return ("store: %r\ndeleted: %r\nimages: %r\nlength: %r" % (self._store, self.deleted_tags, self.images, self.length))
 
 
 _album_metadata_processors = PluginFunctions()
