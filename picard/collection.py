@@ -94,6 +94,16 @@ class Collection(QtCore.QObject):
             )
 
 
+def get_user_collection(collection_id, name, size, refresh=False):
+    collection = user_collections.get(collection_id)
+    if collection is None:
+        collection = user_collections[collection_id] = Collection(collection_id, name, size)
+    elif refresh:
+        collection.name = name
+        collection.size = size
+    return collection
+
+
 def load_user_collections(callback=None):
     tagger = QtCore.QObject.tagger
 
@@ -112,18 +122,18 @@ def load_user_collections(callback=None):
             for node in collection_list:
                 if node["entity-type"] != "release":
                     continue
-                node_id = node['id']
-                new_collections.add(node_id)
-                collection = user_collections.get(node_id)
-                if collection is None:
-                    user_collections[node_id] = Collection(node_id, node['name'], node['release-count'])
-                else:
-                    collection.name = node['name']
-                    collection.size = node['release-count']
+                col_id = node['id']
+                col_name = node['name']
+                col_size = node['release-count']
+                new_collections.add(col_id)
+                collection = get_user_collection(col_id, col_name, col_size, refresh=True)
 
-            for collection_id in set(user_collections.keys()) - new_collections:
+            # remove collections which aren't returned by the web service anymore
+            old_collections = set(user_collections) - new_collections
+            for collection_id in old_collections:
                 del user_collections[collection_id]
 
+            log.debug("User collections: %r", [(k, v.name) for k, v in user_collections.items()])
         if callback:
             callback()
 
@@ -140,9 +150,10 @@ def add_release_to_user_collections(release_node):
         release_id = release_node['id']
         username = config.persist["oauth_username"].lower()
         for node in release_node['collections']:
-            node_id = node['id']
             if node['editor'].lower() == username:
-                if node_id not in user_collections:
-                    user_collections[node_id] = Collection(node_id, node['name'], node['release-count'])
-                user_collections[node_id].releases.add(release_id)
-                log.debug("Adding release %r to %r", release_id, user_collections[node_id])
+                col_id = node['id']
+                col_name = node['name']
+                col_size = node['release-count']
+                collection = get_user_collection(col_id, col_name, col_size)
+                collection.releases.add(release_id)
+                log.debug("Adding release %r to %r", release_id, collection)
