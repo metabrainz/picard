@@ -63,6 +63,7 @@ class Collection(QtCore.QObject):
 
     def _finished(self, kind, ids, callback, document, reply, error):
         self.pending -= ids
+        statusbar = self.tagger.window.set_statusbar_message
         if not error:
             count = len(ids)
             if kind == self.COLLECTION_ADD:
@@ -84,7 +85,13 @@ class Collection(QtCore.QObject):
             callback()
             mparms = {'count': count, 'name': self.name}
             log.debug(debug_msg % mparms)
-            self.tagger.window.set_statusbar_message(status_msg, mparms, translate=None, echo=None)
+            statusbar(status_msg, mparms, translate=None, echo=None)
+        else:
+            statusbar(
+                N_("Error while modifying collections: %(error)s"),
+                {'error': reply.errorString()},
+                echo=log.error
+            )
 
 
 def load_user_collections(callback=None):
