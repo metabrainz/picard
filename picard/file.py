@@ -559,8 +559,7 @@ class File(QtCore.QObject, Item):
                     self.state = File.NORMAL
         if signal:
             log.debug("Updating file %r", self)
-            if self.item:
-                self.item.update()
+            self.update_item()
 
     def can_save(self):
         """Return if this object can be saved."""
@@ -720,12 +719,16 @@ class File(QtCore.QObject, Item):
     def set_pending(self):
         if self.state != File.REMOVED:
             self.state = File.PENDING
-            self.update()  # FIXME: only call self.item.update() ??
+            self.update_item()
 
     def clear_pending(self):
         if self.state == File.PENDING:
             self.state = File.NORMAL
-            self.update()  # FIXME: only call self.item.update() ??
+            self.update_item()
+
+    def update_item(self):
+        if self.item:
+            self.item.update()
 
     def iterfiles(self, save=False):
         yield self
