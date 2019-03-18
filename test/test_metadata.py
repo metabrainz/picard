@@ -34,6 +34,10 @@ class MetadataTest(PicardTestCase):
         self.metadata.set("multi3", self.multi3)
         self.metadata["~hidden"] = "hidden-value"
 
+        self.metadata_d1 = Metadata({'a': 'b', 'c': 2, 'd': ['x', 'y'], 'x': ''})
+        self.metadata_d2 = Metadata({'a': 'b', 'c': 2, 'd': ['x', 'y'], 'x': 'z'})
+        self.metadata_d3 = Metadata({'c': 3, 'd': ['u', 'w'], 'x': 'p'})
+
     def tearDown(self):
         pass
 
@@ -196,8 +200,7 @@ class MetadataTest(PicardTestCase):
         self.assertEqual(m.length, 1234)
 
     def test_metadata_mapping_del(self):
-        d = {'a': 'b', 'c': 2, 'd': ['x', 'y'], 'x': ''}
-        m = Metadata(d)
+        m = self.metadata_d1
         self.assertEqual(m.getraw('a'), ['b'])
         self.assertNotIn('a', m.deleted_tags)
 
@@ -209,26 +212,19 @@ class MetadataTest(PicardTestCase):
         self.assertIn('a', m.deleted_tags)
 
     def test_metadata_mapping_iter(self):
-        d = {'a': 'b', 'c': 2, 'd': ['x', 'y'], 'x': ''}
-        m = Metadata(d)
-        l = set(m)
+        l = set(self.metadata_d1)
         self.assertEqual(l, {'a', 'c', 'd'})
 
     def test_metadata_mapping_keys(self):
-        d = {'a': 'b', 'c': 2, 'd': ['x', 'y'], 'x': ''}
-        m = Metadata(d)
-        l = set(m.keys())
+        l = set(self.metadata_d1.keys())
         self.assertEqual(l, {'a', 'c', 'd'})
 
     def test_metadata_mapping_values(self):
-        d = {'a': 'b', 'c': 2, 'd': ['x', 'y'], 'x': ''}
-        m = Metadata(d)
-        l = set(m.values())
+        l = set(self.metadata_d1.values())
         self.assertEqual(l, {'b', '2', 'x; y'})
 
     def test_metadata_mapping_len(self):
-        d = {'a': 'b', 'c': 2, 'd': ['x', 'y'], 'x': ''}
-        m = Metadata(d)
+        m = self.metadata_d1
         self.assertEqual(len(m), 3)
         del m['x']
         self.assertEqual(len(m), 3)
@@ -236,81 +232,63 @@ class MetadataTest(PicardTestCase):
         self.assertEqual(len(m), 2)
         #TODO: test with cover art images
 
+    def _check_mapping_update(self, m):
+        self.assertEqual(m['a'], 'b')
+        self.assertEqual(m['c'], '3')
+        self.assertEqual(m.getraw('d'), ['u', 'w'])
+        self.assertEqual(m['x'], '')
+        self.assertIn('x', m.deleted_tags)
+
     def test_metadata_mapping_update(self):
         # update from Metadata
-        d = {'a': 'b', 'c': 2, 'd': ['x', 'y'], 'x': 'z'}
-        m = Metadata(d)
-
-        d2 = {'c': 3, 'd': ['u', 'w'], 'x': 'p'}
-        m2 = Metadata(d2)
+        m = self.metadata_d2
+        m2 = self.metadata_d3
 
         del m2['x']
         m.update(m2)
-        self.assertEqual(m['a'], 'b')
-        self.assertEqual(m['c'], '3')
-        self.assertEqual(m['x'], '')
-        self.assertIn('x', m.deleted_tags)
-        self.assertEqual(m.getraw('d'), ['u', 'w'])
+        self._check_mapping_update(m)
 
     def test_metadata_mapping_update_dict(self):
         # update from dict
-        d = {'a': 'b', 'c': 2, 'd': ['x', 'y'], 'x': 'z'}
-        m = Metadata(d)
+        m = self.metadata_d2
 
         d2 = {'c': 3, 'd': ['u', 'w'], 'x': ''}
 
         m.update(d2)
-        self.assertEqual(m['a'], 'b')
-        self.assertEqual(m['c'], '3')
-        self.assertEqual(m.getraw('d'), ['u', 'w'])
-        self.assertEqual(m['x'], '')
-        self.assertIn('x', m.deleted_tags)
+        self._check_mapping_update(m)
 
     def test_metadata_mapping_update_tuple(self):
         # update from tuple
-        d = {'a': 'b', 'c': 2, 'd': ['x', 'y'], 'x': 'z'}
-        m = Metadata(d)
+        m = self.metadata_d2
 
         d2 = (('c', 3), ('d', ['u', 'w']), ('x', ''))
 
         m.update(d2)
-        self.assertEqual(m['a'], 'b')
-        self.assertEqual(m['c'], '3')
-        self.assertEqual(m.getraw('d'), ['u', 'w'])
-        self.assertEqual(m['x'], '')
-        self.assertIn('x', m.deleted_tags)
+        self._check_mapping_update(m)
 
     def test_metadata_mapping_update_dictlike(self):
         # update from kwargs
-        d = {'a': 'b', 'c': 2, 'd': ['x', 'y'], 'x': 'z'}
-        m = Metadata(d)
+        m = self.metadata_d2
 
         m.update(c=3, d=['u', 'w'], x='')
-        self.assertEqual(m['a'], 'b')
-        self.assertEqual(m['c'], '3')
-        self.assertEqual(m.getraw('d'), ['u', 'w'])
-        self.assertEqual(m['x'], '')
-        self.assertIn('x', m.deleted_tags)
+        self._check_mapping_update(m)
 
     def test_metadata_mapping_update_noparam(self):
         # update without parameter
-        d = {'a': 'b', 'c': 2, 'd': ['x', 'y'], 'x': 'z'}
-        m = Metadata(d)
+        m = self.metadata_d2
 
         m.update()
         self.assertEqual(m['a'], 'b')
 
     def test_metadata_mapping_update_intparam(self):
         # update without parameter
-        d = {'a': 'b', 'c': 2, 'd': ['x', 'y'], 'x': 'z'}
-        m = Metadata(d)
+        m = self.metadata_d2
 
         self.assertRaises(TypeError, m.update, 123)
 
     def test_metadata_mapping_update_strparam(self):
         # update without parameter
-        d = {'a': 'b', 'c': 2, 'd': ['x', 'y'], 'x': 'z'}
-        m = Metadata(d)
+        m = self.metadata_d2
 
         self.assertRaises(ValueError, m.update, 'abc')
 
