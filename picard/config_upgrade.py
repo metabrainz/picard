@@ -70,20 +70,19 @@ def upgrade_to_v1_0_0_final_0():
                 "cs%,1),%discnumber%-,)$num(%tracknumber%,2) %artist% - "
                 "%title%"):
 
-            answer = msgbox.question(msgbox,
-                _("Various Artists file naming scheme removal"),
-                _("The separate file naming scheme for various artists "
-                    "albums has been removed in this version of Picard.\n"
-                    "You currently do not use this option, but have a "
-                    "separate file naming scheme defined.\n"
-                    "Do you want to remove it or merge it with your file "
-                    "naming scheme for single artist albums?"),
-                _("Merge"), _("Remove"))
-
-            if answer:
-                remove_va_file_naming_format(merge=False)
-            else:
-                remove_va_file_naming_format()
+            msgbox.setWindowTitle(_("Various Artists file naming scheme removal"))
+            msgbox.setText(_("The separate file naming scheme for various artists "
+                "albums has been removed in this version of Picard.\n"
+                "You currently do not use this option, but have a "
+                "separate file naming scheme defined.\n"
+                "Do you want to remove it or merge it with your file "
+                "naming scheme for single artist albums?"))
+            msgbox.setIcon(QtWidgets.QMessageBox.Question)
+            merge_button = msgbox.addButton(_('Merge'), QtWidgets.QMessageBox.AcceptRole)
+            msgbox.addButton(_('Remove'), QtWidgets.QMessageBox.DestructiveRole)
+            msgbox.exec()
+            merge = msgbox.clickedButton() == merge_button
+            remove_va_file_naming_format(merge=merge)
         else:
             # default format, disabled
             remove_va_file_naming_format(merge=False)
