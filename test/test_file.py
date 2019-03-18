@@ -1,3 +1,7 @@
+import os
+import shutil
+from tempfile import mkdtemp
+
 from test.picardtestcase import PicardTestCase
 
 from picard.file import File
@@ -26,3 +30,60 @@ class DataObjectTest(PicardTestCase):
         self.assertEqual(42, self.file.discnumber)
         self.file.metadata['discnumber'] = 'FOURTYTWO'
         self.assertEqual(0, self.file.discnumber)
+
+
+class TestPreserveTimes(PicardTestCase):
+
+    def setUp(self):
+        super().setUp()
+        self.tmp_directory = mkdtemp()
+        filepath = os.path.join(self.tmp_directory, 'a.mp3')
+        self.file = File(filepath)
+
+    def tearDown(self):
+        shutil.rmtree(self.tmp_directory)
+
+    def _create_testfile(self):
+        # create a dummy file
+        with open(self.file.filename, 'w') as f:
+            f.write('xxx')
+
+    def _modify_testfile(self):
+        # dummy file modification, append data to it
+        with open(self.file.filename, 'a') as f:
+            f.write('yyy')
+
+    def _read_testfile(self):
+        with open(self.file.filename, 'r') as f:
+            return f.read()
+
+    def test_preserve_times(self):
+        self._create_testfile()
+
+        st = os.stat(self.file.filename)
+        expect = (st.st_mtime_ns, st.st_atime_ns)
+
+        # test if times are preserved
+        result = self.file._preserve_times(self.file.filename,
+                                           self._modify_testfile)
+        self.assertEqual(result, expect)
+
+        # ensure written data can be read back
+        self.assertEqual(self._read_testfile(), 'xxxyyy')
+
+    def test_preserve_times_nofile(self):
+
+        with self.assertRaises(self.file.PreserveTimesStatError):
+            self.file._preserve_times(self.file.filename,
+                                      self._modify_testfile)
+        with self.assertRaises(FileNotFoundError):
+            self._read_testfile()
+
+    def test_preserve_times_nofile_utime(self):
+        self._create_testfile()
+
+        def save():
+            os.remove(self.file.filename)
+
+        with self.assertRaises(self.file.PreserveTimesUtimeError):
+            result = self.file._preserve_times(self.file.filename, save)

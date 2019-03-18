@@ -82,6 +82,12 @@ class File(QtCore.QObject, Item):
         "format": 2,
     }
 
+    class PreserveTimesStatError(Exception):
+        pass
+
+    class PreserveTimesUtimeError(Exception):
+        pass
+
     def __init__(self, filename):
         super().__init__()
         self.filename = filename
@@ -203,6 +209,27 @@ class File(QtCore.QObject, Item):
             priority=2,
             thread_pool=self.tagger.save_thread_pool)
 
+    def _preserve_times(self, filename, func):
+        """Save filename times before calling func, and set them again"""
+        try:
+            # https://docs.python.org/3/library/os.html#os.utime
+            # Since Python 3.3, ns parameter is available
+            # The best way to preserve exact times is to use the st_atime_ns and st_mtime_ns
+            # fields from the os.stat() result object with the ns parameter to utime.
+            st = os.stat(filename)
+            times_ns = (st.st_atime_ns, st.st_mtime_ns)
+        except OSError as why:
+            errmsg = "Couldn't read timestamps from %r: %s" % (filename, why)
+            raise self.PreserveTimesStatError(errmsg) from None
+            # if we can't read original times, don't call func and let caller handle this
+        func()
+        try:
+            os.utime(filename, ns=times_ns)
+        except OSError as why:
+            errmsg = "Couldn't preserve timestamps for %r: %s" % (filename, why)
+            raise self.PreserveTimesUtimeError(errmsg) from None
+        return times_ns
+
     def _save_and_rename(self, old_filename, metadata):
         """Save the metadata."""
         # Check that file has not been removed since thread was queued
@@ -215,13 +242,18 @@ class File(QtCore.QObject, Item):
             return None
         new_filename = old_filename
         if not config.setting["dont_write_tags"]:
-            info = os.stat(old_filename)
-            self._save(old_filename, metadata)
+            save = partial(self._save, old_filename, metadata)
             if config.setting["preserve_timestamps"]:
                 try:
-                    os.utime(old_filename, (info.st_atime, info.st_mtime))
-                except OSError:
-                    log.warning("Couldn't preserve timestamp for %r", old_filename)
+                    self._preserve_times(old_filename, save)
+                except self.PreserveTimesStatError as why:
+                    log.warning(why)
+                    # we didn't save the file yet, bail out
+                    return None
+                except self.FilePreserveTimesUtimeError as why:
+                    log.warning(why)
+            else:
+                save()
         # Rename files
         if config.setting["rename_files"] or config.setting["move_files"]:
             new_filename = self._rename(old_filename, metadata)
