@@ -105,16 +105,7 @@ class Cluster(QtCore.QObject, Item):
         self._update_related_album(added_files=files)
 
     def add_file(self, file):
-        self.metadata.length += file.metadata.length
-        self.files.append(file)
-        self.metadata['totaltracks'] = len(self.files)
-        file._move(self)
-        file.update(signal=False)
-        if self.can_show_coverart:
-            file.metadata_images_changed.connect(self.update_metadata_images)
-            add_metadata_images(self, [file])
-        self.item.add_file(file)
-        self._update_related_album(added_files=[file])
+        self.add_files([file])
 
     def remove_file(self, file):
         self.metadata.length -= file.metadata.length
