@@ -284,8 +284,10 @@ class Metadata(MutableMapping):
         self.clear()
         self.update(other)
 
-    def update(self, other):
-        if isinstance(other, self.__class__):
+    def update(self, *args, **kwargs):
+        if len(args) == 1 and isinstance(args[0], self.__class__):
+            # update from Metadata object
+            other = args[0]
             for k, v in other._store.items():
                 self._store[k] = v[:]
             if other.images:
@@ -296,8 +298,13 @@ class Metadata(MutableMapping):
             # Remove deleted tags from UI on save
             for tag in other.deleted_tags:
                 del self[tag]
-        elif isinstance(other, dict):
-            for k, v in other.items():
+        elif len(args) == 1 and isinstance(args[0], MutableMapping):
+            # update from MutableMapping (ie. dict)
+            for k, v in args[0].items():
+                self[k] = v
+        else:
+            # update from a dict-like constructor parameters
+            for k, v in dict(*args, **kwargs).items():
                 self[k] = v
 
     def clear(self):
