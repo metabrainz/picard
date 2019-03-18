@@ -30,6 +30,8 @@ user_collections = {}
 
 
 class Collection(QtCore.QObject):
+    COLLECTION_ADD = 1
+    COLLECTION_REMOVE = 2
 
     def __init__(self, collection_id, name, size):
         self.id = collection_id
@@ -37,66 +39,69 @@ class Collection(QtCore.QObject):
         self.pending = set()
         self.size = int(size)
         self.releases = set()
+        mb_api = self.tagger.mb_api
+        self.api_action = {
+            self.COLLECTION_ADD: mb_api.put_to_collection,
+            self.COLLECTION_REMOVE: mb_api.delete_from_collection,
+        }
 
     def __repr__(self):
         return '<Collection %s (%s)>' % (self.name, self.id)
 
-    def add_releases(self, ids, callback):
-        ids = ids - self.pending
+    def _modify(self, kind, ids, callback):
+        ids -= self.pending
         if ids:
-            self.pending.update(ids)
-            self.tagger.mb_api.put_to_collection(self.id, list(ids),
-                partial(self._add_finished, ids, callback))
+            self.pending |= ids
+            when_done = partial(self._finished, kind, ids, callback)
+            self.api_action[kind](self.id, list(ids), when_done)
+
+    def add_releases(self, ids, callback):
+        self._modify(self.COLLECTION_ADD, ids, callback)
 
     def remove_releases(self, ids, callback):
-        ids = ids - self.pending
-        if ids:
-            self.pending.update(ids)
-            self.tagger.mb_api.delete_from_collection(self.id, list(ids),
-                partial(self._remove_finished, ids, callback))
+        self._modify(self.COLLECTION_REMOVE, ids, callback)
 
-    def _add_finished(self, ids, callback, document, reply, error):
-        self.pending.difference_update(ids)
+    def _finished(self, kind, ids, callback, document, reply, error):
+        self.pending -= ids
+        statusbar = self.tagger.window.set_statusbar_message
         if not error:
             count = len(ids)
-            self.releases.update(ids)
-            self.size += count
+            if kind == self.COLLECTION_ADD:
+                self.releases |= ids
+                self.size += count
+                status_msg = ngettext(
+                    'Added %(count)i release to collection "%(name)s"',
+                    'Added %(count)i releases to collection "%(name)s"',
+                    count)
+                debug_msg = 'Added %(count)i releases to collection "%(name)s"'
+            else:
+                self.releases -= ids
+                self.size -= count
+                status_msg = ngettext(
+                    'Removed %(count)i release from collection "%(name)s"',
+                    'Removed %(count)i releases from collection "%(name)s"',
+                    count)
+                debug_msg = 'Removed %(count)i releases from collection "%(name)s"'
             callback()
-            mparms = {
-                'count': count,
-                'name': self.name
-            }
-            log.debug('Added %(count)i releases to collection "%(name)s"' % mparms)
-            self.tagger.window.set_statusbar_message(
-                ngettext('Added %(count)i release to collection "%(name)s"',
-                         'Added %(count)i releases to collection "%(name)s"',
-                         count),
-                mparms,
-                translate=None,
-                echo=None
+            mparms = {'count': count, 'name': self.name}
+            log.debug(debug_msg % mparms)
+            statusbar(status_msg, mparms, translate=None, echo=None)
+        else:
+            statusbar(
+                N_("Error while modifying collections: %(error)s"),
+                {'error': reply.errorString()},
+                echo=log.error
             )
 
-    def _remove_finished(self, ids, callback, document, reply, error):
-        self.pending.difference_update(ids)
-        if not error:
-            count = len(ids)
-            self.releases.difference_update(ids)
-            self.size -= count
-            callback()
-            mparms = {
-                'count': count,
-                'name': self.name
-            }
-            log.debug('Removed %(count)i releases from collection "%(name)s"' %
-                      mparms)
-            self.tagger.window.set_statusbar_message(
-                ngettext('Removed %(count)i release from collection "%(name)s"',
-                         'Removed %(count)i releases from collection "%(name)s"',
-                         count),
-                mparms,
-                translate=None,
-                echo=None
-            )
+
+def get_user_collection(collection_id, name, size, refresh=False):
+    collection = user_collections.get(collection_id)
+    if collection is None:
+        collection = user_collections[collection_id] = Collection(collection_id, name, size)
+    elif refresh:
+        collection.name = name
+        collection.size = size
+    return collection
 
 
 def load_user_collections(callback=None):
@@ -117,18 +122,18 @@ def load_user_collections(callback=None):
             for node in collection_list:
                 if node["entity-type"] != "release":
                     continue
-                node_id = node['id']
-                new_collections.add(node_id)
-                collection = user_collections.get(node_id)
-                if collection is None:
-                    user_collections[node_id] = Collection(node_id, node['name'], node['release-count'])
-                else:
-                    collection.name = node['name']
-                    collection.size = node['release-count']
+                col_id = node['id']
+                col_name = node['name']
+                col_size = node['release-count']
+                new_collections.add(col_id)
+                collection = get_user_collection(col_id, col_name, col_size, refresh=True)
 
-            for collection_id in set(user_collections.keys()) - new_collections:
+            # remove collections which aren't returned by the web service anymore
+            old_collections = set(user_collections) - new_collections
+            for collection_id in old_collections:
                 del user_collections[collection_id]
 
+            log.debug("User collections: %r", [(k, v.name) for k, v in user_collections.items()])
         if callback:
             callback()
 
@@ -145,9 +150,10 @@ def add_release_to_user_collections(release_node):
         release_id = release_node['id']
         username = config.persist["oauth_username"].lower()
         for node in release_node['collections']:
-            node_id = node['id']
             if node['editor'].lower() == username:
-                if node_id not in user_collections:
-                    user_collections[node_id] = Collection(node_id, node['name'], node['release-count'])
-                user_collections[node_id].releases.add(release_id)
-                log.debug("Adding release %r to %r", release_id, user_collections[node_id])
+                col_id = node['id']
+                col_name = node['name']
+                col_size = node['release-count']
+                collection = get_user_collection(col_id, col_name, col_size)
+                collection.releases.add(release_id)
+                log.debug("Adding release %r to %r", release_id, collection)
