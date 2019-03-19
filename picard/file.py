@@ -221,18 +221,17 @@ class File(QtCore.QObject, Item):
             # The best way to preserve exact times is to use the st_atime_ns and st_mtime_ns
             # fields from the os.stat() result object with the ns parameter to utime.
             st = os.stat(filename)
-            times_ns = (st.st_atime_ns, st.st_mtime_ns)
         except OSError as why:
             errmsg = "Couldn't read timestamps from %r: %s" % (filename, why)
             raise self.PreserveTimesStatError(errmsg) from None
             # if we can't read original times, don't call func and let caller handle this
         func()
         try:
-            os.utime(filename, ns=times_ns)
+            os.utime(filename, ns=(st.st_atime_ns, st.st_mtime_ns))
         except OSError as why:
             errmsg = "Couldn't preserve timestamps for %r: %s" % (filename, why)
             raise self.PreserveTimesUtimeError(errmsg) from None
-        return times_ns
+        return (st.st_atime_ns, st.st_mtime_ns)
 
     def _save_and_rename(self, old_filename, metadata):
         """Save the metadata."""

@@ -47,11 +47,15 @@ class TestPreserveTimes(PicardTestCase):
         # create a dummy file
         with open(self.file.filename, 'w') as f:
             f.write('xxx')
+            f.flush()
+            os.fsync(f.fileno())
 
     def _modify_testfile(self):
         # dummy file modification, append data to it
         with open(self.file.filename, 'a') as f:
             f.write('yyy')
+            f.flush()
+            os.fsync(f.fileno())
 
     def _read_testfile(self):
         with open(self.file.filename, 'r') as f:
@@ -60,15 +64,26 @@ class TestPreserveTimes(PicardTestCase):
     def test_preserve_times(self):
         self._create_testfile()
 
-        st = os.stat(self.file.filename)
-        expect = (st.st_mtime_ns, st.st_atime_ns)
-
         # test if times are preserved
-        result = self.file._preserve_times(self.file.filename,
-                                           self._modify_testfile)
-        self.assertEqual(result, expect)
+        (before_atime_ns, before_mtime_ns) = self.file._preserve_times(self.file.filename, self._modify_testfile)
+
+        # HERE an external access to the file is possible, modifying its access time
+
+        # read times again and compare with original
+        st = os.stat(self.file.filename)
+        (after_atimes_ns, after_mtimes_ns) = (st.st_atime_ns, st.st_mtime_ns)
+
+        # modification times should be equal
+        self.assertEqual(before_mtime_ns, after_mtimes_ns)
+
+        # access times may not be equal
+        # time difference should be positive and reasonably low (if no access in between, it should be 0)
+        delta = after_atimes_ns - before_atime_ns
+        tolerance = 10**7  #  0.01 seconds
+        self.assertTrue(0 <= delta < tolerance)
 
         # ensure written data can be read back
+        # keep it at the end, we don't want to access file before time checks
         self.assertEqual(self._read_testfile(), 'xxxyyy')
 
     def test_preserve_times_nofile(self):
