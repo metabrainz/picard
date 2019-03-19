@@ -409,7 +409,7 @@ class Metadata(MutableMapping):
         return "%s(%r, deleted_tags=%r, length=%r, images=%r)" % (self.__class__.__name__, self._store, self.deleted_tags, self.length, self.images)
 
     def __str__(self):
-        return ("store: %r\ndeleted: %r\nimages: %r\nlength: %r" % (self._store, self.deleted_tags, self.images, self.length))
+        return ("store: %r\ndeleted: %r\nimages: %r\nlength: %r" % (self._store, self.deleted_tags, [str(img) for img in self.images], self.length))
 
 
 _album_metadata_processors = PluginFunctions()

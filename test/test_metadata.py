@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from test.picardtestcase import PicardTestCase
+from test.test_coverart_image import create_image
 
 from picard import config
 from picard.metadata import (
@@ -312,3 +313,20 @@ class MetadataTest(PicardTestCase):
         self.assertNotIn('tag2', m)
         self.assertNotIn('tag1', m.deleted_tags)
         self.assertIn('tag2', m.deleted_tags)
+
+    def test_metadata_mapping_images(self):
+        image1 = create_image(b'A', comment='A')
+        image2 = create_image(b'B', comment='B')
+
+        m1 = Metadata(a='b', length=1234, images=[image1])
+        self.assertEqual(m1.images[0], image1)
+
+        m1.append_image(image2)
+        self.assertEqual(m1.images[1], image2)
+
+        m1.remove_image(0)
+        self.assertEqual(m1.images[0], image2)
+
+        m2 = Metadata(a='c', length=4567, images=[image1])
+        m1.update(m2)
+        self.assertEqual(m1.images[0], image1)
