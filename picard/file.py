@@ -88,6 +88,10 @@ class File(QtCore.QObject, Item):
     class PreserveTimesUtimeError(Exception):
         pass
 
+    # in order to significantly speed up performance, the number of pending
+    # files is cached, set @state.setter
+    num_pending_files = 0
+
     def __init__(self, filename):
         super().__init__()
         self.filename = filename
@@ -298,7 +302,7 @@ class File(QtCore.QObject, Item):
         old_filename = new_filename = self.filename
         if error is not None:
             self.error = str(error)
-            self.set_state(File.ERROR, update=True)
+            self.state = File.ERROR
         else:
             self.filename = new_filename = result
             self.base_filename = os.path.basename(new_filename)
@@ -321,10 +325,12 @@ class File(QtCore.QObject, Item):
             for k, v in temp_info.items():
                 self.orig_metadata[k] = v
             self.error = None
-            # Force update to ensure file status icon changes immediately after save
-            self.clear_pending(force_update=True)
+            self.clear_pending()
             self._add_path_to_metadata(self.orig_metadata)
             self.metadata_images_changed.emit()
+
+        # Force update to ensure file status icon changes immediately after save
+        self.update()
 
         if self.state != File.REMOVED:
             del self.tagger.files[old_filename]
@@ -540,7 +546,7 @@ class File(QtCore.QObject, Item):
                 orig_values = self.orig_metadata.getall(name)
                 if orig_values != new_values:
                     self.similarity = self.orig_metadata.compare(new_metadata)
-                    if self.state in (File.CHANGED, File.NORMAL):
+                    if self.state == File.NORMAL:
                         self.state = File.CHANGED
                     break
         else:
@@ -549,12 +555,11 @@ class File(QtCore.QObject, Item):
                 self.state = File.CHANGED
             else:
                 self.similarity = 1.0
-                if self.state in (File.CHANGED, File.NORMAL):
+                if self.state == File.CHANGED:
                     self.state = File.NORMAL
         if signal:
             log.debug("Updating file %r", self)
-            if self.item:
-                self.item.update()
+            self.update_item()
 
     def can_save(self):
         """Return if this object can be saved."""
@@ -604,25 +609,22 @@ class File(QtCore.QObject, Item):
         metadata['~filename'] = filename
         metadata['~extension'] = extension.lower()[1:]
 
-    def get_state(self):
+    @property
+    def state(self):
+        """Current state of the File object"""
         return self._state
 
-    # in order to significantly speed up performance, the number of pending
-    #  files is cached
-    num_pending_files = 0
-
-    def set_state(self, state, update=False):
-        if state != self._state:
-            if state == File.PENDING:
-                File.num_pending_files += 1
-            elif self._state == File.PENDING:
-                File.num_pending_files -= 1
+    @state.setter
+    def state(self, state):
+        if state == self._state:
+            return
+        if state == File.PENDING:
+            File.num_pending_files += 1
+            self.tagger.tagger_stats_changed.emit()
+        elif self._state == File.PENDING:
+            File.num_pending_files -= 1
+            self.tagger.tagger_stats_changed.emit()
         self._state = state
-        if update:
-            self.update()
-        self.tagger.tagger_stats_changed.emit()
-
-    state = property(get_state, set_state)
 
     def column(self, column):
         m = self.metadata
@@ -717,28 +719,32 @@ class File(QtCore.QObject, Item):
     def set_pending(self):
         if self.state != File.REMOVED:
             self.state = File.PENDING
-            self.update()
+            self.update_item()
 
-    def clear_pending(self, force_update=False):
+    def clear_pending(self):
         if self.state == File.PENDING:
             self.state = File.NORMAL
-            self.update()
-        elif force_update:
-            self.update()
+            self.update_item()
+
+    def update_item(self):
+        if self.item:
+            self.item.update()
 
     def iterfiles(self, save=False):
         yield self
 
-    def _get_tracknumber(self):
+    @property
+    def tracknumber(self):
+        """The track number as an int."""
         try:
             return int(self.metadata["tracknumber"])
         except BaseException:
             return 0
-    tracknumber = property(_get_tracknumber, doc="The track number as an int.")
 
-    def _get_discnumber(self):
+    @property
+    def discnumber(self):
+        """The disc number as an int."""
         try:
             return int(self.metadata["discnumber"])
         except BaseException:
             return 0
-    discnumber = property(_get_discnumber, doc="The disc number as an int.")
