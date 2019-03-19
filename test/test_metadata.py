@@ -299,3 +299,16 @@ class MetadataTest(PicardTestCase):
         self.assertEqual(m['tag2'], 'b')
         m.update(tag2='')
         self.assertIn('tag2', m.deleted_tags)
+
+    def test_metadata_mapping_update_kw_del(self):
+        m = Metadata(tag1='a', tag2='b')
+        del m['tag1']
+
+        m2 = Metadata(tag1='c', tag2='d')
+        del m2['tag2']
+
+        m.update(m2)
+        self.assertEqual(m['tag1'], 'c')
+        self.assertNotIn('tag2', m)
+        self.assertNotIn('tag1', m.deleted_tags)
+        self.assertIn('tag2', m.deleted_tags)
