@@ -344,8 +344,10 @@ class File(QtCore.QObject, Item):
         raise NotImplementedError
 
     def _script_to_filename(self, naming_format, file_metadata, settings=None):
+        if settings is None:
+            settings = config.setting
         metadata = Metadata()
-        if config.setting["clear_existing_tags"]:
+        if settings["clear_existing_tags"]:
             metadata.copy(file_metadata)
         else:
             metadata.copy(self.orig_metadata)
@@ -361,6 +363,38 @@ class File(QtCore.QObject, Item):
             new_filename = ''
         return new_filename, ext
 
+    def _format_filename(self, new_dirname, new_filename, metadata, settings):
+        # TODO: tests !!
+        new_filename, ext = self._fixed_splitext(new_filename)
+        ext = ext.lower()
+        new_filename = new_filename + ext
+
+        # expand the naming format
+        naming_format = settings['file_naming_format']
+        if naming_format:
+            new_filename = self._script_to_filename(naming_format, metadata, settings)
+            # NOTE: the _script_to_filename strips the extension away
+            new_filename = new_filename + ext
+            if not settings['move_files']:
+                new_filename = os.path.basename(new_filename)
+            win_compat = IS_WIN or settings['windows_compatibility']
+            new_filename = make_short_filename(new_dirname, new_filename,
+                                               win_compat)
+            # TODO: move following logic under util.filenaming
+            # (and reconsider its necessity)
+            # win32 compatibility fixes
+            if win_compat:
+                new_filename = new_filename.replace('./', '_/').replace('.\\', '_\\')
+            # replace . at the beginning of file and directory names
+            # FIXME: even on non-win platforms ???
+            new_filename = new_filename.replace('/.', '/_').replace('\\.', '\\_')
+            if new_filename.startswith('.'):
+                new_filename = '_' + new_filename[1:]
+            # Fix for precomposed characters on OSX
+            if IS_MACOS:
+                new_filename = unicodedata.normalize("NFD", new_filename)
+        return new_filename
+
     def _make_filename(self, filename, metadata, settings=None):
         """Constructs file name based on metadata and file naming formats."""
         if settings is None:
@@ -374,33 +408,7 @@ class File(QtCore.QObject, Item):
         new_filename = os.path.basename(filename)
 
         if settings["rename_files"]:
-            new_filename, ext = self._fixed_splitext(new_filename)
-            ext = ext.lower()
-            new_filename = new_filename + ext
-
-            # expand the naming format
-            naming_format = settings['file_naming_format']
-            if len(naming_format) > 0:
-                new_filename = self._script_to_filename(naming_format, metadata, settings)
-                # NOTE: the _script_to_filename strips the extension away
-                new_filename = new_filename + ext
-                if not settings['move_files']:
-                    new_filename = os.path.basename(new_filename)
-                new_filename = make_short_filename(new_dirname, new_filename,
-                                                   config.setting['windows_compatibility'],
-                                                   config.setting['windows_compatibility_drive_root'])
-                # TODO: move following logic under util.filenaming
-                # (and reconsider its necessity)
-                # win32 compatibility fixes
-                if settings['windows_compatibility'] or IS_WIN:
-                    new_filename = new_filename.replace('./', '_/').replace('.\\', '_\\')
-                # replace . at the beginning of file and directory names
-                new_filename = new_filename.replace('/.', '/_').replace('\\.', '\\_')
-                if new_filename and new_filename[0] == '.':
-                    new_filename = '_' + new_filename[1:]
-                # Fix for precomposed characters on OSX
-                if IS_MACOS:
-                    new_filename = unicodedata.normalize("NFD", new_filename)
+            new_filename = self._format_filename(new_dirname, new_filename, metadata, settings)
 
         new_path = os.path.join(new_dirname, new_filename)
         try:
