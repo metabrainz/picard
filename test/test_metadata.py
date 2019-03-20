@@ -212,6 +212,14 @@ class MetadataTest(PicardTestCase):
         self.assertRaises(KeyError, m.getraw, 'a')
         self.assertIn('a', m.deleted_tags)
 
+        # NOTE: historic behavior of Metadata.delete()
+        # an attempt to delete an non-existing tag, will add it to the list
+        # of deleted tags
+        # so this will not raise a KeyError
+        # as is it differs from dict or even defaultdict behavior
+        del m['unknown']
+        self.assertIn('unknown', m.deleted_tags)
+
     def test_metadata_mapping_iter(self):
         l = set(self.metadata_d1)
         self.assertEqual(l, {'a', 'c', 'd'})
