@@ -305,10 +305,13 @@ class Metadata(MutableMapping):
             # update from MutableMapping (ie. dict)
             for k, v in args[0].items():
                 self[k] = v
-        else:
+        elif args or kwargs:
             # update from a dict-like constructor parameters
             for k, v in dict(*args, **kwargs).items():
                 self[k] = v
+        else:
+            # no argument, raise TypeError to mimic dict.update()
+            raise TypeError("descriptor 'update' of '%s' object needs an argument" % self.__class__.__name__)
 
     def clear(self):
         self._store.clear()

@@ -277,7 +277,7 @@ class MetadataTest(PicardTestCase):
         # update without parameter
         m = self.metadata_d2
 
-        m.update()
+        self.assertRaises(TypeError, m.update)
         self.assertEqual(m['a'], 'b')
 
     def test_metadata_mapping_update_intparam(self):
