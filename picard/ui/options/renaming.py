@@ -145,7 +145,8 @@ class RenamingOptionsPage(OptionsPage):
             'move_files': self.ui.move_files.isChecked(),
             'use_va_format': False,  # TODO remove
             'file_naming_format': self.ui.file_naming_format.toPlainText(),
-            'move_files_to': os.path.normpath(self.ui.move_files_to.text())
+            'move_files_to': os.path.normpath(self.ui.move_files_to.text()),
+            'clear_existing_tags': config.setting['clear_existing_tags'],
         }
         try:
             if config.setting["enable_tagger_scripts"]:
