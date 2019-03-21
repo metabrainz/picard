@@ -15,14 +15,13 @@ from picard.coverart.image import (
 
 def create_image(extra_data, types=None, support_types=False,
                  support_multi_types=False, comment=None):
-    image = CoverArtImage(
+    return CoverArtImage(
         data=create_fake_png(extra_data),
         types=types,
-        comment=comment
+        comment=comment,
+        support_types=support_types,
+        support_multi_types=support_multi_types,
     )
-    image.support_types = support_types
-    image.support_multi_types = support_multi_types
-    return image
 
 
 class CoverArtImageTest(PicardTestCase):

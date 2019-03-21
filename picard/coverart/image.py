@@ -128,7 +128,7 @@ class CoverArtImage:
     is_front = None
     sourceprefix = "URL"
 
-    def __init__(self, url=None, types=None, comment='', data=None):
+    def __init__(self, url=None, types=None, comment='', data=None, support_types=None, support_multi_types=None):
         if types is None:
             self.types = []
         else:
@@ -144,6 +144,10 @@ class CoverArtImage:
         self.can_be_saved_to_tags = True
         self.can_be_saved_to_disk = True
         self.can_be_saved_to_metadata = True
+        if support_types is not None:
+            self.support_types = support_types
+        if support_multi_types is not None:
+            self.support_multi_types = support_multi_types
         if data is not None:
             self.set_data(data)
 
