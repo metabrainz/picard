@@ -200,6 +200,16 @@ class MetadataTest(PicardTestCase):
         self.assertIn('c', m.deleted_tags)
         self.assertEqual(m.length, 1234)
 
+    def test_metadata_mapping_init_zero(self):
+        m = Metadata(tag1='a', tag2=0, tag3='', tag4=None)
+        m['tag5'] = 0
+        m['tag1'] = ''
+        self.assertIn('tag1', m.deleted_tags)
+        self.assertEqual(m['tag2'], '0')
+        self.assertNotIn('tag3', m)
+        self.assertNotIn('tag4', m)
+        self.assertEqual(m['tag5'], '0')
+
     def test_metadata_mapping_del(self):
         m = self.metadata_d1
         self.assertEqual(m.getraw('a'), ['b'])

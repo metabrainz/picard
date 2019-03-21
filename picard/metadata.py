@@ -348,7 +348,7 @@ class Metadata(MutableMapping):
     def __setitem__(self, name, values):
         if not isinstance(values, list):
             values = [values]
-        values = [str(value) for value in values if value]
+        values = [str(value) for value in values if value or value == 0]
         if values:
             self.set(name, values)
         elif name in self._store:
