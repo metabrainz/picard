@@ -319,3 +319,11 @@ class ImageListTest(PicardTestCase):
         self.assertNotIn(self.images['c'], self.imagelist)
         self.assertIn(self.images['a'], self.imagelist)
         self.assertEqual(len(self.imagelist), 1)
+
+    def test_imagelist_insert(self):
+        l = ImageList()
+        l.insert(0, 'a')
+        self.assertEqual(l[0], 'a')
+        l.insert(0, 'b')
+        self.assertEqual(l[0], 'b')
+        self.assertEqual(l[1], 'a')
