@@ -139,14 +139,14 @@ class RenamingOptionsPage(OptionsPage):
 
     def _example_to_filename(self, file):
         settings = {
-            'windows_compatibility': self.ui.windows_compatibility.isChecked(),
             'ascii_filenames': self.ui.ascii_filenames.isChecked(),
-            'rename_files': self.ui.rename_files.isChecked(),
-            'move_files': self.ui.move_files.isChecked(),
-            'use_va_format': False,  # TODO remove
-            'file_naming_format': self.ui.file_naming_format.toPlainText(),
-            'move_files_to': os.path.normpath(self.ui.move_files_to.text()),
             'clear_existing_tags': config.setting['clear_existing_tags'],
+            'file_naming_format': self.ui.file_naming_format.toPlainText(),
+            'move_files': self.ui.move_files.isChecked(),
+            'move_files_to': os.path.normpath(self.ui.move_files_to.text()),
+            'rename_files': self.ui.rename_files.isChecked(),
+            'use_va_format': False,  # TODO remove
+            'windows_compatibility': self.ui.windows_compatibility.isChecked(),
         }
         try:
             if config.setting["enable_tagger_scripts"]:
