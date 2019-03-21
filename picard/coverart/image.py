@@ -354,13 +354,17 @@ class CoverArtImage:
     def tempfile_filename(self):
         return self.datahash.filename
 
-    def types_as_string(self, translate=True, separator=', '):
+    def normalized_types(self):
         if self.types:
-            types = self.types
+            types = sorted(set(self.types))
         elif self.is_front_image():
             types = ['front']
         else:
             types = ['-']
+        return types
+
+    def types_as_string(self, translate=True, separator=', '):
+        types = self.normalized_types()
         if translate:
             types = [translate_caa_type(type) for type in types]
         return separator.join(types)
