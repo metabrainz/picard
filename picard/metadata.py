@@ -97,9 +97,6 @@ class Metadata(MutableMapping):
         self.images[:] = [img for img in self.images if not img.is_front_image()]
         self.images.append(coverartimage)
 
-    def remove_image(self, index):
-        self.images.pop(index)
-
     @staticmethod
     def length_score(a, b):
         return (1.0 - min(abs(a - b), LENGTH_SCORE_THRES_MS) /
