@@ -339,7 +339,7 @@ class MetadataTest(PicardTestCase):
         self.assertEqual(m1.images[0], image1)
         self.assertEqual(len(m1), 2) # one tag, one image
 
-        m1.append_image(image2)
+        m1.images.append(image2)
         self.assertEqual(m1.images[1], image2)
 
         m1.images.pop(0)

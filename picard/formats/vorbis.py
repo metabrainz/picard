@@ -126,7 +126,7 @@ class VCommentFile(File):
                     except CoverArtImageError as e:
                         log.error('Cannot load image from %r: %s' % (filename, e))
                     else:
-                        metadata.append_image(coverartimage)
+                        metadata.images.append(coverartimage)
 
                     continue
                 elif name in self.__translate:
@@ -146,7 +146,7 @@ class VCommentFile(File):
                 except CoverArtImageError as e:
                     log.error('Cannot load image from %r: %s' % (filename, e))
                 else:
-                    metadata.append_image(coverartimage)
+                    metadata.images.append(coverartimage)
 
         # Read the unofficial COVERART tags, for backward compatibility only
         if "metadata_block_picture" not in file.tags:
@@ -161,7 +161,7 @@ class VCommentFile(File):
                     except CoverArtImageError as e:
                         log.error('Cannot load image from %r: %s' % (filename, e))
                     else:
-                        metadata.append_image(coverartimage)
+                        metadata.images.append(coverartimage)
             except KeyError:
                 pass
         self._info(metadata, file)

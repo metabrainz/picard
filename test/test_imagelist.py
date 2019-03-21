@@ -28,12 +28,12 @@ def create_test_files():
         File('test2.flac'),
         File('test2.flac')
     ]
-    test_files[0].metadata.append_image(test_images[0])
-    test_files[1].metadata.append_image(test_images[1])
-    test_files[2].metadata.append_image(test_images[1])
-    test_files[0].orig_metadata.append_image(test_images[0])
-    test_files[1].orig_metadata.append_image(test_images[1])
-    test_files[2].orig_metadata.append_image(test_images[1])
+    test_files[0].metadata.images.append(test_images[0])
+    test_files[1].metadata.images.append(test_images[1])
+    test_files[2].metadata.images.append(test_images[1])
+    test_files[0].orig_metadata.images.append(test_images[0])
+    test_files[1].orig_metadata.images.append(test_images[1])
+    test_files[2].orig_metadata.images.append(test_images[1])
     return (test_images, test_files)
 
 

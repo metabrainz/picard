@@ -174,7 +174,7 @@ class MP4File(File):
                         log.error('Cannot load image from %r: %s' %
                                   (filename, e))
                     else:
-                        metadata.append_image(coverartimage)
+                        metadata.images.append(coverartimage)
 
         self._info(metadata, file)
         return metadata

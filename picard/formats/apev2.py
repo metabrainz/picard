@@ -93,7 +93,7 @@ class APEv2File(File):
                             log.error('Cannot load image from %r: %s' %
                                       (filename, e))
                         else:
-                            metadata.append_image(coverartimage)
+                            metadata.images.append(coverartimage)
 
                 # skip EXTERNAL and BINARY values
                 if values.kind != mutagen.apev2.TEXT:

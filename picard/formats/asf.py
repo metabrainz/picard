@@ -182,7 +182,7 @@ class ASFFile(File):
                         log.error('Cannot load image from %r: %s' %
                                   (filename, e))
                     else:
-                        metadata.append_image(coverartimage)
+                        metadata.images.append(coverartimage)
 
                 continue
             elif name not in self.__RTRANS:

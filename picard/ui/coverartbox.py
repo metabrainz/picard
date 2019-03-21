@@ -289,7 +289,7 @@ def set_image_replace(obj, coverartimage):
 
 
 def set_image_append(obj, coverartimage):
-    obj.metadata.append_image(coverartimage)
+    obj.metadata.images.append(coverartimage)
 
 
 class CoverArtBox(QtWidgets.QGroupBox):
