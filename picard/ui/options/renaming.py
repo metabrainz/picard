@@ -145,7 +145,6 @@ class RenamingOptionsPage(OptionsPage):
             'move_files': self.ui.move_files.isChecked(),
             'move_files_to': os.path.normpath(self.ui.move_files_to.text()),
             'rename_files': self.ui.rename_files.isChecked(),
-            'use_va_format': False,  # TODO remove
             'windows_compatibility': self.ui.windows_compatibility.isChecked(),
         }
         try:
