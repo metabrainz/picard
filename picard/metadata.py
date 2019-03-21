@@ -89,11 +89,6 @@ class Metadata(MutableMapping):
     def __len__(self):
         return len(self._store) + len(self.images)
 
-    def set_front_image(self, coverartimage):
-        # First remove all front images
-        self.images[:] = [img for img in self.images if not img.is_front_image()]
-        self.images.append(coverartimage)
-
     @staticmethod
     def length_score(a, b):
         return (1.0 - min(abs(a - b), LENGTH_SCORE_THRES_MS) /

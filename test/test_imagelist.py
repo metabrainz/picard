@@ -306,3 +306,16 @@ class ImageListTest(PicardTestCase):
         del settings["save_images_to_tags"]
         with self.assertRaises(KeyError):
             image = next(to_be_saved(settings))
+
+    def test_strip_front_images(self):
+        self.imagelist.append(self.images['a'])
+        self.imagelist.append(self.images['b'])
+        self.imagelist.append(self.images['c'])
+
+        # strip front images from list, only a isn't
+        self.assertEqual(len(self.imagelist), 3)
+        self.imagelist.strip_front_images()
+        self.assertNotIn(self.images['b'], self.imagelist)
+        self.assertNotIn(self.images['c'], self.imagelist)
+        self.assertIn(self.images['a'], self.imagelist)
+        self.assertEqual(len(self.imagelist), 1)

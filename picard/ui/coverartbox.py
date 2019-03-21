@@ -285,7 +285,8 @@ class CoverArtThumbnail(ActiveLabel):
 
 
 def set_image_replace(obj, coverartimage):
-    obj.metadata.set_front_image(coverartimage)
+    obj.metadata.images.strip_front_images()
+    obj.metadata.images.append(coverartimage)
 
 
 def set_image_append(obj, coverartimage):

@@ -79,6 +79,9 @@ class ImageList(MutableSequence):
                 else:
                     yield image
 
+    def strip_front_images(self):
+        self._images = [image for image in self._images if not image.is_front_image()]
+
 
 class ImageListState:
     def __init__(self):
