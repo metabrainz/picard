@@ -352,3 +352,13 @@ class MetadataTest(PicardTestCase):
         m1.remove_image(0)
         self.assertEqual(len(m1), 1) # one tag, zero image
         self.assertFalse(m1.images)
+
+    def test_metadata_mapping_iterable(self):
+        m = Metadata(tag_tuple=('a', 0))
+        m['tag_set'] = {'c', 'd'}
+        m['tag_dict'] = {'e': 1, 'f': 2}
+        m['tag_str'] = 'gh'
+        self.assertIn('0', m.getraw('tag_tuple'))
+        self.assertIn('c', m.getraw('tag_set'))
+        self.assertIn('e', m.getraw('tag_dict'))
+        self.assertIn('gh', m.getraw('tag_str'))
