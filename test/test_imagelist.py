@@ -327,3 +327,24 @@ class ImageListTest(PicardTestCase):
         l.insert(0, 'b')
         self.assertEqual(l[0], 'b')
         self.assertEqual(l[1], 'a')
+
+    def test_imagelist_clear(self):
+        l = ImageList(['a', 'b'])
+        self.assertEqual(len(l), 2)
+        l.clear()
+        self.assertEqual(len(l), 0)
+
+    def test_imagelist_copy(self):
+        l = ['a', 'b']
+        l1 = ImageList(l)
+        l2 = l1.copy()
+        l3 = l1
+        l1[0] = 'c'
+        self.assertEqual(l2[0], 'a')
+        self.assertEqual(l3[0], 'c')
+
+    def test_imagelist_del(self):
+        l = ImageList(['a', 'b'])
+        del l[0]
+        self.assertEqual(l[0], 'b')
+        self.assertEqual(len(l), 1)
