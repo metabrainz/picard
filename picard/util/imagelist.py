@@ -18,23 +18,38 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+from collections.abc import MutableSequence
+
 from picard import config
 
 
-class ImageList(list):
+class ImageList(MutableSequence):
+    def __init__(self, iterable=()):
+        self._images = list(iterable)
+
+    def __len__(self):
+        return len(self._images)
+
+    def __getitem__(self, index):
+        return self._images[index]
+
+    def __setitem__(self, index, value):
+        self._images[index] = value
+
+    def __delitem__(self, index):
+        del self._images[index]
+
+    def insert(self, index, image):
+        return self._images.insert(index, image)
+
+    def __repr__(self):
+        return '%s(%r)' % (self.__class__.__name__, self._images)
 
     def _sorted(self):
-        return sorted(self, key=lambda image:  image.normalized_types())
+        return sorted(self, key=lambda image: image.normalized_types())
 
     def __eq__(self, other):
         return self._sorted() == other._sorted()
-
-    def __getitem__(self, k):
-        result = super().__getitem__(k)
-        try:
-            return ImageList(result)
-        except TypeError:
-            return result
 
     def get_front_image(self):
         for img in self:
