@@ -51,6 +51,9 @@ class ImageList(MutableSequence):
     def __eq__(self, other):
         return self._sorted() == other._sorted()
 
+    def copy(self):
+        return self.__class__(self._images)
+
     def get_front_image(self):
         for img in self:
             if img.is_front_image():

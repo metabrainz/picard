@@ -275,7 +275,7 @@ class Metadata(MutableMapping):
                 del self[tag]
 
             if other.images:
-                self.images = other.images[:]
+                self.images = other.images.copy()
             if other.length:
                 self.length = other.length
 
