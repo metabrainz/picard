@@ -210,7 +210,7 @@ class ASFFile(File):
         if config.setting['clear_existing_tags']:
             tags.clear()
         cover = []
-        for image in metadata.images_to_be_saved_to_tags:
+        for image in metadata.images.to_be_saved_to_tags():
             tag_data = pack_image(image.mimetype, image.data,
                                   image_type_as_id3_num(image.maintype),
                                   image.comment)

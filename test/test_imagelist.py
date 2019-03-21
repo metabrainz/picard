@@ -269,3 +269,40 @@ class ImageListTest(PicardTestCase):
         self.imagelist.append(self.images['a'])
         self.imagelist.append(self.images['b'])
         self.assertEqual(self.imagelist.get_front_image(), self.images['b'])
+
+    def test_to_be_saved_to_tags(self):
+
+        def to_be_saved(settings):
+            return self.imagelist.to_be_saved_to_tags(settings=settings)
+
+        settings = {
+            "save_images_to_tags": True,
+            "embed_only_one_front_image": False,
+        }
+        # save all but no images
+        self.assertEqual(list(to_be_saved(settings)), [])
+
+        # save all, only one non-front image in the list
+        self.imagelist.append(self.images['a'])
+        self.assertEqual(list(to_be_saved(settings)), [self.images['a']])
+
+        # save all, 2 images, one of them is a front image (b)
+        self.imagelist.append(self.images['b'])
+        self.assertEqual(list(to_be_saved(settings)), [self.images['a'], self.images['b']])
+
+        # save only one front, 2 images, one of them is a front image (b)
+        settings["embed_only_one_front_image"] = True
+        self.assertEqual(list(to_be_saved(settings)), [self.images['b']])
+
+        # save only one front, 3 images, two of them have front type (b & c)
+        self.imagelist.append(self.images['c'])
+        self.assertEqual(list(to_be_saved(settings)), [self.images['b']])
+
+        # 3 images, but do not save
+        settings["save_images_to_tags"] = False
+        self.assertEqual(list(to_be_saved(settings)), [])
+
+        # settings is missing a setting
+        del settings["save_images_to_tags"]
+        with self.assertRaises(KeyError):
+            image = next(to_be_saved(settings))

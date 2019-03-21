@@ -97,17 +97,6 @@ class Metadata(MutableMapping):
         self.images[:] = [img for img in self.images if not img.is_front_image()]
         self.images.append(coverartimage)
 
-    @property
-    def images_to_be_saved_to_tags(self):
-        if not config.setting["save_images_to_tags"]:
-            return ()
-        images = [img for img in self.images if img.can_be_saved_to_tags]
-        if config.setting["embed_only_one_front_image"]:
-            front_image = self.images.get_front_image()
-            if front_image:
-                return [front_image]
-        return images
-
     def remove_image(self, index):
         self.images.pop(index)
 

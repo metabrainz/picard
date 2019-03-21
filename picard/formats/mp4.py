@@ -222,7 +222,7 @@ class MP4File(File):
                 tags["disk"] = [(int(metadata["discnumber"]), 0)]
 
         covr = []
-        for image in metadata.images_to_be_saved_to_tags:
+        for image in metadata.images.to_be_saved_to_tags():
             if image.mimetype == "image/jpeg":
                 covr.append(MP4Cover(image.data, MP4Cover.FORMAT_JPEG))
             elif image.mimetype == "image/png":

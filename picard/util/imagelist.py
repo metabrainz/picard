@@ -18,6 +18,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+from picard import config
+
 
 class ImageList(list):
 
@@ -39,6 +41,25 @@ class ImageList(list):
             if img.is_front_image():
                 return img
         return None
+
+    def to_be_saved_to_tags(self, settings=None):
+        """Generator returning images to be saved to tags according to
+           passed settings or config.setting
+        """
+        if settings is None:
+            settings = config.setting
+        if settings['save_images_to_tags']:
+            only_one_front = settings['embed_only_one_front_image']
+            for image in self:
+                if not image.can_be_saved_to_tags:
+                    continue
+                if only_one_front:
+                    if not image.is_front_image():
+                        continue
+                    yield image
+                    break
+                else:
+                    yield image
 
 
 class ImageListState:

@@ -319,7 +319,8 @@ class ID3File(File):
 
         if config.setting['clear_existing_tags']:
             tags.clear()
-        if metadata.images_to_be_saved_to_tags:
+        images_to_save = list(metadata.images.to_be_saved_to_tags())
+        if images_to_save:
             tags.delall('APIC')
 
         encoding = {'utf-8': 3, 'utf-16': 1}.get(config.setting['id3v2_encoding'], 0)
@@ -350,7 +351,7 @@ class ID3File(File):
         # impossible to save two images, even of different types, without
         # any description.
         counters = defaultdict(lambda: 0)
-        for image in metadata.images_to_be_saved_to_tags:
+        for image in images_to_save:
             desc = desctag = image.comment
             if counters[desc] > 0:
                 if desc:
