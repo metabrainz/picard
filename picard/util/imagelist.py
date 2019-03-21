@@ -34,6 +34,12 @@ class ImageList(list):
         except TypeError:
             return result
 
+    def get_front_image(self):
+        for img in self:
+            if img.is_front_image():
+                return img
+        return None
+
 
 class ImageListState:
     def __init__(self):

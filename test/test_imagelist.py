@@ -264,3 +264,8 @@ class ImageListTest(PicardTestCase):
 
         self.assertTrue(list1 == list2)
         self.assertFalse(list1 == list3)
+
+    def test_get_front_image(self):
+        self.imagelist.append(self.images['a'])
+        self.imagelist.append(self.images['b'])
+        self.assertEqual(self.imagelist.get_front_image(), self.images['b'])

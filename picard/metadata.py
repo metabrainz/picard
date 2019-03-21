@@ -103,18 +103,10 @@ class Metadata(MutableMapping):
             return ()
         images = [img for img in self.images if img.can_be_saved_to_tags]
         if config.setting["embed_only_one_front_image"]:
-            front_image = self.get_single_front_image(images)
+            front_image = self.images.get_front_image()
             if front_image:
-                return front_image
+                return [front_image]
         return images
-
-    def get_single_front_image(self, images=None):
-        if not images:
-            images = self.images
-        for img in images:
-            if img.is_front_image():
-                return [img]
-        return []
 
     def remove_image(self, index):
         self.images.pop(index)

@@ -444,7 +444,7 @@ class File(QtCore.QObject, Item):
         counters = defaultdict(lambda: 0)
         images = []
         if config.setting["caa_save_single_front_image"]:
-            images = metadata.get_single_front_image()
+            images = [metadata.images.get_front_image()]
         if not images:
             images = metadata.images
         for image in images:
