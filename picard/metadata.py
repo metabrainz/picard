@@ -17,7 +17,10 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
 # USA.
-from collections.abc import MutableMapping
+from collections.abc import (
+    Iterable,
+    MutableMapping,
+)
 
 from PyQt5.QtCore import QObject
 
@@ -346,9 +349,9 @@ class Metadata(MutableMapping):
         self.deleted_tags.discard(name)
 
     def __setitem__(self, name, values):
-        if not isinstance(values, list):
+        if isinstance(values, str) or not isinstance(values, Iterable):
             values = [values]
-        values = [str(value) for value in values if value]
+        values = [str(value) for value in values if value or value == 0]
         if values:
             self.set(name, values)
         elif name in self._store:
