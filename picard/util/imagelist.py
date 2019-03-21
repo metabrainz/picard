@@ -19,14 +19,13 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-def get_image_type(image):
-    return image.types_as_string()
-
-
 class ImageList(list):
 
+    def _sorted(self):
+        return sorted(self, key=lambda image:  image.normalized_types())
+
     def __eq__(self, other):
-        return sorted(self, key=get_image_type) == sorted(other, key=get_image_type)
+        return self._sorted() == other._sorted()
 
     def __getitem__(self, k):
         result = super().__getitem__(k)

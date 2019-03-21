@@ -11,6 +11,7 @@ from picard.coverart.image import CoverArtImage
 from picard.file import File
 from picard.track import Track
 from picard.util.imagelist import (
+    ImageList,
     add_metadata_images,
     remove_metadata_images,
     update_metadata_images,
@@ -220,3 +221,46 @@ class AddMetadataImagesTest(PicardTestCase):
         add_metadata_images(cluster, self.test_files[1:])
         self.assertEqual(set(self.test_images), set(cluster.metadata.images))
         self.assertFalse(cluster.metadata.has_common_images)
+
+
+class ImageListTest(PicardTestCase):
+
+    def setUp(self):
+        super().setUp()
+        self.imagelist = ImageList()
+
+        def create_image(name, types):
+            return CoverArtImage(
+                url='file://file' + name,
+                data=create_fake_png(name.encode('utf-8')),
+                types=types,
+                support_types=True,
+                support_multi_types=True
+            )
+
+        self.images = {
+            'a': create_image('a', ["booklet"]),
+            'b': create_image('b', ["booklet", "front"]),
+            'c': create_image('c', ["front", "booklet"]),
+        }
+
+    def test_append(self):
+        self.imagelist.append(self.images['a'])
+        self.assertEqual(self.imagelist[0], self.images['a'])
+
+    def test_eq(self):
+        list1 = ImageList()
+        list2 = ImageList()
+        list3 = ImageList()
+
+        list1.append(self.images['a'])
+        list1.append(self.images['b'])
+
+        list2.append(self.images['b'])
+        list2.append(self.images['a'])
+
+        list3.append(self.images['a'])
+        list3.append(self.images['c'])
+
+        self.assertTrue(list1 == list2)
+        self.assertFalse(list1 == list3)
