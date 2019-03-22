@@ -379,7 +379,7 @@ class Metadata(MutableMapping):
         >>> m["foo"]
         "bar"
         """
-        self.apply_func(lambda s: s.strip())
+        self.apply_func(str.strip)
 
     def __repr__(self):
         return "%s(%r, deleted_tags=%r, length=%r, images=%r)" % (self.__class__.__name__, self._store, self.deleted_tags, self.length, self.images)
