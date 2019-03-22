@@ -7,6 +7,8 @@ from picard.metadata import (
     MULTI_VALUED_JOINER,
     Metadata,
 )
+from picard.util.tags import PRESERVED_TAGS
+
 
 settings = {
     'write_id3v23': False,
@@ -140,6 +142,18 @@ class MetadataTest(PicardTestCase):
         self.assertEqual(MULTI_VALUED_JOINER.join(map(func, self.multi1)), self.metadata["multi1"])
         self.assertEqual(MULTI_VALUED_JOINER.join(map(func, self.multi1)), self.metadata.get("multi1"))
         self.assertEqual(list(map(func, self.multi1)), self.metadata.getall("multi1"))
+
+    def test_metadata_applyfunc_preserve_tags(self):
+        self.assertTrue(len(PRESERVED_TAGS) > 0)
+        m = Metadata()
+        m[PRESERVED_TAGS[0]] = 'value1'
+        m['not_preserved'] = 'value2'
+
+        def func(x): return x[1:]
+        m.apply_func(func)
+
+        self.assertEqual("value1", m[PRESERVED_TAGS[0]])
+        self.assertEqual("alue2", m['not_preserved'])
 
     def test_length_score(self):
         results = [(20000, 0, 0.333333333333),
