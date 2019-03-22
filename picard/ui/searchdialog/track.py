@@ -18,8 +18,6 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-from operator import itemgetter
-
 from PyQt5 import QtCore
 
 from picard import config
@@ -33,6 +31,7 @@ from picard.mbjson import (
 )
 from picard.metadata import Metadata
 from picard.track import Track
+from picard.util import sort_by_similarity
 from picard.webservice.api_helpers import escape_lucene_query
 
 from picard.ui.searchdialog import (
@@ -126,14 +125,13 @@ class TrackSearchDialog(SearchDialog):
             return
 
         if self.file_:
-            sorted_results = sorted(
-                (self.file_.orig_metadata.compare_to_track(
-                    track,
-                    File.comparison_weights)
-                 for track in tracks),
-                reverse=True,
-                key=itemgetter(0))
-            tracks = [item[3] for item in sorted_results]
+            metadata = self.file_.orig_metadata
+
+            def candidates():
+                for track in tracks:
+                    yield metadata.compare_to_track(track, File.comparison_weights)
+
+            tracks = [result.track for result in sort_by_similarity(candidates)]
 
         del self.search_results[:]  # Clear existing data
         self.parse_tracks(tracks)

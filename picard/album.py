@@ -18,8 +18,10 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-from operator import itemgetter
-from collections import defaultdict
+from collections import (
+    defaultdict,
+    namedtuple,
+)
 import traceback
 
 from PyQt5 import (
@@ -56,6 +58,7 @@ from picard.script import (
 )
 from picard.track import Track
 from picard.util import (
+    find_best_match,
     format_time,
     mbid_validate,
 )
@@ -481,8 +484,10 @@ class Album(DataObject, Item):
                 for tup in (
                     (tm_recordingid, tm_tracknumber, tm_discnumber),
                     (tm_recordingid, tm_tracknumber),
-                        (tm_recordingid, )):
+                    (tm_recordingid, )):
                     tracks_cache[tup] = track
+
+        SimMatchAlbum = namedtuple('SimMatchAlbum', 'similarity track')
 
         for file in list(files):
             if file.state == File.REMOVED:
@@ -500,16 +505,23 @@ class Album(DataObject, Item):
                 if track:
                     yield (file, track)
                     continue
+
             # try to match by similarity
-            # TODO: find a way to speed up this part, it needs to iterate all
-            # tracks for each file, and metadata.compare() is rather complex
-            best_track = None
-            best_score = -1
-            for track in self.tracks:
-                sim = track.metadata.compare(file.orig_metadata)
-                if sim >= threshold and sim > best_score:
-                    best_track, best_score = track, sim
-            yield (file, best_track or self.unmatched_files)
+            def candidates():
+                for track in self.tracks:
+                    yield SimMatchAlbum(
+                        similarity=track.metadata.compare(file.orig_metadata),
+                        track=track
+                    )
+
+            no_match = SimMatchAlbum(similarity=-1, track=self.unmatched_files)
+            best_match = find_best_match(candidates, no_match)
+
+            if best_match.similarity < threshold:
+                log.debug("%s < threshold=%f", repr(best_match), threshold)
+                yield (file, no_match.track)
+            else:
+                yield (file, best_match.result.track)
 
     def match_files(self, files, recordingid=None):
         """Match and move files to tracks on this album, based on metadata similarity or recordingid."""

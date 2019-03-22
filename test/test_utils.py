@@ -1,13 +1,18 @@
 # -*- coding: utf-8 -*-
 
 import builtins
+from collections import namedtuple
 import os.path
 from test.picardtestcase import PicardTestCase
 import unittest
 
 from picard import util
 from picard.const.sys import IS_WIN
-from picard.util import imageinfo
+from picard.util import (
+    find_best_match,
+    imageinfo,
+    sort_by_similarity,
+)
 
 # ensure _() is defined
 if '_' not in builtins.__dict__:
@@ -229,6 +234,7 @@ class ImageInfoTest(PicardTestCase):
         self.assertRaises(imageinfo.UnrecognizedFormat,
                           imageinfo.identify, data)
 
+
 class CompareBarcodesTest(unittest.TestCase):
 
     def test_same(self):
@@ -262,3 +268,43 @@ class MbidValidateTest(unittest.TestCase):
     def test_not_ok(self):
         self.assertRaises(TypeError, util.mbid_validate, 123)
         self.assertRaises(TypeError, util.mbid_validate, None)
+
+
+SimMatchTest = namedtuple('SimMatchTest', 'similarity name')
+
+
+class SortBySimilarity(unittest.TestCase):
+
+    def setUp(self):
+        self.test_values = [
+            SimMatchTest(similarity=0.74, name='d'),
+            SimMatchTest(similarity=0.61, name='a'),
+            SimMatchTest(similarity=0.75, name='b'),
+            SimMatchTest(similarity=0.75, name='c'),
+        ]
+
+    def candidates(self):
+        for value in self.test_values:
+            yield value
+
+    def test_sort_by_similarity(self):
+        results = [result.name for result in sort_by_similarity(self.candidates)]
+        self.assertEqual(results, ['b', 'c', 'd', 'a'])
+
+    def test_findbestmatch(self):
+        no_match = SimMatchTest(similarity=-1, name='no_match')
+        best_match = find_best_match(self.candidates, no_match)
+
+        self.assertEqual(best_match.result.name, 'b')
+        self.assertEqual(best_match.similarity, 0.75)
+        self.assertEqual(best_match.num_results, 4)
+
+    def test_findbestmatch_nomatch(self):
+        self.test_values = []
+
+        no_match = SimMatchTest(similarity=-1, name='no_match')
+        best_match = find_best_match(self.candidates, no_match)
+
+        self.assertEqual(best_match.result.name, 'no_match')
+        self.assertEqual(best_match.similarity, -1)
+        self.assertEqual(best_match.num_results, 0)

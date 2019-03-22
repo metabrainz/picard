@@ -18,9 +18,11 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 import builtins
+from collections import namedtuple
 import html
 import json
 import ntpath
+from operator import attrgetter
 import os
 import re
 import sys
@@ -590,3 +592,21 @@ def compare_barcodes(barcode1, barcode2):
     if not barcode1 or not barcode2:
         return False
     return barcode1.zfill(13) == barcode2.zfill(13)
+
+
+BestMatch = namedtuple('BestMatch', 'similarity result num_results')
+
+def sort_by_similarity(candidates):
+    return sorted(
+        candidates(),
+        reverse=True,
+        key=attrgetter('similarity')
+    )
+
+def find_best_match(candidates, no_match):
+    sorted_results = sort_by_similarity(candidates)
+    if sorted_results:
+        result = sorted_results[0]
+    else:
+        result = no_match
+    return BestMatch(similarity=result.similarity, result=result, num_results=len(sorted_results))
