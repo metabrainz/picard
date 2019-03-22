@@ -188,6 +188,14 @@ class MetadataTest(PicardTestCase):
         m2.delete("title")
         self.assertTrue(m1.compare(m2) < 1)
 
+    def test_strip_whitespace(self):
+        m1 = Metadata()
+        m1["artist"] = "  TheArtist  "
+        m1["title"] = "\t\u00A0  tit le1 \r\n"
+        m1.strip_whitespace()
+        self.assertEqual(m1["artist"], "TheArtist")
+        self.assertEqual(m1["title"], "tit le1")
+
     def test_metadata_mapping_init(self):
         d = {'a': 'b', 'c': 2, 'd': ['x', 'y'], 'x': '', 'z': {'u', 'w'}}
         deleted_tags = set('c')
