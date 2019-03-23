@@ -472,7 +472,7 @@ class Album(DataObject, Item):
         file.metadata_images_changed.disconnect(self.update_metadata_images)
         remove_metadata_images(self, [file])
 
-    def _match_files(self, files, recordingid=None, threshold=0):
+    def _match_files(self, files, recordingid=None, threshold=0, debug=True):
         """Match files to tracks on this album, based on metadata similarity or recordingid."""
         tracks_cache = defaultdict(lambda: None)
 
@@ -518,7 +518,8 @@ class Album(DataObject, Item):
             best_match = find_best_match(candidates, no_match)
 
             if best_match.similarity < threshold:
-                log.debug("%s < threshold=%f", repr(best_match), threshold)
+                if debug:
+                    log.debug("%s < threshold=%f", repr(best_match), threshold)
                 yield (file, no_match.track)
             else:
                 yield (file, best_match.result.track)
