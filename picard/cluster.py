@@ -192,9 +192,12 @@ class Cluster(QtCore.QObject, Item):
         except (KeyError, TypeError):
             releases = None
 
-        mparms = {
-            'album': self.metadata['album']
-        }
+        def statusbar(message):
+            self.tagger.window.set_statusbar_message(
+                message,
+                {'album': self.metadata['album']},
+                timeout=3000
+            )
 
         if releases:
             albumid = self._match_to_album(releases, threshold=config.setting['cluster_lookup_threshold'])
@@ -202,17 +205,9 @@ class Cluster(QtCore.QObject, Item):
             albumid = None
 
         if albumid is None:
-            self.tagger.window.set_statusbar_message(
-                N_("No matching releases for cluster %(album)s"),
-                mparms,
-                timeout=3000
-            )
+            statusbar(N_("No matching releases for cluster %(album)s"))
         else:
-            self.tagger.window.set_statusbar_message(
-                N_("Cluster %(album)s identified!"),
-                mparms,
-                timeout=3000
-            )
+            statusbar(N_("Cluster %(album)s identified!"))
             self.tagger.move_files_to_album(self.files, albumid)
 
     def _match_to_album(self, releases, threshold=0, debug=True):

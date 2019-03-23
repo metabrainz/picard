@@ -655,6 +655,13 @@ class File(QtCore.QObject, Item):
         except (KeyError, TypeError):
             tracks = None
 
+        def statusbar(message):
+            self.tagger.window.set_statusbar_message(
+                message,
+                {'filename': self.filename},
+                timeout=3000
+            )
+
         if tracks:
             if lookuptype == File.LOOKUP_ACOUSTID:
                 threshold = 0
@@ -663,18 +670,9 @@ class File(QtCore.QObject, Item):
 
             trackmatch = self._match_to_track(tracks, threshold=threshold)
             if trackmatch is None:
-                self.tagger.window.set_statusbar_message(
-                    N_("No matching tracks above the threshold for file '%(filename)s'"),
-                    {'filename': self.filename},
-                    timeout=3000
-                )
+                statusbar(N_("No matching tracks above the threshold for file '%(filename)s'"))
             else:
-                self.tagger.window.set_statusbar_message(
-                    N_("File '%(filename)s' identified!"),
-                    {'filename': self.filename},
-                    timeout=3000
-                )
-
+                statusbar(N_("File '%(filename)s' identified!"))
                 (track_id, release_group_id, release_id, node) = trackmatch
                 if lookuptype == File.LOOKUP_ACOUSTID:
                     self.tagger.acoustidmanager.add(self, track_id)
@@ -685,11 +683,7 @@ class File(QtCore.QObject, Item):
                 else:
                     self.tagger.move_file_to_nat(self, track_id, node=node)
         else:
-            self.tagger.window.set_statusbar_message(
-                N_("No matching tracks for file '%(filename)s'"),
-                {'filename': self.filename},
-                timeout=3000
-            )
+            statusbar(N_("No matching tracks for file '%(filename)s'"))
 
         self.clear_pending()
 
