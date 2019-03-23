@@ -675,11 +675,11 @@ class File(QtCore.QObject, Item):
                     timeout=3000
                 )
 
-                (track_id, rg_id, release_id, node) = trackmatch
+                (track_id, release_group_id, release_id, node) = trackmatch
                 if lookuptype == File.LOOKUP_ACOUSTID:
                     self.tagger.acoustidmanager.add(self, track_id)
-                if rg_id is not None:
-                    releasegroup = self.tagger.get_release_group_by_id(rg_id)
+                if release_group_id is not None:
+                    releasegroup = self.tagger.get_release_group_by_id(release_group_id)
                     releasegroup.loaded_albums.add(release_id)
                     self.tagger.move_file_to_track(self, release_id, track_id)
                 else:
@@ -708,15 +708,15 @@ class File(QtCore.QObject, Item):
             return None
 
         track_id = best_match.result.track['id']
-        rg_id = None
+        release_group_id = None
         release_id = None
         node = None
         if best_match.result.release:
-            rg_id = best_match.result.releasegroup['id']
+            release_group_id = best_match.result.releasegroup['id']
             release_id = best_match.result.release['id']
         elif 'title' in best_match.result.track:
             node = best_match.result.track
-        return (track_id, rg_id, release_id, node)
+        return (track_id, release_group_id, release_id, node)
 
     def lookup_metadata(self):
         """Try to identify the file using the existing metadata."""
