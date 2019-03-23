@@ -655,16 +655,45 @@ class File(QtCore.QObject, Item):
         except (KeyError, TypeError):
             tracks = None
 
-        # no matches
-        if not tracks:
+        if tracks:
+            if lookuptype == File.LOOKUP_ACOUSTID:
+                threshold = 0
+            else:
+                threshold = config.setting['file_lookup_threshold']
+
+            trackmatch = self._match_to_track(tracks, threshold=threshold)
+            if trackmatch is None:
+                self.tagger.window.set_statusbar_message(
+                    N_("No matching tracks above the threshold for file '%(filename)s'"),
+                    {'filename': self.filename},
+                    timeout=3000
+                )
+            else:
+                self.tagger.window.set_statusbar_message(
+                    N_("File '%(filename)s' identified!"),
+                    {'filename': self.filename},
+                    timeout=3000
+                )
+
+                (track_id, rg_id, release_id, node) = trackmatch
+                if lookuptype == File.LOOKUP_ACOUSTID:
+                    self.tagger.acoustidmanager.add(self, track_id)
+                if rg_id is not None:
+                    releasegroup = self.tagger.get_release_group_by_id(rg_id)
+                    releasegroup.loaded_albums.add(release_id)
+                    self.tagger.move_file_to_track(self, release_id, track_id)
+                else:
+                    self.tagger.move_file_to_nat(self, track_id, node=node)
+        else:
             self.tagger.window.set_statusbar_message(
                 N_("No matching tracks for file '%(filename)s'"),
                 {'filename': self.filename},
                 timeout=3000
             )
-            self.clear_pending()
-            return
 
+        self.clear_pending()
+
+    def _match_to_track(self, tracks, threshold=0, debug=True):
         # multiple matches -- calculate similarities to each of them
         def candidates():
             for track in tracks:
@@ -673,42 +702,21 @@ class File(QtCore.QObject, Item):
         no_match = SimMatchTrack(similarity=-1, releasegroup=None, release=None, track=None)
         best_match = find_best_match(candidates, no_match)
 
-        if lookuptype == File.LOOKUP_ACOUSTID:
-            threshold = 0
-        else:
-            threshold = config.setting['file_lookup_threshold']
-
         if best_match.similarity < threshold:
-            self.tagger.window.set_statusbar_message(
-                N_("No matching tracks above the threshold for file '%(filename)s'"),
-                {'filename': self.filename},
-                timeout=3000
-            )
-            self.clear_pending()
-            log.debug("%s < threshold=%f", repr(best_match), threshold)
-            return
-
-        self.tagger.window.set_statusbar_message(
-            N_("File '%(filename)s' identified!"),
-            {'filename': self.filename},
-            timeout=3000
-        )
-
-        self.clear_pending()
+            if debug:
+                log.debug("%s < threshold=%f", repr(best_match), threshold)
+            return None
 
         track_id = best_match.result.track['id']
-        if lookuptype == File.LOOKUP_ACOUSTID:
-            self.tagger.acoustidmanager.add(self, track_id)
+        rg_id = None
+        release_id = None
+        node = None
         if best_match.result.release:
             rg_id = best_match.result.releasegroup['id']
             release_id = best_match.result.release['id']
-            releasegroup = self.tagger.get_release_group_by_id(rg_id)
-            releasegroup.loaded_albums.add(release_id)
-            self.tagger.move_file_to_track(self, release_id, track_id)
-        else:
-            track = best_match.result.track
-            node = track if 'title' in track else None
-            self.tagger.move_file_to_nat(self, track_id, node=node)
+        elif 'title' in best_match.result.track:
+            node = best_match.result.track
+        return (track_id, rg_id, release_id, node)
 
     def lookup_metadata(self):
         """Try to identify the file using the existing metadata."""
