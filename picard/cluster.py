@@ -196,15 +196,26 @@ class Cluster(QtCore.QObject, Item):
             'album': self.metadata['album']
         }
 
-        # no matches
-        if not releases:
+        if releases:
+            albumid = self._match_to_album(releases, threshold=config.setting['cluster_lookup_threshold'])
+        else:
+            albumid = None
+
+        if albumid is None:
             self.tagger.window.set_statusbar_message(
                 N_("No matching releases for cluster %(album)s"),
                 mparms,
                 timeout=3000
             )
-            return
+        else:
+            self.tagger.window.set_statusbar_message(
+                N_("Cluster %(album)s identified!"),
+                mparms,
+                timeout=3000
+            )
+            self.tagger.move_files_to_album(self.files, albumid)
 
+    def _match_to_album(self, releases, threshold=0, debug=True):
         # multiple matches -- calculate similarities to each of them
         def candidates():
             for release in releases:
@@ -213,21 +224,11 @@ class Cluster(QtCore.QObject, Item):
         no_match = SimMatchRelease(similarity=-1, release=None)
         best_match = find_best_match(candidates, no_match)
 
-        threshold = config.setting['cluster_lookup_threshold']
         if best_match.similarity < threshold:
-            self.tagger.window.set_statusbar_message(
-                N_("No matching releases for cluster %(album)s"),
-                mparms,
-                timeout=3000
-            )
-            log.debug("%s < threshold=%f", repr(best_match), threshold)
-            return
-        self.tagger.window.set_statusbar_message(
-            N_("Cluster %(album)s identified!"),
-            mparms,
-            timeout=3000
-        )
-        self.tagger.move_files_to_album(self.files, best_match.result.release['id'])
+            if debug:
+                log.debug("%s < threshold=%f", repr(best_match), threshold)
+            return None
+        return best_match.result.release['id']
 
     def lookup_metadata(self):
         """Try to identify the cluster using the existing metadata."""
