@@ -76,6 +76,28 @@ class OAuthManager(object):
         else:
             config.persist["oauth_refresh_token_scopes"] = value
 
+    @property
+    def access_token(self):
+        return config.persist["oauth_access_token"]
+
+    @access_token.setter
+    def access_token(self, value):
+        if value is None:
+            config.persist.remove("oauth_access_token")
+        else:
+            config.persist["oauth_access_token"] = value
+
+    @property
+    def access_token_expires(self):
+        return config.persist["oauth_access_token_expires"]
+
+    @access_token_expires.setter
+    def access_token_expires(self, value):
+        if value is None:
+            config.persist.remove("oauth_access_token_expires")
+        else:
+            config.persist["oauth_access_token_expires"] = value
+
     def is_authorized(self):
         return bool(self.refresh_token and self.refresh_token_scopes)
 
@@ -92,17 +114,15 @@ class OAuthManager(object):
         self.refresh_token_scopes = None
 
     def forget_access_token(self):
-        config.persist.remove("oauth_access_token")
-        config.persist.remove("oauth_access_token_expires")
+        self.access_token = None
+        self.access_token_expires = None
 
     def get_access_token(self, callback):
         if not self.is_authorized():
             callback(None)
         else:
-            access_token = config.persist["oauth_access_token"]
-            access_token_expires = config.persist["oauth_access_token_expires"]
-            if access_token and time.time() < access_token_expires:
-                callback(access_token)
+            if self.access_token and time.time() < self.access_token_expires:
+                callback(self.access_token)
             else:
                 self.forget_access_token()
                 self.refresh_access_token(callback)
@@ -122,8 +142,8 @@ class OAuthManager(object):
 
     def set_access_token(self, access_token, expires_in):
         log.debug("OAuth: got access_token %s that expires in %s seconds", access_token, expires_in)
-        config.persist["oauth_access_token"] = access_token
-        config.persist["oauth_access_token_expires"] = int(time.time() + expires_in - 60)
+        self.access_token = access_token
+        self.access_token_expires = int(time.time() + expires_in - 60)
 
     def set_username(self, username):
         log.debug("OAuth: got username %s", username)
@@ -155,8 +175,8 @@ class OAuthManager(object):
                     if response["error"] == "invalid_grant":
                         self.forget_refresh_token()
             else:
-                self.set_access_token(data["access_token"], data["expires_in"])
                 access_token = data["access_token"]
+                self.set_access_token(access_token, data["expires_in"])
         except Exception as e:
             log.error('OAuth: Unexpected error handling access token response: %r', e)
         finally:
