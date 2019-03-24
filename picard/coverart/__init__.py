@@ -72,9 +72,9 @@ class CoverArt:
                     coverartimage,
                     coverartimage.imageinfo_as_string())
                 )
-                self.metadata.append_image(coverartimage)
+                self.metadata.images.append(coverartimage)
                 for track in self.album._new_tracks:
-                    track.metadata.append_image(coverartimage)
+                    track.metadata.images.append(coverartimage)
                 # If the image already was a front image,
                 # there might still be some other non-CAA front
                 # images in the queue - ignore them.

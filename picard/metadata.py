@@ -93,36 +93,6 @@ class Metadata(MutableMapping):
     def __len__(self):
         return len(self._store) + len(self.images)
 
-    def append_image(self, coverartimage):
-        self.images.append(coverartimage)
-
-    def set_front_image(self, coverartimage):
-        # First remove all front images
-        self.images[:] = [img for img in self.images if not img.is_front_image()]
-        self.images.append(coverartimage)
-
-    @property
-    def images_to_be_saved_to_tags(self):
-        if not config.setting["save_images_to_tags"]:
-            return ()
-        images = [img for img in self.images if img.can_be_saved_to_tags]
-        if config.setting["embed_only_one_front_image"]:
-            front_image = self.get_single_front_image(images)
-            if front_image:
-                return front_image
-        return images
-
-    def get_single_front_image(self, images=None):
-        if not images:
-            images = self.images
-        for img in images:
-            if img.is_front_image():
-                return [img]
-        return []
-
-    def remove_image(self, index):
-        self.images.pop(index)
-
     @staticmethod
     def length_score(a, b):
         return (1.0 - min(abs(a - b), LENGTH_SCORE_THRES_MS) /
@@ -303,7 +273,7 @@ class Metadata(MutableMapping):
                 del self[tag]
 
             if other.images:
-                self.images = other.images[:]
+                self.images = other.images.copy()
             if other.length:
                 self.length = other.length
 
@@ -412,7 +382,7 @@ class Metadata(MutableMapping):
         >>> m["foo"]
         "bar"
         """
-        self.apply_func(lambda s: s.strip())
+        self.apply_func(str.strip)
 
     def __repr__(self):
         return "%s(%r, deleted_tags=%r, length=%r, images=%r)" % (self.__class__.__name__, self._store, self.deleted_tags, self.length, self.images)

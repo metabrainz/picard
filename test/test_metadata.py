@@ -7,6 +7,8 @@ from picard.metadata import (
     MULTI_VALUED_JOINER,
     Metadata,
 )
+from picard.util.tags import PRESERVED_TAGS
+
 
 settings = {
     'write_id3v23': False,
@@ -141,6 +143,18 @@ class MetadataTest(PicardTestCase):
         self.assertEqual(MULTI_VALUED_JOINER.join(map(func, self.multi1)), self.metadata.get("multi1"))
         self.assertEqual(list(map(func, self.multi1)), self.metadata.getall("multi1"))
 
+    def test_metadata_applyfunc_preserve_tags(self):
+        self.assertTrue(len(PRESERVED_TAGS) > 0)
+        m = Metadata()
+        m[PRESERVED_TAGS[0]] = 'value1'
+        m['not_preserved'] = 'value2'
+
+        def func(x): return x[1:]
+        m.apply_func(func)
+
+        self.assertEqual("value1", m[PRESERVED_TAGS[0]])
+        self.assertEqual("alue2", m['not_preserved'])
+
     def test_length_score(self):
         results = [(20000, 0, 0.333333333333),
                    (20000, 10000, 0.666666666667),
@@ -187,6 +201,14 @@ class MetadataTest(PicardTestCase):
         m2["artist"] = "TheArtist"
         m2.delete("title")
         self.assertTrue(m1.compare(m2) < 1)
+
+    def test_strip_whitespace(self):
+        m1 = Metadata()
+        m1["artist"] = "  TheArtist  "
+        m1["title"] = "\t\u00A0  tit le1 \r\n"
+        m1.strip_whitespace()
+        self.assertEqual(m1["artist"], "TheArtist")
+        self.assertEqual(m1["title"], "tit le1")
 
     def test_metadata_mapping_init(self):
         d = {'a': 'b', 'c': 2, 'd': ['x', 'y'], 'x': '', 'z': {'u', 'w'}}
@@ -339,17 +361,17 @@ class MetadataTest(PicardTestCase):
         self.assertEqual(m1.images[0], image1)
         self.assertEqual(len(m1), 2) # one tag, one image
 
-        m1.append_image(image2)
+        m1.images.append(image2)
         self.assertEqual(m1.images[1], image2)
 
-        m1.remove_image(0)
+        m1.images.pop(0)
         self.assertEqual(m1.images[0], image2)
 
         m2 = Metadata(a='c', length=4567, images=[image1])
         m1.update(m2)
         self.assertEqual(m1.images[0], image1)
 
-        m1.remove_image(0)
+        m1.images.pop(0)
         self.assertEqual(len(m1), 1) # one tag, zero image
         self.assertFalse(m1.images)
 

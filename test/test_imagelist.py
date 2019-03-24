@@ -11,6 +11,7 @@ from picard.coverart.image import CoverArtImage
 from picard.file import File
 from picard.track import Track
 from picard.util.imagelist import (
+    ImageList,
     add_metadata_images,
     remove_metadata_images,
     update_metadata_images,
@@ -27,12 +28,12 @@ def create_test_files():
         File('test2.flac'),
         File('test2.flac')
     ]
-    test_files[0].metadata.append_image(test_images[0])
-    test_files[1].metadata.append_image(test_images[1])
-    test_files[2].metadata.append_image(test_images[1])
-    test_files[0].orig_metadata.append_image(test_images[0])
-    test_files[1].orig_metadata.append_image(test_images[1])
-    test_files[2].orig_metadata.append_image(test_images[1])
+    test_files[0].metadata.images.append(test_images[0])
+    test_files[1].metadata.images.append(test_images[1])
+    test_files[2].metadata.images.append(test_images[1])
+    test_files[0].orig_metadata.images.append(test_images[0])
+    test_files[1].orig_metadata.images.append(test_images[1])
+    test_files[2].orig_metadata.images.append(test_images[1])
     return (test_images, test_files)
 
 
@@ -220,3 +221,130 @@ class AddMetadataImagesTest(PicardTestCase):
         add_metadata_images(cluster, self.test_files[1:])
         self.assertEqual(set(self.test_images), set(cluster.metadata.images))
         self.assertFalse(cluster.metadata.has_common_images)
+
+
+class ImageListTest(PicardTestCase):
+
+    def setUp(self):
+        super().setUp()
+        self.imagelist = ImageList()
+
+        def create_image(name, types):
+            return CoverArtImage(
+                url='file://file' + name,
+                data=create_fake_png(name.encode('utf-8')),
+                types=types,
+                support_types=True,
+                support_multi_types=True
+            )
+
+        self.images = {
+            'a': create_image('a', ["booklet"]),
+            'b': create_image('b', ["booklet", "front"]),
+            'c': create_image('c', ["front", "booklet"]),
+        }
+
+    def test_append(self):
+        self.imagelist.append(self.images['a'])
+        self.assertEqual(self.imagelist[0], self.images['a'])
+
+    def test_eq(self):
+        list1 = ImageList()
+        list2 = ImageList()
+        list3 = ImageList()
+
+        list1.append(self.images['a'])
+        list1.append(self.images['b'])
+
+        list2.append(self.images['b'])
+        list2.append(self.images['a'])
+
+        list3.append(self.images['a'])
+        list3.append(self.images['c'])
+
+        self.assertTrue(list1 == list2)
+        self.assertFalse(list1 == list3)
+
+    def test_get_front_image(self):
+        self.imagelist.append(self.images['a'])
+        self.imagelist.append(self.images['b'])
+        self.assertEqual(self.imagelist.get_front_image(), self.images['b'])
+
+    def test_to_be_saved_to_tags(self):
+
+        def to_be_saved(settings):
+            return self.imagelist.to_be_saved_to_tags(settings=settings)
+
+        settings = {
+            "save_images_to_tags": True,
+            "embed_only_one_front_image": False,
+        }
+        # save all but no images
+        self.assertEqual(list(to_be_saved(settings)), [])
+
+        # save all, only one non-front image in the list
+        self.imagelist.append(self.images['a'])
+        self.assertEqual(list(to_be_saved(settings)), [self.images['a']])
+
+        # save all, 2 images, one of them is a front image (b)
+        self.imagelist.append(self.images['b'])
+        self.assertEqual(list(to_be_saved(settings)), [self.images['a'], self.images['b']])
+
+        # save only one front, 2 images, one of them is a front image (b)
+        settings["embed_only_one_front_image"] = True
+        self.assertEqual(list(to_be_saved(settings)), [self.images['b']])
+
+        # save only one front, 3 images, two of them have front type (b & c)
+        self.imagelist.append(self.images['c'])
+        self.assertEqual(list(to_be_saved(settings)), [self.images['b']])
+
+        # 3 images, but do not save
+        settings["save_images_to_tags"] = False
+        self.assertEqual(list(to_be_saved(settings)), [])
+
+        # settings is missing a setting
+        del settings["save_images_to_tags"]
+        with self.assertRaises(KeyError):
+            image = next(to_be_saved(settings))
+
+    def test_strip_front_images(self):
+        self.imagelist.append(self.images['a'])
+        self.imagelist.append(self.images['b'])
+        self.imagelist.append(self.images['c'])
+
+        # strip front images from list, only a isn't
+        self.assertEqual(len(self.imagelist), 3)
+        self.imagelist.strip_front_images()
+        self.assertNotIn(self.images['b'], self.imagelist)
+        self.assertNotIn(self.images['c'], self.imagelist)
+        self.assertIn(self.images['a'], self.imagelist)
+        self.assertEqual(len(self.imagelist), 1)
+
+    def test_imagelist_insert(self):
+        l = ImageList()
+        l.insert(0, 'a')
+        self.assertEqual(l[0], 'a')
+        l.insert(0, 'b')
+        self.assertEqual(l[0], 'b')
+        self.assertEqual(l[1], 'a')
+
+    def test_imagelist_clear(self):
+        l = ImageList(['a', 'b'])
+        self.assertEqual(len(l), 2)
+        l.clear()
+        self.assertEqual(len(l), 0)
+
+    def test_imagelist_copy(self):
+        l = ['a', 'b']
+        l1 = ImageList(l)
+        l2 = l1.copy()
+        l3 = l1
+        l1[0] = 'c'
+        self.assertEqual(l2[0], 'a')
+        self.assertEqual(l3[0], 'c')
+
+    def test_imagelist_del(self):
+        l = ImageList(['a', 'b'])
+        del l[0]
+        self.assertEqual(l[0], 'b')
+        self.assertEqual(len(l), 1)

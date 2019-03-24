@@ -126,7 +126,7 @@ class VCommentFile(File):
                     except CoverArtImageError as e:
                         log.error('Cannot load image from %r: %s' % (filename, e))
                     else:
-                        metadata.append_image(coverartimage)
+                        metadata.images.append(coverartimage)
 
                     continue
                 elif name in self.__translate:
@@ -146,7 +146,7 @@ class VCommentFile(File):
                 except CoverArtImageError as e:
                     log.error('Cannot load image from %r: %s' % (filename, e))
                 else:
-                    metadata.append_image(coverartimage)
+                    metadata.images.append(coverartimage)
 
         # Read the unofficial COVERART tags, for backward compatibility only
         if "metadata_block_picture" not in file.tags:
@@ -161,7 +161,7 @@ class VCommentFile(File):
                     except CoverArtImageError as e:
                         log.error('Cannot load image from %r: %s' % (filename, e))
                     else:
-                        metadata.append_image(coverartimage)
+                        metadata.images.append(coverartimage)
             except KeyError:
                 pass
         self._info(metadata, file)
@@ -179,8 +179,8 @@ class VCommentFile(File):
             file.tags.clear()
             if channel_mask:
                 file.tags['waveformatextensible_channel_mask'] = channel_mask
-        if (is_flac and (config.setting["clear_existing_tags"] or
-                         metadata.images_to_be_saved_to_tags)):
+        images_to_save = list(metadata.images.to_be_saved_to_tags())
+        if is_flac and (config.setting["clear_existing_tags"] or images_to_save):
             file.clear_pictures()
         tags = {}
         for name, value in metadata.items():
@@ -216,7 +216,7 @@ class VCommentFile(File):
         if "totaldiscs" in metadata:
             tags.setdefault("DISCTOTAL", []).append(metadata["totaldiscs"])
 
-        for image in metadata.images_to_be_saved_to_tags:
+        for image in images_to_save:
             picture = mutagen.flac.Picture()
             picture.data = image.data
             picture.mime = image.mimetype

@@ -807,13 +807,13 @@ class TestCoverArt(PicardTestCase):
     def _file_save_image(filename, image):
         f = picard.formats.open_(filename)
         metadata = Metadata()
-        metadata.append_image(image)
+        metadata.images.append(image)
         f._save(filename, metadata)
 
     def _cover_metadata(self):
         imgdata = self.jpegdata
         metadata = Metadata()
-        metadata.append_image(
+        metadata.images.append(
             TagCoverArtImage(
                 file='a',
                 tag='a',
@@ -822,7 +822,7 @@ class TestCoverArt(PicardTestCase):
                 types=[u'booklet', u'front'],
             )
         )
-        metadata.append_image(
+        metadata.images.append(
             TagCoverArtImage(
                 file='b',
                 tag='b',
@@ -831,7 +831,7 @@ class TestCoverArt(PicardTestCase):
                 types=[u'back'],
             )
         )
-        metadata.append_image(
+        metadata.images.append(
             TagCoverArtImage(
                 file='c',
                 tag='c',
@@ -840,14 +840,14 @@ class TestCoverArt(PicardTestCase):
                 types=[u'front'],
             )
         )
-        metadata.append_image(
+        metadata.images.append(
             TagCoverArtImage(
                 file='d',
                 tag='d',
                 data=imgdata + b'd',
             )
         )
-        metadata.append_image(
+        metadata.images.append(
             TagCoverArtImage(
                 file='e',
                 tag='e',
@@ -855,7 +855,7 @@ class TestCoverArt(PicardTestCase):
                 is_front=False
             )
         )
-        metadata.append_image(
+        metadata.images.append(
             TagCoverArtImage(
                 file='f',
                 tag='f',
@@ -863,7 +863,7 @@ class TestCoverArt(PicardTestCase):
                 types=[u'front']
             )
         )
-        metadata.append_image(
+        metadata.images.append(
             TagCoverArtImage(
                 file='g',
                 tag='g',

@@ -93,7 +93,7 @@ class APEv2File(File):
                             log.error('Cannot load image from %r: %s' %
                                       (filename, e))
                         else:
-                            metadata.append_image(coverartimage)
+                            metadata.images.append(coverartimage)
 
                 # skip EXTERNAL and BINARY values
                 if values.kind != mutagen.apev2.TEXT:
@@ -137,9 +137,10 @@ class APEv2File(File):
             tags = mutagen.apev2.APEv2(encode_filename(filename))
         except mutagen.apev2.APENoHeaderError:
             tags = mutagen.apev2.APEv2()
+        images_to_save = list(metadata.images.to_be_saved_to_tags())
         if config.setting["clear_existing_tags"]:
             tags.clear()
-        elif metadata.images_to_be_saved_to_tags:
+        elif images_to_save:
             for name, value in tags.items():
                 if name.lower().startswith('cover art') and value.kind == mutagen.apev2.BINARY:
                     del tags[name]
@@ -166,7 +167,7 @@ class APEv2File(File):
             temp.setdefault(real_name, []).append(value)
         for name, values in temp.items():
             tags[name] = values
-        for image in metadata.images_to_be_saved_to_tags:
+        for image in images_to_save:
             cover_filename = 'Cover Art (Front)'
             cover_filename += image.extension
             tags['Cover Art (Front)'] = mutagen.apev2.APEValue(cover_filename.encode('ascii') + b'\0' + image.data, mutagen.apev2.BINARY)

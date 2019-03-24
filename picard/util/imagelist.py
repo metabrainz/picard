@@ -18,22 +18,69 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+from collections.abc import MutableSequence
 
-def get_image_type(image):
-    return image.types_as_string()
+from picard import config
 
 
-class ImageList(list):
+class ImageList(MutableSequence):
+    def __init__(self, iterable=()):
+        self._images = list(iterable)
+
+    def __len__(self):
+        return len(self._images)
+
+    def __getitem__(self, index):
+        return self._images[index]
+
+    def __setitem__(self, index, value):
+        self._images[index] = value
+
+    def __delitem__(self, index):
+        del self._images[index]
+
+    def insert(self, index, value):
+        return self._images.insert(index, value)
+
+    def __repr__(self):
+        return '%s(%r)' % (self.__class__.__name__, self._images)
+
+    def _sorted(self):
+        return sorted(self, key=lambda image: image.normalized_types())
 
     def __eq__(self, other):
-        return sorted(self, key=get_image_type) == sorted(other, key=get_image_type)
+        return self._sorted() == other._sorted()
 
-    def __getitem__(self, k):
-        result = super().__getitem__(k)
-        try:
-            return ImageList(result)
-        except TypeError:
-            return result
+    def copy(self):
+        return self.__class__(self._images)
+
+    def get_front_image(self):
+        for img in self:
+            if img.is_front_image():
+                return img
+        return None
+
+    def to_be_saved_to_tags(self, settings=None):
+        """Generator returning images to be saved to tags according to
+           passed settings or config.setting
+        """
+        if settings is None:
+            settings = config.setting
+        if settings['save_images_to_tags']:
+            only_one_front = settings['embed_only_one_front_image']
+            for image in self:
+                if not image.can_be_saved_to_tags:
+                    continue
+                if only_one_front:
+                    if not image.is_front_image():
+                        continue
+                    yield image
+                    break
+                else:
+                    yield image
+
+    def strip_front_images(self):
+        self._images = [image for image in self._images if not image.is_front_image()]
 
 
 class ImageListState:
