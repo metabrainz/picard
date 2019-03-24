@@ -61,10 +61,11 @@ class OAuthManager(object):
 
     @refresh_token.setter
     def refresh_token(self, value):
-        if value is None:
-            self.persist.remove("oauth_refresh_token")
-        else:
-            self.persist["oauth_refresh_token"] = value
+        self.persist["oauth_refresh_token"] = value
+
+    @refresh_token.deleter
+    def refresh_token(self):
+        self.persist.remove("oauth_refresh_token")
 
     @property
     def refresh_token_scopes(self):
@@ -72,10 +73,11 @@ class OAuthManager(object):
 
     @refresh_token_scopes.setter
     def refresh_token_scopes(self, value):
-        if value is None:
-            self.persist.remove("oauth_refresh_token_scopes")
-        else:
-            self.persist["oauth_refresh_token_scopes"] = value
+        self.persist["oauth_refresh_token_scopes"] = value
+
+    @refresh_token_scopes.deleter
+    def refresh_token_scopes(self):
+        self.persist.remove("oauth_refresh_token_scopes")
 
     @property
     def access_token(self):
@@ -83,10 +85,11 @@ class OAuthManager(object):
 
     @access_token.setter
     def access_token(self, value):
-        if value is None:
-            self.persist.remove("oauth_access_token")
-        else:
-            self.persist["oauth_access_token"] = value
+        self.persist["oauth_access_token"] = value
+
+    @access_token.deleter
+    def access_token(self):
+        self.persist.remove("oauth_access_token")
 
     @property
     def access_token_expires(self):
@@ -94,10 +97,11 @@ class OAuthManager(object):
 
     @access_token_expires.setter
     def access_token_expires(self, value):
-        if value is None:
-            self.persist.remove("oauth_access_token_expires")
-        else:
-            self.persist["oauth_access_token_expires"] = value
+        self.persist["oauth_access_token_expires"] = value
+
+    @access_token_expires.deleter
+    def access_token_expires(self):
+        self.persist.remove("oauth_access_token_expires")
 
     @property
     def username(self):
@@ -119,12 +123,12 @@ class OAuthManager(object):
         self.forget_access_token()
 
     def forget_refresh_token(self):
-        self.refresh_token = None
-        self.refresh_token_scopes = None
+        del self.refresh_token
+        del self.refresh_token_scopes
 
     def forget_access_token(self):
-        self.access_token = None
-        self.access_token_expires = None
+        del self.access_token
+        del self.access_token_expires
 
     def get_access_token(self, callback):
         if not self.is_authorized():
