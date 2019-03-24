@@ -54,9 +54,30 @@ class OAuthManager(object):
     def port(self):
         return self.setting['server_port']
 
+    @property
+    def refresh_token(self):
+        return config.persist["oauth_refresh_token"]
+
+    @refresh_token.setter
+    def refresh_token(self, value):
+        if value is None:
+            config.persist.remove("oauth_refresh_token")
+        else:
+            config.persist["oauth_refresh_token"] = value
+
+    @property
+    def refresh_token_scopes(self):
+        return config.persist["oauth_refresh_token_scopes"]
+
+    @refresh_token_scopes.setter
+    def refresh_token_scopes(self, value):
+        if value is None:
+            config.persist.remove("oauth_refresh_token_scopes")
+        else:
+            config.persist["oauth_refresh_token_scopes"] = value
+
     def is_authorized(self):
-        return bool(config.persist["oauth_refresh_token"] and
-                    config.persist["oauth_refresh_token_scopes"])
+        return bool(self.refresh_token and self.refresh_token_scopes)
 
     def is_logged_in(self):
         return self.is_authorized() and bool(config.persist["oauth_username"])
@@ -67,8 +88,8 @@ class OAuthManager(object):
         self.forget_access_token()
 
     def forget_refresh_token(self):
-        config.persist.remove("oauth_refresh_token")
-        config.persist.remove("oauth_refresh_token_scopes")
+        self.refresh_token = None
+        self.refresh_token_scopes = None
 
     def forget_access_token(self):
         config.persist.remove("oauth_access_token")
@@ -96,8 +117,8 @@ class OAuthManager(object):
 
     def set_refresh_token(self, refresh_token, scopes):
         log.debug("OAuth: got refresh_token %s with scopes %s", refresh_token, scopes)
-        config.persist["oauth_refresh_token"] = refresh_token
-        config.persist["oauth_refresh_token_scopes"] = scopes
+        self.refresh_token = refresh_token
+        self.refresh_token_scopes = scopes
 
     def set_access_token(self, access_token, expires_in):
         log.debug("OAuth: got access_token %s that expires in %s seconds", access_token, expires_in)
@@ -109,13 +130,12 @@ class OAuthManager(object):
         config.persist["oauth_username"] = username
 
     def refresh_access_token(self, callback):
-        refresh_token = config.persist["oauth_refresh_token"]
-        log.debug("OAuth: refreshing access_token with a refresh_token %s", refresh_token)
+        log.debug("OAuth: refreshing access_token with a refresh_token %s", self.refresh_token)
         path = "/oauth2/token"
         url = QUrl()
         url_query = QUrlQuery()
         url_query.addQueryItem("grant_type", "refresh_token")
-        url_query.addQueryItem("refresh_token", refresh_token)
+        url_query.addQueryItem("refresh_token", self.refresh_token)
         url_query.addQueryItem("client_id", MUSICBRAINZ_OAUTH_CLIENT_ID)
         url_query.addQueryItem("client_secret", MUSICBRAINZ_OAUTH_CLIENT_SECRET)
         url.setQuery(url_query.query(QUrl.FullyEncoded))
