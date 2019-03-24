@@ -98,11 +98,19 @@ class OAuthManager(object):
         else:
             config.persist["oauth_access_token_expires"] = value
 
+    @property
+    def username(self):
+        return config.persist["oauth_username"]
+
+    @username.setter
+    def username(self, value):
+        config.persist["oauth_username"] = value
+
     def is_authorized(self):
         return bool(self.refresh_token and self.refresh_token_scopes)
 
     def is_logged_in(self):
-        return self.is_authorized() and bool(config.persist["oauth_username"])
+        return self.is_authorized() and bool(self.username)
 
     def revoke_tokens(self):
         # TODO actually revoke the tokens on MB (I think it's not implementented there)
@@ -144,10 +152,6 @@ class OAuthManager(object):
         log.debug("OAuth: got access_token %s that expires in %s seconds", access_token, expires_in)
         self.access_token = access_token
         self.access_token_expires = int(time.time() + expires_in - 60)
-
-    def set_username(self, username):
-        log.debug("OAuth: got username %s", username)
-        config.persist["oauth_username"] = username
 
     def refresh_access_token(self, callback):
         log.debug("OAuth: refreshing access_token with a refresh_token %s", self.refresh_token)
@@ -226,7 +230,8 @@ class OAuthManager(object):
             if error:
                 log.error("OAuth: username fetching failed: %s", data)
             else:
-                self.set_username(data["sub"])
+                self.username = data["sub"]
+                log.debug("OAuth: got username %s", self.username)
                 successful = True
         except Exception as e:
             log.error('OAuth: Unexpected error handling username fetch response: %r', e)
