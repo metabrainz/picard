@@ -17,6 +17,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
 # USA.
+from collections import namedtuple
 from collections.abc import (
     Iterable,
     MutableMapping,
@@ -48,6 +49,9 @@ MULTI_VALUED_JOINER = '; '
 # 20000 40000 0.333333333333
 # 20000 50000 0.0
 LENGTH_SCORE_THRES_MS = 30000
+
+SimMatchTrack = namedtuple('SimMatchTrack', 'similarity releasegroup release track')
+SimMatchRelease = namedtuple('SimMatchRelease', 'similarity release')
 
 
 class Metadata(MutableMapping):
@@ -160,7 +164,7 @@ class Metadata(MutableMapping):
         sim = linear_combination_of_weights(parts)
         if 'score' in release:
             sim *= release['score'] / 100
-        return (sim, release)
+        return SimMatchRelease(similarity=sim, release=release)
 
     def compare_to_release_parts(self, release, weights):
         parts = []
@@ -269,18 +273,17 @@ class Metadata(MutableMapping):
 
         if not releases:
             sim = linear_combination_of_weights(parts)
-            return (sim, None, None, track)
+            return SimMatchTrack(similarity=sim, releasegroup=None, release=None, track=track)
 
-        result = (-1,)
-
+        result = SimMatchTrack(similarity=-1, releasegroup=None, release=None, track=None)
         for release in releases:
             release_parts = self.compare_to_release_parts(release, weights)
             sim = linear_combination_of_weights(parts + release_parts)
             if 'score' in track:
                 sim *= track['score'] / 100
-            if sim > result[0]:
+            if sim > result.similarity:
                 rg = release['release-group'] if "release-group" in release else None
-                result = (sim, rg, release, track)
+                result = SimMatchTrack(similarity=sim, releasegroup=rg, release=release, track=track)
         return result
 
     def copy(self, other):

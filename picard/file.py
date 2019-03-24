@@ -21,7 +21,6 @@
 from collections import defaultdict
 import fnmatch
 from functools import partial
-from operator import itemgetter
 import os
 import os.path
 import re
@@ -40,9 +39,13 @@ from picard.const.sys import (
     IS_MACOS,
     IS_WIN,
 )
-from picard.metadata import Metadata
+from picard.metadata import (
+    Metadata,
+    SimMatchTrack,
+)
 from picard.util import (
     decode_filename,
+    find_best_match,
     format_time,
     pathcmp,
     thread,
@@ -652,49 +655,59 @@ class File(QtCore.QObject, Item):
         except (KeyError, TypeError):
             tracks = None
 
-        # no matches
-        if not tracks:
+        def statusbar(message):
             self.tagger.window.set_statusbar_message(
-                N_("No matching tracks for file '%(filename)s'"),
+                message,
                 {'filename': self.filename},
                 timeout=3000
             )
-            self.clear_pending()
-            return
 
-        # multiple matches -- calculate similarities to each of them
-        best_sim = -1
-        for track in tracks:
-            match = self.metadata.compare_to_track(track, self.comparison_weights)
-            if match[0] > best_sim:
-                best_match = match
-                best_sim = best_match[0]
-        sim, rg, release, track = best_match
-        if lookuptype == File.LOOKUP_METADATA and sim < config.setting['file_lookup_threshold']:
-            self.tagger.window.set_statusbar_message(
-                N_("No matching tracks above the threshold for file '%(filename)s'"),
-                {'filename': self.filename},
-                timeout=3000
-            )
-            self.clear_pending()
-            return
+        if tracks:
+            if lookuptype == File.LOOKUP_ACOUSTID:
+                threshold = 0
+            else:
+                threshold = config.setting['file_lookup_threshold']
 
-        self.tagger.window.set_statusbar_message(
-            N_("File '%(filename)s' identified!"),
-            {'filename': self.filename},
-            timeout=3000
-        )
+            trackmatch = self._match_to_track(tracks, threshold=threshold)
+            if trackmatch is None:
+                statusbar(N_("No matching tracks above the threshold for file '%(filename)s'"))
+            else:
+                statusbar(N_("File '%(filename)s' identified!"))
+                (track_id, release_group_id, release_id, node) = trackmatch
+                if lookuptype == File.LOOKUP_ACOUSTID:
+                    self.tagger.acoustidmanager.add(self, track_id)
+                if release_group_id is not None:
+                    releasegroup = self.tagger.get_release_group_by_id(release_group_id)
+                    releasegroup.loaded_albums.add(release_id)
+                    self.tagger.move_file_to_track(self, release_id, track_id)
+                else:
+                    self.tagger.move_file_to_nat(self, track_id, node=node)
+        else:
+            statusbar(N_("No matching tracks for file '%(filename)s'"))
 
         self.clear_pending()
 
-        if lookuptype == File.LOOKUP_ACOUSTID:
-            self.tagger.acoustidmanager.add(self, track['id'])
-        if release:
-            self.tagger.get_release_group_by_id(rg['id']).loaded_albums.add(release['id'])
-            self.tagger.move_file_to_track(self, release['id'], track['id'])
+    def _match_to_track(self, tracks, threshold=0):
+        # multiple matches -- calculate similarities to each of them
+        def candidates():
+            for track in tracks:
+                yield self.metadata.compare_to_track(track, self.comparison_weights)
+
+        no_match = SimMatchTrack(similarity=-1, releasegroup=None, release=None, track=None)
+        best_match = find_best_match(candidates, no_match)
+
+        if best_match.similarity < threshold:
+            return None
         else:
-            node = track if 'title' in track else None
-            self.tagger.move_file_to_nat(self, track['id'], node=node)
+            track_id = best_match.result.track['id']
+            release_group_id, release_id, node = None, None, None
+
+            if best_match.result.release:
+                release_group_id = best_match.result.releasegroup['id']
+                release_id = best_match.result.release['id']
+            elif 'title' in best_match.result.track:
+                node = best_match.result.track
+            return (track_id, release_group_id, release_id, node)
 
     def lookup_metadata(self):
         """Try to identify the file using the existing metadata."""

@@ -24,7 +24,6 @@ from heapq import (
     heappush,
 )
 import ntpath
-from operator import itemgetter
 import re
 
 from PyQt5 import QtCore
@@ -32,10 +31,14 @@ from PyQt5 import QtCore
 from picard import config
 from picard.const import QUERY_LIMIT
 from picard.const.sys import IS_WIN
-from picard.metadata import Metadata
+from picard.metadata import (
+    Metadata,
+    SimMatchRelease,
+)
 from picard.similarity import similarity
 from picard.util import (
     album_artist_from_path,
+    find_best_match,
     format_time,
 )
 from picard.util.imagelist import (
@@ -186,37 +189,37 @@ class Cluster(QtCore.QObject, Item):
         except (KeyError, TypeError):
             releases = None
 
-        mparms = {
-            'album': self.metadata['album']
-        }
-
-        # no matches
-        if not releases:
+        def statusbar(message):
             self.tagger.window.set_statusbar_message(
-                N_("No matching releases for cluster %(album)s"),
-                mparms,
+                message,
+                {'album': self.metadata['album']},
                 timeout=3000
             )
-            return
 
+        if releases:
+            albumid = self._match_to_album(releases, threshold=config.setting['cluster_lookup_threshold'])
+        else:
+            albumid = None
+
+        if albumid is None:
+            statusbar(N_("No matching releases for cluster %(album)s"))
+        else:
+            statusbar(N_("Cluster %(album)s identified!"))
+            self.tagger.move_files_to_album(self.files, albumid)
+
+    def _match_to_album(self, releases, threshold=0):
         # multiple matches -- calculate similarities to each of them
-        match = sorted((self.metadata.compare_to_release(
-            release, Cluster.comparison_weights) for release in releases),
-            reverse=True, key=itemgetter(0))[0]
+        def candidates():
+            for release in releases:
+                yield self.metadata.compare_to_release(release, Cluster.comparison_weights)
 
-        if match[0] < config.setting['cluster_lookup_threshold']:
-            self.tagger.window.set_statusbar_message(
-                N_("No matching releases for cluster %(album)s"),
-                mparms,
-                timeout=3000
-            )
-            return
-        self.tagger.window.set_statusbar_message(
-            N_("Cluster %(album)s identified!"),
-            mparms,
-            timeout=3000
-        )
-        self.tagger.move_files_to_album(self.files, match[1]['id'])
+        no_match = SimMatchRelease(similarity=-1, release=None)
+        best_match = find_best_match(candidates, no_match)
+
+        if best_match.similarity < threshold:
+            return None
+        else:
+            return best_match.result.release['id']
 
     def lookup_metadata(self):
         """Try to identify the cluster using the existing metadata."""
