@@ -39,11 +39,8 @@ class ImageList(MutableSequence):
     def __delitem__(self, index):
         del self._images[index]
 
-    # Codacy reports: Parameters differ from overridden 'insert' method
-    # but it seems perfectly legit, and matches list.insert()
-    # pylint: disable=W0221
-    def insert(self, index, image):
-        return self._images.insert(index, image)
+    def insert(self, index, value):
+        return self._images.insert(index, value)
 
     def __repr__(self):
         return '%s(%r)' % (self.__class__.__name__, self._images)
