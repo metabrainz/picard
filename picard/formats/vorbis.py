@@ -180,7 +180,7 @@ class VCommentFile(File):
             if channel_mask:
                 file.tags['waveformatextensible_channel_mask'] = channel_mask
         images_to_save = list(metadata.images.to_be_saved_to_tags())
-        if (is_flac and (config.setting["clear_existing_tags"] or images_to_save)):
+        if is_flac and (config.setting["clear_existing_tags"] or images_to_save):
             file.clear_pictures()
         tags = {}
         for name, value in metadata.items():
