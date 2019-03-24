@@ -28,10 +28,7 @@ import re
 
 from PyQt5 import QtCore
 
-from picard import (
-    config,
-    log,
-)
+from picard import config
 from picard.const import QUERY_LIMIT
 from picard.const.sys import IS_WIN
 from picard.metadata import (
@@ -210,7 +207,7 @@ class Cluster(QtCore.QObject, Item):
             statusbar(N_("Cluster %(album)s identified!"))
             self.tagger.move_files_to_album(self.files, albumid)
 
-    def _match_to_album(self, releases, threshold=0, debug=True):
+    def _match_to_album(self, releases, threshold=0):
         # multiple matches -- calculate similarities to each of them
         def candidates():
             for release in releases:
@@ -220,10 +217,9 @@ class Cluster(QtCore.QObject, Item):
         best_match = find_best_match(candidates, no_match)
 
         if best_match.similarity < threshold:
-            if debug:
-                log.debug("%s < threshold=%f", repr(best_match), threshold)
             return None
-        return best_match.result.release['id']
+        else:
+            return best_match.result.release['id']
 
     def lookup_metadata(self):
         """Try to identify the cluster using the existing metadata."""

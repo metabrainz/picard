@@ -687,7 +687,7 @@ class File(QtCore.QObject, Item):
 
         self.clear_pending()
 
-    def _match_to_track(self, tracks, threshold=0, debug=True):
+    def _match_to_track(self, tracks, threshold=0):
         # multiple matches -- calculate similarities to each of them
         def candidates():
             for track in tracks:
@@ -697,20 +697,17 @@ class File(QtCore.QObject, Item):
         best_match = find_best_match(candidates, no_match)
 
         if best_match.similarity < threshold:
-            if debug:
-                log.debug("%s < threshold=%f", repr(best_match), threshold)
             return None
+        else:
+            track_id = best_match.result.track['id']
+            release_group_id, release_id, node = None, None, None
 
-        track_id = best_match.result.track['id']
-        release_group_id = None
-        release_id = None
-        node = None
-        if best_match.result.release:
-            release_group_id = best_match.result.releasegroup['id']
-            release_id = best_match.result.release['id']
-        elif 'title' in best_match.result.track:
-            node = best_match.result.track
-        return (track_id, release_group_id, release_id, node)
+            if best_match.result.release:
+                release_group_id = best_match.result.releasegroup['id']
+                release_id = best_match.result.release['id']
+            elif 'title' in best_match.result.track:
+                node = best_match.result.track
+            return (track_id, release_group_id, release_id, node)
 
     def lookup_metadata(self):
         """Try to identify the file using the existing metadata."""
