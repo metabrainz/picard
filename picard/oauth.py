@@ -44,6 +44,15 @@ class OAuthManager(object):
 
     def __init__(self, webservice):
         self.webservice = webservice
+        self.setting = config.setting
+
+    @property
+    def host(self):
+        return self.setting['server_host']
+
+    @property
+    def port(self):
+        return self.setting['server_port']
 
     def is_authorized(self):
         return bool(config.persist["oauth_refresh_token"] and
@@ -78,11 +87,10 @@ class OAuthManager(object):
                 self.refresh_access_token(callback)
 
     def get_authorization_url(self, scopes):
-        host, port = config.setting['server_host'], config.setting['server_port']
         params = {"response_type": "code", "client_id":
                   MUSICBRAINZ_OAUTH_CLIENT_ID, "redirect_uri":
                   "urn:ietf:wg:oauth:2.0:oob", "scope": scopes}
-        url = build_qurl(host, port, path="/oauth2/authorize",
+        url = build_qurl(self.host, self.port, path="/oauth2/authorize",
                          queryargs=params)
         return bytes(url.toEncoded()).decode()
 
@@ -103,7 +111,6 @@ class OAuthManager(object):
     def refresh_access_token(self, callback):
         refresh_token = config.persist["oauth_refresh_token"]
         log.debug("OAuth: refreshing access_token with a refresh_token %s", refresh_token)
-        host, port = config.setting['server_host'], config.setting['server_port']
         path = "/oauth2/token"
         url = QUrl()
         url_query = QUrlQuery()
@@ -113,7 +120,7 @@ class OAuthManager(object):
         url_query.addQueryItem("client_secret", MUSICBRAINZ_OAUTH_CLIENT_SECRET)
         url.setQuery(url_query.query(QUrl.FullyEncoded))
         data = url.query()
-        self.webservice.post(host, port, path, data,
+        self.webservice.post(self.host, self.port, path, data,
                              partial(self.on_refresh_access_token_finished, callback),
                              mblogin=True, priority=True, important=True,
                              request_mimetype="application/x-www-form-urlencoded")
@@ -137,7 +144,6 @@ class OAuthManager(object):
 
     def exchange_authorization_code(self, authorization_code, scopes, callback):
         log.debug("OAuth: exchanging authorization_code %s for an access_token", authorization_code)
-        host, port = config.setting['server_host'], config.setting['server_port']
         path = "/oauth2/token"
         url = QUrl()
         url_query = QUrlQuery()
@@ -148,7 +154,7 @@ class OAuthManager(object):
         url_query.addQueryItem("redirect_uri", "urn:ietf:wg:oauth:2.0:oob")
         url.setQuery(url_query.query(QUrl.FullyEncoded))
         data = url.query()
-        self.webservice.post(host, port, path, data,
+        self.webservice.post(self.host, self.port, path, data,
                              partial(self.on_exchange_authorization_code_finished, scopes, callback),
                              mblogin=True, priority=True, important=True,
                              request_mimetype="application/x-www-form-urlencoded")
@@ -169,9 +175,8 @@ class OAuthManager(object):
 
     def fetch_username(self, callback):
         log.debug("OAuth: fetching username")
-        host, port = config.setting['server_host'], config.setting['server_port']
         path = "/oauth2/userinfo"
-        self.webservice.get(host, port, path,
+        self.webservice.get(self.host, self.port, path,
                             partial(self.on_fetch_username_finished, callback),
                             mblogin=True, priority=True, important=True)
 
