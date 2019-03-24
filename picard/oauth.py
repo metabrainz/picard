@@ -45,6 +45,7 @@ class OAuthManager(object):
     def __init__(self, webservice):
         self.webservice = webservice
         self.setting = config.setting
+        self.persist = config.persist
 
     @property
     def host(self):
@@ -56,55 +57,55 @@ class OAuthManager(object):
 
     @property
     def refresh_token(self):
-        return config.persist["oauth_refresh_token"]
+        return self.persist["oauth_refresh_token"]
 
     @refresh_token.setter
     def refresh_token(self, value):
         if value is None:
-            config.persist.remove("oauth_refresh_token")
+            self.persist.remove("oauth_refresh_token")
         else:
-            config.persist["oauth_refresh_token"] = value
+            self.persist["oauth_refresh_token"] = value
 
     @property
     def refresh_token_scopes(self):
-        return config.persist["oauth_refresh_token_scopes"]
+        return self.persist["oauth_refresh_token_scopes"]
 
     @refresh_token_scopes.setter
     def refresh_token_scopes(self, value):
         if value is None:
-            config.persist.remove("oauth_refresh_token_scopes")
+            self.persist.remove("oauth_refresh_token_scopes")
         else:
-            config.persist["oauth_refresh_token_scopes"] = value
+            self.persist["oauth_refresh_token_scopes"] = value
 
     @property
     def access_token(self):
-        return config.persist["oauth_access_token"]
+        return self.persist["oauth_access_token"]
 
     @access_token.setter
     def access_token(self, value):
         if value is None:
-            config.persist.remove("oauth_access_token")
+            self.persist.remove("oauth_access_token")
         else:
-            config.persist["oauth_access_token"] = value
+            self.persist["oauth_access_token"] = value
 
     @property
     def access_token_expires(self):
-        return config.persist["oauth_access_token_expires"]
+        return self.persist["oauth_access_token_expires"]
 
     @access_token_expires.setter
     def access_token_expires(self, value):
         if value is None:
-            config.persist.remove("oauth_access_token_expires")
+            self.persist.remove("oauth_access_token_expires")
         else:
-            config.persist["oauth_access_token_expires"] = value
+            self.persist["oauth_access_token_expires"] = value
 
     @property
     def username(self):
-        return config.persist["oauth_username"]
+        return self.persist["oauth_username"]
 
     @username.setter
     def username(self, value):
-        config.persist["oauth_username"] = value
+        self.persist["oauth_username"] = value
 
     def is_authorized(self):
         return bool(self.refresh_token and self.refresh_token_scopes)
