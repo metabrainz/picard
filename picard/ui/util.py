@@ -19,7 +19,6 @@
 
 from PyQt5 import (
     QtCore,
-    QtGui,
     QtWidgets,
 )
 
@@ -30,7 +29,6 @@ from picard.const.sys import (
 )
 from picard.util import (
     find_existing_path,
-    icontheme,
 )
 
 
