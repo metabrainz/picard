@@ -38,7 +38,7 @@ from picard.const import (
 )
 from picard.coverart.image import CaaThumbnailCoverArtImage
 from picard.mbjson import (
-    country_list_from_node,
+    countries_from_node,
     media_formats_from_node,
     release_group_to_metadata,
     release_to_metadata,
@@ -331,7 +331,7 @@ class AlbumSearchDialog(SearchDialog):
                 media = node['media']
                 release["format"] = media_formats_from_node(media)
                 release["tracks"] = node['track-count']
-            countries = country_list_from_node(node)
+            countries = countries_from_node(node)
             if countries:
                 release["country"] = ", ".join(countries)
             self.search_results.append(release)

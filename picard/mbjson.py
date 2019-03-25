@@ -264,7 +264,7 @@ def artist_credit_to_metadata(node, m, release=False):
         m["~artists_sort"] = artistssort
 
 
-def country_list_from_node(node):
+def countries_from_node(node):
     countries = []
     if "release-events" in node:
         for release_event in node['release-events']:

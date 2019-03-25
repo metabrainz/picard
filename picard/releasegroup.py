@@ -25,7 +25,7 @@ import traceback
 from picard import log
 from picard.dataobj import DataObject
 from picard.mbjson import (
-    country_list_from_node,
+    countries_from_node,
     label_info_from_node,
     media_formats_from_node,
 )
@@ -72,7 +72,7 @@ class ReleaseGroup(DataObject):
         for node in releases:
             labels, catnums = label_info_from_node(node['label-info'])
 
-            countries = country_list_from_node(node)
+            countries = countries_from_node(node)
 
             formats = []
             for medium in node['media']:
