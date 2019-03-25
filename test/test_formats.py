@@ -199,6 +199,16 @@ class CommonTests:
                 self.assertEqual(loaded_metadata[key], value, '%s: %r != %r' % (key, loaded_metadata[key], value))
 
         @skipUnlessTestfile
+        def test_save_does_not_modify_metadata(self):
+            tags = dict(self.tags)
+            if self.supports_ratings:
+                tags['~rating'] = '3'
+            metadata = Metadata(tags)
+            save_metadata(self.filename, metadata)
+            for (key, value) in tags.items():
+                self.assertEqual(metadata[key], value, '%s: %r != %r' % (key, metadata[key], value))
+
+        @skipUnlessTestfile
         def test_unsupported_tags(self):
             metadata = Metadata(self.unsupported_tags)
             loaded_metadata = save_and_load_metadata(self.filename, metadata)
