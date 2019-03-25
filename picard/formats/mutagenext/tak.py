@@ -42,7 +42,8 @@ class TAKInfo(object):
         if len(header) != 4 or not header.startswith(b"tBaK"):
             raise TAKHeaderError("not a TAK file")
 
-    def pprint(self):
+    @staticmethod
+    def pprint():
         return "Tom's lossless Audio Kompressor"
 
 
@@ -50,9 +51,9 @@ class TAK(APEv2File):
     _Info = TAKInfo
     _mimes = ["audio/x-tak"]
 
+    @staticmethod
     def score(filename, fileobj, header):
         return header.startswith(b"tBaK") + filename.lower().endswith(".tak")
-    score = staticmethod(score)
 
 
 Open = TAK

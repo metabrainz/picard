@@ -34,7 +34,6 @@ from PyQt5 import QtCore
 
 from picard import (
     VersionError,
-    api_versions,
     config,
     log,
     version_from_string,

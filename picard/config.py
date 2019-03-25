@@ -249,6 +249,18 @@ class Option(QtCore.QObject):
         return cls.registry.get((section, name))
 
 
+def _convert_to_bool(value):
+    # The QSettings IniFormat saves boolean values as the strings "true"
+    # and "false". Thus, explicit boolean and string comparisons are used
+    # to determine the value. NOTE: In PyQt >= 4.8.3, QSettings.value has
+    # an optional "type" parameter that avoids this. But we still support
+    # PyQt >= 4.5, so that is not used.
+    return value is True or value == "true"
+
+def _convert_to_int_list(values):
+    return list(map(int, values))
+
+
 class TextOption(Option):
 
     convert = str
@@ -256,14 +268,7 @@ class TextOption(Option):
 
 class BoolOption(Option):
 
-    @staticmethod
-    def convert(value):
-        # The QSettings IniFormat saves boolean values as the strings "true"
-        # and "false". Thus, explicit boolean and string comparisons are used
-        # to determine the value. NOTE: In PyQt >= 4.8.3, QSettings.value has
-        # an optional "type" parameter that avoids this. But we still support
-        # PyQt >= 4.5, so that is not used.
-        return value is True or value == "true"
+    convert = _convert_to_bool
 
 
 class IntOption(Option):
@@ -283,9 +288,7 @@ class ListOption(Option):
 
 class IntListOption(Option):
 
-    @staticmethod
-    def convert(values):
-        return list(map(int, values))
+    convert = _convert_to_int_list
 
 
 config = None

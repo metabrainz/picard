@@ -304,8 +304,8 @@ class Metadata(MutableMapping):
     def getraw(self, name):
         return self._store[name]
 
-    def get(self, name, default=None):
-        values = self._store.get(name, None)
+    def get(self, key, default=None):
+        values = self._store.get(key, None)
         if values:
             return self.multi_valued_joiner.join(values)
         else:

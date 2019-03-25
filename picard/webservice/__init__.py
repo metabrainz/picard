@@ -143,14 +143,15 @@ class WSRequest(QNetworkRequest):
         self.queryargs = queryargs
         self.priority = priority
         self.important = important
+        self._high_prio_no_cache = False
 
         self.access_token = None
         self._init_headers()
 
-    def _init_headers(self, high_prio_no_cache=False):
+    def _init_headers(self):
         self.setHeader(QNetworkRequest.UserAgentHeader, USER_AGENT_STRING)
 
-        if self.mblogin or high_prio_no_cache:
+        if self.mblogin or self._high_prio_no_cache:
             self.setPriority(QNetworkRequest.HighPriority)
             self.setAttribute(QNetworkRequest.CacheLoadControlAttribute, QNetworkRequest.AlwaysNetwork)
         elif self.cacheloadcontrol is not None:
@@ -216,7 +217,8 @@ class WSGetRequest(WSRequest):
         super().__init__("GET", *args, **kwargs)
 
     def _init_headers(self):
-        super()._init_headers(high_prio_no_cache=self.refresh)
+        self._high_prio_no_cache = self.refresh
+        super()._init_headers()
         self.setAttribute(QNetworkRequest.HttpPipeliningAllowedAttribute,
                           True)
 
@@ -227,7 +229,8 @@ class WSPutRequest(WSRequest):
         super().__init__("PUT", *args, **kwargs)
 
     def _init_headers(self):
-        super()._init_headers(high_prio_no_cache=True)
+        self._high_prio_no_cache = True
+        super()._init_headers()
 
 
 class WSDeleteRequest(WSRequest):
@@ -236,7 +239,8 @@ class WSDeleteRequest(WSRequest):
         super().__init__("DELETE", *args, **kwargs)
 
     def _init_headers(self):
-        super()._init_headers(high_prio_no_cache=True)
+        self._high_prio_no_cache = True
+        super()._init_headers()
 
 
 class WSPostRequest(WSRequest):
@@ -245,7 +249,8 @@ class WSPostRequest(WSRequest):
         super().__init__("POST", *args, **kwargs)
 
     def _init_headers(self):
-        super()._init_headers(high_prio_no_cache=True)
+        self._high_prio_no_cache = True
+        super()._init_headers()
 
 
 class WebService(QtCore.QObject):
