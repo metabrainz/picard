@@ -281,6 +281,10 @@ class CountryListTest(MBJSONTest):
         country_list = country_list_from_node(self.json_doc)
         self.assertEqual(['GB'], country_list)
 
+    def test_country_from_node_no_event(self):
+        del self.json_doc["release-events"]
+        country_list = country_list_from_node(self.json_doc)
+        self.assertEqual([], country_list)
 
 class NullCountryListTest(MBJSONTest):
 
