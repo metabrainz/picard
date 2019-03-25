@@ -273,26 +273,26 @@ class NullReleaseGroupTest(MBJSONTest):
         self.assertEqual(m, {})
 
 
-class CountryListTest(MBJSONTest):
+class CountriesFromNodeTest(MBJSONTest):
 
     filename = 'country.json'
 
-    def test_country_from_node(self):
-        country_list = countries_from_node(self.json_doc)
-        self.assertEqual(['GB'], country_list)
+    def test_countries_from_node(self):
+        countries = countries_from_node(self.json_doc)
+        self.assertEqual(['GB'], countries)
 
-    def test_country_from_node_no_event(self):
+    def test_countries_from_node_no_event(self):
         del self.json_doc["release-events"]
-        country_list = countries_from_node(self.json_doc)
-        self.assertEqual([], country_list)
+        countries = countries_from_node(self.json_doc)
+        self.assertEqual([], countries)
 
-class NullCountryListTest(MBJSONTest):
+class CountriesFromNodeNullTest(MBJSONTest):
 
     filename = 'country_null.json'
 
-    def test_country_from_node(self):
-        country_list = countries_from_node(self.json_doc)
-        self.assertEqual(country_list, [])
+    def test_countries_from_node(self):
+        countries = countries_from_node(self.json_doc)
+        self.assertEqual(countries, [])
 
 
 class LabelInfoTest(MBJSONTest):
