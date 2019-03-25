@@ -24,7 +24,7 @@ from picard import config
 from picard.const import QUERY_LIMIT
 from picard.file import File
 from picard.mbjson import (
-    country_list_from_node,
+    countries_from_node,
     recording_to_metadata,
     release_group_to_metadata,
     release_to_metadata,
@@ -162,7 +162,7 @@ class TrackSearchDialog(SearchDialog):
                     release_to_metadata(rel_node, track)
                     rg_node = rel_node['release-group']
                     release_group_to_metadata(rg_node, track)
-                    countries = country_list_from_node(rel_node)
+                    countries = countries_from_node(rel_node)
                     if countries:
                         track["country"] = ", ".join(countries)
                     self.search_results.append((track, node))

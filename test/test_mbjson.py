@@ -6,7 +6,7 @@ from picard import config
 from picard.album import Album
 from picard.mbjson import (
     artist_to_metadata,
-    country_list_from_node,
+    countries_from_node,
     label_info_from_node,
     media_formats_from_node,
     medium_to_metadata,
@@ -273,22 +273,26 @@ class NullReleaseGroupTest(MBJSONTest):
         self.assertEqual(m, {})
 
 
-class CountryListTest(MBJSONTest):
+class CountriesFromNodeTest(MBJSONTest):
 
     filename = 'country.json'
 
-    def test_country_from_node(self):
-        country_list = country_list_from_node(self.json_doc)
-        self.assertEqual(['GB'], country_list)
+    def test_countries_from_node(self):
+        countries = countries_from_node(self.json_doc)
+        self.assertEqual(['GB'], countries)
 
+    def test_countries_from_node_no_event(self):
+        del self.json_doc["release-events"]
+        countries = countries_from_node(self.json_doc)
+        self.assertEqual([], countries)
 
-class NullCountryListTest(MBJSONTest):
+class CountriesFromNodeNullTest(MBJSONTest):
 
     filename = 'country_null.json'
 
-    def test_country_from_node(self):
-        country_list = country_list_from_node(self.json_doc)
-        self.assertEqual(country_list, [])
+    def test_countries_from_node(self):
+        countries = countries_from_node(self.json_doc)
+        self.assertEqual(countries, [])
 
 
 class LabelInfoTest(MBJSONTest):
