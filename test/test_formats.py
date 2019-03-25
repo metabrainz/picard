@@ -193,27 +193,21 @@ class CommonTests:
 
         @skipUnlessTestfile
         def test_simple_tags(self):
-            metadata = Metadata()
-            for (key, value) in self.tags.items():
-                metadata[key] = value
+            metadata = Metadata(self.tags)
             loaded_metadata = save_and_load_metadata(self.filename, metadata)
             for (key, value) in self.tags.items():
                 self.assertEqual(loaded_metadata[key], value, '%s: %r != %r' % (key, loaded_metadata[key], value))
 
         @skipUnlessTestfile
         def test_unsupported_tags(self):
-            metadata = Metadata()
-            for (key, value) in self.unsupported_tags.items():
-                metadata[key] = value
+            metadata = Metadata(self.unsupported_tags)
             loaded_metadata = save_and_load_metadata(self.filename, metadata)
             for tag in self.unsupported_tags:
                 self.assertTrue(tag not in loaded_metadata, '%s: %r != None' % (tag, loaded_metadata[tag]))
 
         @skipUnlessTestfile
         def test_preserve_unchanged_tags(self):
-            metadata = Metadata()
-            for (key, value) in self.tags.items():
-                metadata[key] = value
+            metadata = Metadata(self.tags)
             save_metadata(self.filename, metadata)
             loaded_metadata = save_and_load_metadata(self.filename, Metadata())
             for (key, value) in self.tags.items():
@@ -221,9 +215,7 @@ class CommonTests:
 
         @skipUnlessTestfile
         def test_delete_simple_tags(self):
-            metadata = Metadata()
-            for (key, value) in self.tags.items():
-                metadata[key] = value
+            metadata = Metadata(self.tags)
             if self.supports_ratings:
                 metadata['~rating'] = 1
             original_metadata = save_and_load_metadata(self.filename, metadata)
@@ -250,11 +242,7 @@ class CommonTests:
 
         @skipUnlessTestfile
         def test_delete_complex_tags(self):
-            metadata = Metadata()
-
-            for (key, value) in self.tags.items():
-                metadata[key] = value
-
+            metadata = Metadata(self.tags)
             original_metadata = save_and_load_metadata(self.filename, metadata)
             metadata.delete('totaldiscs')
             new_metadata = save_and_load_metadata(self.filename, metadata)
@@ -268,10 +256,7 @@ class CommonTests:
         @skipUnlessTestfile
         def test_delete_performer(self):
             if 'performer:guest vocal' in self.tags:
-                metadata = Metadata()
-                for (key, value) in self.tags.items():
-                    metadata[key] = value
-
+                metadata = Metadata(self.tags)
                 metadata['performer:piano'] = 'Foo'
 
                 original_metadata = save_and_load_metadata(self.filename, metadata)
@@ -320,10 +305,7 @@ class CommonTests:
 
         @skipUnlessTestfile
         def test_id3_freeform_delete(self):
-            metadata = Metadata()
-            for (key, value) in self.tags.items():
-                metadata[key] = value
-
+            metadata = Metadata(self.tags)
             metadata['Foo'] = 'Foo'
             original_metadata = save_and_load_metadata(self.filename, metadata)
             metadata.delete('Foo')
@@ -334,9 +316,7 @@ class CommonTests:
 
         @skipUnlessTestfile
         def test_id3_ufid_delete(self):
-            metadata = Metadata()
-            for (key, value) in self.tags.items():
-                metadata[key] = value
+            metadata = Metadata(self.tags)
             metadata['musicbrainz_recordingid'] = "Foo"
             original_metadata = save_and_load_metadata(self.filename, metadata)
             metadata.delete('musicbrainz_recordingid')
@@ -347,10 +327,7 @@ class CommonTests:
 
         @skipUnlessTestfile
         def test_id3_multiple_freeform_delete(self):
-            metadata = Metadata()
-            for (key, value) in self.tags.items():
-                metadata[key] = value
-
+            metadata = Metadata(self.tags)
             metadata['Foo'] = 'Foo'
             metadata['Bar'] = 'Foo'
             metadata['FooBar'] = 'Foo'
@@ -370,17 +347,12 @@ class CommonTests:
         def test_performer_duplication(self):
 
             config.setting['write_id3v23'] = True
-            metadata = Metadata()
-            tags = {
+            metadata = Metadata({
                 'album': 'Foo',
                 'artist': 'Foo',
                 'performer:piano': 'Foo',
                 'title': 'Foo',
-            }
-
-            for (key, value) in tags.items():
-                metadata[key] = value
-
+            })
             original_metadata = save_and_load_metadata(self.filename, metadata)
             new_metadata = save_and_load_metadata(self.filename, original_metadata)
 
@@ -388,9 +360,7 @@ class CommonTests:
 
         @skipUnlessTestfile
         def test_comment_delete(self):
-            metadata = Metadata()
-            for (key, value) in self.tags.items():
-                metadata[key] = value
+            metadata = Metadata(self.tags)
             metadata['comment:bar'] = 'Foo'
             original_metadata = save_and_load_metadata(self.filename, metadata)
             metadata.delete('comment:bar')
@@ -404,9 +374,7 @@ class CommonTests:
         @skipUnlessTestfile
         def test_id3v23_simple_tags(self):
             config.setting['write_id3v23'] = True
-            metadata = Metadata()
-            for (key, value) in self.tags.items():
-                metadata[key] = value
+            metadata = Metadata(self.tags)
             loaded_metadata = save_and_load_metadata(self.filename, metadata)
             for (key, value) in self.tags.items():
                 self.assertEqual(loaded_metadata[key], value, '%s: %r != %r' % (key, loaded_metadata[key], value))
