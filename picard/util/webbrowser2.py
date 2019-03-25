@@ -17,6 +17,11 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+"""A webbrowser extension for Picard.
+
+It handles and displays errors in PyQt and also adds a utility function for opening Picard URLS.
+"""
+
 from sys import version_info
 import webbrowser
 
@@ -24,12 +29,6 @@ from PyQt5 import QtWidgets
 
 from picard import log
 from picard.const import PICARD_URLS
-
-
-"""
-A webbrowser extension for Picard. It handles and displays errors
-in PyQt and also adds a utility function for opening Picard URLS.
-"""
 
 
 def open(url):

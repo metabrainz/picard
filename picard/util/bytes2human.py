@@ -17,16 +17,17 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-import locale
+"""Helper class to convert bytes to human-readable form
 
-"""
-Helper class to convert bytes to human-readable form
 It supports i18n through gettext, decimal and binary units.
 
 >>> n = 1572864
 >>> [binary(n), decimal(n)]
 ['1.5 MiB', '1.6 MB']
 """
+
+import locale
+
 
 # used to force gettextization
 _BYTES_STRINGS_I18N = (
