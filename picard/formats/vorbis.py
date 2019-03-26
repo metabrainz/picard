@@ -53,6 +53,10 @@ INVALID_CHARS = re.compile('([^\x20-}]|=)')
 
 
 def sanitize_key(key):
+    """
+    Remove characters from key which are invalid for a Vorbis comment field name.
+    See https://www.xiph.org/vorbis/doc/v-comment.html#vectorformat
+    """
     return INVALID_CHARS.sub('', key)
 
 

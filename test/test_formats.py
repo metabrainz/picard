@@ -19,7 +19,7 @@ from picard.coverart.image import (
     TagCoverArtImage,
 )
 import picard.formats
-from picard.formats import ext_to_format
+from picard.formats import ext_to_format, vorbis
 from picard.metadata import Metadata
 
 settings = {
@@ -607,6 +607,12 @@ class OptimFROGDUalStreamTest(CommonTests.FormatsTest):
     def test_format(self):
         metadata = load_metadata(self.filename)
         self.assertEqual(metadata['~format'], 'OptimFROG DualStream Audio')
+
+
+class VorbisUtilTest(PicardTestCase):
+    def test_sanitize_key(self):
+        sanitized = vorbis.sanitize_key(' \x1f=}~')
+        self.assertEqual(sanitized, ' }')
 
 
 cover_settings = {
