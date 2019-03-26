@@ -220,7 +220,7 @@ class OAuthManager(object):
         except Exception as e:
             log.error('OAuth: Unexpected error handling authorization code response: %r', e)
         finally:
-            callback(successful)
+            callback(successful=successful)
 
     def fetch_username(self, callback):
         log.debug("OAuth: fetching username")
