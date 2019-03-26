@@ -16,6 +16,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+from collections import defaultdict, namedtuple
 import traceback
 
 from picard import log, config
@@ -67,20 +68,36 @@ def register_cover_art_provider(provider):
         register_options_page(provider.OPTIONS)
 
 
-def cover_art_providers():
-    order = [p[0] for p in config.setting['ca_providers']]
+# named tuples used by cover_art_providers()
+ProviderTuple = namedtuple('ProviderTuple', 'name title enabled cls')
+PInfoTuple = namedtuple('PInfoTuple', 'position enabled')
+POrderTuple = namedtuple('OrderTuple', 'name position enabled')
 
-    def _key_provider(p):
+
+def cover_art_providers():
+    def from_ca_providers_option():
+        """Iterate through ca_providers option and yield name, position and enabled"""
+        for pos, (name, enabled) in enumerate(config.setting['ca_providers']):
+            yield POrderTuple(name=name, position=pos, enabled=enabled)
+
+    # build a defaultdict with provider name as key, and PInfoTuple as value
+    order = defaultdict(lambda: PInfoTuple(position=666, enabled=False))
+    for o in from_ca_providers_option():
+        order[o.name] = PInfoTuple(position=o.position, enabled=o.enabled)
+
+    # use previously built dict to order providers, according to current ca_providers
+    # (yet) unknown providers are placed at the end, disabled
+    ordered_providers = sorted(_cover_art_providers, key=lambda p: order[p.NAME].position)
+
+    log.debug("CA Providers order: %s", ' > '.join([p.NAME for p in ordered_providers]))
+
+    for p in ordered_providers:
+        name = p.NAME
         try:
-            return order.index(p.NAME)
-        except ValueError:
-            return 666  # move to the end
-    providers = []
-    for p in sorted(_cover_art_providers, key=_key_provider):
-        providers.append(p)
-    log.debug("CA Providers order: %s",
-              ' > '.join([p.NAME for p in providers]))
-    return providers
+            title = p.TITLE
+        except AttributeError:
+            title = name
+        yield ProviderTuple(name=name, title=title, enabled=order[name].enabled, cls=p)
 
 
 def is_provider_enabled(provider_name):

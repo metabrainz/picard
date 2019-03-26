@@ -67,14 +67,8 @@ class CoverOptionsPage(OptionsPage):
     def load_cover_art_providers(self):
         """Load available providers, initialize provider-specific options, restore state of each
         """
-        providers = cover_art_providers()
-        for provider in providers:
-            try:
-                title = _(provider.TITLE)
-            except AttributeError:
-                title = provider.NAME
-            checked = is_provider_enabled(provider.NAME)
-            self.ui.ca_providers_list.addItem(CheckboxListItem(title, checked=checked, data=provider.NAME))
+        for p in cover_art_providers():
+            self.ui.ca_providers_list.addItem(CheckboxListItem(_(p.title), checked=p.enabled, data=p.name))
 
     def restore_defaults(self):
         # Remove previous entries

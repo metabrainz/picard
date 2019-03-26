@@ -72,8 +72,7 @@ class CoverArtProviderLocal(CoverArtProvider):
     _known_types = set([t['name'] for t in CAA_TYPES])
 
     def enabled(self):
-        enabled = CoverArtProvider.enabled(self)
-        return enabled and not self.coverart.front_image_found
+        return not self.coverart.front_image_found
 
     def queue_images(self):
         _match_re = re.compile(config.setting['local_cover_regex'], re.IGNORECASE)

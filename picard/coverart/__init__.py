@@ -136,19 +136,19 @@ class CoverArt:
             return
 
         if self._queue_empty():
-            if self.providers:
+            try:
                 # requeue from next provider
-                provider = self.providers.pop(0)
+                provider = next(self.providers)
                 ret = CoverArtProvider._STARTED
                 try:
-                    p = provider(self)
-                    if p.enabled():
+                    instance = provider.cls(self)
+                    if provider.enabled and instance.enabled():
                         log.debug("Trying cover art provider %s ..." %
-                                  provider.NAME)
-                        ret = p.queue_images()
+                                  provider.name)
+                        ret = instance.queue_images()
                     else:
                         log.debug("Skipping cover art provider %s ..." %
-                                  provider.NAME)
+                                  provider.name)
                 except BaseException:
                     log.error(traceback.format_exc())
                     raise
@@ -156,7 +156,7 @@ class CoverArt:
                     if ret != CoverArtProvider.WAIT:
                         self.next_in_queue()
                     return
-            else:
+            except StopIteration:
                 # nothing more to do
                 self.album._finalize_loading(None)
                 return

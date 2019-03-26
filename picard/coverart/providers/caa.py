@@ -544,8 +544,7 @@ class CoverArtProviderCaa(CoverArtProvider):
 
     def enabled(self):
         """Check if CAA artwork has to be downloaded"""
-        if not super().enabled() or \
-                self.coverart.front_image_found:
+        if self.coverart.front_image_found:
             return False
         if self.restrict_types and not self.len_caa_types:
             log.debug('User disabled all Cover Art Archive types')

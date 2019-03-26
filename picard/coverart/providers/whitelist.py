@@ -37,8 +37,7 @@ class CoverArtProviderWhitelist(CoverArtProvider):
     TITLE = N_('Whitelist')
 
     def enabled(self):
-        return (super().enabled()
-                and not self.coverart.front_image_found)
+        return not self.coverart.front_image_found
 
     def queue_images(self):
         self.match_url_relations(('cover art link', 'has_cover_art_at'),
