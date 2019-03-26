@@ -132,10 +132,10 @@ class OAuthManager(object):
 
     def get_access_token(self, callback):
         if not self.is_authorized():
-            callback(None)
+            callback(access_token=None)
         else:
             if self.access_token and time.time() < self.access_token_expires:
-                callback(self.access_token)
+                callback(access_token=self.access_token)
             else:
                 self.forget_access_token()
                 self.refresh_access_token(callback)
@@ -189,7 +189,7 @@ class OAuthManager(object):
         except Exception as e:
             log.error('OAuth: Unexpected error handling access token response: %r', e)
         finally:
-            callback(access_token)
+            callback(access_token=access_token)
 
     def exchange_authorization_code(self, authorization_code, scopes, callback):
         log.debug("OAuth: exchanging authorization_code %s for an access_token", authorization_code)
