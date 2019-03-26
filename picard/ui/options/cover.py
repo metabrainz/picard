@@ -20,7 +20,6 @@
 from picard import config
 from picard.coverart.providers import (
     cover_art_providers,
-    is_provider_enabled,
 )
 
 from picard.ui.checkbox_list_item import CheckboxListItem

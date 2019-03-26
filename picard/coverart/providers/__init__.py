@@ -95,15 +95,6 @@ def cover_art_providers():
         yield ProviderTuple(name=p.name, title=p.title, enabled=order[p.name].enabled, cls=p)
 
 
-def is_provider_enabled(provider_name):
-    """Test if provider with name `provider_name` was enabled
-    by user through options"""
-    for name, checked in config.setting['ca_providers']:
-        if name == provider_name:
-            return checked
-    return False
-
-
 class CoverArtProviderMetaClass(type):
     """Provide default properties name & title for CoverArtProvider
     It is recommended to use those in place of NAME and TITLE that might not be defined
@@ -146,14 +137,7 @@ class CoverArtProvider(metaclass=CoverArtProviderMetaClass):
         self.album = coverart.album
 
     def enabled(self):
-        """By default, return True if user enabled the provider
-        through options. It is used when iterating through providers
-        to decide to skip or process one.
-        It can be subclassed to add conditions."""
-        enabled = is_provider_enabled(self.name)
-        if not enabled:
-            log.debug("%s disabled by user" % self.name)
-        return enabled
+        return not self.coverart.front_image_found
 
     def queue_images(self):
         # this method has to return CoverArtProvider.FINISHED or
