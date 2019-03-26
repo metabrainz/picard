@@ -18,6 +18,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from functools import partial
+from heapq import heappush, heappop
 import os
 import re
 
@@ -356,34 +357,44 @@ class BaseTreeView(QtWidgets.QTreeWidget):
 
                     versions = obj.release_group.versions
 
-                    albumtracks = obj.get_num_total_files() if obj.get_num_total_files() else len(obj.tracks)
+                    album_tracks_count = obj.get_num_total_files() or len(obj.tracks)
                     preferred_countries = set(config.setting["preferred_release_countries"])
                     preferred_formats = set(config.setting["preferred_release_formats"])
-                    matches = ("trackmatch", "countrymatch", "formatmatch")
-                    priorities = {}
-                    for version in versions:
-                        priority = {
-                            "trackmatch": "0" if version['totaltracks'] == albumtracks else "?",
-                            "countrymatch": "0" if len(preferred_countries) == 0 or preferred_countries & set(version['countries'] or '') else "?",
-                            "formatmatch": "0" if len(preferred_formats) == 0 or preferred_formats & set(version['formats'] or '') else "?",
-                        }
-                        priorities[version['id']] = "".join(priority[k] for k in matches)
-                    versions.sort(key=lambda version: priorities[version['id']] + version['name'])
+                    ORDER_BEFORE, ORDER_AFTER = 0, 1
 
-                    priority = normal = False
+                    alternatives = []
                     for version in versions:
-                        if not normal and "?" in priorities[version['id']]:
-                            if priority:
+                        trackmatch = countrymatch = formatmatch = ORDER_BEFORE
+                        if version['totaltracks'] != album_tracks_count:
+                            trackmatch = ORDER_AFTER
+                        if preferred_countries:
+                            countries = set(version['countries'])
+                            if not countries or not countries.intersection(preferred_countries):
+                                countrymatch = ORDER_AFTER
+                        if preferred_formats:
+                            formats = set(version['formats'])
+                            if not formats or not formats.intersection(preferred_formats):
+                                formatmatch = ORDER_AFTER
+                        group = (trackmatch, countrymatch, formatmatch)
+                        # order by group, name, and id on push
+                        heappush(alternatives, (group, version['name'], version['id']))
+
+                    prev_group = None
+                    while alternatives:
+                        group, action_text, release_id = heappop(alternatives)
+                        if group != prev_group:
+                            if prev_group is not None:
                                 releases_menu.addSeparator()
-                            normal = True
-                        else:
-                            priority = True
-                        action = releases_menu.addAction(version["name"])
+                            prev_group = group
+                        action = releases_menu.addAction(action_text)
                         action.setCheckable(True)
-                        if obj.id == version["id"]:
+                        if obj.id == release_id:
                             action.setChecked(True)
-                        action.triggered.connect(partial(obj.switch_release_version, version["id"]))
+                        action.triggered.connect(partial(obj.switch_release_version, release_id))
 
+                    versions_count = len(versions)
+                    if versions_count > 1:
+                        releases_menu.setTitle(_("&Other versions (%d)") % versions_count)
                 if obj.release_group.loaded:
                     _add_other_versions()
                 else:
