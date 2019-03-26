@@ -63,8 +63,8 @@ class ProviderOptions(OptionsPage):
 def register_cover_art_provider(provider):
     _cover_art_providers.register(provider.__module__, provider)
     if hasattr(provider, 'OPTIONS') and provider.OPTIONS:
-        provider.OPTIONS.NAME = provider.NAME
-        provider.OPTIONS.TITLE = provider.TITLE or provider.NAME
+        provider.OPTIONS.NAME = provider.name
+        provider.OPTIONS.TITLE = provider.title
         register_options_page(provider.OPTIONS)
 
 
@@ -87,17 +87,12 @@ def cover_art_providers():
 
     # use previously built dict to order providers, according to current ca_providers
     # (yet) unknown providers are placed at the end, disabled
-    ordered_providers = sorted(_cover_art_providers, key=lambda p: order[p.NAME].position)
+    ordered_providers = sorted(_cover_art_providers, key=lambda p: order[p.name].position)
 
-    log.debug("CA Providers order: %s", ' > '.join([p.NAME for p in ordered_providers]))
+    log.debug("CA Providers order: %s", ' > '.join([p.name for p in ordered_providers]))
 
     for p in ordered_providers:
-        name = p.NAME
-        try:
-            title = p.TITLE
-        except AttributeError:
-            title = name
-        yield ProviderTuple(name=name, title=title, enabled=order[name].enabled, cls=p)
+        yield ProviderTuple(name=p.name, title=p.title, enabled=order[p.name].enabled, cls=p)
 
 
 def is_provider_enabled(provider_name):
@@ -109,7 +104,20 @@ def is_provider_enabled(provider_name):
     return False
 
 
-class CoverArtProvider(object):
+class CoverArtProviderMetaClass(type):
+    """Provide default properties name & title for CoverArtProvider
+    It is recommended to use those in place of NAME and TITLE that might not be defined
+    """
+    @property
+    def name(cls):
+        return getattr(cls, 'NAME', cls.__name__)
+
+    @property
+    def title(cls):
+        return getattr(cls, 'TITLE', cls.name)
+
+
+class CoverArtProvider(metaclass=CoverArtProviderMetaClass):
     """Subclasses of this class need to reimplement at least `queue_images()`.
        `__init__()` does not have to do anything.
        `queue_images()` will be called if `enabled()` returns `True`.
@@ -142,9 +150,9 @@ class CoverArtProvider(object):
         through options. It is used when iterating through providers
         to decide to skip or process one.
         It can be subclassed to add conditions."""
-        enabled = is_provider_enabled(self.NAME)
+        enabled = is_provider_enabled(self.name)
         if not enabled:
-            log.debug("%s disabled by user" % self.NAME)
+            log.debug("%s disabled by user" % self.name)
         return enabled
 
     def queue_images(self):
