@@ -49,6 +49,13 @@ from picard.util import (
 )
 
 
+INVALID_CHARS = re.compile('([^\x20-}]|=)')
+
+
+def sanitize_key(key):
+    return INVALID_CHARS.sub('', key)
+
+
 class VCommentFile(File):
 
     """Generic VComment-based file."""
@@ -94,7 +101,7 @@ class VCommentFile(File):
                         name, email = name.split(':', 1)
                     except ValueError:
                         email = ''
-                    if email != config.setting['rating_user_email']:
+                    if email != sanitize_key(config.setting['rating_user_email']):
                         continue
                     name = '~rating'
                     try:
@@ -186,8 +193,9 @@ class VCommentFile(File):
         for name, value in metadata.items():
             if name == '~rating':
                 # Save rating according to http://code.google.com/p/quodlibet/wiki/Specs_VorbisComments
-                if config.setting['rating_user_email']:
-                    name = 'rating:%s' % config.setting['rating_user_email']
+                user_email = sanitize_key(config.setting['rating_user_email'])
+                if user_email:
+                    name = 'rating:%s' % user_email
                 else:
                     name = 'rating'
                 value = str(float(value) / (config.setting['rating_steps'] - 1))

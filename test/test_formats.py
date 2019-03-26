@@ -290,6 +290,16 @@ class CommonTests:
                 self.assertEqual(int(loaded_metadata['~rating']), rating, '~rating: %r != %r' % (loaded_metadata['~rating'], rating))
 
         @skipUnlessTestfile
+        def test_invalid_rating_email(self):
+            if not self.supports_ratings:
+                raise unittest.SkipTest("Ratings not supported")
+            metadata = Metadata()
+            metadata['~rating'] = 3
+            config.setting['rating_user_email'] = '{in\tvälid}'
+            loaded_metadata = save_and_load_metadata(self.filename, metadata)
+            self.assertEqual(loaded_metadata['~rating'], metadata['~rating'])
+
+        @skipUnlessTestfile
         def test_guess_format(self):
             temp_file = self.copy_of_original_testfile()
             audio = picard.formats.guess_format(temp_file)
