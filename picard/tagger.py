@@ -292,7 +292,7 @@ class Tagger(QtWidgets.QApplication):
         else:
             callback(False)
 
-    def on_mb_authorization_finished(self, callback, successful):
+    def on_mb_authorization_finished(self, callback, successful=False):
         if successful:
             self.webservice.oauth_manager.fetch_username(
                 partial(self.on_mb_login_finished, callback))

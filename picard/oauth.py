@@ -44,13 +44,78 @@ class OAuthManager(object):
 
     def __init__(self, webservice):
         self.webservice = webservice
+        self.setting = config.setting
+        self.persist = config.persist
+
+    @property
+    def host(self):
+        return self.setting['server_host']
+
+    @property
+    def port(self):
+        return self.setting['server_port']
+
+    @property
+    def refresh_token(self):
+        return self.persist["oauth_refresh_token"]
+
+    @refresh_token.setter
+    def refresh_token(self, value):
+        self.persist["oauth_refresh_token"] = value
+
+    @refresh_token.deleter
+    def refresh_token(self):
+        self.persist.remove("oauth_refresh_token")
+
+    @property
+    def refresh_token_scopes(self):
+        return self.persist["oauth_refresh_token_scopes"]
+
+    @refresh_token_scopes.setter
+    def refresh_token_scopes(self, value):
+        self.persist["oauth_refresh_token_scopes"] = value
+
+    @refresh_token_scopes.deleter
+    def refresh_token_scopes(self):
+        self.persist.remove("oauth_refresh_token_scopes")
+
+    @property
+    def access_token(self):
+        return self.persist["oauth_access_token"]
+
+    @access_token.setter
+    def access_token(self, value):
+        self.persist["oauth_access_token"] = value
+
+    @access_token.deleter
+    def access_token(self):
+        self.persist.remove("oauth_access_token")
+
+    @property
+    def access_token_expires(self):
+        return self.persist["oauth_access_token_expires"]
+
+    @access_token_expires.setter
+    def access_token_expires(self, value):
+        self.persist["oauth_access_token_expires"] = value
+
+    @access_token_expires.deleter
+    def access_token_expires(self):
+        self.persist.remove("oauth_access_token_expires")
+
+    @property
+    def username(self):
+        return self.persist["oauth_username"]
+
+    @username.setter
+    def username(self, value):
+        self.persist["oauth_username"] = value
 
     def is_authorized(self):
-        return bool(config.persist["oauth_refresh_token"] and
-                    config.persist["oauth_refresh_token_scopes"])
+        return bool(self.refresh_token and self.refresh_token_scopes)
 
     def is_logged_in(self):
-        return self.is_authorized() and bool(config.persist["oauth_username"])
+        return self.is_authorized() and bool(self.username)
 
     def revoke_tokens(self):
         # TODO actually revoke the tokens on MB (I think it's not implementented there)
@@ -58,62 +123,53 @@ class OAuthManager(object):
         self.forget_access_token()
 
     def forget_refresh_token(self):
-        config.persist.remove("oauth_refresh_token")
-        config.persist.remove("oauth_refresh_token_scopes")
+        del self.refresh_token
+        del self.refresh_token_scopes
 
     def forget_access_token(self):
-        config.persist.remove("oauth_access_token")
-        config.persist.remove("oauth_access_token_expires")
+        del self.access_token
+        del self.access_token_expires
 
     def get_access_token(self, callback):
         if not self.is_authorized():
-            callback(None)
+            callback(access_token=None)
         else:
-            access_token = config.persist["oauth_access_token"]
-            access_token_expires = config.persist["oauth_access_token_expires"]
-            if access_token and time.time() < access_token_expires:
-                callback(access_token)
+            if self.access_token and time.time() < self.access_token_expires:
+                callback(access_token=self.access_token)
             else:
                 self.forget_access_token()
                 self.refresh_access_token(callback)
 
     def get_authorization_url(self, scopes):
-        host, port = config.setting['server_host'], config.setting['server_port']
         params = {"response_type": "code", "client_id":
                   MUSICBRAINZ_OAUTH_CLIENT_ID, "redirect_uri":
                   "urn:ietf:wg:oauth:2.0:oob", "scope": scopes}
-        url = build_qurl(host, port, path="/oauth2/authorize",
+        url = build_qurl(self.host, self.port, path="/oauth2/authorize",
                          queryargs=params)
         return bytes(url.toEncoded()).decode()
 
     def set_refresh_token(self, refresh_token, scopes):
         log.debug("OAuth: got refresh_token %s with scopes %s", refresh_token, scopes)
-        config.persist["oauth_refresh_token"] = refresh_token
-        config.persist["oauth_refresh_token_scopes"] = scopes
+        self.refresh_token = refresh_token
+        self.refresh_token_scopes = scopes
 
     def set_access_token(self, access_token, expires_in):
         log.debug("OAuth: got access_token %s that expires in %s seconds", access_token, expires_in)
-        config.persist["oauth_access_token"] = access_token
-        config.persist["oauth_access_token_expires"] = int(time.time() + expires_in - 60)
-
-    def set_username(self, username):
-        log.debug("OAuth: got username %s", username)
-        config.persist["oauth_username"] = username
+        self.access_token = access_token
+        self.access_token_expires = int(time.time() + expires_in - 60)
 
     def refresh_access_token(self, callback):
-        refresh_token = config.persist["oauth_refresh_token"]
-        log.debug("OAuth: refreshing access_token with a refresh_token %s", refresh_token)
-        host, port = config.setting['server_host'], config.setting['server_port']
+        log.debug("OAuth: refreshing access_token with a refresh_token %s", self.refresh_token)
         path = "/oauth2/token"
         url = QUrl()
         url_query = QUrlQuery()
         url_query.addQueryItem("grant_type", "refresh_token")
-        url_query.addQueryItem("refresh_token", refresh_token)
+        url_query.addQueryItem("refresh_token", self.refresh_token)
         url_query.addQueryItem("client_id", MUSICBRAINZ_OAUTH_CLIENT_ID)
         url_query.addQueryItem("client_secret", MUSICBRAINZ_OAUTH_CLIENT_SECRET)
         url.setQuery(url_query.query(QUrl.FullyEncoded))
         data = url.query()
-        self.webservice.post(host, port, path, data,
+        self.webservice.post(self.host, self.port, path, data,
                              partial(self.on_refresh_access_token_finished, callback),
                              mblogin=True, priority=True, important=True,
                              request_mimetype="application/x-www-form-urlencoded")
@@ -128,16 +184,15 @@ class OAuthManager(object):
                     if response["error"] == "invalid_grant":
                         self.forget_refresh_token()
             else:
-                self.set_access_token(data["access_token"], data["expires_in"])
                 access_token = data["access_token"]
+                self.set_access_token(access_token, data["expires_in"])
         except Exception as e:
             log.error('OAuth: Unexpected error handling access token response: %r', e)
         finally:
-            callback(access_token)
+            callback(access_token=access_token)
 
     def exchange_authorization_code(self, authorization_code, scopes, callback):
         log.debug("OAuth: exchanging authorization_code %s for an access_token", authorization_code)
-        host, port = config.setting['server_host'], config.setting['server_port']
         path = "/oauth2/token"
         url = QUrl()
         url_query = QUrlQuery()
@@ -148,7 +203,7 @@ class OAuthManager(object):
         url_query.addQueryItem("redirect_uri", "urn:ietf:wg:oauth:2.0:oob")
         url.setQuery(url_query.query(QUrl.FullyEncoded))
         data = url.query()
-        self.webservice.post(host, port, path, data,
+        self.webservice.post(self.host, self.port, path, data,
                              partial(self.on_exchange_authorization_code_finished, scopes, callback),
                              mblogin=True, priority=True, important=True,
                              request_mimetype="application/x-www-form-urlencoded")
@@ -165,13 +220,12 @@ class OAuthManager(object):
         except Exception as e:
             log.error('OAuth: Unexpected error handling authorization code response: %r', e)
         finally:
-            callback(successful)
+            callback(successful=successful)
 
     def fetch_username(self, callback):
         log.debug("OAuth: fetching username")
-        host, port = config.setting['server_host'], config.setting['server_port']
         path = "/oauth2/userinfo"
-        self.webservice.get(host, port, path,
+        self.webservice.get(self.host, self.port, path,
                             partial(self.on_fetch_username_finished, callback),
                             mblogin=True, priority=True, important=True)
 
@@ -181,7 +235,8 @@ class OAuthManager(object):
             if error:
                 log.error("OAuth: username fetching failed: %s", data)
             else:
-                self.set_username(data["sub"])
+                self.username = data["sub"]
+                log.debug("OAuth: got username %s", self.username)
                 successful = True
         except Exception as e:
             log.error('OAuth: Unexpected error handling username fetch response: %r', e)
