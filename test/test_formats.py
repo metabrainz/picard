@@ -486,7 +486,17 @@ class CommonTests:
             self.test_preserve_unchanged_tags()
 
 
-class FLACTest(CommonTests.FormatsTest):
+    class VorbisTest(FormatsTest):
+        def test_invalid_rating(self):
+            filename = os.path.join('test', 'data', 'test-invalid-rating.ogg')
+            old_log_level = log.get_effective_level()
+            log.set_level(logging.ERROR)
+            metadata = load_metadata(filename)
+            log.set_level(old_log_level)
+            self.assertEqual(metadata["~rating"], "THERATING")
+
+
+class FLACTest(CommonTests.VorbisTest):
     testfile = 'test.flac'
     supports_ratings = True
 
@@ -528,26 +538,18 @@ class AIFFTest(CommonTests.ID3Test):
     supports_ratings = False
 
 
-class OggVorbisTest(CommonTests.FormatsTest):
+class OggVorbisTest(CommonTests.VorbisTest):
     testfile = 'test.ogg'
     supports_ratings = True
 
-    def test_invalid_rating(self):
-        filename = os.path.join('test', 'data', 'test-invalid-rating.ogg')
-        old_log_level = log.get_effective_level()
-        log.set_level(logging.ERROR)
-        metadata = load_metadata(filename)
-        log.set_level(old_log_level)
-        self.assertEqual(metadata["~rating"], "THERATING")
 
-
-class OggSpxTest(CommonTests.FormatsTest):
+class OggSpxTest(CommonTests.VorbisTest):
     testfile = 'test.spx'
     supports_ratings = True
 
 
-class OggOpusTest(CommonTests.FormatsTest):
-    testfile = 'test.spx'
+class OggOpusTest(CommonTests.VorbisTest):
+    testfile = 'test.opus'
     supports_ratings = True
 
 
