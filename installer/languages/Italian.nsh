@@ -1,4 +1,4 @@
-LangString MsgAlreadyInstalled ${LANG_ENGLISH} '${PRODUCT_NAME} è già installato.$\n$\nFai clic su "OK" per disinstallare la versione installata o su "Annulla" per annullare l'aggiornamento.'
+LangString MsgAlreadyInstalled ${LANG_ENGLISH} '${PRODUCT_NAME} è già installato.$\n$\nFai clic su "OK" per disinstallare la versione installata o su "Annulla" per annullare l$\'aggiornamento.'
 LangString MsgApplicationRunning ${LANG_ENGLISH} "L'applicazione ${PRODUCT_NAME} è in esecuzione.$\nChiudi l'applicazione e riprova."
 LangString MsgRequires64Bit ${LANG_ENGLISH} "Questa versione di ${PRODUCT_NAME} richiede un sistema Windows a 64bit."
 LangString MuiDescriptionRequired ${LANG_ENGLISH} "Installa ${PRODUCT_NAME} e i relativi file necessari alla sua esecuzione."
