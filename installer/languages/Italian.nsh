@@ -1,0 +1,13 @@
+LangString MsgAlreadyInstalled ${LANG_ENGLISH} '${PRODUCT_NAME} è già installato.$\n$\nFai clic su "OK" per disinstallare la versione installata o su "Annulla" per annullare l'aggiornamento.'
+LangString MsgApplicationRunning ${LANG_ENGLISH} "L'applicazione ${PRODUCT_NAME} è in esecuzione.$\nChiudi l'applicazione e riprova."
+LangString MsgRequires64Bit ${LANG_ENGLISH} "Questa versione di ${PRODUCT_NAME} richiede un sistema Windows a 64bit."
+LangString MuiDescriptionRequired ${LANG_ENGLISH} "Installa ${PRODUCT_NAME} e i relativi file necessari alla sua esecuzione."
+LangString MuiDescriptionLang ${LANG_ENGLISH} "Installa le traduzioni di ${PRODUCT_NAME} per le differenti lingue."
+LangString MuiDescriptionShortcuts ${LANG_ENGLISH} "Installa collegamento per eseguire ${PRODUCT_NAME}."
+LangString MuiDescriptionDesktop ${LANG_ENGLISH} "Installa collegamento sul desktop."
+LangString MuiDescriptionStarteMenu ${LANG_ENGLISH} "Installa collegamento nel menu Start."
+LangString SectionDesktop ${LANG_ENGLISH} "Desktop"
+LangString SectionLanguages ${LANG_ENGLISH} "Lingue"
+LangString SectionRequired ${LANG_ENGLISH} "Richiesto"
+LangString SectionShortcuts ${LANG_ENGLISH} "Collegamenti"
+LangString SectionStartMenu ${LANG_ENGLISH} "Menu Start"
