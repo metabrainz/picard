@@ -16,6 +16,7 @@ OutFile "picard-setup-${PRODUCT_VERSION}.exe"
 ShowInstDetails show
 ShowUnInstDetails show
 BrandingText " "
+Unicode true
 ; We need this so Windows 7/Vista lets us install what we need to
 RequestExecutionLevel admin
 
@@ -73,8 +74,41 @@ UninstPage custom un.RemoveSettingsPage
 ReserveFile "removeSettings.ini"
 ReserveFile "${NSISDIR}\Plugins\x86-unicode\InstallOptions.dll"
 
+; Language handling
+!macro LOAD_LANGUAGE LANGUAGE
+  !insertmacro MUI_LANGUAGE "${LANGUAGE}"
+  !include "languages\${LANGUAGE}.nsh"
+!macroend
+
 ; Language files
-!insertmacro MUI_LANGUAGE "English"
+!insertmacro LOAD_LANGUAGE "English"
+; !insertmacro LOAD_LANGUAGE "Arabic"
+; !insertmacro LOAD_LANGUAGE "Catalan"
+; !insertmacro LOAD_LANGUAGE "Czech"
+; !insertmacro LOAD_LANGUAGE "Danish"
+; !insertmacro LOAD_LANGUAGE "Dutch"
+; !insertmacro LOAD_LANGUAGE "Estonian"
+; !insertmacro LOAD_LANGUAGE "Finnish"
+; !insertmacro LOAD_LANGUAGE "French"
+!insertmacro LOAD_LANGUAGE "German"
+; !insertmacro LOAD_LANGUAGE "Greek"
+; !insertmacro LOAD_LANGUAGE "Hebrew"
+; !insertmacro LOAD_LANGUAGE "Italian"
+; !insertmacro LOAD_LANGUAGE "Japanese"
+; !insertmacro LOAD_LANGUAGE "Korean"
+; !insertmacro LOAD_LANGUAGE "Norwegian"
+; !insertmacro LOAD_LANGUAGE "Polish"
+; !insertmacro LOAD_LANGUAGE "Portuguese"
+; !insertmacro LOAD_LANGUAGE "PortugueseBR"
+; !insertmacro LOAD_LANGUAGE "Russian"
+; !insertmacro LOAD_LANGUAGE "SimpChinese"
+; !insertmacro LOAD_LANGUAGE "Slovak"
+; !insertmacro LOAD_LANGUAGE "Slovenian"
+; !insertmacro LOAD_LANGUAGE "Spanish"
+; !insertmacro LOAD_LANGUAGE "Swedish"
+; !insertmacro LOAD_LANGUAGE "TradChinese"
+; !insertmacro LOAD_LANGUAGE "Turkish"
+; !insertmacro LOAD_LANGUAGE "Ukrainian"
 
 ; Adds info to installer
 VIProductVersion "%(file_version)s"
@@ -87,7 +121,7 @@ VIAddVersionKey /LANG=${LANG_ENGLISH} "FileVersion" "%(version)s"
 VIAddVersionKey /LANG=${LANG_ENGLISH} "ProductVersion" "%(version)s"
 
 ; Install
-Section !Required req
+Section "!$(SectionRequired)" required
   SectionIn RO
     SetOutPath "$INSTDIR"
     SetOverwrite on
@@ -113,23 +147,23 @@ Section !Required req
 
 SectionEnd
 
-Section "Languages" lang
+Section "$(SectionLanguages)" lang
   RMDir "$INSTDIR\locale"
   CreateDirectory "$INSTDIR\locale"
   SetOutPath "$INSTDIR\locale"
   File /r "${PROJECT_PATH}\dist\picard\locale\"
 SectionEnd
 
-SubSection "Shortcuts" shortcuts
+SubSection "$(SectionShortcuts)" shortcuts
 
-  Section "Startmenu" startmenu
+  Section "$(SectionStartmenu)" startmenu
     SetShellVarContext all
     SetOutPath "$INSTDIR"
     CreateShortCut "$SMPROGRAMS\${PRODUCT_NAME}.lnk" "$INSTDIR\picard.exe" \
       "" "" "" SW_SHOWNORMAL "" "${PRODUCT_DESCRIPTION}"
   SectionEnd
 
-  Section "Desktop" desktop
+  Section "$(SectionDesktop)" desktop
     SetShellVarContext all
     SetOutPath "$INSTDIR"
     CreateShortCut "$DESKTOP\${PRODUCT_NAME}.lnk" "$INSTDIR\picard.exe" \
@@ -179,7 +213,7 @@ Function un.onInit
   !insertmacro INSTALLOPTIONS_EXTRACT "removeSettings.ini"
   FindWindow $0 "${WNDCLASS}" "${WNDTITLE}"
   StrCmp $0 0 continueInstall
-    MessageBox MB_ICONSTOP|MB_OK "The application you are trying to remove is running. Close it and try again."
+    MessageBox MB_ICONSTOP|MB_OK "$(MsgApplicationRunning)"
     Abort
   continueInstall:
 FunctionEnd
@@ -187,14 +221,14 @@ FunctionEnd
 Function .onInit
   ; Abort installation if this is not a 64 bit system
   ${IfNot} ${RunningX64}
-    MessageBox MB_ICONSTOP|MB_OK "This version of ${PRODUCT_NAME} requires a 64-bit Windows system."
+    MessageBox MB_ICONSTOP|MB_OK "$(MsgRequires64Bit)"
     Abort
   ${EndIf}
 
   ; Abort installation if Picard is currently running
   FindWindow $0 "${WNDCLASS}" "${WNDTITLE}"
   StrCmp $0 0 continueInstall
-    MessageBox MB_ICONSTOP|MB_OK "The application you are trying to install is running. Close it and try again."
+    MessageBox MB_ICONSTOP|MB_OK "$(MsgApplicationRunning)"
     Abort
   continueInstall:
 
@@ -202,10 +236,7 @@ Function .onInit
   ReadRegStr $R0 HKLM "${PRODUCT_UNINST_KEY}" "UninstallString"
   StrCmp $R0 "" skipUninstall
 
-  MessageBox MB_OKCANCEL|MB_ICONEXCLAMATION \
-  "${PRODUCT_NAME} is already installed. $\n$\nClick `OK` to remove the \
-  previous version or `Cancel` to cancel this upgrade." \
-  IDOK uninstall
+  MessageBox MB_OKCANCEL|MB_ICONEXCLAMATION "$(MsgAlreadyInstalled)" IDOK uninstall
   Abort
 
   uninstall:
@@ -224,8 +255,9 @@ Function .onInit
 FunctionEnd
 
 !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
-  !insertmacro MUI_DESCRIPTION_TEXT ${req} "Installs ${PRODUCT_NAME} along with the necessary files for it run."
-  !insertmacro MUI_DESCRIPTION_TEXT ${lang} "Installs translations of ${PRODUCT_NAME} in different languages."
-  !insertmacro MUI_DESCRIPTION_TEXT ${desktop} "Installs a shortcut on the desktop."
-  !insertmacro MUI_DESCRIPTION_TEXT ${startmenu} "Installs a shortcut in the Start Menu."
+  !insertmacro MUI_DESCRIPTION_TEXT ${required} "$(MuiDescriptionRequired)"
+  !insertmacro MUI_DESCRIPTION_TEXT ${lang} "$(MuiDescriptionLang)"
+  !insertmacro MUI_DESCRIPTION_TEXT ${shortcuts} "$(MuiDescriptionShortcuts)"
+  !insertmacro MUI_DESCRIPTION_TEXT ${desktop} "$(MuiDescriptionDesktop)"
+  !insertmacro MUI_DESCRIPTION_TEXT ${startmenu} "$(MuiDescriptionStarteMenu)"
 !insertmacro MUI_FUNCTION_DESCRIPTION_END
