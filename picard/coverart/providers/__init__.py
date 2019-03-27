@@ -16,6 +16,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+from collections import defaultdict, namedtuple
 import traceback
 
 from picard import log, config
@@ -62,37 +63,56 @@ class ProviderOptions(OptionsPage):
 def register_cover_art_provider(provider):
     _cover_art_providers.register(provider.__module__, provider)
     if hasattr(provider, 'OPTIONS') and provider.OPTIONS:
-        provider.OPTIONS.NAME = provider.NAME
-        provider.OPTIONS.TITLE = provider.TITLE or provider.NAME
+        provider.OPTIONS.NAME = provider.name
+        provider.OPTIONS.TITLE = provider.title
         register_options_page(provider.OPTIONS)
 
 
+# named tuples used by cover_art_providers()
+ProviderTuple = namedtuple('ProviderTuple', 'name title enabled cls')
+PInfoTuple = namedtuple('PInfoTuple', 'position enabled')
+POrderTuple = namedtuple('OrderTuple', 'name position enabled')
+
+
 def cover_art_providers():
-    order = [p[0] for p in config.setting['ca_providers']]
+    def from_ca_providers_option():
+        """Iterate through ca_providers option and yield name, position and enabled"""
+        for pos, (name, enabled) in enumerate(config.setting['ca_providers']):
+            yield POrderTuple(name=name, position=pos, enabled=enabled)
 
-    def _key_provider(p):
-        try:
-            return order.index(p.NAME)
-        except ValueError:
-            return 666  # move to the end
-    providers = []
-    for p in sorted(_cover_art_providers, key=_key_provider):
-        providers.append(p)
-    log.debug("CA Providers order: %s",
-              ' > '.join([p.NAME for p in providers]))
-    return providers
+    # build a defaultdict with provider name as key, and PInfoTuple as value
+    order = defaultdict(lambda: PInfoTuple(position=666, enabled=False))
+    for o in from_ca_providers_option():
+        order[o.name] = PInfoTuple(position=o.position, enabled=o.enabled)
+
+    # use previously built dict to order providers, according to current ca_providers
+    # (yet) unknown providers are placed at the end, disabled
+    ordered_providers = sorted(_cover_art_providers, key=lambda p: order[p.name].position)
+
+    def label(p):
+        checked = 'x' if order[p.name].enabled else ' '
+        return "%s [%s]" % (p.name, checked)
+
+    log.debug("CA Providers order: %s", ' > '.join([label(p) for p in ordered_providers]))
+
+    for p in ordered_providers:
+        yield ProviderTuple(name=p.name, title=p.title, enabled=order[p.name].enabled, cls=p)
 
 
-def is_provider_enabled(provider_name):
-    """Test if provider with name `provider_name` was enabled
-    by user through options"""
-    for name, checked in config.setting['ca_providers']:
-        if name == provider_name:
-            return checked
-    return False
+class CoverArtProviderMetaClass(type):
+    """Provide default properties name & title for CoverArtProvider
+    It is recommended to use those in place of NAME and TITLE that might not be defined
+    """
+    @property
+    def name(cls):
+        return getattr(cls, 'NAME', cls.__name__)
+
+    @property
+    def title(cls):
+        return getattr(cls, 'TITLE', cls.name)
 
 
-class CoverArtProvider(object):
+class CoverArtProvider(metaclass=CoverArtProviderMetaClass):
     """Subclasses of this class need to reimplement at least `queue_images()`.
        `__init__()` does not have to do anything.
        `queue_images()` will be called if `enabled()` returns `True`.
@@ -121,24 +141,12 @@ class CoverArtProvider(object):
         self.album = coverart.album
 
     def enabled(self):
-        """By default, return True if user enabled the provider
-        through options. It is used when iterating through providers
-        to decide to skip or process one.
-        It can be subclassed to add conditions."""
-        enabled = is_provider_enabled(self.NAME)
-        if not enabled:
-            log.debug("%s disabled by user" % self.NAME)
-        return enabled
+        return not self.coverart.front_image_found
 
     def queue_images(self):
         # this method has to return CoverArtProvider.FINISHED or
         # CoverArtProvider.WAIT
-        old = getattr(self, 'queue_downloads')  # compat with old plugins
-        if callable(old):
-            log.warning('CoverArtProvider: queue_downloads() was replaced by queue_images()')
-            return old()
-        else:
-            raise NotImplementedError
+        raise NotImplementedError
 
     def error(self, msg):
         self.coverart.album.error_append(msg)

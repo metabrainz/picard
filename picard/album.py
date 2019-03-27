@@ -36,7 +36,6 @@ from picard import (
 from picard.cluster import Cluster
 from picard.collection import add_release_to_user_collections
 from picard.const import VARIOUS_ARTISTS_ID
-from picard.coverart import coverart
 from picard.dataobj import DataObject
 from picard.file import File
 from picard.mbjson import (
@@ -47,7 +46,6 @@ from picard.mbjson import (
 )
 from picard.metadata import (
     Metadata,
-    register_album_metadata_processor,
     run_album_metadata_processors,
     run_track_metadata_processors,
 )
@@ -70,8 +68,6 @@ from picard.util.imagelist import (
 from picard.util.textencoding import asciipunct
 
 from picard.ui.item import Item
-
-register_album_metadata_processor(coverart)
 
 
 def _create_artist_node_dict(source_node):

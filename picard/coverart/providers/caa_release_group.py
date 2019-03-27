@@ -22,7 +22,6 @@ from picard.coverart.image import (
     CaaCoverArtImage,
     CaaThumbnailCoverArtImage,
 )
-from picard.coverart.providers import CoverArtProvider
 from picard.coverart.providers.caa import CoverArtProviderCaa
 
 
@@ -48,7 +47,7 @@ class CoverArtProviderCaaReleaseGroup(CoverArtProviderCaa):
     coverartimage_thumbnail_class = CaaThumbnailCoverArtImageRg
 
     def enabled(self):
-        return CoverArtProvider.enabled(self) and not self.coverart.front_image_found
+        return not self.coverart.front_image_found
 
     @property
     def _caa_path(self):
