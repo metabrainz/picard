@@ -69,9 +69,9 @@ class TestCoverArt(PicardTestCase):
             )
             tmp_file = coverartimage.tempfile_filename
             tmp_files.append(tmp_file)
-            l = os.path.getsize(tmp_file)
+            filesize = os.path.getsize(tmp_file)
             # ensure file was written, and check its length
-            self.assertEqual(l, len(imgdata2))
+            self.assertEqual(filesize, len(imgdata2))
             self.assertEqual(coverartimage.data, imgdata2)
 
             # set data again, with another payload
@@ -79,9 +79,9 @@ class TestCoverArt(PicardTestCase):
 
             tmp_file = coverartimage.tempfile_filename
             tmp_files.append(tmp_file)
-            l = os.path.getsize(tmp_file)
+            filesize = os.path.getsize(tmp_file)
             # check file length again
-            self.assertEqual(l, len(imgdata))
+            self.assertEqual(filesize, len(imgdata))
             self.assertEqual(coverartimage.data, imgdata)
 
         QtCore.QObject.tagger.run_cleanup()

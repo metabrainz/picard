@@ -183,7 +183,6 @@ class CommonTests:
                 value = metadata.length if key == 'length' else metadata[key]
                 self.assertEqual(value, expected_value)
 
-
     class TagFormatsTest(SimpleFormatsTest):
 
         def setUp(self):
@@ -194,7 +193,7 @@ class CommonTests:
         def setup_tags(self):
             if self.testfile:
                 supports_tag = ext_to_format(self.testfile_ext[1:]).supports_tag
-                self.unsupported_tags = {tag : val for tag, val in self.tags.items() if not supports_tag(tag)}
+                self.unsupported_tags = {tag: val for tag, val in self.tags.items() if not supports_tag(tag)}
                 self.remove_tags(self.unsupported_tags.keys())
 
         def set_tags(self, dict_tag_value=None):
