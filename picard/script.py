@@ -125,10 +125,7 @@ class ScriptFunction(object):
 class ScriptExpression(list):
 
     def eval(self, state):
-        result = []
-        for item in self:
-            result.append(item.eval(state))
-        return "".join(result)
+        return "".join([item.eval(state) for item in self])
 
 
 def isidentif(ch):
