@@ -41,6 +41,8 @@ from picard.coverart.providers import (
     cover_art_providers,
 )
 
+from picard.metadata import register_album_metadata_processor
+
 
 class CoverArt:
 
@@ -231,10 +233,13 @@ class CoverArt:
         QObject.tagger.window.set_statusbar_message(*args, **kwargs)
 
 
-def coverart(album, metadata, release):
+def _retrieve_coverart(album, metadata, release):
     """Gets all cover art URLs from the metadata and then attempts to
     download the album art. """
 
     coverart = CoverArt(album, metadata, release)
     log.debug("New %r", coverart)
     coverart.retrieve()
+
+
+register_album_metadata_processor(_retrieve_coverart)
