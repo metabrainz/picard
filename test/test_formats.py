@@ -19,7 +19,7 @@ from picard.coverart.image import (
     TagCoverArtImage,
 )
 import picard.formats
-from picard.formats import ext_to_format
+from picard.formats import ext_to_format, vorbis
 from picard.metadata import Metadata
 
 settings = {
@@ -288,6 +288,16 @@ class CommonTests:
                 metadata['~rating'] = rating
                 loaded_metadata = save_and_load_metadata(self.filename, metadata)
                 self.assertEqual(int(loaded_metadata['~rating']), rating, '~rating: %r != %r' % (loaded_metadata['~rating'], rating))
+
+        @skipUnlessTestfile
+        def test_invalid_rating_email(self):
+            if not self.supports_ratings:
+                raise unittest.SkipTest("Ratings not supported")
+            metadata = Metadata()
+            metadata['~rating'] = 3
+            config.setting['rating_user_email'] = '{in\tvälid}'
+            loaded_metadata = save_and_load_metadata(self.filename, metadata)
+            self.assertEqual(loaded_metadata['~rating'], metadata['~rating'])
 
         @skipUnlessTestfile
         def test_guess_format(self):
@@ -597,6 +607,12 @@ class OptimFROGDUalStreamTest(CommonTests.FormatsTest):
     def test_format(self):
         metadata = load_metadata(self.filename)
         self.assertEqual(metadata['~format'], 'OptimFROG DualStream Audio')
+
+
+class VorbisUtilTest(PicardTestCase):
+    def test_sanitize_key(self):
+        sanitized = vorbis.sanitize_key(' \x1f=}~')
+        self.assertEqual(sanitized, ' }')
 
 
 cover_settings = {
