@@ -68,10 +68,10 @@ class picard_test(Command):
         import unittest
 
         names = []
-        for filename in glob.glob("test/test_*.py"):
-            name = os.path.splitext(os.path.basename(filename))[0]
+        for filename in glob.glob("test/**/test_*.py", recursive=True):
+            modules = os.path.splitext(filename)[0].split('/')
             if not self.tests or name in self.tests:
-                names.append("test." + name)
+                names.append('.'.join(modules))
 
         tests = unittest.defaultTestLoader.loadTestsFromNames(names)
         t = unittest.TextTestRunner(verbosity=self.verbosity)
