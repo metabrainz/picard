@@ -14,11 +14,25 @@ from .common import (
     load_raw,
     save_and_load_metadata,
     skipUnlessTestfile,
+    TAGS,
 )
 from .coverart import (
     CommonCoverArtTests,
     file_save_image,
 )
+
+
+VALID_KEYS = [
+    ' valid Key}',
+    '{ $ome tag}',
+]
+
+
+INVALID_KEYS = [
+    'invalid=key',
+    'invalid\x19key',
+    'invalid~key',
+]
 
 
 # prevent unittest to run tests in those classes
@@ -32,6 +46,13 @@ class CommonVorbisTests:
             metadata = load_metadata(filename)
             log.set_level(old_log_level)
             self.assertEqual(metadata["~rating"], "THERATING")
+
+        def test_supports_tags(self):
+            supports_tag = self.format.supports_tag
+            for key in VALID_KEYS + list(TAGS.keys()):
+                self.assertTrue(supports_tag(key), '%r should be supported' % key)
+            for key in INVALID_KEYS + ['']:
+                self.assertFalse(supports_tag(key), '%r should be unsupported' % key)
 
 
 class FLACTest(CommonVorbisTests.VorbisTestCase):
@@ -85,6 +106,12 @@ class VorbisUtilTest(PicardTestCase):
     def test_sanitize_key(self):
         sanitized = vorbis.sanitize_key(' \x1f=}~')
         self.assertEqual(sanitized, ' }')
+
+    def test_is_valid_key(self):
+        for key in VALID_KEYS:
+            self.assertTrue(vorbis.is_valid_key(key), '%r is valid' % key)
+        for key in INVALID_KEYS:
+            self.assertFalse(vorbis.is_valid_key(key), '%r is invalid' % key)
 
 
 class FlacCoverArtTest(CommonCoverArtTests.CoverArtTestCase):

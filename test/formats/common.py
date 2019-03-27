@@ -154,6 +154,7 @@ class CommonTests:
                 self.testfile_path = os.path.join('test', 'data', self.testfile)
                 self.testfile_ext = os.path.splitext(self.testfile)[1]
                 self.filename = self.copy_of_original_testfile()
+                self.format = ext_to_format(self.testfile_ext[1:])
 
         def copy_of_original_testfile(self):
             return self.copy_file_tmp(self.testfile_path, self.testfile_ext)
@@ -192,7 +193,7 @@ class CommonTests:
 
         def setup_tags(self):
             if self.testfile:
-                supports_tag = ext_to_format(self.testfile_ext[1:]).supports_tag
+                supports_tag = self.format.supports_tag
                 self.unsupported_tags = {tag: val for tag, val in self.tags.items() if not supports_tag(tag)}
                 self.remove_tags(self.unsupported_tags.keys())
 

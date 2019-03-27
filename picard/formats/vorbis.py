@@ -49,7 +49,7 @@ from picard.util import (
 )
 
 
-INVALID_CHARS = re.compile('([^\x20-}]|=)')
+INVALID_CHARS = re.compile('([^\x20-\x7d]|=)')
 
 
 def sanitize_key(key):
@@ -58,6 +58,15 @@ def sanitize_key(key):
     See https://www.xiph.org/vorbis/doc/v-comment.html#vectorformat
     """
     return INVALID_CHARS.sub('', key)
+
+
+def is_valid_key(key):
+    """
+    Return true if a string is a valid Vorbis comment key.
+    Valid characters for Vorbis comment field names are
+    ASCII 0x20 through 0x7D, 0x3D ('=') excluded.
+    """
+    return INVALID_CHARS.search(key) is None
 
 
 class VCommentFile(File):
@@ -296,7 +305,8 @@ class VCommentFile(File):
     @classmethod
     def supports_tag(cls, name):
         unsupported_tags = {}
-        return bool(name) and name not in unsupported_tags
+        return (bool(name) and name not in unsupported_tags
+                and is_valid_key(name))
 
 
 class FLACFile(VCommentFile):

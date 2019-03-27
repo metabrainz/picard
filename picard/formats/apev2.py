@@ -46,6 +46,20 @@ from picard.util import (
 from .mutagenext import tak
 
 
+INVALID_CHARS = re.compile('[^\x20-\x7e]')
+
+
+def is_valid_key(key):
+    """
+    Return true if a string is a valid APE tag key.
+    APE tag item keys can have a length of 2 (including) up to 255 (including)
+    characters in the range from 0x20 (Space) until 0x7E (Tilde).
+
+    See http://wiki.hydrogenaud.io/index.php?title=APE_key
+    """
+    return key and 2 <= len(key) <= 255 and INVALID_CHARS.search(key) is None
+
+
 class APEv2File(File):
 
     """Generic APEv2-based file."""

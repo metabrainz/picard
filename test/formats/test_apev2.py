@@ -1,8 +1,28 @@
+from test.picardtestcase import PicardTestCase
+
+from picard.formats import apev2
 from .common import (
     CommonTests,
     load_metadata,
 )
 from .coverart import CommonCoverArtTests
+
+
+VALID_KEYS = [
+    ' valid Key}',
+    '{ $ome tag~}',
+    'xx',
+    'x' * 255,
+]
+
+
+INVALID_KEYS = [
+    'invalid\x7fkey',
+    'invalid\x19key',
+    '',
+    'x',
+    'x' * 256,
+]
 
 
 class MonkeysAudioTest(CommonTests.TagFormatsTestCase):
@@ -82,3 +102,11 @@ class OptimFROGDUalStreamTest(CommonTests.TagFormatsTestCase):
 class ApeCoverArtTest(CommonCoverArtTests.CoverArtTestCase):
     testfile = 'test.ape'
     supports_types = False
+
+
+class Apev2UtilTest(PicardTestCase):
+    def test_is_valid_key(self):
+        for key in VALID_KEYS:
+            self.assertTrue(apev2.is_valid_key(key), '%r is valid' % key)
+        for key in INVALID_KEYS:
+            self.assertFalse(apev2.is_valid_key(key), '%r is invalid' % key)
