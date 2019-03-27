@@ -1,10 +1,20 @@
 from picard.formats import ext_to_format
-from .common import CommonTests
+from .common import (
+    CommonTests,
+    load_metadata,
+)
 
 
 class MP4Test(CommonTests.TagFormatsTest):
     testfile = 'test.m4a'
     supports_ratings = False
+    expected_info = {
+        'length': 106,
+        '~channels': '2',
+        '~sample_rate': '44100',
+        '~bitrate': '14.376',
+        '~bits_per_sample': '16',
+    }
 
     def test_supports_tag(self):
         fmt = ext_to_format(self.testfile_ext[1:])
@@ -15,3 +25,7 @@ class MP4Test(CommonTests.TagFormatsTest):
         self.assertTrue(fmt.supports_tag('discnumber'))
         self.assertTrue(fmt.supports_tag('lyrics:lead'))
         self.assertTrue(fmt.supports_tag('~length'))
+
+    def test_format(self):
+        metadata = load_metadata(self.filename)
+        self.assertIn('AAC LC', metadata['~format'])

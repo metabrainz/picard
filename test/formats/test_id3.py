@@ -192,18 +192,40 @@ class CommonId3Tests:
 class MP3Test(CommonId3Tests.Id3Test):
     testfile = 'test.mp3'
     supports_ratings = True
+    expected_info = {
+        'length': 156,
+        '~channels': '2',
+        '~sample_rate': '44100',
+    }
 
 
 class TTATest(CommonId3Tests.Id3Test):
     testfile = 'test.tta'
     supports_ratings = True
+    expected_info = {
+        'length': 82,
+        '~sample_rate': '44100',
+    }
 
 
 class DSFTest(CommonId3Tests.Id3Test):
     testfile = 'test.dsf'
     supports_ratings = True
+    expected_info = {
+        'length': 10,
+        '~channels': '2',
+        '~sample_rate': '5644800',
+        '~bitrate': '11289.6',
+        '~bits_per_sample': '1',
+    }
 
 
 class AIFFTest(CommonId3Tests.Id3Test):
     testfile = 'test.aiff'
     supports_ratings = False
+    expected_info = {
+        'length': 82,
+        '~channels': '2',
+        '~sample_rate': '44100',
+        '~bitrate': '1411.2',
+    }

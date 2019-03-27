@@ -146,6 +146,7 @@ class CommonTests:
         testfile = None
         testfile_ext = None
         testfile_path = None
+        expected_info = None
 
         def setUp(self):
             super().setUp()
@@ -169,7 +170,18 @@ class CommonTests:
         @skipUnlessTestfile
         def test_can_open_and_save(self):
             metadata = Metadata()
-            save_and_load_metadata(self.filename, metadata)
+            metadata = save_and_load_metadata(self.filename, metadata)
+            self.assertTrue(metadata['~format'])
+
+        @skipUnlessTestfile
+        def test_info(self):
+            if not self.expected_info:
+                raise unittest.SkipTest("Ratings not supported")
+            metadata = Metadata()
+            metadata = save_and_load_metadata(self.filename, metadata)
+            for key, expected_value in self.expected_info.items():
+                value = metadata.length if key == 'length' else metadata[key]
+                self.assertEqual(value, expected_value)
 
 
     class TagFormatsTest(SimpleFormatsTest):

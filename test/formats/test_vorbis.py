@@ -31,6 +31,11 @@ class CommonVorbisTests:
 class FLACTest(CommonVorbisTests.VorbisTest):
     testfile = 'test.flac'
     supports_ratings = True
+    expected_info = {
+        'length': 82,
+        '~channels': '2',
+        '~sample_rate': '44100',
+    }
 
     @skipUnlessTestfile
     def test_preserve_waveformatextensible_channel_mask(self):
@@ -44,16 +49,30 @@ class FLACTest(CommonVorbisTests.VorbisTest):
 class OggVorbisTest(CommonVorbisTests.VorbisTest):
     testfile = 'test.ogg'
     supports_ratings = True
+    expected_info = {
+        'length': 82,
+        '~channels': '2',
+        '~sample_rate': '44100',
+    }
 
 
 class OggSpxTest(CommonVorbisTests.VorbisTest):
     testfile = 'test.spx'
     supports_ratings = True
+    expected_info = {
+        'length': 89,
+        '~channels': '2',
+        '~bitrate': '29.6',
+    }
 
 
 class OggOpusTest(CommonVorbisTests.VorbisTest):
     testfile = 'test.opus'
     supports_ratings = True
+    expected_info = {
+        'length': 82,
+        '~channels': '2',
+    }
 
 
 class VorbisUtilTest(PicardTestCase):
