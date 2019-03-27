@@ -142,12 +142,7 @@ class CoverArtProvider(metaclass=CoverArtProviderMetaClass):
     def queue_images(self):
         # this method has to return CoverArtProvider.FINISHED or
         # CoverArtProvider.WAIT
-        old = getattr(self, 'queue_downloads')  # compat with old plugins
-        if callable(old):
-            log.warning('CoverArtProvider: queue_downloads() was replaced by queue_images()')
-            return old()
-        else:
-            raise NotImplementedError
+        raise NotImplementedError
 
     def error(self, msg):
         self.coverart.album.error_append(msg)
