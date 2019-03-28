@@ -1,8 +1,8 @@
 import os.path
+from test.picardtestcase import PicardTestCase
 
-from picard import (
-    config,
-)
+from picard import config
+from picard.formats import id3
 from picard.metadata import Metadata
 from .common import (
     CommonTests,
@@ -230,6 +230,33 @@ class AIFFTest(CommonId3Tests.Id3TestCase):
         '~sample_rate': '44100',
         '~bitrate': '1411.2',
     }
+
+
+class Id3UtilTest(PicardTestCase):
+    def test_id3text(self):
+        teststring = '日本語testÖäß'
+        self.assertEqual(id3.id3text(teststring, 0), '???testÖäß')
+        self.assertEqual(id3.id3text(teststring, 1), teststring)
+        self.assertEqual(id3.id3text(teststring, 3), teststring)
+
+    def test_image_type_from_id3_num(self):
+        self.assertEqual(id3.image_type_from_id3_num(0), 'other')
+        self.assertEqual(id3.image_type_from_id3_num(3), 'front')
+        self.assertEqual(id3.image_type_from_id3_num(6), 'medium')
+        self.assertEqual(id3.image_type_from_id3_num(9999), 'other')
+
+    def image_type_as_id3_num(self):
+        self.assertEqual(id3.image_type_from_id3_num('other'), 0)
+        self.assertEqual(id3.image_type_from_id3_num('front'), 3)
+        self.assertEqual(id3.image_type_from_id3_num('medium'), 6)
+        self.assertEqual(id3.image_type_from_id3_num('track'), 6)
+        self.assertEqual(id3.image_type_from_id3_num('unknowntype'), 0)
+
+    def types_from_id3(self):
+        self.assertEqual(id3.image_type_from_id3_num(0), ['other'])
+        self.assertEqual(id3.image_type_from_id3_num(3), ['front'])
+        self.assertEqual(id3.image_type_from_id3_num(6), ['medium'])
+        self.assertEqual(id3.image_type_from_id3_num(9999), ['other'])
 
 
 class Mp3CoverArtTest(CommonCoverArtTests.CoverArtTestCase):
