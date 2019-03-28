@@ -55,6 +55,7 @@ InstallDirRegKey HKLM "Software\MusicBrainz\${PRODUCT_NAME}" "InstallDir"
 !insertmacro MUI_PAGE_DIRECTORY
 
 ; Components page
+!define MUI_COMPONENTSPAGE_SMALLDESC
 !insertmacro MUI_PAGE_COMPONENTS
 
 ; Instfiles page
@@ -93,7 +94,7 @@ ReserveFile "${NSISDIR}\Plugins\x86-unicode\InstallOptions.dll"
 !insertmacro LOAD_LANGUAGE "German"
 ; !insertmacro LOAD_LANGUAGE "Greek"
 ; !insertmacro LOAD_LANGUAGE "Hebrew"
-; !insertmacro LOAD_LANGUAGE "Italian"
+!insertmacro LOAD_LANGUAGE "Italian"
 ; !insertmacro LOAD_LANGUAGE "Japanese"
 ; !insertmacro LOAD_LANGUAGE "Korean"
 ; !insertmacro LOAD_LANGUAGE "Norwegian"
@@ -210,12 +211,13 @@ SectionEnd
 !define WNDCLASS "Qt5QWindowIcon"
 !define WNDTITLE "${PRODUCT_NAME}"
 Function un.onInit
-  !insertmacro INSTALLOPTIONS_EXTRACT "removeSettings.ini"
   FindWindow $0 "${WNDCLASS}" "${WNDTITLE}"
   StrCmp $0 0 continueInstall
     MessageBox MB_ICONSTOP|MB_OK "$(MsgApplicationRunning)"
     Abort
   continueInstall:
+  !insertmacro INSTALLOPTIONS_EXTRACT "removeSettings.ini"
+  !insertmacro INSTALLOPTIONS_WRITE "removeSettings.ini" "Field 1" "Text" "$(OptionRemoveSettings)"
 FunctionEnd
 
 Function .onInit
