@@ -49,20 +49,22 @@ id3.TCMP = compatid3.TCMP
 id3.TSO2 = compatid3.TSO2
 id3.TSOC = compatid3.TSOC
 
-__ID3_IMAGE_TYPE_MAP = {
-    "other": 0,
-    "obi": 0,
-    "tray": 0,
-    "spine": 0,
-    "sticker": 0,
-    "front": 3,
-    "back": 4,
-    "booklet": 5,
-    "medium": 6,
-    "track": 6,
-}
+__IMAGE_TYPES = [
+    ("obi", 0),
+    ("tray", 0),
+    ("spine", 0),
+    ("sticker", 0),
+    ("other", 0),
+    ("front", 3),
+    ("back", 4),
+    ("booklet", 5),
+    ("track", 6),
+    ("medium", 6),
+]
 
-__ID3_REVERSE_IMAGE_TYPE_MAP = dict([(v, k) for k, v in __ID3_IMAGE_TYPE_MAP.items()])
+__ID3_IMAGE_TYPE_MAP = dict(__IMAGE_TYPES)
+
+__ID3_REVERSE_IMAGE_TYPE_MAP = dict([(v, k) for k, v in __IMAGE_TYPES])
 
 
 def id3text(text, encoding):

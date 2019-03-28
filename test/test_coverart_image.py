@@ -1,6 +1,9 @@
 #!/usr/bin/env python
 # coding: utf-8
+import os.path
 import unittest
+
+from PyQt5 import QtCore
 
 from test.picardtestcase import (
     PicardTestCase,
@@ -25,6 +28,11 @@ def create_image(extra_data, types=None, support_types=False,
 
 
 class CoverArtImageTest(PicardTestCase):
+    def setUp(self):
+        # Cover art images uses DataHash, which registers a cleanup job
+        # to clear temporary files.
+        self.addCleanup(QtCore.QObject.tagger.run_cleanup)
+
     def test_is_front_image_no_types(self):
         image = create_image(b'a')
         self.assertTrue(image.is_front_image())
@@ -83,6 +91,26 @@ class CoverArtImageTest(PicardTestCase):
         self.assertNotEqual(image1, image2)
         self.assertEqual(image2, image3)
         self.assertNotEqual(image2, image4)
+
+    def test_set_data(self):
+        imgdata = create_fake_png(b'a')
+        imgdata2 = create_fake_png(b'xxx')
+        # set data once
+        coverartimage = CoverArtImage(data=imgdata2)
+        tmp_file = coverartimage.tempfile_filename
+        filesize = os.path.getsize(tmp_file)
+        # ensure file was written, and check its length
+        self.assertEqual(filesize, len(imgdata2))
+        self.assertEqual(coverartimage.data, imgdata2)
+
+        # set data again, with another payload
+        coverartimage.set_data(imgdata)
+
+        tmp_file = coverartimage.tempfile_filename
+        filesize = os.path.getsize(tmp_file)
+        # check file length again
+        self.assertEqual(filesize, len(imgdata))
+        self.assertEqual(coverartimage.data, imgdata)
 
 
 class LocalFileCoverArtImageTest(PicardTestCase):
