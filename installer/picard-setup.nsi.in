@@ -55,6 +55,7 @@ InstallDirRegKey HKLM "Software\MusicBrainz\${PRODUCT_NAME}" "InstallDir"
 !insertmacro MUI_PAGE_DIRECTORY
 
 ; Components page
+!define MUI_COMPONENTSPAGE_SMALLDESC
 !insertmacro MUI_PAGE_COMPONENTS
 
 ; Instfiles page

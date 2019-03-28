@@ -9,6 +9,6 @@ LangString MuiDescriptionStarteMenu ${LANG_ITALIAN} "Installa collegamento nel m
 LangString OptionRemoveSettings ${LANG_ITALIAN} "Elimina impostazioni e dati personali"
 LangString SectionDesktop ${LANG_ITALIAN} "Desktop"
 LangString SectionLanguages ${LANG_ITALIAN} "Lingue"
-LangString SectionRequired ${LANG_ITALIAN} "Richiesto"
+LangString SectionRequired ${LANG_ITALIAN} "File programma (richiesti)"
 LangString SectionShortcuts ${LANG_ITALIAN} "Collegamenti"
 LangString SectionStartMenu ${LANG_ITALIAN} "Menu Start"

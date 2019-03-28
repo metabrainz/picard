@@ -9,6 +9,6 @@ LangString MuiDescriptionStarteMenu ${LANG_GERMAN} "Installiert eine Verknüpfun
 LangString OptionRemoveSettings ${LANG_GERMAN} "Einstellungen und persönliche Daten entfernen"
 LangString SectionDesktop ${LANG_GERMAN} "Desktop"
 LangString SectionLanguages ${LANG_GERMAN} "Sprachen"
-LangString SectionRequired ${LANG_GERMAN} "Erforderlich"
+LangString SectionRequired ${LANG_GERMAN} "Programmdateien (erforderlich)"
 LangString SectionShortcuts ${LANG_GERMAN} "Verknüpfungen"
 LangString SectionStartMenu ${LANG_GERMAN} "Startmenü"

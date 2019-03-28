@@ -9,6 +9,6 @@ LangString MuiDescriptionStarteMenu ${LANG_ENGLISH} "Installs a shortcut in the 
 LangString OptionRemoveSettings ${LANG_ENGLISH} "Remove settings and personal data"
 LangString SectionDesktop ${LANG_ENGLISH} "Desktop"
 LangString SectionLanguages ${LANG_ENGLISH} "Languages"
-LangString SectionRequired ${LANG_ENGLISH} "Required"
+LangString SectionRequired ${LANG_ENGLISH} "Program files (required)"
 LangString SectionShortcuts ${LANG_ENGLISH} "Shortcuts"
 LangString SectionStartMenu ${LANG_ENGLISH} "Start menu"
