@@ -210,12 +210,13 @@ SectionEnd
 !define WNDCLASS "Qt5QWindowIcon"
 !define WNDTITLE "${PRODUCT_NAME}"
 Function un.onInit
-  !insertmacro INSTALLOPTIONS_EXTRACT "removeSettings.ini"
   FindWindow $0 "${WNDCLASS}" "${WNDTITLE}"
   StrCmp $0 0 continueInstall
     MessageBox MB_ICONSTOP|MB_OK "$(MsgApplicationRunning)"
     Abort
   continueInstall:
+  !insertmacro INSTALLOPTIONS_EXTRACT "removeSettings.ini"
+  !insertmacro INSTALLOPTIONS_WRITE "removeSettings.ini" "Field 1" "Text" "$(OptionRemoveSettings)"
 FunctionEnd
 
 Function .onInit

@@ -6,6 +6,7 @@ LangString MuiDescriptionLang ${LANG_GERMAN} "Installiert Übersetzungen von ${P
 LangString MuiDescriptionShortcuts ${LANG_GERMAN} "Installiert Verknüpfungen, um ${PRODUCT_NAME} zu starten."
 LangString MuiDescriptionDesktop ${LANG_GERMAN} "Installiert eine Verknüpfung auf dem Desktop."
 LangString MuiDescriptionStarteMenu ${LANG_GERMAN} "Installiert eine Verknüpfung im Startmenü."
+LangString OptionRemoveSettings ${LANG_GERMAN} "Einstellungen und persönliche Daten entfernen"
 LangString SectionDesktop ${LANG_GERMAN} "Desktop"
 LangString SectionLanguages ${LANG_GERMAN} "Sprachen"
 LangString SectionRequired ${LANG_GERMAN} "Erforderlich"

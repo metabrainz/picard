@@ -6,6 +6,7 @@ LangString MuiDescriptionLang ${LANG_ITALIAN} "Installa le traduzioni di ${PRODU
 LangString MuiDescriptionShortcuts ${LANG_ITALIAN} "Installa collegamento per eseguire ${PRODUCT_NAME}."
 LangString MuiDescriptionDesktop ${LANG_ITALIAN} "Installa collegamento sul desktop."
 LangString MuiDescriptionStarteMenu ${LANG_ITALIAN} "Installa collegamento nel menu Start."
+LangString OptionRemoveSettings ${LANG_ITALIAN} "Elimina impostazioni e dati personali"
 LangString SectionDesktop ${LANG_ITALIAN} "Desktop"
 LangString SectionLanguages ${LANG_ITALIAN} "Lingue"
 LangString SectionRequired ${LANG_ITALIAN} "Richiesto"

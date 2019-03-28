@@ -6,6 +6,7 @@ LangString MuiDescriptionLang ${LANG_ENGLISH} "Installs translations of ${PRODUC
 LangString MuiDescriptionShortcuts ${LANG_ENGLISH} "Installs shortcuts to launch ${PRODUCT_NAME}."
 LangString MuiDescriptionDesktop ${LANG_ENGLISH} "Installs a shortcut on the desktop."
 LangString MuiDescriptionStarteMenu ${LANG_ENGLISH} "Installs a shortcut in the Start Menu."
+LangString OptionRemoveSettings ${LANG_ENGLISH} "Remove settings and personal data"
 LangString SectionDesktop ${LANG_ENGLISH} "Desktop"
 LangString SectionLanguages ${LANG_ENGLISH} "Languages"
 LangString SectionRequired ${LANG_ENGLISH} "Required"
