@@ -106,6 +106,7 @@ class ConfigSection(LockableObject):
                 return option_type.convert(self.raw_value(name))
             return default
         except Exception:
+            log.error('Error reading option value', exc_info=True)
             return default
         finally:
             self.unlock()
@@ -249,6 +250,7 @@ class Option(QtCore.QObject):
         return cls.registry.get((section, name))
 
 
+@staticmethod
 def _convert_to_bool(value):
     # The QSettings IniFormat saves boolean values as the strings "true"
     # and "false". Thus, explicit boolean and string comparisons are used
@@ -257,6 +259,8 @@ def _convert_to_bool(value):
     # PyQt >= 4.5, so that is not used.
     return value is True or value == "true"
 
+
+@staticmethod
 def _convert_to_int_list(values):
     return list(map(int, values))
 
