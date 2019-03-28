@@ -60,8 +60,7 @@ class TagStatus:
     NOCHANGE = 1
     ADDED = 2
     REMOVED = 4
-    # ADDED | REMOVED = CHANGED
-    CHANGED = 6
+    CHANGED = ADDED | REMOVED
     EMPTY = 8
     NOTREMOVABLE = 16
 
