@@ -4,6 +4,7 @@ from picard.formats import apev2
 from .common import (
     CommonTests,
     load_metadata,
+    TAGS,
 )
 from .coverart import CommonCoverArtTests
 
@@ -15,17 +16,34 @@ VALID_KEYS = [
     'x' * 255,
 ]
 
-
 INVALID_KEYS = [
     'invalid\x7fkey',
     'invalid\x19key',
     '',
     'x',
     'x' * 256,
+    'ID3',
+    'TAG',
+    'OggS',
+    'MP+',
 ]
 
 
-class MonkeysAudioTest(CommonTests.TagFormatsTestCase):
+SUPPORTED_TAGS = list(set(TAGS.keys()) - set(apev2.UNSUPPORTED_TAGS))
+
+
+class CommonApeTests:
+
+    class ApeTestCase(CommonTests.TagFormatsTestCase):
+        def test_supports_tags(self):
+            supports_tag = self.format.supports_tag
+            for key in VALID_KEYS + SUPPORTED_TAGS:
+                self.assertTrue(supports_tag(key), '%r should be supported' % key)
+            for key in INVALID_KEYS + apev2.UNSUPPORTED_TAGS:
+                self.assertFalse(supports_tag(key), '%r should be unsupported' % key)
+
+
+class MonkeysAudioTest(CommonApeTests.ApeTestCase):
     testfile = 'test.ape'
     supports_ratings = False
     expected_info = {
@@ -36,7 +54,7 @@ class MonkeysAudioTest(CommonTests.TagFormatsTestCase):
     }
 
 
-class WavPackTest(CommonTests.TagFormatsTestCase):
+class WavPackTest(CommonApeTests.ApeTestCase):
     testfile = 'test.wv'
     supports_ratings = False
     expected_info = {
@@ -46,7 +64,7 @@ class WavPackTest(CommonTests.TagFormatsTestCase):
     }
 
 
-class MusepackSV7Test(CommonTests.TagFormatsTestCase):
+class MusepackSV7Test(CommonApeTests.ApeTestCase):
     testfile = 'test-sv7.mpc'
     supports_ratings = False
     expected_info = {
@@ -56,7 +74,7 @@ class MusepackSV7Test(CommonTests.TagFormatsTestCase):
     }
 
 
-class MusepackSV8Test(CommonTests.TagFormatsTestCase):
+class MusepackSV8Test(CommonApeTests.ApeTestCase):
     testfile = 'test-sv8.mpc'
     supports_ratings = False
     expected_info = {
@@ -66,12 +84,12 @@ class MusepackSV8Test(CommonTests.TagFormatsTestCase):
     }
 
 
-class TAKTest(CommonTests.TagFormatsTestCase):
+class TAKTest(CommonApeTests.ApeTestCase):
     testfile = 'test.tak'
     supports_ratings = False
 
 
-class OptimFROGLosslessTest(CommonTests.TagFormatsTestCase):
+class OptimFROGLosslessTest(CommonApeTests.ApeTestCase):
     testfile = 'test.ofr'
     supports_ratings = False
     expected_info = {
@@ -85,7 +103,7 @@ class OptimFROGLosslessTest(CommonTests.TagFormatsTestCase):
         self.assertEqual(metadata['~format'], 'OptimFROG Lossless Audio')
 
 
-class OptimFROGDUalStreamTest(CommonTests.TagFormatsTestCase):
+class OptimFROGDUalStreamTest(CommonApeTests.ApeTestCase):
     testfile = 'test.ofs'
     supports_ratings = False
     expected_info = {
