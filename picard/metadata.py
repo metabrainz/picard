@@ -348,6 +348,7 @@ class Metadata(MutableMapping):
             self.add(name, value)
 
     def delete(self, name):
+        """Deprecated: use del directly"""
         del self[name]
 
     def __iter__(self):

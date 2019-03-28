@@ -190,7 +190,7 @@ class File(QtCore.QObject, Item):
         self.metadata.copy(metadata)
         if preserve_deleted:
             for tag in deleted_tags:
-                self.metadata.delete(tag)
+                del self.metadata[tag]
         for tag, values in saved_metadata.items():
             self.metadata.set(tag, values)
 
