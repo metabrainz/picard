@@ -32,7 +32,7 @@ class CommonId3Tests:
             metadata = Metadata(self.tags)
             metadata['Foo'] = 'Foo'
             original_metadata = save_and_load_metadata(self.filename, metadata)
-            metadata.delete('Foo')
+            del metadata['Foo']
             new_metadata = save_and_load_metadata(self.filename, metadata)
 
             self.assertIn('Foo', original_metadata)
@@ -43,7 +43,7 @@ class CommonId3Tests:
             metadata = Metadata(self.tags)
             metadata['musicbrainz_recordingid'] = "Foo"
             original_metadata = save_and_load_metadata(self.filename, metadata)
-            metadata.delete('musicbrainz_recordingid')
+            del metadata['musicbrainz_recordingid']
             new_metadata = save_and_load_metadata(self.filename, metadata)
 
             self.assertIn('musicbrainz_recordingid', original_metadata)
@@ -56,8 +56,8 @@ class CommonId3Tests:
             metadata['Bar'] = 'Foo'
             metadata['FooBar'] = 'Foo'
             original_metadata = save_and_load_metadata(self.filename, metadata)
-            metadata.delete('Foo')
-            metadata.delete('Bar')
+            del metadata['Foo']
+            del metadata['Bar']
             new_metadata = save_and_load_metadata(self.filename, metadata)
 
             self.assertIn('Foo', original_metadata)
@@ -87,7 +87,7 @@ class CommonId3Tests:
             metadata = Metadata(self.tags)
             metadata['comment:bar'] = 'Foo'
             original_metadata = save_and_load_metadata(self.filename, metadata)
-            metadata.delete('comment:bar')
+            del metadata['comment:bar']
             new_metadata = save_and_load_metadata(self.filename, metadata)
 
             self.assertIn('comment:foo', original_metadata)
