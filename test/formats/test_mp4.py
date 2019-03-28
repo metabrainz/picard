@@ -3,6 +3,7 @@ from .common import (
     CommonTests,
     load_metadata,
 )
+from .coverart import CommonCoverArtTests
 
 
 class MP4Test(CommonTests.TagFormatsTest):
@@ -29,3 +30,7 @@ class MP4Test(CommonTests.TagFormatsTest):
     def test_format(self):
         metadata = load_metadata(self.filename)
         self.assertIn('AAC LC', metadata['~format'])
+
+
+class Mp4CoverArtTest(CommonCoverArtTests.CoverArtTest):
+    testfile = 'test.m4a'

@@ -6,12 +6,18 @@ from picard import (
     config,
     log,
 )
+from picard.coverart.image import CoverArtImage
 from picard.formats import vorbis
 from .common import (
     CommonTests,
     load_metadata,
+    load_raw,
     save_and_load_metadata,
     skipUnlessTestfile,
+)
+from .coverart import (
+    CommonCoverArtTests,
+    file_save_image,
 )
 
 
@@ -81,7 +87,7 @@ class VorbisUtilTest(PicardTestCase):
         self.assertEqual(sanitized, ' }')
 
 
-class FlacCoverArtTest(CommonCoverArtTests.CoverArtTestCase):
+class FlacCoverArtTest(CommonCoverArtTests.CoverArtTest):
     testfile = 'test.flac'
 
     def test_set_picture_dimensions(self):
@@ -99,5 +105,5 @@ class FlacCoverArtTest(CommonCoverArtTests.CoverArtTestCase):
             self.assertEqual(pic.height, test.height)
 
 
-class OggCoverArtTest(CommonCoverArtTests.CoverArtTestCase):
+class OggCoverArtTest(CommonCoverArtTests.CoverArtTest):
     testfile = 'test.ogg'

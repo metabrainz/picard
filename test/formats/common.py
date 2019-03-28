@@ -12,6 +12,7 @@ import picard.formats
 from picard.formats import ext_to_format
 from picard.metadata import Metadata
 
+
 settings = {
     'clear_existing_tags': False,
     'embed_only_one_front_image': False,
@@ -141,12 +142,10 @@ def skipUnlessTestfile(func):
 # prevent unittest to run tests in those classes
 class CommonTests:
 
-    class SimpleFormatsTest(PicardTestCase):
-
+    class BaseFileTest(PicardTestCase):
         testfile = None
         testfile_ext = None
         testfile_path = None
-        expected_info = None
 
         def setUp(self):
             super().setUp()
@@ -166,6 +165,10 @@ class CommonTests:
             os.close(fd)
             shutil.copy(filename, copy)
             return copy
+
+    class SimpleFormatsTest(BaseFileTest):
+
+        expected_info = None
 
         @skipUnlessTestfile
         def test_can_open_and_save(self):

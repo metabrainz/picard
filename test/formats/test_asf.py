@@ -1,4 +1,5 @@
 from .common import CommonTests
+from .coverart import CommonCoverArtTests
 
 
 class ASFTest(CommonTests.TagFormatsTest):
@@ -21,3 +22,11 @@ class WMATest(CommonTests.TagFormatsTest):
         '~sample_rate': '44100',
         '~bitrate': '64.0',
     }
+
+
+class AsfCoverArtTest(CommonCoverArtTests.CoverArtTest):
+    testfile = 'test.asf'
+
+
+class WmaCoverArtTest(CommonCoverArtTests.CoverArtTest):
+    testfile = 'test.wma'

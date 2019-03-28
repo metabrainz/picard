@@ -12,6 +12,7 @@ from .common import (
     save_metadata,
     skipUnlessTestfile,
 )
+from .coverart import CommonCoverArtTests
 
 
 # prevent unittest to run tests in those classes
@@ -229,3 +230,7 @@ class AIFFTest(CommonId3Tests.Id3Test):
         '~sample_rate': '44100',
         '~bitrate': '1411.2',
     }
+
+
+class Mp3CoverArtTest(CommonCoverArtTests.CoverArtTest):
+    testfile = 'test.mp3'

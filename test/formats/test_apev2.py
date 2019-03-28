@@ -2,6 +2,7 @@ from .common import (
     CommonTests,
     load_metadata,
 )
+from .coverart import CommonCoverArtTests
 
 
 class MonkeysAudioTest(CommonTests.TagFormatsTest):
@@ -76,3 +77,8 @@ class OptimFROGDUalStreamTest(CommonTests.TagFormatsTest):
     def test_format(self):
         metadata = load_metadata(self.filename)
         self.assertEqual(metadata['~format'], 'OptimFROG DualStream Audio')
+
+
+class ApeCoverArtTest(CommonCoverArtTests.CoverArtTest):
+    testfile = 'test.ape'
+    supports_types = False
