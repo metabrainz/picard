@@ -2,7 +2,7 @@ from .common import CommonTests
 from .coverart import CommonCoverArtTests
 
 
-class ASFTest(CommonTests.TagFormatsTest):
+class ASFTest(CommonTests.TagFormatsTestCase):
     testfile = 'test.asf'
     supports_ratings = True
     expected_info = {
@@ -13,7 +13,7 @@ class ASFTest(CommonTests.TagFormatsTest):
     }
 
 
-class WMATest(CommonTests.TagFormatsTest):
+class WMATest(CommonTests.TagFormatsTestCase):
     testfile = 'test.wma'
     supports_ratings = True
     expected_info = {
@@ -24,9 +24,9 @@ class WMATest(CommonTests.TagFormatsTest):
     }
 
 
-class AsfCoverArtTest(CommonCoverArtTests.CoverArtTest):
+class AsfCoverArtTest(CommonCoverArtTests.CoverArtTestCase):
     testfile = 'test.asf'
 
 
-class WmaCoverArtTest(CommonCoverArtTests.CoverArtTest):
+class WmaCoverArtTest(CommonCoverArtTests.CoverArtTestCase):
     testfile = 'test.wma'

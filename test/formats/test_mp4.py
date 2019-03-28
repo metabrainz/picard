@@ -6,7 +6,7 @@ from .common import (
 from .coverart import CommonCoverArtTests
 
 
-class MP4Test(CommonTests.TagFormatsTest):
+class MP4Test(CommonTests.TagFormatsTestCase):
     testfile = 'test.m4a'
     supports_ratings = False
     expected_info = {
@@ -32,5 +32,5 @@ class MP4Test(CommonTests.TagFormatsTest):
         self.assertIn('AAC LC', metadata['~format'])
 
 
-class Mp4CoverArtTest(CommonCoverArtTests.CoverArtTest):
+class Mp4CoverArtTest(CommonCoverArtTests.CoverArtTestCase):
     testfile = 'test.m4a'

@@ -142,7 +142,7 @@ def skipUnlessTestfile(func):
 # prevent unittest to run tests in those classes
 class CommonTests:
 
-    class BaseFileTest(PicardTestCase):
+    class BaseFileTestCase(PicardTestCase):
         testfile = None
         testfile_ext = None
         testfile_path = None
@@ -166,7 +166,7 @@ class CommonTests:
             shutil.copy(filename, copy)
             return copy
 
-    class SimpleFormatsTest(BaseFileTest):
+    class SimpleFormatsTestCase(BaseFileTestCase):
 
         expected_info = None
 
@@ -186,7 +186,7 @@ class CommonTests:
                 value = metadata.length if key == 'length' else metadata[key]
                 self.assertEqual(value, expected_value)
 
-    class TagFormatsTest(SimpleFormatsTest):
+    class TagFormatsTestCase(SimpleFormatsTestCase):
 
         def setUp(self):
             super().setUp()

@@ -18,7 +18,7 @@ from .coverart import CommonCoverArtTests
 # prevent unittest to run tests in those classes
 class CommonId3Tests:
 
-    class Id3Test(CommonTests.TagFormatsTest):
+    class Id3TestCase(CommonTests.TagFormatsTestCase):
 
         def setup_tags(self):
             # Note: in ID3v23, the original date can only be stored as a year.
@@ -190,7 +190,7 @@ class CommonId3Tests:
             self.test_preserve_unchanged_tags()
 
 
-class MP3Test(CommonId3Tests.Id3Test):
+class MP3Test(CommonId3Tests.Id3TestCase):
     testfile = 'test.mp3'
     supports_ratings = True
     expected_info = {
@@ -200,7 +200,7 @@ class MP3Test(CommonId3Tests.Id3Test):
     }
 
 
-class TTATest(CommonId3Tests.Id3Test):
+class TTATest(CommonId3Tests.Id3TestCase):
     testfile = 'test.tta'
     supports_ratings = True
     expected_info = {
@@ -209,7 +209,7 @@ class TTATest(CommonId3Tests.Id3Test):
     }
 
 
-class DSFTest(CommonId3Tests.Id3Test):
+class DSFTest(CommonId3Tests.Id3TestCase):
     testfile = 'test.dsf'
     supports_ratings = True
     expected_info = {
@@ -221,7 +221,7 @@ class DSFTest(CommonId3Tests.Id3Test):
     }
 
 
-class AIFFTest(CommonId3Tests.Id3Test):
+class AIFFTest(CommonId3Tests.Id3TestCase):
     testfile = 'test.aiff'
     supports_ratings = False
     expected_info = {
@@ -232,5 +232,5 @@ class AIFFTest(CommonId3Tests.Id3Test):
     }
 
 
-class Mp3CoverArtTest(CommonCoverArtTests.CoverArtTest):
+class Mp3CoverArtTest(CommonCoverArtTests.CoverArtTestCase):
     testfile = 'test.mp3'

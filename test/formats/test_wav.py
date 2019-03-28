@@ -1,7 +1,7 @@
 from .common import CommonTests
 
 
-class WAVTest(CommonTests.SimpleFormatsTest):
+class WAVTest(CommonTests.SimpleFormatsTestCase):
     testfile = 'test.wav'
     expected_info = {
         'length': 82,

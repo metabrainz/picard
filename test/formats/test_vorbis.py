@@ -24,7 +24,7 @@ from .coverart import (
 # prevent unittest to run tests in those classes
 class CommonVorbisTests:
 
-    class VorbisTest(CommonTests.TagFormatsTest):
+    class VorbisTestCase(CommonTests.TagFormatsTestCase):
         def test_invalid_rating(self):
             filename = os.path.join('test', 'data', 'test-invalid-rating.ogg')
             old_log_level = log.get_effective_level()
@@ -34,7 +34,7 @@ class CommonVorbisTests:
             self.assertEqual(metadata["~rating"], "THERATING")
 
 
-class FLACTest(CommonVorbisTests.VorbisTest):
+class FLACTest(CommonVorbisTests.VorbisTestCase):
     testfile = 'test.flac'
     supports_ratings = True
     expected_info = {
@@ -52,7 +52,7 @@ class FLACTest(CommonVorbisTests.VorbisTest):
         self.assertEqual(new_metadata['~waveformatextensible_channel_mask'], '0x3')
 
 
-class OggVorbisTest(CommonVorbisTests.VorbisTest):
+class OggVorbisTest(CommonVorbisTests.VorbisTestCase):
     testfile = 'test.ogg'
     supports_ratings = True
     expected_info = {
@@ -62,7 +62,7 @@ class OggVorbisTest(CommonVorbisTests.VorbisTest):
     }
 
 
-class OggSpxTest(CommonVorbisTests.VorbisTest):
+class OggSpxTest(CommonVorbisTests.VorbisTestCase):
     testfile = 'test.spx'
     supports_ratings = True
     expected_info = {
@@ -72,7 +72,7 @@ class OggSpxTest(CommonVorbisTests.VorbisTest):
     }
 
 
-class OggOpusTest(CommonVorbisTests.VorbisTest):
+class OggOpusTest(CommonVorbisTests.VorbisTestCase):
     testfile = 'test.opus'
     supports_ratings = True
     expected_info = {
@@ -87,7 +87,7 @@ class VorbisUtilTest(PicardTestCase):
         self.assertEqual(sanitized, ' }')
 
 
-class FlacCoverArtTest(CommonCoverArtTests.CoverArtTest):
+class FlacCoverArtTest(CommonCoverArtTests.CoverArtTestCase):
     testfile = 'test.flac'
 
     def test_set_picture_dimensions(self):
@@ -105,5 +105,5 @@ class FlacCoverArtTest(CommonCoverArtTests.CoverArtTest):
             self.assertEqual(pic.height, test.height)
 
 
-class OggCoverArtTest(CommonCoverArtTests.CoverArtTest):
+class OggCoverArtTest(CommonCoverArtTests.CoverArtTestCase):
     testfile = 'test.ogg'

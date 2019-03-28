@@ -30,7 +30,7 @@ def load_coverart_file(filename):
 # prevent unittest to run tests in those classes
 class CommonCoverArtTests:
 
-    class CoverArtTest(CommonTests.BaseFileTest):
+    class CoverArtTestCase(CommonTests.BaseFileTestCase):
 
         supports_types = True
 
