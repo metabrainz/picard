@@ -57,13 +57,12 @@ COMMON_TAGS = [
 
 class TagStatus:
 
-    NoChange = 1
-    Added = 2
-    Removed = 4
-    # Added | Removed = Changed
-    Changed = 6
-    Empty = 8
-    NotRemovable = 16
+    NOCHANGE = 1
+    ADDED = 2
+    REMOVED = 4
+    CHANGED = ADDED | REMOVED
+    EMPTY = 8
+    NOTREMOVABLE = 16
 
 
 class TagCounter(dict):
@@ -131,27 +130,27 @@ class TagDiff(object):
             self.new.add(tag, new_values)
 
         if (orig_values and not new_values) or removed:
-            self.status[tag] |= TagStatus.Removed
+            self.status[tag] |= TagStatus.REMOVED
         elif new_values and not orig_values:
-            self.status[tag] |= TagStatus.Added
+            self.status[tag] |= TagStatus.ADDED
             removable = True
         elif orig_values and new_values and self.__tag_ne(tag, orig_values, new_values):
-            self.status[tag] |= TagStatus.Changed
+            self.status[tag] |= TagStatus.CHANGED
         elif not (orig_values or new_values or tag in COMMON_TAGS):
-            self.status[tag] |= TagStatus.Empty
+            self.status[tag] |= TagStatus.EMPTY
         else:
-            self.status[tag] |= TagStatus.NoChange
+            self.status[tag] |= TagStatus.NOCHANGE
 
         if not removable:
-            self.status[tag] |= TagStatus.NotRemovable
+            self.status[tag] |= TagStatus.NOTREMOVABLE
 
     def tag_status(self, tag):
         status = self.status[tag]
-        for s in (TagStatus.Changed, TagStatus.Added,
-                  TagStatus.Removed, TagStatus.Empty):
+        for s in (TagStatus.CHANGED, TagStatus.ADDED,
+                  TagStatus.REMOVED, TagStatus.EMPTY):
             if status & s == s:
                 return s
-        return TagStatus.NoChange
+        return TagStatus.NOCHANGE
 
 
 class PreservedTags:
@@ -205,10 +204,10 @@ class MetadataBox(QtWidgets.QTableWidget):
         self.setStyleSheet("QTableWidget {border: none;}")
         self.setAttribute(QtCore.Qt.WA_MacShowFocusRect, 1)
         self.colors = {
-            TagStatus.NoChange: self.palette().color(QtGui.QPalette.Text),
-            TagStatus.Removed: QtGui.QBrush(QtGui.QColor("red")),
-            TagStatus.Added: QtGui.QBrush(QtGui.QColor("green")),
-            TagStatus.Changed: QtGui.QBrush(QtGui.QColor("darkgoldenrod"))
+            TagStatus.NOCHANGE: self.palette().color(QtGui.QPalette.Text),
+            TagStatus.REMOVED: QtGui.QBrush(QtGui.QColor("red")),
+            TagStatus.ADDED: QtGui.QBrush(QtGui.QColor("green")),
+            TagStatus.CHANGED: QtGui.QBrush(QtGui.QColor("darkgoldenrod"))
         }
         self.files = set()
         self.tracks = set()
@@ -339,8 +338,8 @@ class MetadataBox(QtWidgets.QTableWidget):
                             menu.addAction(lookup_action)
                     if self.tag_is_removable(tag):
                         removals.append(partial(self.remove_tag, tag))
-                    status = self.tag_diff.status[tag] & TagStatus.Changed
-                    if status == TagStatus.Changed or status == TagStatus.Removed:
+                    status = self.tag_diff.status[tag] & TagStatus.CHANGED
+                    if status == TagStatus.CHANGED or status == TagStatus.REMOVED:
                         for file in self.files:
                             objects = [file]
                             if file.parent in self.tracks and len(self.files & set(file.parent.linked_files)) == 1:
@@ -403,7 +402,7 @@ class MetadataBox(QtWidgets.QTableWidget):
                 self.remove_tag(tag)
 
     def tag_is_removable(self, tag):
-        return self.tag_diff.status[tag] & TagStatus.NotRemovable == 0
+        return self.tag_diff.status[tag] & TagStatus.NOTREMOVABLE == 0
 
     def selected_tags(self, discard=None):
         if discard is None:
@@ -509,13 +508,13 @@ class MetadataBox(QtWidgets.QTableWidget):
             for tag in tag_names:
                 tags_by_status.setdefault(tag_diff.tag_status(tag), []).append(tag)
 
-            for status in (TagStatus.Changed, TagStatus.Added,
-                           TagStatus.Removed, TagStatus.NoChange):
+            for status in (TagStatus.CHANGED, TagStatus.ADDED,
+                           TagStatus.REMOVED, TagStatus.NOCHANGE):
                 tag_diff.tag_names += tags_by_status.pop(status, [])
         else:
             tag_diff.tag_names = [
                 tag for tag in tag_names if
-                tag_diff.status[tag] != TagStatus.Empty]
+                tag_diff.status[tag] != TagStatus.EMPTY]
 
         return tag_diff
 
@@ -564,7 +563,7 @@ class MetadataBox(QtWidgets.QTableWidget):
             self.set_item_value(new_item, self.tag_diff.new, name)
 
             font = new_item.font()
-            if result.tag_status(name) == TagStatus.Removed:
+            if result.tag_status(name) == TagStatus.REMOVED:
                 font.setStrikeOut(True)
             else:
                 font.setStrikeOut(False)
@@ -572,7 +571,7 @@ class MetadataBox(QtWidgets.QTableWidget):
             new_item.setFont(font)
 
             color = self.colors.get(result.tag_status(name),
-                                    self.colors[TagStatus.NoChange])
+                                    self.colors[TagStatus.NOCHANGE])
             orig_item.setForeground(color)
             new_item.setForeground(color)
 
