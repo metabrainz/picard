@@ -46,6 +46,32 @@ from picard.util import (
 from .mutagenext import tak
 
 
+INVALID_CHARS = re.compile('[^\x20-\x7e]')
+BLACKLISTED_KEYS = ['ID3', 'TAG', 'OggS', 'MP+']
+UNSUPPORTED_TAGS = [
+    'gapless',
+    'musicip_fingerprint',
+    'podcast',
+    'podcasturl',
+    'show',
+    'showsort',
+]
+
+
+def is_valid_key(key):
+    """
+    Return true if a string is a valid APE tag key.
+    APE tag item keys can have a length of 2 (including) up to 255 (including)
+    characters in the range from 0x20 (Space) until 0x7E (Tilde).
+    Not allowed are the following keys: ID3, TAG, OggS and MP+.
+
+    See http://wiki.hydrogenaud.io/index.php?title=APE_key
+    """
+    return (key and 2 <= len(key) <= 255
+            and key not in BLACKLISTED_KEYS
+            and INVALID_CHARS.search(key) is None)
+
+
 class APEv2File(File):
 
     """Generic APEv2-based file."""
@@ -215,15 +241,8 @@ class APEv2File(File):
 
     @classmethod
     def supports_tag(cls, name):
-        unsupported_tags = {
-            'gapless',
-            'musicip_fingerprint',
-            'podcast',
-            'podcasturl',
-            'show',
-            'showsort',
-        }
-        return bool(name) and name not in unsupported_tags
+        return (bool(name) and is_valid_key(name)
+                and name not in UNSUPPORTED_TAGS)
 
 
 class MusepackFile(APEv2File):
