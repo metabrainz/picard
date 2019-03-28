@@ -47,8 +47,7 @@ def save_and_load_metadata(filename, metadata):
     loaded_metadata = f._load(filename)
     f._copy_loaded_metadata(loaded_metadata)
     f._save(filename, metadata)
-    loaded_metadata = load_metadata(filename)
-    return loaded_metadata
+    return load_metadata(filename)
 
 
 def load_raw(filename):
@@ -172,16 +171,14 @@ class CommonTests:
 
         @skipUnlessTestfile
         def test_can_open_and_save(self):
-            metadata = Metadata()
-            metadata = save_and_load_metadata(self.filename, metadata)
+            metadata = save_and_load_metadata(self.filename, Metadata())
             self.assertTrue(metadata['~format'])
 
         @skipUnlessTestfile
         def test_info(self):
             if not self.expected_info:
                 raise unittest.SkipTest("Ratings not supported")
-            metadata = Metadata()
-            metadata = save_and_load_metadata(self.filename, metadata)
+            metadata = save_and_load_metadata(self.filename, Metadata())
             for key, expected_value in self.expected_info.items():
                 value = metadata.length if key == 'length' else metadata[key]
                 self.assertEqual(value, expected_value)
@@ -245,9 +242,9 @@ class CommonTests:
             if self.supports_ratings:
                 metadata['~rating'] = 1
             original_metadata = save_and_load_metadata(self.filename, metadata)
-            metadata.delete('albumartist')
+            del metadata['albumartist']
             if self.supports_ratings:
-                metadata.delete('~rating')
+                del metadata['~rating']
             new_metadata = save_and_load_metadata(self.filename, metadata)
             self.assertIn('albumartist', original_metadata.keys())
             self.assertNotIn('albumartist', new_metadata.keys())
@@ -258,9 +255,9 @@ class CommonTests:
         @skipUnlessTestfile
         def test_delete_non_existant_tags(self):
             metadata = Metadata()
-            metadata.delete('albumartist')
-            metadata.delete('performer:drums')
-            metadata.delete('totaltracks')
+            del metadata['albumartist']
+            del metadata['performer:drums']
+            del metadata['totaltracks']
             new_metadata = save_and_load_metadata(self.filename, metadata)
             self.assertNotIn('albumartist', new_metadata.keys())
             self.assertNotIn('performer:drums', new_metadata.keys())
@@ -270,7 +267,7 @@ class CommonTests:
         def test_delete_complex_tags(self):
             metadata = Metadata(self.tags)
             original_metadata = save_and_load_metadata(self.filename, metadata)
-            metadata.delete('totaldiscs')
+            del metadata['totaldiscs']
             new_metadata = save_and_load_metadata(self.filename, metadata)
 
             self.assertIn('totaldiscs', original_metadata)
@@ -286,7 +283,7 @@ class CommonTests:
                 metadata['performer:piano'] = 'Foo'
 
                 original_metadata = save_and_load_metadata(self.filename, metadata)
-                metadata.delete('performer:piano')
+                del metadata['performer:piano']
                 new_metadata = save_and_load_metadata(self.filename, metadata)
 
                 self.assertIn('performer:guest vocal', original_metadata)

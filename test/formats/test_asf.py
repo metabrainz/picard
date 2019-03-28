@@ -34,18 +34,18 @@ class AsfUtilTest(PicardTestCase):
     def test_pack_and_unpack_image(self):
         mime = 'image/png'
         image_data = create_fake_png(b'x')
-        type = 4
+        image_type = 4
         description = 'testing'
-        tag_data = asf.pack_image(mime, image_data, type, description)
+        tag_data = asf.pack_image(mime, image_data, image_type, description)
         expected_length = 5 + 2 * len(mime) + 2 + 2 * len(description) + 2 + len(image_data)
-        self.assertEqual(tag_data[0], type)
+        self.assertEqual(tag_data[0], image_type)
         self.assertEqual(len(tag_data), expected_length)
         self.assertEqual(image_data, tag_data[-len(image_data):])
 
         unpacked = asf.unpack_image(tag_data)
         self.assertEqual(mime, unpacked[0])
         self.assertEqual(image_data, unpacked[1])
-        self.assertEqual(type, unpacked[2])
+        self.assertEqual(image_type, unpacked[2])
         self.assertEqual(description, unpacked[3])
 
 

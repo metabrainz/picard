@@ -17,8 +17,7 @@ from .common import (
 
 def file_save_image(filename, image):
     f = picard.formats.open_(filename)
-    metadata = Metadata()
-    metadata.images.append(image)
+    metadata = Metadata(images=[image])
     f._save(filename, metadata)
 
 
@@ -45,9 +44,10 @@ class CommonCoverArtTests:
             source_types = ["front", "booklet"]
             # Use reasonable large data > 64kb.
             # This checks a mutagen error with ASF files.
+            payload = b"a" * 1024 * 128
             tests = [
-                CoverArtImage(data=self.jpegdata + b"a" * 1024 * 128, types=source_types),
-                CoverArtImage(data=self.pngdata + b"a" * 1024 * 128, types=source_types),
+                CoverArtImage(data=self.jpegdata + payload, types=source_types),
+                CoverArtImage(data=self.pngdata + payload, types=source_types),
             ]
             for test in tests:
                 file_save_image(self.filename, test)

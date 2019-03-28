@@ -28,6 +28,11 @@ def create_image(extra_data, types=None, support_types=False,
 
 
 class CoverArtImageTest(PicardTestCase):
+    def setUp(self):
+        # Cover art images uses DataHash, which registers a cleanup job
+        # to clear temporary files.
+        self.addCleanup(QtCore.QObject.tagger.run_cleanup)
+
     def test_is_front_image_no_types(self):
         image = create_image(b'a')
         self.assertTrue(image.is_front_image())
@@ -88,9 +93,8 @@ class CoverArtImageTest(PicardTestCase):
         self.assertNotEqual(image2, image4)
 
     def test_set_data(self):
-        self.addCleanup(QtCore.QObject.tagger.run_cleanup)
-        imgdata = data=create_fake_png(b'a')
-        imgdata2 = data=create_fake_png(b'xxx')
+        imgdata = create_fake_png(b'a')
+        imgdata2 = create_fake_png(b'xxx')
         # set data once
         coverartimage = CoverArtImage(data=imgdata2)
         tmp_file = coverartimage.tempfile_filename
