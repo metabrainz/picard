@@ -391,7 +391,7 @@ class Album(DataObject, Item):
         if va:
             tm["compilation"] = "1"
         else:
-            tm.delete("compilation")
+            del tm["compilation"]
         if discpregap:
             tm["~discpregap"] = "1"
 

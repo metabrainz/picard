@@ -385,7 +385,7 @@ class MetadataBox(QtWidgets.QTableWidget):
             values = []
         if not values and self.tag_is_removable(tag):
             for obj in objects:
-                obj.metadata.delete(tag)
+                del obj.metadata[tag]
         elif values:
             for obj in objects:
                 obj.metadata[tag] = values
