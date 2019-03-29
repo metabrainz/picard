@@ -166,8 +166,9 @@ class ReleasesOptionsPage(OptionsPage):
                                  label,
                                  next(griditer))
 
-        griditer = RowColIter(len(RELEASE_PRIMARY_GROUPS) +
-                              len(RELEASE_SECONDARY_GROUPS) + 1)  # +1 for Reset button
+        griditer = RowColIter(len(RELEASE_PRIMARY_GROUPS)
+                              + len(RELEASE_SECONDARY_GROUPS)
+                              + 1)  # +1 for Reset button
         for name in RELEASE_PRIMARY_GROUPS:
             add_slider(name, griditer, context='release_group_primary_type')
         for name in sorted(RELEASE_SECONDARY_GROUPS,

@@ -344,9 +344,9 @@ def _get_multi_values(parser, multi, separator):
 
     if separator == MULTI_VALUED_JOINER:
         # Convert ScriptExpression containing only a single variable into variable
-        if (isinstance(multi, ScriptExpression) and
-                len(multi) == 1 and
-                isinstance(multi[0], ScriptVariable)):
+        if (isinstance(multi, ScriptExpression)
+            and len(multi) == 1
+            and isinstance(multi[0], ScriptVariable)):
             multi = multi[0]
 
         # If a variable, return multi-values

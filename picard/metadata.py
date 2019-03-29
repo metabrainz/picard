@@ -95,8 +95,8 @@ class Metadata(MutableMapping):
 
     @staticmethod
     def length_score(a, b):
-        return (1.0 - min(abs(a - b), LENGTH_SCORE_THRES_MS) /
-                float(LENGTH_SCORE_THRES_MS))
+        return (1.0 - min(abs(a - b),
+                LENGTH_SCORE_THRES_MS) / float(LENGTH_SCORE_THRES_MS))
 
     def compare(self, other):
         parts = []

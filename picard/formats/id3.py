@@ -259,8 +259,8 @@ class ID3File(File):
                     name = self.__rename_freetext[name]
                 if name in self.__translate_freetext:
                     name = self.__translate_freetext[name]
-                elif ((name in self.__rtranslate) !=
-                        (name in self.__rtranslate_freetext)):
+                elif ((name in self.__rtranslate)
+                      != (name in self.__rtranslate_freetext)):
                     # If the desc of a TXXX frame conflicts with the name of a
                     # Picard tag, load it into ~id3:TXXX:desc rather than desc.
                     #

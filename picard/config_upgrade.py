@@ -65,10 +65,10 @@ def upgrade_to_v1_0_0_final_0():
                     "merged with that of single artist albums."),
                 QtWidgets.QMessageBox.Ok)
 
-        elif (_s.value("va_file_naming_format", config.TextOption) !=
-                r"$if2(%albumartist%,%artist%)/%album%/$if($gt(%totaldis"
-                "cs%,1),%discnumber%-,)$num(%tracknumber%,2) %artist% - "
-                "%title%"):
+        elif (_s.value("va_file_naming_format", config.TextOption)
+              != r"$if2(%albumartist%,%artist%)/%album%/$if($gt(%totaldis"
+                 "cs%,1),%discnumber%-,)$num(%tracknumber%,2) %artist% - "
+                 "%title%"):
 
             msgbox.setWindowTitle(_("Various Artists file naming scheme removal"))
             msgbox.setText(_("The separate file naming scheme for various artists "
@@ -91,7 +91,6 @@ def upgrade_to_v1_0_0_final_0():
 def upgrade_to_v1_3_0_dev_1():
     """Option "windows_compatible_filenames" was renamed "windows_compatibility" (PICARD-110).
     """
-    _s = config.setting
     old_opt = "windows_compatible_filenames"
     new_opt = "windows_compatibility"
     rename_option(old_opt, new_opt, config.BoolOption, True)

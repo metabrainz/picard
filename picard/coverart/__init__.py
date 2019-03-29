@@ -129,10 +129,10 @@ class CoverArt:
             # album removed
             return
 
-        if (self.front_image_found and
-                config.setting["save_images_to_tags"] and not
-                config.setting["save_images_to_files"] and
-                config.setting["embed_only_one_front_image"]):
+        if (self.front_image_found
+            and config.setting["save_images_to_tags"]
+            and not config.setting["save_images_to_files"]
+            and config.setting["embed_only_one_front_image"]):
             # no need to continue
             self.album._finalize_loading(None)
             return

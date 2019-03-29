@@ -36,7 +36,6 @@ from picard.const import MUSICBRAINZ_SERVERS
 from picard.const.sys import (
     FROZEN_TEMP_PATH,
     IS_FROZEN,
-    IS_MACOS,
     IS_WIN,
 )
 
