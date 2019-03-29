@@ -3,8 +3,6 @@
 import os.path
 import unittest
 
-from PyQt5 import QtCore
-
 from test.picardtestcase import (
     PicardTestCase,
     create_fake_png,

@@ -30,11 +30,9 @@ from collections import (
     namedtuple,
 )
 from functools import partial
-import math
 import os.path
 import platform
 import sys
-import time
 
 from PyQt5 import (
     QtCore,

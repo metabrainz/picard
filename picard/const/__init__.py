@@ -19,7 +19,6 @@
 
 from collections import OrderedDict
 import os
-import sys
 
 from PyQt5.QtCore import QStandardPaths
 from picard import PICARD_APP_NAME

@@ -1,7 +1,5 @@
 import os.path
 
-from PyQt5 import QtCore
-
 from picard import config
 from picard.coverart.image import (
     CoverArtImage,
