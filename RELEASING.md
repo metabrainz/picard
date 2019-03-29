@@ -1,5 +1,17 @@
 # Picard release process
 
+
+## Release preparation (few weeks/days before)
+
+
+### Synchronize picard.pot with sources
+
+```bash
+python setup.py regen_pot_file && git diff --quiet || git commit -m 'Update pot file' -- po/picard.pot
+```
+
+And push changes to main remote repository, see [po/README.md](po/README.md) for details about translations
+
 ## Ensure git repository tree is clean
 
 From the local repository:
@@ -15,6 +27,7 @@ git fetch $PICARD_REMOTE && git checkout master
 ```bash
 git reset --hard $PICARD_REMOTE/master && git clean -f -d
 ```
+
 
 #### Remove old compiled modules
 
@@ -48,12 +61,6 @@ python setup.py get_po_files && git diff --quiet || git commit -m 'Update .po fi
 python setup.py update_constants && git diff --quiet || git commit -a -m 'Update constants' -- picard/const/*.py
 ```
 
-## Synchronize picard.pot with sources
-
-```bash
-python setup.py regen_pot_file && git diff --quiet || git commit -m 'Update pot file' -- po/picard.pot
-```
-
 ## Update NEWS.txt
 
 TODO: explain how
@@ -76,6 +83,9 @@ Commit changes!
 ```bash
 git tag -s "$PICARD_RELEASE_TAG" -m "Release $PICARD_VERSION"
 ```
+
+Stable release tags have the following format: `release-#.#.#`
+Example: `release-2.1.0`
 
 ## Update Picard version to next dev version
 
