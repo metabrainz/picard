@@ -1,10 +1,11 @@
 # Picard release process
 
-## Ensure git repository tree is clean
+## Ensure git repository tree is clean
 
 From the local repository:
 
 ### Check out the repo master branch
+
 ```bash
 git fetch $PICARD_REMOTE && git checkout master
 ```
@@ -21,12 +22,11 @@ git reset --hard $PICARD_REMOTE/master && git clean -f -d
 find . -type f -name '*.pyc' -exec rm -f {} \;
 ```
 
-### Tag to save the current state
+### Tag to save the current state
 
 ```bash
 git tag "before-release-$PICARD_VERSION" --force
 ```
-
 
 ### Remove any BOM nasty bytes from files
 
@@ -48,17 +48,17 @@ python setup.py get_po_files && git diff --quiet || git commit -m 'Update .po fi
 python setup.py update_constants && git diff --quiet || git commit -a -m 'Update constants' -- picard/const/*.py
 ```
 
-## Synchronize picard.pot with sources
+## Synchronize picard.pot with sources
 
+```bash
 python setup.py regen_pot_file && git diff --quiet || git commit -m 'Update pot file' -- po/picard.pot
-
+```
 
 ## Update NEWS.txt
 
 TODO: explain how
 
-
-## Update Picard version
+## Update Picard version
 
 Edit `picard/__init__.py` and set new version tuple
 
@@ -99,7 +99,7 @@ git push "$PICARD_REMOTE" tag "$PICARD_RELEASE_TAG"
 
 ### To revert after push
 
-```
+```bash
 git tag -d "release-$PICARD_VERSION"
 git reset --hard "before-release-$PICARD_VERSION"
 git push "$PICARD_REMOTE" :"$TAG"
