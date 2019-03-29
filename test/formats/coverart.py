@@ -37,7 +37,6 @@ class CommonCoverArtTests:
             super().setUp()
             self.jpegdata = load_coverart_file('mb.jpg')
             self.pngdata = load_coverart_file('mb.png')
-            self.addCleanup(QtCore.QObject.tagger.run_cleanup)
 
         @skipUnlessTestfile
         def test_cover_art(self):
