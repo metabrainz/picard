@@ -47,8 +47,9 @@ def escape_lucene_query(text):
 
 
 def _wrap_xml_metadata(data):
-    return ('<?xml version="1.0" encoding="UTF-8"?>' +
-            '<metadata xmlns="http://musicbrainz.org/ns/mmd-2.0#">%s</metadata>' % data)
+    return ('<?xml version="1.0" encoding="UTF-8"?>'
+            '<metadata xmlns="http://musicbrainz.org/ns/mmd-2.0#">%s</metadata>'
+            % data)
 
 
 class APIHelper(object):
