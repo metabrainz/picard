@@ -56,6 +56,7 @@ class BoolOptionTest(CommonTests.CommonOptionTest):
     def _test_convert(self, obj):
         self.assertTrue(obj.convert(True))
         self.assertTrue(obj.convert('true'))
+        self.assertFalse(obj.convert(False))
         self.assertFalse(obj.convert(None))
         self.assertFalse(obj.convert('unknown'))
         self.assertFalse(obj.convert('false'))
@@ -75,6 +76,10 @@ class IntOptionTest(CommonTests.CommonOptionTest):
     def _test_convert(self, obj):
         self.assertEqual(42, obj.convert(42))
         self.assertEqual(42, obj.convert('42'))
+        self.assertEqual(0, obj.convert(False))
+        self.assertEqual(1, obj.convert(True))
+        with self.assertRaises(ValueError):
+            obj.convert('notanumber')
 
     def test_convert_instance(self):
         opt = self.opt_type('test', 'option1', self.default_value)
