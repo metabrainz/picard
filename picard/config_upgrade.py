@@ -118,7 +118,10 @@ def upgrade_to_v1_3_0_dev_3():
     }
     for (opt, sep) in option_separators.items():
         if opt in _s:
-            _s[opt] = _s.raw_value(opt).split(sep)
+            try:
+                _s[opt] = _s.raw_value(opt, qtype=str).split(sep)
+            except AttributeError:
+                pass
 
 
 def upgrade_to_v1_3_0_dev_4():
@@ -139,7 +142,11 @@ def upgrade_to_v1_3_0_dev_4():
 
     opt = "release_type_scores"
     if opt in _s:
-        _s[opt] = load_release_type_scores(_s.raw_value(opt))
+        try:
+            _s[opt] = load_release_type_scores(_s.raw_value(opt, qtype=str))
+        except AttributeError:
+            pass
+
 
 
 def upgrade_to_v1_4_0_dev_2():

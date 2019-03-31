@@ -43,25 +43,16 @@ class ConfigSection(LockableObject):
     def __init__(self, config, name):
         super().__init__()
         self.__qt_config = config
-        self.__config = {}
         self.__name = name
-        self.__load_keys()
+
+    def key(self, name):
+        return self.__name + '/' + name
 
     def __qt_keys(self):
         prefix = self.__name + '/'
-        return filter(lambda key: key.startswith(prefix),
-                      self.__qt_config.allKeys())
-
-    def __load_keys(self):
-        for key in self.__qt_keys():
-            try:
-                self.__config[key] = self.__qt_config.value(key)
-            except TypeError:
-                # Related to PICARD-1255, Unable to load the object into
-                # Python at all. Something weird with the way it is read and converted
-                # via the Qt C++ API. Simply ignore the key and it will be reset to
-                # default whenever the user opens Picard options
-                log.error('Unable to load config value: %s', key)
+        for key in self.__qt_config.allKeys():
+            if key.startswith(prefix):
+                yield key
 
     def __getitem__(self, name):
         opt = Option.get(self.__name, name)
@@ -70,40 +61,47 @@ class ConfigSection(LockableObject):
         return self.value(name, opt, opt.default)
 
     def __setitem__(self, name, value):
-        key = self.__name + '/' + name
         self.lock_for_write()
         try:
-            self.__config[key] = value
-            self.__qt_config.setValue(key, value)
+            self.__qt_config.setValue(self.key(name), value)
         finally:
             self.unlock()
 
     def __contains__(self, name):
-        key = self.__name + '/' + name
-        return key in self.__config
+        return self.key(name) in self.__qt_keys()
 
     def remove(self, name):
-        key = self.__name + '/' + name
         self.lock_for_write()
         try:
-            if key in self.__config:
-                self.__config.pop(key)
+            key = self.key(name)
+            if key in self.__qt_keys():
                 self.__qt_config.remove(key)
         finally:
             self.unlock()
 
-    def raw_value(self, name):
-        """Return an option value without any type conversion."""
-        value = self.__config[self.__name + '/' + name]
+    def _raw_value_for_key(self, key, qtype=None):
+        if qtype is not None:
+            value = self.__qt_config.value(key, type=qtype)
+        else:
+            value = self.__qt_config.value(key)
         return value
+
+    def raw_value(self, name, qtype=None):
+        """Return an option value without any type conversion."""
+        return self._raw_value_for_key(self.key(name), qtype=qtype)
 
     def value(self, name, option_type, default=None):
         """Return an option value converted to the given Option type."""
-        key = self.__name + '/' + name
         self.lock_for_read()
         try:
-            if key in self.__config:
-                return option_type.convert(self.raw_value(name))
+            key = self.key(name)
+            if key in self.__qt_keys():
+                try:
+                    value = self._raw_value_for_key(key, qtype=option_type.qtype)
+                    return option_type.convert(value)
+                except (TypeError, ValueError) as why:
+                    log.warning("Cannot read %s value: %s", key, why)
+                    pass  #  return default
             return default
         except Exception:
             log.error('Error reading option value', exc_info=True)
@@ -235,6 +233,7 @@ class Option(QtCore.QObject):
     """Generic option."""
 
     registry = {}
+    qtype = None
 
     def __init__(self, section, name, default):
         super().__init__()
@@ -250,29 +249,16 @@ class Option(QtCore.QObject):
         return cls.registry.get((section, name))
 
 
-@staticmethod
-def _convert_to_bool(value):
-    # The QSettings IniFormat saves boolean values as the strings "true"
-    # and "false". Thus, explicit boolean and string comparisons are used
-    # to determine the value. NOTE: In PyQt >= 4.8.3, QSettings.value has
-    # an optional "type" parameter that avoids this. But we still support
-    # PyQt >= 4.5, so that is not used.
-    return value is True or value == "true"
-
-
-@staticmethod
-def _convert_to_int_list(values):
-    return list(map(int, values))
-
-
 class TextOption(Option):
 
     convert = str
+    qtype = 'QString'
 
 
 class BoolOption(Option):
 
-    convert = _convert_to_bool
+    convert = bool
+    qtype = bool
 
 
 class IntOption(Option):
@@ -288,11 +274,18 @@ class FloatOption(Option):
 class ListOption(Option):
 
     convert = list
+    qtype = 'QVariantList'
+
+
+@staticmethod
+def _convert_to_int_list(values):
+    return list(map(int, values))
 
 
 class IntListOption(Option):
 
     convert = _convert_to_int_list
+    qtype = 'QVariantList'
 
 
 config = None
