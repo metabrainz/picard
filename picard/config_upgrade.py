@@ -149,7 +149,7 @@ def upgrade_to_v1_3_0_dev_4(config):
     opt = "release_type_scores"
     if opt in _s:
         try:
-            _s[opt] = load_release_type_scores(_s.raw_value(opt, qtype=str))
+            _s[opt] = load_release_type_scores(_s.raw_value(opt, qtype='QString'))
         except AttributeError:
             pass
 
