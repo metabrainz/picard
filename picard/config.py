@@ -83,10 +83,9 @@ class ConfigSection(LockableObject):
 
     def _raw_value_for_key(self, key, qtype=None):
         if qtype is not None:
-            value = self.__qt_config.value(key, type=qtype)
+            return self.__qt_config.value(key, type=qtype)
         else:
-            value = self.__qt_config.value(key)
-        return value
+            return self.__qt_config.value(key)
 
     def raw_value(self, name, qtype=None):
         """Return an option value without any type conversion."""
