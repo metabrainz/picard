@@ -609,3 +609,11 @@ def find_best_match(candidates, no_match):
     else:
         result = no_match
     return BestMatch(similarity=result.similarity, result=result, num_results=len(sorted_results))
+
+
+def callers(func, offset=3, length=1):
+    from inspect import stack
+
+    """Helper to print callers of a function"""
+    for i, f in enumerate(stack()[offset:offset+length]):
+        func("[%d]: %r:%d %s %r", i, f.filename, f.lineno, f.function, f.code_context)

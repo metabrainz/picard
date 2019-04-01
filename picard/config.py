@@ -17,7 +17,6 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-import inspect
 from operator import itemgetter
 
 from PyQt5 import QtCore
@@ -30,7 +29,10 @@ from picard import (
     version_from_string,
     version_to_string,
 )
-from picard.util import LockableObject
+from picard.util import (
+    callers,
+    LockableObject,
+)
 
 
 class ConfigUpgradeError(Exception):
@@ -98,14 +100,10 @@ class ConfigSection(LockableObject):
             return default
         except Exception as why:
             log.error('Cannot read %s value: %s', self.key(name), why)
-            self.callers(log.error)
+            callers(log.error, offset=2, length=2)
             return default
         finally:
             self.unlock()
-
-    def callers(self, func, offset=3, length=1):
-        for i, f in enumerate(inspect.stack()[offset:offset+length]):
-            func("[%d]: %r:%d %s %r", i, f.filename, f.lineno, f.function, f.code_context)
 
 
 class Config(QtCore.QSettings):
