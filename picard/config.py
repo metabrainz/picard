@@ -51,10 +51,10 @@ class ConfigSection(LockableObject):
     def key(self, name):
         return self.__prefix + name
 
-    def __qt_keys(self):
+    def _subkeys(self):
         for key in self.__qt_config.allKeys():
             if key[:self.__prefix_len] == self.__prefix:
-                yield key
+                yield key[self.__prefix_len:]
 
     def __getitem__(self, name):
         opt = Option.get(self.__name, name)
@@ -70,38 +70,34 @@ class ConfigSection(LockableObject):
             self.unlock()
 
     def __contains__(self, name):
-        return self.key(name) in self.__qt_keys()
+        return name in self._subkeys()
 
     def remove(self, name):
         self.lock_for_write()
         try:
-            key = self.key(name)
-            if key in self.__qt_keys():
-                self.__qt_config.remove(key)
+            if name in self:
+                self.__qt_config.remove(self.key(name))
         finally:
             self.unlock()
 
-    def _raw_value_for_key(self, key, qtype=None):
+    def raw_value(self, name, qtype=None):
+        """Return an option value without any type conversion."""
+        key = self.key(name)
         if qtype is not None:
             return self.__qt_config.value(key, type=qtype)
         else:
             return self.__qt_config.value(key)
 
-    def raw_value(self, name, qtype=None):
-        """Return an option value without any type conversion."""
-        return self._raw_value_for_key(self.key(name), qtype=qtype)
-
     def value(self, name, option_type, default=None):
         """Return an option value converted to the given Option type."""
         self.lock_for_read()
-        key = self.key(name)
         try:
-            if key in self.__qt_keys():
-                value = self._raw_value_for_key(key, qtype=option_type.qtype)
+            if name in self:
+                value = self.raw_value(name, qtype=option_type.qtype)
                 return option_type.convert(value)
             return default
         except Exception as why:
-            log.error('Cannot read %s value: %s', key, why)
+            log.error('Cannot read %s value: %s', self.key(name), why)
             self.callers(log.error)
             return default
         finally:
