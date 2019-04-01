@@ -106,7 +106,7 @@ class ConfigSection(LockableObject):
                 return option_type.convert(self.raw_value(name))
             return default
         except Exception:
-            log.error('Error reading option value', exc_info=True)
+            log.error('Error reading the value of option "%s"', key, exc_info=True)
             return default
         finally:
             self.unlock()
