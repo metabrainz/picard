@@ -45,14 +45,15 @@ class ConfigSection(LockableObject):
         super().__init__()
         self.__qt_config = config
         self.__name = name
+        self.__prefix = self.__name + '/'
+        self.__prefix_len = len(self.__prefix)
 
     def key(self, name):
-        return self.__name + '/' + name
+        return self.__prefix + name
 
     def __qt_keys(self):
-        prefix = self.__name + '/'
         for key in self.__qt_config.allKeys():
-            if key.startswith(prefix):
+            if key[:self.__prefix_len] == self.__prefix:
                 yield key
 
     def __getitem__(self, name):
