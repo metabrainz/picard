@@ -64,6 +64,7 @@ class TestPicardConfig(PicardTestCase):
         self.config = Config.from_file(None, self.configpath)
         self.config.application["version"] = "testing"
         logging.disable(logging.ERROR)
+        Option.registry = {}
 
     def tearDown(self):
         shutil.rmtree(self.tmp_directory)
