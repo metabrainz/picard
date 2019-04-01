@@ -195,7 +195,7 @@ class Config(QtCore.QSettings):
                                    version_to_string(self._version),
                                    version_to_string(version),
                                    hook['func'].__doc__.strip()))
-                    hook['func'](*hook['args'])
+                    hook['func'](self, *hook['args'])
                 except BaseException:
                     import traceback
                     raise ConfigUpgradeError(

@@ -24,6 +24,7 @@ from tempfile import mkdtemp
 from test.picardtestcase import PicardTestCase
 
 from picard.config import *
+from picard.config_upgrade import *
 
 
 class TestPicardConfig(PicardTestCase):
@@ -382,3 +383,64 @@ class TestPicardConfig(PicardTestCase):
         self.config.setValue('setting/var_option', object)
         self.assertEqual(self.config.setting["var_option"], set(["a", "b"]))
 
+    def test_upgrade_to_v1_0_0_final_0_A(self):
+        TextOption('setting', 'file_naming_format', '')
+
+        self.config.setting['va_file_naming_format'] = 'abc'
+        self.config.setting['use_va_format'] = True
+
+        self.assertIn('va_file_naming_format', self.config.setting)
+        self.assertIn('use_va_format', self.config.setting)
+
+        upgrade_to_v1_0_0_final_0(self.config, interactive=False, merge=True)
+        self.assertNotIn('va_file_naming_format', self.config.setting)
+        self.assertNotIn('use_va_format', self.config.setting)
+        self.assertIn('file_naming_format', self.config.setting)
+
+    def test_upgrade_to_v1_0_0_final_0_B(self):
+        TextOption('setting', 'file_naming_format', '')
+
+        self.config.setting['va_file_naming_format'] = 'abc'
+        self.config.setting['use_va_format'] = ""
+
+        self.assertIn('va_file_naming_format', self.config.setting)
+        self.assertIn('use_va_format', self.config.setting)
+
+        upgrade_to_v1_0_0_final_0(self.config, interactive=False, merge=False)
+        self.assertNotIn('va_file_naming_format', self.config.setting)
+        self.assertNotIn('use_va_format', self.config.setting)
+        self.assertNotIn('file_naming_format', self.config.setting)
+
+    def test_upgrade_to_v1_3_0_dev_1(self):
+        BoolOption('setting', 'windows_compatible_filenames', False)
+        self.config.setting['windows_compatible_filenames'] = True
+
+        upgrade_to_v1_3_0_dev_1(self.config)
+        self.assertNotIn('windows_compatible_filenames', self.config.setting)
+        self.assertTrue(self.config.setting['windows_compatibility'])
+
+    def test_upgrade_to_v1_3_0_dev_2(self):
+        TextOption('setting', 'preserved_tags', '')
+        self.config.setting['preserved_tags'] = "a b  c  "
+        upgrade_to_v1_3_0_dev_2(self.config)
+        self.assertEqual("a,b,c", self.config.setting['preserved_tags'])
+
+    def test_upgrade_to_v1_3_0_dev_3(self):
+        ListOption("setting", "preferred_release_countries", [])
+        ListOption("setting", "preferred_release_formats", [])
+        ListOption("setting", "enabled_plugins", [])
+        ListOption("setting", "caa_image_types", [])
+        ListOption("setting", "metadata_box_sizes", [])
+
+        self.config.setting['preferred_release_countries'] = "a  b  c"
+        self.config.setting['preferred_release_formats'] = "a  b  c"
+        self.config.setting['enabled_plugins'] = 'a b c'
+        self.config.setting['caa_image_types'] = 'a b c'
+        self.config.setting['metadata_box_sizes'] = 'a b c'
+
+        upgrade_to_v1_3_0_dev_3(self.config)
+        self.assertEqual(["a", "b", "c"], self.config.setting['preferred_release_countries'])
+        self.assertEqual(["a", "b", "c"], self.config.setting['preferred_release_formats'])
+        self.assertEqual(["a", "b", "c"], self.config.setting['enabled_plugins'])
+        self.assertEqual(["a", "b", "c"], self.config.setting['caa_image_types'])
+        self.assertEqual(["a", "b", "c"], self.config.setting['metadata_box_sizes'])
