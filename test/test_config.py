@@ -34,6 +34,14 @@ from picard.config_upgrade import (
     upgrade_to_v1_4_0_dev_2,
     upgrade_to_v1_4_0_dev_3,
     upgrade_to_v1_4_0_dev_4,
+    upgrade_to_v1_4_0_dev_6,
+    upgrade_to_v1_4_0_dev_7,
+    upgrade_to_v2_0_0_dev_3,
+    upgrade_to_v2_1_0_dev_1,
+)
+from picard.const import (
+    DEFAULT_FILE_NAMING_FORMAT,
+    DEFAULT_NUMBERED_SCRIPT_NAME,
 )
 
 
@@ -489,8 +497,6 @@ class TestPicardConfig(PicardTestCase):
         self.assertEqual(len(self.config.setting['ca_providers']), 4)
 
     def test_upgrade_to_v1_4_0_dev_4(self):
-        from picard.const import DEFAULT_FILE_NAMING_FORMAT
-
         TextOption("setting", "file_naming_format", "")
 
         self.config.setting['file_naming_format'] = 'xxx'
@@ -500,3 +506,72 @@ class TestPicardConfig(PicardTestCase):
         self.config.setting['file_naming_format'] = OLD_DEFAULT_FILE_NAMING_FORMAT
         upgrade_to_v1_4_0_dev_4(self.config)
         self.assertEqual(DEFAULT_FILE_NAMING_FORMAT, self.config.setting['file_naming_format'])
+
+    def test_upgrade_to_v1_4_0_dev_6(self):
+        BoolOption('setting', 'enable_tagger_scripts', False)
+        ListOption('setting', 'list_of_scripts', [])
+
+        self.config.setting['enable_tagger_script'] = True
+        self.config.setting['tagger_script'] = "abc"
+        upgrade_to_v1_4_0_dev_6(self.config)
+
+        self.assertNotIn('enable_tagger_script', self.config.setting)
+        self.assertNotIn('tagger_script', self.config.setting)
+
+        self.assertTrue(self.config.setting['enable_tagger_scripts'])
+        self.assertEqual([(0, DEFAULT_NUMBERED_SCRIPT_NAME % 1, True, 'abc')], self.config.setting['list_of_scripts'])
+
+    def test_upgrade_to_v1_4_0_dev_7(self):
+        BoolOption('setting', 'embed_only_one_front_image', False)
+
+        self.config.setting['save_only_front_images_to_tags'] = True
+        upgrade_to_v1_4_0_dev_7(self.config)
+        self.assertNotIn('save_only_front_images_to_tags', self.config.setting)
+        self.assertTrue(self.config.setting['embed_only_one_front_image'])
+
+    def test_upgrade_to_v2_0_0_dev_3(self):
+        IntOption("setting", "caa_image_size", 500)
+
+        self.config.setting['caa_image_size'] = 0
+        upgrade_to_v2_0_0_dev_3(self.config)
+        self.assertEqual(250, self.config.setting['caa_image_size'])
+
+        self.config.setting['caa_image_size'] = 501
+        upgrade_to_v2_0_0_dev_3(self.config)
+        self.assertEqual(501, self.config.setting['caa_image_size'])
+
+    def test_upgrade_to_v2_1_0_dev_1(self):
+        BoolOption("setting", "use_genres", False)
+        IntOption("setting", "max_genres", 5)
+        IntOption("setting", "min_genre_usage", 90)
+        TextOption("setting", "ignore_genres", "seen live, favorites, fixme, owned")
+        TextOption("setting", "join_genres", "")
+        BoolOption("setting", "only_my_genres", False)
+        BoolOption("setting", "artists_genres", False)
+        BoolOption("setting", "folksonomy_tags", False)
+
+        self.config.setting['folksonomy_tags'] = True
+        self.config.setting['max_tags'] = 6
+        self.config.setting['min_tag_usage'] = 85
+        self.config.setting['ignore_tags'] = "abc"
+        self.config.setting['join_tags'] =  "abc"
+        self.config.setting['only_my_tags'] = True
+        self.config.setting['artists_tags'] = True
+
+        upgrade_to_v2_1_0_dev_1(self.config)
+        self.assertEqual(self.config.setting['use_genres'], True)
+        self.assertEqual(self.config.setting['max_genres'], 6)
+        self.assertEqual(self.config.setting['min_genre_usage'], 85)
+        self.assertEqual(self.config.setting['ignore_genres'], "abc")
+        self.assertEqual(self.config.setting['join_genres'], "abc")
+        self.assertEqual(self.config.setting['only_my_genres'], True)
+        self.assertEqual(self.config.setting['artists_genres'], True)
+
+        self.assertIn('folksonomy_tags', self.config.setting)
+
+        self.assertNotIn('max_tags', self.config.setting)
+        self.assertNotIn('min_tag_usage', self.config.setting)
+        self.assertNotIn('ignore_tags', self.config.setting)
+        self.assertNotIn('join_tags', self.config.setting)
+        self.assertNotIn('only_my_tags', self.config.setting)
+        self.assertNotIn('artists_tags', self.config.setting)
