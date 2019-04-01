@@ -43,6 +43,16 @@ class TestPicardConfig(PicardTestCase):
         with open(self.configpath) as f:
             print(f.read())
 
+    def test_remove(self):
+        TextOption("setting", "text_option", "abc")
+
+        self.config.setting["text_option"] = "def"
+        self.assertEqual(self.config.setting["text_option"], "def")
+
+        self.config.setting.remove("text_option")
+        self.assertEqual(self.config.setting["text_option"], "abc")
+
+
     ### TextOption
     def test_text_opt_convert(self):
         opt = TextOption("setting", "text_option", "abc")
