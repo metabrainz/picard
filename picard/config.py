@@ -17,6 +17,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+import inspect
 from operator import itemgetter
 
 from PyQt5 import QtCore
@@ -101,6 +102,9 @@ class ConfigSection(LockableObject):
                     return option_type.convert(value)
                 except (TypeError, ValueError) as why:
                     log.warning("Cannot read %s value: %s", key, why)
+                    frames = inspect.getouterframes(inspect.currentframe())[2:3]
+                    for f in frames:
+                        log.warning("Called from: %r:%d %s %r", f.filename, f.lineno, f.function, f.code_context)
                     pass  #  return default
             return default
         except Exception:
