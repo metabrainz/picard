@@ -17,19 +17,12 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-import logging
-import os
-import shutil
-from tempfile import mkdtemp
-
-from test.picardtestcase import PicardTestCase
+from test.test_config import TestPicardConfigCommon
 
 from picard.config import (
     BoolOption,
-    Config,
     IntOption,
     ListOption,
-    Option,
     TextOption,
 )
 from picard.config_upgrade import (
@@ -53,24 +46,7 @@ from picard.const import (
 )
 
 
-class TestPicardConfig(PicardTestCase):
-
-    def setUp(self):
-        super().setUp()
-        self.tmp_directory = mkdtemp()
-        self.configpath = os.path.join(self.tmp_directory, 'test.ini')
-        self.config = Config.from_file(None, self.configpath)
-        self.config.application["version"] = "testing"
-        logging.disable(logging.ERROR)
-        Option.registry = {}
-
-    def tearDown(self):
-        shutil.rmtree(self.tmp_directory)
-
-    def _print_config(self):
-        self.config.sync()
-        with open(self.configpath) as f:
-            print(f.read())
+class TestPicardConfigUpgrades(TestPicardConfigCommon):
 
     def test_upgrade_to_v1_0_0_final_0_A(self):
         TextOption('setting', 'file_naming_format', '')

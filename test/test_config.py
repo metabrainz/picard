@@ -35,8 +35,7 @@ from picard.config import (
     TextOption,
 )
 
-
-class TestPicardConfig(PicardTestCase):
+class TestPicardConfigCommon(PicardTestCase):
 
     def setUp(self):
         super().setUp()
@@ -50,10 +49,8 @@ class TestPicardConfig(PicardTestCase):
     def tearDown(self):
         shutil.rmtree(self.tmp_directory)
 
-    def _print_config(self):
-        self.config.sync()
-        with open(self.configpath) as f:
-            print(f.read())
+
+class TestPicardConfig(TestPicardConfigCommon):
 
     def test_remove(self):
         TextOption("setting", "text_option", "abc")
@@ -64,6 +61,8 @@ class TestPicardConfig(PicardTestCase):
         self.config.setting.remove("text_option")
         self.assertEqual(self.config.setting["text_option"], "abc")
 
+
+class TestPicardConfigTextOption(TestPicardConfigCommon):
 
     ### TextOption
     def test_text_opt_convert(self):
@@ -105,6 +104,9 @@ class TestPicardConfig(PicardTestCase):
         # store invalid value in config file directly
         self.config.setValue('setting/text_option', object)
         self.assertEqual(self.config.setting["text_option"], 'abc')
+
+
+class TestPicardConfigBoolOption(TestPicardConfigCommon):
 
     ### BoolOption
     def test_bool_opt_convert(self):
@@ -161,6 +163,9 @@ class TestPicardConfig(PicardTestCase):
         self.config.setValue('setting/bool_option', 'true')
         self.assertEqual(self.config.setting["bool_option"], True)
 
+
+class TestPicardConfigIntOption(TestPicardConfigCommon):
+
     ### IntOption
     def test_int_opt_convert(self):
         opt = IntOption("setting", "int_option", 666)
@@ -208,6 +213,9 @@ class TestPicardConfig(PicardTestCase):
         # store int as string directly, it should be ok, due to conversion
         self.config.setValue('setting/int_option', '333')
         self.assertEqual(self.config.setting["int_option"], 333)
+
+
+class TestPicardConfigFloatOption(TestPicardConfigCommon):
 
     # FloatOption
     def test_float_opt_convert(self):
@@ -257,6 +265,9 @@ class TestPicardConfig(PicardTestCase):
         self.config.setValue('setting/float_option', '333.3')
         self.assertEqual(self.config.setting["float_option"], 333.3)
 
+
+class TestPicardConfigListOption(TestPicardConfigCommon):
+
     ### ListOption
     def test_list_opt_convert(self):
         opt = ListOption("setting", "list_option", [])
@@ -305,6 +316,9 @@ class TestPicardConfig(PicardTestCase):
         self.config.setValue('setting/list_option', 'efg')
         self.assertEqual(self.config.setting["list_option"], ["a", "b"])
 
+
+class TestPicardConfigIntListOption(TestPicardConfigCommon):
+
     ### IntListOption
     def test_intlist_opt_convert(self):
         opt = IntListOption("setting", "intlist_option", [])
@@ -352,6 +366,9 @@ class TestPicardConfig(PicardTestCase):
         # store invalid intlist value in config file directly
         self.config.setValue('setting/intlist_option', 'efg')
         self.assertEqual(self.config.setting["intlist_option"], [1, 2])
+
+
+class TestPicardConfigVarOption(TestPicardConfigCommon):
 
     ### Option
     def test_var_opt_convert(self):
