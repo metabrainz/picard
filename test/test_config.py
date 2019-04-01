@@ -23,7 +23,16 @@ from tempfile import mkdtemp
 
 from test.picardtestcase import PicardTestCase
 
-from picard.config import *
+from picard.config import (
+    BoolOption,
+    Config,
+    FloatOption,
+    IntListOption,
+    IntOption,
+    ListOption,
+    Option,
+    TextOption,
+)
 from picard.config_upgrade import (
     OLD_DEFAULT_FILE_NAMING_FORMAT,
     upgrade_to_v1_0_0_final_0,
