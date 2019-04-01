@@ -28,6 +28,8 @@ from picard.config import (
     IntOption,
     TextOption,
 )
+from picard.const import DEFAULT_FILE_NAMING_FORMAT
+
 
 # TO ADD AN UPGRADE HOOK:
 # ----------------------
@@ -181,23 +183,19 @@ def upgrade_to_v1_4_0_dev_3(config):
     _s['ca_providers'] = newopts
 
 
+OLD_DEFAULT_FILE_NAMING_FORMAT = "$if2(%albumartist%,%artist%)/" \
+    "$if($ne(%albumartist%,),%album%/)" \
+    "$if($gt(%totaldiscs%,1),%discnumber%-,)" \
+    "$if($ne(%albumartist%,),$num(%tracknumber%,2) ,)" \
+    "$if(%_multiartist%,%artist% - ,)" \
+    "%title%"
+
+
 def upgrade_to_v1_4_0_dev_4(config):
     """Adds trailing comma to default file names for scripts"""
     _s = config.setting
-    _DEFAULT_FILE_NAMING_FORMAT = "$if2(%albumartist%,%artist%)/" \
-        "$if($ne(%albumartist%,),%album%/)" \
-        "$if($gt(%totaldiscs%,1),%discnumber%-,)" \
-        "$if($ne(%albumartist%,),$num(%tracknumber%,2) ,)" \
-        "$if(%_multiartist%,%artist% - ,)" \
-        "%title%"
-    if _s["file_naming_format"] == _DEFAULT_FILE_NAMING_FORMAT:
-        _DEFAULT_FILE_NAMING_FORMAT = "$if2(%albumartist%,%artist%)/" \
-            "$if($ne(%albumartist%,),%album%/,)" \
-            "$if($gt(%totaldiscs%,1),%discnumber%-,)" \
-            "$if($ne(%albumartist%,),$num(%tracknumber%,2) ,)" \
-            "$if(%_multiartist%,%artist% - ,)" \
-            "%title%"
-        _s["file_naming_format"] = _DEFAULT_FILE_NAMING_FORMAT
+    if _s["file_naming_format"] == OLD_DEFAULT_FILE_NAMING_FORMAT:
+        _s["file_naming_format"] = DEFAULT_FILE_NAMING_FORMAT
 
 
 def upgrade_to_v1_4_0_dev_5(config):

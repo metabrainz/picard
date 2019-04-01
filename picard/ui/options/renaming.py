@@ -26,7 +26,10 @@ from PyQt5.QtCore import QStandardPaths
 from PyQt5.QtGui import QPalette
 
 from picard import config
-from picard.const import PICARD_URLS
+from picard.const import (
+    DEFAULT_FILE_NAMING_FORMAT,
+    PICARD_URLS,
+)
 from picard.const.sys import IS_WIN
 from picard.file import File
 from picard.script import (
@@ -44,12 +47,7 @@ from picard.ui.options.scripting import TaggerScriptSyntaxHighlighter
 from picard.ui.ui_options_renaming import Ui_RenamingOptionsPage
 from picard.ui.util import enabledSlot
 
-_DEFAULT_FILE_NAMING_FORMAT = "$if2(%albumartist%,%artist%)/" \
-    "$if($ne(%albumartist%,),%album%/,)" \
-    "$if($gt(%totaldiscs%,1),%discnumber%-,)" \
-    "$if($ne(%albumartist%,),$num(%tracknumber%,2) ,)" \
-    "$if(%_multiartist%,%artist% - ,)" \
-    "%title%"
+
 
 
 _default_music_dir = QStandardPaths.writableLocation(QStandardPaths.MusicLocation)
@@ -70,7 +68,7 @@ class RenamingOptionsPage(OptionsPage):
         config.TextOption(
             "setting",
             "file_naming_format",
-            _DEFAULT_FILE_NAMING_FORMAT,
+            DEFAULT_FILE_NAMING_FORMAT,
         ),
         config.BoolOption("setting", "move_files", False),
         config.TextOption("setting", "move_files_to", _default_music_dir),
