@@ -18,6 +18,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from functools import partial
+from pprint import pformat
 
 from PyQt5 import QtCore
 
@@ -133,7 +134,7 @@ def load_user_collections(callback=None):
             for collection_id in old_collections:
                 del user_collections[collection_id]
 
-            log.debug("User collections: %r", [(k, v.name) for k, v in user_collections.items()])
+            log.debug("User collections:\n%s", pformat([(k, v.name) for k, v in user_collections.items()]))
         if callback:
             callback()
 
