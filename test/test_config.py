@@ -412,9 +412,9 @@ class TestPicardConfig(PicardTestCase):
         self.assertNotIn('file_naming_format', self.config.setting)
 
     def test_upgrade_to_v1_3_0_dev_1(self):
-        BoolOption('setting', 'windows_compatible_filenames', False)
-        self.config.setting['windows_compatible_filenames'] = True
+        BoolOption('setting', 'windows_compatibility', False)
 
+        self.config.setting['windows_compatible_filenames'] = True
         upgrade_to_v1_3_0_dev_1(self.config)
         self.assertNotIn('windows_compatible_filenames', self.config.setting)
         self.assertTrue(self.config.setting['windows_compatibility'])
