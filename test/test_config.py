@@ -24,7 +24,17 @@ from tempfile import mkdtemp
 from test.picardtestcase import PicardTestCase
 
 from picard.config import *
-from picard.config_upgrade import *
+from picard.config_upgrade import (
+    OLD_DEFAULT_FILE_NAMING_FORMAT,
+    upgrade_to_v1_0_0_final_0,
+    upgrade_to_v1_3_0_dev_1,
+    upgrade_to_v1_3_0_dev_2,
+    upgrade_to_v1_3_0_dev_3,
+    upgrade_to_v1_3_0_dev_4,
+    upgrade_to_v1_4_0_dev_2,
+    upgrade_to_v1_4_0_dev_3,
+    upgrade_to_v1_4_0_dev_4,
+)
 
 
 class TestPicardConfig(PicardTestCase):
@@ -421,6 +431,7 @@ class TestPicardConfig(PicardTestCase):
 
     def test_upgrade_to_v1_3_0_dev_2(self):
         TextOption('setting', 'preserved_tags', '')
+
         self.config.setting['preserved_tags'] = "a b  c  "
         upgrade_to_v1_3_0_dev_2(self.config)
         self.assertEqual("a,b,c", self.config.setting['preserved_tags'])
@@ -444,3 +455,48 @@ class TestPicardConfig(PicardTestCase):
         self.assertEqual(["a", "b", "c"], self.config.setting['enabled_plugins'])
         self.assertEqual(["a", "b", "c"], self.config.setting['caa_image_types'])
         self.assertEqual(["a", "b", "c"], self.config.setting['metadata_box_sizes'])
+
+    def test_upgrade_to_v1_3_0_dev_4(self):
+        ListOption("setting", "release_type_scores", [])
+
+        self.config.setting['release_type_scores'] = "a 0.1 b 0.2 c 1"
+        upgrade_to_v1_3_0_dev_4(self.config)
+
+        self.assertEqual([('a', 0.1), ('b', 0.2), ('c', 1.0)], self.config.setting['release_type_scores'])
+
+    def test_upgrade_to_v1_4_0_dev_2(self):
+        self.config.setting['username'] = 'abc'
+        self.config.setting['password'] = 'abc'
+
+        upgrade_to_v1_4_0_dev_2(self.config)
+        self.assertNotIn('username', self.config.setting)
+        self.assertNotIn('password', self.config.setting)
+
+    def test_upgrade_to_v1_4_0_dev_3(self):
+        ListOption("setting", "ca_providers", [])
+
+        self.config.setting['ca_provider_use_amazon'] = True
+        self.config.setting['ca_provider_use_caa'] = True
+        self.config.setting['ca_provider_use_whitelist'] = False
+        self.config.setting['ca_provider_use_caa_release_group_fallback'] = True
+
+        upgrade_to_v1_4_0_dev_3(self.config)
+        self.assertIn('ca_providers', self.config.setting)
+        self.assertIn(('Amazon', True), self.config.setting['ca_providers'])
+        self.assertIn(('Cover Art Archive', True), self.config.setting['ca_providers'])
+        self.assertIn(('Whitelist', False), self.config.setting['ca_providers'])
+        self.assertIn(('CaaReleaseGroup', True), self.config.setting['ca_providers'])
+        self.assertEqual(len(self.config.setting['ca_providers']), 4)
+
+    def test_upgrade_to_v1_4_0_dev_4(self):
+        from picard.const import DEFAULT_FILE_NAMING_FORMAT
+
+        TextOption("setting", "file_naming_format", "")
+
+        self.config.setting['file_naming_format'] = 'xxx'
+        upgrade_to_v1_4_0_dev_4(self.config)
+        self.assertEqual('xxx', self.config.setting['file_naming_format'])
+
+        self.config.setting['file_naming_format'] = OLD_DEFAULT_FILE_NAMING_FORMAT
+        upgrade_to_v1_4_0_dev_4(self.config)
+        self.assertEqual(DEFAULT_FILE_NAMING_FORMAT, self.config.setting['file_naming_format'])
