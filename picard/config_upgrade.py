@@ -28,8 +28,10 @@ from picard.config import (
     IntOption,
     TextOption,
 )
-from picard.const import DEFAULT_FILE_NAMING_FORMAT
-
+from picard.const import (
+    DEFAULT_FILE_NAMING_FORMAT,
+    DEFAULT_NUMBERED_SCRIPT_NAME,
+)
 
 # TO ADD AN UPGRADE HOOK:
 # ----------------------
@@ -206,7 +208,6 @@ def upgrade_to_v1_4_0_dev_5(config):
 def upgrade_to_v1_4_0_dev_6(config):
     """Adds support for multiple and selective tagger scripts"""
     _s = config.setting
-    DEFAULT_NUMBERED_SCRIPT_NAME = N_("My script %d")
     old_enabled_option = "enable_tagger_script"
     old_script_text_option = "tagger_script"
     list_of_scripts = []
