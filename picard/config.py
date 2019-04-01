@@ -94,24 +94,22 @@ class ConfigSection(LockableObject):
     def value(self, name, option_type, default=None):
         """Return an option value converted to the given Option type."""
         self.lock_for_read()
+        key = self.key(name)
         try:
-            key = self.key(name)
             if key in self.__qt_keys():
-                try:
-                    value = self._raw_value_for_key(key, qtype=option_type.qtype)
-                    return option_type.convert(value)
-                except (TypeError, ValueError) as why:
-                    log.warning("Cannot read %s value: %s", key, why)
-                    frames = inspect.getouterframes(inspect.currentframe())[2:3]
-                    for f in frames:
-                        log.warning("Called from: %r:%d %s %r", f.filename, f.lineno, f.function, f.code_context)
-                    pass  #  return default
+                value = self._raw_value_for_key(key, qtype=option_type.qtype)
+                return option_type.convert(value)
             return default
-        except Exception:
-            log.error('Error reading option value', exc_info=True)
+        except Exception as why:
+            log.error('Cannot read %s value: %s', key, why)
+            self.callers(log.error)
             return default
         finally:
             self.unlock()
+
+    def callers(self, func, offset=3, length=1):
+        for i, f in enumerate(inspect.stack()[offset:offset+length]):
+            func("[%d]: %r:%d %s %r", i, f.filename, f.lineno, f.function, f.code_context)
 
 
 class Config(QtCore.QSettings):
