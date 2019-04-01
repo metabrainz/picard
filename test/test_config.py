@@ -486,7 +486,7 @@ class TestPicardConfig(PicardTestCase):
 
     def test_upgrade_to_v1_4_0_dev_2(self):
         self.config.setting['username'] = 'abc'
-        self.config.setting['password'] = 'abc'
+        self.config.setting['password'] = 'abc'  # nosec
 
         upgrade_to_v1_4_0_dev_2(self.config)
         self.assertNotIn('username', self.config.setting)
