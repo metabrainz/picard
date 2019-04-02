@@ -24,7 +24,11 @@ from PyQt5 import (
 )
 
 from picard import config
-from picard.const import PICARD_URLS
+from picard.const import (
+    DEFAULT_NUMBERED_SCRIPT_NAME,
+    DEFAULT_SCRIPT_NAME,
+    PICARD_URLS,
+)
 from picard.script import ScriptParser
 from picard.util import restore_method
 
@@ -35,9 +39,6 @@ from picard.ui.options import (
     register_options_page,
 )
 from picard.ui.ui_options_script import Ui_ScriptingOptionsPage
-
-DEFAULT_NUMBERED_SCRIPT_NAME = N_("My script %d")
-DEFAULT_SCRIPT_NAME = N_("My script")
 
 
 class TaggerScriptSyntaxHighlighter(QtGui.QSyntaxHighlighter):
