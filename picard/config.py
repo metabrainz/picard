@@ -29,7 +29,9 @@ from picard import (
     version_from_string,
     version_to_string,
 )
-from picard.util import LockableObject
+from picard.util import (
+    LockableObject,
+)
 
 
 class ConfigUpgradeError(Exception):
@@ -43,25 +45,17 @@ class ConfigSection(LockableObject):
     def __init__(self, config, name):
         super().__init__()
         self.__qt_config = config
-        self.__config = {}
         self.__name = name
-        self.__load_keys()
+        self.__prefix = self.__name + '/'
+        self.__prefix_len = len(self.__prefix)
 
-    def __qt_keys(self):
-        prefix = self.__name + '/'
-        return filter(lambda key: key.startswith(prefix),
-                      self.__qt_config.allKeys())
+    def key(self, name):
+        return self.__prefix + name
 
-    def __load_keys(self):
-        for key in self.__qt_keys():
-            try:
-                self.__config[key] = self.__qt_config.value(key)
-            except TypeError:
-                # Related to PICARD-1255, Unable to load the object into
-                # Python at all. Something weird with the way it is read and converted
-                # via the Qt C++ API. Simply ignore the key and it will be reset to
-                # default whenever the user opens Picard options
-                log.error('Unable to load config value: %s', key)
+    def _subkeys(self):
+        for key in self.__qt_config.allKeys():
+            if key[:self.__prefix_len] == self.__prefix:
+                yield key[self.__prefix_len:]
 
     def __getitem__(self, name):
         opt = Option.get(self.__name, name)
@@ -70,43 +64,41 @@ class ConfigSection(LockableObject):
         return self.value(name, opt, opt.default)
 
     def __setitem__(self, name, value):
-        key = self.__name + '/' + name
         self.lock_for_write()
         try:
-            self.__config[key] = value
-            self.__qt_config.setValue(key, value)
+            self.__qt_config.setValue(self.key(name), value)
         finally:
             self.unlock()
 
     def __contains__(self, name):
-        key = self.__name + '/' + name
-        return key in self.__config
+        return name in self._subkeys()
 
     def remove(self, name):
-        key = self.__name + '/' + name
         self.lock_for_write()
         try:
-            if key in self.__config:
-                self.__config.pop(key)
-                self.__qt_config.remove(key)
+            if name in self:
+                self.__qt_config.remove(self.key(name))
         finally:
             self.unlock()
 
-    def raw_value(self, name):
+    def raw_value(self, name, qtype=None):
         """Return an option value without any type conversion."""
-        value = self.__config[self.__name + '/' + name]
-        return value
+        key = self.key(name)
+        if qtype is not None:
+            return self.__qt_config.value(key, type=qtype)
+        else:
+            return self.__qt_config.value(key)
 
     def value(self, name, option_type, default=None):
         """Return an option value converted to the given Option type."""
-        key = self.__name + '/' + name
         self.lock_for_read()
         try:
-            if key in self.__config:
-                return option_type.convert(self.raw_value(name))
+            if name in self:
+                value = self.raw_value(name, qtype=option_type.qtype)
+                return option_type.convert(value)
             return default
-        except Exception:
-            log.error('Error reading option value', exc_info=True)
+        except Exception as why:
+            log.error('Cannot read %s value: %s', self.key(name), why, exc_info=True)
             return default
         finally:
             self.unlock()
@@ -201,7 +193,7 @@ class Config(QtCore.QSettings):
                                    version_to_string(self._version),
                                    version_to_string(version),
                                    hook['func'].__doc__.strip()))
-                    hook['func'](*hook['args'])
+                    hook['func'](self, *hook['args'])
                 except BaseException:
                     import traceback
                     raise ConfigUpgradeError(
@@ -235,6 +227,7 @@ class Option(QtCore.QObject):
     """Generic option."""
 
     registry = {}
+    qtype = None
 
     def __init__(self, section, name, default):
         super().__init__()
@@ -250,24 +243,16 @@ class Option(QtCore.QObject):
         return cls.registry.get((section, name))
 
 
-@staticmethod
-def _convert_to_bool(value):
-    # The QSettings IniFormat saves boolean values as the strings "true"
-    # and "false". Thus, explicit boolean and string comparisons are used
-    # to determine the value. NOTE: In PyQt >= 4.8.3, QSettings.value has
-    # an optional "type" parameter that avoids this. But we still support
-    # PyQt >= 4.5, so that is not used.
-    return value is True or value == "true"
-
-
 class TextOption(Option):
 
     convert = str
+    qtype = 'QString'
 
 
 class BoolOption(Option):
 
-    convert = _convert_to_bool
+    convert = bool
+    qtype = bool
 
 
 class IntOption(Option):
@@ -283,6 +268,7 @@ class FloatOption(Option):
 class ListOption(Option):
 
     convert = list
+    qtype = 'QVariantList'
 
 
 config = None
