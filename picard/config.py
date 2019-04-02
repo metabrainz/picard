@@ -260,11 +260,6 @@ def _convert_to_bool(value):
     return value is True or value == "true"
 
 
-@staticmethod
-def _convert_to_int_list(values):
-    return list(map(int, values))
-
-
 class TextOption(Option):
 
     convert = str
@@ -288,11 +283,6 @@ class FloatOption(Option):
 class ListOption(Option):
 
     convert = list
-
-
-class IntListOption(Option):
-
-    convert = _convert_to_int_list
 
 
 config = None
