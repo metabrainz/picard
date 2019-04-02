@@ -138,3 +138,15 @@ PROGRAM_UPDATE_LEVELS = OrderedDict(
         ),
     ]
 )
+
+
+DEFAULT_FILE_NAMING_FORMAT = "$if2(%albumartist%,%artist%)/" \
+    "$if($ne(%albumartist%,),%album%/,)" \
+    "$if($gt(%totaldiscs%,1),%discnumber%-,)" \
+    "$if($ne(%albumartist%,),$num(%tracknumber%,2) ,)" \
+    "$if(%_multiartist%,%artist% - ,)" \
+    "%title%"
+
+
+DEFAULT_NUMBERED_SCRIPT_NAME = N_("My script %d")
+DEFAULT_SCRIPT_NAME = N_("My script")

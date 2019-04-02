@@ -2,14 +2,13 @@ from test.picardtestcase import PicardTestCase
 from unittest.mock import MagicMock
 
 from picard import config
+from picard.const import DEFAULT_FILE_NAMING_FORMAT
 from picard.metadata import Metadata
 from picard.script import (
     ScriptError,
     ScriptParser,
     register_script_function,
 )
-
-from picard.ui.options.renaming import _DEFAULT_FILE_NAMING_FORMAT
 
 
 class ScriptParserTest(PicardTestCase):
@@ -370,10 +369,10 @@ class ScriptParserTest(PicardTestCase):
         context['discnumber'] = 1
         context['tracknumber'] = 8
         context['title'] = u'title'
-        result = self.parser.eval(_DEFAULT_FILE_NAMING_FORMAT, context)
+        result = self.parser.eval(DEFAULT_FILE_NAMING_FORMAT, context)
         self.assertEqual(result, u'albumartist/album/1-08 title')
         context['~multiartist'] = '1'
-        result = self.parser.eval(_DEFAULT_FILE_NAMING_FORMAT, context)
+        result = self.parser.eval(DEFAULT_FILE_NAMING_FORMAT, context)
         self.assertEqual(result, u'albumartist/album/1-08 artist - title')
 
     def test_default_NAT_filenaming(self):
@@ -381,7 +380,7 @@ class ScriptParserTest(PicardTestCase):
         context['artist'] = u'artist'
         context['album'] = u'[non-album tracks]'
         context['title'] = u'title'
-        result = self.parser.eval(_DEFAULT_FILE_NAMING_FORMAT, context)
+        result = self.parser.eval(DEFAULT_FILE_NAMING_FORMAT, context)
         self.assertEqual(result, u'artist/title')
 
     def test_cmd_with_not_arguments(self):
