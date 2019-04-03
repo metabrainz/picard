@@ -161,7 +161,6 @@ class AcoustIDClient(QtCore.QObject):
         try:
             self._running -= 1
             self._run_next_task()
-            process = self.sender()
             if exit_code == 0 and exit_status == 0:
                 output = bytes(process.readAllStandardOutput()).decode()
                 duration = None
