@@ -38,8 +38,7 @@ from picard.util import (
     encode_filename,
     format_time,
     htmlescape,
-    union_sorted_lists,
-    webbrowser2,
+    union_sorted_lists
 )
 
 from picard.ui import PicardDialog
@@ -243,7 +242,8 @@ class InfoDialog(PicardDialog):
             return
         filename = data.tempfile_filename
         if filename:
-            webbrowser2.open("file://" + filename)
+            url = QtCore.QUrl.fromLocalFile(filename)
+            QtGui.QDesktopServices.openUrl(url)
 
 
 def format_file_info(file_):
