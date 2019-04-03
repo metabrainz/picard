@@ -38,7 +38,7 @@ from picard.util import (
     encode_filename,
     format_time,
     htmlescape,
-    union_sorted_lists
+    union_sorted_lists,
 )
 
 from picard.ui import PicardDialog
