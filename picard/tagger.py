@@ -223,7 +223,7 @@ class Tagger(QtWidgets.QApplication):
         # translated
         setup_gettext(localedir, config.setting["ui_language"], log.debug)
 
-        upgrade_config()
+        upgrade_config(config.config)
 
         self.webservice = WebService()
         self.mb_api = MBAPIHelper(self.webservice)
