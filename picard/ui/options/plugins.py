@@ -35,7 +35,6 @@ from picard import (
     config,
     log,
 )
-
 from picard.const import (
     PLUGINS_API,
     USER_PLUGIN_DIR,

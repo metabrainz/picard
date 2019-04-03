@@ -26,7 +26,6 @@ from PyQt5 import (
 )
 
 from picard import config
-
 from picard.const import (
     RELEASE_COUNTRIES,
     RELEASE_FORMATS,

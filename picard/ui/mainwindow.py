@@ -35,9 +35,7 @@ from picard import (
 from picard.album import Album
 from picard.cluster import Cluster
 from picard.const import PROGRAM_UPDATE_LEVELS
-from picard.const.sys import (
-    IS_MACOS,
-)
+from picard.const.sys import IS_MACOS
 from picard.file import File
 from picard.formats import supported_formats
 from picard.plugin import ExtensionPoint

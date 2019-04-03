@@ -12,6 +12,7 @@ from picard.const.sys import (
 )
 from picard.util.filenaming import make_short_filename
 
+
 class ShortFilenameTest(PicardTestCase):
 
     def __init__(self, *args, **kwargs):

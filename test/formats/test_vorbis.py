@@ -8,19 +8,19 @@ from picard import (
 )
 from picard.coverart.image import CoverArtImage
 from picard.formats import vorbis
+
 from .common import (
+    TAGS,
     CommonTests,
     load_metadata,
     load_raw,
     save_and_load_metadata,
     skipUnlessTestfile,
-    TAGS,
 )
 from .coverart import (
     CommonCoverArtTests,
     file_save_image,
 )
-
 
 VALID_KEYS = [
     ' valid Key}',

@@ -18,7 +18,10 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from functools import partial
-from heapq import heappush, heappop
+from heapq import (
+    heappop,
+    heappush,
+)
 import os
 import re
 

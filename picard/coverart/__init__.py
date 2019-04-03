@@ -40,7 +40,6 @@ from picard.coverart.providers import (
     CoverArtProvider,
     cover_art_providers,
 )
-
 from picard.metadata import register_album_metadata_processor
 
 

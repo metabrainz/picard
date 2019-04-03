@@ -1,7 +1,6 @@
 import os
 import shutil
 from tempfile import mkdtemp
-
 from test.picardtestcase import PicardTestCase
 
 from picard.file import File

@@ -8,7 +8,6 @@ from test.picardtestcase import PicardTestCase
 from picard import config
 import picard.formats
 
-
 settings = {
     'enabled_plugins': '',
     'move_files': True,

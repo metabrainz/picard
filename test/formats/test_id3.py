@@ -4,6 +4,7 @@ from test.picardtestcase import PicardTestCase
 from picard import config
 from picard.formats import id3
 from picard.metadata import Metadata
+
 from .common import (
     CommonTests,
     load_metadata,

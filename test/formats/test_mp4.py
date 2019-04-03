@@ -1,4 +1,5 @@
 from picard.formats import ext_to_format
+
 from .common import (
     CommonTests,
     load_metadata,

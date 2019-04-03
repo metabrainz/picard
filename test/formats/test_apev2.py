@@ -1,13 +1,13 @@
 from test.picardtestcase import PicardTestCase
 
 from picard.formats import apev2
+
 from .common import (
+    TAGS,
     CommonTests,
     load_metadata,
-    TAGS,
 )
 from .coverart import CommonCoverArtTests
-
 
 VALID_KEYS = [
     ' valid Key}',

@@ -7,7 +7,6 @@ from picard.metadata import Metadata
 from picard.script import register_script_function
 from picard.util.scripttofilename import script_to_filename
 
-
 settings = {
     'ascii_filenames': False,
     'enabled_plugins': [],

@@ -58,14 +58,14 @@ from picard.cluster import (
 )
 from picard.collection import load_user_collections
 from picard.config_upgrade import upgrade_config
+from picard.const import (
+    USER_DIR,
+    USER_PLUGIN_DIR,
+)
 from picard.const.sys import (
     IS_FROZEN,
     IS_MACOS,
     IS_WIN,
-)
-from picard.const import (
-    USER_DIR,
-    USER_PLUGIN_DIR,
 )
 from picard.dataobj import DataObject
 from picard.disc import Disc

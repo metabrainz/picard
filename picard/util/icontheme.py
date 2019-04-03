@@ -23,7 +23,6 @@ from PyQt5 import QtGui
 
 from picard.const.sys import IS_WIN
 
-
 if IS_WIN:
     _search_paths = []
 else:

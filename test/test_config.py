@@ -21,7 +21,6 @@ import logging
 import os
 import shutil
 from tempfile import mkdtemp
-
 from test.picardtestcase import PicardTestCase
 
 from picard.config import (
@@ -33,6 +32,7 @@ from picard.config import (
     Option,
     TextOption,
 )
+
 
 class TestPicardConfigCommon(PicardTestCase):
 
