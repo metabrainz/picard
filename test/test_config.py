@@ -1,138 +1,360 @@
+# -*- coding: utf-8 -*-
+#
+# Picard, the next-generation MusicBrainz tagger
+# Copyright (C) 2019 Laurent Monin
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+
+import logging
+import os
+import shutil
+from tempfile import mkdtemp
+
 from test.picardtestcase import PicardTestCase
 
-from picard import config
+from picard.config import (
+    BoolOption,
+    Config,
+    FloatOption,
+    IntOption,
+    ListOption,
+    Option,
+    TextOption,
+)
+
+class TestPicardConfigCommon(PicardTestCase):
+
+    def setUp(self):
+        super().setUp()
+        self.tmp_directory = mkdtemp()
+        self.configpath = os.path.join(self.tmp_directory, 'test.ini')
+        self.config = Config.from_file(None, self.configpath)
+        self.config.application["version"] = "testing"
+        logging.disable(logging.ERROR)
+        Option.registry = {}
+
+    def tearDown(self):
+        shutil.rmtree(self.tmp_directory)
 
 
-class CommonTests:
+class TestPicardConfig(TestPicardConfigCommon):
 
-    class CommonOptionTest(PicardTestCase):
-        opt_type = config.Option
-        default_value = 'somevalue'
+    def test_remove(self):
+        TextOption("setting", "text_option", "abc")
 
-        def setUp(self):
-            self.opt_type.registry = {}
+        self.config.setting["text_option"] = "def"
+        self.assertEqual(self.config.setting["text_option"], "def")
 
-        def test_constructor(self):
-            opt = self.opt_type('test', 'option1', self.default_value)
-            self.assertEqual('test', opt.section)
-            self.assertEqual('option1', opt.name)
-            self.assertEqual(self.default_value, opt.default)
-
-        def test_registry(self):
-            opt = self.opt_type('test', 'option1', self.default_value)
-            self.assertEqual(opt, self.opt_type.get('test', 'option1'))
+        self.config.setting.remove("text_option")
+        self.assertEqual(self.config.setting["text_option"], "abc")
 
 
-class OptionTest(CommonTests.CommonOptionTest):
+class TestPicardConfigTextOption(TestPicardConfigCommon):
 
-    def test_default_convert(self):
-        for default in ['somevalue', True, [], tuple(), 42]:
-            opt = config.Option('test', 'option1', default)
-            self.assertEqual(type(default), opt.convert)
-            self.assertEqual(default, opt.convert(default))
+    ### TextOption
+    def test_text_opt_convert(self):
+        opt = TextOption("setting", "text_option", "abc")
+        self.assertEqual(opt.convert(123), "123")
 
+    def test_text_opt_no_config(self):
+        TextOption("setting", "text_option", "abc")
 
-class TextOptionTest(CommonTests.CommonOptionTest):
-    opt_type = config.TextOption
-    default_value = 'test'
+        # test default, nothing in config yet
+        self.assertEqual(self.config.setting["text_option"], "abc")
+        self.assertIs(type(self.config.setting["text_option"]), str)
 
-    def _test_convert(self, obj):
-        self.assertEqual('', obj.convert(''))
-        self.assertEqual('test', obj.convert('test'))
-        self.assertEqual('42', obj.convert(42))
+    def test_text_opt_set_read_back(self):
+        TextOption("setting", "text_option", "abc")
 
-    def test_convert_instance(self):
-        opt = self.opt_type('test', 'option1', self.default_value)
-        self._test_convert(opt)
+        # set option to "def", and read back
+        self.config.setting["text_option"] = "def"
+        self.assertEqual(self.config.setting["text_option"], "def")
+        self.assertIs(type(self.config.setting["text_option"]), str)
 
-    def test_convert_static(self):
-        self._test_convert(self.opt_type)
+    def test_text_opt_set_none(self):
+        TextOption("setting", "text_option", "abc")
 
+        # set option to None
+        self.config.setting["text_option"] = None
+        self.assertEqual(self.config.setting["text_option"], "")
 
-class BoolOptionTest(CommonTests.CommonOptionTest):
-    opt_type = config.BoolOption
-    default_value = False
+    def test_text_opt_set_empty(self):
+        TextOption("setting", "text_option", "abc")
 
-    def _test_convert(self, obj):
-        self.assertTrue(obj.convert(True))
-        self.assertTrue(obj.convert('true'))
-        self.assertFalse(obj.convert(False))
-        self.assertFalse(obj.convert(None))
-        self.assertFalse(obj.convert('unknown'))
-        self.assertFalse(obj.convert('false'))
+        # set option to ""
+        self.config.setting["text_option"] = ""
+        self.assertEqual(self.config.setting["text_option"], "")
 
-    def test_convert_instance(self):
-        opt = self.opt_type('test', 'option1', self.default_value)
-        self._test_convert(opt)
+    def test_text_opt_invalid_value(self):
+        TextOption("setting", "text_option", "abc")
 
-    def test_convert_static(self):
-        self._test_convert(self.opt_type)
+        # store invalid value in config file directly
+        self.config.setValue('setting/text_option', object)
+        self.assertEqual(self.config.setting["text_option"], 'abc')
 
 
-class IntOptionTest(CommonTests.CommonOptionTest):
-    opt_type = config.IntOption
-    default_value = 42
+class TestPicardConfigBoolOption(TestPicardConfigCommon):
 
-    def _test_convert(self, obj):
-        self.assertEqual(42, obj.convert(42))
-        self.assertEqual(42, obj.convert('42'))
-        self.assertEqual(0, obj.convert(False))
-        self.assertEqual(1, obj.convert(True))
-        with self.assertRaises(ValueError):
-            obj.convert('notanumber')
+    ### BoolOption
+    def test_bool_opt_convert(self):
+        opt = BoolOption("setting", "bool_option", False)
+        self.assertEqual(opt.convert(1), True)
 
-    def test_convert_instance(self):
-        opt = self.opt_type('test', 'option1', self.default_value)
-        self._test_convert(opt)
+    def test_bool_opt_no_config(self):
+        BoolOption("setting", "bool_option", True)
 
-    def test_convert_static(self):
-        self._test_convert(self.opt_type)
+        # test default, nothing in config yet
+        self.assertEqual(self.config.setting["bool_option"], True)
+        self.assertIs(type(self.config.setting["bool_option"]), bool)
+
+    def test_bool_opt_set_read_back(self):
+        BoolOption("setting", "bool_option", True)
+
+        # set option and read back
+        self.config.setting["bool_option"] = False
+        self.assertEqual(self.config.setting["bool_option"], False)
+        self.assertIs(type(self.config.setting["bool_option"]), bool)
+
+    def test_bool_opt_set_str(self):
+        BoolOption("setting", "bool_option", False)
+
+        # set option to invalid value
+        self.config.setting["bool_option"] = 'yes'
+        self.assertEqual(self.config.setting["bool_option"], True)
+
+    def test_bool_opt_set_empty_str(self):
+        BoolOption("setting", "bool_option", True)
+
+        # set option to empty string
+        self.config.setting["bool_option"] = ''
+        self.assertEqual(self.config.setting["bool_option"], False)
+
+    def test_bool_opt_set_none(self):
+        BoolOption("setting", "bool_option", True)
+
+        # set option to None value
+        self.config.setting["bool_option"] = None
+        self.assertEqual(self.config.setting["bool_option"], False)
+
+    def test_bool_opt_set_direct_str(self):
+        BoolOption("setting", "bool_option", False)
+
+        # store invalid bool value in config file directly
+        self.config.setValue('setting/bool_option', 'yes')
+        self.assertEqual(self.config.setting["bool_option"], True)
+
+    def test_bool_opt_set_direct_str_true(self):
+        BoolOption("setting", "bool_option", False)
+
+        # store 'true' directly, it should be ok, due to conversion
+        self.config.setValue('setting/bool_option', 'true')
+        self.assertEqual(self.config.setting["bool_option"], True)
 
 
-class FloatOptionTest(CommonTests.CommonOptionTest):
-    opt_type = config.FloatOption
-    default_value = 42.5
+class TestPicardConfigIntOption(TestPicardConfigCommon):
 
-    def _test_convert(self, obj):
-        self.assertEqual(42.5, obj.convert(42.5))
-        self.assertEqual(42.5, obj.convert('42.5'))
+    ### IntOption
+    def test_int_opt_convert(self):
+        opt = IntOption("setting", "int_option", 666)
+        self.assertEqual(opt.convert("123"), 123)
 
-    def test_convert_instance(self):
-        opt = self.opt_type('test', 'option1', self.default_value)
-        self._test_convert(opt)
+    def test_int_opt_no_config(self):
+        IntOption("setting", "int_option", 666)
 
-    def test_convert_static(self):
-        self._test_convert(self.opt_type)
+        # test default, nothing in config yet
+        self.assertEqual(self.config.setting["int_option"], 666)
+        self.assertIs(type(self.config.setting["int_option"]), int)
+
+    def test_int_opt_set_read_back(self):
+        IntOption("setting", "int_option", 666)
+
+        # set option and read back
+        self.config.setting["int_option"] = 333
+        self.assertEqual(self.config.setting["int_option"], 333)
+        self.assertIs(type(self.config.setting["int_option"]), int)
+
+    def test_int_opt_not_int(self):
+        IntOption("setting", "int_option", 666)
+
+        # set option to invalid value
+        self.config.setting["int_option"] = 'invalid'
+        self.assertEqual(self.config.setting["int_option"], 666)
+
+    def test_int_opt_set_none(self):
+        IntOption("setting", "int_option", 666)
+
+        # set option to None
+        self.config.setting["int_option"] = None
+        self.assertEqual(self.config.setting["int_option"], 666)
+
+    def test_int_opt_direct_invalid(self):
+        IntOption("setting", "int_option", 666)
+
+        # store invalid int value in config file directly
+        self.config.setValue('setting/int_option', 'x333')
+        self.assertEqual(self.config.setting["int_option"], 666)
+
+    def test_int_opt_direct_validstr(self):
+        IntOption("setting", "int_option", 666)
+
+        # store int as string directly, it should be ok, due to conversion
+        self.config.setValue('setting/int_option', '333')
+        self.assertEqual(self.config.setting["int_option"], 333)
 
 
-class ListOptionTest(CommonTests.CommonOptionTest):
-    opt_type = config.ListOption
-    default_value = ['somevalue']
+class TestPicardConfigFloatOption(TestPicardConfigCommon):
 
-    def _test_convert(self, obj):
-        self.assertEqual([], obj.convert([]))
-        self.assertEqual(['a', 'b', 'c'], obj.convert(('a', 'b', 'c')))
-        self.assertEqual(['a', 'b', 'c'], obj.convert('abc'))
+    # FloatOption
+    def test_float_opt_convert(self):
+        opt = FloatOption("setting", "float_option", 666.6)
+        self.assertEqual(opt.convert("333.3"), 333.3)
 
-    def test_convert_instance(self):
-        opt = self.opt_type('test', 'option1', self.default_value)
-        self._test_convert(opt)
+    def test_float_opt_no_config(self):
+        FloatOption("setting", "float_option", 666.6)
 
-    def test_convert_static(self):
-        self._test_convert(self.opt_type)
+        # test default, nothing in config yet
+        self.assertEqual(self.config.setting["float_option"], 666.6)
+        self.assertIs(type(self.config.setting["float_option"]), float)
+
+    def test_float_opt_set_read_back(self):
+        FloatOption("setting", "float_option", 666.6)
+
+        # set option and read back
+        self.config.setting["float_option"] = 333.3
+        self.assertEqual(self.config.setting["float_option"], 333.3)
+        self.assertIs(type(self.config.setting["float_option"]), float)
+
+    def test_float_opt_not_float(self):
+        FloatOption("setting", "float_option", 666.6)
+
+        # set option to invalid value
+        self.config.setting["float_option"] = 'invalid'
+        self.assertEqual(self.config.setting["float_option"], 666.6)
+
+    def test_float_opt_set_none(self):
+        FloatOption("setting", "float_option", 666.6)
+
+        # set option to None
+        self.config.setting["float_option"] = None
+        self.assertEqual(self.config.setting["float_option"], 666.6)
+
+    def test_float_opt_direct_invalid(self):
+        FloatOption("setting", "float_option", 666.6)
+
+        # store invalid float value in config file directly
+        self.config.setValue('setting/float_option', '333.3x')
+        self.assertEqual(self.config.setting["float_option"], 666.6)
+
+    def test_float_opt_direct_validstr(self):
+        FloatOption("setting", "float_option", 666.6)
+
+        # store float as string directly, it should be ok, due to conversion
+        self.config.setValue('setting/float_option', '333.3')
+        self.assertEqual(self.config.setting["float_option"], 333.3)
 
 
-class IntListOptionTest(CommonTests.CommonOptionTest):
-    opt_type = config.IntListOption
-    default_value = [1, 2, 3]
+class TestPicardConfigListOption(TestPicardConfigCommon):
 
-    def _test_convert(self, obj):
-        self.assertEqual([], obj.convert([]))
-        self.assertEqual([1, 2, 3], obj.convert(('1', '2', '3')))
+    ### ListOption
+    def test_list_opt_convert(self):
+        opt = ListOption("setting", "list_option", [])
+        self.assertEqual(opt.convert("123"), ['1', '2', '3'])
 
-    def test_convert_instance(self):
-        opt = self.opt_type('test', 'option1', self.default_value)
-        self._test_convert(opt)
+    def test_list_opt_no_config(self):
+        ListOption("setting", "list_option", ["a", "b"])
 
-    def test_convert_static(self):
-        self._test_convert(self.opt_type)
+        # test default, nothing in config yet
+        self.assertEqual(self.config.setting["list_option"], ["a", "b"])
+        self.assertIs(type(self.config.setting["list_option"]), list)
+
+    def test_list_opt_set_read_back(self):
+        ListOption("setting", "list_option", ["a", "b"])
+
+        # set option and read back
+        self.config.setting["list_option"] = ["c", "d"]
+        self.assertEqual(self.config.setting["list_option"], ["c", "d"])
+        self.assertIs(type(self.config.setting["list_option"]), list)
+
+    def test_list_opt_not_list(self):
+        ListOption("setting", "list_option", ["a", "b"])
+
+        # set option to invalid value
+        self.config.setting["list_option"] = 'invalid'
+        self.assertEqual(self.config.setting["list_option"], ["a", "b"])
+
+    def test_list_opt_set_none(self):
+        ListOption("setting", "list_option", ["a", "b"])
+
+        # set option to None
+        self.config.setting["list_option"] = None
+        self.assertEqual(self.config.setting["list_option"], [])
+
+    def test_list_opt_set_empty(self):
+        ListOption("setting", "list_option", ["a", "b"])
+
+        # set option to empty list
+        self.config.setting["list_option"] = []
+        self.assertEqual(self.config.setting["list_option"], [])
+
+    def test_list_opt_direct_invalid(self):
+        ListOption("setting", "list_option", ["a", "b"])
+
+        # store invalid list value in config file directly
+        self.config.setValue('setting/list_option', 'efg')
+        self.assertEqual(self.config.setting["list_option"], ["a", "b"])
+
+
+class TestPicardConfigVarOption(TestPicardConfigCommon):
+
+    ### Option
+    def test_var_opt_convert(self):
+        opt = Option("setting", "var_option", set())
+        self.assertEqual(opt.convert(["a", "b", "a"]), {"a", "b"})
+
+    def test_var_opt_no_config(self):
+        Option("setting", "var_option", set(["a", "b"]))
+
+        # test default, nothing in config yet
+        self.assertEqual(self.config.setting["var_option"], set(["a", "b"]))
+        self.assertIs(type(self.config.setting["var_option"]), set)
+
+    def test_var_opt_set_read_back(self):
+        Option("setting", "var_option", set(["a", "b"]))
+
+        # set option to "def", and read back
+        self.config.setting["var_option"] = set(["c", "d"])
+        self.assertEqual(self.config.setting["var_option"], set(["c", "d"]))
+        self.assertIs(type(self.config.setting["var_option"]), set)
+
+    def test_var_opt_set_none(self):
+        Option("setting", "var_option", set(["a", "b"]))
+
+        # set option to None
+        self.config.setting["var_option"] = None
+        self.assertEqual(self.config.setting["var_option"], set(["a", "b"]))
+
+    def test_var_opt_set_empty(self):
+        Option("setting", "var_option", set(["a", "b"]))
+
+        # set option to ""
+        self.config.setting["var_option"] = set()
+        self.assertEqual(self.config.setting["var_option"], set())
+
+    def test_var_opt_invalid_value(self):
+        Option("setting", "var_option", set(["a", "b"]))
+
+        # store invalid value in config file directly
+        self.config.setValue('setting/var_option', object)
+        self.assertEqual(self.config.setting["var_option"], set(["a", "b"]))
