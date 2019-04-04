@@ -26,6 +26,7 @@ from picard import (
     log,
 )
 
+
 user_collections = {}
 
 

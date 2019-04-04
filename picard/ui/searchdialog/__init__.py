@@ -42,9 +42,7 @@ from picard.util import (
 )
 
 from picard.ui import PicardDialog
-from picard.ui.util import (
-    StandardButton,
-)
+from picard.ui.util import StandardButton
 
 
 class ResultTable(QtWidgets.QTableWidget):

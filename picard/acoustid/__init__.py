@@ -29,9 +29,7 @@ from picard import (
 from picard.acoustid.json_helpers import parse_recording
 from picard.const import FPCALC_NAMES
 from picard.const.sys import IS_FROZEN
-from picard.util import (
-    find_executable,
-)
+from picard.util import find_executable
 
 
 class AcoustIDClient(QtCore.QObject):

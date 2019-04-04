@@ -33,6 +33,7 @@ from picard import PICARD_FANCY_VERSION_STR
 from picard.disc import discid_version
 from picard.util.astrcmp import astrcmp_implementation
 
+
 _versions = OrderedDict([
     ("version", PICARD_FANCY_VERSION_STR),
     ("python-version", python_version()),

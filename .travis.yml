@@ -13,7 +13,7 @@ env:
   global:
   - PIP_INSTALL="pip3 install"
   - INSTALL_DEPS="$PIP_INSTALL -r requirements.txt"
-  - PYTEST="$PIP_INSTALL pytest pytest-randomly pytest-cov"
+  - INSTALL_TEST_TOOLS="$PIP_INSTALL pytest pytest-randomly pytest-cov isort==4.3.10"
   - CODACY="$PIP_INSTALL codacy-coverage"
   - LIBDISCID="libdiscid0 libdiscid-dev"
   matrix:
@@ -56,9 +56,11 @@ before_install:
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export LD_LIBRARY_PATH=`pwd`:$LD_LIBRARY_PATH; fi
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then source bin/activate; fi
 - "$INSTALL_DEPS"
-- "$PYTEST"
+- "$INSTALL_TEST_TOOLS"
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then bash scripts/package-osx.sh; fi
-script: py.test -v --cov=picard --cov-report xml:coverage.xml
+script:
+- py.test -v --cov=picard --cov-report xml:coverage.xml
+- isort --check-only --diff --quiet $(git ls-tree -r --name-only $(git rev-parse HEAD) | grep "\\.py$")
 after_success:
 - if [ ! -z "${CODACY_PROJECT_TOKEN}" ]; then $CODACY; python-codacy-coverage -r coverage.xml;
   fi

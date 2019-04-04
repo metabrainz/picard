@@ -29,9 +29,7 @@ from picard import (
     version_from_string,
     version_to_string,
 )
-from picard.util import (
-    LockableObject,
-)
+from picard.util import LockableObject
 
 
 class ConfigUpgradeError(Exception):

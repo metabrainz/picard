@@ -39,6 +39,7 @@ from picard.ui.options import (
 from picard.ui.ui_options_interface import Ui_InterfaceOptionsPage
 from picard.ui.util import enabledSlot
 
+
 _default_starting_dir = QStandardPaths.writableLocation(QStandardPaths.HomeLocation)
 
 

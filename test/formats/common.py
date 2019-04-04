@@ -2,10 +2,11 @@
 import os.path
 import shutil
 from tempfile import mkstemp
-from test.picardtestcase import PicardTestCase
 import unittest
 
 import mutagen
+
+from test.picardtestcase import PicardTestCase
 
 from picard import config
 import picard.formats

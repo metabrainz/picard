@@ -7,6 +7,7 @@ from test.picardtestcase import (
     PicardTestCase,
     create_fake_png,
 )
+
 from picard.const.sys import IS_WIN
 from picard.coverart.image import (
     CoverArtImage,

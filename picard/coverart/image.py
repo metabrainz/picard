@@ -45,6 +45,7 @@ from picard.util import (
 )
 from picard.util.scripttofilename import script_to_filename
 
+
 _datafiles = dict()
 _datafile_mutex = QMutex(QMutex.Recursive)
 

@@ -26,7 +26,6 @@ from PyQt5 import (
 )
 
 from picard import config
-
 from picard.const import (
     RELEASE_COUNTRIES,
     RELEASE_FORMATS,
@@ -41,6 +40,7 @@ from picard.ui.options import (
     register_options_page,
 )
 from picard.ui.ui_options_releases import Ui_ReleasesOptionsPage
+
 
 _DEFAULT_SCORE = 0.5
 _release_type_scores = [(g, _DEFAULT_SCORE) for g in list(RELEASE_PRIMARY_GROUPS.keys()) + list(RELEASE_SECONDARY_GROUPS.keys())]

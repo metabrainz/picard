@@ -52,6 +52,7 @@ from picard.util.textencoding import asciipunct
 
 from picard.ui.item import Item
 
+
 _TRANSLATE_TAGS = {
     "hip hop": "Hip-Hop",
     "synth-pop": "Synthpop",

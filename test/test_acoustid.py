@@ -1,5 +1,6 @@
 import json
 import os
+
 from test.picardtestcase import PicardTestCase
 
 from picard import config
@@ -7,6 +8,7 @@ from picard.acoustid.json_helpers import parse_recording
 from picard.mbjson import recording_to_metadata
 from picard.metadata import Metadata
 from picard.track import Track
+
 
 settings = {
     "standardize_tracks": False,

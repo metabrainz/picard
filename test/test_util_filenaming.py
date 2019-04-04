@@ -3,14 +3,16 @@
 import os
 import os.path
 import sys
-from test.picardtestcase import PicardTestCase
 import unittest
+
+from test.picardtestcase import PicardTestCase
 
 from picard.const.sys import (
     IS_MACOS,
     IS_WIN,
 )
 from picard.util.filenaming import make_short_filename
+
 
 class ShortFilenameTest(PicardTestCase):
 

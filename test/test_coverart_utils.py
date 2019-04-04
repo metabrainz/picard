@@ -3,6 +3,7 @@
 import os.path
 import shutil
 import tempfile
+
 from test.picardtestcase import PicardTestCase
 
 from picard.coverart.utils import translate_caa_type

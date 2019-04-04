@@ -1,5 +1,6 @@
-from test.picardtestcase import PicardTestCase
 from unittest.mock import MagicMock
+
+from test.picardtestcase import PicardTestCase
 
 from picard import config
 from picard.webservice import WebService

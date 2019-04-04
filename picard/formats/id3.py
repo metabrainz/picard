@@ -44,6 +44,7 @@ from picard.util import (
     sanitize_date,
 )
 
+
 id3.GRP1 = compatid3.GRP1
 id3.TCMP = compatid3.TCMP
 id3.TSO2 = compatid3.TSO2

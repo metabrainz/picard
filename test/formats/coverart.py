@@ -7,6 +7,7 @@ from picard.coverart.image import (
 )
 import picard.formats
 from picard.metadata import Metadata
+
 from .common import (
     CommonTests,
     skipUnlessTestfile,

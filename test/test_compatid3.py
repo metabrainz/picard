@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-from test.picardtestcase import PicardTestCase
-
 from mutagen import id3
+
+from test.picardtestcase import PicardTestCase
 
 from picard.formats.id3 import id3text
 from picard.formats.mutagenext import compatid3

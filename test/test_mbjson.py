@@ -1,5 +1,6 @@
 import json
 import os
+
 from test.picardtestcase import PicardTestCase
 
 from picard import config
@@ -18,6 +19,7 @@ from picard.mbjson import (
 from picard.metadata import Metadata
 from picard.releasegroup import ReleaseGroup
 from picard.track import Track
+
 
 settings = {
     "standardize_tracks": False,

@@ -30,6 +30,7 @@ from picard.ui.options import (
     register_options_page,
 )
 
+
 if AUTO_DETECT_DRIVES:
     from picard.ui.ui_options_cdlookup_select import Ui_CDLookupOptionsPage
 else:

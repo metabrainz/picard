@@ -27,9 +27,7 @@ from picard.const.sys import (
     IS_MACOS,
     IS_WIN,
 )
-from picard.util import (
-    find_existing_path,
-)
+from picard.util import find_existing_path
 
 
 class StandardButton(QtWidgets.QPushButton):

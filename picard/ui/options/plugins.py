@@ -35,7 +35,6 @@ from picard import (
     config,
     log,
 )
-
 from picard.const import (
     PLUGINS_API,
     USER_PLUGIN_DIR,
@@ -49,6 +48,7 @@ from picard.ui.options import (
     register_options_page,
 )
 from picard.ui.ui_options_plugins import Ui_PluginsOptionsPage
+
 
 COLUMN_NAME, COLUMN_VERSION, COLUMN_ACTIONS = range(3)
 

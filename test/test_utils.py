@@ -3,8 +3,9 @@
 import builtins
 from collections import namedtuple
 import os.path
-from test.picardtestcase import PicardTestCase
 import unittest
+
+from test.picardtestcase import PicardTestCase
 
 from picard import util
 from picard.const.sys import IS_WIN
@@ -13,6 +14,7 @@ from picard.util import (
     imageinfo,
     sort_by_similarity,
 )
+
 
 # ensure _() is defined
 if '_' not in builtins.__dict__:

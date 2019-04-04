@@ -3,6 +3,7 @@ from contextlib import suppress
 import os.path
 import shutil
 from tempfile import mkdtemp
+
 from test.picardtestcase import PicardTestCase
 
 from picard import config

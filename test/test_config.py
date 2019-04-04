@@ -34,6 +34,7 @@ from picard.config import (
     TextOption,
 )
 
+
 class TestPicardConfigCommon(PicardTestCase):
 
     def setUp(self):

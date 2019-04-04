@@ -18,9 +18,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from picard import config
-from picard.coverart.providers import (
-    cover_art_providers,
-)
+from picard.coverart.providers import cover_art_providers
 
 from picard.ui.checkbox_list_item import CheckboxListItem
 from picard.ui.moveable_list_view import MoveableListView

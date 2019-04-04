@@ -4,6 +4,7 @@ from test.picardtestcase import (
 )
 
 from picard.formats import asf
+
 from .common import CommonTests
 from .coverart import CommonCoverArtTests
 
