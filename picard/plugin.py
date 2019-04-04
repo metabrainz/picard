@@ -53,6 +53,7 @@ _PLUGIN_MODULE_PREFIX = "picard.plugins."
 _PLUGIN_MODULE_PREFIX_LEN = len(_PLUGIN_MODULE_PREFIX)
 _PLUGIN_PACKAGE_SUFFIX = ".picard"
 _PLUGIN_PACKAGE_SUFFIX_LEN = len(_PLUGIN_PACKAGE_SUFFIX)
+_FILEEXTS = ['.py', '.pyc', '.pyo', '.zip']
 
 
 def _plugin_name_from_path(path):
@@ -385,13 +386,12 @@ class PluginManager(QtCore.QObject):
         versions = [version_from_string(v) for v in list(api_versions)]
         return set(versions) & set(picard.api_versions_tuple)
 
-    def _get_existing_paths(self, plugin_name):
-        dirpath = os.path.join(USER_PLUGIN_DIR, plugin_name)
+    def _get_existing_paths(self, plugin_name, plugin_dir, fileexts):
+        dirpath = os.path.join(plugin_dir, plugin_name)
         if not os.path.isdir(dirpath):
             dirpath = None
-        fileexts = ['.py', '.pyc', '.pyo', '.zip']
-        filepaths = [os.path.join(USER_PLUGIN_DIR, f)
-                     for f in os.listdir(USER_PLUGIN_DIR)
+        filepaths = [os.path.join(plugin_dir, f)
+                     for f in os.listdir(plugin_dir)
                      if f in [plugin_name + ext for ext in fileexts]
                      ]
         return (dirpath, filepaths)
@@ -400,7 +400,7 @@ class PluginManager(QtCore.QObject):
         if plugin_name.endswith('.zip'):
             plugin_name = os.path.splitext(plugin_name)[0]
         log.debug("Remove plugin files and dirs : %r", plugin_name)
-        dirpath, filepaths = self._get_existing_paths(plugin_name)
+        dirpath, filepaths = self._get_existing_paths(plugin_name, USER_PLUGIN_DIR, _FILEEXTS)
         if dirpath:
             if os.path.islink(dirpath):
                 log.debug("Removing symlink %r", dirpath)
