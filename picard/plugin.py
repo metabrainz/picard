@@ -54,6 +54,7 @@ _PLUGIN_MODULE_PREFIX_LEN = len(_PLUGIN_MODULE_PREFIX)
 _PLUGIN_PACKAGE_SUFFIX = ".picard"
 _PLUGIN_PACKAGE_SUFFIX_LEN = len(_PLUGIN_PACKAGE_SUFFIX)
 _FILEEXTS = ['.py', '.pyc', '.pyo', '.zip']
+_UPDATE_SUFFIX = '.update'
 
 
 def _plugin_name_from_path(path):
@@ -287,7 +288,7 @@ class PluginManager(QtCore.QObject):
             return
         # first, handle eventual plugin updates
         for updatepath in [os.path.join(plugindir, file) for file in
-                           os.listdir(plugindir) if file.endswith('.update')]:
+                           os.listdir(plugindir) if file.endswith(_UPDATE_SUFFIX)]:
             path = os.path.splitext(updatepath)[0]
             name = is_zip(path)
             if not name:
@@ -413,7 +414,7 @@ class PluginManager(QtCore.QObject):
                 log.debug("Removing file %r", filepath)
                 os.remove(filepath)
                 if with_update:
-                    update = filepath + '.update'
+                    update = filepath + _UPDATE_SUFFIX
                     if os.path.isfile(update):
                         log.debug("Removing file %r", update)
                         os.remove(update)
@@ -447,7 +448,7 @@ class PluginManager(QtCore.QObject):
                     zip_plugin = plugin_name + '.zip'
                     dst = os.path.join(USER_PLUGIN_DIR, zip_plugin)
                     if update:
-                        dst += '.update'
+                        dst += _UPDATE_SUFFIX
                         if os.path.isfile(dst):
                             os.remove(dst)
                     ziptmp = tempfile.NamedTemporaryFile(delete=False,
@@ -468,14 +469,14 @@ class PluginManager(QtCore.QObject):
                 elif os.path.isfile(path):
                     dst = os.path.join(USER_PLUGIN_DIR, os.path.basename(path))
                     if update:
-                        dst += '.update'
+                        dst += _UPDATE_SUFFIX
                         if os.path.isfile(dst):
                             os.remove(dst)
                     shutil.copy2(path, dst)
                 elif os.path.isdir(path):
                     dst = os.path.join(USER_PLUGIN_DIR, plugin_name)
                     if update:
-                        dst += '.update'
+                        dst += _UPDATE_SUFFIX
                         if os.path.isdir(dst):
                             shutil.rmtree(dst)
                     shutil.copytree(path, dst)
