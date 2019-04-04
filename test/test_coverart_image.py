@@ -1,11 +1,12 @@
 #!/usr/bin/env python
 # coding: utf-8
 import os.path
+import unittest
+
 from test.picardtestcase import (
     PicardTestCase,
     create_fake_png,
 )
-import unittest
 
 from picard.const.sys import IS_WIN
 from picard.coverart.image import (

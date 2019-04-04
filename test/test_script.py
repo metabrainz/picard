@@ -1,5 +1,6 @@
-from test.picardtestcase import PicardTestCase
 from unittest.mock import MagicMock
+
+from test.picardtestcase import PicardTestCase
 
 from picard import config
 from picard.const import DEFAULT_FILE_NAMING_FORMAT

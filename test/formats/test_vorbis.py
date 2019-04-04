@@ -1,5 +1,6 @@
 import logging
 import os
+
 from test.picardtestcase import PicardTestCase
 
 from picard import (

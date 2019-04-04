@@ -1,5 +1,6 @@
 import json
 import os
+
 from test.picardtestcase import PicardTestCase
 
 from picard import config

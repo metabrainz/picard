@@ -3,6 +3,7 @@ import os.path
 import shutil
 import sys
 import tempfile
+
 from test.picardtestcase import PicardTestCase
 
 from picard import config

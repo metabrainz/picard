@@ -1,9 +1,10 @@
-from test.picardtestcase import PicardTestCase
 from unittest.mock import patch
 from urllib.parse import (
     parse_qs,
     urlparse,
 )
+
+from test.picardtestcase import PicardTestCase
 
 from picard.browser.filelookup import FileLookup
 from picard.util import webbrowser2

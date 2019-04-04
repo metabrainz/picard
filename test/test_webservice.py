@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
-from test.picardtestcase import PicardTestCase
 from unittest.mock import (
     MagicMock,
     patch,
 )
+
+from test.picardtestcase import PicardTestCase
 
 from picard import config
 from picard.webservice import (

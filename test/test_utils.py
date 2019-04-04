@@ -3,8 +3,9 @@
 import builtins
 from collections import namedtuple
 import os.path
-from test.picardtestcase import PicardTestCase
 import unittest
+
+from test.picardtestcase import PicardTestCase
 
 from picard import util
 from picard.const.sys import IS_WIN

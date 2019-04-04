@@ -1,4 +1,5 @@
 import os.path
+
 from test.picardtestcase import PicardTestCase
 
 from picard import config

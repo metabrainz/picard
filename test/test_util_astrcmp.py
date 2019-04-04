@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
-from test.picardtestcase import PicardTestCase
 import unittest
+
+from test.picardtestcase import PicardTestCase
 
 from picard.util.astrcmp import astrcmp_py
 
