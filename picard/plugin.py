@@ -460,6 +460,14 @@ class PluginManager(QtCore.QObject):
                 os.remove(dst)
         shutil.copy2(path, dst)
 
+    def _install_plugin_dir(self, plugin_name, path, update=False):
+        dst = os.path.join(USER_PLUGIN_DIR, plugin_name)
+        if update:
+            dst += _UPDATE_SUFFIX
+            if os.path.isdir(dst):
+                shutil.rmtree(dst)
+        shutil.copytree(path, dst)
+
     def install_plugin(self, path, update=False, overwrite_confirm=None, plugin_name=None,
                        plugin_data=None):
         """
@@ -483,12 +491,8 @@ class PluginManager(QtCore.QObject):
                 elif os.path.isfile(path):
                     self._install_plugin_file(path, update=update)
                 elif os.path.isdir(path):
-                    dst = os.path.join(USER_PLUGIN_DIR, plugin_name)
-                    if update:
-                        dst += _UPDATE_SUFFIX
-                        if os.path.isdir(dst):
-                            shutil.rmtree(dst)
-                    shutil.copytree(path, dst)
+                    self._install_plugin_dir(plugin_name, path, update=update)
+
                 if not update:
                     try:
                         installed_plugin = self.load_plugin(zip_plugin or plugin_name, USER_PLUGIN_DIR)
