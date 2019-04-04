@@ -428,6 +428,30 @@ class PluginManager(QtCore.QObject):
         self._remove_plugin(plugin_name, with_update=with_update)
         self.plugin_removed.emit(plugin_name, False)
 
+    def _install_plugin_zip(self, plugin_name, plugin_data, update=False):
+        # zipped module from download
+        zip_plugin = plugin_name + '.zip'
+        dst = os.path.join(USER_PLUGIN_DIR, zip_plugin)
+        if update:
+            dst += _UPDATE_SUFFIX
+            if os.path.isfile(dst):
+                os.remove(dst)
+        ziptmp = tempfile.NamedTemporaryFile(delete=False,
+                                             dir=USER_PLUGIN_DIR).name
+        try:
+            with open(ziptmp, "wb") as zipfile:
+                zipfile.write(plugin_data)
+                zipfile.flush()
+                os.fsync(zipfile.fileno())
+            os.rename(ziptmp, dst)
+            log.debug("Plugin saved to %r", dst)
+        except BaseException:
+            try:
+                os.remove(ziptmp)
+            except (IOError, OSError):
+                pass
+            raise
+
     def install_plugin(self, path, update=False, overwrite_confirm=None, plugin_name=None,
                        plugin_data=None):
         """
@@ -447,28 +471,7 @@ class PluginManager(QtCore.QObject):
         if plugin_name:
             try:
                 if plugin_data and plugin_name:
-                    # zipped module from download
-                    zip_plugin = plugin_name + '.zip'
-                    dst = os.path.join(USER_PLUGIN_DIR, zip_plugin)
-                    if update:
-                        dst += _UPDATE_SUFFIX
-                        if os.path.isfile(dst):
-                            os.remove(dst)
-                    ziptmp = tempfile.NamedTemporaryFile(delete=False,
-                                                         dir=USER_PLUGIN_DIR).name
-                    try:
-                        with open(ziptmp, "wb") as zipfile:
-                            zipfile.write(plugin_data)
-                            zipfile.flush()
-                            os.fsync(zipfile.fileno())
-                        os.rename(ziptmp, dst)
-                        log.debug("Plugin saved to %r", dst)
-                    except BaseException:
-                        try:
-                            os.remove(ziptmp)
-                        except (IOError, OSError):
-                            pass
-                        raise
+                    self._install_plugin_zip(plugin_name, plugin_data, update=update)
                 elif os.path.isfile(path):
                     dst = os.path.join(USER_PLUGIN_DIR, os.path.basename(path))
                     if update:
