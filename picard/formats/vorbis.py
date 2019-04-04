@@ -48,6 +48,7 @@ from picard.util import (
     sanitize_date,
 )
 
+
 INVALID_CHARS = re.compile('([^\x20-\x7d]|=)')
 
 

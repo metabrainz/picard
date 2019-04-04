@@ -28,6 +28,7 @@ It supports i18n through gettext, decimal and binary units.
 
 import locale
 
+
 # used to force gettextization
 _BYTES_STRINGS_I18N = (
     N_('%s B'),

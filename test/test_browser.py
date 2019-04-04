@@ -9,6 +9,7 @@ from test.picardtestcase import PicardTestCase
 from picard.browser.filelookup import FileLookup
 from picard.util import webbrowser2
 
+
 SERVER = 'musicbrainz.org'
 PORT = 443
 LOCAL_PORT = "8000"

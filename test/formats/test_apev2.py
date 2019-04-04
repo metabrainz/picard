@@ -9,6 +9,7 @@ from .common import (
 )
 from .coverart import CommonCoverArtTests
 
+
 VALID_KEYS = [
     ' valid Key}',
     '{ $ome tag~}',

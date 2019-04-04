@@ -36,6 +36,7 @@ from picard.util import linear_combination_of_weights
 from picard.util.imagelist import ImageList
 from picard.util.tags import PRESERVED_TAGS
 
+
 MULTI_VALUED_JOINER = '; '
 
 # lengths difference over this number of milliseconds will give a score of 0.0

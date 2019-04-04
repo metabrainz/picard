@@ -29,6 +29,7 @@ from picard.const.sys import (
     IS_WIN,
 )
 
+
 builtins.__dict__['N_'] = lambda a: a
 
 

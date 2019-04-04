@@ -81,6 +81,7 @@ from picard.ui.util import (
     find_starting_directory,
 )
 
+
 ui_init = ExtensionPoint()
 
 

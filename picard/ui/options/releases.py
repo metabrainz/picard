@@ -41,6 +41,7 @@ from picard.ui.options import (
 )
 from picard.ui.ui_options_releases import Ui_ReleasesOptionsPage
 
+
 _DEFAULT_SCORE = 0.5
 _release_type_scores = [(g, _DEFAULT_SCORE) for g in list(RELEASE_PRIMARY_GROUPS.keys()) + list(RELEASE_SECONDARY_GROUPS.keys())]
 

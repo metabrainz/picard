@@ -28,6 +28,7 @@ from threading import Lock
 
 from PyQt5 import QtCore
 
+
 _MAX_TAIL_LEN = 10**6
 
 VERBOSITY_DEFAULT = logging.WARNING

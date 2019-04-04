@@ -31,6 +31,7 @@ from picard.const.sys import IS_MACOS
 from picard.formats import supported_formats
 from picard.util import find_existing_path
 
+
 _default_current_browser_path = QStandardPaths.writableLocation(QStandardPaths.HomeLocation)
 
 

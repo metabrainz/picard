@@ -30,6 +30,7 @@ from picard.const.sys import (
 )
 from picard.util import uniqify
 
+
 if IS_WIN:
     from ctypes import windll
 

@@ -45,6 +45,7 @@ from picard.util import (
 
 from .mutagenext import tak
 
+
 INVALID_CHARS = re.compile('[^\x20-\x7e]')
 BLACKLISTED_KEYS = ['ID3', 'TAG', 'OggS', 'MP+']
 UNSUPPORTED_TAGS = [

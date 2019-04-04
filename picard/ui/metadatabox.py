@@ -45,6 +45,7 @@ from picard.util.tags import display_tag_name
 
 from picard.ui.edittagdialog import EditTagDialog
 
+
 COMMON_TAGS = [
     "title",
     "artist",

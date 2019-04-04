@@ -59,6 +59,7 @@ from picard.util import webbrowser2
 from picard.ui.ui_provider_options_caa import Ui_CaaOptions
 from picard.ui.util import StandardButton
 
+
 CaaSizeItem = namedtuple('CaaSizeItem', ['thumbnail', 'label'])
 
 _CAA_THUMBNAIL_SIZE_MAP = OrderedDict([

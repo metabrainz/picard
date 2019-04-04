@@ -38,6 +38,7 @@ from picard.webservice import (
     ratecontrol,
 )
 
+
 ratecontrol.set_minimum_delay((ACOUSTID_HOST, ACOUSTID_PORT), 333)
 ratecontrol.set_minimum_delay((CAA_HOST, CAA_PORT), 0)
 

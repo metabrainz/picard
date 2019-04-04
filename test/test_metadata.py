@@ -9,6 +9,7 @@ from picard.metadata import (
 )
 from picard.util.tags import PRESERVED_TAGS
 
+
 settings = {
     'write_id3v23': False,
     'id3v23_join_with': '/',

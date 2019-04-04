@@ -9,6 +9,7 @@ from picard.mbjson import recording_to_metadata
 from picard.metadata import Metadata
 from picard.track import Track
 
+
 settings = {
     "standardize_tracks": False,
     "standardize_artists": False,

@@ -15,6 +15,7 @@ from picard.util import (
     sort_by_similarity,
 )
 
+
 # ensure _() is defined
 if '_' not in builtins.__dict__:
     builtins.__dict__['_'] = lambda a: a

@@ -45,6 +45,7 @@ from picard.const import (
 )
 import picard.plugins
 
+
 _suffixes = [s[0] for s in imp.get_suffixes()]
 _package_entries = ["__init__.py", "__init__.pyc", "__init__.pyo"]
 _extension_points = []

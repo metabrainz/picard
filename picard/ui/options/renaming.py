@@ -47,6 +47,7 @@ from picard.ui.options.scripting import TaggerScriptSyntaxHighlighter
 from picard.ui.ui_options_renaming import Ui_RenamingOptionsPage
 from picard.ui.util import enabledSlot
 
+
 _default_music_dir = QStandardPaths.writableLocation(QStandardPaths.MusicLocation)
 
 

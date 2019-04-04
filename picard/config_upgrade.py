@@ -33,6 +33,7 @@ from picard.const import (
     DEFAULT_NUMBERED_SCRIPT_NAME,
 )
 
+
 # TO ADD AN UPGRADE HOOK:
 # ----------------------
 # add a function here, named after the version you want upgrade to

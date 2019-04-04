@@ -14,6 +14,7 @@ from picard.webservice import (
     ratecontrol,
 )
 
+
 PROXY_SETTINGS = {
     "use_proxy": True,
     "proxy_server_host": '127.0.0.1',

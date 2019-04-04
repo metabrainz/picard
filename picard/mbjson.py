@@ -28,6 +28,7 @@ from picard.util import (
     translate_from_sortname,
 )
 
+
 _artist_rel_types = {
     "arranger": "arranger",
     "audio": "engineer",

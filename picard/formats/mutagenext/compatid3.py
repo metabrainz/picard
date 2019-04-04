@@ -25,6 +25,7 @@ from mutagen.id3 import (
     TextFrame,
 )
 
+
 try:
     from mutagen.id3 import GRP1
 except ImportError:

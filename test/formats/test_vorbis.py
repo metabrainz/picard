@@ -23,6 +23,7 @@ from .coverart import (
     file_save_image,
 )
 
+
 VALID_KEYS = [
     ' valid Key}',
     '{ $ome tag}',

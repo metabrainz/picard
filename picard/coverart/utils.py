@@ -20,6 +20,7 @@
 from picard.const import MB_ATTRIBUTES
 from picard.i18n import gettext_attr
 
+
 # list of types from http://musicbrainz.org/doc/Cover_Art/Types
 # order of declaration is preserved in selection box
 CAA_TYPES = []

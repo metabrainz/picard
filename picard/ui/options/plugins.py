@@ -49,6 +49,7 @@ from picard.ui.options import (
 )
 from picard.ui.ui_options_plugins import Ui_PluginsOptionsPage
 
+
 COLUMN_NAME, COLUMN_VERSION, COLUMN_ACTIONS = range(3)
 
 

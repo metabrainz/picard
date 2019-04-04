@@ -20,6 +20,7 @@ from picard.metadata import Metadata
 from picard.releasegroup import ReleaseGroup
 from picard.track import Track
 
+
 settings = {
     "standardize_tracks": False,
     "standardize_artists": False,

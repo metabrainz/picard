@@ -10,6 +10,7 @@ from picard import config
 from picard.i18n import setup_gettext
 from picard.releasegroup import ReleaseGroup
 
+
 settings = {
     "standardize_tracks": False,
     "standardize_artists": False,

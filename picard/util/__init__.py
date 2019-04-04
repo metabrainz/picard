@@ -39,6 +39,7 @@ from picard.const.sys import (
     IS_WIN,
 )
 
+
 if IS_WIN:
     from ctypes import windll
 

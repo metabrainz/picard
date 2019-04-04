@@ -13,6 +13,7 @@ import picard.formats
 from picard.formats import ext_to_format
 from picard.metadata import Metadata
 
+
 settings = {
     'clear_existing_tags': False,
     'embed_only_one_front_image': False,

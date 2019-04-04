@@ -3,6 +3,7 @@ from test.picardtestcase import PicardTestCase
 
 from picard import util
 
+
 #from picard.util import textencoding
 
 # Set the value to true below to show the coverage of Latin characters
