@@ -486,7 +486,7 @@ class PluginManager(QtCore.QObject):
                 plugin_name = os.path.splitext(zip_plugin)[0]
         if plugin_name:
             try:
-                if plugin_data and plugin_name:
+                if plugin_data:
                     self._install_plugin_zip(plugin_name, plugin_data, update=update)
                 elif os.path.isfile(path):
                     self._install_plugin_file(path, update=update)
