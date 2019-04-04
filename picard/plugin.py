@@ -397,11 +397,11 @@ class PluginManager(QtCore.QObject):
                      ]
         return (dirpath, filepaths)
 
-    def _remove_plugin_files(self, plugin_name, with_update=False):
+    def _remove_plugin_files(self, plugin_name, plugin_dir, with_update=False):
         if plugin_name.endswith('.zip'):
             plugin_name = os.path.splitext(plugin_name)[0]
         log.debug("Remove plugin files and dirs : %r", plugin_name)
-        dirpath, filepaths = self._get_existing_paths(plugin_name, USER_PLUGIN_DIR, _FILEEXTS)
+        dirpath, filepaths = self._get_existing_paths(plugin_name, plugin_dir, _FILEEXTS)
         if dirpath:
             if os.path.islink(dirpath):
                 log.debug("Removing symlink %r", dirpath)
@@ -420,7 +420,7 @@ class PluginManager(QtCore.QObject):
                         os.remove(update)
 
     def _remove_plugin(self, plugin_name, with_update=False):
-        self._remove_plugin_files(plugin_name, with_update)
+        self._remove_plugin_files(plugin_name, USER_PLUGIN_DIR, with_update)
         _unregister_module_extensions(plugin_name)
         self.plugins = [p for p in self.plugins if p.module_name != plugin_name]
 
