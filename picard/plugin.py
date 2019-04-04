@@ -267,7 +267,6 @@ class PluginManager(QtCore.QObject):
     def __init__(self):
         super().__init__()
         self.plugins = []
-        self._api_versions = set([version_from_string(v) for v in picard.api_versions])
         self._available_plugins = None  # None=never loaded, [] = empty
 
     @property
@@ -384,7 +383,7 @@ class PluginManager(QtCore.QObject):
 
     def _compatible_api_versions(self, api_versions):
         versions = [version_from_string(v) for v in list(api_versions)]
-        return set(versions) & self._api_versions
+        return set(versions) & set(picard.api_versions_tuple)
 
     def _get_existing_paths(self, plugin_name):
         dirpath = os.path.join(USER_PLUGIN_DIR, plugin_name)
