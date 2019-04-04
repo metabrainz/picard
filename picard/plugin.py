@@ -55,28 +55,63 @@ _PLUGIN_PACKAGE_SUFFIX = ".picard"
 _PLUGIN_PACKAGE_SUFFIX_LEN = len(_PLUGIN_PACKAGE_SUFFIX)
 _FILEEXTS = ['.py', '.pyc', '.pyo', '.zip']
 _UPDATE_SUFFIX = '.update'
+_UPDATE_SUFFIX_LEN = len(_UPDATE_SUFFIX)
+
+
+def is_update(path):
+    return path.endswith(_UPDATE_SUFFIX)
+
+
+def strip_update_suffix(path):
+    if not is_update(path):
+        return path
+    return path[:-_UPDATE_SUFFIX_LEN]
+
+
+def is_zip(path):
+    return path.endswith('.zip')
+
+
+def strip_zip_suffix(path):
+    if not is_zip(path):
+        return path
+    return path[:-4]
+
+
+def is_package(path):
+    return path.endswith(_PLUGIN_PACKAGE_SUFFIX)
+
+
+def strip_package_suffix(path):
+    if not is_package(path):
+        return path
+    return path[:-_PLUGIN_PACKAGE_SUFFIX_LEN]
+
+
+def is_zipped_package(path):
+    return path.endswith(_PLUGIN_PACKAGE_SUFFIX + '.zip')
 
 
 def _plugin_name_from_path(path):
     path = os.path.normpath(path)
-    file = os.path.basename(path)
-    if os.path.isdir(path):
+    if is_zip(path):
+        name = os.path.basename(strip_zip_suffix(path))
+        if is_package(name):
+            return strip_package_suffix(name)
+        else:
+            return name
+    elif os.path.isdir(path):
         for entry in _package_entries:
             if os.path.isfile(os.path.join(path, entry)):
-                return file
+                return os.path.basename(path)
     else:
+        file = os.path.basename(path)
         if file in _package_entries:
             return None
         name, ext = os.path.splitext(file)
         if ext in _suffixes:
             return name
         return None
-
-
-def is_zip(path):
-    if os.path.splitext(path)[1] == '.zip':
-        return os.path.basename(path)
-    return False
 
 
 def load_manifest(archive_path):
@@ -88,21 +123,18 @@ def load_manifest(archive_path):
 
 
 def zip_import(path):
-    splitext = os.path.splitext(path)
-    if (not os.path.isfile(path)
-            or not splitext[1] == '.zip'):
+    if (not is_zip(path) or not os.path.isfile(path)):
         return (None, None, None)
     try:
         importer = zipimport.zipimporter(path)
-        basename = os.path.basename(splitext[0])
+        plugin_name = _plugin_name_from_path(path)
         manifest_data = None
-        if basename.endswith(_PLUGIN_PACKAGE_SUFFIX):
-            basename = basename[:-_PLUGIN_PACKAGE_SUFFIX_LEN]
+        if is_zipped_package(path):
             try:
                 manifest_data = load_manifest(path)
             except Exception:
                 pass
-        return (importer, basename, manifest_data)
+        return (importer, plugin_name, manifest_data)
     except zipimport.ZipImportError:
         return (None, None, None)
 
@@ -289,10 +321,8 @@ class PluginManager(QtCore.QObject):
         # first, handle eventual plugin updates
         for updatepath in [os.path.join(plugindir, file) for file in
                            os.listdir(plugindir) if file.endswith(_UPDATE_SUFFIX)]:
-            path = os.path.splitext(updatepath)[0]
-            name = is_zip(path)
-            if not name:
-                name = _plugin_name_from_path(path)
+            path = strip_update_suffix(updatepath)
+            name = _plugin_name_from_path(path)
             if name:
                 self._remove_plugin(name)
                 os.rename(updatepath, path)
@@ -302,9 +332,7 @@ class PluginManager(QtCore.QObject):
         # now load found plugins
         names = set()
         for path in [os.path.join(plugindir, file) for file in os.listdir(plugindir)]:
-            name = is_zip(path)
-            if not name:
-                name = _plugin_name_from_path(path)
+            name = _plugin_name_from_path(path)
             if name:
                 names.add(name)
         log.debug("Looking for plugins in directory %r, %d names found",
@@ -318,7 +346,7 @@ class PluginManager(QtCore.QObject):
 
     def load_plugin(self, name, plugindir):
         module_file = None
-        (importer, module_name, manifest_data) = zip_import(os.path.join(plugindir, name))
+        (importer, module_name, manifest_data) = zip_import(os.path.join(plugindir, name + '.zip'))
         if importer:
             name = module_name
             if not importer.find_module(name):
@@ -398,8 +426,7 @@ class PluginManager(QtCore.QObject):
         return (dirpath, filepaths)
 
     def _remove_plugin_files(self, plugin_name, plugin_dir, with_update=False):
-        if plugin_name.endswith('.zip'):
-            plugin_name = os.path.splitext(plugin_name)[0]
+        plugin_name = strip_zip_suffix(plugin_name)
         log.debug("Remove plugin files and dirs : %r", plugin_name)
         dirpath, filepaths = self._get_existing_paths(plugin_name, plugin_dir, _FILEEXTS)
         if dirpath:
@@ -477,13 +504,8 @@ class PluginManager(QtCore.QObject):
                 3) /some/dir/name.zip (containing either 1 or 2)
 
         """
-        zip_plugin = False
         if not plugin_name:
-            zip_plugin = is_zip(path)
-            if not zip_plugin:
-                plugin_name = _plugin_name_from_path(path)
-            else:
-                plugin_name = os.path.splitext(zip_plugin)[0]
+            plugin_name = _plugin_name_from_path(path)
         if plugin_name:
             try:
                 if plugin_data:
@@ -495,7 +517,7 @@ class PluginManager(QtCore.QObject):
 
                 if not update:
                     try:
-                        installed_plugin = self.load_plugin(zip_plugin or plugin_name, USER_PLUGIN_DIR)
+                        installed_plugin = self.load_plugin(plugin_name, USER_PLUGIN_DIR)
                     except Exception as e:
                         log.error('Unable to load plugin: %s.\nError occured: %s', plugin_name, e)
                         installed_plugin = None
