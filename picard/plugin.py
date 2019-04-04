@@ -452,6 +452,14 @@ class PluginManager(QtCore.QObject):
                 pass
             raise
 
+    def _install_plugin_file(self, path, update=False):
+        dst = os.path.join(USER_PLUGIN_DIR, os.path.basename(path))
+        if update:
+            dst += _UPDATE_SUFFIX
+            if os.path.isfile(dst):
+                os.remove(dst)
+        shutil.copy2(path, dst)
+
     def install_plugin(self, path, update=False, overwrite_confirm=None, plugin_name=None,
                        plugin_data=None):
         """
@@ -473,12 +481,7 @@ class PluginManager(QtCore.QObject):
                 if plugin_data and plugin_name:
                     self._install_plugin_zip(plugin_name, plugin_data, update=update)
                 elif os.path.isfile(path):
-                    dst = os.path.join(USER_PLUGIN_DIR, os.path.basename(path))
-                    if update:
-                        dst += _UPDATE_SUFFIX
-                        if os.path.isfile(dst):
-                            os.remove(dst)
-                    shutil.copy2(path, dst)
+                    self._install_plugin_file(path, update=update)
                 elif os.path.isdir(path):
                     dst = os.path.join(USER_PLUGIN_DIR, plugin_name)
                     if update:
