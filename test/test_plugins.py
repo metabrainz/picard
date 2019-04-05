@@ -18,6 +18,8 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 import logging
+import os
+
 from test.picardtestcase import PicardTestCase
 
 import picard
@@ -25,7 +27,44 @@ from picard import (
     VersionError,
     version_from_string,
 )
-from picard.plugin import PluginManager
+from picard.plugin import (
+    PluginManager,
+    _plugin_name_from_path,
+)
+
+
+# testplugins structure along plugins (zipped or not) structures
+#
+# ├── module/
+# │   └── dummyplugin/
+# │       └── __init__.py
+# ├── packaged_module/
+# │   └── dummyplugin.picard.zip
+# │       └── dummyplugin/         # FIXME: correct structure??
+# │           └── __init__.py
+# │           └── MANIFEST.json    # FIXME: format??
+# ├── singlefile/
+# │   └── dummyplugin.py
+# ├── zipped_module/
+# │   └── dummyplugin.zip
+# │       └── dummyplugin/
+# │           └── __init__.py
+# └── zipped_singlefile/
+#     └── dummyplugin.zip
+#         └── dummyplugin.py
+
+
+def _get_test_plugins():
+    testplugins = {}
+    testplugins_path = os.path.join('test', 'data', 'testplugins')
+    for f in os.listdir(testplugins_path):
+        testplugin = os.path.join(testplugins_path, f)
+        for e in os.listdir(testplugin):
+            testplugins[f] = os.path.join(testplugin, e)
+    return testplugins
+
+
+_testplugins = _get_test_plugins()
 
 
 class TestPicardPluginsCommon(PicardTestCase):
@@ -60,3 +99,10 @@ class TestPicardPluginManager(TestPicardPluginsCommon):
         api_versions = ["0.a"]
         with self.assertRaises(VersionError):
             result = pm._compatible_api_versions(api_versions)
+
+    def test_plugin_name_from_path(self):
+        for name, path in _testplugins.items():
+            self.assertEqual(
+                _plugin_name_from_path(path), 'dummyplugin',
+                "failed to get plugin name from %s: %r" % (name, path)
+            )
