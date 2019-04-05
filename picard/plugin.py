@@ -302,6 +302,7 @@ class PluginManager(QtCore.QObject):
         super().__init__()
         self.plugins = []
         self._available_plugins = None  # None=never loaded, [] = empty
+        self.plugins_directory = USER_PLUGIN_DIR
 
     @property
     def available_plugins(self):
@@ -447,7 +448,7 @@ class PluginManager(QtCore.QObject):
                         os.remove(update)
 
     def _remove_plugin(self, plugin_name, with_update=False):
-        self._remove_plugin_files(plugin_name, USER_PLUGIN_DIR, with_update)
+        self._remove_plugin_files(plugin_name, self.plugins_directory, with_update)
         _unregister_module_extensions(plugin_name)
         self.plugins = [p for p in self.plugins if p.module_name != plugin_name]
 
@@ -458,13 +459,13 @@ class PluginManager(QtCore.QObject):
     def _install_plugin_zip(self, plugin_name, plugin_data, update=False):
         # zipped module from download
         zip_plugin = plugin_name + '.zip'
-        dst = os.path.join(USER_PLUGIN_DIR, zip_plugin)
+        dst = os.path.join(self.plugins_directory, zip_plugin)
         if update:
             dst += _UPDATE_SUFFIX
             if os.path.isfile(dst):
                 os.remove(dst)
         ziptmp = tempfile.NamedTemporaryFile(delete=False,
-                                             dir=USER_PLUGIN_DIR).name
+                                             dir=self.plugins_directory).name
         try:
             with open(ziptmp, "wb") as zipfile:
                 zipfile.write(plugin_data)
@@ -480,7 +481,7 @@ class PluginManager(QtCore.QObject):
             raise
 
     def _install_plugin_file(self, path, update=False):
-        dst = os.path.join(USER_PLUGIN_DIR, os.path.basename(path))
+        dst = os.path.join(self.plugins_directory, os.path.basename(path))
         if update:
             dst += _UPDATE_SUFFIX
             if os.path.isfile(dst):
@@ -488,7 +489,7 @@ class PluginManager(QtCore.QObject):
         shutil.copy2(path, dst)
 
     def _install_plugin_dir(self, plugin_name, path, update=False):
-        dst = os.path.join(USER_PLUGIN_DIR, plugin_name)
+        dst = os.path.join(self.plugins_directory, plugin_name)
         if update:
             dst += _UPDATE_SUFFIX
             if os.path.isdir(dst):
@@ -517,7 +518,7 @@ class PluginManager(QtCore.QObject):
 
                 if not update:
                     try:
-                        installed_plugin = self.load_plugin(plugin_name, USER_PLUGIN_DIR)
+                        installed_plugin = self.load_plugin(plugin_name, self.plugins_directory)
                     except Exception as e:
                         log.error('Unable to load plugin: %s.\nError occured: %s', plugin_name, e)
                         installed_plugin = None
@@ -527,7 +528,7 @@ class PluginManager(QtCore.QObject):
                 else:
                     self.plugin_updated.emit(plugin_name, False)
             except (OSError, IOError):
-                log.warning("Unable to copy %s to plugin folder %s" % (path, USER_PLUGIN_DIR))
+                log.warning("Unable to copy %s to plugin folder %s" % (path, self.plugins_directory))
 
     def query_available_plugins(self, callback=None):
         self.tagger.webservice.get(
