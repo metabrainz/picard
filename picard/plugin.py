@@ -341,11 +341,11 @@ class PluginManager(QtCore.QObject):
                   len(names))
         for name in sorted(names):
             try:
-                self.load_plugin(name, plugindir)
+                self._load_plugin_from_directory(name, plugindir)
             except Exception as e:
                 log.error('Unable to load plugin: %s.\nError occured: %s', name, e)
 
-    def load_plugin(self, name, plugindir):
+    def _load_plugin_from_directory(self, name, plugindir):
         module_file = None
         (importer, module_name, manifest_data) = zip_import(os.path.join(plugindir, name + '.zip'))
         if importer:
@@ -518,7 +518,7 @@ class PluginManager(QtCore.QObject):
 
                 if not update:
                     try:
-                        installed_plugin = self.load_plugin(plugin_name, self.plugins_directory)
+                        installed_plugin = self._load_plugin_from_directory(plugin_name, self.plugins_directory)
                     except Exception as e:
                         log.error('Unable to load plugin: %s.\nError occured: %s', plugin_name, e)
                         installed_plugin = None
