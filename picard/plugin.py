@@ -314,17 +314,22 @@ class PluginManager(QtCore.QObject):
         log_func(error)
         self.plugin_errored.emit(name, error, False)
 
+    def _marked_for_update(self):
+        for file in os.listdir(self.plugins_directory):
+            if file.endswith(_UPDATE_SUFFIX):
+                source_path = os.path.join(self.plugins_directory, file)
+                target_path = strip_update_suffix(source_path)
+                plugin_name = _plugin_name_from_path(target_path)
+                if plugin_name:
+                    yield (source_path, target_path, plugin_name)
+                else:
+                    log.error('Cannot get plugin name from %r', source_path)
+
     def handle_plugin_updates(self):
-        for updatepath in [os.path.join(self.plugins_directory, file) for file in
-                           os.listdir(self.plugins_directory) if file.endswith(_UPDATE_SUFFIX)]:
-            path = strip_update_suffix(updatepath)
-            name = _plugin_name_from_path(path)
-            if name:
-                self._remove_plugin(name)
-                os.rename(updatepath, path)
-                log.debug('Updating plugin %r (%r))', name, path)
-            else:
-                log.error('Cannot get plugin name from %r', updatepath)
+        for source_path, target_path, plugin_name in self._marked_for_update():
+            self._remove_plugin(plugin_name)
+            os.rename(source_path, target_path)
+            log.debug('Updating plugin %r (%r))', plugin_name, target_path)
 
     def load_plugins_from_directory(self, plugindir):
         plugindir = os.path.normpath(plugindir)
