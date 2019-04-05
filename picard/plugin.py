@@ -126,7 +126,7 @@ def zip_import(path):
     if (not is_zip(path) or not os.path.isfile(path)):
         return (None, None, None)
     try:
-        importer = zipimport.zipimporter(path)
+        zip_importer = zipimport.zipimporter(path)
         plugin_name = _plugin_name_from_path(path)
         manifest_data = None
         if is_zipped_package(path):
@@ -134,7 +134,7 @@ def zip_import(path):
                 manifest_data = load_manifest(path)
             except Exception:
                 pass
-        return (importer, plugin_name, manifest_data)
+        return (zip_importer, plugin_name, manifest_data)
     except zipimport.ZipImportError:
         return (None, None, None)
 
@@ -363,14 +363,14 @@ class PluginManager(QtCore.QObject):
 
     def _load_plugin_from_directory(self, name, plugindir):
         module_file = None
-        (importer, module_name, manifest_data) = zip_import(os.path.join(plugindir, name + '.zip'))
-        if importer:
+        (zip_importer, module_name, manifest_data) = zip_import(os.path.join(plugindir, name + '.zip'))
+        if zip_importer:
             name = module_name
-            if not importer.find_module(name):
+            if not zip_importer.find_module(name):
                 error = _("Failed loading zipped plugin %r") % name
                 self.plugin_error(name, error)
                 return None
-            module_pathname = importer.get_filename(name)
+            module_pathname = zip_importer.get_filename(name)
         else:
             try:
                 info = imp.find_module(name, [plugindir])
@@ -392,10 +392,10 @@ class PluginManager(QtCore.QObject):
                             existing_plugin.version,
                             existing_plugin.file)
                 _unregister_module_extensions(name)
-            if not importer:
+            if not zip_importer:
                 plugin_module = imp.load_module(_PLUGIN_MODULE_PREFIX + name, *info)
             else:
-                plugin_module = importer.load_module(_PLUGIN_MODULE_PREFIX + name)
+                plugin_module = zip_importer.load_module(_PLUGIN_MODULE_PREFIX + name)
             plugin = PluginWrapper(plugin_module, plugindir,
                                    file=module_pathname, manifest_data=manifest_data)
             compatible_versions = self._compatible_api_versions(plugin.api_versions)
