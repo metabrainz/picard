@@ -302,7 +302,7 @@ class PluginManager(QtCore.QObject):
         super().__init__()
         self.plugins = []
         self._available_plugins = None  # None=never loaded, [] = empty
-        self.plugins_directory = USER_PLUGIN_DIR
+        self.plugins_directory = os.path.normpath(USER_PLUGIN_DIR)
 
     @property
     def available_plugins(self):
@@ -314,14 +314,9 @@ class PluginManager(QtCore.QObject):
         log_func(error)
         self.plugin_errored.emit(name, error, False)
 
-    def load_plugins_from_directory(self, plugindir):
-        plugindir = os.path.normpath(plugindir)
-        if not os.path.isdir(plugindir):
-            log.info("Plugin directory %r doesn't exist", plugindir)
-            return
-        # first, handle eventual plugin updates
-        for updatepath in [os.path.join(plugindir, file) for file in
-                           os.listdir(plugindir) if file.endswith(_UPDATE_SUFFIX)]:
+    def handle_plugin_updates(self):
+        for updatepath in [os.path.join(self.plugins_directory, file) for file in
+                           os.listdir(self.plugins_directory) if file.endswith(_UPDATE_SUFFIX)]:
             path = strip_update_suffix(updatepath)
             name = _plugin_name_from_path(path)
             if name:
@@ -330,6 +325,16 @@ class PluginManager(QtCore.QObject):
                 log.debug('Updating plugin %r (%r))', name, path)
             else:
                 log.error('Cannot get plugin name from %r', updatepath)
+
+    def load_plugins_from_directory(self, plugindir):
+        plugindir = os.path.normpath(plugindir)
+        if not os.path.isdir(plugindir):
+            log.info("Plugin directory %r doesn't exist", plugindir)
+            return
+        if plugindir == self.plugins_directory:
+            # .update trick is only for plugins installed through the Picard UI
+            # and only for plugins in plugins_directory (USER_PLUGIN_DIR by default)
+            self.handle_plugin_updates()
         # now load found plugins
         names = set()
         for path in [os.path.join(plugindir, file) for file in os.listdir(plugindir)]:
