@@ -392,10 +392,11 @@ class PluginManager(QtCore.QObject):
                             existing_plugin.version,
                             existing_plugin.file)
                 _unregister_module_extensions(name)
+            full_module_name = _PLUGIN_MODULE_PREFIX + name
             if zip_importer:
-                plugin_module = zip_importer.load_module(_PLUGIN_MODULE_PREFIX + name)
+                plugin_module = zip_importer.load_module(full_module_name)
             else:
-                plugin_module = imp.load_module(_PLUGIN_MODULE_PREFIX + name, *info)
+                plugin_module = imp.load_module(full_module_name, *info)
             plugin = PluginWrapper(plugin_module, plugindir,
                                    file=module_pathname, manifest_data=manifest_data)
             compatible_versions = self._compatible_api_versions(plugin.api_versions)
