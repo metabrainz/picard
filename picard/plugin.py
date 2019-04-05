@@ -355,6 +355,12 @@ class PluginManager(QtCore.QObject):
             except Exception as e:
                 log.error('Unable to load plugin: %s.\nError occured: %s', name, e)
 
+    def _get_plugin_index_by_name(self, name):
+        for index, plugin in enumerate(self.plugins):
+            if name == plugin.module_name:
+                return (plugin, index)
+        return (None, None)
+
     def _load_plugin_from_directory(self, name, plugindir):
         module_file = None
         (importer, module_name, manifest_data) = zip_import(os.path.join(plugindir, name + '.zip'))
@@ -377,18 +383,15 @@ class PluginManager(QtCore.QObject):
 
         plugin = None
         try:
-            index = None
-            for i, p in enumerate(self.plugins):
-                if name == p.module_name:
-                    log.warning("Module %r conflict: unregistering previously"
-                                " loaded %r version %s from %r",
-                                p.module_name,
-                                p.name,
-                                p.version,
-                                p.file)
-                    _unregister_module_extensions(name)
-                    index = i
-                    break
+            existing_plugin, existing_plugin_index = self._get_plugin_index_by_name(name)
+            if existing_plugin:
+                log.warning("Module %r conflict: unregistering previously"
+                            " loaded %r version %s from %r",
+                            existing_plugin.module_name,
+                            existing_plugin.name,
+                            existing_plugin.version,
+                            existing_plugin.file)
+                _unregister_module_extensions(name)
             if not importer:
                 plugin_module = imp.load_module(_PLUGIN_MODULE_PREFIX + name, *info)
             else:
@@ -404,8 +407,8 @@ class PluginManager(QtCore.QObject):
                                      sorted(compatible_versions)]))
                 plugin.compatible = True
                 setattr(picard.plugins, name, plugin_module)
-                if index is not None:
-                    self.plugins[index] = plugin
+                if existing_plugin:
+                    self.plugins[existing_plugin_index] = plugin
                 else:
                     self.plugins.append(plugin)
             else:
