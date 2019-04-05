@@ -314,7 +314,7 @@ class PluginManager(QtCore.QObject):
         log_func(error)
         self.plugin_errored.emit(name, error, False)
 
-    def load_plugindir(self, plugindir):
+    def load_plugins_from_directory(self, plugindir):
         plugindir = os.path.normpath(plugindir)
         if not os.path.isdir(plugindir):
             log.info("Plugin directory %r doesn't exist", plugindir)
