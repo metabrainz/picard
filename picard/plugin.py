@@ -416,20 +416,20 @@ class PluginManager(QtCore.QObject):
         versions = [version_from_string(v) for v in list(api_versions)]
         return set(versions) & set(picard.api_versions_tuple)
 
-    def _get_existing_paths(self, plugin_name, plugin_dir, fileexts):
-        dirpath = os.path.join(plugin_dir, plugin_name)
+    def _get_existing_paths(self, plugin_name, fileexts):
+        dirpath = os.path.join(self.plugins_directory, plugin_name)
         if not os.path.isdir(dirpath):
             dirpath = None
-        filepaths = [os.path.join(plugin_dir, f)
-                     for f in os.listdir(plugin_dir)
+        filepaths = [os.path.join(self.plugins_directory, f)
+                     for f in os.listdir(self.plugins_directory)
                      if f in [plugin_name + ext for ext in fileexts]
                      ]
         return (dirpath, filepaths)
 
-    def _remove_plugin_files(self, plugin_name, plugin_dir, with_update=False):
+    def _remove_plugin_files(self, plugin_name, with_update=False):
         plugin_name = strip_zip_suffix(plugin_name)
         log.debug("Remove plugin files and dirs : %r", plugin_name)
-        dirpath, filepaths = self._get_existing_paths(plugin_name, plugin_dir, _FILEEXTS)
+        dirpath, filepaths = self._get_existing_paths(plugin_name, _FILEEXTS)
         if dirpath:
             if os.path.islink(dirpath):
                 log.debug("Removing symlink %r", dirpath)
@@ -448,7 +448,7 @@ class PluginManager(QtCore.QObject):
                         os.remove(update)
 
     def _remove_plugin(self, plugin_name, with_update=False):
-        self._remove_plugin_files(plugin_name, self.plugins_directory, with_update)
+        self._remove_plugin_files(plugin_name, with_update)
         _unregister_module_extensions(plugin_name)
         self.plugins = [p for p in self.plugins if p.module_name != plugin_name]
 
