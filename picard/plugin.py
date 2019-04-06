@@ -532,18 +532,19 @@ class PluginManager(QtCore.QObject):
                     self._install_plugin_file(path, update=update)
                 elif os.path.isdir(path):
                     self._install_plugin_dir(plugin_name, path, update=update)
-
-                if not update:
-                    try:
-                        installed_plugin = self._load_plugin_from_directory(plugin_name, self.plugins_directory)
-                    except Exception as e:
-                        log.error('Unable to load plugin: %s.\nError occured: %s', plugin_name, e)
-                    else:
-                        self.plugin_installed.emit(installed_plugin, False)
-                else:
-                    self.plugin_updated.emit(plugin_name, False)
             except (OSError, IOError):
                 log.warning("Unable to copy %s to plugin folder %s" % (path, self.plugins_directory))
+                return
+
+            if not update:
+                try:
+                    installed_plugin = self._load_plugin_from_directory(plugin_name, self.plugins_directory)
+                except Exception as e:
+                    log.error('Unable to load plugin: %s.\nError occured: %s', plugin_name, e)
+                else:
+                    self.plugin_installed.emit(installed_plugin, False)
+            else:
+                self.plugin_updated.emit(plugin_name, False)
 
     def query_available_plugins(self, callback=None):
         self.tagger.webservice.get(
