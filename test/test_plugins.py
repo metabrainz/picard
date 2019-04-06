@@ -139,6 +139,10 @@ class TestPicardPluginsInstall(TestPicardPluginsCommonTmpDir):
         self.assertEqual(len(pm.plugins), 1, msg)
         self.assertEqual(pm.plugins[0].name, 'Dummy plugin', msg)
 
+        # if module is properly loaded, this should work
+        from picard.plugins.dummyplugin import DummyPlugin
+        d = DummyPlugin()
+
     def _test_plugin_install_data(self, name):
         # simulate installation from UI using data from picard plugins api web service
         with open(_testplugins[name], 'rb') as f:
@@ -151,6 +155,10 @@ class TestPicardPluginsInstall(TestPicardPluginsCommonTmpDir):
         pm.install_plugin(None, plugin_name='dummyplugin', plugin_data=data)
         self.assertEqual(len(pm.plugins), 1, msg)
         self.assertEqual(pm.plugins[0].name, 'Dummy plugin', msg)
+
+        # if module is properly loaded, this should work
+        from picard.plugins.dummyplugin import DummyPlugin
+        d = DummyPlugin()
 
     # module
     def test_plugin_install_module(self):
