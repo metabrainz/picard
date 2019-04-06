@@ -46,13 +46,13 @@ from picard.const import (
 import picard.plugins
 
 
-_SUFFIXES = [s[0] for s in imp.get_suffixes()]
-_PACKAGE_ENTRIES = ["__init__.py", "__init__.pyc", "__init__.pyo"]
+_SUFFIXES = tuple([s[0] for s in imp.get_suffixes()])
+_PACKAGE_ENTRIES = ("__init__.py", "__init__.pyc", "__init__.pyo")
 _PLUGIN_MODULE_PREFIX = "picard.plugins."
 _PLUGIN_MODULE_PREFIX_LEN = len(_PLUGIN_MODULE_PREFIX)
 _PLUGIN_PACKAGE_SUFFIX = ".picard"
 _PLUGIN_PACKAGE_SUFFIX_LEN = len(_PLUGIN_PACKAGE_SUFFIX)
-_FILEEXTS = ['.py', '.pyc', '.pyo', '.zip']
+_FILEEXTS = ('.py', '.pyc', '.pyo', '.zip')
 _UPDATE_SUFFIX = '.update'
 _UPDATE_SUFFIX_LEN = len(_UPDATE_SUFFIX)
 
