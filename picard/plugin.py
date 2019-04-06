@@ -298,11 +298,13 @@ class PluginManager(QtCore.QObject):
     plugin_removed = QtCore.pyqtSignal(str, bool)
     plugin_errored = QtCore.pyqtSignal(str, str, bool)
 
-    def __init__(self):
+    def __init__(self, plugins_directory=None):
         super().__init__()
         self.plugins = []
         self._available_plugins = None  # None=never loaded, [] = empty
-        self.plugins_directory = os.path.normpath(USER_PLUGIN_DIR)
+        if plugins_directory is None:
+            plugins_directory = USER_PLUGIN_DIR
+        self.plugins_directory = os.path.normpath(plugins_directory)
 
     @property
     def available_plugins(self):
