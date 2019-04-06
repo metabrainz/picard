@@ -538,9 +538,7 @@ class PluginManager(QtCore.QObject):
                         installed_plugin = self._load_plugin_from_directory(plugin_name, self.plugins_directory)
                     except Exception as e:
                         log.error('Unable to load plugin: %s.\nError occured: %s', plugin_name, e)
-                        installed_plugin = None
-
-                    if installed_plugin is not None:
+                    else:
                         self.plugin_installed.emit(installed_plugin, False)
                 else:
                     self.plugin_updated.emit(plugin_name, False)
