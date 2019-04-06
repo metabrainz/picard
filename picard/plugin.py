@@ -22,6 +22,7 @@
 from collections import defaultdict
 from functools import partial
 import imp
+import importlib
 import json
 import os.path
 import shutil
@@ -46,7 +47,7 @@ from picard.const import (
 import picard.plugins
 
 
-_SUFFIXES = tuple([s[0] for s in imp.get_suffixes()])
+_SUFFIXES = tuple(importlib.machinery.all_suffixes())
 _PACKAGE_ENTRIES = ("__init__.py", "__init__.pyc", "__init__.pyo")
 _PLUGIN_MODULE_PREFIX = "picard.plugins."
 _PLUGIN_MODULE_PREFIX_LEN = len(_PLUGIN_MODULE_PREFIX)
