@@ -19,6 +19,9 @@
 
 import logging
 import os
+import shutil
+from tempfile import mkdtemp
+import unittest
 
 from test.picardtestcase import PicardTestCase
 
@@ -53,6 +56,12 @@ from picard.plugin import (
 #     └── dummyplugin.zip
 #         └── dummyplugin.py
 
+# module
+# packaged_module
+# singlefile
+# zipped_module
+# zipped_singlefile
+
 
 def _get_test_plugins():
     testplugins = {}
@@ -75,6 +84,17 @@ class TestPicardPluginsCommon(PicardTestCase):
 
     def tearDown(self):
         pass
+
+
+class TestPicardPluginsCommonTmpDir(TestPicardPluginsCommon):
+
+    def setUp(self):
+        super().setUp()
+        self.tmp_directory = mkdtemp()
+
+    def tearDown(self):
+        super().tearDown()
+        shutil.rmtree(self.tmp_directory)
 
 
 class TestPicardPluginManager(TestPicardPluginsCommon):
@@ -106,3 +126,39 @@ class TestPicardPluginManager(TestPicardPluginsCommon):
                 _plugin_name_from_path(path), 'dummyplugin',
                 "failed to get plugin name from %s: %r" % (name, path)
             )
+
+
+class TestPicardPluginsInstall(TestPicardPluginsCommonTmpDir):
+
+    def _test_plugin_install(self, name):
+        plugin_path = _testplugins[name]
+        pm = PluginManager(plugins_directory=self.tmp_directory)
+
+        msg = "install_plugin: %s %r" % (name, plugin_path)
+        pm.install_plugin(plugin_path)
+        self.assertEqual(len(pm.plugins), 1, msg)
+
+        for plugin in pm.plugins:
+            self.assertEqual(plugin.name, 'Dummy plugin', msg)
+
+    # module
+    def test_plugin_install_module(self):
+        self._test_plugin_install('module')
+
+    # packaged_module
+    # FIXME
+    @unittest.skipIf(True, "FIXME")
+    def test_plugin_install_packaged_module(self):
+        self._test_plugin_install('packaged_module')
+
+    # singlefile
+    def test_plugin_install_packaged_singlefile(self):
+        self._test_plugin_install('singlefile')
+
+    # zipped_module
+    def test_plugin_install_packaged_zipped_module(self):
+        self._test_plugin_install('zipped_module')
+
+    # zipped_singlefile
+    def test_plugin_install_packaged_zipped_singlefile(self):
+        self._test_plugin_install('zipped_singlefile')
