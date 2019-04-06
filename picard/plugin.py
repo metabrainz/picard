@@ -512,8 +512,7 @@ class PluginManager(QtCore.QObject):
                 shutil.rmtree(dst)
         shutil.copytree(path, dst)
 
-    def install_plugin(self, path, update=False, overwrite_confirm=None, plugin_name=None,
-                       plugin_data=None):
+    def install_plugin(self, path, update=False, plugin_name=None, plugin_data=None):
         """
             path is either:
                 1) /some/dir/name.py
