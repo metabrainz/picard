@@ -7,7 +7,7 @@ PLUGIN_DESCRIPTION = "Dummy plugin description"
 PLUGIN_VERSION = "1.0"
 PLUGIN_API_VERSIONS = ["2.0"]
 PLUGIN_LICENSE = 'Dummy plugin license'
-PLUGIN_LICENSE_URL =  'dummy.plugin.url'
+PLUGIN_LICENSE_URL = 'dummy.plugin.url'
 
 
 class DummyPlugin:
