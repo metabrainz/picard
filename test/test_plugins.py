@@ -139,6 +139,19 @@ class TestPicardPluginsInstall(TestPicardPluginsCommonTmpDir):
         self.assertEqual(len(pm.plugins), 1, msg)
         self.assertEqual(pm.plugins[0].name, 'Dummy plugin', msg)
 
+    def _test_plugin_install_data(self, name):
+        # simulate installation from UI using data from picard plugins api web service
+        with open(_testplugins[name], 'rb') as f:
+            data = f.read()
+
+        plugin_path = _testplugins[name]
+        pm = PluginManager(plugins_directory=self.tmp_directory)
+
+        msg = "install_plugin_data: %s data: %d bytes" % (name, len(data))
+        pm.install_plugin(None, plugin_name='dummyplugin', plugin_data=data)
+        self.assertEqual(len(pm.plugins), 1, msg)
+        self.assertEqual(pm.plugins[0].name, 'Dummy plugin', msg)
+
     # module
     def test_plugin_install_module(self):
         self._test_plugin_install('module')
@@ -160,3 +173,11 @@ class TestPicardPluginsInstall(TestPicardPluginsCommonTmpDir):
     # zipped_singlefile
     def test_plugin_install_packaged_zipped_singlefile(self):
         self._test_plugin_install('zipped_singlefile')
+
+    # zipped_module from picard plugins ws
+    def test_plugin_install_zipped_module_data(self):
+        self._test_plugin_install_data('zipped_module')
+
+    # zipped_singlefile from picard plugins ws
+    def test_plugin_install_zipped_singlefile_data(self):
+        self._test_plugin_install_data('zipped_singlefile')
