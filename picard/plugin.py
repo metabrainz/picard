@@ -46,7 +46,7 @@ from picard.const import (
 import picard.plugins
 
 
-_suffixes = [s[0] for s in imp.get_suffixes()]
+_SUFFIXES = [s[0] for s in imp.get_suffixes()]
 _PACKAGE_ENTRIES = ["__init__.py", "__init__.pyc", "__init__.pyo"]
 _extension_points = []
 _PLUGIN_MODULE_PREFIX = "picard.plugins."
@@ -109,7 +109,7 @@ def _plugin_name_from_path(path):
         if file in _PACKAGE_ENTRIES:
             return None
         name, ext = os.path.splitext(file)
-        if ext in _suffixes:
+        if ext in _SUFFIXES:
             return name
         return None
 
