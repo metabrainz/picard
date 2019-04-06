@@ -123,9 +123,11 @@ class ExtensionPoint(object):
     def register(self, module, item):
         if module.startswith(_PLUGIN_MODULE_PREFIX):
             module = module[_PLUGIN_MODULE_PREFIX_LEN:]
+            log.debug("ExtensionPoint: %s register <- plugin=%r item=%r" % (self.label, module, item))
         else:
             module = None
-        log.debug("ExtensionPoint: %s register <- module=%r item=%r" % (self.label, module, item))
+            # uncomment to debug internal extensions loaded at startup
+            # print("ExtensionPoint: %s register <- item=%r" % (self.label, item))
         self.__dict[module].append(item)
 
     def unregister_module(self, name):
