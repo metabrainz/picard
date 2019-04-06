@@ -117,7 +117,7 @@ class ExtensionPoint(object):
             import uuid
             label = uuid.uuid4()
         self.label = label
-        self.__items = []
+        self.__dict = defaultdict(list)
         _extension_points.append(self)
 
     def register(self, module, item):
@@ -126,16 +126,28 @@ class ExtensionPoint(object):
         else:
             module = None
         log.debug("ExtensionPoint: %s register <- module=%r item=%r" % (self.label, module, item))
-        self.__items.append((module, item))
+        self.__dict[module].append(item)
 
     def unregister_module(self, name):
-        self.__items = [item for item in self.__items if item[0] != name]
+        try:
+            del self.__dict[name]
+        except KeyError:
+            # NOTE: needed due to defaultdict behaviour:
+            # >>> d = defaultdict(list)
+            # >>> del d['a']
+            # KeyError: 'a'
+            # >>> d['a']
+            # []
+            # >>> del d['a']
+            # >>> #^^ no exception, after first read
+            pass
 
     def __iter__(self):
         enabled_plugins = config.setting["enabled_plugins"]
-        for module, item in self.__items:
-            if module is None or module in enabled_plugins:
-                yield item
+        for name in self.__dict:
+            if name is None or name in enabled_plugins:
+                for item in self.__dict[name]:
+                    yield item
 
 
 class PluginShared(object):
