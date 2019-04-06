@@ -522,6 +522,8 @@ class PluginManager(QtCore.QObject):
                 3) /some/dir/name.zip (containing either 1 or 2)
 
         """
+        assert path or plugin_name, "path is required if plugin_name is empty"
+
         if not plugin_name:
             plugin_name = _plugin_name_from_path(path)
         if plugin_name:

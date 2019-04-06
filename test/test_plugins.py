@@ -189,3 +189,8 @@ class TestPicardPluginsInstall(TestPicardPluginsCommonTmpDir):
     # zipped_singlefile from picard plugins ws
     def test_plugin_install_zipped_singlefile_data(self):
         self._test_plugin_install_data('zipped_singlefile')
+
+    def test_plugin_install_no_path_no_plugin_name(self):
+        pm = PluginManager(plugins_directory=self.tmp_directory)
+        with self.assertRaises(AssertionError):
+            pm.install_plugin(None)
