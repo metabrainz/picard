@@ -483,21 +483,12 @@ class PluginManager(QtCore.QObject):
             dst += _UPDATE_SUFFIX
             if os.path.isfile(dst):
                 os.remove(dst)
-        ziptmp = tempfile.NamedTemporaryFile(delete=False,
-                                             dir=self.plugins_directory).name
-        try:
-            with open(ziptmp, "wb") as zipfile:
-                zipfile.write(plugin_data)
-                zipfile.flush()
-                os.fsync(zipfile.fileno())
-            os.rename(ziptmp, dst)
+        with tempfile.NamedTemporaryFile(dir=self.plugins_directory) as zipfile:
+            zipfile.write(plugin_data)
+            zipfile.flush()
+            os.fsync(zipfile.fileno())
+            os.link(zipfile.name, dst)
             log.debug("Plugin (zipped) saved to %r", dst)
-        except BaseException:
-            try:
-                os.remove(ziptmp)
-            except (IOError, OSError):
-                pass
-            raise
 
     def _install_plugin_file(self, path, update=False):
         dst = os.path.join(self.plugins_directory, os.path.basename(path))
