@@ -137,9 +137,7 @@ class TestPicardPluginsInstall(TestPicardPluginsCommonTmpDir):
         msg = "install_plugin: %s %r" % (name, plugin_path)
         pm.install_plugin(plugin_path)
         self.assertEqual(len(pm.plugins), 1, msg)
-
-        for plugin in pm.plugins:
-            self.assertEqual(plugin.name, 'Dummy plugin', msg)
+        self.assertEqual(pm.plugins[0].name, 'Dummy plugin', msg)
 
     # module
     def test_plugin_install_module(self):
