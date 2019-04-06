@@ -47,7 +47,7 @@ import picard.plugins
 
 
 _suffixes = [s[0] for s in imp.get_suffixes()]
-_package_entries = ["__init__.py", "__init__.pyc", "__init__.pyo"]
+_PACKAGE_ENTRIES = ["__init__.py", "__init__.pyc", "__init__.pyo"]
 _extension_points = []
 _PLUGIN_MODULE_PREFIX = "picard.plugins."
 _PLUGIN_MODULE_PREFIX_LEN = len(_PLUGIN_MODULE_PREFIX)
@@ -101,12 +101,12 @@ def _plugin_name_from_path(path):
         else:
             return name
     elif os.path.isdir(path):
-        for entry in _package_entries:
+        for entry in _PACKAGE_ENTRIES:
             if os.path.isfile(os.path.join(path, entry)):
                 return os.path.basename(path)
     else:
         file = os.path.basename(path)
-        if file in _package_entries:
+        if file in _PACKAGE_ENTRIES:
             return None
         name, ext = os.path.splitext(file)
         if ext in _suffixes:
