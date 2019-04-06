@@ -24,7 +24,7 @@ from picard.plugin import ExtensionPoint
 from picard.ui.options import OptionsPage, register_options_page
 
 
-_cover_art_providers = ExtensionPoint()
+_cover_art_providers = ExtensionPoint(label='cover_art_providers')
 
 
 class ProviderOptions(OptionsPage):

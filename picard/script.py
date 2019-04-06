@@ -146,7 +146,7 @@ Grammar:
   argument   ::= (variable | function | argtext)*
 """
 
-    _function_registry = ExtensionPoint()
+    _function_registry = ExtensionPoint(label='function_registry')
     _cache = {}
 
     def __raise_eof(self):

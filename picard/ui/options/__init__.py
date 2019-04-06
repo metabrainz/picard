@@ -98,7 +98,7 @@ class OptionsPage(QtWidgets.QWidget):
         regex_edit.textChanged.connect(live_checker)
 
 
-_pages = ExtensionPoint()
+_pages = ExtensionPoint(label='pages')
 
 
 def register_options_page(page_class):

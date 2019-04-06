@@ -20,7 +20,7 @@
 from picard import log
 from picard.plugin import ExtensionPoint
 
-_formats = ExtensionPoint()
+_formats = ExtensionPoint(label='formats')
 _extensions = {}
 
 

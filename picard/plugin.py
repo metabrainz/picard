@@ -112,7 +112,11 @@ def _unregister_module_extensions(module):
 
 class ExtensionPoint(object):
 
-    def __init__(self):
+    def __init__(self, label=None):
+        if label is None:
+            import uuid
+            label = uuid.uuid4()
+        self.label = label
         self.__items = []
         _extension_points.append(self)
 
@@ -121,6 +125,7 @@ class ExtensionPoint(object):
             module = module[_PLUGIN_MODULE_PREFIX_LEN:]
         else:
             module = None
+        log.debug("ExtensionPoint: %s register <- module=%r item=%r" % (self.label, module, item))
         self.__items.append((module, item))
 
     def unregister_module(self, name):
@@ -529,8 +534,8 @@ class PluginFunctions:
     run() method will execute entries with higher priority value first
     """
 
-    def __init__(self):
-        self.functions = defaultdict(ExtensionPoint)
+    def __init__(self, label=None):
+        self.functions = defaultdict(lambda : ExtensionPoint(label=label))
 
     def register(self, module, item, priority=PluginPriority.NORMAL):
         self.functions[priority].register(module, item)
