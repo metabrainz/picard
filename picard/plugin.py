@@ -488,7 +488,7 @@ class PluginManager(QtCore.QObject):
                 zipfile.flush()
                 os.fsync(zipfile.fileno())
             os.rename(ziptmp, dst)
-            log.debug("Plugin saved to %r", dst)
+            log.debug("Plugin (zipped) saved to %r", dst)
         except BaseException:
             try:
                 os.remove(ziptmp)
@@ -503,6 +503,7 @@ class PluginManager(QtCore.QObject):
             if os.path.isfile(dst):
                 os.remove(dst)
         shutil.copy2(path, dst)
+        log.debug("Plugin (file) saved to %r", dst)
 
     def _install_plugin_dir(self, plugin_name, path, update=False):
         dst = os.path.join(self.plugins_directory, plugin_name)
@@ -511,6 +512,7 @@ class PluginManager(QtCore.QObject):
             if os.path.isdir(dst):
                 shutil.rmtree(dst)
         shutil.copytree(path, dst)
+        log.debug("Plugin (directory) saved to %r", dst)
 
     def install_plugin(self, path, update=False, plugin_name=None, plugin_data=None):
         """
