@@ -144,7 +144,7 @@ class TestPicardPluginsInstall(TestPicardPluginsCommonTmpDir):
         self._test_plugin_install('module')
 
     # packaged_module
-    # FIXME
+    # FIXME : not really implemented
     @unittest.skipIf(True, "FIXME")
     def test_plugin_install_packaged_module(self):
         self._test_plugin_install('packaged_module')
