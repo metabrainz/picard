@@ -533,7 +533,7 @@ class PluginManager(QtCore.QObject):
                 elif os.path.isdir(path):
                     self._install_plugin_dir(plugin_name, path, update=update)
             except (OSError, IOError) as why:
-                log.warning("Unable to copy %s to plugin folder %s: %s" % (path, self.plugins_directory, why))
+                log.error("Unable to copy plugin '%s' to %r: %s" % (plugin_name, self.plugins_directory, why))
                 return
 
             if not update:
