@@ -141,14 +141,13 @@ class TestPicardPluginsInstall(TestPicardPluginsCommonTmpDir):
 
         # if module is properly loaded, this should work
         from picard.plugins.dummyplugin import DummyPlugin
-        d = DummyPlugin()
+        DummyPlugin()
 
     def _test_plugin_install_data(self, name):
         # simulate installation from UI using data from picard plugins api web service
         with open(_testplugins[name], 'rb') as f:
             data = f.read()
 
-        plugin_path = _testplugins[name]
         pm = PluginManager(plugins_directory=self.tmp_directory)
 
         msg = "install_plugin_data: %s data: %d bytes" % (name, len(data))
@@ -158,7 +157,7 @@ class TestPicardPluginsInstall(TestPicardPluginsCommonTmpDir):
 
         # if module is properly loaded, this should work
         from picard.plugins.dummyplugin import DummyPlugin
-        d = DummyPlugin()
+        DummyPlugin()
 
     # module
     def test_plugin_install_module(self):
