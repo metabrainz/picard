@@ -1,0 +1,7 @@
+autopep8
+Babel>=2.6.0
+isort==4.3.10
+flake8
+pycodestyle
+pylint
+transifex-client

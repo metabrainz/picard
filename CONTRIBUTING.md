@@ -10,6 +10,12 @@ As most of the other projects written in Python, we use the [PEP 8](https://www.
 
 The general idea is to make the code within a project consistent and easy to interpret (for humans).
 
+Developers may install few extra tools using:
+
+```bash
+pip install -r requirements-dev.txt
+```
+
 To fix or preserve imports style, one can use `isort -rc .` command (requires the [isort](https://github.com/timothycrosley/isort) tool, see `.isort.cfg`).
 
 It is recommended to add a pre-commit hook to check whether imports in changed code
@@ -23,7 +29,7 @@ PYFILES=$(git diff --cached --name-only | grep "\\.py$")
 
 if [ ! -z "$PYFILES" ]; then
 	set -e
-	isort --check-only $PYFILES
+	isort --check-only --diff --quiet $PYFILES
 fi
 ```
 
@@ -55,3 +61,7 @@ We follow the "typical" GitHub workflow when contributing changes:
 5. Make sure to provide a bug tracker link to the issue that your pull request solves in the description.
 6. Do not make one big pull request with a lot of unrelated changes. If you are solving more than one issue, unless they are closely related, split them into multiple pull requests. It makes it easier to review and merge the patches this way.
 7. Try to avoid un-necessary commits after code reviews by making use of [git rebase](https://help.github.com/articles/about-git-rebase/) to fix merge conflicts, remove unwanted commits, rewording and editing previous commits or squashing multiple small related changes into one commit.
+
+### Translations
+
+See po/README.md for information about translations.
