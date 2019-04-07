@@ -29,7 +29,7 @@ PYFILES=$(git diff --cached --name-only | grep "\\.py$")
 
 if [ ! -z "$PYFILES" ]; then
 	set -e
-	isort --check-only $PYFILES
+	isort --check-only --diff --quiet $PYFILES
 fi
 ```
 
