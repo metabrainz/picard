@@ -216,3 +216,40 @@ class TestPicardPluginsInstall(TestPicardPluginsCommonTmpDir):
         pm = PluginManager(plugins_directory=self.tmp_directory)
         with self.assertRaises(AssertionError):
             pm.install_plugin(None)
+
+
+class TestPicardPluginsLoad(TestPicardPluginsCommonTmpDir):
+
+    def _test_plugin_load_from_directory(self, name):
+        unload_plugin('dummyplugin')
+        with self.assertRaises(ImportError):
+            from picard.plugins.dummyplugin import DummyPlugin
+
+        pm = PluginManager(plugins_directory=self.tmp_directory)
+
+        src_dir = os.path.dirname(_testplugins[name])
+
+        msg = "plugins_load_from_directory: %s %r" % (name, src_dir)
+        pm.load_plugins_from_directory(src_dir)
+        self.assertEqual(len(pm.plugins), 1, msg)
+        self.assertEqual(pm.plugins[0].name, 'Dummy plugin', msg)
+
+        # if module is properly loaded, this should work
+        from picard.plugins.dummyplugin import DummyPlugin
+        DummyPlugin()
+
+    # singlefile
+    def test_plugin_load_from_directory_singlefile(self):
+        self._test_plugin_load_from_directory('singlefile')
+
+    # zipped_module
+    def test_plugin_load_from_directory_zipped_module(self):
+        self._test_plugin_load_from_directory('zipped_module')
+
+    # zipped_singlefile
+    def test_plugin_load_from_directory_zipped_singlefile(self):
+        self._test_plugin_load_from_directory('zipped_singlefile')
+
+    # module
+    def test_plugin_load_from_directory_module(self):
+        self._test_plugin_load_from_directory('module')
