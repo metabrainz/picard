@@ -20,6 +20,7 @@
 import logging
 import os
 import shutil
+import sys
 from tempfile import mkdtemp
 import unittest
 
@@ -31,8 +32,10 @@ from picard import (
     version_from_string,
 )
 from picard.plugin import (
+    _PLUGIN_MODULE_PREFIX,
     PluginManager,
     _plugin_name_from_path,
+    _unregister_module_extensions,
 )
 
 
@@ -76,6 +79,16 @@ def _get_test_plugins():
 
 
 _testplugins = _get_test_plugins()
+
+
+def unload_plugin(plugin_name):
+    """for testing purposes"""
+    _unregister_module_extensions(plugin_name)
+    if hasattr(picard.plugins, plugin_name):
+        delattr(picard.plugins, plugin_name)
+    key = _PLUGIN_MODULE_PREFIX + plugin_name
+    if key in sys.modules:
+        del sys.modules[key]
 
 
 class TestPicardPluginsCommon(PicardTestCase):
@@ -133,6 +146,10 @@ class TestPicardPluginManager(TestPicardPluginsCommon):
 class TestPicardPluginsInstall(TestPicardPluginsCommonTmpDir):
 
     def _test_plugin_install(self, name):
+        unload_plugin('dummyplugin')
+        with self.assertRaises(ImportError):
+            from picard.plugins.dummyplugin import DummyPlugin
+
         plugin_path = _testplugins[name]
         pm = PluginManager(plugins_directory=self.tmp_directory)
 
@@ -146,6 +163,10 @@ class TestPicardPluginsInstall(TestPicardPluginsCommonTmpDir):
         DummyPlugin()
 
     def _test_plugin_install_data(self, name):
+        unload_plugin('dummyplugin')
+        with self.assertRaises(ImportError):
+            from picard.plugins.dummyplugin import DummyPlugin
+
         # simulate installation from UI using data from picard plugins api web service
         with open(_testplugins[name], 'rb') as f:
             data = f.read()
