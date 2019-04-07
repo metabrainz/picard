@@ -747,7 +747,7 @@ class Tagger(QtWidgets.QApplication):
     def lookup_cd(self, action):
         """Reads CD from the selected drive and tries to lookup the DiscID on MusicBrainz."""
         if isinstance(action, QtWidgets.QAction):
-            device = action.text()
+            device = action.data()
         elif config.setting["cd_lookup_device"] != '':
             device = config.setting["cd_lookup_device"].split(",", 1)[0]
         else:
