@@ -69,6 +69,8 @@ def _get_test_plugins():
     for f in os.listdir(testplugins_path):
         testplugin = os.path.join(testplugins_path, f)
         for e in os.listdir(testplugin):
+            if e == '__pycache__':
+                continue
             testplugins[f] = os.path.join(testplugin, e)
     return testplugins
 
