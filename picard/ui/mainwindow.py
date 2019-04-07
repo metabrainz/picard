@@ -471,6 +471,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                 self.cd_lookup_action.setEnabled(True)
                 for drive in drives:
                     action = self.cd_lookup_menu.addAction(drive)
+                    action.setData(drive)
                     if drive == shortcut_drive:
                         # Clear existing shortcode on main action and assign it to sub-action
                         self.cd_lookup_action.setShortcut(QtGui.QKeySequence())
