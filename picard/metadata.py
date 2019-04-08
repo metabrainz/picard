@@ -393,8 +393,8 @@ class Metadata(MutableMapping):
         return ("store: %r\ndeleted: %r\nimages: %r\nlength: %r" % (self._store, self.deleted_tags, [str(img) for img in self.images], self.length))
 
 
-_album_metadata_processors = PluginFunctions()
-_track_metadata_processors = PluginFunctions()
+_album_metadata_processors = PluginFunctions(label='album_metadata_processors')
+_track_metadata_processors = PluginFunctions(label='track_metadata_processors')
 
 
 def register_album_metadata_processor(function, priority=PluginPriority.NORMAL):

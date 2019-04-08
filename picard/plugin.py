@@ -112,25 +112,44 @@ def _unregister_module_extensions(module):
 
 class ExtensionPoint(object):
 
-    def __init__(self):
-        self.__items = []
+    def __init__(self, label=None):
+        if label is None:
+            import uuid
+            label = uuid.uuid4()
+        self.label = label
+        self.__dict = defaultdict(list)
         _extension_points.append(self)
 
     def register(self, module, item):
         if module.startswith(_PLUGIN_MODULE_PREFIX):
-            module = module[_PLUGIN_MODULE_PREFIX_LEN:]
+            name = module[_PLUGIN_MODULE_PREFIX_LEN:]
+            log.debug("ExtensionPoint: %s register <- plugin=%r item=%r" % (self.label, name, item))
         else:
-            module = None
-        self.__items.append((module, item))
+            name = None
+            # uncomment to debug internal extensions loaded at startup
+            # print("ExtensionPoint: %s register <- item=%r" % (self.label, item))
+        self.__dict[name].append(item)
 
     def unregister_module(self, name):
-        self.__items = [item for item in self.__items if item[0] != name]
+        try:
+            del self.__dict[name]
+        except KeyError:
+            # NOTE: needed due to defaultdict behaviour:
+            # >>> d = defaultdict(list)
+            # >>> del d['a']
+            # KeyError: 'a'
+            # >>> d['a']
+            # []
+            # >>> del d['a']
+            # >>> #^^ no exception, after first read
+            pass
 
     def __iter__(self):
         enabled_plugins = config.setting["enabled_plugins"]
-        for module, item in self.__items:
-            if module is None or module in enabled_plugins:
-                yield item
+        for name in self.__dict:
+            if name is None or name in enabled_plugins:
+                for item in self.__dict[name]:
+                    yield item
 
 
 class PluginShared(object):
@@ -529,8 +548,8 @@ class PluginFunctions:
     run() method will execute entries with higher priority value first
     """
 
-    def __init__(self):
-        self.functions = defaultdict(ExtensionPoint)
+    def __init__(self, label=None):
+        self.functions = defaultdict(lambda : ExtensionPoint(label=label))
 
     def register(self, module, item, priority=PluginPriority.NORMAL):
         self.functions[priority].register(module, item)

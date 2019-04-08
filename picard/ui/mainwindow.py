@@ -82,7 +82,7 @@ from picard.ui.util import (
 )
 
 
-ui_init = ExtensionPoint()
+ui_init = ExtensionPoint(label='ui_init')
 
 
 def register_ui_init(function):

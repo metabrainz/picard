@@ -77,11 +77,11 @@ class BaseAction(QtWidgets.QAction):
         raise NotImplementedError
 
 
-_album_actions = ExtensionPoint()
-_cluster_actions = ExtensionPoint()
-_clusterlist_actions = ExtensionPoint()
-_track_actions = ExtensionPoint()
-_file_actions = ExtensionPoint()
+_album_actions = ExtensionPoint(label='album_actions')
+_cluster_actions = ExtensionPoint(label='cluster_actions')
+_clusterlist_actions = ExtensionPoint(label='clusterlist_actions')
+_track_actions = ExtensionPoint(label='track_actions')
+_file_actions = ExtensionPoint(label='file_actions')
 
 
 def register_album_action(action):
