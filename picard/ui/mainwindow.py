@@ -29,6 +29,7 @@ from PyQt5 import (
 )
 
 from picard import (
+    PICARD_APP_ID,
     config,
     log,
 )
@@ -115,12 +116,12 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     def setupUi(self):
         self.setWindowTitle(_("MusicBrainz Picard"))
         icon = QtGui.QIcon()
-        icon.addFile(":/images/16x16/org.musicbrainz.Picard.png", QtCore.QSize(16, 16))
-        icon.addFile(":/images/24x24/org.musicbrainz.Picard.png", QtCore.QSize(24, 24))
-        icon.addFile(":/images/32x32/org.musicbrainz.Picard.png", QtCore.QSize(32, 32))
-        icon.addFile(":/images/48x48/org.musicbrainz.Picard.png", QtCore.QSize(48, 48))
-        icon.addFile(":/images/128x128/org.musicbrainz.Picard.png", QtCore.QSize(128, 128))
-        icon.addFile(":/images/256x256/org.musicbrainz.Picard.png", QtCore.QSize(256, 256))
+        for size in (16, 24, 32, 48, 128, 256):
+            icon.addFile(
+                ":/images/{size}x{size}/{app_id}.png".format(
+                    size=size, app_id=PICARD_APP_ID),
+                QtCore.QSize(size, size)
+            )
         self.setWindowIcon(icon)
 
         self.show_close_window = IS_MACOS
