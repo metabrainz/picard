@@ -23,6 +23,8 @@ from setuptools import (
 from setuptools.dist import Distribution
 
 from picard import (
+    PICARD_APP_ID,
+    PICARD_DESKTOP_NAME,
     PICARD_VERSION,
     __version__,
 )
@@ -36,6 +38,8 @@ if sys.version_info < (3, 5):
     sys.exit("ERROR: You need Python 3.5 or higher to use Picard.")
 
 PACKAGE_NAME = "picard"
+APPDATA_FILE = PICARD_APP_ID + '.appdata.xml'
+APPDATA_FILE_TEMPLATE = APPDATA_FILE + '.in'
 
 ext_modules = [
     Extension('picard.util._astrcmp', sources=['picard/util/_astrcmp.c']),
@@ -360,11 +364,10 @@ class picard_build_appdata(Command):
         pass
 
     def run(self):
-        with tempfile.NamedTemporaryFile(prefix='org.musicbrainz.Picard.appdata.',
-                                         suffix='.xml') as tmp_file:
+        with tempfile.NamedTemporaryFile(suffix=APPDATA_FILE) as tmp_file:
             self.spawn([
                 'msgfmt', '--xml',
-                '--template=org.musicbrainz.Picard.appdata.xml.in',
+                '--template=%s' % APPDATA_FILE_TEMPLATE,
                 '-d', 'po/appstream',
                 '-o', tmp_file.name,
             ])
@@ -375,8 +378,12 @@ class picard_build_appdata(Command):
         with open('NEWS.txt', 'r') as newsfile:
             news = newsfile.read()
             releases = [template.format(**m.groupdict()) for m in self.re_release.finditer(news)]
-            args = {'releases': '\n    '.join(releases)}
-            generate_file(source_file, 'org.musicbrainz.Picard.appdata.xml', args)
+            args = {
+                'app-id': PICARD_APP_ID,
+                'desktop-id': PICARD_DESKTOP_NAME,
+                'releases': '\n    '.join(releases)
+            }
+            generate_file(source_file, APPDATA_FILE, args)
 
 
 class picard_regen_appdata_pot_file(Command):
@@ -396,7 +403,7 @@ class picard_regen_appdata_pot_file(Command):
             'xgettext',
             '--output', pot_file,
             '--language=appdata',
-            'org.musicbrainz.Picard.appdata.xml.in',
+            APPDATA_FILE_TEMPLATE,
         ])
         for filepath in glob.glob(os.path.join(output_dir, '*.po')):
             self.spawn([
@@ -729,17 +736,17 @@ def find_file_in_path(filename):
 
 
 args['data_files'] = [
-    ('share/icons/hicolor/16x16/apps', ['resources/images/16x16/org.musicbrainz.Picard.png']),
-    ('share/icons/hicolor/24x24/apps', ['resources/images/24x24/org.musicbrainz.Picard.png']),
-    ('share/icons/hicolor/32x32/apps', ['resources/images/32x32/org.musicbrainz.Picard.png']),
-    ('share/icons/hicolor/48x48/apps', ['resources/images/48x48/org.musicbrainz.Picard.png']),
-    ('share/icons/hicolor/128x128/apps', ['resources/images/128x128/org.musicbrainz.Picard.png']),
-    ('share/icons/hicolor/256x256/apps', ['resources/images/256x256/org.musicbrainz.Picard.png']),
-    ('share/icons/hicolor/scalable/apps', ['resources/img-src/org.musicbrainz.Picard.svg']),
-    ('share/applications', ('org.musicbrainz.Picard.desktop',)),
+    (
+        'share/icons/hicolor/{size}x{size}/apps'.format(size=size),
+        ['resources/images/{size}x{size}/{app_id}.png'.format(size=size, app_id=PICARD_APP_ID)]
+    )
+    for size in (16, 24, 32, 48, 128, 256)
 ]
 
+args['data_files'].append(('share/icons/hicolor/scalable/apps', ['resources/img-src/%s.svg' % PICARD_APP_ID]))
+args['data_files'].append(('share/applications', [PICARD_DESKTOP_NAME]))
+
 if IS_LINUX:
-    args['data_files'].append(('share/metainfo', ['org.musicbrainz.Picard.appdata.xml']))
+    args['data_files'].append(('share/metainfo', [APPDATA_FILE]))
 
 setup(**args)

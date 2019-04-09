@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component type="desktop-application">
-  <id>org.musicbrainz.Picard</id>
+  <id>%(app-id)s</id>
   <project_license>GPL-2.0-or-later</project_license>
   <metadata_license>CC0-1.0</metadata_license>
   <name>Picard</name>
@@ -55,7 +55,7 @@
     </ul>
   </description>
 
-  <launchable type="desktop-id">org.musicbrainz.Picard.desktop</launchable>
+  <launchable type="desktop-id">%(desktop-id)s</launchable>
 
   <provides>
     <binary>picard</binary>

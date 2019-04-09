@@ -5,11 +5,10 @@ import os
 import platform
 import sys
 
-
 # Get the version
 # and build a CFBundleVersion compatible version of it according to Apple dev documentation
 sys.path.append('.')
-from picard import PICARD_VERSION
+from picard import PICARD_APP_ID, PICARD_VERSION
 pv = [str(x) for x in PICARD_VERSION]
 macos_picard_version = '.'.join(pv[:3])
 macos_picard_short_version = macos_picard_version
@@ -108,7 +107,7 @@ if platform.system() == 'Darwin':
         'NSPrincipalClass': 'NSApplication',
         'CFBundleName': 'Picard',
         'CFBundleDisplayName': 'MusicBrainz Picard',
-        'CFBundleIdentifier': 'org.musicbrainz.picard',
+        'CFBundleIdentifier': PICARD_APP_ID,
         'CFBundleVersion': macos_picard_version,
         'CFBundleShortVersionString': macos_picard_short_version,
     }
