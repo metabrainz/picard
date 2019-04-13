@@ -43,6 +43,10 @@ from picard.metadata import (
     Metadata,
     SimMatchTrack,
 )
+from picard.plugin import (
+    PluginFunctions,
+    PluginPriority,
+)
 from picard.util import (
     decode_filename,
     find_best_match,
@@ -330,6 +334,9 @@ class File(QtCore.QObject, Item):
             self.clear_pending()
             self._add_path_to_metadata(self.orig_metadata)
             self.metadata_images_changed.emit()
+
+            # run post save hook
+            run_file_post_save_processors(self)
 
         # Force update to ensure file status icon changes immediately after save
         self.update()
@@ -768,3 +775,22 @@ class File(QtCore.QObject, Item):
             return int(self.metadata["discnumber"])
         except BaseException:
             return 0
+
+
+_file_post_save_processors = PluginFunctions(label='file_post_save_processors')
+
+
+def register_file_post_save_processor(function, priority=PluginPriority.NORMAL):
+    """Registers file saved processor.
+
+    Args:
+        function: function to call after save, it will be passed the file object
+        priority: optional, PluginPriority.NORMAL by default
+    Returns:
+        None
+    """
+    _file_post_save_processors.register(function.__module__, function, priority)
+
+
+def run_file_post_save_processors(file_object):
+    _file_post_save_processors.run(file_object)
