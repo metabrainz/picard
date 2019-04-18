@@ -137,8 +137,8 @@ def zip_import(path):
         if is_zipped_package(path):
             try:
                 manifest_data = load_manifest(path)
-            except Exception:
-                pass
+            except Exception as why:
+                log.warning("Failed to load manifest data from json: %s", why)
         return (zip_importer, plugin_name, manifest_data)
     except zipimport.ZipImportError:
         return (None, None, None)
