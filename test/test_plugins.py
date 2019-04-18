@@ -33,9 +33,12 @@ from picard import (
 )
 from picard.plugin import (
     _PLUGIN_MODULE_PREFIX,
-    PluginManager,
-    _plugin_name_from_path,
     _unregister_module_extensions,
+)
+from picard.pluginmanager import (
+    PluginManager,
+    _compatible_api_versions,
+    _plugin_name_from_path,
 )
 
 
@@ -116,24 +119,22 @@ class TestPicardPluginManager(TestPicardPluginsCommon):
 
     def test_compatible_api_version(self):
 
-        pm = PluginManager()
-
         # use first element from picard.api_versions, it should be compatible
         api_versions = picard.api_versions[:1]
         expected = set([version_from_string(v) for v in api_versions])
-        result = pm._compatible_api_versions(api_versions)
+        result = _compatible_api_versions(api_versions)
         self.assertEqual(result, expected)
 
         # pretty sure 0.0 isn't compatible
         api_versions = ["0.0"]
         expected = set()
-        result = pm._compatible_api_versions(api_versions)
+        result = _compatible_api_versions(api_versions)
         self.assertEqual(result, expected)
 
         # buggy version
         api_versions = ["0.a"]
         with self.assertRaises(VersionError):
-            result = pm._compatible_api_versions(api_versions)
+            result = _compatible_api_versions(api_versions)
 
     def test_plugin_name_from_path(self):
         for name, path in _testplugins.items():

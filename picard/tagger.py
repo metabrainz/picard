@@ -73,7 +73,7 @@ from picard.disc import Disc
 from picard.file import File
 from picard.formats import open_ as open_file
 from picard.i18n import setup_gettext
-from picard.plugin import PluginManager
+from picard.pluginmanager import PluginManager
 from picard.releasegroup import ReleaseGroup
 from picard.track import (
     NonAlbumTrack,
