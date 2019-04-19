@@ -21,6 +21,7 @@
 
 from picard import config
 from picard.const.sys import IS_WIN
+from picard.metadata import Metadata
 from picard.script import ScriptParser
 from picard.util import (
     replace_win32_incompat,
@@ -33,11 +34,11 @@ def script_to_filename(naming_format, metadata, file=None, settings=None):
     if settings is None:
         settings = config.setting
     # make sure every metadata can safely be used in a path name
+    meta = Metadata()
     for name in metadata:
-        values = [sanitize_filename(str(v)) for v in metadata.getall(name)]
-        metadata.set(name, values)
+        meta[name] = [sanitize_filename(str(v)) for v in metadata.getall(name)]
     naming_format = naming_format.replace("\t", "").replace("\n", "")
-    filename = ScriptParser().eval(naming_format, metadata, file)
+    filename = ScriptParser().eval(naming_format, meta, file)
     if settings["ascii_filenames"]:
         filename = replace_non_ascii(filename, pathsave=True)
     # replace incompatible characters
