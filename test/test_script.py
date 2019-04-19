@@ -390,6 +390,45 @@ class ScriptParserTest(PicardTestCase):
         except ScriptError:
             self.fail("Function noargs raised ScriptError unexpectedly.")
 
+    def test_cmd_with_wrong_argcount_or(self):
+        # $or() requires at least 2 arguments
+        with self.assertRaises(ScriptError):
+            self.parser.eval('$or(0)')
+        try:
+            self.parser.eval('$or(0,1)')
+        except ScriptError as why:
+            self.fail("Function raised ScriptError: %s" % why)
+        try:
+            self.parser.eval('$or(0,1,1,1,1)')
+        except ScriptError as why:
+            self.fail("Function raised ScriptError: %s" % why)
+
+    def test_cmd_with_wrong_argcount_eq(self):
+        # $eq() requires exactly 2 arguments
+        with self.assertRaises(ScriptError):
+            self.parser.eval('$eq(0)')
+        with self.assertRaises(ScriptError):
+            self.parser.eval('$eq(0,0,0)')
+        try:
+            self.parser.eval('$eq(1,1)')
+        except ScriptError as why:
+            self.fail("Function raised ScriptError: %s" % why)
+
+    def test_cmd_with_wrong_argcount_if(self):
+        # $if() requires 2 or 3 arguments
+        with self.assertRaises(ScriptError):
+            self.parser.eval('$if(1)')
+        with self.assertRaises(ScriptError):
+            self.parser.eval('$if(1,a,b,c)')
+        try:
+            self.parser.eval('$if(1,a)')
+        except ScriptError as why:
+            self.fail("Function raised ScriptError: %s" % why)
+        try:
+            self.parser.eval('$if(1,a,b)')
+        except ScriptError as why:
+            self.fail("Function raised ScriptError: %s" % why)
+
     def test_cmd_unset_simple(self):
         context = Metadata()
         context['title'] = u'Foo'
