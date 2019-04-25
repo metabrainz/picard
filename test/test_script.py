@@ -385,49 +385,29 @@ class ScriptParserTest(PicardTestCase):
         self.assertEqual(result, u'artist/title')
 
     def test_cmd_with_not_arguments(self):
-        try:
-            self.parser.eval("$noargstest()")
-        except ScriptError:
-            self.fail("Function noargs raised ScriptError unexpectedly.")
+        self.parser.eval("$noargstest()")
 
     def test_cmd_with_wrong_argcount_or(self):
         # $or() requires at least 2 arguments
-        with self.assertRaises(ScriptError):
+        areg = r"^Wrong number of arguments for \$or: Expected at least 2, "
+        with self.assertRaisesRegex(ScriptError, areg):
             self.parser.eval('$or(0)')
-        try:
-            self.parser.eval('$or(0,1)')
-        except ScriptError as why:
-            self.fail("Function raised ScriptError: %s" % why)
-        try:
-            self.parser.eval('$or(0,1,1,1,1)')
-        except ScriptError as why:
-            self.fail("Function raised ScriptError: %s" % why)
 
     def test_cmd_with_wrong_argcount_eq(self):
         # $eq() requires exactly 2 arguments
-        with self.assertRaises(ScriptError):
+        areg = r"^Wrong number of arguments for \$eq: Expected exactly 2, "
+        with self.assertRaisesRegex(ScriptError, areg):
             self.parser.eval('$eq(0)')
-        with self.assertRaises(ScriptError):
+        with self.assertRaisesRegex(ScriptError, areg):
             self.parser.eval('$eq(0,0,0)')
-        try:
-            self.parser.eval('$eq(1,1)')
-        except ScriptError as why:
-            self.fail("Function raised ScriptError: %s" % why)
 
     def test_cmd_with_wrong_argcount_if(self):
+        areg = r"^Wrong number of arguments for \$if: Expected between 2 and 3, "
         # $if() requires 2 or 3 arguments
-        with self.assertRaises(ScriptError):
+        with self.assertRaisesRegex(ScriptError, areg):
             self.parser.eval('$if(1)')
-        with self.assertRaises(ScriptError):
+        with self.assertRaisesRegex(ScriptError, areg):
             self.parser.eval('$if(1,a,b,c)')
-        try:
-            self.parser.eval('$if(1,a)')
-        except ScriptError as why:
-            self.fail("Function raised ScriptError: %s" % why)
-        try:
-            self.parser.eval('$if(1,a,b)')
-        except ScriptError as why:
-            self.fail("Function raised ScriptError: %s" % why)
 
     def test_cmd_unset_simple(self):
         context = Metadata()
