@@ -92,18 +92,23 @@ class ScriptFunction(object):
         try:
             argnum_bound = parser.functions[name].argcount
             argcount = len(args)
-            if argnum_bound and not (argnum_bound.lower <= argcount
-                                     and (argnum_bound.upper is None
-                                          or len(args) <= argnum_bound.upper)):
-                raise ScriptError(
-                    "Wrong number of arguments for $%s: Expected %s, got %i at position %i, line %i"
-                    % (name,
-                       str(argnum_bound.lower)
-                        if argnum_bound.upper is None
-                        else "%i - %i" % (argnum_bound.lower, argnum_bound.upper),
-                       argcount,
-                       parser._x,
-                       parser._y))
+            if argnum_bound:
+                too_few_args = argcount < argnum_bound.lower
+                if argnum_bound.upper is not None:
+                    if argnum_bound.lower == argnum_bound.upper:
+                        expected = "exactly %i" % argnum_bound.lower
+                    else:
+                        expected = "between %i and %i" % (argnum_bound.lower, argnum_bound.upper)
+                    too_many_args = argcount > argnum_bound.upper
+                else:
+                    expected = "at least %i" % argnum_bound.lower
+                    too_many_args = False
+
+                if too_few_args or too_many_args:
+                    raise ScriptError(
+                        "Wrong number of arguments for $%s: Expected %s, got %i at position %i, line %i"
+                        % (name, expected, argcount, parser._x, parser._y)
+                    )
         except KeyError:
             raise ScriptUnknownFunction("Unknown function '%s'" % name)
 
