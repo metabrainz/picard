@@ -1,8 +1,12 @@
 # -*- coding: utf-8 -*-
+import unittest
+
 from test.picardtestcase import PicardTestCase
 
 from picard import (
     VersionError,
+    api_versions,
+    api_versions_tuple,
     version_from_string,
     version_to_string,
 )
@@ -100,15 +104,20 @@ class VersionsTest(PicardTestCase):
     def test_version_conv_20(self):
         self.assertRaises(VersionError, version_from_string, '123.')
 
+    @unittest.skipUnless(len(api_versions) > 1, "api_versions do not have enough elements")
     def test_api_versions_1(self):
         """Check api versions format and order (from oldest to newest)"""
-        from picard import api_versions
 
-        len_api_versions = len(api_versions)
-        if len_api_versions > 1:
-            for i in range(len_api_versions - 1):
-                a = version_from_string(api_versions[i])
-                b = version_from_string(api_versions[i+1])
-                self.assertLess(a, b)
-        elif len_api_versions == 1:
-            a = version_from_string(api_versions[0])
+        for i in range(len(api_versions) - 1):
+            a = version_from_string(api_versions[i])
+            b = version_from_string(api_versions[i+1])
+            self.assertLess(a, b)
+
+    @unittest.skipUnless(len(api_versions_tuple) > 1, "api_versions_tuple do not have enough elements")
+    def test_api_versions_tuple_1(self):
+        """Check api versions format and order (from oldest to newest)"""
+
+        for i in range(len(api_versions_tuple) - 1):
+            a = api_versions_tuple[i]
+            b = api_versions_tuple[i+1]
+            self.assertLess(a, b)
