@@ -49,6 +49,7 @@ from picard.acoustid.manager import AcoustIDManager
 from picard.album import (
     Album,
     NatAlbum,
+    run_album_post_removal_processors,
 )
 from picard.browser.browser import BrowserIntegration
 from picard.browser.filelookup import FileLookup
@@ -688,6 +689,7 @@ class Tagger(QtWidgets.QApplication):
         if album == self.nats:
             self.nats = None
         self.album_removed.emit(album)
+        run_album_post_removal_processors(album)
 
     def remove_nat(self, track):
         """Remove the specified non-album track."""

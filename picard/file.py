@@ -335,6 +335,9 @@ class File(QtCore.QObject, Item):
             self._add_path_to_metadata(self.orig_metadata)
             self.metadata_images_changed.emit()
 
+            # run post save hook
+            run_file_post_save_processors(self)
+
         # Force update to ensure file status icon changes immediately after save
         self.update()
 
@@ -776,12 +779,14 @@ class File(QtCore.QObject, Item):
 
 _file_post_addition_to_track_processors = PluginFunctions(label='file_post_addition_to_track_processors')
 _file_post_removal_from_track_processors = PluginFunctions(label='file_post_removal_from_track_processors')
+_file_post_save_processors = PluginFunctions(label='file_post_save_processors')
 
 
 def register_file_post_addition_to_track_processor(function, priority=PluginPriority.NORMAL):
     """Registers a file-added-to-track processor.
+
     Args:
-        function: function to call after file addition, it will be passed the file object
+        function: function to call after file addition, it will be passed the track and file objects
         priority: optional, PluginPriority.NORMAL by default
     Returns:
         None
@@ -791,13 +796,26 @@ def register_file_post_addition_to_track_processor(function, priority=PluginPrio
 
 def register_file_post_removal_from_track_processor(function, priority=PluginPriority.NORMAL):
     """Registers a file-removed-from-track processor.
+
     Args:
-        function: function to call after file removal, it will be passed the file object
+        function: function to call after file removal, it will be passed the track and file objects
         priority: optional, PluginPriority.NORMAL by default
     Returns:
         None
     """
     _file_post_removal_from_track_processors.register(function.__module__, function, priority)
+
+
+def register_file_post_save_processor(function, priority=PluginPriority.NORMAL):
+    """Registers file saved processor.
+
+    Args:
+        function: function to call after save, it will be passed the file object
+        priority: optional, PluginPriority.NORMAL by default
+    Returns:
+        None
+    """
+    _file_post_save_processors.register(function.__module__, function, priority)
 
 
 def run_file_post_addition_to_track_processors(track_object, file_object):
@@ -806,3 +824,7 @@ def run_file_post_addition_to_track_processors(track_object, file_object):
 
 def run_file_post_removal_from_track_processors(track_object, file_object):
     _file_post_removal_from_track_processors.run(track_object, file_object)
+
+
+def run_file_post_save_processors(file_object):
+    _file_post_save_processors.run(file_object)
