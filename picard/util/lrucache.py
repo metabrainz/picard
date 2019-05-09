@@ -17,8 +17,10 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+from collections.abc import MutableMapping
 
-class LRUCache(dict):
+
+class LRUCache(MutableMapping):
     """
     Helper class to cache items using a Least Recently Used policy.
 
@@ -51,29 +53,39 @@ class LRUCache(dict):
     'some value'
     """
 
-    def __init__(self, max_size):
+    def __init__(self, max_size, *args, **kwargs):
         self._ordered_keys = []
         self._max_size = max_size
+        self._dict = dict()
+        for k, v in dict(*args, **kwargs).items():
+            self[k] = v
 
     def __getitem__(self, key):
-        if key in self:
-            self._ordered_keys.remove(key)
-            self._ordered_keys.insert(0, key)
-        return super().__getitem__(key)
+        value = self._dict[key]
+        self._ordered_keys.remove(key)
+        self._ordered_keys.insert(0, key)
+        return value
 
     def __setitem__(self, key, value):
         if key in self:
             self._ordered_keys.remove(key)
         self._ordered_keys.insert(0, key)
 
-        r = super().__setitem__(key, value)
+        self._dict[key] = value
 
         if len(self) > self._max_size:
             item = self._ordered_keys.pop()
-            super().__delitem__(item)
-
-        return r
+            del self._dict[item]
 
     def __delitem__(self, key):
+        del self._dict[key]
         self._ordered_keys.remove(key)
-        super().__delitem__(key)
+
+    def __len__(self):
+        return len(self._dict)
+
+    def __iter__(self):
+        return iter(self._dict)
+
+    def __repr__(self):
+        return repr(self._dict)
