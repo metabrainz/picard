@@ -33,6 +33,10 @@ from picard.const import (
     VARIOUS_ARTISTS_ID,
 )
 from picard.dataobj import DataObject
+from picard.file import (
+    run_file_post_addition_to_track_processors,
+    run_file_post_removal_from_track_processors,
+)
 from picard.mbjson import recording_to_metadata
 from picard.metadata import (
     Metadata,
@@ -90,6 +94,7 @@ class Track(DataObject, Item):
         add_metadata_images(self, [file])
         self.album._add_file(self, file)
         file.metadata_images_changed.connect(self.update_orig_metadata_images)
+        run_file_post_addition_to_track_processors(self, file)
 
     def update_file_metadata(self, file):
         if file not in self.linked_files:
@@ -108,6 +113,7 @@ class Track(DataObject, Item):
         file.metadata_images_changed.disconnect(self.update_orig_metadata_images)
         self.album._remove_file(self, file)
         remove_metadata_images(self, [file])
+        run_file_post_removal_from_track_processors(self, file)
         self.update()
 
     def update(self):

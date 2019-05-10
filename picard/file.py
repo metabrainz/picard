@@ -777,7 +777,33 @@ class File(QtCore.QObject, Item):
             return 0
 
 
+_file_post_addition_to_track_processors = PluginFunctions(label='file_post_addition_to_track_processors')
+_file_post_removal_from_track_processors = PluginFunctions(label='file_post_removal_from_track_processors')
 _file_post_save_processors = PluginFunctions(label='file_post_save_processors')
+
+
+def register_file_post_addition_to_track_processor(function, priority=PluginPriority.NORMAL):
+    """Registers a file-added-to-track processor.
+
+    Args:
+        function: function to call after file addition, it will be passed the track and file objects
+        priority: optional, PluginPriority.NORMAL by default
+    Returns:
+        None
+    """
+    _file_post_addition_to_track_processors.register(function.__module__, function, priority)
+
+
+def register_file_post_removal_from_track_processor(function, priority=PluginPriority.NORMAL):
+    """Registers a file-removed-from-track processor.
+
+    Args:
+        function: function to call after file removal, it will be passed the track and file objects
+        priority: optional, PluginPriority.NORMAL by default
+    Returns:
+        None
+    """
+    _file_post_removal_from_track_processors.register(function.__module__, function, priority)
 
 
 def register_file_post_save_processor(function, priority=PluginPriority.NORMAL):
@@ -790,6 +816,14 @@ def register_file_post_save_processor(function, priority=PluginPriority.NORMAL):
         None
     """
     _file_post_save_processors.register(function.__module__, function, priority)
+
+
+def run_file_post_addition_to_track_processors(track_object, file_object):
+    _file_post_addition_to_track_processors.run(track_object, file_object)
+
+
+def run_file_post_removal_from_track_processors(track_object, file_object):
+    _file_post_removal_from_track_processors.run(track_object, file_object)
 
 
 def run_file_post_save_processors(file_object):
