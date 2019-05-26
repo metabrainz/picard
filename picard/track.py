@@ -18,7 +18,9 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+from collections import defaultdict
 from functools import partial
+import re
 import traceback
 
 from PyQt5 import QtCore
@@ -69,10 +71,48 @@ class TagGenreFilter:
     def __init__(self, setting=None):
         if setting is None:
             setting = config.setting
-        self.exact_match_blacklist = [s.strip().lower() for s in setting['ignore_genres'].split(',')]
+        # FIXME: convert ignore_genres option
+        self.genres_filter = setting['genres_filter']
+
+        self.match_regexes = defaultdict(list)
+        for line in self.genres_filter.splitlines():
+            line = line.strip()
+            if line and line[0] in ('+', '-'):
+                _list = line[0]
+                remain = line[1:]
+                if not remain:
+                    continue
+                if len(remain) > 2 and remain[0] == '/' and remain[-1] == '/':
+                    remain = remain[1:-1]
+                    try:
+                        regex_search = re.compile(remain)
+                    except Exception as e:
+                        log.error("Failed to compile regex /%s/: %s", remain, e)
+                        regex_search = None
+                else:
+                    # FIXME?: only support '*' (not '?' or '[abc]')
+                    # replace multiple '*' by one
+                    star = re.escape('*')
+                    remain = re.sub(star + '+', '*', remain)
+                    regex = '.*'.join([re.escape(x) for x in remain.split('*')])
+                    regex_search = re.compile('^' + regex + '$')
+                if regex_search:
+                    self.match_regexes[_list].append(regex_search)
+        #print(self.match_regexes)
 
     def skip(self, tag):
-        return tag.lower() in self.exact_match_blacklist
+        if not self.match_regexes:
+            return False
+        tag = tag.lower()
+        for regex in self.match_regexes['+']:
+            if regex.search(tag):
+                #print("+ %s %s" % (regex, tag))
+                return False
+        for regex in self.match_regexes['-']:
+            if regex.search(tag):
+                #print("- %s %s" % (regex, tag))
+                return True
+        return False
 
 
 class TrackArtist(DataObject):
