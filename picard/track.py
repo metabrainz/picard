@@ -64,6 +64,17 @@ _TRANSLATE_TAGS = {
 }
 
 
+class TagGenreFilter:
+
+    def __init__(self, setting=None):
+        if setting is None:
+            setting = config.setting
+        self.exact_match_blacklist = [s.strip().lower() for s in setting['ignore_genres'].split(',')]
+
+    def skip(self, tag):
+        return tag.lower() in self.exact_match_blacklist
+
+
 class TrackArtist(DataObject):
     def __init__(self, ta_id):
         super().__init__(ta_id)
@@ -232,10 +243,10 @@ class Track(DataObject, Item):
         # And generate the genre metadata tag
         maxtags = config.setting['max_genres']
         minusage = config.setting['min_genre_usage']
-        ignore_genres = self._get_ignored_folksonomy_tags()
+        tag_filter = TagGenreFilter()
         genre = []
         for usage, name in taglist[:maxtags]:
-            if name.lower() in ignore_genres:
+            if tag_filter.skip(name):
                 continue
             if usage < minusage:
                 break
@@ -245,13 +256,6 @@ class Track(DataObject, Item):
         if join_genres:
             genre = [join_genres.join(genre)]
         self.metadata['genre'] = genre
-
-    def _get_ignored_folksonomy_tags(self):
-        tags = []
-        ignore_genres = config.setting['ignore_genres']
-        if ignore_genres:
-            tags = [s.strip().lower() for s in ignore_genres.split(',')]
-        return tags
 
     def update_orig_metadata_images(self):
         update_metadata_images(self)
