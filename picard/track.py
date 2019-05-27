@@ -74,8 +74,9 @@ class TagGenreFilter:
         # FIXME: convert ignore_genres option
         self.genres_filter = setting['genres_filter']
 
+        self.errors = dict()
         self.match_regexes = defaultdict(list)
-        for line in self.genres_filter.splitlines():
+        for lineno, line in enumerate(self.genres_filter.splitlines()):
             line = line.strip()
             if line and line[0] in ('+', '-'):
                 _list = line[0]
@@ -88,6 +89,7 @@ class TagGenreFilter:
                         regex_search = re.compile(remain)
                     except Exception as e:
                         log.error("Failed to compile regex /%s/: %s", remain, e)
+                        self.errors[lineno] = str(e)
                         regex_search = None
                 else:
                     # FIXME?: only support '*' (not '?' or '[abc]')
@@ -98,7 +100,6 @@ class TagGenreFilter:
                     regex_search = re.compile('^' + regex + '$')
                 if regex_search:
                     self.match_regexes[_list].append(regex_search)
-        #print(self.match_regexes)
 
     def skip(self, tag):
         if not self.match_regexes:
@@ -106,11 +107,9 @@ class TagGenreFilter:
         tag = tag.lower()
         for regex in self.match_regexes['+']:
             if regex.search(tag):
-                #print("+ %s %s" % (regex, tag))
                 return False
         for regex in self.match_regexes['-']:
             if regex.search(tag):
-                #print("- %s %s" % (regex, tag))
                 return True
         return False
 
