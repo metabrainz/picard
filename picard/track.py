@@ -71,7 +71,6 @@ class TagGenreFilter:
     def __init__(self, setting=None):
         if setting is None:
             setting = config.setting
-        # FIXME: convert ignore_genres option
         self.genres_filter = setting['genres_filter']
 
         self.errors = dict()
