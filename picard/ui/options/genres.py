@@ -99,6 +99,16 @@ class GenresOptionsPage(OptionsPage):
         self.ui.test_genres_filter.setToolTip(_(TOOLTIP_TEST_GENRES_FILTER))
         self.ui.test_genres_filter.textChanged.connect(self.test_genres_filter_changed)
 
+        #FIXME: colors aren't great from accessibility POV
+        self.fmt_keep = QTextBlockFormat()
+        self.fmt_keep.setBackground(Qt.green)
+
+        self.fmt_skip = QTextBlockFormat()
+        self.fmt_skip.setBackground(Qt.red)
+
+        self.fmt_clear = QTextBlockFormat()
+        self.fmt_clear.clearBackground()
+
     def load(self):
         self.ui.use_genres.setChecked(config.setting["use_genres"])
         self.ui.max_genres.setValue(config.setting["max_genres"])
@@ -127,8 +137,6 @@ class GenresOptionsPage(OptionsPage):
 
     def update_test_genres_filter(self):
         test_text = self.ui.test_genres_filter.toPlainText()
-        if not test_text:
-            return
 
         setting = dict()
         setting["genres_filter"] = self.ui.genres_filter.toPlainText()
@@ -141,28 +149,27 @@ class GenresOptionsPage(OptionsPage):
             )
         )
 
-        #FIXME: colors aren't great from accessibility POV
-        fmt_keep = QTextBlockFormat()
-        fmt_keep.setBackground(Qt.green)
-
-        fmt_skip = QTextBlockFormat()
-        fmt_skip.setBackground(Qt.red)
-
         def set_line_fmt(obj, lineno, textformat):
             obj = self.ui.test_genres_filter
             obj.blockSignals(True)
-            cursor = QTextCursor(obj.document().findBlockByNumber(lineno))
+            if lineno < 0:
+                #use current cursor position
+                cursor = obj.textCursor()
+            else:
+                cursor = QTextCursor(obj.document().findBlockByNumber(lineno))
             cursor.setBlockFormat(textformat)
             obj.blockSignals(False)
 
+        set_line_fmt(self.ui.test_genres_filter, -1, self.fmt_clear)
         for lineno, line in enumerate(test_text.splitlines()):
             line = line.strip()
             if not line:
+                set_line_fmt(self.ui.test_genres_filter, lineno, self.fmt_clear)
                 continue
             if tagfilter.skip(line):
-                set_line_fmt(self.ui.test_genres_filter, lineno, fmt_skip)
+                set_line_fmt(self.ui.test_genres_filter, lineno, self.fmt_skip)
             else:
-                set_line_fmt(self.ui.test_genres_filter, lineno, fmt_keep)
+                set_line_fmt(self.ui.test_genres_filter, lineno, self.fmt_keep)
 
 
 register_options_page(GenresOptionsPage)
