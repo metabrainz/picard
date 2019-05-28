@@ -104,7 +104,6 @@ class TagGenreFilter:
     def skip(self, tag):
         if not self.match_regexes:
             return False
-        tag = tag.lower()
         for regex in self.match_regexes['+']:
             if regex.search(tag):
                 return False
