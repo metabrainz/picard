@@ -132,3 +132,19 @@ class TagGenreFilterTest(PicardTestCase):
         self.assertTrue(tag_filter.skip('ROCK'))
         self.assertTrue(tag_filter.skip('disco'))
         self.assertTrue(tag_filter.skip('DISCO'))
+
+    def test_whitespaces_filter(self):
+        setting = {
+            'genres_filter': """
+            - jazz b*
+            - * ro ck
+            - /^di sco$/
+            """
+        }
+        tag_filter = TagGenreFilter(setting=setting)
+
+        self.assertTrue(tag_filter.skip('jazz blues'))
+        self.assertTrue(tag_filter.skip('blues ro ck'))
+        self.assertTrue(tag_filter.skip('di sco'))
+
+        self.assertFalse(tag_filter.skip('bluesro ck'))

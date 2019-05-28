@@ -79,7 +79,7 @@ class TagGenreFilter:
             line = line.strip()
             if line and line[0] in ('+', '-'):
                 _list = line[0]
-                remain = line[1:]
+                remain = line[1:].strip()
                 if not remain:
                     continue
                 if len(remain) > 2 and remain[0] == '/' and remain[-1] == '/':
