@@ -115,3 +115,20 @@ class TagGenreFilterTest(PicardTestCase):
         self.assertTrue(tag_filter.skip('xdiscox'))
         self.assertTrue(tag_filter.skip('xdiscooox'))
         self.assertFalse(tag_filter.skip('xdiscoooox'))
+
+    def test_uppercased_filter(self):
+        setting = {
+            'genres_filter': """
+            -JAZZ*
+            -ROCK
+            -/^DISCO$/
+            """
+        }
+        tag_filter = TagGenreFilter(setting=setting)
+
+        self.assertTrue(tag_filter.skip('jazz blues'))
+        self.assertTrue(tag_filter.skip('JAZZ BLUES'))
+        self.assertTrue(tag_filter.skip('rock'))
+        self.assertTrue(tag_filter.skip('ROCK'))
+        self.assertTrue(tag_filter.skip('disco'))
+        self.assertTrue(tag_filter.skip('DISCO'))

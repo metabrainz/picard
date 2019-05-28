@@ -86,7 +86,7 @@ class TagGenreFilter:
                 if len(remain) > 2 and remain[0] == '/' and remain[-1] == '/':
                     remain = remain[1:-1]
                     try:
-                        regex_search = re.compile(remain)
+                        regex_search = re.compile(remain, re.IGNORECASE)
                     except Exception as e:
                         log.error("Failed to compile regex /%s/: %s", remain, e)
                         self.errors[lineno] = str(e)
@@ -97,7 +97,7 @@ class TagGenreFilter:
                     star = re.escape('*')
                     remain = re.sub(star + '+', '*', remain)
                     regex = '.*'.join([re.escape(x) for x in remain.split('*')])
-                    regex_search = re.compile('^' + regex + '$')
+                    regex_search = re.compile('^' + regex + '$', re.IGNORECASE)
                 if regex_search:
                     self.match_regexes[_list].append(regex_search)
 
