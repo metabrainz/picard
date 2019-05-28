@@ -20,6 +20,7 @@
 
 from collections import defaultdict
 from functools import partial
+from itertools import filterfalse
 import re
 import traceback
 
@@ -106,6 +107,9 @@ class TagGenreFilter:
             if regex.search(tag):
                 return True
         return False
+
+    def filter(self, list_of_tags):
+        return list(filterfalse(self.skip, list_of_tags))
 
 
 class TrackArtist(DataObject):

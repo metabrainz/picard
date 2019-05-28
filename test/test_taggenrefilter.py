@@ -134,3 +134,7 @@ class TagGenreFilterTest(PicardTestCase):
         self.assertTrue(tag_filter.skip('di sco'))
 
         self.assertFalse(tag_filter.skip('bluesro ck'))
+
+    def test_filter_method(self):
+        tag_filter = TagGenreFilter("-a*")
+        self.assertEqual(['bx', 'by'], tag_filter.filter(["ax", "bx", "ay", "by"]))
