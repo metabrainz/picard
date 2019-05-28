@@ -203,23 +203,17 @@
       </item>
       <item>
        <widget class="QPlainTextEdit" name="genres_filter">
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Lines not starting with &lt;span style=&quot; font-weight:600;&quot;&gt;-&lt;/span&gt; or &lt;span style=&quot; font-weight:600;&quot;&gt;+&lt;/span&gt; are ignored.&lt;/p&gt;&lt;p&gt;Examples:&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;#comment&lt;br/&gt;!comment&lt;br/&gt;comment&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; text-decoration: underline;&quot;&gt;Strict filtering:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;-word&lt;/span&gt;: exclude this &lt;span style=&quot; font-style:italic;&quot;&gt;word&lt;br/&gt;&lt;/span&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;+word&lt;/span&gt; : include this &lt;span style=&quot; font-style:italic;&quot;&gt;word&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; text-decoration: underline;&quot;&gt;Wildcard filtering:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;-*word&lt;/span&gt;: exclude all genres ending with &lt;span style=&quot; font-style:italic;&quot;&gt;word&lt;br/&gt;&lt;/span&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;+word*&lt;/span&gt;: exclude all genres starting with &lt;span style=&quot; font-style:italic;&quot;&gt;word&lt;br/&gt;&lt;/span&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;-w*rd&lt;/span&gt;: exclude all genres starting with &lt;span style=&quot; font-style:italic;&quot;&gt;w&lt;/span&gt; and ending with &lt;span style=&quot; font-style:italic;&quot;&gt;rd&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; text-decoration: underline;&quot;&gt;Regular expressions filtering (Python re syntax):&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;-/^w.rd+/&lt;/span&gt;: exclude genres starting with &lt;span style=&quot; font-style:italic;&quot;&gt;w&lt;/span&gt; followed by any character, then &lt;span style=&quot; font-style:italic;&quot;&gt;r&lt;/span&gt; followed by at least one &lt;span style=&quot; font-style:italic;&quot;&gt;d&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
        </widget>
       </item>
       <item>
        <widget class="QLabel" name="label_test_genres_filter">
         <property name="text">
-         <string>Test zone for genres or folksonomy tags filters, one tag per line, not saved</string>
+         <string>Playground for genres or folksonomy tags filters (cleared on exit):</string>
         </property>
        </widget>
       </item>
       <item>
        <widget class="QPlainTextEdit" name="test_genres_filter">
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;You can add genres to test filter against, one per line&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
        </widget>
       </item>
       <item>

@@ -33,6 +33,42 @@ from picard.ui.options import (
 from picard.ui.ui_options_genres import Ui_GenresOptionsPage
 
 
+TOOLTIP_GENRES_FILTER = N_("""<html><head/><body>
+<p>Lines not starting with <b>-</b> or <b>+</b> are ignored.</p>
+<p>One expression per line, case-insensitive</p>
+<p>Examples:</p>
+<p><b>
+#comment<br/>
+!comment<br/>
+comment
+</b></p>
+<p><u>Strict filtering:</u></p>
+<p>
+<b>-word</b>: exclude <i>word</i><br/>
+<b>+word</b>: include <i>word</i>
+</p>
+<p><u>Wildcard filtering:</u></p>
+<p>
+<b>-*word</b>: exclude all genres ending with <i>word</i><br/>
+<b>+word*</b>: exclude all genres starting with <i>word</i><br/>
+<b>-w*rd</b>: exclude all genres starting with <i>w</i> and ending with <i>rd</i>
+</p>
+<p><u>Regular expressions filtering (Python re syntax):</u></p>
+<p><b>-/^w.rd+/</b>: exclude genres starting with <i>w</i> followed by any character, then <i>r</i> followed by at least one <i>d</i>
+</p>
+</body></html>""")
+
+TOOLTIP_TEST_GENRES_FILTER = N_("""<html><head/><body>
+<p>You can add genres to test filters against, one per line.<br/>
+This playground will not be preserved on Options exit.
+</p>
+<p>
+Red background means the tag will be skipped<br/>
+Green background means the tag will be kept
+</p>
+</body></html>""")
+
+
 class GenresOptionsPage(OptionsPage):
 
     NAME = "genres"
@@ -56,7 +92,11 @@ class GenresOptionsPage(OptionsPage):
         super().__init__(parent)
         self.ui = Ui_GenresOptionsPage()
         self.ui.setupUi(self)
+
+        self.ui.genres_filter.setToolTip(_(TOOLTIP_GENRES_FILTER))
         self.ui.genres_filter.textChanged.connect(self.genres_filter_changed)
+
+        self.ui.test_genres_filter.setToolTip(_(TOOLTIP_TEST_GENRES_FILTER))
         self.ui.test_genres_filter.textChanged.connect(self.test_genres_filter_changed)
 
     def load(self):
