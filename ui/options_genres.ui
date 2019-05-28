@@ -197,7 +197,7 @@
       <item>
        <widget class="QLabel" name="label_genres_filter">
         <property name="text">
-         <string>Genres or folksonomy tags to include or exclude:</string>
+         <string>Genres or folksonomy tags to include or exclude, one per line:</string>
         </property>
        </widget>
       </item>
@@ -211,7 +211,7 @@
       <item>
        <widget class="QLabel" name="label_test_genres_filter">
         <property name="text">
-         <string>Test genres or folksonomy tags filter</string>
+         <string>Test zone for genres or folksonomy tags filters, one tag per line, not saved</string>
         </property>
        </widget>
       </item>

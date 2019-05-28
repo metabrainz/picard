@@ -125,9 +125,9 @@ class Ui_GenresOptionsPage(object):
         self.ignore_genres_4.setText(_("Join multiple genres with:"))
         self.join_genres.setItemText(1, _(" / "))
         self.join_genres.setItemText(2, _(", "))
-        self.label_genres_filter.setText(_("Genres or folksonomy tags to include or exclude:"))
+        self.label_genres_filter.setText(_("Genres or folksonomy tags to include or exclude, one per line:"))
         self.genres_filter.setToolTip(_("<html><head/><body><p>Lines not starting with <span style=\" font-weight:600;\">-</span> or <span style=\" font-weight:600;\">+</span> are ignored.</p><p>Examples:</p><p><span style=\" font-weight:600;\">#comment<br/>!comment<br/>comment</span></p><p><span style=\" text-decoration: underline;\">Strict filtering:</span></p><p><span style=\" font-weight:600;\">-word</span>: exclude this <span style=\" font-style:italic;\">word<br/></span><span style=\" font-weight:600;\">+word</span> : include this <span style=\" font-style:italic;\">word</span></p><p><span style=\" text-decoration: underline;\">Wildcard filtering:</span></p><p><span style=\" font-weight:600;\">-*word</span>: exclude all genres ending with <span style=\" font-style:italic;\">word<br/></span><span style=\" font-weight:600;\">+word*</span>: exclude all genres starting with <span style=\" font-style:italic;\">word<br/></span><span style=\" font-weight:600;\">-w*rd</span>: exclude all genres starting with <span style=\" font-style:italic;\">w</span> and ending with <span style=\" font-style:italic;\">rd</span></p><p><span style=\" text-decoration: underline;\">Regular expressions filtering (Python re syntax):</span></p><p><span style=\" font-weight:600;\">-/^w.rd+/</span>: exclude genres starting with <span style=\" font-style:italic;\">w</span> followed by any character, then <span style=\" font-style:italic;\">r</span> followed by at least one <span style=\" font-style:italic;\">d</span></p></body></html>"))
-        self.label_test_genres_filter.setText(_("Test genres or folksonomy tags filter"))
+        self.label_test_genres_filter.setText(_("Test zone for genres or folksonomy tags filters, one tag per line, not saved"))
         self.test_genres_filter.setToolTip(_("<html><head/><body><p>You can add genres to test filter against, one per line</p></body></html>"))
 
 
