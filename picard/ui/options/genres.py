@@ -138,9 +138,8 @@ class GenresOptionsPage(OptionsPage):
     def update_test_genres_filter(self):
         test_text = self.ui.test_genres_filter.toPlainText()
 
-        setting = dict()
-        setting["genres_filter"] = self.ui.genres_filter.toPlainText()
-        tagfilter = TagGenreFilter(setting=setting)
+        filters = self.ui.genres_filter.toPlainText()
+        tagfilter = TagGenreFilter(filters)
 
         #FIXME: very simple error reporting, improve
         self.ui.label_test_genres_filter_error.setText(

@@ -68,14 +68,10 @@ _TRANSLATE_TAGS = {
 
 class TagGenreFilter:
 
-    def __init__(self, setting=None):
-        if setting is None:
-            setting = config.setting
-        self.genres_filter = setting['genres_filter']
-
+    def __init__(self, filters):
         self.errors = dict()
         self.match_regexes = defaultdict(list)
-        for lineno, line in enumerate(self.genres_filter.splitlines()):
+        for lineno, line in enumerate(filters.splitlines()):
             line = line.strip()
             if line and line[0] in ('+', '-'):
                 _list = line[0]
@@ -280,7 +276,7 @@ class Track(DataObject, Item):
         # And generate the genre metadata tag
         maxtags = config.setting['max_genres']
         minusage = config.setting['min_genre_usage']
-        tag_filter = TagGenreFilter()
+        tag_filter = TagGenreFilter(config.setting['genres_filter'])
         genre = []
         for usage, name in taglist[:maxtags]:
             if tag_filter.skip(name):

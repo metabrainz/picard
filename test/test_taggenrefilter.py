@@ -8,69 +8,58 @@ from picard.track import TagGenreFilter
 class TagGenreFilterTest(PicardTestCase):
 
     def test_no_filter(self):
-        setting = {
-            'genres_filter': """
-            # comment
-            """
-        }
-        tag_filter = TagGenreFilter(setting=setting)
+        filters = "# comment"
+
+        tag_filter = TagGenreFilter(filters)
 
         self.assertFalse(tag_filter.skip('jazz'))
 
     def test_strict_filter(self):
-        setting = {
-            'genres_filter': """
-            -jazz
-            """
-        }
-        tag_filter = TagGenreFilter(setting=setting)
+        filters = "-jazz"
+        tag_filter = TagGenreFilter(filters)
 
         self.assertTrue(tag_filter.skip('jazz'))
 
     def test_strict_filter_whitelist(self):
-        setting = {
-            'genres_filter': """
+        filters = """
             +jazz
             -jazz
-            """
-        }
-        tag_filter = TagGenreFilter(setting=setting)
+        """
+
+        tag_filter = TagGenreFilter(filters)
 
         self.assertFalse(tag_filter.skip('jazz'))
 
     def test_strict_filter_whitelist_reverseorder(self):
-        setting = {
-            'genres_filter': """
+        filters = """
             -jazz
             +jazz
-            """
-        }
-        tag_filter = TagGenreFilter(setting=setting)
+        """
+
+        tag_filter = TagGenreFilter(filters)
 
         self.assertFalse(tag_filter.skip('jazz'))
 
     def test_wildcard_filter_all_but(self):
-        setting = {
-            'genres_filter': """
+        filters = """
             -*
             +blues
-            """
-        }
-        tag_filter = TagGenreFilter(setting=setting)
+        """
+
+        tag_filter = TagGenreFilter(filters)
         self.assertTrue(tag_filter.skip('jazz'))
         self.assertTrue(tag_filter.skip('rock'))
         self.assertFalse(tag_filter.skip('blues'))
 
     def test_wildcard_filter(self):
-        setting = {
-            'genres_filter': """
+        filters = """
             -jazz*
             -*rock
             -*disco*
             -a*b
-            """
-        }
-        tag_filter = TagGenreFilter(setting=setting)
+        """
+
+        tag_filter = TagGenreFilter(filters)
 
         self.assertTrue(tag_filter.skip('jazz'))
         self.assertTrue(tag_filter.skip('jazz blues'))
@@ -90,16 +79,15 @@ class TagGenreFilterTest(PicardTestCase):
         self.assertFalse(tag_filter.skip('xab'))
 
     def test_regex_filter(self):
-        setting = {
-            'genres_filter': """
+        filters = """
             -/^j.zz/
             -/r[io]ck$/
             -/disco+/
             +/discoooo/
             +/*/
-            """
-        }
-        tag_filter = TagGenreFilter(setting=setting)
+        """
+
+        tag_filter = TagGenreFilter(filters)
 
         self.assertTrue(tag_filter.skip('jazz'))
         self.assertTrue(tag_filter.skip('jizz'))
@@ -117,14 +105,13 @@ class TagGenreFilterTest(PicardTestCase):
         self.assertFalse(tag_filter.skip('xdiscoooox'))
 
     def test_uppercased_filter(self):
-        setting = {
-            'genres_filter': """
+        filters = """
             -JAZZ*
             -ROCK
             -/^DISCO$/
-            """
-        }
-        tag_filter = TagGenreFilter(setting=setting)
+        """
+
+        tag_filter = TagGenreFilter(filters)
 
         self.assertTrue(tag_filter.skip('jazz blues'))
         self.assertTrue(tag_filter.skip('JAZZ BLUES'))
@@ -134,14 +121,13 @@ class TagGenreFilterTest(PicardTestCase):
         self.assertTrue(tag_filter.skip('DISCO'))
 
     def test_whitespaces_filter(self):
-        setting = {
-            'genres_filter': """
+        filters = """
             - jazz b*
             - * ro ck
             - /^di sco$/
-            """
-        }
-        tag_filter = TagGenreFilter(setting=setting)
+        """
+
+        tag_filter = TagGenreFilter(filters)
 
         self.assertTrue(tag_filter.skip('jazz blues'))
         self.assertTrue(tag_filter.skip('blues ro ck'))
