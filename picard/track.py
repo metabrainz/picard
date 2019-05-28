@@ -48,6 +48,7 @@ from picard.script import (
     enabled_tagger_scripts_texts,
 )
 from picard.util.imagelist import (
+    ImageList,
     add_metadata_images,
     remove_metadata_images,
     update_metadata_images,
@@ -261,9 +262,9 @@ class Track(DataObject, Item):
             file.keep_original_images()
         self.update_orig_metadata_images()
         if self.linked_files:
-            self.metadata.images = self.orig_metadata.images[:]
+            self.metadata.images = self.orig_metadata.images.copy()
         else:
-            self.metadata.images = []
+            self.metadata.images = ImageList()
         self.update()
 
 
