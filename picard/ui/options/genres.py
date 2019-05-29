@@ -94,10 +94,10 @@ class GenresOptionsPage(OptionsPage):
         self.ui.setupUi(self)
 
         self.ui.genres_filter.setToolTip(_(TOOLTIP_GENRES_FILTER))
-        self.ui.genres_filter.textChanged.connect(self.genres_filter_changed)
+        self.ui.genres_filter.textChanged.connect(self.update_test_genres_filter)
 
         self.ui.test_genres_filter.setToolTip(_(TOOLTIP_TEST_GENRES_FILTER))
-        self.ui.test_genres_filter.textChanged.connect(self.test_genres_filter_changed)
+        self.ui.test_genres_filter.textChanged.connect(self.update_test_genres_filter)
 
         #FIXME: colors aren't great from accessibility POV
         self.fmt_keep = QTextBlockFormat()
@@ -128,12 +128,6 @@ class GenresOptionsPage(OptionsPage):
         config.setting["only_my_genres"] = self.ui.only_my_genres.isChecked()
         config.setting["artists_genres"] = self.ui.artists_genres.isChecked()
         config.setting["folksonomy_tags"] = self.ui.folksonomy_tags.isChecked()
-
-    def genres_filter_changed(self):
-        self.update_test_genres_filter()
-
-    def test_genres_filter_changed(self):
-        self.update_test_genres_filter()
 
     def update_test_genres_filter(self):
         test_text = self.ui.test_genres_filter.toPlainText()
