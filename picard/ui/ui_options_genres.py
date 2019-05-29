@@ -5,10 +5,11 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+
 class Ui_GenresOptionsPage(object):
     def setupUi(self, GenresOptionsPage):
         GenresOptionsPage.setObjectName("GenresOptionsPage")
-        GenresOptionsPage.resize(590, 304)
+        GenresOptionsPage.resize(590, 471)
         self.verticalLayout_2 = QtWidgets.QVBoxLayout(GenresOptionsPage)
         self.verticalLayout_2.setObjectName("verticalLayout_2")
         self.use_genres = QtWidgets.QGroupBox(GenresOptionsPage)
@@ -27,12 +28,6 @@ class Ui_GenresOptionsPage(object):
         self.folksonomy_tags = QtWidgets.QCheckBox(self.use_genres)
         self.folksonomy_tags.setObjectName("folksonomy_tags")
         self.verticalLayout.addWidget(self.folksonomy_tags)
-        self.ignore_genres_2 = QtWidgets.QLabel(self.use_genres)
-        self.ignore_genres_2.setObjectName("ignore_genres_2")
-        self.verticalLayout.addWidget(self.ignore_genres_2)
-        self.ignore_genres = QtWidgets.QLineEdit(self.use_genres)
-        self.ignore_genres.setObjectName("ignore_genres")
-        self.verticalLayout.addWidget(self.ignore_genres)
         self.hboxlayout = QtWidgets.QHBoxLayout()
         self.hboxlayout.setContentsMargins(0, 0, 0, 0)
         self.hboxlayout.setSpacing(6)
@@ -93,6 +88,22 @@ class Ui_GenresOptionsPage(object):
         self.join_genres.addItem("")
         self.hboxlayout2.addWidget(self.join_genres)
         self.verticalLayout.addLayout(self.hboxlayout2)
+        self.label_genres_filter = QtWidgets.QLabel(self.use_genres)
+        self.label_genres_filter.setObjectName("label_genres_filter")
+        self.verticalLayout.addWidget(self.label_genres_filter)
+        self.genres_filter = QtWidgets.QPlainTextEdit(self.use_genres)
+        self.genres_filter.setObjectName("genres_filter")
+        self.verticalLayout.addWidget(self.genres_filter)
+        self.label_test_genres_filter = QtWidgets.QLabel(self.use_genres)
+        self.label_test_genres_filter.setObjectName("label_test_genres_filter")
+        self.verticalLayout.addWidget(self.label_test_genres_filter)
+        self.test_genres_filter = QtWidgets.QPlainTextEdit(self.use_genres)
+        self.test_genres_filter.setObjectName("test_genres_filter")
+        self.verticalLayout.addWidget(self.test_genres_filter)
+        self.label_test_genres_filter_error = QtWidgets.QLabel(self.use_genres)
+        self.label_test_genres_filter_error.setText("")
+        self.label_test_genres_filter_error.setObjectName("label_test_genres_filter_error")
+        self.verticalLayout.addWidget(self.label_test_genres_filter_error)
         self.verticalLayout_2.addWidget(self.use_genres)
         spacerItem = QtWidgets.QSpacerItem(181, 31, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.verticalLayout_2.addItem(spacerItem)
@@ -108,11 +119,13 @@ class Ui_GenresOptionsPage(object):
         self.only_my_genres.setText(_("Only use my genres"))
         self.artists_genres.setText(_("Fall back on album\'s artists genres if no genres are found for the release or release group"))
         self.folksonomy_tags.setText(_("Use folksonomy tags as genre"))
-        self.ignore_genres_2.setText(_("Genres or folksonomy tags to exclude (comma-separated list):"))
         self.label_5.setText(_("Minimal genre usage:"))
         self.min_genre_usage.setSuffix(_(" %"))
         self.label_6.setText(_("Maximum number of genres:"))
         self.ignore_genres_4.setText(_("Join multiple genres with:"))
         self.join_genres.setItemText(1, _(" / "))
         self.join_genres.setItemText(2, _(", "))
+        self.label_genres_filter.setText(_("Genres or folksonomy tags to include or exclude, one per line:"))
+        self.label_test_genres_filter.setText(_("Playground for genres or folksonomy tags filters (cleared on exit):"))
+
 

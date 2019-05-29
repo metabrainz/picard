@@ -18,7 +18,10 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+from collections import defaultdict
 from functools import partial
+from itertools import filterfalse
+import re
 import traceback
 
 from PyQt5 import QtCore
@@ -63,6 +66,51 @@ _TRANSLATE_TAGS = {
     "synth-pop": "Synthpop",
     "electronica": "Electronic",
 }
+
+
+class TagGenreFilter:
+
+    def __init__(self, filters):
+        self.errors = dict()
+        self.match_regexes = defaultdict(list)
+        for lineno, line in enumerate(filters.splitlines()):
+            line = line.strip()
+            if line and line[0] in ('+', '-'):
+                _list = line[0]
+                remain = line[1:].strip()
+                if not remain:
+                    continue
+                if len(remain) > 2 and remain[0] == '/' and remain[-1] == '/':
+                    remain = remain[1:-1]
+                    try:
+                        regex_search = re.compile(remain, re.IGNORECASE)
+                    except Exception as e:
+                        log.error("Failed to compile regex /%s/: %s", remain, e)
+                        self.errors[lineno] = str(e)
+                        regex_search = None
+                else:
+                    # FIXME?: only support '*' (not '?' or '[abc]')
+                    # replace multiple '*' by one
+                    star = re.escape('*')
+                    remain = re.sub(star + '+', '*', remain)
+                    regex = '.*'.join([re.escape(x) for x in remain.split('*')])
+                    regex_search = re.compile('^' + regex + '$', re.IGNORECASE)
+                if regex_search:
+                    self.match_regexes[_list].append(regex_search)
+
+    def skip(self, tag):
+        if not self.match_regexes:
+            return False
+        for regex in self.match_regexes['+']:
+            if regex.search(tag):
+                return False
+        for regex in self.match_regexes['-']:
+            if regex.search(tag):
+                return True
+        return False
+
+    def filter(self, list_of_tags):
+        return list(filterfalse(self.skip, list_of_tags))
 
 
 class TrackArtist(DataObject):
@@ -233,10 +281,10 @@ class Track(DataObject, Item):
         # And generate the genre metadata tag
         maxtags = config.setting['max_genres']
         minusage = config.setting['min_genre_usage']
-        ignore_genres = self._get_ignored_folksonomy_tags()
+        tag_filter = TagGenreFilter(config.setting['genres_filter'])
         genre = []
         for usage, name in taglist[:maxtags]:
-            if name.lower() in ignore_genres:
+            if tag_filter.skip(name):
                 continue
             if usage < minusage:
                 break
@@ -246,13 +294,6 @@ class Track(DataObject, Item):
         if join_genres:
             genre = [join_genres.join(genre)]
         self.metadata['genre'] = genre
-
-    def _get_ignored_folksonomy_tags(self):
-        tags = []
-        ignore_genres = config.setting['ignore_genres']
-        if ignore_genres:
-            tags = [s.strip().lower() for s in ignore_genres.split(',')]
-        return tags
 
     def update_orig_metadata_images(self):
         update_metadata_images(self)

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>590</width>
-    <height>304</height>
+    <height>471</height>
    </rect>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -46,16 +46,6 @@
          <string>Use folksonomy tags as genre</string>
         </property>
        </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="ignore_genres_2">
-        <property name="text">
-         <string>Genres or folksonomy tags to exclude (comma-separated list):</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLineEdit" name="ignore_genres"/>
       </item>
       <item>
        <layout class="QHBoxLayout">
@@ -203,6 +193,35 @@
          </widget>
         </item>
        </layout>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_genres_filter">
+        <property name="text">
+         <string>Genres or folksonomy tags to include or exclude, one per line:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPlainTextEdit" name="genres_filter">
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_test_genres_filter">
+        <property name="text">
+         <string>Playground for genres or folksonomy tags filters (cleared on exit):</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPlainTextEdit" name="test_genres_filter">
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_test_genres_filter_error">
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
       </item>
      </layout>
     </widget>

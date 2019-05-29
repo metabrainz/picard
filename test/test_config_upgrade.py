@@ -39,6 +39,7 @@ from picard.config_upgrade import (
     upgrade_to_v1_4_0_dev_7,
     upgrade_to_v2_0_0_dev_3,
     upgrade_to_v2_1_0_dev_1,
+    upgrade_to_v2_2_0_dev_3,
 )
 from picard.const import (
     DEFAULT_FILE_NAMING_FORMAT,
@@ -201,7 +202,7 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
         self.config.setting['max_tags'] = 6
         self.config.setting['min_tag_usage'] = 85
         self.config.setting['ignore_tags'] = "abc"
-        self.config.setting['join_tags'] =  "abc"
+        self.config.setting['join_tags'] = "abc"
         self.config.setting['only_my_tags'] = True
         self.config.setting['artists_tags'] = True
 
@@ -222,3 +223,12 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
         self.assertNotIn('join_tags', self.config.setting)
         self.assertNotIn('only_my_tags', self.config.setting)
         self.assertNotIn('artists_tags', self.config.setting)
+
+    def test_upgrade_to_v2_2_0_dev_3(self):
+        TextOption("setting", "ignore_genres", "")
+        TextOption("setting", "genres_filter", "")
+
+        self.config.setting['ignore_genres'] = "a, b,c"
+        upgrade_to_v2_2_0_dev_3(self.config)
+        self.assertNotIn('ignore_genres', self.config.setting)
+        self.assertEqual(self.config.setting['genres_filter'], "-a\n-b\n-c")

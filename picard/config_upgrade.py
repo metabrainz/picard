@@ -263,6 +263,18 @@ def upgrade_to_v2_1_0_dev_1(config):
     rename_option(config, "artists_tags",  "artists_genres",  BoolOption, False)
 
 
+def upgrade_to_v2_2_0_dev_3(config):
+    """Option ignore_genres was replaced by option genres_filter"""
+    _s = config.setting
+    old_opt = "ignore_genres"
+    if old_opt in _s:
+        if _s[old_opt]:
+            new_opt = "genres_filter"
+            tags = ["-" + e.strip().lower() for e in _s[old_opt].split(',')]
+            _s[new_opt] = "\n".join(tags)
+        _s.remove(old_opt)
+
+
 def rename_option(config, old_opt, new_opt, option_type, default):
     _s = config.setting
     if old_opt in _s:
@@ -285,4 +297,5 @@ def upgrade_config(config):
     cfg.register_upgrade_hook(upgrade_to_v1_4_0_dev_7)
     cfg.register_upgrade_hook(upgrade_to_v2_0_0_dev_3)
     cfg.register_upgrade_hook(upgrade_to_v2_1_0_dev_1)
+    cfg.register_upgrade_hook(upgrade_to_v2_2_0_dev_3)
     cfg.run_upgrade_hooks(log.debug)
