@@ -94,9 +94,11 @@ class GenresOptionsPage(OptionsPage):
         self.ui.setupUi(self)
 
         self.ui.genres_filter.setToolTip(_(TOOLTIP_GENRES_FILTER))
+        self.ui.genres_filter.setToolTipDuration(5000)
         self.ui.genres_filter.textChanged.connect(self.update_test_genres_filter)
 
         self.ui.test_genres_filter.setToolTip(_(TOOLTIP_TEST_GENRES_FILTER))
+        self.ui.test_genres_filter.setToolTipDuration(5000)
         self.ui.test_genres_filter.textChanged.connect(self.update_test_genres_filter)
 
         #FIXME: colors aren't great from accessibility POV
