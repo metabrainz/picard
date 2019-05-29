@@ -142,27 +142,27 @@ class GenresOptionsPage(OptionsPage):
             )
         )
 
-        def set_line_fmt(obj, lineno, textformat):
+        def set_line_fmt(lineno, textformat):
             obj = self.ui.test_genres_filter
-            obj.blockSignals(True)
             if lineno < 0:
                 #use current cursor position
                 cursor = obj.textCursor()
             else:
                 cursor = QTextCursor(obj.document().findBlockByNumber(lineno))
+            obj.blockSignals(True)
             cursor.setBlockFormat(textformat)
             obj.blockSignals(False)
 
-        set_line_fmt(self.ui.test_genres_filter, -1, self.fmt_clear)
+        set_line_fmt(-1, self.fmt_clear)
         for lineno, line in enumerate(test_text.splitlines()):
             line = line.strip()
-            if not line:
-                set_line_fmt(self.ui.test_genres_filter, lineno, self.fmt_clear)
-                continue
-            if tagfilter.skip(line):
-                set_line_fmt(self.ui.test_genres_filter, lineno, self.fmt_skip)
-            else:
-                set_line_fmt(self.ui.test_genres_filter, lineno, self.fmt_keep)
+            fmt = self.fmt_clear
+            if line:
+                if tagfilter.skip(line):
+                    fmt = self.fmt_skip
+                else:
+                    fmt = self.fmt_keep
+            set_line_fmt(lineno, fmt)
 
 
 register_options_page(GenresOptionsPage)
