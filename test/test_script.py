@@ -3,6 +3,7 @@ from unittest.mock import MagicMock
 from test.picardtestcase import PicardTestCase
 
 from picard import config
+from picard.cluster import Cluster
 from picard.const import DEFAULT_FILE_NAMING_FORMAT
 from picard.metadata import Metadata
 from picard.script import (
@@ -508,6 +509,28 @@ class ScriptParserTest(PicardTestCase):
         self.assertScriptResultEquals("$matchedtracks()", "0")
         # The following only is possible for backward compatibility, arg is unused
         self.assertScriptResultEquals("$matchedtracks(arg)", "0")
+
+    def test_matchedtracks_with_cluster(self):
+        file = MagicMock()
+        cluster = Cluster(name="Test")
+        cluster.files.append(file)
+        file.parent = cluster
+        self.assertScriptResultEquals("$matchedtracks()", "0", file=file)
+
+    def test_is_complete(self):
+        file = MagicMock()
+        file.parent.album.is_complete.return_value = True
+        self.assertScriptResultEquals("$is_complete()", "1", file=file)
+        file.parent.album.is_complete.return_value = False
+        self.assertScriptResultEquals("$is_complete()", "0", file=file)
+        self.assertScriptResultEquals("$is_complete()", "0")
+
+    def test_is_complete_with_cluster(self):
+        file = MagicMock()
+        cluster = Cluster(name="Test")
+        cluster.files.append(file)
+        file.parent = cluster
+        self.assertScriptResultEquals("$is_complete()", "0", file=file)
 
     def test_required_kwonly_parameters(self):
         def func(a, *, required_kwarg):

@@ -710,14 +710,17 @@ def func_performer(parser, pattern="", join=", "):
 
 def func_matchedtracks(parser, *args):
     # only works in file naming scripts, always returns zero in tagging scripts
-    if parser.file and parser.file.parent:
+    file = parser.file
+    if file and file.parent and hasattr(file.parent, 'album'):
         return str(parser.file.parent.album.get_num_matched_tracks())
     return "0"
 
 
 def func_is_complete(parser):
-    if (parser.file and parser.file.parent
-            and parser.file.parent.album.is_complete()):
+    # only works in file naming scripts, always returns zero in tagging scripts
+    file = parser.file
+    if (file and file.parent and hasattr(file.parent, 'album')
+            and file.parent.album.is_complete()):
         return "1"
     return "0"
 
