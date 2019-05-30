@@ -41,6 +41,7 @@ class TestPicardConfigCommon(PicardTestCase):
         super().setUp()
         self.tmp_directory = mkdtemp()
         self.configpath = os.path.join(self.tmp_directory, 'test.ini')
+        shutil.copy(os.path.join('test', 'data', 'test.ini'), self.configpath)
         self.config = Config.from_file(None, self.configpath)
         self.config.application["version"] = "testing"
         logging.disable(logging.ERROR)
