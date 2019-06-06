@@ -140,7 +140,8 @@ def zip_import(path):
             except Exception as why:
                 log.warning("Failed to load manifest data from json: %s", why)
         return (zip_importer, plugin_name, manifest_data)
-    except zipimport.ZipImportError:
+    except zipimport.ZipImportError as why:
+        log.error("ZIP import error: %s", why)
         return (None, None, None)
 
 
@@ -391,8 +392,11 @@ class PluginManager(QtCore.QObject):
             if not update:
                 try:
                     installed_plugin = self._load_plugin_from_directory(plugin_name, self.plugins_directory)
+                    if not installed_plugin:
+                        raise RuntimeError("Failed loading newly installed plugin %s" % plugin_name)
                 except Exception as e:
                     log.error("Unable to load plugin '%s': %s", plugin_name, e)
+                    self._remove_plugin(plugin_name)
                 else:
                     self.plugin_installed.emit(installed_plugin, False)
             else:
