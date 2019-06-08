@@ -34,6 +34,7 @@ from picard import (
 from picard.util import reconnect
 
 from picard.ui import PicardDialog
+from picard.ui.colors import interface_colors
 
 
 class LogViewDialog(PicardDialog):
@@ -218,13 +219,14 @@ class LogView(LogViewCommon):
             self.clear_highlight_button.setEnabled(bool(self.hl))
 
     def _setup_formats(self):
+        interface_colors.load_from_config()
         self.formats = {}
         font = QtGui.QFont()
         font.setFamily("Monospace")
         for level, feat in log.levels_features.items():
             text_fmt = QtGui.QTextCharFormat()
             text_fmt.setFont(font)
-            text_fmt.setForeground(QtGui.QColor(feat.fgcolor))
+            text_fmt.setForeground(interface_colors.get_qcolor(feat.color_key))
             self.formats[level] = text_fmt
 
     def _format(self, level):

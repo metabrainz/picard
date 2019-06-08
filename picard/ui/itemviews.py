@@ -57,6 +57,7 @@ from picard.util import (
 )
 
 from picard.ui.collectionmenu import CollectionMenu
+from picard.ui.colors import interface_colors
 from picard.ui.ratingwidget import RatingWidget
 from picard.ui.scriptsmenu import ScriptsMenu
 
@@ -141,16 +142,16 @@ class MainPanel(QtWidgets.QSplitter):
         TreeItem.text_color_secondary = self.palette() \
             .brush(QtGui.QPalette.Disabled, QtGui.QPalette.Text).color()
         TrackItem.track_colors = {
-            File.NORMAL: config.setting["color_saved"],
+            File.NORMAL: interface_colors.get_qcolor('entity_saved'),
             File.CHANGED: TreeItem.text_color,
-            File.PENDING: config.setting["color_pending"],
-            File.ERROR: config.setting["color_error"],
+            File.PENDING: interface_colors.get_qcolor('entity_pending'),
+            File.ERROR: interface_colors.get_qcolor('entity_error'),
         }
         FileItem.file_colors = {
             File.NORMAL: TreeItem.text_color,
             File.CHANGED: TreeItem.text_color,
-            File.PENDING: config.setting["color_pending"],
-            File.ERROR: config.setting["color_error"],
+            File.PENDING: interface_colors.get_qcolor('entity_pending'),
+            File.ERROR: interface_colors.get_qcolor('entity_error'),
         }
 
     def save_state(self):
@@ -243,12 +244,6 @@ class MainPanel(QtWidgets.QSplitter):
 
 
 class BaseTreeView(QtWidgets.QTreeWidget):
-
-    options = [
-        config.Option("setting", "color_saved", QtGui.QColor(0, 128, 0)),
-        config.Option("setting", "color_error", QtGui.QColor(200, 0, 0)),
-        config.Option("setting", "color_pending", QtGui.QColor(128, 128, 128)),
-    ]
 
     def __init__(self, window, parent=None):
         super().__init__(parent)
