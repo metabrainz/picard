@@ -31,6 +31,7 @@ from picard import (
     config,
     log,
 )
+from picard.util import reconnect
 
 from picard.ui import PicardDialog
 
@@ -54,15 +55,24 @@ class LogViewDialog(PicardDialog):
 class LogViewCommon(LogViewDialog):
 
     def __init__(self, log_tail, *args, **kwargs):
-        self.displaying = False
-        self.prev = -1
-        self.log_tail = log_tail
-        self.log_tail.updated.connect(self._updated)
         super().__init__(*args, **kwargs)
+        self.displaying = False
+        self.log_tail = log_tail
+        self._init_doc()
 
-    def show(self):
-        self.display(clear=True)
-        super().show()
+    def _init_doc(self):
+        self.prev = -1
+        self.doc.clear()
+        self.textCursor.movePosition(QtGui.QTextCursor.Start)
+
+    def hideEvent(self, event):
+        reconnect(self.log_tail.updated, None)
+        super().hideEvent(event)
+
+    def showEvent(self, event):
+        self.display()
+        reconnect(self.log_tail.updated, self._updated)
+        super().showEvent(event)
 
     def _updated(self):
         if self.displaying:
@@ -72,9 +82,7 @@ class LogViewCommon(LogViewDialog):
     def display(self, clear=False):
         self.displaying = True
         if clear:
-            self.prev = -1
-            self.doc.clear()
-            self.textCursor.movePosition(QtGui.QTextCursor.Start)
+            self._init_doc()
         for logitem in self.log_tail.contents(self.prev):
             self._add_entry(logitem)
             self.prev = logitem.pos
