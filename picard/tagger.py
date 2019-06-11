@@ -722,7 +722,7 @@ class Tagger(QtWidgets.QApplication):
                 self.remove_nat(obj)
             elif isinstance(obj, Track):
                 files.extend(obj.linked_files)
-            elif isinstance(obj, Album):
+            elif isinstance(obj, Album) and not isinstance(obj, NatAlbum):
                 self.window.set_statusbar_message(
                     N_("Removing album %(id)s: %(artist)s - %(album)s"),
                     {
