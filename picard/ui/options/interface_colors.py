@@ -130,7 +130,16 @@ class InterfaceColorsOptionsPage(OptionsPage):
         self.update_color_selectors()
 
     def save(self):
-        config.setting['interface_colors'] = interface_colors.get_colors()
+        new_colors = interface_colors.get_colors()
+        if new_colors != config.setting['interface_colors']:
+            config.setting['interface_colors'] = new_colors
+            dialog = QtWidgets.QMessageBox(
+                QtWidgets.QMessageBox.Information,
+                _('Colors changed'),
+                _('You have changed the interface colors. You may have to restart Picard in order for the changes to take effect.'),
+                QtWidgets.QMessageBox.Ok,
+                self)
+            dialog.exec_()
 
     def restore_defaults(self):
         interface_colors.default_colors()
