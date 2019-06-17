@@ -43,6 +43,7 @@ from picard.util import (
 )
 from picard.util.tags import display_tag_name
 
+from picard.ui.colors import interface_colors
 from picard.ui.edittagdialog import EditTagDialog
 
 
@@ -204,12 +205,6 @@ class MetadataBox(QtWidgets.QTableWidget):
         self.setTabKeyNavigation(False)
         self.setStyleSheet("QTableWidget {border: none;}")
         self.setAttribute(QtCore.Qt.WA_MacShowFocusRect, 1)
-        self.colors = {
-            TagStatus.NOCHANGE: self.palette().color(QtGui.QPalette.Text),
-            TagStatus.REMOVED: QtGui.QBrush(QtGui.QColor("red")),
-            TagStatus.ADDED: QtGui.QBrush(QtGui.QColor("green")),
-            TagStatus.CHANGED: QtGui.QBrush(QtGui.QColor("darkgoldenrod"))
-        }
         self.files = set()
         self.tracks = set()
         self.objects = set()
@@ -457,6 +452,13 @@ class MetadataBox(QtWidgets.QTableWidget):
 
         if not (files or tracks):
             return None
+
+        self.colors = {
+            TagStatus.NOCHANGE: self.palette().color(QtGui.QPalette.Text),
+            TagStatus.REMOVED: QtGui.QBrush(interface_colors.get_qcolor('tagstatus_removed')),
+            TagStatus.ADDED: QtGui.QBrush(interface_colors.get_qcolor('tagstatus_added')),
+            TagStatus.CHANGED: QtGui.QBrush(interface_colors.get_qcolor('tagstatus_changed'))
+        }
 
         tag_diff = TagDiff(max_length_diff=config.setting["ignore_track_duration_difference_under"])
         orig_tags = tag_diff.orig

@@ -43,6 +43,7 @@ from picard.ui.options import (  # pylint: disable=unused-import
     general,
     genres,
     interface,
+    interface_colors,
     matching,
     metadata,
     network,

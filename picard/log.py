@@ -42,13 +42,13 @@ def get_effective_level():
     return main_logger.getEffectiveLevel()
 
 
-_feat = namedtuple('_feat', ['name', 'prefix', 'fgcolor'])
+_feat = namedtuple('_feat', ['name', 'prefix', 'color_key'])
 
 levels_features = OrderedDict([
-    (logging.ERROR,   _feat('Error',   'E', 'red')),
-    (logging.WARNING, _feat('Warning', 'W', 'darkorange')),
-    (logging.INFO,    _feat('Info',    'I', 'black')),
-    (logging.DEBUG,   _feat('Debug',   'D', 'purple')),
+    (logging.ERROR,   _feat('Error',   'E', 'log_error')),
+    (logging.WARNING, _feat('Warning', 'W', 'log_warning')),
+    (logging.INFO,    _feat('Info',    'I', 'log_info')),
+    (logging.DEBUG,   _feat('Debug',   'D', 'log_debug')),
 ])
 
 
