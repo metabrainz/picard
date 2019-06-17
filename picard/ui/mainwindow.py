@@ -25,6 +25,7 @@ import os.path
 from PyQt5 import (
     QtCore,
     QtGui,
+    QtMultimedia,
     QtWidgets,
 )
 
@@ -104,6 +105,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         config.BoolOption("persist", "view_toolbar", True),
         config.BoolOption("persist", "view_file_browser", False),
         config.TextOption("persist", "current_directory", ""),
+        config.IntOption("persist", "mediaplayer_volume", "50"),
     ]
 
     def __init__(self, parent=None):
@@ -111,6 +113,8 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.selected_objects = []
         self.ignore_selection_changes = False
         self.toolbar = None
+        self.player = QtMultimedia.QMediaPlayer(self)
+        self.player.error.connect(self._on_player_error)
         self.setupUi()
 
     def setupUi(self):
@@ -198,6 +202,8 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         if config.setting["quit_confirmation"] and not self.show_quit_confirmation():
             event.ignore()
             return
+        if self.player.availability() != QtMultimedia.QMultimedia.ServiceMissing:
+            config.persist['mediaplayer_volume'] = self.player.volume()
         self.saveWindowState()
         event.accept()
 
@@ -564,6 +570,20 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             self.check_update_action.setMenuRole(QtWidgets.QAction.ApplicationSpecificRole)
             self.check_update_action.triggered.connect(self.do_update_check)
 
+        self.internal_play_action = QtWidgets.QAction(self.style().standardIcon(QtWidgets.QStyle.SP_MediaPlay), _("Play"), self)
+        self.internal_play_action.setStatusTip(_("Play selected files in an internal player"))
+        self.internal_play_action.setEnabled(False)
+        self.internal_play_action.triggered.connect(self.internal_play)
+
+        self.pause_action = QtWidgets.QAction(self.style().standardIcon(QtWidgets.QStyle.SP_MediaPause), _("Pause"), self)
+        self.pause_action.setToolTip(_("Pause/resume"))
+        self.pause_action.setStatusTip(_("Pause or resume playing with an internal player"))
+        self.pause_action.setCheckable(True)
+        self.pause_action.setChecked(False)
+        self.pause_action.setEnabled(False)
+        self.pause_action.triggered.connect(self.pause)
+        self.player.stateChanged.connect(self.pause_action.setEnabled)
+
     def toggle_rename_files(self, checked):
         config.setting["rename_files"] = checked
 
@@ -614,6 +634,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         menu.addSeparator()
         menu.addAction(self.show_toolbar_action)
         menu.addAction(self.search_toolbar_toggle_action)
+        menu.addAction(self.player_toolbar_toggle_action)
         menu = self.menuBar().addMenu(_("&Options"))
         menu.addAction(self.enable_renaming_action)
         menu.addAction(self.enable_moving_action)
@@ -652,11 +673,16 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     def update_toolbar_style(self):
         if config.setting["toolbar_show_labels"]:
             self.toolbar.setToolButtonStyle(QtCore.Qt.ToolButtonTextUnderIcon)
+            self.player_toolbar.setToolButtonStyle(QtCore.Qt.ToolButtonTextUnderIcon)
+            self.volume_label.show()
         else:
             self.toolbar.setToolButtonStyle(QtCore.Qt.ToolButtonIconOnly)
+            self.player_toolbar.setToolButtonStyle(QtCore.Qt.ToolButtonIconOnly)
+            self.volume_label.hide()
 
     def create_toolbar(self):
         self.create_search_toolbar()
+        self.create_player_toolbar()
         self.create_action_toolbar()
 
     def create_action_toolbar(self):
@@ -689,6 +715,33 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                 except AttributeError:
                     log.warning('Warning: Unknown action name "%r" found in config. Ignored.', action)
         self.show_toolbar()
+
+    def create_player_toolbar(self):
+        """"Create a toolbar with internal player control elements"""
+        self.player_toolbar = toolbar = QtWidgets.QToolBar(_("Player"))
+        toolbar.setObjectName("player_toolbar")
+        self.insertToolBar(self.search_toolbar, self.player_toolbar)
+        self.player_toolbar_toggle_action = self.player_toolbar.toggleViewAction()
+        def add_toolbar_action(action):
+            toolbar.addAction(action)
+            widget = toolbar.widgetForAction(action)
+            widget.setFocusPolicy(QtCore.Qt.TabFocus)
+            widget.setAttribute(QtCore.Qt.WA_MacShowFocusRect)
+        add_toolbar_action(self.internal_play_action)
+        add_toolbar_action(self.pause_action)
+        self.volume_slider = QtWidgets.QSlider(toolbar)
+        self.volume_slider.setOrientation(QtCore.Qt.Horizontal)
+        self.volume_slider.setMinimum(0)
+        self.volume_slider.setMaximum(100)
+        self.volume_slider.valueChanged.connect(self.set_volume)
+        self.volume_slider.setValue(self.get_logarithmic_volume(int(config.persist["mediaplayer_volume"])))
+        self.volume_label = QtWidgets.QLabel(_("Volume"), toolbar)
+        self.volume_widget = QtWidgets.QWidget(toolbar)
+        vbox = QtWidgets.QVBoxLayout(self.volume_widget)
+        vbox.addWidget(self.volume_slider)
+        vbox.addWidget(self.volume_label)
+        toolbar.addWidget(self.volume_widget)
+        toolbar.hide() #Hide by default
 
     def create_search_toolbar(self):
         self.search_toolbar = toolbar = self.addToolBar(_("Search"))
@@ -900,6 +953,42 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         for file in files:
             QtGui.QDesktopServices.openUrl(self._openUrl(file.filename))
 
+    def internal_play(self):
+        """Play selected tracks with an internal player"""
+        self.player.stop()
+        playlist = QtMultimedia.QMediaPlaylist(self)
+        playlist.setPlaybackMode(QtMultimedia.QMediaPlaylist.Sequential)
+        playlist.addMedia([QtMultimedia.QMediaContent(self._openUrl(file.filename)) \
+                                                      for file in self.tagger.get_files_from_objects(self.selected_objects)])
+        self.player.setPlaylist(playlist)
+        self.player.play()
+        self.pause_action.setChecked(False)
+
+    def _on_player_error(self, error):
+        self.set_statusbar_message(self.player.errorString(), echo=log.warning)
+
+    def pause(self, is_paused):
+        """Toggle pause of an internal player"""
+        if is_paused:
+            self.player.pause()
+        else:
+            self.player.play()
+
+    def set_volume(self, slider_value):
+        """Convert to linear scale and set"""
+        linear_volume = QtMultimedia.QAudio.convertVolume(slider_value/100.,
+                                                          QtMultimedia.QAudio.LogarithmicVolumeScale,
+                                                          QtMultimedia.QAudio.LinearVolumeScale)
+        self.player.setVolume(QtCore.qRound(linear_volume * 100))
+
+    @staticmethod
+    def get_logarithmic_volume(player_value):
+        """Return logarithmic scale volume to set slider position"""
+        logarithmic_volume = QtMultimedia.QAudio.convertVolume(player_value/100.,
+                                                               QtMultimedia.QAudio.LinearVolumeScale,
+                                                               QtMultimedia.QAudio.LogarithmicVolumeScale)
+        return QtCore.qRound(logarithmic_volume * 100)
+
     def open_folder(self):
         files = self.tagger.get_files_from_objects(self.selected_objects)
         folders = set([os.path.dirname(f.filename) for f in files])
@@ -990,6 +1079,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.autotag_action.setEnabled(can_autotag)
         self.browser_lookup_action.setEnabled(can_browser_lookup)
         self.play_file_action.setEnabled(have_files)
+        self.internal_play_action.setEnabled(have_files)
         self.open_folder_action.setEnabled(have_files)
         self.cut_action.setEnabled(have_objects)
         files = self.get_selected_or_unmatched_files()
