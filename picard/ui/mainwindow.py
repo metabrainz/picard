@@ -25,7 +25,6 @@ import os.path
 from PyQt5 import (
     QtCore,
     QtGui,
-    QtMultimedia,
     QtWidgets,
 )
 
@@ -84,6 +83,15 @@ from picard.ui.util import (
 )
 
 
+try:
+    from PyQt5 import QtMultimedia
+except Exception as e:
+    qt_multimedia_available = False
+    log.warning("{} - Internal player disabled".format(e.msg))
+else:
+    qt_multimedia_available = True
+
+
 ui_init = ExtensionPoint(label='ui_init')
 
 
@@ -113,8 +121,9 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.selected_objects = []
         self.ignore_selection_changes = False
         self.toolbar = None
-        self.player = QtMultimedia.QMediaPlayer(self)
-        self.player.error.connect(self._on_player_error)
+        if qt_multimedia_available:
+            self.player = QtMultimedia.QMediaPlayer(self)
+            self.player.error.connect(self._on_player_error)
         self.setupUi()
 
     def setupUi(self):
@@ -202,7 +211,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         if config.setting["quit_confirmation"] and not self.show_quit_confirmation():
             event.ignore()
             return
-        if self.player.availability() != QtMultimedia.QMultimedia.ServiceMissing:
+        if qt_multimedia_available and self.player.availability() != QtMultimedia.QMultimedia.ServiceMissing:
             config.persist['mediaplayer_volume'] = self.player.volume()
         self.saveWindowState()
         event.accept()
@@ -570,19 +579,20 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             self.check_update_action.setMenuRole(QtWidgets.QAction.ApplicationSpecificRole)
             self.check_update_action.triggered.connect(self.do_update_check)
 
-        self.internal_play_action = QtWidgets.QAction(self.style().standardIcon(QtWidgets.QStyle.SP_MediaPlay), _("Play"), self)
-        self.internal_play_action.setStatusTip(_("Play selected files in an internal player"))
-        self.internal_play_action.setEnabled(False)
-        self.internal_play_action.triggered.connect(self.internal_play)
+        if qt_multimedia_available:
+            self.internal_play_action = QtWidgets.QAction(self.style().standardIcon(QtWidgets.QStyle.SP_MediaPlay), _("Play"), self)
+            self.internal_play_action.setStatusTip(_("Play selected files in an internal player"))
+            self.internal_play_action.setEnabled(False)
+            self.internal_play_action.triggered.connect(self.internal_play)
 
-        self.pause_action = QtWidgets.QAction(self.style().standardIcon(QtWidgets.QStyle.SP_MediaPause), _("Pause"), self)
-        self.pause_action.setToolTip(_("Pause/resume"))
-        self.pause_action.setStatusTip(_("Pause or resume playing with an internal player"))
-        self.pause_action.setCheckable(True)
-        self.pause_action.setChecked(False)
-        self.pause_action.setEnabled(False)
-        self.pause_action.triggered.connect(self.pause)
-        self.player.stateChanged.connect(self.pause_action.setEnabled)
+            self.pause_action = QtWidgets.QAction(self.style().standardIcon(QtWidgets.QStyle.SP_MediaPause), _("Pause"), self)
+            self.pause_action.setToolTip(_("Pause/resume"))
+            self.pause_action.setStatusTip(_("Pause or resume playing with an internal player"))
+            self.pause_action.setCheckable(True)
+            self.pause_action.setChecked(False)
+            self.pause_action.setEnabled(False)
+            self.pause_action.triggered.connect(self.pause)
+            self.player.stateChanged.connect(self.pause_action.setEnabled)
 
     def toggle_rename_files(self, checked):
         config.setting["rename_files"] = checked
@@ -634,7 +644,8 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         menu.addSeparator()
         menu.addAction(self.show_toolbar_action)
         menu.addAction(self.search_toolbar_toggle_action)
-        menu.addAction(self.player_toolbar_toggle_action)
+        if qt_multimedia_available:
+            menu.addAction(self.player_toolbar_toggle_action)
         menu = self.menuBar().addMenu(_("&Options"))
         menu.addAction(self.enable_renaming_action)
         menu.addAction(self.enable_moving_action)
@@ -673,16 +684,19 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     def update_toolbar_style(self):
         if config.setting["toolbar_show_labels"]:
             self.toolbar.setToolButtonStyle(QtCore.Qt.ToolButtonTextUnderIcon)
-            self.player_toolbar.setToolButtonStyle(QtCore.Qt.ToolButtonTextUnderIcon)
-            self.volume_label.show()
+            if qt_multimedia_available:
+                self.player_toolbar.setToolButtonStyle(QtCore.Qt.ToolButtonTextUnderIcon)
+                self.volume_label.show()
         else:
             self.toolbar.setToolButtonStyle(QtCore.Qt.ToolButtonIconOnly)
-            self.player_toolbar.setToolButtonStyle(QtCore.Qt.ToolButtonIconOnly)
-            self.volume_label.hide()
+            if qt_multimedia_available:
+                self.player_toolbar.setToolButtonStyle(QtCore.Qt.ToolButtonIconOnly)
+                self.volume_label.hide()
 
     def create_toolbar(self):
         self.create_search_toolbar()
-        self.create_player_toolbar()
+        if qt_multimedia_available:
+            self.create_player_toolbar()
         self.create_action_toolbar()
 
     def create_action_toolbar(self):
@@ -1079,7 +1093,8 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.autotag_action.setEnabled(can_autotag)
         self.browser_lookup_action.setEnabled(can_browser_lookup)
         self.play_file_action.setEnabled(have_files)
-        self.internal_play_action.setEnabled(have_files)
+        if qt_multimedia_available:
+            self.internal_play_action.setEnabled(have_files)
         self.open_folder_action.setEnabled(have_files)
         self.cut_action.setEnabled(have_objects)
         files = self.get_selected_or_unmatched_files()
