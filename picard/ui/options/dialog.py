@@ -23,6 +23,7 @@ from PyQt5 import (
 )
 
 from picard import config
+from picard.const import PICARD_URLS
 from picard.util import (
     restore_method,
     webbrowser2,
@@ -145,7 +146,9 @@ class OptionsDialog(PicardDialog):
             self.ui.pages_stack.setCurrentWidget(page)
 
     def help(self):
-        webbrowser2.goto('doc_options')
+        current_page = self.ui.pages_stack.currentWidget()
+        url = "{}#{}".format(PICARD_URLS['doc_options'], current_page.NAME)
+        webbrowser2.open(url)
 
     def accept(self):
         for page in self.pages:
