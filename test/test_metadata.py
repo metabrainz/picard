@@ -145,6 +145,7 @@ class MetadataTest(PicardTestCase):
         self.assertIn("single1", m.deleted_tags)
         self.assertEqual("single2-value", m["single2"])
         self.assertEqual(self.metadata.deleted_tags, m.deleted_tags)
+        self.assertEqual(self.metadata.images, m.images)
 
         self.metadata["old"] = "old-value"
         for (key, value) in self.metadata.rawitems():
