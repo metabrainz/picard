@@ -7,6 +7,7 @@ from picard.metadata import (
     MULTI_VALUED_JOINER,
     Metadata,
 )
+from picard.util.imagelist import ImageList
 from picard.util.tags import PRESERVED_TAGS
 
 
@@ -102,6 +103,24 @@ class MetadataTest(PicardTestCase):
         self.assertIn("single1", self.metadata)
         self.assertNotIn("single1", self.metadata.deleted_tags)
 
+    def test_metadata_copy(self):
+        m = Metadata()
+        m["old"] = "old-value"
+        self.metadata.delete("single1")
+        m.copy(self.metadata)
+        self.assertEqual(self.metadata._store, m._store)
+        self.assertEqual(self.metadata.deleted_tags, m.deleted_tags)
+        self.assertEqual(self.metadata.length, m.length)
+        self.assertEqual(self.metadata.images, m.images)
+
+    def test_metadata_copy_without_images(self):
+        m = Metadata()
+        m.copy(self.metadata, copy_images=False)
+        self.assertEqual(self.metadata._store, m._store)
+        self.assertEqual(self.metadata.deleted_tags, m.deleted_tags)
+        self.assertEqual(self.metadata.length, m.length)
+        self.assertEqual(ImageList(), m.images)
+
     def test_metadata_update(self):
         m = Metadata()
         m["old"] = "old-value"
@@ -112,14 +131,10 @@ class MetadataTest(PicardTestCase):
         self.assertIn("single1", m.deleted_tags)
         self.assertEqual("single2-value", m["single2"])
         self.assertEqual(self.metadata.deleted_tags, m.deleted_tags)
+        self.assertEqual(self.metadata.images, m.images)
 
         self.metadata["old"] = "old-value"
-        for (key, value) in self.metadata.rawitems():
-            self.assertIn(key, m)
-            self.assertEqual(value, m.getraw(key))
-        for (key, value) in m.rawitems():
-            self.assertIn(key, self.metadata)
-            self.assertEqual(value, self.metadata.getraw(key))
+        self.assertEqual(self.metadata._store, m._store)
 
     def test_metadata_clear(self):
         self.metadata.clear()

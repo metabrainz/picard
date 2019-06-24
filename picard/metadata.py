@@ -257,27 +257,14 @@ class Metadata(MutableMapping):
                 result = SimMatchTrack(similarity=sim, releasegroup=rg, release=release, track=track)
         return result
 
-    def copy(self, other):
+    def copy(self, other, copy_images=True):
         self.clear()
-        self.update(other)
+        self._update_from_metadata(other, copy_images)
 
     def update(self, *args, **kwargs):
         one_arg = len(args) == 1
         if one_arg and isinstance(args[0], self.__class__):
-            # update from Metadata object
-            other = args[0]
-
-            for k, v in other.rawitems():
-                self.set(k, v[:])
-
-            for tag in other.deleted_tags:
-                del self[tag]
-
-            if other.images:
-                self.images = other.images.copy()
-            if other.length:
-                self.length = other.length
-
+            self._update_from_metadata(args[0])
         elif one_arg and isinstance(args[0], MutableMapping):
             # update from MutableMapping (ie. dict)
             for k, v in args[0].items():
@@ -289,6 +276,18 @@ class Metadata(MutableMapping):
         else:
             # no argument, raise TypeError to mimic dict.update()
             raise TypeError("descriptor 'update' of '%s' object needs an argument" % self.__class__.__name__)
+
+    def _update_from_metadata(self, other, copy_images=True):
+        for k, v in other.rawitems():
+            self.set(k, v[:])
+
+        for tag in other.deleted_tags:
+            del self[tag]
+
+        if copy_images and other.images:
+            self.images = other.images.copy()
+        if other.length:
+            self.length = other.length
 
     def clear(self):
         self._store.clear()

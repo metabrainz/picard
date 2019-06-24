@@ -329,7 +329,7 @@ class NonAlbumTrack(Track):
         return super().column(column)
 
     def load(self, priority=False, refresh=False):
-        self.metadata.copy(self.album.metadata)
+        self.metadata.copy(self.album.metadata, copy_images=False)
         self.status = _("[loading recording information]")
         self.error = None
         self.loaded = False
