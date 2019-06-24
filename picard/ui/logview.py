@@ -66,6 +66,10 @@ class LogViewCommon(LogViewDialog):
         self.doc.clear()
         self.textCursor.movePosition(QtGui.QTextCursor.Start)
 
+    def closeEvent(self, event):
+        event.ignore()
+        self.hide()
+
     def hideEvent(self, event):
         reconnect(self.log_tail.updated, None)
         super().hideEvent(event)
