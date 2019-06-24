@@ -108,32 +108,18 @@ class MetadataTest(PicardTestCase):
         m["old"] = "old-value"
         self.metadata.delete("single1")
         m.copy(self.metadata)
-
+        self.assertEqual(self.metadata._store, m._store)
         self.assertEqual(self.metadata.deleted_tags, m.deleted_tags)
         self.assertEqual(self.metadata.length, m.length)
         self.assertEqual(self.metadata.images, m.images)
 
-        for (key, value) in self.metadata.rawitems():
-            self.assertIn(key, m)
-            self.assertEqual(value, m.getraw(key))
-        for (key, value) in m.rawitems():
-            self.assertIn(key, self.metadata)
-            self.assertEqual(value, self.metadata.getraw(key))
-
     def test_metadata_copy_without_images(self):
         m = Metadata()
         m.copy(self.metadata, copy_images=False)
-
+        self.assertEqual(self.metadata._store, m._store)
         self.assertEqual(self.metadata.deleted_tags, m.deleted_tags)
         self.assertEqual(self.metadata.length, m.length)
         self.assertEqual(ImageList(), m.images)
-
-        for (key, value) in self.metadata.rawitems():
-            self.assertIn(key, m)
-            self.assertEqual(value, m.getraw(key))
-        for (key, value) in m.rawitems():
-            self.assertIn(key, self.metadata)
-            self.assertEqual(value, self.metadata.getraw(key))
 
     def test_metadata_update(self):
         m = Metadata()
@@ -148,12 +134,7 @@ class MetadataTest(PicardTestCase):
         self.assertEqual(self.metadata.images, m.images)
 
         self.metadata["old"] = "old-value"
-        for (key, value) in self.metadata.rawitems():
-            self.assertIn(key, m)
-            self.assertEqual(value, m.getraw(key))
-        for (key, value) in m.rawitems():
-            self.assertIn(key, self.metadata)
-            self.assertEqual(value, self.metadata.getraw(key))
+        self.assertEqual(self.metadata._store, m._store)
 
     def test_metadata_clear(self):
         self.metadata.clear()
