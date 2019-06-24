@@ -146,9 +146,6 @@ class Tagger(QtWidgets.QApplication):
         self.__class__.__instance = self
         config._setup(self, picard_args.config_file)
 
-        # Allow High DPI Support
-        self.setAttribute(QtCore.Qt.AA_UseHighDpiPixmaps)
-        self.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling)
         super().setStyleSheet(
             'QGroupBox::title { /* PICARD-1206, Qt bug workaround */ }'
         )
@@ -889,6 +886,10 @@ def main(localedir=None, autoupdate=True):
     QtWidgets.QApplication.setApplicationName(PICARD_APP_NAME)
     QtWidgets.QApplication.setOrganizationName(PICARD_ORG_NAME)
     QtWidgets.QApplication.setDesktopFileName(PICARD_DESKTOP_NAME)
+
+    # Allow High DPI Support
+    QtWidgets.QApplication.setAttribute(QtCore.Qt.AA_UseHighDpiPixmaps)
+    QtWidgets.QApplication.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling)
 
     signal.signal(signal.SIGINT, signal.SIG_DFL)
 
