@@ -85,7 +85,7 @@ from picard.ui.util import (
 
 try:
     from PyQt5 import QtMultimedia
-except Exception as e:
+except ImportError as e:
     qt_multimedia_available = False
     qt_multimedia_errmsg = e.msg
 else:
