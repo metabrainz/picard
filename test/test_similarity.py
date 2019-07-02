@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from test.picardtestcase import PicardTestCase
 
 from picard.similarity import similarity
