@@ -69,11 +69,16 @@ class ReleaseGroup(DataObject):
         except (TypeError, KeyError):
             releases = []
 
+        max_tracks = 10
         for node in releases:
             labels, catnums = label_info_from_node(node['label-info'])
 
             countries = countries_from_node(node)
 
+            if len(node['media']) > max_tracks:
+                tracks = "+".join([str(m['track-count']) for m in node['media'][:max_tracks]]) + '+…'
+            else:
+                tracks = "+".join([str(m['track-count']) for m in node['media']])
             formats = []
             for medium in node['media']:
                 if "format" in medium:
@@ -86,7 +91,7 @@ class ReleaseGroup(DataObject):
                 "format":  media_formats_from_node(node['media']),
                 "label":  ", ".join([' '.join(x.split(' ')[:2]) for x in set(labels)]),
                 "catnum": ", ".join(set(catnums)),
-                "tracks":  "+".join([str(m['track-count']) for m in node['media']]),
+                "tracks": tracks,
                 "barcode": node.get('barcode', '') or _('[no barcode]'),
                 "packaging": node.get('packaging', '') or '??',
                 "disambiguation": node.get('disambiguation', ''),
