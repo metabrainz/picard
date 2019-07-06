@@ -4,7 +4,7 @@
 import datetime
 from distutils import log
 from distutils.command.build import build
-from distutils.command.install import install as install
+from setuptools.command.install import install as install
 from distutils.dep_util import newer
 from distutils.spawn import find_executable
 import glob
