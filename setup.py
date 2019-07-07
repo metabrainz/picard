@@ -28,10 +28,6 @@ from picard import (
     PICARD_VERSION,
     __version__,
 )
-from picard.const.sys import (
-    IS_LINUX,
-    IS_WIN,
-)
 
 
 if sys.version_info < (3, 5):
@@ -222,7 +218,7 @@ class picard_build(build):
     def run(self):
         log.info('generating scripts/%s from scripts/picard.in', PACKAGE_NAME)
         generate_file('scripts/picard.in', 'scripts/' + PACKAGE_NAME, {'localedir': self.localedir, 'autoupdate': not self.disable_autoupdate})
-        if IS_WIN:
+        if sys.platform == 'win32':
             # Temporarily setting it to this value to generate a nice name for Windows app
             args['name'] = 'MusicBrainz Picard'
             file_version = PICARD_VERSION[0:3] + PICARD_VERSION[4:]
@@ -234,7 +230,7 @@ class picard_build(build):
             }
             generate_file('win-version-info.txt.in', 'win-version-info.txt', {**args, **version_args})
             args['name'] = 'picard'
-        elif IS_LINUX:
+        elif sys.platform == 'linux':
             self.run_command('build_appdata')
         build.run(self)
 
@@ -746,7 +742,7 @@ args['data_files'] = [
 args['data_files'].append(('share/icons/hicolor/scalable/apps', ['resources/img-src/%s.svg' % PICARD_APP_ID]))
 args['data_files'].append(('share/applications', [PICARD_DESKTOP_NAME]))
 
-if IS_LINUX:
+if sys.platform == 'linux':
     args['data_files'].append(('share/metainfo', [APPDATA_FILE]))
 
 setup(**args)
