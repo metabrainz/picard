@@ -244,6 +244,8 @@ class Metadata(MutableMapping):
 
         if not releases:
             sim = linear_combination_of_weights(parts)
+            if 'score' in track:
+                sim *= track['score'] / 100
             return SimMatchTrack(similarity=sim, releasegroup=None, release=None, track=track)
 
         result = SimMatchTrack(similarity=-1, releasegroup=None, release=None, track=None)
