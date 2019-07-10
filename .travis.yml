@@ -18,6 +18,7 @@ env:
   - LIBDISCID="libdiscid0 libdiscid-dev"
   matrix:
   - INSTALL_DEPS="$PIP_INSTALL -r requirements.txt"
+  - INSTALL_DEPS="$PIP_INSTALL pyqt5==5.12.3 mutagen       discid"
   - INSTALL_DEPS="$PIP_INSTALL pyqt5==5.11.3 mutagen       discid"
   - INSTALL_DEPS="$PIP_INSTALL pyqt5==5.10   mutagen       discid"
   - INSTALL_DEPS="$PIP_INSTALL pyqt5==5.9    mutagen       discid"
@@ -31,7 +32,7 @@ matrix:
     env:
     - DISCID_VERSION=0.6.2
     - FPCALC_VERSION=1.4.3
-    - PYTHON_VERSION=3.7.2
+    - PYTHON_VERSION=3.7.4
     - INSTALL_DEPS="$PIP_INSTALL -r requirements-macos.txt"
   - os: osx
     osx_image: xcode7.3
@@ -39,7 +40,7 @@ matrix:
     env:
     - DISCID_VERSION=0.6.2
     - FPCALC_VERSION=1.4.3
-    - PYTHON_VERSION=3.7.2
+    - PYTHON_VERSION=3.7.4
     - INSTALL_DEPS="$PIP_INSTALL -r requirements-macos.txt"
   # - os: osx
   #   osx_image: xcode10.1
