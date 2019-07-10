@@ -150,18 +150,11 @@ class Metadata(MutableMapping):
 
         try:
             a = int(self["totaltracks"])
-        except (ValueError, KeyError):
-            pass
-        else:
-            try:
-                if "title" in weights:
-                    b = release['media'][0]['track-count']
-                else:
-                    b = release['track-count']
-            except KeyError:
-                b = 0
+            b = release['track-count']
             score = 0.0 if a > b else 0.3 if a < b else 1.0
             parts.append((score, weights["totaltracks"]))
+        except (ValueError, KeyError):
+            pass
 
         preferred_countries = config.setting["preferred_release_countries"]
         preferred_formats = config.setting["preferred_release_formats"]
