@@ -395,7 +395,6 @@ class File(QtCore.QObject, Item):
             if win_compat:
                 new_filename = new_filename.replace('./', '_/').replace('.\\', '_\\')
             # replace . at the beginning of file and directory names
-            # FIXME: even on non-win platforms ???
             new_filename = new_filename.replace('/.', '/_').replace('\\.', '\\_')
             if new_filename.startswith('.'):
                 new_filename = '_' + new_filename[1:]
