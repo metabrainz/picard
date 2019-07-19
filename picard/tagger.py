@@ -66,6 +66,7 @@ from picard.const import (
 )
 from picard.const.sys import (
     IS_FROZEN,
+    IS_HAIKU,
     IS_MACOS,
     IS_WIN,
 )
@@ -137,7 +138,7 @@ class Tagger(QtWidgets.QApplication):
 
         # Use the new fusion style from PyQt5 for a modern and consistent look
         # across all OSes.
-        if not IS_MACOS:
+        if not IS_MACOS and not IS_HAIKU:
             self.setStyle('Fusion')
 
         # Set the WM_CLASS to 'MusicBrainz-Picard' so desktop environments
