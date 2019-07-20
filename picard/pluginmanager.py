@@ -338,7 +338,12 @@ class PluginManager(QtCore.QObject):
             zipfile.write(plugin_data)
             zipfile.flush()
             os.fsync(zipfile.fileno())
-            os.link(zipfile.name, dst)
+            try:
+                os.link(zipfile.name, dst)
+            except OSError:
+                with open(dst, 'wb') as dstfile:
+                    zipfile.seek(0)
+                    shutil.copyfileobj(zipfile, dstfile)
             log.debug("Plugin (zipped) saved to %r", dst)
 
     def _install_plugin_file(self, path, update=False):
