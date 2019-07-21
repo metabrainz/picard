@@ -35,8 +35,6 @@ from picard.ui.util import StandardButton
 
 class TagsFromFileNamesDialog(PicardDialog):
 
-    defaultsize = QtCore.QSize(560, 400)
-
     options = [
         config.TextOption("persist", "tags_from_filenames_format", ""),
     ]

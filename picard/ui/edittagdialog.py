@@ -30,7 +30,6 @@ from picard.ui.ui_edittagdialog import Ui_EditTagDialog
 
 class EditTagDialog(PicardDialog):
 
-    defaultsize = None
     autorestore = False
 
     def __init__(self, window, tag):

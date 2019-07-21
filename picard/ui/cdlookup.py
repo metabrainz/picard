@@ -42,7 +42,6 @@ from picard.ui.ui_cdlookup import Ui_Dialog
 
 class CDLookupDialog(PicardDialog):
 
-    defaultsize = QtCore.QSize(720, 360)
     autorestore = False
     dialog_header_state = "cdlookupdialog_header_state"
 

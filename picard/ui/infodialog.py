@@ -97,7 +97,6 @@ class ArtworkTable(QtWidgets.QTableWidget):
 
 class InfoDialog(PicardDialog):
 
-    defaultsize = QtCore.QSize(665, 436)
     autorestore = False
 
     def __init__(self, obj, parent=None):

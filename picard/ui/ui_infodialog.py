@@ -3,12 +3,14 @@
 # Automatically generated - don't edit.
 # Use `python setup.py build_ui` to update it.
 
+
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class Ui_InfoDialog(object):
     def setupUi(self, InfoDialog):
         InfoDialog.setObjectName("InfoDialog")
-        InfoDialog.resize(535, 436)
+        InfoDialog.resize(665, 436)
         self.verticalLayout = QtWidgets.QVBoxLayout(InfoDialog)
         self.verticalLayout.setObjectName("verticalLayout")
         self.tabWidget = QtWidgets.QTabWidget(InfoDialog)
@@ -25,7 +27,6 @@ class Ui_InfoDialog(object):
         self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 493, 358))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self.verticalLayoutLabel = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents)
-        self.verticalLayoutLabel.setContentsMargins(0, 0, 0, 0)
         self.verticalLayoutLabel.setObjectName("verticalLayoutLabel")
         self.info = QtWidgets.QLabel(self.scrollAreaWidgetContents)
         self.info.setText("")
@@ -57,4 +58,3 @@ class Ui_InfoDialog(object):
         _translate = QtCore.QCoreApplication.translate
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.info_tab), _("&Info"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.artwork_tab), _("A&rtwork"))
-
