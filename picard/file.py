@@ -160,6 +160,7 @@ class File(QtCore.QObject, Item):
             self.error = None
             self.state = self.NORMAL
             self._copy_loaded_metadata(result)
+        run_file_post_load_processors(self)
         self.update()
         callback(self)
 
@@ -776,9 +777,22 @@ class File(QtCore.QObject, Item):
             return 0
 
 
+_file_post_load_processors = PluginFunctions(label='file_post_load_processors')
 _file_post_addition_to_track_processors = PluginFunctions(label='file_post_addition_to_track_processors')
 _file_post_removal_from_track_processors = PluginFunctions(label='file_post_removal_from_track_processors')
 _file_post_save_processors = PluginFunctions(label='file_post_save_processors')
+
+
+def register_file_post_load_processor(function, priority=PluginPriority.NORMAL):
+    """Registers a file-loaded processor.
+
+    Args:
+        function: function to call after file has been loaded, it will be passed the file object
+        priority: optional, PluginPriority.NORMAL by default
+    Returns:
+        None
+    """
+    _file_post_load_processors.register(function.__module__, function, priority)
 
 
 def register_file_post_addition_to_track_processor(function, priority=PluginPriority.NORMAL):
@@ -815,6 +829,10 @@ def register_file_post_save_processor(function, priority=PluginPriority.NORMAL):
         None
     """
     _file_post_save_processors.register(function.__module__, function, priority)
+
+
+def run_file_post_load_processors(file_object):
+    _file_post_load_processors.run(file_object)
 
 
 def run_file_post_addition_to_track_processors(track_object, file_object):
