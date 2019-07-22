@@ -3,12 +3,14 @@
 # Automatically generated - don't edit.
 # Use `python setup.py build_ui` to update it.
 
+
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class Ui_TagsFromFileNamesDialog(object):
     def setupUi(self, TagsFromFileNamesDialog):
         TagsFromFileNamesDialog.setObjectName("TagsFromFileNamesDialog")
-        TagsFromFileNamesDialog.resize(487, 368)
+        TagsFromFileNamesDialog.resize(560, 400)
         self.gridlayout = QtWidgets.QGridLayout(TagsFromFileNamesDialog)
         self.gridlayout.setContentsMargins(9, 9, 9, 9)
         self.gridlayout.setSpacing(6)
@@ -51,4 +53,3 @@ class Ui_TagsFromFileNamesDialog(object):
         TagsFromFileNamesDialog.setWindowTitle(_("Convert File Names to Tags"))
         self.replace_underscores.setText(_("Replace underscores with spaces"))
         self.preview.setText(_("&Preview"))
-

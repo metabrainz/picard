@@ -3,12 +3,14 @@
 # Automatically generated - don't edit.
 # Use `python setup.py build_ui` to update it.
 
+
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
-        Dialog.resize(640, 240)
+        Dialog.resize(720, 360)
         self.vboxlayout = QtWidgets.QVBoxLayout(Dialog)
         self.vboxlayout.setContentsMargins(9, 9, 9, 9)
         self.vboxlayout.setSpacing(6)
@@ -53,4 +55,3 @@ class Ui_Dialog(object):
         self.ok_button.setText(_("&Load into Picard"))
         self.lookup_button.setText(_("Lookup in &Browser"))
         self.cancel_button.setText(_("&Cancel"))
-

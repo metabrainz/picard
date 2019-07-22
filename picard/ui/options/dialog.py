@@ -59,7 +59,6 @@ from picard.ui.util import StandardButton
 
 class OptionsDialog(PicardDialog):
 
-    defaultsize = QtCore.QSize(560, 400)
     autorestore = False
 
     options = [
