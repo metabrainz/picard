@@ -4,7 +4,15 @@ from tempfile import mkdtemp
 
 from test.picardtestcase import PicardTestCase
 
+from picard.const.sys import IS_MACOS
 from picard.file import File
+
+
+def is_macos_10_14():
+    if IS_MACOS:
+        import platform
+        return platform.mac_ver()[0].startswith('10.14')
+    return False
 
 
 class DataObjectTest(PicardTestCase):
@@ -71,16 +79,24 @@ class TestPreserveTimes(PicardTestCase):
 
         # read times again and compare with original
         st = os.stat(self.file.filename)
-        (after_atimes_ns, after_mtimes_ns) = (st.st_atime_ns, st.st_mtime_ns)
+        (after_atime_ns, after_mtime_ns) = (st.st_atime_ns, st.st_mtime_ns)
+
+        # on macOS 10.14 os.utime only sets the times with second precision
+        # see https://tickets.metabrainz.org/browse/PICARD-1516
+        if is_macos_10_14():
+            before_atime_ns //= 1000
+            before_mtime_ns //= 1000
+            after_atime_ns //= 1000
+            after_mtime_ns //= 1000
 
         # modification times should be equal
-        self.assertEqual(before_mtime_ns, after_mtimes_ns)
+        self.assertEqual(before_mtime_ns, after_mtime_ns)
 
         # access times may not be equal
         # time difference should be positive and reasonably low (if no access in between, it should be 0)
-        delta = after_atimes_ns - before_atime_ns
+        delta = after_atime_ns - before_atime_ns
         tolerance = 10**7  #  0.01 seconds
-        self.assertTrue(0 <= delta < tolerance)
+        self.assertTrue(0 <= delta < tolerance, "0 <= %s < %s" % (delta, tolerance))
 
         # ensure written data can be read back
         # keep it at the end, we don't want to access file before time checks
