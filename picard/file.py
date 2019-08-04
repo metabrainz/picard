@@ -167,18 +167,18 @@ class File(QtCore.QObject, Item):
     def _copy_loaded_metadata(self, metadata):
         filename, _ = os.path.splitext(self.base_filename)
         metadata['~length'] = format_time(metadata.length)
-        if 'title' not in metadata:
-            metadata['title'] = filename
         if 'tracknumber' not in metadata:
             tracknumber = tracknum_from_filename(self.base_filename)
             if tracknumber != -1:
                 tracknumber = str(tracknumber)
                 metadata['tracknumber'] = tracknumber
-                if metadata['title'] == filename:
+                if 'title' not in metadata:
                     stripped_filename = filename.lstrip('0')
                     tnlen = len(tracknumber)
                     if stripped_filename[:tnlen] == tracknumber:
                         metadata['title'] = stripped_filename[tnlen:].lstrip()
+        if 'title' not in metadata:
+            metadata['title'] = filename
         self.orig_metadata = metadata
         self.metadata.copy(metadata)
 
