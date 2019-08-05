@@ -375,6 +375,7 @@ class File(QtCore.QObject, Item):
 
     def _format_filename(self, new_dirname, new_filename, metadata, settings):
         # TODO: tests !!
+        old_filename = new_filename
         new_filename, ext = self._fixed_splitext(new_filename)
         ext = ext.lower()
         new_filename = new_filename + ext
@@ -385,6 +386,8 @@ class File(QtCore.QObject, Item):
             new_filename = self._script_to_filename(naming_format, metadata, settings)
             # NOTE: the _script_to_filename strips the extension away
             new_filename = new_filename + ext
+            if not settings['rename_files']:
+                new_filename = os.path.join(os.path.dirname(new_filename), old_filename)
             if not settings['move_files']:
                 new_filename = os.path.basename(new_filename)
             win_compat = IS_WIN or settings['windows_compatibility']
@@ -416,7 +419,7 @@ class File(QtCore.QObject, Item):
             new_dirname = os.path.dirname(filename)
         new_filename = os.path.basename(filename)
 
-        if settings["rename_files"]:
+        if settings["rename_files"] or settings["move_files"]:
             new_filename = self._format_filename(new_dirname, new_filename, metadata, settings)
 
         new_path = os.path.join(new_dirname, new_filename)
