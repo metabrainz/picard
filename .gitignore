@@ -22,3 +22,4 @@ scripts/picard
 .*.sw[a-z]
 org.musicbrainz.Picard.appdata.xml
 win-version-info.txt
+picard.egg-info
