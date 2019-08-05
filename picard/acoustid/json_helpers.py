@@ -37,7 +37,6 @@ def _make_releases_node(recording):
                 medium_mb = {}
                 if 'format' in medium:
                     medium_mb['format'] = medium['format']
-                medium_mb['track'] = {}
                 medium_mb['track-count'] = medium['track_count']
                 release_mb['media'].append(medium_mb)
             release_list.append(release_mb)
