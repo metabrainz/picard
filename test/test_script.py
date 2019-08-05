@@ -372,10 +372,10 @@ class ScriptParserTest(PicardTestCase):
         context['tracknumber'] = 8
         context['title'] = u'title'
         result = self.parser.eval(DEFAULT_FILE_NAMING_FORMAT, context)
-        self.assertEqual(result, u'albumartist/album/1-08 title')
+        self.assertEqual(result, u'albumartist/\nalbum/\n1-08 title')
         context['~multiartist'] = '1'
         result = self.parser.eval(DEFAULT_FILE_NAMING_FORMAT, context)
-        self.assertEqual(result, u'albumartist/album/1-08 artist - title')
+        self.assertEqual(result, u'albumartist/\nalbum/\n1-08 artist - title')
 
     def test_default_NAT_filenaming(self):
         context = Metadata()
@@ -383,7 +383,7 @@ class ScriptParserTest(PicardTestCase):
         context['album'] = u'[non-album tracks]'
         context['title'] = u'title'
         result = self.parser.eval(DEFAULT_FILE_NAMING_FORMAT, context)
-        self.assertEqual(result, u'artist/title')
+        self.assertEqual(result, u'artist/\n\ntitle')
 
     def test_cmd_with_not_arguments(self):
         self.parser.eval("$noargstest()")
