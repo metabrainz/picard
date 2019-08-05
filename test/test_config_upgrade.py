@@ -26,7 +26,8 @@ from picard.config import (
     TextOption,
 )
 from picard.config_upgrade import (
-    OLD_DEFAULT_FILE_NAMING_FORMAT,
+    OLD_DEFAULT_FILE_NAMING_FORMAT_v1_3,
+    OLD_DEFAULT_FILE_NAMING_FORMAT_v2_1,
     upgrade_to_v1_0_0_final_0,
     upgrade_to_v1_3_0_dev_1,
     upgrade_to_v1_3_0_dev_2,
@@ -40,6 +41,7 @@ from picard.config_upgrade import (
     upgrade_to_v2_0_0_dev_3,
     upgrade_to_v2_1_0_dev_1,
     upgrade_to_v2_2_0_dev_3,
+    upgrade_to_v2_2_0_dev_4,
 )
 from picard.const import (
     DEFAULT_FILE_NAMING_FORMAT,
@@ -151,7 +153,7 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
         upgrade_to_v1_4_0_dev_4(self.config)
         self.assertEqual('xxx', self.config.setting['file_naming_format'])
 
-        self.config.setting['file_naming_format'] = OLD_DEFAULT_FILE_NAMING_FORMAT
+        self.config.setting['file_naming_format'] = OLD_DEFAULT_FILE_NAMING_FORMAT_v1_3
         upgrade_to_v1_4_0_dev_4(self.config)
         self.assertEqual(DEFAULT_FILE_NAMING_FORMAT, self.config.setting['file_naming_format'])
 
@@ -232,3 +234,14 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
         upgrade_to_v2_2_0_dev_3(self.config)
         self.assertNotIn('ignore_genres', self.config.setting)
         self.assertEqual(self.config.setting['genres_filter'], "-a\n-b\n-c")
+
+    def test_upgrade_to_v2_2_0_dev_4(self):
+        TextOption("setting", "file_naming_format", "")
+
+        self.config.setting['file_naming_format'] = 'xxx'
+        upgrade_to_v2_2_0_dev_4(self.config)
+        self.assertEqual('xxx', self.config.setting['file_naming_format'])
+
+        self.config.setting['file_naming_format'] = OLD_DEFAULT_FILE_NAMING_FORMAT_v2_1
+        upgrade_to_v2_2_0_dev_4(self.config)
+        self.assertEqual(DEFAULT_FILE_NAMING_FORMAT, self.config.setting['file_naming_format'])

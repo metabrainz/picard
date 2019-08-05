@@ -141,9 +141,9 @@ PROGRAM_UPDATE_LEVELS = OrderedDict(
 
 
 DEFAULT_FILE_NAMING_FORMAT = "$if2(%albumartist%,%artist%)/" \
-    "$if($ne(%albumartist%,),%album%/,)" \
+    "$if(%albumartist%,%album%/,)" \
     "$if($gt(%totaldiscs%,1),%discnumber%-,)" \
-    "$if($ne(%albumartist%,),$num(%tracknumber%,2) ,)" \
+    "$if($and(%albumartist%,%tracknumber%),$num(%tracknumber%,2) ,)" \
     "$if(%_multiartist%,%artist% - ,)" \
     "%title%"
 

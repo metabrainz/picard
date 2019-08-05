@@ -157,7 +157,6 @@ def upgrade_to_v1_3_0_dev_4(config):
             pass
 
 
-
 def upgrade_to_v1_4_0_dev_2(config):
     """Options "username" and "password" are removed and
     replaced with OAuth tokens
@@ -186,7 +185,7 @@ def upgrade_to_v1_4_0_dev_3(config):
     _s['ca_providers'] = newopts
 
 
-OLD_DEFAULT_FILE_NAMING_FORMAT = "$if2(%albumartist%,%artist%)/" \
+OLD_DEFAULT_FILE_NAMING_FORMAT_v1_3 = "$if2(%albumartist%,%artist%)/" \
     "$if($ne(%albumartist%,),%album%/)" \
     "$if($gt(%totaldiscs%,1),%discnumber%-,)" \
     "$if($ne(%albumartist%,),$num(%tracknumber%,2) ,)" \
@@ -197,7 +196,7 @@ OLD_DEFAULT_FILE_NAMING_FORMAT = "$if2(%albumartist%,%artist%)/" \
 def upgrade_to_v1_4_0_dev_4(config):
     """Adds trailing comma to default file names for scripts"""
     _s = config.setting
-    if _s["file_naming_format"] == OLD_DEFAULT_FILE_NAMING_FORMAT:
+    if _s["file_naming_format"] == OLD_DEFAULT_FILE_NAMING_FORMAT_v1_3:
         _s["file_naming_format"] = DEFAULT_FILE_NAMING_FORMAT
 
 
@@ -273,6 +272,21 @@ def upgrade_to_v2_2_0_dev_3(config):
             tags = ["-" + e.strip().lower() for e in _s[old_opt].split(',')]
             _s[new_opt] = "\n".join(tags)
         _s.remove(old_opt)
+
+
+OLD_DEFAULT_FILE_NAMING_FORMAT_v2_1 = "$if2(%albumartist%,%artist%)/" \
+    "$if($ne(%albumartist%,),%album%/,)" \
+    "$if($gt(%totaldiscs%,1),%discnumber%-,)" \
+    "$if($ne(%albumartist%,),$num(%tracknumber%,2) ,)" \
+    "$if(%_multiartist%,%artist% - ,)" \
+    "%title%"
+
+
+def upgrade_to_v2_2_0_dev_4(config):
+    """Improved default file naming script"""
+    _s = config.setting
+    if _s["file_naming_format"] == OLD_DEFAULT_FILE_NAMING_FORMAT_v2_1:
+        _s["file_naming_format"] = DEFAULT_FILE_NAMING_FORMAT
 
 
 def rename_option(config, old_opt, new_opt, option_type, default):
