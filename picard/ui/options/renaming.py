@@ -150,7 +150,7 @@ class RenamingOptionsPage(OptionsPage):
                     if s_enabled and s_text:
                         parser = ScriptParser()
                         parser.eval(s_text, file.metadata)
-            filename = file._make_filename(file.filename, file.metadata, settings)
+            filename = file.make_filename(file.filename, file.metadata, settings)
             if not settings["move_files"]:
                 return os.path.basename(filename)
             return filename

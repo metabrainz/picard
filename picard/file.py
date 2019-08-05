@@ -374,7 +374,6 @@ class File(QtCore.QObject, Item):
         return new_filename, ext
 
     def _format_filename(self, new_dirname, new_filename, metadata, settings):
-        # TODO: tests !!
         old_filename = new_filename
         new_filename, ext = self._fixed_splitext(new_filename)
         ext = ext.lower()
@@ -407,7 +406,7 @@ class File(QtCore.QObject, Item):
                 new_filename = unicodedata.normalize("NFD", new_filename)
         return new_filename
 
-    def _make_filename(self, filename, metadata, settings=None):
+    def make_filename(self, filename, metadata, settings=None):
         """Constructs file name based on metadata and file naming formats."""
         if settings is None:
             settings = config.setting
@@ -431,7 +430,7 @@ class File(QtCore.QObject, Item):
 
     def _rename(self, old_filename, metadata):
         new_filename, ext = os.path.splitext(
-            self._make_filename(old_filename, metadata))
+            self.make_filename(old_filename, metadata))
 
         if old_filename == new_filename + ext:
             return old_filename
