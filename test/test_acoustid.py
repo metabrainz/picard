@@ -41,7 +41,7 @@ class RecordingTest(AcoustIDTest):
         self.assertEqual(parsed_recording['id'], '017830c1-d1cf-46f3-8801-aaaa0a930223')
         self.assertEqual(parsed_recording['length'], 225000)
         self.assertEqual(parsed_recording['title'], 'Nina')
-        self.assertEqual(release['media'], [{'track': {}, 'format': 'CD', 'track-count': 12}])
+        self.assertEqual(release['media'], [{'format': 'CD', 'track-count': 12}])
         self.assertEqual(release['title'], 'x')
         self.assertEqual(release['id'], 'a2b25883-306f-4a53-809a-a234737c209d')
         self.assertEqual(release['release-group'], {'id': 'c24e5416-cd2e-4cff-851b-5faa78db98a2'})
