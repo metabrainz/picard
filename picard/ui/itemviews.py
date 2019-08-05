@@ -555,6 +555,8 @@ class BaseTreeView(QtWidgets.QTreeWidget):
                 item = parent.child(index)
             if item is not None:
                 target = item.obj
+        if isinstance(self, FileTreeView) and target is None:
+            target = self.tagger.unclustered_files
         log.debug("Drop target = %r", target)
         handled = False
         # text/uri-list
@@ -565,8 +567,6 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         # application/picard.album-list
         albums = data.data("application/picard.album-list")
         if albums:
-            if isinstance(self, FileTreeView) and target is None:
-                target = self.tagger.unclustered_files
             albums = [self.tagger.load_album(id) for id in bytes(albums).decode().split("\n")]
             self.tagger.move_files(self.tagger.get_files_from_objects(albums), target)
             handled = True
