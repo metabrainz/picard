@@ -26,6 +26,7 @@ from PyQt5 import (
 )
 
 from picard import config
+from picard.const.sys import IS_MACOS
 from picard.util import restore_method
 
 
@@ -62,6 +63,13 @@ class PicardDialog(QtWidgets.QDialog, PreserveGeometry):
 
     def __init__(self, parent=None):
         super().__init__(parent, self.flags)
+
+    def keyPressEvent(self, event):
+        if (IS_MACOS and event.modifiers() & QtCore.Qt.ControlModifier
+            and event.key() == QtCore.Qt.Key_W):
+            self.close()
+        else:
+            super().keyPressEvent(event)
 
 
 # With py3, QObjects are no longer hashable unless they have
