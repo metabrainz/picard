@@ -56,6 +56,7 @@ from picard.coverart.utils import (
 )
 from picard.util import webbrowser2
 
+from picard.ui import PicardDialog
 from picard.ui.ui_provider_options_caa import Ui_CaaOptions
 from picard.ui.util import StandardButton
 
@@ -199,7 +200,7 @@ class ListBox(QtWidgets.QListWidget):
             yield self.item(index).data(role)
 
 
-class CAATypesSelectorDialog(QtWidgets.QDialog):
+class CAATypesSelectorDialog(PicardDialog):
     """Display dialog box to select the CAA image types to include and exclude from download and use.
 
     Keyword Arguments:
