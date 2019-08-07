@@ -1,12 +1,15 @@
 import os
 import shutil
 from tempfile import mkdtemp
+import unittest
 
 from test.picardtestcase import PicardTestCase
 
 from picard import config
-from picard.const import DEFAULT_FILE_NAMING_FORMAT
-from picard.const.sys import IS_MACOS
+from picard.const.sys import (
+    IS_MACOS,
+    IS_WIN,
+)
 from picard.file import File
 from picard.metadata import Metadata
 
@@ -120,7 +123,7 @@ class TestPreserveTimes(PicardTestCase):
             os.remove(self.file.filename)
 
         with self.assertRaises(self.file.PreserveTimesUtimeError):
-            result = self.file._preserve_times(self.file.filename, save)
+            self.file._preserve_times(self.file.filename, save)
 
 
 class FileNamingTest(PicardTestCase):
@@ -145,29 +148,35 @@ class FileNamingTest(PicardTestCase):
 
     def test_make_filename_no_move_and_rename(self):
         filename = self.file.make_filename(self.file.filename, self.metadata)
-        self.assertEqual(self.file.filename, filename)
+        self.assertEqual(os.path.realpath(self.file.filename), filename)
 
     def test_make_filename_rename_only(self):
         config.setting['rename_files'] = True
         filename = self.file.make_filename(self.file.filename, self.metadata)
-        self.assertEqual('/somepath/sometitle.mp3', filename)
+        self.assertEqual(os.path.realpath('/somepath/sometitle.mp3'), filename)
 
     def test_make_filename_move_only(self):
         config.setting['move_files'] = True
         filename = self.file.make_filename(self.file.filename, self.metadata)
-        self.assertEqual('/media/music/somealbum/somefile.mp3', filename)
+        self.assertEqual(
+            os.path.realpath('/media/music/somealbum/somefile.mp3'),
+            filename)
 
     def test_make_filename_move_and_rename(self):
         config.setting['rename_files'] = True
         config.setting['move_files'] = True
         filename = self.file.make_filename(self.file.filename, self.metadata)
-        self.assertEqual('/media/music/somealbum/sometitle.mp3', filename)
+        self.assertEqual(
+            os.path.realpath('/media/music/somealbum/sometitle.mp3'),
+            filename)
 
     def test_make_filename_move_relative_path(self):
         config.setting['move_files'] = True
         config.setting['move_files_to'] = 'subdir'
         filename = self.file.make_filename(self.file.filename, self.metadata)
-        self.assertEqual('/somepath/subdir/somealbum/somefile.mp3', filename)
+        self.assertEqual(
+            os.path.realpath('/somepath/subdir/somealbum/somefile.mp3'),
+            filename)
 
     def test_make_filename_replace_trailing_dots(self):
         config.setting['rename_files'] = True
@@ -178,11 +187,23 @@ class FileNamingTest(PicardTestCase):
             'title': 'sometitle',
         })
         filename = self.file.make_filename(self.file.filename, metadata)
-        self.assertEqual('/media/music/somealbum_/sometitle.mp3', filename)
+        self.assertEqual(
+            os.path.realpath('/media/music/somealbum_/sometitle.mp3'),
+            filename)
 
+    @unittest.skipUnless(not IS_WIN, "non-windows test")
+    def test_make_filename_keep_trailing_dots(self):
+        config.setting['rename_files'] = True
+        config.setting['move_files'] = True
         config.setting['windows_compatibility'] = False
+        metadata = Metadata({
+            'album': 'somealbum.',
+            'title': 'sometitle',
+        })
         filename = self.file.make_filename(self.file.filename, metadata)
-        self.assertEqual('/media/music/somealbum./sometitle.mp3', filename)
+        self.assertEqual(
+            os.path.realpath('/media/music/somealbum./sometitle.mp3'),
+            filename)
 
     def test_make_filename_replace_leading_dots(self):
         config.setting['rename_files'] = True
@@ -193,4 +214,6 @@ class FileNamingTest(PicardTestCase):
             'title': '.sometitle',
         })
         filename = self.file.make_filename(self.file.filename, metadata)
-        self.assertEqual('/media/music/_somealbum/_sometitle.mp3', filename)
+        self.assertEqual(
+            os.path.realpath('/media/music/_somealbum/_sometitle.mp3'),
+            filename)
