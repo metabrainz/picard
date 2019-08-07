@@ -86,6 +86,7 @@ class OptionsDialog(PicardDialog):
 
     def __init__(self, default_page=None, parent=None):
         super().__init__(parent)
+        self.setWindowModality(QtCore.Qt.ApplicationModal)
 
         from picard.ui.ui_options import Ui_Dialog
         self.ui = Ui_Dialog()

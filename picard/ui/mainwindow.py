@@ -177,6 +177,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
         self.logDialog = LogView(self)
         self.historyDialog = HistoryView(self)
+        self.optionsDialog = None
 
         bottomLayout = QtWidgets.QHBoxLayout()
         bottomLayout.setContentsMargins(0, 0, 0, 0)
@@ -928,8 +929,15 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.show_options("about")
 
     def show_options(self, page=None):
-        dialog = OptionsDialog(page, self)
-        dialog.exec_()
+        if not self.optionsDialog:
+            self.optionsDialog = OptionsDialog(page, self)
+            self.optionsDialog.finished.connect(self.on_options_closed)
+        self.optionsDialog.show()
+        self.optionsDialog.raise_()
+        self.optionsDialog.activateWindow()
+
+    def on_options_closed(self):
+        self.optionsDialog = None
 
     def show_help(self):
         webbrowser2.goto('documentation')
