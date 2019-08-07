@@ -288,6 +288,7 @@ class ToolbarListItem(QtWidgets.QListWidgetItem):
 class AddActionDialog(PicardDialog):
     def __init__(self, action_list, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.setWindowModality(QtCore.Qt.WindowModal)
 
         layout = QtWidgets.QVBoxLayout(self)
 

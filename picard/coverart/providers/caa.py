@@ -217,7 +217,9 @@ class CAATypesSelectorDialog(PicardDialog):
             types_exclude = []
 
         self.setWindowTitle(_("Cover art types"))
+        self.setWindowModality(QtCore.Qt.WindowModal)
         self.layout = QtWidgets.QVBoxLayout(self)
+        self.layout.setSizeConstraint(QtWidgets.QLayout.SetFixedSize)
 
         # Create list boxes for dialog
         self.list_include = ListBox()
