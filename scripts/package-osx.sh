@@ -27,10 +27,10 @@ if [ -f scripts/appledev.p12 ] && [ -n "$appledev_p12_password" ]; then
     security unlock-keychain -p picard picard.keychain
     security list-keychains -d user -s picard.keychain
     security default-keychain -s picard.keychain
-    # The line below may become necessary when building on Sierra.
-    # See https://stackoverflow.com/q/39868578
-    # security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k picard picard.keychain
     security import scripts/appledev.p12 -k picard.keychain -P "$appledev_p12_password" -T /usr/bin/codesign
+    # The line below is necessary when building on Sierra.
+    # See https://stackoverflow.com/q/39868578
+    security set-key-partition-list -S apple-tool:,apple: -s -k picard picard.keychain
     security find-identity -p codesigning # For debugging
     codesign=1
 fi
