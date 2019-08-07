@@ -30,7 +30,7 @@ env:
 matrix:
   include:
   - os: osx
-    osx_image: xcode8.3
+    osx_image: xcode9
     language: generic
     env:
     - DISCID_VERSION=0.6.2
@@ -97,4 +97,4 @@ deploy:
   on:
     tags: true
     all_branches: true
-    condition: $TRAVIS_OSX_IMAGE = xcode8.3
+    condition: $TRAVIS_OSX_IMAGE = xcode9
