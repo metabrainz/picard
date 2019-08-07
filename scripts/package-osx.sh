@@ -11,8 +11,6 @@ rm -rf dist build locale
 python3 setup.py clean
 python3 setup.py build_ext
 python3 setup.py build_locales
-# Downgrade pip to 18.1 due to https://tickets.metabrainz.org/browse/PICARD-1456
-pip3 install pip==18.1
 pip3 install -r requirements-build.txt
 pyinstaller picard.spec
 
