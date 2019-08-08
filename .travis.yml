@@ -53,6 +53,11 @@ matrix:
     - FPCALC_VERSION=1.4.3
     - PYTHON_VERSION=3.7.4
     - INSTALL_DEPS="$PIP_INSTALL -r requirements-macos.txt"
+  - os: linux
+    before_install: skip
+    install: sudo apt-get update -qq && sudo apt-get
+      install -qq $LIBDISCID qt5-default
+    script: pip3 install .
   fast_finish: true
 
 before_cache:
