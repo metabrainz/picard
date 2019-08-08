@@ -31,6 +31,7 @@ from picard import config
 from picard.const import UI_LANGUAGES
 from picard.util import icontheme
 
+from picard.ui import PicardDialog
 from picard.ui.moveable_list_view import MoveableListView
 from picard.ui.options import (
     OptionsPage,
@@ -284,9 +285,10 @@ class ToolbarListItem(QtWidgets.QListWidgetItem):
         self.action_name = action_name
 
 
-class AddActionDialog(QtWidgets.QDialog):
+class AddActionDialog(PicardDialog):
     def __init__(self, action_list, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.setWindowModality(QtCore.Qt.WindowModal)
 
         layout = QtWidgets.QVBoxLayout(self)
 
