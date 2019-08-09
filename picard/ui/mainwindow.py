@@ -74,6 +74,7 @@ from picard.ui.passworddialog import (
     PasswordDialog,
     ProxyDialog,
 )
+from picard.ui.playertoolbar import Player
 from picard.ui.searchdialog.album import AlbumSearchDialog
 from picard.ui.searchdialog.track import TrackSearchDialog
 from picard.ui.tagsfromfilenames import TagsFromFileNamesDialog
@@ -81,15 +82,6 @@ from picard.ui.util import (
     MultiDirsSelectDialog,
     find_starting_directory,
 )
-
-
-try:
-    from PyQt5 import QtMultimedia
-except ImportError as e:
-    qt_multimedia_available = False
-    qt_multimedia_errmsg = e.msg
-else:
-    qt_multimedia_available = True
 
 
 ui_init = ExtensionPoint(label='ui_init')
@@ -121,19 +113,10 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.selected_objects = []
         self.ignore_selection_changes = False
         self.toolbar = None
-        self.player = None
-        if qt_multimedia_available:
-            player = QtMultimedia.QMediaPlayer(self)
-            availability = player.availability()
-            if availability == QtMultimedia.QMultimedia.Available:
-                self.player = player
-                self.player.error.connect(self._on_player_error)
-            elif availability == QtMultimedia.QMultimedia.ServiceMissing:
-                log.warning("Internal player: unavailable, service is missing")
-            else:
-                log.warning("Internal player: unavailable, status=%d", availability)
-        else:
-            log.warning("Internal player: unavailable, %s", qt_multimedia_errmsg)
+        player = Player(self)
+        if player.available:
+            self.player = player
+            self.player.error.connect(self._on_player_error)
         self.setupUi()
 
     def setupUi(self):
@@ -590,21 +573,6 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             self.check_update_action.setMenuRole(QtWidgets.QAction.ApplicationSpecificRole)
             self.check_update_action.triggered.connect(self.do_update_check)
 
-        if self.player:
-            self.internal_play_action = QtWidgets.QAction(self.style().standardIcon(QtWidgets.QStyle.SP_MediaPlay), _("Play"), self)
-            self.internal_play_action.setStatusTip(_("Play selected files in an internal player"))
-            self.internal_play_action.setEnabled(False)
-            self.internal_play_action.triggered.connect(self.internal_play)
-
-            self.pause_action = QtWidgets.QAction(self.style().standardIcon(QtWidgets.QStyle.SP_MediaPause), _("Pause"), self)
-            self.pause_action.setToolTip(_("Pause/resume"))
-            self.pause_action.setStatusTip(_("Pause or resume playing with an internal player"))
-            self.pause_action.setCheckable(True)
-            self.pause_action.setChecked(False)
-            self.pause_action.setEnabled(False)
-            self.pause_action.triggered.connect(self.pause)
-            self.player.stateChanged.connect(self.pause_action.setEnabled)
-
     def toggle_rename_files(self, checked):
         config.setting["rename_files"] = checked
 
@@ -696,13 +664,11 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         if config.setting["toolbar_show_labels"]:
             self.toolbar.setToolButtonStyle(QtCore.Qt.ToolButtonTextUnderIcon)
             if self.player:
-                self.player_toolbar.setToolButtonStyle(QtCore.Qt.ToolButtonTextUnderIcon)
-                self.volume_label.show()
+                self.player.toolbar.setToolButtonStyle(QtCore.Qt.ToolButtonTextUnderIcon)
         else:
             self.toolbar.setToolButtonStyle(QtCore.Qt.ToolButtonIconOnly)
             if self.player:
-                self.player_toolbar.setToolButtonStyle(QtCore.Qt.ToolButtonIconOnly)
-                self.volume_label.hide()
+                self.player.toolbar.setToolButtonStyle(QtCore.Qt.ToolButtonIconOnly)
 
     def create_toolbar(self):
         self.create_search_toolbar()
@@ -743,30 +709,10 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     def create_player_toolbar(self):
         """"Create a toolbar with internal player control elements"""
-        self.player_toolbar = toolbar = QtWidgets.QToolBar(_("Player"))
-        toolbar.setObjectName("player_toolbar")
-        self.insertToolBar(self.search_toolbar, self.player_toolbar)
-        self.player_toolbar_toggle_action = self.player_toolbar.toggleViewAction()
-        def add_toolbar_action(action):
-            toolbar.addAction(action)
-            widget = toolbar.widgetForAction(action)
-            widget.setFocusPolicy(QtCore.Qt.TabFocus)
-            widget.setAttribute(QtCore.Qt.WA_MacShowFocusRect)
-        add_toolbar_action(self.internal_play_action)
-        add_toolbar_action(self.pause_action)
-        self.volume_slider = QtWidgets.QSlider(toolbar)
-        self.volume_slider.setOrientation(QtCore.Qt.Horizontal)
-        self.volume_slider.setMinimum(0)
-        self.volume_slider.setMaximum(100)
-        self.volume_slider.valueChanged.connect(self.set_volume)
-        self.volume_slider.setValue(self.get_logarithmic_volume(int(config.persist["mediaplayer_volume"])))
-        self.volume_label = QtWidgets.QLabel(_("Volume"), toolbar)
-        self.volume_widget = QtWidgets.QWidget(toolbar)
-        vbox = QtWidgets.QVBoxLayout(self.volume_widget)
-        vbox.addWidget(self.volume_slider)
-        vbox.addWidget(self.volume_label)
-        toolbar.addWidget(self.volume_widget)
-        toolbar.hide() #Hide by default
+        toolbar = self.player.create_toolbar()
+        self.insertToolBar(self.search_toolbar, toolbar)
+        self.player_toolbar_toggle_action = toolbar.toggleViewAction()
+        toolbar.hide()  # Hide by default
 
     def create_search_toolbar(self):
         self.search_toolbar = toolbar = self.addToolBar(_("Search"))
@@ -985,49 +931,8 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         for file in files:
             QtGui.QDesktopServices.openUrl(self._openUrl(file.filename))
 
-    def internal_play(self):
-        """Play selected tracks with an internal player"""
-        self.player.stop()
-        playlist = QtMultimedia.QMediaPlaylist(self)
-        playlist.setPlaybackMode(QtMultimedia.QMediaPlaylist.Sequential)
-        playlist.addMedia([QtMultimedia.QMediaContent(self._openUrl(file.filename)) \
-                                                      for file in self.tagger.get_files_from_objects(self.selected_objects)])
-        self.player.setPlaylist(playlist)
-        self.player.play()
-        self.pause_action.setChecked(False)
-
-    def _on_player_error(self, error):
-        if error == QtMultimedia.QMediaPlayer.FormatError:
-            msg = _("Internal player: The format of a media resource isn't (fully) supported")
-        elif error == QtMultimedia.QMediaPlayer.AccessDeniedError:
-            msg = _("Internal player: There are not the appropriate permissions to play a media resource")
-        elif error == QtMultimedia.QMediaPlayer.ServiceMissingError:
-            msg = _("Internal player: A valid playback service was not found, playback cannot proceed")
-        else:
-            msg = _("Internal player: error, code=%d, msg=%s") % (error, self.player.errorString())
+    def _on_player_error(self, error, msg):
         self.set_statusbar_message(msg, echo=log.warning, translate=None)
-
-    def pause(self, is_paused):
-        """Toggle pause of an internal player"""
-        if is_paused:
-            self.player.pause()
-        else:
-            self.player.play()
-
-    def set_volume(self, slider_value):
-        """Convert to linear scale and set"""
-        linear_volume = QtMultimedia.QAudio.convertVolume(slider_value/100.,
-                                                          QtMultimedia.QAudio.LogarithmicVolumeScale,
-                                                          QtMultimedia.QAudio.LinearVolumeScale)
-        self.player.setVolume(QtCore.qRound(linear_volume * 100))
-
-    @staticmethod
-    def get_logarithmic_volume(player_value):
-        """Return logarithmic scale volume to set slider position"""
-        logarithmic_volume = QtMultimedia.QAudio.convertVolume(player_value/100.,
-                                                               QtMultimedia.QAudio.LinearVolumeScale,
-                                                               QtMultimedia.QAudio.LogarithmicVolumeScale)
-        return QtCore.qRound(logarithmic_volume * 100)
 
     def open_folder(self):
         files = self.tagger.get_files_from_objects(self.selected_objects)
@@ -1120,7 +1025,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.browser_lookup_action.setEnabled(can_browser_lookup)
         self.play_file_action.setEnabled(have_files)
         if self.player:
-            self.internal_play_action.setEnabled(have_files)
+            self.player.toolbar.play_action.setEnabled(have_files)
         self.open_folder_action.setEnabled(have_files)
         self.cut_action.setEnabled(have_objects)
         files = self.get_selected_or_unmatched_files()
@@ -1144,6 +1049,9 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
         # Clear any existing status bar messages
         self.set_statusbar_message("")
+
+        if self.player:
+            self.player.toolbar.set_objects(self.selected_objects)
 
         if len(objects) == 1:
             obj = list(objects)[0]
