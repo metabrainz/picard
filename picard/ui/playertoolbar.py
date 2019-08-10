@@ -145,6 +145,9 @@ class PlayerToolbar(QtWidgets.QToolBar):
     def __init__(self, parent, player):
         super().__init__(_("Player"), parent)
         self.setObjectName("player_toolbar")
+        self.setAllowedAreas(QtCore.Qt.TopToolBarArea
+            | QtCore.Qt.BottomToolBarArea
+            | QtCore.Qt.NoToolBarArea)
 
         self.player = player
 
