@@ -1052,7 +1052,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.set_statusbar_message("")
 
         if self.player:
-            self.player.toolbar.set_objects(self.selected_objects)
+            self.player.set_objects(self.selected_objects)
 
         if len(objects) == 1:
             obj = list(objects)[0]

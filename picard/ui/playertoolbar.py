@@ -64,8 +64,10 @@ class Player(QtCore.QObject):
         super().__init__(parent)
         self._player = None
         self._toolbar = None
+        self._selected_objects = []
         if qt_multimedia_available:
             player = QtMultimedia.QMediaPlayer(parent)
+            self.state_changed = player.stateChanged
             availability = player.availability()
             if availability == QtMultimedia.QMultimedia.Available:
                 self._player = player
@@ -89,8 +91,32 @@ class Player(QtCore.QObject):
         return self._player.volume()
 
     def create_toolbar(self):
-        self._toolbar = PlayerToolbar(self.parent(), self._player)
+        self._toolbar = PlayerToolbar(self.parent(), self)
         return self._toolbar
+
+    def set_objects(self, objects):
+        self._selected_objects = objects
+
+    def play(self):
+        """Play selected tracks with an internal player"""
+        self._player.stop()
+        playlist = QtMultimedia.QMediaPlaylist(self)
+        playlist.setPlaybackMode(QtMultimedia.QMediaPlaylist.Sequential)
+        playlist.addMedia([QtMultimedia.QMediaContent(QtCore.QUrl.fromLocalFile(file.filename))
+                          for file in self.tagger.get_files_from_objects(self._selected_objects)])
+        self._player.setPlaylist(playlist)
+        self._player.play()
+
+    def pause(self, is_paused):
+        """Toggle pause of an internal player"""
+        if is_paused:
+            self._player.pause()
+        else:
+            self._player.play()
+
+    def set_volume(self, slider_value):
+        """Convert to linear scale and set"""
+        self._player.setVolume(get_linear_volume(slider_value))
 
     def _on_error(self, error):
         if error == QtMultimedia.QMediaPlayer.FormatError:
@@ -110,7 +136,6 @@ class PlayerToolbar(QtWidgets.QToolBar):
         self.setObjectName("player_toolbar")
 
         self.player = player
-        self._selected_objects = []
 
         self.play_action = QtWidgets.QAction(self.style().standardIcon(QtWidgets.QStyle.SP_MediaPlay), _("Play"), self)
         self.play_action.setStatusTip(_("Play selected files in an internal player"))
@@ -123,8 +148,8 @@ class PlayerToolbar(QtWidgets.QToolBar):
         self.pause_action.setCheckable(True)
         self.pause_action.setChecked(False)
         self.pause_action.setEnabled(False)
-        self.pause_action.triggered.connect(self.pause)
-        self.player.stateChanged.connect(self.pause_action.setEnabled)
+        self.pause_action.triggered.connect(self.player.pause)
+        self.player.state_changed.connect(self.pause_action.setEnabled)
 
         self._add_toolbar_action(self.play_action)
         self._add_toolbar_action(self.pause_action)
@@ -132,7 +157,7 @@ class PlayerToolbar(QtWidgets.QToolBar):
         self.volume_slider.setOrientation(QtCore.Qt.Horizontal)
         self.volume_slider.setMinimum(0)
         self.volume_slider.setMaximum(100)
-        self.volume_slider.valueChanged.connect(self.set_volume)
+        self.volume_slider.valueChanged.connect(self.player.set_volume)
         self.volume_slider.setValue(
             get_logarithmic_volume(int(config.persist["mediaplayer_volume"])))
         self.volume_label = QtWidgets.QLabel(_("Volume"), self)
@@ -148,30 +173,9 @@ class PlayerToolbar(QtWidgets.QToolBar):
         widget.setFocusPolicy(QtCore.Qt.TabFocus)
         widget.setAttribute(QtCore.Qt.WA_MacShowFocusRect)
 
-    def set_objects(self, objects):
-        self._selected_objects = objects
-
     def play(self):
-        """Play selected tracks with an internal player"""
-        self.player.stop()
-        playlist = QtMultimedia.QMediaPlaylist(self)
-        playlist.setPlaybackMode(QtMultimedia.QMediaPlaylist.Sequential)
-        playlist.addMedia([QtMultimedia.QMediaContent(QtCore.QUrl.fromLocalFile(file.filename))
-                          for file in self.tagger.get_files_from_objects(self._selected_objects)])
-        self.player.setPlaylist(playlist)
         self.player.play()
         self.pause_action.setChecked(False)
-
-    def pause(self, is_paused):
-        """Toggle pause of an internal player"""
-        if is_paused:
-            self.player.pause()
-        else:
-            self.player.play()
-
-    def set_volume(self, slider_value):
-        """Convert to linear scale and set"""
-        self.player.setVolume(get_linear_volume(slider_value))
 
     def setToolButtonStyle(self, style):
         super().setToolButtonStyle(style)
