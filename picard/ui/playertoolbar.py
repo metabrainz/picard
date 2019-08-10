@@ -233,6 +233,18 @@ class PlayerToolbar(QtWidgets.QToolBar):
         label = _('%1.1f ×') % playback_rate
         self.player._player.setPlaybackRate(playback_rate)
         self.playback_speed_action.setText(label)
+        # Playback rate changes do not affect the current media playback.
+        # Force playback restart to have the rate change applied immediately.
+        player = self.player._player
+        player_state = player.state()
+        if player_state != QtMultimedia.QMediaPlayer.StoppedState:
+            position = player.position()
+            player.stop()
+            player.setPosition(position)
+            if player_state == QtMultimedia.QMediaPlayer.PlayingState:
+                player.play()
+            elif player_state == QtMultimedia.QMediaPlayer.PausedState:
+                player.pause()
 
     def on_duration_changed(self, duration):
         self.progress_slider.setMaximum(duration)
