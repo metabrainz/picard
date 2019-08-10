@@ -112,10 +112,10 @@ def pathcmp(a, b):
     return os.path.normcase(a) == os.path.normcase(b)
 
 
-def format_time(ms):
+def format_time(ms, display_zero=False):
     """Formats time in milliseconds to a string representation."""
     ms = float(ms)
-    if ms == 0:
+    if ms == 0 and not display_zero:
         return "?:??"
     duration_seconds = round(ms / 1000)
     if duration_seconds < 3600:

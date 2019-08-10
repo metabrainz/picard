@@ -218,7 +218,7 @@ class PlayerToolbar(QtWidgets.QToolBar):
 
     def on_position_changed(self, position):
         self.progress_slider.setValue(position)
-        self.position_label.setText(format_time(position))
+        self.position_label.setText(format_time(position, display_zero=True))
 
     def on_media_changed(self, media):
         if media.isNull():
