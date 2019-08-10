@@ -93,6 +93,9 @@ class Player(QtCore.QObject):
     def volume(self):
         return self._player.volume()
 
+    def playback_rate(self):
+        return self._player.playbackRate()
+
     def create_toolbar(self):
         self._toolbar = PlayerToolbar(self.parent(), self)
         return self._toolbar
@@ -145,12 +148,14 @@ class PlayerToolbar(QtWidgets.QToolBar):
 
         self.player = player
 
-        self.play_action = QtWidgets.QAction(self.style().standardIcon(QtWidgets.QStyle.SP_MediaPlay), _("Play"), self)
+        self.play_action = QtWidgets.QAction(self.style().standardIcon(
+            QtWidgets.QStyle.SP_MediaPlay), _("Play"), self)
         self.play_action.setStatusTip(_("Play selected files in an internal player"))
         self.play_action.setEnabled(False)
         self.play_action.triggered.connect(self.play)
 
-        self.pause_action = QtWidgets.QAction(self.style().standardIcon(QtWidgets.QStyle.SP_MediaPause), _("Pause"), self)
+        self.pause_action = QtWidgets.QAction(self.style().standardIcon(
+            QtWidgets.QStyle.SP_MediaPause), _("Pause"), self)
         self.pause_action.setToolTip(_("Pause/resume"))
         self.pause_action.setStatusTip(_("Pause or resume playing with an internal player"))
         self.pause_action.setCheckable(True)
@@ -184,13 +189,18 @@ class PlayerToolbar(QtWidgets.QToolBar):
         vbox.addWidget(self.media_name_label)
         self.addWidget(progress_widget)
 
+        self.playback_speed_action = QtWidgets.QAction('', self)
+        self.set_playback_rate(config.persist["mediaplayer_playback_rate"])
+        self.playback_speed_action.triggered.connect(self.show_playback_rate_popover)
+        self._add_toolbar_action(self.playback_speed_action)
+
         self.volume_slider = QtWidgets.QSlider(self)
         self.volume_slider.setOrientation(QtCore.Qt.Horizontal)
         self.volume_slider.setMinimum(0)
         self.volume_slider.setMaximum(100)
         self.volume_slider.valueChanged.connect(self.player.set_volume)
         self.volume_slider.setValue(
-            get_logarithmic_volume(int(config.persist["mediaplayer_volume"])))
+            get_logarithmic_volume(config.persist["mediaplayer_volume"]))
         self.volume_label = QtWidgets.QLabel(_("Volume"), self)
         self.volume_widget = QtWidgets.QWidget(self)
         vbox = QtWidgets.QVBoxLayout(self.volume_widget)
@@ -211,6 +221,18 @@ class PlayerToolbar(QtWidgets.QToolBar):
     def play(self):
         self.player.play()
         self.pause_action.setChecked(False)
+
+    def show_playback_rate_popover(self):
+        parent = self.widgetForAction(self.playback_speed_action)
+        current_rate = self.player._player.playbackRate()
+        speed_popover = PlaybackRatePopover(parent, current_rate)
+        speed_popover.value_changed.connect(self.set_playback_rate)
+        speed_popover.show()
+
+    def set_playback_rate(self, playback_rate):
+        label = _('%1.1f ×') % playback_rate
+        self.player._player.setPlaybackRate(playback_rate)
+        self.playback_speed_action.setText(label)
 
     def on_duration_changed(self, duration):
         self.progress_slider.setMaximum(duration)
@@ -234,3 +256,40 @@ class PlayerToolbar(QtWidgets.QToolBar):
             self.volume_label.show()
         else:
             self.volume_label.hide()
+
+
+class PlaybackRatePopover(QtWidgets.QFrame):
+    value_changed = QtCore.pyqtSignal(float)
+
+    def __init__(self, parent, value):
+        super().__init__(parent)
+        self.setWindowFlags(QtCore.Qt.Popup | QtCore.Qt.FramelessWindowHint)
+
+        vbox = QtWidgets.QVBoxLayout(self)
+        speed_label = QtWidgets.QLabel(_("Playback speed"), self)
+        speed_label.setAlignment(QtCore.Qt.AlignCenter)
+        vbox.addWidget(speed_label)
+        speed_slider = QtWidgets.QSlider(self)
+        speed_slider.setOrientation(QtCore.Qt.Horizontal)
+        # In 0.1 steps from 0.5 to 1.5
+        multiplier = 10.0
+        speed_slider.setMinimum(5)
+        speed_slider.setMaximum(15)
+        speed_slider.setSingleStep(1)
+        speed_slider.setPageStep(1)
+        speed_slider.setTickInterval(1)
+        speed_slider.setTickPosition(QtWidgets.QSlider.TicksBelow)
+        speed_slider.setValue(value * multiplier)
+        speed_slider.valueChanged.connect(lambda v: self.value_changed.emit(v / multiplier))
+        vbox.addWidget(speed_slider)
+
+    def show(self):
+        super().show()
+        self._update_position()
+
+    def _update_position(self):
+        parent = self.parent()
+        x = -(self.width() - parent.width()) / 2
+        y = -self.height()
+        pos = parent.mapToGlobal(QtCore.QPoint(x, y))
+        self.move(pos)

@@ -105,7 +105,8 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         config.BoolOption("persist", "view_toolbar", True),
         config.BoolOption("persist", "view_file_browser", False),
         config.TextOption("persist", "current_directory", ""),
-        config.IntOption("persist", "mediaplayer_volume", "50"),
+        config.FloatOption("persist", "mediaplayer_playback_rate", 1.0),
+        config.IntOption("persist", "mediaplayer_volume", 50),
     ]
 
     def __init__(self, parent=None):
@@ -207,6 +208,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             event.ignore()
             return
         if self.player:
+            config.persist['mediaplayer_playback_rate'] = self.player.playback_rate()
             config.persist['mediaplayer_volume'] = self.player.volume()
         self.saveWindowState()
         event.accept()
