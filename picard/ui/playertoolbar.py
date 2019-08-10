@@ -19,6 +19,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+import os
+
 from PyQt5 import (
     QtCore,
     QtWidgets,
@@ -28,6 +30,7 @@ from picard import (
     config,
     log,
 )
+from picard.util import format_time
 
 
 try:
@@ -118,6 +121,9 @@ class Player(QtCore.QObject):
         """Convert to linear scale and set"""
         self._player.setVolume(get_linear_volume(slider_value))
 
+    def set_position(self, position):
+        self._player.setPosition(position)
+
     def _on_error(self, error):
         if error == QtMultimedia.QMediaPlayer.FormatError:
             msg = _("Internal player: The format of a media resource isn't (fully) supported")
@@ -153,6 +159,28 @@ class PlayerToolbar(QtWidgets.QToolBar):
 
         self._add_toolbar_action(self.play_action)
         self._add_toolbar_action(self.pause_action)
+
+        self.progress_slider = QtWidgets.QSlider(self)
+        self.progress_slider.setOrientation(QtCore.Qt.Horizontal)
+        self.progress_slider.sliderMoved.connect(self.player.set_position)
+        self.media_name_label = QtWidgets.QLabel(self)
+        self.media_name_label.setAlignment(QtCore.Qt.AlignCenter)
+
+        slider_container = QtWidgets.QWidget(self)
+        hbox = QtWidgets.QHBoxLayout(slider_container)
+        hbox.setContentsMargins(0, 0, 0, 0)
+        self.position_label = QtWidgets.QLabel("0:00", self)
+        self.duration_label = QtWidgets.QLabel(format_time(0), self)
+        hbox.addWidget(self.position_label)
+        hbox.addWidget(self.progress_slider)
+        hbox.addWidget(self.duration_label)
+
+        progress_widget = QtWidgets.QWidget(self)
+        vbox = QtWidgets.QVBoxLayout(progress_widget)
+        vbox.addWidget(slider_container)
+        vbox.addWidget(self.media_name_label)
+        self.addWidget(progress_widget)
+
         self.volume_slider = QtWidgets.QSlider(self)
         self.volume_slider.setOrientation(QtCore.Qt.Horizontal)
         self.volume_slider.setMinimum(0)
@@ -167,6 +195,10 @@ class PlayerToolbar(QtWidgets.QToolBar):
         vbox.addWidget(self.volume_label)
         self.addWidget(self.volume_widget)
 
+        self.player._player.durationChanged.connect(self.on_duration_changed)
+        self.player._player.positionChanged.connect(self.on_position_changed)
+        self.player._player.currentMediaChanged.connect(self.on_media_changed)
+
     def _add_toolbar_action(self, action):
         self.addAction(action)
         widget = self.widgetForAction(action)
@@ -176,6 +208,18 @@ class PlayerToolbar(QtWidgets.QToolBar):
     def play(self):
         self.player.play()
         self.pause_action.setChecked(False)
+
+    def on_duration_changed(self, duration):
+        self.progress_slider.setMaximum(duration)
+        self.duration_label.setText(format_time(duration))
+
+    def on_position_changed(self, position):
+        self.progress_slider.setValue(position)
+        self.position_label.setText(format_time(position))
+
+    def on_media_changed(self, media):
+        url = media.canonicalUrl().toString()
+        self.media_name_label.setText(os.path.basename(url))
 
     def setToolButtonStyle(self, style):
         super().setToolButtonStyle(style)
