@@ -711,7 +711,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     def create_player_toolbar(self):
         """"Create a toolbar with internal player control elements"""
         toolbar = self.player.create_toolbar()
-        self.insertToolBar(self.search_toolbar, toolbar)
+        self.addToolBar(QtCore.Qt.BottomToolBarArea, toolbar)
         self.player_toolbar_toggle_action = toolbar.toggleViewAction()
         toolbar.hide()  # Hide by default
 
