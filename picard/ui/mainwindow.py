@@ -1025,8 +1025,6 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.autotag_action.setEnabled(can_autotag)
         self.browser_lookup_action.setEnabled(can_browser_lookup)
         self.play_file_action.setEnabled(have_files)
-        if self.player:
-            self.player.toolbar.play_action.setEnabled(have_files)
         self.open_folder_action.setEnabled(have_files)
         self.cut_action.setEnabled(have_objects)
         files = self.get_selected_or_unmatched_files()

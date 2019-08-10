@@ -99,6 +99,8 @@ class Player(QtCore.QObject):
 
     def set_objects(self, objects):
         self._selected_objects = objects
+        player_enabled = len(objects) > 0
+        self._toolbar.play_action.setEnabled(player_enabled)
 
     def play(self):
         """Play selected tracks with an internal player"""
@@ -162,6 +164,7 @@ class PlayerToolbar(QtWidgets.QToolBar):
 
         self.progress_slider = QtWidgets.QSlider(self)
         self.progress_slider.setOrientation(QtCore.Qt.Horizontal)
+        self.progress_slider.setEnabled(False)
         self.progress_slider.sliderMoved.connect(self.player.set_position)
         self.media_name_label = QtWidgets.QLabel(self)
         self.media_name_label.setAlignment(QtCore.Qt.AlignCenter)
@@ -218,8 +221,12 @@ class PlayerToolbar(QtWidgets.QToolBar):
         self.position_label.setText(format_time(position))
 
     def on_media_changed(self, media):
-        url = media.canonicalUrl().toString()
-        self.media_name_label.setText(os.path.basename(url))
+        if media.isNull():
+            self.progress_slider.setEnabled(False)
+        else:
+            url = media.canonicalUrl().toString()
+            self.media_name_label.setText(os.path.basename(url))
+            self.progress_slider.setEnabled(True)
 
     def setToolButtonStyle(self, style):
         super().setToolButtonStyle(style)
