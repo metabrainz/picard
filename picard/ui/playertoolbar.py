@@ -192,10 +192,9 @@ class PlayerToolbar(QtWidgets.QToolBar):
         vbox.addWidget(self.media_name_label)
         self.addWidget(progress_widget)
 
-        self.playback_speed_action = QtWidgets.QAction('', self)
-        self.set_playback_rate(config.persist["mediaplayer_playback_rate"])
-        self.playback_speed_action.triggered.connect(self.show_playback_rate_popover)
-        self._add_toolbar_action(self.playback_speed_action)
+        playback_rate_button = PlaybackRateButton(self, config.persist["mediaplayer_playback_rate"])
+        playback_rate_button.playback_rate_changed.connect(self.set_playback_rate)
+        self.addWidget(playback_rate_button)
 
         self.volume_slider = QtWidgets.QSlider(self)
         self.volume_slider.setOrientation(QtCore.Qt.Horizontal)
@@ -225,17 +224,8 @@ class PlayerToolbar(QtWidgets.QToolBar):
         self.player.play()
         self.pause_action.setChecked(False)
 
-    def show_playback_rate_popover(self):
-        parent = self.widgetForAction(self.playback_speed_action)
-        current_rate = self.player._player.playbackRate()
-        speed_popover = PlaybackRatePopover(parent, current_rate)
-        speed_popover.value_changed.connect(self.set_playback_rate)
-        speed_popover.show()
-
     def set_playback_rate(self, playback_rate):
-        label = _('%1.1f ×') % playback_rate
         self.player._player.setPlaybackRate(playback_rate)
-        self.playback_speed_action.setText(label)
         # Playback rate changes do not affect the current media playback.
         # Force playback restart to have the rate change applied immediately.
         player = self.player._player
@@ -271,6 +261,44 @@ class PlayerToolbar(QtWidgets.QToolBar):
             self.volume_label.show()
         else:
             self.volume_label.hide()
+
+
+class PlaybackRateButton(QtWidgets.QToolButton):
+    playback_rate_changed = QtCore.pyqtSignal(float)
+
+    def __init__(self, parent, playback_rate):
+        super().__init__(parent)
+        self.set_playback_rate(playback_rate)
+        self.clicked.connect(self.show_playback_rate_popover)
+
+    def show_playback_rate_popover(self):
+        speed_popover = PlaybackRatePopover(self, self.playback_rate)
+        speed_popover.value_changed.connect(self.set_playback_rate)
+        speed_popover.value_changed.connect(self.playback_rate_changed)
+        speed_popover.show()
+
+    def set_playback_rate(self, playback_rate):
+        self.playback_rate = playback_rate
+        label = _('%1.1f ×') % playback_rate
+        self.setText(label)
+
+    def event(self, event):
+        if event.type() == QtCore.QEvent.Wheel:
+            delta = event.angleDelta().y()
+            # Incrementing repeatadly in 0.1 steps would cause floating point
+            # rounding issues. Do the calculation in whole numbers to prevent this.
+            new_rate = int(self.playback_rate * 10)
+            if delta > 0:
+                new_rate += 1
+            elif delta < 0:
+                new_rate -= 1
+            new_rate = min(max(new_rate, 5), 15) / 10.0
+            if new_rate != self.playback_rate:
+                self.set_playback_rate(new_rate)
+                self.playback_rate_changed.emit(new_rate)
+            return True
+
+        return super().event(event)
 
 
 class PlaybackRatePopover(QtWidgets.QFrame):
