@@ -12,17 +12,19 @@
 #   LI Daobing <lidaobing@gmail.com>, 2007, 2008, 2009, 2010, 2011
 # LI Daobing <lidaobing@gmail.com>, 2007, 2008, 2009, 2010
 # LXY <767763591@qq.com>, 2016
-# 毛瑞盈 <mry_33@163.com>, 2014
+# Maureen <mry_33@163.com>, 2019
+# MR <admin@mr-cn.net>, 2019
+# Maureen <mry_33@163.com>, 2014
 # Naiwei Zheng <i@rix.li>, 2018
 # Niklas Berglund <niklas.berglund@gmail.com>, 2016
 #   Tobias Toedter <t.toedter@gmx.net>, 2007
 #   - Wang Jian <lark@linux.net.cn>, 2000
 # YunQiang Su <wzssyqa@gmail.com>, 2011
-# 毛瑞盈 <mry_33@163.com>, 2014
+# Maureen <mry_33@163.com>, 2014,2019
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2019-01-22 20:58+0000\n"
+"PO-Revision-Date: 2019-08-08 09:30+0000\n"
 "Last-Translator: yvanz\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/musicbrainz/musicbrainz/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
@@ -44,7 +46,7 @@ msgctxt "work_type"
 msgid ""
 "\"Sonata\" is a general term used to describe small scale (very often solo "
 "or solo + keyboard) instrumental works, initially in baroque music."
-msgstr "”奏鸣曲“是一种源自巴洛克音乐的小规模(常常仅有独唱或者仅有独唱和键盘手)的音乐。"
+msgstr "“奏鸣曲”是一种源自巴洛克音乐的小规模(常常仅有独唱或者仅有独唱和键盘手)的音乐。"
 
 #: DB:medium_format/name:54
 msgctxt "medium_format"
@@ -99,7 +101,7 @@ msgstr "8寸激光影碟"
 #: DB:medium_format/name:78
 msgctxt "medium_format"
 msgid "8-Track Cartridge"
-msgstr ""
+msgstr "8轨道磁带"
 
 #: DB:medium_format/name:34
 msgctxt "medium_format"
@@ -169,7 +171,7 @@ msgctxt "instrument_type"
 msgid ""
 "A grouping of related but different instruments, like the different violin-"
 "like instruments"
-msgstr ""
+msgstr "指由一些不同但相关的乐器组成的乐器统称，就像弦乐乐器是提琴类乐器的统称一样。"
 
 #: DB:work_attribute_type_allowed_value/value:28
 msgctxt "work_attribute_type_allowed_value"
@@ -220,7 +222,7 @@ msgstr "底页带有 CD 袋的胶订书"
 msgctxt "place_type"
 msgid ""
 "A place (generally a factory) at which physical media are manufactured."
-msgstr ""
+msgstr "指用来制造媒体设备的场所。（通常为工厂）"
 
 #: DB:place_type/description:5
 msgctxt "place_type"
@@ -362,7 +364,7 @@ msgctxt "instrument_type"
 msgid ""
 "A standard grouping of instruments often played together, like a string "
 "quartet"
-msgstr ""
+msgstr "指经常搭配在一起演奏的标准化乐队，例如演奏弦乐四重奏的乐队"
 
 #: DB:work_type/description:6
 msgctxt "work_type"
@@ -413,7 +415,7 @@ msgstr "降A小调"
 #: DB:work_attribute_type_allowed_value/value:817
 msgctxt "work_attribute_type_allowed_value"
 msgid "A-sharp major"
-msgstr ""
+msgstr "升A大调"
 
 #: DB:work_attribute_type_allowed_value/value:30
 msgctxt "work_attribute_type_allowed_value"
@@ -483,12 +485,12 @@ msgstr "艾且塔拉布"
 #: DB:work_attribute_type_allowed_value/value:848
 msgctxt "work_attribute_type_allowed_value"
 msgid "Adānā"
-msgstr ""
+msgstr "阿达纳（印度拉加）"
 
 #: DB:work_attribute_type_allowed_value/value:849
 msgctxt "work_attribute_type_allowed_value"
 msgid "Adānā malhār"
-msgstr ""
+msgstr "阿达纳马尔哈（印度拉加）"
 
 #: DB:work_attribute_type_allowed_value/value:308
 msgctxt "work_attribute_type_allowed_value"
@@ -898,12 +900,12 @@ msgstr "降B小调"
 #: DB:work_attribute_type_allowed_value/value:818
 msgctxt "work_attribute_type_allowed_value"
 msgid "B-sharp major"
-msgstr ""
+msgstr "升B大调"
 
 #: DB:work_attribute_type_allowed_value/value:819
 msgctxt "work_attribute_type_allowed_value"
 msgid "B-sharp minor"
-msgstr ""
+msgstr "升B小调"
 
 #: DB:work_attribute_type/name:7
 msgctxt "work_attribute_type"
@@ -1238,6 +1240,11 @@ msgctxt "label_type"
 msgid "Bootleg Production"
 msgstr "非法制作的产品"
 
+#: DB:release_packaging/name:19
+msgctxt "release_packaging"
+msgid "Box"
+msgstr ""
+
 #: DB:work_attribute_type_allowed_value/value:607
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bozlak"
@@ -1342,7 +1349,7 @@ msgstr "降C大调"
 #: DB:work_attribute_type_allowed_value/value:812
 msgctxt "work_attribute_type_allowed_value"
 msgid "C-flat minor"
-msgstr ""
+msgstr "降C小调"
 
 #: DB:work_attribute_type_allowed_value/value:4
 msgctxt "work_attribute_type_allowed_value"
@@ -1655,7 +1662,7 @@ msgstr "降D小调"
 #: DB:work_attribute_type_allowed_value/value:813
 msgctxt "work_attribute_type_allowed_value"
 msgid "D-sharp major"
-msgstr ""
+msgstr "升D大调"
 
 #: DB:work_attribute_type_allowed_value/value:10
 msgctxt "work_attribute_type_allowed_value"
@@ -2148,7 +2155,7 @@ msgstr "降E小调"
 #: DB:work_attribute_type_allowed_value/value:814
 msgctxt "work_attribute_type_allowed_value"
 msgid "E-sharp major"
-msgstr ""
+msgstr "升A大调"
 
 #: DB:work_attribute_type_allowed_value/value:15
 msgctxt "work_attribute_type_allowed_value"
@@ -2183,7 +2190,7 @@ msgstr "增强CD"
 #: DB:instrument_type/name:6
 msgctxt "instrument_type"
 msgid "Ensemble"
-msgstr ""
+msgstr "乐团"
 
 #: DB:work_attribute_type_allowed_value/value:356
 msgctxt "work_attribute_type_allowed_value"
@@ -2213,7 +2220,7 @@ msgstr "事件名称"
 #: DB:series_type/name:6
 msgctxt "series_type"
 msgid "Event series"
-msgstr ""
+msgstr "一系列的演出计划"
 
 #: DB:work_attribute_type_allowed_value/value:729
 msgctxt "work_attribute_type_allowed_value"
@@ -2318,7 +2325,7 @@ msgstr "法赫特"
 #: DB:instrument_type/name:7
 msgctxt "instrument_type"
 msgid "Family"
-msgstr ""
+msgstr "族"
 
 #: DB:work_attribute_type_allowed_value/value:615
 msgctxt "work_attribute_type_allowed_value"
@@ -2410,7 +2417,7 @@ msgctxt "medium_format"
 msgid ""
 "Flat discs with grooves used in phonographs/gramophones. For shellac and "
 "vinyl records, use that specifically"
-msgstr ""
+msgstr "留声机里使用的带沟槽的碟片，专门用于虫胶和黑胶唱片的录制。"
 
 #: DB:medium_format/name:51
 msgctxt "medium_format"
@@ -2428,14 +2435,14 @@ msgstr "软唱片是由较薄，可弯曲塑胶片通过模压刻上音轨的留
 #: DB:medium_format/name:76
 msgctxt "medium_format"
 msgid "Floppy Disk"
-msgstr ""
+msgstr "软盘"
 
 #: DB:gender/description:4
 msgctxt "gender"
 msgid ""
 "For cases where gender just doesn't apply at all (like companies entered as "
 "artists)."
-msgstr ""
+msgstr "在区分性别无用的情况下。（就像大公司以艺术家的身份加入一样）"
 
 #: DB:work_attribute_type/name:16
 msgctxt "work_attribute_type"
@@ -2485,7 +2492,7 @@ msgstr "降 G 大调"
 #: DB:work_attribute_type_allowed_value/value:816
 msgctxt "work_attribute_type_allowed_value"
 msgid "G-flat minor"
-msgstr ""
+msgstr "降G小调"
 
 #: DB:work_attribute_type_allowed_value/value:24
 msgctxt "work_attribute_type_allowed_value"
@@ -3081,6 +3088,16 @@ msgstr "比利时版权协会SABAM的代号"
 msgctxt "work_attribute_type"
 msgid "ID for the International Copyright Enterprise"
 msgstr "国际版权企业的代号"
+
+#: DB:work_attribute_type/description:3
+msgctxt "work_attribute_type"
+msgid "ID for the Japanese rights society JASRAC"
+msgstr "日本音乐著作权协会JASRAC（社团法人日本音乐著作权协会）ID"
+
+#: DB:work_attribute_type/description:33
+msgctxt "work_attribute_type"
+msgid "ID for the Japanese rights society NexTone"
+msgstr "日本音乐著作权协会Nextone ID"
 
 #: DB:work_attribute_type/description:27
 msgctxt "work_attribute_type"
@@ -4576,6 +4593,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Nevruzi Rumi"
 msgstr "那吾肉齐卢米"
 
+#: DB:work_attribute_type/name:33
+msgctxt "work_attribute_type"
+msgid "NexTone ID"
+msgstr ""
+
 #: DB:work_attribute_type_allowed_value/value:471
 msgctxt "work_attribute_type_allowed_value"
 msgid "Neşataver"
@@ -4950,7 +4972,7 @@ msgstr "佩什雷夫"
 #: DB:medium_format/name:73
 msgctxt "medium_format"
 msgid "Phonograph record"
-msgstr ""
+msgstr "留声机唱片"
 
 #: DB:medium_format/name:15
 msgctxt "medium_format"
@@ -4967,6 +4989,16 @@ msgctxt "alias_type"
 msgid "Place name"
 msgstr "地名"
 
+#: DB:release_packaging/description:20
+msgctxt "release_packaging"
+msgid "Plastic CD tray inside a cardboard slipcover"
+msgstr ""
+
+#: DB:release_packaging/name:18
+msgctxt "release_packaging"
+msgid "Plastic Sleeve"
+msgstr ""
+
 #: DB:work_type/name:28
 msgctxt "work_type"
 msgid "Play"
@@ -4975,7 +5007,7 @@ msgstr "播放"
 #: DB:medium_format/name:74
 msgctxt "medium_format"
 msgid "PlayTape"
-msgstr ""
+msgstr "PlayTape磁带"
 
 #: DB:medium_format/name:45
 msgctxt "medium_format"
@@ -5005,7 +5037,7 @@ msgstr ""
 #: DB:place_type/name:8
 msgctxt "place_type"
 msgid "Pressing plant"
-msgstr ""
+msgstr "（黑胶唱片）压制厂"
 
 #: DB:label_type/name:3
 msgctxt "label_type"
@@ -5341,7 +5373,7 @@ msgstr "拉格 (卡纳提克)"
 #: DB:work_attribute_type/name:32
 msgctxt "work_attribute_type"
 msgid "Rāga (Hindustani)"
-msgstr ""
+msgstr "拉加（印度斯坦）"
 
 #: DB:work_attribute_type_allowed_value/value:1003
 msgctxt "work_attribute_type_allowed_value"
@@ -5731,6 +5763,11 @@ msgstr "希尔托"
 #: DB:work_attribute_type_allowed_value/value:843
 msgctxt "work_attribute_type_allowed_value"
 msgid "Sitārkhānī"
+msgstr ""
+
+#: DB:release_packaging/name:20
+msgctxt "release_packaging"
+msgid "Slidepack"
 msgstr ""
 
 #: DB:release_packaging/name:2
@@ -6149,6 +6186,13 @@ msgid ""
 "medium."
 msgstr "复合SACD的CD面。SACD面应视为独立媒介。"
 
+#: DB:medium_format/description:82
+msgctxt "medium_format"
+msgid ""
+"The CD side of a vinyl + CD VinylDisc. The vinyl side should be added as a "
+"separate medium."
+msgstr "黑胶光盘二合一碟的CD面。黑胶面材料为单独添加的介质。"
+
 #: DB:medium_format/description:60
 msgctxt "medium_format"
 msgid ""
@@ -6179,6 +6223,13 @@ msgid ""
 "separate medium."
 msgstr "双面碟的DVD(video)面。CD面应视为独立媒介。"
 
+#: DB:medium_format/description:80
+msgctxt "medium_format"
+msgid ""
+"The DVD side of a vinyl + DVD VinylDisc. The vinyl side should be added as a"
+" separate medium."
+msgstr "黑胶光盘二合一碟的DVD面。黑胶面材料为单独添加的介质。"
+
 #: DB:medium_format/description:64
 msgctxt "medium_format"
 msgid ""
@@ -6205,6 +6256,13 @@ msgstr "轻歌剧是一种轻型歌剧，在音乐和主题方面都是如此。
 msgctxt "release_packaging"
 msgid "The traditional CD case, made of hard, brittle plastic."
 msgstr "传统 CD 盒由硬脆塑料制成。"
+
+#: DB:medium_format/description:81
+msgctxt "medium_format"
+msgid ""
+"The vinyl side of a VinylDisc. The CD or DVD side should be added as a "
+"separate medium."
+msgstr "黑胶光盘二合一碟的黑胶面。CD/DVD面材料为单独添加的介质。"
 
 #: DB:work_type/description:23
 msgctxt "work_type"
@@ -6502,6 +6560,21 @@ msgstr "黑胶"
 msgctxt "medium_format"
 msgid "VinylDisc"
 msgstr "黑胶碟片"
+
+#: DB:medium_format/name:82
+msgctxt "medium_format"
+msgid "VinylDisc (CD side)"
+msgstr "黑胶光盘二合一碟（CD面）"
+
+#: DB:medium_format/name:80
+msgctxt "medium_format"
+msgid "VinylDisc (DVD side)"
+msgstr "黑胶光盘二合一碟（DVD面）"
+
+#: DB:medium_format/name:81
+msgctxt "medium_format"
+msgid "VinylDisc (Vinyl side)"
+msgstr "黑胶光盘二合一碟（黑胶面）"
 
 #: DB:work_attribute_type_allowed_value/value:259
 #: DB:work_attribute_type_allowed_value/value:1047

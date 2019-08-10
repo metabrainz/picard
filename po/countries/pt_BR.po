@@ -3,13 +3,13 @@
 # André Aparecido Caniato <andre_caniato@yahoo.com.br>, 2015
 # Eduardo Bastos <eduardorochacg@gmail.com>, 2012
 # lampih <lampih@gmail.com>, 2012
-# Lucas Gomes <x8lucas8x@gmail.com>, 2012
+# Lucas Lira Gomes <x8lucas8x@gmail.com>, 2012
 # Marco Costa <mmarcottulio@gmail.com>, 2012
 # Marcus Vinícius Marques, 2014
 # Marco Costa <mmarcottulio@gmail.com>, 2012
 # rafaelbrandao <rblcin@gmail.com>, 2012
 # davitf <transifex@davitf.com>, 2012
-# Lucas Gomes <x8lucas8x@gmail.com>, 2012
+# Lucas Lira Gomes <x8lucas8x@gmail.com>, 2012
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"

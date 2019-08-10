@@ -10,8 +10,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2019-01-23 08:10+0000\n"
-"Last-Translator: Maurits Meulenbelt <mfmeulenbelt@gmail.com>\n"
+"PO-Revision-Date: 2019-08-08 09:30+0000\n"
+"Last-Translator: yvanz\n"
 "Language-Team: Dutch (http://www.transifex.com/musicbrainz/musicbrainz/language/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1225,6 +1225,11 @@ msgstr "Bootleg"
 msgctxt "label_type"
 msgid "Bootleg Production"
 msgstr "Onofficiële (bootleg) productie"
+
+#: DB:release_packaging/name:19
+msgctxt "release_packaging"
+msgid "Box"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:607
 msgctxt "work_attribute_type_allowed_value"
@@ -3063,22 +3068,32 @@ msgstr "ICE-ID"
 #: DB:work_attribute_type/description:28
 msgctxt "work_attribute_type"
 msgid "ID for the Belgian rights society SABAM"
-msgstr "Identificatiecode voor de Belgische auteursrechtenorganisatie SABAM"
+msgstr "Identificatiecode van de Belgische auteursrechtenorganisatie SABAM"
 
 #: DB:work_attribute_type/description:29
 msgctxt "work_attribute_type"
 msgid "ID for the International Copyright Enterprise"
-msgstr "Identificatiecode voor de International Copyright Enterprise"
+msgstr "Identificatiecode van de International Copyright Enterprise"
+
+#: DB:work_attribute_type/description:3
+msgctxt "work_attribute_type"
+msgid "ID for the Japanese rights society JASRAC"
+msgstr "Identificatiecode van de Japanse auteursrechtenorganisatie JASRAC"
+
+#: DB:work_attribute_type/description:33
+msgctxt "work_attribute_type"
+msgid "ID for the Japanese rights society NexTone"
+msgstr "Identificatiecode van de Japanse auteursrechtenorganisatie NexTone"
 
 #: DB:work_attribute_type/description:27
 msgctxt "work_attribute_type"
 msgid "ID for the Mexican rights society SACM"
-msgstr "Identificatiecode voor de Mexicaanse auteursrechtenorganisatie SACM"
+msgstr "Identificatiecode van de Mexicaanse auteursrechtenorganisatie SACM"
 
 #: DB:work_attribute_type/description:30
 msgctxt "work_attribute_type"
 msgid "ID for the Polish rights society ZAiKS"
-msgstr "Identificatiecode voor de Poolse auteursrechtenorganisatie ZAiKS"
+msgstr "Identificatiecode van de Poolse auteursrechtenorganisatie ZAiKS"
 
 #: DB:work_attribute_type/name:14
 msgctxt "work_attribute_type"
@@ -4564,6 +4579,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Nevruzi Rumi"
 msgstr "Nevruzi Rumi"
 
+#: DB:work_attribute_type/name:33
+msgctxt "work_attribute_type"
+msgid "NexTone ID"
+msgstr "NexTone-ID"
+
 #: DB:work_attribute_type_allowed_value/value:471
 msgctxt "work_attribute_type_allowed_value"
 msgid "Neşataver"
@@ -4954,6 +4974,16 @@ msgstr "Plaats"
 msgctxt "alias_type"
 msgid "Place name"
 msgstr "Naam van de plaats"
+
+#: DB:release_packaging/description:20
+msgctxt "release_packaging"
+msgid "Plastic CD tray inside a cardboard slipcover"
+msgstr ""
+
+#: DB:release_packaging/name:18
+msgctxt "release_packaging"
+msgid "Plastic Sleeve"
+msgstr ""
 
 #: DB:work_type/name:28
 msgctxt "work_type"
@@ -5721,6 +5751,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Sitārkhānī"
 msgstr "Sitārkhānī"
 
+#: DB:release_packaging/name:20
+msgctxt "release_packaging"
+msgid "Slidepack"
+msgstr ""
+
 #: DB:release_packaging/name:2
 msgctxt "release_packaging"
 msgid "Slim Jewel Case"
@@ -6137,6 +6172,13 @@ msgid ""
 "medium."
 msgstr "De cd-laag van een hybride sacd. De sacd-laag moet als een apart medium worden toegevoegd."
 
+#: DB:medium_format/description:82
+msgctxt "medium_format"
+msgid ""
+"The CD side of a vinyl + CD VinylDisc. The vinyl side should be added as a "
+"separate medium."
+msgstr "De cd-kant van een VinylDisc (variant met vinyl en cd). De vinylkant moet als afzonderlijk medium worden toegevoegd."
+
 #: DB:medium_format/description:60
 msgctxt "medium_format"
 msgid ""
@@ -6167,6 +6209,13 @@ msgid ""
 "separate medium."
 msgstr "De dvd-video-laag van een DualDisc. De cd-laag moet als een apart medium worden toegevoegd."
 
+#: DB:medium_format/description:80
+msgctxt "medium_format"
+msgid ""
+"The DVD side of a vinyl + DVD VinylDisc. The vinyl side should be added as a"
+" separate medium."
+msgstr "De dvd-kant van een VinylDisc (variant met vinyl en dvd). De vinylkant moet als afzonderlijk medium worden toegevoegd."
+
 #: DB:medium_format/description:64
 msgctxt "medium_format"
 msgid ""
@@ -6193,6 +6242,13 @@ msgstr "Een operette is een lichte opera, zowel qua muziek als onderwerp. Operet
 msgctxt "release_packaging"
 msgid "The traditional CD case, made of hard, brittle plastic."
 msgstr "Het traditionele cd-doosje, gemaakt van hard, bros plastic."
+
+#: DB:medium_format/description:81
+msgctxt "medium_format"
+msgid ""
+"The vinyl side of a VinylDisc. The CD or DVD side should be added as a "
+"separate medium."
+msgstr "De vinylkant van een VinylDisc. De cd- of dvdkant moet als afzonderlijk medium worden toegevoegd."
 
 #: DB:work_type/description:23
 msgctxt "work_type"
@@ -6490,6 +6546,21 @@ msgstr "vinyl"
 msgctxt "medium_format"
 msgid "VinylDisc"
 msgstr "VinylDisc"
+
+#: DB:medium_format/name:82
+msgctxt "medium_format"
+msgid "VinylDisc (CD side)"
+msgstr "VinylDisc (cd-kant)"
+
+#: DB:medium_format/name:80
+msgctxt "medium_format"
+msgid "VinylDisc (DVD side)"
+msgstr "VinylDisc (dvd-kant)"
+
+#: DB:medium_format/name:81
+msgctxt "medium_format"
+msgid "VinylDisc (Vinyl side)"
+msgstr "VinylDisc (vinylkant)"
 
 #: DB:work_attribute_type_allowed_value/value:259
 #: DB:work_attribute_type_allowed_value/value:1047
