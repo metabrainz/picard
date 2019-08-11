@@ -205,12 +205,14 @@ class PlayerToolbar(QtWidgets.QToolBar):
         self.addWidget(progress_widget)
 
         volume = get_logarithmic_volume(config.persist["mediaplayer_volume"])
+        self.player.set_volume(volume)
         self.volume_button = VolumeControlButton(self, volume)
         self.volume_button.volume_changed.connect(self.player.set_volume)
         self.volume_button.setToolButtonStyle(self.toolButtonStyle())
         self.addWidget(self.volume_button)
 
         playback_rate = config.persist["mediaplayer_playback_rate"]
+        self.set_playback_rate(playback_rate)
         self.playback_rate_button = PlaybackRateButton(self, playback_rate)
         self.playback_rate_button.playback_rate_changed.connect(self.set_playback_rate)
         self.playback_rate_button.setToolButtonStyle(self.toolButtonStyle())
