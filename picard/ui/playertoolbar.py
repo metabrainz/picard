@@ -192,9 +192,11 @@ class PlayerToolbar(QtWidgets.QToolBar):
         vbox.addWidget(self.media_name_label)
         self.addWidget(progress_widget)
 
-        playback_rate_button = PlaybackRateButton(self, config.persist["mediaplayer_playback_rate"])
-        playback_rate_button.playback_rate_changed.connect(self.set_playback_rate)
-        self.addWidget(playback_rate_button)
+        playback_rate = config.persist["mediaplayer_playback_rate"]
+        self.playback_rate_button = PlaybackRateButton(self, playback_rate)
+        self.playback_rate_button.playback_rate_changed.connect(self.set_playback_rate)
+        self.playback_rate_button.setToolButtonStyle(self.toolButtonStyle())
+        self.addWidget(self.playback_rate_button)
 
         self.volume_slider = QtWidgets.QSlider(self)
         self.volume_slider.setOrientation(QtCore.Qt.Horizontal)
@@ -261,26 +263,80 @@ class PlayerToolbar(QtWidgets.QToolBar):
             self.volume_label.show()
         else:
             self.volume_label.hide()
+        self.playback_rate_button.setToolButtonStyle(style)
+
+
+class Popover(QtWidgets.QFrame):
+    def __init__(self, parent):
+        super().__init__(parent)
+        self.setWindowFlags(QtCore.Qt.Popup | QtCore.Qt.FramelessWindowHint)
+
+    def show(self):
+        super().show()
+        self.update_position()
+
+    def update_position(self):
+        parent = self.parent()
+        x = -(self.width() - parent.width()) / 2
+        y = -self.height()
+        pos = parent.mapToGlobal(QtCore.QPoint(x, y))
+        self.move(pos)
+
+
+class SliderPopover(Popover):
+    value_changed = QtCore.pyqtSignal(float)
+
+    def __init__(self, parent, label, value):
+        super().__init__(parent)
+        vbox = QtWidgets.QVBoxLayout(self)
+        self.label = QtWidgets.QLabel(label, self)
+        self.label.setAlignment(QtCore.Qt.AlignCenter)
+        vbox.addWidget(self.label)
+
+        self.slider = QtWidgets.QSlider(self)
+        self.slider.setOrientation(QtCore.Qt.Horizontal)
+        self.slider.setValue(value)
+        self.slider.valueChanged.connect(lambda v: self.value_changed.emit(v))
+        vbox.addWidget(self.slider)
 
 
 class PlaybackRateButton(QtWidgets.QToolButton):
     playback_rate_changed = QtCore.pyqtSignal(float)
 
+    multiplier = 10.0
+
     def __init__(self, parent, playback_rate):
         super().__init__(parent)
         self.set_playback_rate(playback_rate)
-        self.clicked.connect(self.show_playback_rate_popover)
+        self.clicked.connect(self.show_popover)
 
-    def show_playback_rate_popover(self):
-        speed_popover = PlaybackRatePopover(self, self.playback_rate)
-        speed_popover.value_changed.connect(self.set_playback_rate)
-        speed_popover.value_changed.connect(self.playback_rate_changed)
-        speed_popover.show()
+    def show_popover(self):
+        slider_value = self.playback_rate * self.multiplier
+        popover = SliderPopover(self, _('Playback speed'), slider_value)
+        # In 0.1 steps from 0.5 to 1.5
+        popover.slider.setMinimum(5)
+        popover.slider.setMaximum(15)
+        popover.slider.setSingleStep(1)
+        popover.slider.setPageStep(1)
+        popover.slider.setTickInterval(1)
+        popover.slider.setTickPosition(QtWidgets.QSlider.TicksBelow)
+        popover.value_changed.connect(self.on_slider_value_changed)
+        popover.show()
+
+    def on_slider_value_changed(self, value):
+        playback_rate = value / self.multiplier
+        self.set_playback_rate(playback_rate)
+        self.playback_rate_changed.emit(self.playback_rate)
 
     def set_playback_rate(self, playback_rate):
         self.playback_rate = playback_rate
         label = _('%1.1f ×') % playback_rate
         self.setText(label)
+
+    def showEvent(self, event):
+        super().showEvent(event)
+        # Avoid size changes when value changes
+        self.setMinimumWidth(self.width() + 2)
 
     def event(self, event):
         if event.type() == QtCore.QEvent.Wheel:
