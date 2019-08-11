@@ -297,6 +297,17 @@ class Popover(QtWidgets.QFrame):
         x = -(self.width() - parent.width()) / 2
         y = -self.height()
         pos = parent.mapToGlobal(QtCore.QPoint(x, y))
+        screen_number = QtWidgets.QApplication.desktop().screenNumber()
+        screen = QtGui.QGuiApplication.screens()[screen_number]
+        screen_size = screen.availableVirtualSize()
+        if pos.x() < 0:
+            pos.setX(0)
+        if pos.x() + self.width() > screen_size.width():
+            pos.setX(screen_size.width() - self.width())
+        if pos.y() < 0:
+            pos.setY(0)
+        if pos.y() + self.height() > screen_size.height():
+            pos.setY(screen_size.height() - self.height())
         self.move(pos)
 
 
