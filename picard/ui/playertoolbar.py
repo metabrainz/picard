@@ -61,6 +61,12 @@ def get_linear_volume(slider_value):
     return QtCore.qRound(linear_volume * 100)
 
 
+def get_text_width(font, text):
+    metrics = QtGui.QFontMetrics(font)
+    size = metrics.size(QtCore.Qt.TextSingleLine, text)
+    return size.width()
+
+
 class Player(QtCore.QObject):
     error = QtCore.pyqtSignal(object, str)
 
@@ -185,6 +191,9 @@ class PlayerToolbar(QtWidgets.QToolBar):
         hbox.setContentsMargins(0, 0, 0, 0)
         self.position_label = QtWidgets.QLabel("0:00", self)
         self.duration_label = QtWidgets.QLabel(format_time(0), self)
+        min_duration_width = get_text_width(self.position_label.font(), "8:88")
+        self.position_label.setMinimumWidth(min_duration_width)
+        self.duration_label.setMinimumWidth(min_duration_width)
         hbox.addWidget(self.position_label)
         hbox.addWidget(self.progress_slider)
         hbox.addWidget(self.duration_label)
@@ -312,6 +321,9 @@ class PlaybackRateButton(QtWidgets.QToolButton):
 
     def __init__(self, parent, playback_rate):
         super().__init__(parent)
+        button_margin = self.style().pixelMetric(QtWidgets.QStyle.PM_ButtonMargin)
+        min_width = get_text_width(self.font(), _('%1.1f ×') % 8.8)
+        self.setMinimumWidth(min_width + (2 * button_margin) + 2)
         self.set_playback_rate(playback_rate)
         self.clicked.connect(self.show_popover)
 
@@ -337,11 +349,6 @@ class PlaybackRateButton(QtWidgets.QToolButton):
         self.playback_rate = playback_rate
         label = _('%1.1f ×') % playback_rate
         self.setText(label)
-
-    def showEvent(self, event):
-        super().showEvent(event)
-        # Avoid size changes when value changes
-        self.setMinimumWidth(self.width() + 2)
 
     def event(self, event):
         if event.type() == QtCore.QEvent.Wheel:
@@ -370,7 +377,10 @@ class VolumeControlButton(QtWidgets.QToolButton):
         icon = self.style().standardIcon(QtWidgets.QStyle.SP_MediaVolume)
         self.setIcon(icon)
         self.set_volume(volume)
-        self.setText('100%')  # Only for initial min width calculation
+        margins = self.getContentsMargins()
+        button_margin = self.style().pixelMetric(QtWidgets.QStyle.PM_ButtonMargin)
+        min_width = get_text_width(self.font(), '888%')
+        self.setMinimumWidth(min_width + (2 * button_margin) + 2)
         self.clicked.connect(self.show_popover)
 
     def show_popover(self):
@@ -388,11 +398,6 @@ class VolumeControlButton(QtWidgets.QToolButton):
         self.volume = volume
         label = _('%d%%') % volume
         self.setText(label)
-
-    def showEvent(self, event):
-        super().showEvent(event)
-        self.setMinimumWidth(self.width())
-        self.set_volume(self.volume)
 
     def event(self, event):
         if event.type() == QtCore.QEvent.Wheel:
