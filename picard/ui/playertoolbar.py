@@ -23,6 +23,7 @@ import os
 
 from PyQt5 import (
     QtCore,
+    QtGui,
     QtWidgets,
 )
 
@@ -150,6 +151,7 @@ class PlayerToolbar(QtWidgets.QToolBar):
             | QtCore.Qt.NoToolBarArea)
 
         self.player = player
+        self.media_name = ''
 
         self.play_action = QtWidgets.QAction(self.style().standardIcon(
             QtWidgets.QStyle.SP_MediaPlay), _("Play"), self)
@@ -173,6 +175,7 @@ class PlayerToolbar(QtWidgets.QToolBar):
         self.progress_slider = QtWidgets.QSlider(self)
         self.progress_slider.setOrientation(QtCore.Qt.Horizontal)
         self.progress_slider.setEnabled(False)
+        self.progress_slider.setMinimumWidth(30)
         self.progress_slider.sliderMoved.connect(self.player.set_position)
         self.media_name_label = QtWidgets.QLabel(self)
         self.media_name_label.setAlignment(QtCore.Qt.AlignCenter)
@@ -246,13 +249,26 @@ class PlayerToolbar(QtWidgets.QToolBar):
             self.progress_slider.setEnabled(False)
         else:
             url = media.canonicalUrl().toString()
-            self.media_name_label.setText(os.path.basename(url))
+            self.set_media_name(os.path.basename(url))
             self.progress_slider.setEnabled(True)
 
     def setToolButtonStyle(self, style):
         super().setToolButtonStyle(style)
         self.playback_rate_button.setToolButtonStyle(style)
         self.volume_button.setToolButtonStyle(style)
+
+    def resizeEvent(self, event):
+        super().resizeEvent(event)
+        self.set_media_name(self.media_name)
+
+    def set_media_name(self, media_name):
+        self.media_name = media_name
+        media_label = self.media_name_label
+        metrics = QtGui.QFontMetrics(media_label.font())
+        elidedText = metrics.elidedText(media_name,
+                                        QtCore.Qt.ElideRight,
+                                        media_label.width())
+        media_label.setText(elidedText)
 
 
 class Popover(QtWidgets.QFrame):
