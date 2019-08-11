@@ -37,6 +37,8 @@
     <file>images/16x16/media-optical.png</file>
     <file>images/16x16/media-optical@2x.png</file>
     <file>images/16x16/org.musicbrainz.Picard.png</file>
+    <file>images/16x16/pause.png</file>
+    <file>images/16x16/pause@2x.png</file>
     <file>images/16x16/picard-analyze.png</file>
     <file>images/16x16/picard-analyze@2x.png</file>
     <file>images/16x16/picard-auto-tag.png</file>
@@ -47,10 +49,20 @@
     <file>images/16x16/picard-edit-tags@2x.png</file>
     <file>images/16x16/play-music.png</file>
     <file>images/16x16/play-music@2x.png</file>
+    <file>images/16x16/play.png</file>
+    <file>images/16x16/play@2x.png</file>
     <file>images/16x16/preferences-desktop.png</file>
     <file>images/16x16/preferences-desktop@2x.png</file>
     <file>images/16x16/remove-item.png</file>
     <file>images/16x16/remove-item@2x.png</file>
+    <file>images/16x16/speaker-0.png</file>
+    <file>images/16x16/speaker-0@2x.png</file>
+    <file>images/16x16/speaker-33.png</file>
+    <file>images/16x16/speaker-33@2x.png</file>
+    <file>images/16x16/speaker-66.png</file>
+    <file>images/16x16/speaker-66@2x.png</file>
+    <file>images/16x16/speaker-100.png</file>
+    <file>images/16x16/speaker-100@2x.png</file>
     <file>images/16x16/view-refresh.png</file>
     <file>images/16x16/view-refresh@2x.png</file>
     <file>images/22x22/acoustid-fingerprinter.png</file>
@@ -77,6 +89,8 @@
     <file>images/22x22/media-optical-saved@2x.png</file>
     <file>images/22x22/media-optical.png</file>
     <file>images/22x22/media-optical@2x.png</file>
+    <file>images/22x22/pause.png</file>
+    <file>images/22x22/pause@2x.png</file>
     <file>images/22x22/picard-analyze.png</file>
     <file>images/22x22/picard-analyze@2x.png</file>
     <file>images/22x22/picard-auto-tag.png</file>
@@ -87,8 +101,18 @@
     <file>images/22x22/picard-edit-tags@2x.png</file>
     <file>images/22x22/play-music.png</file>
     <file>images/22x22/play-music@2x.png</file>
+    <file>images/22x22/play.png</file>
+    <file>images/22x22/play@2x.png</file>
     <file>images/22x22/preferences-desktop.png</file>
     <file>images/22x22/preferences-desktop@2x.png</file>
+    <file>images/22x22/speaker-0.png</file>
+    <file>images/22x22/speaker-0@2x.png</file>
+    <file>images/22x22/speaker-33.png</file>
+    <file>images/22x22/speaker-33@2x.png</file>
+    <file>images/22x22/speaker-66.png</file>
+    <file>images/22x22/speaker-66@2x.png</file>
+    <file>images/22x22/speaker-100.png</file>
+    <file>images/22x22/speaker-100@2x.png</file>
     <file>images/22x22/system-search.png</file>
     <file>images/22x22/system-search@2x.png</file>
     <file>images/24x24/org.musicbrainz.Picard.png</file>

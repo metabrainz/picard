@@ -74,7 +74,8 @@ class AboutOptionsPage(OptionsPage):
 and <a href="http://www.flaticon.com/authors/madebyoliver">Madebyoliver</a>,
 <a href="http://www.flaticon.com/authors/pixel-buddha">Pixel Buddha</a>,
 <a href="http://www.flaticon.com/authors/nikita-golubev">Nikita Golubev</a>,
-<a href="http://www.flaticon.com/authors/maxim-basinski">Maxim Basinski</a>
+<a href="http://www.flaticon.com/authors/maxim-basinski">Maxim Basinski</a>,
+<a href="https://www.flaticon.com/authors/smashicons">Smashicons</a>
 from <a href="www.flaticon.com">www.flaticon.com</a>""")
 
         text = _("""<p align="center"><span style="font-size:15px;font-weight:bold;">MusicBrainz Picard</span><br/>

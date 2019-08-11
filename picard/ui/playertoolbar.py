@@ -31,7 +31,10 @@ from picard import (
     config,
     log,
 )
-from picard.util import format_time
+from picard.util import (
+    format_time,
+    icontheme,
+)
 
 
 try:
@@ -159,14 +162,12 @@ class PlayerToolbar(QtWidgets.QToolBar):
         self.player = player
         self.media_name = ''
 
-        self.play_action = QtWidgets.QAction(self.style().standardIcon(
-            QtWidgets.QStyle.SP_MediaPlay), _("Play"), self)
+        self.play_action = QtWidgets.QAction(icontheme.lookup('play'), _("Play"), self)
         self.play_action.setStatusTip(_("Play selected files in an internal player"))
         self.play_action.setEnabled(False)
         self.play_action.triggered.connect(self.play)
 
-        self.pause_action = QtWidgets.QAction(self.style().standardIcon(
-            QtWidgets.QStyle.SP_MediaPause), _("Pause"), self)
+        self.pause_action = QtWidgets.QAction(icontheme.lookup('pause'), _("Pause"), self)
         self.pause_action.setToolTip(_("Pause/resume"))
         self.pause_action.setStatusTip(_("Pause or resume playing with an internal player"))
         self.pause_action.setCheckable(True)
@@ -376,8 +377,6 @@ class VolumeControlButton(QtWidgets.QToolButton):
 
     def __init__(self, parent, volume):
         super().__init__(parent)
-        icon = self.style().standardIcon(QtWidgets.QStyle.SP_MediaVolume)
-        self.setIcon(icon)
         self.set_volume(volume)
         margins = self.getContentsMargins()
         button_margin = self.style().pixelMetric(QtWidgets.QStyle.PM_ButtonMargin)
@@ -400,6 +399,19 @@ class VolumeControlButton(QtWidgets.QToolButton):
         self.volume = volume
         label = _('%d%%') % volume
         self.setText(label)
+        self.update_icon()
+
+    def update_icon(self):
+        if self.volume == 0:
+            icon = 'speaker-0'
+        elif self.volume <= 33:
+            icon = 'speaker-33'
+        elif self.volume <= 66:
+            icon = 'speaker-66'
+        else:
+            icon = 'speaker-100'
+        icon = icontheme.lookup(icon)
+        self.setIcon(icon)
 
     def event(self, event):
         if event.type() == QtCore.QEvent.Wheel:
