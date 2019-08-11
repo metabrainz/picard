@@ -192,25 +192,17 @@ class PlayerToolbar(QtWidgets.QToolBar):
         vbox.addWidget(self.media_name_label)
         self.addWidget(progress_widget)
 
+        volume = get_logarithmic_volume(config.persist["mediaplayer_volume"])
+        self.volume_button = VolumeControlButton(self, volume)
+        self.volume_button.volume_changed.connect(self.player.set_volume)
+        self.volume_button.setToolButtonStyle(self.toolButtonStyle())
+        self.addWidget(self.volume_button)
+
         playback_rate = config.persist["mediaplayer_playback_rate"]
         self.playback_rate_button = PlaybackRateButton(self, playback_rate)
         self.playback_rate_button.playback_rate_changed.connect(self.set_playback_rate)
         self.playback_rate_button.setToolButtonStyle(self.toolButtonStyle())
         self.addWidget(self.playback_rate_button)
-
-        self.volume_slider = QtWidgets.QSlider(self)
-        self.volume_slider.setOrientation(QtCore.Qt.Horizontal)
-        self.volume_slider.setMinimum(0)
-        self.volume_slider.setMaximum(100)
-        self.volume_slider.valueChanged.connect(self.player.set_volume)
-        self.volume_slider.setValue(
-            get_logarithmic_volume(config.persist["mediaplayer_volume"]))
-        self.volume_label = QtWidgets.QLabel(_("Volume"), self)
-        self.volume_widget = QtWidgets.QWidget(self)
-        vbox = QtWidgets.QVBoxLayout(self.volume_widget)
-        vbox.addWidget(self.volume_slider)
-        vbox.addWidget(self.volume_label)
-        self.addWidget(self.volume_widget)
 
         self.player._player.durationChanged.connect(self.on_duration_changed)
         self.player._player.positionChanged.connect(self.on_position_changed)
@@ -259,11 +251,8 @@ class PlayerToolbar(QtWidgets.QToolBar):
 
     def setToolButtonStyle(self, style):
         super().setToolButtonStyle(style)
-        if style == QtCore.Qt.ToolButtonTextUnderIcon:
-            self.volume_label.show()
-        else:
-            self.volume_label.hide()
         self.playback_rate_button.setToolButtonStyle(style)
+        self.volume_button.setToolButtonStyle(style)
 
 
 class Popover(QtWidgets.QFrame):
@@ -357,38 +346,50 @@ class PlaybackRateButton(QtWidgets.QToolButton):
         return super().event(event)
 
 
-class PlaybackRatePopover(QtWidgets.QFrame):
-    value_changed = QtCore.pyqtSignal(float)
+class VolumeControlButton(QtWidgets.QToolButton):
+    volume_changed = QtCore.pyqtSignal(int)
 
-    def __init__(self, parent, value):
+    def __init__(self, parent, volume):
         super().__init__(parent)
-        self.setWindowFlags(QtCore.Qt.Popup | QtCore.Qt.FramelessWindowHint)
+        icon = self.style().standardIcon(QtWidgets.QStyle.SP_MediaVolume)
+        self.setIcon(icon)
+        self.set_volume(volume)
+        self.setText('100%')  # Only for initial min width calculation
+        self.clicked.connect(self.show_popover)
 
-        vbox = QtWidgets.QVBoxLayout(self)
-        speed_label = QtWidgets.QLabel(_("Playback speed"), self)
-        speed_label.setAlignment(QtCore.Qt.AlignCenter)
-        vbox.addWidget(speed_label)
-        speed_slider = QtWidgets.QSlider(self)
-        speed_slider.setOrientation(QtCore.Qt.Horizontal)
-        # In 0.1 steps from 0.5 to 1.5
-        multiplier = 10.0
-        speed_slider.setMinimum(5)
-        speed_slider.setMaximum(15)
-        speed_slider.setSingleStep(1)
-        speed_slider.setPageStep(1)
-        speed_slider.setTickInterval(1)
-        speed_slider.setTickPosition(QtWidgets.QSlider.TicksBelow)
-        speed_slider.setValue(value * multiplier)
-        speed_slider.valueChanged.connect(lambda v: self.value_changed.emit(v / multiplier))
-        vbox.addWidget(speed_slider)
+    def show_popover(self):
+        popover = SliderPopover(self, _('Volume'), self.volume)
+        popover.slider.setMinimum(0)
+        popover.slider.setMaximum(100)
+        popover.value_changed.connect(self.on_slider_value_changed)
+        popover.show()
 
-    def show(self):
-        super().show()
-        self._update_position()
+    def on_slider_value_changed(self, value):
+        self.set_volume(value)
+        self.volume_changed.emit(self.volume)
 
-    def _update_position(self):
-        parent = self.parent()
-        x = -(self.width() - parent.width()) / 2
-        y = -self.height()
-        pos = parent.mapToGlobal(QtCore.QPoint(x, y))
-        self.move(pos)
+    def set_volume(self, volume):
+        self.volume = volume
+        label = _('%d%%') % volume
+        self.setText(label)
+
+    def showEvent(self, event):
+        super().showEvent(event)
+        self.setMinimumWidth(self.width())
+        self.set_volume(self.volume)
+
+    def event(self, event):
+        if event.type() == QtCore.QEvent.Wheel:
+            delta = event.angleDelta().y()
+            volume = self.volume
+            if delta > 0:
+                volume += 3
+            elif delta < 0:
+                volume -= 3
+            volume = min(max(volume, 0), 100)
+            if volume != self.volume:
+                self.set_volume(volume)
+                self.volume_changed.emit(volume)
+            return True
+
+        return super().event(event)
