@@ -273,6 +273,25 @@ class PlayerToolbar(QtWidgets.QToolBar):
         super().resizeEvent(event)
         self.set_media_name(self.media_name)
 
+    def showEvent(self, event):
+        super().showEvent(event)
+        self._update_popover_position()
+
+    def _update_popover_position(self):
+        popover_position = self._get_popover_position()
+        self.playback_rate_button.popover_position = popover_position
+        self.volume_button.popover_position = popover_position
+
+    def _get_popover_position(self):
+        if self.isFloating():
+            return 'bottom'
+        pos = self.mapToParent(QtCore.QPoint(0, 0))
+        half_main_window_height = self.parent().height() / 2
+        if pos.y() <= half_main_window_height:
+            return 'bottom'
+        else:
+            return 'top'
+
     def set_media_name(self, media_name):
         self.media_name = media_name
         media_label = self.media_name_label
@@ -284,9 +303,10 @@ class PlayerToolbar(QtWidgets.QToolBar):
 
 
 class Popover(QtWidgets.QFrame):
-    def __init__(self, parent):
+    def __init__(self, parent, position='bottom'):
         super().__init__(parent)
         self.setWindowFlags(QtCore.Qt.Popup | QtCore.Qt.FramelessWindowHint)
+        self.position = position
 
     def show(self):
         super().show()
@@ -295,7 +315,10 @@ class Popover(QtWidgets.QFrame):
     def update_position(self):
         parent = self.parent()
         x = -(self.width() - parent.width()) / 2
-        y = -self.height()
+        if self.position == 'top':
+            y = -self.height()
+        else:  # bottom
+            y = parent.height()
         pos = parent.mapToGlobal(QtCore.QPoint(x, y))
         screen_number = QtWidgets.QApplication.desktop().screenNumber()
         screen = QtGui.QGuiApplication.screens()[screen_number]
@@ -314,8 +337,8 @@ class Popover(QtWidgets.QFrame):
 class SliderPopover(Popover):
     value_changed = QtCore.pyqtSignal(float)
 
-    def __init__(self, parent, label, value):
-        super().__init__(parent)
+    def __init__(self, parent, position, label, value):
+        super().__init__(parent, position)
         vbox = QtWidgets.QVBoxLayout(self)
         self.label = QtWidgets.QLabel(label, self)
         self.label.setAlignment(QtCore.Qt.AlignCenter)
@@ -335,6 +358,7 @@ class PlaybackRateButton(QtWidgets.QToolButton):
 
     def __init__(self, parent, playback_rate):
         super().__init__(parent)
+        self.popover_position = 'bottom'
         button_margin = self.style().pixelMetric(QtWidgets.QStyle.PM_ButtonMargin)
         min_width = get_text_width(self.font(), _('%1.1f ×') % 8.8)
         self.setMinimumWidth(min_width + (2 * button_margin) + 2)
@@ -343,7 +367,8 @@ class PlaybackRateButton(QtWidgets.QToolButton):
 
     def show_popover(self):
         slider_value = self.playback_rate * self.multiplier
-        popover = SliderPopover(self, _('Playback speed'), slider_value)
+        popover = SliderPopover(
+            self, self.popover_position, _('Playback speed'), slider_value)
         # In 0.1 steps from 0.5 to 1.5
         popover.slider.setMinimum(5)
         popover.slider.setMaximum(15)
@@ -388,6 +413,7 @@ class VolumeControlButton(QtWidgets.QToolButton):
 
     def __init__(self, parent, volume):
         super().__init__(parent)
+        self.popover_position = 'bottom'
         self.set_volume(volume)
         margins = self.getContentsMargins()
         button_margin = self.style().pixelMetric(QtWidgets.QStyle.PM_ButtonMargin)
@@ -396,7 +422,8 @@ class VolumeControlButton(QtWidgets.QToolButton):
         self.clicked.connect(self.show_popover)
 
     def show_popover(self):
-        popover = SliderPopover(self, _('Volume'), self.volume)
+        popover = SliderPopover(
+            self, self.popover_position, _('Volume'), self.volume)
         popover.slider.setMinimum(0)
         popover.slider.setMaximum(100)
         popover.value_changed.connect(self.on_slider_value_changed)
