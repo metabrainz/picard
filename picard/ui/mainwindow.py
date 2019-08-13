@@ -113,6 +113,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.selected_objects = []
         self.ignore_selection_changes = False
         self.toolbar = None
+        self.player = None
         player = Player(self)
         if player.available:
             self.player = player
