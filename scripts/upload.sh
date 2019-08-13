@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 VERSION="2.0.3"
 # comment out this line after editing following variables
 echo "Update the version variable to the latest release and re-run this script after commenting this statement"; exit 1
