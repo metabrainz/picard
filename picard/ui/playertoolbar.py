@@ -112,8 +112,7 @@ class Player(QtCore.QObject):
 
     def set_objects(self, objects):
         self._selected_objects = objects
-        player_enabled = len(objects) > 0
-        self._toolbar.play_action.setEnabled(player_enabled)
+        self._toolbar.play_action.setEnabled(bool(objects))
 
     def play(self):
         """Play selected tracks with an internal player"""
@@ -359,8 +358,9 @@ class PlaybackRateButton(QtWidgets.QToolButton):
     def __init__(self, parent, playback_rate):
         super().__init__(parent)
         self.popover_position = 'bottom'
+        self.rate_fmt = N_('%1.1f ×')
         button_margin = self.style().pixelMetric(QtWidgets.QStyle.PM_ButtonMargin)
-        min_width = get_text_width(self.font(), _('%1.1f ×') % 8.8)
+        min_width = get_text_width(self.font(), _(self.rate_fmt) % 8.8)
         self.setMinimumWidth(min_width + (2 * button_margin) + 2)
         self.set_playback_rate(playback_rate)
         self.clicked.connect(self.show_popover)
@@ -386,7 +386,7 @@ class PlaybackRateButton(QtWidgets.QToolButton):
 
     def set_playback_rate(self, playback_rate):
         self.playback_rate = playback_rate
-        label = _('%1.1f ×') % playback_rate
+        label = _(self.rate_fmt) % playback_rate
         self.setText(label)
 
     def event(self, event):
@@ -414,10 +414,12 @@ class VolumeControlButton(QtWidgets.QToolButton):
     def __init__(self, parent, volume):
         super().__init__(parent)
         self.popover_position = 'bottom'
+        self.step = 3
+        self.volume_fmt = N_('%d%%')
         self.set_volume(volume)
         margins = self.getContentsMargins()
         button_margin = self.style().pixelMetric(QtWidgets.QStyle.PM_ButtonMargin)
-        min_width = get_text_width(self.font(), '888%')
+        min_width = get_text_width(self.font(), _(self.volume_fmt) % 888)
         self.setMinimumWidth(min_width + (2 * button_margin) + 2)
         self.clicked.connect(self.show_popover)
 
@@ -426,6 +428,7 @@ class VolumeControlButton(QtWidgets.QToolButton):
             self, self.popover_position, _('Volume'), self.volume)
         popover.slider.setMinimum(0)
         popover.slider.setMaximum(100)
+        popover.slider.setPageStep(self.step)
         popover.value_changed.connect(self.on_slider_value_changed)
         popover.show()
 
@@ -435,7 +438,7 @@ class VolumeControlButton(QtWidgets.QToolButton):
 
     def set_volume(self, volume):
         self.volume = volume
-        label = _('%d%%') % volume
+        label = _(self.volume_fmt) % volume
         self.setText(label)
         self.update_icon()
 
@@ -456,9 +459,9 @@ class VolumeControlButton(QtWidgets.QToolButton):
             delta = event.angleDelta().y()
             volume = self.volume
             if delta > 0:
-                volume += 3
+                volume += self.step
             elif delta < 0:
-                volume -= 3
+                volume -= self.step
             volume = min(max(volume, 0), 100)
             if volume != self.volume:
                 self.set_volume(volume)
