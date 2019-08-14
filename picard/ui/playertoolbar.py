@@ -138,6 +138,21 @@ class Player(QtCore.QObject):
     def set_position(self, position):
         self._player.setPosition(position)
 
+    def set_playback_rate(self, playback_rate):
+        player = self._player
+        player.setPlaybackRate(playback_rate)
+        # Playback rate changes do not affect the current media playback.
+        # Force playback restart to have the rate change applied immediately.
+        player_state = player.state()
+        if player_state != QtMultimedia.QMediaPlayer.StoppedState:
+            position = player.position()
+            player.stop()
+            player.setPosition(position)
+            if player_state == QtMultimedia.QMediaPlayer.PlayingState:
+                player.play()
+            elif player_state == QtMultimedia.QMediaPlayer.PausedState:
+                player.pause()
+
     def _on_error(self, error):
         if error == QtMultimedia.QMediaPlayer.FormatError:
             msg = _("Internal player: The format of a media resource isn't (fully) supported")
@@ -212,7 +227,7 @@ class PlayerToolbar(QtWidgets.QToolBar):
         self.addWidget(self.volume_button)
 
         playback_rate = config.persist["mediaplayer_playback_rate"]
-        self.set_playback_rate(playback_rate)
+        self.player.set_playback_rate(playback_rate)
         self.playback_rate_button = PlaybackRateButton(self, playback_rate)
         self.playback_rate_button.playback_rate_changed.connect(self.set_playback_rate)
         self.playback_rate_button.setToolButtonStyle(self.toolButtonStyle())
@@ -231,21 +246,6 @@ class PlayerToolbar(QtWidgets.QToolBar):
     def play(self):
         self.player.play()
         self.pause_action.setChecked(False)
-
-    def set_playback_rate(self, playback_rate):
-        self.player._player.setPlaybackRate(playback_rate)
-        # Playback rate changes do not affect the current media playback.
-        # Force playback restart to have the rate change applied immediately.
-        player = self.player._player
-        player_state = player.state()
-        if player_state != QtMultimedia.QMediaPlayer.StoppedState:
-            position = player.position()
-            player.stop()
-            player.setPosition(position)
-            if player_state == QtMultimedia.QMediaPlayer.PlayingState:
-                player.play()
-            elif player_state == QtMultimedia.QMediaPlayer.PausedState:
-                player.pause()
 
     def on_duration_changed(self, duration):
         self.progress_slider.setMaximum(duration)
