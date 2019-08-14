@@ -170,6 +170,13 @@ class MetadataTest(PicardTestCase):
         self.assertEqual("value1", m[PRESERVED_TAGS[0]])
         self.assertEqual("alue2", m['not_preserved'])
 
+    def test_metadata_applyfunc_delete_tags(self):
+        def func(x): return None
+        metadata = Metadata(self.metadata)
+        metadata.apply_func(func)
+        self.assertEqual(0, len(metadata.rawitems()))
+        self.assertEqual(self.metadata.keys(), metadata.deleted_tags)
+
     def test_length_score(self):
         results = [(20000, 0, 0.333333333333),
                    (20000, 10000, 0.666666666667),
@@ -221,6 +228,7 @@ class MetadataTest(PicardTestCase):
         m1 = Metadata()
         m1["artist"] = "  TheArtist  "
         m1["title"] = "\t\u00A0  tit le1 \r\n"
+        m1["genre"] = " \t"
         m1.strip_whitespace()
         self.assertEqual(m1["artist"], "TheArtist")
         self.assertEqual(m1["title"], "tit le1")

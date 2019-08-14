@@ -363,7 +363,7 @@ class Metadata(MutableMapping):
         return self._store.items()
 
     def apply_func(self, func):
-        for name, values in self.rawitems():
+        for name, values in list(self.rawitems()):
             if name not in PRESERVED_TAGS:
                 self[name] = [func(value) for value in values]
 
