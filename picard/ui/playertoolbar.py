@@ -81,6 +81,7 @@ class Player(QtCore.QObject):
         if qt_multimedia_available:
             player = QtMultimedia.QMediaPlayer(parent)
             self.state_changed = player.stateChanged
+            self._logarithmic_volume = get_logarithmic_volume(player.volume())
             availability = player.availability()
             if availability == QtMultimedia.QMultimedia.Available:
                 self._player = player
@@ -101,7 +102,7 @@ class Player(QtCore.QObject):
         return self._toolbar
 
     def volume(self):
-        return self._player.volume()
+        return self._logarithmic_volume
 
     def playback_rate(self):
         return self._player.playbackRate()
@@ -131,9 +132,10 @@ class Player(QtCore.QObject):
         else:
             self._player.play()
 
-    def set_volume(self, slider_value):
+    def set_volume(self, logarithmic_volume):
         """Convert to linear scale and set"""
-        self._player.setVolume(get_linear_volume(slider_value))
+        self._logarithmic_volume = logarithmic_volume
+        self._player.setVolume(get_linear_volume(logarithmic_volume))
 
     def set_position(self, position):
         self._player.setPosition(position)
@@ -219,7 +221,7 @@ class PlayerToolbar(QtWidgets.QToolBar):
         vbox.addWidget(self.media_name_label)
         self.addWidget(progress_widget)
 
-        volume = get_logarithmic_volume(config.persist["mediaplayer_volume"])
+        volume = config.persist["mediaplayer_volume"]
         self.player.set_volume(volume)
         self.volume_button = VolumeControlButton(self, volume)
         self.volume_button.volume_changed.connect(self.player.set_volume)
@@ -229,7 +231,7 @@ class PlayerToolbar(QtWidgets.QToolBar):
         playback_rate = config.persist["mediaplayer_playback_rate"]
         self.player.set_playback_rate(playback_rate)
         self.playback_rate_button = PlaybackRateButton(self, playback_rate)
-        self.playback_rate_button.playback_rate_changed.connect(self.set_playback_rate)
+        self.playback_rate_button.playback_rate_changed.connect(self.player.set_playback_rate)
         self.playback_rate_button.setToolButtonStyle(self.toolButtonStyle())
         self.addWidget(self.playback_rate_button)
 
