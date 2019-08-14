@@ -336,7 +336,7 @@ class Popover(QtWidgets.QFrame):
 
 
 class SliderPopover(Popover):
-    value_changed = QtCore.pyqtSignal(float)
+    value_changed = QtCore.pyqtSignal(int)
 
     def __init__(self, parent, position, label, value):
         super().__init__(parent, position)
@@ -348,7 +348,7 @@ class SliderPopover(Popover):
         self.slider = QtWidgets.QSlider(self)
         self.slider.setOrientation(QtCore.Qt.Horizontal)
         self.slider.setValue(value)
-        self.slider.valueChanged.connect(lambda v: self.value_changed.emit(v))
+        self.slider.valueChanged.connect(self.value_changed)
         vbox.addWidget(self.slider)
 
 
