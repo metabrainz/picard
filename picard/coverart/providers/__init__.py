@@ -63,7 +63,7 @@ class ProviderOptions(OptionsPage):
 def register_cover_art_provider(provider):
     _cover_art_providers.register(provider.__module__, provider)
     if hasattr(provider, 'OPTIONS') and provider.OPTIONS:
-        provider.OPTIONS.NAME = provider.name
+        provider.OPTIONS.NAME = provider.name.lower().replace(' ', '_')
         provider.OPTIONS.TITLE = provider.title
         register_options_page(provider.OPTIONS)
 
