@@ -1,6 +1,6 @@
 LangString MsgAlreadyInstalled ${LANG_DUTCH} '${PRODUCT_NAME} is al geïnstalleerd. $\n$\nKlik op “OK” om de vorige versie te verwijderen of op “Annuleren” om de installatie te annuleren.'
-LangString MsgApplicationRunning ${LANG_DUTCH} "The application ${PRODUCT_NAME} is nog actief. Sluit Picard af en probeer het opnieuw."
-LangString MsgRequires64Bit ${LANG_DUTCH} "Voor deze versie van ${PRODUCT_NAME} heb je een 64bits-Windowsversie nodig."
+LangString MsgApplicationRunning ${LANG_DUTCH} "De applicatie ${PRODUCT_NAME} is nog actief. Sluit haar af en probeer het opnieuw."
+LangString MsgRequires64Bit ${LANG_DUTCH} "Voor deze versie van ${PRODUCT_NAME} heb je een 64 bitssysteem nodig."
 LangString MuiDescriptionRequired ${LANG_DUTCH} "Installeert ${PRODUCT_NAME} en de bestanden die het nodig heeft om te draaien."
 LangString MuiDescriptionLang ${LANG_DUTCH} "Installeert vertalingen van ${PRODUCT_NAME}."
 LangString MuiDescriptionShortcuts ${LANG_DUTCH} "Installeert snelkoppelingen om ${PRODUCT_NAME} te starten."
