@@ -400,6 +400,9 @@ class CoverArtBox(QtWidgets.QGroupBox):
         data = bytes(data)
         mime = reply.header(QtNetwork.QNetworkRequest.ContentTypeHeader)
         url_query = QtCore.QUrlQuery(url.query())
+        # If mime indicates only binary data we can try to guess the real mime type
+        if mime in ('application/octet-stream', 'binary/data'):
+            mime = imageinfo.identify(data)[2]
         if mime in ('image/jpeg', 'image/png'):
             self.load_remote_image(url, mime, data)
         elif url_query.hasQueryItem("imgurl"):
