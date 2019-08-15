@@ -127,7 +127,7 @@ def load_user_collections(callback=None):
                 col_name = node['name']
                 col_size = node['release-count']
                 new_collections.add(col_id)
-                collection = get_user_collection(col_id, col_name, col_size, refresh=True)
+                get_user_collection(col_id, col_name, col_size, refresh=True)
 
             # remove collections which aren't returned by the web service anymore
             old_collections = set(user_collections) - new_collections

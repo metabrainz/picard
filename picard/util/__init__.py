@@ -146,7 +146,7 @@ def sanitize_date(datestr):
 
 
 _re_win32_incompat = re.compile(r'["*:<>?|]', re.UNICODE)
-def replace_win32_incompat(string, repl="_"):
+def replace_win32_incompat(string, repl="_"):  # noqa: E302
     """Replace win32 filename incompatible characters from ``string`` by
        ``repl``."""
     # Don't replace : with _ for windows drive
@@ -158,13 +158,13 @@ def replace_win32_incompat(string, repl="_"):
 
 
 _re_non_alphanum = re.compile(r'\W+', re.UNICODE)
-def strip_non_alnum(string):
+def strip_non_alnum(string):  # noqa: E302
     """Remove all non-alphanumeric characters from ``string``."""
     return _re_non_alphanum.sub(" ", string).strip()
 
 
 _re_slashes = re.compile(r'[\\/]', re.UNICODE)
-def sanitize_filename(string, repl="_"):
+def sanitize_filename(string, repl="_"):  # noqa: E302
     return _re_slashes.sub(repl, string)
 
 
@@ -224,7 +224,7 @@ def find_executable(*executables):
 
 _mbid_format = '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'
 _re_mbid_val = re.compile(_mbid_format, re.IGNORECASE)
-def mbid_validate(string):
+def mbid_validate(string):  # noqa: E302
     """Test if passed string is a valid mbid
     """
     return _re_mbid_val.match(string) is not None
@@ -595,12 +595,14 @@ def compare_barcodes(barcode1, barcode2):
 
 BestMatch = namedtuple('BestMatch', 'similarity result num_results')
 
+
 def sort_by_similarity(candidates):
     return sorted(
         candidates(),
         reverse=True,
         key=attrgetter('similarity')
     )
+
 
 def find_best_match(candidates, no_match):
     sorted_results = sort_by_similarity(candidates)

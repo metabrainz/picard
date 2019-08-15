@@ -33,7 +33,6 @@ _PLUGIN_MODULE_PREFIX_LEN = len(_PLUGIN_MODULE_PREFIX)
 _extension_points = []
 
 
-
 def _unregister_module_extensions(module):
     for ep in _extension_points:
         ep.unregister_module(module)
@@ -206,7 +205,7 @@ class PluginFunctions:
     """
 
     def __init__(self, label=None):
-        self.functions = defaultdict(lambda : ExtensionPoint(label=label))
+        self.functions = defaultdict(lambda: ExtensionPoint(label=label))
 
     def register(self, module, item, priority=PluginPriority.NORMAL):
         self.functions[priority].register(module, item)

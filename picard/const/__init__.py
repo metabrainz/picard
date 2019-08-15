@@ -84,13 +84,13 @@ for k, v in MB_ATTRIBUTES.items():
         RELEASE_SECONDARY_GROUPS[v] = v
 
 # Release countries
-from picard.const.countries import RELEASE_COUNTRIES
+from picard.const.countries import RELEASE_COUNTRIES  # noqa: F401 # pylint: disable=unused-import
 
 # List of available user interface languages
-from picard.const.languages import UI_LANGUAGES
+from picard.const.languages import UI_LANGUAGES  # noqa: F401 # pylint: disable=unused-import
 
 # List of alias locales
-from picard.const.locales import ALIAS_LOCALES
+from picard.const.locales import ALIAS_LOCALES  # noqa: F401 # pylint: disable=unused-import
 
 # List of official musicbrainz servers - must support SSL for mblogin requests (such as collections).
 MUSICBRAINZ_SERVERS = [

@@ -767,7 +767,7 @@ def func_endswith(parser, text, suffix):
 def func_truncate(parser, text, length):
     try:
         length = int(length)
-    except ValueError as e:
+    except ValueError:
         length = None
     return text[:length].rstrip()
 
@@ -887,7 +887,7 @@ def iswbound(char):
     # from https://github.com/metabrainz/picard-plugins/blob/2.0/plugins/titlecase/titlecase.py
     """ Checks whether the given character is a word boundary """
     category = unicodedata.category(char)
-    return "Zs" == unicodedata.category(char) or "Sk" == unicodedata.category(char) or "P" == unicodedata.category(char)[0]
+    return "Zs" == category or "Sk" == category or "P" == category[0]
 
 
 register_script_function(func_if, "if", eval_args=False)

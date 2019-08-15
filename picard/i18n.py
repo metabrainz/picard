@@ -36,7 +36,7 @@ builtins.__dict__['N_'] = lambda a: a
 def setup_gettext(localedir, ui_language=None, logger=None):
     """Setup locales, load translations, install gettext functions."""
     if not logger:
-        logger = lambda *a, **b: None  # noop
+        logger = lambda *a, **b: None  # noqa: E731
     current_locale = ''
     if ui_language:
         try:
