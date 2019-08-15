@@ -1,25 +1,34 @@
-appledev.p12
-build
-build.cfg
-dist
+# IDE config files
 .pydevproject
 .project
-.idea
-*.pyc
-*.pyd
-*.dll
-*.so
-locale
-*.exe
+.idea/
+
+# OS generated files
 .DS_Store
-*~
 Thumbs.db
 Thumbs.db:encryptable
+
+# Files generated during build, test and deployment
+.coverage
+*.dll
+*.exe
+*.pyc
+*.pyd
+*.so
+build/
+coverage.xml
+dist/
 installer/picard-setup.nsi
-po/countries/countries.pot
-po/attributes/attributes.pot
-scripts/picard
-.*.sw[a-z]
+locale/
 org.musicbrainz.Picard.appdata.xml
-win-version-info.txt
 picard.egg-info
+po/attributes/attributes.pot
+po/countries/countries.pot
+scripts/picard
+win-version-info.txt
+
+# Other files
+.*.sw[a-z]
+*~
+appledev.p12
+build.cfg
