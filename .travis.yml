@@ -77,7 +77,7 @@ before_install:
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then bash scripts/package-osx.sh; fi
 
 script:
-- py.test -v --cov=picard --cov-report xml:coverage.xml
+- py.test -v --cov=picard --cov-report xml:coverage.xml test
 - isort --check-only --diff --quiet $(git ls-tree -r --name-only $(git rev-parse HEAD) | grep "\\.py$")
 - flake8 picard
 
