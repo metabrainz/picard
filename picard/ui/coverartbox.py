@@ -409,6 +409,10 @@ class CoverArtBox(QtWidgets.QGroupBox):
             # This may be a google images result, try to get the URL which is encoded in the query
             url = QtCore.QUrl(url_query.queryItemValue("imgurl", QtCore.QUrl.FullyDecoded))
             self.fetch_remote_image(url)
+        elif url_query.hasQueryItem("mediaurl"):
+            # Bing uses mediaurl
+            url = QtCore.QUrl(url_query.queryItemValue("mediaurl", QtCore.QUrl.FullyDecoded))
+            self.fetch_remote_image(url)
         else:
             log.warning("Can't load remote image with MIME-Type %s", mime)
             if fallback_data:
