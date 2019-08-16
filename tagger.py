@@ -1,14 +1,10 @@
 #!/usr/bin/env python3
 
-import os.path
+import os
 import sys
 
+IS_WIN = sys.platform == 'win32'
 
-from picard.const.sys import (
-    FROZEN_TEMP_PATH,
-    IS_FROZEN,
-    IS_WIN,
-)
 # On Windows try to attach to the console as early as possible in order
 # to get stdout / stderr logged to console. This needs to happen before
 # logging gets imported.
@@ -19,15 +15,16 @@ if IS_WIN:
         sys.stdout = open('CON', 'w')
         sys.stderr = open('CON', 'w')
 
-
-from picard.tagger import main
-
 sys.path.insert(0, '.')
 
 # This is needed to find resources when using pyinstaller
-if IS_FROZEN:
-    basedir = FROZEN_TEMP_PATH
+if getattr(sys, 'frozen', False):
+    basedir = getattr(sys, '_MEIPASS', '')
 else:
     basedir = os.path.dirname(os.path.abspath(__file__))
 
+if IS_WIN:
+    os.environ['PATH'] = basedir + ';' + os.environ['PATH']
+
+from picard.tagger import main
 main(os.path.join(basedir, 'locale'), True)
