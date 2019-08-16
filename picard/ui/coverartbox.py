@@ -399,12 +399,21 @@ class CoverArtBox(QtWidgets.QGroupBox):
     def on_remote_image_fetched(self, url, data, reply, error, fallback_data=None):
         data = bytes(data)
         mime = reply.header(QtNetwork.QNetworkRequest.ContentTypeHeader)
+        # Some sites return a mime type with encoding like "image/jpeg; charset=UTF-8"
+        mime = mime.split(';')[0]
         url_query = QtCore.QUrlQuery(url.query())
+        # If mime indicates only binary data we can try to guess the real mime type
+        if mime in ('application/octet-stream', 'binary/data'):
+            mime = imageinfo.identify(data)[2]
         if mime in ('image/jpeg', 'image/png'):
             self.load_remote_image(url, mime, data)
         elif url_query.hasQueryItem("imgurl"):
             # This may be a google images result, try to get the URL which is encoded in the query
             url = QtCore.QUrl(url_query.queryItemValue("imgurl", QtCore.QUrl.FullyDecoded))
+            self.fetch_remote_image(url)
+        elif url_query.hasQueryItem("mediaurl"):
+            # Bing uses mediaurl
+            url = QtCore.QUrl(url_query.queryItemValue("mediaurl", QtCore.QUrl.FullyDecoded))
             self.fetch_remote_image(url)
         else:
             log.warning("Can't load remote image with MIME-Type %s", mime)
