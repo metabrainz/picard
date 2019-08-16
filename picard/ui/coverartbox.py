@@ -399,6 +399,8 @@ class CoverArtBox(QtWidgets.QGroupBox):
     def on_remote_image_fetched(self, url, data, reply, error, fallback_data=None):
         data = bytes(data)
         mime = reply.header(QtNetwork.QNetworkRequest.ContentTypeHeader)
+        # Some sites return a mime type with encoding like "image/jpeg; charset=UTF-8"
+        mime = mime.split(';')[0]
         url_query = QtCore.QUrlQuery(url.query())
         # If mime indicates only binary data we can try to guess the real mime type
         if mime in ('application/octet-stream', 'binary/data'):
