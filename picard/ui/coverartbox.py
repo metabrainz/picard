@@ -397,6 +397,12 @@ class CoverArtBox(QtWidgets.QGroupBox):
                 self.load_remote_image(url, mime, data)
 
     def on_remote_image_fetched(self, url, data, reply, error, fallback_data=None):
+        if error:
+            log.error("Failed loading remote image from %s: %s", url, reply.errorString())
+            if fallback_data:
+                self._load_fallback_data(url, fallback_data)
+            return
+
         data = bytes(data)
         mime = reply.header(QtNetwork.QNetworkRequest.ContentTypeHeader)
         # Some sites return a mime type with encoding like "image/jpeg; charset=UTF-8"
@@ -418,14 +424,17 @@ class CoverArtBox(QtWidgets.QGroupBox):
         else:
             log.warning("Can't load remote image with MIME-Type %s", mime)
             if fallback_data:
-                # Tests for image format obtained from file-magic
-                try:
-                    mime = imageinfo.identify(fallback_data)[2]
-                except imageinfo.IdentificationError as e:
-                    log.error("Unable to identify dropped data format: %s" % e)
-                else:
-                    self.load_remote_image(url, mime, fallback_data)
-                    log.debug("Trying the dropped %s data", mime)
+                self._load_fallback_data(url, fallback_data)
+
+    def _load_fallback_data(self, url, data):
+        # Tests for image format obtained from file-magic
+        try:
+            mime = imageinfo.identify(data)[2]
+        except imageinfo.IdentificationError as e:
+            log.error("Unable to identify dropped data format: %s" % e)
+        else:
+            self.load_remote_image(url, mime, data)
+            log.debug("Trying the dropped %s data", mime)
 
     def load_remote_image(self, url, mime, data):
         try:
