@@ -87,7 +87,7 @@ class ReleaseGroup(DataObject):
                 "id":      node['id'],
                 "year":    node['date'][:4] if "date" in node else "????",
                 "country": "+".join(countries) if countries
-                    else node.get('country', '') or "??",
+                           else node.get('country', '') or "??",
                 "format":  media_formats_from_node(node['media']),
                 "label":  ", ".join([' '.join(x.split(' ')[:2]) for x in set(labels)]),
                 "catnum": ", ".join(set(catnums)),

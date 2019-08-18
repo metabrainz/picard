@@ -51,7 +51,7 @@ class InterfaceOptionsPage(OptionsPage):
     PARENT = None
     SORT_ORDER = 80
     ACTIVE = True
-    SEPARATOR = '—'*5
+    SEPARATOR = '—' * 5
     TOOLBAR_BUTTONS = {
         'add_directory_action': {
             'label': N_('Add Folder'),
@@ -140,7 +140,8 @@ class InterfaceOptionsPage(OptionsPage):
         self.ui.ui_language.addItem(_('System default'), '')
         language_list = [(l[0], l[1], _(l[2])) for l in UI_LANGUAGES]
 
-        def fcmp(x): return locale.strxfrm(x[2])
+        def fcmp(x):
+            return locale.strxfrm(x[2])
         for lang_code, native, translation in sorted(language_list, key=fcmp):
             if native and native != translation:
                 name = '%s (%s)' % (translation, native)

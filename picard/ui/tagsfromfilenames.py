@@ -20,10 +20,7 @@
 import os.path
 import re
 
-from PyQt5 import (
-    QtCore,
-    QtWidgets,
-)
+from PyQt5 import QtWidgets
 
 from picard import config
 from picard.util.tags import display_tag_name

@@ -36,7 +36,7 @@ def open(url):
         webbrowser.open(url)
     except webbrowser.Error as e:
         QtWidgets.QMessageBox.critical(None, _("Web Browser Error"), _("Error while launching a web browser:\n\n%s") % (e,))
-    except TypeError as e:
+    except TypeError:
         if version_info.major == 3 and version_info.minor == 7 and version_info.micro == 0:
             # See https://bugs.python.org/issue31014, webbrowser.open doesn't
             # work on 3.7.0 the first time it's called. The initialization code

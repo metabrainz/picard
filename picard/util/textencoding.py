@@ -68,7 +68,7 @@ import unicodedata
 from picard.util import sanitize_filename
 
 
-#########################  LATIN SIMPLIFICATION ###########################
+# LATIN SIMPLIFICATION
 # The translation tables for punctuation and latin combined-characters are taken from
 # http://unicode.org/repos/cldr/trunk/common/transforms/Latin-ASCII.xml
 # Various bugs and mistakes in this have been ironed out during testing.

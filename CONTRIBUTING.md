@@ -36,6 +36,7 @@ PYFILES=$(git diff --cached --name-only | grep "\\.py$" | grep --invert-match \
 if [ ! -z "$PYFILES" ]; then
   set -e
   isort --check-only --diff --quiet $PYFILES
+  flake8 $PYFILES
 fi
 ```
 

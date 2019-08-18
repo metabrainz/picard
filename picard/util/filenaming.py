@@ -89,8 +89,9 @@ def _shorten_to_utf16_nfd_length(text, length):
         pass
     return unicodedata.normalize('NFC', newtext)
 
+
 _re_utf8 = re.compile(r'^utf([-_]?8)$', re.IGNORECASE)
-def _shorten_to_bytes_length(text, length):
+def _shorten_to_bytes_length(text, length):  # noqa: E302
     """Truncates a unicode object to the given number of bytes it would take
     when encoded in the "filesystem encoding".
     """
@@ -124,7 +125,7 @@ def _shorten_to_bytes_length(text, length):
 
 
 SHORTEN_BYTES, SHORTEN_UTF16, SHORTEN_UTF16_NFD = 0, 1, 2
-def shorten_filename(filename, length, mode):
+def shorten_filename(filename, length, mode):  # noqa: E302
     """Truncates a filename to the given number of thingies,
     as implied by `mode`.
     """
@@ -145,7 +146,8 @@ def shorten_path(path, length, mode):
     length: Maximum number of code points / bytes allowed in a node.
     mode: One of SHORTEN_BYTES, SHORTEN_UTF16, SHORTEN_UTF16_NFD.
     """
-    def shorten(n, l): return n and shorten_filename(n, l, mode).strip() or ""
+    def shorten(n, l):
+        return n and shorten_filename(n, l, mode).strip() or ""
     dirpath, filename = os.path.split(path)
     fileroot, ext = os.path.splitext(filename)
     return os.path.join(
@@ -192,7 +194,8 @@ def _make_win_short_filename(relpath, reserved=0):
     remaining = MAX_DIRPATH_LEN - reserved
 
     # to make things more readable...
-    def shorten(p, l): return shorten_path(p, l, mode=SHORTEN_UTF16)
+    def shorten(p, l):
+        return shorten_path(p, l, mode=SHORTEN_UTF16)
     xlength = _get_utf16_length
 
     # shorten to MAX_NODE_LEN from the beginning
@@ -274,6 +277,7 @@ def _get_mount_point(target):
             mount = os.path.dirname(mount)
         mounts[target] = mount
     return mount
+
 
 # NOTE: this could be merged with the function above, and get all needed info
 # in a single call, returning the filesystem type as well. (but python's
