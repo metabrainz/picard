@@ -419,7 +419,6 @@ class VolumeControlButton(QtWidgets.QToolButton):
         self.step = 3
         self.volume_fmt = N_('%d%%')
         self.set_volume(volume)
-        margins = self.getContentsMargins()
         button_margin = self.style().pixelMetric(QtWidgets.QStyle.PM_ButtonMargin)
         min_width = get_text_width(self.font(), _(self.volume_fmt) % 888)
         self.setMinimumWidth(min_width + (2 * button_margin) + 2)
