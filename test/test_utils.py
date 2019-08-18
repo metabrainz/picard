@@ -89,6 +89,7 @@ class FormatTimeTest(PicardTestCase):
 
     def test(self):
         self.assertEqual("?:??", util.format_time(0))
+        self.assertEqual("0:00", util.format_time(0, display_zero=True))
         self.assertEqual("3:00", util.format_time(179750))
         self.assertEqual("3:00", util.format_time(179500))
         self.assertEqual("2:59", util.format_time(179499))

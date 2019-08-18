@@ -105,7 +105,8 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         config.BoolOption("persist", "view_toolbar", True),
         config.BoolOption("persist", "view_file_browser", False),
         config.TextOption("persist", "current_directory", ""),
-        config.IntOption("persist", "mediaplayer_volume", "50"),
+        config.FloatOption("persist", "mediaplayer_playback_rate", 1.0),
+        config.IntOption("persist", "mediaplayer_volume", 50),
     ]
 
     def __init__(self, parent=None):
@@ -207,6 +208,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             event.ignore()
             return
         if self.player:
+            config.persist['mediaplayer_playback_rate'] = self.player.playback_rate()
             config.persist['mediaplayer_volume'] = self.player.volume()
         self.saveWindowState()
         event.accept()
@@ -711,7 +713,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     def create_player_toolbar(self):
         """"Create a toolbar with internal player control elements"""
         toolbar = self.player.create_toolbar()
-        self.insertToolBar(self.search_toolbar, toolbar)
+        self.addToolBar(QtCore.Qt.BottomToolBarArea, toolbar)
         self.player_toolbar_toggle_action = toolbar.toggleViewAction()
         toolbar.hide()  # Hide by default
 
@@ -1025,8 +1027,6 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.autotag_action.setEnabled(can_autotag)
         self.browser_lookup_action.setEnabled(can_browser_lookup)
         self.play_file_action.setEnabled(have_files)
-        if self.player:
-            self.player.toolbar.play_action.setEnabled(have_files)
         self.open_folder_action.setEnabled(have_files)
         self.cut_action.setEnabled(have_objects)
         files = self.get_selected_or_unmatched_files()
@@ -1052,7 +1052,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.set_statusbar_message("")
 
         if self.player:
-            self.player.toolbar.set_objects(self.selected_objects)
+            self.player.set_objects(self.selected_objects)
 
         if len(objects) == 1:
             obj = list(objects)[0]
