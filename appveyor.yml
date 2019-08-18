@@ -47,9 +47,13 @@ build_script:
 
     pip3 install -r requirements-win.txt
 
+    copy /Y %PYTHON_SITE%\PyQt5\Qt\bin\libeay32.dll .
+
     copy /Y %PYTHON_SITE%\PyQt5\Qt\bin\ssleay32.dll .
 
-    copy /Y %PYTHON_SITE%\PyQt5\Qt\bin\libeay32.dll .
+    copy /Y %PYTHON_SITE%\PyQt5\Qt\bin\libcrypto-1_1-x64.dll .
+
+    copy /Y %PYTHON_SITE%\PyQt5\Qt\bin\libssl-1_1-x64.dll .
 
     IF "%APPVEYOR_REPO_TAG%" == "false" python setup.py patch_version --platform=python%PYTHON_VERSION%
 
@@ -60,6 +64,10 @@ build_script:
     python setup.py test -v
 
     pyinstaller --noconfirm picard.spec
+
+    del /F /Q dist\picard\libcrypto-1_1.dll
+
+    del /F /Q dist\picard\libssl-1_1.dll
 
     makensis.exe /INPUTCHARSET UTF8 installer\picard-setup.nsi
 
