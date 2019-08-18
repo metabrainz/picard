@@ -51,8 +51,12 @@ if os_name == 'Windows':
     fpcalc_name = 'fpcalc.exe'
     binaries += [
         ('discid.dll', '.'),
-        ('ssleay32.dll', '.'),
+        # The following two lines should not be neccasary with PyInstaller 3.5
         ('libeay32.dll', '.'),
+        ('ssleay32.dll', '.'),
+        # The following two lines should not be neccasary with PyInstaller >3.5
+        ('libcrypto-1_1-x64.dll', '.'),
+        ('libssl-1_1-x64.dll', '.'),
     ]
     data_files.append((os.path.join('resources', 'win10', '*'), '.'))
 
