@@ -48,15 +48,17 @@ data_files = get_locale_messages()
 
 fpcalc_name = 'fpcalc'
 if os_name == 'Windows':
+    from PyQt5.QtCore import QLibraryInfo
+    qt_binaries_path = QLibraryInfo.location(QLibraryInfo.BinariesPath)
     fpcalc_name = 'fpcalc.exe'
     binaries += [
         ('discid.dll', '.'),
         # The following two lines should not be neccasary with PyInstaller 3.5
-        ('libeay32.dll', '.'),
-        ('ssleay32.dll', '.'),
+        (os.path.join(qt_binaries_path, 'libeay32.dll'), '.'),
+        (os.path.join(qt_binaries_path, 'ssleay32.dll'), '.'),
         # The following two lines should not be neccasary with PyInstaller >3.5
-        ('libcrypto-1_1-x64.dll', '.'),
-        ('libssl-1_1-x64.dll', '.'),
+        (os.path.join(qt_binaries_path, 'libcrypto-1_1-x64.dll'), '.'),
+        (os.path.join(qt_binaries_path, 'libssl-1_1-x64.dll'), '.'),
     ]
     data_files.append((os.path.join('resources', 'win10', '*'), '.'))
 
