@@ -107,7 +107,7 @@ coll = COLLECT(exe,
                name='picard')
 
 
-if platform.system() == 'Darwin':
+if os_name == 'Darwin':
     info_plist = {
         'NSHighResolutionCapable': 'True',
         'NSPrincipalClass': 'NSApplication',
