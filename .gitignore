@@ -5,6 +5,7 @@
 
 # OS generated files
 .DS_Store
+*:Zone.Identifier
 Thumbs.db
 Thumbs.db:encryptable
 
