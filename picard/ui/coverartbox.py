@@ -85,19 +85,8 @@ class ActiveLabel(QtWidgets.QLabel):
         if not dropped_data:
             dropped_data = bytes(mime_data.data('application/x-qt-image'))
 
-        if dropped_data:
-            try:
-                mime = imageinfo.identify(dropped_data)[2]
-                if mime in ('image/jpeg', 'image/png'):
-                    accepted = True
-                    log.debug("Dropped %s mime data (%d bytes)", mime,
-                              len(dropped_data or ''))
-                    self.image_dropped.emit(QtCore.QUrl(''), dropped_data)
-            except imageinfo.IdentificationError as e:
-                log.debug("Image identification failed: %s", e)
-
         if not accepted:
-            for url in event.mimeData().urls():
+            for url in mime_data.urls():
                 if url.scheme() in ('https', 'http', 'file'):
                     accepted = True
                     log.debug("Dropped %s url (with %d bytes of data)",
