@@ -19,6 +19,7 @@
 
 from functools import partial
 import os
+import re
 
 from PyQt5 import (
     QtCore,
@@ -84,6 +85,10 @@ class ActiveLabel(QtWidgets.QLabel):
 
         if not dropped_data:
             dropped_data = bytes(mime_data.data('application/x-qt-image'))
+
+        if not dropped_data:
+            # Maybe we can get something useful from a dropped HTML snippet.
+            dropped_data = bytes(mime_data.data('text/html'))
 
         if not accepted:
             for url in mime_data.urls():
@@ -282,6 +287,9 @@ def set_image_append(obj, coverartimage):
     obj.metadata.images.append(coverartimage)
 
 
+HTML_IMG_SRC_REGEX = re.compile(r'<img .*?src="(.*?)"', re.UNICODE)
+
+
 class CoverArtBox(QtWidgets.QGroupBox):
 
     def __init__(self, parent):
@@ -420,10 +428,23 @@ class CoverArtBox(QtWidgets.QGroupBox):
         try:
             mime = imageinfo.identify(data)[2]
         except imageinfo.IdentificationError as e:
-            log.error("Unable to identify dropped data format: %s" % e)
+            log.warning("Unable to identify dropped data format: %s" % e)
         else:
-            self.load_remote_image(url, mime, data)
             log.debug("Trying the dropped %s data", mime)
+            self.load_remote_image(url, mime, data)
+            return
+
+        # Try getting image out of HTML (e.g. for Goole image search detail view)
+        try:
+            html = data.decode()
+            match = re.search(HTML_IMG_SRC_REGEX, html)
+            if match:
+                url = QtCore.QUrl(match.group(1))
+        except UnicodeDecodeError as e:
+            log.warning("Unable to decode dropped data format: %s" % e)
+        else:
+            log.debug("Trying URL parsed from HTML: %s", url.toString())
+            self.fetch_remote_image(url)
 
     def load_remote_image(self, url, mime, data):
         try:
