@@ -64,7 +64,7 @@ class CoverArtProviderLocal(CoverArtProvider):
 
     """Get cover art from local files"""
 
-    NAME = "Local"
+    NAME = "Local Files"
     TITLE = N_("Local Files")
     OPTIONS = ProviderOptionsLocal
 
