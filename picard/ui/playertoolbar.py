@@ -250,19 +250,35 @@ class PlayerToolbar(QtWidgets.QToolBar):
             return 'top'
 
 
+class ClickableSlider(QtWidgets.QSlider):
+    def mousePressEvent(self, event):
+        self._set_position_from_mouse_event(event)
+
+    def mouseMoveEvent(self, event):
+        self._set_position_from_mouse_event(event)
+
+    def _set_position_from_mouse_event(self, event):
+        value = QtWidgets.QStyle.sliderValueFromPosition(
+            self.minimum(), self.maximum(), event.x(), self.width())
+        self.setValue(value)
+
+
 class PlaybackProgressSlider(QtWidgets.QWidget):
     def __init__(self, parent, player):
         super().__init__(parent)
         self.player = player
         self.media_name = ''
+        self._position_update = False
 
         vbox = QtWidgets.QVBoxLayout(self)
 
-        self.progress_slider = QtWidgets.QSlider(self)
+        self.progress_slider = ClickableSlider(self)
         self.progress_slider.setOrientation(QtCore.Qt.Horizontal)
         self.progress_slider.setEnabled(False)
         self.progress_slider.setMinimumWidth(30)
-        self.progress_slider.sliderMoved.connect(self.player.set_position)
+        self.progress_slider.setSingleStep(1000)
+        self.progress_slider.setPageStep(3000)
+        self.progress_slider.valueChanged.connect(self.on_value_changed)
         self.media_name_label = QtWidgets.QLabel(self)
         self.media_name_label.setAlignment(QtCore.Qt.AlignCenter)
 
@@ -290,7 +306,9 @@ class PlaybackProgressSlider(QtWidgets.QWidget):
         self.duration_label.setText(format_time(duration))
 
     def on_position_changed(self, position):
+        self._position_update = True
         self.progress_slider.setValue(position)
+        self._position_update = False
         self.position_label.setText(format_time(position, display_zero=True))
 
     def on_media_changed(self, media):
@@ -300,6 +318,10 @@ class PlaybackProgressSlider(QtWidgets.QWidget):
             url = media.canonicalUrl().toString()
             self.set_media_name(os.path.basename(url))
             self.progress_slider.setEnabled(True)
+
+    def on_value_changed(self, value):
+        if not self._position_update:  # Avoid circular events
+            self.player.set_position(value)
 
     def set_media_name(self, media_name):
         self.media_name = media_name
