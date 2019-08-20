@@ -176,7 +176,6 @@ class PlayerToolbar(QtWidgets.QToolBar):
             | QtCore.Qt.NoToolBarArea)
 
         self.player = player
-        self.media_name = ''
 
         self.play_action = QtWidgets.QAction(icontheme.lookup('play'), _("Play"), self)
         self.play_action.setStatusTip(_("Play selected files in an internal player"))
@@ -195,31 +194,8 @@ class PlayerToolbar(QtWidgets.QToolBar):
         self._add_toolbar_action(self.play_action)
         self._add_toolbar_action(self.pause_action)
 
-        self.progress_slider = QtWidgets.QSlider(self)
-        self.progress_slider.setOrientation(QtCore.Qt.Horizontal)
-        self.progress_slider.setEnabled(False)
-        self.progress_slider.setMinimumWidth(30)
-        self.progress_slider.sliderMoved.connect(self.player.set_position)
-        self.media_name_label = QtWidgets.QLabel(self)
-        self.media_name_label.setAlignment(QtCore.Qt.AlignCenter)
-
-        slider_container = QtWidgets.QWidget(self)
-        hbox = QtWidgets.QHBoxLayout(slider_container)
-        hbox.setContentsMargins(0, 0, 0, 0)
-        self.position_label = QtWidgets.QLabel("0:00", self)
-        self.duration_label = QtWidgets.QLabel(format_time(0), self)
-        min_duration_width = get_text_width(self.position_label.font(), "8:88")
-        self.position_label.setMinimumWidth(min_duration_width)
-        self.duration_label.setMinimumWidth(min_duration_width)
-        hbox.addWidget(self.position_label)
-        hbox.addWidget(self.progress_slider)
-        hbox.addWidget(self.duration_label)
-
-        progress_widget = QtWidgets.QWidget(self)
-        vbox = QtWidgets.QVBoxLayout(progress_widget)
-        vbox.addWidget(slider_container)
-        vbox.addWidget(self.media_name_label)
-        self.addWidget(progress_widget)
+        self.progress_widget = PlaybackProgressSlider(self, self.player)
+        self.addWidget(self.progress_widget)
 
         volume = config.persist["mediaplayer_volume"]
         self.player.set_volume(volume)
@@ -235,10 +211,6 @@ class PlayerToolbar(QtWidgets.QToolBar):
         self.playback_rate_button.setToolButtonStyle(self.toolButtonStyle())
         self.addWidget(self.playback_rate_button)
 
-        self.player._player.durationChanged.connect(self.on_duration_changed)
-        self.player._player.positionChanged.connect(self.on_position_changed)
-        self.player._player.currentMediaChanged.connect(self.on_media_changed)
-
     def _add_toolbar_action(self, action):
         self.addAction(action)
         widget = self.widgetForAction(action)
@@ -249,22 +221,6 @@ class PlayerToolbar(QtWidgets.QToolBar):
         self.player.play()
         self.pause_action.setChecked(False)
 
-    def on_duration_changed(self, duration):
-        self.progress_slider.setMaximum(duration)
-        self.duration_label.setText(format_time(duration))
-
-    def on_position_changed(self, position):
-        self.progress_slider.setValue(position)
-        self.position_label.setText(format_time(position, display_zero=True))
-
-    def on_media_changed(self, media):
-        if media.isNull():
-            self.progress_slider.setEnabled(False)
-        else:
-            url = media.canonicalUrl().toString()
-            self.set_media_name(os.path.basename(url))
-            self.progress_slider.setEnabled(True)
-
     def setToolButtonStyle(self, style):
         super().setToolButtonStyle(style)
         self.playback_rate_button.setToolButtonStyle(style)
@@ -272,7 +228,7 @@ class PlayerToolbar(QtWidgets.QToolBar):
 
     def resizeEvent(self, event):
         super().resizeEvent(event)
-        self.set_media_name(self.media_name)
+        self.progress_widget.resize_media_name()
 
     def showEvent(self, event):
         super().showEvent(event)
@@ -293,6 +249,80 @@ class PlayerToolbar(QtWidgets.QToolBar):
         else:
             return 'top'
 
+
+class ClickableSlider(QtWidgets.QSlider):
+    def mousePressEvent(self, event):
+        self._set_position_from_mouse_event(event)
+
+    def mouseMoveEvent(self, event):
+        self._set_position_from_mouse_event(event)
+
+    def _set_position_from_mouse_event(self, event):
+        value = QtWidgets.QStyle.sliderValueFromPosition(
+            self.minimum(), self.maximum(), event.x(), self.width())
+        self.setValue(value)
+
+
+class PlaybackProgressSlider(QtWidgets.QWidget):
+    def __init__(self, parent, player):
+        super().__init__(parent)
+        self.player = player
+        self.media_name = ''
+        self._position_update = False
+
+        vbox = QtWidgets.QVBoxLayout(self)
+
+        self.progress_slider = ClickableSlider(self)
+        self.progress_slider.setOrientation(QtCore.Qt.Horizontal)
+        self.progress_slider.setEnabled(False)
+        self.progress_slider.setMinimumWidth(30)
+        self.progress_slider.setSingleStep(1000)
+        self.progress_slider.setPageStep(3000)
+        self.progress_slider.valueChanged.connect(self.on_value_changed)
+        self.media_name_label = QtWidgets.QLabel(self)
+        self.media_name_label.setAlignment(QtCore.Qt.AlignCenter)
+
+        slider_container = QtWidgets.QWidget(self)
+        hbox = QtWidgets.QHBoxLayout(slider_container)
+        hbox.setContentsMargins(0, 0, 0, 0)
+        self.position_label = QtWidgets.QLabel("0:00", self)
+        self.duration_label = QtWidgets.QLabel(format_time(0), self)
+        min_duration_width = get_text_width(self.position_label.font(), "8:88")
+        self.position_label.setMinimumWidth(min_duration_width)
+        self.duration_label.setMinimumWidth(min_duration_width)
+        hbox.addWidget(self.position_label)
+        hbox.addWidget(self.progress_slider)
+        hbox.addWidget(self.duration_label)
+
+        vbox.addWidget(slider_container)
+        vbox.addWidget(self.media_name_label)
+
+        self.player._player.durationChanged.connect(self.on_duration_changed)
+        self.player._player.positionChanged.connect(self.on_position_changed)
+        self.player._player.currentMediaChanged.connect(self.on_media_changed)
+
+    def on_duration_changed(self, duration):
+        self.progress_slider.setMaximum(duration)
+        self.duration_label.setText(format_time(duration))
+
+    def on_position_changed(self, position):
+        self._position_update = True
+        self.progress_slider.setValue(position)
+        self._position_update = False
+        self.position_label.setText(format_time(position, display_zero=True))
+
+    def on_media_changed(self, media):
+        if media.isNull():
+            self.progress_slider.setEnabled(False)
+        else:
+            url = media.canonicalUrl().toString()
+            self.set_media_name(os.path.basename(url))
+            self.progress_slider.setEnabled(True)
+
+    def on_value_changed(self, value):
+        if not self._position_update:  # Avoid circular events
+            self.player.set_position(value)
+
     def set_media_name(self, media_name):
         self.media_name = media_name
         media_label = self.media_name_label
@@ -301,6 +331,9 @@ class PlayerToolbar(QtWidgets.QToolBar):
                                         QtCore.Qt.ElideRight,
                                         media_label.width())
         media_label.setText(elidedText)
+
+    def resize_media_name(self):
+        self.set_media_name(self.media_name)
 
 
 class Popover(QtWidgets.QFrame):
