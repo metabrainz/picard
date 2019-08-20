@@ -178,13 +178,16 @@ class PlayerToolbar(QtWidgets.QToolBar):
         self.player = player
 
         self.play_action = QtWidgets.QAction(icontheme.lookup('play'), _("Play"), self)
-        self.play_action.setStatusTip(_("Play selected files in an internal player"))
+        play_tip = _("Play selected files")
+        self.play_action.setToolTip(play_tip)
+        self.play_action.setStatusTip(play_tip)
         self.play_action.setEnabled(False)
         self.play_action.triggered.connect(self.play)
 
         self.pause_action = QtWidgets.QAction(icontheme.lookup('pause'), _("Pause"), self)
-        self.pause_action.setToolTip(_("Pause/resume"))
-        self.pause_action.setStatusTip(_("Pause or resume playing with an internal player"))
+        pause_tip = _("Pause or resume current playback")
+        self.pause_action.setToolTip(pause_tip)
+        self.pause_action.setStatusTip(pause_tip)
         self.pause_action.setCheckable(True)
         self.pause_action.setChecked(False)
         self.pause_action.setEnabled(False)
@@ -399,6 +402,9 @@ class PlaybackRateButton(QtWidgets.QToolButton):
         self.setMinimumWidth(min_width + (2 * button_margin) + 2)
         self.set_playback_rate(playback_rate)
         self.clicked.connect(self.show_popover)
+        tooltip = _('Change playback speed')
+        self.setToolTip(tooltip)
+        self.setStatusTip(tooltip)
 
     def show_popover(self):
         slider_value = self.playback_rate * self.multiplier
@@ -456,10 +462,13 @@ class VolumeControlButton(QtWidgets.QToolButton):
         min_width = get_text_width(self.font(), _(self.volume_fmt) % 888)
         self.setMinimumWidth(min_width + (2 * button_margin) + 2)
         self.clicked.connect(self.show_popover)
+        tooltip = _('Change audio volume')
+        self.setToolTip(tooltip)
+        self.setStatusTip(tooltip)
 
     def show_popover(self):
         popover = SliderPopover(
-            self, self.popover_position, _('Volume'), self.volume)
+            self, self.popover_position, _('Audio volume'), self.volume)
         popover.slider.setMinimum(0)
         popover.slider.setMaximum(100)
         popover.slider.setPageStep(self.step)
