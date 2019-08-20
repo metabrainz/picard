@@ -176,7 +176,6 @@ class PlayerToolbar(QtWidgets.QToolBar):
             | QtCore.Qt.NoToolBarArea)
 
         self.player = player
-        self.media_name = ''
 
         self.play_action = QtWidgets.QAction(icontheme.lookup('play'), _("Play"), self)
         self.play_action.setStatusTip(_("Play selected files in an internal player"))
@@ -194,6 +193,70 @@ class PlayerToolbar(QtWidgets.QToolBar):
 
         self._add_toolbar_action(self.play_action)
         self._add_toolbar_action(self.pause_action)
+
+        self.progress_widget = PlaybackProgressSlider(self, self.player)
+        self.addWidget(self.progress_widget)
+
+        volume = config.persist["mediaplayer_volume"]
+        self.player.set_volume(volume)
+        self.volume_button = VolumeControlButton(self, volume)
+        self.volume_button.volume_changed.connect(self.player.set_volume)
+        self.volume_button.setToolButtonStyle(self.toolButtonStyle())
+        self.addWidget(self.volume_button)
+
+        playback_rate = config.persist["mediaplayer_playback_rate"]
+        self.player.set_playback_rate(playback_rate)
+        self.playback_rate_button = PlaybackRateButton(self, playback_rate)
+        self.playback_rate_button.playback_rate_changed.connect(self.player.set_playback_rate)
+        self.playback_rate_button.setToolButtonStyle(self.toolButtonStyle())
+        self.addWidget(self.playback_rate_button)
+
+    def _add_toolbar_action(self, action):
+        self.addAction(action)
+        widget = self.widgetForAction(action)
+        widget.setFocusPolicy(QtCore.Qt.TabFocus)
+        widget.setAttribute(QtCore.Qt.WA_MacShowFocusRect)
+
+    def play(self):
+        self.player.play()
+        self.pause_action.setChecked(False)
+
+    def setToolButtonStyle(self, style):
+        super().setToolButtonStyle(style)
+        self.playback_rate_button.setToolButtonStyle(style)
+        self.volume_button.setToolButtonStyle(style)
+
+    def resizeEvent(self, event):
+        super().resizeEvent(event)
+        self.progress_widget.resize_media_name()
+
+    def showEvent(self, event):
+        super().showEvent(event)
+        self._update_popover_position()
+
+    def _update_popover_position(self):
+        popover_position = self._get_popover_position()
+        self.playback_rate_button.popover_position = popover_position
+        self.volume_button.popover_position = popover_position
+
+    def _get_popover_position(self):
+        if self.isFloating():
+            return 'bottom'
+        pos = self.mapToParent(QtCore.QPoint(0, 0))
+        half_main_window_height = self.parent().height() / 2
+        if pos.y() <= half_main_window_height:
+            return 'bottom'
+        else:
+            return 'top'
+
+
+class PlaybackProgressSlider(QtWidgets.QWidget):
+    def __init__(self, parent, player):
+        super().__init__(parent)
+        self.player = player
+        self.media_name = ''
+
+        vbox = QtWidgets.QVBoxLayout(self)
 
         self.progress_slider = QtWidgets.QSlider(self)
         self.progress_slider.setOrientation(QtCore.Qt.Horizontal)
@@ -215,39 +278,12 @@ class PlayerToolbar(QtWidgets.QToolBar):
         hbox.addWidget(self.progress_slider)
         hbox.addWidget(self.duration_label)
 
-        progress_widget = QtWidgets.QWidget(self)
-        vbox = QtWidgets.QVBoxLayout(progress_widget)
         vbox.addWidget(slider_container)
         vbox.addWidget(self.media_name_label)
-        self.addWidget(progress_widget)
-
-        volume = config.persist["mediaplayer_volume"]
-        self.player.set_volume(volume)
-        self.volume_button = VolumeControlButton(self, volume)
-        self.volume_button.volume_changed.connect(self.player.set_volume)
-        self.volume_button.setToolButtonStyle(self.toolButtonStyle())
-        self.addWidget(self.volume_button)
-
-        playback_rate = config.persist["mediaplayer_playback_rate"]
-        self.player.set_playback_rate(playback_rate)
-        self.playback_rate_button = PlaybackRateButton(self, playback_rate)
-        self.playback_rate_button.playback_rate_changed.connect(self.player.set_playback_rate)
-        self.playback_rate_button.setToolButtonStyle(self.toolButtonStyle())
-        self.addWidget(self.playback_rate_button)
 
         self.player._player.durationChanged.connect(self.on_duration_changed)
         self.player._player.positionChanged.connect(self.on_position_changed)
         self.player._player.currentMediaChanged.connect(self.on_media_changed)
-
-    def _add_toolbar_action(self, action):
-        self.addAction(action)
-        widget = self.widgetForAction(action)
-        widget.setFocusPolicy(QtCore.Qt.TabFocus)
-        widget.setAttribute(QtCore.Qt.WA_MacShowFocusRect)
-
-    def play(self):
-        self.player.play()
-        self.pause_action.setChecked(False)
 
     def on_duration_changed(self, duration):
         self.progress_slider.setMaximum(duration)
@@ -265,34 +301,6 @@ class PlayerToolbar(QtWidgets.QToolBar):
             self.set_media_name(os.path.basename(url))
             self.progress_slider.setEnabled(True)
 
-    def setToolButtonStyle(self, style):
-        super().setToolButtonStyle(style)
-        self.playback_rate_button.setToolButtonStyle(style)
-        self.volume_button.setToolButtonStyle(style)
-
-    def resizeEvent(self, event):
-        super().resizeEvent(event)
-        self.set_media_name(self.media_name)
-
-    def showEvent(self, event):
-        super().showEvent(event)
-        self._update_popover_position()
-
-    def _update_popover_position(self):
-        popover_position = self._get_popover_position()
-        self.playback_rate_button.popover_position = popover_position
-        self.volume_button.popover_position = popover_position
-
-    def _get_popover_position(self):
-        if self.isFloating():
-            return 'bottom'
-        pos = self.mapToParent(QtCore.QPoint(0, 0))
-        half_main_window_height = self.parent().height() / 2
-        if pos.y() <= half_main_window_height:
-            return 'bottom'
-        else:
-            return 'top'
-
     def set_media_name(self, media_name):
         self.media_name = media_name
         media_label = self.media_name_label
@@ -301,6 +309,9 @@ class PlayerToolbar(QtWidgets.QToolBar):
                                         QtCore.Qt.ElideRight,
                                         media_label.width())
         media_label.setText(elidedText)
+
+    def resize_media_name(self):
+        self.set_media_name(self.media_name)
 
 
 class Popover(QtWidgets.QFrame):
