@@ -351,7 +351,7 @@ class picard_build_appdata(Command):
     description = 'Build appdata metadata file'
     user_options = []
 
-    re_release = re.compile('Version (?P<version>\d+(?:\.\d+){1,2}) - (?P<date>\d{4}-\d{2}-\d{2})')
+    re_release = re.compile('^# Version (?P<version>\d+(?:\.\d+){1,2}) - (?P<date>\d{4}-\d{2}-\d{2})', re.MULTILINE)
 
     def initialize_options(self):
         pass
@@ -371,7 +371,7 @@ class picard_build_appdata(Command):
 
     def add_release_list(self, source_file):
         template = '<release date="{date}" version="{version}"/>'
-        with open('NEWS.txt', 'r') as newsfile:
+        with open('NEWS.md', 'r') as newsfile:
             news = newsfile.read()
             releases = [template.format(**m.groupdict()) for m in self.re_release.finditer(news)]
             args = {
