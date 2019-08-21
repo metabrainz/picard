@@ -74,7 +74,10 @@ class TipSlider(QtWidgets.QSlider):
     def hideEvent(self, event):
         super().hideEvent(event)
         if not IS_WIN:
-            self.valueChanged.disconnect(self.show_tip)
+            try:
+                self.valueChanged.disconnect(self.show_tip)
+            except TypeError:
+                pass
 
     def show_tip(self, value):
         self.round_value(value)
