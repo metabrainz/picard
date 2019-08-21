@@ -110,6 +110,7 @@ class RenamingOptionsPage(OptionsPage):
         self.textEditPaletteReadOnly.setColor(QPalette.Disabled, QPalette.Base, disabled_color)
 
     def toggle_file_moving(self, state):
+        self.toggle_file_naming_format()
         self.ui.delete_empty_dirs.setEnabled(state)
         self.ui.move_files_to.setEnabled(state)
         self.ui.move_files_to_browse.setEnabled(state)
@@ -117,18 +118,18 @@ class RenamingOptionsPage(OptionsPage):
         self.ui.move_additional_files_pattern.setEnabled(state)
 
     def toggle_file_renaming(self, state):
+        self.toggle_file_naming_format()
 
-        self.ui.file_naming_format.setEnabled(state)
-        self.ui.file_naming_format_default.setEnabled(state)
-        self.ui.ascii_filenames.setEnabled(state)
-        self.ui.file_naming_format_group.setEnabled(state)
+    def toggle_file_naming_format(self):
+        active = self.ui.move_files.isChecked() or self.ui.rename_files.isChecked()
+        self.ui.file_naming_format.setEnabled(active)
+        self.ui.file_naming_format_default.setEnabled(active)
+        palette = self.textEditPaletteNormal if active else self.textEditPaletteReadOnly
+        self.ui.file_naming_format.setPalette(palette)
+
+        self.ui.ascii_filenames.setEnabled(active)
         if not IS_WIN:
-            self.ui.windows_compatibility.setEnabled(state)
-
-        if self.ui.file_naming_format.isEnabled():
-            self.ui.file_naming_format.setPalette(self.textEditPaletteNormal)
-        else:
-            self.ui.file_naming_format.setPalette(self.textEditPaletteReadOnly)
+            self.ui.windows_compatibility.setEnabled(active)
 
     def check_formats(self):
         self.test()
