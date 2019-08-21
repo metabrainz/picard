@@ -80,6 +80,7 @@ class Player(QtCore.QObject):
         self._selected_objects = []
         if qt_multimedia_available:
             player = QtMultimedia.QMediaPlayer(parent)
+            player.setAudioRole(QtMultimedia.QAudio.MusicRole)
             self.state_changed = player.stateChanged
             self._logarithmic_volume = get_logarithmic_volume(player.volume())
             availability = player.availability()
