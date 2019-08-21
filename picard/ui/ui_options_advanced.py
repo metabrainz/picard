@@ -3,7 +3,9 @@
 # Automatically generated - don't edit.
 # Use `python setup.py build_ui` to update it.
 
+
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class Ui_AdvancedOptionsPage(object):
     def setupUi(self, AdvancedOptionsPage):
@@ -100,7 +102,7 @@ class Ui_AdvancedOptionsPage(object):
     def retranslateUi(self, AdvancedOptionsPage):
         _translate = QtCore.QCoreApplication.translate
         self.groupBox.setTitle(_("Advanced options"))
-        self.recursively_add_files.setText(_("Recursively add files and folders from directory"))
+        self.recursively_add_files.setText(_("Include sub-folders when adding files from folder"))
         self.label_track_duration_diff.setText(_("Ignore track duration difference under this number of seconds"))
         self.label_ignore_regex.setText(_("Ignore file paths matching the following regular expression:"))
         self.ignore_hidden_files.setText(_("Ignore hidden files"))
@@ -109,4 +111,3 @@ class Ui_AdvancedOptionsPage(object):
         self.completeness_ignore_pregap.setText(_("Pregap tracks"))
         self.completeness_ignore_data.setText(_("Data tracks"))
         self.completeness_ignore_silence.setText(_("Silent tracks"))
-

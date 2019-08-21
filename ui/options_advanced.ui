@@ -23,7 +23,7 @@
       <item row="5" column="0">
        <widget class="QCheckBox" name="recursively_add_files">
         <property name="text">
-         <string>Recursively add files and folders from directory</string>
+         <string>Include sub-folders when adding files from folder</string>
         </property>
        </widget>
       </item>
