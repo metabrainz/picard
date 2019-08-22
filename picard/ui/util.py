@@ -85,9 +85,8 @@ class MultiDirsSelectDialog(QtWidgets.QFileDialog):
         super().__init__(*args)
         self.setFileMode(self.Directory)
         self.setOption(self.ShowDirsOnly)
-        if IS_WIN or IS_MACOS:
-            # The native dialog doesn't allow selecting >1 directory
-            self.setOption(self.DontUseNativeDialog)
+        # The native dialog doesn't allow selecting >1 directory
+        self.setOption(self.DontUseNativeDialog)
         for view in self.findChildren((QtWidgets.QListView, QtWidgets.QTreeView)):
             if isinstance(view.model(), QtWidgets.QFileSystemModel):
                 view.setSelectionMode(QtWidgets.QAbstractItemView.ExtendedSelection)
