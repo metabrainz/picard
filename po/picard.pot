@@ -8,14 +8,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: picard 2.2.0.dev4\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2019-08-20 20:49+0200\n"
+"POT-Creation-Date: 2019-08-22 11:59+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.6.0\n"
+"Generated-By: Babel 2.7.0\n"
 
 #: picard/album.py:112
 msgid "Unmatched Files"
@@ -869,7 +869,7 @@ msgstr ""
 msgid "Contains albums and matched files"
 msgstr ""
 
-#: picard/ui/itemviews.py:743 picard/ui/options/renaming.py:196
+#: picard/ui/itemviews.py:743 picard/ui/options/renaming.py:197
 msgid "Error"
 msgstr ""
 
@@ -1447,70 +1447,70 @@ msgid ""
 "password."
 msgstr ""
 
-#: picard/ui/playertoolbar.py:160
+#: picard/ui/playertoolbar.py:161
 msgid "Internal player: The format of a media resource isn't (fully) supported"
 msgstr ""
 
-#: picard/ui/playertoolbar.py:162
+#: picard/ui/playertoolbar.py:163
 msgid ""
 "Internal player: There are not the appropriate permissions to play a "
 "media resource"
 msgstr ""
 
-#: picard/ui/playertoolbar.py:164
+#: picard/ui/playertoolbar.py:165
 msgid ""
 "Internal player: A valid playback service was not found, playback cannot "
 "proceed"
 msgstr ""
 
-#: picard/ui/playertoolbar.py:166
+#: picard/ui/playertoolbar.py:167
 #, python-format
 msgid "Internal player: error, code=%d, msg=%s"
 msgstr ""
 
-#: picard/ui/playertoolbar.py:172
+#: picard/ui/playertoolbar.py:173
 msgid "Player"
 msgstr ""
 
-#: picard/ui/playertoolbar.py:180
+#: picard/ui/playertoolbar.py:181
 msgid "Play"
 msgstr ""
 
-#: picard/ui/playertoolbar.py:181
+#: picard/ui/playertoolbar.py:182
 msgid "Play selected files"
 msgstr ""
 
-#: picard/ui/playertoolbar.py:187
+#: picard/ui/playertoolbar.py:188
 msgid "Pause"
 msgstr ""
 
-#: picard/ui/playertoolbar.py:188
+#: picard/ui/playertoolbar.py:189
 msgid "Pause or resume current playback"
 msgstr ""
 
-#: picard/ui/playertoolbar.py:399
+#: picard/ui/playertoolbar.py:400
 #, python-format
 msgid "%1.1f ×"
 msgstr ""
 
-#: picard/ui/playertoolbar.py:405
+#: picard/ui/playertoolbar.py:406
 msgid "Change playback speed"
 msgstr ""
 
-#: picard/ui/playertoolbar.py:412
+#: picard/ui/playertoolbar.py:413
 msgid "Playback speed"
 msgstr ""
 
-#: picard/ui/playertoolbar.py:459
+#: picard/ui/playertoolbar.py:460
 #, python-format
 msgid "%d%%"
 msgstr ""
 
-#: picard/ui/playertoolbar.py:465
+#: picard/ui/playertoolbar.py:466
 msgid "Change audio volume"
 msgstr ""
 
-#: picard/ui/playertoolbar.py:471
+#: picard/ui/playertoolbar.py:472
 msgid "Audio volume"
 msgstr ""
 
@@ -1570,43 +1570,43 @@ msgstr ""
 msgid "Options"
 msgstr ""
 
-#: picard/ui/ui_options_advanced.py:102
+#: picard/ui/ui_options_advanced.py:104
 msgid "Advanced options"
 msgstr ""
 
-#: picard/ui/ui_options_advanced.py:103
-msgid "Recursively add files and folders from directory"
-msgstr ""
-
-#: picard/ui/ui_options_advanced.py:104
-msgid "Ignore track duration difference under this number of seconds"
-msgstr ""
-
 #: picard/ui/ui_options_advanced.py:105
-msgid "Ignore file paths matching the following regular expression:"
+msgid "Include sub-folders when adding files from folder"
 msgstr ""
 
 #: picard/ui/ui_options_advanced.py:106
-msgid "Ignore hidden files"
+msgid "Ignore track duration difference under this number of seconds"
 msgstr ""
 
 #: picard/ui/ui_options_advanced.py:107
-msgid "Ignore the following tracks when determining whether a release is complete"
+msgid "Ignore file paths matching the following regular expression:"
 msgstr ""
 
 #: picard/ui/ui_options_advanced.py:108
-msgid "Video tracks"
+msgid "Ignore hidden files"
 msgstr ""
 
 #: picard/ui/ui_options_advanced.py:109
-msgid "Pregap tracks"
+msgid "Ignore the following tracks when determining whether a release is complete"
 msgstr ""
 
 #: picard/ui/ui_options_advanced.py:110
-msgid "Data tracks"
+msgid "Video tracks"
 msgstr ""
 
 #: picard/ui/ui_options_advanced.py:111
+msgid "Pregap tracks"
+msgstr ""
+
+#: picard/ui/ui_options_advanced.py:112
+msgid "Data tracks"
+msgstr ""
+
+#: picard/ui/ui_options_advanced.py:113
 msgid "Silent tracks"
 msgstr ""
 
@@ -1683,7 +1683,7 @@ msgid "Fingerprint calculator:"
 msgstr ""
 
 #: picard/ui/ui_options_fingerprinting.py:79
-#: picard/ui/ui_options_interface.py:130 picard/ui/ui_options_renaming.py:152
+#: picard/ui/ui_options_interface.py:130 picard/ui/ui_options_renaming.py:149
 msgid "Browse..."
 msgstr ""
 
@@ -1920,7 +1920,7 @@ msgid "Non-album tracks:"
 msgstr ""
 
 #: picard/ui/ui_options_metadata.py:106 picard/ui/ui_options_metadata.py:107
-#: picard/ui/ui_options_renaming.py:164
+#: picard/ui/ui_options_renaming.py:161
 #: picard/ui/ui_provider_options_local.py:52
 msgid "Default"
 msgstr ""
@@ -2019,39 +2019,39 @@ msgstr ""
 msgid "Preferred release formats"
 msgstr ""
 
-#: picard/ui/ui_options_renaming.py:150
+#: picard/ui/ui_options_renaming.py:147
 msgid "Move files when saving"
 msgstr ""
 
-#: picard/ui/ui_options_renaming.py:151
+#: picard/ui/ui_options_renaming.py:148
 msgid "Destination directory:"
 msgstr ""
 
-#: picard/ui/ui_options_renaming.py:153
+#: picard/ui/ui_options_renaming.py:150
 msgid "Move additional files (case insensitive):"
 msgstr ""
 
-#: picard/ui/ui_options_renaming.py:154
+#: picard/ui/ui_options_renaming.py:151
 msgid "Delete empty directories"
 msgstr ""
 
-#: picard/ui/ui_options_renaming.py:155
+#: picard/ui/ui_options_renaming.py:152
 msgid "Rename files when saving"
 msgstr ""
 
-#: picard/ui/ui_options_renaming.py:156
+#: picard/ui/ui_options_renaming.py:153
 msgid "Replace non-ASCII characters"
 msgstr ""
 
-#: picard/ui/ui_options_renaming.py:157
+#: picard/ui/ui_options_renaming.py:154
 msgid "Windows compatibility"
 msgstr ""
 
-#: picard/ui/ui_options_renaming.py:158
+#: picard/ui/ui_options_renaming.py:155
 msgid "Name files like this"
 msgstr ""
 
-#: picard/ui/ui_options_renaming.py:165
+#: picard/ui/ui_options_renaming.py:162
 msgid "Examples"
 msgstr ""
 
@@ -2553,11 +2553,11 @@ msgstr ""
 msgid "Ratings"
 msgstr ""
 
-#: picard/ui/options/releases.py:143
+#: picard/ui/options/releases.py:146
 msgid "Preferred Releases"
 msgstr ""
 
-#: picard/ui/options/releases.py:179
+#: picard/ui/options/releases.py:182
 msgid "Reset all"
 msgstr ""
 
@@ -2565,17 +2565,17 @@ msgstr ""
 msgid "File Naming"
 msgstr ""
 
-#: picard/ui/options/renaming.py:183 picard/ui/options/scripting.py:431
+#: picard/ui/options/renaming.py:184 picard/ui/options/scripting.py:431
 msgid ""
 "<a href=\"%(picard-doc-scripting-url)s\">Open Scripting Documentation in "
 "your browser</a>"
 msgstr ""
 
-#: picard/ui/options/renaming.py:196
+#: picard/ui/options/renaming.py:197
 msgid "The location to move files to must not be empty."
 msgstr ""
 
-#: picard/ui/options/renaming.py:206
+#: picard/ui/options/renaming.py:207
 msgid "The file naming format must not be empty."
 msgstr ""
 
