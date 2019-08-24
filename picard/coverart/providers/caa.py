@@ -32,7 +32,10 @@ from PyQt5 import (
     QtCore,
     QtWidgets,
 )
-from PyQt5.QtNetwork import QNetworkReply
+from PyQt5.QtNetwork import (
+    QNetworkReply,
+    QNetworkRequest,
+)
 
 from picard import (
     config,
@@ -566,7 +569,8 @@ class CoverArtProviderCaa(CoverArtProvider):
             self._caa_path,
             self._caa_json_downloaded,
             priority=True,
-            important=False
+            important=False,
+            cacheloadcontrol=QNetworkRequest.PreferNetwork
         )
         self.album._requests += 1
         # we will call next_in_queue() after json parsing
