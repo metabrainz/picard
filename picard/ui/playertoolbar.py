@@ -79,12 +79,14 @@ class Player(QtCore.QObject):
         self._toolbar = None
         self._selected_objects = []
         if qt_multimedia_available:
+            log.debug('Internal player: QtMultimedia available, initializing QMediaPlayer')
             player = QtMultimedia.QMediaPlayer(parent)
             player.setAudioRole(QtMultimedia.QAudio.MusicRole)
             self.state_changed = player.stateChanged
             self._logarithmic_volume = get_logarithmic_volume(player.volume())
             availability = player.availability()
             if availability == QtMultimedia.QMultimedia.Available:
+                log.debug('Internal player: available, QMediaPlayer set up')
                 self._player = player
                 self._player.error.connect(self._on_error)
             elif availability == QtMultimedia.QMultimedia.ServiceMissing:
