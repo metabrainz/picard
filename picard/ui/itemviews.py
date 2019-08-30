@@ -759,6 +759,9 @@ class AlbumItem(TreeItem):
             self.setText(i, album.column(column[1]))
         if self.isSelected():
             TreeItem.window.update_selection()
+        # Workaround for PICARD-1446: Expand/collapse indicator for the release
+        # is briefly missing on Windows
+        self.emitDataChanged()
 
 
 class TrackItem(TreeItem):
