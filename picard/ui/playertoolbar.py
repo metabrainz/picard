@@ -31,6 +31,7 @@ from picard import (
     config,
     log,
 )
+from picard.const.sys import IS_MACOS
 from picard.util import (
     format_time,
     icontheme,
@@ -146,17 +147,19 @@ class Player(QtCore.QObject):
     def set_playback_rate(self, playback_rate):
         player = self._player
         player.setPlaybackRate(playback_rate)
-        # Playback rate changes do not affect the current media playback.
-        # Force playback restart to have the rate change applied immediately.
-        player_state = player.state()
-        if player_state != QtMultimedia.QMediaPlayer.StoppedState:
-            position = player.position()
-            player.stop()
-            player.setPosition(position)
-            if player_state == QtMultimedia.QMediaPlayer.PlayingState:
-                player.play()
-            elif player_state == QtMultimedia.QMediaPlayer.PausedState:
-                player.pause()
+        if not IS_MACOS:
+            # Playback rate changes do not affect the current media playback on
+            # Linux and does work unreliable on Windows.
+            # Force playback restart to have the rate change applied immediately.
+            player_state = player.state()
+            if player_state != QtMultimedia.QMediaPlayer.StoppedState:
+                position = player.position()
+                player.stop()
+                player.setPosition(position)
+                if player_state == QtMultimedia.QMediaPlayer.PlayingState:
+                    player.play()
+                elif player_state == QtMultimedia.QMediaPlayer.PausedState:
+                    player.pause()
 
     def _on_error(self, error):
         if error == QtMultimedia.QMediaPlayer.FormatError:
