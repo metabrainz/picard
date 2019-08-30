@@ -40,7 +40,6 @@ InstallDirRegKey HKLM "Software\MusicBrainz\${PRODUCT_NAME}" "InstallDir"
 !define MUI_ICON "${PROJECT_PATH}\installer\images\tango-install.ico"
 !define MUI_UNICON "${NSISDIR}\Contrib\Graphics\Icons\classic-uninstall.ico"
 
-
 ; Abort Warning
 !define MUI_ABORTWARNING
 
@@ -62,6 +61,9 @@ InstallDirRegKey HKLM "Software\MusicBrainz\${PRODUCT_NAME}" "InstallDir"
 !insertmacro MUI_PAGE_INSTFILES
 
 ; Finish page
+!define MUI_FINISHPAGE_TITLE_3LINES
+!define MUI_FINISHPAGE_RUN "$WINDIR\explorer.exe"
+!define MUI_FINISHPAGE_RUN_PARAMETERS "$\"$INSTDIR\picard.exe$\""
 !insertmacro MUI_PAGE_FINISH
 
 ; Uninstaller pages
@@ -128,7 +130,6 @@ Section "!$(SectionRequired)" required
     SetOverwrite on
 
     ; Files
-
     File "${PROJECT_PATH}\dist\picard\"
     File /r "${PROJECT_PATH}\dist\picard\PyQt5"
 
@@ -145,7 +146,6 @@ Section "!$(SectionRequired)" required
     WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "Comments" "${PRODUCT_DESCRIPTION}"
     WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "URLInfoAbout" "${PRODUCT_URL}"
     WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "UninstallString" "$INSTDIR\uninst.exe"
-
 SectionEnd
 
 Section "$(SectionLanguages)" lang
@@ -155,8 +155,7 @@ Section "$(SectionLanguages)" lang
   File /r "${PROJECT_PATH}\dist\picard\locale\"
 SectionEnd
 
-SubSection "$(SectionShortcuts)" shortcuts
-
+SectionGroup "$(SectionShortcuts)" shortcuts
   Section "$(SectionStartmenu)" startmenu
     SetShellVarContext all
     SetOutPath "$INSTDIR"
@@ -170,20 +169,16 @@ SubSection "$(SectionShortcuts)" shortcuts
     CreateShortCut "$DESKTOP\${PRODUCT_NAME}.lnk" "$INSTDIR\picard.exe" \
       "" "" "" SW_SHOWNORMAL "" "${PRODUCT_DESCRIPTION}"
   SectionEnd
-
-SubSectionEnd
+SectionGroupEnd
 
 ; Uninstall
 Function un.RemoveSettingsPage
-
   !insertmacro MUI_DEFAULT MUI_UNCONFIRMPAGE_TEXT_TOP ""
   !insertmacro MUI_DEFAULT MUI_UNCONFIRMPAGE_TEXT_LOCATION ""
   !insertmacro INSTALLOPTIONS_DISPLAY "removeSettings.ini"
-
 FunctionEnd
 
 Section Uninstall
-
   RMDir /r "$INSTDIR"
 
   SetShellVarContext all
@@ -204,7 +199,6 @@ Section Uninstall
     DeleteRegKey HKCU "Software\MusicBrainz\Picard\persist"
     DeleteRegKey HKCU "Software\MusicBrainz\Picard\setting"
     DeleteRegKey HKCU "Software\MusicBrainz\Picard"
-
 SectionEnd
 
 ; Checks whether program is running.
