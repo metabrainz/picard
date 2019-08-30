@@ -119,7 +119,11 @@ class ScriptFunction(object):
         return "<ScriptFunction $%s(%r)>" % (self.name, self.args)
 
     def eval(self, parser):
-        function, eval_args, num_args = parser.functions[self.name]
+        try:
+            function, eval_args, num_args = parser.functions[self.name]
+        except KeyError:
+            raise ScriptUnknownFunction("Unknown function '%s'" % self.name)
+
         if eval_args:
             args = [arg.eval(parser) for arg in self.args]
         else:
