@@ -279,7 +279,6 @@ class PlaybackProgressSlider(QtWidgets.QWidget):
         self.media_name = ''
         self._position_update = False
 
-        vbox = QtWidgets.QVBoxLayout(self)
         tool_font = QtWidgets.QApplication.font("QToolButton")
 
         self.progress_slider = ClickableSlider(self)
@@ -307,6 +306,8 @@ class PlaybackProgressSlider(QtWidgets.QWidget):
         hbox.addWidget(self.progress_slider)
         hbox.addWidget(self.duration_label)
 
+        vbox = QtWidgets.QVBoxLayout(self)
+        vbox.setSpacing(0)
         vbox.addWidget(slider_container)
         vbox.addWidget(self.media_name_label)
 
