@@ -280,6 +280,7 @@ class PlaybackProgressSlider(QtWidgets.QWidget):
         self._position_update = False
 
         vbox = QtWidgets.QVBoxLayout(self)
+        tool_font = QtWidgets.QApplication.font("QToolButton")
 
         self.progress_slider = ClickableSlider(self)
         self.progress_slider.setOrientation(QtCore.Qt.Horizontal)
@@ -290,6 +291,7 @@ class PlaybackProgressSlider(QtWidgets.QWidget):
         self.progress_slider.valueChanged.connect(self.on_value_changed)
         self.media_name_label = QtWidgets.QLabel(self)
         self.media_name_label.setAlignment(QtCore.Qt.AlignCenter)
+        self.media_name_label.setFont(tool_font)
 
         slider_container = QtWidgets.QWidget(self)
         hbox = QtWidgets.QHBoxLayout(slider_container)
@@ -299,6 +301,8 @@ class PlaybackProgressSlider(QtWidgets.QWidget):
         min_duration_width = get_text_width(self.position_label.font(), "8:88")
         self.position_label.setMinimumWidth(min_duration_width)
         self.duration_label.setMinimumWidth(min_duration_width)
+        self.position_label.setFont(tool_font)
+        self.duration_label.setFont(tool_font)
         hbox.addWidget(self.position_label)
         hbox.addWidget(self.progress_slider)
         hbox.addWidget(self.duration_label)
