@@ -31,6 +31,7 @@ from picard import (
     config,
     log,
 )
+from picard.const.sys import IS_MACOS
 from picard.util import (
     format_time,
     icontheme,
@@ -146,17 +147,19 @@ class Player(QtCore.QObject):
     def set_playback_rate(self, playback_rate):
         player = self._player
         player.setPlaybackRate(playback_rate)
-        # Playback rate changes do not affect the current media playback.
-        # Force playback restart to have the rate change applied immediately.
-        player_state = player.state()
-        if player_state != QtMultimedia.QMediaPlayer.StoppedState:
-            position = player.position()
-            player.stop()
-            player.setPosition(position)
-            if player_state == QtMultimedia.QMediaPlayer.PlayingState:
-                player.play()
-            elif player_state == QtMultimedia.QMediaPlayer.PausedState:
-                player.pause()
+        if not IS_MACOS:
+            # Playback rate changes do not affect the current media playback on
+            # Linux and does work unreliable on Windows.
+            # Force playback restart to have the rate change applied immediately.
+            player_state = player.state()
+            if player_state != QtMultimedia.QMediaPlayer.StoppedState:
+                position = player.position()
+                player.stop()
+                player.setPosition(position)
+                if player_state == QtMultimedia.QMediaPlayer.PlayingState:
+                    player.play()
+                elif player_state == QtMultimedia.QMediaPlayer.PausedState:
+                    player.pause()
 
     def _on_error(self, error):
         if error == QtMultimedia.QMediaPlayer.FormatError:
@@ -276,7 +279,7 @@ class PlaybackProgressSlider(QtWidgets.QWidget):
         self.media_name = ''
         self._position_update = False
 
-        vbox = QtWidgets.QVBoxLayout(self)
+        tool_font = QtWidgets.QApplication.font("QToolButton")
 
         self.progress_slider = ClickableSlider(self)
         self.progress_slider.setOrientation(QtCore.Qt.Horizontal)
@@ -287,6 +290,7 @@ class PlaybackProgressSlider(QtWidgets.QWidget):
         self.progress_slider.valueChanged.connect(self.on_value_changed)
         self.media_name_label = QtWidgets.QLabel(self)
         self.media_name_label.setAlignment(QtCore.Qt.AlignCenter)
+        self.media_name_label.setFont(tool_font)
 
         slider_container = QtWidgets.QWidget(self)
         hbox = QtWidgets.QHBoxLayout(slider_container)
@@ -296,10 +300,14 @@ class PlaybackProgressSlider(QtWidgets.QWidget):
         min_duration_width = get_text_width(self.position_label.font(), "8:88")
         self.position_label.setMinimumWidth(min_duration_width)
         self.duration_label.setMinimumWidth(min_duration_width)
+        self.position_label.setFont(tool_font)
+        self.duration_label.setFont(tool_font)
         hbox.addWidget(self.position_label)
         hbox.addWidget(self.progress_slider)
         hbox.addWidget(self.duration_label)
 
+        vbox = QtWidgets.QVBoxLayout(self)
+        vbox.setSpacing(0)
         vbox.addWidget(slider_container)
         vbox.addWidget(self.media_name_label)
 
