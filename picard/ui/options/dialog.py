@@ -186,7 +186,7 @@ class OptionsDialog(PicardDialog):
         self._show_dialog(msg, self.restore_all_defaults)
 
     def _show_dialog(self, msg, function):
-        message_box = QtWidgets.QMessageBox()
+        message_box = QtWidgets.QMessageBox(self)
         message_box.setIcon(QtWidgets.QMessageBox.Warning)
         message_box.setWindowModality(QtCore.Qt.WindowModal)
         message_box.setWindowTitle(_("Confirm Reset"))
