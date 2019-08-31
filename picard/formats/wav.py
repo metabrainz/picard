@@ -43,3 +43,7 @@ class WAVFile(File):
 
     def _save(self, filename, metadata):
         log.debug("Saving file %r", filename)
+
+    @classmethod
+    def supports_tag(cls, name):
+        return False
