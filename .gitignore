@@ -12,6 +12,7 @@ Thumbs.db:encryptable
 # Files generated during build, test and deployment
 .coverage
 *.dll
+*.dylib
 *.exe
 *.pyc
 *.pyd
