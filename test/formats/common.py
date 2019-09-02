@@ -130,6 +130,16 @@ TAGS = {
     'work': 'Foo'
 }
 
+REPLAYGAIN_TAGS = {
+    'replaygain_album_gain': '-6.48 dB',
+    'replaygain_album_peak': '0.978475',
+    'replaygain_album_range': '7.84 dB',
+    'replaygain_track_gain': '-6.16 dB',
+    'replaygain_track_peak': '0.976991',
+    'replaygain_track_range': '8.22 dB',
+    'replaygain_reference_loudness': '-18.00 LUFS',
+}
+
 
 def skipUnlessTestfile(func):
     def _decorator(self, *args, **kwargs):
@@ -190,6 +200,7 @@ class CommonTests:
         def setUp(self):
             super().setUp()
             self.tags = TAGS.copy()
+            self.replaygain_tags = REPLAYGAIN_TAGS.copy()
             self.setup_tags()
 
         def setup_tags(self):
@@ -211,6 +222,13 @@ class CommonTests:
             metadata = Metadata(self.tags)
             loaded_metadata = save_and_load_metadata(self.filename, metadata)
             for (key, value) in self.tags.items():
+                self.assertEqual(loaded_metadata[key], value, '%s: %r != %r' % (key, loaded_metadata[key], value))
+
+        @skipUnlessTestfile
+        def test_replaygain_tags(self):
+            metadata = Metadata(self.replaygain_tags)
+            loaded_metadata = save_and_load_metadata(self.filename, metadata)
+            for (key, value) in self.replaygain_tags.items():
                 self.assertEqual(loaded_metadata[key], value, '%s: %r != %r' % (key, loaded_metadata[key], value))
 
         @skipUnlessTestfile

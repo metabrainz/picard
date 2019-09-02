@@ -96,6 +96,13 @@ TAG_NAMES = {
     'musicbrainz_originalartistid': N_('MusicBrainz Original Artist Id'),
     'originalalbum': N_('Original Album'),
     'musicbrainz_originalalbumid': N_('MusicBrainz Original Release Id'),
+    'replaygain_album_gain': N_('ReplayGain Album Gain'),
+    'replaygain_album_peak': N_('ReplayGain Album Peak'),
+    'replaygain_album_range': N_('ReplayGain Album Range'),
+    'replaygain_track_gain': N_('ReplayGain Track Gain'),
+    'replaygain_track_peak': N_('ReplayGain Track Peak'),
+    'replaygain_track_range': N_('ReplayGain Track Range'),
+    'replaygain_reference_loudness': N_('ReplayGain Reference Loudness'),
 }
 
 PRESERVED_TAGS = [

@@ -121,6 +121,13 @@ class MP4File(File):
         "----:com.apple.iTunes:ARTISTS": "artists",
         "----:com.apple.iTunes:WORK": "work",
         "----:com.apple.iTunes:initialkey": "key",
+        "----:com.apple.iTunes:REPLAYGAIN_ALBUM_GAIN": "replaygain_album_gain",
+        "----:com.apple.iTunes:REPLAYGAIN_ALBUM_PEAK": "replaygain_album_peak",
+        "----:com.apple.iTunes:REPLAYGAIN_ALBUM_RANGE": "replaygain_album_range",
+        "----:com.apple.iTunes:REPLAYGAIN_TRACK_GAIN": "replaygain_track_gain",
+        "----:com.apple.iTunes:REPLAYGAIN_TRACK_PEAK": "replaygain_track_peak",
+        "----:com.apple.iTunes:REPLAYGAIN_TRACK_RANGE": "replaygain_track_range",
+        "----:com.apple.iTunes:REPLAYGAIN_REFERENCE_LOUDNESS": "replaygain_reference_loudness",
     }
     __r_freeform_tags = dict([(v, k) for k, v in __freeform_tags.items()])
 

@@ -158,6 +158,13 @@ class ASFFile(File):
         'artists': 'WM/ARTISTS',
         'work': 'WM/Work',
         'website': 'WM/AuthorURL',
+        'replaygain_album_gain': 'REPLAYGAIN_ALBUM_GAIN',
+        'replaygain_album_peak': 'REPLAYGAIN_ALBUM_PEAK',
+        'replaygain_album_range': 'REPLAYGAIN_ALBUM_RANGE',
+        'replaygain_track_gain': 'REPLAYGAIN_TRACK_GAIN',
+        'replaygain_track_peak': 'REPLAYGAIN_TRACK_PEAK',
+        'replaygain_track_range': 'REPLAYGAIN_TRACK_RANGE',
+        'replaygain_reference_loudness': 'REPLAYGAIN_REFERENCE_LOUDNESS',
     }
     __RTRANS = dict([(b, a) for a, b in __TRANS.items()])
 
