@@ -103,11 +103,11 @@ class RenamingOptionsPage(OptionsPage):
         self.highlighter = TaggerScriptSyntaxHighlighter(self.ui.file_naming_format.document())
         self.ui.move_files_to_browse.clicked.connect(self.move_files_to_browse)
 
-        textEdit = self.ui.file_naming_format
-        self.textEditPaletteNormal = textEdit.palette()
-        self.textEditPaletteReadOnly = QPalette(self.textEditPaletteNormal)
-        disabled_color = self.textEditPaletteNormal.color(QPalette.Inactive, QPalette.Window)
-        self.textEditPaletteReadOnly.setColor(QPalette.Disabled, QPalette.Base, disabled_color)
+        script_edit = self.ui.file_naming_format
+        self.script_palette_normal = script_edit.palette()
+        self.script_palette_readonly = QPalette(self.script_palette_normal)
+        disabled_color = self.script_palette_normal.color(QPalette.Inactive, QPalette.Window)
+        self.script_palette_readonly.setColor(QPalette.Disabled, QPalette.Base, disabled_color)
 
     def toggle_file_moving(self, state):
         self.toggle_file_naming_format()
@@ -124,7 +124,7 @@ class RenamingOptionsPage(OptionsPage):
         active = self.ui.move_files.isChecked() or self.ui.rename_files.isChecked()
         self.ui.file_naming_format.setEnabled(active)
         self.ui.file_naming_format_default.setEnabled(active)
-        palette = self.textEditPaletteNormal if active else self.textEditPaletteReadOnly
+        palette = self.script_palette_normal if active else self.script_palette_readonly
         self.ui.file_naming_format.setPalette(palette)
 
         self.ui.ascii_filenames.setEnabled(active)
