@@ -28,6 +28,8 @@ class CommonId3Tests:
             self.set_tags({
                 'originaldate': '1980'
             })
+            self.unsupported_tags['r128_album_gain'] = '-2857'
+            self.unsupported_tags['r128_track_gain'] = '-2857'
 
         @skipUnlessTestfile
         def test_id3_freeform_delete(self):

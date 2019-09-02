@@ -36,6 +36,11 @@ SUPPORTED_TAGS = list(set(TAGS.keys()) - set(apev2.UNSUPPORTED_TAGS))
 class CommonApeTests:
 
     class ApeTestCase(CommonTests.TagFormatsTestCase):
+        def setup_tags(self):
+            super().setup_tags()
+            self.unsupported_tags['r128_album_gain'] = '-2857'
+            self.unsupported_tags['r128_track_gain'] = '-2857'
+
         def test_supports_tags(self):
             supports_tag = self.format.supports_tag
             for key in VALID_KEYS + SUPPORTED_TAGS:

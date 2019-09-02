@@ -55,6 +55,8 @@ UNSUPPORTED_TAGS = [
     'podcasturl',
     'show',
     'showsort',
+    'r128_album_gain',
+    'r128_track_gain',
 ]
 
 

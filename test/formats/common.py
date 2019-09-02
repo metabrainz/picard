@@ -201,6 +201,7 @@ class CommonTests:
             super().setUp()
             self.tags = TAGS.copy()
             self.replaygain_tags = REPLAYGAIN_TAGS.copy()
+            self.unsupported_tags = {}
             self.setup_tags()
 
         def setup_tags(self):
@@ -219,17 +220,11 @@ class CommonTests:
 
         @skipUnlessTestfile
         def test_simple_tags(self):
-            metadata = Metadata(self.tags)
-            loaded_metadata = save_and_load_metadata(self.filename, metadata)
-            for (key, value) in self.tags.items():
-                self.assertEqual(loaded_metadata[key], value, '%s: %r != %r' % (key, loaded_metadata[key], value))
+            self._test_supported_tags(self.tags)
 
         @skipUnlessTestfile
         def test_replaygain_tags(self):
-            metadata = Metadata(self.replaygain_tags)
-            loaded_metadata = save_and_load_metadata(self.filename, metadata)
-            for (key, value) in self.replaygain_tags.items():
-                self.assertEqual(loaded_metadata[key], value, '%s: %r != %r' % (key, loaded_metadata[key], value))
+            self._test_supported_tags(self.replaygain_tags)
 
         @skipUnlessTestfile
         def test_save_does_not_modify_metadata(self):
@@ -243,10 +238,7 @@ class CommonTests:
 
         @skipUnlessTestfile
         def test_unsupported_tags(self):
-            metadata = Metadata(self.unsupported_tags)
-            loaded_metadata = save_and_load_metadata(self.filename, metadata)
-            for tag in self.unsupported_tags:
-                self.assertTrue(tag not in loaded_metadata, '%s: %r != None' % (tag, loaded_metadata[tag]))
+            self._test_unsupported_tags(self.unsupported_tags)
 
         @skipUnlessTestfile
         def test_preserve_unchanged_tags(self):
@@ -346,3 +338,15 @@ class CommonTests:
             self.assertEqual(f._fixed_splitext(f.EXTENSIONS[0]), ('', f.EXTENSIONS[0]))
             self.assertEqual(f._fixed_splitext('.test'), os.path.splitext('.test'))
             self.assertNotEqual(f._fixed_splitext(f.EXTENSIONS[0]), os.path.splitext(f.EXTENSIONS[0]))
+
+        def _test_supported_tags(self, tags):
+            metadata = Metadata(tags)
+            loaded_metadata = save_and_load_metadata(self.filename, metadata)
+            for (key, value) in tags.items():
+                self.assertEqual(loaded_metadata[key], value, '%s: %r != %r' % (key, loaded_metadata[key], value))
+
+        def _test_unsupported_tags(self, tags):
+            metadata = Metadata(tags)
+            loaded_metadata = save_and_load_metadata(self.filename, metadata)
+            for tag in tags:
+                self.assertTrue(tag not in loaded_metadata, '%s: %r != None' % (tag, loaded_metadata[tag]))

@@ -549,7 +549,7 @@ class ID3File(File):
 
     @classmethod
     def supports_tag(cls, name):
-        unsupported_tags = {}
+        unsupported_tags = ['r128_album_gain', 'r128_track_gain']
         return ((name and not name.startswith("~") and name not in unsupported_tags)
                 or name in ("~rating", "~length")
                 or name.startswith("~id3"))
