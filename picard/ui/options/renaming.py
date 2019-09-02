@@ -23,7 +23,10 @@ import os.path
 
 from PyQt5 import QtWidgets
 from PyQt5.QtCore import QStandardPaths
-from PyQt5.QtGui import QPalette
+from PyQt5.QtGui import (
+    QFont,
+    QPalette,
+)
 
 from picard import config
 from picard.const import (
@@ -104,6 +107,9 @@ class RenamingOptionsPage(OptionsPage):
         self.ui.move_files_to_browse.clicked.connect(self.move_files_to_browse)
 
         script_edit = self.ui.file_naming_format
+        font = QFont('Monospace')
+        font.setStyleHint(QFont.TypeWriter)
+        script_edit.setFont(font)
         self.script_palette_normal = script_edit.palette()
         self.script_palette_readonly = QPalette(self.script_palette_normal)
         disabled_color = self.script_palette_normal.color(QPalette.Inactive, QPalette.Window)
