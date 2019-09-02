@@ -9,8 +9,10 @@ from picard import (
 )
 from picard.coverart.image import CoverArtImage
 from picard.formats import vorbis
+from picard.metadata import Metadata
 
 from .common import (
+    REPLAYGAIN_TAGS,
     TAGS,
     CommonTests,
     load_metadata,
@@ -102,6 +104,26 @@ class OggOpusTest(CommonVorbisTests.VorbisTestCase):
         'length': 82,
         '~channels': '2',
     }
+
+    @skipUnlessTestfile
+    def test_replaygain_tags(self):
+        # The normal replaygain tags are not supported by Opus
+        tags = REPLAYGAIN_TAGS.copy()
+        metadata = Metadata(tags)
+        loaded_metadata = save_and_load_metadata(self.filename, metadata)
+        for (key, value) in tags.items():
+            self.assertEqual(loaded_metadata[key], '', '%s: %r != %r' % (key, loaded_metadata[key], ''))
+
+    @skipUnlessTestfile
+    def test_r128_replaygain_tags(self):
+        tags = {
+            'r128_album_gain': '-2857',
+            'r128_track_gain': '-2857',
+        }
+        metadata = Metadata(tags)
+        loaded_metadata = save_and_load_metadata(self.filename, metadata)
+        for (key, value) in tags.items():
+            self.assertEqual(loaded_metadata[key], value, '%s: %r != %r' % (key, loaded_metadata[key], value))
 
 
 class VorbisUtilTest(PicardTestCase):

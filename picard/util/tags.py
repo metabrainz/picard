@@ -103,6 +103,8 @@ TAG_NAMES = {
     'replaygain_track_peak': N_('ReplayGain Track Peak'),
     'replaygain_track_range': N_('ReplayGain Track Range'),
     'replaygain_reference_loudness': N_('ReplayGain Reference Loudness'),
+    'r128_album_gain': N_('R128 Album Gain'),
+    'r128_track_gain': N_('R128 Track Gain'),
 }
 
 PRESERVED_TAGS = [

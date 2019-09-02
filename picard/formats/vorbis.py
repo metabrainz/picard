@@ -360,6 +360,12 @@ class OggOpusFile(VCommentFile):
     NAME = "Ogg Opus"
     _File = mutagen.oggopus.OggOpus
 
+    @classmethod
+    def supports_tag(cls, name):
+        if name.startswith('replaygain_'):
+            return False
+        return VCommentFile.supports_tag(name)
+
 
 def OggAudioFile(filename):
     """Generic Ogg audio file."""
