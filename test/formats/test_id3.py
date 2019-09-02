@@ -1,5 +1,7 @@
 import os.path
 
+import mutagen
+
 from test.picardtestcase import PicardTestCase
 
 from picard import config
@@ -12,6 +14,7 @@ from .common import (
     load_raw,
     save_and_load_metadata,
     save_metadata,
+    save_raw,
     skipUnlessTestfile,
 )
 from .coverart import CommonCoverArtTests
@@ -192,6 +195,21 @@ class CommonId3Tests:
         def test_preserve_unchanged_tags_v23(self):
             config.setting['write_id3v23'] = True
             self.test_preserve_unchanged_tags()
+
+        @skipUnlessTestfile
+        def test_replaygain_tags_case_insensitive(self):
+            tags = mutagen.id3.ID3Tags()
+            tags.add(mutagen.id3.TXXX(desc='replaygain_album_gain', text='-6.48 dB'))
+            tags.add(mutagen.id3.TXXX(desc='Replaygain_Album_Peak', text='0.978475'))
+            tags.add(mutagen.id3.TXXX(desc='replaygain_album_range', text='7.84 dB'))
+            tags.add(mutagen.id3.TXXX(desc='replaygain_track_gain', text='-6.16 dB'))
+            tags.add(mutagen.id3.TXXX(desc='REPLAYGAIN_track_peak', text='0.976991'))
+            tags.add(mutagen.id3.TXXX(desc='REPLAYGAIN_TRACK_RANGE', text='8.22 dB'))
+            tags.add(mutagen.id3.TXXX(desc='replaygain_reference_loudness', text='-18.00 LUFS'))
+            save_raw(self.filename, tags)
+            loaded_metadata = load_metadata(self.filename)
+            for (key, value) in self.replaygain_tags.items():
+                self.assertEqual(loaded_metadata[key], value, '%s: %r != %r' % (key, loaded_metadata[key], value))
 
 
 class MP3Test(CommonId3Tests.Id3TestCase):

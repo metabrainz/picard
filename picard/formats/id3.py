@@ -37,7 +37,10 @@ from picard.coverart.image import (
     TagCoverArtImage,
 )
 from picard.file import File
-from picard.formats.mutagenext import compatid3
+from picard.formats.mutagenext import (
+    compatid3,
+    delall_ci,
+)
 from picard.metadata import Metadata
 from picard.util import (
     encode_filename,
@@ -173,16 +176,21 @@ class ID3File(File):
         'WORK': 'work',
         'Writer': 'writer',
         'SHOWMOVEMENT': 'showmovement',
-        'REPLAYGAIN_ALBUM_GAIN': 'replaygain_album_gain',
-        'REPLAYGAIN_ALBUM_PEAK': 'replaygain_album_peak',
-        'REPLAYGAIN_ALBUM_RANGE': 'replaygain_album_range',
-        'REPLAYGAIN_TRACK_GAIN': 'replaygain_track_gain',
-        'REPLAYGAIN_TRACK_PEAK': 'replaygain_track_peak',
-        'REPLAYGAIN_TRACK_RANGE': 'replaygain_track_range',
-        'REPLAYGAIN_REFERENCE_LOUDNESS': 'replaygain_reference_loudness',
     }
     __rtranslate_freetext = dict([(v, k) for k, v in __translate_freetext.items()])
     __translate_freetext['writer'] = 'writer'  # For backward compatibility of case
+
+    # Freetext fields that are loaded case-insensitive
+    __rtranslate_freetext_ci = {
+        'replaygain_album_gain': 'REPLAYGAIN_ALBUM_GAIN',
+        'replaygain_album_peak': 'REPLAYGAIN_ALBUM_PEAK',
+        'replaygain_album_range': 'REPLAYGAIN_ALBUM_RANGE',
+        'replaygain_track_gain': 'REPLAYGAIN_TRACK_GAIN',
+        'replaygain_track_peak': 'REPLAYGAIN_TRACK_PEAK',
+        'replaygain_track_range': 'REPLAYGAIN_TRACK_RANGE',
+        'replaygain_reference_loudness': 'REPLAYGAIN_REFERENCE_LOUDNESS',
+    }
+    __translate_freetext_ci = dict([(b.lower(), a) for a, b in __rtranslate_freetext_ci.items()])
 
     # Obsolete tag names which will still be loaded, but will get renamed on saving
     __rename_freetext = {
@@ -263,9 +271,12 @@ class ID3File(File):
                         metadata.add('performer:%s' % role, name)
             elif frameid == 'TXXX':
                 name = frame.desc
+                name_lower = name.lower()
                 if name in self.__rename_freetext:
                     name = self.__rename_freetext[name]
-                if name in self.__translate_freetext:
+                if name_lower in self.__translate_freetext_ci:
+                    name = self.__translate_freetext_ci[name_lower]
+                elif name in self.__translate_freetext:
                     name = self.__translate_freetext[name]
                 elif ((name in self.__rtranslate)
                       != (name in self.__rtranslate_freetext)):
@@ -458,6 +469,10 @@ class ID3File(File):
                         tags.delall('XSOP')
                     elif frameid == 'TSO2':
                         tags.delall('TXXX:ALBUMARTISTSORT')
+            elif name in self.__rtranslate_freetext_ci:
+                description = self.__rtranslate_freetext_ci[name]
+                delall_ci(tags, 'TXXX:' + description)
+                tags.add(self.build_TXXX(encoding, description, values))
             elif name in self.__rtranslate_freetext:
                 description = self.__rtranslate_freetext[name]
                 if description in self.__rrename_freetext:

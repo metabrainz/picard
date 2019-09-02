@@ -55,6 +55,13 @@ def load_raw(filename):
     return mutagen.File(filename)
 
 
+def save_raw(filename, tags):
+    file = load_raw(filename)
+    for k, v in tags.items():
+        file[k] = v
+    file.save()
+
+
 TAGS = {
     'albumartist': 'Foo',
     'albumartistsort': 'Foo',
