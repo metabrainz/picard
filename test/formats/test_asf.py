@@ -3,13 +3,34 @@ from test.picardtestcase import (
     create_fake_png,
 )
 
-from picard.formats import asf
+from picard.formats import (
+    asf,
+    ext_to_format,
+)
 
 from .common import CommonTests
 from .coverart import CommonCoverArtTests
 
 
-class ASFTest(CommonTests.TagFormatsTestCase):
+# prevent unittest to run tests in those classes
+class CommonAsfTests:
+
+    class AsfTestCase(CommonTests.TagFormatsTestCase):
+
+        def test_supports_tag(self):
+            fmt = ext_to_format(self.testfile_ext[1:])
+            self.assertTrue(fmt.supports_tag('copyright'))
+            self.assertTrue(fmt.supports_tag('compilation'))
+            self.assertTrue(fmt.supports_tag('bpm'))
+            self.assertTrue(fmt.supports_tag('djmixer'))
+            self.assertTrue(fmt.supports_tag('discnumber'))
+            self.assertTrue(fmt.supports_tag('lyrics:lead'))
+            self.assertTrue(fmt.supports_tag('~length'))
+            for tag in self.replaygain_tags.keys():
+                self.assertTrue(fmt.supports_tag(tag))
+
+
+class ASFTest(CommonAsfTests.AsfTestCase):
     testfile = 'test.asf'
     supports_ratings = True
     expected_info = {
@@ -20,7 +41,7 @@ class ASFTest(CommonTests.TagFormatsTestCase):
     }
 
 
-class WMATest(CommonTests.TagFormatsTestCase):
+class WMATest(CommonAsfTests.AsfTestCase):
     testfile = 'test.wma'
     supports_ratings = True
     expected_info = {

@@ -11,6 +11,7 @@ from test.picardtestcase import PicardTestCase
 from picard import config
 import picard.formats
 from picard.formats import ext_to_format
+from picard.formats.mutagenext.tak import TAK
 from picard.metadata import Metadata
 
 
@@ -52,7 +53,10 @@ def save_and_load_metadata(filename, metadata):
 
 
 def load_raw(filename):
-    return mutagen.File(filename)
+    file = mutagen.File(filename)
+    if file is None:
+        file = mutagen.File(filename, [TAK])
+    return file
 
 
 def save_raw(filename, tags):
@@ -232,6 +236,22 @@ class CommonTests:
         @skipUnlessTestfile
         def test_replaygain_tags(self):
             self._test_supported_tags(self.replaygain_tags)
+
+        @skipUnlessTestfile
+        def test_replaygain_tags_case_insensitive(self):
+            tags = {
+                'replaygain_album_gain': '-6.48 dB',
+                'Replaygain_Album_Peak': '0.978475',
+                'replaygain_album_range': '7.84 dB',
+                'replaygain_track_gain': '-6.16 dB',
+                'replaygain_track_peak': '0.976991',
+                'replaygain_track_range': '8.22 dB',
+                'replaygain_reference_loudness': '-18.00 LUFS',
+            }
+            save_raw(self.filename, tags)
+            loaded_metadata = load_metadata(self.filename)
+            for (key, value) in self.replaygain_tags.items():
+                self.assertEqual(loaded_metadata[key], value, '%s: %r != %r' % (key, loaded_metadata[key], value))
 
         @skipUnlessTestfile
         def test_save_does_not_modify_metadata(self):
