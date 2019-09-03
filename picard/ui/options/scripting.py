@@ -246,6 +246,9 @@ class ScriptingOptionsPage(OptionsPage):
         self.delete_shortcut = QtWidgets.QShortcut(self.ui.script_list)
         self.delete_shortcut.setKey(QtGui.QKeySequence.Delete)
         self.delete_shortcut.activated.connect(self.delete_selected_script)
+        font = QtGui.QFont('Monospace')
+        font.setStyleHint(QtGui.QFont.TypeWriter)
+        self.ui.tagger_script.setFont(font)
 
     def delete_selected_script(self):
         items = self.ui.script_list.selectedItems()
