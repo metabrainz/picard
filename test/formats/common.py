@@ -87,6 +87,7 @@ TAGS = {
     'catalognumber': 'Foo',
     'comment:': 'Foo',
     'comment:foo': 'Foo',
+    'comment:deu:foo': 'Foo',
     'compilation': '1',
     'composer': 'Foo',
     'composersort': 'Foo',

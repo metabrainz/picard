@@ -17,6 +17,9 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+import re
+
+
 TAG_NAMES = {
     'acoustid_fingerprint': N_('AcoustID Fingerprint'),
     'acoustid_id': N_('AcoustID'),
@@ -32,7 +35,7 @@ TAG_NAMES = {
     'barcode': N_('Barcode'),
     'bpm': N_('BPM'),
     'catalognumber': N_('Catalog Number'),
-    'comment:': N_('Comment'),
+    'comment': N_('Comment'),
     'compilation': N_('Compilation (iTunes)'),
     'composer': N_('Composer'),
     'composersort': N_('Composer Sort Order'),
@@ -127,3 +130,19 @@ def display_tag_name(name):
         if desc:
             return '%s [%s]' % (_(TAG_NAMES.get(name, name)), desc)
     return _(TAG_NAMES.get(name, name))
+
+
+RE_COMMENT_LANG = re.compile('^([a-zA-Z]{3}):')
+def parse_comment_tag(name):  # noqa: E302
+    """
+    Parses a tag name like "comment:XXX:desc", where XXX is the language.
+    If language is not set ("comment:desc") "eng" is assumed as default.
+    Returns a (lang, desc) tuple.
+    """
+    desc = name.split(':', 1)[1]
+    lang = 'eng'
+    match = RE_COMMENT_LANG.match(desc)
+    if match:
+        lang = match.group(1)
+        desc = desc[4:]
+    return (lang, desc)

@@ -101,14 +101,18 @@ class CommonId3Tests:
         def test_comment_delete(self):
             metadata = Metadata(self.tags)
             metadata['comment:bar'] = 'Foo'
+            metadata['comment:XXX:withlang'] = 'Foo'
             original_metadata = save_and_load_metadata(self.filename, metadata)
             del metadata['comment:bar']
+            del metadata['comment:XXX:withlang']
             new_metadata = save_and_load_metadata(self.filename, metadata)
 
             self.assertIn('comment:foo', original_metadata)
             self.assertIn('comment:bar', original_metadata)
+            self.assertIn('comment:XXX:withlang', original_metadata)
             self.assertIn('comment:foo', new_metadata)
             self.assertNotIn('comment:bar', new_metadata)
+            self.assertNotIn('comment:XXX:withlang', new_metadata)
 
         @skipUnlessTestfile
         def test_id3v23_simple_tags(self):

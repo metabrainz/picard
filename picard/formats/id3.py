@@ -46,6 +46,7 @@ from picard.util import (
     encode_filename,
     sanitize_date,
 )
+from picard.util.tags import parse_comment_tag
 
 
 id3.GRP1 = compatid3.GRP1
@@ -254,7 +255,11 @@ class ID3File(File):
                 elif frameid == 'COMM':
                     for text in frame.text:
                         if text:
-                            metadata.add('%s:%s' % (name, frame.desc), text)
+                            if frame.lang == 'eng':
+                                name = '%s:%s' % (name, frame.desc)
+                            else:
+                                name = '%s:%s:%s' % (name, frame.lang, frame.desc)
+                            metadata.add(name, text)
                 else:
                     metadata.add(name, frame)
             elif frameid == 'TIT1':
@@ -411,12 +416,12 @@ class ID3File(File):
                     else:
                         tmcl.people.append([role, value])
             elif name.startswith('comment:'):
-                desc = name.split(':', 1)[1]
+                (lang, desc) = parse_comment_tag(name)
                 if desc.lower()[:4] == 'itun':
                     tags.delall('COMM:' + desc)
                     tags.add(id3.COMM(encoding=0, desc=desc, lang='eng', text=[v + '\x00' for v in values]))
                 else:
-                    tags.add(id3.COMM(encoding=encoding, desc=desc, lang='eng', text=values))
+                    tags.add(id3.COMM(encoding=encoding, desc=desc, lang=lang, text=values))
             elif name.startswith('lyrics:') or name == 'lyrics':
                 if ':' in name:
                     desc = name.split(':', 1)[1]
@@ -528,10 +533,11 @@ class ID3File(File):
                                 if people[0] == role:
                                     frame.people.remove(people)
                 elif name.startswith('comment:'):
-                    desc = name.split(':', 1)[1]
+                    (lang, desc) = parse_comment_tag(name)
                     if desc.lower()[:4] != 'itun':
                         for key, frame in list(tags.items()):
-                            if frame.FrameID == 'COMM' and frame.desc == desc:
+                            if (frame.FrameID == 'COMM' and frame.desc == desc
+                                and frame.lang == lang):
                                 del tags[key]
                 elif name.startswith('lyrics:') or name == 'lyrics':
                     if ':' in name:
