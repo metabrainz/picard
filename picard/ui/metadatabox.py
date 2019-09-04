@@ -501,7 +501,7 @@ class MetadataBox(QtWidgets.QTableWidget):
                 tag_diff.objects += 1
 
         all_tags = set(list(orig_tags.keys()) + list(new_tags.keys()))
-        common_tags = [tag for tag in COMMON_TAGS if file.supports_tag(tag)]
+        common_tags = [tag for tag in COMMON_TAGS if tag in all_tags]
         tag_names = common_tags + sorted(all_tags.difference(common_tags),
                                          key=lambda x: display_tag_name(x).lower())
 
