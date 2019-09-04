@@ -247,18 +247,18 @@ class Id3UtilTest(PicardTestCase):
         self.assertEqual(id3.image_type_from_id3_num(6), 'medium')
         self.assertEqual(id3.image_type_from_id3_num(9999), 'other')
 
-    def image_type_as_id3_num(self):
-        self.assertEqual(id3.image_type_from_id3_num('other'), 0)
-        self.assertEqual(id3.image_type_from_id3_num('front'), 3)
-        self.assertEqual(id3.image_type_from_id3_num('medium'), 6)
-        self.assertEqual(id3.image_type_from_id3_num('track'), 6)
-        self.assertEqual(id3.image_type_from_id3_num('unknowntype'), 0)
+    def test_image_type_as_id3_num(self):
+        self.assertEqual(id3.image_type_as_id3_num('other'), 0)
+        self.assertEqual(id3.image_type_as_id3_num('front'), 3)
+        self.assertEqual(id3.image_type_as_id3_num('medium'), 6)
+        self.assertEqual(id3.image_type_as_id3_num('track'), 6)
+        self.assertEqual(id3.image_type_as_id3_num('unknowntype'), 0)
 
-    def types_from_id3(self):
-        self.assertEqual(id3.image_type_from_id3_num(0), ['other'])
-        self.assertEqual(id3.image_type_from_id3_num(3), ['front'])
-        self.assertEqual(id3.image_type_from_id3_num(6), ['medium'])
-        self.assertEqual(id3.image_type_from_id3_num(9999), ['other'])
+    def test_types_from_id3(self):
+        self.assertEqual(id3.types_from_id3(0), ['other'])
+        self.assertEqual(id3.types_from_id3(3), ['front'])
+        self.assertEqual(id3.types_from_id3(6), ['medium'])
+        self.assertEqual(id3.types_from_id3(9999), ['other'])
 
 
 class Mp3CoverArtTest(CommonCoverArtTests.CoverArtTestCase):
