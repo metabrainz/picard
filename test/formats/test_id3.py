@@ -211,6 +211,18 @@ class CommonId3Tests:
             for (key, value) in self.replaygain_tags.items():
                 self.assertEqual(loaded_metadata[key], value, '%s: %r != %r' % (key, loaded_metadata[key], value))
 
+        @skipUnlessTestfile
+        def test_replaygain_tags_not_duplicated(self):
+            # Ensure values are not duplicated on repeated save
+            tags = mutagen.id3.ID3Tags()
+            tags.add(mutagen.id3.TXXX(desc='Replaygain_Album_Peak', text='0.978475'))
+            save_raw(self.filename, tags)
+            loaded_metadata = load_metadata(self.filename)
+            save_metadata(self.filename, loaded_metadata)
+            raw_metadata = load_raw(self.filename)
+            self.assertFalse('TXXX:Replaygain_Album_Peak' in raw_metadata)
+            self.assertTrue('TXXX:REPLAYGAIN_ALBUM_PEAK' in raw_metadata)
+
 
 class MP3Test(CommonId3Tests.Id3TestCase):
     testfile = 'test.mp3'

@@ -8,7 +8,14 @@ from picard.formats import (
     ext_to_format,
 )
 
-from .common import CommonTests
+from .common import (
+    CommonTests,
+    load_metadata,
+    load_raw,
+    save_metadata,
+    save_raw,
+    skipUnlessTestfile,
+)
 from .coverart import CommonCoverArtTests
 
 
@@ -28,6 +35,19 @@ class CommonAsfTests:
             self.assertTrue(fmt.supports_tag('~length'))
             for tag in self.replaygain_tags.keys():
                 self.assertTrue(fmt.supports_tag(tag))
+
+        @skipUnlessTestfile
+        def test_replaygain_tags_not_duplicated(self):
+            # Ensure values are not duplicated on repeated save
+            tags = {
+                'Replaygain_Album_Peak': '-6.48 dB'
+            }
+            save_raw(self.filename, tags)
+            loaded_metadata = load_metadata(self.filename)
+            save_metadata(self.filename, loaded_metadata)
+            raw_metadata = load_raw(self.filename)
+            self.assertFalse('Replaygain_Album_Peak' in raw_metadata)
+            self.assertTrue('REPLAYGAIN_ALBUM_PEAK' in raw_metadata)
 
 
 class ASFTest(CommonAsfTests.AsfTestCase):

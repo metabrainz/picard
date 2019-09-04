@@ -5,6 +5,8 @@ from picard.formats import ext_to_format
 from .common import (
     CommonTests,
     load_metadata,
+    load_raw,
+    save_metadata,
     save_raw,
     skipUnlessTestfile,
 )
@@ -52,6 +54,18 @@ class MP4Test(CommonTests.TagFormatsTestCase):
         loaded_metadata = load_metadata(self.filename)
         for (key, value) in self.replaygain_tags.items():
             self.assertEqual(loaded_metadata[key], value, '%s: %r != %r' % (key, loaded_metadata[key], value))
+
+    @skipUnlessTestfile
+    def test_replaygain_tags_not_duplicated(self):
+        # Ensure values are not duplicated on repeated save
+        tags = mutagen.mp4.MP4Tags()
+        tags['----:com.apple.iTunes:Replaygain_Album_Peak'] = [b'-6.48 dB']
+        save_raw(self.filename, tags)
+        loaded_metadata = load_metadata(self.filename)
+        save_metadata(self.filename, loaded_metadata)
+        raw_metadata = load_raw(self.filename)
+        self.assertFalse('----:com.apple.iTunes:Replaygain_Album_Peak' in raw_metadata)
+        self.assertTrue('----:com.apple.iTunes:REPLAYGAIN_ALBUM_PEAK' in raw_metadata)
 
 
 class Mp4CoverArtTest(CommonCoverArtTests.CoverArtTestCase):
