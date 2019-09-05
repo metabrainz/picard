@@ -140,6 +140,10 @@ class MP4File(File):
     __other_supported_tags = ("discnumber", "tracknumber",
                               "totaldiscs", "totaltracks")
 
+    def __init__(self, filename):
+        super().__init__(filename)
+        self.__casemap = {}
+
     def _load(self, filename):
         log.debug("Loading file %r", filename)
         self.__casemap = {}
@@ -163,7 +167,9 @@ class MP4File(File):
             elif name_lower in self.__freeform_tags_ci:
                 for value in values:
                     value = value.decode("utf-8", "replace").strip("\x00")
-                    metadata.add(self.__freeform_tags_ci[name_lower], value)
+                    tag_name = self.__freeform_tags_ci[name_lower]
+                    metadata.add(tag_name, value)
+                    self.__casemap[tag_name] = name
             elif name == "----:com.apple.iTunes:fingerprint":
                 for value in values:
                     value = value.decode("utf-8", "replace").strip("\x00")
@@ -223,7 +229,11 @@ class MP4File(File):
             elif name in self.__r_freeform_tags_ci:
                 values = [v.encode("utf-8") for v in values]
                 delall_ci(tags, self.__r_freeform_tags_ci[name])
-                tags[self.__r_freeform_tags_ci[name]] = values
+                if name in self.__casemap:
+                    name = self.__casemap[name]
+                else:
+                    name = self.__r_freeform_tags_ci[name]
+                tags[name] = values
             elif name == "musicip_fingerprint":
                 tags["----:com.apple.iTunes:fingerprint"] = [b"MusicMagic Fingerprint%s" % v.encode('ascii') for v in values]
 

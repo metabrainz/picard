@@ -217,6 +217,10 @@ class ID3File(File):
         'MVIN': re.compile(r'^(?P<movementnumber>\d+)(?:/(?P<movementtotal>\d+))?$')
     }
 
+    def __init__(self, filename):
+        super().__init__(filename)
+        self.__casemap = {}
+
     def build_TXXX(self, encoding, desc, values):
         """Construct and return a TXXX frame."""
         # This is here so that plugins can customize the behavior of TXXX
@@ -229,6 +233,7 @@ class ID3File(File):
 
     def _load(self, filename):
         log.debug("Loading file %r", filename)
+        self.__casemap = {}
         file = self._get_file(encode_filename(filename))
         tags = file.tags or {}
         # upgrade custom 2.3 frames to 2.4
@@ -275,7 +280,9 @@ class ID3File(File):
                 if name in self.__rename_freetext:
                     name = self.__rename_freetext[name]
                 if name_lower in self.__translate_freetext_ci:
+                    orig_name = name
                     name = self.__translate_freetext_ci[name_lower]
+                    self.__casemap[name] = orig_name
                 elif name in self.__translate_freetext:
                     name = self.__translate_freetext[name]
                 elif ((name in self.__rtranslate)
@@ -388,7 +395,6 @@ class ID3File(File):
 
         tmcl = mutagen.id3.TMCL(encoding=encoding, people=[])
         tipl = mutagen.id3.TIPL(encoding=encoding, people=[])
-
         for name, values in metadata.rawitems():
             values = [id3text(v, encoding) for v in values]
             name = id3text(name, encoding)
@@ -470,7 +476,10 @@ class ID3File(File):
                     elif frameid == 'TSO2':
                         tags.delall('TXXX:ALBUMARTISTSORT')
             elif name in self.__rtranslate_freetext_ci:
-                description = self.__rtranslate_freetext_ci[name]
+                if name in self.__casemap:
+                    description = self.__casemap[name]
+                else:
+                    description = self.__rtranslate_freetext_ci[name]
                 delall_ci(tags, 'TXXX:' + description)
                 tags.add(self.build_TXXX(encoding, description, values))
             elif name in self.__rtranslate_freetext:

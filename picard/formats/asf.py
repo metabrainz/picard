@@ -174,6 +174,10 @@ class ASFFile(File):
     }
     __RTRANS_CI = dict([(b.lower(), a) for a, b in __TRANS_CI.items()])
 
+    def __init__(self, filename):
+        super().__init__(filename)
+        self.__casemap = {}
+
     def _load(self, filename):
         log.debug("Loading file %r", filename)
         self.__casemap = {}
@@ -211,7 +215,9 @@ class ASFFile(File):
             if name in self.__RTRANS:
                 name = self.__RTRANS[name]
             elif name_lower in self.__RTRANS_CI:
+                orig_name = name
                 name = self.__RTRANS_CI[name_lower]
+                self.__casemap[name] = orig_name
             else:
                 continue
             values = [str(value) for value in values if value]
@@ -245,7 +251,10 @@ class ASFFile(File):
             if name in self.__TRANS:
                 name = self.__TRANS[name]
             elif name in self.__TRANS_CI:
-                name = self.__TRANS_CI[name]
+                if name in self.__casemap:
+                    name = self.__casemap[name]
+                else:
+                    name = self.__TRANS_CI[name]
                 delall_ci(tags, name)
             else:
                 continue

@@ -35,6 +35,8 @@ settings = {
 
 def save_metadata(filename, metadata):
     f = picard.formats.open_(filename)
+    loaded_metadata = f._load(filename)
+    f._copy_loaded_metadata(loaded_metadata)
     f._save(filename, metadata)
 
 
