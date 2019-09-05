@@ -26,6 +26,7 @@ from PyQt5 import (
 
 from picard import config
 from picard.util.tags import TAG_NAMES
+from picard.util.thread import to_main
 
 from picard.ui.options import (
     OptionsPage,
@@ -97,7 +98,7 @@ class TagsOptionsPage(OptionsPage):
         clear_existing_tags = self.ui.clear_existing_tags.isChecked()
         if clear_existing_tags != config.setting["clear_existing_tags"]:
             config.setting["clear_existing_tags"] = clear_existing_tags
-            self.tagger.window.metadata_box.update()
+            to_main(self.tagger.window.metadata_box.update)
         config.setting["write_id3v1"] = self.ui.write_id3v1.isChecked()
         config.setting["write_id3v23"] = self.ui.write_id3v23.isChecked()
         config.setting["id3v23_join_with"] = self.ui.id3v23_join_with.currentText()
