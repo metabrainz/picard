@@ -55,17 +55,17 @@ def save_and_load_metadata(filename, metadata):
 
 
 def load_raw(filename):
-    file = mutagen.File(filename)
-    if file is None:
-        file = mutagen.File(filename, [TAK])
-    return file
+    f = mutagen.File(filename)
+    if f is None:
+        f = mutagen.File(filename, [TAK])
+    return f
 
 
 def save_raw(filename, tags):
-    file = load_raw(filename)
+    f = load_raw(filename)
     for k, v in tags.items():
-        file[k] = v
-    file.save()
+        f[k] = v
+    f.save()
 
 
 TAGS = {
