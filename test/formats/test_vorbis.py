@@ -1,3 +1,4 @@
+import base64
 import logging
 import os
 
@@ -17,6 +18,7 @@ from .common import (
     load_metadata,
     load_raw,
     save_and_load_metadata,
+    save_raw,
     skipUnlessTestfile,
 )
 from .coverart import (
@@ -65,6 +67,54 @@ class CommonVorbisTests:
                 'r128_track_gain': '-2857',
             }
             self._test_unsupported_tags(tags)
+
+        @skipUnlessTestfile
+        def test_invalid_metadata_block_picture_nobase64(self):
+            metadata = {
+                'metadata_block_picture': 'notbase64'
+            }
+            save_raw(self.filename, metadata)
+            loaded_metadata = load_metadata(self.filename)
+            self.assertEqual(0, len(loaded_metadata.images))
+
+        @skipUnlessTestfile
+        def test_invalid_metadata_block_picture_noflacpicture(self):
+            metadata = {
+                'metadata_block_picture': base64.b64encode(b'notaflacpictureblock').decode('ascii')
+            }
+            save_raw(self.filename, metadata)
+            loaded_metadata = load_metadata(self.filename)
+            self.assertEqual(0, len(loaded_metadata.images))
+
+        @skipUnlessTestfile
+        def test_legacy_coverart(self):
+            metadata = {
+                'coverart': 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAADElEQVQI12P4//8/AAX+Av7czFnnAAAAAElFTkSuQmCC'
+            }
+            save_raw(self.filename, metadata)
+            loaded_metadata = load_metadata(self.filename)
+            self.assertEqual(1, len(loaded_metadata.images))
+            first_image = loaded_metadata.images[0]
+            self.assertEqual('image/png', first_image.mimetype)
+            self.assertEqual(69, first_image.datalength)
+
+        @skipUnlessTestfile
+        def test_invalid_legacy_coverart_nobase64(self):
+            metadata = {
+                'coverart': 'notbase64'
+            }
+            save_raw(self.filename, metadata)
+            loaded_metadata = load_metadata(self.filename)
+            self.assertEqual(0, len(loaded_metadata.images))
+
+        @skipUnlessTestfile
+        def test_invalid_legacy_coverart_noimage(self):
+            metadata = {
+                'coverart': base64.b64encode(b'invalidimagedata').decode('ascii')
+            }
+            save_raw(self.filename, metadata)
+            loaded_metadata = load_metadata(self.filename)
+            self.assertEqual(0, len(loaded_metadata.images))
 
 
 class FLACTest(CommonVorbisTests.VorbisTestCase):

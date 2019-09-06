@@ -133,8 +133,8 @@ class VCommentFile(File):
                         continue
                     name = "totaldiscs"
                 elif name == "metadata_block_picture":
-                    image = mutagen.flac.Picture(base64.standard_b64decode(value))
                     try:
+                        image = mutagen.flac.Picture(base64.standard_b64decode(value))
                         coverartimage = TagCoverArtImage(
                             file=filename,
                             tag=name,
@@ -143,11 +143,10 @@ class VCommentFile(File):
                             support_types=True,
                             data=image.data,
                         )
-                    except CoverArtImageError as e:
+                    except (CoverArtImageError, TypeError, ValueError, mutagen.flac.error) as e:
                         log.error('Cannot load image from %r: %s' % (filename, e))
                     else:
                         metadata.images.append(coverartimage)
-
                     continue
                 elif name in self.__translate:
                     name = self.__translate[name]
@@ -178,7 +177,7 @@ class VCommentFile(File):
                             tag='COVERART',
                             data=base64.standard_b64decode(data)
                         )
-                    except CoverArtImageError as e:
+                    except (CoverArtImageError, TypeError, ValueError) as e:
                         log.error('Cannot load image from %r: %s' % (filename, e))
                     else:
                         metadata.images.append(coverartimage)
