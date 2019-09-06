@@ -1,4 +1,9 @@
-from .common import CommonTests
+from .common import (
+    REPLAYGAIN_TAGS,
+    TAGS,
+    CommonTests,
+    skipUnlessTestfile,
+)
 
 
 class WAVTest(CommonTests.SimpleFormatsTestCase):
@@ -9,3 +14,11 @@ class WAVTest(CommonTests.SimpleFormatsTestCase):
         '~sample_rate': '44100',
         '~bits_per_sample': '16',
     }
+
+    def setUp(self):
+        super().setUp()
+        self.unsupported_tags = {**TAGS, **REPLAYGAIN_TAGS}
+
+    @skipUnlessTestfile
+    def test_unsupported_tags(self):
+        self._test_unsupported_tags(self.unsupported_tags)

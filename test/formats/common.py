@@ -185,10 +185,15 @@ class CommonTests:
 
         def copy_file_tmp(self, filename, ext):
             fd, copy = mkstemp(suffix=ext)
-            self.addCleanup(os.unlink, copy)
+            self.addCleanup(self.remove_file_tmp, copy)
             os.close(fd)
             shutil.copy(filename, copy)
             return copy
+
+        @staticmethod
+        def remove_file_tmp(tmpfile):
+            if os.path.isfile(tmpfile):
+                os.unlink(tmpfile)
 
     class SimpleFormatsTestCase(BaseFileTestCase):
 
@@ -207,6 +212,18 @@ class CommonTests:
             for key, expected_value in self.expected_info.items():
                 value = metadata.length if key == 'length' else metadata[key]
                 self.assertEqual(value, expected_value)
+
+        def _test_supported_tags(self, tags):
+            metadata = Metadata(tags)
+            loaded_metadata = save_and_load_metadata(self.filename, metadata)
+            for (key, value) in tags.items():
+                self.assertEqual(loaded_metadata[key], value, '%s: %r != %r' % (key, loaded_metadata[key], value))
+
+        def _test_unsupported_tags(self, tags):
+            metadata = Metadata(tags)
+            loaded_metadata = save_and_load_metadata(self.filename, metadata)
+            for tag in tags:
+                self.assertTrue(tag not in loaded_metadata, '%s: %r != None' % (tag, loaded_metadata[tag]))
 
     class TagFormatsTestCase(SimpleFormatsTestCase):
 
@@ -368,14 +385,27 @@ class CommonTests:
             self.assertEqual(f._fixed_splitext('.test'), os.path.splitext('.test'))
             self.assertNotEqual(f._fixed_splitext(f.EXTENSIONS[0]), os.path.splitext(f.EXTENSIONS[0]))
 
-        def _test_supported_tags(self, tags):
-            metadata = Metadata(tags)
-            loaded_metadata = save_and_load_metadata(self.filename, metadata)
-            for (key, value) in tags.items():
-                self.assertEqual(loaded_metadata[key], value, '%s: %r != %r' % (key, loaded_metadata[key], value))
+        @skipUnlessTestfile
+        def test_clear_existing_tags_off(self):
+            config.setting['clear_existing_tags'] = False
+            existing_metadata = Metadata({'artist': 'The Artist'})
+            save_metadata(self.filename, existing_metadata)
+            new_metadata = Metadata({'title': 'The Title'})
+            loaded_metadata = save_and_load_metadata(self.filename, new_metadata)
+            self.assertEqual(existing_metadata['artist'], loaded_metadata['artist'])
+            self.assertEqual(new_metadata['title'], loaded_metadata['title'])
 
-        def _test_unsupported_tags(self, tags):
-            metadata = Metadata(tags)
+        @skipUnlessTestfile
+        def test_clear_existing_tags_on(self):
+            config.setting['clear_existing_tags'] = True
+            existing_metadata = Metadata({'artist': 'The Artist'})
+            save_metadata(self.filename, existing_metadata)
+            new_metadata = Metadata({'title': 'The Title'})
+            loaded_metadata = save_and_load_metadata(self.filename, new_metadata)
+            self.assertNotIn('artist', loaded_metadata)
+            self.assertEqual(new_metadata['title'], loaded_metadata['title'])
+
+        def test_lyrcis_with_description(self):
+            metadata = Metadata({'lyrics:foo': 'bar'})
             loaded_metadata = save_and_load_metadata(self.filename, metadata)
-            for tag in tags:
-                self.assertTrue(tag not in loaded_metadata, '%s: %r != None' % (tag, loaded_metadata[tag]))
+            self.assertEqual(metadata['lyrics:foo'], loaded_metadata['lyrics'])

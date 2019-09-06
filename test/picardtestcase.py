@@ -21,6 +21,7 @@ class FakeTagger(QtCore.QObject):
         self.tagger_stats_changed.connect(self.emit)
         self.exit_cleanup = []
         self.files = {}
+        self.stopping = False
 
     def register_cleanup(self, func):
         self.exit_cleanup.append(func)
