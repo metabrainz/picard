@@ -18,6 +18,8 @@ from .common import (
     TAGS,
     CommonTests,
     load_metadata,
+    load_raw,
+    save_metadata,
     save_raw,
     skipUnlessTestfile,
 )
@@ -76,6 +78,26 @@ class CommonApeTests:
             self.assertTrue(self.format.supports_tag(performer_tag))
             self.assertTrue(self.format.supports_tag('lyrics:foó'))
             self.assertTrue(self.format.supports_tag('comment:foó'))
+
+        def test_case_insensitive_reading(self):
+            self._read_case_insensitive_tag('artist', 'Artist')
+            self._read_case_insensitive_tag('albumartist', 'Album Artist')
+            self._read_case_insensitive_tag('performer:', 'Performer')
+            self._read_case_insensitive_tag('tracknumber', 'Track')
+            self._read_case_insensitive_tag('discnumber', 'Disc')
+
+        def _read_case_insensitive_tag(self, name, ape_name):
+            upper_ape_name = ape_name.upper()
+            metadata = {
+                upper_ape_name: 'Some value'
+            }
+            save_raw(self.filename, metadata)
+            loaded_metadata = load_metadata(self.filename)
+            self.assertEqual(metadata[upper_ape_name], loaded_metadata[name])
+            save_metadata(self.filename, loaded_metadata)
+            raw_metadata = load_raw(self.filename)
+            self.assertIn(ape_name, raw_metadata.keys())
+            self.assertEqual(metadata[upper_ape_name], raw_metadata[ape_name])
 
 
 class MonkeysAudioTest(CommonApeTests.ApeTestCase):
