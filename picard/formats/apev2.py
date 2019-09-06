@@ -80,34 +80,34 @@ class APEv2File(File):
     _File = None
 
     __translate = {
-        "Album Artist": "albumartist",
-        "MixArtist": "remixer",
-        "Weblink": "website",
-        "DiscSubtitle": "discsubtitle",
-        "BPM": "bpm",
-        "ISRC": "isrc",
-        "CatalogNumber": "catalognumber",
-        "Barcode": "barcode",
-        "EncodedBy": "encodedby",
-        "Language": "language",
-        "MOVEMENT": "movementnumber",
-        "MOVEMENTNAME": "movement",
-        "MOVEMENTTOTAL": "movementtotal",
-        "SHOWMOVEMENT": "showmovement",
-        "MUSICBRAINZ_ALBUMSTATUS": "releasestatus",
-        "MUSICBRAINZ_ALBUMTYPE": "releasetype",
-        "musicbrainz_trackid": "musicbrainz_recordingid",
-        "musicbrainz_releasetrackid": "musicbrainz_trackid",
-        "Original Artist": "originalartist",
-        "REPLAYGAIN_ALBUM_GAIN": "replaygain_album_gain",
-        "REPLAYGAIN_ALBUM_PEAK": "replaygain_album_peak",
-        "REPLAYGAIN_ALBUM_RANGE": "replaygain_album_range",
-        "REPLAYGAIN_TRACK_GAIN": "replaygain_track_gain",
-        "REPLAYGAIN_TRACK_PEAK": "replaygain_track_peak",
-        "REPLAYGAIN_TRACK_RANGE": "replaygain_track_range",
-        "REPLAYGAIN_REFERENCE_LOUDNESS": "replaygain_reference_loudness",
+        "albumartist": "Album Artist",
+        "remixer": "MixArtist",
+        "website": "Weblink",
+        "discsubtitle": "DiscSubtitle",
+        "bpm": "BPM",
+        "isrc": "ISRC",
+        "catalognumber": "CatalogNumber",
+        "barcode": "Barcode",
+        "encodedby": "EncodedBy",
+        "language": "Language",
+        "movementnumber": "MOVEMENT",
+        "movement": "MOVEMENTNAME",
+        "movementtotal": "MOVEMENTTOTAL",
+        "showmovement": "SHOWMOVEMENT",
+        "releasestatus": "MUSICBRAINZ_ALBUMSTATUS",
+        "releasetype": "MUSICBRAINZ_ALBUMTYPE",
+        "musicbrainz_recordingid": "musicbrainz_trackid",
+        "musicbrainz_trackid": "musicbrainz_releasetrackid",
+        "originalartist": "Original Artist",
+        "replaygain_album_gain": "REPLAYGAIN_ALBUM_GAIN",
+        "replaygain_album_peak": "REPLAYGAIN_ALBUM_PEAK",
+        "replaygain_album_range": "REPLAYGAIN_ALBUM_RANGE",
+        "replaygain_track_gain": "REPLAYGAIN_TRACK_GAIN",
+        "replaygain_track_peak": "REPLAYGAIN_TRACK_PEAK",
+        "replaygain_track_range": "REPLAYGAIN_TRACK_RANGE",
+        "replaygain_reference_loudness": "REPLAYGAIN_REFERENCE_LOUDNESS",
     }
-    __rtranslate = dict([(v, k) for k, v in __translate.items()])
+    __rtranslate = dict([(v.lower(), k) for k, v in __translate.items()])
 
     def _load(self, filename):
         log.debug("Loading file %r", filename)
@@ -115,7 +115,9 @@ class APEv2File(File):
         metadata = Metadata()
         if file.tags:
             for origname, values in file.tags.items():
-                if origname.lower().startswith("cover art") and values.kind == mutagen.apev2.BINARY:
+                origname = origname.lower()
+                if (values.kind == mutagen.apev2.BINARY
+                    and origname.startswith("cover art")):
                     if b'\0' in values.value:
                         descr, data = values.value.split(b'\0', 1)
                         try:
@@ -135,32 +137,30 @@ class APEv2File(File):
                     continue
                 for value in values:
                     name = origname
-                    if name == "Year":
+                    if name == "year":
                         name = "date"
                         value = sanitize_date(value)
-                    elif name == "Track":
+                    elif name == "track":
                         name = "tracknumber"
                         track = value.split("/")
                         if len(track) > 1:
                             metadata["totaltracks"] = track[1]
                             value = track[0]
-                    elif name == "Disc":
+                    elif name == "disc":
                         name = "discnumber"
                         disc = value.split("/")
                         if len(disc) > 1:
                             metadata["totaldiscs"] = disc[1]
                             value = disc[0]
-                    elif name == 'Performer' or name == 'Comment':
-                        name = name.lower() + ':'
+                    elif name == 'performer' or name == 'comment':
+                        name = name + ':'
                         if value.endswith(')'):
                             start = value.rfind(' (')
                             if start > 0:
                                 name += value[start + 2:-1]
                                 value = value[:start]
-                    elif name in self.__translate:
-                        name = self.__translate[name]
-                    else:
-                        name = name.lower()
+                    elif name in self.__rtranslate:
+                        name = self.__rtranslate[name]
                     metadata.add(name, value)
         self._info(metadata, file)
         return metadata
@@ -177,7 +177,8 @@ class APEv2File(File):
             tags.clear()
         elif images_to_save:
             for name, value in tags.items():
-                if name.lower().startswith('cover art') and value.kind == mutagen.apev2.BINARY:
+                if (value.kind == mutagen.apev2.BINARY
+                    and name.lower().startswith('cover art')):
                     del tags[name]
         temp = {}
         for name, value in metadata.items():
@@ -205,7 +206,8 @@ class APEv2File(File):
         for image in images_to_save:
             cover_filename = 'Cover Art (Front)'
             cover_filename += image.extension
-            tags['Cover Art (Front)'] = mutagen.apev2.APEValue(cover_filename.encode('ascii') + b'\0' + image.data, mutagen.apev2.BINARY)
+            tags['Cover Art (Front)'] = mutagen.apev2.APEValue(
+                cover_filename.encode('ascii') + b'\0' + image.data, mutagen.apev2.BINARY)
             break
             # can't save more than one item with the same name
             # (mp3tags does this, but it's against the specs)
@@ -243,8 +245,8 @@ class APEv2File(File):
             return 'Disc'
         elif name.startswith('performer:') or name.startswith('comment:'):
             return name.split(':', 1)[0].title()
-        elif name in self.__rtranslate:
-            return self.__rtranslate[name]
+        elif name in self.__translate:
+            return self.__translate[name]
         else:
             return name.title()
 
