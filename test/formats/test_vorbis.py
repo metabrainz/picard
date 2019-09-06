@@ -11,6 +11,7 @@ from picard.coverart.image import CoverArtImage
 from picard.formats import vorbis
 
 from .common import (
+    REPLAYGAIN_TAGS,
     TAGS,
     CommonTests,
     load_metadata,
@@ -55,6 +56,15 @@ class CommonVorbisTests:
                 self.assertTrue(supports_tag(key), '%r should be supported' % key)
             for key in INVALID_KEYS + ['']:
                 self.assertFalse(supports_tag(key), '%r should be unsupported' % key)
+
+        @skipUnlessTestfile
+        def test_r128_replaygain_tags(self):
+            # Vorbis files other then Opus must not support the r128_* tags
+            tags = {
+                'r128_album_gain': '-2857',
+                'r128_track_gain': '-2857',
+            }
+            self._test_unsupported_tags(tags)
 
 
 class FLACTest(CommonVorbisTests.VorbisTestCase):
@@ -102,6 +112,20 @@ class OggOpusTest(CommonVorbisTests.VorbisTestCase):
         'length': 82,
         '~channels': '2',
     }
+
+    @skipUnlessTestfile
+    def test_replaygain_tags(self):
+        # The normal replaygain tags are not supported by Opus
+        tags = REPLAYGAIN_TAGS.copy()
+        self._test_unsupported_tags(tags)
+
+    @skipUnlessTestfile
+    def test_r128_replaygain_tags(self):
+        tags = {
+            'r128_album_gain': '-2857',
+            'r128_track_gain': '-2857',
+        }
+        self._test_supported_tags(tags)
 
 
 class VorbisUtilTest(PicardTestCase):

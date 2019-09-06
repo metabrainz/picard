@@ -31,6 +31,7 @@ from picard.coverart.image import (
     TagCoverArtImage,
 )
 from picard.file import File
+from picard.formats.mutagenext import delall_ci
 from picard.metadata import Metadata
 from picard.util import encode_filename
 
@@ -124,15 +125,33 @@ class MP4File(File):
     }
     __r_freeform_tags = dict([(v, k) for k, v in __freeform_tags.items()])
 
+    # Tags to load case insensitive
+    __r_freeform_tags_ci = {
+        "replaygain_album_gain": "----:com.apple.iTunes:REPLAYGAIN_ALBUM_GAIN",
+        "replaygain_album_peak": "----:com.apple.iTunes:REPLAYGAIN_ALBUM_PEAK",
+        "replaygain_album_range": "----:com.apple.iTunes:REPLAYGAIN_ALBUM_RANGE",
+        "replaygain_track_gain": "----:com.apple.iTunes:REPLAYGAIN_TRACK_GAIN",
+        "replaygain_track_peak": "----:com.apple.iTunes:REPLAYGAIN_TRACK_PEAK",
+        "replaygain_track_range": "----:com.apple.iTunes:REPLAYGAIN_TRACK_RANGE",
+        "replaygain_reference_loudness": "----:com.apple.iTunes:REPLAYGAIN_REFERENCE_LOUDNESS",
+    }
+    __freeform_tags_ci = dict([(b.lower(), a) for a, b in __r_freeform_tags_ci.items()])
+
     __other_supported_tags = ("discnumber", "tracknumber",
                               "totaldiscs", "totaltracks")
 
+    def __init__(self, filename):
+        super().__init__(filename)
+        self.__casemap = {}
+
     def _load(self, filename):
         log.debug("Loading file %r", filename)
+        self.__casemap = {}
         file = MP4(encode_filename(filename))
         tags = file.tags or {}
         metadata = Metadata()
         for name, values in tags.items():
+            name_lower = name.lower()
             if name in self.__text_tags:
                 for value in values:
                     metadata.add(self.__text_tags[name], value)
@@ -145,6 +164,12 @@ class MP4File(File):
                 for value in values:
                     value = value.decode("utf-8", "replace").strip("\x00")
                     metadata.add(self.__freeform_tags[name], value)
+            elif name_lower in self.__freeform_tags_ci:
+                for value in values:
+                    value = value.decode("utf-8", "replace").strip("\x00")
+                    tag_name = self.__freeform_tags_ci[name_lower]
+                    metadata.add(tag_name, value)
+                    self.__casemap[tag_name] = name
             elif name == "----:com.apple.iTunes:fingerprint":
                 for value in values:
                     value = value.decode("utf-8", "replace").strip("\x00")
@@ -201,6 +226,14 @@ class MP4File(File):
             elif name in self.__r_freeform_tags:
                 values = [v.encode("utf-8") for v in values]
                 tags[self.__r_freeform_tags[name]] = values
+            elif name in self.__r_freeform_tags_ci:
+                values = [v.encode("utf-8") for v in values]
+                delall_ci(tags, self.__r_freeform_tags_ci[name])
+                if name in self.__casemap:
+                    name = self.__casemap[name]
+                else:
+                    name = self.__r_freeform_tags_ci[name]
+                tags[name] = values
             elif name == "musicip_fingerprint":
                 tags["----:com.apple.iTunes:fingerprint"] = [b"MusicMagic Fingerprint%s" % v.encode('ascii') for v in values]
 
@@ -244,6 +277,7 @@ class MP4File(File):
         return (name in cls.__r_text_tags
                 or name in cls.__r_bool_tags
                 or name in cls.__r_freeform_tags
+                or name in cls.__r_freeform_tags_ci
                 or name in cls.__r_int_tags
                 or name in cls.__other_supported_tags
                 or name.startswith('lyrics:')
@@ -260,6 +294,8 @@ class MP4File(File):
             return self.__r_int_tags[name]
         elif name in self.__r_freeform_tags:
             return self.__r_freeform_tags[name]
+        elif name in self.__r_freeform_tags_ci:
+            return self.__r_freeform_tags_ci[name]
         elif name == "musicip_fingerprint":
             return "----:com.apple.iTunes:fingerprint"
         elif name in ("tracknumber", "totaltracks"):

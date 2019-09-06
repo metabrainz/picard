@@ -11,6 +11,7 @@ from test.picardtestcase import PicardTestCase
 from picard import config
 import picard.formats
 from picard.formats import ext_to_format
+from picard.formats.mutagenext.tak import TAK
 from picard.metadata import Metadata
 
 
@@ -34,6 +35,8 @@ settings = {
 
 def save_metadata(filename, metadata):
     f = picard.formats.open_(filename)
+    loaded_metadata = f._load(filename)
+    f._copy_loaded_metadata(loaded_metadata)
     f._save(filename, metadata)
 
 
@@ -52,7 +55,17 @@ def save_and_load_metadata(filename, metadata):
 
 
 def load_raw(filename):
-    return mutagen.File(filename)
+    f = mutagen.File(filename)
+    if f is None:
+        f = mutagen.File(filename, [TAK])
+    return f
+
+
+def save_raw(filename, tags):
+    f = load_raw(filename)
+    for k, v in tags.items():
+        f[k] = v
+    f.save()
 
 
 TAGS = {
@@ -130,6 +143,16 @@ TAGS = {
     'work': 'Foo'
 }
 
+REPLAYGAIN_TAGS = {
+    'replaygain_album_gain': '-6.48 dB',
+    'replaygain_album_peak': '0.978475',
+    'replaygain_album_range': '7.84 dB',
+    'replaygain_track_gain': '-6.16 dB',
+    'replaygain_track_peak': '0.976991',
+    'replaygain_track_range': '8.22 dB',
+    'replaygain_reference_loudness': '-18.00 LUFS',
+}
+
 
 def skipUnlessTestfile(func):
     def _decorator(self, *args, **kwargs):
@@ -190,6 +213,8 @@ class CommonTests:
         def setUp(self):
             super().setUp()
             self.tags = TAGS.copy()
+            self.replaygain_tags = REPLAYGAIN_TAGS.copy()
+            self.unsupported_tags = {}
             self.setup_tags()
 
         def setup_tags(self):
@@ -208,9 +233,26 @@ class CommonTests:
 
         @skipUnlessTestfile
         def test_simple_tags(self):
-            metadata = Metadata(self.tags)
-            loaded_metadata = save_and_load_metadata(self.filename, metadata)
-            for (key, value) in self.tags.items():
+            self._test_supported_tags(self.tags)
+
+        @skipUnlessTestfile
+        def test_replaygain_tags(self):
+            self._test_supported_tags(self.replaygain_tags)
+
+        @skipUnlessTestfile
+        def test_replaygain_tags_case_insensitive(self):
+            tags = {
+                'replaygain_album_gain': '-6.48 dB',
+                'Replaygain_Album_Peak': '0.978475',
+                'replaygain_album_range': '7.84 dB',
+                'replaygain_track_gain': '-6.16 dB',
+                'replaygain_track_peak': '0.976991',
+                'replaygain_track_range': '8.22 dB',
+                'replaygain_reference_loudness': '-18.00 LUFS',
+            }
+            save_raw(self.filename, tags)
+            loaded_metadata = load_metadata(self.filename)
+            for (key, value) in self.replaygain_tags.items():
                 self.assertEqual(loaded_metadata[key], value, '%s: %r != %r' % (key, loaded_metadata[key], value))
 
         @skipUnlessTestfile
@@ -225,10 +267,7 @@ class CommonTests:
 
         @skipUnlessTestfile
         def test_unsupported_tags(self):
-            metadata = Metadata(self.unsupported_tags)
-            loaded_metadata = save_and_load_metadata(self.filename, metadata)
-            for tag in self.unsupported_tags:
-                self.assertTrue(tag not in loaded_metadata, '%s: %r != None' % (tag, loaded_metadata[tag]))
+            self._test_unsupported_tags(self.unsupported_tags)
 
         @skipUnlessTestfile
         def test_preserve_unchanged_tags(self):
@@ -328,3 +367,15 @@ class CommonTests:
             self.assertEqual(f._fixed_splitext(f.EXTENSIONS[0]), ('', f.EXTENSIONS[0]))
             self.assertEqual(f._fixed_splitext('.test'), os.path.splitext('.test'))
             self.assertNotEqual(f._fixed_splitext(f.EXTENSIONS[0]), os.path.splitext(f.EXTENSIONS[0]))
+
+        def _test_supported_tags(self, tags):
+            metadata = Metadata(tags)
+            loaded_metadata = save_and_load_metadata(self.filename, metadata)
+            for (key, value) in tags.items():
+                self.assertEqual(loaded_metadata[key], value, '%s: %r != %r' % (key, loaded_metadata[key], value))
+
+        def _test_unsupported_tags(self, tags):
+            metadata = Metadata(tags)
+            loaded_metadata = save_and_load_metadata(self.filename, metadata)
+            for tag in tags:
+                self.assertTrue(tag not in loaded_metadata, '%s: %r != None' % (tag, loaded_metadata[tag]))

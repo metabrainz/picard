@@ -304,7 +304,7 @@ class VCommentFile(File):
 
     @classmethod
     def supports_tag(cls, name):
-        unsupported_tags = {}
+        unsupported_tags = ['r128_album_gain', 'r128_track_gain']
         return (bool(name) and name not in unsupported_tags
                 and is_valid_key(name))
 
@@ -359,6 +359,14 @@ class OggOpusFile(VCommentFile):
     EXTENSIONS = [".opus"]
     NAME = "Ogg Opus"
     _File = mutagen.oggopus.OggOpus
+
+    @classmethod
+    def supports_tag(cls, name):
+        if name.startswith('replaygain_'):
+            return False
+        elif name.startswith('r128_'):
+            return True
+        return VCommentFile.supports_tag(name)
 
 
 def OggAudioFile(filename):

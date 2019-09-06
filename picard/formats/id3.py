@@ -37,7 +37,10 @@ from picard.coverart.image import (
     TagCoverArtImage,
 )
 from picard.file import File
-from picard.formats.mutagenext import compatid3
+from picard.formats.mutagenext import (
+    compatid3,
+    delall_ci,
+)
 from picard.metadata import Metadata
 from picard.util import (
     encode_filename,
@@ -177,6 +180,18 @@ class ID3File(File):
     __rtranslate_freetext = dict([(v, k) for k, v in __translate_freetext.items()])
     __translate_freetext['writer'] = 'writer'  # For backward compatibility of case
 
+    # Freetext fields that are loaded case-insensitive
+    __rtranslate_freetext_ci = {
+        'replaygain_album_gain': 'REPLAYGAIN_ALBUM_GAIN',
+        'replaygain_album_peak': 'REPLAYGAIN_ALBUM_PEAK',
+        'replaygain_album_range': 'REPLAYGAIN_ALBUM_RANGE',
+        'replaygain_track_gain': 'REPLAYGAIN_TRACK_GAIN',
+        'replaygain_track_peak': 'REPLAYGAIN_TRACK_PEAK',
+        'replaygain_track_range': 'REPLAYGAIN_TRACK_RANGE',
+        'replaygain_reference_loudness': 'REPLAYGAIN_REFERENCE_LOUDNESS',
+    }
+    __translate_freetext_ci = dict([(b.lower(), a) for a, b in __rtranslate_freetext_ci.items()])
+
     # Obsolete tag names which will still be loaded, but will get renamed on saving
     __rename_freetext = {
         'Artists': 'ARTISTS',
@@ -202,6 +217,10 @@ class ID3File(File):
         'MVIN': re.compile(r'^(?P<movementnumber>\d+)(?:/(?P<movementtotal>\d+))?$')
     }
 
+    def __init__(self, filename):
+        super().__init__(filename)
+        self.__casemap = {}
+
     def build_TXXX(self, encoding, desc, values):
         """Construct and return a TXXX frame."""
         # This is here so that plugins can customize the behavior of TXXX
@@ -214,6 +233,7 @@ class ID3File(File):
 
     def _load(self, filename):
         log.debug("Loading file %r", filename)
+        self.__casemap = {}
         file = self._get_file(encode_filename(filename))
         tags = file.tags or {}
         # upgrade custom 2.3 frames to 2.4
@@ -256,9 +276,14 @@ class ID3File(File):
                         metadata.add('performer:%s' % role, name)
             elif frameid == 'TXXX':
                 name = frame.desc
+                name_lower = name.lower()
                 if name in self.__rename_freetext:
                     name = self.__rename_freetext[name]
-                if name in self.__translate_freetext:
+                if name_lower in self.__translate_freetext_ci:
+                    orig_name = name
+                    name = self.__translate_freetext_ci[name_lower]
+                    self.__casemap[name] = orig_name
+                elif name in self.__translate_freetext:
                     name = self.__translate_freetext[name]
                 elif ((name in self.__rtranslate)
                       != (name in self.__rtranslate_freetext)):
@@ -370,7 +395,6 @@ class ID3File(File):
 
         tmcl = mutagen.id3.TMCL(encoding=encoding, people=[])
         tipl = mutagen.id3.TIPL(encoding=encoding, people=[])
-
         for name, values in metadata.rawitems():
             values = [id3text(v, encoding) for v in values]
             name = id3text(name, encoding)
@@ -451,6 +475,13 @@ class ID3File(File):
                         tags.delall('XSOP')
                     elif frameid == 'TSO2':
                         tags.delall('TXXX:ALBUMARTISTSORT')
+            elif name in self.__rtranslate_freetext_ci:
+                if name in self.__casemap:
+                    description = self.__casemap[name]
+                else:
+                    description = self.__rtranslate_freetext_ci[name]
+                delall_ci(tags, 'TXXX:' + description)
+                tags.add(self.build_TXXX(encoding, description, values))
             elif name in self.__rtranslate_freetext:
                 description = self.__rtranslate_freetext[name]
                 if description in self.__rrename_freetext:
@@ -542,7 +573,7 @@ class ID3File(File):
 
     @classmethod
     def supports_tag(cls, name):
-        unsupported_tags = {}
+        unsupported_tags = ['r128_album_gain', 'r128_track_gain']
         return ((name and not name.startswith("~") and name not in unsupported_tags)
                 or name in ("~rating", "~length")
                 or name.startswith("~id3"))

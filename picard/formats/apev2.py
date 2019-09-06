@@ -55,6 +55,8 @@ UNSUPPORTED_TAGS = [
     'podcasturl',
     'show',
     'showsort',
+    'r128_album_gain',
+    'r128_track_gain',
 ]
 
 
@@ -97,6 +99,13 @@ class APEv2File(File):
         "musicbrainz_trackid": "musicbrainz_recordingid",
         "musicbrainz_releasetrackid": "musicbrainz_trackid",
         "Original Artist": "originalartist",
+        "REPLAYGAIN_ALBUM_GAIN": "replaygain_album_gain",
+        "REPLAYGAIN_ALBUM_PEAK": "replaygain_album_peak",
+        "REPLAYGAIN_ALBUM_RANGE": "replaygain_album_range",
+        "REPLAYGAIN_TRACK_GAIN": "replaygain_track_gain",
+        "REPLAYGAIN_TRACK_PEAK": "replaygain_track_peak",
+        "REPLAYGAIN_TRACK_RANGE": "replaygain_track_range",
+        "REPLAYGAIN_REFERENCE_LOUDNESS": "replaygain_reference_loudness",
     }
     __rtranslate = dict([(v, k) for k, v in __translate.items()])
 
