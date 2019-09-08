@@ -87,3 +87,8 @@ class Testbytes2human(PicardTestCase):
             lines = [l.rstrip("\n") for l in f.readlines()]
             f.close()
             return lines
+
+    def test_calc_unit(self):
+        self.assertEqual(bytes2human.calc_unit(12456, 1024), (12.1640625, 'KiB'))
+        self.assertEqual(bytes2human.calc_unit(-12456, 1000), (-12.456, 'kB'))
+        self.assertRaises(ValueError, bytes2human.calc_unit, 0, 1001)
