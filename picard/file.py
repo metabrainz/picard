@@ -117,7 +117,7 @@ class File(QtCore.QObject, Item):
         self.item = None
 
     def __repr__(self):
-        return '<File %r>' % self.base_filename
+        return '<%s %r>' % (type(self).__name__, self.base_filename)
 
     @property
     def new_metadata(self):

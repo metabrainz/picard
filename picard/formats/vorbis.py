@@ -315,10 +315,6 @@ class FLACFile(VCommentFile):
     NAME = "FLAC"
     _File = mutagen.flac.FLAC
 
-    def _info(self, metadata, file):
-        super()._info(metadata, file)
-        metadata['~format'] = self.NAME
-
 
 class OggFLACFile(VCommentFile):
 
@@ -376,6 +372,7 @@ def OggAudioFile(filename):
 
 OggAudioFile.EXTENSIONS = [".oga"]
 OggAudioFile.NAME = "Ogg Audio"
+OggAudioFile.supports_tag = VCommentFile.supports_tag
 
 
 def OggVideoFile(filename):
@@ -386,3 +383,4 @@ def OggVideoFile(filename):
 
 OggVideoFile.EXTENSIONS = [".ogv"]
 OggVideoFile.NAME = "Ogg Video"
+OggVideoFile.supports_tag = VCommentFile.supports_tag

@@ -116,6 +116,7 @@ from picard.formats.vorbis import (
     FLACFile,
     OggFLACFile,
     OggSpeexFile,
+    OggTheoraFile,
     OggVorbisFile,
     OggAudioFile,
     OggVideoFile,
@@ -124,6 +125,7 @@ from picard.formats.vorbis import (
 register_format(FLACFile)
 register_format(OggFLACFile)
 register_format(OggSpeexFile)
+register_format(OggTheoraFile)
 register_format(OggVorbisFile)
 register_format(OggOpusFile)
 register_format(OggAudioFile)

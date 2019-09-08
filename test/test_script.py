@@ -7,8 +7,11 @@ from picard.cluster import Cluster
 from picard.const import DEFAULT_FILE_NAMING_FORMAT
 from picard.metadata import Metadata
 from picard.script import (
+    ScriptEndOfFile,
     ScriptError,
     ScriptParser,
+    ScriptSyntaxError,
+    ScriptUnknownFunction,
     register_script_function,
 )
 
@@ -54,12 +57,16 @@ class ScriptParserTest(PicardTestCase):
     def test_cmd_if2(self):
         self.assertScriptResultEquals("$if2(,a,b)", "a")
         self.assertScriptResultEquals("$if2($noop(),b)", "b")
+        self.assertScriptResultEquals("$if2()", "")
+        self.assertScriptResultEquals("$if2(,)", "")
 
     def test_cmd_left(self):
         self.assertScriptResultEquals("$left(abcd,2)", "ab")
+        self.assertScriptResultEquals("$left(abcd,x)", "")
 
     def test_cmd_right(self):
         self.assertScriptResultEquals("$right(abcd,2)", "cd")
+        self.assertScriptResultEquals("$right(abcd,x)", "")
 
     def test_cmd_set(self):
         self.assertScriptResultEquals("$set(test,aaa)%test%", "aaa")
@@ -118,6 +125,8 @@ class ScriptParserTest(PicardTestCase):
         self.assertScriptResultEquals("$num(3,3)", "003")
         self.assertScriptResultEquals("$num(03,3)", "003")
         self.assertScriptResultEquals("$num(123,2)", "123")
+        self.assertScriptResultEquals("$num(123,a)", "")
+        self.assertScriptResultEquals("$num(a,2)", "00")
 
     def test_cmd_or(self):
         self.assertScriptResultEquals("$or(,)", "")
@@ -139,14 +148,23 @@ class ScriptParserTest(PicardTestCase):
         self.assertScriptResultEquals("$not($noop())", "1")
         self.assertScriptResultEquals("$not(q)", "")
 
+    def test_cmd_trim(self):
+        self.assertScriptResultEquals("$trim( \\t test \\n )", "test")
+        self.assertScriptResultEquals("$trim(test,t)", "es")
+        self.assertScriptResultEquals("$trim(test,ts)", "e")
+
     def test_cmd_add(self):
         self.assertScriptResultEquals("$add(1,2)", "3")
         self.assertScriptResultEquals("$add(1,2,3)", "6")
+        self.assertScriptResultEquals("$add(a,2)", "")
+        self.assertScriptResultEquals("$add(2,a)", "")
 
     def test_cmd_sub(self):
         self.assertScriptResultEquals("$sub(1,2)", "-1")
         self.assertScriptResultEquals("$sub(2,1)", "1")
         self.assertScriptResultEquals("$sub(4,2,1)", "1")
+        self.assertScriptResultEquals("$sub(a,2)", "")
+        self.assertScriptResultEquals("$sub(2,a)", "")
 
     def test_cmd_div(self):
         self.assertScriptResultEquals("$div(9,3)", "3")
@@ -157,11 +175,15 @@ class ScriptParserTest(PicardTestCase):
         self.assertScriptResultEquals("$mod(9,3)", "0")
         self.assertScriptResultEquals("$mod(10,3)", "1")
         self.assertScriptResultEquals("$mod(10,6,3)", "1")
+        self.assertScriptResultEquals("$mod(a,3)", "")
+        self.assertScriptResultEquals("$mod(10,a)", "")
 
     def test_cmd_mul(self):
         self.assertScriptResultEquals("$mul(9,3)", "27")
         self.assertScriptResultEquals("$mul(10,3)", "30")
         self.assertScriptResultEquals("$mul(2,5,3)", "30")
+        self.assertScriptResultEquals("$mul(2,a)", "")
+        self.assertScriptResultEquals("$mul(2,5,a)", "")
 
     def test_cmd_eq(self):
         self.assertScriptResultEquals("$eq(,)", "1")
@@ -191,7 +213,6 @@ class ScriptParserTest(PicardTestCase):
         self.assertScriptResultEquals("$pad(abc de,0,-)", "abc de")
         self.assertScriptResultEquals("$pad(abc de,-3,-)", "abc de")
 
-
     def test_cmd_replace(self):
         self.assertScriptResultEquals("$replace(abc ab abd a,ab,test)", "testc test testd a")
 
@@ -200,9 +221,12 @@ class ScriptParserTest(PicardTestCase):
 
     def test_cmd_rreplace(self):
         self.assertScriptResultEquals(r'''$rreplace(test \(disc 1\),\\s\\\(disc \\d+\\\),)''', "test")
+        self.assertScriptResultEquals(r'''$rreplace(test,[t,)''', "test")
 
     def test_cmd_rsearch(self):
         self.assertScriptResultEquals(r"$rsearch(test \(disc 1\),\\\(disc \(\\d+\)\\\))", "1")
+        self.assertScriptResultEquals(r"$rsearch(test \(disc 1\),\\\(disc \\d+\\\))", "(disc 1)")
+        self.assertScriptResultEquals(r'''$rsearch(test,[t)''', "")
 
     def test_arguments(self):
         self.assertTrue(
@@ -212,20 +236,24 @@ class ScriptParserTest(PicardTestCase):
     def test_cmd_gt(self):
         self.assertScriptResultEquals("$gt(10,4)", "1")
         self.assertScriptResultEquals("$gt(6,4)", "1")
+        self.assertScriptResultEquals("$gt(a,b)", "")
 
     def test_cmd_gte(self):
         self.assertScriptResultEquals("$gte(10,10)", "1")
         self.assertScriptResultEquals("$gte(10,4)", "1")
         self.assertScriptResultEquals("$gte(6,4)", "1")
+        self.assertScriptResultEquals("$gte(a,b)", "")
 
     def test_cmd_lt(self):
         self.assertScriptResultEquals("$lt(4,10)", "1")
         self.assertScriptResultEquals("$lt(4,6)", "1")
+        self.assertScriptResultEquals("$lt(a,b)", "")
 
     def test_cmd_lte(self):
         self.assertScriptResultEquals("$lte(10,10)", "1")
         self.assertScriptResultEquals("$lte(4,10)", "1")
         self.assertScriptResultEquals("$lte(4,6)", "1")
+        self.assertScriptResultEquals("$lte(a,b)", "")
 
     def test_cmd_len(self):
         self.assertScriptResultEquals("$len(abcdefg)", "7")
@@ -339,8 +367,11 @@ class ScriptParserTest(PicardTestCase):
         self.assertScriptResultEquals("$title(Abc Def G)", "Abc Def G")
         self.assertScriptResultEquals("$title(abc def g)", "Abc Def G")
         self.assertScriptResultEquals("$title(#1abc 4def - g)", "#1abc 4def - G")
-        self.assertScriptResultEquals("$title(abcd \\(efg hi jkl mno\\))","Abcd (Efg Hi Jkl Mno)")
+        self.assertScriptResultEquals("$title(abcd \\(efg hi jkl mno\\))", "Abcd (Efg Hi Jkl Mno)")
         self.assertScriptResultEquals("$title(...abcd)", "...Abcd")
+        self.assertScriptResultEquals("$title(a)", "A")
+        self.assertScriptResultEquals("$title(’a)", "’a")
+        self.assertScriptResultEquals("$title('a)", "'a")
 
     def test_cmd_swapprefix(self):
         self.assertScriptResultEquals("$swapprefix(A stitch in time)", "stitch in time, A")
@@ -364,26 +395,26 @@ class ScriptParserTest(PicardTestCase):
 
     def test_default_filenaming(self):
         context = Metadata()
-        context['albumartist'] = u'albumartist'
-        context['artist'] = u'artist'
-        context['album'] = u'album'
+        context['albumartist'] = 'albumartist'
+        context['artist'] = 'artist'
+        context['album'] = 'album'
         context['totaldiscs'] = 2
         context['discnumber'] = 1
         context['tracknumber'] = 8
-        context['title'] = u'title'
+        context['title'] = 'title'
         result = self.parser.eval(DEFAULT_FILE_NAMING_FORMAT, context)
-        self.assertEqual(result, u'albumartist/\nalbum/\n1-08 title')
+        self.assertEqual(result, 'albumartist/\nalbum/\n1-08 title')
         context['~multiartist'] = '1'
         result = self.parser.eval(DEFAULT_FILE_NAMING_FORMAT, context)
-        self.assertEqual(result, u'albumartist/\nalbum/\n1-08 artist - title')
+        self.assertEqual(result, 'albumartist/\nalbum/\n1-08 artist - title')
 
     def test_default_NAT_filenaming(self):
         context = Metadata()
-        context['artist'] = u'artist'
-        context['album'] = u'[non-album tracks]'
-        context['title'] = u'title'
+        context['artist'] = 'artist'
+        context['album'] = '[non-album tracks]'
+        context['title'] = 'title'
         result = self.parser.eval(DEFAULT_FILE_NAMING_FORMAT, context)
-        self.assertEqual(result, u'artist/\n\ntitle')
+        self.assertEqual(result, 'artist/\n\ntitle')
 
     def test_cmd_with_not_arguments(self):
         self.parser.eval("$noargstest()")
@@ -412,26 +443,33 @@ class ScriptParserTest(PicardTestCase):
 
     def test_cmd_unset_simple(self):
         context = Metadata()
-        context['title'] = u'Foo'
-        context['album'] = u'Foo'
-        context['artist'] = u'Foo'
+        context['title'] = 'Foo'
+        context['album'] = 'Foo'
+        context['artist'] = 'Foo'
         self.parser.eval("$unset(album)", context)
         self.assertNotIn('album', context)
 
     def test_cmd_unset_prefix(self):
         context = Metadata()
-        context['title'] = u'Foo'
-        context['~rating'] = u'4'
+        context['title'] = 'Foo'
+        context['~rating'] = '4'
         self.parser.eval("$unset(_rating)", context)
         self.assertNotIn('~rating', context)
 
     def test_cmd_unset_multi(self):
         context = Metadata()
-        context['performer:foo'] = u'Foo'
-        context['performer:bar'] = u'Foo'
+        context['performer:foo'] = 'Foo'
+        context['performer:bar'] = 'Foo'
         self.parser.eval("$unset(performer:*)", context)
         self.assertNotIn('performer:bar', context)
         self.assertNotIn('performer:foo', context)
+
+    def test_cmd_delete(self):
+        context = Metadata()
+        context['title'] = 'Foo'
+        self.parser.eval("$delete(title)", context)
+        self.assertNotIn('title', context)
+        self.assertIn('title', context.deleted_tags)
 
     def test_cmd_inmulti(self):
         context = Metadata()
@@ -502,7 +540,29 @@ class ScriptParserTest(PicardTestCase):
         self.assertScriptResultEquals("$lenmulti(%bar%,:)", "4", context)
         self.assertScriptResultEquals("$lenmulti(%foo%.,:)", "4", context)
 
-    def test_matchedtracks(self):
+    def test_cmd_performer(self):
+        context = Metadata()
+        context['performer:guitar'] = 'Foo1'
+        context['performer:rhythm-guitar'] = 'Foo2'
+        context['performer:drums'] = 'Drummer'
+        result = self.parser.eval("$performer(guitar)", context=context)
+        performers = result.split(', ')
+        self.assertIn('Foo1', performers)
+        self.assertIn('Foo2', performers)
+        self.assertEqual(2, len(performers))
+
+    def test_cmd_performer_custom_join(self):
+        context = Metadata()
+        context['performer:guitar'] = 'Foo1'
+        context['performer:rhythm-guitar'] = 'Foo2'
+        context['performer:drums'] = 'Drummer'
+        result = self.parser.eval("$performer(guitar, / )", context=context)
+        performers = result.split(' / ')
+        self.assertIn('Foo1', performers)
+        self.assertIn('Foo2', performers)
+        self.assertEqual(2, len(performers))
+
+    def test_cmd_matchedtracks(self):
         file = MagicMock()
         file.parent.album.get_num_matched_tracks.return_value = 42
         self.assertScriptResultEquals("$matchedtracks()", "42", file=file)
@@ -510,14 +570,14 @@ class ScriptParserTest(PicardTestCase):
         # The following only is possible for backward compatibility, arg is unused
         self.assertScriptResultEquals("$matchedtracks(arg)", "0")
 
-    def test_matchedtracks_with_cluster(self):
+    def test_cmd_matchedtracks_with_cluster(self):
         file = MagicMock()
         cluster = Cluster(name="Test")
         cluster.files.append(file)
         file.parent = cluster
         self.assertScriptResultEquals("$matchedtracks()", "0", file=file)
 
-    def test_is_complete(self):
+    def test_cmd_is_complete(self):
         file = MagicMock()
         file.parent.album.is_complete.return_value = True
         self.assertScriptResultEquals("$is_complete()", "1", file=file)
@@ -525,7 +585,7 @@ class ScriptParserTest(PicardTestCase):
         self.assertScriptResultEquals("$is_complete()", "0", file=file)
         self.assertScriptResultEquals("$is_complete()", "0")
 
-    def test_is_complete_with_cluster(self):
+    def test_cmd_is_complete_with_cluster(self):
         file = MagicMock()
         cluster = Cluster(name="Test")
         cluster.files.append(file)
@@ -543,5 +603,19 @@ class ScriptParserTest(PicardTestCase):
     def test_optional_kwonly_parameters(self):
         def func(a, *, optional_kwarg=1):
             pass
-
         register_script_function(func)
+
+    def test_char_escape(self):
+        self.assertScriptResultEquals("\\n\\t\\$\\%\\(\\)\\,\\\\", "\n\t$%(),\\")
+
+    def test_raise_unknown_function(self):
+        self.assertRaises(ScriptUnknownFunction, self.parser.eval, '$unknownfn()')
+
+    def test_raise_end_of_file(self):
+        self.assertRaises(ScriptEndOfFile, self.parser.eval, '$noop(')
+        self.assertRaises(ScriptEndOfFile, self.parser.eval, '%var')
+
+    def test_raise_syntax_error(self):
+        self.assertRaises(ScriptSyntaxError, self.parser.eval, '%var()%')
+        self.assertRaises(ScriptSyntaxError, self.parser.eval, '$noop(()')
+        self.assertRaises(ScriptSyntaxError, self.parser.eval, '\\x')

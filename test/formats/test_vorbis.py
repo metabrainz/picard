@@ -1,6 +1,8 @@
 import base64
 import logging
 import os
+import shutil
+from tempfile import mkstemp
 
 from test.picardtestcase import PicardTestCase
 
@@ -124,6 +126,7 @@ class FLACTest(CommonVorbisTests.VorbisTestCase):
         'length': 82,
         '~channels': '2',
         '~sample_rate': '44100',
+        '~format': 'FLAC',
     }
 
     @skipUnlessTestfile
@@ -178,6 +181,24 @@ class OggOpusTest(CommonVorbisTests.VorbisTestCase):
         self._test_supported_tags(tags)
 
 
+class OggTheoraTest(CommonVorbisTests.VorbisTestCase):
+    testfile = 'test.ogv'
+    supports_ratings = True
+    expected_info = {
+        'length': 520,
+        '~bitrate': '200.0',
+    }
+
+
+class OggFlacTest(CommonVorbisTests.VorbisTestCase):
+    testfile = 'test-oggflac.oga'
+    supports_ratings = True
+    expected_info = {
+        'length': 82,
+        '~channels': '2',
+    }
+
+
 class VorbisUtilTest(PicardTestCase):
     def test_sanitize_key(self):
         sanitized = vorbis.sanitize_key(' \x1f=}~')
@@ -206,6 +227,39 @@ class FlacCoverArtTest(CommonCoverArtTests.CoverArtTestCase):
             self.assertEqual(pic.width, test.width)
             self.assertNotEqual(pic.height, 0)
             self.assertEqual(pic.height, test.height)
+
+
+class OggAudioVideoFileTest(PicardTestCase):
+    def test_ogg_audio(self):
+        self._test_file_is_type(
+            vorbis.OggAudioFile,
+            self._copy_file_tmp('test-oggflac.oga', '.oga'),
+            vorbis.OggFLACFile)
+        self._test_file_is_type(
+            vorbis.OggAudioFile,
+            self._copy_file_tmp('test.spx', '.oga'),
+            vorbis.OggSpeexFile)
+        self._test_file_is_type(
+            vorbis.OggAudioFile,
+            self._copy_file_tmp('test.ogg', '.oga'),
+            vorbis.OggVorbisFile)
+
+    def test_ogg_video(self):
+        self._test_file_is_type(
+            vorbis.OggVideoFile,
+            self._copy_file_tmp('test.ogv', '.ogv'),
+            vorbis.OggTheoraFile)
+
+    def _test_file_is_type(self, factory, filename, expected_type):
+        f = factory(filename)
+        self.assertIsInstance(f, expected_type)
+
+    def _copy_file_tmp(self, filename, ext):
+        fd, copy = mkstemp(suffix=ext)
+        self.addCleanup(os.unlink, copy)
+        os.close(fd)
+        shutil.copy(os.path.join('test', 'data', filename), copy)
+        return copy
 
 
 class OggCoverArtTest(CommonCoverArtTests.CoverArtTestCase):
