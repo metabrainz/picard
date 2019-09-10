@@ -54,6 +54,10 @@ from picard.ui.util import enabledSlot
 _default_music_dir = QStandardPaths.writableLocation(QStandardPaths.MusicLocation)
 
 
+class ScriptCheckError(OptionsCheckError):
+    pass
+
+
 class RenamingOptionsPage(OptionsPage):
 
     NAME = "filerenaming"
@@ -207,10 +211,10 @@ class RenamingOptionsPage(OptionsPage):
         try:
             parser.eval(self.ui.file_naming_format.toPlainText())
         except Exception as e:
-            raise OptionsCheckError("", str(e))
+            raise ScriptCheckError("", str(e))
         if self.ui.rename_files.isChecked():
             if not self.ui.file_naming_format.toPlainText().strip():
-                raise OptionsCheckError("", _("The file naming format must not be empty."))
+                raise ScriptCheckError("", _("The file naming format must not be empty."))
 
     def save(self):
         config.setting["windows_compatibility"] = self.ui.windows_compatibility.isChecked()
@@ -226,7 +230,9 @@ class RenamingOptionsPage(OptionsPage):
         self.tagger.window.enable_moving_action.setChecked(config.setting["move_files"])
 
     def display_error(self, error):
-        pass
+        # Ignore scripting errors, those are handled inline
+        if not isinstance(error, ScriptCheckError):
+            super().display_error(error)
 
     def set_file_naming_format_default(self):
         self.ui.file_naming_format.setText(self.options[3].default)
@@ -301,7 +307,7 @@ class RenamingOptionsPage(OptionsPage):
         self.ui.renaming_error.setText("")
         try:
             self.check_format()
-        except OptionsCheckError as e:
+        except ScriptCheckError as e:
             self.ui.renaming_error.setStyleSheet(self.STYLESHEET_ERROR)
             self.ui.renaming_error.setText(e.info)
             return
