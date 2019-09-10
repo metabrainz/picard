@@ -7,6 +7,7 @@ from picard.cluster import Cluster
 from picard.const import DEFAULT_FILE_NAMING_FORMAT
 from picard.metadata import Metadata
 from picard.script import (
+    VIDEO_EXTENSIONS,
     ScriptEndOfFile,
     ScriptError,
     ScriptParser,
@@ -591,6 +592,26 @@ class ScriptParserTest(PicardTestCase):
         cluster.files.append(file)
         file.parent = cluster
         self.assertScriptResultEquals("$is_complete()", "0", file=file)
+
+    def test_cmd_is_video(self):
+        context = Metadata({'~video': '1'})
+        self.assertScriptResultEquals("$is_video()", "1", context=context)
+        context = Metadata({'~video': '0'})
+        self.assertScriptResultEquals("$is_video()", "", context=context)
+        self.assertScriptResultEquals("$is_video()", "")
+        for ext in VIDEO_EXTENSIONS:
+            context = Metadata({'~extension': ext})
+            self.assertScriptResultEquals("$is_video()", "1", context=context)
+
+    def test_cmd_is_audio(self):
+        context = Metadata({'~video': '1'})
+        self.assertScriptResultEquals("$is_audio()", "", context=context)
+        context = Metadata({'~video': '0'})
+        self.assertScriptResultEquals("$is_audio()", "1", context=context)
+        self.assertScriptResultEquals("$is_audio()", "1")
+        for ext in VIDEO_EXTENSIONS:
+            context = Metadata({'~extension': ext})
+            self.assertScriptResultEquals("$is_audio()", "", context=context)
 
     def test_required_kwonly_parameters(self):
         def func(a, *, required_kwarg):

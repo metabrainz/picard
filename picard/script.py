@@ -894,6 +894,24 @@ def iswbound(char):
     return "Zs" == category or "Sk" == category or "P" == category[0]
 
 
+def func_is_audio(parser):
+    """Returns true, if the file processed is an audio file."""
+    if func_is_video(parser) == "1":
+        return ""
+    else:
+        return "1"
+
+
+VIDEO_EXTENSIONS = ['m4v', 'wmv', 'ogv', 'oggtheora']
+def func_is_video(parser):  # noqa: E302
+    """Returns true, if the file processed is a video file."""
+    if ((parser.context['~video'] and parser.context['~video'] != '0')
+        or parser.context['~extension'] in VIDEO_EXTENSIONS):
+        return "1"
+    else:
+        return ""
+
+
 register_script_function(func_if, "if", eval_args=False)
 register_script_function(func_if2, "if2", eval_args=False)
 register_script_function(func_noop, "noop", eval_args=False)
@@ -949,3 +967,5 @@ register_script_function(func_ne_all, "ne_all", check_argcount=False)
 register_script_function(func_eq_all, "eq_all", check_argcount=False)
 register_script_function(func_ne_any, "ne_any", check_argcount=False)
 register_script_function(func_title, "title")
+register_script_function(func_is_audio, "is_audio")
+register_script_function(func_is_video, "is_video")
