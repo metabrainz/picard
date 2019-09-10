@@ -97,6 +97,8 @@ class EditTagDialog(PicardDialog):
     def tag_changed(self, tag):
         tag_names = self.ui.tag_names
         tag_names.editTextChanged.disconnect(self.tag_changed)
+        line_edit = tag_names.lineEdit()
+        cursor_pos = line_edit.cursorPosition()
         flags = QtCore.Qt.MatchFixedString | QtCore.Qt.MatchCaseSensitive
 
         # if the previous tag was new and has no value, remove it from the QComboBox.
@@ -121,6 +123,7 @@ class EditTagDialog(PicardDialog):
 
         self.enable_all()
         tag_names.setCurrentIndex(row)
+        line_edit.setCursorPosition(cursor_pos)
         self.value_list.clear()
 
         values = self.modified_tags.get(self.tag, None)
