@@ -357,9 +357,7 @@ class OggOpusFile(VCommentFile):
 
     @classmethod
     def supports_tag(cls, name):
-        if name.startswith('replaygain_'):
-            return False
-        elif name.startswith('r128_'):
+        if name.startswith('r128_'):
             return True
         return VCommentFile.supports_tag(name)
 

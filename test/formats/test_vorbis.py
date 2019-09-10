@@ -14,7 +14,6 @@ from picard.coverart.image import CoverArtImage
 from picard.formats import vorbis
 
 from .common import (
-    REPLAYGAIN_TAGS,
     TAGS,
     CommonTests,
     load_metadata,
@@ -165,12 +164,6 @@ class OggOpusTest(CommonVorbisTests.VorbisTestCase):
         'length': 82,
         '~channels': '2',
     }
-
-    @skipUnlessTestfile
-    def test_replaygain_tags(self):
-        # The normal replaygain tags are not supported by Opus
-        tags = REPLAYGAIN_TAGS.copy()
-        self._test_unsupported_tags(tags)
 
     @skipUnlessTestfile
     def test_r128_replaygain_tags(self):
