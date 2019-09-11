@@ -309,3 +309,8 @@ class MP4File(File):
         super()._info(metadata, file)
         if hasattr(file.info, 'codec_description') and file.info.codec_description:
             metadata['~format'] = "%s (%s)" % (metadata['~format'], file.info.codec_description)
+        filename = file.filename
+        if isinstance(filename, bytes):
+            filename = filename.decode()
+        if filename.lower().endswith(".m4v"):
+            metadata['~video'] = '1'

@@ -243,6 +243,7 @@ class MP3Test(CommonId3Tests.Id3TestCase):
         '~channels': '2',
         '~sample_rate': '44100',
     }
+    unexpected_info = ['~video']
 
 
 class TTATest(CommonId3Tests.Id3TestCase):
@@ -252,6 +253,7 @@ class TTATest(CommonId3Tests.Id3TestCase):
         'length': 82,
         '~sample_rate': '44100',
     }
+    unexpected_info = ['~video']
 
 
 class DSFTest(CommonId3Tests.Id3TestCase):
@@ -264,6 +266,7 @@ class DSFTest(CommonId3Tests.Id3TestCase):
         '~bitrate': '11289.6',
         '~bits_per_sample': '1',
     }
+    unexpected_info = ['~video']
 
 
 class AIFFTest(CommonId3Tests.Id3TestCase):
@@ -275,6 +278,7 @@ class AIFFTest(CommonId3Tests.Id3TestCase):
         '~sample_rate': '44100',
         '~bitrate': '1411.2',
     }
+    unexpected_info = ['~video']
 
 
 class Id3UtilTest(PicardTestCase):

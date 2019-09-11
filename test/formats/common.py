@@ -197,7 +197,8 @@ class CommonTests:
 
     class SimpleFormatsTestCase(BaseFileTestCase):
 
-        expected_info = None
+        expected_info = {}
+        unexpected_info = []
 
         @skipUnlessTestfile
         def test_can_open_and_save(self):
@@ -211,7 +212,9 @@ class CommonTests:
             metadata = save_and_load_metadata(self.filename, Metadata())
             for key, expected_value in self.expected_info.items():
                 value = metadata.length if key == 'length' else metadata[key]
-                self.assertEqual(value, expected_value)
+                self.assertEqual(expected_value, value, '%s: %r != %r' % (key, expected_value, value))
+            for key in self.unexpected_info:
+                self.assertNotIn(key, metadata)
 
         def _test_supported_tags(self, tags):
             metadata = Metadata(tags)
@@ -330,7 +333,7 @@ class CommonTests:
             new_metadata = save_and_load_metadata(self.filename, metadata)
 
             self.assertIn('totaldiscs', original_metadata)
-            if self.testfile_ext == '.m4a':
+            if self.testfile_ext in ('.m4a', '.m4v'):
                 self.assertEqual(u'0', new_metadata['totaldiscs'])
             else:
                 self.assertNotIn('totaldiscs', new_metadata)

@@ -14,6 +14,7 @@ class WAVTest(CommonTests.SimpleFormatsTestCase):
         '~sample_rate': '44100',
         '~bits_per_sample': '16',
     }
+    unexpected_info = ['~video']
 
     def setUp(self):
         super().setUp()

@@ -81,6 +81,7 @@ class MonkeysAudioTest(CommonApeTests.ApeTestCase):
         '~sample_rate': '44100',
         '~bits_per_sample': '16',
     }
+    unexpected_info = ['~video']
 
 
 class WavPackTest(CommonApeTests.ApeTestCase):
@@ -91,6 +92,7 @@ class WavPackTest(CommonApeTests.ApeTestCase):
         '~channels': '2',
         '~sample_rate': '44100',
     }
+    unexpected_info = ['~video']
 
     @skipUnlessTestfile
     def test_save_wavpack_correction_file(self):
@@ -130,6 +132,7 @@ class MusepackSV7Test(CommonApeTests.ApeTestCase):
         '~channels': '2',
         '~sample_rate': '44100',
     }
+    unexpected_info = ['~video']
 
 
 class MusepackSV8Test(CommonApeTests.ApeTestCase):
@@ -140,11 +143,13 @@ class MusepackSV8Test(CommonApeTests.ApeTestCase):
         '~channels': '2',
         '~sample_rate': '44100',
     }
+    unexpected_info = ['~video']
 
 
 class TAKTest(CommonApeTests.ApeTestCase):
     testfile = 'test.tak'
     supports_ratings = False
+    unexpected_info = ['~video']
 
 
 class OptimFROGLosslessTest(CommonApeTests.ApeTestCase):
@@ -155,6 +160,7 @@ class OptimFROGLosslessTest(CommonApeTests.ApeTestCase):
         '~channels': '2',
         '~sample_rate': '48000',
     }
+    unexpected_info = ['~video']
 
     def test_format(self):
         metadata = load_metadata(self.filename)
@@ -169,6 +175,7 @@ class OptimFROGDUalStreamTest(CommonApeTests.ApeTestCase):
         '~channels': '2',
         '~sample_rate': '48000',
     }
+    unexpected_info = ['~video']
 
     def test_format(self):
         metadata = load_metadata(self.filename)

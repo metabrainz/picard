@@ -6,3 +6,4 @@ class MIDITest(CommonTests.SimpleFormatsTestCase):
     expected_info = {
         'length': 127997,
     }
+    unexpected_info = ['~video']

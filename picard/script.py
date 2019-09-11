@@ -902,11 +902,9 @@ def func_is_audio(parser):
         return "1"
 
 
-VIDEO_EXTENSIONS = ['m4v', 'wmv', 'ogv', 'oggtheora']
-def func_is_video(parser):  # noqa: E302
+def func_is_video(parser):
     """Returns true, if the file processed is a video file."""
-    if ((parser.context['~video'] and parser.context['~video'] != '0')
-        or parser.context['~extension'] in VIDEO_EXTENSIONS):
+    if parser.context['~video'] and parser.context['~video'] != '0':
         return "1"
     else:
         return ""

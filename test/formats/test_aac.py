@@ -9,6 +9,7 @@ class AACTest(CommonTests.SimpleFormatsTestCase):
         '~sample_rate': '44100',
         '~bitrate': '123.824',
     }
+    unexpected_info = ['~video']
 
 
 class AACWithAPETest(CommonTests.TagFormatsTestCase):

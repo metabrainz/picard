@@ -287,3 +287,11 @@ class ASFFile(File):
             return self.__TRANS[name]
         else:
             return None
+
+    def _info(self, metadata, file):
+        super()._info(metadata, file)
+        filename = file.filename
+        if isinstance(filename, bytes):
+            filename = filename.decode()
+        if filename.lower().endswith(".wmv"):
+            metadata['~video'] = '1'

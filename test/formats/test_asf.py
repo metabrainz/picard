@@ -74,6 +74,19 @@ class WMATest(CommonAsfTests.AsfTestCase):
         '~sample_rate': '44100',
         '~bitrate': '64.0',
     }
+    unexpected_info = ['~video']
+
+
+class WMVTest(CommonAsfTests.AsfTestCase):
+    testfile = 'test.wmv'
+    supports_ratings = True
+    expected_info = {
+        'length': 565,
+        '~channels': '2',
+        '~sample_rate': '44100',
+        '~bitrate': '128.0',
+        '~video': '1',
+    }
 
 
 class AsfUtilTest(PicardTestCase):
