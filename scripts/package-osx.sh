@@ -49,7 +49,7 @@ if [ -n "$UPLOAD_OSX" ]
 then
     set +e
     # make upload failures non fatal
-    curl -v --retry 6 --retry-delay 10 --upload-file "$dmg" https://transfer.sh/
+    curl -v --retry 6 --retry-delay 10 --max-time 180 --upload-file "$dmg" https://transfer.sh/
     set -e
     # Required for a newline between the outputs
     echo -e "\n"
