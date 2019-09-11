@@ -513,6 +513,14 @@ class BaseTreeView(QtWidgets.QTreeWidget):
             mimeData.setUrls(files)
         return mimeData
 
+    def scrollTo(self, index, scrolltype=QtWidgets.QAbstractItemView.EnsureVisible):
+        # QTreeView.scrollTo resets the horizontal scroll position to 0.
+        # Reimplemented to maintain current horizontal scroll position.
+        hscrollbar = self.horizontalScrollBar()
+        xpos = hscrollbar.value()
+        super().scrollTo(index, scrolltype)
+        hscrollbar.setValue(xpos)
+
     @staticmethod
     def drop_urls(urls, target):
         files = []
