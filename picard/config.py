@@ -69,7 +69,7 @@ class ConfigSection(LockableObject):
             self.unlock()
 
     def __contains__(self, name):
-        return name in self._subkeys()
+        return self.__qt_config.contains(self.key(name))
 
     def remove(self, name):
         self.lock_for_write()
@@ -107,7 +107,7 @@ class Config(QtCore.QSettings):
     """Configuration."""
 
     def __init__(self):
-        pass
+        self.__known_keys = set()
 
     def __initialize(self):
         """Common initializer method for :meth:`from_app` and
@@ -130,6 +130,12 @@ class Config(QtCore.QSettings):
         TextOption("application", "version", '0.0.0dev0')
         self._version = version_from_string(self.application["version"])
         self._upgrade_hooks = dict()
+        # Save known config names for faster access and to prevent
+        # strange cases of Qt locking up when accessing QSettings.allKeys()
+        # or QSettings.contains() shortly after having written settings
+        # inside threads.
+        # See https://tickets.metabrainz.org/browse/PICARD-1590
+        self.__known_keys = set(self.allKeys())
 
     @classmethod
     def from_app(cls, parent):
@@ -151,6 +157,19 @@ class Config(QtCore.QSettings):
                                   parent)
         this.__initialize()
         return this
+
+    def setValue(self, key, value):
+        super().setValue(key, value)
+        self.__known_keys.add(key)
+
+    def remove(self, key):
+        super().remove(key)
+        self.__known_keys.discard(key)
+
+    def contains(self, key):
+        # Overwritten due to https://tickets.metabrainz.org/browse/PICARD-1590
+        # See comment above in __initialize
+        return key in self.__known_keys or super().contains(key)
 
     def switchProfile(self, profilename):
         """Sets the current profile."""
