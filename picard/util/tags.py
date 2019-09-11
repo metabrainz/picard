@@ -109,7 +109,7 @@ TAG_NAMES = {
 
 PRESERVED_TAGS = [
     "~bitrate", "~bits_per_sample", "~format", "~channels", "~sample_rate",
-    "~dirname", "~filename", "~extension",
+    "~dirname", "~filename", "~extension", "~video",
 ]
 
 

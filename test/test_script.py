@@ -592,6 +592,20 @@ class ScriptParserTest(PicardTestCase):
         file.parent = cluster
         self.assertScriptResultEquals("$is_complete()", "0", file=file)
 
+    def test_cmd_is_video(self):
+        context = Metadata({'~video': '1'})
+        self.assertScriptResultEquals("$is_video()", "1", context=context)
+        context = Metadata({'~video': '0'})
+        self.assertScriptResultEquals("$is_video()", "", context=context)
+        self.assertScriptResultEquals("$is_video()", "")
+
+    def test_cmd_is_audio(self):
+        context = Metadata({'~video': '1'})
+        self.assertScriptResultEquals("$is_audio()", "", context=context)
+        context = Metadata({'~video': '0'})
+        self.assertScriptResultEquals("$is_audio()", "1", context=context)
+        self.assertScriptResultEquals("$is_audio()", "1")
+
     def test_required_kwonly_parameters(self):
         def func(a, *, required_kwarg):
             pass

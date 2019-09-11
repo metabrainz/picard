@@ -339,6 +339,10 @@ class OggTheoraFile(VCommentFile):
     NAME = "Ogg Theora"
     _File = mutagen.oggtheora.OggTheora
 
+    def _info(self, metadata, file):
+        super()._info(metadata, file)
+        metadata['~video'] = '1'
+
 
 class OggVorbisFile(VCommentFile):
 

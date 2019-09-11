@@ -127,6 +127,7 @@ class FLACTest(CommonVorbisTests.VorbisTestCase):
         '~sample_rate': '44100',
         '~format': 'FLAC',
     }
+    unexpected_info = ['~video']
 
     @skipUnlessTestfile
     def test_preserve_waveformatextensible_channel_mask(self):
@@ -155,6 +156,7 @@ class OggSpxTest(CommonVorbisTests.VorbisTestCase):
         '~channels': '2',
         '~bitrate': '29.6',
     }
+    unexpected_info = ['~video']
 
 
 class OggOpusTest(CommonVorbisTests.VorbisTestCase):
@@ -164,6 +166,7 @@ class OggOpusTest(CommonVorbisTests.VorbisTestCase):
         'length': 82,
         '~channels': '2',
     }
+    unexpected_info = ['~video']
 
     @skipUnlessTestfile
     def test_r128_replaygain_tags(self):
@@ -180,6 +183,7 @@ class OggTheoraTest(CommonVorbisTests.VorbisTestCase):
     expected_info = {
         'length': 520,
         '~bitrate': '200.0',
+        '~video': '1',
     }
 
 
@@ -190,6 +194,7 @@ class OggFlacTest(CommonVorbisTests.VorbisTestCase):
         'length': 82,
         '~channels': '2',
     }
+    unexpected_info = ['~video']
 
 
 class VorbisUtilTest(PicardTestCase):
