@@ -405,5 +405,5 @@ def run_album_metadata_processors(album_object, metadata, release):
     _album_metadata_processors.run(album_object, metadata, release)
 
 
-def run_track_metadata_processors(track_object, metadata, release, track):
-    _track_metadata_processors.run(track_object, metadata, track, release)
+def run_track_metadata_processors(album_object, metadata, track, release=None):
+    _track_metadata_processors.run(album_object, metadata, track, release)
