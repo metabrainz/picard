@@ -12,7 +12,7 @@ Required:
 * [PyQt 5.7.1 or newer](http://www.riverbankcomputing.co.uk/software/pyqt/download)
 * [Mutagen 1.37 or newer](https://bitbucket.org/lazka/mutagen/downloads)
 * gettext:
-  * [Windows](http://gnuwin32.sourceforge.net/packages/gettext.htm)
+  * [Windows](https://mlocati.github.io/articles/gettext-iconv-windows.html)
 * a compiler
   * Windows should work with [Visual C++ 2008 Express](http://go.microsoft.com/?linkid=7729279)
 
