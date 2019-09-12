@@ -722,18 +722,21 @@ class AlbumItem(TreeItem):
 
     def update(self, update_tracks=True):
         album = self.obj
+        selection_changed = self.isSelected()
         if update_tracks:
             oldnum = self.childCount() - 1
             newnum = len(album.tracks)
             if oldnum > newnum:  # remove old items
                 for i in range(oldnum - newnum):
+                    item = self.child(newnum)
+                    selection_changed |= item.isSelected()
                     self.takeChild(newnum)
                 oldnum = newnum
             # update existing items
             for i in range(oldnum):
                 item = self.child(i)
-                item.setSelected(False)
                 track = album.tracks[i]
+                selection_changed |= item.isSelected() and item.obj != track
                 item.obj = track
                 track.item = item
                 item.update(update_album=False)
@@ -765,8 +768,8 @@ class AlbumItem(TreeItem):
                 self.setToolTip(0, _("Album unchanged"))
         for i, column in enumerate(MainPanel.columns):
             self.setText(i, album.column(column[1]))
-        if self.isSelected():
-            TreeItem.window.update_selection()
+        if selection_changed:
+            TreeItem.window.panel.update_current_view()
         # Workaround for PICARD-1446: Expand/collapse indicator for the release
         # is briefly missing on Windows
         self.emitDataChanged()
