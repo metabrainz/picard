@@ -19,6 +19,7 @@
 
 from collections import deque
 from functools import partial
+import json
 
 from PyQt5 import QtCore
 
@@ -161,16 +162,10 @@ class AcoustIDClient(QtCore.QObject):
             self._run_next_task()
             if exit_code == 0 and exit_status == 0:
                 output = bytes(process.readAllStandardOutput()).decode()
-                duration = None
-                fingerprint = None
-                for line in output.splitlines():
-                    parts = line.split('=', 1)
-                    if len(parts) != 2:
-                        continue
-                    if parts[0] == 'DURATION':
-                        duration = int(parts[1])
-                    elif parts[0] == 'FINGERPRINT':
-                        fingerprint = parts[1]
+                jsondata = json.loads(output)
+                # Use only integer part of duration, floats are not allowed in lookup
+                duration = int(jsondata.get('duration'))
+                fingerprint = jsondata.get('fingerprint')
                 if fingerprint and duration:
                     result = 'fingerprint', fingerprint, duration
             else:
@@ -179,6 +174,8 @@ class AcoustIDClient(QtCore.QObject):
                     exit_code,
                     exit_status,
                     process.errorString())
+        except (json.decoder.JSONDecodeError, UnicodeDecodeError, ValueError):
+            log.error("Error reading fingerprint calculator output", exc_info=True)
         finally:
             next_func(result)
 
@@ -206,7 +203,7 @@ class AcoustIDClient(QtCore.QObject):
         process.setProperty('picard_finished', False)
         process.finished.connect(partial(self._on_fpcalc_finished, next_func, file))
         process.error.connect(partial(self._on_fpcalc_error, next_func, file))
-        process.start(fpcalc, ["-length", "120", file.filename])
+        process.start(fpcalc, ["-json", "-length", "120", file.filename])
         log.debug("Starting fingerprint calculator %r %r", fpcalc, file.filename)
 
     def analyze(self, file, next_func):
