@@ -37,10 +37,27 @@ The binaries for Python, GetText (`msgfmt`), `fpcalc` and `discid.dll` have to b
 in the `%PATH%` on Windows.
 
 
-Installation
-------------
+Installation using pip
+----------------------
 
-After installing the dependencies, you can install Picard by running:
+The recommended way to install Picard from source is using pip. After installing
+the dependencies, you can install Picard as a pip package by running:
+
+    pip3 install .
+
+To start Picard now you can use:
+
+    picard
+
+To uninstall Picard run:
+
+    pip3 uninstall picard
+
+
+Installation using setup.py
+---------------------------
+
+You can also install Picard with `setup.py` by running:
 
     sudo python3 setup.py install
 
@@ -51,6 +68,17 @@ in front of the command.
 To start Picard now you can use:
 
     picard
+
+If you want to be able to easily uninstall Picard again, run `setup.py`
+with the `--record installed-files.txt` command line argument. This will record
+all files generated during installation into the file `installed-files.txt`.
+
+    sudo python3 setup.py install --record installed-files.txt
+
+To uninstall Picard again simply remove all the files listed in
+`installed-files.txt`, e.g. by running:
+
+    rm -vI $(cat installed-files.txt)
 
 
 Running From the Source Tree
