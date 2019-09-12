@@ -91,7 +91,6 @@ api_versions = [
     "2.0",
     "2.1",
     "2.2",
-    "2.3",
 ]
 
 api_versions_tuple = [version_from_string(v) for v in api_versions]
