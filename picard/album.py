@@ -401,7 +401,7 @@ class Album(DataObject, Item):
 
         # Run track metadata plugins
         try:
-            run_track_metadata_processors(self, tm, self._release_node, track_node)
+            run_track_metadata_processors(self, tm, track_node, self._release_node)
         except BaseException:
             self.error_append(traceback.format_exc())
 

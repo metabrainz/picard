@@ -374,7 +374,7 @@ class NonAlbumTrack(Track):
         recording_to_metadata(recording, m, self)
         self.orig_metadata.copy(m)
         self._customize_metadata()
-        run_track_metadata_processors(self.album, m, None, recording)
+        run_track_metadata_processors(self.album, m, recording)
         for s_name, s_text in enabled_tagger_scripts_texts():
             parser = ScriptParser()
             try:
