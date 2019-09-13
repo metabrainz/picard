@@ -227,7 +227,7 @@ class CommonTests:
             loaded_metadata = save_and_load_metadata(self.filename, metadata)
             for tag in tags:
                 self.assertFalse(self.format.supports_tag(tag))
-                self.assertTrue(tag not in loaded_metadata, '%s: %r != None' % (tag, loaded_metadata[tag]))
+                self.assertNotIn(tag, loaded_metadata, '%s: %r != None' % (tag, loaded_metadata[tag]))
 
     class TagFormatsTestCase(SimpleFormatsTestCase):
 

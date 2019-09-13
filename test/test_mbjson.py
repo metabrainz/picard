@@ -157,7 +157,7 @@ class RecordingCreditsTest(MBJSONTest):
         t = Track("1")
         recording_to_metadata(self.json_doc, m, t)
         config.setting["standardize_artists"] = False
-        self.assertTrue('performer:solo' not in m)
+        self.assertNotIn('performer:solo', m)
         self.assertEqual(m['performer:solo vocals'], 'Frida')
 
     def test_recording_standardize_artist_credits(self):
@@ -165,7 +165,7 @@ class RecordingCreditsTest(MBJSONTest):
         t = Track("1")
         config.setting["standardize_artists"] = True
         recording_to_metadata(self.json_doc, m, t)
-        self.assertTrue('performer:solo' not in m)
+        self.assertNotIn('performer:solo', m)
         self.assertEqual(m['performer:solo vocals'], 'Anni-Frid Lyngstad')
 
 
