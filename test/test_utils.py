@@ -311,3 +311,13 @@ class SortBySimilarity(unittest.TestCase):
         self.assertEqual(best_match.result.name, 'no_match')
         self.assertEqual(best_match.similarity, -1)
         self.assertEqual(best_match.num_results, 0)
+
+
+class GetQtEnum(unittest.TestCase):
+
+    def test_get_qt_enum(self):
+        from PyQt5.QtCore import QStandardPaths
+        values = util.get_qt_enum(QStandardPaths, QStandardPaths.LocateOption)
+        self.assertIn('LocateFile', values)
+        self.assertIn('LocateDirectory', values)
+        self.assertNotIn('DesktopLocation', values)

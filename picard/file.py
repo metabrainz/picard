@@ -49,6 +49,7 @@ from picard.plugin import (
 )
 from picard.util import (
     decode_filename,
+    emptydir,
     find_best_match,
     format_time,
     pathcmp,
@@ -275,30 +276,21 @@ class File(QtCore.QObject, Item):
         if config.setting["delete_empty_dirs"]:
             dirname = os.path.dirname(old_filename)
             try:
-                self._rmdir(dirname)
+                emptydir.rm_empty_dir(dirname)
                 head, tail = os.path.split(dirname)
                 if not tail:
                     head, tail = os.path.split(head)
                 while head and tail:
-                    try:
-                        self._rmdir(head)
-                    except BaseException:
-                        break
+                    emptydir.rm_empty_dir(head)
                     head, tail = os.path.split(head)
-            except EnvironmentError:
-                pass
+            except OSError as why:
+                log.warning("Error removing directory: %s", why)
+            except emptydir.SkipRemoveDir as why:
+                log.debug("Not removing empty directory: %s", why)
         # Save cover art images
         if config.setting["save_images_to_files"]:
             self._save_images(os.path.dirname(new_filename), metadata)
         return new_filename
-
-    @staticmethod
-    def _rmdir(path):
-        junk_files = (".DS_Store", "desktop.ini", "Desktop.ini", "Thumbs.db")
-        if not set(os.listdir(path)) - set(junk_files):
-            shutil.rmtree(path, False)
-        else:
-            raise OSError
 
     def _saving_finished(self, result=None, error=None):
         # Handle file removed before save
