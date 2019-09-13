@@ -237,7 +237,7 @@ class MetadataTest(PicardTestCase):
         d = {'a': 'b', 'c': 2, 'd': ['x', 'y'], 'x': '', 'z': {'u', 'w'}}
         deleted_tags = set('c')
         m = Metadata(d, deleted_tags=deleted_tags, length=1234)
-        self.assertTrue('a' in m)
+        self.assertIn('a', m)
         self.assertEqual(m.getraw('a'), ['b'])
         self.assertEqual(m['d'], MULTI_VALUED_JOINER.join(d['d']))
         self.assertNotIn('c', m)
