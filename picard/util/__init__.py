@@ -611,3 +611,20 @@ def find_best_match(candidates, no_match):
     else:
         result = no_match
     return BestMatch(similarity=result.similarity, result=result, num_results=len(sorted_results))
+
+
+def get_qt_enum(cls, enum):
+    """
+    List all the names of attributes inside a Qt enum.
+
+    Example:
+        >>> from PyQt5.Qt import Qt
+        >>> print(get_qt_enum(Qt, Qt.CoordinateSystem))
+        ['DeviceCoordinates', 'LogicalCoordinates']
+    """
+    values = []
+    for key in dir(cls):
+        value = getattr(cls, key)
+        if isinstance(value, enum):
+            values.append(key)
+    return values

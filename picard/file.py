@@ -27,7 +27,11 @@ import re
 import shutil
 import unicodedata
 
-from PyQt5 import QtCore
+from PyQt5.QtCore import (
+    QObject,
+    QStandardPaths,
+    pyqtSignal,
+)
 
 from picard import (
     PICARD_APP_NAME,
@@ -51,6 +55,7 @@ from picard.util import (
     decode_filename,
     find_best_match,
     format_time,
+    get_qt_enum,
     pathcmp,
     thread,
     tracknum_from_filename,
@@ -62,9 +67,21 @@ from picard.util.tags import PRESERVED_TAGS
 from picard.ui.item import Item
 
 
-class File(QtCore.QObject, Item):
+# Files not considered relevant for a directory. If a directory has only
+# some of these files inside it is still considered empty and can be deleted.
+JUNK_FILES = set([".DS_Store", "desktop.ini", "Desktop.ini", "Thumbs.db"])
 
-    metadata_images_changed = QtCore.pyqtSignal()
+# Special file system locations Picard should never delete.
+PROTECTED_DIRECTORIES = set()
+for location in get_qt_enum(QStandardPaths, QStandardPaths.StandardLocation):
+    value = getattr(QStandardPaths, location)
+    for path in QStandardPaths.standardLocations(value):
+        PROTECTED_DIRECTORIES.add(os.path.realpath(path))
+
+
+class File(QObject, Item):
+
+    metadata_images_changed = pyqtSignal()
 
     NAME = None
 
@@ -285,7 +302,7 @@ class File(QtCore.QObject, Item):
                     except BaseException:
                         break
                     head, tail = os.path.split(head)
-            except EnvironmentError:
+            except OSError:
                 pass
         # Save cover art images
         if config.setting["save_images_to_files"]:
@@ -294,8 +311,8 @@ class File(QtCore.QObject, Item):
 
     @staticmethod
     def _rmdir(path):
-        junk_files = (".DS_Store", "desktop.ini", "Desktop.ini", "Thumbs.db")
-        if not set(os.listdir(path)) - set(junk_files):
+        if (os.path.realpath(path) not in PROTECTED_DIRECTORIES
+            and not set(os.listdir(path)) - JUNK_FILES):
             shutil.rmtree(path, False)
         else:
             raise OSError
