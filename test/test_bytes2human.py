@@ -51,8 +51,8 @@ class Testbytes2human(PicardTestCase):
         self.assertRaises(ValueError, bytes2human.calc_unit, 1, 999)
         self.assertRaises(ValueError, bytes2human.calc_unit, 1, 1023)
         self.assertRaises(ValueError, bytes2human.calc_unit, 1, 1025)
-        self.assertEquals((1.0, 'B'), bytes2human.calc_unit(1, 1024))
-        self.assertEquals((1.0, 'B'), bytes2human.calc_unit(1, 1000))
+        self.assertEqual((1.0, 'B'), bytes2human.calc_unit(1, 1024))
+        self.assertEqual((1.0, 'B'), bytes2human.calc_unit(1, 1000))
 
     def run_test(self, lang='C', create_test_data=False):
         """
