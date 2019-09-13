@@ -27,11 +27,7 @@ import re
 import shutil
 import unicodedata
 
-from PyQt5.QtCore import (
-    QObject,
-    QStandardPaths,
-    pyqtSignal,
-)
+from PyQt5 import QtCore
 
 from picard import (
     PICARD_APP_NAME,
@@ -53,9 +49,9 @@ from picard.plugin import (
 )
 from picard.util import (
     decode_filename,
+    emptydir,
     find_best_match,
     format_time,
-    get_qt_enum,
     pathcmp,
     thread,
     tracknum_from_filename,
@@ -67,25 +63,9 @@ from picard.util.tags import PRESERVED_TAGS
 from picard.ui.item import Item
 
 
-# Files not considered relevant for a directory. If a directory has only
-# some of these files inside it is still considered empty and can be deleted.
-JUNK_FILES = set([".DS_Store", "desktop.ini", "Desktop.ini", "Thumbs.db"])
+class File(QtCore.QObject, Item):
 
-# Special file system locations Picard should never delete.
-PROTECTED_DIRECTORIES = set()
-for location in get_qt_enum(QStandardPaths, QStandardPaths.StandardLocation):
-    value = getattr(QStandardPaths, location)
-    for path in QStandardPaths.standardLocations(value):
-        PROTECTED_DIRECTORIES.add(os.path.realpath(path))
-
-
-class SkipRemoveDir(Exception):
-    pass
-
-
-class File(QObject, Item):
-
-    metadata_images_changed = pyqtSignal()
+    metadata_images_changed = QtCore.pyqtSignal()
 
     NAME = None
 
@@ -296,30 +276,21 @@ class File(QObject, Item):
         if config.setting["delete_empty_dirs"]:
             dirname = os.path.dirname(old_filename)
             try:
-                self._rmdir(dirname)
+                emptydir.rm_empty_dir(dirname)
                 head, tail = os.path.split(dirname)
                 if not tail:
                     head, tail = os.path.split(head)
                 while head and tail:
-                    self._rmdir(head)
+                    emptydir.rm_empty_dir(head)
                     head, tail = os.path.split(head)
             except OSError as why:
                 log.warning("Error removing directory: %s", why)
-            except SkipRemoveDir as why:
+            except emptydir.SkipRemoveDir as why:
                 log.debug("Not removing empty directory: %s", why)
         # Save cover art images
         if config.setting["save_images_to_files"]:
             self._save_images(os.path.dirname(new_filename), metadata)
         return new_filename
-
-    @staticmethod
-    def _rmdir(path):
-        if os.path.realpath(path) in PROTECTED_DIRECTORIES:
-            raise SkipRemoveDir('%s is a protected directory' % path)
-        elif set(os.listdir(path)) - JUNK_FILES:
-            raise SkipRemoveDir('%s is not empty' % path)
-        else:
-            shutil.rmtree(path, False)
 
     def _saving_finished(self, result=None, error=None):
         # Handle file removed before save
