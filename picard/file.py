@@ -79,6 +79,10 @@ for location in get_qt_enum(QStandardPaths, QStandardPaths.StandardLocation):
         PROTECTED_DIRECTORIES.add(os.path.realpath(path))
 
 
+class SkipRemoveDir(Exception):
+    pass
+
+
 class File(QObject, Item):
 
     metadata_images_changed = pyqtSignal()
@@ -297,13 +301,12 @@ class File(QObject, Item):
                 if not tail:
                     head, tail = os.path.split(head)
                 while head and tail:
-                    try:
-                        self._rmdir(head)
-                    except BaseException:
-                        break
+                    self._rmdir(head)
                     head, tail = os.path.split(head)
-            except OSError:
-                pass
+            except OSError as why:
+                log.warning("Error removing directory: %s", why)
+            except SkipRemoveDir as why:
+                log.debug("Not removing empty directory: %s", why)
         # Save cover art images
         if config.setting["save_images_to_files"]:
             self._save_images(os.path.dirname(new_filename), metadata)
@@ -311,11 +314,12 @@ class File(QObject, Item):
 
     @staticmethod
     def _rmdir(path):
-        if (os.path.realpath(path) not in PROTECTED_DIRECTORIES
-            and not set(os.listdir(path)) - JUNK_FILES):
-            shutil.rmtree(path, False)
+        if os.path.realpath(path) in PROTECTED_DIRECTORIES:
+            raise SkipRemoveDir('%s is a protected directory' % path)
+        elif set(os.listdir(path)) - JUNK_FILES:
+            raise SkipRemoveDir('%s is not empty' % path)
         else:
-            raise OSError
+            shutil.rmtree(path, False)
 
     def _saving_finished(self, result=None, error=None):
         # Handle file removed before save
