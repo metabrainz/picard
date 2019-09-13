@@ -64,7 +64,7 @@ class RmEmptyDirTest(unittest.TestCase):
     def test_rm_empty_dir_is_special(self):
         dir = _create_temp_dir()
         orig_portected_dirs = emptydir.PROTECTED_DIRECTORIES
-        emptydir.PROTECTED_DIRECTORIES.add(dir)
+        emptydir.PROTECTED_DIRECTORIES.add(os.path.realpath(dir))
         self.assertRaises(emptydir.SkipRemoveDir, emptydir.rm_empty_dir, dir)
         emptydir.PROTECTED_DIRECTORIES = orig_portected_dirs
 
