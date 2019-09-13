@@ -61,7 +61,10 @@ matrix:
     - INSTALL_DEPS="$PIP_INSTALL -r requirements-macos.txt"
   - os: linux
     before_install: skip
-    script: pip3 install .
+    install: skip
+    script:
+    - pip3 install .
+    - scripts/run-sdist-test.sh
   fast_finish: true
 
 before_cache:
