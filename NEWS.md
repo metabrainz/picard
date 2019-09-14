@@ -1,3 +1,93 @@
+# Version 2.2 - 2019-09-14
+
+## Bug-fix
+- [PICARD-456](https://tickets.metabrainz.org/browse/PICARD-456) - "Delete empty directories" should not delete special folders such as the desktop
+- [PICARD-571](https://tickets.metabrainz.org/browse/PICARD-571) - Scripting and renaming font on macOS and Windows not monospace
+- [PICARD-622](https://tickets.metabrainz.org/browse/PICARD-622) - File Browser resets horizontal scrolling on selection change
+- [PICARD-765](https://tickets.metabrainz.org/browse/PICARD-765) - Refreshing a release reloads the CAA index.json file from cache, even if it changed online
+- [PICARD-1025](https://tickets.metabrainz.org/browse/PICARD-1025) - An empty destination directory prevents the options from being saved, but doesn't show an error
+- [PICARD-1090](https://tickets.metabrainz.org/browse/PICARD-1090) - Match quality indicators are blurry
+- [PICARD-1282](https://tickets.metabrainz.org/browse/PICARD-1282) - ⌘W does not close Preferences window
+- [PICARD-1284](https://tickets.metabrainz.org/browse/PICARD-1284) - Can't quit with preferences open
+- [PICARD-1446](https://tickets.metabrainz.org/browse/PICARD-1446) - Expand/collapse indicator for the release is briefly missing
+- [PICARD-1483](https://tickets.metabrainz.org/browse/PICARD-1483) - Can't submit fingerprints to non-album recordings
+- [PICARD-1489](https://tickets.metabrainz.org/browse/PICARD-1489) - Crash on start when loading python-discid without libdiscid being available
+- [PICARD-1490](https://tickets.metabrainz.org/browse/PICARD-1490) - Local cover art provider fails on Windows
+- [PICARD-1491](https://tickets.metabrainz.org/browse/PICARD-1491) - Version check when loading Picard plugins too strict
+- [PICARD-1492](https://tickets.metabrainz.org/browse/PICARD-1492) - Can’t save rated tracks when it’s a FLAC file (when Metadata/Ratings is active)
+- [PICARD-1493](https://tickets.metabrainz.org/browse/PICARD-1493) - Crash on pre 1.0 config upgrade
+- [PICARD-1497](https://tickets.metabrainz.org/browse/PICARD-1497) - Saving fails when setting tags with invalid names for the underlying tagging format
+- [PICARD-1499](https://tickets.metabrainz.org/browse/PICARD-1499) - Picard loads embedded cover art with ID3 type "other" as sticker
+- [PICARD-1501](https://tickets.metabrainz.org/browse/PICARD-1501) - Double click in a cover opens it in web browser instead of an image viewer
+- [PICARD-1503](https://tickets.metabrainz.org/browse/PICARD-1503) - Scanning CDROM uses path containing ampersand (&)
+- [PICARD-1516](https://tickets.metabrainz.org/browse/PICARD-1516) - Picard fails to load MP4 without tags
+- [PICARD-1517](https://tickets.metabrainz.org/browse/PICARD-1517) - Functions matchedtracks and is_complete throw exception when run on cluster
+- [PICARD-1522](https://tickets.metabrainz.org/browse/PICARD-1522) - Crash when removing NAT recordings
+- [PICARD-1527](https://tickets.metabrainz.org/browse/PICARD-1527) - Can't resize options window in 2.1.x (Mac)
+- [PICARD-1529](https://tickets.metabrainz.org/browse/PICARD-1529) - NAT tracks get assigned wrong cover art
+- [PICARD-1533](https://tickets.metabrainz.org/browse/PICARD-1533) - Attribute Qt::AA_EnableHighDpiScaling must be set before QCoreApplication is created
+- [PICARD-1541](https://tickets.metabrainz.org/browse/PICARD-1541) - Closing log views destroys widgets
+- [PICARD-1543](https://tickets.metabrainz.org/browse/PICARD-1543) - v2.1.3 crashes when selecting Preferences in the Apple menu 10.14.5
+- [PICARD-1547](https://tickets.metabrainz.org/browse/PICARD-1547) - Picard doesn't warn about not updating .wav metadata
+- [PICARD-1549](https://tickets.metabrainz.org/browse/PICARD-1549) - Source distributions are broken on Windows
+- [PICARD-1551](https://tickets.metabrainz.org/browse/PICARD-1551) - "compare_to_track" method considers "score" parameter only if track has releases
+- [PICARD-1556](https://tickets.metabrainz.org/browse/PICARD-1556) - Default File Naming Script produces "00" track number in file name.
+- [PICARD-1558](https://tickets.metabrainz.org/browse/PICARD-1558) - Setting rating on a track does not apply to already matched files
+- [PICARD-1566](https://tickets.metabrainz.org/browse/PICARD-1566) - Cannot drag misidentified song back to the left pane
+- [PICARD-1567](https://tickets.metabrainz.org/browse/PICARD-1567) - Parsing track number from file name modifies original title in metadata
+- [PICARD-1571](https://tickets.metabrainz.org/browse/PICARD-1571) - On macOS multiple option dialogs can be opened
+- [PICARD-1573](https://tickets.metabrainz.org/browse/PICARD-1573) - Crash when loading release with a tag that contains only whitespace.
+- [PICARD-1575](https://tickets.metabrainz.org/browse/PICARD-1575) - Can't drag and drop a picture from the Google Picture Result Page to Picard.
+- [PICARD-1580](https://tickets.metabrainz.org/browse/PICARD-1580) - Crash when closing options window on "Preferred Releases" page
+- [PICARD-1582](https://tickets.metabrainz.org/browse/PICARD-1582) - "Allow selection of multiple directories" has no effect on Linux with Gtk file chooser
+- [PICARD-1584](https://tickets.metabrainz.org/browse/PICARD-1584) - Crash when disabling script function providing plugin
+- [PICARD-1585](https://tickets.metabrainz.org/browse/PICARD-1585) - On macOS restore default options dialog opens in background
+- [PICARD-1588](https://tickets.metabrainz.org/browse/PICARD-1588) - Metadata box shows tags unsupported by format
+- [PICARD-1591](https://tickets.metabrainz.org/browse/PICARD-1591) - Error when loading Vorbis file with invalid metadata_block_picture
+- [PICARD-1593](https://tickets.metabrainz.org/browse/PICARD-1593) - Picard crashes on plugin install error
+- [PICARD-1595](https://tickets.metabrainz.org/browse/PICARD-1595) - Cursor in tag edit box always jumps to end on input
+- [PICARD-1598](https://tickets.metabrainz.org/browse/PICARD-1598) - Metadata box hidden when album gets updated
+- [PICARD-1601](https://tickets.metabrainz.org/browse/PICARD-1601) - PyPI source tarball misses some test data
+
+## New Feature
+- [PICARD-143](https://tickets.metabrainz.org/browse/PICARD-143) - Add a plugin hook for a file-added-to-a-track event
+- [PICARD-1130](https://tickets.metabrainz.org/browse/PICARD-1130) - Post save plugins
+- [PICARD-1488](https://tickets.metabrainz.org/browse/PICARD-1488) - Built-in media player (beta feature)
+- [PICARD-1510](https://tickets.metabrainz.org/browse/PICARD-1510) - Add a plugin hook for a file-removed-from-a-track event
+- [PICARD-1512](https://tickets.metabrainz.org/browse/PICARD-1512) - Add a plugin hook for an album-removed event
+- [PICARD-1514](https://tickets.metabrainz.org/browse/PICARD-1514) - Replace genre / folksonomy tag blacklist with more comprehensive list
+- [PICARD-1524](https://tickets.metabrainz.org/browse/PICARD-1524) - Replace hardcoded colors by user-configurable ones
+- [PICARD-1560](https://tickets.metabrainz.org/browse/PICARD-1560) - Add a plugin hook for a file loaded event
+- [PICARD-1594](https://tickets.metabrainz.org/browse/PICARD-1594) - Provide $is_video() / $is_audio scripting functions
+
+## Task
+- [PICARD-1353](https://tickets.metabrainz.org/browse/PICARD-1353) - Update Travis CI to use newer Xcode
+- [PICARD-1388](https://tickets.metabrainz.org/browse/PICARD-1388) - Document how to uninstall local built version of picard from CLI
+- [PICARD-1561](https://tickets.metabrainz.org/browse/PICARD-1561) - test_file.TestPreserveTimes fails on macOS 10.14
+- [PICARD-1563](https://tickets.metabrainz.org/browse/PICARD-1563) - Add 'picard.egg-info' file to .gitignore
+
+## Improvement
+- [PICARD-1235](https://tickets.metabrainz.org/browse/PICARD-1235) - Picard is not responding during start while CD is being inserted
+- [PICARD-1361](https://tickets.metabrainz.org/browse/PICARD-1361) - Add "Launch Picard" to Windows installer
+- [PICARD-1400](https://tickets.metabrainz.org/browse/PICARD-1400) - Remove Amazon cover art provider from Picard and place it into a plugin
+- [PICARD-1468](https://tickets.metabrainz.org/browse/PICARD-1468) - Localize Windows installer
+- [PICARD-1485](https://tickets.metabrainz.org/browse/PICARD-1485) - Picard should show the hours of long tracks
+- [PICARD-1494](https://tickets.metabrainz.org/browse/PICARD-1494) - Use Python3.3+ nano seconds resolution stat()/utime() to preserve times on file save
+- [PICARD-1496](https://tickets.metabrainz.org/browse/PICARD-1496) - Display count of Other versions available once known in album's contextual menu
+- [PICARD-1502](https://tickets.metabrainz.org/browse/PICARD-1502) - qApp.setDesktopFileName (wayland app_ip)
+- [PICARD-1525](https://tickets.metabrainz.org/browse/PICARD-1525) - Log/History views are updated even if not actually visible
+- [PICARD-1546](https://tickets.metabrainz.org/browse/PICARD-1546) - Display in Others submenu is messy for albums with a lot of tracks
+- [PICARD-1552](https://tickets.metabrainz.org/browse/PICARD-1552) - "compare_to_release_parts" considers track count of only first medium
+- [PICARD-1559](https://tickets.metabrainz.org/browse/PICARD-1559) - Allow moving files to subfolders without renaming
+- [PICARD-1564](https://tickets.metabrainz.org/browse/PICARD-1564) - Picard code for parsing response from AcoustID servers ignores tracks
+- [PICARD-1576](https://tickets.metabrainz.org/browse/PICARD-1576) - Open option help context sensitive
+- [PICARD-1578](https://tickets.metabrainz.org/browse/PICARD-1578) - Allow dragging images from Bing image search result
+- [PICARD-1579](https://tickets.metabrainz.org/browse/PICARD-1579) - Dragging cover art from Google image search on Linux drops just preview image
+- [PICARD-1581](https://tickets.metabrainz.org/browse/PICARD-1581) - "Recursively add files and folders" is very technical and hard to understand
+- [PICARD-1586](https://tickets.metabrainz.org/browse/PICARD-1586) - Support for ReplayGain 2.0 tags
+- [PICARD-1599](https://tickets.metabrainz.org/browse/PICARD-1599) - Use fpcalc json output for more robust output parsing
+
+
 # Version 2.1.3 - 2019-03-03
 ## Bug-fix
 - [PICARD-323](https://tickets.metabrainz.org/browse/PICARD-323) - Only the discid of the first disc in a release is written to tags
