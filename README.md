@@ -1,4 +1,4 @@
-MusicBrainz Picard
+MusicBrainz Picard TEST
 ==================
 [![Travis Status](https://img.shields.io/travis/metabrainz/picard/master.svg?style=flat-square&label=Travis)](https://travis-ci.org/metabrainz/picard)
 [![Codacy Grade](https://img.shields.io/codacy/grade/53a33607234a4c18a11a6207d1173c0c/master.svg?style=flat-square&label=Codacy)](https://www.codacy.com/app/MetaBrainz/picard)
