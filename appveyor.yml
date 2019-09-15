@@ -57,6 +57,10 @@ build_script:
 
     pyinstaller --noconfirm picard.spec
 
+    REM Workaround for https://github.com/pyinstaller/pyinstaller/issues/4429
+
+    IF EXIST dist\picard\PyQt5\translations move dist\picard\PyQt5\translations dist\picard\PyQt5\Qt
+
     del /F /Q dist\picard\libcrypto-1_1.dll
 
     del /F /Q dist\picard\libssl-1_1.dll
