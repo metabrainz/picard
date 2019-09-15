@@ -81,7 +81,7 @@ class InterfaceColors:
 
     @staticmethod
     def get_color_description(color_key):
-        return _DEFAULT_COLORS[color_key].description
+        return _(_DEFAULT_COLORS[color_key].description)
 
     def set_color(self, color_key, color_value):
         if color_key in _DEFAULT_COLORS:
