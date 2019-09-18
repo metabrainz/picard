@@ -1,42 +1,8 @@
 graft po
+prune test
 
 recursive-include scripts *.in
-
-graft ui
-recursive-include resources *.py
-
-recursive-include test *.py
-recursive-include test/data *.aac
-recursive-include test/data *.aiff
-recursive-include test/data *.ape
-recursive-include test/data *.asf
-recursive-include test/data *.dat
-recursive-include test/data *.dsf
-recursive-include test/data *.flac
-recursive-include test/data *.gif
-recursive-include test/data *.ini
-recursive-include test/data *.jpg
-recursive-include test/data *.json
-recursive-include test/data *.m4a
-recursive-include test/data *.m4v
-recursive-include test/data *.mid
-recursive-include test/data *.mp3
-recursive-include test/data *.mpc
-recursive-include test/data *.ofr
-recursive-include test/data *.ofs
-recursive-include test/data *.oga
-recursive-include test/data *.ogg
-recursive-include test/data *.ogv
-recursive-include test/data *.opus
-recursive-include test/data *.png
-recursive-include test/data *.spx
-recursive-include test/data *.tak
-recursive-include test/data *.tta
-recursive-include test/data *.wav
-recursive-include test/data *.wma
-recursive-include test/data *.wmv
-recursive-include test/data *.wv
-recursive-include test/data/testplugins *.zip
+recursive-exclude scripts picard
 
 include tagger.py
 include *.in
@@ -44,12 +10,4 @@ include *.in
 include *.md
 include *.txt
 
-recursive-include resources org.musicbrainz.Picard.svg
-recursive-include resources/images org.musicbrainz.Picard.png
-
-recursive-include installer *.in
-recursive-include installer *.ini
-recursive-include installer/images *.bmp
-recursive-include installer/images *.ico
-recursive-include installer/images *.svg
-recursive-include installer/languages *.nsh
+exclude org.musicbrainz.Picard.appdata.xml

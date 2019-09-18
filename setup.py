@@ -223,7 +223,8 @@ class picard_build(build):
             args['name'] = 'MusicBrainz Picard'
             file_version = PICARD_VERSION[0:3] + PICARD_VERSION[4:]
             args['file_version'] = '.'.join([str(v) for v in file_version])
-            generate_file('installer/picard-setup.nsi.in', 'installer/picard-setup.nsi', args)
+            if os.path.isfile('installer/picard-setup.nsi.in'):
+                generate_file('installer/picard-setup.nsi.in', 'installer/picard-setup.nsi', args)
             version_args = {
                 'filevers': str(file_version),
                 'prodvers': str(file_version),
