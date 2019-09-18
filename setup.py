@@ -739,7 +739,7 @@ args['data_files'] = [
     for size in (16, 24, 32, 48, 128, 256)
 ]
 
-args['data_files'].append(('share/icons/hicolor/scalable/apps', ['resources/img-src/%s.svg' % PICARD_APP_ID]))
+args['data_files'].append(('share/icons/hicolor/scalable/apps', ['resources/%s.svg' % PICARD_APP_ID]))
 args['data_files'].append(('share/applications', [PICARD_DESKTOP_NAME]))
 
 if sys.platform == 'linux':

@@ -44,7 +44,8 @@ include *.in
 include *.md
 include *.txt
 
-recursive-include resources/images *.png
+recursive-include resources org.musicbrainz.Picard.svg
+recursive-include resources/images org.musicbrainz.Picard.png
 
 recursive-include installer *.in
 recursive-include installer *.ini
