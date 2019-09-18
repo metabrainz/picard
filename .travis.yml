@@ -63,7 +63,6 @@ matrix:
     install: skip
     script:
     - pip3 install .
-    - scripts/run-sdist-test.sh
   fast_finish: true
 
 before_cache:
