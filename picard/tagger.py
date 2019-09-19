@@ -681,6 +681,8 @@ class Tagger(QtWidgets.QApplication):
     def remove_album(self, album):
         """Remove the specified album."""
         log.debug("Removing %r", album)
+        if album.id not in self.albums:
+            return
         album.stop_loading()
         self.remove_files(self.get_files_from_objects([album]))
         del self.albums[album.id]
@@ -722,7 +724,7 @@ class Tagger(QtWidgets.QApplication):
                 self.remove_nat(obj)
             elif isinstance(obj, Track):
                 files.extend(obj.linked_files)
-            elif isinstance(obj, Album) and not isinstance(obj, NatAlbum):
+            elif isinstance(obj, Album):
                 self.window.set_statusbar_message(
                     N_("Removing album %(id)s: %(artist)s - %(album)s"),
                     {
