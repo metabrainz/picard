@@ -25,7 +25,7 @@ from mutagen import version_string as mutagen_version
 
 from PyQt5.QtCore import (
     PYQT_VERSION_STR as pyqt_version,
-    QT_VERSION_STR,
+    qVersion,
 )
 from PyQt5.QtNetwork import QSslSocket
 
@@ -38,7 +38,7 @@ _versions = OrderedDict([
     ("version", PICARD_FANCY_VERSION_STR),
     ("python-version", python_version()),
     ("pyqt-version", pyqt_version),
-    ("qt-version", QT_VERSION_STR),
+    ("qt-version", qVersion()),
     ("mutagen-version", mutagen_version),
     ("discid-version", discid_version),
     ("astrcmp", astrcmp_implementation),
