@@ -51,7 +51,7 @@ if [ -n "$UPLOAD_OSX" ]; then
     set +e
     # Set $AWS_ARTIFACTS_BUCKET, $AWS_ACCESS_KEY_ID and $AWS_SECRET_ACCESS_KEY for AWS S3 upload to work
     if [ -n "$AWS_ARTIFACTS_BUCKET" ] && [ -n "$AWS_ACCESS_KEY_ID" ]; then
-      # pip3 install --upgrade awscli
+      pip3 install --upgrade awscli
       aws s3 cp --acl public-read "$dmg" "s3://${AWS_ARTIFACTS_BUCKET}/${TRAVIS_REPO_SLUG}/${TRAVIS_BUILD_NUMBER}/$dmg"
     else
       # Fall back to transfer.sh
