@@ -42,7 +42,7 @@ _versions = OrderedDict([
     ("mutagen-version", mutagen_version),
     ("discid-version", discid_version),
     ("astrcmp", astrcmp_implementation),
-    ("SSL", QSslSocket.sslLibraryVersionString())
+    ("ssl-version", QSslSocket.sslLibraryVersionString())
 ])
 
 _names = {
@@ -53,7 +53,7 @@ _names = {
     "mutagen-version": "Mutagen",
     "discid-version": "Discid",
     "astrcmp": "astrcmp",
-    "SSL": "SSL",
+    "ssl-version": "SSL",
 }
 
 
