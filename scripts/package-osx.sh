@@ -53,6 +53,7 @@ if [ -n "$UPLOAD_OSX" ]; then
     if [ -n "$AWS_ARTIFACTS_BUCKET" ] && [ -n "$AWS_ACCESS_KEY_ID" ]; then
       pip3 install --upgrade awscli
       aws s3 cp --acl public-read "$dmg" "s3://${AWS_ARTIFACTS_BUCKET}/${TRAVIS_REPO_SLUG}/${TRAVIS_BUILD_NUMBER}/$dmg"
+      echo "Package uploaded to https://s3.${AWS_DEFAULT_REGION}.amazonaws.com/${AWS_ARTIFACTS_BUCKET}/${TRAVIS_REPO_SLUG}/${TRAVIS_BUILD_NUMBER}/$dmg"
     else
       # Fall back to transfer.sh
       curl -v --retry 6 --retry-delay 10 --max-time 180 --upload-file "$dmg" https://transfer.sh/
