@@ -110,10 +110,8 @@ class InterfaceColorsOptionsPage(OptionsPage):
             hlayout.setContentsMargins(0, 0, 0, 0)
 
             label = QtWidgets.QLabel(interface_colors.get_color_description(color_key))
+            label.setSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
             hlayout.addWidget(label)
-
-            spacer = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
-            hlayout.addItem(spacer)
 
             button = ColorButton(color_value)
             button.color_changed.connect(partial(color_changed, color_key))
