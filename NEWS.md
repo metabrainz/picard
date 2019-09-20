@@ -1,3 +1,18 @@
+# Version 2.2.1 - 2019-09-20
+
+## Bug
+
+- [PICARD-1603](https://tickets.metabrainz.org/browse/PICARD-1603) - Translations from picard/ui/colors.py don’t show up in Picard
+- [PICARD-1604](https://tickets.metabrainz.org/browse/PICARD-1604) - Windows install is not using Qt default translations
+- [PICARD-1607](https://tickets.metabrainz.org/browse/PICARD-1607) - Upgrading a plugin displays the dialog box multiple times
+- [PICARD-1608](https://tickets.metabrainz.org/browse/PICARD-1608) - "[non-album tracks]" can not directly be removed
+- [PICARD-1609](https://tickets.metabrainz.org/browse/PICARD-1609) - Picard About shows Qt version PyQt was build against, not actually used Qt
+
+## Improvement
+
+- [PICARD-1602](https://tickets.metabrainz.org/browse/PICARD-1602) - Tests should not be included in the sdist package
+
+
 # Version 2.2 - 2019-09-14
 
 ## Bug-fix
