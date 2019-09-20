@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2019-09-06 22:04+0200\n"
-"PO-Revision-Date: 2019-09-07 10:42+0000\n"
+"PO-Revision-Date: 2019-09-15 09:21+0000\n"
 "Last-Translator: Maurits Meulenbelt <mfmeulenbelt@gmail.com>\n"
 "Language-Team: Dutch (http://www.transifex.com/musicbrainz/musicbrainz/language/nl/)\n"
 "MIME-Version: 1.0\n"
@@ -1665,7 +1665,7 @@ msgstr "Verplaatst het element omlaag"
 
 #: picard/ui/ui_options_fingerprinting.py:73
 msgid "Audio Fingerprinting"
-msgstr "Nemen van audiovingerafdrukken"
+msgstr "Audiovingerafdrukken"
 
 #: picard/ui/ui_options_fingerprinting.py:74
 msgid "Do not use audio fingerprinting"
@@ -1764,7 +1764,7 @@ msgstr "Alleen mijn genres gebruiken"
 msgid ""
 "Fall back on album's artists genres if no genres are found for the release "
 "or release group"
-msgstr "Op de genres van de albumartiest teruggrijpen als er voor de uitgave(groep) geen genres zijn gevonden"
+msgstr "Op de genres van de albumartiest terugvallen als er voor de uitgave(groep) geen genres zijn gevonden"
 
 #: picard/ui/ui_options_genres.py:121
 msgid "Use folksonomy tags as genre"
@@ -2560,7 +2560,7 @@ msgstr "Bestandsnamen"
 msgid ""
 "<a href=\"%(picard-doc-scripting-url)s\">Open Scripting Documentation in "
 "your browser</a>"
-msgstr "<a href=\"%(picard-doc-scripting-url)s\">Open de documentatie voor scripts in je browser.</a>"
+msgstr "<a href=\"%(picard-doc-scripting-url)s\">Open de documentatie voor scripts in je browser</a>"
 
 #: picard/ui/options/renaming.py:203
 msgid "The location to move files to must not be empty."
