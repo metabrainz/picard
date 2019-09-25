@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: picard 2.2.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2019-09-25 11:45+0200\n"
+"POT-Creation-Date: 2019-09-25 12:26+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -335,94 +335,102 @@ msgid "English"
 msgstr ""
 
 #: picard/const/languages.py:35
-msgid "English (Canada)"
+msgid "English (Australia)"
 msgstr ""
 
 #: picard/const/languages.py:36
+msgid "English (Canada)"
+msgstr ""
+
+#: picard/const/languages.py:37
 msgid "English (UK)"
 msgstr ""
 
-#: picard/const/languages.py:38
+#: picard/const/languages.py:39
 msgid "Spanish"
 msgstr ""
 
-#: picard/const/languages.py:39
+#: picard/const/languages.py:40
 msgid "Estonian"
 msgstr ""
 
-#: picard/const/languages.py:41
+#: picard/const/languages.py:42
 msgid "Finnish"
 msgstr ""
 
-#: picard/const/languages.py:43
+#: picard/const/languages.py:44
 msgid "French"
 msgstr ""
 
-#: picard/const/languages.py:47
+#: picard/const/languages.py:45
+msgid "French (Canada)"
+msgstr ""
+
+#: picard/const/languages.py:48
 msgid "Hebrew"
 msgstr ""
 
-#: picard/const/languages.py:52
+#: picard/const/languages.py:53
 msgid "Italian"
 msgstr ""
 
-#: picard/const/languages.py:53
+#: picard/const/languages.py:54
 msgid "Japanese"
 msgstr ""
 
-#: picard/const/languages.py:55
+#: picard/const/languages.py:56
 msgid "Korean"
 msgstr ""
 
-#: picard/const/languages.py:57
+#: picard/const/languages.py:58
 msgid "Norwegian Bokmal"
 msgstr ""
 
-#: picard/const/languages.py:59
+#: picard/const/languages.py:60
 msgid "Dutch"
 msgstr ""
 
-#: picard/const/languages.py:61
+#: picard/const/languages.py:62
 msgid "Polish"
 msgstr ""
 
-#: picard/const/languages.py:62
+#: picard/const/languages.py:63
 msgid "Portuguese"
 msgstr ""
 
-#: picard/const/languages.py:63
+#: picard/const/languages.py:64
 msgid "Brazilian Portuguese"
 msgstr ""
 
-#: picard/const/languages.py:65
+#: picard/const/languages.py:66
 msgid "Russian"
 msgstr ""
 
-#: picard/const/languages.py:67
+#: picard/const/languages.py:68
 msgid "Slovak"
 msgstr ""
 
-#: picard/const/languages.py:68
+#: picard/const/languages.py:69
 msgid "Slovenian"
 msgstr ""
 
-#: picard/const/languages.py:70
+#: picard/const/languages.py:71
 msgid "Swedish"
 msgstr ""
 
-#: picard/const/languages.py:72
+#: picard/const/languages.py:73
 msgid "Turkish"
 msgstr ""
 
-#: picard/const/languages.py:73
+#: picard/const/languages.py:74
 msgid "Ukrainian"
 msgstr ""
 
-#: picard/const/languages.py:74
+#: picard/const/languages.py:75
 msgid "Chinese (China)"
 msgstr ""
 
-#: picard/const/languages.py:75
+#: picard/const/languages.py:76
 msgid "Chinese (Taiwan)"
 msgstr ""
 
