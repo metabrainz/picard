@@ -162,7 +162,7 @@ class WebServiceTaskTest(PicardTestCase):
         self.ws._run_next_task()
         self.assertEqual(mock_task.call_count, 1)
 
-        # Checking if the cleanup occured on the prio queue
+        # Checking if the cleanup occurred on the prio queue
         self.assertNotIn(key, self.ws._queues[1])
 
         # Check the call counts on proper execution of tasks
