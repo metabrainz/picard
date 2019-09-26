@@ -116,6 +116,7 @@ if os_name == 'Darwin':
         'CFBundleIdentifier': PICARD_APP_ID,
         'CFBundleVersion': macos_picard_version,
         'CFBundleShortVersionString': macos_picard_short_version,
+        'LSMinimumSystemVersion': '10.12',
     }
     app = BUNDLE(coll,
                  name='MusicBrainz Picard.app',
