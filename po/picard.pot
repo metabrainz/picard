@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: picard 2.2.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2019-09-25 12:26+0200\n"
+"POT-Creation-Date: 2019-09-26 10:11+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -366,8 +366,16 @@ msgstr ""
 msgid "French (Canada)"
 msgstr ""
 
+#: picard/const/languages.py:47
+msgid "Galician"
+msgstr ""
+
 #: picard/const/languages.py:48
 msgid "Hebrew"
+msgstr ""
+
+#: picard/const/languages.py:52
+msgid "Icelandic"
 msgstr ""
 
 #: picard/const/languages.py:53
@@ -390,6 +398,10 @@ msgstr ""
 msgid "Dutch"
 msgstr ""
 
+#: picard/const/languages.py:61
+msgid "Occitan"
+msgstr ""
+
 #: picard/const/languages.py:62
 msgid "Polish"
 msgstr ""
@@ -400,6 +412,10 @@ msgstr ""
 
 #: picard/const/languages.py:64
 msgid "Brazilian Portuguese"
+msgstr ""
+
+#: picard/const/languages.py:65
+msgid "Romanian"
 msgstr ""
 
 #: picard/const/languages.py:66
