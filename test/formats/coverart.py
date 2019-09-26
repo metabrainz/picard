@@ -85,7 +85,7 @@ class CommonCoverArtTests:
                     tag='a',
                     data=imgdata + b'a',
                     support_types=True,
-                    types=[u'booklet', u'front'],
+                    types=['booklet', 'front'],
                 )
             )
             metadata.images.append(
@@ -94,7 +94,7 @@ class CommonCoverArtTests:
                     tag='b',
                     data=imgdata + b'b',
                     support_types=True,
-                    types=[u'back'],
+                    types=['back'],
                 )
             )
             metadata.images.append(
@@ -103,7 +103,7 @@ class CommonCoverArtTests:
                     tag='c',
                     data=imgdata + b'c',
                     support_types=True,
-                    types=[u'front'],
+                    types=['front'],
                 )
             )
             metadata.images.append(
@@ -126,7 +126,7 @@ class CommonCoverArtTests:
                     file='f',
                     tag='f',
                     data=imgdata + b'f',
-                    types=[u'front']
+                    types=['front']
                 )
             )
             metadata.images.append(
@@ -134,7 +134,7 @@ class CommonCoverArtTests:
                     file='g',
                     tag='g',
                     data=imgdata + b'g',
-                    types=[u'back'],
+                    types=['back'],
                     is_front=True
                 )
             )

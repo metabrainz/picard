@@ -68,10 +68,10 @@ class TracknumTest(PicardTestCase):
         self.assertEqual(parse('01_foo.mp3'), 1)
 
     def test_matched_tracknum_20(self):
-        self.assertEqual(parse(u'01ābc.mp3'), 1)
+        self.assertEqual(parse('01ābc.mp3'), 1)
 
     def test_matched_tracknum_21(self):
-        self.assertEqual(parse(u'01abc.mp3'), 1)
+        self.assertEqual(parse('01abc.mp3'), 1)
 
     def test_matched_tracknum_22(self):
         t = u"11 Linda Jones - Things I've Been Through 08.flac"

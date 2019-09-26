@@ -41,7 +41,7 @@ class Testbytes2human(PicardTestCase):
         self.assertRaises(ValueError, bytes2human.binary, 'yyy')
         self.assertRaises(ValueError, bytes2human.binary, '456yyy')
         try:
-            bytes2human.decimal(u'123')
+            bytes2human.decimal('123')
         except Exception as e:
             self.fail('Unexpected exception: %s' % e)
 
