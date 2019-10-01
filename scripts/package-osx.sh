@@ -11,7 +11,6 @@ rm -rf dist build locale
 python3 setup.py clean
 python3 setup.py build_ext
 python3 setup.py build_locales
-pip3 install -r requirements-build.txt
 pyinstaller picard.spec
 
 CODESIGN=0
