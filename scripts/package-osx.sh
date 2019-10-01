@@ -37,14 +37,27 @@ if [ -f scripts/appledev.p12 ] && [ -n "$appledev_p12_password" ]; then
 fi
 
 cd dist
+
+# Create app bundle
 ditto -rsrc --arch x86_64 'MusicBrainz Picard.app' 'MusicBrainz Picard.tmp'
 rm -r 'MusicBrainz Picard.app'
 mv 'MusicBrainz Picard.tmp' 'MusicBrainz Picard.app'
 [ "$CODESIGN" = '1' ] && codesign --keychain $KEYCHAIN_PATH --verify --verbose --deep --sign "$CERTIFICATE_NAME" 'MusicBrainz Picard.app'
+
+# Verify Picard executable works and required dependencies are bundled
+VERSIONS=$("MusicBrainz Picard.app/Contents/MacOS/picard-run" --long-version)
+echo $VERSIONS
+ASTRCMP_REGEX="astrcmp C"
+[[ $VERSIONS =~ $ASTRCMP_REGEX ]] || (echo "Failed: Build does not include astrcmp C" && false)
+LIBDISCID_REGEX="libdiscid [0-9]+\.[0-9]+\.[0-9]+"
+[[ $VERSIONS =~ $LIBDISCID_REGEX ]] || (echo "Failed: Build does not include libdiscid" && false)
+
+# Package app bundle into DMG image
 dmg="MusicBrainz Picard $VERSION.dmg"
 hdiutil create -volname "MusicBrainz Picard $VERSION" -srcfolder 'MusicBrainz Picard.app' -ov -format UDBZ "$dmg"
 [ "$CODESIGN" = '1' ] && codesign --keychain $KEYCHAIN_PATH --verify --verbose --sign "$CERTIFICATE_NAME" "$dmg"
 md5 -r "$dmg"
+
 if [ -n "$UPLOAD_OSX" ]; then
     # make upload failures non fatal
     set +e
