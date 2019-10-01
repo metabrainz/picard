@@ -101,14 +101,21 @@ class CoverOptionsPage(OptionsPage):
         self.update_filename()
         self.update_save_images_to_tags()
 
+    def update_ca_providers_groupbox_state(self):
+        files_enabled = self.ui.save_images_to_files.isChecked()
+        tags_enabled = self.ui.save_images_to_tags.isChecked()
+        self.ui.ca_providers_groupbox.setEnabled(files_enabled or tags_enabled)
+
     def update_filename(self):
         enabled = self.ui.save_images_to_files.isChecked()
         self.ui.cover_image_filename.setEnabled(enabled)
         self.ui.save_images_overwrite.setEnabled(enabled)
+        self.update_ca_providers_groupbox_state()
 
     def update_save_images_to_tags(self):
         enabled = self.ui.save_images_to_tags.isChecked()
         self.ui.cb_embed_front_only.setEnabled(enabled)
+        self.update_ca_providers_groupbox_state()
 
 
 register_options_page(CoverOptionsPage)
