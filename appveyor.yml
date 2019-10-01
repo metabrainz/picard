@@ -55,7 +55,7 @@ build_script:
 
     python setup.py test -v
 
-    pyinstaller --noconfirm picard.spec
+    pyinstaller --noconfirm --clean picard.spec
 
     REM Workaround for https://github.com/pyinstaller/pyinstaller/issues/4429
 
