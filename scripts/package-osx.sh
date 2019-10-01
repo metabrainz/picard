@@ -9,9 +9,9 @@ VERSION=$(python3 -c 'import picard; print(picard.__version__)')
 
 rm -rf dist build locale
 python3 setup.py clean
-python3 setup.py build_ext
-python3 setup.py build_locales
-pyinstaller picard.spec
+python3 setup.py build
+python3 setup.py build_ext -i
+pyinstaller --noconfirm --clean picard.spec
 
 CODESIGN=0
 KEYCHAIN_PATH=picard.keychain
