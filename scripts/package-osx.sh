@@ -51,6 +51,7 @@ ASTRCMP_REGEX="astrcmp C"
 [[ $VERSIONS =~ $ASTRCMP_REGEX ]] || (echo "Failed: Build does not include astrcmp C" && false)
 LIBDISCID_REGEX="libdiscid [0-9]+\.[0-9]+\.[0-9]+"
 [[ $VERSIONS =~ $LIBDISCID_REGEX ]] || (echo "Failed: Build does not include libdiscid" && false)
+"MusicBrainz Picard.app/Contents/MacOS/fpcalc" -version
 
 # Package app bundle into DMG image
 dmg="MusicBrainz Picard $VERSION.dmg"
