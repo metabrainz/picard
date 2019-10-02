@@ -13,7 +13,7 @@ pv = [str(x) for x in PICARD_VERSION]
 macos_picard_version = '.'.join(pv[:3])
 macos_picard_short_version = macos_picard_version
 if pv[3] != 'final':
-	macos_picard_version += pv[3][0] + ''.join(pv[4:])
+    macos_picard_version += pv[3][0] + ''.join(pv[4:])
 
 
 def _picard_get_locale_files():
