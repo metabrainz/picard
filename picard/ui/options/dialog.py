@@ -22,7 +22,10 @@ from PyQt5 import (
     QtWidgets,
 )
 
-from picard import config
+from picard import (
+    config,
+    log,
+)
 from picard.const import PICARD_URLS
 from picard.util import (
     restore_method,
@@ -115,8 +118,11 @@ class OptionsDialog(PicardDialog):
 
         self.pages = []
         for Page in page_classes:
-            page = Page(self.ui.pages_stack)
-            self.pages.append(page)
+            try:
+                page = Page(self.ui.pages_stack)
+                self.pages.append(page)
+            except Exception:
+                log.exception('Failed initializing options page %r', page)
         self.item_to_page = {}
         self.page_to_item = {}
         self.default_item = None
@@ -137,7 +143,11 @@ class OptionsDialog(PicardDialog):
         self.finished.connect(self.saveWindowState)
 
         for page in self.pages:
-            page.load()
+            try:
+                page.load()
+            except Exception:
+                log.exception('Failed loading options page %r', page)
+                self.disable_page(page.NAME)
         self.ui.pages_tree.setCurrentItem(self.default_item)
 
     def switch_page(self):
@@ -145,6 +155,10 @@ class OptionsDialog(PicardDialog):
         if items:
             page = self.item_to_page[items[0]]
             self.ui.pages_stack.setCurrentWidget(page)
+
+    def disable_page(self, name):
+        item = self.page_to_item[name]
+        item.setDisabled(True)
 
     def help(self):
         current_page = self.ui.pages_stack.currentWidget()
@@ -156,12 +170,26 @@ class OptionsDialog(PicardDialog):
             try:
                 page.check()
             except OptionsCheckError as e:
-                self.ui.pages_tree.setCurrentItem(self.page_to_item[page.NAME])
-                page.display_error(e)
+                self._show_page_error(page, e)
+                return
+            except Exception as e:
+                log.exception('Failed checking options page %r', page)
+                self._show_page_error(page, e)
                 return
         for page in self.pages:
-            page.save()
+            try:
+                page.save()
+            except Exception as e:
+                log.exception('Failed saving options page %r', page)
+                self._show_page_error(page, e)
+                return
         super().accept()
+
+    def _show_page_error(self, page, error):
+        if not isinstance(error, OptionsCheckError):
+            error = OptionsCheckError(_('Unexpected error'), str(error))
+        self.ui.pages_tree.setCurrentItem(self.page_to_item[page.NAME])
+        page.display_error(error)
 
     def saveWindowState(self):
         config.persist["options_splitter"] = self.ui.splitter.saveState()
