@@ -39,6 +39,12 @@ install:
 
     copy /Y discid.dll %PYTHON%
 
+    pip3 install pytest pytest-randomly
+
+    pip3 install -r requirements-build.txt
+
+    pip3 install -r requirements-win.txt
+
 build_script:
 - cmd: >-
     appveyor DownloadFile https://github.com/acoustid/chromaprint/releases/download/v%CHROMAPRINT_FPCALC_VERSION%/chromaprint-fpcalc-%CHROMAPRINT_FPCALC_VERSION%-windows-x86_64.zip -FileName fpcalc.zip
@@ -47,17 +53,11 @@ build_script:
 
     copy /Y chromaprint-fpcalc-%CHROMAPRINT_FPCALC_VERSION%-windows-x86_64\fpcalc.exe fpcalc.exe
 
-    pip3 install -r requirements-build.txt
-
-    pip3 install -r requirements-win.txt
-
     IF "%APPVEYOR_REPO_TAG%" == "false" python setup.py patch_version --platform=python%PYTHON_VERSION%
 
     python setup.py build
 
     python setup.py build_ext -i
-
-    python setup.py test -v
 
     pyinstaller --noconfirm --clean picard.spec
 
@@ -71,13 +71,26 @@ build_script:
 
     makensis.exe /INPUTCHARSET UTF8 installer\picard-setup.nsi
 
+test_script:
+- ps: >-
+    pytest --junitxml=test-results.xml
+
+    $wc = New-Object 'System.Net.WebClient'
+
+    $wc.UploadFile("https://ci.appveyor.com/api/testresults/junit/$($env:APPVEYOR_JOB_ID)", (Resolve-Path .\test-results.xml))
+- dist\picard\fpcalc -version
+
 for:
 -
   matrix:
     only:
       - TEST_PIP_INSTALL: true
+  install:
+    echo Skipped install
   build_script:
     pip3 install .
+  test_script:
+    echo Skipped test_script
 
 artifacts:
 - path: installer/*.exe
