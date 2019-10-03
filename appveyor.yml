@@ -27,6 +27,10 @@ init:
 
     ECHO %PYTHON% %PYTHON_VERSION%
 
+    ECHO fpcalc %CHROMAPRINT_FPCALC_VERSION%
+
+    ECHO libdiscid %DISCID_VERSION%
+
 install:
 - cmd: >-
     appveyor DownloadFile https://github.com/metabrainz/libdiscid/releases/download/v%DISCID_VERSION%/libdiscid-%DISCID_VERSION%-win64.zip -FileName libdiscid.zip
