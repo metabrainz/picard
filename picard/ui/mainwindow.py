@@ -580,6 +580,15 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                     # Clear existing shortcode on main action and assign it to sub-action
                     self.cd_lookup_action.setShortcut(QtGui.QKeySequence())
                     action.setShortcut(QtGui.QKeySequence(_("Ctrl+K")))
+        self._update_cd_lookup_button()
+
+    def _update_cd_lookup_button(self):
+        if len(self.cd_lookup_menu.actions()) > 1:
+            button = self.toolbar.widgetForAction(self.cd_lookup_action)
+            button.setPopupMode(QtWidgets.QToolButton.MenuButtonPopup)
+            self.cd_lookup_action.setMenu(self.cd_lookup_menu)
+        else:
+            self.cd_lookup_action.setMenu(None)
 
     def toggle_rename_files(self, checked):
         config.setting["rename_files"] = checked
@@ -641,10 +650,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         menu.addAction(self.options_action)
         menu = self.menuBar().addMenu(_("&Tools"))
         menu.addAction(self.refresh_action)
-        if len(self.cd_lookup_menu.actions()) > 1:
-            menu.addMenu(self.cd_lookup_menu)
-        else:
-            menu.addAction(self.cd_lookup_action)
+        menu.addAction(self.cd_lookup_action)
         menu.addAction(self.autotag_action)
         menu.addAction(self.analyze_action)
         menu.addAction(self.cluster_action)
@@ -702,10 +708,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         for action in config.setting['toolbar_layout']:
             if action == 'cd_lookup_action':
                 add_toolbar_action(self.cd_lookup_action)
-                if len(self.cd_lookup_menu.actions()) > 1:
-                    button = toolbar.widgetForAction(self.cd_lookup_action)
-                    button.setPopupMode(QtWidgets.QToolButton.MenuButtonPopup)
-                    button.setMenu(self.cd_lookup_menu)
+                self._update_cd_lookup_button()
             elif action == 'separator':
                 toolbar.addSeparator()
             else:
