@@ -80,7 +80,7 @@ def get_cdrom_drives():
                 if GetDriveType(drive) == DRIVE_CDROM:
                     drives.append(drive)
 
-    elif IS_LINUX and QFile.exists(LINUX_CDROM_INFO):
+    elif IS_LINUX and AUTO_DETECT_DRIVES:
         # Read info from /proc/sys/dev/cdrom/info
         cdinfo = QFile(LINUX_CDROM_INFO)
         if cdinfo.open(QIODevice.ReadOnly | QIODevice.Text):
