@@ -565,14 +565,18 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             self.check_update_action.triggered.connect(self.do_update_check)
 
     def _update_cd_lookup_actions(self, result=None, error=None):
-        drives = result
         if error:
             log.error("CDROM: Error on CD-ROM drive detection: %r", error)
-        elif not drives:
+        else:
+            self.update_cd_lookup_drives(result)
+
+    def update_cd_lookup_drives(self, drives):
+        if not drives:
             log.warning("CDROM: No CD-ROM drives found - Lookup CD functionality disabled")
         else:
             shortcut_drive = config.setting["cd_lookup_device"].split(",")[0] if len(drives) > 1 else ""
-            self.cd_lookup_action.setEnabled(True)
+            self.cd_lookup_action.setEnabled(discid is not None)
+            self.cd_lookup_menu.clear()
             for drive in drives:
                 action = self.cd_lookup_menu.addAction(drive)
                 action.setData(drive)
