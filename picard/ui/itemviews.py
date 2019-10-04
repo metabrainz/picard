@@ -54,6 +54,7 @@ from picard.track import (
 from picard.util import (
     encode_filename,
     icontheme,
+    natsort,
     restore_method,
 )
 
@@ -676,9 +677,12 @@ class TreeItem(QtWidgets.QTreeWidgetItem):
         if not self.sortable:
             return False
         column = self.treeWidget().sortColumn()
+        return self.sortkey(column) < other.sortkey(column)
+
+    def sortkey(self, column):
         if column == 1:
-            return (self.obj.metadata.length or 0) < (other.obj.metadata.length or 0)
-        return self.text(column).lower() < other.text(column).lower()
+            return self.obj.metadata.length or 0
+        return natsort.natkey(self.text(column).lower())
 
 
 class ClusterItem(TreeItem):
