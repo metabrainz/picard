@@ -18,65 +18,42 @@ environment:
   - PYTHON: C:\Python37-x64
     TEST_PIP_INSTALL: true
 init:
-- cmd: >-
+- cmd: |
     SET PATH=%PYTHON%;%PYTHON%\Scripts;%PATH%
-
     SET PYTHON_SITE=%PYTHON%\lib\site-packages
-
     FOR /F "tokens=*" %%a IN ('python -c "import sys;print('%%s.%%s.%%s' %% sys.version_info[0:3])"') do (SET PYTHON_VERSION=%%a)
-
     ECHO %PYTHON% %PYTHON_VERSION%
-
     ECHO fpcalc %CHROMAPRINT_FPCALC_VERSION%
-
     ECHO libdiscid %DISCID_VERSION%
 
 install:
-- cmd: >-
+- cmd: |
     appveyor DownloadFile https://github.com/metabrainz/libdiscid/releases/download/v%DISCID_VERSION%/libdiscid-%DISCID_VERSION%-win64.zip -FileName libdiscid.zip
-
     7z x libdiscid.zip -y
-
     copy /Y discid.dll %PYTHON%
-
     pip3 install pytest pytest-randomly
-
     pip3 install -r requirements-build.txt
-
     pip3 install -r requirements-win.txt
 
 build_script:
-- cmd: >-
+- cmd: |
     appveyor DownloadFile https://github.com/acoustid/chromaprint/releases/download/v%CHROMAPRINT_FPCALC_VERSION%/chromaprint-fpcalc-%CHROMAPRINT_FPCALC_VERSION%-windows-x86_64.zip -FileName fpcalc.zip
-
     7z x fpcalc.zip -y
-
     copy /Y chromaprint-fpcalc-%CHROMAPRINT_FPCALC_VERSION%-windows-x86_64\fpcalc.exe fpcalc.exe
-
     IF "%APPVEYOR_REPO_TAG%" == "false" python setup.py patch_version --platform=python%PYTHON_VERSION%
-
     python setup.py build
-
     python setup.py build_ext -i
-
     pyinstaller --noconfirm --clean picard.spec
-
     REM Workaround for https://github.com/pyinstaller/pyinstaller/issues/4429
-
     IF EXIST dist\picard\PyQt5\translations move dist\picard\PyQt5\translations dist\picard\PyQt5\Qt
-
     del /F /Q dist\picard\libcrypto-1_1.dll
-
     del /F /Q dist\picard\libssl-1_1.dll
-
     makensis.exe /INPUTCHARSET UTF8 installer\picard-setup.nsi
 
 test_script:
-- ps: >-
-    pytest --junitxml=test-results.xml
-
+- ps: |
+    pytest -ra --junitxml=test-results.xml
     $wc = New-Object 'System.Net.WebClient'
-
     $wc.UploadFile("https://ci.appveyor.com/api/testresults/junit/$($env:APPVEYOR_JOB_ID)", (Resolve-Path .\test-results.xml))
 - dist\picard\fpcalc -version
 
