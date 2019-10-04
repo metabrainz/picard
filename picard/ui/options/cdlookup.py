@@ -72,6 +72,7 @@ class CDLookupOptionsPage(OptionsPage):
             config.setting["cd_lookup_device"] = self.ui.cd_lookup_device.currentText()
         else:
             config.setting["cd_lookup_device"] = self.ui.cd_lookup_device.text()
+        self.tagger.window.update_cd_lookup_drives(self.drives)
 
 
 register_options_page(CDLookupOptionsPage)
