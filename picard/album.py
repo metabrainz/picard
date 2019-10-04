@@ -521,6 +521,7 @@ class Album(DataObject, Item):
                         similarity=track.metadata.compare(file.orig_metadata),
                         track=track
                     )
+                    QtCore.QCoreApplication.processEvents()
 
             no_match = SimMatchAlbum(similarity=-1, track=self.unmatched_files)
             best_match = find_best_match(candidates, no_match)
