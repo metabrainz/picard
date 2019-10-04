@@ -447,9 +447,11 @@ class Tagger(QtWidgets.QApplication):
         if isinstance(target, (Track, Cluster)):
             for file in files:
                 file.move(target)
+                QtCore.QCoreApplication.processEvents()
         elif isinstance(target, File):
             for file in files:
                 file.move(target.parent)
+                QtCore.QCoreApplication.processEvents()
         elif isinstance(target, Album):
             self.move_files_to_album(files, album=target)
         elif isinstance(target, ClusterList):
@@ -829,6 +831,7 @@ class Tagger(QtWidgets.QApplication):
             cluster = self.load_cluster(name, artist)
             for file in sorted(files, key=attrgetter('discnumber', 'tracknumber', 'base_filename')):
                 file.move(cluster)
+                QtCore.QCoreApplication.processEvents()
 
     def load_cluster(self, name, artist):
         for cluster in self.clusters:
