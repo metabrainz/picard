@@ -83,6 +83,8 @@ def setup_gettext(localedir, ui_language=None, logger=None):
         trans_countries = gettext.translation("picard-countries", localedir)
         logger("Loading gettext translation (picard-attributes), localedir=%r", localedir)
         trans_attributes = gettext.translation("picard-attributes", localedir)
+        logger("Loading gettext translation (picard-languages), localedir=%r", localedir)
+        trans_languages = gettext.translation("picard-languages", localedir)
     except IOError as e:
         logger(e)
         trans = gettext.NullTranslations()
@@ -92,12 +94,14 @@ def setup_gettext(localedir, ui_language=None, logger=None):
     trans.install(['ngettext'])
     builtins.__dict__['gettext_countries'] = trans_countries.gettext
     builtins.__dict__['gettext_attributes'] = trans_attributes.gettext
+    builtins.__dict__['gettext_languages'] = trans_languages.gettext
 
     logger("_ = %r", _)
     logger("N_ = %r", N_)
     logger("ngettext = %r", ngettext)
     logger("gettext_countries = %r", gettext_countries)
     logger("gettext_attributes = %r", gettext_attributes)
+    logger("gettext_languages = %r", gettext_languages)
 
 
 # Workaround for po files with msgctxt which isn't supported by current python

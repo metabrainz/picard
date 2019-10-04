@@ -60,7 +60,7 @@ class MetadataOptionsPage(OptionsPage):
         combo_box = self.ui.artist_locale
         locales = sorted(ALIAS_LOCALES.keys())
         for i, loc in enumerate(locales):
-            name = ALIAS_LOCALES[loc]
+            name = gettext_languages(ALIAS_LOCALES[loc])
             if "_" in loc:
                 name = "    " + name
             combo_box.addItem(name, loc)

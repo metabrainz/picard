@@ -26,6 +26,7 @@ org.musicbrainz.Picard.appdata.xml
 picard.egg-info
 po/attributes/attributes.pot
 po/countries/countries.pot
+po/languages/languages.pot
 scripts/picard
 win-version-info.txt
 

@@ -1,0 +1,2668 @@
+# 
+# Translators:
+# Gioele <gioele@svario.it>, 2012
+# leofiore <leofiore@libero.it>, 2012
+# Luca Salini <salo.rock@gmail.com>, 2016-2019
+# Luca Salini <salo.rock@gmail.com>, 2013-2015
+# Luca Salini <salo.rock@gmail.com>, 2012
+msgid ""
+msgstr ""
+"Project-Id-Version: MusicBrainz\n"
+"PO-Revision-Date: 2019-04-27 21:21+0000\n"
+"Last-Translator: Luca Salini <salo.rock@gmail.com>\n"
+"Language-Team: Italian (http://www.transifex.com/musicbrainz/musicbrainz/language/it/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: it\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. frequency:1 iso_code_3:abk
+#: DB:language/name:2
+msgid "Abkhazian"
+msgstr "Abcaso"
+
+#. frequency:1 iso_code_3:ace
+#: DB:language/name:3
+msgid "Achinese"
+msgstr "Aceh"
+
+#. frequency:1 iso_code_3:ach
+#: DB:language/name:4
+msgid "Acoli"
+msgstr "Acholi"
+
+#. frequency:1 iso_code_3:ada
+#: DB:language/name:5
+msgid "Adangme"
+msgstr "Adangme"
+
+#. frequency:1 iso_code_3:ady
+#: DB:language/name:6
+msgid "Adyghe"
+msgstr "Adighè"
+
+#. frequency:1 iso_code_3:aar
+#: DB:language/name:1
+msgid "Afar"
+msgstr "Afar"
+
+#. frequency:1 iso_code_3:afh
+#: DB:language/name:8
+msgid "Afrihili"
+msgstr "Afrihili"
+
+#. frequency:1 iso_code_3:afr
+#: DB:language/name:9
+msgid "Afrikaans"
+msgstr "Afrikaans"
+
+#. frequency:0 iso_code_3:null
+#: DB:language/name:7
+msgid "Afro-Asiatic languages"
+msgstr "Lingue afro-asiatiche"
+
+#. frequency:1 iso_code_3:ain
+#: DB:language/name:473
+msgid "Ainu"
+msgstr "Ainu"
+
+#. frequency:1 iso_code_3:aka
+#: DB:language/name:10
+msgid "Akan"
+msgstr "Akan"
+
+#. frequency:1 iso_code_3:akk
+#: DB:language/name:11
+msgid "Akkadian"
+msgstr "Accadico"
+
+#. frequency:1 iso_code_3:sqi
+#: DB:language/name:12
+msgid "Albanian"
+msgstr "Albanese"
+
+#. frequency:1 iso_code_3:ale
+#: DB:language/name:13
+msgid "Aleut"
+msgstr "Aleutino"
+
+#. frequency:0 iso_code_3:null
+#: DB:language/name:14
+msgid "Algonquian languages"
+msgstr "Lingue algonchine"
+
+#. frequency:0 iso_code_3:null
+#: DB:language/name:434
+msgid "Altaic languages"
+msgstr "Lingue altaiche"
+
+#. frequency:1 iso_code_3:amh
+#: DB:language/name:15
+msgid "Amharic"
+msgstr "Amarico"
+
+#. frequency:1 iso_code_3:anp
+#: DB:language/name:475
+msgid "Angika"
+msgstr "Angika"
+
+#. frequency:0 iso_code_3:null
+#: DB:language/name:17
+msgid "Apache languages"
+msgstr "Lingue apache"
+
+#. frequency:2 iso_code_3:ara
+#: DB:language/name:18
+msgid "Arabic"
+msgstr "Arabo"
+
+#. frequency:1 iso_code_3:arg
+#: DB:language/name:20
+msgid "Aragonese"
+msgstr "Aragonese"
+
+#. frequency:1 iso_code_3:arp
+#: DB:language/name:23
+msgid "Arapaho"
+msgstr "Arapaho"
+
+#. frequency:1 iso_code_3:arw
+#: DB:language/name:25
+msgid "Arawak"
+msgstr "Arawak"
+
+#. frequency:1 iso_code_3:hye
+#: DB:language/name:21
+msgid "Armenian"
+msgstr "Armeno"
+
+#. frequency:1 iso_code_3:rup
+#: DB:language/name:479
+msgid "Aromanian"
+msgstr "Arumeno"
+
+#. frequency:1 iso_code_3:asm
+#: DB:language/name:26
+msgid "Assamese"
+msgstr "Assamese"
+
+#. frequency:1 iso_code_3:ast
+#: DB:language/name:27
+msgid "Asturian"
+msgstr "Asturiano"
+
+#. frequency:0 iso_code_3:null
+#: DB:language/name:28
+msgid "Athapascan languages"
+msgstr "Lingue athabaska"
+
+#. frequency:0 iso_code_3:null
+#: DB:language/name:29
+msgid "Australian languages"
+msgstr "Lingue australiane aborigene"
+
+#. frequency:0 iso_code_3:null
+#: DB:language/name:263
+msgid "Austronesian languages"
+msgstr "Lingue austronesiane"
+
+#. frequency:1 iso_code_3:ava
+#: DB:language/name:30
+msgid "Avaric"
+msgstr "Avaro"
+
+#. frequency:1 iso_code_3:ave
+#: DB:language/name:31
+msgid "Avestan"
+msgstr "Avestico"
+
+#. frequency:1 iso_code_3:awa
+#: DB:language/name:32
+msgid "Awadhi"
+msgstr "Awadhi"
+
+#. frequency:1 iso_code_3:aym
+#: DB:language/name:33
+msgid "Aymara"
+msgstr "Aymara"
+
+#. frequency:1 iso_code_3:aze
+#: DB:language/name:34
+msgid "Azerbaijani"
+msgstr "Azero"
+
+#. frequency:1 iso_code_3:ban
+#: DB:language/name:40
+msgid "Balinese"
+msgstr "Balinese"
+
+#. frequency:0 iso_code_3:null
+#: DB:language/name:43
+msgid "Baltic languages"
+msgstr "Lingue baltiche"
+
+#. frequency:1 iso_code_3:bal
+#: DB:language/name:38
+msgid "Baluchi"
+msgstr "Baluchi"
+
+#. frequency:1 iso_code_3:bam
+#: DB:language/name:39
+msgid "Bambara"
+msgstr "Bambara"
+
+#. frequency:0 iso_code_3:null
+#: DB:language/name:36
+msgid "Bamileke languages"
+msgstr "Lingue bamileke"
+
+#. frequency:0 iso_code_3:null
+#: DB:language/name:35
+msgid "Banda languages"
+msgstr "Lingue banda"
+
+#. frequency:0 iso_code_3:null
+#: DB:language/name:55
+msgid "Bantu languages"
+msgstr "Lingue bantu"
+
+#. frequency:1 iso_code_3:bas
+#: DB:language/name:42
+msgid "Basa"
+msgstr "Basa"
+
+#. frequency:1 iso_code_3:bak
+#: DB:language/name:37
+msgid "Bashkir"
+msgstr "Baschiro"
+
+#. frequency:1 iso_code_3:eus
+#: DB:language/name:41
+msgid "Basque"
+msgstr "Basco"
+
+#. frequency:0 iso_code_3:null
+#: DB:language/name:59
+msgid "Batak languages"
+msgstr "Lingue batak"
+
+#. frequency:1 iso_code_3:bar
+#: DB:language/name:982
+msgid "Bavarian"
+msgstr "Bavarese"
+
+#. frequency:1 iso_code_3:bej
+#: DB:language/name:44
+msgid "Beja"
+msgstr "Begia"
+
+#. frequency:1 iso_code_3:bel
+#: DB:language/name:45
+msgid "Belarusian"
+msgstr "Bielorusso"
+
+#. frequency:1 iso_code_3:bem
+#: DB:language/name:46
+msgid "Bemba"
+msgstr "Bemba"
+
+#. frequency:1 iso_code_3:ben
+#: DB:language/name:47
+msgid "Bengali"
+msgstr "Bengalese"
+
+#. frequency:0 iso_code_3:null
+#: DB:language/name:48
+msgid "Berber languages"
+msgstr "Lingue berbere"
+
+#. frequency:1 iso_code_3:bho
+#: DB:language/name:49
+msgid "Bhojpuri"
+msgstr "Bhojpuri"
+
+#. frequency:0 iso_code_3:null
+#: DB:language/name:50
+msgid "Bihari languages"
+msgstr "Lingue bihari"
+
+#. frequency:1 iso_code_3:bik
+#: DB:language/name:51
+msgid "Bikol"
+msgstr "Bicolano"
+
+#. frequency:1 iso_code_3:bin
+#: DB:language/name:52
+msgid "Bini"
+msgstr "Bini"
+
+#. frequency:1 iso_code_3:bis
+#: DB:language/name:53
+msgid "Bislama"
+msgstr "Bislama"
+
+#. frequency:1 iso_code_3:byn
+#: DB:language/name:64
+msgid "Blin"
+msgstr "Bilen"
+
+#. frequency:0 iso_code_3:zbl
+#: DB:language/name:482
+msgid "Blissymbols"
+msgstr "Linguaggio grafico Bliss"
+
+#. frequency:1 iso_code_3:brx
+#: DB:language/name:1394
+msgid "Bodo (India)"
+msgstr "Bodo (India)"
+
+#. frequency:1 iso_code_3:bos
+#: DB:language/name:56
+msgid "Bosnian"
+msgstr "Bosniaco"
+
+#. frequency:1 iso_code_3:bra
+#: DB:language/name:57
+msgid "Braj"
+msgstr "Braj"
+
+#. frequency:1 iso_code_3:bre
+#: DB:language/name:58
+msgid "Breton"
+msgstr "Bretone"
+
+#. frequency:1 iso_code_3:bug
+#: DB:language/name:61
+msgid "Buginese"
+msgstr "Buginese"
+
+#. frequency:1 iso_code_3:bul
+#: DB:language/name:62
+msgid "Bulgarian"
+msgstr "Bulgaro"
+
+#. frequency:1 iso_code_3:bua
+#: DB:language/name:60
+msgid "Buriat"
+msgstr "Buriato"
+
+#. frequency:1 iso_code_3:mya
+#: DB:language/name:63
+msgid "Burmese"
+msgstr "Birmano"
+
+#. frequency:1 iso_code_3:cad
+#: DB:language/name:65
+msgid "Caddo"
+msgstr "Caddo"
+
+#. frequency:1 iso_code_3:frc
+#: DB:language/name:2311
+msgid "Cajun French"
+msgstr "Francese cajun"
+
+#. frequency:1 iso_code_3:cat
+#: DB:language/name:68
+msgid "Catalan"
+msgstr "Catalano"
+
+#. frequency:0 iso_code_3:null
+#: DB:language/name:69
+msgid "Caucasian languages"
+msgstr "Lingue caucasiche"
+
+#. frequency:1 iso_code_3:ceb
+#: DB:language/name:70
+msgid "Cebuano"
+msgstr "Cebuano"
+
+#. frequency:1 iso_code_3:xce
+#: DB:language/name:7217
+msgid "Celtiberian"
+msgstr "Celtiberico"
+
+#. frequency:0 iso_code_3:null
+#: DB:language/name:71
+msgid "Celtic languages"
+msgstr "Lingue celtiche"
+
+#. frequency:0 iso_code_3:null
+#: DB:language/name:66
+msgid "Central American Indian languages"
+msgstr "Lingue native centroamericane"
+
+#. frequency:1 iso_code_3:ryu
+#: DB:language/name:5809
+msgid "Central Okinawan"
+msgstr "Lingua di Okinawa centrale"
+
+#. frequency:1 iso_code_3:chg
+#: DB:language/name:75
+msgid "Chagatai"
+msgstr "Chagatai"
+
+#. frequency:0 iso_code_3:null
+#: DB:language/name:86
+msgid "Chamic languages"
+msgstr "Lingue ciamiche"
+
+#. frequency:1 iso_code_3:cha
+#: DB:language/name:72
+msgid "Chamorro"
+msgstr "Chamorro"
+
+#. frequency:1 iso_code_3:che
+#: DB:language/name:74
+msgid "Chechen"
+msgstr "Ceceno"
+
+#. frequency:1 iso_code_3:chr
+#: DB:language/name:82
+msgid "Cherokee"
+msgstr "Cherokee"
+
+#. frequency:1 iso_code_3:chy
+#: DB:language/name:85
+msgid "Cheyenne"
+msgstr "Cheyenne"
+
+#. frequency:1 iso_code_3:chb
+#: DB:language/name:73
+msgid "Chibcha"
+msgstr "Chibcha"
+
+#. frequency:1 iso_code_3:nya
+#: DB:language/name:313
+msgid "Chichewa"
+msgstr "Chichewa"
+
+#. frequency:2 iso_code_3:zho
+#: DB:language/name:76
+msgid "Chinese"
+msgstr "Cinese"
+
+#. frequency:1 iso_code_3:chn
+#: DB:language/name:79
+msgid "Chinook jargon"
+msgstr "Gergo chinook"
+
+#. frequency:1 iso_code_3:chp
+#: DB:language/name:81
+msgid "Chipewyan"
+msgstr "Chipewyan"
+
+#. frequency:1 iso_code_3:cho
+#: DB:language/name:80
+msgid "Choctaw"
+msgstr "Choctaw"
+
+#. frequency:1 iso_code_3:chu
+#: DB:language/name:83
+msgid "Church Slavic"
+msgstr "Slavo ecclesiastico"
+
+#. frequency:1 iso_code_3:chk
+#: DB:language/name:77
+msgid "Chuukese"
+msgstr "Chuukese"
+
+#. frequency:1 iso_code_3:chv
+#: DB:language/name:84
+msgid "Chuvash"
+msgstr "Ciuvascio"
+
+#. frequency:0 iso_code_3:nwc
+#: DB:language/name:312
+msgid "Classical Newari"
+msgstr "Newari classico"
+
+#. frequency:0 iso_code_3:syc
+#: DB:language/name:481
+msgid "Classical Syriac"
+msgstr "Siriaco classico"
+
+#. frequency:1 iso_code_3:cop
+#: DB:language/name:87
+msgid "Coptic"
+msgstr "Copto"
+
+#. frequency:1 iso_code_3:cor
+#: DB:language/name:88
+msgid "Cornish"
+msgstr "Cornico"
+
+#. frequency:1 iso_code_3:cos
+#: DB:language/name:89
+msgid "Corsican"
+msgstr "Corso"
+
+#. frequency:1 iso_code_3:cre
+#: DB:language/name:93
+msgid "Cree"
+msgstr "Cree"
+
+#. frequency:1 iso_code_3:mus
+#: DB:language/name:286
+msgid "Creek"
+msgstr "Creek"
+
+#. frequency:0 iso_code_3:null
+#: DB:language/name:95
+msgid "Creoles and pidgins"
+msgstr "Lingue creole e pidgin"
+
+#. frequency:0 iso_code_3:null
+#: DB:language/name:90
+msgid "Creoles and pidgins, English based"
+msgstr "Lingue creole e pidgin basate sull'inglese"
+
+#. frequency:0 iso_code_3:null
+#: DB:language/name:91
+msgid "Creoles and pidgins, French-based"
+msgstr "Lingue creole e pidgin basate sul francese"
+
+#. frequency:0 iso_code_3:null
+#: DB:language/name:92
+msgid "Creoles and pidgins, Portuguese-based"
+msgstr "Lingue creole e pidgin basate sul portoghese"
+
+#. frequency:1 iso_code_3:crh
+#: DB:language/name:94
+msgid "Crimean Tatar"
+msgstr "Tataro di Crimea"
+
+#. frequency:1 iso_code_3:hrv
+#: DB:language/name:366
+msgid "Croatian"
+msgstr "Croato"
+
+#. frequency:1 iso_code_3:xlu
+#: DB:language/name:7303
+msgid "Cuneiform Luwian"
+msgstr "Luvio cuneiforme"
+
+#. frequency:0 iso_code_3:null
+#: DB:language/name:97
+msgid "Cushitic languages"
+msgstr "Lingue cuscitiche"
+
+#. frequency:1 iso_code_3:ces
+#: DB:language/name:98
+msgid "Czech"
+msgstr "Ceco"
+
+#. frequency:1 iso_code_3:dak
+#: DB:language/name:99
+msgid "Dakota"
+msgstr "Dakota"
+
+#. frequency:2 iso_code_3:dan
+#: DB:language/name:100
+msgid "Danish"
+msgstr "Danese"
+
+#. frequency:1 iso_code_3:dar
+#: DB:language/name:101
+msgid "Dargwa"
+msgstr "Dargwa"
+
+#. frequency:1 iso_code_3:del
+#: DB:language/name:103
+msgid "Delaware"
+msgstr "Delaware"
+
+#. frequency:1 iso_code_3:din
+#: DB:language/name:106
+msgid "Dinka"
+msgstr "Dinka"
+
+#. frequency:1 iso_code_3:div
+#: DB:language/name:107
+msgid "Divehi"
+msgstr "Maldiviano"
+
+#. frequency:1 iso_code_3:doi
+#: DB:language/name:108
+msgid "Dogri"
+msgstr "Dogri"
+
+#. frequency:1 iso_code_3:dgr
+#: DB:language/name:105
+msgid "Dogrib"
+msgstr "Dogrib"
+
+#. frequency:0 iso_code_3:null
+#: DB:language/name:109
+msgid "Dravidian languages"
+msgstr "Lingue dravidiche"
+
+#. frequency:1 iso_code_3:dua
+#: DB:language/name:111
+msgid "Duala"
+msgstr "Duala"
+
+#. frequency:2 iso_code_3:nld
+#: DB:language/name:113
+msgid "Dutch"
+msgstr "Olandese"
+
+#. frequency:1 iso_code_3:dum
+#: DB:language/name:112
+msgid "Dutch, Middle (ca.1050-1350)"
+msgstr "Olandese medio (ca. 1050-1350)"
+
+#. frequency:1 iso_code_3:dyu
+#: DB:language/name:114
+msgid "Dyula"
+msgstr "Dioula"
+
+#. frequency:1 iso_code_3:dzo
+#: DB:language/name:115
+msgid "Dzongkha"
+msgstr "Dzongkha"
+
+#. frequency:1 iso_code_3:aer
+#: DB:language/name:584
+msgid "Eastern Arrernte"
+msgstr "Arrernte orientale"
+
+#. frequency:1 iso_code_3:efi
+#: DB:language/name:116
+msgid "Efik"
+msgstr "Efik"
+
+#. frequency:1 iso_code_3:egy
+#: DB:language/name:117
+msgid "Egyptian (Ancient)"
+msgstr "Egiziano (antico)"
+
+#. frequency:1 iso_code_3:eka
+#: DB:language/name:118
+msgid "Ekajuk"
+msgstr "Ekajuk"
+
+#. frequency:1 iso_code_3:elx
+#: DB:language/name:119
+msgid "Elamite"
+msgstr "Elamitico"
+
+#. frequency:2 iso_code_3:eng
+#: DB:language/name:120
+msgid "English"
+msgstr "Inglese"
+
+#. frequency:1 iso_code_3:enm
+#: DB:language/name:121
+msgid "English, Middle (1100-1500)"
+msgstr "Inglese medio (1100-1500)"
+
+#. frequency:1 iso_code_3:ang
+#: DB:language/name:16
+msgid "English, Old (ca.450-1100)"
+msgstr "Inglese antico (ca. 450-1100)"
+
+#. frequency:1 iso_code_3:myv
+#: DB:language/name:290
+msgid "Erzya"
+msgstr "Ersiano"
+
+#. frequency:1 iso_code_3:epo
+#: DB:language/name:122
+msgid "Esperanto"
+msgstr "Esperanto"
+
+#. frequency:1 iso_code_3:est
+#: DB:language/name:123
+msgid "Estonian"
+msgstr "Estone"
+
+#. frequency:1 iso_code_3:ewe
+#: DB:language/name:124
+msgid "Ewe"
+msgstr "Ewe"
+
+#. frequency:1 iso_code_3:ewo
+#: DB:language/name:125
+msgid "Ewondo"
+msgstr "Ewondo"
+
+#. frequency:1 iso_code_3:fan
+#: DB:language/name:126
+msgid "Fang"
+msgstr "Fang"
+
+#. frequency:1 iso_code_3:fat
+#: DB:language/name:128
+msgid "Fanti"
+msgstr "Fanti"
+
+#. frequency:1 iso_code_3:fao
+#: DB:language/name:127
+msgid "Faroese"
+msgstr "Faroese"
+
+#. frequency:1 iso_code_3:fij
+#: DB:language/name:129
+msgid "Fijian"
+msgstr "Figiano"
+
+#. frequency:1 iso_code_3:fil
+#: DB:language/name:130
+msgid "Filipino"
+msgstr "Filippino"
+
+#. frequency:2 iso_code_3:fin
+#: DB:language/name:131
+msgid "Finnish"
+msgstr "Finlandese"
+
+#. frequency:0 iso_code_3:null
+#: DB:language/name:132
+msgid "Finno-Ugrian languages"
+msgstr "Lingue ugro-finniche"
+
+#. frequency:1 iso_code_3:fon
+#: DB:language/name:133
+msgid "Fon"
+msgstr "Fon"
+
+#. frequency:2 iso_code_3:fra
+#: DB:language/name:134
+msgid "French"
+msgstr "Francese"
+
+#. frequency:0 iso_code_3:frm
+#: DB:language/name:135
+msgid "French, Middle (ca.1400-1600)"
+msgstr "Francese medio (ca. 1400-1600)"
+
+#. frequency:1 iso_code_3:fro
+#: DB:language/name:136
+msgid "French, Old (842-ca.1400)"
+msgstr "Francese antico (842-ca. 1400)"
+
+#. frequency:1 iso_code_3:frs
+#: DB:language/name:485
+msgid "Frisian, Eastern"
+msgstr "Frisone orientale"
+
+#. frequency:1 iso_code_3:frr
+#: DB:language/name:484
+msgid "Frisian, Northern"
+msgstr "Frisone settentrionale"
+
+#. frequency:1 iso_code_3:fry
+#: DB:language/name:137
+msgid "Frisian, Western"
+msgstr "Frisone occidentale"
+
+#. frequency:1 iso_code_3:fur
+#: DB:language/name:139
+msgid "Friulian"
+msgstr "Friulano"
+
+#. frequency:1 iso_code_3:ful
+#: DB:language/name:138
+msgid "Fulah"
+msgstr "Fula"
+
+#. frequency:1 iso_code_3:gaa
+#: DB:language/name:140
+msgid "Ga"
+msgstr "Ga"
+
+#. frequency:1 iso_code_3:car
+#: DB:language/name:67
+msgid "Galibi Carib"
+msgstr "Galibi"
+
+#. frequency:1 iso_code_3:glg
+#: DB:language/name:150
+msgid "Galician"
+msgstr "Gallego"
+
+#. frequency:1 iso_code_3:lug
+#: DB:language/name:249
+msgid "Ganda"
+msgstr "Ganda"
+
+#. frequency:1 iso_code_3:cab
+#: DB:language/name:1591
+msgid "Garifuna"
+msgstr "Garifuna"
+
+#. frequency:1 iso_code_3:gay
+#: DB:language/name:141
+msgid "Gayo"
+msgstr "Gayo"
+
+#. frequency:1 iso_code_3:gba
+#: DB:language/name:142
+msgid "Gbaya"
+msgstr "Gbaya"
+
+#. frequency:1 iso_code_3:gez
+#: DB:language/name:146
+msgid "Geez"
+msgstr "Ge'ez"
+
+#. frequency:1 iso_code_3:kat
+#: DB:language/name:144
+msgid "Georgian"
+msgstr "Georgiano"
+
+#. frequency:2 iso_code_3:deu
+#: DB:language/name:145
+msgid "German"
+msgstr "Tedesco"
+
+#. frequency:1 iso_code_3:nds
+#: DB:language/name:299
+msgid "German, Low"
+msgstr "Tedesco, basso"
+
+#. frequency:1 iso_code_3:gmh
+#: DB:language/name:152
+msgid "German, Middle High (ca.1050-1500)"
+msgstr "Tedesco, alto medio (ca. 1050-1500)"
+
+#. frequency:0 iso_code_3:goh
+#: DB:language/name:153
+msgid "German, Old High (ca.750-1050)"
+msgstr "Tedesco, alto antico (ca. 750-1050)"
+
+#. frequency:1 iso_code_3:gsw
+#: DB:language/name:476
+msgid "German, Swiss"
+msgstr "Tedesco, svizzero"
+
+#. frequency:0 iso_code_3:null
+#: DB:language/name:143
+msgid "Germanic languages"
+msgstr "Lingue germaniche"
+
+#. frequency:1 iso_code_3:gil
+#: DB:language/name:147
+msgid "Gilbertese"
+msgstr "Gilbertese"
+
+#. frequency:1 iso_code_3:gon
+#: DB:language/name:154
+msgid "Gondi"
+msgstr "Gondi"
+
+#. frequency:1 iso_code_3:gor
+#: DB:language/name:155
+msgid "Gorontalo"
+msgstr "Gorontalo"
+
+#. frequency:1 iso_code_3:got
+#: DB:language/name:156
+msgid "Gothic"
+msgstr "Gotico"
+
+#. frequency:1 iso_code_3:grb
+#: DB:language/name:157
+msgid "Grebo"
+msgstr "Grebo"
+
+#. frequency:2 iso_code_3:ell
+#: DB:language/name:159
+msgid "Greek"
+msgstr "Greco"
+
+#. frequency:1 iso_code_3:grc
+#: DB:language/name:158
+msgid "Greek, Ancient"
+msgstr "Greco antico"
+
+#. frequency:1 iso_code_3:kal
+#: DB:language/name:204
+msgid "Greenlandic"
+msgstr "Groenlandese"
+
+#. frequency:1 iso_code_3:gos
+#: DB:language/name:2534
+msgid "Gronings"
+msgstr "Gronings"
+
+#. frequency:1 iso_code_3:grn
+#: DB:language/name:160
+msgid "Guarani"
+msgstr "Guaraní"
+
+#. frequency:1 iso_code_3:guj
+#: DB:language/name:161
+msgid "Gujarati"
+msgstr "Gujarati"
+
+#. frequency:1 iso_code_3:gnn
+#: DB:language/name:2511
+msgid "Gumatj"
+msgstr "Gumatj"
+
+#. frequency:1 iso_code_3:guf
+#: DB:language/name:2581
+msgid "Gupapuyngu"
+msgstr "Gupapuyngu"
+
+#. frequency:1 iso_code_3:gwi
+#: DB:language/name:162
+msgid "Gwich'in"
+msgstr "Gwich'in"
+
+#. frequency:1 iso_code_3:hai
+#: DB:language/name:163
+msgid "Haida"
+msgstr "Haida"
+
+#. frequency:1 iso_code_3:hat
+#: DB:language/name:164
+msgid "Haitian Creole"
+msgstr "Creolo haitiano"
+
+#. frequency:1 iso_code_3:hau
+#: DB:language/name:165
+msgid "Hausa"
+msgstr "Hausa"
+
+#. frequency:1 iso_code_3:haw
+#: DB:language/name:166
+msgid "Hawaiian"
+msgstr "Hawaiiano"
+
+#. frequency:1 iso_code_3:heb
+#: DB:language/name:167
+msgid "Hebrew"
+msgstr "Ebraico"
+
+#. frequency:1 iso_code_3:her
+#: DB:language/name:168
+msgid "Herero"
+msgstr "Herero"
+
+#. frequency:1 iso_code_3:hil
+#: DB:language/name:169
+msgid "Hiligaynon"
+msgstr "Hiligaynon"
+
+#. frequency:0 iso_code_3:null
+#: DB:language/name:170
+msgid "Himachali languages"
+msgstr "Lingue himachali"
+
+#. frequency:1 iso_code_3:hin
+#: DB:language/name:171
+msgid "Hindi"
+msgstr "Hindi"
+
+#. frequency:1 iso_code_3:hmo
+#: DB:language/name:174
+msgid "Hiri Motu"
+msgstr "Hiri Motu"
+
+#. frequency:0 iso_code_3:hit
+#: DB:language/name:172
+msgid "Hittite"
+msgstr "Ittita"
+
+#. frequency:1 iso_code_3:hmn
+#: DB:language/name:173
+msgid "Hmong"
+msgstr "Hmong"
+
+#. frequency:1 iso_code_3:hun
+#: DB:language/name:176
+msgid "Hungarian"
+msgstr "Ungherese"
+
+#. frequency:1 iso_code_3:hup
+#: DB:language/name:177
+msgid "Hupa"
+msgstr "Hupa"
+
+#. frequency:1 iso_code_3:iba
+#: DB:language/name:178
+msgid "Iban"
+msgstr "Iban"
+
+#. frequency:1 iso_code_3:isl
+#: DB:language/name:180
+msgid "Icelandic"
+msgstr "Islandese"
+
+#. frequency:1 iso_code_3:ido
+#: DB:language/name:181
+msgid "Ido"
+msgstr "Ido"
+
+#. frequency:1 iso_code_3:ibo
+#: DB:language/name:179
+msgid "Igbo"
+msgstr "Igbo"
+
+#. frequency:0 iso_code_3:null
+#: DB:language/name:183
+msgid "Ijo languages"
+msgstr "Lingue ijo"
+
+#. frequency:1 iso_code_3:ilo
+#: DB:language/name:186
+msgid "Iloko"
+msgstr "Ilocano"
+
+#. frequency:0 iso_code_3:null
+#: DB:language/name:188
+msgid "Indic languages"
+msgstr "Lingue indoarie"
+
+#. frequency:0 iso_code_3:null
+#: DB:language/name:190
+msgid "Indo-European languages"
+msgstr "Lingue indoeuropee"
+
+#. frequency:1 iso_code_3:ind
+#: DB:language/name:189
+msgid "Indonesian"
+msgstr "Indonesiano"
+
+#. frequency:1 iso_code_3:izh
+#: DB:language/name:2967
+msgid "Ingrian"
+msgstr "Ingrico"
+
+#. frequency:1 iso_code_3:inh
+#: DB:language/name:191
+msgid "Ingush"
+msgstr "Inguscio"
+
+#. frequency:1 iso_code_3:ina
+#: DB:language/name:187
+msgid "Interlingua"
+msgstr "Interlingua"
+
+#. frequency:1 iso_code_3:ile
+#: DB:language/name:185
+msgid "Interlingue"
+msgstr "Interlingue"
+
+#. frequency:1 iso_code_3:iku
+#: DB:language/name:184
+msgid "Inuktitut"
+msgstr "Inuktitut"
+
+#. frequency:1 iso_code_3:ipk
+#: DB:language/name:192
+msgid "Inupiaq"
+msgstr "Inupiaq"
+
+#. frequency:0 iso_code_3:null
+#: DB:language/name:193
+msgid "Iranian languages"
+msgstr "Lingue iraniche"
+
+#. frequency:1 iso_code_3:gle
+#: DB:language/name:149
+msgid "Irish"
+msgstr "Irlandese"
+
+#. frequency:0 iso_code_3:mga
+#: DB:language/name:270
+msgid "Irish, Middle (900-1200)"
+msgstr "Irlandese medio (900-1200)"
+
+#. frequency:0 iso_code_3:sga
+#: DB:language/name:369
+msgid "Irish, Old (to 900)"
+msgstr "Irlandese antico (fino al 900)"
+
+#. frequency:0 iso_code_3:null
+#: DB:language/name:194
+msgid "Iroquoian languages"
+msgstr "Lingue irochesi"
+
+#. frequency:2 iso_code_3:ita
+#: DB:language/name:195
+msgid "Italian"
+msgstr "Italiano"
+
+#. frequency:1 iso_code_3:jam
+#: DB:language/name:2980
+msgid "Jamaican Creole English"
+msgstr "Inglese creolo giamaicano"
+
+#. frequency:2 iso_code_3:jpn
+#: DB:language/name:198
+msgid "Japanese"
+msgstr "Giapponese"
+
+#. frequency:1 iso_code_3:jav
+#: DB:language/name:196
+msgid "Javanese"
+msgstr "Giavanese"
+
+#. frequency:1 iso_code_3:tmr
+#: DB:language/name:6526
+msgid "Jewish Babylonian Aramaic (ca. 200-1200 CE)"
+msgstr "Aramaico giudaico babilonese (circa 200-1200 d.C.)"
+
+#. frequency:1 iso_code_3:jrb
+#: DB:language/name:200
+msgid "Judeo-Arabic"
+msgstr "Giudeo-arabo"
+
+#. frequency:1 iso_code_3:jpr
+#: DB:language/name:199
+msgid "Judeo-Persian"
+msgstr "Giudeo-persiano"
+
+#. frequency:1 iso_code_3:kbd
+#: DB:language/name:212
+msgid "Kabardian"
+msgstr "Cabardo"
+
+#. frequency:1 iso_code_3:kea
+#: DB:language/name:3185
+msgid "Kabuverdianu"
+msgstr "Capoverdiano"
+
+#. frequency:1 iso_code_3:kab
+#: DB:language/name:202
+msgid "Kabyle"
+msgstr "Cabilo"
+
+#. frequency:1 iso_code_3:kac
+#: DB:language/name:203
+msgid "Kachin"
+msgstr "Kachin"
+
+#. frequency:1 iso_code_3:xal
+#: DB:language/name:459
+msgid "Kalmyk"
+msgstr "Calmucco"
+
+#. frequency:1 iso_code_3:kam
+#: DB:language/name:205
+msgid "Kamba"
+msgstr "Kamba"
+
+#. frequency:1 iso_code_3:kan
+#: DB:language/name:206
+msgid "Kannada"
+msgstr "Kannada"
+
+#. frequency:1 iso_code_3:kau
+#: DB:language/name:209
+msgid "Kanuri"
+msgstr "Kanuri"
+
+#. frequency:1 iso_code_3:kaa
+#: DB:language/name:201
+msgid "Kara-Kalpak"
+msgstr "Karakalpako"
+
+#. frequency:1 iso_code_3:krc
+#: DB:language/name:227
+msgid "Karachay-Balkar"
+msgstr "Caraciai-balcaro"
+
+#. frequency:1 iso_code_3:krl
+#: DB:language/name:477
+msgid "Karelian"
+msgstr "Careliano"
+
+#. frequency:0 iso_code_3:null
+#: DB:language/name:207
+msgid "Karen languages"
+msgstr "Lingue karen"
+
+#. frequency:1 iso_code_3:kas
+#: DB:language/name:208
+msgid "Kashmiri"
+msgstr "Kashmiri"
+
+#. frequency:1 iso_code_3:csb
+#: DB:language/name:96
+msgid "Kashubian"
+msgstr "Casciubo"
+
+#. frequency:0 iso_code_3:kaw
+#: DB:language/name:210
+msgid "Kawi"
+msgstr "Kawi"
+
+#. frequency:1 iso_code_3:kaz
+#: DB:language/name:211
+msgid "Kazakh"
+msgstr "Kazako"
+
+#. frequency:1 iso_code_3:kca
+#: DB:language/name:3137
+msgid "Khanty"
+msgstr "Khanty"
+
+#. frequency:1 iso_code_3:kha
+#: DB:language/name:213
+msgid "Khasi"
+msgstr "Khasi"
+
+#. frequency:1 iso_code_3:khm
+#: DB:language/name:215
+msgid "Khmer, Central"
+msgstr "Khmer centrale"
+
+#. frequency:0 iso_code_3:null
+#: DB:language/name:214
+msgid "Khoisan languages"
+msgstr "Lingue khoisan"
+
+#. frequency:0 iso_code_3:kho
+#: DB:language/name:216
+msgid "Khotanese"
+msgstr "Khotanese"
+
+#. frequency:1 iso_code_3:kik
+#: DB:language/name:217
+msgid "Kikuyu"
+msgstr "Kikuyu"
+
+#. frequency:1 iso_code_3:kmb
+#: DB:language/name:220
+msgid "Kimbundu"
+msgstr "Kimbundu"
+
+#. frequency:1 iso_code_3:kin
+#: DB:language/name:218
+msgid "Kinyarwanda"
+msgstr "Kinyarwanda"
+
+#. frequency:1 iso_code_3:kir
+#: DB:language/name:219
+msgid "Kirghiz"
+msgstr "Chirghiso"
+
+#. frequency:1 iso_code_3:tlh
+#: DB:language/name:421
+msgid "Klingon"
+msgstr "Klingon"
+
+#. frequency:1 iso_code_3:kom
+#: DB:language/name:222
+msgid "Komi"
+msgstr "Komi"
+
+#. frequency:1 iso_code_3:kon
+#: DB:language/name:223
+msgid "Kongo"
+msgstr "Kongo"
+
+#. frequency:1 iso_code_3:kok
+#: DB:language/name:221
+msgid "Konkani"
+msgstr "Konkani"
+
+#. frequency:2 iso_code_3:kor
+#: DB:language/name:224
+msgid "Korean"
+msgstr "Coreano"
+
+#. frequency:1 iso_code_3:kos
+#: DB:language/name:225
+msgid "Kosraean"
+msgstr "Kosraese"
+
+#. frequency:1 iso_code_3:kpe
+#: DB:language/name:226
+msgid "Kpelle"
+msgstr "Kpelle"
+
+#. frequency:0 iso_code_3:null
+#: DB:language/name:228
+msgid "Kru languages"
+msgstr "Lingue kru"
+
+#. frequency:1 iso_code_3:kua
+#: DB:language/name:230
+msgid "Kuanyama"
+msgstr "Kuanyama"
+
+#. frequency:1 iso_code_3:kum
+#: DB:language/name:231
+msgid "Kumyk"
+msgstr "Cumucco"
+
+#. frequency:1 iso_code_3:kur
+#: DB:language/name:232
+msgid "Kurdish"
+msgstr "Curdo"
+
+#. frequency:1 iso_code_3:kru
+#: DB:language/name:229
+msgid "Kurukh"
+msgstr "Kurukh"
+
+#. frequency:1 iso_code_3:kut
+#: DB:language/name:233
+msgid "Kutenai"
+msgstr "Kutenai"
+
+#. frequency:1 iso_code_3:ksh
+#: DB:language/name:3529
+msgid "Kölsch"
+msgstr "Kölsch"
+
+#. frequency:1 iso_code_3:lld
+#: DB:language/name:3885
+msgid "Ladin"
+msgstr "Ladino"
+
+#. frequency:1 iso_code_3:lad
+#: DB:language/name:234
+msgid "Ladino"
+msgstr "Giudeo-spagnolo"
+
+#. frequency:1 iso_code_3:lah
+#: DB:language/name:235
+msgid "Lahnda"
+msgstr "Lahnda"
+
+#. frequency:1 iso_code_3:lkt
+#: DB:language/name:3880
+msgid "Lakota"
+msgstr "Lakota"
+
+#. frequency:1 iso_code_3:lam
+#: DB:language/name:236
+msgid "Lamba"
+msgstr "Lamba"
+
+#. frequency:0 iso_code_3:null
+#: DB:language/name:102
+msgid "Land Dayak languages"
+msgstr "Lingue dayak di terra"
+
+#. frequency:1 iso_code_3:lao
+#: DB:language/name:237
+msgid "Lao"
+msgstr "Lao"
+
+#. frequency:1 iso_code_3:lat
+#: DB:language/name:238
+msgid "Latin"
+msgstr "Latino"
+
+#. frequency:1 iso_code_3:lav
+#: DB:language/name:239
+msgid "Latvian"
+msgstr "Lettone"
+
+#. frequency:1 iso_code_3:lzz
+#: DB:language/name:4039
+msgid "Laz"
+msgstr "Laz"
+
+#. frequency:1 iso_code_3:lez
+#: DB:language/name:240
+msgid "Lezghian"
+msgstr "Lezgi"
+
+#. frequency:1 iso_code_3:lim
+#: DB:language/name:241
+msgid "Limburgish"
+msgstr "Limburghese"
+
+#. frequency:1 iso_code_3:lin
+#: DB:language/name:242
+msgid "Lingala"
+msgstr "Lingala"
+
+#. frequency:1 iso_code_3:lit
+#: DB:language/name:243
+msgid "Lithuanian"
+msgstr "Lituano"
+
+#. frequency:1 iso_code_3:liv
+#: DB:language/name:3858
+msgid "Liv"
+msgstr "Livone"
+
+#. frequency:1 iso_code_3:jbo
+#: DB:language/name:197
+msgid "Lojban"
+msgstr "Lojban"
+
+#. frequency:1 iso_code_3:loz
+#: DB:language/name:245
+msgid "Lozi"
+msgstr "Lozi"
+
+#. frequency:1 iso_code_3:lub
+#: DB:language/name:248
+msgid "Luba-Katanga"
+msgstr "Luba-Katanga"
+
+#. frequency:1 iso_code_3:lua
+#: DB:language/name:247
+msgid "Luba-Lulua"
+msgstr "Luba-Lulua"
+
+#. frequency:1 iso_code_3:lui
+#: DB:language/name:250
+msgid "Luiseno"
+msgstr "Luiseño"
+
+#. frequency:1 iso_code_3:lun
+#: DB:language/name:251
+msgid "Lunda"
+msgstr "Lunda"
+
+#. frequency:1 iso_code_3:luo
+#: DB:language/name:252
+msgid "Luo"
+msgstr "Luo"
+
+#. frequency:1 iso_code_3:lus
+#: DB:language/name:253
+msgid "Lushai"
+msgstr "Lushai"
+
+#. frequency:1 iso_code_3:ltz
+#: DB:language/name:246
+msgid "Luxembourgish"
+msgstr "Lussemburghese"
+
+#. frequency:1 iso_code_3:luy
+#: DB:language/name:4018
+msgid "Luyia"
+msgstr "Luyia"
+
+#. frequency:1 iso_code_3:mkd
+#: DB:language/name:254
+msgid "Macedonian"
+msgstr "Macedone"
+
+#. frequency:1 iso_code_3:mad
+#: DB:language/name:255
+msgid "Madurese"
+msgstr "Madurese"
+
+#. frequency:1 iso_code_3:mag
+#: DB:language/name:256
+msgid "Magahi"
+msgstr "Magahi"
+
+#. frequency:1 iso_code_3:mai
+#: DB:language/name:258
+msgid "Maithili"
+msgstr "Maithili"
+
+#. frequency:1 iso_code_3:mak
+#: DB:language/name:259
+msgid "Makasar"
+msgstr "Makasar"
+
+#. frequency:1 iso_code_3:mlg
+#: DB:language/name:275
+msgid "Malagasy"
+msgstr "Malgascio"
+
+#. frequency:1 iso_code_3:msa
+#: DB:language/name:266
+msgid "Malay"
+msgstr "Malese"
+
+#. frequency:1 iso_code_3:mal
+#: DB:language/name:260
+msgid "Malayalam"
+msgstr "Malayalam"
+
+#. frequency:1 iso_code_3:mlt
+#: DB:language/name:276
+msgid "Maltese"
+msgstr "Maltese"
+
+#. frequency:1 iso_code_3:mnc
+#: DB:language/name:277
+msgid "Manchu"
+msgstr "Mancese"
+
+#. frequency:1 iso_code_3:mdr
+#: DB:language/name:268
+msgid "Mandar"
+msgstr "Mandar"
+
+#. frequency:1 iso_code_3:cmn
+#: DB:language/name:1739
+msgid "Mandarin Chinese"
+msgstr "Cinese mandarino"
+
+#. frequency:1 iso_code_3:man
+#: DB:language/name:261
+msgid "Mandingo"
+msgstr "Mandingo"
+
+#. frequency:1 iso_code_3:mni
+#: DB:language/name:278
+msgid "Manipuri"
+msgstr "Manipuri"
+
+#. frequency:0 iso_code_3:null
+#: DB:language/name:279
+msgid "Manobo languages"
+msgstr "Lingue manobo"
+
+#. frequency:1 iso_code_3:mns
+#: DB:language/name:4358
+msgid "Mansi"
+msgstr "Mansi"
+
+#. frequency:1 iso_code_3:glv
+#: DB:language/name:151
+msgid "Manx"
+msgstr "Mannese"
+
+#. frequency:1 iso_code_3:mri
+#: DB:language/name:262
+msgid "Maori"
+msgstr "Maori"
+
+#. frequency:1 iso_code_3:arn
+#: DB:language/name:22
+msgid "Mapudungun"
+msgstr "Mapudungun"
+
+#. frequency:1 iso_code_3:mar
+#: DB:language/name:264
+msgid "Marathi"
+msgstr "Marathi"
+
+#. frequency:1 iso_code_3:chm
+#: DB:language/name:78
+msgid "Mari"
+msgstr "Mari"
+
+#. frequency:1 iso_code_3:mah
+#: DB:language/name:257
+msgid "Marshallese"
+msgstr "Marshallese"
+
+#. frequency:1 iso_code_3:mwr
+#: DB:language/name:288
+msgid "Marwari"
+msgstr "Marwari"
+
+#. frequency:1 iso_code_3:mas
+#: DB:language/name:265
+msgid "Masai"
+msgstr "Masai"
+
+#. frequency:0 iso_code_3:null
+#: DB:language/name:289
+msgid "Mayan languages"
+msgstr "Lingue maya"
+
+#. frequency:1 iso_code_3:men
+#: DB:language/name:269
+msgid "Mende"
+msgstr "Mende"
+
+#. frequency:1 iso_code_3:mic
+#: DB:language/name:271
+msgid "Mi'kmaq"
+msgstr "Mi'kmaq"
+
+#. frequency:1 iso_code_3:nan
+#: DB:language/name:4663
+msgid "Min Nan Chinese"
+msgstr "Cinese min nan"
+
+#. frequency:1 iso_code_3:hna
+#: DB:language/name:2735
+msgid "Mina (Cameroon)"
+msgstr "Mina (Camerun)"
+
+#. frequency:1 iso_code_3:min
+#: DB:language/name:272
+msgid "Minangkabau"
+msgstr "Minangkabau"
+
+#. frequency:1 iso_code_3:mwl
+#: DB:language/name:287
+msgid "Mirandese"
+msgstr "Mirandese"
+
+#. frequency:1 iso_code_3:moh
+#: DB:language/name:280
+msgid "Mohawk"
+msgstr "Mohawk"
+
+#. frequency:1 iso_code_3:mdf
+#: DB:language/name:267
+msgid "Moksha"
+msgstr "Mokšo"
+
+#. frequency:0 iso_code_3:null
+#: DB:language/name:281
+msgid "Moldavian"
+msgstr "Moldavo"
+
+#. frequency:0 iso_code_3:null
+#: DB:language/name:274
+msgid "Mon-Khmer languages"
+msgstr "Lingue mon khmer"
+
+#. frequency:1 iso_code_3:lol
+#: DB:language/name:244
+msgid "Mongo"
+msgstr "Mongo"
+
+#. frequency:1 iso_code_3:mon
+#: DB:language/name:282
+msgid "Mongolian"
+msgstr "Mongolo"
+
+#. frequency:1 iso_code_3:moe
+#: DB:language/name:4369
+msgid "Montagnais"
+msgstr "Montagnais"
+
+#. frequency:1 iso_code_3:mos
+#: DB:language/name:283
+msgid "Mossi"
+msgstr "Mossi"
+
+#. frequency:0 iso_code_3:null
+#: DB:language/name:285
+msgid "Munda languages"
+msgstr "Lingue munda"
+
+#. frequency:1 iso_code_3:nqo
+#: DB:language/name:478
+msgid "N'Ko"
+msgstr "N'Ko"
+
+#. frequency:0 iso_code_3:null
+#: DB:language/name:291
+msgid "Nahuatl languages"
+msgstr "Lingue nahuatl"
+
+#. frequency:1 iso_code_3:nau
+#: DB:language/name:294
+msgid "Nauru"
+msgstr "Nauruano"
+
+#. frequency:1 iso_code_3:nav
+#: DB:language/name:295
+msgid "Navajo"
+msgstr "Navajo"
+
+#. frequency:1 iso_code_3:nde
+#: DB:language/name:297
+msgid "Ndebele, North"
+msgstr "Ndebele del nord"
+
+#. frequency:1 iso_code_3:nbl
+#: DB:language/name:296
+msgid "Ndebele, South"
+msgstr "Ndebele del sud"
+
+#. frequency:1 iso_code_3:ndo
+#: DB:language/name:298
+msgid "Ndonga"
+msgstr "Ndonga"
+
+#. frequency:1 iso_code_3:nap
+#: DB:language/name:293
+msgid "Neapolitan"
+msgstr "Napoletano"
+
+#. frequency:1 iso_code_3:new
+#: DB:language/name:301
+msgid "Nepal Bhasa"
+msgstr "Nepal Bhasa"
+
+#. frequency:1 iso_code_3:nep
+#: DB:language/name:300
+msgid "Nepali"
+msgstr "Nepalese"
+
+#. frequency:1 iso_code_3:yrl
+#: DB:language/name:7618
+msgid "Nhengatu"
+msgstr "Nheengatu"
+
+#. frequency:1 iso_code_3:nia
+#: DB:language/name:302
+msgid "Nias"
+msgstr "Nias"
+
+#. frequency:0 iso_code_3:null
+#: DB:language/name:303
+msgid "Niger-Kordofanian languages"
+msgstr "Lingue niger-kordofaniane"
+
+#. frequency:0 iso_code_3:null
+#: DB:language/name:396
+msgid "Nilo-Saharan languages"
+msgstr "Lingue nilo-sahariane"
+
+#. frequency:1 iso_code_3:niu
+#: DB:language/name:304
+msgid "Niuean"
+msgstr "Niueano"
+
+#. frequency:1 iso_code_3:zxx
+#: DB:language/name:486
+msgid "No linguistic content"
+msgstr "Nessun contenuto linguistico"
+
+#. frequency:1 iso_code_3:nog
+#: DB:language/name:307
+msgid "Nogai"
+msgstr "Nogai"
+
+#. frequency:1 iso_code_3:nrn
+#: DB:language/name:4991
+msgid "Norn"
+msgstr "Norn"
+
+#. frequency:1 iso_code_3:non
+#: DB:language/name:308
+msgid "Norse, Old"
+msgstr "Norreno antico"
+
+#. frequency:0 iso_code_3:null
+#: DB:language/name:292
+msgid "North American Indian languages"
+msgstr "Lingue native nordamericane"
+
+#. frequency:2 iso_code_3:nor
+#: DB:language/name:309
+msgid "Norwegian"
+msgstr "Norvegese"
+
+#. frequency:1 iso_code_3:nob
+#: DB:language/name:306
+msgid "Norwegian Bokmål"
+msgstr "Norvegese bokmål"
+
+#. frequency:1 iso_code_3:nno
+#: DB:language/name:305
+msgid "Norwegian Nynorsk"
+msgstr "Norvegese nynorsk"
+
+#. frequency:0 iso_code_3:null
+#: DB:language/name:311
+msgid "Nubian languages"
+msgstr "Lingue nubiane"
+
+#. frequency:1 iso_code_3:nym
+#: DB:language/name:314
+msgid "Nyamwezi"
+msgstr "Nyamwezi"
+
+#. frequency:1 iso_code_3:nyn
+#: DB:language/name:315
+msgid "Nyankole"
+msgstr "Nyankole"
+
+#. frequency:1 iso_code_3:nyo
+#: DB:language/name:316
+msgid "Nyoro"
+msgstr "Nyoro"
+
+#. frequency:1 iso_code_3:nzi
+#: DB:language/name:317
+msgid "Nzima"
+msgstr "Nzima"
+
+#. frequency:1 iso_code_3:oci
+#: DB:language/name:318
+msgid "Occitan"
+msgstr "Occitano"
+
+#. frequency:0 iso_code_3:arc
+#: DB:language/name:19
+msgid "Official Aramaic (700-300 BCE)"
+msgstr "Aramaico ufficiale (700-300 a.C.)"
+
+#. frequency:1 iso_code_3:oji
+#: DB:language/name:319
+msgid "Ojibwa"
+msgstr "Ojibwa"
+
+#. frequency:1 iso_code_3:ori
+#: DB:language/name:320
+msgid "Oriya"
+msgstr "Oriya"
+
+#. frequency:1 iso_code_3:orm
+#: DB:language/name:321
+msgid "Oromo"
+msgstr "Oromo"
+
+#. frequency:1 iso_code_3:osa
+#: DB:language/name:322
+msgid "Osage"
+msgstr "Osage"
+
+#. frequency:1 iso_code_3:oss
+#: DB:language/name:323
+msgid "Ossetian"
+msgstr "Osseto"
+
+#. frequency:0 iso_code_3:null
+#: DB:language/name:325
+msgid "Otomian languages"
+msgstr "Lingue otomiane"
+
+#. frequency:0 iso_code_3:pal
+#: DB:language/name:328
+msgid "Pahlavi"
+msgstr "Pahlavi"
+
+#. frequency:1 iso_code_3:pau
+#: DB:language/name:332
+msgid "Palauan"
+msgstr "Palauano"
+
+#. frequency:1 iso_code_3:pli
+#: DB:language/name:337
+msgid "Pali"
+msgstr "Pali"
+
+#. frequency:1 iso_code_3:pam
+#: DB:language/name:329
+msgid "Pampanga"
+msgstr "Pampanga"
+
+#. frequency:1 iso_code_3:pag
+#: DB:language/name:327
+msgid "Pangasinan"
+msgstr "Pangasinan"
+
+#. frequency:1 iso_code_3:pap
+#: DB:language/name:331
+msgid "Papiamento"
+msgstr "Papiamento"
+
+#. frequency:0 iso_code_3:null
+#: DB:language/name:326
+msgid "Papuan languages"
+msgstr "Lingue papuasiche"
+
+#. frequency:1 iso_code_3:fas
+#: DB:language/name:334
+msgid "Persian"
+msgstr "Persiano"
+
+#. frequency:0 iso_code_3:peo
+#: DB:language/name:333
+msgid "Persian, Old (ca.600-400 B.C.)"
+msgstr "Persiano antico (ca. 600-400 a.C.)"
+
+#. frequency:0 iso_code_3:null
+#: DB:language/name:335
+msgid "Philippine languages"
+msgstr "Lingue filippine"
+
+#. frequency:0 iso_code_3:phn
+#: DB:language/name:336
+msgid "Phoenician"
+msgstr "Fenicio"
+
+#. frequency:1 iso_code_3:pjt
+#: DB:language/name:5402
+msgid "Pitjantjatjara"
+msgstr "Pitjantjatjara"
+
+#. frequency:1 iso_code_3:pon
+#: DB:language/name:339
+msgid "Pohnpeian"
+msgstr "Pohnpeiano"
+
+#. frequency:2 iso_code_3:pol
+#: DB:language/name:338
+msgid "Polish"
+msgstr "Polacco"
+
+#. frequency:2 iso_code_3:por
+#: DB:language/name:340
+msgid "Portuguese"
+msgstr "Portoghese"
+
+#. frequency:0 iso_code_3:null
+#: DB:language/name:341
+msgid "Prakrit languages"
+msgstr "Lingue pracrite"
+
+#. frequency:0 iso_code_3:pro
+#: DB:language/name:342
+msgid "Provençal, Old (to 1500)"
+msgstr "Provenzale antico (fino al 1500)"
+
+#. frequency:1 iso_code_3:pan
+#: DB:language/name:330
+msgid "Punjabi"
+msgstr "Punjabi"
+
+#. frequency:1 iso_code_3:pus
+#: DB:language/name:343
+msgid "Pushto"
+msgstr "Pashtu"
+
+#. frequency:1 iso_code_3:pyu
+#: DB:language/name:5603
+msgid "Puyuma"
+msgstr "Puyuma"
+
+#. frequency:1 iso_code_3:que
+#: DB:language/name:344
+msgid "Quechua"
+msgstr "Quechua"
+
+#. frequency:1 iso_code_3:qya
+#: DB:language/name:5662
+msgid "Quenya"
+msgstr "Quenya"
+
+#. frequency:1 iso_code_3:raj
+#: DB:language/name:345
+msgid "Rajasthani"
+msgstr "Rajasthani"
+
+#. frequency:1 iso_code_3:rap
+#: DB:language/name:346
+msgid "Rapanui"
+msgstr "Rapanui"
+
+#. frequency:1 iso_code_3:rar
+#: DB:language/name:347
+msgid "Rarotongan"
+msgstr "Rarotongano"
+
+#. frequency:0 iso_code_3:null
+#: DB:language/name:348
+msgid "Romance languages"
+msgstr "Lingue romanze"
+
+#. frequency:1 iso_code_3:ron
+#: DB:language/name:351
+msgid "Romanian"
+msgstr "Rumeno"
+
+#. frequency:1 iso_code_3:roh
+#: DB:language/name:349
+msgid "Romansh"
+msgstr "Romancio"
+
+#. frequency:1 iso_code_3:rom
+#: DB:language/name:350
+msgid "Romany"
+msgstr "Romaní"
+
+#. frequency:1 iso_code_3:run
+#: DB:language/name:352
+msgid "Rundi"
+msgstr "Rundi"
+
+#. frequency:2 iso_code_3:rus
+#: DB:language/name:353
+msgid "Russian"
+msgstr "Russo"
+
+#. frequency:1 iso_code_3:rcf
+#: DB:language/name:5690
+msgid "Réunion Creole French"
+msgstr "Francese creolo della Riunione"
+
+#. frequency:0 iso_code_3:null
+#: DB:language/name:358
+msgid "Salishan languages"
+msgstr "Lingue salish"
+
+#. frequency:1 iso_code_3:sam
+#: DB:language/name:359
+msgid "Samaritan Aramaic"
+msgstr "Aramaico samaritano"
+
+#. frequency:0 iso_code_3:null
+#: DB:language/name:381
+msgid "Sami languages"
+msgstr "Lingue sami"
+
+#. frequency:1 iso_code_3:smn
+#: DB:language/name:383
+msgid "Sami, Inari"
+msgstr "Sami di Inari"
+
+#. frequency:1 iso_code_3:smj
+#: DB:language/name:382
+msgid "Sami, Lule"
+msgstr "Sami di Lule"
+
+#. frequency:1 iso_code_3:sme
+#: DB:language/name:380
+msgid "Sami, Northern"
+msgstr "Sami settentrionale"
+
+#. frequency:1 iso_code_3:sms
+#: DB:language/name:385
+msgid "Sami, Skolt"
+msgstr "Sami skolt"
+
+#. frequency:1 iso_code_3:sma
+#: DB:language/name:379
+msgid "Sami, Southern"
+msgstr "Sami meridionale"
+
+#. frequency:1 iso_code_3:smo
+#: DB:language/name:384
+msgid "Samoan"
+msgstr "Samoano"
+
+#. frequency:1 iso_code_3:sad
+#: DB:language/name:354
+msgid "Sandawe"
+msgstr "Sandawe"
+
+#. frequency:1 iso_code_3:sag
+#: DB:language/name:355
+msgid "Sango"
+msgstr "Sango"
+
+#. frequency:1 iso_code_3:san
+#: DB:language/name:360
+msgid "Sanskrit"
+msgstr "Sanscrito"
+
+#. frequency:1 iso_code_3:sat
+#: DB:language/name:362
+msgid "Santali"
+msgstr "Santali"
+
+#. frequency:1 iso_code_3:srd
+#: DB:language/name:394
+msgid "Sardinian"
+msgstr "Sardo"
+
+#. frequency:1 iso_code_3:sas
+#: DB:language/name:361
+msgid "Sasak"
+msgstr "Sasak"
+
+#. frequency:1 iso_code_3:sco
+#: DB:language/name:365
+msgid "Scots"
+msgstr "Scots"
+
+#. frequency:1 iso_code_3:gla
+#: DB:language/name:148
+msgid "Scottish Gaelic"
+msgstr "Gaelico scozzese"
+
+#. frequency:1 iso_code_3:sel
+#: DB:language/name:367
+msgid "Selkup"
+msgstr "Selkupico"
+
+#. frequency:0 iso_code_3:null
+#: DB:language/name:368
+msgid "Semitic languages"
+msgstr "Lingue semitiche"
+
+#. frequency:1 iso_code_3:srp
+#: DB:language/name:363
+msgid "Serbian"
+msgstr "Serbo"
+
+#. frequency:1 iso_code_3:srr
+#: DB:language/name:395
+msgid "Serer"
+msgstr "Serer"
+
+#. frequency:1 iso_code_3:shn
+#: DB:language/name:371
+msgid "Shan"
+msgstr "Shan"
+
+#. frequency:1 iso_code_3:sna
+#: DB:language/name:386
+msgid "Shona"
+msgstr "Shona"
+
+#. frequency:1 iso_code_3:iii
+#: DB:language/name:182
+msgid "Sichuan Yi"
+msgstr "Yi di Sichuan"
+
+#. frequency:1 iso_code_3:scn
+#: DB:language/name:364
+msgid "Sicilian"
+msgstr "Siciliano"
+
+#. frequency:1 iso_code_3:sid
+#: DB:language/name:372
+msgid "Sidamo"
+msgstr "Sidamo"
+
+#. frequency:0 iso_code_3:null
+#: DB:language/name:370
+msgid "Sign Languages"
+msgstr "Lingue dei segni"
+
+#. frequency:1 iso_code_3:bla
+#: DB:language/name:54
+msgid "Siksika"
+msgstr "Siksika"
+
+#. frequency:1 iso_code_3:sjn
+#: DB:language/name:5989
+msgid "Sindarin"
+msgstr "Sindarin"
+
+#. frequency:1 iso_code_3:snd
+#: DB:language/name:387
+msgid "Sindhi"
+msgstr "Sindhi"
+
+#. frequency:1 iso_code_3:sin
+#: DB:language/name:373
+msgid "Sinhala"
+msgstr "Singalese"
+
+#. frequency:0 iso_code_3:null
+#: DB:language/name:375
+msgid "Sino-Tibetan languages"
+msgstr "Lingue sinotibetane"
+
+#. frequency:0 iso_code_3:null
+#: DB:language/name:374
+msgid "Siouan languages"
+msgstr "Lingue siouan"
+
+#. frequency:1 iso_code_3:den
+#: DB:language/name:104
+msgid "Slave (Athapascan)"
+msgstr "Slave (athabaska)"
+
+#. frequency:0 iso_code_3:null
+#: DB:language/name:376
+msgid "Slavic languages"
+msgstr "Lingue slave"
+
+#. frequency:1 iso_code_3:slk
+#: DB:language/name:377
+msgid "Slovak"
+msgstr "Slovacco"
+
+#. frequency:1 iso_code_3:slv
+#: DB:language/name:378
+msgid "Slovenian"
+msgstr "Sloveno"
+
+#. frequency:0 iso_code_3:sog
+#: DB:language/name:389
+msgid "Sogdian"
+msgstr "Sogdiano"
+
+#. frequency:1 iso_code_3:som
+#: DB:language/name:390
+msgid "Somali"
+msgstr "Somalo"
+
+#. frequency:0 iso_code_3:null
+#: DB:language/name:391
+msgid "Songhai languages"
+msgstr "Lingue songhai"
+
+#. frequency:1 iso_code_3:snk
+#: DB:language/name:388
+msgid "Soninke"
+msgstr "Soninke"
+
+#. frequency:0 iso_code_3:null
+#: DB:language/name:456
+msgid "Sorbian languages"
+msgstr "Lingue lusaziane"
+
+#. frequency:1 iso_code_3:dsb
+#: DB:language/name:110
+msgid "Sorbian, Lower"
+msgstr "Lusaziano inferiore"
+
+#. frequency:1 iso_code_3:hsb
+#: DB:language/name:175
+msgid "Sorbian, Upper"
+msgstr "Lusaziano superiore"
+
+#. frequency:1 iso_code_3:nso
+#: DB:language/name:310
+msgid "Sotho, Northern"
+msgstr "Sotho del nord"
+
+#. frequency:1 iso_code_3:sot
+#: DB:language/name:392
+msgid "Sotho, Southern"
+msgstr "Sotho del sud"
+
+#. frequency:0 iso_code_3:null
+#: DB:language/name:357
+msgid "South American Indian languages"
+msgstr "Lingue native sudamericane"
+
+#. frequency:1 iso_code_3:alt
+#: DB:language/name:474
+msgid "Southern Altai"
+msgstr "Altai del sud"
+
+#. frequency:1 iso_code_3:kjd
+#: DB:language/name:3309
+msgid "Southern Kiwai"
+msgstr "Kiwai meridionale"
+
+#. frequency:2 iso_code_3:spa
+#: DB:language/name:393
+msgid "Spanish"
+msgstr "Spagnolo"
+
+#. frequency:1 iso_code_3:srn
+#: DB:language/name:480
+msgid "Sranan Tongo"
+msgstr "Sranan tongo"
+
+#. frequency:1 iso_code_3:suk
+#: DB:language/name:398
+msgid "Sukuma"
+msgstr "Sukuma"
+
+#. frequency:0 iso_code_3:sux
+#: DB:language/name:401
+msgid "Sumerian"
+msgstr "Sumero"
+
+#. frequency:1 iso_code_3:sun
+#: DB:language/name:399
+msgid "Sundanese"
+msgstr "Sondanese"
+
+#. frequency:1 iso_code_3:sus
+#: DB:language/name:400
+msgid "Susu"
+msgstr "Susu"
+
+#. frequency:1 iso_code_3:swa
+#: DB:language/name:402
+msgid "Swahili"
+msgstr "Swahili"
+
+#. frequency:1 iso_code_3:ssw
+#: DB:language/name:397
+msgid "Swati"
+msgstr "Swati"
+
+#. frequency:2 iso_code_3:swe
+#: DB:language/name:403
+msgid "Swedish"
+msgstr "Svedese"
+
+#. frequency:1 iso_code_3:syr
+#: DB:language/name:404
+msgid "Syriac"
+msgstr "Siriaco"
+
+#. frequency:1 iso_code_3:tgl
+#: DB:language/name:414
+msgid "Tagalog"
+msgstr "Tagalog"
+
+#. frequency:1 iso_code_3:tah
+#: DB:language/name:405
+msgid "Tahitian"
+msgstr "Tahitiano"
+
+#. frequency:0 iso_code_3:null
+#: DB:language/name:406
+msgid "Tai languages"
+msgstr "Lingue tai"
+
+#. frequency:1 iso_code_3:tgk
+#: DB:language/name:413
+msgid "Tajik"
+msgstr "Tagico"
+
+#. frequency:1 iso_code_3:tmh
+#: DB:language/name:423
+msgid "Tamashek"
+msgstr "Tamashek"
+
+#. frequency:1 iso_code_3:tam
+#: DB:language/name:407
+msgid "Tamil"
+msgstr "Tamil"
+
+#. frequency:1 iso_code_3:tat
+#: DB:language/name:408
+msgid "Tatar"
+msgstr "Tataro"
+
+#. frequency:1 iso_code_3:tel
+#: DB:language/name:409
+msgid "Telugu"
+msgstr "Telugu"
+
+#. frequency:1 iso_code_3:ter
+#: DB:language/name:411
+msgid "Tereno"
+msgstr "Tereno"
+
+#. frequency:1 iso_code_3:tet
+#: DB:language/name:412
+msgid "Tetum"
+msgstr "Tetum"
+
+#. frequency:1 iso_code_3:tha
+#: DB:language/name:415
+msgid "Thai"
+msgstr "Thailandese"
+
+#. frequency:1 iso_code_3:bod
+#: DB:language/name:416
+msgid "Tibetan"
+msgstr "Tibetano"
+
+#. frequency:1 iso_code_3:tig
+#: DB:language/name:417
+msgid "Tigre"
+msgstr "Tigré"
+
+#. frequency:1 iso_code_3:tir
+#: DB:language/name:418
+msgid "Tigrinya"
+msgstr "Tigrino"
+
+#. frequency:1 iso_code_3:tem
+#: DB:language/name:410
+msgid "Timne"
+msgstr "Timne"
+
+#. frequency:1 iso_code_3:tiv
+#: DB:language/name:419
+msgid "Tiv"
+msgstr "Tiv"
+
+#. frequency:1 iso_code_3:tli
+#: DB:language/name:422
+msgid "Tlingit"
+msgstr "Tlingit"
+
+#. frequency:1 iso_code_3:tpi
+#: DB:language/name:426
+msgid "Tok Pisin"
+msgstr "Tok Pisin"
+
+#. frequency:1 iso_code_3:tkl
+#: DB:language/name:420
+msgid "Tokelau"
+msgstr "Tokelauano"
+
+#. frequency:1 iso_code_3:tog
+#: DB:language/name:424
+msgid "Tonga (Nyasa)"
+msgstr "Tonga (Nyasa)"
+
+#. frequency:1 iso_code_3:ton
+#: DB:language/name:425
+msgid "Tonga (Tonga Islands)"
+msgstr "Tongano (Isole Tonga)"
+
+#. frequency:1 iso_code_3:tsi
+#: DB:language/name:427
+msgid "Tsimshian"
+msgstr "Tsimshian"
+
+#. frequency:1 iso_code_3:tso
+#: DB:language/name:429
+msgid "Tsonga"
+msgstr "Tsonga"
+
+#. frequency:1 iso_code_3:tsn
+#: DB:language/name:428
+msgid "Tswana"
+msgstr "Tswana"
+
+#. frequency:1 iso_code_3:tum
+#: DB:language/name:431
+msgid "Tumbuka"
+msgstr "Tumbuka"
+
+#. frequency:0 iso_code_3:null
+#: DB:language/name:432
+msgid "Tupi languages"
+msgstr "Lingue tupi"
+
+#. frequency:2 iso_code_3:tur
+#: DB:language/name:433
+msgid "Turkish"
+msgstr "Turco"
+
+#. frequency:1 iso_code_3:ota
+#: DB:language/name:324
+msgid "Turkish, Ottoman"
+msgstr "Turco ottomano"
+
+#. frequency:1 iso_code_3:tuk
+#: DB:language/name:430
+msgid "Turkmen"
+msgstr "Turkmeno"
+
+#. frequency:1 iso_code_3:tvl
+#: DB:language/name:435
+msgid "Tuvalu"
+msgstr "Tuvaluano"
+
+#. frequency:1 iso_code_3:tyv
+#: DB:language/name:437
+msgid "Tuvinian"
+msgstr "Tuvano"
+
+#. frequency:1 iso_code_3:twi
+#: DB:language/name:436
+msgid "Twi"
+msgstr "Twi"
+
+#. frequency:1 iso_code_3:udm
+#: DB:language/name:438
+msgid "Udmurt"
+msgstr "Udmurto"
+
+#. frequency:0 iso_code_3:uga
+#: DB:language/name:439
+msgid "Ugaritic"
+msgstr "Ugaritico"
+
+#. frequency:1 iso_code_3:uig
+#: DB:language/name:440
+msgid "Uighur"
+msgstr "Uiguro"
+
+#. frequency:1 iso_code_3:ukr
+#: DB:language/name:441
+msgid "Ukrainian"
+msgstr "Ucraino"
+
+#. frequency:1 iso_code_3:umb
+#: DB:language/name:442
+msgid "Umbundu"
+msgstr "Umbundu"
+
+#. frequency:1 iso_code_3:sju
+#: DB:language/name:5995
+msgid "Ume Sami"
+msgstr "Sami di Ume"
+
+#. frequency:0 iso_code_3:mis
+#: DB:language/name:273
+msgid "Uncoded languages"
+msgstr "Lingue non codificate"
+
+#. frequency:0 iso_code_3:und
+#: DB:language/name:443
+msgid "Undetermined"
+msgstr "Non determinato"
+
+#. frequency:1 iso_code_3:urd
+#: DB:language/name:444
+msgid "Urdu"
+msgstr "Urdu"
+
+#. frequency:1 iso_code_3:uzb
+#: DB:language/name:445
+msgid "Uzbek"
+msgstr "Usbeco"
+
+#. frequency:1 iso_code_3:vai
+#: DB:language/name:446
+msgid "Vai"
+msgstr "Vai"
+
+#. frequency:1 iso_code_3:ven
+#: DB:language/name:447
+msgid "Venda"
+msgstr "Venda"
+
+#. frequency:1 iso_code_3:vep
+#: DB:language/name:6913
+msgid "Veps"
+msgstr "Vepso"
+
+#. frequency:1 iso_code_3:vie
+#: DB:language/name:448
+msgid "Vietnamese"
+msgstr "Vietnamita"
+
+#. frequency:1 iso_code_3:vol
+#: DB:language/name:449
+msgid "Volapük"
+msgstr "Volapük"
+
+#. frequency:1 iso_code_3:vot
+#: DB:language/name:450
+msgid "Votic"
+msgstr "Votico"
+
+#. frequency:1 iso_code_3:vro
+#: DB:language/name:6966
+msgid "Võro"
+msgstr "Võro"
+
+#. frequency:0 iso_code_3:null
+#: DB:language/name:451
+msgid "Wakashan languages"
+msgstr "Lingue wakash"
+
+#. frequency:1 iso_code_3:wln
+#: DB:language/name:457
+msgid "Walloon"
+msgstr "Vallone"
+
+#. frequency:1 iso_code_3:war
+#: DB:language/name:453
+msgid "Waray"
+msgstr "Waray"
+
+#. frequency:1 iso_code_3:wbp
+#: DB:language/name:7009
+msgid "Warlpiri"
+msgstr "Warlpiri"
+
+#. frequency:1 iso_code_3:was
+#: DB:language/name:454
+msgid "Washo"
+msgstr "Washo"
+
+#. frequency:1 iso_code_3:cym
+#: DB:language/name:455
+msgid "Welsh"
+msgstr "Gallese"
+
+#. frequency:1 iso_code_3:are
+#: DB:language/name:820
+msgid "Western Arrarnta"
+msgstr "Arrernte occidentale"
+
+#. frequency:1 iso_code_3:wal
+#: DB:language/name:452
+msgid "Wolaitta"
+msgstr "Wolaitta"
+
+#. frequency:1 iso_code_3:wol
+#: DB:language/name:458
+msgid "Wolof"
+msgstr "Wolof"
+
+#. frequency:1 iso_code_3:wya
+#: DB:language/name:7181
+msgid "Wyandot"
+msgstr "Wyandot"
+
+#. frequency:1 iso_code_3:xho
+#: DB:language/name:460
+msgid "Xhosa"
+msgstr "Xhosa"
+
+#. frequency:1 iso_code_3:rys
+#: DB:language/name:5808
+msgid "Yaeyama"
+msgstr "Yaeyama"
+
+#. frequency:1 iso_code_3:sah
+#: DB:language/name:356
+msgid "Yakut"
+msgstr "Sacha"
+
+#. frequency:1 iso_code_3:yao
+#: DB:language/name:461
+msgid "Yao"
+msgstr "Yao"
+
+#. frequency:1 iso_code_3:yap
+#: DB:language/name:462
+msgid "Yapese"
+msgstr "Yapese"
+
+#. frequency:1 iso_code_3:yid
+#: DB:language/name:463
+msgid "Yiddish"
+msgstr "Yiddish"
+
+#. frequency:1 iso_code_3:yor
+#: DB:language/name:464
+msgid "Yoruba"
+msgstr "Yoruba"
+
+#. frequency:1 iso_code_3:yua
+#: DB:language/name:7636
+msgid "Yucateco"
+msgstr "Yucateco"
+
+#. frequency:1 iso_code_3:yue
+#: DB:language/name:7640
+msgid "Yue Chinese"
+msgstr "Cantonese"
+
+#. frequency:0 iso_code_3:null
+#: DB:language/name:465
+msgid "Yupik languages"
+msgstr "Lingue yupik"
+
+#. frequency:0 iso_code_3:null
+#: DB:language/name:469
+msgid "Zande languages"
+msgstr "Lingue zande"
+
+#. frequency:1 iso_code_3:zap
+#: DB:language/name:466
+msgid "Zapotec"
+msgstr "Zapoteco"
+
+#. frequency:1 iso_code_3:dje
+#: DB:language/name:2009
+msgid "Zarma"
+msgstr "Zarma"
+
+#. frequency:1 iso_code_3:zza
+#: DB:language/name:483
+msgid "Zaza"
+msgstr "Zazaki"
+
+#. frequency:1 iso_code_3:zen
+#: DB:language/name:467
+msgid "Zenaga"
+msgstr "Zenaga"
+
+#. frequency:1 iso_code_3:zha
+#: DB:language/name:468
+msgid "Zhuang"
+msgstr "Zhuang"
+
+#. frequency:1 iso_code_3:zul
+#: DB:language/name:470
+msgid "Zulu"
+msgstr "Zulu"
+
+#. frequency:1 iso_code_3:zun
+#: DB:language/name:471
+msgid "Zuni"
+msgstr "Zuni"
+
+#. frequency:1 iso_code_3:qaa
+#: DB:language/name:24
+msgid "[Artificial (Other)]"
+msgstr "[Artificiale (altra)]"
+
+#. frequency:2 iso_code_3:mul
+#: DB:language/name:284
+msgid "[Multiple languages]"
+msgstr "[Più lingue]"

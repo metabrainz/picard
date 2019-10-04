@@ -24,3 +24,9 @@ file_filter = po/attributes/<lang>.po
 source_file = po/attributes/attributes.pot
 source_lang = en
 type = PO
+
+[musicbrainz.languages-9]
+file_filter = po/languages/<lang>.po
+source_file = po/languages/languages.pot
+source_lang = en
+type = PO
