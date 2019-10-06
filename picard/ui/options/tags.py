@@ -57,6 +57,8 @@ class TagsOptionsPage(OptionsPage):
         config.BoolOption("setting", "preserve_timestamps", False),
         config.BoolOption("setting", "aac_save_ape", True),
         config.BoolOption("setting", "remove_ape_from_aac", False),
+        config.BoolOption("setting", "ac3_save_ape", True),
+        config.BoolOption("setting", "remove_ape_from_ac3", False),
     ]
 
     def __init__(self, parent=None):
@@ -71,6 +73,7 @@ class TagsOptionsPage(OptionsPage):
         self.ui.preserved_tags.textEdited.connect(self.preserved_tags_edited)
         self.completer.activated.connect(self.completer_activated)
         self.ui.aac_no_tags.toggled.connect(self.ui.remove_ape_from_aac.setEnabled)
+        self.ui.ac3_no_tags.toggled.connect(self.ui.remove_ape_from_ac3.setEnabled)
 
     def load(self):
         self.ui.write_tags.setChecked(not config.setting["dont_write_tags"])
@@ -98,6 +101,12 @@ class TagsOptionsPage(OptionsPage):
             self.ui.aac_no_tags.setChecked(True)
         self.ui.remove_ape_from_aac.setChecked(config.setting["remove_ape_from_aac"])
         self.ui.remove_ape_from_aac.setEnabled(not config.setting["aac_save_ape"])
+        if config.setting["ac3_save_ape"]:
+            self.ui.ac3_save_ape.setChecked(True)
+        else:
+            self.ui.ac3_no_tags.setChecked(True)
+        self.ui.remove_ape_from_ac3.setChecked(config.setting["remove_ape_from_ac3"])
+        self.ui.remove_ape_from_ac3.setEnabled(not config.setting["ac3_save_ape"])
         self.update_encodings()
 
     def save(self):
@@ -122,6 +131,8 @@ class TagsOptionsPage(OptionsPage):
         config.setting["preserved_tags"] = self.ui.preserved_tags.text()
         config.setting["aac_save_ape"] = self.ui.aac_save_ape.isChecked()
         config.setting["remove_ape_from_aac"] = self.ui.remove_ape_from_aac.isChecked()
+        config.setting["ac3_save_ape"] = self.ui.ac3_save_ape.isChecked()
+        config.setting["remove_ape_from_ac3"] = self.ui.remove_ape_from_ac3.isChecked()
         self.tagger.window.enable_tag_saving_action.setChecked(not config.setting["dont_write_tags"])
 
     def update_encodings(self, force_utf8=False):

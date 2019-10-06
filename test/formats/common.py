@@ -33,6 +33,7 @@ settings = {
     'write_id3v23': False,
     'itunes_compatible_grouping': False,
     'aac_save_ape': True,
+    'ac3_save_ape': True,
 }
 
 
