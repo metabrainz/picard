@@ -30,14 +30,17 @@ from .mutagenext import ac3
 
 
 class AC3File(APEv2File):
-    EXTENSIONS = [".ac3"]
+    EXTENSIONS = [".ac3", ".eac3"]
     NAME = "AC3"
     _File = ac3.AC3APEv2
 
     def _info(self, metadata, file):
         super()._info(metadata, file)
+        type = file.info.type or self.NAME
         if file.tags:
-            metadata['~format'] = "%s (APEv2)" % self.NAME
+            metadata['~format'] = "%s (APEv2)" % type
+        else:
+            metadata['~format'] = type
 
     def _save(self, filename, metadata):
         if config.setting['ac3_save_ape']:

@@ -15,7 +15,12 @@ from picard.metadata import Metadata
 class AC3WithAPETest(CommonApeTests.ApeTestCase):
     testfile = 'test.ac3'
     supports_ratings = False
-    expected_info = {}
+    expected_info = {
+        'length': 106,
+        '~bitrate': '192.0',
+        '~sample_rate': '44100',
+        '~channels': '2',
+    }
     unexpected_info = ['~video']
 
     def setUp(self):
@@ -55,6 +60,8 @@ class AC3NoTagsTest(CommonTests.BaseFileTestCase):
     def test_info_format(self):
         metadata = load_metadata(os.path.join('test', 'data', 'test.ac3'))
         self.assertEqual('AC3', metadata['~format'])
+        metadata = load_metadata(os.path.join('test', 'data', 'test.eac3'))
+        self.assertEqual('EAC3', metadata['~format'])
         metadata = load_metadata(os.path.join('test', 'data', 'test-apev2.ac3'))
         self.assertEqual('AC3 (APEv2)', metadata['~format'])
 
@@ -63,3 +70,22 @@ class AC3NoTagsTest(CommonTests.BaseFileTestCase):
         self.assertTrue(AC3File.supports_tag('title'))
         config.setting['ac3_save_ape'] = False
         self.assertFalse(AC3File.supports_tag('title'))
+
+
+class EAC3Test(CommonTests.SimpleFormatsTestCase):
+    testfile = 'test.eac3'
+    expected_info = {
+        'length': 107,
+        '~sample_rate': '44100',
+        '~channels': '2',
+    }
+    unexpected_info = ['~video']
+
+    def setUp(self):
+        super().setUp()
+        config.setting['ac3_save_ape'] = True
+
+    def test_bitrate(self):
+        # For EAC3 bitrate is calculated and often a fractional value
+        metadata = load_metadata(os.path.join('test', 'data', 'test.ac3'))
+        self.assertAlmostEqual(192.0, float(metadata['~bitrate']))
