@@ -428,14 +428,22 @@ class picard_get_po_files(Command):
     def run(self):
         if tx_executable is None:
             sys.exit('Transifex client executable (tx) not found.')
-        txpull_cmd = [
+        self.spawn([
             tx_executable,
             'pull',
             '--force',
             '--all',
             '--minimum-perc=%d' % self.minimum_perc
-        ]
-        self.spawn(txpull_cmd)
+        ])
+        self.spawn([
+            tx_executable,
+            'pull',
+            '--force',
+            '--resource',
+            'musicbrainz.picard',
+            '--language',
+            'en_AU,en_GB,en_CA'
+        ])
 
 
 _regen_pot_description = "Regenerate po/picard.pot, parsing source tree for new or updated strings"
