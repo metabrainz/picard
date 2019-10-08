@@ -70,9 +70,12 @@ class CDLookupOptionsPage(OptionsPage):
     def save(self):
         if AUTO_DETECT_DRIVES:
             config.setting["cd_lookup_device"] = self.ui.cd_lookup_device.currentText()
+            drives = self.drives
         else:
-            config.setting["cd_lookup_device"] = self.ui.cd_lookup_device.text()
-        self.tagger.window.update_cd_lookup_drives(self.drives)
+            selected_drive = self.ui.cd_lookup_device.text()
+            config.setting["cd_lookup_device"] = selected_drive
+            drives = [selected_drive]
+        self.tagger.window.update_cd_lookup_drives(drives)
 
 
 register_options_page(CDLookupOptionsPage)
