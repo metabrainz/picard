@@ -46,8 +46,7 @@ class CDLookupOptionsPage(OptionsPage):
     ACTIVE = True
 
     options = [
-        config.TextOption("setting", "cd_lookup_device",
-                          ",".join(DEFAULT_DRIVES)),
+        config.TextOption("setting", "cd_lookup_device", ",".join(DEFAULT_DRIVES)),
     ]
 
     def __init__(self, parent=None):
@@ -55,27 +54,28 @@ class CDLookupOptionsPage(OptionsPage):
         self.ui = Ui_CDLookupOptionsPage()
         self.ui.setupUi(self)
         if AUTO_DETECT_DRIVES:
-            self.drives = get_cdrom_drives()
-            self.ui.cd_lookup_device.addItems(self.drives)
+            self._device_list = get_cdrom_drives()
+            self.ui.cd_lookup_device.addItems(self._device_list)
 
     def load(self):
+        device = config.setting["cd_lookup_device"]
         if AUTO_DETECT_DRIVES:
             try:
-                self.ui.cd_lookup_device.setCurrentIndex(self.drives.index(config.setting["cd_lookup_device"]))
+                self.ui.cd_lookup_device.setCurrentIndex(self._device_list.index(device))
             except ValueError:
                 pass
         else:
-            self.ui.cd_lookup_device.setText(config.setting["cd_lookup_device"])
+            self.ui.cd_lookup_device.setText(device)
 
     def save(self):
         if AUTO_DETECT_DRIVES:
-            config.setting["cd_lookup_device"] = self.ui.cd_lookup_device.currentText()
-            drives = self.drives
+            device = self.ui.cd_lookup_device.currentText()
+            device_list = self._device_list
         else:
-            selected_drive = self.ui.cd_lookup_device.text()
-            config.setting["cd_lookup_device"] = selected_drive
-            drives = [selected_drive]
-        self.tagger.window.update_cd_lookup_drives(drives)
+            device = self.ui.cd_lookup_device.text()
+            device_list = [device]
+        config.setting["cd_lookup_device"] = device
+        self.tagger.window.update_cd_lookup_drives(device_list)
 
 
 register_options_page(CDLookupOptionsPage)
