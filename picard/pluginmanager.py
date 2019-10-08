@@ -220,8 +220,8 @@ class PluginManager(QtCore.QObject):
         for name in sorted(names):
             try:
                 self._load_plugin_from_directory(name, plugindir)
-            except Exception as e:
-                log.error("Unable to load plugin '%s': %s", name, e)
+            except Exception:
+                self.plugin_error(name, _("Unable to load plugin '%s'"), name, log_func=log.exception)
 
     def _get_plugin_index_by_name(self, name):
         for index, plugin in enumerate(self.plugins):
