@@ -26,7 +26,6 @@ import json
 import os.path
 import shutil
 import tempfile
-import traceback
 import zipfile
 import zipimport
 
@@ -289,8 +288,8 @@ class PluginManager(QtCore.QObject):
             error = _("Plugin %r has an invalid API version string : %s")
             self.plugin_error(name, error, name, e)
         except BaseException:
-            error = _("Plugin %r : %s")
-            self.plugin_error(name, error, name, traceback.format_exc())
+            error = _("Plugin %r")
+            self.plugin_error(name, error, name, log_func=log.exception)
         if module_file is not None:
             module_file.close()
         return plugin
