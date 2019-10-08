@@ -73,7 +73,6 @@ class TagGenreFilterTest(PicardTestCase):
             -/r[io]ck$/
             -/disco+/
             +/discoooo/
-            +/*/
         """
         tag_filter = TagGenreFilter(filters)
 
@@ -90,6 +89,31 @@ class TagGenreFilterTest(PicardTestCase):
         self.assertTrue(tag_filter.skip('disco'))
         self.assertTrue(tag_filter.skip('xdiscox'))
         self.assertTrue(tag_filter.skip('xdiscooox'))
+        self.assertFalse(tag_filter.skip('xdiscoooox'))
+
+    def test_regex_filter_keep_all(self):
+        filters = """
+            -/^j.zz/
+            -/r[io]ck$/
+            -/disco+/
+            +/discoooo/
+            +/.*/
+        """
+        tag_filter = TagGenreFilter(filters)
+
+        self.assertFalse(tag_filter.skip('jazz'))
+        self.assertFalse(tag_filter.skip('jizz'))
+        self.assertFalse(tag_filter.skip('jazz blues'))
+        self.assertFalse(tag_filter.skip('blues jazz'))
+
+        self.assertFalse(tag_filter.skip('rock'))
+        self.assertFalse(tag_filter.skip('blues rock'))
+        self.assertFalse(tag_filter.skip('blues rick'))
+        self.assertFalse(tag_filter.skip('rock blues'))
+
+        self.assertFalse(tag_filter.skip('disco'))
+        self.assertFalse(tag_filter.skip('xdiscox'))
+        self.assertFalse(tag_filter.skip('xdiscooox'))
         self.assertFalse(tag_filter.skip('xdiscoooox'))
 
     def test_uppercased_filter(self):
