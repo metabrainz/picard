@@ -50,7 +50,7 @@ comment
 <p><u>Wildcard filtering:</u></p>
 <p>
 <b>-*word</b>: exclude all genres ending with <i>word</i><br/>
-<b>+word*</b>: exclude all genres starting with <i>word</i><br/>
+<b>+word*</b>: include all genres starting with <i>word</i><br/>
 <b>-w*rd</b>: exclude all genres starting with <i>w</i> and ending with <i>rd</i>
 </p>
 <p><u>Regular expressions filtering (Python re syntax):</u></p>
