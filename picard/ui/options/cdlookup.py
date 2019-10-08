@@ -46,8 +46,7 @@ class CDLookupOptionsPage(OptionsPage):
     ACTIVE = True
 
     options = [
-        config.TextOption("setting", "cd_lookup_device",
-                          ",".join(DEFAULT_DRIVES)),
+        config.TextOption("setting", "cd_lookup_device", ",".join(DEFAULT_DRIVES)),
     ]
 
     def __init__(self, parent=None):
@@ -59,22 +58,23 @@ class CDLookupOptionsPage(OptionsPage):
             self.ui.cd_lookup_device.addItems(self.drives)
 
     def load(self):
+        device = config.setting["cd_lookup_device"]
         if AUTO_DETECT_DRIVES:
             try:
-                self.ui.cd_lookup_device.setCurrentIndex(self.drives.index(config.setting["cd_lookup_device"]))
+                self.ui.cd_lookup_device.setCurrentIndex(self.drives.index(device))
             except ValueError:
                 pass
         else:
-            self.ui.cd_lookup_device.setText(config.setting["cd_lookup_device"])
+            self.ui.cd_lookup_device.setText(device)
 
     def save(self):
         if AUTO_DETECT_DRIVES:
-            config.setting["cd_lookup_device"] = self.ui.cd_lookup_device.currentText()
+            device = self.ui.cd_lookup_device.currentText()
             drives = self.drives
         else:
-            selected_drive = self.ui.cd_lookup_device.text()
-            config.setting["cd_lookup_device"] = selected_drive
-            drives = [selected_drive]
+            device = self.ui.cd_lookup_device.text()
+            drives = [device]
+        config.setting["cd_lookup_device"] = device
         self.tagger.window.update_cd_lookup_drives(drives)
 
 
