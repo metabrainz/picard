@@ -1,7 +1,21 @@
+# Version 2.2.2 - 2019-10-08
+
+## Bug-fix
+- [PICARD-1606](https://tickets.metabrainz.org/browse/PICARD-1606) - Crashes on opening options with broken plugin
+- [PICARD-1612](https://tickets.metabrainz.org/browse/PICARD-1612) - Trackpad tap is not working properly on macOS
+- [PICARD-1614](https://tickets.metabrainz.org/browse/PICARD-1614) - macOS: Incorrect 'LSMinimumSystemVersion'
+- [PICARD-1618](https://tickets.metabrainz.org/browse/PICARD-1618) - macOS and Windows packages built without C astrcmp
+- [PICARD-1621](https://tickets.metabrainz.org/browse/PICARD-1621) - Lookup CD dropdown does not list additional drives
+- [PICARD-1624](https://tickets.metabrainz.org/browse/PICARD-1624) - Updating default CD device in options does not change default for keyboard shortcut
+
+## Improvement
+- [PICARD-1610](https://tickets.metabrainz.org/browse/PICARD-1610) - Make the labels in Options > User Interface > Colours wider
+- [PICARD-1619](https://tickets.metabrainz.org/browse/PICARD-1619) - Grey out cover art providers list when cover art is disabled
+
+
 # Version 2.2.1 - 2019-09-20
 
-## Bug
-
+## Bug-fix
 - [PICARD-1603](https://tickets.metabrainz.org/browse/PICARD-1603) - Translations from picard/ui/colors.py don’t show up in Picard
 - [PICARD-1604](https://tickets.metabrainz.org/browse/PICARD-1604) - Windows install is not using Qt default translations
 - [PICARD-1607](https://tickets.metabrainz.org/browse/PICARD-1607) - Upgrading a plugin displays the dialog box multiple times
@@ -9,7 +23,6 @@
 - [PICARD-1609](https://tickets.metabrainz.org/browse/PICARD-1609) - Picard About shows Qt version PyQt was build against, not actually used Qt
 
 ## Improvement
-
 - [PICARD-1602](https://tickets.metabrainz.org/browse/PICARD-1602) - Tests should not be included in the sdist package
 
 
