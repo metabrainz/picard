@@ -63,8 +63,8 @@ TOOLTIP_TEST_GENRES_FILTER = N_("""<html><head/><body>
 This playground will not be preserved on Options exit.
 </p>
 <p>
-Red background means the tag will be skipped<br/>
-Green background means the tag will be kept
+Red background means the tag will be skipped.<br/>
+Green background means the tag will be kept.
 </p>
 </body></html>""")
 
