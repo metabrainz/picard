@@ -9,14 +9,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2019-09-26 10:11+0200\n"
-"PO-Revision-Date: 2019-09-26 13:55+0000\n"
+"POT-Creation-Date: 2019-10-04 09:41+0200\n"
+"PO-Revision-Date: 2019-10-04 12:49+0000\n"
 "Last-Translator: Michael Wiencek <mwtuea@gmail.com>\n"
 "Language-Team: Persian (http://www.transifex.com/musicbrainz/musicbrainz/language/fa/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.7.0\n"
+"Generated-By: Babel 2.6.0\n"
 "Language: fa\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
@@ -518,7 +518,7 @@ msgstr ""
 msgid "C&lear all"
 msgstr ""
 
-#: picard/coverart/providers/caa.py:305 picard/ui/options/dialog.py:99
+#: picard/coverart/providers/caa.py:305 picard/ui/options/dialog.py:102
 msgid "Restore &Defaults"
 msgstr ""
 
@@ -2292,35 +2292,39 @@ msgstr ""
 msgid "Cover Art"
 msgstr ""
 
-#: picard/ui/options/dialog.py:97
+#: picard/ui/options/dialog.py:100
 msgid "&Restore all Defaults"
 msgstr ""
 
-#: picard/ui/options/dialog.py:98
+#: picard/ui/options/dialog.py:101
 msgid "Reset all of Picard's settings"
 msgstr ""
 
-#: picard/ui/options/dialog.py:100
+#: picard/ui/options/dialog.py:103
 msgid "Reset all settings for current option page"
 msgstr ""
 
-#: picard/ui/options/dialog.py:103
+#: picard/ui/options/dialog.py:106
 msgid "Make It So!"
 msgstr ""
 
-#: picard/ui/options/dialog.py:182
+#: picard/ui/options/dialog.py:190
+msgid "Unexpected error"
+msgstr ""
+
+#: picard/ui/options/dialog.py:210
 msgid "You are about to reset your options for this page."
 msgstr ""
 
-#: picard/ui/options/dialog.py:186
+#: picard/ui/options/dialog.py:214
 msgid "Warning! This will reset all of your settings."
 msgstr ""
 
-#: picard/ui/options/dialog.py:193
+#: picard/ui/options/dialog.py:221
 msgid "Confirm Reset"
 msgstr ""
 
-#: picard/ui/options/dialog.py:194
+#: picard/ui/options/dialog.py:222
 msgid "Are you sure?"
 msgstr ""
 

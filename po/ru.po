@@ -21,14 +21,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2019-09-26 10:11+0200\n"
-"PO-Revision-Date: 2019-09-26 13:55+0000\n"
-"Last-Translator: Александр Жибарь <santer1986@gmail.com>\n"
+"POT-Creation-Date: 2019-10-04 09:41+0200\n"
+"PO-Revision-Date: 2019-10-04 12:49+0000\n"
+"Last-Translator: Michael Wiencek <mwtuea@gmail.com>\n"
 "Language-Team: Russian (http://www.transifex.com/musicbrainz/musicbrainz/language/ru/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.7.0\n"
+"Generated-By: Babel 2.6.0\n"
 "Language: ru\n"
 "Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);\n"
 
@@ -540,7 +540,7 @@ msgstr ""
 msgid "C&lear all"
 msgstr ""
 
-#: picard/coverart/providers/caa.py:305 picard/ui/options/dialog.py:99
+#: picard/coverart/providers/caa.py:305 picard/ui/options/dialog.py:102
 msgid "Restore &Defaults"
 msgstr "Восстановить значения по умолчанию"
 
@@ -2326,35 +2326,39 @@ msgstr "Расширенные"
 msgid "Cover Art"
 msgstr "Обложка"
 
-#: picard/ui/options/dialog.py:97
+#: picard/ui/options/dialog.py:100
 msgid "&Restore all Defaults"
 msgstr "Восстановить все значения по умолчанию"
 
-#: picard/ui/options/dialog.py:98
+#: picard/ui/options/dialog.py:101
 msgid "Reset all of Picard's settings"
 msgstr "Сбросить все настройки"
 
-#: picard/ui/options/dialog.py:100
+#: picard/ui/options/dialog.py:103
 msgid "Reset all settings for current option page"
 msgstr "Сбросить настройки для текущей страницы опций"
 
-#: picard/ui/options/dialog.py:103
+#: picard/ui/options/dialog.py:106
 msgid "Make It So!"
 msgstr "Сделайте это!"
 
-#: picard/ui/options/dialog.py:182
+#: picard/ui/options/dialog.py:190
+msgid "Unexpected error"
+msgstr ""
+
+#: picard/ui/options/dialog.py:210
 msgid "You are about to reset your options for this page."
 msgstr "Вы собираетесь сбросить настройки для этой страницы."
 
-#: picard/ui/options/dialog.py:186
+#: picard/ui/options/dialog.py:214
 msgid "Warning! This will reset all of your settings."
 msgstr "Внимание! Это сбросит все ваши настройки."
 
-#: picard/ui/options/dialog.py:193
+#: picard/ui/options/dialog.py:221
 msgid "Confirm Reset"
 msgstr "Подтвердите сброс"
 
-#: picard/ui/options/dialog.py:194
+#: picard/ui/options/dialog.py:222
 msgid "Are you sure?"
 msgstr "Вы уверены?"
 

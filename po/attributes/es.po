@@ -24,6 +24,7 @@
 # Luis zas <dalues@gmail.com>, 2017
 # Marta PD <marta_puerto_d@yahoo.com>, 2014
 # Mathias Gonzalez <mathiias.gonzalez@gmail.com>, 2015
+# Maurizio Corripio <perromaldo@outlook.com>, 2019
 # Nicolás Tamargo <email address hidden>, 2011-2012
 # Nicolás Tamargo <reosarevok@gmail.com>, 2011-2013,2015,2019
 # Pier Jose Gotta Perez <piegope@protonmail.com>, 2017
@@ -36,8 +37,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2019-08-08 09:30+0000\n"
-"Last-Translator: yvanz\n"
+"PO-Revision-Date: 2019-10-07 23:29+0000\n"
+"Last-Translator: Maurizio Corripio <perromaldo@outlook.com>\n"
 "Language-Team: Spanish (http://www.transifex.com/musicbrainz/musicbrainz/language/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1255,7 +1256,7 @@ msgstr "Producción de bootlegs"
 #: DB:release_packaging/name:19
 msgctxt "release_packaging"
 msgid "Box"
-msgstr ""
+msgstr "Caja"
 
 #: DB:work_attribute_type_allowed_value/value:607
 msgctxt "work_attribute_type_allowed_value"
@@ -5004,12 +5005,12 @@ msgstr "Nombre de lugar"
 #: DB:release_packaging/description:20
 msgctxt "release_packaging"
 msgid "Plastic CD tray inside a cardboard slipcover"
-msgstr ""
+msgstr "Bandeja de plástico para CD dentro de una funda de cartón"
 
 #: DB:release_packaging/name:18
 msgctxt "release_packaging"
 msgid "Plastic Sleeve"
-msgstr ""
+msgstr "Funda de Plástico"
 
 #: DB:work_type/name:28
 msgctxt "work_type"
@@ -5780,7 +5781,7 @@ msgstr "Sitārkhānī"
 #: DB:release_packaging/name:20
 msgctxt "release_packaging"
 msgid "Slidepack"
-msgstr ""
+msgstr "Paquete de diapositivas"
 
 #: DB:release_packaging/name:2
 msgctxt "release_packaging"
@@ -6203,7 +6204,7 @@ msgctxt "medium_format"
 msgid ""
 "The CD side of a vinyl + CD VinylDisc. The vinyl side should be added as a "
 "separate medium."
-msgstr ""
+msgstr "El lado CD de un vinilo + CD VinylDisc. El lado de vinilo debería ser añadido como un medio separado."
 
 #: DB:medium_format/description:60
 msgctxt "medium_format"
@@ -6240,7 +6241,7 @@ msgctxt "medium_format"
 msgid ""
 "The DVD side of a vinyl + DVD VinylDisc. The vinyl side should be added as a"
 " separate medium."
-msgstr ""
+msgstr "El lado DVD de un vinilo + DVD VinylDisc. El lado de vinilo debería ser añadido como un medio separado."
 
 #: DB:medium_format/description:64
 msgctxt "medium_format"
@@ -6274,7 +6275,7 @@ msgctxt "medium_format"
 msgid ""
 "The vinyl side of a VinylDisc. The CD or DVD side should be added as a "
 "separate medium."
-msgstr ""
+msgstr "El lado de vinilo de un VinylDisc. El CD o DVD debería ser añadido como un medio separado."
 
 #: DB:work_type/description:23
 msgctxt "work_type"
@@ -6576,17 +6577,17 @@ msgstr "Disco de vinilo"
 #: DB:medium_format/name:82
 msgctxt "medium_format"
 msgid "VinylDisc (CD side)"
-msgstr ""
+msgstr "VinylDisc (lado de CD)"
 
 #: DB:medium_format/name:80
 msgctxt "medium_format"
 msgid "VinylDisc (DVD side)"
-msgstr ""
+msgstr "VinylDisc (lado de DVD)"
 
 #: DB:medium_format/name:81
 msgctxt "medium_format"
 msgid "VinylDisc (Vinyl side)"
-msgstr ""
+msgstr "VinylDisc (Lado de Vinilo)"
 
 #: DB:work_attribute_type_allowed_value/value:259
 #: DB:work_attribute_type_allowed_value/value:1047

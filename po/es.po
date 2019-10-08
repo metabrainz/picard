@@ -13,6 +13,7 @@
 # Jaime Marquínez Ferrándiz, 2018
 # Jaime Marquínez Ferrándiz, 2019
 # Jeremias Brown <comercialspam@gmail.com>, 2018
+# Maurizio Corripio <perromaldo@outlook.com>, 2019
 # Nicolás Tamargo <reosarevok@gmail.com>, 2012
 # Peter Cuevas H <peter.cuevas6@gmail.com>, 2017
 # Philipp Wolfer <ph.wolfer@gmail.com>, 2019
@@ -21,14 +22,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2019-09-26 10:11+0200\n"
-"PO-Revision-Date: 2019-09-26 13:55+0000\n"
-"Last-Translator: Ian McEwen <ianmcorvidae@ianmcorvidae.net>\n"
+"POT-Creation-Date: 2019-10-04 09:41+0200\n"
+"PO-Revision-Date: 2019-10-08 02:27+0000\n"
+"Last-Translator: Maurizio Corripio <perromaldo@outlook.com>\n"
 "Language-Team: Spanish (http://www.transifex.com/musicbrainz/musicbrainz/language/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.7.0\n"
+"Generated-By: Babel 2.6.0\n"
 "Language: es\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
@@ -530,7 +531,7 @@ msgstr "Excluir todo"
 msgid "C&lear all"
 msgstr "Limpiar todo"
 
-#: picard/coverart/providers/caa.py:305 picard/ui/options/dialog.py:99
+#: picard/coverart/providers/caa.py:305 picard/ui/options/dialog.py:102
 msgid "Restore &Defaults"
 msgstr "Restaurar los valores predeterminados"
 
@@ -591,43 +592,43 @@ msgstr[1] "%s (%i publicaciones)"
 
 #: picard/ui/colors.py:33
 msgid "Errored entity"
-msgstr ""
+msgstr "Entidad incorrecta"
 
 #: picard/ui/colors.py:34
 msgid "Pending entity"
-msgstr ""
+msgstr "Entidad pendiente"
 
 #: picard/ui/colors.py:35
 msgid "Saved entity"
-msgstr ""
+msgstr "Entidad guardada"
 
 #: picard/ui/colors.py:36
 msgid "Log view text (debug)"
-msgstr ""
+msgstr "Texto de vista de registro (depuración)"
 
 #: picard/ui/colors.py:37
 msgid "Log view text (error)"
-msgstr ""
+msgstr "Texto de vista de registro (error)"
 
 #: picard/ui/colors.py:38
 msgid "Log view text (info)"
-msgstr ""
+msgstr "Texto de vista de registro (info)"
 
 #: picard/ui/colors.py:39
 msgid "Log view text (warning)"
-msgstr ""
+msgstr "Texto de vista de registro (advertencia)"
 
 #: picard/ui/colors.py:40
 msgid "Tag added"
-msgstr ""
+msgstr "Etiqueta añadida"
 
 #: picard/ui/colors.py:41
 msgid "Tag changed"
-msgstr ""
+msgstr "Etiqueta cambiada"
 
 #: picard/ui/colors.py:42
 msgid "Tag removed"
-msgstr ""
+msgstr "Etiqueta eliminada"
 
 #: picard/ui/coverartbox.py:261
 msgid "View release on MusicBrainz"
@@ -1485,24 +1486,24 @@ msgstr "El proxy %s requiere inicio de sesión. Por favor ingrese su nombre de u
 #: picard/ui/playertoolbar.py:166
 msgid ""
 "Internal player: The format of a media resource isn't (fully) supported"
-msgstr ""
+msgstr "Reproductor interno: El formato de un medio no es (completamente) compatible"
 
 #: picard/ui/playertoolbar.py:168
 msgid ""
 "Internal player: There are not the appropriate permissions to play a media "
 "resource"
-msgstr ""
+msgstr "Reproductor interno: No hay permisos apropiados para reproducir un medio"
 
 #: picard/ui/playertoolbar.py:170
 msgid ""
 "Internal player: A valid playback service was not found, playback cannot "
 "proceed"
-msgstr ""
+msgstr "Reproductor interno: No se encontró un servicio de reproducción válido, la reproducción no puede proceder"
 
 #: picard/ui/playertoolbar.py:172
 #, python-format
 msgid "Internal player: error, code=%d, msg=%s"
-msgstr ""
+msgstr "Reproductor interno: error, código=%d, msj=%s"
 
 #: picard/ui/playertoolbar.py:178
 msgid "Player"
@@ -1514,7 +1515,7 @@ msgstr "Reproducir"
 
 #: picard/ui/playertoolbar.py:187
 msgid "Play selected files"
-msgstr ""
+msgstr "Reproducir los archivos seleccionados"
 
 #: picard/ui/playertoolbar.py:193
 msgid "Pause"
@@ -1522,7 +1523,7 @@ msgstr "Pausar"
 
 #: picard/ui/playertoolbar.py:194
 msgid "Pause or resume current playback"
-msgstr ""
+msgstr "Pausar o reanudar la reproducción actual"
 
 #: picard/ui/playertoolbar.py:410
 #, python-format
@@ -1531,11 +1532,11 @@ msgstr "%1.1f ×"
 
 #: picard/ui/playertoolbar.py:416
 msgid "Change playback speed"
-msgstr ""
+msgstr "Cambiar velocidad de reproducción"
 
 #: picard/ui/playertoolbar.py:423
 msgid "Playback speed"
-msgstr ""
+msgstr "Velocidad de reproducción"
 
 #: picard/ui/playertoolbar.py:470
 #, python-format
@@ -1544,11 +1545,11 @@ msgstr "%d%%"
 
 #: picard/ui/playertoolbar.py:476
 msgid "Change audio volume"
-msgstr ""
+msgstr "Cambiar volumen de audio"
 
 #: picard/ui/playertoolbar.py:482
 msgid "Audio volume"
-msgstr ""
+msgstr "Volumen de audio"
 
 #: picard/ui/scriptsmenu.py:58
 #, python-format
@@ -1612,7 +1613,7 @@ msgstr "Opciones avanzadas"
 
 #: picard/ui/ui_options_advanced.py:105
 msgid "Include sub-folders when adding files from folder"
-msgstr ""
+msgstr "Incluir subcarpetas al añadir archivos desde carpeta"
 
 #: picard/ui/ui_options_advanced.py:106
 msgid "Ignore track duration difference under this number of seconds"
@@ -1899,7 +1900,7 @@ msgstr "Quitar botón de la Barra de herramientas"
 #: picard/ui/options/interface_colors.py:82
 #: picard/ui/ui_options_interface_colors.py:48
 msgid "Colors"
-msgstr ""
+msgstr "Colores"
 
 #: picard/ui/ui_options_matching.py:69
 msgid "Thresholds"
@@ -2304,35 +2305,39 @@ msgstr "Avanzado"
 msgid "Cover Art"
 msgstr "Carátula"
 
-#: picard/ui/options/dialog.py:97
+#: picard/ui/options/dialog.py:100
 msgid "&Restore all Defaults"
 msgstr "Restaurar todos los Valores Predeterminados"
 
-#: picard/ui/options/dialog.py:98
+#: picard/ui/options/dialog.py:101
 msgid "Reset all of Picard's settings"
 msgstr "Restablecer todos los ajustes de Picard"
 
-#: picard/ui/options/dialog.py:100
+#: picard/ui/options/dialog.py:103
 msgid "Reset all settings for current option page"
 msgstr "Restablecer todas los ajustes para la página de opción actual"
 
-#: picard/ui/options/dialog.py:103
+#: picard/ui/options/dialog.py:106
 msgid "Make It So!"
 msgstr "¡Que Sea Así!"
 
-#: picard/ui/options/dialog.py:182
+#: picard/ui/options/dialog.py:190
+msgid "Unexpected error"
+msgstr "Error inesperado"
+
+#: picard/ui/options/dialog.py:210
 msgid "You are about to reset your options for this page."
 msgstr "Estás a punto de restablecer tus opciones para esta página."
 
-#: picard/ui/options/dialog.py:186
+#: picard/ui/options/dialog.py:214
 msgid "Warning! This will reset all of your settings."
 msgstr "¡Advertencia! Esto restablecerá todos sus ajustes."
 
-#: picard/ui/options/dialog.py:193
+#: picard/ui/options/dialog.py:221
 msgid "Confirm Reset"
 msgstr "Confirmar Restablecer"
 
-#: picard/ui/options/dialog.py:194
+#: picard/ui/options/dialog.py:222
 msgid "Are you sure?"
 msgstr "¿Está seguro?"
 
@@ -2468,17 +2473,17 @@ msgstr "Arrastra y Suelta para reordenar"
 
 #: picard/ui/options/interface_colors.py:57
 msgid "Choose a color"
-msgstr ""
+msgstr "Escoja un color"
 
 #: picard/ui/options/interface_colors.py:136
 msgid "Colors changed"
-msgstr ""
+msgstr "Colores cambiados"
 
 #: picard/ui/options/interface_colors.py:137
 msgid ""
 "You have changed the interface colors. You may have to restart Picard in "
 "order for the changes to take effect."
-msgstr ""
+msgstr "Ha cambiado los colores de la interfaz. Puede que necesite reiniciar Picard para que los cambios surtan efecto."
 
 #: picard/ui/options/matching.py:32
 msgid "Matching"
@@ -3116,39 +3121,39 @@ msgstr "MusicBrainz ID Original de Lanzamiento"
 
 #: picard/util/tags.py:99
 msgid "ReplayGain Album Gain"
-msgstr ""
+msgstr "ReplayGain Ganancia del Álbum"
 
 #: picard/util/tags.py:100
 msgid "ReplayGain Album Peak"
-msgstr ""
+msgstr "ReplayGain Pico del Álbum"
 
 #: picard/util/tags.py:101
 msgid "ReplayGain Album Range"
-msgstr ""
+msgstr "ReplayGain Rango del Álbum"
 
 #: picard/util/tags.py:102
 msgid "ReplayGain Track Gain"
-msgstr ""
+msgstr "ReplayGain Ganancia de la pista"
 
 #: picard/util/tags.py:103
 msgid "ReplayGain Track Peak"
-msgstr ""
+msgstr "ReplayGain Pico de la pista"
 
 #: picard/util/tags.py:104
 msgid "ReplayGain Track Range"
-msgstr ""
+msgstr "ReplayGain Rango de la pista"
 
 #: picard/util/tags.py:105
 msgid "ReplayGain Reference Loudness"
-msgstr ""
+msgstr "ReplayGain Volumen de Referencia"
 
 #: picard/util/tags.py:106
 msgid "R128 Album Gain"
-msgstr ""
+msgstr "R128 Ganancia del Álbum"
 
 #: picard/util/tags.py:107
 msgid "R128 Track Gain"
-msgstr ""
+msgstr "R128 Ganancia de la Pista"
 
 #: picard/util/versions.py:62
 msgid "is not installed"
