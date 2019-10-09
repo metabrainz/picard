@@ -17,6 +17,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+from collections import defaultdict
 from functools import partial
 from heapq import (
     heappop,
@@ -141,18 +142,18 @@ class MainPanel(QtWidgets.QSplitter):
         TreeItem.text_color = self.palette().text().color()
         TreeItem.text_color_secondary = self.palette() \
             .brush(QtGui.QPalette.Disabled, QtGui.QPalette.Text).color()
-        TrackItem.track_colors = {
+        TrackItem.track_colors = defaultdict(lambda: TreeItem.text_color, {
             File.NORMAL: interface_colors.get_qcolor('entity_saved'),
             File.CHANGED: TreeItem.text_color,
             File.PENDING: interface_colors.get_qcolor('entity_pending'),
             File.ERROR: interface_colors.get_qcolor('entity_error'),
-        }
-        FileItem.file_colors = {
+        })
+        FileItem.file_colors = defaultdict(lambda: TreeItem.text_color, {
             File.NORMAL: TreeItem.text_color,
             File.CHANGED: TreeItem.text_color,
             File.PENDING: interface_colors.get_qcolor('entity_pending'),
             File.ERROR: interface_colors.get_qcolor('entity_error'),
-        }
+        })
 
     def save_state(self):
         config.persist["splitter_state"] = self.saveState()
