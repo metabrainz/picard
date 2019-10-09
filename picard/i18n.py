@@ -63,6 +63,7 @@ def setup_gettext(localedir, ui_language=None, logger=None):
                 import Foundation
                 defaults = Foundation.NSUserDefaults.standardUserDefaults()
                 current_locale = defaults.objectForKey_('AppleLanguages')[0]
+                current_locale = current_locale.replace('-', '_')
                 locale.setlocale(locale.LC_ALL, current_locale)
             except Exception as e:
                 logger(e)
