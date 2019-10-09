@@ -50,7 +50,7 @@ comment
 <p><u>Wildcard filtering:</u></p>
 <p>
 <b>-*word</b>: exclude all genres ending with <i>word</i><br/>
-<b>+word*</b>: exclude all genres starting with <i>word</i><br/>
+<b>+word*</b>: include all genres starting with <i>word</i><br/>
 <b>-w*rd</b>: exclude all genres starting with <i>w</i> and ending with <i>rd</i>
 </p>
 <p><u>Regular expressions filtering (Python re syntax):</u></p>
@@ -63,8 +63,8 @@ TOOLTIP_TEST_GENRES_FILTER = N_("""<html><head/><body>
 This playground will not be preserved on Options exit.
 </p>
 <p>
-Red background means the tag will be skipped<br/>
-Green background means the tag will be kept
+Red background means the tag will be skipped.<br/>
+Green background means the tag will be kept.
 </p>
 </body></html>""")
 
@@ -94,11 +94,9 @@ class GenresOptionsPage(OptionsPage):
         self.ui.setupUi(self)
 
         self.ui.genres_filter.setToolTip(_(TOOLTIP_GENRES_FILTER))
-        self.ui.genres_filter.setToolTipDuration(5000)
         self.ui.genres_filter.textChanged.connect(self.update_test_genres_filter)
 
         self.ui.test_genres_filter.setToolTip(_(TOOLTIP_TEST_GENRES_FILTER))
-        self.ui.test_genres_filter.setToolTipDuration(5000)
         self.ui.test_genres_filter.textChanged.connect(self.update_test_genres_filter)
 
         #FIXME: colors aren't great from accessibility POV
