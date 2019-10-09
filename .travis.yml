@@ -30,8 +30,7 @@ env:
   - INSTALL_DEPS="$PIP_INSTALL pyqt5==5.11.3 mutagen       discid"
   - INSTALL_DEPS="$PIP_INSTALL pyqt5==5.10   mutagen       discid"
   - INSTALL_DEPS="$PIP_INSTALL pyqt5==5.9    mutagen       discid"
-  - INSTALL_DEPS="$PIP_INSTALL pyqt5==5.8    mutagen       discid"
-  - INSTALL_DEPS="$PIP_INSTALL pyqt5==5.8    mutagen==1.37 discid"
+  - INSTALL_DEPS="$PIP_INSTALL pyqt5==5.8    mutagen==1.37 discid sip==4.19.8"
 matrix:
   include:
   - os: osx
