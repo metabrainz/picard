@@ -108,7 +108,8 @@ class FileBrowser(QtWidgets.QTreeView):
         level = -1
         super().scrollTo(index, scrolltype)
         parent = self.currentIndex().parent()
-        while parent.isValid():
+        root = self.rootIndex()
+        while parent.isValid() and parent != root:
             parent = parent.parent()
             level += 1
         pos_x = max(self.indentation() * level, 0)
