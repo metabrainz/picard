@@ -69,7 +69,8 @@ def setup_gettext(localedir, ui_language=None, logger=None):
                 logger(e)
         else:
             try:
-                current_locale = locale.setlocale(locale.LC_ALL, '')
+                locale.setlocale(locale.LC_ALL, '')
+                current_locale = '.'.join(locale.getlocale(locale.LC_MESSAGES))
             except Exception as e:
                 logger(e)
     os.environ['LANGUAGE'] = os.environ['LANG'] = current_locale
