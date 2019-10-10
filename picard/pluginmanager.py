@@ -26,7 +26,6 @@ import json
 import os.path
 import shutil
 import tempfile
-import traceback
 import zipfile
 import zipimport
 
@@ -169,9 +168,16 @@ class PluginManager(QtCore.QObject):
     def available_plugins(self):
         return self._available_plugins
 
-    def plugin_error(self, name, error, log_func=None):
-        if log_func is None:
-            log_func = log.error
+    def plugin_error(self, name, error, *args, **kwargs):
+        """Log a plugin loading error for the plugin `name` and signal the
+        error via the `plugin_errored` signal.
+
+        A string consisting of all `args` interpolated into `error` will be
+        passed to the function given via the `log_func` keyword argument
+        (default: log.error) and as the error message to the `plugin_errored`
+        signal."""
+        error = error % args
+        log_func = kwargs.get('log_func', log.error)
         log_func(error)
         self.plugin_errored.emit(name, error, False)
 
@@ -213,8 +219,8 @@ class PluginManager(QtCore.QObject):
         for name in sorted(names):
             try:
                 self._load_plugin_from_directory(name, plugindir)
-            except Exception as e:
-                log.error("Unable to load plugin '%s': %s", name, e)
+            except Exception:
+                self.plugin_error(name, _("Unable to load plugin '%s'"), name, log_func=log.exception)
 
     def _get_plugin_index_by_name(self, name):
         for index, plugin in enumerate(self.plugins):
@@ -224,12 +230,13 @@ class PluginManager(QtCore.QObject):
 
     def _load_plugin_from_directory(self, name, plugindir):
         module_file = None
-        (zip_importer, module_name, manifest_data) = zip_import(os.path.join(plugindir, name + '.zip'))
+        zipfilename = os.path.join(plugindir, name + '.zip')
+        (zip_importer, module_name, manifest_data) = zip_import(zipfilename)
         if zip_importer:
             name = module_name
             if not zip_importer.find_module(name):
-                error = _("Failed loading zipped plugin %r") % name
-                self.plugin_error(name, error)
+                error = _("Failed loading zipped plugin %r from %r")
+                self.plugin_error(name, error, name, zipfilename)
                 return None
             module_pathname = zip_importer.get_filename(name)
         else:
@@ -238,8 +245,8 @@ class PluginManager(QtCore.QObject):
                 module_file = info[0]
                 module_pathname = info[1]
             except ImportError:
-                error = _("Failed loading plugin %r") % name
-                self.plugin_error(name, error)
+                error = _("Failed loading plugin %r in %r")
+                self.plugin_error(name, error, name, [plugindir])
                 return None
 
         plugin = None
@@ -278,11 +285,11 @@ class PluginManager(QtCore.QObject):
                           "version of Picard.") % (plugin.name, plugin.file)
                 self.plugin_error(plugin.name, error, log_func=log.warning)
         except VersionError as e:
-            error = _("Plugin %r has an invalid API version string : %s") % (name, e)
-            self.plugin_error(name, error)
+            error = _("Plugin %r has an invalid API version string : %s")
+            self.plugin_error(name, error, name, e)
         except BaseException:
-            error = _("Plugin %r : %s") % (name, traceback.format_exc())
-            self.plugin_error(name, error)
+            error = _("Plugin %r")
+            self.plugin_error(name, error, name, log_func=log.exception)
         if module_file is not None:
             module_file.close()
         return plugin
