@@ -258,11 +258,7 @@ class File(QtCore.QObject, Item):
             if config.setting["preserve_timestamps"]:
                 try:
                     self._preserve_times(old_filename, save)
-                except self.PreserveTimesStatError as why:
-                    log.warning(why)
-                    # we didn't save the file yet, bail out
-                    return None
-                except self.FilePreserveTimesUtimeError as why:
+                except self.PreserveTimesUtimeError as why:
                     log.warning(why)
             else:
                 save()
