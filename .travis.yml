@@ -90,7 +90,7 @@ after_success:
 notifications:
   irc:
     channels:
-      - "ircs://chat.freenode.net:6697/#metabrainz"
+      - "chat.freenode.net#metabrainz"
     template:
       - "[%{repository_name}:%{branch}@%{commit} - build #%{build_number}] CI %{result}! (%{build_url})"
     on_success: change
