@@ -88,7 +88,13 @@ after_success:
   fi
 
 notifications:
-  irc: chat.freenode.net#metabrainz
+  irc:
+    channels:
+      - "ircs://chat.freenode.net:6697/#metabrainz"
+    template:
+      - "[%{repository_name}:%{branch}@%{commit} - build #%{build_number}] CI %{result}! (%{build_url})"
+    on_success: change
+    on_failure: always
 
 branches:
   only:
