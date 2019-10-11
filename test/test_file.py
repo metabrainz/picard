@@ -28,6 +28,7 @@ class DataObjectTest(PicardTestCase):
         self.file = File('somepath/somefile.mp3')
 
     def test_filename(self):
+        raise Exception("FAILED")
         self.assertEqual('somepath/somefile.mp3', self.file.filename)
         self.assertEqual('somefile.mp3', self.file.base_filename)
 
