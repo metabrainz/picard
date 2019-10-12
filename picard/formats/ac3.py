@@ -36,11 +36,15 @@ class AC3File(APEv2File):
 
     def _info(self, metadata, file):
         super()._info(metadata, file)
-        type = file.info.type or self.NAME
-        if file.tags:
-            metadata['~format'] = "%s (APEv2)" % type
+
+        if hasattr(file.info, 'type_') and file.info.type_:
+            format = file.info.type_
         else:
-            metadata['~format'] = type
+            format = self.NAME
+        if file.tags:
+            metadata['~format'] = "%s (APEv2)" % format
+        else:
+            metadata['~format'] = format
 
     def _save(self, filename, metadata):
         if config.setting['ac3_save_ape']:

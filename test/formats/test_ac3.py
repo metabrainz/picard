@@ -1,4 +1,5 @@
 import os
+import unittest
 
 from .common import (
     CommonTests,
@@ -9,6 +10,7 @@ from .test_apev2 import CommonApeTests
 
 from picard import config
 from picard.formats.ac3 import AC3File
+from picard.formats.mutagenext.ac3 import native_ac3
 from picard.metadata import Metadata
 
 
@@ -27,6 +29,10 @@ class AC3WithAPETest(CommonApeTests.ApeTestCase):
         super().setUp()
         config.setting['ac3_save_ape'] = True
         config.setting['remove_ape_from_ac3'] = True
+
+    @unittest.skipUnless(native_ac3, "mutagen.ac3 not available")
+    def test_info(self):
+        super().test_info()
 
 
 class AC3NoTagsTest(CommonTests.BaseFileTestCase):
@@ -60,10 +66,11 @@ class AC3NoTagsTest(CommonTests.BaseFileTestCase):
     def test_info_format(self):
         metadata = load_metadata(os.path.join('test', 'data', 'test.ac3'))
         self.assertEqual('AC3', metadata['~format'])
-        metadata = load_metadata(os.path.join('test', 'data', 'test.eac3'))
-        self.assertEqual('EAC3', metadata['~format'])
         metadata = load_metadata(os.path.join('test', 'data', 'test-apev2.ac3'))
         self.assertEqual('AC3 (APEv2)', metadata['~format'])
+        if native_ac3:
+            metadata = load_metadata(os.path.join('test', 'data', 'test.eac3'))
+            self.assertEqual('EAC3', metadata['~format'])
 
     def test_supports_tag(self):
         config.setting['ac3_save_ape'] = True
@@ -72,6 +79,7 @@ class AC3NoTagsTest(CommonTests.BaseFileTestCase):
         self.assertFalse(AC3File.supports_tag('title'))
 
 
+@unittest.skipUnless(native_ac3, "mutagen.ac3 not available")
 class EAC3Test(CommonTests.SimpleFormatsTestCase):
     testfile = 'test.eac3'
     expected_info = {
