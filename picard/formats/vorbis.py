@@ -69,6 +69,32 @@ def is_valid_key(key):
     return INVALID_CHARS.search(key) is None
 
 
+def flac_sort_pics_after_tags(metadata_blocks):
+    """
+    Reorder the metadata_blocks so that all picture blocks are located after
+    the first Vorbis comment block.
+
+    Windows fails to read FLAC tags if the picture blocks are located before
+    the Vorbis comments. Reordering the blocks fixes this.
+    """
+    # First remember all picture blocks that are located before the tag block.
+    tagindex = 0
+    picblocks = []
+    for block in metadata_blocks:
+        if block.code == mutagen.flac.VCFLACDict.code:
+            tagindex = metadata_blocks.index(block)
+            break
+        elif block.code == mutagen.flac.Picture.code:
+            picblocks.append(block)
+    else:
+        return  # No tags found, nothing to sort
+
+    # Now move those picture block after the tag block, maintaining their order.
+    for pic in picblocks:
+        metadata_blocks.remove(pic)
+        metadata_blocks.insert(tagindex, pic)
+
+
 class VCommentFile(File):
 
     """Generic VComment-based file."""
@@ -244,7 +270,7 @@ class VCommentFile(File):
             picture.width = image.width
             picture.height = image.height
             picture.type = image_type_as_id3_num(image.maintype)
-            if self._File == mutagen.flac.FLAC:
+            if is_flac:
                 file.add_picture(picture)
             else:
                 tags.setdefault("METADATA_BLOCK_PICTURE", []).append(
@@ -253,6 +279,9 @@ class VCommentFile(File):
         file.tags.update(tags)
 
         self._remove_deleted_tags(metadata, file.tags)
+
+        if is_flac:
+            flac_sort_pics_after_tags(file.metadata_blocks)
 
         kwargs = {}
         if is_flac and config.setting["remove_id3_from_flac"]:
