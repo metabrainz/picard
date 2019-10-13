@@ -4,6 +4,12 @@ import os
 import shutil
 from tempfile import mkstemp
 
+from mutagen.flac import (
+    Padding,
+    Picture,
+    VCFLACDict,
+)
+
 from test.picardtestcase import PicardTestCase
 
 from picard import (
@@ -12,6 +18,7 @@ from picard import (
 )
 from picard.coverart.image import CoverArtImage
 from picard.formats import vorbis
+from picard.metadata import Metadata
 
 from .common import (
     TAGS,
@@ -19,12 +26,14 @@ from .common import (
     load_metadata,
     load_raw,
     save_and_load_metadata,
+    save_metadata,
     save_raw,
     skipUnlessTestfile,
 )
 from .coverart import (
     CommonCoverArtTests,
     file_save_image,
+    load_coverart_file,
 )
 
 
@@ -137,6 +146,29 @@ class FLACTest(CommonVorbisTests.VorbisTestCase):
         new_metadata = save_and_load_metadata(self.filename, original_metadata)
         self.assertEqual(new_metadata['~waveformatextensible_channel_mask'], '0x3')
 
+    @skipUnlessTestfile
+    def test_sort_pics_after_tags(self):
+        # First save file with pic block before tags
+        pic = Picture()
+        pic.data = load_coverart_file('mb.png')
+        f = load_raw(self.filename)
+        f.metadata_blocks.insert(1, pic)
+        f.save()
+
+        # Save the file with Picard
+        metadata = Metadata()
+        save_metadata(self.filename, metadata)
+
+        # Load raw file and verify picture block position
+        f = load_raw(self.filename)
+        tagindex = f.metadata_blocks.index(f.tags)
+        haspics = False
+        for b in f.metadata_blocks:
+            if b.code == Picture.code:
+                haspics = True
+                self.assertGreater(f.metadata_blocks.index(b), tagindex)
+        self.assertTrue(haspics, "Picture block expected, none found")
+
 
 class OggVorbisTest(CommonVorbisTests.VorbisTestCase):
     testfile = 'test.ogg'
@@ -207,6 +239,33 @@ class VorbisUtilTest(PicardTestCase):
             self.assertTrue(vorbis.is_valid_key(key), '%r is valid' % key)
         for key in INVALID_KEYS:
             self.assertFalse(vorbis.is_valid_key(key), '%r is invalid' % key)
+
+    def test_flac_sort_pics_after_tags(self):
+        pic1 = Picture()
+        pic2 = Picture()
+        pic3 = Picture()
+        tags = VCFLACDict()
+        pad = Padding()
+
+        blocks = []
+        vorbis.flac_sort_pics_after_tags(blocks)
+        self.assertEqual([], blocks)
+
+        blocks = [tags]
+        vorbis.flac_sort_pics_after_tags(blocks)
+        self.assertEqual([tags], blocks)
+
+        blocks = [tags, pad, pic1]
+        vorbis.flac_sort_pics_after_tags(blocks)
+        self.assertEqual([tags, pad, pic1], blocks)
+
+        blocks = [pic1, pic2, tags, pad, pic3]
+        vorbis.flac_sort_pics_after_tags(blocks)
+        self.assertEqual([tags, pic1, pic2, pad, pic3], blocks)
+
+        blocks = [pic1, pic2, pad, pic3]
+        vorbis.flac_sort_pics_after_tags(blocks)
+        self.assertEqual([pic1, pic2, pad, pic3], blocks)
 
 
 class FlacCoverArtTest(CommonCoverArtTests.CoverArtTestCase):
