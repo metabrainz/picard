@@ -113,14 +113,6 @@ class Config(QtCore.QSettings):
         """Common initializer method for :meth:`from_app` and
         :meth:`from_file`."""
 
-        # If there are no settings, copy existing settings from old format
-        # (registry on windows systems)
-        if not self.allKeys():
-            oldFormat = QtCore.QSettings(PICARD_ORG_NAME, PICARD_APP_NAME)
-            for k in oldFormat.allKeys():
-                self.setValue(k, oldFormat.value(k))
-            self.sync()
-
         self.application = ConfigSection(self, "application")
         self.setting = ConfigSection(self, "setting")
         self.persist = ConfigSection(self, "persist")
@@ -145,6 +137,15 @@ class Config(QtCore.QSettings):
         QtCore.QSettings.__init__(this, QtCore.QSettings.IniFormat,
                                   QtCore.QSettings.UserScope, PICARD_ORG_NAME,
                                   PICARD_APP_NAME, parent)
+
+        # If there are no settings, copy existing settings from old format
+        # (registry on windows systems)
+        if not this.allKeys():
+            oldFormat = QtCore.QSettings(PICARD_ORG_NAME, PICARD_APP_NAME)
+            for k in oldFormat.allKeys():
+                this.setValue(k, oldFormat.value(k))
+            this.sync()
+
         this.__initialize()
         return this
 
