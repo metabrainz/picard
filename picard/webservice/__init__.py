@@ -39,7 +39,6 @@ from PyQt5 import (
     QtNetwork,
 )
 from PyQt5.QtCore import (
-    QStandardPaths,
     QUrl,
     QUrlQuery,
 )
@@ -52,6 +51,7 @@ from picard import (
     config,
     log,
 )
+from picard.const import CACHE_DIR
 from picard.oauth import OAuthManager
 from picard.util import (
     build_qurl,
@@ -288,8 +288,7 @@ class WebService(QtCore.QObject):
 
     def set_cache(self, cache_size_in_mb=100):
         cache = QtNetwork.QNetworkDiskCache()
-        location = QStandardPaths.writableLocation(QStandardPaths.CacheLocation)
-        cache.setCacheDirectory(os.path.join(location, 'picard'))
+        cache.setCacheDirectory(os.path.join(CACHE_DIR, 'network'))
         cache.setMaximumCacheSize(cache_size_in_mb * 1024 * 1024)
         self.manager.setCache(cache)
         log.debug("NetworkDiskCache dir: %r size: %s / %s",
