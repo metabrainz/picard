@@ -3,17 +3,6 @@
 import os
 import sys
 
-IS_WIN = sys.platform == 'win32'
-
-# On Windows try to attach to the console as early as possible in order
-# to get stdout / stderr logged to console. This needs to happen before
-# logging gets imported.
-# See https://stackoverflow.com/questions/54536/win32-gui-app-that-writes-usage-text-to-stdout-when-invoked-as-app-exe-help
-if IS_WIN:
-    from ctypes import windll
-    if windll.kernel32.AttachConsole(-1):
-        sys.stdout = open('CON', 'w')
-        sys.stderr = open('CON', 'w')
 
 sys.path.insert(0, '.')
 
@@ -23,7 +12,7 @@ if getattr(sys, 'frozen', False):
 else:
     basedir = os.path.dirname(os.path.abspath(__file__))
 
-if IS_WIN:
+if sys.platform == 'win32':
     os.environ['PATH'] = basedir + ';' + os.environ['PATH']
 
 from picard.tagger import main
