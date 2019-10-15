@@ -5,8 +5,8 @@ import os
 import platform
 import sys
 
-# Get the version
-# and build a CFBundleVersion compatible version of it according to Apple dev documentation
+# Get the version and build a CFBundleVersion compatible version
+# of it according to Apple dev documentation
 sys.path.append('.')
 from picard import PICARD_APP_ID, PICARD_VERSION
 pv = [str(x) for x in PICARD_VERSION]
@@ -68,6 +68,10 @@ if os_name == 'Darwin':
 if os.path.isfile(fpcalc_name):
     binaries += [(fpcalc_name, '.')]
 
+runtime_hooks = []
+if sys.platform == 'win32':
+    runtime_hooks.append('scripts/picard-winconsole-hook.py')
+
 
 a = Analysis(['tagger.py'],
              pathex=['picard'],
@@ -75,7 +79,7 @@ a = Analysis(['tagger.py'],
              datas=data_files,
              hiddenimports=[],
              hookspath=[],
-             runtime_hooks=[],
+             runtime_hooks=runtime_hooks,
              excludes=[],
              win_no_prefer_redirects=False,
              win_private_assemblies=False,
