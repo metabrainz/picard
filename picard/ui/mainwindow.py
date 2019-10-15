@@ -589,7 +589,8 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     def _update_cd_lookup_button(self):
         if len(self.cd_lookup_menu.actions()) > 1:
             button = self.toolbar.widgetForAction(self.cd_lookup_action)
-            button.setPopupMode(QtWidgets.QToolButton.MenuButtonPopup)
+            if button:
+                button.setPopupMode(QtWidgets.QToolButton.MenuButtonPopup)
             self.cd_lookup_action.setMenu(self.cd_lookup_menu)
         else:
             self.cd_lookup_action.setMenu(None)
