@@ -79,7 +79,7 @@ def setup_gettext(localedir, ui_language=None, logger=None):
     try:
         logger("Loading gettext translation, localedir=%r", localedir)
         trans = gettext.translation("picard", localedir)
-        trans.install(True)
+        trans.install()
         _ngettext = trans.ngettext
         logger("Loading gettext translation (picard-countries), localedir=%r", localedir)
         trans_countries = gettext.translation("picard-countries", localedir)
