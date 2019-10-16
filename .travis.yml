@@ -2,9 +2,10 @@ os: linux
 dist: xenial
 language: python
 python:
-- '3.7'
-- '3.6'
-- '3.5'
+- 3.8
+- 3.7
+- 3.6
+- 3.5
 addons:
   apt:
     packages:
@@ -62,6 +63,13 @@ matrix:
     install: skip
     script:
     - pip3 install .
+  exclude:
+  - python: 3.8
+    env: INSTALL_DEPS="$PIP_INSTALL pyqt5==5.10   mutagen       discid"
+  - python: 3.8
+    env: INSTALL_DEPS="$PIP_INSTALL pyqt5==5.9    mutagen       discid"
+  - python: 3.8
+    env: INSTALL_DEPS="$PIP_INSTALL pyqt5==5.8    mutagen==1.37 discid sip==4.19.8"
   fast_finish: true
 
 before_cache:
@@ -80,6 +88,8 @@ before_install:
 
 script:
 - py.test -v --cov=picard --cov-report xml:coverage.xml test
+- python3 setup.py build_locales build_ext -i
+- python3 tagger.py --long-version
 - isort --check-only --diff --quiet $(git ls-tree -r --name-only $(git rev-parse HEAD) | grep "\\.py$")
 - flake8 picard
 
