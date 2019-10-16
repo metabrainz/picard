@@ -229,7 +229,7 @@ class CommonId3Tests:
             self.assertEqual(1, len(raw_metadata['TXXX:Replaygain_Album_Peak'].text))
             self.assertNotIn('TXXX:REPLAYGAIN_ALBUM_PEAK', raw_metadata)
 
-        def test_lyrcis_with_description(self):
+        def test_lyrics_with_description(self):
             metadata = Metadata({'lyrics:foo': 'bar'})
             loaded_metadata = save_and_load_metadata(self.filename, metadata)
             self.assertEqual(metadata['lyrics:foo'], loaded_metadata['lyrics:foo'])
