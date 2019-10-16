@@ -334,7 +334,10 @@ class VCommentFile(File):
     def supports_tag(cls, name):
         unsupported_tags = ['r128_album_gain', 'r128_track_gain']
         return (bool(name) and name not in unsupported_tags
-                and is_valid_key(name))
+                and (is_valid_key(name)
+                    or name.startswith('comment:')
+                    or name.startswith('lyrics:')
+                    or name.startswith('performer:')))
 
 
 class FLACFile(VCommentFile):

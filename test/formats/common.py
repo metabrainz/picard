@@ -354,6 +354,18 @@ class CommonTests:
                 self.assertNotIn('performer:piano', new_metadata)
 
         @skipUnlessTestfile
+        def test_save_performer(self):
+            if not self.format.supports_tag('performer:'):
+                return
+            instrument = "accordéon clavier « boutons »"
+            artist = "桑山哲也"
+            tag = "performer:" + instrument
+            metadata = Metadata({ tag: artist })
+            loaded_metadata = save_and_load_metadata(self.filename, metadata)
+            self.assertIn(tag, loaded_metadata)
+            self.assertEqual(artist, loaded_metadata[tag])
+
+        @skipUnlessTestfile
         def test_ratings(self):
             if not self.supports_ratings:
                 raise unittest.SkipTest("Ratings not supported")
@@ -409,7 +421,16 @@ class CommonTests:
             self.assertNotIn('artist', loaded_metadata)
             self.assertEqual(new_metadata['title'], loaded_metadata['title'])
 
-        def test_lyrcis_with_description(self):
-            metadata = Metadata({'lyrics:foo': 'bar'})
+        @skipUnlessTestfile
+        def test_lyrics_with_description(self):
+            metadata = Metadata({'lyrics:foó': 'bar'})
             loaded_metadata = save_and_load_metadata(self.filename, metadata)
-            self.assertEqual(metadata['lyrics:foo'], loaded_metadata['lyrics'])
+            self.assertEqual(metadata['lyrics:foó'], loaded_metadata['lyrics'])
+
+        @skipUnlessTestfile
+        def test_comments_with_description(self):
+            if not self.format.supports_tag('comment:foó'):
+                return
+            metadata = Metadata({'comment:foó': 'bar'})
+            loaded_metadata = save_and_load_metadata(self.filename, metadata)
+            self.assertEqual(metadata['comment:foó'], loaded_metadata['comment:foó'])
