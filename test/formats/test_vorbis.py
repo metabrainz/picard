@@ -126,6 +126,12 @@ class CommonVorbisTests:
             loaded_metadata = load_metadata(self.filename)
             self.assertEqual(0, len(loaded_metadata.images))
 
+        def test_supports_extended_tags(self):
+            performer_tag = "performer:accordéon clavier « boutons »"
+            self.assertTrue(self.format.supports_tag(performer_tag))
+            self.assertTrue(self.format.supports_tag('lyrics:foó'))
+            self.assertTrue(self.format.supports_tag('comment:foó'))
+
 
 class FLACTest(CommonVorbisTests.VorbisTestCase):
     testfile = 'test.flac'
