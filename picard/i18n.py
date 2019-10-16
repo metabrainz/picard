@@ -79,33 +79,19 @@ def setup_gettext(localedir, ui_language=None, logger=None):
     try:
         logger("Loading gettext translation, localedir=%r", localedir)
         trans = gettext.translation("picard", localedir)
-        trans.install()
-        _ngettext = trans.ngettext
         logger("Loading gettext translation (picard-countries), localedir=%r", localedir)
         trans_countries = gettext.translation("picard-countries", localedir)
-        _gettext_countries = trans_countries.gettext
         logger("Loading gettext translation (picard-attributes), localedir=%r", localedir)
         trans_attributes = gettext.translation("picard-attributes", localedir)
-        _gettext_attributes = trans_attributes.gettext
     except IOError as e:
         logger(e)
-        builtins.__dict__['_'] = lambda a: a
+        trans = gettext.NullTranslations()
+        trans_countries = gettext.NullTranslations()
+        trans_attributes = gettext.NullTranslations()
 
-        def _ngettext(a, b, c):
-            if c == 1:
-                return a
-            else:
-                return b
-
-        def _gettext_countries(msg):
-            return msg
-
-        def _gettext_attributes(msg):
-            return msg
-
-    builtins.__dict__['ngettext'] = _ngettext
-    builtins.__dict__['gettext_countries'] = _gettext_countries
-    builtins.__dict__['gettext_attributes'] = _gettext_attributes
+    trans.install(['ngettext'])
+    builtins.__dict__['gettext_countries'] = trans_countries.gettext
+    builtins.__dict__['gettext_attributes'] = trans_attributes.gettext
 
     logger("_ = %r", _)
     logger("N_ = %r", N_)
