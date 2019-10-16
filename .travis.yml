@@ -29,9 +29,6 @@ env:
   - INSTALL_DEPS="$PIP_INSTALL -r requirements.txt"
   - INSTALL_DEPS="$PIP_INSTALL pyqt5==5.12.3 mutagen       discid"
   - INSTALL_DEPS="$PIP_INSTALL pyqt5==5.11.3 mutagen       discid"
-  - INSTALL_DEPS="$PIP_INSTALL pyqt5==5.10   mutagen       discid"
-  - INSTALL_DEPS="$PIP_INSTALL pyqt5==5.9    mutagen       discid"
-  - INSTALL_DEPS="$PIP_INSTALL pyqt5==5.8    mutagen==1.37 discid sip==4.19.8"
 matrix:
   include:
   - os: osx
@@ -63,13 +60,18 @@ matrix:
     install: skip
     script:
     - pip3 install .
-  exclude:
-  - python: 3.8
-    env: INSTALL_DEPS="$PIP_INSTALL pyqt5==5.10   mutagen       discid"
-  - python: 3.8
-    env: INSTALL_DEPS="$PIP_INSTALL pyqt5==5.9    mutagen       discid"
-  - python: 3.8
-    env: INSTALL_DEPS="$PIP_INSTALL pyqt5==5.8    mutagen==1.37 discid sip==4.19.8"
+  - os: linux
+    python: 3.5
+    env:
+      INSTALL_DEPS="$PIP_INSTALL pyqt5==5.8 mutagen==1.37 discid sip==4.19.8"
+  - os: linux
+    python: 3.6
+    env:
+      INSTALL_DEPS="$PIP_INSTALL pyqt5==5.9 mutagen discid"
+  - os: linux
+    python: 3.6
+    env:
+      INSTALL_DEPS="$PIP_INSTALL pyqt5==5.10 mutagen discid"
   fast_finish: true
 
 before_cache:
