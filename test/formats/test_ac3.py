@@ -59,18 +59,18 @@ class AC3NoTagsTest(CommonTests.BaseFileTestCase):
             'artist': 'Foo'
         })
         metadata = save_and_load_metadata(self.filename, metadata)
-        self.assertEqual('AC3', metadata['~format'])
+        self.assertEqual('AC-3', metadata['~format'])
         self.assertNotIn('title', metadata)
         self.assertNotIn('artist', metadata)
 
     def test_info_format(self):
         metadata = load_metadata(os.path.join('test', 'data', 'test.ac3'))
-        self.assertEqual('AC3', metadata['~format'])
+        self.assertEqual('AC-3', metadata['~format'])
         metadata = load_metadata(os.path.join('test', 'data', 'test-apev2.ac3'))
-        self.assertEqual('AC3 (APEv2)', metadata['~format'])
+        self.assertEqual('AC-3 (APEv2)', metadata['~format'])
         if native_ac3:
             metadata = load_metadata(os.path.join('test', 'data', 'test.eac3'))
-            self.assertEqual('EAC3', metadata['~format'])
+            self.assertEqual('Enhanced AC-3', metadata['~format'])
 
     def test_supports_tag(self):
         config.setting['ac3_save_ape'] = True
@@ -83,6 +83,7 @@ class AC3NoTagsTest(CommonTests.BaseFileTestCase):
 class EAC3Test(CommonTests.SimpleFormatsTestCase):
     testfile = 'test.eac3'
     expected_info = {
+        '~format': 'Enhanced AC-3',
         'length': 107,
         '~sample_rate': '44100',
         '~channels': '2',

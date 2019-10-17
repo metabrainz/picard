@@ -31,14 +31,14 @@ from .mutagenext import ac3
 
 class AC3File(APEv2File):
     EXTENSIONS = [".ac3", ".eac3"]
-    NAME = "AC3"
+    NAME = "AC-3"
     _File = ac3.AC3APEv2
 
     def _info(self, metadata, file):
         super()._info(metadata, file)
 
-        if hasattr(file.info, 'type_') and file.info.type_:
-            format = file.info.type_
+        if hasattr(file.info, 'codec') and file.info.codec == 'ec-3':
+            format = 'Enhanced AC-3'
         else:
             format = self.NAME
         if file.tags:
