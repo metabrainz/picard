@@ -1,4 +1,5 @@
 import mutagen
+import unittest
 
 from picard.formats import ext_to_format
 
@@ -78,6 +79,14 @@ class M4ATest(CommonMP4Tests.MP4TestCase):
         '~bits_per_sample': '16',
     }
     unexpected_info = ['~video']
+
+    @unittest.skipUnless(mutagen.version >= (1, 43, 0), "mutagen >= 1.43.0 required")
+    def test_hdvd_tag_considered_video(self):
+        tags = mutagen.mp4.MP4Tags()
+        tags['hdvd'] = [1]
+        save_raw(self.filename, tags)
+        metadata = load_metadata(self.filename)
+        self.assertEqual('1', metadata["~video"])
 
 
 class M4VTest(CommonMP4Tests.MP4TestCase):
