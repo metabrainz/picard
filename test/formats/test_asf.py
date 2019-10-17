@@ -90,6 +90,15 @@ class WMVTest(CommonAsfTests.AsfTestCase):
 
 
 class AsfUtilTest(PicardTestCase):
+    test_cases = [
+        # Empty MIME, description and data
+        (('', b'', 2, ''), b'\x02\x00\x00\x00\x00\x00\x00\x00\x00'),
+        # MIME, description set, 1 byte data
+        (('M', b'x', 2, 'D'), b'\x02\x01\x00\x00\x00M\x00\x00\x00D\x00\x00\x00x'),
+        # Empty MIME and description, 3 byte data
+        (('', b'abc', 0, ''), b'\x00\x03\x00\x00\x00\x00\x00\x00\x00abc'),
+    ]
+
     def test_pack_and_unpack_image(self):
         mime = 'image/png'
         image_data = create_fake_png(b'x')
@@ -106,6 +115,28 @@ class AsfUtilTest(PicardTestCase):
         self.assertEqual(image_data, unpacked[1])
         self.assertEqual(image_type, unpacked[2])
         self.assertEqual(description, unpacked[3])
+
+    def test_pack_image(self):
+        for args, expected in self.test_cases:
+            self.assertEquals(expected, asf.pack_image(*args))
+
+    def test_unpack_image(self):
+        for expected, packed in self.test_cases:
+            self.assertEquals(expected, asf.unpack_image(packed))
+
+    def test_unpack_image_value_errors(self):
+        self.assertRaisesRegex(ValueError, "unpack_from requires a buffer of at least 5 bytes",
+                               asf.unpack_image, b'')
+        self.assertRaisesRegex(ValueError, "unpack_from requires a buffer of at least 5 bytes",
+                               asf.unpack_image, b'\x02\x01\x00\x00')
+        self.assertRaisesRegex(ValueError, "mime: missing data",
+                               asf.unpack_image, b'\x00\x00\x00\x00\x00')
+        self.assertRaisesRegex(ValueError, "mime: missing data",
+                               asf.unpack_image, b'\x04\x19\x00\x00\x00a\x00')
+        self.assertRaisesRegex(ValueError, "desc: missing data",
+                               asf.unpack_image, b'\x04\x19\x00\x00\x00a\x00\x00\x00a\x00')
+        self.assertRaisesRegex(ValueError, "image data size mismatch",
+                               asf.unpack_image, b'\x04\x19\x00\x00\x00a\x00\x00\x00a\x00\x00\x00x')
 
 
 class AsfCoverArtTest(CommonCoverArtTests.CoverArtTestCase):

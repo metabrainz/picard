@@ -47,26 +47,45 @@ def unpack_image(data):
     Helper function to unpack image data from a WM/Picture tag.
 
     The data has the following format:
-    1 byte: Picture type (0-20), see ID3 APIC frame specification at http://www.id3.org/id3v2.4.0-frames
+    1 byte: Picture type (0-20), see ID3 APIC frame specification at
+            http://www.id3.org/id3v2.4.0-frames
     4 bytes: Picture data length in LE format
     MIME type, null terminated UTF-16-LE string
     Description, null terminated UTF-16-LE string
     The image data in the given length
     """
-    (image_type, size) = struct.unpack_from("<bi", data)
-    pos = 5
+    try:
+        (type_, size) = struct.unpack_from("<bi", data)
+    except struct.error as e:
+        raise ValueError(e)
+    data = data[5:]
+
     mime = b""
-    while data[pos:pos+2] != b"\x00\x00":
-        mime += data[pos:pos+2]
-        pos += 2
-    pos += 2
+    while data:
+        char, data = data[:2], data[2:]
+        if char == b"\x00\x00":
+            break
+        mime += char
+    else:
+        raise ValueError("mime: missing data")
+
+    mime = mime.decode("utf-16-le")
+
     description = b""
-    while data[pos:pos+2] != b"\x00\x00":
-        description += data[pos:pos+2]
-        pos += 2
-    pos += 2
-    image_data = data[pos:pos+size]
-    return (mime.decode("utf-16-le"), image_data, image_type, description.decode("utf-16-le"))
+    while data:
+        char, data = data[:2], data[2:]
+        if char == b"\x00\x00":
+            break
+        description += char
+    else:
+        raise ValueError("desc: missing data")
+
+    description = description.decode("utf-16-le")
+
+    if size != len(data):
+        raise ValueError("image data size mismatch")
+
+    return (mime, data, type_, description)
 
 
 def pack_image(mime, data, image_type=3, description=""):
@@ -186,7 +205,12 @@ class ASFFile(File):
         for name, values in file.tags.items():
             if name == 'WM/Picture':
                 for image in values:
-                    (mime, data, type_, description) = unpack_image(image.value)
+                    try:
+                        (mime, data, type_, description) = unpack_image(image.value)
+                    except ValueError as e:
+                        log.warning('Cannot unpack image from %r: %s',
+                                    filename, e)
+                        continue
                     try:
                         coverartimage = TagCoverArtImage(
                             file=filename,
