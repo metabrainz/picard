@@ -18,6 +18,7 @@ and http://en.wikipedia.org/wiki/TAK_(audio_codec)
 
 __all__ = ["TAK", "Open", "delete"]
 
+from mutagen import StreamInfo
 from mutagen.apev2 import (
     APEv2File,
     delete,
@@ -29,7 +30,7 @@ class TAKHeaderError(error):
     pass
 
 
-class TAKInfo(object):
+class TAKInfo(StreamInfo):
 
     """TAK stream information.
 
