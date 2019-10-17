@@ -349,5 +349,5 @@ class MP4File(File):
         filename = file.filename
         if isinstance(filename, bytes):
             filename = filename.decode()
-        if filename.lower().endswith(".m4v"):
+        if filename.lower().endswith(".m4v") or 'hdvd' in file.tags:
             metadata['~video'] = '1'
