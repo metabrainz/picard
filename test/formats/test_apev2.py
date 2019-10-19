@@ -12,6 +12,7 @@ from picard.formats import (
     apev2,
     open_,
 )
+from picard.formats.mutagenext.tak import native_tak
 from picard.metadata import Metadata
 
 from .common import (
@@ -156,6 +157,16 @@ class TAKTest(CommonApeTests.ApeTestCase):
     testfile = 'test.tak'
     supports_ratings = False
     unexpected_info = ['~video']
+
+    def setUp(self):
+        super().setUp()
+        if native_tak:
+            self.expected_info = {
+                'length': 82,
+                '~channels': '2',
+                '~sample_rate': '44100',
+                '~bits_per_sample': '16'
+            }
 
 
 class OptimFROGLosslessTest(CommonApeTests.ApeTestCase):
