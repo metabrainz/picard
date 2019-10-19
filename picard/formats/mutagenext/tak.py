@@ -18,43 +18,62 @@ and http://en.wikipedia.org/wiki/TAK_(audio_codec)
 
 __all__ = ["TAK", "Open", "delete"]
 
-from mutagen import StreamInfo
-from mutagen.apev2 import (
-    APEv2File,
-    delete,
-    error,
-)
+try:
+    from mutagen.tak import (
+        Open,
+        TAK,
+        TAKHeaderError,
+        TAKInfo,
+        delete
+    )
 
+    native_tak = True
 
-class TAKHeaderError(error):
-    pass
+except ImportError:
+    from mutagen import StreamInfo
+    from mutagen.apev2 import (
+        APEv2File,
+        delete,
+        error,
+    )
 
+    native_tak = False
 
-class TAKInfo(StreamInfo):
+    class TAKHeaderError(error):
+        pass
 
-    """TAK stream information.
+    class TAKInfo(StreamInfo):
 
-    Attributes:
-      (none at the moment)
-    """
+        """TAK stream information.
 
-    def __init__(self, fileobj):
-        header = fileobj.read(4)
-        if len(header) != 4 or not header.startswith(b"tBaK"):
-            raise TAKHeaderError("not a TAK file")
+        Attributes:
+          (none at the moment)
+        """
 
-    @staticmethod
-    def pprint():
-        return "Tom's lossless Audio Kompressor"
+        def __init__(self, fileobj):
+            header = fileobj.read(4)
+            if len(header) != 4 or not header.startswith(b"tBaK"):
+                raise TAKHeaderError("not a TAK file")
 
+        @staticmethod
+        def pprint():
+            return "Tom's lossless Audio Kompressor"
 
-class TAK(APEv2File):
-    _Info = TAKInfo
-    _mimes = ["audio/x-tak"]
+    class TAK(APEv2File):
+        """TAK(filething)
 
-    @staticmethod
-    def score(filename, fileobj, header):
-        return header.startswith(b"tBaK") + filename.lower().endswith(".tak")
+        Arguments:
+            filething (filething)
 
+        Attributes:
+            info (`TAKInfo`)
+        """
 
-Open = TAK
+        _Info = TAKInfo
+        _mimes = ["audio/x-tak"]
+
+        @staticmethod
+        def score(filename, fileobj, header):
+            return header.startswith(b"tBaK") + filename.lower().endswith(".tak")
+
+    Open = TAK
