@@ -114,6 +114,9 @@ class PluginTreeWidgetItem(HashableTreeWidgetItem):
     @staticmethod
     def set_icon(button, stdicon):
         button.setIcon(button.style().standardIcon(getattr(QtWidgets.QStyle, stdicon)))
+        # Workaround for Qt sometimes not updating the icon.
+        # See https://tickets.metabrainz.org/browse/PICARD-1647
+        button.repaint()
 
     def show_install(self, button, mode):
         if mode == 'hide':
