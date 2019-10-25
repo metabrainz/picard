@@ -175,8 +175,9 @@ class TrackSearchDialog(SearchDialog):
                 track["album"] = _("Standalone Recording")
                 self.search_results.append((track, node))
 
-    def accept_event(self, arg):
-        self.load_selection(arg)
+    def accept_event(self, rows):
+        for row in rows:
+            self.load_selection(row)
 
     def load_selection(self, row):
         """Load the album corresponding to the selected track.
