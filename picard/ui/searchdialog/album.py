@@ -253,9 +253,6 @@ class AlbumSearchDialog(SearchDialog):
         If server replies without error, try to get small thumbnail of front
         coverart of the release.
         """
-        if not self.table:
-            return
-
         cover_cell.fetch_task = None
 
         if error:
@@ -292,9 +289,6 @@ class AlbumSearchDialog(SearchDialog):
         Args:
             row -- Album's row in results table
         """
-        if not self.table:
-            return
-
         cover_cell.fetch_task = None
 
         if error:

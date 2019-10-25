@@ -3,6 +3,7 @@
 # Picard, the next-generation MusicBrainz tagger
 # Copyright (C) 2016 Rahul Raturi
 # Copyright (C) 2018 Laurent Monin
+# Copyright (C) 2019 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -47,9 +48,8 @@ from picard.ui.util import StandardButton
 
 class ResultTable(QtWidgets.QTableWidget):
 
-    def __init__(self, parent, column_titles):
-        super().__init__(0, len(column_titles), parent)
-        self.setHorizontalHeaderLabels(column_titles)
+    def __init__(self, parent):
+        super().__init__(parent)
         self.setSelectionMode(
             QtWidgets.QAbstractItemView.SingleSelection)
         self.setSelectionBehavior(
@@ -69,6 +69,13 @@ class ResultTable(QtWidgets.QTableWidget):
         self.horizontalScrollBar().valueChanged.connect(emit_scrolled)
         self.verticalScrollBar().valueChanged.connect(emit_scrolled)
         self.setHorizontalScrollMode(QtWidgets.QAbstractItemView.ScrollPerPixel)
+
+    def prepare(self, headers):
+        self.clear()
+        self.setColumnCount(len(headers))
+        self.setHorizontalHeaderLabels(headers)
+        self.setRowCount(0)
+        self.setSortingEnabled(False)
 
 
 class SearchBox(QtWidgets.QWidget):
@@ -193,7 +200,6 @@ class SearchDialog(PicardDialog):
     def __init__(self, parent, accept_button_title, show_search=True, search_type=None):
         super().__init__(parent)
         self.search_results = []
-        self.table = None
         self.show_search = show_search
         self.search_type = search_type
         self.search_box = None
@@ -203,6 +209,7 @@ class SearchDialog(PicardDialog):
         # matching label as values
         self.columns = None
         self.sorting_enabled = True
+        self.create_table()
         self.finished.connect(self.save_state)
 
     @property
@@ -283,20 +290,23 @@ class SearchDialog(PicardDialog):
     def add_widget_to_center_layout(self, widget):
         """Update center widget with new child. If child widget exists,
         schedule it for deletion."""
-        wid = self.center_layout.takeAt(0)
-        if wid:
-            if wid.widget().objectName() == "results_table":
-                self.table = None
-            wid.widget().deleteLater()
+        widget_item = self.center_layout.takeAt(0)
+        if widget_item:
+            current_widget = widget_item.widget()
+            current_widget.hide()
+            self.center_layout.removeWidget(current_widget)
+            if current_widget != self.table:
+                current_widget.deleteLater()
         self.center_layout.addWidget(widget)
+        widget.show()
 
     def show_progress(self):
-        self.progress_widget = QtWidgets.QWidget(self)
-        self.progress_widget.setObjectName("progress_widget")
-        layout = QtWidgets.QVBoxLayout(self.progress_widget)
-        text_label = QtWidgets.QLabel(_('<strong>Loading...</strong>'), self.progress_widget)
+        progress_widget = QtWidgets.QWidget(self)
+        progress_widget.setObjectName("progress_widget")
+        layout = QtWidgets.QVBoxLayout(progress_widget)
+        text_label = QtWidgets.QLabel(_('<strong>Loading...</strong>'), progress_widget)
         text_label.setAlignment(QtCore.Qt.AlignHCenter | QtCore.Qt.AlignBottom)
-        gif_label = QtWidgets.QLabel(self.progress_widget)
+        gif_label = QtWidgets.QLabel(progress_widget)
         movie = QtGui.QMovie(":/images/loader.gif")
         gif_label.setMovie(movie)
         movie.start()
@@ -304,8 +314,8 @@ class SearchDialog(PicardDialog):
         layout.addWidget(text_label)
         layout.addWidget(gif_label)
         layout.setContentsMargins(1, 1, 1, 1)
-        self.progress_widget.setLayout(layout)
-        self.add_widget_to_center_layout(self.progress_widget)
+        progress_widget.setLayout(layout)
+        self.add_widget_to_center_layout(progress_widget)
 
     def show_error(self, error, show_retry_button=False):
         """Display the error string.
@@ -314,42 +324,45 @@ class SearchDialog(PicardDialog):
             error -- Error string
             show_retry_button -- Whether to display retry button or not
         """
-        self.error_widget = QtWidgets.QWidget(self)
-        self.error_widget.setObjectName("error_widget")
-        layout = QtWidgets.QVBoxLayout(self.error_widget)
-        error_label = QtWidgets.QLabel(error, self.error_widget)
+        error_widget = QtWidgets.QWidget(self)
+        error_widget.setObjectName("error_widget")
+        layout = QtWidgets.QVBoxLayout(error_widget)
+        error_label = QtWidgets.QLabel(error, error_widget)
         error_label.setWordWrap(True)
         error_label.setAlignment(QtCore.Qt.AlignCenter)
         error_label.setTextInteractionFlags(QtCore.Qt.TextSelectableByMouse)
         layout.addWidget(error_label)
         if show_retry_button:
-            retry_widget = QtWidgets.QWidget(self.error_widget)
+            retry_widget = QtWidgets.QWidget(error_widget)
             retry_layout = QtWidgets.QHBoxLayout(retry_widget)
-            retry_button = QtWidgets.QPushButton(_("Retry"), self.error_widget)
+            retry_button = QtWidgets.QPushButton(_("Retry"), error_widget)
             retry_button.clicked.connect(self.retry)
             retry_button.setSizePolicy(QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Fixed))
             retry_layout.addWidget(retry_button)
             retry_layout.setAlignment(QtCore.Qt.AlignHCenter | QtCore.Qt.AlignTop)
             retry_widget.setLayout(retry_layout)
             layout.addWidget(retry_widget)
-        self.error_widget.setLayout(layout)
-        self.add_widget_to_center_layout(self.error_widget)
+        error_widget.setLayout(layout)
+        self.add_widget_to_center_layout(error_widget)
 
-    def prepare_table(self):
-        self.table = ResultTable(self, self.table_headers)
+    def create_table(self):
+        self.table = ResultTable(self)
         self.table.verticalHeader().setDefaultSectionSize(100)
         self.table.setSortingEnabled(False)
-        self.table.setObjectName("results_table")
         self.table.cellDoubleClicked.connect(self.accept)
-        self.restore_table_header_state()
-        self.add_widget_to_center_layout(self.table)
+        self.table.hide()
 
         def enable_accept_button():
             self.accept_button.setEnabled(True)
         self.table.itemSelectionChanged.connect(
             enable_accept_button)
 
+    def prepare_table(self):
+        self.table.prepare(self.table_headers)
+        self.restore_table_header_state()
+
     def show_table(self, sort_column=None, sort_order=QtCore.Qt.DescendingOrder):
+        self.add_widget_to_center_layout(self.table)
         self.table.horizontalHeader().setSortIndicatorShown(self.sorting_enabled)
         self.table.setSortingEnabled(self.sorting_enabled)
         if self.sorting_enabled and sort_column:
