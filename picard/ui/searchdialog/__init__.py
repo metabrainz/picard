@@ -51,7 +51,7 @@ class ResultTable(QtWidgets.QTableWidget):
     def __init__(self, parent):
         super().__init__(parent)
         self.setSelectionMode(
-            QtWidgets.QAbstractItemView.SingleSelection)
+            QtWidgets.QAbstractItemView.ExtendedSelection)
         self.setSelectionBehavior(
             QtWidgets.QAbstractItemView.SelectRows)
         self.setEditTriggers(
@@ -61,9 +61,8 @@ class ResultTable(QtWidgets.QTableWidget):
             QtWidgets.QHeaderView.Stretch)
         self.horizontalHeader().setSectionResizeMode(
             QtWidgets.QHeaderView.Interactive)
-        # only emit scrolled signal once per second
 
-        @throttle(1000)
+        @throttle(1000)  # only emit scrolled signal once per second
         def emit_scrolled(x):
             parent.scrolled.emit()
         self.horizontalScrollBar().valueChanged.connect(emit_scrolled)
@@ -393,9 +392,11 @@ class SearchDialog(PicardDialog):
 
     def accept(self):
         if self.table:
-            idx = self.table.selectionModel().selectedRows()[0]
-            row = self.table.itemFromIndex(idx).data(QtCore.Qt.UserRole)
-            self.accept_event(row)
+            selected_rows = []
+            for idx in self.table.selectionModel().selectedRows():
+                row = self.table.itemFromIndex(idx).data(QtCore.Qt.UserRole)
+                selected_rows.append(row)
+            self.accept_event(selected_rows)
         super().accept()
 
     @restore_method

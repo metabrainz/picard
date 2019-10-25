@@ -107,8 +107,9 @@ class ArtistSearchDialog(SearchDialog):
             self.set_table_item(row, 'score',     artist, "score", sort=BY_NUMBER)
         self.show_table(sort_column='score')
 
-    def accept_event(self, row):
-        self.load_in_browser(row)
+    def accept_event(self, rows):
+        for row in rows:
+            self.load_in_browser(row)
 
     def load_in_browser(self, row):
         self.tagger.search(self.search_results[row]["musicbrainz_artistid"], "artist")
