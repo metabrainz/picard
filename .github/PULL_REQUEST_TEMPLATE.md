@@ -32,7 +32,7 @@
     What problem are you trying to fix? What does this change address?
 -->
 
-* JIRA ticket (_optional_): [PICARD-XXX](https://tickets.metabrainz.org/browse/PICARD-XXX)
+* JIRA ticket (_optional_): PICARD-XXX
 <!--
     Please make sure you prefix your pull request title with 'PICARD-XXX' in order
     for our ticket tracker to link your pull request to the relevant ticket.
@@ -55,4 +55,3 @@
     Other than merging your change, do you want / need us to do anything else
     with your change? This could include reviewing a specific part of your PR.
 -->
-
