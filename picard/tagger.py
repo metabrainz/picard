@@ -677,6 +677,7 @@ class Tagger(QtWidgets.QApplication):
                 self._acoustid.stop_analyze(file)
                 del self.files[file.filename]
                 file.remove(from_parent)
+        self.tagger_stats_changed.emit()
 
     def remove_album(self, album):
         """Remove the specified album."""
@@ -692,6 +693,7 @@ class Tagger(QtWidgets.QApplication):
             self.nats = None
         self.album_removed.emit(album)
         run_album_post_removal_processors(album)
+        self.tagger_stats_changed.emit()
 
     def remove_nat(self, track):
         """Remove the specified non-album track."""
