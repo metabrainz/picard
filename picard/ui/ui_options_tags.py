@@ -3,12 +3,14 @@
 # Automatically generated - don't edit.
 # Use `python setup.py build_ui` to update it.
 
+
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class Ui_TagsOptionsPage(object):
     def setupUi(self, TagsOptionsPage):
         TagsOptionsPage.setObjectName("TagsOptionsPage")
-        TagsOptionsPage.resize(539, 476)
+        TagsOptionsPage.resize(539, 633)
         self.vboxlayout = QtWidgets.QVBoxLayout(TagsOptionsPage)
         self.vboxlayout.setObjectName("vboxlayout")
         self.write_tags = QtWidgets.QCheckBox(TagsOptionsPage)
@@ -128,6 +130,21 @@ class Ui_TagsOptionsPage(object):
         self.write_id3v1.setObjectName("write_id3v1")
         self.vboxlayout2.addWidget(self.write_id3v1)
         self.vboxlayout.addWidget(self.tag_compatibility)
+        self.aac_tags = QtWidgets.QGroupBox(TagsOptionsPage)
+        self.aac_tags.setObjectName("aac_tags")
+        self.verticalLayout = QtWidgets.QVBoxLayout(self.aac_tags)
+        self.verticalLayout.setObjectName("verticalLayout")
+        self.aac_save_ape = QtWidgets.QRadioButton(self.aac_tags)
+        self.aac_save_ape.setChecked(True)
+        self.aac_save_ape.setObjectName("aac_save_ape")
+        self.verticalLayout.addWidget(self.aac_save_ape)
+        self.aac_no_tags = QtWidgets.QRadioButton(self.aac_tags)
+        self.aac_no_tags.setObjectName("aac_no_tags")
+        self.verticalLayout.addWidget(self.aac_no_tags)
+        self.remove_ape_from_aac = QtWidgets.QCheckBox(self.aac_tags)
+        self.remove_ape_from_aac.setObjectName("remove_ape_from_aac")
+        self.verticalLayout.addWidget(self.remove_ape_from_aac)
+        self.vboxlayout.addWidget(self.aac_tags)
         spacerItem3 = QtWidgets.QSpacerItem(274, 41, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.vboxlayout.addItem(spacerItem3)
 
@@ -168,4 +185,7 @@ class Ui_TagsOptionsPage(object):
         self.id3v23_join_with.setToolTip(_("<html><head/><body><p>Default is \'/\' to maintain compatibility with previous Picard releases.</p><p>New alternatives are \';_\' or \'_/_\' or type your own. </p></body></html>"))
         self.itunes_compatible_grouping.setText(_("Save iTunes compatible grouping and work"))
         self.write_id3v1.setText(_("Also include ID3v1 tags in the files"))
-
+        self.aac_tags.setTitle(_("AAC files"))
+        self.aac_save_ape.setText(_("Save APEv2 tags"))
+        self.aac_no_tags.setText(_("Do not save tags"))
+        self.remove_ape_from_aac.setText(_("Remove APEv2 tags from AAC files"))

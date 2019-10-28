@@ -55,6 +55,8 @@ class TagsOptionsPage(OptionsPage):
         config.BoolOption("setting", "itunes_compatible_grouping", False),
         config.BoolOption("setting", "dont_write_tags", False),
         config.BoolOption("setting", "preserve_timestamps", False),
+        config.BoolOption("setting", "aac_save_ape", True),
+        config.BoolOption("setting", "remove_ape_from_aac", False),
     ]
 
     def __init__(self, parent=None):
@@ -68,6 +70,7 @@ class TagsOptionsPage(OptionsPage):
         self.completer.setWidget(self.ui.preserved_tags)
         self.ui.preserved_tags.textEdited.connect(self.preserved_tags_edited)
         self.completer.activated.connect(self.completer_activated)
+        self.ui.aac_no_tags.toggled.connect(self.ui.remove_ape_from_aac.setEnabled)
 
     def load(self):
         self.ui.write_tags.setChecked(not config.setting["dont_write_tags"])
@@ -89,6 +92,12 @@ class TagsOptionsPage(OptionsPage):
         self.ui.remove_id3_from_flac.setChecked(config.setting["remove_id3_from_flac"])
         self.ui.itunes_compatible_grouping.setChecked(config.setting["itunes_compatible_grouping"])
         self.ui.preserved_tags.setText(config.setting["preserved_tags"])
+        if config.setting["aac_save_ape"]:
+            self.ui.aac_save_ape.setChecked(True)
+        else:
+            self.ui.aac_no_tags.setChecked(True)
+        self.ui.remove_ape_from_aac.setChecked(config.setting["remove_ape_from_aac"])
+        self.ui.remove_ape_from_aac.setEnabled(not config.setting["aac_save_ape"])
         self.update_encodings()
 
     def save(self):
@@ -111,6 +120,8 @@ class TagsOptionsPage(OptionsPage):
         config.setting["remove_id3_from_flac"] = self.ui.remove_id3_from_flac.isChecked()
         config.setting["itunes_compatible_grouping"] = self.ui.itunes_compatible_grouping.isChecked()
         config.setting["preserved_tags"] = self.ui.preserved_tags.text()
+        config.setting["aac_save_ape"] = self.ui.aac_save_ape.isChecked()
+        config.setting["remove_ape_from_aac"] = self.ui.remove_ape_from_aac.isChecked()
         self.tagger.window.enable_tag_saving_action.setChecked(not config.setting["dont_write_tags"])
 
     def update_encodings(self, force_utf8=False):
