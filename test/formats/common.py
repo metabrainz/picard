@@ -11,6 +11,7 @@ from test.picardtestcase import PicardTestCase
 from picard import config
 import picard.formats
 from picard.formats import ext_to_format
+from picard.formats.mutagenext.aac import AACAPEv2
 from picard.formats.mutagenext.tak import TAK
 from picard.metadata import Metadata
 
@@ -55,9 +56,10 @@ def save_and_load_metadata(filename, metadata):
 
 
 def load_raw(filename):
-    f = mutagen.File(filename)
+    # First try special implementations in Picard
+    f = mutagen.File(filename, [AACAPEv2, TAK])
     if f is None:
-        f = mutagen.File(filename, [TAK])
+        f = mutagen.File(filename)
     return f
 
 

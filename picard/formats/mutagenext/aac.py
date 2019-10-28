@@ -17,6 +17,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+from mutagen._util import loadfile
 from mutagen.aac import AAC
 from mutagen.apev2 import (
     APENoHeaderError,
@@ -24,10 +25,11 @@ from mutagen.apev2 import (
     error as APEError,
 )
 
-from picard.formats.apev2 import APEv2File
-
 
 class AACAPEv2(AAC):
+    """AAC file with APEv2 tags.
+    """
+    @loadfile()
     def load(self, filething):
         super().load(filething)
         try:
@@ -40,14 +42,3 @@ class AACAPEv2(AAC):
             self.tags = APEv2()
         else:
             raise APEError("%r already has tags: %r" % (self, self.tags))
-
-
-class AACFile(APEv2File):
-    EXTENSIONS = [".aac"]
-    NAME = "AAC"
-    _File = AACAPEv2
-
-    def _info(self, metadata, file):
-        super()._info(metadata, file)
-        if file.tags:
-            metadata['~format'] = "%s (APEv2)" % self.NAME

@@ -43,7 +43,10 @@ from picard.util import (
     sanitize_date,
 )
 
-from .mutagenext import tak
+from .mutagenext import (
+    aac,
+    tak,
+)
 
 
 INVALID_CHARS = re.compile('[^\x20-\x7e]')
@@ -320,3 +323,14 @@ class TAKFile(APEv2File):
     EXTENSIONS = [".tak"]
     NAME = "Tom's lossless Audio Kompressor"
     _File = tak.TAK
+
+
+class AACFile(APEv2File):
+    EXTENSIONS = [".aac"]
+    NAME = "AAC"
+    _File = aac.AACAPEv2
+
+    def _info(self, metadata, file):
+        super()._info(metadata, file)
+        if file.tags:
+            metadata['~format'] = "%s (APEv2)" % self.NAME

@@ -100,17 +100,19 @@ register_format(MP3File)
 register_format(TrueAudioFile)
 
 from picard.formats.apev2 import (
+    AACFile,
     MonkeysAudioFile,
     MusepackFile,
     OptimFROGFile,
-    WavPackFile,
     TAKFile,
+    WavPackFile,
 )
-register_format(MusepackFile)
-register_format(WavPackFile)
-register_format(OptimFROGFile)
+register_format(AACFile)
 register_format(MonkeysAudioFile)
+register_format(MusepackFile)
+register_format(OptimFROGFile)
 register_format(TAKFile)
+register_format(WavPackFile)
 
 from picard.formats.vorbis import (
     FLACFile,
@@ -142,6 +144,3 @@ register_format(WAVFile)
 
 from picard.formats.midi import MIDIFile
 register_format(MIDIFile)
-
-from picard.formats.aac import AACFile
-register_format(AACFile)
