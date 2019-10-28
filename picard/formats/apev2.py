@@ -334,3 +334,19 @@ class AACFile(APEv2File):
         super()._info(metadata, file)
         if file.tags:
             metadata['~format'] = "%s (APEv2)" % self.NAME
+
+    def _save(self, filename, metadata):
+        if config.setting['aac_save_ape']:
+            super()._save(filename, metadata)
+        elif config.setting['remove_ape_from_aac']:
+            try:
+                mutagen.apev2.delete(encode_filename(filename))
+            except BaseException:
+                log.exception('Error removing APEv2 tags from %s', filename)
+
+    @classmethod
+    def supports_tag(cls, name):
+        if config.setting['aac_save_ape']:
+            return APEv2File.supports_tag(name)
+        else:
+            return False

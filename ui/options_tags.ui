@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>539</width>
-    <height>476</height>
+    <height>633</height>
    </rect>
   </property>
   <layout class="QVBoxLayout">
@@ -294,6 +294,39 @@
        <widget class="QCheckBox" name="write_id3v1">
         <property name="text">
          <string>Also include ID3v1 tags in the files</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="aac_tags">
+     <property name="title">
+      <string>AAC files</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <widget class="QRadioButton" name="aac_save_ape">
+        <property name="text">
+         <string>Save APEv2 tags</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QRadioButton" name="aac_no_tags">
+        <property name="text">
+         <string>Do not save tags</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="remove_ape_from_aac">
+        <property name="text">
+         <string>Remove APEv2 tags from AAC files</string>
         </property>
        </widget>
       </item>
