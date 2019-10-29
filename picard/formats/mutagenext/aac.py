@@ -22,6 +22,7 @@ from mutagen.aac import AAC
 from mutagen.apev2 import (
     APENoHeaderError,
     APEv2,
+    _APEv2Data,
     error as APEError,
 )
 
@@ -34,6 +35,14 @@ class AACAPEv2(AAC):
         super().load(filething)
         try:
             self.tags = APEv2(filething)
+            # Correct the calculated length
+            if not hasattr(self.info, 'bitrate') or self.info.bitrate == 0:
+                return
+            ape_data = _APEv2Data(filething.fileobj)
+            if ape_data.size is not None:
+                # Remove APEv2 data length from calculated track length
+                extra_length = (8.0 * ape_data.size) / self.info.bitrate
+                self.info.length = max(self.info.length - extra_length, 0.001)
         except APENoHeaderError:
             self.tags = None
 
