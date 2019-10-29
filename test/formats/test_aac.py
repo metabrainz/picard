@@ -27,7 +27,7 @@ class AACWithAPETest(CommonApeTests.ApeTestCase):
     testfile = 'test-apev2.aac'
     supports_ratings = False
     expected_info = {
-        'length': 125,
+        'length': 119,
         '~channels': '2',
         '~sample_rate': '44100',
         '~bitrate': '123.824',
