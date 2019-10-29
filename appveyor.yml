@@ -35,20 +35,28 @@ install:
     pip3 install -r requirements-build.txt
     pip3 install -r requirements-win.txt
 
-build_script:
+before_build:
 - cmd: |
     appveyor DownloadFile https://github.com/acoustid/chromaprint/releases/download/v%CHROMAPRINT_FPCALC_VERSION%/chromaprint-fpcalc-%CHROMAPRINT_FPCALC_VERSION%-windows-x86_64.zip -FileName fpcalc.zip
     7z x fpcalc.zip -y
     copy /Y chromaprint-fpcalc-%CHROMAPRINT_FPCALC_VERSION%-windows-x86_64\fpcalc.exe fpcalc.exe
     IF "%APPVEYOR_REPO_TAG%" == "false" python setup.py patch_version --platform=python%PYTHON_VERSION%
+
+build_script:
+- cmd: |
     python setup.py build
     python setup.py build_ext -i
+- cmd: |
+    echo "Building Windows installer..."
     pyinstaller --noconfirm --clean picard.spec
     REM Workaround for https://github.com/pyinstaller/pyinstaller/issues/4429
     IF EXIST dist\picard\PyQt5\translations move dist\picard\PyQt5\translations dist\picard\PyQt5\Qt
     del /F /Q dist\picard\libcrypto-1_1.dll
     del /F /Q dist\picard\libssl-1_1.dll
     makensis.exe /INPUTCHARSET UTF8 installer\picard-setup.nsi
+- cmd: |
+    echo "Building portable exe..."
+    pyinstaller --noconfirm --clean --onefile picard.spec
 
 test_script:
 - ps: |
@@ -64,6 +72,8 @@ for:
       - TEST_PIP_INSTALL: true
   install:
     echo Skipped install
+  before_build:
+    echo Skipped before_build
   build_script:
     pip3 install .
   test_script:
@@ -71,6 +81,7 @@ for:
 
 artifacts:
 - path: installer/*.exe
+- path: dist/*.exe
 deploy:
 - provider: GitHub
   auth_token:

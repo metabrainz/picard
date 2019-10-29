@@ -8,7 +8,14 @@ import sys
 # Get the version and build a CFBundleVersion compatible version
 # of it according to Apple dev documentation
 sys.path.append('.')
-from picard import PICARD_APP_ID, PICARD_VERSION
+from picard import (
+    PICARD_APP_ID,
+    PICARD_APP_NAME,
+    PICARD_ORG_NAME,
+    PICARD_VERSION,
+    PICARD_VERSION_STR_SHORT,
+)
+
 pv = [str(x) for x in PICARD_VERSION]
 macos_picard_version = '.'.join(pv[:3])
 macos_picard_short_version = macos_picard_version
@@ -71,6 +78,8 @@ if os.path.isfile(fpcalc_name):
 runtime_hooks = []
 if sys.platform == 'win32':
     runtime_hooks.append('scripts/picard-winconsole-hook.py')
+if '--onefile' in sys.argv:
+    runtime_hooks.append('scripts/picard-portable-hook.py')
 
 
 a = Analysis(['tagger.py'],
@@ -90,42 +99,60 @@ pyz = PYZ(a.pure, a.zipped_data,
           cipher=block_cipher)
 
 
-exe = EXE(pyz,
-          a.scripts,
-          exclude_binaries=True,
-          # Avoid name clash between picard executable and picard module folder
-          name='picard' if os_name == 'Windows' else 'picard-run',
-          debug=False,
-          strip=False,
-          upx=False,
-          icon='picard.ico',
-          version='win-version-info.txt',
-          console=False)
+if '--onefile' in sys.argv:
+    exe = EXE(pyz,
+              a.scripts,
+              a.binaries,
+              a.zipfiles,
+              a.datas,
+              name='{}-{}-{}'.format(PICARD_ORG_NAME,
+                                     PICARD_APP_NAME,
+                                     PICARD_VERSION_STR_SHORT),
+              debug=False,
+              strip=False,
+              upx=False,
+              icon='picard.ico',
+              version='win-version-info.txt',
+              console=False)
+
+else:
+    exe = EXE(pyz,
+              a.scripts,
+              exclude_binaries=True,
+              # Avoid name clash between picard executable and picard module folder
+              name='picard' if os_name == 'Windows' else 'picard-run',
+              debug=False,
+              strip=False,
+              upx=False,
+              icon='picard.ico',
+              version='win-version-info.txt',
+              console=False)
 
 
-coll = COLLECT(exe,
-               a.binaries,
-               a.zipfiles,
-               a.datas,
-               strip=False,
-               upx=False,
-               name='picard')
+    coll = COLLECT(exe,
+                   a.binaries,
+                   a.zipfiles,
+                   a.datas,
+                   strip=False,
+                   upx=False,
+                   name='picard')
 
 
-if os_name == 'Darwin':
-    info_plist = {
-        'NSHighResolutionCapable': 'True',
-        'NSPrincipalClass': 'NSApplication',
-        'CFBundleName': 'Picard',
-        'CFBundleDisplayName': 'MusicBrainz Picard',
-        'CFBundleIdentifier': PICARD_APP_ID,
-        'CFBundleVersion': macos_picard_version,
-        'CFBundleShortVersionString': macos_picard_short_version,
-        'LSMinimumSystemVersion': '10.12',
-    }
-    app = BUNDLE(coll,
-                 name='MusicBrainz Picard.app',
-                 icon='picard.icns',
-                 bundle_identifier=None,
-                 info_plist=info_plist
-                 )
+    if os_name == 'Darwin':
+        info_plist = {
+            'NSHighResolutionCapable': 'True',
+            'NSPrincipalClass': 'NSApplication',
+            'CFBundleName': PICARD_APP_NAME,
+            'CFBundleDisplayName': '{} {}'.format(PICARD_ORG_NAME,
+                                                  PICARD_APP_NAME),
+            'CFBundleIdentifier': PICARD_APP_ID,
+            'CFBundleVersion': macos_picard_version,
+            'CFBundleShortVersionString': macos_picard_short_version,
+            'LSMinimumSystemVersion': '10.12',
+        }
+        app = BUNDLE(coll,
+                     name='{} {}.app'.format(PICARD_ORG_NAME, PICARD_APP_NAME),
+                     icon='picard.icns',
+                     bundle_identifier=None,
+                     info_plist=info_plist
+                     )

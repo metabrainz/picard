@@ -33,6 +33,9 @@ _appconfiglocation = QStandardPaths.writableLocation(QStandardPaths.AppConfigLoc
 USER_DIR = os.path.join(_appconfiglocation, "MusicBrainz", PICARD_APP_NAME)
 USER_PLUGIN_DIR = os.path.join(USER_DIR, "plugins")
 
+# Cache directory
+CACHE_DIR = QStandardPaths.writableLocation(QStandardPaths.CacheLocation)
+
 # AcoustID client API key
 ACOUSTID_KEY = 'v8pQ6oyB'
 ACOUSTID_HOST = 'api.acoustid.org'
