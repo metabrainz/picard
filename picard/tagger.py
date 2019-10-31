@@ -285,9 +285,13 @@ class Tagger(QtWidgets.QApplication):
         webbrowser2.open(authorization_url)
         if not parent:
             parent = self.window
-        authorization_code, ok = QtWidgets.QInputDialog.getText(parent,
-            _("MusicBrainz Account"), _("Authorization code:"))
-        if ok:
+        dialog = QtWidgets.QInputDialog(parent)
+        dialog.setWindowModality(QtCore.Qt.WindowModal)
+        dialog.setWindowTitle(_("MusicBrainz Account"))
+        dialog.setLabelText(_("Authorization code:"))
+        status = dialog.exec_()
+        if status == QtWidgets.QDialog.Accepted:
+            authorization_code = dialog.textValue()
             self.webservice.oauth_manager.exchange_authorization_code(
                 authorization_code, scopes,
                 partial(self.on_mb_authorization_finished, callback))
