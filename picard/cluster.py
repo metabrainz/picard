@@ -73,6 +73,7 @@ class Cluster(QtCore.QObject, Item):
         self.related_album = related_album
         self.files = []
         self.lookup_task = None
+        self.update_metadata_images_enabled = True
 
     def __repr__(self):
         if self.related_album:
@@ -296,8 +297,11 @@ class Cluster(QtCore.QObject, Item):
 
             yield album_name, artist_name, (files[i] for i in album)
 
+    def enable_update_metadata_images(self, enabled):
+        self.update_metadata_images_enabled = enabled
+
     def update_metadata_images(self):
-        if self.can_show_coverart:
+        if self.update_metadata_images_enabled and self.can_show_coverart:
             update_metadata_images(self)
 
 
