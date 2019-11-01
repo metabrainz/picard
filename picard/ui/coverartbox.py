@@ -33,6 +33,7 @@ from picard import (
     log,
 )
 from picard.album import Album
+from picard.cluster import Cluster
 from picard.const import MAX_COVERS_TO_STACK
 from picard.coverart.image import (
     CoverArtImage,
@@ -479,6 +480,17 @@ class CoverArtBox(QtWidgets.QGroupBox):
             album.enable_update_metadata_images(True)
             album.update_metadata_images()
             album.update(False)
+        elif isinstance(self.item, Cluster):
+            cluster = self.item
+            cluster.enable_update_metadata_images(False)
+            set_image(cluster, coverartimage)
+            for file in cluster.iterfiles():
+                set_image(file, coverartimage)
+                file.metadata_images_changed.emit()
+                file.update()
+            cluster.enable_update_metadata_images(True)
+            cluster.update_metadata_images()
+            cluster.update()
         elif isinstance(self.item, Track):
             track = self.item
             track.album.enable_update_metadata_images(False)
