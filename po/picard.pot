@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: picard 2.3.0.dev1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2019-10-31 12:57+0100\n"
+"POT-Creation-Date: 2019-11-01 17:22+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -435,23 +435,27 @@ msgstr ""
 msgid "Slovenian"
 msgstr ""
 
-#: picard/const/languages.py:71
+#: picard/const/languages.py:70
+msgid "Albanian"
+msgstr ""
+
+#: picard/const/languages.py:72
 msgid "Swedish"
 msgstr ""
 
-#: picard/const/languages.py:73
+#: picard/const/languages.py:74
 msgid "Turkish"
 msgstr ""
 
-#: picard/const/languages.py:74
+#: picard/const/languages.py:75
 msgid "Ukrainian"
 msgstr ""
 
-#: picard/const/languages.py:75
+#: picard/const/languages.py:76
 msgid "Chinese (China)"
 msgstr ""
 
-#: picard/const/languages.py:76
+#: picard/const/languages.py:77
 msgid "Chinese (Taiwan)"
 msgstr ""
 

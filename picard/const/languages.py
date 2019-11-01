@@ -67,6 +67,7 @@ UI_LANGUAGES = [
     #('sco', 'Scots leid', N_('Scots')),
     ('sk', 'Slovenčina', N_('Slovak')),
     ('sl', 'Slovenščina', N_('Slovenian')),
+    ('sq', 'Shqip', N_('Albanian')),
     #('sr', 'Србин', N_('Serbian')),
     ('sv', 'Svenska', N_('Swedish')),
     #('ta', 'தமிழ்', N_('Tamil')),
