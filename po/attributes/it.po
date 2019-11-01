@@ -12,8 +12,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2019-09-21 13:03+0000\n"
-"Last-Translator: Luca Salini <salo.rock@gmail.com>\n"
+"PO-Revision-Date: 2019-10-21 23:42+0000\n"
+"Last-Translator: Michael Wiencek <mwtuea@gmail.com>\n"
 "Language-Team: Italian (http://www.transifex.com/musicbrainz/musicbrainz/language/it/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -4060,6 +4060,11 @@ msgstr "Mevlevi Evferi"
 msgctxt "work_attribute_type_allowed_value"
 msgid "Mevlidişerif"
 msgstr "Mevlidişerif"
+
+#: DB:medium_format/name:83
+msgctxt "medium_format"
+msgid "Microcassette"
+msgstr ""
 
 #: DB:medium_format/name:6
 msgctxt "medium_format"

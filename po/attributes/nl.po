@@ -10,7 +10,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2019-08-14 13:02+0000\n"
+"PO-Revision-Date: 2019-10-28 15:05+0000\n"
 "Last-Translator: Maurits Meulenbelt <mfmeulenbelt@gmail.com>\n"
 "Language-Team: Dutch (http://www.transifex.com/musicbrainz/musicbrainz/language/nl/)\n"
 "MIME-Version: 1.0\n"
@@ -4058,6 +4058,11 @@ msgstr "Mevlevi Evferi"
 msgctxt "work_attribute_type_allowed_value"
 msgid "Mevlidişerif"
 msgstr "Mevlidişerif"
+
+#: DB:medium_format/name:83
+msgctxt "medium_format"
+msgid "Microcassette"
+msgstr "microcassette"
 
 #: DB:medium_format/name:6
 msgctxt "medium_format"

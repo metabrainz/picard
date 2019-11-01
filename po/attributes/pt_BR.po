@@ -22,14 +22,15 @@
 # Rodrigo Tavares, 2019
 # davitf <transifex@davitf.com>, 2012
 # Willer Portugal <willer_tj@hotmail.com>, 2019
+# Willer Silva <programacaowp@gmail.com>, 2019
 # Willer TJ <willertj1986@gmail.com>, 2019
 # Lucas Lira Gomes <x8lucas8x@gmail.com>, 2012
 # Zgamer72 Zombie <Thiferreira16@gmail.com>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2019-08-08 09:30+0000\n"
-"Last-Translator: yvanz\n"
+"PO-Revision-Date: 2019-10-21 23:42+0000\n"
+"Last-Translator: Michael Wiencek <mwtuea@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/musicbrainz/musicbrainz/language/pt_BR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -256,7 +257,7 @@ msgid ""
 "A place that has worship or religious studies as its main function. "
 "Religious buildings often host concerts and serve as recording locations, "
 "especially for classical music."
-msgstr "Um lugar cuja principal função é o culto ou estudo religioso. Edifícios religiosos freqüentemente abrigam concertos e servem como local para gravações, especialmente para música clássica."
+msgstr "Um lugar cuja principal função é o culto ou estudo religioso. Edifícios religiosos freqüentemente abrigam concertos e servem como local para gravação, especialmente para música clássica."
 
 #: DB:place_type/description:4
 msgctxt "place_type"
@@ -4077,6 +4078,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Mevlidişerif"
 msgstr ""
 
+#: DB:medium_format/name:83
+msgctxt "medium_format"
+msgid "Microcassette"
+msgstr ""
+
 #: DB:medium_format/name:6
 msgctxt "medium_format"
 msgid "MiniDisc"
@@ -5006,7 +5012,7 @@ msgstr ""
 #: DB:work_type/name:28
 msgctxt "work_type"
 msgid "Play"
-msgstr ""
+msgstr "Tocar"
 
 #: DB:medium_format/name:74
 msgctxt "medium_format"

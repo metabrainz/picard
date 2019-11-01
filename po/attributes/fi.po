@@ -16,8 +16,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2019-08-10 17:17+0000\n"
-"Last-Translator: Jaakko Perttilä <jormangeud@gmail.com>\n"
+"PO-Revision-Date: 2019-10-21 23:42+0000\n"
+"Last-Translator: Michael Wiencek <mwtuea@gmail.com>\n"
 "Language-Team: Finnish (http://www.transifex.com/musicbrainz/musicbrainz/language/fi/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -4063,6 +4063,11 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:643
 msgctxt "work_attribute_type_allowed_value"
 msgid "Mevlidişerif"
+msgstr ""
+
+#: DB:medium_format/name:83
+msgctxt "medium_format"
+msgid "Microcassette"
 msgstr ""
 
 #: DB:medium_format/name:6

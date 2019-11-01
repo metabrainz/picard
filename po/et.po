@@ -13,9 +13,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2019-10-04 09:41+0200\n"
-"PO-Revision-Date: 2019-10-04 12:49+0000\n"
-"Last-Translator: Michael Wiencek <mwtuea@gmail.com>\n"
+"POT-Creation-Date: 2019-10-31 12:57+0100\n"
+"PO-Revision-Date: 2019-11-01 15:50+0000\n"
+"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Estonian (http://www.transifex.com/musicbrainz/musicbrainz/language/et/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -130,52 +130,57 @@ msgstr "Ühenda"
 msgid "Remove"
 msgstr "Eemalda"
 
-#: picard/file.py:674
+#: picard/file.py:670
 #, python-format
 msgid "No matching tracks above the threshold for file '%(filename)s'"
 msgstr "Failile \"%(filename)s\" üle seatud läve vastavaid lugusid pole"
 
-#: picard/file.py:676
+#: picard/file.py:672
 #, python-format
 msgid "File '%(filename)s' identified!"
 msgstr "Fail \"%(filename)s\" tuvastatud!"
 
-#: picard/file.py:687
+#: picard/file.py:683
 #, python-format
 msgid "No matching tracks for file '%(filename)s'"
 msgstr "Failile \"%(filename)s\" vastavaid lugusid pole"
 
-#: picard/file.py:718
+#: picard/file.py:714
 #, python-format
 msgid "Looking up the metadata for file %(filename)s ..."
 msgstr "Metaandmete otsimine failile \"%(filename)s\"..."
 
-#: picard/pluginmanager.py:231
+#: picard/pluginmanager.py:223
 #, python-format
-msgid "Failed loading zipped plugin %r"
-msgstr "Pakitud plugina \"%r\" laadimine nurjus"
+msgid "Unable to load plugin '%s'"
+msgstr ""
 
-#: picard/pluginmanager.py:241
+#: picard/pluginmanager.py:238
 #, python-format
-msgid "Failed loading plugin %r"
-msgstr "Plugina \"%r\" laadimine nurjus"
+msgid "Failed loading zipped plugin %r from %r"
+msgstr ""
 
-#: picard/pluginmanager.py:277
+#: picard/pluginmanager.py:248
+#, python-format
+msgid "Failed loading plugin %r in %r"
+msgstr ""
+
+#: picard/pluginmanager.py:284
 #, python-format
 msgid "Plugin '%s' from '%s' is not compatible with this version of Picard."
 msgstr "Plugin \"%s\" (%s) ei ühildu Picardi praeguse versiooniga."
 
-#: picard/pluginmanager.py:281
+#: picard/pluginmanager.py:288
 #, python-format
 msgid "Plugin %r has an invalid API version string : %s"
 msgstr "Pluginal \"%r\" on vigane API versioonistring: %s"
 
-#: picard/pluginmanager.py:284
+#: picard/pluginmanager.py:291
 #, python-format
-msgid "Plugin %r : %s"
-msgstr "Plugin %r : %s"
+msgid "Plugin %r"
+msgstr ""
 
-#: picard/pluginmanager.py:421
+#: picard/pluginmanager.py:428
 #, python-format
 msgid "Error loading plugins list: %(error)s"
 msgstr "Viga pluginaloendi laadimisel: %(error)s"
@@ -213,31 +218,31 @@ msgstr "[vöötkood puudub]"
 msgid "[no release info]"
 msgstr "[väljalaskeinfo puudub]"
 
-#: picard/tagger.py:289 picard/ui/ui_options_general.py:135
+#: picard/tagger.py:290 picard/ui/ui_options_general.py:135
 msgid "MusicBrainz Account"
 msgstr "MusicBrainzi konto"
 
-#: picard/tagger.py:289
+#: picard/tagger.py:291
 msgid "Authorization code:"
 msgstr "Autoriseerimiskood:"
 
-#: picard/tagger.py:511 picard/tagger.py:544
+#: picard/tagger.py:515 picard/tagger.py:548
 #, python-format
 msgid "Adding %(count)d file from '%(directory)s' ..."
 msgid_plural "Adding %(count)d files from '%(directory)s' ..."
 msgstr[0] "%(count)d faili lisamine kataloogist \"%(directory)s\"..."
 msgstr[1] "%(count)d faili lisamine kataloogist \"%(directory)s\"..."
 
-#: picard/tagger.py:729
+#: picard/tagger.py:735
 #, python-format
 msgid "Removing album %(id)s: %(artist)s - %(album)s"
 msgstr "Albumi \"%(id)s\" (%(artist)s - %(album)s) eemaldamine"
 
-#: picard/tagger.py:747
+#: picard/tagger.py:753
 msgid "CD Lookup Error"
 msgstr "Viga CD päringul"
 
-#: picard/tagger.py:748
+#: picard/tagger.py:754
 #, python-format
 msgid ""
 "Error while reading CD:\n"
@@ -287,24 +292,24 @@ msgstr "AcoustID edastamine nurjus veateatega \"%(error)s\": %(message)s"
 msgid "AcoustIDs successfully submitted."
 msgstr "AcoustID-d edastatud."
 
-#: picard/const/__init__.py:124
+#: picard/const/__init__.py:127
 msgid "Stable releases only"
 msgstr "Ainult stabiilsed väljalasked"
 
-#: picard/const/__init__.py:130
+#: picard/const/__init__.py:133
 msgid "Stable and Beta releases"
 msgstr "Stabiilsed ja beetaväljalasked"
 
-#: picard/const/__init__.py:136
+#: picard/const/__init__.py:139
 msgid "Stable, Beta and Dev releases"
 msgstr "Stabiilsed, beeta- ja arendusväljalasked"
 
-#: picard/const/__init__.py:151
+#: picard/const/__init__.py:154
 #, python-format
 msgid "My script %d"
 msgstr "Minu skript %d"
 
-#: picard/const/__init__.py:152
+#: picard/const/__init__.py:155
 msgid "My script"
 msgstr "Minu skript"
 
@@ -542,12 +547,12 @@ msgstr "Kohalikud failid"
 msgid "Whitelist"
 msgstr "Lubatud saidid"
 
-#: picard/ui/cdlookup.py:60 picard/ui/mainwindow.py:732 picard/util/tags.py:21
+#: picard/ui/cdlookup.py:60 picard/ui/mainwindow.py:740 picard/util/tags.py:21
 msgid "Album"
 msgstr "Album"
 
-#: picard/ui/cdlookup.py:60 picard/ui/itemviews.py:126
-#: picard/ui/mainwindow.py:733 picard/ui/searchdialog/album.py:151
+#: picard/ui/cdlookup.py:60 picard/ui/itemviews.py:128
+#: picard/ui/mainwindow.py:741 picard/ui/searchdialog/album.py:151
 #: picard/ui/searchdialog/track.py:63 picard/util/tags.py:22
 msgid "Artist"
 msgstr "Esitaja"
@@ -785,7 +790,7 @@ msgstr "Esitaja:"
 msgid "Tracklist:"
 msgstr "Lugude nimekiri:"
 
-#: picard/ui/infostatus.py:56 picard/ui/options/plugins.py:584
+#: picard/ui/infostatus.py:56 picard/ui/options/plugins.py:587
 msgid "Files"
 msgstr "Failid"
 
@@ -801,125 +806,125 @@ msgstr "Ootel failid"
 msgid "Pending requests"
 msgstr "Ootel päringud"
 
-#: picard/ui/itemviews.py:124 picard/util/tags.py:23
+#: picard/ui/itemviews.py:126 picard/util/tags.py:23
 msgid "Title"
 msgstr "Pealkiri"
 
-#: picard/ui/itemviews.py:125 picard/ui/searchdialog/track.py:62
+#: picard/ui/itemviews.py:127 picard/ui/searchdialog/track.py:62
 #: picard/util/tags.py:87
 msgid "Length"
 msgstr "Pikkus"
 
-#: picard/ui/itemviews.py:194
+#: picard/ui/itemviews.py:196
 msgid "Bad match"
 msgstr "Ebatäpne vaste"
 
-#: picard/ui/itemviews.py:195
+#: picard/ui/itemviews.py:197
 msgid "Poor match"
 msgstr "Kehv vaste"
 
-#: picard/ui/itemviews.py:196
+#: picard/ui/itemviews.py:198
 msgid "Ok match"
 msgstr "Rahuldav vaste"
 
-#: picard/ui/itemviews.py:197
+#: picard/ui/itemviews.py:199
 msgid "Good match"
 msgstr "Hea vaste"
 
-#: picard/ui/itemviews.py:198
+#: picard/ui/itemviews.py:200
 msgid "Great match"
 msgstr "Väga hea vaste"
 
-#: picard/ui/itemviews.py:199
+#: picard/ui/itemviews.py:201
 msgid "Excellent match"
 msgstr "Täpne vaste"
 
-#: picard/ui/itemviews.py:268
+#: picard/ui/itemviews.py:270
 msgid "&Expand all"
 msgstr "Lai&enda kõik"
 
-#: picard/ui/itemviews.py:270
+#: picard/ui/itemviews.py:272
 msgid "&Collapse all"
 msgstr "A&henda kõik"
 
-#: picard/ui/itemviews.py:272
+#: picard/ui/itemviews.py:274
 msgid "Select &all"
 msgstr "V&ali kõik"
 
-#: picard/ui/itemviews.py:274
+#: picard/ui/itemviews.py:276
 msgid "Ctrl+A"
 msgstr "Ctrl+A"
 
-#: picard/ui/itemviews.py:340
+#: picard/ui/itemviews.py:342
 msgid "&Other versions"
 msgstr "&Teised versioonid"
 
-#: picard/ui/itemviews.py:343
+#: picard/ui/itemviews.py:345
 msgid "Loading..."
 msgstr "Laadimine..."
 
-#: picard/ui/itemviews.py:395
+#: picard/ui/itemviews.py:397
 #, python-format
 msgid "&Other versions (%d)"
 msgstr ""
 
-#: picard/ui/itemviews.py:419
+#: picard/ui/itemviews.py:421
 msgid "Collections"
 msgstr "Kogud"
 
-#: picard/ui/itemviews.py:427
+#: picard/ui/itemviews.py:429
 msgid "P&lugins"
 msgstr "Pluginad"
 
-#: picard/ui/itemviews.py:443
+#: picard/ui/itemviews.py:445
 msgid "&Run scripts"
 msgstr "&Käivita skript"
 
-#: picard/ui/itemviews.py:614
+#: picard/ui/itemviews.py:616
 msgid "file view"
 msgstr "failivaade"
 
-#: picard/ui/itemviews.py:615
+#: picard/ui/itemviews.py:617
 msgid "Contains unmatched files and clusters"
 msgstr "Sisaldab vasteteta faile ja rühmi"
 
-#: picard/ui/itemviews.py:635
+#: picard/ui/itemviews.py:637
 msgid "Clusters"
 msgstr "Rühmad"
 
-#: picard/ui/itemviews.py:644
+#: picard/ui/itemviews.py:646
 msgid "album view"
 msgstr "albumivaade"
 
-#: picard/ui/itemviews.py:645
+#: picard/ui/itemviews.py:647
 msgid "Contains albums and matched files"
 msgstr "Sisaldab albumeid ja vastetega faile"
 
-#: picard/ui/itemviews.py:754 picard/ui/options/renaming.py:207
+#: picard/ui/itemviews.py:759 picard/ui/options/renaming.py:207
 msgid "Error"
 msgstr "Viga"
 
-#: picard/ui/itemviews.py:758
+#: picard/ui/itemviews.py:763
 msgid "Album modified and complete"
 msgstr "Albumit on muudetud ja see on terviklik"
 
-#: picard/ui/itemviews.py:761
+#: picard/ui/itemviews.py:766
 msgid "Album unchanged and complete"
 msgstr "Albumit pole muudetud ja see on terviklik"
 
-#: picard/ui/itemviews.py:765
+#: picard/ui/itemviews.py:770
 msgid "Album modified"
 msgstr "Albumit on muudetud"
 
-#: picard/ui/itemviews.py:768
+#: picard/ui/itemviews.py:773
 msgid "Album unchanged"
 msgstr "Albumit pole muudetud"
 
-#: picard/ui/itemviews.py:879
+#: picard/ui/itemviews.py:884
 msgid "Track saved"
 msgstr "Lugu salvestatud"
 
-#: picard/ui/itemviews.py:881 picard/ui/itemviews.py:885
+#: picard/ui/itemviews.py:886 picard/ui/itemviews.py:890
 msgid "Pending"
 msgstr "Ootel"
 
@@ -1164,8 +1169,8 @@ msgstr "&Kaanepilt"
 msgid "&Actions"
 msgstr "&Toimingud"
 
-#: picard/ui/mainwindow.py:463 picard/ui/mainwindow.py:726
-#: picard/ui/searchdialog/__init__.py:79
+#: picard/ui/mainwindow.py:463 picard/ui/mainwindow.py:734
+#: picard/ui/searchdialog/__init__.py:85
 msgid "Search"
 msgstr "Otsing"
 
@@ -1177,7 +1182,7 @@ msgstr "&CD päring..."
 msgid "Lookup the details of the CD in your drive"
 msgstr "CD-seadmes oleva plaadi andmete otsimine"
 
-#: picard/ui/mainwindow.py:470 picard/ui/mainwindow.py:582
+#: picard/ui/mainwindow.py:470 picard/ui/mainwindow.py:586
 msgid "Ctrl+K"
 msgstr "Ctrl+K"
 
@@ -1295,95 +1300,95 @@ msgstr "Faili sisaldava kataloogi avamine failihalduris"
 msgid "&Check for Update…"
 msgstr ""
 
-#: picard/ui/mainwindow.py:609
+#: picard/ui/mainwindow.py:623
 msgid "&File"
 msgstr "&Fail"
 
-#: picard/ui/mainwindow.py:622
+#: picard/ui/mainwindow.py:636
 msgid "&Edit"
 msgstr "&Redigeerimine"
 
-#: picard/ui/mainwindow.py:628
+#: picard/ui/mainwindow.py:642
 msgid "&View"
 msgstr "&Vaade"
 
-#: picard/ui/mainwindow.py:636
+#: picard/ui/mainwindow.py:650
 msgid "&Options"
 msgstr "&Seadistused"
 
-#: picard/ui/mainwindow.py:642
+#: picard/ui/mainwindow.py:656
 msgid "&Tools"
 msgstr "&Tööriistad"
 
-#: picard/ui/mainwindow.py:656 picard/ui/util.py:43
+#: picard/ui/mainwindow.py:667 picard/ui/util.py:43
 msgid "&Help"
 msgstr "&Abi"
 
-#: picard/ui/mainwindow.py:691 picard/ui/ui_options_plugins.py:132
+#: picard/ui/mainwindow.py:702 picard/ui/ui_options_plugins.py:132
 msgid "Actions"
 msgstr "Toimingud"
 
-#: picard/ui/mainwindow.py:734
+#: picard/ui/mainwindow.py:742
 msgid "Track"
 msgstr "Lugu"
 
-#: picard/ui/mainwindow.py:751
+#: picard/ui/mainwindow.py:759
 msgid "&Advanced search"
 msgstr "Täpsem otsing"
 
-#: picard/ui/mainwindow.py:752
+#: picard/ui/mainwindow.py:760
 msgid "&Builtin search"
 msgstr "Sisseehitatud otsing"
 
-#: picard/ui/mainwindow.py:841
+#: picard/ui/mainwindow.py:849
 msgid "All Supported Formats"
 msgstr "Kõik toetatud vormingud"
 
-#: picard/ui/mainwindow.py:867
+#: picard/ui/mainwindow.py:875
 #, python-format
 msgid "Adding multiple directories from '%(directory)s' ..."
 msgstr "Mitme kataloogi lisamine asukohast \"%(directory)s\"..."
 
-#: picard/ui/mainwindow.py:872
+#: picard/ui/mainwindow.py:880
 #, python-format
 msgid "Adding directory: '%(directory)s' ..."
 msgstr "Kataloogi \"%(directory)s\" lisamine..."
 
-#: picard/ui/mainwindow.py:953
+#: picard/ui/mainwindow.py:961
 msgid "Configuration Required"
 msgstr "Vaja on seadistamist"
 
-#: picard/ui/mainwindow.py:954
+#: picard/ui/mainwindow.py:962
 msgid ""
 "Audio fingerprinting is not yet configured. Would you like to configure it "
 "now?"
 msgstr "Audiosõrmejälgede süsteem pole veel seadistatud. Kas soovid seda kohe teha?"
 
-#: picard/ui/mainwindow.py:1068
+#: picard/ui/mainwindow.py:1076
 #, python-format
 msgid "%(filename)s (error: %(error)s)"
 msgstr "%(filename)s (viga: %(error)s)"
 
-#: picard/ui/mainwindow.py:1074
+#: picard/ui/mainwindow.py:1082
 #, python-format
 msgid "%(filename)s"
 msgstr "%(filename)s"
 
-#: picard/ui/mainwindow.py:1085
+#: picard/ui/mainwindow.py:1093
 #, python-format
 msgid "%(filename)s (%(similarity)d%%) (error: %(error)s)"
 msgstr "%(filename)s (%(similarity)d%%) (viga: %(error)s)"
 
-#: picard/ui/mainwindow.py:1092
+#: picard/ui/mainwindow.py:1100
 #, python-format
 msgid "%(filename)s (%(similarity)d%%)"
 msgstr "%(filename)s (%(similarity)d%%)"
 
-#: picard/ui/mainwindow.py:1138
+#: picard/ui/mainwindow.py:1146
 msgid "Authentication Required"
 msgstr "Nõutakse autentimist"
 
-#: picard/ui/mainwindow.py:1139
+#: picard/ui/mainwindow.py:1147
 msgid ""
 "Picard needs authorization to access your personal data on the MusicBrainz "
 "server. Would you like to log in now?"
@@ -1843,7 +1848,7 @@ msgstr "Mitme kataloogi valimise võimalus"
 msgid "Use builtin search rather than looking in browser"
 msgstr "Brauseris otsimise asemel eelistatakse sisseehitatud otsingut"
 
-#: picard/ui/searchdialog/__init__.py:119
+#: picard/ui/searchdialog/__init__.py:125
 #: picard/ui/ui_options_interface.py:127
 msgid "Use advanced query syntax"
 msgstr "Laiendatud päringusüntaks"
@@ -1979,11 +1984,11 @@ msgstr "Vaikimisi kuulatav port:"
 msgid "Listen only on localhost"
 msgstr "Kuulatakse ainult \"localhost'il\""
 
-#: picard/ui/options/plugins.py:204 picard/ui/ui_options_plugins.py:129
+#: picard/ui/options/plugins.py:207 picard/ui/ui_options_plugins.py:129
 msgid "Plugins"
 msgstr "Pluginad"
 
-#: picard/ui/options/plugins.py:579 picard/ui/searchdialog/album.py:150
+#: picard/ui/options/plugins.py:582 picard/ui/searchdialog/album.py:150
 #: picard/ui/searchdialog/artist.py:50 picard/ui/searchdialog/track.py:61
 #: picard/ui/ui_options_plugins.py:130
 msgid "Name"
@@ -2097,89 +2102,105 @@ msgstr "Lisa uus skript"
 msgid "Display Name"
 msgstr "Kuvatav nimi"
 
-#: picard/ui/ui_options_tags.py:151
+#: picard/ui/ui_options_tags.py:168
 msgid "Write tags to files"
 msgstr "Sildid kirjutatakse failidesse"
 
-#: picard/ui/ui_options_tags.py:152
+#: picard/ui/ui_options_tags.py:169
 msgid "Preserve timestamps of tagged files"
 msgstr "Sildistatud failide ajatemplid säilitatakse"
 
-#: picard/ui/ui_options_tags.py:153
+#: picard/ui/ui_options_tags.py:170
 msgid "Before Tagging"
 msgstr "Enne sildistamist"
 
-#: picard/ui/ui_options_tags.py:154
+#: picard/ui/ui_options_tags.py:171
 msgid "Clear existing tags"
 msgstr "Eemaldatakse olemasolevad sildid"
 
-#: picard/ui/ui_options_tags.py:155
+#: picard/ui/ui_options_tags.py:172
 msgid "Remove ID3 tags from FLAC files"
 msgstr "FLAC-failidest eemaldatakse ID3-sildid"
 
-#: picard/ui/ui_options_tags.py:156
+#: picard/ui/ui_options_tags.py:173
 msgid "Remove APEv2 tags from MP3 files"
 msgstr "MP3-failidest eemaldatakse APEv2-sildid"
 
-#: picard/ui/ui_options_tags.py:157
+#: picard/ui/ui_options_tags.py:174
 msgid ""
 "Preserve these tags from being cleared or overwritten with MusicBrainz data:"
 msgstr "Järgmisi silte ei tühjendata ega kirjutata üle MusicBrainzi andmetega:"
 
-#: picard/ui/ui_options_tags.py:158
+#: picard/ui/ui_options_tags.py:175
 msgid "Tags are separated by commas, and are case-sensitive."
 msgstr "Sildid on tõstutundlikud ja tuleb eraldada komaga."
 
-#: picard/ui/ui_options_tags.py:159
+#: picard/ui/ui_options_tags.py:176
 msgid "Tag Compatibility"
 msgstr "Siltide ühilduvus"
 
-#: picard/ui/ui_options_tags.py:160
+#: picard/ui/ui_options_tags.py:177
 msgid "ID3v2 Version"
 msgstr "ID3v2 versioon"
 
-#: picard/ui/ui_options_tags.py:161
+#: picard/ui/ui_options_tags.py:178
 msgid "2.4"
 msgstr "2.4"
 
-#: picard/ui/ui_options_tags.py:162
+#: picard/ui/ui_options_tags.py:179
 msgid "2.3"
 msgstr "2.3"
 
-#: picard/ui/ui_options_tags.py:163
+#: picard/ui/ui_options_tags.py:180
 msgid "ID3v2 Text Encoding"
 msgstr "ID3v2 teksti kodeering"
 
-#: picard/ui/ui_options_tags.py:164
+#: picard/ui/ui_options_tags.py:181
 msgid "UTF-8"
 msgstr "UTF-8"
 
-#: picard/ui/ui_options_tags.py:165
+#: picard/ui/ui_options_tags.py:182
 msgid "UTF-16"
 msgstr "UTF-16"
 
-#: picard/ui/ui_options_tags.py:166
+#: picard/ui/ui_options_tags.py:183
 msgid "ISO-8859-1"
 msgstr "ISO-8859-1"
 
-#: picard/ui/ui_options_tags.py:167
+#: picard/ui/ui_options_tags.py:184
 msgid "Join multiple ID3v2.3 tags with:"
 msgstr "Eraldaja mitme ID3v2.3 sildi puhul:"
 
-#: picard/ui/ui_options_tags.py:168
+#: picard/ui/ui_options_tags.py:185
 msgid ""
 "<html><head/><body><p>Default is '/' to maintain compatibility with previous"
 " Picard releases.</p><p>New alternatives are ';_' or '_/_' or type your own."
 " </p></body></html>"
 msgstr "<html><head/><body><p>Picardi eelmiste versioonidega ühilduvuse hoidmiseks on vaikeväärtus '/'.</p><p>Valida saab ka '; ', ' / ' või omamääratud eraldaja.</p></body></html>"
 
-#: picard/ui/ui_options_tags.py:169
+#: picard/ui/ui_options_tags.py:186
 msgid "Save iTunes compatible grouping and work"
 msgstr "Salvestatakse iTunes'iga ühilduv rühmitus- ja teoseteave"
 
-#: picard/ui/ui_options_tags.py:170
+#: picard/ui/ui_options_tags.py:187
 msgid "Also include ID3v1 tags in the files"
 msgstr "Failidesse lisatakse ka ID3v1-sildid"
+
+#: picard/ui/ui_options_tags.py:188
+msgid "AAC files"
+msgstr ""
+
+#: picard/ui/ui_options_tags.py:189
+msgid "Save APEv2 tags"
+msgstr ""
+
+#: picard/ui/ui_options_tags.py:190
+msgid "Do not save tags"
+msgstr ""
+
+#: picard/ui/ui_options_tags.py:191
+msgid "Remove APEv2 tags from AAC files"
+msgstr "AAC-failidest eemaldatakse APEv2-sildid"
 
 #: picard/ui/ui_passworddialog.py:60
 msgid "Authentication required"
@@ -2369,7 +2390,7 @@ msgid ""
 "<p><u>Wildcard filtering:</u></p>\n"
 "<p>\n"
 "<b>-*word</b>: exclude all genres ending with <i>word</i><br/>\n"
-"<b>+word*</b>: exclude all genres starting with <i>word</i><br/>\n"
+"<b>+word*</b>: include all genres starting with <i>word</i><br/>\n"
 "<b>-w*rd</b>: exclude all genres starting with <i>w</i> and ending with <i>rd</i>\n"
 "</p>\n"
 "<p><u>Regular expressions filtering (Python re syntax):</u></p>\n"
@@ -2385,8 +2406,8 @@ msgid ""
 "This playground will not be preserved on Options exit.\n"
 "</p>\n"
 "<p>\n"
-"Red background means the tag will be skipped<br/>\n"
-"Green background means the tag will be kept\n"
+"Red background means the tag will be skipped.<br/>\n"
+"Green background means the tag will be kept.\n"
 "</p>\n"
 "</body></html>"
 msgstr ""
@@ -2395,7 +2416,7 @@ msgstr ""
 msgid "Genres"
 msgstr "Muusikastiilid"
 
-#: picard/ui/options/genres.py:143
+#: picard/ui/options/genres.py:141
 #, python-format
 msgid "Error line %d: %s"
 msgstr ""
@@ -2484,38 +2505,38 @@ msgstr "Sobitamine"
 msgid "Network"
 msgstr "Võrk"
 
-#: picard/ui/options/plugins.py:123
+#: picard/ui/options/plugins.py:126
 msgid "Download and install plugin"
 msgstr "Laadi alla ja paigalda plugin"
 
-#: picard/ui/options/plugins.py:131
+#: picard/ui/options/plugins.py:134
 #, python-format
 msgid "Download and upgrade plugin to version %s"
 msgstr "Laadi alla ja uuenda plugin versioonile %s"
 
-#: picard/ui/options/plugins.py:137
+#: picard/ui/options/plugins.py:140
 msgid "Enabled"
 msgstr "Lubatud"
 
-#: picard/ui/options/plugins.py:141
+#: picard/ui/options/plugins.py:144
 msgid "Disabled"
 msgstr "Keelatud"
 
-#: picard/ui/options/plugins.py:151
+#: picard/ui/options/plugins.py:154
 msgid "Uninstall plugin"
 msgstr "Eemalda plugin"
 
-#: picard/ui/options/plugins.py:382
+#: picard/ui/options/plugins.py:385
 msgid "Reloading list of available plugins..."
 msgstr "Saadaolevate pluginate loendi uuendamine..."
 
-#: picard/ui/options/plugins.py:390 picard/ui/options/plugins.py:399
-#: picard/ui/options/plugins.py:420
+#: picard/ui/options/plugins.py:393 picard/ui/options/plugins.py:402
+#: picard/ui/options/plugins.py:423
 #, python-format
 msgid "Plugin '%s'"
 msgstr "Plugin \"%s\""
 
-#: picard/ui/options/plugins.py:391
+#: picard/ui/options/plugins.py:394
 #, python-format
 msgid ""
 "An error occurred while loading the plugin '%s':\n"
@@ -2523,48 +2544,48 @@ msgid ""
 "%s"
 msgstr "Plugina \"%s\" laadimisel ilmnes viga:\n\n%s"
 
-#: picard/ui/options/plugins.py:400
+#: picard/ui/options/plugins.py:403
 #, python-format
 msgid "The plugin '%s' is not compatible with this version of Picard."
 msgstr "Plugin \"%s\" ei ühildu Picardi praeguse versiooniga."
 
-#: picard/ui/options/plugins.py:421
+#: picard/ui/options/plugins.py:424
 #, python-format
 msgid "The plugin '%s' will be upgraded to version %s on next run of Picard."
 msgstr "Picardi järgmisel käivitamisel uuendatakse plugin \"%s\" versioonile %s."
 
-#: picard/ui/options/plugins.py:442
+#: picard/ui/options/plugins.py:445
 #, python-format
 msgid "Uninstall plugin '%s'?"
 msgstr "Plugina \"%s\" eemaldamine"
 
-#: picard/ui/options/plugins.py:443
+#: picard/ui/options/plugins.py:446
 #, python-format
 msgid "Do you really want to uninstall the plugin '%s' ?"
 msgstr "Kas soovid kindlasti plugina \"%s\" eemaldada?"
 
-#: picard/ui/options/plugins.py:572
+#: picard/ui/options/plugins.py:575
 msgid "Restart Picard to upgrade to new version"
 msgstr "Uue versiooni paigaldamiseks taaskäivita Picard"
 
-#: picard/ui/options/plugins.py:574
+#: picard/ui/options/plugins.py:577
 msgid "New version available"
 msgstr "Uus versioon saadaval"
 
-#: picard/ui/options/plugins.py:581
+#: picard/ui/options/plugins.py:584
 msgid "Authors"
 msgstr "Autorid"
 
-#: picard/ui/options/plugins.py:583 picard/util/tags.py:44
+#: picard/ui/options/plugins.py:586 picard/util/tags.py:44
 msgid "License"
 msgstr "Litsents"
 
-#: picard/ui/options/plugins.py:620
+#: picard/ui/options/plugins.py:623
 #, python-format
 msgid "The plugin '%s' could not be downloaded."
 msgstr "Pluginat \"%s\" polnud võimalik alla laadida."
 
-#: picard/ui/options/plugins.py:621
+#: picard/ui/options/plugins.py:624
 msgid "Please try again later."
 msgstr "Proovi palun hiljem uuesti."
 
@@ -2638,25 +2659,25 @@ msgstr "Skripti viga"
 msgid "Tags"
 msgstr "Sildid"
 
-#: picard/ui/searchdialog/__init__.py:124
+#: picard/ui/searchdialog/__init__.py:130
 msgid ""
 "&#160;(<a href='https://musicbrainz.org/doc/Indexed_Search_Syntax'>Syntax "
 "Help</a>)"
 msgstr "&#160;(<a href='https://musicbrainz.org/doc/Indexed_Search_Syntax'>süntaksiabi</a>)"
 
-#: picard/ui/searchdialog/__init__.py:264
+#: picard/ui/searchdialog/__init__.py:270
 msgid "Search in browser"
 msgstr "Otsi brauseris"
 
-#: picard/ui/searchdialog/__init__.py:297
+#: picard/ui/searchdialog/__init__.py:306
 msgid "<strong>Loading...</strong>"
 msgstr "<strong>Laadimine...</strong>"
 
-#: picard/ui/searchdialog/__init__.py:328
+#: picard/ui/searchdialog/__init__.py:337
 msgid "Retry"
 msgstr "Proovi uuesti"
 
-#: picard/ui/searchdialog/__init__.py:363
+#: picard/ui/searchdialog/__init__.py:375
 #, python-format
 msgid ""
 "<strong>Following error occurred while fetching "
@@ -2664,7 +2685,7 @@ msgid ""
 "HTTP code %s)<br>"
 msgstr "<strong>Tulemuste hankimisel ilmnes viga:<br><br></strong>võrgupäringu viga %s jaoks:<br>%s (QT-kood %d, HTTP-kood %s)<br>"
 
-#: picard/ui/searchdialog/__init__.py:374
+#: picard/ui/searchdialog/__init__.py:386
 msgid ""
 "<strong>No results found. Please try a different search query.</strong>"
 msgstr "<strong>Midagi ei leitud. Proovi teistsugust päringut.</strong>"
