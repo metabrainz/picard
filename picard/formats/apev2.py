@@ -112,21 +112,26 @@ class APEv2File(File):
     }
     __rtranslate = dict([(v.lower(), k) for k, v in __translate.items()])
 
+    def __init__(self, filename):
+        super().__init__(filename)
+        self.__casemap = {}
+
     def _load(self, filename):
         log.debug("Loading file %r", filename)
+        self.__casemap = {}
         file = self._File(encode_filename(filename))
         metadata = Metadata()
         if file.tags:
             for origname, values in file.tags.items():
-                origname = origname.lower()
+                name_lower = origname.lower()
                 if (values.kind == mutagen.apev2.BINARY
-                    and origname.startswith("cover art")):
+                    and name_lower.startswith("cover art")):
                     if b'\0' in values.value:
                         descr, data = values.value.split(b'\0', 1)
                         try:
                             coverartimage = TagCoverArtImage(
                                 file=filename,
-                                tag=origname,
+                                tag=name_lower,
                                 data=data,
                             )
                         except CoverArtImageError as e:
@@ -139,7 +144,7 @@ class APEv2File(File):
                 if values.kind != mutagen.apev2.TEXT:
                     continue
                 for value in values:
-                    name = origname
+                    name = name_lower
                     if name == "year":
                         name = "date"
                         value = sanitize_date(value)
@@ -164,6 +169,7 @@ class APEv2File(File):
                                 value = value[:start]
                     elif name in self.__rtranslate:
                         name = self.__rtranslate[name]
+                    self.__casemap[name] = origname
                     metadata.add(name, value)
         self._info(metadata, file)
         return metadata
@@ -238,7 +244,9 @@ class APEv2File(File):
                     del tags[real_name]
 
     def _get_tag_name(self, name):
-        if name.startswith('lyrics:'):
+        if name in self.__casemap:
+            return self.__casemap[name]
+        elif name.startswith('lyrics:'):
             return 'Lyrics'
         elif name == 'date':
             return 'Year'

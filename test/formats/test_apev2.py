@@ -87,6 +87,25 @@ class CommonApeTests:
             self._read_case_insensitive_tag('tracknumber', 'Track')
             self._read_case_insensitive_tag('discnumber', 'Disc')
 
+        @skipUnlessTestfile
+        def test_ci_tags_preserve_case(self):
+            # Ensure values are not duplicated on repeated save and are saved
+            # case preserving.
+            for name in ('CUStom', 'ARtist'):
+                tags = {}
+                tags[name] = 'foo'
+                save_raw(self.filename, tags)
+                loaded_metadata = load_metadata(self.filename)
+                loaded_metadata[name.lower()] = 'bar'
+                save_metadata(self.filename, loaded_metadata)
+                raw_metadata = dict(load_raw(self.filename))
+                self.assertIn(name, raw_metadata)
+                self.assertEqual(
+                    raw_metadata[name],
+                    loaded_metadata[name.lower()])
+                self.assertEqual(1, len(raw_metadata[name]))
+                self.assertNotIn(name.upper(), raw_metadata)
+
         def _read_case_insensitive_tag(self, name, ape_name):
             upper_ape_name = ape_name.upper()
             metadata = {
@@ -97,7 +116,7 @@ class CommonApeTests:
             self.assertEqual(metadata[upper_ape_name], loaded_metadata[name])
             save_metadata(self.filename, loaded_metadata)
             raw_metadata = load_raw(self.filename)
-            self.assertIn(ape_name, raw_metadata.keys())
+            self.assertIn(upper_ape_name, raw_metadata.keys())
             self.assertEqual(metadata[upper_ape_name], raw_metadata[ape_name])
 
 
