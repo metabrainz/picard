@@ -26,6 +26,9 @@ class CommonMP4Tests:
             self.assertTrue(fmt.supports_tag('discnumber'))
             self.assertTrue(fmt.supports_tag('lyrics:lead'))
             self.assertTrue(fmt.supports_tag('~length'))
+            self.assertTrue(fmt.supports_tag('Custom'))
+            self.assertTrue(fmt.supports_tag('äöüéß\0'))  # Latin 1 is supported
+            self.assertFalse(fmt.supports_tag('Б'))  # Unsupported custom tags
             for tag in self.replaygain_tags.keys():
                 self.assertTrue(fmt.supports_tag(tag))
 
@@ -52,7 +55,7 @@ class CommonMP4Tests:
         def test_ci_tags_preserve_case(self):
             # Ensure values are not duplicated on repeated save and are saved
             # case preserving.
-            for name in ('Replaygain_Album_Peak', 'Custom'):
+            for name in ('Replaygain_Album_Peak', 'Custom', 'äöüéß\0'):
                 tags = mutagen.mp4.MP4Tags()
                 tags['----:com.apple.iTunes:' + name] = [b'foo']
                 save_raw(self.filename, tags)

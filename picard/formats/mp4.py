@@ -17,6 +17,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+import re
+
 from mutagen.mp4 import (
     MP4,
     MP4Cover,
@@ -39,6 +41,16 @@ from picard.util import encode_filename
 def _add_text_values_to_metadata(metadata, name, values):
     for value in values:
         metadata.add(name, value.decode("utf-8", "replace").strip("\x00"))
+
+
+_VALID_KEY_CHARS = re.compile('^[\x00-\xff]+$')
+
+
+def _is_valid_key(key):
+    """
+    Return true if a string is a valid name for a custom tag.
+    """
+    return bool(_VALID_KEY_CHARS.match(key))
 
 
 class MP4File(File):
@@ -298,7 +310,8 @@ class MP4File(File):
                  and not name.startswith("~")
                  and name not in unsupported_tags
                  and not (name.startswith('comment:') and len(name) > 9)
-                 and not name.startswith('performer:'))
+                 and not name.startswith('performer:')
+                 and _is_valid_key(name))
                 or name in ('~length'))
 
     def _get_tag_name(self, name):
