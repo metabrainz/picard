@@ -26,6 +26,9 @@ class CommonMP4Tests:
             self.assertTrue(fmt.supports_tag('discnumber'))
             self.assertTrue(fmt.supports_tag('lyrics:lead'))
             self.assertTrue(fmt.supports_tag('~length'))
+            self.assertTrue(fmt.supports_tag('Custom'))
+            self.assertTrue(fmt.supports_tag('äöüéß\0'))  # Latin 1 is supported
+            self.assertFalse(fmt.supports_tag('Б'))  # Unsupported custom tags
             for tag in self.replaygain_tags.keys():
                 self.assertTrue(fmt.supports_tag(tag))
 
@@ -52,19 +55,20 @@ class CommonMP4Tests:
         def test_ci_tags_preserve_case(self):
             # Ensure values are not duplicated on repeated save and are saved
             # case preserving.
-            tags = mutagen.mp4.MP4Tags()
-            tags['----:com.apple.iTunes:Replaygain_Album_Peak'] = [b'-6.48 dB']
-            save_raw(self.filename, tags)
-            loaded_metadata = load_metadata(self.filename)
-            loaded_metadata['replaygain_album_peak'] = '1.0'
-            save_metadata(self.filename, loaded_metadata)
-            raw_metadata = load_raw(self.filename)
-            self.assertIn('----:com.apple.iTunes:Replaygain_Album_Peak', raw_metadata)
-            self.assertEqual(
-                raw_metadata['----:com.apple.iTunes:Replaygain_Album_Peak'][0].decode('utf-8'),
-                loaded_metadata['replaygain_album_peak'])
-            self.assertEqual(1, len(raw_metadata['----:com.apple.iTunes:Replaygain_Album_Peak']))
-            self.assertNotIn('----:com.apple.iTunes:REPLAYGAIN_ALBUM_PEAK', raw_metadata)
+            for name in ('Replaygain_Album_Peak', 'Custom', 'äöüéß\0'):
+                tags = mutagen.mp4.MP4Tags()
+                tags['----:com.apple.iTunes:' + name] = [b'foo']
+                save_raw(self.filename, tags)
+                loaded_metadata = load_metadata(self.filename)
+                loaded_metadata[name.lower()] = 'bar'
+                save_metadata(self.filename, loaded_metadata)
+                raw_metadata = load_raw(self.filename)
+                self.assertIn('----:com.apple.iTunes:' + name, raw_metadata)
+                self.assertEqual(
+                    raw_metadata['----:com.apple.iTunes:' + name][0].decode('utf-8'),
+                    loaded_metadata[name.lower()])
+                self.assertEqual(1, len(raw_metadata['----:com.apple.iTunes:' + name]))
+                self.assertNotIn('----:com.apple.iTunes:' + name.upper(), raw_metadata)
 
 
 class M4ATest(CommonMP4Tests.MP4TestCase):

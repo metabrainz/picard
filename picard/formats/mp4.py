@@ -17,6 +17,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+import re
+
 from mutagen.mp4 import (
     MP4,
     MP4Cover,
@@ -34,6 +36,21 @@ from picard.file import File
 from picard.formats.mutagenext import delall_ci
 from picard.metadata import Metadata
 from picard.util import encode_filename
+
+
+def _add_text_values_to_metadata(metadata, name, values):
+    for value in values:
+        metadata.add(name, value.decode("utf-8", "replace").strip("\x00"))
+
+
+_VALID_KEY_CHARS = re.compile('^[\x00-\xff]+$')
+
+
+def _is_valid_key(key):
+    """
+    Return true if a string is a valid name for a custom tag.
+    """
+    return bool(_VALID_KEY_CHARS.match(key))
 
 
 class MP4File(File):
@@ -125,7 +142,8 @@ class MP4File(File):
     }
     __r_freeform_tags = dict([(v, k) for k, v in __freeform_tags.items()])
 
-    # Tags to load case insensitive
+    # Tags to load case insensitive. Case is preserved, but the specified case
+    # is written if it is unset.
     __r_freeform_tags_ci = {
         "replaygain_album_gain": "----:com.apple.iTunes:REPLAYGAIN_ALBUM_GAIN",
         "replaygain_album_peak": "----:com.apple.iTunes:REPLAYGAIN_ALBUM_PEAK",
@@ -161,15 +179,12 @@ class MP4File(File):
                 for value in values:
                     metadata.add(self.__int_tags[name], str(value))
             elif name in self.__freeform_tags:
-                for value in values:
-                    value = value.decode("utf-8", "replace").strip("\x00")
-                    metadata.add(self.__freeform_tags[name], value)
+                tag_name = self.__freeform_tags[name]
+                _add_text_values_to_metadata(metadata, tag_name, values)
             elif name_lower in self.__freeform_tags_ci:
-                for value in values:
-                    value = value.decode("utf-8", "replace").strip("\x00")
-                    tag_name = self.__freeform_tags_ci[name_lower]
-                    metadata.add(tag_name, value)
-                    self.__casemap[tag_name] = name
+                tag_name = self.__freeform_tags_ci[name_lower]
+                self.__casemap[tag_name] = name
+                _add_text_values_to_metadata(metadata, tag_name, values)
             elif name == "----:com.apple.iTunes:fingerprint":
                 for value in values:
                     value = value.decode("utf-8", "replace").strip("\x00")
@@ -197,6 +212,17 @@ class MP4File(File):
                                   (filename, e))
                     else:
                         metadata.images.append(coverartimage)
+            # Read other freeform tags always case insensitive
+            elif name.startswith('----:com.apple.iTunes:'):
+                tag_name = name_lower[22:]
+                self.__casemap[tag_name] = name[22:]
+                if (name not in self.__r_text_tags
+                    and name not in self.__r_bool_tags
+                    and name not in self.__r_int_tags
+                    and name not in self.__r_freeform_tags
+                    and name_lower not in self.__r_freeform_tags_ci
+                    and name not in self.__other_supported_tags):
+                    _add_text_values_to_metadata(metadata, tag_name, values)
 
         self._info(metadata, file)
         return metadata
@@ -236,6 +262,11 @@ class MP4File(File):
                 tags[name] = values
             elif name == "musicip_fingerprint":
                 tags["----:com.apple.iTunes:fingerprint"] = [b"MusicMagic Fingerprint%s" % v.encode('ascii') for v in values]
+            elif self.supports_tag(name) and name not in ('tracknumber',
+                    'totaltracks', 'discnumber', 'totaldiscs'):
+                values = [v.encode("utf-8") for v in values]
+                name = self.__casemap.get(name, name)
+                tags['----:com.apple.iTunes:' + name] = values
 
         if "tracknumber" in metadata:
             if "totaltracks" in metadata:
@@ -274,14 +305,14 @@ class MP4File(File):
 
     @classmethod
     def supports_tag(cls, name):
-        return (name in cls.__r_text_tags
-                or name in cls.__r_bool_tags
-                or name in cls.__r_freeform_tags
-                or name in cls.__r_freeform_tags_ci
-                or name in cls.__r_int_tags
-                or name in cls.__other_supported_tags
-                or name.startswith('lyrics:')
-                or name in ('~length', 'musicip_fingerprint'))
+        unsupported_tags = ['r128_album_gain', 'r128_track_gain']
+        return ((name
+                 and not name.startswith("~")
+                 and name not in unsupported_tags
+                 and not (name.startswith('comment:') and len(name) > 9)
+                 and not name.startswith('performer:')
+                 and _is_valid_key(name))
+                or name in ('~length'))
 
     def _get_tag_name(self, name):
         if name.startswith('lyrics:'):
