@@ -42,7 +42,10 @@ cd dist
 ditto -rsrc --arch x86_64 'MusicBrainz Picard.app' 'MusicBrainz Picard.tmp'
 rm -r 'MusicBrainz Picard.app'
 mv 'MusicBrainz Picard.tmp' 'MusicBrainz Picard.app'
-[ "$CODESIGN" = '1' ] && codesign --keychain $KEYCHAIN_PATH --verify --verbose --deep --sign "$CERTIFICATE_NAME" 'MusicBrainz Picard.app'
+[ "$CODESIGN" = '1' ] && codesign --verify --verbose --deep \
+  --options runtime --entitlements scripts/package/entitlements.plist \
+  --keychain $KEYCHAIN_PATH --sign "$CERTIFICATE_NAME" \
+  "MusicBrainz Picard.app"
 
 # Verify Picard executable works and required dependencies are bundled
 VERSIONS=$("MusicBrainz Picard.app/Contents/MacOS/picard-run" --long-version)
