@@ -42,10 +42,20 @@ cd dist
 ditto -rsrc --arch x86_64 'MusicBrainz Picard.app' 'MusicBrainz Picard.tmp'
 rm -r 'MusicBrainz Picard.app'
 mv 'MusicBrainz Picard.tmp' 'MusicBrainz Picard.app'
-[ "$CODESIGN" = '1' ] && codesign --verify --verbose --deep \
-  --options runtime --entitlements scripts/package/entitlements.plist \
-  --keychain $KEYCHAIN_PATH --sign "$CERTIFICATE_NAME" \
-  "MusicBrainz Picard.app"
+if [ "$CODESIGN" = '1' ]; then
+  MACOS_VERSION=$(sw_vers -productVersion)
+  MACOS_VERSION_MAJOR=${MACOS_VERSION%.*.*}
+  MACOS_VERSION_MINOR=${MACOS_VERSION#*.}
+  MACOS_VERSION_MINOR=${MACOS_VERSION_MINOR%.*}
+  # Enable hardened runtime on macOS >= 10.14
+  if [ $MACOS_VERSION_MAJOR -ge 10 ] && [ $MACOS_VERSION_MINOR -ge 14 ]; then
+    HARDENED_RUNTIME_ARGS="--options runtime --entitlements ../scripts/package/entitlements.plist"
+  fi
+  codesign --verify --verbose --deep \
+    $HARDENED_RUNTIME_ARGS \
+    --keychain $KEYCHAIN_PATH --sign "$CERTIFICATE_NAME" \
+    "MusicBrainz Picard.app"
+fi
 
 # Verify Picard executable works and required dependencies are bundled
 VERSIONS=$("MusicBrainz Picard.app/Contents/MacOS/picard-run" --long-version)
