@@ -17,13 +17,13 @@ CODESIGN=0
 KEYCHAIN_PATH=picard.keychain
 KEYCHAIN_PASSWORD=picard
 CERTIFICATE_NAME="Developer ID Application: MetaBrainz Foundation Inc."
-CERTIFICATE_FILE=scripts/appledev.p12
+CERTIFICATE_FILE=scripts/package/appledev.p12
 
 if [ -n "$encrypted_be5fb2212036_key" ] && [ -n "$encrypted_be5fb2212036_iv" ]; then
-    openssl aes-256-cbc -K "$encrypted_be5fb2212036_key" -iv "$encrypted_be5fb2212036_iv" -in scripts/appledev.p12.enc -out $CERTIFICATE_FILE -d
+    openssl aes-256-cbc -K "$encrypted_be5fb2212036_key" -iv "$encrypted_be5fb2212036_iv" -in scripts/package/appledev.p12.enc -out $CERTIFICATE_FILE -d
 fi
 
-if [ -f scripts/appledev.p12 ] && [ -n "$appledev_p12_password" ]; then
+if [ -f scripts/package/appledev.p12 ] && [ -n "$appledev_p12_password" ]; then
     security create-keychain -p $KEYCHAIN_PASSWORD $KEYCHAIN_PATH
     security unlock-keychain -p $KEYCHAIN_PASSWORD $KEYCHAIN_PATH
     security list-keychains -d user -s $KEYCHAIN_PATH
