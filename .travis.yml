@@ -31,8 +31,9 @@ env:
   - INSTALL_DEPS="$PIP_INSTALL pyqt5==5.11.3 mutagen       discid"
 matrix:
   include:
+  # See https://docs.travis-ci.com/user/reference/osx
   - os: osx
-    osx_image: xcode9
+    osx_image: xcode9  # macOS 10.12
     language: generic
     env:
     - DISCID_VERSION=0.6.2
@@ -40,7 +41,7 @@ matrix:
     - PYTHON_VERSION=3.7.4
     - INSTALL_DEPS="$PIP_INSTALL -r requirements-macos.txt"
   - os: osx
-    osx_image: xcode9.4
+    osx_image: xcode9.4  # macOS 10.13
     language: generic
     env:
     - DISCID_VERSION=0.6.2
@@ -48,7 +49,7 @@ matrix:
     - PYTHON_VERSION=3.7.4
     - INSTALL_DEPS="$PIP_INSTALL -r requirements-macos.txt"
   - os: osx
-    osx_image: xcode11
+    osx_image: xcode11.2  # macOS 10.14
     language: generic
     env:
     - DISCID_VERSION=0.6.2
@@ -123,4 +124,4 @@ deploy:
   on:
     tags: true
     all_branches: true
-    condition: $TRAVIS_OSX_IMAGE = xcode9
+    condition: $TRAVIS_OS_NAME = osx

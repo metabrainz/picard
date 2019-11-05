@@ -7,6 +7,11 @@ then
 fi
 VERSION=$(python3 -c 'import picard; print(picard.__version__)')
 
+MACOS_VERSION=$(sw_vers -productVersion)
+MACOS_VERSION_MAJOR=${MACOS_VERSION%.*.*}
+MACOS_VERSION_MINOR=${MACOS_VERSION#*.}
+MACOS_VERSION_MINOR=${MACOS_VERSION_MINOR%.*}
+
 rm -rf dist build locale
 python3 setup.py clean
 python3 setup.py build
@@ -43,10 +48,6 @@ ditto -rsrc --arch x86_64 'MusicBrainz Picard.app' 'MusicBrainz Picard.tmp'
 rm -r 'MusicBrainz Picard.app'
 mv 'MusicBrainz Picard.tmp' 'MusicBrainz Picard.app'
 if [ "$CODESIGN" = '1' ]; then
-  MACOS_VERSION=$(sw_vers -productVersion)
-  MACOS_VERSION_MAJOR=${MACOS_VERSION%.*.*}
-  MACOS_VERSION_MINOR=${MACOS_VERSION#*.}
-  MACOS_VERSION_MINOR=${MACOS_VERSION_MINOR%.*}
   # Enable hardened runtime on macOS >= 10.14
   if [ $MACOS_VERSION_MAJOR -ge 10 ] && [ $MACOS_VERSION_MINOR -ge 14 ]; then
     HARDENED_RUNTIME_ARGS="--options runtime --entitlements ../scripts/package/entitlements.plist"
@@ -67,10 +68,12 @@ LIBDISCID_REGEX="libdiscid [0-9]+\.[0-9]+\.[0-9]+"
 "MusicBrainz Picard.app/Contents/MacOS/fpcalc" -version
 
 # Package app bundle into DMG image
-dmg="MusicBrainz Picard $VERSION.dmg"
-hdiutil create -volname "MusicBrainz Picard $VERSION" -srcfolder 'MusicBrainz Picard.app' -ov -format UDBZ "$dmg"
-[ "$CODESIGN" = '1' ] && codesign --keychain $KEYCHAIN_PATH --verify --verbose --sign "$CERTIFICATE_NAME" "$dmg"
-md5 -r "$dmg"
+DMG="MusicBrainz Picard $VERSION macOS $MACOS_VERSION_MAJOR.$MACOS_VERSION_MINOR.dmg"
+hdiutil create -volname "MusicBrainz Picard $VERSION" \
+  -srcfolder 'MusicBrainz Picard.app' -ov -format UDBZ "$DMG"
+[ "$CODESIGN" = '1' ] && codesign --verify --verbose \
+  --keychain $KEYCHAIN_PATH --sign "$CERTIFICATE_NAME" "$DMG"
+md5 -r "$DMG"
 
 if [ -n "$UPLOAD_OSX" ]; then
     # make upload failures non fatal
@@ -78,11 +81,11 @@ if [ -n "$UPLOAD_OSX" ]; then
     # Set $AWS_ARTIFACTS_BUCKET, $AWS_ACCESS_KEY_ID and $AWS_SECRET_ACCESS_KEY for AWS S3 upload to work
     if [ -n "$AWS_ARTIFACTS_BUCKET" ] && [ -n "$AWS_ACCESS_KEY_ID" ]; then
       pip3 install --upgrade awscli
-      aws s3 cp --acl public-read "$dmg" "s3://${AWS_ARTIFACTS_BUCKET}/${TRAVIS_REPO_SLUG}/${TRAVIS_BUILD_NUMBER}/$dmg"
+      aws s3 cp --acl public-read "$DMG" "s3://${AWS_ARTIFACTS_BUCKET}/${TRAVIS_REPO_SLUG}/${TRAVIS_BUILD_NUMBER}/$DMG"
       echo "Package uploaded to https://s3.${AWS_DEFAULT_REGION}.amazonaws.com/${AWS_ARTIFACTS_BUCKET}/${TRAVIS_REPO_SLUG}/${TRAVIS_BUILD_NUMBER}/${dmg// /%20}"
     else
       # Fall back to transfer.sh
-      curl -v --retry 6 --retry-delay 10 --max-time 180 --upload-file "$dmg" https://transfer.sh/
+      curl -v --retry 6 --retry-delay 10 --max-time 180 --upload-file "$DMG" https://transfer.sh/
     fi
     set -e
     # Required for a newline between the outputs
