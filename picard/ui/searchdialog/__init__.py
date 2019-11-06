@@ -38,6 +38,7 @@ from picard import (
 )
 from picard.util import (
     icontheme,
+    natsort,
     restore_method,
     throttle,
 )
@@ -168,9 +169,6 @@ class SearchBox(QtWidgets.QWidget):
 Retry = namedtuple("Retry", ["function", "query"])
 
 
-BY_NUMBER, BY_DURATION = range(2)
-
-
 class SortableTableWidgetItem(QtWidgets.QTableWidgetItem):
 
     def __init__(self, sort_key):
@@ -179,15 +177,6 @@ class SortableTableWidgetItem(QtWidgets.QTableWidgetItem):
 
     def __lt__(self, other):
         return self.sort_key < other.sort_key
-
-
-def to_seconds(timestr):
-    if not timestr:
-        return 0
-    seconds = 0
-    for part in timestr.split(':'):
-        seconds = seconds * 60 + int(part)
-    return seconds
 
 
 class SearchDialog(PicardDialog):
@@ -229,21 +218,14 @@ class SearchDialog(PicardDialog):
     def colpos(self, colname):
         return self.__colkeys.index(colname)
 
-    def set_table_item(self, row, colname, obj, key, default="", sort=None):
+    def set_table_item(self, row, colname, obj, key, default="", sortkey=None):
         # QVariant remembers the original type of the data
         # matching comparison operator will be used when sorting
         # get() will return a string, force conversion if asked to
         value = obj.get(key, default)
-        if sort == BY_DURATION:
-            item = SortableTableWidgetItem(to_seconds(value))
-        elif sort == BY_NUMBER:
-            try:
-                sortkey = float(value)
-            except ValueError:
-                sortkey = 0.0
-            item = SortableTableWidgetItem(sortkey)
-        else:
-            item = QtWidgets.QTableWidgetItem()
+        if sortkey is None:
+            sortkey = natsort.natkey(value)
+        item = SortableTableWidgetItem(sortkey)
         item.setData(QtCore.Qt.DisplayRole, value)
         pos = self.colpos(colname)
         if pos == 0:
