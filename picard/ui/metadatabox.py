@@ -47,16 +47,6 @@ from picard.ui.colors import interface_colors
 from picard.ui.edittagdialog import EditTagDialog
 
 
-COMMON_TAGS = [
-    "title",
-    "artist",
-    "album",
-    "tracknumber",
-    "~length",
-    "date",
-]
-
-
 class TagStatus:
 
     NOCHANGE = 1
@@ -138,7 +128,7 @@ class TagDiff(object):
             removable = True
         elif orig_values and new_values and self.__tag_ne(tag, orig_values, new_values):
             self.status[tag] |= TagStatus.CHANGED
-        elif not (orig_values or new_values or tag in COMMON_TAGS):
+        elif not (orig_values or new_values or tag in config.setting['metadatabox_top_tags']):
             self.status[tag] |= TagStatus.EMPTY
         else:
             self.status[tag] |= TagStatus.NOCHANGE
@@ -501,7 +491,7 @@ class MetadataBox(QtWidgets.QTableWidget):
                 tag_diff.objects += 1
 
         all_tags = set(list(orig_tags.keys()) + list(new_tags.keys()))
-        common_tags = [tag for tag in COMMON_TAGS if tag in all_tags]
+        common_tags = [tag for tag in config.setting['metadatabox_top_tags'] if tag in all_tags]
         tag_names = common_tags + sorted(all_tags.difference(common_tags),
                                          key=lambda x: display_tag_name(x).lower())
 
