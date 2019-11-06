@@ -20,25 +20,14 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-import os
-import sys
 import traceback
 
 from PyQt5 import QtCore
 
 from picard import log
-from picard.const.sys import (
-    IS_FROZEN,
-    IS_MACOS,
-)
 
 from picard.ui.cdlookup import CDLookupDialog
 
-
-# Ensure libdiscid.dylib gets loaded from app bundle
-if IS_MACOS and IS_FROZEN:
-    os.environ['DYLD_FALLBACK_LIBRARY_PATH'] = '%s:%s' % (
-        os.path.dirname(sys.executable), os.environ.get('DYLD_FALLBACK_LIBRARY_PATH', ''))
 
 try:
     # use python-libdiscid (http://pythonhosted.org/python-libdiscid/)
