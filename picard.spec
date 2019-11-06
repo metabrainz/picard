@@ -77,9 +77,9 @@ if os.path.isfile(fpcalc_name):
 
 runtime_hooks = []
 if sys.platform == 'win32':
-    runtime_hooks.append('scripts/pyinstaller/picard-winconsole-hook.py')
+    runtime_hooks.append('scripts/pyinstaller/win-console-hook.py')
 if '--onefile' in sys.argv:
-    runtime_hooks.append('scripts/pyinstaller/picard-portable-hook.py')
+    runtime_hooks.append('scripts/pyinstaller/portable-hook.py')
 
 
 a = Analysis(['tagger.py'],
