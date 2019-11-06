@@ -1,3 +1,26 @@
+# Version 2.2.3 - 2019-11-06
+
+## Bug-fix
+- [PICARD-1633](https://tickets.metabrainz.org/browse/PICARD-1633) - macOS: Automatic locale detection broken
+- [PICARD-1634](https://tickets.metabrainz.org/browse/PICARD-1634) - macOS: File browser sets wrong horizontal scroll position
+- [PICARD-1635](https://tickets.metabrainz.org/browse/PICARD-1635) - Terminated randomly when deleting files when saving
+- [PICARD-1636](https://tickets.metabrainz.org/browse/PICARD-1636) - Default locale detection fails if locale categories have different locales
+- [PICARD-1637](https://tickets.metabrainz.org/browse/PICARD-1637) - Crash when saving after removing some underlying files
+- [PICARD-1640](https://tickets.metabrainz.org/browse/PICARD-1640) - Picard with --config-file parameter copies over legacy configuration
+- [PICARD-1642](https://tickets.metabrainz.org/browse/PICARD-1642) - Picard crashes on launch (AttributeError: 'NoneType' object has no attribute 'setPopupMode')
+- [PICARD-1643](https://tickets.metabrainz.org/browse/PICARD-1643) - Performer with instruments containing non-ASCII characters are not written to Vorbis and APE tags
+- [PICARD-1644](https://tickets.metabrainz.org/browse/PICARD-1644) - Crash when initializing translations on Python 3.8
+- [PICARD-1647](https://tickets.metabrainz.org/browse/PICARD-1647) - macOS: Plugin enable/disable button does not always update the icon
+- [PICARD-1648](https://tickets.metabrainz.org/browse/PICARD-1648) - Crashes when using search dialogs
+- [PICARD-1651](https://tickets.metabrainz.org/browse/PICARD-1651) - File and release counts in status bar not updated when files get removed
+- [PICARD-1654](https://tickets.metabrainz.org/browse/PICARD-1654) - macOS: Logout button / username stays visible after logout
+- [PICARD-1655](https://tickets.metabrainz.org/browse/PICARD-1655) - macOS: Login dialog can be hidden behind options
+
+## Improvement
+- [PICARD-1630](https://tickets.metabrainz.org/browse/PICARD-1630) - Ensure FLAC metadata is visible/editable in Windows Explorer
+- [PICARD-1632](https://tickets.metabrainz.org/browse/PICARD-1632) - Tooltips for genre filter help hide too quickly
+
+
 # Version 2.2.2 - 2019-10-08
 
 ## Bug-fix
