@@ -82,12 +82,12 @@ before_cache:
 - if [ "${TRAVIS_OS_NAME}" = "osx" ]; then find /usr/local/Homebrew \! -regex ".+\.git.+" -delete; fi
 
 before_install:
-- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then bash scripts/package/setup-osx.sh; fi
+- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then bash scripts/package/macos-setup.sh; fi
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export LD_LIBRARY_PATH=`pwd`:$LD_LIBRARY_PATH; fi
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then source bin/activate; fi
 - "$INSTALL_DEPS"
 - "$INSTALL_TEST_TOOLS"
-- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then bash scripts/package/package-osx.sh; fi
+- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then bash scripts/package/macos-package-app.sh; fi
 
 script:
 - py.test -v --cov=picard --cov-report xml:coverage.xml test
