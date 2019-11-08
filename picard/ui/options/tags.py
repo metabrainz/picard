@@ -18,6 +18,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from functools import partial
+import re
 
 from PyQt5 import (
     QtCore,
@@ -119,7 +120,7 @@ class TagsOptionsPage(OptionsPage):
         config.setting["remove_ape_from_mp3"] = self.ui.remove_ape_from_mp3.isChecked()
         config.setting["remove_id3_from_flac"] = self.ui.remove_id3_from_flac.isChecked()
         config.setting["itunes_compatible_grouping"] = self.ui.itunes_compatible_grouping.isChecked()
-        config.setting["preserved_tags"] = self.ui.preserved_tags.text()
+        config.setting["preserved_tags"] = re.sub(r"[,\s]+$", "", self.ui.preserved_tags.text())
         config.setting["aac_save_ape"] = self.ui.aac_save_ape.isChecked()
         config.setting["remove_ape_from_aac"] = self.ui.remove_ape_from_aac.isChecked()
         self.tagger.window.enable_tag_saving_action.setChecked(not config.setting["dont_write_tags"])
@@ -140,7 +141,7 @@ class TagsOptionsPage(OptionsPage):
 
     def preserved_tags_edited(self, text):
         prefix = text[:self.ui.preserved_tags.cursorPosition()].split(",")[-1]
-        self.completer.setCompletionPrefix(prefix)
+        self.completer.setCompletionPrefix(prefix.strip())
         if prefix:
             self.completer.complete()
         else:
@@ -151,8 +152,9 @@ class TagsOptionsPage(OptionsPage):
         current = input_field.text()
         i = input_field.cursorPosition()
         p = len(self.completer.completionPrefix())
-        input_field.setText("%s%s %s" % (current[:i - p], text, current[i:]))
-        input_field.setCursorPosition(i - p + len(text) + 1)
+        start_text = current[:i - p].rstrip()
+        input_field.setText("%s %s, %s" % (start_text, text, current[i:].lstrip()))
+        input_field.setCursorPosition(len(start_text) + len(text) + 3)
 
 
 register_options_page(TagsOptionsPage)
