@@ -19,6 +19,7 @@ python3 setup.py build_ext -i
 pyinstaller --noconfirm --clean picard.spec
 
 CODESIGN=0
+NOTARIZE=0
 KEYCHAIN_PATH=picard.keychain
 KEYCHAIN_PASSWORD=picard
 CERTIFICATE_NAME="Developer ID Application: MetaBrainz Foundation Inc."
@@ -41,6 +42,11 @@ if [ -f scripts/package/appledev.p12 ] && [ -n "$appledev_p12_password" ]; then
     CODESIGN=1
 fi
 
+# Submit app for notarization on macOS >= 10.14
+if [ $MACOS_VERSION_MAJOR -eq 10 ] && [ $MACOS_VERSION_MINOR -ge 14 ]; then
+    NOTARIZE=1
+fi
+
 cd dist
 
 # Create app bundle
@@ -48,14 +54,17 @@ ditto -rsrc --arch x86_64 'MusicBrainz Picard.app' 'MusicBrainz Picard.tmp'
 rm -r 'MusicBrainz Picard.app'
 mv 'MusicBrainz Picard.tmp' 'MusicBrainz Picard.app'
 if [ "$CODESIGN" = '1' ]; then
-  # Enable hardened runtime on macOS >= 10.14
-  if [ $MACOS_VERSION_MAJOR -ge 10 ] && [ $MACOS_VERSION_MINOR -ge 14 ]; then
-    HARDENED_RUNTIME_ARGS="--options runtime --entitlements ../scripts/package/entitlements.plist"
-  fi
-  codesign --verify --verbose --deep \
-    $HARDENED_RUNTIME_ARGS \
-    --keychain $KEYCHAIN_PATH --sign "$CERTIFICATE_NAME" \
-    "MusicBrainz Picard.app"
+    # Enable hardened runtime if app will get notarized
+    if [ "$NOTARIZE" = "1" ]; then
+      HARDENED_RUNTIME_ARGS="--options runtime --entitlements ../scripts/package/entitlements.plist"
+    fi
+    codesign --verify --verbose --deep \
+        $HARDENED_RUNTIME_ARGS \
+        --keychain $KEYCHAIN_PATH --sign "$CERTIFICATE_NAME" \
+        "MusicBrainz Picard.app"
+    if [ "$NOTARIZE" = "1" ]; then
+        ../scripts/package/macos-notarize-app.sh "MusicBrainz Picard.app"
+    fi
 fi
 
 # Verify Picard executable works and required dependencies are bundled
