@@ -18,7 +18,7 @@ class Ui_InterfaceTopTagsOptionsPage(object):
         self.label = QtWidgets.QLabel(InterfaceTopTagsOptionsPage)
         self.label.setObjectName("label")
         self.vboxlayout.addWidget(self.label)
-        self.top_tags_list = QtWidgets.QListWidget(InterfaceTopTagsOptionsPage)
+        self.top_tags_list = QtWidgets.QListView(InterfaceTopTagsOptionsPage)
         self.top_tags_list.setDragEnabled(True)
         self.top_tags_list.setDragDropMode(QtWidgets.QAbstractItemView.InternalMove)
         self.top_tags_list.setObjectName("top_tags_list")

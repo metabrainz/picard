@@ -34,7 +34,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QListWidget" name="top_tags_list">
+    <widget class="QListView" name="top_tags_list">
      <property name="dragEnabled">
       <bool>true</bool>
      </property>
