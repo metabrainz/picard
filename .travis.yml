@@ -109,10 +109,10 @@ notifications:
     on_success: change
     on_failure: always
 
-branches:
-  only:
-  - master
-  - /\d\.[0-9x](\.[0-9x])?/
+#branches:
+#  only:
+#  - master
+#  - /\d\.[0-9x](\.[0-9x])?/
 
 deploy:
   provider: releases
