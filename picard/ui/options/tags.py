@@ -150,11 +150,16 @@ class TagsOptionsPage(OptionsPage):
     def completer_activated(self, text):
         input_field = self.ui.preserved_tags
         current = input_field.text()
-        i = input_field.cursorPosition()
-        p = len(self.completer.completionPrefix())
-        start_text = current[:i - p].rstrip()
-        input_field.setText("%s %s, %s" % (start_text, text, current[i:].lstrip()))
-        input_field.setCursorPosition(len(start_text) + len(text) + 3)
+        cursor_pos = input_field.cursorPosition()
+        prefix_len = len(self.completer.completionPrefix())
+        leading_text = current[:cursor_pos - prefix_len].rstrip()
+        trailing_text = current[cursor_pos:].lstrip()
+        # Replace the autocompletion prefix with the autocompleted text,
+        # append a comma so the user can easily enter the next entry
+        replacement = ("%s %s, " % (leading_text, text)).lstrip()
+        input_field.setText(replacement + trailing_text)
+        # Set cursor position to end of autocompleted input
+        input_field.setCursorPosition(len(replacement))
 
 
 register_options_page(TagsOptionsPage)
