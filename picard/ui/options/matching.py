@@ -36,7 +36,7 @@ class MatchingOptionsPage(OptionsPage):
 
     options = [
         config.FloatOption("setting", "file_lookup_threshold", 0.7),
-        config.FloatOption("setting", "cluster_lookup_threshold", 0.8),
+        config.FloatOption("setting", "cluster_lookup_threshold", 0.7),
         config.FloatOption("setting", "track_matching_threshold", 0.4),
     ]
 

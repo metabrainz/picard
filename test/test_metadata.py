@@ -29,6 +29,9 @@ settings = {
     'standardize_artists': False,
     'standardize_instruments': False,
     'translate_artist_names': False,
+    'release_type_scores': [
+        ('Album', 1.0)
+    ],
 }
 
 
