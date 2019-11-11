@@ -177,7 +177,7 @@ class MP4File(File):
                 metadata.add(self.__bool_tags[name], values and '1' or '0')
             elif name in self.__int_tags:
                 for value in values:
-                    metadata.add(self.__int_tags[name], str(value))
+                    metadata.add(self.__int_tags[name], value)
             elif name in self.__freeform_tags:
                 tag_name = self.__freeform_tags[name]
                 _add_text_values_to_metadata(metadata, tag_name, values)
@@ -191,11 +191,11 @@ class MP4File(File):
                     if value.startswith("MusicMagic Fingerprint"):
                         metadata.add("musicip_fingerprint", value[22:])
             elif name == "trkn":
-                metadata["tracknumber"] = str(values[0][0])
-                metadata["totaltracks"] = str(values[0][1])
+                metadata["tracknumber"] = values[0][0]
+                metadata["totaltracks"] = values[0][1]
             elif name == "disk":
-                metadata["discnumber"] = str(values[0][0])
-                metadata["totaldiscs"] = str(values[0][1])
+                metadata["discnumber"] = values[0][0]
+                metadata["totaldiscs"] = values[0][1]
             elif name == "covr":
                 for value in values:
                     if value.imageformat not in (value.FORMAT_JPEG,

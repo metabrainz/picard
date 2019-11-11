@@ -306,24 +306,24 @@ class Metadata(MutableMapping):
         else:
             return default
 
-    def __contains__(self, name):
-        return self._store.__contains__(name)
-
     def __getitem__(self, name):
         return self.get(name, '')
 
     def set(self, name, values):
-        self._store[name] = values
-        self.deleted_tags.discard(name)
-
-    def __setitem__(self, name, values):
         if isinstance(values, str) or not isinstance(values, Iterable):
             values = [values]
         values = [str(value) for value in values if value or value == 0]
         if values:
-            self.set(name, values)
+            self._store[name] = values
+            self.deleted_tags.discard(name)
         elif name in self._store:
             del self[name]
+
+    def __setitem__(self, name, values):
+        self.set(name, values)
+
+    def __contains__(self, name):
+        return self._store.__contains__(name)
 
     def __delitem__(self, name):
         try:
@@ -335,7 +335,7 @@ class Metadata(MutableMapping):
 
     def add(self, name, value):
         if value or value == 0:
-            self._store.setdefault(name, []).append(value)
+            self._store.setdefault(name, []).append(str(value))
             self.deleted_tags.discard(name)
 
     def add_unique(self, name, value):

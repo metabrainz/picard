@@ -53,6 +53,20 @@ class MetadataTest(PicardTestCase):
         self.assertEqual(self.multi3, self.metadata.getraw("multi3"))
         self.assertEqual(["hidden-value"], self.metadata.getraw("~hidden"))
 
+    def test_metadata_set_all_values_as_string(self):
+        for val in (0, 2, True):
+            str_val = str(val)
+            self.metadata.set('val1', val)
+            self.assertEqual([str_val], self.metadata.getraw("val1"))
+            self.metadata['val2'] = val
+            self.assertEqual([str_val], self.metadata.getraw("val2"))
+            del self.metadata['val3']
+            self.metadata.add('val3', val)
+            self.assertEqual([str_val], self.metadata.getraw("val3"))
+            del self.metadata['val4']
+            self.metadata.add_unique('val4', val)
+            self.assertEqual([str_val], self.metadata.getraw("val4"))
+
     def test_metadata_get(self):
         self.assertEqual("single1-value", self.metadata["single1"])
         self.assertEqual("single1-value", self.metadata.get("single1"))
@@ -86,13 +100,6 @@ class MetadataTest(PicardTestCase):
         self.metadata["unknown"] = ""
         self.assertNotIn("unknown", self.metadata)
         self.assertNotIn("unknown", self.metadata.deleted_tags)
-
-    def test_metadata_set_explicit_empty(self):
-        self.metadata.delete("single1")
-        self.metadata.set("single1", [])
-        self.assertIn("single1", self.metadata)
-        self.assertNotIn("single1", self.metadata.deleted_tags)
-        self.assertEqual([], self.metadata.getall("single1"))
 
     def test_metadata_undelete(self):
         self.metadata.delete("single1")

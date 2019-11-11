@@ -198,7 +198,7 @@ class File(QtCore.QObject, Item):
             for tag in deleted_tags:
                 del self.metadata[tag]
         for tag, values in saved_metadata.items():
-            self.metadata.set(tag, values)
+            self.metadata[tag] = values
 
         if acoustid and "acoustid_id" not in metadata.deleted_tags:
             self.metadata["acoustid_id"] = acoustid
