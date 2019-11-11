@@ -249,19 +249,19 @@ class ID3File(File):
                 if frameid.startswith('T') or frameid in ["GRP1", "MVNM"]:
                     for text in frame.text:
                         if text:
-                            metadata.add(name, str(text))
+                            metadata.add(name, text)
                 elif frameid == 'COMM':
                     for text in frame.text:
                         if text:
-                            metadata.add('%s:%s' % (name, frame.desc), str(text))
+                            metadata.add('%s:%s' % (name, frame.desc), text)
                 else:
-                    metadata.add(name, str(frame))
+                    metadata.add(name, frame)
             elif frameid == 'TIT1':
                 itunes_compatible = config.setting['itunes_compatible_grouping']
                 name = 'work' if itunes_compatible else 'grouping'
                 for text in frame.text:
                     if text:
-                        metadata.add(name, str(text))
+                        metadata.add(name, text)
             elif frameid == "TMCL":
                 for role, name in frame.people:
                     if role or name:
@@ -296,12 +296,12 @@ class ID3File(File):
                     # ways.) Currently, the only tag in both is license.
                     name = '~id3:TXXX:' + name
                 for text in frame.text:
-                    metadata.add(name, str(text))
+                    metadata.add(name, text)
             elif frameid == 'USLT':
                 name = 'lyrics'
                 if frame.desc:
                     name += ':%s' % frame.desc
-                metadata.add(name, str(frame.text))
+                metadata.add(name, frame.text)
             elif frameid == 'UFID' and frame.owner == 'http://musicbrainz.org':
                 metadata['musicbrainz_recordingid'] = frame.data.decode('ascii', 'ignore')
             elif frameid in self.__tag_re_parse.keys():
@@ -329,7 +329,7 @@ class ID3File(File):
             elif frameid == 'POPM':
                 # Rating in ID3 ranges from 0 to 255, normalize this to the range 0 to 5
                 if frame.email == config.setting['rating_user_email']:
-                    rating = str(int(round(frame.rating / 255.0 * (config.setting['rating_steps'] - 1))))
+                    rating = int(round(frame.rating / 255.0 * (config.setting['rating_steps'] - 1)))
                     metadata.add('~rating', rating)
 
         if 'date' in metadata:
