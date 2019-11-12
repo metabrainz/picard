@@ -726,7 +726,7 @@ def func_is_complete(parser):
     if (file and file.parent and hasattr(file.parent, 'album')
             and file.parent.album.is_complete()):
         return "1"
-    return "0"
+    return ""
 
 
 def func_firstalphachar(parser, text="", nonalpha="#"):
@@ -759,13 +759,13 @@ def func_firstwords(parser, text, length):
 def func_startswith(parser, text, prefix):
     if text.startswith(prefix):
         return "1"
-    return "0"
+    return ""
 
 
 def func_endswith(parser, text, suffix):
     if text.endswith(suffix):
         return "1"
-    return "0"
+    return ""
 
 
 def func_truncate(parser, text, length):
