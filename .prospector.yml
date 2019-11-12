@@ -1,0 +1,23 @@
+# Configuration for prospector, mainly used by Codacy.
+
+pep8:
+  # Please see comments in setup.cfg as to why we disable the below checks.
+  disable:
+    - E127
+    - E128
+    - E129
+    - E226
+    - E241
+    - E265
+    - E402
+    - E501
+    - W503
+
+
+pyflakes:
+  disable:
+    # Undefined name. Ignore this since it otherwise detects the gettext
+    # helpers (_, ngettext, N_) as undefined. There seems to be no clean way
+    # to specify additional builtins for pyflakes with prospector.
+    # We also test for this with flake8 in a saner way.
+    - F821
