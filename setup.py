@@ -9,7 +9,6 @@ from distutils.spawn import find_executable
 import glob
 from io import StringIO
 import os
-from os import path
 import re
 import sys
 import tempfile
@@ -352,7 +351,7 @@ class picard_build_appdata(Command):
     description = 'Build appdata metadata file'
     user_options = []
 
-    re_release = re.compile('^# Version (?P<version>\d+(?:\.\d+){1,2}) - (?P<date>\d{4}-\d{2}-\d{2})', re.MULTILINE)
+    re_release = re.compile(r'^# Version (?P<version>\d+(?:\.\d+){1,2}) - (?P<date>\d{4}-\d{2}-\d{2})', re.MULTILINE)
 
     def initialize_options(self):
         pass
@@ -573,8 +572,8 @@ class picard_update_constants(Command):
                   "# Use `python setup.py {option}` to update it.\n"
                   "\n"
                   "RELEASE_COUNTRIES = {{\n")
-        line   =  "    '{code}': '{name}',\n"
-        footer =  "}}\n"
+        line = "    '{code}': '{name}',\n"
+        footer = "}}\n"
         filename = os.path.join('picard', 'const', 'countries.py')
         with open(filename, 'w') as countries_py:
             def write(s, **kwargs):
@@ -593,8 +592,8 @@ class picard_update_constants(Command):
                   "# Use `python setup.py {option}` to update it.\n"
                   "\n"
                   "MB_ATTRIBUTES = {{\n")
-        line   =  "    '{key}': '{value}',\n"
-        footer =  "}}\n"
+        line = "    '{key}': '{value}',\n"
+        footer = "}}\n"
         filename = os.path.join('picard', 'const', 'attributes.py')
         with open(filename, 'w') as attributes_py:
             def write(s, **kwargs):
@@ -677,8 +676,8 @@ def _picard_packages():
     return tuple(sorted(packages))
 
 
-this_directory = path.abspath(path.dirname(__file__))
-with open(path.join(this_directory, 'README.md'), encoding='utf-8') as f:
+this_directory = os.path.abspath(os.path.dirname(__file__))
+with open(os.path.join(this_directory, 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
 
 args = {
