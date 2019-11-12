@@ -41,14 +41,24 @@ before_build:
     7z x fpcalc.zip -y
     copy /Y chromaprint-fpcalc-%CHROMAPRINT_FPCALC_VERSION%-windows-x86_64\fpcalc.exe fpcalc.exe
     IF "%APPVEYOR_REPO_TAG%" == "false" python setup.py patch_version --platform=python%PYTHON_VERSION%
+- ps: |
+    if ($Env:CODESIGN_PFX_BASE64) {
+      echo "Preparing code signing certificate"
+      [IO.File]::WriteAllBytes((Join-Path $PWD codesign.pfx), [Convert]::FromBase64String($Env:CODESIGN_PFX_BASE64))
+      $CertPassword = ConvertTo-SecureString -String $Env:CODESIGN_PFX_PASSWORD -Force -AsPlainText
+      Import-PfxCertificate -CertStoreLocation Cert:\CurrentUser\My -FilePath .\codesign.pfx -Password $CertPassword
+    }
 
 build_script:
 - ps: |
+    $Certificate = @(Get-ChildItem cert:\CurrentUser\My -codesign)[0]
     echo "Building Windows installer..."
-    & .\scripts\package\win-package-app.ps1
-- cmd: |
+    & .\scripts\package\win-package-app.ps1 -Certificate $Certificate
     echo "Building portable exe..."
-    pyinstaller --noconfirm --clean --onefile picard.spec
+    pyinstaller --noconfirm --clean --onefile picard.spec 2>&1 | %{ "$_" }
+    If ($Certificate) {
+      Set-AuthenticodeSignature -FilePath .\dist\MusicBrainz-Picard-*.exe -Certificate $Certificate
+    }
 
 test_script:
 - ps: |
