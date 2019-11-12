@@ -79,7 +79,7 @@ def version_from_string(version_str):
 PICARD_VERSION_STR = version_to_string(PICARD_VERSION)
 PICARD_VERSION_STR_SHORT = version_to_string(PICARD_VERSION, short=True)
 if PICARD_BUILD_VERSION_STR:
-    __version__ = "%s_%s" % (PICARD_VERSION_STR, PICARD_BUILD_VERSION_STR)
+    __version__ = "%s+%s" % (PICARD_VERSION_STR, PICARD_BUILD_VERSION_STR)
     PICARD_FANCY_VERSION_STR = "%s (%s)" % (PICARD_VERSION_STR_SHORT,
                                             PICARD_BUILD_VERSION_STR)
 else:
