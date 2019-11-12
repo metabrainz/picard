@@ -292,15 +292,15 @@ class ScriptParserTest(PicardTestCase):
         self.assertScriptResultEquals("$startswith(abc,a)", "1")
         self.assertScriptResultEquals("$startswith(abc,abc)", "1")
         self.assertScriptResultEquals("$startswith(abc,)", "1")
-        self.assertScriptResultEquals("$startswith(abc,b)", "0")
-        self.assertScriptResultEquals("$startswith(abc,Ab)", "0")
+        self.assertScriptResultEquals("$startswith(abc,b)", "")
+        self.assertScriptResultEquals("$startswith(abc,Ab)", "")
 
     def test_cmd_endswith(self):
         self.assertScriptResultEquals("$endswith(abc,c)", "1")
         self.assertScriptResultEquals("$endswith(abc,abc)", "1")
         self.assertScriptResultEquals("$endswith(abc,)", "1")
-        self.assertScriptResultEquals("$endswith(abc,b)", "0")
-        self.assertScriptResultEquals("$endswith(abc,bC)", "0")
+        self.assertScriptResultEquals("$endswith(abc,b)", "")
+        self.assertScriptResultEquals("$endswith(abc,bC)", "")
 
     def test_cmd_truncate(self):
         self.assertScriptResultEquals("$truncate(abcdefg,0)", "")
@@ -582,15 +582,15 @@ class ScriptParserTest(PicardTestCase):
         file.parent.album.is_complete.return_value = True
         self.assertScriptResultEquals("$is_complete()", "1", file=file)
         file.parent.album.is_complete.return_value = False
-        self.assertScriptResultEquals("$is_complete()", "0", file=file)
-        self.assertScriptResultEquals("$is_complete()", "0")
+        self.assertScriptResultEquals("$is_complete()", "", file=file)
+        self.assertScriptResultEquals("$is_complete()", "")
 
     def test_cmd_is_complete_with_cluster(self):
         file = MagicMock()
         cluster = Cluster(name="Test")
         cluster.files.append(file)
         file.parent = cluster
-        self.assertScriptResultEquals("$is_complete()", "0", file=file)
+        self.assertScriptResultEquals("$is_complete()", "", file=file)
 
     def test_cmd_is_video(self):
         context = Metadata({'~video': '1'})
