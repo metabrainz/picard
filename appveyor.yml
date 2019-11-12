@@ -43,17 +43,9 @@ before_build:
     IF "%APPVEYOR_REPO_TAG%" == "false" python setup.py patch_version --platform=python%PYTHON_VERSION%
 
 build_script:
-- cmd: |
-    python setup.py build
-    python setup.py build_ext -i
-- cmd: |
+- ps: |
     echo "Building Windows installer..."
-    pyinstaller --noconfirm --clean picard.spec
-    REM Workaround for https://github.com/pyinstaller/pyinstaller/issues/4429
-    IF EXIST dist\picard\PyQt5\translations move dist\picard\PyQt5\translations dist\picard\PyQt5\Qt
-    del /F /Q dist\picard\libcrypto-1_1.dll
-    del /F /Q dist\picard\libssl-1_1.dll
-    makensis.exe /INPUTCHARSET UTF8 installer\picard-setup.nsi
+    & .\scripts\package\win-package-app.ps1
 - cmd: |
     echo "Building portable exe..."
     pyinstaller --noconfirm --clean --onefile picard.spec
