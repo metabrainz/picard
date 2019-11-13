@@ -11,6 +11,8 @@ Function CodeSignBinary {
   )
   If ($Certificate) {
     Set-AuthenticodeSignature -FilePath $BinaryPath -Certificate $Certificate
+  } else {
+    Write-Output "Skip signing $BinaryPath"
   }
 }
 
@@ -31,6 +33,7 @@ python setup.py build_ext -i 2>&1 | %{ "$_" }
 ThrowOnExeError "setup.py build_ext -i failed"
 
 # Package application
+Write-Output "Building Windows installer..."
 pyinstaller --noconfirm --clean picard.spec 2>&1 | %{ "$_" }
 ThrowOnExeError "PyInstaller failed"
 CodeSignBinary .\dist\picard\picard.exe
@@ -50,3 +53,8 @@ Remove-Item -Path dist\picard\libssl-1_1.dll
 makensis.exe /INPUTCHARSET UTF8 installer\picard-setup.nsi 2>&1 | %{ "$_" }
 ThrowOnExeError "NSIS failed"
 CodeSignBinary .\installer\picard-setup-*.exe
+
+Write-Output "Building portable exe..."
+pyinstaller --noconfirm --clean --onefile picard.spec 2>&1 | %{ "$_" }
+ThrowOnExeError "PyInstaller failed"
+CodeSignBinary .\dist\MusicBrainz-Picard-*.exe
