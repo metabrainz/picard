@@ -194,14 +194,14 @@ class MP4File(File):
                 try:
                     metadata["tracknumber"] = values[0][0]
                     metadata["totaltracks"] = values[0][1]
-                except:
-                    pass
+                except IndexError:
+                    log.debug('trkn is invalid, ignoring')
             elif name == "disk":
                 try:
                     metadata["discnumber"] = values[0][0]
                     metadata["totaldiscs"] = values[0][1]
-                except:
-                    pass
+                except IndexError:
+                    log.debug('disk is invalid, ignoring')
             elif name == "covr":
                 for value in values:
                     if value.imageformat not in (value.FORMAT_JPEG,
