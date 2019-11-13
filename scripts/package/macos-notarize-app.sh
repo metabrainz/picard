@@ -62,7 +62,7 @@ do
     break
   elif [ "$STATUS" = "in progress" ]; then
     echo -n .
-    sleep 60
+    sleep 30
   else
     echo "Notarizing $APP_BUNDLE failed:"
     echo $RESULT

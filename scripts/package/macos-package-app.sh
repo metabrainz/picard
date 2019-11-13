@@ -32,6 +32,7 @@ fi
 if [ -f scripts/package/appledev.p12 ] && [ -n "$appledev_p12_password" ]; then
     security create-keychain -p $KEYCHAIN_PASSWORD $KEYCHAIN_PATH
     security unlock-keychain -p $KEYCHAIN_PASSWORD $KEYCHAIN_PATH
+    security set-keychain-settings $KEYCHAIN_PATH  # Ensure keychain stays unlocked
     security list-keychains -d user -s $KEYCHAIN_PATH
     security default-keychain -s $KEYCHAIN_PATH
     security import $CERTIFICATE_FILE -k $KEYCHAIN_PATH -P "$appledev_p12_password" -T /usr/bin/codesign
