@@ -241,6 +241,12 @@ class Metadata(MutableMapping):
                 sim *= track['score'] / 100
             return SimMatchTrack(similarity=sim, releasegroup=None, release=None, track=track)
 
+        if 'isvideo' in weights:
+            metadata_is_video = self['~video'] == '1'
+            track_is_video = track.get('video', False)
+            score = 1 if metadata_is_video == track_is_video else 0
+            parts.append((score, weights['isvideo']))
+
         result = SimMatchTrack(similarity=-1, releasegroup=None, release=None, track=None)
         for release in releases:
             release_parts = self.compare_to_release_parts(release, weights)
