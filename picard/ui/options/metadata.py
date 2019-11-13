@@ -27,6 +27,23 @@ from picard.ui.options import (
 from picard.ui.ui_options_metadata import Ui_MetadataOptionsPage
 
 
+def iter_sorted_locales(locales):
+    generic_names = []
+    grouped_locales = {}
+    for locale, name in locales.items():
+        name = _(name)
+        generic_locale = locale.split('_', 1)[0]
+        if generic_locale == locale:
+            generic_names.append((name, locale))
+        else:
+            grouped_locales.setdefault(generic_locale, []).append((name, locale))
+
+    for name, locale in sorted(generic_names):
+        yield (locale, name, 0)
+        for name, locale in sorted(grouped_locales.get(locale, [])):
+            yield (locale, name, 1)
+
+
 class MetadataOptionsPage(OptionsPage):
 
     NAME = "metadata"
@@ -58,13 +75,11 @@ class MetadataOptionsPage(OptionsPage):
         self.ui.translate_artist_names.setChecked(config.setting["translate_artist_names"])
 
         combo_box = self.ui.artist_locale
-        locales = sorted(ALIAS_LOCALES.keys())
-        for i, loc in enumerate(locales):
-            name = ALIAS_LOCALES[loc]
-            if "_" in loc:
-                name = "    " + name
-            combo_box.addItem(name, loc)
-            if loc == config.setting["artist_locale"]:
+        current_locale = config.setting["artist_locale"]
+        for i, (locale, name, level) in enumerate(iter_sorted_locales(ALIAS_LOCALES)):
+            label = "    " * level + name
+            combo_box.addItem(label, locale)
+            if locale == current_locale:
                 combo_box.setCurrentIndex(i)
 
         self.ui.convert_punctuation.setChecked(config.setting["convert_punctuation"])
