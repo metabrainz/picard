@@ -76,13 +76,11 @@ class MetadataOptionsPage(OptionsPage):
 
         combo_box = self.ui.artist_locale
         current_locale = config.setting["artist_locale"]
-        i = 0
-        for locale, name, level in iter_sorted_locales(ALIAS_LOCALES):
+        for i, (locale, name, level) in enumerate(iter_sorted_locales(ALIAS_LOCALES)):
             label = "    " * level + name
             combo_box.addItem(label, locale)
             if locale == current_locale:
                 combo_box.setCurrentIndex(i)
-            i += 1
 
         self.ui.convert_punctuation.setChecked(config.setting["convert_punctuation"])
         self.ui.release_ars.setChecked(config.setting["release_ars"])
