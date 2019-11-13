@@ -118,11 +118,11 @@ class AsfUtilTest(PicardTestCase):
 
     def test_pack_image(self):
         for args, expected in self.test_cases:
-            self.assertEquals(expected, asf.pack_image(*args))
+            self.assertEqual(expected, asf.pack_image(*args))
 
     def test_unpack_image(self):
         for expected, packed in self.test_cases:
-            self.assertEquals(expected, asf.unpack_image(packed))
+            self.assertEqual(expected, asf.unpack_image(packed))
 
     def test_unpack_image_value_errors(self):
         self.assertRaisesRegex(ValueError, "unpack_from requires a buffer of at least 5 bytes",
