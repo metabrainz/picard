@@ -37,7 +37,7 @@ if [ -f scripts/package/appledev.p12 ] && [ -n "$appledev_p12_password" ]; then
     security import $CERTIFICATE_FILE -k $KEYCHAIN_PATH -P "$appledev_p12_password" -T /usr/bin/codesign
     # The line below is necessary when building on Sierra.
     # See https://stackoverflow.com/q/39868578
-    security set-key-partition-list -S apple-tool:,apple: -s -k $KEYCHAIN_PASSWORD $KEYCHAIN_PATH
+    security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k $KEYCHAIN_PASSWORD $KEYCHAIN_PATH
     security find-identity -p codesigning # For debugging
     CODESIGN=1
 fi
