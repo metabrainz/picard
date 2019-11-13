@@ -191,15 +191,17 @@ class MP4File(File):
                     if value.startswith("MusicMagic Fingerprint"):
                         metadata.add("musicip_fingerprint", value[22:])
             elif name == "trkn":
-                if (len(values) >= 1 and len(values[0] >= 1)):
+                try:
                     metadata["tracknumber"] = values[0][0]
-                    if (len(values[0])>=2):
-                        metadata["totaltracks"] = values[0][1]
+                    metadata["totaltracks"] = values[0][1]
+                except:
+                    pass
             elif name == "disk":
-                if (len(values) >= 1 and len(values[0] >= 1)):
+                try:
                     metadata["discnumber"] = values[0][0]
-                    if (len(values[0])>=2):
-                        metadata["totaldiscs"] = values[0][1]
+                    metadata["totaldiscs"] = values[0][1]
+                except:
+                    pass
             elif name == "covr":
                 for value in values:
                     if value.imageformat not in (value.FORMAT_JPEG,
