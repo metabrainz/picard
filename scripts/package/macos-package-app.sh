@@ -85,6 +85,7 @@ hdiutil create -volname "MusicBrainz Picard $VERSION" \
 md5 -r "$DMG"
 
 if [ -n "$UPLOAD_OSX" ]; then
+    echo "Preparing to upload $DMG..."
     # make upload failures non fatal
     set +e
     # Set $AWS_ARTIFACTS_BUCKET, $AWS_ACCESS_KEY_ID and $AWS_SECRET_ACCESS_KEY for AWS S3 upload to work
