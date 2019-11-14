@@ -1,7 +1,13 @@
 Param(
   [System.Security.Cryptography.X509Certificates.X509Certificate]
-  $Certificate
+  $Certificate,
+  [Int]
+  $BuildNumber
 )
+
+If (-Not $BuildNumber) {
+  $BuildNumber = 0
+}
 
 Function CodeSignBinary {
   Param(
@@ -11,7 +17,7 @@ Function CodeSignBinary {
   )
   If ($Certificate) {
     Set-AuthenticodeSignature -FilePath $BinaryPath -Certificate $Certificate
-  } else {
+  } Else {
     Write-Output "Skip signing $BinaryPath"
   }
 }
@@ -27,7 +33,7 @@ Function ThrowOnExeError {
 Remove-Item -Path build,dist/picard,locale -Recurse -ErrorAction Ignore
 python setup.py clean 2>&1 | %{ "$_" }
 ThrowOnExeError "setup.py clean failed"
-python setup.py build 2>&1 | %{ "$_" }
+python setup.py build --build-number=$BuildNumber 2>&1 | %{ "$_" }
 ThrowOnExeError "setup.py build failed"
 python setup.py build_ext -i 2>&1 | %{ "$_" }
 ThrowOnExeError "setup.py build_ext -i failed"

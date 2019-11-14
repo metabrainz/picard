@@ -192,12 +192,14 @@ class picard_build(build):
         ('localedir=', None, ''),
         ('disable-autoupdate', None, 'disable update checking and hide settings for it'),
         ('disable-locales', None, ''),
+        ('build-number=', None, 'build number (integer)'),
     ]
 
     sub_commands = build.sub_commands
 
     def initialize_options(self):
         build.initialize_options(self)
+        self.build_number = 0
         self.build_locales = None
         self.localedir = None
         self.disable_autoupdate = None
@@ -205,6 +207,10 @@ class picard_build(build):
 
     def finalize_options(self):
         build.finalize_options(self)
+        try:
+            self.build_number = int(self.build_number)
+        except ValueError:
+            self.build_number = 0
         if self.build_locales is None:
             self.build_locales = os.path.join(self.build_base, 'locale')
         if self.localedir is None:
@@ -218,7 +224,7 @@ class picard_build(build):
         log.info('generating scripts/%s from scripts/picard.in', PACKAGE_NAME)
         generate_file('scripts/picard.in', 'scripts/' + PACKAGE_NAME, {'localedir': self.localedir, 'autoupdate': not self.disable_autoupdate})
         if sys.platform == 'win32':
-            file_version = PICARD_VERSION[0:3] + PICARD_VERSION[4:]
+            file_version = PICARD_VERSION[0:3] + (self.build_number,)
             file_version_str = '.'.join([str(v) for v in file_version])
 
             # Temporarily setting it to this value to generate a nice name for Windows app
