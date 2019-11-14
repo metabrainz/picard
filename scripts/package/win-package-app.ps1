@@ -36,9 +36,9 @@ ThrowOnExeError "setup.py build_ext -i failed"
 Write-Output "Building Windows installer..."
 pyinstaller --noconfirm --clean picard.spec 2>&1 | %{ "$_" }
 ThrowOnExeError "PyInstaller failed"
-CodeSignBinary .\dist\picard\picard.exe
-CodeSignBinary .\dist\picard\fpcalc.exe
-CodeSignBinary .\dist\picard\discid.dll
+CodeSignBinary dist\picard\picard.exe
+CodeSignBinary dist\picard\fpcalc.exe
+CodeSignBinary dist\picard\discid.dll
 
 # Workaround for https://github.com/pyinstaller/pyinstaller/issues/4429
 If (Test-Path dist\picard\PyQt5\translations -PathType Container) {
@@ -52,9 +52,18 @@ Remove-Item -Path dist\picard\libssl-1_1.dll
 # Build the installer
 makensis.exe /INPUTCHARSET UTF8 installer\picard-setup.nsi 2>&1 | %{ "$_" }
 ThrowOnExeError "NSIS failed"
-CodeSignBinary .\installer\picard-setup-*.exe
+CodeSignBinary installer\picard-setup-*.exe
 
 Write-Output "Building portable exe..."
 pyinstaller --noconfirm --clean --onefile picard.spec 2>&1 | %{ "$_" }
 ThrowOnExeError "PyInstaller failed"
-CodeSignBinary .\dist\MusicBrainz-Picard-*.exe
+CodeSignBinary dist\MusicBrainz-Picard-*.exe
+
+Write-Output "Building app package..."
+ThrowOnExeError "setup.py build failed"
+$PicardVersion = (python -c "import picard; print(picard.__version__)")
+$PackageFile = "dist\MusicBrainz Picard $PicardVersion.msix"
+Copy-Item appxmanifest.xml dist\picard
+MakeAppx pack /o /d dist\picard\ /p $PackageFile
+ThrowOnExeError "MakeAppx failed"
+CodeSignBinary $PackageFile

@@ -218,10 +218,12 @@ class picard_build(build):
         log.info('generating scripts/%s from scripts/picard.in', PACKAGE_NAME)
         generate_file('scripts/picard.in', 'scripts/' + PACKAGE_NAME, {'localedir': self.localedir, 'autoupdate': not self.disable_autoupdate})
         if sys.platform == 'win32':
+            file_version = PICARD_VERSION[0:3] + PICARD_VERSION[4:]
+            file_version_str = '.'.join([str(v) for v in file_version])
+
             # Temporarily setting it to this value to generate a nice name for Windows app
             args['name'] = 'MusicBrainz Picard'
-            file_version = PICARD_VERSION[0:3] + PICARD_VERSION[4:]
-            args['file_version'] = '.'.join([str(v) for v in file_version])
+            args['file_version'] = file_version_str
             if os.path.isfile('installer/picard-setup.nsi.in'):
                 generate_file('installer/picard-setup.nsi.in', 'installer/picard-setup.nsi', args)
             version_args = {
@@ -230,6 +232,11 @@ class picard_build(build):
             }
             generate_file('win-version-info.txt.in', 'win-version-info.txt', {**args, **version_args})
             args['name'] = 'picard'
+
+            generate_file('appxmanifest.xml.in', 'appxmanifest.xml', {
+                'app-id': PICARD_APP_ID,
+                'version': file_version_str
+            })
         elif sys.platform == 'linux':
             self.run_command('build_appdata')
         build.run(self)
