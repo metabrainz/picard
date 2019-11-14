@@ -13,7 +13,7 @@ from picard import (
     PICARD_APP_NAME,
     PICARD_ORG_NAME,
     PICARD_VERSION,
-    PICARD_VERSION_STR_SHORT,
+    __version__,
 )
 
 pv = [str(x) for x in PICARD_VERSION]
@@ -109,7 +109,7 @@ if '--onefile' in sys.argv:
               a.datas,
               name='{}-{}-{}'.format(PICARD_ORG_NAME,
                                      PICARD_APP_NAME,
-                                     PICARD_VERSION_STR_SHORT),
+                                     __version__),
               debug=False,
               strip=False,
               upx=False,
