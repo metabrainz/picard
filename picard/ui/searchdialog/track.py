@@ -139,7 +139,6 @@ class TrackSearchDialog(SearchDialog):
         self.prepare_table()
         for row, obj in enumerate(self.search_results):
             track = obj[0]
-            print(track, track.length)
             self.table.insertRow(row)
             self.set_table_item(row, 'name',    track, "title")
             self.set_table_item(row, 'length',  track, "~length", sortkey=track.length)
