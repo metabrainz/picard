@@ -25,21 +25,13 @@ init:
     ECHO %PYTHON% %PYTHON_VERSION%
     ECHO fpcalc %CHROMAPRINT_FPCALC_VERSION%
     ECHO libdiscid %DISCID_VERSION%
-- ps: |
-    if ($Env:CODESIGN_PFX_BASE64) {
-      echo "Preparing code signing certificate"
-      pip3 install awscli
-      aws s3 cp "$Env:CODESIGN_PFX_URL" .\codesign.pfx
-      $CertPassword = ConvertTo-SecureString -String $Env:CODESIGN_PFX_PASSWORD -Force -AsPlainText
-      Import-PfxCertificate -CertStoreLocation Cert:\CurrentUser\My -FilePath .\codesign.pfx -Password $CertPassword
-    }
 
 install:
 - cmd: |
     appveyor DownloadFile https://github.com/metabrainz/libdiscid/releases/download/v%DISCID_VERSION%/libdiscid-%DISCID_VERSION%-win64.zip -FileName libdiscid.zip
     7z x libdiscid.zip -y
     copy /Y discid.dll %PYTHON%
-    pip3 install pytest pytest-randomly
+    pip3 install pytest pytest-randomly awscli
     pip3 install -r requirements-build.txt
     pip3 install -r requirements-win.txt
 
@@ -49,6 +41,13 @@ before_build:
     7z x fpcalc.zip -y
     copy /Y chromaprint-fpcalc-%CHROMAPRINT_FPCALC_VERSION%-windows-x86_64\fpcalc.exe fpcalc.exe
     IF "%APPVEYOR_REPO_TAG%" == "false" python setup.py patch_version --platform=python%PYTHON_VERSION%
+- ps: |
+    if ($Env:CODESIGN_PFX_BASE64) {
+      echo "Preparing code signing certificate"
+      aws s3 cp "$Env:CODESIGN_PFX_URL" .\codesign.pfx
+      $CertPassword = ConvertTo-SecureString -String $Env:CODESIGN_PFX_PASSWORD -Force -AsPlainText
+      Import-PfxCertificate -CertStoreLocation Cert:\CurrentUser\My -FilePath .\codesign.pfx -Password $CertPassword
+    }
 
 build_script:
 - ps: |
