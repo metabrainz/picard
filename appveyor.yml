@@ -28,7 +28,8 @@ init:
 - ps: |
     if ($Env:CODESIGN_PFX_BASE64) {
       echo "Preparing code signing certificate"
-      [IO.File]::WriteAllBytes((Join-Path $PWD codesign.pfx), [Convert]::FromBase64String($Env:CODESIGN_PFX_BASE64))
+      pip3 install awscli
+      aws s3 cp "$Env:CODESIGN_PFX_URL" .\codesign.pfx
       $CertPassword = ConvertTo-SecureString -String $Env:CODESIGN_PFX_PASSWORD -Force -AsPlainText
       Import-PfxCertificate -CertStoreLocation Cert:\CurrentUser\My -FilePath .\codesign.pfx -Password $CertPassword
     }
