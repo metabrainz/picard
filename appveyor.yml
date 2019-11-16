@@ -6,7 +6,9 @@ pull_requests:
 #   - master
 #   - /\d\.[0-9x](\.[0-9x])?/
 skip_branch_with_pr: true
-image: Visual Studio 2015
+image:
+  - Visual Studio 2019
+  - Visual Studio 2015
 environment:
   CHROMAPRINT_FPCALC_VERSION: 1.4.3
   DISCID_VERSION: 0.6.2
@@ -17,9 +19,18 @@ environment:
   - PYTHON: C:\Python35-x64
   - PYTHON: C:\Python37-x64
     TEST_PIP_INSTALL: true
+matrix:
+  exclude:
+    - image: Visual Studio 2019
+      TEST_PIP_INSTALL: true
+    - image: Visual Studio 2019
+      PYTHON: C:\Python36-x64
+    - image: Visual Studio 2019
+      PYTHON: C:\Python35-x64
+
 init:
 - cmd: |
-    SET PATH=%PYTHON%;%PYTHON%\Scripts;%PATH%
+    SET PATH=%PYTHON%;%PYTHON%\Scripts;%PATH%;C:\Program Files (x86)\Windows Kits\10\bin\10.0.18362.0\x64
     SET PYTHON_SITE=%PYTHON%\lib\site-packages
     FOR /F "tokens=*" %%a IN ('python -c "import sys;print('%%s.%%s.%%s' %% sys.version_info[0:3])"') do (SET PYTHON_VERSION=%%a)
     ECHO %PYTHON% %PYTHON_VERSION%
@@ -52,9 +63,6 @@ before_build:
 build_script:
 - ps: |
     $Certificate = @(Get-ChildItem cert:\CurrentUser\My -codesign)[0]
-    if ($Certificate) {
-      & .\scripts\package\win-package-appx.ps1 -BuildNumber $env:APPVEYOR_BUILD_NUMBER -Certificate $Certificate
-    }
     & .\scripts\package\win-package-portable.ps1 -BuildNumber $env:APPVEYOR_BUILD_NUMBER -Certificate $Certificate
     & .\scripts\package\win-package-installer.ps1 -BuildNumber $env:APPVEYOR_BUILD_NUMBER -Certificate $Certificate
 
@@ -78,6 +86,16 @@ for:
     pip3 install .
   test_script:
     echo Skipped test_script
+-
+  matrix:
+    only:
+      - image: Visual Studio 2019
+  build_script:
+  - ps: |
+      $Certificate = @(Get-ChildItem cert:\CurrentUser\My -codesign)[0]
+      if ($Certificate) {
+        & .\scripts\package\win-package-appx.ps1 -BuildNumber $env:APPVEYOR_BUILD_NUMBER -Certificate $Certificate
+      }
 
 artifacts:
 - path: installer/*.exe
