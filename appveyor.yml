@@ -1,10 +1,10 @@
 version: '{build}'
 pull_requests:
   do_not_increment_build_number: true
-branches:
-  only:
-  - master
-  - /\d\.[0-9x](\.[0-9x])?/
+# branches:
+#   only:
+#   - master
+#   - /\d\.[0-9x](\.[0-9x])?/
 skip_branch_with_pr: true
 image: Visual Studio 2015
 environment:
