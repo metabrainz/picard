@@ -12,7 +12,8 @@ Function CodeSignBinary {
     $BinaryPath
   )
   If ($Certificate) {
-    Set-AuthenticodeSignature -FilePath $BinaryPath -Certificate $Certificate
+    Set-AuthenticodeSignature -FilePath $BinaryPath -Certificate $Certificate `
+      -ErrorAction Stop
   } Else {
     Write-Output "Skip signing $BinaryPath"
   }

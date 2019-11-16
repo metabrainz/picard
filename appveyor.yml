@@ -73,6 +73,9 @@ test_script:
     pytest -ra --junitxml=test-results.xml
     $wc = New-Object 'System.Net.WebClient'
     $wc.UploadFile("https://ci.appveyor.com/api/testresults/junit/$($env:APPVEYOR_JOB_ID)", (Resolve-Path .\test-results.xml))
+    If ($LastExitCode -ne 0) {
+      Throw "Tests failed"
+    }
 - dist\picard\fpcalc -version
 
 for:
@@ -95,10 +98,8 @@ for:
   build_script:
   - ps: |
       $Certificate = @(Get-ChildItem cert:\CurrentUser\My -codesign)[0]
-      if ($Certificate) {
-        & .\scripts\package\win-package-appx.ps1 -BuildNumber $env:APPVEYOR_BUILD_NUMBER -Certificate $Certificate
-        Push-AppveyorArtifact dist\*.msix
-      }
+      & .\scripts\package\win-package-appx.ps1 -BuildNumber $env:APPVEYOR_BUILD_NUMBER -Certificate $Certificate
+      Push-AppveyorArtifact dist\*.msix
 
 deploy:
 - provider: GitHub
