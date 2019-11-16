@@ -31,6 +31,48 @@
         Square150x150Logo="Square150x150Logo.png"
         Square44x44Logo="Square44x44Logo.png"
         BackgroundColor="#736DAB"/>
+      <Extensions>
+        <uap:Extension Category="windows.fileTypeAssociation">
+          <uap:FileTypeAssociation Name="mediafiles">
+            <uap:SupportedFileTypes>
+              <uap:FileType>.aac</uap:FileType>
+              <uap:FileType>.aif</uap:FileType>
+              <uap:FileType>.aifc</uap:FileType>
+              <uap:FileType>.aiff</uap:FileType>
+              <uap:FileType>.ape</uap:FileType>
+              <uap:FileType>.asf</uap:FileType>
+              <uap:FileType>.dff</uap:FileType>
+              <uap:FileType>.dsf</uap:FileType>
+              <uap:FileType>.flac</uap:FileType>
+              <uap:FileType>.kar</uap:FileType>
+              <uap:FileType>.m2a</uap:FileType>
+              <uap:FileType>.m4a</uap:FileType>
+              <uap:FileType>.m4b</uap:FileType>
+              <uap:FileType>.m4p</uap:FileType>
+              <uap:FileType>.m4v</uap:FileType>
+              <uap:FileType>.mid</uap:FileType>
+              <uap:FileType>.mp+</uap:FileType>
+              <uap:FileType>.mp2</uap:FileType>
+              <uap:FileType>.mp3</uap:FileType>
+              <uap:FileType>.mp4</uap:FileType>
+              <uap:FileType>.mpc</uap:FileType>
+              <uap:FileType>.ofr</uap:FileType>
+              <uap:FileType>.ofs</uap:FileType>
+              <uap:FileType>.oga</uap:FileType>
+              <uap:FileType>.ogg</uap:FileType>
+              <uap:FileType>.ogv</uap:FileType>
+              <uap:FileType>.opus</uap:FileType>
+              <uap:FileType>.spx</uap:FileType>
+              <uap:FileType>.tak</uap:FileType>
+              <uap:FileType>.tta</uap:FileType>
+              <uap:FileType>.wav</uap:FileType>
+              <uap:FileType>.wma</uap:FileType>
+              <uap:FileType>.wmv</uap:FileType>
+              <uap:FileType>.wv</uap:FileType>
+            </uap:SupportedFileTypes>
+          </uap:FileTypeAssociation>
+        </uap:Extension>
+      </Extensions>
     </Application>
   </Applications>
 </Package>
