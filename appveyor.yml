@@ -64,7 +64,9 @@ build_script:
 - ps: |
     $Certificate = @(Get-ChildItem cert:\CurrentUser\My -codesign)[0]
     & .\scripts\package\win-package-portable.ps1 -BuildNumber $env:APPVEYOR_BUILD_NUMBER -Certificate $Certificate
+    Push-AppveyorArtifact dist\*.exe
     & .\scripts\package\win-package-installer.ps1 -BuildNumber $env:APPVEYOR_BUILD_NUMBER -Certificate $Certificate
+    Push-AppveyorArtifact installer\*.exe
 
 test_script:
 - ps: |
@@ -95,12 +97,9 @@ for:
       $Certificate = @(Get-ChildItem cert:\CurrentUser\My -codesign)[0]
       if ($Certificate) {
         & .\scripts\package\win-package-appx.ps1 -BuildNumber $env:APPVEYOR_BUILD_NUMBER -Certificate $Certificate
+        Push-AppveyorArtifact dist\*.msix
       }
 
-artifacts:
-- path: installer/*.exe
-- path: dist/*.exe
-- path: dist/*.msix
 deploy:
 - provider: GitHub
   auth_token:
