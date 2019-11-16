@@ -17,6 +17,7 @@ Thumbs.db:encryptable
 *.pyc
 *.pyd
 *.so
+appxmanifest.xml
 build/
 coverage.xml
 dist/

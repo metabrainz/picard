@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Package
+  xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10"
+  xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
+  xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities">
+  <Identity
+    Name="%(app-id)s"
+    Version="%(version)s"
+    Publisher="CN=Metabrainz Foundation Inc., O=Metabrainz Foundation Inc., L=San Luis Obispo, S=California, C=US"
+    ProcessorArchitecture="x64"/>
+  <Properties>
+    <DisplayName>MusicBrainz Picard</DisplayName>
+    <PublisherDisplayName>MetaBrainz Foundation</PublisherDisplayName>
+    <Description>Picard is an open-source cross-platform music tagger by MusicBrainz. It has the ability to identify audio files even without any existing metadata.</Description>
+    <Logo>Square70x70Logo.png</Logo>
+  </Properties>
+  <Resources>
+    <Resource Language="en-us"/>
+  </Resources>
+  <Dependencies>
+    <TargetDeviceFamily Name="Windows.Desktop" MinVersion="10.0.17135.0" MaxVersionTested="10.0.18363.0"/>
+  </Dependencies>
+  <Capabilities>
+    <rescap:Capability Name="runFullTrust"/>
+  </Capabilities>
+  <Applications>
+    <Application Id="Picard" Executable="picard.exe" EntryPoint="Windows.FullTrustApplication">
+      <uap:VisualElements
+        DisplayName="MusicBrainz Picard"
+        Description="Tag your music with the next generation MusicBrainz tagger"
+        Square150x150Logo="Square150x150Logo.png"
+        Square44x44Logo="Square44x44Logo.png"
+        BackgroundColor="#736DAB"/>
+    </Application>
+  </Applications>
+</Package>

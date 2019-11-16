@@ -40,7 +40,7 @@ before_build:
     appveyor DownloadFile https://github.com/acoustid/chromaprint/releases/download/v%CHROMAPRINT_FPCALC_VERSION%/chromaprint-fpcalc-%CHROMAPRINT_FPCALC_VERSION%-windows-x86_64.zip -FileName fpcalc.zip
     7z x fpcalc.zip -y
     copy /Y chromaprint-fpcalc-%CHROMAPRINT_FPCALC_VERSION%-windows-x86_64\fpcalc.exe fpcalc.exe
-    IF "%APPVEYOR_REPO_TAG%" == "false" python setup.py patch_version --platform=python%PYTHON_VERSION%
+    IF "%APPVEYOR_REPO_TAG%" == "false" python setup.py patch_version --platform=%APPVEYOR_BUILD_NUMBER%.python%PYTHON_VERSION%
 - ps: |
     if ($Env:CODESIGN_PFX_URL) {
       echo "Preparing code signing certificate"
@@ -52,7 +52,11 @@ before_build:
 build_script:
 - ps: |
     $Certificate = @(Get-ChildItem cert:\CurrentUser\My -codesign)[0]
-    & .\scripts\package\win-package-app.ps1 -Certificate $Certificate
+    if ($Certificate) {
+      & .\scripts\package\win-package-appx.ps1 -BuildNumber $env:APPVEYOR_BUILD_NUMBER -Certificate $Certificate
+    }
+    & .\scripts\package\win-package-portable.ps1 -BuildNumber $env:APPVEYOR_BUILD_NUMBER -Certificate $Certificate
+    & .\scripts\package\win-package-installer.ps1 -BuildNumber $env:APPVEYOR_BUILD_NUMBER -Certificate $Certificate
 
 test_script:
 - ps: |
@@ -78,12 +82,13 @@ for:
 artifacts:
 - path: installer/*.exe
 - path: dist/*.exe
+- path: dist/*.msix
 deploy:
 - provider: GitHub
   auth_token:
     secure: bEUedqYteaHx/e64i8Wy16O/o/2WE/O0VNkTAgWCDTYeuiQvkZa3UqyaFaO2k8vk
   repository: metabrainz/picard
-  artifact: /.*\.exe/
+  artifact: /.*\.(exe|msix)/
   force_update: true
   on:
     APPVEYOR_REPO_TAG: true
