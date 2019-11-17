@@ -10,7 +10,10 @@ from mutagen.flac import (
     VCFLACDict,
 )
 
-from test.picardtestcase import PicardTestCase
+from test.picardtestcase import (
+    PicardTestCase,
+    create_fake_png,
+)
 
 from picard import (
     config,
@@ -290,6 +293,15 @@ class FlacCoverArtTest(CommonCoverArtTests.CoverArtTestCase):
             self.assertEqual(pic.width, test.width)
             self.assertNotEqual(pic.height, 0)
             self.assertEqual(pic.height, test.height)
+
+    def test_save_large_pics(self):
+        # 16 MB image
+        data = create_fake_png(b"a" * 1024 * 1024 * 16)
+        image = CoverArtImage(data=data)
+        file_save_image(self.filename, image)
+        raw_metadata = load_raw(self.filename)
+        # Images with more than 16 MB cannot be saved to FLAC
+        self.assertEqual(0, len(raw_metadata.pictures))
 
 
 class OggAudioVideoFileTest(PicardTestCase):

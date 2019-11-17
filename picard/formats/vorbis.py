@@ -49,6 +49,7 @@ from picard.util import (
 )
 
 
+FLAC_MAX_BLOCK_SIZE = 2 ** 24 - 1  # FLAC block size is limited to a 24 bit integer
 INVALID_CHARS = re.compile('([^\x20-\x7d]|=)')
 
 
@@ -271,6 +272,14 @@ class VCommentFile(File):
             picture.height = image.height
             picture.type = image_type_as_id3_num(image.maintype)
             if is_flac:
+                # See https://xiph.org/flac/format.html#metadata_block_picture
+                expected_block_size = (8 * 4 + len(picture.data)
+                    + len(picture.mime)
+                    + len(picture.desc.encode('UTF-8')))
+                if expected_block_size > FLAC_MAX_BLOCK_SIZE:
+                    log.error('Failed saving image to %r: Image size of %d bytes exceeds maximum FLAC block size of %d bytes',
+                        filename, expected_block_size, FLAC_MAX_BLOCK_SIZE)
+                    continue
                 file.add_picture(picture)
             else:
                 tags.setdefault("METADATA_BLOCK_PICTURE", []).append(
