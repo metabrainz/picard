@@ -30,7 +30,13 @@
         Description="Tag your music with the next generation MusicBrainz tagger"
         Square150x150Logo="Square150x150Logo.png"
         Square44x44Logo="Square44x44Logo.png"
-        BackgroundColor="#736DAB"/>
+        BackgroundColor="#736DAB">
+        <uap:DefaultTile ShortName="Picard" Square71x71Logo="Square70x70Logo.png">
+          <uap:ShowNameOnTiles>
+            <uap:ShowOn Tile="square150x150Logo"/>
+          </uap:ShowNameOnTiles>
+        </uap:DefaultTile>
+      </uap:VisualElements>
       <Extensions>
         <uap:Extension Category="windows.fileTypeAssociation">
           <uap:FileTypeAssociation Name="mediafiles">
