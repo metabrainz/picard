@@ -39,5 +39,7 @@ MakeAppx pack /o /h SHA256 /d dist\picard\ /p $PackageFile
 ThrowOnExeError "MakeAppx failed"
 
 # Sign package
-SignTool sign /fd SHA256 /sha1 $Certificate.Thumbprint $PackageFile
-ThrowOnExeError "SignTool failed"
+If ($Certificate) {
+  SignTool sign /fd SHA256 /sha1 $Certificate.Thumbprint $PackageFile
+  ThrowOnExeError "SignTool failed"
+}
