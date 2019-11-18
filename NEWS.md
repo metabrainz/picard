@@ -109,7 +109,7 @@
 - [PICARD-1514](https://tickets.metabrainz.org/browse/PICARD-1514) - Replace genre / folksonomy tag blacklist with more comprehensive list
 - [PICARD-1524](https://tickets.metabrainz.org/browse/PICARD-1524) - Replace hardcoded colors by user-configurable ones
 - [PICARD-1560](https://tickets.metabrainz.org/browse/PICARD-1560) - Add a plugin hook for a file loaded event
-- [PICARD-1594](https://tickets.metabrainz.org/browse/PICARD-1594) - Provide $is_video() / $is_audio scripting functions
+- [PICARD-1594](https://tickets.metabrainz.org/browse/PICARD-1594) - Provide `$is_video()` / `$is_audio()` scripting functions
 
 ## Task
 - [PICARD-1353](https://tickets.metabrainz.org/browse/PICARD-1353) - Update Travis CI to use newer Xcode
@@ -199,7 +199,7 @@
 - [PICARD-105](https://tickets.metabrainz.org/browse/PICARD-105) - Picard won't load non-album tracks from fingerprints
 - [PICARD-421](https://tickets.metabrainz.org/browse/PICARD-421) - Releases in private collections are not shown as being in them
 - [PICARD-518](https://tickets.metabrainz.org/browse/PICARD-518) - Sliders without labels in "Options - Metadata - Preferred Releases"
-- [PICARD-637](https://tickets.metabrainz.org/browse/PICARD-637) - $matchedtracks is broken
+- [PICARD-637](https://tickets.metabrainz.org/browse/PICARD-637) - `$matchedtracks` is broken
 - [PICARD-875](https://tickets.metabrainz.org/browse/PICARD-875) - AIFF does not support any of the compatid3 tags
 - [PICARD-949](https://tickets.metabrainz.org/browse/PICARD-949) - Track can be placed in the incorrect spot on the release after using Scan
 - [PICARD-1013](https://tickets.metabrainz.org/browse/PICARD-1013) - False file save error in specific circumstances
@@ -257,12 +257,12 @@
 - [PICARD-1268](https://tickets.metabrainz.org/browse/PICARD-1268) - Support concertmaster recording relationships as performer:concertmaster
 - [PICARD-1273](https://tickets.metabrainz.org/browse/PICARD-1273) - Add an option to exclude new cover art type "Raw / Unedited"
 - [PICARD-1319](https://tickets.metabrainz.org/browse/PICARD-1319) - Provide cover art metadata to cover image naming script
-- [PICARD-1344](https://tickets.metabrainz.org/browse/PICARD-1344) - Add $delete function
+- [PICARD-1344](https://tickets.metabrainz.org/browse/PICARD-1344) - Add `$delete` function
 - [PICARD-1352](https://tickets.metabrainz.org/browse/PICARD-1352) - Add a command-line option to skip plugin loading
 - [PICARD-1354](https://tickets.metabrainz.org/browse/PICARD-1354) - Allow using vocals and instruments as credited
 - [PICARD-1367](https://tickets.metabrainz.org/browse/PICARD-1367) - Allow opening searches in browser when using search dialogs
 - [PICARD-1384](https://tickets.metabrainz.org/browse/PICARD-1384) - Add AppStream data
-- [PICARD-1386](https://tickets.metabrainz.org/browse/PICARD-1386) - Add $title function
+- [PICARD-1386](https://tickets.metabrainz.org/browse/PICARD-1386) - Add `$title` function
 - [PICARD-1395](https://tickets.metabrainz.org/browse/PICARD-1395) - Support genres from MusicBrainz
 - [PICARD-1440](https://tickets.metabrainz.org/browse/PICARD-1440) - Support loading and renaming Standard MIDI Files (SMF)
 
@@ -547,7 +547,7 @@
 - [PICARD-857](https://tickets.metabrainz.org/browse/PICARD-857) - Improper detection of Gnome as a desktop environment and no support for gnome 3
 - [PICARD-858](https://tickets.metabrainz.org/browse/PICARD-858) - Apparent non-functional tagger button
 - [PICARD-859](https://tickets.metabrainz.org/browse/PICARD-859) - Picard does not read Ogg/Opus files with an ".ogg" file exension
-- [PICARD-865](https://tickets.metabrainz.org/browse/PICARD-865) - Setting a large value in in $num function as length causes picard to become unresponsive
+- [PICARD-865](https://tickets.metabrainz.org/browse/PICARD-865) - Setting a large value in in `$num` function as length causes picard to become unresponsive
 - [PICARD-867](https://tickets.metabrainz.org/browse/PICARD-867) - id3 deletion needs to be improved
 - [PICARD-868](https://tickets.metabrainz.org/browse/PICARD-868) - id3v2.3 does not properly handle TMOO ( mood tag)
 - [PICARD-870](https://tickets.metabrainz.org/browse/PICARD-870) - Coverart providers duplicates on reset
@@ -658,7 +658,7 @@
 - [PICARD-918](https://tickets.metabrainz.org/browse/PICARD-918) - Make PICARD-883 UI have adjustable widths for list of scripts and script content
 - [PICARD-919](https://tickets.metabrainz.org/browse/PICARD-919) - Move Options/Advanced/Scripting to Options/Scripting
 - [PICARD-921](https://tickets.metabrainz.org/browse/PICARD-921) - Move UI options page up the options tree
-- [PICARD-923](https://tickets.metabrainz.org/browse/PICARD-923) - Add $startswith and $endswith string functions
+- [PICARD-923](https://tickets.metabrainz.org/browse/PICARD-923) - Add `$startswith` and `$endswith` string functions
 - [PICARD-924](https://tickets.metabrainz.org/browse/PICARD-924) - Make list of scripts smaller than script text by default
 - [PICARD-944](https://tickets.metabrainz.org/browse/PICARD-944) - Wait for save thread pool to be finished before exit
 - [PICARD-970](https://tickets.metabrainz.org/browse/PICARD-970) - New guess format functionality should use explicit buffer size
@@ -819,12 +819,12 @@
 - Fixed track metadata plugins.
 - [PICARD-16](https://tickets.metabrainz.org/browse/PICARD-16) - Added new internal `%_totalalbumtracks%` tag field.
 - [PICARD-7](https://tickets.metabrainz.org/browse/PICARD-7) - Track metadata plugins now run also on non-album tracks.
-- [PICARD-5](https://tickets.metabrainz.org/browse/PICARD-5) - Fixed custom Various Artists name on the %albumartist% field.
+- [PICARD-5](https://tickets.metabrainz.org/browse/PICARD-5) - Fixed custom Various Artists name on the `%albumartist%` field.
 - [PICARD-1](https://tickets.metabrainz.org/browse/PICARD-1) - Album artist is now correctly "translated".
 - Unicode punctuation is now converted to ASCII by default.
 - [PICARD-15](https://tickets.metabrainz.org/browse/PICARD-15) - WavPack correction files are moved together with the main files.
 - Unicode filename normalization on OS X.
-- Original release date is now saved into %originaldate%.
+- Original release date is now saved into `%originaldate%`.
 - [PICARD-17](https://tickets.metabrainz.org/browse/PICARD-17) - Allow tagging with localized artist aliases
 - [PICARD-46](https://tickets.metabrainz.org/browse/PICARD-46) - Added a quit confirmation dialog.
 - [PICARD-10](https://tickets.metabrainz.org/browse/PICARD-10) - Standalone recordings can be tagged with relationships now.
@@ -859,7 +859,7 @@
 - Added several new tags: `%_originaldate%`, `%_recordingcomment%`, and `%_releasecomment%`
 - Changes to request queuing: added separate high and low priority queues for each host.
 - Tagger scripts now run after metadata plugins finish (#5850)
-- The "compilation" tag can now be $unset or modified via tagger script.
+- The "compilation" tag can now be `$unset` or modified via tagger script.
 - Added a shortcut (Ctrl+I) for Edit->Details.
 - Miscellaneous bug fixes.
 
@@ -893,7 +893,7 @@
 - Existing embedded images in APE and ASF files are removed only if there
   are new images to replace them.
 - More strict tagger script validation.
-- Fixed the $truncate tagger script function.
+- Fixed the `$truncate` tagger script function.
 - Proper rounding of track durations.
 - Fixed a bug with saving images larger than 64k to WMA files.
 - Added a `$swapprefix` tagger script function.
@@ -1009,7 +1009,7 @@
 - Folksonomy tags/genre support. (Lukáš Lalinský)
 - Added menu items (with keyboard shortcuts) for CD lookup / Scan /
   Lookup / Cluster. (Lukáš Lalinský)
-- Add taggerscript function $performer(). (Lukáš Lalinský)
+- Add taggerscript function `$performer()`. (Lukáš Lalinský)
 - Lower the default PUID lookup threshold to 10%. (Lukáš Lalinský)
 - Compare tracknumber and totaltracks as numbers, not strings.
   (Lukáš Lalinský)
