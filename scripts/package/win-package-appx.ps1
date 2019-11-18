@@ -29,13 +29,23 @@ ThrowOnExeError "setup.py build_ext -i failed"
 Write-Output "Building Windows installer..."
 pyinstaller --noconfirm --clean picard.spec 2>&1 | %{ "$_" }
 ThrowOnExeError "PyInstaller failed"
-FinalizePackage dist\picard
+$PackageDir = (Resolve-Path dist\picard)
+FinalizePackage $PackageDir
+
+# Generate resource files
+Copy-Item appxmanifest.xml $PackageDir
+$PriConfigFile = (Join-Path (Resolve-Path .\build) priconfig.xml)
+Push-Location $PackageDir
+MakePri createconfig /ConfigXml $PriConfigFile /Default en-US /Overwrite
+ThrowOnExeError "MakePri createconfig failed"
+MakePri new /ProjectRoot $PackageDir /ConfigXml $PriConfigFile
+ThrowOnExeError "MakePri new failed"
+Pop-Location
 
 # Generate msix package
 $PicardVersion = (python -c "import picard; print(picard.__version__)")
 $PackageFile = "dist\MusicBrainz Picard $PicardVersion.msix"
-Copy-Item appxmanifest.xml dist\picard
-MakeAppx pack /o /h SHA256 /d dist\picard\ /p $PackageFile
+MakeAppx pack /o /h SHA256 /d $PackageDir /p $PackageFile
 ThrowOnExeError "MakeAppx failed"
 
 # Sign package
