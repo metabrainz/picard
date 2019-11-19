@@ -77,6 +77,7 @@ from picard.ui.passworddialog import (
 from picard.ui.playertoolbar import Player
 from picard.ui.searchdialog.album import AlbumSearchDialog
 from picard.ui.searchdialog.track import TrackSearchDialog
+from picard.ui.statusindicator import DesktopStatusIndicator
 from picard.ui.tagsfromfilenames import TagsFromFileNamesDialog
 from picard.ui.util import (
     MultiDirsSelectDialog,
@@ -203,6 +204,11 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         if self.tagger.autoupdate_enabled:
             self.auto_update_check()
         self.metadata_box.restore_state()
+
+    def showEvent(self, event):
+        super().showEvent(event)
+        if DesktopStatusIndicator:
+            self.register_status_indicator(DesktopStatusIndicator(self.windowHandle()))
 
     def closeEvent(self, event):
         if config.setting["quit_confirmation"] and not self.show_quit_confirmation():
