@@ -42,6 +42,7 @@
           <uap:FileTypeAssociation Name="mediafiles">
             <uap:SupportedFileTypes>
               <uap:FileType>.aac</uap:FileType>
+              <uap:FileType>.ac3</uap:FileType>
               <uap:FileType>.aif</uap:FileType>
               <uap:FileType>.aifc</uap:FileType>
               <uap:FileType>.aiff</uap:FileType>
