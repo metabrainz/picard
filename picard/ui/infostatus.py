@@ -66,16 +66,22 @@ class InfoStatus(QtWidgets.QWidget, Ui_InfoStatus):
         self.val4.setToolTip(t4)
         self.label4.setToolTip(t4)
 
-    def setFiles(self, num):
+    def update(self, files=0, albums=0, pending_files=0, pending_requests=0):
+        self.set_files(files)
+        self.set_albums(albums)
+        self.set_pending_files(pending_files)
+        self.set_pending_requests(pending_requests)
+
+    def set_files(self, num):
         self.val1.setText(str(num))
 
-    def setAlbums(self, num):
+    def set_albums(self, num):
         self.val2.setText(str(num))
 
-    def setPendingFiles(self, num):
+    def set_pending_files(self, num):
         self.val3.setText(str(num))
 
-    def setPendingRequests(self, num):
+    def set_pending_requests(self, num):
         if num <= 0:
             enabled = QtGui.QIcon.Disabled
         else:
