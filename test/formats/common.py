@@ -12,6 +12,7 @@ from picard import config
 import picard.formats
 from picard.formats import ext_to_format
 from picard.formats.mutagenext.aac import AACAPEv2
+from picard.formats.mutagenext.ac3 import AC3APEv2
 from picard.formats.mutagenext.tak import TAK
 from picard.metadata import Metadata
 
@@ -32,6 +33,7 @@ settings = {
     'write_id3v23': False,
     'itunes_compatible_grouping': False,
     'aac_save_ape': True,
+    'ac3_save_ape': True,
 }
 
 
@@ -58,7 +60,7 @@ def save_and_load_metadata(filename, metadata):
 
 def load_raw(filename):
     # First try special implementations in Picard
-    f = mutagen.File(filename, [AACAPEv2, TAK])
+    f = mutagen.File(filename, [AACAPEv2, AC3APEv2, TAK])
     if f is None:
         f = mutagen.File(filename)
     return f
