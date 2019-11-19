@@ -115,6 +115,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.ignore_selection_changes = False
         self.toolbar = None
         self.player = None
+        self.status_indicators = []
         player = Player(self)
         if player.available:
             self.player = player
@@ -213,6 +214,9 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.saveWindowState()
         event.accept()
 
+    def register_status_indicator(self, indicator):
+        self.status_indicators.append(indicator)
+
     def show_quit_confirmation(self):
         unsaved_files = sum(a.get_num_unsaved_files() for a in self.tagger.albums.values())
         QMessageBox = QtWidgets.QMessageBox
@@ -267,7 +271,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     def create_statusbar(self):
         """Creates a new status bar."""
         self.statusBar().showMessage(_("Ready"))
-        self.infostatus = InfoStatus(self)
+        infostatus = InfoStatus(self)
         self.listening_label = QtWidgets.QLabel()
         self.listening_label.setVisible(False)
         self.listening_label.setToolTip("<qt/>" + _(
@@ -275,20 +279,24 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             "you \"Search\" or \"Open in Browser\" from Picard, clicking the "
             "\"Tagger\" button on the web page loads the release into Picard."
         ))
-        self.statusBar().addPermanentWidget(self.infostatus)
+        self.statusBar().addPermanentWidget(infostatus)
         self.statusBar().addPermanentWidget(self.listening_label)
         self.tagger.tagger_stats_changed.connect(self.update_statusbar_stats)
         self.tagger.listen_port_changed.connect(self.update_statusbar_listen_port)
+        self.register_status_indicator(infostatus)
         self.update_statusbar_stats()
 
     @throttle(100)
     def update_statusbar_stats(self):
         """Updates the status bar information."""
-        self.infostatus.setFiles(len(self.tagger.files))
-        self.infostatus.setAlbums(len(self.tagger.albums))
-        self.infostatus.setPendingFiles(File.num_pending_files)
-        ws = self.tagger.webservice
-        self.infostatus.setPendingRequests(ws.num_pending_web_requests)
+        total_files = len(self.tagger.files)
+        total_albums = len(self.tagger.albums)
+        pending_files = File.num_pending_files
+        pending_requests = self.tagger.webservice.num_pending_web_requests
+
+        for indicator in self.status_indicators:
+            indicator.update(files=total_files, albums=total_albums,
+                pending_files=pending_files, pending_requests=pending_requests)
 
     def update_statusbar_listen_port(self, listen_port):
         if listen_port:
