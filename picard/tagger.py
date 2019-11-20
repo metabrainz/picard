@@ -35,8 +35,10 @@ from PyQt5 import (
     QtGui,
     QtWidgets,
 )
+from PyQt5.QtDBus import QDBusConnection
 
 from picard import (
+    PICARD_APP_ID,
     PICARD_APP_NAME,
     PICARD_DESKTOP_NAME,
     PICARD_FANCY_VERSION_STR,
@@ -909,6 +911,10 @@ def main(localedir=None, autoupdate=True):
         return version()
     if picard_args.long_version:
         return longversion()
+
+    if not (IS_WIN or IS_MACOS or IS_HAIKU):
+        dbus = QDBusConnection.sessionBus()
+        dbus.registerService(PICARD_APP_ID)
 
     tagger = Tagger(picard_args, unparsed_args, localedir, autoupdate)
 
