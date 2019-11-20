@@ -41,9 +41,9 @@ class AbstractProgressStatusIndicator:
         if total_pending == self._last_pending:
             return  # No changes, avoid update
 
+        previous_done = self._max_pending - self._last_pending
+        self._max_pending = max(self._max_pending, previous_done + total_pending)
         self._last_pending = total_pending
-        if total_pending > self._max_pending:
-            self._max_pending = total_pending
 
         if total_pending == 0 or self._max_pending <= 1:  # No need to show progress for single item
             self._max_pending = 0
