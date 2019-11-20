@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: picard 2.3.0.dev1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2019-11-13 08:55+0100\n"
+"POT-Creation-Date: 2019-11-20 12:47+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -128,22 +128,22 @@ msgstr ""
 msgid "Remove"
 msgstr ""
 
-#: picard/file.py:670
+#: picard/file.py:671
 #, python-format
 msgid "No matching tracks above the threshold for file '%(filename)s'"
 msgstr ""
 
-#: picard/file.py:672
+#: picard/file.py:673
 #, python-format
 msgid "File '%(filename)s' identified!"
 msgstr ""
 
-#: picard/file.py:683
+#: picard/file.py:684
 #, python-format
 msgid "No matching tracks for file '%(filename)s'"
 msgstr ""
 
-#: picard/file.py:714
+#: picard/file.py:715
 #, python-format
 msgid "Looking up the metadata for file %(filename)s ..."
 msgstr ""
@@ -701,11 +701,11 @@ msgid "Chinese"
 msgstr ""
 
 #: picard/const/locales.py:88
-msgid "Chinese (Hong Kong SAR China)"
+msgid "Chinese (Hong Kong)"
 msgstr ""
 
 #: picard/const/locales.py:89
-msgid "Chinese (Macau SAR China)"
+msgid "Chinese (Macau)"
 msgstr ""
 
 #: picard/const/locales.py:90
@@ -717,11 +717,11 @@ msgid "Chinese (Simplified Han) (China)"
 msgstr ""
 
 #: picard/const/locales.py:92
-msgid "Chinese (Simplified Han) (Hong Kong SAR China)"
+msgid "Chinese (Simplified Han) (Hong Kong)"
 msgstr ""
 
 #: picard/const/locales.py:93
-msgid "Chinese (Simplified Han) (Macau SAR China)"
+msgid "Chinese (Simplified Han) (Macau)"
 msgstr ""
 
 #: picard/const/locales.py:94
@@ -737,11 +737,11 @@ msgid "Chinese (Traditional Han)"
 msgstr ""
 
 #: picard/const/locales.py:98
-msgid "Chinese (Traditional Han) (Hong Kong SAR China)"
+msgid "Chinese (Traditional Han) (Hong Kong)"
 msgstr ""
 
 #: picard/const/locales.py:99
-msgid "Chinese (Traditional Han) (Macau SAR China)"
+msgid "Chinese (Traditional Han) (Macau)"
 msgstr ""
 
 #: picard/const/locales.py:100
@@ -829,7 +829,7 @@ msgid "English (Guam)"
 msgstr ""
 
 #: picard/const/locales.py:127
-msgid "English (Hong Kong SAR China)"
+msgid "English (Hong Kong)"
 msgstr ""
 
 #: picard/const/locales.py:128
@@ -1473,11 +1473,11 @@ msgid "Northern Sami"
 msgstr ""
 
 #: picard/const/locales.py:301
-msgid "Northern (Sami Finland)"
+msgid "Northern Sami (Finland)"
 msgstr ""
 
 #: picard/const/locales.py:302
-msgid "Northern (Sami Norway)"
+msgid "Northern Sami (Norway)"
 msgstr ""
 
 #: picard/const/locales.py:303
@@ -1701,7 +1701,7 @@ msgid "Sichuan Yi"
 msgstr ""
 
 #: picard/const/locales.py:367
-msgid "Sichuan (Yi China)"
+msgid "Sichuan Yi (China)"
 msgstr ""
 
 #: picard/const/locales.py:368
@@ -2234,7 +2234,7 @@ msgstr ""
 msgid "C&lear all"
 msgstr ""
 
-#: picard/coverart/providers/caa.py:305 picard/ui/options/dialog.py:102
+#: picard/coverart/providers/caa.py:305 picard/ui/options/dialog.py:103
 msgid "Restore &Defaults"
 msgstr ""
 
@@ -3805,105 +3805,115 @@ msgstr ""
 msgid "Display Name"
 msgstr ""
 
-#: picard/ui/ui_options_tags.py:168
+#: picard/ui/ui_options_tags.py:62
 msgid "Write tags to files"
 msgstr ""
 
-#: picard/ui/ui_options_tags.py:169
+#: picard/ui/ui_options_tags.py:63
 msgid "Preserve timestamps of tagged files"
 msgstr ""
 
-#: picard/ui/ui_options_tags.py:170
+#: picard/ui/ui_options_tags.py:64
 msgid "Before Tagging"
 msgstr ""
 
-#: picard/ui/ui_options_tags.py:171
+#: picard/ui/ui_options_tags.py:65
 msgid "Clear existing tags"
 msgstr ""
 
-#: picard/ui/ui_options_tags.py:172
+#: picard/ui/ui_options_tags.py:66
 msgid "Remove ID3 tags from FLAC files"
 msgstr ""
 
-#: picard/ui/ui_options_tags.py:173
+#: picard/ui/ui_options_tags.py:67
 msgid "Remove APEv2 tags from MP3 files"
 msgstr ""
 
-#: picard/ui/ui_options_tags.py:174
+#: picard/ui/ui_options_tags.py:68
 msgid ""
 "Preserve these tags from being cleared or overwritten with MusicBrainz "
 "data:"
 msgstr ""
 
-#: picard/ui/ui_options_tags.py:175
+#: picard/ui/ui_options_tags.py:69
 msgid "Tags are separated by commas, and are case-sensitive."
 msgstr ""
 
-#: picard/ui/ui_options_tags.py:176
-msgid "Tag Compatibility"
+#: picard/ui/ui_options_tags_compatibility.py:144
+msgid "ID3"
 msgstr ""
 
-#: picard/ui/ui_options_tags.py:177
+#: picard/ui/ui_options_tags_compatibility.py:145
 msgid "ID3v2 Version"
 msgstr ""
 
-#: picard/ui/ui_options_tags.py:178
+#: picard/ui/ui_options_tags_compatibility.py:146
 msgid "2.4"
 msgstr ""
 
-#: picard/ui/ui_options_tags.py:179
+#: picard/ui/ui_options_tags_compatibility.py:147
 msgid "2.3"
 msgstr ""
 
-#: picard/ui/ui_options_tags.py:180
+#: picard/ui/ui_options_tags_compatibility.py:148
 msgid "ID3v2 Text Encoding"
 msgstr ""
 
-#: picard/ui/ui_options_tags.py:181
+#: picard/ui/ui_options_tags_compatibility.py:149
 msgid "UTF-8"
 msgstr ""
 
-#: picard/ui/ui_options_tags.py:182
+#: picard/ui/ui_options_tags_compatibility.py:150
 msgid "UTF-16"
 msgstr ""
 
-#: picard/ui/ui_options_tags.py:183
+#: picard/ui/ui_options_tags_compatibility.py:151
 msgid "ISO-8859-1"
 msgstr ""
 
-#: picard/ui/ui_options_tags.py:184
+#: picard/ui/ui_options_tags_compatibility.py:152
 msgid "Join multiple ID3v2.3 tags with:"
 msgstr ""
 
-#: picard/ui/ui_options_tags.py:185
+#: picard/ui/ui_options_tags_compatibility.py:153
 msgid ""
 "<html><head/><body><p>Default is '/' to maintain compatibility with "
 "previous Picard releases.</p><p>New alternatives are ';_' or '_/_' or "
 "type your own. </p></body></html>"
 msgstr ""
 
-#: picard/ui/ui_options_tags.py:186
+#: picard/ui/ui_options_tags_compatibility.py:154
 msgid "Save iTunes compatible grouping and work"
 msgstr ""
 
-#: picard/ui/ui_options_tags.py:187
+#: picard/ui/ui_options_tags_compatibility.py:155
 msgid "Also include ID3v1 tags in the files"
 msgstr ""
 
-#: picard/ui/ui_options_tags.py:188
+#: picard/ui/ui_options_tags_compatibility.py:156
 msgid "AAC files"
 msgstr ""
 
-#: picard/ui/ui_options_tags.py:189
+#: picard/ui/ui_options_tags_compatibility.py:157
+#: picard/ui/ui_options_tags_compatibility.py:161
 msgid "Save APEv2 tags"
 msgstr ""
 
-#: picard/ui/ui_options_tags.py:190
+#: picard/ui/ui_options_tags_compatibility.py:158
+#: picard/ui/ui_options_tags_compatibility.py:162
 msgid "Do not save tags"
 msgstr ""
 
-#: picard/ui/ui_options_tags.py:191
+#: picard/ui/ui_options_tags_compatibility.py:159
 msgid "Remove APEv2 tags from AAC files"
+msgstr ""
+
+#: picard/ui/ui_options_tags_compatibility.py:160
+msgid "AC3 files"
+msgstr ""
+
+#: picard/ui/ui_options_tags_compatibility.py:163
+msgid "Remove APEv2 tags from AC3 files"
 msgstr ""
 
 #: picard/ui/ui_passworddialog.py:60
@@ -4033,39 +4043,39 @@ msgstr ""
 msgid "Cover Art"
 msgstr ""
 
-#: picard/ui/options/dialog.py:100
+#: picard/ui/options/dialog.py:101
 msgid "&Restore all Defaults"
 msgstr ""
 
-#: picard/ui/options/dialog.py:101
+#: picard/ui/options/dialog.py:102
 msgid "Reset all of Picard's settings"
 msgstr ""
 
-#: picard/ui/options/dialog.py:103
+#: picard/ui/options/dialog.py:104
 msgid "Reset all settings for current option page"
 msgstr ""
 
-#: picard/ui/options/dialog.py:106
+#: picard/ui/options/dialog.py:107
 msgid "Make It So!"
 msgstr ""
 
-#: picard/ui/options/dialog.py:190
+#: picard/ui/options/dialog.py:191
 msgid "Unexpected error"
 msgstr ""
 
-#: picard/ui/options/dialog.py:210
+#: picard/ui/options/dialog.py:211
 msgid "You are about to reset your options for this page."
 msgstr ""
 
-#: picard/ui/options/dialog.py:214
+#: picard/ui/options/dialog.py:215
 msgid "Warning! This will reset all of your settings."
 msgstr ""
 
-#: picard/ui/options/dialog.py:221
+#: picard/ui/options/dialog.py:222
 msgid "Confirm Reset"
 msgstr ""
 
-#: picard/ui/options/dialog.py:222
+#: picard/ui/options/dialog.py:223
 msgid "Are you sure?"
 msgstr ""
 
@@ -4373,8 +4383,12 @@ msgstr ""
 msgid "Script Error"
 msgstr ""
 
-#: picard/ui/options/tags.py:41
+#: picard/ui/options/tags.py:40
 msgid "Tags"
+msgstr ""
+
+#: picard/ui/options/tags_compatibility.py:36
+msgid "Tag Compatibility"
 msgstr ""
 
 #: picard/ui/searchdialog/__init__.py:131
@@ -4468,7 +4482,7 @@ msgstr ""
 msgid "Release"
 msgstr ""
 
-#: picard/ui/searchdialog/track.py:174
+#: picard/ui/searchdialog/track.py:173
 msgid "Standalone Recording"
 msgstr ""
 
