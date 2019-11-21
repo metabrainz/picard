@@ -16,4 +16,4 @@ if sys.platform == 'win32':
     os.environ['PATH'] = basedir + ';' + os.environ['PATH']
 
 from picard.tagger import main
-main(os.path.join(basedir, 'locale'), True)
+main(os.path.join(basedir, 'locale'), %(autoupdate)s)
