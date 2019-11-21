@@ -10,6 +10,7 @@ import glob
 from io import StringIO
 import os
 import re
+import stat
 import sys
 import tempfile
 
@@ -221,8 +222,10 @@ class picard_build(build):
             self.sub_commands.append(('build_locales', None))
 
     def run(self):
-        log.info('generating scripts/%s from scripts/picard.in', PACKAGE_NAME)
-        generate_file('scripts/picard.in', 'scripts/' + PACKAGE_NAME, {'localedir': self.localedir, 'autoupdate': not self.disable_autoupdate})
+        params = {'localedir': self.localedir, 'autoupdate': not self.disable_autoupdate}
+        generate_file('tagger.py.in', 'tagger.py', params)
+        make_executable('tagger.py')
+        generate_file('scripts/picard.in', 'scripts/' + PACKAGE_NAME, params)
         if sys.platform == 'win32':
             file_version = PICARD_VERSION[0:3] + (self.build_number,)
             file_version_str = '.'.join([str(v) for v in file_version])
@@ -740,9 +743,14 @@ args = {
 
 
 def generate_file(infilename, outfilename, variables):
+    log.info('generating %s from %s', outfilename, infilename)
     with open(infilename, "rt") as f_in:
         with open(outfilename, "wt") as f_out:
             f_out.write(f_in.read() % variables)
+
+
+def make_executable(filename):
+    os.chmod(filename, os.stat(filename).st_mode | stat.S_IEXEC)
 
 
 def find_file_in_path(filename):

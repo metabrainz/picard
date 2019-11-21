@@ -91,7 +91,8 @@ before_install:
 
 script:
 - py.test -v --cov=picard --cov-report xml:coverage.xml test
-- python3 setup.py build_locales build_ext -i
+- python3 setup.py build
+- python3 setup.py build_ext -i
 - python3 tagger.py --long-version
 - isort --check-only --diff --quiet $(git ls-tree -r --name-only $(git rev-parse HEAD) | grep "\\.py$")
 - flake8 picard

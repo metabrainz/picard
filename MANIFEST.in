@@ -4,7 +4,6 @@ prune test
 recursive-include scripts *.in
 recursive-exclude scripts picard
 
-include tagger.py
 include *.in
 
 include *.md
