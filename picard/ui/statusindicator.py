@@ -69,7 +69,7 @@ if IS_WIN:
 
     class WindowsTaskbarStatusIndicator(AbstractProgressStatusIndicator):
         def __init__(self, window):
-            self.super().__init__()
+            super().__init__()
             taskbar_button = QWinTaskbarButton(window)
             taskbar_button.setWindow(window)
             self._progress = taskbar_button.progress()
