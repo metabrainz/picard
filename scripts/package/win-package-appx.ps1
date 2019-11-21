@@ -26,7 +26,6 @@ python setup.py build_ext -i 2>&1 | %{ "$_" }
 ThrowOnExeError "setup.py build_ext -i failed"
 
 # Package application
-Write-Output "Building Windows installer..."
 pyinstaller --noconfirm --clean picard.spec 2>&1 | %{ "$_" }
 ThrowOnExeError "PyInstaller failed"
 $PackageDir = (Resolve-Path dist\picard)
