@@ -17,10 +17,16 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-from PyQt5 import QtCore
+from PyQt5 import (
+    QtCore,
+    QtWidgets,
+)
 
 from picard import config
-from picard.util.tags import display_tag_name
+from picard.util.tags import (
+    TAG_NAMES,
+    display_tag_name,
+)
 
 from picard.ui.options import (
     OptionsPage,
@@ -99,6 +105,19 @@ class TagListModel(QtCore.QAbstractListModel):
         self.endResetModel()
 
 
+class TagItemDelegate(QtWidgets.QItemDelegate):
+    def createEditor(self, parent, option, index):
+        editor = QtWidgets.QLineEdit(parent)
+        completer = QtWidgets.QCompleter(TAG_NAMES.keys(), parent)
+
+        def complete(text):
+            parent.setFocus()
+
+        completer.activated.connect(complete)
+        editor.setCompleter(completer)
+        return editor
+
+
 class InterfaceTopTagsOptionsPage(OptionsPage):
 
     NAME = "interface_top_tags"
@@ -126,6 +145,7 @@ class InterfaceTopTagsOptionsPage(OptionsPage):
     def load(self):
         tags = config.setting["metadatabox_top_tags"]
         self._model = TagListModel(tags)
+        self.ui.top_tags_list.setItemDelegate(TagItemDelegate())
         self.ui.top_tags_list.setModel(self._model)
 
     def save(self):
