@@ -28,7 +28,7 @@ picard.egg-info
 po/attributes/attributes.pot
 po/countries/countries.pot
 scripts/picard
-tagger.py
+/tagger.py
 win-version-info.txt
 
 # Other files
