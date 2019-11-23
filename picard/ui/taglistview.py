@@ -34,6 +34,21 @@ class EditableTagListView(QtWidgets.QListView):
         model = TagListModel()
         self.setModel(model)
         self.setItemDelegate(TagItemDelegate())
+        self.setSelectionMode(QtWidgets.QAbstractItemView.ExtendedSelection)
+
+    def event(self, e):
+        if (e.type() == QtCore.QEvent.KeyPress
+            and e.modifiers() == QtCore.Qt.NoModifier
+            and e.key() == QtCore.Qt.Key_Delete):
+            model = self.model()
+            selected_indexes = self.selectedIndexes()
+            for index in selected_indexes:
+                model.removeRow(index.row())
+            first_selected_row = selected_indexes[0].row()
+            self.select_row(first_selected_row)
+            return True
+        else:
+            return super().event(e)
 
     def mouseDoubleClickEvent(self, event):
         index = self.indexAt(QtCore.QPoint(event.x(), event.y()))
@@ -41,6 +56,16 @@ class EditableTagListView(QtWidgets.QListView):
             super().mouseDoubleClickEvent(event)
         else:
             self.add_empty_row()
+
+    def closeEditor(self, editor, hint):
+        if not editor.text():
+            index = self.currentIndex()
+            row = index.row()
+            self.model().removeRow(row)
+            self.select_row(row)
+            editor.parent().setFocus()
+        else:
+            super().closeEditor(editor, hint)
 
     def add_tag(self, tag=""):
         model = self.model()
@@ -64,6 +89,10 @@ class EditableTagListView(QtWidgets.QListView):
         index = self.add_tag()
         self.setCurrentIndex(index)
         self.edit(index)
+
+    def select_row(self, row):
+        index = self.model().index(row, 0)
+        self.setCurrentIndex(index)
 
 
 class TagListModel(QtCore.QAbstractListModel):
