@@ -1,0 +1,32 @@
+name: Package for macOS
+
+on: [push]
+
+jobs:
+  package:
+
+    runs-on: macos-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Set up Python 3.7
+      uses: actions/setup-python@v1
+      with:
+        python-version: 3.7
+    - name: Setup macOS build environment
+      run: |
+        ./scripts/package/macos-setup.sh
+      env:
+        DISCID_VERSION: 0.6.2
+        FPCALC_VERSION: 1.4.3
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        source bin/activate
+        pip install -r requirements-macos.txt
+    - name: Build macOS app
+      run: |
+        source bin/activate
+        ./scripts/package/macos-package-app.sh
+      env:
+        UPLOAD_OSX: 1
