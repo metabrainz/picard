@@ -40,12 +40,7 @@ class EditableTagListView(QtWidgets.QListView):
         if (e.type() == QtCore.QEvent.KeyPress
             and e.modifiers() == QtCore.Qt.NoModifier
             and e.key() == QtCore.Qt.Key_Delete):
-            model = self.model()
-            selected_indexes = self.selectedIndexes()
-            for index in selected_indexes:
-                model.removeRow(index.row())
-            first_selected_row = selected_indexes[0].row()
-            self.select_row(first_selected_row)
+            self.remove_selected_rows()
             return True
         else:
             return super().event(e)
@@ -90,9 +85,49 @@ class EditableTagListView(QtWidgets.QListView):
         self.setCurrentIndex(index)
         self.edit(index)
 
+    def remove_selected_rows(self):
+        rows = self.get_selected_rows()
+        if not rows:
+            return
+        model = self.model()
+        for row in sorted(rows, reverse=True):
+            model.removeRow(row)
+        first_selected_row = rows[0]
+        self.select_row(first_selected_row)
+
+    def move_selected_rows_up(self):
+        rows = self.get_selected_rows()
+        if not rows:
+            return
+        first_selected_row = min(rows)
+        if first_selected_row > 0:
+            self._move_rows_relative(rows, -1)
+
+    def move_selected_rows_down(self):
+        rows = self.get_selected_rows()
+        if not rows:
+            return
+        last_selected_row = max(rows)
+        if last_selected_row < self.model().rowCount() - 1:
+            self._move_rows_relative(rows, 1)
+
     def select_row(self, row):
         index = self.model().index(row, 0)
         self.setCurrentIndex(index)
+
+    def get_selected_rows(self):
+        return [index.row() for index in self.selectedIndexes()]
+
+    def _move_rows_relative(self, rows, direction):
+        model = self.model()
+        current_index = self.currentIndex()
+        selection = self.selectionModel()
+        for row in sorted(rows, reverse=direction > 0):
+            new_index = model.index(row + direction, 0)
+            model.move_row(row, new_index.row())
+            selection.select(new_index, QtCore.QItemSelectionModel.Select)
+            if row == current_index.row():
+                selection.setCurrentIndex(new_index, QtCore.QItemSelectionModel.Current)
 
 
 class TagListModel(QtCore.QAbstractListModel):
@@ -161,6 +196,14 @@ class TagListModel(QtCore.QAbstractListModel):
         self.beginResetModel()
         self._tags = [(tag, display_tag_name(tag)) for tag in tags]
         self.endResetModel()
+
+    def move_row(self, row, new_row):
+        item = self._tags[row]
+        self.removeRow(row)
+        self.insertRow(new_row)
+        index = self.index(new_row, 0)
+        self.setData(index, item[0], QtCore.Qt.EditRole)
+        self.setData(index, item[1], QtCore.Qt.DisplayRole)
 
     @property
     def tags(self):
