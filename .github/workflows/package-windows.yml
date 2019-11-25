@@ -16,6 +16,7 @@ jobs:
     - name: Setup Windows build environment
       run: |
         & .\scripts\package\win-setup.ps1 -DiscidVersion $Env:DISCID_VERSION -FpcalVersion $Env:FPCALC_VERSION
+        New-Item -Name .\artifacts -ItemType Directory
       env:
         DISCID_VERSION: 0.6.2
         FPCALC_VERSION: 1.4.3
@@ -29,15 +30,24 @@ jobs:
         $Env:PATH += ";C:\Program Files (x86)\Windows Kits\10\bin\10.0.18362.0\x64"
         $Certificate = @(Get-ChildItem cert:\CurrentUser\My -codesign)[0]
         & .\scripts\package\win-package-appx.ps1 -BuildNumber $(git rev-list --count HEAD) -Certificate $Certificate
+        Move-Item .\dist\*.msix .\artifacts
     - name: Build Windows installer
       if: always()
       run: |
         choco install nsis
         $Certificate = @(Get-ChildItem cert:\CurrentUser\My -codesign)[0]
         & .\scripts\package\win-package-installer.ps1 -BuildNumber $(git rev-list --count HEAD) -Certificate $Certificate
+        Move-Item .\installer\*.exe .\artifacts
         dist\picard\fpcalc -version
     - name: Build Windows portable app
       if: always()
       run: |
         $Certificate = @(Get-ChildItem cert:\CurrentUser\My -codesign)[0]
         & .\scripts\package\win-package-portable.ps1 -BuildNumber $(git rev-list --count HEAD) -Certificate $Certificate
+        Move-Item .\dist\*.exe .\artifacts
+    - name: Archive production artifacts
+      uses: actions/upload-artifact@v1
+      if: always()
+      with:
+        name: windows-builds
+        path: artifacts/
