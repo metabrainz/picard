@@ -20,6 +20,18 @@ jobs:
       env:
         DISCID_VERSION: 0.6.2
         FPCALC_VERSION: 1.4.3
+    - name: Prepare code signing certificate
+      run: |
+        pip install awscli
+        aws s3 cp "$Env:CODESIGN_PFX_URL" .\codesign.pfx
+        $CertPassword = ConvertTo-SecureString -String $Env:CODESIGN_PFX_PASSWORD -Force -AsPlainText
+        Import-PfxCertificate -CertStoreLocation Cert:\CurrentUser\My -FilePath .\codesign.pfx -Password $CertPassword
+      env:
+        AWS_DEFAULT_REGION: eu-central-1
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        CODESIGN_PFX_URL: ${{ secrets.CODESIGN_PFX_URL }}
+        CODESIGN_PFX_PASSWORD: ${{ secrets.CODESIGN_PFX_PASSWORD }}
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
