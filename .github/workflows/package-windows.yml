@@ -13,6 +13,10 @@ jobs:
       uses: actions/setup-python@v1
       with:
         python-version: 3.7
+    - name: Patch build version
+      if: startsWith(github.ref, 'refs/tags/') != true
+      run: |
+        python setup.py patch_version --platform=$(git rev-list --count HEAD).$(git rev-parse --short HEAD)
     - name: Setup Windows build environment
       run: |
         & .\scripts\package\win-setup.ps1 -DiscidVersion $Env:DISCID_VERSION -FpcalVersion $Env:FPCALC_VERSION
