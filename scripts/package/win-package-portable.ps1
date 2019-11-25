@@ -7,6 +7,10 @@ Param(
   $BuildNumber
 )
 
+# Errors are handled explicitly. Otherwise any output to stderr when
+# calling classic Windows exes causes a script error.
+$ErrorActionPreference = 'Continue'
+
 If (-Not $BuildNumber) {
   $BuildNumber = 0
 }
