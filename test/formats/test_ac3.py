@@ -1,17 +1,17 @@
 import os
 import unittest
 
+from picard import config
+from picard.formats.ac3 import AC3File
+from picard.formats.mutagenext.ac3 import native_ac3
+from picard.metadata import Metadata
+
 from .common import (
     CommonTests,
     load_metadata,
     save_and_load_metadata,
 )
 from .test_apev2 import CommonApeTests
-
-from picard import config
-from picard.formats.ac3 import AC3File
-from picard.formats.mutagenext.ac3 import native_ac3
-from picard.metadata import Metadata
 
 
 class AC3WithAPETest(CommonApeTests.ApeTestCase):
