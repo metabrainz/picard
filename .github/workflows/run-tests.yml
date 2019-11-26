@@ -10,6 +10,8 @@ jobs:
       matrix:
         os: [macos-latest, ubuntu-latest, windows-latest]
         python-version: [3.5, 3.6, 3.7, 3.8]
+    env:
+      CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
 
     steps:
     - uses: actions/checkout@v1
@@ -30,8 +32,8 @@ jobs:
       run: |
         pip install pytest pytest-randomly pytest-cov
         pytest --verbose --cov=picard --cov-report xml:coverage.xml test
-    # - name: Submit code coverage to codacy
-    #   if: secrets.CODACY_PROJECT_TOKEN
-    #   run: |
-    #     pip install codacy-coverage
-    #     python-codacy-coverage -r coverage.xml
+    - name: Submit code coverage to Codacy
+      if: env.CODACY_PROJECT_TOKEN
+      run: |
+        pip install codacy-coverage
+        python-codacy-coverage -r coverage.xml
