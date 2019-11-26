@@ -131,9 +131,9 @@ class EditableTagListView(QtWidgets.QListView):
 
 
 class TagListModel(QtCore.QAbstractListModel):
-    def __init__(self, tags=[], parent=None):
+    def __init__(self, tags=None, parent=None):
         super().__init__(parent)
-        self._tags = [(tag, display_tag_name(tag)) for tag in tags]
+        self._tags = [(tag, display_tag_name(tag)) for tag in tags or []]
 
     def rowCount(self, parent=QtCore.QModelIndex()):
         return len(self._tags)
@@ -141,10 +141,9 @@ class TagListModel(QtCore.QAbstractListModel):
     def data(self, index, role=QtCore.Qt.DisplayRole):
         if not index.isValid() or role not in (QtCore.Qt.DisplayRole, QtCore.Qt.EditRole):
             return None
-        i = index.row()
         field = 1 if role == QtCore.Qt.DisplayRole else 0
         try:
-            return self._tags[i][field]
+            return self._tags[index.row()][field]
         except IndexError:
             return None
 
@@ -163,7 +162,8 @@ class TagListModel(QtCore.QAbstractListModel):
         except IndexError:
             return False
 
-    def flags(self, index):
+    @staticmethod
+    def flags(index):
         if index.isValid():
             return (QtCore.Qt.ItemIsSelectable
                 | QtCore.Qt.ItemIsEditable
@@ -186,10 +186,12 @@ class TagListModel(QtCore.QAbstractListModel):
         super().endRemoveRows()
         return True
 
-    def supportedDragActions(self):
+    @staticmethod
+    def supportedDragActions():
         return QtCore.Qt.MoveAction
 
-    def supportedDropActions(self):
+    @staticmethod
+    def supportedDropActions():
         return QtCore.Qt.MoveAction
 
     def update(self, tags):
@@ -211,7 +213,8 @@ class TagListModel(QtCore.QAbstractListModel):
 
 
 class TagItemDelegate(QtWidgets.QItemDelegate):
-    def createEditor(self, parent, option, index):
+    @staticmethod
+    def createEditor(parent, option, index):
         editor = QtWidgets.QLineEdit(parent)
         completer = QtWidgets.QCompleter(TAG_NAMES.keys(), parent)
 
