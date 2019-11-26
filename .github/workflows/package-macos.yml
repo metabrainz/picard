@@ -34,6 +34,12 @@ jobs:
         source bin/activate
         ./scripts/package/macos-package-app.sh
         mv dist/*.dmg artifacts/
+      env:
+        APPLE_ID_USER: ${{ secrets. APPLE_ID_USER }}
+        APPLE_ID_PASSWORD: ${{ secrets. APPLE_ID_PASSWORD }}
+        encrypted_be5fb2212036_key: ${{ secrets.CODESIGN_MACOS_ENCRYPTED_KEY }}
+        encrypted_be5fb2212036_iv: ${{ secrets.CODESIGN_MACOS_ENCRYPTED_IV }}
+        appledev_p12_password: ${{ secrets.CODESIGN_MACOS_P12_PASSWORD }}
     - name: Archive production artifacts
       uses: actions/upload-artifact@v1
       if: always()
