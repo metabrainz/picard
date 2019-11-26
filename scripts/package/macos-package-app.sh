@@ -77,7 +77,11 @@ LIBDISCID_REGEX="libdiscid [0-9]+\.[0-9]+\.[0-9]+"
 "MusicBrainz Picard.app/Contents/MacOS/fpcalc" -version
 
 # Package app bundle into DMG image
-DMG="MusicBrainz Picard $VERSION macOS $MACOS_VERSION_MAJOR.$MACOS_VERSION_MINOR.dmg"
+if [ -n "$TRAVIS_OSX_IMAGE" ]; then
+  DMG="MusicBrainz-Picard-${VERSION}_macOS-$MACOS_VERSION_MAJOR.$MACOS_VERSION_MINOR.dmg"
+else
+  DMG="MusicBrainz-Picard-$VERSION.dmg"
+fi
 hdiutil create -volname "MusicBrainz Picard $VERSION" \
   -srcfolder 'MusicBrainz Picard.app' -ov -format UDBZ "$DMG"
 [ "$CODESIGN" = '1' ] && codesign --verify --verbose \

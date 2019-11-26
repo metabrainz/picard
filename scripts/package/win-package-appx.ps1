@@ -57,7 +57,7 @@ Pop-Location
 
 # Generate msix package
 $PicardVersion = (python -c "import picard; print(picard.__version__)")
-$PackageFile = "dist\MusicBrainz Picard $PicardVersion.msix"
+$PackageFile = "dist\MusicBrainz-Picard-$PicardVersion.msix"
 MakeAppx pack /o /h SHA256 /d $PackageDir /p $PackageFile
 ThrowOnExeError "MakeAppx failed"
 
