@@ -1,15 +1,15 @@
 import os
 
+from picard import config
+from picard.formats.apev2 import AACFile
+from picard.metadata import Metadata
+
 from .common import (
     CommonTests,
     load_metadata,
     save_and_load_metadata,
 )
 from .test_apev2 import CommonApeTests
-
-from picard import config
-from picard.formats.apev2 import AACFile
-from picard.metadata import Metadata
 
 
 class AACTest(CommonTests.SimpleFormatsTestCase):

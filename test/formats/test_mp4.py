@@ -1,5 +1,6 @@
-import mutagen
 import unittest
+
+import mutagen
 
 from picard.formats import ext_to_format
 
