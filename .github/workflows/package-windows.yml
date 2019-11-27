@@ -17,6 +17,9 @@ on:
     - 'setup.py'
     - 'tagger.py.in'
     - 'win.version-info.txt.in'
+  create:
+    tags:
+    - 'release-*'
 
 jobs:
   package:
@@ -89,7 +92,7 @@ jobs:
         path: artifacts/
     - name: Release
       uses: softprops/action-gh-release@v1
-      if: startsWith(github.ref, 'refs/tags/')
+      if: startsWith(github.ref, 'refs/tags/') && github.event_name == 'create'
       with:
         files: artifacts/*
       env:
