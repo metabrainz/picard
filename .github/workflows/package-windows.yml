@@ -1,6 +1,22 @@
 name: Package for Windows
 
-on: [push]
+on:
+  push:
+    paths:
+    - '.github/workflows/package-windows.yml'
+    - 'installer/**'
+    - 'picard/**'
+    - 'po/**.po'
+    - 'resources/win10/**'
+    - 'scripts/package/*.ps1'
+    - 'scripts/pyinstaller/*'
+    - 'appxmanifest.xml.in'
+    - 'picard.ico'
+    - 'picard.spec'
+    - 'requirements*.txt'
+    - 'setup.py'
+    - 'tagger.py.in'
+    - 'win.version-info.txt.in'
 
 jobs:
   package:

@@ -1,6 +1,23 @@
 name: Run tests
 
-on: [push]
+on:
+  push:
+    paths-ignore:
+    - '.github/*.yml'
+    - '.tx/**'
+    - 'installer/**'
+    - 'resources/**'
+    - 'scripts/package/**'
+    - 'scripts/pyinstaller/**'
+    - 'ui/**'
+    - '.*'
+    - '*.icns'
+    - '*.ico'
+    - '*.txt'
+    - '**.md'
+    - 'appveyor.yml'
+    - 'appxmanifest.xml.in'
+    - 'win-version-info.txt.in'
 
 jobs:
   build:
