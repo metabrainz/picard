@@ -87,6 +87,7 @@ Running From the Source Tree
 If you want to run Picard from the source directory without installing, you
 need to build the C extensions and locales manually:
 
+    python3 setup.py build
     python3 setup.py build_ext -i
     python3 setup.py build_locales -i
 
