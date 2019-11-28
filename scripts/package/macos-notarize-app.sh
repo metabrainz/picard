@@ -44,6 +44,9 @@ if [ -z "$REQUEST_UUID" ]; then
   exit 1
 fi
 
+echo $(echo $RESULT | xpath \
+  "//key[normalize-space(text()) = 'success-message']/following-sibling::string[1]/text()" 2> /dev/null)
+
 # Poll for notarization status
 echo "Submitted notarization request $REQUEST_UUID, waiting for response..."
 sleep 20
