@@ -36,14 +36,12 @@ class EditableTagListView(QtWidgets.QListView):
         self.setItemDelegate(TagItemDelegate())
         self.setSelectionMode(QtWidgets.QAbstractItemView.ExtendedSelection)
 
-    def event(self, e):
-        if (e.type() == QtCore.QEvent.KeyPress
-            and e.modifiers() == QtCore.Qt.NoModifier
-            and e.key() == QtCore.Qt.Key_Delete):
+    def keyPressEvent(self, event):
+        if (event.modifiers() == QtCore.Qt.NoModifier
+            and event.key() == QtCore.Qt.Key_Delete):
             self.remove_selected_rows()
-            return True
         else:
-            return super().event(e)
+            super().keyPressEvent(event)
 
     def mouseDoubleClickEvent(self, event):
         index = self.indexAt(QtCore.QPoint(event.x(), event.y()))

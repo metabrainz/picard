@@ -441,23 +441,19 @@ class PlaybackRateButton(QtWidgets.QToolButton):
         label = _(self.rate_fmt) % playback_rate
         self.setText(label)
 
-    def event(self, event):
-        if event.type() == QtCore.QEvent.Wheel:
-            delta = event.angleDelta().y()
-            # Incrementing repeatadly in 0.1 steps would cause floating point
-            # rounding issues. Do the calculation in whole numbers to prevent this.
-            new_rate = int(self.playback_rate * 10)
-            if delta > 0:
-                new_rate += 1
-            elif delta < 0:
-                new_rate -= 1
-            new_rate = min(max(new_rate, 5), 15) / 10.0
-            if new_rate != self.playback_rate:
-                self.set_playback_rate(new_rate)
-                self.playback_rate_changed.emit(new_rate)
-            return True
-
-        return super().event(event)
+    def wheelEvent(self, event):
+        delta = event.angleDelta().y()
+        # Incrementing repeatedly in 0.1 steps would cause floating point
+        # rounding issues. Do the calculation in whole numbers to prevent this.
+        new_rate = int(self.playback_rate * 10)
+        if delta > 0:
+            new_rate += 1
+        elif delta < 0:
+            new_rate -= 1
+        new_rate = min(max(new_rate, 5), 15) / 10.0
+        if new_rate != self.playback_rate:
+            self.set_playback_rate(new_rate)
+            self.playback_rate_changed.emit(new_rate)
 
 
 class VolumeControlButton(QtWidgets.QToolButton):
@@ -508,18 +504,14 @@ class VolumeControlButton(QtWidgets.QToolButton):
         icon = icontheme.lookup(icon)
         self.setIcon(icon)
 
-    def event(self, event):
-        if event.type() == QtCore.QEvent.Wheel:
-            delta = event.angleDelta().y()
-            volume = self.volume
-            if delta > 0:
-                volume += self.step
-            elif delta < 0:
-                volume -= self.step
-            volume = min(max(volume, 0), 100)
-            if volume != self.volume:
-                self.set_volume(volume)
-                self.volume_changed.emit(volume)
-            return True
-
-        return super().event(event)
+    def wheelEvent(self, event):
+        delta = event.angleDelta().y()
+        volume = self.volume
+        if delta > 0:
+            volume += self.step
+        elif delta < 0:
+            volume -= self.step
+        volume = min(max(volume, 0), 100)
+        if volume != self.volume:
+            self.set_volume(volume)
+            self.volume_changed.emit(volume)
