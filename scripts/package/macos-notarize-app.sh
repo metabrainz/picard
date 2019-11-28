@@ -45,8 +45,8 @@ if [ -z "$REQUEST_UUID" ]; then
 fi
 
 # Poll for notarization status
-echo -n "Submitted notarization request $REQUEST_UUID, waiting for response.."
-sleep 60
+echo "Submitted notarization request $REQUEST_UUID, waiting for response..."
+sleep 20
 while :
 do
   RESULT=$(xcrun altool --notarization-info $REQUEST_UUID \
@@ -57,14 +57,13 @@ do
     "//key[normalize-space(text()) = 'Status']/following-sibling::string[1]/text()" 2> /dev/null)
 
   if [ "$STATUS" = "success" ]; then
-    echo
-    echo "Notarizing $APP_BUNDLE succeeded!"
+    echo "Notarization of $APP_BUNDLE succeeded!"
     break
   elif [ "$STATUS" = "in progress" ]; then
-    echo -n .
-    sleep 30
+    echo "Notarization in progress..."
+    sleep 20
   else
-    echo "Notarizing $APP_BUNDLE failed:"
+    echo "Notarization of $APP_BUNDLE failed:"
     echo $RESULT
     exit 1
   fi
