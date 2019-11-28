@@ -7,6 +7,7 @@ on:
     - 'picard/**'
     - 'po/**.po'
     - 'resources/win10/**'
+    - 'scripts/package/*'
     - '!scripts/package/*.ps1'
     - 'scripts/pyinstaller/*'
     - 'picard.icns'
