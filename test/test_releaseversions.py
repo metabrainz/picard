@@ -1,10 +1,12 @@
-import json
 import os.path
 import shutil
 import sys
 import tempfile
 
-from test.picardtestcase import PicardTestCase
+from test.picardtestcase import (
+    PicardTestCase,
+    load_test_json,
+)
 
 from picard import config
 from picard.i18n import setup_gettext
@@ -21,11 +23,6 @@ settings = {
 
 class ReleaseTest(PicardTestCase):
 
-    @staticmethod
-    def load_data(filename):
-        with open(os.path.join('test', 'data', 'ws_data', filename), encoding='utf-8') as f:
-            return json.load(f)
-
     def setUp(self):
         super().setUp()
         # we are using temporary locales for tests
@@ -41,7 +38,7 @@ class ReleaseTest(PicardTestCase):
 
     def test_1(self):
         config.setting = settings.copy()
-        rlist = self.load_data('release_group_2.json')
+        rlist = load_test_json('release_group_2.json')
         r = ReleaseGroup(1)
         r._parse_versions(rlist)
         self.assertEqual(r.versions[0]['name'],
@@ -53,7 +50,7 @@ class ReleaseTest(PicardTestCase):
 
     def test_2(self):
         config.setting = settings.copy()
-        rlist = self.load_data('release_group_3.json')
+        rlist = load_test_json('release_group_3.json')
         r = ReleaseGroup(1)
         r._parse_versions(rlist)
         self.assertEqual(r.versions[0]['name'],
@@ -63,7 +60,7 @@ class ReleaseTest(PicardTestCase):
 
     def test_3(self):
         config.setting = settings.copy()
-        rlist = self.load_data('release_group_4.json')
+        rlist = load_test_json('release_group_4.json')
         r = ReleaseGroup(1)
         r._parse_versions(rlist)
         self.assertEqual(r.versions[0]['name'],

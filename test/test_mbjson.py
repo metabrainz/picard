@@ -1,13 +1,14 @@
-import json
-import os
-
-from test.picardtestcase import PicardTestCase
+from test.picardtestcase import (
+    PicardTestCase,
+    load_test_json,
+)
 
 from picard import config
 from picard.album import Album
 from picard.mbjson import (
     artist_to_metadata,
     countries_from_node,
+    get_score,
     label_info_from_node,
     media_formats_from_node,
     medium_to_metadata,
@@ -38,9 +39,7 @@ class MBJSONTest(PicardTestCase):
 
     def init_test(self, filename):
         config.setting = settings.copy()
-        self.json_doc = None
-        with open(os.path.join('test', 'data', 'ws_data', filename), encoding='utf-8') as f:
-            self.json_doc = json.load(f)
+        self.json_doc = load_test_json(filename)
 
 
 class ReleaseTest(MBJSONTest):
@@ -69,11 +68,11 @@ class ReleaseTest(MBJSONTest):
         self.assertEqual(m['~releaselanguage'], 'eng')
         self.assertEqual(a.genres, {
             'genre1': 6, 'genre2': 3,
-            'tag1': 6, 'tag2': 3 })
+            'tag1': 6, 'tag2': 3})
         for artist in a._album_artists:
             self.assertEqual(artist.genres, {
                 'british': 2,
-                'progressive rock': 10 })
+                'progressive rock': 10})
 
     def test_media_formats_from_node(self):
         formats = media_formats_from_node(self.json_doc['media'])
@@ -122,11 +121,11 @@ class RecordingTest(MBJSONTest):
         self.assertEqual(m['~recordingtitle'], 'Thinking Out Loud')
         self.assertEqual(t.genres, {
             'blue-eyed soul': 1,
-            'pop': 3 })
+            'pop': 3})
         for artist in t._track_artists:
             self.assertEqual(artist.genres, {
                 'dance-pop': 1,
-                'guitarist': 0 })
+                'guitarist': 0})
 
     def test_recording_instrument_credits(self):
         m = Metadata()
@@ -288,6 +287,7 @@ class CountriesFromNodeTest(MBJSONTest):
         countries = countries_from_node(self.json_doc)
         self.assertEqual([], countries)
 
+
 class CountriesFromNodeNullTest(MBJSONTest):
 
     filename = 'country_null.json'
@@ -324,3 +324,12 @@ class NullLabelInfoTest(MBJSONTest):
     def test_label_info_from_node_0(self):
         label_info = label_info_from_node(self.json_doc['releases'][0]['label-info'])
         self.assertEqual(label_info, ([], []))
+
+
+class GetScoreTest(PicardTestCase):
+    def test_get_score(self):
+        for score, expected in ((42, 0.42), ('100', 1.0), (0, 0.0), (None, 1.0), ('', 1.0)):
+            self.assertEqual(expected, get_score({'score': score}))
+
+    def test_get_score_no_score(self):
+        self.assertEqual(1.0, get_score({}))
