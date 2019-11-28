@@ -22,6 +22,9 @@ jobs:
   package:
 
     runs-on: macos-latest
+    env:
+      DISCID_VERSION: 0.6.2
+      FPCALC_VERSION: 1.4.3
 
     steps:
     - uses: actions/checkout@v1
@@ -29,6 +32,11 @@ jobs:
       uses: actions/setup-python@v1
       with:
         python-version: 3.7
+    - name: Cache libdiscid
+      uses: actions/cache@v1
+      with:
+        path: ~/libdiscid
+        key: ${{ runner.os }}-libdiscid-${{ env.DISCID_VERSION }}
     - name: Patch build version
       if: startsWith(github.ref, 'refs/tags/') != true
       run: |
@@ -37,9 +45,6 @@ jobs:
       run: |
         ./scripts/package/macos-setup.sh
         mkdir artifacts
-      env:
-        DISCID_VERSION: 0.6.2
-        FPCALC_VERSION: 1.4.3
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip

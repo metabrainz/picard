@@ -13,12 +13,14 @@ if [ -n "$PYTHON_VERSION" ]; then
 fi
 
 # Install libdiscid
-wget "ftp://ftp.musicbrainz.org/pub/musicbrainz/libdiscid/libdiscid-$DISCID_VERSION.tar.gz"
-tar -xf "libdiscid-$DISCID_VERSION.tar.gz"
-cd "libdiscid-$DISCID_VERSION"
-./configure --prefix="$HOME/libdiscid"
-make install
-cd ..
+if [ ! -f "$HOME/libdiscid/lib/libdiscid.0.dylib" ]; then
+  wget "ftp://ftp.musicbrainz.org/pub/musicbrainz/libdiscid/libdiscid-$DISCID_VERSION.tar.gz"
+  tar -xf "libdiscid-$DISCID_VERSION.tar.gz"
+  cd "libdiscid-$DISCID_VERSION"
+  ./configure --prefix="$HOME/libdiscid"
+  make install
+  cd ..
+fi
 cp "$HOME/libdiscid/lib/libdiscid.0.dylib" .
 
 # Install fpcalc
