@@ -519,3 +519,15 @@ def add_user_genres(node, obj):
 def add_isrcs_to_metadata(node, metadata):
     for isrc in node:
         metadata.add('isrc', isrc)
+
+
+def get_score(node):
+    """Returns the score attribute for a node.
+    The score is expected to be an integer between 0 and 100, it is returned as
+    a value between 0.0 and 1.0. If there is no score attribute or it has an
+    invalid value 1.0 will be returned.
+    """
+    try:
+        return int(node.get('score', 100)) / 100
+    except (TypeError, ValueError):
+        return 1.0

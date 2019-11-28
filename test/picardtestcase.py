@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+import json
+import os
 import struct
 import unittest
 
@@ -8,6 +10,7 @@ from picard import (
     config,
     log,
 )
+from picard.releasegroup import ReleaseGroup
 
 
 class FakeTagger(QtCore.QObject):
@@ -33,6 +36,9 @@ class FakeTagger(QtCore.QObject):
     def emit(self, *args):
         pass
 
+    def get_release_group_by_id(self, rg_id):  # pylint: disable=no-self-use
+        return ReleaseGroup(rg_id)
+
 
 class PicardTestCase(unittest.TestCase):
     def setUp(self):
@@ -45,3 +51,8 @@ class PicardTestCase(unittest.TestCase):
 def create_fake_png(extra):
     """Creates fake PNG data that satisfies Picard's internal image type detection"""
     return b'\x89PNG\x0D\x0A\x1A\x0A' + (b'a' * 4) + b'IHDR' + struct.pack('>LL', 100, 100) + extra
+
+
+def load_test_json(filename):
+    with open(os.path.join('test', 'data', 'ws_data', filename), encoding='utf-8') as f:
+        return json.load(f)

@@ -26,7 +26,10 @@ from collections.abc import (
 from PyQt5.QtCore import QObject
 
 from picard import config
-from picard.mbjson import artist_credit_from_node
+from picard.mbjson import (
+    artist_credit_from_node,
+    get_score,
+)
 from picard.plugin import (
     PluginFunctions,
     PluginPriority,
@@ -132,9 +135,7 @@ class Metadata(MutableMapping):
         linear combination of weights that the metadata matches a certain album.
         """
         parts = self.compare_to_release_parts(release, weights)
-        sim = linear_combination_of_weights(parts)
-        if 'score' in release:
-            sim *= release['score'] / 100
+        sim = linear_combination_of_weights(parts) * get_score(release)
         return SimMatchRelease(similarity=sim, release=release)
 
     def compare_to_release_parts(self, release, weights):
@@ -235,10 +236,9 @@ class Metadata(MutableMapping):
         if "releases" in track:
             releases = track['releases']
 
+        search_score = get_score(track)
         if not releases:
-            sim = linear_combination_of_weights(parts)
-            if 'score' in track:
-                sim *= track['score'] / 100
+            sim = linear_combination_of_weights(parts) * search_score
             return SimMatchTrack(similarity=sim, releasegroup=None, release=None, track=track)
 
         if 'isvideo' in weights:
@@ -250,9 +250,7 @@ class Metadata(MutableMapping):
         result = SimMatchTrack(similarity=-1, releasegroup=None, release=None, track=None)
         for release in releases:
             release_parts = self.compare_to_release_parts(release, weights)
-            sim = linear_combination_of_weights(parts + release_parts)
-            if 'score' in track:
-                sim *= track['score'] / 100
+            sim = linear_combination_of_weights(parts + release_parts) * search_score
             if sim > result.similarity:
                 rg = release['release-group'] if "release-group" in release else None
                 result = SimMatchTrack(similarity=sim, releasegroup=rg, release=release, track=track)
