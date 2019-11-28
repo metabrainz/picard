@@ -7,9 +7,11 @@ brew install gettext
 brew link gettext --force
 
 # Install requested Python version
-wget "https://www.python.org/ftp/python/${PYTHON_VERSION}/python-${PYTHON_VERSION}-macosx10.9.pkg"
-sudo installer -pkg python-${PYTHON_VERSION}-macosx10.9.pkg -target /
-sudo python3 -m ensurepip
+if [ -n "$PYTHON_VERSION" ]; then
+  wget "https://www.python.org/ftp/python/${PYTHON_VERSION}/python-${PYTHON_VERSION}-macosx10.9.pkg"
+  sudo installer -pkg python-${PYTHON_VERSION}-macosx10.9.pkg -target /
+  sudo python3 -m ensurepip
+fi
 
 # Install libdiscid
 wget "ftp://ftp.musicbrainz.org/pub/musicbrainz/libdiscid/libdiscid-$DISCID_VERSION.tar.gz"

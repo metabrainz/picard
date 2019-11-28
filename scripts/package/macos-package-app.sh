@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-if [ -z "$TRAVIS_TAG" ]
-then
+if [ -z "$TRAVIS_TAG" ] && [ -n "$TRAVIS_OSX_IMAGE" ]; then
     python3 setup.py patch_version --platform=osx.$TRAVIS_OSX_IMAGE
 fi
 VERSION=$(python3 -c 'import picard; print(picard.__version__)')
@@ -78,7 +77,11 @@ LIBDISCID_REGEX="libdiscid [0-9]+\.[0-9]+\.[0-9]+"
 "MusicBrainz Picard.app/Contents/MacOS/fpcalc" -version
 
 # Package app bundle into DMG image
-DMG="MusicBrainz Picard $VERSION macOS $MACOS_VERSION_MAJOR.$MACOS_VERSION_MINOR.dmg"
+if [ -n "$TRAVIS_OSX_IMAGE" ]; then
+  DMG="MusicBrainz-Picard-${VERSION}_macOS-$MACOS_VERSION_MAJOR.$MACOS_VERSION_MINOR.dmg"
+else
+  DMG="MusicBrainz-Picard-$VERSION.dmg"
+fi
 hdiutil create -volname "MusicBrainz Picard $VERSION" \
   -srcfolder 'MusicBrainz Picard.app' -ov -format UDBZ "$DMG"
 [ "$CODESIGN" = '1' ] && codesign --verify --verbose \

@@ -3,12 +3,26 @@
 Param(
   [System.Security.Cryptography.X509Certificates.X509Certificate]
   $Certificate,
+  [ValidateScript({Test-Path $_ -PathType Leaf})]
+  [String]
+  $CertificateFile,
+  [String]
+  $CertificatePassword,
   [Int]
   $BuildNumber
 )
 
+# Errors are handled explicitly. Otherwise any output to stderr when
+# calling classic Windows exes causes a script error.
+$ErrorActionPreference = 'Continue'
+
 If (-Not $BuildNumber) {
   $BuildNumber = 0
+}
+
+If (-Not $Certificate -And $CertificateFile) {
+  $CertPassword = ConvertTo-SecureString -String $CertificatePassword -Force -AsPlainText
+  $Certificate = Get-PfxCertificate -FilePath $CertificateFile -Password $CertPassword
 }
 
 $ScriptDirectory = Split-Path -Path $MyInvocation.MyCommand.Definition -Parent
@@ -43,12 +57,15 @@ Pop-Location
 
 # Generate msix package
 $PicardVersion = (python -c "import picard; print(picard.__version__)")
-$PackageFile = "dist\MusicBrainz Picard $PicardVersion.msix"
+$PackageFile = "dist\MusicBrainz-Picard-$PicardVersion.msix"
 MakeAppx pack /o /h SHA256 /d $PackageDir /p $PackageFile
 ThrowOnExeError "MakeAppx failed"
 
 # Sign package
-If ($Certificate) {
+If ($CertificateFile)  {
+  SignTool sign /fd SHA256 /f "$CertificateFile" /p "$CertificatePassword" $PackageFile
+  ThrowOnExeError "SignTool failed"
+} ElseIf ($Certificate) {
   SignTool sign /fd SHA256 /sha1 $Certificate.Thumbprint $PackageFile
   ThrowOnExeError "SignTool failed"
 }

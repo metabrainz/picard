@@ -1,0 +1,99 @@
+name: Package for Windows
+
+on:
+  push:
+    paths:
+    - '.github/workflows/package-windows.yml'
+    - 'installer/**'
+    - 'picard/**'
+    - 'po/**.po'
+    - 'resources/win10/**'
+    - 'scripts/package/*.ps1'
+    - 'scripts/pyinstaller/*'
+    - 'appxmanifest.xml.in'
+    - 'picard.ico'
+    - 'picard.spec'
+    - 'requirements*.txt'
+    - 'setup.py'
+    - 'tagger.py.in'
+    - 'win.version-info.txt.in'
+  create:
+    tags:
+    - 'release-*'
+
+jobs:
+  package:
+
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Set up Python 3.7
+      uses: actions/setup-python@v1
+      with:
+        python-version: 3.7
+    - name: Patch build version
+      if: startsWith(github.ref, 'refs/tags/') != true
+      run: |
+        python setup.py patch_version --platform=$(git rev-list --count HEAD).$(git rev-parse --short HEAD)
+    - name: Setup Windows build environment
+      run: |
+        & .\scripts\package\win-setup.ps1 -DiscidVersion $Env:DISCID_VERSION -FpcalVersion $Env:FPCALC_VERSION
+        New-Item -Name .\artifacts -ItemType Directory
+      env:
+        DISCID_VERSION: 0.6.2
+        FPCALC_VERSION: 1.4.3
+    - name: Prepare code signing certificate
+      run: |
+        pip install awscli
+        aws s3 cp "$Env:CODESIGN_PFX_URL" .\codesign.pfx
+      env:
+        AWS_DEFAULT_REGION: eu-central-1
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        CODESIGN_PFX_URL: ${{ secrets.CODESIGN_PFX_URL }}
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements-build.txt
+        pip install -r requirements-win.txt
+    - name: Build Windows 10 app package
+      run: |
+        $Env:PATH += ";C:\Program Files (x86)\Windows Kits\10\bin\10.0.18362.0\x64"
+        & .\scripts\package\win-package-appx.ps1 -BuildNumber $(git rev-list --count HEAD) -CertificateFile .\codesign.pfx -CertificatePassword $Env:CODESIGN_PFX_PASSWORD
+        Move-Item .\dist\*.msix .\artifacts
+      env:
+        CODESIGN_PFX_PASSWORD: ${{ secrets.CODESIGN_PFX_PASSWORD }}
+    - name: Build Windows installer
+      if: always()
+      run: |
+        # choco install nsis
+        $CertPassword = ConvertTo-SecureString -String $Env:CODESIGN_PFX_PASSWORD -Force -AsPlainText
+        $Certificate = Get-PfxCertificate -FilePath .\codesign.pfx -Password $CertPassword
+        & .\scripts\package\win-package-installer.ps1 -BuildNumber $(git rev-list --count HEAD) -Certificate $Certificate
+        Move-Item .\installer\*.exe .\artifacts
+        dist\picard\fpcalc -version
+      env:
+        CODESIGN_PFX_PASSWORD: ${{ secrets.CODESIGN_PFX_PASSWORD }}
+    - name: Build Windows portable app
+      if: always()
+      run: |
+        $CertPassword = ConvertTo-SecureString -String $Env:CODESIGN_PFX_PASSWORD -Force -AsPlainText
+        $Certificate = Get-PfxCertificate -FilePath .\codesign.pfx -Password $CertPassword
+        & .\scripts\package\win-package-portable.ps1 -BuildNumber $(git rev-list --count HEAD) -Certificate $Certificate
+        Move-Item .\dist\*.exe .\artifacts
+      env:
+        CODESIGN_PFX_PASSWORD: ${{ secrets.CODESIGN_PFX_PASSWORD }}
+    - name: Archive production artifacts
+      uses: actions/upload-artifact@v1
+      if: always()
+      with:
+        name: windows-builds
+        path: artifacts/
+    - name: Release
+      uses: softprops/action-gh-release@v1
+      if: startsWith(github.ref, 'refs/tags/') && github.event_name == 'create'
+      with:
+        files: artifacts/*
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
