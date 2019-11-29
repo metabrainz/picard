@@ -203,3 +203,20 @@ class EditableListModel(QtCore.QAbstractListModel):
     @property
     def items(self):
         return (t[0] for t in self._items)
+
+
+class AutocompleteItemDelegate(QtWidgets.QItemDelegate):
+    def __init__(self, completions, parent=None):
+        super().__init__(parent)
+        self._completions = completions
+
+    def createEditor(self, parent, option, index):
+        editor = QtWidgets.QLineEdit(parent)
+        completer = QtWidgets.QCompleter(self._completions, parent)
+
+        def complete(text):
+            parent.setFocus()
+
+        completer.activated.connect(complete)
+        editor.setCompleter(completer)
+        return editor

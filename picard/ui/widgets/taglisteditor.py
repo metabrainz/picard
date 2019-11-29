@@ -25,7 +25,10 @@ from picard.util.tags import (
 )
 
 from picard.ui.ui_widget_taglisteditor import Ui_TagListEditor
-from picard.ui.widgets.editablelistview import EditableListModel
+from picard.ui.widgets.editablelistview import (
+    AutocompleteItemDelegate,
+    EditableListModel,
+)
 
 
 class TagListEditor(QtWidgets.QWidget):
@@ -36,7 +39,8 @@ class TagListEditor(QtWidgets.QWidget):
         list_view = self.ui.tag_list_view
         model = TagListModel()
         list_view.setModel(model)
-        list_view.setItemDelegate(TagItemDelegate())
+        list_view.setItemDelegate(AutocompleteItemDelegate(
+            sorted(TAG_NAMES.keys())))
 
         selection = list_view.selectionModel()
         selection.selectionChanged.connect(self.on_selection_changed)
@@ -62,17 +66,3 @@ class TagListEditor(QtWidgets.QWidget):
 class TagListModel(EditableListModel):
     def get_display_name(self, item):
         return display_tag_name(item)
-
-
-class TagItemDelegate(QtWidgets.QItemDelegate):
-    @staticmethod
-    def createEditor(parent, option, index):
-        editor = QtWidgets.QLineEdit(parent)
-        completer = QtWidgets.QCompleter(TAG_NAMES.keys(), parent)
-
-        def complete(text):
-            parent.setFocus()
-
-        completer.activated.connect(complete)
-        editor.setCompleter(completer)
-        return editor
