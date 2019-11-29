@@ -31,32 +31,32 @@ RESULT=$(xcrun altool --notarize-app --type osx \
 
 if [ $? -ne 0 ]; then
   echo "Submitting $APP_BUNDLE failed:"
-  echo $RESULT
+  echo "$RESULT"
   exit 1
 fi
 
-REQUEST_UUID=$(echo $RESULT | xpath \
+REQUEST_UUID=$(echo "$RESULT" | xpath \
   "//key[normalize-space(text()) = 'RequestUUID']/following-sibling::string[1]/text()" 2> /dev/null)
 
 if [ -z "$REQUEST_UUID" ]; then
   echo "Submitting $APP_BUNDLE failed:"
-  echo $RESULT
+  echo "$RESULT"
   exit 1
 fi
 
-echo $(echo $RESULT | xpath \
-  "//key[normalize-space(text()) = 'success-message']/following-sibling::string[1]/text()" 2> /dev/null)
+echo "$(echo "$RESULT" | xpath \
+  "//key[normalize-space(text()) = 'success-message']/following-sibling::string[1]/text()" 2> /dev/null)"
 
 # Poll for notarization status
 echo "Submitted notarization request $REQUEST_UUID, waiting for response..."
 sleep 20
 while :
 do
-  RESULT=$(xcrun altool --notarization-info $REQUEST_UUID \
-    --username $APPLE_ID_USER \
+  RESULT=$(xcrun altool --notarization-info "$REQUEST_UUID" \
+    --username "$APPLE_ID_USER" \
     --password @env:APPLE_ID_PASSWORD \
     --output-format xml)
-  STATUS=$(echo $RESULT | xpath \
+  STATUS=$(echo "$RESULT" | xpath \
     "//key[normalize-space(text()) = 'Status']/following-sibling::string[1]/text()" 2> /dev/null)
 
   if [ "$STATUS" = "success" ]; then
@@ -67,7 +67,7 @@ do
     sleep 20
   else
     echo "Notarization of $APP_BUNDLE failed:"
-    echo $RESULT
+    echo "$RESULT"
     exit 1
   fi
 done
