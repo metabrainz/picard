@@ -15,9 +15,6 @@ on:
     - 'requirements*.txt'
     - 'setup.py'
     - 'tagger.py.in'
-  create:
-    tags:
-    - 'release-*'
 
 jobs:
   package:

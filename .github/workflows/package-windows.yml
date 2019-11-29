@@ -17,9 +17,6 @@ on:
     - 'setup.py'
     - 'tagger.py.in'
     - 'win.version-info.txt.in'
-  create:
-    tags:
-    - 'release-*'
 
 jobs:
   package:
