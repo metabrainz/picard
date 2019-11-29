@@ -89,7 +89,7 @@ def upgrade_to_v1_0_0_final_0(config, interactive=True, merge=True):
                 msgbox.setIcon(QtWidgets.QMessageBox.Question)
                 merge_button = msgbox.addButton(_('Merge'), QtWidgets.QMessageBox.AcceptRole)
                 msgbox.addButton(_('Remove'), QtWidgets.QMessageBox.DestructiveRole)
-                msgbox.exec()
+                msgbox.exec_()
                 merge = msgbox.clickedButton() == merge_button
             remove_va_file_naming_format(merge=merge)
         else:
