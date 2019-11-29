@@ -773,18 +773,26 @@ args = {
     },
     'scripts': ['scripts/' + PACKAGE_NAME],
     'install_requires': ['PyQt5', 'mutagen', 'python-dateutil'],
+    'python_requires': '~=3.5',
     'classifiers': [
         'License :: OSI Approved :: GNU General Public License v2 or later (GPLv2+)',
         'Development Status :: 5 - Production/Stable',
+        'Environment :: MacOS X',
+        'Environment :: Win32 (MS Windows)',
+        'Environment :: X11 Applications :: Qt',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3 :: Only',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
-        'Operating System :: Microsoft :: Windows',
+        'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.9',
         'Operating System :: MacOS',
+        'Operating System :: Microsoft :: Windows',
         'Operating System :: POSIX :: Linux',
         'Topic :: Multimedia :: Sound/Audio',
-        'Topic :: Multimedia :: Sound/Audio :: Analysis'
+        'Topic :: Multimedia :: Sound/Audio :: Analysis',
+        'Intended Audience :: End Users/Desktop',
     ]
 }
 
