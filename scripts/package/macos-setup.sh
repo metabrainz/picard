@@ -9,7 +9,7 @@ brew link gettext --force
 # Install requested Python version
 if [ -n "$PYTHON_VERSION" ]; then
   wget "https://www.python.org/ftp/python/${PYTHON_VERSION}/python-${PYTHON_VERSION}-macosx10.9.pkg"
-  sudo installer -pkg python-${PYTHON_VERSION}-macosx10.9.pkg -target /
+  sudo installer -pkg "python-${PYTHON_VERSION}-macosx10.9.pkg" -target /
   sudo python3 -m ensurepip
 fi
 
