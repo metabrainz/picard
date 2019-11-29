@@ -24,7 +24,9 @@ from setuptools.dist import Distribution
 
 from picard import (
     PICARD_APP_ID,
+    PICARD_APP_NAME,
     PICARD_DESKTOP_NAME,
+    PICARD_DISPLAY_NAME,
     PICARD_VERSION,
     __version__,
 )
@@ -230,21 +232,23 @@ class picard_build(build):
             file_version = PICARD_VERSION[0:3] + (self.build_number,)
             file_version_str = '.'.join([str(v) for v in file_version])
 
-            # Temporarily setting it to this value to generate a nice name for Windows app
-            args['name'] = 'MusicBrainz Picard'
-            args['file_version'] = file_version_str
+            installer_args = {
+                'display-name': PICARD_DISPLAY_NAME,
+                'file-version': file_version_str,
+            }
             if os.path.isfile('installer/picard-setup.nsi.in'):
-                generate_file('installer/picard-setup.nsi.in', 'installer/picard-setup.nsi', args)
+                generate_file('installer/picard-setup.nsi.in', 'installer/picard-setup.nsi', {**args, **installer_args})
             version_args = {
                 'filevers': str(file_version),
                 'prodvers': str(file_version),
             }
             generate_file('win-version-info.txt.in', 'win-version-info.txt', {**args, **version_args})
-            args['name'] = 'picard'
 
             generate_file('appxmanifest.xml.in', 'appxmanifest.xml', {
                 'app-id': PICARD_APP_ID,
-                'version': file_version_str
+                'display-name': PICARD_DISPLAY_NAME,
+                'short-name': PICARD_APP_NAME,
+                'version': file_version_str,
             })
         elif sys.platform == 'linux':
             self.run_command('build_appdata')
@@ -393,6 +397,7 @@ class picard_build_appdata(Command):
             args = {
                 'app-id': PICARD_APP_ID,
                 'desktop-id': PICARD_DESKTOP_NAME,
+                'display-name': PICARD_DISPLAY_NAME,
                 'releases': '\n    '.join(releases)
             }
             generate_file(source_file, APPDATA_FILE, args)

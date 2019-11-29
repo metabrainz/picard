@@ -3,7 +3,7 @@
   <id>%(app-id)s</id>
   <project_license>GPL-2.0-or-later</project_license>
   <metadata_license>CC0-1.0</metadata_license>
-  <name>Picard</name>
+  <name>%(display-name)s</name>
   <summary>MusicBrainz's music tagger</summary>
 
   <description>

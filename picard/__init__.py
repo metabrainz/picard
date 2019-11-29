@@ -22,6 +22,7 @@ import re
 
 PICARD_ORG_NAME = "MusicBrainz"
 PICARD_APP_NAME = "Picard"
+PICARD_DISPLAY_NAME = "MusicBrainz Picard"
 PICARD_APP_ID = "org.musicbrainz.Picard"
 PICARD_DESKTOP_NAME = PICARD_APP_ID + ".desktop"
 PICARD_VERSION = (2, 3, 0, 'dev', 1)
