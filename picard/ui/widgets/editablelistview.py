@@ -22,18 +22,10 @@ from PyQt5 import (
     QtWidgets,
 )
 
-from picard.util.tags import (
-    TAG_NAMES,
-    display_tag_name,
-)
 
-
-class EditableTagListView(QtWidgets.QListView):
+class EditableListView(QtWidgets.QListView):
     def __init__(self, parent=None):
         super().__init__(parent)
-        model = TagListModel()
-        self.setModel(model)
-        self.setItemDelegate(TagItemDelegate())
         self.setSelectionMode(QtWidgets.QAbstractItemView.ExtendedSelection)
 
     def keyPressEvent(self, event):
@@ -60,26 +52,26 @@ class EditableTagListView(QtWidgets.QListView):
         else:
             super().closeEditor(editor, hint)
 
-    def add_tag(self, tag=""):
+    def add_item(self, value=""):
         model = self.model()
         row = model.rowCount()
         model.insertRow(row)
         index = model.createIndex(row, 0)
-        model.setData(index, tag)
+        model.setData(index, value)
         return index
 
     def clear(self):
         self.model().update([])
 
-    def update(self, tags):
-        self.model().update(tags)
+    def update(self, values):
+        self.model().update(values)
 
     @property
-    def tags(self):
-        return self.model().tags
+    def items(self):
+        return self.model().items
 
     def add_empty_row(self):
-        index = self.add_tag()
+        index = self.add_item()
         self.setCurrentIndex(index)
         self.edit(index)
 
@@ -128,20 +120,23 @@ class EditableTagListView(QtWidgets.QListView):
                 selection.setCurrentIndex(new_index, QtCore.QItemSelectionModel.Current)
 
 
-class TagListModel(QtCore.QAbstractListModel):
-    def __init__(self, tags=None, parent=None):
+class EditableListModel(QtCore.QAbstractListModel):
+    def __init__(self, items=None, parent=None):
         super().__init__(parent)
-        self._tags = [(tag, display_tag_name(tag)) for tag in tags or []]
+        self._items = [(item, self.get_display_name(item)) for item in items or []]
+
+    def get_display_name(self, item):  # pylint: disable=no-self-use
+        return item
 
     def rowCount(self, parent=QtCore.QModelIndex()):
-        return len(self._tags)
+        return len(self._items)
 
     def data(self, index, role=QtCore.Qt.DisplayRole):
         if not index.isValid() or role not in (QtCore.Qt.DisplayRole, QtCore.Qt.EditRole):
             return None
         field = 1 if role == QtCore.Qt.DisplayRole else 0
         try:
-            return self._tags[index.row()][field]
+            return self._items[index.row()][field]
         except IndexError:
             return None
 
@@ -151,11 +146,11 @@ class TagListModel(QtCore.QAbstractListModel):
         i = index.row()
         try:
             if role == QtCore.Qt.EditRole:
-                display_name = display_tag_name(value) if value else value
-                self._tags[i] = (value, display_name)
+                display_name = self.get_display_name(value) if value else value
+                self._items[i] = (value, display_name)
             elif role == QtCore.Qt.DisplayRole:
-                current = self._tags[i]
-                self._tags[i] = (current[0], value)
+                current = self._items[i]
+                self._items[i] = (current[0], value)
             return True
         except IndexError:
             return False
@@ -174,13 +169,13 @@ class TagListModel(QtCore.QAbstractListModel):
     def insertRows(self, row, count, parent=QtCore.QModelIndex()):
         super().beginInsertRows(parent, row, row + count - 1)
         for i in range(count):
-            self._tags.insert(row, ("", ""))
+            self._items.insert(row, ("", ""))
         super().endInsertRows()
         return True
 
     def removeRows(self, row, count, parent=QtCore.QModelIndex()):
         super().beginRemoveRows(parent, row, row + count - 1)
-        self._tags = self._tags[:row] + self._tags[row + count:]
+        self._items = self._items[:row] + self._items[row + count:]
         super().endRemoveRows()
         return True
 
@@ -192,13 +187,13 @@ class TagListModel(QtCore.QAbstractListModel):
     def supportedDropActions():
         return QtCore.Qt.MoveAction
 
-    def update(self, tags):
+    def update(self, items):
         self.beginResetModel()
-        self._tags = [(tag, display_tag_name(tag)) for tag in tags]
+        self._items = [(item, self.get_display_name(item)) for item in items]
         self.endResetModel()
 
     def move_row(self, row, new_row):
-        item = self._tags[row]
+        item = self._items[row]
         self.removeRow(row)
         self.insertRow(new_row)
         index = self.index(new_row, 0)
@@ -206,15 +201,18 @@ class TagListModel(QtCore.QAbstractListModel):
         self.setData(index, item[1], QtCore.Qt.DisplayRole)
 
     @property
-    def tags(self):
-        return (t[0] for t in self._tags)
+    def items(self):
+        return (t[0] for t in self._items)
 
 
-class TagItemDelegate(QtWidgets.QItemDelegate):
-    @staticmethod
-    def createEditor(parent, option, index):
+class AutocompleteItemDelegate(QtWidgets.QItemDelegate):
+    def __init__(self, completions, parent=None):
+        super().__init__(parent)
+        self._completions = completions
+
+    def createEditor(self, parent, option, index):
         editor = QtWidgets.QLineEdit(parent)
-        completer = QtWidgets.QCompleter(TAG_NAMES.keys(), parent)
+        completer = QtWidgets.QCompleter(self._completions, parent)
 
         def complete(text):
             parent.setFocus()

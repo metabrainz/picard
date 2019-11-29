@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>TagListEditor</class>
+ <widget class="QWidget" name="TagListEditor">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>300</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QHBoxLayout" name="horizontalLayout">
+   <property name="spacing">
+    <number>6</number>
+   </property>
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
+   <item>
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <widget class="EditableListView" name="tag_list_view"/>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <item>
+        <spacer name="horizontalSpacer">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="QPushButton" name="tags_remove_btn">
+         <property name="toolTip">
+          <string>Remove selected tags</string>
+         </property>
+         <property name="accessibleName">
+          <string>Remove selected tags</string>
+         </property>
+         <property name="text">
+          <string>Remove tags</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="tags_add_btn">
+         <property name="text">
+          <string>Add new tag</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QVBoxLayout" name="verticalLayout_2">
+     <item>
+      <spacer name="verticalSpacer">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>20</width>
+         <height>40</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="tags_move_up_btn">
+       <property name="toolTip">
+        <string>Move tag up</string>
+       </property>
+       <property name="accessibleName">
+        <string>Move tag up</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset theme="go-up"/>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="tags_move_down_btn">
+       <property name="toolTip">
+        <string>Move tag down</string>
+       </property>
+       <property name="accessibleName">
+        <string>Move tag down</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset theme="go-down"/>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="verticalSpacer_2">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>20</width>
+         <height>40</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>EditableListView</class>
+   <extends>QListView</extends>
+   <header>picard.ui.widgets.editablelistview</header>
+   <slots>
+    <slot>add_empty_row()</slot>
+    <slot>remove_selected_rows()</slot>
+    <slot>move_selected_rows_up()</slot>
+    <slot>move_selected_rows_down()</slot>
+   </slots>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>tags_remove_btn</sender>
+   <signal>clicked()</signal>
+   <receiver>tag_list_view</receiver>
+   <slot>remove_selected_rows()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>182</x>
+     <y>285</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>155</x>
+     <y>133</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>tags_add_btn</sender>
+   <signal>clicked()</signal>
+   <receiver>tag_list_view</receiver>
+   <slot>add_empty_row()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>269</x>
+     <y>285</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>155</x>
+     <y>133</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>tags_move_up_btn</sender>
+   <signal>clicked()</signal>
+   <receiver>tag_list_view</receiver>
+   <slot>move_selected_rows_up()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>384</x>
+     <y>134</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>181</x>
+     <y>133</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>tags_move_down_btn</sender>
+   <signal>clicked()</signal>
+   <receiver>tag_list_view</receiver>
+   <slot>move_selected_rows_down()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>384</x>
+     <y>164</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>181</x>
+     <y>133</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

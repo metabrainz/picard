@@ -51,9 +51,6 @@ class InterfaceTopTagsOptionsPage(OptionsPage):
         super().__init__(parent)
         self.ui = Ui_InterfaceTopTagsOptionsPage()
         self.ui.setupUi(self)
-        selection = self.ui.top_tags_list.selectionModel()
-        selection.selectionChanged.connect(self.on_selection_changed)
-        self.on_selection_changed([], [])
 
     def load(self):
         tags = config.setting["metadatabox_top_tags"]
@@ -68,12 +65,6 @@ class InterfaceTopTagsOptionsPage(OptionsPage):
     def restore_defaults(self):
         self.ui.top_tags_list.clear()
         super().restore_defaults()
-
-    def on_selection_changed(self, selected, deselected):
-        buttons_enabled = len(self.ui.top_tags_list.selectedIndexes()) > 0
-        self.ui.tags_remove_btn.setEnabled(buttons_enabled)
-        self.ui.tags_move_up_btn.setEnabled(buttons_enabled)
-        self.ui.tags_move_down_btn.setEnabled(buttons_enabled)
 
 
 register_options_page(InterfaceTopTagsOptionsPage)
