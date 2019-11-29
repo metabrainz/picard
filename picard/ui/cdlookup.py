@@ -19,6 +19,7 @@
 
 from PyQt5 import (
     QtCore,
+    QtGui,
     QtWidgets,
 )
 
@@ -59,10 +60,12 @@ class CDLookupDialog(PicardDialog):
         self.ui.release_list.setAlternatingRowColors(True)
         self.ui.release_list.setHeaderLabels([_("Album"), _("Artist"), _("Date"), _("Country"),
                                               _("Labels"), _("Catalog #s"), _("Barcode")])
+        self.ui.submit_button.setIcon(QtGui.QIcon(":/images/cdrom.png"))
         if self.releases:
             def myjoin(l):
                 return "\n".join(l)
 
+            self.ui.results_view.setCurrentIndex(0)
             selected = None
             for release in self.releases:
                 labels, catalog_numbers = label_info_from_node(release['label-info'])
@@ -81,12 +84,15 @@ class CDLookupDialog(PicardDialog):
                 item.setData(0, QtCore.Qt.UserRole, release['id'])
             self.ui.release_list.setCurrentItem(selected or self.ui.release_list.topLevelItem(0))
             self.ui.ok_button.setEnabled(True)
-        for i in range(self.ui.release_list.columnCount() - 1):
-            self.ui.release_list.resizeColumnToContents(i)
-        # Sort by descending date, then ascending country
-        self.ui.release_list.sortByColumn(3, QtCore.Qt.AscendingOrder)
-        self.ui.release_list.sortByColumn(2, QtCore.Qt.DescendingOrder)
+            for i in range(self.ui.release_list.columnCount() - 1):
+                self.ui.release_list.resizeColumnToContents(i)
+            # Sort by descending date, then ascending country
+            self.ui.release_list.sortByColumn(3, QtCore.Qt.AscendingOrder)
+            self.ui.release_list.sortByColumn(2, QtCore.Qt.DescendingOrder)
+        else:
+            self.ui.results_view.setCurrentIndex(1)
         self.ui.lookup_button.clicked.connect(self.lookup)
+        self.ui.submit_button.clicked.connect(self.lookup)
         self.restore_geometry()
         self.restore_header_state()
         self.finished.connect(self.save_header_state)
