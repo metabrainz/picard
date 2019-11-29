@@ -208,6 +208,18 @@ class MetadataTest(PicardTestCase):
         self.assertEqual(m1.compare(m2), m2.compare(m1))
         self.assertEqual(m1.compare(m2), 1)
 
+    def test_compare_with_ignored(self):
+        m1 = Metadata()
+        m1["title"] = "title1"
+        m1["tracknumber"] = "2"
+        m1.length = 360
+        m2 = Metadata()
+        m2["title"] = "title1"
+        m2["tracknumber"] = "3"
+        m2.length = 300
+        self.assertNotEqual(m1.compare(m2), 1)
+        self.assertEqual(m1.compare(m2, ignored=['tracknumber', '~length']), 1)
+
     def test_compare_lengths(self):
         m1 = Metadata()
         m1.length = 360

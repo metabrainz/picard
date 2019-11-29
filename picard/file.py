@@ -545,15 +545,17 @@ class File(QtCore.QObject, Item):
         names = set(new_metadata.keys())
         names.update(self.orig_metadata.keys())
         clear_existing_tags = config.setting["clear_existing_tags"]
+        ignored_tags = config.setting["compare_ignore_tags"]
         for name in names:
-            if not name.startswith('~') and self.supports_tag(name):
+            if (not name.startswith('~') and self.supports_tag(name)
+                and name not in ignored_tags):
                 new_values = new_metadata.getall(name)
                 if not (new_values or clear_existing_tags
                         or name in new_metadata.deleted_tags):
                     continue
                 orig_values = self.orig_metadata.getall(name)
                 if orig_values != new_values:
-                    self.similarity = self.orig_metadata.compare(new_metadata)
+                    self.similarity = self.orig_metadata.compare(new_metadata, ignored_tags)
                     if self.state == File.NORMAL:
                         self.state = File.CHANGED
                     break

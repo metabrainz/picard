@@ -99,14 +99,18 @@ class Metadata(MutableMapping):
         return (1.0 - min(abs(a - b),
                 LENGTH_SCORE_THRES_MS) / float(LENGTH_SCORE_THRES_MS))
 
-    def compare(self, other):
+    def compare(self, other, ignored=None):
         parts = []
+        if ignored is None:
+            ignored = []
 
-        if self.length and other.length:
+        if self.length and other.length and '~length' not in ignored:
             score = self.length_score(self.length, other.length)
             parts.append((score, 8))
 
         for name, weight in self.__weights:
+            if name in ignored:
+                continue
             a = self[name]
             b = other[name]
             if a and b:
