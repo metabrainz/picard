@@ -2,7 +2,7 @@
 
 !define PROJECT_PATH ".."
 
-!define PRODUCT_NAME "%(name)s"
+!define PRODUCT_NAME "%(display-name)s"
 !define PRODUCT_VERSION "%(version)s"
 !define PRODUCT_PUBLISHER "MusicBrainz"
 !define PRODUCT_DESCRIPTION "%(description)s"
@@ -114,7 +114,7 @@ ReserveFile "${NSISDIR}\Plugins\x86-unicode\InstallOptions.dll"
 ; !insertmacro LOAD_LANGUAGE "Ukrainian"
 
 ; Adds info to installer
-VIProductVersion "%(file_version)s"
+VIProductVersion "%(file-version)s"
 VIAddVersionKey /LANG=${LANG_ENGLISH} "ProductName" "${PRODUCT_NAME}"
 VIAddVersionKey /LANG=${LANG_ENGLISH} "Comments" "${PRODUCT_DESCRIPTION}"
 VIAddVersionKey /LANG=${LANG_ENGLISH} "CompanyName" "${PRODUCT_PUBLISHER}"

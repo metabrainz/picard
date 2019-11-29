@@ -11,6 +11,7 @@ sys.path.append('.')
 from picard import (
     PICARD_APP_ID,
     PICARD_APP_NAME,
+    PICARD_DISPLAY_NAME,
     PICARD_ORG_NAME,
     PICARD_VERSION,
     __version__,
@@ -145,8 +146,7 @@ else:
             'NSHighResolutionCapable': 'True',
             'NSPrincipalClass': 'NSApplication',
             'CFBundleName': PICARD_APP_NAME,
-            'CFBundleDisplayName': '{} {}'.format(PICARD_ORG_NAME,
-                                                  PICARD_APP_NAME),
+            'CFBundleDisplayName': PICARD_DISPLAY_NAME,
             'CFBundleIdentifier': PICARD_APP_ID,
             'CFBundleVersion': macos_picard_version,
             'CFBundleShortVersionString': macos_picard_short_version,
