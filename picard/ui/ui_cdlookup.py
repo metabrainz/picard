@@ -37,6 +37,7 @@ class Ui_Dialog(object):
         spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.verticalLayout_3.addItem(spacerItem)
         self.no_results_label = QtWidgets.QLabel(self.no_results_page)
+        self.no_results_label.setStyleSheet("margin-bottom: 9px;")
         self.no_results_label.setObjectName("no_results_label")
         self.verticalLayout_3.addWidget(self.no_results_label, 0, QtCore.Qt.AlignHCenter)
         self.submit_button = QtWidgets.QToolButton(self.no_results_page)

@@ -83,6 +83,9 @@
        </item>
        <item alignment="Qt::AlignHCenter">
         <widget class="QLabel" name="no_results_label">
+         <property name="styleSheet">
+          <string notr="true">margin-bottom: 9px;</string>
+         </property>
          <property name="text">
           <string>No matching releases found for this disc.</string>
          </property>
