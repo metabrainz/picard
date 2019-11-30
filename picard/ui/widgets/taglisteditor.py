@@ -60,7 +60,7 @@ class TagListEditor(QtWidgets.QWidget):
 
     @property
     def tags(self):
-        return self.ui.tag_list_view.tags
+        return self.ui.tag_list_view.items
 
 
 class TagListModel(EditableListModel):
