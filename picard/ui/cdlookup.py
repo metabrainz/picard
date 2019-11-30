@@ -56,10 +56,12 @@ class CDLookupDialog(PicardDialog):
         self.disc = disc
         self.ui = Ui_Dialog()
         self.ui.setupUi(self)
-        self.ui.release_list.setSortingEnabled(True)
-        self.ui.release_list.setAlternatingRowColors(True)
-        self.ui.release_list.setHeaderLabels([_("Album"), _("Artist"), _("Date"), _("Country"),
-                                              _("Labels"), _("Catalog #s"), _("Barcode")])
+        release_list = self.ui.release_list
+        release_list.setSelectionMode(QtWidgets.QAbstractItemView.ExtendedSelection)
+        release_list.setSortingEnabled(True)
+        release_list.setAlternatingRowColors(True)
+        release_list.setHeaderLabels([_("Album"), _("Artist"), _("Date"), _("Country"),
+                                      _("Labels"), _("Catalog #s"), _("Barcode")])
         self.ui.submit_button.setIcon(QtGui.QIcon(":/images/cdrom.png"))
         if self.releases:
             def myjoin(l):
@@ -71,7 +73,7 @@ class CDLookupDialog(PicardDialog):
                 labels, catalog_numbers = label_info_from_node(release['label-info'])
                 dates, countries = release_dates_and_countries_from_node(release)
                 barcode = release['barcode'] if "barcode" in release else ""
-                item = QtWidgets.QTreeWidgetItem(self.ui.release_list)
+                item = QtWidgets.QTreeWidgetItem(release_list)
                 if disc.mcn and compare_barcodes(barcode, disc.mcn):
                     selected = item
                 item.setText(0, release['title'])
@@ -82,13 +84,13 @@ class CDLookupDialog(PicardDialog):
                 item.setText(5, myjoin(catalog_numbers))
                 item.setText(6, barcode)
                 item.setData(0, QtCore.Qt.UserRole, release['id'])
-            self.ui.release_list.setCurrentItem(selected or self.ui.release_list.topLevelItem(0))
+            release_list.setCurrentItem(selected or release_list.topLevelItem(0))
             self.ui.ok_button.setEnabled(True)
-            for i in range(self.ui.release_list.columnCount() - 1):
-                self.ui.release_list.resizeColumnToContents(i)
+            for i in range(release_list.columnCount() - 1):
+                release_list.resizeColumnToContents(i)
             # Sort by descending date, then ascending country
-            self.ui.release_list.sortByColumn(3, QtCore.Qt.AscendingOrder)
-            self.ui.release_list.sortByColumn(2, QtCore.Qt.DescendingOrder)
+            release_list.sortByColumn(3, QtCore.Qt.AscendingOrder)
+            release_list.sortByColumn(2, QtCore.Qt.DescendingOrder)
         else:
             self.ui.results_view.setCurrentIndex(1)
         self.ui.lookup_button.clicked.connect(self.lookup)
@@ -98,8 +100,10 @@ class CDLookupDialog(PicardDialog):
         self.finished.connect(self.save_header_state)
 
     def accept(self):
-        release_id = self.ui.release_list.currentItem().data(0, QtCore.Qt.UserRole)
-        self.tagger.load_album(release_id, discid=self.disc.id)
+        release_list = self.ui.release_list
+        for index in release_list.selectionModel().selectedRows():
+            release_id = release_list.itemFromIndex(index).data(0, QtCore.Qt.UserRole)
+            self.tagger.load_album(release_id, discid=self.disc.id)
         super().accept()
 
     def lookup(self):
