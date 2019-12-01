@@ -85,7 +85,7 @@ class File(QtCore.QObject, Item):
         "album": 5,
         "length": 10,
         "totaltracks": 4,
-        "releasetype": 20,
+        "releasetype": 14,
         "releasecountry": 2,
         "format": 2,
         "isvideo": 2,

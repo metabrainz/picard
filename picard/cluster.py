@@ -57,7 +57,7 @@ class Cluster(QtCore.QObject, Item):
         'album': 17,
         'albumartist': 6,
         'totaltracks': 5,
-        'releasetype': 16,
+        'releasetype': 10,
         'releasecountry': 2,
         'format': 2,
     }
