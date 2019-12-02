@@ -41,6 +41,7 @@ from picard.util import (
     thread,
     throttle,
 )
+from picard.util.preservedtags import PreservedTags
 from picard.util.tags import display_tag_name
 
 from picard.ui.colors import interface_colors
@@ -143,32 +144,6 @@ class TagDiff(object):
             if status & s == s:
                 return s
         return TagStatus.NOCHANGE
-
-
-class PreservedTags:
-
-    opt_name = 'preserved_tags'
-
-    def __init__(self):
-        self._tags = self._from_config()
-
-    def _to_config(self):
-        config.setting[self.opt_name] = ", ".join(sorted(self._tags))
-
-    def _from_config(self):
-        tags = config.setting[self.opt_name].split(',')
-        return set(filter(bool, map(str.strip, tags)))
-
-    def add(self, name):
-        self._tags.add(name)
-        self._to_config()
-
-    def discard(self, name):
-        self._tags.discard(name)
-        self._to_config()
-
-    def __contains__(self, key):
-        return key in self._tags
 
 
 class MetadataBox(QtWidgets.QTableWidget):
