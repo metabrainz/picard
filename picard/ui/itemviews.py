@@ -305,8 +305,16 @@ class ConfigurableColumnsHeader(QtWidgets.QHeaderView):
             action.triggered.connect(partial(self.show_column, i))
             menu.addAction(action)
 
+        menu.addSeparator()
+        restore_action = QtWidgets.QAction(_('Restore default columns'), self.parent())
+        restore_action.triggered.connect(self.restore_defaults)
+        menu.addAction(restore_action)
+
         menu.exec_(event.globalPos())
         event.accept()
+
+    def restore_defaults(self):
+        self.parent().restore_default_columns()
 
 
 class BaseTreeView(QtWidgets.QTreeWidget):
@@ -517,20 +525,24 @@ class BaseTreeView(QtWidgets.QTreeWidget):
 
     @restore_method
     def restore_state(self):
+        self._restore_state(config.persist[self.header_state.name])
+
+    def save_state(self):
+        config.persist[self.header_state.name] = self.header().saveState()
+
+    def restore_default_columns(self):
+        self._restore_state(None)
+
+    def _restore_state(self, header_state):
         header = self.header()
-        header.update_visible_columns([int(i) for i in config.persist[self.visible_columns.name]])
-        state = config.persist[self.header_state.name]
-        if state:
-            header.restoreState(state)
+        if header_state:
+            header.restoreState(header_state)
+            for i in range(0, self.columnCount() - 1):
+                header.show_column(i, not self.isColumnHidden(i))
         else:
             header.update_visible_columns([0, 1, 2])
             for i, size in enumerate([250, 50, 100]):
                 header.resizeSection(i, size)
-
-    def save_state(self):
-        header = self.header()
-        config.persist[self.visible_columns.name] = list(header.visible_columns)
-        config.persist[self.header_state.name] = header.saveState()
 
     def supportedDropActions(self):
         return QtCore.Qt.CopyAction | QtCore.Qt.MoveAction
@@ -670,7 +682,6 @@ class BaseTreeView(QtWidgets.QTreeWidget):
 
 class FileTreeView(BaseTreeView):
 
-    visible_columns = config.ListOption("persist", "album_visible_columns", [0, 1, 2])
     header_state = config.Option("persist", "file_view_header_state", QtCore.QByteArray())
 
     def __init__(self, window, parent=None):
@@ -701,7 +712,6 @@ class FileTreeView(BaseTreeView):
 
 class AlbumTreeView(BaseTreeView):
 
-    visible_columns = config.ListOption("persist", "album_visible_columns", [0, 1, 2])
     header_state = config.Option("persist", "album_view_header_state", QtCore.QByteArray())
 
     def __init__(self, window, parent=None):
