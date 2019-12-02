@@ -33,6 +33,13 @@ from picard.const.sys import IS_FROZEN
 from picard.util import find_executable
 
 
+def get_score(node):
+    try:
+        return float(node.get('score', 1.0))
+    except (TypeError, ValueError):
+        return 1.0
+
+
 class AcoustIDClient(QtCore.QObject):
 
     def __init__(self):
@@ -76,18 +83,21 @@ class AcoustIDClient(QtCore.QObject):
                 recording_list = doc['recordings'] = []
                 status = document['status']
                 if status == 'ok':
-                    results = document['results']
-                    if results:
-                        result = results[0]
-                        file.metadata['acoustid_id'] = result['id']
-                        if 'recordings' in result and result['recordings']:
-                            max_sources = max([r.get('sources', 1) for r in result['recordings']] + [1])
-                            for recording in result['recordings']:
-                                parsed_recording = parse_recording(recording)
-                                if parsed_recording is not None:
-                                    parsed_recording['score'] = recording.get('sources', 1) / max_sources * 100
-                                    recording_list.append(parsed_recording)
-                            log.debug("AcoustID: Lookup successful for '%s'", file.filename)
+                    results = document.get('results') or []
+                    for result in results:
+                        recordings = result.get('recordings') or []
+                        max_sources = max([r.get('sources', 1) for r in recordings] + [1])
+                        result_score = get_score(result)
+                        for recording in recordings:
+                            parsed_recording = parse_recording(recording)
+                            if parsed_recording is not None:
+                                # Calculate a score based on result score and sources for this
+                                # recording relative to other recordings in this result
+                                score = recording.get('sources', 1) / max_sources * 100
+                                parsed_recording['score'] = score * result_score
+                                parsed_recording['acoustid'] = result['id']
+                                recording_list.append(parsed_recording)
+                        log.debug("AcoustID: Lookup successful for '%s'", file.filename)
                 else:
                     mparms = {
                         'error': document['error']['message'],
