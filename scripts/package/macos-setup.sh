@@ -2,7 +2,6 @@
 set -e
 
 # Install gettext
-brew update
 brew install gettext
 brew link gettext --force
 
