@@ -57,6 +57,7 @@ from picard.util import (
     tracknum_from_filename,
 )
 from picard.util.filenaming import make_short_filename
+from picard.util.preservedtags import PreservedTags
 from picard.util.scripttofilename import script_to_filename
 from picard.util.tags import PRESERVED_TAGS
 
@@ -186,12 +187,11 @@ class File(QtCore.QObject, Item):
 
     def copy_metadata(self, metadata, preserve_deleted=True):
         acoustid = self.metadata["acoustid_id"]
-        preserve = config.setting["preserved_tags"].strip()
         saved_metadata = {}
 
-        for tag in re.split(r"\s*,\s*", preserve) + PRESERVED_TAGS:
-            values = self.orig_metadata.getall(tag)
-            if values:
+        preserved_tags = PreservedTags()
+        for tag, values in self.orig_metadata.rawitems():
+            if tag in preserved_tags or tag in PRESERVED_TAGS:
                 saved_metadata[tag] = values
         deleted_tags = self.metadata.deleted_tags
         self.metadata.copy(metadata)
