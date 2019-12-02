@@ -19,6 +19,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from collections import (
+    OrderedDict,
     defaultdict,
     namedtuple,
 )
@@ -203,6 +204,10 @@ class Album(DataObject, Item):
             m.apply_func(asciipunct)
 
         m['totaldiscs'] = len(release_node['media'])
+        m['totaltracks'] = sum([m['track-count'] for m in release_node['media']])
+        # Generate a list of unique media, but keep order of first appearance
+        all_media = [media['format'] for media in release_node['media']]
+        m['media'] = " / ".join(list(OrderedDict.fromkeys(all_media)))
 
         # Add album to collections
         add_release_to_user_collections(release_node)
@@ -639,8 +644,12 @@ class Album(DataObject, Item):
                 return ''
         elif column == 'artist':
             return self.metadata['albumartist']
+        elif column == 'tracknumber':
+            return self.metadata['totaltracks']
+        elif column == 'discnumber':
+            return self.metadata['totaldiscs']
         else:
-            return ''
+            return self.metadata[column]
 
     def switch_release_version(self, mbid):
         if mbid == self.id:

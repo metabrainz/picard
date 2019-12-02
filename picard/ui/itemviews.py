@@ -126,6 +126,16 @@ class MainPanel(QtWidgets.QSplitter):
         (N_('Title'), 'title'),
         (N_('Length'), '~length'),
         (N_('Artist'), 'artist'),
+        (N_('Album Artist'), 'albumartist'),
+        (N_('Composer'), 'composer'),
+        (N_('Album'), 'album'),
+        (N_('Disc Subtitle'), 'discsubtitle'),
+        (N_('Track No.'), 'tracknumber'),
+        (N_('Disc No.'), 'discnumber'),
+        (N_('Catalog No.'), 'catalognumber'),
+        (N_('Barcode'), 'barcode'),
+        (N_('Media'), 'media'),
+        (N_('Genre'), 'genre'),
     ]
 
     def __init__(self, window, parent=None):
@@ -245,14 +255,68 @@ class MainPanel(QtWidgets.QSplitter):
             self.update_current_view()
 
 
+class ConfigurableColumnsHeader(QtWidgets.QHeaderView):
+
+    def __init__(self, parent=None):
+        super().__init__(QtCore.Qt.Horizontal, parent)
+        self._visible_columns = set([0])
+
+        # The following are settings applied to default headers
+        # of QTreeView and QTreeWidget.
+        self.setSectionsMovable(True)
+        self.setStretchLastSection(True)
+        self.setDefaultAlignment(QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter)
+        self.setSectionsClickable(False)
+
+        # enable sorting, but don't actually use it by default
+        # XXX it would be nice to be able to go to the 'no sort' mode, but the
+        #     internal model that QTreeWidget uses doesn't support it
+        self.setSortIndicator(-1, QtCore.Qt.AscendingOrder)
+        self.setDefaultSectionSize(100)
+
+    def show_column(self, column, show):
+        if column == 0:  # The first column is fixed
+            return
+        self.parent().setColumnHidden(column, not show)
+        if show:
+            if self.sectionSize(column) == 0:
+                self.resizeSection(column, self.defaultSectionSize())
+            self._visible_columns.add(column)
+        elif column in self._visible_columns:
+            self._visible_columns.remove(column)
+
+    def update_visible_columns(self, columns):
+        for i, column in enumerate(MainPanel.columns):
+            self.show_column(i, i in columns)
+
+    @property
+    def visible_columns(self):
+        return self._visible_columns
+
+    def contextMenuEvent(self, event):
+        menu = QtWidgets.QMenu(self)
+
+        for i, column in enumerate(MainPanel.columns):
+            if i == 0:
+                continue
+            action = QtWidgets.QAction(column[0], self.parent())
+            action.setCheckable(True)
+            action.setChecked(i in self._visible_columns)
+            action.triggered.connect(partial(self.show_column, i))
+            menu.addAction(action)
+
+        menu.exec_(event.globalPos())
+        event.accept()
+
+
 class BaseTreeView(QtWidgets.QTreeWidget):
 
     def __init__(self, window, parent=None):
         super().__init__(parent)
+        self.setHeader(ConfigurableColumnsHeader(self))
         self.window = window
         self.panel = parent
 
-        self.numHeaderSections = len(MainPanel.columns)
         self.setHeaderLabels([_(h) for h, n in MainPanel.columns])
         self.restore_state()
 
@@ -261,10 +325,6 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         self.setDropIndicatorShown(True)
         self.setSelectionMode(QtWidgets.QAbstractItemView.ExtendedSelection)
 
-        # enable sorting, but don't actually use it by default
-        # XXX it would be nice to be able to go to the 'no sort' mode, but the
-        #     internal model that QTreeWidget uses doesn't support it
-        self.header().setSortIndicator(-1, QtCore.Qt.AscendingOrder)
         self.setSortingEnabled(True)
 
         self.expand_all_action = QtWidgets.QAction(_("&Expand all"), self)
@@ -457,18 +517,22 @@ class BaseTreeView(QtWidgets.QTreeWidget):
 
     @restore_method
     def restore_state(self):
-        sizes = config.persist[self.view_sizes.name]
         header = self.header()
+        header.update_visible_columns([int(i) for i in config.persist[self.view_columns.name]])
+        sizes = config.persist[self.view_sizes.name]
         sizes = sizes.split(" ")
-        try:
-            for i in range(self.numHeaderSections - 1):
-                header.resizeSection(i, int(sizes[i]))
-        except IndexError:
-            pass
+        for i in range(self.columnCount() - 1):
+            try:
+                size = int(sizes[i])
+            except IndexError:
+                size = header.defaultSectionSize()
+            header.resizeSection(i, size)
 
     def save_state(self):
-        cols = range(self.numHeaderSections - 1)
-        sizes = " ".join(str(self.header().sectionSize(i)) for i in cols)
+        header = self.header()
+        config.persist[self.view_columns.name] = list(header.visible_columns)
+        cols = range(self.columnCount() - 1)
+        sizes = " ".join(str(header.sectionSize(i)) for i in cols)
         config.persist[self.view_sizes.name] = sizes
 
     def supportedDropActions(self):
@@ -609,7 +673,8 @@ class BaseTreeView(QtWidgets.QTreeWidget):
 
 class FileTreeView(BaseTreeView):
 
-    view_sizes = config.TextOption("persist", "file_view_sizes", "250 40 100")
+    view_columns = config.ListOption("persist", "file_view_columns", [0, 1, 2])
+    view_sizes = config.TextOption("persist", "file_view_sizes", "250 50 100")
 
     def __init__(self, window, parent=None):
         super().__init__(window, parent)
@@ -639,7 +704,8 @@ class FileTreeView(BaseTreeView):
 
 class AlbumTreeView(BaseTreeView):
 
-    view_sizes = config.TextOption("persist", "album_view_sizes", "250 40 100")
+    view_columns = config.ListOption("persist", "album_view_columns", [0, 1, 2])
+    view_sizes = config.TextOption("persist", "album_view_sizes", "250 50 100")
 
     def __init__(self, window, parent=None):
         super().__init__(window, parent)
@@ -672,6 +738,8 @@ class TreeItem(QtWidgets.QTreeWidgetItem):
             obj.item = self
         self.sortable = sortable
         self.setTextAlignment(1, QtCore.Qt.AlignRight | QtCore.Qt.AlignVCenter)
+        self.setTextAlignment(7, QtCore.Qt.AlignRight | QtCore.Qt.AlignVCenter)
+        self.setTextAlignment(8, QtCore.Qt.AlignRight | QtCore.Qt.AlignVCenter)
 
     def __lt__(self, other):
         if not self.sortable:
