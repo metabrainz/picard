@@ -675,6 +675,7 @@ class File(QtCore.QObject, Item):
                 statusbar(N_("File '%(filename)s' identified!"))
                 (track_id, release_group_id, release_id, node) = trackmatch
                 if lookuptype == File.LOOKUP_ACOUSTID:
+                    self.metadata['acoustid_id'] = node.get('acoustid')
                     self.tagger.acoustidmanager.add(self, track_id)
                 if release_group_id is not None:
                     releasegroup = self.tagger.get_release_group_by_id(release_group_id)
@@ -700,13 +701,12 @@ class File(QtCore.QObject, Item):
             return None
         else:
             track_id = best_match.result.track['id']
-            release_group_id, release_id, node = None, None, None
+            release_group_id, release_id = None, None
 
             if best_match.result.release:
                 release_group_id = best_match.result.releasegroup['id']
                 release_id = best_match.result.release['id']
-            elif 'title' in best_match.result.track:
-                node = best_match.result.track
+            node = best_match.result.track
             return (track_id, release_group_id, release_id, node)
 
     def lookup_metadata(self):

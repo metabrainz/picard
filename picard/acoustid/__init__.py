@@ -85,7 +85,6 @@ class AcoustIDClient(QtCore.QObject):
                 if status == 'ok':
                     results = document.get('results') or []
                     for result in results:
-                        file.metadata['acoustid_id'] = result['id']
                         recordings = result.get('recordings') or []
                         max_sources = max([r.get('sources', 1) for r in recordings] + [1])
                         result_score = get_score(result)
@@ -96,6 +95,7 @@ class AcoustIDClient(QtCore.QObject):
                                 # recording relative to other recordings in this result
                                 score = recording.get('sources', 1) / max_sources * 100
                                 parsed_recording['score'] = score * result_score
+                                parsed_recording['acoustid'] = result['id']
                                 recording_list.append(parsed_recording)
                         log.debug("AcoustID: Lookup successful for '%s'", file.filename)
                 else:
