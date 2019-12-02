@@ -82,6 +82,7 @@ before_cache:
 - if [ "${TRAVIS_OS_NAME}" = "osx" ]; then find /usr/local/Homebrew \! -regex ".+\.git.+" -delete; fi
 
 before_install:
+- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update; fi
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then bash scripts/package/macos-setup.sh; fi
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export LD_LIBRARY_PATH=`pwd`:$LD_LIBRARY_PATH; fi
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then source bin/activate; fi
