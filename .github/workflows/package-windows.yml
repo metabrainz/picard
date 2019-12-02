@@ -17,6 +17,7 @@ on:
     - 'setup.py'
     - 'tagger.py.in'
     - 'win.version-info.txt.in'
+  pull_request:
 
 jobs:
   package:

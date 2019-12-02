@@ -15,6 +15,7 @@ on:
     - 'requirements*.txt'
     - 'setup.py'
     - 'tagger.py.in'
+  pull_request:
 
 jobs:
   package:
