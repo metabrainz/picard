@@ -37,14 +37,21 @@ jobs:
     - name: Setup Windows build environment
       run: |
         & .\scripts\package\win-setup.ps1 -DiscidVersion $Env:DISCID_VERSION -FpcalVersion $Env:FPCALC_VERSION
+        Write-Output "::add-path::C:\Program Files (x86)\Windows Kits\10\bin\10.0.18362.0\x64"
+        Write-Output "::set-env name=BUILD_NUMBER::$(git rev-list --count HEAD)"
         New-Item -Name .\artifacts -ItemType Directory
       env:
         DISCID_VERSION: 0.6.2
         FPCALC_VERSION: 1.4.3
     - name: Prepare code signing certificate
       run: |
-        pip install awscli
-        aws s3 cp "$Env:CODESIGN_PFX_URL" .\codesign.pfx
+        If ($Env:CODESIGN_PFX_URL -And $Env:AWS_ACCESS_KEY_ID) {
+          pip install awscli
+          aws s3 cp "$Env:CODESIGN_PFX_URL" .\codesign.pfx
+          Write-Output "::set-env name=CODESIGN::1"
+        } Else {
+          Write-Output "::warning::No code signing certificate available, skipping code signing."
+        }
       env:
         AWS_DEFAULT_REGION: eu-central-1
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -57,8 +64,11 @@ jobs:
         pip install -r requirements-win.txt
     - name: Build Windows 10 app package
       run: |
-        $Env:PATH += ";C:\Program Files (x86)\Windows Kits\10\bin\10.0.18362.0\x64"
-        & .\scripts\package\win-package-appx.ps1 -BuildNumber $(git rev-list --count HEAD) -CertificateFile .\codesign.pfx -CertificatePassword $Env:CODESIGN_PFX_PASSWORD
+        If ($Env:CODESIGN) {
+          & .\scripts\package\win-package-appx.ps1 -BuildNumber $Env:BUILD_NUMBER -CertificateFile .\codesign.pfx -CertificatePassword $Env:CODESIGN_PFX_PASSWORD
+        } Else {
+          & .\scripts\package\win-package-appx.ps1 -BuildNumber $Env:BUILD_NUMBER
+        }
         Move-Item .\dist\*.msix .\artifacts
       env:
         CODESIGN_PFX_PASSWORD: ${{ secrets.CODESIGN_PFX_PASSWORD }}
@@ -66,9 +76,13 @@ jobs:
       if: always()
       run: |
         # choco install nsis
-        $CertPassword = ConvertTo-SecureString -String $Env:CODESIGN_PFX_PASSWORD -Force -AsPlainText
-        $Certificate = Get-PfxCertificate -FilePath .\codesign.pfx -Password $CertPassword
-        & .\scripts\package\win-package-installer.ps1 -BuildNumber $(git rev-list --count HEAD) -Certificate $Certificate
+        If ($Env:CODESIGN) {
+          $CertPassword = ConvertTo-SecureString -String $Env:CODESIGN_PFX_PASSWORD -Force -AsPlainText
+          $Certificate = Get-PfxCertificate -FilePath .\codesign.pfx -Password $CertPassword
+          & .\scripts\package\win-package-installer.ps1 -BuildNumber $Env:BUILD_NUMBER -Certificate $Certificate
+        } Else {
+          & .\scripts\package\win-package-installer.ps1 -BuildNumber $Env:BUILD_NUMBER
+        }
         Move-Item .\installer\*.exe .\artifacts
         dist\picard\fpcalc -version
       env:
@@ -76,9 +90,13 @@ jobs:
     - name: Build Windows portable app
       if: always()
       run: |
-        $CertPassword = ConvertTo-SecureString -String $Env:CODESIGN_PFX_PASSWORD -Force -AsPlainText
-        $Certificate = Get-PfxCertificate -FilePath .\codesign.pfx -Password $CertPassword
-        & .\scripts\package\win-package-portable.ps1 -BuildNumber $(git rev-list --count HEAD) -Certificate $Certificate
+        If ($Env:CODESIGN) {
+          $CertPassword = ConvertTo-SecureString -String $Env:CODESIGN_PFX_PASSWORD -Force -AsPlainText
+          $Certificate = Get-PfxCertificate -FilePath .\codesign.pfx -Password $CertPassword
+          & .\scripts\package\win-package-portable.ps1 -BuildNumber $Env:BUILD_NUMBER -Certificate $Certificate
+        } Else {
+          & .\scripts\package\win-package-portable.ps1 -BuildNumber $Env:BUILD_NUMBER
+        }
         Move-Item .\dist\*.exe .\artifacts
       env:
         CODESIGN_PFX_PASSWORD: ${{ secrets.CODESIGN_PFX_PASSWORD }}
