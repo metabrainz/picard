@@ -62,6 +62,7 @@ class AdvancedOptionsPage(OptionsPage):
         self.ui.completeness_ignore_data.setChecked(config.setting["completeness_ignore_data"])
         self.ui.completeness_ignore_silence.setChecked(config.setting["completeness_ignore_silence"])
         self.ui.compare_ignore_tags.update(config.setting["compare_ignore_tags"])
+        self.ui.compare_ignore_tags.set_user_sortable(False)
 
     def save(self):
         config.setting["ignore_regex"] = self.ui.ignore_regex.text()

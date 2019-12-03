@@ -44,14 +44,19 @@ class EditableListView(QtWidgets.QListView):
             self.add_empty_row()
 
     def closeEditor(self, editor, hint):
+        model = self.model()
+        index = self.currentIndex()
         if not editor.text():
-            index = self.currentIndex()
             row = index.row()
-            self.model().removeRow(row)
+            model.removeRow(row)
             self.select_row(row)
             editor.parent().setFocus()
         else:
             super().closeEditor(editor, hint)
+            if not model.user_sortable:
+                data = index.data(QtCore.Qt.EditRole)
+                model.sort(0)
+                self.select_key(data)
 
     def add_item(self, value=""):
         model = self.model()
@@ -106,6 +111,14 @@ class EditableListView(QtWidgets.QListView):
         index = self.model().index(row, 0)
         self.setCurrentIndex(index)
 
+    def select_key(self, value):
+        model = self.model()
+        for row in range(0, model.rowCount() - 1):
+            index = model.createIndex(row, 0)
+            if value == index.data(QtCore.Qt.EditRole):
+                self.setCurrentIndex(index)
+                break
+
     def get_selected_rows(self):
         return [index.row() for index in self.selectedIndexes()]
 
@@ -122,9 +135,28 @@ class EditableListView(QtWidgets.QListView):
 
 
 class EditableListModel(QtCore.QAbstractListModel):
+    user_sortable_changed = QtCore.pyqtSignal(bool)
+
     def __init__(self, items=None, parent=None):
         super().__init__(parent)
         self._items = [(item, self.get_display_name(item)) for item in items or []]
+        self._user_sortable = True
+
+    @property
+    def user_sortable(self):
+        return self._user_sortable
+
+    @user_sortable.setter
+    def user_sortable(self, user_sortable):
+        self._user_sortable = user_sortable
+        if not user_sortable:
+            self.sort(0)
+        self.user_sortable_changed.emit(user_sortable)
+
+    def sort(self, column, order=QtCore.Qt.AscendingOrder):
+        self.beginResetModel()
+        self._items.sort(key=lambda t: t[1], reverse=(order == QtCore.Qt.DescendingOrder))
+        self.endResetModel()
 
     def get_display_name(self, item):  # pylint: disable=no-self-use
         return item
@@ -156,16 +188,19 @@ class EditableListModel(QtCore.QAbstractListModel):
         except IndexError:
             return False
 
-    @staticmethod
-    def flags(index):
+    def flags(self, index):
         if index.isValid():
-            return (QtCore.Qt.ItemIsSelectable
+            flags = (QtCore.Qt.ItemIsSelectable
                 | QtCore.Qt.ItemIsEditable
-                | QtCore.Qt.ItemIsDragEnabled
                 | QtCore.Qt.ItemIsEnabled
                 | QtCore.Qt.ItemNeverHasChildren)
-        else:
+            if self.user_sortable:
+                flags |= QtCore.Qt.ItemIsDragEnabled
+            return flags
+        elif self.user_sortable:
             return QtCore.Qt.ItemIsDropEnabled
+        else:
+            return QtCore.Qt.NoItemFlags
 
     def insertRows(self, row, count, parent=QtCore.QModelIndex()):
         super().beginInsertRows(parent, row, row + count - 1)
