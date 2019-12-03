@@ -211,12 +211,19 @@ class AutocompleteItemDelegate(QtWidgets.QItemDelegate):
         self._completions = completions
 
     def createEditor(self, parent, option, index):
+        if not index.isValid():
+            return None
+
         editor = QtWidgets.QLineEdit(parent)
-        completer = QtWidgets.QCompleter(self._completions, parent)
+        style = editor.style()
+        editor.setFrame(style.styleHint(QtWidgets.QStyle.SH_ItemView_DrawDelegateFrame, None, editor))
+        if not style.styleHint(QtWidgets.QStyle.SH_ItemView_ShowDecorationSelected, None, editor):
+            editor.setWidgetOwnsGeometry(True)
 
         def complete(text):
             parent.setFocus()
 
+        completer = QtWidgets.QCompleter(self._completions, parent)
         completer.activated.connect(complete)
         editor.setCompleter(completer)
         return editor
