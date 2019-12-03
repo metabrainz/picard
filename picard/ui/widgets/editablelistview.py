@@ -215,15 +215,10 @@ class AutocompleteItemDelegate(QtWidgets.QItemDelegate):
         if not index.isValid():
             return None
 
-        editor = QtWidgets.QLineEdit(parent)
-        style = editor.style()
-        editor.setFrame(style.styleHint(QtWidgets.QStyle.SH_ItemView_DrawDelegateFrame, None, editor))
-        if not style.styleHint(QtWidgets.QStyle.SH_ItemView_ShowDecorationSelected, None, editor):
-            editor.setWidgetOwnsGeometry(True)
-
         def complete(text):
             parent.setFocus()
 
+        editor = super().createEditor(parent, option, index)
         completer = QtWidgets.QCompleter(self._completions, parent)
         completer.activated.connect(complete)
         editor.setCompleter(completer)
