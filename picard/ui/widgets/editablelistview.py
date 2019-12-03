@@ -27,6 +27,7 @@ class EditableListView(QtWidgets.QListView):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setSelectionMode(QtWidgets.QAbstractItemView.ExtendedSelection)
+        self.setDragDropMode(QtWidgets.QAbstractItemView.InternalMove)
 
     def keyPressEvent(self, event):
         if (event.modifiers() == QtCore.Qt.NoModifier
