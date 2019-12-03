@@ -28,6 +28,24 @@ from picard.ui import PicardDialog
 from picard.ui.ui_edittagdialog import Ui_EditTagDialog
 
 
+class TagEditorDelegate(QtWidgets.QItemDelegate):
+
+    def createEditor(self, parent, option, index):
+        if not index.isValid():
+            return None
+        tag = self.get_tag_name(index)
+        if tag == 'lyrics' or tag == 'comment' or tag.startswith('comment:'):
+            editor = QtWidgets.QPlainTextEdit(parent)
+            editor.setFrameStyle(editor.style().styleHint(QtWidgets.QStyle.SH_ItemView_DrawDelegateFrame, None, editor))
+            editor.setMinimumSize(QtCore.QSize(0, 80))
+        else:
+            editor = super().createEditor(parent, option, index)
+        return editor
+
+    def get_tag_name(self, index):
+        return self.parent().tag
+
+
 class EditTagDialog(PicardDialog):
 
     autorestore = False
@@ -62,6 +80,7 @@ class EditTagDialog(PicardDialog):
         self.ui.remove_value.clicked.connect(self.remove_value)
         self.value_list.itemChanged.connect(self.value_edited)
         self.value_list.itemSelectionChanged.connect(self.value_selection_changed)
+        self.value_list.setItemDelegate(TagEditorDelegate(self))
         self.restore_geometry()
 
     def edit_value(self):
