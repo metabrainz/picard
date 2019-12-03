@@ -38,6 +38,8 @@ class TagListEditor(QtWidgets.QWidget):
         self.ui.setupUi(self)
         list_view = self.ui.tag_list_view
         model = TagListModel()
+        model.user_sortable_changed.connect(self.on_user_sortable_changed)
+        self.ui.sort_buttons.setVisible(model.user_sortable)
         list_view.setModel(model)
         list_view.setItemDelegate(AutocompleteItemDelegate(
             sorted(TAG_NAMES.keys())))
@@ -61,6 +63,12 @@ class TagListEditor(QtWidgets.QWidget):
     @property
     def tags(self):
         return self.ui.tag_list_view.items
+
+    def on_user_sortable_changed(self, user_sortable):
+        self.ui.sort_buttons.setVisible(user_sortable)
+
+    def set_user_sortable(self, user_sortable):
+        self.ui.tag_list_view.model().user_sortable = user_sortable
 
 
 class TagListModel(EditableListModel):
