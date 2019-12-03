@@ -204,10 +204,6 @@ class Album(DataObject, Item):
             m.apply_func(asciipunct)
 
         m['totaldiscs'] = len(release_node['media'])
-        m['totaltracks'] = sum([m['track-count'] for m in release_node['media']])
-        # Generate a list of unique media, but keep order of first appearance
-        all_media = [media['format'] for media in release_node['media']]
-        m['media'] = " / ".join(list(OrderedDict.fromkeys(all_media)))
 
         # Add album to collections
         add_release_to_user_collections(release_node)
@@ -278,8 +274,9 @@ class Album(DataObject, Item):
 
         if not self._tracks_loaded:
             artists = set()
-            totalalbumtracks = 0
+            all_media = []
             absolutetracknumber = 0
+
             va = self._new_metadata['musicbrainz_albumartistid'] == VARIOUS_ARTISTS_ID
 
             djmix_ars = {}
@@ -291,6 +288,9 @@ class Album(DataObject, Item):
                 mm.copy(self._new_metadata)
                 medium_to_metadata(medium_node, mm)
                 discpregap = False
+                format = medium_node.get('format')
+                if format:
+                    all_media.append(format)
 
                 for dj in djmix_ars.get(mm["discnumber"], []):
                     mm.add("djmixer", dj)
@@ -319,7 +319,10 @@ class Album(DataObject, Item):
                         track = self._finalize_loading_track(track_node, mm, artists, va, absolutetracknumber, discpregap)
                         track.metadata['~datatrack'] = "1"
 
-            totalalbumtracks = str(absolutetracknumber)
+            totalalbumtracks = absolutetracknumber
+            self._new_metadata['~totalalbumtracks'] = totalalbumtracks
+            # Generate a list of unique media, but keep order of first appearance
+            self._new_metadata['media'] = " / ".join(list(OrderedDict.fromkeys(all_media)))
 
             for track in self._new_tracks:
                 track.metadata["~totalalbumtracks"] = totalalbumtracks
@@ -645,7 +648,7 @@ class Album(DataObject, Item):
         elif column == 'artist':
             return self.metadata['albumartist']
         elif column == 'tracknumber':
-            return self.metadata['totaltracks']
+            return self.metadata['~totalalbumtracks']
         elif column == 'discnumber':
             return self.metadata['totaldiscs']
         else:
