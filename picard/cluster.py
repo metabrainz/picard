@@ -181,6 +181,10 @@ class Cluster(QtCore.QObject, Item):
             return format_time(self.metadata.length)
         elif column == 'artist':
             return self.metadata['albumartist']
+        elif column == 'tracknumber':
+            return self.metadata['totaltracks']
+        elif column == 'discnumber':
+            return self.metadata['totaldiscs']
         return self.metadata[column]
 
     def _lookup_finished(self, document, http, error):
