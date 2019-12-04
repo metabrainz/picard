@@ -21,3 +21,6 @@ pyflakes:
     # to specify additional builtins for pyflakes with prospector.
     # We also test for this with flake8 in a saner way.
     - F821
+    # Ignore syntax errors as reported by PyFlages since on Codacy this does
+    # not support Python 3 syntax.
+    - F999
