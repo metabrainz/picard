@@ -22,6 +22,10 @@
     <file>images/16x16/edit-paste@2x.png</file>
     <file>images/16x16/folder.png</file>
     <file>images/16x16/folder@2x.png</file>
+    <file>images/16x16/go-down.png</file>
+    <file>images/16x16/go-down@2x.png</file>
+    <file>images/16x16/go-up.png</file>
+    <file>images/16x16/go-up@2x.png</file>
     <file>images/16x16/list-remove.png</file>
     <file>images/16x16/list-remove@2x.png</file>
     <file>images/16x16/lookup-musicbrainz.png</file>
