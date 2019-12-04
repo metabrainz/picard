@@ -34,12 +34,16 @@ class TagEditorDelegate(QtWidgets.QItemDelegate):
         if not index.isValid():
             return None
         tag = self.get_tag_name(index)
-        if tag == 'lyrics' or tag == 'comment' or tag.startswith('comment:'):
+        if tag in ('lyrics', 'comment') or tag.startswith('comment:'):
             editor = QtWidgets.QPlainTextEdit(parent)
             editor.setFrameStyle(editor.style().styleHint(QtWidgets.QStyle.SH_ItemView_DrawDelegateFrame, None, editor))
             editor.setMinimumSize(QtCore.QSize(0, 80))
         else:
             editor = super().createEditor(parent, option, index)
+        if tag in ('date', 'originaldate'):
+            editor.setPlaceholderText(_('YYYY-MM-DD'))
+        elif tag == 'originalyear':
+            editor.setPlaceholderText(_('YYYY'))
         return editor
 
     def get_tag_name(self, index):
