@@ -572,6 +572,7 @@ class picard_update_constants(Command):
             'DB:medium_format/name',
             'DB:release_group_primary_type/name',
             'DB:release_group_secondary_type/name',
+            'DB:release_status/name',
         )
         with open(attributes_potfile, 'rb') as f:
             log.info('Parsing %s' % attributes_potfile)

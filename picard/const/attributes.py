@@ -98,6 +98,7 @@ MB_ATTRIBUTES = {
     'DB:medium_format/name:080': 'VinylDisc (DVD side)',
     'DB:medium_format/name:081': 'VinylDisc (Vinyl side)',
     'DB:medium_format/name:082': 'VinylDisc (CD side)',
+    'DB:medium_format/name:083': 'Microcassette',
     'DB:release_group_primary_type/name:001': 'Album',
     'DB:release_group_primary_type/name:002': 'Single',
     'DB:release_group_primary_type/name:003': 'EP',
@@ -114,4 +115,8 @@ MB_ATTRIBUTES = {
     'DB:release_group_secondary_type/name:009': 'Mixtape/Street',
     'DB:release_group_secondary_type/name:010': 'Demo',
     'DB:release_group_secondary_type/name:011': 'Audio drama',
+    'DB:release_status/name:001': 'Official',
+    'DB:release_status/name:002': 'Promotion',
+    'DB:release_status/name:003': 'Bootleg',
+    'DB:release_status/name:004': 'Pseudo-Release',
 }

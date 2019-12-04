@@ -2,6 +2,7 @@
 #
 # Picard, the next-generation MusicBrainz tagger
 # Copyright (C) 2011 Michael Wiencek
+# Copyright (C) 2019 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -22,10 +23,24 @@ from PyQt5 import (
     QtWidgets,
 )
 
+from picard.const import (
+    RELEASE_COUNTRIES,
+    RELEASE_FORMATS,
+    RELEASE_PRIMARY_GROUPS,
+    RELEASE_SECONDARY_GROUPS,
+    RELEASE_STATUS,
+)
 from picard.util.tags import TAG_NAMES
 
 from picard.ui import PicardDialog
 from picard.ui.ui_edittagdialog import Ui_EditTagDialog
+
+
+AUTOCOMPLETE_RELEASE_TYPES = [s.lower() for s
+                              in sorted(RELEASE_PRIMARY_GROUPS) + sorted(RELEASE_SECONDARY_GROUPS)]
+AUTOCOMPLETE_RELEASE_STATUS = sorted([s.lower() for s in RELEASE_STATUS])
+AUTOCOMPLETE_RELEASE_COUNTRIES = sorted(RELEASE_COUNTRIES, key=str.casefold)
+AUTOCOMPLETE_RELEASE_FORMATS = sorted(RELEASE_FORMATS, key=str.casefold)
 
 
 class TagEditorDelegate(QtWidgets.QItemDelegate):
@@ -40,10 +55,26 @@ class TagEditorDelegate(QtWidgets.QItemDelegate):
             editor.setMinimumSize(QtCore.QSize(0, 80))
         else:
             editor = super().createEditor(parent, option, index)
+        completer = None
         if tag in ('date', 'originaldate'):
             editor.setPlaceholderText(_('YYYY-MM-DD'))
         elif tag == 'originalyear':
             editor.setPlaceholderText(_('YYYY'))
+        elif tag == 'releasetype':
+            completer = QtWidgets.QCompleter(AUTOCOMPLETE_RELEASE_TYPES, editor)
+        elif tag == 'releasestatus':
+            completer = QtWidgets.QCompleter(AUTOCOMPLETE_RELEASE_STATUS, editor)
+            completer.setModelSorting(QtWidgets.QCompleter.CaseInsensitivelySortedModel)
+        elif tag == 'releasecountry':
+            completer = QtWidgets.QCompleter(AUTOCOMPLETE_RELEASE_COUNTRIES, editor)
+            completer.setModelSorting(QtWidgets.QCompleter.CaseInsensitivelySortedModel)
+        elif tag == 'media':
+            completer = QtWidgets.QCompleter(AUTOCOMPLETE_RELEASE_FORMATS, editor)
+            completer.setModelSorting(QtWidgets.QCompleter.CaseInsensitivelySortedModel)
+        if editor and completer:
+            completer.setCompletionMode(QtWidgets.QCompleter.UnfilteredPopupCompletion)
+            completer.setCaseSensitivity(QtCore.Qt.CaseInsensitive)
+            editor.setCompleter(completer)
         return editor
 
     def get_tag_name(self, index):
