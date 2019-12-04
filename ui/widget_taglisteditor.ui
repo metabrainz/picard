@@ -134,7 +134,7 @@
          <string/>
         </property>
         <property name="icon">
-         <iconset theme="go-up">
+         <iconset theme=":/images/16x16/go-up.png">
           <normaloff>.</normaloff>.</iconset>
         </property>
        </widget>
@@ -151,7 +151,7 @@
          <string/>
         </property>
         <property name="icon">
-         <iconset theme="go-down">
+         <iconset theme=":/images/16x16/go-down.png">
           <normaloff>.</normaloff>.</iconset>
         </property>
        </widget>
