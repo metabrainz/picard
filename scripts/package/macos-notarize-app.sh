@@ -49,7 +49,7 @@ echo "$(echo "$RESULT" | xpath \
 
 # Poll for notarization status
 echo "Submitted notarization request $REQUEST_UUID, waiting for response..."
-sleep 20
+sleep 60
 while :
 do
   RESULT=$(xcrun altool --notarization-info "$REQUEST_UUID" \
