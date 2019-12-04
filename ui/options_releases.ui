@@ -59,15 +59,27 @@
         </item>
         <item>
          <widget class="QPushButton" name="add_countries">
-          <property name="text">
-           <string>&gt;</string>
+          <property name="toolTip">
+           <string>Add to preferred release countries</string>
+          </property>
+          <property name="accessibleDescription">
+           <string>Add to preferred release countries</string>
+          </property>
+          <property name="icon">
+           <iconset theme=":/images/16x16/go-next.png"/>
           </property>
          </widget>
         </item>
         <item>
          <widget class="QPushButton" name="remove_countries">
-          <property name="text">
-           <string>&lt;</string>
+          <property name="toolTip">
+           <string>Remove from preferred release countries</string>
+          </property>
+          <property name="accessibleDescription">
+           <string>Remove from preferred release countries</string>
+          </property>
+          <property name="icon">
+           <iconset theme=":/images/16x16/go-previous.png"/>
           </property>
          </widget>
         </item>
@@ -141,15 +153,27 @@
         </item>
         <item>
          <widget class="QPushButton" name="add_formats">
-          <property name="text">
-           <string>&gt;</string>
+          <property name="toolTip">
+           <string>Add to preferred release formats</string>
+          </property>
+          <property name="accessibleName">
+           <string>Add to preferred release formats</string>
+          </property>
+          <property name="icon">
+           <iconset theme=":/images/16x16/go-next.png"/>
           </property>
          </widget>
         </item>
         <item>
          <widget class="QPushButton" name="remove_formats">
-          <property name="text">
-           <string>&lt;</string>
+          <property name="toolTip">
+           <string>Remove from preferred release formats</string>
+          </property>
+          <property name="accessibleDescription">
+           <string>Remove from preferred release formats</string>
+          </property>
+          <property name="icon">
+           <iconset theme=":/images/16x16/go-previous.png"/>
           </property>
          </widget>
         </item>

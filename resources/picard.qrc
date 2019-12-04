@@ -24,6 +24,10 @@
     <file>images/16x16/folder@2x.png</file>
     <file>images/16x16/go-down.png</file>
     <file>images/16x16/go-down@2x.png</file>
+    <file>images/16x16/go-next.png</file>
+    <file>images/16x16/go-next@2x.png</file>
+    <file>images/16x16/go-previous.png</file>
+    <file>images/16x16/go-previous@2x.png</file>
     <file>images/16x16/go-up.png</file>
     <file>images/16x16/go-up@2x.png</file>
     <file>images/16x16/list-remove.png</file>
@@ -40,6 +44,14 @@
     <file>images/16x16/media-optical-saved@2x.png</file>
     <file>images/16x16/media-optical.png</file>
     <file>images/16x16/media-optical@2x.png</file>
+    <file>images/16x16/opt/go-down.png</file>
+    <file>images/16x16/opt/go-down@2x.png</file>
+    <file>images/16x16/opt/go-next.png</file>
+    <file>images/16x16/opt/go-next@2x.png</file>
+    <file>images/16x16/opt/go-previous.png</file>
+    <file>images/16x16/opt/go-previous@2x.png</file>
+    <file>images/16x16/opt/go-up.png</file>
+    <file>images/16x16/opt/go-up@2x.png</file>
     <file>images/16x16/org.musicbrainz.Picard.png</file>
     <file>images/16x16/pause.png</file>
     <file>images/16x16/pause@2x.png</file>

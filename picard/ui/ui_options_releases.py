@@ -3,7 +3,9 @@
 # Automatically generated - don't edit.
 # Use `python setup.py build_ui` to update it.
 
+
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class Ui_ReleasesOptionsPage(object):
     def setupUi(self, ReleasesOptionsPage):
@@ -35,9 +37,13 @@ class Ui_ReleasesOptionsPage(object):
         spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.verticalLayout.addItem(spacerItem)
         self.add_countries = QtWidgets.QPushButton(self.country_group)
+        icon = QtGui.QIcon.fromTheme(":/images/16x16/go-next.png")
+        self.add_countries.setIcon(icon)
         self.add_countries.setObjectName("add_countries")
         self.verticalLayout.addWidget(self.add_countries)
         self.remove_countries = QtWidgets.QPushButton(self.country_group)
+        icon = QtGui.QIcon.fromTheme(":/images/16x16/go-previous.png")
+        self.remove_countries.setIcon(icon)
         self.remove_countries.setObjectName("remove_countries")
         self.verticalLayout.addWidget(self.remove_countries)
         spacerItem1 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
@@ -72,9 +78,13 @@ class Ui_ReleasesOptionsPage(object):
         spacerItem2 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.verticalLayout_2.addItem(spacerItem2)
         self.add_formats = QtWidgets.QPushButton(self.format_group)
+        icon = QtGui.QIcon.fromTheme(":/images/16x16/go-next.png")
+        self.add_formats.setIcon(icon)
         self.add_formats.setObjectName("add_formats")
         self.verticalLayout_2.addWidget(self.add_formats)
         self.remove_formats = QtWidgets.QPushButton(self.format_group)
+        icon = QtGui.QIcon.fromTheme(":/images/16x16/go-previous.png")
+        self.remove_formats.setIcon(icon)
         self.remove_formats.setObjectName("remove_formats")
         self.verticalLayout_2.addWidget(self.remove_formats)
         spacerItem3 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
@@ -99,9 +109,12 @@ class Ui_ReleasesOptionsPage(object):
         _translate = QtCore.QCoreApplication.translate
         self.type_group.setTitle(_("Preferred release types"))
         self.country_group.setTitle(_("Preferred release countries"))
-        self.add_countries.setText(_(">"))
-        self.remove_countries.setText(_("<"))
+        self.add_countries.setToolTip(_("Add to preferred release countries"))
+        self.add_countries.setAccessibleDescription(_("Add to preferred release countries"))
+        self.remove_countries.setToolTip(_("Remove from preferred release countries"))
+        self.remove_countries.setAccessibleDescription(_("Remove from preferred release countries"))
         self.format_group.setTitle(_("Preferred release formats"))
-        self.add_formats.setText(_(">"))
-        self.remove_formats.setText(_("<"))
-
+        self.add_formats.setToolTip(_("Add to preferred release formats"))
+        self.add_formats.setAccessibleName(_("Add to preferred release formats"))
+        self.remove_formats.setToolTip(_("Remove from preferred release formats"))
+        self.remove_formats.setAccessibleDescription(_("Remove from preferred release formats"))
