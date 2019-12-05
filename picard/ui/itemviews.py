@@ -62,6 +62,7 @@ from picard.ui.collectionmenu import CollectionMenu
 from picard.ui.colors import interface_colors
 from picard.ui.ratingwidget import RatingWidget
 from picard.ui.scriptsmenu import ScriptsMenu
+from picard.ui.widgets.tristatesortheaderview import TristateSortHeaderView
 
 
 class BaseAction(QtWidgets.QAction):
@@ -255,7 +256,7 @@ class MainPanel(QtWidgets.QSplitter):
             self.update_current_view()
 
 
-class ConfigurableColumnsHeader(QtWidgets.QHeaderView):
+class ConfigurableColumnsHeader(TristateSortHeaderView):
 
     def __init__(self, parent=None):
         super().__init__(QtCore.Qt.Horizontal, parent)
@@ -543,6 +544,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
             header.update_visible_columns([0, 1, 2])
             for i, size in enumerate([250, 50, 100]):
                 header.resizeSection(i, size)
+            self.sortByColumn(-1, QtCore.Qt.AscendingOrder)
 
     def supportedDropActions(self):
         return QtCore.Qt.CopyAction | QtCore.Qt.MoveAction
