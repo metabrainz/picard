@@ -44,14 +44,10 @@
     <file>images/16x16/media-optical-saved@2x.png</file>
     <file>images/16x16/media-optical.png</file>
     <file>images/16x16/media-optical@2x.png</file>
-    <file>images/16x16/opt/go-down.png</file>
-    <file>images/16x16/opt/go-down@2x.png</file>
-    <file>images/16x16/opt/go-next.png</file>
-    <file>images/16x16/opt/go-next@2x.png</file>
-    <file>images/16x16/opt/go-previous.png</file>
-    <file>images/16x16/opt/go-previous@2x.png</file>
-    <file>images/16x16/opt/go-up.png</file>
-    <file>images/16x16/opt/go-up@2x.png</file>
+    <file>images/16x16/move-all-left.png</file>
+    <file>images/16x16/move-all-left@2x.png</file>
+    <file>images/16x16/move-all-right.png</file>
+    <file>images/16x16/move-all-right@2x.png</file>
     <file>images/16x16/org.musicbrainz.Picard.png</file>
     <file>images/16x16/pause.png</file>
     <file>images/16x16/pause@2x.png</file>

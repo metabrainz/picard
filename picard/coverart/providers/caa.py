@@ -30,6 +30,7 @@ from functools import partial
 
 from PyQt5 import (
     QtCore,
+    QtGui,
     QtWidgets,
 )
 from PyQt5.QtNetwork import (
@@ -109,14 +110,11 @@ class ArrowButton(QtWidgets.QPushButton):
         parent {[type]} -- Parent of the QPushButton object being created (default: {None})
     """
 
-    ARROW_BUTTON_WIDTH = 35
-    ARROW_BUTTON_HEIGHT = 20
-
-    def __init__(self, label, command=None, parent=None):
-        super().__init__(label, parent=parent)
+    def __init__(self, icon_name, command=None, parent=None):
+        icon = QtGui.QIcon(":/images/16x16/" + icon_name + '.png')
+        super().__init__(icon, "", parent=parent)
         if command is not None:
             self.clicked.connect(command)
-        self.setFixedSize(QtCore.QSize(self.ARROW_BUTTON_WIDTH, self.ARROW_BUTTON_HEIGHT))
 
 
 class ArrowsColumn(QtWidgets.QWidget):
@@ -138,13 +136,13 @@ class ArrowsColumn(QtWidgets.QWidget):
         spacer_item = QtWidgets.QSpacerItem(20, 20, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         arrows_layout = QtWidgets.QVBoxLayout()
         arrows_layout.addItem(QtWidgets.QSpacerItem(spacer_item))
-        self.button_add = ArrowButton('>' if reverse else '<', self.move_from_ignore)
+        self.button_add = ArrowButton('go-next' if reverse else 'go-previous', self.move_from_ignore)
         arrows_layout.addWidget(self.button_add)
-        self.button_add_all = ArrowButton('>>' if reverse else '<<', self.move_all_from_ignore)
+        self.button_add_all = ArrowButton('move-all-right' if reverse else 'move-all-left', self.move_all_from_ignore)
         arrows_layout.addWidget(self.button_add_all)
-        self.button_remove = ArrowButton('<' if reverse else '>', self.move_to_ignore)
+        self.button_remove = ArrowButton('go-previous' if reverse else 'go-next', self.move_to_ignore)
         arrows_layout.addWidget(self.button_remove)
-        self.button_remove_all = ArrowButton('<<' if reverse else '>>', self.move_all_to_ignore)
+        self.button_remove_all = ArrowButton('move-all-left' if reverse else 'move-all-right', self.move_all_to_ignore)
         arrows_layout.addWidget(self.button_remove_all)
         arrows_layout.addItem(QtWidgets.QSpacerItem(spacer_item))
         self.setLayout(arrows_layout)
@@ -169,13 +167,13 @@ class ListBox(QtWidgets.QListWidget):
         parent {[type]} -- Parent of the QListWidget object being created (default: {None})
     """
 
-    LISTBOX_WIDTH = 150
+    LISTBOX_WIDTH = 100
     LISTBOX_HEIGHT = 250
 
     def __init__(self, parent=None):
         super().__init__(parent=parent)
-        self.setFixedSize(QtCore.QSize(self.LISTBOX_WIDTH, self.LISTBOX_HEIGHT))
-        self.setSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        self.setMinimumSize(QtCore.QSize(self.LISTBOX_WIDTH, self.LISTBOX_HEIGHT))
+        self.setSizePolicy(QtWidgets.QSizePolicy.MinimumExpanding, QtWidgets.QSizePolicy.Expanding)
         self.setSortingEnabled(True)
         self.setSelectionMode(QtWidgets.QAbstractItemView.ExtendedSelection)
 
@@ -244,10 +242,6 @@ class CAATypesSelectorDialog(PicardDialog):
         instructions.setSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
         self.layout.addWidget(instructions)
 
-        grid = QtWidgets.QWidget()
-        gridlayout = QtWidgets.QGridLayout()
-        grid.setLayout(gridlayout)
-
         self.arrows_include = ArrowsColumn(
             self.list_include,
             self.list_ignore,
@@ -261,20 +255,28 @@ class CAATypesSelectorDialog(PicardDialog):
             reverse=True
         )
 
-        def add_widget(row=0, column=0, widget=None):
-            gridlayout.addWidget(widget, row, column)
+        lists_layout = QtWidgets.QHBoxLayout()
 
-        add_widget(row=0, column=0, widget=QtWidgets.QLabel(_("Include types list")))
-        add_widget(row=1, column=0, widget=self.list_include)
+        include_list_layout = QtWidgets.QVBoxLayout()
+        include_list_layout.addWidget(QtWidgets.QLabel(_("Include types list")))
+        include_list_layout.addWidget(self.list_include)
+        lists_layout.addLayout(include_list_layout)
 
-        add_widget(row=1, column=1, widget=self.arrows_include)
-        add_widget(row=1, column=2, widget=self.list_ignore)
-        add_widget(row=1, column=3, widget=self.arrows_exclude)
+        lists_layout.addWidget(self.arrows_include)
 
-        add_widget(row=0, column=4, widget=QtWidgets.QLabel(_("Exclude types list")))
-        add_widget(row=1, column=4, widget=self.list_exclude)
+        ignore_list_layout = QtWidgets.QVBoxLayout()
+        ignore_list_layout.addWidget(QtWidgets.QLabel(""))
+        ignore_list_layout.addWidget(self.list_ignore)
+        lists_layout.addLayout(ignore_list_layout)
 
-        self.layout.addWidget(grid)
+        lists_layout.addWidget(self.arrows_exclude)
+
+        exclude_list_layout = QtWidgets.QVBoxLayout()
+        exclude_list_layout.addWidget(QtWidgets.QLabel(_("Exclude types list")))
+        exclude_list_layout.addWidget(self.list_exclude)
+        lists_layout.addLayout(exclude_list_layout)
+
+        self.layout.addLayout(lists_layout)
 
         # Add usage explanation to the dialog box
         instructions = QtWidgets.QLabel()
@@ -306,8 +308,6 @@ class CAATypesSelectorDialog(PicardDialog):
         ]
         for label, callback in extrabuttons:
             button = QtWidgets.QPushButton(_(label))
-            button.setSizePolicy(
-                QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Expanding)
             self.buttonbox.addButton(button, QtWidgets.QDialogButtonBox.ActionRole)
             button.clicked.connect(callback)
 
