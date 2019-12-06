@@ -3,7 +3,9 @@
 # Automatically generated - don't edit.
 # Use `python setup.py build_ui` to update it.
 
+
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class Ui_EditTagDialog(object):
     def setupUi(self, EditTagDialog):
@@ -23,7 +25,8 @@ class Ui_EditTagDialog(object):
         self.value_list = QtWidgets.QListWidget(EditTagDialog)
         self.value_list.setFocusPolicy(QtCore.Qt.StrongFocus)
         self.value_list.setTabKeyNavigation(False)
-        self.value_list.setProperty("showDropIndicator", False)
+        self.value_list.setDragDropMode(QtWidgets.QAbstractItemView.InternalMove)
+        self.value_list.setMovement(QtWidgets.QListView.Free)
         self.value_list.setObjectName("value_list")
         self.horizontalLayout.addWidget(self.value_list)
         self.verticalLayout = QtWidgets.QVBoxLayout()
@@ -58,8 +61,22 @@ class Ui_EditTagDialog(object):
         self.remove_value.setAutoDefault(False)
         self.remove_value.setObjectName("remove_value")
         self.verticalLayout.addWidget(self.remove_value)
-        spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Maximum)
         self.verticalLayout.addItem(spacerItem)
+        self.move_value_up = QtWidgets.QPushButton(EditTagDialog)
+        self.move_value_up.setText("")
+        icon = QtGui.QIcon.fromTheme(":/images/16x16/go-up.png")
+        self.move_value_up.setIcon(icon)
+        self.move_value_up.setObjectName("move_value_up")
+        self.verticalLayout.addWidget(self.move_value_up)
+        self.move_value_down = QtWidgets.QPushButton(EditTagDialog)
+        self.move_value_down.setText("")
+        icon = QtGui.QIcon.fromTheme(":/images/16x16/go-down.png")
+        self.move_value_down.setIcon(icon)
+        self.move_value_down.setObjectName("move_value_down")
+        self.verticalLayout.addWidget(self.move_value_down)
+        spacerItem1 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        self.verticalLayout.addItem(spacerItem1)
         self.horizontalLayout.addLayout(self.verticalLayout)
         self.verticalLayout_2.addLayout(self.horizontalLayout)
         self.buttonbox = QtWidgets.QDialogButtonBox(EditTagDialog)
@@ -77,6 +94,14 @@ class Ui_EditTagDialog(object):
         self.retranslateUi(EditTagDialog)
         self.buttonbox.accepted.connect(EditTagDialog.accept)
         self.buttonbox.rejected.connect(EditTagDialog.reject)
+        self.move_value_up.clicked.connect(EditTagDialog.move_row_up)
+        self.move_value_down.clicked.connect(EditTagDialog.move_row_down)
+        self.edit_value.clicked.connect(EditTagDialog.edit_value)
+        self.add_value.clicked.connect(EditTagDialog.add_value)
+        self.value_list.itemChanged['QListWidgetItem*'].connect(EditTagDialog.value_edited)
+        self.remove_value.clicked.connect(EditTagDialog.remove_value)
+        self.value_list.itemSelectionChanged.connect(EditTagDialog.value_selection_changed)
+        self.tag_names.editTextChanged['QString'].connect(EditTagDialog.tag_changed)
         QtCore.QMetaObject.connectSlotsByName(EditTagDialog)
         EditTagDialog.setTabOrder(self.tag_names, self.value_list)
         EditTagDialog.setTabOrder(self.value_list, self.edit_value)
@@ -90,4 +115,7 @@ class Ui_EditTagDialog(object):
         self.edit_value.setText(_("Edit value"))
         self.add_value.setText(_("Add value"))
         self.remove_value.setText(_("Remove value"))
-
+        self.move_value_up.setToolTip(_("Move selected value up"))
+        self.move_value_up.setAccessibleDescription(_("Move selected value up"))
+        self.move_value_down.setToolTip(_("Move selected value down"))
+        self.move_value_down.setAccessibleDescription(_("Move selected value down"))

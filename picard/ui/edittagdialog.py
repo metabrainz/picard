@@ -101,7 +101,6 @@ class EditTagDialog(PicardDialog):
             current_file = list(self.metadata_box.files)[0]
             self.default_tags = list(filter(current_file.supports_tag, self.default_tags))
         tag_names = self.ui.tag_names
-        tag_names.editTextChanged.connect(self.tag_changed)
         tag_names.addItem("")
         visible_tags = [tn for tn in self.default_tags if not tn.startswith("~")]
         tag_names.addItems(visible_tags)
@@ -110,11 +109,8 @@ class EditTagDialog(PicardDialog):
         tag_names.setCompleter(self.completer)
         self.tag_changed(tag)
         self.value_selection_changed()
-        self.ui.edit_value.clicked.connect(self.edit_value)
-        self.ui.add_value.clicked.connect(self.add_value)
-        self.ui.remove_value.clicked.connect(self.remove_value)
-        self.value_list.itemChanged.connect(self.value_edited)
-        self.value_list.itemSelectionChanged.connect(self.value_selection_changed)
+        self.value_list.model().rowsInserted.connect(self.on_rows_inserted)
+        self.value_list.model().rowsRemoved.connect(self.on_rows_removed)
         self.value_list.setItemDelegate(TagEditorDelegate(self))
         self.restore_geometry()
 
@@ -124,7 +120,6 @@ class EditTagDialog(PicardDialog):
             self.value_list.editItem(item)
 
     def add_value(self):
-        self._modified_tag().append("")
         item = QtWidgets.QListWidgetItem()
         item.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsEditable)
         self.value_list.addItem(item)
@@ -132,12 +127,37 @@ class EditTagDialog(PicardDialog):
 
     def remove_value(self):
         value_list = self.value_list
-        row = value_list.row(value_list.currentItem())
+        row = value_list.currentRow()
         if row == 0 and self.different:
             self.different = False
             self.ui.add_value.setEnabled(True)
         value_list.takeItem(row)
-        del self._modified_tag()[row]
+
+    def on_rows_inserted(self, parent, first, last):
+        for row in range(first, last + 1):
+            item = self.value_list.item(row)
+            self._modified_tag().insert(row, item.text())
+
+    def on_rows_removed(self, parent, first, last):
+        for row in range(first, last + 1):
+            del self._modified_tag()[row]
+
+    def move_row_up(self):
+        row = self.value_list.currentRow()
+        if row > 0:
+            self._move_row(row, -1)
+
+    def move_row_down(self):
+        row = self.value_list.currentRow()
+        if row + 1 < self.value_list.count():
+            self._move_row(row, 1)
+
+    def _move_row(self, row, direction):
+        value_list = self.value_list
+        item = value_list.takeItem(row)
+        new_row = row + direction
+        value_list.insertItem(new_row, item)
+        value_list.setCurrentRow(new_row)
 
     def disable_all(self):
         self.value_list.clear()
@@ -195,7 +215,7 @@ class EditTagDialog(PicardDialog):
         values = [v for v in values if v] or [""]
         for value in values:
             item = QtWidgets.QListWidgetItem(value)
-            item.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsEditable)
+            item.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsEditable | QtCore.Qt.ItemIsDragEnabled)
             font = item.font()
             font.setItalic(self.different)
             item.setFont(font)
@@ -224,6 +244,8 @@ class EditTagDialog(PicardDialog):
         selection = len(self.value_list.selectedItems()) > 0
         self.ui.edit_value.setEnabled(selection)
         self.ui.remove_value.setEnabled(selection)
+        self.ui.move_value_up.setEnabled(selection)
+        self.ui.move_value_down.setEnabled(selection)
 
     def _modified_tag(self):
         return self.modified_tags.setdefault(self.tag,
