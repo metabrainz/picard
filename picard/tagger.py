@@ -904,6 +904,9 @@ def main(localedir=None, autoupdate=True):
     QtWidgets.QApplication.setAttribute(QtCore.Qt.AA_UseHighDpiPixmaps)
     QtWidgets.QApplication.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling)
 
+    # Enable mnemonics on all platforms, even macOS
+    QtGui.qt_set_sequence_auto_mnemonic(True)
+
     signal.signal(signal.SIGINT, signal.SIG_DFL)
 
     picard_args, unparsed_args = process_picard_args()
