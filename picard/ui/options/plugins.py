@@ -527,7 +527,8 @@ class PluginsOptionsPage(OptionsPage):
 
         if item.is_installed:
             item.buttons['install'].mode('hide')
-            item.buttons['uninstall'].mode('show')
+            item.buttons['uninstall'].mode(
+                'show' if plugin.dir == USER_PLUGIN_DIR else 'hide')
             item.enable(enabled, greyout=False)
 
             def uninstall_processor():
