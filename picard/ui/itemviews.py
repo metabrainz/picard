@@ -300,7 +300,7 @@ class ConfigurableColumnsHeader(TristateSortHeaderView):
         for i, column in enumerate(MainPanel.columns):
             if i == 0:
                 continue
-            action = QtWidgets.QAction(column[0], self.parent())
+            action = QtWidgets.QAction(_(column[0]), self.parent())
             action.setCheckable(True)
             action.setChecked(i in self._visible_columns)
             action.triggered.connect(partial(self.show_column, i))
