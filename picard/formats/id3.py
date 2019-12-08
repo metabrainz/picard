@@ -139,6 +139,7 @@ class ID3File(File):
         'COMM': 'comment',
         'TOAL': 'originalalbum',
         'TOPE': 'originalartist',
+        'TOFN': 'originalfilename',
 
         # The following are informal iTunes extensions to id3v2:
         'TCMP': 'compilation',
