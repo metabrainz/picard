@@ -40,7 +40,10 @@ class ElidedLabel(QtWidgets.QLabel):
 
     def _update_text(self):
         metrics = QtGui.QFontMetrics(self.font())
+        # Elide the text. On some setups, e.g. using the Breeze theme, the
+        # text does not properly fit into width(), as a workaround subtract
+        # 2 pixels from the available width.
         elided_label = metrics.elidedText(self._full_label,
                                           QtCore.Qt.ElideRight,
-                                          self.width())
+                                          self.width() - 2)
         super().setText(elided_label)
