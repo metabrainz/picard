@@ -127,6 +127,7 @@ TAGS = {
     'musicip_puid': '00000000-0000-0000-0000-000000000000',
     'originaldate': '1980-01-20',
     'originalyear': '1980',
+    'originalfilename': 'Foo',
     'performer:guest vocal': 'Foo',
     'podcast': '1',
     'podcasturl': 'Foo',

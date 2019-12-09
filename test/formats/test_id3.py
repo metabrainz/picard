@@ -75,6 +75,14 @@ class CommonId3Tests:
             self.assertIn('FooBar', new_metadata)
 
         @skipUnlessTestfile
+        def test_id3_metadata_tofn(self):
+            metadata = Metadata(self.tags)
+            metadata = save_and_load_metadata(self.filename, metadata)
+
+            self.assertIn('originalfilename', metadata)
+            self.assertEqual(metadata['originalfilename'], "Foo")
+
+        @skipUnlessTestfile
         def test_performer_duplication(self):
 
             config.setting['write_id3v23'] = True

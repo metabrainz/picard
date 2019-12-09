@@ -77,6 +77,7 @@ TAG_NAMES = {
     'originalalbum': N_('Original Album'),
     'originalartist': N_('Original Artist'),
     'originaldate': N_('Original Release Date'),
+    'originalfilename': N_('Original Filename'),
     'originalyear': N_('Original Year'),
     'performer:': N_('Performer'),
     'producer': N_('Producer'),
