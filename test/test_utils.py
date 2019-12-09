@@ -114,6 +114,7 @@ class TagsTest(PicardTestCase):
         self.assertEqual(dtn('tag'), 'tag')
         self.assertEqual(dtn('tag:desc'), 'tag [desc]')
         self.assertEqual(dtn('tag:'), 'tag')
+        self.assertEqual(dtn('tag:de:sc'), 'tag [de:sc]')
         self.assertEqual(dtn('originalyear'), 'Original Year')
         self.assertEqual(dtn('originalyear:desc'), 'Original Year [desc]')
         self.assertEqual(dtn('~length'), 'Length')
