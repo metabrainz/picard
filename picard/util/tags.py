@@ -107,10 +107,17 @@ TAG_NAMES = {
     'r128_track_gain': N_('R128 Track Gain'),
 }
 
-PRESERVED_TAGS = [
-    "~bitrate", "~bits_per_sample", "~format", "~channels", "~sample_rate",
-    "~dirname", "~filename", "~extension", "~video",
-]
+PRESERVED_TAGS = (
+    '~bitrate',
+    '~bits_per_sample',
+    '~channels',
+    '~dirname',
+    '~extension',
+    '~filename',
+    '~format',
+    '~sample_rate',
+    '~video',
+)
 
 
 def display_tag_name(name):
