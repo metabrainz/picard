@@ -3,7 +3,9 @@
 # Automatically generated - don't edit.
 # Use `python setup.py build_ui` to update it.
 
+
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class Ui_ScriptingOptionsPage(object):
     def setupUi(self, ScriptingOptionsPage):
@@ -48,7 +50,7 @@ class Ui_ScriptingOptionsPage(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.script_list.sizePolicy().hasHeightForWidth())
         self.script_list.setSizePolicy(sizePolicy)
-        self.script_list.setMinimumSize(QtCore.QSize(80, 0))
+        self.script_list.setMinimumSize(QtCore.QSize(120, 0))
         self.script_list.setObjectName("script_list")
         self.formWidget = QtWidgets.QWidget(self.splitter)
         self.formWidget.setObjectName("formWidget")
@@ -95,4 +97,3 @@ class Ui_ScriptingOptionsPage(object):
         self.add_script.setToolTip(_("Add new script"))
         self.add_script.setText(_("Add new script"))
         self.script_name.setPlaceholderText(_("Display Name"))
-

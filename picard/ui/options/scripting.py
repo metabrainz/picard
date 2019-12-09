@@ -110,6 +110,26 @@ class TaggerScriptSyntaxHighlighter(QtGui.QSyntaxHighlighter):
         self.setCurrentBlockState(open_brackets)
 
 
+class ElidedLabel(QtWidgets.QLabel):
+    def __init__(self, text, parent=None):
+        self._full_label = text
+        super().__init__(text, parent)
+
+    def setText(self, text):
+        self._full_label = text
+        self._update_text()
+
+    def resizeEvent(self, event):
+        self._update_text()
+
+    def _update_text(self):
+        metrics = QtGui.QFontMetrics(self.font())
+        elided_label = metrics.elidedText(self._full_label,
+                                          QtCore.Qt.ElideRight,
+                                          self.width())
+        super().setText(elided_label)
+
+
 class AdvancedScriptItem(QtWidgets.QWidget):
     """Custom widget for script list items"""
 
@@ -132,7 +152,10 @@ class AdvancedScriptItem(QtWidgets.QWidget):
         checkbox.setMaximumSize(QtCore.QSize(22, 22))
         layout.addWidget(checkbox, 0, self._CHECKBOX_POS)
 
-        layout.addWidget(QtWidgets.QLabel(name), 0, self._NAME_POS)
+        name_label = ElidedLabel(name)
+        name_label.setMinimumWidth(30)
+        name_label.setSizePolicy(QtWidgets.QSizePolicy.MinimumExpanding, QtWidgets.QSizePolicy.Preferred)
+        layout.addWidget(name_label, 0, self._NAME_POS)
 
         up_button = QtWidgets.QToolButton()
         up_button.setArrowType(QtCore.Qt.UpArrow)
