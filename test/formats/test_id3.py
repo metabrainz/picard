@@ -80,6 +80,7 @@ class CommonId3Tests:
             metadata = save_and_load_metadata(self.filename, metadata)
 
             self.assertIn('originalfilename', metadata)
+            self.assertEqual(metadata['originalfilename'], "Foo")
 
         @skipUnlessTestfile
         def test_performer_duplication(self):
