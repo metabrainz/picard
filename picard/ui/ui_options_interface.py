@@ -20,6 +20,9 @@ class Ui_InterfaceOptionsPage(object):
         self.toolbar_show_labels = QtWidgets.QCheckBox(self.groupBox_2)
         self.toolbar_show_labels.setObjectName("toolbar_show_labels")
         self.vboxlayout1.addWidget(self.toolbar_show_labels)
+        self.use_system_theme = QtWidgets.QCheckBox(self.groupBox_2)
+        self.use_system_theme.setObjectName("use_system_theme")
+        self.vboxlayout1.addWidget(self.use_system_theme)
         self.toolbar_multiselect = QtWidgets.QCheckBox(self.groupBox_2)
         self.toolbar_multiselect.setObjectName("toolbar_multiselect")
         self.vboxlayout1.addWidget(self.toolbar_multiselect)
@@ -126,6 +129,7 @@ class Ui_InterfaceOptionsPage(object):
         _translate = QtCore.QCoreApplication.translate
         self.groupBox_2.setTitle(_("Miscellaneous"))
         self.toolbar_show_labels.setText(_("Show text labels under icons"))
+        self.use_system_theme.setText(_("Use system theme"))
         self.toolbar_multiselect.setText(_("Allow selection of multiple directories"))
         self.builtin_search.setText(_("Use builtin search rather than looking in browser"))
         self.use_adv_search_syntax.setText(_("Use advanced query syntax"))

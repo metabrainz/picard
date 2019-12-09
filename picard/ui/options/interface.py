@@ -40,6 +40,11 @@ from PyQt5.QtCore import QStandardPaths
 
 from picard import config
 from picard.const import UI_LANGUAGES
+from picard.const.sys import (
+    IS_HAIKU,
+    IS_MACOS,
+    IS_WIN,
+)
 from picard.util import icontheme
 
 from picard.ui import PicardDialog
@@ -126,6 +131,7 @@ class InterfaceOptionsPage(OptionsPage):
         config.BoolOption("setting", "use_adv_search_syntax", False),
         config.BoolOption("setting", "quit_confirmation", True),
         config.TextOption("setting", "ui_language", ""),
+        config.BoolOption("setting", "use_system_theme", False),
         config.BoolOption("setting", "starting_directory", False),
         config.TextOption("setting", "starting_directory_path", _default_starting_dir),
         config.TextOption("setting", "load_image_behavior", "append"),
@@ -183,6 +189,8 @@ class InterfaceOptionsPage(OptionsPage):
         self.move_view = MoveableListView(self.ui.toolbar_layout_list, self.ui.up_button,
                                           self.ui.down_button, self.update_action_buttons)
         self.update_buttons = self.move_view.update_buttons
+        if IS_MACOS or IS_WIN or IS_HAIKU:
+            self.ui.use_system_theme.hide()
 
     def load(self):
         self.ui.toolbar_show_labels.setChecked(config.setting["toolbar_show_labels"])
@@ -190,6 +198,7 @@ class InterfaceOptionsPage(OptionsPage):
         self.ui.builtin_search.setChecked(config.setting["builtin_search"])
         self.ui.use_adv_search_syntax.setChecked(config.setting["use_adv_search_syntax"])
         self.ui.quit_confirmation.setChecked(config.setting["quit_confirmation"])
+        self.ui.use_system_theme.setChecked(config.setting["use_system_theme"])
         current_ui_language = config.setting["ui_language"]
         self.ui.ui_language.setCurrentIndex(self.ui.ui_language.findData(current_ui_language))
         self.ui.starting_directory.setChecked(config.setting["starting_directory"])
@@ -205,16 +214,25 @@ class InterfaceOptionsPage(OptionsPage):
         config.setting["use_adv_search_syntax"] = self.ui.use_adv_search_syntax.isChecked()
         config.setting["quit_confirmation"] = self.ui.quit_confirmation.isChecked()
         self.tagger.window.update_toolbar_style()
+        new_theme_setting = self.ui.use_system_theme.isChecked()
         new_language = self.ui.ui_language.itemData(self.ui.ui_language.currentIndex())
-        if new_language != config.setting["ui_language"]:
-            config.setting["ui_language"] = self.ui.ui_language.itemData(self.ui.ui_language.currentIndex())
+        restart_warning = None
+        if new_theme_setting != config.setting["use_system_theme"]:
+            restart_warning_title = _('Theme changed')
+            restart_warning = _('You have changed the application theme. You have to restart Picard in order for the change to take effect.')
+        elif new_language != config.setting["ui_language"]:
+            restart_warning_title = _('Language changed')
+            restart_warning = _('You have changed the interface language. You have to restart Picard in order for the change to take effect.')
+        if restart_warning:
             dialog = QtWidgets.QMessageBox(
                 QtWidgets.QMessageBox.Information,
-                _('Language changed'),
-                _('You have changed the interface language. You have to restart Picard in order for the change to take effect.'),
+                restart_warning_title,
+                restart_warning,
                 QtWidgets.QMessageBox.Ok,
                 self)
             dialog.exec_()
+        config.setting["use_system_theme"] = self.ui.use_system_theme.isChecked()
+        config.setting["ui_language"] = self.ui.ui_language.itemData(self.ui.ui_language.currentIndex())
         config.setting["starting_directory"] = self.ui.starting_directory.isChecked()
         config.setting["starting_directory_path"] = os.path.normpath(self.ui.starting_directory_path.text())
         self.update_layout_config()

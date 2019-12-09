@@ -25,6 +25,13 @@
        </widget>
       </item>
       <item>
+       <widget class="QCheckBox" name="use_system_theme">
+        <property name="text">
+         <string>Use system theme</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QCheckBox" name="toolbar_multiselect">
         <property name="text">
          <string>Allow selection of multiple directories</string>
