@@ -47,3 +47,75 @@ class ElidedLabel(QtWidgets.QLabel):
                                           QtCore.Qt.ElideRight,
                                           self.width() - 2)
         super().setText(elided_label)
+
+
+class ClickableSlider(QtWidgets.QSlider):
+    """A slider implementation where the user can select any slider position by clicking."""
+
+    def mousePressEvent(self, event):
+        self._set_position_from_mouse_event(event)
+
+    def mouseMoveEvent(self, event):
+        self._set_position_from_mouse_event(event)
+
+    def _set_position_from_mouse_event(self, event):
+        value = QtWidgets.QStyle.sliderValueFromPosition(
+            self.minimum(), self.maximum(), event.x(), self.width())
+        self.setValue(value)
+
+
+class Popover(QtWidgets.QFrame):
+    """A generic popover implementation.
+
+    The popover opens relative to its parent, either above or below the parent.
+    Subclass this widget and add child widgets for a custom popover.
+    """
+
+    def __init__(self, parent, position='bottom'):
+        super().__init__(parent)
+        self.setWindowFlags(QtCore.Qt.Popup | QtCore.Qt.FramelessWindowHint)
+        self.position = position
+
+    def show(self):
+        super().show()
+        self.update_position()
+
+    def update_position(self):
+        parent = self.parent()
+        x = -(self.width() - parent.width()) / 2
+        if self.position == 'top':
+            y = -self.height()
+        else:  # bottom
+            y = parent.height()
+        pos = parent.mapToGlobal(QtCore.QPoint(x, y))
+        screen_number = QtWidgets.QApplication.desktop().screenNumber()
+        screen = QtGui.QGuiApplication.screens()[screen_number]
+        screen_size = screen.availableVirtualSize()
+        if pos.x() < 0:
+            pos.setX(0)
+        if pos.x() + self.width() > screen_size.width():
+            pos.setX(screen_size.width() - self.width())
+        if pos.y() < 0:
+            pos.setY(0)
+        if pos.y() + self.height() > screen_size.height():
+            pos.setY(screen_size.height() - self.height())
+        self.move(pos)
+
+
+class SliderPopover(Popover):
+    """A popover containing a single slider."""
+
+    value_changed = QtCore.pyqtSignal(int)
+
+    def __init__(self, parent, position, label, value):
+        super().__init__(parent, position)
+        vbox = QtWidgets.QVBoxLayout(self)
+        self.label = QtWidgets.QLabel(label, self)
+        self.label.setAlignment(QtCore.Qt.AlignCenter)
+        vbox.addWidget(self.label)
+
+        self.slider = QtWidgets.QSlider(self)
+        self.slider.setOrientation(QtCore.Qt.Horizontal)
+        self.slider.setValue(value)
+        self.slider.valueChanged.connect(self.value_changed)
+        vbox.addWidget(self.slider)
