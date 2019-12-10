@@ -37,7 +37,11 @@ from picard.util import (
     icontheme,
 )
 
-from picard.ui.widgets import ElidedLabel
+from picard.ui.widgets import (
+    ClickableSlider,
+    ElidedLabel,
+    SliderPopover,
+)
 
 
 try:
@@ -257,19 +261,6 @@ class PlayerToolbar(QtWidgets.QToolBar):
             return 'top'
 
 
-class ClickableSlider(QtWidgets.QSlider):
-    def mousePressEvent(self, event):
-        self._set_position_from_mouse_event(event)
-
-    def mouseMoveEvent(self, event):
-        self._set_position_from_mouse_event(event)
-
-    def _set_position_from_mouse_event(self, event):
-        value = QtWidgets.QStyle.sliderValueFromPosition(
-            self.minimum(), self.maximum(), event.x(), self.width())
-        self.setValue(value)
-
-
 class PlaybackProgressSlider(QtWidgets.QWidget):
     def __init__(self, parent, player):
         super().__init__(parent)
@@ -333,55 +324,6 @@ class PlaybackProgressSlider(QtWidgets.QWidget):
     def on_value_changed(self, value):
         if not self._position_update:  # Avoid circular events
             self.player.set_position(value)
-
-
-class Popover(QtWidgets.QFrame):
-    def __init__(self, parent, position='bottom'):
-        super().__init__(parent)
-        self.setWindowFlags(QtCore.Qt.Popup | QtCore.Qt.FramelessWindowHint)
-        self.position = position
-
-    def show(self):
-        super().show()
-        self.update_position()
-
-    def update_position(self):
-        parent = self.parent()
-        x = -(self.width() - parent.width()) / 2
-        if self.position == 'top':
-            y = -self.height()
-        else:  # bottom
-            y = parent.height()
-        pos = parent.mapToGlobal(QtCore.QPoint(x, y))
-        screen_number = QtWidgets.QApplication.desktop().screenNumber()
-        screen = QtGui.QGuiApplication.screens()[screen_number]
-        screen_size = screen.availableVirtualSize()
-        if pos.x() < 0:
-            pos.setX(0)
-        if pos.x() + self.width() > screen_size.width():
-            pos.setX(screen_size.width() - self.width())
-        if pos.y() < 0:
-            pos.setY(0)
-        if pos.y() + self.height() > screen_size.height():
-            pos.setY(screen_size.height() - self.height())
-        self.move(pos)
-
-
-class SliderPopover(Popover):
-    value_changed = QtCore.pyqtSignal(int)
-
-    def __init__(self, parent, position, label, value):
-        super().__init__(parent, position)
-        vbox = QtWidgets.QVBoxLayout(self)
-        self.label = QtWidgets.QLabel(label, self)
-        self.label.setAlignment(QtCore.Qt.AlignCenter)
-        vbox.addWidget(self.label)
-
-        self.slider = QtWidgets.QSlider(self)
-        self.slider.setOrientation(QtCore.Qt.Horizontal)
-        self.slider.setValue(value)
-        self.slider.valueChanged.connect(self.value_changed)
-        vbox.addWidget(self.slider)
 
 
 class PlaybackRateButton(QtWidgets.QToolButton):
