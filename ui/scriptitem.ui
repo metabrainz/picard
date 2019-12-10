@@ -7,18 +7,12 @@
     <x>0</x>
     <y>0</y>
     <width>120</width>
-    <height>22</height>
+    <height>20</height>
    </rect>
-  </property>
-  <property name="sizePolicy">
-   <sizepolicy hsizetype="MinimumExpanding" vsizetype="Minimum">
-    <horstretch>0</horstretch>
-    <verstretch>0</verstretch>
-   </sizepolicy>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout_2">
    <property name="spacing">
-    <number>5</number>
+    <number>6</number>
    </property>
    <property name="leftMargin">
     <number>0</number>
@@ -34,20 +28,17 @@
    </property>
    <item>
     <widget class="QCheckBox" name="checkbox">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="maximumSize">
+     <property name="minimumSize">
       <size>
-       <width>22</width>
-       <height>22</height>
+       <width>18</width>
+       <height>0</height>
       </size>
      </property>
      <property name="accessibleDescription">
       <string>Enable this script</string>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QCheckBox { border-width: 0px; margin-left: 3px; }</string>
      </property>
      <property name="text">
       <string/>
