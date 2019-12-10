@@ -122,6 +122,7 @@ class AdvancedScriptItem(QtWidgets.QWidget):
         menu = QtWidgets.QMenu()
         menu.addAction(_("Rename script"))
         menu.addAction(_("Remove script"))
+        self.ui.checkbox.setChecked(state)
         self.menu = menu
         self.ui.other_button.setMenu(menu)
 
