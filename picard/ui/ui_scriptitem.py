@@ -16,7 +16,7 @@ class Ui_ScriptItem(object):
         self.horizontalLayout_2.setSpacing(6)
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
         self.checkbox = QtWidgets.QCheckBox(ScriptItem)
-        self.checkbox.setMinimumSize(QtCore.QSize(18, 0))
+        self.checkbox.setMinimumSize(QtCore.QSize(22, 0))
         self.checkbox.setStyleSheet("QCheckBox { border-width: 0px; margin-left: 3px; }")
         self.checkbox.setText("")
         self.checkbox.setObjectName("checkbox")

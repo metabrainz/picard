@@ -30,7 +30,7 @@
     <widget class="QCheckBox" name="checkbox">
      <property name="minimumSize">
       <size>
-       <width>18</width>
+       <width>22</width>
        <height>0</height>
       </size>
      </property>
