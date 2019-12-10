@@ -37,6 +37,8 @@ from picard.util import (
     icontheme,
 )
 
+from picard.ui.widgets import ElidedLabel
+
 
 try:
     from PyQt5 import QtMultimedia
@@ -235,10 +237,6 @@ class PlayerToolbar(QtWidgets.QToolBar):
         self.playback_rate_button.setToolButtonStyle(style)
         self.volume_button.setToolButtonStyle(style)
 
-    def resizeEvent(self, event):
-        super().resizeEvent(event)
-        self.progress_widget.resize_media_name()
-
     def showEvent(self, event):
         super().showEvent(event)
         self._update_popover_position()
@@ -276,7 +274,6 @@ class PlaybackProgressSlider(QtWidgets.QWidget):
     def __init__(self, parent, player):
         super().__init__(parent)
         self.player = player
-        self.media_name = ''
         self._position_update = False
 
         tool_font = QtWidgets.QApplication.font("QToolButton")
@@ -288,7 +285,7 @@ class PlaybackProgressSlider(QtWidgets.QWidget):
         self.progress_slider.setSingleStep(1000)
         self.progress_slider.setPageStep(3000)
         self.progress_slider.valueChanged.connect(self.on_value_changed)
-        self.media_name_label = QtWidgets.QLabel(self)
+        self.media_name_label = ElidedLabel(self)
         self.media_name_label.setAlignment(QtCore.Qt.AlignCenter)
         self.media_name_label.setFont(tool_font)
 
@@ -330,24 +327,12 @@ class PlaybackProgressSlider(QtWidgets.QWidget):
             self.progress_slider.setEnabled(False)
         else:
             url = media.canonicalUrl().toString()
-            self.set_media_name(os.path.basename(url))
+            self.media_name_label.setText(os.path.basename(url))
             self.progress_slider.setEnabled(True)
 
     def on_value_changed(self, value):
         if not self._position_update:  # Avoid circular events
             self.player.set_position(value)
-
-    def set_media_name(self, media_name):
-        self.media_name = media_name
-        media_label = self.media_name_label
-        metrics = QtGui.QFontMetrics(media_label.font())
-        elidedText = metrics.elidedText(media_name,
-                                        QtCore.Qt.ElideRight,
-                                        media_label.width())
-        media_label.setText(elidedText)
-
-    def resize_media_name(self):
-        self.set_media_name(self.media_name)
 
 
 class Popover(QtWidgets.QFrame):
