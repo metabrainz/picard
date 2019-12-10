@@ -107,11 +107,11 @@ class EditTagDialog(PicardDialog):
         self.completer = QtWidgets.QCompleter(visible_tags, tag_names)
         self.completer.setCompletionMode(QtWidgets.QCompleter.PopupCompletion)
         tag_names.setCompleter(self.completer)
-        self.tag_changed(tag)
-        self.value_selection_changed()
         self.value_list.model().rowsInserted.connect(self.on_rows_inserted)
         self.value_list.model().rowsRemoved.connect(self.on_rows_removed)
         self.value_list.setItemDelegate(TagEditorDelegate(self))
+        self.tag_changed(tag)
+        self.value_selection_changed()
         self.restore_geometry()
 
     def edit_value(self):
@@ -207,7 +207,9 @@ class EditTagDialog(PicardDialog):
             values = [display_value] if self.different else new_tags[self.tag]
             self.ui.add_value.setEnabled(not self.different)
 
+        self.value_list.model().rowsInserted.disconnect(self.on_rows_inserted)
         self._add_value_items(values)
+        self.value_list.model().rowsInserted.connect(self.on_rows_inserted)
         self.value_list.setCurrentItem(self.value_list.item(0), QtCore.QItemSelectionModel.SelectCurrent)
         tag_names.editTextChanged.connect(self.tag_changed)
 
