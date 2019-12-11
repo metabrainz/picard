@@ -120,5 +120,5 @@ class Ui_AdvancedOptionsPage(object):
         self.completeness_ignore_pregap.setText(_("Pregap tracks"))
         self.completeness_ignore_data.setText(_("Data tracks"))
         self.completeness_ignore_silence.setText(_("Silent tracks"))
-        self.compare_ignore_tags_label.setText(_("Tags to ignore for comparisson:"))
+        self.compare_ignore_tags_label.setText(_("Tags to ignore for comparison:"))
 from picard.ui.widgets.taglisteditor import TagListEditor

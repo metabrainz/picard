@@ -157,7 +157,7 @@
    <item>
     <widget class="QLabel" name="compare_ignore_tags_label">
      <property name="text">
-      <string>Tags to ignore for comparisson:</string>
+      <string>Tags to ignore for comparison:</string>
      </property>
     </widget>
    </item>
