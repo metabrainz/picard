@@ -292,6 +292,7 @@ class AddActionDialog(PicardDialog):
         self.setWindowModality(QtCore.Qt.WindowModal)
 
         layout = QtWidgets.QVBoxLayout(self)
+        layout.setSizeConstraint(QtWidgets.QLayout.SetFixedSize)
 
         # TODO: Remove temporary workaround once https://github.com/python-babel/babel/issues/415 has been resolved.
         babel_415_workaround_list = []
