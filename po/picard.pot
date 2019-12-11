@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: picard 2.3.0.dev1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2019-12-10 21:10+0100\n"
+"POT-Creation-Date: 2019-12-11 22:45+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -248,11 +248,11 @@ msgid ""
 "%s"
 msgstr ""
 
-#: picard/track.py:333
+#: picard/track.py:336
 msgid "[loading recording information]"
 msgstr ""
 
-#: picard/track.py:368
+#: picard/track.py:371
 #, python-format
 msgid "[could not load recording %s]"
 msgstr ""
@@ -3230,70 +3230,70 @@ msgid ""
 "password."
 msgstr ""
 
-#: picard/ui/playertoolbar.py:166
+#: picard/ui/playertoolbar.py:172
 msgid "Internal player: The format of a media resource isn't (fully) supported"
 msgstr ""
 
-#: picard/ui/playertoolbar.py:168
+#: picard/ui/playertoolbar.py:174
 msgid ""
 "Internal player: There are not the appropriate permissions to play a "
 "media resource"
 msgstr ""
 
-#: picard/ui/playertoolbar.py:170
+#: picard/ui/playertoolbar.py:176
 msgid ""
 "Internal player: A valid playback service was not found, playback cannot "
 "proceed"
 msgstr ""
 
-#: picard/ui/playertoolbar.py:172
+#: picard/ui/playertoolbar.py:178
 #, python-format
 msgid "Internal player: error, code=%d, msg=%s"
 msgstr ""
 
-#: picard/ui/playertoolbar.py:178
+#: picard/ui/playertoolbar.py:184
 msgid "Player"
 msgstr ""
 
-#: picard/ui/playertoolbar.py:186
+#: picard/ui/playertoolbar.py:192
 msgid "Play"
 msgstr ""
 
-#: picard/ui/playertoolbar.py:187
+#: picard/ui/playertoolbar.py:193
 msgid "Play selected files"
 msgstr ""
 
-#: picard/ui/playertoolbar.py:193
+#: picard/ui/playertoolbar.py:199
 msgid "Pause"
 msgstr ""
 
-#: picard/ui/playertoolbar.py:194
+#: picard/ui/playertoolbar.py:200
 msgid "Pause or resume current playback"
 msgstr ""
 
-#: picard/ui/playertoolbar.py:410
+#: picard/ui/playertoolbar.py:337
 #, python-format
 msgid "%1.1f ×"
 msgstr ""
 
-#: picard/ui/playertoolbar.py:416
+#: picard/ui/playertoolbar.py:343
 msgid "Change playback speed"
 msgstr ""
 
-#: picard/ui/playertoolbar.py:423
+#: picard/ui/playertoolbar.py:350
 msgid "Playback speed"
 msgstr ""
 
-#: picard/ui/playertoolbar.py:466
+#: picard/ui/playertoolbar.py:393
 #, python-format
 msgid "%d%%"
 msgstr ""
 
-#: picard/ui/playertoolbar.py:472
+#: picard/ui/playertoolbar.py:399
 msgid "Change audio volume"
 msgstr ""
 
-#: picard/ui/playertoolbar.py:478
+#: picard/ui/playertoolbar.py:405
 msgid "Audio volume"
 msgstr ""
 
@@ -3411,7 +3411,7 @@ msgid "Silent tracks"
 msgstr ""
 
 #: picard/ui/ui_options_advanced.py:123
-msgid "Tags to ignore for comparisson:"
+msgid "Tags to ignore for comparison:"
 msgstr ""
 
 #: picard/ui/ui_options_cdlookup.py:39
@@ -3916,7 +3916,7 @@ msgid ""
 msgstr ""
 
 #: picard/ui/ui_options_tags.py:69
-msgid "Tags are separated by commas, and are case-sensitive."
+msgid "Tags are separated by commas and are case-insensitive."
 msgstr ""
 
 #: picard/ui/ui_options_tags_compatibility.py:144
@@ -4444,11 +4444,11 @@ msgstr ""
 msgid "Ratings"
 msgstr ""
 
-#: picard/ui/options/releases.py:146
+#: picard/ui/options/releases.py:147
 msgid "Preferred Releases"
 msgstr ""
 
-#: picard/ui/options/releases.py:182
+#: picard/ui/options/releases.py:183
 msgid "Reset all"
 msgstr ""
 
