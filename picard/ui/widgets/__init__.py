@@ -47,6 +47,10 @@ class ElidedLabel(QtWidgets.QLabel):
                                           QtCore.Qt.ElideRight,
                                           self.width() - 2)
         super().setText(elided_label)
+        if self._full_label and elided_label != self._full_label:
+            self.setToolTip(self._full_label)
+        else:
+            self.setToolTip("")
 
 
 class ClickableSlider(QtWidgets.QSlider):
