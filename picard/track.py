@@ -202,7 +202,10 @@ class Track(DataObject, Item):
         if column == 'title':
             prefix = "%s-" % m['discnumber'] if m['discnumber'] and m['totaldiscs'] != "1" else ""
             return "%s%s  %s" % (prefix, m['tracknumber'].zfill(2), m['title'])
-        return m[column]
+        elif column in m:
+            return m[column]
+        elif self.num_linked_files == 1:
+            return self.linked_files[0].column(column)
 
     def is_video(self):
         return self.metadata['~video'] == '1'
