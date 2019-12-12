@@ -35,6 +35,7 @@ from picard.util import (
 from picard.ui import (
     HashableTreeWidgetItem,
     PicardDialog,
+    SingletonDialog,
 )
 from picard.ui.options import (  # noqa: F401 # pylint: disable=unused-import
     OptionsCheckError,
@@ -63,7 +64,7 @@ from picard.ui.options import (  # noqa: F401 # pylint: disable=unused-import
 from picard.ui.util import StandardButton
 
 
-class OptionsDialog(PicardDialog):
+class OptionsDialog(PicardDialog, SingletonDialog):
 
     autorestore = False
 
