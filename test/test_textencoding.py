@@ -2,9 +2,8 @@
 from test.picardtestcase import PicardTestCase
 
 from picard import util
+from picard.const.sys import IS_WIN
 
-
-#from picard.util import textencoding
 
 # Set the value to true below to show the coverage of Latin characters
 show_latin2ascii_coverage = False
@@ -129,8 +128,12 @@ class PunctuationTest(PicardTestCase):
         self.assertEqual(util.textencoding.unicode_simplify_punctuation(ascii_chars), ascii_chars)
 
     def test_pathsave(self):
-        self.assertEqual(util.textencoding.unicode_simplify_punctuation('\u2215', True), '_')
-        self.assertEqual(util.textencoding.unicode_simplify_punctuation('/\\\u2215', True), '/\\_')
+        self.assertEqual(util.textencoding.unicode_simplify_punctuation('\u2215\u2216', True), '__' if IS_WIN else '_\\')
+        self.assertEqual(util.textencoding.unicode_simplify_punctuation('/\\\u2215\u2216', True), '/\\__' if IS_WIN else '/\\_\\')
+
+    def test_pathsave_win_compat(self):
+        self.assertEqual(util.textencoding.unicode_simplify_punctuation('\u2215\u2216', True, True), '__')
+        self.assertEqual(util.textencoding.unicode_simplify_punctuation('/\\\u2215\u2216', True, True), '/\\__')
 
     def test_incorrect(self):
         pass
@@ -200,7 +203,11 @@ class ReplaceNonAsciiTest(PicardTestCase):
         self.assertEqual(util.textencoding.replace_non_ascii(u"１２３"), u"123") # Fullwidth digits
 
     def test_pathsave(self):
-        self.assertEqual(util.textencoding.replace_non_ascii('\u2044/8½\\', pathsave=True), '_/8 1_2\\')
+        expected = '__/8 1_2\\' if IS_WIN else '\\_/8 1_2\\'
+        self.assertEqual(util.textencoding.replace_non_ascii('\u2216\u2044/8½\\', pathsave=True), expected)
+
+    def test_win_compat(self):
+        self.assertEqual(util.textencoding.replace_non_ascii('\u2216\u2044/8½\\', pathsave=True, win_compat=True), '__/8 1_2\\')
 
     def test_incorrect(self):
         self.assertNotEqual(util.textencoding.replace_non_ascii(u"Lukáš"), u"Lukáš")
