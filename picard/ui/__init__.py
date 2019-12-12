@@ -57,6 +57,28 @@ class PreserveGeometry:
         config.persist[self.opt_name()] = self.saveGeometry()
 
 
+class SingletonDialog:
+    _instance = None
+
+    @classmethod
+    def get_instance(cls, *args, **kwargs):
+        if not cls._instance:
+            cls._instance = cls(*args, **kwargs)
+            cls._instance.finished.connect(cls._on_dialog_finished)
+        return cls._instance
+
+    @classmethod
+    def show_instance(cls, *args, **kwargs):
+        instance = cls.get_instance(*args, **kwargs)
+        instance.show()
+        instance.raise_()
+        instance.activateWindow()
+
+    @classmethod
+    def _on_dialog_finished(cls):
+        cls._instance = None
+
+
 class PicardDialog(QtWidgets.QDialog, PreserveGeometry):
 
     flags = QtCore.Qt.WindowSystemMenuHint | QtCore.Qt.WindowTitleHint | QtCore.Qt.WindowCloseButtonHint
