@@ -179,12 +179,16 @@ _simplify_punctuation = {
     "\u200B": "",  # Zero Width Space
 }
 _re_simplify_punctuation = _re_any(_simplify_punctuation.keys())
-_pathsave_simplify_punctuation = {k: sanitize_filename(v) for k, v in _simplify_punctuation.items()}
 
 
-def unicode_simplify_punctuation(string, pathsave=False):
-    punctuation = _pathsave_simplify_punctuation if pathsave else _simplify_punctuation
-    return _re_simplify_punctuation.sub(lambda m: punctuation[m.group(0)], string)
+def unicode_simplify_punctuation(string, pathsave=False, win_compat=False):
+    def repl(m):
+        if pathsave:
+            return sanitize_filename(_simplify_punctuation[m.group(0)], win_compat=win_compat)
+        else:
+            return _simplify_punctuation[m.group(0)]
+
+    return _re_simplify_punctuation.sub(repl, string)
 
 
 _simplify_combinations = {
@@ -413,12 +417,16 @@ _simplify_combinations = {
     "\u01BE": "ts",  # LATIN LETTER TS LIGATION (see http://unicode.org/notes/tn27/)
 }
 _re_simplify_combinations = _re_any(_simplify_combinations)
-_pathsave_simplify_combinations = {k: sanitize_filename(v) for k, v in _simplify_combinations.items()}
 
 
-def unicode_simplify_combinations(string, pathsave=False):
-    combinations = _pathsave_simplify_combinations if pathsave else _simplify_combinations
-    return _re_simplify_combinations.sub(lambda m: combinations[m.group(0)], string)
+def unicode_simplify_combinations(string, pathsave=False, win_compat=False):
+    def repl(m):
+        if pathsave:
+            return sanitize_filename(_simplify_combinations[m.group(0)], win_compat=win_compat)
+        else:
+            return _simplify_combinations[m.group(0)]
+
+    return _re_simplify_combinations.sub(repl, string)
 
 
 def unicode_simplify_accents(string):
@@ -436,11 +444,11 @@ def unaccent(string):
     return unicode_simplify_accents(string)
 
 
-def replace_non_ascii(string, repl="_", pathsave=False):
+def replace_non_ascii(string, repl="_", pathsave=False, win_compat=False):
     """Replace non-ASCII characters from ``string`` by ``repl``."""
-    interim = unicode_simplify_combinations(string, pathsave)
+    interim = unicode_simplify_combinations(string, pathsave, win_compat)
     interim = unicode_simplify_accents(interim)
-    interim = unicode_simplify_punctuation(interim, pathsave)
+    interim = unicode_simplify_punctuation(interim, pathsave, win_compat)
     interim = unicode_simplify_compatibility(interim)
 
     def error_repl(e, repl="_"):

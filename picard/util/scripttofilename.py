@@ -34,15 +34,17 @@ def script_to_filename(naming_format, metadata, file=None, settings=None):
     if settings is None:
         settings = config.setting
     # make sure every metadata can safely be used in a path name
+    win_compat = IS_WIN or settings["windows_compatibility"]
     meta = Metadata()
     for name in metadata:
-        meta[name] = [sanitize_filename(str(v)) for v in metadata.getall(name)]
+        meta[name] = [sanitize_filename(str(v), win_compat=win_compat)
+                      for v in metadata.getall(name)]
     naming_format = naming_format.replace("\t", "").replace("\n", "")
     filename = ScriptParser().eval(naming_format, meta, file)
     if settings["ascii_filenames"]:
-        filename = replace_non_ascii(filename, pathsave=True)
+        filename = replace_non_ascii(filename, pathsave=True, win_compat=win_compat)
     # replace incompatible characters
-    if settings["windows_compatibility"] or IS_WIN:
+    if win_compat:
         filename = replace_win32_incompat(filename)
     # remove null characters
     filename = filename.replace("\x00", "")

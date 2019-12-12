@@ -163,9 +163,13 @@ def strip_non_alnum(string):  # noqa: E302
     return _re_non_alphanum.sub(" ", string).strip()
 
 
-_re_slashes = re.compile(r'[\\/]', re.UNICODE)
-def sanitize_filename(string, repl="_"):  # noqa: E302
-    return _re_slashes.sub(repl, string)
+def sanitize_filename(string, repl="_", win_compat=False):
+    string = string.replace(os.sep, repl)
+    if os.altsep:
+        string = string.replace(os.altsep, repl)
+    if win_compat and os.altsep != '\\':
+        string = string.replace('\\', repl)
+    return string
 
 
 def _reverse_sortname(sortname):

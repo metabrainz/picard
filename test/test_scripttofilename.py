@@ -1,3 +1,5 @@
+import unittest
+
 from test.picardtestcase import PicardTestCase
 
 from picard import config
@@ -42,6 +44,12 @@ class ScriptToFilenameTest(PicardTestCase):
         filename = script_to_filename('%artist%/%album%', metadata)
         self.assertEqual('AC_DC/The Album', filename)
 
+    def test_preserve_backslash(self):
+        metadata = Metadata()
+        metadata['artist'] = 'AC\\/DC'
+        filename = script_to_filename('%artist%', metadata)
+        self.assertEqual('AC__DC' if IS_WIN else 'AC\\_DC', filename)
+
     def test_file_metadata(self):
         metadata = Metadata()
         file = File('somepath/somefile.mp3')
@@ -53,24 +61,40 @@ class ScriptToFilenameTest(PicardTestCase):
         metadata['artist'] = 'Die Ärzte'
         settings = config.setting.copy()
         settings['ascii_filenames'] = False
-        filename = script_to_filename('%artist% éöü', metadata, settings=settings)
-        self.assertEqual('Die Ärzte éöü', filename)
+        filename = script_to_filename('%artist% éöü½', metadata, settings=settings)
+        self.assertEqual('Die Ärzte éöü½', filename)
         settings['ascii_filenames'] = True
-        filename = script_to_filename('%artist% éöü', metadata, settings=settings)
-        self.assertEqual('Die Arzte eou', filename)
+        filename = script_to_filename('%artist% éöü½', metadata, settings=settings)
+        self.assertEqual('Die Arzte eou 1_2', filename)
 
     def test_windows_compatibility(self):
         metadata = Metadata()
-        metadata['artist'] = '*:'
+        metadata['artist'] = '\\*:'
         settings = config.setting.copy()
         settings['windows_compatibility'] = False
-        expect_orig = '*:?'
-        expect_compat = '___'
+        expect_orig = '\\*:?'
+        expect_compat = '____'
         filename = script_to_filename('%artist%?', metadata, settings=settings)
         self.assertEqual(expect_compat if IS_WIN else expect_orig, filename)
         settings['windows_compatibility'] = True
         filename = script_to_filename('%artist%?', metadata, settings=settings)
         self.assertEqual(expect_compat, filename)
+
+    @unittest.skipUnless(IS_WIN, "windows test")
+    def test_ascii_win_save(self):
+        self._test_ascii_windows_compatibility()
+
+    def test_ascii_win_compat(self):
+        config.setting['windows_compatibility'] = True
+        self._test_ascii_windows_compatibility()
+
+    def _test_ascii_windows_compatibility(self):
+        metadata = Metadata()
+        metadata['artist'] = '\u2216/\\\u2215'
+        settings = config.setting.copy()
+        settings['ascii_filenames'] = True
+        filename = script_to_filename('%artist%/\u2216\\\\\u2215', metadata, settings=settings)
+        self.assertEqual('____/_\\_', filename)
 
     def test_remove_null_chars(self):
         metadata = Metadata()
