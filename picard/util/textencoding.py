@@ -62,7 +62,6 @@
 
 import codecs
 from functools import partial
-import re
 import unicodedata
 
 from picard.util import sanitize_filename
@@ -72,10 +71,6 @@ from picard.util import sanitize_filename
 # The translation tables for punctuation and latin combined-characters are taken from
 # http://unicode.org/repos/cldr/trunk/common/transforms/Latin-ASCII.xml
 # Various bugs and mistakes in this have been ironed out during testing.
-
-
-def _re_any(iterable):
-    return re.compile('([' + ''.join(iterable) + '])', re.UNICODE)
 
 
 _additional_compatibility = {
@@ -100,11 +95,10 @@ _additional_compatibility = {
     "\u3000": " ",  # IDEOGRAPHIC SPACE (from ‹character-fallback›)
     "\u2033": "”",  # DOUBLE PRIME
 }
-_re_additional_compatibility = _re_any(_additional_compatibility.keys())
 
 
 def unicode_simplify_compatibility(string):
-    interim = _re_additional_compatibility.sub(lambda m: _additional_compatibility[m.group(0)], string)
+    interim = ''.join(_additional_compatibility.get(c, c) for c in string)
     return unicodedata.normalize("NFKC", interim)
 
 
@@ -178,17 +172,21 @@ _simplify_punctuation = {
     "\u2986": "))",  # RIGHT WHITE PARENTHESIS
     "\u200B": "",  # Zero Width Space
 }
-_re_simplify_punctuation = _re_any(_simplify_punctuation.keys())
+
+
+def _replace_unicode_simplify_punctuation(char, pathsave, win_compat):
+    result = _simplify_punctuation.get(char)
+    if result is None:
+        return char
+    elif not pathsave:
+        return result
+    else:
+        return sanitize_filename(result, win_compat=win_compat)
 
 
 def unicode_simplify_punctuation(string, pathsave=False, win_compat=False):
-    def repl(m):
-        if pathsave:
-            return sanitize_filename(_simplify_punctuation[m.group(0)], win_compat=win_compat)
-        else:
-            return _simplify_punctuation[m.group(0)]
-
-    return _re_simplify_punctuation.sub(repl, string)
+    return ''.join(
+        _replace_unicode_simplify_punctuation(c, pathsave, win_compat) for c in string)
 
 
 _simplify_combinations = {
@@ -416,17 +414,21 @@ _simplify_combinations = {
     "\u0185": "h",  # LATIN SMALL LETTER TONE SIX
     "\u01BE": "ts",  # LATIN LETTER TS LIGATION (see http://unicode.org/notes/tn27/)
 }
-_re_simplify_combinations = _re_any(_simplify_combinations)
+
+
+def _replace_unicode_simplify_combinations(char, pathsave, win_compat):
+    result = _simplify_combinations.get(char)
+    if result is None:
+        return char
+    elif not pathsave:
+        return result
+    else:
+        return sanitize_filename(result, win_compat=win_compat)
 
 
 def unicode_simplify_combinations(string, pathsave=False, win_compat=False):
-    def repl(m):
-        if pathsave:
-            return sanitize_filename(_simplify_combinations[m.group(0)], win_compat=win_compat)
-        else:
-            return _simplify_combinations[m.group(0)]
-
-    return _re_simplify_combinations.sub(repl, string)
+    return ''.join(
+        _replace_unicode_simplify_combinations(c, pathsave, win_compat) for c in string)
 
 
 def unicode_simplify_accents(string):
