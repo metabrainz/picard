@@ -815,18 +815,23 @@ def find_file_in_path(filename):
             return file_path
 
 
-args['data_files'] = [
-    (
-        'share/icons/hicolor/{size}x{size}/apps'.format(size=size),
-        ['resources/images/{size}x{size}/{app_id}.png'.format(size=size, app_id=PICARD_APP_ID)]
-    )
-    for size in (16, 24, 32, 48, 128, 256)
-]
-
-args['data_files'].append(('share/icons/hicolor/scalable/apps', ['resources/%s.svg' % PICARD_APP_ID]))
-args['data_files'].append(('share/applications', [PICARD_DESKTOP_NAME]))
-
-if sys.platform == 'linux':
+if sys.platform not in ['darwin', 'haiku1', 'win32']:
+    args['data_files'].append(('share/applications', [PICARD_DESKTOP_NAME]))
+    args['data_files'].append(('share/icons/hicolor/scalable/apps', ['resources/%s.svg' % PICARD_APP_ID]))
+    args['data_files'] = [
+        (
+            'share/icons/hicolor/{size}x{size}/apps'.format(size=size),
+            ['resources/images/{size}x{size}/{app_id}.png'.format(size=size, app_id=PICARD_APP_ID)]
+        )
+        for size in (16, 24, 32, 48, 128, 256)
+    ]
     args['data_files'].append(('share/metainfo', [APPDATA_FILE]))
+
+if sys.platform == 'win32':
+    args['entry_points'] = {
+        'gui_scripts': [
+            'picard = picard.tagger:main'
+        ]
+    }
 
 setup(**args)
