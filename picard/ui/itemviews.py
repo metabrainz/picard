@@ -137,7 +137,7 @@ class MainPanel(QtWidgets.QSplitter):
         (N_('Barcode'), 'barcode'),
         (N_('Media'), 'media'),
         (N_('Genre'), 'genre'),
-        (N_('AcoustId'), 'acoustid_id'),
+        (N_('Fingerprint status'), '~fingerprint'),
     ]
 
     TITLE_COLUMN = 0
@@ -274,6 +274,7 @@ class ConfigurableColumnsHeader(TristateSortHeaderView):
         self.setStretchLastSection(True)
         self.setDefaultAlignment(QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter)
         self.setSectionsClickable(False)
+        self.sortIndicatorChanged.connect(self.on_sort_indicator_changed)
 
         # enable sorting, but don't actually use it by default
         # XXX it would be nice to be able to go to the 'no sort' mode, but the
@@ -289,6 +290,9 @@ class ConfigurableColumnsHeader(TristateSortHeaderView):
             if self.sectionSize(column) == 0:
                 self.resizeSection(column, self.defaultSectionSize())
             self._visible_columns.add(column)
+            if column == MainPanel.FINGERPRINT_COLUMN:
+                self.setSectionResizeMode(column, QtWidgets.QHeaderView.Fixed)
+                self.parent().resizeColumnToContents(column)
         elif column in self._visible_columns:
             self._visible_columns.remove(column)
 
@@ -323,6 +327,23 @@ class ConfigurableColumnsHeader(TristateSortHeaderView):
     def restore_defaults(self):
         self.parent().restore_default_columns()
 
+    def paintSection(self, painter, rect, index):
+        if index == MainPanel.FINGERPRINT_COLUMN:
+            size = 16
+            padding_h = (rect.width() - size) / 2
+            padding_v = (rect.height() - size) / 2
+            target_rect = QtCore.QRect(rect.x() + padding_h, rect.y() + padding_v, size, size)
+            painter.save()
+            super().paintSection(painter, rect, index)
+            painter.restore()
+            painter.drawPixmap(target_rect, FileItem.icon_fingerprint.pixmap(size, size))
+        else:
+            super().paintSection(painter, rect, index)
+
+    def on_sort_indicator_changed(self, index, order):
+        if index == MainPanel.FINGERPRINT_COLUMN:
+            self.setSortIndicator(-1, QtCore.Qt.AscendingOrder)
+
 
 class BaseTreeView(QtWidgets.QTreeWidget):
 
@@ -332,7 +353,8 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         self.window = window
         self.panel = parent
 
-        self.setHeaderLabels([_(h) for h, n in MainPanel.columns])
+        self.setHeaderLabels([_(h) if n != '~fingerprint' else ''
+                              for h, n in MainPanel.columns])
         self.restore_state()
 
         self.setAcceptDrops(True)
@@ -1013,7 +1035,7 @@ class FileItem(TreeItem):
     def decide_fingerprint_icon_info(file):
         acoustid = file.metadata['acoustid_id']
         if acoustid:
-            return acoustid
+            return _('AcoustID: %s' % acoustid)
         elif getattr(file, 'acoustid_fingerprint', None):
             return _('Fingerprint calculated')
         else:
