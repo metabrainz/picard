@@ -41,8 +41,8 @@ class VersionError(Exception):
 def version_to_string(version, short=False):
     if len(version) != 5:
         raise VersionError("Length != 5")
-    if version[3] not in ('final', 'dev'):
-        raise VersionError("Should be either 'final' or 'dev'")
+    if version[3] not in ('final', 'dev', 'alpha', 'beta', 'rc'):
+        raise VersionError("Should be either 'final', 'dev', 'alpha', 'beta' or 'rc'")
     _version = []
     for p in version:
         try:
@@ -50,6 +50,8 @@ def version_to_string(version, short=False):
         except ValueError:
             n = p
         _version.append(n)
+    if short and _version[3] in ('alpha', 'beta'):
+        _version[3] = _version[3][:1]
     version = tuple(_version)
     if short and version[3] == 'final':
         if version[2] == 0:
@@ -61,7 +63,7 @@ def version_to_string(version, short=False):
     return version_str
 
 
-_version_re = re.compile(r"(\d+)[._](\d+)(?:[._](\d+)[._]?(?:(dev|final)[._]?(\d+))?)?$")
+_version_re = re.compile(r"(\d+)[._](\d+)(?:[._](\d+)[._]?(?:(dev|a|alpha|b|beta|rc|final)[._]?(\d+))?)?$")
 
 
 def version_from_string(version_str):
@@ -72,7 +74,8 @@ def version_from_string(version_str):
             return (int(g[0]), int(g[1]), 0, 'final', 0)
         if g[3] is None:
             return (int(g[0]), int(g[1]), int(g[2]), 'final', 0)
-        return (int(g[0]), int(g[1]), int(g[2]), g[3], int(g[4]))
+        identifier = {'a': 'alpha', 'b': 'beta'}.get(g[3], g[3])
+        return (int(g[0]), int(g[1]), int(g[2]), identifier, int(g[4]))
     raise VersionError("String '%s' does not match regex '%s'" % (version_str,
                                                                   _version_re.pattern))
 
