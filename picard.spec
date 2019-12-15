@@ -7,7 +7,7 @@ import sys
 
 # Get the version and build a CFBundleVersion compatible version
 # of it according to Apple dev documentation
-sys.path.append('.')
+sys.path.insert(0, '.')
 from picard import (
     PICARD_APP_ID,
     PICARD_APP_NAME,
