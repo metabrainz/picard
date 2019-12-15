@@ -514,7 +514,7 @@ class File(QtCore.QObject, Item):
                 self.parent.remove_file(self)
             self.parent = parent
             self.parent.add_file(self)
-            self._acoustid_update()
+            self.acoustid_update()
 
     def _move(self, parent):
         if parent != self.parent:
@@ -522,9 +522,9 @@ class File(QtCore.QObject, Item):
             if self.parent:
                 self.parent.remove_file(self)
             self.parent = parent
-            self._acoustid_update()
+            self.acoustid_update()
 
-    def _acoustid_update(self):
+    def acoustid_update(self):
         recording_id = None
         if self.parent and hasattr(self.parent, 'orig_metadata'):
             recording_id = self.parent.orig_metadata['musicbrainz_recordingid']
@@ -743,7 +743,7 @@ class File(QtCore.QObject, Item):
 
     def clear_pending(self):
         if self.state == File.PENDING:
-            self.state = File.NORMAL
+            self.state = File.NORMAL if self.similarity == 1.0 else File.CHANGED
             self.update_item()
 
     def update_item(self):

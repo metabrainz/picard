@@ -364,6 +364,8 @@ class BaseTreeView(QtWidgets.QTreeWidget):
                 menu.addAction(self.window.track_search_action)
                 plugin_actions.extend(_file_actions)
             menu.addAction(self.window.browser_lookup_action)
+            if obj.num_linked_files > 0:
+                menu.addAction(self.window.generate_fingerprints_action)
             menu.addSeparator()
             if isinstance(obj, NonAlbumTrack):
                 menu.addAction(self.window.refresh_action)
@@ -378,10 +380,12 @@ class BaseTreeView(QtWidgets.QTreeWidget):
                 menu.addAction(self.window.cluster_action)
             else:
                 menu.addAction(self.window.album_search_action)
+            menu.addAction(self.window.generate_fingerprints_action)
             plugin_actions = list(_cluster_actions)
         elif isinstance(obj, ClusterList):
             menu.addAction(self.window.autotag_action)
             menu.addAction(self.window.analyze_action)
+            menu.addAction(self.window.generate_fingerprints_action)
             plugin_actions = list(_clusterlist_actions)
         elif isinstance(obj, File):
             if can_view_info:
@@ -393,11 +397,14 @@ class BaseTreeView(QtWidgets.QTreeWidget):
             menu.addAction(self.window.autotag_action)
             menu.addAction(self.window.analyze_action)
             menu.addAction(self.window.track_search_action)
+            menu.addAction(self.window.generate_fingerprints_action)
             plugin_actions = list(_file_actions)
         elif isinstance(obj, Album):
             if can_view_info:
                 menu.addAction(self.window.view_info_action)
             menu.addAction(self.window.browser_lookup_action)
+            if obj.get_num_total_files() > 0:
+                menu.addAction(self.window.generate_fingerprints_action)
             menu.addSeparator()
             menu.addAction(self.window.refresh_action)
             plugin_actions = list(_album_actions)
