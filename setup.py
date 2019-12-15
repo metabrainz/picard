@@ -28,7 +28,7 @@ from picard import (
     PICARD_DESKTOP_NAME,
     PICARD_DISPLAY_NAME,
     PICARD_VERSION,
-    __version__,
+    PICARD_VERSION_STR_SHORT,
 )
 
 
@@ -704,7 +704,7 @@ with open(os.path.join(this_directory, 'README.md'), encoding='utf-8') as f:
 
 args = {
     'name': PACKAGE_NAME,
-    'version': __version__,
+    'version': PICARD_VERSION_STR_SHORT,
     'description': 'The next generation MusicBrainz tagger',
     'keywords': 'MusicBrainz metadata tagger picard',
     'long_description': long_description,
