@@ -137,7 +137,11 @@ class MainPanel(QtWidgets.QSplitter):
         (N_('Barcode'), 'barcode'),
         (N_('Media'), 'media'),
         (N_('Genre'), 'genre'),
+        (N_('AcoustId'), 'acoustid_id'),
     ]
+
+    TITLE_COLUMN = 0
+    FINGERPRINT_COLUMN = 13
 
     def __init__(self, window, parent=None):
         super().__init__(parent)
@@ -195,6 +199,8 @@ class MainPanel(QtWidgets.QSplitter):
         FileItem.icon_file_pending = QtGui.QIcon(":/images/file-pending.png")
         FileItem.icon_error = icontheme.lookup('dialog-error', icontheme.ICON_SIZE_MENU)
         FileItem.icon_saved = QtGui.QIcon(":/images/track-saved.png")
+        FileItem.icon_fingerprint_none = QtGui.QIcon()
+        FileItem.icon_fingerprint = icontheme.lookup('picard-fingerprint', icontheme.ICON_SIZE_MENU)
         FileItem.match_icons = [
             QtGui.QIcon(":/images/match-50.png"),
             QtGui.QIcon(":/images/match-60.png"),
@@ -716,7 +722,7 @@ class FileTreeView(BaseTreeView):
         self.set_clusters_text()
 
     def set_clusters_text(self):
-        self.clusters.setText(0, '%s (%d)' % (_("Clusters"), len(self.tagger.clusters)))
+        self.clusters.setText(MainPanel.TITLE_COLUMN, '%s (%d)' % (_("Clusters"), len(self.tagger.clusters)))
 
 
 class AlbumTreeView(BaseTreeView):
@@ -736,7 +742,7 @@ class AlbumTreeView(BaseTreeView):
             self.insertTopLevelItem(0, item)
         else:
             item = AlbumItem(album, True, self)
-        item.setIcon(0, AlbumItem.icon_cd)
+        item.setIcon(MainPanel.TITLE_COLUMN, AlbumItem.icon_cd)
         for i, column in enumerate(MainPanel.columns):
             font = item.font(i)
             font.setBold(True)
@@ -777,7 +783,7 @@ class ClusterItem(TreeItem):
 
     def __init__(self, *args):
         super().__init__(*args)
-        self.setIcon(0, ClusterItem.icon_dir)
+        self.setIcon(MainPanel.TITLE_COLUMN, ClusterItem.icon_dir)
 
     def update(self):
         for i, column in enumerate(MainPanel.columns):
@@ -843,22 +849,22 @@ class AlbumItem(TreeItem):
                 for item in items:  # Update after insertChildren so that setExpanded works
                     item.update(update_album=False)
         if album.errors:
-            self.setIcon(0, AlbumItem.icon_error)
-            self.setToolTip(0, _("Error"))
+            self.setIcon(MainPanel.TITLE_COLUMN, AlbumItem.icon_error)
+            self.setToolTip(MainPanel.TITLE_COLUMN, _("Error"))
         elif album.is_complete():
             if album.is_modified():
-                self.setIcon(0, AlbumItem.icon_cd_saved_modified)
-                self.setToolTip(0, _("Album modified and complete"))
+                self.setIcon(MainPanel.TITLE_COLUMN, AlbumItem.icon_cd_saved_modified)
+                self.setToolTip(MainPanel.TITLE_COLUMN, _("Album modified and complete"))
             else:
-                self.setIcon(0, AlbumItem.icon_cd_saved)
-                self.setToolTip(0, _("Album unchanged and complete"))
+                self.setIcon(MainPanel.TITLE_COLUMN, AlbumItem.icon_cd_saved)
+                self.setToolTip(MainPanel.TITLE_COLUMN, _("Album unchanged and complete"))
         else:
             if album.is_modified():
-                self.setIcon(0, AlbumItem.icon_cd_modified)
-                self.setToolTip(0, _("Album modified"))
+                self.setIcon(MainPanel.TITLE_COLUMN, AlbumItem.icon_cd_modified)
+                self.setToolTip(MainPanel.TITLE_COLUMN, _("Album modified"))
             else:
-                self.setIcon(0, AlbumItem.icon_cd)
-                self.setToolTip(0, _("Album unchanged"))
+                self.setIcon(MainPanel.TITLE_COLUMN, AlbumItem.icon_cd)
+                self.setToolTip(MainPanel.TITLE_COLUMN, _("Album unchanged"))
         for i, column in enumerate(MainPanel.columns):
             self.setText(i, album.column(column[1]))
         if selection_changed:
@@ -891,11 +897,15 @@ class TrackItem(TreeItem):
             color = TrackItem.track_colors[file.state]
             bgcolor = get_match_color(file.similarity, TreeItem.base_color)
             icon = FileItem.decide_file_icon(file)
-            self.setToolTip(0, _(FileItem.decide_file_icon_info(file)))
+            self.setToolTip(MainPanel.TITLE_COLUMN, _(FileItem.decide_file_icon_info(file)))
             self.takeChildren()
             self.setExpanded(False)
+            self.setIcon(MainPanel.FINGERPRINT_COLUMN, FileItem.decide_fingerprint_icon(file))
+            self.setToolTip(MainPanel.FINGERPRINT_COLUMN, FileItem.decide_fingerprint_icon_info(file))
         else:
-            self.setToolTip(0, "")
+            self.setToolTip(MainPanel.TITLE_COLUMN, "")
+            self.setIcon(MainPanel.FINGERPRINT_COLUMN, FileItem.icon_fingerprint_none)
+            self.setToolTip(MainPanel.FINGERPRINT_COLUMN, "")
             if track.ignored_for_completeness():
                 color = TreeItem.text_color_secondary
             else:
@@ -929,10 +939,10 @@ class TrackItem(TreeItem):
                     self.addChildren(items)
             self.setExpanded(True)
         if track.error:
-            self.setIcon(0, TrackItem.icon_error)
-            self.setToolTip(0, track.error)
+            self.setIcon(MainPanel.TITLE_COLUMN, TrackItem.icon_error)
+            self.setToolTip(MainPanel.TITLE_COLUMN, track.error)
         else:
-            self.setIcon(0, icon)
+            self.setIcon(MainPanel.TITLE_COLUMN, icon)
         for i, column in enumerate(MainPanel.columns):
             self.setText(i, track.column(column[1]))
             self.setForeground(i, color)
@@ -947,7 +957,9 @@ class FileItem(TreeItem):
 
     def update(self, update_track=True):
         file = self.obj
-        self.setIcon(0, FileItem.decide_file_icon(file))
+        self.setIcon(MainPanel.TITLE_COLUMN, FileItem.decide_file_icon(file))
+        self.setIcon(MainPanel.FINGERPRINT_COLUMN, self.decide_fingerprint_icon(file))
+        self.setToolTip(MainPanel.FINGERPRINT_COLUMN, self.decide_fingerprint_icon_info(file))
         color = FileItem.file_colors[file.state]
         bgcolor = get_match_color(file.similarity, TreeItem.base_color)
         for i, column in enumerate(MainPanel.columns):
@@ -989,3 +1001,20 @@ class FileItem(TreeItem):
                 return FileItem.match_icons_info[int(file.similarity * 5 + 0.5)]
         elif file.state == File.PENDING:
             return N_("Pending")
+
+    @staticmethod
+    def decide_fingerprint_icon(file):
+        if getattr(file, 'acoustid_fingerprint', None):
+            return FileItem.icon_fingerprint
+        else:
+            return FileItem.icon_fingerprint_none
+
+    @staticmethod
+    def decide_fingerprint_icon_info(file):
+        acoustid = file.metadata['acoustid_id']
+        if acoustid:
+            return acoustid
+        elif getattr(file, 'acoustid_fingerprint', None):
+            return _('Fingerprint calculated')
+        else:
+            return _('No fingerprint was calculated for this file, use "Scan" or "Generate AcoustID fingerprints" to calculate the fingerprint.')
