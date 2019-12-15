@@ -22,6 +22,7 @@
 # Leo_Verto <leotheverto@googlemail.com>, 2017
 # Leo_Verto <leotheverto@googlemail.com>, 2017
 # Marc Rodrigues <info@sustain-release.de>, 2019
+# Mark Spike, 2019
 # Mineo <email address hidden>, 2011
 # Wieland Hoffmann <themineo+transifex@googlemail.com>, 2011
 # nikki, 2013-2014
@@ -45,8 +46,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2019-10-27 10:29+0000\n"
-"Last-Translator: David Kellner <kellnerd@gmx.net>\n"
+"PO-Revision-Date: 2019-12-11 07:23+0000\n"
+"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: German (http://www.transifex.com/musicbrainz/musicbrainz/language/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -446,7 +447,7 @@ msgstr "ais-Moll"
 #: DB:work_attribute_type/name:23
 msgctxt "work_attribute_type"
 msgid "AKM ID"
-msgstr ""
+msgstr "AKM-ID"
 
 #: DB:work_attribute_type/name:13
 msgctxt "work_attribute_type"
@@ -1234,7 +1235,7 @@ msgstr "Blu-ray"
 #: DB:medium_format/name:79
 msgctxt "medium_format"
 msgid "Blu-ray-R"
-msgstr ""
+msgstr "Blu-ray-R"
 
 #: DB:medium_format/name:35
 msgctxt "medium_format"
@@ -1593,7 +1594,7 @@ msgctxt "area_type"
 msgid ""
 "Country is used for areas included (or previously included) in ISO 3166-1, "
 "e.g. United States."
-msgstr "Land wird für Gebiete verwendet, die in ISO 3166-1 enthalten sind (oder zuvor enthalten waren), z.B. die Vereinigten Staaten."
+msgstr "Land wird für Gebiete verwendet, die in ISO 3166-1 enthalten sind (oder zuvor enthalten waren), z. B. die Vereinigten Staaten."
 
 #: DB:area_type/name:7
 msgctxt "area_type"
@@ -1607,7 +1608,7 @@ msgid ""
 "not the main administrative divisions but are also not municipalities, e.g. "
 "counties in the USA. These are not considered when displaying the parent "
 "areas for a given area."
-msgstr "Kreis wird für kleinere Verwaltungseinheiten eines Landes verwendet, die nicht die Hauptverwaltungseinheiten sind, aber auch keine Gemeinden, z.B. Countys in den USA, Landkreise in Deutschland oder Bezirke in Österreich und der Schweiz. Diese werden bei der Anzeige der übergeordneten Bereiche für einen bestimmten Bereich nicht berücksichtigt."
+msgstr "Kreis wird für kleinere Verwaltungseinheiten eines Landes verwendet, die nicht die Hauptverwaltungseinheiten sind, aber auch keine Gemeinden, z. B. Countys in den USA, Landkreise in Deutschland oder Bezirke in Österreich und der Schweiz. Diese werden bei der Anzeige der übergeordneten Bereiche für einen bestimmten Bereich nicht berücksichtigt."
 
 #: DB:work_attribute_type_allowed_value/value:608
 msgctxt "work_attribute_type_allowed_value"
@@ -3098,7 +3099,7 @@ msgstr ""
 #: DB:work_attribute_type/name:29
 msgctxt "work_attribute_type"
 msgid "ICE ID"
-msgstr "ICE ID"
+msgstr "ICE-ID"
 
 #: DB:work_attribute_type/description:28
 msgctxt "work_attribute_type"
@@ -3238,7 +3239,7 @@ msgid ""
 "Island is used for islands and atolls which don't form subdivisions of their"
 " own, e.g. Skye. These are not considered when displaying the parent areas "
 "for a given area."
-msgstr "Insel wird für Inseln und Atolle verwendet, die keine eigenen Unterteilungen bilden, z.B. Skye. Diese werden bei der Anzeige der übergeordneten Gebiete für ein bestimmtes Gebiet nicht berücksichtigt."
+msgstr "Insel wird für Inseln und Atolle verwendet, die keine eigenen Unterteilungen bilden, z. B. Skye. Diese werden bei der Anzeige der übergeordneten Gebiete für ein bestimmtes Gebiet nicht berücksichtigt."
 
 #: DB:work_attribute_type/name:3
 msgctxt "work_attribute_type"
@@ -4097,7 +4098,7 @@ msgstr "Mevlidişerif"
 #: DB:medium_format/name:83
 msgctxt "medium_format"
 msgid "Microcassette"
-msgstr ""
+msgstr "Mikrokassette"
 
 #: DB:medium_format/name:6
 msgctxt "medium_format"
@@ -4622,7 +4623,7 @@ msgstr ""
 #: DB:work_attribute_type/name:33
 msgctxt "work_attribute_type"
 msgid "NexTone ID"
-msgstr ""
+msgstr "NexTone-ID"
 
 #: DB:work_attribute_type_allowed_value/value:471
 msgctxt "work_attribute_type_allowed_value"
@@ -5254,7 +5255,7 @@ msgstr "Ravicandrika"
 #: DB:cover_art_archive.art_type/name:14
 msgctxt "cover_art_type"
 msgid "Raw/Unedited"
-msgstr "Original/unbearbeitet"
+msgstr "Raw/unbearbeitet"
 
 #: DB:editor_collection_type/name:12
 msgctxt "collection_type"
@@ -6296,7 +6297,7 @@ msgid ""
 "This represents literary works written in prose, that is, written in "
 "relatively ordinary language without metrical structure (e.g. novels, short "
 "stories, essays...)."
-msgstr "Repräsentiert literarische Werke, die in Prosa geschrieben wurden, d.h. in einer relativ gewöhnlichen Sprache ohne metrische Struktur (z.B. Romane, Kurzgeschichten, Essays...)."
+msgstr "Repräsentiert literarische Werke, die in Prosa geschrieben wurden, d. h. in einer relativ gewöhnlichen Sprache ohne metrische Struktur (z. B. Romane, Kurzgeschichten, Essays, …)."
 
 #: DB:work_attribute_type_allowed_value/value:1041
 msgctxt "work_attribute_type_allowed_value"
@@ -6717,7 +6718,7 @@ msgstr "Yürüksofyan"
 #: DB:work_attribute_type/name:30
 msgctxt "work_attribute_type"
 msgid "ZAiKS ID"
-msgstr ""
+msgstr "ZAiKS-ID"
 
 #: DB:work_attribute_type_allowed_value/value:780
 msgctxt "work_attribute_type_allowed_value"
