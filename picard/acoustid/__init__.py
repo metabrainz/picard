@@ -150,9 +150,6 @@ class AcoustIDClient(QtCore.QObject):
         params = dict(meta='recordings releasegroups releases tracks compress sources')
         if result[0] == 'fingerprint':
             fp_type, fingerprint, length = result
-            file.acoustid_fingerprint = fingerprint
-            file.acoustid_length = length
-            self.tagger.acoustidmanager.add(file, None)
             params['fingerprint'] = fingerprint
             params['duration'] = str(length)
         else:
@@ -187,6 +184,11 @@ class AcoustIDClient(QtCore.QObject):
         except (json.decoder.JSONDecodeError, UnicodeDecodeError, ValueError):
             log.error("Error reading fingerprint calculator output", exc_info=True)
         finally:
+            if result and result[0] == 'fingerprint':
+                fp_type, fingerprint, length = result
+                file.acoustid_fingerprint = fingerprint
+                file.acoustid_length = length
+                self.tagger.acoustidmanager.add(file, None)
             next_func(result)
 
     def _on_fpcalc_error(self, next_func, filename, error):
@@ -227,7 +229,10 @@ class AcoustIDClient(QtCore.QObject):
                 fpcalc_next(result=('fingerprint', fingerprints[0], length))
                 return
         # calculate the fingerprint
-        task = (file, fpcalc_next)
+        self.fingerprint(file, fpcalc_next)
+
+    def fingerprint(self, file, next_func):
+        task = (file, next_func)
         self._queue.append(task)
         if self._running < self._max_processes:
             self._run_next_task()

@@ -788,6 +788,20 @@ class Tagger(QtWidgets.QApplication):
             self._acoustid.analyze(file, partial(file._lookup_finished,
                                                  File.LOOKUP_ACOUSTID))
 
+    def generate_fingerprints(self, objs):
+        """Generate the fingerprints without matching the files."""
+        if not self.use_acoustid:
+            return
+        files = self.get_files_from_objects(objs)
+
+        def finished(file, result):
+            file.acoustid_update()
+            file.clear_pending()
+
+        for file in files:
+            file.set_pending()
+            self._acoustid.fingerprint(file, partial(finished, file))
+
     # =======================================================================
     #  Metadata-based lookups
     # =======================================================================
