@@ -62,6 +62,8 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements-build.txt
         pip install -r requirements-win.txt
+    - name: Run tests
+      run: python setup.py test
     - name: Build Windows 10 app package
       run: |
         If ($Env:CODESIGN) {

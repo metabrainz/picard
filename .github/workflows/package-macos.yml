@@ -50,6 +50,10 @@ jobs:
         python -m pip install --upgrade pip
         source bin/activate
         pip install -r requirements-macos.txt
+    - name: Run tests
+      run: |
+        source bin/activate
+        python setup.py test
     - name: Build macOS app
       run: |
         source bin/activate
