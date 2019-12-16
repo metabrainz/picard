@@ -16,6 +16,7 @@ jobs:
         python-version: 3.8
     - name: Prepare changelog
       id: changelog
+      continue-on-error: true
       run: |
         PICARD_VERSION=$(python -c "import picard; print(picard.__version__)")
         echo "::set-output name=version::"$PICARD_VERSION
