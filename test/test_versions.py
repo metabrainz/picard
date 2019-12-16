@@ -34,9 +34,9 @@ class VersionsTest(PicardTestCase):
             ((1, 1, 1, 'final', 0), '1.1.1'),
             ((0, 0, 1, 'dev', 1), '0.0.1.dev1'),
             ((1, 1, 0, 'dev', 0), '1.1.0.dev0'),
-            ((1, 1, 2, 'alpha', 2), '1.1.2.a2'),
-            ((1, 1, 2, 'beta', 2), '1.1.2.b2'),
-            ((1, 1, 2, 'rc', 2), '1.1.2.rc2'),
+            ((1, 1, 2, 'alpha', 2), '1.1.2a2'),
+            ((1, 1, 2, 'beta', 2), '1.1.2b2'),
+            ((1, 1, 2, 'rc', 2), '1.1.2rc2'),
         )
         for l, s in versions:
             self.assertEqual(version_to_string(l, short=True), s)
