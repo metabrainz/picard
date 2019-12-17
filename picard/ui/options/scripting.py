@@ -42,6 +42,10 @@ from picard.ui.options import (
 from picard.ui.ui_options_script import Ui_ScriptingOptionsPage
 
 
+class ScriptCheckError(OptionsCheckError):
+    pass
+
+
 class TaggerScriptSyntaxHighlighter(QtGui.QSyntaxHighlighter):
 
     def __init__(self, document):
@@ -262,7 +266,7 @@ class ScriptingOptionsPage(OptionsPage):
         try:
             parser.eval(self.ui.tagger_script.toPlainText())
         except Exception as e:
-            raise OptionsCheckError(_("Script Error"), str(e))
+            raise ScriptCheckError(_("Script Error"), str(e))
 
     def restore_defaults(self):
         # Remove existing scripts
@@ -310,7 +314,9 @@ class ScriptingOptionsPage(OptionsPage):
         config.persist["scripting_splitter"] = self.ui.splitter.saveState()
 
     def display_error(self, error):
-        pass
+        # Ignore scripting errors, those are handled inline
+        if not isinstance(error, ScriptCheckError):
+            super().display_error(error)
 
 
 register_options_page(ScriptingOptionsPage)
