@@ -151,7 +151,7 @@
           <number>0</number>
          </property>
          <item>
-          <widget class="QPushButton" name="add_button">
+          <widget class="QToolButton" name="add_button">
            <property name="toolTip">
             <string>Add a new button to Toolbar</string>
            </property>
@@ -161,7 +161,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="insert_separator_button">
+          <widget class="QToolButton" name="insert_separator_button">
            <property name="toolTip">
             <string>Insert a separator</string>
            </property>
@@ -207,7 +207,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="remove_button">
+          <widget class="QToolButton" name="remove_button">
            <property name="toolTip">
             <string>Remove button from toolbar</string>
            </property>
