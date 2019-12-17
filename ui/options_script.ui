@@ -295,38 +295,6 @@
     </hint>
    </hints>
   </connection>
-  <connection>
-   <sender>move_up_button</sender>
-   <signal>clicked()</signal>
-   <receiver>ScriptingOptionsPage</receiver>
-   <slot>move_selected_script_up()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>428</x>
-     <y>475</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>302</x>
-     <y>275</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>move_down_button</sender>
-   <signal>clicked()</signal>
-   <receiver>ScriptingOptionsPage</receiver>
-   <slot>move_selected_script_down()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>464</x>
-     <y>475</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>302</x>
-     <y>275</y>
-    </hint>
-   </hints>
-  </connection>
  </connections>
  <slots>
   <slot>add_script()</slot>

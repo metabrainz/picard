@@ -33,6 +33,7 @@ from picard.script import ScriptParser
 from picard.util import restore_method
 
 from picard.ui import HashableListWidgetItem
+from picard.ui.moveable_list_view import MoveableListView
 from picard.ui.options import (
     OptionsCheckError,
     OptionsPage,
@@ -170,6 +171,8 @@ class ScriptingOptionsPage(OptionsPage):
         font = QtGui.QFont('Monospace')
         font.setStyleHint(QtGui.QFont.TypeWriter)
         self.ui.tagger_script.setFont(font)
+        self.move_view = MoveableListView(self.ui.script_list, self.ui.move_up_button,
+                                          self.ui.move_down_button)
 
     def delete_selected_script(self):
         indexes = self.ui.script_list.selectedIndexes()
@@ -180,24 +183,6 @@ class ScriptingOptionsPage(OptionsPage):
         items = self.ui.script_list.selectedItems()
         if items:
             self.rename_script(items[0])
-
-    def move_selected_script_up(self):
-        indexes = self.ui.script_list.selectedIndexes()
-        if indexes:
-            row = indexes[0].row()
-            self.move_script(row, 1)
-            new_index = self.ui.script_list.model().index(row - 1, 0)
-            selection = self.ui.script_list.selectionModel()
-            selection.select(new_index, QtCore.QItemSelectionModel.Clear | QtCore.QItemSelectionModel.SelectCurrent)
-
-    def move_selected_script_down(self):
-        indexes = self.ui.script_list.selectedIndexes()
-        if indexes:
-            row = indexes[0].row()
-            self.move_script(row, -1)
-            new_index = self.ui.script_list.model().index(row + 1, 0)
-            selection = self.ui.script_list.selectionModel()
-            selection.select(new_index, QtCore.QItemSelectionModel.Clear | QtCore.QItemSelectionModel.SelectCurrent)
 
     def script_name_changed(self):
         items = self.ui.script_list.selectedItems()
@@ -259,13 +244,6 @@ class ScriptingOptionsPage(OptionsPage):
             elif row < self.last_selected_script_pos:
                 self.last_selected_script_pos -= 1
 
-    def move_script(self, row, step):
-        item1 = self.ui.script_list.item(row)
-        item2 = self.ui.script_list.item(row - step)
-        if item1 and item2:
-            list_item = self.ui.script_list.takeItem(row)
-            self.ui.script_list.insertItem(row - step, list_item)
-
     def live_update_and_check(self):
         items = self.ui.script_list.selectedItems()
         if items:
@@ -304,6 +282,7 @@ class ScriptingOptionsPage(OptionsPage):
         self.last_selected_script_pos = config.persist["last_selected_script_pos"]
         last_selected_script = self.ui.script_list.item(self.last_selected_script_pos)
         if last_selected_script:
+            self.ui.script_list.setCurrentItem(last_selected_script)
             last_selected_script.setSelected(True)
 
         self.restore_state()

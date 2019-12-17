@@ -99,8 +99,6 @@ class Ui_ScriptingOptionsPage(object):
         self.script_list.itemSelectionChanged.connect(ScriptingOptionsPage.script_selected)
         self.remove_button.clicked.connect(ScriptingOptionsPage.delete_selected_script)
         self.rename_button.clicked.connect(ScriptingOptionsPage.rename_selected_script)
-        self.move_up_button.clicked.connect(ScriptingOptionsPage.move_selected_script_up)
-        self.move_down_button.clicked.connect(ScriptingOptionsPage.move_selected_script_down)
         QtCore.QMetaObject.connectSlotsByName(ScriptingOptionsPage)
         ScriptingOptionsPage.setTabOrder(self.enable_tagger_scripts, self.add_button)
         ScriptingOptionsPage.setTabOrder(self.add_button, self.script_list)
