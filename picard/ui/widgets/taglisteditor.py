@@ -49,10 +49,14 @@ class TagListEditor(QtWidgets.QWidget):
         self.on_selection_changed([], [])
 
     def on_selection_changed(self, selected, deselected):
-        buttons_enabled = len(self.ui.tag_list_view.selectedIndexes()) > 0
+        indexes = self.ui.tag_list_view.selectedIndexes()
+        last_row = self.ui.tag_list_view.model().rowCount() - 1
+        buttons_enabled = len(indexes) > 0
+        move_up_enabled = buttons_enabled and all(i.row() != 0 for i in indexes)
+        move_down_enabled = buttons_enabled and all(i.row() != last_row for i in indexes)
         self.ui.tags_remove_btn.setEnabled(buttons_enabled)
-        self.ui.tags_move_up_btn.setEnabled(buttons_enabled)
-        self.ui.tags_move_down_btn.setEnabled(buttons_enabled)
+        self.ui.tags_move_up_btn.setEnabled(move_up_enabled)
+        self.ui.tags_move_down_btn.setEnabled(move_down_enabled)
 
     def clear(self):
         self.ui.tag_list_view.update([])
