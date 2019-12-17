@@ -216,10 +216,9 @@ class ScriptingOptionsPage(OptionsPage):
 
     def remove_from_list_of_scripts(self, row):
         item = self.ui.script_list.item(row)
-        confirm_remove = QtWidgets.QMessageBox()
         msg = _("Are you sure you want to remove this script?")
-        reply = confirm_remove.question(confirm_remove, _('Confirm Remove'), msg, QtWidgets.QMessageBox.Yes,
-                                        QtWidgets.QMessageBox.No)
+        reply = QtWidgets.QMessageBox.question(self, _('Confirm Remove'), msg,
+            QtWidgets.QMessageBox.Yes, QtWidgets.QMessageBox.No)
         if item and reply == QtWidgets.QMessageBox.Yes:
             item = self.ui.script_list.takeItem(row)
             item = None
