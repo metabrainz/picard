@@ -3,7 +3,9 @@
 # Automatically generated - don't edit.
 # Use `python setup.py build_ui` to update it.
 
+
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class Ui_CoverOptionsPage(object):
     def setupUi(self, CoverOptionsPage):
@@ -56,15 +58,17 @@ class Ui_CoverOptionsPage(object):
         self.up_button = QtWidgets.QToolButton(self.ca_providers_groupbox)
         self.up_button.setLayoutDirection(QtCore.Qt.LeftToRight)
         self.up_button.setText("")
+        icon = QtGui.QIcon.fromTheme(":/images/16x16/go-up.png")
+        self.up_button.setIcon(icon)
         self.up_button.setToolButtonStyle(QtCore.Qt.ToolButtonIconOnly)
         self.up_button.setAutoRaise(False)
-        self.up_button.setArrowType(QtCore.Qt.UpArrow)
         self.up_button.setObjectName("up_button")
         self.ca_layout.addWidget(self.up_button)
         self.down_button = QtWidgets.QToolButton(self.ca_providers_groupbox)
         self.down_button.setText("")
+        icon = QtGui.QIcon.fromTheme(":/images/16x16/go-down.png")
+        self.down_button.setIcon(icon)
         self.down_button.setToolButtonStyle(QtCore.Qt.ToolButtonIconOnly)
-        self.down_button.setArrowType(QtCore.Qt.DownArrow)
         self.down_button.setObjectName("down_button")
         self.ca_layout.addWidget(self.down_button)
         spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
@@ -93,4 +97,3 @@ class Ui_CoverOptionsPage(object):
         self.move_label.setText(_("Reorder Priority: "))
         self.up_button.setToolTip(_("Move selected item up"))
         self.down_button.setToolTip(_("Move selected item down"))
-
