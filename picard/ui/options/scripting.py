@@ -39,7 +39,6 @@ from picard.ui.options import (
     register_options_page,
 )
 from picard.ui.ui_options_script import Ui_ScriptingOptionsPage
-from picard.ui.ui_scriptitem import Ui_ScriptItem
 
 
 class TaggerScriptSyntaxHighlighter(QtGui.QSyntaxHighlighter):
@@ -111,60 +110,33 @@ class TaggerScriptSyntaxHighlighter(QtGui.QSyntaxHighlighter):
         self.setCurrentBlockState(open_brackets)
 
 
-class AdvancedScriptItem(QtWidgets.QWidget):
-    """Custom widget for script list items"""
+class ScriptListWidgetItem(HashableListWidgetItem):
+    """Holds a script's list and text widget properties"""
 
-    def __init__(self, name, state=True, parent=None):
-        super().__init__(parent)
-        self.ui = Ui_ScriptItem()
-        self.ui.setupUi(self)
-        self.update_name(name)
-        menu = QtWidgets.QMenu()
-        menu.addAction(_("Rename script"))
-        menu.addAction(_("Remove script"))
-        self.ui.checkbox.setChecked(state)
-        self.menu = menu
-        self.ui.other_button.setMenu(menu)
-
-    def set_up_connection(self, move_up):
-        self.ui.up_button.clicked.connect(move_up)
-
-    def set_down_connection(self, move_down):
-        self.ui.down_button.clicked.connect(move_down)
-
-    def set_remove_connection(self, remove):
-        menu_options = self.menu.actions()
-        menu_options[1].triggered.connect(remove)
-
-    def set_rename_connection(self, rename):
-        menu_options = self.menu.actions()
-        menu_options[0].triggered.connect(rename)
-
-    def set_checkbox_connection(self, check_state):
-        self.ui.checkbox.stateChanged.connect(check_state)
-
-    def update_name(self, name):
-        self.ui.name_label.setText(name)
-
-    def checkbox_state(self):
-        return self.ui.checkbox.isChecked()
-
-
-class ScriptItem:
-    """Holds a script's list and text widget properties and improves readability"""
-
-    def __init__(self, pos, name=None, enabled=True, text=""):
-        self.pos = pos
+    def __init__(self, name=None, enabled=True, script=""):
+        super().__init__(name)
+        self.setFlags(self.flags() | QtCore.Qt.ItemIsUserCheckable)
         if name is None:
-            self.name = _(DEFAULT_SCRIPT_NAME)
-        else:
-            self.name = name
-        self.enabled = enabled
-        self.text = text
+            name = _(DEFAULT_SCRIPT_NAME)
+        self.setText(name)
+        self.setCheckState(QtCore.Qt.Checked if enabled else QtCore.Qt.Unchecked)
+        self.script = script
+
+    @property
+    def pos(self):
+        return self.listWidget().row(self)
+
+    @property
+    def name(self):
+        return self.text()
+
+    @property
+    def enabled(self):
+        return self.checkState() == QtCore.Qt.Checked
 
     def get_all(self):
         # tuples used to get pickle dump of settings to work
-        return (self.pos, self.name, self.enabled, self.text)
+        return (self.pos, self.name, self.enabled, self.script)
 
 
 class ScriptingOptionsPage(OptionsPage):
@@ -189,8 +161,6 @@ class ScriptingOptionsPage(OptionsPage):
         self.highlighter = TaggerScriptSyntaxHighlighter(self.ui.tagger_script.document())
         self.ui.tagger_script.setEnabled(False)
         self.ui.script_name.setEnabled(False)
-        self.listitem_to_scriptitem = {}
-        self.list_of_scripts = []
         self.last_selected_script_pos = 0
         self.ui.splitter.setStretchFactor(0, 1)
         self.ui.splitter.setStretchFactor(1, 2)
@@ -232,58 +202,32 @@ class ScriptingOptionsPage(OptionsPage):
     def script_name_changed(self):
         items = self.ui.script_list.selectedItems()
         if items:
-            script = self.listitem_to_scriptitem[items[0]]
-            script.name = self.ui.script_name.text()
-            list_widget = self.ui.script_list.itemWidget(items[0])
-            list_widget.update_name(script.name)
-            self.list_of_scripts[script.pos] = script.get_all()
+            script = items[0]
+            script.setText(self.ui.script_name.text())
 
     def script_selected(self):
         items = self.ui.script_list.selectedItems()
         if items:
             self.ui.tagger_script.setEnabled(True)
             self.ui.script_name.setEnabled(True)
-            script = self.listitem_to_scriptitem[items[0]]
-            self.ui.tagger_script.setText(script.text)
+            script = items[0]
+            self.ui.tagger_script.setText(script.script)
             self.ui.script_name.setText(script.name)
             self.last_selected_script_pos = script.pos
-
-    def setSignals(self, list_widget, item):
-        list_widget.set_up_connection(lambda: self.move_script(self.ui.script_list.row(item), 1))
-        list_widget.set_down_connection(lambda: self.move_script(self.ui.script_list.row(item), -1))
-        list_widget.set_remove_connection(lambda: self.remove_from_list_of_scripts(self.ui.script_list.row(item)))
-        list_widget.set_checkbox_connection(lambda: self.update_check_state(item, list_widget.checkbox_state()))
-        list_widget.set_rename_connection(lambda: self.rename_script(item))
 
     def rename_script(self, item):
         item.setSelected(True)
         self.ui.script_name.setFocus()
         self.ui.script_name.selectAll()
 
-    def update_check_state(self, item, checkbox_state):
-        script = self.listitem_to_scriptitem[item]
-        script.enabled = checkbox_state
-        self.list_of_scripts[script.pos] = script.get_all()
-
     def add_script(self):
         count = self.ui.script_list.count()
         numbered_name = _(DEFAULT_NUMBERED_SCRIPT_NAME) % (count + 1)
-        script = ScriptItem(pos=count, name=numbered_name)
 
-        list_item = HashableListWidgetItem()
-        list_widget = AdvancedScriptItem(numbered_name)
-        self.setSignals(list_widget, list_item)
+        list_item = ScriptListWidgetItem(name=numbered_name)
+        list_item.setCheckState(QtCore.Qt.Checked)
         self.ui.script_list.addItem(list_item)
-        self.ui.script_list.setItemWidget(list_item, list_widget)
-        self.listitem_to_scriptitem[list_item] = script
-        self.list_of_scripts.append(script.get_all())
         list_item.setSelected(True)
-
-    def update_script_positions(self):
-        for i, script in enumerate(self.list_of_scripts):
-            self.list_of_scripts[i] = (i, script[1], script[2], script[3])
-            item = self.ui.script_list.item(i)
-            self.listitem_to_scriptitem[item].pos = i
 
     def remove_from_list_of_scripts(self, row):
         item = self.ui.script_list.item(row)
@@ -293,13 +237,7 @@ class ScriptingOptionsPage(OptionsPage):
                                         QtWidgets.QMessageBox.No)
         if item and reply == QtWidgets.QMessageBox.Yes:
             item = self.ui.script_list.takeItem(row)
-            script = self.listitem_to_scriptitem[item]
-            del self.listitem_to_scriptitem[item]
-            del self.list_of_scripts[script.pos]
-            del script
             item = None
-            # update positions of other items
-            self.update_script_positions()
             if not self.ui.script_list:
                 self.ui.tagger_script.setText("")
                 self.ui.tagger_script.setEnabled(False)
@@ -325,40 +263,14 @@ class ScriptingOptionsPage(OptionsPage):
         item1 = self.ui.script_list.item(row)
         item2 = self.ui.script_list.item(row - step)
         if item1 and item2:
-            # make changes in the ui
-
             list_item = self.ui.script_list.takeItem(row)
-            script = self.listitem_to_scriptitem[list_item]
-            # list_widget has to be set again
-            list_widget = AdvancedScriptItem(name=script.name, state=script.enabled)
-            self.setSignals(list_widget, list_item)
             self.ui.script_list.insertItem(row - step, list_item)
-            self.ui.script_list.setItemWidget(list_item, list_widget)
-
-            # make changes in the picklable list
-
-            script1 = self.listitem_to_scriptitem[item1]
-            script2 = self.listitem_to_scriptitem[item2]
-            # workaround since tuples are immutable
-            indices = script1.pos, script2.pos
-            self.list_of_scripts = [i for j, i in enumerate(self.list_of_scripts) if j not in indices]
-            new_script1 = (script1.pos - step, script1.name, script1.enabled, script1.text)
-            new_script2 = (script2.pos + step, script2.name, script2.enabled, script2.text)
-            self.list_of_scripts.append(new_script1)
-            self.list_of_scripts.append(new_script2)
-            self.list_of_scripts = sorted(self.list_of_scripts, key=lambda x: x[0])
-            # corresponding mapping support also has to be updated
-            self.listitem_to_scriptitem[item1] = ScriptItem(script1.pos - step, script1.name, script1.enabled,
-                                                            script1.text)
-            self.listitem_to_scriptitem[item2] = ScriptItem(script2.pos + step, script2.name, script2.enabled,
-                                                            script2.text)
 
     def live_update_and_check(self):
         items = self.ui.script_list.selectedItems()
         if items:
-            script = self.listitem_to_scriptitem[items[0]]
-            script.text = self.ui.tagger_script.toPlainText()
-            self.list_of_scripts[script.pos] = script.get_all()
+            script = items[0]
+            script.script = self.ui.tagger_script.toPlainText()
         self.ui.script_error.setStyleSheet("")
         self.ui.script_error.setText("")
         try:
@@ -384,15 +296,9 @@ class ScriptingOptionsPage(OptionsPage):
 
     def load(self):
         self.ui.enable_tagger_scripts.setChecked(config.setting["enable_tagger_scripts"])
-        self.list_of_scripts = config.setting["list_of_scripts"]
-        for s_pos, s_name, s_enabled, s_text in self.list_of_scripts:
-            script = ScriptItem(s_pos, s_name, s_enabled, s_text)
-            list_item = HashableListWidgetItem()
-            list_widget = AdvancedScriptItem(name=s_name, state=s_enabled)
-            self.setSignals(list_widget, list_item)
+        for pos, name, enabled, text in config.setting["list_of_scripts"]:
+            list_item = ScriptListWidgetItem(name, enabled, text)
             self.ui.script_list.addItem(list_item)
-            self.ui.script_list.setItemWidget(list_item, list_widget)
-            self.listitem_to_scriptitem[list_item] = script
 
         # Select the last selected script item
         self.last_selected_script_pos = config.persist["last_selected_script_pos"]
@@ -409,6 +315,11 @@ class ScriptingOptionsPage(OptionsPage):
                  ' Documentation in your browser</a>') % args
         self.ui.scripting_doc_link.setText(text)
 
+    def _all_scripts(self):
+        for row in range(0, self.ui.script_list.count()):
+            item = self.ui.script_list.item(row)
+            yield item.get_all()
+
     @restore_method
     def restore_state(self):
         # Preserve previous splitter position
@@ -416,7 +327,7 @@ class ScriptingOptionsPage(OptionsPage):
 
     def save(self):
         config.setting["enable_tagger_scripts"] = self.ui.enable_tagger_scripts.isChecked()
-        config.setting["list_of_scripts"] = self.list_of_scripts
+        config.setting["list_of_scripts"] = list(self._all_scripts())
         config.persist["last_selected_script_pos"] = self.last_selected_script_pos
         config.persist["scripting_splitter"] = self.ui.splitter.saveState()
 
