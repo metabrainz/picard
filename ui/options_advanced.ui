@@ -155,20 +155,22 @@
     </widget>
    </item>
    <item>
-    <widget class="QLabel" name="compare_ignore_tags_label">
-     <property name="text">
+    <widget class="QGroupBox" name="groupBox_2">
+     <property name="title">
       <string>Tags to ignore for comparison:</string>
      </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="TagListEditor" name="compare_ignore_tags" native="true">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <widget class="TagListEditor" name="compare_ignore_tags" native="true">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </widget>
    </item>
   </layout>

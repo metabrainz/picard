@@ -3,7 +3,9 @@
 # Automatically generated - don't edit.
 # Use `python setup.py build_ui` to update it.
 
+
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class Ui_InterfaceOptionsPage(object):
     def setupUi(self, InterfaceOptionsPage):
@@ -79,23 +81,25 @@ class Ui_InterfaceOptionsPage(object):
         self.edit_box_layout = QtWidgets.QHBoxLayout(self.edit_button_box)
         self.edit_box_layout.setContentsMargins(0, 0, 0, 0)
         self.edit_box_layout.setObjectName("edit_box_layout")
-        self.add_button = QtWidgets.QPushButton(self.edit_button_box)
+        self.add_button = QtWidgets.QToolButton(self.edit_button_box)
         self.add_button.setObjectName("add_button")
         self.edit_box_layout.addWidget(self.add_button)
-        self.insert_separator_button = QtWidgets.QPushButton(self.edit_button_box)
+        self.insert_separator_button = QtWidgets.QToolButton(self.edit_button_box)
         self.insert_separator_button.setObjectName("insert_separator_button")
         self.edit_box_layout.addWidget(self.insert_separator_button)
         spacerItem1 = QtWidgets.QSpacerItem(50, 20, QtWidgets.QSizePolicy.MinimumExpanding, QtWidgets.QSizePolicy.Minimum)
         self.edit_box_layout.addItem(spacerItem1)
         self.up_button = QtWidgets.QToolButton(self.edit_button_box)
-        self.up_button.setArrowType(QtCore.Qt.UpArrow)
+        icon = QtGui.QIcon.fromTheme(":/images/16x16/go-up.png")
+        self.up_button.setIcon(icon)
         self.up_button.setObjectName("up_button")
         self.edit_box_layout.addWidget(self.up_button)
         self.down_button = QtWidgets.QToolButton(self.edit_button_box)
-        self.down_button.setArrowType(QtCore.Qt.DownArrow)
+        icon = QtGui.QIcon.fromTheme(":/images/16x16/go-down.png")
+        self.down_button.setIcon(icon)
         self.down_button.setObjectName("down_button")
         self.edit_box_layout.addWidget(self.down_button)
-        self.remove_button = QtWidgets.QPushButton(self.edit_button_box)
+        self.remove_button = QtWidgets.QToolButton(self.edit_button_box)
         self.remove_button.setObjectName("remove_button")
         self.edit_box_layout.addWidget(self.remove_button)
         self.verticalLayout.addWidget(self.edit_button_box)
@@ -135,9 +139,6 @@ class Ui_InterfaceOptionsPage(object):
         self.insert_separator_button.setToolTip(_("Insert a separator"))
         self.insert_separator_button.setText(_("Add Separator"))
         self.up_button.setToolTip(_("Move selected item up"))
-        self.up_button.setText(_("..."))
         self.down_button.setToolTip(_("Move selected item down"))
-        self.down_button.setText(_("..."))
         self.remove_button.setToolTip(_("Remove button from toolbar"))
         self.remove_button.setText(_("Remove"))
-

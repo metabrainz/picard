@@ -57,6 +57,13 @@
          <number>0</number>
         </property>
         <item>
+         <widget class="QToolButton" name="tags_add_btn">
+          <property name="text">
+           <string>Add new tag</string>
+          </property>
+         </widget>
+        </item>
+        <item>
          <spacer name="horizontalSpacer">
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
@@ -70,7 +77,59 @@
          </spacer>
         </item>
         <item>
-         <widget class="QPushButton" name="tags_remove_btn">
+         <widget class="QWidget" name="sort_buttons" native="true">
+          <layout class="QHBoxLayout" name="horizontalLayout_3">
+           <property name="leftMargin">
+            <number>0</number>
+           </property>
+           <property name="topMargin">
+            <number>0</number>
+           </property>
+           <property name="rightMargin">
+            <number>0</number>
+           </property>
+           <property name="bottomMargin">
+            <number>0</number>
+           </property>
+           <item>
+            <widget class="QToolButton" name="tags_move_up_btn">
+             <property name="toolTip">
+              <string>Move tag up</string>
+             </property>
+             <property name="accessibleName">
+              <string>Move tag up</string>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="icon">
+              <iconset theme=":/images/16x16/go-up.png">
+               <normaloff>.</normaloff>.</iconset>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QToolButton" name="tags_move_down_btn">
+             <property name="toolTip">
+              <string>Move tag down</string>
+             </property>
+             <property name="accessibleName">
+              <string>Move tag down</string>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="icon">
+              <iconset theme=":/images/16x16/go-down.png">
+               <normaloff>.</normaloff>.</iconset>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <widget class="QToolButton" name="tags_remove_btn">
           <property name="toolTip">
            <string>Remove selected tags</string>
           </property>
@@ -82,95 +141,10 @@
           </property>
          </widget>
         </item>
-        <item>
-         <widget class="QPushButton" name="tags_add_btn">
-          <property name="text">
-           <string>Add new tag</string>
-          </property>
-         </widget>
-        </item>
        </layout>
       </widget>
      </item>
     </layout>
-   </item>
-   <item>
-    <widget class="QWidget" name="sort_buttons" native="true">
-     <layout class="QVBoxLayout" name="verticalLayout_2">
-      <property name="leftMargin">
-       <number>0</number>
-      </property>
-      <property name="topMargin">
-       <number>0</number>
-      </property>
-      <property name="rightMargin">
-       <number>0</number>
-      </property>
-      <property name="bottomMargin">
-       <number>0</number>
-      </property>
-      <item>
-       <spacer name="verticalSpacer">
-        <property name="orientation">
-         <enum>Qt::Vertical</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>20</width>
-          <height>40</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      <item>
-       <widget class="QPushButton" name="tags_move_up_btn">
-        <property name="toolTip">
-         <string>Move tag up</string>
-        </property>
-        <property name="accessibleName">
-         <string>Move tag up</string>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="icon">
-         <iconset theme=":/images/16x16/go-up.png">
-          <normaloff>.</normaloff>.</iconset>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="tags_move_down_btn">
-        <property name="toolTip">
-         <string>Move tag down</string>
-        </property>
-        <property name="accessibleName">
-         <string>Move tag down</string>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="icon">
-         <iconset theme=":/images/16x16/go-down.png">
-          <normaloff>.</normaloff>.</iconset>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <spacer name="verticalSpacer_2">
-        <property name="orientation">
-         <enum>Qt::Vertical</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>20</width>
-          <height>40</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-     </layout>
-    </widget>
    </item>
   </layout>
  </widget>

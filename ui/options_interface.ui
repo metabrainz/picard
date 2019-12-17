@@ -138,11 +138,20 @@
       <item>
        <widget class="QWidget" name="edit_button_box" native="true">
         <layout class="QHBoxLayout" name="edit_box_layout">
-         <property name="margin">
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
           <number>0</number>
          </property>
          <item>
-          <widget class="QPushButton" name="add_button">
+          <widget class="QToolButton" name="add_button">
            <property name="toolTip">
             <string>Add a new button to Toolbar</string>
            </property>
@@ -152,7 +161,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="insert_separator_button">
+          <widget class="QToolButton" name="insert_separator_button">
            <property name="toolTip">
             <string>Insert a separator</string>
            </property>
@@ -182,11 +191,8 @@
            <property name="toolTip">
             <string>Move selected item up</string>
            </property>
-           <property name="text">
-            <string>...</string>
-           </property>
-           <property name="arrowType">
-            <enum>Qt::UpArrow</enum>
+           <property name="icon">
+            <iconset theme=":/images/16x16/go-up.png"/>
            </property>
           </widget>
          </item>
@@ -195,16 +201,13 @@
            <property name="toolTip">
             <string>Move selected item down</string>
            </property>
-           <property name="text">
-            <string>...</string>
-           </property>
-           <property name="arrowType">
-            <enum>Qt::DownArrow</enum>
+           <property name="icon">
+            <iconset theme=":/images/16x16/go-down.png"/>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="remove_button">
+          <widget class="QToolButton" name="remove_button">
            <property name="toolTip">
             <string>Remove button from toolbar</string>
            </property>

@@ -108,14 +108,14 @@
           <property name="text">
            <string/>
           </property>
+          <property name="icon">
+           <iconset theme=":/images/16x16/go-up.png"/>
+          </property>
           <property name="toolButtonStyle">
            <enum>Qt::ToolButtonIconOnly</enum>
           </property>
           <property name="autoRaise">
            <bool>false</bool>
-          </property>
-          <property name="arrowType">
-           <enum>Qt::UpArrow</enum>
           </property>
          </widget>
         </item>
@@ -127,11 +127,11 @@
           <property name="text">
            <string/>
           </property>
+          <property name="icon">
+           <iconset theme=":/images/16x16/go-down.png"/>
+          </property>
           <property name="toolButtonStyle">
            <enum>Qt::ToolButtonIconOnly</enum>
-          </property>
-          <property name="arrowType">
-           <enum>Qt::DownArrow</enum>
           </property>
          </widget>
         </item>
