@@ -187,10 +187,6 @@ class ScriptingOptionsPage(OptionsPage):
         self.ui = Ui_ScriptingOptionsPage()
         self.ui.setupUi(self)
         self.highlighter = TaggerScriptSyntaxHighlighter(self.ui.tagger_script.document())
-        self.ui.tagger_script.textChanged.connect(self.live_update_and_check)
-        self.ui.script_name.textChanged.connect(self.script_name_changed)
-        self.ui.add_script.clicked.connect(self.add_to_list_of_scripts)
-        self.ui.script_list.itemSelectionChanged.connect(self.script_selected)
         self.ui.tagger_script.setEnabled(False)
         self.ui.script_name.setEnabled(False)
         self.listitem_to_scriptitem = {}
@@ -206,9 +202,32 @@ class ScriptingOptionsPage(OptionsPage):
         self.ui.tagger_script.setFont(font)
 
     def delete_selected_script(self):
+        indexes = self.ui.script_list.selectedIndexes()
+        if indexes:
+            self.remove_from_list_of_scripts(indexes[0].row())
+
+    def rename_selected_script(self):
         items = self.ui.script_list.selectedItems()
         if items:
-            self.remove_from_list_of_scripts(self.ui.script_list.row(items[0]))
+            self.rename_script(items[0])
+
+    def move_selected_script_up(self):
+        indexes = self.ui.script_list.selectedIndexes()
+        if indexes:
+            row = indexes[0].row()
+            self.move_script(row, 1)
+            new_index = self.ui.script_list.model().index(row - 1, 0)
+            selection = self.ui.script_list.selectionModel()
+            selection.select(new_index, QtCore.QItemSelectionModel.Clear | QtCore.QItemSelectionModel.SelectCurrent)
+
+    def move_selected_script_down(self):
+        indexes = self.ui.script_list.selectedIndexes()
+        if indexes:
+            row = indexes[0].row()
+            self.move_script(row, -1)
+            new_index = self.ui.script_list.model().index(row + 1, 0)
+            selection = self.ui.script_list.selectionModel()
+            selection.select(new_index, QtCore.QItemSelectionModel.Clear | QtCore.QItemSelectionModel.SelectCurrent)
 
     def script_name_changed(self):
         items = self.ui.script_list.selectedItems()
@@ -246,7 +265,7 @@ class ScriptingOptionsPage(OptionsPage):
         script.enabled = checkbox_state
         self.list_of_scripts[script.pos] = script.get_all()
 
-    def add_to_list_of_scripts(self):
+    def add_script(self):
         count = self.ui.script_list.count()
         numbered_name = _(DEFAULT_NUMBERED_SCRIPT_NAME) % (count + 1)
         script = ScriptItem(pos=count, name=numbered_name)

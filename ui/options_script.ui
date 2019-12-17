@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>605</width>
-    <height>377</height>
+    <height>551</height>
    </rect>
   </property>
   <layout class="QVBoxLayout">
@@ -36,121 +36,131 @@
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
-       <widget class="QGroupBox" name="groupBox">
+       <widget class="QSplitter" name="splitter">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
-        <property name="title">
-         <string/>
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
         </property>
-        <layout class="QVBoxLayout" name="verticalLayout_3">
-         <property name="spacing">
-          <number>6</number>
+        <property name="childrenCollapsible">
+         <bool>false</bool>
+        </property>
+        <widget class="QListWidget" name="script_list">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="MinimumExpanding" vsizetype="Expanding">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
          </property>
-         <property name="leftMargin">
-          <number>0</number>
+         <property name="minimumSize">
+          <size>
+           <width>120</width>
+           <height>0</height>
+          </size>
          </property>
-         <property name="topMargin">
-          <number>0</number>
-         </property>
-         <property name="rightMargin">
-          <number>0</number>
-         </property>
-         <property name="bottomMargin">
-          <number>0</number>
-         </property>
-         <item>
-          <layout class="QHBoxLayout" name="horizontalLayout">
-           <item>
-            <widget class="QPushButton" name="add_script">
-             <property name="toolTip">
-              <string>Add new script</string>
-             </property>
-             <property name="text">
-              <string>Add new script</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <spacer name="horizontalSpacer">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>40</width>
-               <height>20</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-          </layout>
-         </item>
-         <item>
-          <widget class="QSplitter" name="splitter">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="childrenCollapsible">
-            <bool>false</bool>
-           </property>
-           <widget class="QListWidget" name="script_list">
+        </widget>
+        <widget class="QWidget" name="formWidget" native="true">
+         <layout class="QVBoxLayout" name="verticalLayout_2">
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+          <item>
+           <widget class="QLineEdit" name="script_name">
             <property name="sizePolicy">
-             <sizepolicy hsizetype="MinimumExpanding" vsizetype="Expanding">
+             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
             </property>
-            <property name="minimumSize">
-             <size>
-              <width>120</width>
-              <height>0</height>
-             </size>
+            <property name="placeholderText">
+             <string>Display Name</string>
             </property>
            </widget>
-           <widget class="QWidget" name="formWidget" native="true">
-            <layout class="QVBoxLayout" name="verticalLayout_2">
-             <property name="leftMargin">
-              <number>0</number>
-             </property>
-             <property name="topMargin">
-              <number>0</number>
-             </property>
-             <property name="rightMargin">
-              <number>0</number>
-             </property>
-             <property name="bottomMargin">
-              <number>0</number>
-             </property>
-             <item>
-              <widget class="QLineEdit" name="script_name">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="placeholderText">
-                <string>Display Name</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QTextEdit" name="tagger_script">
-               <property name="acceptRichText">
-                <bool>false</bool>
-               </property>
-              </widget>
-             </item>
-            </layout>
+          </item>
+          <item>
+           <widget class="QTextEdit" name="tagger_script">
+            <property name="acceptRichText">
+             <bool>false</bool>
+            </property>
            </widget>
-          </widget>
-         </item>
-        </layout>
+          </item>
+         </layout>
+        </widget>
        </widget>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <item>
+         <widget class="QToolButton" name="add_button">
+          <property name="toolTip">
+           <string>Add new script</string>
+          </property>
+          <property name="text">
+           <string>Add new script</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QToolButton" name="rename_button">
+          <property name="text">
+           <string>Rename script</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QToolButton" name="move_up_button">
+          <property name="toolTip">
+           <string>Move script up</string>
+          </property>
+          <property name="icon">
+           <iconset theme=":/images/16x16/go-up.png"/>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QToolButton" name="move_down_button">
+          <property name="toolTip">
+           <string>Move script down</string>
+          </property>
+          <property name="icon">
+           <iconset theme=":/images/16x16/go-down.png"/>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QToolButton" name="remove_button">
+          <property name="text">
+           <string>Remove script</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </item>
       <item>
        <widget class="QLabel" name="script_error">
@@ -182,11 +192,150 @@
  </widget>
  <tabstops>
   <tabstop>enable_tagger_scripts</tabstop>
-  <tabstop>add_script</tabstop>
+  <tabstop>add_button</tabstop>
   <tabstop>script_list</tabstop>
   <tabstop>script_name</tabstop>
   <tabstop>tagger_script</tabstop>
  </tabstops>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>add_button</sender>
+   <signal>clicked()</signal>
+   <receiver>ScriptingOptionsPage</receiver>
+   <slot>add_script()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>85</x>
+     <y>475</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>302</x>
+     <y>275</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>tagger_script</sender>
+   <signal>textChanged()</signal>
+   <receiver>ScriptingOptionsPage</receiver>
+   <slot>live_update_and_check()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>450</x>
+     <y>267</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>302</x>
+     <y>275</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>script_name</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>ScriptingOptionsPage</receiver>
+   <slot>script_name_changed()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>450</x>
+     <y>56</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>302</x>
+     <y>275</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>script_list</sender>
+   <signal>itemSelectionChanged()</signal>
+   <receiver>ScriptingOptionsPage</receiver>
+   <slot>script_selected()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>170</x>
+     <y>246</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>302</x>
+     <y>275</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>remove_button</sender>
+   <signal>clicked()</signal>
+   <receiver>ScriptingOptionsPage</receiver>
+   <slot>delete_selected_script()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>537</x>
+     <y>475</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>302</x>
+     <y>275</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>rename_button</sender>
+   <signal>clicked()</signal>
+   <receiver>ScriptingOptionsPage</receiver>
+   <slot>rename_selected_script()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>196</x>
+     <y>475</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>302</x>
+     <y>275</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>move_up_button</sender>
+   <signal>clicked()</signal>
+   <receiver>ScriptingOptionsPage</receiver>
+   <slot>move_selected_script_up()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>428</x>
+     <y>475</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>302</x>
+     <y>275</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>move_down_button</sender>
+   <signal>clicked()</signal>
+   <receiver>ScriptingOptionsPage</receiver>
+   <slot>move_selected_script_down()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>464</x>
+     <y>475</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>302</x>
+     <y>275</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>add_script()</slot>
+  <slot>live_update_and_check()</slot>
+  <slot>script_name_changed()</slot>
+  <slot>script_selected()</slot>
+  <slot>delete_selected_script()</slot>
+  <slot>rename_selected_script()</slot>
+  <slot>move_selected_script_up()</slot>
+  <slot>move_selected_script_down()</slot>
+ </slots>
 </ui>
