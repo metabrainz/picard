@@ -415,7 +415,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
             loading.setDisabled(True)
             bottom_separator = True
 
-            if len(self.selectedIndexes()) == len(MainPanel.columns):
+            if len(self.selectedItems()) == 1:
                 def _add_other_versions():
                     releases_menu.removeAction(loading)
                     heading = releases_menu.addAction(obj.release_group.version_headings)
