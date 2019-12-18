@@ -49,7 +49,7 @@
         <property name="childrenCollapsible">
          <bool>false</bool>
         </property>
-        <widget class="QListWidget" name="script_list">
+        <widget class="ScriptListWidget" name="script_list">
          <property name="sizePolicy">
           <sizepolicy hsizetype="MinimumExpanding" vsizetype="Expanding">
            <horstretch>0</horstretch>
@@ -78,19 +78,6 @@
            <number>0</number>
           </property>
           <item>
-           <widget class="QLineEdit" name="script_name">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="placeholderText">
-             <string>Display Name</string>
-            </property>
-           </widget>
-          </item>
-          <item>
            <widget class="QTextEdit" name="tagger_script">
             <property name="acceptRichText">
              <bool>false</bool>
@@ -114,13 +101,6 @@
          </widget>
         </item>
         <item>
-         <widget class="QToolButton" name="rename_button">
-          <property name="text">
-           <string>Rename script</string>
-          </property>
-         </widget>
-        </item>
-        <item>
          <spacer name="horizontalSpacer">
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
@@ -139,7 +119,8 @@
            <string>Move script up</string>
           </property>
           <property name="icon">
-           <iconset theme=":/images/16x16/go-up.png"/>
+           <iconset theme=":/images/16x16/go-up.png">
+            <normaloff>.</normaloff>.</iconset>
           </property>
          </widget>
         </item>
@@ -149,7 +130,8 @@
            <string>Move script down</string>
           </property>
           <property name="icon">
-           <iconset theme=":/images/16x16/go-down.png"/>
+           <iconset theme=":/images/16x16/go-down.png">
+            <normaloff>.</normaloff>.</iconset>
           </property>
          </widget>
         </item>
@@ -190,11 +172,17 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>ScriptListWidget</class>
+   <extends>QListWidget</extends>
+   <header location="global">picard.ui.widgets.scriptlistwidget</header>
+  </customwidget>
+ </customwidgets>
  <tabstops>
   <tabstop>enable_tagger_scripts</tabstop>
   <tabstop>add_button</tabstop>
   <tabstop>script_list</tabstop>
-  <tabstop>script_name</tabstop>
   <tabstop>tagger_script</tabstop>
  </tabstops>
  <resources/>
@@ -224,22 +212,6 @@
     <hint type="sourcelabel">
      <x>450</x>
      <y>267</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>302</x>
-     <y>275</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>script_name</sender>
-   <signal>textChanged(QString)</signal>
-   <receiver>ScriptingOptionsPage</receiver>
-   <slot>script_name_changed()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>450</x>
-     <y>56</y>
     </hint>
     <hint type="destinationlabel">
      <x>302</x>
@@ -279,30 +251,12 @@
     </hint>
    </hints>
   </connection>
-  <connection>
-   <sender>rename_button</sender>
-   <signal>clicked()</signal>
-   <receiver>ScriptingOptionsPage</receiver>
-   <slot>rename_selected_script()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>196</x>
-     <y>475</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>302</x>
-     <y>275</y>
-    </hint>
-   </hints>
-  </connection>
  </connections>
  <slots>
   <slot>add_script()</slot>
   <slot>live_update_and_check()</slot>
-  <slot>script_name_changed()</slot>
   <slot>script_selected()</slot>
   <slot>delete_selected_script()</slot>
-  <slot>rename_selected_script()</slot>
   <slot>move_selected_script_up()</slot>
   <slot>move_selected_script_down()</slot>
  </slots>

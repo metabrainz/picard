@@ -26,13 +26,11 @@ from PyQt5 import (
 from picard import config
 from picard.const import (
     DEFAULT_NUMBERED_SCRIPT_NAME,
-    DEFAULT_SCRIPT_NAME,
     PICARD_URLS,
 )
 from picard.script import ScriptParser
 from picard.util import restore_method
 
-from picard.ui import HashableListWidgetItem
 from picard.ui.moveable_list_view import MoveableListView
 from picard.ui.options import (
     OptionsCheckError,
@@ -40,6 +38,7 @@ from picard.ui.options import (
     register_options_page,
 )
 from picard.ui.ui_options_script import Ui_ScriptingOptionsPage
+from picard.ui.widgets.scriptlistwidget import ScriptListWidgetItem
 
 
 class ScriptCheckError(OptionsCheckError):
@@ -115,35 +114,6 @@ class TaggerScriptSyntaxHighlighter(QtGui.QSyntaxHighlighter):
         self.setCurrentBlockState(open_brackets)
 
 
-class ScriptListWidgetItem(HashableListWidgetItem):
-    """Holds a script's list and text widget properties"""
-
-    def __init__(self, name=None, enabled=True, script=""):
-        super().__init__(name)
-        self.setFlags(self.flags() | QtCore.Qt.ItemIsUserCheckable)
-        if name is None:
-            name = _(DEFAULT_SCRIPT_NAME)
-        self.setText(name)
-        self.setCheckState(QtCore.Qt.Checked if enabled else QtCore.Qt.Unchecked)
-        self.script = script
-
-    @property
-    def pos(self):
-        return self.listWidget().row(self)
-
-    @property
-    def name(self):
-        return self.text()
-
-    @property
-    def enabled(self):
-        return self.checkState() == QtCore.Qt.Checked
-
-    def get_all(self):
-        # tuples used to get pickle dump of settings to work
-        return (self.pos, self.name, self.enabled, self.script)
-
-
 class ScriptingOptionsPage(OptionsPage):
 
     NAME = "scripting"
@@ -165,7 +135,6 @@ class ScriptingOptionsPage(OptionsPage):
         self.ui.setupUi(self)
         self.highlighter = TaggerScriptSyntaxHighlighter(self.ui.tagger_script.document())
         self.ui.tagger_script.setEnabled(False)
-        self.ui.script_name.setEnabled(False)
         self.last_selected_script_pos = 0
         self.ui.splitter.setStretchFactor(0, 1)
         self.ui.splitter.setStretchFactor(1, 2)
@@ -183,31 +152,13 @@ class ScriptingOptionsPage(OptionsPage):
         if indexes:
             self.remove_from_list_of_scripts(indexes[0].row())
 
-    def rename_selected_script(self):
-        items = self.ui.script_list.selectedItems()
-        if items:
-            self.rename_script(items[0])
-
-    def script_name_changed(self):
-        items = self.ui.script_list.selectedItems()
-        if items:
-            script = items[0]
-            script.setText(self.ui.script_name.text())
-
     def script_selected(self):
         items = self.ui.script_list.selectedItems()
         if items:
             self.ui.tagger_script.setEnabled(True)
-            self.ui.script_name.setEnabled(True)
             script = items[0]
             self.ui.tagger_script.setText(script.script)
-            self.ui.script_name.setText(script.name)
             self.last_selected_script_pos = script.pos
-
-    def rename_script(self, item):
-        item.setSelected(True)
-        self.ui.script_name.setFocus()
-        self.ui.script_name.selectAll()
 
     def add_script(self):
         count = self.ui.script_list.count()
@@ -229,8 +180,6 @@ class ScriptingOptionsPage(OptionsPage):
             if not self.ui.script_list:
                 self.ui.tagger_script.setText("")
                 self.ui.tagger_script.setEnabled(False)
-                self.ui.script_name.setText("")
-                self.ui.script_name.setEnabled(False)
 
             # update position of last_selected_script
             if row == self.last_selected_script_pos:
@@ -271,7 +220,6 @@ class ScriptingOptionsPage(OptionsPage):
     def restore_defaults(self):
         # Remove existing scripts
         self.ui.script_list.clear()
-        self.ui.script_name.setText("")
         self.ui.tagger_script.setText("")
         super().restore_defaults()
 
