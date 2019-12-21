@@ -46,16 +46,15 @@ from picard.ui.options import (
     OptionsPage,
     register_options_page,
 )
-from picard.ui.options.scripting import TaggerScriptSyntaxHighlighter
+from picard.ui.options.scripting import (
+    ScriptCheckError,
+    TaggerScriptSyntaxHighlighter,
+)
 from picard.ui.ui_options_renaming import Ui_RenamingOptionsPage
 from picard.ui.util import enabledSlot
 
 
 _default_music_dir = QStandardPaths.writableLocation(QStandardPaths.MusicLocation)
-
-
-class ScriptCheckError(OptionsCheckError):
-    pass
 
 
 class RenamingOptionsPage(OptionsPage):
