@@ -177,6 +177,10 @@
    <class>ScriptListWidget</class>
    <extends>QListWidget</extends>
    <header location="global">picard.ui.widgets.scriptlistwidget</header>
+   <slots>
+    <slot>remove_selected_script()</slot>
+    <slot>add_script()</slot>
+   </slots>
   </customwidget>
  </customwidgets>
  <tabstops>
@@ -190,7 +194,7 @@
   <connection>
    <sender>add_button</sender>
    <signal>clicked()</signal>
-   <receiver>ScriptingOptionsPage</receiver>
+   <receiver>script_list</receiver>
    <slot>add_script()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -198,8 +202,8 @@
      <y>475</y>
     </hint>
     <hint type="destinationlabel">
-     <x>302</x>
-     <y>275</y>
+     <x>170</x>
+     <y>246</y>
     </hint>
    </hints>
   </connection>
@@ -238,25 +242,23 @@
   <connection>
    <sender>remove_button</sender>
    <signal>clicked()</signal>
-   <receiver>ScriptingOptionsPage</receiver>
-   <slot>delete_selected_script()</slot>
+   <receiver>script_list</receiver>
+   <slot>remove_selected_script()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>537</x>
      <y>475</y>
     </hint>
     <hint type="destinationlabel">
-     <x>302</x>
-     <y>275</y>
+     <x>170</x>
+     <y>246</y>
     </hint>
    </hints>
   </connection>
  </connections>
  <slots>
-  <slot>add_script()</slot>
   <slot>live_update_and_check()</slot>
   <slot>script_selected()</slot>
-  <slot>delete_selected_script()</slot>
   <slot>move_selected_script_up()</slot>
   <slot>move_selected_script_down()</slot>
  </slots>
