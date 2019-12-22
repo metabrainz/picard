@@ -82,10 +82,10 @@ class Ui_ScriptingOptionsPage(object):
         self.vboxlayout.addWidget(self.enable_tagger_scripts)
 
         self.retranslateUi(ScriptingOptionsPage)
-        self.add_button.clicked.connect(ScriptingOptionsPage.add_script)
+        self.add_button.clicked.connect(self.script_list.add_script)
         self.tagger_script.textChanged.connect(ScriptingOptionsPage.live_update_and_check)
         self.script_list.itemSelectionChanged.connect(ScriptingOptionsPage.script_selected)
-        self.remove_button.clicked.connect(ScriptingOptionsPage.delete_selected_script)
+        self.remove_button.clicked.connect(self.script_list.remove_selected_script)
         QtCore.QMetaObject.connectSlotsByName(ScriptingOptionsPage)
         ScriptingOptionsPage.setTabOrder(self.enable_tagger_scripts, self.add_button)
         ScriptingOptionsPage.setTabOrder(self.add_button, self.script_list)

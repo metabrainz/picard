@@ -20,14 +20,10 @@
 from PyQt5 import (
     QtCore,
     QtGui,
-    QtWidgets,
 )
 
 from picard import config
-from picard.const import (
-    DEFAULT_NUMBERED_SCRIPT_NAME,
-    PICARD_URLS,
-)
+from picard.const import PICARD_URLS
 from picard.script import ScriptParser
 from picard.util import restore_method
 
@@ -135,66 +131,23 @@ class ScriptingOptionsPage(OptionsPage):
         self.ui.setupUi(self)
         self.highlighter = TaggerScriptSyntaxHighlighter(self.ui.tagger_script.document())
         self.ui.tagger_script.setEnabled(False)
-        self.last_selected_script_pos = 0
         self.ui.splitter.setStretchFactor(0, 1)
         self.ui.splitter.setStretchFactor(1, 2)
-        self.delete_shortcut = QtWidgets.QShortcut(self.ui.script_list)
-        self.delete_shortcut.setKey(QtGui.QKeySequence.Delete)
-        self.delete_shortcut.activated.connect(self.delete_selected_script)
         font = QtGui.QFont('Monospace')
         font.setStyleHint(QtGui.QFont.TypeWriter)
         self.ui.tagger_script.setFont(font)
         self.move_view = MoveableListView(self.ui.script_list, self.ui.move_up_button,
                                           self.ui.move_down_button)
 
-    def delete_selected_script(self):
-        indexes = self.ui.script_list.selectedIndexes()
-        if indexes:
-            self.remove_from_list_of_scripts(indexes[0].row())
-
     def script_selected(self):
         items = self.ui.script_list.selectedItems()
         if items:
+            item = items[0]
             self.ui.tagger_script.setEnabled(True)
-            script = items[0]
-            self.ui.tagger_script.setText(script.script)
-            self.last_selected_script_pos = script.pos
-
-    def add_script(self):
-        count = self.ui.script_list.count()
-        numbered_name = _(DEFAULT_NUMBERED_SCRIPT_NAME) % (count + 1)
-
-        list_item = ScriptListWidgetItem(name=numbered_name)
-        list_item.setCheckState(QtCore.Qt.Checked)
-        self.ui.script_list.addItem(list_item)
-        list_item.setSelected(True)
-
-    def remove_from_list_of_scripts(self, row):
-        item = self.ui.script_list.item(row)
-        msg = _("Are you sure you want to remove this script?")
-        reply = QtWidgets.QMessageBox.question(self, _('Confirm Remove'), msg,
-            QtWidgets.QMessageBox.Yes, QtWidgets.QMessageBox.No)
-        if item and reply == QtWidgets.QMessageBox.Yes:
-            item = self.ui.script_list.takeItem(row)
-            item = None
-            if not self.ui.script_list:
-                self.ui.tagger_script.setText("")
-                self.ui.tagger_script.setEnabled(False)
-
-            # update position of last_selected_script
-            if row == self.last_selected_script_pos:
-                self.last_selected_script_pos = 0
-                # workaround to remove residue on UI
-                if not self.ui.script_list.selectedItems():
-                    current_item = self.ui.script_list.currentItem()
-                    if current_item:
-                        current_item.setSelected(True)
-                    else:
-                        item = self.ui.script_list.item(0)
-                        if item:
-                            item.setSelected(True)
-            elif row < self.last_selected_script_pos:
-                self.last_selected_script_pos -= 1
+            self.ui.tagger_script.setText(item.script)
+        else:
+            self.ui.tagger_script.setEnabled(False)
+            self.ui.tagger_script.setText("")
 
     def live_update_and_check(self):
         items = self.ui.script_list.selectedItems()
@@ -230,8 +183,8 @@ class ScriptingOptionsPage(OptionsPage):
             self.ui.script_list.addItem(list_item)
 
         # Select the last selected script item
-        self.last_selected_script_pos = config.persist["last_selected_script_pos"]
-        last_selected_script = self.ui.script_list.item(self.last_selected_script_pos)
+        last_selected_script_pos = config.persist["last_selected_script_pos"]
+        last_selected_script = self.ui.script_list.item(last_selected_script_pos)
         if last_selected_script:
             self.ui.script_list.setCurrentItem(last_selected_script)
             last_selected_script.setSelected(True)
@@ -258,7 +211,7 @@ class ScriptingOptionsPage(OptionsPage):
     def save(self):
         config.setting["enable_tagger_scripts"] = self.ui.enable_tagger_scripts.isChecked()
         config.setting["list_of_scripts"] = list(self._all_scripts())
-        config.persist["last_selected_script_pos"] = self.last_selected_script_pos
+        config.persist["last_selected_script_pos"] = self.ui.script_list.currentRow()
         config.persist["scripting_splitter"] = self.ui.splitter.saveState()
 
     def display_error(self, error):

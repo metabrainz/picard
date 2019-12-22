@@ -21,15 +21,25 @@ from functools import partial
 
 from PyQt5 import (
     QtCore,
+    QtGui,
     QtWidgets,
 )
 
-from picard.const import DEFAULT_SCRIPT_NAME
+from picard.const import (
+    DEFAULT_NUMBERED_SCRIPT_NAME,
+    DEFAULT_SCRIPT_NAME,
+)
 
 from picard.ui import HashableListWidgetItem
 
 
 class ScriptListWidget(QtWidgets.QListWidget):
+
+    def __init__(self, parent):
+        super().__init__(parent=parent)
+        self.delete_shortcut = QtWidgets.QShortcut(self)
+        self.delete_shortcut.setKey(QtGui.QKeySequence.Delete)
+        self.delete_shortcut.activated.connect(self.remove_selected_script)
 
     def contextMenuEvent(self, event):
         item = self.itemAt(event.x(), event.y())
@@ -38,7 +48,33 @@ class ScriptListWidget(QtWidgets.QListWidget):
             rename_action = QtWidgets.QAction(_("Rename script"), self)
             rename_action.triggered.connect(partial(self.editItem, item))
             menu.addAction(rename_action)
+            remove_action = QtWidgets.QAction(_("Remove script"), self)
+            remove_action.triggered.connect(partial(self.remove_script, item))
+            menu.addAction(remove_action)
             menu.exec_(event.globalPos())
+
+    def add_script(self):
+        count = self.count()
+        numbered_name = _(DEFAULT_NUMBERED_SCRIPT_NAME) % (count + 1)
+        list_item = ScriptListWidgetItem(name=numbered_name)
+        list_item.setCheckState(QtCore.Qt.Checked)
+        self.addItem(list_item)
+        self.setCurrentItem(list_item, QtCore.QItemSelectionModel.Clear
+            | QtCore.QItemSelectionModel.SelectCurrent)
+
+    def remove_selected_script(self):
+        items = self.selectedItems()
+        if items:
+            self.remove_script(items[0])
+
+    def remove_script(self, item):
+        row = self.row(item)
+        msg = _("Are you sure you want to remove this script?")
+        reply = QtWidgets.QMessageBox.question(self, _('Confirm Remove'), msg,
+            QtWidgets.QMessageBox.Yes, QtWidgets.QMessageBox.No)
+        if item and reply == QtWidgets.QMessageBox.Yes:
+            item = self.takeItem(row)
+            del item
 
 
 class ScriptListWidgetItem(HashableListWidgetItem):
