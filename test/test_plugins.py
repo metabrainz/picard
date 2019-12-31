@@ -31,8 +31,10 @@ from picard import (
     VersionError,
     version_from_string,
 )
+from picard.const import USER_PLUGIN_DIR
 from picard.plugin import (
     _PLUGIN_MODULE_PREFIX,
+    PluginWrapper,
     _unregister_module_extensions,
 )
 from picard.pluginmanager import (
@@ -160,7 +162,7 @@ class TestPicardPluginsInstall(TestPicardPluginsCommonTmpDir):
         self.assertEqual(pm.plugins[0].name, 'Dummy plugin', msg)
 
         # if module is properly loaded, this should work
-        from picard.plugins.dummyplugin import DummyPlugin
+        from picard.plugins.dummyplugin import DummyPlugin  # noqa: F811
         DummyPlugin()
 
     def _test_plugin_install_data(self, name):
@@ -180,7 +182,7 @@ class TestPicardPluginsInstall(TestPicardPluginsCommonTmpDir):
         self.assertEqual(pm.plugins[0].name, 'Dummy plugin', msg)
 
         # if module is properly loaded, this should work
-        from picard.plugins.dummyplugin import DummyPlugin
+        from picard.plugins.dummyplugin import DummyPlugin  # noqa: F811
         DummyPlugin()
 
     # module
@@ -236,7 +238,7 @@ class TestPicardPluginsLoad(TestPicardPluginsCommonTmpDir):
         self.assertEqual(pm.plugins[0].name, 'Dummy plugin', msg)
 
         # if module is properly loaded, this should work
-        from picard.plugins.dummyplugin import DummyPlugin
+        from picard.plugins.dummyplugin import DummyPlugin  # noqa: F811
         DummyPlugin()
 
     # singlefile
@@ -254,3 +256,15 @@ class TestPicardPluginsLoad(TestPicardPluginsCommonTmpDir):
     # module
     def test_plugin_load_from_directory_module(self):
         self._test_plugin_load_from_directory('module')
+
+
+class TestPluginWrapper(PicardTestCase):
+
+    def test_is_user_installed(self):
+        manifest = {
+            'PLUGIN_NAME': 'foo'
+        }
+        user_plugin = PluginWrapper({}, USER_PLUGIN_DIR, manifest_data=manifest)
+        self.assertTrue(user_plugin.is_user_installed)
+        system_plugin = PluginWrapper({}, '/other/path/plugins', manifest_data=manifest)
+        self.assertFalse(system_plugin.is_user_installed)
