@@ -20,6 +20,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from collections import defaultdict
+import os.path
 
 from picard import (
     config,
@@ -92,7 +93,7 @@ class PluginWrapper(PluginShared):
         super().__init__()
         self.module = module
         self.compatible = False
-        self.dir = plugindir
+        self.dir = os.path.normpath(plugindir)
         self._file = file
         self.data = manifest_data or self.module.__dict__
 

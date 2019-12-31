@@ -30,11 +30,11 @@ builtins.__dict__['N_'] = lambda a: a
 
 # Config directory
 _appconfiglocation = QStandardPaths.writableLocation(QStandardPaths.AppConfigLocation)
-USER_DIR = os.path.join(_appconfiglocation, "MusicBrainz", PICARD_APP_NAME)
-USER_PLUGIN_DIR = os.path.join(USER_DIR, "plugins")
+USER_DIR = os.path.normpath(os.path.join(_appconfiglocation, "MusicBrainz", PICARD_APP_NAME))
+USER_PLUGIN_DIR = os.path.normpath(os.path.join(USER_DIR, "plugins"))
 
 # Cache directory
-CACHE_DIR = QStandardPaths.writableLocation(QStandardPaths.CacheLocation)
+CACHE_DIR = os.path.normpath(QStandardPaths.writableLocation(QStandardPaths.CacheLocation))
 
 # AcoustID client API key
 ACOUSTID_KEY = 'v8pQ6oyB'
