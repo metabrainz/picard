@@ -26,6 +26,7 @@ from picard import (
     config,
     log,
 )
+from picard.const import USER_PLUGIN_DIR
 
 
 _PLUGIN_MODULE_PREFIX = "picard.plugins."
@@ -163,6 +164,10 @@ class PluginWrapper(PluginShared):
     @property
     def files_list(self):
         return self.file[len(self.dir)+1:]
+
+    @property
+    def is_user_installed(self):
+        return self.dir == USER_PLUGIN_DIR
 
 
 class PluginData(PluginShared):
