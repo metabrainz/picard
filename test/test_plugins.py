@@ -27,10 +27,6 @@ import unittest
 from test.picardtestcase import PicardTestCase
 
 import picard
-from picard import (
-    VersionError,
-    version_from_string,
-)
 from picard.const import USER_PLUGIN_DIR
 from picard.plugin import (
     _PLUGIN_MODULE_PREFIX,
@@ -41,6 +37,10 @@ from picard.pluginmanager import (
     PluginManager,
     _compatible_api_versions,
     _plugin_name_from_path,
+)
+from picard.version import (
+    Version,
+    VersionError,
 )
 
 
@@ -123,7 +123,7 @@ class TestPicardPluginManager(TestPicardPluginsCommon):
 
         # use first element from picard.api_versions, it should be compatible
         api_versions = picard.api_versions[:1]
-        expected = set([version_from_string(v) for v in api_versions])
+        expected = set([Version.from_string(v) for v in api_versions])
         result = _compatible_api_versions(api_versions)
         self.assertEqual(result, expected)
 

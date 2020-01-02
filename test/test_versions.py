@@ -4,11 +4,14 @@ import unittest
 from test.picardtestcase import PicardTestCase
 
 from picard import (
-    VersionError,
     api_versions,
     api_versions_tuple,
     version_from_string,
     version_to_string,
+)
+from picard.version import (
+    Version,
+    VersionError,
 )
 
 
@@ -16,31 +19,39 @@ class VersionsTest(PicardTestCase):
 
     def test_version_conversion(self):
         versions =  (
-            ((1, 1, 0, 'final', 0), '1.1.0.final0'),
-            ((0, 0, 1, 'dev', 1), '0.0.1.dev1'),
-            ((1, 1, 0, 'dev', 0), '1.1.0.dev0'),
-            ((999, 999, 999, 'dev', 999), '999.999.999.dev999'),
-            ((1, 1, 2, 'alpha', 2), '1.1.2.alpha2'),
-            ((1, 1, 2, 'beta', 2), '1.1.2.beta2'),
-            ((1, 1, 2, 'rc', 2), '1.1.2.rc2'),
+            (Version(1, 1, 0, 'final', 0), '1.1.0.final0'),
+            (Version(0, 0, 1, 'dev', 1), '0.0.1.dev1'),
+            (Version(1, 1, 0, 'dev', 0), '1.1.0.dev0'),
+            (Version(999, 999, 999, 'dev', 999), '999.999.999.dev999'),
+            (Version(1, 1, 2, 'alpha', 2), '1.1.2.alpha2'),
+            (Version(1, 1, 2, 'a', 2), '1.1.2.alpha2'),
+            (Version(1, 1, 2, 'beta', 2), '1.1.2.beta2'),
+            (Version(1, 1, 2, 'b', 2), '1.1.2.beta2'),
+            (Version(1, 1, 2, 'rc', 2), '1.1.2.rc2'),
         )
-        for l, s in versions:
-            self.assertEqual(version_to_string(l), s)
-            self.assertEqual(l, version_from_string(s))
+        for v, s in versions:
+            self.assertEqual(version_to_string(v), s)
+            self.assertEqual(str(v), s)
+            self.assertEqual(v, Version.from_string(s))
+            self.assertEqual(v, version_from_string(s))
 
     def test_version_conversion_short(self):
         versions =  (
-            ((1, 1, 0, 'final', 0), '1.1'),
-            ((1, 1, 1, 'final', 0), '1.1.1'),
-            ((0, 0, 1, 'dev', 1), '0.0.1.dev1'),
-            ((1, 1, 0, 'dev', 0), '1.1.0.dev0'),
-            ((1, 1, 2, 'alpha', 2), '1.1.2a2'),
-            ((1, 1, 2, 'beta', 2), '1.1.2b2'),
-            ((1, 1, 2, 'rc', 2), '1.1.2rc2'),
+            (Version(1, 1, 0, 'final', 0), '1.1'),
+            (Version(1, 1, 1, 'final', 0), '1.1.1'),
+            (Version(0, 0, 1, 'dev', 1), '0.0.1.dev1'),
+            (Version(1, 1, 0, 'dev', 0), '1.1.0.dev0'),
+            (Version(1, 1, 2, 'alpha', 2), '1.1.2a2'),
+            (Version(1, 1, 2, 'a', 2), '1.1.2a2'),
+            (Version(1, 1, 2, 'beta', 2), '1.1.2b2'),
+            (Version(1, 1, 2, 'b', 2), '1.1.2b2'),
+            (Version(1, 1, 2, 'rc', 2), '1.1.2rc2'),
         )
-        for l, s in versions:
-            self.assertEqual(version_to_string(l, short=True), s)
-            self.assertEqual(l, version_from_string(s))
+        for v, s in versions:
+            self.assertEqual(version_to_string(v, short=True), s)
+            self.assertEqual(v.to_string(short=True), s)
+            self.assertEqual(v, Version.from_string(s))
+            self.assertEqual(v, version_from_string(s))
 
     def test_version_to_string_invalid_identifier(self):
         l = (1, 0, 2, 'xx', 0)
@@ -87,3 +98,48 @@ class VersionsTest(PicardTestCase):
             a = api_versions_tuple[i]
             b = api_versions_tuple[i+1]
             self.assertLess(a, b)
+
+    def test_sortkey(self):
+        self.assertEqual((2, 1, 3, 4, 2), Version(2, 1, 3, 'final', 2).sortkey)
+        self.assertEqual((2, 0, 0, 1, 0), Version(2, 0, 0, 'a', 0).sortkey)
+        self.assertEqual((2, 0, 0, 1, 0), Version(2, 0, 0, 'alpha', 0).sortkey)
+
+    def test_lt(self):
+        v1 = Version(2, 3, 0, 'dev', 1)
+        v2 = Version(2, 3, 0, 'alpha', 1)
+        self.assertLess(v1, v2)
+        self.assertFalse(v2 < v2)
+
+    def test_le(self):
+        v1 = Version(2, 3, 0, 'dev', 1)
+        v2 = Version(2, 3, 0, 'alpha', 1)
+        self.assertLessEqual(v1, v2)
+        self.assertLessEqual(v2, v2)
+
+    def test_gt(self):
+        v1 = Version(2, 3, 0, 'alpha', 1)
+        v2 = Version(2, 3, 0, 'dev', 1)
+        self.assertGreater(v1, v2)
+        self.assertFalse(v2 > v2)
+
+    def test_ge(self):
+        v1 = Version(2, 3, 0, 'alpha', 1)
+        v2 = Version(2, 3, 0, 'dev', 1)
+        self.assertGreaterEqual(v1, v2)
+        self.assertGreaterEqual(v2, v2)
+
+    def test_eq(self):
+        v1 = Version(2, 3, 0, 'alpha', 1)
+        v2 = Version(2, 3, 0, 'a', 1)
+        v3 = Version(2, 3, 0, 'final', 1)
+        self.assertEqual(v1, v1)
+        self.assertEqual(v1, v2)
+        self.assertFalse(v1 == v3)
+
+    def test_ne(self):
+        v1 = Version(2, 3, 0, 'alpha', 1)
+        v2 = Version(2, 3, 0, 'a', 1)
+        v3 = Version(2, 3, 0, 'final', 1)
+        self.assertFalse(v1 != v1)
+        self.assertFalse(v1 != v2)
+        self.assertTrue(v1 != v3)

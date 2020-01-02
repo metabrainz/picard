@@ -34,7 +34,6 @@ from PyQt5 import QtCore
 from picard import (
     VersionError,
     log,
-    version_from_string,
     version_to_string,
 )
 from picard.const import (
@@ -48,6 +47,7 @@ from picard.plugin import (
     _unregister_module_extensions,
 )
 import picard.plugins
+from picard.version import Version
 
 
 _SUFFIXES = tuple(importlib.machinery.all_suffixes())
@@ -145,7 +145,7 @@ def zip_import(path):
 
 
 def _compatible_api_versions(api_versions):
-    versions = [version_from_string(v) for v in list(api_versions)]
+    versions = [Version.from_string(v) for v in list(api_versions)]
     return set(versions) & set(picard.api_versions_tuple)
 
 

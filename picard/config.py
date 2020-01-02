@@ -26,10 +26,9 @@ from picard import (
     PICARD_ORG_NAME,
     PICARD_VERSION,
     log,
-    version_from_string,
-    version_to_string,
 )
 from picard.util import LockableObject
+from picard.version import Version
 
 
 class ConfigUpgradeError(Exception):
@@ -120,7 +119,7 @@ class Config(QtCore.QSettings):
         self.current_preset = "default"
 
         TextOption("application", "version", '0.0.0dev0')
-        self._version = version_from_string(self.application["version"])
+        self._version = Version.from_string(self.application["version"])
         self._upgrade_hooks = dict()
         # Save known config names for faster access and to prevent
         # strange cases of Qt locking up when accessing QSettings.allKeys()
@@ -182,7 +181,7 @@ class Config(QtCore.QSettings):
 
     def register_upgrade_hook(self, func, *args):
         """Register a function to upgrade from one config version to another"""
-        to_version = version_from_string(func.__name__)
+        to_version = Version.from_string(func.__name__)
         assert to_version <= PICARD_VERSION, "%r > %r !!!" % (to_version, PICARD_VERSION)
         self._upgrade_hooks[to_version] = {
             'func': func,
@@ -198,8 +197,8 @@ class Config(QtCore.QSettings):
             if self._version > PICARD_VERSION:
                 print("Warning: config file %s was created by a more recent "
                       "version of Picard (current is %s)" % (
-                          version_to_string(self._version),
-                          version_to_string(PICARD_VERSION)
+                          self._version.to_string(),
+                          PICARD_VERSION.to_string()
                       ))
             return
         for version in sorted(self._upgrade_hooks):
@@ -208,8 +207,8 @@ class Config(QtCore.QSettings):
                 try:
                     if outputfunc and hook['func'].__doc__:
                         outputfunc("Config upgrade %s -> %s: %s" % (
-                                   version_to_string(self._version),
-                                   version_to_string(version),
+                                   self._version.to_string(),
+                                   version.to_string(),
                                    hook['func'].__doc__.strip()))
                     hook['func'](self, *hook['args'])
                 except BaseException:
@@ -217,8 +216,8 @@ class Config(QtCore.QSettings):
                     raise ConfigUpgradeError(
                         "Error during config upgrade from version %s to %s "
                         "using %s():\n%s" % (
-                            version_to_string(self._version),
-                            version_to_string(version),
+                            self._version.to_string(),
+                            version.to_string(),
                             hook['func'].__name__,
                             traceback.format_exc()
                         ))
@@ -236,7 +235,7 @@ class Config(QtCore.QSettings):
             self._write_version()
 
     def _write_version(self):
-        self.application["version"] = version_to_string(self._version)
+        self.application["version"] = self._version.to_string()
         self.sync()
 
 
