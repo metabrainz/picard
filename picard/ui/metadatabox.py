@@ -164,6 +164,11 @@ class TableTagEditorDelegate(TagEditorDelegate):
             table.setRowHeight(index.row(), editor.frameSize().height() + 1)
         return editor
 
+    def sizeHint(self, option, index):
+        # Expand the row for multiline content, but limit the maximum row height.
+        size_hint = super().sizeHint(option, index)
+        return QtCore.QSize(size_hint.width(), min(160, size_hint.height()))
+
     def get_tag_name(self, index):
         return index.data(QtCore.Qt.UserRole)
 
@@ -193,6 +198,7 @@ class MetadataBox(QtWidgets.QTableWidget):
         self.setStyleSheet("QTableWidget {border: none;}")
         self.setAttribute(QtCore.Qt.WA_MacShowFocusRect, 1)
         self.setItemDelegate(TableTagEditorDelegate(self))
+        self.setWordWrap(False)
         self.files = set()
         self.tracks = set()
         self.objects = set()
@@ -579,10 +585,8 @@ class MetadataBox(QtWidgets.QTableWidget):
             orig_item.setTextAlignment(alignment)
             new_item.setTextAlignment(alignment)
 
-            # Expand the row for multiline content, but limit the maximum
-            # row height.
-            row_height = min(self.sizeHintForRow(i), 160)
-            self.setRowHeight(i, row_height)
+            # Adjust row height to content size
+            self.setRowHeight(i, self.sizeHintForRow(i))
 
     def set_item_value(self, item, tags, name):
         text, italic = tags.display_value(name)
