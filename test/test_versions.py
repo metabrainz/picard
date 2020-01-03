@@ -99,6 +99,12 @@ class VersionsTest(PicardTestCase):
             b = api_versions_tuple[i+1]
             self.assertLess(a, b)
 
+    def test_version_invalid_new(self):
+        self.assertRaises(VersionError, Version, '1', 'a')
+        self.assertRaises(VersionError, Version, None, 0)
+        self.assertRaises(VersionError, Version, 1, 0, 0, 'final', None)
+        self.assertRaises(VersionError, Version, 1, 0, 0, 'invalid', 0)
+
     def test_sortkey(self):
         self.assertEqual((2, 1, 3, 4, 2), Version(2, 1, 3, 'final', 2).sortkey)
         self.assertEqual((2, 0, 0, 1, 0), Version(2, 0, 0, 'a', 0).sortkey)
