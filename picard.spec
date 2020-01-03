@@ -17,12 +17,6 @@ from picard import (
     __version__,
 )
 
-pv = [str(x) for x in PICARD_VERSION]
-macos_picard_version = '.'.join(pv[:3])
-macos_picard_short_version = macos_picard_version
-if pv[3] != 'final':
-    macos_picard_version += pv[3][0] + ''.join(pv[4:])
-
 
 def _picard_get_locale_files():
     locales = []
@@ -140,7 +134,6 @@ else:
                    upx=False,
                    name='picard')
 
-
     if os_name == 'Darwin':
         info_plist = {
             'NSHighResolutionCapable': 'True',
@@ -148,8 +141,8 @@ else:
             'CFBundleName': PICARD_APP_NAME,
             'CFBundleDisplayName': PICARD_DISPLAY_NAME,
             'CFBundleIdentifier': PICARD_APP_ID,
-            'CFBundleVersion': macos_picard_version,
-            'CFBundleShortVersionString': macos_picard_short_version,
+            'CFBundleVersion': '%d.%d.%d' % PICARD_VERSION[:3],
+            'CFBundleShortVersionString': PICARD_VERSION.to_string(short=True),
             'LSMinimumSystemVersion': '10.12',
         }
         app = BUNDLE(coll,
