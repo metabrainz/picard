@@ -17,6 +17,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+from collections import namedtuple
 import re
 
 
@@ -24,7 +25,7 @@ class VersionError(Exception):
     pass
 
 
-class Version(tuple):
+class Version(namedtuple('VersionBase', 'major minor patch identifier revision')):
     _version_re = re.compile(r"(\d+)[._](\d+)(?:[._](\d+)[._]?(?:(dev|a|alpha|b|beta|rc|final)[._]?(\d+))?)?$")
 
     _identifiers = {
@@ -48,7 +49,7 @@ class Version(tuple):
             revision = int(revision)
         except (TypeError, ValueError):
             raise VersionError("major, minor, patch and revision must be integer values")
-        return super(Version, cls).__new__(cls, (major, minor, patch, identifier, revision))
+        return super(Version, cls).__new__(cls, major, minor, patch, identifier, revision)
 
     @classmethod
     def from_string(cls, version_str):
@@ -72,16 +73,16 @@ class Version(tuple):
         return set(cls._identifiers.keys())
 
     def to_string(self, short=False):
-        if short and self[3] in ('alpha', 'beta'):
-            version = (self[0], self[1], self[2], self[3][:1], self[4])
+        if short and self.identifier in ('alpha', 'beta'):
+            version = self._replace(identifier=self.identifier[0])
         else:
             version = self
-        if short and version[3] == 'final':
-            if version[2] == 0:
+        if short and version.identifier == 'final':
+            if version.patch == 0:
                 version_str = '%d.%d' % version[:2]
             else:
                 version_str = '%d.%d.%d' % version[:3]
-        elif short and version[3] in ('a', 'b', 'rc'):
+        elif short and version.identifier in ('a', 'b', 'rc'):
             version_str = '%d.%d.%d%s%d' % version
         else:
             version_str = '%d.%d.%d.%s%d' % version
@@ -89,7 +90,7 @@ class Version(tuple):
 
     @property
     def sortkey(self):
-        return self[:3] + (self._identifiers.get(self[3], 0), self[4])
+        return self[:3] + (self._identifiers.get(self.identifier, 0), self.revision)
 
     def __str__(self):
         return self.to_string()
