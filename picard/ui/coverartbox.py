@@ -538,7 +538,7 @@ class CoverArtBox(QtWidgets.QGroupBox):
         if not menu.isEmpty():
             menu.addSeparator()
 
-        load_image_behavior_group = QtWidgets.QActionGroup(self.parent, exclusive=True)
+        load_image_behavior_group = QtWidgets.QActionGroup(self.parent)
         action = load_image_behavior_group.addAction(QtWidgets.QAction(_('Replace front cover art on drop'), self.parent, checkable=True))
         action.triggered.connect(partial(self.set_load_image_behavior, behavior='replace'))
         if config.setting["load_image_behavior"] == 'replace':

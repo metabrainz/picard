@@ -129,7 +129,6 @@ class VerbosityMenu(QtWidgets.QMenu):
         super().__init__(parent=parent)
 
         self.action_group = QtWidgets.QActionGroup(self)
-        self.action_group .setExclusive(True)
         self.actions = {}
         for level, feat in log.levels_features.items():
             act = QtWidgets.QAction(_(feat.name), self, checkable=True)
