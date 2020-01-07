@@ -131,11 +131,12 @@ class VerbosityMenu(QtWidgets.QMenu):
         self.action_group = QtWidgets.QActionGroup(self)
         self.actions = {}
         for level, feat in log.levels_features.items():
-            act = QtWidgets.QAction(_(feat.name), self, checkable=True)
-            act.triggered.connect(partial(self.verbosity_changed.emit, level))
-            self.action_group.addAction(act)
-            self.addAction(act)
-            self.actions[level] = act
+            action = QtWidgets.QAction(_(feat.name), self)
+            action.setCheckable(True)
+            action.triggered.connect(partial(self.verbosity_changed.emit, level))
+            self.action_group.addAction(action)
+            self.addAction(action)
+            self.actions[level] = action
 
     def set_verbosity(self, level):
         self.actions[level].setChecked(True)
