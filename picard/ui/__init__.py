@@ -73,6 +73,7 @@ class SingletonDialog:
         instance.show()
         instance.raise_()
         instance.activateWindow()
+        return instance
 
     @classmethod
     def _on_dialog_finished(cls):
