@@ -888,6 +888,14 @@ def process_picard_args():
     parser = argparse.ArgumentParser(
         epilog="If one of the filenames begins with a hyphen, use -- to separate the options from the filenames."
     )
+    # Qt default arguments. Parse them so Picard does not interpret the
+    # arguments as file names to load.
+    parser.add_argument("-style", nargs=1, help=argparse.SUPPRESS)
+    parser.add_argument("-stylesheet", nargs=1, help=argparse.SUPPRESS)
+    # Same for default X arguments
+    parser.add_argument("-display", nargs=1, help=argparse.SUPPRESS)
+
+    # Picard specific arguments
     parser.add_argument("-c", "--config-file", action='store',
                         default=None,
                         help="location of the configuration file")
