@@ -318,6 +318,8 @@ class ConfigurableColumnsHeader(TristateSortHeaderView):
             if column == MainPanel.FINGERPRINT_COLUMN:
                 self.setSectionResizeMode(column, QtWidgets.QHeaderView.Fixed)
                 self.parent().resizeColumnToContents(column)
+            else:
+                self.setSectionResizeMode(column, QtWidgets.QHeaderView.Interactive)
         elif column in self._visible_columns:
             self._visible_columns.remove(column)
 
