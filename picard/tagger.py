@@ -143,9 +143,7 @@ class Tagger(QtWidgets.QApplication):
         if not IS_MACOS and not IS_HAIKU:
             self.setStyle('Fusion')
 
-        # Set the WM_CLASS to 'MusicBrainz-Picard' so desktop environments
-        # can use it to look up the app
-        super().__init__(['MusicBrainz-Picard'] + unparsed_args)
+        super().__init__(sys.argv)
         self.__class__.__instance = self
         config._setup(self, picard_args.config_file)
 
