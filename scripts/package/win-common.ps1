@@ -37,12 +37,6 @@ Function FinalizePackage {
   CodeSignBinary (Join-Path $Path fpcalc.exe)
   CodeSignBinary (Join-Path $Path discid.dll)
 
-  # Workaround for https://github.com/pyinstaller/pyinstaller/issues/4429
-  $OldTRanslationsPath = (Join-Path $Path PyQt5\translations)
-  If (Test-Path $OldTRanslationsPath -PathType Container) {
-    Move-Item -Path $OldTRanslationsPath -Destination (Join-Path $Path PyQt5\Qt)
-  }
-
   # Delete unused files
   Remove-Item -Path (Join-Path $Path libcrypto-1_1.dll)
   Remove-Item -Path (Join-Path $Path libssl-1_1.dll)
