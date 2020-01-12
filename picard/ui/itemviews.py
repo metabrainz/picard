@@ -199,7 +199,8 @@ class MainPanel(QtWidgets.QSplitter):
         FileItem.icon_file_pending = QtGui.QIcon(":/images/file-pending.png")
         FileItem.icon_error = icontheme.lookup('dialog-error', icontheme.ICON_SIZE_MENU)
         FileItem.icon_saved = QtGui.QIcon(":/images/track-saved.png")
-        FileItem.icon_fingerprint = icontheme.lookup('picard-fingerprint', icontheme.ICON_SIZE_MENU)
+        FileItem.icon_fingerprint = icontheme.lookup('fingerprint', icontheme.ICON_SIZE_MENU)
+        FileItem.icon_fingerprint_gray = icontheme.lookup('fingerprint-gray', icontheme.ICON_SIZE_MENU)
         FileItem.match_icons = [
             QtGui.QIcon(":/images/match-50.png"),
             QtGui.QIcon(":/images/match-60.png"),
@@ -282,7 +283,10 @@ class FingerprintColumnWidget(QtWidgets.QWidget):
 
     def decide_icon(self):
         if getattr(self._file, 'acoustid_fingerprint', None):
-            return FileItem.icon_fingerprint
+            if self.tagger.acoustidmanager.is_submitted(self._file):
+                return FileItem.icon_fingerprint_gray
+            else:
+                return FileItem.icon_fingerprint
         else:
             return None
 
@@ -359,7 +363,7 @@ class ConfigurableColumnsHeader(TristateSortHeaderView):
             painter.save()
             super().paintSection(painter, rect, index)
             painter.restore()
-            paint_fingerprint_icon(painter, rect, FileItem.icon_fingerprint)
+            paint_fingerprint_icon(painter, rect, FileItem.icon_fingerprint_gray)
         else:
             super().paintSection(painter, rect, index)
 
@@ -1058,10 +1062,10 @@ class FileItem(TreeItem):
 
     @staticmethod
     def decide_fingerprint_icon_info(file):
-        acoustid = file.metadata['acoustid_id']
-        if acoustid:
-            return _('AcoustID: %s' % acoustid)
-        elif getattr(file, 'acoustid_fingerprint', None):
-            return _('Fingerprint calculated')
+        if getattr(file, 'acoustid_fingerprint', None):
+            if QtCore.QObject.tagger.acoustidmanager.is_submitted(file):
+                return _('Fingerprint has already been submitted')
+            else:
+                return _('Unsubmitted fingerprint')
         else:
             return _('No fingerprint was calculated for this file, use "Scan" or "Generate AcoustID fingerprints" to calculate the fingerprint.')

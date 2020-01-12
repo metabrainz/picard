@@ -531,6 +531,7 @@ class File(QtCore.QObject, Item):
         if not recording_id:
             recording_id = self.metadata['musicbrainz_recordingid']
         self.tagger.acoustidmanager.update(self, recording_id)
+        self.update_item()
 
     @classmethod
     def supports_tag(cls, name):

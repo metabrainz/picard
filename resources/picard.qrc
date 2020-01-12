@@ -20,6 +20,10 @@
     <file>images/16x16/edit-cut@2x.png</file>
     <file>images/16x16/edit-paste.png</file>
     <file>images/16x16/edit-paste@2x.png</file>
+    <file>images/16x16/fingerprint-gray.png</file>
+    <file>images/16x16/fingerprint-gray@2x.png</file>
+    <file>images/16x16/fingerprint.png</file>
+    <file>images/16x16/fingerprint@2x.png</file>
     <file>images/16x16/folder.png</file>
     <file>images/16x16/folder@2x.png</file>
     <file>images/16x16/go-down.png</file>
@@ -59,8 +63,6 @@
     <file>images/16x16/picard-cluster@2x.png</file>
     <file>images/16x16/picard-edit-tags.png</file>
     <file>images/16x16/picard-edit-tags@2x.png</file>
-    <file>images/16x16/picard-fingerprint.png</file>
-    <file>images/16x16/picard-fingerprint@2x.png</file>
     <file>images/16x16/play-music.png</file>
     <file>images/16x16/play-music@2x.png</file>
     <file>images/16x16/play.png</file>
