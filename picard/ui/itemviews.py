@@ -65,6 +65,9 @@ from picard.ui.scriptsmenu import ScriptsMenu
 from picard.ui.widgets.tristatesortheaderview import TristateSortHeaderView
 
 
+COLUMN_ICON_SIZE = 16
+
+
 class BaseAction(QtWidgets.QAction):
     NAME = "Unknown"
     MENU = []
@@ -265,7 +268,7 @@ class MainPanel(QtWidgets.QSplitter):
 def paint_fingerprint_icon(painter, rect, icon):
     if not icon:
         return
-    size = 16
+    size = COLUMN_ICON_SIZE
     padding_h = (rect.width() - size) / 2
     padding_v = (rect.height() - size) / 2
     target_rect = QtCore.QRect(rect.x() + padding_h, rect.y() + padding_v, size, size)
