@@ -47,16 +47,14 @@ jobs:
         mkdir artifacts
     - name: Install dependencies
       run: |
-        python -m pip install --upgrade pip
-        source bin/activate
+        python -m pip install --upgrade pip setuptools wheel
+        pip install -r requirements-build.txt
         pip install -r requirements-macos.txt
     - name: Run tests
       run: |
-        source bin/activate
         python setup.py test
     - name: Build macOS app
       run: |
-        source bin/activate
         ./scripts/package/macos-package-app.sh
         mv dist/*.dmg artifacts/
       env:
