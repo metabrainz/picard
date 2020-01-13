@@ -75,7 +75,7 @@ class ExtensionPoint(object):
             pass
 
     def __iter__(self):
-        enabled_plugins = config.setting["enabled_plugins"]
+        enabled_plugins = config.setting["enabled_plugins"] if config.setting else []
         for name in self.__dict:
             if name is None or name in enabled_plugins:
                 for item in self.__dict[name]:

@@ -134,7 +134,40 @@ else:
             'CFBundleVersion': '%d.%d.%d' % PICARD_VERSION[:3],
             'CFBundleShortVersionString': PICARD_VERSION.to_string(short=True),
             'LSMinimumSystemVersion': '10.12',
+            'CFBundleDocumentTypes': [{
+                # Add UTIs understood by macOS
+                'LSItemContentTypes': [
+                    'com.apple.m4a-audio',
+                    'com.apple.m4v-video',
+                    'com.apple.protected-mpeg-4-audio',
+                    'com.microsoft.advanced-systems-format',
+                    'com.microsoft.waveform-audio',
+                    'com.microsoft.windows-media-wm',
+                    'com.microsoft.windows-media-wma',
+                    'com.microsoft.windows-media-wmv',
+                    'org.xiph.flac',
+                    'public.aac-audio',
+                    'public.ac3-audio',
+                    'public.aifc-audio',
+                    'public.aiff-audio',
+                    'public.enhanced-ac3-audio',
+                    'public.midi-audio',
+                    'public.mp3',
+                    'public.mpeg-4',
+                    'public.mpeg-4-audio',
+                ],
+                'CFBundleTypeRole': 'Editor',
+            }],
         }
+
+        # Add additional supported file types by extension
+        from picard.formats import supported_formats
+        for extensions, name in supported_formats():
+            info_plist['CFBundleDocumentTypes'].append({
+                'CFBundleTypeExtensions': [ext[1:] for ext in extensions],
+                'CFBundleTypeRole': 'Editor',
+            })
+
         app = BUNDLE(coll,
                      name='{} {}.app'.format(PICARD_ORG_NAME, PICARD_APP_NAME),
                      icon='picard.icns',
