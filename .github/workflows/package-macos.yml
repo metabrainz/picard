@@ -9,7 +9,6 @@ on:
     - 'resources/win10/**'
     - 'scripts/package/*'
     - '!scripts/package/*.ps1'
-    - '!scripts/package/changelog-for-version.py'
     - 'scripts/pyinstaller/*'
     - 'picard.icns'
     - 'picard.spec'

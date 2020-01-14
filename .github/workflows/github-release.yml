@@ -20,7 +20,7 @@ jobs:
       run: |
         PICARD_VERSION=$(python -c "import picard; print(picard.__version__)")
         echo "::set-output name=version::"$PICARD_VERSION
-        ./scripts/package/changelog-for-version.py $PICARD_VERSION > changes-$PICARD_VERSION.txt
+        ./scripts/tools/changelog-for-version.py $PICARD_VERSION > changes-$PICARD_VERSION.txt
     - name: Update release
       uses: softprops/action-gh-release@v1
       with:
