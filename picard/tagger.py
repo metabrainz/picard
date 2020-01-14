@@ -391,7 +391,11 @@ class Tagger(QtWidgets.QApplication):
         if isinstance(event, thread.ProxyToMainEvent):
             event.run()
         elif event.type() == QtCore.QEvent.FileOpen:
-            self.add_files([event.file()])
+            file = event.file()
+            if os.path.isdir(file):
+                self.add_directory(file)
+            else:
+                self.add_files([file])
             # We should just return True here, except that seems to
             # cause the event's sender to get a -9874 error, so
             # apparently there's some magic inside QFileOpenEvent...
