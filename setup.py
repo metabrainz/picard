@@ -247,7 +247,7 @@ class picard_build(build):
             default_publisher = 'CN=Metabrainz Foundation Inc., O=Metabrainz Foundation Inc., L=San Luis Obispo, S=California, C=US'
             generate_file('appxmanifest.xml.in', 'appxmanifest.xml', {
                 'app-id': "MetaBrainzFoundationInc." + PICARD_APP_ID,
-                'display-name': PICARD_DISPLAY_NAME,
+                'display-name': PICARD_APP_NAME,  # PICARD_DISPLAY_NAME, messed up name reservation.
                 'short-name': PICARD_APP_NAME,
                 'publisher': os.environ.get('PICARD_APPX_PUBLISHER', default_publisher),
                 'version': file_version_str,
