@@ -400,7 +400,6 @@ class picard_build_appdata(Command):
             args = {
                 'app-id': PICARD_APP_ID,
                 'desktop-id': PICARD_DESKTOP_NAME,
-                'display-name': PICARD_DISPLAY_NAME,
                 'releases': '\n    '.join(releases)
             }
             generate_file(source_file, APPDATA_FILE, args)
