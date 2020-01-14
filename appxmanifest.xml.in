@@ -10,7 +10,7 @@
     ProcessorArchitecture="x64"/>
   <Properties>
     <DisplayName>%(display-name)s</DisplayName>
-    <PublisherDisplayName>MetaBrainz Foundation</PublisherDisplayName>
+    <PublisherDisplayName>MetaBrainz Foundation Inc.</PublisherDisplayName>
     <Description>Picard is an open-source cross-platform music tagger by MusicBrainz. It has the ability to identify audio files even without any existing metadata.</Description>
     <Logo>Square70x70Logo.png</Logo>
   </Properties>
