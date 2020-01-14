@@ -249,7 +249,7 @@ class picard_build(build):
                 'app-id': "MetaBrainzFoundationInc." + PICARD_APP_ID,
                 'display-name': PICARD_DISPLAY_NAME,
                 'short-name': PICARD_APP_NAME,
-                'publisher': os.environ.get('PICARD_APPX_PUBLISHER', default_publisher)
+                'publisher': os.environ.get('PICARD_APPX_PUBLISHER', default_publisher),
                 'version': file_version_str,
             })
         elif sys.platform == 'linux':
