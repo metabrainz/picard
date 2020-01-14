@@ -87,7 +87,7 @@ class AcoustIDManager(QtCore.QObject):
             N_('Submitting AcoustIDs ...'),
             echo=None
         )
-        fingerprints = [fingerprint for _, fingerprint in submissions]
+        fingerprints = [fingerprint for file_, fingerprint in submissions]
         self.tagger.acoustid_api.submit_acoustid_fingerprints(fingerprints,
             partial(self.__fingerprint_submission_finished, submissions))
 
