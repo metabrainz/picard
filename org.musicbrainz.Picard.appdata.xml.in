@@ -3,7 +3,7 @@
   <id>%(app-id)s</id>
   <project_license>GPL-2.0-or-later</project_license>
   <metadata_license>CC0-1.0</metadata_license>
-  <name>%(display-name)s</name>
+  <name>MusicBrainz Picard</name>
   <summary>MusicBrainz's music tagger</summary>
 
   <description>
@@ -13,7 +13,9 @@
       identify audio files even without any existing metadata.
     </p>
     <p>
-      A variety of plugins are available and you can even write your own.
+      Picard helps you organize your music collection by renaming your music
+      files and sorting them into a folder structure exactly the way you want
+      it. A variety of plugins are available and you can even write your own.
       Picard supports a wide range of audio formats and can also lookup an
       entire CD for you.
     </p>
@@ -63,19 +65,19 @@
 
   <screenshots>
     <screenshot type="default">
-	<image>https://picard.musicbrainz.org/static/img/screenshots/picard-main-windows.png</image>
+      <image>https://picard.musicbrainz.org/static/img/screenshots/picard-main-windows.png</image>
     </screenshot>
     <screenshot>
-	<image>https://picard.musicbrainz.org/static/img/screenshots/picard-options-about.png</image>
+      <image>https://picard.musicbrainz.org/static/img/screenshots/picard-options-about.png</image>
     </screenshot>
     <screenshot>
-	<image>https://picard.musicbrainz.org/static/img/screenshots/picard-options-plugins.png</image>
+      <image>https://picard.musicbrainz.org/static/img/screenshots/picard-options-plugins.png</image>
     </screenshot>
     <screenshot>
-	<image>https://picard.musicbrainz.org/static/img/screenshots/picard-options-lookup.png</image>
+      <image>https://picard.musicbrainz.org/static/img/screenshots/picard-options-lookup.png</image>
     </screenshot>
     <screenshot>
-	<image>https://picard.musicbrainz.org/static/img/screenshots/picard-cover-art.png</image>
+      <image>https://picard.musicbrainz.org/static/img/screenshots/picard-cover-art.png</image>
     </screenshot>
   </screenshots>
 
