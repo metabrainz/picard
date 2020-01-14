@@ -126,14 +126,15 @@ else:
 
     if os_name == 'Darwin':
         info_plist = {
-            'NSHighResolutionCapable': 'True',
-            'NSPrincipalClass': 'NSApplication',
             'CFBundleName': PICARD_APP_NAME,
             'CFBundleDisplayName': PICARD_DISPLAY_NAME,
             'CFBundleIdentifier': PICARD_APP_ID,
             'CFBundleVersion': '%d.%d.%d' % PICARD_VERSION[:3],
             'CFBundleShortVersionString': PICARD_VERSION.to_string(short=True),
+            'LSApplicationCategoryType': 'public.app-category.music',
             'LSMinimumSystemVersion': '10.12',
+            'NSHighResolutionCapable': 'True',
+            'NSPrincipalClass': 'NSApplication',
             'CFBundleDocumentTypes': [{
                 # Add UTIs understood by macOS
                 'LSItemContentTypes': [
