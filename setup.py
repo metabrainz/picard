@@ -248,7 +248,7 @@ class picard_build(build):
             store_version = (PICARD_VERSION.major, PICARD_VERSION.minor, PICARD_VERSION.patch * 100000 + self.build_number, 0)
             generate_file('appxmanifest.xml.in', 'appxmanifest.xml', {
                 'app-id': "MetaBrainzFoundationInc." + PICARD_APP_ID,
-                'display-name': PICARD_APP_NAME,  # PICARD_DISPLAY_NAME, messed up name reservation.
+                'display-name': PICARD_DISPLAY_NAME,
                 'short-name': PICARD_APP_NAME,
                 'publisher': os.environ.get('PICARD_APPX_PUBLISHER', default_publisher),
                 'version': '.'.join([str(v) for v in store_version]),
