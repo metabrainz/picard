@@ -244,10 +244,12 @@ class picard_build(build):
             }
             generate_file('win-version-info.txt.in', 'win-version-info.txt', {**args, **version_args})
 
+            default_publisher = 'CN=Metabrainz Foundation Inc., O=Metabrainz Foundation Inc., L=San Luis Obispo, S=California, C=US'
             generate_file('appxmanifest.xml.in', 'appxmanifest.xml', {
-                'app-id': PICARD_APP_ID,
+                'app-id': "MetaBrainzFoundationInc." + PICARD_APP_ID,
                 'display-name': PICARD_DISPLAY_NAME,
                 'short-name': PICARD_APP_NAME,
+                'publisher': os.environ.get('PICARD_APPX_PUBLISHER', default_publisher)
                 'version': file_version_str,
             })
         elif sys.platform == 'linux':

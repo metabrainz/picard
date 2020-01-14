@@ -65,16 +65,22 @@ jobs:
         pip install -r requirements-win.txt
     - name: Run tests
       run: python setup.py test
-    - name: Build Windows 10 app package
+    # - name: Build Windows 10 signed app package
+    #   run: |
+    #     If ($Env:CODESIGN) {
+    #       & .\scripts\package\win-package-appx.ps1 -BuildNumber $Env:BUILD_NUMBER -CertificateFile .\codesign.pfx -CertificatePassword $Env:CODESIGN_PFX_PASSWORD
+    #     } Else {
+    #       & .\scripts\package\win-package-appx.ps1 -BuildNumber $Env:BUILD_NUMBER
+    #     }
+    #     Move-Item .\dist\*.msix .\artifacts
+    #   env:
+    #     CODESIGN_PFX_PASSWORD: ${{ secrets.CODESIGN_PFX_PASSWORD }}
+    - name: Build Windows 10 store app package
       run: |
-        If ($Env:CODESIGN) {
-          & .\scripts\package\win-package-appx.ps1 -BuildNumber $Env:BUILD_NUMBER -CertificateFile .\codesign.pfx -CertificatePassword $Env:CODESIGN_PFX_PASSWORD
-        } Else {
-          & .\scripts\package\win-package-appx.ps1 -BuildNumber $Env:BUILD_NUMBER
-        }
+        & .\scripts\package\win-package-appx.ps1 -BuildNumber $Env:BUILD_NUMBER
         Move-Item .\dist\*.msix .\artifacts
       env:
-        CODESIGN_PFX_PASSWORD: ${{ secrets.CODESIGN_PFX_PASSWORD }}
+        PICARD_APPX_PUBLISHER: CN=0A9169B7-05A3-4ED9-8876-830F17846709
     - name: Build Windows installer
       if: always()
       run: |

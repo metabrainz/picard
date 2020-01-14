@@ -6,7 +6,7 @@
   <Identity
     Name="%(app-id)s"
     Version="%(version)s"
-    Publisher="CN=Metabrainz Foundation Inc., O=Metabrainz Foundation Inc., L=San Luis Obispo, S=California, C=US"
+    Publisher="%(publisher)s"
     ProcessorArchitecture="x64"/>
   <Properties>
     <DisplayName>%(display-name)s</DisplayName>
