@@ -65,6 +65,9 @@ from picard.ui.scriptsmenu import ScriptsMenu
 from picard.ui.widgets.tristatesortheaderview import TristateSortHeaderView
 
 
+COLUMN_ICON_SIZE = 16
+
+
 class BaseAction(QtWidgets.QAction):
     NAME = "Unknown"
     MENU = []
@@ -137,7 +140,11 @@ class MainPanel(QtWidgets.QSplitter):
         (N_('Barcode'), 'barcode'),
         (N_('Media'), 'media'),
         (N_('Genre'), 'genre'),
+        (N_('Fingerprint status'), '~fingerprint'),
     ]
+
+    TITLE_COLUMN = 0
+    FINGERPRINT_COLUMN = 13
 
     def __init__(self, window, parent=None):
         super().__init__(parent)
@@ -195,6 +202,8 @@ class MainPanel(QtWidgets.QSplitter):
         FileItem.icon_file_pending = QtGui.QIcon(":/images/file-pending.png")
         FileItem.icon_error = icontheme.lookup('dialog-error', icontheme.ICON_SIZE_MENU)
         FileItem.icon_saved = QtGui.QIcon(":/images/track-saved.png")
+        FileItem.icon_fingerprint = icontheme.lookup('fingerprint', icontheme.ICON_SIZE_MENU)
+        FileItem.icon_fingerprint_gray = icontheme.lookup('fingerprint-gray', icontheme.ICON_SIZE_MENU)
         FileItem.match_icons = [
             QtGui.QIcon(":/images/match-50.png"),
             QtGui.QIcon(":/images/match-60.png"),
@@ -256,6 +265,35 @@ class MainPanel(QtWidgets.QSplitter):
             self.update_current_view()
 
 
+def paint_fingerprint_icon(painter, rect, icon):
+    if not icon:
+        return
+    size = COLUMN_ICON_SIZE
+    padding_h = (rect.width() - size) / 2
+    padding_v = (rect.height() - size) / 2
+    target_rect = QtCore.QRect(rect.x() + padding_h, rect.y() + padding_v, size, size)
+    painter.drawPixmap(target_rect, icon.pixmap(size, size))
+
+
+class FingerprintColumnWidget(QtWidgets.QWidget):
+    def __init__(self, file, parent=None):
+        super().__init__(parent=parent)
+        self._file = file
+
+    def paintEvent(self, event=None):
+        painter = QtGui.QPainter(self)
+        paint_fingerprint_icon(painter, event.rect(), self.decide_icon())
+
+    def decide_icon(self):
+        if getattr(self._file, 'acoustid_fingerprint', None):
+            if self.tagger.acoustidmanager.is_submitted(self._file):
+                return FileItem.icon_fingerprint_gray
+            else:
+                return FileItem.icon_fingerprint
+        else:
+            return None
+
+
 class ConfigurableColumnsHeader(TristateSortHeaderView):
 
     def __init__(self, parent=None):
@@ -268,6 +306,7 @@ class ConfigurableColumnsHeader(TristateSortHeaderView):
         self.setStretchLastSection(True)
         self.setDefaultAlignment(QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter)
         self.setSectionsClickable(False)
+        self.sortIndicatorChanged.connect(self.on_sort_indicator_changed)
 
         # enable sorting, but don't actually use it by default
         # XXX it would be nice to be able to go to the 'no sort' mode, but the
@@ -283,6 +322,11 @@ class ConfigurableColumnsHeader(TristateSortHeaderView):
             if self.sectionSize(column) == 0:
                 self.resizeSection(column, self.defaultSectionSize())
             self._visible_columns.add(column)
+            if column == MainPanel.FINGERPRINT_COLUMN:
+                self.setSectionResizeMode(column, QtWidgets.QHeaderView.Fixed)
+                self.parent().resizeColumnToContents(column)
+            else:
+                self.setSectionResizeMode(column, QtWidgets.QHeaderView.Interactive)
         elif column in self._visible_columns:
             self._visible_columns.remove(column)
 
@@ -317,6 +361,19 @@ class ConfigurableColumnsHeader(TristateSortHeaderView):
     def restore_defaults(self):
         self.parent().restore_default_columns()
 
+    def paintSection(self, painter, rect, index):
+        if index == MainPanel.FINGERPRINT_COLUMN:
+            painter.save()
+            super().paintSection(painter, rect, index)
+            painter.restore()
+            paint_fingerprint_icon(painter, rect, FileItem.icon_fingerprint_gray)
+        else:
+            super().paintSection(painter, rect, index)
+
+    def on_sort_indicator_changed(self, index, order):
+        if index == MainPanel.FINGERPRINT_COLUMN:
+            self.setSortIndicator(-1, QtCore.Qt.AscendingOrder)
+
 
 class BaseTreeView(QtWidgets.QTreeWidget):
 
@@ -326,7 +383,8 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         self.window = window
         self.panel = parent
 
-        self.setHeaderLabels([_(h) for h, n in MainPanel.columns])
+        self.setHeaderLabels([_(h) if n != '~fingerprint' else ''
+                              for h, n in MainPanel.columns])
         self.restore_state()
 
         self.setAcceptDrops(True)
@@ -716,7 +774,7 @@ class FileTreeView(BaseTreeView):
         self.set_clusters_text()
 
     def set_clusters_text(self):
-        self.clusters.setText(0, '%s (%d)' % (_("Clusters"), len(self.tagger.clusters)))
+        self.clusters.setText(MainPanel.TITLE_COLUMN, '%s (%d)' % (_("Clusters"), len(self.tagger.clusters)))
 
 
 class AlbumTreeView(BaseTreeView):
@@ -736,7 +794,7 @@ class AlbumTreeView(BaseTreeView):
             self.insertTopLevelItem(0, item)
         else:
             item = AlbumItem(album, True, self)
-        item.setIcon(0, AlbumItem.icon_cd)
+        item.setIcon(MainPanel.TITLE_COLUMN, AlbumItem.icon_cd)
         for i, column in enumerate(MainPanel.columns):
             font = item.font(i)
             font.setBold(True)
@@ -777,7 +835,7 @@ class ClusterItem(TreeItem):
 
     def __init__(self, *args):
         super().__init__(*args)
-        self.setIcon(0, ClusterItem.icon_dir)
+        self.setIcon(MainPanel.TITLE_COLUMN, ClusterItem.icon_dir)
 
     def update(self):
         for i, column in enumerate(MainPanel.columns):
@@ -843,22 +901,22 @@ class AlbumItem(TreeItem):
                 for item in items:  # Update after insertChildren so that setExpanded works
                     item.update(update_album=False)
         if album.errors:
-            self.setIcon(0, AlbumItem.icon_error)
-            self.setToolTip(0, _("Error"))
+            self.setIcon(MainPanel.TITLE_COLUMN, AlbumItem.icon_error)
+            self.setToolTip(MainPanel.TITLE_COLUMN, _("Error"))
         elif album.is_complete():
             if album.is_modified():
-                self.setIcon(0, AlbumItem.icon_cd_saved_modified)
-                self.setToolTip(0, _("Album modified and complete"))
+                self.setIcon(MainPanel.TITLE_COLUMN, AlbumItem.icon_cd_saved_modified)
+                self.setToolTip(MainPanel.TITLE_COLUMN, _("Album modified and complete"))
             else:
-                self.setIcon(0, AlbumItem.icon_cd_saved)
-                self.setToolTip(0, _("Album unchanged and complete"))
+                self.setIcon(MainPanel.TITLE_COLUMN, AlbumItem.icon_cd_saved)
+                self.setToolTip(MainPanel.TITLE_COLUMN, _("Album unchanged and complete"))
         else:
             if album.is_modified():
-                self.setIcon(0, AlbumItem.icon_cd_modified)
-                self.setToolTip(0, _("Album modified"))
+                self.setIcon(MainPanel.TITLE_COLUMN, AlbumItem.icon_cd_modified)
+                self.setToolTip(MainPanel.TITLE_COLUMN, _("Album modified"))
             else:
-                self.setIcon(0, AlbumItem.icon_cd)
-                self.setToolTip(0, _("Album unchanged"))
+                self.setIcon(MainPanel.TITLE_COLUMN, AlbumItem.icon_cd)
+                self.setToolTip(MainPanel.TITLE_COLUMN, _("Album unchanged"))
         for i, column in enumerate(MainPanel.columns):
             self.setText(i, album.column(column[1]))
         if selection_changed:
@@ -885,17 +943,26 @@ class TrackItem(TreeItem):
 
     def update(self, update_album=True, update_files=True):
         track = self.obj
+        tree_widget = self.treeWidget()
         if track.num_linked_files == 1:
             file = track.linked_files[0]
             file.item = self
             color = TrackItem.track_colors[file.state]
             bgcolor = get_match_color(file.similarity, TreeItem.base_color)
             icon = FileItem.decide_file_icon(file)
-            self.setToolTip(0, _(FileItem.decide_file_icon_info(file)))
+            self.setToolTip(MainPanel.TITLE_COLUMN, _(FileItem.decide_file_icon_info(file)))
             self.takeChildren()
             self.setExpanded(False)
+            self.setToolTip(MainPanel.FINGERPRINT_COLUMN, FileItem.decide_fingerprint_icon_info(file))
+            if tree_widget:
+                if not tree_widget.itemWidget(self, MainPanel.FINGERPRINT_COLUMN):
+                    tree_widget.setItemWidget(self, MainPanel.FINGERPRINT_COLUMN,
+                        FingerprintColumnWidget(file=file))
         else:
-            self.setToolTip(0, "")
+            self.setToolTip(MainPanel.TITLE_COLUMN, "")
+            self.setToolTip(MainPanel.FINGERPRINT_COLUMN, "")
+            if tree_widget:
+                tree_widget.setItemWidget(self, MainPanel.FINGERPRINT_COLUMN, None)
             if track.ignored_for_completeness():
                 color = TreeItem.text_color_secondary
             else:
@@ -929,10 +996,10 @@ class TrackItem(TreeItem):
                     self.addChildren(items)
             self.setExpanded(True)
         if track.error:
-            self.setIcon(0, TrackItem.icon_error)
-            self.setToolTip(0, track.error)
+            self.setIcon(MainPanel.TITLE_COLUMN, TrackItem.icon_error)
+            self.setToolTip(MainPanel.TITLE_COLUMN, track.error)
         else:
-            self.setIcon(0, icon)
+            self.setIcon(MainPanel.TITLE_COLUMN, icon)
         for i, column in enumerate(MainPanel.columns):
             self.setText(i, track.column(column[1]))
             self.setForeground(i, color)
@@ -947,13 +1014,19 @@ class FileItem(TreeItem):
 
     def update(self, update_track=True):
         file = self.obj
-        self.setIcon(0, FileItem.decide_file_icon(file))
+        self.setIcon(MainPanel.TITLE_COLUMN, FileItem.decide_file_icon(file))
+        self.setToolTip(MainPanel.FINGERPRINT_COLUMN, self.decide_fingerprint_icon_info(file))
         color = FileItem.file_colors[file.state]
         bgcolor = get_match_color(file.similarity, TreeItem.base_color)
         for i, column in enumerate(MainPanel.columns):
             self.setText(i, file.column(column[1]))
             self.setForeground(i, color)
             self.setBackground(i, bgcolor)
+        tree_widget = self.treeWidget()
+        if tree_widget:
+            if not tree_widget.itemWidget(self, MainPanel.FINGERPRINT_COLUMN):
+                tree_widget.setItemWidget(self, MainPanel.FINGERPRINT_COLUMN,
+                    FingerprintColumnWidget(file=file))
         if self.isSelected():
             TreeItem.window.update_selection()
 
@@ -989,3 +1062,13 @@ class FileItem(TreeItem):
                 return FileItem.match_icons_info[int(file.similarity * 5 + 0.5)]
         elif file.state == File.PENDING:
             return N_("Pending")
+
+    @staticmethod
+    def decide_fingerprint_icon_info(file):
+        if getattr(file, 'acoustid_fingerprint', None):
+            if QtCore.QObject.tagger.acoustidmanager.is_submitted(file):
+                return _('Fingerprint has already been submitted')
+            else:
+                return _('Unsubmitted fingerprint')
+        else:
+            return _('No fingerprint was calculated for this file, use "Scan" or "Generate AcoustID fingerprints" to calculate the fingerprint.')

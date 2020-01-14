@@ -137,6 +137,7 @@ class Track(DataObject, Item):
 
     def add_file(self, file):
         if file not in self.linked_files:
+            track_will_expand = self.num_linked_files == 1
             self.linked_files.append(file)
             self.num_linked_files += 1
         self.update_file_metadata(file)
@@ -144,6 +145,9 @@ class Track(DataObject, Item):
         self.album._add_file(self, file)
         file.metadata_images_changed.connect(self.update_orig_metadata_images)
         run_file_post_addition_to_track_processors(self, file)
+        if track_will_expand:
+            # Files get expanded, ensure the existing item renders correctly
+            self.linked_files[0].update_item()
 
     def update_file_metadata(self, file):
         if file not in self.linked_files:

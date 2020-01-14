@@ -62,18 +62,24 @@ class AcoustIDManager(QtCore.QObject):
             del self._fingerprints[file]
         self._check_unsubmitted()
 
+    def is_submitted(self, file):
+        submission = self._fingerprints.get(file)
+        if submission:
+            return not submission.recordingid or submission.orig_recordingid == submission.recordingid
+        return True
+
     def _unsubmitted(self):
-        for submission in self._fingerprints.values():
+        for file, submission in self._fingerprints.items():
             if submission.recordingid and submission.orig_recordingid != submission.recordingid:
-                yield submission
+                yield (file, submission)
 
     def _check_unsubmitted(self):
         enabled = next(self._unsubmitted(), None) is not None
         self.tagger.window.enable_submit(enabled)
 
     def submit(self):
-        fingerprints = list(self._unsubmitted())
-        if not fingerprints:
+        submissions = list(self._unsubmitted())
+        if not submissions:
             self._check_unsubmitted()
             return
         log.debug("AcoustID: submitting ...")
@@ -81,10 +87,11 @@ class AcoustIDManager(QtCore.QObject):
             N_('Submitting AcoustIDs ...'),
             echo=None
         )
+        fingerprints = [fingerprint for _, fingerprint in submissions]
         self.tagger.acoustid_api.submit_acoustid_fingerprints(fingerprints,
-            partial(self.__fingerprint_submission_finished, fingerprints))
+            partial(self.__fingerprint_submission_finished, submissions))
 
-    def __fingerprint_submission_finished(self, fingerprints, document, http, error):
+    def __fingerprint_submission_finished(self, submissions, document, http, error):
         if error:
             try:
                 error = load_json(document)
@@ -111,6 +118,7 @@ class AcoustIDManager(QtCore.QObject):
                 echo=None,
                 timeout=3000
             )
-            for submission in fingerprints:
+            for file, submission in submissions:
                 submission.orig_recordingid = submission.recordingid
+                file.update()
             self._check_unsubmitted()
