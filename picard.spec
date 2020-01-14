@@ -151,6 +151,7 @@ else:
                     'public.aifc-audio',
                     'public.aiff-audio',
                     'public.enhanced-ac3-audio',
+                    'public.folder',
                     'public.midi-audio',
                     'public.mp3',
                     'public.mpeg-4',
