@@ -15,6 +15,7 @@ from picard.mbjson import (
 from picard.metadata import (
     MULTI_VALUED_JOINER,
     Metadata,
+    weights_from_release_type_scores,
 )
 from picard.track import Track
 from picard.util.imagelist import ImageList
@@ -461,6 +462,22 @@ class MetadataTest(PicardTestCase):
             release['score'] = score
             match = metadata.compare_to_release(release, Cluster.comparison_weights)
             self.assertEqual(sim, match.similarity)
+
+    def test_weights_from_release_type_scores(self):
+        release = load_test_json('release.json')
+        self.assertEqual(
+            weights_from_release_type_scores(release, {'Album': 0.75}, 666),
+            (0.75, 666)
+        )
+        self.assertEqual(
+            weights_from_release_type_scores(release, {}, 666),
+            (0.5, 666)
+        )
+        del release['release-group']
+        self.assertEqual(
+            weights_from_release_type_scores(release, {}, 777),
+            (0.0, 777)
+        )
 
     def test_compare_to_track(self):
         track_json = load_test_json('track.json')
