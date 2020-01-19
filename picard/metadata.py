@@ -58,6 +58,27 @@ SimMatchTrack = namedtuple('SimMatchTrack', 'similarity releasegroup release tra
 SimMatchRelease = namedtuple('SimMatchRelease', 'similarity release')
 
 
+def weights_from_release_type_scores(release, release_type_scores,
+                                     weight_release_type=1):
+    # This function generates a score that determines how likely this release will be selected in a lookup.
+    # The score goes from 0 to 1 with 1 being the most likely to be chosen and 0 the least likely
+    # This score is based on the preferences of release-types found in this release
+    # This algorithm works by taking the scores of the primary type (and secondary if found) and averages them
+    # If no types are found, it is set to the score of the 'Other' type or 0.5 if 'Other' doesnt exist
+
+    type_scores = dict(release_type_scores)
+    score = 0.0
+    if 'release-group' in release and 'primary-type' in release['release-group']:
+        types_found = [release['release-group']['primary-type']]
+        if 'secondary-types' in release['release-group']:
+            types_found += release['release-group']['secondary-types']
+        other_score = type_scores.get('Other', 0.5)
+        for release_type in types_found:
+            score += type_scores.get(release_type, other_score)
+        score /= len(types_found)
+    return (score, weight_release_type)
+
+
 class Metadata(MutableMapping):
 
     """List of metadata items with dict-like access."""
@@ -192,23 +213,9 @@ class Metadata(MutableMapping):
             parts.append((score, weights["format"]))
 
         if "releasetype" in weights:
-            # This section generates a score that determines how likely this release will be selected in a lookup.
-            # The score goes from 0 to 1 with 1 being the most likely to be chosen and 0 the least likely
-            # This score is based on the preferences of release-types found in this release
-            # This algorithm works by taking the scores of the primary type (and secondary if found) and averages them
-            # If no types are found, it is set to the score of the 'Other' type or 0.5 if 'Other' doesnt exist
-
-            type_scores = dict(config.setting["release_type_scores"])
-            score = 0.0
-            other_score = type_scores.get('Other', 0.5)
-            if 'release-group' in release and 'primary-type' in release['release-group']:
-                types_found = [release['release-group']['primary-type']]
-                if 'secondary-types' in release['release-group']:
-                    types_found += release['release-group']['secondary-types']
-                for release_type in types_found:
-                    score += type_scores.get(release_type, other_score)
-                score /= len(types_found)
-            parts.append((score, weights["releasetype"]))
+            parts.append(weights_from_release_type_scores(release,
+                                                          config.setting["release_type_scores"],
+                                                          weights["releasetype"]))
 
         rg = QObject.tagger.get_release_group_by_id(release['release-group']['id'])
         if release['id'] in rg.loaded_albums:
