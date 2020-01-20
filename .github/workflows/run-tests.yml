@@ -86,7 +86,9 @@ jobs:
         python-version: ${{ matrix.python-version }}
     - name: Install gettext (Linux)
       if: runner.os == 'Linux'
-      run: sudo apt-get install gettext
+      run: |
+        sudo apt-get update
+        sudo apt-get install gettext
     - name: Install gettext (macOS)
       if: runner.os == 'macOS'
       run: |
