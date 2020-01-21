@@ -23,7 +23,7 @@ jobs:
     runs-on: macos-latest
     env:
       DISCID_VERSION: 0.6.2
-      FPCALC_VERSION: 1.4.4-8
+      FPCALC_VERSION: 1.4.4-9
 
     steps:
     - uses: actions/checkout@v1

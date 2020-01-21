@@ -38,7 +38,7 @@ jobs:
         New-Item -Name .\artifacts -ItemType Directory
       env:
         DISCID_VERSION: 0.6.2
-        FPCALC_VERSION: 1.4.3
+        FPCALC_VERSION: 1.4.4-9
     - name: Patch build version
       if: startsWith(github.ref, 'refs/tags/') != true
       run: |

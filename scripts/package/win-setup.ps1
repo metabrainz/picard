@@ -33,7 +33,7 @@ Copy-Item .\build\libdiscid\discid.dll .
 
 $ArchiveFile = ".\build\fpcalc.zip"
 Write-Output "Downloading chromaprint-fpcalc to $ArchiveFile..."
-DownloadFile -Url "https://github.com/acoustid/chromaprint/releases/download/v$FpcalVersion/chromaprint-fpcalc-$FpcalVersion-windows-x86_64.zip" `
+DownloadFile -Url "https://github.com/phw/chromaprint/releases/download/v$FpcalVersion/chromaprint-fpcalc-$FpcalVersion-windows-x86_64.zip" `
     -FileName $ArchiveFile
 Expand-Archive -Path $ArchiveFile -DestinationPath .\build\fpcalc -Force
 Copy-Item .\build\fpcalc\chromaprint-fpcalc-$FpcalVersion-windows-x86_64\fpcalc.exe .
