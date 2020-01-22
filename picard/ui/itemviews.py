@@ -712,13 +712,16 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         # text/uri-list
         urls = data.urls()
         if urls:
-            self.drop_urls(urls, target)
+            # Use QTimer.singleShot to run expensive processing outside of the drop handler.
+            QtCore.QTimer.singleShot(0, partial(self.drop_urls, urls, target))
             handled = True
         # application/picard.album-list
         albums = data.data("application/picard.album-list")
         if albums:
             albums = [self.tagger.load_album(id) for id in bytes(albums).decode().split("\n")]
-            self.tagger.move_files(self.tagger.get_files_from_objects(albums), target)
+            # Use QTimer.singleShot to run expensive processing outside of the drop handler.
+            QtCore.QTimer.singleShot(0, partial(self.tagger.move_files,
+                self.tagger.get_files_from_objects(albums), target))
             handled = True
         return handled
 
