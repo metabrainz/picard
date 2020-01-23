@@ -545,7 +545,7 @@ class ID3File(File):
                     else:
                         desc = ''
                     for key, frame in list(tags.items()):
-                        if frame.FrameID == desc:
+                        if frame.FrameID == 'USLT' and frame.desc == desc:
                             del tags[key]
                 elif name in self._rtipl_roles:
                     role = self._rtipl_roles[name]
