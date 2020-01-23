@@ -58,13 +58,14 @@ SimMatchTrack = namedtuple('SimMatchTrack', 'similarity releasegroup release tra
 SimMatchRelease = namedtuple('SimMatchRelease', 'similarity release')
 
 
-def weights_from_release_type_scores(release, release_type_scores,
+def weights_from_release_type_scores(parts, release, release_type_scores,
                                      weight_release_type=1):
     # This function generates a score that determines how likely this release will be selected in a lookup.
     # The score goes from 0 to 1 with 1 being the most likely to be chosen and 0 the least likely
     # This score is based on the preferences of release-types found in this release
     # This algorithm works by taking the scores of the primary type (and secondary if found) and averages them
     # If no types are found, it is set to the score of the 'Other' type or 0.5 if 'Other' doesnt exist
+    # It appends (score, weight_release_type) to passed parts list
 
     type_scores = dict(release_type_scores)
     score = 0.0
@@ -76,7 +77,7 @@ def weights_from_release_type_scores(release, release_type_scores,
         for release_type in types_found:
             score += type_scores.get(release_type, other_score)
         score /= len(types_found)
-    return (score, weight_release_type)
+    parts.append((score, weight_release_type))
 
 
 class Metadata(MutableMapping):
@@ -213,9 +214,9 @@ class Metadata(MutableMapping):
             parts.append((score, weights["format"]))
 
         if "releasetype" in weights:
-            parts.append(weights_from_release_type_scores(release,
-                                                          config.setting["release_type_scores"],
-                                                          weights["releasetype"]))
+            weights_from_release_type_scores(parts, release,
+                                             config.setting["release_type_scores"],
+                                             weights["releasetype"])
 
         rg = QObject.tagger.get_release_group_by_id(release['release-group']['id'])
         if release['id'] in rg.loaded_albums:

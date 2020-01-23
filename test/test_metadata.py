@@ -465,17 +465,21 @@ class MetadataTest(PicardTestCase):
 
     def test_weights_from_release_type_scores(self):
         release = load_test_json('release.json')
+        parts = []
+        weights_from_release_type_scores(parts, release, {'Album': 0.75}, 666)
         self.assertEqual(
-            weights_from_release_type_scores(release, {'Album': 0.75}, 666),
+            parts[0],
             (0.75, 666)
         )
+        weights_from_release_type_scores(parts, release, {}, 666)
         self.assertEqual(
-            weights_from_release_type_scores(release, {}, 666),
+            parts[1],
             (0.5, 666)
         )
         del release['release-group']
+        weights_from_release_type_scores(parts, release, {}, 777)
         self.assertEqual(
-            weights_from_release_type_scores(release, {}, 777),
+            parts[2],
             (0.0, 777)
         )
 
