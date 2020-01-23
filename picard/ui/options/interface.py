@@ -93,6 +93,10 @@ class InterfaceOptionsPage(OptionsPage):
             'label': N_('Submit AcoustIDs'),
             'icon': 'acoustid-fingerprinter'
         },
+        'generate_fingerprints_action': {
+            'label': N_("Generate AcoustID fingerprints"),
+            'icon': 'fingerprint'
+        },
         'play_file_action': {
             'label': N_('Open in Player'),
             'icon': 'play-music'
