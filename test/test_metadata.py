@@ -15,6 +15,8 @@ from picard.mbjson import (
 from picard.metadata import (
     MULTI_VALUED_JOINER,
     Metadata,
+    weights_from_preferred_countries,
+    weights_from_preferred_formats,
     weights_from_release_type_scores,
 )
 from picard.track import Track
@@ -482,6 +484,26 @@ class MetadataTest(PicardTestCase):
             parts[2],
             (0.0, 777)
         )
+
+    def test_preferred_countries(self):
+        release = load_test_json('release.json')
+        parts = []
+        weights_from_preferred_countries(parts, release, [], 666)
+        self.assertFalse(parts)
+        weights_from_preferred_countries(parts, release, ['FR'], 666)
+        self.assertEqual(parts[0], (0.0, 666))
+        weights_from_preferred_countries(parts, release, ['GB'], 666)
+        self.assertEqual(parts[1], (1.0, 666))
+
+    def test_preferred_formats(self):
+        release = load_test_json('release.json')
+        parts = []
+        weights_from_preferred_formats(parts, release, [], 777)
+        self.assertFalse(parts)
+        weights_from_preferred_formats(parts, release, ['Digital Media'], 777)
+        self.assertEqual(parts[0], (0.0, 777))
+        weights_from_preferred_formats(parts, release, ['12" Vinyl'], 777)
+        self.assertEqual(parts[1], (1.0, 777))
 
     def test_compare_to_track(self):
         track_json = load_test_json('track.json')

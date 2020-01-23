@@ -80,6 +80,39 @@ def weights_from_release_type_scores(parts, release, release_type_scores,
     parts.append((score, weight_release_type))
 
 
+def weights_from_preferred_countries(parts, release,
+                                     preferred_countries,
+                                     weight):
+    total_countries = len(preferred_countries)
+    if total_countries:
+        score = 0.0
+        if "country" in release:
+            try:
+                i = preferred_countries.index(release['country'])
+                score = float(total_countries - i) / float(total_countries)
+            except ValueError:
+                pass
+        parts.append((score, weight))
+
+
+def weights_from_preferred_formats(parts, release, preferred_formats, weight):
+    total_formats = len(preferred_formats)
+    if total_formats and 'media' in release:
+        score = 0.0
+        subtotal = 0
+        for medium in release['media']:
+            if "format" in medium:
+                try:
+                    i = preferred_formats.index(medium['format'])
+                    score += float(total_formats - i) / float(total_formats)
+                except ValueError:
+                    pass
+                subtotal += 1
+        if subtotal > 0:
+            score /= subtotal
+        parts.append((score, weight))
+
+
 class Metadata(MutableMapping):
 
     """List of metadata items with dict-like access."""
@@ -183,35 +216,13 @@ class Metadata(MutableMapping):
         except (ValueError, KeyError):
             pass
 
-        preferred_countries = config.setting["preferred_release_countries"]
-        preferred_formats = config.setting["preferred_release_formats"]
+        weights_from_preferred_countries(parts, release,
+                                         config.setting["preferred_release_countries"],
+                                         weights["releasecountry"])
 
-        total_countries = len(preferred_countries)
-        if total_countries:
-            score = 0.0
-            if "country" in release:
-                try:
-                    i = preferred_countries.index(release['country'])
-                    score = float(total_countries - i) / float(total_countries)
-                except ValueError:
-                    pass
-            parts.append((score, weights["releasecountry"]))
-
-        total_formats = len(preferred_formats)
-        if total_formats and 'media' in release:
-            score = 0.0
-            subtotal = 0
-            for medium in release['media']:
-                if "format" in medium:
-                    try:
-                        i = preferred_formats.index(medium['format'])
-                        score += float(total_formats - i) / float(total_formats)
-                    except ValueError:
-                        pass
-                    subtotal += 1
-            if subtotal > 0:
-                score /= subtotal
-            parts.append((score, weights["format"]))
+        weights_from_preferred_formats(parts, release,
+                                       config.setting["preferred_release_formats"],
+                                       weights["format"])
 
         if "releasetype" in weights:
             weights_from_release_type_scores(parts, release,
