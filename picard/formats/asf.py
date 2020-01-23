@@ -300,12 +300,12 @@ class ASFFile(File):
         return (name in cls.__TRANS
                 or name in cls.__TRANS_CI
                 or name in ('~rating', '~length', 'totaldiscs')
-                or name.startswith('lyrics'))
+                or name.startswith('lyrics:'))
 
     def _get_tag_name(self, name):
-        if name.startswith('lyrics'):
-            return 'lyrics'
-        elif name == 'totaldiscs':
+        if name.startswith('lyrics:'):
+            name = 'lyrics'
+        if name == 'totaldiscs':
             return self.__TRANS['discnumber']
         elif name in self.__TRANS:
             return self.__TRANS[name]

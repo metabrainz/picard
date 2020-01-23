@@ -228,8 +228,9 @@ class APEv2File(File):
         """Remove the tags from the file that were deleted in the UI"""
         for tag in metadata.deleted_tags:
             real_name = self._get_tag_name(tag)
-            if real_name in ('Lyrics', 'Comment', 'Performer'):
-                tag_type = re.compile(r"\(%s\)" % tag.split(':', 1)[1])
+            if (real_name in ('Lyrics', 'Comment', 'Performer')
+                and ':' in tag and not tag.endswith(':')):
+                tag_type = re.compile(r"\(%s\)$" % tag.split(':', 1)[1])
                 existing_tags = tags.get(real_name)
                 if existing_tags:
                     for item in existing_tags:
