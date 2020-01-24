@@ -8,13 +8,13 @@
 # riotism, 2017
 # Shen-Ta Hsieh(BestSteve) <ibmibmibm.tw@gmail.com>, 2016
 # Shen-Ta Hsieh(BestSteve) <email address hidden>, 2014,2016,2018
-# Shen-Ta Hsieh(BestSteve) <ibmibmibm.tw@gmail.com>, 2016,2018
+# Shen-Ta Hsieh(BestSteve) <ibmibmibm.tw@gmail.com>, 2016,2018,2020
 # riotism, 2017
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2019-10-21 23:42+0000\n"
-"Last-Translator: Michael Wiencek <mwtuea@gmail.com>\n"
+"PO-Revision-Date: 2020-01-22 07:17+0000\n"
+"Last-Translator: Shen-Ta Hsieh(BestSteve) <ibmibmibm.tw@gmail.com>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/musicbrainz/musicbrainz/language/zh_TW/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -90,7 +90,7 @@ msgstr "8英吋雷射影碟"
 #: DB:medium_format/name:78
 msgctxt "medium_format"
 msgid "8-Track Cartridge"
-msgstr ""
+msgstr "8-軌磁帶"
 
 #: DB:medium_format/name:34
 msgctxt "medium_format"
@@ -3071,7 +3071,7 @@ msgstr ""
 #: DB:work_attribute_type/description:28
 msgctxt "work_attribute_type"
 msgid "ID for the Belgian rights society SABAM"
-msgstr "比利時維權協會 SABAM 的 ID"
+msgstr "比利時著作權機構 SABAM 的 ID"
 
 #: DB:work_attribute_type/description:29
 msgctxt "work_attribute_type"
@@ -3081,22 +3081,22 @@ msgstr "International Copyright Enterprise 的 ID"
 #: DB:work_attribute_type/description:3
 msgctxt "work_attribute_type"
 msgid "ID for the Japanese rights society JASRAC"
-msgstr ""
+msgstr "日本著作權機構 JASRAC 的 ID"
 
 #: DB:work_attribute_type/description:33
 msgctxt "work_attribute_type"
 msgid "ID for the Japanese rights society NexTone"
-msgstr ""
+msgstr "日本著作權機構 NexTone 的 ID"
 
 #: DB:work_attribute_type/description:27
 msgctxt "work_attribute_type"
 msgid "ID for the Mexican rights society SACM"
-msgstr "墨西哥維權協會 SACM 的 ID"
+msgstr "墨西哥著作權機構 SACM 的 ID"
 
 #: DB:work_attribute_type/description:30
 msgctxt "work_attribute_type"
 msgid "ID for the Polish rights society ZAiKS"
-msgstr "波蘭維權協會 ZAiKS 的 ID"
+msgstr "波蘭著作權機構 ZAiKS 的 ID"
 
 #: DB:work_attribute_type/name:14
 msgctxt "work_attribute_type"

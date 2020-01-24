@@ -3,14 +3,14 @@
 # reneweesp <bmom43@hotmail.com>, 2017
 # Maurits Meulenbelt <email address hidden>, 2012
 # Maurits Meulenbelt <mfmeulenbelt@gmail.com>, 2012
-# Maurits Meulenbelt <mfmeulenbelt@gmail.com>, 2013-2019
+# Maurits Meulenbelt <mfmeulenbelt@gmail.com>, 2013-2020
 # Nikolai Prokoschenko <email address hidden>, 2011
 # Nikolai Prokoschenko <nikolai@prokoschenko.de>, 2011
 # Niko Strijbol <strijbol.niko@gmail.com>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2019-10-28 15:05+0000\n"
+"PO-Revision-Date: 2020-01-20 13:10+0000\n"
 "Last-Translator: Maurits Meulenbelt <mfmeulenbelt@gmail.com>\n"
 "Language-Team: Dutch (http://www.transifex.com/musicbrainz/musicbrainz/language/nl/)\n"
 "MIME-Version: 1.0\n"
@@ -25,64 +25,64 @@ msgid ""
 "\"Motet\" is a term that applies to different types of (usually "
 "unaccompanied) choral works. What exactly is a motet depends quite a bit on "
 "the period."
-msgstr "\"Motet\" is een term die van toepassing is op verschillende soorten (meestal niet-begeleide) koorcomposities. Wat een motet precies is, hangt nogal af van de tijdsperiode."
+msgstr "Met motet worden verschillende soorten gezongen composities aangeduid. Meestal worden motetten niet door een instrument begeleid. Wat precies als een motet wordt beschouwd, hangt af van de periode."
 
 #: DB:work_type/description:5
 msgctxt "work_type"
 msgid ""
 "\"Sonata\" is a general term used to describe small scale (very often solo "
 "or solo + keyboard) instrumental works, initially in baroque music."
-msgstr "\"Sonate\" is een term die kleinschalige instrumentale composities (vaak voor een solo-instrument of een solo-instrument samen met piano) beschrijft. De sonate is ontstaan in de barok."
+msgstr "Sonate is een benaming die wordt gebruikt voor kleinschalige instrumentale composities (vaak voor een solo-instrument of een solo-instrument samen met piano). De sonate is ontstaan in de barok."
 
 #: DB:medium_format/name:54
 msgctxt "medium_format"
 msgid "10\" Shellac"
-msgstr "10″ schellak"
+msgstr "10″-schellak"
 
 #: DB:medium_format/name:30
 msgctxt "medium_format"
 msgid "10\" Vinyl"
-msgstr "10″ vinyl"
+msgstr "10″-vinyl"
 
 #: DB:medium_format/name:72
 msgctxt "medium_format"
 msgid "12\" LaserDisc"
-msgstr "12″ LaserDisc"
+msgstr "12″-LaserDisc"
 
 #: DB:medium_format/name:55
 msgctxt "medium_format"
 msgid "12\" Shellac"
-msgstr "12″ schellak"
+msgstr "12″-schellak"
 
 #: DB:medium_format/name:31
 msgctxt "medium_format"
 msgid "12\" Vinyl"
-msgstr "12″ vinyl"
+msgstr "12″-vinyl"
 
 #: DB:medium_format/name:49
 msgctxt "medium_format"
 msgid "3.5\" Floppy Disk"
-msgstr "3,5″ floppy"
+msgstr "3,5″-floppy"
 
 #: DB:medium_format/name:52
 msgctxt "medium_format"
 msgid "7\" Flexi-disc"
-msgstr "7″ flexi-disc"
+msgstr "7″-flexi-disc"
 
 #: DB:medium_format/name:56
 msgctxt "medium_format"
 msgid "7\" Shellac"
-msgstr "7″ schellak"
+msgstr "7″-schellak"
 
 #: DB:medium_format/name:29
 msgctxt "medium_format"
 msgid "7\" Vinyl"
-msgstr "7″ vinyl"
+msgstr "7″-vinyl"
 
 #: DB:medium_format/name:71
 msgctxt "medium_format"
 msgid "8\" LaserDisc"
-msgstr "8″ LaserDisc"
+msgstr "8″-LaserDisc"
 
 #: DB:medium_format/name:78
 msgctxt "medium_format"
@@ -92,12 +92,12 @@ msgstr "8-sporencassette"
 #: DB:medium_format/name:34
 msgctxt "medium_format"
 msgid "8cm CD"
-msgstr "8 cm cd"
+msgstr "8cm-cd"
 
 #: DB:medium_format/name:40
 msgctxt "medium_format"
 msgid "8cm CD+G"
-msgstr "8 cm cd+g"
+msgstr "8cm-cd+g"
 
 #: DB:medium_format/description:58
 msgctxt "medium_format"
@@ -2421,7 +2421,7 @@ msgstr "Flexidiscs zijn grammofoonplaten die zijn gemaakt van een dun, flexibel 
 #: DB:medium_format/name:76
 msgctxt "medium_format"
 msgid "Floppy Disk"
-msgstr "Floppy"
+msgstr "floppy"
 
 #: DB:gender/description:4
 msgctxt "gender"
@@ -3203,7 +3203,7 @@ msgid ""
 "Island is used for islands and atolls which don't form subdivisions of their"
 " own, e.g. Skye. These are not considered when displaying the parent areas "
 "for a given area."
-msgstr "Eiland wordt gebruikt voor eilanden en atollen die geen eigen subdivisie vormen, zoals het Britse eiland Skye. Eilanden worden niet getoond als bovenliggende gebieden van andere gebieden."
+msgstr "Eiland wordt gebruikt voor eilanden en atollen die geen eigen onderafdeling vormen, zoals het Britse eiland Skye. Eilanden worden niet getoond als bovenliggende gebieden van andere gebieden."
 
 #: DB:work_attribute_type/name:3
 msgctxt "work_attribute_type"
@@ -5703,7 +5703,7 @@ msgctxt "medium_format"
 msgid ""
 "Shellac records were the most predominant type of gramophone record during "
 "the first half of the 20th century."
-msgstr "De schellakplaat was het meest voorkomende type grammofoonplaat tijdens de eerste helft van de twintigste eeuw."
+msgstr "De schellakplaat was tijdens de eerste helft van de twintigste eeuw het meest voorkomende type grammofoonplaat."
 
 #: DB:work_attribute_type_allowed_value/value:236
 msgctxt "work_attribute_type_allowed_value"
