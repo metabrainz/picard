@@ -415,7 +415,7 @@ class ID3File(File):
                         tipl.people.append([role, value])
                     else:
                         tmcl.people.append([role, value])
-            elif name.startswith('comment:'):
+            elif name == 'comment' or name.startswith('comment:'):
                 (lang, desc) = parse_comment_tag(name)
                 if desc.lower()[:4] == 'itun':
                     tags.delall('COMM:' + desc)

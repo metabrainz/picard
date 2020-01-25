@@ -131,7 +131,7 @@ class ASFFile(File):
         'discsubtitle': 'WM/SetSubTitle',
         'tracknumber': 'WM/TrackNumber',
         'discnumber': 'WM/PartOfSet',
-        'comment:': 'Description',
+        'comment': 'Description',
         'genre': 'WM/Genre',
         'bpm': 'WM/BeatsPerMinute',
         'key': 'WM/InitialKey',

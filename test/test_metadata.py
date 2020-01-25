@@ -131,6 +131,22 @@ class MetadataTest(PicardTestCase):
         self.assertIn("single1", self.metadata)
         self.assertNotIn("single1", self.metadata.deleted_tags)
 
+    def test_normalize_tag(self):
+        self.assertEqual('sometag', Metadata.normalize_tag('sometag'))
+        self.assertEqual('sometag', Metadata.normalize_tag('sometag:'))
+        self.assertEqual('sometag', Metadata.normalize_tag('sometag::'))
+        self.assertEqual('sometag:desc', Metadata.normalize_tag('sometag:desc'))
+
+    def test_metadata_tag_trailing_colon(self):
+        self.metadata['tag:'] = 'Foo'
+        self.assertIn('tag', self.metadata)
+        self.assertIn('tag:', self.metadata)
+        self.assertEqual('Foo', self.metadata['tag'])
+        self.assertEqual('Foo', self.metadata['tag:'])
+        del self.metadata['tag']
+        self.assertNotIn('tag', self.metadata)
+        self.assertNotIn('tag:', self.metadata)
+
     def test_metadata_copy(self):
         m = Metadata()
         m["old"] = "old-value"
