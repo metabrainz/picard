@@ -407,10 +407,10 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.add_files_action.setShortcut(QtGui.QKeySequence.Open)
         self.add_files_action.triggered.connect(self.add_files)
 
-        self.add_directory_action = QtWidgets.QAction(icontheme.lookup('folder'), _("A&dd Folder..."), self)
+        self.add_directory_action = QtWidgets.QAction(icontheme.lookup('folder'), _("Add Fold&er..."), self)
         self.add_directory_action.setStatusTip(_("Add a folder to the tagger"))
         # TR: Keyboard shortcut for "Add Directory..."
-        self.add_directory_action.setShortcut(QtGui.QKeySequence(_("Ctrl+D")))
+        self.add_directory_action.setShortcut(QtGui.QKeySequence(_("Ctrl+E")))
         self.add_directory_action.triggered.connect(self.add_directory)
 
         if self.show_close_window:
