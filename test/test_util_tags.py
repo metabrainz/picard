@@ -16,3 +16,4 @@ class UtilTagsTest(PicardTestCase):
     def test_parse_comment_tag(self):
         self.assertEqual(('XXX', 'foo'), parse_comment_tag('comment:XXX:foo'))
         self.assertEqual(('eng', 'foo'), parse_comment_tag('comment:foo'))
+        self.assertEqual(('eng', ''), parse_comment_tag('comment'))

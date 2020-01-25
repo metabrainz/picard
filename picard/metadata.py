@@ -320,23 +320,28 @@ class Metadata(MutableMapping):
     def clear_deleted(self):
         self.deleted_tags = set()
 
+    @staticmethod
+    def normalize_tag(name):
+        return name.rstrip(':')
+
     def getall(self, name):
-        return self._store.get(name, [])
+        return self._store.get(self.normalize_tag(name), [])
 
     def getraw(self, name):
-        return self._store[name]
+        return self._store[self.normalize_tag(name)]
 
     def get(self, key, default=None):
-        values = self._store.get(key, None)
+        values = self._store.get(self.normalize_tag(key), None)
         if values:
             return self.multi_valued_joiner.join(values)
         else:
             return default
 
     def __getitem__(self, name):
-        return self.get(name, '')
+        return self.get(self.normalize_tag(name), '')
 
     def set(self, name, values):
+        name = self.normalize_tag(name)
         if isinstance(values, str) or not isinstance(values, Iterable):
             values = [values]
         values = [str(value) for value in values if value or value == 0]
@@ -347,12 +352,13 @@ class Metadata(MutableMapping):
             del self[name]
 
     def __setitem__(self, name, values):
-        self.set(name, values)
+        self.set(self.normalize_tag(name), values)
 
     def __contains__(self, name):
-        return self._store.__contains__(name)
+        return self._store.__contains__(self.normalize_tag(name))
 
     def __delitem__(self, name):
+        name = self.normalize_tag(name)
         try:
             del self._store[name]
         except KeyError:
@@ -362,16 +368,18 @@ class Metadata(MutableMapping):
 
     def add(self, name, value):
         if value or value == 0:
+            name = self.normalize_tag(name)
             self._store.setdefault(name, []).append(str(value))
             self.deleted_tags.discard(name)
 
     def add_unique(self, name, value):
+        name = self.normalize_tag(name)
         if value not in self.getall(name):
             self.add(name, value)
 
     def delete(self, name):
         """Deprecated: use del directly"""
-        del self[name]
+        del self[self.normalize_tag(name)]
 
     def __iter__(self):
         return iter(self._store)

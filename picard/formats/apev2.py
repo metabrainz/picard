@@ -161,11 +161,10 @@ class APEv2File(File):
                             metadata["totaldiscs"] = disc[1]
                             value = disc[0]
                     elif name == 'performer' or name == 'comment':
-                        name = name + ':'
                         if value.endswith(')'):
                             start = value.rfind(' (')
                             if start > 0:
-                                name += value[start + 2:-1]
+                                name += ':' + value[start + 2:-1]
                                 value = value[:start]
                     elif name in self.__rtranslate:
                         name = self.__rtranslate[name]

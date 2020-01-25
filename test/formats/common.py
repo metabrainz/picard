@@ -85,7 +85,7 @@ TAGS = {
     'barcode': 'Foo',
     'bpm': '80',
     'catalognumber': 'Foo',
-    'comment:': 'Foo',
+    'comment': 'Foo',
     'comment:foo': 'Foo',
     'comment:deu:foo': 'Foo',
     'compilation': '1',
