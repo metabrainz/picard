@@ -438,6 +438,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
         self.remove_action = QtWidgets.QAction(icontheme.lookup('list-remove'), _("&Remove"), self)
         self.remove_action.setStatusTip(_("Remove selected files/albums"))
+        self.remove_action.setShortcut(QtGui.QKeySequence.Delete)
         self.remove_action.setEnabled(False)
         self.remove_action.triggered.connect(self.remove)
 
