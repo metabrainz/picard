@@ -194,6 +194,8 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                 self.metadata_box.remove_selected_tags()
             else:
                 self.remove()
+        elif event.matches(QtGui.QKeySequence.Find):
+            self.search_edit.setFocus(True)
         else:
             super().keyPressEvent(event)
 
