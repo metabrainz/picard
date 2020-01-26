@@ -407,10 +407,10 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.add_files_action.setShortcut(QtGui.QKeySequence.Open)
         self.add_files_action.triggered.connect(self.add_files)
 
-        self.add_directory_action = QtWidgets.QAction(icontheme.lookup('folder'), _("A&dd Folder..."), self)
+        self.add_directory_action = QtWidgets.QAction(icontheme.lookup('folder'), _("Add Fold&er..."), self)
         self.add_directory_action.setStatusTip(_("Add a folder to the tagger"))
         # TR: Keyboard shortcut for "Add Directory..."
-        self.add_directory_action.setShortcut(QtGui.QKeySequence(_("Ctrl+D")))
+        self.add_directory_action.setShortcut(QtGui.QKeySequence(_("Ctrl+E")))
         self.add_directory_action.triggered.connect(self.add_directory)
 
         if self.show_close_window:
@@ -438,6 +438,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
         self.remove_action = QtWidgets.QAction(icontheme.lookup('list-remove'), _("&Remove"), self)
         self.remove_action.setStatusTip(_("Remove selected files/albums"))
+        self.remove_action.setShortcut(QtGui.QKeySequence.Delete)
         self.remove_action.setEnabled(False)
         self.remove_action.triggered.connect(self.remove)
 
@@ -559,7 +560,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.view_log_action = QtWidgets.QAction(_("View &Error/Debug Log"), self)
         self.view_log_action.triggered.connect(self.show_log)
         # TR: Keyboard shortcut for "View Error/Debug Log"
-        self.view_log_action.setShortcut(QtGui.QKeySequence(_("Ctrl+E")))
+        self.view_log_action.setShortcut(QtGui.QKeySequence(_("Ctrl+G")))
 
         self.view_history_action = QtWidgets.QAction(_("View Activity &History"), self)
         self.view_history_action.triggered.connect(self.show_history)
