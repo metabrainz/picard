@@ -22,11 +22,11 @@ import uuid
 
 from PyQt5 import (
     QtCore,
+    QtGui,
     QtWidgets,
 )
 
 from picard import config
-from picard.const.sys import IS_MACOS
 from picard.util import restore_method
 
 
@@ -88,8 +88,7 @@ class PicardDialog(QtWidgets.QDialog, PreserveGeometry):
         super().__init__(parent, self.flags)
 
     def keyPressEvent(self, event):
-        if (IS_MACOS and event.modifiers() & QtCore.Qt.ControlModifier
-            and event.key() == QtCore.Qt.Key_W):
+        if event.matches(QtGui.QKeySequence.Close):
             self.close()
         else:
             super().keyPressEvent(event)

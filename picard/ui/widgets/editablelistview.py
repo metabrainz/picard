@@ -19,6 +19,7 @@
 
 from PyQt5 import (
     QtCore,
+    QtGui,
     QtWidgets,
 )
 
@@ -30,8 +31,7 @@ class EditableListView(QtWidgets.QListView):
         self.setDragDropMode(QtWidgets.QAbstractItemView.InternalMove)
 
     def keyPressEvent(self, event):
-        if (event.modifiers() == QtCore.Qt.NoModifier
-            and event.key() == QtCore.Qt.Key_Delete):
+        if event.matches(QtGui.QKeySequence.Delete):
             self.remove_selected_rows()
         else:
             super().keyPressEvent(event)
