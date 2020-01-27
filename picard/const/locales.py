@@ -225,7 +225,7 @@ ALIAS_LOCALES = {
     'ja': N_('Japanese'),
     'ja_JP': N_('Japanese (Japan)'),
     'kaj': N_('Jju'),
-    'kaj_NG': N_('Jju Nigeria'),
+    'kaj_NG': N_('Jju (Nigeria)'),
     'kl': N_('Kalaallisut'),
     'kl_GL': N_('Kalaallisut (Greenland)'),
     'kam': N_('Kamba'),
