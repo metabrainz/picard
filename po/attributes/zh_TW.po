@@ -13,7 +13,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2020-01-22 07:17+0000\n"
+"PO-Revision-Date: 2020-01-25 22:15+0000\n"
 "Last-Translator: Shen-Ta Hsieh(BestSteve) <ibmibmibm.tw@gmail.com>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/musicbrainz/musicbrainz/language/zh_TW/)\n"
 "MIME-Version: 1.0\n"
@@ -361,7 +361,7 @@ msgid ""
 "A suite is an ordered set of instrumental or orchestral pieces normally "
 "performed in a concert setting. They may be extracts from a ballet or opera,"
 " or entirely original movements."
-msgstr ""
+msgstr "組曲是一組有序的樂器或管弦樂作品，通常在音樂會上演出。它們可能是芭蕾或歌劇的摘錄，也可能是原創的樂章。"
 
 #: DB:work_type/description:18
 msgctxt "work_type"
@@ -369,7 +369,7 @@ msgid ""
 "A symphonic poem is a piece of programmatic orchestral music, usually in a "
 "single movement, that evokes a painting, a landscape, the content of a poem,"
 " a story or novel, or other non-musical source."
-msgstr ""
+msgstr "交響詩是一段程序性的管弦樂，通常為單樂章，並且對應一幅畫，一處景點，一首詩歌的內容，一篇故事或小說或其他非音樂來源。"
 
 #: DB:work_type/description:16
 msgctxt "work_type"
@@ -389,7 +389,7 @@ msgid ""
 "A zarzuela is a Spanish lyric-dramatic work that alternates between spoken "
 "and sung scenes, the latter incorporating operatic and popular song, as well"
 " as dance."
-msgstr ""
+msgstr "西班牙輕歌劇是一種西班牙的抒情戲劇作品，在口語和歌唱場景之間交替，後者融合了歌劇和流行歌曲以及舞蹈。"
 
 #: DB:work_attribute_type_allowed_value/value:26
 msgctxt "work_attribute_type_allowed_value"
@@ -577,7 +577,7 @@ msgctxt "work_type"
 msgid ""
 "An audio drama is a dramatized, purely acoustic performance, broadcast on "
 "radio or published on an audio medium (tape, CD, etc.)."
-msgstr ""
+msgstr "廣播劇是一種戲劇化的，純聲學的表演，可以通過廣播播放或通過音訊媒介 (磁帶，CD等) 發布。"
 
 #: DB:event_type/description:2
 msgctxt "event_type"
@@ -599,7 +599,7 @@ msgid ""
 "An opera is a dramatised work (text + musical score) for singers and "
 "orchestra/ensemble. In true operas all dialog is sung, through arias and "
 "recitatives, but some styles of opera include spoken dialogue."
-msgstr ""
+msgstr "歌劇是歌手和管弦樂隊／合奏團的戲劇作品 (文字+樂譜)。在真正的歌劇中，所有對話都是通過詠嘆調和朗誦來進行的，但是某些形式的歌劇包含口語對話。"
 
 #: DB:work_type/description:11
 msgctxt "work_type"
@@ -608,7 +608,7 @@ msgid ""
 "orchestra, a choir, and soloists. While it has characters and a plot, it is "
 "usually not performed theatrically (it lacks costumes, props and strong "
 "character interaction)."
-msgstr ""
+msgstr "神劇是大型的 (通常是神聖的) 音樂作品，包括樂團，合唱團和獨奏家。雖然有角色和劇情，但通常不進行戲劇表演 (缺少服裝，道具和強烈的角色互動)。"
 
 #: DB:work_type/description:12
 msgctxt "work_type"
@@ -616,7 +616,7 @@ msgid ""
 "An overture is, generally, the instrumental introduction to an opera. "
 "Independent (\"concert\") overtures also exist, which are generally "
 "programmatic works shorter than a symphonic poem."
-msgstr ""
+msgstr "序曲通常是純樂器的歌劇開場音樂。還存在獨立的「音樂會」序曲，通常是比交響詩短的程序化作品。"
 
 #: DB:release_status/description:3
 msgctxt "release_status"
@@ -632,7 +632,7 @@ msgid ""
 "An étude is an instrumental musical composition, most commonly of "
 "considerable difficulty, usually designed to provide practice material for "
 "perfecting a particular technical skill."
-msgstr ""
+msgstr "練習曲是一種樂器音樂作品，大多被認為難度很高，通常設計來提供練習材料以完善特定的演奏技術。"
 
 #: DB:work_attribute_type_allowed_value/value:310
 msgctxt "work_attribute_type_allowed_value"
@@ -744,12 +744,12 @@ msgstr "會出席"
 #: DB:release_group_secondary_type/name:11
 msgctxt "release_group_secondary_type"
 msgid "Audio drama"
-msgstr "音樂劇"
+msgstr "廣播劇"
 
 #: DB:work_type/name:25
 msgctxt "work_type"
 msgid "Audio drama"
-msgstr "音樂劇"
+msgstr "廣播劇"
 
 #: DB:release_group_secondary_type/name:5
 msgctxt "release_group_secondary_type"
@@ -1671,7 +1671,7 @@ msgstr "DCC"
 #: DB:release_group_secondary_type/name:8
 msgctxt "release_group_secondary_type"
 msgid "DJ-mix"
-msgstr "DJ-mix"
+msgstr "DJ 混音"
 
 #: DB:medium_format/name:44
 msgctxt "medium_format"
@@ -1701,17 +1701,17 @@ msgstr "DVDplus"
 #: DB:medium_format/name:70
 msgctxt "medium_format"
 msgid "DVDplus (CD side)"
-msgstr "DVDplus（CD 面）"
+msgstr "DVDplus (CD 面)"
 
 #: DB:medium_format/name:68
 msgctxt "medium_format"
 msgid "DVDplus (DVD-Audio side)"
-msgstr "DVDplus（DVD-Audio 面）"
+msgstr "DVDplus (DVD-Audio 面)"
 
 #: DB:medium_format/name:69
 msgctxt "medium_format"
 msgid "DVDplus (DVD-Video side)"
-msgstr "DVDplus（DVD-Video 面）"
+msgstr "DVDplus (DVD-Video 面)"
 
 #: DB:work_attribute_type_allowed_value/value:343
 msgctxt "work_attribute_type_allowed_value"
@@ -1972,17 +1972,17 @@ msgstr "DualDisc"
 #: DB:medium_format/name:67
 msgctxt "medium_format"
 msgid "DualDisc (CD side)"
-msgstr "DualDisc（CD面）"
+msgstr "DualDisc (CD面)"
 
 #: DB:medium_format/name:65
 msgctxt "medium_format"
 msgid "DualDisc (DVD-Audio side)"
-msgstr "DualDisc（DVD-Audio面）"
+msgstr "DualDisc (DVD-Audio面)"
 
 #: DB:medium_format/name:66
 msgctxt "medium_format"
 msgid "DualDisc (DVD-Video side)"
-msgstr "DualDisc（DVD-Video面）"
+msgstr "DualDisc (DVD-Video面)"
 
 #: DB:work_attribute_type_allowed_value/value:612
 msgctxt "work_attribute_type_allowed_value"
@@ -2986,12 +2986,12 @@ msgstr "Hybrid SACD"
 #: DB:medium_format/name:63
 msgctxt "medium_format"
 msgid "Hybrid SACD (CD layer)"
-msgstr "Hybrid SACD（CD層）"
+msgstr "Hybrid SACD (CD層)"
 
 #: DB:medium_format/name:64
 msgctxt "medium_format"
 msgid "Hybrid SACD (SACD layer)"
-msgstr "Hybrid SACD（SACD層）"
+msgstr "Hybrid SACD (SACD層)"
 
 #: DB:work_attribute_type_allowed_value/value:418
 msgctxt "work_attribute_type_allowed_value"
@@ -3116,14 +3116,14 @@ msgstr "廠牌"
 #: DB:work_type/name:30
 msgctxt "work_type"
 msgid "Incidental music"
-msgstr "伴奏"
+msgstr "配樂"
 
 #: DB:work_type/description:30
 msgctxt "work_type"
 msgid ""
 "Incidental music is music written as background for (usually) a theatre "
 "play."
-msgstr ""
+msgstr "配樂 (通常) 是作為戲劇的背景音樂。"
 
 #: DB:place_type/name:5
 msgctxt "place_type"
@@ -3840,7 +3840,7 @@ msgstr ""
 #: DB:release_group_secondary_type/name:6
 msgctxt "release_group_secondary_type"
 msgid "Live"
-msgstr "現場錄音"
+msgstr "現場"
 
 #: DB:work_attribute_type_allowed_value/value:636
 msgctxt "work_attribute_type_allowed_value"
@@ -3880,7 +3880,7 @@ msgstr ""
 #: DB:work_type/name:7
 msgctxt "work_type"
 msgid "Madrigal"
-msgstr ""
+msgstr "牧歌"
 
 #: DB:work_attribute_type_allowed_value/value:163
 msgctxt "work_attribute_type_allowed_value"
@@ -4150,7 +4150,7 @@ msgstr ""
 #: DB:work_type/name:9
 msgctxt "work_type"
 msgid "Motet"
-msgstr ""
+msgstr "經文歌"
 
 #: DB:work_attribute_type_allowed_value/value:746
 msgctxt "work_attribute_type_allowed_value"
@@ -4795,7 +4795,7 @@ msgstr "神劇"
 #: DB:artist_type/name:5
 msgctxt "artist_type"
 msgid "Orchestra"
-msgstr "樂團"
+msgstr "管弦樂團"
 
 #: DB:label_type/name:4
 msgctxt "label_type"
@@ -5031,7 +5031,7 @@ msgstr ""
 #: DB:place_type/name:8
 msgctxt "place_type"
 msgid "Pressing plant"
-msgstr ""
+msgstr "壓片廠"
 
 #: DB:label_type/name:3
 msgctxt "label_type"
@@ -5046,7 +5046,7 @@ msgstr "促銷"
 #: DB:work_type/name:23
 msgctxt "work_type"
 msgid "Prose"
-msgstr ""
+msgstr "散文句"
 
 #: DB:release_status/name:4
 msgctxt "release_status"
@@ -5872,7 +5872,7 @@ msgstr ""
 #: DB:work_type/name:6
 msgctxt "work_type"
 msgid "Suite"
-msgstr ""
+msgstr "組曲"
 
 #: DB:work_attribute_type_allowed_value/value:534
 msgctxt "work_attribute_type_allowed_value"
@@ -6201,21 +6201,21 @@ msgctxt "medium_format"
 msgid ""
 "The DVD (audio) layer of a DVDplus. The CD layer should be added as a "
 "separate medium."
-msgstr "DVDplus的DVD（音訊）層。CD層應新增為別的媒體。"
+msgstr "DVDplus的DVD (音訊) 層。CD層應新增為別的媒體。"
 
 #: DB:medium_format/description:65
 msgctxt "medium_format"
 msgid ""
 "The DVD (audio) layer of a DualDisc. The CD layer should be added as a "
 "separate medium."
-msgstr "DualDisc的DVD（音訊）層。CD層應新增為別的媒體。"
+msgstr "DualDisc的DVD (音訊) 層。CD層應新增為別的媒體。"
 
 #: DB:medium_format/description:66
 msgctxt "medium_format"
 msgid ""
 "The DVD (video) layer of a DualDisc. The CD layer should be added as a "
 "separate medium."
-msgstr "DualDisc的DVD（視訊）層。CD層應新增為別的媒體。"
+msgstr "DualDisc的DVD (視訊) 層。CD層應新增為別的媒體。"
 
 #: DB:medium_format/description:80
 msgctxt "medium_format"
@@ -6237,14 +6237,14 @@ msgid ""
 "The madrigal is a type of secular vocal music composition. In its original "
 "form, it had no instrumental accompaniment, although accompaniment is much "
 "more common in later madrigals."
-msgstr ""
+msgstr "牧歌是一種世俗聲樂組合。 最初的形式沒有樂器伴奏，儘管在後來的牧歌中伴奏更為常見。"
 
 #: DB:work_type/description:24
 msgctxt "work_type"
 msgid ""
 "The operetta is a genre of light opera, in terms both of music and subject "
 "matter. Operettas are generally short and include spoken parts."
-msgstr ""
+msgstr "無論是音樂還是題材，輕歌劇都比歌劇輕。輕歌劇通常很短，並且包括口語部分。"
 
 #: DB:release_packaging/description:1
 msgctxt "release_packaging"
@@ -6264,7 +6264,7 @@ msgid ""
 "This represents literary works written in prose, that is, written in "
 "relatively ordinary language without metrical structure (e.g. novels, short "
 "stories, essays...)."
-msgstr ""
+msgstr "這代表以散文形式寫的文學作品，即以相對普通的語言書寫而沒有韻律結構(例如小說，短篇小說，短文…等)。"
 
 #: DB:work_attribute_type_allowed_value/value:1041
 msgctxt "work_attribute_type_allowed_value"
@@ -6695,7 +6695,7 @@ msgstr ""
 #: DB:work_type/name:19
 msgctxt "work_type"
 msgid "Zarzuela"
-msgstr ""
+msgstr "西班牙輕歌劇"
 
 #: DB:work_attribute_type_allowed_value/value:591
 msgctxt "work_attribute_type_allowed_value"
@@ -6827,7 +6827,7 @@ msgstr ""
 #: DB:work_type/name:20
 msgctxt "work_type"
 msgid "Étude"
-msgstr ""
+msgstr "練習曲"
 
 #: DB:work_attribute_type_allowed_value/value:653
 msgctxt "work_attribute_type_allowed_value"
