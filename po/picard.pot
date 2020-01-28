@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: picard 2.3.0a1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-01-27 19:27+0100\n"
+"POT-Creation-Date: 2020-01-28 12:15+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -396,8 +396,8 @@ msgstr ""
 msgid "Korean"
 msgstr ""
 
-#: picard/const/languages.py:58
-msgid "Norwegian Bokmal"
+#: picard/const/languages.py:58 picard/const/locales.py:306
+msgid "Norwegian Bokmål"
 msgstr ""
 
 #: picard/const/languages.py:60 picard/const/locales.py:112
@@ -1490,10 +1490,6 @@ msgstr ""
 
 #: picard/const/locales.py:305
 msgid "Norwegian"
-msgstr ""
-
-#: picard/const/locales.py:306
-msgid "Norwegian Bokmål"
 msgstr ""
 
 #: picard/const/locales.py:307
