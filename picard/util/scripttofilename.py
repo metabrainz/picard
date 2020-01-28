@@ -48,4 +48,4 @@ def script_to_filename(naming_format, metadata, file=None, settings=None):
         filename = replace_win32_incompat(filename)
     # remove null characters
     filename = filename.replace("\x00", "")
-    return filename
+    return (filename, meta)

@@ -342,7 +342,7 @@ class File(QtCore.QObject, Item):
         """Save the metadata."""
         raise NotImplementedError
 
-    def _script_to_filename(self, naming_format, file_metadata, settings=None):
+    def _script_to_filename(self, naming_format, file_metadata, file_extension, settings=None):
         if settings is None:
             settings = config.setting
         metadata = Metadata()
@@ -351,7 +351,13 @@ class File(QtCore.QObject, Item):
         else:
             metadata.copy(self.orig_metadata)
             metadata.update(file_metadata)
-        return script_to_filename(naming_format, metadata, file=self, settings=settings)
+        (filename, new_metadata) = script_to_filename(naming_format, metadata,
+                                                      file=self, settings=settings)
+        # NOTE: the script_to_filename strips the extension away
+        ext = new_metadata.get('~extension', file_extension)
+        if not ext.startswith('.'):
+            ext = '.' + ext
+        return filename + ext
 
     def _fixed_splitext(self, filename):
         # In case the filename is blank and only has the extension
@@ -371,9 +377,7 @@ class File(QtCore.QObject, Item):
         # expand the naming format
         naming_format = settings['file_naming_format']
         if naming_format:
-            new_filename = self._script_to_filename(naming_format, metadata, settings)
-            # NOTE: the _script_to_filename strips the extension away
-            new_filename = new_filename + ext
+            new_filename = self._script_to_filename(naming_format, metadata, ext, settings)
             if not settings['rename_files']:
                 new_filename = os.path.join(os.path.dirname(new_filename), old_filename)
             if not settings['move_files']:
