@@ -49,7 +49,7 @@ class TagEditorDelegate(QtWidgets.QItemDelegate):
         if not index.isValid():
             return None
         tag = self.get_tag_name(index)
-        if tag in ('lyrics', 'comment') or tag.startswith('comment:'):
+        if tag.partition(':')[0] in ('comment', 'lyrics'):
             editor = QtWidgets.QPlainTextEdit(parent)
             editor.setFrameStyle(editor.style().styleHint(QtWidgets.QStyle.SH_ItemView_DrawDelegateFrame, None, editor))
             editor.setMinimumSize(QtCore.QSize(0, 80))
