@@ -45,7 +45,7 @@ fi
 
 Unless the function is easy to understand quickly, it should probably have a docstring describing what it does, how it does it, what the arguments are, and what the expected output is.
 
-We recommend using ["Google-style" docstrings](https://google.github.io/styleguide/pyguide.html?showone=Comments#Comments) for writing docstrings.
+We recommend using ["Google-style" docstrings](https://google.github.io/styleguide/pyguide.html?showone=Comments#38-comments-and-docstrings) for writing docstrings.
 
 
 ### Picard specific code
