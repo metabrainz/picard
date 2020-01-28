@@ -355,9 +355,7 @@ class File(QtCore.QObject, Item):
             naming_format, metadata, file=self, settings=settings)
         # NOTE: the script_to_filename strips the extension away
         ext = new_metadata.get('~extension', file_extension)
-        if not ext.startswith('.'):
-            ext = '.' + ext
-        return filename + ext
+        return filename + '.' + ext.lstrip('.')
 
     def _fixed_splitext(self, filename):
         # In case the filename is blank and only has the extension
