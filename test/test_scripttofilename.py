@@ -7,7 +7,10 @@ from picard.const.sys import IS_WIN
 from picard.file import File
 from picard.metadata import Metadata
 from picard.script import register_script_function
-from picard.util.scripttofilename import script_to_filename
+from picard.util.scripttofilename import (
+    script_to_filename,
+    script_to_filename_with_metadata,
+)
 
 
 settings = {
@@ -55,6 +58,16 @@ class ScriptToFilenameTest(PicardTestCase):
         file = File('somepath/somefile.mp3')
         self.assertEqual('', script_to_filename('$has_file()', metadata))
         self.assertEqual('1', script_to_filename('$has_file()', metadata, file=file))
+
+    def test_script_to_filename_with_metadata(self):
+        metadata = Metadata()
+        metadata['artist'] = 'Foo'
+        metadata['~extension'] = 'foo'
+        (filename, new_metadata) = script_to_filename_with_metadata(
+            '$set(_extension,bar)\n%artist%', metadata)
+        self.assertEqual('Foo', filename)
+        self.assertEqual('foo', metadata['~extension'])
+        self.assertEqual('bar', new_metadata['~extension'])
 
     def test_ascii_filenames(self):
         metadata = Metadata()
