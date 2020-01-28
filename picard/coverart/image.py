@@ -277,7 +277,7 @@ class CoverArtImage:
             metadata.add_unique("coverart_types", "front")
         for cover_type in self.types:
             metadata.add_unique("coverart_types", cover_type)
-        (filename, updated_metadata) = script_to_filename(filename, metadata)
+        filename = script_to_filename(filename, metadata)
         if not filename:
             filename = "cover"
         if not os.path.isabs(filename):

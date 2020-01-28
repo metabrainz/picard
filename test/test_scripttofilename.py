@@ -7,7 +7,10 @@ from picard.const.sys import IS_WIN
 from picard.file import File
 from picard.metadata import Metadata
 from picard.script import register_script_function
-from picard.util.scripttofilename import script_to_filename
+from picard.util.scripttofilename import (
+    script_to_filename,
+    script_to_filename_with_metadata,
+)
 
 
 settings = {
@@ -32,35 +35,36 @@ class ScriptToFilenameTest(PicardTestCase):
 
     def test_plain_filename(self):
         metadata = Metadata()
-        (filename, new_metadata) = script_to_filename('AlbumArt', metadata)
+        filename = script_to_filename('AlbumArt', metadata)
         self.assertEqual('AlbumArt', filename)
 
     def test_simple_script(self):
         metadata = Metadata()
         metadata['artist'] = 'AC/DC'
         metadata['album'] = 'The Album'
-        (filename, new_metadata) = script_to_filename('%album%', metadata)
+        filename = script_to_filename('%album%', metadata)
         self.assertEqual('The Album', filename)
-        (filename, new_metadata) = script_to_filename('%artist%/%album%', metadata)
+        filename = script_to_filename('%artist%/%album%', metadata)
         self.assertEqual('AC_DC/The Album', filename)
 
     def test_preserve_backslash(self):
         metadata = Metadata()
         metadata['artist'] = 'AC\\/DC'
-        (filename, new_metadata) = script_to_filename('%artist%', metadata)
+        filename = script_to_filename('%artist%', metadata)
         self.assertEqual('AC__DC' if IS_WIN else 'AC\\_DC', filename)
 
     def test_file_metadata(self):
         metadata = Metadata()
         file = File('somepath/somefile.mp3')
-        self.assertEqual('', script_to_filename('$has_file()', metadata)[0])
-        self.assertEqual('1', script_to_filename('$has_file()', metadata, file=file)[0])
+        self.assertEqual('', script_to_filename('$has_file()', metadata))
+        self.assertEqual('1', script_to_filename('$has_file()', metadata, file=file))
 
-    def test_update_metadata(self):
+    def test_script_to_filename_with_metadata(self):
         metadata = Metadata()
         metadata['artist'] = 'Foo'
         metadata['~extension'] = 'foo'
-        (filename, new_metadata) = script_to_filename('$set(_extension,bar)\n%artist%', metadata)
+        (filename, new_metadata) = script_to_filename_with_metadata(
+            '$set(_extension,bar)\n%artist%', metadata)
         self.assertEqual('Foo', filename)
         self.assertEqual('foo', metadata['~extension'])
         self.assertEqual('bar', new_metadata['~extension'])
@@ -70,10 +74,10 @@ class ScriptToFilenameTest(PicardTestCase):
         metadata['artist'] = 'Die Ärzte'
         settings = config.setting.copy()
         settings['ascii_filenames'] = False
-        (filename, new_metadata) = script_to_filename('%artist% éöü½', metadata, settings=settings)
+        filename = script_to_filename('%artist% éöü½', metadata, settings=settings)
         self.assertEqual('Die Ärzte éöü½', filename)
         settings['ascii_filenames'] = True
-        (filename, new_metadata) = script_to_filename('%artist% éöü½', metadata, settings=settings)
+        filename = script_to_filename('%artist% éöü½', metadata, settings=settings)
         self.assertEqual('Die Arzte eou 1_2', filename)
 
     def test_windows_compatibility(self):
@@ -83,10 +87,10 @@ class ScriptToFilenameTest(PicardTestCase):
         settings['windows_compatibility'] = False
         expect_orig = '\\*:?'
         expect_compat = '____'
-        (filename, new_metadata) = script_to_filename('%artist%?', metadata, settings=settings)
+        filename = script_to_filename('%artist%?', metadata, settings=settings)
         self.assertEqual(expect_compat if IS_WIN else expect_orig, filename)
         settings['windows_compatibility'] = True
-        (filename, new_metadata) = script_to_filename('%artist%?', metadata, settings=settings)
+        filename = script_to_filename('%artist%?', metadata, settings=settings)
         self.assertEqual(expect_compat, filename)
 
     @unittest.skipUnless(IS_WIN, "windows test")
@@ -102,21 +106,21 @@ class ScriptToFilenameTest(PicardTestCase):
         metadata['artist'] = '\u2216/\\\u2215'
         settings = config.setting.copy()
         settings['ascii_filenames'] = True
-        (filename, new_metadata) = script_to_filename('%artist%/\u2216\\\\\u2215', metadata, settings=settings)
+        filename = script_to_filename('%artist%/\u2216\\\\\u2215', metadata, settings=settings)
         self.assertEqual('____/_\\_', filename)
 
     def test_remove_null_chars(self):
         metadata = Metadata()
-        (filename, new_metadata) = script_to_filename('a\x00b\x00', metadata)
+        filename = script_to_filename('a\x00b\x00', metadata)
         self.assertEqual('ab', filename)
 
     def test_remove_tabs_and_linebreaks_chars(self):
         metadata = Metadata()
-        (filename, new_metadata) = script_to_filename('a\tb\nc', metadata)
+        filename = script_to_filename('a\tb\nc', metadata)
         self.assertEqual('abc', filename)
 
     def test_preserve_leading_and_trailing_whitespace(self):
         metadata = Metadata()
         metadata['artist'] = 'The Artist'
-        (filename, new_metadata) = script_to_filename(' %artist% ', metadata)
+        filename = script_to_filename(' %artist% ', metadata)
         self.assertEqual(' The Artist ', filename)

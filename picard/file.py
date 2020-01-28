@@ -58,7 +58,7 @@ from picard.util import (
 )
 from picard.util.filenaming import make_short_filename
 from picard.util.preservedtags import PreservedTags
-from picard.util.scripttofilename import script_to_filename
+from picard.util.scripttofilename import script_to_filename_with_metadata
 from picard.util.tags import PRESERVED_TAGS
 
 from picard.ui.item import Item
@@ -351,8 +351,8 @@ class File(QtCore.QObject, Item):
         else:
             metadata.copy(self.orig_metadata)
             metadata.update(file_metadata)
-        (filename, new_metadata) = script_to_filename(naming_format, metadata,
-                                                      file=self, settings=settings)
+        (filename, new_metadata) = script_to_filename_with_metadata(
+            naming_format, metadata, file=self, settings=settings)
         # NOTE: the script_to_filename strips the extension away
         ext = new_metadata.get('~extension', file_extension)
         if not ext.startswith('.'):
