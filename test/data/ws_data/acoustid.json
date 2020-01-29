@@ -8,8 +8,11 @@
     "duration": 225,
     "releasegroups": [
         {
-            "type": "Album",
             "id": "c24e5416-cd2e-4cff-851b-5faa78db98a2",
+            "type": "Album",
+            "secondarytypes": [
+                "Compilation"
+            ],
             "releases": [
                 {
                     "track_count": 12,

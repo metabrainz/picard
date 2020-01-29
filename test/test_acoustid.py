@@ -44,7 +44,11 @@ class RecordingTest(AcoustIDTest):
         self.assertEqual(release['media'], [{'format': 'CD', 'track-count': 12}])
         self.assertEqual(release['title'], 'x')
         self.assertEqual(release['id'], 'a2b25883-306f-4a53-809a-a234737c209d')
-        self.assertEqual(release['release-group'], {'id': 'c24e5416-cd2e-4cff-851b-5faa78db98a2'})
+        self.assertEqual(release['release-group'], {
+            'id': 'c24e5416-cd2e-4cff-851b-5faa78db98a2',
+            'primary-type': 'Album',
+            'secondary-types': ['Compilation']
+        })
         self.assertEqual(release['country'], 'XE')
         self.assertEqual(artist_credit['artist'], {'sort-name': 'Ed Sheeran',
                                                    'name': 'Ed Sheeran',

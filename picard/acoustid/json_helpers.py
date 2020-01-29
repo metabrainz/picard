@@ -26,6 +26,10 @@ def _make_releases_node(recording):
             release_mb['id'] = release['id']
             release_mb['release-group'] = {}
             release_mb['release-group']['id'] = release_group['id']
+            if 'type' in release_group:
+                release_mb['release-group']['primary-type'] = release_group['type']
+            if 'secondarytypes' in release_group:
+                release_mb['release-group']['secondary-types'] = release_group['secondarytypes']
             if 'title' in release:
                 release_mb['title'] = release['title']
             else:
