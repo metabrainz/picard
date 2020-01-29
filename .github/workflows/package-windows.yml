@@ -20,8 +20,16 @@ on:
   pull_request:
 
 jobs:
-  package-store-app:
+  package:
     runs-on: windows-latest
+    strategy:
+      matrix:
+        type:
+        - store-app
+        - signed-app
+        - installer
+        - portable
+      fail-fast: false
     steps:
     - uses: actions/checkout@v1
     - name: Set up Python 3.7
@@ -48,115 +56,37 @@ jobs:
         pip install -r requirements-win.txt
     - name: Run tests
       run: python setup.py test
+    - name: Prepare code signing certificate
+      if: matrix.type != 'store-app'
+      run: |
+        If ($Env:CODESIGN_PFX_URL -And $Env:AWS_ACCESS_KEY_ID) {
+          pip install awscli
+          aws s3 cp "$Env:CODESIGN_PFX_URL" .\codesign.pfx
+          Write-Output "::set-env name=CODESIGN::1"
+        } Else {
+          Write-Output "::warning::No code signing certificate available, skipping code signing."
+        }
+      env:
+        AWS_DEFAULT_REGION: eu-central-1
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        CODESIGN_PFX_URL: ${{ secrets.CODESIGN_PFX_URL }}
     - name: Build Windows 10 store app package
+      if: matrix.type == 'store-app'
       run: |
         & .\scripts\package\win-package-appx.ps1 -BuildNumber $Env:BUILD_NUMBER
         Move-Item .\dist\*.msix .\artifacts
       env:
         PICARD_APPX_PUBLISHER: CN=0A9169B7-05A3-4ED9-8876-830F17846709
-    - name: Archive production artifacts
-      uses: actions/upload-artifact@v1
-      with:
-        name: windows-store-app
-        path: artifacts/
-
-  package-signed-app:
-    runs-on: windows-latest
-    steps:
-    - uses: actions/checkout@v1
-    - name: Set up Python 3.7
-      uses: actions/setup-python@v1
-      with:
-        python-version: 3.7
-    - name: Setup Windows build environment
-      run: |
-        & .\scripts\package\win-setup.ps1 -DiscidVersion $Env:DISCID_VERSION -FpcalVersion $Env:FPCALC_VERSION
-        Write-Output "::add-path::C:\Program Files (x86)\Windows Kits\10\bin\10.0.18362.0\x64"
-        Write-Output "::set-env name=BUILD_NUMBER::$(git rev-list --count HEAD)"
-        New-Item -Name .\artifacts -ItemType Directory
-      env:
-        DISCID_VERSION: 0.6.2
-        FPCALC_VERSION: 1.4.4-9
-    - name: Patch build version
-      if: startsWith(github.ref, 'refs/tags/') != true
-      run: |
-        python setup.py patch_version --platform=$Env:BUILD_NUMBER.$(git rev-parse --short HEAD)
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements-build.txt
-        pip install -r requirements-win.txt
-    - name: Run tests
-      run: python setup.py test
-    - name: Prepare code signing certificate
-      run: |
-        If ($Env:CODESIGN_PFX_URL -And $Env:AWS_ACCESS_KEY_ID) {
-          pip install awscli
-          aws s3 cp "$Env:CODESIGN_PFX_URL" .\codesign.pfx
-          Write-Output "::set-env name=CODESIGN::1"
-        } Else {
-          Write-Output "::warning::No code signing certificate available, skipping code signing."
-        }
-      env:
-        AWS_DEFAULT_REGION: eu-central-1
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        CODESIGN_PFX_URL: ${{ secrets.CODESIGN_PFX_URL }}
     - name: Build Windows 10 signed app package
-      if: env.CODESIGN == '1'
+      if: matrix.type == 'signed-app' && env.CODESIGN == '1'
       run: |
         & .\scripts\package\win-package-appx.ps1 -BuildNumber $Env:BUILD_NUMBER -CertificateFile .\codesign.pfx -CertificatePassword $Env:CODESIGN_PFX_PASSWORD
         Move-Item .\dist\*.msix .\artifacts
       env:
         CODESIGN_PFX_PASSWORD: ${{ secrets.CODESIGN_PFX_PASSWORD }}
-    - name: Archive production artifacts
-      uses: actions/upload-artifact@v1
-      with:
-        name: windows-signed-app
-        path: artifacts/
-
-  package-installer:
-    runs-on: windows-latest
-    steps:
-    - uses: actions/checkout@v1
-    - name: Set up Python 3.7
-      uses: actions/setup-python@v1
-      with:
-        python-version: 3.7
-    - name: Setup Windows build environment
-      run: |
-        & .\scripts\package\win-setup.ps1 -DiscidVersion $Env:DISCID_VERSION -FpcalVersion $Env:FPCALC_VERSION
-        Write-Output "::set-env name=BUILD_NUMBER::$(git rev-list --count HEAD)"
-        New-Item -Name .\artifacts -ItemType Directory
-      env:
-        DISCID_VERSION: 0.6.2
-        FPCALC_VERSION: 1.4.4-9
-    - name: Patch build version
-      if: startsWith(github.ref, 'refs/tags/') != true
-      run: |
-        python setup.py patch_version --platform=$Env:BUILD_NUMBER.$(git rev-parse --short HEAD)
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements-build.txt
-        pip install -r requirements-win.txt
-    - name: Run tests
-      run: python setup.py test
-    - name: Prepare code signing certificate
-      run: |
-        If ($Env:CODESIGN_PFX_URL -And $Env:AWS_ACCESS_KEY_ID) {
-          pip install awscli
-          aws s3 cp "$Env:CODESIGN_PFX_URL" .\codesign.pfx
-          Write-Output "::set-env name=CODESIGN::1"
-        } Else {
-          Write-Output "::warning::No code signing certificate available, skipping code signing."
-        }
-      env:
-        AWS_DEFAULT_REGION: eu-central-1
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        CODESIGN_PFX_URL: ${{ secrets.CODESIGN_PFX_URL }}
     - name: Build Windows installer
+      if: matrix.type == 'installer'
       run: |
         # choco install nsis
         If ($Env:CODESIGN) {
@@ -170,54 +100,8 @@ jobs:
         dist\picard\fpcalc -version
       env:
         CODESIGN_PFX_PASSWORD: ${{ secrets.CODESIGN_PFX_PASSWORD }}
-    - name: Archive production artifacts
-      uses: actions/upload-artifact@v1
-      with:
-        name: windows-installer
-        path: artifacts/
-
-  package-portable:
-    runs-on: windows-latest
-    steps:
-    - uses: actions/checkout@v1
-    - name: Set up Python 3.7
-      uses: actions/setup-python@v1
-      with:
-        python-version: 3.7
-    - name: Setup Windows build environment
-      run: |
-        & .\scripts\package\win-setup.ps1 -DiscidVersion $Env:DISCID_VERSION -FpcalVersion $Env:FPCALC_VERSION
-        Write-Output "::add-path::C:\Program Files (x86)\Windows Kits\10\bin\10.0.18362.0\x64"
-        New-Item -Name .\artifacts -ItemType Directory
-      env:
-        DISCID_VERSION: 0.6.2
-        FPCALC_VERSION: 1.4.4-9
-    - name: Patch build version
-      if: startsWith(github.ref, 'refs/tags/') != true
-      run: |
-        python setup.py patch_version --platform=$Env:BUILD_NUMBER.$(git rev-parse --short HEAD)
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements-build.txt
-        pip install -r requirements-win.txt
-    - name: Run tests
-      run: python setup.py test
-    - name: Prepare code signing certificate
-      run: |
-        If ($Env:CODESIGN_PFX_URL -And $Env:AWS_ACCESS_KEY_ID) {
-          pip install awscli
-          aws s3 cp "$Env:CODESIGN_PFX_URL" .\codesign.pfx
-          Write-Output "::set-env name=CODESIGN::1"
-        } Else {
-          Write-Output "::warning::No code signing certificate available, skipping code signing."
-        }
-      env:
-        AWS_DEFAULT_REGION: eu-central-1
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        CODESIGN_PFX_URL: ${{ secrets.CODESIGN_PFX_URL }}
     - name: Build Windows portable app
+      if: matrix.type == 'portable'
       run: |
         If ($Env:CODESIGN) {
           $CertPassword = ConvertTo-SecureString -String $Env:CODESIGN_PFX_PASSWORD -Force -AsPlainText
@@ -232,33 +116,12 @@ jobs:
     - name: Archive production artifacts
       uses: actions/upload-artifact@v1
       with:
-        name: windows-portable
+        name: windows-${{ matrix.type }}
         path: artifacts/
-
-  release:
-    runs-on: ubuntu-latest
-    if: startsWith(github.ref, 'refs/tags/')
-    needs:
-      - package-store-app
-      - package-signed-app
-      - package-installer
-      - package-portable
-    steps:
-      - uses: actions/download-artifact@v1
-        with:
-          name: windows-signed-app
-      - uses: actions/download-artifact@v1
-        with:
-          name: windows-store-app
-      - uses: actions/download-artifact@v1
-        with:
-          name: windows-installer
-      - uses: actions/download-artifact@v1
-        with:
-          name: windows-portable
-      - name: Release
-        uses: softprops/action-gh-release@v1
-        with:
-          files: windows-*/*
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Release
+      uses: softprops/action-gh-release@v1
+      if: startsWith(github.ref, 'refs/tags/')
+      with:
+        files: artifacts/*
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
