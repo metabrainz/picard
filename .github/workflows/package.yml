@@ -165,6 +165,7 @@ jobs:
         CODESIGN_PFX_PASSWORD: ${{ secrets.CODESIGN_PFX_PASSWORD }}
     - name: Archive production artifacts
       uses: actions/upload-artifact@v1
+      if: matrix.type != 'signed-app' || env.CODESIGN == '1'
       with:
         name: windows-${{ matrix.type }}
         path: artifacts/
