@@ -139,6 +139,11 @@ class Config(QtCore.QSettings):
                                   QtCore.QSettings.UserScope, PICARD_ORG_NAME,
                                   PICARD_APP_NAME, parent)
 
+        # Check if there is a config file specifically for this version
+        versioned_config_file = this._versioned_config_filename(PICARD_VERSION)
+        if os.path.isfile(versioned_config_file):
+            return cls.from_file(parent, versioned_config_file)
+
         # If there are no settings, copy existing settings from old format
         # (registry on windows systems)
         if not this.allKeys():
@@ -250,9 +255,11 @@ class Config(QtCore.QSettings):
         self.application["version"] = self._version.to_string()
         self.sync()
 
-    def _versioned_config_filename(self):
+    def _versioned_config_filename(self, version=None):
+        if not version:
+            version = self._version
         return os.path.join(os.path.dirname(self.fileName()), '%s-%s.ini' % (
-            self.applicationName(), self._version.to_string(short=True)))
+            self.applicationName(), version.to_string(short=True)))
 
 
 class Option(QtCore.QObject):
