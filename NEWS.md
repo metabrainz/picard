@@ -1,3 +1,84 @@
+# Version 2.3.0b1 - 2020-01-30
+
+## Bug-fix
+- [PICARD-239](https://tickets.metabrainz.org/browse/PICARD-239) -  Using tag "comment" should behave the same as "comment:" (with colon) in tagger script
+- [PICARD-965](https://tickets.metabrainz.org/browse/PICARD-965) -  Items in tagger scripts list are squished
+- [PICARD-1054](https://tickets.metabrainz.org/browse/PICARD-1054) -  Picard swallows values of Qt command line arguments
+- [PICARD-1218](https://tickets.metabrainz.org/browse/PICARD-1218) -  Script names aren't truncated properly
+- [PICARD-1312](https://tickets.metabrainz.org/browse/PICARD-1312) -  Hotkeys for buttons do not work on macOS
+- [PICARD-1565](https://tickets.metabrainz.org/browse/PICARD-1565) -  Picard ignores results in Acoust ID web service response
+- [PICARD-1592](https://tickets.metabrainz.org/browse/PICARD-1592) -  APEv2: Read tags case insensitive
+- [PICARD-1625](https://tickets.metabrainz.org/browse/PICARD-1625) -  UI unresponsive while matching files to release
+- [PICARD-1626](https://tickets.metabrainz.org/browse/PICARD-1626) -  Locales in Options > Metadata are not translated and not sorted
+- [PICARD-1629](https://tickets.metabrainz.org/browse/PICARD-1629) -  Duration for AAC files with APEv2 tags is wrong
+- [PICARD-1658](https://tickets.metabrainz.org/browse/PICARD-1658) -  macOS: System wide libdiscid is used instead of the bundled one
+- [PICARD-1662](https://tickets.metabrainz.org/browse/PICARD-1662) -  Issue saving FLAC with large (~ 16 MiB) embedded images
+- [PICARD-1664](https://tickets.metabrainz.org/browse/PICARD-1664) -  Cluster lookup does not use preferred release types
+- [PICARD-1667](https://tickets.metabrainz.org/browse/PICARD-1667) -  Some scripting functions are always true
+- [PICARD-1668](https://tickets.metabrainz.org/browse/PICARD-1668) -  Read fails if mp4 file has "disk" tag set but empty
+- [PICARD-1675](https://tickets.metabrainz.org/browse/PICARD-1675) -  Allow disabling auto update for Windows builds
+- [PICARD-1678](https://tickets.metabrainz.org/browse/PICARD-1678) -  Picard crashes if result from search server contains non-integer scores
+- [PICARD-1693](https://tickets.metabrainz.org/browse/PICARD-1693) -  Position and size of log view and activity history are not preserved
+- [PICARD-1699](https://tickets.metabrainz.org/browse/PICARD-1699) -  On scan asking the user to enable the fingerprinting does always abort the scan
+- [PICARD-1700](https://tickets.metabrainz.org/browse/PICARD-1700) -  Crash with PyQt5 when opening cover art context menu
+- [PICARD-1709](https://tickets.metabrainz.org/browse/PICARD-1709) -  Saving AIFF files can make them unreadable (requires mutagen >= 1.43)
+- [PICARD-1711](https://tickets.metabrainz.org/browse/PICARD-1711) -  Cannot delete lyrics from ASF, ID3, MP4 and APE files
+
+## New Feature
+- [PICARD-34](https://tickets.metabrainz.org/browse/PICARD-34) -  Add a fingerprint indicator
+- [PICARD-118](https://tickets.metabrainz.org/browse/PICARD-118) -  Windows: Provide a portable Picard version
+- [PICARD-125](https://tickets.metabrainz.org/browse/PICARD-125) -  Support for AC3
+- [PICARD-170](https://tickets.metabrainz.org/browse/PICARD-170) -  Allow selecting displayed columns
+- [PICARD-714](https://tickets.metabrainz.org/browse/PICARD-714) -  Allow user to reorder fields in the lower pane
+- [PICARD-991](https://tickets.metabrainz.org/browse/PICARD-991) -  Allow calculating AcoustID fingerprints for matched recordings
+- [PICARD-1098](https://tickets.metabrainz.org/browse/PICARD-1098) -  MP4: Support custom tags
+- [PICARD-1521](https://tickets.metabrainz.org/browse/PICARD-1521) -  Make Picard recognize "TOFN (Original Filename)" ID3 tag
+- [PICARD-1656](https://tickets.metabrainz.org/browse/PICARD-1656) -  Allow setting cover art for clusters
+- [PICARD-1673](https://tickets.metabrainz.org/browse/PICARD-1673) -  Show progress in Windows taskbar
+- [PICARD-1674](https://tickets.metabrainz.org/browse/PICARD-1674) -  Show progress in Linux docks / taskbar supporting the Unity.LauncherEntry DBus interface
+- [PICARD-1677](https://tickets.metabrainz.org/browse/PICARD-1677) -  Option to ignore tags for file changed status
+- [PICARD-1684](https://tickets.metabrainz.org/browse/PICARD-1684) -  Allow re-ordering multi-value tags
+
+## Improvement
+- [PICARD-115](https://tickets.metabrainz.org/browse/PICARD-115) -  Display 'YYYY', 'MM' and 'DD' in date input field when value not available
+- [PICARD-321](https://tickets.metabrainz.org/browse/PICARD-321) -  Backslash support in filenames if Windows compatibility is disabled
+- [PICARD-1260](https://tickets.metabrainz.org/browse/PICARD-1260) -  Sort entries in Clusters more "naturally"
+- [PICARD-1349](https://tickets.metabrainz.org/browse/PICARD-1349) -  Change the sorting by clicking on a column title so that it switches through three states (sort ascending/descending/not at all)
+- [PICARD-1401](https://tickets.metabrainz.org/browse/PICARD-1401) -  CD Lookup dialog does not make it clear how to submit a disc ID
+- [PICARD-1402](https://tickets.metabrainz.org/browse/PICARD-1402) -  macOS: Register for supported file types to open with Finder or drag and drop on dock icon
+- [PICARD-1467](https://tickets.metabrainz.org/browse/PICARD-1467) -  Provide signed Windows installer
+- [PICARD-1523](https://tickets.metabrainz.org/browse/PICARD-1523) -  Make Picard case-agnostic for "Preserve tags from being cleared"
+- [PICARD-1589](https://tickets.metabrainz.org/browse/PICARD-1589) -  Support language for ID3 COMM tags with `comment:{language}:{description}` syntax (enables support for MediaMonkey's Songs-DB_Custom tags)
+- [PICARD-1628](https://tickets.metabrainz.org/browse/PICARD-1628) -  Make APEv2 tags with AAC optional
+- [PICARD-1631](https://tickets.metabrainz.org/browse/PICARD-1631) -  Notarize macOS app
+- [PICARD-1646](https://tickets.metabrainz.org/browse/PICARD-1646) -  Respect preferred release types when scanning tracks
+- [PICARD-1650](https://tickets.metabrainz.org/browse/PICARD-1650) -  Select / load multiple items from search results
+- [PICARD-1652](https://tickets.metabrainz.org/browse/PICARD-1652) -  Support extended info for TAK files (requires mutagen >= 1.43)
+- [PICARD-1659](https://tickets.metabrainz.org/browse/PICARD-1659) -  Natural sorting for search results
+- [PICARD-1661](https://tickets.metabrainz.org/browse/PICARD-1661) -  Improve preserved tags autocomplete
+- [PICARD-1665](https://tickets.metabrainz.org/browse/PICARD-1665) -  Disable uninstall for globally installed plugins
+- [PICARD-1666](https://tickets.metabrainz.org/browse/PICARD-1666) -  Consider video / audio when comparing files to tracks
+- [PICARD-1671](https://tickets.metabrainz.org/browse/PICARD-1671) -  Rework Options > Tags page
+- [PICARD-1672](https://tickets.metabrainz.org/browse/PICARD-1672) -  MP4: Use hdvd atom to detect videos (requires mutagen >= 1.43)
+- [PICARD-1680](https://tickets.metabrainz.org/browse/PICARD-1680) -  Select / load multiple items from CD lookup results
+- [PICARD-1682](https://tickets.metabrainz.org/browse/PICARD-1682) -  Multiline editing for lyrics and comments
+- [PICARD-1683](https://tickets.metabrainz.org/browse/PICARD-1683) -  Autocompletion when editing media, releasetype, releasecountry and releasestatus tags
+- [PICARD-1686](https://tickets.metabrainz.org/browse/PICARD-1686) -  Always keep [non-album tracks] entry on top
+- [PICARD-1692](https://tickets.metabrainz.org/browse/PICARD-1692) -  Change sliders to jump to clicked position
+- [PICARD-1695](https://tickets.metabrainz.org/browse/PICARD-1695) -  Make script editor UI consistent with other option pages
+- [PICARD-1712](https://tickets.metabrainz.org/browse/PICARD-1712) -  Use Ctrl+D as keyboard shortcut to remove albums or files
+- [PICARD-1714](https://tickets.metabrainz.org/browse/PICARD-1714) -  Focus search input with Ctrl+F
+- [PICARD-1715](https://tickets.metabrainz.org/browse/PICARD-1715) -  Allow changing file extension by manipulating the %_extension% variable in renaming script
+
+## Task
+- [PICARD-1406](https://tickets.metabrainz.org/browse/PICARD-1406) -  Refactor Metadata.set and metadata.__setitem__
+- [PICARD-1465](https://tickets.metabrainz.org/browse/PICARD-1465) -  Add Picard to Windows Store
+- [PICARD-1596](https://tickets.metabrainz.org/browse/PICARD-1596) -  Automate PyPI deployment
+- [PICARD-1653](https://tickets.metabrainz.org/browse/PICARD-1653) -  macOS: Enable Hardened Runtime
+- [PICARD-1669](https://tickets.metabrainz.org/browse/PICARD-1669) -  Build Windows 10 MSIX app package
+- [PICARD-1703](https://tickets.metabrainz.org/browse/PICARD-1703) -  Upgrade to PyInstaller 3.6
+
+
 # Version 2.2.3 - 2019-11-06
 
 ## Bug-fix
