@@ -18,6 +18,8 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from operator import itemgetter
+import os
+import shutil
 
 from PyQt5 import QtCore
 
@@ -146,6 +148,7 @@ class Config(QtCore.QSettings):
             this.sync()
 
         this.__initialize()
+        this._backup_settings()
         return this
 
     @classmethod
@@ -234,9 +237,22 @@ class Config(QtCore.QSettings):
             self._version = PICARD_VERSION
             self._write_version()
 
+    def _backup_settings(self):
+        if Version(0, 0, 0) < self._version < PICARD_VERSION:
+            backup_path = self._versioned_config_filename()
+            log.info('Backing up config file to %s', backup_path)
+            try:
+                shutil.copyfile(self.fileName(), backup_path)
+            except OSError:
+                log.error('Failed backing up config file to %s', backup_path)
+
     def _write_version(self):
         self.application["version"] = self._version.to_string()
         self.sync()
+
+    def _versioned_config_filename(self):
+        return os.path.join(os.path.dirname(self.fileName()), '%s-%s.ini' % (
+            self.applicationName(), self._version.to_string(short=True)))
 
 
 class Option(QtCore.QObject):
