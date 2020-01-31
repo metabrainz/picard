@@ -69,7 +69,9 @@ class ScriptParserTest(PicardTestCase):
         self.assertScriptResultEquals("$right(abcd,x)", "")
 
     def test_cmd_set(self):
-        self.assertScriptResultEquals("$set(test,aaa)%test%", "aaa")
+        context = Metadata()
+        self.assertScriptResultEquals("$set(test,aaa)%test%", "aaa", context)
+        self.assertEqual(context['test'], 'aaa')
 
     def test_cmd_set_empty(self):
         self.assertScriptResultEquals("$set(test,)%test%", "")
@@ -463,6 +465,13 @@ class ScriptParserTest(PicardTestCase):
         self.parser.eval("$unset(performer:*)", context)
         self.assertNotIn('performer:bar', context)
         self.assertNotIn('performer:foo', context)
+
+    def test_cmd_unset(self):
+        context = Metadata()
+        context['title'] = 'Foo'
+        self.parser.eval("$unset(title)", context)
+        self.assertNotIn('title', context)
+        self.assertNotIn('title', context.deleted_tags)
 
     def test_cmd_delete(self):
         context = Metadata()

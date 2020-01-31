@@ -381,6 +381,18 @@ class Metadata(MutableMapping):
         """Deprecated: use del directly"""
         del self[self.normalize_tag(name)]
 
+    def unset(self, name):
+        """Removes a tag from the metadata, but does not mark it for deletion.
+
+        Args:
+            name: name of the tag to unset
+
+        Raises:
+            KeyError: name not set
+        """
+        name = self.normalize_tag(name)
+        del self._store[name]
+
     def __iter__(self):
         return iter(self._store)
 
