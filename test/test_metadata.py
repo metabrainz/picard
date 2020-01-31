@@ -108,7 +108,18 @@ class MetadataTest(PicardTestCase):
         metadata_items = [(x, z) for (x, y) in self.metadata.rawitems() for z in y]
         self.assertEqual(metadata_items, list(self.metadata.items()))
 
+    def test_metadata_unset(self):
+        self.metadata.unset("single1")
+        self.assertNotIn("single1", self.metadata)
+        self.assertNotIn("single1", self.metadata.deleted_tags)
+        self.assertRaises(KeyError, self.metadata.unset, 'unknown_tag')
+
     def test_metadata_delete(self):
+        del self.metadata["single1"]
+        self.assertNotIn("single1", self.metadata)
+        self.assertIn("single1", self.metadata.deleted_tags)
+
+    def test_metadata_legacy_delete(self):
         self.metadata.delete("single1")
         self.assertNotIn("single1", self.metadata)
         self.assertIn("single1", self.metadata.deleted_tags)

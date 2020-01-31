@@ -489,10 +489,10 @@ def func_unset(parser, name):
         name = name[:-1]
         for key in list(parser.context.keys()):
             if key.startswith(name):
-                del parser.context[key]
+                parser.context.unset(key)
         return ""
     try:
-        del parser.context[name]
+        parser.context.unset(name)
     except KeyError:
         pass
     return ""
