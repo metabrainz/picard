@@ -914,11 +914,11 @@ def func_find_str(parser, haystack, needle):
     """Find the location of the first occurrence of one string within another.
 
     Arguments:
-        haystack {str} -- The string to search
-        needle {str} -- The substring to find
+        haystack: The string to search
+        needle: The substring to find
 
     Returns:
-        str -- Returns the zero-based index of the first occurrance of needle in haystack, or -1 if needle was not found.
+        The zero-based index of the first occurrance of needle in haystack, or -1 if needle was not found.
     """
     return str(haystack.find(needle))
 
@@ -927,10 +927,10 @@ def func_reverse_str(parser, text):
     """Returns 'text' in reverse order.
 
     Arguments:
-        text {str} -- Text to be processed
+        text: Text to be processed
 
     Returns:
-        str -- Text in reverse order.
+        Text in reverse order.
     """
     return text[::-1]
 
@@ -939,112 +939,128 @@ def func_substr(parser, text, start_index, end_index):
     """Extract a specified portion of a string.
 
     Arguments:
-        text {str} -- The string from which the extract will be made.
-        start_index {int} -- Index of the first character to extract.
-        end_index {int} -- Index of the first character that will not be extracted.
+        text: The string from which the extract will be made.
+        start_index: Index of the first character to extract.
+        end_index: Index of the first character that will not be extracted.
 
     Returns:
-        str -- Returns the substring beginning with the character at the start index,
-               up to (but not including) the character at the end index.  The first
-               character is at index number 0.  If the start index is left blank, it
-               defaults to the first character in the string.  If the end index is
-               left blank, it defaults to the number of characters in the string.
-               If either index is negative, it is subtracted from the total number of
-               characters in the string to provide the index used.
+        Returns the substring beginning with the character at the start index,
+        up to (but not including) the character at the end index.  The first
+        character is at index number 0.  If the start index is left blank, it
+        defaults to the first character in the string.  If the end index is
+        left blank, it defaults to the number of characters in the string.
+        If either index is negative, it is subtracted from the total number of
+        characters in the string to provide the index used.
     """
-    _start = int(start_index) if start_index else None
-    _end = int(end_index) if end_index else None
-    return text[_start:_end]
+    try:
+        start = int(start_index) if start_index else None
+    except ValueError:
+        start = None
+    try:
+        end = int(end_index) if end_index else None
+    except ValueError:
+        end = None
+    return text[start:end]
 
 
-def func_get_multi_item(parser, multi, item_index, separator=MULTI_VALUED_JOINER):
+def func_get_multi(parser, multi, item_index, separator=MULTI_VALUED_JOINER):
     """Returns value of the item at the specified index in the multi-value variable.  Index values are zero-based.
 
     Arguments:
-        multi {multi-value} -- The multi-value from which the item is to be retrieved.
-        item_index {int} -- The zero-based index of the item to be retrieved.
+        multi: The multi-value from which the item is to be retrieved.
+        item_index: The zero-based index of the item to be retrieved.
 
     Returns:
-        str -- Returns value of the item at the specified index in the multi-value variable.  Index values are zero-based.
+        Returns the value of the item at the specified index in the multi-value variable.
     """
     if item_index:
-        _index = int(item_index.eval(parser))
+        try:
+            index = int(item_index.eval(parser))
+        except ValueError:
+            return ''
     else:
         return ''
-    _multi = _get_multi_values(parser, multi, separator)
+    multi_var = _get_multi_values(parser, multi, separator)
     try:
-        return str(_multi[_index])
+        return str(multi_var[index])
     except IndexError:
         return ''
 
 
-def func_foreach_multi_item(parser, multi, loop_code, _loop_value="_loop_value", _loop_count="_loop_count", separator=MULTI_VALUED_JOINER):
-    """Iterates over each element found in the specified multi-value variable, executing the specified code.
+def func_foreach_multi(parser,
+                       multi,
+                       loop_code,
+                       separator=MULTI_VALUED_JOINER):
+    """Iterates over each element found in the specified multi-value variable.
+
+    Iterates over each element found in the specified multi-value variable, executing the specified code.
     For each loop, the element value is first stored in the tag specified by _loop_value and the count is
     stored in the tag specified by _loop_count.  This allows the element or count value to be accessed within
     the code script.
 
     Arguments:
-        multi {multi-value} -- The multi-value to be iterated.
-        loop_code {str} -- Script code to be processed on each iteration.
-
-    Keyword Arguments:
-        _loop_value {str} -- Tag name to use for the element for the current loop (default: {"_loop_value"})
-        _loop_count {str} -- Tag name to use for the count of the current loop (default: {"_loop_count"})
+        multi: The multi-value to be iterated.
+        loop_code: Script code to be processed on each iteration.
     """
     loop_count = 0
-    _multi = _get_multi_values(parser, multi, separator)
-    for value in _multi:
+    multi_value = _get_multi_values(parser, multi, separator)
+    for value in multi_value:
         loop_count += 1
-        func_set(parser, _loop_count, str(loop_count))
-        func_set(parser, _loop_value, str(value))
+        func_set(parser, '_loop_count', str(loop_count))
+        func_set(parser, '_loop_value', str(value))
         loop_code.eval(parser)
-    func_unset(parser, _loop_count)
-    func_unset(parser, _loop_value)
-    return ''
-
-
-def func_for_loop(parser, name, start, end, increment, loop_code):
-    """Standard Python 'for' loop.
-
-    Sets the value of name to the start value (integer) and loops through the specified code until the value
-    of name is greater than or equal to the end value (integer).  At the end of each loop, the value of name is
-    incremented by the specified increment value (integer).
-
-    Arguments:
-        name {str} -- Tag name to use for the loop count.  This can be accessed within the code block.
-        start {int} -- The initial value for the loop counter.
-        end {int} -- The value at which the loop exits.
-        increment {int} -- The value by which the loop count variable is incremented for each loop.
-        loop_code {str} -- Script code to be processed on each iteration.
-    """
-    if name and start and end and increment and loop_code:
-        _count = int(start.eval(parser))
-        _end = int(end.eval(parser))
-        _inc = int(increment.eval(parser))
-        _name = str(name.eval(parser))
-        if _inc > 0:
-            while _count < _end:
-                func_set(parser, _name, str(_count))
-                loop_code.eval(parser)
-                _count += _inc
-            func_unset(parser, _name)
+    func_unset(parser, '_loop_count')
+    func_unset(parser, '_loop_value')
     return ''
 
 
 def func_while_loop(parser, condition, loop_code):
-    """Standard Python 'while' loop.  Also includes a runaway check to limit the maximum number of iterations.
+    """Standard 'while' loop.  Also includes a runaway check to limit the maximum number of iterations.
 
     Arguments:
-        condition {str} -- Script code to check before each iteration through the loop.
-        loop_code {str} -- Script code to be processed on each iteration.
+        condition: Script code to check before each iteration through the loop.
+        loop_code: Script code to be processed on each iteration.
     """
     runaway_check = 1000
+    loop_count = 0
     if condition and loop_code:
-        while condition.eval(parser) and runaway_check:
+        while condition.eval(parser) and loop_count < runaway_check:
+            loop_count += 1
+            func_set(parser, '_loop_count', str(loop_count))
             loop_code.eval(parser)
-            runaway_check -= 1
+        func_unset(parser, '_loop_count')
     return ''
+
+
+def func_map_multi(parser,
+                   multi,
+                   loop_code,
+                   separator=MULTI_VALUED_JOINER):
+    """Iterates over each element found in the specified multi-value variable and updates the value.
+
+    Iterates over each element found in the specified multi-value variable and updates the value of the
+    element to the value returned by the specified code. For each loop, the element value is first stored in
+    the tag specified by _loop_value and the count is stored in the tag specified by _loop_count.  This
+    allows the element or count value to be accessed within the code script.
+
+    Arguments:
+        multi: The multi-value to be iterated.
+        loop_code: Script code to be processed on each iteration.
+
+    Returns the updated multi-value variable.
+    """
+    loop_count = 0
+    multi_value = _get_multi_values(parser, multi, separator)
+    for value in multi_value:
+        loop_count += 1
+        func_set(parser, '_loop_count', str(loop_count))
+        func_set(parser, '_loop_value', str(value))
+        multi_value[loop_count - 1] = str(loop_code.eval(parser))
+    func_unset(parser, '_loop_count')
+    func_unset(parser, '_loop_value')
+    if type(separator) is not str:
+        separator = separator.eval(parser)
+    return separator.join(multi_value)
 
 
 register_script_function(func_if, "if", eval_args=False)
@@ -1107,7 +1123,7 @@ register_script_function(func_is_video, "is_video")
 register_script_function(func_find_str, "find")
 register_script_function(func_reverse_str, "reverse")
 register_script_function(func_substr, "substr")
-register_script_function(func_get_multi_item, "get_multi_item", eval_args=False)
-register_script_function(func_foreach_multi_item, "foreach", eval_args=False)
-register_script_function(func_for_loop, "for", eval_args=False)
+register_script_function(func_get_multi, "get_multi", eval_args=False)
+register_script_function(func_foreach_multi, "foreach", eval_args=False)
+register_script_function(func_map_multi, "map", eval_args=False)
 register_script_function(func_while_loop, "while", eval_args=False)
