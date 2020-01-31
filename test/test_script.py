@@ -756,6 +756,9 @@ class ScriptParserTest(PicardTestCase):
         self.assertScriptResultEquals("$get_multi(First:A; Second:B; Third:C,)", "", context)
         self.assertScriptResultEquals("$get_multi(First:A; Second:B; Third:C,10+1)", "", context)
         self.assertScriptResultEquals("$get_multi(First:A; Second:B; Third:C,a)", "", context)
+        # Tests with missing inputs
+        self.assertScriptResultEquals("$get_multi(,0)", "", context)
+        self.assertScriptResultEquals("$get_multi(First:A; Second:B; Third:C,)", "", context)
         # Tests with invalid number of arguments
         areg = r"^Wrong number of arguments for \$get_multi: Expected between 2 and 3, "
         with self.assertRaisesRegex(ScriptError, areg):
@@ -780,6 +783,11 @@ class ScriptParserTest(PicardTestCase):
         # Tests with static inputs
         context["output"] = "Output:"
         self.assertScriptResultEquals("$foreach(First:A; Second:B; Third:C,$set(output,%output% %_loop_count%=%_loop_value%))%output%", loop_output, context)
+        # Tests with missing inputs
+        context["output"] = "Output:"
+        self.assertScriptResultEquals("$foreach(,$set(output,%output% %_loop_count%=%_loop_value%))%output%", "Output: 1=", context)
+        context["output"] = "Output:"
+        self.assertScriptResultEquals("$foreach(First:A; Second:B; Third:C,)%output%", "Output:", context)
         # Tests with separator override
         context["output"] = "Output:"
         self.assertScriptResultEquals("$foreach(First:A; Second:B; Third:C,$set(output,%output% %_loop_count%=%_loop_value%),:)%output%", alternate_output, context)
@@ -836,6 +844,9 @@ class ScriptParserTest(PicardTestCase):
         self.assertScriptResultEquals("$map(%bar%,$upper(%_loop_count%=%_loop_value%))", loop_output, context)
         # Tests with static inputs
         self.assertScriptResultEquals("$map(First:A; Second:B; Third:C,$upper(%_loop_count%=%_loop_value%))", loop_output, context)
+        # Tests with missing inputs
+        self.assertScriptResultEquals("$map(,$upper(%_loop_count%=%_loop_value%))", "1=", context)
+        self.assertScriptResultEquals("$map(First:A; Second:B; Third:C,)", "; ; ", context)
         # Tests with separator override
         self.assertScriptResultEquals("$map(First:A; Second:B; Third:C,$upper(%_loop_count%=%_loop_value%),:)", alternate_output, context)
         # Tests with invalid number of arguments
