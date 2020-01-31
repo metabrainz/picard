@@ -21,7 +21,10 @@ from collections import OrderedDict
 import os
 
 from PyQt5.QtCore import QStandardPaths
-from picard import PICARD_APP_NAME
+from picard import (
+    PICARD_APP_NAME,
+    PICARD_ORG_NAME,
+)
 
 # Install gettext "noop" function in case const.py gets imported directly.
 import builtins
@@ -30,7 +33,7 @@ builtins.__dict__['N_'] = lambda a: a
 
 # Config directory
 _appconfiglocation = QStandardPaths.writableLocation(QStandardPaths.AppConfigLocation)
-USER_DIR = os.path.normpath(os.path.join(_appconfiglocation, "MusicBrainz", PICARD_APP_NAME))
+USER_DIR = os.path.normpath(os.path.join(_appconfiglocation, PICARD_ORG_NAME, PICARD_APP_NAME))
 USER_PLUGIN_DIR = os.path.normpath(os.path.join(USER_DIR, "plugins"))
 
 # Cache directory
