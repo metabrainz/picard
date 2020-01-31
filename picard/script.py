@@ -1058,7 +1058,7 @@ def func_map_multi(parser,
         multi_value[loop_count - 1] = str(loop_code.eval(parser))
     func_unset(parser, '_loop_count')
     func_unset(parser, '_loop_value')
-    if type(separator) is not str:
+    if not isinstance(separator, str):
         separator = separator.eval(parser)
     return separator.join(multi_value)
 
