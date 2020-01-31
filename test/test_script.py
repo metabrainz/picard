@@ -633,3 +633,227 @@ class ScriptParserTest(PicardTestCase):
         self.assertRaises(ScriptSyntaxError, self.parser.eval, '%var()%')
         self.assertRaises(ScriptSyntaxError, self.parser.eval, '$noop(()')
         self.assertRaises(ScriptSyntaxError, self.parser.eval, '\\x')
+
+    def test_cmd_find(self):
+        context = Metadata()
+        context["foo"] = "First:A; Second:B; Third:C"
+        context["bar"] = ["First:A", "Second:B", "Third:C"]
+        context["baz"] = "Second"
+        context["err"] = "Forth"
+        # Tests with context
+        self.assertScriptResultEquals("$find(%foo%,%baz%)", "9", context)
+        self.assertScriptResultEquals("$find(%bar%,%baz%)", "9", context)
+        self.assertScriptResultEquals("$find(%foo%,%bar%)", "0", context)
+        self.assertScriptResultEquals("$find(%bar%,%foo%)", "0", context)
+        self.assertScriptResultEquals("$find(%foo%,%err%)", "-1", context)
+        # Tests with static input
+        self.assertScriptResultEquals("$find(abcdef,c)", "2", context)
+        self.assertScriptResultEquals("$find(abcdef,cd)", "2", context)
+        self.assertScriptResultEquals("$find(abcdef,g)", "-1", context)
+        # Tests ends of string
+        self.assertScriptResultEquals("$find(abcdef,a)", "0", context)
+        self.assertScriptResultEquals("$find(abcdef,ab)", "0", context)
+        self.assertScriptResultEquals("$find(abcdef,f)", "5", context)
+        self.assertScriptResultEquals("$find(abcdef,ef)", "4", context)
+        # Tests case sensitivity
+        self.assertScriptResultEquals("$find(abcdef,C)", "-1", context)
+        # Tests no characters processed as wildcards
+        self.assertScriptResultEquals("$find(abcdef,.f)", "-1", context)
+        self.assertScriptResultEquals("$find(abcdef,?f)", "-1", context)
+        self.assertScriptResultEquals("$find(abcdef,*f)", "-1", context)
+        self.assertScriptResultEquals("$find(abc.ef,cde)", "-1", context)
+        self.assertScriptResultEquals("$find(abc?ef,cde)", "-1", context)
+        self.assertScriptResultEquals("$find(abc*ef,cde)", "-1", context)
+        # Tests missing inputs
+        self.assertScriptResultEquals("$find(,c)", "-1", context)
+        self.assertScriptResultEquals("$find(abcdef,)", "0", context)
+        # Tests wrong number of arguments
+        areg = r"^Wrong number of arguments for \$find: Expected exactly 2, "
+        with self.assertRaisesRegex(ScriptError, areg):
+            self.parser.eval("$find(abcdef)")
+
+    def test_cmd_reverse(self):
+        context = Metadata()
+        context["foo"] = "One; Two; Three"
+        context["bar"] = ["One", "Two", "Three"]
+        # Tests with context
+        self.assertScriptResultEquals("$reverse(%foo%)", "eerhT ;owT ;enO", context)
+        self.assertScriptResultEquals("$reverse(%bar%)", "eerhT ;owT ;enO", context)
+        # Tests with static input
+        self.assertScriptResultEquals("$reverse(One; Two; Three)", "eerhT ;owT ;enO", context)
+        # Tests with missing input
+        areg = r"^Wrong number of arguments for \$reverse: Expected exactly 1, "
+        with self.assertRaisesRegex(ScriptError, areg):
+            self.parser.eval("$reverse()")
+
+    def test_cmd_substr(self):
+        context = Metadata()
+        context["foo"] = "One; Two; Three"
+        context["bar"] = ["One", "Two", "Three"]
+        context["start"] = '5'
+        context["end"] = '9'
+        # Tests with context
+        self.assertScriptResultEquals("$substr(%foo%,%start%,%end%)", "Two;", context)
+        self.assertScriptResultEquals("$substr(%bar%,%start%,%end%)", "Two;", context)
+        # Tests with static input
+        self.assertScriptResultEquals("$substr(One; Two; Three,5,9)", "Two;", context)
+        # Tests ends of string
+        self.assertScriptResultEquals("$substr(One; Two; Three,0,4)", "One;", context)
+        self.assertScriptResultEquals("$substr(One; Two; Three,10,15)", "Three", context)
+        # Tests negative index inputs
+        self.assertScriptResultEquals("$substr(One; Two; Three,-15,4)", "One;", context)
+        self.assertScriptResultEquals("$substr(One; Two; Three,-5,15)", "Three", context)
+        self.assertScriptResultEquals("$substr(One; Two; Three,-10,8)", "Two", context)
+        self.assertScriptResultEquals("$substr(One; Two; Three,5,-7)", "Two", context)
+        # Tests overrun ends of string
+        self.assertScriptResultEquals("$substr(One; Two; Three,10,25)", "Three", context)
+        self.assertScriptResultEquals("$substr(One; Two; Three,-25,4)", "One;", context)
+        self.assertScriptResultEquals("$substr(One; Two; Three,-5,25)", "Three", context)
+        # Tests invalid ranges (end < start, end = start)
+        self.assertScriptResultEquals("$substr(One; Two; Three,10,9)", "", context)
+        self.assertScriptResultEquals("$substr(One; Two; Three,10,10)", "", context)
+        # Tests invalid index inputs
+        self.assertScriptResultEquals("$substr(One; Two; Three,10-1,4)", "One;", context)
+        self.assertScriptResultEquals("$substr(One; Two; Three,10,4+2)", "Three", context)
+        self.assertScriptResultEquals("$substr(One; Two; Three,10-1,4+2)", "One; Two; Three", context)
+        self.assertScriptResultEquals("$substr(One; Two; Three,a,4)", "One;", context)
+        self.assertScriptResultEquals("$substr(One; Two; Three,0,b)", "One; Two; Three", context)
+        self.assertScriptResultEquals("$substr(One; Two; Three,a,b)", "One; Two; Three", context)
+        # # Tests with missing input
+        self.assertScriptResultEquals("$substr(One; Two; Three,,4)", "One;", context)
+        self.assertScriptResultEquals("$substr(One; Two; Three,10,)", "Three", context)
+        self.assertScriptResultEquals("$substr(One; Two; Three,,)", "One; Two; Three", context)
+        # Tests with missing input
+        areg = r"^Wrong number of arguments for \$substr: Expected exactly 3, "
+        with self.assertRaisesRegex(ScriptError, areg):
+            self.parser.eval("$substr()")
+        with self.assertRaisesRegex(ScriptError, areg):
+            self.parser.eval("$substr(abc)")
+        with self.assertRaisesRegex(ScriptError, areg):
+            self.parser.eval("$substr(abc,0)")
+
+    def test_cmd_get_multi(self):
+        context = Metadata()
+        context["foo"] = ["First:A", "Second:B", "Third:C"]
+        context["index"] = "1"
+        # Tests with context
+        self.assertScriptResultEquals("$get_multi(%foo%,%index%)", "Second:B", context)
+        # Tests with static inputs
+        self.assertScriptResultEquals("$get_multi(First:A; Second:B; Third:C,0)", "First:A", context)
+        self.assertScriptResultEquals("$get_multi(First:A; Second:B; Third:C,1)", "Second:B", context)
+        # Tests separator override
+        self.assertScriptResultEquals("$get_multi(%foo%,1,:)", "A; Second", context)
+        self.assertScriptResultEquals("$get_multi(First:A; Second:B; Third:C,1,:)", "A; Second", context)
+        # Tests negative index values
+        self.assertScriptResultEquals("$get_multi(First:A; Second:B; Third:C,-1)", "Third:C", context)
+        self.assertScriptResultEquals("$get_multi(First:A; Second:B; Third:C,-2)", "Second:B", context)
+        self.assertScriptResultEquals("$get_multi(First:A; Second:B; Third:C,-3)", "First:A", context)
+        # Tests out of range index values
+        self.assertScriptResultEquals("$get_multi(First:A; Second:B; Third:C,10)", "", context)
+        self.assertScriptResultEquals("$get_multi(First:A; Second:B; Third:C,-4)", "", context)
+        # Tests invalid index values
+        self.assertScriptResultEquals("$get_multi(,0)", "", context)
+        self.assertScriptResultEquals("$get_multi(First:A; Second:B; Third:C,)", "", context)
+        self.assertScriptResultEquals("$get_multi(First:A; Second:B; Third:C,10+1)", "", context)
+        self.assertScriptResultEquals("$get_multi(First:A; Second:B; Third:C,a)", "", context)
+        # Tests with missing inputs
+        self.assertScriptResultEquals("$get_multi(,0)", "", context)
+        self.assertScriptResultEquals("$get_multi(First:A; Second:B; Third:C,)", "", context)
+        # Tests with invalid number of arguments
+        areg = r"^Wrong number of arguments for \$get_multi: Expected between 2 and 3, "
+        with self.assertRaisesRegex(ScriptError, areg):
+            self.parser.eval("$get_multi()")
+        with self.assertRaisesRegex(ScriptError, areg):
+            self.parser.eval("$get_multi(abc)")
+        with self.assertRaisesRegex(ScriptError, areg):
+            self.parser.eval("$get_multi(abc,0,; ,extra)")
+
+    def test_cmd_foreach(self):
+        context = Metadata()
+        context["foo"] = "First:A; Second:B; Third:C"
+        context["bar"] = ["First:A", "Second:B", "Third:C"]
+        foo_output = "Output: 1=First:A; Second:B; Third:C"
+        loop_output = "Output: 1=First:A 2=Second:B 3=Third:C"
+        alternate_output = "Output: 1=First 2=A; Second 3=B; Third 4=C"
+        # Tests with context
+        context["output"] = "Output:"
+        self.assertScriptResultEquals("$foreach(%foo%,$set(output,%output% %_loop_count%=%_loop_value%))%output%", foo_output, context)
+        context["output"] = "Output:"
+        self.assertScriptResultEquals("$foreach(%bar%,$set(output,%output% %_loop_count%=%_loop_value%))%output%", loop_output, context)
+        # Tests with static inputs
+        context["output"] = "Output:"
+        self.assertScriptResultEquals("$foreach(First:A; Second:B; Third:C,$set(output,%output% %_loop_count%=%_loop_value%))%output%", loop_output, context)
+        # Tests with missing inputs
+        context["output"] = "Output:"
+        self.assertScriptResultEquals("$foreach(,$set(output,%output% %_loop_count%=%_loop_value%))%output%", "Output: 1=", context)
+        context["output"] = "Output:"
+        self.assertScriptResultEquals("$foreach(First:A; Second:B; Third:C,)%output%", "Output:", context)
+        # Tests with separator override
+        context["output"] = "Output:"
+        self.assertScriptResultEquals("$foreach(First:A; Second:B; Third:C,$set(output,%output% %_loop_count%=%_loop_value%),:)%output%", alternate_output, context)
+        # Tests with invalid number of arguments
+        areg = r"^Wrong number of arguments for \$foreach: Expected between 2 and 3, "
+        with self.assertRaisesRegex(ScriptError, areg):
+            self.parser.eval("$foreach()")
+        with self.assertRaisesRegex(ScriptError, areg):
+            self.parser.eval("$foreach(abc;def)")
+        with self.assertRaisesRegex(ScriptError, areg):
+            self.parser.eval("$foreach(abc:def,$noop(),:,extra)")
+
+    def test_cmd_while(self):
+        context = Metadata()
+        context["max_value"] = '5'
+        loop_output = "Output: 1 2 3 4 5"
+        # Tests with context
+        context["output"] = "Output:"
+        self.assertScriptResultEquals("$set(_loop_count,1)$while($lt(%_loop_count%,%max_value%),$set(output,%output% %_loop_count%))%output%", loop_output, context)
+        # Tests with static inputs
+        context["output"] = "Output:"
+        self.assertScriptResultEquals("$set(_loop_count,1)$while($lt(%_loop_count%,5),$set(output,%output% %_loop_count%))%output%", loop_output, context)
+        # Tests with invalid conditional input
+        context["output"] = "Output:"
+        self.assertScriptResultEquals("$while($lt(%_loop_count%,5),$set(output,%output% %_loop_count%))%output%", "Output:", context)
+        # Tests with forced conditional (runaway condition)
+        context["output"] = "Output:"
+        self.assertScriptResultEquals("$while(1,$set(output,%output% %_loop_count%))$right(%output%,4)", "1000", context)
+        context["output"] = "Output:"
+        self.assertScriptResultEquals("$while(0,$set(output,%output% %_loop_count%))$right(%output%,4)", "1000", context)
+        # Tests with missing inputs
+        context["output"] = "Output:"
+        self.assertScriptResultEquals("$while($lt(%_loop_count%,5),)%output%", "Output:", context)
+        context["output"] = "Output:"
+        self.assertScriptResultEquals("$while(,$set(output,%output% %_loop_count%))%output%", "Output:", context)
+        # Tests with invalid number of arguments
+        areg = r"^Wrong number of arguments for \$while: Expected exactly 2, "
+        with self.assertRaisesRegex(ScriptError, areg):
+            self.parser.eval("$while()")
+        with self.assertRaisesRegex(ScriptError, areg):
+            self.parser.eval("$while(a)")
+        with self.assertRaisesRegex(ScriptError, areg):
+            self.parser.eval("$while(a,$noop(),extra)")
+
+    def test_cmd_map(self):
+        context = Metadata()
+        context["foo"] = "First:A; Second:B; Third:C"
+        context["bar"] = ["First:A", "Second:B", "Third:C"]
+        foo_output = "1=FIRST:A; SECOND:B; THIRD:C"
+        loop_output = "1=FIRST:A; 2=SECOND:B; 3=THIRD:C"
+        alternate_output = "1=FIRST:2=A; SECOND:3=B; THIRD:4=C"
+        # Tests with context
+        self.assertScriptResultEquals("$map(%foo%,$upper(%_loop_count%=%_loop_value%))", foo_output, context)
+        self.assertScriptResultEquals("$map(%bar%,$upper(%_loop_count%=%_loop_value%))", loop_output, context)
+        # Tests with static inputs
+        self.assertScriptResultEquals("$map(First:A; Second:B; Third:C,$upper(%_loop_count%=%_loop_value%))", loop_output, context)
+        # Tests with missing inputs
+        self.assertScriptResultEquals("$map(,$upper(%_loop_count%=%_loop_value%))", "1=", context)
+        self.assertScriptResultEquals("$map(First:A; Second:B; Third:C,)", "; ; ", context)
+        # Tests with separator override
+        self.assertScriptResultEquals("$map(First:A; Second:B; Third:C,$upper(%_loop_count%=%_loop_value%),:)", alternate_output, context)
+        # Tests with invalid number of arguments
+        areg = r"^Wrong number of arguments for \$map: Expected between 2 and 3, "
+        with self.assertRaisesRegex(ScriptError, areg):
+            self.parser.eval("$map()")
+        with self.assertRaisesRegex(ScriptError, areg):
+            self.parser.eval("$map(abc; def)")
+        with self.assertRaisesRegex(ScriptError, areg):
+            self.parser.eval("$map(abc:def,$noop(),:,extra)")
