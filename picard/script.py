@@ -914,8 +914,9 @@ def func_find_str(parser, haystack, needle):
     """Find the location of the first occurrence of one string within another.
 
     Arguments:
-        haystack: The string to search
-        needle: The substring to find
+        parser: The ScriptParser object used to parse the script.
+        haystack: The string to search.
+        needle: The substring to find.
 
     Returns:
         The zero-based index of the first occurrance of needle in haystack, or -1 if needle was not found.
@@ -927,7 +928,8 @@ def func_reverse_str(parser, text):
     """Returns 'text' in reverse order.
 
     Arguments:
-        text: Text to be processed
+        parser: The ScriptParser object used to parse the script.
+        text: String to be processed.
 
     Returns:
         Text in reverse order.
@@ -939,9 +941,10 @@ def func_substr(parser, text, start_index, end_index):
     """Extract a specified portion of a string.
 
     Arguments:
+        parser: The ScriptParser object used to parse the script.
         text: The string from which the extract will be made.
-        start_index: Index of the first character to extract.
-        end_index: Index of the first character that will not be extracted.
+        start_index: Integer index of the first character to extract.
+        end_index: Integer index of the first character that will not be extracted.
 
     Returns:
         Returns the substring beginning with the character at the start index,
@@ -967,23 +970,21 @@ def func_get_multi(parser, multi, item_index, separator=MULTI_VALUED_JOINER):
     """Returns value of the item at the specified index in the multi-value variable.  Index values are zero-based.
 
     Arguments:
+        parser: The ScriptParser object used to parse the script.
         multi: The multi-value from which the item is to be retrieved.
-        item_index: The zero-based index of the item to be retrieved.
+        item_index: The zero-based integer index of the item to be retrieved.
+        separator: String used to separate the elements in the multi-value.
 
     Returns:
         Returns the value of the item at the specified index in the multi-value variable.
     """
-    if item_index:
-        try:
-            index = int(item_index.eval(parser))
-        except ValueError:
-            return ''
-    else:
+    if not item_index:
         return ''
-    multi_var = _get_multi_values(parser, multi, separator)
     try:
+        index = int(item_index.eval(parser))
+        multi_var = _get_multi_values(parser, multi, separator)
         return str(multi_var[index])
-    except IndexError:
+    except (ValueError, IndexError):
         return ''
 
 
@@ -999,13 +1000,13 @@ def func_foreach_multi(parser,
     the code script.
 
     Arguments:
+        parser: The ScriptParser object used to parse the script.
         multi: The multi-value to be iterated.
-        loop_code: Script code to be processed on each iteration.
+        loop_code: String of script code to be processed on each iteration.
+        separator: String used to separate the elements in the multi-value.
     """
-    loop_count = 0
     multi_value = _get_multi_values(parser, multi, separator)
-    for index, value in enumerate(multi_value):
-        loop_count = index + 1
+    for loop_count, value in enumerate(multi_value, 1):
         func_set(parser, '_loop_count', str(loop_count))
         func_set(parser, '_loop_value', str(value))
         loop_code.eval(parser)
@@ -1018,8 +1019,9 @@ def func_while_loop(parser, condition, loop_code):
     """Standard 'while' loop.  Also includes a runaway check to limit the maximum number of iterations.
 
     Arguments:
-        condition: Script code to check before each iteration through the loop.
-        loop_code: Script code to be processed on each iteration.
+        parser: The ScriptParser object used to parse the script.
+        condition: String of script code to check before each iteration through the loop.
+        loop_code: String of script code to be processed on each iteration.
     """
     if condition and loop_code:
         runaway_check = 1000
@@ -1044,18 +1046,20 @@ def func_map_multi(parser,
     allows the element or count value to be accessed within the code script.
 
     Arguments:
+        parser: The ScriptParser object used to parse the script.
         multi: The multi-value to be iterated.
-        loop_code: Script code to be processed on each iteration.
+        loop_code: String of script code to be processed on each iteration that yields the new value for
+            the multi-value element.
+        separator: String used to separate the elements in the multi-value.
 
     Returns the updated multi-value variable.
     """
     loop_count = 0
     multi_value = _get_multi_values(parser, multi, separator)
-    for index, value in enumerate(multi_value):
-        loop_count = index + 1
+    for loop_count, value in enumerate(multi_value, 1):
         func_set(parser, '_loop_count', str(loop_count))
         func_set(parser, '_loop_value', str(value))
-        multi_value[index] = str(loop_code.eval(parser))
+        multi_value[loop_count - 1] = str(loop_code.eval(parser))
     func_unset(parser, '_loop_count')
     func_unset(parser, '_loop_value')
     if not isinstance(separator, str):
