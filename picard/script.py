@@ -1054,7 +1054,6 @@ def func_map_multi(parser,
 
     Returns the updated multi-value variable.
     """
-    loop_count = 0
     multi_value = _get_multi_values(parser, multi, separator)
     for loop_count, value in enumerate(multi_value, 1):
         func_set(parser, '_loop_count', str(loop_count))
