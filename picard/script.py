@@ -1004,8 +1004,8 @@ def func_foreach_multi(parser,
     """
     loop_count = 0
     multi_value = _get_multi_values(parser, multi, separator)
-    for value in multi_value:
-        loop_count += 1
+    for index, value in enumerate(multi_value):
+        loop_count = index + 1
         func_set(parser, '_loop_count', str(loop_count))
         func_set(parser, '_loop_value', str(value))
         loop_code.eval(parser)
@@ -1021,9 +1021,9 @@ def func_while_loop(parser, condition, loop_code):
         condition: Script code to check before each iteration through the loop.
         loop_code: Script code to be processed on each iteration.
     """
-    runaway_check = 1000
-    loop_count = 0
     if condition and loop_code:
+        runaway_check = 1000
+        loop_count = 0
         while condition.eval(parser) and loop_count < runaway_check:
             loop_count += 1
             func_set(parser, '_loop_count', str(loop_count))
@@ -1051,11 +1051,11 @@ def func_map_multi(parser,
     """
     loop_count = 0
     multi_value = _get_multi_values(parser, multi, separator)
-    for value in multi_value:
-        loop_count += 1
+    for index, value in enumerate(multi_value):
+        loop_count = index + 1
         func_set(parser, '_loop_count', str(loop_count))
         func_set(parser, '_loop_value', str(value))
-        multi_value[loop_count - 1] = str(loop_code.eval(parser))
+        multi_value[index] = str(loop_code.eval(parser))
     func_unset(parser, '_loop_count')
     func_unset(parser, '_loop_value')
     if not isinstance(separator, str):
