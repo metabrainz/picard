@@ -339,6 +339,30 @@ def register_script_function(function, name=None, eval_args=True,
     )
 
 
+def script_function(name=None, eval_args=True, check_argcount=True, prefix='func_'):
+    """Decorator helper to register script functions
+
+    It calls ``register_script_function()`` and share same arguments
+    Extra optional arguments:
+        ``prefix``: define the prefix to be removed from defined function to name script function
+                    By default, ``func_foo`` will create ``foo`` script function
+
+    Example:
+        @script_function(eval_args=False)
+        def func_myscriptfunc():
+            ...
+    """
+    def script_function_decorator(func):
+        fname = func.__name__
+        if name is None and prefix and fname.startswith(prefix):
+            sname = fname[len(prefix):]
+        else:
+            sname = name
+        register_script_function(func, name=sname, eval_args=eval_args, check_argcount=check_argcount)
+        return func
+    return script_function_decorator
+
+
 def _compute_int(operation, *args):
     return str(reduce(operation, map(int, args)))
 
@@ -368,6 +392,7 @@ def _get_multi_values(parser, multi, separator):
     return multi.split(separator) if separator else [multi]
 
 
+@script_function(eval_args=False)
 def func_if(parser, _if, _then, _else=None):
     """If ``if`` is not empty, it returns ``then``, otherwise it returns ``else``."""
     if _if.eval(parser):
@@ -377,6 +402,7 @@ def func_if(parser, _if, _then, _else=None):
     return ''
 
 
+@script_function(eval_args=False)
 def func_if2(parser, *args):
     """Returns first non empty argument."""
     for arg in args:
@@ -386,11 +412,13 @@ def func_if2(parser, *args):
     return ''
 
 
+@script_function(eval_args=False)
 def func_noop(parser, *args):
     """Does nothing :)"""
     return ''
 
 
+@script_function()
 def func_left(parser, text, length):
     """Returns first ``num`` characters from ``text``."""
     try:
@@ -399,6 +427,7 @@ def func_left(parser, text, length):
         return ""
 
 
+@script_function()
 def func_right(parser, text, length):
     """Returns last ``num`` characters from ``text``."""
     try:
@@ -407,16 +436,19 @@ def func_right(parser, text, length):
         return ""
 
 
+@script_function()
 def func_lower(parser, text):
     """Returns ``text`` in lower case."""
     return text.lower()
 
 
+@script_function()
 def func_upper(parser, text):
     """Returns ``text`` in upper case."""
     return text.upper()
 
 
+@script_function()
 def func_pad(parser, text, length, char):
     try:
         return char * (int(length) - len(text)) + text
@@ -424,14 +456,17 @@ def func_pad(parser, text, length, char):
         return ""
 
 
+@script_function()
 def func_strip(parser, text):
     return re.sub(r"\s+", " ", text).strip()
 
 
+@script_function()
 def func_replace(parser, text, old, new):
     return text.replace(old, new)
 
 
+@script_function()
 def func_in(parser, text, needle):
     if needle in text:
         return "1"
@@ -439,6 +474,7 @@ def func_in(parser, text, needle):
         return ""
 
 
+@script_function(eval_args=False)
 def func_inmulti(parser, haystack, needle, separator=MULTI_VALUED_JOINER):
     """Searches for ``needle`` in ``haystack``, supporting a list variable for
        ``haystack``. If a string is used instead, then a ``separator`` can be
@@ -449,6 +485,7 @@ def func_inmulti(parser, haystack, needle, separator=MULTI_VALUED_JOINER):
     return func_in(parser, _get_multi_values(parser, haystack, separator), needle)
 
 
+@script_function()
 def func_rreplace(parser, text, old, new):
     try:
         return re.sub(old, new, text)
@@ -456,6 +493,7 @@ def func_rreplace(parser, text, old, new):
         return text
 
 
+@script_function()
 def func_rsearch(parser, text, pattern):
     try:
         match = re.search(pattern, text)
@@ -469,6 +507,7 @@ def func_rsearch(parser, text, pattern):
     return ""
 
 
+@script_function()
 def func_num(parser, text, length):
     try:
         format_ = "%%0%dd" % min(int(length), 20)
@@ -481,6 +520,7 @@ def func_num(parser, text, length):
     return format_ % value
 
 
+@script_function()
 def func_unset(parser, name):
     """Unsets the variable ``name``."""
     name = normalize_tagname(name)
@@ -498,6 +538,7 @@ def func_unset(parser, name):
     return ""
 
 
+@script_function()
 def func_delete(parser, name):
     """
     Deletes the variable ``name``.
@@ -508,6 +549,7 @@ def func_delete(parser, name):
     return ""
 
 
+@script_function()
 def func_set(parser, name, value):
     """Sets the variable ``name`` to ``value``."""
     if value:
@@ -517,16 +559,19 @@ def func_set(parser, name, value):
     return ""
 
 
+@script_function()
 def func_setmulti(parser, name, value, separator=MULTI_VALUED_JOINER):
     """Sets the variable ``name`` to ``value`` as a list; splitting by the passed string, or "; " otherwise."""
     return func_set(parser, name, value.split(separator) if value and separator else value)
 
 
+@script_function()
 def func_get(parser, name):
     """Returns the variable ``name`` (equivalent to ``%name%``)."""
     return parser.context.get(normalize_tagname(name), "")
 
 
+@script_function()
 def func_copy(parser, new, old):
     """Copies content of variable ``old`` to variable ``new``."""
     new = normalize_tagname(new)
@@ -535,6 +580,7 @@ def func_copy(parser, new, old):
     return ""
 
 
+@script_function()
 def func_copymerge(parser, new, old):
     """Copies content of variable ``old`` and appends it into variable ``new``, removing duplicates. This is normally
     used to merge a multi-valued variable into another, existing multi-valued variable."""
@@ -546,6 +592,7 @@ def func_copymerge(parser, new, old):
     return ""
 
 
+@script_function()
 def func_trim(parser, text, char=None):
     """Trims all leading and trailing whitespaces from ``text``. The optional
        second parameter specifies the character to trim."""
@@ -555,6 +602,7 @@ def func_trim(parser, text, char=None):
         return text.strip()
 
 
+@script_function()
 def func_add(parser, x, y, *args):
     """Adds ``y`` to ``x``.
        Can be used with an arbitrary number of arguments.
@@ -566,6 +614,7 @@ def func_add(parser, x, y, *args):
         return ""
 
 
+@script_function()
 def func_sub(parser, x, y, *args):
     """Subtracts ``y`` from ``x``.
        Can be used with an arbitrary number of arguments.
@@ -577,6 +626,7 @@ def func_sub(parser, x, y, *args):
         return ""
 
 
+@script_function()
 def func_div(parser, x, y, *args):
     """Divides ``x`` by ``y``.
        Can be used with an arbitrary number of arguments.
@@ -588,6 +638,7 @@ def func_div(parser, x, y, *args):
         return ""
 
 
+@script_function()
 def func_mod(parser, x, y, *args):
     """Returns the remainder of ``x`` divided by ``y``.
        Can be used with an arbitrary number of arguments.
@@ -599,6 +650,7 @@ def func_mod(parser, x, y, *args):
         return ""
 
 
+@script_function()
 def func_mul(parser, x, y, *args):
     """Multiplies ``x`` by ``y``.
        Can be used with an arbitrary number of arguments.
@@ -610,6 +662,7 @@ def func_mul(parser, x, y, *args):
         return ""
 
 
+@script_function()
 def func_or(parser, x, y, *args):
     """Returns true, if either ``x`` or ``y`` not empty.
        Can be used with an arbitrary number of arguments. The result is
@@ -621,6 +674,7 @@ def func_or(parser, x, y, *args):
         return ""
 
 
+@script_function()
 def func_and(parser, x, y, *args):
     """Returns true, if both ``x`` and ``y`` are not empty.
        Can be used with an arbitrary number of arguments. The result is
@@ -632,6 +686,7 @@ def func_and(parser, x, y, *args):
         return ""
 
 
+@script_function()
 def func_not(parser, x):
     """Returns true, if ``x`` is empty."""
     if not x:
@@ -640,6 +695,7 @@ def func_not(parser, x):
         return ""
 
 
+@script_function()
 def func_eq(parser, x, y):
     """Returns true, if ``x`` equals ``y``."""
     if x == y:
@@ -648,6 +704,7 @@ def func_eq(parser, x, y):
         return ""
 
 
+@script_function()
 def func_ne(parser, x, y):
     """Returns true, if ``x`` not equals ``y``."""
     if x != y:
@@ -656,6 +713,7 @@ def func_ne(parser, x, y):
         return ""
 
 
+@script_function()
 def func_lt(parser, x, y):
     """Returns true, if ``x`` is lower than ``y``."""
     try:
@@ -666,6 +724,7 @@ def func_lt(parser, x, y):
     return ""
 
 
+@script_function()
 def func_lte(parser, x, y):
     """Returns true, if ``x`` is lower than or equals ``y``."""
     try:
@@ -676,6 +735,7 @@ def func_lte(parser, x, y):
     return ""
 
 
+@script_function()
 def func_gt(parser, x, y):
     """Returns true, if ``x`` is greater than ``y``."""
     try:
@@ -686,6 +746,7 @@ def func_gt(parser, x, y):
     return ""
 
 
+@script_function()
 def func_gte(parser, x, y):
     """Returns true, if ``x`` is greater than or equals ``y``."""
     try:
@@ -696,14 +757,17 @@ def func_gte(parser, x, y):
     return ""
 
 
+@script_function()
 def func_len(parser, text=""):
     return str(len(text))
 
 
+@script_function(eval_args=False)
 def func_lenmulti(parser, multi, separator=MULTI_VALUED_JOINER):
     return func_len(parser, _get_multi_values(parser, multi, separator))
 
 
+@script_function()
 def func_performer(parser, pattern="", join=", "):
     values = []
     for name, value in parser.context.items():
@@ -712,6 +776,7 @@ def func_performer(parser, pattern="", join=", "):
     return join.join(values)
 
 
+@script_function(eval_args=False)
 def func_matchedtracks(parser, *args):
     # only works in file naming scripts, always returns zero in tagging scripts
     file = parser.file
@@ -720,6 +785,7 @@ def func_matchedtracks(parser, *args):
     return "0"
 
 
+@script_function()
 def func_is_complete(parser):
     # only works in file naming scripts, always returns zero in tagging scripts
     file = parser.file
@@ -729,6 +795,7 @@ def func_is_complete(parser):
     return ""
 
 
+@script_function()
 def func_firstalphachar(parser, text="", nonalpha="#"):
     if len(text) == 0:
         return nonalpha
@@ -739,10 +806,12 @@ def func_firstalphachar(parser, text="", nonalpha="#"):
         return nonalpha
 
 
+@script_function()
 def func_initials(parser, text=""):
     return "".join(a[:1] for a in text.split(" ") if a[:1].isalpha())
 
 
+@script_function()
 def func_firstwords(parser, text, length):
     try:
         length = int(length)
@@ -756,18 +825,21 @@ def func_firstwords(parser, text, length):
         return text[:length].rsplit(' ', 1)[0]
 
 
+@script_function()
 def func_startswith(parser, text, prefix):
     if text.startswith(prefix):
         return "1"
     return ""
 
 
+@script_function()
 def func_endswith(parser, text, suffix):
     if text.endswith(suffix):
         return "1"
     return ""
 
 
+@script_function()
 def func_truncate(parser, text, length):
     try:
         length = int(length)
@@ -776,6 +848,7 @@ def func_truncate(parser, text, length):
     return text[:length].rstrip()
 
 
+@script_function(check_argcount=False)
 def func_swapprefix(parser, text, *prefixes):
     """
     Moves the specified prefixes to the end of text.
@@ -789,6 +862,7 @@ def func_swapprefix(parser, text, *prefixes):
     return text
 
 
+@script_function(check_argcount=False)
 def func_delprefix(parser, text, *prefixes):
     """
     Deletes the specified prefixes.
@@ -818,6 +892,7 @@ def _delete_prefix(parser, text, *prefixes):
     return text, ''
 
 
+@script_function(check_argcount=False)
 def func_eq_any(parser, x, *args):
     """
     Return True if one string matches any of one or more other strings.
@@ -828,6 +903,7 @@ def func_eq_any(parser, x, *args):
     return '1' if x in args else ''
 
 
+@script_function(check_argcount=False)
 def func_ne_all(parser, x, *args):
     """
     Return True if one string doesn't match all of one or more other strings.
@@ -838,6 +914,7 @@ def func_ne_all(parser, x, *args):
     return '1' if x not in args else ''
 
 
+@script_function(check_argcount=False)
 def func_eq_all(parser, x, *args):
     """
     Return True if all string are equal.
@@ -850,6 +927,7 @@ def func_eq_all(parser, x, *args):
     return '1'
 
 
+@script_function(check_argcount=False)
 def func_ne_any(parser, x, *args):
     """
     Return True if all strings are not equal.
@@ -859,6 +937,7 @@ def func_ne_any(parser, x, *args):
     return func_not(parser, func_eq_all(parser, x, *args))
 
 
+@script_function()
 def func_title(parser, text):
     # GPL 2.0 licensed code by Javier Kohen, Sambhav Kothari
     # from https://github.com/metabrainz/picard-plugins/blob/2.0/plugins/titlecase/titlecase.py
@@ -894,6 +973,7 @@ def iswbound(char):
     return "Zs" == category or "Sk" == category or "P" == category[0]
 
 
+@script_function()
 def func_is_audio(parser):
     """Returns true, if the file processed is an audio file."""
     if func_is_video(parser) == "1":
@@ -902,6 +982,7 @@ def func_is_audio(parser):
         return "1"
 
 
+@script_function()
 def func_is_video(parser):
     """Returns true, if the file processed is a video file."""
     if parser.context['~video'] and parser.context['~video'] != '0':
@@ -910,7 +991,8 @@ def func_is_video(parser):
         return ""
 
 
-def func_find_str(parser, haystack, needle):
+@script_function()
+def func_find(parser, haystack, needle):
     """Find the location of the first occurrence of one string within another.
 
     Arguments:
@@ -924,7 +1006,8 @@ def func_find_str(parser, haystack, needle):
     return str(haystack.find(needle))
 
 
-def func_reverse_str(parser, text):
+@script_function()
+def func_reverse(parser, text):
     """Returns 'text' in reverse order.
 
     Arguments:
@@ -937,6 +1020,7 @@ def func_reverse_str(parser, text):
     return text[::-1]
 
 
+@script_function()
 def func_substr(parser, text, start_index, end_index):
     """Extract a specified portion of a string.
 
@@ -966,7 +1050,8 @@ def func_substr(parser, text, start_index, end_index):
     return text[start:end]
 
 
-def func_get_multi(parser, multi, item_index, separator=MULTI_VALUED_JOINER):
+@script_function(eval_args=False)
+def func_getmulti(parser, multi, item_index, separator=MULTI_VALUED_JOINER):
     """Returns value of the item at the specified index in the multi-value variable.  Index values are zero-based.
 
     Arguments:
@@ -988,10 +1073,8 @@ def func_get_multi(parser, multi, item_index, separator=MULTI_VALUED_JOINER):
         return ''
 
 
-def func_foreach_multi(parser,
-                       multi,
-                       loop_code,
-                       separator=MULTI_VALUED_JOINER):
+@script_function(eval_args=False)
+def func_foreach(parser, multi, loop_code, separator=MULTI_VALUED_JOINER):
     """Iterates over each element found in the specified multi-value variable.
 
     Iterates over each element found in the specified multi-value variable, executing the specified code.
@@ -1015,7 +1098,8 @@ def func_foreach_multi(parser,
     return ''
 
 
-def func_while_loop(parser, condition, loop_code):
+@script_function(eval_args=False)
+def func_while(parser, condition, loop_code):
     """Standard 'while' loop.  Also includes a runaway check to limit the maximum number of iterations.
 
     Arguments:
@@ -1034,10 +1118,8 @@ def func_while_loop(parser, condition, loop_code):
     return ''
 
 
-def func_map_multi(parser,
-                   multi,
-                   loop_code,
-                   separator=MULTI_VALUED_JOINER):
+@script_function(eval_args=False)
+def func_map(parser, multi, loop_code, separator=MULTI_VALUED_JOINER):
     """Iterates over each element found in the specified multi-value variable and updates the value.
 
     Iterates over each element found in the specified multi-value variable and updates the value of the
@@ -1064,69 +1146,3 @@ def func_map_multi(parser,
     if not isinstance(separator, str):
         separator = separator.eval(parser)
     return separator.join(multi_value)
-
-
-register_script_function(func_if, "if", eval_args=False)
-register_script_function(func_if2, "if2", eval_args=False)
-register_script_function(func_noop, "noop", eval_args=False)
-register_script_function(func_left, "left")
-register_script_function(func_right, "right")
-register_script_function(func_lower, "lower")
-register_script_function(func_upper, "upper")
-register_script_function(func_pad, "pad")
-register_script_function(func_strip, "strip")
-register_script_function(func_replace, "replace")
-register_script_function(func_rreplace, "rreplace")
-register_script_function(func_rsearch, "rsearch")
-register_script_function(func_num, "num")
-register_script_function(func_unset, "unset")
-register_script_function(func_delete, "delete")
-register_script_function(func_set, "set")
-register_script_function(func_setmulti, "setmulti")
-register_script_function(func_get, "get")
-register_script_function(func_trim, "trim")
-register_script_function(func_add, "add")
-register_script_function(func_sub, "sub")
-register_script_function(func_div, "div")
-register_script_function(func_mod, "mod")
-register_script_function(func_mul, "mul")
-register_script_function(func_or, "or")
-register_script_function(func_and, "and")
-register_script_function(func_not, "not")
-register_script_function(func_eq, "eq")
-register_script_function(func_ne, "ne")
-register_script_function(func_lt, "lt")
-register_script_function(func_lte, "lte")
-register_script_function(func_gt, "gt")
-register_script_function(func_gte, "gte")
-register_script_function(func_in, "in")
-register_script_function(func_inmulti, "inmulti", eval_args=False)
-register_script_function(func_copy, "copy")
-register_script_function(func_copymerge, "copymerge")
-register_script_function(func_len, "len")
-register_script_function(func_lenmulti, "lenmulti", eval_args=False)
-register_script_function(func_performer, "performer")
-register_script_function(func_matchedtracks, "matchedtracks", eval_args=False)
-register_script_function(func_is_complete, "is_complete")
-register_script_function(func_firstalphachar, "firstalphachar")
-register_script_function(func_initials, "initials")
-register_script_function(func_firstwords, "firstwords")
-register_script_function(func_startswith, "startswith")
-register_script_function(func_endswith, "endswith")
-register_script_function(func_truncate, "truncate")
-register_script_function(func_swapprefix, "swapprefix", check_argcount=False)
-register_script_function(func_delprefix, "delprefix", check_argcount=False)
-register_script_function(func_eq_any, "eq_any", check_argcount=False)
-register_script_function(func_ne_all, "ne_all", check_argcount=False)
-register_script_function(func_eq_all, "eq_all", check_argcount=False)
-register_script_function(func_ne_any, "ne_any", check_argcount=False)
-register_script_function(func_title, "title")
-register_script_function(func_is_audio, "is_audio")
-register_script_function(func_is_video, "is_video")
-register_script_function(func_find_str, "find")
-register_script_function(func_reverse_str, "reverse")
-register_script_function(func_substr, "substr")
-register_script_function(func_get_multi, "get_multi", eval_args=False)
-register_script_function(func_foreach_multi, "foreach", eval_args=False)
-register_script_function(func_map_multi, "map", eval_args=False)
-register_script_function(func_while_loop, "while", eval_args=False)
