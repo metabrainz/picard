@@ -910,7 +910,7 @@ def func_is_video(parser):
         return ""
 
 
-def func_find_str(parser, haystack, needle):
+def func_find(parser, haystack, needle):
     """Find the location of the first occurrence of one string within another.
 
     Arguments:
@@ -924,7 +924,7 @@ def func_find_str(parser, haystack, needle):
     return str(haystack.find(needle))
 
 
-def func_reverse_str(parser, text):
+def func_reverse(parser, text):
     """Returns 'text' in reverse order.
 
     Arguments:
@@ -966,7 +966,7 @@ def func_substr(parser, text, start_index, end_index):
     return text[start:end]
 
 
-def func_get_multi(parser, multi, item_index, separator=MULTI_VALUED_JOINER):
+def func_getmulti(parser, multi, item_index, separator=MULTI_VALUED_JOINER):
     """Returns value of the item at the specified index in the multi-value variable.  Index values are zero-based.
 
     Arguments:
@@ -988,10 +988,7 @@ def func_get_multi(parser, multi, item_index, separator=MULTI_VALUED_JOINER):
         return ''
 
 
-def func_foreach_multi(parser,
-                       multi,
-                       loop_code,
-                       separator=MULTI_VALUED_JOINER):
+def func_foreach(parser, multi, loop_code, separator=MULTI_VALUED_JOINER):
     """Iterates over each element found in the specified multi-value variable.
 
     Iterates over each element found in the specified multi-value variable, executing the specified code.
@@ -1015,7 +1012,8 @@ def func_foreach_multi(parser,
     return ''
 
 
-def func_while_loop(parser, condition, loop_code):
+@script_function(eval_args=False)
+def func_while(parser, condition, loop_code):
     """Standard 'while' loop.  Also includes a runaway check to limit the maximum number of iterations.
 
     Arguments:
@@ -1034,10 +1032,7 @@ def func_while_loop(parser, condition, loop_code):
     return ''
 
 
-def func_map_multi(parser,
-                   multi,
-                   loop_code,
-                   separator=MULTI_VALUED_JOINER):
+def func_map(parser, multi, loop_code, separator=MULTI_VALUED_JOINER):
     """Iterates over each element found in the specified multi-value variable and updates the value.
 
     Iterates over each element found in the specified multi-value variable and updates the value of the
@@ -1123,10 +1118,10 @@ register_script_function(func_ne_any, "ne_any", check_argcount=False)
 register_script_function(func_title, "title")
 register_script_function(func_is_audio, "is_audio")
 register_script_function(func_is_video, "is_video")
-register_script_function(func_find_str, "find")
-register_script_function(func_reverse_str, "reverse")
+register_script_function(func_find, "find")
+register_script_function(func_reverse, "reverse")
 register_script_function(func_substr, "substr")
-register_script_function(func_get_multi, "get_multi", eval_args=False)
-register_script_function(func_foreach_multi, "foreach", eval_args=False)
-register_script_function(func_map_multi, "map", eval_args=False)
-register_script_function(func_while_loop, "while", eval_args=False)
+register_script_function(func_getmulti, "getmulti", eval_args=False)
+register_script_function(func_foreach, "foreach", eval_args=False)
+register_script_function(func_map, "map", eval_args=False)
+register_script_function(func_while, "while", eval_args=False)

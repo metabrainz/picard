@@ -741,41 +741,41 @@ class ScriptParserTest(PicardTestCase):
         with self.assertRaisesRegex(ScriptError, areg):
             self.parser.eval("$substr(abc,0)")
 
-    def test_cmd_get_multi(self):
+    def test_cmd_getmulti(self):
         context = Metadata()
         context["foo"] = ["First:A", "Second:B", "Third:C"]
         context["index"] = "1"
         # Tests with context
-        self.assertScriptResultEquals("$get_multi(%foo%,%index%)", "Second:B", context)
+        self.assertScriptResultEquals("$getmulti(%foo%,%index%)", "Second:B", context)
         # Tests with static inputs
-        self.assertScriptResultEquals("$get_multi(First:A; Second:B; Third:C,0)", "First:A", context)
-        self.assertScriptResultEquals("$get_multi(First:A; Second:B; Third:C,1)", "Second:B", context)
+        self.assertScriptResultEquals("$getmulti(First:A; Second:B; Third:C,0)", "First:A", context)
+        self.assertScriptResultEquals("$getmulti(First:A; Second:B; Third:C,1)", "Second:B", context)
         # Tests separator override
-        self.assertScriptResultEquals("$get_multi(%foo%,1,:)", "A; Second", context)
-        self.assertScriptResultEquals("$get_multi(First:A; Second:B; Third:C,1,:)", "A; Second", context)
+        self.assertScriptResultEquals("$getmulti(%foo%,1,:)", "A; Second", context)
+        self.assertScriptResultEquals("$getmulti(First:A; Second:B; Third:C,1,:)", "A; Second", context)
         # Tests negative index values
-        self.assertScriptResultEquals("$get_multi(First:A; Second:B; Third:C,-1)", "Third:C", context)
-        self.assertScriptResultEquals("$get_multi(First:A; Second:B; Third:C,-2)", "Second:B", context)
-        self.assertScriptResultEquals("$get_multi(First:A; Second:B; Third:C,-3)", "First:A", context)
+        self.assertScriptResultEquals("$getmulti(First:A; Second:B; Third:C,-1)", "Third:C", context)
+        self.assertScriptResultEquals("$getmulti(First:A; Second:B; Third:C,-2)", "Second:B", context)
+        self.assertScriptResultEquals("$getmulti(First:A; Second:B; Third:C,-3)", "First:A", context)
         # Tests out of range index values
-        self.assertScriptResultEquals("$get_multi(First:A; Second:B; Third:C,10)", "", context)
-        self.assertScriptResultEquals("$get_multi(First:A; Second:B; Third:C,-4)", "", context)
+        self.assertScriptResultEquals("$getmulti(First:A; Second:B; Third:C,10)", "", context)
+        self.assertScriptResultEquals("$getmulti(First:A; Second:B; Third:C,-4)", "", context)
         # Tests invalid index values
-        self.assertScriptResultEquals("$get_multi(,0)", "", context)
-        self.assertScriptResultEquals("$get_multi(First:A; Second:B; Third:C,)", "", context)
-        self.assertScriptResultEquals("$get_multi(First:A; Second:B; Third:C,10+1)", "", context)
-        self.assertScriptResultEquals("$get_multi(First:A; Second:B; Third:C,a)", "", context)
+        self.assertScriptResultEquals("$getmulti(,0)", "", context)
+        self.assertScriptResultEquals("$getmulti(First:A; Second:B; Third:C,)", "", context)
+        self.assertScriptResultEquals("$getmulti(First:A; Second:B; Third:C,10+1)", "", context)
+        self.assertScriptResultEquals("$getmulti(First:A; Second:B; Third:C,a)", "", context)
         # Tests with missing inputs
-        self.assertScriptResultEquals("$get_multi(,0)", "", context)
-        self.assertScriptResultEquals("$get_multi(First:A; Second:B; Third:C,)", "", context)
+        self.assertScriptResultEquals("$getmulti(,0)", "", context)
+        self.assertScriptResultEquals("$getmulti(First:A; Second:B; Third:C,)", "", context)
         # Tests with invalid number of arguments
-        areg = r"^Wrong number of arguments for \$get_multi: Expected between 2 and 3, "
+        areg = r"^Wrong number of arguments for \$getmulti: Expected between 2 and 3, "
         with self.assertRaisesRegex(ScriptError, areg):
-            self.parser.eval("$get_multi()")
+            self.parser.eval("$getmulti()")
         with self.assertRaisesRegex(ScriptError, areg):
-            self.parser.eval("$get_multi(abc)")
+            self.parser.eval("$getmulti(abc)")
         with self.assertRaisesRegex(ScriptError, areg):
-            self.parser.eval("$get_multi(abc,0,; ,extra)")
+            self.parser.eval("$getmulti(abc,0,; ,extra)")
 
     def test_cmd_foreach(self):
         context = Metadata()
