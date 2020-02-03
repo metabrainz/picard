@@ -1074,4 +1074,4 @@ class FileItem(TreeItem):
             else:
                 return _('Unsubmitted fingerprint')
         else:
-            return _('No fingerprint was calculated for this file, use "Scan" or "Generate AcoustID fingerprints" to calculate the fingerprint.')
+            return _('No fingerprint was calculated for this file, use "Scan" or "Generate AcoustID Fingerprints" to calculate the fingerprint.')
