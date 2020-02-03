@@ -1166,3 +1166,38 @@ def func_join(parser, multi, join_phrase, separator=MULTI_VALUED_JOINER):
     join_phrase = str(join_phrase.eval(parser))
     multi_value = _get_multi_values(parser, multi, separator)
     return join_phrase.join(multi_value)
+
+
+@script_function(eval_args=False)
+def func_slice(parser, multi, start_index, end_index, separator=MULTI_VALUED_JOINER):
+    """Returns a multi-value containing a slice of the supplied multi-value.  Index values are zero-based.
+
+    Arguments:
+        parser: The ScriptParser object used to parse the script.
+        multi: The ScriptVariable/Function that evaluates to a multi-value from
+            which the slice is to be retrieved.
+        start_index: The ScriptVariable/Function that evaluates to a zero-based integer
+            index of the first item included in the slice.
+        end_index: The ScriptVariable/Function that evaluates to a zero-based integer
+            index of the first item not included in the slice.
+        separator: A string or the ScriptVariable/Function that evaluates to the
+            string used to separate the elements in the multi-value.
+
+    Returns:
+        Returns a multi-value variable containing the specified slice.
+    """
+    try:
+        start = int(start_index.eval(parser)) if start_index else None
+    except ValueError:
+        start = None
+    try:
+        end = int(end_index.eval(parser)) if end_index else None
+    except ValueError:
+        end = None
+    try:
+        multi_var = _get_multi_values(parser, multi, separator)
+        if not isinstance(separator, str):
+            separator = separator.eval(parser)
+        return separator.join(multi_var[start:end])
+    except IndexError:
+        return ''
