@@ -123,6 +123,8 @@ class Metadata(MutableMapping):
         ('album', 12),
         ('tracknumber', 6),
         ('totaltracks', 5),
+        ('discnumber', 5),
+        ('totaldiscs', 4),
     ]
 
     multi_valued_joiner = MULTI_VALUED_JOINER
@@ -172,7 +174,7 @@ class Metadata(MutableMapping):
             a = self[name]
             b = other[name]
             if a and b:
-                if name in ('tracknumber', 'totaltracks'):
+                if name in ('tracknumber', 'totaltracks', 'discnumber', 'totaldiscs'):
                     try:
                         ia = int(a)
                         ib = int(b)
