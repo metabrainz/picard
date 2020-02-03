@@ -866,3 +866,30 @@ class ScriptParserTest(PicardTestCase):
             self.parser.eval("$map(abc; def)")
         with self.assertRaisesRegex(ScriptError, areg):
             self.parser.eval("$map(abc:def,$noop(),:,extra)")
+
+    def test_cmd_joinmulti(self):
+        context = Metadata()
+        context["foo"] = "First:A; Second:B; Third:C"
+        context["bar"] = ["First:A", "Second:B", "Third:C"]
+        context["joiner"] = " ==> "
+        foo_output = "First:A; Second:B; Third:C"
+        bar_output = "First:A ==> Second:B ==> Third:C"
+        alternate_output = "First ==> A; Second ==> B; Third ==> C"
+        # Tests with context
+        self.assertScriptResultEquals("$join(%foo%,%joiner%)", foo_output, context)
+        self.assertScriptResultEquals("$join(%bar%,%joiner%)", bar_output, context)
+        # Tests with static inputs
+        self.assertScriptResultEquals("$join(First:A; Second:B; Third:C, ==> )", bar_output, context)
+        # Tests with missing inputs
+        self.assertScriptResultEquals("$join(, ==> )", "", context)
+        self.assertScriptResultEquals("$join(First:A; Second:B; Third:C,)", "First:ASecond:BThird:C", context)
+        # Tests with separator override
+        self.assertScriptResultEquals("$join(First:A; Second:B; Third:C, ==> ,:)", alternate_output, context)
+        # Tests with invalid number of arguments
+        areg = r"^Wrong number of arguments for \$join: Expected between 2 and 3, "
+        with self.assertRaisesRegex(ScriptError, areg):
+            self.parser.eval("$join()")
+        with self.assertRaisesRegex(ScriptError, areg):
+            self.parser.eval("$join(abc; def)")
+        with self.assertRaisesRegex(ScriptError, areg):
+            self.parser.eval("$join(abc:def, ==> ,:,extra)")

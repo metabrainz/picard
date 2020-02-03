@@ -1146,3 +1146,23 @@ def func_map(parser, multi, loop_code, separator=MULTI_VALUED_JOINER):
     if not isinstance(separator, str):
         separator = separator.eval(parser)
     return separator.join(multi_value)
+
+
+@script_function(eval_args=False)
+def func_join(parser, multi, join_phrase, separator=MULTI_VALUED_JOINER):
+    """Joins all elements in the specified multi-value variable, placing the join_phrase between each element.
+
+    Arguments:
+        parser: The ScriptParser object used to parse the script.
+        multi: The ScriptVariable/Function that evaluates to a multi-value whose
+            elements are to be joined.
+        join_phrase: The ScriptVariable/Function that evaluates to a string which
+            will be placed between each of the elements.
+        separator: A string or the ScriptVariable/Function that evaluates to the
+            string used to separate the elements in the multi-value.
+
+    Returns a string with the elements joined.
+    """
+    join_phrase = str(join_phrase.eval(parser))
+    multi_value = _get_multi_values(parser, multi, separator)
+    return join_phrase.join(multi_value)
