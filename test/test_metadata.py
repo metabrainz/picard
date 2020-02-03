@@ -280,7 +280,20 @@ class MetadataTest(PicardTestCase):
         m1["tracknumber"] = "1"
         m2 = Metadata()
         m2["tracknumber"] = "2"
+        m3 = Metadata()
+        m3["tracknumber"] = "2"
         self.assertEqual(m1.compare(m2), 0)
+        self.assertEqual(m2.compare(m3), 1)
+
+    def test_compare_discnumber_difference(self):
+        m1 = Metadata()
+        m1["discnumber"] = "1"
+        m2 = Metadata()
+        m2["discnumber"] = "2"
+        m3 = Metadata()
+        m3["discnumber"] = "2"
+        self.assertEqual(m1.compare(m2), 0)
+        self.assertEqual(m2.compare(m3), 1)
 
     def test_compare_deleted(self):
         m1 = Metadata()
