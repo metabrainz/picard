@@ -282,7 +282,7 @@ class FingerprintColumnWidget(QtWidgets.QWidget):
 
     def paintEvent(self, event=None):
         painter = QtGui.QPainter(self)
-        paint_fingerprint_icon(painter, event.rect(), self.decide_icon())
+        paint_fingerprint_icon(painter, self.rect(), self.decide_icon())
 
     def decide_icon(self):
         if getattr(self._file, 'acoustid_fingerprint', None):
