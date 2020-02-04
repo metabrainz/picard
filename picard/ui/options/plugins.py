@@ -235,6 +235,16 @@ class PluginsOptionsPage(OptionsPage):
         self.ui.folder_open.clicked.connect(self.open_plugin_dir)
         self.ui.reload_list_of_plugins.clicked.connect(self.reload_list_of_plugins)
 
+        # Keep track whether the object has been destroyed to avoid trying to update
+        # deleted UI widgets after plugin list refresh.
+        self._deleted = False
+
+        # The on destroyed cannot be created as a method on this class or it will never get called.
+        # See https://stackoverflow.com/questions/16842955/widgets-destroyed-signal-is-not-fired-pyqt
+        def on_destroyed(obj=None):
+            self._deleted = True
+        self.destroyed.connect(on_destroyed)
+
         self.manager = self.tagger.pluginmanager
         self.manager.plugin_installed.connect(self.plugin_installed)
         self.manager.plugin_updated.connect(self.plugin_updated)
@@ -373,6 +383,8 @@ class PluginsOptionsPage(OptionsPage):
                     self.set_current_item(item, scroll=True)
 
     def _reload(self):
+        if self._deleted:
+            return
         self._remove_all()
         self._populate()
         self._restore_plugins_states()
