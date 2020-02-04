@@ -82,7 +82,7 @@ TAG_NAMES = {
     'originaldate': N_('Original Release Date'),
     'originalfilename': N_('Original Filename'),
     'originalyear': N_('Original Year'),
-    'performer:': N_('Performer'),
+    'performer': N_('Performer'),
     'producer': N_('Producer'),
     'r128_album_gain': N_('R128 Album Gain'),
     'r128_track_gain': N_('R128 Track Gain'),
