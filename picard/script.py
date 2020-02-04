@@ -21,6 +21,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from collections import namedtuple
+import datetime
 from functools import reduce
 from inspect import getfullargspec
 import operator
@@ -1201,3 +1202,28 @@ def func_slice(parser, multi, start_index, end_index, separator=MULTI_VALUED_JOI
         return separator.join(multi_var[start:end])
     except IndexError:
         return ''
+
+
+@script_function()
+def func_datetime(parser, format=None):
+    """Return the current date and time as a string.
+
+    Arguments:
+        parser: The ScriptParser object used to parse the script.
+        format: A string or the ScriptVariable/Function that evaluates to the
+            string used to format the output.  Default is '%Y-%m-%d %H:%M:%S'
+            if blank.  Uses strftime() format.
+
+    Returns:
+        Returns the current date and time as a string.
+    """
+    # local_tz required for Python 3.5 which does not allow setting astimezone()
+    # on a naive datetime.datetime object.  This provides timezone information to
+    # allow the use of %Z and %z in the output format.
+    local_tz = datetime.datetime.now(datetime.timezone.utc).astimezone().tzinfo
+
+    # Handle case where format evaluates to ''
+    if not format:
+        format = '%Y-%m-%d %H:%M:%S'
+
+    return datetime.datetime.now(tz=local_tz).strftime(format)
