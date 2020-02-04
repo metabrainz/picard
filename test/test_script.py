@@ -1,3 +1,4 @@
+import datetime
 from unittest.mock import MagicMock
 
 from test.picardtestcase import PicardTestCase
@@ -14,6 +15,38 @@ from picard.script import (
     ScriptUnknownFunction,
     register_script_function,
 )
+
+
+class _TestTimezone(datetime.tzinfo):
+    def utcoffset(self, dt):
+        # Set to GMT+2
+        return datetime.timedelta(hours=2) + self.dst(dt)
+
+    def dst(self, dt):
+        d = datetime.datetime(dt.year, 4, 1)
+        self.dston = d - datetime.timedelta(days=d.weekday() + 1)
+        d = datetime.datetime(dt.year, 11, 1)
+        self.dstoff = d - datetime.timedelta(days=d.weekday() + 1)
+        if self.dston <=  dt.replace(tzinfo=None) < self.dstoff:
+            return datetime.timedelta(hours=1)
+        else:
+            return datetime.timedelta(0)
+
+    def tzname(self,dt):
+        return "TZ Test"
+
+
+class _DateTime(datetime.datetime):
+    @classmethod
+    def now(cls, tz=None):
+        return datetime.datetime(2020, 1, 2, hour=12, minute=34, second=56, microsecond=789, tzinfo=tz)
+
+    def astimezone(self, tz=None):
+        # Ignore tz passed to the method and force use of test timezone.
+        tz = _TestTimezone()
+        utc = (self - self.utcoffset()).replace(tzinfo=tz)
+        # Convert from UTC to tz's local time.
+        return tz.fromutc(utc)
 
 
 class ScriptParserTest(PicardTestCase):
@@ -943,3 +976,33 @@ class ScriptParserTest(PicardTestCase):
             self.parser.eval("$slice(abc; def,0)")
         with self.assertRaisesRegex(ScriptError, areg):
             self.parser.eval("$slice(abc; def),0,1,:,extra")
+
+    def test_cmd_datetime(self):
+        # Save origninal datetime object and substitute one returning
+        # a fixed now() value for testing.
+        original_datetime = datetime.datetime
+        datetime.datetime = _DateTime
+
+        try:
+            context = Metadata()
+            context["foo"] = "%Y%m%d%H%M%S.%f"
+            # Tests with context
+            self.assertScriptResultEquals("$datetime(%foo%)", "20200102123456.000789", context)
+            self.assertScriptResultEquals("$datetime($initials())", "2020-01-02 12:34:56", context)
+            # Tests with static input
+            self.assertScriptResultEquals("$datetime(\%Y\%m\%d\%H\%M\%S.\%f)", "20200102123456.000789", context)
+            # Tests with timezones
+            self.assertScriptResultEquals("$datetime(\%H\%M\%S \%z \%Z)", "123456 +0200 TZ Test", context)
+            # Tests with missing input
+            self.assertScriptResultEquals("$datetime()", "2020-01-02 12:34:56", context)
+            # Tests with invalid format
+            self.assertScriptResultEquals("$datetime(xxx)", "xxx", context)
+            # Tests with invalid number of arguments
+            areg = r"^Wrong number of arguments for \$datetime: Expected between 0 and 1, "
+            with self.assertRaisesRegex(ScriptError, areg):
+                self.parser.eval("$datetime(abc,def)")
+        except (AssertionError, ValueError, IndexError) as err:
+            raise err
+        finally:
+            # Restore origninal datetime object
+            datetime.datetime = original_datetime
