@@ -7,7 +7,7 @@
 # nikki2 <b4931048@nwldx.com>, 2012
 # Björn Krombholz <fox.box@gmail.com>, 2006
 # Wildwatz <daniel@theis-internet.de>, 2017
-# David Kellner <kellnerd@gmx.net>, 2019
+# David Kellner <kellnerd@gmx.net>, 2019-2020
 # Eckhard Henkel <eckhard.henkel@t-online.de>, 2018
 # Ettore Atalan <atalanttore@googlemail.com>, 2014,2018
 # Felix Kugler <relgukxilef@gmail.com>, 2015
@@ -40,9 +40,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-01-28 12:15+0100\n"
-"PO-Revision-Date: 2020-01-30 08:08+0000\n"
-"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
+"POT-Creation-Date: 2020-02-03 18:01+0100\n"
+"PO-Revision-Date: 2020-02-04 13:47+0000\n"
+"Last-Translator: David Kellner <kellnerd@gmx.net>\n"
 "Language-Team: German (http://www.transifex.com/musicbrainz/musicbrainz/language/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -157,22 +157,22 @@ msgstr "Zusammenführen"
 msgid "Remove"
 msgstr "Entfernen"
 
-#: picard/file.py:674
+#: picard/file.py:676
 #, python-format
 msgid "No matching tracks above the threshold for file '%(filename)s'"
 msgstr "Keine passenden Titel oberhalb der Schwellenwerte für Datei „%(filename)s“"
 
-#: picard/file.py:676
+#: picard/file.py:678
 #, python-format
 msgid "File '%(filename)s' identified!"
 msgstr "Datei „%(filename)s“ identifiziert!"
 
-#: picard/file.py:688
+#: picard/file.py:690
 #, python-format
 msgid "No matching tracks for file '%(filename)s'"
 msgstr "Keine passenden Titel für Datei „%(filename)s“"
 
-#: picard/file.py:720
+#: picard/file.py:722
 #, python-format
 msgid "Looking up the metadata for file %(filename)s ..."
 msgstr "Metadaten für Datei %(filename)s werden abgefragt …"
@@ -319,24 +319,24 @@ msgstr "AcoustID-Übermittlung fehlgeschlagen mit Fehler „%(error)s“: %(mess
 msgid "AcoustIDs successfully submitted."
 msgstr "AcoustIDs erfolgreich übermittelt."
 
-#: picard/const/__init__.py:130
+#: picard/const/__init__.py:133
 msgid "Stable releases only"
 msgstr "Nur stabile Versionen"
 
-#: picard/const/__init__.py:136
+#: picard/const/__init__.py:139
 msgid "Stable and Beta releases"
 msgstr "Stabile und Beta-Versionen"
 
-#: picard/const/__init__.py:142
+#: picard/const/__init__.py:145
 msgid "Stable, Beta and Dev releases"
 msgstr "Stabile, Beta- und Entwicklungs-Versionen"
 
-#: picard/const/__init__.py:157
+#: picard/const/__init__.py:160
 #, python-format
 msgid "My script %d"
 msgstr "Eigenes Skript %d"
 
-#: picard/const/__init__.py:158
+#: picard/const/__init__.py:161
 msgid "My script"
 msgstr "Eigenes Skript"
 
@@ -2720,7 +2720,7 @@ msgstr "Nicht übermittelter Fingerabdruck"
 #: picard/ui/itemviews.py:1077
 msgid ""
 "No fingerprint was calculated for this file, use \"Scan\" or \"Generate "
-"AcoustID fingerprints\" to calculate the fingerprint."
+"AcoustID Fingerprints\" to calculate the fingerprint."
 msgstr "Für diese Datei wurde kein Fingerabdruck generiert. Verwende \"Analysieren\" oder \"AcoustID-Fingerabdrücke generieren\" um den Fingerabdruck zu generieren."
 
 #: picard/ui/logview.py:152
@@ -3000,7 +3000,7 @@ msgid "Ctrl+Y"
 msgstr "Ctrl+Y"
 
 #: picard/ui/mainwindow.py:507
-msgid "&Generate AcoustID fingerprints"
+msgid "&Generate AcoustID Fingerprints"
 msgstr "Acoust&ID-Fingerabdrücke generieren"
 
 #: picard/ui/mainwindow.py:508
@@ -4337,7 +4337,7 @@ msgid "Submit AcoustIDs"
 msgstr "AcoustIDs übermitteln"
 
 #: picard/ui/options/interface.py:97
-msgid "Generate AcoustID fingerprints"
+msgid "Generate AcoustID Fingerprints"
 msgstr "AcoustID-Fingerabdrücke generieren"
 
 #: picard/ui/options/interface.py:101

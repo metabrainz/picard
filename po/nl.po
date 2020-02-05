@@ -13,9 +13,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-01-28 12:15+0100\n"
-"PO-Revision-Date: 2020-01-28 12:59+0000\n"
-"Last-Translator: Michael Wiencek <mwtuea@gmail.com>\n"
+"POT-Creation-Date: 2020-02-03 18:01+0100\n"
+"PO-Revision-Date: 2020-02-04 09:29+0000\n"
+"Last-Translator: Maurits Meulenbelt <mfmeulenbelt@gmail.com>\n"
 "Language-Team: Dutch (http://www.transifex.com/musicbrainz/musicbrainz/language/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -130,22 +130,22 @@ msgstr "Samenvoegen"
 msgid "Remove"
 msgstr "Verwijderen"
 
-#: picard/file.py:674
+#: picard/file.py:676
 #, python-format
 msgid "No matching tracks above the threshold for file '%(filename)s'"
 msgstr "Geen bijpassende tracks boven de limiet voor bestand ‘%(filename)s’"
 
-#: picard/file.py:676
+#: picard/file.py:678
 #, python-format
 msgid "File '%(filename)s' identified!"
 msgstr "Bestand ‘%(filename)s’ geïdentificeerd!"
 
-#: picard/file.py:688
+#: picard/file.py:690
 #, python-format
 msgid "No matching tracks for file '%(filename)s'"
 msgstr "Geen overeenkomende nummers voor bestand ‘%(filename)s’"
 
-#: picard/file.py:720
+#: picard/file.py:722
 #, python-format
 msgid "Looking up the metadata for file %(filename)s ..."
 msgstr "Metadata voor het bestand %(filename)s wordt opgezocht …"
@@ -292,24 +292,24 @@ msgstr "Het verzenden van de AcoustID mislukte met de fout ‘%(error)s’: %(me
 msgid "AcoustIDs successfully submitted."
 msgstr "AcoustID’s met succes ingediend."
 
-#: picard/const/__init__.py:130
+#: picard/const/__init__.py:133
 msgid "Stable releases only"
 msgstr "alleen stabiele versies"
 
-#: picard/const/__init__.py:136
+#: picard/const/__init__.py:139
 msgid "Stable and Beta releases"
 msgstr "stabiele en bètaversies"
 
-#: picard/const/__init__.py:142
+#: picard/const/__init__.py:145
 msgid "Stable, Beta and Dev releases"
 msgstr "stabiele, bèta- en ontwikkelversies"
 
-#: picard/const/__init__.py:157
+#: picard/const/__init__.py:160
 #, python-format
 msgid "My script %d"
 msgstr "Mijn script %d"
 
-#: picard/const/__init__.py:158
+#: picard/const/__init__.py:161
 msgid "My script"
 msgstr "Mijn script"
 
@@ -2693,7 +2693,7 @@ msgstr "Niet-ingediende vingerafdruk"
 #: picard/ui/itemviews.py:1077
 msgid ""
 "No fingerprint was calculated for this file, use \"Scan\" or \"Generate "
-"AcoustID fingerprints\" to calculate the fingerprint."
+"AcoustID Fingerprints\" to calculate the fingerprint."
 msgstr "Voor dit bestand is geen vingerafdruk berekend. Gebruik “Scannen” of “AcoustID-vingerafdrukken aanmaken” om de vingerafdruk te berekenen."
 
 #: picard/ui/logview.py:152
@@ -2973,7 +2973,7 @@ msgid "Ctrl+Y"
 msgstr "Ctrl+Y"
 
 #: picard/ui/mainwindow.py:507
-msgid "&Generate AcoustID fingerprints"
+msgid "&Generate AcoustID Fingerprints"
 msgstr "AcoustID-&vingerafdrukken aanmaken"
 
 #: picard/ui/mainwindow.py:508
@@ -3048,7 +3048,7 @@ msgstr "Mijn Collecties in de browser &openen"
 
 #: picard/ui/mainwindow.py:562
 msgid "View &Error/Debug Log"
-msgstr "Fout- &en debug&logboek bekijken"
+msgstr "Fout- en debug&logboek bekijken"
 
 #: picard/ui/mainwindow.py:565
 msgid "Ctrl+G"
@@ -3408,15 +3408,15 @@ msgstr "Uitgebreide opties"
 
 #: picard/ui/ui_options_advanced.py:116
 msgid "Include sub-folders when adding files from folder"
-msgstr "Neem ook submappen mee als je bestanden uit een map toevoegt"
+msgstr "Ook submappen toevoegen als je bestanden uit een map toevoegt"
 
 #: picard/ui/ui_options_advanced.py:117
 msgid "Ignore track duration difference under this number of seconds"
-msgstr "Negeer verschillen in de lengtes van nummers als dat minder is dan dit aantal seconden:"
+msgstr "Verschillen korter dan dit aantal seconden bij het vergelijken van nummers negeren:"
 
 #: picard/ui/ui_options_advanced.py:118
 msgid "Ignore file paths matching the following regular expression:"
-msgstr "Bestandspaden negeren die met de volgende reguliere expressie overeenkomen:"
+msgstr "Bestandspaden negeren als ze met de volgende reguliere expressie overeenkomen:"
 
 #: picard/ui/ui_options_advanced.py:119
 msgid "Ignore hidden files"
@@ -3477,7 +3477,7 @@ msgstr "De volgende bestandsnaam voor afbeeldingen gebruiken:"
 
 #: picard/ui/ui_options_cover.py:95
 msgid "Overwrite the file if it already exists"
-msgstr "Overschrijven als het bestand al bestaat"
+msgstr "Bestaande bestanden overschrijven"
 
 #: picard/ui/ui_options_cover.py:96
 msgid "Cover Art Providers"
@@ -3629,7 +3629,7 @@ msgstr ", "
 
 #: picard/ui/ui_options_genres.py:128
 msgid "Genres or folksonomy tags to include or exclude, one per line:"
-msgstr "Genres of folksonomietags die moeten worden in- of uitgesloten, één per regel:"
+msgstr "Genres of folksonomietags die moeten worden in- of uitgesloten (één per regel):"
 
 #: picard/ui/ui_options_genres.py:129
 msgid "Playground for genres or folksonomy tags filters (cleared on exit):"
@@ -3731,7 +3731,7 @@ msgstr "Gestandaardiseerde artiestennamen gebruiken"
 
 #: picard/ui/ui_options_metadata.py:99
 msgid "Use standardized instrument and vocal credits"
-msgstr "Gebruik gestandaardiseerde instrumentnamen en stemsoorten"
+msgstr "Gestandaardiseerde instrumentnamen en stemsoorten gebruiken"
 
 #: picard/ui/ui_options_metadata.py:100
 msgid "Convert Unicode punctuation characters to ASCII"
@@ -3827,7 +3827,7 @@ msgid ""
 "user who did the rating. That way different ratings for different users can "
 "be stored in the files. Please specify the e-mail you want to use to save "
 "your ratings."
-msgstr "Picard slaat het e-mailadres van de gebruiker die een waardering gaf op bij die waardering. Op die manier kunnen verschillende waarderingen van verschillende gebruikers in de bestanden worden opgeslagen. Vul hier het e-mailadres in dat je voor het opslaan van je waarderingen wil gebruiken."
+msgstr "Picard slaat het e-mailadres van de gebruiker samen met zijn waardering op. Zo kunnen verschillende waarderingen van verschillende gebruikers in de bestanden worden opgeslagen. Vul hier het e-mailadres in dat je voor het opslaan van je waarderingen wil gebruiken."
 
 #: picard/ui/ui_options_ratings.py:47
 msgid "E-mail:"
@@ -3887,7 +3887,7 @@ msgstr "Bestanden bij het opslaan een andere naam geven"
 
 #: picard/ui/ui_options_renaming.py:150
 msgid "Replace non-ASCII characters"
-msgstr "Niet-ASCII-karakters vervangen"
+msgstr "Niet-ASCII-tekens vervangen"
 
 #: picard/ui/ui_options_renaming.py:151
 msgid "Windows compatibility"
@@ -3948,7 +3948,7 @@ msgstr "APEv2-tags uit MP3-bestanden verwijderen"
 #: picard/ui/ui_options_tags.py:68
 msgid ""
 "Preserve these tags from being cleared or overwritten with MusicBrainz data:"
-msgstr "Behoud deze tags in plaats van ze te wissen of met gegevens van MusicBrainz te overschrijven:"
+msgstr "Deze tags behouden in plaats van ze te wissen of met gegevens van MusicBrainz te overschrijven:"
 
 #: picard/ui/ui_options_tags.py:69
 msgid "Tags are separated by commas and are case-insensitive."
@@ -4037,7 +4037,7 @@ msgstr "Aanmelding vereist"
 
 #: picard/ui/ui_provider_options_caa.py:80
 msgid "Download only cover art images matching selected types"
-msgstr "Download alleen de volgende types afbeeldingen:"
+msgstr "Alleen de volgende types afbeeldingen downloaden:"
 
 #: picard/ui/ui_provider_options_caa.py:81
 msgid "Select types..."
@@ -4045,7 +4045,7 @@ msgstr "Types selecteren"
 
 #: picard/ui/ui_provider_options_caa.py:82
 msgid "Only use images of the following size:"
-msgstr "Gebruik alleen afbeeldingen van de volgende grootte:"
+msgstr "Alleen afbeeldingen van de volgende grootte gebruiken:"
 
 #: picard/ui/ui_provider_options_caa.py:83
 msgid "Save only one front image as separate file"
@@ -4059,7 +4059,7 @@ msgstr "Alleen goedgekeurde afbeeldingen downloaden"
 msgid ""
 "Use the first image type as the filename. This will not change the filename "
 "of front images."
-msgstr "Gebruik het eerste type als bestandsnaam. Dit verandert de bestandsnaam van de voorkant niet"
+msgstr "Het eerste type als bestandsnaam gebruiken. Dit verandert de bestandsnaam van de voorkant niet"
 
 #: picard/ui/ui_provider_options_local.py:51
 msgid "Local cover art files match the following regular expression:"
@@ -4310,7 +4310,7 @@ msgid "Submit AcoustIDs"
 msgstr "AcoustID’s versturen"
 
 #: picard/ui/options/interface.py:97
-msgid "Generate AcoustID fingerprints"
+msgid "Generate AcoustID Fingerprints"
 msgstr "AcoustID-vingerafdrukken aanmaken"
 
 #: picard/ui/options/interface.py:101
@@ -4469,7 +4469,7 @@ msgstr "Bestandsnamen"
 msgid ""
 "<a href=\"%(picard-doc-scripting-url)s\">Open Scripting Documentation in "
 "your browser</a>"
-msgstr "<a href=\"%(picard-doc-scripting-url)s\">Open de documentatie voor scripts in je browser</a>"
+msgstr "<a href=\"%(picard-doc-scripting-url)s\">De documentatie voor scripts in je browser openen</a>"
 
 #: picard/ui/options/renaming.py:206
 msgid "The location to move files to must not be empty."

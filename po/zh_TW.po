@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-01-28 12:15+0100\n"
-"PO-Revision-Date: 2020-01-28 12:59+0000\n"
+"POT-Creation-Date: 2020-02-03 18:01+0100\n"
+"PO-Revision-Date: 2020-02-04 01:03+0000\n"
 "Last-Translator: Michael Wiencek <mwtuea@gmail.com>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/musicbrainz/musicbrainz/language/zh_TW/)\n"
 "MIME-Version: 1.0\n"
@@ -125,22 +125,22 @@ msgstr "合併"
 msgid "Remove"
 msgstr "移除"
 
-#: picard/file.py:674
+#: picard/file.py:676
 #, python-format
 msgid "No matching tracks above the threshold for file '%(filename)s'"
 msgstr "檔案「%(filename)s」沒有符合程度超過閥值的音軌"
 
-#: picard/file.py:676
+#: picard/file.py:678
 #, python-format
 msgid "File '%(filename)s' identified!"
 msgstr "檔案「%(filename)s」已辨識！"
 
-#: picard/file.py:688
+#: picard/file.py:690
 #, python-format
 msgid "No matching tracks for file '%(filename)s'"
 msgstr "檔案「%(filename)s」沒有任何符合的音軌"
 
-#: picard/file.py:720
+#: picard/file.py:722
 #, python-format
 msgid "Looking up the metadata for file %(filename)s ..."
 msgstr "正在查找檔案「%(filename)s」的後設資料…"
@@ -148,7 +148,7 @@ msgstr "正在查找檔案「%(filename)s」的後設資料…"
 #: picard/pluginmanager.py:223
 #, python-format
 msgid "Unable to load plugin '%s'"
-msgstr ""
+msgstr "無法載入插件「%s」"
 
 #: picard/pluginmanager.py:238
 #, python-format
@@ -275,7 +275,7 @@ msgstr "正在查找檔案「%(filename)s」的特徵碼…"
 
 #: picard/acoustid/manager.py:87
 msgid "Submitting AcoustIDs ..."
-msgstr "正在上傳 AcoustIDs…"
+msgstr "正在提交 AcoustIDs…"
 
 #: picard/acoustid/manager.py:109
 #, python-format
@@ -286,24 +286,24 @@ msgstr "AcoustID提交失敗，錯誤為「%(error)s」: %(message)s"
 msgid "AcoustIDs successfully submitted."
 msgstr "已成功提交 AcoustID。"
 
-#: picard/const/__init__.py:130
+#: picard/const/__init__.py:133
 msgid "Stable releases only"
-msgstr ""
+msgstr "僅限穩定版"
 
-#: picard/const/__init__.py:136
+#: picard/const/__init__.py:139
 msgid "Stable and Beta releases"
-msgstr ""
+msgstr "穩定版與測試版"
 
-#: picard/const/__init__.py:142
+#: picard/const/__init__.py:145
 msgid "Stable, Beta and Dev releases"
-msgstr ""
+msgstr "穩定版、測試版與開發版"
 
-#: picard/const/__init__.py:157
+#: picard/const/__init__.py:160
 #, python-format
 msgid "My script %d"
 msgstr "我的腳本「%d」"
 
-#: picard/const/__init__.py:158
+#: picard/const/__init__.py:161
 msgid "My script"
 msgstr "我的腳本"
 
@@ -338,7 +338,7 @@ msgstr "英語"
 
 #: picard/const/languages.py:35 picard/const/locales.py:119
 msgid "English (Australia)"
-msgstr ""
+msgstr "英語 (澳大利亞)"
 
 #: picard/const/languages.py:36 picard/const/locales.py:123
 msgid "English (Canada)"
@@ -366,7 +366,7 @@ msgstr "法語"
 
 #: picard/const/languages.py:45 picard/const/locales.py:162
 msgid "French (Canada)"
-msgstr ""
+msgstr "法語 (加拿大)"
 
 #: picard/const/languages.py:47 picard/const/locales.py:172
 msgid "Galician"
@@ -450,11 +450,11 @@ msgstr "烏克蘭語"
 
 #: picard/const/languages.py:76 picard/const/locales.py:87
 msgid "Chinese (China)"
-msgstr ""
+msgstr "漢語 (中國)"
 
 #: picard/const/languages.py:77 picard/const/locales.py:96
 msgid "Chinese (Taiwan)"
-msgstr ""
+msgstr "漢語 (台灣)"
 
 #: picard/const/locales.py:24
 msgid "Afar"
@@ -462,19 +462,19 @@ msgstr "阿法爾語"
 
 #: picard/const/locales.py:25
 msgid "Afar (Djibouti)"
-msgstr ""
+msgstr "阿法爾語 (吉布地)"
 
 #: picard/const/locales.py:26
 msgid "Afar (Eritrea)"
-msgstr ""
+msgstr "阿法爾語 (厄利垂亞)"
 
 #: picard/const/locales.py:27
 msgid "Afar (Eritrea) (Saho)"
-msgstr ""
+msgstr "阿法爾語 (厄利垂亞) (紹約語)"
 
 #: picard/const/locales.py:28
 msgid "Afar (Ethiopia)"
-msgstr ""
+msgstr "阿法爾語 (衣索比亞)"
 
 #: picard/const/locales.py:29
 msgid "Afrikaans"
@@ -482,11 +482,11 @@ msgstr "南非語"
 
 #: picard/const/locales.py:30
 msgid "Afrikaans (Namibia)"
-msgstr ""
+msgstr "南非語 (納米比亞)"
 
 #: picard/const/locales.py:31
 msgid "Afrikaans (South Africa)"
-msgstr ""
+msgstr "南非語 (南非)"
 
 #: picard/const/locales.py:32
 msgid "Akan"
@@ -494,11 +494,11 @@ msgstr "阿坎語"
 
 #: picard/const/locales.py:33
 msgid "Akan (Ghana)"
-msgstr ""
+msgstr "阿寒語 (迦納)"
 
 #: picard/const/locales.py:35
 msgid "Albanian (Albania)"
-msgstr ""
+msgstr "阿爾巴尼亞語 (阿爾巴尼亞)"
 
 #: picard/const/locales.py:36
 msgid "Amharic"
@@ -506,75 +506,75 @@ msgstr "阿姆哈拉語"
 
 #: picard/const/locales.py:37
 msgid "Amharic (Ethiopia)"
-msgstr ""
+msgstr "阿姆哈拉語 (衣索比亞)"
 
 #: picard/const/locales.py:39
 msgid "Arabic (Algeria)"
-msgstr ""
+msgstr "阿拉伯語 (阿爾及利亞)"
 
 #: picard/const/locales.py:40
 msgid "Arabic (Bahrain)"
-msgstr ""
+msgstr "阿拉伯語 (巴林)"
 
 #: picard/const/locales.py:41
 msgid "Arabic (Egypt)"
-msgstr ""
+msgstr "阿拉伯語 (埃及)"
 
 #: picard/const/locales.py:42
 msgid "Arabic (Iraq)"
-msgstr ""
+msgstr "阿拉伯語 (伊拉克)"
 
 #: picard/const/locales.py:43
 msgid "Arabic (Jordan)"
-msgstr ""
+msgstr "阿拉伯語 (約旦)"
 
 #: picard/const/locales.py:44
 msgid "Arabic (Kuwait)"
-msgstr ""
+msgstr "阿拉伯語 (科威特)"
 
 #: picard/const/locales.py:45
 msgid "Arabic (Lebanon)"
-msgstr ""
+msgstr "阿拉伯語 (黎巴嫩)"
 
 #: picard/const/locales.py:46
 msgid "Arabic (Libya)"
-msgstr ""
+msgstr "阿拉伯語 (利比亞)"
 
 #: picard/const/locales.py:47
 msgid "Arabic (Morocco)"
-msgstr ""
+msgstr "阿拉伯語 (摩洛哥)"
 
 #: picard/const/locales.py:48
 msgid "Arabic (Oman)"
-msgstr ""
+msgstr "阿拉伯語 (阿曼)"
 
 #: picard/const/locales.py:49
 msgid "Arabic (Qatar)"
-msgstr ""
+msgstr "阿拉伯語 (卡達)"
 
 #: picard/const/locales.py:50
 msgid "Arabic (Saudi Arabia)"
-msgstr ""
+msgstr "阿拉伯語 (沙烏地阿拉伯)"
 
 #: picard/const/locales.py:51
 msgid "Arabic (Sudan)"
-msgstr ""
+msgstr "阿拉伯語 (蘇丹)"
 
 #: picard/const/locales.py:52
 msgid "Arabic (Syria)"
-msgstr ""
+msgstr "阿拉伯語 (敘利亞)"
 
 #: picard/const/locales.py:53
 msgid "Arabic (Tunisia)"
-msgstr ""
+msgstr "阿拉伯語 (突尼西亞)"
 
 #: picard/const/locales.py:54
 msgid "Arabic (United Arab Emirates)"
-msgstr ""
+msgstr "阿拉伯語 (阿拉伯聯合大公國)"
 
 #: picard/const/locales.py:55
 msgid "Arabic (Yemen)"
-msgstr ""
+msgstr "阿拉伯語 (葉門)"
 
 #: picard/const/locales.py:56
 msgid "Armenian"
@@ -582,11 +582,11 @@ msgstr "亞美尼亞文"
 
 #: picard/const/locales.py:57
 msgid "Armenian (Armenia)"
-msgstr ""
+msgstr "亞美尼亞語 (亞美尼亞)"
 
 #: picard/const/locales.py:58
 msgid "Armenian (Armenia) (Revised Orthography)"
-msgstr ""
+msgstr "亞美尼亞語 (亞美尼亞) (書寫改革)"
 
 #: picard/const/locales.py:59
 msgid "Assamese"
@@ -594,7 +594,7 @@ msgstr "阿薩姆語"
 
 #: picard/const/locales.py:60
 msgid "Assamese (India)"
-msgstr ""
+msgstr "阿薩姆語 (印度)"
 
 #: picard/const/locales.py:61
 msgid "Atsam"
@@ -610,23 +610,23 @@ msgstr "亞塞拜然語"
 
 #: picard/const/locales.py:64
 msgid "Azerbaijani (Azerbaijan)"
-msgstr ""
+msgstr "亞塞拜然語 (亞塞拜然)"
 
 #: picard/const/locales.py:65
 msgid "Azerbaijani (Cyrillic)"
-msgstr ""
+msgstr "亞塞拜然語 (西里爾字母)"
 
 #: picard/const/locales.py:66
 msgid "Azerbaijani (Cyrillic) (Azerbaijan)"
-msgstr ""
+msgstr "亞塞拜然語 (西里爾字母) (亞塞拜然)"
 
 #: picard/const/locales.py:67
 msgid "Azerbaijani (Latin)"
-msgstr ""
+msgstr "亞塞拜然語 (拉丁字母)"
 
 #: picard/const/locales.py:68
 msgid "Azerbaijani (Latin) (Azerbaijan)"
-msgstr ""
+msgstr "亞塞拜然語 (拉丁字母) (亞塞拜然)"
 
 #: picard/const/locales.py:69
 msgid "Basque"
@@ -634,7 +634,7 @@ msgstr "巴斯克語"
 
 #: picard/const/locales.py:70
 msgid "Basque (Spain)"
-msgstr ""
+msgstr "巴斯克語 (西班牙)"
 
 #: picard/const/locales.py:71
 msgid "Belarusian"
@@ -642,7 +642,7 @@ msgstr "白俄語"
 
 #: picard/const/locales.py:72
 msgid "Belarusian (Belarus)"
-msgstr ""
+msgstr "白俄羅斯語 (白俄羅斯)"
 
 #: picard/const/locales.py:73
 msgid "Bengali"
@@ -650,11 +650,11 @@ msgstr "孟加拉文"
 
 #: picard/const/locales.py:74
 msgid "Bengali (Bangladesh)"
-msgstr ""
+msgstr "孟加拉語 (孟加拉)"
 
 #: picard/const/locales.py:75
 msgid "Bengali (India)"
-msgstr ""
+msgstr "孟加拉語 (印度)"
 
 #: picard/const/locales.py:76
 msgid "Blin"
@@ -662,7 +662,7 @@ msgstr "比林語"
 
 #: picard/const/locales.py:77
 msgid "Blin (Eritrea)"
-msgstr ""
+msgstr "比林語 (厄利垂亞)"
 
 #: picard/const/locales.py:78
 msgid "Bosnian"
@@ -670,7 +670,7 @@ msgstr "波士尼亞語"
 
 #: picard/const/locales.py:79
 msgid "Bosnian (Bosnia and Herzegovina)"
-msgstr ""
+msgstr "波士尼亞語 (波希尼亞及赫塞哥維那)"
 
 #: picard/const/locales.py:80
 msgid "Bulgarian"
@@ -678,7 +678,7 @@ msgstr "保加利亞語"
 
 #: picard/const/locales.py:81
 msgid "Bulgarian (Bulgaria)"
-msgstr ""
+msgstr "保加利亞語 (保加利亞)"
 
 #: picard/const/locales.py:82
 msgid "Burmese"
@@ -686,11 +686,11 @@ msgstr "緬甸語"
 
 #: picard/const/locales.py:83
 msgid "Burmese (Myanmar [Burma])"
-msgstr ""
+msgstr "緬甸語 (緬甸)"
 
 #: picard/const/locales.py:85
 msgid "Catalan (Spain)"
-msgstr ""
+msgstr "加泰隆語 (西班牙)"
 
 #: picard/const/locales.py:86
 msgid "Chinese"
@@ -698,51 +698,51 @@ msgstr "漢語"
 
 #: picard/const/locales.py:88
 msgid "Chinese (Hong Kong)"
-msgstr ""
+msgstr "漢語 (香港)"
 
 #: picard/const/locales.py:89
 msgid "Chinese (Macau)"
-msgstr ""
+msgstr "漢語 (澳門)"
 
 #: picard/const/locales.py:90
 msgid "Chinese (Simplified Han)"
-msgstr ""
+msgstr "漢語 (簡體漢文)"
 
 #: picard/const/locales.py:91
 msgid "Chinese (Simplified Han) (China)"
-msgstr ""
+msgstr "漢語 (簡體漢文) (中國)"
 
 #: picard/const/locales.py:92
 msgid "Chinese (Simplified Han) (Hong Kong)"
-msgstr ""
+msgstr "漢語 (簡體漢文) (香港)"
 
 #: picard/const/locales.py:93
 msgid "Chinese (Simplified Han) (Macau)"
-msgstr ""
+msgstr "漢語 (簡體漢文) (澳門)"
 
 #: picard/const/locales.py:94
 msgid "Chinese (Simplified Han) (Singapore)"
-msgstr ""
+msgstr "漢語 (簡體漢文) (新加坡)"
 
 #: picard/const/locales.py:95
 msgid "Chinese (Singapore)"
-msgstr ""
+msgstr "漢語 (新加坡)"
 
 #: picard/const/locales.py:97
 msgid "Chinese (Traditional Han)"
-msgstr ""
+msgstr "漢語 (傳統漢文)"
 
 #: picard/const/locales.py:98
 msgid "Chinese (Traditional Han) (Hong Kong)"
-msgstr ""
+msgstr "漢語 (傳統漢文) (香港)"
 
 #: picard/const/locales.py:99
 msgid "Chinese (Traditional Han) (Macau)"
-msgstr ""
+msgstr "漢語 (傳統漢文) (澳門)"
 
 #: picard/const/locales.py:100
 msgid "Chinese (Traditional Han) (Taiwan)"
-msgstr ""
+msgstr "漢語 (傳統漢文) (台灣)"
 
 #: picard/const/locales.py:101
 msgid "Coptic"
@@ -754,7 +754,7 @@ msgstr "康沃爾語"
 
 #: picard/const/locales.py:103
 msgid "Cornish (United Kingdom)"
-msgstr ""
+msgstr "康瓦爾語 (英國)"
 
 #: picard/const/locales.py:104
 msgid "Croatian"
@@ -762,15 +762,15 @@ msgstr "克羅埃西亞語"
 
 #: picard/const/locales.py:105
 msgid "Croatian (Croatia)"
-msgstr ""
+msgstr "克羅埃西亞語 (克羅埃西亞)"
 
 #: picard/const/locales.py:107
 msgid "Czech (Czech Republic)"
-msgstr ""
+msgstr "捷克語 (捷克)"
 
 #: picard/const/locales.py:109
 msgid "Danish (Denmark)"
-msgstr ""
+msgstr "丹麥語 (丹麥)"
 
 #: picard/const/locales.py:110
 msgid "Divehi"
@@ -778,15 +778,15 @@ msgstr "迪維西語"
 
 #: picard/const/locales.py:111
 msgid "Divehi (Maldives)"
-msgstr ""
+msgstr "迪維西語 (馬爾地夫)"
 
 #: picard/const/locales.py:113
 msgid "Dutch (Belgium)"
-msgstr ""
+msgstr "荷蘭語 (比利時)"
 
 #: picard/const/locales.py:114
 msgid "Dutch (Netherlands)"
-msgstr ""
+msgstr "荷蘭語 (荷蘭)"
 
 #: picard/const/locales.py:115
 msgid "Dzongkha"
@@ -794,119 +794,119 @@ msgstr "宗卡語"
 
 #: picard/const/locales.py:116
 msgid "Dzongkha (Bhutan)"
-msgstr ""
+msgstr "宗卡語 (不丹)"
 
 #: picard/const/locales.py:118
 msgid "English (American Samoa)"
-msgstr ""
+msgstr "英語 (美屬薩摩亞)"
 
 #: picard/const/locales.py:120
 msgid "English (Belgium)"
-msgstr ""
+msgstr "英語 (比利時)"
 
 #: picard/const/locales.py:121
 msgid "English (Belize)"
-msgstr ""
+msgstr "英語 (貝里斯)"
 
 #: picard/const/locales.py:122
 msgid "English (Botswana)"
-msgstr ""
+msgstr "英語 (波札那)"
 
 #: picard/const/locales.py:124
 msgid "English (Deseret)"
-msgstr ""
+msgstr "英語 (蜜蜂州)"
 
 #: picard/const/locales.py:125
 msgid "English (Deseret) (United States)"
-msgstr ""
+msgstr "英語 (蜜蜂州) (美國)"
 
 #: picard/const/locales.py:126
 msgid "English (Guam)"
-msgstr ""
+msgstr "英語 (關島)"
 
 #: picard/const/locales.py:127
 msgid "English (Hong Kong)"
-msgstr ""
+msgstr "英語 (香港)"
 
 #: picard/const/locales.py:128
 msgid "English (India)"
-msgstr ""
+msgstr "英語 (印度)"
 
 #: picard/const/locales.py:129
 msgid "English (Ireland)"
-msgstr ""
+msgstr "英語 (愛爾蘭)"
 
 #: picard/const/locales.py:130
 msgid "English (Jamaica)"
-msgstr ""
+msgstr "英語 (牙買加)"
 
 #: picard/const/locales.py:131
 msgid "English (Malta)"
-msgstr ""
+msgstr "英語 (馬爾他)"
 
 #: picard/const/locales.py:132
 msgid "English (Marshall Islands)"
-msgstr ""
+msgstr "英語 (馬紹爾群島)"
 
 #: picard/const/locales.py:133
 msgid "English (Namibia)"
-msgstr ""
+msgstr "英語 (納米比亞)"
 
 #: picard/const/locales.py:134
 msgid "English (New Zealand)"
-msgstr ""
+msgstr "英語 (紐西蘭)"
 
 #: picard/const/locales.py:135
 msgid "English (Northern Mariana Islands)"
-msgstr ""
+msgstr "英語 (北馬里亞納群島)"
 
 #: picard/const/locales.py:136
 msgid "English (Pakistan)"
-msgstr ""
+msgstr "英語 (巴基斯坦)"
 
 #: picard/const/locales.py:137
 msgid "English (Philippines)"
-msgstr ""
+msgstr "英語 (菲律賓)"
 
 #: picard/const/locales.py:138
 msgid "English (Shavian)"
-msgstr ""
+msgstr "英語 (蕭伯納字母)"
 
 #: picard/const/locales.py:139
 msgid "English (Singapore)"
-msgstr ""
+msgstr "英語 (新加坡)"
 
 #: picard/const/locales.py:140
 msgid "English (South Africa)"
-msgstr ""
+msgstr "英語 (南非)"
 
 #: picard/const/locales.py:141
 msgid "English (Trinidad and Tobago)"
-msgstr ""
+msgstr "英語 (千里達及托貝哥)"
 
 #: picard/const/locales.py:142
 msgid "English (U.S. Minor Outlying Islands)"
-msgstr ""
+msgstr "英語 (美屬邊疆群島)"
 
 #: picard/const/locales.py:143
 msgid "English (U.S. Virgin Islands)"
-msgstr ""
+msgstr "英語 (美屬維京群島)"
 
 #: picard/const/locales.py:144
 msgid "English (United Kingdom)"
-msgstr ""
+msgstr "英語 (英國)"
 
 #: picard/const/locales.py:145
 msgid "English (United States)"
-msgstr ""
+msgstr "英語 (美國)"
 
 #: picard/const/locales.py:146
 msgid "English (United States) (Computer)"
-msgstr ""
+msgstr "英語 (美國) (電腦)"
 
 #: picard/const/locales.py:147
 msgid "English (Zimbabwe)"
-msgstr ""
+msgstr "英語 (辛巴威)"
 
 #: picard/const/locales.py:148
 msgid "Esperanto"
@@ -914,7 +914,7 @@ msgstr "世界語"
 
 #: picard/const/locales.py:150
 msgid "Estonian (Estonia)"
-msgstr ""
+msgstr "愛沙尼亞語 (愛沙尼亞)"
 
 #: picard/const/locales.py:151
 msgid "Ewe"
@@ -942,43 +942,43 @@ msgstr "菲律賓語"
 
 #: picard/const/locales.py:157
 msgid "Filipino (Philippines)"
-msgstr ""
+msgstr "菲律賓語 (菲律賓)"
 
 #: picard/const/locales.py:159
 msgid "Finnish (Finland)"
-msgstr ""
+msgstr "芬蘭語 (芬蘭)"
 
 #: picard/const/locales.py:161
 msgid "French (Belgium)"
-msgstr ""
+msgstr "法語 (比利時)"
 
 #: picard/const/locales.py:163
 msgid "French (France)"
-msgstr ""
+msgstr "法語 (法國)"
 
 #: picard/const/locales.py:164
 msgid "French (Luxembourg)"
-msgstr ""
+msgstr "法語 (盧森堡)"
 
 #: picard/const/locales.py:165
 msgid "French (Monaco)"
-msgstr ""
+msgstr "法語 (摩納哥)"
 
 #: picard/const/locales.py:166
 msgid "French (Senegal)"
-msgstr ""
+msgstr "法語 (塞內加爾)"
 
 #: picard/const/locales.py:167
 msgid "French (Switzerland)"
-msgstr ""
+msgstr "法語 (瑞士)"
 
 #: picard/const/locales.py:168
 msgid "Friulian"
-msgstr "弗留利語"
+msgstr "佛里烏利語"
 
 #: picard/const/locales.py:169
 msgid "Friulian (Italy)"
-msgstr ""
+msgstr "佛里烏利語 (義大利)"
 
 #: picard/const/locales.py:170
 msgid "Ga"
@@ -1174,7 +1174,7 @@ msgstr ""
 
 #: picard/const/locales.py:226
 msgid "Japanese (Japan)"
-msgstr ""
+msgstr "日語 (日本)"
 
 #: picard/const/locales.py:227
 msgid "Jju"
@@ -1258,7 +1258,7 @@ msgstr ""
 
 #: picard/const/locales.py:248
 msgid "Korean (South Korea)"
-msgstr ""
+msgstr "韓語 (南韓)"
 
 #: picard/const/locales.py:249
 msgid "Koro"
@@ -1886,7 +1886,7 @@ msgstr "敘利亞語"
 
 #: picard/const/locales.py:419
 msgid "Syriac (Syria)"
-msgstr ""
+msgstr "敘利亞 (敘利亞)"
 
 #: picard/const/locales.py:420
 msgid "Tagalog"
@@ -1922,7 +1922,7 @@ msgstr ""
 
 #: picard/const/locales.py:428
 msgid "Taroko (Taiwan)"
-msgstr ""
+msgstr "德路固語 (台灣)"
 
 #: picard/const/locales.py:429
 msgid "Tatar"
@@ -2685,7 +2685,7 @@ msgstr ""
 #: picard/ui/itemviews.py:1077
 msgid ""
 "No fingerprint was calculated for this file, use \"Scan\" or \"Generate "
-"AcoustID fingerprints\" to calculate the fingerprint."
+"AcoustID Fingerprints\" to calculate the fingerprint."
 msgstr ""
 
 #: picard/ui/logview.py:152
@@ -2957,25 +2957,25 @@ msgstr "使用 AcoustID 音訊特徵碼來從實際的音樂內容中辨識檔�
 
 #: picard/ui/mainwindow.py:502
 msgid "Identify the file using its AcoustID audio fingerprint"
-msgstr "使用 AcoustID 音訊指紋辨識檔案"
+msgstr "使用 AcoustID 音訊特徵碼辨識檔案"
 
 #: picard/ui/mainwindow.py:504
 msgid "Ctrl+Y"
 msgstr "Ctrl+Y"
 
 #: picard/ui/mainwindow.py:507
-msgid "&Generate AcoustID fingerprints"
+msgid "&Generate AcoustID Fingerprints"
 msgstr ""
 
 #: picard/ui/mainwindow.py:508
 msgid ""
 "Generate the AcoustID audio fingerprints for the selected files without "
 "doing a lookup"
-msgstr ""
+msgstr "對已選取的檔案產生 AcoustID 音訊特徵碼，但是不查找這些檔案。"
 
 #: picard/ui/mainwindow.py:510
 msgid "Generate the AcoustID audio fingerprints for the selected files"
-msgstr ""
+msgstr "對已選取的檔案產生 AcoustID 音訊特徵碼。"
 
 #: picard/ui/mainwindow.py:513
 msgid "Cl&uster"
@@ -3071,7 +3071,7 @@ msgstr "在您的檔案總管中開啟包含該檔案的資料夾"
 
 #: picard/ui/mainwindow.py:587
 msgid "&Check for Update…"
-msgstr ""
+msgstr "檢查更新(&C)⋯"
 
 #: picard/ui/mainwindow.py:647
 msgid "&File"
@@ -3473,7 +3473,7 @@ msgstr "封面圖片提供者"
 
 #: picard/ui/ui_options_cover.py:97
 msgid "Reorder Priority: "
-msgstr ""
+msgstr "調整優先度:"
 
 #: picard/ui/ui_options_cover.py:98 picard/ui/ui_options_interface.py:141
 msgid "Move selected item up"
@@ -3558,33 +3558,33 @@ msgstr "當讀取新檔案時忽略 MBID"
 
 #: picard/ui/ui_options_general.py:141
 msgid "Update Checking"
-msgstr ""
+msgstr "更新檢查"
 
 #: picard/ui/ui_options_general.py:142
 msgid "Check for updates during start-up"
-msgstr ""
+msgstr "啟動時檢查更新"
 
 #: picard/ui/ui_options_general.py:143
 msgid "Days between checks:"
-msgstr ""
+msgstr "檢查間隔天數:"
 
 #: picard/ui/ui_options_general.py:144
 msgid "Updates to check:"
-msgstr ""
+msgstr "要檢查的更新:"
 
 #: picard/ui/ui_options_genres.py:118
 msgid "Use genres from MusicBrainz"
-msgstr ""
+msgstr "使用來自 MusicBrainz 的音樂類型"
 
 #: picard/ui/ui_options_genres.py:119
 msgid "Only use my genres"
-msgstr ""
+msgstr "只使用我指定的音樂類型"
 
 #: picard/ui/ui_options_genres.py:120
 msgid ""
 "Fall back on album's artists genres if no genres are found for the release "
 "or release group"
-msgstr ""
+msgstr "如果該發行品或發行組沒有類型資訊，則使用專輯作者的類型資訊"
 
 #: picard/ui/ui_options_genres.py:121
 msgid "Use folksonomy tags as genre"
@@ -3601,11 +3601,11 @@ msgstr " %"
 
 #: picard/ui/ui_options_genres.py:124
 msgid "Maximum number of genres:"
-msgstr ""
+msgstr "類型總數上限:"
 
 #: picard/ui/ui_options_genres.py:125
 msgid "Join multiple genres with:"
-msgstr ""
+msgstr "串接類型用的分隔符號:"
 
 #: picard/ui/ui_options_genres.py:126
 msgid " / "
@@ -3617,11 +3617,11 @@ msgstr ", "
 
 #: picard/ui/ui_options_genres.py:128
 msgid "Genres or folksonomy tags to include or exclude, one per line:"
-msgstr ""
+msgstr "要包含或排除的類型或用戶標籤，每行一個:"
 
 #: picard/ui/ui_options_genres.py:129
 msgid "Playground for genres or folksonomy tags filters (cleared on exit):"
-msgstr ""
+msgstr "類型或用戶標籤篩選器測試區(離開時將清空):"
 
 #: picard/ui/ui_options_interface.py:127
 msgid "Miscellaneous"
@@ -3683,7 +3683,7 @@ msgstr "從工具列種移除按鈕"
 #: picard/ui/options/interface_colors.py:82
 #: picard/ui/ui_options_interface_colors.py:48
 msgid "Colors"
-msgstr ""
+msgstr "顏色"
 
 #: picard/ui/ui_options_interface_top_tags.py:37
 msgid "Show the below tags above all other tags in the metadata view"
@@ -3719,7 +3719,7 @@ msgstr "使用標準化的創作者名稱"
 
 #: picard/ui/ui_options_metadata.py:99
 msgid "Use standardized instrument and vocal credits"
-msgstr ""
+msgstr "使用標準化的樂器與人聲名稱"
 
 #: picard/ui/ui_options_metadata.py:100
 msgid "Convert Unicode punctuation characters to ASCII"
@@ -3815,7 +3815,7 @@ msgid ""
 "user who did the rating. That way different ratings for different users can "
 "be stored in the files. Please specify the e-mail you want to use to save "
 "your ratings."
-msgstr ""
+msgstr "Picard 將評分資訊與電子郵件位址一起儲存，來辨識哪個使用者提出評價。這使不同的使用者可以儲存不同的評分資訊。如果您想儲存評分，請指定您的電子郵件位址。"
 
 #: picard/ui/ui_options_ratings.py:47
 msgid "E-mail:"
@@ -3915,7 +3915,7 @@ msgstr "將標籤寫入檔案"
 
 #: picard/ui/ui_options_tags.py:63
 msgid "Preserve timestamps of tagged files"
-msgstr ""
+msgstr "寫入標籤時保留檔案的修改時間戳記"
 
 #: picard/ui/ui_options_tags.py:64
 msgid "Before Tagging"
@@ -3936,11 +3936,11 @@ msgstr "從 MP3 檔案移除 APEv2 標籤"
 #: picard/ui/ui_options_tags.py:68
 msgid ""
 "Preserve these tags from being cleared or overwritten with MusicBrainz data:"
-msgstr ""
+msgstr "保留以下標籤不會被清除，或是被 MusicBrainz 資訊覆蓋:"
 
 #: picard/ui/ui_options_tags.py:69
 msgid "Tags are separated by commas and are case-insensitive."
-msgstr ""
+msgstr "標籤以逗號分隔，且大小寫無關"
 
 #: picard/ui/ui_options_tags_compatibility.py:144
 msgid "ID3"
@@ -3987,11 +3987,11 @@ msgstr "<html><head/><body><p>預設為「/」來與舊版 Picard 保持相容�
 
 #: picard/ui/ui_options_tags_compatibility.py:154
 msgid "Save iTunes compatible grouping and work"
-msgstr ""
+msgstr "儲存相容於iTunes的分組與作品標籤"
 
 #: picard/ui/ui_options_tags_compatibility.py:155
 msgid "Also include ID3v1 tags in the files"
-msgstr ""
+msgstr "在檔案中同時包含 ID3v1 標籤"
 
 #: picard/ui/ui_options_tags_compatibility.py:156
 msgid "AAC files"
@@ -4025,7 +4025,7 @@ msgstr "需要認證"
 
 #: picard/ui/ui_provider_options_caa.py:80
 msgid "Download only cover art images matching selected types"
-msgstr ""
+msgstr "僅下載符合以選類型的封面圖片"
 
 #: picard/ui/ui_provider_options_caa.py:81
 msgid "Select types..."
@@ -4051,7 +4051,7 @@ msgstr ""
 
 #: picard/ui/ui_provider_options_local.py:51
 msgid "Local cover art files match the following regular expression:"
-msgstr ""
+msgstr "本地封面圖片檔案符合以下正規表式:"
 
 #: picard/ui/ui_provider_options_local.py:53
 msgid ""
@@ -4147,7 +4147,7 @@ msgid ""
 "<small>Copyright © %(copyright_years)s %(authors_credits)s and others%(translator_credits)s</small></p>\n"
 "<p align=\"center\"><small>%(icons_credits)s</small></p>\n"
 "<p align=\"center\"><strong>Official website</strong><br/><a href=\"%(picard_doc_url)s\">%(picard_doc_url)s</a></p>\n"
-msgstr ""
+msgstr "<p align=\"center\"><span style=\"font-size:15px;font-weight:bold;\">MusicBrainz Picard</span><br/>\n版本 %(version)s</p>\n<p align=\"center\"><small>\n%(third_parties_versions)s\n</small></p>\n<p align=\"center\"><strong>支援的格式</strong><br/>%(formats)s</p>\n<p align=\"center\"><strong>請捐獻</strong><br/>\n感謝您使用 Picard。Picard 依賴於 MusicBrainz 資料庫，它是由 MetaBrainz 基金會在數千名自願者的幫助下運作。如果您喜歡這個程式，可考慮捐獻給 MetaBrainz 基金會來幫助維持服務運作。</p>\n<p align=\"center\"><a href=\"%(picard_donate_url)s\">立即捐獻！</a></p>\n<p align=\"center\"><strong>貢獻名單</strong><br/>\n<small>版權所有 © %(copyright_years)s %(authors_credits)s與其他%(translator_credits)s</small></p>\n<p align=\"center\"><small>%(icons_credits)s</small></p>\n<p align=\"center\"><strong>官方網站</strong><br/><a href=\"%(picard_doc_url)s\">%(picard_doc_url)s</a></p>\n"
 
 #: picard/ui/options/advanced.py:32
 msgid "Advanced"
@@ -4237,7 +4237,7 @@ msgid ""
 "<p><b>-/^w.rd+/</b>: exclude genres starting with <i>w</i> followed by any character, then <i>r</i> followed by at least one <i>d</i>\n"
 "</p>\n"
 "</body></html>"
-msgstr ""
+msgstr "<html><head/><body>\n<p>每行首字不為<b>-</b>或<b>+</b>的資料將被忽略。</p>\n<p>每行包含一筆運算式，大小寫不同</p>\n<p>範例:</p>\n<p><b>\n#註解<br/>\n!註解<br/>\n註解\n</b></p>\n<p><u>嚴格篩選:</u></p>\n<p>\n<b>-word</b>: 排除 <i>word</i><br/>\n<b>+word</b>: 包含 <i>word</i>\n</p>\n<p><u>通配篩選:</u></p>\n<p>\n<b>-*word</b>: 排除所有以<i>word</i>結尾的類型<br/>\n<b>+word*</b>: 包含所有以<i>word</i>開頭的類型<br/>\n<b>-w*rd</b>: 排除所有以<i>w</i>開頭，且已<i>rd</i>結尾的類型\n</p>\n<p><u>正規表式篩選 (Python re 語法):</u></p>\n<p><b>-/^w.rd+/</b>: 排除所有以<i>w</i>開頭，接著任一字元，然後接著<i>r</i>，然後接著至少一個<i>d</i>的類型\n</p>\n</body></html>"
 
 #: picard/ui/options/genres.py:61
 msgid ""
@@ -4250,7 +4250,7 @@ msgid ""
 "Green background means the tag will be kept.\n"
 "</p>\n"
 "</body></html>"
-msgstr ""
+msgstr "<html><head/><body>\n<p>您可以增加種賴來測試篩選器，每行一個。<br/>\n此測試區的內容在偏好設定結束時將不會被保留。\n</p>\n<p>\n紅色背景表示該標籤會被忽略。<br/>\n綠色背景表示該標籤會被保留。\n</p>\n</body></html>"
 
 #: picard/ui/options/genres.py:75
 msgid "Genres"
@@ -4298,7 +4298,7 @@ msgid "Submit AcoustIDs"
 msgstr "提交 AcoustID"
 
 #: picard/ui/options/interface.py:97
-msgid "Generate AcoustID fingerprints"
+msgid "Generate AcoustID Fingerprints"
 msgstr ""
 
 #: picard/ui/options/interface.py:101
@@ -4491,7 +4491,7 @@ msgstr "&#160;（<a href='https://musicbrainz.org/doc/Indexed_Search_Syntax'>語
 
 #: picard/ui/searchdialog/__init__.py:252
 msgid "Search in browser"
-msgstr ""
+msgstr "在瀏覽器中搜尋"
 
 #: picard/ui/searchdialog/__init__.py:288
 msgid "<strong>Loading...</strong>"
@@ -4674,7 +4674,7 @@ msgid ""
 "New version: {picard_new_version}\n"
 "\n"
 "Would you like to download the new version?"
-msgstr ""
+msgstr "Picard 的新版本已可取得。\n\n目前版本: {picard_old_version}\n最新版本: {picard_new_version}\n\n請問您是否想要下載新版本？"
 
 #: picard/util/checkupdate.py:150
 msgid "unknown"
@@ -4685,7 +4685,7 @@ msgid ""
 "There is no update currently available for your subscribed update level: {update_level}\n"
 "\n"
 "Your version: {picard_old_version}\n"
-msgstr ""
+msgstr "目前沒有更新來自於您訂閱的更新等級: {update_level}\n\n您的版本: {picard_old_version}\n"
 
 #: picard/util/tags.py:24
 msgid "AcoustID Fingerprint"
@@ -4805,15 +4805,15 @@ msgstr "心情"
 
 #: picard/util/tags.py:65
 msgid "Movement"
-msgstr ""
+msgstr "樂章"
 
 #: picard/util/tags.py:66
 msgid "Movement Number"
-msgstr ""
+msgstr "樂章編號"
 
 #: picard/util/tags.py:67
 msgid "Movement Count"
-msgstr ""
+msgstr "樂章總數"
 
 #: picard/util/tags.py:68
 msgid "MusicBrainz Release Artist Id"
@@ -4877,7 +4877,7 @@ msgstr "原始發售日"
 
 #: picard/util/tags.py:83
 msgid "Original Filename"
-msgstr ""
+msgstr "原始檔名"
 
 #: picard/util/tags.py:84
 msgid "Original Year"
@@ -4953,7 +4953,7 @@ msgstr "文字系統"
 
 #: picard/util/tags.py:102
 msgid "Show Work & Movement"
-msgstr ""
+msgstr "顯示作品與樂章"
 
 #: picard/util/tags.py:103
 msgid "Subtitle"

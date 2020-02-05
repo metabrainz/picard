@@ -14,9 +14,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-01-28 12:15+0100\n"
-"PO-Revision-Date: 2020-01-30 12:19+0000\n"
-"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
+"POT-Creation-Date: 2020-02-03 18:01+0100\n"
+"PO-Revision-Date: 2020-02-04 17:19+0000\n"
+"Last-Translator: Avi Markovitz <avi.markovitz@gmail.com>\n"
 "Language-Team: Hebrew (http://www.transifex.com/musicbrainz/musicbrainz/language/he/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -139,22 +139,22 @@ msgstr "מיזוג"
 msgid "Remove"
 msgstr "הסרה"
 
-#: picard/file.py:674
+#: picard/file.py:676
 #, python-format
 msgid "No matching tracks above the threshold for file '%(filename)s'"
 msgstr "אין רצועות תואמות מעבר לסף לקובץ %(filename)s"
 
-#: picard/file.py:676
+#: picard/file.py:678
 #, python-format
 msgid "File '%(filename)s' identified!"
 msgstr "קובץ %(filename)s זוהה!"
 
-#: picard/file.py:688
+#: picard/file.py:690
 #, python-format
 msgid "No matching tracks for file '%(filename)s'"
 msgstr " אין רצועות תואמות לקובץ '%(filename)s'"
 
-#: picard/file.py:720
+#: picard/file.py:722
 #, python-format
 msgid "Looking up the metadata for file %(filename)s ..."
 msgstr "חיפוש במטה-נתונים אחר קובץ %(filename)s..."
@@ -303,24 +303,24 @@ msgstr "שגור AcoustID כשלה עם שגיאה '%(error)s': %(message)s"
 msgid "AcoustIDs successfully submitted."
 msgstr "AcoustIDs שוגרו בהצלחה."
 
-#: picard/const/__init__.py:130
+#: picard/const/__init__.py:133
 msgid "Stable releases only"
 msgstr "גרסה יציבה בלבד"
 
-#: picard/const/__init__.py:136
+#: picard/const/__init__.py:139
 msgid "Stable and Beta releases"
 msgstr "גרסה יציבה וגרסת בטא"
 
-#: picard/const/__init__.py:142
+#: picard/const/__init__.py:145
 msgid "Stable, Beta and Dev releases"
 msgstr "גרסה יציבה, גרסת בטא וגרסת פתוח"
 
-#: picard/const/__init__.py:157
+#: picard/const/__init__.py:160
 #, python-format
 msgid "My script %d"
 msgstr "התַּסְרִיט שלי %d"
 
-#: picard/const/__init__.py:158
+#: picard/const/__init__.py:161
 msgid "My script"
 msgstr "התַּסְרִיט שלי"
 
@@ -1067,7 +1067,7 @@ msgstr "גויארטית"
 
 #: picard/const/locales.py:191
 msgid "Gujarati (India)"
-msgstr ""
+msgstr "גויארטית (הודו)"
 
 #: picard/const/locales.py:192
 msgid "Hausa"
@@ -1183,7 +1183,7 @@ msgstr ""
 
 #: picard/const/locales.py:223
 msgid "Italian (Italy)"
-msgstr ""
+msgstr "איטלקית (איטליה)"
 
 #: picard/const/locales.py:224
 msgid "Italian (Switzerland)"
@@ -1279,7 +1279,7 @@ msgstr ""
 
 #: picard/const/locales.py:249
 msgid "Koro"
-msgstr ""
+msgstr "קורו"
 
 #: picard/const/locales.py:250
 msgid "Koro (Côte d’Ivoire)"
@@ -1299,47 +1299,47 @@ msgstr ""
 
 #: picard/const/locales.py:254
 msgid "Kurdish"
-msgstr ""
+msgstr "כורדית"
 
 #: picard/const/locales.py:255
 msgid "Kurdish (Arabic)"
-msgstr ""
+msgstr "כורדית (ערבית)"
 
 #: picard/const/locales.py:256
 msgid "Kurdish (Arabic) (Iran)"
-msgstr ""
+msgstr "כורדית (ערבית) (אירן)"
 
 #: picard/const/locales.py:257
 msgid "Kurdish (Arabic) (Iraq)"
-msgstr ""
+msgstr "כורדית (ערבית) (עירק)"
 
 #: picard/const/locales.py:258
 msgid "Kurdish (Arabic) (Syria)"
-msgstr ""
+msgstr "כורדית (ערבית) (סוריה)"
 
 #: picard/const/locales.py:259
 msgid "Kurdish (Iran)"
-msgstr ""
+msgstr "כורדית (אירן)"
 
 #: picard/const/locales.py:260
 msgid "Kurdish (Iraq)"
-msgstr ""
+msgstr "כורדית (עירק)"
 
 #: picard/const/locales.py:261
 msgid "Kurdish (Latin)"
-msgstr ""
+msgstr "כורדית (לטינית)"
 
 #: picard/const/locales.py:262
 msgid "Kurdish (Latin) (Turkey)"
-msgstr ""
+msgstr "כורדית (לטינית) (תורכית)"
 
 #: picard/const/locales.py:263
 msgid "Kurdish (Syria)"
-msgstr ""
+msgstr "כורדית (סוריה)"
 
 #: picard/const/locales.py:264
 msgid "Kurdish (Turkey)"
-msgstr ""
+msgstr "כורדית (תורכית)"
 
 #: picard/const/locales.py:265
 msgid "Lao"
@@ -1347,7 +1347,7 @@ msgstr "לאו"
 
 #: picard/const/locales.py:266
 msgid "Lao (Laos)"
-msgstr ""
+msgstr "לאו (לאוס)"
 
 #: picard/const/locales.py:267
 msgid "Latvian"
@@ -1355,7 +1355,7 @@ msgstr "לטבית"
 
 #: picard/const/locales.py:268
 msgid "Latvian (Latvia)"
-msgstr ""
+msgstr "לטבית (לטביה)"
 
 #: picard/const/locales.py:269
 msgid "Lingala"
@@ -2171,7 +2171,7 @@ msgstr "זולו"
 
 #: picard/const/locales.py:488
 msgid "Zulu (South Africa)"
-msgstr ""
+msgstr "זולו (דרום אפריקה)"
 
 #: picard/coverart/__init__.py:106
 #, python-format
@@ -2708,8 +2708,8 @@ msgstr " טביעות-אצבע שטרם שוגרו"
 #: picard/ui/itemviews.py:1077
 msgid ""
 "No fingerprint was calculated for this file, use \"Scan\" or \"Generate "
-"AcoustID fingerprints\" to calculate the fingerprint."
-msgstr ""
+"AcoustID Fingerprints\" to calculate the fingerprint."
+msgstr "לא חושבו טביעות אצבע AcoustID לקובץ זה, נא להריץ 'סריקה' או 'חילול טביעות אצבע AcoustID' לחישוב טביעות האצבע."
 
 #: picard/ui/logview.py:152
 msgid "Log"
@@ -2990,7 +2990,7 @@ msgid "Ctrl+Y"
 msgstr "Ctrl+Y"
 
 #: picard/ui/mainwindow.py:507
-msgid "&Generate AcoustID fingerprints"
+msgid "&Generate AcoustID Fingerprints"
 msgstr "&חילול טביעת אצבע AcoustID"
 
 #: picard/ui/mainwindow.py:508
@@ -4333,7 +4333,7 @@ msgid "Submit AcoustIDs"
 msgstr "‮שגור ‭AcoustIDs"
 
 #: picard/ui/options/interface.py:97
-msgid "Generate AcoustID fingerprints"
+msgid "Generate AcoustID Fingerprints"
 msgstr "חילול טביעת אצבע AcoustID"
 
 #: picard/ui/options/interface.py:101
