@@ -44,6 +44,16 @@ class OptionsPage(QtWidgets.QWidget):
         super().__init__(*args, **kwargs)
         self.setStyleSheet(self.STYLESHEET)
 
+        # Keep track whether the options page has been destroyed to avoid
+        # trying to update deleted UI widgets after plugin list refresh.
+        self.deleted = False
+
+        # The on destroyed cannot be created as a method on this class or it will never get called.
+        # See https://stackoverflow.com/questions/16842955/widgets-destroyed-signal-is-not-fired-pyqt
+        def on_destroyed(obj=None):
+            self.deleted = True
+        self.destroyed.connect(on_destroyed)
+
     def check(self):
         pass
 
