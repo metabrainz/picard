@@ -26,33 +26,31 @@ jobs:
     env:
       DISCID_VERSION: 0.6.2
       FPCALC_VERSION: 1.4.4-9
+      PYTHON_VERSION: 3.7.6
     steps:
     - uses: actions/checkout@v1
-    - name: Set up Python 3.7
-      uses: actions/setup-python@v1
-      with:
-        python-version: 3.7
     - name: Cache libdiscid
       uses: actions/cache@v1
       with:
         path: ~/libdiscid
         key: ${{ runner.os }}-libdiscid-${{ env.DISCID_VERSION }}
-    - name: Patch build version
-      if: startsWith(github.ref, 'refs/tags/') != true
-      run: |
-        python setup.py patch_version --platform=$(git rev-list --count HEAD).$(git rev-parse --short HEAD)
     - name: Setup macOS build environment
       run: |
         ./scripts/package/macos-setup.sh
+        echo "::add-path::/Library/Frameworks/Python.framework/Versions/3.7/bin"
         mkdir artifacts
+    - name: Patch build version
+      if: startsWith(github.ref, 'refs/tags/') != true
+      run: |
+        python3 setup.py patch_version --platform=$(git rev-list --count HEAD).$(git rev-parse --short HEAD)
     - name: Install dependencies
       run: |
-        python -m pip install --upgrade pip setuptools wheel
-        pip install -r requirements-build.txt
-        pip install -r requirements-macos.txt
+        python3 -m pip install --upgrade pip setuptools wheel
+        pip3 install -r requirements-build.txt
+        pip3 install -r requirements-macos.txt
     - name: Run tests
       run: |
-        python setup.py test
+        python3 setup.py test
     - name: Build macOS app
       run: |
         ./scripts/package/macos-package-app.sh
