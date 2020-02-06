@@ -10,6 +10,7 @@ on:
     - 'resources/win10/**'
     - 'scripts/package/*'
     - 'scripts/pyinstaller/*'
+    - 'test/**'
     - 'appxmanifest.xml.in'
     - 'picard.icns'
     - 'picard.ico'
