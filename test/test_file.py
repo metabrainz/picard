@@ -14,13 +14,6 @@ from picard.file import File
 from picard.metadata import Metadata
 
 
-def is_macos_10_14():
-    if IS_MACOS:
-        import platform
-        return platform.mac_ver()[0].startswith('10.14')
-    return False
-
-
 class DataObjectTest(PicardTestCase):
 
     def setUp(self):
@@ -87,9 +80,10 @@ class TestPreserveTimes(PicardTestCase):
         st = os.stat(self.file.filename)
         (after_atime_ns, after_mtime_ns) = (st.st_atime_ns, st.st_mtime_ns)
 
-        # on macOS 10.14 os.utime only sets the times with second precision
-        # see https://tickets.metabrainz.org/browse/PICARD-1516
-        if is_macos_10_14():
+        # on macOS 10.14 and later os.utime only sets the times with second
+        # precision see https://tickets.metabrainz.org/browse/PICARD-1516.
+        # This also seems to depend on the Python build being used.
+        if IS_MACOS:
             before_atime_ns //= 1000
             before_mtime_ns //= 1000
             after_atime_ns //= 1000
