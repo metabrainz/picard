@@ -505,6 +505,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.analyze_action.triggered.connect(self.analyze)
 
         self.generate_fingerprints_action = QtWidgets.QAction(icontheme.lookup('fingerprint'), _("&Generate AcoustID Fingerprints"), self)
+        self.generate_fingerprints_action.setIconText(_("Generate Fingerprints"))
         self.generate_fingerprints_action.setStatusTip(_("Generate the AcoustID audio fingerprints for the selected files without doing a lookup"))
         self.generate_fingerprints_action.setEnabled(False)
         self.generate_fingerprints_action.setToolTip(_('Generate the AcoustID audio fingerprints for the selected files'))
