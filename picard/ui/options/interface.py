@@ -94,7 +94,7 @@ class InterfaceOptionsPage(OptionsPage):
             'icon': 'acoustid-fingerprinter'
         },
         'generate_fingerprints_action': {
-            'label': N_("Generate AcoustID Fingerprints"),
+            'label': N_("Generate Fingerprints"),
             'icon': 'fingerprint'
         },
         'play_file_action': {
