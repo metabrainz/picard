@@ -175,6 +175,48 @@ class Tagger(QtWidgets.QApplication):
             'QGroupBox::title { /* PICARD-1206, Qt bug workaround */ }'
         )
 
+        # Set a dark palette on Windows 10 if dark app mode is enabled
+        if IS_WIN:
+            import winreg
+
+            dark_theme = False
+            with winreg.OpenKey(winreg.HKEY_CURRENT_USER, r"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize") as key:
+                try:
+                    dark_theme = winreg.QueryValueEx(key, "AppsUseLightTheme")[0] == 0
+                except OSError:
+                    log.warning('Failed reading AppsUseLightTheme from registry')
+
+            if dark_theme:
+                with winreg.OpenKey(winreg.HKEY_CURRENT_USER, r"Software\Microsoft\Windows\DWM") as key:
+                    try:
+                        accent_color_dword = winreg.QueryValueEx(key, "ColorizationColor")[0]
+                        accent_color_hex = '#{:06x}'.format(accent_color_dword & 0xffffff)
+                        accent_color = QtGui.QColor(accent_color_hex)
+                    except OSError:
+                        log.warning('Failed reading ColorizationColor from registry')
+                        # accent_color = QtGui.QColor(0, 120, 215)  # Windows 10 default blue
+                        accent_color = QtGui.QColor(119, 27, 133)  # MusicBrainz Picard purple
+
+                palette = QtGui.QPalette(self.palette())
+                palette.setColor(QtGui.QPalette.Window, QtGui.QColor(51, 51, 51))
+                palette.setColor(QtGui.QPalette.WindowText, QtCore.Qt.white)
+                palette.setColor(QtGui.QPalette.Base, QtGui.QColor(31, 31, 31))
+                palette.setColor(QtGui.QPalette.AlternateBase, QtGui.QColor(51, 51, 51))
+                palette.setColor(QtGui.QPalette.ToolTipBase, QtGui.QColor(51, 51, 51))
+                palette.setColor(QtGui.QPalette.ToolTipText, QtCore.Qt.white)
+                palette.setColor(QtGui.QPalette.Text, QtCore.Qt.white)
+                palette.setColor(QtGui.QPalette.Button, QtGui.QColor(51, 51, 51))
+                palette.setColor(QtGui.QPalette.ButtonText, QtCore.Qt.white)
+                palette.setColor(QtGui.QPalette.BrightText, QtCore.Qt.red)
+                palette.setColor(QtGui.QPalette.Highlight, accent_color)
+                accent_text_color = QtCore.Qt.white if accent_color.lightness() < 160 else QtCore.Qt.black
+                palette.setColor(QtGui.QPalette.HighlightedText, accent_text_color)
+                palette.setColor(QtGui.QPalette.Link, accent_color.lighter())
+                palette.setColor(QtGui.QPalette.Disabled, QtGui.QPalette.Text, QtCore.Qt.darkGray)
+                palette.setColor(QtGui.QPalette.Disabled, QtGui.QPalette.Light, QtGui.QColor(0, 0, 0, 0))
+                palette.setColor(QtGui.QPalette.Disabled, QtGui.QPalette.ButtonText, QtCore.Qt.darkGray)
+                self.setPalette(palette)
+
         self._cmdline_files = picard_args.FILE
         self.autoupdate_enabled = autoupdate
         self._no_restore = picard_args.no_restore
