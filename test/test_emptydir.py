@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import os.path
-from tempfile import mkstemp
+from tempfile import NamedTemporaryFile
 
 from test.picardtestcase import PicardTestCase
 
@@ -47,10 +47,8 @@ class EmptyDirTest(EmptyDirTestCommon):
         self.assertFalse(emptydir.is_empty_dir(tempdir))
 
     def test_is_empty_dir_on_file(self):
-        fd, file_ = mkstemp()
-        self.addCleanup(os.remove, file_)
-        self.assertRaises(NotADirectoryError, emptydir.is_empty_dir, file_)
-        os.close(fd)
+        with NamedTemporaryFile() as f:
+            self.assertRaises(NotADirectoryError, emptydir.is_empty_dir, f.name)
 
 
 class RmEmptyDirTest(EmptyDirTestCommon):
@@ -80,10 +78,5 @@ class RmEmptyDirTest(EmptyDirTestCommon):
         emptydir.PROTECTED_DIRECTORIES = orig_portected_dirs
 
     def test_is_empty_dir_on_file(self):
-        fd, file_ = mkstemp()
-        self.addCleanup(os.remove, file_)
-        self.assertRaises(NotADirectoryError, emptydir.rm_empty_dir, file_)
-        os.close(fd)
-
-
-
+        with NamedTemporaryFile() as f:
+            self.assertRaises(NotADirectoryError, emptydir.rm_empty_dir, f.name)
