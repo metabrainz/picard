@@ -1,8 +1,6 @@
 import base64
 import logging
 import os
-import shutil
-from tempfile import mkstemp
 
 from mutagen.flac import (
     Padding,
@@ -330,11 +328,8 @@ class OggAudioVideoFileTest(PicardTestCase):
         self.assertIsInstance(f, expected_type)
 
     def _copy_file_tmp(self, filename, ext):
-        fd, copy = mkstemp(suffix=ext)
-        self.addCleanup(os.unlink, copy)
-        os.close(fd)
-        shutil.copy(os.path.join('test', 'data', filename), copy)
-        return copy
+        path = os.path.join('test', 'data', filename)
+        return self.copy_file_tmp(path, ext)
 
 
 class OggCoverArtTest(CommonCoverArtTests.CoverArtTestCase):
