@@ -110,11 +110,8 @@ class TestPicardPluginsCommonTmpDir(TestPicardPluginsCommon):
 
     def setUp(self):
         super().setUp()
-        self.tmp_directory = mkdtemp()
-
-    def tearDown(self):
-        super().tearDown()
-        shutil.rmtree(self.tmp_directory)
+        self.tmp_directory = mkdtemp(suffix=self.__class__.__name__)
+        self.addCleanup(shutil.rmtree, self.tmp_directory)
 
 
 class TestPicardPluginManager(TestPicardPluginsCommon):

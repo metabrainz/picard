@@ -1,6 +1,5 @@
 import os.path
 import shutil
-import sys
 import tempfile
 
 from test.picardtestcase import (
@@ -26,15 +25,10 @@ class ReleaseTest(PicardTestCase):
     def setUp(self):
         super().setUp()
         # we are using temporary locales for tests
-        self.tmp_path = tempfile.mkdtemp()
-        if sys.hexversion >= 0x020700F0:
-            self.addCleanup(shutil.rmtree, self.tmp_path)
+        self.tmp_path = tempfile.mkdtemp(suffix=self.__class__.__name__)
+        self.addCleanup(shutil.rmtree, self.tmp_path)
         self.localedir = os.path.join(self.tmp_path, 'locale')
         setup_gettext(self.localedir, 'C')
-
-    def tearDown(self):
-        if sys.hexversion < 0x020700F0:
-            shutil.rmtree(self.tmp_path)
 
     def test_1(self):
         config.setting = settings.copy()

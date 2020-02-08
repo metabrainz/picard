@@ -22,13 +22,11 @@ class TestFileSystem(PicardTestCase):
 
     def setUp(self):
         super().setUp()
-        self.src_directory = mkdtemp()
+        self.src_directory = mkdtemp(suffix=self.__class__.__name__)
+        self.addCleanup(shutil.rmtree, self.src_directory)
         self.tgt_directory = mkdtemp()
+        self.addCleanup(shutil.rmtree, self.tgt_directory)
         config.setting = settings.copy()
-
-    def tearDown(self):
-        shutil.rmtree(self.src_directory)
-        shutil.rmtree(self.tgt_directory)
 
     def _prepare_files(self, src_rel_path='', tgt_rel_path=''):
         """Prepare src files and tgt filenames for a test."""
