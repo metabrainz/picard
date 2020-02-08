@@ -20,7 +20,6 @@
 import logging
 import os
 import shutil
-from tempfile import mkdtemp
 
 from test.picardtestcase import PicardTestCase
 
@@ -40,8 +39,7 @@ class TestPicardConfigCommon(PicardTestCase):
     def setUp(self):
         super().setUp()
 
-        self.tmp_directory = mkdtemp(suffix=self.__class__.__name__)
-        self.addCleanup(shutil.rmtree, self.tmp_directory)
+        self.tmp_directory = self.mktmpdir()
 
         self.configpath = os.path.join(self.tmp_directory, 'test.ini')
         shutil.copy(os.path.join('test', 'data', 'test.ini'), self.configpath)

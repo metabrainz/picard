@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
 import os.path
-import shutil
-import tempfile
 
 from test.picardtestcase import PicardTestCase
 
@@ -14,8 +12,7 @@ class CaaTypeTranslationTest(PicardTestCase):
     def setUp(self):
         super().setUp()
         # we are using temporary locales for tests
-        self.tmp_path = tempfile.mkdtemp(suffix=self.__class__.__name__)
-        self.addCleanup(shutil.rmtree, self.tmp_path)
+        self.tmp_path = self.mktmpdir()
         self.localedir = os.path.join(self.tmp_path, 'locale')
         setup_gettext(self.localedir, "C")
 

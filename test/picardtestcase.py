@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 import json
 import os
+import shutil
 import struct
+from tempfile import mkdtemp
 import unittest
 
 from PyQt5 import QtCore
@@ -47,6 +49,10 @@ class PicardTestCase(unittest.TestCase):
         self.addCleanup(self.tagger.run_cleanup)
         config.setting = {}
 
+    def mktmpdir(self, ignore_errors=False):
+        tmpdir = mkdtemp(suffix=self.__class__.__name__)
+        self.addCleanup(shutil.rmtree, tmpdir, ignore_errors=ignore_errors)
+        return tmpdir
 
 def create_fake_png(extra):
     """Creates fake PNG data that satisfies Picard's internal image type detection"""

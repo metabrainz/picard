@@ -1,21 +1,17 @@
 # -*- coding: utf-8 -*-
 
 import os.path
-import shutil
-from tempfile import (
-    mkdtemp,
-    mkstemp,
-)
-import unittest
+from tempfile import mkstemp
+
+from test.picardtestcase import PicardTestCase
 
 from picard.util import emptydir
 
 
-class EmptyDirTestCommon(unittest.TestCase):
+class EmptyDirTestCommon(PicardTestCase):
 
     def create_temp_dir(self, extra_files=(), extra_dirs=(), ignore_errors=False):
-        tempdir = mkdtemp(suffix=self.__class__.__name__)
-        self.addCleanup(shutil.rmtree, tempdir, ignore_errors=ignore_errors)
+        tempdir = self.mktmpdir(ignore_errors=ignore_errors)
         for f in extra_files:
             open(os.path.join(tempdir, f), 'a').close()
         for f in extra_dirs:

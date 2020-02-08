@@ -2,7 +2,6 @@
 from contextlib import suppress
 import os.path
 import shutil
-from tempfile import mkdtemp
 
 from test.picardtestcase import PicardTestCase
 
@@ -22,10 +21,8 @@ class TestFileSystem(PicardTestCase):
 
     def setUp(self):
         super().setUp()
-        self.src_directory = mkdtemp(suffix=self.__class__.__name__)
-        self.addCleanup(shutil.rmtree, self.src_directory)
-        self.tgt_directory = mkdtemp()
-        self.addCleanup(shutil.rmtree, self.tgt_directory)
+        self.src_directory = self.mktmpdir()
+        self.tgt_directory = self.mktmpdir()
         config.setting = settings.copy()
 
     def _prepare_files(self, src_rel_path='', tgt_rel_path=''):
