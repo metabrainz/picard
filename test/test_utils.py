@@ -259,7 +259,7 @@ class ImageInfoTest(PicardTestCase):
                           imageinfo.identify, data)
 
 
-class CompareBarcodesTest(unittest.TestCase):
+class CompareBarcodesTest(PicardTestCase):
 
     def test_same(self):
         self.assertTrue(util.compare_barcodes('0727361379704', '0727361379704'))
@@ -278,7 +278,7 @@ class CompareBarcodesTest(unittest.TestCase):
         self.assertFalse(util.compare_barcodes(None, '0727361379704'))
 
 
-class MbidValidateTest(unittest.TestCase):
+class MbidValidateTest(PicardTestCase):
 
     def test_ok(self):
         self.assertTrue(util.mbid_validate('2944824d-4c26-476f-a981-be849081942f'))
@@ -297,7 +297,7 @@ class MbidValidateTest(unittest.TestCase):
 SimMatchTest = namedtuple('SimMatchTest', 'similarity name')
 
 
-class SortBySimilarity(unittest.TestCase):
+class SortBySimilarity(PicardTestCase):
 
     def setUp(self):
         self.test_values = [
@@ -334,7 +334,7 @@ class SortBySimilarity(unittest.TestCase):
         self.assertEqual(best_match.num_results, 0)
 
 
-class GetQtEnum(unittest.TestCase):
+class GetQtEnum(PicardTestCase):
 
     def test_get_qt_enum(self):
         from PyQt5.QtCore import QStandardPaths

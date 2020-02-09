@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 import os.path
-import shutil
-from tempfile import mkstemp
 import unittest
 
 import mutagen
@@ -189,18 +187,6 @@ class CommonTests:
 
         def copy_of_original_testfile(self):
             return self.copy_file_tmp(self.testfile_path, self.testfile_ext)
-
-        def copy_file_tmp(self, filename, ext):
-            fd, copy = mkstemp(suffix=ext)
-            self.addCleanup(self.remove_file_tmp, copy)
-            os.close(fd)
-            shutil.copy(filename, copy)
-            return copy
-
-        @staticmethod
-        def remove_file_tmp(tmpfile):
-            if os.path.isfile(tmpfile):
-                os.unlink(tmpfile)
 
     class SimpleFormatsTestCase(BaseFileTestCase):
 

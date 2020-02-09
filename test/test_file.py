@@ -1,6 +1,4 @@
 import os
-import shutil
-from tempfile import mkdtemp
 import unittest
 
 from test.picardtestcase import PicardTestCase
@@ -43,12 +41,9 @@ class TestPreserveTimes(PicardTestCase):
 
     def setUp(self):
         super().setUp()
-        self.tmp_directory = mkdtemp()
+        self.tmp_directory = self.mktmpdir()
         filepath = os.path.join(self.tmp_directory, 'a.mp3')
         self.file = File(filepath)
-
-    def tearDown(self):
-        shutil.rmtree(self.tmp_directory)
 
     def _create_testfile(self):
         # create a dummy file

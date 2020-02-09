@@ -19,9 +19,7 @@
 
 import logging
 import os
-import shutil
 import sys
-from tempfile import mkdtemp
 import unittest
 
 from test.picardtestcase import PicardTestCase
@@ -110,11 +108,7 @@ class TestPicardPluginsCommonTmpDir(TestPicardPluginsCommon):
 
     def setUp(self):
         super().setUp()
-        self.tmp_directory = mkdtemp()
-
-    def tearDown(self):
-        super().tearDown()
-        shutil.rmtree(self.tmp_directory)
+        self.tmp_directory = self.mktmpdir()
 
 
 class TestPicardPluginManager(TestPicardPluginsCommon):

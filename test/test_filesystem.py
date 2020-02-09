@@ -2,7 +2,6 @@
 from contextlib import suppress
 import os.path
 import shutil
-from tempfile import mkdtemp
 
 from test.picardtestcase import PicardTestCase
 
@@ -22,13 +21,9 @@ class TestFileSystem(PicardTestCase):
 
     def setUp(self):
         super().setUp()
-        self.src_directory = mkdtemp()
-        self.tgt_directory = mkdtemp()
+        self.src_directory = self.mktmpdir()
+        self.tgt_directory = self.mktmpdir()
         config.setting = settings.copy()
-
-    def tearDown(self):
-        shutil.rmtree(self.src_directory)
-        shutil.rmtree(self.tgt_directory)
 
     def _prepare_files(self, src_rel_path='', tgt_rel_path=''):
         """Prepare src files and tgt filenames for a test."""

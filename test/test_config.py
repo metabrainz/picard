@@ -20,7 +20,6 @@
 import logging
 import os
 import shutil
-from tempfile import mkdtemp
 
 from test.picardtestcase import PicardTestCase
 
@@ -39,16 +38,25 @@ class TestPicardConfigCommon(PicardTestCase):
 
     def setUp(self):
         super().setUp()
-        self.tmp_directory = mkdtemp()
+
+        self.tmp_directory = self.mktmpdir()
+
         self.configpath = os.path.join(self.tmp_directory, 'test.ini')
         shutil.copy(os.path.join('test', 'data', 'test.ini'), self.configpath)
+        self.addCleanup(os.remove, self.configpath)
+
         self.config = Config.from_file(None, self.configpath)
+        self.addCleanup(self.cleanup_config_obj)
+
         self.config.application["version"] = "testing"
         logging.disable(logging.ERROR)
         Option.registry = {}
 
-    def tearDown(self):
-        shutil.rmtree(self.tmp_directory)
+    def cleanup_config_obj(self):
+        # Ensure QSettings do not recreate the file on exit
+        self.config.sync()
+        del self.config
+        self.config = None
 
 
 class TestPicardConfig(TestPicardConfigCommon):

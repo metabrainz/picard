@@ -1,7 +1,12 @@
 # -*- coding: utf-8 -*-
 import json
 import os
+import shutil
 import struct
+from tempfile import (
+    mkdtemp,
+    mkstemp,
+)
 import unittest
 
 from PyQt5 import QtCore
@@ -46,6 +51,23 @@ class PicardTestCase(unittest.TestCase):
         QtCore.QObject.tagger = self.tagger
         self.addCleanup(self.tagger.run_cleanup)
         config.setting = {}
+
+    def mktmpdir(self, ignore_errors=False):
+        tmpdir = mkdtemp(suffix=self.__class__.__name__)
+        self.addCleanup(shutil.rmtree, tmpdir, ignore_errors=ignore_errors)
+        return tmpdir
+
+    def copy_file_tmp(self, filepath, ext):
+        fd, copy = mkstemp(suffix=ext)
+        os.close(fd)
+        self.addCleanup(self.remove_file_tmp, copy)
+        shutil.copy(filepath, copy)
+        return copy
+
+    @staticmethod
+    def remove_file_tmp(filepath):
+        if os.path.isfile(filepath):
+            os.unlink(filepath)
 
 
 def create_fake_png(extra):
