@@ -37,6 +37,8 @@ class Submission(object):
 
 class AcoustIDManager(QtCore.QObject):
 
+    BATCH_SUBMIT_COUNT = 240
+
     def __init__(self):
         super().__init__()
         self._fingerprints = {}
@@ -82,16 +84,32 @@ class AcoustIDManager(QtCore.QObject):
         if not submissions:
             self._check_unsubmitted()
             return
-        log.debug("AcoustID: submitting ...")
+        log.debug("AcoustID: submitting total of %d fingerprints...", len(submissions))
+        self._batch_submit(submissions)
+
+    def _batch_submit(self, submissions):
+        if not submissions:  # All fingerprints submitted, nothing to do
+            log.debug("AcoustID: submitted all fingerprints")
+            self.tagger.window.set_statusbar_message(
+                N_('AcoustIDs successfully submitted.'),
+                echo=None,
+                timeout=3000
+            )
+            self._check_unsubmitted()
+            return
+        submission_batch = submissions[:self.BATCH_SUBMIT_COUNT]
+        log.debug("AcoustID: submitting batch of %d fingerprints...", len(submission_batch))
         self.tagger.window.set_statusbar_message(
             N_('Submitting AcoustIDs ...'),
             echo=None
         )
-        fingerprints = [fingerprint for file_, fingerprint in submissions]
+        submissions = submissions[self.BATCH_SUBMIT_COUNT:]
+        fingerprints = [fingerprint for file_, fingerprint in submission_batch]
+        next_func = partial(self._batch_submit, submissions)
         self.tagger.acoustid_api.submit_acoustid_fingerprints(fingerprints,
-            partial(self.__fingerprint_submission_finished, submissions))
+            partial(self._batch_submit_finished, submission_batch, next_func))
 
-    def __fingerprint_submission_finished(self, submissions, document, http, error):
+    def _batch_submit_finished(self, submissions, next, document, http, error):
         if error:
             try:
                 error = load_json(document)
@@ -112,13 +130,9 @@ class AcoustIDManager(QtCore.QObject):
                 timeout=3000
             )
         else:
-            log.debug('AcoustID: successfully submitted')
-            self.tagger.window.set_statusbar_message(
-                N_('AcoustIDs successfully submitted.'),
-                echo=None,
-                timeout=3000
-            )
+            log.debug('AcoustID: %d fingerprints successfully submitted', len(submissions))
             for file, submission in submissions:
                 submission.orig_recordingid = submission.recordingid
                 file.update()
             self._check_unsubmitted()
+        next()
