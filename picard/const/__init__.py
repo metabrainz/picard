@@ -36,8 +36,9 @@ _appconfiglocation = QStandardPaths.writableLocation(QStandardPaths.AppConfigLoc
 USER_DIR = os.path.normpath(os.path.join(_appconfiglocation, PICARD_ORG_NAME, PICARD_APP_NAME))
 USER_PLUGIN_DIR = os.path.normpath(os.path.join(USER_DIR, "plugins"))
 
-# Cache directory
+# Network Cache default settings
 CACHE_DIR = os.path.normpath(QStandardPaths.writableLocation(QStandardPaths.CacheLocation))
+CACHE_SIZE_IN_BYTES = 100*1000*1000
 
 # AcoustID client API key
 ACOUSTID_KEY = 'v8pQ6oyB'
