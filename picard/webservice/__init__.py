@@ -51,10 +51,14 @@ from picard import (
     config,
     log,
 )
-from picard.const import CACHE_DIR
+from picard.const import (
+    CACHE_DIR,
+    CACHE_SIZE_IN_BYTES,
+)
 from picard.oauth import OAuthManager
 from picard.util import (
     build_qurl,
+    bytes2human,
     parse_json,
 )
 from picard.util.xml import parse_xml
@@ -286,14 +290,17 @@ class WebService(QtCore.QObject):
         self._timer_count_pending_requests.setSingleShot(True)
         self._timer_count_pending_requests.timeout.connect(self._count_pending_requests)
 
-    def set_cache(self, cache_size_in_mb=100):
+    def set_cache(self, cache_size_in_bytes=None):
+        if cache_size_in_bytes is None:
+            cache_size_in_bytes = CACHE_SIZE_IN_BYTES
         cache = QtNetwork.QNetworkDiskCache()
         cache.setCacheDirectory(os.path.join(CACHE_DIR, 'network'))
-        cache.setMaximumCacheSize(cache_size_in_mb * 1024 * 1024)
+        cache.setMaximumCacheSize(cache_size_in_bytes)
         self.manager.setCache(cache)
-        log.debug("NetworkDiskCache dir: %r size: %s / %s",
-                  cache.cacheDirectory(), cache.cacheSize(),
-                  cache.maximumCacheSize())
+        log.debug("NetworkDiskCache dir: %r current size: %s max size: %s",
+                  cache.cacheDirectory(),
+                  bytes2human.decimal(cache.cacheSize(), l10n=False),
+                  bytes2human.decimal(cache.maximumCacheSize(), l10n=False))
 
     def setup_proxy(self):
         proxy = QtNetwork.QNetworkProxy()
