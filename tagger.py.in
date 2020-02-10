@@ -23,13 +23,13 @@ except SystemExit:
 except:  # noqa: F722
     # First try to get traceback information and write it to a log file
     # with minimum chance to fail.
-    import tempfile
+    from tempfile import NamedTemporaryFile
     import traceback
     trace = traceback.format_exc()
     try:
-        (fd, logfile) = tempfile.mkstemp(".log", "picard-crash-")
-        os.write(fd, trace.encode(errors="replace"))
-        os.close(fd)
+        with NamedTemporaryFile(suffix='.log', prefix='picard-crash-', delete=False) as f:
+            f.write(trace.encode(errors="replace"))
+            logfile = f.name
     except:  # noqa: F722
         print("Failed writing log file {0}".format(logfile), file=sys.stderr)
         logfile = None
