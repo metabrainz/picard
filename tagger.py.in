@@ -26,18 +26,21 @@ except:  # noqa: F722
     import tempfile
     import traceback
     trace = traceback.format_exc()
-    logfile = None
     try:
         (fd, logfile) = tempfile.mkstemp(".log", "picard-crash-")
         os.write(fd, trace.encode(errors="replace"))
         os.close(fd)
     except:  # noqa: F722
         print("Failed writing log file {0}".format(logfile), file=sys.stderr)
+        logfile = None
 
     # Display the crash information to the user as a dialog. This requires#
     # importing Qt5 and has some potential to fail if things are broken.
     from PyQt5 import QtWidgets
     app = QtWidgets.QApplication(sys.argv)
-    msg = "A logfile has been written to {0}\n\nError details:\n{1}".format(logfile, trace)
-    QtWidgets.QMessageBox.critical(None, "Picard terminated unexpectedly", msg)
+    msg = []
+    if logfile:
+        msg.append("A logfile has been written to {0}".format(logfile))
+    msg.append("Error details: \n{0}".format(trace))
+    QtWidgets.QMessageBox.critical(None, "Picard terminated unexpectedly", "\n\n".join(msg))
     raise
