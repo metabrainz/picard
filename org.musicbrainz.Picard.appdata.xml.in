@@ -57,6 +57,12 @@
     </ul>
   </description>
 
+  <categories>
+    <category>AudioVideo</category>
+    <category>Audio</category>
+    <category>AudioVideoEditing</category>
+  </categories>
+
   <launchable type="desktop-id">%(desktop-id)s</launchable>
 
   <provides>
