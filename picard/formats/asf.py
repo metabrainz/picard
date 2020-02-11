@@ -121,6 +121,7 @@ class ASFFile(File):
         'originalartist': 'WM/OriginalArtist',
         'originaldate': 'WM/OriginalReleaseTime',
         'originalyear': 'WM/OriginalReleaseYear',
+        'originalfilename': 'WM/OriginalFilename',
         'composer': 'WM/Composer',
         'lyricist': 'WM/Writer',
         'conductor': 'WM/Conductor',
