@@ -14,8 +14,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-02-03 18:01+0100\n"
-"PO-Revision-Date: 2020-02-04 17:19+0000\n"
+"POT-Creation-Date: 2020-02-07 10:07+0100\n"
+"PO-Revision-Date: 2020-02-09 08:46+0000\n"
 "Last-Translator: Avi Markovitz <avi.markovitz@gmail.com>\n"
 "Language-Team: Hebrew (http://www.transifex.com/musicbrainz/musicbrainz/language/he/)\n"
 "MIME-Version: 1.0\n"
@@ -1963,7 +1963,7 @@ msgstr "תאית"
 
 #: picard/const/locales.py:434
 msgid "Thai (Thailand)"
-msgstr ""
+msgstr ",תאית (תאילנד)"
 
 #: picard/const/locales.py:435
 msgid "Tibetan"
@@ -1971,11 +1971,11 @@ msgstr "טיבטית"
 
 #: picard/const/locales.py:436
 msgid "Tibetan (China)"
-msgstr ""
+msgstr "טיבתית  (סין)"
 
 #: picard/const/locales.py:437
 msgid "Tibetan (India)"
-msgstr ""
+msgstr "טיבתית  (הודו)"
 
 #: picard/const/locales.py:438
 msgid "Tigre"
@@ -1983,7 +1983,7 @@ msgstr "טיגרה"
 
 #: picard/const/locales.py:439
 msgid "Tigre (Eritrea)"
-msgstr ""
+msgstr "טיגרה (אריתראה)"
 
 #: picard/const/locales.py:440
 msgid "Tigrinya"
@@ -1991,11 +1991,11 @@ msgstr "תיגרינית"
 
 #: picard/const/locales.py:441
 msgid "Tigrinya (Eritrea)"
-msgstr ""
+msgstr "טיגריניה (אריתראה)"
 
 #: picard/const/locales.py:442
 msgid "Tigrinya (Ethiopia)"
-msgstr ""
+msgstr "טיגריניה (אתיופיה)"
 
 #: picard/const/locales.py:443
 msgid "Tonga"
@@ -2003,7 +2003,7 @@ msgstr "טונגה"
 
 #: picard/const/locales.py:444
 msgid "Tonga (Tonga)"
-msgstr ""
+msgstr "טונגה (טונגה)"
 
 #: picard/const/locales.py:445
 msgid "Tsonga"
@@ -2011,7 +2011,7 @@ msgstr "צונגה"
 
 #: picard/const/locales.py:446
 msgid "Tsonga (South Africa)"
-msgstr ""
+msgstr "צונגה (דרום אפריקה)"
 
 #: picard/const/locales.py:447
 msgid "Tswana"
@@ -2019,39 +2019,39 @@ msgstr "צוואנה"
 
 #: picard/const/locales.py:448
 msgid "Tswana (South Africa)"
-msgstr ""
+msgstr "צוואנה (דרום אפריקה)"
 
 #: picard/const/locales.py:450
 msgid "Turkish (Turkey)"
-msgstr ""
+msgstr "תורכית (תורכיה)"
 
 #: picard/const/locales.py:451
 msgid "Tyap"
-msgstr ""
+msgstr "טיאפ"
 
 #: picard/const/locales.py:452
 msgid "Tyap (Nigeria)"
-msgstr ""
+msgstr "טיאפ (ניגריה)"
 
 #: picard/const/locales.py:453
 msgid "Uighur"
-msgstr ""
+msgstr "אויגור"
 
 #: picard/const/locales.py:454
 msgid "Uighur (Arabic)"
-msgstr ""
+msgstr "אויגור (ערבית)"
 
 #: picard/const/locales.py:455
 msgid "Uighur (Arabic) (China)"
-msgstr ""
+msgstr "אויגור (ערבית) (סין)"
 
 #: picard/const/locales.py:456
 msgid "Uighur (China)"
-msgstr ""
+msgstr "אויגור (סין)"
 
 #: picard/const/locales.py:458
 msgid "Ukrainian (Ukraine)"
-msgstr ""
+msgstr "אוקראינית (אוקרינה)"
 
 #: picard/const/locales.py:459
 msgid "Urdu"
@@ -2059,11 +2059,11 @@ msgstr "אורדו"
 
 #: picard/const/locales.py:460
 msgid "Urdu (India)"
-msgstr ""
+msgstr "אורדו (הודו)"
 
 #: picard/const/locales.py:461
 msgid "Urdu (Pakistan)"
-msgstr ""
+msgstr "אורדו (פקיסטן)‏"
 
 #: picard/const/locales.py:462
 msgid "Uzbek"
@@ -2071,35 +2071,35 @@ msgstr "אוזבקית"
 
 #: picard/const/locales.py:463
 msgid "Uzbek (Afghanistan)"
-msgstr ""
+msgstr "אוזבקית (אפגניסטן)"
 
 #: picard/const/locales.py:464
 msgid "Uzbek (Arabic)"
-msgstr ""
+msgstr "אוזבקית (ערבית)"
 
 #: picard/const/locales.py:465
 msgid "Uzbek (Arabic) (Afghanistan)"
-msgstr ""
+msgstr "אוזבקית (ערבית) (אפגניסטן)"
 
 #: picard/const/locales.py:466
 msgid "Uzbek (Cyrillic)"
-msgstr ""
+msgstr "אוזבקית (קירילית)"
 
 #: picard/const/locales.py:467
 msgid "Uzbek (Cyrillic) (Uzbekistan)"
-msgstr ""
+msgstr "אזרית  (קירילית) (אוזבקיסטן)"
 
 #: picard/const/locales.py:468
 msgid "Uzbek (Latin)"
-msgstr ""
+msgstr "אוזבקית (לוינית)"
 
 #: picard/const/locales.py:469
 msgid "Uzbek (Latin) (Uzbekistan)"
-msgstr ""
+msgstr "אוזבקית  (לטינית) (אוזבקיסטן)"
 
 #: picard/const/locales.py:470
 msgid "Uzbek (Uzbekistan)"
-msgstr ""
+msgstr "אוזבקית (אוזבקיסטן)"
 
 #: picard/const/locales.py:471
 msgid "Venda"
@@ -2119,11 +2119,11 @@ msgstr ""
 
 #: picard/const/locales.py:475
 msgid "Walamo"
-msgstr ""
+msgstr "וואלאמו"
 
 #: picard/const/locales.py:476
 msgid "Walamo (Ethiopia)"
-msgstr ""
+msgstr "וואלאמו (אתיופיה)"
 
 #: picard/const/locales.py:477
 msgid "Welsh"
@@ -2131,7 +2131,7 @@ msgstr "וולשית"
 
 #: picard/const/locales.py:478
 msgid "Welsh (United Kingdom)"
-msgstr ""
+msgstr "וולשית (בריטניה)"
 
 #: picard/const/locales.py:479
 msgid "Wolof"
@@ -2139,23 +2139,23 @@ msgstr "וולוף"
 
 #: picard/const/locales.py:480
 msgid "Wolof (Latin)"
-msgstr ""
+msgstr "וולוף (לטינית)"
 
 #: picard/const/locales.py:481
 msgid "Wolof (Latin) (Senegal)"
-msgstr ""
+msgstr "וולוף (לטינית) (סנגל)"
 
 #: picard/const/locales.py:482
 msgid "Wolof (Senegal)"
-msgstr ""
+msgstr "וולוף (סנגל)"
 
 #: picard/const/locales.py:483
 msgid "Xhosa"
-msgstr ""
+msgstr "קסוסה"
 
 #: picard/const/locales.py:484
 msgid "Xhosa (South Africa)"
-msgstr ""
+msgstr "קסוסה (דרום אפריקה)"
 
 #: picard/const/locales.py:485
 msgid "Yoruba"
@@ -2163,7 +2163,7 @@ msgstr "יורובה"
 
 #: picard/const/locales.py:486
 msgid "Yoruba (Nigeria)"
-msgstr ""
+msgstr "יורובה (ניגריה)"
 
 #: picard/const/locales.py:487
 msgid "Zulu"
@@ -2264,12 +2264,12 @@ msgid "Whitelist"
 msgstr "רשימה לבנה"
 
 #: picard/ui/cdlookup.py:63 picard/ui/itemviews.py:135
-#: picard/ui/mainwindow.py:765 picard/util/tags.py:28
+#: picard/ui/mainwindow.py:767 picard/util/tags.py:28
 msgid "Album"
 msgstr "אלבום"
 
 #: picard/ui/cdlookup.py:63 picard/ui/itemviews.py:132
-#: picard/ui/mainwindow.py:766 picard/ui/searchdialog/album.py:150
+#: picard/ui/mainwindow.py:768 picard/ui/searchdialog/album.py:150
 #: picard/ui/searchdialog/track.py:61 picard/util/tags.py:31
 msgid "Artist"
 msgstr "אמן"
@@ -2519,7 +2519,7 @@ msgstr "אמן:"
 msgid "Tracklist:"
 msgstr "רשימת רצועות:"
 
-#: picard/ui/infostatus.py:56 picard/ui/options/plugins.py:588
+#: picard/ui/infostatus.py:56 picard/ui/options/plugins.py:590
 msgid "Files"
 msgstr "קבצים"
 
@@ -2954,7 +2954,7 @@ msgstr "&תמונת עטיפה"
 msgid "&Actions"
 msgstr "&פעולות"
 
-#: picard/ui/mainwindow.py:481 picard/ui/mainwindow.py:759
+#: picard/ui/mainwindow.py:481 picard/ui/mainwindow.py:761
 #: picard/ui/searchdialog/__init__.py:86
 msgid "Search"
 msgstr "חיפוש"
@@ -2967,7 +2967,7 @@ msgstr "איתור &תקליטור‮..."
 msgid "Lookup the details of the CD in your drive"
 msgstr "חיפוש את פרטי ה CD בקונן"
 
-#: picard/ui/mainwindow.py:488 picard/ui/mainwindow.py:610
+#: picard/ui/mainwindow.py:488 picard/ui/mainwindow.py:612
 msgid "Ctrl+K"
 msgstr "Ctrl+K"
 
@@ -2993,201 +2993,209 @@ msgstr "Ctrl+Y"
 msgid "&Generate AcoustID Fingerprints"
 msgstr "&חילול טביעת אצבע AcoustID"
 
-#: picard/ui/mainwindow.py:508
+#: picard/ui/mainwindow.py:508 picard/ui/options/interface.py:97
+msgid "Generate Fingerprints"
+msgstr "חילול טביעות אצבע"
+
+#: picard/ui/mainwindow.py:509
 msgid ""
 "Generate the AcoustID audio fingerprints for the selected files without "
 "doing a lookup"
 msgstr "חילול טביעת אצבע שמע AcoustID לקבצים שנבחרו ללא ביצוע חיפוש"
 
-#: picard/ui/mainwindow.py:510
+#: picard/ui/mainwindow.py:511
 msgid "Generate the AcoustID audio fingerprints for the selected files"
 msgstr "חילול טביעת אצבע שמע AcoustID לקבצים שנבחרו"
 
-#: picard/ui/mainwindow.py:513
+#: picard/ui/mainwindow.py:512
+msgid "Ctrl+Alt+F"
+msgstr "Ctrl+Alt+F"
+
+#: picard/ui/mainwindow.py:515
 msgid "Cl&uster"
 msgstr "א&שכול"
 
-#: picard/ui/mainwindow.py:514
+#: picard/ui/mainwindow.py:516
 msgid "Cluster files into album clusters"
 msgstr "קבצי אשכול לתוך אשכולות אלבום"
 
-#: picard/ui/mainwindow.py:517
+#: picard/ui/mainwindow.py:519
 msgid "Ctrl+U"
 msgstr "Ctrl+U"
 
-#: picard/ui/mainwindow.py:520
+#: picard/ui/mainwindow.py:522
 msgid "&Lookup"
 msgstr "&איתור"
 
-#: picard/ui/mainwindow.py:521
+#: picard/ui/mainwindow.py:523
 msgid "Lookup selected items in MusicBrainz"
 msgstr "איתור פרטים שנבחרו במוזיקבריינז"
 
-#: picard/ui/mainwindow.py:526
+#: picard/ui/mainwindow.py:528
 msgid "Ctrl+L"
 msgstr "Ctrl+L"
 
-#: picard/ui/mainwindow.py:529
+#: picard/ui/mainwindow.py:531
 msgid "&Info..."
 msgstr "&מידע‮..."
 
-#: picard/ui/mainwindow.py:532
+#: picard/ui/mainwindow.py:534
 msgid "Ctrl+I"
 msgstr "Ctrl+I"
 
-#: picard/ui/mainwindow.py:535
+#: picard/ui/mainwindow.py:537
 msgid "&Refresh"
 msgstr "רע&נון"
 
-#: picard/ui/mainwindow.py:536
+#: picard/ui/mainwindow.py:538
 msgid "Ctrl+R"
 msgstr "Ctrl+R"
 
-#: picard/ui/mainwindow.py:539
+#: picard/ui/mainwindow.py:541
 msgid "&Rename Files"
 msgstr "&שינוי שמות קבצים"
 
-#: picard/ui/mainwindow.py:544
+#: picard/ui/mainwindow.py:546
 msgid "&Move Files"
 msgstr "ה&עברת קבצים"
 
-#: picard/ui/mainwindow.py:549
+#: picard/ui/mainwindow.py:551
 msgid "Save &Tags"
 msgstr "שמירת &תגים"
 
-#: picard/ui/mainwindow.py:554
+#: picard/ui/mainwindow.py:556
 msgid "Tags From &File Names..."
 msgstr "תגים מ&שמות קבצים‮..."
 
-#: picard/ui/mainwindow.py:558
+#: picard/ui/mainwindow.py:560
 msgid "&Open My Collections in Browser"
 msgstr "&פתיחת האוספים בדפדפן"
 
-#: picard/ui/mainwindow.py:562
+#: picard/ui/mainwindow.py:564
 msgid "View &Error/Debug Log"
 msgstr "הצגת יומן &שגיאות/ניפוי תקלים"
 
-#: picard/ui/mainwindow.py:565
+#: picard/ui/mainwindow.py:567
 msgid "Ctrl+G"
 msgstr "Ctrl+G"
 
-#: picard/ui/mainwindow.py:567
+#: picard/ui/mainwindow.py:569
 msgid "View Activity &History"
 msgstr "הצגת &הסטורית פעולות"
 
-#: picard/ui/mainwindow.py:570
+#: picard/ui/mainwindow.py:572
 msgid "Ctrl+H"
 msgstr "Ctrl+H"
 
-#: picard/ui/mainwindow.py:576
+#: picard/ui/mainwindow.py:578
 msgid "Open in &Player"
 msgstr "פתיחה ב&נגן"
 
-#: picard/ui/mainwindow.py:577
+#: picard/ui/mainwindow.py:579
 msgid "Play the file in your default media player"
 msgstr "נגון קובץ בנגן ברירת המחדל"
 
-#: picard/ui/mainwindow.py:581
+#: picard/ui/mainwindow.py:583
 msgid "Open Containing &Folder"
 msgstr "פתיחת &תקיה מכילה"
 
-#: picard/ui/mainwindow.py:582
+#: picard/ui/mainwindow.py:584
 msgid "Open the containing folder in your file explorer"
 msgstr "פתיחה התקיה המכילה בסייר"
 
-#: picard/ui/mainwindow.py:587
+#: picard/ui/mainwindow.py:589
 msgid "&Check for Update…"
 msgstr "&בדיקת עדכון..."
 
-#: picard/ui/mainwindow.py:647
+#: picard/ui/mainwindow.py:649
 msgid "&File"
 msgstr "&קובץ"
 
-#: picard/ui/mainwindow.py:660
+#: picard/ui/mainwindow.py:662
 msgid "&Edit"
 msgstr "ע&ריכה"
 
-#: picard/ui/mainwindow.py:666
+#: picard/ui/mainwindow.py:668
 msgid "&View"
 msgstr "&מצג"
 
-#: picard/ui/mainwindow.py:674
+#: picard/ui/mainwindow.py:676
 msgid "&Options"
 msgstr "&אפשרויות"
 
-#: picard/ui/mainwindow.py:680
+#: picard/ui/mainwindow.py:682
 msgid "&Tools"
 msgstr "&כלים"
 
-#: picard/ui/mainwindow.py:692 picard/ui/util.py:43
+#: picard/ui/mainwindow.py:694 picard/ui/util.py:43
 msgid "&Help"
 msgstr "&עזרה"
 
-#: picard/ui/mainwindow.py:727 picard/ui/ui_options_plugins.py:132
+#: picard/ui/mainwindow.py:729 picard/ui/ui_options_plugins.py:132
 msgid "Actions"
 msgstr "פעולות"
 
-#: picard/ui/mainwindow.py:767
+#: picard/ui/mainwindow.py:769
 msgid "Track"
 msgstr "רצועה"
 
-#: picard/ui/mainwindow.py:784
+#: picard/ui/mainwindow.py:786
 msgid "&Advanced search"
 msgstr "חיפוש &מתקדם"
 
-#: picard/ui/mainwindow.py:785
+#: picard/ui/mainwindow.py:787
 msgid "&Builtin search"
 msgstr "חיפוש &מובנה"
 
-#: picard/ui/mainwindow.py:874
+#: picard/ui/mainwindow.py:876
 msgid "All Supported Formats"
 msgstr "כל סוגי התבניות הנתמכות"
 
-#: picard/ui/mainwindow.py:900
+#: picard/ui/mainwindow.py:902
 #, python-format
 msgid "Adding multiple directories from '%(directory)s' ..."
 msgstr "הוספת ספריות מרובות מ '%(directory)s'..."
 
-#: picard/ui/mainwindow.py:905
+#: picard/ui/mainwindow.py:907
 #, python-format
 msgid "Adding directory: '%(directory)s' ..."
 msgstr "  הוספת סִפְרִיָּה: '%(directory)s'..."
 
-#: picard/ui/mainwindow.py:992
+#: picard/ui/mainwindow.py:994
 msgid "Configuration Required"
 msgstr "נדרשת הגדרה"
 
-#: picard/ui/mainwindow.py:993
+#: picard/ui/mainwindow.py:995
 msgid ""
 "Audio fingerprinting is not yet configured. Would you like to configure it "
 "now?"
 msgstr "טביעת אצבע אודיו עדיין לא הוגדרה. האם להגדירה כעת?"
 
-#: picard/ui/mainwindow.py:1108
+#: picard/ui/mainwindow.py:1110
 #, python-format
 msgid "%(filename)s (error: %(error)s)"
 msgstr "%(filename)s (שגיאה: %(error)s)"
 
-#: picard/ui/mainwindow.py:1114
+#: picard/ui/mainwindow.py:1116
 #, python-format
 msgid "%(filename)s"
 msgstr "%(filename)s"
 
-#: picard/ui/mainwindow.py:1125
+#: picard/ui/mainwindow.py:1127
 #, python-format
 msgid "%(filename)s (%(similarity)d%%) (error: %(error)s)"
 msgstr "%(filename)s %(similarity)d %% (שגיאה: %(error)s)"
 
-#: picard/ui/mainwindow.py:1132
+#: picard/ui/mainwindow.py:1134
 #, python-format
 msgid "%(filename)s (%(similarity)d%%)"
 msgstr "%(filename)s (%(similarity)d%%)"
 
-#: picard/ui/mainwindow.py:1178
+#: picard/ui/mainwindow.py:1180
 msgid "Authentication Required"
 msgstr "נדרש אימות"
 
-#: picard/ui/mainwindow.py:1179
+#: picard/ui/mainwindow.py:1181
 msgid ""
 "Picard needs authorization to access your personal data on the MusicBrainz "
 "server. Would you like to log in now?"
@@ -3814,7 +3822,7 @@ msgstr "האזן רק במחשב מקומי"
 msgid "Plugins"
 msgstr "מִתְקָעים"
 
-#: picard/ui/options/plugins.py:583 picard/ui/searchdialog/album.py:149
+#: picard/ui/options/plugins.py:585 picard/ui/searchdialog/album.py:149
 #: picard/ui/searchdialog/artist.py:49 picard/ui/searchdialog/track.py:59
 #: picard/ui/ui_options_plugins.py:130
 msgid "Name"
@@ -4138,7 +4146,7 @@ msgstr "&אשר"
 msgid "Clos&e"
 msgstr "סגו&ר"
 
-#: picard/ui/options/__init__.py:87
+#: picard/ui/options/__init__.py:97
 msgid "Regex Error"
 msgstr "שגיאת Regex"
 
@@ -4332,10 +4340,6 @@ msgstr "שמירה"
 msgid "Submit AcoustIDs"
 msgstr "‮שגור ‭AcoustIDs"
 
-#: picard/ui/options/interface.py:97
-msgid "Generate AcoustID Fingerprints"
-msgstr "חילול טביעת אצבע AcoustID"
-
 #: picard/ui/options/interface.py:101
 msgid "Open in Player"
 msgstr "פתיחה בנגן"
@@ -4409,17 +4413,17 @@ msgstr "מנוטרל"
 msgid "Uninstall plugin"
 msgstr "הסרת מִתְקָע"
 
-#: picard/ui/options/plugins.py:385
+#: picard/ui/options/plugins.py:387
 msgid "Reloading list of available plugins..."
 msgstr "טעינה מחדש של רשימת מִתְקָעים זמינים..."
 
-#: picard/ui/options/plugins.py:393 picard/ui/options/plugins.py:402
-#: picard/ui/options/plugins.py:423
+#: picard/ui/options/plugins.py:395 picard/ui/options/plugins.py:404
+#: picard/ui/options/plugins.py:425
 #, python-format
 msgid "Plugin '%s'"
 msgstr "מִתְקָע '%s'"
 
-#: picard/ui/options/plugins.py:394
+#: picard/ui/options/plugins.py:396
 #, python-format
 msgid ""
 "An error occurred while loading the plugin '%s':\n"
@@ -4427,48 +4431,48 @@ msgid ""
 "%s"
 msgstr "ארעה שגיאה בעת טעינת מִתְקָע '%s':\n\n%s"
 
-#: picard/ui/options/plugins.py:403
+#: picard/ui/options/plugins.py:405
 #, python-format
 msgid "The plugin '%s' is not compatible with this version of Picard."
 msgstr "מִתְקָע '%s' אינו תואם לגרסה נוכחית של פיקארד."
 
-#: picard/ui/options/plugins.py:424
+#: picard/ui/options/plugins.py:426
 #, python-format
 msgid "The plugin '%s' will be upgraded to version %s on next run of Picard."
 msgstr "המִתְקָע '%s' ישודרג לגרסה %s בהפעלה הבאה של פיקארד."
 
-#: picard/ui/options/plugins.py:445
+#: picard/ui/options/plugins.py:447
 #, python-format
 msgid "Uninstall plugin '%s'?"
 msgstr "הסרת מִתְקָע '%s'?"
 
-#: picard/ui/options/plugins.py:446
+#: picard/ui/options/plugins.py:448
 #, python-format
 msgid "Do you really want to uninstall the plugin '%s' ?"
 msgstr "האם להסיר מִתְקָע '%s' ?"
 
-#: picard/ui/options/plugins.py:576
+#: picard/ui/options/plugins.py:578
 msgid "Restart Picard to upgrade to new version"
 msgstr "אתחול פיקארד לעדכון לגרסה החדשה"
 
-#: picard/ui/options/plugins.py:578
+#: picard/ui/options/plugins.py:580
 msgid "New version available"
 msgstr "גרסה חדשה זמינה"
 
-#: picard/ui/options/plugins.py:585
+#: picard/ui/options/plugins.py:587
 msgid "Authors"
 msgstr "יוצרים"
 
-#: picard/ui/options/plugins.py:587 picard/util/tags.py:59
+#: picard/ui/options/plugins.py:589 picard/util/tags.py:59
 msgid "License"
 msgstr "רשיון"
 
-#: picard/ui/options/plugins.py:624
+#: picard/ui/options/plugins.py:626
 #, python-format
 msgid "The plugin '%s' could not be downloaded."
 msgstr "לא ניתן להוריד את מִתְקָע '%s'."
 
-#: picard/ui/options/plugins.py:625
+#: picard/ui/options/plugins.py:627
 msgid "Please try again later."
 msgstr "נסו שוב מאוחר יותר."
 
