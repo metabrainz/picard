@@ -39,7 +39,6 @@ from picard.const import (
     PLUGINS_API,
     USER_PLUGIN_DIR,
 )
-from picard.const.sys import IS_WIN
 from picard.util import reconnect
 
 from picard.ui import HashableTreeWidgetItem
@@ -640,11 +639,7 @@ class PluginsOptionsPage(OptionsPage):
 
     @staticmethod
     def open_plugin_dir():
-        if IS_WIN:
-            url = 'file:///' + USER_PLUGIN_DIR
-        else:
-            url = 'file://' + USER_PLUGIN_DIR
-        QtGui.QDesktopServices.openUrl(QtCore.QUrl(url, QtCore.QUrl.TolerantMode))
+        QtGui.QDesktopServices.openUrl(QtCore.QUrl.fromLocalFile(USER_PLUGIN_DIR))
 
     def mimeTypes(self):
         return ["text/uri-list"]
