@@ -109,6 +109,9 @@ class FileLookup(object):
         if entity == 'release':
             QtCore.QObject.tagger.load_album(mbid)
             return True
+        elif entity == 'recording':
+            QtCore.QObject.tagger.load_nat(mbid)
+            return True
         return self._lookup(entity, mbid)
 
     def tag_lookup(self, artist, release, track, trackNum, duration, filename):
