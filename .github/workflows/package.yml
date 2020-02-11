@@ -200,6 +200,10 @@ jobs:
       with:
         name: windows-portable
         path: artifacts/
+    - name: Generate checksums
+      run: |
+        cd artifacts
+        sha256sum * > SHA256SUMS
     - name: Prepare changelog
       id: changelog
       continue-on-error: true
