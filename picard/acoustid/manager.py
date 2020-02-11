@@ -42,9 +42,10 @@ class AcoustIDManager(QtCore.QObject):
     # some leeway.
     BATCH_SUBMIT_COUNT = 240
 
-    def __init__(self):
+    def __init__(self, acoustid_api):
         super().__init__()
         self._fingerprints = {}
+        self._acoustid_api = acoustid_api
 
     def add(self, file, recordingid):
         if not hasattr(file, 'acoustid_fingerprint'):
@@ -110,7 +111,7 @@ class AcoustIDManager(QtCore.QObject):
             echo=None
         )
         next_func = partial(self._batch_submit, submissions)
-        self.tagger.acoustid_api.submit_acoustid_fingerprints(fingerprints,
+        self._acoustid_api.submit_acoustid_fingerprints(fingerprints,
             partial(self._batch_submit_finished, submission_batch, next_func))
 
     def _batch_submit_finished(self, submissions, next_func, document, http, error):
