@@ -37,6 +37,9 @@ class Submission(object):
 
 class AcoustIDManager(QtCore.QObject):
 
+    # AcoustID has a post limit of around 1 MB. With the data submitted by
+    # Picard this is roughly around 250 fingerprints. Submit a few less to have
+    # some leeway.
     BATCH_SUBMIT_COUNT = 240
 
     def __init__(self):
@@ -98,18 +101,19 @@ class AcoustIDManager(QtCore.QObject):
             self._check_unsubmitted()
             return
         submission_batch = submissions[:self.BATCH_SUBMIT_COUNT]
-        log.debug("AcoustID: submitting batch of %d fingerprints...", len(submission_batch))
+        submissions = submissions[self.BATCH_SUBMIT_COUNT:]
+        fingerprints = [fingerprint for file_, fingerprint in submission_batch]
+        log.debug("AcoustID: submitting batch of %d fingerprints (%d remaining)...",
+            len(submission_batch), len(submissions))
         self.tagger.window.set_statusbar_message(
             N_('Submitting AcoustIDs ...'),
             echo=None
         )
-        submissions = submissions[self.BATCH_SUBMIT_COUNT:]
-        fingerprints = [fingerprint for file_, fingerprint in submission_batch]
         next_func = partial(self._batch_submit, submissions)
         self.tagger.acoustid_api.submit_acoustid_fingerprints(fingerprints,
             partial(self._batch_submit_finished, submission_batch, next_func))
 
-    def _batch_submit_finished(self, submissions, next, document, http, error):
+    def _batch_submit_finished(self, submissions, next_func, document, http, error):
         if error:
             try:
                 error = load_json(document)
@@ -135,4 +139,4 @@ class AcoustIDManager(QtCore.QObject):
                 submission.orig_recordingid = submission.recordingid
                 file.update()
             self._check_unsubmitted()
-        next()
+        next_func()
