@@ -42,11 +42,12 @@ def get_score(node):
 
 class AcoustIDClient(QtCore.QObject):
 
-    def __init__(self):
+    def __init__(self, acoustid_api):
         super().__init__()
         self._queue = deque()
         self._running = 0
         self._max_processes = 2
+        self._acoustid_api = acoustid_api
 
         # The second condition is checked because in case of a packaged build of picard
         # the temp directory that pyinstaller decompresses picard into changes on every
@@ -155,7 +156,7 @@ class AcoustIDClient(QtCore.QObject):
         else:
             fp_type, recordingid = result
             params['recordingid'] = recordingid
-        self.tagger.acoustid_api.query_acoustid(partial(self._on_lookup_finished, next_func, file), **params)
+        self._acoustid_api.query_acoustid(partial(self._on_lookup_finished, next_func, file), **params)
 
     def _on_fpcalc_finished(self, next_func, file, exit_code, exit_status):
         process = self.sender()

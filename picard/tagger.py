@@ -229,13 +229,14 @@ class Tagger(QtWidgets.QApplication):
 
         self.webservice = WebService()
         self.mb_api = MBAPIHelper(self.webservice)
-        self.acoustid_api = AcoustIdAPIHelper(self.webservice)
 
         load_user_collections()
 
         # Initialize fingerprinting
-        self._acoustid = acoustid.AcoustIDClient()
+        acoustid_api = AcoustIdAPIHelper(self.webservice)
+        self._acoustid = acoustid.AcoustIDClient(acoustid_api)
         self._acoustid.init()
+        self.acoustidmanager = AcoustIDManager(acoustid_api)
 
         # Load plugins
         self.pluginmanager = PluginManager()
@@ -250,7 +251,6 @@ class Tagger(QtWidgets.QApplication):
                 os.makedirs(USER_PLUGIN_DIR)
             self.pluginmanager.load_plugins_from_directory(USER_PLUGIN_DIR)
 
-        self.acoustidmanager = AcoustIDManager()
         self.browser_integration = BrowserIntegration()
 
         self.files = {}
