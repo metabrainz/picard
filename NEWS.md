@@ -3,7 +3,7 @@
 ## Bug-fix
 - [PICARD-1688](https://tickets.metabrainz.org/browse/PICARD-1688) - "Submit AcoustIDs" fails with many tracks
 - [PICARD-1719](https://tickets.metabrainz.org/browse/PICARD-1719) - `$unset` marks tag for deletion
-- [PICARD-1724](https://tickets.metabrainz.org/browse/PICARD-1724) - Fingerprint status on left should not be submitable (red)
+- [PICARD-1724](https://tickets.metabrainz.org/browse/PICARD-1724) - Fingerprint status on left should not be submittable (red)
 - [PICARD-1725](https://tickets.metabrainz.org/browse/PICARD-1725) - Fingerprint indicator rendering artifacts
 - [PICARD-1726](https://tickets.metabrainz.org/browse/PICARD-1726) - Crash when closing options quickly before plugin list got loaded
 - [PICARD-1727](https://tickets.metabrainz.org/browse/PICARD-1727) - Performer tag in metadata list is not translated
@@ -16,7 +16,7 @@
 - [PICARD-1720](https://tickets.metabrainz.org/browse/PICARD-1720) - Add script function `$slice` to extract a portion of a multi-value variable
 - [PICARD-1721](https://tickets.metabrainz.org/browse/PICARD-1721) - Add script function `$join` to join the elements of a multi-value variable
 - [PICARD-1723](https://tickets.metabrainz.org/browse/PICARD-1723) - Match to album should consider the disc number
-- [PICARD-1729](https://tickets.metabrainz.org/browse/PICARD-1729) - Add scripting function $datetime to return the current date and time
+- [PICARD-1729](https://tickets.metabrainz.org/browse/PICARD-1729) - Add scripting function `$datetime` to return the current date and time
 - [PICARD-1737](https://tickets.metabrainz.org/browse/PICARD-1737) - Add keyboard shortcut Ctrl+Alt+F for "Generate Fingerprints"
 - [PICARD-1738](https://tickets.metabrainz.org/browse/PICARD-1738) - Load a recording URL entered into the search field as standalone recording
 
