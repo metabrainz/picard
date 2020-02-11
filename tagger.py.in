@@ -36,11 +36,23 @@ except:  # noqa: F722
 
     # Display the crash information to the user as a dialog. This requires#
     # importing Qt5 and has some potential to fail if things are broken.
-    from PyQt5 import QtWidgets
-    app = QtWidgets.QApplication(sys.argv)
-    msg = []
+    from PyQt5.QtCore import Qt, QUrl
+    from PyQt5.QtWidgets import QApplication, QMessageBox
+    _unused = QApplication(sys.argv)
+    msgbox = QMessageBox()
+    msgbox.setIcon(QMessageBox.Critical)
+    msgbox.setWindowTitle("Picard terminated unexpectedly")
+    msgbox.setTextFormat(Qt.RichText)
+    msgbox.setText(
+        'An unexpected error has caused Picard to crash. '
+        'Please report this issue on the <a href="https://tickets.metabrainz.org/projects/PICARD">MusicBrainz bug tracker</a>.')
     if logfile:
-        msg.append("A logfile has been written to {0}".format(logfile))
-    msg.append("Error details: \n{0}".format(trace))
-    QtWidgets.QMessageBox.critical(None, "Picard terminated unexpectedly", "\n\n".join(msg))
+        logfile_url = QUrl.fromLocalFile(logfile)
+        msgbox.setInformativeText(
+            'A logfile has been written to <a href="{0}">{1}</a>.'
+                .format(logfile_url.url(), logfile))
+    msgbox.setDetailedText(trace)
+    msgbox.setStandardButtons(QMessageBox.Close)
+    msgbox.setDefaultButton(QMessageBox.Close)
+    msgbox.exec_()
     raise
