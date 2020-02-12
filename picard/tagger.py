@@ -127,6 +127,7 @@ from picard.webservice.api_helpers import (
 
 import picard.resources  # noqa: F401 # pylint: disable=unused-import
 
+from picard.ui import theme
 from picard.ui.itemviews import BaseTreeView
 from picard.ui.mainwindow import MainWindow
 from picard.ui.searchdialog.album import AlbumSearchDialog
@@ -162,60 +163,10 @@ class Tagger(QtWidgets.QApplication):
 
     def __init__(self, picard_args, unparsed_args, localedir, autoupdate):
 
-        # Use the new fusion style from PyQt5 for a modern and consistent look
-        # across all OSes.
-        if not IS_MACOS and not IS_HAIKU:
-            self.setStyle('Fusion')
-
         super().__init__(sys.argv)
         self.__class__.__instance = self
         config._setup(self, picard_args.config_file)
-
-        super().setStyleSheet(
-            'QGroupBox::title { /* PICARD-1206, Qt bug workaround */ }'
-        )
-
-        # Adapt to Windows 10 color scheme (dark / light theme and accent color)
-        if IS_WIN:
-            import winreg
-
-            dark_theme = False
-            with winreg.OpenKey(winreg.HKEY_CURRENT_USER, r"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize") as key:
-                try:
-                    dark_theme = winreg.QueryValueEx(key, "AppsUseLightTheme")[0] == 0
-                except OSError:
-                    log.warning('Failed reading AppsUseLightTheme from registry')
-
-            accent_color = None
-            with winreg.OpenKey(winreg.HKEY_CURRENT_USER, r"Software\Microsoft\Windows\DWM") as key:
-                try:
-                    accent_color_dword = winreg.QueryValueEx(key, "ColorizationColor")[0]
-                    accent_color_hex = '#{:06x}'.format(accent_color_dword & 0xffffff)
-                    accent_color = QtGui.QColor(accent_color_hex)
-                    accent_text_color = QtCore.Qt.white if accent_color.lightness() < 160 else QtCore.Qt.black
-                except OSError:
-                    log.warning('Failed reading ColorizationColor from registry')
-
-            palette = QtGui.QPalette(self.palette())
-            if accent_color:
-                palette.setColor(QtGui.QPalette.Highlight, accent_color)
-                palette.setColor(QtGui.QPalette.HighlightedText, accent_text_color)
-            if dark_theme:
-                palette.setColor(QtGui.QPalette.Window, QtGui.QColor(51, 51, 51))
-                palette.setColor(QtGui.QPalette.WindowText, QtCore.Qt.white)
-                palette.setColor(QtGui.QPalette.Base, QtGui.QColor(31, 31, 31))
-                palette.setColor(QtGui.QPalette.AlternateBase, QtGui.QColor(51, 51, 51))
-                palette.setColor(QtGui.QPalette.ToolTipBase, QtGui.QColor(51, 51, 51))
-                palette.setColor(QtGui.QPalette.ToolTipText, QtCore.Qt.white)
-                palette.setColor(QtGui.QPalette.Text, QtCore.Qt.white)
-                palette.setColor(QtGui.QPalette.Button, QtGui.QColor(51, 51, 51))
-                palette.setColor(QtGui.QPalette.ButtonText, QtCore.Qt.white)
-                palette.setColor(QtGui.QPalette.BrightText, QtCore.Qt.red)
-                palette.setColor(QtGui.QPalette.Link, accent_color.lighter())
-                palette.setColor(QtGui.QPalette.Disabled, QtGui.QPalette.Text, QtCore.Qt.darkGray)
-                palette.setColor(QtGui.QPalette.Disabled, QtGui.QPalette.Light, QtGui.QColor(0, 0, 0, 0))
-                palette.setColor(QtGui.QPalette.Disabled, QtGui.QPalette.ButtonText, QtCore.Qt.darkGray)
-            self.setPalette(palette)
+        theme.setup(self)
 
         self._cmdline_files = picard_args.FILE
         self.autoupdate_enabled = autoupdate
