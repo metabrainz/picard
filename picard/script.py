@@ -1195,13 +1195,10 @@ def func_slice(parser, multi, start_index, end_index, separator=MULTI_VALUED_JOI
         end = int(end_index.eval(parser)) if end_index else None
     except ValueError:
         end = None
-    try:
-        multi_var = _get_multi_values(parser, multi, separator)
-        if not isinstance(separator, str):
-            separator = separator.eval(parser)
-        return separator.join(multi_var[start:end])
-    except IndexError:
-        return ''
+    multi_var = _get_multi_values(parser, multi, separator)
+    if not isinstance(separator, str):
+        separator = separator.eval(parser)
+    return separator.join(multi_var[start:end])
 
 
 @script_function()
