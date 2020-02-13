@@ -1201,7 +1201,7 @@ def func_slice(parser, multi, start_index, end_index, separator=MULTI_VALUED_JOI
             separator = separator.eval(parser)
         return separator.join(multi_var[start:end])
     except IndexError:
-        return ''
+        return []
 
 
 @script_function()
