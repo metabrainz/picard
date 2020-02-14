@@ -21,6 +21,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from collections import namedtuple
+from collections.abc import MutableSequence
 import datetime
 from functools import reduce
 from inspect import getfullargspec
@@ -297,6 +298,54 @@ Grammar:
         if key not in ScriptParser._cache:
             ScriptParser._cache[key] = self.parse(script, True)
         return ScriptParser._cache[key].eval(self)
+
+
+class MultiValue(MutableSequence):
+    def __init__(self, parser, multi, separator):
+        self.parser = parser
+        if isinstance(separator, ScriptExpression):
+            self.separator = separator.eval(self.parser)
+        else:
+            self.separator = separator
+        self._multi = self._get_multi_values(multi)
+
+    def _get_multi_values(self, multi):
+        if self.separator == MULTI_VALUED_JOINER:
+            # Convert ScriptExpression containing only a single variable into variable
+            if (isinstance(multi, ScriptExpression)
+                and len(multi) == 1
+                and isinstance(multi[0], ScriptVariable)):
+                multi = multi[0]
+
+            # If a variable, return multi-values
+            if isinstance(multi, ScriptVariable):
+                return self.parser.context.getall(normalize_tagname(multi.name))
+
+        # Fall-back to converting to a string and splitting if haystack is an expression
+        # or user has overridden the separator character.
+        multi = multi.eval(self.parser)
+        if self.separator:
+            return multi.split(self.separator)
+        else:
+            return [multi]
+
+    def __len__(self):
+        return len(self._multi)
+
+    def __getitem__(self, index):
+        return self._multi[index]
+
+    def __setitem__(self, index, value):
+        self._multi[index] = value
+
+    def __delitem__(self, index):
+        del self._multi[index]
+
+    def insert(self, index, value):
+        return self._multi.insert(index, value)
+
+    def __repr__(self):
+        return '%s(%r, %r, %r)' % (self.__class__.__name__, self.parser, self._multi, self.separator)
 
 
 def enabled_tagger_scripts_texts():
