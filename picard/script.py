@@ -1172,9 +1172,7 @@ def func_map(parser, multi, loop_code, separator=MULTI_VALUED_JOINER):
         multi_value[loop_count - 1] = str(loop_code.eval(parser))
     func_unset(parser, '_loop_count')
     func_unset(parser, '_loop_value')
-    if not isinstance(separator, str):
-        separator = separator.eval(parser)
-    return separator.join(multi_value)
+    return multi_value.separator.join(multi_value)
 
 
 @script_function(eval_args=False)
@@ -1224,9 +1222,7 @@ def func_slice(parser, multi, start_index, end_index, separator=MULTI_VALUED_JOI
     except ValueError:
         end = None
     multi_var = MultiValue(parser, multi, separator)
-    if not isinstance(separator, str):
-        separator = separator.eval(parser)
-    return separator.join(multi_var[start:end])
+    return multi_var.separator.join(multi_var[start:end])
 
 
 @script_function()
