@@ -795,7 +795,7 @@ def func_len(parser, text=""):
 
 @script_function(eval_args=False)
 def func_lenmulti(parser, multi, separator=MULTI_VALUED_JOINER):
-    return func_len(parser, MultiValue(parser, multi, separator))
+    return str(len(MultiValue(parser, multi, separator)))
 
 
 @script_function()
