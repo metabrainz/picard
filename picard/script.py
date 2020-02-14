@@ -421,27 +421,6 @@ def _compute_logic(operation, *args):
     return operation(args)
 
 
-def _get_multi_values(parser, multi, separator):
-    if isinstance(separator, ScriptExpression):
-        separator = separator.eval(parser)
-
-    if separator == MULTI_VALUED_JOINER:
-        # Convert ScriptExpression containing only a single variable into variable
-        if (isinstance(multi, ScriptExpression)
-            and len(multi) == 1
-            and isinstance(multi[0], ScriptVariable)):
-            multi = multi[0]
-
-        # If a variable, return multi-values
-        if isinstance(multi, ScriptVariable):
-            return parser.context.getall(normalize_tagname(multi.name))
-
-    # Fall-back to converting to a string and splitting if haystack is an expression
-    # or user has overridden the separator character.
-    multi = multi.eval(parser)
-    return multi.split(separator) if separator else [multi]
-
-
 @script_function(eval_args=False)
 def func_if(parser, _if, _then, _else=None):
     """If ``if`` is not empty, it returns ``then``, otherwise it returns ``else``."""
@@ -532,7 +511,7 @@ def func_inmulti(parser, haystack, needle, separator=MULTI_VALUED_JOINER):
        contains exactly ``needle`` as a member."""
 
     needle = needle.eval(parser)
-    return func_in(parser, _get_multi_values(parser, haystack, separator), needle)
+    return func_in(parser, MultiValue(parser, haystack, separator), needle)
 
 
 @script_function()
@@ -816,7 +795,7 @@ def func_len(parser, text=""):
 
 @script_function(eval_args=False)
 def func_lenmulti(parser, multi, separator=MULTI_VALUED_JOINER):
-    return func_len(parser, _get_multi_values(parser, multi, separator))
+    return func_len(parser, MultiValue(parser, multi, separator))
 
 
 @script_function()
@@ -1117,7 +1096,7 @@ def func_getmulti(parser, multi, item_index, separator=MULTI_VALUED_JOINER):
         return ''
     try:
         index = int(item_index.eval(parser))
-        multi_var = _get_multi_values(parser, multi, separator)
+        multi_var = MultiValue(parser, multi, separator)
         return str(multi_var[index])
     except (ValueError, IndexError):
         return ''
@@ -1138,7 +1117,7 @@ def func_foreach(parser, multi, loop_code, separator=MULTI_VALUED_JOINER):
         loop_code: String of script code to be processed on each iteration.
         separator: String used to separate the elements in the multi-value.
     """
-    multi_value = _get_multi_values(parser, multi, separator)
+    multi_value = MultiValue(parser, multi, separator)
     for loop_count, value in enumerate(multi_value, 1):
         func_set(parser, '_loop_count', str(loop_count))
         func_set(parser, '_loop_value', str(value))
@@ -1186,7 +1165,7 @@ def func_map(parser, multi, loop_code, separator=MULTI_VALUED_JOINER):
 
     Returns the updated multi-value variable.
     """
-    multi_value = _get_multi_values(parser, multi, separator)
+    multi_value = MultiValue(parser, multi, separator)
     for loop_count, value in enumerate(multi_value, 1):
         func_set(parser, '_loop_count', str(loop_count))
         func_set(parser, '_loop_value', str(value))
@@ -1214,7 +1193,7 @@ def func_join(parser, multi, join_phrase, separator=MULTI_VALUED_JOINER):
     Returns a string with the elements joined.
     """
     join_phrase = str(join_phrase.eval(parser))
-    multi_value = _get_multi_values(parser, multi, separator)
+    multi_value = MultiValue(parser, multi, separator)
     return join_phrase.join(multi_value)
 
 
@@ -1244,7 +1223,7 @@ def func_slice(parser, multi, start_index, end_index, separator=MULTI_VALUED_JOI
         end = int(end_index.eval(parser)) if end_index else None
     except ValueError:
         end = None
-    multi_var = _get_multi_values(parser, multi, separator)
+    multi_var = MultiValue(parser, multi, separator)
     if not isinstance(separator, str):
         separator = separator.eval(parser)
     return separator.join(multi_var[start:end])
