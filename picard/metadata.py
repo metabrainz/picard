@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # Picard, the next-generation MusicBrainz tagger
-# Copyright (C) 2006-2007 Lukáš Lalinský
+# Copyright (C) 2006-2007 LukÃ¡Å¡ LalinskÃ½
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -25,7 +25,10 @@ from collections.abc import (
 
 from PyQt5.QtCore import QObject
 
-from picard import config
+from picard import (
+    config,
+    match_details_log,
+)
 from picard.mbjson import (
     artist_credit_from_node,
     get_score,
@@ -78,12 +81,13 @@ def weights_from_release_type_scores(parts, release, release_type_scores,
             types_found += release['release-group']['secondary-types']
         other_score = type_scores.get('Other', 0.5)
         for release_type in types_found:
-            type_score = type_scores.get(release_type, other_score) 
-            if type_score == 0: skip_it = True 
+            type_score = type_scores.get(release_type, other_score)
+            if type_score == 0:
+                skip_it = True
             score += type_scores.get(release_type, other_score)
         score /= len(types_found)
 
-    if skip_it: 
+    if skip_it:
         parts.append((0, 9999))
     else:
         parts.append((score, weight_release_type))
@@ -228,7 +232,7 @@ class Metadata(MutableMapping):
             pass
 
         if "date" in release:
-            parts.append((1.0, 3))
+            parts.append((1.0, weights['date']))
 
         weights_from_preferred_countries(parts, release,
                                          config.setting["preferred_release_countries"],
@@ -288,10 +292,15 @@ class Metadata(MutableMapping):
         for release in releases:
             release_parts = self.compare_to_release_parts(release, weights)
             sim = linear_combination_of_weights(parts + release_parts) * search_score
-            
+
             if sim > result.similarity:
                 rg = release['release-group'] if "release-group" in release else None
                 result = SimMatchTrack(similarity=sim, releasegroup=rg, release=release, track=track)
+                is_new = True
+            else:
+                is_new = False
+
+            match_details_log.match_dtl_entry("Recording candidate release score", track, release, parts, release_parts, search_score, sim, is_new)
         return result
 
     def copy(self, other, copy_images=True):
@@ -398,8 +407,10 @@ class Metadata(MutableMapping):
 
     def unset(self, name):
         """Removes a tag from the metadata, but does not mark it for deletion.
+
         Args:
             name: name of the tag to unset
+
         Raises:
             KeyError: name not set
         """
@@ -416,6 +427,7 @@ class Metadata(MutableMapping):
 
     def rawitems(self):
         """Returns the metadata items.
+
         >>> m.rawitems()
         [("key1", ["value1", "value2"]), ("key2", ["value3"])]
         """
@@ -428,6 +440,7 @@ class Metadata(MutableMapping):
 
     def strip_whitespace(self):
         """Strip leading/trailing whitespace.
+
         >>> m = Metadata()
         >>> m["foo"] = "  bar  "
         >>> m["foo"]

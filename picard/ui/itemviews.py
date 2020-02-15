@@ -420,6 +420,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
                 menu.addAction(self.window.play_file_action)
                 menu.addAction(self.window.open_folder_action)
                 menu.addAction(self.window.track_search_action)
+                menu.addAction(self.window.track_match_details_action)
                 plugin_actions.extend(_file_actions)
             menu.addAction(self.window.browser_lookup_action)
             if obj.num_linked_files > 0:

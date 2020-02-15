@@ -18,6 +18,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+
 from collections import defaultdict
 import fnmatch
 from functools import partial
@@ -33,6 +34,7 @@ from picard import (
     PICARD_APP_NAME,
     config,
     log,
+    match_details_log,
 )
 from picard.const import QUERY_LIMIT
 from picard.const.sys import (
@@ -90,6 +92,7 @@ class File(QtCore.QObject, Item):
         "releasecountry": 2,
         "format": 2,
         "isvideo": 2,
+        "date": 3,
     }
 
     class PreserveTimesStatError(Exception):
@@ -666,10 +669,13 @@ class File(QtCore.QObject, Item):
             )
 
         if tracks:
+            match_details_log.set_cur_file(self)
+
             if lookuptype == File.LOOKUP_ACOUSTID:
                 threshold = 0
             else:
                 threshold = config.setting['file_lookup_threshold']
+                match_details_log.set_file_result_json(self.filename, document)
 
             trackmatch = self._match_to_track(tracks, threshold=threshold)
             if trackmatch is None:
@@ -686,6 +692,8 @@ class File(QtCore.QObject, Item):
                     self.tagger.move_file_to_track(self, release_id, track_id)
                 else:
                     self.tagger.move_file_to_nat(self, track_id, node=node)
+
+            match_details_log.set_cur_file(None)
         else:
             statusbar(N_("No matching tracks for file '%(filename)s'"))
 
@@ -695,7 +703,11 @@ class File(QtCore.QObject, Item):
         # multiple matches -- calculate similarities to each of them
         def candidates():
             for track in tracks:
-                yield self.metadata.compare_to_track(track, self.comparison_weights)
+                result = self.metadata.compare_to_track(track, self.comparison_weights)
+
+                match_details_log.match_dtl_entry("Recording selection score:", result.track, result.release, similarity=result.similarity)
+
+                yield result
 
         no_match = SimMatchTrack(similarity=-1, releasegroup=None, release=None, track=None)
         best_match = find_best_match(candidates, no_match)
@@ -703,6 +715,8 @@ class File(QtCore.QObject, Item):
         if best_match.similarity < threshold:
             return None
         else:
+            match_details_log.match_dtl_entry("Final Match:", best_match.result.track, best_match.result.release, similarity=best_match.similarity)
+
             track_id = best_match.result.track['id']
             release_group_id, release_id, node = None, None, None
             acoustid = best_match.result.track.get('acoustid', None)

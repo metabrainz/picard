@@ -511,8 +511,8 @@ def load_json(data):
     return json.loads(__convert_to_string(data))
 
 
-def parse_json(reply):
-    return load_json(reply.readAll())
+def parse_json(json_str):
+    return load_json(json_str)
 
 
 def restore_method(func):

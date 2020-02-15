@@ -60,6 +60,7 @@ class Cluster(QtCore.QObject, Item):
         'releasetype': 10,
         'releasecountry': 2,
         'format': 2,
+        'date': 3,
     }
 
     def __init__(self, name, artist="", special=False, related_album=None, hide_if_empty=False):

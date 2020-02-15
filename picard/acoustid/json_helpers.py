@@ -34,16 +34,48 @@ def _make_releases_node(recording):
                 release_mb['title'] = release['title']
             else:
                 release_mb['title'] = release_group['title']
+
             if 'country' in release:
                 release_mb['country'] = release['country']
+
+            if 'date' in release:
+                release_mb['date'] = release['date']
+
+            if 'medium_count' in release:
+                release_mb['medium_count'] = release['medium_count']
+
+            if 'track_count' in release:
+                release_mb['track-count'] = release['track_count']
+
             release_mb['media'] = []
             for medium in release['mediums']:
                 medium_mb = {}
                 if 'format' in medium:
                     medium_mb['format'] = medium['format']
-                medium_mb['track-count'] = medium['track_count']
+
+                if 'track_count' in medium:
+                    medium_mb['track-count'] = medium['track_count']
+
+                if 'position' in medium:
+                    medium_mb['position'] = medium['position']
+
+                if 'tracks' in medium:
+                    medium_mb['tracks'] = medium['tracks'][0]
+
                 release_mb['media'].append(medium_mb)
-            release_list.append(release_mb)
+
+            # AcoustId service is returning country/date as attrib of the release, but really, according to MusicBrainz schema definition,
+            # its a one-many sub attribute in release events.
+            # They do return the releaseevents, but seem to be copying the first one on to the release.
+            # So if we have releaseevents, then use them to create multiple records, and ignore what is coming on the release
+            if 'releaseevents' in release:
+                for releaseevent in release['releaseevents']:
+                    release_mb['country'] = releaseevent.get('country', '')
+                    release_mb['date'] = releaseevent.get('date', '')
+                    release_list.append(release_mb)
+            else:
+                release_list.append(release_mb)
+
     return release_list
 
 
@@ -91,4 +123,8 @@ def parse_recording(recording):
             recording_mb['length'] = int(recording['duration']) * 1000
         except TypeError:
             pass
+
+    if 'sources' in recording:
+        recording_mb['sources'] = recording['sources']
+
     return recording_mb

@@ -26,11 +26,13 @@ from PyQt5 import QtCore
 from picard import (
     config,
     log,
+    match_details_log,
 )
 from picard.acoustid.json_helpers import parse_recording
 from picard.const import FPCALC_NAMES
 from picard.const.sys import IS_FROZEN
 from picard.util import find_executable
+from picard.webservice import WebService
 
 
 def get_score(node):
@@ -84,21 +86,28 @@ class AcoustIDClient(QtCore.QObject):
                 recording_list = doc['recordings'] = []
                 status = document['status']
                 if status == 'ok':
+                    log.debug("AcoustID Lookup successful for '%s'", file.filename)
                     results = document.get('results') or []
+                    result_cnt = 0
                     for result in results:
+                        result_cnt += 1
                         recordings = result.get('recordings') or []
                         max_sources = max([r.get('sources', 1) for r in recordings] + [1])
                         result_score = get_score(result)
+                        recording_cnt = 0
                         for recording in recordings:
+                            recording_cnt += 1
                             parsed_recording = parse_recording(recording)
                             if parsed_recording is not None:
                                 # Calculate a score based on result score and sources for this
                                 # recording relative to other recordings in this result
-                                score = recording.get('sources', 1) / max_sources * 100
-                                parsed_recording['score'] = score * result_score
+                                recording_src_score = recording.get('sources', 1) / max_sources * 100
+                                parsed_recording['score'] = recording_src_score * result_score
                                 parsed_recording['acoustid'] = result['id']
                                 recording_list.append(parsed_recording)
-                        log.debug("AcoustID: Lookup successful for '%s'", file.filename)
+
+                                log.debug("MATCH:AcoustID Lkp: Result#: %d, Recording#: %d, recording_score: %7.4f calc is (result_score %.5f * nbr_src_ratio: (%3d/%3d=%8.4f)), File:%s",
+                                         result_cnt, recording_cnt, parsed_recording['score'], result_score, recording.get('sources', 1), max_sources, recording_src_score, file.filename)
                 else:
                     mparms = {
                         'error': document['error']['message'],
@@ -115,6 +124,8 @@ class AcoustIDClient(QtCore.QObject):
             except (AttributeError, KeyError, TypeError) as e:
                 log.error("AcoustID: Error reading response", exc_info=True)
                 error = e
+
+            match_details_log.set_file_result_json(file.filename, WebService.get_last_last_raw_reply())
 
         next_func(doc, http, error)
 

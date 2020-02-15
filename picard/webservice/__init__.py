@@ -24,6 +24,7 @@
 Asynchronous web service.
 """
 
+from builtins import staticmethod
 from collections import (
     defaultdict,
     deque,
@@ -259,6 +260,7 @@ class WSPostRequest(WSRequest):
 class WebService(QtCore.QObject):
 
     PARSERS = dict()
+    last_raw_reply = ""
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -425,7 +427,8 @@ class WebService(QtCore.QObject):
                     self._handle_redirect(reply, request, redirect)
                 elif request.response_parser:
                     try:
-                        document = request.response_parser(reply)
+                        WebService.last_raw_reply = reply.readAll()
+                        document = request.response_parser(WebService.last_raw_reply)
                     except Exception as e:
                         url = reply.request().url().toString(QUrl.RemoveUserInfo)
                         log.error("Unable to parse the response for %s: %s", url, e)
@@ -434,7 +437,8 @@ class WebService(QtCore.QObject):
                     finally:
                         handler(document, reply, error)
                 else:
-                    handler(reply.readAll(), reply, error)
+                    WebService.last_raw_reply = reply.readAll()
+                    handler(WebService.last_raw_reply, reply, error)
 
         ratecontrol.adjust(hostkey, slow_down)
 
@@ -571,6 +575,22 @@ class WebService(QtCore.QObject):
             return cls.PARSERS[response_type].parser
         else:
             raise UnknownResponseParserError(response_type)
+
+    @staticmethod
+    def get_last_last_raw_reply():
+        """ get last raw reply - the http body
+
+        This class passes the http body to a parsing function, and returns the result of that as the document.
+        Note that reply.readAll() is only able to be called once, as it consumes the actual http body.
+        Therefore the unparsed reply is not available to anything else.
+        Now we pre-saved the the http body and make it available via this getter.
+        Ideally this would not be static.  However, Webservice class is abstracted with layers of classes that make it unavailable from any class that would want to get the raw reply.
+        So making it static allows us to expose this value without re-architecting the whole program.
+        This should be re-factored in the future.
+        WARNING: This is not thread-safe, so if multiple threads are making Webservice calls concurrently, they could get the wrong results here.
+        But given we have the rate-limiter, we should be fine until this is refactored.
+        """
+        return WebService.last_raw_reply
 
 
 WebService.add_parser('xml', 'application/xml', parse_xml)

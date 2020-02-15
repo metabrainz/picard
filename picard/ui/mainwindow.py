@@ -32,6 +32,7 @@ from picard import (
     PICARD_APP_ID,
     config,
     log,
+    match_details_log,
 )
 from picard.album import Album
 from picard.cluster import Cluster
@@ -68,6 +69,7 @@ from picard.ui.logview import (
     HistoryView,
     LogView,
 )
+from picard.ui.matchdetailsdialog.matchdetails import MatchDetailsDialog
 from picard.ui.metadatabox import MetadataBox
 from picard.ui.options.dialog import OptionsDialog
 from picard.ui.passworddialog import (
@@ -465,6 +467,10 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             self.show_file_browser_action.setChecked(True)
         self.show_file_browser_action.setShortcut(QtGui.QKeySequence(_("Ctrl+B")))
         self.show_file_browser_action.triggered.connect(self.show_file_browser)
+
+        self.track_match_details_action = QtWidgets.QAction(icontheme.lookup('picard-target'), _("View Match Details..."), self)
+        self.track_match_details_action.setStatusTip(_("View match deatils"))
+        self.track_match_details_action.triggered.connect(self.show_match_details)
 
         self.show_cover_art_action = QtWidgets.QAction(_("&Cover Art"), self)
         self.show_cover_art_action.setCheckable(True)
@@ -1005,6 +1011,16 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         dialog.load_similar_tracks(obj)
         dialog.exec_()
 
+    def show_match_details(self):
+        obj = self.selected_objects[0]
+        if isinstance(obj, Track):
+            linkedFile = obj.linked_files[0]
+        else:
+            linkedFile = None
+        dialog = MatchDetailsDialog(self)
+        dialog.load_match_details(obj, linkedFile)
+        dialog.exec_()
+
     def show_more_albums(self):
         obj = self.selected_objects[0]
         dialog = AlbumSearchDialog(self)
@@ -1079,6 +1095,15 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         files = self.get_selected_or_unmatched_files()
         self.tags_from_filenames_action.setEnabled(bool(files))
         self.track_search_action.setEnabled(have_objects)
+
+        try:
+            enable_match_dialog = False
+            if single.linked_files[0].filename in match_details_log.get_all_match_dtls():
+                enable_match_dialog = have_objects
+        except (IndexError, AttributeError):
+            enable_match_dialog = False
+
+        self.track_match_details_action.setEnabled(enable_match_dialog)
 
     def update_selection(self, objects=None):
         if self.ignore_selection_changes:
