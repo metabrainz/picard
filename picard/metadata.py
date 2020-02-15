@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # Picard, the next-generation MusicBrainz tagger
-# Copyright (C) 2006-2007 LukÃ¡Å¡ LalinskÃ½
+# Copyright (C) 2006-2007 Lukáš Lalinský
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -67,6 +67,9 @@ def weights_from_release_type_scores(parts, release, release_type_scores,
     # If no types are found, it is set to the score of the 'Other' type or 0.5 if 'Other' doesnt exist
     # It appends (score, weight_release_type) to passed parts list
 
+    # if our preference is zero for the release_type, force to never return this recording. By using large zero weight. This means it only gets picked if there are no others at all
+    skip_it = False
+
     type_scores = dict(release_type_scores)
     score = 0.0
     if 'release-group' in release and 'primary-type' in release['release-group']:
@@ -75,9 +78,15 @@ def weights_from_release_type_scores(parts, release, release_type_scores,
             types_found += release['release-group']['secondary-types']
         other_score = type_scores.get('Other', 0.5)
         for release_type in types_found:
+            type_score = type_scores.get(release_type, other_score) 
+            if type_score == 0: skip_it = True 
             score += type_scores.get(release_type, other_score)
         score /= len(types_found)
-    parts.append((score, weight_release_type))
+
+    if skip_it: 
+        parts.append((0, 9999))
+    else:
+        parts.append((score, weight_release_type))
 
 
 def weights_from_preferred_countries(parts, release,
@@ -218,6 +227,9 @@ class Metadata(MutableMapping):
         except (ValueError, KeyError):
             pass
 
+        if "date" in release:
+            parts.append((1.0, 3))
+
         weights_from_preferred_countries(parts, release,
                                          config.setting["preferred_release_countries"],
                                          weights["releasecountry"])
@@ -276,6 +288,7 @@ class Metadata(MutableMapping):
         for release in releases:
             release_parts = self.compare_to_release_parts(release, weights)
             sim = linear_combination_of_weights(parts + release_parts) * search_score
+            
             if sim > result.similarity:
                 rg = release['release-group'] if "release-group" in release else None
                 result = SimMatchTrack(similarity=sim, releasegroup=rg, release=release, track=track)
@@ -385,10 +398,8 @@ class Metadata(MutableMapping):
 
     def unset(self, name):
         """Removes a tag from the metadata, but does not mark it for deletion.
-
         Args:
             name: name of the tag to unset
-
         Raises:
             KeyError: name not set
         """
@@ -405,7 +416,6 @@ class Metadata(MutableMapping):
 
     def rawitems(self):
         """Returns the metadata items.
-
         >>> m.rawitems()
         [("key1", ["value1", "value2"]), ("key2", ["value3"])]
         """
@@ -418,7 +428,6 @@ class Metadata(MutableMapping):
 
     def strip_whitespace(self):
         """Strip leading/trailing whitespace.
-
         >>> m = Metadata()
         >>> m["foo"] = "  bar  "
         >>> m["foo"]
