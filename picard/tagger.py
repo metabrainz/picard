@@ -462,7 +462,10 @@ class Tagger(QtWidgets.QApplication):
         ignoreregex = None
         pattern = config.setting['ignore_regex']
         if pattern:
-            ignoreregex = re.compile(pattern)
+            try:
+                ignoreregex = re.compile(pattern)
+            except re.error as e:
+                log.error("Failed evaluating regular expression for ignore_regex: %s", e)
         ignore_hidden = config.setting["ignore_hidden_files"]
         new_files = []
         for filename in filenames:
