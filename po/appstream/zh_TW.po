@@ -46,6 +46,8 @@ msgid ""
 "supports a wide range of audio formats and can also lookup an entire CD for "
 "you."
 msgstr ""
+"Picard 依照您指定的方式來重新命名音樂檔案，並整理進資料夾，藉此幫助您整理您的音樂收藏。Picard "
+"有多種插件可使用，您甚至可以撰寫自己的插件。Picard 支援多種音樂格式，也可以為您查找整張 CD。"
 
 #: org.musicbrainz.Picard.appdata.xml.in:22
 msgid "Tagging audio files has never been easier."

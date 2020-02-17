@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2020-02-11 13:53+0000\n"
+"PO-Revision-Date: 2020-02-16 06:54+0000\n"
 "Last-Translator: Muhammad Adli Ibrahim <adli98@yahoo.com>\n"
 "Language-Team: Malay (Malaysia) (http://www.transifex.com/musicbrainz/musicbrainz/language/ms_MY/)\n"
 "MIME-Version: 1.0\n"
@@ -1545,7 +1545,7 @@ msgstr "CD Copy Control (CCCD) ialah istilah umum bagi CD yang dikeluarkan sekit
 #: DB:area_type/name:1
 msgctxt "area_type"
 msgid "Country"
-msgstr ""
+msgstr "Negara"
 
 #: DB:area_type/description:1
 msgctxt "area_type"
@@ -3515,7 +3515,7 @@ msgstr ""
 #: DB:work_attribute_type/name:1
 msgctxt "work_attribute_type"
 msgid "Key"
-msgstr ""
+msgstr "Nada"
 
 #: DB:work_attribute_type_allowed_value/value:950
 msgctxt "work_attribute_type_allowed_value"
@@ -4987,7 +4987,7 @@ msgstr ""
 #: DB:work_type/name:28
 msgctxt "work_type"
 msgid "Play"
-msgstr ""
+msgstr "Mainkan"
 
 #: DB:medium_format/name:74
 msgctxt "medium_format"
@@ -6305,7 +6305,7 @@ msgstr ""
 #: DB:cover_art_archive.art_type/name:7
 msgctxt "cover_art_type"
 msgid "Track"
-msgstr ""
+msgstr "Runut"
 
 #: DB:cover_art_archive.art_type/name:9
 msgctxt "cover_art_type"
@@ -6615,7 +6615,7 @@ msgstr ""
 #: DB:editor_collection_type/name:15
 msgctxt "collection_type"
 msgid "Work"
-msgstr ""
+msgstr "Karya"
 
 #: DB:work_alias_type/name:1
 msgctxt "alias_type"

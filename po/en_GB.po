@@ -7,15 +7,15 @@
 # Ivan Dobsky, 2019-2020
 # Nikki, 2006
 # Oliver Lineham, 2012-2013
-# Philipp Wolfer <ph.wolfer@gmail.com>, 2019
+# Philipp Wolfer <ph.wolfer@gmail.com>, 2019-2020
 # Sam, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2020-02-07 10:07+0100\n"
-"PO-Revision-Date: 2020-02-07 12:46+0000\n"
-"Last-Translator: Michael Wiencek <mwtuea@gmail.com>\n"
+"PO-Revision-Date: 2020-02-17 13:50+0000\n"
+"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: English (United Kingdom) (http://www.transifex.com/musicbrainz/musicbrainz/language/en_GB/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -4133,7 +4133,7 @@ msgstr ""
 
 #: picard/ui/options/about.py:54
 msgid "translator-credits"
-msgstr "Contributions via Transifex: \n Ivan Dobsky https://www.transifex.com/accounts/profile/ivandobsky/\nLaunchpad Contributions:\n  Andi Chandler https://launchpad.net/~bing\n  Jen Ockwell https://launchpad.net/~rj-ockwell\n  Lukáš Lalinský https://launchpad.net/~luks\n  Mihkel Tõnnov https://launchpad.net/~v6lur\n  Philipp Wolfer https://launchpad.net/~phw\n  for4saken https://launchpad.net/~for4saken"
+msgstr "Contributions via Transifex: \n Ivan Dobsky https://www.transifex.com/accounts/profile/ivandobsky/\nLaunchpad Contributions:\n  Andi Chandler https://launchpad.net/~bing\n  Jen Ockwell https://launchpad.net/~rj-ockwell\n  Lukáš Lalinský https://launchpad.net/~luks\n  Mihkel Tõnnov https://launchpad.net/~v6lur\n  for4saken https://launchpad.net/~for4saken"
 
 #: picard/ui/options/about.py:57
 #, python-format

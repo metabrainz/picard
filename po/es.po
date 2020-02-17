@@ -24,8 +24,8 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2020-02-07 10:07+0100\n"
-"PO-Revision-Date: 2020-02-07 12:46+0000\n"
-"Last-Translator: Michael Wiencek <mwtuea@gmail.com>\n"
+"PO-Revision-Date: 2020-02-17 15:45+0000\n"
+"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Spanish (http://www.transifex.com/musicbrainz/musicbrainz/language/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -3002,7 +3002,7 @@ msgstr ""
 
 #: picard/ui/mainwindow.py:512
 msgid "Ctrl+Alt+F"
-msgstr ""
+msgstr "Ctrl+Alt+F"
 
 #: picard/ui/mainwindow.py:515
 msgid "Cl&uster"
@@ -4143,7 +4143,7 @@ msgstr "Acerca de"
 
 #: picard/ui/options/about.py:54
 msgid "translator-credits"
-msgstr "Contribuciones en Launchpad:\n  Alejandro Mas Chiotakis https://launchpad.net/~alejandro-maschiotakis\n  Alexander Dupuy https://launchpad.net/~dupuy\n  Ancho https://launchpad.net/~ancho-corp\n  Brie A. Gordon https://launchpad.net/~brie.aleida\n  Carlos Sánchez Mateo https://launchpad.net/~chukysoria\n  Cristóbal Iván Rivera Macías https://launchpad.net/~ivanrivera\n  DiegoJ https://launchpad.net/~diegojromerolopez\n  Emerson Posadas https://launchpad.net/~toxickore\n  Fitoschido https://launchpad.net/~fitoschido\n  Julian Alarcon https://launchpad.net/~alarconj\n  Kito https://launchpad.net/~ejpastorino\n  Leandro Gómez https://launchpad.net/~leogg\n  Lukáš Lalinský https://launchpad.net/~luks\n  Monkey https://launchpad.net/~monkey-libre\n  Paul21 https://launchpad.net/~pdvalentini\n  Philipp Wolfer https://launchpad.net/~phw\n  Steven De Winter https://launchpad.net/~info-estudiodos\n  ZUR47 https://launchpad.net/~om-paucar\n  enebro https://launchpad.net/~enebro"
+msgstr "Contribuciones en Launchpad:\n  Alejandro Mas Chiotakis https://launchpad.net/~alejandro-maschiotakis\n  Alexander Dupuy https://launchpad.net/~dupuy\n  Ancho https://launchpad.net/~ancho-corp\n  Brie A. Gordon https://launchpad.net/~brie.aleida\n  Carlos Sánchez Mateo https://launchpad.net/~chukysoria\n  Cristóbal Iván Rivera Macías https://launchpad.net/~ivanrivera\n  DiegoJ https://launchpad.net/~diegojromerolopez\n  Emerson Posadas https://launchpad.net/~toxickore\n  Fitoschido https://launchpad.net/~fitoschido\n  Julian Alarcon https://launchpad.net/~alarconj\n  Kito https://launchpad.net/~ejpastorino\n  Leandro Gómez https://launchpad.net/~leogg\n  Lukáš Lalinský https://launchpad.net/~luks\n  Monkey https://launchpad.net/~monkey-libre\n  Paul21 https://launchpad.net/~pdvalentini\n  Steven De Winter https://launchpad.net/~info-estudiodos\n  ZUR47 https://launchpad.net/~om-paucar\n  enebro https://launchpad.net/~enebro"
 
 #: picard/ui/options/about.py:57
 #, python-format

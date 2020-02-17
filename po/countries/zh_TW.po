@@ -3,10 +3,11 @@
 # Shen-Ta Hsieh(BestSteve) <ibmibmibm.tw@gmail.com>, 2014
 # Shen-Ta Hsieh(BestSteve) <ibmibmibm.tw@gmail.com>, 2014,2016
 # Shen-Ta Hsieh(BestSteve) <email address hidden>, 2014,2016
+# Shen-Ta Hsieh(BestSteve) <ibmibmibm.tw@gmail.com>, 2020
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2018-05-30 11:38+0000\n"
+"PO-Revision-Date: 2020-02-14 18:49+0000\n"
 "Last-Translator: Shen-Ta Hsieh(BestSteve) <ibmibmibm.tw@gmail.com>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/musicbrainz/musicbrainz/language/zh_TW/)\n"
 "MIME-Version: 1.0\n"
@@ -763,7 +764,7 @@ msgstr "蒙古"
 #. iso.code:ME
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:247
 msgid "Montenegro"
-msgstr "蒙特內哥羅共和國"
+msgstr "蒙特內哥羅"
 
 #. iso.code:MS
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:143

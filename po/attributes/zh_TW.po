@@ -13,7 +13,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2020-01-25 22:15+0000\n"
+"PO-Revision-Date: 2020-02-14 09:38+0000\n"
 "Last-Translator: Shen-Ta Hsieh(BestSteve) <ibmibmibm.tw@gmail.com>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/musicbrainz/musicbrainz/language/zh_TW/)\n"
 "MIME-Version: 1.0\n"
@@ -909,7 +909,7 @@ msgstr ""
 #: DB:cover_art_archive.art_type/name:2
 msgctxt "cover_art_type"
 msgid "Back"
-msgstr "上一頁"
+msgstr "背面"
 
 #: DB:work_attribute_type_allowed_value/value:323
 msgctxt "work_attribute_type_allowed_value"
@@ -3835,7 +3835,7 @@ msgstr ""
 #: DB:cover_art_archive.art_type/name:12
 msgctxt "cover_art_type"
 msgid "Liner"
-msgstr ""
+msgstr "襯墊"
 
 #: DB:release_group_secondary_type/name:6
 msgctxt "release_group_secondary_type"
@@ -4770,7 +4770,7 @@ msgstr "OSA ID"
 #: DB:cover_art_archive.art_type/name:5
 msgctxt "cover_art_type"
 msgid "Obi"
-msgstr ""
+msgstr "書腰"
 
 #: DB:release_status/name:1
 msgctxt "release_status"
@@ -5222,7 +5222,7 @@ msgstr ""
 #: DB:cover_art_archive.art_type/name:14
 msgctxt "cover_art_type"
 msgid "Raw/Unedited"
-msgstr ""
+msgstr "未加工/未編輯"
 
 #: DB:editor_collection_type/name:12
 msgctxt "collection_type"
@@ -5814,7 +5814,7 @@ msgstr "原聲音樂"
 #: DB:cover_art_archive.art_type/name:6
 msgctxt "cover_art_type"
 msgid "Spine"
-msgstr "書脊"
+msgstr "書背"
 
 #: DB:release_group_secondary_type/name:3
 msgctxt "release_group_secondary_type"
@@ -5829,7 +5829,7 @@ msgstr "大型運動場"
 #: DB:cover_art_archive.art_type/name:10
 msgctxt "cover_art_type"
 msgid "Sticker"
-msgstr "標籤"
+msgstr "貼紙"
 
 #: DB:instrument_type/name:2
 msgctxt "instrument_type"
@@ -6319,7 +6319,7 @@ msgstr "音軌"
 #: DB:cover_art_archive.art_type/name:9
 msgctxt "cover_art_type"
 msgid "Tray"
-msgstr "盤子"
+msgstr "托盤"
 
 #: DB:work_attribute_type_allowed_value/value:1046
 msgctxt "work_attribute_type_allowed_value"

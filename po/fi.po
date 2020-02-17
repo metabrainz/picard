@@ -19,8 +19,8 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2020-02-07 10:07+0100\n"
-"PO-Revision-Date: 2020-02-11 01:03+0000\n"
-"Last-Translator: Jaakko Perttilä <jormangeud@gmail.com>\n"
+"PO-Revision-Date: 2020-02-17 13:51+0000\n"
+"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Finnish (http://www.transifex.com/musicbrainz/musicbrainz/language/fi/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -4138,7 +4138,7 @@ msgstr "Tietoja ohjelmasta"
 
 #: picard/ui/options/about.py:54
 msgid "translator-credits"
-msgstr "Transifex Contributions:\n  Timo Martikainen https://www.transifex.net/accounts/profile/listmycds/\n  Jaakko Perttilä https://www.transifex.net/accounts/profile/Jormangeud/\n\nLaunchpad Contributions:\n  Juha Ekholm https://launchpad.net/~juhae\n  Juha Ekholm https://launchpad.net/~quaz\n  Juhana Uuttu https://launchpad.net/~rexroom\n  Jukka Kolehmainen https://launchpad.net/~jukka-kolehmainen\n  Jussi Aalto https://launchpad.net/~jtaalto-deactivatedaccount\n  Lukáš Lalinský https://launchpad.net/~luks\n  Mika Heiska https://launchpad.net/~kilu\n  Olli https://launchpad.net/~ollinpostit\n  Philipp Wolfer https://launchpad.net/~phw\n  Tomi Juntunen https://launchpad.net/~tojuntu"
+msgstr "Transifex Contributions:\n  Timo Martikainen https://www.transifex.net/accounts/profile/listmycds/\n  Jaakko Perttilä https://www.transifex.net/accounts/profile/Jormangeud/\n\nLaunchpad Contributions:\n  Juha Ekholm https://launchpad.net/~juhae\n  Juha Ekholm https://launchpad.net/~quaz\n  Juhana Uuttu https://launchpad.net/~rexroom\n  Jukka Kolehmainen https://launchpad.net/~jukka-kolehmainen\n  Jussi Aalto https://launchpad.net/~jtaalto-deactivatedaccount\n  Lukáš Lalinský https://launchpad.net/~luks\n  Mika Heiska https://launchpad.net/~kilu\n  Olli https://launchpad.net/~ollinpostit\n  Tomi Juntunen https://launchpad.net/~tojuntu"
 
 #: picard/ui/options/about.py:57
 #, python-format

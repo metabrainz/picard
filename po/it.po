@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2020-02-07 10:07+0100\n"
-"PO-Revision-Date: 2020-02-10 14:44+0000\n"
+"PO-Revision-Date: 2020-02-17 13:38+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Italian (http://www.transifex.com/musicbrainz/musicbrainz/language/it/)\n"
 "MIME-Version: 1.0\n"
@@ -4133,7 +4133,7 @@ msgstr "Informazioni"
 
 #: picard/ui/options/about.py:54
 msgid "translator-credits"
-msgstr "Launchpad Contributions:\n  Alberto Antioco Cogoni https://launchpad.net/~neurino\n  Alberto T. https://launchpad.net/~alberto1992\n  Claudio Arseni https://launchpad.net/~claudio.arseni\n  Daniele de Virgilio https://launchpad.net/~erunamo-deactivatedaccount\n  Distruttore https://launchpad.net/~keep-clear\n  Fabio Podda https://launchpad.net/~nydardosh\n  Francesco Placco https://launchpad.net/~frapla\n  Giacomo Barbalinardo https://launchpad.net/~jacxs-lj\n  Guybrush88 https://launchpad.net/~guybrush\n  LoReNicolò https://launchpad.net/~god121-p-l\n  Luca Salini https://launchpad.net/~salo-rock\n  Luca Zorzi https://launchpad.net/~lucazorzi91\n  Lukáš Lalinský https://launchpad.net/~luks\n  Matteo Piotto https://launchpad.net/~namuit\n  Nicola Piovesan https://launchpad.net/~piovesannicola\n  Philipp Wolfer https://launchpad.net/~phw"
+msgstr "Launchpad Contributions:\n  Alberto Antioco Cogoni https://launchpad.net/~neurino\n  Alberto T. https://launchpad.net/~alberto1992\n  Claudio Arseni https://launchpad.net/~claudio.arseni\n  Daniele de Virgilio https://launchpad.net/~erunamo-deactivatedaccount\n  Distruttore https://launchpad.net/~keep-clear\n  Fabio Podda https://launchpad.net/~nydardosh\n  Francesco Placco https://launchpad.net/~frapla\n  Giacomo Barbalinardo https://launchpad.net/~jacxs-lj\n  Guybrush88 https://launchpad.net/~guybrush\n  LoReNicolò https://launchpad.net/~god121-p-l\n  Luca Salini https://launchpad.net/~salo-rock\n  Luca Zorzi https://launchpad.net/~lucazorzi91\n  Lukáš Lalinský https://launchpad.net/~luks\n  Matteo Piotto https://launchpad.net/~namuit\n  Nicola Piovesan https://launchpad.net/~piovesannicola"
 
 #: picard/ui/options/about.py:57
 #, python-format

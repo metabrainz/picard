@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2020-02-07 10:07+0100\n"
-"PO-Revision-Date: 2020-02-09 08:46+0000\n"
+"PO-Revision-Date: 2020-02-16 16:45+0000\n"
 "Last-Translator: Avi Markovitz <avi.markovitz@gmail.com>\n"
 "Language-Team: Hebrew (http://www.transifex.com/musicbrainz/musicbrainz/language/he/)\n"
 "MIME-Version: 1.0\n"
@@ -1147,7 +1147,7 @@ msgstr "הונגרית (הונגריה)"
 
 #: picard/const/locales.py:213
 msgid "Icelandic (Iceland)"
-msgstr ""
+msgstr "איסלנדית (איסלנד)"
 
 #: picard/const/locales.py:214
 msgid "Igbo"
@@ -1155,7 +1155,7 @@ msgstr "איגבו"
 
 #: picard/const/locales.py:215
 msgid "Igbo (Nigeria)"
-msgstr ""
+msgstr "איגבו (ניגריה)"
 
 #: picard/const/locales.py:216
 msgid "Indonesian"
@@ -1163,7 +1163,7 @@ msgstr "אינדונזית"
 
 #: picard/const/locales.py:217
 msgid "Indonesian (Indonesia)"
-msgstr ""
+msgstr "אינדונזית (אינדונזיה)"
 
 #: picard/const/locales.py:218
 msgid "Interlingua"
@@ -1179,7 +1179,7 @@ msgstr "אירית"
 
 #: picard/const/locales.py:221
 msgid "Irish (Ireland)"
-msgstr ""
+msgstr "אירית (אירלנד)‏"
 
 #: picard/const/locales.py:223
 msgid "Italian (Italy)"
@@ -1187,27 +1187,27 @@ msgstr "איטלקית (איטליה)"
 
 #: picard/const/locales.py:224
 msgid "Italian (Switzerland)"
-msgstr ""
+msgstr "איטלקית (שוויץ)"
 
 #: picard/const/locales.py:226
 msgid "Japanese (Japan)"
-msgstr ""
+msgstr "יפנית (יפן)"
 
 #: picard/const/locales.py:227
 msgid "Jju"
-msgstr ""
+msgstr "ג'יו"
 
 #: picard/const/locales.py:228
 msgid "Jju (Nigeria)"
-msgstr ""
+msgstr "ג'יו (ניגריה)"
 
 #: picard/const/locales.py:229
 msgid "Kalaallisut"
-msgstr ""
+msgstr "קאלאליסות"
 
 #: picard/const/locales.py:230
 msgid "Kalaallisut (Greenland)"
-msgstr ""
+msgstr "קאלאליסות (גרינלאנד)"
 
 #: picard/const/locales.py:231
 msgid "Kamba"
@@ -1215,7 +1215,7 @@ msgstr "קאמבה"
 
 #: picard/const/locales.py:232
 msgid "Kamba (Kenya)"
-msgstr ""
+msgstr "קאמבה (קניה)"
 
 #: picard/const/locales.py:233
 msgid "Kannada"
@@ -1223,7 +1223,7 @@ msgstr "קנאדית"
 
 #: picard/const/locales.py:234
 msgid "Kannada (India)"
-msgstr ""
+msgstr "קאנאבה (הודו)"
 
 #: picard/const/locales.py:235
 msgid "Kazakh"
@@ -1259,7 +1259,7 @@ msgstr ""
 
 #: picard/const/locales.py:243
 msgid "Kirghiz"
-msgstr ""
+msgstr "קירגיזית"
 
 #: picard/const/locales.py:244
 msgid "Kirghiz (Kyrgyzstan)"
@@ -1527,7 +1527,7 @@ msgstr ""
 
 #: picard/const/locales.py:313
 msgid "Occitan (France)"
-msgstr ""
+msgstr "אוקסיטנית (צרפת)"
 
 #: picard/const/locales.py:314
 msgid "Oriya"
@@ -1619,7 +1619,7 @@ msgstr ""
 
 #: picard/const/locales.py:340
 msgid "Russian (Russia)"
-msgstr ""
+msgstr "רוסית (רוסיה)"
 
 #: picard/const/locales.py:341
 msgid "Russian (Ukraine)"
@@ -1947,15 +1947,15 @@ msgstr "טטרית"
 
 #: picard/const/locales.py:430
 msgid "Tatar (Russia)"
-msgstr ""
+msgstr "טטארית (רוסיה)"
 
 #: picard/const/locales.py:431
 msgid "Telugu"
-msgstr ""
+msgstr "טלוגו"
 
 #: picard/const/locales.py:432
 msgid "Telugu (India)"
-msgstr ""
+msgstr "טלוגו (הודו)"
 
 #: picard/const/locales.py:433
 msgid "Thai"
@@ -2107,7 +2107,7 @@ msgstr "ונדה"
 
 #: picard/const/locales.py:472
 msgid "Venda (South Africa)"
-msgstr ""
+msgstr "ונדא (דרום אפריקה)"
 
 #: picard/const/locales.py:473
 msgid "Vietnamese"
@@ -2115,7 +2115,7 @@ msgstr "ויאטנמית"
 
 #: picard/const/locales.py:474
 msgid "Vietnamese (Vietnam)"
-msgstr ""
+msgstr "וייטנאמית (וייטנאם)"
 
 #: picard/const/locales.py:475
 msgid "Walamo"

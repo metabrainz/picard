@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2020-02-11 10:34+0000\n"
+"PO-Revision-Date: 2020-02-15 15:24+0000\n"
 "Last-Translator: Muhammad Adli Ibrahim <adli98@yahoo.com>\n"
 "Language-Team: Malay (Malaysia) (http://www.transifex.com/musicbrainz/musicbrainz/language/ms_MY/)\n"
 "MIME-Version: 1.0\n"
@@ -376,7 +376,7 @@ msgstr "Estonia"
 #. iso.code:ET
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:68
 msgid "Ethiopia"
-msgstr "Ethiopia"
+msgstr "Habsyah"
 
 #. iso.code:XE
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:241
@@ -641,7 +641,7 @@ msgstr "Latvia"
 #. iso.code:LB
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:118
 msgid "Lebanon"
-msgstr "Lebanon"
+msgstr "Lubnan"
 
 #. iso.code:LS
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:119
