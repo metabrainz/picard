@@ -1,3 +1,13 @@
+# Version 2.3 - 2020-02-17
+
+## Bug-fix
+- [PICARD-1739](https://tickets.metabrainz.org/browse/PICARD-1739) - Update check does not handle alpha, beta and rc versions properly
+- [PICARD-1744](https://tickets.metabrainz.org/browse/PICARD-1744) - Invalid ignore path regex can crash Picard
+
+## Improvement
+- [PICARD-1740](https://tickets.metabrainz.org/browse/PICARD-1740) - Save originalfilename to ASF tags
+
+
 # Version 2.3.0rc1 - 2020-02-11
 
 ## Bug-fix
