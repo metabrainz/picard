@@ -428,6 +428,8 @@ class Tagger(QtWidgets.QApplication):
                 self.add_directory(file)
             else:
                 self.add_files([file])
+            if IS_HAIKU:
+                self.bring_tagger_front()
             # We should just return True here, except that seems to
             # cause the event's sender to get a -9874 error, so
             # apparently there's some magic inside QFileOpenEvent...
