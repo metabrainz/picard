@@ -28,13 +28,14 @@ jobs:
       DISCID_VERSION: 0.6.2
       FPCALC_VERSION: 1.4.4-9
       PYTHON_VERSION: 3.7.6
+      MACOSX_DEPLOYMENT_TARGET: 10.12
     steps:
     - uses: actions/checkout@v1
     - name: Cache libdiscid
       uses: actions/cache@v1
       with:
         path: ~/libdiscid
-        key: ${{ runner.os }}-libdiscid-${{ env.DISCID_VERSION }}
+        key: ${{ runner.os }}-libdiscid-${{ env.DISCID_VERSION }}-${{ env.MACOSX_DEPLOYMENT_TARGET }}
     - name: Setup macOS build environment
       run: |
         ./scripts/package/macos-setup.sh
