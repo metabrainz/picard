@@ -3,6 +3,7 @@
 # Picard, the next-generation MusicBrainz tagger
 # Copyright (C) 2004 Robert Kaye
 # Copyright (C) 2006 Lukáš Lalinský
+# Copyright (C) 2020 Laurent Monin
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -593,3 +594,39 @@ def get_qt_enum(cls, enum):
         if isinstance(value, enum):
             values.append(key)
     return values
+
+
+def limited_join(a_list, limit, join_string='+', middle_string='…'):
+    """Join elements of a list with `join_string`
+    If list is longer than `limit`, middle elements will be dropped,
+    and replaced by `middle_string`.
+
+    Args:
+        a_list: list of strings to join
+        limit: maximum number of elements to join before limiting
+        join_string: string used to join elements
+        middle_string: string to insert in the middle if limited
+
+    Returns:
+        A string
+
+    Example:
+        >>> limited_join(['a', 'b', 'c', 'd', 'e', 'f'], 2)
+        'a+…+f'
+        >>> limited_join(['a', 'b', 'c', 'd', 'e', 'f'], 3)
+        'a+…+f'
+        >>> limited_join(['a', 'b', 'c', 'd', 'e', 'f'], 4)
+        'a+b+…+e+f'
+        >>> limited_join(['a', 'b', 'c', 'd', 'e', 'f'], 6)
+        'a+b+c+d+e+f'
+        >>> limited_join(['a', 'b', 'c', 'd', 'e', 'f'], 2, ',', '?')
+        'a,?,f'
+    """
+    length = len(a_list)
+    if limit <= 1 or limit >= length:
+        return join_string.join(a_list)
+
+    half = limit // 2
+    start = a_list[:half]
+    end = a_list[-half:]
+    return join_string.join(start + [middle_string] + end)

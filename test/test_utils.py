@@ -12,6 +12,7 @@ from picard.const.sys import IS_WIN
 from picard.util import (
     find_best_match,
     imageinfo,
+    limited_join,
     sort_by_similarity,
 )
 
@@ -342,3 +343,28 @@ class GetQtEnum(PicardTestCase):
         self.assertIn('LocateFile', values)
         self.assertIn('LocateDirectory', values)
         self.assertNotIn('DesktopLocation', values)
+
+
+class LimitedJoin(PicardTestCase):
+
+    def setUp(self):
+        self.list = [str(x) for x in range(0, 10)]
+
+    def test_1(self):
+        expected = '0+1+...+8+9'
+        result = limited_join(self.list, 5, '+', '...')
+        self.assertEqual(result, expected)
+
+    def test_2(self):
+        expected = '0+1+2+3+4+5+6+7+8+9'
+        result = limited_join(self.list, -1)
+        self.assertEqual(result, expected)
+        result = limited_join(self.list, len(self.list))
+        self.assertEqual(result, expected)
+        result = limited_join(self.list, len(self.list) + 1)
+        self.assertEqual(result, expected)
+
+    def test_3(self):
+        expected = '0,1,2,3,…,6,7,8,9'
+        result = limited_join(self.list, len(self.list) - 1, ',')
+        self.assertEqual(result, expected)
