@@ -28,6 +28,7 @@ settings = {
     "standardize_releases": False,
     "translate_artist_names": True,
     "standardize_instruments": True,
+    "preferred_release_countries": [],
     "artist_locale": 'en'
 }
 
@@ -74,6 +75,18 @@ class ReleaseTest(MBJSONTest):
             self.assertEqual(artist.genres, {
                 'british': 2,
                 'progressive rock': 10})
+
+    def test_preferred_release_country(self):
+        m = Metadata()
+        a = Album("1")
+        release_to_metadata(self.json_doc, m, a)
+        self.assertEqual(m['releasecountry'], 'GB')
+        config.setting['preferred_release_countries'] = ['NZ', 'GB']
+        release_to_metadata(self.json_doc, m, a)
+        self.assertEqual(m['releasecountry'], 'NZ')
+        config.setting['preferred_release_countries'] = ['GB', 'NZ']
+        release_to_metadata(self.json_doc, m, a)
+        self.assertEqual(m['releasecountry'], 'GB')
 
     def test_media_formats_from_node(self):
         formats = media_formats_from_node(self.json_doc['media'])
