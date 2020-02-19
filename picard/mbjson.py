@@ -462,6 +462,7 @@ def release_to_metadata(node, m, album=None):
                 m['~releaselanguage'] = value['language']
             if 'script' in value:
                 m['script'] = value['script']
+    m['~releasecountries'] = countries_from_node(node)
     add_genres_from_node(node, album)
 
 
