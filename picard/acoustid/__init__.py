@@ -187,9 +187,7 @@ class AcoustIDClient(QtCore.QObject):
         finally:
             if result and result[0] == 'fingerprint':
                 fp_type, fingerprint, length = result
-                file.acoustid_fingerprint = fingerprint
-                file.acoustid_length = length
-                self.tagger.acoustidmanager.add(file, None)
+                file.set_acoustid_fingerprint(fingerprint, length)
             next_func(result)
 
     def _on_fpcalc_error(self, next_func, filename, error):
@@ -222,7 +220,7 @@ class AcoustIDClient(QtCore.QObject):
     def analyze(self, file, next_func):
         fpcalc_next = partial(self._lookup_fingerprint, next_func, file.filename)
 
-        fingerprint = getattr(file, 'acoustid_fingerprint', None)
+        fingerprint = file.acoustid_fingerprint
         if not fingerprint and not config.setting["ignore_existing_acoustid_fingerprints"]:
             # use cached fingerprint from file metadata
             fingerprints = file.metadata.getall('acoustid_fingerprint')
@@ -231,7 +229,7 @@ class AcoustIDClient(QtCore.QObject):
 
         # If the fingerprint already exists skip calling fpcalc
         if fingerprint:
-            length = int(file.metadata.length / 1000)
+            length = file.acoustid_length
             fpcalc_next(result=('fingerprint', fingerprint, length))
             return
 

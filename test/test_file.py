@@ -1,5 +1,6 @@
 import os
 import unittest
+from unittest.mock import MagicMock
 
 from test.picardtestcase import PicardTestCase
 
@@ -16,6 +17,7 @@ class DataObjectTest(PicardTestCase):
 
     def setUp(self):
         super().setUp()
+        self.tagger.acoustidmanager = MagicMock()
         self.file = File('somepath/somefile.mp3')
 
     def test_filename(self):
@@ -35,6 +37,33 @@ class DataObjectTest(PicardTestCase):
         self.assertEqual(42, self.file.discnumber)
         self.file.metadata['discnumber'] = 'FOURTYTWO'
         self.assertEqual(0, self.file.discnumber)
+
+    def test_set_acoustid_fingerprint(self):
+        fingerprint = 'foo'
+        length = 36
+        self.file.set_acoustid_fingerprint(fingerprint, length)
+        self.assertEqual(fingerprint, self.file.acoustid_fingerprint)
+        self.assertEqual(length, self.file.acoustid_length)
+        self.tagger.acoustidmanager.add.assert_called_with(self.file, None)
+        self.tagger.acoustidmanager.add.reset_mock()
+        self.file.set_acoustid_fingerprint(fingerprint, length)
+        self.tagger.acoustidmanager.add.assert_not_called()
+        self.tagger.acoustidmanager.remove.assert_not_called()
+
+    def test_set_acoustid_fingerprint_no_length(self):
+        self.file.metadata.length = 42000
+        fingerprint = 'foo'
+        self.file.set_acoustid_fingerprint(fingerprint)
+        self.assertEqual(fingerprint, self.file.acoustid_fingerprint)
+        self.assertEqual(42, self.file.acoustid_length)
+
+    def test_set_acoustid_fingerprint_unset(self):
+        self.file.acoustid_fingerprint = 'foo'
+        self.file.set_acoustid_fingerprint(None, 42)
+        self.tagger.acoustidmanager.add.assert_not_called()
+        self.tagger.acoustidmanager.remove.assert_called_with(self.file)
+        self.assertEqual(None, self.file.acoustid_fingerprint)
+        self.assertEqual(0, self.file.acoustid_length)
 
 
 class TestPreserveTimes(PicardTestCase):

@@ -802,7 +802,6 @@ class Tagger(QtWidgets.QApplication):
         files = self.get_files_from_objects(objs)
 
         def finished(file, result):
-            file.acoustid_update()
             file.clear_pending()
 
         for file in files:
