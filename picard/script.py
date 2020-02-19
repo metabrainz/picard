@@ -1096,8 +1096,8 @@ def func_getmulti(parser, multi, item_index, separator=MULTI_VALUED_JOINER):
         return ''
     try:
         index = int(item_index.eval(parser))
-        multi_var = MultiValue(parser, multi, separator)
-        return str(multi_var[index])
+        multi_value = MultiValue(parser, multi, separator)
+        return str(multi_value[index])
     except (ValueError, IndexError):
         return ''
 
@@ -1221,8 +1221,8 @@ def func_slice(parser, multi, start_index, end_index, separator=MULTI_VALUED_JOI
         end = int(end_index.eval(parser)) if end_index else None
     except ValueError:
         end = None
-    multi_var = MultiValue(parser, multi, separator)
-    return multi_var.separator.join(multi_var[start:end])
+    multi_value = MultiValue(parser, multi, separator)
+    return multi_value.separator.join(multi_value[start:end])
 
 
 @script_function()
