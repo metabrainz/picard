@@ -48,9 +48,7 @@ class AcoustIDManager(QtCore.QObject):
         self._acoustid_api = acoustid_api
 
     def add(self, file, recordingid):
-        if not hasattr(file, 'acoustid_fingerprint'):
-            return
-        if not hasattr(file, 'acoustid_length'):
+        if not file.acoustid_fingerprint or not file.acoustid_length:
             return
         puid = file.metadata['musicip_puid']
         self._fingerprints[file] = Submission(file.acoustid_fingerprint, file.acoustid_length, recordingid, recordingid, puid)
