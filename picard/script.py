@@ -347,6 +347,9 @@ class MultiValue(MutableSequence):
     def __repr__(self):
         return '%s(%r, %r, %r)' % (self.__class__.__name__, self.parser, self._multi, self.separator)
 
+    def __str__(self):
+        return self.separator.join(self)
+
 
 def enabled_tagger_scripts_texts():
     """Returns an iterator over the enabled tagger scripts.
@@ -1172,7 +1175,7 @@ def func_map(parser, multi, loop_code, separator=MULTI_VALUED_JOINER):
         multi_value[loop_count - 1] = str(loop_code.eval(parser))
     func_unset(parser, '_loop_count')
     func_unset(parser, '_loop_value')
-    return multi_value.separator.join(multi_value)
+    return str(multi_value)
 
 
 @script_function(eval_args=False)
