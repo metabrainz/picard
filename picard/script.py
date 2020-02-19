@@ -332,14 +332,14 @@ class MultiValue(MutableSequence):
     def __len__(self):
         return len(self._multi)
 
-    def __getitem__(self, index):
-        return self._multi[index]
+    def __getitem__(self, key):
+        return self._multi[key]
 
-    def __setitem__(self, index, value):
-        self._multi[index] = value
+    def __setitem__(self, key, value):
+        self._multi[key] = value
 
-    def __delitem__(self, index):
-        del self._multi[index]
+    def __delitem__(self, key):
+        del self._multi[key]
 
     def insert(self, index, value):
         return self._multi.insert(index, value)
