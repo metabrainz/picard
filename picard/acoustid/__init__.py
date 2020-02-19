@@ -226,6 +226,7 @@ class AcoustIDClient(QtCore.QObject):
             fingerprints = file.metadata.getall('acoustid_fingerprint')
             if fingerprints:
                 fingerprint = fingerprints[0]
+                file.set_acoustid_fingerprint(fingerprint)
 
         # If the fingerprint already exists skip calling fpcalc
         if fingerprint:
