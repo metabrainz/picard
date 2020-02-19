@@ -462,7 +462,14 @@ def release_to_metadata(node, m, album=None):
                 m['~releaselanguage'] = value['language']
             if 'script' in value:
                 m['script'] = value['script']
-    m['~releasecountries'] = countries_from_node(node)
+    m['~releasecountries'] = release_countries = countries_from_node(node)
+    # The MB web service returns the first release country in the country tag.
+    # If the user has configured preferred release countries, use the first one
+    # if it is one in the complete list of release countries.
+    for country in config.setting["preferred_release_countries"]:
+        if country in release_countries:
+            m['releasecountry'] = country
+            break
     add_genres_from_node(node, album)
 
 
