@@ -166,6 +166,11 @@ class File(QtCore.QObject, Item):
             self.error = None
             self.state = self.NORMAL
             self._copy_loaded_metadata(result)
+        # use cached fingerprint from file metadata
+        if not config.setting["ignore_existing_acoustid_fingerprints"]:
+            fingerprints = self.metadata.getall('acoustid_fingerprint')
+            if fingerprints:
+                self.set_acoustid_fingerprint(fingerprints[0])
         run_file_post_load_processors(self)
         self.update()
         callback(self)
