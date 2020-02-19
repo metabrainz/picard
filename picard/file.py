@@ -119,6 +119,9 @@ class File(QtCore.QObject, Item):
         self.lookup_task = None
         self.item = None
 
+        self.acoustid_fingerprint = None
+        self.acoustid_length = 0
+
     def __repr__(self):
         return '<%s %r>' % (type(self).__name__, self.base_filename)
 
@@ -524,6 +527,17 @@ class File(QtCore.QObject, Item):
             if self.parent:
                 self.parent.remove_file(self)
             self.parent = parent
+            self.acoustid_update()
+
+    def set_acoustid_fingerprint(self, fingerprint, length=None):
+        if not fingerprint:
+            self.acoustid_fingerprint = None
+            self.acoustid_length = 0
+            self.tagger.acoustidmanager.remove(self)
+        elif fingerprint != self.acoustid_fingerprint:
+            self.acoustid_fingerprint = fingerprint
+            self.acoustid_length = length or self.metadata.length // 1000
+            self.tagger.acoustidmanager.add(self, None)
             self.acoustid_update()
 
     def acoustid_update(self):

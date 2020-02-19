@@ -1068,7 +1068,7 @@ class FileItem(TreeItem):
 
     @staticmethod
     def decide_fingerprint_icon_info(file):
-        if getattr(file, 'acoustid_fingerprint', None):
+        if file.acoustid_fingerprint:
             if QtCore.QObject.tagger.acoustidmanager.is_submitted(file):
                 return _('Fingerprint has already been submitted')
             else:
