@@ -37,7 +37,7 @@ class LRUCacheTest(PicardTestCase):
         self.assertEqual('test3', lrucache._ordered_keys[0])
         self.assertEqual('test2', lrucache._ordered_keys[1])
         self.assertEqual('test1', lrucache._ordered_keys[2])
-        v = lrucache['test2']
+        self.assertEqual(2, lrucache['test2'])
         self.assertEqual('test2', lrucache._ordered_keys[0])
         self.assertEqual('test3', lrucache._ordered_keys[1])
         self.assertEqual('test1', lrucache._ordered_keys[2])

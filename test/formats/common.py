@@ -363,7 +363,7 @@ class CommonTests:
             instrument = "accordéon clavier « boutons »"
             artist = "桑山哲也"
             tag = "performer:" + instrument
-            metadata = Metadata({ tag: artist })
+            metadata = Metadata({tag: artist})
             loaded_metadata = save_and_load_metadata(self.filename, metadata)
             self.assertIn(tag, loaded_metadata)
             self.assertEqual(artist, loaded_metadata[tag])
