@@ -582,6 +582,8 @@ class ScriptParserTest(PicardTestCase):
         self.assertScriptResultEquals("$inmulti(%foo%,A; Second,:)", "1", context)
         self.assertScriptResultEquals("$inmulti(%foo%,B; Third,:)", "1", context)
         self.assertScriptResultEquals("$inmulti(%foo%,C,:)", "1", context)
+        # Test no separator
+        self.assertScriptResultEquals("$inmulti(%foo%,First:A; Second:B; Third:C,)", "1", context)
 
         # Test with multi-values
         context["foo"] = ["First:A", "Second:B", "Third:C"]
@@ -605,6 +607,8 @@ class ScriptParserTest(PicardTestCase):
         self.assertScriptResultEquals("$inmulti(%foo%,A; Second,:)", "1", context)
         self.assertScriptResultEquals("$inmulti(%foo%,B; Third,:)", "1", context)
         self.assertScriptResultEquals("$inmulti(%foo%,C,:)", "1", context)
+        # Test no separator
+        self.assertScriptResultEquals("$inmulti(%foo%,First:A; Second:B; Third:C,)", "1", context)
 
     def test_cmd_lenmulti(self):
         context = Metadata()
@@ -625,6 +629,9 @@ class ScriptParserTest(PicardTestCase):
         self.assertScriptResultEquals("$lenmulti(%foo%,:)", "4", context)
         self.assertScriptResultEquals("$lenmulti(%bar%,:)", "4", context)
         self.assertScriptResultEquals("$lenmulti(%foo%.,:)", "4", context)
+        # Test no separator
+        self.assertScriptResultEquals("$lenmulti(%foo%,)", "1", context)
+        self.assertScriptResultEquals("$lenmulti(%bar%,)", "1", context)
 
     def test_cmd_performer(self):
         context = Metadata()
@@ -1009,6 +1016,10 @@ class ScriptParserTest(PicardTestCase):
         self.assertScriptResultEquals("$slice(First:A; Second:B; Third:C,,)", output_0_3, context)
         # Tests with invalid inputs (end < start)
         self.assertScriptResultEquals("$slice(First:A; Second:B; Third:C,1,0)", "", context)
+        # Tests with invalid inputs (non-numeric end and/or start)
+        self.assertScriptResultEquals("$slice(First:A; Second:B; Third:C,a,1)", output_0_1, context)
+        self.assertScriptResultEquals("$slice(First:A; Second:B; Third:C,1,b)", output_1_3, context)
+        self.assertScriptResultEquals("$slice(First:A; Second:B; Third:C,a,b)", output_0_3, context)
         # Tests with separator override
         self.assertScriptResultEquals("$slice(First:A; Second:B; Third:C,1,3,:)", alternate_output, context)
         # Tests with invalid number of arguments
