@@ -116,6 +116,10 @@ class VersionsTest(PicardTestCase):
         self.assertLess(v1, v2)
         self.assertFalse(v2 < v2)
 
+        v1 = Version(2, 3, 0, 'final', 1)
+        v2 = Version(2, 10, 0, 'final', 1)
+        self.assertLess(v1, v2)
+
     def test_le(self):
         v1 = Version(2, 3, 0, 'dev', 1)
         v2 = Version(2, 3, 0, 'alpha', 1)

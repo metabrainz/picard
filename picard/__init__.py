@@ -38,6 +38,7 @@ PICARD_BUILD_VERSION_STR = ""
 
 
 def version_to_string(version, short=False):
+    """Deprecated: Use picard.version.Version.to_string instead"""
     if len(version) != 5:
         raise VersionError("Length != 5")
     if not isinstance(version, Version):
