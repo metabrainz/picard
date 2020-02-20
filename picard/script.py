@@ -637,6 +637,8 @@ def func_div(parser, x, y, *args):
         return _compute_int(operator.floordiv, x, y, *args)
     except ValueError:
         return ""
+    except ZeroDivisionError:
+        return ""
 
 
 @script_function()
@@ -947,8 +949,6 @@ def func_title(parser, text):
     like: from "Lost in the Supermarket" to "Lost In The Supermarket"
     Example: $set(album,$title(%album%))
     """
-    if not text:
-        return ""
     capitalized = text[0].capitalize()
     capital = False
     for i in range(1, len(text)):
