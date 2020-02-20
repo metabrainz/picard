@@ -445,6 +445,12 @@ class ScriptParserTest(PicardTestCase):
         self.assertScriptResultEquals("$title(a)", "A")
         self.assertScriptResultEquals("$title(’a)", "’a")
         self.assertScriptResultEquals("$title('a)", "'a")
+        self.assertScriptResultEquals("$title(l'a)", "L'a")
+        self.assertScriptResultEquals("$title(2'a)", "2'A")
+        # Tests wrong number of arguments
+        areg = r"^Wrong number of arguments for \$title: Expected exactly 1, "
+        with self.assertRaisesRegex(ScriptError, areg):
+            self.parser.eval("$title()")
 
     def test_cmd_swapprefix(self):
         self.assertScriptResultEquals("$swapprefix(A stitch in time)", "stitch in time, A")
