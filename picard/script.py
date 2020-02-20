@@ -302,6 +302,7 @@ Grammar:
 
 class MultiValue(MutableSequence):
     def __init__(self, parser, multi, separator):
+        assert isinstance(multi, ScriptExpression)
         self.parser = parser
         if isinstance(separator, ScriptExpression):
             self.separator = separator.eval(self.parser)
@@ -310,16 +311,11 @@ class MultiValue(MutableSequence):
         self._multi = self._get_multi_values(multi)
 
     def _get_multi_values(self, multi):
-        if self.separator == MULTI_VALUED_JOINER:
+        if (self.separator == MULTI_VALUED_JOINER
+            and len(multi) == 1
+            and isinstance(multi[0], ScriptVariable)):
             # Convert ScriptExpression containing only a single variable into variable
-            if (isinstance(multi, ScriptExpression)
-                and len(multi) == 1
-                and isinstance(multi[0], ScriptVariable)):
-                multi = multi[0]
-
-            # If a variable, return multi-values
-            if isinstance(multi, ScriptVariable):
-                return self.parser.context.getall(normalize_tagname(multi.name))
+            return self.parser.context.getall(normalize_tagname(multi[0].name))
 
         # Fall-back to converting to a string and splitting if haystack is an expression
         # or user has overridden the separator character.
