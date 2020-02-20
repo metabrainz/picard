@@ -27,12 +27,12 @@ class _TestTimezone(datetime.tzinfo):
         self.dston = d - datetime.timedelta(days=d.weekday() + 1)
         d = datetime.datetime(dt.year, 11, 1)
         self.dstoff = d - datetime.timedelta(days=d.weekday() + 1)
-        if self.dston <=  dt.replace(tzinfo=None) < self.dstoff:
+        if self.dston <= dt.replace(tzinfo=None) < self.dstoff:
             return datetime.timedelta(hours=1)
         else:
             return datetime.timedelta(0)
 
-    def tzname(self,dt):
+    def tzname(self, dt):
         return "TZ Test"
 
 
@@ -402,7 +402,7 @@ class ScriptParserTest(PicardTestCase):
         self.assertScriptResultEquals("$title(Abc Def G)", "Abc Def G")
         self.assertScriptResultEquals("$title(abc def g)", "Abc Def G")
         self.assertScriptResultEquals("$title(#1abc 4def - g)", "#1abc 4def - G")
-        self.assertScriptResultEquals("$title(abcd \\(efg hi jkl mno\\))", "Abcd (Efg Hi Jkl Mno)")
+        self.assertScriptResultEquals(r"$title(abcd \(efg hi jkl mno\))", "Abcd (Efg Hi Jkl Mno)")
         self.assertScriptResultEquals("$title(...abcd)", "...Abcd")
         self.assertScriptResultEquals("$title(a)", "A")
         self.assertScriptResultEquals("$title(’a)", "’a")
@@ -656,13 +656,14 @@ class ScriptParserTest(PicardTestCase):
                                msg="Functions with required keyword-only parameters are not supported"):
             register_script_function(func)
 
-    def test_optional_kwonly_parameters(self):
+    @staticmethod
+    def test_optional_kwonly_parameters():
         def func(a, *, optional_kwarg=1):
             pass
         register_script_function(func)
 
     def test_char_escape(self):
-        self.assertScriptResultEquals("\\n\\t\\$\\%\\(\\)\\,\\\\", "\n\t$%(),\\")
+        self.assertScriptResultEquals(r"\n\t\$\%\(\)\,\\", "\n\t$%(),\\")
 
     def test_raise_unknown_function(self):
         self.assertRaises(ScriptUnknownFunction, self.parser.eval, '$unknownfn()')
@@ -674,7 +675,7 @@ class ScriptParserTest(PicardTestCase):
     def test_raise_syntax_error(self):
         self.assertRaises(ScriptSyntaxError, self.parser.eval, '%var()%')
         self.assertRaises(ScriptSyntaxError, self.parser.eval, '$noop(()')
-        self.assertRaises(ScriptSyntaxError, self.parser.eval, '\\x')
+        self.assertRaises(ScriptSyntaxError, self.parser.eval, r'\x')
 
     def test_cmd_find(self):
         context = Metadata()
@@ -990,9 +991,9 @@ class ScriptParserTest(PicardTestCase):
             self.assertScriptResultEquals("$datetime(%foo%)", "20200102123456.000789", context)
             self.assertScriptResultEquals("$datetime($initials())", "2020-01-02 12:34:56", context)
             # Tests with static input
-            self.assertScriptResultEquals("$datetime(\%Y\%m\%d\%H\%M\%S.\%f)", "20200102123456.000789", context)
+            self.assertScriptResultEquals(r"$datetime(\%Y\%m\%d\%H\%M\%S.\%f)", "20200102123456.000789", context)
             # Tests with timezones
-            self.assertScriptResultEquals("$datetime(\%H\%M\%S \%z \%Z)", "123456 +0200 TZ Test", context)
+            self.assertScriptResultEquals(r"$datetime(\%H\%M\%S \%z \%Z)", "123456 +0200 TZ Test", context)
             # Tests with missing input
             self.assertScriptResultEquals("$datetime()", "2020-01-02 12:34:56", context)
             # Tests with invalid format
@@ -1004,5 +1005,5 @@ class ScriptParserTest(PicardTestCase):
         except (AssertionError, ValueError, IndexError) as err:
             raise err
         finally:
-            # Restore origninal datetime object
+            # Restore original datetime object
             datetime.datetime = original_datetime
