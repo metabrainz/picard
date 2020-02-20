@@ -1,3 +1,4 @@
+import copy
 import datetime
 from unittest.mock import MagicMock
 
@@ -15,6 +16,7 @@ from picard.script import (
     ScriptSyntaxError,
     ScriptUnknownFunction,
     register_script_function,
+    script_function,
 )
 
 
@@ -60,10 +62,12 @@ class ScriptParserTest(PicardTestCase):
 
         self.parser = ScriptParser()
 
-        def func_noargstest(parser):
-            return ""
+        # ensure we start on clean registry
+        ScriptParser._cache = {}
+        self._backup_registry = copy.deepcopy(ScriptParser._function_registry)
 
-        register_script_function(func_noargstest, "noargstest")
+    def tearDown(self):
+        ScriptParser._function_registry = copy.deepcopy(self._backup_registry)
 
     def assertScriptResultEquals(self, script, expected, context=None, file=None):
         """Asserts that evaluating `script` returns `expected`.
@@ -79,6 +83,61 @@ class ScriptParserTest(PicardTestCase):
                          expected,
                          "'%s' evaluated to '%s', expected '%s'"
                          % (script, actual, expected))
+
+    def test_script_function_decorator_default(self):
+        # test default decorator and default prefix
+        @script_function()
+        def func_somefunc(parser):
+            return "x"
+        self.assertScriptResultEquals("$somefunc()", "x")
+
+    def test_script_function_decorator_no_prefix(self):
+        # function without prefix
+        @script_function()
+        def somefunc(parser):
+            return "x"
+        self.assertScriptResultEquals("$somefunc()", "x")
+
+    def test_script_function_decorator_arg(self):
+        # function with argument
+        @script_function()
+        def somefunc(parser, arg):
+            return arg
+        self.assertScriptResultEquals("$somefunc($title(x))", "X")
+        areg = r"^Wrong number of arguments for \$somefunc: Expected exactly 1"
+        with self.assertRaisesRegex(ScriptError, areg):
+            self.parser.eval("$somefunc()")
+
+    def test_script_function_decorator_argcount(self):
+        # ignore argument count
+        @script_function(check_argcount=False)
+        def somefunc(parser, *arg):
+            return str(len(arg))
+        self.assertScriptResultEquals("$somefunc(a,b,c)", "3")
+
+    def test_script_function_decorator_altname(self):
+        # alternative name
+        @script_function(name="otherfunc")
+        def somefunc4(parser):
+            return "x"
+        self.assertScriptResultEquals("$otherfunc()", "x")
+        areg = "^Unknown function 'somefunc'$"
+        with self.assertRaisesRegex(ScriptError, areg):
+            self.parser.eval("$somefunc()")
+
+    def test_script_function_decorator_altprefix(self):
+        # alternative prefix
+        @script_function(prefix='theprefix_')
+        def theprefix_somefunc(parser):
+            return "x"
+        self.assertScriptResultEquals("$somefunc()", "x")
+
+    def test_script_function_decorator_eval_args(self):
+        # disable argument evaluation
+        @script_function(eval_args=False)
+        def somefunc(parser, arg):
+            return arg.eval(parser)
+        self.assertScriptResultEquals("$somefunc($title(x))", "X")
 
     def test_unknown_function(self):
         areg = r"^Unknown function 'unknownfunction'$"
@@ -496,6 +555,10 @@ class ScriptParserTest(PicardTestCase):
         self.assertEqual(result, 'artist/\n\ntitle')
 
     def test_cmd_with_not_arguments(self):
+        def func_noargstest(parser):
+            return ""
+
+        register_script_function(func_noargstest, "noargstest")
         self.parser.eval("$noargstest()")
 
     def test_cmd_with_wrong_argcount_or(self):
