@@ -130,7 +130,7 @@ class PluginTreeWidgetItem(HashableTreeWidgetItem):
             button.hide()
         else:
             button.show()
-            button.setToolTip(_("Download and upgrade plugin to version %s") % self.new_version)
+            button.setToolTip(_("Download and upgrade plugin to version %s") % self.new_version.to_string(short=True))
             self.set_icon(button, 'SP_BrowserReload')
 
     def show_enable(self, button, mode):
@@ -319,7 +319,7 @@ class PluginsOptionsPage(OptionsPage):
             new_version = None
             if plugin.module_name in available_plugins:
                 latest = available_plugins[plugin.module_name]
-                if latest.split('.') > plugin.version.split('.'):
+                if latest > plugin.version:
                     new_version = latest
             self.update_plugin_item(None, plugin,
                                     enabled=self.is_plugin_enabled(plugin),
@@ -472,9 +472,10 @@ class PluginsOptionsPage(OptionsPage):
 
         def update_text():
             if item.new_version is not None:
-                version = "%s → %s" % (plugin.version, item.new_version)
+                version = "%s → %s" % (plugin.version.to_string(short=True),
+                                       item.new_version.to_string(short=True))
             else:
-                version = plugin.version
+                version = plugin.version.to_string(short=True)
 
             if item.installed_font is None:
                 item.installed_font = item.font(COLUMN_NAME)
@@ -561,7 +562,7 @@ class PluginsOptionsPage(OptionsPage):
                 return int(elem)
             except ValueError:
                 return 0
-        item.setSortData(COLUMN_VERSION, tuple(v2int(e) for e in plugin.version.split('.')))
+        item.setSortData(COLUMN_VERSION, plugin.version)
 
         return item
 

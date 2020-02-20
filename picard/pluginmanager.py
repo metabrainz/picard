@@ -31,11 +31,7 @@ import zipimport
 
 from PyQt5 import QtCore
 
-from picard import (
-    VersionError,
-    log,
-    version_to_string,
-)
+from picard import log
 from picard.const import (
     PLUGINS_API,
     USER_PLUGIN_DIR,
@@ -47,7 +43,10 @@ from picard.plugin import (
     _unregister_module_extensions,
 )
 import picard.plugins
-from picard.version import Version
+from picard.version import (
+    Version,
+    VersionError,
+)
 
 
 _SUFFIXES = tuple(importlib.machinery.all_suffixes())
@@ -272,7 +271,7 @@ class PluginManager(QtCore.QObject):
                 log.debug("Loading plugin %r version %s, compatible with API: %s",
                           plugin.name,
                           plugin.version,
-                          ", ".join([version_to_string(v, short=True) for v in
+                          ", ".join([v.to_string(short=True) for v in
                                      sorted(compatible_versions)]))
                 plugin.compatible = True
                 setattr(picard.plugins, name, plugin_module)

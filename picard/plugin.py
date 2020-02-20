@@ -27,6 +27,10 @@ from picard import (
     log,
 )
 from picard.const import USER_PLUGIN_DIR
+from picard.version import (
+    Version,
+    VersionError,
+)
 
 
 _PLUGIN_MODULE_PREFIX = "picard.plugins."
@@ -129,9 +133,9 @@ class PluginWrapper(PluginShared):
     @property
     def version(self):
         try:
-            return self.data['PLUGIN_VERSION']
-        except KeyError:
-            return ""
+            return Version.from_string(self.data['PLUGIN_VERSION'])
+        except (KeyError, VersionError):
+            return Version(0, 0, 0)
 
     @property
     def api_versions(self):
@@ -185,6 +189,13 @@ class PluginData(PluginShared):
         except AttributeError:
             log.debug('Attribute %r not found for plugin %r', name, self.module_name)
             return None
+
+    @property
+    def version(self):
+        try:
+            return Version.from_string(self.__dict__['version'])
+        except (KeyError, VersionError):
+            return Version(0, 0, 0)
 
     @property
     def files_list(self):
