@@ -240,6 +240,7 @@ class ScriptParserTest(PicardTestCase):
         self.assertScriptResultEquals("$div(9,3)", "3")
         self.assertScriptResultEquals("$div(10,3)", "3")
         self.assertScriptResultEquals("$div(30,3,3)", "3")
+        self.assertScriptResultEquals("$div(30,0)", "")
 
     def test_cmd_mod(self):
         self.assertScriptResultEquals("$mod(9,3)", "0")

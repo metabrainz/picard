@@ -637,6 +637,8 @@ def func_div(parser, x, y, *args):
         return _compute_int(operator.floordiv, x, y, *args)
     except ValueError:
         return ""
+    except ZeroDivisionError:
+        return ""
 
 
 @script_function()
