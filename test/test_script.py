@@ -10,6 +10,7 @@ from picard.metadata import Metadata
 from picard.script import (
     ScriptEndOfFile,
     ScriptError,
+    ScriptFunction,
     ScriptParser,
     ScriptSyntaxError,
     ScriptUnknownFunction,
@@ -78,6 +79,40 @@ class ScriptParserTest(PicardTestCase):
                          expected,
                          "'%s' evaluated to '%s', expected '%s'"
                          % (script, actual, expected))
+
+    def test_unknown_function(self):
+        areg = r"^Unknown function 'unknownfunction'$"
+        with self.assertRaisesRegex(ScriptError, areg):
+            self.parser.eval("$unknownfunction()")
+
+    def test_noname_function(self):
+        areg = r"^Unknown function ''$"
+        with self.assertRaisesRegex(ScriptError, areg):
+            self.parser.eval("$()")
+
+    def test_unexpected_end_of_script(self):
+        areg = r"^Unexpected end of script at position"
+        with self.assertRaisesRegex(ScriptError, areg):
+            self.parser.eval("$noop(")
+        with self.assertRaisesRegex(ScriptError, areg):
+            self.parser.eval("$")
+
+    def test_unexpected_character(self):
+        areg = r"^Unexpected character"
+        with self.assertRaisesRegex(ScriptError, areg):
+            self.parser.eval("$^noop()")
+
+    def test_scriptfunction_unknown(self):
+        parser = ScriptParser()
+        parser.parse('')
+        areg = r"^Unknown function 'x'$"
+        with self.assertRaisesRegex(ScriptError, areg):
+            ScriptFunction('x', '', parser)
+        areg = r"^Unknown function 'noop'$"
+        with self.assertRaisesRegex(ScriptError, areg):
+            f = ScriptFunction('noop', '', parser)
+            del parser.functions['noop']
+            f.eval(parser)
 
     def test_cmd_noop(self):
         self.assertScriptResultEquals("$noop()", "")
