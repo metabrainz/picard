@@ -302,7 +302,6 @@ Grammar:
 
 class MultiValue(MutableSequence):
     def __init__(self, parser, multi, separator):
-        assert isinstance(multi, ScriptExpression)
         self.parser = parser
         if isinstance(separator, ScriptExpression):
             self.separator = separator.eval(self.parser)
