@@ -15,7 +15,16 @@
     <Logo>Square70x70Logo.png</Logo>
   </Properties>
   <Resources>
-    <Resource Language="en-us"/>
+    <Resource Language="en"/>
+    <Resource Language="de"/>
+    <Resource Language="fi"/>
+    <Resource Language="fr"/>
+    <Resource Language="he"/>
+    <Resource Language="it"/>
+    <Resource Language="ms-my"/>
+    <Resource Language="nl"/>
+    <Resource Language="zh-cn"/>
+    <Resource Language="zh-tw"/>
   </Resources>
   <Dependencies>
     <TargetDeviceFamily Name="Windows.Desktop" MinVersion="10.0.17135.0" MaxVersionTested="10.0.18363.0"/>
