@@ -308,22 +308,19 @@ class MultiValue(MutableSequence):
             self.separator = separator.eval(self.parser)
         else:
             self.separator = separator
-        self._multi = self._get_multi_values(multi)
-
-    def _get_multi_values(self, multi):
         if (self.separator == MULTI_VALUED_JOINER
             and len(multi) == 1
             and isinstance(multi[0], ScriptVariable)):
             # Convert ScriptExpression containing only a single variable into variable
-            return self.parser.context.getall(normalize_tagname(multi[0].name))
-
-        # Fall-back to converting to a string and splitting if haystack is an expression
-        # or user has overridden the separator character.
-        multi = multi.eval(self.parser)
-        if self.separator:
-            return multi.split(self.separator)
+            self._multi = self.parser.context.getall(normalize_tagname(multi[0].name))
         else:
-            return [multi]
+            # Fall-back to converting to a string and splitting if haystack is an expression
+            # or user has overridden the separator character.
+            evaluated_multi = multi.eval(self.parser)
+            if self.separator:
+                self._multi = evaluated_multi.split(self.separator)
+            else:
+                self._multi = [evaluated_multi]
 
     def __len__(self):
         return len(self._multi)
