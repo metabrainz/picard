@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # Picard, the next-generation MusicBrainz tagger
-# Copyright (C) 2019 Philipp Wolfer
+# Copyright (C) 2019-2020 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -113,7 +113,7 @@ class EditableListView(QtWidgets.QListView):
 
     def select_key(self, value):
         model = self.model()
-        for row in range(0, model.rowCount() - 1):
+        for row in range(0, model.rowCount()):
             index = model.createIndex(row, 0)
             if value == index.data(QtCore.Qt.EditRole):
                 self.setCurrentIndex(index)
@@ -132,6 +132,31 @@ class EditableListView(QtWidgets.QListView):
             selection.select(new_index, QtCore.QItemSelectionModel.Select)
             if row == current_index.row():
                 selection.setCurrentIndex(new_index, QtCore.QItemSelectionModel.Current)
+
+
+class UniqueEditableListView(EditableListView):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+
+    def setModel(self, model):
+        super().setModel(model)
+        model.dataChanged.connect(self.on_data_changed)
+
+    def on_data_changed(self, top_left, bottom_right, roles):
+        role = roles[0]
+        model = self.model()
+        if role == QtCore.Qt.EditRole:
+            value = model.data(top_left, role)
+            if not value:
+                return
+            # Remove duplicate entries from the model
+            unique_list = []
+            for row, item in enumerate(model.items):
+                if item != value or row == top_left.row():
+                    unique_list.append(item)
+            if len(unique_list) != model.rowCount():
+                self.update(unique_list)
+                self.select_key(value)
 
 
 class EditableListModel(QtCore.QAbstractListModel):
@@ -184,6 +209,7 @@ class EditableListModel(QtCore.QAbstractListModel):
             elif role == QtCore.Qt.DisplayRole:
                 current = self._items[i]
                 self._items[i] = (current[0], value)
+            self.dataChanged.emit(index, index, [role])
             return True
         except IndexError:
             return False

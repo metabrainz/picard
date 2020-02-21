@@ -32,7 +32,7 @@
    <item>
     <layout class="QVBoxLayout" name="verticalLayout">
      <item>
-      <widget class="EditableListView" name="tag_list_view">
+      <widget class="UniqueEditableListView" name="tag_list_view">
        <property name="dragDropMode">
         <enum>QAbstractItemView::InternalMove</enum>
        </property>
@@ -150,7 +150,7 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>EditableListView</class>
+   <class>UniqueEditableListView</class>
    <extends>QListView</extends>
    <header>picard.ui.widgets.editablelistview</header>
    <slots>
