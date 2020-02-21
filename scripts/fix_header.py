@@ -24,7 +24,7 @@ import glob
 import itertools
 import os
 import re
-import subprocess
+import subprocess  # nosec: B404
 
 
 ALIASES = {
@@ -45,7 +45,7 @@ def ranges(i):
 def extract_authors_from_gitlog(path):
     authors = {}
     cmd = ['git', 'log', r'--pretty=format:%ad %aN', r'--date=format:%Y', r'--', path]
-    result = subprocess.run(cmd, stdout=subprocess.PIPE, timeout=30)
+    result = subprocess.run(cmd, stdout=subprocess.PIPE, timeout=30)  # nosec: B603
     if result.returncode == 0:
         pattern = re.compile(r'^(\d+) (.*)$')
         for line in result.stdout.decode('utf-8').split("\n"):
