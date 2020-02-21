@@ -137,26 +137,41 @@ class EditableListView(QtWidgets.QListView):
 class UniqueEditableListView(EditableListView):
     def __init__(self, parent=None):
         super().__init__(parent)
+        self._is_drag_drop = False
 
     def setModel(self, model):
+        current_model = self.model()
+        if current_model:
+            current_model.dataChanged.disconnect(self.on_data_changed)
         super().setModel(model)
         model.dataChanged.connect(self.on_data_changed)
 
+    def dropEvent(self, event):
+        self._is_drag_drop = True
+        super().dropEvent(event)
+        self._is_drag_drop = False
+
     def on_data_changed(self, top_left, bottom_right, roles):
-        role = roles[0]
+        # Do not drop duplicates during drag and drop as there is always
+        # a duplicate in the list for a short time in this case.
+        if self._is_drag_drop:
+            return
         model = self.model()
-        if role == QtCore.Qt.EditRole:
-            value = model.data(top_left, role)
+        if QtCore.Qt.EditRole in roles:
+            value = model.data(top_left, QtCore.Qt.EditRole)
             if not value:
                 return
             # Remove duplicate entries from the model
-            unique_list = []
-            for row, item in enumerate(model.items):
-                if item != value or row == top_left.row():
-                    unique_list.append(item)
-            if len(unique_list) != model.rowCount():
-                self.update(unique_list)
-                self.select_key(value)
+            changed_row = top_left.row()
+            row = 0
+            for item in model.items:
+                if item == value and row != changed_row:
+                    model.removeRow(row)
+                    row -= 1
+                    if changed_row > row:
+                        changed_row -= 1
+                row += 1
+            self.select_row(changed_row)
 
 
 class EditableListModel(QtCore.QAbstractListModel):
