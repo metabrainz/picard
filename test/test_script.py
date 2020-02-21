@@ -1176,3 +1176,51 @@ class ScriptParserTest(PicardTestCase):
         self.assertIsInstance(sep, ScriptExpression)
         mv = MultiValue(self.parser, expr, sep)
         self.assertEqual(mv._multi, ['x:yz; d:ef'])
+
+    def test_cmd_sortmulti(self):
+        context = Metadata()
+        context["foo"] = ['B', 'D', 'E', 'A', 'C']
+        context["bar"] = ['B:AB', 'D:C', 'E:D', 'A:A', 'C:X']
+        context['baz'] = "B; D; E; A; C"
+        # Tests with context
+        self.assertScriptResultEquals("$sortmulti(%foo%)", "A; B; C; D; E", context)
+        self.assertScriptResultEquals("$sortmulti(%bar%)", "A:A; B:AB; C:X; D:C; E:D", context)
+        self.assertScriptResultEquals("$sortmulti(%baz%)", "B; D; E; A; C", context)
+        # Tests with static inputs
+        self.assertScriptResultEquals("$sortmulti(B; D; E; A; C)", "A; B; C; D; E", context)
+        self.assertScriptResultEquals("$sortmulti(B:AB; D:C; E:D; A:A; C:X)", "A:A; B:AB; C:X; D:C; E:D", context)
+        # Tests with separator override
+        self.assertScriptResultEquals("$sortmulti(B:AB; D:C; E:D; A:A; C:X,:)", "A; C:AB; D:B:C; E:D; A:X", context)
+        # Tests with missing inputs
+        self.assertScriptResultEquals("$sortmulti(,)", "", context)
+        self.assertScriptResultEquals("$sortmulti(,:)", "", context)
+        # Tests with invalid number of arguments
+        areg = r"^Wrong number of arguments for \$sortmulti: Expected between 1 and 2, "
+        with self.assertRaisesRegex(ScriptError, areg):
+            self.parser.eval("$sortmulti()")
+        with self.assertRaisesRegex(ScriptError, areg):
+            self.parser.eval("$sortmulti(B:AB; D:C; E:D; A:A; C:X,:,extra)")
+
+    def test_cmd_reversemulti(self):
+        context = Metadata()
+        context["foo"] = ['B', 'D', 'E', 'A', 'C']
+        context["bar"] = ['B:AB', 'D:C', 'E:D', 'A:A', 'C:X']
+        context['baz'] = "B; D; E; A; C"
+        # Tests with context
+        self.assertScriptResultEquals("$reversemulti(%foo%)", "C; A; E; D; B", context)
+        self.assertScriptResultEquals("$reversemulti(%bar%)", "C:X; A:A; E:D; D:C; B:AB", context)
+        self.assertScriptResultEquals("$reversemulti(%baz%)", "B; D; E; A; C", context)
+        # Tests with static inputs
+        self.assertScriptResultEquals("$reversemulti(B; D; E; A; C)", "C; A; E; D; B", context)
+        self.assertScriptResultEquals("$reversemulti(B:AB; D:C; E:D; A:A; C:X)", "C:X; A:A; E:D; D:C; B:AB", context)
+        # Tests with separator override
+        self.assertScriptResultEquals("$reversemulti(B:AB; D:C; E:D; A:A; C:X,:)", "X:A; C:D; A:C; E:AB; D:B", context)
+        # Tests with missing inputs
+        self.assertScriptResultEquals("$reversemulti(,)", "", context)
+        self.assertScriptResultEquals("$reversemulti(,:)", "", context)
+        # Tests with invalid number of arguments
+        areg = r"^Wrong number of arguments for \$reversemulti: Expected between 1 and 2, "
+        with self.assertRaisesRegex(ScriptError, areg):
+            self.parser.eval("$reversemulti()")
+        with self.assertRaisesRegex(ScriptError, areg):
+            self.parser.eval("$reversemulti(B:AB; D:C; E:D; A:A; C:X,:,extra)")
