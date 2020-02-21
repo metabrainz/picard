@@ -15,6 +15,7 @@
 # Copyright (C) 2017-2018 Antonio Larrosa
 # Copyright (C) 2018 Vishal Choudhary
 # Copyright (C) 2018 Xincognito10
+# Copyright (C) 2020 Ray
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -81,6 +82,10 @@ def weights_from_release_type_scores(parts, release, release_type_scores,
     # If no types are found, it is set to the score of the 'Other' type or 0.5 if 'Other' doesnt exist
     # It appends (score, weight_release_type) to passed parts list
 
+    # if our preference is zero for the release_type, force to never return this recording
+    # by using a large zero weight. This means it only gets picked if there are no others at all.
+    skip_release = False
+
     type_scores = dict(release_type_scores)
     score = 0.0
     if 'release-group' in release and 'primary-type' in release['release-group']:
@@ -89,9 +94,16 @@ def weights_from_release_type_scores(parts, release, release_type_scores,
             types_found += release['release-group']['secondary-types']
         other_score = type_scores.get('Other', 0.5)
         for release_type in types_found:
-            score += type_scores.get(release_type, other_score)
+            type_score = type_scores.get(release_type, other_score)
+            if type_score == 0:
+                skip_release = True
+            score += type_score
         score /= len(types_found)
-    parts.append((score, weight_release_type))
+
+    if skip_release:
+        parts.append((0, 9999))
+    else:
+        parts.append((score, weight_release_type))
 
 
 def weights_from_preferred_countries(parts, release,
