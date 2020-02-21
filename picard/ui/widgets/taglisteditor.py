@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # Picard, the next-generation MusicBrainz tagger
-# Copyright (C) 2019 Philipp Wolfer
+# Copyright (C) 2019-2020 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -19,10 +19,7 @@
 
 from PyQt5 import QtWidgets
 
-from picard.util.tags import (
-    TAG_NAMES,
-    display_tag_name,
-)
+from picard.util.tags import TAG_NAMES
 
 from picard.ui.ui_widget_taglisteditor import Ui_TagListEditor
 from picard.ui.widgets.editablelistview import (
@@ -37,7 +34,7 @@ class TagListEditor(QtWidgets.QWidget):
         self.ui = Ui_TagListEditor()
         self.ui.setupUi(self)
         list_view = self.ui.tag_list_view
-        model = TagListModel()
+        model = EditableListModel()
         model.user_sortable_changed.connect(self.on_user_sortable_changed)
         self.ui.sort_buttons.setVisible(model.user_sortable)
         list_view.setModel(model)
@@ -73,8 +70,3 @@ class TagListEditor(QtWidgets.QWidget):
 
     def set_user_sortable(self, user_sortable):
         self.ui.tag_list_view.model().user_sortable = user_sortable
-
-
-class TagListModel(EditableListModel):
-    def get_display_name(self, item):
-        return display_tag_name(item)
