@@ -1243,3 +1243,37 @@ def func_datetime(parser, format=None):
         format = '%Y-%m-%d %H:%M:%S'
 
     return datetime.datetime.now(tz=local_tz).strftime(format)
+
+
+@script_function(eval_args=False)
+def func_sortmulti(parser, multi, separator=MULTI_VALUED_JOINER):
+    """Returns the supplied multi-value sorted in ascending order.
+
+        parser: The ScriptParser object used to parse the script.
+        multi: The ScriptVariable/Function that evaluates to a multi-value to be
+            sorted.
+        separator: A string or the ScriptVariable/Function that evaluates to the
+            string used to separate the elements in the multi-value.
+
+    Returns:
+        Returns the supplied multi-value sorted in ascending order.
+    """
+    multi_value = MultiValue(parser, multi, separator)
+    return multi_value.separator.join(sorted(multi_value))
+
+
+@script_function(eval_args=False)
+def func_reversemulti(parser, multi, separator=MULTI_VALUED_JOINER):
+    """Returns the supplied multi-value in reverse order.
+
+        parser: The ScriptParser object used to parse the script.
+        multi: The ScriptVariable/Function that evaluates to a multi-value to be
+            reversed.
+        separator: A string or the ScriptVariable/Function that evaluates to the
+            string used to separate the elements in the multi-value.
+
+    Returns:
+        Returns the supplied multi-value in reverse order.
+    """
+    multi_value = MultiValue(parser, multi, separator)
+    return multi_value.separator.join(reversed(multi_value))
