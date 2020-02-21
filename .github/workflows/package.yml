@@ -30,7 +30,7 @@ jobs:
       PYTHON_VERSION: 3.7.6
       MACOSX_DEPLOYMENT_TARGET: 10.12
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2
     - name: Cache libdiscid
       uses: actions/cache@v1
       with:
@@ -81,7 +81,7 @@ jobs:
         - portable
       fail-fast: false
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2
     - name: Set up Python 3.7
       uses: actions/setup-python@v1
       with:
@@ -177,7 +177,7 @@ jobs:
       - package-macos
       - package-windows
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2
     - uses: actions/setup-python@v1
       with:
         python-version: 3.8
