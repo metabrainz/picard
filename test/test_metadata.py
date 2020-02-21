@@ -202,7 +202,8 @@ class MetadataTest(PicardTestCase):
         self.assertNotIn("single1", self.metadata.deleted_tags)
 
     def test_metadata_applyfunc(self):
-        def func(x): return x[1:]
+        def func(x):
+            return x[1:]
         self.metadata.apply_func(func)
 
         self.assertEqual("ingle1-value", self.metadata["single1"])
@@ -219,14 +220,16 @@ class MetadataTest(PicardTestCase):
         m[PRESERVED_TAGS[0]] = 'value1'
         m['not_preserved'] = 'value2'
 
-        def func(x): return x[1:]
+        def func(x):
+            return x[1:]
         m.apply_func(func)
 
         self.assertEqual("value1", m[PRESERVED_TAGS[0]])
         self.assertEqual("alue2", m['not_preserved'])
 
     def test_metadata_applyfunc_delete_tags(self):
-        def func(x): return None
+        def func(x):
+            return None
         metadata = Metadata(self.metadata)
         metadata.apply_func(func)
         self.assertEqual(0, len(metadata.rawitems()))
@@ -356,16 +359,13 @@ class MetadataTest(PicardTestCase):
         self.assertIn('unknown', m.deleted_tags)
 
     def test_metadata_mapping_iter(self):
-        l = set(self.metadata_d1)
-        self.assertEqual(l, {'a', 'c', 'd'})
+        self.assertEqual(set(self.metadata_d1), {'a', 'c', 'd'})
 
     def test_metadata_mapping_keys(self):
-        l = set(self.metadata_d1.keys())
-        self.assertEqual(l, {'a', 'c', 'd'})
+        self.assertEqual(set(self.metadata_d1.keys()), {'a', 'c', 'd'})
 
     def test_metadata_mapping_values(self):
-        l = set(self.metadata_d1.values())
-        self.assertEqual(l, {'b', '2', 'x; y'})
+        self.assertEqual(set(self.metadata_d1.values()), {'b', '2', 'x; y'})
 
     def test_metadata_mapping_len(self):
         m = self.metadata_d1
@@ -462,7 +462,7 @@ class MetadataTest(PicardTestCase):
 
         m1 = Metadata(a='b', length=1234, images=[image1])
         self.assertEqual(m1.images[0], image1)
-        self.assertEqual(len(m1), 2) # one tag, one image
+        self.assertEqual(len(m1), 2)  # one tag, one image
 
         m1.images.append(image2)
         self.assertEqual(m1.images[1], image2)

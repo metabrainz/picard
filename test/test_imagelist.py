@@ -321,30 +321,29 @@ class ImageListTest(PicardTestCase):
         self.assertEqual(len(self.imagelist), 1)
 
     def test_imagelist_insert(self):
-        l = ImageList()
-        l.insert(0, 'a')
-        self.assertEqual(l[0], 'a')
-        l.insert(0, 'b')
-        self.assertEqual(l[0], 'b')
-        self.assertEqual(l[1], 'a')
+        imagelist = ImageList()
+        imagelist.insert(0, 'a')
+        self.assertEqual(imagelist[0], 'a')
+        imagelist.insert(0, 'b')
+        self.assertEqual(imagelist[0], 'b')
+        self.assertEqual(imagelist[1], 'a')
 
     def test_imagelist_clear(self):
-        l = ImageList(['a', 'b'])
-        self.assertEqual(len(l), 2)
-        l.clear()
-        self.assertEqual(len(l), 0)
+        imagelist = ImageList(['a', 'b'])
+        self.assertEqual(len(imagelist), 2)
+        imagelist.clear()
+        self.assertEqual(len(imagelist), 0)
 
     def test_imagelist_copy(self):
-        l = ['a', 'b']
-        l1 = ImageList(l)
-        l2 = l1.copy()
-        l3 = l1
-        l1[0] = 'c'
-        self.assertEqual(l2[0], 'a')
-        self.assertEqual(l3[0], 'c')
+        imagelist1 = ImageList(['a', 'b'])
+        imagelist2 = imagelist1.copy()
+        imagelist3 = imagelist1
+        imagelist1[0] = 'c'
+        self.assertEqual(imagelist2[0], 'a')
+        self.assertEqual(imagelist3[0], 'c')
 
     def test_imagelist_del(self):
-        l = ImageList(['a', 'b'])
-        del l[0]
-        self.assertEqual(l[0], 'b')
-        self.assertEqual(len(l), 1)
+        imagelist = ImageList(['a', 'b'])
+        del imagelist[0]
+        self.assertEqual(imagelist[0], 'b')
+        self.assertEqual(len(imagelist), 1)

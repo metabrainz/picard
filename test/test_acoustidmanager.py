@@ -107,4 +107,3 @@ class AcoustIDManagerTest(PicardTestCase):
         self.assertEqual(self.mock_api_helper.submit_acoustid_fingerprints.call_count, 6)
         for f in files:
             self.assertFalse(self.acoustidmanager.is_submitted(f))
-

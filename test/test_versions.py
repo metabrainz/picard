@@ -18,7 +18,7 @@ from picard.version import (
 class VersionsTest(PicardTestCase):
 
     def test_version_conversion(self):
-        versions =  (
+        versions = (
             (Version(1, 1, 0, 'final', 0), '1.1.0.final0'),
             (Version(0, 0, 1, 'dev', 1), '0.0.1.dev1'),
             (Version(1, 1, 0, 'dev', 0), '1.1.0.dev0'),
@@ -36,7 +36,7 @@ class VersionsTest(PicardTestCase):
             self.assertEqual(v, version_from_string(s))
 
     def test_version_conversion_short(self):
-        versions =  (
+        versions = (
             (Version(1, 1, 0, 'final', 0), '1.1'),
             (Version(1, 1, 1, 'final', 0), '1.1.1'),
             (Version(0, 0, 1, 'dev', 1), '0.0.1.dev1'),
@@ -54,8 +54,8 @@ class VersionsTest(PicardTestCase):
             self.assertEqual(v, version_from_string(s))
 
     def test_version_to_string_invalid_identifier(self):
-        l = (1, 0, 2, 'xx', 0)
-        self.assertRaises(VersionError, version_to_string, (l))
+        invalid = (1, 0, 2, 'xx', 0)
+        self.assertRaises(VersionError, version_to_string, (invalid))
 
     def test_version_from_string_underscores(self):
         l, s = (1, 1, 0, 'dev', 0), '1_1_0_dev_0'
@@ -66,8 +66,8 @@ class VersionsTest(PicardTestCase):
         self.assertEqual(l, version_from_string(s))
 
     def test_version_from_string_invalid(self):
-        l = 'anything_28x_1_0_dev_0'
-        self.assertRaises(VersionError, version_to_string, (l))
+        invalid = 'anything_28x_1_0_dev_0'
+        self.assertRaises(VersionError, version_to_string, (invalid))
 
     def test_version_from_string_prefixed_final(self):
         l, s = (1, 1, 0, 'final', 0), 'anything_28_1_1_0'

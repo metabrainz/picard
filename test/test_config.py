@@ -73,7 +73,7 @@ class TestPicardConfig(TestPicardConfigCommon):
 
 class TestPicardConfigTextOption(TestPicardConfigCommon):
 
-    ### TextOption
+    # TextOption
     def test_text_opt_convert(self):
         opt = TextOption("setting", "text_option", "abc")
         self.assertEqual(opt.convert(123), "123")
@@ -117,7 +117,7 @@ class TestPicardConfigTextOption(TestPicardConfigCommon):
 
 class TestPicardConfigBoolOption(TestPicardConfigCommon):
 
-    ### BoolOption
+    # BoolOption
     def test_bool_opt_convert(self):
         opt = BoolOption("setting", "bool_option", False)
         self.assertEqual(opt.convert(1), True)
@@ -175,7 +175,7 @@ class TestPicardConfigBoolOption(TestPicardConfigCommon):
 
 class TestPicardConfigIntOption(TestPicardConfigCommon):
 
-    ### IntOption
+    # IntOption
     def test_int_opt_convert(self):
         opt = IntOption("setting", "int_option", 666)
         self.assertEqual(opt.convert("123"), 123)
@@ -277,7 +277,7 @@ class TestPicardConfigFloatOption(TestPicardConfigCommon):
 
 class TestPicardConfigListOption(TestPicardConfigCommon):
 
-    ### ListOption
+    # ListOption
     def test_list_opt_convert(self):
         opt = ListOption("setting", "list_option", [])
         self.assertEqual(opt.convert("123"), ['1', '2', '3'])
@@ -328,7 +328,7 @@ class TestPicardConfigListOption(TestPicardConfigCommon):
 
 class TestPicardConfigVarOption(TestPicardConfigCommon):
 
-    ### Option
+    # Option
     def test_var_opt_convert(self):
         opt = Option("setting", "var_option", set())
         self.assertEqual(opt.convert(["a", "b", "a"]), {"a", "b"})

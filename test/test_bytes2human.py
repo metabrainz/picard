@@ -62,7 +62,8 @@ class Testbytes2human(PicardTestCase):
             # be sure it is disabled
             self.fail('!!! UNSET create_test_data mode !!! (%s)' % filename)
 
-    def _create_testlist(self):
+    @staticmethod
+    def _create_testlist():
         values = [0, 1]
         for n in [1000, 1024]:
             p = 1
@@ -77,12 +78,14 @@ class Testbytes2human(PicardTestCase):
                                   bytes2human.short_string(x, 1024, 2)]))
         return list
 
-    def _save_expected_to(self, path, a_list):
+    @staticmethod
+    def _save_expected_to(path, a_list):
         with open(path, 'wb') as f:
             f.writelines([l + "\n" for l in a_list])
             f.close()
 
-    def _read_expected_from(self, path):
+    @staticmethod
+    def _read_expected_from(path):
         with open(path, 'r') as f:
             lines = [l.rstrip("\n") for l in f.readlines()]
             f.close()
