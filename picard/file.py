@@ -90,6 +90,7 @@ class File(QtCore.QObject, Item):
         "releasecountry": 2,
         "format": 2,
         "isvideo": 2,
+        "date": 3,
     }
 
     class PreserveTimesStatError(Exception):
