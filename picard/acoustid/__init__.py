@@ -7,6 +7,7 @@
 # Copyright (C) 2018 Vishal Choudhary
 # Copyright (C) 2018-2019 Laurent Monin
 # Copyright (C) 2018-2020 Philipp Wolfer
+# Copyright (C) 2020 Ray Bouchard
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -90,21 +91,24 @@ class AcoustIDClient(QtCore.QObject):
                 recording_list = doc['recordings'] = []
                 status = document['status']
                 if status == 'ok':
+                    log.debug("AcoustID Lookup successful for '%s'", file.filename)
                     results = document.get('results') or []
-                    for result in results:
+                    for result_cnt, result in enumerate(results, 1):
                         recordings = result.get('recordings') or []
                         max_sources = max([r.get('sources', 1) for r in recordings] + [1])
                         result_score = get_score(result)
-                        for recording in recordings:
+                        for recording_cnt, recording in enumerate(recordings, 1):
                             parsed_recording = parse_recording(recording)
                             if parsed_recording is not None:
                                 # Calculate a score based on result score and sources for this
                                 # recording relative to other recordings in this result
-                                score = recording.get('sources', 1) / max_sources * 100
-                                parsed_recording['score'] = score * result_score
+                                recording_src_score = recording.get('sources', 1) / max_sources * 100
+                                parsed_recording['score'] = recording_src_score * result_score
                                 parsed_recording['acoustid'] = result['id']
                                 recording_list.append(parsed_recording)
-                        log.debug("AcoustID: Lookup successful for '%s'", file.filename)
+
+                                log.debug("MATCH:AcoustID Lkp: Result#: %d, Recording#: %d, recording_score: %7.4f calc is (result_score %.5f * nbr_src_ratio: (%3d/%3d=%8.4f)), File:%s",
+                                         result_cnt, recording_cnt, parsed_recording['score'], result_score, recording.get('sources', 1), max_sources, recording_src_score, file.filename)
                 else:
                     mparms = {
                         'error': document['error']['message'],

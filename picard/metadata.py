@@ -41,6 +41,10 @@ from collections.abc import (
 from PyQt5.QtCore import QObject
 
 from picard import config
+from picard.match_details_log import (
+    MatchDetailEntryType,
+    MatchDtlEntry,
+)
 from picard.mbjson import (
     artist_credit_from_node,
     get_score,
@@ -346,11 +350,17 @@ class Metadata(MutableMapping):
 
         result = SimMatchTrack(similarity=-1, releasegroup=None, release=None, track=None)
         for release in releases:
+            if 'medium-count' not in release and 'media' in release:  # generate this field for MusicBrainz, it is already part of acoustid
+                release['medium-count'] = len(release['media'])
             release_parts = self.compare_to_release_parts(release, weights)
             sim = linear_combination_of_weights(parts + release_parts) * search_score
-            if sim > result.similarity:
+
+            is_new_preferred_track = sim > result.similarity
+            if is_new_preferred_track:
                 rg = release['release-group'] if "release-group" in release else None
                 result = SimMatchTrack(similarity=sim, releasegroup=rg, release=release, track=track)
+
+            MatchDtlEntry(MatchDetailEntryType.candidate, track, release, parts, release_parts, search_score, sim, is_new_preferred_track)
         return result
 
     def copy(self, other, copy_images=True):

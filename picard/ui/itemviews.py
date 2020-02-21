@@ -21,6 +21,7 @@
 # Copyright (C) 2016 Suhas
 # Copyright (C) 2016-2017 Sambhav Kothari
 # Copyright (C) 2018 Vishal Choudhary
+# Copyright (C) 2020 Ray Bouchard
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -440,6 +441,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
                 menu.addAction(self.window.play_file_action)
                 menu.addAction(self.window.open_folder_action)
                 menu.addAction(self.window.track_search_action)
+                menu.addAction(self.window.track_match_details_action)
                 plugin_actions.extend(_file_actions)
             menu.addAction(self.window.browser_lookup_action)
             if obj.num_linked_files > 0:

@@ -6,6 +6,7 @@
 # Copyright (C) 2009, 2011, 2019 Philipp Wolfer
 # Copyright (C) 2011-2013 Michael Wiencek
 # Copyright (C) 2018 Laurent Monin
+# Copyright (C) 2020 Ray Bouchard
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -43,6 +44,7 @@ class MatchingOptionsPage(OptionsPage):
         config.FloatOption("setting", "file_lookup_threshold", 0.7),
         config.FloatOption("setting", "cluster_lookup_threshold", 0.7),
         config.FloatOption("setting", "track_matching_threshold", 0.4),
+        config.BoolOption("setting", "show_debug_col_in_match_dialog", False),
     ]
 
     _release_type_sliders = {}
@@ -56,11 +58,13 @@ class MatchingOptionsPage(OptionsPage):
         self.ui.file_lookup_threshold.setValue(int(config.setting["file_lookup_threshold"] * 100))
         self.ui.cluster_lookup_threshold.setValue(int(config.setting["cluster_lookup_threshold"] * 100))
         self.ui.track_matching_threshold.setValue(int(config.setting["track_matching_threshold"] * 100))
+        self.ui.show_debug_col_in_match_dialog.setChecked(config.setting["show_debug_col_in_match_dialog"])
 
     def save(self):
         config.setting["file_lookup_threshold"] = float(self.ui.file_lookup_threshold.value()) / 100.0
         config.setting["cluster_lookup_threshold"] = float(self.ui.cluster_lookup_threshold.value()) / 100.0
         config.setting["track_matching_threshold"] = float(self.ui.track_matching_threshold.value()) / 100.0
+        config.setting["show_debug_col_in_match_dialog"] = self.ui.show_debug_col_in_match_dialog.isChecked()
 
 
 register_options_page(MatchingOptionsPage)

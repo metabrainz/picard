@@ -188,7 +188,7 @@ class TableBasedDialog(PicardDialog):
             selected_rows_user_values = []
             for idx in self.table.selectionModel().selectedRows():
                 row = self.table.itemFromIndex(idx).data(QtCore.Qt.UserRole)
-                selected_rows_user_values .append(row)
+                selected_rows_user_values.append(row)
             self.accept_event(selected_rows_user_values)
         super().accept()
 
