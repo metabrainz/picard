@@ -255,6 +255,8 @@ class AutocompleteItemDelegate(QtWidgets.QItemDelegate):
 
         editor = super().createEditor(parent, option, index)
         completer = QtWidgets.QCompleter(self._completions, parent)
+        completer.setCompletionMode(QtWidgets.QCompleter.UnfilteredPopupCompletion)
+        completer.setCaseSensitivity(QtCore.Qt.CaseInsensitive)
         completer.activated.connect(complete)
         editor.setCompleter(completer)
         return editor
