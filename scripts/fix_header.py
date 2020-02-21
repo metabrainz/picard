@@ -204,17 +204,17 @@ def fix_header(path):
     authors = {}
     for a in authors_from_log:
         if a not in authors:
-            authors[a] = authors_from_log[a]
-        for b in authors_from_file:
-            if b not in authors:
-                authors[b] = authors_from_file[b]
-            else:
-                authors[b].extend(authors_from_file[b])
+            authors[a] = set(authors_from_log[a])
+    for b in authors_from_file:
+        if b not in authors:
+            authors[b] = set(authors_from_file[b])
+        else:
+            authors[b].union(authors_from_file[b])
 
     new_authors = {}
     for a in authors:
         new_authors[a] = []
-        for y1, y2 in list(ranges(sorted(set(authors[a])))):
+        for y1, y2 in list(ranges(sorted(authors[a]))):
             if y1 == y2:
                 new_authors[a].append(str(y1))
             else:
