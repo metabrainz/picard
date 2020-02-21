@@ -9,8 +9,11 @@ from picard.cluster import Cluster
 from picard.const import DEFAULT_FILE_NAMING_FORMAT
 from picard.metadata import Metadata
 from picard.script import (
+    MULTI_VALUED_JOINER,
+    MultiValue,
     ScriptEndOfFile,
     ScriptError,
+    ScriptExpression,
     ScriptFunction,
     ScriptParser,
     ScriptSyntaxError,
@@ -1125,3 +1128,51 @@ class ScriptParserTest(PicardTestCase):
         finally:
             # Restore original datetime object
             datetime.datetime = original_datetime
+
+    def test_multivalue_1(self):
+        self.parser.context = Metadata({'foo': ':', 'bar': 'x:yz', 'empty': ''})
+        expr = self.parser.parse('a:bc; d:ef')
+        self.assertIsInstance(expr, ScriptExpression)
+
+        mv = MultiValue(self.parser, expr, MULTI_VALUED_JOINER)
+        self.assertEqual(mv._multi, ['a:bc', 'd:ef'])
+        self.assertEqual(mv.separator, MULTI_VALUED_JOINER)
+        self.assertEqual(len(mv), 2)
+        del mv[0]
+        self.assertEqual(len(mv), 1)
+        mv.insert(0, 'x')
+        self.assertEqual(mv[0], 'x')
+        mv[0] = 'y'
+        self.assertEqual(mv[0], 'y')
+        self.assertEqual(str(mv), 'y; d:ef')
+        self.assertTrue(repr(mv).startswith('MultiValue('))
+
+        mv = MultiValue(self.parser, expr, ':')
+        self.assertEqual(mv._multi, ['a', 'bc; d', 'ef'])
+        self.assertEqual(mv.separator, ':')
+
+        expr = self.parser.parse('a:bc; d:ef')
+        self.assertIsInstance(expr, ScriptExpression)
+        sep = self.parser.parse('%foo%')
+        self.assertIsInstance(sep, ScriptExpression)
+        mv = MultiValue(self.parser, expr, sep)
+        self.assertEqual(mv._multi, ['a', 'bc; d', 'ef'])
+
+        expr = self.parser.parse('%bar%; d:ef')
+        self.assertIsInstance(expr, ScriptExpression)
+        sep = self.parser.parse('%foo%')
+        self.assertIsInstance(sep, ScriptExpression)
+        mv = MultiValue(self.parser, expr, sep)
+        self.assertEqual(mv._multi, ['x', 'yz; d', 'ef'])
+
+        expr = self.parser.parse('%bar%')
+        self.assertIsInstance(expr, ScriptExpression)
+        mv = MultiValue(self.parser, expr, MULTI_VALUED_JOINER)
+        self.assertEqual(mv._multi, ['x:yz'])
+
+        expr = self.parser.parse('%bar%; d:ef')
+        self.assertIsInstance(expr, ScriptExpression)
+        sep = self.parser.parse('%empty%')
+        self.assertIsInstance(sep, ScriptExpression)
+        mv = MultiValue(self.parser, expr, sep)
+        self.assertEqual(mv._multi, ['x:yz; d:ef'])

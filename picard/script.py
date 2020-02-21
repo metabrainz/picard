@@ -21,6 +21,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from collections import namedtuple
+from collections.abc import MutableSequence
 import datetime
 from functools import reduce
 from inspect import getfullargspec
@@ -299,6 +300,49 @@ Grammar:
         return ScriptParser._cache[key].eval(self)
 
 
+class MultiValue(MutableSequence):
+    def __init__(self, parser, multi, separator):
+        self.parser = parser
+        if isinstance(separator, ScriptExpression):
+            self.separator = separator.eval(self.parser)
+        else:
+            self.separator = separator
+        if (self.separator == MULTI_VALUED_JOINER
+            and len(multi) == 1
+            and isinstance(multi[0], ScriptVariable)):
+            # Convert ScriptExpression containing only a single variable into variable
+            self._multi = self.parser.context.getall(normalize_tagname(multi[0].name))
+        else:
+            # Fall-back to converting to a string and splitting if haystack is an expression
+            # or user has overridden the separator character.
+            evaluated_multi = multi.eval(self.parser)
+            if self.separator:
+                self._multi = evaluated_multi.split(self.separator)
+            else:
+                self._multi = [evaluated_multi]
+
+    def __len__(self):
+        return len(self._multi)
+
+    def __getitem__(self, key):
+        return self._multi[key]
+
+    def __setitem__(self, key, value):
+        self._multi[key] = value
+
+    def __delitem__(self, key):
+        del self._multi[key]
+
+    def insert(self, index, value):
+        return self._multi.insert(index, value)
+
+    def __repr__(self):
+        return '%s(%r, %r, %r)' % (self.__class__.__name__, self.parser, self._multi, self.separator)
+
+    def __str__(self):
+        return self.separator.join(self)
+
+
 def enabled_tagger_scripts_texts():
     """Returns an iterator over the enabled tagger scripts.
     For each script, you'll get a tuple consisting of the script name and text"""
@@ -370,27 +414,6 @@ def _compute_int(operation, *args):
 
 def _compute_logic(operation, *args):
     return operation(args)
-
-
-def _get_multi_values(parser, multi, separator):
-    if isinstance(separator, ScriptExpression):
-        separator = separator.eval(parser)
-
-    if separator == MULTI_VALUED_JOINER:
-        # Convert ScriptExpression containing only a single variable into variable
-        if (isinstance(multi, ScriptExpression)
-            and len(multi) == 1
-            and isinstance(multi[0], ScriptVariable)):
-            multi = multi[0]
-
-        # If a variable, return multi-values
-        if isinstance(multi, ScriptVariable):
-            return parser.context.getall(normalize_tagname(multi.name))
-
-    # Fall-back to converting to a string and splitting if haystack is an expression
-    # or user has overridden the separator character.
-    multi = multi.eval(parser)
-    return multi.split(separator) if separator else [multi]
 
 
 @script_function(eval_args=False)
@@ -483,7 +506,7 @@ def func_inmulti(parser, haystack, needle, separator=MULTI_VALUED_JOINER):
        contains exactly ``needle`` as a member."""
 
     needle = needle.eval(parser)
-    return func_in(parser, _get_multi_values(parser, haystack, separator), needle)
+    return func_in(parser, MultiValue(parser, haystack, separator), needle)
 
 
 @script_function()
@@ -767,7 +790,7 @@ def func_len(parser, text=""):
 
 @script_function(eval_args=False)
 def func_lenmulti(parser, multi, separator=MULTI_VALUED_JOINER):
-    return func_len(parser, _get_multi_values(parser, multi, separator))
+    return str(len(MultiValue(parser, multi, separator)))
 
 
 @script_function()
@@ -1068,8 +1091,8 @@ def func_getmulti(parser, multi, item_index, separator=MULTI_VALUED_JOINER):
         return ''
     try:
         index = int(item_index.eval(parser))
-        multi_var = _get_multi_values(parser, multi, separator)
-        return str(multi_var[index])
+        multi_value = MultiValue(parser, multi, separator)
+        return str(multi_value[index])
     except (ValueError, IndexError):
         return ''
 
@@ -1089,7 +1112,7 @@ def func_foreach(parser, multi, loop_code, separator=MULTI_VALUED_JOINER):
         loop_code: String of script code to be processed on each iteration.
         separator: String used to separate the elements in the multi-value.
     """
-    multi_value = _get_multi_values(parser, multi, separator)
+    multi_value = MultiValue(parser, multi, separator)
     for loop_count, value in enumerate(multi_value, 1):
         func_set(parser, '_loop_count', str(loop_count))
         func_set(parser, '_loop_value', str(value))
@@ -1137,16 +1160,14 @@ def func_map(parser, multi, loop_code, separator=MULTI_VALUED_JOINER):
 
     Returns the updated multi-value variable.
     """
-    multi_value = _get_multi_values(parser, multi, separator)
+    multi_value = MultiValue(parser, multi, separator)
     for loop_count, value in enumerate(multi_value, 1):
         func_set(parser, '_loop_count', str(loop_count))
         func_set(parser, '_loop_value', str(value))
         multi_value[loop_count - 1] = str(loop_code.eval(parser))
     func_unset(parser, '_loop_count')
     func_unset(parser, '_loop_value')
-    if not isinstance(separator, str):
-        separator = separator.eval(parser)
-    return separator.join(multi_value)
+    return str(multi_value)
 
 
 @script_function(eval_args=False)
@@ -1165,7 +1186,7 @@ def func_join(parser, multi, join_phrase, separator=MULTI_VALUED_JOINER):
     Returns a string with the elements joined.
     """
     join_phrase = str(join_phrase.eval(parser))
-    multi_value = _get_multi_values(parser, multi, separator)
+    multi_value = MultiValue(parser, multi, separator)
     return join_phrase.join(multi_value)
 
 
@@ -1195,10 +1216,8 @@ def func_slice(parser, multi, start_index, end_index, separator=MULTI_VALUED_JOI
         end = int(end_index.eval(parser)) if end_index else None
     except ValueError:
         end = None
-    multi_var = _get_multi_values(parser, multi, separator)
-    if not isinstance(separator, str):
-        separator = separator.eval(parser)
-    return separator.join(multi_var[start:end])
+    multi_value = MultiValue(parser, multi, separator)
+    return multi_value.separator.join(multi_value[start:end])
 
 
 @script_function()
