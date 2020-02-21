@@ -210,7 +210,7 @@ def fix_header(path):
         if b not in authors:
             authors[b] = set(authors_from_file[b])
         else:
-            authors[b].union(authors_from_file[b])
+            authors[b] = authors[b].union(authors_from_file[b])
 
     new_authors = {}
     for a in authors:
