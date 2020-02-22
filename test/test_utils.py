@@ -87,16 +87,16 @@ class SanitizeFilenameTest(PicardTestCase):
 class TranslateArtistTest(PicardTestCase):
 
     def test_latin(self):
-        self.assertEqual(u"Jean Michel Jarre", util.translate_from_sortname(u"Jean Michel Jarre", u"Jarre, Jean Michel"))
+        self.assertEqual("Jean Michel Jarre", util.translate_from_sortname("Jean Michel Jarre", "Jarre, Jean Michel"))
 
     def test_kanji(self):
-        self.assertEqual(u"Tetsuya Komuro", util.translate_from_sortname(u"小室哲哉", u"Komuro, Tetsuya"))
+        self.assertEqual("Tetsuya Komuro", util.translate_from_sortname("小室哲哉", "Komuro, Tetsuya"))
 
     def test_kanji2(self):
-        self.assertEqual(u"Ayumi Hamasaki & Keiko", util.translate_from_sortname(u"浜崎あゆみ & KEIKO", u"Hamasaki, Ayumi & Keiko"))
+        self.assertEqual("Ayumi Hamasaki & Keiko", util.translate_from_sortname("浜崎あゆみ & KEIKO", "Hamasaki, Ayumi & Keiko"))
 
     def test_cyrillic(self):
-        self.assertEqual(U"Pyotr Ilyich Tchaikovsky", util.translate_from_sortname(u"Пётр Ильич Чайковский", u"Tchaikovsky, Pyotr Ilyich"))
+        self.assertEqual("Pyotr Ilyich Tchaikovsky", util.translate_from_sortname("Пётр Ильич Чайковский", "Tchaikovsky, Pyotr Ilyich"))
 
 
 class FormatTimeTest(PicardTestCase):
