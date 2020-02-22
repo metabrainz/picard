@@ -106,7 +106,7 @@ def identify(data):
             pass
 
     # PDF
-    elif data[:4] == '%PDF':
+    elif data[:4] == b'%PDF':
         h, w = 0, 0
         mime = 'application/pdf'
         extension = '.pdf'
