@@ -241,6 +241,15 @@ class ImageInfoTest(PicardTestCase):
                 (140, 96, 'image/jpeg', '.jpg', 8550)
             )
 
+    def test_pdf(self):
+        file = os.path.join('test', 'data', 'mb.pdf')
+
+        with open(file, 'rb') as f:
+            self.assertEqual(
+                imageinfo.identify(f.read()),
+                (0, 0, 'application/pdf', '.pdf', 10362)
+            )
+
     def test_not_enough_data(self):
         self.assertRaises(imageinfo.IdentificationError,
                           imageinfo.identify, "x")
