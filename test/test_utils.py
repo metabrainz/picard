@@ -238,7 +238,7 @@ class ImageInfoTest(PicardTestCase):
             )
 
     def test_jpeg(self):
-        file = os.path.join('test', 'data', 'mb.jpg',)
+        file = os.path.join('test', 'data', 'mb.jpg')
 
         with open(file, 'rb') as f:
             self.assertEqual(
