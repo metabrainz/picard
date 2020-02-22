@@ -35,6 +35,8 @@ class EditableListView(QtWidgets.QListView):
     def keyPressEvent(self, event):
         if event.matches(QtGui.QKeySequence.Delete):
             self.remove_selected_rows()
+        elif event.key() == QtCore.Qt.Key_Insert:
+            self.add_empty_row()
         else:
             super().keyPressEvent(event)
 
@@ -79,6 +81,8 @@ class EditableListView(QtWidgets.QListView):
         return self.model().items
 
     def add_empty_row(self):
+        # Setting the focus causes any open editor to getting closed
+        self.setFocus(True)
         index = self.add_item()
         self.setCurrentIndex(index)
         self.edit(index)
