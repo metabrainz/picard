@@ -8,9 +8,11 @@ class UnionSortedListsTest(PicardTestCase):
 
     def test_1(self):
         list1 = [1, 2, 3]
-        list2 = [3, 4, 5]
-        expected = [1, 2, 3, 4, 5]
+        list2 = [3, 4, 5, 6]
+        expected = [1, 2, 3, 4, 5, 6]
         r = union_sorted_lists(list1, list2)
+        self.assertEqual(r, expected)
+        r = union_sorted_lists(list2, list1)
         self.assertEqual(r, expected)
 
     def test_2(self):
