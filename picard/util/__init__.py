@@ -392,7 +392,7 @@ def album_artist_from_path(filename, album, artist):
     if not album:
         dirs = os.path.dirname(filename).replace('\\', '/').lstrip('/').split('/')
         # Strip disc subdirectory from list
-        if re.search(r'(^|\s)(CD|DVD|Disc)\s*\d+(\s|$)', dirs[-1], re.I):
+        if re.search(r'\b(?:CD|DVD|Disc)\s*\d+\b', dirs[-1], re.I):
             del dirs[-1]
         if dirs:
             # For clustering assume %artist%/%album%/file or %artist% - %album%/file
