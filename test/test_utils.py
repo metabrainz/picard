@@ -190,10 +190,12 @@ class AlbumArtistFromPathTest(PicardTestCase):
         file_2 = r"/10cc - Original Soundtrack/02 I'm Not in Love.mp3"
         file_3 = r"/Original Soundtrack/02 I'm Not in Love.mp3"
         file_4 = r"/02 I'm Not in Love.mp3"
+        file_5 = r"/10cc - Original Soundtrack - bonus/02 I'm Not in Love.mp3"
         self.assertEqual(aafp(file_1, '', ''), ('Original Soundtrack', '10cc'))
         self.assertEqual(aafp(file_2, '', ''), ('Original Soundtrack', '10cc'))
         self.assertEqual(aafp(file_3, '', ''), ('Original Soundtrack', ''))
         self.assertEqual(aafp(file_4, '', ''), ('', ''))
+        self.assertEqual(aafp(file_5, '', ''), ('Original Soundtrack - bonus', '10cc'))
         self.assertEqual(aafp(file_1, 'album', ''), ('album', ''))
         self.assertEqual(aafp(file_2, 'album', ''), ('album', ''))
         self.assertEqual(aafp(file_3, 'album', ''), ('album', ''))
@@ -206,6 +208,13 @@ class AlbumArtistFromPathTest(PicardTestCase):
         self.assertEqual(aafp(file_2, 'album', 'artist'), ('album', 'artist'))
         self.assertEqual(aafp(file_3, 'album', 'artist'), ('album', 'artist'))
         self.assertEqual(aafp(file_4, 'album', 'artist'), ('album', 'artist'))
+        for name in ('', 'x', '/', '\\', '///'):
+            self.assertEqual(aafp(name, '', 'artist'), ('', 'artist'))
+        # test Strip disc subdirectory
+        self.assertEqual(aafp(r'/artistx/albumy/CD 1/file.flac', '', ''), ('albumy', 'artistx'))
+        self.assertEqual(aafp(r'/artistx/albumy/the DVD 23 B/file.flac', '', ''), ('albumy', 'artistx'))
+        self.assertEqual(aafp(r'/artistx/albumy/disc23/file.flac', '', ''), ('albumy', 'artistx'))
+        self.assertNotEqual(aafp(r'/artistx/albumy/disc/file.flac', '', ''), ('albumy', 'artistx'))
 
 
 class ImageInfoTest(PicardTestCase):
