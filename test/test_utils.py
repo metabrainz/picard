@@ -87,7 +87,7 @@ class SanitizeFilenameTest(PicardTestCase):
 class TranslateArtistTest(PicardTestCase):
 
     def test_latin(self):
-        self.assertEqual("Jean Michel Jarre", util.translate_from_sortname("Jean Michel Jarre", "Jarre, Jean Michel"))
+        self.assertEqual("thename", util.translate_from_sortname("thename", "sort, name"))
 
     def test_kanji(self):
         self.assertEqual("Tetsuya Komuro", util.translate_from_sortname("小室哲哉", "Komuro, Tetsuya"))
