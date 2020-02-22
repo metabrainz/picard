@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # Picard, the next-generation MusicBrainz tagger
-# Copyright (C) 2019 Philipp Wolfer
+# Copyright (C) 2019-2020 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -113,7 +113,7 @@ class EditableListView(QtWidgets.QListView):
 
     def select_key(self, value):
         model = self.model()
-        for row in range(0, model.rowCount() - 1):
+        for row in range(0, model.rowCount()):
             index = model.createIndex(row, 0)
             if value == index.data(QtCore.Qt.EditRole):
                 self.setCurrentIndex(index)
@@ -132,6 +132,46 @@ class EditableListView(QtWidgets.QListView):
             selection.select(new_index, QtCore.QItemSelectionModel.Select)
             if row == current_index.row():
                 selection.setCurrentIndex(new_index, QtCore.QItemSelectionModel.Current)
+
+
+class UniqueEditableListView(EditableListView):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self._is_drag_drop = False
+
+    def setModel(self, model):
+        current_model = self.model()
+        if current_model:
+            current_model.dataChanged.disconnect(self.on_data_changed)
+        super().setModel(model)
+        model.dataChanged.connect(self.on_data_changed)
+
+    def dropEvent(self, event):
+        self._is_drag_drop = True
+        super().dropEvent(event)
+        self._is_drag_drop = False
+
+    def on_data_changed(self, top_left, bottom_right, roles):
+        # Do not drop duplicates during drag and drop as there is always
+        # a duplicate in the list for a short time in this case.
+        if self._is_drag_drop:
+            return
+        model = self.model()
+        if QtCore.Qt.EditRole in roles:
+            value = model.data(top_left, QtCore.Qt.EditRole)
+            if not value:
+                return
+            # Remove duplicate entries from the model
+            changed_row = top_left.row()
+            row = 0
+            for item in model.items:
+                if item == value and row != changed_row:
+                    model.removeRow(row)
+                    row -= 1
+                    if changed_row > row:
+                        changed_row -= 1
+                row += 1
+            self.select_row(changed_row)
 
 
 class EditableListModel(QtCore.QAbstractListModel):
@@ -184,6 +224,7 @@ class EditableListModel(QtCore.QAbstractListModel):
             elif role == QtCore.Qt.DisplayRole:
                 current = self._items[i]
                 self._items[i] = (current[0], value)
+            self.dataChanged.emit(index, index, [role])
             return True
         except IndexError:
             return False

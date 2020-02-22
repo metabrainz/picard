@@ -17,7 +17,7 @@ class Ui_TagListEditor(object):
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.verticalLayout = QtWidgets.QVBoxLayout()
         self.verticalLayout.setObjectName("verticalLayout")
-        self.tag_list_view = EditableListView(TagListEditor)
+        self.tag_list_view = UniqueEditableListView(TagListEditor)
         self.tag_list_view.setDragDropMode(QtWidgets.QAbstractItemView.InternalMove)
         self.tag_list_view.setSelectionMode(QtWidgets.QAbstractItemView.ExtendedSelection)
         self.tag_list_view.setObjectName("tag_list_view")
@@ -74,4 +74,4 @@ class Ui_TagListEditor(object):
         self.tags_remove_btn.setToolTip(_("Remove selected tags"))
         self.tags_remove_btn.setAccessibleName(_("Remove selected tags"))
         self.tags_remove_btn.setText(_("Remove tags"))
-from picard.ui.widgets.editablelistview import EditableListView
+from picard.ui.widgets.editablelistview import UniqueEditableListView
