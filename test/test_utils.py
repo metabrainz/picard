@@ -91,6 +91,9 @@ class TranslateArtistTest(PicardTestCase):
 
     def test_kanji(self):
         self.assertEqual("Tetsuya Komuro", util.translate_from_sortname("小室哲哉", "Komuro, Tetsuya"))
+        # see _reverse_sortname(), cases with 3 or 4 chunks
+        self.assertEqual("c b a", util.translate_from_sortname("小室哲哉", "a, b, c"))
+        self.assertEqual("b a, d c", util.translate_from_sortname("小室哲哉", "a, b, c, d"))
 
     def test_kanji2(self):
         self.assertEqual("Ayumi Hamasaki & Keiko", util.translate_from_sortname("浜崎あゆみ & KEIKO", "Hamasaki, Ayumi & Keiko"))
