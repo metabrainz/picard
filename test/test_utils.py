@@ -87,23 +87,19 @@ class SanitizeFilenameTest(PicardTestCase):
 class TranslateArtistTest(PicardTestCase):
 
     def test_latin(self):
-        self.assertEqual(u"Jean Michel Jarre", util.translate_from_sortname(u"Jean Michel Jarre", u"Jarre, Jean Michel"))
-        self.assertNotEqual(u"Jarre, Jean Michel", util.translate_from_sortname(u"Jean Michel Jarre", u"Jarre, Jean Michel"))
+        self.assertEqual("thename", util.translate_from_sortname("thename", "sort, name"))
 
     def test_kanji(self):
-        self.assertEqual(u"Tetsuya Komuro", util.translate_from_sortname(u"小室哲哉", u"Komuro, Tetsuya"))
-        self.assertNotEqual(u"Komuro, Tetsuya", util.translate_from_sortname(u"小室哲哉", u"Komuro, Tetsuya"))
-        self.assertNotEqual(u"小室哲哉", util.translate_from_sortname(u"小室哲哉", u"Komuro, Tetsuya"))
+        self.assertEqual("Tetsuya Komuro", util.translate_from_sortname("小室哲哉", "Komuro, Tetsuya"))
+        # see _reverse_sortname(), cases with 3 or 4 chunks
+        self.assertEqual("c b a", util.translate_from_sortname("小室哲哉", "a, b, c"))
+        self.assertEqual("b a, d c", util.translate_from_sortname("小室哲哉", "a, b, c, d"))
 
     def test_kanji2(self):
-        self.assertEqual(u"Ayumi Hamasaki & Keiko", util.translate_from_sortname(u"浜崎あゆみ & KEIKO", u"Hamasaki, Ayumi & Keiko"))
-        self.assertNotEqual(u"浜崎あゆみ & KEIKO", util.translate_from_sortname(u"浜崎あゆみ & KEIKO", u"Hamasaki, Ayumi & Keiko"))
-        self.assertNotEqual(u"Hamasaki, Ayumi & Keiko", util.translate_from_sortname(u"浜崎あゆみ & KEIKO", u"Hamasaki, Ayumi & Keiko"))
+        self.assertEqual("Ayumi Hamasaki & Keiko", util.translate_from_sortname("浜崎あゆみ & KEIKO", "Hamasaki, Ayumi & Keiko"))
 
     def test_cyrillic(self):
-        self.assertEqual(U"Pyotr Ilyich Tchaikovsky", util.translate_from_sortname(u"Пётр Ильич Чайковский", u"Tchaikovsky, Pyotr Ilyich"))
-        self.assertNotEqual(u"Tchaikovsky, Pyotr Ilyich", util.translate_from_sortname(u"Пётр Ильич Чайковский", u"Tchaikovsky, Pyotr Ilyich"))
-        self.assertNotEqual(u"Пётр Ильич Чайковский", util.translate_from_sortname(u"Пётр Ильич Чайковский", u"Tchaikovsky, Pyotr Ilyich"))
+        self.assertEqual("Pyotr Ilyich Tchaikovsky", util.translate_from_sortname("Пётр Ильич Чайковский", "Tchaikovsky, Pyotr Ilyich"))
 
 
 class FormatTimeTest(PicardTestCase):
@@ -194,10 +190,12 @@ class AlbumArtistFromPathTest(PicardTestCase):
         file_2 = r"/10cc - Original Soundtrack/02 I'm Not in Love.mp3"
         file_3 = r"/Original Soundtrack/02 I'm Not in Love.mp3"
         file_4 = r"/02 I'm Not in Love.mp3"
+        file_5 = r"/10cc - Original Soundtrack - bonus/02 I'm Not in Love.mp3"
         self.assertEqual(aafp(file_1, '', ''), ('Original Soundtrack', '10cc'))
         self.assertEqual(aafp(file_2, '', ''), ('Original Soundtrack', '10cc'))
         self.assertEqual(aafp(file_3, '', ''), ('Original Soundtrack', ''))
         self.assertEqual(aafp(file_4, '', ''), ('', ''))
+        self.assertEqual(aafp(file_5, '', ''), ('Original Soundtrack - bonus', '10cc'))
         self.assertEqual(aafp(file_1, 'album', ''), ('album', ''))
         self.assertEqual(aafp(file_2, 'album', ''), ('album', ''))
         self.assertEqual(aafp(file_3, 'album', ''), ('album', ''))
@@ -210,6 +208,13 @@ class AlbumArtistFromPathTest(PicardTestCase):
         self.assertEqual(aafp(file_2, 'album', 'artist'), ('album', 'artist'))
         self.assertEqual(aafp(file_3, 'album', 'artist'), ('album', 'artist'))
         self.assertEqual(aafp(file_4, 'album', 'artist'), ('album', 'artist'))
+        for name in ('', 'x', '/', '\\', '///'):
+            self.assertEqual(aafp(name, '', 'artist'), ('', 'artist'))
+        # test Strip disc subdirectory
+        self.assertEqual(aafp(r'/artistx/albumy/CD 1/file.flac', '', ''), ('albumy', 'artistx'))
+        self.assertEqual(aafp(r'/artistx/albumy/the DVD 23 B/file.flac', '', ''), ('albumy', 'artistx'))
+        self.assertEqual(aafp(r'/artistx/albumy/disc23/file.flac', '', ''), ('albumy', 'artistx'))
+        self.assertNotEqual(aafp(r'/artistx/albumy/disc/file.flac', '', ''), ('albumy', 'artistx'))
 
 
 class ImageInfoTest(PicardTestCase):
@@ -233,7 +238,7 @@ class ImageInfoTest(PicardTestCase):
             )
 
     def test_jpeg(self):
-        file = os.path.join('test', 'data', 'mb.jpg',)
+        file = os.path.join('test', 'data', 'mb.jpg')
 
         with open(file, 'rb') as f:
             self.assertEqual(
