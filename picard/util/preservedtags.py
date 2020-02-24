@@ -2,7 +2,7 @@
 #
 # Picard, the next-generation MusicBrainz tagger
 # Copyright (C) 2018 Laurent Monin
-# Copyright (C) 2019 Philipp Wolfer
+# Copyright (C) 2019-2020 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -40,12 +40,12 @@ class PreservedTags:
         return tag.strip().lower()
 
     def add(self, name):
-        self._tags.add(name)
+        self._tags.add(self._normalize_tag(name))
         self._to_config()
 
     def discard(self, name):
-        self._tags.discard(name)
+        self._tags.discard(self._normalize_tag(name))
         self._to_config()
 
     def __contains__(self, key):
-        return key.lower() in self._tags
+        return self._normalize_tag(key) in self._tags
