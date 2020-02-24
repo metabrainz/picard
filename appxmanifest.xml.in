@@ -15,15 +15,15 @@
     <Logo>Square70x70Logo.png</Logo>
   </Properties>
   <Resources>
-    <Resource Language="en"/>
+    <Resource Language="en-us"/>
     <Resource Language="de"/>
+    <Resource Language="es"/>
     <Resource Language="fi"/>
     <Resource Language="fr"/>
     <Resource Language="he"/>
     <Resource Language="it"/>
     <Resource Language="ms-my"/>
     <Resource Language="nl"/>
-    <Resource Language="zh-cn"/>
     <Resource Language="zh-tw"/>
   </Resources>
   <Dependencies>
