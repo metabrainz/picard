@@ -118,7 +118,7 @@ def parse_file(path):
     with open(path) as f:
         lines = f.readlines()
         found = defaultdict(lambda: None)
-        if lines[0].startswith('#!'):
+        if lines and lines[0].startswith('#!'):
             found["shebang"] = lines[0].rstrip()
             del lines[0]
         for num, line in enumerate(lines):
