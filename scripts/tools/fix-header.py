@@ -282,10 +282,12 @@ def main():
             print("Skipping %s (%s)" % (path, info), file=sys.stderr)
             continue
         if args.in_place:
+            print("Parsing and fixing %s (in place)" % path, file=sys.stderr)
             with open(path, 'w') as f:
                 print(new_content, file=f)
         else:
             # by default, we just output to stdout
+            print("Parsing and fixing %s (stdout)" % path, file=sys.stderr)
             print(new_content)
 
 
