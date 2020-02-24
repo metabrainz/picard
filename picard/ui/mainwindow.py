@@ -508,7 +508,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.generate_fingerprints_action.setStatusTip(_("Generate the AcoustID audio fingerprints for the selected files without doing a lookup"))
         self.generate_fingerprints_action.setEnabled(False)
         self.generate_fingerprints_action.setToolTip(_('Generate the AcoustID audio fingerprints for the selected files'))
-        self.generate_fingerprints_action.setShortcut(QtGui.QKeySequence(_("Ctrl+Alt+F")))
+        self.generate_fingerprints_action.setShortcut(QtGui.QKeySequence(_("Ctrl+Shift+Y")))
         self.generate_fingerprints_action.triggered.connect(self.generate_fingerprints)
 
         self.cluster_action = QtWidgets.QAction(icontheme.lookup('picard-cluster'), _("Cl&uster"), self)
