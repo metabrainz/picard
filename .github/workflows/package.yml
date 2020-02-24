@@ -33,6 +33,7 @@ jobs:
     - uses: actions/checkout@v2
       with:
         fetch-depth: 0  # Fetch entire history, needed for setting the build number
+    - run: git fetch --depth=1 origin +refs/tags/release-*:refs/tags/release-*
     - name: Cache libdiscid
       uses: actions/cache@v1
       with:
@@ -42,11 +43,14 @@ jobs:
       run: |
         ./scripts/package/macos-setup.sh
         echo "::add-path::/Library/Frameworks/Python.framework/Versions/3.7/bin"
+        RELEASE_TAG=$(git describe --match "release-*" --abbrev=0 HEAD)
+        BUILD_NUMBER=$(git rev-list --count $RELEASE_TAG..HEAD)
+        echo "::set-env name=BUILD_NUMBER::$BUILD_NUMBER"
         mkdir artifacts
     - name: Patch build version
       if: startsWith(github.ref, 'refs/tags/') != true
       run: |
-        python3 setup.py patch_version --platform=$(git rev-list --count HEAD).$(git rev-parse --short HEAD)
+        python3 setup.py patch_version --platform=$BUILD_NUMBER.$(git rev-parse --short HEAD)
     - name: Install dependencies
       run: |
         python3 -m pip install --upgrade pip setuptools wheel
@@ -86,6 +90,7 @@ jobs:
     - uses: actions/checkout@v2
       with:
         fetch-depth: 0  # Fetch entire history, needed for setting the build number
+    - run: git fetch --depth=1 origin +refs/tags/release-*:refs/tags/release-*
     - name: Set up Python 3.7
       uses: actions/setup-python@v1
       with:
@@ -94,7 +99,9 @@ jobs:
       run: |
         & .\scripts\package\win-setup.ps1 -DiscidVersion $Env:DISCID_VERSION -FpcalVersion $Env:FPCALC_VERSION
         Write-Output "::add-path::C:\Program Files (x86)\Windows Kits\10\bin\10.0.18362.0\x64"
-        Write-Output "::set-env name=BUILD_NUMBER::$(git rev-list --count HEAD)"
+        $ReleaseTag = $(git describe --match "release-*" --abbrev=0 HEAD)
+        $BuildNumber = $(git rev-list --count "$ReleaseTag..HEAD")
+        Write-Output "::set-env name=BUILD_NUMBER::$BuildNumber"
         New-Item -Name .\artifacts -ItemType Directory
       env:
         DISCID_VERSION: 0.6.2
