@@ -166,6 +166,21 @@ class CoverArtImageTest(PicardTestCase):
         image = CAImage()
         self.assertEqual(image.source, 'TEST')
 
+    def test_coverartimage_str_repr(self):
+        image = CoverArtImage(url='url',
+                              types=['front'], comment='comment')
+        image.is_front = True
+        self.assertEqual(
+            str(image),
+            "Image from url of type front and comment 'comment'"
+        )
+        self.assertEqual(
+            repr(image),
+            "CoverArtImage(url='url', types=['front'], support_types=False, "
+            "support_multi_types=False, is_front=True, comment='comment')"
+        )
+
+
 class LocalFileCoverArtImageTest(PicardTestCase):
     def test_set_file_url(self):
         path = '/some/path/image.jpeg'
