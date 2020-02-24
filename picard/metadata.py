@@ -1,7 +1,20 @@
 # -*- coding: utf-8 -*-
 #
 # Picard, the next-generation MusicBrainz tagger
-# Copyright (C) 2006-2007 Lukáš Lalinský
+#
+# Copyright (C) 2006-2008, 2011 Lukáš Lalinský
+# Copyright (C) 2009, 2015, 2018-2020 Philipp Wolfer
+# Copyright (C) 2011-2014 Michael Wiencek
+# Copyright (C) 2012 Chad Wilson
+# Copyright (C) 2012 Johannes Weißl
+# Copyright (C) 2012-2014, 2018 Wieland Hoffmann
+# Copyright (C) 2013-2014, 2016, 2018-2020 Laurent Monin
+# Copyright (C) 2013-2014, 2017 Sophist-UK
+# Copyright (C) 2016 Rahul Raturi
+# Copyright (C) 2016-2017 Sambhav Kothari
+# Copyright (C) 2017-2018 Antonio Larrosa
+# Copyright (C) 2018 Vishal Choudhary
+# Copyright (C) 2018 Xincognito10
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -15,8 +28,9 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
-# USA.
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+
+
 from collections import namedtuple
 from collections.abc import (
     Iterable,

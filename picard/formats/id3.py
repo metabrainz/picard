@@ -1,7 +1,21 @@
 # -*- coding: utf-8 -*-
 #
 # Picard, the next-generation MusicBrainz tagger
-# Copyright (C) 2006-2007 Lukáš Lalinský
+#
+# Copyright (C) 2006-2009, 2011-2012 Lukáš Lalinský
+# Copyright (C) 2008-2011, 2014, 2018-2020 Philipp Wolfer
+# Copyright (C) 2009 Carlin Mangar
+# Copyright (C) 2011-2012 Johannes Weißl
+# Copyright (C) 2011-2014 Michael Wiencek
+# Copyright (C) 2011-2014 Wieland Hoffmann
+# Copyright (C) 2013 Calvin Walton
+# Copyright (C) 2013-2014, 2017-2019 Laurent Monin
+# Copyright (C) 2013-2015, 2017 Sophist-UK
+# Copyright (C) 2015 Frederik “Freso” S. Olesen
+# Copyright (C) 2016 Christoph Reiter
+# Copyright (C) 2016-2018 Sambhav Kothari
+# Copyright (C) 2017 tungol
+# Copyright (C) 2019 Zenara Daley
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -16,6 +30,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+
 
 from collections import defaultdict
 import re

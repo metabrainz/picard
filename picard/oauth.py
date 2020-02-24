@@ -1,7 +1,14 @@
 # -*- coding: utf-8 -*-
 #
 # Picard, the next-generation MusicBrainz tagger
+#
 # Copyright (C) 2014 Lukáš Lalinský
+# Copyright (C) 2015 Sophist-UK
+# Copyright (C) 2015 Wieland Hoffmann
+# Copyright (C) 2015, 2018 Philipp Wolfer
+# Copyright (C) 2016-2017 Sambhav Kothari
+# Copyright (C) 2017 Frederik “Freso” S. Olesen
+# Copyright (C) 2018-2019 Laurent Monin
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -16,6 +23,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+
 
 from functools import partial
 import time

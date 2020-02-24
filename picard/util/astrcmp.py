@@ -1,3 +1,5 @@
+# fix-header: skip
+
 # http://hetland.org/coding/python/levenshtein.py
 
 # This is a straightforward implementation of a well-known algorithm, and thus

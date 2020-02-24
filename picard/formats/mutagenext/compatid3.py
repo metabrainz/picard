@@ -1,8 +1,15 @@
 # -*- coding: utf-8 -*-
 #
 # Picard, the next-generation MusicBrainz tagger
-# Copyright (C) 2006 Lukáš Lalinský
+#
 # Copyright (C) 2005 Michael Urman
+# Copyright (C) 2006-2008, 2011-2012 Lukáš Lalinský
+# Copyright (C) 2013-2014 Sophist-UK
+# Copyright (C) 2013-2014, 2018 Laurent Monin
+# Copyright (C) 2014, 2018-2019 Philipp Wolfer
+# Copyright (C) 2016 Christoph Reiter
+# Copyright (C) 2016 Ville Skyttä
+# Copyright (C) 2017 Sambhav Kothari
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -17,6 +24,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+
 
 from mutagen.id3 import (
     ID3,

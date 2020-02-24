@@ -118,7 +118,7 @@ def parse_file(path):
     with open(path) as f:
         lines = f.readlines()
         found = defaultdict(lambda: None)
-        if lines[0].startswith('#!'):
+        if lines and lines[0].startswith('#!'):
             found["shebang"] = lines[0].rstrip()
             del lines[0]
         for num, line in enumerate(lines):
@@ -282,10 +282,12 @@ def main():
             print("Skipping %s (%s)" % (path, info), file=sys.stderr)
             continue
         if args.in_place:
+            print("Parsing and fixing %s (in place)" % path, file=sys.stderr)
             with open(path, 'w') as f:
                 print(new_content, file=f)
         else:
             # by default, we just output to stdout
+            print("Parsing and fixing %s (stdout)" % path, file=sys.stderr)
             print(new_content)
 
 
