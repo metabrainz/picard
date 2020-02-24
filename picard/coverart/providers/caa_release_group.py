@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 #
 # Picard, the next-generation MusicBrainz tagger
-# Copyright (C) 2014 Laurent Monin
+#
+# Copyright (C) 2014-2016, 2018-2019 Laurent Monin
+# Copyright (C) 2017 Sambhav Kothari
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License

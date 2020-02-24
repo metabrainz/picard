@@ -1,7 +1,11 @@
 # -*- coding: utf-8 -*-
 #
 # Picard, the next-generation MusicBrainz tagger
-# Copyright (C) 2013 Laurent Monin
+#
+# Copyright (C) 2012 Frederik “Freso” S. Olesen
+# Copyright (C) 2013-2014, 2018-2019 Laurent Monin
+# Copyright (C) 2017 Sambhav Kothari
+# Copyright (C) 2017-2019 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -16,6 +20,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+
 
 import builtins
 import gettext

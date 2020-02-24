@@ -1,7 +1,12 @@
 # -*- coding: utf-8 -*-
 #
 # Picard, the next-generation MusicBrainz tagger
-# Copyright (C) 2017 Sambhav Kothari
+#
+# Copyright (C) 2017 David Mandelberg
+# Copyright (C) 2017-2018 Sambhav Kothari
+# Copyright (C) 2017-2019 Laurent Monin
+# Copyright (C) 2018-2020 Philipp Wolfer
+# Copyright (C) 2019 Michael Wiencek
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -16,6 +21,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+
 
 import re
 
