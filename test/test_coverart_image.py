@@ -20,6 +20,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+from collections import defaultdict
 import os.path
 import unittest
 
@@ -28,12 +29,14 @@ from test.picardtestcase import (
     create_fake_png,
 )
 
+from picard import config
 from picard.const.sys import IS_WIN
 from picard.coverart.image import (
     CoverArtImage,
     CoverArtImageIOError,
     LocalFileCoverArtImage,
 )
+from picard.metadata import Metadata
 
 
 def create_image(extra_data, types=None, support_types=False,
@@ -48,6 +51,19 @@ def create_image(extra_data, types=None, support_types=False,
 
 
 class CoverArtImageTest(PicardTestCase):
+    def setUp(self):
+        super().setUp()
+        settings = {
+            'ascii_filenames': False,
+            'caa_image_type_as_filename': False,
+            'cover_image_filename': 'cover',
+            'enabled_plugins': [],
+            'save_images_overwrite': True,
+            'windows_compatibility': False,
+        }
+
+        config.setting = settings.copy()
+
     def test_is_front_image_no_types(self):
         image = create_image(b'a')
         self.assertTrue(image.is_front_image())
@@ -179,6 +195,46 @@ class CoverArtImageTest(PicardTestCase):
             "CoverArtImage(url='url', types=['front'], support_types=False, "
             "support_multi_types=False, is_front=True, comment='comment')"
         )
+
+    def test_save(self):
+        metadata = Metadata()
+        image = create_image(b'x', types=['back'], support_types=True,
+                             support_multi_types=True)
+        tmpdir = self.mktmpdir()
+        def listdir():
+            return os.listdir(tmpdir)
+        counters = defaultdict(lambda: 0)
+
+        image.can_be_saved_to_disk = False
+        image.save(tmpdir, metadata, counters)
+        self.assertEqual(listdir(), [])
+
+        image.can_be_saved_to_disk = True
+        image.save(tmpdir, metadata, counters)
+        self.assertIn('cover.png', listdir())
+
+        image.save(tmpdir, metadata, counters)
+        self.assertIn('cover (1).png', listdir())
+
+        config.setting['caa_image_type_as_filename'] = False
+        image.save(tmpdir, metadata, counters)
+        self.assertIn('cover (2).png', listdir())
+
+        image.is_front = False
+        image.can_be_saved_to_metadata = True
+        config.setting['caa_image_type_as_filename'] = True
+        image.save(tmpdir, metadata, counters)
+        self.assertIn('back.png', listdir())
+
+        tmpdir = self.mktmpdir()
+        counters = defaultdict(lambda: 0)
+        config.setting['save_images_overwrite'] = True
+        image.save(tmpdir, metadata, counters)
+        self.assertIn('back.png', listdir())
+
+        # FIXME
+        #image.save(tmpdir, metadata, counters)
+        #self.assertEqual(len(listdir()), 1)
 
 
 class LocalFileCoverArtImageTest(PicardTestCase):
