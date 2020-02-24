@@ -31,6 +31,7 @@ from test.picardtestcase import (
 from picard.const.sys import IS_WIN
 from picard.coverart.image import (
     CoverArtImage,
+    CoverArtImageIOError,
     LocalFileCoverArtImage,
 )
 
@@ -126,6 +127,22 @@ class CoverArtImageTest(PicardTestCase):
         self.assertEqual(filesize, len(imgdata))
         self.assertEqual(coverartimage.data, imgdata)
 
+    def test_delete_file_removed(self):
+        payload = b'atest'
+        image_ = create_image(payload, comment='1')
+        image = create_image(payload, comment='2')
+        self.assertIsNotNone(image.datahash._filename)
+        data = image.datahash.data
+        self.assertEqual(data, b'\x89PNG\r\n\x1a\naaaaIHDR\x00\x00\x00d\x00\x00\x00datest')
+        self.assertEqual(image_.datahash.data, data)
+        # simulate removal of temporary file by external command
+        os.unlink(image.datahash._filename)
+        # the following should handle this case without raising an exception
+        image.datahash.delete_file()
+        self.assertIsNone(image.datahash._filename)
+        self.assertIsNone(image.datahash.data)
+        with self.assertRaises(CoverArtImageIOError):
+            data = image_.data
 
 class LocalFileCoverArtImageTest(PicardTestCase):
     def test_set_file_url(self):

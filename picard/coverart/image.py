@@ -90,14 +90,15 @@ class DataHash:
                 os.unlink(self._filename)
             except BaseException:
                 pass
-            else:
-                _datafile_mutex.lock()
-                try:
-                    self._filename = None
-                    del _datafiles[self._hash]
-                    self._hash = None
-                finally:
-                    _datafile_mutex.unlock()
+            _datafile_mutex.lock()
+            try:
+                del _datafiles[self._hash]
+            except KeyError:
+                pass
+            finally:
+                self._filename = None
+                self._hash = None
+                _datafile_mutex.unlock()
 
     @property
     def data(self):
@@ -355,8 +356,8 @@ class CoverArtImage:
         """
         try:
             return self.datahash.data
-        except (OSError, IOError) as e:
-            raise CoverArtImageIOError(e)
+        except (OSError, IOError, FileNotFoundError) as e:
+            raise CoverArtImageIOError(e) from None
 
     @property
     def tempfile_filename(self):
