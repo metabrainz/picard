@@ -17,8 +17,8 @@
 # Copyright (C) 2016 Rahul Raturi
 # Copyright (C) 2016-2017 Ville Skyttä
 # Copyright (C) 2016-2018 Sambhav Kothari
+# Copyright (C) 2018 Abhinav Ohri
 # Copyright (C) 2018 Kartik Ohri
-# Copyright (C) 2018 abhi-ohri
 # Copyright (C) 2018 virusMac
 # Copyright (C) 2019 Kurt Mosiejczuk
 #

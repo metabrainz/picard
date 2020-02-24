@@ -32,6 +32,7 @@ import sys
 
 
 ALIASES = {
+    'abhi-ohri': 'Abhinav Ohri',
     'Antonio Larrosa <alarrosa@suse.com>': 'Antonio Larrosa',
     'Lukas Lalinsky <lalinsky@gmail.com>': 'Lukáš Lalinský',
     'Philipp Wolfer <ph.wolfer@gmail.com>': 'Philipp Wolfer',
