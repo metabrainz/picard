@@ -144,6 +144,16 @@ class CoverArtImageTest(PicardTestCase):
         with self.assertRaises(CoverArtImageIOError):
             data = image_.data
 
+    def test_coverartimage_image_as_string(self):
+        image = CoverArtImage(data=None)
+        self.assertEqual(image.imageinfo_as_string(), '')
+        image = create_image(b'a')
+        self.assertEqual(
+            image.imageinfo_as_string(),
+            'w=100 h=100 mime=image/png ext=.png datalen=25 file=' +
+            image.tempfile_filename
+        )
+
 class LocalFileCoverArtImageTest(PicardTestCase):
     def test_set_file_url(self):
         path = '/some/path/image.jpeg'
