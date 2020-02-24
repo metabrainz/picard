@@ -31,6 +31,8 @@ jobs:
       MACOSX_DEPLOYMENT_TARGET: 10.12
     steps:
     - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0  # Fetch entire history, needed for setting the build number
     - name: Cache libdiscid
       uses: actions/cache@v1
       with:
@@ -82,6 +84,8 @@ jobs:
       fail-fast: false
     steps:
     - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0  # Fetch entire history, needed for setting the build number
     - name: Set up Python 3.7
       uses: actions/setup-python@v1
       with:
