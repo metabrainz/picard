@@ -154,6 +154,10 @@ class CoverArtImageTest(PicardTestCase):
             image.tempfile_filename
         )
 
+    def test_coverartimage_url_with_query(self):
+        image = CoverArtImage(url='http://example.com/image.jpg?size=1024')
+        self.assertEqual(image.path, '/image.jpg?size=1024')
+
 class LocalFileCoverArtImageTest(PicardTestCase):
     def test_set_file_url(self):
         path = '/some/path/image.jpeg'
