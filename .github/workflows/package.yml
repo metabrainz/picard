@@ -71,7 +71,6 @@ jobs:
         appledev_p12_password: ${{ secrets.CODESIGN_MACOS_P12_PASSWORD }}
     - name: Archive production artifacts
       uses: actions/upload-artifact@v1
-      if: always()
       with:
         name: macos-app
         path: artifacts/
