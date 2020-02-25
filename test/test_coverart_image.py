@@ -236,6 +236,22 @@ class CoverArtImageTest(PicardTestCase):
         #image.save(tmpdir, metadata, counters)
         #self.assertEqual(len(listdir()), 1)
 
+    def test_normalized_types(self):
+        image = create_image(b'a', types=["front", 'back'], support_types=True, support_multi_types=True)
+        self.assertEqual(image.normalized_types(), ['back', 'front'])
+
+        image = create_image(b'a')
+        self.assertEqual(image.normalized_types(), ['front'])
+
+        image.is_front = False
+        self.assertEqual(image.normalized_types(), ['-'])
+
+    def test_types_as_string(self):
+        image = create_image(b'a', types=["front", 'back'], support_types=True, support_multi_types=True)
+        self.assertEqual(image.types_as_string(translate=False, separator=';'),
+                         'back;front')
+        # FIXME: translate=True
+
 
 class LocalFileCoverArtImageTest(PicardTestCase):
     def test_set_file_url(self):
