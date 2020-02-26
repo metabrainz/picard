@@ -290,6 +290,8 @@ class ScriptParserTest(PicardTestCase):
         self.assertScriptResultEquals("$num(123,2)", "123")
         self.assertScriptResultEquals("$num(123,a)", "")
         self.assertScriptResultEquals("$num(a,2)", "00")
+        self.assertScriptResultEquals("$num(123,-1)", "123")
+        self.assertScriptResultEquals("$num(123,35)", "00000000000000000123")
 
     def test_cmd_or(self):
         self.assertScriptResultEquals("$or(,)", "")
