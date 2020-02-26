@@ -81,7 +81,7 @@ def weights_from_release_type_scores(parts, release, release_type_scores,
             type_score = type_scores.get(release_type, other_score)
             if type_score == 0:
                 skip_it = True
-            score += type_scores.get(release_type, other_score)
+            score += type_score
         score /= len(types_found)
 
     if skip_it:
