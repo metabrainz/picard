@@ -342,6 +342,7 @@ class ScriptParserTest(PicardTestCase):
         self.assertScriptResultEquals("$mod(10,6,3)", "1")
         self.assertScriptResultEquals("$mod(a,3)", "")
         self.assertScriptResultEquals("$mod(10,a)", "")
+        self.assertScriptResultEquals("$mod(10,0)", "")
 
     def test_cmd_mul(self):
         self.assertScriptResultEquals("$mul(9,3)", "27")

@@ -687,7 +687,7 @@ def func_mod(parser, x, y, *args):
     """
     try:
         return _compute_int(operator.mod, x, y, *args)
-    except ValueError:
+    except (ValueError, ZeroDivisionError):
         return ""
 
 
