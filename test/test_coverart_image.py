@@ -196,45 +196,157 @@ class CoverArtImageTest(PicardTestCase):
             "support_multi_types=False, is_front=True, comment='comment')"
         )
 
-    def test_save(self):
+    def _save_images(self, cases):
+        config.setting.update(cases['options'])
+        expected = cases['expected']
+        types = cases.get('types', None)
         metadata = Metadata()
-        image = create_image(b'x', types=['back'], support_types=True,
-                             support_multi_types=True)
+        if types is None:
+            image1 = create_image(b'x')
+            image2 = create_image(b'y')
+        else:
+            image1 = create_image(b'tx', types=types['image1'],
+                                  support_types=True,
+                                  support_multi_types=True)
+            image2 = create_image(b'ty', types=types['image2'],
+                                  support_types=True,
+                                  support_multi_types=True)
         tmpdir = self.mktmpdir()
         def listdir():
-            return os.listdir(tmpdir)
+            return sorted(os.listdir(tmpdir))
         counters = defaultdict(lambda: 0)
 
-        image.can_be_saved_to_disk = False
-        image.save(tmpdir, metadata, counters)
-        self.assertEqual(listdir(), [])
+        image1.can_be_saved_to_disk = False
+        image2.can_be_saved_to_disk = False
+        image1.save(tmpdir, metadata, counters)
+        image2.save(tmpdir, metadata, counters)
+        self.assertEqual(listdir(), expected[1])
 
-        image.can_be_saved_to_disk = True
-        image.save(tmpdir, metadata, counters)
-        self.assertIn('cover.png', listdir())
+        image1.can_be_saved_to_disk = True
+        image1.save(tmpdir, metadata, counters)
+        self.assertEqual(listdir(), expected[2])
 
-        image.save(tmpdir, metadata, counters)
-        self.assertIn('cover (1).png', listdir())
+        image2.can_be_saved_to_disk = True
+        image2.save(tmpdir, metadata, counters)
+        self.assertEqual(listdir(), expected[3])
 
-        config.setting['caa_image_type_as_filename'] = False
-        image.save(tmpdir, metadata, counters)
-        self.assertIn('cover (2).png', listdir())
+    def test_save_notype_1(self):
+        cases = {
+            'options': {
+                'caa_image_type_as_filename': False,
+                'cover_image_filename': 'cover',
+                'save_images_overwrite': False,
+            },
+            'expected': {
+                1: [],
+                2: ['cover.png'],
+                3: ['cover (1).png', 'cover.png']
+            },
+        }
+        self._save_images(cases)
 
-        image.is_front = False
-        image.can_be_saved_to_metadata = True
-        config.setting['caa_image_type_as_filename'] = True
-        image.save(tmpdir, metadata, counters)
-        self.assertIn('back.png', listdir())
+    def test_save_notype_2(self):
+        cases = {
+            'options': {
+                'caa_image_type_as_filename': False,
+                'cover_image_filename': 'folder',
+                'save_images_overwrite': False,
+            },
+            'expected': {
+                1: [],
+                2: ['folder.png'],
+                3: ['folder (1).png', 'folder.png'],
+            },
+        }
+        self._save_images(cases)
 
-        tmpdir = self.mktmpdir()
-        counters = defaultdict(lambda: 0)
-        config.setting['save_images_overwrite'] = True
-        image.save(tmpdir, metadata, counters)
-        self.assertIn('back.png', listdir())
+    def test_save_notype_3(self):
+        cases = {
+            'options': {
+                'caa_image_type_as_filename': True,
+                'cover_image_filename': 'folder',
+                'save_images_overwrite': False,
+            },
+            'expected': {
+                1: [],
+                2: ['folder.png'],
+                3: ['folder (1).png', 'folder.png'],
+            },
+        }
+        self._save_images(cases)
 
-        # FIXME
-        #image.save(tmpdir, metadata, counters)
-        #self.assertEqual(len(listdir()), 1)
+# FIXME: overwrite doesn't work
+#    def test_save_notype_4(self):
+#        cases = {
+#            'options': {
+#                'caa_image_type_as_filename': False,
+#                'cover_image_filename': 'folder',
+#                'save_images_overwrite': True,
+#            },
+#            'expected': {
+#                1: [],
+#                2: ['folder.png'],
+#                3: ['folder.png'],
+#            },
+#        }
+#        self._save_images(cases)
+
+    def test_save_types_1(self):
+        cases = {
+            'options': {
+                'caa_image_type_as_filename': False,
+                'cover_image_filename': 'cover',
+                'save_images_overwrite': False,
+            },
+            'expected': {
+                1: [],
+                2: ['cover.png'],
+                3: ['cover (1).png', 'cover.png']
+            },
+            'types': {
+                'image1': ['front'],
+                'image2': ['back'],
+            }
+        }
+        self._save_images(cases)
+
+    def test_save_types_2(self):
+        cases = {
+            'options': {
+                'caa_image_type_as_filename': True,
+                'cover_image_filename': 'cover',
+                'save_images_overwrite': False,
+            },
+            'expected': {
+                1: [],
+                2: ['cover.png'],
+                3: ['back.png', 'cover.png']
+            },
+            'types': {
+                'image1': ['front'],
+                'image2': ['back'],
+            }
+        }
+        self._save_images(cases)
+
+    def test_save_types_3(self):
+        cases = {
+            'options': {
+                'caa_image_type_as_filename': True,
+                'cover_image_filename': 'cover',
+                'save_images_overwrite': False,
+            },
+            'expected': {
+                1: [],
+                2: ['cover.png'],
+                3: ['cover (1)', 'cover.png']  # FIXME: is this what we expect?
+            },
+            'types': {
+                'image1': ['front'],
+                'image2': ['front'],
+            }
+        }
+        self._save_images(cases)
 
     def test_normalized_types(self):
         image = create_image(b'a', types=["front", 'back'], support_types=True, support_multi_types=True)
