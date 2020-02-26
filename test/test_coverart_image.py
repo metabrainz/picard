@@ -200,35 +200,52 @@ class CoverArtImageTest(PicardTestCase):
         config.setting.update(cases['options'])
         expected = cases['expected']
         types = cases.get('types', None)
+        is_front = cases.get('is_front', None)
+
         metadata = Metadata()
         if types is None:
-            image1 = create_image(b'x')
-            image2 = create_image(b'y')
+            image1 = create_image(b'1')
+            image2 = create_image(b'2')
         else:
-            image1 = create_image(b'tx', types=types['image1'],
+            image1 = create_image(b'1', types=types['image1'],
                                   support_types=True,
                                   support_multi_types=True)
-            image2 = create_image(b'ty', types=types['image2'],
+            image2 = create_image(b'2', types=types['image2'],
                                   support_types=True,
                                   support_multi_types=True)
+        image1.can_be_saved_to_metadata = True
+        image2.can_be_saved_to_metadata = True
+        if is_front:
+            image1.is_front = is_front.get('image1', False)
+            image2.is_front = is_front.get('image2', False)
+
         tmpdir = self.mktmpdir()
-        def listdir():
-            return sorted(os.listdir(tmpdir))
+
+        def listdir(tmpdir):
+            result = dict()
+            for name in sorted(os.listdir(tmpdir)):
+                path = os.path.join(tmpdir, name)
+                # read image file content
+                with open(path, 'rb') as f:
+                    # last byte is a marker matching image number
+                    result[name] = chr(f.read()[-1])
+            return result
+
         counters = defaultdict(lambda: 0)
 
         image1.can_be_saved_to_disk = False
         image2.can_be_saved_to_disk = False
         image1.save(tmpdir, metadata, counters)
         image2.save(tmpdir, metadata, counters)
-        self.assertEqual(listdir(), expected[1])
+        self.assertEqual(listdir(tmpdir), expected[1])
 
         image1.can_be_saved_to_disk = True
         image1.save(tmpdir, metadata, counters)
-        self.assertEqual(listdir(), expected[2])
+        self.assertEqual(listdir(tmpdir), expected[2])
 
         image2.can_be_saved_to_disk = True
         image2.save(tmpdir, metadata, counters)
-        self.assertEqual(listdir(), expected[3])
+        self.assertEqual(listdir(tmpdir), expected[3])
 
     def test_save_notype_1(self):
         cases = {
@@ -238,9 +255,9 @@ class CoverArtImageTest(PicardTestCase):
                 'save_images_overwrite': False,
             },
             'expected': {
-                1: [],
-                2: ['cover.png'],
-                3: ['cover (1).png', 'cover.png']
+                1: {},
+                2: {'cover.png': '1'},
+                3: {'cover (1).png': '2', 'cover.png': '1'},
             },
         }
         self._save_images(cases)
@@ -253,9 +270,9 @@ class CoverArtImageTest(PicardTestCase):
                 'save_images_overwrite': False,
             },
             'expected': {
-                1: [],
-                2: ['folder.png'],
-                3: ['folder (1).png', 'folder.png'],
+                1: {},
+                2: {'folder.png': '1'},
+                3: {'folder (1).png': '2', 'folder.png': '1'},
             },
         }
         self._save_images(cases)
@@ -268,9 +285,9 @@ class CoverArtImageTest(PicardTestCase):
                 'save_images_overwrite': False,
             },
             'expected': {
-                1: [],
-                2: ['folder.png'],
-                3: ['folder (1).png', 'folder.png'],
+                1: {},
+                2: {'folder.png': '1'},
+                3: {'folder (1).png': '2', 'folder.png': '1'},
             },
         }
         self._save_images(cases)
@@ -284,9 +301,9 @@ class CoverArtImageTest(PicardTestCase):
 #                'save_images_overwrite': True,
 #            },
 #            'expected': {
-#                1: [],
-#                2: ['folder.png'],
-#                3: ['folder.png'],
+#                1: {},
+#                2: {'folder.png': '1'},
+#                3: {'folder.png': '2'},
 #            },
 #        }
 #        self._save_images(cases)
@@ -299,9 +316,9 @@ class CoverArtImageTest(PicardTestCase):
                 'save_images_overwrite': False,
             },
             'expected': {
-                1: [],
-                2: ['cover.png'],
-                3: ['cover (1).png', 'cover.png']
+                1: {},
+                2: {'cover.png': '1'},
+                3: {'cover (1).png': '2', 'cover.png': '1'},
             },
             'types': {
                 'image1': ['front'],
@@ -318,9 +335,9 @@ class CoverArtImageTest(PicardTestCase):
                 'save_images_overwrite': False,
             },
             'expected': {
-                1: [],
-                2: ['cover.png'],
-                3: ['back.png', 'cover.png']
+                1: {},
+                2: {'cover.png': '1'},
+                3: {'back.png': '2', 'cover.png': '1'},
             },
             'types': {
                 'image1': ['front'],
@@ -337,14 +354,37 @@ class CoverArtImageTest(PicardTestCase):
                 'save_images_overwrite': False,
             },
             'expected': {
-                1: [],
-                2: ['cover.png'],
-                3: ['cover (1)', 'cover.png']  # FIXME: is this what we expect?
+                1: {},
+                2: {'cover.png': '1'},
+                3: {'cover (1).png': '2', 'cover.png': '1'}
             },
             'types': {
                 'image1': ['front'],
                 'image2': ['front'],
             }
+        }
+        self._save_images(cases)
+
+    def test_save_types_4(self):
+        cases = {
+            'options': {
+                'caa_image_type_as_filename': True,
+                'cover_image_filename': 'cover',
+                'save_images_overwrite': False,
+            },
+            'expected': {
+                1: {},
+                2: {'front.png': '1'},
+                3: {'cover.png': '2', 'front.png': '1'},  # FIXME: is this what we expect?
+            },
+            'types': {
+                'image1': ['front'],
+                'image2': ['back'],
+            },
+            'is_front': {
+                'image1': False,
+                'image2': True,
+            },
         }
         self._save_images(cases)
 
