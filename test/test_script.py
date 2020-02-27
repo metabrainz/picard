@@ -456,6 +456,8 @@ class ScriptParserTest(PicardTestCase):
         self.assertScriptResultEquals("$firstwords(Abc Def Ghi,0)", "")
         self.assertScriptResultEquals("$firstwords(Abc Def Ghi,NaN)", "")
         self.assertScriptResultEquals("$firstwords(Abc Def Ghi,)", "")
+        self.assertScriptResultEquals("$firstwords(Abc Def Ghi,-2)", "Abc Def")
+        self.assertScriptResultEquals("$firstwords(Abc Def Ghi,-50)", "")
 
     def test_cmd_startswith(self):
         self.assertScriptResultEquals("$startswith(abc,a)", "1")

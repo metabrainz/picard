@@ -863,9 +863,12 @@ def func_firstwords(parser, text, length):
     if len(text) <= length:
         return text
     else:
-        if text[length] == ' ':
-            return text[:length]
-        return text[:length].rsplit(' ', 1)[0]
+        try:
+            if text[length] == ' ':
+                return text[:length]
+            return text[:length].rsplit(' ', 1)[0]
+        except IndexError:
+            return ''
 
 
 @script_function()
