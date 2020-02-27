@@ -225,10 +225,15 @@ class CoverArtImageTest(PicardTestCase):
             result = dict()
             for name in sorted(os.listdir(tmpdir)):
                 path = os.path.join(tmpdir, name)
-                # read image file content
-                with open(path, 'rb') as f:
-                    # last byte is a marker matching image number
-                    result[name] = chr(f.read()[-1])
+                if os.path.isdir(path):
+                    subresult = listdir(path)
+                    for subname in subresult:
+                        result[name + '/' + subname] = subresult[subname]
+                else:
+                    # read image file content
+                    with open(path, 'rb') as f:
+                        # last byte is a marker matching image number
+                        result[name] = chr(f.read()[-1])
             return result
 
         counters = defaultdict(lambda: 0)
@@ -334,6 +339,21 @@ class CoverArtImageTest(PicardTestCase):
                 1: {},
                 2: {'cover.png': '1'},
                 3: {'cover (1).png': '2', 'cover.png': '1'},
+            },
+        }
+        self._save_images(cases)
+
+    def test_save_notype_7(self):
+        cases = {
+            'options': {
+                'caa_image_type_as_filename': True,
+                'cover_image_filename': 'subdir/%foo%',
+                'save_images_overwrite': False,
+            },
+            'expected': {
+                1: {},
+                2: {'subdir/bar.png': '1'},
+                3: {'subdir/bar (1).png': '2', 'subdir/bar.png': '1'},
             },
         }
         self._save_images(cases)
