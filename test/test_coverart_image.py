@@ -248,9 +248,8 @@ class CoverArtImageTest(PicardTestCase):
             prerun(tmpdir, images, metadata, counters)
 
         if tests is None:
-            # default tests
-            def tests(tmpdir, images, metadata, counters, expected):
-                keys = list(images)
+            def default_tests(tmpdir, images, metadata, counters, expected):
+                keys = sorted(images)
                 for key in keys:
                     images[key].can_be_saved_to_disk = False
                     images[key].save(tmpdir, metadata, counters)
@@ -263,6 +262,8 @@ class CoverArtImageTest(PicardTestCase):
                 images[keys[1]].can_be_saved_to_disk = True
                 images[keys[1]].save(tmpdir, metadata, counters)
                 self.assertEqual(listdir(tmpdir), expected[3])
+
+            tests = default_tests
 
         tests(tmpdir, images, metadata, counters, expected)
 
@@ -386,6 +387,33 @@ class CoverArtImageTest(PicardTestCase):
             },
         }
         self._save_images(cases)
+
+    def test_save_notype_9(self):
+        cases = {
+            'options': {
+                'caa_image_type_as_filename': True,
+                'cover_image_filename': 'subdir/folder',
+                'save_images_overwrite': False,
+            },
+            'expected': {
+                1: {},
+                2: {'subdir/folder.png': '1'},
+                3: {'subdir/folder (1).png': '2', 'subdir/folder.png': '1'},
+            },
+        }
+
+        def prerun(tmpdir, images, metadata, counters):
+            # we create a file with same name of the sub-directory to be created
+            with open(tmpdir + '/subdir', 'wb') as f:
+                f.write(IGNORE_MARKER)
+
+        def tests(tmpdir, images, metadata, counters, expected):
+            keys = sorted(images)
+            images[keys[0]].can_be_saved_to_disk = True
+            with self.assertRaises(CoverArtImageIOError):
+                images[keys[0]].save(tmpdir, metadata, counters)
+
+        self._save_images(cases, prerun=prerun, tests=tests)
 
     def test_save_types_1(self):
         cases = {
