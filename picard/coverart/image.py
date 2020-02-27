@@ -336,8 +336,10 @@ class CoverArtImage:
             if not os.path.exists(target):
                 _mkdir_and_copy(self.tempfile_filename, target)
                 #print("copy (do not exist)")
-            elif filecmp.cmp(self.tempfile_filename, target):
-                _mkdir_and_copy(self.tempfile_filename, target)
+            else:
+                files_differ = not filecmp.cmp(self.tempfile_filename, target)
+                if files_differ:
+                    _mkdir_and_copy(self.tempfile_filename, target)
                 #print("copy (differs)")
 
         target = clean_path(filename, ext)
