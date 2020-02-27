@@ -805,6 +805,8 @@ def func_len(parser, text=""):
 
 @script_function(eval_args=False)
 def func_lenmulti(parser, multi, separator=MULTI_VALUED_JOINER):
+    if not multi:
+        return "0"
     return str(len(MultiValue(parser, multi, separator)))
 
 

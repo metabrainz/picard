@@ -732,6 +732,17 @@ class ScriptParserTest(PicardTestCase):
         # Test no separator
         self.assertScriptResultEquals("$lenmulti(%foo%,)", "1", context)
         self.assertScriptResultEquals("$lenmulti(%bar%,)", "1", context)
+        # Test blank name
+        context["baz"] = ""
+        self.assertScriptResultEquals("$lenmulti(%baz%)", "0", context)
+        self.assertScriptResultEquals("$lenmulti(%baz%,:)", "1", context)   # Bug in multi-value evaluation?
+        # Test empty multi-value
+        context["baz"] = []
+        self.assertScriptResultEquals("$lenmulti(%baz%)", "0", context)
+        self.assertScriptResultEquals("$lenmulti(%baz%,:)", "1", context)   # Bug in multi-value evaluation?
+        # Test missing name
+        self.assertScriptResultEquals("$lenmulti(,)", "0", context)
+        self.assertScriptResultEquals("$lenmulti(,:)", "0", context)
 
     def test_cmd_performer(self):
         context = Metadata()
