@@ -732,6 +732,17 @@ class ScriptParserTest(PicardTestCase):
         # Test no separator
         self.assertScriptResultEquals("$lenmulti(%foo%,)", "1", context)
         self.assertScriptResultEquals("$lenmulti(%bar%,)", "1", context)
+        # Test blank name
+        context["baz"] = ""
+        self.assertScriptResultEquals("$lenmulti(%baz%)", "0", context)
+        self.assertScriptResultEquals("$lenmulti(%baz%,:)", "0", context)
+        # Test empty multi-value
+        context["baz"] = []
+        self.assertScriptResultEquals("$lenmulti(%baz%)", "0", context)
+        self.assertScriptResultEquals("$lenmulti(%baz%,:)", "0", context)
+        # Test missing name
+        self.assertScriptResultEquals("$lenmulti(,)", "0", context)
+        self.assertScriptResultEquals("$lenmulti(,:)", "0", context)
 
     def test_cmd_performer(self):
         context = Metadata()
@@ -979,7 +990,7 @@ class ScriptParserTest(PicardTestCase):
         self.assertScriptResultEquals("$foreach(First:A; Second:B; Third:C,$set(output,%output% %_loop_count%=%_loop_value%))%output%", loop_output, context)
         # Tests with missing inputs
         context["output"] = "Output:"
-        self.assertScriptResultEquals("$foreach(,$set(output,%output% %_loop_count%=%_loop_value%))%output%", "Output: 1=", context)
+        self.assertScriptResultEquals("$foreach(,$set(output,%output% %_loop_count%=%_loop_value%))%output%", "Output:", context)
         context["output"] = "Output:"
         self.assertScriptResultEquals("$foreach(First:A; Second:B; Third:C,)%output%", "Output:", context)
         # Tests with separator override
@@ -1039,7 +1050,7 @@ class ScriptParserTest(PicardTestCase):
         # Tests with static inputs
         self.assertScriptResultEquals("$map(First:A; Second:B; Third:C,$upper(%_loop_count%=%_loop_value%))", loop_output, context)
         # Tests with missing inputs
-        self.assertScriptResultEquals("$map(,$upper(%_loop_count%=%_loop_value%))", "1=", context)
+        self.assertScriptResultEquals("$map(,$upper(%_loop_count%=%_loop_value%))", "", context)
         self.assertScriptResultEquals("$map(First:A; Second:B; Third:C,)", "; ; ", context)
         # Tests with separator override
         self.assertScriptResultEquals("$map(First:A; Second:B; Third:C,$upper(%_loop_count%=%_loop_value%),:)", alternate_output, context)
@@ -1210,6 +1221,11 @@ class ScriptParserTest(PicardTestCase):
         self.assertIsInstance(sep, ScriptExpression)
         mv = MultiValue(self.parser, expr, sep)
         self.assertEqual(mv._multi, ['x:yz; d:ef'])
+
+        expr = self.parser.parse('')
+        self.assertIsInstance(expr, ScriptExpression)
+        mv = MultiValue(self.parser, expr, MULTI_VALUED_JOINER)
+        self.assertEqual(mv._multi, [])
 
     def test_cmd_sortmulti(self):
         context = Metadata()
