@@ -39,6 +39,9 @@ from picard.coverart.image import (
 from picard.metadata import Metadata
 
 
+IGNORE_MARKER = b"\n"
+
+
 def create_image(extra_data, types=None, support_types=False,
                  support_multi_types=False, comment=None):
     return CoverArtImage(
@@ -232,7 +235,11 @@ class CoverArtImageTest(PicardTestCase):
                     # read image file content
                     with open(path, 'rb') as f:
                         # last byte is a marker matching image number
-                        result[name] = chr(f.read()[-1])
+                        marker = f.read()[-1]
+                        if marker >= ord('0'):
+                            # we intentionnaly ignore files with markers like
+                            # "\n" to ease tests
+                            result[name] = chr(marker)
             return result
 
         counters = defaultdict(lambda: 0)
