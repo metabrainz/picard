@@ -249,18 +249,17 @@ class CoverArtImageTest(PicardTestCase):
 
         if tests is None:
             def default_tests(tmpdir, images, metadata, counters, expected):
-                keys = sorted(images)
-                for key in keys:
+                for key in sorted(images):
                     images[key].can_be_saved_to_disk = False
                     images[key].save(tmpdir, metadata, counters)
                 self.assertEqual(listdir(tmpdir), expected[1])
 
-                images[keys[0]].can_be_saved_to_disk = True
-                images[keys[0]].save(tmpdir, metadata, counters)
+                images['1'].can_be_saved_to_disk = True
+                images['1'].save(tmpdir, metadata, counters)
                 self.assertEqual(listdir(tmpdir), expected[2])
 
-                images[keys[1]].can_be_saved_to_disk = True
-                images[keys[1]].save(tmpdir, metadata, counters)
+                images['2'].can_be_saved_to_disk = True
+                images['2'].save(tmpdir, metadata, counters)
                 self.assertEqual(listdir(tmpdir), expected[3])
 
             tests = default_tests
