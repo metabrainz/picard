@@ -41,7 +41,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2020-02-24 09:52+0100\n"
-"PO-Revision-Date: 2020-02-24 14:07+0000\n"
+"PO-Revision-Date: 2020-02-27 19:52+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: German (http://www.transifex.com/musicbrainz/musicbrainz/language/de/)\n"
 "MIME-Version: 1.0\n"
@@ -2393,11 +2393,11 @@ msgstr "Ursprüngliches Cover-Art behalten"
 
 #: picard/ui/coverartbox.py:557
 msgid "Replace front cover art on drop"
-msgstr "Vorderes Coverbild durch Ablegen ersetzen"
+msgstr "Titelcover durch Ablegen ersetzen"
 
 #: picard/ui/coverartbox.py:565
 msgid "Append front cover art on drop"
-msgstr "Vorderes Coverbild durch Ablegen hinzufügen"
+msgstr "Titelcover durch Ablegen hinzufügen"
 
 #: picard/ui/edittagdialog.py:67
 msgid "YYYY-MM-DD"
@@ -3500,7 +3500,7 @@ msgstr "Cover-Bilder in Tags einbetten"
 
 #: picard/ui/ui_options_cover.py:92
 msgid "Only embed a front image"
-msgstr "Nur Vorderbild einbetten"
+msgstr "Nur Titelcover einbetten"
 
 #: picard/ui/ui_options_cover.py:93
 msgid "Save cover images as separate files"
@@ -4084,7 +4084,7 @@ msgstr "Nur Bilder mit folgender Größe verwenden:"
 
 #: picard/ui/ui_provider_options_caa.py:83
 msgid "Save only one front image as separate file"
-msgstr "Nur ein einziges Frontbild als separate Datei speichern"
+msgstr "Nur ein einziges Titelcover als separate Datei speichern"
 
 #: picard/ui/ui_provider_options_caa.py:84
 msgid "Download only approved images"
