@@ -202,22 +202,21 @@ class CoverArtImageTest(PicardTestCase):
         types = cases.get('types', None)
         is_front = cases.get('is_front', None)
 
+        keys = ['1', '2']
         metadata = Metadata({'foo': 'bar', 'nada': ''})
+        images = dict()
         if types is None:
-            image1 = create_image(b'1')
-            image2 = create_image(b'2')
+            for key in keys:
+                images[key] = create_image(key.encode('ascii'))
         else:
-            image1 = create_image(b'1', types=types['image1'],
+            for key in keys:
+                images[key] = create_image(key.encode('ascii'), types=types[key],
                                   support_types=True,
                                   support_multi_types=True)
-            image2 = create_image(b'2', types=types['image2'],
-                                  support_types=True,
-                                  support_multi_types=True)
-        image1.can_be_saved_to_metadata = True
-        image2.can_be_saved_to_metadata = True
-        if is_front:
-            image1.is_front = is_front.get('image1', False)
-            image2.is_front = is_front.get('image2', False)
+        for key in keys:
+            images[key].can_be_saved_to_metadata = True
+            if is_front:
+                images[key].is_front = is_front.get(key, False)
 
         tmpdir = self.mktmpdir()
 
@@ -238,18 +237,18 @@ class CoverArtImageTest(PicardTestCase):
 
         counters = defaultdict(lambda: 0)
 
-        image1.can_be_saved_to_disk = False
-        image2.can_be_saved_to_disk = False
-        image1.save(tmpdir, metadata, counters)
-        image2.save(tmpdir, metadata, counters)
+        for key in keys:
+            images[key].can_be_saved_to_disk = False
+            images[key].save(tmpdir, metadata, counters)
         self.assertEqual(listdir(tmpdir), expected[1])
 
-        image1.can_be_saved_to_disk = True
-        image1.save(tmpdir, metadata, counters)
+
+        images[keys[0]].can_be_saved_to_disk = True
+        images[keys[0]].save(tmpdir, metadata, counters)
         self.assertEqual(listdir(tmpdir), expected[2])
 
-        image2.can_be_saved_to_disk = True
-        image2.save(tmpdir, metadata, counters)
+        images[keys[1]].can_be_saved_to_disk = True
+        images[keys[1]].save(tmpdir, metadata, counters)
         self.assertEqual(listdir(tmpdir), expected[3])
 
     def test_save_notype_1(self):
@@ -386,8 +385,8 @@ class CoverArtImageTest(PicardTestCase):
                 3: {'cover (1).png': '2', 'cover.png': '1'},
             },
             'types': {
-                'image1': ['front'],
-                'image2': ['back'],
+                '1': ['front'],
+                '2': ['back'],
             }
         }
         self._save_images(cases)
@@ -405,8 +404,8 @@ class CoverArtImageTest(PicardTestCase):
                 3: {'back.png': '2', 'cover.png': '1'},
             },
             'types': {
-                'image1': ['front'],
-                'image2': ['back'],
+                '1': ['front'],
+                '2': ['back'],
             }
         }
         self._save_images(cases)
@@ -424,8 +423,8 @@ class CoverArtImageTest(PicardTestCase):
                 3: {'cover (1).png': '2', 'cover.png': '1'}
             },
             'types': {
-                'image1': ['front'],
-                'image2': ['front'],
+                '1': ['front'],
+                '2': ['front'],
             }
         }
         self._save_images(cases)
@@ -443,12 +442,12 @@ class CoverArtImageTest(PicardTestCase):
                 3: {'cover.png': '2', 'front.png': '1'},  # FIXME: is this what we expect?
             },
             'types': {
-                'image1': ['front'],
-                'image2': ['back'],
+                '1': ['front'],
+                '2': ['back'],
             },
             'is_front': {
-                'image1': False,
-                'image2': True,
+                '1': False,
+                '2': True,
             },
         }
         self._save_images(cases)
