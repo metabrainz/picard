@@ -331,7 +331,9 @@ class MultiValue(MutableSequence):
             # Fall-back to converting to a string and splitting if haystack is an expression
             # or user has overridden the separator character.
             evaluated_multi = multi.eval(self.parser)
-            if self.separator:
+            if not evaluated_multi:
+                self._multi = []
+            elif self.separator:
                 self._multi = evaluated_multi.split(self.separator)
             else:
                 self._multi = [evaluated_multi]
