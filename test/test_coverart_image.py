@@ -196,7 +196,7 @@ class CoverArtImageTest(PicardTestCase):
             "support_multi_types=False, is_front=True, comment='comment')"
         )
 
-    def _save_images(self, cases):
+    def _save_images(self, cases, prerun=None, tests=None):
         config.setting.update(cases['options'])
         expected = cases['expected']
         types = cases.get('types', None)
@@ -237,19 +237,27 @@ class CoverArtImageTest(PicardTestCase):
 
         counters = defaultdict(lambda: 0)
 
-        for key in keys:
-            images[key].can_be_saved_to_disk = False
-            images[key].save(tmpdir, metadata, counters)
-        self.assertEqual(listdir(tmpdir), expected[1])
+        if prerun is not None:
+            prerun(tmpdir, images, metadata, counters)
 
+        if tests is None:
+            # default tests
+            def tests(tmpdir, images, metadata, counters, expected):
+                keys = list(images)
+                for key in keys:
+                    images[key].can_be_saved_to_disk = False
+                    images[key].save(tmpdir, metadata, counters)
+                self.assertEqual(listdir(tmpdir), expected[1])
 
-        images[keys[0]].can_be_saved_to_disk = True
-        images[keys[0]].save(tmpdir, metadata, counters)
-        self.assertEqual(listdir(tmpdir), expected[2])
+                images[keys[0]].can_be_saved_to_disk = True
+                images[keys[0]].save(tmpdir, metadata, counters)
+                self.assertEqual(listdir(tmpdir), expected[2])
 
-        images[keys[1]].can_be_saved_to_disk = True
-        images[keys[1]].save(tmpdir, metadata, counters)
-        self.assertEqual(listdir(tmpdir), expected[3])
+                images[keys[1]].can_be_saved_to_disk = True
+                images[keys[1]].save(tmpdir, metadata, counters)
+                self.assertEqual(listdir(tmpdir), expected[3])
+
+        tests(tmpdir, images, metadata, counters, expected)
 
     def test_save_notype_1(self):
         cases = {
