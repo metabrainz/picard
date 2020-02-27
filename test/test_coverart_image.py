@@ -358,6 +358,21 @@ class CoverArtImageTest(PicardTestCase):
         }
         self._save_images(cases)
 
+    def test_save_notype_8(self):
+        cases = {
+            'options': {
+                'caa_image_type_as_filename': True,
+                'cover_image_filename': 'subdir/%foo%/%nada%/%foo%/../%foo%',
+                'save_images_overwrite': False,
+            },
+            'expected': {
+                1: {},
+                2: {'subdir/bar/bar.png': '1'},
+                3: {'subdir/bar/bar (1).png': '2', 'subdir/bar/bar.png': '1'},
+            },
+        }
+        self._save_images(cases)
+
     def test_save_types_1(self):
         cases = {
             'options': {

@@ -327,6 +327,7 @@ class CoverArtImage:
                 return
             log.debug("Saving cover image to %r", new_filename)
             try:
+                new_filename = os.path.abspath(os.path.realpath(new_filename))
                 new_dirname = os.path.dirname(new_filename)
                 if not os.path.isdir(new_dirname):
                     os.makedirs(new_dirname)
