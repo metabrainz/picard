@@ -43,7 +43,7 @@ jobs:
       run: |
         ./scripts/package/macos-setup.sh
         echo "::add-path::/Library/Frameworks/Python.framework/Versions/3.7/bin"
-        RELEASE_TAG=$(git describe --match "release-*" --abbrev=0 HEAD)
+        RELEASE_TAG=$(git describe --match "release-*" --abbrev=0 --always HEAD)
         BUILD_NUMBER=$(git rev-list --count $RELEASE_TAG..HEAD)
         echo "::set-env name=BUILD_NUMBER::$BUILD_NUMBER"
         mkdir artifacts
@@ -98,7 +98,7 @@ jobs:
       run: |
         & .\scripts\package\win-setup.ps1 -DiscidVersion $Env:DISCID_VERSION -FpcalVersion $Env:FPCALC_VERSION
         Write-Output "::add-path::C:\Program Files (x86)\Windows Kits\10\bin\10.0.18362.0\x64"
-        $ReleaseTag = $(git describe --match "release-*" --abbrev=0 HEAD)
+        $ReleaseTag = $(git describe --match "release-*" --abbrev=0 --always HEAD)
         $BuildNumber = $(git rev-list --count "$ReleaseTag..HEAD")
         Write-Output "::set-env name=BUILD_NUMBER::$BuildNumber"
         New-Item -Name .\artifacts -ItemType Directory
