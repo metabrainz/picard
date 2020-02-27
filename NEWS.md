@@ -1,3 +1,31 @@
+# Version 2.3.1 - 2020-02-27
+
+## Bug-fix
+- [PICARD-1745](https://tickets.metabrainz.org/browse/PICARD-1745) - Packaged libdiscid is not compatible with macOS 10.12
+- [PICARD-1748](https://tickets.metabrainz.org/browse/PICARD-1748) - Many release events can cause the versions context menu to overflow
+- [PICARD-1750](https://tickets.metabrainz.org/browse/PICARD-1750) - Existing acoustid_fingerprint tags are not considered for AcoustID submission
+- [PICARD-1754](https://tickets.metabrainz.org/browse/PICARD-1754) - DEL always removes release or file from main window
+- [PICARD-1756](https://tickets.metabrainz.org/browse/PICARD-1756) - Plugin update fails to compare plugin versions with double digit versions
+- [PICARD-1757](https://tickets.metabrainz.org/browse/PICARD-1757) - Crash on loading a release if `$div(n,0)` is used in a script
+- [PICARD-1760](https://tickets.metabrainz.org/browse/PICARD-1760) - Prevent duplicates in top tags editor
+- [PICARD-1762](https://tickets.metabrainz.org/browse/PICARD-1762) - Dropping a PDF file on cover art image box doesn't work
+- [PICARD-1765](https://tickets.metabrainz.org/browse/PICARD-1765) - Adding uppercase tags to preserved tags list is not handled correctly
+- [PICARD-1772](https://tickets.metabrainz.org/browse/PICARD-1772) - Unexpected results with `$num` function
+- [PICARD-1773](https://tickets.metabrainz.org/browse/PICARD-1773) - Untrapped error on `$mod` with zero input
+- [PICARD-1774](https://tickets.metabrainz.org/browse/PICARD-1774) - `$lenmulti` with missing name returns "1"
+
+## New Feature
+- [PICARD-1743](https://tickets.metabrainz.org/browse/PICARD-1743) - Add script functions `$sortmulti` and `$reversemulti` to sort and reverse multi-value variables
+- [PICARD-1751](https://tickets.metabrainz.org/browse/PICARD-1751) - Provide a `%_releasecountries%` variable
+
+## Improvement
+- [PICARD-1746](https://tickets.metabrainz.org/browse/PICARD-1746) - Change Generate AcoustID Fingerprints shortcut to Ctrl+Shift+Y / ⌘⇧Y
+- [PICARD-1752](https://tickets.metabrainz.org/browse/PICARD-1752) - Use preferred release countries to select a matching release country if there are multiple
+- [PICARD-1755](https://tickets.metabrainz.org/browse/PICARD-1755) - "Supported Languages" on Microsoft Store shows only English (United States)
+- [PICARD-1759](https://tickets.metabrainz.org/browse/PICARD-1759) - Make editing tags in top tags list more intuitive
+- [PICARD-1771](https://tickets.metabrainz.org/browse/PICARD-1771) - Completely ignore release types set to zero in preferred releases
+
+
 # Version 2.3 - 2020-02-17
 
 ## Bug-fix
