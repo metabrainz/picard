@@ -293,13 +293,11 @@ class CoverArtImage:
             filename = os.path.join(dirname, filename)
         return encode_filename(filename)
 
-    def save(self, dirname, metadata, counters):
+    def save(self, dirname, metadata):
         """Saves this image.
 
         :dirname: The name of the directory that contains the audio file
         :metadata: A metadata object
-        :counters: A dictionary mapping filenames to the amount of how many
-                    images with that filename were already saved in `dirname`.
         """
         if not self.can_be_saved_to_disk:
             return

@@ -473,14 +473,13 @@ class File(QtCore.QObject, Item):
         """Save the cover images to disk."""
         if not metadata.images:
             return
-        counters = defaultdict(lambda: 0)
         images = []
         if config.setting["caa_save_single_front_image"]:
             images = [metadata.images.get_front_image()]
         if not images:
             images = metadata.images
         for image in images:
-            image.save(dirname, metadata, counters)
+            image.save(dirname, metadata)
 
     def _move_additional_files(self, old_filename, new_filename):
         """Move extra files, like images, playlists..."""

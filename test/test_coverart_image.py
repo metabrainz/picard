@@ -242,29 +242,27 @@ class CoverArtImageTest(PicardTestCase):
                             result[name] = chr(marker)
             return result
 
-        counters = defaultdict(lambda: 0)
-
         if prerun is not None:
-            prerun(tmpdir, images, metadata, counters)
+            prerun(tmpdir, images, metadata)
 
         if tests is None:
-            def default_tests(tmpdir, images, metadata, counters, expected):
+            def default_tests(tmpdir, images, metadata, expected):
                 for key in sorted(images):
                     images[key].can_be_saved_to_disk = False
-                    images[key].save(tmpdir, metadata, counters)
+                    images[key].save(tmpdir, metadata)
                 self.assertEqual(listdir(tmpdir), expected[1])
 
                 images['1'].can_be_saved_to_disk = True
-                images['1'].save(tmpdir, metadata, counters)
+                images['1'].save(tmpdir, metadata)
                 self.assertEqual(listdir(tmpdir), expected[2])
 
                 images['2'].can_be_saved_to_disk = True
-                images['2'].save(tmpdir, metadata, counters)
+                images['2'].save(tmpdir, metadata)
                 self.assertEqual(listdir(tmpdir), expected[3])
 
             tests = default_tests
 
-        tests(tmpdir, images, metadata, counters, expected)
+        tests(tmpdir, images, metadata, expected)
 
     def test_save_notype_1(self):
         cases = {
@@ -400,16 +398,16 @@ class CoverArtImageTest(PicardTestCase):
             },
         }
 
-        def prerun(tmpdir, images, metadata, counters):
+        def prerun(tmpdir, images, metadata):
             # we create a file with same name of the sub-directory to be created
             with open(tmpdir + '/subdir', 'wb') as f:
                 f.write(IGNORE_MARKER)
 
-        def tests(tmpdir, images, metadata, counters, expected):
+        def tests(tmpdir, images, metadata, expected):
             keys = sorted(images)
             images[keys[0]].can_be_saved_to_disk = True
             with self.assertRaises(CoverArtImageIOError):
-                images[keys[0]].save(tmpdir, metadata, counters)
+                images[keys[0]].save(tmpdir, metadata)
 
         self._save_images(cases, prerun=prerun, tests=tests)
 
