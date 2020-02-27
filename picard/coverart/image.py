@@ -335,7 +335,15 @@ class CoverArtImage:
                 _mkdir_and_copy(self.tempfile_filename, target)
                 #print("copy (do not exist)")
             else:
-                files_differ = not filecmp.cmp(self.tempfile_filename, target)
+                #import time
+                #start = time.perf_counter()
+                # FIXME
+                filecmp.clear_cache()
+                files_differ = not filecmp.cmp(self.tempfile_filename, target,
+                                               shallow=False)
+                #delta = time.perf_counter() - start
+                #print("Compared %r to %r in %f seconds" %
+                #          (self.tempfile_filename, target, delta))
                 if files_differ:
                     _mkdir_and_copy(self.tempfile_filename, target)
                 #print("copy (differs)")
