@@ -316,8 +316,12 @@ class CoverArtImage:
         overwrite = config.setting["save_images_overwrite"]
         ext = encode_filename(self.extension)
 
-        def clean_path(filename, ext, suffix=b''):
-            return os.path.abspath(os.path.realpath(filename + suffix + ext))
+        def clean_path(filename, ext, suffix=None):
+            path = decode_filename(filename)
+            if suffix is not None:
+                path += suffix
+            path += decode_filename(ext)
+            return os.path.abspath(os.path.realpath(encode_filename(path)))
 
         def _mkdir_and_copy(source, target):
             try:
@@ -344,7 +348,7 @@ class CoverArtImage:
         else:
             num = 1
             while True:
-                suffix = encode_filename(" (%d)" % num)
+                suffix = " (%d)" % num
                 target = clean_path(filename, ext, suffix=suffix)
                 if not os.path.exists(target):
                     break
