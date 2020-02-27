@@ -312,21 +312,20 @@ class CoverArtImageTest(PicardTestCase):
         }
         self._save_images(cases)
 
-# FIXME: overwrite doesn't work
-#    def test_save_notype_4(self):
-#        cases = {
-#            'options': {
-#                'caa_image_type_as_filename': False,
-#                'cover_image_filename': 'folder',
-#                'save_images_overwrite': True,
-#            },
-#            'expected': {
-#                1: {},
-#                2: {'folder.png': '1'},
-#                3: {'folder.png': '2'},
-#            },
-#        }
-#        self._save_images(cases)
+    def test_save_notype_4(self):
+        cases = {
+            'options': {
+                'caa_image_type_as_filename': False,
+                'cover_image_filename': 'folder',
+                'save_images_overwrite': True,
+            },
+            'expected': {
+                1: {},
+                2: {'folder.png': '1'},
+                3: {'folder.png': '2'},
+            },
+        }
+        self._save_images(cases)
 
     def test_save_notype_5(self):
         cases = {

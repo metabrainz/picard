@@ -29,6 +29,7 @@
 
 
 from hashlib import md5
+import filecmp
 import os
 import shutil
 import tempfile
@@ -314,41 +315,42 @@ class CoverArtImage:
 
         overwrite = config.setting["save_images_overwrite"]
         ext = encode_filename(self.extension)
-        image_filename = self._next_filename(filename, counters)
-        while os.path.exists(image_filename + ext) and not overwrite:
-            if not self._is_write_needed(image_filename + ext):
-                break
-            image_filename = self._next_filename(filename, counters)
-        else:
-            new_filename = image_filename + ext
-            # Even if overwrite is enabled we don't need to write the same
-            # image multiple times
-            if not self._is_write_needed(new_filename):
-                return
-            log.debug("Saving cover image to %r", new_filename)
+
+        def clean_path(filename, ext, suffix=b''):
+            return os.path.abspath(os.path.realpath(filename + suffix + ext))
+
+        def _mkdir_and_copy(source, target):
             try:
-                new_filename = os.path.abspath(os.path.realpath(new_filename))
-                new_dirname = os.path.dirname(new_filename)
-                if not os.path.isdir(new_dirname):
-                    os.makedirs(new_dirname)
-                shutil.copyfile(self.tempfile_filename, new_filename)
+                dirname = os.path.dirname(target)
+                if not os.path.isdir(dirname):
+                    os.makedirs(dirname)
+                shutil.copyfile(source, target)
             except (OSError, IOError) as e:
                 raise CoverArtImageIOError(e)
 
-    def _next_filename(self, filename, counters):
-        if counters[filename]:
-            new_filename = "%s (%d)" % (decode_filename(filename), counters[filename])
-        else:
-            new_filename = filename
-        counters[filename] += 1
-        return encode_filename(new_filename)
+        def copy_tmp_to_target(target):
+            if not os.path.exists(target):
+                _mkdir_and_copy(self.tempfile_filename, target)
+                #print("copy (do not exist)")
+            elif filecmp.cmp(self.tempfile_filename, target):
+                _mkdir_and_copy(self.tempfile_filename, target)
+                #print("copy (differs)")
 
-    def _is_write_needed(self, filename):
-        if (os.path.exists(filename)
-                and os.path.getsize(filename) == self.datalength):
-            log.debug("Identical file size, not saving %r", filename)
-            return False
-        return True
+        target = clean_path(filename, ext)
+        if overwrite or not os.path.exists(target):
+            log.debug("Saving cover image to %r (overwrite: %r)", target,
+                      overwrite)
+            copy_tmp_to_target(target)
+        else:
+            num = 1
+            while True:
+                suffix = encode_filename(" (%d)" % num)
+                target = clean_path(filename, ext, suffix=suffix)
+                if not os.path.exists(target):
+                    break
+                num += 1
+            log.debug("Saving cover image to %r", target)
+            copy_tmp_to_target(target)
 
     @property
     def data(self):
