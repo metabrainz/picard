@@ -32,10 +32,7 @@
 import copy
 import datetime
 import os
-from unittest import (
-    skipIf,
-    skipUnless,
-)
+from unittest import skipUnless
 from unittest.mock import MagicMock
 
 from test.picardtestcase import PicardTestCase
@@ -52,6 +49,7 @@ from picard.script import (
     ScriptExpression,
     ScriptFunction,
     ScriptParser,
+    ScriptRuntimeError,
     ScriptSyntaxError,
     ScriptUnknownFunction,
     register_script_function,
@@ -1194,25 +1192,12 @@ class ScriptParserTest(PicardTestCase):
 
         try:
             context = Metadata()
+            # Tests with Windows-specific format
+            self.assertScriptResultEquals(r"$datetime(\%Y-\%#m-\%#d)", "2020-1-2", context)
             # Tests with invalid format
-            self.assertScriptResultEquals(r"$datetime(\%B \%-d\, \%Y)", "", context)
-        except (AssertionError, ValueError, IndexError) as err:
-            raise err
-        finally:
-            # Restore original datetime object
-            datetime.datetime = original_datetime
-
-    @skipIf(IS_WIN, "non-windows test")
-    def test_cmd_datetime_non_windows(self):
-        # Save origninal datetime object and substitute one returning
-        # a fixed now() value for testing.
-        original_datetime = datetime.datetime
-        datetime.datetime = _DateTime
-
-        try:
-            context = Metadata()
-            # Tests with invalid format
-            self.assertScriptResultEquals(r"$datetime(\%Y-\%-m-\%-d)", "2020-1-2", context)
+            areg = r"^Unsupported format code in \$datetime"
+            with self.assertRaisesRegex(ScriptRuntimeError, areg):
+                self.parser.eval(r"$datetime(\%B \%-d\, \%Y)")
         except (AssertionError, ValueError, IndexError) as err:
             raise err
         finally:

@@ -73,6 +73,10 @@ class ScriptUnknownFunction(ScriptError):
     pass
 
 
+class ScriptRuntimeError(ScriptError):
+    pass
+
+
 class ScriptText(str):
 
     def eval(self, state):
@@ -1267,7 +1271,10 @@ def func_datetime(parser, format=None):
     try:
         return datetime.datetime.now(tz=local_tz).strftime(format)
     except ValueError:
-        return ''
+        raise ScriptRuntimeError(
+            "Unsupported format code in $%s at position %i, line %i"
+            % ('datetime', parser._x, parser._y)
+        )
 
 
 @script_function(eval_args=False)
