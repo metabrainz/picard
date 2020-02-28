@@ -37,6 +37,7 @@ from collections.abc import (
     Iterable,
     MutableMapping,
 )
+import re
 
 from PyQt5.QtCore import QObject
 
@@ -225,6 +226,27 @@ class Metadata(MutableMapping):
         sim = linear_combination_of_weights(parts) * get_score(release)
         return SimMatchRelease(similarity=sim, release=release)
 
+    @staticmethod
+    def extract_year_from_date(dt):
+        """ Tries to handle various date formats, not exhaustive but common, and extract the year"""
+
+        if isinstance(dt, dict):
+            year = dt.get('year')
+        elif re.match(r"^[0-9]{8}$", dt):  # 20201231
+            year = dt[0:4]
+        elif re.match(r"^[0-9]{6}$", dt):  # 201231
+            year = dt[0:4]
+        elif re.match(r"^[0-9]{4}$", dt):  # 2012
+            year = dt[0:4]
+        elif re.match(r"^[0-9]{4}[-/]", dt):  # 2020-12-31 or 2020/12/31
+            year = dt[0:4]
+        elif re.match(r"^[0-9]{2}/[0-9]{2}/[0-9]{4}", dt):  # 12/31/2020
+            year = dt[6:10]
+        else:
+            year = "0"
+
+        return int(year)
+
     def compare_to_release_parts(self, release, weights):
         parts = []
         if "album" in self:
@@ -243,6 +265,34 @@ class Metadata(MutableMapping):
             parts.append((score, weights["totaltracks"]))
         except (ValueError, KeyError):
             pass
+
+        # Date Logic - in order of preference
+        # release has a date and it matches what our metadata had exactly.
+        # release has a date and it matches what our metadata had for year exactly.
+        # release has a date and it matches what our metadata had closely (year +/- 2).
+        # release has a date but we don't have one (all else equal, we prefer tracks that have non-blank date values)
+        # release has a no date (all else equal, we don't prefer this release since its date is missing)
+        # release has a date but it does not match ours(all else equal, its better to have an unknown date than a wrong date. since the unknown could actually be correct)
+        factor = 0.0
+        if "date" in release:
+            release_date = release['date']
+            release_year = Metadata.extract_year_from_date(release_date)
+            if "date" in self:
+                metadata_date = self['date']
+                metadata_year = Metadata.extract_year_from_date(metadata_date)
+                if release_date == metadata_date:
+                    factor = 1.00
+                elif release_year == metadata_year:
+                    factor = 0.95
+                elif abs(release_year - metadata_year) <= 2:
+                    factor = 0.85
+                else:
+                    factor = 0.00
+            else:
+                factor = 0.65
+        else:
+            factor = 0.25
+        parts.append((factor, weights['date']))
 
         weights_from_preferred_countries(parts, release,
                                          config.setting["preferred_release_countries"],

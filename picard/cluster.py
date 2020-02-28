@@ -16,6 +16,7 @@
 # Copyright (C) 2016-2017 Sambhav Kothari
 # Copyright (C) 2017 Antonio Larrosa
 # Copyright (C) 2018 Vishal Choudhary
+# Copyright (C) 2020 Ray Bouchard
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -74,6 +75,7 @@ class Cluster(QtCore.QObject, Item):
         'releasetype': 10,
         'releasecountry': 2,
         'format': 2,
+        'date': 4,
     }
 
     def __init__(self, name, artist="", special=False, related_album=None, hide_if_empty=False):
