@@ -39,7 +39,7 @@ from picard.coverart.image import (
 from picard.metadata import Metadata
 
 
-IGNORE_MARKER = b"\n"
+IGNORE_MARKER = "\n"
 
 
 def create_image(extra_data, types=None, support_types=False,
@@ -198,6 +198,15 @@ class CoverArtImageTest(PicardTestCase):
             "CoverArtImage(url='url', types=['front'], support_types=False, "
             "support_multi_types=False, is_front=True, comment='comment')"
         )
+
+    @staticmethod
+    def _mkdummyfile(filename, tmpdir, images, metadata, marker=None):
+        if marker is None:
+            marker = IGNORE_MARKER
+        with open(os.path.join(tmpdir, filename), 'wb') as f:
+            f.write(marker.encode('ascii'))
+            f.flush()
+            os.fsync(f.fileno())
 
     def _save_images(self, cases, prerun=None, tests=None):
         config.setting.update(cases['options'])
@@ -400,8 +409,7 @@ class CoverArtImageTest(PicardTestCase):
 
         def prerun(tmpdir, images, metadata):
             # we create a file with same name of the sub-directory to be created
-            with open(tmpdir + '/subdir', 'wb') as f:
-                f.write(IGNORE_MARKER)
+            self._mkdummyfile('subdir', tmpdir, images, metadata)
 
         def tests(tmpdir, images, metadata, expected):
             keys = sorted(images)
