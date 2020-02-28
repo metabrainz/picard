@@ -438,12 +438,50 @@ class CoverArtImageTest(PicardTestCase):
         }
         self._save_images(cases)
 
+    def test_save_types_overwrite_1(self):
+        cases = {
+            'options': {
+                'caa_image_type_as_filename': False,
+                'cover_image_filename': 'cover',
+                'save_images_overwrite': True,
+            },
+            'expected': {
+                1: {},
+                2: {'cover.png': '1'},
+                3: {'cover.png': '2'},
+            },
+            'types': {
+                '1': ['front'],
+                '2': ['back'],
+            }
+        }
+        self._save_images(cases)
+
     def test_save_types_2(self):
         cases = {
             'options': {
                 'caa_image_type_as_filename': True,
                 'cover_image_filename': 'cover',
                 'save_images_overwrite': False,
+            },
+            'expected': {
+                1: {},
+                2: {'cover.png': '1'},
+                3: {'back.png': '2', 'cover.png': '1'},
+            },
+            'types': {
+                '1': ['front'],
+                '2': ['back'],
+            }
+        }
+        self._save_images(cases)
+
+    def test_save_types_overwrite_2(self):
+        cases = {
+            'options': {
+                'caa_image_type_as_filename': True,
+                'cover_image_filename': 'cover',
+                'save_images_overwrite': True,
             },
             'expected': {
                 1: {},
@@ -476,6 +514,25 @@ class CoverArtImageTest(PicardTestCase):
         }
         self._save_images(cases)
 
+    def test_save_types_overwrite_3(self):
+        cases = {
+            'options': {
+                'caa_image_type_as_filename': True,
+                'cover_image_filename': 'cover',
+                'save_images_overwrite': True,
+            },
+            'expected': {
+                1: {},
+                2: {'cover.png': '1'},
+                3: {'cover.png': '2'}
+            },
+            'types': {
+                '1': ['front'],
+                '2': ['front'],
+            }
+        }
+        self._save_images(cases)
+
     def test_save_types_4(self):
         cases = {
             'options': {
@@ -498,6 +555,57 @@ class CoverArtImageTest(PicardTestCase):
             },
         }
         self._save_images(cases)
+
+    def test_save_types_overwrite_4(self):
+        cases = {
+            'options': {
+                'caa_image_type_as_filename': True,
+                'cover_image_filename': 'cover',
+                'save_images_overwrite': True,
+            },
+            'expected': {
+                1: {},
+                2: {'front.png': '1'},
+                3: {'cover.png': '2', 'front.png': '1'},  # FIXME: is this what we expect?
+            },
+            'types': {
+                '1': ['front'],
+                '2': ['back'],
+            },
+            'is_front': {
+                '1': False,
+                '2': True,
+            },
+        }
+        self._save_images(cases)
+
+    def test_save_types_overwrite_5(self):
+        cases = {
+            'options': {
+                'caa_image_type_as_filename': False,
+                'cover_image_filename': '$if($eq(%coverart_maintype%,{{cover}}),cover,%coverart_maintype%)',
+                'save_images_overwrite': True,
+            },
+            'expected': {
+                1: {'front.png': '9'},
+                2: {'front.png': '1'},
+                3: {'back.png': '2', 'front.png': '1'},  # FIXME: is this what we expect?
+            },
+            'types': {
+                '1': ['front', 'booklet'],
+                '2': ['back', 'booklet'],
+            },
+            'is_front': {
+                '1': True,
+                '2': False,
+            },
+        }
+
+        def prerun(tmpdir, images, metadata):
+            # we create a preexisting 'front.png' file
+            self._mkdummyfile('front.png', tmpdir, images, metadata, marker='9')
+
+        self._save_images(cases, prerun=prerun)
 
     def test_normalized_types(self):
         image = create_image(b'a', types=["front", 'back'], support_types=True, support_multi_types=True)
