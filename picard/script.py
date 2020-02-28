@@ -1264,8 +1264,10 @@ def func_datetime(parser, format=None):
     # Handle case where format evaluates to ''
     if not format:
         format = '%Y-%m-%d %H:%M:%S'
-
-    return datetime.datetime.now(tz=local_tz).strftime(format)
+    try:
+        return datetime.datetime.now(tz=local_tz).strftime(format)
+    except ValueError:
+        return ''
 
 
 @script_function(eval_args=False)

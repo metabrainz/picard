@@ -31,6 +31,11 @@
 
 import copy
 import datetime
+import os
+from unittest import (
+    skipIf,
+    skipUnless,
+)
 from unittest.mock import MagicMock
 
 from test.picardtestcase import PicardTestCase
@@ -52,6 +57,9 @@ from picard.script import (
     register_script_function,
     script_function,
 )
+
+
+IS_WIN = os.name == 'nt'
 
 
 class _TestTimezone(datetime.tzinfo):
@@ -1170,6 +1178,41 @@ class ScriptParserTest(PicardTestCase):
             areg = r"^Wrong number of arguments for \$datetime: Expected between 0 and 1, "
             with self.assertRaisesRegex(ScriptError, areg):
                 self.parser.eval("$datetime(abc,def)")
+        except (AssertionError, ValueError, IndexError) as err:
+            raise err
+        finally:
+            # Restore original datetime object
+            datetime.datetime = original_datetime
+
+    @skipUnless(IS_WIN, "windows test")
+    def test_cmd_datetime_windows(self):
+        ''' Test failure specific to Windows only. '''
+        # Save origninal datetime object and substitute one returning
+        # a fixed now() value for testing.
+        original_datetime = datetime.datetime
+        datetime.datetime = _DateTime
+
+        try:
+            context = Metadata()
+            # Tests with invalid format
+            self.assertScriptResultEquals(r"$datetime(\%B \%-d\, \%Y)", "", context)
+        except (AssertionError, ValueError, IndexError) as err:
+            raise err
+        finally:
+            # Restore original datetime object
+            datetime.datetime = original_datetime
+
+    @skipIf(IS_WIN, "non-windows test")
+    def test_cmd_datetime_non_windows(self):
+        # Save origninal datetime object and substitute one returning
+        # a fixed now() value for testing.
+        original_datetime = datetime.datetime
+        datetime.datetime = _DateTime
+
+        try:
+            context = Metadata()
+            # Tests with invalid format
+            self.assertScriptResultEquals(r"$datetime(\%Y-\%-m-\%-d)", "2020-1-2", context)
         except (AssertionError, ValueError, IndexError) as err:
             raise err
         finally:
