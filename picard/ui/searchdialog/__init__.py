@@ -5,6 +5,7 @@
 # Copyright (C) 2016 Rahul Raturi
 # Copyright (C) 2018-2019 Laurent Monin
 # Copyright (C) 2018-2019 Philipp Wolfer
+# Copyright (C) 2020 Ray Bouchard
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
