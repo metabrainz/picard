@@ -37,7 +37,8 @@ from collections.abc import (
     Iterable,
     MutableMapping,
 )
-import re
+
+from dateutil.parser import parse
 
 from PyQt5.QtCore import QObject
 
@@ -228,24 +229,15 @@ class Metadata(MutableMapping):
 
     @staticmethod
     def extract_year_from_date(dt):
-        """ Tries to handle various date formats, not exhaustive but common, and extract the year"""
+        """ Extracts year from  passed in date either dict or string """
 
-        if isinstance(dt, dict):
-            year = dt.get('year')
-        elif re.match(r"^[0-9]{8}$", dt):  # 20201231
-            year = dt[0:4]
-        elif re.match(r"^[0-9]{6}$", dt):  # 201231
-            year = dt[0:4]
-        elif re.match(r"^[0-9]{4}$", dt):  # 2012
-            year = dt[0:4]
-        elif re.match(r"^[0-9]{4}[-/]", dt):  # 2020-12-31 or 2020/12/31
-            year = dt[0:4]
-        elif re.match(r"^[0-9]{2}/[0-9]{2}/[0-9]{4}", dt):  # 12/31/2020
-            year = dt[6:10]
+        if isinstance(dt, Mapping):
+            year = int(dt.get('year'))
         else:
-            year = "0"
+            parsed_dt = parse(dt)
+            year = parsed_dt.year
 
-        return int(year)
+        return year
 
     def compare_to_release_parts(self, release, weights):
         parts = []
@@ -279,15 +271,16 @@ class Metadata(MutableMapping):
             release_year = Metadata.extract_year_from_date(release_date)
             if "date" in self:
                 metadata_date = self['date']
-                metadata_year = Metadata.extract_year_from_date(metadata_date)
                 if release_date == metadata_date:
                     factor = 1.00
-                elif release_year == metadata_year:
-                    factor = 0.95
-                elif abs(release_year - metadata_year) <= 2:
-                    factor = 0.85
                 else:
-                    factor = 0.00
+                    metadata_year = Metadata.extract_year_from_date(metadata_date)
+                    if release_year == metadata_year:
+                        factor = 0.95
+                    elif abs(release_year - metadata_year) <= 2:
+                        factor = 0.85
+                    else:
+                        factor = 0.00
             else:
                 factor = 0.65
         else:
