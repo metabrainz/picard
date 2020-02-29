@@ -224,17 +224,6 @@ class SearchDialog(TableBasedDialog):
         error_widget.setLayout(layout)
         self.add_widget_to_center_layout(error_widget)
 
-    def show_table(self, sort_column=None, sort_order=QtCore.Qt.DescendingOrder):
-        self.add_widget_to_center_layout(self.table)
-        self.table.horizontalHeader().setSortIndicatorShown(self.sorting_enabled)
-        self.table.setSortingEnabled(self.sorting_enabled)
-        if self.sorting_enabled and sort_column:
-            self.table.sortItems(self.colpos(sort_column), sort_order)
-
-        self.table.resizeColumnsToContents()
-        self.table.resizeRowsToContents()
-        self.table.setAlternatingRowColors(True)
-
     def network_error(self, reply, error):
         error_msg = _("<strong>Following error occurred while fetching results:<br><br></strong>"
                       "Network request error for %s:<br>%s (QT code %d, HTTP code %s)<br>") % (
@@ -253,15 +242,6 @@ class SearchDialog(TableBasedDialog):
     def search_browser(self):
         self.tagger.search(self.search_box.query, self.search_type,
                            adv=config.setting["use_adv_search_syntax"], force_browser=True)
-
-    def accept(self):
-        if self.table:
-            selected_rows = []
-            for idx in self.table.selectionModel().selectedRows():
-                row = self.table.itemFromIndex(idx).data(QtCore.Qt.UserRole)
-                selected_rows.append(row)
-            self.accept_event(selected_rows)
-        super().accept()
 
     @restore_method
     def restore_state(self):

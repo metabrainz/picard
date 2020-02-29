@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 #
 # Picard, the next-generation MusicBrainz tagger
+# Copyright (C) 2016 Rahul Raturi
+# Copyright (C) 2018 Laurent Monin
+# Copyright (C) 2019 Philipp Wolfer
 # Copyright (C) 2020 Ray Bouchard
 #
 # This program is free software; you can redistribute it and/or
@@ -169,12 +172,24 @@ class TableBasedDialog(PicardDialog):
         self.table.prepare(self.table_headers)
         self.restore_table_header_state()
 
-    @abstractmethod
     def show_table(self, sort_column=None, sort_order=QtCore.Qt.DescendingOrder):
-        pass
+        self.add_widget_to_center_layout(self.table)
+        self.table.horizontalHeader().setSortIndicatorShown(self.sorting_enabled)
+        self.table.setSortingEnabled(self.sorting_enabled)
+        if self.sorting_enabled and sort_column:
+            self.table.sortItems(self.colpos(sort_column), sort_order)
 
-    @abstractmethod
+        self.table.resizeColumnsToContents()
+        self.table.resizeRowsToContents()
+        self.table.setAlternatingRowColors(True)
+
     def accept(self):
+        if self.table:
+            selected_rows = []
+            for idx in self.table.selectionModel().selectedRows():
+                row = self.table.itemFromIndex(idx).data(QtCore.Qt.UserRole)
+                selected_rows.append(row)
+            self.accept_event(selected_rows)
         super().accept()
 
     @restore_method
