@@ -74,7 +74,8 @@ class ScriptUnknownFunction(ScriptError):
 
 
 class ScriptRuntimeError(ScriptError):
-    pass
+    def __init__(self, message, name, line, position):
+        super().__init__("${1:s}:{2:d}:{3:d}: {0:s}".format(message, name, line, position))
 
 
 class ScriptText(str):
@@ -149,7 +150,11 @@ class ScriptFunction(object):
             args = [arg.eval(parser) for arg in self.args]
         else:
             args = self.args
-        return function(parser, *args)
+        parser._function_stack.append(self.name)
+        # Save return value to allow removing function from the stack on successful completion
+        return_value = function(parser, *args)
+        parser._function_stack = parser._function_stack[:-1]
+        return return_value
 
 
 class ScriptExpression(list):
@@ -178,6 +183,9 @@ Grammar:
 
     _function_registry = ExtensionPoint(label='function_registry')
     _cache = {}
+
+    def __init__(self):
+        self._function_stack = []
 
     def __raise_eof(self):
         raise ScriptEndOfFile("Unexpected end of script at position %d, line %d" % (self._x, self._y))
@@ -1272,8 +1280,10 @@ def func_datetime(parser, format=None):
         return datetime.datetime.now(tz=local_tz).strftime(format)
     except ValueError:
         raise ScriptRuntimeError(
-            "Unsupported format code in $%s at position %i, line %i"
-            % ('datetime', parser._x, parser._y)
+            "Unsupported format code",
+            parser._function_stack[-1],
+            parser._x,
+            parser._y
         )
 
 

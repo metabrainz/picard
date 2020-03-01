@@ -31,7 +31,6 @@
 
 import copy
 import datetime
-import os
 from unittest import skipUnless
 from unittest.mock import MagicMock
 
@@ -40,6 +39,7 @@ from test.picardtestcase import PicardTestCase
 from picard import config
 from picard.cluster import Cluster
 from picard.const import DEFAULT_FILE_NAMING_FORMAT
+from picard.const.sys import IS_WIN
 from picard.metadata import Metadata
 from picard.script import (
     MULTI_VALUED_JOINER,
@@ -55,9 +55,6 @@ from picard.script import (
     register_script_function,
     script_function,
 )
-
-
-IS_WIN = os.name == 'nt'
 
 
 class _TestTimezone(datetime.tzinfo):
@@ -1194,10 +1191,12 @@ class ScriptParserTest(PicardTestCase):
             context = Metadata()
             # Tests with Windows-specific format
             self.assertScriptResultEquals(r"$datetime(\%Y-\%#m-\%#d)", "2020-1-2", context)
-            # Tests with invalid format
-            areg = r"^Unsupported format code in \$datetime"
+            # Tests with invalid format codes (Windows does not support -d or -m codes)
+            areg = r"^\$datetime:\d+:\d+: Unsupported format code"
             with self.assertRaisesRegex(ScriptRuntimeError, areg):
-                self.parser.eval(r"$datetime(\%B \%-d\, \%Y)")
+                self.parser.eval(r"$datetime(\%-d)")
+            with self.assertRaisesRegex(ScriptRuntimeError, areg):
+                self.parser.eval(r"$datetime(\%-m)")
         except (AssertionError, ValueError, IndexError) as err:
             raise err
         finally:
