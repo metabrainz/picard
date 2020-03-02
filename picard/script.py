@@ -1047,7 +1047,10 @@ def func_find(parser, haystack, needle):
     Returns:
         The zero-based index of the first occurrance of needle in haystack, or -1 if needle was not found.
     """
-    return str(haystack.find(needle))
+    index = haystack.find(needle)
+    if index < 0:
+        return ''
+    return str(index)
 
 
 @script_function()

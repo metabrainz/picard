@@ -852,27 +852,27 @@ class ScriptParserTest(PicardTestCase):
         self.assertScriptResultEquals("$find(%bar%,%baz%)", "9", context)
         self.assertScriptResultEquals("$find(%foo%,%bar%)", "0", context)
         self.assertScriptResultEquals("$find(%bar%,%foo%)", "0", context)
-        self.assertScriptResultEquals("$find(%foo%,%err%)", "-1", context)
+        self.assertScriptResultEquals("$find(%foo%,%err%)", "", context)
         # Tests with static input
         self.assertScriptResultEquals("$find(abcdef,c)", "2", context)
         self.assertScriptResultEquals("$find(abcdef,cd)", "2", context)
-        self.assertScriptResultEquals("$find(abcdef,g)", "-1", context)
+        self.assertScriptResultEquals("$find(abcdef,g)", "", context)
         # Tests ends of string
         self.assertScriptResultEquals("$find(abcdef,a)", "0", context)
         self.assertScriptResultEquals("$find(abcdef,ab)", "0", context)
         self.assertScriptResultEquals("$find(abcdef,f)", "5", context)
         self.assertScriptResultEquals("$find(abcdef,ef)", "4", context)
         # Tests case sensitivity
-        self.assertScriptResultEquals("$find(abcdef,C)", "-1", context)
+        self.assertScriptResultEquals("$find(abcdef,C)", "", context)
         # Tests no characters processed as wildcards
-        self.assertScriptResultEquals("$find(abcdef,.f)", "-1", context)
-        self.assertScriptResultEquals("$find(abcdef,?f)", "-1", context)
-        self.assertScriptResultEquals("$find(abcdef,*f)", "-1", context)
-        self.assertScriptResultEquals("$find(abc.ef,cde)", "-1", context)
-        self.assertScriptResultEquals("$find(abc?ef,cde)", "-1", context)
-        self.assertScriptResultEquals("$find(abc*ef,cde)", "-1", context)
+        self.assertScriptResultEquals("$find(abcdef,.f)", "", context)
+        self.assertScriptResultEquals("$find(abcdef,?f)", "", context)
+        self.assertScriptResultEquals("$find(abcdef,*f)", "", context)
+        self.assertScriptResultEquals("$find(abc.ef,cde)", "", context)
+        self.assertScriptResultEquals("$find(abc?ef,cde)", "", context)
+        self.assertScriptResultEquals("$find(abc*ef,cde)", "", context)
         # Tests missing inputs
-        self.assertScriptResultEquals("$find(,c)", "-1", context)
+        self.assertScriptResultEquals("$find(,c)", "", context)
         self.assertScriptResultEquals("$find(abcdef,)", "0", context)
         # Tests wrong number of arguments
         areg = r"^Wrong number of arguments for \$find: Expected exactly 2, "
