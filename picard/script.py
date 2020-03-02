@@ -41,6 +41,7 @@ import datetime
 from functools import reduce
 from inspect import getfullargspec
 import operator
+from queue import LifoQueue
 import re
 import unicodedata
 
@@ -150,10 +151,10 @@ class ScriptFunction(object):
             args = [arg.eval(parser) for arg in self.args]
         else:
             args = self.args
-        parser._function_stack.append(self.name)
+        parser._function_stack.put(self.name)
         # Save return value to allow removing function from the stack on successful completion
         return_value = function(parser, *args)
-        parser._function_stack = parser._function_stack[:-1]
+        parser._function_stack.get()
         return return_value
 
 
@@ -185,7 +186,7 @@ Grammar:
     _cache = {}
 
     def __init__(self):
-        self._function_stack = []
+        self._function_stack = LifoQueue()
 
     def __raise_eof(self):
         raise ScriptEndOfFile("Unexpected end of script at position %d, line %d" % (self._x, self._y))
@@ -1281,7 +1282,7 @@ def func_datetime(parser, format=None):
     except ValueError:
         raise ScriptRuntimeError(
             "Unsupported format code",
-            parser._function_stack[-1],
+            parser._function_stack.get(),
             parser._x,
             parser._y
         )

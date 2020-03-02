@@ -31,7 +31,6 @@
 
 import copy
 import datetime
-from unittest import skipUnless
 from unittest.mock import MagicMock
 
 from test.picardtestcase import PicardTestCase
@@ -39,7 +38,6 @@ from test.picardtestcase import PicardTestCase
 from picard import config
 from picard.cluster import Cluster
 from picard.const import DEFAULT_FILE_NAMING_FORMAT
-from picard.const.sys import IS_WIN
 from picard.metadata import Metadata
 from picard.script import (
     MULTI_VALUED_JOINER,
@@ -1150,7 +1148,7 @@ class ScriptParserTest(PicardTestCase):
             self.parser.eval("$slice(abc; def),0,1,:,extra")
 
     def test_cmd_datetime(self):
-        # Save origninal datetime object and substitute one returning
+        # Save original datetime object and substitute one returning
         # a fixed now() value for testing.
         original_datetime = datetime.datetime
         datetime.datetime = _DateTime
@@ -1179,24 +1177,36 @@ class ScriptParserTest(PicardTestCase):
             # Restore original datetime object
             datetime.datetime = original_datetime
 
-    @skipUnless(IS_WIN, "windows test")
-    def test_cmd_datetime_windows(self):
-        ''' Test failure specific to Windows only. '''
-        # Save origninal datetime object and substitute one returning
+    def test_cmd_datetime_platform_dependent(self):
+        # Platform dependent testing because different platforms (both os and Python version)
+        # support some format arguments differently.
+        possible_tests = (
+            '%',    # Hanging % at end of format
+            '%-d',  # Non zero-padded day
+            '%-m',  # Non zero-padded month
+            '%3Y',  # Length specifier shorter than string
+        )
+        tests_to_run = []
+        # Get list of tests for unsupported format codes
+        for test_case in possible_tests:
+            try:
+                datetime.datetime.now().strftime(test_case)
+            except ValueError:
+                tests_to_run.append(test_case)
+        if not tests_to_run:
+            self.skipTest('datetime module supports all test cases')
+        # Save original datetime object and substitute one returning
         # a fixed now() value for testing.
         original_datetime = datetime.datetime
         datetime.datetime = _DateTime
 
         try:
             context = Metadata()
-            # Tests with Windows-specific format
-            self.assertScriptResultEquals(r"$datetime(\%Y-\%#m-\%#d)", "2020-1-2", context)
-            # Tests with invalid format codes (Windows does not support -d or -m codes)
             areg = r"^\$datetime:\d+:\d+: Unsupported format code"
-            with self.assertRaisesRegex(ScriptRuntimeError, areg):
-                self.parser.eval(r"$datetime(\%-d)")
-            with self.assertRaisesRegex(ScriptRuntimeError, areg):
-                self.parser.eval(r"$datetime(\%-m)")
+            # Tests with invalid format code (platform dependent tests)
+            for test_case in tests_to_run:
+                with self.assertRaisesRegex(ScriptRuntimeError, areg):
+                    self.parser.eval(r'$datetime(\{0})'.format(test_case))
         except (AssertionError, ValueError, IndexError) as err:
             raise err
         finally:
