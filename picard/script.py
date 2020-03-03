@@ -1045,7 +1045,7 @@ def func_find(parser, haystack, needle):
         needle: The substring to find.
 
     Returns:
-        The zero-based index of the first occurrance of needle in haystack, or -1 if needle was not found.
+        The zero-based index of the first occurrence of needle in haystack, or "" if needle was not found.
     """
     index = haystack.find(needle)
     if index < 0:
