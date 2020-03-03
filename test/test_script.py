@@ -1171,8 +1171,6 @@ class ScriptParserTest(PicardTestCase):
             areg = r"^Wrong number of arguments for \$datetime: Expected between 0 and 1, "
             with self.assertRaisesRegex(ScriptError, areg):
                 self.parser.eval("$datetime(abc,def)")
-        except (AssertionError, ValueError, IndexError) as err:
-            raise err
         finally:
             # Restore original datetime object
             datetime.datetime = original_datetime
@@ -1207,8 +1205,6 @@ class ScriptParserTest(PicardTestCase):
             for test_case in tests_to_run:
                 with self.assertRaisesRegex(ScriptRuntimeError, areg):
                     self.parser.eval(r'$datetime(\{0})'.format(test_case))
-        except (AssertionError, ValueError, IndexError) as err:
-            raise err
         finally:
             # Restore original datetime object
             datetime.datetime = original_datetime
