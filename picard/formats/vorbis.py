@@ -4,7 +4,7 @@
 #
 # Copyright (C) 2006-2008, 2012 Lukáš Lalinský
 # Copyright (C) 2008 Hendrik van Antwerpen
-# Copyright (C) 2008-2010, 2014-2015, 2018-2019 Philipp Wolfer
+# Copyright (C) 2008-2010, 2014-2015, 2018-2020 Philipp Wolfer
 # Copyright (C) 2012-2013 Michael Wiencek
 # Copyright (C) 2012-2014 Wieland Hoffmann
 # Copyright (C) 2013 Calvin Walton
@@ -316,10 +316,16 @@ class VCommentFile(File):
             real_name = self._get_tag_name(tag)
             if real_name and real_name in tags:
                 if real_name in ('performer', 'comment'):
-                    tag_type = r"\(%s\)" % tag.split(':', 1)[1]
-                    for item in tags.get(real_name):
-                        if re.search(tag_type, item):
-                            tags.get(real_name).remove(item)
+                    parts = tag.split(':', 1)
+                    if len(parts) == 2:
+                        tag_type_regex = r"\(%s\)$" % parts[1]
+                    else:
+                        tag_type_regex = r"[^)]$"
+                    existing_tags = tags.get(real_name)
+                    for item in existing_tags:
+                        if re.search(tag_type_regex, item):
+                            existing_tags.remove(item)
+                    tags[real_name] = existing_tags
                 else:
                     if tag in ('totaldiscs', 'totaltracks'):
                         # both tag and real_name are to be deleted in this case
