@@ -1202,7 +1202,7 @@ class ScriptParserTest(PicardTestCase):
 
         try:
             context = Metadata()
-            areg = r"^\$datetime:\d+:\d+: Unsupported format code"
+            areg = r"^\$datetime:1:\d+: Unsupported format code"
             # Tests with invalid format code (platform dependent tests)
             for test_case in tests_to_run:
                 with self.assertRaisesRegex(ScriptRuntimeError, areg):

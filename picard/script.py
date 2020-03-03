@@ -1283,8 +1283,8 @@ def func_datetime(parser, format=None):
         raise ScriptRuntimeError(
             "Unsupported format code",
             parser._function_stack.get(),
-            parser._x,
-            parser._y
+            parser._y,
+            parser._x
         )
 
 
