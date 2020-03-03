@@ -351,16 +351,20 @@ class CommonTests:
 
         @skipUnlessTestfile
         def test_delete_tags_with_description(self):
-            for key in ('comment:foo', 'comment:de:foo', 'performer:foo', 'lyrics:foo'):
+            for key in (
+                'comment:foo', 'comment:de:foo', 'performer:foo', 'lyrics:foo',
+                'comment:a*', 'comment:a[', 'performer:(x)', 'performer: Ä é '
+                ):
                 if not self.format.supports_tag(key):
                     continue
                 prefix = key.split(':')[0]
                 metadata = Metadata()
                 metadata[key] = 'bar'
-                metadata[prefix] = '(foo) bar'
                 original_metadata = save_and_load_metadata(self.filename, metadata)
                 if not key in original_metadata and prefix in original_metadata:
                     continue  # Skip if the type did not support saving this kind of tag
+                self.assertEqual('bar', original_metadata[key], original_metadata)
+                metadata[prefix] = '(foo) bar'
                 del metadata[key]
                 new_metadata = save_and_load_metadata(self.filename, metadata)
                 self.assertNotIn(key, new_metadata)
