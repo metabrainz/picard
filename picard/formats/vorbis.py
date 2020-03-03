@@ -318,9 +318,9 @@ class VCommentFile(File):
                 if real_name in ('performer', 'comment'):
                     parts = tag.split(':', 1)
                     if len(parts) == 2:
-                        tag_type_regex = r"\(%s\)$" % parts[1]
+                        tag_type_regex = re.compile(r"\(%s\)$" % re.escape(parts[1]))
                     else:
-                        tag_type_regex = r"[^)]$"
+                        tag_type_regex = re.compile(r"[^)]$")
                     existing_tags = tags.get(real_name)
                     for item in existing_tags:
                         if re.search(tag_type_regex, item):
