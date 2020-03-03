@@ -547,7 +547,7 @@ class ID3File(File):
                             for people in frame.people:
                                 if people[0] == role:
                                     frame.people.remove(people)
-                elif name.startswith('comment:'):
+                elif name.startswith('comment:') or name == 'comment':
                     (lang, desc) = parse_comment_tag(name)
                     if desc.lower()[:4] != 'itun':
                         for key, frame in list(tags.items()):

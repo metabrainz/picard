@@ -169,7 +169,7 @@ class APEv2File(File):
                         if len(disc) > 1:
                             metadata["totaldiscs"] = disc[1]
                             value = disc[0]
-                    elif name == 'performer' or name == 'comment':
+                    elif name in ('performer', 'comment'):
                         if value.endswith(')'):
                             start = value.rfind(' (')
                             if start > 0:
@@ -236,14 +236,17 @@ class APEv2File(File):
         """Remove the tags from the file that were deleted in the UI"""
         for tag in metadata.deleted_tags:
             real_name = self._get_tag_name(tag)
-            if (real_name in ('Lyrics', 'Comment', 'Performer')
-                and ':' in tag and not tag.endswith(':')):
-                tag_type = re.compile(r"\(%s\)$" % tag.split(':', 1)[1])
-                existing_tags = tags.get(real_name)
-                if existing_tags:
-                    for item in existing_tags:
-                        if tag_type.search(item):
-                            tags.get(real_name).remove(item)
+            if real_name in ('Lyrics', 'Comment', 'Performer'):
+                parts = tag.split(':', 1)
+                if len(parts) == 2:
+                    tag_type_regex = r"\(%s\)$" % parts[1]
+                else:
+                    tag_type_regex = r"[^)]$"
+                existing_tags = tags.get(real_name, [])
+                for item in existing_tags:
+                    if re.search(tag_type_regex, item):
+                        existing_tags.remove(item)
+                tags[real_name] = existing_tags
             elif tag in ('totaltracks', 'totaldiscs'):
                 tagstr = real_name.lower() + 'number'
                 if tagstr in metadata:

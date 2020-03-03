@@ -149,6 +149,7 @@ TAGS = {
     'originaldate': '1980-01-20',
     'originalyear': '1980',
     'originalfilename': 'Foo',
+    'performer': 'Foo',
     'performer:guest vocal': 'Foo',
     'podcast': '1',
     'podcasturl': 'Foo',
@@ -330,14 +331,51 @@ class CommonTests:
                 self.assertNotIn('~rating', new_metadata.keys())
 
         @skipUnlessTestfile
-        def test_delete_lyrics_tags(self):
-            for key in ('lyrics', 'lyrics:'):
-                metadata = Metadata(self.tags)
+        def test_delete_tags_with_empty_description(self):
+            for key in ('lyrics', 'lyrics:', 'comment', 'comment:', 'performer', 'performer:'):
+                name = key.rstrip(':')
+                name_with_description = name + ':foo'
+                if not self.format.supports_tag(name):
+                    continue
+                metadata = Metadata()
+                metadata[name] = 'bar'
+                metadata[name_with_description] = 'other'
                 original_metadata = save_and_load_metadata(self.filename, metadata)
-                self.assertIn('lyrics', original_metadata)
+                self.assertIn(name, original_metadata)
                 del metadata[key]
                 new_metadata = save_and_load_metadata(self.filename, metadata)
-                self.assertNotIn('lyrics', new_metadata)
+                self.assertNotIn(name, new_metadata)
+                # Ensure the names with description did not get deleted
+                if name_with_description in original_metadata:
+                    self.assertIn(name_with_description, new_metadata)
+
+        @skipUnlessTestfile
+        def test_delete_tags_with_description(self):
+            for key in ('comment:foo', 'comment:de:foo', 'performer:foo', 'lyrics:foo'):
+                if not self.format.supports_tag(key):
+                    continue
+                prefix = key.split(':')[0]
+                metadata = Metadata()
+                metadata[key] = 'bar'
+                metadata[prefix] = '(foo) bar'
+                original_metadata = save_and_load_metadata(self.filename, metadata)
+                if not key in original_metadata and prefix in original_metadata:
+                    continue  # Skip if the type did not support saving this kind of tag
+                del metadata[key]
+                new_metadata = save_and_load_metadata(self.filename, metadata)
+                self.assertNotIn(key, new_metadata)
+                self.assertEqual('(foo) bar', new_metadata[prefix])
+
+        @skipUnlessTestfile
+        def test_delete_nonexistant_tags(self):
+            for key in ('title', 'foo', 'comment:foo', 'comment:de:foo', 'performer:foo', 'lyrics:foo'):
+                if not self.format.supports_tag(key):
+                    continue
+                metadata = Metadata()
+                save_metadata(self.filename, metadata)
+                del metadata[key]
+                new_metadata = save_and_load_metadata(self.filename, metadata)
+                self.assertNotIn(key, new_metadata)
 
         @skipUnlessTestfile
         def test_delete_non_existant_tags(self):

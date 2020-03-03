@@ -280,8 +280,7 @@ class MP4File(File):
                 tags[name] = values
             elif name == "musicip_fingerprint":
                 tags["----:com.apple.iTunes:fingerprint"] = [b"MusicMagic Fingerprint%s" % v.encode('ascii') for v in values]
-            elif self.supports_tag(name) and name not in ('tracknumber',
-                    'totaltracks', 'discnumber', 'totaldiscs'):
+            elif self.supports_tag(name) and name not in self.__other_supported_tags:
                 values = [v.encode("utf-8") for v in values]
                 name = self.__casemap.get(name, name)
                 tags['----:com.apple.iTunes:' + name] = values
@@ -351,8 +350,9 @@ class MP4File(File):
             return "trkn"
         elif name in ("discnumber", "totaldiscs"):
             return "disk"
-        else:
-            return None
+        elif self.supports_tag(name) and name not in self.__other_supported_tags:
+            name = self.__casemap.get(name, name)
+            return '----:com.apple.iTunes:' + name
 
     def _info(self, metadata, file):
         super()._info(metadata, file)
