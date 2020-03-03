@@ -146,21 +146,24 @@ class CoverArtImageTest(PicardTestCase):
         self.assertEqual(coverartimage.data, imgdata)
 
     def test_delete_file_removed(self):
-        payload = b'atest'
-        image_ = create_image(payload, comment='1')
-        image = create_image(payload, comment='2')
-        self.assertIsNotNone(image.datahash._filename)
-        data = image.datahash.data
-        self.assertEqual(data, b'\x89PNG\r\n\x1a\naaaaIHDR\x00\x00\x00d\x00\x00\x00datest')
-        self.assertEqual(image_.datahash.data, data)
+        """Test unexpected removal of image temporary file"""
+        # Create 2 images sharing same temporary file (same payload, different comment)
+        data = create_fake_png(b'test')
+        image1 = CoverArtImage(data=data, comment='1')
+        image2 = CoverArtImage(data=data, comment='2')
+        # Ensure both images share same content
+        self.assertEqual(image2.datahash.data, data)
+        self.assertEqual(image1.datahash.data, image2.datahash.data)
         # simulate removal of temporary file by external command
-        os.unlink(image.datahash._filename)
+        self.assertTrue(os.path.exists(image2.datahash._filename))
+        os.unlink(image2.datahash._filename)
+        self.assertFalse(os.path.exists(image2.datahash._filename))
         # the following should handle this case without raising an exception
-        image.datahash.delete_file()
-        self.assertIsNone(image.datahash._filename)
-        self.assertIsNone(image.datahash.data)
+        image2.datahash.delete_file()
+        self.assertIsNone(image2.datahash._filename)
+        self.assertIsNone(image2.datahash.data)
         with self.assertRaises(CoverArtImageIOError):
-            data = image_.data
+            _unused = image1.data
 
     def test_coverartimage_image_as_string(self):
         image = CoverArtImage(data=None)
