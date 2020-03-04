@@ -47,6 +47,7 @@ from picard.script import (
     ScriptExpression,
     ScriptFunction,
     ScriptParser,
+    ScriptRuntimeError,
     ScriptSyntaxError,
     ScriptUnknownFunction,
     register_script_function,
@@ -1147,7 +1148,7 @@ class ScriptParserTest(PicardTestCase):
             self.parser.eval("$slice(abc; def),0,1,:,extra")
 
     def test_cmd_datetime(self):
-        # Save origninal datetime object and substitute one returning
+        # Save original datetime object and substitute one returning
         # a fixed now() value for testing.
         original_datetime = datetime.datetime
         datetime.datetime = _DateTime
@@ -1170,8 +1171,40 @@ class ScriptParserTest(PicardTestCase):
             areg = r"^Wrong number of arguments for \$datetime: Expected between 0 and 1, "
             with self.assertRaisesRegex(ScriptError, areg):
                 self.parser.eval("$datetime(abc,def)")
-        except (AssertionError, ValueError, IndexError) as err:
-            raise err
+        finally:
+            # Restore original datetime object
+            datetime.datetime = original_datetime
+
+    def test_cmd_datetime_platform_dependent(self):
+        # Platform dependent testing because different platforms (both os and Python version)
+        # support some format arguments differently.
+        possible_tests = (
+            '%',    # Hanging % at end of format
+            '%-d',  # Non zero-padded day
+            '%-m',  # Non zero-padded month
+            '%3Y',  # Length specifier shorter than string
+        )
+        tests_to_run = []
+        # Get list of tests for unsupported format codes
+        for test_case in possible_tests:
+            try:
+                datetime.datetime.now().strftime(test_case)
+            except ValueError:
+                tests_to_run.append(test_case)
+        if not tests_to_run:
+            self.skipTest('datetime module supports all test cases')
+        # Save original datetime object and substitute one returning
+        # a fixed now() value for testing.
+        original_datetime = datetime.datetime
+        datetime.datetime = _DateTime
+
+        try:
+            context = Metadata()
+            areg = r"^\$datetime:1:\d+: Unsupported format code"
+            # Tests with invalid format code (platform dependent tests)
+            for test_case in tests_to_run:
+                with self.assertRaisesRegex(ScriptRuntimeError, areg):
+                    self.parser.eval(r'$datetime(\{0})'.format(test_case))
         finally:
             # Restore original datetime object
             datetime.datetime = original_datetime

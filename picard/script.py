@@ -41,6 +41,7 @@ import datetime
 from functools import reduce
 from inspect import getfullargspec
 import operator
+from queue import LifoQueue
 import re
 import unicodedata
 
@@ -71,6 +72,11 @@ class ScriptSyntaxError(ScriptParseError):
 
 class ScriptUnknownFunction(ScriptError):
     pass
+
+
+class ScriptRuntimeError(ScriptError):
+    def __init__(self, message, name, line, position):
+        super().__init__("${1:s}:{2:d}:{3:d}: {0:s}".format(message, name, line, position))
 
 
 class ScriptText(str):
@@ -145,7 +151,11 @@ class ScriptFunction(object):
             args = [arg.eval(parser) for arg in self.args]
         else:
             args = self.args
-        return function(parser, *args)
+        parser._function_stack.put(self.name)
+        # Save return value to allow removing function from the stack on successful completion
+        return_value = function(parser, *args)
+        parser._function_stack.get()
+        return return_value
 
 
 class ScriptExpression(list):
@@ -174,6 +184,9 @@ Grammar:
 
     _function_registry = ExtensionPoint(label='function_registry')
     _cache = {}
+
+    def __init__(self):
+        self._function_stack = LifoQueue()
 
     def __raise_eof(self):
         raise ScriptEndOfFile("Unexpected end of script at position %d, line %d" % (self._x, self._y))
@@ -1264,8 +1277,15 @@ def func_datetime(parser, format=None):
     # Handle case where format evaluates to ''
     if not format:
         format = '%Y-%m-%d %H:%M:%S'
-
-    return datetime.datetime.now(tz=local_tz).strftime(format)
+    try:
+        return datetime.datetime.now(tz=local_tz).strftime(format)
+    except ValueError:
+        raise ScriptRuntimeError(
+            "Unsupported format code",
+            parser._function_stack.get(),
+            parser._y,
+            parser._x
+        )
 
 
 @script_function(eval_args=False)
