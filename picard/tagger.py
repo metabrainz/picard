@@ -955,6 +955,11 @@ def main(localedir=None, autoupdate=True):
     # Allow High DPI Support
     QtWidgets.QApplication.setAttribute(QtCore.Qt.AA_UseHighDpiPixmaps)
     QtWidgets.QApplication.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling)
+    # HighDpiScaleFactorRoundingPolicy is available since Qt 5.14. This is
+    # required to support fractional scaling properly.
+    if hasattr(QtGui.QGuiApplication, 'setHighDpiScaleFactorRoundingPolicy'):
+        QtGui.QGuiApplication.setHighDpiScaleFactorRoundingPolicy(
+            QtCore.Qt.HighDpiScaleFactorRoundingPolicy.PassThrough)
 
     # Enable mnemonics on all platforms, even macOS
     QtGui.qt_set_sequence_auto_mnemonic(True)
