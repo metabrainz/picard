@@ -107,11 +107,12 @@ FunctionRegistryItem = namedtuple("FunctionRegistryItem",
                                   ["function", "eval_args",
                                    "argcount"])
 Bound = namedtuple("Bound", ["lower", "upper"])
+FunctionStackItem = namedtuple("FunctionStackItem", ["function", "column", "line"])
 
 
 class ScriptFunction(object):
 
-    def __init__(self, name, args, parser):
+    def __init__(self, name, args, parser, column=0, line=0):
         try:
             argnum_bound = parser.functions[name].argcount
             argcount = len(args)
@@ -137,6 +138,7 @@ class ScriptFunction(object):
 
         self.name = name
         self.args = args
+        self.function = FunctionStackItem(name, column, line)
 
     def __repr__(self):
         return "<ScriptFunction $%s(%r)>" % (self.name, self.args)
@@ -151,7 +153,7 @@ class ScriptFunction(object):
             args = [arg.eval(parser) for arg in self.args]
         else:
             args = self.args
-        parser._function_stack.put(self.name)
+        parser._function_stack.put(self.function)
         # Save return value to allow removing function from the stack on successful completion
         return_value = function(parser, *args)
         parser._function_stack.get()
@@ -233,13 +235,15 @@ Grammar:
 
     def parse_function(self):
         start = self._pos
+        column = self._x - 2     # Set x position to start of function name ($)
+        line = self._y
         while True:
             ch = self.read()
             if ch == '(':
                 name = self._text[start:self._pos-1]
                 if name not in self.functions:
                     raise ScriptUnknownFunction("Unknown function '%s'" % name)
-                return ScriptFunction(name, self.parse_arguments(), self)
+                return ScriptFunction(name, self.parse_arguments(), self, column, line)
             elif ch is None:
                 self.__raise_eof()
             elif not isidentif(ch):
@@ -1280,11 +1284,12 @@ def func_datetime(parser, format=None):
     try:
         return datetime.datetime.now(tz=local_tz).strftime(format)
     except ValueError:
+        function = parser._function_stack.get()
         raise ScriptRuntimeError(
             "Unsupported format code",
-            parser._function_stack.get(),
-            parser._y,
-            parser._x
+            function.function,
+            function.line,
+            function.column
         )
 
 

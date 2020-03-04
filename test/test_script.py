@@ -1205,6 +1205,19 @@ class ScriptParserTest(PicardTestCase):
             for test_case in tests_to_run:
                 with self.assertRaisesRegex(ScriptRuntimeError, areg):
                     self.parser.eval(r'$datetime(\{0})'.format(test_case))
+            # Test that the correct position number is passed
+            test_string = r'$noop()$datetime(\{0})'.format(test_case)
+            areg = r"^\$datetime:\d+:7: Unsupported format code"
+            with self.assertRaisesRegex(ScriptRuntimeError, areg):
+                self.parser.eval(test_string)
+            # Test that the function stack is returning the correct name (nested functions)
+            areg = r"^\$datetime:\d+:\d+: Unsupported format code"
+            with self.assertRaisesRegex(ScriptRuntimeError, areg):
+                self.parser.eval(r'$set(foo,$datetime($if(,,\{0})))'.format(test_case))
+            # Test that the correct line number is passed
+            areg = r"^\$datetime:2:\d+: Unsupported format code"
+            with self.assertRaisesRegex(ScriptRuntimeError, areg):
+                self.parser.eval('$noop(\n)$datetime($if(,,\\{0})))'.format(test_case))
         finally:
             # Restore original datetime object
             datetime.datetime = original_datetime
