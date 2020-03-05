@@ -50,10 +50,10 @@ class CoverArtImageProviderCaaTest(PicardTestCase):
             50:  [],
             250: ['url 250'],
             400: ['url 250'],
-            500: ['url large', 'url 250'],
-            600: ['url large', 'url 250'],
-            1200: ['url 1200', 'url large', 'url 250'],
-            1500: ['url 1200', 'url large', 'url 250'],
+            500: ['url 500', 'url 250'],
+            600: ['url 500', 'url 250'],
+            1200: ['url 1200', 'url 500', 'url 250'],
+            1500: ['url 1200', 'url 500', 'url 250'],
         }
         do_tests(sizes, expectations)
 
@@ -63,24 +63,24 @@ class CoverArtImageProviderCaaTest(PicardTestCase):
             50:  [],
             250: ['url 250'],
             400: ['url 250'],
-            500: ['url large', 'url 250'],
-            600: ['url large', 'url 250'],
-            1200: ['url large', 'url 250'],
-            1500: ['url large', 'url 250'],
+            500: ['url 500', 'url 250'],
+            600: ['url 500', 'url 250'],
+            1200: ['url 500', 'url 250'],
+            1500: ['url 500', 'url 250'],
         }
         do_tests(sizes, expectations)
 
         # In the future, large and small might be removed or new size added
         # test if we can handle that (through size aliases)
-        sizes = ("small", "500", "1200", "2000", "unknownsize")
+        sizes = ("small", "large", "1200", "2000", "unknownsize")
         expectations = {
             50:  [],
             250: ['url small'],
             400: ['url small'],
-            500: ['url 500', 'url small'],
-            600: ['url 500', 'url small'],
-            1200: ['url 1200', 'url 500', 'url small'],
-            1500: ['url 1200', 'url 500', 'url small'],
+            500: ['url large', 'url small'],
+            600: ['url large', 'url small'],
+            1200: ['url 1200', 'url large', 'url small'],
+            1500: ['url 1200', 'url large', 'url small'],
         }
         do_tests(sizes, expectations)
 
