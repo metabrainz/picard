@@ -75,7 +75,7 @@ from picard.ui.util import StandardButton
 CaaSizeItem = namedtuple('CaaSizeItem', ['thumbnail', 'label'])
 
 _CAA_THUMBNAIL_SIZE_MAP = OrderedDict([
-    (250, CaaSizeItem('small', N_('250 px'))),
+    (250, CaaSizeItem('250', N_('250 px'))),
     (500, CaaSizeItem('large', N_('500 px'))),
     (1200, CaaSizeItem('1200', N_('1200 px'))),
     (-1, CaaSizeItem(None, N_('Full size'))),
