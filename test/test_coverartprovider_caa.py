@@ -29,9 +29,10 @@ class CoverArtImageProviderCaaTest(PicardTestCase):
         def do_tests(sizes, expectations):
             # we create a dummy url named after matching size
             thumbnails = dict([(size, "url %s" % size) for size in sizes])
+            msgfmt = "for size %s, with sizes %r, got %r, expected %r"
             for size, expect in expectations.items():
                 result = caa_url_fallback_list(size, thumbnails)
-                self.assertEqual(result, expect)
+                self.assertEqual(result, expect, msg=msgfmt % (size, sizes, result, expect))
 
         sizes = ("250", "500", "1200", "large", "small")
         expectations = {
