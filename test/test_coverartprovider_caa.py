@@ -57,3 +57,9 @@ class CoverArtImageProviderCaaTest(PicardTestCase):
             1500: ['url large', 'url small'],
         }
         do_tests(sizes, expectations)
+
+        with self.assertRaises(TypeError):
+            caa_url_fallback_list("not_an_integer", {"250": "url 250"})
+
+        with self.assertRaises(TypeError):
+            caa_url_fallback_list(250, 666)
