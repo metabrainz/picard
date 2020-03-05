@@ -638,7 +638,7 @@ class CoverArtProviderCaa(CoverArtProvider):
                             # thumbnail will be used to "display" PDF in info
                             # dialog
                             thumbnail = self.coverartimage_thumbnail_class(
-                                url=url[0],
+                                url=urls[0],
                                 types=image["types"],
                                 is_front=image['front'],
                                 comment=image["comment"],
