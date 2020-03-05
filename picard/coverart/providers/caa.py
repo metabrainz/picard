@@ -80,7 +80,12 @@ _CAA_THUMBNAIL_SIZE_MAP = OrderedDict([
     (1200, CaaSizeItem('1200', N_('1200 px'))),
     (-1, CaaSizeItem(None, N_('Full size'))),
 ])
-
+_CAA_THUMBNAIL_SIZE_ALIASES = {
+    'large': '500',
+    'small': '250',
+    '500': 'large',
+    '250': 'small',
+}
 _CAA_IMAGE_SIZE_DEFAULT = 500
 
 _CAA_IMAGE_TYPE_DEFAULT_INCLUDE = ['front']
@@ -103,8 +108,13 @@ def caa_url_fallback_list(desired_size, thumbnails):
     for item_id, item in reversed_map.items():
         if item_id == -1 or item_id > desired_size:
             continue
-        if item.thumbnail in thumbnails:
-            urls.append(thumbnails[item.thumbnail])
+        url = thumbnails.get(item.thumbnail, None)
+        if url is None:
+            size_alias = _CAA_THUMBNAIL_SIZE_ALIASES.get(item.thumbnail, None)
+            if size_alias is not None:
+                url = thumbnails.get(size_alias, None)
+        if url is not None:
+            urls.append(url)
     return urls
 
 
