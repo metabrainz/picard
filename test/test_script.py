@@ -156,7 +156,7 @@ class ScriptParserTest(PicardTestCase):
         def somefunc4(parser):
             return "x"
         self.assertScriptResultEquals("$otherfunc()", "x")
-        areg = "^Unknown function 'somefunc'$"
+        areg = "^Unknown function 'somefunc'"
         with self.assertRaisesRegex(ScriptError, areg):
             self.parser.eval("$somefunc()")
 
@@ -175,12 +175,12 @@ class ScriptParserTest(PicardTestCase):
         self.assertScriptResultEquals("$somefunc($title(x))", "X")
 
     def test_unknown_function(self):
-        areg = r"^Unknown function 'unknownfunction'$"
+        areg = r"^Unknown function 'unknownfunction'"
         with self.assertRaisesRegex(ScriptError, areg):
             self.parser.eval("$unknownfunction()")
 
     def test_noname_function(self):
-        areg = r"^Unknown function ''$"
+        areg = r"^Unknown function ''"
         with self.assertRaisesRegex(ScriptError, areg):
             self.parser.eval("$()")
 
@@ -199,10 +199,10 @@ class ScriptParserTest(PicardTestCase):
     def test_scriptfunction_unknown(self):
         parser = ScriptParser()
         parser.parse('')
-        areg = r"^Unknown function 'x'$"
+        areg = r"^Unknown function 'x'"
         with self.assertRaisesRegex(ScriptError, areg):
             ScriptFunction('x', '', parser)
-        areg = r"^Unknown function 'noop'$"
+        areg = r"^Unknown function 'noop'"
         with self.assertRaisesRegex(ScriptError, areg):
             f = ScriptFunction('noop', '', parser)
             del parser.functions['noop']
@@ -1200,24 +1200,53 @@ class ScriptParserTest(PicardTestCase):
 
         try:
             context = Metadata()
-            areg = r"^\$datetime:1:\d+: Unsupported format code"
+            areg = r"^1:\d+:\$datetime: Unsupported format code"
             # Tests with invalid format code (platform dependent tests)
             for test_case in tests_to_run:
                 with self.assertRaisesRegex(ScriptRuntimeError, areg):
                     self.parser.eval(r'$datetime(\{0})'.format(test_case))
+        finally:
+            # Restore original datetime object
+            datetime.datetime = original_datetime
+
+    def test_scriptruntimeerror(self):
+        # Platform dependent testing because different platforms (both os and Python version)
+        # support some format arguments differently.  Use $datetime function to generate exceptions.
+        possible_tests = (
+            '%',    # Hanging % at end of format
+            '%-d',  # Non zero-padded day
+            '%-m',  # Non zero-padded month
+            '%3Y',  # Length specifier shorter than string
+        )
+        test_to_run = ''
+        # Get list of tests for unsupported format codes
+        for test_case in possible_tests:
+            try:
+                datetime.datetime.now().strftime(test_case)
+            except ValueError:
+                test_to_run = test_case
+                break
+        if not test_to_run:
+            self.skipTest('no test found to generate ScriptRuntimeError')
+        # Save original datetime object and substitute one returning
+        # a fixed now() value for testing.
+        original_datetime = datetime.datetime
+        datetime.datetime = _DateTime
+
+        try:
+            context = Metadata()
             # Test that the correct position number is passed
-            test_string = r'$noop()$datetime(\{0})'.format(test_case)
-            areg = r"^\$datetime:\d+:7: Unsupported format code"
+            areg = r"^\d+:7:\$datetime: Unsupported format code"
             with self.assertRaisesRegex(ScriptRuntimeError, areg):
-                self.parser.eval(test_string)
+                self.parser.eval(r'$noop()$datetime(\{0})'.format(test_to_run))
             # Test that the function stack is returning the correct name (nested functions)
-            areg = r"^\$datetime:\d+:\d+: Unsupported format code"
+            areg = r"^\d+:\d+:\$datetime: Unsupported format code"
             with self.assertRaisesRegex(ScriptRuntimeError, areg):
-                self.parser.eval(r'$set(foo,$datetime($if(,,\{0})))'.format(test_case))
+                self.parser.eval(r'$set(foo,$datetime($if(,,\{0})))'.format(test_to_run))
             # Test that the correct line number is passed
-            areg = r"^\$datetime:2:\d+: Unsupported format code"
+            areg = r"^2:\d+:\$datetime: Unsupported format code"
             with self.assertRaisesRegex(ScriptRuntimeError, areg):
-                self.parser.eval('$noop(\n)$datetime($if(,,\\{0})))'.format(test_case))
+                self.parser.eval('$noop(\n)$datetime($if(,,\\{0})))'.format(test_to_run))
         finally:
             # Restore original datetime object
             datetime.datetime = original_datetime

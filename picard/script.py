@@ -59,7 +59,14 @@ class ScriptError(Exception):
 
 
 class ScriptParseError(ScriptError):
-    pass
+    def __init__(self, message, stackitem):
+        super().__init__(
+            "{0} at position {1}, line {2}".format(
+                message,
+                stackitem.line,
+                stackitem.column
+            )
+        )
 
 
 class ScriptEndOfFile(ScriptParseError):
@@ -70,13 +77,32 @@ class ScriptSyntaxError(ScriptParseError):
     pass
 
 
-class ScriptUnknownFunction(ScriptError):
+class ScriptUnknownFunction(ScriptParseError):
     pass
 
 
 class ScriptRuntimeError(ScriptError):
-    def __init__(self, message, name, line, position):
-        super().__init__("${1:s}:{2:d}:{3:d}: {0:s}".format(message, name, line, position))
+    def __init__(self, message, functionstackitem):
+        super().__init__(
+            "{0}:{1}:${2}: {3}".format(
+                functionstackitem.line,
+                functionstackitem.column,
+                functionstackitem.name,
+                message
+            )
+        )
+
+
+class StackItem:
+    def __init__(self, line, column):
+        self.line = line
+        self.column = column
+
+
+class FunctionStackItem(StackItem):
+    def __init__(self, line, column, name):
+        super().__init__(line, column)
+        self.name = name
 
 
 class ScriptText(str):
@@ -107,12 +133,13 @@ FunctionRegistryItem = namedtuple("FunctionRegistryItem",
                                   ["function", "eval_args",
                                    "argcount"])
 Bound = namedtuple("Bound", ["lower", "upper"])
-FunctionStackItem = namedtuple("FunctionStackItem", ["function", "column", "line"])
 
 
 class ScriptFunction(object):
 
     def __init__(self, name, args, parser, column=0, line=0):
+        self.stackitem = StackItem(line, column)
+        self.functionstackitem = FunctionStackItem(line, column, name)
         try:
             argnum_bound = parser.functions[name].argcount
             argcount = len(args)
@@ -129,16 +156,16 @@ class ScriptFunction(object):
                     too_many_args = False
 
                 if too_few_args or too_many_args:
-                    raise ScriptError(
-                        "Wrong number of arguments for $%s: Expected %s, got %i at position %i, line %i"
-                        % (name, expected, argcount, parser._x, parser._y)
+                    raise ScriptSyntaxError(
+                        "Wrong number of arguments for $%s: Expected %s, got %i"
+                        % (name, expected, argcount),
+                        StackItem(parser._y, parser._x)
                     )
         except KeyError:
-            raise ScriptUnknownFunction("Unknown function '%s'" % name)
+            raise ScriptUnknownFunction("Unknown function '%s'" % name, self.stackitem)
 
         self.name = name
         self.args = args
-        self.function = FunctionStackItem(name, column, line)
 
     def __repr__(self):
         return "<ScriptFunction $%s(%r)>" % (self.name, self.args)
@@ -147,13 +174,13 @@ class ScriptFunction(object):
         try:
             function, eval_args, num_args = parser.functions[self.name]
         except KeyError:
-            raise ScriptUnknownFunction("Unknown function '%s'" % self.name)
+            raise ScriptUnknownFunction("Unknown function '%s'" % self.name, self.stackitem)
 
         if eval_args:
             args = [arg.eval(parser) for arg in self.args]
         else:
             args = self.args
-        parser._function_stack.put(self.function)
+        parser._function_stack.put(self.functionstackitem)
         # Save return value to allow removing function from the stack on successful completion
         return_value = function(parser, *args)
         parser._function_stack.get()
@@ -191,13 +218,13 @@ Grammar:
         self._function_stack = LifoQueue()
 
     def __raise_eof(self):
-        raise ScriptEndOfFile("Unexpected end of script at position %d, line %d" % (self._x, self._y))
+        raise ScriptEndOfFile("Unexpected end of script", StackItem(self._y, self._x))
 
     def __raise_char(self, ch):
         #line = self._text[self._line:].split("\n", 1)[0]
         #cursor = " " * (self._pos - self._line - 1) + "^"
         #raise ScriptSyntaxError("Unexpected character '%s' at position %d, line %d\n%s\n%s" % (ch, self._x, self._y, line, cursor))
-        raise ScriptSyntaxError("Unexpected character '%s' at position %d, line %d" % (ch, self._x, self._y))
+        raise ScriptSyntaxError("Unexpected character '%s'", StackItem(self._y, self._x))
 
     def read(self):
         try:
@@ -242,7 +269,7 @@ Grammar:
             if ch == '(':
                 name = self._text[start:self._pos-1]
                 if name not in self.functions:
-                    raise ScriptUnknownFunction("Unknown function '%s'" % name)
+                    raise ScriptUnknownFunction("Unknown function '%s'" % name, StackItem(line, column))
                 return ScriptFunction(name, self.parse_arguments(), self, column, line)
             elif ch is None:
                 self.__raise_eof()
@@ -1284,12 +1311,10 @@ def func_datetime(parser, format=None):
     try:
         return datetime.datetime.now(tz=local_tz).strftime(format)
     except ValueError:
-        function = parser._function_stack.get()
+        functionstackitem = parser._function_stack.get()
         raise ScriptRuntimeError(
             "Unsupported format code",
-            function.function,
-            function.line,
-            function.column
+            functionstackitem
         )
 
 
