@@ -34,6 +34,17 @@ class CoverArtImageProviderCaaTest(PicardTestCase):
                 result = caa_url_fallback_list(size, thumbnails)
                 self.assertEqual(result, expect, msg=msgfmt % (size, sizes, result, expect))
 
+        # For historical reasons, caa web service returns 2 identical urls,
+        # for 2 different keys (250/small, 500/large)
+        # Here is an example of the json relevant part:
+        # "thumbnails": {
+        #   "250": "http://coverartarchive.org/release/d20247ad-940e-486d-948f-be4c17024ab9/24885128253-250.jpg",
+        #   "500": "http://coverartarchive.org/release/d20247ad-940e-486d-948f-be4c17024ab9/24885128253-500.jpg",
+        #   "1200": "http://coverartarchive.org/release/d20247ad-940e-486d-948f-be4c17024ab9/24885128253-1200.jpg",
+        #   "large": "http://coverartarchive.org/release/d20247ad-940e-486d-948f-be4c17024ab9/24885128253-500.jpg",
+        #   "small": "http://coverartarchive.org/release/d20247ad-940e-486d-948f-be4c17024ab9/24885128253-250.jpg"
+        # },
+        # 
         sizes = ("250", "500", "1200", "large", "small")
         expectations = {
             50:  [],
@@ -46,7 +57,7 @@ class CoverArtImageProviderCaaTest(PicardTestCase):
         }
         do_tests(sizes, expectations)
 
-        # no 1200px in thumbnails list
+        # Some older releases have no 1200px thumbnail
         sizes = ("250", "500", "large", "small")
         expectations = {
             50:  [],
