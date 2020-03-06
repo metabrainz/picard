@@ -293,6 +293,25 @@ class CommonId3Tests:
             self.assertEqual('owner', raw_metadata['TOWN'])
 
         @skipUnlessTestfile
+        def test_delete_explicit_id3_frames(self):
+            tags = mutagen.id3.ID3Tags()
+            tags.add(mutagen.id3.TOWN(text='bar'))
+            tags.add(mutagen.id3.TXXX(desc='foo', text='bar1'))
+            tags.add(mutagen.id3.TXXX(desc='foo', text='bar2'))
+            save_raw(self.filename, tags)
+            raw_metadata = load_raw(self.filename)
+            self.assertIn('TOWN', raw_metadata)
+            self.assertIn('TXXX:foo', raw_metadata)
+            metadata = Metadata()
+            metadata.delete('~id3:TOWN')
+            metadata.delete('~id3:TXXX:foo')
+            metadata.delete('~id3:NOTAFRAME')
+            save_metadata(self.filename, metadata)
+            raw_metadata = load_raw(self.filename)
+            self.assertNotIn('TOWN', raw_metadata)
+            self.assertNotIn('TXXX:foo', raw_metadata)
+
+        @skipUnlessTestfile
         def test_load_conflicting_txxx_tags(self):
             tags = mutagen.id3.ID3Tags()
             tags.add(mutagen.id3.TXXX(desc='title', text='foo'))
