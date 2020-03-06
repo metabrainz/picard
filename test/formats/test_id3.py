@@ -3,7 +3,7 @@
 # Picard, the next-generation MusicBrainz tagger
 #
 # Copyright (C) 2019 Laurent Monin
-# Copyright (C) 2019 Philipp Wolfer
+# Copyright (C) 2019-2020 Philipp Wolfer
 # Copyright (C) 2019 Zenara Daley
 #
 # This program is free software; you can redistribute it and/or
@@ -96,6 +96,48 @@ class CommonId3Tests:
             self.assertNotIn('Foo', new_metadata)
             self.assertNotIn('Bar', new_metadata)
             self.assertIn('FooBar', new_metadata)
+
+        @skipUnlessTestfile
+        def test_id3_rename_freetext_delete(self):
+            tags = mutagen.id3.ID3Tags()
+            tags.add(mutagen.id3.TXXX(desc='Work', text='foo'))
+            save_raw(self.filename, tags)
+            raw_metadata = load_raw(self.filename)
+            self.assertIn('TXXX:Work', raw_metadata)
+
+            metadata = Metadata()
+            metadata.delete('work')
+            new_metadata = save_and_load_metadata(self.filename, metadata)
+            self.assertNotIn('work', new_metadata)
+            raw_metadata = load_raw(self.filename)
+            self.assertNotIn('TXXX:Work', raw_metadata)
+            self.assertNotIn('TXXX:WORK', raw_metadata)
+
+        @skipUnlessTestfile
+        def test_id3_freetext_ci_delete(self):
+            # No matter which of the names below gets deleted it always
+            # should remove all of them
+            tag_name_variants = [
+                'replaygain_album_gain',
+                'REPLAYGAIN_ALBUM_GAIN',
+                'Replaygain_Album_Gain',
+            ]
+
+            for tag_in_test in tag_name_variants:
+                tags = mutagen.id3.ID3Tags()
+                for tag in tag_name_variants:
+                    tags.add(mutagen.id3.TXXX(desc=tag, text='foo'))
+                save_raw(self.filename, tags)
+                raw_metadata = load_raw(self.filename)
+                for tag in tag_name_variants:
+                    self.assertIn('TXXX:' + tag, raw_metadata)
+
+                metadata = Metadata()
+                metadata.delete(tag_in_test)
+                save_metadata(self.filename, metadata)
+                raw_metadata = load_raw(self.filename)
+                for tag in tag_name_variants:
+                    self.assertNotIn('TXXX:' + tag, raw_metadata)
 
         @skipUnlessTestfile
         def test_id3_metadata_tofn(self):
@@ -247,6 +289,19 @@ class CommonId3Tests:
                 self.assertEqual(loaded_metadata[key], value, '%s: %r != %r' % (key, loaded_metadata[key], value))
 
         @skipUnlessTestfile
+        def test_ci_tags_save(self):
+            tag_name_variants = [
+                'replaygain_album_gain',
+                'REPLAYGAIN_ALBUM_GAIN',
+                'Replaygain_Album_Gain',
+            ]
+
+            for tag in tag_name_variants:
+                metadata = Metadata({ tag: 'foo' })
+                loaded_metadata = save_and_load_metadata(self.filename, metadata)
+                self.assertEqual('foo', loaded_metadata['replaygain_album_gain'])
+
+        @skipUnlessTestfile
         def test_ci_tags_preserve_case(self):
             # Ensure values are not duplicated on repeated save and are saved
             # case preserving.
@@ -264,10 +319,126 @@ class CommonId3Tests:
             self.assertEqual(1, len(raw_metadata['TXXX:Replaygain_Album_Peak'].text))
             self.assertNotIn('TXXX:REPLAYGAIN_ALBUM_PEAK', raw_metadata)
 
+        @skipUnlessTestfile
         def test_lyrics_with_description(self):
             metadata = Metadata({'lyrics:foo': 'bar'})
             loaded_metadata = save_and_load_metadata(self.filename, metadata)
             self.assertEqual(metadata['lyrics:foo'], loaded_metadata['lyrics:foo'])
+
+        @skipUnlessTestfile
+        def test_invalid_track_and_discnumber(self):
+            metadata = Metadata({
+                'discnumber': 'notanumber',
+                'tracknumber': 'notanumber',
+            })
+            loaded_metadata = save_and_load_metadata(self.filename, metadata)
+            self.assertNotIn('discnumber', loaded_metadata)
+            self.assertNotIn('tracknumber', loaded_metadata)
+
+        @skipUnlessTestfile
+        def test_save_explicit_id3_frames(self):
+            metadata = Metadata({
+                '~id3:TXXX:foo': 'bar',
+                '~id3:TOWN': 'owner'
+            })
+            save_metadata(self.filename, metadata)
+            raw_metadata = load_raw(self.filename)
+            self.assertIn('TXXX:foo', raw_metadata)
+            self.assertEqual('bar', raw_metadata['TXXX:foo'])
+            self.assertEqual('owner', raw_metadata['TOWN'])
+
+        @skipUnlessTestfile
+        def test_delete_explicit_id3_frames(self):
+            tags = mutagen.id3.ID3Tags()
+            tags.add(mutagen.id3.TOWN(text='bar'))
+            tags.add(mutagen.id3.TXXX(desc='foo', text='bar1'))
+            tags.add(mutagen.id3.TXXX(desc='foo', text='bar2'))
+            save_raw(self.filename, tags)
+            raw_metadata = load_raw(self.filename)
+            self.assertIn('TOWN', raw_metadata)
+            self.assertIn('TXXX:foo', raw_metadata)
+            metadata = Metadata()
+            metadata.delete('~id3:TOWN')
+            metadata.delete('~id3:TXXX:foo')
+            metadata.delete('~id3:NOTAFRAME')
+            save_metadata(self.filename, metadata)
+            raw_metadata = load_raw(self.filename)
+            self.assertNotIn('TOWN', raw_metadata)
+            self.assertNotIn('TXXX:foo', raw_metadata)
+
+        @skipUnlessTestfile
+        def test_delete_tipl(self):
+            tags = mutagen.id3.ID3Tags()
+            tags.add(mutagen.id3.TIPL(people=[
+                ['mix', 'mixer1'],
+                ['mix', 'mixer2'],
+                ['producer', 'producer1'],
+            ]))
+            save_raw(self.filename, tags)
+            metadata = Metadata()
+            metadata.delete('mixer')
+            save_metadata(self.filename, metadata)
+            raw_metadata = load_raw(self.filename)
+            people = raw_metadata['TIPL'].people
+            self.assertIn(['producer', 'producer1'], people)
+            self.assertNotIn(['mix', 'mixer1'], people)
+            self.assertNotIn(['mix', 'mixer2'], people)
+            self.assertEqual(1, len(people))
+
+        @skipUnlessTestfile
+        def test_load_conflicting_txxx_tags(self):
+            tags = mutagen.id3.ID3Tags()
+            tags.add(mutagen.id3.TXXX(desc='title', text='foo'))
+            save_raw(self.filename, tags)
+            loaded_metadata = load_metadata(self.filename)
+            self.assertEqual('foo', loaded_metadata['~id3:TXXX:title'])
+
+        @skipUnlessTestfile
+        def test_license_single_url(self):
+            metadata = Metadata({
+                'license': 'http://example.com'
+            })
+            loaded_metadata = save_and_load_metadata(self.filename, metadata)
+            self.assertEqual(metadata['license'], loaded_metadata['license'])
+            raw_metadata = load_raw(self.filename)
+            self.assertEqual(metadata['license'], raw_metadata['WCOP'])
+
+        @skipUnlessTestfile
+        def test_license_single_non_url(self):
+            metadata = Metadata({
+                'license': 'foo'
+            })
+            loaded_metadata = save_and_load_metadata(self.filename, metadata)
+            self.assertEqual(metadata['license'], loaded_metadata['license'])
+            raw_metadata = load_raw(self.filename)
+            self.assertEqual(metadata['license'], raw_metadata['TXXX:LICENSE'])
+
+        @skipUnlessTestfile
+        def test_license_multi_url(self):
+            metadata = Metadata({
+                'license': [
+                    'http://example.com/1',
+                    'http://example.com/2',
+                ]
+            })
+            loaded_metadata = save_and_load_metadata(self.filename, metadata)
+            self.assertEqual(metadata['license'], loaded_metadata['license'])
+            raw_metadata = load_raw(self.filename)
+            self.assertEqual(
+                set(metadata.getall('license')),
+                set(raw_metadata.get('TXXX:LICENSE').text))
+
+        @skipUnlessTestfile
+        def test_license_wcop_and_txxx(self):
+            tags = mutagen.id3.ID3Tags()
+            tags.add(mutagen.id3.WCOP(url='http://example.com/1'))
+            tags.add(mutagen.id3.TXXX(desc='license', text='http://example.com/2'))
+            save_raw(self.filename, tags)
+            loaded_metadata = load_metadata(self.filename)
+            loaded_licenses = loaded_metadata.getall('license')
+            self.assertEqual(2, len(loaded_licenses))
+            self.assertIn('http://example.com/1', loaded_licenses)
+            self.assertIn('http://example.com/2', loaded_licenses)
 
 
 class MP3Test(CommonId3Tests.Id3TestCase):
@@ -279,6 +450,27 @@ class MP3Test(CommonId3Tests.Id3TestCase):
         '~sample_rate': '44100',
     }
     unexpected_info = ['~video']
+
+    @skipUnlessTestfile
+    def test_remove_apev2(self):
+        # Add APEv2 tags
+        apev2_tags = mutagen.apev2.APEv2()
+        apev2_tags['Title'] = 'foo'
+        apev2_tags.save(self.filename)
+        self.assertEqual('foo', mutagen.apev2.APEv2(self.filename)['Title'])
+        config.setting['remove_ape_from_mp3'] = False
+        save_metadata(self.filename, Metadata())
+        self.assertEqual('foo', mutagen.apev2.APEv2(self.filename)['Title'])
+        config.setting['remove_ape_from_mp3'] = True
+        save_metadata(self.filename, Metadata())
+        self.assertRaises(mutagen.apev2.APENoHeaderError, mutagen.apev2.APEv2, self.filename)
+
+    @skipUnlessTestfile
+    def test_remove_apev2_no_existing_tags(self):
+        self.assertRaises(mutagen.apev2.APENoHeaderError, mutagen.apev2.APEv2, self.filename)
+        config.setting['remove_ape_from_mp3'] = True
+        save_metadata(self.filename, Metadata())
+        self.assertRaises(mutagen.apev2.APENoHeaderError, mutagen.apev2.APEv2, self.filename)
 
 
 class TTATest(CommonId3Tests.Id3TestCase):
