@@ -75,12 +75,15 @@ from picard.ui.util import StandardButton
 CaaSizeItem = namedtuple('CaaSizeItem', ['thumbnail', 'label'])
 
 _CAA_THUMBNAIL_SIZE_MAP = OrderedDict([
-    (250, CaaSizeItem('small', N_('250 px'))),
-    (500, CaaSizeItem('large', N_('500 px'))),
+    (250, CaaSizeItem('250', N_('250 px'))),
+    (500, CaaSizeItem('500', N_('500 px'))),
     (1200, CaaSizeItem('1200', N_('1200 px'))),
     (-1, CaaSizeItem(None, N_('Full size'))),
 ])
-
+_CAA_THUMBNAIL_SIZE_ALIASES = {
+    '500': 'large',
+    '250': 'small',
+}
 _CAA_IMAGE_SIZE_DEFAULT = 500
 
 _CAA_IMAGE_TYPE_DEFAULT_INCLUDE = ['front']
@@ -103,8 +106,13 @@ def caa_url_fallback_list(desired_size, thumbnails):
     for item_id, item in reversed_map.items():
         if item_id == -1 or item_id > desired_size:
             continue
-        if item.thumbnail in thumbnails:
-            urls.append(thumbnails[item.thumbnail])
+        url = thumbnails.get(item.thumbnail, None)
+        if url is None:
+            size_alias = _CAA_THUMBNAIL_SIZE_ALIASES.get(item.thumbnail, None)
+            if size_alias is not None:
+                url = thumbnails.get(size_alias, None)
+        if url is not None:
+            urls.append(url)
     return urls
 
 
