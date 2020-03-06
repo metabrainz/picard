@@ -81,8 +81,6 @@ _CAA_THUMBNAIL_SIZE_MAP = OrderedDict([
     (-1, CaaSizeItem(None, N_('Full size'))),
 ])
 _CAA_THUMBNAIL_SIZE_ALIASES = {
-    'large': '500',
-    'small': '250',
     '500': 'large',
     '250': 'small',
 }
