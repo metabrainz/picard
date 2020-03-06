@@ -103,7 +103,7 @@ class StackItem:
         self.line = line
         self.column = column
         if name is None:
-            self.name = name
+            self.name = None
         else:
             self.name = '$' + name
 
@@ -236,10 +236,7 @@ Grammar:
         raise ScriptEndOfFile(StackItem(line=self._y, column=self._x))
 
     def __raise_char(self, ch):
-        #line = self._text[self._line:].split("\n", 1)[0]
-        #cursor = " " * (self._pos - self._line - 1) + "^"
-        #raise ScriptSyntaxError("Unexpected character '%s' at position %d, line %d\n%s\n%s" % (ch, self._x, self._y, line, cursor))
-        raise ScriptSyntaxError(StackItem(line=self._y, column=self._x), "Unexpected character '%s'")
+        raise ScriptSyntaxError(StackItem(line=self._y, column=self._x), "Unexpected character '%s'" % ch)
 
     def read(self):
         try:
@@ -1327,10 +1324,7 @@ def func_datetime(parser, format=None):
         return datetime.datetime.now(tz=local_tz).strftime(format)
     except ValueError:
         stackitem = parser._function_stack.get()
-        raise ScriptRuntimeError(
-            stackitem,
-            "Unsupported format code"
-        )
+        raise ScriptRuntimeError(stackitem, "Unsupported format code")
 
 
 @script_function(eval_args=False)

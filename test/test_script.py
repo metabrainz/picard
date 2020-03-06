@@ -192,7 +192,7 @@ class ScriptParserTest(PicardTestCase):
             self.parser.eval("$")
 
     def test_unexpected_character(self):
-        areg = r"^\d+:\d+: Unexpected character"
+        areg = r"^\d+:\d+: Unexpected character '\^'"
         with self.assertRaisesRegex(ScriptError, areg):
             self.parser.eval("$^noop()")
 
