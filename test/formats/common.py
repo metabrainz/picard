@@ -404,18 +404,22 @@ class CommonTests:
 
         @skipUnlessTestfile
         def test_delete_performer(self):
-            if 'performer:guest vocal' in self.tags:
-                metadata = Metadata(self.tags)
-                metadata['performer:piano'] = 'Foo'
+            if not self.format.supports_tag('performer:'):
+                raise unittest.SkipTest('Tag "performer:" not supported for %s' % self.format.NAME)
+            metadata = Metadata({
+                'performer:piano': ['Piano1', 'Piano2'],
+                'performer:guitar': ['Guitar1'],
+            })
+            original_metadata = save_and_load_metadata(self.filename, metadata)
+            self.assertIn('Piano1', original_metadata.getall('performer:piano'))
+            self.assertIn('Piano2', original_metadata.getall('performer:piano'))
+            self.assertEqual(2, len(original_metadata.getall('performer:piano')))
+            self.assertEqual('Guitar1', original_metadata['performer:guitar'])
 
-                original_metadata = save_and_load_metadata(self.filename, metadata)
-                del metadata['performer:piano']
-                new_metadata = save_and_load_metadata(self.filename, metadata)
-
-                self.assertIn('performer:guest vocal', original_metadata)
-                self.assertIn('performer:guest vocal', new_metadata)
-                self.assertIn('performer:piano', original_metadata)
-                self.assertNotIn('performer:piano', new_metadata)
+            del metadata['performer:piano']
+            new_metadata = save_and_load_metadata(self.filename, metadata)
+            self.assertNotIn('performer:piano', new_metadata)
+            self.assertEqual('Guitar1', metadata['performer:guitar'])
 
         @skipUnlessTestfile
         def test_save_performer(self):

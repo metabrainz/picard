@@ -312,6 +312,25 @@ class CommonId3Tests:
             self.assertNotIn('TXXX:foo', raw_metadata)
 
         @skipUnlessTestfile
+        def test_delete_tipl(self):
+            tags = mutagen.id3.ID3Tags()
+            tags.add(mutagen.id3.TIPL(people=[
+                ['mix', 'mixer1'],
+                ['mix', 'mixer2'],
+                ['producer', 'producer1'],
+            ]))
+            save_raw(self.filename, tags)
+            metadata = Metadata()
+            metadata.delete('mixer')
+            save_metadata(self.filename, metadata)
+            raw_metadata = load_raw(self.filename)
+            people = raw_metadata['TIPL'].people
+            self.assertIn(['producer', 'producer1'], people)
+            self.assertNotIn(['mix', 'mixer1'], people)
+            self.assertNotIn(['mix', 'mixer2'], people)
+            self.assertEqual(1, len(people))
+
+        @skipUnlessTestfile
         def test_load_conflicting_txxx_tags(self):
             tags = mutagen.id3.ID3Tags()
             tags.add(mutagen.id3.TXXX(desc='title', text='foo'))

@@ -109,6 +109,14 @@ def types_from_id3(id3type):
     return [image_type_from_id3_num(id3type)]
 
 
+def _remove_people_with_role(tags, frames, role):
+    for key, frame in tags.items():
+        if frame.FrameID in frames:
+            for people in list(frame.people):
+                if people[0] == role:
+                    frame.people.remove(people)
+
+
 class ID3File(File):
 
     """Generic ID3-based file."""
@@ -542,11 +550,7 @@ class ID3File(File):
             try:
                 if name.startswith('performer:'):
                     role = name.split(':', 1)[1]
-                    for key, frame in tags.items():
-                        if frame.FrameID in ('TMCL', 'TIPL', 'IPLS'):
-                            for people in frame.people:
-                                if people[0] == role:
-                                    frame.people.remove(people)
+                    _remove_people_with_role(tags, ['TMCL', 'TIPL', 'IPLS'], role)
                 elif name.startswith('comment:') or name == 'comment':
                     (lang, desc) = parse_comment_tag(name)
                     if desc.lower()[:4] != 'itun':
@@ -564,11 +568,7 @@ class ID3File(File):
                             del tags[key]
                 elif name in self._rtipl_roles:
                     role = self._rtipl_roles[name]
-                    for key, frame in tags.items():
-                        if frame.FrameID in ('TIPL', 'IPLS'):
-                            for people in frame.people:
-                                if people[0] == role:
-                                    frame.people.remove(people)
+                    _remove_people_with_role(tags, ['TIPL', 'IPLS'], role)
                 elif name == 'musicbrainz_recordingid':
                     for key, frame in list(tags.items()):
                         if frame.FrameID == 'UFID' and frame.owner == 'http://musicbrainz.org':
