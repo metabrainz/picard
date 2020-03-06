@@ -289,6 +289,19 @@ class CommonId3Tests:
                 self.assertEqual(loaded_metadata[key], value, '%s: %r != %r' % (key, loaded_metadata[key], value))
 
         @skipUnlessTestfile
+        def test_ci_tags_save(self):
+            tag_name_variants = [
+                'replaygain_album_gain',
+                'REPLAYGAIN_ALBUM_GAIN',
+                'Replaygain_Album_Gain',
+            ]
+
+            for tag in tag_name_variants:
+                metadata = Metadata({ tag: 'foo' })
+                loaded_metadata = save_and_load_metadata(self.filename, metadata)
+                self.assertEqual('foo', loaded_metadata['replaygain_album_gain'])
+
+        @skipUnlessTestfile
         def test_ci_tags_preserve_case(self):
             # Ensure values are not duplicated on repeated save and are saved
             # case preserving.

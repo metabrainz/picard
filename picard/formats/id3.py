@@ -427,6 +427,7 @@ class ID3File(File):
         for name, values in metadata.rawitems():
             values = [id3text(v, encoding) for v in values]
             name = id3text(name, encoding)
+            name_lower = name.lower()
 
             if not self.supports_tag(name):
                 continue
@@ -504,11 +505,11 @@ class ID3File(File):
                         tags.delall('XSOP')
                     elif frameid == 'TSO2':
                         tags.delall('TXXX:ALBUMARTISTSORT')
-            elif name in self.__rtranslate_freetext_ci:
-                if name in self.__casemap:
-                    description = self.__casemap[name]
+            elif name_lower in self.__rtranslate_freetext_ci:
+                if name_lower in self.__casemap:
+                    description = self.__casemap[name_lower]
                 else:
-                    description = self.__rtranslate_freetext_ci[name]
+                    description = self.__rtranslate_freetext_ci[name_lower]
                 delall_ci(tags, 'TXXX:' + description)
                 tags.add(self.build_TXXX(encoding, description, values))
             elif name in self.__rtranslate_freetext:
@@ -579,8 +580,8 @@ class ID3File(File):
                             del tags[key]
                 elif real_name in self.__translate:
                     del tags[real_name]
-                elif name in self.__rtranslate_freetext_ci:
-                    delall_ci(tags, 'TXXX:' + self.__rtranslate_freetext_ci[name])
+                elif name.lower() in self.__rtranslate_freetext_ci:
+                    delall_ci(tags, 'TXXX:' + self.__rtranslate_freetext_ci[name.lower()])
                 elif real_name in self.__translate_freetext:
                     tags.delall('TXXX:' + real_name)
                     if real_name in self.__rrename_freetext:
