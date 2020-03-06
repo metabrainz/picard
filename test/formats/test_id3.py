@@ -300,6 +300,53 @@ class CommonId3Tests:
             loaded_metadata = load_metadata(self.filename)
             self.assertEqual('foo', loaded_metadata['~id3:TXXX:title'])
 
+        @skipUnlessTestfile
+        def test_license_single_url(self):
+            metadata = Metadata({
+                'license': 'http://example.com'
+            })
+            loaded_metadata = save_and_load_metadata(self.filename, metadata)
+            self.assertEqual(metadata['license'], loaded_metadata['license'])
+            raw_metadata = load_raw(self.filename)
+            self.assertEqual(metadata['license'], raw_metadata['WCOP'])
+
+        @skipUnlessTestfile
+        def test_license_single_non_url(self):
+            metadata = Metadata({
+                'license': 'foo'
+            })
+            loaded_metadata = save_and_load_metadata(self.filename, metadata)
+            self.assertEqual(metadata['license'], loaded_metadata['license'])
+            raw_metadata = load_raw(self.filename)
+            self.assertEqual(metadata['license'], raw_metadata['TXXX:LICENSE'])
+
+        @skipUnlessTestfile
+        def test_license_multi_url(self):
+            metadata = Metadata({
+                'license': [
+                    'http://example.com/1',
+                    'http://example.com/2',
+                ]
+            })
+            loaded_metadata = save_and_load_metadata(self.filename, metadata)
+            self.assertEqual(metadata['license'], loaded_metadata['license'])
+            raw_metadata = load_raw(self.filename)
+            self.assertEqual(
+                set(metadata.getall('license')),
+                set(raw_metadata.get('TXXX:LICENSE').text))
+
+        @skipUnlessTestfile
+        def test_license_wcop_and_txxx(self):
+            tags = mutagen.id3.ID3Tags()
+            tags.add(mutagen.id3.WCOP(url='http://example.com/1'))
+            tags.add(mutagen.id3.TXXX(desc='license', text='http://example.com/2'))
+            save_raw(self.filename, tags)
+            loaded_metadata = load_metadata(self.filename)
+            loaded_licenses = loaded_metadata.getall('license')
+            self.assertEqual(2, len(loaded_licenses))
+            self.assertIn('http://example.com/1', loaded_licenses)
+            self.assertIn('http://example.com/2', loaded_licenses)
+
 
 class MP3Test(CommonId3Tests.Id3TestCase):
     testfile = 'test.mp3'
