@@ -286,18 +286,32 @@ class MP4File(File):
                 tags['----:com.apple.iTunes:' + name] = values
 
         if "tracknumber" in metadata:
-            if "totaltracks" in metadata:
-                tags["trkn"] = [(int(metadata["tracknumber"]),
-                                 int(metadata["totaltracks"]))]
+            try:
+                tracknumber = int(metadata["tracknumber"])
+            except ValueError:
+                pass
             else:
-                tags["trkn"] = [(int(metadata["tracknumber"]), 0)]
+                totaltracks = 0
+                if "totaltracks" in metadata:
+                    try:
+                        totaltracks = int(metadata["totaltracks"])
+                    except ValueError:
+                        pass
+                tags["trkn"] = [(tracknumber, totaltracks)]
 
         if "discnumber" in metadata:
-            if "totaldiscs" in metadata:
-                tags["disk"] = [(int(metadata["discnumber"]),
-                                 int(metadata["totaldiscs"]))]
+            try:
+                discnumber = int(metadata["discnumber"])
+            except ValueError:
+                pass
             else:
-                tags["disk"] = [(int(metadata["discnumber"]), 0)]
+                totaldiscs = 0
+                if "totaldiscs" in metadata:
+                    try:
+                        totaldiscs = int(metadata["totaldiscs"])
+                    except ValueError:
+                        pass
+                tags["disk"] = [(discnumber, totaldiscs)]
 
         covr = []
         for image in metadata.images.to_be_saved_to_tags():

@@ -3,7 +3,7 @@
 # Picard, the next-generation MusicBrainz tagger
 #
 # Copyright (C) 2019 Laurent Monin
-# Copyright (C) 2019 Philipp Wolfer
+# Copyright (C) 2019-2020 Philipp Wolfer
 # Copyright (C) 2019 Zenara Daley
 #
 # This program is free software; you can redistribute it and/or
@@ -264,10 +264,41 @@ class CommonId3Tests:
             self.assertEqual(1, len(raw_metadata['TXXX:Replaygain_Album_Peak'].text))
             self.assertNotIn('TXXX:REPLAYGAIN_ALBUM_PEAK', raw_metadata)
 
+        @skipUnlessTestfile
         def test_lyrics_with_description(self):
             metadata = Metadata({'lyrics:foo': 'bar'})
             loaded_metadata = save_and_load_metadata(self.filename, metadata)
             self.assertEqual(metadata['lyrics:foo'], loaded_metadata['lyrics:foo'])
+
+        @skipUnlessTestfile
+        def test_invalid_track_and_discnumber(self):
+            metadata = Metadata({
+                'discnumber': 'notanumber',
+                'tracknumber': 'notanumber',
+            })
+            loaded_metadata = save_and_load_metadata(self.filename, metadata)
+            self.assertNotIn('discnumber', loaded_metadata)
+            self.assertNotIn('tracknumber', loaded_metadata)
+
+        @skipUnlessTestfile
+        def test_save_explicit_id3_frames(self):
+            metadata = Metadata({
+                '~id3:TXXX:foo': 'bar',
+                '~id3:TOWN': 'owner'
+            })
+            save_metadata(self.filename, metadata)
+            raw_metadata = load_raw(self.filename)
+            self.assertIn('TXXX:foo', raw_metadata)
+            self.assertEqual('bar', raw_metadata['TXXX:foo'])
+            self.assertEqual('owner', raw_metadata['TOWN'])
+
+        @skipUnlessTestfile
+        def test_load_conflicting_txxx_tags(self):
+            tags = mutagen.id3.ID3Tags()
+            tags.add(mutagen.id3.TXXX(desc='title', text='foo'))
+            save_raw(self.filename, tags)
+            loaded_metadata = load_metadata(self.filename)
+            self.assertEqual('foo', loaded_metadata['~id3:TXXX:title'])
 
 
 class MP3Test(CommonId3Tests.Id3TestCase):
@@ -279,6 +310,27 @@ class MP3Test(CommonId3Tests.Id3TestCase):
         '~sample_rate': '44100',
     }
     unexpected_info = ['~video']
+
+    @skipUnlessTestfile
+    def test_remove_apev2(self):
+        # Add APEv2 tags
+        apev2_tags = mutagen.apev2.APEv2()
+        apev2_tags['Title'] = 'foo'
+        apev2_tags.save(self.filename)
+        self.assertEqual('foo', mutagen.apev2.APEv2(self.filename)['Title'])
+        config.setting['remove_ape_from_mp3'] = False
+        save_metadata(self.filename, Metadata())
+        self.assertEqual('foo', mutagen.apev2.APEv2(self.filename)['Title'])
+        config.setting['remove_ape_from_mp3'] = True
+        save_metadata(self.filename, Metadata())
+        self.assertRaises(mutagen.apev2.APENoHeaderError, mutagen.apev2.APEv2, self.filename)
+
+    @skipUnlessTestfile
+    def test_remove_apev2_no_existing_tags(self):
+        self.assertRaises(mutagen.apev2.APENoHeaderError, mutagen.apev2.APEv2, self.filename)
+        config.setting['remove_ape_from_mp3'] = True
+        save_metadata(self.filename, Metadata())
+        self.assertRaises(mutagen.apev2.APENoHeaderError, mutagen.apev2.APEv2, self.filename)
 
 
 class TTATest(CommonId3Tests.Id3TestCase):

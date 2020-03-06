@@ -221,7 +221,7 @@ class CommonTests:
         @skipUnlessTestfile
         def test_info(self):
             if not self.expected_info:
-                raise unittest.SkipTest("Ratings not supported")
+                raise unittest.SkipTest("Ratings not supported for %s" % self.format.NAME)
             metadata = save_and_load_metadata(self.filename, Metadata())
             for key, expected_value in self.expected_info.items():
                 value = metadata.length if key == 'length' else metadata[key]
@@ -420,7 +420,7 @@ class CommonTests:
         @skipUnlessTestfile
         def test_save_performer(self):
             if not self.format.supports_tag('performer:'):
-                return
+                raise unittest.SkipTest('Tag "performer:" not supported for %s' % self.format.NAME)
             instrument = "accordéon clavier « boutons »"
             artist = "桑山哲也"
             tag = "performer:" + instrument
@@ -498,3 +498,26 @@ class CommonTests:
             metadata = Metadata({'comment:foó': 'bar'})
             loaded_metadata = save_and_load_metadata(self.filename, metadata)
             self.assertEqual(metadata['comment:foó'], loaded_metadata['comment:foó'])
+
+        @skipUnlessTestfile
+        def test_invalid_track_and_discnumber(self):
+            # This test assumes a non-numeric test number can be written. For
+            # formats not supporting this it needs to be overridden.
+            metadata = Metadata({
+                'discnumber': 'notanumber',
+                'tracknumber': 'notanumber',
+            })
+            loaded_metadata = save_and_load_metadata(self.filename, metadata)
+            self.assertEqual(loaded_metadata['discnumber'], metadata['discnumber'])
+            self.assertEqual(loaded_metadata['totaldiscs'], metadata['totaldiscs'])
+            self.assertEqual(loaded_metadata['tracknumber'], metadata['tracknumber'])
+            self.assertEqual(loaded_metadata['totaltracks'], metadata['totaltracks'])
+
+        @skipUnlessTestfile
+        def test_save_movementnumber_without_movementtotal(self):
+            if not self.format.supports_tag('movementnumber'):
+                raise unittest.SkipTest('Tag "movementnumber" not supported for %s' % self.format.NAME)
+            metadata = Metadata({ 'movementnumber': 7 })
+            loaded_metadata = save_and_load_metadata(self.filename, metadata)
+            self.assertEqual(loaded_metadata['movementnumber'], metadata['movementnumber'])
+            self.assertNotIn('movementtotal', loaded_metadata)
