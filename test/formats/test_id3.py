@@ -114,6 +114,32 @@ class CommonId3Tests:
             self.assertNotIn('TXXX:WORK', raw_metadata)
 
         @skipUnlessTestfile
+        def test_id3_freetext_ci_delete(self):
+            # No matter which of the names below gets deleted it always
+            # should remove all of them
+            tag_name_variants = [
+                'replaygain_album_gain',
+                'REPLAYGAIN_ALBUM_GAIN',
+                'Replaygain_Album_Gain',
+            ]
+
+            for tag_in_test in tag_name_variants:
+                tags = mutagen.id3.ID3Tags()
+                for tag in tag_name_variants:
+                    tags.add(mutagen.id3.TXXX(desc=tag, text='foo'))
+                save_raw(self.filename, tags)
+                raw_metadata = load_raw(self.filename)
+                for tag in tag_name_variants:
+                    self.assertIn('TXXX:' + tag, raw_metadata)
+
+                metadata = Metadata()
+                metadata.delete(tag_in_test)
+                save_metadata(self.filename, metadata)
+                raw_metadata = load_raw(self.filename)
+                for tag in tag_name_variants:
+                    self.assertNotIn('TXXX:' + tag, raw_metadata)
+
+        @skipUnlessTestfile
         def test_id3_metadata_tofn(self):
             metadata = Metadata(self.tags)
             metadata = save_and_load_metadata(self.filename, metadata)

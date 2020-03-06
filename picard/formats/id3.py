@@ -579,6 +579,8 @@ class ID3File(File):
                             del tags[key]
                 elif real_name in self.__translate:
                     del tags[real_name]
+                elif name in self.__rtranslate_freetext_ci:
+                    delall_ci(tags, 'TXXX:' + self.__rtranslate_freetext_ci[name])
                 elif real_name in self.__translate_freetext:
                     tags.delall('TXXX:' + real_name)
                     if real_name in self.__rrename_freetext:
