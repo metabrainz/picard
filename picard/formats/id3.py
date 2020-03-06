@@ -110,7 +110,7 @@ def types_from_id3(id3type):
 
 
 def _remove_people_with_role(tags, frames, role):
-    for key, frame in tags.items():
+    for frame in tags.values():
         if frame.FrameID in frames:
             for people in list(frame.people):
                 if people[0] == role:
@@ -575,8 +575,9 @@ class ID3File(File):
                         if frame.FrameID == 'UFID' and frame.owner == 'http://musicbrainz.org':
                             del tags[key]
                 elif real_name == 'POPM':
+                    user_email = config.setting['rating_user_email']
                     for key, frame in list(tags.items()):
-                        if frame.FrameID == 'POPM' and frame.email == config.setting['rating_user_email']:
+                        if frame.FrameID == 'POPM' and frame.email == user_email:
                             del tags[key]
                 elif real_name in self.__translate:
                     del tags[real_name]
@@ -657,7 +658,6 @@ class ID3File(File):
             # ID3v23 can only save TDOR dates in YYYY format. Mutagen cannot
             # handle ID3v23 dates which are YYYY-MM rather than YYYY or
             # YYYY-MM-DD.
-
             if name == "originaldate":
                 values = [v[:4] for v in values]
             elif name == "date":
@@ -665,7 +665,6 @@ class ID3File(File):
 
             # If this is a multi-valued field, then it needs to be flattened,
             # unless it's TIPL or TMCL which can still be multi-valued.
-
             if (len(values) > 1 and name not in ID3File._rtipl_roles
                     and not name.startswith("performer:")):
                 values = [join_with.join(values)]
