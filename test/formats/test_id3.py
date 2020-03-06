@@ -98,6 +98,22 @@ class CommonId3Tests:
             self.assertIn('FooBar', new_metadata)
 
         @skipUnlessTestfile
+        def test_id3_rename_freetext_delete(self):
+            tags = mutagen.id3.ID3Tags()
+            tags.add(mutagen.id3.TXXX(desc='Work', text='foo'))
+            save_raw(self.filename, tags)
+            raw_metadata = load_raw(self.filename)
+            self.assertIn('TXXX:Work', raw_metadata)
+
+            metadata = Metadata()
+            metadata.delete('work')
+            new_metadata = save_and_load_metadata(self.filename, metadata)
+            self.assertNotIn('work', new_metadata)
+            raw_metadata = load_raw(self.filename)
+            self.assertNotIn('TXXX:Work', raw_metadata)
+            self.assertNotIn('TXXX:WORK', raw_metadata)
+
+        @skipUnlessTestfile
         def test_id3_metadata_tofn(self):
             metadata = Metadata(self.tags)
             metadata = save_and_load_metadata(self.filename, metadata)

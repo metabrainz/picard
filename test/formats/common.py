@@ -318,14 +318,17 @@ class CommonTests:
                 metadata['~rating'] = 1
             original_metadata = save_and_load_metadata(self.filename, metadata)
             del metadata['albumartist']
+            del metadata['musicbrainz_artistid']
             if self.supports_ratings:
                 del metadata['~rating']
             new_metadata = save_and_load_metadata(self.filename, metadata)
-            self.assertIn('albumartist', original_metadata.keys())
-            self.assertNotIn('albumartist', new_metadata.keys())
+            self.assertIn('albumartist', original_metadata)
+            self.assertNotIn('albumartist', new_metadata)
+            self.assertIn('musicbrainz_artistid', original_metadata)
+            self.assertNotIn('musicbrainz_artistid', new_metadata)
             if self.supports_ratings:
-                self.assertIn('~rating', original_metadata.keys())
-                self.assertNotIn('~rating', new_metadata.keys())
+                self.assertIn('~rating', original_metadata)
+                self.assertNotIn('~rating', new_metadata)
 
         @skipUnlessTestfile
         def test_delete_tags_with_empty_description(self):
@@ -369,7 +372,8 @@ class CommonTests:
 
         @skipUnlessTestfile
         def test_delete_nonexistant_tags(self):
-            for key in ('title', 'foo', 'comment:foo', 'comment:de:foo', 'performer:foo', 'lyrics:foo'):
+            for key in ('title', 'foo', 'comment:foo', 'comment:de:foo',
+                'performer:foo', 'lyrics:foo', 'totaltracks'):
                 if not self.format.supports_tag(key):
                     continue
                 metadata = Metadata()
@@ -377,17 +381,6 @@ class CommonTests:
                 del metadata[key]
                 new_metadata = save_and_load_metadata(self.filename, metadata)
                 self.assertNotIn(key, new_metadata)
-
-        @skipUnlessTestfile
-        def test_delete_non_existant_tags(self):
-            metadata = Metadata()
-            del metadata['albumartist']
-            del metadata['performer:drums']
-            del metadata['totaltracks']
-            new_metadata = save_and_load_metadata(self.filename, metadata)
-            self.assertNotIn('albumartist', new_metadata.keys())
-            self.assertNotIn('performer:drums', new_metadata.keys())
-            self.assertNotIn('totaltracks', new_metadata.keys())
 
         @skipUnlessTestfile
         def test_delete_complex_tags(self):
