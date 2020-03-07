@@ -178,8 +178,9 @@ class ScriptFunctionDocError(Exception):
     pass
 
 
-def script_function_documentation(name, fmt):
-    functions = dict(ScriptParser._function_registry)
+def script_function_documentation(name, fmt, functions=None):
+    if functions is None:
+        functions = dict(ScriptParser._function_registry)
     if name not in functions:
         raise ScriptFunctionDocError("no such function: %s (known functions: %r)" % (name, [name for name in functions]))
 
@@ -189,6 +190,16 @@ def script_function_documentation(name, fmt):
         return functions[name].markdowndoc()
     else:
         raise ScriptFunctionDocError("no such documentation format: %s (known formats: html, markdown)" % fmt)
+
+
+def script_function_documentation_all(fmt='html', pre_element='<div class="scriptfuncdoc">', post_element='</div>'):
+    functions = dict(ScriptParser._function_registry)
+    doc_elements = []
+    for name in functions:
+        doc_element = script_function_documentation(name, fmt, functions=functions)
+        if doc_element:
+            doc_elements.append(pre_element + doc_element + post_element)
+    return "\n".join(doc_elements)
 
 
 Bound = namedtuple("Bound", ["lower", "upper"])
