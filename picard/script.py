@@ -145,9 +145,19 @@ class ScriptVariable(object):
         return state.context.get(normalize_tagname(self.name), "")
 
 
-FunctionRegistryItem = namedtuple("FunctionRegistryItem",
-                                  ["function", "eval_args",
-                                   "argcount"])
+class FunctionRegistryItem:
+    def __init__(self, function, eval_args, argcount):
+        self.function = function
+        self.eval_args = eval_args
+        self.argcount = argcount
+
+    def __repr__(self):
+        return "{classname}({me.function}, {me.eval_args}, {me.argcount})".format(
+            classname=self.__class__.__name__,
+            me=self
+        )
+
+
 Bound = namedtuple("Bound", ["lower", "upper"])
 
 
@@ -187,17 +197,17 @@ class ScriptFunction(object):
 
     def eval(self, parser):
         try:
-            function, eval_args, num_args = parser.functions[self.name]
+            function_registry_item = parser.functions[self.name]
         except KeyError:
             raise ScriptUnknownFunction(self.stackitem)
 
-        if eval_args:
+        if function_registry_item.eval_args:
             args = [arg.eval(parser) for arg in self.args]
         else:
             args = self.args
         parser._function_stack.put(self.stackitem)
         # Save return value to allow removing function from the stack on successful completion
-        return_value = function(parser, *args)
+        return_value = function_registry_item.function(parser, *args)
         parser._function_stack.get()
         return return_value
 
@@ -449,11 +459,16 @@ def register_script_function(function, name=None, eval_args=True,
 
     if name is None:
         name = function.__name__
-    ScriptParser._function_registry.register(function.__module__,
-        (name, FunctionRegistryItem(
-            function, eval_args,
-            argcount if argcount and check_argcount else False)
-         )
+    ScriptParser._function_registry.register(
+        function.__module__,
+        (
+            name,
+            FunctionRegistryItem(
+                function,
+                eval_args,
+                argcount if argcount and check_argcount else False
+            )
+        )
     )
 
 
@@ -476,7 +491,12 @@ def script_function(name=None, eval_args=True, check_argcount=True, prefix='func
             sname = fname[len(prefix):]
         else:
             sname = name
-        register_script_function(func, name=sname, eval_args=eval_args, check_argcount=check_argcount)
+        register_script_function(
+            func,
+            name=sname,
+            eval_args=eval_args,
+            check_argcount=check_argcount
+        )
         return func
     return script_function_decorator
 
