@@ -177,6 +177,16 @@ class ScriptParserTest(PicardTestCase):
             return arg.eval(parser)
         self.assertScriptResultEquals("$somefunc($title(x))", "X")
 
+    @staticmethod
+    def assertStartswith(text, expect):
+        if not text.startswith(expect):
+            raise AssertionError("do not start with %r but with %r" % (expect, text[:len(expect)]))
+
+    @staticmethod
+    def assertEndswith(text, expect):
+        if not text.endswith(expect):
+            raise AssertionError("do not end with %r but with %r" % (expect, text[-len(expect):]))
+
     def test_script_function_documentation(self):
         # test decorator documentation
         markdown = '`$somefunc()`'
@@ -195,16 +205,12 @@ class ScriptParserTest(PicardTestCase):
             script_function_documentation('somefunc', 'unknownformat')
 
         docall = script_function_documentation_all()
-        expect = '<div class="scriptfuncdoc"><p><code>'
-        self.assertTrue(docall.startswith(expect), "do not start with %s but with %s..." % (expect, docall[:20]))
-        expect = '</code></p></div>'
-        self.assertTrue(docall.endswith(expect), "do not end with %s but with ...%s" % (expect, docall[-20:]))
+        self.assertStartswith(docall, '<div class="scriptfuncdoc"><p><code>')
+        self.assertEndswith(docall, '</code></p></div>')
 
         docall = script_function_documentation_all(pre_element='<div id="test">', post_element="</div>\n")
-        expect = '<div id="test"><p><code>'
-        self.assertTrue(docall.startswith(expect), "do not start with %s but with %s..." % (expect, docall[:20]))
-        expect = '</code></p></div>\n'
-        self.assertTrue(docall.endswith(expect), "do not end with %s but with ...%s" % (expect, docall[-20:]))
+        self.assertStartswith(docall, '<div id="test"><p><code>')
+        self.assertEndswith(docall, '</code></p></div>\n')
 
     def test_unknown_function(self):
         areg = r"^\d+:\d+:\$unknownfunction: Unknown function '\$unknownfunction'"
