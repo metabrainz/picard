@@ -46,12 +46,14 @@ from picard.script import (
     ScriptError,
     ScriptExpression,
     ScriptFunction,
+    ScriptFunctionDocError,
     ScriptParser,
     ScriptRuntimeError,
     ScriptSyntaxError,
     ScriptUnknownFunction,
     register_script_function,
     script_function,
+    script_function_documentation,
 )
 
 
@@ -173,6 +175,23 @@ class ScriptParserTest(PicardTestCase):
         def somefunc(parser, arg):
             return arg.eval(parser)
         self.assertScriptResultEquals("$somefunc($title(x))", "X")
+
+    def test_script_function_documentation(self):
+        # test decorator documentation
+        markdown = '`$somefunc()`'
+        @script_function(documentation=markdown)
+        def func_somefunc(parser):
+            return "x"
+        doc = script_function_documentation('somefunc', 'markdown')
+        self.assertEqual(doc, markdown)
+        doc = script_function_documentation('somefunc', 'html')
+        self.assertEqual(doc, '<p><code>$somefunc()</code></p>')
+        areg = r"^no such function: unknownfunc"
+        with self.assertRaisesRegex(ScriptFunctionDocError, areg):
+            script_function_documentation('unknownfunc', 'html')
+        areg = r"^no such documentation format: unknownformat"
+        with self.assertRaisesRegex(ScriptFunctionDocError, areg):
+            script_function_documentation('somefunc', 'unknownformat')
 
     def test_unknown_function(self):
         areg = r"^\d+:\d+:\$unknownfunction: Unknown function '\$unknownfunction'"
