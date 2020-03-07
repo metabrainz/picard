@@ -174,6 +174,23 @@ class FunctionRegistryItem:
             return ''
 
 
+class ScriptFunctionDocError(Exception):
+    pass
+
+
+def script_function_documentation(name, fmt):
+    functions = dict(ScriptParser._function_registry)
+    if name not in functions:
+        raise ScriptFunctionDocError("no such function: %s (known functions: %r)" % (name, [name for name in functions]))
+
+    if fmt == 'html':
+        return functions[name].htmldoc()
+    elif fmt == 'markdown':
+        return functions[name].markdowndoc()
+    else:
+        raise ScriptFunctionDocError("no such documentation format: %s (known formats: html, markdown)" % fmt)
+
+
 Bound = namedtuple("Bound", ["lower", "upper"])
 
 
