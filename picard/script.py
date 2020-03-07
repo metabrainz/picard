@@ -146,15 +146,17 @@ class ScriptVariable(object):
 
 
 class FunctionRegistryItem:
-    def __init__(self, function, eval_args, argcount):
+    def __init__(self, function, eval_args, argcount, documentation):
         self.function = function
         self.eval_args = eval_args
         self.argcount = argcount
+        self.documentation = documentation
 
     def __repr__(self):
-        return "{classname}({me.function}, {me.eval_args}, {me.argcount})".format(
+        return '{classname}({me.function}, {me.eval_args}, {me.argcount}, {doc})'.format(
             classname=self.__class__.__name__,
-            me=self
+            me=self,
+            doc='"""{0}"""'.format(self.documentation) if self.documentation else None
         )
 
 
@@ -435,7 +437,7 @@ def enabled_tagger_scripts_texts():
 
 
 def register_script_function(function, name=None, eval_args=True,
-                             check_argcount=True):
+                             check_argcount=True, documentation=None):
     """Registers a script function. If ``name`` is ``None``,
     ``function.__name__`` will be used.
     If ``eval_args`` is ``False``, the arguments will not be evaluated before being
@@ -466,13 +468,14 @@ def register_script_function(function, name=None, eval_args=True,
             FunctionRegistryItem(
                 function,
                 eval_args,
-                argcount if argcount and check_argcount else False
+                argcount if argcount and check_argcount else False,
+                documentation=documentation
             )
         )
     )
 
 
-def script_function(name=None, eval_args=True, check_argcount=True, prefix='func_'):
+def script_function(name=None, eval_args=True, check_argcount=True, prefix='func_', documentation=None):
     """Decorator helper to register script functions
 
     It calls ``register_script_function()`` and share same arguments
@@ -495,7 +498,8 @@ def script_function(name=None, eval_args=True, check_argcount=True, prefix='func
             func,
             name=sname,
             eval_args=eval_args,
-            check_argcount=check_argcount
+            check_argcount=check_argcount,
+            documentation=documentation
         )
         return func
     return script_function_decorator
@@ -509,7 +513,11 @@ def _compute_logic(operation, *args):
     return operation(args)
 
 
-@script_function(eval_args=False)
+@script_function(eval_args=False, documentation=N_(
+    """`$if(if,then,else)`
+
+    If `if` is not empty, it returns `then`, otherwise it returns `else`."""
+))
 def func_if(parser, _if, _then, _else=None):
     """If ``if`` is not empty, it returns ``then``, otherwise it returns ``else``."""
     if _if.eval(parser):
