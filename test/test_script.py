@@ -54,6 +54,7 @@ from picard.script import (
     register_script_function,
     script_function,
     script_function_documentation,
+    script_function_documentation_all,
 )
 
 
@@ -192,6 +193,18 @@ class ScriptParserTest(PicardTestCase):
         areg = r"^no such documentation format: unknownformat"
         with self.assertRaisesRegex(ScriptFunctionDocError, areg):
             script_function_documentation('somefunc', 'unknownformat')
+
+        docall = script_function_documentation_all()
+        expect = '<div class="scriptfuncdoc"><p><code>'
+        self.assertTrue(docall.startswith(expect), "do not start with %s but with %s..." % (expect, docall[:20]))
+        expect = '</code></p></div>'
+        self.assertTrue(docall.endswith(expect), "do not end with %s but with ...%s" % (expect, docall[-20:]))
+
+        docall = script_function_documentation_all(pre_element='<div id="test">', post_element="</div>\n")
+        expect = '<div id="test"><p><code>'
+        self.assertTrue(docall.startswith(expect), "do not start with %s but with %s..." % (expect, docall[:20]))
+        expect = '</code></p></div>\n'
+        self.assertTrue(docall.endswith(expect), "do not end with %s but with ...%s" % (expect, docall[-20:]))
 
     def test_unknown_function(self):
         areg = r"^\d+:\d+:\$unknownfunction: Unknown function '\$unknownfunction'"
