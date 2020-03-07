@@ -1,4 +1,5 @@
 discid==1.2.0
+markdown
 mutagen==1.44.0
 pyobjc-core==5.2
 pyobjc-framework-Cocoa==5.2

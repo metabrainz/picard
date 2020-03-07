@@ -1,3 +1,4 @@
 discid==1.2.0
+markdown
 mutagen==1.44.0
 PyQt5==5.14.1
