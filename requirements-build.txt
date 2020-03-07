@@ -1,3 +1,4 @@
 Babel==2.6
+markdown
 PyInstaller==3.6
 setuptools<45.0.0

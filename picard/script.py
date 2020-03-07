@@ -45,6 +45,8 @@ from queue import LifoQueue
 import re
 import unicodedata
 
+import markdown
+
 from picard import config
 from picard.metadata import (
     MULTI_VALUED_JOINER,
@@ -158,6 +160,18 @@ class FunctionRegistryItem:
             me=self,
             doc='"""{0}"""'.format(self.documentation) if self.documentation else None
         )
+
+    def markdowndoc(self):
+        if self.documentation is not None:
+            return self.documentation
+        else:
+            return ''
+
+    def htmldoc(self):
+        if self.documentation is not None:
+            return markdown.markdown(self.documentation)
+        else:
+            return ''
 
 
 Bound = namedtuple("Bound", ["lower", "upper"])
