@@ -31,6 +31,7 @@
 
 import copy
 import datetime
+import re
 from unittest.mock import MagicMock
 
 import markdown
@@ -44,6 +45,7 @@ from picard.metadata import Metadata
 from picard.plugin import ExtensionPoint
 from picard.script import (
     MULTI_VALUED_JOINER,
+    FunctionRegistryItem,
     MultiValue,
     ScriptEndOfFile,
     ScriptError,
@@ -124,6 +126,25 @@ class ScriptParserTest(PicardTestCase):
                          expected,
                          "'%s' evaluated to '%s', expected '%s'"
                          % (script, actual, expected))
+
+    def test_function_registry_item(self):
+        def somefunc():
+            return 'x'
+        item = FunctionRegistryItem(somefunc, 'x', 'y', 'doc')
+        self.assertEqual(item.function, somefunc)
+        self.assertEqual(item.eval_args, 'x')
+        self.assertEqual(item.argcount, 'y')
+        self.assertEqual(item.documentation, 'doc')
+
+        regex = r'^'\
+                + re.escape(r'FunctionRegistryItem(<function ')\
+                + r'[^ ]+'\
+                + re.escape(r'.somefunc at ')\
+                + r'[^>]+'\
+                + re.escape(r'>, x, y, """doc""")')\
+                + r'$'
+
+        self.assertRegex(repr(item), regex)
 
     def test_script_function_decorator_default(self):
         # test default decorator and default prefix
