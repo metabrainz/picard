@@ -281,12 +281,12 @@ class ScriptParserTest(PicardTestCase):
         """test script_function_documentation_all() with markdown format"""
         self.reset_registry()
 
-        @script_function(documentation='somedoc1')
-        def func_somefunc1(parser):
-            return "x"
-
         @script_function(documentation='somedoc2')
         def func_somefunc2(parser):
+            return "x"
+
+        @script_function(documentation='somedoc1')
+        def func_somefunc1(parser):
             return "x"
 
         docall = script_function_documentation_all()
