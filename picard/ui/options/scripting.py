@@ -151,7 +151,7 @@ p {
 '''
         htmldoc += script_function_documentation_all(fmt='html')
         htmldoc += '</body></html>'
-        self.ui.textEdit.setHtml(htmldoc)
+        self.ui.textBrowser.setHtml(htmldoc)
         self.ui.buttonBox.rejected.connect(self.reject)
 
     def reject(self):
