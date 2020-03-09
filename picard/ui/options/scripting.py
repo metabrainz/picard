@@ -158,6 +158,7 @@ p {
         self.parent.scriptfuncdoc_shown = False
         super().reject()
 
+
 class ScriptingOptionsPage(OptionsPage):
 
     NAME = "scripting"
