@@ -45,8 +45,6 @@ from queue import LifoQueue
 import re
 import unicodedata
 
-import markdown
-
 from picard import config
 from picard.metadata import (
     MULTI_VALUED_JOINER,
@@ -54,6 +52,12 @@ from picard.metadata import (
 )
 from picard.plugin import ExtensionPoint
 from picard.util import uniqify
+
+
+try:
+    from markdown import markdown
+except ImportError:
+    markdown = None
 
 
 class ScriptError(Exception):
@@ -168,8 +172,8 @@ class FunctionRegistryItem:
             return ''
 
     def htmldoc(self):
-        if self.documentation is not None:
-            return markdown.markdown(self.documentation)
+        if self.documentation is not None and markdown is not None:
+            return markdown(self.documentation)
         else:
             return ''
 
@@ -192,7 +196,7 @@ def script_function_documentation(name, fmt, functions=None):
         raise ScriptFunctionDocError("no such documentation format: %s (known formats: html, markdown)" % fmt)
 
 
-def script_function_documentation_all(fmt='html', pre_element='<div class="scriptfuncdoc">', post_element='</div>'):
+def script_function_documentation_all(fmt='markdown', pre_element='', post_element=''):
     functions = dict(ScriptParser._function_registry)
     doc_elements = []
     for name in functions:
