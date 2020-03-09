@@ -151,6 +151,7 @@ p {
         htmldoc += '</body></html>'
         self.ui.textEdit.setHtml(htmldoc)
 
+
 class ScriptingOptionsPage(OptionsPage):
 
     NAME = "scripting"
