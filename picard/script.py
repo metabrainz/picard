@@ -199,7 +199,7 @@ def script_function_documentation(name, fmt, functions=None):
 def script_function_documentation_all(fmt='markdown', pre_element='', post_element=''):
     functions = dict(ScriptParser._function_registry)
     doc_elements = []
-    for name in functions:
+    for name in sorted(functions):
         doc_element = script_function_documentation(name, fmt, functions=functions)
         if doc_element:
             doc_elements.append(pre_element + doc_element + post_element)
