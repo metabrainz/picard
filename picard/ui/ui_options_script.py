@@ -3,9 +3,7 @@
 # Automatically generated - don't edit.
 # Use `python setup.py build_ui` to update it.
 
-
 from PyQt5 import QtCore, QtGui, QtWidgets
-
 
 class Ui_ScriptingOptionsPage(object):
     def setupUi(self, ScriptingOptionsPage):
@@ -73,12 +71,28 @@ class Ui_ScriptingOptionsPage(object):
         self.script_error.setAlignment(QtCore.Qt.AlignCenter)
         self.script_error.setObjectName("script_error")
         self.verticalLayout.addWidget(self.script_error)
+        self.hlayout_doc = QtWidgets.QHBoxLayout()
+        self.hlayout_doc.setObjectName("hlayout_doc")
         self.scripting_doc_link = QtWidgets.QLabel(self.enable_tagger_scripts)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.scripting_doc_link.sizePolicy().hasHeightForWidth())
+        self.scripting_doc_link.setSizePolicy(sizePolicy)
         self.scripting_doc_link.setText("")
         self.scripting_doc_link.setWordWrap(True)
         self.scripting_doc_link.setOpenExternalLinks(True)
         self.scripting_doc_link.setObjectName("scripting_doc_link")
-        self.verticalLayout.addWidget(self.scripting_doc_link)
+        self.hlayout_doc.addWidget(self.scripting_doc_link)
+        self.scriptfuncdoc_button = QtWidgets.QPushButton(self.enable_tagger_scripts)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.scriptfuncdoc_button.sizePolicy().hasHeightForWidth())
+        self.scriptfuncdoc_button.setSizePolicy(sizePolicy)
+        self.scriptfuncdoc_button.setObjectName("scriptfuncdoc_button")
+        self.hlayout_doc.addWidget(self.scriptfuncdoc_button)
+        self.verticalLayout.addLayout(self.hlayout_doc)
         self.vboxlayout.addWidget(self.enable_tagger_scripts)
 
         self.retranslateUi(ScriptingOptionsPage)
@@ -99,4 +113,6 @@ class Ui_ScriptingOptionsPage(object):
         self.move_up_button.setToolTip(_("Move script up"))
         self.move_down_button.setToolTip(_("Move script down"))
         self.remove_button.setText(_("Remove script"))
+        self.scriptfuncdoc_button.setText(_("Script functions documentation"))
+
 from picard.ui.widgets.scriptlistwidget import ScriptListWidget

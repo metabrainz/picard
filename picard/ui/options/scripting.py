@@ -37,6 +37,7 @@ from picard.const import PICARD_URLS
 from picard.script import ScriptParser
 from picard.util import restore_method
 
+from picard.ui import PicardDialog
 from picard.ui.moveable_list_view import MoveableListView
 from picard.ui.options import (
     OptionsCheckError,
@@ -44,6 +45,7 @@ from picard.ui.options import (
     register_options_page,
 )
 from picard.ui.ui_options_script import Ui_ScriptingOptionsPage
+from picard.ui.ui_scriptfuncdocdialog import Ui_ScriptFunctionsDocDialog
 from picard.ui.widgets.scriptlistwidget import ScriptListWidgetItem
 
 
@@ -120,6 +122,35 @@ class TaggerScriptSyntaxHighlighter(QtGui.QSyntaxHighlighter):
         self.setCurrentBlockState(open_brackets)
 
 
+class ScriptFuncDocDialog(PicardDialog):
+    defaultsize = QtCore.QSize(570, 400)
+
+    def __init__(self, parent):
+        super().__init__(parent)
+        self.setWindowFlags(QtCore.Qt.Window)
+        self.ui = Ui_ScriptFunctionsDocDialog()
+        self.ui.setupUi(self)
+        from picard.script import script_function_documentation_all
+        htmldoc = '''
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+code {
+    font-family: sans-serif;
+    font-weight: bold;
+}
+p {
+    font-family: serif;
+}
+</style>
+</head>
+<body>
+'''
+        htmldoc += script_function_documentation_all(fmt='html')
+        htmldoc += '</body></html>'
+        self.ui.textEdit.setHtml(htmldoc)
+
 class ScriptingOptionsPage(OptionsPage):
 
     NAME = "scripting"
@@ -148,6 +179,10 @@ class ScriptingOptionsPage(OptionsPage):
         self.ui.tagger_script.setFont(font)
         self.move_view = MoveableListView(self.ui.script_list, self.ui.move_up_button,
                                           self.ui.move_down_button)
+        self.ui.scriptfuncdoc_button.clicked.connect(self.show_scriptfuncdoc)
+
+    def show_scriptfuncdoc(self):
+        ScriptFuncDocDialog(parent=self).show()
 
     def script_selected(self):
         items = self.ui.script_list.selectedItems()
