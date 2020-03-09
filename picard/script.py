@@ -560,9 +560,9 @@ def _compute_logic(operation, *args):
 
 
 @script_function(eval_args=False, documentation=N_(
-    """`$if(if,then,else)`
+"""`$if(if,then,else)`
 
-    If `if` is not empty, it returns `then`, otherwise it returns `else`."""
+If `if` is not empty, it returns `then`, otherwise it returns `else`."""
 ))
 def func_if(parser, _if, _then, _else=None):
     """If ``if`` is not empty, it returns ``then``, otherwise it returns ``else``."""
@@ -573,7 +573,11 @@ def func_if(parser, _if, _then, _else=None):
     return ''
 
 
-@script_function(eval_args=False)
+@script_function(eval_args=False, documentation=N_(
+"""`$if2(a1,a2,a3,...)`
+
+Returns first non empty argument."""
+))
 def func_if2(parser, *args):
     """Returns first non empty argument."""
     for arg in args:
@@ -583,13 +587,22 @@ def func_if2(parser, *args):
     return ''
 
 
-@script_function(eval_args=False)
+@script_function(eval_args=False, documentation=N_(
+"""`$noop(...)`
+
+Does nothing (useful for comments or disabling a block of code)."""
+))
 def func_noop(parser, *args):
     """Does nothing :)"""
     return ''
 
 
-@script_function()
+@script_function(documentation=N_(
+"""`$left(text,num)`
+
+Returns the first `num` characters from `text`.
+"""
+))
 def func_left(parser, text, length):
     """Returns first ``num`` characters from ``text``."""
     try:
