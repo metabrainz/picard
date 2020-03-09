@@ -127,6 +127,8 @@ class ScriptFuncDocDialog(PicardDialog):
 
     def __init__(self, parent):
         super().__init__(parent)
+        self.parent = parent
+        self.parent.scriptfuncdoc_shown = True
         self.setWindowFlags(QtCore.Qt.Window)
         self.ui = Ui_ScriptFunctionsDocDialog()
         self.ui.setupUi(self)
@@ -150,7 +152,11 @@ p {
         htmldoc += script_function_documentation_all(fmt='html')
         htmldoc += '</body></html>'
         self.ui.textEdit.setHtml(htmldoc)
+        self.ui.buttonBox.rejected.connect(self.reject)
 
+    def reject(self):
+        self.parent.scriptfuncdoc_shown = False
+        super().reject()
 
 class ScriptingOptionsPage(OptionsPage):
 
@@ -181,9 +187,15 @@ class ScriptingOptionsPage(OptionsPage):
         self.move_view = MoveableListView(self.ui.script_list, self.ui.move_up_button,
                                           self.ui.move_down_button)
         self.ui.scriptfuncdoc_button.clicked.connect(self.show_scriptfuncdoc)
+        self.scriptfuncdoc_shown = None
 
     def show_scriptfuncdoc(self):
-        ScriptFuncDocDialog(parent=self).show()
+        if not self.scriptfuncdoc_shown:
+            self.scriptfuncdoc_dialog = ScriptFuncDocDialog(parent=self)
+            self.scriptfuncdoc_dialog.show()
+        else:
+            self.scriptfuncdoc_dialog.raise_()
+            self.scriptfuncdoc_dialog.activateWindow()
 
     def script_selected(self):
         items = self.ui.script_list.selectedItems()
