@@ -145,12 +145,18 @@ code {
 p {
     font-family: serif;
 }
+ul {
+    list-style: disc;
+}
 </style>
 </head>
 <body>
+<ul>
 '''
-        htmldoc += script_function_documentation_all(fmt='html')
-        htmldoc += '</body></html>'
+        htmldoc += script_function_documentation_all(fmt='html',
+                                                     pre_element='<li>',
+                                                     post_element='</li>')
+        htmldoc += '</ul></body></html>'
         self.ui.textBrowser.setHtml(htmldoc)
         self.ui.buttonBox.rejected.connect(self.reject)
 
