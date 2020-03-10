@@ -304,9 +304,18 @@ class ScriptParserTest(PicardTestCase):
         def func_somefunc(parser):
             return "x"
 
-        docall = script_function_documentation_all(fmt='html', pre_element='<div id="test">', post_element="</div>\n")
-        self.assertStartswith(docall, '<div id="test">' + pre)
-        self.assertEndswith(docall, post + '</div>\n')
+        def preprocessor(data):
+            return 'w'  + data + 'y'
+
+        docall = script_function_documentation_all(
+            fmt='html',
+            pre='<div id="test">',
+            post="</div>\n",
+            preprocessor=preprocessor,
+        )
+
+        self.assertStartswith(docall, '<div id="test">w' + pre)
+        self.assertEndswith(docall, post + 'y</div>\n')
 
     def test_unknown_function(self):
         areg = r"^\d+:\d+:\$unknownfunction: Unknown function '\$unknownfunction'"

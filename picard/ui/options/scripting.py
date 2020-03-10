@@ -38,6 +38,7 @@ from picard.script import ScriptParser
 from picard.util import restore_method
 
 from picard.ui import PicardDialog
+from picard.ui.colors import interface_colors
 from picard.ui.moveable_list_view import MoveableListView
 from picard.ui.options import (
     OptionsCheckError,
@@ -127,6 +128,8 @@ class ScriptFuncDocDialog(PicardDialog):
 
     def __init__(self, parent):
         super().__init__(parent)
+        self.setWindowFlags(QtCore.Qt.Window)
+        self.setAttribute(QtCore.Qt.WA_DeleteOnClose)
         self.parent = parent
         self.parent.scriptfuncdoc_shown = True
         self.setWindowFlags(QtCore.Qt.Window)
@@ -138,31 +141,49 @@ class ScriptFuncDocDialog(PicardDialog):
 <html>
 <head>
 <style>
-code {
-    font-family: sans-serif;
-    font-weight: bold;
+dt {
+    font-family: monospace;
+    /* font-weight: bold; */
+    color: %(script_function_fg)s
+}
+dd {
+    padding: 50px;
+    margin-bottom: 50px;
 }
 p {
     font-family: serif;
 }
-ul {
-    list-style: disc;
+code {
+    font-family: sans-serif;
 }
 </style>
 </head>
 <body>
-<ul>
+    <dl>
+    %(html)s
+    </dl>
+</body>
+</html>
 '''
-        htmldoc += script_function_documentation_all(fmt='html',
-                                                     pre_element='<li>',
-                                                     post_element='</li>')
-        htmldoc += '</ul></body></html>'
-        self.ui.textBrowser.setHtml(htmldoc)
-        self.ui.buttonBox.rejected.connect(self.reject)
 
-    def reject(self):
+        def preprocessor(html):
+            firstline, remaining = html.split("\n", 1)
+            return '<dt>' + firstline + '</dt><dd>' + remaining + '</dd>'
+
+        color_fg = interface_colors.get_color('script_function_fg')
+        html = htmldoc % {
+            'html': script_function_documentation_all(
+                fmt='html',
+                preprocessor=preprocessor
+            ),
+            'script_function_fg': color_fg,
+        }
+        self.ui.textBrowser.setHtml(html)
+        self.ui.buttonBox.rejected.connect(self.close)
+
+    def closeEvent(self, event):
         self.parent.scriptfuncdoc_shown = False
-        super().reject()
+        super().closeEvent(event)
 
 
 class ScriptingOptionsPage(OptionsPage):
