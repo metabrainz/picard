@@ -136,7 +136,7 @@ class ScriptFuncDocDialog(PicardDialog):
         self.ui = Ui_ScriptFunctionsDocDialog()
         self.ui.setupUi(self)
         from picard.script import script_function_documentation_all
-        htmldoc = '''
+        template = '''
 <!DOCTYPE html>
 <html>
 <head>
@@ -159,23 +159,26 @@ code {
 </style>
 </head>
 <body>
-    <dl>
     %(html)s
-    </dl>
 </body>
 </html>
 '''
 
-        def preprocessor(html):
+        def process_html(html):
+            if not html:
+                return ''
             firstline, remaining = html.split("\n", 1)
             return '<dt>' + firstline + '</dt><dd>' + remaining + '</dd>'
 
+        funcdoc = script_function_documentation_all(
+            fmt='html',
+            preprocessor=process_html,
+        )
+        enclosed_by = ('<dl>', '</dl>')
+
         color_fg = interface_colors.get_color('script_function_fg')
-        html = htmldoc % {
-            'html': script_function_documentation_all(
-                fmt='html',
-                preprocessor=preprocessor
-            ),
+        html = template % {
+            'html': "%s%s%s" % (enclosed_by[0], funcdoc, enclosed_by[1]),
             'script_function_fg': color_fg,
         }
         self.ui.textBrowser.setHtml(html)
