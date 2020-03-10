@@ -173,14 +173,14 @@ class FunctionRegistryItem:
 
     def markdowndoc(self):
         if self.documentation is not None:
-            ret = self.documentation
+            ret = _(self.documentation)
         else:
             ret = ''
         return self._preprocess(ret)
 
     def htmldoc(self):
         if self.documentation is not None and markdown is not None:
-            ret = markdown(self.documentation)
+            ret = markdown(_(self.documentation))
         else:
             ret = ''
         return self._preprocess(ret)
