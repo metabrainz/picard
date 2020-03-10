@@ -157,6 +157,7 @@ class FunctionRegistryItem:
         self.eval_args = eval_args
         self.argcount = argcount
         self.documentation = documentation
+        self.preprocessor = None
 
     def __repr__(self):
         return '{classname}({me.function}, {me.eval_args}, {me.argcount}, {doc})'.format(
@@ -165,29 +166,37 @@ class FunctionRegistryItem:
             doc='"""{0}"""'.format(self.documentation) if self.documentation else None
         )
 
+    def _preprocess(self, data):
+        if self.preprocessor is not None:
+            data = self.preprocessor(data)
+        return data
+
     def markdowndoc(self):
         if self.documentation is not None:
-            return self.documentation
+            ret = self.documentation
         else:
-            return ''
+            ret = ''
+        return self._preprocess(ret)
 
     def htmldoc(self):
         if self.documentation is not None and markdown is not None:
-            return markdown(self.documentation)
+            ret = markdown(self.documentation)
         else:
-            return ''
+            ret = ''
+        return self._preprocess(ret)
 
 
 class ScriptFunctionDocError(Exception):
     pass
 
 
-def script_function_documentation(name, fmt, functions=None):
+def script_function_documentation(name, fmt, functions=None, preprocessor=None):
     if functions is None:
         functions = dict(ScriptParser._function_registry)
     if name not in functions:
         raise ScriptFunctionDocError("no such function: %s (known functions: %r)" % (name, [name for name in functions]))
 
+    functions[name].preprocessor = preprocessor
     if fmt == 'html':
         return functions[name].htmldoc()
     elif fmt == 'markdown':
@@ -196,13 +205,16 @@ def script_function_documentation(name, fmt, functions=None):
         raise ScriptFunctionDocError("no such documentation format: %s (known formats: html, markdown)" % fmt)
 
 
-def script_function_documentation_all(fmt='markdown', pre_element='', post_element=''):
+def script_function_documentation_all(fmt='markdown', pre='',
+                                      post='', preprocessor=None):
     functions = dict(ScriptParser._function_registry)
     doc_elements = []
     for name in sorted(functions):
-        doc_element = script_function_documentation(name, fmt, functions=functions)
+        doc_element = script_function_documentation(name, fmt,
+                                                    functions=functions,
+                                                    preprocessor=preprocessor)
         if doc_element:
-            doc_elements.append(pre_element + doc_element + post_element)
+            doc_elements.append(pre + doc_element + post)
     return "\n".join(doc_elements)
 
 
