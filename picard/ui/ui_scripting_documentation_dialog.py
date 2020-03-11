@@ -5,19 +5,19 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
-class Ui_ScriptFunctionsDocDialog(object):
-    def setupUi(self, ScriptFunctionsDocDialog):
-        ScriptFunctionsDocDialog.setObjectName("ScriptFunctionsDocDialog")
-        ScriptFunctionsDocDialog.resize(725, 457)
+class Ui_ScriptingDocumentationDialog(object):
+    def setupUi(self, ScriptingDocumentationDialog):
+        ScriptingDocumentationDialog.setObjectName("ScriptingDocumentationDialog")
+        ScriptingDocumentationDialog.resize(725, 457)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(1)
         sizePolicy.setVerticalStretch(1)
-        sizePolicy.setHeightForWidth(ScriptFunctionsDocDialog.sizePolicy().hasHeightForWidth())
-        ScriptFunctionsDocDialog.setSizePolicy(sizePolicy)
-        ScriptFunctionsDocDialog.setModal(False)
-        self.gridLayout = QtWidgets.QGridLayout(ScriptFunctionsDocDialog)
+        sizePolicy.setHeightForWidth(ScriptingDocumentationDialog.sizePolicy().hasHeightForWidth())
+        ScriptingDocumentationDialog.setSizePolicy(sizePolicy)
+        ScriptingDocumentationDialog.setModal(False)
+        self.gridLayout = QtWidgets.QGridLayout(ScriptingDocumentationDialog)
         self.gridLayout.setObjectName("gridLayout")
-        self.textBrowser = QtWidgets.QTextBrowser(ScriptFunctionsDocDialog)
+        self.textBrowser = QtWidgets.QTextBrowser(ScriptingDocumentationDialog)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(1)
         sizePolicy.setVerticalStretch(1)
@@ -26,7 +26,7 @@ class Ui_ScriptFunctionsDocDialog(object):
         self.textBrowser.setOpenExternalLinks(True)
         self.textBrowser.setObjectName("textBrowser")
         self.gridLayout.addWidget(self.textBrowser, 0, 0, 1, 2)
-        self.scripting_doc_link = QtWidgets.QLabel(ScriptFunctionsDocDialog)
+        self.scripting_doc_link = QtWidgets.QLabel(ScriptingDocumentationDialog)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -36,17 +36,17 @@ class Ui_ScriptFunctionsDocDialog(object):
         self.scripting_doc_link.setOpenExternalLinks(True)
         self.scripting_doc_link.setObjectName("scripting_doc_link")
         self.gridLayout.addWidget(self.scripting_doc_link, 1, 0, 1, 1)
-        self.buttonBox = QtWidgets.QDialogButtonBox(ScriptFunctionsDocDialog)
+        self.buttonBox = QtWidgets.QDialogButtonBox(ScriptingDocumentationDialog)
         self.buttonBox.setOrientation(QtCore.Qt.Horizontal)
         self.buttonBox.setStandardButtons(QtWidgets.QDialogButtonBox.Close)
         self.buttonBox.setObjectName("buttonBox")
         self.gridLayout.addWidget(self.buttonBox, 1, 1, 1, 1)
 
-        self.retranslateUi(ScriptFunctionsDocDialog)
-        QtCore.QMetaObject.connectSlotsByName(ScriptFunctionsDocDialog)
+        self.retranslateUi(ScriptingDocumentationDialog)
+        QtCore.QMetaObject.connectSlotsByName(ScriptingDocumentationDialog)
 
-    def retranslateUi(self, ScriptFunctionsDocDialog):
+    def retranslateUi(self, ScriptingDocumentationDialog):
         _translate = QtCore.QCoreApplication.translate
-        ScriptFunctionsDocDialog.setWindowTitle(_("Script Functions Documentation"))
+        ScriptingDocumentationDialog.setWindowTitle(_("Scripting Documentation"))
         self.scripting_doc_link.setText(_("Open documentation in browser"))
 
