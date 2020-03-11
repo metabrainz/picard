@@ -144,6 +144,12 @@ class ScriptFuncDocDialog(PicardDialog):
         self.setWindowFlags(QtCore.Qt.Window)
         self.ui = Ui_ScriptFunctionsDocDialog()
         self.ui.setupUi(self)
+        args = {
+            "picard-doc-scripting-url": PICARD_URLS['doc_scripting'],
+        }
+        text = _('<a href="%(picard-doc-scripting-url)s">Open Scripting'
+                 ' Documentation in your browser</a>') % args
+        self.ui.scripting_doc_link.setText(text)
         from picard.script import script_function_documentation_all
         template = '''
 <!DOCTYPE html>
@@ -370,13 +376,6 @@ class ScriptingOptionsPage(OptionsPage):
             last_selected_script.setSelected(True)
 
         self.restore_state()
-
-        args = {
-            "picard-doc-scripting-url": PICARD_URLS['doc_scripting'],
-        }
-        text = _('<a href="%(picard-doc-scripting-url)s">Open Scripting'
-                 ' Documentation in your browser</a>') % args
-        self.ui.scripting_doc_link.setText(text)
 
     def _all_scripts(self):
         for row in range(0, self.ui.script_list.count()):
