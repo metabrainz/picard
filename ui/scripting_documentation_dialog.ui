@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>ScriptFunctionsDocDialog</class>
- <widget class="QDialog" name="ScriptFunctionsDocDialog">
+ <class>ScriptingDocumentationDialog</class>
+ <widget class="QDialog" name="ScriptingDocumentationDialog">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -17,7 +17,7 @@
    </sizepolicy>
   </property>
   <property name="windowTitle">
-   <string>Script Functions Documentation</string>
+   <string>Scripting Documentation</string>
   </property>
   <property name="modal">
    <bool>false</bool>
