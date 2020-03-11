@@ -42,6 +42,7 @@ from picard import config
 from picard.const import PICARD_URLS
 from picard.script import (
     ScriptParser,
+    script_function_documentation_all,
     script_function_names,
 )
 from picard.util import restore_method
@@ -150,7 +151,6 @@ class ScriptFuncDocDialog(PicardDialog):
         text = _('<a href="%(picard-doc-scripting-url)s">Open Scripting'
                  ' Documentation in your browser</a>') % args
         self.ui.scripting_doc_link.setText(text)
-        from picard.script import script_function_documentation_all
         template = '''
 <!DOCTYPE html>
 <html>
