@@ -31,10 +31,19 @@ from PyQt5 import (
     QtCore,
     QtGui,
 )
+from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QTextCursor
+from PyQt5.QtWidgets import (
+    QCompleter,
+    QTextEdit,
+)
 
 from picard import config
 from picard.const import PICARD_URLS
-from picard.script import ScriptParser
+from picard.script import (
+    ScriptParser,
+    script_function_names,
+)
 from picard.util import restore_method
 
 from picard.ui import PicardDialog
@@ -197,6 +206,78 @@ code {
         super().closeEvent(event)
 
 
+class ScriptCompleter(QCompleter):
+    insertText = QtCore.pyqtSignal(str)
+
+    def __init__(self, parent=None):
+        choices = list(script_function_names())
+        super().__init__(choices, parent)
+        self.setCompletionMode(QCompleter.PopupCompletion)
+        self.highlighted.connect(self.set_highlighted)
+        self.last_selected = ''
+
+    def set_highlighted(self, text):
+        self.last_selected = text
+
+    def get_selected(self):
+        return self.last_selected
+
+
+class ScriptTextEdit(QTextEdit):
+
+    def enable_completer(self):
+        self.completer = ScriptCompleter()
+        self.completer.setWidget(self)
+        self.completer.insertText.connect(self.insert_completion)
+        self.popup_shown = False
+
+    def insert_completion(self, completion):
+        tc = self.textCursor()
+        tc.movePosition(QTextCursor.Left)
+        tc.movePosition(QTextCursor.EndOfWord)
+
+        prefix = self.completer.completionPrefix()
+        extra = len(completion) - len(prefix)
+        tc.insertText(completion[-extra:])
+
+        self.setTextCursor(tc)
+        self.popup_hide()
+
+    def focusInEvent(self, event):
+        if self.completer:
+            self.completer.setWidget(self)
+        super().focusInEvent(event)
+
+    def popup_hide(self):
+        self.completer.popup().hide()
+
+    def keyPressEvent(self, event):
+
+        if event.key() == Qt.Key_Tab and self.completer.popup().isVisible():
+            self.completer.insertText.emit(self.completer.get_selected())
+            self.completer.setCompletionMode(QCompleter.PopupCompletion)
+            return
+
+        super().keyPressEvent(event)
+
+        tc = self.textCursor()
+        tc.select(QTextCursor.WordUnderCursor)
+        selected_text = tc.selectedText()
+        if selected_text:
+            self.completer.setCompletionPrefix(selected_text)
+            popup = self.completer.popup()
+            popup.setCurrentIndex(self.completer.completionModel().index(0, 0))
+
+            cr = self.cursorRect()
+            cr.setWidth(
+                popup.sizeHintForColumn(0)
+                + popup.verticalScrollBar().sizeHint().width()
+            )
+            self.completer.complete(cr)
+        else:
+            self.popup_hide()
+
+
 class ScriptingOptionsPage(OptionsPage):
 
     NAME = "scripting"
@@ -216,6 +297,8 @@ class ScriptingOptionsPage(OptionsPage):
         super().__init__(parent)
         self.ui = Ui_ScriptingOptionsPage()
         self.ui.setupUi(self)
+        self.ui.tagger_script.__class__ = ScriptTextEdit  # hacky
+        self.ui.tagger_script.enable_completer()
         self.highlighter = TaggerScriptSyntaxHighlighter(self.ui.tagger_script.document())
         self.ui.tagger_script.setEnabled(False)
         self.ui.splitter.setStretchFactor(0, 1)
