@@ -101,7 +101,7 @@ class Ui_ScriptingOptionsPage(object):
         self.enable_tagger_scripts.setTitle(_("Tagger Script(s)"))
         self.add_button.setToolTip(_("Add new script"))
         self.add_button.setText(_("Add new script"))
-        self.scriptfuncdoc_button.setText(_("Script functions documentation"))
+        self.scriptfuncdoc_button.setText(_("Scripting Documentation"))
         self.move_up_button.setToolTip(_("Move script up"))
         self.move_down_button.setToolTip(_("Move script down"))
         self.remove_button.setText(_("Remove script"))

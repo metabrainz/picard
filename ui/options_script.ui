@@ -122,7 +122,7 @@
            </sizepolicy>
           </property>
           <property name="text">
-           <string>Script functions documentation</string>
+           <string>Scripting Documentation</string>
           </property>
          </widget>
         </item>
