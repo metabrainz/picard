@@ -315,7 +315,7 @@ class ScriptingOptionsPage(OptionsPage):
         self.ui.tagger_script.setFont(font)
         self.move_view = MoveableListView(self.ui.script_list, self.ui.move_up_button,
                                           self.ui.move_down_button)
-        self.ui.scriptfuncdoc_button.clicked.connect(self.show_scriptfuncdoc)
+        self.ui.scripting_documentation_button.clicked.connect(self.show_scriptfuncdoc)
         self.scriptfuncdoc_shown = None
 
     def show_scriptfuncdoc(self):
