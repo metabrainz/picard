@@ -133,25 +133,7 @@ class TaggerScriptSyntaxHighlighter(QtGui.QSyntaxHighlighter):
         self.setCurrentBlockState(open_brackets)
 
 
-class ScriptFuncDocDialog(PicardDialog):
-    defaultsize = QtCore.QSize(570, 400)
-
-    def __init__(self, parent):
-        super().__init__(parent)
-        self.setWindowFlags(QtCore.Qt.Window)
-        self.setAttribute(QtCore.Qt.WA_DeleteOnClose)
-        self.parent = parent
-        self.parent.scriptfuncdoc_shown = True
-        self.setWindowFlags(QtCore.Qt.Window)
-        self.ui = Ui_ScriptFunctionsDocDialog()
-        self.ui.setupUi(self)
-        args = {
-            "picard-doc-scripting-url": PICARD_URLS['doc_scripting'],
-        }
-        text = _('<a href="%(picard-doc-scripting-url)s">Open Scripting'
-                 ' Documentation in your browser</a>') % args
-        self.ui.scripting_doc_link.setText(text)
-        template = '''
+DOCUMENTATION_HTML_TEMPLATE = '''
 <!DOCTYPE html>
 <html>
 <head>
@@ -179,6 +161,25 @@ code {
 </html>
 '''
 
+class ScriptingDocumentationDialog(PicardDialog):
+    defaultsize = QtCore.QSize(570, 400)
+
+    def __init__(self, parent):
+        super().__init__(parent)
+        self.setWindowFlags(QtCore.Qt.Window)
+        self.setAttribute(QtCore.Qt.WA_DeleteOnClose)
+        self.parent = parent
+        self.parent.scriptfuncdoc_shown = True
+        self.setWindowFlags(QtCore.Qt.Window)
+        self.ui = Ui_ScriptFunctionsDocDialog()
+        self.ui.setupUi(self)
+        args = {
+            "picard-doc-scripting-url": PICARD_URLS['doc_scripting'],
+        }
+        text = _('<a href="%(picard-doc-scripting-url)s">Open Scripting'
+                 ' Documentation in your browser</a>') % args
+        self.ui.scripting_doc_link.setText(text)
+
         def process_html(html, function):
             if not html:
                 html = ''
@@ -200,7 +201,7 @@ code {
         enclosed_by = ('<dl>', '</dl>')
 
         color_fg = interface_colors.get_color('script_function_fg')
-        html = template % {
+        html = DOCUMENTATION_HTML_TEMPLATE % {
             'html': "%s%s%s" % (enclosed_by[0], funcdoc, enclosed_by[1]),
             'script_function_fg': color_fg,
         }
@@ -319,7 +320,7 @@ class ScriptingOptionsPage(OptionsPage):
 
     def show_scriptfuncdoc(self):
         if not self.scriptfuncdoc_shown:
-            self.scriptfuncdoc_dialog = ScriptFuncDocDialog(parent=self)
+            self.scriptfuncdoc_dialog = ScriptingDocumentationDialog(parent=self)
             self.scriptfuncdoc_dialog.show()
         else:
             self.scriptfuncdoc_dialog.raise_()
