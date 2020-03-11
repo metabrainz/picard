@@ -166,12 +166,17 @@ code {
 
         def process_html(html, function):
             if not html:
-                return ''
+                html = ''
+            template = '<dt>%s%s</dt><dd>%s</dd>'
+            if function.module is not None and function.module != 'picard.script':
+                module = ' [' + function.module + ']'
+            else:
+                module = ''
             try:
                 firstline, remaining = html.split("\n", 1)
-                return '<dt>' + firstline + '</dt><dd>' + remaining + '</dd>'
+                return template % (firstline, module, remaining)
             except ValueError:
-                return '<dt>$' + function.name + '(...)</dt><dd>' + html + '</dd>'
+                return template % ("$%s()" % function.name, module, html)
 
         funcdoc = script_function_documentation_all(
             fmt='html',
