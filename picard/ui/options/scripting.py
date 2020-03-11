@@ -164,7 +164,7 @@ code {
 </html>
 '''
 
-        def process_html(html):
+        def process_html(html, function):
             if not html:
                 return ''
             firstline, remaining = html.split("\n", 1)

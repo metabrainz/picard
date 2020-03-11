@@ -157,7 +157,6 @@ class FunctionRegistryItem:
         self.eval_args = eval_args
         self.argcount = argcount
         self.documentation = documentation
-        self.preprocessor = None
 
     def __repr__(self):
         return '{classname}({me.function}, {me.eval_args}, {me.argcount}, {doc})'.format(
@@ -166,24 +165,24 @@ class FunctionRegistryItem:
             doc='"""{0}"""'.format(self.documentation) if self.documentation else None
         )
 
-    def _preprocess(self, data):
-        if self.preprocessor is not None:
-            data = self.preprocessor(data)
+    def _preprocess(self, data, preprocessor):
+        if preprocessor is not None:
+            data = preprocessor(data, function=self)
         return data
 
-    def markdowndoc(self):
+    def markdowndoc(self, preprocessor=None):
         if self.documentation is not None:
             ret = _(self.documentation)
         else:
             ret = ''
-        return self._preprocess(ret)
+        return self._preprocess(ret, preprocessor)
 
-    def htmldoc(self):
+    def htmldoc(self, preprocessor=None):
         if self.documentation is not None and markdown is not None:
             ret = markdown(_(self.documentation))
         else:
             ret = ''
-        return self._preprocess(ret)
+        return self._preprocess(ret, preprocessor)
 
 
 class ScriptFunctionDocError(Exception):
@@ -196,11 +195,10 @@ def script_function_documentation(name, fmt, functions=None, preprocessor=None):
     if name not in functions:
         raise ScriptFunctionDocError("no such function: %s (known functions: %r)" % (name, [name for name in functions]))
 
-    functions[name].preprocessor = preprocessor
     if fmt == 'html':
-        return functions[name].htmldoc()
+        return functions[name].htmldoc(preprocessor)
     elif fmt == 'markdown':
-        return functions[name].markdowndoc()
+        return functions[name].markdowndoc(preprocessor)
     else:
         raise ScriptFunctionDocError("no such documentation format: %s (known formats: html, markdown)" % fmt)
 
