@@ -206,11 +206,18 @@ def script_function_documentation(name, fmt, functions=None, preprocessor=None):
         raise ScriptFunctionDocError("no such documentation format: %s (known formats: html, markdown)" % fmt)
 
 
+def script_function_names(functions=None):
+    if functions is None:
+        functions = dict(ScriptParser._function_registry)
+    for name in sorted(functions):
+        yield name
+
+
 def script_function_documentation_all(fmt='markdown', pre='',
                                       post='', preprocessor=None):
     functions = dict(ScriptParser._function_registry)
     doc_elements = []
-    for name in sorted(functions):
+    for name in script_function_names(functions):
         doc_element = script_function_documentation(name, fmt,
                                                     functions=functions,
                                                     preprocessor=preprocessor)
