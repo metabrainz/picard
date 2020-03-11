@@ -167,8 +167,11 @@ code {
         def process_html(html, function):
             if not html:
                 return ''
-            firstline, remaining = html.split("\n", 1)
-            return '<dt>' + firstline + '</dt><dd>' + remaining + '</dd>'
+            try:
+                firstline, remaining = html.split("\n", 1)
+                return '<dt>' + firstline + '</dt><dd>' + remaining + '</dd>'
+            except ValueError:
+                return '<dt>$' + function.name + '(...)</dt><dd>' + html + '</dd>'
 
         funcdoc = script_function_documentation_all(
             fmt='html',
