@@ -56,7 +56,9 @@ from picard.ui.options import (
     register_options_page,
 )
 from picard.ui.ui_options_script import Ui_ScriptingOptionsPage
-from picard.ui.ui_scripting_documentation_dialog import Ui_ScriptingDocumentationDialog
+from picard.ui.ui_scripting_documentation_dialog import (
+    Ui_ScriptingDocumentationDialog,
+)
 from picard.ui.widgets.scriptlistwidget import ScriptListWidgetItem
 
 
@@ -161,6 +163,7 @@ code {
 </html>
 '''
 
+
 class ScriptingDocumentationDialog(PicardDialog):
     defaultsize = QtCore.QSize(570, 400)
 
@@ -169,7 +172,7 @@ class ScriptingDocumentationDialog(PicardDialog):
         self.setWindowFlags(QtCore.Qt.Window)
         self.setAttribute(QtCore.Qt.WA_DeleteOnClose)
         self.parent = parent
-        self.parent.scriptfuncdoc_shown = True
+        self.parent.scripting_documentation_shown = True
         self.setWindowFlags(QtCore.Qt.Window)
         self.ui = Ui_ScriptingDocumentationDialog()
         self.ui.setupUi(self)
@@ -209,7 +212,7 @@ class ScriptingDocumentationDialog(PicardDialog):
         self.ui.buttonBox.rejected.connect(self.close)
 
     def closeEvent(self, event):
-        self.parent.scriptfuncdoc_shown = False
+        self.parent.scripting_documentation_shown = False
         super().closeEvent(event)
 
 
@@ -315,16 +318,16 @@ class ScriptingOptionsPage(OptionsPage):
         self.ui.tagger_script.setFont(font)
         self.move_view = MoveableListView(self.ui.script_list, self.ui.move_up_button,
                                           self.ui.move_down_button)
-        self.ui.scripting_documentation_button.clicked.connect(self.show_scriptfuncdoc)
-        self.scriptfuncdoc_shown = None
+        self.ui.scripting_documentation_button.clicked.connect(self.show_scripting_documentation)
+        self.scripting_documentation_shown = None
 
-    def show_scriptfuncdoc(self):
-        if not self.scriptfuncdoc_shown:
-            self.scriptfuncdoc_dialog = ScriptingDocumentationDialog(parent=self)
-            self.scriptfuncdoc_dialog.show()
+    def show_scripting_documentation(self):
+        if not self.scripting_documentation_shown:
+            self.scriptdoc_dialog = ScriptingDocumentationDialog(parent=self)
+            self.scriptdoc_dialog.show()
         else:
-            self.scriptfuncdoc_dialog.raise_()
-            self.scriptfuncdoc_dialog.activateWindow()
+            self.scriptdoc_dialog.raise_()
+            self.scriptdoc_dialog.activateWindow()
 
     def script_selected(self):
         items = self.ui.script_list.selectedItems()
