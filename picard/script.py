@@ -152,14 +152,14 @@ class ScriptVariable(object):
 
 
 class FunctionRegistryItem:
-    def __init__(self, function, eval_args, argcount,
-                 documentation=None,
-                 name=None):
+    def __init__(self, function, eval_args, argcount, documentation=None,
+                 name=None, module=None):
         self.function = function
         self.eval_args = eval_args
         self.argcount = argcount
         self.documentation = documentation
         self.name = name
+        self.module = module
 
     def __repr__(self):
         return '{classname}({me.function}, {me.eval_args}, {me.argcount}, {doc})'.format(
@@ -530,6 +530,7 @@ def register_script_function(function, name=None, eval_args=True,
                 argcount if argcount and check_argcount else False,
                 documentation=documentation,
                 name=name,
+                module=function.__module__,
             )
         )
     )
