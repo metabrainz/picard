@@ -114,7 +114,7 @@
          </spacer>
         </item>
         <item>
-         <widget class="QPushButton" name="scriptfuncdoc_button">
+         <widget class="QPushButton" name="scripting_documentation_button">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
             <horstretch>0</horstretch>
