@@ -56,7 +56,7 @@ from picard.ui.options import (
     register_options_page,
 )
 from picard.ui.ui_options_script import Ui_ScriptingOptionsPage
-from picard.ui.ui_scriptfuncdocdialog import Ui_ScriptFunctionsDocDialog
+from picard.ui.ui_scripting_documentation_dialog import Ui_ScriptingDocumentationDialog
 from picard.ui.widgets.scriptlistwidget import ScriptListWidgetItem
 
 
@@ -171,7 +171,7 @@ class ScriptingDocumentationDialog(PicardDialog):
         self.parent = parent
         self.parent.scriptfuncdoc_shown = True
         self.setWindowFlags(QtCore.Qt.Window)
-        self.ui = Ui_ScriptFunctionsDocDialog()
+        self.ui = Ui_ScriptingDocumentationDialog()
         self.ui.setupUi(self)
         args = {
             "picard-doc-scripting-url": PICARD_URLS['doc_scripting'],
