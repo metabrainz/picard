@@ -4,9 +4,9 @@
 #
 # Copyright (C) 2006-2007, 2009 Lukáš Lalinský
 # Copyright (C) 2009 Nikolai Prokoschenko
-# Copyright (C) 2009-2010, 2019 Philipp Wolfer
+# Copyright (C) 2009-2010, 2019-2020 Philipp Wolfer
 # Copyright (C) 2011-2013 Michael Wiencek
-# Copyright (C) 2013-2015, 2017-2019 Laurent Monin
+# Copyright (C) 2013-2015, 2017-2020 Laurent Monin
 # Copyright (C) 2014 m42i
 # Copyright (C) 2016-2017 Sambhav Kothari
 # Copyright (C) 2016-2017 Suhas
@@ -220,7 +220,7 @@ class ScriptCompleter(QCompleter):
     insertText = QtCore.pyqtSignal(str)
 
     def __init__(self, parent=None):
-        choices = list(script_function_names())
+        choices = list(['$' + name for name in script_function_names()])
         super().__init__(choices, parent)
         self.setCompletionMode(QCompleter.PopupCompletion)
         self.highlighted.connect(self.set_highlighted)
@@ -242,14 +242,8 @@ class ScriptTextEdit(QTextEdit):
         self.popup_shown = False
 
     def insert_completion(self, completion):
-        tc = self.textCursor()
-        tc.movePosition(QTextCursor.Left)
-        tc.movePosition(QTextCursor.EndOfWord)
-
-        prefix = self.completer.completionPrefix()
-        extra = len(completion) - len(prefix)
-        tc.insertText(completion[-extra:])
-
+        tc = self.cursor_select_word()
+        tc.insertText(completion)
         self.setTextCursor(tc)
         self.popup_hide()
 
@@ -261,17 +255,33 @@ class ScriptTextEdit(QTextEdit):
     def popup_hide(self):
         self.completer.popup().hide()
 
-    def keyPressEvent(self, event):
+    def cursor_select_word(self):
+        tc = self.textCursor()
+        current_position = tc.position()
+        tc.select(QTextCursor.WordUnderCursor)
+        selected_text = tc.selectedText()
+        start = tc.selectionStart()
+        end = tc.selectionEnd()
+        if current_position < start or current_position > end:
+            # If the cursor is between words WordUnderCursor will select the
+            # previous word. Reset the selection if the new selection is
+            # outside the old cursor position.
+            tc.setPosition(current_position)
+        elif not selected_text.startswith('$') and not selected_text.startswith('%'):
+            # Update selection to include the character before the
+            # selected word to include the $ or %.
+            tc.setPosition(start - 1 if start > 0 else 0)
+            tc.setPosition(end, QTextCursor.KeepAnchor)
+        return tc
 
+    def keyPressEvent(self, event):
         if event.key() == Qt.Key_Tab and self.completer.popup().isVisible():
             self.completer.insertText.emit(self.completer.get_selected())
-            self.completer.setCompletionMode(QCompleter.PopupCompletion)
             return
 
         super().keyPressEvent(event)
 
-        tc = self.textCursor()
-        tc.select(QTextCursor.WordUnderCursor)
+        tc = self.cursor_select_word()
         selected_text = tc.selectedText()
         if selected_text:
             self.completer.setCompletionPrefix(selected_text)
