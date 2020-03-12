@@ -433,7 +433,7 @@ class PluginsOptionsPage(OptionsPage):
                 self,
                 _("Plugin '%s'") % plugin_name,
                 _("The plugin '%s' will be upgraded to version %s on next run of Picard.")
-                % (plugin.name, item.new_version)
+                % (plugin.name, item.new_version.to_string(short=True))
             )
 
             item.upgrade_to_version = item.new_version
@@ -584,11 +584,12 @@ class PluginsOptionsPage(OptionsPage):
         plugin = item.plugin
         text = []
         if item.new_version is not None:
+            version_str = item.new_version.to_string(short=True)
             if item.upgrade_to_version:
                 label = _("Restart Picard to upgrade to new version")
             else:
                 label = _("New version available")
-            text.append("<b>" + label + ": " + item.new_version + "</b>")
+            text.append("<b>" + label + ": " + version_str + "</b>")
         if plugin.description:
             text.append(plugin.description + "<hr width='90%'/>")
         if plugin.name:
