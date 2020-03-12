@@ -584,22 +584,24 @@ class PluginsOptionsPage(OptionsPage):
         plugin = item.plugin
         text = []
         if item.new_version is not None:
-            version_str = item.new_version.to_string(short=True)
             if item.upgrade_to_version:
                 label = _("Restart Picard to upgrade to new version")
             else:
                 label = _("New version available")
-            text.append("<b>" + label + ": " + version_str + "</b>")
+            version_str = item.new_version.to_string(short=True)
+            text.append("<b>{0}: {1}</b>".format(label, version_str))
         if plugin.description:
             text.append(plugin.description + "<hr width='90%'/>")
-        if plugin.name:
-            text.append("<b>" + _("Name") + "</b>: " + plugin.name)
-        if plugin.author:
-            text.append("<b>" + _("Authors") + "</b>: " + plugin.author)
-        if plugin.license:
-            text.append("<b>" + _("License") + "</b>: " + plugin.license)
-        text.append("<b>" + _("Files") + "</b>: " + plugin.files_list)
-        self.ui.details.setText("<p>%s</p>" % "<br/>\n".join(text))
+        infos = [
+            (_("Name"), plugin.name),
+            (_("Authors"), plugin.author),
+            (_("License"), plugin.license),
+            (_("Files"), plugin.files_list),
+        ]
+        for label, value in infos:
+            if value:
+                text.append("<b>{0}:</b> {1}".format(label, value))
+        self.ui.details.setText("<p>{0}</p>".format("<br/>\n".join(text)))
 
     def change_details(self):
         item = self.selected_item()
