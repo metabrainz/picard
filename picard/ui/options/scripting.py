@@ -46,6 +46,7 @@ from picard.script import (
     script_function_names,
 )
 from picard.util import restore_method
+from picard.util.tags import TAG_NAMES
 
 from picard.ui import PicardDialog
 from picard.ui.colors import interface_colors
@@ -221,6 +222,7 @@ class ScriptCompleter(QCompleter):
 
     def __init__(self, parent=None):
         choices = list(['$' + name for name in script_function_names()])
+        choices += ['%' + name.replace('~', '_') + '%' for name in TAG_NAMES.keys()]
         super().__init__(choices, parent)
         self.setCompletionMode(QCompleter.PopupCompletion)
         self.highlighted.connect(self.set_highlighted)
