@@ -1722,7 +1722,12 @@ def func_slice(parser, multi, start_index, end_index, separator=MULTI_VALUED_JOI
 Returns the current date and time in the specified `format`, which is based on
     the standard Python `strftime` [format codes](https://strftime.org/). If no
     `format` is specified the date/time will be returned in the form
-    `2020-02-05 14:26:32`."""
+    `2020-02-05 14:26:32`.
+Note: Platform-specific formatting codes should be avoided to help ensure the
+    portability of scripts across the different platforms.  These codes include:
+    remove zero-padding (e.g. `%-d` and `%-m` on Linux or macOS, and their
+    equivalent `%#d` and `%#m` on Windows); element length specifiers (e.g.
+    `%3Y`); and hanging '%' at the end of the format string."""
 ))
 def func_datetime(parser, format=None):
     """Return the current date and time as a string.
