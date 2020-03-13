@@ -1445,7 +1445,11 @@ def func_is_video(parser):
     """`$find(haystack,needle)`
 
 Finds the location of one string within another.
-    Returns the index of the first occurrance of `needle` in `haystack`, or -1 if `needle` was not found."""
+    Returns the index of the first occurrance of `needle` in `haystack`, or "" if `needle` was not found.
+
+_Since Picard 2.3_
+
+Note that prior to Picard 2.3.2 `$find` returned "-1" if `needle` was not found."""
 ))
 def func_find(parser, haystack, needle):
     """Find the location of the first occurrence of one string within another.
