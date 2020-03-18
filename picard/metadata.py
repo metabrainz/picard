@@ -38,8 +38,6 @@ from collections.abc import (
     MutableMapping,
 )
 
-from dateutil.parser import parse
-
 from PyQt5.QtCore import QObject
 
 from picard import config
@@ -52,7 +50,10 @@ from picard.plugin import (
     PluginPriority,
 )
 from picard.similarity import similarity2
-from picard.util import linear_combination_of_weights
+from picard.util import (
+    extract_year_from_date,
+    linear_combination_of_weights,
+)
 from picard.util.imagelist import ImageList
 from picard.util.tags import PRESERVED_TAGS
 
@@ -227,18 +228,6 @@ class Metadata(MutableMapping):
         sim = linear_combination_of_weights(parts) * get_score(release)
         return SimMatchRelease(similarity=sim, release=release)
 
-    @staticmethod
-    def extract_year_from_date(dt):
-        """ Extracts year from  passed in date either dict or string """
-
-        if isinstance(dt, Mapping):
-            year = int(dt.get('year'))
-        else:
-            parsed_dt = parse(dt)
-            year = parsed_dt.year
-
-        return year
-
     def compare_to_release_parts(self, release, weights):
         parts = []
         if "album" in self:
@@ -268,13 +257,13 @@ class Metadata(MutableMapping):
         factor = 0.0
         if "date" in release:
             release_date = release['date']
-            release_year = Metadata.extract_year_from_date(release_date)
+            release_year = extract_year_from_date(release_date)
             if "date" in self:
                 metadata_date = self['date']
                 if release_date == metadata_date:
                     factor = 1.00
                 else:
-                    metadata_year = Metadata.extract_year_from_date(metadata_date)
+                    metadata_year = extract_year_from_date(metadata_date)
                     if release_year == metadata_year:
                         factor = 0.95
                     elif abs(release_year - metadata_year) <= 2:
