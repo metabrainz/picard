@@ -66,7 +66,7 @@ class Ui_RenamingOptionsPage(object):
         self.file_naming_format_label = QtWidgets.QLabel(RenamingOptionsPage)
         self.file_naming_format_label.setObjectName("file_naming_format_label")
         self.verticalLayout_5.addWidget(self.file_naming_format_label)
-        self.file_naming_format = QtWidgets.QTextEdit(RenamingOptionsPage)
+        self.file_naming_format = ScriptTextEdit(RenamingOptionsPage)
         self.file_naming_format.setEnabled(False)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
@@ -152,3 +152,4 @@ class Ui_RenamingOptionsPage(object):
         self.file_naming_format_label.setText(_("Name files like this"))
         self.file_naming_format_default.setText(_("Default"))
         self.groupBox.setTitle(_("Examples"))
+from picard.ui.widgets.scripttextedit import ScriptTextEdit
