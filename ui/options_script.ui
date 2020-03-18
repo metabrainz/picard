@@ -78,7 +78,7 @@
            <number>0</number>
           </property>
           <item>
-           <widget class="QTextEdit" name="tagger_script">
+           <widget class="ScriptTextEdit" name="tagger_script">
             <property name="acceptRichText">
              <bool>false</bool>
             </property>
@@ -197,6 +197,11 @@
     <slot>remove_selected_script()</slot>
     <slot>add_script()</slot>
    </slots>
+  </customwidget>
+  <customwidget>
+   <class>ScriptTextEdit</class>
+   <extends>QTextEdit</extends>
+   <header location="global">picard.ui.widgets.scripttextedit</header>
   </customwidget>
  </customwidgets>
  <tabstops>

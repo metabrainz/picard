@@ -3,7 +3,9 @@
 # Automatically generated - don't edit.
 # Use `python setup.py build_ui` to update it.
 
+
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class Ui_ScriptingOptionsPage(object):
     def setupUi(self, ScriptingOptionsPage):
@@ -40,7 +42,7 @@ class Ui_ScriptingOptionsPage(object):
         self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.formWidget)
         self.verticalLayout_2.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_2.setObjectName("verticalLayout_2")
-        self.tagger_script = QtWidgets.QTextEdit(self.formWidget)
+        self.tagger_script = ScriptTextEdit(self.formWidget)
         self.tagger_script.setAcceptRichText(False)
         self.tagger_script.setObjectName("tagger_script")
         self.verticalLayout_2.addWidget(self.tagger_script)
@@ -105,5 +107,5 @@ class Ui_ScriptingOptionsPage(object):
         self.move_up_button.setToolTip(_("Move script up"))
         self.move_down_button.setToolTip(_("Move script down"))
         self.remove_button.setText(_("Remove script"))
-
 from picard.ui.widgets.scriptlistwidget import ScriptListWidget
+from picard.ui.widgets.scripttextedit import ScriptTextEdit

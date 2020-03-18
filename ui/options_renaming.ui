@@ -125,7 +125,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QTextEdit" name="file_naming_format">
+    <widget class="ScriptTextEdit" name="file_naming_format">
      <property name="enabled">
       <bool>false</bool>
      </property>
@@ -265,6 +265,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>ScriptTextEdit</class>
+   <extends>QTextEdit</extends>
+   <header location="global">picard.ui.widgets.scripttextedit</header>
+  </customwidget>
+ </customwidgets>
  <tabstops>
   <tabstop>move_files</tabstop>
   <tabstop>move_files_to</tabstop>
