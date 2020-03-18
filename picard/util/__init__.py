@@ -20,6 +20,7 @@
 # Copyright (C) 2017 Frederik “Freso” S. Olesen
 # Copyright (C) 2018 Bob Swift
 # Copyright (C) 2018 Vishal Choudhary
+# Copyright (C) 2020 Ray Bouchard
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -38,6 +39,7 @@
 
 import builtins
 from collections import namedtuple
+from collections.abc import Mapping
 import html
 import json
 import ntpath
@@ -47,6 +49,8 @@ import re
 import sys
 from time import time
 import unicodedata
+
+from dateutil.parser import parse
 
 from PyQt5 import QtCore
 
@@ -645,3 +649,15 @@ def limited_join(a_list, limit, join_string='+', middle_string='…'):
     start = a_list[:half]
     end = a_list[-half:]
     return join_string.join(start + [middle_string] + end)
+
+
+def extract_year_from_date(dt):
+    """ Extracts year from  passed in date either dict or string """
+
+    if isinstance(dt, Mapping):
+        year = int(dt.get('year'))
+    else:
+        parsed_dt = parse(dt)
+        year = parsed_dt.year
+
+    return year

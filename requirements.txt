@@ -2,3 +2,4 @@ discid
 markdown
 mutagen>=1.37
 PyQt5>=5.7.1
+dateutils==2.8.1
