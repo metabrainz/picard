@@ -255,7 +255,7 @@ class Metadata(MutableMapping):
         # release has a no date (all else equal, we don't prefer this release since its date is missing)
         # release has a date but it does not match ours(all else equal, its better to have an unknown date than a wrong date. since the unknown could actually be correct)
         factor = 0.0
-        if "date" in release:
+        if "date" in release and release['date'] != '':
             release_date = release['date']
             release_year = extract_year_from_date(release_date)
             if "date" in self:
