@@ -218,8 +218,6 @@ class ScriptingDocumentationDialog(PicardDialog):
 
 
 class ScriptCompleter(QCompleter):
-    insertText = QtCore.pyqtSignal(str)
-
     def __init__(self, parent=None):
         choices = list(['$' + name for name in script_function_names()])
         choices += ['%' + name.replace('~', '_') + '%' for name in TAG_NAMES.keys()]
@@ -240,7 +238,7 @@ class ScriptTextEdit(QTextEdit):
     def enable_completer(self):
         self.completer = ScriptCompleter()
         self.completer.setWidget(self)
-        self.completer.insertText.connect(self.insert_completion)
+        self.completer.activated.connect(self.insert_completion)
         self.popup_shown = False
 
     def insert_completion(self, completion):
@@ -278,7 +276,7 @@ class ScriptTextEdit(QTextEdit):
 
     def keyPressEvent(self, event):
         if event.key() == Qt.Key_Tab and self.completer.popup().isVisible():
-            self.completer.insertText.emit(self.completer.get_selected())
+            self.completer.activated.emit(self.completer.get_selected())
             return
 
         super().keyPressEvent(event)
