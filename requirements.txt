@@ -1,4 +1,4 @@
+python-dateutil>=2.8.1
 discid
 mutagen>=1.37
 PyQt5>=5.7.1
-dateutils==2.8.1
