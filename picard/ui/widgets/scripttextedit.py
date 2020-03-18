@@ -139,11 +139,6 @@ class ScriptTextEdit(QTextEdit):
         self.setTextCursor(tc)
         self.popup_hide()
 
-    def focusInEvent(self, event):
-        if self.completer:
-            self.completer.setWidget(self)
-        super().focusInEvent(event)
-
     def popup_hide(self):
         self.completer.popup().hide()
 
