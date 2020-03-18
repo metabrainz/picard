@@ -4,7 +4,7 @@
 #
 # Copyright (C) 2006-2008, 2011 Lukáš Lalinský
 # Copyright (C) 2008-2009 Nikolai Prokoschenko
-# Copyright (C) 2009-2010, 2014-2015, 2018-2019 Philipp Wolfer
+# Copyright (C) 2009-2010, 2014-2015, 2018-2020 Philipp Wolfer
 # Copyright (C) 2011-2013 Michael Wiencek
 # Copyright (C) 2011-2013 Wieland Hoffmann
 # Copyright (C) 2013 Calvin Walton
@@ -59,10 +59,7 @@ from picard.ui.options import (
     OptionsPage,
     register_options_page,
 )
-from picard.ui.options.scripting import (
-    ScriptCheckError,
-    TaggerScriptSyntaxHighlighter,
-)
+from picard.ui.options.scripting import ScriptCheckError
 from picard.ui.ui_options_renaming import Ui_RenamingOptionsPage
 from picard.ui.util import enabledSlot
 
@@ -119,7 +116,6 @@ class RenamingOptionsPage(OptionsPage):
         )
         self.ui.file_naming_format.textChanged.connect(self.check_formats)
         self.ui.file_naming_format_default.clicked.connect(self.set_file_naming_format_default)
-        self.highlighter = TaggerScriptSyntaxHighlighter(self.ui.file_naming_format.document())
         self.ui.move_files_to_browse.clicked.connect(self.move_files_to_browse)
 
         script_edit = self.ui.file_naming_format
