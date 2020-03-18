@@ -283,6 +283,10 @@ class ScriptTextEdit(QTextEdit):
 
         super().keyPressEvent(event)
 
+        # Do not trigger autocomplete on cursor keys to allow for easier navigation
+        if event.key() in (Qt.Key_Left, Qt.Key_Right, Qt.Key_Up, Qt.Key_Down):
+            return
+
         tc = self.cursor_select_word()
         selected_text = tc.selectedText()
         if selected_text:
