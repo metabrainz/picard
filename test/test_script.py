@@ -304,14 +304,14 @@ class ScriptParserTest(PicardTestCase):
         def func_somefunc(parser):
             return "x"
 
-        def preprocessor(data, function):
-            return 'w'  + data + function.name + 'y'
+        def postprocessor(data, function):
+            return 'w' + data + function.name + 'y'
 
         docall = script_function_documentation_all(
             fmt='html',
             pre='<div id="test">',
             post="</div>\n",
-            preprocessor=preprocessor,
+            postprocessor=postprocessor,
         )
 
         self.assertStartswith(docall, '<div id="test">w' + pre)
