@@ -65,7 +65,6 @@ DOCUMENTATION_HTML_TEMPLATE = '''
 <style>
 dt {
     font-family: monospace;
-    /* font-weight: bold; */
     color: %(script_function_fg)s
 }
 dd {
@@ -124,11 +123,10 @@ class ScriptingDocumentationDialog(PicardDialog):
             fmt='html',
             preprocessor=process_html,
         )
-        enclosed_by = ('<dl>', '</dl>')
 
         color_fg = interface_colors.get_color('script_function_fg')
         html = DOCUMENTATION_HTML_TEMPLATE % {
-            'html': "%s%s%s" % (enclosed_by[0], funcdoc, enclosed_by[1]),
+            'html': "<dl>%s</dl>" % funcdoc,
             'script_function_fg': color_fg,
         }
         self.ui.textBrowser.setHtml(html)
