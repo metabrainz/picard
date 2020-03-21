@@ -78,7 +78,7 @@ class AboutOptionsPage(OptionsPage):
             'Sambhav Kothari',
             'Philipp Wolfer',
         ])
-        args['copyright_years'] = '2004-2019'
+        args['copyright_years'] = '2004-2020'
         args['icons_credits'] = _("""Icons made by Sambhav Kothari <sambhavs.email@gmail.com>
 and <a href="http://www.flaticon.com/authors/madebyoliver">Madebyoliver</a>,
 <a href="http://www.flaticon.com/authors/pixel-buddha">Pixel Buddha</a>,
