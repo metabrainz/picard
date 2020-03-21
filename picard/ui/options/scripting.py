@@ -121,7 +121,7 @@ class ScriptingDocumentationDialog(PicardDialog):
 
         funcdoc = script_function_documentation_all(
             fmt='html',
-            preprocessor=process_html,
+            postprocessor=process_html,
         )
 
         color_fg = interface_colors.get_color('script_function_fg')
