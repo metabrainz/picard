@@ -181,8 +181,8 @@ class FunctionRegistryItem:
         return self._preprocess(ret, preprocessor)
 
     def htmldoc(self, preprocessor=None):
-        if self.documentation is not None and markdown is not None:
-            ret = markdown(_(self.documentation))
+        if markdown is not None:
+            ret = markdown(self.markdowndoc())
         else:
             ret = ''
         return self._preprocess(ret, preprocessor)
