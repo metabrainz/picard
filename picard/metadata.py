@@ -156,6 +156,15 @@ class Metadata(MutableMapping):
         ('totaldiscs', 4),
     ]
 
+    __date_match_factors = {
+        'exact': 1.00,
+        'year': 0.95,
+        'close_year': 0.85,
+        'exists_vs_null': 0.65,
+        'no_release_date': 0.25,
+        'differed': 0.0
+    }
+
     multi_valued_joiner = MULTI_VALUED_JOINER
 
     def __init__(self, *args, deleted_tags=None, images=None, length=None, **kwargs):
@@ -247,34 +256,39 @@ class Metadata(MutableMapping):
         except (ValueError, KeyError):
             pass
 
-        # Date Logic - in order of preference
-        # release has a date and it matches what our metadata had exactly.
-        # release has a date and it matches what our metadata had for year exactly.
-        # release has a date and it matches what our metadata had closely (year +/- 2).
-        # release has a date but we don't have one (all else equal, we prefer tracks that have non-blank date values)
-        # release has a no date (all else equal, we don't prefer this release since its date is missing)
-        # release has a date but it does not match ours(all else equal, its better to have an unknown date than a wrong date. since the unknown could actually be correct)
-        factor = 0.0
+        # Date Logic
+        date_match_factor = 0.0
         if "date" in release and release['date'] != '':
             release_date = release['date']
             release_year = extract_year_from_date(release_date)
             if "date" in self:
                 metadata_date = self['date']
                 if release_date == metadata_date:
-                    factor = 1.00
+                    # release has a date and it matches what our metadata had exactly.
+                    date_match_factor = self.__date_match_factors['exact']
                 else:
                     metadata_year = extract_year_from_date(metadata_date)
                     if release_year == metadata_year:
-                        factor = 0.95
+                        # release has a date and it matches what our metadata had for year exactly.
+                        date_match_factor = self.__date_match_factors['year']
                     elif abs(release_year - metadata_year) <= 2:
-                        factor = 0.85
+                        # release has a date and it matches what our metadata had closely (year +/- 2).
+                        date_match_factor = self.__date_match_factors['close_year']
                     else:
-                        factor = 0.00
+                        # release has a date but it does not match ours (all else equal,
+                        # its better to have an unknown date than a wrong date, since
+                        # the unknown could actually be correct)
+                        date_match_factor = self.__date_match_factors['differed']
             else:
-                factor = 0.65
+                # release has a date but we don't have one (all else equal, we prefer
+                # tracks that have non-blank date values)
+                date_match_factor = self.__date_match_factors['exists_vs_null']
         else:
-            factor = 0.25
-        parts.append((factor, weights['date']))
+            # release has a no date (all else equal, we don't prefer this
+            # release since its date is missing)
+            date_match_factor = self.__date_match_factors['no_release_date']
+
+        parts.append((date_match_factor, weights['date']))
 
         weights_from_preferred_countries(parts, release,
                                          config.setting["preferred_release_countries"],
