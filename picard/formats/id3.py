@@ -554,11 +554,10 @@ class ID3File(File):
                     _remove_people_with_role(tags, ['TMCL', 'TIPL', 'IPLS'], role)
                 elif name.startswith('comment:') or name == 'comment':
                     (lang, desc) = parse_comment_tag(name)
-                    if desc.lower()[:4] != 'itun':
-                        for key, frame in list(tags.items()):
-                            if (frame.FrameID == 'COMM' and frame.desc == desc
-                                and frame.lang == lang):
-                                del tags[key]
+                    for key, frame in list(tags.items()):
+                        if (frame.FrameID == 'COMM' and frame.desc == desc
+                            and frame.lang == lang):
+                            del tags[key]
                 elif name.startswith('lyrics:') or name == 'lyrics':
                     if ':' in name:
                         desc = name.split(':', 1)[1]
