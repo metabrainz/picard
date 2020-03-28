@@ -249,6 +249,20 @@ class CommonId3Tests:
             new_metadata = save_and_load_metadata(self.filename, metadata)
             self.assertEqual(new_metadata['comment:iTunNORM'], iTunNORM)
 
+        @skipUnlessTestfile
+        def test_delete_itun_tags(self):
+            metadata = Metadata()
+            metadata['comment:iTunNORM'] = '00001E86 00001E86 0000A2A3 0000A2A3 000006A6 000006A6 000078FA 000078FA 00000211 00000211'
+            metadata['comment:iTunPGAP'] = '1'
+            new_metadata = save_and_load_metadata(self.filename, metadata)
+            self.assertIn('comment:iTunNORM', new_metadata)
+            self.assertIn('comment:iTunPGAP', new_metadata)
+            del metadata['comment:iTunNORM']
+            del metadata['comment:iTunPGAP']
+            new_metadata = save_and_load_metadata(self.filename, metadata)
+            self.assertNotIn('comment:iTunNORM', new_metadata)
+            self.assertNotIn('comment:iTunPGAP', new_metadata)
+
         def test_rename_txxx_tags(self):
             file_path = os.path.join('test', 'data', 'test-id3-rename-tags.mp3')
             filename = self.copy_file_tmp(file_path, 'mp3')
