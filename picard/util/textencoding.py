@@ -176,6 +176,7 @@ _simplify_punctuation = {
     "\u226B": ">>",  # MUCH GREATER-THAN
     "\u2985": "((",  # LEFT WHITE PARENTHESIS
     "\u2986": "))",  # RIGHT WHITE PARENTHESIS
+    "\u2022": "-",  # BULLET
     "\u200B": "",  # Zero Width Space
 }
 
