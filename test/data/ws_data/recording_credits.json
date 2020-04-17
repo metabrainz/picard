@@ -164,6 +164,30 @@
     "attributes": ["solo"],
     "type": "vocal",
     "type-id": "0fdbe3c6-7700-4a31-ae54-b53f06ae1cfa"
+  }, {
+    "attribute-credits": {},
+    "attributes": [
+      "EWI"
+    ],
+    "end": null,
+    "artist": {
+      "sort-name": "Brecker, Michael",
+      "id": "795058e7-927e-4fcd-a5a0-f57c2fe9d3d1",
+      "name": "Michael Brecker",
+      "disambiguation": ""
+    },
+    "source-credit": "",
+    "type-id": "59054b12-01ac-43ee-a618-285fd397e461",
+    "attribute-values": {},
+    "begin": null,
+    "type": "instrument",
+    "target-credit": "",
+    "attribute-ids": {
+      "EWI": "7061c07c-e87a-4f5f-b45f-fb1138733e32"
+    },
+    "ended": false,
+    "direction": "backward",
+    "target-type": "artist"
   }],
   "length": 242640,
   "id": "2d40c8b2-7524-49e3-af44-ebb924c5b023",
