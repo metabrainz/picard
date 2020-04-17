@@ -635,7 +635,7 @@ class picard_update_constants(Command):
         line = "    '{code}': '{name}',\n"
         footer = "}}\n"
         filename = os.path.join('picard', 'const', 'countries.py')
-        with open(filename, 'w') as countries_py:
+        with open(filename, 'w', encoding='utf-8') as countries_py:
             def write(s, **kwargs):
                 countries_py.write(s.format(**kwargs))
 
@@ -655,7 +655,7 @@ class picard_update_constants(Command):
         line = "    '{key}': '{value}',\n"
         footer = "}}\n"
         filename = os.path.join('picard', 'const', 'attributes.py')
-        with open(filename, 'w') as attributes_py:
+        with open(filename, 'w', encoding='utf-8') as attributes_py:
             def write(s, **kwargs):
                 attributes_py.write(s.format(**kwargs))
 
