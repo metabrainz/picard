@@ -100,7 +100,7 @@ _RELEASE_GROUP_TO_METADATA = {
 
 
 def _decamelcase(text):
-    return re.sub(r'([A-Z])', r' \1', text).strip()
+    return re.sub(r'(?<![A-Z\s])([A-Z])', r' \1', text).strip()
 
 
 _REPLACE_MAP = {}

@@ -30,6 +30,7 @@ from test.picardtestcase import (
 from picard import config
 from picard.album import Album
 from picard.mbjson import (
+    _decamelcase,
     artist_to_metadata,
     countries_from_node,
     get_score,
@@ -205,6 +206,12 @@ class RecordingCreditsTest(MBJSONTest):
         self.assertNotIn('performer:solo', m)
         self.assertEqual(m['performer:solo vocals'], 'Anni-Frid Lyngstad')
 
+    def test_recording_instrument_decamelcase(self):
+        m = Metadata()
+        t = Track("1")
+        recording_to_metadata(self.json_doc, m, t)
+        self.assertEqual(m['performer:ewi'], 'Michael Brecker')
+
 
 class TrackTest(MBJSONTest):
 
@@ -371,3 +378,12 @@ class GetScoreTest(PicardTestCase):
 
     def test_get_score_no_score(self):
         self.assertEqual(1.0, get_score({}))
+
+
+class DecamelcaseTest(PicardTestCase):
+    def test_decamelcase(self):
+        self.assertEqual('foo bar', _decamelcase('foo bar'))
+        self.assertEqual('Foo Bar', _decamelcase('Foo Bar'))
+        self.assertEqual('Foo Bar', _decamelcase('FooBar'))
+        self.assertEqual('Foo BAr', _decamelcase('FooBAr'))
+        self.assertEqual('EWI', _decamelcase('EWI'))
