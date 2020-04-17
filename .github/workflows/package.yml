@@ -26,7 +26,7 @@ jobs:
     runs-on: macos-latest
     env:
       DISCID_VERSION: 0.6.2
-      FPCALC_VERSION: 1.4.4-9
+      FPCALC_VERSION: 1.5.0
       PYTHON_VERSION: 3.7.6
       MACOSX_DEPLOYMENT_TARGET: 10.12
     steps:
@@ -104,7 +104,7 @@ jobs:
         New-Item -Name .\artifacts -ItemType Directory
       env:
         DISCID_VERSION: 0.6.2
-        FPCALC_VERSION: 1.4.4-9
+        FPCALC_VERSION: 1.5.0
     - name: Patch build version
       if: startsWith(github.ref, 'refs/tags/') != true
       run: |
