@@ -266,6 +266,8 @@ class WebService(QtCore.QObject):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.manager = QtNetwork.QNetworkAccessManager()
+        self._network_accessible_changed(self.manager.networkAccessible())
+        self.manager.networkAccessibleChanged.connect(self._network_accessible_changed)
         self.oauth_manager = OAuthManager(self)
         self.set_cache()
         self.setup_proxy()
@@ -278,6 +280,15 @@ class WebService(QtCore.QObject):
         }
         self._init_queues()
         self._init_timers()
+
+    def _network_accessible_changed(self, accessible):
+        # Qt's network accessibility check sometimes fails, e.g. with VPNs on Windows.
+        # If the accessibility is reported to be not accessible, set it to
+        # unknown instead. Let's just try any request and handle the error.
+        # See https://tickets.metabrainz.org/browse/PICARD-1791
+        if accessible == QtNetwork.QNetworkAccessManager.NotAccessible:
+            self.manager.setNetworkAccessible(QtNetwork.QNetworkAccessManager.UnknownAccessibility)
+        log.debug("Network accessible requested: %s, actual: %s", accessible, self.manager.networkAccessible())
 
     def _init_queues(self):
         self._active_requests = {}
