@@ -93,6 +93,7 @@ class Ui_ScriptingOptionsPage(object):
         self.tagger_script.textChanged.connect(ScriptingOptionsPage.live_update_and_check)
         self.script_list.itemSelectionChanged.connect(ScriptingOptionsPage.script_selected)
         self.remove_button.clicked.connect(self.script_list.remove_selected_script)
+        self.enable_tagger_scripts.toggled['bool'].connect(ScriptingOptionsPage.enable_tagger_scripts_toggled)
         QtCore.QMetaObject.connectSlotsByName(ScriptingOptionsPage)
         ScriptingOptionsPage.setTabOrder(self.enable_tagger_scripts, self.add_button)
         ScriptingOptionsPage.setTabOrder(self.add_button, self.script_list)
@@ -101,6 +102,7 @@ class Ui_ScriptingOptionsPage(object):
     def retranslateUi(self, ScriptingOptionsPage):
         _translate = QtCore.QCoreApplication.translate
         self.enable_tagger_scripts.setTitle(_("Tagger Script(s)"))
+        self.tagger_script.setPlaceholderText(_("Enter your tagger script here."))
         self.add_button.setToolTip(_("Add new script"))
         self.add_button.setText(_("Add new script"))
         self.scripting_documentation_button.setText(_("Scripting Documentation"))
