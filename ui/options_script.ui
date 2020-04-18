@@ -82,6 +82,9 @@
             <property name="acceptRichText">
              <bool>false</bool>
             </property>
+            <property name="placeholderText">
+             <string>Enter your tagger script here.</string>
+            </property>
            </widget>
           </item>
          </layout>
@@ -276,11 +279,28 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>enable_tagger_scripts</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>ScriptingOptionsPage</receiver>
+   <slot>enable_tagger_scripts_toggled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>302</x>
+     <y>275</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>302</x>
+     <y>275</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>live_update_and_check()</slot>
   <slot>script_selected()</slot>
   <slot>move_selected_script_up()</slot>
   <slot>move_selected_script_down()</slot>
+  <slot>enable_tagger_scripts_toggled(bool)</slot>
  </slots>
 </ui>
