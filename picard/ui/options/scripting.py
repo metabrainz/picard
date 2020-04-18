@@ -175,12 +175,17 @@ class ScriptingOptionsPage(OptionsPage):
             self.scriptdoc_dialog.raise_()
             self.scriptdoc_dialog.activateWindow()
 
+    def enable_tagger_scripts_toggled(self, on):
+        if on and self.ui.script_list.count() == 0:
+            self.ui.script_list.add_script()
+
     def script_selected(self):
         items = self.ui.script_list.selectedItems()
         if items:
             item = items[0]
             self.ui.tagger_script.setEnabled(True)
             self.ui.tagger_script.setText(item.script)
+            self.ui.tagger_script.setFocus(QtCore.Qt.OtherFocusReason)
         else:
             self.ui.tagger_script.setEnabled(False)
             self.ui.tagger_script.setText("")
