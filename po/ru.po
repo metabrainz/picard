@@ -7,6 +7,7 @@
 # Андрей Пындык <andrew.pyndyk@gmail.com>, 2017
 # Dmitr Y, 2017
 # Edward Pavlenko <dfcbktd@gmail.com>, 2019
+# Ekaterina <nawsikaya@bk.ru>, 2020
 # Ivan Ivaschenko <defuz.net@gmail.com>, 2014
 # MrClon . <MrClon2007@yandex.ru>, 2019
 # Nikolai Prokoschenko <nikolai@prokoschenko.de>, 2012
@@ -25,8 +26,8 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2020-02-24 09:52+0100\n"
-"PO-Revision-Date: 2020-02-24 14:10+0000\n"
-"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
+"PO-Revision-Date: 2020-04-01 09:47+0000\n"
+"Last-Translator: Ekaterina <nawsikaya@bk.ru>\n"
 "Language-Team: Russian (http://www.transifex.com/musicbrainz/musicbrainz/language/ru/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1585,11 +1586,11 @@ msgstr ""
 
 #: picard/const/locales.py:330
 msgid "Portuguese (Brazil)"
-msgstr ""
+msgstr "Португальский (Бразилия)"
 
 #: picard/const/locales.py:331
 msgid "Portuguese (Portugal)"
-msgstr ""
+msgstr "Португальский (Португалия)"
 
 #: picard/const/locales.py:332
 msgid "Punjabi"
@@ -1621,19 +1622,19 @@ msgstr ""
 
 #: picard/const/locales.py:340
 msgid "Romanian (Moldova)"
-msgstr ""
+msgstr "Румынский (Молдавия)"
 
 #: picard/const/locales.py:341
 msgid "Romanian (Romania)"
-msgstr ""
+msgstr "Румынский (Румыния)"
 
 #: picard/const/locales.py:343
 msgid "Russian (Russia)"
-msgstr ""
+msgstr "Русский (Россия)"
 
 #: picard/const/locales.py:344
 msgid "Russian (Ukraine)"
-msgstr ""
+msgstr "Русский (Украина)"
 
 #: picard/const/locales.py:345
 msgid "Sanskrit"
@@ -1845,7 +1846,7 @@ msgstr ""
 
 #: picard/const/locales.py:404
 msgid "Spanish (Peru)"
-msgstr ""
+msgstr "Испанский (Перу)"
 
 #: picard/const/locales.py:405
 msgid "Spanish (Puerto Rico)"
@@ -1861,11 +1862,11 @@ msgstr ""
 
 #: picard/const/locales.py:408
 msgid "Spanish (Uruguay)"
-msgstr ""
+msgstr "Испанский (Уругвай)"
 
 #: picard/const/locales.py:409
 msgid "Spanish (Venezuela)"
-msgstr ""
+msgstr "Испанский (Венесуэла)"
 
 #: picard/const/locales.py:410
 msgid "Swahili"
@@ -2333,7 +2334,7 @@ msgstr ""
 
 #: picard/ui/colors.py:40
 msgid "Log view text (error)"
-msgstr ""
+msgstr "Просмотр журнала (ошибка)"
 
 #: picard/ui/colors.py:41
 msgid "Log view text (info)"

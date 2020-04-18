@@ -13,6 +13,7 @@
 #   LI Daobing <lidaobing@gmail.com>, 2007, 2008, 2009, 2010, 2011
 # LI Daobing <lidaobing@gmail.com>, 2007, 2008, 2009, 2010
 # LXY <767763591@qq.com>, 2016
+# Lo Nie <asd7878787@163.com>, 2020
 # Maureen <mry_33@163.com>, 2019
 # MR <admin@mr-cn.net>, 2019
 # Maureen <mry_33@163.com>, 2014
@@ -25,8 +26,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2019-10-21 23:42+0000\n"
-"Last-Translator: Michael Wiencek <mwtuea@gmail.com>\n"
+"PO-Revision-Date: 2020-03-26 07:07+0000\n"
+"Last-Translator: Lo Nie <asd7878787@163.com>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/musicbrainz/musicbrainz/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -4077,7 +4078,7 @@ msgstr "Mevlidişerif"
 #: DB:medium_format/name:83
 msgctxt "medium_format"
 msgid "Microcassette"
-msgstr ""
+msgstr "微型卡式录音带"
 
 #: DB:medium_format/name:6
 msgctxt "medium_format"

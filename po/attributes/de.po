@@ -31,7 +31,7 @@
 # Nikolai Prokoschenko <nikolai@prokoschenko.de>, 2011
 # nikki, 2013
 # Patrick <patrick.rein@gmail.com>, 2015
-# Philipp Wolfer <ph.wolfer@gmail.com>, 2012,2018-2019
+# Philipp Wolfer <ph.wolfer@gmail.com>, 2012,2018-2020
 # Philipp Wolfer <ph.wolfer@gmail.com>, 2012
 # S.Brandt <s.brandt@mixxx.org>, 2014-2016
 # Shepard, 2011
@@ -41,13 +41,14 @@
 # TL, 2015-2016
 # Tobias Quathamer <email address hidden>, 2007
 # Tobias Quathamer <toddy@debian.org>, 2007
+# palim <ueblesurmeli-transifex@yahoo.de>, 2020
 # Ulrich Klauer <ulrich@chirlu.de>, 2015-2016
 # Wieland Hoffmann <themineo+transifex@googlemail.com>, 2011
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2019-12-11 07:23+0000\n"
-"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
+"PO-Revision-Date: 2020-04-07 00:51+0000\n"
+"Last-Translator: palim <ueblesurmeli-transifex@yahoo.de>\n"
 "Language-Team: German (http://www.transifex.com/musicbrainz/musicbrainz/language/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -3983,7 +3984,7 @@ msgstr "Manuell"
 #: DB:label_type/name:10
 msgctxt "label_type"
 msgid "Manufacturer"
-msgstr ""
+msgstr "Hersteller"
 
 #: DB:work_attribute_type_allowed_value/value:172
 msgctxt "work_attribute_type_allowed_value"
@@ -5064,7 +5065,7 @@ msgstr ""
 #: DB:place_type/name:8
 msgctxt "place_type"
 msgid "Pressing plant"
-msgstr ""
+msgstr "Presswerk"
 
 #: DB:label_type/name:3
 msgctxt "label_type"

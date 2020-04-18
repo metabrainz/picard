@@ -6,13 +6,13 @@
 # Gioele  <email address hidden>, 2012
 # Gioele <gioele@svario.it>, 2012
 # leofiore <leofiore@libero.it>, 2012
-# Luca Salini <salo.rock@gmail.com>, 2016-2019
+# Luca Salini <salo.rock@gmail.com>, 2016-2020
 # Luca Salini <salo.rock@gmail.com>, 2013-2015
 # Luca Salini <salo.rock@gmail.com>, 2012
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2019-11-06 23:13+0000\n"
+"PO-Revision-Date: 2020-03-24 01:24+0000\n"
 "Last-Translator: Luca Salini <salo.rock@gmail.com>\n"
 "Language-Team: Italian (http://www.transifex.com/musicbrainz/musicbrainz/language/it/)\n"
 "MIME-Version: 1.0\n"
@@ -2168,7 +2168,7 @@ msgstr "Istituzione di istruzione"
 #: DB:instrument_type/name:4
 msgctxt "instrument_type"
 msgid "Electronic instrument"
-msgstr "Strumento elettronico"
+msgstr "Strumenti elettronici"
 
 #: DB:medium_format/name:42
 msgctxt "medium_format"
@@ -2313,7 +2313,7 @@ msgstr "Fahte"
 #: DB:instrument_type/name:7
 msgctxt "instrument_type"
 msgid "Family"
-msgstr "Famiglia"
+msgstr "Famiglie"
 
 #: DB:work_attribute_type_allowed_value/value:615
 msgctxt "work_attribute_type_allowed_value"
@@ -4839,7 +4839,7 @@ msgstr "Altro"
 #: DB:instrument_type/name:5
 msgctxt "instrument_type"
 msgid "Other instrument"
-msgstr "Altro strumento"
+msgstr "Altri strumenti"
 
 #: DB:work_type/name:12
 msgctxt "work_type"
@@ -4930,7 +4930,7 @@ msgstr "Pençgah-ı Zaid"
 #: DB:instrument_type/name:3
 msgctxt "instrument_type"
 msgid "Percussion instrument"
-msgstr "Strumento a percussione"
+msgstr "Strumenti a percussione"
 
 #: DB:work_attribute_type_allowed_value/value:496
 msgctxt "work_attribute_type_allowed_value"
@@ -5833,7 +5833,7 @@ msgstr "Adesivo"
 #: DB:instrument_type/name:2
 msgctxt "instrument_type"
 msgid "String instrument"
-msgstr "Strumento a corda"
+msgstr "Strumenti a corda"
 
 #: DB:place_type/name:1
 msgctxt "place_type"
@@ -6613,7 +6613,7 @@ msgstr "Cilindro fonografico"
 #: DB:instrument_type/name:1
 msgctxt "instrument_type"
 msgid "Wind instrument"
-msgstr "Strumento ad aria"
+msgstr "Strumenti ad aria"
 
 #: DB:editor_collection_type/name:3
 msgctxt "collection_type"

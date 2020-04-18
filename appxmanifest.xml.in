@@ -16,6 +16,7 @@
   </Properties>
   <Resources>
     <Resource Language="en-us"/>
+    <Resource Language="cs"/>
     <Resource Language="de"/>
     <Resource Language="es"/>
     <Resource Language="fi"/>
@@ -24,6 +25,7 @@
     <Resource Language="it"/>
     <Resource Language="ms-my"/>
     <Resource Language="nl"/>
+    <Resource Language="pt-br"/>
     <Resource Language="zh-tw"/>
   </Resources>
   <Dependencies>

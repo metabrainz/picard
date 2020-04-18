@@ -15,8 +15,8 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2020-02-24 09:52+0100\n"
-"PO-Revision-Date: 2020-02-24 14:08+0000\n"
-"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
+"PO-Revision-Date: 2020-02-28 16:14+0000\n"
+"Last-Translator: Avi Markovitz <avi.markovitz@gmail.com>\n"
 "Language-Team: Hebrew (http://www.transifex.com/musicbrainz/musicbrainz/language/he/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -419,11 +419,11 @@ msgstr "קוראנית"
 
 #: picard/const/languages.py:63 picard/const/locales.py:283
 msgid "Malay (Malaysia)"
-msgstr ""
+msgstr "מלאית (מלזיה)"
 
 #: picard/const/languages.py:64 picard/const/locales.py:309
 msgid "Norwegian Bokmål"
-msgstr "נורבגית בוקמל"
+msgstr "נורווגית בוקמל"
 
 #: picard/const/languages.py:66 picard/const/locales.py:115
 msgid "Dutch"
@@ -1235,15 +1235,15 @@ msgstr "קזאחית"
 
 #: picard/const/locales.py:239
 msgid "Kazakh (Cyrillic)"
-msgstr ""
+msgstr "קזחית (קירילית)"
 
 #: picard/const/locales.py:240
 msgid "Kazakh (Cyrillic) (Kazakhstan)"
-msgstr ""
+msgstr "קזחית (קירילית) (קזחסטן)"
 
 #: picard/const/locales.py:241
 msgid "Kazakh (Kazakhstan)"
-msgstr ""
+msgstr "קזחית (קזחסטן)"
 
 #: picard/const/locales.py:242
 msgid "Khmer"
@@ -1251,15 +1251,15 @@ msgstr "קאמר"
 
 #: picard/const/locales.py:243
 msgid "Khmer (Cambodia)"
-msgstr ""
+msgstr "חמר (קמבודיה)"
 
 #: picard/const/locales.py:244
 msgid "Kinyarwanda"
-msgstr ""
+msgstr "קינירוואנדה"
 
 #: picard/const/locales.py:245
 msgid "Kinyarwanda (Rwanda)"
-msgstr ""
+msgstr "קינירוואנדה (רואנדה)"
 
 #: picard/const/locales.py:246
 msgid "Kirghiz"
@@ -1267,7 +1267,7 @@ msgstr "קירגיזית"
 
 #: picard/const/locales.py:247
 msgid "Kirghiz (Kyrgyzstan)"
-msgstr ""
+msgstr "קירגיזית (קירגיסטן)"
 
 #: picard/const/locales.py:248
 msgid "Konkani"
@@ -1383,11 +1383,11 @@ msgstr ""
 
 #: picard/const/locales.py:277
 msgid "Low German"
-msgstr ""
+msgstr "גרמנית נמוכה"
 
 #: picard/const/locales.py:278
 msgid "Low German (Germany)"
-msgstr ""
+msgstr "גרמנית נמוכה (גרמניה)"
 
 #: picard/const/locales.py:279
 msgid "Macedonian"
@@ -1415,11 +1415,11 @@ msgstr ""
 
 #: picard/const/locales.py:286
 msgid "Maltese"
-msgstr ""
+msgstr "מלטית"
 
 #: picard/const/locales.py:287
 msgid "Maltese (Malta)"
-msgstr ""
+msgstr "מלטית (מלטה)‏"
 
 #: picard/const/locales.py:288
 msgid "Manx"
@@ -1503,19 +1503,19 @@ msgstr ""
 
 #: picard/const/locales.py:308
 msgid "Norwegian"
-msgstr ""
+msgstr "נורווגית"
 
 #: picard/const/locales.py:310
 msgid "Norwegian Bokmål (Norway)"
-msgstr ""
+msgstr "נורווגית בוקמל (נורווגיה)"
 
 #: picard/const/locales.py:311
 msgid "Norwegian Nynorsk"
-msgstr ""
+msgstr "נורווגית נינורסק"
 
 #: picard/const/locales.py:312
 msgid "Norwegian Nynorsk (Norway)"
-msgstr ""
+msgstr "נורווגית נינורסק (נורווגיה)"
 
 #: picard/const/locales.py:313
 msgid "Nyanja"
@@ -1551,7 +1551,7 @@ msgstr ""
 
 #: picard/const/locales.py:322
 msgid "Pashto"
-msgstr ""
+msgstr "פשטו"
 
 #: picard/const/locales.py:323
 msgid "Pashto (Afghanistan)"
@@ -1779,83 +1779,83 @@ msgstr ""
 
 #: picard/const/locales.py:390
 msgid "Spanish (Argentina)"
-msgstr ""
+msgstr "ספרדית (ארגנטינה)"
 
 #: picard/const/locales.py:391
 msgid "Spanish (Bolivia)"
-msgstr ""
+msgstr "ספרדית (בוליביה)"
 
 #: picard/const/locales.py:392
 msgid "Spanish (Chile)"
-msgstr ""
+msgstr "ספרדית (צ'ילה)"
 
 #: picard/const/locales.py:393
 msgid "Spanish (Colombia)"
-msgstr ""
+msgstr "ספרדית (קולומביה)"
 
 #: picard/const/locales.py:394
 msgid "Spanish (Costa Rica)"
-msgstr ""
+msgstr "ספרדית (קוסטה ריקה)"
 
 #: picard/const/locales.py:395
 msgid "Spanish (Dominican Republic)"
-msgstr ""
+msgstr "ספרדית (הרפובליקה הדומיניקנית)"
 
 #: picard/const/locales.py:396
 msgid "Spanish (Ecuador)"
-msgstr ""
+msgstr "ספרדית (אקוודור)"
 
 #: picard/const/locales.py:397
 msgid "Spanish (El Salvador)"
-msgstr ""
+msgstr "ספרדית (אל סלבדור)"
 
 #: picard/const/locales.py:398
 msgid "Spanish (Guatemala)"
-msgstr ""
+msgstr "ספרדית (גואטמלה)"
 
 #: picard/const/locales.py:399
 msgid "Spanish (Honduras)"
-msgstr ""
+msgstr "ספרדית (הונדורס)"
 
 #: picard/const/locales.py:400
 msgid "Spanish (Mexico)"
-msgstr ""
+msgstr "ספרדית (מקסיקו)"
 
 #: picard/const/locales.py:401
 msgid "Spanish (Nicaragua)"
-msgstr ""
+msgstr "ספרדית (ניקרגואה)"
 
 #: picard/const/locales.py:402
 msgid "Spanish (Panama)"
-msgstr ""
+msgstr "ספרדית (פנמה)"
 
 #: picard/const/locales.py:403
 msgid "Spanish (Paraguay)"
-msgstr ""
+msgstr "ספרדית (פרגוואי)"
 
 #: picard/const/locales.py:404
 msgid "Spanish (Peru)"
-msgstr ""
+msgstr "ספרדית (פרו)"
 
 #: picard/const/locales.py:405
 msgid "Spanish (Puerto Rico)"
-msgstr ""
+msgstr "ספרדית (פורטו ריקו)"
 
 #: picard/const/locales.py:406
 msgid "Spanish (Spain)"
-msgstr ""
+msgstr "ספרדית (ספרד)"
 
 #: picard/const/locales.py:407
 msgid "Spanish (United States)"
-msgstr ""
+msgstr "ספרדית (ארצות הברית)"
 
 #: picard/const/locales.py:408
 msgid "Spanish (Uruguay)"
-msgstr ""
+msgstr "ספרדית (אורוגוואי)"
 
 #: picard/const/locales.py:409
 msgid "Spanish (Venezuela)"
-msgstr ""
+msgstr "ספרדית (ונצואלה)"
 
 #: picard/const/locales.py:410
 msgid "Swahili"
@@ -1891,11 +1891,11 @@ msgstr ""
 
 #: picard/const/locales.py:419
 msgid "Swiss German"
-msgstr ""
+msgstr "גרמנית שוויצרית"
 
 #: picard/const/locales.py:420
 msgid "Swiss German (Switzerland)"
-msgstr ""
+msgstr "גרמנית שוויצרית (שוויץ)"
 
 #: picard/const/locales.py:421
 msgid "Syriac"

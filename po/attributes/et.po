@@ -1,12 +1,12 @@
 # 
 # Translators:
 # Mihkel Tõnnov <mihhkel@gmail.com>, 2008-2009,2011-2014
-# Mihkel Tõnnov <mihhkel@gmail.com>, 2015,2017-2018
+# Mihkel Tõnnov <mihhkel@gmail.com>, 2015,2017-2018,2020
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2019-10-21 23:42+0000\n"
-"Last-Translator: Michael Wiencek <mwtuea@gmail.com>\n"
+"PO-Revision-Date: 2020-04-02 10:19+0000\n"
+"Last-Translator: Mihkel Tõnnov <mihhkel@gmail.com>\n"
 "Language-Team: Estonian (http://www.transifex.com/musicbrainz/musicbrainz/language/et/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -62,7 +62,7 @@ msgstr "3,5″ diskett"
 #: DB:medium_format/name:52
 msgctxt "medium_format"
 msgid "7\" Flexi-disc"
-msgstr "7″ Flexi-plaat"
+msgstr "7″ lastikplaat"
 
 #: DB:medium_format/name:56
 msgctxt "medium_format"
@@ -104,12 +104,12 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:794
 msgctxt "work_attribute_type_allowed_value"
 msgid "A Dorian"
-msgstr ""
+msgstr "A-dooria"
 
 #: DB:work_attribute_type_allowed_value/value:806
 msgctxt "work_attribute_type_allowed_value"
 msgid "A Mixolydian"
-msgstr ""
+msgstr "A-miksolüüdia"
 
 #: DB:work_type/description:2
 msgctxt "work_type"
@@ -192,7 +192,7 @@ msgctxt "event_type"
 msgid ""
 "A party, reception or other event held specifically for the launch of a "
 "release."
-msgstr ""
+msgstr "Pidu, vastuvõtt või muu sündmus väljalaske tähistamiseks."
 
 #: DB:release_packaging/description:17
 msgctxt "release_packaging"
@@ -274,7 +274,7 @@ msgctxt "place_type"
 msgid ""
 "A school, university or other similar educational institution (especially, "
 "but not only, one where music is taught)"
-msgstr ""
+msgstr "Kool, ülikool vmt haridusasutus (eriti selline, kus õpetatakse muusikat)."
 
 #: DB:series_type/description:6
 msgctxt "series_type"
@@ -309,7 +309,7 @@ msgstr "Seeria koosneb väljalasetest."
 #: DB:series_type/description:5
 msgctxt "series_type"
 msgid "A series of works which form a catalogue of classical compositions."
-msgstr ""
+msgstr "Seeria koosneb teostest, mis moodustavad klassikaliste heliteoste kataloogi."
 
 #: DB:series_type/description:4
 msgctxt "series_type"
@@ -373,7 +373,7 @@ msgstr ""
 #: DB:release_packaging/description:2
 msgctxt "release_packaging"
 msgid "A thinner jewel case, commonly used for CD singles."
-msgstr ""
+msgstr "Õhem CD-karp, kasutatakse tavaliselt CD-singlite jaoks."
 
 #: DB:work_type/description:19
 msgctxt "work_type"
@@ -616,7 +616,7 @@ msgid ""
 "An unofficial/underground release that was not sanctioned by the artist "
 "and/or the record company. This includes unofficial live recordings and "
 "pirated releases."
-msgstr ""
+msgstr "Mitteametlik või põrandaalune väljalase, mida pole heaks kiitnud artist ega nende plaadifirma. Selle alla käivad ka mitteametlikud kontsertsalvestused ja piraatväljalasked."
 
 #: DB:work_type/description:20
 msgctxt "work_type"
@@ -636,7 +636,7 @@ msgctxt "release_status"
 msgid ""
 "Any release officially sanctioned by the artist and/or their record company."
 " Most releases will fit into this category."
-msgstr ""
+msgstr "Igasugune väljalase, mille on heaks kiitnud artist ja/või nende plaadifirma. Sellesse kategooriasse sobib enamik väljalaskeid."
 
 #: DB:work_attribute_type_allowed_value/value:311
 msgctxt "work_attribute_type_allowed_value"
@@ -691,7 +691,7 @@ msgstr "Arazbarek"
 #: DB:editor_collection_type/name:7
 msgctxt "collection_type"
 msgid "Area"
-msgstr "Piirkond"
+msgstr "piirkond"
 
 #: DB:area_alias_type/name:1
 msgctxt "alias_type"
@@ -706,7 +706,7 @@ msgstr "aaria"
 #: DB:editor_collection_type/name:8
 msgctxt "collection_type"
 msgid "Artist"
-msgstr ""
+msgstr "artist"
 
 #: DB:artist_alias_type/name:1
 msgctxt "alias_type"
@@ -851,12 +851,12 @@ msgstr "Aṭṭa"
 #: DB:work_attribute_type_allowed_value/value:795
 msgctxt "work_attribute_type_allowed_value"
 msgid "B Dorian"
-msgstr ""
+msgstr "B-dooria"
 
 #: DB:work_attribute_type_allowed_value/value:807
 msgctxt "work_attribute_type_allowed_value"
 msgid "B Mixolydian"
-msgstr ""
+msgstr "B-miksolüüdia"
 
 #: DB:work_attribute_type_allowed_value/value:33
 msgctxt "work_attribute_type_allowed_value"
@@ -1224,7 +1224,7 @@ msgstr "piraattoodang"
 #: DB:release_packaging/name:19
 msgctxt "release_packaging"
 msgid "Box"
-msgstr ""
+msgstr "karp"
 
 #: DB:work_attribute_type_allowed_value/value:607
 msgctxt "work_attribute_type_allowed_value"
@@ -1305,12 +1305,12 @@ msgstr "Bṛndāvani"
 #: DB:work_attribute_type_allowed_value/value:789
 msgctxt "work_attribute_type_allowed_value"
 msgid "C Dorian"
-msgstr ""
+msgstr "C-dooria"
 
 #: DB:work_attribute_type_allowed_value/value:801
 msgctxt "work_attribute_type_allowed_value"
 msgid "C Mixolydian"
-msgstr ""
+msgstr "C-miksolüüdia"
 
 #: DB:work_attribute_type_allowed_value/value:2
 msgctxt "work_attribute_type_allowed_value"
@@ -1507,7 +1507,7 @@ msgstr "asula"
 msgctxt "area_type"
 msgid ""
 "City is used for settlements of any size, including towns and villages."
-msgstr ""
+msgstr "Asula tähendab igas suuruses linnu ja külasid."
 
 #: DB:release_group_secondary_type/name:1
 msgctxt "release_group_secondary_type"
@@ -1532,7 +1532,7 @@ msgstr ""
 #: DB:medium_format/name:61
 msgctxt "medium_format"
 msgid "Copy Control CD"
-msgstr ""
+msgstr "Copy Control CD"
 
 #: DB:medium_format/description:61
 msgctxt "medium_format"
@@ -1553,7 +1553,7 @@ msgctxt "area_type"
 msgid ""
 "Country is used for areas included (or previously included) in ISO 3166-1, "
 "e.g. United States."
-msgstr ""
+msgstr "Riik tähendab piirkondi, mis on (või on olnud) ISO 3166-1 nimistus, nt Eesti või Ameerika Ühendriigid."
 
 #: DB:area_type/name:7
 msgctxt "area_type"
@@ -1613,12 +1613,12 @@ msgstr "Cāyātarangiṇi"
 #: DB:work_attribute_type_allowed_value/value:790
 msgctxt "work_attribute_type_allowed_value"
 msgid "D Dorian"
-msgstr ""
+msgstr "D-dooria"
 
 #: DB:work_attribute_type_allowed_value/value:802
 msgctxt "work_attribute_type_allowed_value"
 msgid "D Mixolydian"
-msgstr ""
+msgstr "D-miksolüüdia"
 
 #: DB:work_attribute_type_allowed_value/value:8
 msgctxt "work_attribute_type_allowed_value"
@@ -1944,7 +1944,7 @@ msgstr "linnaosa"
 #: DB:area_type/description:5
 msgctxt "area_type"
 msgid "District is used for a division of a large city, e.g. Queens."
-msgstr ""
+msgstr "Linnaosa kasutatakse suurlinnade allüksuste jaoks, nt Queens."
 
 #: DB:work_attribute_type_allowed_value/value:611
 msgctxt "work_attribute_type_allowed_value"
@@ -2105,12 +2105,12 @@ msgstr "Dīpāḷi"
 #: DB:work_attribute_type_allowed_value/value:791
 msgctxt "work_attribute_type_allowed_value"
 msgid "E Dorian"
-msgstr ""
+msgstr "E-dooria"
 
 #: DB:work_attribute_type_allowed_value/value:803
 msgctxt "work_attribute_type_allowed_value"
 msgid "E Mixolydian"
-msgstr ""
+msgstr "E-miksolüüdia"
 
 #: DB:work_attribute_type_allowed_value/value:13
 msgctxt "work_attribute_type_allowed_value"
@@ -2156,12 +2156,12 @@ msgstr ""
 #: DB:place_type/name:7
 msgctxt "place_type"
 msgid "Educational institution"
-msgstr ""
+msgstr "haridusasutus"
 
 #: DB:instrument_type/name:4
 msgctxt "instrument_type"
 msgid "Electronic instrument"
-msgstr "Elektrooniline pill"
+msgstr "Elektroonilised pillid"
 
 #: DB:medium_format/name:42
 msgctxt "medium_format"
@@ -2171,7 +2171,7 @@ msgstr "Enhanced CD"
 #: DB:instrument_type/name:6
 msgctxt "instrument_type"
 msgid "Ensemble"
-msgstr ""
+msgstr "Ansamblid"
 
 #: DB:work_attribute_type_allowed_value/value:356
 msgctxt "work_attribute_type_allowed_value"
@@ -2266,12 +2266,12 @@ msgstr "Ezan"
 #: DB:work_attribute_type_allowed_value/value:792
 msgctxt "work_attribute_type_allowed_value"
 msgid "F Dorian"
-msgstr ""
+msgstr "F-dooria"
 
 #: DB:work_attribute_type_allowed_value/value:804
 msgctxt "work_attribute_type_allowed_value"
 msgid "F Mixolydian"
-msgstr ""
+msgstr "F-miksolüüdia"
 
 #: DB:work_attribute_type_allowed_value/value:17
 msgctxt "work_attribute_type_allowed_value"
@@ -2306,7 +2306,7 @@ msgstr "Fahte"
 #: DB:instrument_type/name:7
 msgctxt "instrument_type"
 msgid "Family"
-msgstr ""
+msgstr "Perekonnad"
 
 #: DB:work_attribute_type_allowed_value/value:615
 msgctxt "work_attribute_type_allowed_value"
@@ -2403,7 +2403,7 @@ msgstr ""
 #: DB:medium_format/name:51
 msgctxt "medium_format"
 msgid "Flexi-disc"
-msgstr "Flexi-plaat"
+msgstr "lastikplaat"
 
 #: DB:medium_format/description:51
 msgctxt "medium_format"
@@ -2411,7 +2411,7 @@ msgid ""
 "Flexi-discs are phonograph records made of a thin, flexible vinyl sheet with"
 " a molded-in groove, designed to be playable on a normal phonograph "
 "turntable."
-msgstr ""
+msgstr "Lastikplaat (ka fleksiplaat) on elastne heliplaat, mis on valmistatud õhukesest ja painduvast vinüül- või plastlehest, kuhu on pressitud helivagu, nii et seda saaks mängida tavalise grammofoniga."
 
 #: DB:medium_format/name:76
 msgctxt "medium_format"
@@ -2428,7 +2428,7 @@ msgstr ""
 #: DB:work_attribute_type/name:16
 msgctxt "work_attribute_type"
 msgid "Form (Ottoman, Turkish)"
-msgstr ""
+msgstr "vorm (otomani, türgi)"
 
 #: DB:area_alias_type/name:2
 msgctxt "alias_type"
@@ -2448,12 +2448,12 @@ msgstr "esikaas"
 #: DB:work_attribute_type_allowed_value/value:793
 msgctxt "work_attribute_type_allowed_value"
 msgid "G Dorian"
-msgstr ""
+msgstr "G-dooria"
 
 #: DB:work_attribute_type_allowed_value/value:805
 msgctxt "work_attribute_type_allowed_value"
 msgid "G Mixolydian"
-msgstr ""
+msgstr "G-miksolüüdia"
 
 #: DB:work_attribute_type_allowed_value/value:22
 msgctxt "work_attribute_type_allowed_value"
@@ -3907,7 +3907,7 @@ msgstr "Mahālakṣmi"
 #: DB:work_attribute_type/name:15
 msgctxt "work_attribute_type"
 msgid "Makam (Ottoman, Turkish)"
-msgstr ""
+msgstr "makam (otomani, türgi)"
 
 #: DB:work_attribute_type_allowed_value/value:164
 msgctxt "work_attribute_type_allowed_value"
@@ -4582,7 +4582,7 @@ msgstr "Nevruzi Rumi"
 #: DB:work_attribute_type/name:33
 msgctxt "work_attribute_type"
 msgid "NexTone ID"
-msgstr ""
+msgstr "NexTone ID"
 
 #: DB:work_attribute_type_allowed_value/value:471
 msgctxt "work_attribute_type_allowed_value"
@@ -4682,7 +4682,7 @@ msgstr "pole"
 #: DB:gender/name:4
 msgctxt "gender"
 msgid "Not applicable"
-msgstr ""
+msgstr "kohaldamatu"
 
 #: DB:work_attribute_type_allowed_value/value:491
 msgctxt "work_attribute_type_allowed_value"
@@ -4832,7 +4832,7 @@ msgstr "muu"
 #: DB:instrument_type/name:5
 msgctxt "instrument_type"
 msgid "Other instrument"
-msgstr "Muu pill"
+msgstr "Muud pillid"
 
 #: DB:work_type/name:12
 msgctxt "work_type"
@@ -4887,7 +4887,7 @@ msgstr "partiita"
 #: DB:medium_format/name:58
 msgctxt "medium_format"
 msgid "Pathé disc"
-msgstr ""
+msgstr "Pathé plaat"
 
 #: DB:work_attribute_type_allowed_value/value:995
 msgctxt "work_attribute_type_allowed_value"
@@ -4923,7 +4923,7 @@ msgstr "Pençgah-ı Zaid"
 #: DB:instrument_type/name:3
 msgctxt "instrument_type"
 msgid "Percussion instrument"
-msgstr "Löökpill"
+msgstr "Löökpillid"
 
 #: DB:work_attribute_type_allowed_value/value:496
 msgctxt "work_attribute_type_allowed_value"
@@ -4958,7 +4958,7 @@ msgstr "Peşrev"
 #: DB:medium_format/name:73
 msgctxt "medium_format"
 msgid "Phonograph record"
-msgstr ""
+msgstr "grammofoniplaat"
 
 #: DB:medium_format/name:15
 msgctxt "medium_format"
@@ -4968,7 +4968,7 @@ msgstr "klaverirull"
 #: DB:editor_collection_type/name:11
 msgctxt "collection_type"
 msgid "Place"
-msgstr ""
+msgstr "koht"
 
 #: DB:place_alias_type/name:1
 msgctxt "alias_type"
@@ -4983,7 +4983,7 @@ msgstr ""
 #: DB:release_packaging/name:18
 msgctxt "release_packaging"
 msgid "Plastic Sleeve"
-msgstr ""
+msgstr "plasttasku"
 
 #: DB:work_type/name:28
 msgctxt "work_type"
@@ -5023,7 +5023,7 @@ msgstr "Pratāpavarāli"
 #: DB:place_type/name:8
 msgctxt "place_type"
 msgid "Pressing plant"
-msgstr ""
+msgstr "pressimistehas"
 
 #: DB:label_type/name:3
 msgctxt "label_type"
@@ -5284,7 +5284,7 @@ msgstr "väljalasete seeria"
 #: DB:place_type/name:6
 msgctxt "place_type"
 msgid "Religious building"
-msgstr ""
+msgstr "sakraalehitis"
 
 #: DB:work_attribute_type_allowed_value/value:765
 msgctxt "work_attribute_type_allowed_value"
@@ -5676,7 +5676,7 @@ msgstr "Serbest"
 #: DB:editor_collection_type/name:14
 msgctxt "collection_type"
 msgid "Series"
-msgstr "Seeriad"
+msgstr "seeria"
 
 #: DB:series_alias_type/name:1
 msgctxt "alias_type"
@@ -5826,7 +5826,7 @@ msgstr "kleeps"
 #: DB:instrument_type/name:2
 msgctxt "instrument_type"
 msgid "String instrument"
-msgstr "Keelpill"
+msgstr "Keelpillid"
 
 #: DB:place_type/name:1
 msgctxt "place_type"
@@ -6156,28 +6156,28 @@ msgctxt "medium_format"
 msgid ""
 "The CD layer of a DVDplus. The DVD layer should be added as a separate "
 "medium."
-msgstr ""
+msgstr "DVDplusi CD-kiht. DVD-kiht tuleks lisada eraldi helikandjana."
 
 #: DB:medium_format/description:67
 msgctxt "medium_format"
 msgid ""
 "The CD layer of a DualDisc. The DVD layer should be added as a separate "
 "medium."
-msgstr ""
+msgstr "DualDisci CD-kiht. DVD-kiht tuleks lisada eraldi helikandjana."
 
 #: DB:medium_format/description:63
 msgctxt "medium_format"
 msgid ""
 "The CD layer of a hybrid SACD. The SACD layer should be added as a separate "
 "medium."
-msgstr ""
+msgstr "Hübriid-SACD CD-kiht. SACD-kiht tuleks lisada eraldi helikandjana."
 
 #: DB:medium_format/description:82
 msgctxt "medium_format"
 msgid ""
 "The CD side of a vinyl + CD VinylDisc. The vinyl side should be added as a "
 "separate medium."
-msgstr ""
+msgstr "Vinüül+CD VinylDisci CD-külg. Vinüülikülg tuleks lisada eraldi helikandjana."
 
 #: DB:medium_format/description:60
 msgctxt "medium_format"
@@ -6193,35 +6193,35 @@ msgctxt "medium_format"
 msgid ""
 "The DVD (audio) layer of a DVDplus. The CD layer should be added as a "
 "separate medium."
-msgstr ""
+msgstr "DVDplusi (audio-)DVD-kiht. CD-kiht tuleks lisada eraldi helikandjana."
 
 #: DB:medium_format/description:65
 msgctxt "medium_format"
 msgid ""
 "The DVD (audio) layer of a DualDisc. The CD layer should be added as a "
 "separate medium."
-msgstr ""
+msgstr "DualDisci (audio-)DVD-kiht. CD-kiht tuleks lisada eraldi helikandjana."
 
 #: DB:medium_format/description:66
 msgctxt "medium_format"
 msgid ""
 "The DVD (video) layer of a DualDisc. The CD layer should be added as a "
 "separate medium."
-msgstr ""
+msgstr "DualDisci (video-)DVD-kiht. CD-kiht tuleks lisada eraldi helikandjana."
 
 #: DB:medium_format/description:80
 msgctxt "medium_format"
 msgid ""
 "The DVD side of a vinyl + DVD VinylDisc. The vinyl side should be added as a"
 " separate medium."
-msgstr ""
+msgstr "Vinüül+DVD VinylDisci DVD-külg. Vinüülikülg tuleks lisada eraldi helikandjana."
 
 #: DB:medium_format/description:64
 msgctxt "medium_format"
 msgid ""
 "The SACD layer of a hybrid SACD. The CD layer should be added as a separate "
 "medium."
-msgstr ""
+msgstr "Hübriid-SACD SACD-kiht. CD-kiht tuleks lisada eraldi helikandjana."
 
 #: DB:work_type/description:7
 msgctxt "work_type"
@@ -6241,14 +6241,14 @@ msgstr ""
 #: DB:release_packaging/description:1
 msgctxt "release_packaging"
 msgid "The traditional CD case, made of hard, brittle plastic."
-msgstr ""
+msgstr "Traditsiooniline kõvast haprast plastist CD-karp."
 
 #: DB:medium_format/description:81
 msgctxt "medium_format"
 msgid ""
 "The vinyl side of a VinylDisc. The CD or DVD side should be added as a "
 "separate medium."
-msgstr ""
+msgstr "VinylDisci vinüülikülg. CD- või DVD-külg tuleks lisada eraldi helikandjana."
 
 #: DB:work_type/description:23
 msgctxt "work_type"
@@ -6403,7 +6403,7 @@ msgstr ""
 #: DB:work_attribute_type/name:17
 msgctxt "work_attribute_type"
 msgid "Usul (Ottoman, Turkish)"
-msgstr "Usul (otomani, türgi)"
+msgstr "usul (otomani, türgi)"
 
 #: DB:work_attribute_type_allowed_value/value:676
 msgctxt "work_attribute_type_allowed_value"
@@ -6545,22 +6545,22 @@ msgstr "vinüülplaat"
 #: DB:medium_format/name:48
 msgctxt "medium_format"
 msgid "VinylDisc"
-msgstr ""
+msgstr "VinylDisc"
 
 #: DB:medium_format/name:82
 msgctxt "medium_format"
 msgid "VinylDisc (CD side)"
-msgstr ""
+msgstr "VinylDisc (CD-külg)"
 
 #: DB:medium_format/name:80
 msgctxt "medium_format"
 msgid "VinylDisc (DVD side)"
-msgstr ""
+msgstr "VinylDisc (DVD-külg)"
 
 #: DB:medium_format/name:81
 msgctxt "medium_format"
 msgid "VinylDisc (Vinyl side)"
-msgstr ""
+msgstr "VinylDisc (vinüülikülg)"
 
 #: DB:work_attribute_type_allowed_value/value:259
 #: DB:work_attribute_type_allowed_value/value:1047
@@ -6606,7 +6606,7 @@ msgstr "vaharull"
 #: DB:instrument_type/name:1
 msgctxt "instrument_type"
 msgid "Wind instrument"
-msgstr "Õhkpill"
+msgstr "Õhkpillid"
 
 #: DB:editor_collection_type/name:3
 msgctxt "collection_type"
@@ -6626,7 +6626,7 @@ msgstr "teose nimi"
 #: DB:series_type/name:4
 msgctxt "series_type"
 msgid "Work series"
-msgstr ""
+msgstr "teoste seeria"
 
 #: DB:work_attribute_type_allowed_value/value:277
 msgctxt "work_attribute_type_allowed_value"

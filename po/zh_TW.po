@@ -7,14 +7,14 @@
 # Philipp Wolfer <ph.wolfer@gmail.com>, 2019-2020
 # Shen-Ta Hsieh(BestSteve) <ibmibmibm.tw@gmail.com>, 2016
 # Shen-Ta Hsieh(BestSteve) <ibmibmibm.tw@gmail.com>, 2016-2020
-# riotism, 2017-2018
+# riotism, 2017-2018,2020
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2020-02-24 09:52+0100\n"
-"PO-Revision-Date: 2020-02-24 14:10+0000\n"
-"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
+"PO-Revision-Date: 2020-04-16 15:55+0000\n"
+"Last-Translator: riotism\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/musicbrainz/musicbrainz/language/zh_TW/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -3378,11 +3378,11 @@ msgstr "移除值"
 
 #: picard/ui/ui_edittagdialog.py:118 picard/ui/ui_edittagdialog.py:119
 msgid "Move selected value up"
-msgstr ""
+msgstr "向上移動所選數值"
 
 #: picard/ui/ui_edittagdialog.py:120 picard/ui/ui_edittagdialog.py:121
 msgid "Move selected value down"
-msgstr ""
+msgstr "向下移動所選數值"
 
 #: picard/ui/ui_infodialog.py:60
 msgid "A&rtwork"
@@ -3392,7 +3392,7 @@ msgstr "圖片(&R)"
 #: picard/ui/ui_provider_options_local.py:50
 #: picard/ui/ui_widget_taglisteditor.py:68
 msgid "Form"
-msgstr ""
+msgstr "表格"
 
 #: picard/ui/ui_options.py:44
 msgid "Options"
@@ -3891,7 +3891,7 @@ msgstr "Windows 相容性"
 
 #: picard/ui/ui_options_renaming.py:152
 msgid "Name files like this"
-msgstr ""
+msgstr "類似檔案名稱"
 
 #: picard/ui/ui_options_renaming.py:154
 msgid "Examples"
@@ -4087,17 +4087,17 @@ msgstr "新增標籤"
 #: picard/ui/ui_widget_taglisteditor.py:70
 #: picard/ui/ui_widget_taglisteditor.py:71
 msgid "Move tag up"
-msgstr ""
+msgstr "向上移動標籤"
 
 #: picard/ui/ui_widget_taglisteditor.py:72
 #: picard/ui/ui_widget_taglisteditor.py:73
 msgid "Move tag down"
-msgstr ""
+msgstr "向下移動標籤"
 
 #: picard/ui/ui_widget_taglisteditor.py:74
 #: picard/ui/ui_widget_taglisteditor.py:75
 msgid "Remove selected tags"
-msgstr ""
+msgstr "移除所選標籤"
 
 #: picard/ui/ui_widget_taglisteditor.py:76
 msgid "Remove tags"
