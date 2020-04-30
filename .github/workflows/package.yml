@@ -43,6 +43,7 @@ jobs:
       run: |
         ./scripts/package/macos-setup.sh
         echo "::add-path::/Library/Frameworks/Python.framework/Versions/3.7/bin"
+        echo "::add-path::/usr/local/opt/gettext/bin"
         RELEASE_TAG=$(git describe --match "release-*" --abbrev=0 --always HEAD)
         BUILD_NUMBER=$(git rev-list --count $RELEASE_TAG..HEAD)
         echo "::set-env name=BUILD_NUMBER::$BUILD_NUMBER"
