@@ -165,7 +165,16 @@ class File(QtCore.QObject, Item):
         if self.tagger.stopping:
             log.debug("File not loaded because %s is stopping: %r", PICARD_APP_NAME, self.filename)
             return None
-        return self._load(filename)
+        try:
+            # Try loading based on extension first
+            return self._load(filename)
+        except Exception:
+            from picard.formats import guess_format
+            # If it fails, force format guessing and try loading again
+            file_format = guess_format(filename)
+            if not file_format and type(file_format) == type(self):
+                raise
+            return file_format._load(filename)
 
     def _load(self, filename):
         """Load metadata from the file."""
