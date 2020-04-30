@@ -79,15 +79,16 @@ def guess_format(filename, options=_formats):
 def open_(filename):
     """Open the specified file and return a File instance with the appropriate format handler, or None."""
     try:
-        # First try to guess the format on the basis of file headers
-        audio_file = guess_format(filename)
-        if not audio_file:
-            i = filename.rfind(".")
-            if i < 0:
-                return None
+        # Use extension based opening as default
+        i = filename.rfind(".")
+        if i >= 0:
             ext = filename[i+1:].lower()
-            # Switch to extension based opening if guess_format fails
             audio_file = _extensions[ext](filename)
+        else:
+            # If there is no extension, try to guess the format based on file headers
+            audio_file = guess_format(filename)
+        if not audio_file:
+            return None
         return audio_file
     except KeyError:
         # None is returned if both the methods fail
