@@ -25,6 +25,7 @@
 # Copyright (C) 2018 Bob Swift
 # Copyright (C) 2018 virusMac
 # Copyright (C) 2019 Joel Lintunen
+# Copyright (C) 2020 Gabriel Ferreira
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -52,6 +53,7 @@ import re
 import shutil
 import signal
 import sys
+from threading import Thread
 
 from PyQt5 import (
     QtCore,
@@ -517,76 +519,53 @@ class Tagger(QtWidgets.QApplication):
             for file in new_files:
                 file.load(partial(self._file_loaded, target=target))
 
-    def add_directory(self, path):
-        if config.setting['recursively_add_files']:
-            self._add_directory_recursive(path)
-        else:
-            self._add_directory_non_recursive(path)
-
-    def _add_directory_recursive(self, path):
-        ignore_hidden = config.setting["ignore_hidden_files"]
-        walk = os.walk(path)
-
-        def get_files():
-            try:
-                root, dirs, files = next(walk)
-                if ignore_hidden:
-                    dirs[:] = [d for d in dirs if not is_hidden(os.path.join(root, d))]
-            except StopIteration:
-                return None
-            else:
-                number_of_files = len(files)
-                if number_of_files:
-                    mparms = {
-                        'count': number_of_files,
-                        'directory': root,
-                    }
-                    log.debug("Adding %(count)d files from '%(directory)r'" %
-                              mparms)
-                    self.window.set_statusbar_message(
-                        ngettext(
-                            "Adding %(count)d file from '%(directory)s' ...",
-                            "Adding %(count)d files from '%(directory)s' ...",
-                            number_of_files),
-                        mparms,
-                        translate=None,
-                        echo=None
-                    )
-                return (os.path.join(root, f) for f in files)
-
-        def process(result=None, error=None):
-            if result:
-                if error is None:
-                    self.add_files(result)
-                thread.run_task(get_files, process)
-
-        process(True, False)
-
-    def _add_directory_non_recursive(self, path):
+    def _scan_dir(self, ignore_hidden, folders, recursive):
         files = []
-        for f in os.listdir(path):
-            listing = os.path.join(path, f)
-            if os.path.isfile(listing):
-                files.append(listing)
-        number_of_files = len(files)
-        if number_of_files:
-            mparms = {
-                'count': number_of_files,
-                'directory': path,
-            }
-            log.debug("Adding %(count)d files from '%(directory)r'" %
-                      mparms)
-            self.window.set_statusbar_message(
-                ngettext(
-                    "Adding %(count)d file from '%(directory)s' ...",
-                    "Adding %(count)d files from '%(directory)s' ...",
-                    number_of_files),
-                mparms,
-                translate=None,
-                echo=None
-            )
-            # Function call only if files exist
-            self.add_files(files)
+        local_folders = list(folders)
+        while len(local_folders) > 0:
+            current_folder = local_folders.pop(0)
+            current_folder_files = []
+            for entry in os.scandir(current_folder):
+                if ignore_hidden and is_hidden(entry.path):
+                    continue
+                if recursive and entry.is_dir():
+                    local_folders.extend([entry.path])
+                else:
+                    current_folder_files.extend([entry.path])
+
+            number_of_files = len(current_folder_files)
+            if number_of_files:
+                mparms = {
+                    'count': number_of_files,
+                    'directory': current_folder,
+                }
+                log.debug("Adding %(count)d files from '%(directory)r'" %
+                          mparms)
+                self.window.set_statusbar_message(
+                    ngettext(
+                        "Adding %(count)d file from '%(directory)s' ...",
+                        "Adding %(count)d files from '%(directory)s' ...",
+                        number_of_files),
+                    mparms,
+                    translate=None,
+                    echo=None
+                )
+                files.extend(current_folder_files)
+        return files
+
+    def add_directory(self, path):
+        Thread(target=self._add_directory, args=[path, config.setting['recursively_add_files']]).start()
+
+    def _add_directory(self, path, recursive=False):
+        if not os.path.exists(path) or not os.path.isdir(path):
+            return
+
+        ignore_hidden = config.setting["ignore_hidden_files"]
+        files = self._scan_dir(ignore_hidden, [path], recursive)
+
+        # Add files at once
+        if files:
+            thread.to_main(self.add_files, files)
 
     def get_file_lookup(self):
         """Return a FileLookup object."""
