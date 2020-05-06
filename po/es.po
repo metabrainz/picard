@@ -17,6 +17,7 @@
 # Jesús Heriberto López Cisneros, 2019
 # Maurizio Corripio <perromaldo@outlook.com>, 2019
 # Nicolás Tamargo <reosarevok@gmail.com>, 2012
+# Olivernio Silva <diegoozzysh@gmail.com>, 2020
 # Peter Cuevas H <peter.cuevas6@gmail.com>, 2017
 # Philipp Wolfer <ph.wolfer@gmail.com>, 2019-2020
 # Robert Schneider <robertschv@gmail.com>, 2019
@@ -25,8 +26,8 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2020-02-24 09:52+0100\n"
-"PO-Revision-Date: 2020-02-24 14:08+0000\n"
-"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
+"PO-Revision-Date: 2020-05-03 03:46+0000\n"
+"Last-Translator: Olivernio Silva <diegoozzysh@gmail.com>\n"
 "Language-Team: Spanish (http://www.transifex.com/musicbrainz/musicbrainz/language/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -346,7 +347,7 @@ msgstr "Alemán"
 
 #: picard/const/languages.py:37 picard/const/locales.py:188
 msgid "German (Switzerland)"
-msgstr ""
+msgstr "Alemán (Suiza)"
 
 #: picard/const/languages.py:38 picard/const/locales.py:189
 #: picard/const/locales.py:190
@@ -2385,7 +2386,7 @@ msgstr " Anexar el arte de la carátula frontal en la gota"
 
 #: picard/ui/edittagdialog.py:67
 msgid "YYYY-MM-DD"
-msgstr ""
+msgstr "AAAA-MM-DD"
 
 #: picard/ui/edittagdialog.py:69
 msgid "YYYY"
@@ -2554,15 +2555,15 @@ msgstr "Subtítulo de disco"
 
 #: picard/ui/itemviews.py:157
 msgid "Track No."
-msgstr ""
+msgstr "Pista No."
 
 #: picard/ui/itemviews.py:158
 msgid "Disc No."
-msgstr ""
+msgstr "Disco No."
 
 #: picard/ui/itemviews.py:159
 msgid "Catalog No."
-msgstr ""
+msgstr "Catálogo No."
 
 #: picard/ui/itemviews.py:161 picard/util/tags.py:72
 msgid "Media"
@@ -2574,7 +2575,7 @@ msgstr "Género"
 
 #: picard/ui/itemviews.py:163
 msgid "Fingerprint status"
-msgstr ""
+msgstr "Estado de la Huella Dactilar"
 
 #: picard/ui/itemviews.py:236
 msgid "Bad match"
@@ -2602,7 +2603,7 @@ msgstr "incidencia excelente"
 
 #: picard/ui/itemviews.py:374
 msgid "Restore default columns"
-msgstr ""
+msgstr "Restaurar columnas por defecto"
 
 #: picard/ui/itemviews.py:417
 msgid "&Expand all"
@@ -2695,11 +2696,11 @@ msgstr "Pendiente"
 
 #: picard/ui/itemviews.py:1093
 msgid "Fingerprint has already been submitted"
-msgstr ""
+msgstr "La huella dactilar ya ha sido enviada"
 
 #: picard/ui/itemviews.py:1095
 msgid "Unsubmitted fingerprint"
-msgstr ""
+msgstr "Huella dactilar no enviada"
 
 #: picard/ui/itemviews.py:1097
 msgid ""

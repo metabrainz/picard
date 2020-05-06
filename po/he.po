@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2020-02-24 09:52+0100\n"
-"PO-Revision-Date: 2020-02-28 16:14+0000\n"
+"PO-Revision-Date: 2020-04-22 14:33+0000\n"
 "Last-Translator: Avi Markovitz <avi.markovitz@gmail.com>\n"
 "Language-Team: Hebrew (http://www.transifex.com/musicbrainz/musicbrainz/language/he/)\n"
 "MIME-Version: 1.0\n"
@@ -1275,11 +1275,11 @@ msgstr "קונקאנית"
 
 #: picard/const/locales.py:249
 msgid "Konkani (India)"
-msgstr ""
+msgstr "קונקאני (הודו)"
 
 #: picard/const/locales.py:251
 msgid "Korean (South Korea)"
-msgstr ""
+msgstr "קוריאנית (קוריאה הדרומית)"
 
 #: picard/const/locales.py:252
 msgid "Koro"
@@ -1411,7 +1411,7 @@ msgstr "מאלאילאמית"
 
 #: picard/const/locales.py:285
 msgid "Malayalam (India)"
-msgstr ""
+msgstr "מאלאילאמית (הודו)"
 
 #: picard/const/locales.py:286
 msgid "Maltese"
@@ -1435,7 +1435,7 @@ msgstr "מאראתי"
 
 #: picard/const/locales.py:291
 msgid "Marathi (India)"
-msgstr ""
+msgstr "מרהטי (הודו)"
 
 #: picard/const/locales.py:292
 msgid "Moldavian"
@@ -1475,7 +1475,7 @@ msgstr "נפאלית"
 
 #: picard/const/locales.py:301
 msgid "Nepali (India)"
-msgstr ""
+msgstr "נפלית (הודו)"
 
 #: picard/const/locales.py:302
 msgid "Nepali (Nepal)"
@@ -1535,7 +1535,7 @@ msgstr "אוריה"
 
 #: picard/const/locales.py:318
 msgid "Oriya (India)"
-msgstr ""
+msgstr "אוריא (הודו)"
 
 #: picard/const/locales.py:319
 msgid "Oromo"
@@ -1599,11 +1599,11 @@ msgstr ""
 
 #: picard/const/locales.py:336
 msgid "Punjabi (Gurmukhi) (India)"
-msgstr ""
+msgstr "פונג'טית (גרומוקי) (הודו)"
 
 #: picard/const/locales.py:337
 msgid "Punjabi (India)"
-msgstr ""
+msgstr "פונג'אבית (הודו)"
 
 #: picard/const/locales.py:338
 msgid "Punjabi (Pakistan)"
@@ -1623,7 +1623,7 @@ msgstr "רוסית (רוסיה)"
 
 #: picard/const/locales.py:344
 msgid "Russian (Ukraine)"
-msgstr ""
+msgstr "רוסית (אוקרינה)"
 
 #: picard/const/locales.py:345
 msgid "Sanskrit"
@@ -1631,7 +1631,7 @@ msgstr "סנסקריט"
 
 #: picard/const/locales.py:346
 msgid "Sanskrit (India)"
-msgstr ""
+msgstr "סנסקריט (הודו)"
 
 #: picard/const/locales.py:347 picard/const/locales.py:348
 msgid "Serbian"
@@ -1931,7 +1931,7 @@ msgstr "טמילית"
 
 #: picard/const/locales.py:429
 msgid "Tamil (India)"
-msgstr ""
+msgstr "טמילית (הודו)"
 
 #: picard/const/locales.py:430
 msgid "Taroko"

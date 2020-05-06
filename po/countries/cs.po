@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2020-04-18 04:45+0000\n"
+"PO-Revision-Date: 2020-04-18 10:02+0000\n"
 "Last-Translator: DJ Sweder <djsweder@gmail.com>\n"
 "Language-Team: Czech (http://www.transifex.com/musicbrainz/musicbrainz/language/cs/)\n"
 "MIME-Version: 1.0\n"
@@ -182,7 +182,7 @@ msgstr "Britské Panenské Ostrovy"
 #. iso.code:BN
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:32
 msgid "Brunei"
-msgstr ""
+msgstr "Brunej"
 
 #. iso.code:BG
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:33
@@ -312,12 +312,12 @@ msgstr "Československo"
 #. iso.code:CI
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:52
 msgid "Côte d'Ivoire"
-msgstr ""
+msgstr "Pobřeží slonoviny"
 
 #. iso.code:CD
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:236
 msgid "Democratic Republic of the Congo"
-msgstr ""
+msgstr "Demokratická republika Kongo"
 
 #. iso.code:DK
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:57
@@ -387,7 +387,7 @@ msgstr "Evropa"
 #. iso.code:FK
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:69
 msgid "Falkland Islands"
-msgstr ""
+msgstr "Falklandy"
 
 #. iso.code:FO
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:70
@@ -397,7 +397,7 @@ msgstr "Faerské ostrovy"
 #. iso.code:FM
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:139
 msgid "Federated States of Micronesia"
-msgstr ""
+msgstr "Mikronésie"
 
 #. iso.code:FJ
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:71
@@ -1017,7 +1017,7 @@ msgstr "Srbsko"
 #. iso.code:CS
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:242
 msgid "Serbia and Montenegro"
-msgstr ""
+msgstr "Srbsko a Černá Hora"
 
 #. iso.code:SC
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:186
@@ -1112,7 +1112,7 @@ msgstr "Špicberky a Jan Mayen"
 #. iso.code:SZ
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:201
 msgid "Swaziland"
-msgstr ""
+msgstr "Svazijsko"
 
 #. iso.code:SE
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:202
@@ -1202,7 +1202,7 @@ msgstr "Tuvalu"
 #. iso.code:VI
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:231
 msgid "U.S. Virgin Islands"
-msgstr ""
+msgstr "Spojené Státy Panenské ostrovy"
 
 #. iso.code:UG
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:218
@@ -1297,7 +1297,7 @@ msgstr "Zimbabwe"
 #. iso.code:XW
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:240
 msgid "[Worldwide]"
-msgstr ""
+msgstr "[Celý svět]"
 
 #. iso.code:AX
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:250

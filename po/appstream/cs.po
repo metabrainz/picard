@@ -5,7 +5,6 @@
 # 
 # Translators:
 # Lukáš Lalinský <lalinsky@gmail.com>, 2020
-# Philipp Wolfer <ph.wolfer@gmail.com>, 2020
 # DJ Sweder <djsweder@gmail.com>, 2020
 # 
 #, fuzzy
@@ -39,7 +38,8 @@ msgid ""
 msgstr ""
 "Potřebujete pročistit Vaší hudební knihovnu? Picard je open-source a "
 "multiplatformní editor hudebních značek - tagů od MusicBrainz. Je schopný "
-"rozpoznat zvukové soubory i bez jakýchkoliv metadat."
+"rozpoznat informace o hudebních souborech i když neobsahují žádná jiná "
+"metadata."
 
 #: org.musicbrainz.Picard.appdata.xml.in:15
 msgid ""
@@ -49,15 +49,17 @@ msgid ""
 "supports a wide range of audio formats and can also lookup an entire CD for "
 "you."
 msgstr ""
-"Picard Vám pomůže uspořádat Vaší hudební sbírku přejmenováním souborů a "
-"jejich zařazením do struktury složek přesně tak, jak Vy budete chtít. K "
-"dispozici je celá řada doplňků a Vy si můžete napsat i své vlastní. Picard "
-"podporuje širokou škálu hudebních formátů a může pro Vás také dohledat celé "
-"CD."
+"Přejmenováním souborů a jejich zařazením do struktury složek Vám Picard "
+"pomůže uspořádat Vaší hudební sbírku přesně tak, jak Vy budete chtít. K "
+"dispozici je celá řada doplňků a Vy máte možnost si vytvořit - napsat i "
+"svoje vlastní. Picard podporuje širokou škálu hudebních formátů a pokud máte"
+" nekompletní informace k Vašim CD, umí chybějící údaje dohledat."
 
 #: org.musicbrainz.Picard.appdata.xml.in:22
 msgid "Tagging audio files has never been easier."
-msgstr "Doplňování značek - taggů do hudebních souborů nebylo nikdy snažší."
+msgstr ""
+"Doplňování informací, metadat či tagů do hudebních souborů nebylo nikdy "
+"snažší."
 
 #: org.musicbrainz.Picard.appdata.xml.in:25
 msgid "Features:"
@@ -77,8 +79,8 @@ msgid ""
 "identified by the actual music, even if they have no metadata."
 msgstr ""
 "AcoustID: Picard používá akustický otisk AcoustID, což umožňuje rozpoznat "
-"soubory podle jejich skutečného hudebního obsahu, i když neobsahují žádná "
-"metadadata."
+"soubory podle jejich skutečného hudebního obsahu i v případě, že žádné údaje"
+" metadat neobsahují."
 
 #: org.musicbrainz.Picard.appdata.xml.in:35
 msgid ""
@@ -87,19 +89,23 @@ msgid ""
 " releases."
 msgstr ""
 "Rozsáhlá databáze:  Picard používá otevřenou a komunitou udržovanou databázi"
-" MusicBrainz k poskytování přesných informací k miliónům hudebních vydání ."
+" MusicBrainz k poskytování přesných informací k miliónům vydání hudebních "
+"děl. "
 
 #: org.musicbrainz.Picard.appdata.xml.in:40
 msgid "CD lookups: Picard can lookup entire music CDs with a click."
-msgstr "Prohledávání CD: Picard umí jedním kliknutím prohledat celá CD."
+msgstr ""
+"Dohledávání informací o CD: Picard umí dohledat informace o obsahu hudebního"
+" CD na jedno kliknutí."
 
 #: org.musicbrainz.Picard.appdata.xml.in:43
 msgid ""
 "Plugin support: If you need a particular feature, you can choose from a "
 "selection of available plugins or write your own."
 msgstr ""
-"Podpora rozšíření: pokud potřebujete některou konkrétní funkci, máte na "
-"výběr s dostupných rozšíření nebo si můžete napsat své vlastní."
+"Podpora rozšíření: pokud Vám nestačí standardní funkce a potřebujete něco "
+"víc, máte na výběr buď z dostupných rozšíření nebo si můžete vytvořit své "
+"vlastní."
 
 #: org.musicbrainz.Picard.appdata.xml.in:47
 msgid ""
@@ -109,7 +115,7 @@ msgid ""
 msgstr ""
 "Skriptování: Přizpůsobivý a snadno pochopitelný skriptovací jazyk Vám umožní"
 " přesně určit, jak budou Vaše hudební soubory pojmenovány a jak budou "
-"vypadat značky."
+"uložená metadata - tagy."
 
 #: org.musicbrainz.Picard.appdata.xml.in:52
 msgid ""
@@ -123,4 +129,4 @@ msgstr ""
 
 #: org.musicbrainz.Picard.appdata.xml.in:92
 msgid "MetaBrainz Foundation"
-msgstr "Zřízení MetaBrainz"
+msgstr "Sdružení MetaBrainz"

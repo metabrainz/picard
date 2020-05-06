@@ -8,8 +8,8 @@
 # Christian Andersson <christian.ld.andersson@gmail.com>, 2012
 # Filip Bengtsson, 2018
 # Henrik Mattsson-Mårn <h@reglage.net>, 2020
-# Jonatan, 2016-2017
-# Jonatan, 2018
+# Jonatan Nyberg <jonatan.nyberg.karl@gmail.com>, 2016-2017
+# Jonatan Nyberg <jonatan.nyberg.karl@gmail.com>, 2018
 # Philipp Wolfer <ph.wolfer@gmail.com>, 2019-2020
 # Robin Björnsvik <robin@bjornsvik.se>, 2013
 # Staffan Vilcans, 2014
