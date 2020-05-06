@@ -1,3 +1,27 @@
+# Version 2.3.2 - 2020-05-06
+
+## Bug-fix
+- [PICARD-1775](https://tickets.metabrainz.org/browse/PICARD-1775) - $firstwords function doesn't catch IndexError
+- [PICARD-1776](https://tickets.metabrainz.org/browse/PICARD-1776) - $datetime crashes when invalid format specified
+- [PICARD-1781](https://tickets.metabrainz.org/browse/PICARD-1781) - Have $find return "" rather than "-1" on not found
+- [PICARD-1783](https://tickets.metabrainz.org/browse/PICARD-1783) - Deleting performer, comment or lyrics tag fails for some cases in ID3, Vorbis, MP4 and Apev2 tags
+- [PICARD-1784](https://tickets.metabrainz.org/browse/PICARD-1784) - Host not found error when downloading PDF artwork
+- [PICARD-1785](https://tickets.metabrainz.org/browse/PICARD-1785) - $delete(_id3:TXXX:foo) does not delete the ID3 frames
+- [PICARD-1786](https://tickets.metabrainz.org/browse/PICARD-1786) - Deleting tag stored in ID3 TIPL frame only removes first occurrence
+- [PICARD-1787](https://tickets.metabrainz.org/browse/PICARD-1787) - Deleting case-insensitive TXXX frames does not delete anything
+- [PICARD-1788](https://tickets.metabrainz.org/browse/PICARD-1788) - Saving ID3 tags marked as case-insensitive causes duplicated TXXX frames
+- [PICARD-1790](https://tickets.metabrainz.org/browse/PICARD-1790) - Crash when selecting plugin that can be updated
+- [PICARD-1791](https://tickets.metabrainz.org/browse/PICARD-1791) - Network access is disabled error under VPN service
+- [PICARD-1795](https://tickets.metabrainz.org/browse/PICARD-1795) - iTunes tags not removable (reappear after being deleted)
+- [PICARD-1801](https://tickets.metabrainz.org/browse/PICARD-1801) - List index out of range when saving Vorbis file
+- [PICARD-1803](https://tickets.metabrainz.org/browse/PICARD-1803) - Instrument EWI is rewritten "e w i"
+
+## Improvement
+- [PICARD-1777](https://tickets.metabrainz.org/browse/PICARD-1777) - Support fractional scaling on Windows 10
+- [PICARD-1800](https://tickets.metabrainz.org/browse/PICARD-1800) - Simplify Unicode 'Bullet' to ASCII 'Hyphen-minus'
+- [PICARD-1809](https://tickets.metabrainz.org/browse/PICARD-1809) - Optimize format detection logic
+
+
 # Version 2.3.1 - 2020-02-27
 
 ## Bug-fix
