@@ -1,12 +1,12 @@
 # Version 2.3.2 - 2020-05-06
 
 ## Bug-fix
-- [PICARD-1775](https://tickets.metabrainz.org/browse/PICARD-1775) - $firstwords function doesn't catch IndexError
-- [PICARD-1776](https://tickets.metabrainz.org/browse/PICARD-1776) - $datetime crashes when invalid format specified
-- [PICARD-1781](https://tickets.metabrainz.org/browse/PICARD-1781) - Have $find return "" rather than "-1" on not found
+- [PICARD-1775](https://tickets.metabrainz.org/browse/PICARD-1775) - `$firstwords` function doesn't catch IndexError
+- [PICARD-1776](https://tickets.metabrainz.org/browse/PICARD-1776) - `$datetime` crashes when invalid format specified
+- [PICARD-1781](https://tickets.metabrainz.org/browse/PICARD-1781) - Have `$find` return "" rather than "-1" on not found
 - [PICARD-1783](https://tickets.metabrainz.org/browse/PICARD-1783) - Deleting performer, comment or lyrics tag fails for some cases in ID3, Vorbis, MP4 and Apev2 tags
 - [PICARD-1784](https://tickets.metabrainz.org/browse/PICARD-1784) - Host not found error when downloading PDF artwork
-- [PICARD-1785](https://tickets.metabrainz.org/browse/PICARD-1785) - $delete(_id3:TXXX:foo) does not delete the ID3 frames
+- [PICARD-1785](https://tickets.metabrainz.org/browse/PICARD-1785) - `$delete(_id3:TXXX:foo)` does not delete the ID3 frames
 - [PICARD-1786](https://tickets.metabrainz.org/browse/PICARD-1786) - Deleting tag stored in ID3 TIPL frame only removes first occurrence
 - [PICARD-1787](https://tickets.metabrainz.org/browse/PICARD-1787) - Deleting case-insensitive TXXX frames does not delete anything
 - [PICARD-1788](https://tickets.metabrainz.org/browse/PICARD-1788) - Saving ID3 tags marked as case-insensitive causes duplicated TXXX frames
