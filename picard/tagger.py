@@ -279,6 +279,7 @@ class Tagger(QtWidgets.QApplication):
         self.browser_integration = BrowserIntegration()
 
         self.files = {}
+        self.pending_files = {}
         self.clusters = ClusterList()
         self.albums = {}
         self.release_groups = {}
@@ -292,6 +293,21 @@ class Tagger(QtWidgets.QApplication):
         # Load release version information
         if self.autoupdate_enabled:
             self.updatecheckmanager = UpdateCheckManager(parent=self.window)
+
+        import multiprocessing as mp
+        from queue import Queue
+        self.pending_files_process_queue = mp.Queue()
+        self.pending_files_results_queue = mp.Queue()
+        self.pending_load_finished_queue = Queue()
+        self.file_loaded_queue = Queue()
+        self.process_stopping = mp.Value('b', False)
+        self.p = mp.Process(target=File._load_check_metadata, args=[self.process_stopping, self.pending_files_process_queue, self.pending_files_results_queue])
+        self.p.start()
+
+        import threading
+        self._add_files_thread = threading.Thread(target=self._add_files_thread).start()
+        self._load_metadata_thread = threading.Thread(target=self._file_load_finished_thread).start()
+        self._analyze_thread = threading.Thread(target=self._file_loaded_thread).start()
 
     def register_cleanup(self, func):
         self.exit_cleanup.append(func)
@@ -381,6 +397,8 @@ class Tagger(QtWidgets.QApplication):
         if self.stopping:
             return
         self.stopping = True
+        self.process_stopping.value = True
+        self.p.join()
         log.debug("Picard stopping")
         self._acoustid.done()
         self.thread_pool.waitForDone()
@@ -514,29 +532,76 @@ class Tagger(QtWidgets.QApplication):
             log.debug("Adding files %r", new_files)
             new_files.sort(key=lambda x: x.filename)
             if target is None or target is self.unclustered_files:
-                self.unclustered_files.add_files(new_files)
+                #self.unclustered_files.add_files(new_files)
                 target = None
 
-            import threading
-            threading.Thread(target=self._continue_add_files, args=[new_files, target]).start()
+            for file in new_files:
+                self.pending_files[file.filename] = (file, target)
+                self.pending_files_process_queue.put(file.filename)
 
+    def _add_files_thread(self):
+        import time
+        from queue import Empty
+        while not self.stopping:
+            try:
+                filename, metadata = self.pending_files_results_queue.get(timeout=100)
+            except Empty:
+                time.sleep(0)
+                continue
 
-    def _continue_add_files(self, new_files, target):
-        import multiprocessing as mp
+            if metadata and filename in self.pending_files:
+                file, target = self.pending_files.pop(filename)
+                if target is None or target is self.unclustered_files:
+                    thread.to_main(self.unclustered_files.add_files, [file])
+                self.pending_load_finished_queue.put((file, metadata, target))
+                time.sleep(0.005)
+                continue
+            time.sleep(1)
 
+    def _file_load_finished_thread(self):
+        import time
+        from queue import Empty
+        while not self.stopping:
+            try:
+                file, metadata, target = self.pending_load_finished_queue.get(timeout=100)
+            except Empty:
+                time.sleep(0)
+                continue
 
-        with mp.Pool(processes=1) as p:
-            results = p.starmap(File._load_check_metadata, [[file.filename for file in new_files]])
+            if metadata and file:
+                thread.to_main(file._loading_finished, result=metadata, callback=None)
 
-        thread.to_main(self._lastpass_add_files, new_files, results, target)
+                # Delay next loading finished for larger periods
+                #   while other tasks are still running
+                if not self.pending_files_results_queue.empty():
+                    time.sleep(0.5)
+                else:
+                    time.sleep(0.005)
+                self.file_loaded_queue.put((file, target))
+                continue
+            time.sleep(1)
 
-    def _lastpass_add_files(self, new_files, results, target):
-        for file, result in zip(new_files, results):
-            if result:
-                file._loading_finished(result=result, callback=None)
+    def _file_loaded_thread(self):
+        import time
+        from queue import Empty
+        while not self.stopping:
+            try:
+                file, target = self.file_loaded_queue.get(timeout=100)
+            except Empty:
+                time.sleep(0)
+                continue
 
-        for file in new_files:
-            self._file_loaded(file, target=target)
+            thread.to_main(self._file_loaded, file, target)
+
+            # Delay next analysis for larger periods
+            #   while other tasks are still running
+            if not self.pending_files_results_queue.empty():
+                time.sleep(30)
+            else:
+                if not self.file_loaded_queue.empty():
+                    time.sleep(10)
+                else:
+                    time.sleep(0.001)
 
     def _scan_dir(self, ignore_hidden, folders, recursive):
         files = []
@@ -584,7 +649,7 @@ class Tagger(QtWidgets.QApplication):
 
         # Add files at once
         if files:
-            thread.to_main(self.add_files, files)
+            self.add_files(files)
 
     def get_file_lookup(self):
         """Return a FileLookup object."""

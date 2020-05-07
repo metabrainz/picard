@@ -178,14 +178,16 @@ class File(QtCore.QObject, Item):
             return file_format._load(filename)
 
     @staticmethod
-    def _load_check_metadata(*filenames):
-        import picard.formats
+    def _load_check_metadata(stopping, process_queue, result_queue):
         from picard.formats import open_ as open_file
-        from multiprocessing.dummy import Pool
-        results = []
-        with Pool(processes=8) as p:
-            results = p.starmap(File._load_check_metadata_thread, [(open_file, filename) for filename in filenames])
-        return results
+        import time
+        from queue import Empty
+        while not stopping.value:
+            try:
+                filename = process_queue.get(timeout=100)
+                result_queue.put((filename, File._load_check_metadata_thread(open_file, filename)))
+            except Empty:
+                time.sleep(0.01)
 
     @staticmethod
     def _load_check_metadata_thread(open_file, filename):
