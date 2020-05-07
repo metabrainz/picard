@@ -163,7 +163,7 @@ class File(QtCore.QObject, Item):
         if self.state != File.PENDING:
             log.debug("File not loaded because it was removed: %r", self.filename)
             return None
-        if self.tagger.stopping:
+        if hasattr(self, 'tagger') and self.tagger.stopping:
             log.debug("File not loaded because %s is stopping: %r", PICARD_APP_NAME, self.filename)
             return None
         try:
@@ -176,6 +176,25 @@ class File(QtCore.QObject, Item):
             if not file_format and type(file_format) == type(self):
                 raise
             return file_format._load(filename)
+
+    @staticmethod
+    def _load_check_metadata(*filenames):
+        import picard.formats
+        from picard.formats import open_ as open_file
+        from multiprocessing.dummy import Pool
+        results = []
+        with Pool(processes=8) as p:
+            results = p.starmap(File._load_check_metadata_thread, [(open_file, filename) for filename in filenames])
+        return results
+
+    @staticmethod
+    def _load_check_metadata_thread(open_file, filename):
+        try:
+            file = open_file(filename)
+            result = file._load_check(filename)
+        except Exception:
+            result = None
+        return result
 
     def _load(self, filename):
         """Load metadata from the file."""
@@ -204,7 +223,7 @@ class File(QtCore.QObject, Item):
                 self.set_acoustid_fingerprint(fingerprints[0])
         run_file_post_load_processors(self)
         self.update()
-        callback(self)
+        #callback(self)
 
     def _copy_loaded_metadata(self, metadata):
         filename, _ = os.path.splitext(self.base_filename)
@@ -683,10 +702,12 @@ class File(QtCore.QObject, Item):
             return
         if state == File.PENDING:
             File.num_pending_files += 1
-            self.tagger.tagger_stats_changed.emit()
+            if hasattr(self, 'tagger'):
+                self.tagger.tagger_stats_changed.emit()
         elif self._state == File.PENDING:
             File.num_pending_files -= 1
-            self.tagger.tagger_stats_changed.emit()
+            if hasattr(self, 'tagger'):
+                self.tagger.tagger_stats_changed.emit()
         self._state = state
 
     def column(self, column):

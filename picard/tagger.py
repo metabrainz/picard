@@ -516,8 +516,27 @@ class Tagger(QtWidgets.QApplication):
             if target is None or target is self.unclustered_files:
                 self.unclustered_files.add_files(new_files)
                 target = None
-            for file in new_files:
-                file.load(partial(self._file_loaded, target=target))
+
+            import threading
+            threading.Thread(target=self._continue_add_files, args=[new_files, target]).start()
+
+
+    def _continue_add_files(self, new_files, target):
+        import multiprocessing as mp
+
+
+        with mp.Pool(processes=1) as p:
+            results = p.starmap(File._load_check_metadata, [[file.filename for file in new_files]])
+
+        thread.to_main(self._lastpass_add_files, new_files, results, target)
+
+    def _lastpass_add_files(self, new_files, results, target):
+        for file, result in zip(new_files, results):
+            if result:
+                file._loading_finished(result=result, callback=None)
+
+        for file in new_files:
+            self._file_loaded(file, target=target)
 
     def _scan_dir(self, ignore_hidden, folders, recursive):
         files = []

@@ -68,7 +68,8 @@ class DataHash:
             self._hash = m.hexdigest()
             if self._hash not in _datafiles:
                 (fd, self._filename) = tempfile.mkstemp(prefix=prefix, suffix=suffix)
-                QObject.tagger.register_cleanup(self.delete_file)
+                if hasattr(QObject, 'tagger'):
+                    QObject.tagger.register_cleanup(self.delete_file)
                 with os.fdopen(fd, "wb") as imagefile:
                     imagefile.write(data)
                 _datafiles[self._hash] = self._filename
