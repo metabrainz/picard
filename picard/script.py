@@ -1048,6 +1048,8 @@ def func_title(parser, text):
     like: from "Lost in the Supermarket" to "Lost In The Supermarket"
     Example: $set(album,$title(%album%))
     """
+    if not text:
+        return text
     capitalized = text[0].capitalize()
     capital = False
     for i in range(1, len(text)):

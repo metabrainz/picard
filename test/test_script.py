@@ -546,6 +546,7 @@ class ScriptParserTest(PicardTestCase):
         self.assertScriptResultEquals("$title('a)", "'a")
         self.assertScriptResultEquals("$title(l'a)", "L'a")
         self.assertScriptResultEquals("$title(2'a)", "2'A")
+        self.assertScriptResultEquals(r"$title(%empty%)", "")
         # Tests wrong number of arguments
         areg = r"^\d+:\d+:\$title: Wrong number of arguments for \$title: Expected exactly 1, "
         with self.assertRaisesRegex(ScriptError, areg):
