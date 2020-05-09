@@ -2,7 +2,7 @@
 #
 # Picard, the next-generation MusicBrainz tagger
 #
-# Copyright (C) 2019 Philipp Wolfer
+# Copyright (C) 2019-2020 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -19,6 +19,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+from picard import config
 from picard.formats import WAVFile
 
 from .common import (
@@ -45,6 +46,11 @@ if WAVFile.supports_tag('artist'):
         }}
         unexpected_info = ['~video']
         supports_ratings = True
+
+        @skipUnlessTestfile
+        def test_invalid_track_and_discnumber(self):
+            config.setting['write_wave_riff_info'] = False
+            super().test_invalid_track_and_discnumber()
 else:
     class WAVTest(CommonTests.SimpleFormatsTestCase):
         testfile = 'test.wav'

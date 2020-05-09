@@ -7,7 +7,7 @@
 # Copyright (C) 2013 Michael Wiencek
 # Copyright (C) 2016-2017 Sambhav Kothari
 # Copyright (C) 2018 Laurent Monin
-# Copyright (C) 2018-2019 Philipp Wolfer
+# Copyright (C) 2018-2020 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -36,7 +36,6 @@ from picard.formats.id3 import ID3File
 from picard.formats.mutagenext import compatid3
 from picard.metadata import Metadata
 from picard.util.textencoding import replace_non_ascii
-
 
 
 try:
@@ -116,19 +115,19 @@ try:
             if info:
                 info.delete()
 
-        def __find_info_chunk(self, parent):
+        @staticmethod
+        def __find_info_chunk(parent):
             for chunk in parent.subchunks():
                 if chunk.id == 'LIST' and chunk.name == 'INFO':
                     return chunk
-            else:
-                return None
+            return None
 
-        def __find_subchunk(self, parent, name):
+        @staticmethod
+        def __find_subchunk(parent, name):
             for chunk in parent.subchunks():
                 if chunk.id == name:
                     return chunk
-            else:
-                return None
+            return None
 
         def __save_tag_data(self, info, name, value):
             data = self.__encode_data(value)
@@ -191,7 +190,7 @@ try:
             super()._info(metadata, file)
             metadata['~format'] = self.NAME
 
-            info = RiffListInfo()
+            info = RiffListInfo(encoding=config.setting['wave_riff_info_encoding'])
             info.load(file.filename)
             for tag, value in info.items():
                 if tag in TRANSLATE_RIFF_INFO:
@@ -203,8 +202,8 @@ try:
             super()._save(filename, metadata)
 
             # Save RIFF LIST INFO
-            if True:  # config.setting['write_wave_riff_info']
-                info = RiffListInfo()
+            if config.setting['write_wave_riff_info']:
+                info = RiffListInfo(encoding=config.setting['wave_riff_info_encoding'])
                 if config.setting['clear_existing_tags']:
                     info.delete(filename)
                 for name, values in metadata.rawitems():
