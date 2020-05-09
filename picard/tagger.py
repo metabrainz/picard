@@ -49,11 +49,13 @@ import logging
 from operator import attrgetter
 import os.path
 import platform
+from queue import Queue
 import re
 import shutil
 import signal
 import sys
 from threading import Thread
+import time
 
 from PyQt5 import (
     QtCore,
@@ -162,7 +164,6 @@ class Tagger(QtWidgets.QApplication):
     _no_restore = False
 
     def __init__(self, picard_args, unparsed_args, localedir, autoupdate):
-
         # Use the new fusion style from PyQt5 for a modern and consistent look
         # across all OSes.
         if not IS_MACOS and not IS_HAIKU:
@@ -189,12 +190,14 @@ class Tagger(QtWidgets.QApplication):
         # FIXME: Figure out what's wrong with QThreadPool.globalInstance().
         # It's a valid reference, but its start() method doesn't work.
         self.thread_pool = QtCore.QThreadPool(self)
+        self.thread_pool.setMaxThreadCount(4)
 
         # Provide a separate thread pool for operations that should not be
         # delayed by longer background processing tasks, e.g. because the user
         # expects instant feedback instead of waiting for a long list of
         # operations to finish.
         self.priority_thread_pool = QtCore.QThreadPool(self)
+        self.priority_thread_pool.setMaxThreadCount(4)
 
         # Use a separate thread pool for file saving, with a thread count of 1,
         # to avoid race conditions in File._save_and_rename.
@@ -294,20 +297,21 @@ class Tagger(QtWidgets.QApplication):
         if self.autoupdate_enabled:
             self.updatecheckmanager = UpdateCheckManager(parent=self.window)
 
-        import multiprocessing as mp
-        from queue import Queue
-        self.pending_files_process_queue = mp.Queue()
-        self.pending_files_results_queue = mp.Queue()
-        self.pending_load_finished_queue = Queue()
-        self.file_loaded_queue = Queue()
-        self.process_stopping = mp.Value('b', False)
-        self.p = mp.Process(target=File._load_check_metadata, args=[self.process_stopping, self.pending_files_process_queue, self.pending_files_results_queue])
-        self.p.start()
+        self._pending_files = {}
+        self._pending_files_process_queue = mp.Queue()
+        self._pending_files_results_queue = mp.Queue()
+        self._pending_load_finished_queue = Queue()
+        self._file_loaded_queue = Queue()
+        self._process_stopping = mp.Value('b', False)
+        self._loader_process = mp.Process(target=File._load_check_metadata,
+                                          args=(self._process_stopping,
+                                                self._pending_files_process_queue,
+                                                self._pending_files_results_queue))
+        self._loader_process.start()
 
-        import threading
-        self._add_files_thread = threading.Thread(target=self._add_files_thread).start()
-        self._load_metadata_thread = threading.Thread(target=self._file_load_finished_thread).start()
-        self._analyze_thread = threading.Thread(target=self._file_loaded_thread).start()
+        Thread(target=self._add_files_thread).start()
+        Thread(target=self._file_load_finished_thread).start()
+        Thread(target=self._file_loaded_thread).start()
 
     def register_cleanup(self, func):
         self.exit_cleanup.append(func)
@@ -397,8 +401,17 @@ class Tagger(QtWidgets.QApplication):
         if self.stopping:
             return
         self.stopping = True
-        self.process_stopping.value = True
-        self.p.join()
+
+        # Stop worker threads by waking them from their slumber
+        self._pending_files_results_queue.put((None, None))
+        time.sleep(0)
+
+        # Stop worker process
+        self._process_stopping.value = True
+        self._pending_files_process_queue.put(None)
+        self._pending_files_process_queue.cancel_join_thread()
+        self._loader_process.join()
+
         log.debug("Picard stopping")
         self._acoustid.done()
         self.thread_pool.waitForDone()
@@ -531,8 +544,7 @@ class Tagger(QtWidgets.QApplication):
         if new_files:
             log.debug("Adding files %r", new_files)
             new_files.sort(key=lambda x: x.filename)
-            if target is None or target is self.unclustered_files:
-                #self.unclustered_files.add_files(new_files)
+            if target is self.unclustered_files:
                 target = None
 
             for file in new_files:
@@ -540,82 +552,76 @@ class Tagger(QtWidgets.QApplication):
                 self.pending_files_process_queue.put(file.filename)
 
     def _add_files_thread(self):
-        import time
-        from queue import Empty
-        while not self.stopping:
-            try:
-                filename, metadata = self.pending_files_results_queue.get(timeout=100)
-            except Empty:
-                time.sleep(0)
-                continue
+        while True:
+            filename, metadata = self._pending_files_results_queue.get()
 
-            if metadata and filename in self.pending_files:
-                file, target = self.pending_files.pop(filename)
+            if self.stopping:
+                break
+
+            if filename in self._pending_files:
+                file, target = self._pending_files.pop(filename)
                 if target is None or target is self.unclustered_files:
                     thread.to_main(self.unclustered_files.add_files, [file])
-                self.pending_load_finished_queue.put((file, metadata, target))
-                time.sleep(0.005)
+                    time.sleep(0.005)
+                self._pending_load_finished_queue.put((file, metadata, target))
                 continue
-            time.sleep(1)
+
+        # Append empty message to kill _file_load_finished_thread and _file_loaded_thread
+        self._pending_load_finished_queue.put((None, None, None))
 
     def _file_load_finished_thread(self):
-        import time
-        from queue import Empty
-        while not self.stopping:
-            try:
-                file, metadata, target = self.pending_load_finished_queue.get(timeout=100)
-            except Empty:
-                time.sleep(0)
-                continue
+        while True:
+            file, metadata, target = self._pending_load_finished_queue.get()
 
-            if metadata and file:
-                thread.to_main(file._loading_finished, result=metadata, callback=None)
+            if self.stopping:
+                break
 
-                # Delay next loading finished for larger periods
+            if file:
+                while not self.stopping and file not in self.unclustered_files.files:
+                    time.sleep(0)
+
+                error = not metadata or None
+                thread.to_main(file._loading_finished, result=metadata, error=error, callback=None)
+
+                # Delay next loading finished for longer periods
                 #   while other tasks are still running
                 if not self.pending_files_results_queue.empty():
                     time.sleep(0.5)
                 else:
-                    time.sleep(0.005)
-                self.file_loaded_queue.put((file, target))
-                continue
-            time.sleep(1)
+                    time.sleep(0.01)
+                self._file_loaded_queue.put((file, target))
+
+        # Append empty message to kill _file_loaded_thread
+        self._file_loaded_queue.put((None, None))
 
     def _file_loaded_thread(self):
-        import time
-        from queue import Empty
-        while not self.stopping:
-            try:
-                file, target = self.file_loaded_queue.get(timeout=100)
-            except Empty:
-                time.sleep(0)
-                continue
+        while True:
+            file, target = self._file_loaded_queue.get()
+
+            if self.stopping:
+                break
 
             thread.to_main(self._file_loaded, file, target)
-
-            # Delay next analysis for larger periods
-            #   while other tasks are still running
-            if not self.pending_files_results_queue.empty():
-                time.sleep(30)
+            if not self._pending_files_results_queue.empty():
+                time.sleep(5)
+            elif not self._pending_load_finished_queue.empty():
+                time.sleep(2)
             else:
-                if not self.file_loaded_queue.empty():
-                    time.sleep(10)
-                else:
-                    time.sleep(0.001)
+                time.sleep(0.01)
 
     def _scan_dir(self, ignore_hidden, folders, recursive):
         files = []
         local_folders = list(folders)
-        while len(local_folders) > 0:
+        while local_folders:
             current_folder = local_folders.pop(0)
             current_folder_files = []
             for entry in os.scandir(current_folder):
                 if ignore_hidden and is_hidden(entry.path):
                     continue
                 if recursive and entry.is_dir():
-                    local_folders.extend([entry.path])
+                    local_folders.append(entry.path)
                 else:
-                    current_folder_files.extend([entry.path])
+                    current_folder_files.append(entry.path)
 
             number_of_files = len(current_folder_files)
             if number_of_files:
@@ -638,13 +644,15 @@ class Tagger(QtWidgets.QApplication):
         return files
 
     def add_directory(self, path):
-        Thread(target=self._add_directory, args=[path, config.setting['recursively_add_files']]).start()
+        Thread(target=self._add_directory, args=[path,
+                                                 config.setting['recursively_add_files'],
+                                                 config.setting["ignore_hidden_files"]
+                                                 ]).start()
 
-    def _add_directory(self, path, recursive=False):
+    def _add_directory(self, path, recursive=False, ignore_hidden=True):
         if not os.path.exists(path) or not os.path.isdir(path):
             return
 
-        ignore_hidden = config.setting["ignore_hidden_files"]
         files = self._scan_dir(ignore_hidden, [path], recursive)
 
         # Add files at once

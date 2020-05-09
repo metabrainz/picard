@@ -22,6 +22,8 @@
 import os
 import os.path
 import sys
+import multiprocessing
+
 
 from picard import (
     PICARD_APP_NAME,
@@ -29,6 +31,7 @@ from picard import (
 )
 import picard.const
 
+multiprocessing.freeze_support()
 
 # The portable version stores all data in a folder beside the executable
 configdir = '{}-{}'.format(PICARD_ORG_NAME, PICARD_APP_NAME)

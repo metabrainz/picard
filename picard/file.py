@@ -180,29 +180,26 @@ class File(QtCore.QObject, Item):
     @staticmethod
     def _load_check_metadata(stopping, process_queue, result_queue):
         from picard.formats import open_ as open_file
-        import time
-        from queue import Empty
-        while not stopping.value:
-            try:
-                filename = process_queue.get(timeout=100)
-                result_queue.put((filename, File._load_check_metadata_thread(open_file, filename)))
-            except Empty:
-                time.sleep(0.01)
+        while True:
+            filename = process_queue.get()
+            if stopping.value:
+                break
+            result_queue.put((filename, File._load_check_metadata_thread(open_file, filename)))
+        result_queue.cancel_join_thread()
 
     @staticmethod
     def _load_check_metadata_thread(open_file, filename):
         try:
             file = open_file(filename)
-            result = file._load_check(filename)
+            return file._load_check(filename)
         except Exception:
-            result = None
-        return result
+            return None
 
     def _load(self, filename):
         """Load metadata from the file."""
         raise NotImplementedError
 
-    def _loading_finished(self, callback, result=None, error=None):
+    def _loading_finished(self, callback=None, result=None, error=None):
         if self.state != File.PENDING or self.tagger.stopping:
             return
         if error is not None:
@@ -225,7 +222,6 @@ class File(QtCore.QObject, Item):
                 self.set_acoustid_fingerprint(fingerprints[0])
         run_file_post_load_processors(self)
         self.update()
-        #callback(self)
 
     def _copy_loaded_metadata(self, metadata):
         filename, _ = os.path.splitext(self.base_filename)
