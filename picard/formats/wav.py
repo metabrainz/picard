@@ -216,6 +216,9 @@ try:
                     if name:
                         del info[name]
                 info.save(filename)
+            elif config.setting['remove_wave_riff_info']:
+                info = RiffListInfo(encoding=config.setting['wave_riff_info_encoding'])
+                info.delete(filename)
 
         def _get_tags(self, filename):
             file = self._get_file(filename)

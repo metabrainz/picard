@@ -10,7 +10,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_TagsCompatibilityOptionsPage(object):
     def setupUi(self, TagsCompatibilityOptionsPage):
         TagsCompatibilityOptionsPage.setObjectName("TagsCompatibilityOptionsPage")
-        TagsCompatibilityOptionsPage.resize(721, 692)
+        TagsCompatibilityOptionsPage.resize(539, 692)
         self.vboxlayout = QtWidgets.QVBoxLayout(TagsCompatibilityOptionsPage)
         self.vboxlayout.setObjectName("vboxlayout")
         self.tag_compatibility = QtWidgets.QGroupBox(TagsCompatibilityOptionsPage)
@@ -134,6 +134,9 @@ class Ui_TagsCompatibilityOptionsPage(object):
         self.write_wave_riff_info = QtWidgets.QCheckBox(self.wave_files)
         self.write_wave_riff_info.setObjectName("write_wave_riff_info")
         self.verticalLayout_3.addWidget(self.write_wave_riff_info)
+        self.remove_wave_riff_info = QtWidgets.QCheckBox(self.wave_files)
+        self.remove_wave_riff_info.setObjectName("remove_wave_riff_info")
+        self.verticalLayout_3.addWidget(self.remove_wave_riff_info)
         self.wave_riff_info_encoding = QtWidgets.QGroupBox(self.wave_files)
         self.wave_riff_info_encoding.setObjectName("wave_riff_info_encoding")
         self.horizontalLayout_3 = QtWidgets.QHBoxLayout(self.wave_riff_info_encoding)
@@ -153,6 +156,7 @@ class Ui_TagsCompatibilityOptionsPage(object):
         self.vboxlayout.addItem(spacerItem3)
 
         self.retranslateUi(TagsCompatibilityOptionsPage)
+        self.write_wave_riff_info.toggled['bool'].connect(self.remove_wave_riff_info.setDisabled)
         QtCore.QMetaObject.connectSlotsByName(TagsCompatibilityOptionsPage)
         TagsCompatibilityOptionsPage.setTabOrder(self.write_id3v24, self.write_id3v23)
         TagsCompatibilityOptionsPage.setTabOrder(self.write_id3v23, self.enc_utf8)
@@ -185,6 +189,7 @@ class Ui_TagsCompatibilityOptionsPage(object):
         self.remove_ape_from_ac3.setText(_("Remove APEv2 tags from AC3 files"))
         self.wave_files.setTitle(_("WAVE files"))
         self.write_wave_riff_info.setText(_("Also include RIFF INFO tags in the files"))
+        self.remove_wave_riff_info.setText(_("Remove existing RIFF INFO tags from WAVE files"))
         self.wave_riff_info_encoding.setTitle(_("RIFF INFO Text Encoding"))
         self.wave_riff_info_enc_iso88591.setText(_("ISO-8859-1"))
         self.wave_riff_info_enc_utf8.setText(_("UTF-8"))

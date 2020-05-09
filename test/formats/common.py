@@ -55,6 +55,7 @@ settings = {
     'aac_save_ape': True,
     'ac3_save_ape': True,
     'write_wave_riff_info': True,
+    'remove_wave_riff_info': False,
     'wave_riff_info_encoding': 'iso-8859-1',
 }
 

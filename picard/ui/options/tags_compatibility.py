@@ -52,6 +52,7 @@ class TagsCompatibilityOptionsPage(OptionsPage):
         config.BoolOption("setting", "ac3_save_ape", True),
         config.BoolOption("setting", "remove_ape_from_ac3", False),
         config.BoolOption("setting", "write_wave_riff_info", True),
+        config.BoolOption("setting", "remove_wave_riff_info", False),
         config.TextOption("setting", "wave_riff_info_encoding", "iso-8859-1"),
     ]
 
@@ -91,6 +92,7 @@ class TagsCompatibilityOptionsPage(OptionsPage):
         self.ui.remove_ape_from_ac3.setChecked(config.setting["remove_ape_from_ac3"])
         self.ui.remove_ape_from_ac3.setEnabled(not config.setting["ac3_save_ape"])
         self.ui.write_wave_riff_info.setChecked(config.setting["write_wave_riff_info"])
+        self.ui.remove_wave_riff_info.setChecked(config.setting["remove_wave_riff_info"])
         if config.setting["wave_riff_info_encoding"] == "utf-8":
             self.ui.wave_riff_info_enc_utf8.setChecked(True)
         else:
@@ -113,6 +115,7 @@ class TagsCompatibilityOptionsPage(OptionsPage):
         config.setting["ac3_save_ape"] = self.ui.ac3_save_ape.isChecked()
         config.setting["remove_ape_from_ac3"] = self.ui.remove_ape_from_ac3.isChecked()
         config.setting["write_wave_riff_info"] = self.ui.write_wave_riff_info.isChecked()
+        config.setting["remove_wave_riff_info"] = self.ui.remove_wave_riff_info.isChecked()
         if self.ui.wave_riff_info_enc_utf8.isChecked():
             config.setting["wave_riff_info_encoding"] = "utf-8"
         else:
