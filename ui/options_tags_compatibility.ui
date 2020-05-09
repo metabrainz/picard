@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>539</width>
-    <height>692</height>
+    <height>705</height>
    </rect>
   </property>
   <layout class="QVBoxLayout">
@@ -307,9 +307,9 @@
         </property>
         <layout class="QHBoxLayout" name="horizontalLayout_3">
          <item>
-          <widget class="QRadioButton" name="wave_riff_info_enc_iso88591">
+          <widget class="QRadioButton" name="wave_riff_info_enc_cp1252">
            <property name="text">
-            <string>ISO-8859-1</string>
+            <string>Windows-1252</string>
            </property>
            <property name="checked">
             <bool>true</bool>

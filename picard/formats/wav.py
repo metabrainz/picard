@@ -35,7 +35,6 @@ from picard.file import File
 from picard.formats.id3 import ID3File
 from picard.formats.mutagenext import compatid3
 from picard.metadata import Metadata
-from picard.util.textencoding import replace_non_ascii
 
 
 try:
@@ -81,7 +80,7 @@ try:
         """Allows loading / saving RIFF INFO tags from / to RIFF files.
         """
 
-        def __init__(self, encoding='iso-8859-1'):
+        def __init__(self, encoding='windows-1252'):
             self.encoding = encoding
             self.__tags = {}
             self.__deleted_tags = set()
@@ -144,8 +143,13 @@ try:
             if chunk:
                 chunk.delete()
 
-        def __decode_data(self, value):
-            return value.decode(self.encoding, errors='replace').rstrip('\0')
+        @staticmethod
+        def __decode_data(value):
+            try:  # Always try first to decode as Unicode
+                value = value.decode('utf-8')
+            except UnicodeDecodeError:  # Fall back to Windows-1252 encoding
+                value = value.decode('windows-1252', errors='replace')
+            return value.rstrip('\0')
 
         def __encode_data(self, value):
             return value.encode(self.encoding, errors='replace') + b'\x00'
@@ -210,7 +214,7 @@ try:
                     name = translate_tag_to_riff_name(name)
                     if name:
                         value = ", ".join(values)
-                        info[name] = replace_non_ascii(value, repl="?")
+                        info[name] = value
                 for name in metadata.deleted_tags:
                     name = translate_tag_to_riff_name(name)
                     if name:

@@ -53,7 +53,7 @@ class TagsCompatibilityOptionsPage(OptionsPage):
         config.BoolOption("setting", "remove_ape_from_ac3", False),
         config.BoolOption("setting", "write_wave_riff_info", True),
         config.BoolOption("setting", "remove_wave_riff_info", False),
-        config.TextOption("setting", "wave_riff_info_encoding", "iso-8859-1"),
+        config.TextOption("setting", "wave_riff_info_encoding", "windows-1252"),
     ]
 
     def __init__(self, parent=None):
@@ -96,7 +96,7 @@ class TagsCompatibilityOptionsPage(OptionsPage):
         if config.setting["wave_riff_info_encoding"] == "utf-8":
             self.ui.wave_riff_info_enc_utf8.setChecked(True)
         else:
-            self.ui.wave_riff_info_enc_iso88591.setChecked(True)
+            self.ui.wave_riff_info_enc_cp1252.setChecked(True)
         self.update_encodings()
 
     def save(self):
@@ -119,7 +119,7 @@ class TagsCompatibilityOptionsPage(OptionsPage):
         if self.ui.wave_riff_info_enc_utf8.isChecked():
             config.setting["wave_riff_info_encoding"] = "utf-8"
         else:
-            config.setting["wave_riff_info_encoding"] = "iso-8859-1"
+            config.setting["wave_riff_info_encoding"] = "windows-1252"
 
     def update_encodings(self, force_utf8=False):
         if self.ui.write_id3v23.isChecked():
