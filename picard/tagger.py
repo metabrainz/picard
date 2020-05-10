@@ -58,7 +58,6 @@ from PyQt5 import (
     QtGui,
     QtWidgets,
 )
-from PyQt5.QtDBus import QDBusConnection
 
 from picard import (
     PICARD_APP_ID,
@@ -972,9 +971,12 @@ def main(localedir=None, autoupdate=True):
     if picard_args.long_version:
         return longversion()
 
-    if not (IS_WIN or IS_MACOS or IS_HAIKU):
+    try:
+        from PyQt5.QtDBus import QDBusConnection
         dbus = QDBusConnection.sessionBus()
         dbus.registerService(PICARD_APP_ID)
+    except ImportError:
+        pass
 
     tagger = Tagger(picard_args, unparsed_args, localedir, autoupdate)
 
