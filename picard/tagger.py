@@ -309,7 +309,6 @@ class Tagger(QtWidgets.QApplication):
                                                 self._pending_files_results_queue))
         self._loader_process.start()
 
-        Thread(target=self._add_files_thread).start()
         Thread(target=self._file_load_finished_thread).start()
         Thread(target=self._file_loaded_thread).start()
 
@@ -491,6 +490,8 @@ class Tagger(QtWidgets.QApplication):
                 self.move_file_to_nat(file, recordingid)
                 return
 
+        self.move_files([file], self.unclustered_files)
+
         # fallback on analyze if nothing else worked
         if config.setting['analyze_new_files'] and file.can_analyze():
             log.debug("Trying to analyze %r ...", file)
@@ -551,7 +552,7 @@ class Tagger(QtWidgets.QApplication):
                 self.pending_files[file.filename] = (file, target)
                 self.pending_files_process_queue.put(file.filename)
 
-    def _add_files_thread(self):
+    def _file_load_finished_thread(self):
         while True:
             filename, metadata = self._pending_files_results_queue.get()
 
@@ -560,35 +561,11 @@ class Tagger(QtWidgets.QApplication):
 
             if filename in self._pending_files:
                 file, target = self._pending_files.pop(filename)
-                if target is None or target is self.unclustered_files:
-                    thread.to_main(self.unclustered_files.add_files, [file])
-                    time.sleep(0.005)
-                self._pending_load_finished_queue.put((file, metadata, target))
-                continue
-
-        # Append empty message to kill _file_load_finished_thread and _file_loaded_thread
-        self._pending_load_finished_queue.put((None, None, None))
-
-    def _file_load_finished_thread(self):
-        while True:
-            file, metadata, target = self._pending_load_finished_queue.get()
-
-            if self.stopping:
-                break
-
-            if file:
-                while not self.stopping and file not in self.unclustered_files.files:
-                    time.sleep(0)
 
                 error = not metadata or None
                 thread.to_main(file._loading_finished, result=metadata, error=error, callback=None)
 
-                # Delay next loading finished for longer periods
-                #   while other tasks are still running
-                if not self.pending_files_results_queue.empty():
-                    time.sleep(0.5)
-                else:
-                    time.sleep(0.01)
+                time.sleep(0)
                 self._file_loaded_queue.put((file, target))
 
         # Append empty message to kill _file_loaded_thread
@@ -603,9 +580,7 @@ class Tagger(QtWidgets.QApplication):
 
             thread.to_main(self._file_loaded, file, target)
             if not self._pending_files_results_queue.empty():
-                time.sleep(5)
-            elif not self._pending_load_finished_queue.empty():
-                time.sleep(2)
+                time.sleep(0.1)
             else:
                 time.sleep(0.01)
 
