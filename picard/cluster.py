@@ -494,7 +494,6 @@ class ClusterEngine(object):
                     c = similarity(token_x, token_y)
                     if c >= threshold:
                         heappush(heap, ((1.0 - c), [x, y]))
-            QtCore.QCoreApplication.processEvents()
 
         for i in range(self.cluster_dict.get_size()):
             word, count = self.cluster_dict.get_word_and_count(i)

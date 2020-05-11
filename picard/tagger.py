@@ -49,12 +49,18 @@ import logging
 from operator import attrgetter
 import os.path
 import platform
-from queue import Queue
+from queue import (
+    Empty,
+    Queue,
+)
 import re
 import shutil
 import signal
 import sys
-from threading import Thread
+from threading import (
+    Event,
+    Thread,
+)
 import time
 
 from PyQt5 import (
@@ -303,12 +309,11 @@ class Tagger(QtWidgets.QApplication):
         self._pending_load_finished_queue = Queue()
         self._file_loaded_queue = Queue()
         self._process_stopping = mp.Value('b', False)
-        self._loader_process = mp.Process(target=File._load_check_metadata,
-                                          args=(self._process_stopping,
-                                                self._pending_files_process_queue,
-                                                self._pending_files_results_queue))
-        self._loader_process.start()
+        self._loader_process = None
 
+        # Loader process is (re)started by the watchdog
+        self._loader_watchdog_timeout = Event()
+        Thread(target=self._loader_process_watchdog_thread).start()
         Thread(target=self._file_load_finished_thread).start()
         Thread(target=self._file_loaded_thread).start()
 
@@ -402,8 +407,9 @@ class Tagger(QtWidgets.QApplication):
         self.stopping = True
 
         # Stop worker threads by waking them from their slumber
+        self._loader_watchdog_timeout.set()
         self._pending_files_results_queue.put((None, None))
-        time.sleep(0)
+        time.sleep(0)  # Yield from the CPU quantum and let other threads work
 
         # Stop worker process
         self._process_stopping.value = True
@@ -504,11 +510,9 @@ class Tagger(QtWidgets.QApplication):
         if isinstance(target, (Track, Cluster)):
             for file in files:
                 file.move(target)
-                QtCore.QCoreApplication.processEvents()
         elif isinstance(target, File):
             for file in files:
                 file.move(target.parent)
-                QtCore.QCoreApplication.processEvents()
         elif isinstance(target, Album):
             self.move_files_to_album(files, album=target)
         elif isinstance(target, ClusterList):
@@ -565,7 +569,7 @@ class Tagger(QtWidgets.QApplication):
                 error = not metadata or None
                 thread.to_main(file._loading_finished, result=metadata, error=error, callback=None)
 
-                time.sleep(0)
+                time.sleep(0)  # Yield from the CPU quantum and let other threads work
                 self._file_loaded_queue.put((file, target))
 
         # Append empty message to kill _file_loaded_thread
@@ -579,10 +583,43 @@ class Tagger(QtWidgets.QApplication):
                 break
 
             thread.to_main(self._file_loaded, file, target)
-            if not self._pending_files_results_queue.empty():
-                time.sleep(0.1)
-            else:
-                time.sleep(0.01)
+            time.sleep(0.01)  # Yields from CPU quantum, should be enough time for clustering few files without freezing
+
+    def _loader_process_watchdog_thread(self):
+        exitcode = None
+        while not self.stopping:
+            # Check if worker process died
+            if hasattr(self._loader_process, "exitcode") and self._loader_process.exitcode is not None:
+                exitcode = self._loader_process.exitcode
+                log.warning("Worker process died with exit code '%d'" %
+                             exitcode)
+
+            # Check if process has yet to be started or died
+            if self._loader_process is None or exitcode:
+                # Empty queue, as the process might have consumed filenames
+                #   and most likely crashed before transmitting results
+                while True:
+                    try:
+                        self._pending_files_process_queue.get_nowait()
+                    except Empty:
+                        break
+
+                # Make sure the process queue is filled without duplicates
+                for filename in self._pending_files:
+                    self._pending_files_process_queue.put(filename)
+
+                # (Re)Start worker
+                exitcode = None
+                self._loader_process = mp.Process(target=File._load_check_metadata,
+                                                  args=(self._process_stopping,
+                                                        self._pending_files_process_queue,
+                                                        self._pending_files_results_queue))
+                self._loader_process.start()
+
+            try:
+                self._loader_watchdog_timeout.wait(10)
+            except TimeoutError:
+                pass
 
     def _scan_dir(self, ignore_hidden, folders, recursive):
         files = []
@@ -898,11 +935,9 @@ class Tagger(QtWidgets.QApplication):
         else:
             files = self.get_files_from_objects(objs)
         for name, artist, files in Cluster.cluster(files, 1.0):
-            QtCore.QCoreApplication.processEvents()
             cluster = self.load_cluster(name, artist)
             for file in sorted(files, key=attrgetter('discnumber', 'tracknumber', 'base_filename')):
                 file.move(cluster)
-                QtCore.QCoreApplication.processEvents()
 
     def load_cluster(self, name, artist):
         for cluster in self.clusters:
