@@ -54,6 +54,10 @@ if os_name == 'Windows':
     binaries += [('discid.dll', '.')]
     data_files.append((os.path.join('resources', 'win10', '*'), '.'))
 
+    import importlib
+    qtmodernpath = os.path.dirname(importlib.import_module('qtmodern').__file__)
+    data_files.append((os.path.join(qtmodernpath, 'resources', '*'), 'qtmodern/resources'))
+
 if os_name == 'Darwin':
     binaries += [('libdiscid.0.dylib', '.')]
 

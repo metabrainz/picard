@@ -21,6 +21,7 @@
 # Copyright (C) 2016 Suhas
 # Copyright (C) 2016-2017 Sambhav Kothari
 # Copyright (C) 2018 Vishal Choudhary
+# Copyright (C) 2020 Gabriel Ferreira
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -169,6 +170,7 @@ class MainPanel(QtWidgets.QSplitter):
     def __init__(self, window, parent=None):
         super().__init__(parent)
         self.window = window
+        self.setPalette(window.tagger.palette())
         self.create_icons()
         self.views = [FileTreeView(window, self), AlbumTreeView(window, self)]
         self.views[0].itemSelectionChanged.connect(self.update_selection_0)

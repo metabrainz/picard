@@ -25,6 +25,7 @@
 # Copyright (C) 2018 Bob Swift
 # Copyright (C) 2018 virusMac
 # Copyright (C) 2019 Joel Lintunen
+# Copyright (C) 2020 Gabriel Ferreira
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -159,7 +160,7 @@ class Tagger(QtWidgets.QApplication):
     _debug = False
     _no_restore = False
 
-    def __init__(self, picard_args, unparsed_args, localedir, autoupdate):
+    def __init__(self, picard_args, unparsed_args, localedir, autoupdate, dark_theme=False):
 
         # Use the new fusion style from PyQt5 for a modern and consistent look
         # across all OSes.
@@ -173,6 +174,10 @@ class Tagger(QtWidgets.QApplication):
         super().setStyleSheet(
             'QGroupBox::title { /* PICARD-1206, Qt bug workaround */ }'
         )
+
+        if dark_theme:
+            import qtmodern.styles
+            qtmodern.styles.dark(self)
 
         self._cmdline_files = picard_args.FILE
         self.autoupdate_enabled = autoupdate
@@ -404,8 +409,8 @@ class Tagger(QtWidgets.QApplication):
     def run(self):
         if config.setting["browser_integration"]:
             self.browser_integration.start()
-        self.window.show()
         QtCore.QTimer.singleShot(0, self._run_init)
+        self.window.show()
         res = self.exec_()
         self.exit()
         return res
@@ -976,7 +981,19 @@ def main(localedir=None, autoupdate=True):
         dbus = QDBusConnection.sessionBus()
         dbus.registerService(PICARD_APP_ID)
 
-    tagger = Tagger(picard_args, unparsed_args, localedir, autoupdate)
+    dark_theme = False
+    if IS_WIN:
+        # Open the windows registry and check theme settings
+        from winreg import ConnectRegistry, OpenKey, QueryValueEx, HKEY_CURRENT_USER
+        try:
+            registry = ConnectRegistry(None, HKEY_CURRENT_USER)
+            path = "Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize"
+            key = OpenKey(registry, path)
+            dark_theme = not QueryValueEx(key, "AppsUseLightTheme")[0]
+        except EnvironmentError:
+            pass
+
+    tagger = Tagger(picard_args, unparsed_args, localedir, autoupdate, dark_theme)
 
     # Initialize Qt default translations
     translator = QtCore.QTranslator()
