@@ -155,8 +155,8 @@ def shorten_path(path, length, mode):
     length: Maximum number of code points / bytes allowed in a node.
     mode: One of SHORTEN_BYTES, SHORTEN_UTF16, SHORTEN_UTF16_NFD.
     """
-    def shorten(n, l):
-        return n and shorten_filename(n, l, mode).strip() or ""
+    def shorten(name, length):
+        return name and shorten_filename(name, length, mode).strip() or ""
     dirpath, filename = os.path.split(path)
     fileroot, ext = os.path.splitext(filename)
     return os.path.join(
@@ -203,8 +203,8 @@ def _make_win_short_filename(relpath, reserved=0):
     remaining = MAX_DIRPATH_LEN - reserved
 
     # to make things more readable...
-    def shorten(p, l):
-        return shorten_path(p, l, mode=SHORTEN_UTF16)
+    def shorten(path, length):
+        return shorten_path(path, length, mode=SHORTEN_UTF16)
     xlength = _get_utf16_length
 
     # shorten to MAX_NODE_LEN from the beginning

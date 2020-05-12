@@ -153,7 +153,7 @@ class InterfaceOptionsPage(OptionsPage):
         self.ui = Ui_InterfaceOptionsPage()
         self.ui.setupUi(self)
         self.ui.ui_language.addItem(_('System default'), '')
-        language_list = [(l[0], l[1], _(l[2])) for l in UI_LANGUAGES]
+        language_list = [(lang[0], lang[1], _(lang[2])) for lang in UI_LANGUAGES]
 
         def fcmp(x):
             return locale.strxfrm(x[2])
