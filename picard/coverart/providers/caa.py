@@ -610,7 +610,7 @@ class CoverArtProviderCaa(CoverArtProvider):
                                   image["image"])
                         continue
                     # if image has no type set, we still want it to match
-                    # pseudo type 'unknown'
+                    # pseudo type 'unknown'
                     if not image["types"]:
                         image["types"] = ["unknown"]
                     else:

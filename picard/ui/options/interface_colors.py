@@ -67,7 +67,7 @@ class ColorButton(QtWidgets.QPushButton):
 
 def delete_items_of_layout(layout):
     # Credits:
-    # https://stackoverflow.com/a/45790404
+    # https://stackoverflow.com/a/45790404
     # https://riverbankcomputing.com/pipermail/pyqt/2009-November/025214.html
     if layout is not None:
         while layout.count():

@@ -268,7 +268,7 @@ class File(QtCore.QObject, Item):
             # https://docs.python.org/3/library/os.html#os.utime
             # Since Python 3.3, ns parameter is available
             # The best way to preserve exact times is to use the st_atime_ns and st_mtime_ns
-            # fields from the os.stat() result object with the ns parameter to utime.
+            # fields from the os.stat() result object with the ns parameter to utime.
             st = os.stat(filename)
         except OSError as why:
             errmsg = "Couldn't read timestamps from %r: %s" % (filename, why)
@@ -497,7 +497,7 @@ class File(QtCore.QObject, Item):
         new_path = os.path.dirname(new_filename)
         old_path = os.path.dirname(old_filename)
         if new_path == old_path:
-            # skip, same directory, nothing to move
+            # skip, same directory, nothing to move
             return
         patterns = config.setting["move_additional_files_pattern"]
         pattern_regexes = set()

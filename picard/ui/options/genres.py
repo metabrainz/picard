@@ -104,7 +104,7 @@ class GenresOptionsPage(OptionsPage):
         self.ui.test_genres_filter.setToolTip(_(TOOLTIP_TEST_GENRES_FILTER))
         self.ui.test_genres_filter.textChanged.connect(self.update_test_genres_filter)
 
-        #FIXME: colors aren't great from accessibility POV
+        # FIXME: colors aren't great from accessibility POV
         self.fmt_keep = QTextBlockFormat()
         self.fmt_keep.setBackground(Qt.green)
 
@@ -140,7 +140,7 @@ class GenresOptionsPage(OptionsPage):
         filters = self.ui.genres_filter.toPlainText()
         tagfilter = TagGenreFilter(filters)
 
-        #FIXME: very simple error reporting, improve
+        # FIXME: very simple error reporting, improve
         self.ui.label_test_genres_filter_error.setText(
             "\n".join(
                 [_("Error line %d: %s") % (lineno + 1, error) for lineno, error in tagfilter.errors.items()]
@@ -150,7 +150,7 @@ class GenresOptionsPage(OptionsPage):
         def set_line_fmt(lineno, textformat):
             obj = self.ui.test_genres_filter
             if lineno < 0:
-                #use current cursor position
+                # use current cursor position
                 cursor = obj.textCursor()
             else:
                 cursor = QTextCursor(obj.document().findBlockByNumber(lineno))

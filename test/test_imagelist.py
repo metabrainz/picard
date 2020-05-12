@@ -300,10 +300,10 @@ class ImageListTest(PicardTestCase):
             "save_images_to_tags": True,
             "embed_only_one_front_image": False,
         }
-        # save all but no images
+        # save all but no images
         self.assertEqual(list(to_be_saved(settings)), [])
 
-        # save all, only one non-front image in the list
+        # save all, only one non-front image in the list
         self.imagelist.append(self.images['a'])
         self.assertEqual(list(to_be_saved(settings)), [self.images['a']])
 
@@ -311,11 +311,11 @@ class ImageListTest(PicardTestCase):
         self.imagelist.append(self.images['b'])
         self.assertEqual(list(to_be_saved(settings)), [self.images['a'], self.images['b']])
 
-        # save only one front, 2 images, one of them is a front image (b)
+        # save only one front, 2 images, one of them is a front image (b)
         settings["embed_only_one_front_image"] = True
         self.assertEqual(list(to_be_saved(settings)), [self.images['b']])
 
-        # save only one front, 3 images, two of them have front type (b & c)
+        # save only one front, 3 images, two of them have front type (b & c)
         self.imagelist.append(self.images['c'])
         self.assertEqual(list(to_be_saved(settings)), [self.images['b']])
 
@@ -323,7 +323,7 @@ class ImageListTest(PicardTestCase):
         settings["save_images_to_tags"] = False
         self.assertEqual(list(to_be_saved(settings)), [])
 
-        # settings is missing a setting
+        # settings is missing a setting
         del settings["save_images_to_tags"]
         with self.assertRaises(KeyError):
             next(to_be_saved(settings))
@@ -333,7 +333,7 @@ class ImageListTest(PicardTestCase):
         self.imagelist.append(self.images['b'])
         self.imagelist.append(self.images['c'])
 
-        # strip front images from list, only a isn't
+        # strip front images from list, only a isn't
         self.assertEqual(len(self.imagelist), 3)
         self.imagelist.strip_front_images()
         self.assertNotIn(self.images['b'], self.imagelist)

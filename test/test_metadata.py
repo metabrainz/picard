@@ -373,11 +373,11 @@ class MetadataTest(PicardTestCase):
         self.assertRaises(KeyError, m.getraw, 'a')
         self.assertIn('a', m.deleted_tags)
 
-        # NOTE: historic behavior of Metadata.delete()
-        # an attempt to delete an non-existing tag, will add it to the list
-        # of deleted tags
-        # so this will not raise a KeyError
-        # as is it differs from dict or even defaultdict behavior
+        # NOTE: historic behavior of Metadata.delete()
+        # an attempt to delete an non-existing tag, will add it to the list
+        # of deleted tags
+        # so this will not raise a KeyError
+        # as is it differs from dict or even defaultdict behavior
         del m['unknown']
         self.assertIn('unknown', m.deleted_tags)
 
@@ -424,7 +424,7 @@ class MetadataTest(PicardTestCase):
         self._check_mapping_update(m)
 
     def test_metadata_mapping_update_tuple(self):
-        # update from tuple
+        # update from tuple
         m = self.metadata_d2
 
         d2 = (('c', 3), ('d', ['u', 'w']), ('x', ''))
@@ -433,27 +433,27 @@ class MetadataTest(PicardTestCase):
         self._check_mapping_update(m)
 
     def test_metadata_mapping_update_dictlike(self):
-        # update from kwargs
+        # update from kwargs
         m = self.metadata_d2
 
         m.update(c=3, d=['u', 'w'], x='')
         self._check_mapping_update(m)
 
     def test_metadata_mapping_update_noparam(self):
-        # update without parameter
+        # update without parameter
         m = self.metadata_d2
 
         self.assertRaises(TypeError, m.update)
         self.assertEqual(m['a'], 'b')
 
     def test_metadata_mapping_update_intparam(self):
-        # update without parameter
+        # update without parameter
         m = self.metadata_d2
 
         self.assertRaises(TypeError, m.update, 123)
 
     def test_metadata_mapping_update_strparam(self):
-        # update without parameter
+        # update without parameter
         m = self.metadata_d2
 
         self.assertRaises(ValueError, m.update, 'abc')

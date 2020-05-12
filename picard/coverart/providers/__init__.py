@@ -76,7 +76,7 @@ def register_cover_art_provider(provider):
         register_options_page(provider.OPTIONS)
 
 
-# named tuples used by cover_art_providers()
+# named tuples used by cover_art_providers()
 ProviderTuple = namedtuple('ProviderTuple', 'name title enabled cls')
 PInfoTuple = namedtuple('PInfoTuple', 'position enabled')
 POrderTuple = namedtuple('OrderTuple', 'name position enabled')
@@ -94,7 +94,7 @@ def cover_art_providers():
         order[o.name] = PInfoTuple(position=o.position, enabled=o.enabled)
 
     # use previously built dict to order providers, according to current ca_providers
-    # (yet) unknown providers are placed at the end, disabled
+    # (yet) unknown providers are placed at the end, disabled
     ordered_providers = sorted(_cover_art_providers, key=lambda p: order[p.name].position)
 
     def label(p):
@@ -152,8 +152,8 @@ class CoverArtProvider(metaclass=CoverArtProviderMetaClass):
         return not self.coverart.front_image_found
 
     def queue_images(self):
-        # this method has to return CoverArtProvider.FINISHED or
-        # CoverArtProvider.WAIT
+        # this method has to return CoverArtProvider.FINISHED or
+        # CoverArtProvider.WAIT
         raise NotImplementedError
 
     def error(self, msg):
@@ -163,7 +163,7 @@ class CoverArtProvider(metaclass=CoverArtProviderMetaClass):
         self.coverart.queue_put(what)
 
     def next_in_queue(self):
-        # must be called by provider if queue_images() returns WAIT
+        # must be called by provider if queue_images() returns WAIT
         self.coverart.next_in_queue()
 
     def match_url_relations(self, relation_types, func):

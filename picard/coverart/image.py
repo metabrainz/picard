@@ -272,7 +272,7 @@ class CoverArtImage:
         """
         if self.is_front_image() or not self.types or 'front' in self.types:
             return 'front'
-        # TODO: do something better than randomly using the first in the list
+        # TODO: do something better than randomly using the first in the list
         return self.types[0]
 
     def _make_image_filename(self, filename, dirname, _metadata):

@@ -88,9 +88,9 @@ _io_encoding = sys.getfilesystemencoding()
 
 
 # The following was adapted from k3b's source code:
-#// On a glibc system the system locale defaults to ANSI_X3.4-1968
-#// It is very unlikely that one would set the locale to ANSI_X3.4-1968
-#// intentionally
+# On a glibc system the system locale defaults to ANSI_X3.4-1968
+# It is very unlikely that one would set the locale to ANSI_X3.4-1968
+# intentionally
 def check_io_encoding():
     if _io_encoding == "ANSI_X3.4-1968":
         from picard import log
@@ -319,9 +319,9 @@ def uniqify(seq):
 _tracknum_regexps = (
     # search for explicit track number (prefix "track")
     r"track[\s_-]*(?:no|nr)?[\s_-]*(\d+)",
-    # search for 2-digit number at start of string
+    # search for 2-digit number at start of string
     r"^(\d{2})\D?",
-    # search for 2-digit number at end of string
+    # search for 2-digit number at end of string
     r"\D?(\d{2})$",
 )
 

@@ -35,16 +35,15 @@ class CoverArtImageProviderCaaTest(PicardTestCase):
                 self.assertEqual(result, expect, msg=msgfmt % (size, sizes, result, expect))
 
         # For historical reasons, caa web service returns 2 identical urls,
-        # for 2 different keys (250/small, 500/large)
-        # Here is an example of the json relevant part:
+        # for 2 different keys (250/small, 500/large)
+        # Here is an example of the json relevant part:
         # "thumbnails": {
         #   "250": "http://coverartarchive.org/release/d20247ad-940e-486d-948f-be4c17024ab9/24885128253-250.jpg",
         #   "500": "http://coverartarchive.org/release/d20247ad-940e-486d-948f-be4c17024ab9/24885128253-500.jpg",
-        #   "1200": "http://coverartarchive.org/release/d20247ad-940e-486d-948f-be4c17024ab9/24885128253-1200.jpg",
-        #   "large": "http://coverartarchive.org/release/d20247ad-940e-486d-948f-be4c17024ab9/24885128253-500.jpg",
+        #   "1200": "http://coverartarchive.org/release/d20247ad-940e-486d-948f-be4c17024ab9/24885128253-1200.jpg",
+        #   "large": "http://coverartarchive.org/release/d20247ad-940e-486d-948f-be4c17024ab9/24885128253-500.jpg",
         #   "small": "http://coverartarchive.org/release/d20247ad-940e-486d-948f-be4c17024ab9/24885128253-250.jpg"
         # },
-        # 
         sizes = ("250", "500", "1200", "large", "small")
         expectations = {
             50:  [],
@@ -71,7 +70,7 @@ class CoverArtImageProviderCaaTest(PicardTestCase):
         do_tests(sizes, expectations)
 
         # In the future, large and small might be removed or new size added
-        # test if we can handle that (through size aliases)
+        # test if we can handle that (through size aliases)
         sizes = ("small", "large", "1200", "2000", "unknownsize")
         expectations = {
             50:  [],

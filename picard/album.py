@@ -518,7 +518,7 @@ class Album(DataObject, Item):
         for file in list(files):
             if file.state == File.REMOVED:
                 continue
-            # if we have a recordingid to match against, use that in priority
+            # if we have a recordingid to match against, use that in priority
             recid = recordingid or file.metadata['musicbrainz_recordingid']
             if recid and mbid_validate(recid):
                 if not tracks_cache:
