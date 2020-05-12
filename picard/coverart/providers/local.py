@@ -27,7 +27,7 @@ import re
 
 from picard import config
 from picard.coverart.image import LocalFileCoverArtImage
-from picard.coverart.providers import (
+from picard.coverart.providers.provider import (
     CoverArtProvider,
     ProviderOptions,
 )

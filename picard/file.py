@@ -172,7 +172,7 @@ class File(QtCore.QObject, Item):
             # Try loading based on extension first
             return self._load(filename)
         except Exception:
-            from picard.formats import guess_format
+            from picard.formats.util import guess_format
             # If it fails, force format guessing and try loading again
             file_format = guess_format(filename)
             if not file_format and type(file_format) == type(self):

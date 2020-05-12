@@ -57,7 +57,7 @@ from picard.coverart.image import (
     CaaCoverArtImage,
     CaaThumbnailCoverArtImage,
 )
-from picard.coverart.providers import (
+from picard.coverart.providers.provider import (
     CoverArtProvider,
     ProviderOptions,
 )
