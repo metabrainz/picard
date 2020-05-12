@@ -27,7 +27,7 @@
 
 from picard import log
 from picard.coverart.image import CoverArtImage
-from picard.coverart.providers import CoverArtProvider
+from picard.coverart.providers.provider import CoverArtProvider
 
 
 class CoverArtProviderWhitelist(CoverArtProvider):

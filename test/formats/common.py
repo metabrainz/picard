@@ -34,6 +34,7 @@ from picard.formats import ext_to_format
 from picard.formats.mutagenext.aac import AACAPEv2
 from picard.formats.mutagenext.ac3 import AC3APEv2
 from picard.formats.mutagenext.tak import TAK
+from picard.formats.util import guess_format
 from picard.metadata import Metadata
 
 
@@ -450,7 +451,7 @@ class CommonTests:
         @skipUnlessTestfile
         def test_guess_format(self):
             temp_file = self.copy_of_original_testfile()
-            audio = picard.formats.guess_format(temp_file)
+            audio = guess_format(temp_file)
             audio_original = picard.formats.open_(self.filename)
             self.assertEqual(type(audio), type(audio_original))
 
