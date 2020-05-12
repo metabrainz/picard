@@ -46,6 +46,7 @@ import argparse
 from functools import partial
 from itertools import chain
 import logging
+import multiprocessing as mp
 from operator import attrgetter
 import os.path
 import platform
@@ -288,7 +289,6 @@ class Tagger(QtWidgets.QApplication):
         self.browser_integration = BrowserIntegration()
 
         self.files = {}
-        self.pending_files = {}
         self.clusters = ClusterList()
         self.albums = {}
         self.release_groups = {}
@@ -466,7 +466,7 @@ class Tagger(QtWidgets.QApplication):
     def _file_loaded(self, file, target=None):
         if file is None:
             return
-        
+
         if file.has_error():
             self.move_files([file], self.unclustered_files)
             return
@@ -557,8 +557,8 @@ class Tagger(QtWidgets.QApplication):
                 target = None
 
             for file in new_files:
-                self.pending_files[file.filename] = (file, target)
-                self.pending_files_process_queue.put(file.filename)
+                self._pending_files[file.filename] = (file, target)
+                self._pending_files_process_queue.put(file.filename)
 
     def _file_load_finished_thread(self):
         while True:
@@ -630,13 +630,17 @@ class Tagger(QtWidgets.QApplication):
         while local_folders:
             current_folder = local_folders.pop(0)
             current_folder_files = []
-            for entry in os.scandir(current_folder):
-                if ignore_hidden and is_hidden(entry.path):
-                    continue
-                if recursive and entry.is_dir():
-                    local_folders.append(entry.path)
-                else:
-                    current_folder_files.append(entry.path)
+
+            try:
+                for entry in os.scandir(current_folder):
+                    if ignore_hidden and is_hidden(entry.path):
+                        continue
+                    if recursive and entry.is_dir():
+                        local_folders.append(entry.path)
+                    else:
+                        current_folder_files.append(entry.path)
+            except FileNotFoundError:
+                pass
 
             number_of_files = len(current_folder_files)
             if number_of_files:
