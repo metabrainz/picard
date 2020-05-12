@@ -24,12 +24,28 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from collections import defaultdict, namedtuple
+from collections import (
+    defaultdict,
+    namedtuple,
+)
 import traceback
 
-from picard import log, config
+from picard import (
+    config,
+    log,
+)
+from picard.coverart.providers.caa import CoverArtProviderCaa
+from picard.coverart.providers.caa_release_group import (
+    CoverArtProviderCaaReleaseGroup,
+)
+from picard.coverart.providers.local import CoverArtProviderLocal
+from picard.coverart.providers.whitelist import CoverArtProviderWhitelist
 from picard.plugin import ExtensionPoint
-from picard.ui.options import OptionsPage, register_options_page
+
+from picard.ui.options import (
+    OptionsPage,
+    register_options_page,
+)
 
 
 _cover_art_providers = ExtensionPoint(label='cover_art_providers')
@@ -179,11 +195,6 @@ class CoverArtProvider(metaclass=CoverArtProviderMetaClass):
         except AttributeError:
             self.error(traceback.format_exc())
 
-
-from picard.coverart.providers.local import CoverArtProviderLocal
-from picard.coverart.providers.caa import CoverArtProviderCaa
-from picard.coverart.providers.whitelist import CoverArtProviderWhitelist
-from picard.coverart.providers.caa_release_group import CoverArtProviderCaaReleaseGroup
 
 __providers = [
     CoverArtProviderLocal,

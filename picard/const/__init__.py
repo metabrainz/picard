@@ -29,17 +29,19 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+import builtins
 from collections import OrderedDict
 import os
 
 from PyQt5.QtCore import QStandardPaths
+
 from picard import (
     PICARD_APP_NAME,
     PICARD_ORG_NAME,
 )
+from picard.const.attributes import MB_ATTRIBUTES
 
 # Install gettext "noop" function in case const.py gets imported directly.
-import builtins
 builtins.__dict__['N_'] = lambda a: a
 
 
@@ -90,7 +92,6 @@ SILENCE_TRACK_TITLE = '[silence]'
 DATA_TRACK_TITLE = '[data track]'
 
 # Release formats
-from picard.const.attributes import MB_ATTRIBUTES
 RELEASE_FORMATS = {}
 RELEASE_PRIMARY_GROUPS = {}
 RELEASE_SECONDARY_GROUPS = {}
@@ -106,13 +107,13 @@ for k, v in MB_ATTRIBUTES.items():
         RELEASE_STATUS[v] = v
 
 # Release countries
-from picard.const.countries import RELEASE_COUNTRIES  # noqa: F401 # pylint: disable=unused-import
+from picard.const.countries import RELEASE_COUNTRIES  # noqa: F401,E402 # pylint: disable=unused-import
 
 # List of available user interface languages
-from picard.const.languages import UI_LANGUAGES  # noqa: F401 # pylint: disable=unused-import
+from picard.const.languages import UI_LANGUAGES  # noqa: F401,E402 # pylint: disable=unused-import
 
 # List of alias locales
-from picard.const.locales import ALIAS_LOCALES  # noqa: F401 # pylint: disable=unused-import
+from picard.const.locales import ALIAS_LOCALES  # noqa: F401,E402 # pylint: disable=unused-import
 
 # List of official musicbrainz servers - must support SSL for mblogin requests (such as collections).
 MUSICBRAINZ_SERVERS = [
