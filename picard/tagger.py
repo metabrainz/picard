@@ -60,6 +60,7 @@ import signal
 import sys
 from threading import (
     Event,
+    Lock,
     Thread,
 )
 import time
@@ -304,8 +305,11 @@ class Tagger(QtWidgets.QApplication):
             self.updatecheckmanager = UpdateCheckManager(parent=self.window)
 
         self._pending_files = {}
+        self._pending_files_lock = Lock()
         self._pending_files_process_queue = mp.Queue()
         self._pending_files_results_queue = mp.Queue()
+        self._pending_files_process_queue.cancel_join_thread()
+        self._pending_files_results_queue.cancel_join_thread()
         self._pending_load_finished_queue = Queue()
         self._file_loaded_queue = Queue()
         self._process_stopping = mp.Value('b', False)
@@ -556,8 +560,11 @@ class Tagger(QtWidgets.QApplication):
             if target is self.unclustered_files:
                 target = None
 
+            with self._pending_files_lock:
+                for file in new_files:
+                    self._pending_files[file.filename] = (file, target)
+
             for file in new_files:
-                self._pending_files[file.filename] = (file, target)
                 self._pending_files_process_queue.put(file.filename)
 
     def _file_load_finished_thread(self):
@@ -568,7 +575,8 @@ class Tagger(QtWidgets.QApplication):
                 break
 
             if filename in self._pending_files:
-                file, target = self._pending_files.pop(filename)
+                with self._pending_files_lock:
+                    file, target = self._pending_files.pop(filename)
 
                 error = not metadata or None
                 event = thread.to_main(file._loading_finished, result=metadata, error=error, callback=None)
@@ -607,10 +615,6 @@ class Tagger(QtWidgets.QApplication):
                     except Empty:
                         break
 
-                # Make sure the process queue is filled without duplicates
-                for filename in self._pending_files:
-                    self._pending_files_process_queue.put(filename)
-
                 # (Re)Start worker
                 exitcode = None
                 self._loader_process = mp.Process(target=File._load_check_metadata,
@@ -618,6 +622,13 @@ class Tagger(QtWidgets.QApplication):
                                                         self._pending_files_process_queue,
                                                         self._pending_files_results_queue))
                 self._loader_process.start()
+
+                # Make sure the process queue is filled without duplicates
+                with self._pending_files_lock:
+                    pending_files_to_process = self._pending_files.copy()
+                if pending_files_to_process:
+                    for filename in pending_files_to_process:
+                        self._pending_files_process_queue.put(filename)
 
             try:
                 self._loader_watchdog_timeout.wait(10)

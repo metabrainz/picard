@@ -26,8 +26,8 @@
 
 
 import sys
-import traceback
 from threading import Event
+import traceback
 
 from PyQt5.QtCore import (
     QCoreApplication,
@@ -38,12 +38,12 @@ from PyQt5.QtCore import (
 
 class ProxyToMainEvent(QEvent):
 
-    def __init__(self, func, *args, **kwargs):
+    def __init__(self, func, event=None, *args, **kwargs):
         super().__init__(QEvent.User)
         self.func = func
         self.args = args
         self.kwargs = kwargs
-        self.event = kwargs.pop('event') if 'event' in kwargs else None
+        self.event = event
 
     def run(self):
         self.func(*self.args, **self.kwargs)
@@ -79,7 +79,6 @@ def run_task(func, next_func, priority=0, thread_pool=None, traceback=True):
 
 def to_main(func, *args, **kwargs):
     event = Event()
-    kwargs['event'] = event
     QCoreApplication.postEvent(QCoreApplication.instance(),
-                               ProxyToMainEvent(func, *args, **kwargs))
+                               ProxyToMainEvent(func, event, *args, **kwargs))
     return event
