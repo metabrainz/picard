@@ -28,7 +28,37 @@
 
 
 from picard import log
+from picard.formats.ac3 import AC3File
+from picard.formats.apev2 import (
+    AACFile,
+    MonkeysAudioFile,
+    MusepackFile,
+    OptimFROGFile,
+    TAKFile,
+    WavPackFile,
+)
+from picard.formats.asf import ASFFile
+from picard.formats.id3 import (
+    AiffFile,
+    DSFFile,
+    MP3File,
+    TrueAudioFile,
+)
+from picard.formats.midi import MIDIFile
+from picard.formats.mp4 import MP4File
+from picard.formats.vorbis import (
+    FLACFile,
+    OggAudioFile,
+    OggFLACFile,
+    OggOpusFile,
+    OggSpeexFile,
+    OggTheoraFile,
+    OggVideoFile,
+    OggVorbisFile,
+)
+from picard.formats.wav import WAVFile
 from picard.plugin import ExtensionPoint
+
 
 _formats = ExtensionPoint(label='formats')
 _extensions = {}
@@ -99,62 +129,26 @@ def open_(filename):
         return None
 
 
-from picard.formats.id3 import (
-    AiffFile,
-    DSFFile,
-    MP3File,
-    TrueAudioFile,
-)
-register_format(AiffFile)
-register_format(DSFFile)
-register_format(MP3File)
-register_format(TrueAudioFile)
-
-from picard.formats.apev2 import (
-    AACFile,
-    MonkeysAudioFile,
-    MusepackFile,
-    OptimFROGFile,
-    TAKFile,
-    WavPackFile,
-)
 register_format(AACFile)
-register_format(MonkeysAudioFile)
-register_format(MusepackFile)
-register_format(OptimFROGFile)
-register_format(TAKFile)
-register_format(WavPackFile)
-
-from picard.formats.vorbis import (
-    FLACFile,
-    OggFLACFile,
-    OggSpeexFile,
-    OggTheoraFile,
-    OggVorbisFile,
-    OggAudioFile,
-    OggVideoFile,
-    OggOpusFile,
-)
+register_format(AC3File)
+register_format(AiffFile)
+register_format(ASFFile)
+register_format(DSFFile)
 register_format(FLACFile)
+register_format(MIDIFile)
+register_format(MonkeysAudioFile)
+register_format(MP3File)
+register_format(MP4File)
+register_format(MusepackFile)
+register_format(OggAudioFile)
 register_format(OggFLACFile)
+register_format(OggOpusFile)
 register_format(OggSpeexFile)
 register_format(OggTheoraFile)
-register_format(OggVorbisFile)
-register_format(OggOpusFile)
-register_format(OggAudioFile)
 register_format(OggVideoFile)
-
-from picard.formats.mp4 import MP4File
-register_format(MP4File)
-
-from picard.formats.asf import ASFFile
-register_format(ASFFile)
-
-from picard.formats.wav import WAVFile
+register_format(OggVorbisFile)
+register_format(OptimFROGFile)
+register_format(TAKFile)
+register_format(TrueAudioFile)
 register_format(WAVFile)
-
-from picard.formats.midi import MIDIFile
-register_format(MIDIFile)
-
-from picard.formats.ac3 import AC3File
-register_format(AC3File)
+register_format(WavPackFile)
