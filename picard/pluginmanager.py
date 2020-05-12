@@ -208,7 +208,7 @@ class PluginManager(QtCore.QObject):
             return
         if plugindir == self.plugins_directory:
             # .update trick is only for plugins installed through the Picard UI
-            # and only for plugins in plugins_directory (USER_PLUGIN_DIR by default)
+            # and only for plugins in plugins_directory (USER_PLUGIN_DIR by default)
             self.handle_plugin_updates()
         # now load found plugins
         names = set()

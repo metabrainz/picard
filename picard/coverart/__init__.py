@@ -79,8 +79,8 @@ class CoverArt:
                 for track in self.album._new_tracks:
                     track.metadata.images.append(coverartimage)
                 # If the image already was a front image,
-                # there might still be some other non-CAA front
-                # images in the queue - ignore them.
+                # there might still be some other non-CAA front
+                # images in the queue - ignore them.
                 if not self.front_image_found:
                     self.front_image_found = coverartimage.is_front_image()
             else:

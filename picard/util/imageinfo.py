@@ -64,7 +64,7 @@ def identify(data):
     mime = ''
     extension = ''
 
-    # http://en.wikipedia.org/wiki/Graphics_Interchange_Format
+    # http://en.wikipedia.org/wiki/Graphics_Interchange_Format
     if data[:6] in (b'GIF87a', b'GIF89a'):
         w, h = struct.unpack('<HH', data[6:10])
         mime = 'image/gif'
@@ -77,7 +77,7 @@ def identify(data):
         mime = 'image/png'
         extension = '.png'
 
-    # http://en.wikipedia.org/wiki/JPEG
+    # http://en.wikipedia.org/wiki/JPEG
     elif data[:2] == b'\xFF\xD8':  # Start Of Image (SOI) marker
         jpeg = BytesIO(data)
         # skip SOI

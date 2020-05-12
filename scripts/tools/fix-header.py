@@ -75,7 +75,6 @@ def parse_copyright_text(text):
     range_pattern = re.compile(r'^\s*(\d{4})\s*-\s*(\d{4})\s*$')
 
     for line in text.split("\n"):
-        #print(line)
         match = pattern_copyright.search(line)
         if match:
             all_years = []

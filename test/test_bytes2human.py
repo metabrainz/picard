@@ -81,7 +81,6 @@ class Testbytes2human(PicardTestCase):
         if create_test_data:
             self._save_expected_to(filename, testlist)
         expected = self._read_expected_from(filename)
-        #self.maxDiff = None
         self.assertEqual(testlist, expected)
         if create_test_data:
             # be sure it is disabled

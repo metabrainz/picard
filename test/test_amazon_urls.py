@@ -47,27 +47,24 @@ class ParseAmazonUrlTest(PicardTestCase):
         self.assertEqual(r, expected)
 
     def test_4(self):
-        #incorrect ASIN
-        url = 'http://www.amazon.com/dp/A20530902X'
-        expected = None
-        r = parse_amazon_url(url)
-        self.assertEqual(r, expected)
-
-    def test_5(self):
-        #incorrect ASIN
-        url = 'http://www.amazon.com/dp/020530902x'
-        expected = None
-        r = parse_amazon_url(url)
-        self.assertEqual(r, expected)
-
-    def test_6(self):
         url = 'https://www.amazon.co.jp/gp/product/B00005FMYV'
         expected = {'asin': 'B00005FMYV', 'host': 'amazon.co.jp'}
         r = parse_amazon_url(url)
         self.assertEqual(r, expected)
 
-    def test_7(self):
-        #incorrect url scheme
+    def test_incorrect_asin_1(self):
+        url = 'http://www.amazon.com/dp/A20530902X'
+        expected = None
+        r = parse_amazon_url(url)
+        self.assertEqual(r, expected)
+
+    def test_incorrect_asin_2(self):
+        url = 'http://www.amazon.com/dp/020530902x'
+        expected = None
+        r = parse_amazon_url(url)
+        self.assertEqual(r, expected)
+
+    def test_incorrect_url_scheme(self):
         url = 'httpsa://www.amazon.co.jp/gp/product/B00005FMYV'
         expected = None
         r = parse_amazon_url(url)

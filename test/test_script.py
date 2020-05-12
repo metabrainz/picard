@@ -134,7 +134,7 @@ class ScriptParserTest(PicardTestCase):
         self.assertScriptResultEquals("$somefunc()", "x")
 
     def test_script_function_decorator_arg(self):
-        # function with argument
+        # function with argument
         @script_function()
         def somefunc(parser, arg):
             return arg
@@ -161,14 +161,14 @@ class ScriptParserTest(PicardTestCase):
             self.parser.eval("$somefunc()")
 
     def test_script_function_decorator_altprefix(self):
-        # alternative prefix
+        # alternative prefix
         @script_function(prefix='theprefix_')
         def theprefix_somefunc(parser):
             return "x"
         self.assertScriptResultEquals("$somefunc()", "x")
 
     def test_script_function_decorator_eval_args(self):
-        # disable argument evaluation
+        # disable argument evaluation
         @script_function(eval_args=False)
         def somefunc(parser, arg):
             return arg.eval(parser)
@@ -547,7 +547,7 @@ class ScriptParserTest(PicardTestCase):
         self.assertScriptResultEquals("$title(l'a)", "L'a")
         self.assertScriptResultEquals("$title(2'a)", "2'A")
         self.assertScriptResultEquals(r"$title(%empty%)", "")
-        # Tests wrong number of arguments
+        # Tests wrong number of arguments
         areg = r"^\d+:\d+:\$title: Wrong number of arguments for \$title: Expected exactly 1, "
         with self.assertRaisesRegex(ScriptError, areg):
             self.parser.eval("$title()")
@@ -603,13 +603,13 @@ class ScriptParserTest(PicardTestCase):
         self.parser.eval("$noargstest()")
 
     def test_cmd_with_wrong_argcount_or(self):
-        # $or() requires at least 2 arguments
+        # $or() requires at least 2 arguments
         areg = r"^\d+:\d+:\$or: Wrong number of arguments for \$or: Expected at least 2, "
         with self.assertRaisesRegex(ScriptError, areg):
             self.parser.eval('$or(0)')
 
     def test_cmd_with_wrong_argcount_eq(self):
-        # $eq() requires exactly 2 arguments
+        # $eq() requires exactly 2 arguments
         areg = r"^\d+:\d+:\$eq: Wrong number of arguments for \$eq: Expected exactly 2, "
         with self.assertRaisesRegex(ScriptError, areg):
             self.parser.eval('$eq(0)')
@@ -876,7 +876,7 @@ class ScriptParserTest(PicardTestCase):
         # Tests missing inputs
         self.assertScriptResultEquals("$find(,c)", "", context)
         self.assertScriptResultEquals("$find(abcdef,)", "0", context)
-        # Tests wrong number of arguments
+        # Tests wrong number of arguments
         areg = r"^\d+:\d+:\$find: Wrong number of arguments for \$find: Expected exactly 2, "
         with self.assertRaisesRegex(ScriptError, areg):
             self.parser.eval("$find(abcdef)")
