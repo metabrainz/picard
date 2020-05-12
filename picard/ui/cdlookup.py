@@ -73,8 +73,8 @@ class CDLookupDialog(PicardDialog):
                                       _("Labels"), _("Catalog #s"), _("Barcode")])
         self.ui.submit_button.setIcon(QtGui.QIcon(":/images/cdrom.png"))
         if self.releases:
-            def myjoin(l):
-                return "\n".join(l)
+            def myjoin(values):
+                return "\n".join(values)
 
             self.ui.results_view.setCurrentIndex(0)
             selected = None
