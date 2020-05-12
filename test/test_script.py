@@ -1200,7 +1200,6 @@ class ScriptParserTest(PicardTestCase):
         datetime.datetime = _DateTime
 
         try:
-            context = Metadata()
             areg = r"^\d+:\d+:\$datetime: Unsupported format code"
             # Tests with invalid format code (platform dependent tests)
             for test_case in tests_to_run:
@@ -1235,7 +1234,6 @@ class ScriptParserTest(PicardTestCase):
         datetime.datetime = _DateTime
 
         try:
-            context = Metadata()
             # Test that the correct position number is passed
             areg = r"^\d+:7:\$datetime: Unsupported format code"
             with self.assertRaisesRegex(ScriptRuntimeError, areg):

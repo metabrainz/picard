@@ -354,14 +354,14 @@ class CommonTests:
             for key in (
                 'comment:foo', 'comment:de:foo', 'performer:foo', 'lyrics:foo',
                 'comment:a*', 'comment:a[', 'performer:(x)', 'performer: Ä é '
-                ):
+            ):
                 if not self.format.supports_tag(key):
                     continue
                 prefix = key.split(':')[0]
                 metadata = Metadata()
                 metadata[key] = 'bar'
                 original_metadata = save_and_load_metadata(self.filename, metadata)
-                if not key in original_metadata and prefix in original_metadata:
+                if key not in original_metadata and prefix in original_metadata:
                     continue  # Skip if the type did not support saving this kind of tag
                 self.assertEqual('bar', original_metadata[key], original_metadata)
                 metadata[prefix] = '(foo) bar'
@@ -373,7 +373,7 @@ class CommonTests:
         @skipUnlessTestfile
         def test_delete_nonexistant_tags(self):
             for key in ('title', 'foo', 'comment:foo', 'comment:de:foo',
-                'performer:foo', 'lyrics:foo', 'totaltracks'):
+                        'performer:foo', 'lyrics:foo', 'totaltracks'):
                 if not self.format.supports_tag(key):
                     continue
                 metadata = Metadata()
@@ -514,7 +514,7 @@ class CommonTests:
         def test_save_movementnumber_without_movementtotal(self):
             if not self.format.supports_tag('movementnumber'):
                 raise unittest.SkipTest('Tag "movementnumber" not supported for %s' % self.format.NAME)
-            metadata = Metadata({ 'movementnumber': 7 })
+            metadata = Metadata({'movementnumber': 7})
             loaded_metadata = save_and_load_metadata(self.filename, metadata)
             self.assertEqual(loaded_metadata['movementnumber'], metadata['movementnumber'])
             self.assertNotIn('movementtotal', loaded_metadata)

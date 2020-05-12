@@ -132,7 +132,7 @@ class CommonMP4Tests:
         @skipUnlessTestfile
         def test_invalid_int_tag(self):
             for tag in ['bpm', 'movementnumber', 'movementtotal', 'showmovement']:
-                metadata = Metadata({ tag: 'notanumber' })
+                metadata = Metadata({tag: 'notanumber'})
                 loaded_metadata = save_and_load_metadata(self.filename, metadata)
                 self.assertNotIn(tag, loaded_metadata)
 

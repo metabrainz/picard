@@ -37,7 +37,7 @@ class SettingsOverrideTest(PicardTestCase):
         self.assertEqual(override['key1'], 'newval2')
         self.assertEqual(override['key2'], 'origval2')
         with self.assertRaises(KeyError):
-            x = override['key3']
+            x = override['key3']  # noqa: F841
 
     def test_read_orig_settings_kw(self):
         override = SettingsOverride(config.setting, key1='newval2')
@@ -57,7 +57,7 @@ class SettingsOverrideTest(PicardTestCase):
         override['key3'] = 'newval5'
         self.assertEqual(override['key3'], 'newval5')
         with self.assertRaises(KeyError):
-            x = config.setting['key3']
+            x = config.setting['key3']  # noqa: F841
 
     def test_del_orig_settings(self):
         override = SettingsOverride(config.setting, self.new_settings)

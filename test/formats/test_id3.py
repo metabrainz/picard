@@ -311,7 +311,7 @@ class CommonId3Tests:
             ]
 
             for tag in tag_name_variants:
-                metadata = Metadata({ tag: 'foo' })
+                metadata = Metadata({tag: 'foo'})
                 loaded_metadata = save_and_load_metadata(self.filename, metadata)
                 self.assertEqual('foo', loaded_metadata['replaygain_album_gain'])
 
