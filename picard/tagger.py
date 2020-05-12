@@ -464,7 +464,11 @@ class Tagger(QtWidgets.QApplication):
         return super().event(event)
 
     def _file_loaded(self, file, target=None):
-        if file is None or file.has_error():
+        if file is None:
+            return
+        
+        if file.has_error():
+            self.move_files([file], self.unclustered_files)
             return
 
         if target is not None:
@@ -567,9 +571,8 @@ class Tagger(QtWidgets.QApplication):
                 file, target = self._pending_files.pop(filename)
 
                 error = not metadata or None
-                thread.to_main(file._loading_finished, result=metadata, error=error, callback=None)
-
-                time.sleep(0)  # Yield from the CPU quantum and let other threads work
+                event = thread.to_main(file._loading_finished, result=metadata, error=error, callback=None)
+                event.wait()
                 self._file_loaded_queue.put((file, target))
 
         # Append empty message to kill _file_loaded_thread
@@ -582,8 +585,8 @@ class Tagger(QtWidgets.QApplication):
             if self.stopping:
                 break
 
-            thread.to_main(self._file_loaded, file, target)
-            time.sleep(0.01)  # Yields from CPU quantum, should be enough time for clustering few files without freezing
+            event = thread.to_main(self._file_loaded, file, target)
+            event.wait()
 
     def _loader_process_watchdog_thread(self):
         exitcode = None
