@@ -326,7 +326,7 @@ class ImageListTest(PicardTestCase):
         # settings is missing a setting
         del settings["save_images_to_tags"]
         with self.assertRaises(KeyError):
-            image = next(to_be_saved(settings))
+            next(to_be_saved(settings))
 
     def test_strip_front_images(self):
         self.imagelist.append(self.images['a'])

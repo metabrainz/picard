@@ -73,7 +73,7 @@ class LRUCacheTest(PicardTestCase):
     def test_get_keyerror(self):
         lrucache = LRUCache(3)
         with self.assertRaises(KeyError):
-            value = lrucache['notakey']
+            value = lrucache['notakey']  # noqa: F841
 
     def test_del_keyerror(self):
         lrucache = LRUCache(3)

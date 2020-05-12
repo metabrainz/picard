@@ -25,7 +25,7 @@ jobs:
     - name: Check coding style
       run: |
         pip install flake8 isort
-        flake8 picard --count --show-source --statistics
+        flake8 picard test --count --show-source --statistics
         isort --check-only --diff --recursive picard test
     - name: Test with pytest
       if: always()
