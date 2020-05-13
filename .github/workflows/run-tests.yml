@@ -32,6 +32,16 @@ jobs:
       run: |
         pip install pytest pytest-randomly pytest-cov
         pytest --verbose --cov=picard --cov-report xml:coverage.xml test
+    - name: Test python-libdiscid (Linux)
+      if: runner.os == 'Linux'
+      run: |
+        sudo apt-get update
+        sudo apt-get install libdiscid-dev
+        python -c "from picard.disc import discid_version; print(discid_version)"
+        pytest --verbose test/test_disc.py
+        pip install python-libdiscid
+        python -c "from picard.disc import discid_version; print(discid_version)"
+        pytest --verbose test/test_disc.py
     - name: Submit code coverage to Codacy
       if: env.CODACY_PROJECT_TOKEN
       run: |
