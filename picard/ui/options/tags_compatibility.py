@@ -3,7 +3,7 @@
 # Picard, the next-generation MusicBrainz tagger
 #
 # Copyright (C) 2006 Lukáš Lalinský
-# Copyright (C) 2019 Philipp Wolfer
+# Copyright (C) 2019-2020 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -51,6 +51,9 @@ class TagsCompatibilityOptionsPage(OptionsPage):
         config.BoolOption("setting", "remove_ape_from_aac", False),
         config.BoolOption("setting", "ac3_save_ape", True),
         config.BoolOption("setting", "remove_ape_from_ac3", False),
+        config.BoolOption("setting", "write_wave_riff_info", True),
+        config.BoolOption("setting", "remove_wave_riff_info", False),
+        config.TextOption("setting", "wave_riff_info_encoding", "windows-1252"),
     ]
 
     def __init__(self, parent=None):
@@ -88,6 +91,12 @@ class TagsCompatibilityOptionsPage(OptionsPage):
             self.ui.ac3_no_tags.setChecked(True)
         self.ui.remove_ape_from_ac3.setChecked(config.setting["remove_ape_from_ac3"])
         self.ui.remove_ape_from_ac3.setEnabled(not config.setting["ac3_save_ape"])
+        self.ui.write_wave_riff_info.setChecked(config.setting["write_wave_riff_info"])
+        self.ui.remove_wave_riff_info.setChecked(config.setting["remove_wave_riff_info"])
+        if config.setting["wave_riff_info_encoding"] == "utf-8":
+            self.ui.wave_riff_info_enc_utf8.setChecked(True)
+        else:
+            self.ui.wave_riff_info_enc_cp1252.setChecked(True)
         self.update_encodings()
 
     def save(self):
@@ -105,6 +114,12 @@ class TagsCompatibilityOptionsPage(OptionsPage):
         config.setting["remove_ape_from_aac"] = self.ui.remove_ape_from_aac.isChecked()
         config.setting["ac3_save_ape"] = self.ui.ac3_save_ape.isChecked()
         config.setting["remove_ape_from_ac3"] = self.ui.remove_ape_from_ac3.isChecked()
+        config.setting["write_wave_riff_info"] = self.ui.write_wave_riff_info.isChecked()
+        config.setting["remove_wave_riff_info"] = self.ui.remove_wave_riff_info.isChecked()
+        if self.ui.wave_riff_info_enc_utf8.isChecked():
+            config.setting["wave_riff_info_encoding"] = "utf-8"
+        else:
+            config.setting["wave_riff_info_encoding"] = "windows-1252"
 
     def update_encodings(self, force_utf8=False):
         if self.ui.write_id3v23.isChecked():
