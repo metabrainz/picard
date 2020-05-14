@@ -46,20 +46,15 @@ import argparse
 from functools import partial
 from itertools import chain
 import logging
-import multiprocessing as mp
 from operator import attrgetter
 import os.path
 import platform
-from queue import (
-    Empty,
-    Queue,
-)
+from queue import Queue
 import re
 import shutil
 import signal
 import sys
 from threading import (
-    Event,
     Lock,
     Thread,
 )
@@ -306,18 +301,13 @@ class Tagger(QtWidgets.QApplication):
 
         self._pending_files = {}
         self._pending_files_lock = Lock()
-        self._pending_files_process_queue = mp.Queue()
-        self._pending_files_results_queue = mp.Queue()
-        self._pending_files_process_queue.cancel_join_thread()
-        self._pending_files_results_queue.cancel_join_thread()
+        self._pending_files_process_queue = Queue()
+        self._pending_files_results_queue = Queue()
         self._pending_load_finished_queue = Queue()
         self._file_loaded_queue = Queue()
-        self._process_stopping = mp.Value('b', False)
-        self._loader_process = None
-
-        # Loader process is (re)started by the watchdog
-        self._loader_watchdog_timeout = Event()
-        Thread(target=self._loader_process_watchdog_thread).start()
+        Thread(target=File._load_check_metadata, args=[self.stopping,
+                                                       self._pending_files_process_queue,
+                                                       self._pending_files_results_queue]).start()
         Thread(target=self._file_load_finished_thread).start()
         Thread(target=self._file_loaded_thread).start()
 
@@ -411,15 +401,11 @@ class Tagger(QtWidgets.QApplication):
         self.stopping = True
 
         # Stop worker threads by waking them from their slumber
-        self._loader_watchdog_timeout.set()
         self._pending_files_results_queue.put((None, None))
         time.sleep(0)  # Yield from the CPU quantum and let other threads work
 
         # Stop worker process
-        self._process_stopping.value = True
         self._pending_files_process_queue.put(None)
-        self._pending_files_process_queue.cancel_join_thread()
-        self._loader_process.join()
 
         log.debug("Picard stopping")
         self._acoustid.done()
@@ -595,45 +581,6 @@ class Tagger(QtWidgets.QApplication):
 
             event = thread.to_main(self._file_loaded, file, target)
             event.wait()
-
-    def _loader_process_watchdog_thread(self):
-        exitcode = None
-        while not self.stopping:
-            # Check if worker process died
-            if hasattr(self._loader_process, "exitcode") and self._loader_process.exitcode is not None:
-                exitcode = self._loader_process.exitcode
-                log.warning("Worker process died with exit code '%d'" %
-                             exitcode)
-
-            # Check if process has yet to be started or died
-            if self._loader_process is None or exitcode:
-                # Empty queue, as the process might have consumed filenames
-                #   and most likely crashed before transmitting results
-                while True:
-                    try:
-                        self._pending_files_process_queue.get_nowait()
-                    except Empty:
-                        break
-
-                # (Re)Start worker
-                exitcode = None
-                self._loader_process = mp.Process(target=File._load_check_metadata,
-                                                  args=(self._process_stopping,
-                                                        self._pending_files_process_queue,
-                                                        self._pending_files_results_queue))
-                self._loader_process.start()
-
-                # Make sure the process queue is filled without duplicates
-                with self._pending_files_lock:
-                    pending_files_to_process = self._pending_files.copy()
-                if pending_files_to_process:
-                    for filename in pending_files_to_process:
-                        self._pending_files_process_queue.put(filename)
-
-            try:
-                self._loader_watchdog_timeout.wait(10)
-            except TimeoutError:
-                pass
 
     def _scan_dir(self, ignore_hidden, folders, recursive):
         files = []

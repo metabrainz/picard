@@ -180,10 +180,9 @@ class File(QtCore.QObject, Item):
     @staticmethod
     def _load_check_metadata(stopping, process_queue, result_queue):
         from picard.formats import open_ as open_file
-        result_queue.cancel_join_thread()
         while True:
             filename = process_queue.get()
-            if stopping.value:
+            if stopping:
                 break
             result_queue.put((filename, File._load_check_metadata_thread(open_file, filename)))
 
