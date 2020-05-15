@@ -315,6 +315,7 @@ class Track(DataObject, Item):
                 break
             name = _TRANSLATE_TAGS.get(name, name.title())
             genre.append(name)
+        genre.sort()
         join_genres = config.setting['join_genres']
         if join_genres:
             genre = [join_genres.join(genre)]
