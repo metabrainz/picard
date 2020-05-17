@@ -159,10 +159,10 @@ class File(QtCore.QObject, Item):
             partial(self._loading_finished, callback),
             priority=1)
 
-    def _load_check(self, filename):
+    def _load_check(self, filename, force=False):
         # Check that file has not been removed since thread was queued
         # Don't load if we are stopping.
-        if self.state != File.PENDING:
+        if self.state != File.PENDING and not force:
             log.debug("File not loaded because it was removed: %r", self.filename)
             return None
         if self.tagger.stopping:
@@ -175,7 +175,10 @@ class File(QtCore.QObject, Item):
             from picard.formats.util import guess_format
             # If it fails, force format guessing and try loading again
             file_format = guess_format(filename)
-            if not file_format or type(file_format) == type(self):
+            if force:
+                file_format.clear_pending()
+
+            if not file_format and type(file_format) == type(self):
                 raise
             return file_format._load(filename)
 
@@ -294,8 +297,21 @@ class File(QtCore.QObject, Item):
         if self.tagger.stopping:
             log.debug("File not saved because %s is stopping: %r", PICARD_APP_NAME, self.filename)
             return None
+
         new_filename = old_filename
-        if not config.setting["dont_write_tags"]:
+        # Determine if metadata changed before trying to save tags
+        changed = self.metadata != self.orig_metadata
+        if not config.setting["dont_write_tags"] and changed:
+            # Copy file to memory
+            try:
+                num_bytes = os.stat(old_filename).st_size
+                with open(old_filename, 'rb') as f:
+                    temporary_memory_file = f.read(num_bytes)
+            except FileNotFoundError as e:
+                log.debug("Failed to backup file before saving the new tags: %s", old_filename)
+                raise e
+
+            # Rewrite file tags
             save = partial(self._save, old_filename, metadata)
             if config.setting["preserve_timestamps"]:
                 try:
@@ -304,6 +320,31 @@ class File(QtCore.QObject, Item):
                     log.warning(why)
             else:
                 save()
+
+            # Open saved file to check if it works
+            try:
+                saved_file = File(new_filename)
+                saved_file.clear_pending()
+                saved_metadata = saved_file._load_check(new_filename, True)
+                saved_file.remove()
+                if not saved_metadata:
+                    raise ValueError("Saved file returned empty metadata: %s" % new_filename)
+            except Exception as e:
+                log.debug("Saving file failed with exception '%s'. Restoring original file: '%s'", e, old_filename)
+                # Restore original file
+                with open(new_filename, 'wb') as f:
+                    restore = partial(f.write, temporary_memory_file)
+                    if config.setting["preserve_timestamps"]:
+                        try:
+                            self._preserve_times(new_filename, restore)
+                        except self.PreserveTimesUtimeError as why:
+                            log.warning(why)
+                    else:
+                        restore()
+            finally:
+                # Free cached file memory
+                del temporary_memory_file
+
         # Rename files
         if config.setting["rename_files"] or config.setting["move_files"]:
             new_filename = self._rename(old_filename, metadata)
