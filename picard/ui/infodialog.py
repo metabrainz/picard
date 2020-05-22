@@ -28,7 +28,10 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from collections import namedtuple
+from collections import (
+    defaultdict,
+    namedtuple,
+)
 import os.path
 import re
 import traceback
@@ -368,12 +371,13 @@ class ClusterInfoDialog(InfoDialog):
                                       htmlescape(cluster.metadata["albumartist"])))
         info.append("")
         TrackListItem = namedtuple('TrackListItem', 'tracknumber, title, artist, length')
-        tracklist = []
+        tracklists = defaultdict(list)
         for file_ in cluster.iterfiles(False):
             m = file_.metadata
             artist = m["artist"] or m["albumartist"] or cluster.metadata["albumartist"]
-            tracklist.append(TrackListItem(m["tracknumber"], m["title"], artist,
-                                           m["~length"]))
+            track = TrackListItem(m["tracknumber"], m["title"], artist,
+                                  m["~length"])
+            tracklists[file_.discnumber].append(track)
 
         def sorttracknum(item):
             try:
@@ -386,7 +390,12 @@ class ClusterInfoDialog(InfoDialog):
                 except AttributeError:
                     return 0
 
-        lines = ["%s %s - %s (%s)" % item for item in sorted(tracklist, key=sorttracknum)]
-        info.append("<b>%s</b><br />%s" % (_('Tracklist:'),
-                    '<br />'.join([htmlescape(s).replace(' ', '&nbsp;') for s in lines])))
+        ndiscs = len(tracklists)
+        for discnumber in sorted(tracklists):
+            tracklist = tracklists[discnumber]
+            if ndiscs > 1:
+                info.append("<b>%s</b>" % (_('Disc %d') % discnumber))
+            lines = ["%s %s - %s (%s)" % item for item in sorted(tracklist, key=sorttracknum)]
+            info.append("<b>%s</b><br />%s<br />" % (_('Tracklist:'),
+                        '<br />'.join([htmlescape(s).replace(' ', '&nbsp;') for s in lines])))
         self.ui.info.setText('<br/>'.join(info))
