@@ -171,8 +171,8 @@ class MainPanel(QtWidgets.QSplitter):
         super().__init__(parent)
         self.window = window
         self.create_icons()
-        self.views = [FileTreeView(window, self), AlbumTreeView(window, self)]
-        self._selected_view = self.views[0]
+        self._views = [FileTreeView(window, self), AlbumTreeView(window, self)]
+        self._selected_view = self._views[0]
         self._ignore_selection_changes = False
 
         def _view_update_selection(view):
@@ -181,7 +181,7 @@ class MainPanel(QtWidgets.QSplitter):
                 self._update_selection(view)
                 self._ignore_selection_changes = False
 
-        for view in self.views:
+        for view in self._views:
             view.itemSelectionChanged.connect(partial(_view_update_selection, view))
 
         TreeItem.window = window
@@ -207,14 +207,14 @@ class MainPanel(QtWidgets.QSplitter):
 
     def tab_order(self, tab_order, before, after):
         prev = before
-        for view in self.views:
+        for view in self._views:
             tab_order(prev, view)
             prev = view
         tab_order(prev, after)
 
     def save_state(self):
         config.persist["splitter_state"] = self.saveState()
-        for view in self.views:
+        for view in self._views:
             view.save_state()
 
     @restore_method
@@ -269,7 +269,7 @@ class MainPanel(QtWidgets.QSplitter):
         self.icon_plugins = icontheme.lookup('applications-system', icontheme.ICON_SIZE_MENU)
 
     def _update_selection(self, selected_view):
-        for view in self.views:
+        for view in self._views:
             if view != selected_view:
                 view.clearSelection()
             else:
@@ -293,7 +293,7 @@ class MainPanel(QtWidgets.QSplitter):
             self.update_current_view()
 
     def set_sorting(self, sort=True):
-        for view in self.views:
+        for view in self._views:
             view.setSortingEnabled(sort)
 
 
