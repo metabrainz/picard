@@ -39,7 +39,6 @@
 
 
 from collections import defaultdict
-from enum import Enum
 from functools import partial
 from heapq import (
     heappop,
@@ -142,11 +141,6 @@ def get_match_color(similarity, basecolor):
         c2[2] + (c1[2] - c2[2]) * similarity)
 
 
-class Panels(Enum):
-    CLUSTERS = 0
-    ALBUMS = 1
-
-
 class MainPanel(QtWidgets.QSplitter):
 
     options = [
@@ -178,10 +172,17 @@ class MainPanel(QtWidgets.QSplitter):
         self.window = window
         self.create_icons()
         self.views = [FileTreeView(window, self), AlbumTreeView(window, self)]
-        self.views[Panels.CLUSTERS.value].itemSelectionChanged.connect(self.update_selection_clusters)
-        self.views[Panels.ALBUMS.value].itemSelectionChanged.connect(self.update_selection_albums)
-        self._selected_view = 0
+        self._selected_view = self.views[0]
         self._ignore_selection_changes = False
+
+        def _view_update_selection(view):
+            if not self._ignore_selection_changes:
+                self._ignore_selection_changes = True
+                self._update_selection(view)
+                self._ignore_selection_changes = False
+
+        for view in self.views:
+            view.itemSelectionChanged.connect(partial(_view_update_selection, view))
 
         TreeItem.window = window
         TreeItem.base_color = self.palette().base().color()
@@ -203,6 +204,13 @@ class MainPanel(QtWidgets.QSplitter):
 
     def set_processing(self, processing=True):
         self._ignore_selection_changes = processing
+
+    def tab_order(self, tab_order, before, after):
+        prev = before
+        for view in self.views:
+            tab_order(prev, view)
+            prev = view
+        tab_order(prev, after)
 
     def save_state(self):
         config.persist["splitter_state"] = self.saveState()
@@ -260,33 +268,23 @@ class MainPanel(QtWidgets.QSplitter):
         ]
         self.icon_plugins = icontheme.lookup('applications-system', icontheme.ICON_SIZE_MENU)
 
-    def update_selection(self, i, j):
-        self._selected_view = i
-        self.views[j].clearSelection()
-        self.window.update_selection(
-            [item.obj for item in self.views[i].selectedItems()])
-
-    def update_selection_clusters(self):
-        if not self._ignore_selection_changes:
-            self._ignore_selection_changes = True
-            self.update_selection(Panels.CLUSTERS.value, Panels.ALBUMS.value)
-            self._ignore_selection_changes = False
-
-    def update_selection_albums(self):
-        if not self._ignore_selection_changes:
-            self._ignore_selection_changes = True
-            self.update_selection(Panels.ALBUMS.value, Panels.CLUSTERS.value)
-            self._ignore_selection_changes = False
+    def _update_selection(self, selected_view):
+        for view in self.views:
+            if view != selected_view:
+                view.clearSelection()
+            else:
+                self._selected_view = view
+                self.window.update_selection([item.obj for item in view.selectedItems()])
 
     def update_current_view(self):
-        self.update_selection(self._selected_view, abs(self._selected_view - 1))
+        self._update_selection(self._selected_view)
 
     def remove(self, objects):
         self._ignore_selection_changes = True
         self.tagger.remove(objects)
         self._ignore_selection_changes = False
 
-        view = self.views[self._selected_view]
+        view = self._selected_view
         index = view.currentIndex()
         if index.isValid():
             # select the current index
@@ -295,8 +293,8 @@ class MainPanel(QtWidgets.QSplitter):
             self.update_current_view()
 
     def set_sorting(self, sort=True):
-        self.views[Panels.CLUSTERS.value].setSortingEnabled(sort)
-        self.views[Panels.ALBUMS.value].setSortingEnabled(sort)
+        for view in self.views:
+            view.setSortingEnabled(sort)
 
 
 def paint_fingerprint_icon(painter, rect, icon):

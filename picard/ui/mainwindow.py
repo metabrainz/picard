@@ -857,9 +857,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         tab_order(self.search_edit, self.search_button)
         # Panels
         tab_order(self.search_button, self.file_browser)
-        tab_order(self.file_browser, self.panel.views[0])
-        tab_order(self.panel.views[0], self.panel.views[1])
-        tab_order(self.panel.views[1], self.metadata_box)
+        self.panel.tab_order(tab_order, self.file_browser, self.metadata_box)
 
     def enable_submit(self, enabled):
         """Enable/disable the 'Submit fingerprints' action."""
