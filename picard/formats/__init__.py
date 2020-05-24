@@ -56,6 +56,7 @@ from picard.formats.util import (  # noqa: F401 # pylint: disable=unused-import
 from picard.formats.vorbis import (
     FLACFile,
     OggAudioFile,
+    OggContainerFile,
     OggFLACFile,
     OggOpusFile,
     OggSpeexFile,
@@ -78,6 +79,7 @@ register_format(MP3File)
 register_format(MP4File)
 register_format(MusepackFile)
 register_format(OggAudioFile)
+register_format(OggContainerFile)
 register_format(OggFLACFile)
 register_format(OggOpusFile)
 register_format(OggSpeexFile)

@@ -41,6 +41,7 @@ from picard import (
 )
 from picard.coverart.image import CoverArtImage
 from picard.formats import vorbis
+from picard.formats.util import open_ as open_format
 from picard.metadata import Metadata
 
 from .common import (
@@ -327,21 +328,31 @@ class FlacCoverArtTest(CommonCoverArtTests.CoverArtTestCase):
 class OggAudioVideoFileTest(PicardTestCase):
     def test_ogg_audio(self):
         self._test_file_is_type(
-            vorbis.OggAudioFile,
+            open_format,
             self._copy_file_tmp('test-oggflac.oga', '.oga'),
             vorbis.OggFLACFile)
         self._test_file_is_type(
-            vorbis.OggAudioFile,
+            open_format,
             self._copy_file_tmp('test.spx', '.oga'),
             vorbis.OggSpeexFile)
         self._test_file_is_type(
-            vorbis.OggAudioFile,
+            open_format,
             self._copy_file_tmp('test.ogg', '.oga'),
             vorbis.OggVorbisFile)
 
+    def test_ogg_opus(self):
+        self._test_file_is_type(
+            open_format,
+            self._copy_file_tmp('test.opus', '.oga'),
+            vorbis.OggOpusFile)
+        self._test_file_is_type(
+            open_format,
+            self._copy_file_tmp('test.opus', '.ogg'),
+            vorbis.OggOpusFile)
+
     def test_ogg_video(self):
         self._test_file_is_type(
-            vorbis.OggVideoFile,
+            open_format,
             self._copy_file_tmp('test.ogv', '.ogv'),
             vorbis.OggTheoraFile)
 
