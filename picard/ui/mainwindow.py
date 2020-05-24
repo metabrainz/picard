@@ -27,6 +27,7 @@
 # Copyright (C) 2018 Vishal Choudhary
 # Copyright (C) 2018 virusMac
 # Copyright (C) 2019 Timur Enikeev
+# Copyright (C) 2020 Gabriel Ferreira
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -208,6 +209,9 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
         for function in ui_init:
             function(self)
+
+    def set_processing(self, processing=True):
+        self.panel.set_processing(processing)
 
     def keyPressEvent(self, event):
         # On macOS Command+Backspace triggers the so called "Forward Delete".

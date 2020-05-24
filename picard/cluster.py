@@ -17,6 +17,7 @@
 # Copyright (C) 2017 Antonio Larrosa
 # Copyright (C) 2018 Vishal Choudhary
 # Copyright (C) 2020 Ray Bouchard
+# Copyright (C) 2020 Gabriel Ferreira
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -129,6 +130,7 @@ class Cluster(QtCore.QObject, Item):
         self.add_files([file])
 
     def remove_file(self, file):
+        self.tagger.window.set_processing(True)
         self.metadata.length -= file.metadata.length
         self.files.remove(file)
         self.metadata['totaltracks'] = len(self.files)
@@ -139,6 +141,7 @@ class Cluster(QtCore.QObject, Item):
             file.metadata_images_changed.disconnect(self.update_metadata_images)
             remove_metadata_images(self, [file])
         self._update_related_album(removed_files=[file])
+        self.tagger.window.set_processing(False)
 
     def update(self):
         if self.item:

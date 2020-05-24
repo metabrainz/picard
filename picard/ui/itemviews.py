@@ -21,6 +21,7 @@
 # Copyright (C) 2016 Suhas
 # Copyright (C) 2016-2017 Sambhav Kothari
 # Copyright (C) 2018 Vishal Choudhary
+# Copyright (C) 2020 Gabriel Ferreira
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -193,6 +194,9 @@ class MainPanel(QtWidgets.QSplitter):
             File.PENDING: interface_colors.get_qcolor('entity_pending'),
             File.ERROR: interface_colors.get_qcolor('entity_error'),
         })
+
+    def set_processing(self, processing=True):
+        self._ignore_selection_changes = processing
 
     def save_state(self):
         config.persist["splitter_state"] = self.saveState()
@@ -866,8 +870,6 @@ class ClusterItem(TreeItem):
         album = self.obj.related_album
         if self.obj.special and album and album.loaded:
             album.item.update(update_tracks=False)
-        if self.isSelected():
-            TreeItem.window.update_selection()
 
     def add_file(self, file):
         self.add_files([file])
@@ -942,8 +944,6 @@ class AlbumItem(TreeItem):
                 self.setToolTip(MainPanel.TITLE_COLUMN, _("Album unchanged"))
         for i, column in enumerate(MainPanel.columns):
             self.setText(i, album.column(column[1]))
-        if selection_changed:
-            TreeItem.window.panel.update_current_view()
         # Workaround for PICARD-1446: Expand/collapse indicator for the release
         # is briefly missing on Windows
         self.emitDataChanged()
@@ -1027,8 +1027,6 @@ class TrackItem(TreeItem):
             self.setText(i, track.column(column[1]))
             self.setForeground(i, color)
             self.setBackground(i, bgcolor)
-        if self.isSelected():
-            TreeItem.window.update_selection()
         if update_album:
             self.parent().update(update_tracks=False)
 
@@ -1050,8 +1048,6 @@ class FileItem(TreeItem):
             if not tree_widget.itemWidget(self, MainPanel.FINGERPRINT_COLUMN):
                 tree_widget.setItemWidget(self, MainPanel.FINGERPRINT_COLUMN,
                     FingerprintColumnWidget(file=file))
-        if self.isSelected():
-            TreeItem.window.update_selection()
 
         parent = self.parent()
         if isinstance(parent, TrackItem) and update_track:
