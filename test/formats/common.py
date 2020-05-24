@@ -462,9 +462,10 @@ class CommonTests:
         def test_split_ext(self):
             f = picard.formats.open_(self.filename)
             self.assertEqual(f._fixed_splitext(f.filename), os.path.splitext(f.filename))
-            self.assertEqual(f._fixed_splitext(f.EXTENSIONS[0]), ('', f.EXTENSIONS[0]))
             self.assertEqual(f._fixed_splitext('.test'), os.path.splitext('.test'))
-            self.assertNotEqual(f._fixed_splitext(f.EXTENSIONS[0]), os.path.splitext(f.EXTENSIONS[0]))
+            if f.EXTENSIONS:
+                self.assertEqual(f._fixed_splitext(f.EXTENSIONS[0]), ('', f.EXTENSIONS[0]))
+                self.assertNotEqual(f._fixed_splitext(f.EXTENSIONS[0]), os.path.splitext(f.EXTENSIONS[0]))
 
         @skipUnlessTestfile
         def test_clear_existing_tags_off(self):
