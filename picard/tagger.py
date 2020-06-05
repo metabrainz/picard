@@ -25,6 +25,7 @@
 # Copyright (C) 2018 Bob Swift
 # Copyright (C) 2018 virusMac
 # Copyright (C) 2019 Joel Lintunen
+# Copyright (C) 2020 Gabriel Ferreira
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -425,7 +426,11 @@ class Tagger(QtWidgets.QApplication):
         return super().event(event)
 
     def _file_loaded(self, file, target=None):
-        if file is None or file.has_error():
+        if file is None:
+            return
+        
+        if file.has_error():
+            self.unclustered_files.add_file(file)
             return
 
         if target is not None:
@@ -456,6 +461,8 @@ class Tagger(QtWidgets.QApplication):
                           file, recordingid)
                 self.move_file_to_nat(file, recordingid)
                 return
+
+        self.unclustered_files.add_file(file)
 
         # fallback on analyze if nothing else worked
         if config.setting['analyze_new_files'] and file.can_analyze():
@@ -511,7 +518,6 @@ class Tagger(QtWidgets.QApplication):
             log.debug("Adding files %r", new_files)
             new_files.sort(key=lambda x: x.filename)
             if target is None or target is self.unclustered_files:
-                self.unclustered_files.add_files(new_files)
                 target = None
             for file in new_files:
                 file.load(partial(self._file_loaded, target=target))
