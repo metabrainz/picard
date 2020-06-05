@@ -706,7 +706,7 @@ class TrueAudioFile(ID3File):
 class DSFFile(ID3File):
 
     """DSF file."""
-    EXTENSIONS = [".dsf", '.dff']
+    EXTENSIONS = [".dsf"]
     NAME = "DSF"
     _File = mutagen.dsf.DSF
 
