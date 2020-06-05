@@ -175,7 +175,7 @@ class File(QtCore.QObject, Item):
             from picard.formats.util import guess_format
             # If it fails, force format guessing and try loading again
             file_format = guess_format(filename)
-            if not file_format and type(file_format) == type(self):
+            if not file_format or type(file_format) == type(self):
                 raise
             return file_format._load(filename)
 
