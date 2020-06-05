@@ -6,7 +6,7 @@
 # Copyright (C) 2006-2008, 2011-2012 Lukáš Lalinský
 # Copyright (C) 2013-2014 Sophist-UK
 # Copyright (C) 2013-2014, 2018 Laurent Monin
-# Copyright (C) 2014, 2018-2019 Philipp Wolfer
+# Copyright (C) 2014, 2018-2020 Philipp Wolfer
 # Copyright (C) 2016 Christoph Reiter
 # Copyright (C) 2016 Ville Skyttä
 # Copyright (C) 2017 Sambhav Kothari
@@ -41,18 +41,6 @@ except ImportError:
         pass
 
 
-class TCMP(TextFrame):
-    pass
-
-
-class TSO2(TextFrame):
-    pass
-
-
-class TSOC(TextFrame):
-    pass
-
-
 class XDOR(TextFrame):
     pass
 
@@ -63,10 +51,7 @@ class XSOP(TextFrame):
 
 known_frames = dict(Frames)
 known_frames.update(dict(Frames_2_2))
-known_frames["GRP1"] = GRP1
-known_frames["TCMP"] = TCMP
-known_frames["TSO2"] = TSO2
-known_frames["TSOC"] = TSOC
+known_frames["GRP1"] = GRP1  # Available since mutagen >= 1.38
 known_frames["XDOR"] = XDOR
 known_frames["XSOP"] = XSOP
 
@@ -75,7 +60,6 @@ class CompatID3(ID3):
 
     """
     Additional features over mutagen.id3.ID3:
-     * iTunes' TCMP frame
      * Allow some v2.4 frames also in v2.3
     """
 

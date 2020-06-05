@@ -65,9 +65,6 @@ from picard.util.tags import parse_comment_tag
 
 
 id3.GRP1 = compatid3.GRP1
-id3.TCMP = compatid3.TCMP
-id3.TSO2 = compatid3.TSO2
-id3.TSOC = compatid3.TSOC
 
 __IMAGE_TYPES = [
     ("obi", 0),
