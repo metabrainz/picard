@@ -41,10 +41,6 @@ except ImportError:
         pass
 
 
-class XDOR(TextFrame):
-    pass
-
-
 class XSOP(TextFrame):
     pass
 
@@ -52,7 +48,6 @@ class XSOP(TextFrame):
 known_frames = dict(Frames)
 known_frames.update(dict(Frames_2_2))
 known_frames["GRP1"] = GRP1  # Available since mutagen >= 1.38
-known_frames["XDOR"] = XDOR
 known_frames["XSOP"] = XSOP
 
 
