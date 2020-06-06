@@ -278,6 +278,7 @@ class Tagger(QtWidgets.QApplication):
 
         self.browser_integration = BrowserIntegration()
 
+        self._pending_files_count = 0
         self.files = {}
         self.clusters = ClusterList()
         self.albums = {}
@@ -428,6 +429,10 @@ class Tagger(QtWidgets.QApplication):
         return super().event(event)
 
     def _file_loaded(self, file, target=None):
+        self._pending_files_count -= 1
+        if self._pending_files_count == 0:
+            self.window.panel.set_sorting(True)
+
         if file is None:
             return
         
@@ -488,8 +493,10 @@ class Tagger(QtWidgets.QApplication):
         elif isinstance(target, ClusterList):
             self.cluster(files)
 
-    def add_files(self, filenames, target=None):
+    def add_files(self, filenames, target=None, result=None):
         """Add files to the tagger."""
+        if result:
+            filenames = result
         ignoreregex = None
         pattern = config.setting['ignore_regex']
         if pattern:
@@ -519,10 +526,12 @@ class Tagger(QtWidgets.QApplication):
         if new_files:
             log.debug("Adding files %r", new_files)
             new_files.sort(key=lambda x: x.filename)
+            self.window.panel.set_sorting(False)
             if target is None or target is self.unclustered_files:
                 target = None
             for file in new_files:
                 file.load(partial(self._file_loaded, target=target))
+            self._pending_files_count += len(new_files)
 
     def _scan_dir(self, folders, recursive, ignore_hidden):
         files = []
@@ -563,10 +572,12 @@ class Tagger(QtWidgets.QApplication):
         return files
 
     def add_directory(self, path):
-            files = self._scan_dir([path],
-                                   config.setting['recursively_add_files'],
-                                   config.setting["ignore_hidden_files"])
-            self.add_files(files)
+            thread.run_task(
+                partial(self._scan_dir, [path],
+                        config.setting['recursively_add_files'],
+                        config.setting["ignore_hidden_files"]),
+                partial(self.add_files, None),
+                traceback=self._debug)
 
     def get_file_lookup(self):
         """Return a FileLookup object."""
