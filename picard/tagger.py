@@ -431,7 +431,7 @@ class Tagger(QtWidgets.QApplication):
     def _file_loaded(self, file, target=None):
         self._pending_files_count -= 1
         if self._pending_files_count == 0:
-            self.window.panel.set_sorting(True)
+            self.window.set_sorting(True)
 
         if file is None:
             return
@@ -526,7 +526,7 @@ class Tagger(QtWidgets.QApplication):
         if new_files:
             log.debug("Adding files %r", new_files)
             new_files.sort(key=lambda x: x.filename)
-            self.window.panel.set_sorting(False)
+            self.window.set_sorting(False)
             if target is None or target is self.unclustered_files:
                 target = None
             for file in new_files:
@@ -843,14 +843,14 @@ class Tagger(QtWidgets.QApplication):
         else:
             files = self.get_files_from_objects(objs)
 
-        self.window.panel.set_sorting(False)
+        self.window.set_sorting(False)
         for name, artist, files in Cluster.cluster(files, 1.0):
             QtCore.QCoreApplication.processEvents()
             cluster = self.load_cluster(name, artist)
             for file in sorted(files, key=attrgetter('discnumber', 'tracknumber', 'base_filename')):
                 file.move(cluster)
                 QtCore.QCoreApplication.processEvents()
-        self.window.panel.set_sorting(True)
+        self.window.set_sorting(True)
 
     def load_cluster(self, name, artist):
         for cluster in self.clusters:
