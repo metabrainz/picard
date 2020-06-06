@@ -435,7 +435,7 @@ class Tagger(QtWidgets.QApplication):
 
         if file is None:
             return
-        
+
         if file.has_error():
             self.unclustered_files.add_file(file)
             return
@@ -572,12 +572,11 @@ class Tagger(QtWidgets.QApplication):
         return files
 
     def add_directory(self, path):
-            thread.run_task(
-                partial(self._scan_dir, [path],
-                        config.setting['recursively_add_files'],
-                        config.setting["ignore_hidden_files"]),
-                partial(self.add_files, None),
-                traceback=self._debug)
+        thread.run_task(partial(self._scan_dir, [path],
+                            config.setting['recursively_add_files'],
+                            config.setting["ignore_hidden_files"]),
+                        partial(self.add_files, None),
+                        traceback=self._debug)
 
     def get_file_lookup(self):
         """Return a FileLookup object."""

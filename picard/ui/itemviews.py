@@ -302,6 +302,7 @@ class MainPanel(QtWidgets.QSplitter):
         else:
             self._views[0].expandAll()
 
+
 def paint_fingerprint_icon(painter, rect, icon):
     if not icon:
         return
