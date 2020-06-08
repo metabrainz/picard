@@ -28,7 +28,7 @@ class VersionError(Exception):
 
 
 class Version(namedtuple('VersionBase', 'major minor patch identifier revision')):
-    _version_re = re.compile(r"(\d+)[._](\d+)(?:[._](\d+)[._]?(?:(dev|a|alpha|b|beta|rc|final)[._]?(\d+))?)?$")
+    _version_re = re.compile(r"(\d+)(?:[._](\d+)(?:[._](\d+)[._]?(?:(dev|a|alpha|b|beta|rc|final)[._]?(\d+))?)?)?$")
 
     _identifiers = {
         'dev': 0,
@@ -40,7 +40,7 @@ class Version(namedtuple('VersionBase', 'major minor patch identifier revision')
         'final': 4
     }
 
-    def __new__(cls, major, minor, patch=0, identifier='final', revision=0):
+    def __new__(cls, major, minor=0, patch=0, identifier='final', revision=0):
         if identifier not in cls.valid_identifiers():
             raise VersionError("Should be either 'final', 'dev', 'alpha', 'beta' or 'rc'")
         identifier = {'a': 'alpha', 'b': 'beta'}.get(identifier, identifier)
@@ -59,6 +59,8 @@ class Version(namedtuple('VersionBase', 'major minor patch identifier revision')
         if match:
             (major, minor, patch, identifier, revision) = match.groups()
             major = int(major)
+            if minor is None:
+                return Version(major)
             minor = int(minor)
             if patch is None:
                 return Version(major, minor)
