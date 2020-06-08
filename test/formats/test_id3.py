@@ -510,6 +510,31 @@ class DSFTest(CommonId3Tests.Id3TestCase):
     unexpected_info = ['~video']
 
 
+if id3.DSDIFFFile:
+    class DSDIFFTest(CommonId3Tests.Id3TestCase):
+        testfile = 'test-dsd.dff'
+        supports_ratings = True
+        expected_info = {
+            'length': 10,
+            '~channels': '2',
+            '~sample_rate': '5644800',
+            '~bitrate': '11289.6',
+            '~bits_per_sample': '1',
+        }
+        unexpected_info = ['~video']
+
+    class DSDIFFDSTTest(CommonId3Tests.Id3TestCase):
+        testfile = 'test-dst.dff'
+        supports_ratings = True
+        expected_info = {
+            'length': 0,
+            '~channels': '2',
+            '~sample_rate': '5644800',
+            '~bits_per_sample': '1',
+        }
+        unexpected_info = ['~video']
+
+
 class AIFFTest(CommonId3Tests.Id3TestCase):
     testfile = 'test.aiff'
     supports_ratings = False

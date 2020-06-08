@@ -736,3 +736,17 @@ class AiffFile(NonCompatID3File):
     EXTENSIONS = [".aiff", ".aif", ".aifc"]
     NAME = "Audio Interchange File Format (AIFF)"
     _File = mutagen.aiff.AIFF
+
+
+try:
+    import mutagen.dsdiff
+
+    class DSDIFFFile(NonCompatID3File):
+
+        """DSF file."""
+        EXTENSIONS = [".dff"]
+        NAME = "DSDIFF"
+        _File = mutagen.dsdiff.DSDIFF
+
+except ImportError:
+    DSDIFFFile = None

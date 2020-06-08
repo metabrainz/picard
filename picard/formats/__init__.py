@@ -39,6 +39,7 @@ from picard.formats.apev2 import (
 from picard.formats.asf import ASFFile
 from picard.formats.id3 import (
     AiffFile,
+    DSDIFFFile,
     DSFFile,
     MP3File,
     TrueAudioFile,
@@ -71,6 +72,8 @@ register_format(AACFile)
 register_format(AC3File)
 register_format(AiffFile)
 register_format(ASFFile)
+if DSDIFFFile:
+    register_format(DSDIFFFile)
 register_format(DSFFile)
 register_format(FLACFile)
 register_format(MIDIFile)
