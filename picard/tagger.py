@@ -502,7 +502,7 @@ class Tagger(QtWidgets.QApplication):
     def add_files(self, filenames, target=None, result=None):
         """Add files to the tagger."""
         if result:
-            filenames = result
+            filenames = result   # Handles add_directory task results coming from a worker thread
         ignoreregex = None
         pattern = config.setting['ignore_regex']
         if pattern:
@@ -533,11 +533,9 @@ class Tagger(QtWidgets.QApplication):
             log.debug("Adding files %r", new_files)
             new_files.sort(key=lambda x: x.filename)
             self.window.set_sorting(False)
-            if target is None or target is self.unclustered_files:
-                target = None
+            self._pending_files_count += len(new_files)
             for file in new_files:
                 file.load(partial(self._file_loaded, target=target))
-            self._pending_files_count += len(new_files)
 
     def _scan_dir(self, folders, recursive, ignore_hidden):
         files = []
