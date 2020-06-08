@@ -700,12 +700,8 @@ class TrueAudioFile(ID3File):
         return self._File(filename, ID3=compatid3.CompatID3)
 
 
-class DSFFile(ID3File):
-
-    """DSF file."""
-    EXTENSIONS = [".dsf"]
-    NAME = "DSF"
-    _File = mutagen.dsf.DSF
+class NonCompatID3File(ID3File):
+    """Base class for ID3 files which do not support setting `compatid3.CompatID3`."""
 
     def _get_file(self, filename):
         return self._File(filename, known_frames=compatid3.known_frames)
@@ -718,23 +714,23 @@ class DSFFile(ID3File):
 
     def _save_tags(self, tags, filename):
         if config.setting['write_id3v23']:
-            tags.update_to_v23()
+            compatid3.update_to_v23(tags)
             separator = config.setting['id3v23_join_with']
             tags.save(filename, v2_version=3, v23_sep=separator)
         else:
             tags.update_to_v24()
             tags.save(filename, v2_version=4)
 
-    @classmethod
-    def supports_tag(cls, name):
-        return (super().supports_tag(name)
-                and name not in {'albumsort',
-                                 'artistsort',
-                                 'discsubtitle',
-                                 'titlesort'})
+
+class DSFFile(NonCompatID3File):
+
+    """DSF file."""
+    EXTENSIONS = [".dsf"]
+    NAME = "DSF"
+    _File = mutagen.dsf.DSF
 
 
-class AiffFile(DSFFile):
+class AiffFile(NonCompatID3File):
 
     """AIFF file."""
     EXTENSIONS = [".aiff", ".aif", ".aifc"]

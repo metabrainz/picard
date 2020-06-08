@@ -32,8 +32,7 @@ from picard import (
     log,
 )
 from picard.file import File
-from picard.formats.id3 import ID3File
-from picard.formats.mutagenext import compatid3
+from picard.formats.id3 import NonCompatID3File
 from picard.metadata import Metadata
 
 
@@ -182,13 +181,10 @@ try:
         def __str__(self):
             return str(self.__tags)
 
-    class WAVFile(ID3File):
+    class WAVFile(NonCompatID3File):
         EXTENSIONS = [".wav"]
         NAME = "Microsoft WAVE"
         _File = mutagen.wave.WAVE
-
-        def _get_file(self, filename):
-            return self._File(filename, known_frames=compatid3.known_frames)
 
         def _info(self, metadata, file):
             super()._info(metadata, file)
@@ -223,29 +219,6 @@ try:
             elif config.setting['remove_wave_riff_info']:
                 info = RiffListInfo(encoding=config.setting['wave_riff_info_encoding'])
                 info.delete(filename)
-
-        def _get_tags(self, filename):
-            file = self._get_file(filename)
-            if file.tags is None:
-                file.add_tags()
-            return file.tags
-
-        def _save_tags(self, tags, filename):
-            if config.setting['write_id3v23']:
-                tags.update_to_v23()
-                separator = config.setting['id3v23_join_with']
-                tags.save(filename, v2_version=3, v23_sep=separator)
-            else:
-                tags.update_to_v24()
-                tags.save(filename, v2_version=4)
-
-        @classmethod
-        def supports_tag(cls, name):
-            return (super().supports_tag(name)
-                    and name not in {'albumsort',
-                                     'artistsort',
-                                     'discsubtitle',
-                                     'titlesort'})
 
 except ImportError:
     import wave
