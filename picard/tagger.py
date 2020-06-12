@@ -361,7 +361,7 @@ class Tagger(QtWidgets.QApplication):
         """Move `file` to recording `recordingid` on album `albumid`."""
         self.window.setUpdatesEnabled(False)
         album = self.load_album(albumid)
-        file.move(album.unmatched_files)
+        album.run_when_loaded(partial(file.move, album.unmatched_files))
         album.run_when_loaded(partial(album.match_files, [file],
                                       recordingid=recordingid))
         self.window.setUpdatesEnabled(True)
