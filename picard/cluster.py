@@ -35,6 +35,7 @@
 
 
 from collections import defaultdict
+from enum import IntEnum
 from heapq import (
     heappop,
     heappush,
@@ -62,6 +63,7 @@ from picard.util.imagelist import (
     remove_metadata_images,
     update_metadata_images,
 )
+from picard.util.progresscheckpoints import ProgressCheckpoints
 
 from picard.ui.item import Item
 
@@ -266,12 +268,17 @@ class Cluster(QtCore.QObject, Item):
             self.lookup_task = None
 
     @staticmethod
-    def cluster(files, threshold):
+    def cluster(files, threshold, tagger=None):
         win_compat = config.setting["windows_compatibility"] or IS_WIN
         artist_dict = ClusterDict()
         album_dict = ClusterDict()
         tracks = []
-        for file in files:
+        num_files = len(files)
+
+        # 10 evenly spaced indexes of files being clustered, used as checkpoints for every 10% progress
+        status_update_steps = ProgressCheckpoints(num_files, 10)
+
+        for i, file in enumerate(files):
             artist = file.metadata["albumartist"] or file.metadata["artist"]
             album = file.metadata["album"]
             # Improve clustering from directory structure if no existing tags
@@ -284,11 +291,21 @@ class Cluster(QtCore.QObject, Item):
             # For each track, record the index of the artist and album within the clusters
             tracks.append((artist_dict.add(artist), album_dict.add(album)))
 
-        artist_cluster_engine = ClusterEngine(artist_dict)
-        artist_cluster_engine.cluster(threshold)
+            if tagger and status_update_steps.is_checkpoint(i):
+                statusmsg = "Clustering - step %(step)d/3: %(cluster_type)s (%(update)d%%)"
+                mparams = {
+                    'step': ClusterType.METADATA.value,
+                    'cluster_type': _(ClusterEngine.cluster_type_label(ClusterType.METADATA)),
+                    'update': status_update_steps.progress(i),
+                }
+                tagger.window.set_statusbar_message(statusmsg, mparams)
+                QtCore.QCoreApplication.processEvents()
 
-        album_cluster_engine = ClusterEngine(album_dict)
-        album_cluster_engine.cluster(threshold)
+        artist_cluster_engine = ClusterEngine(artist_dict, ClusterType.ARTIST)
+        artist_cluster_engine.cluster(threshold, tagger)
+
+        album_cluster_engine = ClusterEngine(album_dict, ClusterType.ALBUM)
+        album_cluster_engine.cluster(threshold, tagger)
 
         # Arrange tracks into albums
         albums = {}
@@ -456,9 +473,20 @@ class ClusterDict(object):
         return word, count
 
 
-class ClusterEngine(object):
+class ClusterType(IntEnum):
+    METADATA = 1
+    ARTIST = 2
+    ALBUM = 3
 
-    def __init__(self, cluster_dict):
+
+class ClusterEngine(object):
+    CLUSTER_TYPE_LABELS = {
+        ClusterType.METADATA: N_('Metadata Extraction'),
+        ClusterType.ARTIST: N_('Artist'),
+        ClusterType.ALBUM: N_('Album'),
+    }
+
+    def __init__(self, cluster_dict, cluster_type):
         # the cluster dictionary we're using
         self.cluster_dict = cluster_dict
         # keeps track of unique cluster index
@@ -467,6 +495,14 @@ class ClusterEngine(object):
         self.cluster_bins = {}
         # Index the word ids -> clusters
         self.index_id_cluster = {}
+        self.cluster_type = cluster_type
+
+    @staticmethod
+    def cluster_type_label(cluster_type):
+        return ClusterEngine.CLUSTER_TYPE_LABELS[cluster_type]
+
+    def _cluster_type_label(self):
+        return ClusterEngine.cluster_type_label(self.cluster_type)
 
     def get_cluster_from_id(self, clusterid):
         return self.index_id_cluster.get(clusterid)
@@ -486,12 +522,15 @@ class ClusterEngine(object):
 
         return maxWord
 
-    def cluster(self, threshold):
-
+    def cluster(self, threshold, tagger=None):
         # Keep the matches sorted in a heap
         heap = []
+        num_files = self.cluster_dict.get_size()
 
-        for y in range(self.cluster_dict.get_size()):
+        # 20 evenly spaced indexes of files being clustered, used as checkpoints for every 5% progress
+        status_update_steps = ProgressCheckpoints(num_files, 20)
+
+        for y in range(num_files):
             token_y = self.cluster_dict.get_token(y).lower()
             for x in range(y):
                 if x != y:
@@ -499,14 +538,22 @@ class ClusterEngine(object):
                     c = similarity(token_x, token_y)
                     if c >= threshold:
                         heappush(heap, ((1.0 - c), [x, y]))
-            QtCore.QCoreApplication.processEvents()
 
-        for i in range(self.cluster_dict.get_size()):
-            word, count = self.cluster_dict.get_word_and_count(i)
+            word, count = self.cluster_dict.get_word_and_count(y)
             if word and count > 1:
-                self.cluster_bins[self.cluster_count] = [i]
-                self.index_id_cluster[i] = self.cluster_count
+                self.cluster_bins[self.cluster_count] = [y]
+                self.index_id_cluster[y] = self.cluster_count
                 self.cluster_count = self.cluster_count + 1
+
+            if tagger and status_update_steps.is_checkpoint(y):
+                statusmsg = "Clustering - step %(step)d/3: %(cluster_type)s (%(update)d%%)"
+                mparams = {
+                    'step': self.cluster_type.value,
+                    'cluster_type': _(self._cluster_type_label()),
+                    'update': status_update_steps.progress(y),
+                }
+                tagger.window.set_statusbar_message(statusmsg, mparams)
+                QtCore.QCoreApplication.processEvents()
 
         for i in range(len(heap)):
             c, pair = heappop(heap)
