@@ -171,11 +171,18 @@ class MainPanel(QtWidgets.QSplitter):
         super().__init__(parent)
         self.window = window
         self.create_icons()
-        self.views = [FileTreeView(window, self), AlbumTreeView(window, self)]
-        self.views[0].itemSelectionChanged.connect(self.update_selection_0)
-        self.views[1].itemSelectionChanged.connect(self.update_selection_1)
-        self._selected_view = 0
+        self._views = [FileTreeView(window, self), AlbumTreeView(window, self)]
+        self._selected_view = self._views[0]
         self._ignore_selection_changes = False
+
+        def _view_update_selection(view):
+            if not self._ignore_selection_changes:
+                self._ignore_selection_changes = True
+                self._update_selection(view)
+                self._ignore_selection_changes = False
+
+        for view in self._views:
+            view.itemSelectionChanged.connect(partial(_view_update_selection, view))
 
         TreeItem.window = window
         TreeItem.base_color = self.palette().base().color()
@@ -198,9 +205,16 @@ class MainPanel(QtWidgets.QSplitter):
     def set_processing(self, processing=True):
         self._ignore_selection_changes = processing
 
+    def tab_order(self, tab_order, before, after):
+        prev = before
+        for view in self._views:
+            tab_order(prev, view)
+            prev = view
+        tab_order(prev, after)
+
     def save_state(self):
         config.persist["splitter_state"] = self.saveState()
-        for view in self.views:
+        for view in self._views:
             view.save_state()
 
     @restore_method
@@ -254,39 +268,39 @@ class MainPanel(QtWidgets.QSplitter):
         ]
         self.icon_plugins = icontheme.lookup('applications-system', icontheme.ICON_SIZE_MENU)
 
-    def update_selection(self, i, j):
-        self._selected_view = i
-        self.views[j].clearSelection()
-        self.window.update_selection(
-            [item.obj for item in self.views[i].selectedItems()])
-
-    def update_selection_0(self):
-        if not self._ignore_selection_changes:
-            self._ignore_selection_changes = True
-            self.update_selection(0, 1)
-            self._ignore_selection_changes = False
-
-    def update_selection_1(self):
-        if not self._ignore_selection_changes:
-            self._ignore_selection_changes = True
-            self.update_selection(1, 0)
-            self._ignore_selection_changes = False
+    def _update_selection(self, selected_view):
+        for view in self._views:
+            if view != selected_view:
+                view.clearSelection()
+            else:
+                self._selected_view = view
+                self.window.update_selection([item.obj for item in view.selectedItems()])
 
     def update_current_view(self):
-        self.update_selection(self._selected_view, abs(self._selected_view - 1))
+        self._update_selection(self._selected_view)
 
     def remove(self, objects):
         self._ignore_selection_changes = True
         self.tagger.remove(objects)
         self._ignore_selection_changes = False
 
-        view = self.views[self._selected_view]
+        view = self._selected_view
         index = view.currentIndex()
         if index.isValid():
             # select the current index
             view.setCurrentIndex(index)
         else:
             self.update_current_view()
+
+    def set_sorting(self, sort=True):
+        for view in self._views:
+            view.setSortingEnabled(sort)
+
+    def collapse_clusters(self, collapse=True):
+        if collapse:
+            self._views[0].collapseAll()
+        else:
+            self._views[0].expandAll()
 
 
 def paint_fingerprint_icon(painter, rect, icon):
