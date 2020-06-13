@@ -17,6 +17,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+from collections import namedtuple
+
 from PyQt5 import (
     QtCore,
     QtGui,
@@ -27,6 +29,25 @@ from picard.const.sys import (
     IS_HAIKU,
     IS_MACOS,
     IS_WIN,
+)
+
+
+SyntaxTheme = namedtuple('SyntaxTheme', 'func var escape special noop')
+
+light_syntax_theme = SyntaxTheme(
+    func=QtCore.Qt.blue,
+    var=QtCore.Qt.darkCyan,
+    escape=QtCore.Qt.darkRed,
+    special=QtCore.Qt.blue,
+    noop=QtCore.Qt.darkGray,
+)
+
+dark_syntax_theme = SyntaxTheme(
+    func=QtGui.QColor(255, 87, 160, 255),  # magenta
+    var=QtGui.QColor(252, 187, 81, 255),  # orange
+    escape=QtGui.QColor(75, 239, 31, 255),  # green
+    special=QtGui.QColor(255, 87, 160, 255),  # blue
+    noop=QtGui.QColor(4, 231, 213, 255),  # cyan
 )
 
 
@@ -52,6 +73,9 @@ class BaseTheme:
     # pylint: disable=no-self-use
     def get_accent_color(self):
         return None
+
+    def get_syntax_theme(self):
+        return dark_syntax_theme if self.is_dark_theme() else light_syntax_theme
 
     # pylint: disable=no-self-use
     def update_palette(self, palette, dark_theme, accent_color):
@@ -107,11 +131,11 @@ if IS_WIN:
                 palette.setColor(QtGui.QPalette.Disabled, QtGui.QPalette.Light, QtGui.QColor(0, 0, 0, 0))
                 palette.setColor(QtGui.QPalette.Disabled, QtGui.QPalette.ButtonText, QtCore.Qt.darkGray)
 
-    _theme = WindowsTheme()
+    theme = WindowsTheme()
 
 else:
-    _theme = BaseTheme()
+    theme = BaseTheme()
 
 
 def setup(app):
-    _theme.setup(app)
+    theme.setup(app)

@@ -36,31 +36,33 @@ from picard.script import script_function_names
 from picard.util.tags import TAG_NAMES
 
 from picard.ui import FONT_FAMILY_MONOSPACE
+from picard.ui.theme import theme
 
 
 class TaggerScriptSyntaxHighlighter(QtGui.QSyntaxHighlighter):
 
     def __init__(self, document):
         super().__init__(document)
+        syntax_theme = theme.get_syntax_theme()
         self.func_re = QtCore.QRegExp(r"\$(?!noop)[a-zA-Z][_a-zA-Z0-9]*\(")
         self.func_fmt = QtGui.QTextCharFormat()
         self.func_fmt.setFontWeight(QtGui.QFont.Bold)
-        self.func_fmt.setForeground(Qt.blue)
+        self.func_fmt.setForeground(syntax_theme.func)
         self.var_re = QtCore.QRegExp(r"%[_a-zA-Z0-9:]*%")
         self.var_fmt = QtGui.QTextCharFormat()
-        self.var_fmt.setForeground(Qt.darkCyan)
+        self.var_fmt.setForeground(syntax_theme.var)
         self.escape_re = QtCore.QRegExp(r"\\.")
         self.escape_fmt = QtGui.QTextCharFormat()
-        self.escape_fmt.setForeground(Qt.darkRed)
+        self.escape_fmt.setForeground(syntax_theme.escape)
         self.special_re = QtCore.QRegExp(r"[^\\][(),]")
         self.special_fmt = QtGui.QTextCharFormat()
-        self.special_fmt.setForeground(Qt.blue)
+        self.special_fmt.setForeground(syntax_theme.special)
         self.bracket_re = QtCore.QRegExp(r"[()]")
         self.noop_re = QtCore.QRegExp(r"\$noop\(")
         self.noop_fmt = QtGui.QTextCharFormat()
         self.noop_fmt.setFontWeight(QtGui.QFont.Bold)
         self.noop_fmt.setFontItalic(True)
-        self.noop_fmt.setForeground(Qt.darkGray)
+        self.noop_fmt.setForeground(syntax_theme.noop)
         self.rules = [
             (self.func_re, self.func_fmt, 0, -1),
             (self.var_re, self.var_fmt, 0, 0),
