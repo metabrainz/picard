@@ -43,6 +43,7 @@
 
 
 import argparse
+from collections import defaultdict
 from functools import partial
 from itertools import chain
 import logging
@@ -842,12 +843,13 @@ class Tagger(QtWidgets.QApplication):
             files = self.get_files_from_objects(objs)
 
         self.window.set_sorting(False)
+        cluster_files = defaultdict(list)
         for name, artist, files in Cluster.cluster(files, 1.0, self):
-            QtCore.QCoreApplication.processEvents()
             cluster = self.load_cluster(name, artist)
-            for file in sorted(files, key=attrgetter('discnumber', 'tracknumber', 'base_filename')):
-                file.move(cluster)
-                QtCore.QCoreApplication.processEvents()
+            cluster_files[cluster].extend(sorted(files, key=attrgetter('discnumber', 'tracknumber', 'base_filename')))
+        for cluster, files in cluster_files.items():
+            cluster.add_files(files)
+            QtCore.QCoreApplication.processEvents()
         self.window.set_sorting(True)
 
     def load_cluster(self, name, artist):
