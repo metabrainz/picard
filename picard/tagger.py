@@ -342,7 +342,6 @@ class Tagger(QtWidgets.QApplication):
 
     def move_files_to_album(self, files, albumid=None, album=None):
         """Move `files` to tracks on album `albumid`."""
-        self.window.setUpdatesEnabled(False)
         if album is None:
             album = self.load_album(albumid)
         if album.loaded:
@@ -350,7 +349,6 @@ class Tagger(QtWidgets.QApplication):
         else:
             for file in list(files):
                 file.move(album.unmatched_files)
-        self.window.setUpdatesEnabled(True)
 
     def move_file_to_album(self, file, albumid):
         """Move `file` to a track on album `albumid`."""
@@ -358,12 +356,10 @@ class Tagger(QtWidgets.QApplication):
 
     def move_file_to_track(self, file, albumid, recordingid):
         """Move `file` to recording `recordingid` on album `albumid`."""
-        self.window.setUpdatesEnabled(False)
         album = self.load_album(albumid)
         album.run_when_loaded(partial(file.move, album.unmatched_files))
         album.run_when_loaded(partial(album.match_files, [file],
                                       recordingid=recordingid))
-        self.window.setUpdatesEnabled(True)
 
     def create_nats(self):
         if self.nats is None:
@@ -374,14 +370,12 @@ class Tagger(QtWidgets.QApplication):
         return self.nats
 
     def move_file_to_nat(self, file, recordingid, node=None):
-        self.window.setUpdatesEnabled(False)
         self.create_nats()
         file.move(self.nats.unmatched_files)
         nat = self.load_nat(recordingid, node=node)
         nat.run_when_loaded(partial(file.move, nat))
         if nat.loaded:
             self.nats.update()
-        self.window.setUpdatesEnabled(True)
 
     def exit(self):
         if self.stopping:
