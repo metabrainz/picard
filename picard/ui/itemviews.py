@@ -443,6 +443,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         self.select_all_action.triggered.connect(self.selectAll)
         self.select_all_action.setShortcut(QtGui.QKeySequence(_("Ctrl+A")))
         self.doubleClicked.connect(self.activate_item)
+        self.setUniformRowHeights(True)
 
     def contextMenuEvent(self, event):
         item = self.itemAt(event.pos())
