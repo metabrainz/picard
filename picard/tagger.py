@@ -482,6 +482,7 @@ class Tagger(QtWidgets.QApplication):
         if target is None:
             log.debug("Aborting move since target is invalid")
             return
+        self.window.set_sorting(False)
         if isinstance(target, (Track, Cluster)):
             for file in files:
                 file.move(target)
@@ -494,6 +495,7 @@ class Tagger(QtWidgets.QApplication):
             self.move_files_to_album(files, album=target)
         elif isinstance(target, ClusterList):
             self.cluster(files)
+        self.window.set_sorting(True)
 
     def add_files(self, filenames, target=None, result=None):
         """Add files to the tagger."""
