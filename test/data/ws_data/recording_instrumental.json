@@ -1,0 +1,235 @@
+{
+    "title": "A Taste of Honey",
+    "length": 165400,
+    "relations": [
+        {
+            "attributes": [
+                "cover",
+                "instrumental"
+            ],
+            "attribute-ids": {
+                "cover": "1e8536bd-6eda-3822-8e78-1c0f4d3d2113",
+                "instrumental": "c031ed4f-c9bb-4394-8cf5-e8ce4db512ae"
+            },
+            "type": "performance",
+            "end": null,
+            "work": {
+                "type-id": "f061270a-2fd6-32f1-a641-f0f8676d14e6",
+                "id": "47dcb656-3e85-39eb-ab71-d2e75564fc44",
+                "iswcs": [
+                    "T-070.178.113-6"
+                ],
+                "languages": [
+                    "eng"
+                ],
+                "title": "A Taste of Honey",
+                "attributes": [],
+                "disambiguation": "",
+                "relations": [
+                    {
+                        "target-credit": "",
+                        "direction": "backward",
+                        "source-credit": "",
+                        "attribute-values": {},
+                        "end": null,
+                        "type-id": "d59d99ea-23d4-4a80-b066-edca32ee158f",
+                        "target-type": "artist",
+                        "begin": null,
+                        "ended": false,
+                        "type": "composer",
+                        "attributes": [],
+                        "attribute-ids": {},
+                        "artist": {
+                            "type": "Person",
+                            "name": "Bobby Scott",
+                            "id": "009a9fa1-c002-4fd5-a3e0-bc39a33bb07b",
+                            "sort-name": "Scott, Bobby",
+                            "disambiguation": "vocals, piano, US musician & producer",
+                            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+                        }
+                    },
+                    {
+                        "artist": {
+                            "sort-name": "Marlow, Ric",
+                            "id": "ada8702e-38a9-4ab1-a286-8846de76ddc9",
+                            "disambiguation": "",
+                            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                            "type": "Person",
+                            "name": "Ric Marlow"
+                        },
+                        "attribute-ids": {},
+                        "attributes": [],
+                        "type": "lyricist",
+                        "target-type": "artist",
+                        "ended": false,
+                        "begin": null,
+                        "type-id": "3e48faba-ec01-47fd-8e89-30e81161661c",
+                        "end": null,
+                        "attribute-values": {},
+                        "target-credit": "",
+                        "direction": "backward",
+                        "source-credit": ""
+                    },
+                    {
+                        "type": "other version",
+                        "attribute-ids": {
+                            "translated": "ed11fcb1-5a18-4e1d-b12c-633ed19c8ee1"
+                        },
+                        "attributes": [
+                            "translated"
+                        ],
+                        "attribute-values": {},
+                        "direction": "forward",
+                        "target-credit": "",
+                        "source-credit": "",
+                        "type-id": "7440b539-19ab-4243-8c03-4f5942ca2218",
+                        "end": null,
+                        "work": {
+                            "type": "Song",
+                            "language": null,
+                            "disambiguation": "",
+                            "attributes": [],
+                            "languages": [],
+                            "title": "En doft av honung",
+                            "iswcs": [],
+                            "id": "fa3c2c66-aedb-43e7-99ff-3eea7bca68f6",
+                            "type-id": "f061270a-2fd6-32f1-a641-f0f8676d14e6"
+                        },
+                        "target-type": "work",
+                        "begin": null,
+                        "ended": false
+                    },
+                    {
+                        "attribute-ids": {
+                            "translated": "ed11fcb1-5a18-4e1d-b12c-633ed19c8ee1"
+                        },
+                        "attributes": [
+                            "translated"
+                        ],
+                        "type": "other version",
+                        "type-id": "7440b539-19ab-4243-8c03-4f5942ca2218",
+                        "end": null,
+                        "work": {
+                            "language": null,
+                            "type": "Song",
+                            "attributes": [],
+                            "disambiguation": "",
+                            "title": "Hunajainen",
+                            "languages": [],
+                            "type-id": "f061270a-2fd6-32f1-a641-f0f8676d14e6",
+                            "id": "ce659116-664c-30ec-babc-46afe8154c7a",
+                            "iswcs": []
+                        },
+                        "ended": false,
+                        "target-type": "work",
+                        "begin": null,
+                        "attribute-values": {},
+                        "source-credit": "",
+                        "target-credit": "",
+                        "direction": "forward"
+                    },
+                    {
+                        "attribute-values": {},
+                        "target-credit": "",
+                        "source-credit": "",
+                        "direction": "forward",
+                        "begin": null,
+                        "target-type": "work",
+                        "ended": false,
+                        "type-id": "7440b539-19ab-4243-8c03-4f5942ca2218",
+                        "end": null,
+                        "work": {
+                            "languages": [],
+                            "title": "Je crois mon cœur",
+                            "type-id": "f061270a-2fd6-32f1-a641-f0f8676d14e6",
+                            "iswcs": [],
+                            "id": "ca8f0457-3638-428c-8c0a-808f04b51245",
+                            "language": null,
+                            "type": "Song",
+                            "attributes": [],
+                            "disambiguation": ""
+                        },
+                        "type": "other version",
+                        "attribute-ids": {
+                            "translated": "ed11fcb1-5a18-4e1d-b12c-633ed19c8ee1"
+                        },
+                        "attributes": [
+                            "translated"
+                        ]
+                    },
+                    {
+                        "attribute-values": {},
+                        "source-credit": "",
+                        "target-credit": "",
+                        "direction": "forward",
+                        "begin": null,
+                        "target-type": "work",
+                        "ended": false,
+                        "type-id": "7440b539-19ab-4243-8c03-4f5942ca2218",
+                        "work": {
+                            "type-id": "f061270a-2fd6-32f1-a641-f0f8676d14e6",
+                            "iswcs": [],
+                            "id": "38c22cd4-d45a-400b-a331-3f8044a95413",
+                            "languages": [],
+                            "title": "柔情蜜意",
+                            "attributes": [],
+                            "disambiguation": "",
+                            "language": null,
+                            "type": "Song"
+                        },
+                        "end": null,
+                        "type": "other version",
+                        "attribute-ids": {
+                            "translated": "ed11fcb1-5a18-4e1d-b12c-633ed19c8ee1"
+                        },
+                        "attributes": [
+                            "translated"
+                        ]
+                    },
+                    {
+                        "type-id": "7440b539-19ab-4243-8c03-4f5942ca2218",
+                        "work": {
+                            "id": "a2055760-8dc5-4e6b-8ce3-0960b7227c5a",
+                            "iswcs": [],
+                            "type-id": "f061270a-2fd6-32f1-a641-f0f8676d14e6",
+                            "languages": [],
+                            "title": "A Waste of Money",
+                            "disambiguation": "",
+                            "attributes": [],
+                            "type": "Song",
+                            "language": null
+                        },
+                        "end": null,
+                        "target-type": "work",
+                        "ended": false,
+                        "begin": null,
+                        "attribute-values": {},
+                        "target-credit": "",
+                        "direction": "forward",
+                        "source-credit": "",
+                        "attribute-ids": {
+                            "parody": "d73de9d3-934b-419c-8c83-2e48a5773b14"
+                        },
+                        "attributes": [
+                            "parody"
+                        ],
+                        "type": "other version"
+                    }
+                ],
+                "language": "eng",
+                "type": "Song"
+            },
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "target-type": "work",
+            "ended": false,
+            "begin": null,
+            "target-credit": "",
+            "source-credit": "",
+            "direction": "forward",
+            "attribute-values": {}
+        }
+    ],
+    "id": "ed23dfd5-2b52-4c38-8118-9924eeaf0025",
+    "disambiguation": "",
+    "video": false
+}
