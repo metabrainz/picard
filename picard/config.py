@@ -57,6 +57,7 @@ class ConfigSection(LockableObject):
         self.__name = name
         self.__prefix = self.__name + '/'
         self.__prefix_len = len(self.__prefix)
+        self._memoization = {}
 
     def key(self, name):
         return self.__prefix + name
@@ -75,7 +76,10 @@ class ConfigSection(LockableObject):
     def __setitem__(self, name, value):
         self.lock_for_write()
         try:
-            self.__qt_config.setValue(self.key(name), value)
+            key = self.key(name)
+            self.__qt_config.setValue(key, value)
+            if key in self._memoization:
+                self._memoization[key][0] = False
         finally:
             self.unlock()
 
@@ -86,7 +90,10 @@ class ConfigSection(LockableObject):
         self.lock_for_write()
         try:
             if name in self:
-                self.__qt_config.remove(self.key(name))
+                key = self.key(name)
+                self.__qt_config.remove(key)
+                if key in self._memoization:
+                    del self._memoization[key]
         finally:
             self.unlock()
 
@@ -94,23 +101,32 @@ class ConfigSection(LockableObject):
         """Return an option value without any type conversion."""
         key = self.key(name)
         if qtype is not None:
-            return self.__qt_config.value(key, type=qtype)
+            value = self.__qt_config.value(key, type=qtype)
         else:
-            return self.__qt_config.value(key)
+            value = self.__qt_config.value(key)
+        return value
 
     def value(self, name, option_type, default=None):
         """Return an option value converted to the given Option type."""
-        self.lock_for_read()
-        try:
-            if name in self:
-                value = self.raw_value(name, qtype=option_type.qtype)
-                return option_type.convert(value)
-            return default
-        except Exception as why:
-            log.error('Cannot read %s value: %s', self.key(name), why, exc_info=True)
-            return default
-        finally:
-            self.unlock()
+        if name in self:
+            key = self.key(name)
+            try:
+                valid, value = self._memoization[key]
+            except KeyError:
+                valid = False
+
+            if not valid:
+                self.lock_for_read()
+                try:
+                    value = self.raw_value(name, qtype=option_type.qtype)
+                    value = option_type.convert(value)
+                    self._memoization[key] = [True, value]
+                except Exception as why:
+                    log.error('Cannot read %s value: %s', self.key(name), why, exc_info=True)
+                    value = default
+                self.unlock()
+            return value
+        return default
 
 
 class Config(QtCore.QSettings):
