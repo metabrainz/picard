@@ -175,6 +175,19 @@ class RecordingTest(MBJSONTest):
         self.assertEqual(m['performer:acoustic guitar'], 'Ed Sheeran')
 
 
+class RecordingInstrumentalTest(MBJSONTest):
+
+    filename = 'recording_instrumental.json'
+
+    def test_recording(self):
+        m = Metadata()
+        t = Track('1')
+        recording_to_metadata(self.json_doc, m, t)
+        self.assertIn('instrumental', m.getall('~performance_attributes'))
+        self.assertEqual(m['language'], 'zxx')
+        self.assertNotIn('lyricist', m)
+
+
 class NullRecordingTest(MBJSONTest):
 
     filename = 'recording_null.json'
