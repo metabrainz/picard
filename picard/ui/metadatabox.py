@@ -249,6 +249,7 @@ class MetadataBox(QtWidgets.QTableWidget):
             "musicbrainz_artistid": lookup.artist_lookup,
             "musicbrainz_albumartistid": lookup.artist_lookup,
             "musicbrainz_releasegroupid": lookup.release_group_lookup,
+            "musicbrainz_discid": lookup.discid_lookup,
             "acoustid_id": lookup.acoust_lookup
         }
         return LOOKUP_TAGS

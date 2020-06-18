@@ -96,6 +96,9 @@ class FileLookup(object):
     def release_group_lookup(self, release_group_id):
         return self._lookup('release-group', release_group_id)
 
+    def discid_lookup(self, discid):
+        return self._lookup('cdtoc', discid)
+
     def acoust_lookup(self, acoust_id):
         return self.launch(PICARD_URLS['acoustid_track'] + acoust_id)
 
