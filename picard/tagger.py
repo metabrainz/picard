@@ -527,6 +527,7 @@ class Tagger(QtWidgets.QApplication):
                 if file:
                     self.files[filename] = file
                     new_files.append(file)
+                QtCore.QCoreApplication.processEvents()
         if new_files:
             log.debug("Adding files %r", new_files)
             new_files.sort(key=lambda x: x.filename)
@@ -534,6 +535,7 @@ class Tagger(QtWidgets.QApplication):
             self._pending_files_count += len(new_files)
             for file in new_files:
                 file.load(partial(self._file_loaded, target=target))
+                QtCore.QCoreApplication.processEvents()
 
     def _scan_dir(self, folders, recursive, ignore_hidden):
         files = []
@@ -571,14 +573,14 @@ class Tagger(QtWidgets.QApplication):
                     echo=None
                 )
                 files.extend(current_folder_files)
+                QtCore.QCoreApplication.processEvents()
         return files
 
     def add_directory(self, path):
-        thread.run_task(partial(self._scan_dir, [path],
+        files = self._scan_dir([path],
                             config.setting['recursively_add_files'],
-                            config.setting["ignore_hidden_files"]),
-                        partial(self.add_files, None),
-                        traceback=self._debug)
+                            config.setting["ignore_hidden_files"])
+        self.add_files(files)
 
     def get_file_lookup(self):
         """Return a FileLookup object."""
