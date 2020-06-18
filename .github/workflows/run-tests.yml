@@ -55,6 +55,7 @@ jobs:
         os: [ubuntu-latest]
         python-version: [3.7]
         dependencies: [
+          "PyQt5==5.14.2",
           "PyQt5==5.13.2",
           "PyQt5==5.12.3",
           "PyQt5==5.11.3",
