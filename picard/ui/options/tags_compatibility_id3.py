@@ -28,15 +28,15 @@ from picard.ui.options import (
     OptionsPage,
     register_options_page,
 )
-from picard.ui.ui_options_tags_compatibility import (
+from picard.ui.ui_options_tags_compatibility_id3 import (
     Ui_TagsCompatibilityOptionsPage,
 )
 
 
-class TagsCompatibilityOptionsPage(OptionsPage):
+class TagsCompatibilityID3OptionsPage(OptionsPage):
 
-    NAME = "tags_compatibility"
-    TITLE = N_("Tag Compatibility")
+    NAME = "tags_compatibility_id3"
+    TITLE = N_("ID3")
     PARENT = "tags"
     SORT_ORDER = 30
     ACTIVE = True
@@ -47,13 +47,6 @@ class TagsCompatibilityOptionsPage(OptionsPage):
         config.TextOption("setting", "id3v2_encoding", "utf-16"),
         config.TextOption("setting", "id3v23_join_with", "/"),
         config.BoolOption("setting", "itunes_compatible_grouping", False),
-        config.BoolOption("setting", "aac_save_ape", True),
-        config.BoolOption("setting", "remove_ape_from_aac", False),
-        config.BoolOption("setting", "ac3_save_ape", True),
-        config.BoolOption("setting", "remove_ape_from_ac3", False),
-        config.BoolOption("setting", "write_wave_riff_info", True),
-        config.BoolOption("setting", "remove_wave_riff_info", False),
-        config.TextOption("setting", "wave_riff_info_encoding", "windows-1252"),
     ]
 
     def __init__(self, parent=None):
@@ -62,8 +55,6 @@ class TagsCompatibilityOptionsPage(OptionsPage):
         self.ui.setupUi(self)
         self.ui.write_id3v23.clicked.connect(self.update_encodings)
         self.ui.write_id3v24.clicked.connect(partial(self.update_encodings, force_utf8=True))
-        self.ui.aac_no_tags.toggled.connect(self.ui.remove_ape_from_aac.setEnabled)
-        self.ui.ac3_no_tags.toggled.connect(self.ui.remove_ape_from_ac3.setEnabled)
 
     def load(self):
         self.ui.write_id3v1.setChecked(config.setting["write_id3v1"])
@@ -79,24 +70,6 @@ class TagsCompatibilityOptionsPage(OptionsPage):
             self.ui.enc_utf8.setChecked(True)
         self.ui.id3v23_join_with.setEditText(config.setting["id3v23_join_with"])
         self.ui.itunes_compatible_grouping.setChecked(config.setting["itunes_compatible_grouping"])
-        if config.setting["aac_save_ape"]:
-            self.ui.aac_save_ape.setChecked(True)
-        else:
-            self.ui.aac_no_tags.setChecked(True)
-        self.ui.remove_ape_from_aac.setChecked(config.setting["remove_ape_from_aac"])
-        self.ui.remove_ape_from_aac.setEnabled(not config.setting["aac_save_ape"])
-        if config.setting["ac3_save_ape"]:
-            self.ui.ac3_save_ape.setChecked(True)
-        else:
-            self.ui.ac3_no_tags.setChecked(True)
-        self.ui.remove_ape_from_ac3.setChecked(config.setting["remove_ape_from_ac3"])
-        self.ui.remove_ape_from_ac3.setEnabled(not config.setting["ac3_save_ape"])
-        self.ui.write_wave_riff_info.setChecked(config.setting["write_wave_riff_info"])
-        self.ui.remove_wave_riff_info.setChecked(config.setting["remove_wave_riff_info"])
-        if config.setting["wave_riff_info_encoding"] == "utf-8":
-            self.ui.wave_riff_info_enc_utf8.setChecked(True)
-        else:
-            self.ui.wave_riff_info_enc_cp1252.setChecked(True)
         self.update_encodings()
 
     def save(self):
@@ -110,16 +83,6 @@ class TagsCompatibilityOptionsPage(OptionsPage):
         else:
             config.setting["id3v2_encoding"] = "utf-8"
         config.setting["itunes_compatible_grouping"] = self.ui.itunes_compatible_grouping.isChecked()
-        config.setting["aac_save_ape"] = self.ui.aac_save_ape.isChecked()
-        config.setting["remove_ape_from_aac"] = self.ui.remove_ape_from_aac.isChecked()
-        config.setting["ac3_save_ape"] = self.ui.ac3_save_ape.isChecked()
-        config.setting["remove_ape_from_ac3"] = self.ui.remove_ape_from_ac3.isChecked()
-        config.setting["write_wave_riff_info"] = self.ui.write_wave_riff_info.isChecked()
-        config.setting["remove_wave_riff_info"] = self.ui.remove_wave_riff_info.isChecked()
-        if self.ui.wave_riff_info_enc_utf8.isChecked():
-            config.setting["wave_riff_info_encoding"] = "utf-8"
-        else:
-            config.setting["wave_riff_info_encoding"] = "windows-1252"
 
     def update_encodings(self, force_utf8=False):
         if self.ui.write_id3v23.isChecked():
@@ -136,4 +99,4 @@ class TagsCompatibilityOptionsPage(OptionsPage):
             self.ui.id3v23_join_with.setEnabled(False)
 
 
-register_options_page(TagsCompatibilityOptionsPage)
+register_options_page(TagsCompatibilityID3OptionsPage)
