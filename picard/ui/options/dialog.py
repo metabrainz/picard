@@ -71,7 +71,10 @@ from picard.ui.options import (  # noqa: F401 # pylint: disable=unused-import
     renaming,
     scripting,
     tags,
-    tags_compatibility,
+    tags_compatibility_aac,
+    tags_compatibility_ac3,
+    tags_compatibility_id3,
+    tags_compatibility_wave,
 )
 from picard.ui.util import StandardButton
 
