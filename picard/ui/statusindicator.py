@@ -38,7 +38,8 @@ class AbstractProgressStatusIndicator:
         if not self.is_available:
             return
 
-        total_pending = pending_files + pending_requests
+        # Weight pending network requests higher as they are slower then file loads
+        total_pending = pending_files + 10 * pending_requests
 
         if total_pending == self._last_pending:
             return  # No changes, avoid update
