@@ -69,7 +69,17 @@ msgstr ""
 msgid "Looking up the metadata for cluster %(album)s..."
 msgstr ""
 
-#: picard/cluster.py:337
+#: picard/cluster.py:478
+#, python-format
+msgid "Metadata Extraction"
+msgstr ""
+
+#: picard/cluster.py:294 picard/cluster.py:541
+#, python-format
+msgid "Clustering - step %(step)d/3: %(cluster_type)s (%(update)d%%)"
+msgstr ""
+
+#: picard/cluster.py:350
 msgid "Unclustered Files"
 msgstr ""
 
@@ -2933,14 +2943,16 @@ msgstr ""
 msgid "Whitelist"
 msgstr ""
 
-#: picard/ui/cdlookup.py:72 picard/ui/itemviews.py:156
-#: picard/ui/mainwindow.py:800 picard/util/tags.py:38
+#: picard/ui/cdlookup.py:72 picard/ui/itemviews.py:155
+#: picard/ui/mainwindow.py:792 picard/util/tags.py:38
+#: picard/cluster.py:479
 msgid "Album"
 msgstr ""
 
 #: picard/ui/cdlookup.py:72 picard/ui/itemviews.py:153
 #: picard/ui/mainwindow.py:801 picard/ui/searchdialog/album.py:153
 #: picard/ui/searchdialog/track.py:65 picard/util/tags.py:41
+#: picard/cluster.py:478
 msgid "Artist"
 msgstr ""
 

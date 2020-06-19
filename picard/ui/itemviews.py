@@ -87,6 +87,9 @@ from picard.ui.widgets.tristatesortheaderview import TristateSortHeaderView
 
 
 COLUMN_ICON_SIZE = 16
+COLUMN_ICON_BORDER = 2
+ICON_SIZE = QtCore.QSize(COLUMN_ICON_SIZE+COLUMN_ICON_BORDER,
+                         COLUMN_ICON_SIZE+COLUMN_ICON_BORDER)
 
 
 class BaseAction(QtWidgets.QAction):
@@ -440,6 +443,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         self.select_all_action.triggered.connect(self.selectAll)
         self.select_all_action.setShortcut(QtGui.QKeySequence(_("Ctrl+A")))
         self.doubleClicked.connect(self.activate_item)
+        self.setUniformRowHeights(True)
 
     def contextMenuEvent(self, event):
         item = self.itemAt(event.pos())
@@ -859,6 +863,7 @@ class TreeItem(QtWidgets.QTreeWidgetItem):
         self.setTextAlignment(1, QtCore.Qt.AlignRight | QtCore.Qt.AlignVCenter)
         self.setTextAlignment(7, QtCore.Qt.AlignRight | QtCore.Qt.AlignVCenter)
         self.setTextAlignment(8, QtCore.Qt.AlignRight | QtCore.Qt.AlignVCenter)
+        self.setSizeHint(MainPanel.TITLE_COLUMN, ICON_SIZE)
 
     def __lt__(self, other):
         if not self.sortable:

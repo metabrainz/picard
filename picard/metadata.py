@@ -412,7 +412,7 @@ class Metadata(MutableMapping):
             return default
 
     def __getitem__(self, name):
-        return self.get(self.normalize_tag(name), '')
+        return self.get(name, '')
 
     def set(self, name, values):
         name = self.normalize_tag(name)
@@ -426,7 +426,7 @@ class Metadata(MutableMapping):
             del self[name]
 
     def __setitem__(self, name, values):
-        self.set(self.normalize_tag(name), values)
+        self.set(name, values)
 
     def __contains__(self, name):
         return self._store.__contains__(self.normalize_tag(name))

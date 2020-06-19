@@ -43,6 +43,7 @@
 
 
 import argparse
+from collections import defaultdict
 from functools import partial
 from itertools import chain
 import logging
@@ -187,7 +188,6 @@ class Tagger(QtWidgets.QApplication):
         # FIXME: Figure out what's wrong with QThreadPool.globalInstance().
         # It's a valid reference, but its start() method doesn't work.
         self.thread_pool = QtCore.QThreadPool(self)
-        self.thread_pool.setMaxThreadCount(6)
 
         # Provide a separate thread pool for operations that should not be
         # delayed by longer background processing tasks, e.g. because the user
@@ -343,7 +343,6 @@ class Tagger(QtWidgets.QApplication):
 
     def move_files_to_album(self, files, albumid=None, album=None):
         """Move `files` to tracks on album `albumid`."""
-        self.window.setUpdatesEnabled(False)
         if album is None:
             album = self.load_album(albumid)
         if album.loaded:
@@ -351,7 +350,6 @@ class Tagger(QtWidgets.QApplication):
         else:
             for file in list(files):
                 file.move(album.unmatched_files)
-        self.window.setUpdatesEnabled(True)
 
     def move_file_to_album(self, file, albumid):
         """Move `file` to a track on album `albumid`."""
@@ -359,12 +357,10 @@ class Tagger(QtWidgets.QApplication):
 
     def move_file_to_track(self, file, albumid, recordingid):
         """Move `file` to recording `recordingid` on album `albumid`."""
-        self.window.setUpdatesEnabled(False)
         album = self.load_album(albumid)
         album.run_when_loaded(partial(file.move, album.unmatched_files))
         album.run_when_loaded(partial(album.match_files, [file],
                                       recordingid=recordingid))
-        self.window.setUpdatesEnabled(True)
 
     def create_nats(self):
         if self.nats is None:
@@ -375,14 +371,12 @@ class Tagger(QtWidgets.QApplication):
         return self.nats
 
     def move_file_to_nat(self, file, recordingid, node=None):
-        self.window.setUpdatesEnabled(False)
         self.create_nats()
         file.move(self.nats.unmatched_files)
         nat = self.load_nat(recordingid, node=node)
         nat.run_when_loaded(partial(file.move, nat))
         if nat.loaded:
             self.nats.update()
-        self.window.setUpdatesEnabled(True)
 
     def exit(self):
         if self.stopping:
@@ -488,6 +482,7 @@ class Tagger(QtWidgets.QApplication):
         if target is None:
             log.debug("Aborting move since target is invalid")
             return
+        self.window.set_sorting(False)
         if isinstance(target, (Track, Cluster)):
             for file in files:
                 file.move(target)
@@ -500,6 +495,7 @@ class Tagger(QtWidgets.QApplication):
             self.move_files_to_album(files, album=target)
         elif isinstance(target, ClusterList):
             self.cluster(files)
+        self.window.set_sorting(True)
 
     def add_files(self, filenames, target=None, result=None):
         """Add files to the tagger."""
@@ -531,6 +527,7 @@ class Tagger(QtWidgets.QApplication):
                 if file:
                     self.files[filename] = file
                     new_files.append(file)
+                QtCore.QCoreApplication.processEvents()
         if new_files:
             log.debug("Adding files %r", new_files)
             new_files.sort(key=lambda x: x.filename)
@@ -538,6 +535,7 @@ class Tagger(QtWidgets.QApplication):
             self._pending_files_count += len(new_files)
             for file in new_files:
                 file.load(partial(self._file_loaded, target=target))
+                QtCore.QCoreApplication.processEvents()
 
     def _scan_dir(self, folders, recursive, ignore_hidden):
         files = []
@@ -575,14 +573,14 @@ class Tagger(QtWidgets.QApplication):
                     echo=None
                 )
                 files.extend(current_folder_files)
+                QtCore.QCoreApplication.processEvents()
         return files
 
     def add_directory(self, path):
-        thread.run_task(partial(self._scan_dir, [path],
+        files = self._scan_dir([path],
                             config.setting['recursively_add_files'],
-                            config.setting["ignore_hidden_files"]),
-                        partial(self.add_files, None),
-                        traceback=self._debug)
+                            config.setting["ignore_hidden_files"])
+        self.add_files(files)
 
     def get_file_lookup(self):
         """Return a FileLookup object."""
@@ -849,12 +847,13 @@ class Tagger(QtWidgets.QApplication):
             files = self.get_files_from_objects(objs)
 
         self.window.set_sorting(False)
-        for name, artist, files in Cluster.cluster(files, 1.0):
-            QtCore.QCoreApplication.processEvents()
+        cluster_files = defaultdict(list)
+        for name, artist, files in Cluster.cluster(files, 1.0, self):
             cluster = self.load_cluster(name, artist)
-            for file in sorted(files, key=attrgetter('discnumber', 'tracknumber', 'base_filename')):
-                file.move(cluster)
-                QtCore.QCoreApplication.processEvents()
+            cluster_files[cluster].extend(sorted(files, key=attrgetter('discnumber', 'tracknumber', 'base_filename')))
+        for cluster, files in cluster_files.items():
+            cluster.add_files(files)
+            QtCore.QCoreApplication.processEvents()
         self.window.set_sorting(True)
 
     def load_cluster(self, name, artist):
