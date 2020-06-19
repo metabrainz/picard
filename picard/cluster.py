@@ -292,7 +292,7 @@ class Cluster(QtCore.QObject, Item):
             tracks.append((artist_dict.add(artist), album_dict.add(album)))
 
             if tagger and status_update_steps.is_checkpoint(i):
-                statusmsg = "Clustering - step %(step)d/3: %(cluster_type)s (%(update)d%%)"
+                statusmsg = N_("Clustering - step %(step)d/3: %(cluster_type)s (%(update)d%%)")
                 mparams = {
                     'step': ClusterType.METADATA.value,
                     'cluster_type': _(ClusterEngine.cluster_type_label(ClusterType.METADATA)),
@@ -546,7 +546,7 @@ class ClusterEngine(object):
                 self.cluster_count = self.cluster_count + 1
 
             if tagger and status_update_steps.is_checkpoint(y):
-                statusmsg = "Clustering - step %(step)d/3: %(cluster_type)s (%(update)d%%)"
+                statusmsg = N_("Clustering - step %(step)d/3: %(cluster_type)s (%(update)d%%)")
                 mparams = {
                     'step': self.cluster_type.value,
                     'cluster_type': _(self._cluster_type_label()),
