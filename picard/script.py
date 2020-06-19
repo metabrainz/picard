@@ -783,10 +783,7 @@ def func_unset(parser, name):
             if key.startswith(name):
                 parser.context.unset(key)
         return ""
-    try:
-        parser.context.unset(name)
-    except KeyError:
-        pass
+    parser.context.unset(name)
     return ""
 
 

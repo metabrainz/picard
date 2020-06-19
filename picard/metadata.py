@@ -460,12 +460,12 @@ class Metadata(MutableMapping):
 
         Args:
             name: name of the tag to unset
-
-        Raises:
-            KeyError: name not set
         """
         name = self.normalize_tag(name)
-        del self._store[name]
+        try:
+            del self._store[name]
+        except KeyError:
+            pass
 
     def __iter__(self):
         return iter(self._store)

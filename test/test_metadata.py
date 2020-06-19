@@ -135,7 +135,7 @@ class MetadataTest(PicardTestCase):
         self.metadata.unset("single1")
         self.assertNotIn("single1", self.metadata)
         self.assertNotIn("single1", self.metadata.deleted_tags)
-        self.assertRaises(KeyError, self.metadata.unset, 'unknown_tag')
+        self.metadata.unset('unknown_tag')
 
     def test_metadata_delete(self):
         del self.metadata["single1"]
