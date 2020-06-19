@@ -4,7 +4,7 @@
 #
 # Copyright (C) 2006-2008, 2011 Lukáš Lalinský
 # Copyright (C) 2008-2009 Nikolai Prokoschenko
-# Copyright (C) 2008-2009, 2018-2019 Philipp Wolfer
+# Copyright (C) 2008-2009, 2018-2020 Philipp Wolfer
 # Copyright (C) 2011 Pavan Chander
 # Copyright (C) 2011-2012, 2019 Wieland Hoffmann
 # Copyright (C) 2011-2013 Michael Wiencek
@@ -81,6 +81,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
     autorestore = False
 
     options = [
+        config.ListOption("persist", "options_pages_tree_state", []),
         config.Option("persist", "options_splitter", QtCore.QByteArray()),
     ]
 
@@ -146,7 +147,6 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         # work-around to set optimal option pane width
         self.ui.pages_tree.expandAll()
         max_page_name = self.ui.pages_tree.sizeHintForColumn(0) + 2*self.ui.pages_tree.frameWidth()
-        self.ui.pages_tree.collapseAll()
         self.ui.splitter.setSizes([max_page_name,
                                    self.geometry().width() - max_page_name])
 
@@ -207,10 +207,27 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         page.display_error(error)
 
     def saveWindowState(self):
+        expanded_pages = []
+        for page, item in self.page_to_item.items():
+            index = self.ui.pages_tree.indexFromItem(item)
+            is_expanded = self.ui.pages_tree.isExpanded(index)
+            expanded_pages.append((page, is_expanded))
+        config.persist["options_pages_tree_state"] = expanded_pages
         config.persist["options_splitter"] = self.ui.splitter.saveState()
 
     @restore_method
     def restoreWindowState(self):
+        pages_tree_state = config.persist["options_pages_tree_state"]
+        if not pages_tree_state:
+            self.ui.pages_tree.expandAll()
+        else:
+            for page, is_expanded in pages_tree_state:
+                try:
+                    item = self.page_to_item[page]
+                except KeyError:
+                    continue
+                item.setExpanded(is_expanded)
+
         self.restore_geometry()
         self.ui.splitter.restoreState(config.persist["options_splitter"])
 
