@@ -390,7 +390,10 @@ def recording_to_metadata(node, m, track=None):
     if m.length:
         m['~length'] = format_time(m.length)
     if 'instrumental' in m.getall('~performance_attributes'):
-        m.unset('lyricist')
+        try:
+            m.unset('lyricist')
+        except KeyError:
+            pass
         m['language'] = 'zxx'
 
 
