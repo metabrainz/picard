@@ -32,6 +32,10 @@ from PyQt5.QtWidgets import (
     QTextEdit,
 )
 
+from picard.const.sys import (
+    IS_MACOS,
+    IS_WIN,
+)
 from picard.script import script_function_names
 from picard.util.tags import TAG_NAMES
 
@@ -126,6 +130,12 @@ class ScriptTextEdit(QTextEdit):
         super().__init__(parent)
         self.highlighter = TaggerScriptSyntaxHighlighter(self.document())
         self.enable_completer()
+        if IS_MACOS:
+            self.setFontFamily('Menlo')
+        if IS_WIN:
+            self.setFontFamily('Courier')
+        else:
+            self.setFontFamily('Monospace')
 
     def enable_completer(self):
         self.completer = ScriptCompleter()

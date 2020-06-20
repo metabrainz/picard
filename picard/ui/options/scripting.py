@@ -26,10 +26,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from PyQt5 import (
-    QtCore,
-    QtGui,
-)
+from PyQt5 import QtCore
 
 from picard import config
 from picard.const import PICARD_URLS
@@ -159,9 +156,6 @@ class ScriptingOptionsPage(OptionsPage):
         self.ui.tagger_script.setEnabled(False)
         self.ui.splitter.setStretchFactor(0, 1)
         self.ui.splitter.setStretchFactor(1, 2)
-        font = QtGui.QFont('Monospace')
-        font.setStyleHint(QtGui.QFont.TypeWriter)
-        self.ui.tagger_script.setFont(font)
         self.move_view = MoveableListView(self.ui.script_list, self.ui.move_up_button,
                                           self.ui.move_down_button)
         self.ui.scripting_documentation_button.clicked.connect(self.show_scripting_documentation)
