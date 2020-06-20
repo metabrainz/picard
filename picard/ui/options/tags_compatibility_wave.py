@@ -21,6 +21,7 @@
 
 
 from picard import config
+from picard.formats.wav import WAVFile
 
 from picard.ui.options import (
     OptionsPage,
@@ -67,4 +68,5 @@ class TagsCompatibilityWaveOptionsPage(OptionsPage):
             config.setting["wave_riff_info_encoding"] = "windows-1252"
 
 
-register_options_page(TagsCompatibilityWaveOptionsPage)
+if WAVFile.supports_tag('artist'):
+    register_options_page(TagsCompatibilityWaveOptionsPage)
