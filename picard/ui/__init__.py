@@ -33,7 +33,19 @@ from PyQt5 import (
 )
 
 from picard import config
+from picard.const.sys import (
+    IS_MACOS,
+    IS_WIN,
+)
 from picard.util import restore_method
+
+
+if IS_MACOS:
+    FONT_FAMILY_MONOSPACE = 'Menlo'
+if IS_WIN:
+    FONT_FAMILY_MONOSPACE = 'Courier'
+else:
+    FONT_FAMILY_MONOSPACE = 'Monospace'
 
 
 class PreserveGeometry:

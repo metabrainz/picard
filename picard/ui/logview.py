@@ -40,7 +40,10 @@ from picard import (
 )
 from picard.util import reconnect
 
-from picard.ui import PicardDialog
+from picard.ui import (
+    FONT_FAMILY_MONOSPACE,
+    PicardDialog,
+)
 from picard.ui.colors import interface_colors
 
 
@@ -232,11 +235,9 @@ class LogView(LogViewCommon):
     def _setup_formats(self):
         interface_colors.load_from_config()
         self.formats = {}
-        font = QtGui.QFont()
-        font.setFamily("Monospace")
         for level, feat in log.levels_features.items():
             text_fmt = QtGui.QTextCharFormat()
-            text_fmt.setFont(font)
+            text_fmt.setFontFamily(FONT_FAMILY_MONOSPACE)
             text_fmt.setForeground(interface_colors.get_qcolor(feat.color_key))
             self.formats[level] = text_fmt
 
