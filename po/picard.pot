@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: picard 2.4.0.dev1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-06-19 09:32+0200\n"
+"POT-Creation-Date: 2020-06-20 16:11+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -365,7 +365,7 @@ msgid ""
 "i.e. `$unset(performer:*)` would unset all performer tags."
 msgstr ""
 
-#: picard/script.py:793
+#: picard/script.py:790
 msgid ""
 "`$delete(name)`\n"
 "\n"
@@ -379,7 +379,7 @@ msgid ""
 "_Since Picard 2.1_"
 msgstr ""
 
-#: picard/script.py:808
+#: picard/script.py:805
 #, python-format
 msgid ""
 "`$set(name,value)`\n"
@@ -393,7 +393,7 @@ msgid ""
 "    `%_something%` will not."
 msgstr ""
 
-#: picard/script.py:825
+#: picard/script.py:822
 #, python-format
 msgid ""
 "`$setmulti(name,value,separator=\"; \")`\n"
@@ -409,14 +409,14 @@ msgid ""
 "_Since Picard 1.0_"
 msgstr ""
 
-#: picard/script.py:839
+#: picard/script.py:836
 msgid ""
 "`$get(name)`\n"
 "\n"
 "Returns the variable `name` (equivalent to `%name%`)."
 msgstr ""
 
-#: picard/script.py:849
+#: picard/script.py:846
 #, python-format
 msgid ""
 "`$copy(new,old)`\n"
@@ -428,7 +428,7 @@ msgid ""
 "_Since Picard 0.9_"
 msgstr ""
 
-#: picard/script.py:865
+#: picard/script.py:862
 msgid ""
 "`$copymerge(new,old)`\n"
 "\n"
@@ -440,7 +440,7 @@ msgid ""
 "_Since Picard 1.0_"
 msgstr ""
 
-#: picard/script.py:883
+#: picard/script.py:880
 msgid ""
 "`$trim(text[,char])`\n"
 "\n"
@@ -448,7 +448,7 @@ msgid ""
 "    The optional second parameter specifies the character to trim."
 msgstr ""
 
-#: picard/script.py:896
+#: picard/script.py:893
 msgid ""
 "`$add(x,y,*args)`\n"
 "\n"
@@ -457,7 +457,7 @@ msgid ""
 "i.e. `$add(x,y,z) = ((x + y) + z)`"
 msgstr ""
 
-#: picard/script.py:910
+#: picard/script.py:907
 msgid ""
 "`$sub(x,y,*args)`\n"
 "\n"
@@ -466,7 +466,7 @@ msgid ""
 "i.e. `$sub(x,y,z) = ((x - y) - z)`"
 msgstr ""
 
-#: picard/script.py:924
+#: picard/script.py:921
 msgid ""
 "`$div(x,y,*args)`\n"
 "\n"
@@ -476,7 +476,7 @@ msgid ""
 "i.e. `$div(x,y,z) = ((x / y) / z)`"
 msgstr ""
 
-#: picard/script.py:945
+#: picard/script.py:942
 msgid ""
 "`$mod(x,y,*args)`\n"
 "\n"
@@ -486,7 +486,7 @@ msgid ""
 "i.e. `$mod(x,y,z) = ((x % y) % z)`"
 msgstr ""
 
-#: picard/script.py:960
+#: picard/script.py:957
 msgid ""
 "`$mul(x,y,*args)`\n"
 "\n"
@@ -495,7 +495,7 @@ msgid ""
 "    i.e. `$mul(x,y,z) = ((x * y) * z)`"
 msgstr ""
 
-#: picard/script.py:974
+#: picard/script.py:971
 msgid ""
 "`$or(x,y,*args)`\n"
 "\n"
@@ -504,7 +504,7 @@ msgid ""
 "    The result is true if ANY of the arguments is not empty."
 msgstr ""
 
-#: picard/script.py:992
+#: picard/script.py:989
 msgid ""
 "`$and(x,y,*args)`\n"
 "\n"
@@ -513,63 +513,63 @@ msgid ""
 "    The result is true if ALL of the arguments are not empty."
 msgstr ""
 
-#: picard/script.py:1006
+#: picard/script.py:1003
 msgid ""
 "`$not(x)`\n"
 "\n"
 "Returns true if `x` is empty."
 msgstr ""
 
-#: picard/script.py:1018
+#: picard/script.py:1015
 msgid ""
 "`$eq(x,y)`\n"
 "\n"
 "Returns true if `x` equals `y`."
 msgstr ""
 
-#: picard/script.py:1030
+#: picard/script.py:1027
 msgid ""
 "`$ne(x,y)`\n"
 "\n"
 "Returns true if `x` does not equal `y`."
 msgstr ""
 
-#: picard/script.py:1042
+#: picard/script.py:1039
 msgid ""
 "`$lt(x,y)`\n"
 "\n"
 "Returns true if `x` is less than `y`."
 msgstr ""
 
-#: picard/script.py:1056
+#: picard/script.py:1053
 msgid ""
 "`$lte(x,y)`\n"
 "\n"
 "Returns true if `x` is less than or equal to `y`."
 msgstr ""
 
-#: picard/script.py:1070
+#: picard/script.py:1067
 msgid ""
 "`$gt(x,y)`\n"
 "\n"
 "Returns true if `x` is greater than `y`."
 msgstr ""
 
-#: picard/script.py:1084
+#: picard/script.py:1081
 msgid ""
 "`$gte(x,y)`\n"
 "\n"
 "Returns true if `x` is greater than or equal to `y`."
 msgstr ""
 
-#: picard/script.py:1098
+#: picard/script.py:1095
 msgid ""
 "`$len(text)`\n"
 "\n"
 "Returns the number of characters in `text`."
 msgstr ""
 
-#: picard/script.py:1107
+#: picard/script.py:1104
 msgid ""
 "`$lenmulti(name,separator=\"; \")`\n"
 "\n"
@@ -584,7 +584,7 @@ msgid ""
 "    `$lenmulti(One; Two; Three)`"
 msgstr ""
 
-#: picard/script.py:1122
+#: picard/script.py:1119
 msgid ""
 "`$performer(pattern=\"\",join=\", \")`\n"
 "\n"
@@ -594,7 +594,7 @@ msgid ""
 "_Since Picard 0.10_"
 msgstr ""
 
-#: picard/script.py:1137
+#: picard/script.py:1134
 msgid ""
 "`$matchedtracks()`\n"
 "\n"
@@ -604,7 +604,7 @@ msgid ""
 "_Since Picard 0.12_"
 msgstr ""
 
-#: picard/script.py:1153
+#: picard/script.py:1150
 msgid ""
 "`$is_complete()`\n"
 "\n"
@@ -612,7 +612,7 @@ msgid ""
 "**Only works in File Naming scripts.**"
 msgstr ""
 
-#: picard/script.py:1168
+#: picard/script.py:1165
 msgid ""
 "`$firstalphachar(text,nonalpha=\"#\")`\n"
 "\n"
@@ -622,7 +622,7 @@ msgid ""
 "_Since Picard 0.12_"
 msgstr ""
 
-#: picard/script.py:1185
+#: picard/script.py:1182
 msgid ""
 "`$initials(text)`\n"
 "\n"
@@ -632,7 +632,7 @@ msgid ""
 "_Since Picard 0.12_"
 msgstr ""
 
-#: picard/script.py:1196
+#: picard/script.py:1193
 msgid ""
 "`$firstwords(text,length)`\n"
 "\n"
@@ -642,7 +642,7 @@ msgid ""
 "_Since Picard 0.12_"
 msgstr ""
 
-#: picard/script.py:1219
+#: picard/script.py:1216
 msgid ""
 "`$startswith(text,prefix)`\n"
 "\n"
@@ -651,7 +651,7 @@ msgid ""
 "_Since Picard 1.4_"
 msgstr ""
 
-#: picard/script.py:1232
+#: picard/script.py:1229
 msgid ""
 "`$endswith(text,suffix)`\n"
 "\n"
@@ -660,7 +660,7 @@ msgid ""
 "_Since Picard 1.4_"
 msgstr ""
 
-#: picard/script.py:1245
+#: picard/script.py:1242
 msgid ""
 "`$truncate(text,length)`\n"
 "\n"
@@ -669,7 +669,7 @@ msgid ""
 "_Since Picard 0.12_"
 msgstr ""
 
-#: picard/script.py:1260
+#: picard/script.py:1257
 msgid ""
 "`$swapprefix(text,*prefixes=\"a\",\"the\")`\n"
 "\n"
@@ -680,7 +680,7 @@ msgid ""
 "_Since Picard 1.3, previously as a plugin since Picard 0.13_"
 msgstr ""
 
-#: picard/script.py:1277
+#: picard/script.py:1274
 msgid ""
 "`$delprefix(text,*prefixes=\"a\",\"the\")`\n"
 "\n"
@@ -690,7 +690,7 @@ msgid ""
 "_Since Picard 1.3_"
 msgstr ""
 
-#: picard/script.py:1309
+#: picard/script.py:1306
 msgid ""
 "`$eq_any(x,a1,a2...)`\n"
 "\n"
@@ -699,7 +699,7 @@ msgid ""
 "Functionally equivalent to the eq2 plugin."
 msgstr ""
 
-#: picard/script.py:1326
+#: picard/script.py:1323
 msgid ""
 "`$ne_all(x,a1,a2...)`\n"
 "\n"
@@ -708,7 +708,7 @@ msgid ""
 "Functionally equivalent to the ne2 plugin."
 msgstr ""
 
-#: picard/script.py:1343
+#: picard/script.py:1340
 msgid ""
 "`$eq_all(x,a1,a2...)`\n"
 "\n"
@@ -716,7 +716,7 @@ msgid ""
 "Functionally equivalent to `$and($eq(x,a1),$eq(x,a2) ...)`."
 msgstr ""
 
-#: picard/script.py:1361
+#: picard/script.py:1358
 msgid ""
 "`$ne_any(x,a1,a2...)`\n"
 "\n"
@@ -724,7 +724,7 @@ msgid ""
 "Functionally equivalent to `$or($ne(x,a1),$ne(x,a2) ...)`."
 msgstr ""
 
-#: picard/script.py:1376
+#: picard/script.py:1373
 msgid ""
 "`$title(text)`\n"
 "\n"
@@ -734,7 +734,7 @@ msgid ""
 "_Since Picard 2.1_"
 msgstr ""
 
-#: picard/script.py:1418
+#: picard/script.py:1415
 msgid ""
 "`$is_audio()`\n"
 "\n"
@@ -743,7 +743,7 @@ msgid ""
 "_Since Picard 2.2_"
 msgstr ""
 
-#: picard/script.py:1432
+#: picard/script.py:1429
 msgid ""
 "`$is_video()`\n"
 "\n"
@@ -752,7 +752,7 @@ msgid ""
 "_Since Picard 2.2_"
 msgstr ""
 
-#: picard/script.py:1446
+#: picard/script.py:1443
 msgid ""
 "`$find(haystack,needle)`\n"
 "\n"
@@ -766,14 +766,14 @@ msgid ""
 "not found."
 msgstr ""
 
-#: picard/script.py:1473
+#: picard/script.py:1470
 msgid ""
 "`$reverse(text)`\n"
 "\n"
 "Returns `text` in reverse order."
 msgstr ""
 
-#: picard/script.py:1491
+#: picard/script.py:1488
 msgid ""
 "`$substr(text,start,end)`\n"
 "\n"
@@ -787,7 +787,7 @@ msgid ""
 "    the start and end of the string respectively."
 msgstr ""
 
-#: picard/script.py:1529
+#: picard/script.py:1526
 msgid ""
 "`$getmulti(name,index,separator=\"; \")`\n"
 "\n"
@@ -799,7 +799,7 @@ msgid ""
 "    multi-valued tag."
 msgstr ""
 
-#: picard/script.py:1559
+#: picard/script.py:1556
 msgid ""
 "`$foreach(name,code,separator=\"; \")`\n"
 "\n"
@@ -817,7 +817,7 @@ msgid ""
 "    proper multi-valued tag."
 msgstr ""
 
-#: picard/script.py:1594
+#: picard/script.py:1591
 msgid ""
 "`$while(condition,code)`\n"
 "\n"
@@ -831,7 +831,7 @@ msgid ""
 "    safeguard against accidentally creating an infinite loop."
 msgstr ""
 
-#: picard/script.py:1622
+#: picard/script.py:1619
 msgid ""
 "`$map(name,code,separator=\"; \")`\n"
 "\n"
@@ -846,7 +846,7 @@ msgid ""
 "    the element or count value to be accessed within the `code` script."
 msgstr ""
 
-#: picard/script.py:1658
+#: picard/script.py:1655
 msgid ""
 "`$join(name,text,separator=\"; \")`\n"
 "\n"
@@ -854,7 +854,7 @@ msgid ""
 "returns the result as a string."
 msgstr ""
 
-#: picard/script.py:1682
+#: picard/script.py:1679
 msgid ""
 "`$slice(name,start,end,separator=\"; \")`\n"
 "\n"
@@ -878,7 +878,7 @@ msgid ""
 "    `$setmulti(supporting_artists,$slice(%artists%,1,))`"
 msgstr ""
 
-#: picard/script.py:1725
+#: picard/script.py:1722
 #, python-format
 msgid ""
 "`$datetime(format=\"%Y-%m-%d %H:%M:%S\")`\n"
@@ -900,7 +900,7 @@ msgid ""
 "    `%3Y`); and hanging '%' at the end of the format string."
 msgstr ""
 
-#: picard/script.py:1765
+#: picard/script.py:1762
 msgid ""
 "`$sortmulti(name,separator=\"; \")`\n"
 "\n"
@@ -908,7 +908,7 @@ msgid ""
 "ascending order."
 msgstr ""
 
-#: picard/script.py:1786
+#: picard/script.py:1783
 msgid ""
 "`$reversemulti(name,separator=\"; \")`\n"
 "\n"
@@ -2933,7 +2933,7 @@ msgstr ""
 msgid "C&lear all"
 msgstr ""
 
-#: picard/coverart/providers/caa.py:322 picard/ui/options/dialog.py:117
+#: picard/coverart/providers/caa.py:322 picard/ui/options/dialog.py:121
 msgid "Restore &Defaults"
 msgstr ""
 
@@ -4667,44 +4667,56 @@ msgstr ""
 msgid "Tags are separated by commas and are case-insensitive."
 msgstr ""
 
+#: picard/ui/options/tags_compatibility_id3.py:39
 #: picard/ui/ui_options_tags_compatibility.py:170
+#: picard/ui/ui_options_tags_compatibility_id3.py:114
 msgid "ID3"
 msgstr ""
 
 #: picard/ui/ui_options_tags_compatibility.py:171
+#: picard/ui/ui_options_tags_compatibility_id3.py:115
 msgid "ID3v2 Version"
 msgstr ""
 
 #: picard/ui/ui_options_tags_compatibility.py:172
+#: picard/ui/ui_options_tags_compatibility_id3.py:116
 msgid "2.4"
 msgstr ""
 
 #: picard/ui/ui_options_tags_compatibility.py:173
+#: picard/ui/ui_options_tags_compatibility_id3.py:117
 msgid "2.3"
 msgstr ""
 
 #: picard/ui/ui_options_tags_compatibility.py:174
+#: picard/ui/ui_options_tags_compatibility_id3.py:118
 msgid "ID3v2 Text Encoding"
 msgstr ""
 
 #: picard/ui/ui_options_tags_compatibility.py:175
 #: picard/ui/ui_options_tags_compatibility.py:195
+#: picard/ui/ui_options_tags_compatibility_id3.py:119
+#: picard/ui/ui_options_tags_compatibility_wave.py:62
 msgid "UTF-8"
 msgstr ""
 
 #: picard/ui/ui_options_tags_compatibility.py:176
+#: picard/ui/ui_options_tags_compatibility_id3.py:120
 msgid "UTF-16"
 msgstr ""
 
 #: picard/ui/ui_options_tags_compatibility.py:177
+#: picard/ui/ui_options_tags_compatibility_id3.py:121
 msgid "ISO-8859-1"
 msgstr ""
 
 #: picard/ui/ui_options_tags_compatibility.py:178
+#: picard/ui/ui_options_tags_compatibility_id3.py:122
 msgid "Join multiple ID3v2.3 tags with:"
 msgstr ""
 
 #: picard/ui/ui_options_tags_compatibility.py:179
+#: picard/ui/ui_options_tags_compatibility_id3.py:123
 msgid ""
 "<html><head/><body><p>Default is '/' to maintain compatibility with "
 "previous Picard releases.</p><p>New alternatives are ';_' or '_/_' or "
@@ -4712,57 +4724,98 @@ msgid ""
 msgstr ""
 
 #: picard/ui/ui_options_tags_compatibility.py:180
+#: picard/ui/ui_options_tags_compatibility_id3.py:124
 msgid "Save iTunes compatible grouping and work"
 msgstr ""
 
 #: picard/ui/ui_options_tags_compatibility.py:181
+#: picard/ui/ui_options_tags_compatibility_id3.py:125
 msgid "Also include ID3v1 tags in the files"
 msgstr ""
 
 #: picard/ui/ui_options_tags_compatibility.py:182
+#: picard/ui/ui_options_tags_compatibility_aac.py:45
 msgid "AAC files"
 msgstr ""
 
 #: picard/ui/ui_options_tags_compatibility.py:183
 #: picard/ui/ui_options_tags_compatibility.py:187
+#: picard/ui/ui_options_tags_compatibility_aac.py:47
+#: picard/ui/ui_options_tags_compatibility_ac3.py:47
 msgid "Save APEv2 tags"
 msgstr ""
 
 #: picard/ui/ui_options_tags_compatibility.py:184
 #: picard/ui/ui_options_tags_compatibility.py:188
+#: picard/ui/ui_options_tags_compatibility_aac.py:48
+#: picard/ui/ui_options_tags_compatibility_ac3.py:48
 msgid "Do not save tags"
 msgstr ""
 
 #: picard/ui/ui_options_tags_compatibility.py:185
+#: picard/ui/ui_options_tags_compatibility_aac.py:49
 msgid "Remove APEv2 tags from AAC files"
 msgstr ""
 
 #: picard/ui/ui_options_tags_compatibility.py:186
+#: picard/ui/ui_options_tags_compatibility_ac3.py:45
 msgid "AC3 files"
 msgstr ""
 
 #: picard/ui/ui_options_tags_compatibility.py:189
+#: picard/ui/ui_options_tags_compatibility_ac3.py:49
 msgid "Remove APEv2 tags from AC3 files"
 msgstr ""
 
 #: picard/ui/ui_options_tags_compatibility.py:190
+#: picard/ui/ui_options_tags_compatibility_wave.py:56
 msgid "WAVE files"
 msgstr ""
 
 #: picard/ui/ui_options_tags_compatibility.py:191
+#: picard/ui/ui_options_tags_compatibility_wave.py:58
 msgid "Also include RIFF INFO tags in the files"
 msgstr ""
 
 #: picard/ui/ui_options_tags_compatibility.py:192
+#: picard/ui/ui_options_tags_compatibility_wave.py:59
 msgid "Remove existing RIFF INFO tags from WAVE files"
 msgstr ""
 
 #: picard/ui/ui_options_tags_compatibility.py:193
+#: picard/ui/ui_options_tags_compatibility_wave.py:60
 msgid "RIFF INFO Text Encoding"
 msgstr ""
 
 #: picard/ui/ui_options_tags_compatibility.py:194
+#: picard/ui/ui_options_tags_compatibility_wave.py:61
 msgid "Windows-1252"
+msgstr ""
+
+#: picard/ui/ui_options_tags_compatibility_aac.py:46
+msgid ""
+"Picard can save APEv2 tags to pure AAC files, which by default do not "
+"support tagging. APEv2 tags in AAC are supported by some players, but "
+"players not supporting AAC files with APEv2 tags can have issues loading "
+"and playing those files. To deal with this you can choose whether to save"
+" tags to those files."
+msgstr ""
+
+#: picard/ui/ui_options_tags_compatibility_ac3.py:46
+msgid ""
+"Picard can save APEv2 tags to pure AC3 files, which by default do not "
+"support tagging. APEv2 tags in AC3 are supported by some players, but "
+"players not supporting AC3 files with APEv2 tags can have issues loading "
+"and playing those files. To deal with this you can choose whether to save"
+" tags to those files."
+msgstr ""
+
+#: picard/ui/ui_options_tags_compatibility_wave.py:57
+msgid ""
+"Picard will tag WAVE files using ID3v2 tags. This is not supported by all"
+" software. For compatibility with software which does not support ID3v2 "
+"tags in WAVE files additional RIFF INFO tags can be written to the files."
+" RIFF INFO has only limited support for tags and character encodings."
 msgstr ""
 
 #: picard/ui/ui_passworddialog.py:60
@@ -4919,39 +4972,39 @@ msgstr ""
 msgid "Cover Art"
 msgstr ""
 
-#: picard/ui/options/dialog.py:115
+#: picard/ui/options/dialog.py:119
 msgid "&Restore all Defaults"
 msgstr ""
 
-#: picard/ui/options/dialog.py:116
+#: picard/ui/options/dialog.py:120
 msgid "Reset all of Picard's settings"
 msgstr ""
 
-#: picard/ui/options/dialog.py:118
+#: picard/ui/options/dialog.py:122
 msgid "Reset all settings for current option page"
 msgstr ""
 
-#: picard/ui/options/dialog.py:121
+#: picard/ui/options/dialog.py:125
 msgid "Make It So!"
 msgstr ""
 
-#: picard/ui/options/dialog.py:205
+#: picard/ui/options/dialog.py:208
 msgid "Unexpected error"
 msgstr ""
 
-#: picard/ui/options/dialog.py:225
+#: picard/ui/options/dialog.py:245
 msgid "You are about to reset your options for this page."
 msgstr ""
 
-#: picard/ui/options/dialog.py:229
+#: picard/ui/options/dialog.py:249
 msgid "Warning! This will reset all of your settings."
 msgstr ""
 
-#: picard/ui/options/dialog.py:236
+#: picard/ui/options/dialog.py:256
 msgid "Confirm Reset"
 msgstr ""
 
-#: picard/ui/options/dialog.py:237
+#: picard/ui/options/dialog.py:257
 msgid "Are you sure?"
 msgstr ""
 
@@ -5239,8 +5292,16 @@ msgstr ""
 msgid "Tags"
 msgstr ""
 
-#: picard/ui/options/tags_compatibility.py:39
-msgid "Tag Compatibility"
+#: picard/ui/options/tags_compatibility_aac.py:37
+msgid "AAC"
+msgstr ""
+
+#: picard/ui/options/tags_compatibility_ac3.py:37
+msgid "AC3"
+msgstr ""
+
+#: picard/ui/options/tags_compatibility_wave.py:38
+msgid "WAVE"
 msgstr ""
 
 #: picard/ui/searchdialog/__init__.py:92
