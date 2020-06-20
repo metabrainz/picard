@@ -146,6 +146,25 @@ if IS_WIN:
 
     theme = WindowsTheme()
 
+elif IS_MACOS:
+    try:
+        import AppKit
+    except ImportError:
+        AppKit = None
+
+    class MacTheme(BaseTheme):
+        def is_dark_theme(self):
+            if not AppKit:
+                return False
+            appearance = AppKit.NSAppearance.currentAppearance()
+            basic_appearance = appearance.bestMatchFromAppearancesWithNames_([
+                AppKit.NSAppearanceNameAqua,
+                AppKit.NSAppearanceNameDarkAqua
+            ])
+            return basic_appearance == AppKit.NSAppearanceNameDarkAqua
+
+    theme = MacTheme()
+
 else:
     theme = BaseTheme()
 
