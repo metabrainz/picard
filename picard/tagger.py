@@ -99,7 +99,10 @@ from picard.const.sys import (
 )
 from picard.dataobj import DataObject
 from picard.disc import Disc
-from picard.file import File, register_file_post_save_processor
+from picard.file import (
+    File,
+    register_file_post_save_processor,
+)
 from picard.formats import open_ as open_file
 from picard.i18n import setup_gettext
 from picard.pluginmanager import PluginManager
