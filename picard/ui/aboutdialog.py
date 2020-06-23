@@ -66,7 +66,7 @@ class AboutDialog(PicardDialog, SingletonDialog):
         else:
             args["translator_credits"] = ""
 
-        args['third_parties_versions'] = '<br />'.join(["%s %s" %
+        args['third_parties_versions'] = ', '.join(["%s %s" %
                                                         (versions.version_name(name), value) for name, value
                                                         in versions.as_dict(i18n=True).items()
                                                         if name != 'version'])

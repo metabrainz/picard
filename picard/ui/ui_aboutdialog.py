@@ -10,7 +10,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_AboutDialog(object):
     def setupUi(self, AboutDialog):
         AboutDialog.setObjectName("AboutDialog")
-        AboutDialog.resize(640, 430)
+        AboutDialog.resize(680, 480)
         AboutDialog.setMinimumSize(QtCore.QSize(400, 300))
         self.vboxlayout = QtWidgets.QVBoxLayout(AboutDialog)
         self.vboxlayout.setContentsMargins(0, 0, 0, 0)
@@ -59,7 +59,7 @@ class Ui_AboutDialog(object):
         self.scrollArea.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
         self.scrollArea.setObjectName("scrollArea")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 640, 366))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 680, 416))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self.verticalLayout = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout.setContentsMargins(9, 0, 9, 9)
