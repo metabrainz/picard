@@ -84,6 +84,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
     autorestore = False
 
     options = [
+        config.TextOption("persist", "options_last_active_page", ""),
         config.ListOption("persist", "options_pages_tree_state", []),
         config.Option("persist", "options_splitter", QtCore.QByteArray()),
     ]
@@ -145,6 +146,8 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         self.item_to_page = {}
         self.page_to_item = {}
         self.default_item = None
+        if not default_page:
+            default_page = config.persist["options_last_active_page"]
         self.add_pages(None, default_page, self.ui.pages_tree)
 
         # work-around to set optimal option pane width
@@ -172,6 +175,8 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         items = self.ui.pages_tree.selectedItems()
         if items:
             page = self.item_to_page[items[0]]
+            if page.NAME != 'about':
+                config.persist["options_last_active_page"] = page.NAME
             self.ui.pages_stack.setCurrentWidget(page)
 
     def disable_page(self, name):
