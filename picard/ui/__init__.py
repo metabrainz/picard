@@ -42,7 +42,7 @@ from picard.util import restore_method
 
 if IS_MACOS:
     FONT_FAMILY_MONOSPACE = 'Menlo'
-if IS_WIN:
+elif IS_WIN:
     FONT_FAMILY_MONOSPACE = 'Courier'
 else:
     FONT_FAMILY_MONOSPACE = 'Monospace'

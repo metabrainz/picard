@@ -227,8 +227,6 @@ class Tagger(QtWidgets.QApplication):
         if IS_MACOS:
             # On macOS it is not common that the global menu shows icons
             self.setAttribute(QtCore.Qt.AA_DontShowIconsInMenus)
-            # Ensure monospace font works on macOS
-            QtGui.QFont.insertSubstitution('Monospace', 'Menlo')
 
         # Setup logging
         log.debug("Starting Picard from %r", os.path.abspath(__file__))
