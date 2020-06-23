@@ -3,7 +3,7 @@
 # Picard, the next-generation MusicBrainz tagger
 #
 # Copyright (C) 2006-2014 Lukáš Lalinský
-# Copyright (C) 2008, 2013, 2018-2019 Philipp Wolfer
+# Copyright (C) 2008, 2013, 2018-2020 Philipp Wolfer
 # Copyright (C) 2011 Pavan Chander
 # Copyright (C) 2011, 2013 Wieland Hoffmann
 # Copyright (C) 2013 Michael Wiencek
@@ -25,32 +25,31 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+from PyQt5 import QtCore
 
 from picard.const import PICARD_URLS
 from picard.formats import supported_extensions
 from picard.util import versions
 
-from picard.ui.options import (
-    OptionsPage,
-    register_options_page,
+from picard.ui import (
+    PicardDialog,
+    SingletonDialog,
 )
-from picard.ui.ui_options_about import Ui_AboutOptionsPage
+from picard.ui.ui_aboutdialog import Ui_AboutDialog
 
 
-class AboutOptionsPage(OptionsPage):
+class AboutDialog(PicardDialog, SingletonDialog):
 
-    NAME = "about"
-    TITLE = N_("About")
-    PARENT = None
-    SORT_ORDER = 100
-    ACTIVE = True
+    autorestore = False
 
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.ui = Ui_AboutOptionsPage()
+        self.setAttribute(QtCore.Qt.WA_DeleteOnClose)
+        self.ui = Ui_AboutDialog()
         self.ui.setupUi(self)
+        self._update_content()
 
-    def load(self):
+    def _update_content(self):
         args = {
             "picard_doc_url": PICARD_URLS['home'],
             "picard_donate_url": PICARD_URLS['donate'],
@@ -103,6 +102,3 @@ Thank you for using Picard. Picard relies on the MusicBrainz database, which is 
 """) % args
         self.ui.label.setOpenExternalLinks(True)
         self.ui.label.setText(text)
-
-
-register_options_page(AboutOptionsPage)

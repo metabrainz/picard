@@ -3,17 +3,20 @@
 # Automatically generated - don't edit.
 # Use `python setup.py build_ui` to update it.
 
+
 from PyQt5 import QtCore, QtGui, QtWidgets
 
-class Ui_AboutOptionsPage(object):
-    def setupUi(self, AboutOptionsPage):
-        AboutOptionsPage.setObjectName("AboutOptionsPage")
-        AboutOptionsPage.resize(171, 137)
-        self.vboxlayout = QtWidgets.QVBoxLayout(AboutOptionsPage)
+
+class Ui_AboutDialog(object):
+    def setupUi(self, AboutDialog):
+        AboutDialog.setObjectName("AboutDialog")
+        AboutDialog.resize(600, 400)
+        AboutDialog.setMinimumSize(QtCore.QSize(400, 300))
+        self.vboxlayout = QtWidgets.QVBoxLayout(AboutDialog)
         self.vboxlayout.setContentsMargins(0, 0, 0, 0)
         self.vboxlayout.setSpacing(6)
         self.vboxlayout.setObjectName("vboxlayout")
-        self.scrollArea = QtWidgets.QScrollArea(AboutOptionsPage)
+        self.scrollArea = QtWidgets.QScrollArea(AboutDialog)
         self.scrollArea.setFrameShape(QtWidgets.QFrame.NoFrame)
         self.scrollArea.setFrameShadow(QtWidgets.QFrame.Plain)
         self.scrollArea.setLineWidth(0)
@@ -22,7 +25,7 @@ class Ui_AboutOptionsPage(object):
         self.scrollArea.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
         self.scrollArea.setObjectName("scrollArea")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 171, 137))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 600, 400))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self.verticalLayout = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout.setContentsMargins(9, 9, 9, 9)
@@ -38,9 +41,9 @@ class Ui_AboutOptionsPage(object):
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
         self.vboxlayout.addWidget(self.scrollArea)
 
-        self.retranslateUi(AboutOptionsPage)
-        QtCore.QMetaObject.connectSlotsByName(AboutOptionsPage)
+        self.retranslateUi(AboutDialog)
+        QtCore.QMetaObject.connectSlotsByName(AboutDialog)
 
-    def retranslateUi(self, AboutOptionsPage):
-        pass
-
+    def retranslateUi(self, AboutDialog):
+        _translate = QtCore.QCoreApplication.translate
+        AboutDialog.setWindowTitle(_("About Picard"))
