@@ -175,6 +175,15 @@ class MainPanel(QtWidgets.QSplitter):
     LENGTH_COLUMN = _column_indexes['~length']
     FINGERPRINT_COLUMN = _column_indexes['~fingerprint']
 
+    NAT_SORT_COLUMNS = [
+        _column_indexes['title'],
+        _column_indexes['album'],
+        _column_indexes['discsubtitle'],
+        _column_indexes['tracknumber'],
+        _column_indexes['discnumber'],
+        _column_indexes['catalognumber'],
+    ]
+
     def __init__(self, window, parent=None):
         super().__init__(parent)
         self.window = window
@@ -874,6 +883,10 @@ class TreeItem(QtWidgets.QTreeWidgetItem):
             self.setTextAlignment(column, QtCore.Qt.AlignRight | QtCore.Qt.AlignVCenter)
         self.setSizeHint(MainPanel.TITLE_COLUMN, ICON_SIZE)
 
+    def setText(self, column, text):
+        self._sortkeys[column] = None
+        return super().setText(column, text)
+
     def __lt__(self, other):
         if not self.sortable:
             return False
@@ -881,9 +894,18 @@ class TreeItem(QtWidgets.QTreeWidgetItem):
         return self.sortkey(column) < other.sortkey(column)
 
     def sortkey(self, column):
+        sortkey = self._sortkeys.get(column)
+        if sortkey is not None:
+            return sortkey
+
         if column == MainPanel.LENGTH_COLUMN:
-            return self.obj.metadata.length or 0
-        return natsort.natkey(self.text(column).lower())
+            sortkey = self.obj.metadata.length or 0
+        elif column in MainPanel.NAT_SORT_COLUMNS:
+            sortkey = natsort.natkey(self.text(column).lower())
+        else:
+            sortkey = self.text(column).lower()
+        self._sortkeys[column] = sortkey
+        return sortkey
 
 
 class ClusterItem(TreeItem):
