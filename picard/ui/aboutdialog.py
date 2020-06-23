@@ -86,8 +86,7 @@ and <a href="http://www.flaticon.com/authors/madebyoliver">Madebyoliver</a>,
 <a href="https://www.flaticon.com/authors/smashicons">Smashicons</a>
 from <a href="https://www.flaticon.com">www.flaticon.com</a>""")
 
-        text = _("""<p align="center"><span style="font-size:15px;font-weight:bold;">MusicBrainz Picard</span><br/>
-Version %(version)s</p>
+        text = _("""<p align="center">Version %(version)s</p>
 <p align="center"><small>
 %(third_parties_versions)s
 </small></p>
