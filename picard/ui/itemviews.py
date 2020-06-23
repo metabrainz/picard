@@ -167,8 +167,13 @@ class MainPanel(QtWidgets.QSplitter):
         (N_('Fingerprint status'), '~fingerprint'),
     ]
 
-    TITLE_COLUMN = 0
-    FINGERPRINT_COLUMN = 13
+    _column_indexes = {column[1]: i for i, column in enumerate(columns)}
+
+    TITLE_COLUMN = _column_indexes['title']
+    TRACKNUMBER_COLUMN = _column_indexes['tracknumber']
+    DISCNUMBER_COLUMN = _column_indexes['discnumber']
+    LENGTH_COLUMN = _column_indexes['~length']
+    FINGERPRINT_COLUMN = _column_indexes['~fingerprint']
 
     def __init__(self, window, parent=None):
         super().__init__(parent)
@@ -860,9 +865,13 @@ class TreeItem(QtWidgets.QTreeWidgetItem):
         if obj is not None:
             obj.item = self
         self.sortable = sortable
-        self.setTextAlignment(1, QtCore.Qt.AlignRight | QtCore.Qt.AlignVCenter)
-        self.setTextAlignment(7, QtCore.Qt.AlignRight | QtCore.Qt.AlignVCenter)
-        self.setTextAlignment(8, QtCore.Qt.AlignRight | QtCore.Qt.AlignVCenter)
+        self._sortkeys = {}
+        for column in [
+            MainPanel.LENGTH_COLUMN,
+            MainPanel.TRACKNUMBER_COLUMN,
+            MainPanel.DISCNUMBER_COLUMN,
+        ]:
+            self.setTextAlignment(column, QtCore.Qt.AlignRight | QtCore.Qt.AlignVCenter)
         self.setSizeHint(MainPanel.TITLE_COLUMN, ICON_SIZE)
 
     def __lt__(self, other):
@@ -872,7 +881,7 @@ class TreeItem(QtWidgets.QTreeWidgetItem):
         return self.sortkey(column) < other.sortkey(column)
 
     def sortkey(self, column):
-        if column == 1:
+        if column == MainPanel.LENGTH_COLUMN:
             return self.obj.metadata.length or 0
         return natsort.natkey(self.text(column).lower())
 
