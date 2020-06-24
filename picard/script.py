@@ -617,9 +617,9 @@ def func_noop(parser, *args):
 
 
 @script_function(documentation=N_(
-    """`$left(text,num)`
+    """`$left(text,number)`
 
-Returns the first `num` characters from `text`."""
+Returns the first `number` characters from `text`."""
 ))
 def func_left(parser, text, length):
     try:
@@ -629,9 +629,9 @@ def func_left(parser, text, length):
 
 
 @script_function(documentation=N_(
-    """`$right(text,num)`
+    """`$right(text,number)`
 
-Returns the last `num` characters from `text`."""
+Returns the last `number` characters from `text`."""
 ))
 def func_right(parser, text, length):
     try:
@@ -751,9 +751,9 @@ def func_rsearch(parser, text, pattern):
 
 
 @script_function(documentation=N_(
-    """`$num(num,length)`
+    """`$num(number,length)`
 
-Returns `num` formatted to `length` digits (maximum 20)."""
+Returns `number` formatted to `length` digits (maximum 20)."""
 ))
 def func_num(parser, text, length):
     try:
