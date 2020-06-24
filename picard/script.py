@@ -927,10 +927,6 @@ Can be used with an arbitrary number of arguments.
 i.e. `$div(x,y,z) = ((x / y) / z)`"""
 ))
 def func_div(parser, x, y, *args):
-    """Divides ``x`` by ``y``.
-       Can be used with an arbitrary number of arguments.
-       Eg: $div(x, y, z) = ((x / y) / z)
-    """
     try:
         return _compute_int(operator.floordiv, x, y, *args)
     except ValueError:
@@ -976,10 +972,6 @@ Returns true if either `x` or `y` not empty.
     The result is true if ANY of the arguments is not empty."""
 ))
 def func_or(parser, x, y, *args):
-    """Returns true, if either ``x`` or ``y`` not empty.
-       Can be used with an arbitrary number of arguments. The result is
-       true if ANY of the arguments is not empty.
-    """
     if _compute_logic(any, x, y, *args):
         return "1"
     else:
@@ -1312,11 +1304,6 @@ Functionally equivalent to `$or($eq(x,a1),$eq(x,a2) ...)`.
 Functionally equivalent to the eq2 plugin."""
 ))
 def func_eq_any(parser, x, *args):
-    """
-    Return True if one string matches any of one or more other strings.
-    $eq_any(a,b,c ...) is functionally equivalent to $or($eq(a,b),$eq(a,c) ...)
-    Example: $if($eq_any(%artist%,foo,bar,baz),$set(engineer,test))
-    """
     # Inspired by the eq2 plugin by Brian Schweitzer.
     return '1' if x in args else ''
 
@@ -1329,11 +1316,6 @@ Functionally equivalent to `$and($ne(x,a1),$ne(x,a2) ...)`.
 Functionally equivalent to the ne2 plugin."""
 ))
 def func_ne_all(parser, x, *args):
-    """
-    Return True if one string doesn't match all of one or more other strings.
-    $ne_all(a,b,c ...) is functionally equivalent to $and($ne(a,b),$ne(a,c) ...)
-    Example: $if($ne_all(%artist%,foo,bar,baz),$set(engineer,test))
-    """
     # Inspired by the ne2 plugin by Brian Schweitzer.
     return '1' if x not in args else ''
 
@@ -1345,11 +1327,6 @@ Returns true if `x` equals `a1` and `a2` and ...
 Functionally equivalent to `$and($eq(x,a1),$eq(x,a2) ...)`."""
 ))
 def func_eq_all(parser, x, *args):
-    """
-    Return True if all string are equal.
-    $eq_all(a,b,c ...) is functionally equivalent to $and($eq(a,b),$eq(a,c) ...)
-    Example: $if($eq_all(%albumartist%,%artist%,Justin Bieber),$set(engineer,Meat Loaf))
-    """
     for i in args:
         if x != i:
             return ''
@@ -1363,11 +1340,6 @@ Returns true if `x` does not equal `a1` or `a2` or ...
 Functionally equivalent to `$or($ne(x,a1),$ne(x,a2) ...)`."""
 ))
 def func_ne_any(parser, x, *args):
-    """
-    Return True if all strings are not equal.
-    $ne_any(a,b,c ...) is functionally equivalent to $or($ne(a,b),$ne(a,c) ...)
-    Example: $if($ne_any(%albumartist%,%trackartist%,%composer%),$set(lyricist,%composer%))
-    """
     return func_not(parser, func_eq_all(parser, x, *args))
 
 
@@ -1381,11 +1353,6 @@ _Since Picard 2.1_"""
 def func_title(parser, text):
     # GPL 2.0 licensed code by Javier Kohen, Sambhav Kothari
     # from https://github.com/metabrainz/picard-plugins/blob/2.0/plugins/titlecase/titlecase.py
-    """
-    Title-case a text - capitalizes first letter of every word
-    like: from "Lost in the Supermarket" to "Lost In The Supermarket"
-    Example: $set(album,$title(%album%))
-    """
     if not text:
         return text
     capitalized = text[0].capitalize()
@@ -1452,16 +1419,6 @@ _Since Picard 2.3_
 Note that prior to Picard 2.3.2 `$find` returned "-1" if `needle` was not found."""
 ))
 def func_find(parser, haystack, needle):
-    """Find the location of the first occurrence of one string within another.
-
-    Arguments:
-        parser: The ScriptParser object used to parse the script.
-        haystack: The string to search.
-        needle: The substring to find.
-
-    Returns:
-        The zero-based index of the first occurrence of needle in haystack, or "" if needle was not found.
-    """
     index = haystack.find(needle)
     if index < 0:
         return ''
@@ -1474,15 +1431,6 @@ def func_find(parser, haystack, needle):
 Returns `text` in reverse order."""
 ))
 def func_reverse(parser, text):
-    """Returns 'text' in reverse order.
-
-    Arguments:
-        parser: The ScriptParser object used to parse the script.
-        text: String to be processed.
-
-    Returns:
-        Text in reverse order.
-    """
     return text[::-1]
 
 
@@ -1496,23 +1444,6 @@ Returns the substring beginning with the character at the `start` index, up to
     the start and end of the string respectively."""
 ))
 def func_substr(parser, text, start_index, end_index):
-    """Extract a specified portion of a string.
-
-    Arguments:
-        parser: The ScriptParser object used to parse the script.
-        text: The string from which the extract will be made.
-        start_index: Integer index of the first character to extract.
-        end_index: Integer index of the first character that will not be extracted.
-
-    Returns:
-        Returns the substring beginning with the character at the start index,
-        up to (but not including) the character at the end index.  The first
-        character is at index number 0.  If the start index is left blank, it
-        defaults to the first character in the string.  If the end index is
-        left blank, it defaults to the number of characters in the string.
-        If either index is negative, it is subtracted from the total number of
-        characters in the string to provide the index used.
-    """
     try:
         start = int(start_index) if start_index else None
     except ValueError:
@@ -1533,17 +1464,6 @@ Gets the element at `index` from the multi-value tag `name`. A literal value
     multi-valued tag."""
 ))
 def func_getmulti(parser, multi, item_index, separator=MULTI_VALUED_JOINER):
-    """Returns value of the item at the specified index in the multi-value variable.  Index values are zero-based.
-
-    Arguments:
-        parser: The ScriptParser object used to parse the script.
-        multi: The multi-value from which the item is to be retrieved.
-        item_index: The zero-based integer index of the item to be retrieved.
-        separator: String used to separate the elements in the multi-value.
-
-    Returns:
-        Returns the value of the item at the specified index in the multi-value variable.
-    """
     if not item_index:
         return ''
     try:
@@ -1566,19 +1486,6 @@ Iterates over each element found in the multi-value tag `name`, executing
     proper multi-valued tag."""
 ))
 def func_foreach(parser, multi, loop_code, separator=MULTI_VALUED_JOINER):
-    """Iterates over each element found in the specified multi-value variable.
-
-    Iterates over each element found in the specified multi-value variable, executing the specified code.
-    For each loop, the element value is first stored in the tag specified by _loop_value and the count is
-    stored in the tag specified by _loop_count.  This allows the element or count value to be accessed within
-    the code script.
-
-    Arguments:
-        parser: The ScriptParser object used to parse the script.
-        multi: The multi-value to be iterated.
-        loop_code: String of script code to be processed on each iteration.
-        separator: String used to separate the elements in the multi-value.
-    """
     multi_value = MultiValue(parser, multi, separator)
     for loop_count, value in enumerate(multi_value, 1):
         func_set(parser, '_loop_count', str(loop_count))
@@ -1599,13 +1506,6 @@ Standard 'while' loop. Executes `code` repeatedly until `condition` no longer
     safeguard against accidentally creating an infinite loop."""
 ))
 def func_while(parser, condition, loop_code):
-    """Standard 'while' loop.  Also includes a runaway check to limit the maximum number of iterations.
-
-    Arguments:
-        parser: The ScriptParser object used to parse the script.
-        condition: String of script code to check before each iteration through the loop.
-        loop_code: String of script code to be processed on each iteration.
-    """
     if condition and loop_code:
         runaway_check = 1000
         loop_count = 0
@@ -1627,22 +1527,6 @@ Iterates over each element found in the multi-value tag `name` and updates the
     the element or count value to be accessed within the `code` script."""
 ))
 def func_map(parser, multi, loop_code, separator=MULTI_VALUED_JOINER):
-    """Iterates over each element found in the specified multi-value variable and updates the value.
-
-    Iterates over each element found in the specified multi-value variable and updates the value of the
-    element to the value returned by the specified code. For each loop, the element value is first stored in
-    the tag specified by _loop_value and the count is stored in the tag specified by _loop_count.  This
-    allows the element or count value to be accessed within the code script.
-
-    Arguments:
-        parser: The ScriptParser object used to parse the script.
-        multi: The multi-value to be iterated.
-        loop_code: String of script code to be processed on each iteration that yields the new value for
-            the multi-value element.
-        separator: String used to separate the elements in the multi-value.
-
-    Returns the updated multi-value variable.
-    """
     multi_value = MultiValue(parser, multi, separator)
     for loop_count, value in enumerate(multi_value, 1):
         func_set(parser, '_loop_count', str(loop_count))
@@ -1659,19 +1543,6 @@ def func_map(parser, multi, loop_code, separator=MULTI_VALUED_JOINER):
 Joins all elements in `name`, placing `text` between each element, and returns the result as a string."""
 ))
 def func_join(parser, multi, join_phrase, separator=MULTI_VALUED_JOINER):
-    """Joins all elements in the specified multi-value variable, placing the join_phrase between each element.
-
-    Arguments:
-        parser: The ScriptParser object used to parse the script.
-        multi: The ScriptVariable/Function that evaluates to a multi-value whose
-            elements are to be joined.
-        join_phrase: The ScriptVariable/Function that evaluates to a string which
-            will be placed between each of the elements.
-        separator: A string or the ScriptVariable/Function that evaluates to the
-            string used to separate the elements in the multi-value.
-
-    Returns a string with the elements joined.
-    """
     join_phrase = str(join_phrase.eval(parser))
     multi_value = MultiValue(parser, multi, separator)
     return join_phrase.join(multi_value)
@@ -1692,22 +1563,6 @@ For example, the following will create a multi-value variable with all artists
     `$setmulti(supporting_artists,$slice(%artists%,1,))`"""
 ))
 def func_slice(parser, multi, start_index, end_index, separator=MULTI_VALUED_JOINER):
-    """Returns a multi-value containing a slice of the supplied multi-value.  Index values are zero-based.
-
-    Arguments:
-        parser: The ScriptParser object used to parse the script.
-        multi: The ScriptVariable/Function that evaluates to a multi-value from
-            which the slice is to be retrieved.
-        start_index: The ScriptVariable/Function that evaluates to a zero-based integer
-            index of the first item included in the slice.
-        end_index: The ScriptVariable/Function that evaluates to a zero-based integer
-            index of the first item not included in the slice.
-        separator: A string or the ScriptVariable/Function that evaluates to the
-            string used to separate the elements in the multi-value.
-
-    Returns:
-        Returns a multi-value variable containing the specified slice.
-    """
     try:
         start = int(start_index.eval(parser)) if start_index else None
     except ValueError:
@@ -1734,17 +1589,6 @@ Note: Platform-specific formatting codes should be avoided to help ensure the
     `%3Y`); and hanging '%' at the end of the format string."""
 ))
 def func_datetime(parser, format=None):
-    """Return the current date and time as a string.
-
-    Arguments:
-        parser: The ScriptParser object used to parse the script.
-        format: A string or the ScriptVariable/Function that evaluates to the
-            string used to format the output.  Default is '%Y-%m-%d %H:%M:%S'
-            if blank.  Uses strftime() format.
-
-    Returns:
-        Returns the current date and time as a string.
-    """
     # local_tz required for Python 3.5 which does not allow setting astimezone()
     # on a naive datetime.datetime object.  This provides timezone information to
     # allow the use of %Z and %z in the output format.
@@ -1766,17 +1610,6 @@ def func_datetime(parser, format=None):
 Returns a copy of the multi-value tag `name` with the elements sorted in ascending order."""
 ))
 def func_sortmulti(parser, multi, separator=MULTI_VALUED_JOINER):
-    """Returns the supplied multi-value sorted in ascending order.
-
-        parser: The ScriptParser object used to parse the script.
-        multi: The ScriptVariable/Function that evaluates to a multi-value to be
-            sorted.
-        separator: A string or the ScriptVariable/Function that evaluates to the
-            string used to separate the elements in the multi-value.
-
-    Returns:
-        Returns the supplied multi-value sorted in ascending order.
-    """
     multi_value = MultiValue(parser, multi, separator)
     return multi_value.separator.join(sorted(multi_value))
 
@@ -1789,16 +1622,5 @@ Returns a copy of the multi-value tag `name` with the elements in reverse order.
     descending order."""
 ))
 def func_reversemulti(parser, multi, separator=MULTI_VALUED_JOINER):
-    """Returns the supplied multi-value in reverse order.
-
-        parser: The ScriptParser object used to parse the script.
-        multi: The ScriptVariable/Function that evaluates to a multi-value to be
-            reversed.
-        separator: A string or the ScriptVariable/Function that evaluates to the
-            string used to separate the elements in the multi-value.
-
-    Returns:
-        Returns the supplied multi-value in reverse order.
-    """
     multi_value = MultiValue(parser, multi, separator)
     return multi_value.separator.join(reversed(multi_value))
