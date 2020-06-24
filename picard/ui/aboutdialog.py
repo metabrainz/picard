@@ -66,10 +66,13 @@ class AboutDialog(PicardDialog, SingletonDialog):
         else:
             args["translator_credits"] = ""
 
-        args['third_parties_versions'] = ', '.join(["%s %s" %
-                                                        (versions.version_name(name), value) for name, value
-                                                        in versions.as_dict(i18n=True).items()
-                                                        if name != 'version'])
+        args['third_parties_versions'] = ', '.join([
+            ("%s %s" % (versions.version_name(name), value))
+            .replace(' ', '&nbsp;')
+            .replace('-', '&#8209;')  # non-breaking hyphen
+            for name, value
+            in versions.as_dict(i18n=True).items()
+            if name != 'version'])
         args['authors_credits'] = ", ".join([
             'Robert Kaye',
             'Lukáš Lalinský',
