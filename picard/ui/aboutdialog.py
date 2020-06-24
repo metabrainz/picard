@@ -50,21 +50,7 @@ class AboutDialog(PicardDialog, SingletonDialog):
         self._update_content()
 
     def _update_content(self):
-        args = {
-            "picard_doc_url": PICARD_URLS['home'],
-            "picard_donate_url": PICARD_URLS['donate'],
-        }
-        args.update(versions.as_dict(i18n=True))
-
-        args["formats"] = ", ".join(map(lambda x: x[1:], supported_extensions()))
-
-        # TR: Replace this with your name to have it appear in the "About" dialog.
-        args["translator_credits"] = _("translator-credits")
-        if args["translator_credits"] != "translator-credits":
-            # TR: Replace LANG with language you are translating to.
-            args["translator_credits"] = _("<br/>Translated to LANG by %s") % args["translator_credits"].replace("\n", "<br/>")
-        else:
-            args["translator_credits"] = ""
+        args = versions.as_dict(i18n=True)
 
         args['third_parties_versions'] = ', '.join([
             ("%s %s" % (versions.version_name(name), value))
@@ -73,6 +59,9 @@ class AboutDialog(PicardDialog, SingletonDialog):
             for name, value
             in versions.as_dict(i18n=True).items()
             if name != 'version'])
+
+        args['formats'] = ", ".join(map(lambda x: x[1:], supported_extensions()))
+        args['copyright_years'] = '2004-2020'
         args['authors_credits'] = ", ".join([
             'Robert Kaye',
             'Lukáš Lalinský',
@@ -80,7 +69,14 @@ class AboutDialog(PicardDialog, SingletonDialog):
             'Sambhav Kothari',
             'Philipp Wolfer',
         ])
-        args['copyright_years'] = '2004-2020'
+
+        # TR: Replace this with your name to have it appear in the "About" dialog.
+        args["translator_credits"] = _("translator-credits")
+        if args["translator_credits"] != "translator-credits":
+            # TR: Replace LANG with language you are translating to.
+            args["translator_credits"] = _("<br/>Translated to LANG by %s") % args["translator_credits"].replace("\n", "<br/>")
+        else:
+            args["translator_credits"] = ""
         args['icons_credits'] = _("""Icons made by Sambhav Kothari <sambhavs.email@gmail.com>
 and <a href="http://www.flaticon.com/authors/madebyoliver">Madebyoliver</a>,
 <a href="http://www.flaticon.com/authors/pixel-buddha">Pixel Buddha</a>,
@@ -89,18 +85,32 @@ and <a href="http://www.flaticon.com/authors/madebyoliver">Madebyoliver</a>,
 <a href="https://www.flaticon.com/authors/smashicons">Smashicons</a>
 from <a href="https://www.flaticon.com">www.flaticon.com</a>""")
 
-        text = _("""<p align="center">Version %(version)s</p>
-<p align="center"><small>
-%(third_parties_versions)s
-</small></p>
-<p align="center"><strong>Supported formats</strong><br/>%(formats)s</p>
-<p align="center"><strong>Please donate</strong><br/>
-Thank you for using Picard. Picard relies on the MusicBrainz database, which is operated by the MetaBrainz Foundation with the help of thousands of volunteers. If you like this application please consider donating to the MetaBrainz Foundation to keep the service running.</p>
-<p align="center"><a href="%(picard_donate_url)s">Donate now!</a></p>
-<p align="center"><strong>Credits</strong><br/>
-<small>Copyright © %(copyright_years)s %(authors_credits)s and others%(translator_credits)s</small></p>
-<p align="center"><small>%(icons_credits)s</small></p>
-<p align="center"><strong>Official website</strong><br/><a href="%(picard_doc_url)s">%(picard_doc_url)s</a></p>
-""") % args
+        def strong(s):
+            return '<strong>' + s + '</strong>'
+
+        def small(s):
+            return '<small>' + s + '</small>'
+
+        def url(url, s=None):
+            if s is None:
+                s = url
+            return '<a href="%s">%s</a>' % (url, s)
+
+        text_paragraphs = [
+            strong(_("Version %(version)s")),
+            small('%(third_parties_versions)s'),
+            strong(_("Supported formats")),
+            '%(formats)s',
+            strong(_("Please donate")),
+            _("""Thank you for using Picard. Picard relies on the MusicBrainz database, which is operated by the MetaBrainz Foundation with the
+help of thousands of volunteers. If you like this application please consider donating to the MetaBrainz Foundation to keep the
+service running."""),
+            url(PICARD_URLS['donate'], _("Donate now!")),
+            strong(_("Credits")),
+            small(_("""Copyright © %(copyright_years)s %(authors_credits)s and others%(translator_credits)s""")),
+            small('%(icons_credits)s'),
+            strong(_("Official website")),
+            url(PICARD_URLS['home'])
+        ]
         self.ui.label.setOpenExternalLinks(True)
-        self.ui.label.setText(text)
+        self.ui.label.setText("".join(['<p align="center">' + p + "</p>" for p in text_paragraphs]) % args)
