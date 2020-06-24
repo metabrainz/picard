@@ -643,7 +643,7 @@ def func_right(parser, text, length):
 @script_function(documentation=N_(
     """`$lower(text)`
 
-Returns text in lower case."""
+Returns `text` in lower case."""
 ))
 def func_lower(parser, text):
     return text.lower()
@@ -751,9 +751,9 @@ def func_rsearch(parser, text, pattern):
 
 
 @script_function(documentation=N_(
-    """`$num(num,len)`
+    """`$num(num,length)`
 
-Returns `num` formatted to `len` digits, where `len` cannot be greater than `20`."""
+Returns `num` formatted to `length` digits (maximum 20)."""
 ))
 def func_num(parser, text, length):
     try:
@@ -881,7 +881,7 @@ def func_copymerge(parser, new, old):
     """`$trim(text[,char])`
 
 Trims all leading and trailing whitespaces from `text`.
-    The optional second parameter specifies the character to trim."""
+    The optional second parameter `char` specifies the character to trim."""
 ))
 def func_trim(parser, text, char=None):
     if char:
@@ -1165,7 +1165,8 @@ def func_is_complete(parser):
 @script_function(documentation=N_(
     """`$firstalphachar(text,nonalpha="#")`
 
-Returns the first character of `text`. If `text` is not an alphabetic character `nonalpha` is returned instead.
+Returns the first character of `text`.
+If `text` is not an alphabetic character `nonalpha` (or `#` if not passed) is returned instead.
 
 _Since Picard 0.12_"""
 ))
@@ -1193,7 +1194,7 @@ def func_initials(parser, text=""):
 @script_function(documentation=N_(
     """`$firstwords(text,length)`
 
-Like `$truncate` except that it will only return the complete words from `text` which fit within `length` characters.
+Like `$truncate()` except that it will only return the complete words from `text` which fit within `length` characters.
 
 _Since Picard 0.12_"""
 ))
@@ -1444,7 +1445,7 @@ def func_is_video(parser):
     """`$find(haystack,needle)`
 
 Finds the location of one string within another.
-    Returns the index of the first occurrance of `needle` in `haystack`, or "" if `needle` was not found.
+    Returns the index of the first occurrence of `needle` in `haystack`, or "" if `needle` was not found.
 
 _Since Picard 2.3_
 
