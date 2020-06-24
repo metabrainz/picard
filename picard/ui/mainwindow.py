@@ -81,6 +81,7 @@ from picard.util.cdrom import (
 )
 
 from picard.ui import PreserveGeometry
+from picard.ui.aboutdialog import AboutDialog
 from picard.ui.coverartbox import CoverArtBox
 from picard.ui.filebrowser import FileBrowser
 from picard.ui.infodialog import (
@@ -946,7 +947,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.tagger.activeWindow().close()
 
     def show_about(self):
-        return self.show_options("about")
+        return AboutDialog.show_instance(self)
 
     def show_options(self, page=None):
         return OptionsDialog.show_instance(page, self)

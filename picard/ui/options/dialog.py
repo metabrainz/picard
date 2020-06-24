@@ -52,7 +52,6 @@ from picard.ui import (
 from picard.ui.options import (  # noqa: F401 # pylint: disable=unused-import
     OptionsCheckError,
     _pages as page_classes,
-    about,
     advanced,
     cdlookup,
     cover,
@@ -175,8 +174,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         items = self.ui.pages_tree.selectedItems()
         if items:
             page = self.item_to_page[items[0]]
-            if page.NAME != 'about':
-                config.persist["options_last_active_page"] = page.NAME
+            config.persist["options_last_active_page"] = page.NAME
             self.ui.pages_stack.setCurrentWidget(page)
 
     def disable_page(self, name):
