@@ -1296,7 +1296,8 @@ def func_swapprefix(parser, text, *prefixes):
 @script_function(check_argcount=False, documentation=N_(
     """`$delprefix(text,*prefixes="a","the")`
 
-Deletes the specified prefixes from the beginning of text. If no prefix is specified 'A' and 'The' are used by default.
+Deletes the specified `prefixes` from the beginning of `text`.
+If no prefix is specified 'A' and 'The' are used by default.
 
 _Since Picard 1.3_"""
 ))
