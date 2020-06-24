@@ -77,13 +77,14 @@ class AboutDialog(PicardDialog, SingletonDialog):
             args["translator_credits"] = _("<br/>Translated to LANG by %s") % args["translator_credits"].replace("\n", "<br/>")
         else:
             args["translator_credits"] = ""
-        args['icons_credits'] = _("""Icons made by Sambhav Kothari <sambhavs.email@gmail.com>
-and <a href="http://www.flaticon.com/authors/madebyoliver">Madebyoliver</a>,
-<a href="http://www.flaticon.com/authors/pixel-buddha">Pixel Buddha</a>,
-<a href="http://www.flaticon.com/authors/nikita-golubev">Nikita Golubev</a>,
-<a href="http://www.flaticon.com/authors/maxim-basinski">Maxim Basinski</a>,
-<a href="https://www.flaticon.com/authors/smashicons">Smashicons</a>
-from <a href="https://www.flaticon.com">www.flaticon.com</a>""")
+        args['icons_credits'] = _(
+            'Icons made by Sambhav Kothari <sambhavs.email@gmail.com> '
+            'and <a href="http://www.flaticon.com/authors/madebyoliver">Madebyoliver</a>, '
+            '<a href="http://www.flaticon.com/authors/pixel-buddha">Pixel Buddha</a>, '
+            '<a href="http://www.flaticon.com/authors/nikita-golubev">Nikita Golubev</a>, '
+            '<a href="http://www.flaticon.com/authors/maxim-basinski">Maxim Basinski</a>, '
+            '<a href="https://www.flaticon.com/authors/smashicons">Smashicons</a> '
+            'from <a href="https://www.flaticon.com">www.flaticon.com</a>')
 
         def strong(s):
             return '<strong>' + s + '</strong>'
@@ -102,12 +103,12 @@ from <a href="https://www.flaticon.com">www.flaticon.com</a>""")
             strong(_("Supported formats")),
             '%(formats)s',
             strong(_("Please donate")),
-            _("""Thank you for using Picard. Picard relies on the MusicBrainz database, which is operated by the MetaBrainz Foundation with the
-help of thousands of volunteers. If you like this application please consider donating to the MetaBrainz Foundation to keep the
-service running."""),
+            _("Thank you for using Picard. Picard relies on the MusicBrainz database, which is operated by the "
+              "MetaBrainz Foundation with the help of thousands of volunteers. If you like this application please "
+              "consider donating to the MetaBrainz Foundation to keep theservice running."),
             url(PICARD_URLS['donate'], _("Donate now!")),
             strong(_("Credits")),
-            small(_("""Copyright © %(copyright_years)s %(authors_credits)s and others%(translator_credits)s""")),
+            small(_("Copyright © %(copyright_years)s %(authors_credits)s and others") + "%(translator_credits)s"),
             small('%(icons_credits)s'),
             strong(_("Official website")),
             url(PICARD_URLS['home'])

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: picard 2.4.0.dev1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-06-24 12:55+0200\n"
+"POT-Creation-Date: 2020-06-24 15:48+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2964,57 +2964,51 @@ msgstr ""
 
 #: picard/ui/aboutdialog.py:80
 msgid ""
-"Icons made by Sambhav Kothari <sambhavs.email@gmail.com>\n"
-"and <a "
-"href=\"http://www.flaticon.com/authors/madebyoliver\">Madebyoliver</a>,\n"
+"Icons made by Sambhav Kothari <sambhavs.email@gmail.com> and <a "
+"href=\"http://www.flaticon.com/authors/madebyoliver\">Madebyoliver</a>, "
 "<a href=\"http://www.flaticon.com/authors/pixel-buddha\">Pixel "
-"Buddha</a>,\n"
-"<a href=\"http://www.flaticon.com/authors/nikita-golubev\">Nikita "
-"Golubev</a>,\n"
-"<a href=\"http://www.flaticon.com/authors/maxim-basinski\">Maxim "
-"Basinski</a>,\n"
-"<a href=\"https://www.flaticon.com/authors/smashicons\">Smashicons</a>\n"
-"from <a href=\"https://www.flaticon.com\">www.flaticon.com</a>"
+"Buddha</a>, <a href=\"http://www.flaticon.com/authors/nikita-"
+"golubev\">Nikita Golubev</a>, <a href=\"http://www.flaticon.com/authors"
+"/maxim-basinski\">Maxim Basinski</a>, <a "
+"href=\"https://www.flaticon.com/authors/smashicons\">Smashicons</a> from "
+"<a href=\"https://www.flaticon.com\">www.flaticon.com</a>"
 msgstr ""
 
-#: picard/ui/aboutdialog.py:100
+#: picard/ui/aboutdialog.py:101
 #, python-format
 msgid "Version %(version)s"
 msgstr ""
 
-#: picard/ui/aboutdialog.py:102
+#: picard/ui/aboutdialog.py:103
 msgid "Supported formats"
 msgstr ""
 
-#: picard/ui/aboutdialog.py:104
+#: picard/ui/aboutdialog.py:105
 msgid "Please donate"
 msgstr ""
 
-#: picard/ui/aboutdialog.py:105
+#: picard/ui/aboutdialog.py:106
 msgid ""
 "Thank you for using Picard. Picard relies on the MusicBrainz database, "
-"which is operated by the MetaBrainz Foundation with the\n"
-"help of thousands of volunteers. If you like this application please "
-"consider donating to the MetaBrainz Foundation to keep the\n"
-"service running."
-msgstr ""
-
-#: picard/ui/aboutdialog.py:108
-msgid "Donate now!"
+"which is operated by the MetaBrainz Foundation with the help of thousands"
+" of volunteers. If you like this application please consider donating to "
+"the MetaBrainz Foundation to keep theservice running."
 msgstr ""
 
 #: picard/ui/aboutdialog.py:109
-msgid "Credits"
+msgid "Donate now!"
 msgstr ""
 
 #: picard/ui/aboutdialog.py:110
-#, python-format
-msgid ""
-"Copyright © %(copyright_years)s %(authors_credits)s and "
-"others%(translator_credits)s"
+msgid "Credits"
 msgstr ""
 
-#: picard/ui/aboutdialog.py:112
+#: picard/ui/aboutdialog.py:111
+#, python-format
+msgid "Copyright © %(copyright_years)s %(authors_credits)s and others"
+msgstr ""
+
+#: picard/ui/aboutdialog.py:113
 msgid "Official website"
 msgstr ""
 
