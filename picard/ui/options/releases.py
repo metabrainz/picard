@@ -41,7 +41,6 @@ from picard.const import (
     RELEASE_SECONDARY_GROUPS,
 )
 from picard.const.sys import IS_WIN
-from picard.i18n import gettext_attr
 
 from picard.ui.options import (
     OptionsPage,
@@ -171,7 +170,7 @@ class ReleasesOptionsPage(OptionsPage):
         self._release_type_sliders = {}
 
         def add_slider(name, griditer, context):
-            label = gettext_attr(name, context)
+            label = pgettext_attributes(context, name)
             self._release_type_sliders[name] = \
                 ReleaseTypeScore(self.ui.type_group,
                                  self.ui.gridLayout,
@@ -184,7 +183,7 @@ class ReleasesOptionsPage(OptionsPage):
         for name in RELEASE_PRIMARY_GROUPS:
             add_slider(name, griditer, context='release_group_primary_type')
         for name in sorted(RELEASE_SECONDARY_GROUPS,
-                           key=lambda v: gettext_attr(v, 'release_group_secondary_type')):
+                           key=lambda v: pgettext_attributes('release_group_secondary_type', v)):
             add_slider(name, griditer, context='release_group_secondary_type')
 
         self.reset_preferred_types_btn = QtWidgets.QPushButton(self.ui.type_group)
@@ -264,7 +263,7 @@ class ReleasesOptionsPage(OptionsPage):
             source_list = [(c[0], gettext_countries(c[1])) for c in
                            source.items()]
         elif setting == "preferred_release_formats":
-            source_list = [(c[0], gettext_attr(c[1], "medium_format")) for c
+            source_list = [(c[0], pgettext_attributes("medium_format", c[1])) for c
                            in source.items()]
         else:
             source_list = [(c[0], _(c[1])) for c in source.items()]
