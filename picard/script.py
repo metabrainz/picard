@@ -806,6 +806,7 @@ def func_delete(parser, name):
     """`$set(name,value)`
 
 Sets the variable `name` to `value`.
+
 Note: To create a variable which can be used for the file naming string, but
     which will not be written as a tag in the file, prefix the variable name
     with an underscore. `%something%` will create a "something" tag;
@@ -825,7 +826,11 @@ def func_set(parser, name, value):
 Sets the variable `name` to `value`, using the separator (or "; " if not passed)
     to coerce the value back into a proper multi-valued tag. This can be used to
     operate on multi-valued tags as a string, and then set them back as proper
-    multi-valued tags, e.g `$setmulti(genre,$lower(%genre%))`
+    multi-valued tags.
+
+Example:
+
+    $setmulti(genre,$lower(%genre%))
 
 _Since Picard 1.0_"""
 ))
@@ -895,7 +900,11 @@ def func_trim(parser, text, char=None):
 
 Add `y` to `x`.
 Can be used with an arbitrary number of arguments.
-i.e. `$add(x,y,z) = ((x + y) + z)`"""
+
+Example:
+
+    $add(x,y,z) = ((x + y) + z)
+"""
 ))
 def func_add(parser, x, y, *args):
     try:
@@ -909,7 +918,11 @@ def func_add(parser, x, y, *args):
 
 Subtracts `y` from `x`.
 Can be used with an arbitrary number of arguments.
-i.e. `$sub(x,y,z) = ((x - y) - z)`"""
+
+Example:
+
+    $sub(x,y,z) = ((x - y) - z)
+"""
 ))
 def func_sub(parser, x, y, *args):
     try:
@@ -924,7 +937,10 @@ def func_sub(parser, x, y, *args):
 Divides `x` by `y`.
 Can be used with an arbitrary number of arguments.
 
-i.e. `$div(x,y,z) = ((x / y) / z)`"""
+Example:
+
+    $div(x,y,z) = ((x / y) / z)
+"""
 ))
 def func_div(parser, x, y, *args):
     try:
@@ -941,7 +957,10 @@ def func_div(parser, x, y, *args):
 Returns the remainder of `x` divided by `y`.
 Can be used with an arbitrary number of arguments.
 
-i.e. `$mod(x,y,z) = ((x % y) % z)`"""
+Example:
+
+    $mod(x,y,z) = ((x % y) % z)
+"""
 ))
 def func_mod(parser, x, y, *args):
     try:
@@ -955,7 +974,11 @@ def func_mod(parser, x, y, *args):
 
 Multiplies `x` by `y`.
 Can be used with an arbitrary number of arguments.
-    i.e. `$mul(x,y,z) = ((x * y) * z)`"""
+
+Example:
+
+    $mul(x,y,z) = ((x * y) * z)
+"""
 ))
 def func_mul(parser, x, y, *args):
     try:
@@ -1101,8 +1124,10 @@ Returns the number of elements in the multi-value tag `name`. A literal value
     `separator` (or "; " if not passed) to coerce the value into a proper
     multi-valued tag.
 
-For example, the following will return the value "3".
-    `$lenmulti(One; Two; Three)`"""
+Example:
+
+    $lenmulti(One; Two; Three) = 3
+"""
 ))
 def func_lenmulti(parser, multi, separator=MULTI_VALUED_JOINER):
     return str(len(MultiValue(parser, multi, separator)))
@@ -1250,8 +1275,12 @@ def func_truncate(parser, text, length):
 @script_function(check_argcount=False, documentation=N_(
     """`$swapprefix(text,*prefixes="a","the")`
 
-Moves the specified prefixes from the beginning to the end of text. If no prefix is specified 'A' and 'The' are used by default.
-`$swapprefix(%albumartist%,A,An,The,Le)`
+Moves the specified `prefixes` from the beginning to the end of `text`.
+If no prefix is specified 'A' and 'The' are used by default.
+
+Example:
+
+    $swapprefix(%albumartist%,A,An,The,Le)
 
 _Since Picard 1.3, previously as a plugin since Picard 0.13_"""
 ))
@@ -1324,7 +1353,12 @@ def func_ne_all(parser, x, *args):
     """`$eq_all(x,a1,a2...)`
 
 Returns true if `x` equals `a1` and `a2` and ...
-Functionally equivalent to `$and($eq(x,a1),$eq(x,a2) ...)`."""
+Functionally equivalent to `$and($eq(x,a1),$eq(x,a2) ...)`.
+
+Example:
+
+    $if($eq_all(%albumartist%,%artist%,Justin Bieber),$set(engineer,Meat Loaf))
+"""
 ))
 def func_eq_all(parser, x, *args):
     for i in args:
@@ -1337,7 +1371,12 @@ def func_eq_all(parser, x, *args):
     """`$ne_any(x,a1,a2...)`
 
 Returns true if `x` does not equal `a1` or `a2` or ...
-Functionally equivalent to `$or($ne(x,a1),$ne(x,a2) ...)`."""
+Functionally equivalent to `$or($ne(x,a1),$ne(x,a2) ...)`.
+
+Example:
+
+    $if($ne_any(%albumartist%,%trackartist%,%composer%),$set(lyricist,%composer%))
+"""
 ))
 def func_ne_any(parser, x, *args):
     return func_not(parser, func_eq_all(parser, x, *args))
@@ -1348,6 +1387,9 @@ def func_ne_any(parser, x, *args):
 
 Returns `text` in title case (first character in every word capitalized).
 
+Example:
+
+    $set(album,$title(%album%))
 _Since Picard 2.1_"""
 ))
 def func_title(parser, text):
@@ -1558,9 +1600,14 @@ Returns a multi-value variable containing the elements between the `start` and
     zero based. Negative numbers will be counted back from the end of the list.
     If the `start` or `end` indexes are left blank, they will default to the
     start and end of the list respectively.
-For example, the following will create a multi-value variable with all artists
+
+    The following example will create a multi-value variable with all artists
     in `%artists%` except the first, which can be used to create a "feat." list.
-    `$setmulti(supporting_artists,$slice(%artists%,1,))`"""
+
+Example:
+
+    $setmulti(supporting_artists,$slice(%artists%,1,))
+"""
 ))
 def func_slice(parser, multi, start_index, end_index, separator=MULTI_VALUED_JOINER):
     try:
