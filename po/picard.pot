@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: picard 2.4.0.dev1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-06-24 15:48+0200\n"
+"POT-Creation-Date: 2020-06-25 09:08+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -259,23 +259,23 @@ msgstr ""
 
 #: picard/script.py:619
 msgid ""
-"`$left(text,num)`\n"
+"`$left(text,number)`\n"
 "\n"
-"Returns the first `num` characters from `text`."
+"Returns the first `number` characters from `text`."
 msgstr ""
 
 #: picard/script.py:631
 msgid ""
-"`$right(text,num)`\n"
+"`$right(text,number)`\n"
 "\n"
-"Returns the last `num` characters from `text`."
+"Returns the last `number` characters from `text`."
 msgstr ""
 
 #: picard/script.py:643
 msgid ""
 "`$lower(text)`\n"
 "\n"
-"Returns text in lower case."
+"Returns `text` in lower case."
 msgstr ""
 
 #: picard/script.py:652
@@ -349,10 +349,9 @@ msgstr ""
 
 #: picard/script.py:753
 msgid ""
-"`$num(num,len)`\n"
+"`$num(number,length)`\n"
 "\n"
-"Returns `num` formatted to `len` digits, where `len` cannot be greater "
-"than `20`."
+"Returns `number` formatted to `length` digits (maximum 20)."
 msgstr ""
 
 #: picard/script.py:770
@@ -385,6 +384,7 @@ msgid ""
 "`$set(name,value)`\n"
 "\n"
 "Sets the variable `name` to `value`.\n"
+"\n"
 "Note: To create a variable which can be used for the file naming string, "
 "but\n"
 "    which will not be written as a tag in the file, prefix the variable "
@@ -393,7 +393,7 @@ msgid ""
 "    `%_something%` will not."
 msgstr ""
 
-#: picard/script.py:822
+#: picard/script.py:823
 #, python-format
 msgid ""
 "`$setmulti(name,value,separator=\"; \")`\n"
@@ -404,19 +404,23 @@ msgid ""
 "used to\n"
 "    operate on multi-valued tags as a string, and then set them back as "
 "proper\n"
-"    multi-valued tags, e.g `$setmulti(genre,$lower(%genre%))`\n"
+"    multi-valued tags.\n"
+"\n"
+"Example:\n"
+"\n"
+"    $setmulti(genre,$lower(%genre%))\n"
 "\n"
 "_Since Picard 1.0_"
 msgstr ""
 
-#: picard/script.py:836
+#: picard/script.py:841
 msgid ""
 "`$get(name)`\n"
 "\n"
 "Returns the variable `name` (equivalent to `%name%`)."
 msgstr ""
 
-#: picard/script.py:846
+#: picard/script.py:851
 #, python-format
 msgid ""
 "`$copy(new,old)`\n"
@@ -428,7 +432,7 @@ msgid ""
 "_Since Picard 0.9_"
 msgstr ""
 
-#: picard/script.py:862
+#: picard/script.py:867
 msgid ""
 "`$copymerge(new,old)`\n"
 "\n"
@@ -440,62 +444,75 @@ msgid ""
 "_Since Picard 1.0_"
 msgstr ""
 
-#: picard/script.py:880
+#: picard/script.py:885
 msgid ""
 "`$trim(text[,char])`\n"
 "\n"
 "Trims all leading and trailing whitespaces from `text`.\n"
-"    The optional second parameter specifies the character to trim."
+"    The optional second parameter `char` specifies the character to trim."
 msgstr ""
 
-#: picard/script.py:893
+#: picard/script.py:898
 msgid ""
 "`$add(x,y,*args)`\n"
 "\n"
 "Add `y` to `x`.\n"
 "Can be used with an arbitrary number of arguments.\n"
-"i.e. `$add(x,y,z) = ((x + y) + z)`"
+"\n"
+"Example:\n"
+"\n"
+"    $add(x,y,z) = ((x + y) + z)\n"
 msgstr ""
 
-#: picard/script.py:907
+#: picard/script.py:916
 msgid ""
 "`$sub(x,y,*args)`\n"
 "\n"
 "Subtracts `y` from `x`.\n"
 "Can be used with an arbitrary number of arguments.\n"
-"i.e. `$sub(x,y,z) = ((x - y) - z)`"
+"\n"
+"Example:\n"
+"\n"
+"    $sub(x,y,z) = ((x - y) - z)\n"
 msgstr ""
 
-#: picard/script.py:921
+#: picard/script.py:934
 msgid ""
 "`$div(x,y,*args)`\n"
 "\n"
 "Divides `x` by `y`.\n"
 "Can be used with an arbitrary number of arguments.\n"
 "\n"
-"i.e. `$div(x,y,z) = ((x / y) / z)`"
+"Example:\n"
+"\n"
+"    $div(x,y,z) = ((x / y) / z)\n"
 msgstr ""
 
-#: picard/script.py:942
+#: picard/script.py:954
 msgid ""
 "`$mod(x,y,*args)`\n"
 "\n"
 "Returns the remainder of `x` divided by `y`.\n"
 "Can be used with an arbitrary number of arguments.\n"
 "\n"
-"i.e. `$mod(x,y,z) = ((x % y) % z)`"
+"Example:\n"
+"\n"
+"    $mod(x,y,z) = ((x % y) % z)\n"
 msgstr ""
 
-#: picard/script.py:957
+#: picard/script.py:972
 msgid ""
 "`$mul(x,y,*args)`\n"
 "\n"
 "Multiplies `x` by `y`.\n"
 "Can be used with an arbitrary number of arguments.\n"
-"    i.e. `$mul(x,y,z) = ((x * y) * z)`"
+"\n"
+"Example:\n"
+"\n"
+"    $mul(x,y,z) = ((x * y) * z)\n"
 msgstr ""
 
-#: picard/script.py:971
+#: picard/script.py:990
 msgid ""
 "`$or(x,y,*args)`\n"
 "\n"
@@ -504,7 +521,7 @@ msgid ""
 "    The result is true if ANY of the arguments is not empty."
 msgstr ""
 
-#: picard/script.py:989
+#: picard/script.py:1004
 msgid ""
 "`$and(x,y,*args)`\n"
 "\n"
@@ -513,63 +530,63 @@ msgid ""
 "    The result is true if ALL of the arguments are not empty."
 msgstr ""
 
-#: picard/script.py:1003
+#: picard/script.py:1018
 msgid ""
 "`$not(x)`\n"
 "\n"
 "Returns true if `x` is empty."
 msgstr ""
 
-#: picard/script.py:1015
+#: picard/script.py:1030
 msgid ""
 "`$eq(x,y)`\n"
 "\n"
 "Returns true if `x` equals `y`."
 msgstr ""
 
-#: picard/script.py:1027
+#: picard/script.py:1042
 msgid ""
 "`$ne(x,y)`\n"
 "\n"
 "Returns true if `x` does not equal `y`."
 msgstr ""
 
-#: picard/script.py:1039
+#: picard/script.py:1054
 msgid ""
 "`$lt(x,y)`\n"
 "\n"
 "Returns true if `x` is less than `y`."
 msgstr ""
 
-#: picard/script.py:1053
+#: picard/script.py:1068
 msgid ""
 "`$lte(x,y)`\n"
 "\n"
 "Returns true if `x` is less than or equal to `y`."
 msgstr ""
 
-#: picard/script.py:1067
+#: picard/script.py:1082
 msgid ""
 "`$gt(x,y)`\n"
 "\n"
 "Returns true if `x` is greater than `y`."
 msgstr ""
 
-#: picard/script.py:1081
+#: picard/script.py:1096
 msgid ""
 "`$gte(x,y)`\n"
 "\n"
 "Returns true if `x` is greater than or equal to `y`."
 msgstr ""
 
-#: picard/script.py:1095
+#: picard/script.py:1110
 msgid ""
 "`$len(text)`\n"
 "\n"
 "Returns the number of characters in `text`."
 msgstr ""
 
-#: picard/script.py:1104
+#: picard/script.py:1119
 msgid ""
 "`$lenmulti(name,separator=\"; \")`\n"
 "\n"
@@ -580,11 +597,12 @@ msgid ""
 "proper\n"
 "    multi-valued tag.\n"
 "\n"
-"For example, the following will return the value \"3\".\n"
-"    `$lenmulti(One; Two; Three)`"
+"Example:\n"
+"\n"
+"    $lenmulti(One; Two; Three) = 3\n"
 msgstr ""
 
-#: picard/script.py:1119
+#: picard/script.py:1136
 msgid ""
 "`$performer(pattern=\"\",join=\", \")`\n"
 "\n"
@@ -594,7 +612,7 @@ msgid ""
 "_Since Picard 0.10_"
 msgstr ""
 
-#: picard/script.py:1134
+#: picard/script.py:1151
 msgid ""
 "`$matchedtracks()`\n"
 "\n"
@@ -604,7 +622,7 @@ msgid ""
 "_Since Picard 0.12_"
 msgstr ""
 
-#: picard/script.py:1150
+#: picard/script.py:1167
 msgid ""
 "`$is_complete()`\n"
 "\n"
@@ -612,17 +630,18 @@ msgid ""
 "**Only works in File Naming scripts.**"
 msgstr ""
 
-#: picard/script.py:1165
+#: picard/script.py:1182
 msgid ""
 "`$firstalphachar(text,nonalpha=\"#\")`\n"
 "\n"
-"Returns the first character of `text`. If `text` is not an alphabetic "
-"character `nonalpha` is returned instead.\n"
+"Returns the first character of `text`.\n"
+"If `text` is not an alphabetic character `nonalpha` (or `#` if not "
+"passed) is returned instead.\n"
 "\n"
 "_Since Picard 0.12_"
 msgstr ""
 
-#: picard/script.py:1182
+#: picard/script.py:1200
 msgid ""
 "`$initials(text)`\n"
 "\n"
@@ -632,17 +651,17 @@ msgid ""
 "_Since Picard 0.12_"
 msgstr ""
 
-#: picard/script.py:1193
+#: picard/script.py:1211
 msgid ""
 "`$firstwords(text,length)`\n"
 "\n"
-"Like `$truncate` except that it will only return the complete words from "
-"`text` which fit within `length` characters.\n"
+"Like `$truncate()` except that it will only return the complete words "
+"from `text` which fit within `length` characters.\n"
 "\n"
 "_Since Picard 0.12_"
 msgstr ""
 
-#: picard/script.py:1216
+#: picard/script.py:1234
 msgid ""
 "`$startswith(text,prefix)`\n"
 "\n"
@@ -651,7 +670,7 @@ msgid ""
 "_Since Picard 1.4_"
 msgstr ""
 
-#: picard/script.py:1229
+#: picard/script.py:1247
 msgid ""
 "`$endswith(text,suffix)`\n"
 "\n"
@@ -660,7 +679,7 @@ msgid ""
 "_Since Picard 1.4_"
 msgstr ""
 
-#: picard/script.py:1242
+#: picard/script.py:1260
 msgid ""
 "`$truncate(text,length)`\n"
 "\n"
@@ -669,28 +688,31 @@ msgid ""
 "_Since Picard 0.12_"
 msgstr ""
 
-#: picard/script.py:1257
+#: picard/script.py:1275
 msgid ""
 "`$swapprefix(text,*prefixes=\"a\",\"the\")`\n"
 "\n"
-"Moves the specified prefixes from the beginning to the end of text. If no"
-" prefix is specified 'A' and 'The' are used by default.\n"
-"`$swapprefix(%albumartist%,A,An,The,Le)`\n"
+"Moves the specified `prefixes` from the beginning to the end of `text`.\n"
+"If no prefix is specified 'A' and 'The' are used by default.\n"
+"\n"
+"Example:\n"
+"\n"
+"    $swapprefix(%albumartist%,A,An,The,Le)\n"
 "\n"
 "_Since Picard 1.3, previously as a plugin since Picard 0.13_"
 msgstr ""
 
-#: picard/script.py:1274
+#: picard/script.py:1296
 msgid ""
 "`$delprefix(text,*prefixes=\"a\",\"the\")`\n"
 "\n"
-"Deletes the specified prefixes from the beginning of text. If no prefix "
-"is specified 'A' and 'The' are used by default.\n"
+"Deletes the specified `prefixes` from the beginning of `text`.\n"
+"If no prefix is specified 'A' and 'The' are used by default.\n"
 "\n"
 "_Since Picard 1.3_"
 msgstr ""
 
-#: picard/script.py:1306
+#: picard/script.py:1329
 msgid ""
 "`$eq_any(x,a1,a2...)`\n"
 "\n"
@@ -699,7 +721,7 @@ msgid ""
 "Functionally equivalent to the eq2 plugin."
 msgstr ""
 
-#: picard/script.py:1323
+#: picard/script.py:1341
 msgid ""
 "`$ne_all(x,a1,a2...)`\n"
 "\n"
@@ -708,33 +730,48 @@ msgid ""
 "Functionally equivalent to the ne2 plugin."
 msgstr ""
 
-#: picard/script.py:1340
+#: picard/script.py:1353
 msgid ""
 "`$eq_all(x,a1,a2...)`\n"
 "\n"
 "Returns true if `x` equals `a1` and `a2` and ...\n"
-"Functionally equivalent to `$and($eq(x,a1),$eq(x,a2) ...)`."
+"Functionally equivalent to `$and($eq(x,a1),$eq(x,a2) ...)`.\n"
+"\n"
+"Example:\n"
+"\n"
+"    $if($eq_all(%albumartist%,%artist%,Justin Bieber),$set(engineer,Meat "
+"Loaf))\n"
 msgstr ""
 
-#: picard/script.py:1358
+#: picard/script.py:1371
+#, python-format
 msgid ""
 "`$ne_any(x,a1,a2...)`\n"
 "\n"
 "Returns true if `x` does not equal `a1` or `a2` or ...\n"
-"Functionally equivalent to `$or($ne(x,a1),$ne(x,a2) ...)`."
+"Functionally equivalent to `$or($ne(x,a1),$ne(x,a2) ...)`.\n"
+"\n"
+"Example:\n"
+"\n"
+"    "
+"$if($ne_any(%albumartist%,%trackartist%,%composer%),$set(lyricist,%composer%))"
+"\n"
 msgstr ""
 
-#: picard/script.py:1373
+#: picard/script.py:1386
 msgid ""
 "`$title(text)`\n"
 "\n"
 "Returns `text` in title case (first character in every word capitalized)."
 "\n"
 "\n"
+"Example:\n"
+"\n"
+"    $set(album,$title(%album%))\n"
 "_Since Picard 2.1_"
 msgstr ""
 
-#: picard/script.py:1415
+#: picard/script.py:1426
 msgid ""
 "`$is_audio()`\n"
 "\n"
@@ -743,7 +780,7 @@ msgid ""
 "_Since Picard 2.2_"
 msgstr ""
 
-#: picard/script.py:1429
+#: picard/script.py:1440
 msgid ""
 "`$is_video()`\n"
 "\n"
@@ -752,12 +789,12 @@ msgid ""
 "_Since Picard 2.2_"
 msgstr ""
 
-#: picard/script.py:1443
+#: picard/script.py:1454
 msgid ""
 "`$find(haystack,needle)`\n"
 "\n"
 "Finds the location of one string within another.\n"
-"    Returns the index of the first occurrance of `needle` in `haystack`, "
+"    Returns the index of the first occurrence of `needle` in `haystack`, "
 "or \"\" if `needle` was not found.\n"
 "\n"
 "_Since Picard 2.3_\n"
@@ -766,14 +803,14 @@ msgid ""
 "not found."
 msgstr ""
 
-#: picard/script.py:1470
+#: picard/script.py:1471
 msgid ""
 "`$reverse(text)`\n"
 "\n"
 "Returns `text` in reverse order."
 msgstr ""
 
-#: picard/script.py:1488
+#: picard/script.py:1480
 msgid ""
 "`$substr(text,start,end)`\n"
 "\n"
@@ -787,7 +824,7 @@ msgid ""
 "    the start and end of the string respectively."
 msgstr ""
 
-#: picard/script.py:1526
+#: picard/script.py:1501
 msgid ""
 "`$getmulti(name,index,separator=\"; \")`\n"
 "\n"
@@ -799,7 +836,7 @@ msgid ""
 "    multi-valued tag."
 msgstr ""
 
-#: picard/script.py:1556
+#: picard/script.py:1520
 msgid ""
 "`$foreach(name,code,separator=\"; \")`\n"
 "\n"
@@ -817,7 +854,7 @@ msgid ""
 "    proper multi-valued tag."
 msgstr ""
 
-#: picard/script.py:1591
+#: picard/script.py:1542
 msgid ""
 "`$while(condition,code)`\n"
 "\n"
@@ -831,7 +868,7 @@ msgid ""
 "    safeguard against accidentally creating an infinite loop."
 msgstr ""
 
-#: picard/script.py:1619
+#: picard/script.py:1563
 msgid ""
 "`$map(name,code,separator=\"; \")`\n"
 "\n"
@@ -846,7 +883,7 @@ msgid ""
 "    the element or count value to be accessed within the `code` script."
 msgstr ""
 
-#: picard/script.py:1655
+#: picard/script.py:1583
 msgid ""
 "`$join(name,text,separator=\"; \")`\n"
 "\n"
@@ -854,7 +891,7 @@ msgid ""
 "returns the result as a string."
 msgstr ""
 
-#: picard/script.py:1679
+#: picard/script.py:1594
 msgid ""
 "`$slice(name,start,end,separator=\"; \")`\n"
 "\n"
@@ -871,14 +908,18 @@ msgid ""
 "    If the `start` or `end` indexes are left blank, they will default to "
 "the\n"
 "    start and end of the list respectively.\n"
-"For example, the following will create a multi-value variable with all "
+"\n"
+"    The following example will create a multi-value variable with all "
 "artists\n"
 "    in `%artists%` except the first, which can be used to create a "
 "\"feat.\" list.\n"
-"    `$setmulti(supporting_artists,$slice(%artists%,1,))`"
+"\n"
+"Example:\n"
+"\n"
+"    $setmulti(supporting_artists,$slice(%artists%,1,))\n"
 msgstr ""
 
-#: picard/script.py:1722
+#: picard/script.py:1626
 #, python-format
 msgid ""
 "`$datetime(format=\"%Y-%m-%d %H:%M:%S\")`\n"
@@ -900,7 +941,7 @@ msgid ""
 "    `%3Y`); and hanging '%' at the end of the format string."
 msgstr ""
 
-#: picard/script.py:1762
+#: picard/script.py:1655
 msgid ""
 "`$sortmulti(name,separator=\"; \")`\n"
 "\n"
@@ -908,7 +949,7 @@ msgid ""
 "ascending order."
 msgstr ""
 
-#: picard/script.py:1783
+#: picard/script.py:1665
 msgid ""
 "`$reversemulti(name,separator=\"; \")`\n"
 "\n"
@@ -2873,7 +2914,7 @@ msgstr ""
 msgid "Downloading cover art of type '%(type)s' for %(albumid)s from %(host)s ..."
 msgstr ""
 
-#: picard/coverart/utils.py:37
+#: picard/coverart/utils.py:36
 msgid "Unknown"
 msgstr ""
 
@@ -5263,11 +5304,11 @@ msgstr ""
 msgid "Ratings"
 msgstr ""
 
-#: picard/ui/options/releases.py:155
+#: picard/ui/options/releases.py:154
 msgid "Preferred Releases"
 msgstr ""
 
-#: picard/ui/options/releases.py:191
+#: picard/ui/options/releases.py:190
 msgid "Reset all"
 msgstr ""
 
