@@ -19,6 +19,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+from locale import strxfrm
 
 from test.picardtestcase import PicardTestCase
 
@@ -39,3 +40,9 @@ class NatsortTest(PicardTestCase):
 
     def test_natkey_handles_null_char(self):
         self.assertEqual(natsort.natkey('foo\0'), natsort.natkey('foo'))
+
+    def test_natkey_handles_numeric_chars(self):
+        self.assertEqual(
+            natsort.natkey('foo0123456789|²³|٠١٢٣٤٥٦٧٨٩|๐๑๒๓๔๕๖๗๘๙|𝟜𝟚bar'),
+            [strxfrm('foo'), 123456789, strxfrm('|²³|'), 123456789,
+             strxfrm('|'), 123456789, strxfrm('|'), 42, strxfrm('bar')])

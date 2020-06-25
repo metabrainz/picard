@@ -33,7 +33,7 @@ def natkey(text):
     """
     Return a sort key for a string for natural sort order.
     """
-    return [int(s) if s.isdigit() else strxfrm(s)
+    return [int(s) if s.isdecimal() else strxfrm(s)
             for s in RE_NUMBER.split(str(text).replace('\0', ''))]
 
 
