@@ -105,7 +105,7 @@ class AboutDialog(PicardDialog, SingletonDialog):
             strong(_("Please donate")),
             _("Thank you for using Picard. Picard relies on the MusicBrainz database, which is operated by the "
               "MetaBrainz Foundation with the help of thousands of volunteers. If you like this application please "
-              "consider donating to the MetaBrainz Foundation to keep theservice running."),
+              "consider donating to the MetaBrainz Foundation to keep the service running."),
             url(PICARD_URLS['donate'], _("Donate now!")),
             strong(_("Credits")),
             small(_("Copyright © %(copyright_years)s %(authors_credits)s and others") + "%(translator_credits)s"),
