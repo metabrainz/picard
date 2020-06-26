@@ -153,10 +153,10 @@
 - [PICARD-1695](https://tickets.metabrainz.org/browse/PICARD-1695) - Make script editor UI consistent with other option pages
 - [PICARD-1712](https://tickets.metabrainz.org/browse/PICARD-1712) - Use Ctrl+D as keyboard shortcut to remove albums or files
 - [PICARD-1714](https://tickets.metabrainz.org/browse/PICARD-1714) - Focus search input with Ctrl+F
-- [PICARD-1715](https://tickets.metabrainz.org/browse/PICARD-1715) - Allow changing file extension by manipulating the %_extension% variable in renaming script
+- [PICARD-1715](https://tickets.metabrainz.org/browse/PICARD-1715) - Allow changing file extension by manipulating the `%_extension%` variable in renaming script
 
 ## Task
-- [PICARD-1406](https://tickets.metabrainz.org/browse/PICARD-1406) - Refactor Metadata.set and metadata.__setitem__
+- [PICARD-1406](https://tickets.metabrainz.org/browse/PICARD-1406) - Refactor `Metadata.set` and `Metadata.__setitem__`
 - [PICARD-1465](https://tickets.metabrainz.org/browse/PICARD-1465) - Add Picard to Windows Store
 - [PICARD-1596](https://tickets.metabrainz.org/browse/PICARD-1596) - Automate PyPI deployment
 - [PICARD-1653](https://tickets.metabrainz.org/browse/PICARD-1653) - macOS: Enable Hardened Runtime
@@ -743,7 +743,7 @@
 - [PICARD-958](https://tickets.metabrainz.org/browse/PICARD-958) - Errors when directory / file names contain unicode characters
 
 ## New Feature
-- [PICARD-42](https://tickets.metabrainz.org/browse/PICARD-42) - AIF support (ID3)
+- [PICARD-42](https://tickets.metabrainz.org/browse/PICARD-42) - AIFF support (ID3)
 - [PICARD-137](https://tickets.metabrainz.org/browse/PICARD-137) - Test and integrate support for "local" cover art into Picard
 - [PICARD-680](https://tickets.metabrainz.org/browse/PICARD-680) - Display infos (album, artist, tracklist) for clusters without release match
 - [PICARD-691](https://tickets.metabrainz.org/browse/PICARD-691) - Add download plugin functionality to existing UI
@@ -801,7 +801,7 @@
 - [PICARD-705](https://tickets.metabrainz.org/browse/PICARD-705) - Set option 'caa_approved_only' disabled by default
 - [PICARD-707](https://tickets.metabrainz.org/browse/PICARD-707) - Validate fpcalc executable in options
 - [PICARD-733](https://tickets.metabrainz.org/browse/PICARD-733) - Improve File Naming options
-- Add --long-version/-V option, outputting third parties libs versions as well as Picard version PICARD-734)
+- [PICARD-734](https://tickets.metabrainz.org/browse/PICARD-734) - Add --long-version/-V option, outputting third parties libs versions as well as Picard version
 - [PICARD-740](https://tickets.metabrainz.org/browse/PICARD-740) - missing info in the help file
 - [PICARD-773](https://tickets.metabrainz.org/browse/PICARD-773) - Pass command-line arguments to QtApplication
 - [PICARD-777](https://tickets.metabrainz.org/browse/PICARD-777) - Use the more detailed icons in more places on windows
@@ -814,7 +814,7 @@
 - [PICARD-864](https://tickets.metabrainz.org/browse/PICARD-864) - Use magic numbers to determine the audio file types instead of relying on extensions
 - [PICARD-883](https://tickets.metabrainz.org/browse/PICARD-883) - Multi-scripting UI is very basic
 - [PICARD-887](https://tickets.metabrainz.org/browse/PICARD-887) - Allow scripting functions to have arbitrary number of arguments
-- The "Restore defaults" confirmation buttons should follow the quit confirmation dialog in style PICARD-890)
+- [PICARD-890](https://tickets.metabrainz.org/browse/PICARD-890) - The "Restore defaults" confirmation buttons should follow the quit confirmation dialog in style
 - [PICARD-896](https://tickets.metabrainz.org/browse/PICARD-896) - Replace submit icon with AcoustID logo
 - [PICARD-897](https://tickets.metabrainz.org/browse/PICARD-897) - Rename "Submit" button to "Submit AcoustIDs"
 - [PICARD-898](https://tickets.metabrainz.org/browse/PICARD-898) - Use UTF-8 for ID3v2.4 by default instead of UTF-16
