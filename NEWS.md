@@ -933,8 +933,7 @@
 
 
 # Version 1.1 - 2012-09-03
-- Always show basic tags in metadata comparison box, even if empty (title,
-  artist, album, tracknumber, ~length, date) (PICARD-201)
+- [PICARD-201](https://tickets.metabrainz.org/browse/PICARD-201) - Always show basic tags in metadata comparison box, even if empty (title, artist, album, tracknumber, ~length, date)
 - [PICARD-82](https://tickets.metabrainz.org/browse/PICARD-82) - Fixed AcoustID submission failure after removing files from Picard
 - [PICARD-194](https://tickets.metabrainz.org/browse/PICARD-194) - Allow multi-select in new MetaDataBox for delete/remove tags
 - [PICARD-104](https://tickets.metabrainz.org/browse/PICARD-104) - File browser remembers last directory/no longer crashes on OS X
