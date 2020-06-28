@@ -728,16 +728,16 @@ class File(QtCore.QObject, Item):
                 statusbar(N_("No matching tracks above the threshold for file '%(filename)s'"))
             else:
                 statusbar(N_("File '%(filename)s' identified!"))
-                (track_id, release_group_id, release_id, acoustid, node) = trackmatch
+                (recording_id, release_group_id, release_id, acoustid, node) = trackmatch
                 if lookuptype == File.LOOKUP_ACOUSTID:
                     self.metadata['acoustid_id'] = acoustid
-                    self.tagger.acoustidmanager.add(self, track_id)
+                    self.tagger.acoustidmanager.add(self, recording_id)
                 if release_group_id is not None:
                     releasegroup = self.tagger.get_release_group_by_id(release_group_id)
                     releasegroup.loaded_albums.add(release_id)
-                    self.tagger.move_file_to_track(self, release_id, track_id)
+                    self.tagger.move_file_to_track(self, release_id, recording_id)
                 else:
-                    self.tagger.move_file_to_nat(self, track_id, node=node)
+                    self.tagger.move_file_to_nat(self, recording_id)
         else:
             statusbar(N_("No matching tracks for file '%(filename)s'"))
 
