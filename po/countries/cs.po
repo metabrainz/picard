@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2020-04-18 10:02+0000\n"
+"PO-Revision-Date: 2020-05-12 09:54+0000\n"
 "Last-Translator: DJ Sweder <djsweder@gmail.com>\n"
 "Language-Team: Czech (http://www.transifex.com/musicbrainz/musicbrainz/language/cs/)\n"
 "MIME-Version: 1.0\n"
@@ -252,7 +252,7 @@ msgstr "Vánoční ostrov"
 #. iso.code:CC
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:46
 msgid "Cocos (Keeling) Islands"
-msgstr ""
+msgstr "Kokosové (Keelingovy) ostrovy"
 
 #. iso.code:CO
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:47
@@ -682,7 +682,7 @@ msgstr "Macao"
 #. iso.code:MK
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:126
 msgid "Macedonia"
-msgstr ""
+msgstr "Makedonie"
 
 #. iso.code:MG
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:127
@@ -747,7 +747,7 @@ msgstr "Mexiko"
 #. iso.code:MD
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:140
 msgid "Moldova"
-msgstr ""
+msgstr "Moldavsko"
 
 #. iso.code:MC
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:141
@@ -807,7 +807,7 @@ msgstr "Nizozemsko"
 #. iso.code:AN
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:151
 msgid "Netherlands Antilles"
-msgstr ""
+msgstr "Nizozemské Antily"
 
 #. iso.code:NC
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:152
@@ -972,7 +972,7 @@ msgstr "Svatá Lucie"
 #. iso.code:MF
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:256
 msgid "Saint Martin (French part)"
-msgstr ""
+msgstr "Svatý Martin (francouzská část)"
 
 #. iso.code:PM
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:197
@@ -982,7 +982,7 @@ msgstr "Saint Pierre a Miquelon"
 #. iso.code:VC
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:180
 msgid "Saint Vincent and The Grenadines"
-msgstr ""
+msgstr "Svatý Vincenc a Grenadiny"
 
 #. iso.code:WS
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:181
@@ -1037,7 +1037,7 @@ msgstr "Singapur"
 #. iso.code:SX
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:260
 msgid "Sint Maarten (Dutch part)"
-msgstr ""
+msgstr "Svatý Martin (nizozemská část)"
 
 #. iso.code:SK
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:189

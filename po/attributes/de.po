@@ -15,8 +15,8 @@
 # Frank Matthiae <senax79@gmail.com>, 2015
 # Hans-Peter Braun <hape.braun@icloud.com>, 2017
 # happykraut, 2017
-# J L <inactive+j_rg@transifex.com>, 2018
-# J L <inactive+j_rg@transifex.com>, 2018
+# 871cf62ea721ffc486279ce0e5a0f34c_d3e66b3 <3d1fc2557ad8bc41db62b2fba21e9eae_680078>, 2018
+# 871cf62ea721ffc486279ce0e5a0f34c_d3e66b3 <3d1fc2557ad8bc41db62b2fba21e9eae_680078>, 2018
 # Jod isnotmyname <beebeebeethats3bees@aaathats3as.com>, 2017
 # happykraut, 2017
 # Leo_Verto <leotheverto@googlemail.com>, 2017

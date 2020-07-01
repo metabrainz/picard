@@ -1,8 +1,8 @@
 # 
 # Translators:
 # Chris_Kay_083, 2014
-# Hmxhmx, 2017
-# Hmxhmx, 2017
+# 6fd7e0289e0c30343ba3ef95fad1ee4c_fa6ad96, 2017
+# 6fd7e0289e0c30343ba3ef95fad1ee4c_fa6ad96, 2017
 # gogo <trebelnik2@gmail.com>, 2019
 msgid ""
 msgstr ""

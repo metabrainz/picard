@@ -2,6 +2,7 @@
 # Translators:
 # nikki, 2014
 # Alexis Jeandeau <alexis.jeandeau@gmail.com>, 2020
+# Atsushi Nakamura <r1990297@gmail.com>, 2020
 # john doe, 2018
 # Keshav Kini <keshav.kini@gmail.com>, 2013
 # ktu0457, 2017
@@ -24,8 +25,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2020-02-18 05:10+0000\n"
-"Last-Translator: Alexis Jeandeau <alexis.jeandeau@gmail.com>\n"
+"PO-Revision-Date: 2020-06-28 04:05+0000\n"
+"Last-Translator: Atsushi Nakamura <r1990297@gmail.com>\n"
 "Language-Team: Japanese (http://www.transifex.com/musicbrainz/musicbrainz/language/ja/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -135,20 +136,20 @@ msgctxt "work_type"
 msgid ""
 "A ballet is music composed to be used, together with a choreography, for a "
 "ballet dance production."
-msgstr ""
+msgstr "バレエとは、バレエダンスの演出のために、振り付けとともに使用されるように作曲された楽曲のことです。"
 
 #: DB:work_type/description:3
 msgctxt "work_type"
 msgid ""
 "A cantata is a vocal (often choral) composition with an instrumental "
 "(usually orchestral) accompaniment, typically in several movements."
-msgstr ""
+msgstr "カンタータは楽器(通常オーケストラ)の伴奏を伴う声楽(多くの場合は合唱)の作曲物で、通常はいくつかの楽章で構成されています。"
 
 #: DB:work_type/description:4
 msgctxt "work_type"
 msgid ""
 "A concerto is a musical work for soloist(s) accompanied by an orchestra."
-msgstr ""
+msgstr "協奏曲はオーケストラを伴奏するソリストのための音楽作品。"
 
 #: DB:event_type/description:4
 msgctxt "event_type"
@@ -156,7 +157,7 @@ msgid ""
 "A convention, expo or trade fair is an event which is not typically "
 "orientated around music performances, but can include them as side "
 "activities."
-msgstr ""
+msgstr "音楽イベントとして普通位置付けられていないが、大会、博覧会または見本市のアクティビティの一部としてそれらを含めることができるイベント。"
 
 #: DB:release_status/description:2
 msgctxt "release_status"
@@ -164,7 +165,7 @@ msgid ""
 "A give-away release or a release intended to promote an upcoming official "
 "release (e.g. pre-release versions, releases included with a magazine, "
 "versions supplied to radio DJs for air-play)."
-msgstr ""
+msgstr "プレゼント用のリリースや、近日発売予定の公式リリースを宣伝するためのリリース(例: プレリリース版、雑誌に同梱されているリリース、ラジオDJに提供されているエアプレイ用のバージョン)。"
 
 #: DB:instrument_type/description:7
 msgctxt "instrument_type"
@@ -184,7 +185,7 @@ msgid ""
 "A mass is a choral composition that sets the invariable portions of the "
 "Christian Eucharistic liturgy (Kyrie - Gloria - Credo - Sanctus - Benedictus"
 " - Agnus Dei, with other portions sometimes added) to music."
-msgstr ""
+msgstr "ミサ曲はキリスト教の聖体典礼(キリエ、グローリア、クレド、サンクトゥス、ベネディクトゥス、アグナス・デイ、その他の部分が追加されることもある)を音楽に合わせて構成された合唱曲。"
 
 #: DB:event_type/description:5
 msgctxt "event_type"
@@ -211,18 +212,18 @@ msgctxt "event_type"
 msgid ""
 "A party, reception or other event held specifically for the launch of a "
 "release."
-msgstr ""
+msgstr "リリース発表のため特別に開催されるパーティー、レセプション、その他のイベント。"
 
 #: DB:release_packaging/description:17
 msgctxt "release_packaging"
 msgid "A perfect bound book with a sleeve at the end to hold a CD"
-msgstr ""
+msgstr "CDが入るスリーブ付きの完全製本"
 
 #: DB:place_type/description:8
 msgctxt "place_type"
 msgid ""
 "A place (generally a factory) at which physical media are manufactured."
-msgstr ""
+msgstr "物理メディアを製造する場所(一般的には工場)"
 
 #: DB:place_type/description:5
 msgctxt "place_type"
@@ -230,21 +231,21 @@ msgid ""
 "A place consisting of a large enclosed area with a central event space "
 "surrounded by tiered seating for spectators, which can be used for indoor "
 "sports, concerts and other entertainment events."
-msgstr ""
+msgstr "屋内スポーツ、コンサート、その他のエンターテイメントイベントに使用できる観客のための階段状の座席で囲まれた中央にイベントスペースを持つ大規模な屋内エリアからなる場所。"
 
 #: DB:place_type/description:1
 msgctxt "place_type"
 msgid ""
 "A place designed for non-live production of music, typically a recording "
 "studio."
-msgstr ""
+msgstr "ライブではない楽曲制作のために設計された場所で、通常はレコーディングスタジオ。"
 
 #: DB:place_type/description:2
 msgctxt "place_type"
 msgid ""
 "A place that has live artistic performances as one of its primary functions,"
 " such as a concert hall."
-msgstr ""
+msgstr "コンサートホールのように芸術的な生演奏を主な機能の一つとしている場所。"
 
 #: DB:place_type/description:6
 msgctxt "place_type"
@@ -252,7 +253,7 @@ msgid ""
 "A place that has worship or religious studies as its main function. "
 "Religious buildings often host concerts and serve as recording locations, "
 "especially for classical music."
-msgstr ""
+msgstr "礼拝や宗教研究を主な機能とする場所。宗教的な建物はしばしばコンサートを主催し、特にクラシック音楽のレコーディング場所として使用されます。"
 
 #: DB:place_type/description:4
 msgctxt "place_type"
@@ -260,7 +261,7 @@ msgid ""
 "A place whose main purpose is to host outdoor sport events, typically "
 "consisting of a pitch surrounded by a structure for spectators with no roof,"
 " or a roof which can be retracted."
-msgstr ""
+msgstr "屋外スポーツイベントを開催することを主な目的とする場所で、通常は屋根のない観客のための構造物で囲まれたピッチ、または格納することができる屋根で構成されています。"
 
 #: DB:work_type/description:28
 msgctxt "work_type"
@@ -392,7 +393,7 @@ msgstr ""
 #: DB:release_packaging/description:2
 msgctxt "release_packaging"
 msgid "A thinner jewel case, commonly used for CD singles."
-msgstr ""
+msgstr "CDシングルによく使われる薄型のジュエルケース。"
 
 #: DB:work_type/description:19
 msgctxt "work_type"
@@ -1577,7 +1578,7 @@ msgstr "国は、アメリカ合衆国などの、ISO 3166-1に含まれる（�
 #: DB:area_type/name:7
 msgctxt "area_type"
 msgid "County"
-msgstr ""
+msgstr "郡"
 
 #: DB:area_type/description:7
 msgctxt "area_type"

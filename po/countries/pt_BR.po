@@ -5,7 +5,7 @@
 # lampih <lampih@gmail.com>, 2012
 # Lucas Lira Gomes <x8lucas8x@gmail.com>, 2012
 # Marco Costa <mmarcottulio@gmail.com>, 2012
-# Marcus Vinícius Marques, 2014
+# 65f2af3cfa184c075942a0418b98d2de_d688669, 2014
 # Marco Costa <mmarcottulio@gmail.com>, 2012
 # rafaelbrandao <rblcin@gmail.com>, 2012
 # davitf <transifex@davitf.com>, 2012

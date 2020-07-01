@@ -3,7 +3,7 @@
 # A. Regnander <anton_r_3@hotmail.com>, 2017
 # Filip Bengtsson, 2018
 # Jonatan Nyberg <jonatan.nyberg.karl@gmail.com>, 2017
-# Kristoffer Grundström <hamnisdude@gmail.com>, 2016
+# Kristoffer Grundström <lovaren@gmail.com>, 2016
 # Killinstinct <myaku@msn.com>, 2015
 # Robin Björnsvik <robin@bjornsvik.se>, 2013
 # Staffan Vilcans, 2015
