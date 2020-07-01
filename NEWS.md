@@ -1,3 +1,43 @@
+# Version 2.4.0b1 - 2020-07-01
+
+## Bug-fix
+- [PICARD-1753](https://tickets.metabrainz.org/browse/PICARD-1753) - Fix font size of script editor and log view on Windows
+- [PICARD-1807](https://tickets.metabrainz.org/browse/PICARD-1807) - Wrong error handling when using python-libdiscid
+- [PICARD-1813](https://tickets.metabrainz.org/browse/PICARD-1813) - `$title` function throws error on empty value
+- [PICARD-1820](https://tickets.metabrainz.org/browse/PICARD-1820) - PLUGIN_VERSION no longer displayed correctly in plugins dialog
+- [PICARD-1823](https://tickets.metabrainz.org/browse/PICARD-1823) - Genre tag ordering is non-deterministic
+- [PICARD-1826](https://tickets.metabrainz.org/browse/PICARD-1826) - "no appropriate stream found" when saving .ogg (OPUS) file
+- [PICARD-1838](https://tickets.metabrainz.org/browse/PICARD-1838) - Files with a .dff file extension are interpreted as DSF files and fail to load
+- [PICARD-1853](https://tickets.metabrainz.org/browse/PICARD-1853) - Crash if tags contain null character
+- [PICARD-1855](https://tickets.metabrainz.org/browse/PICARD-1855) - Relationships not tagged for non-album track
+- [PICARD-1859](https://tickets.metabrainz.org/browse/PICARD-1859) - "ValueError: Invalid literal" followed by crash when opening certain files
+
+## New Feature
+- [PICARD-1704](https://tickets.metabrainz.org/browse/PICARD-1704) - Support Windows 10 dark mode
+- [PICARD-1797](https://tickets.metabrainz.org/browse/PICARD-1797) - Autocompletion for script functions and variables
+- [PICARD-1798](https://tickets.metabrainz.org/browse/PICARD-1798) - Add support for inline translatable documentation
+
+## Improvement
+- [PICARD-824](https://tickets.metabrainz.org/browse/PICARD-824) - Expand all option submenus by default
+- [PICARD-920](https://tickets.metabrainz.org/browse/PICARD-920) - Remember selected options page
+- [PICARD-1117](https://tickets.metabrainz.org/browse/PICARD-1117) - Instrumental recordings of a work should set language to "No lyrics"
+- [PICARD-1796](https://tickets.metabrainz.org/browse/PICARD-1796) - Consider release date when matching files to releases
+- [PICARD-1805](https://tickets.metabrainz.org/browse/PICARD-1805) - Make it easier to add the first script
+- [PICARD-1818](https://tickets.metabrainz.org/browse/PICARD-1818) - Make PyQt5.QtDBus optional
+- [PICARD-1829](https://tickets.metabrainz.org/browse/PICARD-1829) - Add support for disc numbers in cluster Info dialog tracklists
+- [PICARD-1831](https://tickets.metabrainz.org/browse/PICARD-1831) - Mitigate performance impacts of file selection and UI updates during processing
+- [PICARD-1840](https://tickets.metabrainz.org/browse/PICARD-1840) - Instrumental recordings of a work should drop the lyricist credit
+- [PICARD-1842](https://tickets.metabrainz.org/browse/PICARD-1842) - AIFF and DSF: Add support for albumsort, artistsort, titlesort and discsubtitle
+- [PICARD-1843](https://tickets.metabrainz.org/browse/PICARD-1843) - Improve load and clustering performance
+- [PICARD-1844](https://tickets.metabrainz.org/browse/PICARD-1844) - Further improve loading and clustering performance
+- [PICARD-1845](https://tickets.metabrainz.org/browse/PICARD-1845) - Add "lookup in browser" for musicbrainz_discid tag in metadata view
+- [PICARD-1846](https://tickets.metabrainz.org/browse/PICARD-1846) - Metadata.unset should not raise KeyError
+- [PICARD-1847](https://tickets.metabrainz.org/browse/PICARD-1847) - Restructure tag compatibility options
+- [PICARD-1852](https://tickets.metabrainz.org/browse/PICARD-1852) - Make about a separate dialog
+- [PICARD-1854](https://tickets.metabrainz.org/browse/PICARD-1854) - Improve sorting performance in main window
+- [PICARD-1856](https://tickets.metabrainz.org/browse/PICARD-1856) - Use pgettext function in Python 3.8
+
+
 # Version 2.3.2 - 2020-05-06
 
 ## Bug-fix
