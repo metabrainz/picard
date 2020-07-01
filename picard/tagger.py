@@ -127,6 +127,7 @@ from picard.webservice.api_helpers import (
 
 import picard.resources  # noqa: F401 # pylint: disable=unused-import
 
+from picard.ui import theme
 from picard.ui.itemviews import BaseTreeView
 from picard.ui.mainwindow import MainWindow
 from picard.ui.searchdialog.album import AlbumSearchDialog
@@ -162,18 +163,10 @@ class Tagger(QtWidgets.QApplication):
 
     def __init__(self, picard_args, unparsed_args, localedir, autoupdate):
 
-        # Use the new fusion style from PyQt5 for a modern and consistent look
-        # across all OSes.
-        if not IS_MACOS and not IS_HAIKU:
-            self.setStyle('Fusion')
-
         super().__init__(sys.argv)
         self.__class__.__instance = self
         config._setup(self, picard_args.config_file)
-
-        super().setStyleSheet(
-            'QGroupBox::title { /* PICARD-1206, Qt bug workaround */ }'
-        )
+        theme.setup(self)
 
         self._cmdline_files = picard_args.FILE
         self.autoupdate_enabled = autoupdate
