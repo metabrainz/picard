@@ -433,10 +433,6 @@ class Tagger(QtWidgets.QApplication):
             self.unclustered_files.add_file(file)
             return
 
-        if target is not None:
-            self.move_files([file], target)
-            return
-
         if not config.setting["ignore_file_mbids"]:
             recordingid = file.metadata['musicbrainz_recordingid']
             is_valid_recordingid = mbid_validate(recordingid)
@@ -462,7 +458,10 @@ class Tagger(QtWidgets.QApplication):
                 self.move_file_to_nat(file, recordingid)
                 return
 
-        self.unclustered_files.add_file(file)
+        if target:
+            self.move_files([file], target)
+        else:
+            self.unclustered_files.add_file(file)
 
         # fallback on analyze if nothing else worked
         if config.setting['analyze_new_files'] and file.can_analyze():
