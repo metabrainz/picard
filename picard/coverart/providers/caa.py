@@ -365,7 +365,7 @@ class CAATypesSelectorDialog(PicardDialog):
         self.list_ignore.clear()
         for caa_type in CAA_TYPES:
             name = caa_type['name']
-            title = translate_caa_type(caa_type['title'])
+            title = translate_caa_type(name)
             item = QtWidgets.QListWidgetItem(title)
             item.setData(QtCore.Qt.UserRole, name)
             if name in includes:
