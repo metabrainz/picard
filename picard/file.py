@@ -194,7 +194,7 @@ class File(QtCore.QObject, Item):
                 if type(alternative_file) != type(self):  # pylint: disable=unidiomatic-typecheck
                     log.debug('Loading %r failed, retrying as %r' % (self, alternative_file))
                     self.remove()
-                    self.tagger.add_file(alternative_file, callback)
+                    alternative_file.load(callback)
                     return
                 else:
                     alternative_file.remove()  # cleanup unused File object
