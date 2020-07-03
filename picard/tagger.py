@@ -421,10 +421,14 @@ class Tagger(QtWidgets.QApplication):
             return 1
         return super().event(event)
 
-    def _file_loaded(self, file, target=None):
+    def _file_loaded(self, file, target=None, remove_file=False):
         self._pending_files_count -= 1
         if self._pending_files_count == 0:
             self.window.set_sorting(True)
+
+        if remove_file:
+            file.remove()
+            return
 
         if file is None:
             return

@@ -201,8 +201,8 @@ class File(QtCore.QObject, Item):
             from picard.formats import supported_extensions
             file_name, file_extension = os.path.splitext(self.base_filename)
             if file_extension not in supported_extensions():
-                self.remove()
                 log.error('Unsupported media file %r wrongly loaded. Removing ...', self)
+                callback(self, remove_file=True)
                 return
         else:
             self.error = None
