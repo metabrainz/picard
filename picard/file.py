@@ -168,16 +168,7 @@ class File(QtCore.QObject, Item):
         if self.tagger.stopping:
             log.debug("File not loaded because %s is stopping: %r", PICARD_APP_NAME, self.filename)
             return None
-        try:
-            # Try loading based on extension first
-            return self._load(filename)
-        except Exception:
-            from picard.formats.util import guess_format
-            # If it fails, force format guessing and try loading again
-            file_format = guess_format(filename)
-            if not file_format or type(file_format) == type(self):
-                raise
-            return file_format._load(filename)
+        return self._load(filename)
 
     def _load(self, filename):
         """Load metadata from the file."""
@@ -189,11 +180,29 @@ class File(QtCore.QObject, Item):
         if error is not None:
             self.error = str(error)
             self.state = self.ERROR
+
+            # If loading failed, force format guessing and try loading again
+            from picard.formats.util import guess_format
+            try:
+                alternative_file = guess_format(self.filename)
+            except (FileNotFoundError, OSError):
+                log.error("Guessing format of %s failed", self.filename, exc_info=True)
+                alternative_file = None
+
+            if alternative_file:
+                # Do not retry reloading exactly the same file format
+                if type(alternative_file) != type(self):  # pylint: disable=unidiomatic-typecheck
+                    log.debug('Loading %r failed, retrying as %r' % (self, alternative_file))
+                    self.remove()
+                    alternative_file.load(callback)
+                    return
+                else:
+                    alternative_file.remove()  # cleanup unused File object
             from picard.formats import supported_extensions
             file_name, file_extension = os.path.splitext(self.base_filename)
             if file_extension not in supported_extensions():
-                self.remove()
                 log.error('Unsupported media file %r wrongly loaded. Removing ...', self)
+                callback(self, remove_file=True)
                 return
         else:
             self.error = None
