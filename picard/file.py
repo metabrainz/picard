@@ -183,7 +183,12 @@ class File(QtCore.QObject, Item):
 
             # If loading failed, force format guessing and try loading again
             from picard.formats.util import guess_format
-            alternative_file = guess_format(self.base_filename)
+            try:
+                alternative_file = guess_format(self.filename)
+            except (FileNotFoundError, OSError):
+                log.error("Guessing format of %s failed", self.filename, exc_info=True)
+                alternative_file = None
+
             if alternative_file:
                 # Do not retry reloading exactly the same file format
                 if type(alternative_file) != type(self):  # pylint: disable=unidiomatic-typecheck
