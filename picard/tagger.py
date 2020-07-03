@@ -527,6 +527,10 @@ class Tagger(QtWidgets.QApplication):
                 file.load(partial(self._file_loaded, target=target))
                 QtCore.QCoreApplication.processEvents()
 
+    def add_file(self, file_, callback):
+        self._pending_files_count += 1
+        file_.load(callback)
+
     def _scan_dir(self, folders, recursive, ignore_hidden):
         files = []
         local_folders = list(folders)
