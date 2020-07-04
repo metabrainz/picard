@@ -1112,7 +1112,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.tags_from_filenames_action.setEnabled(bool(files))
         self.track_search_action.setEnabled(have_objects)
 
-    def update_selection(self, objects=None):
+    def update_selection(self, objects=None, new_selection=True):
         if self.ignore_selection_changes:
             return
 
@@ -1176,8 +1176,9 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             elif obj.can_show_coverart:
                 metadata = obj.metadata
 
-        self.metadata_box.selection_dirty = True
-        self.metadata_box.update()
+        if new_selection:
+            self.metadata_box.selection_dirty = True
+            self.metadata_box.update()
         self.cover_art_box.set_metadata(metadata, orig_metadata, obj)
         self.selection_updated.emit(objects)
 
