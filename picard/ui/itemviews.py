@@ -920,6 +920,8 @@ class ClusterItem(TreeItem):
         album = self.obj.related_album
         if self.obj.special and album and album.loaded:
             album.item.update(update_tracks=False)
+        if self.isSelected():
+            TreeItem.window.update_selection(new_selection=False)
 
     def add_file(self, file):
         self.add_files([file])
@@ -994,6 +996,8 @@ class AlbumItem(TreeItem):
                 self.setToolTip(MainPanel.TITLE_COLUMN, _("Album unchanged"))
         for i, column in enumerate(MainPanel.columns):
             self.setText(i, album.column(column[1]))
+        if selection_changed:
+            TreeItem.window.update_selection(new_selection=False)
         # Workaround for PICARD-1446: Expand/collapse indicator for the release
         # is briefly missing on Windows
         self.emitDataChanged()
@@ -1077,6 +1081,8 @@ class TrackItem(TreeItem):
             self.setText(i, track.column(column[1]))
             self.setForeground(i, color)
             self.setBackground(i, bgcolor)
+        if self.isSelected():
+            TreeItem.window.update_selection(new_selection=False)
         if update_album:
             self.parent().update(update_tracks=False)
 
@@ -1098,7 +1104,8 @@ class FileItem(TreeItem):
             if not tree_widget.itemWidget(self, MainPanel.FINGERPRINT_COLUMN):
                 tree_widget.setItemWidget(self, MainPanel.FINGERPRINT_COLUMN,
                     FingerprintColumnWidget(file=file))
-
+        if self.isSelected():
+            TreeItem.window.update_selection(new_selection=False)
         parent = self.parent()
         if isinstance(parent, TrackItem) and update_track:
             parent.update(update_files=False)
