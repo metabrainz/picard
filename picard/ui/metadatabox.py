@@ -453,12 +453,14 @@ class MetadataBox(QtWidgets.QTableWidget):
     def update(self):
         if self.editing:
             return
+        new_selection = False
         if self.selection_dirty:
+            new_selection = True
             self._update_selection()
-        thread.run_task(self._update_tags, self._update_items,
+        thread.run_task(partial(self._update_tags, new_selection), self._update_items,
             thread_pool=self.tagger.priority_thread_pool)
 
-    def _update_tags(self):
+    def _update_tags(self, new_selection=True):
         self.selection_mutex.lock()
         files = self.files
         tracks = self.tracks
@@ -466,6 +468,21 @@ class MetadataBox(QtWidgets.QTableWidget):
 
         if not (files or tracks):
             return None
+
+        while not new_selection:  # Just an if with multiple exit points
+            # If we are dealing with the same selection
+            # skip updates unless it we are dealing with a single file/track
+            single_file = len(files) == 1
+            single_track = len(tracks) == 1
+            if single_file or single_track:
+                break
+
+            # Or if we are dealing with a single cluster/album
+            single_file_album = len(set([file.metadata["album"] for file in files])) == 1
+            single_track_album = len(set([track.metadata["album"] for track in tracks])) == 1
+            if single_file_album or single_track_album:
+                break
+            return self.tag_diff
 
         self.colors = {
             TagStatus.NOCHANGE: self.palette().color(QtGui.QPalette.Text),

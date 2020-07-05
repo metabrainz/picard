@@ -1178,7 +1178,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
         if new_selection:
             self.metadata_box.selection_dirty = True
-            self.metadata_box.update()
+        self.metadata_box.update()
         self.cover_art_box.set_metadata(metadata, orig_metadata, obj)
         self.selection_updated.emit(objects)
 
