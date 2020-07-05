@@ -1,3 +1,13 @@
+# Version 2.4.0b2 - 2020-07-05
+
+## Bugfixes
+- [PICARD-1864](https://tickets.metabrainz.org/browse/PICARD-1864) - Adding single files does ignore existing MBIDs
+- [PICARD-1866](https://tickets.metabrainz.org/browse/PICARD-1866) - Coverart pane does not update during / after saving files
+- [PICARD-1867](https://tickets.metabrainz.org/browse/PICARD-1867) - Guess format fallback is broken
+- [PICARD-1868](https://tickets.metabrainz.org/browse/PICARD-1868) - CAA type selection dialog does not translate "Unknown"
+- [PICARD-1869](https://tickets.metabrainz.org/browse/PICARD-1869) - Unable to submit acoustic fingerprints
+
+
 # Version 2.4.0b1 - 2020-07-01
 
 ## Bugfixes
