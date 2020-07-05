@@ -14,8 +14,8 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2020-06-26 01:20+0200\n"
-"PO-Revision-Date: 2020-06-26 09:42+0000\n"
-"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
+"PO-Revision-Date: 2020-07-05 16:13+0000\n"
+"Last-Translator: Maurits Meulenbelt <mfmeulenbelt@gmail.com>\n"
 "Language-Team: Dutch (http://www.transifex.com/musicbrainz/musicbrainz/language/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -79,7 +79,7 @@ msgstr "Metadata voor cluster %(album)s wordt opgezocht …"
 #: picard/cluster.py:295 picard/cluster.py:549
 #, python-format
 msgid "Clustering - step %(step)d/3: %(cluster_type)s (%(update)d%%)"
-msgstr ""
+msgstr "Aan het clusteren: stap %(step)d/3: %(cluster_type)s (%(update)d%%)"
 
 #: picard/cluster.py:354
 msgid "Unclustered Files"
@@ -87,7 +87,7 @@ msgstr "Niet-geclusterde bestanden"
 
 #: picard/cluster.py:484
 msgid "Metadata Extraction"
-msgstr ""
+msgstr "Metadata uitlezen"
 
 #: picard/cluster.py:485 picard/ui/cdlookup.py:72 picard/ui/itemviews.py:156
 #: picard/ui/mainwindow.py:802 picard/ui/searchdialog/album.py:153
@@ -264,21 +264,21 @@ msgid ""
 "`$left(text,number)`\n"
 "\n"
 "Returns the first `number` characters from `text`."
-msgstr ""
+msgstr "`$left(tekst,aantal)`\n\nRetourneert het eerste `aantal` tekens van `tekst`."
 
 #: picard/script.py:631
 msgid ""
 "`$right(text,number)`\n"
 "\n"
 "Returns the last `number` characters from `text`."
-msgstr ""
+msgstr "`$right(tekst,aantal)`\n\nRetourneert het laatste `aantal` tekens van `tekst`."
 
 #: picard/script.py:643
 msgid ""
 "`$lower(text)`\n"
 "\n"
 "Returns `text` in lower case."
-msgstr ""
+msgstr "`$lower(tekst)`\n\nRetourneert `tekst` in kleine letters."
 
 #: picard/script.py:652
 msgid ""
@@ -347,7 +347,7 @@ msgid ""
 "`$num(number,length)`\n"
 "\n"
 "Returns `number` formatted to `length` digits (maximum 20)."
-msgstr ""
+msgstr "`$num(getal,lengte)`\n\nRetourneert `getal`, aangevuld tot `lengte` tekens (maximaal twintig)."
 
 #: picard/script.py:770
 msgid ""
@@ -381,7 +381,7 @@ msgid ""
 "    which will not be written as a tag in the file, prefix the variable name\n"
 "    with an underscore. `%something%` will create a \"something\" tag;\n"
 "    `%_something%` will not."
-msgstr ""
+msgstr "`$set(naam,waarde)`\n\nStelt de variabele `naam` in op `waarde`.\n\nOpmerking: om een variabele te creëren die je kunt gebruiken voor bestandsnamen, maar die niet als tag in het bestand wordt opgeslagen, kan je er een laag streepje voor zetten: met `%iets%` wordt er een tag ‘iets’ opgeslagen; met `%_iets%` wordt er geen tag opgeslagen."
 
 #: picard/script.py:823
 #, python-format
@@ -3063,7 +3063,7 @@ msgstr "Tag verwijderd"
 
 #: picard/ui/colors.py:46
 msgid "Script Function"
-msgstr ""
+msgstr "Scriptfunctie"
 
 #: picard/ui/coverartbox.py:277
 msgid "View release on MusicBrainz"
@@ -3236,7 +3236,7 @@ msgstr "Artiest:"
 #: picard/ui/infodialog.py:397
 #, python-format
 msgid "Disc %d"
-msgstr ""
+msgstr "Medium %d"
 
 #: picard/ui/infodialog.py:399
 msgid "Tracklist:"
@@ -4086,7 +4086,7 @@ msgstr "Bestandsnaam"
 
 #: picard/ui/ui_aboutdialog.py:83
 msgid "About Picard"
-msgstr ""
+msgstr "Over Picard"
 
 #: picard/ui/options/cdlookup.py:49 picard/ui/ui_cdlookup.py:85
 #: picard/ui/ui_options_cdlookup.py:38
@@ -4656,7 +4656,7 @@ msgstr "Taggerscript(s)"
 
 #: picard/ui/ui_options_script.py:105
 msgid "Enter your tagger script here."
-msgstr ""
+msgstr "Voer hier je taggerscript in."
 
 #: picard/ui/ui_options_script.py:106 picard/ui/ui_options_script.py:107
 msgid "Add new script"
@@ -4665,7 +4665,7 @@ msgstr "Nieuw script toevoegen"
 #: picard/ui/ui_options_script.py:108
 #: picard/ui/ui_scripting_documentation_dialog.py:50
 msgid "Scripting Documentation"
-msgstr ""
+msgstr "Documentatie over scripts"
 
 #: picard/ui/ui_options_script.py:109
 msgid "Move script up"
@@ -4815,27 +4815,27 @@ msgstr "APEv2-tags uit AC3-bestanden verwijderen"
 #: picard/ui/ui_options_tags_compatibility.py:190
 #: picard/ui/ui_options_tags_compatibility_wave.py:56
 msgid "WAVE files"
-msgstr ""
+msgstr "WAVE-bestanden"
 
 #: picard/ui/ui_options_tags_compatibility.py:191
 #: picard/ui/ui_options_tags_compatibility_wave.py:58
 msgid "Also include RIFF INFO tags in the files"
-msgstr ""
+msgstr "Ook RIFF INFO-tags aan bestanden toevoegen"
 
 #: picard/ui/ui_options_tags_compatibility.py:192
 #: picard/ui/ui_options_tags_compatibility_wave.py:59
 msgid "Remove existing RIFF INFO tags from WAVE files"
-msgstr ""
+msgstr "Bestaande RIFF INFO-tags uit WAVE-bestanden verwijderen"
 
 #: picard/ui/ui_options_tags_compatibility.py:193
 #: picard/ui/ui_options_tags_compatibility_wave.py:60
 msgid "RIFF INFO Text Encoding"
-msgstr ""
+msgstr "RIFF INFO-tekencodering"
 
 #: picard/ui/ui_options_tags_compatibility.py:194
 #: picard/ui/ui_options_tags_compatibility_wave.py:61
 msgid "Windows-1252"
-msgstr ""
+msgstr "Windows-1252"
 
 #: picard/ui/ui_options_tags_compatibility_aac.py:46
 msgid ""
@@ -4844,7 +4844,7 @@ msgid ""
 "players not supporting AAC files with APEv2 tags can have issues loading and"
 " playing those files. To deal with this you can choose whether to save tags "
 "to those files."
-msgstr ""
+msgstr "Picard kan APEv2-tags opslaan in pure AAC-bestanden, die normaal geen tags ondersteunen. APEv2-tags in AAC-bestanden worden door een aantal spelers ondersteund, maar andere spelers kunnen problemen met het laden en afspelen van dit soort bestanden hebben. Daarom kan je kiezen of Picard tags in deze bestanden opslaat."
 
 #: picard/ui/ui_options_tags_compatibility_ac3.py:46
 msgid ""
@@ -4853,7 +4853,7 @@ msgid ""
 "players not supporting AC3 files with APEv2 tags can have issues loading and"
 " playing those files. To deal with this you can choose whether to save tags "
 "to those files."
-msgstr ""
+msgstr "Picard kan APEv2-tags opslaan in pure AC3-bestanden, die normaal geen tags ondersteunen. APEv2-tags in AC3-bestanden worden door een aantal spelers ondersteund, maar andere spelers kunnen problemen met het laden en afspelen van dit soort bestanden hebben. Daarom kan je kiezen of Picard tags in deze bestanden opslaat."
 
 #: picard/ui/ui_options_tags_compatibility_wave.py:57
 msgid ""
@@ -4861,7 +4861,7 @@ msgid ""
 "software. For compatibility with software which does not support ID3v2 tags "
 "in WAVE files additional RIFF INFO tags can be written to the files. RIFF "
 "INFO has only limited support for tags and character encodings."
-msgstr ""
+msgstr "Picard slaat WAVE-bestanden op met ID3v2-tags. Deze combinatie wordt niet door alle software ondersteund. Voor software die dit niet ondersteunt, kan Picard ook RIFF INFO-tags in de WAVE-bestanden opslaan. RIFF INFO heeft beperkte ondersteuning voor tags en tekencodering."
 
 #: picard/ui/ui_passworddialog.py:60
 msgid "Authentication required"
@@ -4906,7 +4906,7 @@ msgstr "De eerste groep in de reguliere expressie zal, indien aanwezig, als type
 
 #: picard/ui/ui_scripting_documentation_dialog.py:51
 msgid "Open documentation in browser"
-msgstr ""
+msgstr "Open de documentatie in de browser"
 
 #: picard/ui/ui_tagsfromfilenames.py:53
 msgid "Convert File Names to Tags"

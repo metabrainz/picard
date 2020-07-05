@@ -1,5 +1,6 @@
 # 
 # Translators:
+# alvn Lin <alvn@gmx.com>, 2020
 # Bai yun-xi <email address hidden>, 2016
 # byx <myhouse472@gmail.com>, 2016
 # Fei Kuan <fei_fei_0316@hotmail.com>, 2020
@@ -14,8 +15,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2020-06-09 18:13+0000\n"
-"Last-Translator: Fei Kuan <fei_fei_0316@hotmail.com>\n"
+"PO-Revision-Date: 2020-07-04 22:26+0000\n"
+"Last-Translator: alvn Lin <alvn@gmx.com>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/musicbrainz/musicbrainz/language/zh_TW/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -113,12 +114,12 @@ msgstr "每分鐘90轉，垂直切割的蟲膠唱片，於1906年至1932年間�
 #: DB:work_attribute_type_allowed_value/value:794
 msgctxt "work_attribute_type_allowed_value"
 msgid "A Dorian"
-msgstr "A多里安"
+msgstr "A Dorian調式"
 
 #: DB:work_attribute_type_allowed_value/value:806
 msgctxt "work_attribute_type_allowed_value"
 msgid "A Mixolydian"
-msgstr "A米索利地安"
+msgstr "A Mixolydian調式"
 
 #: DB:work_type/description:2
 msgctxt "work_type"
@@ -161,7 +162,7 @@ msgctxt "instrument_type"
 msgid ""
 "A grouping of related but different instruments, like the different violin-"
 "like instruments"
-msgstr ""
+msgstr "一組相關但不同的樂器，如各種提琴類樂器。"
 
 #: DB:work_attribute_type_allowed_value/value:28
 msgctxt "work_attribute_type_allowed_value"
@@ -212,7 +213,7 @@ msgstr "書尾附有 CD 袋的書"
 msgctxt "place_type"
 msgid ""
 "A place (generally a factory) at which physical media are manufactured."
-msgstr ""
+msgstr "一個生產實體媒體的地點（通常是生產工廠）。"
 
 #: DB:place_type/description:5
 msgctxt "place_type"
