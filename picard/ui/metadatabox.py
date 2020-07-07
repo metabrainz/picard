@@ -232,6 +232,8 @@ class MetadataBox(QtWidgets.QTableWidget):
         # TR: Keyboard shortcut for "Remove" (tag)
         self.remove_tag_shortcut = QtWidgets.QShortcut(QtGui.QKeySequence(_("Alt+Shift+R")), self, self.remove_selected_tags)
         self.preserved_tags = PreservedTags()
+        self._single_file_album = False
+        self._single_track_album = False
 
     def get_file_lookup(self):
         """Return a FileLookup object."""
@@ -303,7 +305,7 @@ class MetadataBox(QtWidgets.QTableWidget):
         else:
             self.set_tag_values(tag, new)
         self.editing = None
-        self.update()
+        self.update(drop_album_caches=tag == 'album')
 
     @staticmethod
     def _get_editor_value(editor):
@@ -400,7 +402,6 @@ class MetadataBox(QtWidgets.QTableWidget):
             for obj in objects:
                 obj.metadata[tag] = values
                 obj.update()
-        self.update()
         self.parent.ignore_selection_changes = False
 
     def remove_tag(self, tag):
@@ -450,17 +451,16 @@ class MetadataBox(QtWidgets.QTableWidget):
         self.selection_mutex.unlock()
 
     @throttle(100)
-    def update(self):
+    def update(self, drop_album_caches=False):
         if self.editing:
             return
-        new_selection = False
+        new_selection = self.selection_dirty
         if self.selection_dirty:
-            new_selection = True
             self._update_selection()
-        thread.run_task(partial(self._update_tags, new_selection), self._update_items,
+        thread.run_task(partial(self._update_tags, new_selection, drop_album_caches), self._update_items,
             thread_pool=self.tagger.priority_thread_pool)
 
-    def _update_tags(self, new_selection=True):
+    def _update_tags(self, new_selection=True, drop_album_caches=False):
         self.selection_mutex.lock()
         files = self.files
         tracks = self.tracks
@@ -469,18 +469,21 @@ class MetadataBox(QtWidgets.QTableWidget):
         if not (files or tracks):
             return None
 
+        if new_selection or drop_album_caches:
+            self._single_file_album = len(set([file.metadata["album"] for file in files])) == 1
+            self._single_track_album = len(set([track.metadata["album"] for track in tracks])) == 1
+
         while not new_selection:  # Just an if with multiple exit points
             # If we are dealing with the same selection
             # skip updates unless it we are dealing with a single file/track
-            single_file = len(files) == 1
-            single_track = len(tracks) == 1
-            if single_file or single_track:
+            if len(files) == 1:
                 break
-
+            if len(tracks) == 1:
+                break
             # Or if we are dealing with a single cluster/album
-            single_file_album = len(set([file.metadata["album"] for file in files])) == 1
-            single_track_album = len(set([track.metadata["album"] for track in tracks])) == 1
-            if single_file_album or single_track_album:
+            if self._single_file_album:
+                break
+            if self._single_track_album:
                 break
             return self.tag_diff
 
