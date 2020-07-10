@@ -81,16 +81,25 @@ class BaseTheme:
     def update_palette(self, palette, dark_theme, accent_color):
         if accent_color:
             accent_text_color = QtCore.Qt.white if accent_color.lightness() < 160 else QtCore.Qt.black
+            palette.setColor(QtGui.QPalette.Active, QtGui.QPalette.Highlight, accent_color)
             palette.setColor(QtGui.QPalette.Active, QtGui.QPalette.HighlightedText, accent_text_color)
-            palette.setColor(QtGui.QPalette.Inactive, QtGui.QPalette.HighlightedText, accent_text_color)
-            if dark_theme:
-                palette.setColor(QtGui.QPalette.Link, accent_color.lighter())
-                palette.setColor(QtGui.QPalette.Active, QtGui.QPalette.Highlight, accent_color.lighter())
-                palette.setColor(QtGui.QPalette.Inactive, QtGui.QPalette.Highlight, accent_color)
-            else:
-                palette.setColor(QtGui.QPalette.Link, accent_color)
-                palette.setColor(QtGui.QPalette.Active, QtGui.QPalette.Highlight, accent_color)
-                palette.setColor(QtGui.QPalette.Inactive, QtGui.QPalette.Highlight, accent_color.lighter())
+
+            link_color = accent_color
+            while True:
+                if dark_theme:
+                    if link_color.lightness() < 160:
+                        link_color = link_color.lighter()
+                        continue
+                else:
+                    if link_color.lightness() > 160:
+                        link_color = link_color.darker()
+                        continue
+                break
+            palette.setColor(QtGui.QPalette.Link, link_color)
+
+        if dark_theme:
+            palette.setColor(QtGui.QPalette.Inactive, QtGui.QPalette.Highlight, QtGui.QColor(51, 51, 51))
+            palette.setColor(QtGui.QPalette.Inactive, QtGui.QPalette.HighlightedText, QtCore.Qt.white)
 
 
 if IS_WIN:
