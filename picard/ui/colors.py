@@ -43,7 +43,6 @@ _DEFAULT_COLORS = {
     'tagstatus_added': DefaultColor('green', N_("Tag added")),
     'tagstatus_changed': DefaultColor('darkgoldenrod', N_("Tag changed")),
     'tagstatus_removed': DefaultColor('red', N_("Tag removed")),
-    'script_function_fg': DefaultColor('#220', N_("Script Function")),
 }
 
 

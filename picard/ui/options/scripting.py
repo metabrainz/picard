@@ -40,13 +40,13 @@ from picard.ui import (
     FONT_FAMILY_MONOSPACE,
     PicardDialog,
 )
-from picard.ui.colors import interface_colors
 from picard.ui.moveable_list_view import MoveableListView
 from picard.ui.options import (
     OptionsCheckError,
     OptionsPage,
     register_options_page,
 )
+from picard.ui.theme import theme
 from picard.ui.ui_options_script import Ui_ScriptingOptionsPage
 from picard.ui.ui_scripting_documentation_dialog import (
     Ui_ScriptingDocumentationDialog,
@@ -120,10 +120,10 @@ class ScriptingDocumentationDialog(PicardDialog):
             postprocessor=process_html,
         )
 
-        color_fg = interface_colors.get_color('script_function_fg')
+        syntax_theme = theme.get_syntax_theme()
         html = DOCUMENTATION_HTML_TEMPLATE % {
             'html': "<dl>%s</dl>" % funcdoc,
-            'script_function_fg': color_fg,
+            'script_function_fg': syntax_theme.func.name(),
             'monospace_font': FONT_FAMILY_MONOSPACE,
         }
         self.ui.textBrowser.setHtml(html)
