@@ -1,5 +1,5 @@
 python-dateutil==2.8.1
 discid==1.2.0
 markdown
-mutagen==1.44.0
+mutagen==1.45.0
 PyQt5==5.14.2
