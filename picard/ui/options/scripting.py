@@ -36,7 +36,10 @@ from picard.script import (
 )
 from picard.util import restore_method
 
-from picard.ui import PicardDialog
+from picard.ui import (
+    FONT_FAMILY_MONOSPACE,
+    PicardDialog,
+)
 from picard.ui.colors import interface_colors
 from picard.ui.moveable_list_view import MoveableListView
 from picard.ui.options import (
@@ -61,18 +64,14 @@ DOCUMENTATION_HTML_TEMPLATE = '''
 <head>
 <style>
 dt {
-    font-family: monospace;
     color: %(script_function_fg)s
 }
 dd {
     padding: 50px;
     margin-bottom: 50px;
 }
-p {
-    font-family: serif;
-}
 code {
-    font-family: sans-serif;
+    font-family: %(monospace_font)s;
 }
 </style>
 </head>
@@ -114,7 +113,7 @@ class ScriptingDocumentationDialog(PicardDialog):
                 firstline, remaining = html.split("\n", 1)
                 return template % (firstline, module, remaining)
             except ValueError:
-                return template % ("$%s()" % function.name, module, html)
+                return template % ("<code>$%s()</code>" % function.name, module, html)
 
         funcdoc = script_function_documentation_all(
             fmt='html',
@@ -125,6 +124,7 @@ class ScriptingDocumentationDialog(PicardDialog):
         html = DOCUMENTATION_HTML_TEMPLATE % {
             'html': "<dl>%s</dl>" % funcdoc,
             'script_function_fg': color_fg,
+            'monospace_font': FONT_FAMILY_MONOSPACE,
         }
         self.ui.textBrowser.setHtml(html)
         self.ui.buttonBox.rejected.connect(self.close)
