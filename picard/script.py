@@ -1183,7 +1183,8 @@ def func_is_complete(parser):
     """`$firstalphachar(text,nonalpha="#")`
 
 Returns the first character of `text`.
-If `text` is not an alphabetic character `nonalpha` (or `#` if not passed) is returned instead.
+If `text` does not begin with an alphabetic character, then `nonalpha` is returned instead. If `nonalpha` is not
+specified, the default value "#" will be used.
 
 _Since Picard 0.12_"""
 ))
