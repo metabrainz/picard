@@ -35,11 +35,11 @@ from picard.const.sys import (
 SyntaxTheme = namedtuple('SyntaxTheme', 'func var escape special noop')
 
 light_syntax_theme = SyntaxTheme(
-    func=QtCore.Qt.blue,
-    var=QtCore.Qt.darkCyan,
-    escape=QtCore.Qt.darkRed,
-    special=QtCore.Qt.blue,
-    noop=QtCore.Qt.darkGray,
+    func=QtGui.QColor(QtCore.Qt.blue),
+    var=QtGui.QColor(QtCore.Qt.darkCyan),
+    escape=QtGui.QColor(QtCore.Qt.darkRed),
+    special=QtGui.QColor(QtCore.Qt.blue),
+    noop=QtGui.QColor(QtCore.Qt.darkGray),
 )
 
 dark_syntax_theme = SyntaxTheme(
