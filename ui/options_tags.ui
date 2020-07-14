@@ -85,33 +85,28 @@
        </widget>
       </item>
       <item>
-       <widget class="QLineEdit" name="preserved_tags"/>
-      </item>
-      <item>
-       <widget class="QLabel" name="preserved_tags_help">
-        <property name="text">
-         <string>Tags are separated by commas and are case-insensitive.</string>
+       <widget class="TagListEditor" name="preserved_tags" native="true">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
         </property>
        </widget>
       </item>
      </layout>
     </widget>
    </item>
-   <item>
-    <spacer name="spacer">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>274</width>
-       <height>41</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>TagListEditor</class>
+   <extends>QWidget</extends>
+   <header>picard.ui.widgets.taglisteditor</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <tabstops>
   <tabstop>write_tags</tabstop>
   <tabstop>preserve_timestamps</tabstop>
