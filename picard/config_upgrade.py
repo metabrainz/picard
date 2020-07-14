@@ -5,7 +5,7 @@
 # Copyright (C) 2013-2014 Michael Wiencek
 # Copyright (C) 2013-2016, 2018-2019 Laurent Monin
 # Copyright (C) 2014, 2017 Lukáš Lalinský
-# Copyright (C) 2014, 2018-2019 Philipp Wolfer
+# Copyright (C) 2014, 2018-2020 Philipp Wolfer
 # Copyright (C) 2015 Ohm Patel
 # Copyright (C) 2016 Suhas
 # Copyright (C) 2016-2017 Sambhav Kothari
@@ -296,6 +296,13 @@ def upgrade_to_v2_2_0_dev_4(config):
         _s["file_naming_format"] = DEFAULT_FILE_NAMING_FORMAT
 
 
+def upgrade_to_v2_4_0_beta_3(config):
+    """Improved default file naming script"""
+    _s = config.setting
+    opt = 'preserved_tags'
+    _s[opt] = [t.strip() for t in _s.raw_value(opt, qtype='QString').split(',')]
+
+
 def rename_option(config, old_opt, new_opt, option_type, default):
     _s = config.setting
     if old_opt in _s:
@@ -319,4 +326,5 @@ def upgrade_config(config):
     cfg.register_upgrade_hook(upgrade_to_v2_0_0_dev_3)
     cfg.register_upgrade_hook(upgrade_to_v2_1_0_dev_1)
     cfg.register_upgrade_hook(upgrade_to_v2_2_0_dev_3)
+    cfg.register_upgrade_hook(upgrade_to_v2_4_0_beta_3)
     cfg.run_upgrade_hooks(log.debug)

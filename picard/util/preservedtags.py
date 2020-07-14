@@ -31,10 +31,10 @@ class PreservedTags:
         self._tags = self._from_config()
 
     def _to_config(self):
-        config.setting[self.opt_name] = ", ".join(sorted(self._tags))
+        config.setting[self.opt_name] = sorted(self._tags)
 
     def _from_config(self):
-        tags = config.setting[self.opt_name].split(',')
+        tags = config.setting[self.opt_name]
         return set(filter(bool, map(self._normalize_tag, tags)))
 
     @staticmethod

@@ -28,7 +28,7 @@ from picard.util.preservedtags import PreservedTags
 class PreservedTagsTest(PicardTestCase):
     def setUp(self):
         super().setUp()
-        config.setting[PreservedTags.opt_name] = "tag1, tag2"
+        config.setting[PreservedTags.opt_name] = ["tag1", "tag2"]
 
     def test_load_and_contains(self):
         preserved = PreservedTags()
@@ -71,4 +71,4 @@ class PreservedTagsTest(PicardTestCase):
         preserved.add('tag2')
         preserved.add('tag1')
         preserved.discard('tag2')
-        self.assertEqual(config.setting[PreservedTags.opt_name], 'tag1, tag3')
+        self.assertEqual(config.setting[PreservedTags.opt_name], ['tag1', 'tag3'])
