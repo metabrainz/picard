@@ -52,6 +52,9 @@ dark_syntax_theme = SyntaxTheme(
 
 
 class BaseTheme:
+    def __init__(self):
+        self._dark_theme = False
+
     def setup(self, app):
         # Use the new fusion style from PyQt5 for a modern and consistent look
         # across all OSes.
@@ -63,12 +66,14 @@ class BaseTheme:
         )
 
         palette = QtGui.QPalette(app.palette())
+        base_color = palette.color(QtGui.QPalette.Active, QtGui.QPalette.Base)
+        self._dark_theme = base_color.lightness() < 128
         self.update_palette(palette, self.is_dark_theme(), self.get_accent_color())
         app.setPalette(palette)
 
     # pylint: disable=no-self-use
     def is_dark_theme(self):
-        return False
+        return self._dark_theme
 
     # pylint: disable=no-self-use
     def get_accent_color(self):
