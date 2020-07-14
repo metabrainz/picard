@@ -343,7 +343,7 @@ def track_to_metadata(node, track):
     m.add_unique('musicbrainz_trackid', node['id'])
     # overwrite with data we have on the track
     for key, value in node.items():
-        if not value:
+        if not value and value != 0:
             continue
         if key in _TRACK_TO_METADATA:
             m[_TRACK_TO_METADATA[key]] = value
@@ -359,7 +359,7 @@ def recording_to_metadata(node, m, track=None):
     m.length = 0
     m.add_unique('musicbrainz_recordingid', node['id'])
     for key, value in node.items():
-        if not value:
+        if not value and value != 0:
             continue
         if key in _RECORDING_TO_METADATA:
             m[_RECORDING_TO_METADATA[key]] = value
@@ -415,7 +415,7 @@ def work_to_metadata(work, m):
 
 def medium_to_metadata(node, m):
     for key, value in node.items():
-        if not value:
+        if not value and value != 0:
             continue
         if key in _MEDIUM_TO_METADATA:
             m[_MEDIUM_TO_METADATA[key]] = value
@@ -425,7 +425,7 @@ def artist_to_metadata(node, m):
     """Make meatadata dict from a JSON 'artist' node."""
     m.add_unique("musicbrainz_artistid", node['id'])
     for key, value in node.items():
-        if not value:
+        if not value and value != 0:
             continue
         if key in _ARTIST_TO_METADATA:
             m[_ARTIST_TO_METADATA[key]] = value
@@ -448,7 +448,7 @@ def release_to_metadata(node, m, album=None):
     """Make metadata dict from a JSON 'release' node."""
     m.add_unique('musicbrainz_albumid', node['id'])
     for key, value in node.items():
-        if not value:
+        if not value and value != 0:
             continue
         if key in _RELEASE_TO_METADATA:
             m[_RELEASE_TO_METADATA[key]] = value
@@ -486,7 +486,7 @@ def release_group_to_metadata(node, m, release_group=None):
     """Make metadata dict from a JSON 'release-group' node taken from inside a 'release' node."""
     m.add_unique('musicbrainz_releasegroupid', node['id'])
     for key, value in node.items():
-        if not value:
+        if not value and value != 0:
             continue
         if key in _RELEASE_GROUP_TO_METADATA:
             m[_RELEASE_GROUP_TO_METADATA[key]] = value
