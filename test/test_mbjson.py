@@ -237,12 +237,24 @@ class TrackTest(MBJSONTest):
         self.assertEqual(m['title'], 'Speak to Me')
         self.assertEqual(m['musicbrainz_recordingid'], 'bef3fddb-5aca-49f5-b2fd-d56a23268d63')
         self.assertEqual(m['musicbrainz_trackid'], 'd4156411-b884-368f-a4cb-7c0101a557a2')
-        self.assertEqual(m['title'], 'Speak to Me')
         self.assertEqual(m['~length'], '1:08')
         self.assertEqual(m['tracknumber'], '1')
         self.assertEqual(m['~musicbrainz_tracknumber'], 'A1')
         self.assertEqual(m['~recordingcomment'], 'original stereo mix')
         self.assertEqual(m['~recordingtitle'], 'Speak to Me')
+
+
+class PregapTrackTest(MBJSONTest):
+
+    filename = 'track_pregap.json'
+
+    def test_track(self):
+        t = Track("1")
+        m = t.metadata
+        track_to_metadata(self.json_doc, t)
+        self.assertEqual(m['title'], 'Lady')
+        self.assertEqual(m['tracknumber'], '0')
+        self.assertEqual(m['~musicbrainz_tracknumber'], '0')
 
 
 class NullTrackTest(MBJSONTest):
