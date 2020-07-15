@@ -42,7 +42,7 @@ try:
     from mutagen._riff import RiffFile
     from mutagen._util import loadfile
 
-    # See https://www.sno.phy.queensu.ca/~phil/exiftool/TagNames/RIFF.html
+    # See https://exiftool.org/TagNames/RIFF.html
     TRANSLATE_RIFF_INFO = {
         # Minimal, as e.g. supported by Windows Explorer,
         # Audacity and foobar2000
