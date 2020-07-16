@@ -84,17 +84,8 @@ class BaseTheme:
             palette.setColor(QtGui.QPalette.Active, QtGui.QPalette.Highlight, accent_color)
             palette.setColor(QtGui.QPalette.Active, QtGui.QPalette.HighlightedText, accent_text_color)
 
-            link_color = accent_color
-            while True:
-                if dark_theme:
-                    if link_color.lightness() < 160:
-                        link_color = link_color.lighter()
-                        continue
-                else:
-                    if link_color.lightness() > 160:
-                        link_color = link_color.darker()
-                        continue
-                break
+            link_color = QtGui.QColor()
+            link_color.setHsl(accent_color.hue(), accent_color.saturation(), 160, accent_color.alpha())
             palette.setColor(QtGui.QPalette.Link, link_color)
 
         if dark_theme:
