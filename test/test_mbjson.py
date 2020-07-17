@@ -53,6 +53,7 @@ settings = {
     "standardize_releases": False,
     "translate_artist_names": True,
     "standardize_instruments": True,
+    "release_ars": True,
     "preferred_release_countries": [],
     "artist_locale": 'en'
 }

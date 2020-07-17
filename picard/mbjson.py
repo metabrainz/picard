@@ -462,7 +462,7 @@ def release_to_metadata(node, m, album=None):
                     artist = credit['artist']
                     artist_obj = album.append_album_artist(artist['id'])
                     add_genres_from_node(artist, artist_obj)
-        elif key == 'relations':
+        elif key == 'relations' and config.setting['release_ars']:
             _relations_to_metadata(value, m)
         elif key == 'label-info':
             m['label'], m['catalognumber'] = label_info_from_node(value)
