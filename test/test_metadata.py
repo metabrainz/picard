@@ -55,6 +55,7 @@ settings = {
     'standardize_artists': False,
     'standardize_instruments': False,
     'translate_artist_names': False,
+    'release_ars': True,
     'release_type_scores': [
         ('Album', 1.0)
     ],
