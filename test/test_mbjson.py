@@ -87,6 +87,38 @@ class ReleaseTest(MBJSONTest):
         self.assertEqual(m['label'], 'Harvest')
         self.assertEqual(m['musicbrainz_albumartistid'], '83d91898-7763-47d7-b03b-b92132375c47')
         self.assertEqual(m['musicbrainz_albumid'], 'b84ee12a-09ef-421b-82de-0441a926375b')
+        self.assertEqual(m['producer'], 'Hipgnosis')
+        self.assertEqual(m['releasecountry'], 'GB')
+        self.assertEqual(m['releasestatus'], 'official')
+        self.assertEqual(m['script'], 'Latn')
+        self.assertEqual(m['~albumartists'], 'Pink Floyd')
+        self.assertEqual(m['~albumartists_sort'], 'Pink Floyd')
+        self.assertEqual(m['~releaselanguage'], 'eng')
+        self.assertEqual(m.getall('~releasecountries'), ['GB', 'NZ'])
+        self.assertEqual(a.genres, {
+            'genre1': 6, 'genre2': 3,
+            'tag1': 6, 'tag2': 3})
+        for artist in a._album_artists:
+            self.assertEqual(artist.genres, {
+                'british': 2,
+                'progressive rock': 10})
+
+    def test_release_without_release_relationships(self):
+        config.setting['release_ars'] = False
+        m = Metadata()
+        a = Album("1")
+        release_to_metadata(self.json_doc, m, a)
+        self.assertEqual(m['album'], 'The Dark Side of the Moon')
+        self.assertEqual(m['albumartist'], 'Pink Floyd')
+        self.assertEqual(m['albumartistsort'], 'Pink Floyd')
+        self.assertEqual(m['asin'], 'b123')
+        self.assertEqual(m['barcode'], '123')
+        self.assertEqual(m['catalognumber'], 'SHVL 804')
+        self.assertEqual(m['date'], '1973-03-24')
+        self.assertEqual(m['label'], 'Harvest')
+        self.assertEqual(m['musicbrainz_albumartistid'], '83d91898-7763-47d7-b03b-b92132375c47')
+        self.assertEqual(m['musicbrainz_albumid'], 'b84ee12a-09ef-421b-82de-0441a926375b')
+        self.assertEqual(m['producer'], '')
         self.assertEqual(m['releasecountry'], 'GB')
         self.assertEqual(m['releasestatus'], 'official')
         self.assertEqual(m['script'], 'Latn')

@@ -285,6 +285,32 @@
             "end": null,
             "direction": "backward",
             "type-id": "0b58dc9b-9c49-4b19-bb58-9c06d41c8fbf"
+        },
+        {
+            "attribute-values": {
+
+            },
+            "begin": null,
+            "type": "producer",
+            "target-type": "artist",
+            "target-credit": "",
+            "source-credit": "",
+            "attributes": [
+
+            ],
+            "ended": false,
+            "artist": {
+                "id": "fd1a4572-59ca-40f2-8f55-b82be28bb0ff",
+                "sort-name": "Hipgnosis",
+                "aliases": [
+
+                ],
+                "disambiguation": "UK art design group",
+                "name": "Hipgnosis"
+            },
+            "end": null,
+            "direction": "backward",
+            "type-id": "8bf377ba-8d71-4ecc-97f2-7bb2d8a2a75f"
         }
     ],
     "id": "b84ee12a-09ef-421b-82de-0441a926375b",
