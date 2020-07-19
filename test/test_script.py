@@ -40,11 +40,12 @@ from test.picardtestcase import PicardTestCase
 from picard import config
 from picard.cluster import Cluster
 from picard.const import DEFAULT_FILE_NAMING_FORMAT
-from picard.metadata import Metadata
+from picard.metadata import (
+    MULTI_VALUED_JOINER,
+    Metadata,
+)
 from picard.plugin import ExtensionPoint
 from picard.script import (
-    MULTI_VALUED_JOINER,
-    FunctionRegistryItem,
     MultiValue,
     ScriptEndOfFile,
     ScriptError,
@@ -60,6 +61,7 @@ from picard.script import (
     script_function_documentation,
     script_function_documentation_all,
 )
+from picard.script.functions import FunctionRegistryItem
 
 
 try:
