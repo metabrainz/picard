@@ -25,10 +25,15 @@ from PyQt5 import QtGui
 from picard import config
 
 
+class UnknownColorException(Exception):
+    pass
+
+
 class DefaultColor:
 
     def __init__(self, value, description):
-        self.value = value
+        qcolor = QtGui.QColor(value)
+        self.value = qcolor.name()
         self.description = description
 
 
@@ -77,7 +82,7 @@ class InterfaceColors:
         except KeyError:
             if color_key in _DEFAULT_COLORS:
                 return _DEFAULT_COLORS[color_key].value
-            raise Exception("Unknown color key: %s" % color_key)
+            raise UnknownColorException("Unknown color key: %s" % color_key)
 
     def get_qcolor(self, color_key):
         return QtGui.QColor(self.get_color(color_key))
@@ -89,13 +94,28 @@ class InterfaceColors:
     def set_color(self, color_key, color_value):
         if color_key in _DEFAULT_COLORS:
             qcolor = QtGui.QColor(color_value)
-            if qcolor.isValid():
-                color = qcolor.name()
-            else:
-                color = _DEFAULT_COLORS[color_key].value
-            self._colors[color_key] = color
+            if not qcolor.isValid():
+                qcolor = QtGui.QColor(_DEFAULT_COLORS[color_key].value)
+            self._colors[color_key] = qcolor.name()
         else:
-            raise Exception("Unknown color key: %s" % color_key)
+            raise UnknownColorException("Unknown color key: %s" % color_key)
+
+    def save_to_config(self):
+        # returns True if user has to be warned about color changes
+        changed = False
+        conf = config.setting['interface_colors']
+        for key, color in self._colors.items():
+            if key not in conf:
+                # new color key, not need to warn user
+                conf[key] = color
+            elif color != conf[key]:
+                # color changed
+                conf[key] = color
+                changed = True
+        for key in set(conf) - set(_DEFAULT_COLORS):
+            # old color key, remove
+            del conf[key]
+        return changed
 
 
 interface_colors = InterfaceColors()
