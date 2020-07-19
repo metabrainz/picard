@@ -131,9 +131,7 @@ class InterfaceColorsOptionsPage(OptionsPage):
         self.update_color_selectors()
 
     def save(self):
-        new_colors = interface_colors.get_colors()
-        if new_colors != config.setting['interface_colors']:
-            config.setting['interface_colors'] = new_colors
+        if interface_colors.save_to_config():
             dialog = QtWidgets.QMessageBox(
                 QtWidgets.QMessageBox.Information,
                 _('Colors changed'),
