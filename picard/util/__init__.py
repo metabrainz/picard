@@ -50,11 +50,14 @@ import sys
 from time import time
 import unicodedata
 
-from dateutil.parser import parse
+from dateutil.parser import (
+    ParserError,
+    parse,
+)
 
 from PyQt5 import QtCore
 
-# Required for compatibility with lastfmplus which imports this from here rather than loading it direct.
+from picard import log
 from picard.const import MUSICBRAINZ_SERVERS
 from picard.const.sys import (
     FROZEN_TEMP_PATH,
@@ -97,7 +100,6 @@ _io_encoding = sys.getfilesystemencoding()
 # intentionally
 def check_io_encoding():
     if _io_encoding == "ANSI_X3.4-1968":
-        from picard import log
         log.warning("""
 System locale charset is ANSI_X3.4-1968
 Your system's locale charset (i.e. the charset used to encode filenames)
@@ -505,7 +507,6 @@ def __convert_to_string(obj):
 
 
 def convert_to_string(obj):
-    from picard import log
     log.warning("string_() and convert_to_string() are deprecated, do not use")
     return __convert_to_string(obj)
 
@@ -655,9 +656,14 @@ def extract_year_from_date(dt):
     """ Extracts year from  passed in date either dict or string """
 
     if isinstance(dt, Mapping):
-        year = int(dt.get('year'))
+        try:
+            return int(dt.get('year'))
+        except (TypeError, ValueError) as e:
+            log.debug(e)
     else:
-        parsed_dt = parse(dt)
-        year = parsed_dt.year
+        try:
+            return parse(dt).year
+        except (ParserError, TypeError) as e:
+            log.debug(e)
 
-    return year
+    return None

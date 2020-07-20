@@ -38,6 +38,7 @@ from test.picardtestcase import PicardTestCase
 from picard import util
 from picard.const.sys import IS_WIN
 from picard.util import (
+    extract_year_from_date,
     find_best_match,
     imageinfo,
     limited_join,
@@ -75,6 +76,23 @@ class ReplaceWin32IncompatTest(PicardTestCase):
     def test_incorrect(self):
         self.assertNotEqual(util.replace_win32_incompat("c:\\test\\te\"st2"),
                              "c:\\test\\te\"st2")
+
+
+class ExtractYearTest(PicardTestCase):
+    def test_string(self):
+        self.assertEqual(extract_year_from_date(""), None)
+        self.assertEqual(extract_year_from_date(2020), None)
+        self.assertEqual(extract_year_from_date("2020"), 2020)
+        self.assertEqual(extract_year_from_date('2020-02-28'), 2020)
+        self.assertEqual(extract_year_from_date('2015.02'), 2015)
+        self.assertEqual(extract_year_from_date('2015; 2015'), None)
+
+    def test_mapping(self):
+        self.assertEqual(extract_year_from_date({}), None)
+        self.assertEqual(extract_year_from_date({'year': 'abc'}), None)
+        self.assertEqual(extract_year_from_date({'year': '2020'}), 2020)
+        self.assertEqual(extract_year_from_date({'year': 2020}), 2020)
+        self.assertEqual(extract_year_from_date({'year': '2020-02-28'}), None)
 
 
 class SanitizeDateTest(PicardTestCase):
