@@ -327,7 +327,7 @@ class VCommentFile(File):
                             existing_tags.remove(item)
                     tags[real_name] = existing_tags
                 else:
-                    if tag in ('totaldiscs', 'totaltracks'):
+                    if tag in ('totaldiscs', 'totaltracks') and tag in tags:
                         # both tag and real_name are to be deleted in this case
                         del tags[tag]
                     del tags[real_name]
