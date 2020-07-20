@@ -2,7 +2,7 @@
 #
 # Picard, the next-generation MusicBrainz tagger
 #
-# Copyright (C) 2019 Philipp Wolfer
+# Copyright (C) 2019-2020 Philipp Wolfer
 # Copyright (C) 2020 Laurent Monin
 #
 # This program is free software; you can redistribute it and/or
@@ -155,6 +155,24 @@ class CommonVorbisTests:
             self.assertTrue(self.format.supports_tag(performer_tag))
             self.assertTrue(self.format.supports_tag('lyrics:foó'))
             self.assertTrue(self.format.supports_tag('comment:foó'))
+
+        @skipUnlessTestfile
+        def test_delete_totaldiscs_totaltracks(self):
+            # Create a test file that contains only disctotal / tracktotal,
+            # but not totaldiscs and totaltracks
+            save_raw(self.filename, {
+                'disctotal': '3',
+                'tracktotal': '2',
+            })
+            metadata = Metadata()
+            del metadata['totaldiscs']
+            del metadata['totaltracks']
+            save_metadata(self.filename, metadata)
+            loaded_metadata = load_raw(self.filename)
+            self.assertNotIn('disctotal', loaded_metadata)
+            self.assertNotIn('totaldiscs', loaded_metadata)
+            self.assertNotIn('tracktotal', loaded_metadata)
+            self.assertNotIn('totaltracks', loaded_metadata)
 
 
 class FLACTest(CommonVorbisTests.VorbisTestCase):
