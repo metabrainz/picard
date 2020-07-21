@@ -260,25 +260,27 @@ class Metadata(MutableMapping):
         date_match_factor = 0.0
         if "date" in release and release['date'] != '':
             release_date = release['date']
-            release_year = extract_year_from_date(release_date)
             if "date" in self:
                 metadata_date = self['date']
                 if release_date == metadata_date:
                     # release has a date and it matches what our metadata had exactly.
                     date_match_factor = self.__date_match_factors['exact']
                 else:
-                    metadata_year = extract_year_from_date(metadata_date)
-                    if release_year == metadata_year:
-                        # release has a date and it matches what our metadata had for year exactly.
-                        date_match_factor = self.__date_match_factors['year']
-                    elif abs(release_year - metadata_year) <= 2:
-                        # release has a date and it matches what our metadata had closely (year +/- 2).
-                        date_match_factor = self.__date_match_factors['close_year']
-                    else:
-                        # release has a date but it does not match ours (all else equal,
-                        # its better to have an unknown date than a wrong date, since
-                        # the unknown could actually be correct)
-                        date_match_factor = self.__date_match_factors['differed']
+                    release_year = extract_year_from_date(release_date)
+                    if release_year is not None:
+                        metadata_year = extract_year_from_date(metadata_date)
+                        if metadata_year is not None:
+                            if release_year == metadata_year:
+                                # release has a date and it matches what our metadata had for year exactly.
+                                date_match_factor = self.__date_match_factors['year']
+                            elif abs(release_year - metadata_year) <= 2:
+                                # release has a date and it matches what our metadata had closely (year +/- 2).
+                                date_match_factor = self.__date_match_factors['close_year']
+                            else:
+                                # release has a date but it does not match ours (all else equal,
+                                # its better to have an unknown date than a wrong date, since
+                                # the unknown could actually be correct)
+                                date_match_factor = self.__date_match_factors['differed']
             else:
                 # release has a date but we don't have one (all else equal, we prefer
                 # tracks that have non-blank date values)
