@@ -655,15 +655,10 @@ def limited_join(a_list, limit, join_string='+', middle_string='…'):
 def extract_year_from_date(dt):
     """ Extracts year from  passed in date either dict or string """
 
-    if isinstance(dt, Mapping):
-        try:
+    try:
+        if isinstance(dt, Mapping):
             return int(dt.get('year'))
-        except (TypeError, ValueError) as e:
-            log.debug(e)
-    else:
-        try:
+        else:
             return parse(dt).year
-        except (ParserError, TypeError) as e:
-            log.debug(e)
-
-    return None
+    except (ParserError, TypeError, ValueError):
+        return None
