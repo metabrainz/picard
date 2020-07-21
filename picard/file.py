@@ -222,7 +222,7 @@ class File(QtCore.QObject, Item):
         metadata['~length'] = format_time(metadata.length)
         if 'tracknumber' not in metadata:
             tracknumber = tracknum_from_filename(self.base_filename)
-            if tracknumber != -1:
+            if tracknumber is not None:
                 tracknumber = str(tracknumber)
                 metadata['tracknumber'] = tracknumber
                 if 'title' not in metadata:
