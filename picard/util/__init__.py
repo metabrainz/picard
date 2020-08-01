@@ -50,10 +50,7 @@ import sys
 from time import time
 import unicodedata
 
-from dateutil.parser import (
-    ParserError,
-    parse,
-)
+from dateutil.parser import parse
 
 from PyQt5 import QtCore
 
@@ -660,5 +657,5 @@ def extract_year_from_date(dt):
             return int(dt.get('year'))
         else:
             return parse(dt).year
-    except (ParserError, TypeError, ValueError):
+    except (TypeError, ValueError):
         return None
