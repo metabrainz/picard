@@ -43,7 +43,7 @@ _artist_rel_types = {
     "concertmaster": "performer:concertmaster",
     "conductor": "conductor",
     "engineer": "engineer",
-    "instrumentator": "arranger",
+    "instrument arranger": "arranger",
     "librettist": "lyricist",
     "live sound": "engineer",
     "lyricist": "lyricist",
