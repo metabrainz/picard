@@ -83,33 +83,34 @@ class TaggerScriptSyntaxHighlighter(QtGui.QSyntaxHighlighter):
         # Ignore everything if we're already in a noop function
         index = self.noop_re.indexIn(text) if self.previousBlockState() <= 0 else 0
         open_brackets = self.previousBlockState() if self.previousBlockState() > 0 else 0
+        text_length = len(text)
         while index >= 0:
             next_index = self.bracket_re.indexIn(text, index)
 
             # Skip escaped brackets
-            if (next_index > 0) and text[next_index - 1] == '\\':
+            if next_index > 0 and text[next_index - 1] == '\\':
                 next_index += 1
 
             # Reached end of text?
-            if next_index >= len(text):
-                self.setFormat(index, next_index - index, self.noop_fmt)
+            if next_index >= text_length:
+                self.setFormat(index, text_length - index, self.noop_fmt)
                 break
 
-            if (next_index > -1) and text[next_index] == '(':
+            if next_index > -1 and text[next_index] == '(':
                 open_brackets += 1
-            elif (next_index > -1) and text[next_index] == ')':
+            elif next_index > -1 and text[next_index] == ')':
                 open_brackets -= 1
 
             if next_index > -1:
                 self.setFormat(index, next_index - index + 1, self.noop_fmt)
-            elif (next_index == -1) and (open_brackets > 0):
-                self.setFormat(index, len(text) - index, self.noop_fmt)
+            elif next_index == -1 and open_brackets > 0:
+                self.setFormat(index, text_length - index, self.noop_fmt)
 
             # Check for next noop operation, necessary for multiple noops in one line
             if open_brackets == 0:
                 next_index = self.noop_re.indexIn(text, next_index)
 
-            index = next_index + 1 if (next_index > -1) and (next_index < len(text)) else -1
+            index = next_index + 1 if next_index > -1 and next_index < text_length else -1
 
         self.setCurrentBlockState(open_brackets)
 
