@@ -90,6 +90,11 @@ class TaggerScriptSyntaxHighlighter(QtGui.QSyntaxHighlighter):
             if (next_index > 0) and text[next_index - 1] == '\\':
                 next_index += 1
 
+            # Reached end of text?
+            if next_index >= len(text):
+                self.setFormat(index, next_index - index, self.noop_fmt)
+                break
+
             if (next_index > -1) and text[next_index] == '(':
                 open_brackets += 1
             elif (next_index > -1) and text[next_index] == ')':
