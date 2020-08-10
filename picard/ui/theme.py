@@ -99,22 +99,22 @@ if IS_WIN:
     class WindowsTheme(BaseTheme):
         def is_dark_theme(self):
             dark_theme = False
-            with winreg.OpenKey(winreg.HKEY_CURRENT_USER, r"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize") as key:
-                try:
+            try:
+                with winreg.OpenKey(winreg.HKEY_CURRENT_USER, r"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize") as key:
                     dark_theme = winreg.QueryValueEx(key, "AppsUseLightTheme")[0] == 0
-                except OSError:
-                    log.warning('Failed reading AppsUseLightTheme from registry')
+            except OSError:
+                log.warning('Failed reading AppsUseLightTheme from registry')
             return dark_theme
 
         def get_accent_color(self):
             accent_color = None
-            with winreg.OpenKey(winreg.HKEY_CURRENT_USER, r"Software\Microsoft\Windows\DWM") as key:
-                try:
+            try:
+                with winreg.OpenKey(winreg.HKEY_CURRENT_USER, r"Software\Microsoft\Windows\DWM") as key:
                     accent_color_dword = winreg.QueryValueEx(key, "ColorizationColor")[0]
                     accent_color_hex = '#{:06x}'.format(accent_color_dword & 0xffffff)
                     accent_color = QtGui.QColor(accent_color_hex)
-                except OSError:
-                    log.warning('Failed reading ColorizationColor from registry')
+            except OSError:
+                log.warning('Failed reading ColorizationColor from registry')
             return accent_color
 
         def update_palette(self, palette, dark_theme, accent_color):
