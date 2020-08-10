@@ -12,14 +12,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-06-26 01:20+0200\n"
-"PO-Revision-Date: 2020-06-26 09:50+0000\n"
-"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
+"POT-Creation-Date: 2020-07-14 19:05+0200\n"
+"PO-Revision-Date: 2020-08-05 04:56+0000\n"
+"Last-Translator: Shen-Ta Hsieh(BestSteve) <ibmibmibm.tw@gmail.com>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/musicbrainz/musicbrainz/language/zh_TW/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.8.0\n"
+"Generated-By: Babel 2.6.0\n"
 "Language: zh_TW\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
@@ -84,7 +84,7 @@ msgstr "不在叢集中的檔案"
 
 #: picard/cluster.py:484
 msgid "Metadata Extraction"
-msgstr ""
+msgstr "後設資料萃取"
 
 #: picard/cluster.py:485 picard/ui/cdlookup.py:72 picard/ui/itemviews.py:156
 #: picard/ui/mainwindow.py:802 picard/ui/searchdialog/album.py:153
@@ -145,22 +145,22 @@ msgstr "合併"
 msgid "Remove"
 msgstr "移除"
 
-#: picard/file.py:728
+#: picard/file.py:737
 #, python-format
 msgid "No matching tracks above the threshold for file '%(filename)s'"
 msgstr "檔案「%(filename)s」沒有符合程度超過閥值的音軌"
 
-#: picard/file.py:730
+#: picard/file.py:739
 #, python-format
 msgid "File '%(filename)s' identified!"
 msgstr "檔案「%(filename)s」已辨識！"
 
-#: picard/file.py:742
+#: picard/file.py:751
 #, python-format
 msgid "No matching tracks for file '%(filename)s'"
 msgstr "檔案「%(filename)s」沒有任何符合的音軌"
 
-#: picard/file.py:774
+#: picard/file.py:783
 #, python-format
 msgid "Looking up the metadata for file %(filename)s ..."
 msgstr "正在查找檔案「%(filename)s」的後設資料…"
@@ -238,49 +238,49 @@ msgid ""
 "`$if(if,then,else)`\n"
 "\n"
 "If `if` is not empty, it returns `then`, otherwise it returns `else`."
-msgstr ""
+msgstr "`$if(if,then,else)`\n\n如果`if`不為空白，將回傳`then`，否則回傳`else`。"
 
 #: picard/script.py:597
 msgid ""
 "`$if2(a1,a2,a3,...)`\n"
 "\n"
 "Returns first non empty argument."
-msgstr ""
+msgstr "`$if2(a1,a2,a3,...)`\n\n回傳第一個非空白參數。"
 
 #: picard/script.py:610
 msgid ""
 "`$noop(...)`\n"
 "\n"
 "Does nothing (useful for comments or disabling a block of code)."
-msgstr ""
+msgstr "`$noop(...)`\n\n不做任何事 (可當作程式碼註解，或是用來停用一段程式碼)。"
 
 #: picard/script.py:619
 msgid ""
 "`$left(text,number)`\n"
 "\n"
 "Returns the first `number` characters from `text`."
-msgstr ""
+msgstr "`$left(text,number)`\n\n回傳`text`的前`number`個字元。"
 
 #: picard/script.py:631
 msgid ""
 "`$right(text,number)`\n"
 "\n"
 "Returns the last `number` characters from `text`."
-msgstr ""
+msgstr "`$right(text,number)`\n\n回傳`text`的後`number`個字元。"
 
 #: picard/script.py:643
 msgid ""
 "`$lower(text)`\n"
 "\n"
 "Returns `text` in lower case."
-msgstr ""
+msgstr "`$lower(text)`\n\n回傳`text`轉換為小寫的內容。"
 
 #: picard/script.py:652
 msgid ""
 "`$upper(text)`\n"
 "\n"
 "Returns `text` in upper case."
-msgstr ""
+msgstr "`$upper(text)`\n\n回傳`text`轉換為大寫的內容。"
 
 #: picard/script.py:661
 msgid ""
@@ -303,14 +303,14 @@ msgid ""
 "`$replace(text,search,replace)`\n"
 "\n"
 "Replaces occurrences of `search` in `text` with value of `replace` and returns the resulting string."
-msgstr ""
+msgstr "`$replace(text,search,replace)`\n\n取代`text`內`search`的文字為`replace`的值，並回傳結果字串。"
 
 #: picard/script.py:693
 msgid ""
 "`$in(x,y)`\n"
 "\n"
 "Returns true, if `x` contains `y`."
-msgstr ""
+msgstr "`$in(x,y)`\n\n如果`x`內包含`y`，回傳真值。"
 
 #: picard/script.py:705
 #, python-format
@@ -327,7 +327,7 @@ msgid ""
 "`$rreplace(text,pattern,replace)`\n"
 "\n"
 "[Regular expression](https://docs.python.org/3/library/re.html#regular-expression-syntax) replace."
-msgstr ""
+msgstr "`$rreplace(text,pattern,replace)`\n\n使用[正規表示式](https://docs.python.org/3/library/re.html#regular-expression-syntax)來取代。"
 
 #: picard/script.py:734
 msgid ""
@@ -335,14 +335,14 @@ msgid ""
 "\n"
 "[Regular expression](https://docs.python.org/3/library/re.html#regular-expression-syntax) search.\n"
 "    This function will return the first matching group."
-msgstr ""
+msgstr "`$rsearch(text,pattern)`\n\n使用[正規表示式](https://docs.python.org/3/library/re.html#regular-expression-syntax)來搜尋。\n    此函數會回傳第一組相符資訊。"
 
 #: picard/script.py:753
 msgid ""
 "`$num(number,length)`\n"
 "\n"
 "Returns `number` formatted to `length` digits (maximum 20)."
-msgstr ""
+msgstr "`$num(number,length)`\n\n回傳`number`格式化為寬度`length`個位數 (最多 20 位數)。"
 
 #: picard/script.py:770
 msgid ""
@@ -351,7 +351,7 @@ msgid ""
 "Unsets the variable `name`.\n"
 "Allows for wildcards to unset certain tags (works with 'performer:*', 'comment:*', and 'lyrics:*').\n"
 "i.e. `$unset(performer:*)` would unset all performer tags."
-msgstr ""
+msgstr "`$unset(name)`\n\n清空變數`name`。\n可使用萬用字元來同時清除多個標籤 (可用於'performer:*'，'comment:*'，與'lyrics:*')。\n例如，`$unset(performer:*)`將會清空所有表演者的標籤。"
 
 #: picard/script.py:790
 msgid ""
@@ -363,7 +363,7 @@ msgid ""
 "    saving.\n"
 "\n"
 "_Since Picard 2.1_"
-msgstr ""
+msgstr "`$delete(name)`\n\n清空變數`name`並標示該標籤為將刪除。\n這類似於`$unset(name)`，但是會標記該標籤為將清除。例如\n    執行`$delete(genre)`將會在儲存的時候刪除該 genre 標籤。\n\n_從 Picard 2.1 開始支援_"
 
 #: picard/script.py:805
 #, python-format
@@ -400,7 +400,7 @@ msgid ""
 "`$get(name)`\n"
 "\n"
 "Returns the variable `name` (equivalent to `%name%`)."
-msgstr ""
+msgstr "`$get(name)`\n\n回傳變數`name` (等價於`%name%`)。"
 
 #: picard/script.py:851
 #, python-format
@@ -412,7 +412,7 @@ msgid ""
 "    multi-value variables without flattening them.\n"
 "\n"
 "_Since Picard 0.9_"
-msgstr ""
+msgstr "`$copy(new,old)`\n\n複製後設資料，從變數`old`到變數`new`。\n與`$set(new,%old%)`的不同點在於`$copy(new,old)`\n會將多筆資料一併複製，而不是攤平之。\n\n_從 Picard 0.9 開始支援_"
 
 #: picard/script.py:867
 msgid ""
@@ -613,12 +613,13 @@ msgid ""
 "`$firstalphachar(text,nonalpha=\"#\")`\n"
 "\n"
 "Returns the first character of `text`.\n"
-"If `text` is not an alphabetic character `nonalpha` (or `#` if not passed) is returned instead.\n"
+"If `text` does not begin with an alphabetic character, then `nonalpha` is returned instead. If `nonalpha` is not\n"
+"specified, the default value \"#\" will be used.\n"
 "\n"
 "_Since Picard 0.12_"
 msgstr ""
 
-#: picard/script.py:1200
+#: picard/script.py:1201
 msgid ""
 "`$initials(text)`\n"
 "\n"
@@ -627,7 +628,7 @@ msgid ""
 "_Since Picard 0.12_"
 msgstr ""
 
-#: picard/script.py:1211
+#: picard/script.py:1212
 msgid ""
 "`$firstwords(text,length)`\n"
 "\n"
@@ -636,7 +637,7 @@ msgid ""
 "_Since Picard 0.12_"
 msgstr ""
 
-#: picard/script.py:1234
+#: picard/script.py:1235
 msgid ""
 "`$startswith(text,prefix)`\n"
 "\n"
@@ -645,7 +646,7 @@ msgid ""
 "_Since Picard 1.4_"
 msgstr ""
 
-#: picard/script.py:1247
+#: picard/script.py:1248
 msgid ""
 "`$endswith(text,suffix)`\n"
 "\n"
@@ -654,7 +655,7 @@ msgid ""
 "_Since Picard 1.4_"
 msgstr ""
 
-#: picard/script.py:1260
+#: picard/script.py:1261
 msgid ""
 "`$truncate(text,length)`\n"
 "\n"
@@ -663,7 +664,7 @@ msgid ""
 "_Since Picard 0.12_"
 msgstr ""
 
-#: picard/script.py:1275
+#: picard/script.py:1276
 msgid ""
 "`$swapprefix(text,*prefixes=\"a\",\"the\")`\n"
 "\n"
@@ -677,7 +678,7 @@ msgid ""
 "_Since Picard 1.3, previously as a plugin since Picard 0.13_"
 msgstr ""
 
-#: picard/script.py:1296
+#: picard/script.py:1297
 msgid ""
 "`$delprefix(text,*prefixes=\"a\",\"the\")`\n"
 "\n"
@@ -687,7 +688,7 @@ msgid ""
 "_Since Picard 1.3_"
 msgstr ""
 
-#: picard/script.py:1329
+#: picard/script.py:1330
 msgid ""
 "`$eq_any(x,a1,a2...)`\n"
 "\n"
@@ -696,7 +697,7 @@ msgid ""
 "Functionally equivalent to the eq2 plugin."
 msgstr ""
 
-#: picard/script.py:1341
+#: picard/script.py:1342
 msgid ""
 "`$ne_all(x,a1,a2...)`\n"
 "\n"
@@ -705,7 +706,7 @@ msgid ""
 "Functionally equivalent to the ne2 plugin."
 msgstr ""
 
-#: picard/script.py:1353
+#: picard/script.py:1354
 msgid ""
 "`$eq_all(x,a1,a2...)`\n"
 "\n"
@@ -717,7 +718,7 @@ msgid ""
 "    $if($eq_all(%albumartist%,%artist%,Justin Bieber),$set(engineer,Meat Loaf))\n"
 msgstr ""
 
-#: picard/script.py:1371
+#: picard/script.py:1372
 #, python-format
 msgid ""
 "`$ne_any(x,a1,a2...)`\n"
@@ -730,7 +731,7 @@ msgid ""
 "    $if($ne_any(%albumartist%,%trackartist%,%composer%),$set(lyricist,%composer%))\n"
 msgstr ""
 
-#: picard/script.py:1386
+#: picard/script.py:1387
 msgid ""
 "`$title(text)`\n"
 "\n"
@@ -742,7 +743,7 @@ msgid ""
 "_Since Picard 2.1_"
 msgstr ""
 
-#: picard/script.py:1426
+#: picard/script.py:1427
 msgid ""
 "`$is_audio()`\n"
 "\n"
@@ -751,7 +752,7 @@ msgid ""
 "_Since Picard 2.2_"
 msgstr ""
 
-#: picard/script.py:1440
+#: picard/script.py:1441
 msgid ""
 "`$is_video()`\n"
 "\n"
@@ -760,7 +761,7 @@ msgid ""
 "_Since Picard 2.2_"
 msgstr ""
 
-#: picard/script.py:1454
+#: picard/script.py:1455
 msgid ""
 "`$find(haystack,needle)`\n"
 "\n"
@@ -772,14 +773,14 @@ msgid ""
 "Note that prior to Picard 2.3.2 `$find` returned \"-1\" if `needle` was not found."
 msgstr ""
 
-#: picard/script.py:1471
+#: picard/script.py:1472
 msgid ""
 "`$reverse(text)`\n"
 "\n"
 "Returns `text` in reverse order."
 msgstr ""
 
-#: picard/script.py:1480
+#: picard/script.py:1481
 msgid ""
 "`$substr(text,start,end)`\n"
 "\n"
@@ -790,7 +791,7 @@ msgid ""
 "    the start and end of the string respectively."
 msgstr ""
 
-#: picard/script.py:1501
+#: picard/script.py:1502
 msgid ""
 "`$getmulti(name,index,separator=\"; \")`\n"
 "\n"
@@ -800,7 +801,7 @@ msgid ""
 "    multi-valued tag."
 msgstr ""
 
-#: picard/script.py:1520
+#: picard/script.py:1521
 msgid ""
 "`$foreach(name,code,separator=\"; \")`\n"
 "\n"
@@ -813,7 +814,7 @@ msgid ""
 "    proper multi-valued tag."
 msgstr ""
 
-#: picard/script.py:1542
+#: picard/script.py:1543
 msgid ""
 "`$while(condition,code)`\n"
 "\n"
@@ -824,7 +825,7 @@ msgid ""
 "    safeguard against accidentally creating an infinite loop."
 msgstr ""
 
-#: picard/script.py:1563
+#: picard/script.py:1564
 msgid ""
 "`$map(name,code,separator=\"; \")`\n"
 "\n"
@@ -835,14 +836,14 @@ msgid ""
 "    the element or count value to be accessed within the `code` script."
 msgstr ""
 
-#: picard/script.py:1583
+#: picard/script.py:1584
 msgid ""
 "`$join(name,text,separator=\"; \")`\n"
 "\n"
 "Joins all elements in `name`, placing `text` between each element, and returns the result as a string."
 msgstr ""
 
-#: picard/script.py:1594
+#: picard/script.py:1595
 msgid ""
 "`$slice(name,start,end,separator=\"; \")`\n"
 "\n"
@@ -862,7 +863,7 @@ msgid ""
 "    $setmulti(supporting_artists,$slice(%artists%,1,))\n"
 msgstr ""
 
-#: picard/script.py:1626
+#: picard/script.py:1627
 #, python-format
 msgid ""
 "`$datetime(format=\"%Y-%m-%d %H:%M:%S\")`\n"
@@ -878,14 +879,14 @@ msgid ""
 "    `%3Y`); and hanging '%' at the end of the format string."
 msgstr ""
 
-#: picard/script.py:1655
+#: picard/script.py:1656
 msgid ""
 "`$sortmulti(name,separator=\"; \")`\n"
 "\n"
 "Returns a copy of the multi-value tag `name` with the elements sorted in ascending order."
 msgstr ""
 
-#: picard/script.py:1665
+#: picard/script.py:1666
 msgid ""
 "`$reversemulti(name,separator=\"; \")`\n"
 "\n"
@@ -894,30 +895,30 @@ msgid ""
 "    descending order."
 msgstr ""
 
-#: picard/tagger.py:314 picard/ui/ui_options_general.py:135
+#: picard/tagger.py:307 picard/ui/ui_options_general.py:135
 msgid "MusicBrainz Account"
 msgstr "MusicBrainz 帳號"
 
-#: picard/tagger.py:315
+#: picard/tagger.py:308
 msgid "Authorization code:"
 msgstr "授權代碼:"
 
-#: picard/tagger.py:565
+#: picard/tagger.py:561
 #, python-format
 msgid "Adding %(count)d file from '%(directory)s' ..."
 msgid_plural "Adding %(count)d files from '%(directory)s' ..."
 msgstr[0] "正在從「%(directory)s」新增 %(count)d 個檔案…"
 
-#: picard/tagger.py:759
+#: picard/tagger.py:755
 #, python-format
 msgid "Removing album %(id)s: %(artist)s - %(album)s"
 msgstr "正在移除專輯「%(id)s」: %(artist)s - %(album)s"
 
-#: picard/tagger.py:777
+#: picard/tagger.py:773
 msgid "CD Lookup Error"
 msgstr "CD 查找錯誤"
 
-#: picard/tagger.py:778
+#: picard/tagger.py:774
 #, python-format
 msgid ""
 "Error while reading CD:\n"
@@ -3054,10 +3055,6 @@ msgstr "已修改標籤"
 msgid "Tag removed"
 msgstr "已移除標籤"
 
-#: picard/ui/colors.py:46
-msgid "Script Function"
-msgstr ""
-
 #: picard/ui/coverartbox.py:277
 msgid "View release on MusicBrainz"
 msgstr "於 MusicBrainz 檢視發行品"
@@ -3228,7 +3225,7 @@ msgstr "創作者:"
 #: picard/ui/infodialog.py:397
 #, python-format
 msgid "Disc %d"
-msgstr ""
+msgstr "碟片%d"
 
 #: picard/ui/infodialog.py:399
 msgid "Tracklist:"
@@ -3384,43 +3381,43 @@ msgstr "專輯檢視"
 msgid "Contains albums and matched files"
 msgstr "包含專輯與已配對的檔案"
 
-#: picard/ui/itemviews.py:980 picard/ui/options/renaming.py:209
+#: picard/ui/itemviews.py:982 picard/ui/options/renaming.py:209
 msgid "Error"
 msgstr "錯誤"
 
-#: picard/ui/itemviews.py:984
+#: picard/ui/itemviews.py:986
 msgid "Album modified and complete"
 msgstr "已修改且已儲存的專輯"
 
-#: picard/ui/itemviews.py:987
+#: picard/ui/itemviews.py:989
 msgid "Album unchanged and complete"
 msgstr "未修改且已儲存的專輯"
 
-#: picard/ui/itemviews.py:991
+#: picard/ui/itemviews.py:993
 msgid "Album modified"
 msgstr "已修改專輯"
 
-#: picard/ui/itemviews.py:994
+#: picard/ui/itemviews.py:996
 msgid "Album unchanged"
 msgstr "未修改專輯"
 
-#: picard/ui/itemviews.py:1127
+#: picard/ui/itemviews.py:1134
 msgid "Track saved"
 msgstr "音軌已儲存"
 
-#: picard/ui/itemviews.py:1129 picard/ui/itemviews.py:1133
+#: picard/ui/itemviews.py:1136 picard/ui/itemviews.py:1140
 msgid "Pending"
 msgstr "等待中"
 
-#: picard/ui/itemviews.py:1139
+#: picard/ui/itemviews.py:1146
 msgid "Fingerprint has already been submitted"
 msgstr "特徵碼已經被提交"
 
-#: picard/ui/itemviews.py:1141
+#: picard/ui/itemviews.py:1148
 msgid "Unsubmitted fingerprint"
 msgstr "未提交的特徵碼"
 
-#: picard/ui/itemviews.py:1143
+#: picard/ui/itemviews.py:1150
 msgid ""
 "No fingerprint was calculated for this file, use \"Scan\" or \"Generate "
 "AcoustID Fingerprints\" to calculate the fingerprint."
@@ -3903,11 +3900,11 @@ msgstr "%(filename)s (%(similarity)d%%) (錯誤: %(error)s)"
 msgid "%(filename)s (%(similarity)d%%)"
 msgstr "%(filename)s (%(similarity)d%%)"
 
-#: picard/ui/mainwindow.py:1212
+#: picard/ui/mainwindow.py:1213
 msgid "Authentication Required"
 msgstr "需要鑑認"
 
-#: picard/ui/mainwindow.py:1213
+#: picard/ui/mainwindow.py:1214
 msgid ""
 "Picard needs authorization to access your personal data on the MusicBrainz "
 "server. Would you like to log in now?"
@@ -3998,24 +3995,24 @@ msgstr "代理伺服器%s需要您登入。請輸入您的使用者名稱與密�
 #: picard/ui/playertoolbar.py:174
 msgid ""
 "Internal player: The format of a media resource isn't (fully) supported"
-msgstr ""
+msgstr "內部播放器：此媒體資源的格式尚未(完全)支援"
 
 #: picard/ui/playertoolbar.py:176
 msgid ""
 "Internal player: There are not the appropriate permissions to play a media "
 "resource"
-msgstr ""
+msgstr "內部播放器：沒有適當的權限來播放媒體資源"
 
 #: picard/ui/playertoolbar.py:178
 msgid ""
 "Internal player: A valid playback service was not found, playback cannot "
 "proceed"
-msgstr ""
+msgstr "內部播放器：找不到有效的播放服務，無法開始播放"
 
 #: picard/ui/playertoolbar.py:180
 #, python-format
 msgid "Internal player: error, code=%d, msg=%s"
-msgstr ""
+msgstr "內部播放器：錯誤，代碼=%d，訊息=%s"
 
 #: picard/ui/playertoolbar.py:186
 msgid "Player"
@@ -4074,7 +4071,7 @@ msgstr "檔案名稱"
 
 #: picard/ui/ui_aboutdialog.py:83
 msgid "About Picard"
-msgstr ""
+msgstr "關於 Picard"
 
 #: picard/ui/options/cdlookup.py:49 picard/ui/ui_cdlookup.py:85
 #: picard/ui/ui_options_cdlookup.py:38
@@ -4395,7 +4392,7 @@ msgstr "使用進階查詢語法"
 
 #: picard/ui/ui_options_interface.py:132
 msgid "Show a quit confirmation dialog for unsaved changes"
-msgstr ""
+msgstr "有未儲存的修改時，顯示離開確認視窗"
 
 #: picard/ui/ui_options_interface.py:133
 msgid "Begin browsing in the following directory:"
@@ -4644,7 +4641,7 @@ msgstr "標籤處理腳本"
 
 #: picard/ui/ui_options_script.py:105
 msgid "Enter your tagger script here."
-msgstr ""
+msgstr "在此輸入您的標籤腳本。"
 
 #: picard/ui/ui_options_script.py:106 picard/ui/ui_options_script.py:107
 msgid "Add new script"
@@ -4653,7 +4650,7 @@ msgstr "新增腳本"
 #: picard/ui/ui_options_script.py:108
 #: picard/ui/ui_scripting_documentation_dialog.py:50
 msgid "Scripting Documentation"
-msgstr ""
+msgstr "腳本文件"
 
 #: picard/ui/ui_options_script.py:109
 msgid "Move script up"
@@ -4695,10 +4692,6 @@ msgstr "從 MP3 檔案移除 APEv2 標籤"
 msgid ""
 "Preserve these tags from being cleared or overwritten with MusicBrainz data:"
 msgstr "保留以下標籤不會被清除，或是被 MusicBrainz 資訊覆蓋:"
-
-#: picard/ui/ui_options_tags.py:69
-msgid "Tags are separated by commas and are case-insensitive."
-msgstr "標籤以逗號分隔，且大小寫無關"
 
 #: picard/ui/options/tags_compatibility_id3.py:39
 #: picard/ui/ui_options_tags_compatibility.py:170
@@ -4803,27 +4796,27 @@ msgstr "從 AC3 檔案移除 APEv2 標籤"
 #: picard/ui/ui_options_tags_compatibility.py:190
 #: picard/ui/ui_options_tags_compatibility_wave.py:56
 msgid "WAVE files"
-msgstr ""
+msgstr "WAVE 檔案"
 
 #: picard/ui/ui_options_tags_compatibility.py:191
 #: picard/ui/ui_options_tags_compatibility_wave.py:58
 msgid "Also include RIFF INFO tags in the files"
-msgstr ""
+msgstr "並在檔案內包含 RIFF INFO 標籤"
 
 #: picard/ui/ui_options_tags_compatibility.py:192
 #: picard/ui/ui_options_tags_compatibility_wave.py:59
 msgid "Remove existing RIFF INFO tags from WAVE files"
-msgstr ""
+msgstr "從 WAVE 檔案內移除既有的 RIFF INFO 標籤"
 
 #: picard/ui/ui_options_tags_compatibility.py:193
 #: picard/ui/ui_options_tags_compatibility_wave.py:60
 msgid "RIFF INFO Text Encoding"
-msgstr ""
+msgstr "RIFF INFO 文字編碼"
 
 #: picard/ui/ui_options_tags_compatibility.py:194
 #: picard/ui/ui_options_tags_compatibility_wave.py:61
 msgid "Windows-1252"
-msgstr ""
+msgstr "Windows-1252"
 
 #: picard/ui/ui_options_tags_compatibility_aac.py:46
 msgid ""
@@ -4832,7 +4825,7 @@ msgid ""
 "players not supporting AAC files with APEv2 tags can have issues loading and"
 " playing those files. To deal with this you can choose whether to save tags "
 "to those files."
-msgstr ""
+msgstr "Picard 可儲存 APEv2 標籤於純 AAC 檔案，雖然該種檔案預設並不支援標籤。包含 APEv2 標籤的 AAC 檔案有被某些播放器支援，但是不支援的播放器可能會在讀取這些檔案時遇到問題。為了解決此問題，您可以選擇是否要在這類型檔案內儲存標籤。"
 
 #: picard/ui/ui_options_tags_compatibility_ac3.py:46
 msgid ""
@@ -4841,7 +4834,7 @@ msgid ""
 "players not supporting AC3 files with APEv2 tags can have issues loading and"
 " playing those files. To deal with this you can choose whether to save tags "
 "to those files."
-msgstr ""
+msgstr "Picard 可儲存 APEv2 標籤於純 AC3 檔案，雖然該種檔案預設並不支援標籤。包含 APEv2 標籤的 AC3 檔案有被某些播放器支援，但是不支援的播放器可能會在讀取這些檔案時遇到問題。為了解決此問題，您可以選擇是否要在這類型檔案內儲存標籤。"
 
 #: picard/ui/ui_options_tags_compatibility_wave.py:57
 msgid ""
@@ -4849,7 +4842,7 @@ msgid ""
 "software. For compatibility with software which does not support ID3v2 tags "
 "in WAVE files additional RIFF INFO tags can be written to the files. RIFF "
 "INFO has only limited support for tags and character encodings."
-msgstr ""
+msgstr "Picard 將會使用 ID3v2 標籤於 WAVE 檔案。這不被所有播放器支援。為了與不支援使用 ID3v2 標籤的 WAVE 檔案的軟體的相容性，可額外寫入 RIFF INFO 標籤。RIFF INFO 標籤只能有限支援部分標籤與字元編碼。"
 
 #: picard/ui/ui_passworddialog.py:60
 msgid "Authentication required"
@@ -4894,11 +4887,11 @@ msgstr "正規表式中的如果存在第一個分組，將會當作類型，例
 
 #: picard/ui/ui_scripting_documentation_dialog.py:51
 msgid "Open documentation in browser"
-msgstr ""
+msgstr "在瀏覽器中開啟說明文件"
 
 #: picard/ui/ui_tagsfromfilenames.py:53
 msgid "Convert File Names to Tags"
-msgstr ""
+msgstr "轉換檔名為標籤"
 
 #: picard/ui/ui_tagsfromfilenames.py:54
 msgid "Replace underscores with spaces"
@@ -5053,7 +5046,7 @@ msgstr "種類"
 #: picard/ui/options/genres.py:146
 #, python-format
 msgid "Error line %d: %s"
-msgstr ""
+msgstr "錯誤行 %d：%s"
 
 #: picard/ui/options/interface.py:61
 msgid "User Interface"
@@ -5243,7 +5236,7 @@ msgstr "全部重設"
 msgid "File Naming"
 msgstr "檔案命名"
 
-#: picard/ui/options/renaming.py:196 picard/ui/options/scripting.py:101
+#: picard/ui/options/renaming.py:196 picard/ui/options/scripting.py:100
 msgid ""
 "<a href=\"%(picard-doc-scripting-url)s\">Open Scripting Documentation in "
 "your browser</a>"
@@ -5265,7 +5258,7 @@ msgstr "腳本"
 msgid "Script Error"
 msgstr "腳本錯誤"
 
-#: picard/ui/options/tags.py:50
+#: picard/ui/options/tags.py:42
 msgid "Tags"
 msgstr "標籤"
 

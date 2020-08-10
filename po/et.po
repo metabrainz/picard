@@ -13,14 +13,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-06-26 01:20+0200\n"
-"PO-Revision-Date: 2020-06-26 09:54+0000\n"
-"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
+"POT-Creation-Date: 2020-07-14 19:05+0200\n"
+"PO-Revision-Date: 2020-07-15 00:25+0000\n"
+"Last-Translator: Transifex Bot <>\n"
 "Language-Team: Estonian (http://www.transifex.com/musicbrainz/musicbrainz/language/et/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.8.0\n"
+"Generated-By: Babel 2.6.0\n"
 "Language: et\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
@@ -150,22 +150,22 @@ msgstr "Ühenda"
 msgid "Remove"
 msgstr "Eemalda"
 
-#: picard/file.py:728
+#: picard/file.py:737
 #, python-format
 msgid "No matching tracks above the threshold for file '%(filename)s'"
 msgstr "Failile \"%(filename)s\" üle seatud läve vastavaid lugusid pole"
 
-#: picard/file.py:730
+#: picard/file.py:739
 #, python-format
 msgid "File '%(filename)s' identified!"
 msgstr "Fail \"%(filename)s\" tuvastatud!"
 
-#: picard/file.py:742
+#: picard/file.py:751
 #, python-format
 msgid "No matching tracks for file '%(filename)s'"
 msgstr "Failile \"%(filename)s\" vastavaid lugusid pole"
 
-#: picard/file.py:774
+#: picard/file.py:783
 #, python-format
 msgid "Looking up the metadata for file %(filename)s ..."
 msgstr "Metaandmete otsimine failile \"%(filename)s\"..."
@@ -243,49 +243,49 @@ msgid ""
 "`$if(if,then,else)`\n"
 "\n"
 "If `if` is not empty, it returns `then`, otherwise it returns `else`."
-msgstr ""
+msgstr "`$if(tingimus,siis,muidu)`\n\nKui `tingimus` pole tühi, tagastab `siis`, muul juhul tagastab `muidu`."
 
 #: picard/script.py:597
 msgid ""
 "`$if2(a1,a2,a3,...)`\n"
 "\n"
 "Returns first non empty argument."
-msgstr ""
+msgstr "`$if2(a1,a2,a3,...)`\n\nTagastab esimese mittetühja argumendi."
 
 #: picard/script.py:610
 msgid ""
 "`$noop(...)`\n"
 "\n"
 "Does nothing (useful for comments or disabling a block of code)."
-msgstr ""
+msgstr "`$noop(...)`\n\nEi tee midagi (kasulik kommentaaride lisamiseks või koodiploki väljalülitamiseks)."
 
 #: picard/script.py:619
 msgid ""
 "`$left(text,number)`\n"
 "\n"
 "Returns the first `number` characters from `text`."
-msgstr ""
+msgstr "`$left(tekst,arv)`\n\nTagastab `teksti` esimesed `arv` märki."
 
 #: picard/script.py:631
 msgid ""
 "`$right(text,number)`\n"
 "\n"
 "Returns the last `number` characters from `text`."
-msgstr ""
+msgstr "`$right(tekst,arv)`\n\nTagastab `teksti` viimased `arv` märki."
 
 #: picard/script.py:643
 msgid ""
 "`$lower(text)`\n"
 "\n"
 "Returns `text` in lower case."
-msgstr ""
+msgstr "`$lower(tekst)`\n\nTagastab `teksti` väiketähtedega."
 
 #: picard/script.py:652
 msgid ""
 "`$upper(text)`\n"
 "\n"
 "Returns `text` in upper case."
-msgstr ""
+msgstr "`$upper(tekst)`\n\nTagastab `teksti` suurtähtedega."
 
 #: picard/script.py:661
 msgid ""
@@ -308,14 +308,14 @@ msgid ""
 "`$replace(text,search,replace)`\n"
 "\n"
 "Replaces occurrences of `search` in `text` with value of `replace` and returns the resulting string."
-msgstr ""
+msgstr "`$replace(tekst,otsitav,asendus)`\n\nAsendab `tekstis` `otsitava` esinemiskorrad `asendusega` ja tagastab saadud stringi."
 
 #: picard/script.py:693
 msgid ""
 "`$in(x,y)`\n"
 "\n"
 "Returns true, if `x` contains `y`."
-msgstr ""
+msgstr "`$in(x,y)`\n\nTagastab tõese väärtuse, kui `x` sisaldab `y-it`."
 
 #: picard/script.py:705
 #, python-format
@@ -347,7 +347,7 @@ msgid ""
 "`$num(number,length)`\n"
 "\n"
 "Returns `number` formatted to `length` digits (maximum 20)."
-msgstr ""
+msgstr "`$num(arv,pikkus)`\n\nTagastab `arvu`, millele on lisatud piisavalt algusnulle, et saavutada `pikkus` (max 20)."
 
 #: picard/script.py:770
 msgid ""
@@ -356,7 +356,7 @@ msgid ""
 "Unsets the variable `name`.\n"
 "Allows for wildcards to unset certain tags (works with 'performer:*', 'comment:*', and 'lyrics:*').\n"
 "i.e. `$unset(performer:*)` would unset all performer tags."
-msgstr ""
+msgstr "`$unset(muutuja)`\n\nUnustab `muutuja`.\nTeatud muutujate puhul saab kasutada metamärke (neid toetavad 'performer:*', 'comment:*', 'lyrics:*').\nNt `$unset(performer:*)` unustaks kõik ettekandja-muutujad."
 
 #: picard/script.py:790
 msgid ""
@@ -368,7 +368,7 @@ msgid ""
 "    saving.\n"
 "\n"
 "_Since Picard 2.1_"
-msgstr ""
+msgstr "`$delete(muutuja)`\n\nUnustab `muutuja` ja märgib vastava sildi kustutamiseks.\nSee on sarnane funktsioonile `$unset(muutuja)`, aga lisaks kustutab asjakohase sildi failist.\n    Nt `$delete(genre)` eemaldab faili salvestamisel failist stiilisildi.\n\n_Alates Picard 2.1-st_"
 
 #: picard/script.py:805
 #, python-format
@@ -405,7 +405,7 @@ msgid ""
 "`$get(name)`\n"
 "\n"
 "Returns the variable `name` (equivalent to `%name%`)."
-msgstr ""
+msgstr "`$get(muutuja)`\n\nTagastab `muutuja` (sama nagu `%muutuja%`)."
 
 #: picard/script.py:851
 #, python-format
@@ -448,7 +448,7 @@ msgid ""
 "Example:\n"
 "\n"
 "    $add(x,y,z) = ((x + y) + z)\n"
-msgstr ""
+msgstr "`$add(x,y,*argumendid)`\n\nLiidab `x-i` ja `y-i`.\nKasutada võib suvalist arvu argumente.\n\nNäide:\n    $add(x,y,z) = ((x + y) + z)\n"
 
 #: picard/script.py:916
 msgid ""
@@ -460,7 +460,7 @@ msgid ""
 "Example:\n"
 "\n"
 "    $sub(x,y,z) = ((x - y) - z)\n"
-msgstr ""
+msgstr "`$sub(x,y,*argumendid)`\n\nLahutab `x-st` `y-i`.\nKasutada võib suvalist arvu argumente.\n\nNäide:\n    $sub(x,y,z) = ((x - y) - z)\n"
 
 #: picard/script.py:934
 msgid ""
@@ -472,7 +472,7 @@ msgid ""
 "Example:\n"
 "\n"
 "    $div(x,y,z) = ((x / y) / z)\n"
-msgstr ""
+msgstr "`$div(x,y,*argumendid)`\n\nJagab `x-i` `y-ga`.\nKasutada võib suvalist arvu argumente.\n\nNäide:\n    $div(x,y,z) = ((x / y) / z)\n"
 
 #: picard/script.py:954
 msgid ""
@@ -484,7 +484,7 @@ msgid ""
 "Example:\n"
 "\n"
 "    $mod(x,y,z) = ((x % y) % z)\n"
-msgstr ""
+msgstr "`$mod(x,y,*argumendid)`\n\nTagastab `x-i` jagatud `y-ga` jäägi.\nKasutada võib suvalist arvu argumente.\n\nNäide:\n    $mod(x,y,z) = ((x % y) % z)\n"
 
 #: picard/script.py:972
 msgid ""
@@ -496,7 +496,7 @@ msgid ""
 "Example:\n"
 "\n"
 "    $mul(x,y,z) = ((x * y) * z)\n"
-msgstr ""
+msgstr "`$mul(x,y,*argumendid)`\n\nKorrutab `x-i` `y-ga`.\nKasutada võib suvalist arvu argumente.\n\nNäide:\n    $mul(x,y,z) = ((x * y) * z)\n"
 
 #: picard/script.py:990
 msgid ""
@@ -505,7 +505,7 @@ msgid ""
 "Returns true if either `x` or `y` not empty.\n"
 "    Can be used with an arbitrary number of arguments.\n"
 "    The result is true if ANY of the arguments is not empty."
-msgstr ""
+msgstr "`$or(x,y,*argumendid)`\n\nTagastab tõese väärtuse, kui `x` või `y` on mittetühi.\n    Kasutada võib suvalist arvu argumente.\n    Tulemuseks on tõene väärtus juhul, kui vähemalt üks argument on mittetühi."
 
 #: picard/script.py:1004
 msgid ""
@@ -514,63 +514,63 @@ msgid ""
 "Returns true if both `x` and `y` are not empty.\n"
 "    Can be used with an arbitrary number of arguments.\n"
 "    The result is true if ALL of the arguments are not empty."
-msgstr ""
+msgstr "`$and(x,y,*argumendid)`\n\nTagastab tõese väärtuse, kui `x` ja `y` on mõlemad mittetühjad.\n    Kasutada võib suvalist arvu argumente.\n    Tulemuseks on tõene väärtus ainult juhul, kui KÕIK argumendid on mittetühjad."
 
 #: picard/script.py:1018
 msgid ""
 "`$not(x)`\n"
 "\n"
 "Returns true if `x` is empty."
-msgstr ""
+msgstr "`$not(x)`\n\nTagastab tõese väärtuse, kui `x` on tühi."
 
 #: picard/script.py:1030
 msgid ""
 "`$eq(x,y)`\n"
 "\n"
 "Returns true if `x` equals `y`."
-msgstr ""
+msgstr "`$eq(x,y)`\n\nTagastab tõese väärtuse, kui `x` on võrdne `y-ga`."
 
 #: picard/script.py:1042
 msgid ""
 "`$ne(x,y)`\n"
 "\n"
 "Returns true if `x` does not equal `y`."
-msgstr ""
+msgstr "`$ne(x,y)`\n\nTagastab tõese väärtuse, kui `x` ei ole võrdne `y-ga`."
 
 #: picard/script.py:1054
 msgid ""
 "`$lt(x,y)`\n"
 "\n"
 "Returns true if `x` is less than `y`."
-msgstr ""
+msgstr "`$lt(x,y)`\n\nTagastab tõese väärtuse, kui `x` on väiksem kui `y`."
 
 #: picard/script.py:1068
 msgid ""
 "`$lte(x,y)`\n"
 "\n"
 "Returns true if `x` is less than or equal to `y`."
-msgstr ""
+msgstr "`$lte(x,y)`\n\nTagastab tõese väärtuse, kui `x` on väiksem või võrdne `y-ga`."
 
 #: picard/script.py:1082
 msgid ""
 "`$gt(x,y)`\n"
 "\n"
 "Returns true if `x` is greater than `y`."
-msgstr ""
+msgstr "`$gt(x,y)`\n\nTagastab tõese väärtuse, kui `x` on suurem kui `y`."
 
 #: picard/script.py:1096
 msgid ""
 "`$gte(x,y)`\n"
 "\n"
 "Returns true if `x` is greater than or equal to `y`."
-msgstr ""
+msgstr "`$gte(x,y)`\n\nTagastab tõese väärtuse, kui `x` on suurem või võrdne `y-ga`."
 
 #: picard/script.py:1110
 msgid ""
 "`$len(text)`\n"
 "\n"
 "Returns the number of characters in `text`."
-msgstr ""
+msgstr "`$len(tekst)`\n\nTagastab märkide arvu `tekstis`."
 
 #: picard/script.py:1119
 msgid ""
@@ -618,12 +618,13 @@ msgid ""
 "`$firstalphachar(text,nonalpha=\"#\")`\n"
 "\n"
 "Returns the first character of `text`.\n"
-"If `text` is not an alphabetic character `nonalpha` (or `#` if not passed) is returned instead.\n"
+"If `text` does not begin with an alphabetic character, then `nonalpha` is returned instead. If `nonalpha` is not\n"
+"specified, the default value \"#\" will be used.\n"
 "\n"
 "_Since Picard 0.12_"
 msgstr ""
 
-#: picard/script.py:1200
+#: picard/script.py:1201
 msgid ""
 "`$initials(text)`\n"
 "\n"
@@ -632,7 +633,7 @@ msgid ""
 "_Since Picard 0.12_"
 msgstr ""
 
-#: picard/script.py:1211
+#: picard/script.py:1212
 msgid ""
 "`$firstwords(text,length)`\n"
 "\n"
@@ -641,34 +642,34 @@ msgid ""
 "_Since Picard 0.12_"
 msgstr ""
 
-#: picard/script.py:1234
+#: picard/script.py:1235
 msgid ""
 "`$startswith(text,prefix)`\n"
 "\n"
 "Returns true if `text` starts with `prefix`.\n"
 "\n"
 "_Since Picard 1.4_"
-msgstr ""
+msgstr "`$startswith(tekst,prefiks)`\n\nTagastab tõese väärtuse, kui `tekst` algab `prefiksiga`.\n\n_Alates Picard 1.4-st_"
 
-#: picard/script.py:1247
+#: picard/script.py:1248
 msgid ""
 "`$endswith(text,suffix)`\n"
 "\n"
 "Returns true if `text` ends with `suffix`.\n"
 "\n"
 "_Since Picard 1.4_"
-msgstr ""
+msgstr "`$endswith(tekst,sufiks)`\n\nTagastab tõese väärtuse, kui `tekst` lõpeb `sufiksiga`.\n\n_Alates Picard 1.4-st_"
 
-#: picard/script.py:1260
+#: picard/script.py:1261
 msgid ""
 "`$truncate(text,length)`\n"
 "\n"
 "Truncate `text` to `length`.\n"
 "\n"
 "_Since Picard 0.12_"
-msgstr ""
+msgstr "`$truncate(tekst,pikkus)`\n\nKärbib `teksti` määratud arvu märkide `pikkuseks`.\n\n_Alates Picard 0.12-st_"
 
-#: picard/script.py:1275
+#: picard/script.py:1276
 msgid ""
 "`$swapprefix(text,*prefixes=\"a\",\"the\")`\n"
 "\n"
@@ -682,7 +683,7 @@ msgid ""
 "_Since Picard 1.3, previously as a plugin since Picard 0.13_"
 msgstr ""
 
-#: picard/script.py:1296
+#: picard/script.py:1297
 msgid ""
 "`$delprefix(text,*prefixes=\"a\",\"the\")`\n"
 "\n"
@@ -692,7 +693,7 @@ msgid ""
 "_Since Picard 1.3_"
 msgstr ""
 
-#: picard/script.py:1329
+#: picard/script.py:1330
 msgid ""
 "`$eq_any(x,a1,a2...)`\n"
 "\n"
@@ -701,7 +702,7 @@ msgid ""
 "Functionally equivalent to the eq2 plugin."
 msgstr ""
 
-#: picard/script.py:1341
+#: picard/script.py:1342
 msgid ""
 "`$ne_all(x,a1,a2...)`\n"
 "\n"
@@ -710,7 +711,7 @@ msgid ""
 "Functionally equivalent to the ne2 plugin."
 msgstr ""
 
-#: picard/script.py:1353
+#: picard/script.py:1354
 msgid ""
 "`$eq_all(x,a1,a2...)`\n"
 "\n"
@@ -722,7 +723,7 @@ msgid ""
 "    $if($eq_all(%albumartist%,%artist%,Justin Bieber),$set(engineer,Meat Loaf))\n"
 msgstr ""
 
-#: picard/script.py:1371
+#: picard/script.py:1372
 #, python-format
 msgid ""
 "`$ne_any(x,a1,a2...)`\n"
@@ -735,7 +736,7 @@ msgid ""
 "    $if($ne_any(%albumartist%,%trackartist%,%composer%),$set(lyricist,%composer%))\n"
 msgstr ""
 
-#: picard/script.py:1386
+#: picard/script.py:1387
 msgid ""
 "`$title(text)`\n"
 "\n"
@@ -747,25 +748,25 @@ msgid ""
 "_Since Picard 2.1_"
 msgstr ""
 
-#: picard/script.py:1426
+#: picard/script.py:1427
 msgid ""
 "`$is_audio()`\n"
 "\n"
 "Returns true, if the file processed is an audio file.\n"
 "\n"
 "_Since Picard 2.2_"
-msgstr ""
+msgstr "`$is_audio()`\n\nTagastab tõese väärtuse, kui töödeldav fail on audiofail.\n\n_Alates Picard 2.2-st_"
 
-#: picard/script.py:1440
+#: picard/script.py:1441
 msgid ""
 "`$is_video()`\n"
 "\n"
 "Returns true, if the file processed is an video file.\n"
 "\n"
 "_Since Picard 2.2_"
-msgstr ""
+msgstr "`$is_video()`\n\nTagastab tõese väärtuse, kui töödeldav fail on videofail.\n\n_Alates Picard 2.2-st_"
 
-#: picard/script.py:1454
+#: picard/script.py:1455
 msgid ""
 "`$find(haystack,needle)`\n"
 "\n"
@@ -775,16 +776,16 @@ msgid ""
 "_Since Picard 2.3_\n"
 "\n"
 "Note that prior to Picard 2.3.2 `$find` returned \"-1\" if `needle` was not found."
-msgstr ""
+msgstr "`$find(heinakuhi,nõel)`\n\nLeiab ühe stringi asukoha teise sees.\n    Tagastab `nõela` esimese esinemiskoha indeksi `heinakuhjas` või \"\" kui `nõela` ei leita.\n\n_Alates Picard 2.3-st_\n\nPane tähele, et enne Picardi versiooni 2.3.2 tagastas `$find` \"-1\" kui `nõela` ei leitud."
 
-#: picard/script.py:1471
+#: picard/script.py:1472
 msgid ""
 "`$reverse(text)`\n"
 "\n"
 "Returns `text` in reverse order."
 msgstr ""
 
-#: picard/script.py:1480
+#: picard/script.py:1481
 msgid ""
 "`$substr(text,start,end)`\n"
 "\n"
@@ -795,7 +796,7 @@ msgid ""
 "    the start and end of the string respectively."
 msgstr ""
 
-#: picard/script.py:1501
+#: picard/script.py:1502
 msgid ""
 "`$getmulti(name,index,separator=\"; \")`\n"
 "\n"
@@ -805,7 +806,7 @@ msgid ""
 "    multi-valued tag."
 msgstr ""
 
-#: picard/script.py:1520
+#: picard/script.py:1521
 msgid ""
 "`$foreach(name,code,separator=\"; \")`\n"
 "\n"
@@ -818,7 +819,7 @@ msgid ""
 "    proper multi-valued tag."
 msgstr ""
 
-#: picard/script.py:1542
+#: picard/script.py:1543
 msgid ""
 "`$while(condition,code)`\n"
 "\n"
@@ -829,7 +830,7 @@ msgid ""
 "    safeguard against accidentally creating an infinite loop."
 msgstr ""
 
-#: picard/script.py:1563
+#: picard/script.py:1564
 msgid ""
 "`$map(name,code,separator=\"; \")`\n"
 "\n"
@@ -840,14 +841,14 @@ msgid ""
 "    the element or count value to be accessed within the `code` script."
 msgstr ""
 
-#: picard/script.py:1583
+#: picard/script.py:1584
 msgid ""
 "`$join(name,text,separator=\"; \")`\n"
 "\n"
 "Joins all elements in `name`, placing `text` between each element, and returns the result as a string."
 msgstr ""
 
-#: picard/script.py:1594
+#: picard/script.py:1595
 msgid ""
 "`$slice(name,start,end,separator=\"; \")`\n"
 "\n"
@@ -867,7 +868,7 @@ msgid ""
 "    $setmulti(supporting_artists,$slice(%artists%,1,))\n"
 msgstr ""
 
-#: picard/script.py:1626
+#: picard/script.py:1627
 #, python-format
 msgid ""
 "`$datetime(format=\"%Y-%m-%d %H:%M:%S\")`\n"
@@ -883,14 +884,14 @@ msgid ""
 "    `%3Y`); and hanging '%' at the end of the format string."
 msgstr ""
 
-#: picard/script.py:1655
+#: picard/script.py:1656
 msgid ""
 "`$sortmulti(name,separator=\"; \")`\n"
 "\n"
 "Returns a copy of the multi-value tag `name` with the elements sorted in ascending order."
 msgstr ""
 
-#: picard/script.py:1665
+#: picard/script.py:1666
 msgid ""
 "`$reversemulti(name,separator=\"; \")`\n"
 "\n"
@@ -899,31 +900,31 @@ msgid ""
 "    descending order."
 msgstr ""
 
-#: picard/tagger.py:314 picard/ui/ui_options_general.py:135
+#: picard/tagger.py:307 picard/ui/ui_options_general.py:135
 msgid "MusicBrainz Account"
 msgstr "MusicBrainzi konto"
 
-#: picard/tagger.py:315
+#: picard/tagger.py:308
 msgid "Authorization code:"
 msgstr "Autoriseerimiskood:"
 
-#: picard/tagger.py:565
+#: picard/tagger.py:561
 #, python-format
 msgid "Adding %(count)d file from '%(directory)s' ..."
 msgid_plural "Adding %(count)d files from '%(directory)s' ..."
 msgstr[0] "%(count)d faili lisamine kataloogist \"%(directory)s\"..."
 msgstr[1] "%(count)d faili lisamine kataloogist \"%(directory)s\"..."
 
-#: picard/tagger.py:759
+#: picard/tagger.py:755
 #, python-format
 msgid "Removing album %(id)s: %(artist)s - %(album)s"
 msgstr "Albumi \"%(id)s\" (%(artist)s - %(album)s) eemaldamine"
 
-#: picard/tagger.py:777
+#: picard/tagger.py:773
 msgid "CD Lookup Error"
 msgstr "Viga CD päringul"
 
-#: picard/tagger.py:778
+#: picard/tagger.py:774
 #, python-format
 msgid ""
 "Error while reading CD:\n"
@@ -2952,7 +2953,7 @@ msgid ""
 "Basinski</a>, <a "
 "href=\"https://www.flaticon.com/authors/smashicons\">Smashicons</a> from <a "
 "href=\"https://www.flaticon.com\">www.flaticon.com</a>"
-msgstr "Ikoonid teinud Sambhav Kothari <sambhavs.email@gmail.com> ning <a href=\"http://www.flaticon.com/authors/madebyoliver\">Madebyoliver</a>, <a href=\"http://www.flaticon.com/authors/pixel-buddha\">Pixel Buddha</a>, <a href=\"http://www.flaticon.com/authors/nikita-golubev\">Nikita Golubev</a>, <a href=\"http://www.flaticon.com/authors/maxim-basinski\">Maxim Basinski</a>, <a href=\"https://www.flaticon.com/authors/smashicons\">Smashicons</a> ja <a href=\"https://www.flaticon.com\">www.flaticon.com</a>"
+msgstr "Ikoonid teinud Sambhav Kothari <sambhavs.email@gmail.com> ning <a href=\"https://www.flaticon.com\">www.flaticon.com</a>-i kasutajad <a href=\"https://www.flaticon.com/authors/madebyoliver\">Madebyoliver</a>, <a href=\"https://www.flaticon.com/authors/pixel-buddha\">Pixel Buddha</a>, <a href=\"https://www.flaticon.com/authors/nikita-golubev\">Nikita Golubev</a>, <a href=\"https://www.flaticon.com/authors/maxim-basinski\">Maxim Basinski</a> ja <a href=\"https://www.flaticon.com/authors/smashicons\">Smashicons</a>"
 
 #: picard/ui/aboutdialog.py:101
 #, python-format
@@ -2981,12 +2982,12 @@ msgstr "Tänuavaldused"
 
 #: picard/ui/aboutdialog.py:110
 msgid "Credits"
-msgstr "Artisti- jm teave"
+msgstr "Tänuavaldused"
 
 #: picard/ui/aboutdialog.py:111
 #, python-format
 msgid "Copyright © %(copyright_years)s %(authors_credits)s and others"
-msgstr "Autoriõigus © %(copyright_years)s %(authors_credits)s ja teised."
+msgstr "Autoriõigus © %(copyright_years)s %(authors_credits)s ja teised"
 
 #: picard/ui/aboutdialog.py:113
 msgid "Official website"
@@ -3060,10 +3061,6 @@ msgstr "Muudetav silt"
 #: picard/ui/colors.py:45
 msgid "Tag removed"
 msgstr "Eemaldatav silt"
-
-#: picard/ui/colors.py:46
-msgid "Script Function"
-msgstr ""
 
 #: picard/ui/coverartbox.py:277
 msgid "View release on MusicBrainz"
@@ -3236,7 +3233,7 @@ msgstr "Esitaja:"
 #: picard/ui/infodialog.py:397
 #, python-format
 msgid "Disc %d"
-msgstr ""
+msgstr "%d. plaat"
 
 #: picard/ui/infodialog.py:399
 msgid "Tracklist:"
@@ -3392,43 +3389,43 @@ msgstr "albumivaade"
 msgid "Contains albums and matched files"
 msgstr "Sisaldab albumeid ja vastetega faile"
 
-#: picard/ui/itemviews.py:980 picard/ui/options/renaming.py:209
+#: picard/ui/itemviews.py:982 picard/ui/options/renaming.py:209
 msgid "Error"
 msgstr "Viga"
 
-#: picard/ui/itemviews.py:984
+#: picard/ui/itemviews.py:986
 msgid "Album modified and complete"
 msgstr "Albumit on muudetud ja see on terviklik"
 
-#: picard/ui/itemviews.py:987
+#: picard/ui/itemviews.py:989
 msgid "Album unchanged and complete"
 msgstr "Albumit pole muudetud ja see on terviklik"
 
-#: picard/ui/itemviews.py:991
+#: picard/ui/itemviews.py:993
 msgid "Album modified"
 msgstr "Albumit on muudetud"
 
-#: picard/ui/itemviews.py:994
+#: picard/ui/itemviews.py:996
 msgid "Album unchanged"
 msgstr "Albumit pole muudetud"
 
-#: picard/ui/itemviews.py:1127
+#: picard/ui/itemviews.py:1134
 msgid "Track saved"
 msgstr "Lugu salvestatud"
 
-#: picard/ui/itemviews.py:1129 picard/ui/itemviews.py:1133
+#: picard/ui/itemviews.py:1136 picard/ui/itemviews.py:1140
 msgid "Pending"
 msgstr "Ootel"
 
-#: picard/ui/itemviews.py:1139
+#: picard/ui/itemviews.py:1146
 msgid "Fingerprint has already been submitted"
 msgstr "Sõrmejälg on juba edastatud"
 
-#: picard/ui/itemviews.py:1141
+#: picard/ui/itemviews.py:1148
 msgid "Unsubmitted fingerprint"
 msgstr "Edastamata sõrmejälg"
 
-#: picard/ui/itemviews.py:1143
+#: picard/ui/itemviews.py:1150
 msgid ""
 "No fingerprint was calculated for this file, use \"Scan\" or \"Generate "
 "AcoustID Fingerprints\" to calculate the fingerprint."
@@ -3912,11 +3909,11 @@ msgstr "%(filename)s (%(similarity)d%%) (viga: %(error)s)"
 msgid "%(filename)s (%(similarity)d%%)"
 msgstr "%(filename)s (%(similarity)d%%)"
 
-#: picard/ui/mainwindow.py:1212
+#: picard/ui/mainwindow.py:1213
 msgid "Authentication Required"
 msgstr "Nõutakse autentimist"
 
-#: picard/ui/mainwindow.py:1213
+#: picard/ui/mainwindow.py:1214
 msgid ""
 "Picard needs authorization to access your personal data on the MusicBrainz "
 "server. Would you like to log in now?"
@@ -4086,7 +4083,7 @@ msgstr "Failinimi"
 
 #: picard/ui/ui_aboutdialog.py:83
 msgid "About Picard"
-msgstr ""
+msgstr "Picardi teave"
 
 #: picard/ui/options/cdlookup.py:49 picard/ui/ui_cdlookup.py:85
 #: picard/ui/ui_options_cdlookup.py:38
@@ -4656,7 +4653,7 @@ msgstr "Sildistusskript(id)"
 
 #: picard/ui/ui_options_script.py:105
 msgid "Enter your tagger script here."
-msgstr ""
+msgstr "Sisesta oma sildistusskript siia."
 
 #: picard/ui/ui_options_script.py:106 picard/ui/ui_options_script.py:107
 msgid "Add new script"
@@ -4665,7 +4662,7 @@ msgstr "Lisa uus skript"
 #: picard/ui/ui_options_script.py:108
 #: picard/ui/ui_scripting_documentation_dialog.py:50
 msgid "Scripting Documentation"
-msgstr ""
+msgstr "Skriptimise dokumentatsioon"
 
 #: picard/ui/ui_options_script.py:109
 msgid "Move script up"
@@ -4707,10 +4704,6 @@ msgstr "MP3-failidest eemaldatakse APEv2-sildid"
 msgid ""
 "Preserve these tags from being cleared or overwritten with MusicBrainz data:"
 msgstr "Järgmisi silte ei tühjendata ega kirjutata üle MusicBrainzi andmetega:"
-
-#: picard/ui/ui_options_tags.py:69
-msgid "Tags are separated by commas and are case-insensitive."
-msgstr "Sildid on tõstutundetud ja tuleb eraldada komaga."
 
 #: picard/ui/options/tags_compatibility_id3.py:39
 #: picard/ui/ui_options_tags_compatibility.py:170
@@ -4815,27 +4808,27 @@ msgstr "AC3-failidest eemaldatakse APEv2-sildid"
 #: picard/ui/ui_options_tags_compatibility.py:190
 #: picard/ui/ui_options_tags_compatibility_wave.py:56
 msgid "WAVE files"
-msgstr ""
+msgstr "WAVE-failid"
 
 #: picard/ui/ui_options_tags_compatibility.py:191
 #: picard/ui/ui_options_tags_compatibility_wave.py:58
 msgid "Also include RIFF INFO tags in the files"
-msgstr ""
+msgstr "Failidesse lisatakse ka RIFF INFO sildid"
 
 #: picard/ui/ui_options_tags_compatibility.py:192
 #: picard/ui/ui_options_tags_compatibility_wave.py:59
 msgid "Remove existing RIFF INFO tags from WAVE files"
-msgstr ""
+msgstr "WAVE-failidest eemaldatakse olemasolevad RIFF INFO sildid"
 
 #: picard/ui/ui_options_tags_compatibility.py:193
 #: picard/ui/ui_options_tags_compatibility_wave.py:60
 msgid "RIFF INFO Text Encoding"
-msgstr ""
+msgstr "RIFF INFO teksti kodeering"
 
 #: picard/ui/ui_options_tags_compatibility.py:194
 #: picard/ui/ui_options_tags_compatibility_wave.py:61
 msgid "Windows-1252"
-msgstr ""
+msgstr "Windows-1252"
 
 #: picard/ui/ui_options_tags_compatibility_aac.py:46
 msgid ""
@@ -4906,7 +4899,7 @@ msgstr "Regulaaravaldise esimest rühma (kui see leidub) kasutatakse tüübina, 
 
 #: picard/ui/ui_scripting_documentation_dialog.py:51
 msgid "Open documentation in browser"
-msgstr ""
+msgstr "Ava dokumentatsioon brauseris"
 
 #: picard/ui/ui_tagsfromfilenames.py:53
 msgid "Convert File Names to Tags"
@@ -5255,7 +5248,7 @@ msgstr "Lähtesta kõik"
 msgid "File Naming"
 msgstr "Failinimed"
 
-#: picard/ui/options/renaming.py:196 picard/ui/options/scripting.py:101
+#: picard/ui/options/renaming.py:196 picard/ui/options/scripting.py:100
 msgid ""
 "<a href=\"%(picard-doc-scripting-url)s\">Open Scripting Documentation in "
 "your browser</a>"
@@ -5277,7 +5270,7 @@ msgstr "Skriptimine"
 msgid "Script Error"
 msgstr "Skripti viga"
 
-#: picard/ui/options/tags.py:50
+#: picard/ui/options/tags.py:42
 msgid "Tags"
 msgstr "Sildid"
 

@@ -13,14 +13,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-06-26 01:20+0200\n"
-"PO-Revision-Date: 2020-06-26 12:53+0000\n"
+"POT-Creation-Date: 2020-07-14 19:05+0200\n"
+"PO-Revision-Date: 2020-07-19 20:22+0000\n"
 "Last-Translator: Luca Salini <salo.rock@gmail.com>\n"
 "Language-Team: Italian (http://www.transifex.com/musicbrainz/musicbrainz/language/it/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.8.0\n"
+"Generated-By: Babel 2.6.0\n"
 "Language: it\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
@@ -150,22 +150,22 @@ msgstr "Unisci"
 msgid "Remove"
 msgstr "Elimina"
 
-#: picard/file.py:728
+#: picard/file.py:737
 #, python-format
 msgid "No matching tracks above the threshold for file '%(filename)s'"
 msgstr "Nessuna traccia corrispondente sopra la soglia al file '%(filename)s'"
 
-#: picard/file.py:730
+#: picard/file.py:739
 #, python-format
 msgid "File '%(filename)s' identified!"
 msgstr "Il file '%(filename)s' è stato identificato!"
 
-#: picard/file.py:742
+#: picard/file.py:751
 #, python-format
 msgid "No matching tracks for file '%(filename)s'"
 msgstr "Nessuna traccia corrispondente al file '%(filename)s'"
 
-#: picard/file.py:774
+#: picard/file.py:783
 #, python-format
 msgid "Looking up the metadata for file %(filename)s ..."
 msgstr "Ricerca dei metadati del file %(filename)s in corso..."
@@ -618,12 +618,13 @@ msgid ""
 "`$firstalphachar(text,nonalpha=\"#\")`\n"
 "\n"
 "Returns the first character of `text`.\n"
-"If `text` is not an alphabetic character `nonalpha` (or `#` if not passed) is returned instead.\n"
+"If `text` does not begin with an alphabetic character, then `nonalpha` is returned instead. If `nonalpha` is not\n"
+"specified, the default value \"#\" will be used.\n"
 "\n"
 "_Since Picard 0.12_"
-msgstr "`$firstalphachar(text,nonalpha=\"#\")`\n\nRestituisce il primo carattere di `text`.\nSe `text` non è un carattere alfabetico, restituisce `nonalpha` (o `#` se non passato).\n\n_Da Picard 0.12_"
+msgstr "`$firstalphachar(text,nonalpha=\"#\")`\n\nRestituisce il primo carattere di `text`.\nSe `text` non inizia con un carattere alfabetico, restituisce `nonalpha`. Se `nonalpha` non è specificato,\nsarà utilizzato il valore di default \"#\".\n\n_Da Picard 0.12_"
 
-#: picard/script.py:1200
+#: picard/script.py:1201
 msgid ""
 "`$initials(text)`\n"
 "\n"
@@ -632,7 +633,7 @@ msgid ""
 "_Since Picard 0.12_"
 msgstr "`$initials(text)`\n\nRestituisce il primo carattere di ogni parola in `text`, se è un carattere alfabetico.\n\n_Da Picard 0.12_"
 
-#: picard/script.py:1211
+#: picard/script.py:1212
 msgid ""
 "`$firstwords(text,length)`\n"
 "\n"
@@ -641,7 +642,7 @@ msgid ""
 "_Since Picard 0.12_"
 msgstr "`$firstwords(text,length)`\n\nSimile a `$truncate()`, ma restituirà solo le parole complete da `text` che stanno nella lunghezza di caratteri `length`.\n\n_Da Picard 0.12_"
 
-#: picard/script.py:1234
+#: picard/script.py:1235
 msgid ""
 "`$startswith(text,prefix)`\n"
 "\n"
@@ -650,7 +651,7 @@ msgid ""
 "_Since Picard 1.4_"
 msgstr "`$startswith(text,prefix)`\n\nRestituisce `true` se `text` inizia con `prefix`.\n\n_Da Picard 1.4_"
 
-#: picard/script.py:1247
+#: picard/script.py:1248
 msgid ""
 "`$endswith(text,suffix)`\n"
 "\n"
@@ -659,7 +660,7 @@ msgid ""
 "_Since Picard 1.4_"
 msgstr "`$endswith(text,suffix)`\n\nRestituisce `true` se `text` termina con `suffix`.\n\n_Da Picard 1.4_"
 
-#: picard/script.py:1260
+#: picard/script.py:1261
 msgid ""
 "`$truncate(text,length)`\n"
 "\n"
@@ -668,7 +669,7 @@ msgid ""
 "_Since Picard 0.12_"
 msgstr "`$truncate(text,length)`\n\nTronca `text` alla lunghezza `length`.\n\n_Da Picard 0.12_"
 
-#: picard/script.py:1275
+#: picard/script.py:1276
 msgid ""
 "`$swapprefix(text,*prefixes=\"a\",\"the\")`\n"
 "\n"
@@ -682,7 +683,7 @@ msgid ""
 "_Since Picard 1.3, previously as a plugin since Picard 0.13_"
 msgstr "`$swapprefix(text,*prefixes=\"a\",\"the\")`\n\nSposta i prefissi specificati dall'inizio alla fine del testo.\nSe nessun prefisso è specificato, 'A' e 'The' sono usati come valori predefiniti.\n\nEsempio:\n\n    $swapprefix(%albumartist%,A,An,The,Le)\n\n_Da Picard 1.3, in precedenza come plugin da Picard 0.13_"
 
-#: picard/script.py:1296
+#: picard/script.py:1297
 msgid ""
 "`$delprefix(text,*prefixes=\"a\",\"the\")`\n"
 "\n"
@@ -692,7 +693,7 @@ msgid ""
 "_Since Picard 1.3_"
 msgstr "`$delprefix(text,*prefixes=\"a\",\"the\")`\n\nElimina i prefissi specificati dall'inizio del testo (`text`).\nSe nessun prefisso è specificato, 'A' e 'The' sono usati come valori predefiniti.\n\n_Da Picard 1.3_"
 
-#: picard/script.py:1329
+#: picard/script.py:1330
 msgid ""
 "`$eq_any(x,a1,a2...)`\n"
 "\n"
@@ -701,7 +702,7 @@ msgid ""
 "Functionally equivalent to the eq2 plugin."
 msgstr "`$eq_any(x,a1,a2...)`\n\nRestituisce `true` se `x` è uguale a `a1` o `a2` o...\nEquivalente funzionale di `$or($eq(x,a1),$eq(x,a2) ...)`.\nEquivalente funzionale del plugin eq2."
 
-#: picard/script.py:1341
+#: picard/script.py:1342
 msgid ""
 "`$ne_all(x,a1,a2...)`\n"
 "\n"
@@ -710,7 +711,7 @@ msgid ""
 "Functionally equivalent to the ne2 plugin."
 msgstr "`$ne_all(x,a1,a2...)`\n\nRestituisce `true` se `x` non è uguale a `a1` ed a `a2` ed a...\nEquivalente funzionale di `$and($ne(x,a1),$ne(x,a2) ...)`.\nEquivalente funzionale del plugin ne2."
 
-#: picard/script.py:1353
+#: picard/script.py:1354
 msgid ""
 "`$eq_all(x,a1,a2...)`\n"
 "\n"
@@ -722,7 +723,7 @@ msgid ""
 "    $if($eq_all(%albumartist%,%artist%,Justin Bieber),$set(engineer,Meat Loaf))\n"
 msgstr "`$eq_all(x,a1,a2...)`\n\nRestituisce `true` se `x` è uguale a `a1` ed a `a2` ed a...\nEquivalente funzionale di `$and($eq(x,a1),$eq(x,a2) ...)`.\n\nEsempio:\n\n    $if($eq_all(%albumartist%,%artist%,Justin Bieber),$set(engineer,Meat Loaf))\n"
 
-#: picard/script.py:1371
+#: picard/script.py:1372
 #, python-format
 msgid ""
 "`$ne_any(x,a1,a2...)`\n"
@@ -735,7 +736,7 @@ msgid ""
 "    $if($ne_any(%albumartist%,%trackartist%,%composer%),$set(lyricist,%composer%))\n"
 msgstr "`$ne_any(x,a1,a2...)`\n\nRestituisce `true` se `x` non è uguale a `a1` o a `a2` o a...\nEquivalente funzionale di `$or($ne(x,a1),$ne(x,a2) ...)`.\n\nEsempio:\n\n    $if($ne_any(%albumartist%,%trackartist%,%composer%),$set(lyricist,%composer%))\n"
 
-#: picard/script.py:1386
+#: picard/script.py:1387
 msgid ""
 "`$title(text)`\n"
 "\n"
@@ -747,7 +748,7 @@ msgid ""
 "_Since Picard 2.1_"
 msgstr "`$title(text)`\n\nRestituisce `text` con iniziali maiuscole (primo carattere di ogni parola maiuscolo).\n\nEsempio:\n\n    $set(album,$title(%album%))\n_Da Picard 2.1_"
 
-#: picard/script.py:1426
+#: picard/script.py:1427
 msgid ""
 "`$is_audio()`\n"
 "\n"
@@ -756,7 +757,7 @@ msgid ""
 "_Since Picard 2.2_"
 msgstr "`$is_audio()`\n\nRestituisce `true` se il file processato è un file audio.\n\n_Da Picard 2.2_"
 
-#: picard/script.py:1440
+#: picard/script.py:1441
 msgid ""
 "`$is_video()`\n"
 "\n"
@@ -765,7 +766,7 @@ msgid ""
 "_Since Picard 2.2_"
 msgstr "`$is_video()`\n\nRestituisce `true` se il file processato è un file video.\n\n_Da Picard 2.2_"
 
-#: picard/script.py:1454
+#: picard/script.py:1455
 msgid ""
 "`$find(haystack,needle)`\n"
 "\n"
@@ -777,14 +778,14 @@ msgid ""
 "Note that prior to Picard 2.3.2 `$find` returned \"-1\" if `needle` was not found."
 msgstr "`$find(haystack,needle)`\n\nTrova la posizione di una stringa all'interno di un'altra stringa.\n    Restituisce l'indice della prima occorrenza di `needle` in `haystack`, o \"\" se non trova `needle`.\n\n_Da Picard 2.3_\n\nNota che prima di Picard 2.3.2 `$find` restituiva \"-1\" se non trovava `needle`."
 
-#: picard/script.py:1471
+#: picard/script.py:1472
 msgid ""
 "`$reverse(text)`\n"
 "\n"
 "Returns `text` in reverse order."
 msgstr "`$reverse(text)`\n\nRestituisce `text` in ordine inverso."
 
-#: picard/script.py:1480
+#: picard/script.py:1481
 msgid ""
 "`$substr(text,start,end)`\n"
 "\n"
@@ -795,7 +796,7 @@ msgid ""
 "    the start and end of the string respectively."
 msgstr "`$substr(text,start,end)`\n\nRestituisce la sottostringa che inizia con il carattere all'indice `start`,\n    fino al carattere all'indice `end` escluso.\n    Gli indici sono a base zero. I numeri negativi saranno contati dalla fine della stringa.\n    Se gli indici `start` o `end` sono lasciati vuoti,\n    il loro valore predefinito sarà rispettivamente l'inizio o la fine della stringa."
 
-#: picard/script.py:1501
+#: picard/script.py:1502
 msgid ""
 "`$getmulti(name,index,separator=\"; \")`\n"
 "\n"
@@ -805,7 +806,7 @@ msgid ""
 "    multi-valued tag."
 msgstr "`$getmulti(name,index,separator=\"; \")`\n\nPrende l'elemento all'indice `index` dal tag multi-valore `name`.\nUn valore letterale che rappresenta un multi-valore\npuò essere inserito al posto di `name` utilizzando il separatore `separator`\n (o \"; \" se non fornito) per forzare il valore in un tag multi-valore."
 
-#: picard/script.py:1520
+#: picard/script.py:1521
 msgid ""
 "`$foreach(name,code,separator=\"; \")`\n"
 "\n"
@@ -818,7 +819,7 @@ msgid ""
 "    proper multi-valued tag."
 msgstr "`$foreach(name,code,separator=\"; \")`\n\nItera su ogni elemento trovato nel tag multi-valore `name` eseguendo\n    `code`. Per ogni ciclo, il valore dell'elemento è memorizzato prima nel tag\n    `_loop_value` e il conteggio è memorizzato nel tag `_loop_count`.\n    Ciò permette di accedere al valore dell'elemento o del conteggio\n all'interno dello script `code`. Un valore letterale che rappresenta\nun multi-valore può essere inserito al posto di `name`, utilizzando\n    il separatore `separator` (o \"; \" se non fornito) per forzare il valore\n    in un tag multi-valore."
 
-#: picard/script.py:1542
+#: picard/script.py:1543
 msgid ""
 "`$while(condition,code)`\n"
 "\n"
@@ -829,7 +830,7 @@ msgid ""
 "    safeguard against accidentally creating an infinite loop."
 msgstr "`$while(condition,code)`\n\nCiclo 'while' standard. Esegue `code` ripetutamente fino a che `condition`\n    non è più valutata come `true`. Per ogni ciclo, il conteggio è memorizzato\n    nel tag `_loop_count`. Ciò permette di accedere al valore del conteggio\nall'interno dello script `code`. La funzione limita il numero massimo\n    di iterazioni a 1000 come misura di sicurezza\n    contro la creazione accidentale di loop infiniti."
 
-#: picard/script.py:1563
+#: picard/script.py:1564
 msgid ""
 "`$map(name,code,separator=\"; \")`\n"
 "\n"
@@ -840,14 +841,14 @@ msgid ""
 "    the element or count value to be accessed within the `code` script."
 msgstr "`$map(name,code,separator=\"; \")`\n\nItera su ogni elemento trovato nel tag multi-valore `name` e aggiorna\n    il valore dell'elemento al valore restituito da `code`, restituendo\n    il tag multi-valore aggiornato. Per ogni ciclo, il valore dell'elemento\n   è memorizzato prima nel tag `_loop_value` e il conteggio è memorizzato\n nel tag `_loop_count`. Ciò permette di accedere al valore dell'elemento\n    o del conteggio all'interno dello script `code`."
 
-#: picard/script.py:1583
+#: picard/script.py:1584
 msgid ""
 "`$join(name,text,separator=\"; \")`\n"
 "\n"
 "Joins all elements in `name`, placing `text` between each element, and returns the result as a string."
 msgstr "`$join(name,text,separator=\"; \")`\n\nUnisce tutti gli elementi in `name`, inserendo `text` tra ogni elemento, e restituisce il risultato come stringa."
 
-#: picard/script.py:1594
+#: picard/script.py:1595
 msgid ""
 "`$slice(name,start,end,separator=\"; \")`\n"
 "\n"
@@ -867,7 +868,7 @@ msgid ""
 "    $setmulti(supporting_artists,$slice(%artists%,1,))\n"
 msgstr "`$slice(name,start,end,separator=\"; \")`\n\nRestituisce una variabile multi-valore che contiene gli elementi compresi\n tra gli indici `start` e `end` dal tag multi-valore `name`. Un valore letterale\n che rappresenta un multi-valore può essere inserito al posto di `name`,\nutilizzando il separatore `separator` (o \"; \" se non fornito) per forzare il valore\n    in un tag multi-valore. Gli indici sono a base zero. I numeri negativi\n    saranno contati dalla fine dell'elenco. Se gli indici `start` o `end` sono\nlasciati vuoti, il loro valore predefinito sarà rispettivamente l'inizio o la fine\n    dell'elenco.\n\nL'esempio seguente creerà una variabile multi-valore\n    con tutti gli artisti in `%artists%` eccetto il primo, che può essere\nusata per creare un elenco di \"feat.\".\n\nEsempio:\n\n    $setmulti(supporting_artists,$slice(%artists%,1,))\n"
 
-#: picard/script.py:1626
+#: picard/script.py:1627
 #, python-format
 msgid ""
 "`$datetime(format=\"%Y-%m-%d %H:%M:%S\")`\n"
@@ -883,14 +884,14 @@ msgid ""
 "    `%3Y`); and hanging '%' at the end of the format string."
 msgstr "`$datetime(format=\"%Y-%m-%d %H:%M:%S\")`\n\nRestituisce la data e ora attuale nel formato `format` specificato, che è basato\n    sui [codici di formato](https://strftime.org/) standard `strftime` di Python.\n    Se nessun formato `format` è specificato, la data/ora sarà restituita\nnel formato `2020-02-05 14:26:32`.\nNota: codici di formattazione di piattaforme specifiche vanno evitati\n    per assicurare la portabilità degli script su piattaforme diverse.\n    Questi codici includono: rimozione di zero di riempimento\n(per es. `%-d` e `%-m` su Linux o macOS, e i loro equivalenti `%#d`\ne `%#m` su Windows); specificatori di lunghezza dell'elemento\n(per es. `%3Y`); e '%' sospesi alla fine della stringa del formato."
 
-#: picard/script.py:1655
+#: picard/script.py:1656
 msgid ""
 "`$sortmulti(name,separator=\"; \")`\n"
 "\n"
 "Returns a copy of the multi-value tag `name` with the elements sorted in ascending order."
 msgstr "`$sortmulti(name,separator=\"; \")`\n\nRestituisce una copia del tag multi-valore `name` con gli elementi ordinati in ordine ascendente."
 
-#: picard/script.py:1665
+#: picard/script.py:1666
 msgid ""
 "`$reversemulti(name,separator=\"; \")`\n"
 "\n"
@@ -899,31 +900,31 @@ msgid ""
 "    descending order."
 msgstr "`$reversemulti(name,separator=\"; \")`\n\nRestituisce una copia del tag multi-valore `name` con gli elementi in ordine inverso.\n    Può essere usato in congiunzione con la funzione `$sortmulti` per ordinare\n    in ordine discendente."
 
-#: picard/tagger.py:314 picard/ui/ui_options_general.py:135
+#: picard/tagger.py:307 picard/ui/ui_options_general.py:135
 msgid "MusicBrainz Account"
 msgstr "Account MusicBrainz"
 
-#: picard/tagger.py:315
+#: picard/tagger.py:308
 msgid "Authorization code:"
 msgstr "Codice di autorizzazione:"
 
-#: picard/tagger.py:565
+#: picard/tagger.py:561
 #, python-format
 msgid "Adding %(count)d file from '%(directory)s' ..."
 msgid_plural "Adding %(count)d files from '%(directory)s' ..."
 msgstr[0] "Aggiunta di %(count)d file da '%(directory)s' in corso..."
 msgstr[1] "Aggiunta di %(count)d file da '%(directory)s' in corso..."
 
-#: picard/tagger.py:759
+#: picard/tagger.py:755
 #, python-format
 msgid "Removing album %(id)s: %(artist)s - %(album)s"
 msgstr "Rimozione album %(id)s: %(artist)s - %(album)s in corso"
 
-#: picard/tagger.py:777
+#: picard/tagger.py:773
 msgid "CD Lookup Error"
 msgstr "Errore di ricerca del CD"
 
-#: picard/tagger.py:778
+#: picard/tagger.py:774
 #, python-format
 msgid ""
 "Error while reading CD:\n"
@@ -3061,10 +3062,6 @@ msgstr "Tag modificato"
 msgid "Tag removed"
 msgstr "Tag rimosso"
 
-#: picard/ui/colors.py:46
-msgid "Script Function"
-msgstr "Funzione script"
-
 #: picard/ui/coverartbox.py:277
 msgid "View release on MusicBrainz"
 msgstr "Visualizza pubblicazione su MusicBrainz"
@@ -3392,43 +3389,43 @@ msgstr "visualizzazione album"
 msgid "Contains albums and matched files"
 msgstr "Contiene gli album e i file riconosciuti"
 
-#: picard/ui/itemviews.py:980 picard/ui/options/renaming.py:209
+#: picard/ui/itemviews.py:982 picard/ui/options/renaming.py:209
 msgid "Error"
 msgstr "Errore"
 
-#: picard/ui/itemviews.py:984
+#: picard/ui/itemviews.py:986
 msgid "Album modified and complete"
 msgstr "Album modificato e completo"
 
-#: picard/ui/itemviews.py:987
+#: picard/ui/itemviews.py:989
 msgid "Album unchanged and complete"
 msgstr "Album non modificato e completo"
 
-#: picard/ui/itemviews.py:991
+#: picard/ui/itemviews.py:993
 msgid "Album modified"
 msgstr "Album modificato"
 
-#: picard/ui/itemviews.py:994
+#: picard/ui/itemviews.py:996
 msgid "Album unchanged"
 msgstr "Album non modificato"
 
-#: picard/ui/itemviews.py:1127
+#: picard/ui/itemviews.py:1134
 msgid "Track saved"
 msgstr "Traccia salvata"
 
-#: picard/ui/itemviews.py:1129 picard/ui/itemviews.py:1133
+#: picard/ui/itemviews.py:1136 picard/ui/itemviews.py:1140
 msgid "Pending"
 msgstr "In corso"
 
-#: picard/ui/itemviews.py:1139
+#: picard/ui/itemviews.py:1146
 msgid "Fingerprint has already been submitted"
 msgstr "L'impronta digitale è già stata inviata"
 
-#: picard/ui/itemviews.py:1141
+#: picard/ui/itemviews.py:1148
 msgid "Unsubmitted fingerprint"
 msgstr "Impronta digitale non inviata"
 
-#: picard/ui/itemviews.py:1143
+#: picard/ui/itemviews.py:1150
 msgid ""
 "No fingerprint was calculated for this file, use \"Scan\" or \"Generate "
 "AcoustID Fingerprints\" to calculate the fingerprint."
@@ -3912,11 +3909,11 @@ msgstr "%(filename)s (%(similarity)d%%) (errore: %(error)s)"
 msgid "%(filename)s (%(similarity)d%%)"
 msgstr "%(filename)s (%(similarity)d%%)"
 
-#: picard/ui/mainwindow.py:1212
+#: picard/ui/mainwindow.py:1213
 msgid "Authentication Required"
 msgstr "Autenticazione necessaria"
 
-#: picard/ui/mainwindow.py:1213
+#: picard/ui/mainwindow.py:1214
 msgid ""
 "Picard needs authorization to access your personal data on the MusicBrainz "
 "server. Would you like to log in now?"
@@ -4708,10 +4705,6 @@ msgid ""
 "Preserve these tags from being cleared or overwritten with MusicBrainz data:"
 msgstr "Preserva questi tag dalla cancellazione o dalla sovrascrittura con dati di MusicBrainz:"
 
-#: picard/ui/ui_options_tags.py:69
-msgid "Tags are separated by commas and are case-insensitive."
-msgstr "I tag sono separati da virgole e non rilevano la differenza tra maiuscolo e minuscolo."
-
 #: picard/ui/options/tags_compatibility_id3.py:39
 #: picard/ui/ui_options_tags_compatibility.py:170
 #: picard/ui/ui_options_tags_compatibility_id3.py:114
@@ -5255,7 +5248,7 @@ msgstr "Reimposta tutto"
 msgid "File Naming"
 msgstr "Rinominazione file"
 
-#: picard/ui/options/renaming.py:196 picard/ui/options/scripting.py:101
+#: picard/ui/options/renaming.py:196 picard/ui/options/scripting.py:100
 msgid ""
 "<a href=\"%(picard-doc-scripting-url)s\">Open Scripting Documentation in "
 "your browser</a>"
@@ -5277,7 +5270,7 @@ msgstr "Scripting"
 msgid "Script Error"
 msgstr "Errore causato dallo script"
 
-#: picard/ui/options/tags.py:50
+#: picard/ui/options/tags.py:42
 msgid "Tags"
 msgstr "Tag"
 
