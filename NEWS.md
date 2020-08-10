@@ -1,3 +1,31 @@
+# Version 2.4 - 2020-08-10
+
+## Bugfixes
+- [PICARD-1763](https://tickets.metabrainz.org/browse/PICARD-1763) - App does not start on macOS 10.13 High Sierra
+- [PICARD-1873](https://tickets.metabrainz.org/browse/PICARD-1873) - Scripting documentation uses an ugly font on Windows
+- [PICARD-1881](https://tickets.metabrainz.org/browse/PICARD-1881) - Function names in script documentation not readable with dark theme
+- [PICARD-1884](https://tickets.metabrainz.org/browse/PICARD-1884) - No tracknumber tag if track number is 0
+- [PICARD-1889](https://tickets.metabrainz.org/browse/PICARD-1889) - "Use track relationships" is including release relationships
+- [PICARD-1890](https://tickets.metabrainz.org/browse/PICARD-1890) - User is warned about color changes when exiting options, even if no change was made
+- [PICARD-1891](https://tickets.metabrainz.org/browse/PICARD-1891) - Crash parsing bad date in metadata
+- [PICARD-1892](https://tickets.metabrainz.org/browse/PICARD-1892) - Deleting "Total Tracks" or "Total Discs" from Vorbis tags causes save to fail
+- [PICARD-1894](https://tickets.metabrainz.org/browse/PICARD-1894) - Detecting track number from filename wrongly detects leading or trailing numbers
+- [PICARD-1896](https://tickets.metabrainz.org/browse/PICARD-1896) - Instrument arranger is not being mapped for tagging using the correct key
+- [PICARD-1902](https://tickets.metabrainz.org/browse/PICARD-1902) - Crash when typing `$noop(\)` in the script editor
+
+## New Features
+- [PICARD-1128](https://tickets.metabrainz.org/browse/PICARD-1128) - Support Microsoft WAVE format (RIFF/WAVE) tagging with ID3
+- [PICARD-1839](https://tickets.metabrainz.org/browse/PICARD-1839) - Support DSDIFF (DFF) files
+
+## Improvements
+- [PICARD-1812](https://tickets.metabrainz.org/browse/PICARD-1812) - Support RIFF INFO chunks for WAVE files
+- [PICARD-1871](https://tickets.metabrainz.org/browse/PICARD-1871) - Use tag list editor for preserved tags
+- [PICARD-1875](https://tickets.metabrainz.org/browse/PICARD-1875) - Improve function documentation for `$firstalphachar`
+- [PICARD-1878](https://tickets.metabrainz.org/browse/PICARD-1878) - Inefficient reading of tracks leads to slow saving on some file systems and network shares
+- [PICARD-1880](https://tickets.metabrainz.org/browse/PICARD-1880) - Use Consolas font on Windows for monospace font (script editor, log view etc.)
+- [PICARD-1887](https://tickets.metabrainz.org/browse/PICARD-1887) - On macOS use dark syntax theme if dark mode is enabled (currently only when running from source)
+
+
 # Version 2.4.0b2 - 2020-07-05
 
 ## Bugfixes
