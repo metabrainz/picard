@@ -1,3 +1,9 @@
+# Version 2.4.1 - 2020-08-11
+
+## Bugfixes
+- [PICARD-1904](https://tickets.metabrainz.org/browse/PICARD-1904) - Picard 2.4 does not start on Windows 7 and Windows 8
+
+
 # Version 2.4 - 2020-08-10
 
 ## Bugfixes
