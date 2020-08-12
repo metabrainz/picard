@@ -20,6 +20,7 @@
 # Copyright (C) 2017 Antonio Larrosa
 # Copyright (C) 2018 Vishal Choudhary
 # Copyright (C) 2019 Joel Lintunen
+# Copyright (C) 2020 Gabriel Ferreira
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -374,6 +375,7 @@ class Album(DataObject, Item):
                 for file in list(track.linked_files):
                     file.move(self.unmatched_files)
             self.metadata = self._new_metadata
+            self.orig_metadata.copy(self.metadata)
             self.tracks = self._new_tracks
             del self._new_metadata
             del self._new_tracks

@@ -13,6 +13,7 @@
 # Copyright (C) 2015, 2018-2020 Philipp Wolfer
 # Copyright (C) 2016-2018 Sambhav Kothari
 # Copyright (C) 2018 Vishal Choudhary
+# Copyright (C) 2020 Gabriel Ferreira
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -352,11 +353,24 @@ class MetadataBox(QtWidgets.QTableWidget):
                         removals.append(partial(self.remove_tag, tag))
                     status = self.tag_diff.status[tag] & TagStatus.CHANGED
                     if status == TagStatus.CHANGED or status == TagStatus.REMOVED:
+                        file_tracks = []
+                        track_albums = set()
                         for file in self.files:
                             objects = [file]
                             if file.parent in self.tracks and len(self.files & set(file.parent.linked_files)) == 1:
                                 objects.append(file.parent)
+                                file_tracks.append(file.parent)
+                                track_albums.add(file.parent.album)
                             orig_values = list(file.orig_metadata.getall(tag)) or [""]
+                            useorigs.append(partial(self.set_tag_values, tag, orig_values, objects))
+                        for track in set(self.tracks)-set(file_tracks):
+                            objects = [track]
+                            orig_values = list(track.orig_metadata.getall(tag)) or [""]
+                            useorigs.append(partial(self.set_tag_values, tag, orig_values, objects))
+                            track_albums.add(track.album)
+                        for album in track_albums:
+                            objects = [album]
+                            orig_values = list(album.orig_metadata.getall(tag)) or [""]
                             useorigs.append(partial(self.set_tag_values, tag, orig_values, objects))
                 if removals:
                     remove_tag_action = QtWidgets.QAction(_("Remove"), self.parent)
@@ -527,7 +541,10 @@ class MetadataBox(QtWidgets.QTableWidget):
             if track.num_linked_files == 0:
                 for name, values in track.metadata.rawitems():
                     if not name.startswith("~"):
-                        tag_diff.add(name, values, values, True)
+                        if name in track.orig_metadata:
+                            tag_diff.add(name, [track.orig_metadata[name]], values, True)
+                        else:
+                            tag_diff.add(name, values, values, True)
 
                 length = str(track.metadata.length)
                 tag_diff.add("~length", length, length, False)
