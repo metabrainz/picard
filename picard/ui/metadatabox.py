@@ -294,6 +294,7 @@ class MetadataBox(QtWidgets.QTableWidget):
                     self.clipboard = list(self.tag_diff.new[tag])
             elif e.key() == QtCore.Qt.Key_V and column == 2 and tag != "~length":
                 self.set_tag_values(tag, list(self.clipboard))
+                self.update()
         return super().event(e)
 
     def closeEditor(self, editor, hint):
@@ -374,13 +375,13 @@ class MetadataBox(QtWidgets.QTableWidget):
                             useorigs.append(partial(self.set_tag_values, tag, orig_values, objects))
                 if removals:
                     remove_tag_action = QtWidgets.QAction(_("Remove"), self.parent)
-                    remove_tag_action.triggered.connect(lambda: [f() for f in removals])
+                    remove_tag_action.triggered.connect(partial(self._apply_update_funcs, removals))
                     remove_tag_action.setShortcut(self.remove_tag_shortcut.key())
                     menu.addAction(remove_tag_action)
                 if useorigs:
                     name = ngettext("Use Original Value", "Use Original Values", len(useorigs))
                     use_orig_value_action = QtWidgets.QAction(name, self.parent)
-                    use_orig_value_action.triggered.connect(lambda: [f() for f in useorigs])
+                    use_orig_value_action.triggered.connect(partial(self._apply_update_funcs, useorigs))
                     menu.addAction(use_orig_value_action)
                     menu.addSeparator()
             if len(tags) == 1 or removals or useorigs:
@@ -390,6 +391,11 @@ class MetadataBox(QtWidgets.QTableWidget):
         menu.addAction(self.changes_first_action)
         menu.exec_(event.globalPos())
         event.accept()
+
+    def _apply_update_funcs(self, funcs):
+        for f in funcs:
+            f()
+        self.update(drop_album_caches=True)
 
     def edit_tag(self, tag):
         EditTagDialog(self.parent, tag).exec_()
@@ -426,6 +432,7 @@ class MetadataBox(QtWidgets.QTableWidget):
         for tag in self.selected_tags(discard=('~length',)):
             if self.tag_is_removable(tag):
                 self.remove_tag(tag)
+        self.update(drop_album_caches=True)
 
     def tag_is_removable(self, tag):
         return self.tag_diff.status[tag] & TagStatus.NOTREMOVABLE == 0
