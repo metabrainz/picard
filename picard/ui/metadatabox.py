@@ -395,7 +395,7 @@ class MetadataBox(QtWidgets.QTableWidget):
     def _apply_update_funcs(self, funcs):
         for f in funcs:
             f()
-        self.update(drop_album_caches=True)
+        self.parent.update_selection(new_selection=False, drop_album_caches=True)
 
     def edit_tag(self, tag):
         EditTagDialog(self.parent, tag).exec_()
@@ -432,7 +432,7 @@ class MetadataBox(QtWidgets.QTableWidget):
         for tag in self.selected_tags(discard=('~length',)):
             if self.tag_is_removable(tag):
                 self.remove_tag(tag)
-        self.update(drop_album_caches=True)
+        self.parent.update_selection(new_selection=False, drop_album_caches=True)
 
     def tag_is_removable(self, tag):
         return self.tag_diff.status[tag] & TagStatus.NOTREMOVABLE == 0

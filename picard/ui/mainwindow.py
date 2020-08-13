@@ -1112,7 +1112,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.tags_from_filenames_action.setEnabled(bool(files))
         self.track_search_action.setEnabled(have_objects)
 
-    def update_selection(self, objects=None, new_selection=True):
+    def update_selection(self, objects=None, new_selection=True, drop_album_caches=False):
         if self.ignore_selection_changes:
             return
 
@@ -1178,7 +1178,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
         if new_selection:
             self.metadata_box.selection_dirty = True
-        self.metadata_box.update()
+        self.metadata_box.update(drop_album_caches=drop_album_caches)
         self.cover_art_box.set_metadata(metadata, orig_metadata, obj)
         self.selection_updated.emit(objects)
 
