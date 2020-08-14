@@ -147,11 +147,15 @@ elif IS_MACOS:
         def is_dark_theme(self):
             if not AppKit:
                 return False
+
             appearance = AppKit.NSAppearance.currentAppearance()
-            basic_appearance = appearance.bestMatchFromAppearancesWithNames_([
-                AppKit.NSAppearanceNameAqua,
-                AppKit.NSAppearanceNameDarkAqua
-            ])
+            try:
+                basic_appearance = appearance.bestMatchFromAppearancesWithNames_([
+                    AppKit.NSAppearanceNameAqua,
+                    AppKit.NSAppearanceNameDarkAqua
+                ])
+            except AttributeError:
+                basic_appearance = None
             return basic_appearance == AppKit.NSAppearanceNameDarkAqua
 
     theme = MacTheme()
