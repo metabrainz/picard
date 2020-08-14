@@ -7,7 +7,7 @@
 # Copyright (C) 2008 Gary van der Merwe
 # Copyright (C) 2008 Hendrik van Antwerpen
 # Copyright (C) 2008 ojnkpjg
-# Copyright (C) 2008-2011, 2014, 2018-2019 Philipp Wolfer
+# Copyright (C) 2008-2011, 2014, 2018-2020 Philipp Wolfer
 # Copyright (C) 2009 Nikolai Prokoschenko
 # Copyright (C) 2011-2012 Chad Wilson
 # Copyright (C) 2011-2013, 2019 Michael Wiencek
@@ -396,6 +396,9 @@ class Album(DataObject, Item):
             for func in self._after_load_callbacks:
                 func()
             self._after_load_callbacks = []
+            if self.item.isSelected():
+                self.tagger.window.metadata_box.selection_dirty = True
+                self.tagger.window.metadata_box.update()
 
     def _finalize_loading_track(self, track_node, metadata, artists, va, absolutetracknumber, discpregap):
         # As noted in `_parse_release` above, the release artist nodes
