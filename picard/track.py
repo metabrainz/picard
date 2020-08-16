@@ -187,8 +187,7 @@ class Track(DataObject, Item):
         run_file_post_removal_from_track_processors(self, file)
         self.update()
         if self.item.isSelected():
-            self.tagger.window.metadata_box.selection_dirty = True
-            self.tagger.window.metadata_box.update()
+            self.tagger.window.refresh_metadatabox()
 
     def update(self):
         if self.item:

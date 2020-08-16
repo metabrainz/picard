@@ -1182,6 +1182,10 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.cover_art_box.set_metadata(metadata, orig_metadata, obj)
         self.selection_updated.emit(objects)
 
+    def refresh_metadatabox(self):
+        self.tagger.window.metadata_box.selection_dirty = True
+        self.tagger.window.metadata_box.update()
+
     def show_cover_art(self):
         """Show/hide the cover art box."""
         if self.show_cover_art_action.isChecked():
