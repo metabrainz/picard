@@ -397,8 +397,7 @@ class Album(DataObject, Item):
                 func()
             self._after_load_callbacks = []
             if self.item.isSelected():
-                self.tagger.window.metadata_box.selection_dirty = True
-                self.tagger.window.metadata_box.update()
+                self.tagger.window.refresh_metadatabox()
 
     def _finalize_loading_track(self, track_node, metadata, artists, va, absolutetracknumber, discpregap):
         # As noted in `_parse_release` above, the release artist nodes
