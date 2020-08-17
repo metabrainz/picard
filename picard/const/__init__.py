@@ -71,18 +71,19 @@ CAA_PORT = 443
 
 # Prepare documentation URLs
 if PICARD_VERSION.identifier == 'final':
-    DOCS_VERSION = "v{}".format(PICARD_VERSION.to_string(short=True))
+    DOCS_VERSION = "v{}/".format(PICARD_VERSION.to_string(short=True))
 else:
     DOCS_VERSION = ""  # points to latest version
-DOCS_BASE_URL = "https://picard-docs.musicbrainz.org/" + DOCS_VERSION + '/en'
+DOCS_LANGUAGE = 'en'
+DOCS_BASE_URL = "https://picard-docs.musicbrainz.org/" + DOCS_VERSION + DOCS_LANGUAGE
 
 # URLs
 PICARD_URLS = {
     'home':                "https://picard.musicbrainz.org/",
     'documentation':       DOCS_BASE_URL + '/',
-    'troubleshooting':     DOCS_BASE_URL + '/en/troubleshooting/troubleshooting.html',
-    'doc_options':         DOCS_BASE_URL + '/en/config/configuration.html',
-    'doc_scripting':       DOCS_BASE_URL + '/en/scripting.html',
+    'troubleshooting':     DOCS_BASE_URL + '/troubleshooting/troubleshooting.html',
+    'doc_options':         DOCS_BASE_URL + '/config/configuration.html',
+    'doc_scripting':       DOCS_BASE_URL + '/scripting.html',
     'doc_cover_art_types': "https://musicbrainz.org/doc/Cover_Art/Types",
     'plugins':             "https://picard.musicbrainz.org/plugins/",
     'forum':               "https://community.metabrainz.org/c/picard",
