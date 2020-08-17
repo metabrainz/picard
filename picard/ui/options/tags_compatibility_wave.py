@@ -39,6 +39,7 @@ class TagsCompatibilityWaveOptionsPage(OptionsPage):
     PARENT = "tags"
     SORT_ORDER = 60
     ACTIVE = True
+    HELP_URL = '/config/options_tags_compatibility_wave.html'
 
     options = [
         config.BoolOption("setting", "write_wave_riff_info", True),

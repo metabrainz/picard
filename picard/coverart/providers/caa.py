@@ -430,6 +430,8 @@ class ProviderOptionsCaa(ProviderOptions):
         Options for Cover Art Archive cover art provider
     """
 
+    HELP_URL = '/config/options_cover_art_archive.html'
+
     options = [
         config.BoolOption("setting", "caa_save_single_front_image", False),
         config.BoolOption("setting", "caa_approved_only", False),

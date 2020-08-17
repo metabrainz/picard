@@ -62,6 +62,7 @@ class InterfaceOptionsPage(OptionsPage):
     PARENT = None
     SORT_ORDER = 80
     ACTIVE = True
+    HELP_URL = '/config/options_interface.html'
     SEPARATOR = '—' * 5
     TOOLBAR_BUTTONS = {
         'add_directory_action': {

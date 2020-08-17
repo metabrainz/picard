@@ -52,6 +52,7 @@ class FingerprintingOptionsPage(OptionsPage):
     PARENT = None
     SORT_ORDER = 45
     ACTIVE = True
+    HELP_URL = '/config/options_fingerprinting.html'
 
     options = [
         config.BoolOption("setting", "ignore_existing_acoustid_fingerprints", False),

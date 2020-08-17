@@ -43,6 +43,7 @@ class TagsOptionsPage(OptionsPage):
     PARENT = None
     SORT_ORDER = 30
     ACTIVE = True
+    HELP_URL = '/config/options_tags.html'
 
     options = [
         config.BoolOption("setting", "dont_write_tags", False),

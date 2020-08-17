@@ -44,6 +44,7 @@ class CoverOptionsPage(OptionsPage):
     PARENT = None
     SORT_ORDER = 35
     ACTIVE = True
+    HELP_URL = '/config/options_cover.html'
 
     options = [
         config.BoolOption("setting", "save_images_to_tags", True),

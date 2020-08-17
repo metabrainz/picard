@@ -155,6 +155,7 @@ class ReleasesOptionsPage(OptionsPage):
     PARENT = "metadata"
     SORT_ORDER = 10
     ACTIVE = True
+    HELP_URL = '/config/options_releases.html'
 
     options = [
         config.ListOption("setting", "release_type_scores", _release_type_scores),

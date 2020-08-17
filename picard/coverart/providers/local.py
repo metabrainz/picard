@@ -41,6 +41,7 @@ class ProviderOptionsLocal(ProviderOptions):
         Options for Local Files cover art provider
     """
 
+    HELP_URL = '/config/options_local_files.html'
     _DEFAULT_LOCAL_COVER_ART_REGEX = r'^(?:cover|folder|albumart)(.*)\.(?:jpe?g|png|gif|tiff?)$'
 
     options = [

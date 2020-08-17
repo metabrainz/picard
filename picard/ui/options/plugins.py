@@ -217,6 +217,7 @@ class PluginsOptionsPage(OptionsPage):
     PARENT = None
     SORT_ORDER = 70
     ACTIVE = True
+    HELP_URL = '/config/options_plugins.html'
 
     options = [
         config.ListOption("setting", "enabled_plugins", []),

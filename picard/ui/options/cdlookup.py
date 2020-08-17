@@ -50,6 +50,7 @@ class CDLookupOptionsPage(OptionsPage):
     PARENT = None
     SORT_ORDER = 50
     ACTIVE = True
+    HELP_URL = '/config/options_cdlookup.html'
 
     options = [
         config.TextOption("setting", "cd_lookup_device", ",".join(DEFAULT_DRIVES)),

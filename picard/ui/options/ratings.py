@@ -37,6 +37,7 @@ class RatingsOptionsPage(OptionsPage):
     PARENT = "metadata"
     SORT_ORDER = 20
     ACTIVE = True
+    HELP_URL = '/config/options_ratings.html'
 
     options = [
         config.BoolOption("setting", "enable_ratings", False),

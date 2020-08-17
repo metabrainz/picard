@@ -38,6 +38,7 @@ class TagsCompatibilityAC3OptionsPage(OptionsPage):
     PARENT = "tags"
     SORT_ORDER = 50
     ACTIVE = True
+    HELP_URL = '/config/options_tags_compatibility_ac3.html'
 
     options = [
         config.BoolOption("setting", "ac3_save_ape", True),

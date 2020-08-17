@@ -38,7 +38,7 @@ from picard import (
     config,
     log,
 )
-from picard.const import PICARD_URLS
+from picard.const import DOCS_BASE_URL
 from picard.util import (
     restore_method,
     webbrowser2,
@@ -183,7 +183,15 @@ class OptionsDialog(PicardDialog, SingletonDialog):
 
     def help(self):
         current_page = self.ui.pages_stack.currentWidget()
-        url = "{}#{}".format(PICARD_URLS['doc_options'], current_page.NAME)
+        url = current_page.HELP_URL
+        # If URL is empty, use the first non empty parent help URL.
+        while current_page.PARENT and not url:
+            current_page = self.item_to_page[self.page_to_item[current_page.PARENT]]
+            url = current_page.HELP_URL
+        if not url:
+            url = DOCS_BASE_URL
+        elif url.startswith('/'):
+            url = DOCS_BASE_URL + url
         webbrowser2.open(url)
 
     def accept(self):

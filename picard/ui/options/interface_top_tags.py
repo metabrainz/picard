@@ -37,6 +37,7 @@ class InterfaceTopTagsOptionsPage(OptionsPage):
     PARENT = "interface"
     SORT_ORDER = 30
     ACTIVE = True
+    HELP_URL = '/config/options_interface_top_tags.html'
 
     options = [
         config.ListOption("setting", "metadatabox_top_tags", [

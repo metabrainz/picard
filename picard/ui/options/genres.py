@@ -81,6 +81,7 @@ class GenresOptionsPage(OptionsPage):
     PARENT = "metadata"
     SORT_ORDER = 20
     ACTIVE = True
+    HELP_URL = '/config/options_genres.html'
 
     options = [
         config.BoolOption("setting", "use_genres", False),

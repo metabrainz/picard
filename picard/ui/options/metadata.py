@@ -59,6 +59,7 @@ class MetadataOptionsPage(OptionsPage):
     PARENT = None
     SORT_ORDER = 20
     ACTIVE = True
+    HELP_URL = '/config/options_metadata.html'
 
     options = [
         config.TextOption("setting", "va_name", "Various Artists"),

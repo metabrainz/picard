@@ -38,6 +38,7 @@ class TagsCompatibilityAACOptionsPage(OptionsPage):
     PARENT = "tags"
     SORT_ORDER = 40
     ACTIVE = True
+    HELP_URL = '/config/options_tags_compatibility_aac.html'
 
     options = [
         config.BoolOption("setting", "aac_save_ape", True),
