@@ -31,6 +31,7 @@
 
 from PyQt5 import (
     QtCore,
+    QtGui,
     QtWidgets,
 )
 
@@ -169,6 +170,12 @@ class OptionsDialog(PicardDialog, SingletonDialog):
                 log.exception('Failed loading options page %r', page)
                 self.disable_page(page.NAME)
         self.ui.pages_tree.setCurrentItem(self.default_item)
+
+    def keyPressEvent(self, event):
+        if event.matches(QtGui.QKeySequence.HelpContents):
+            self.help()
+        else:
+            super().keyPressEvent(event)
 
     def switch_page(self):
         items = self.ui.pages_tree.selectedItems()
