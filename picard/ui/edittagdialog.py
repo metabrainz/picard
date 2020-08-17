@@ -121,16 +121,36 @@ class EditTagDialog(PicardDialog):
         self.value_selection_changed()
         self.restore_geometry()
 
+    def keyPressEvent(self, event):
+        if event.modifiers() == QtCore.Qt.NoModifier and event.key() in (QtCore.Qt.Key_Enter, QtCore.Qt.Key_Return):
+            self.add_or_edit_value()
+            event.accept()
+        else:
+            super().keyPressEvent(event)
+
+    def tag_selected(self, index):
+        self.add_or_edit_value()
+
     def edit_value(self):
         item = self.value_list.currentItem()
-        if item:
+        if item and not self.value_list.isPersistentEditorOpen(item):
             self.value_list.editItem(item)
 
     def add_value(self):
         item = QtWidgets.QListWidgetItem()
         item.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsEditable)
         self.value_list.addItem(item)
+        self.value_list.setCurrentItem(item)
         self.value_list.editItem(item)
+
+    def add_or_edit_value(self):
+        last_item = self.value_list.item(self.value_list.count() - 1)
+        # Edit the last item, if it is empty, or add a new empty item
+        if last_item and not last_item.text():
+            self.value_list.setCurrentItem(last_item)
+            self.edit_value()
+        else:
+            self.add_value()
 
     def remove_value(self):
         value_list = self.value_list

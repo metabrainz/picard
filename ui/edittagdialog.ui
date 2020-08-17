@@ -144,7 +144,8 @@
           <string/>
          </property>
          <property name="icon">
-          <iconset theme=":/images/16x16/go-up.png"/>
+          <iconset theme=":/images/16x16/go-up.png">
+           <normaloff>.</normaloff>.</iconset>
          </property>
         </widget>
        </item>
@@ -160,7 +161,8 @@
           <string/>
          </property>
          <property name="icon">
-          <iconset theme=":/images/16x16/go-down.png"/>
+          <iconset theme=":/images/16x16/go-down.png">
+           <normaloff>.</normaloff>.</iconset>
          </property>
         </widget>
        </item>
@@ -375,6 +377,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>tag_names</sender>
+   <signal>activated(QString)</signal>
+   <receiver>EditTagDialog</receiver>
+   <slot>tag_selected()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>199</x>
+     <y>21</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>199</x>
+     <y>124</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>move_row_up()</slot>
@@ -385,5 +403,6 @@
   <slot>value_edited()</slot>
   <slot>value_selection_changed()</slot>
   <slot>tag_changed()</slot>
+  <slot>tag_selected()</slot>
  </slots>
 </ui>
