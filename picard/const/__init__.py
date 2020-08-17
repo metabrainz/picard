@@ -38,6 +38,7 @@ from PyQt5.QtCore import QStandardPaths
 from picard import (
     PICARD_APP_NAME,
     PICARD_ORG_NAME,
+    PICARD_VERSION,
 )
 from picard.const.attributes import MB_ATTRIBUTES
 
@@ -68,20 +69,27 @@ MUSICBRAINZ_OAUTH_CLIENT_SECRET = 'xIsvXbIuntaLuRRhzuazOA'
 CAA_HOST = "coverartarchive.org"
 CAA_PORT = 443
 
+# Prepare documentation URLs
+if PICARD_VERSION.identifier == 'final':
+    DOCS_VERSION = "v{}".format(PICARD_VERSION.to_string(short=True))
+else:
+    DOCS_VERSION = ""  # points to latest version
+DOCS_BASE_URL = "https://picard-docs.musicbrainz.org/" + DOCS_VERSION + '/en'
+
 # URLs
 PICARD_URLS = {
-    'documentation':    "https://picard.musicbrainz.org/docs/",
-    'troubleshooting':  "https://picard.musicbrainz.org/docs/troubleshooting/",
-    'home':             "https://picard.musicbrainz.org/",
-    'doc_options':      "https://picard.musicbrainz.org/docs/options/",
-    'doc_scripting':    "https://picard.musicbrainz.org/docs/scripting",
-    'plugins':          "https://picard.musicbrainz.org/plugins/",
-    'forum':            "https://community.metabrainz.org/c/picard",
-    'donate':           "https://metabrainz.org/donate",
-    'chromaprint':      "https://acoustid.org/chromaprint#download",
-    'acoustid_apikey':  "https://acoustid.org/api-key",
+    'home':                "https://picard.musicbrainz.org/",
+    'documentation':       DOCS_BASE_URL + '/',
+    'troubleshooting':     DOCS_BASE_URL + '/en/troubleshooting/troubleshooting.html',
+    'doc_options':         DOCS_BASE_URL + '/en/config/configuration.html',
+    'doc_scripting':       DOCS_BASE_URL + '/en/scripting.html',
     'doc_cover_art_types': "https://musicbrainz.org/doc/Cover_Art/Types",
-    'acoustid_track': "https://acoustid.org/track/",
+    'plugins':             "https://picard.musicbrainz.org/plugins/",
+    'forum':               "https://community.metabrainz.org/c/picard",
+    'donate':              "https://metabrainz.org/donate",
+    'chromaprint':         "https://acoustid.org/chromaprint#download",
+    'acoustid_apikey':     "https://acoustid.org/api-key",
+    'acoustid_track':      "https://acoustid.org/track/",
 }
 
 # Various Artists MBID

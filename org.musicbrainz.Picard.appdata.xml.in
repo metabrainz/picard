@@ -89,8 +89,8 @@
 
   <url type="homepage">https://picard.musicbrainz.org/</url>
   <url type="bugtracker">https://tickets.metabrainz.org/projects/PICARD/issues/</url>
-  <url type="faq">https://picard.musicbrainz.org/docs/faq/</url>
-  <url type="help">https://picard.musicbrainz.org/docs/</url>
+  <url type="faq">https://picard-docs.musicbrainz.org/en/faq/faq.html</url>
+  <url type="help">https://picard-docs.musicbrainz.org/</url>
   <url type="donation">https://metabrainz.org/donate</url>
   <url type="translate">https://www.transifex.com/musicbrainz/musicbrainz/picard/</url>
 
