@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2020-07-14 19:05+0200\n"
-"PO-Revision-Date: 2020-08-04 09:06+0000\n"
+"PO-Revision-Date: 2020-08-18 05:21+0000\n"
 "Last-Translator: Avi Markovitz <avi.markovitz@gmail.com>\n"
 "Language-Team: Hebrew (http://www.transifex.com/musicbrainz/musicbrainz/language/he/)\n"
 "MIME-Version: 1.0\n"
@@ -252,14 +252,14 @@ msgid ""
 "`$if(if,then,else)`\n"
 "\n"
 "If `if` is not empty, it returns `then`, otherwise it returns `else`."
-msgstr ""
+msgstr "`$if(if,then,else)`\n\nאם '`if' אינו ריק, החזרת 'then', אחרת החזרת 'else'."
 
 #: picard/script.py:597
 msgid ""
 "`$if2(a1,a2,a3,...)`\n"
 "\n"
 "Returns first non empty argument."
-msgstr ""
+msgstr "`$if2(a1,a2,a3,...)`\nהחזרת איבר לא-ריק ראשון."
 
 #: picard/script.py:610
 msgid ""
@@ -287,14 +287,14 @@ msgid ""
 "`$lower(text)`\n"
 "\n"
 "Returns `text` in lower case."
-msgstr "`$lower(text)`\n\nמחזיר 'מלל' באותיות קטנות"
+msgstr "`$lower(text)`\n\nהחזרת 'מלל' באותיות קטנות"
 
 #: picard/script.py:652
 msgid ""
 "`$upper(text)`\n"
 "\n"
 "Returns `text` in upper case."
-msgstr "`$upper(text)`\n\nמחזיר 'מלל' באותיות רישיות."
+msgstr "`$upper(text)`\n\nהחזרת 'מלל' באותיות רישיות."
 
 #: picard/script.py:661
 msgid ""
@@ -324,7 +324,7 @@ msgid ""
 "`$in(x,y)`\n"
 "\n"
 "Returns true, if `x` contains `y`."
-msgstr ""
+msgstr "`$in(x,y)`\n\nהחזרת 'true' אם 'x' מוכל ב 'y'."
 
 #: picard/script.py:705
 #, python-format
@@ -414,7 +414,7 @@ msgid ""
 "`$get(name)`\n"
 "\n"
 "Returns the variable `name` (equivalent to `%name%`)."
-msgstr ""
+msgstr "`$get(name)\n\nהחזרת משתנה 'שם' (זהה ל  `ame%`)."
 
 #: picard/script.py:851
 #, python-format
@@ -530,56 +530,56 @@ msgid ""
 "`$not(x)`\n"
 "\n"
 "Returns true if `x` is empty."
-msgstr ""
+msgstr "`$not(x)`\n\nהחזרת 'true' אם 'x' ריק."
 
 #: picard/script.py:1030
 msgid ""
 "`$eq(x,y)`\n"
 "\n"
 "Returns true if `x` equals `y`."
-msgstr ""
+msgstr "`$not(x)`\n\nהחזרת 'true' אם 'x' שווה ל 'y'."
 
 #: picard/script.py:1042
 msgid ""
 "`$ne(x,y)`\n"
 "\n"
 "Returns true if `x` does not equal `y`."
-msgstr ""
+msgstr "`$not(x)`\n\nהחזרת 'true' אם 'x' לא שווה ל 'y'."
 
 #: picard/script.py:1054
 msgid ""
 "`$lt(x,y)`\n"
 "\n"
 "Returns true if `x` is less than `y`."
-msgstr ""
+msgstr "`$not(x)`\n\nהחזרת 'true' אם 'x' קטן מ 'y'."
 
 #: picard/script.py:1068
 msgid ""
 "`$lte(x,y)`\n"
 "\n"
 "Returns true if `x` is less than or equal to `y`."
-msgstr ""
+msgstr "`$not(x)`\n\nהחזרת 'true' אם 'x' קטן או שווה ל 'y'."
 
 #: picard/script.py:1082
 msgid ""
 "`$gt(x,y)`\n"
 "\n"
 "Returns true if `x` is greater than `y`."
-msgstr ""
+msgstr "`$not(x)`\n\nהחזרת 'true' אם 'x' גדול מ 'y'."
 
 #: picard/script.py:1096
 msgid ""
 "`$gte(x,y)`\n"
 "\n"
 "Returns true if `x` is greater than or equal to `y`."
-msgstr ""
+msgstr "`$not(x)`\n\nהחזרת 'true' אם 'x' גדול או שווה ל 'y'."
 
 #: picard/script.py:1110
 msgid ""
 "`$len(text)`\n"
 "\n"
 "Returns the number of characters in `text`."
-msgstr ""
+msgstr "`$len(text)`\n\nהחזרת מספר התווים ב'מלל'."
 
 #: picard/script.py:1119
 msgid ""
@@ -792,7 +792,7 @@ msgid ""
 "`$reverse(text)`\n"
 "\n"
 "Returns `text` in reverse order."
-msgstr ""
+msgstr "``$reverse(text)`\n\nהחזרת 'מלל' בסדר הפוך."
 
 #: picard/script.py:1481
 msgid ""
@@ -1969,7 +1969,7 @@ msgstr "קורו"
 
 #: picard/const/locales.py:253
 msgid "Koro (Côte d’Ivoire)"
-msgstr ""
+msgstr "קורו (חוף השנהב)"
 
 #: picard/const/locales.py:254
 msgid "Kpelle"
@@ -1977,11 +1977,11 @@ msgstr "קפלה"
 
 #: picard/const/locales.py:255
 msgid "Kpelle (Guinea)"
-msgstr ""
+msgstr "קפלה (גינאה)"
 
 #: picard/const/locales.py:256
 msgid "Kpelle (Liberia)"
-msgstr ""
+msgstr "קפלה (ליבריה)"
 
 #: picard/const/locales.py:257
 msgid "Kurdish"
@@ -2049,11 +2049,11 @@ msgstr "לינגלה"
 
 #: picard/const/locales.py:273
 msgid "Lingala (Congo - Brazzaville)"
-msgstr ""
+msgstr "לינגלה (קונגו-ברזויל)"
 
 #: picard/const/locales.py:274
 msgid "Lingala (Congo - Kinshasa)"
-msgstr ""
+msgstr "לינגלה (קונגו-קינשסה)"
 
 #: picard/const/locales.py:275
 msgid "Lithuanian"
@@ -2061,7 +2061,7 @@ msgstr "ליטאית"
 
 #: picard/const/locales.py:276
 msgid "Lithuanian (Lithuania)"
-msgstr ""
+msgstr "ליטאית (ליטוניה)"
 
 #: picard/const/locales.py:277
 msgid "Low German"
@@ -2121,7 +2121,7 @@ msgstr "מרהטי (הודו)"
 
 #: picard/const/locales.py:292
 msgid "Moldavian"
-msgstr ""
+msgstr "מולדבית"
 
 #: picard/const/locales.py:293
 msgid "Mongolian"
@@ -2129,27 +2129,27 @@ msgstr "מונגולית"
 
 #: picard/const/locales.py:294
 msgid "Mongolian (China)"
-msgstr ""
+msgstr "מונגולית (סין)"
 
 #: picard/const/locales.py:295
 msgid "Mongolian (Cyrillic)"
-msgstr ""
+msgstr "מונגולית (קירילית)"
 
 #: picard/const/locales.py:296
 msgid "Mongolian (Cyrillic) (Mongolia)"
-msgstr ""
+msgstr "מונגולית (קירילית) (מונגוליה)"
 
 #: picard/const/locales.py:297
 msgid "Mongolian (Mongolia)"
-msgstr ""
+msgstr "מונגולית (מונגוליה)"
 
 #: picard/const/locales.py:298
 msgid "Mongolian (Mongolian)"
-msgstr ""
+msgstr "מונגולית (מונגולית)"
 
 #: picard/const/locales.py:299
 msgid "Mongolian (Mongolian) (China)"
-msgstr ""
+msgstr "מונגולית (מונגולית) (סין)"
 
 #: picard/const/locales.py:300
 msgid "Nepali"
@@ -2293,11 +2293,11 @@ msgstr ""
 
 #: picard/const/locales.py:340
 msgid "Romanian (Moldova)"
-msgstr ""
+msgstr "רומנית (מולדובה)"
 
 #: picard/const/locales.py:341
 msgid "Romanian (Romania)"
-msgstr ""
+msgstr "רומנית (רומניה)"
 
 #: picard/const/locales.py:343
 msgid "Russian (Russia)"
@@ -2321,79 +2321,79 @@ msgstr "סרבית"
 
 #: picard/const/locales.py:349
 msgid "Serbian (Bosnia and Herzegovina)"
-msgstr ""
+msgstr "סרבית (בוסניה והרצגובינה)"
 
 #: picard/const/locales.py:350 picard/const/locales.py:351
 msgid "Serbian (Cyrillic)"
-msgstr ""
+msgstr "סרבית (קירילית)"
 
 #: picard/const/locales.py:352
 msgid "Serbian (Cyrillic) (Bosnia and Herzegovina)"
-msgstr ""
+msgstr "סרבית (קירילית) (בוסניה והרצגובינה)"
 
 #: picard/const/locales.py:353
 msgid "Serbian (Cyrillic) (Montenegro)"
-msgstr ""
+msgstr "סרבית (קירילית) (מונטנגרו)"
 
 #: picard/const/locales.py:354
 msgid "Serbian (Cyrillic) (Serbia)"
-msgstr ""
+msgstr "סרבית (קירילית) (סרביה)"
 
 #: picard/const/locales.py:355
 msgid "Serbian (Cyrillic) (Serbia and Montenegro)"
-msgstr ""
+msgstr "סרבית (קירילית) (סרביה ומונטנגרו)"
 
 #: picard/const/locales.py:356 picard/const/locales.py:357
 msgid "Serbian (Latin)"
-msgstr ""
+msgstr "סרבית (לטינית)"
 
 #: picard/const/locales.py:358
 msgid "Serbian (Latin) (Bosnia and Herzegovina)"
-msgstr ""
+msgstr "סרבית (לטינית) (בוסניה והרצגובינה)"
 
 #: picard/const/locales.py:359
 msgid "Serbian (Latin) (Montenegro)"
-msgstr ""
+msgstr "סרבית (לטינית) (מונטנגרו)"
 
 #: picard/const/locales.py:360
 msgid "Serbian (Latin) (Serbia)"
-msgstr ""
+msgstr "סרבית (לטינית) (סרביה)"
 
 #: picard/const/locales.py:361
 msgid "Serbian (Latin) (Serbia and Montenegro)"
-msgstr ""
+msgstr "סרבית (לטינית) (סרביה ומונטנגרו)"
 
 #: picard/const/locales.py:362
 msgid "Serbian (Montenegro)"
-msgstr ""
+msgstr "סרביה (מונטנגרו)"
 
 #: picard/const/locales.py:363
 msgid "Serbian (Serbia)"
-msgstr ""
+msgstr "סרבית (סרביה)"
 
 #: picard/const/locales.py:364
 msgid "Serbian (Serbia and Montenegro)"
-msgstr ""
+msgstr "סרבית (סרביה ומונטנגרו)"
 
 #: picard/const/locales.py:365 picard/const/locales.py:366
 msgid "Serbo-Croatian"
-msgstr ""
+msgstr "סרבית-קרואטית"
 
 #: picard/const/locales.py:367
 msgid "Serbo-Croatian (Bosnia and Herzegovina)"
-msgstr ""
+msgstr "סרבית-קרואטית (בוסניה והרצגובינה)"
 
 #: picard/const/locales.py:368
 msgid "Serbo-Croatian (Serbia and Montenegro)"
-msgstr ""
+msgstr "סרבית (בוסניה ומונטנגרו)"
 
 #: picard/const/locales.py:369
 msgid "Sichuan Yi"
-msgstr ""
+msgstr "סיצ'ואן יי"
 
 #: picard/const/locales.py:370
 msgid "Sichuan Yi (China)"
-msgstr ""
+msgstr "סיצ'ואן יי (סין)"
 
 #: picard/const/locales.py:371
 msgid "Sidamo"
@@ -2401,7 +2401,7 @@ msgstr "סידאמו"
 
 #: picard/const/locales.py:372
 msgid "Sidamo (Ethiopia)"
-msgstr ""
+msgstr "סידמו (אתיופיה)"
 
 #: picard/const/locales.py:373
 msgid "Sinhala"
@@ -2565,11 +2565,11 @@ msgstr ""
 
 #: picard/const/locales.py:417
 msgid "Swedish (Finland)"
-msgstr ""
+msgstr "שוודית (פינלנד)"
 
 #: picard/const/locales.py:418
 msgid "Swedish (Sweden)"
-msgstr ""
+msgstr "שוודית (שוודיה)"
 
 #: picard/const/locales.py:419
 msgid "Swiss German"
@@ -2585,7 +2585,7 @@ msgstr "סורית"
 
 #: picard/const/locales.py:422
 msgid "Syriac (Syria)"
-msgstr ""
+msgstr "סורית (סוריה)"
 
 #: picard/const/locales.py:423
 msgid "Tagalog"
@@ -2597,7 +2597,7 @@ msgstr "טג'יקית"
 
 #: picard/const/locales.py:425
 msgid "Tajik (Cyrillic)"
-msgstr ""
+msgstr "טג'יקית (קירילית)"
 
 #: picard/const/locales.py:426
 msgid "Tajik (Cyrillic) (Tajikistan)"
@@ -4411,7 +4411,7 @@ msgstr "שונות"
 
 #: picard/ui/ui_options_interface.py:128
 msgid "Show text labels under icons"
-msgstr "הצגת תוויות טקסט מתחת לצלמיות"
+msgstr "הצגת תוויות מלל מתחת לצלמיות"
 
 #: picard/ui/ui_options_interface.py:129
 msgid "Allow selection of multiple directories"
@@ -4676,7 +4676,7 @@ msgstr "מתייג תַּסְרִיט(ים)"
 
 #: picard/ui/ui_options_script.py:105
 msgid "Enter your tagger script here."
-msgstr ""
+msgstr "הזנת מתייג התסרוט כאן."
 
 #: picard/ui/ui_options_script.py:106 picard/ui/ui_options_script.py:107
 msgid "Add new script"
@@ -4685,7 +4685,7 @@ msgstr "הוספת תַּסְרִיט חדש"
 #: picard/ui/ui_options_script.py:108
 #: picard/ui/ui_scripting_documentation_dialog.py:50
 msgid "Scripting Documentation"
-msgstr ""
+msgstr "תיעוד תסרוט."
 
 #: picard/ui/ui_options_script.py:109
 msgid "Move script up"
@@ -4752,7 +4752,7 @@ msgstr "2.3"
 #: picard/ui/ui_options_tags_compatibility.py:174
 #: picard/ui/ui_options_tags_compatibility_id3.py:118
 msgid "ID3v2 Text Encoding"
-msgstr "‮קידוד טקסט ‭ID3v2"
+msgstr "‮קידוד מלל ‭ID3v2"
 
 #: picard/ui/ui_options_tags_compatibility.py:175
 #: picard/ui/ui_options_tags_compatibility.py:195
@@ -4836,17 +4836,17 @@ msgstr "קבצי WAVE"
 #: picard/ui/ui_options_tags_compatibility.py:191
 #: picard/ui/ui_options_tags_compatibility_wave.py:58
 msgid "Also include RIFF INFO tags in the files"
-msgstr ""
+msgstr "להכליל בקבצים גם תגי RIFF INFO"
 
 #: picard/ui/ui_options_tags_compatibility.py:192
 #: picard/ui/ui_options_tags_compatibility_wave.py:59
 msgid "Remove existing RIFF INFO tags from WAVE files"
-msgstr ""
+msgstr "‮הסרת תגי RIFF INFO מקבצי WAVE"
 
 #: picard/ui/ui_options_tags_compatibility.py:193
 #: picard/ui/ui_options_tags_compatibility_wave.py:60
 msgid "RIFF INFO Text Encoding"
-msgstr ""
+msgstr "‮קידוד מלל RIFF INFO"
 
 #: picard/ui/ui_options_tags_compatibility.py:194
 #: picard/ui/ui_options_tags_compatibility_wave.py:61
