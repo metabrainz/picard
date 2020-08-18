@@ -1,3 +1,19 @@
+# Version 2.4.2 - 2020-08-18
+
+## Bugfixes
+- [PICARD-1909](https://tickets.metabrainz.org/browse/PICARD-1909) - No refresh of metadata on "Use Original Value" or remove tags
+- [PICARD-1911](https://tickets.metabrainz.org/browse/PICARD-1911) - Removing tags does not update list views
+- [PICARD-1913](https://tickets.metabrainz.org/browse/PICARD-1913) - Changing tags of a track without matched files changes original metadata
+- [PICARD-1914](https://tickets.metabrainz.org/browse/PICARD-1914) - Editing track metadata edits data of previously linked file
+- [PICARD-1915](https://tickets.metabrainz.org/browse/PICARD-1915) - An album selected during loading should update the metadata view when loading has finished
+- [PICARD-1916](https://tickets.metabrainz.org/browse/PICARD-1916) - Picard crashes on older releases of macOS due to theming exception
+
+## Improvements
+- [PICARD-1860](https://tickets.metabrainz.org/browse/PICARD-1860) - New added tag should open field to enter value automatically
+- [PICARD-1899](https://tickets.metabrainz.org/browse/PICARD-1899) - Update help links to go to http://picard-docs.musicbrainz.org
+- [PICARD-1920](https://tickets.metabrainz.org/browse/PICARD-1920) - Open documentation in options dialog using the platform's help shortcut (e.g. F1 on Windows or Ctrl+? on macOS)
+
+
 # Version 2.4.1 - 2020-08-11
 
 ## Bugfixes
