@@ -134,6 +134,7 @@ if IS_WIN:
                 palette.setColor(QtGui.QPalette.Disabled, QtGui.QPalette.Text, QtCore.Qt.darkGray)
                 palette.setColor(QtGui.QPalette.Disabled, QtGui.QPalette.Light, QtGui.QColor(0, 0, 0, 0))
                 palette.setColor(QtGui.QPalette.Disabled, QtGui.QPalette.ButtonText, QtCore.Qt.darkGray)
+                palette.setColor(QtGui.QPalette.Disabled, QtGui.QPalette.Base, QtGui.QColor(60, 60, 60))
 
     theme = WindowsTheme()
 
