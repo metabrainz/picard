@@ -43,6 +43,7 @@ class OptionsPage(QtWidgets.QWidget):
     PARENT = None
     SORT_ORDER = 1000
     ACTIVE = True
+    HELP_URL = None
     STYLESHEET_ERROR = "QWidget { background-color: #f55; color: white; font-weight:bold }"
     STYLESHEET = "QLabel { qproperty-wordWrap: true; }"
 

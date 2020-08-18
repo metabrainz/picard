@@ -38,6 +38,7 @@ class MatchingOptionsPage(OptionsPage):
     PARENT = "advanced"
     SORT_ORDER = 30
     ACTIVE = True
+    HELP_URL = '/config/options_matching.html'
 
     options = [
         config.FloatOption("setting", "file_lookup_threshold", 0.7),

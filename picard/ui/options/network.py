@@ -38,6 +38,7 @@ class NetworkOptionsPage(OptionsPage):
     PARENT = "advanced"
     SORT_ORDER = 10
     ACTIVE = True
+    HELP_URL = '/config/options_network.html'
 
     options = [
         config.BoolOption("setting", "use_proxy", False),

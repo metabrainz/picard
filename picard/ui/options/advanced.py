@@ -38,6 +38,7 @@ class AdvancedOptionsPage(OptionsPage):
     PARENT = None
     SORT_ORDER = 90
     ACTIVE = True
+    HELP_URL = '/config/options_advanced.html'
 
     options = [
         config.TextOption("setting", "ignore_regex", ""),

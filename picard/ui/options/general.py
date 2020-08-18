@@ -50,6 +50,7 @@ class GeneralOptionsPage(OptionsPage):
     PARENT = None
     SORT_ORDER = 1
     ACTIVE = True
+    HELP_URL = '/config/options_general.html'
 
     options = [
         config.TextOption("setting", "server_host", MUSICBRAINZ_SERVERS[0]),

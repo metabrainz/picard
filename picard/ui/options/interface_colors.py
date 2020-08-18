@@ -86,6 +86,7 @@ class InterfaceColorsOptionsPage(OptionsPage):
     PARENT = "interface"
     SORT_ORDER = 30
     ACTIVE = True
+    HELP_URL = '/config/options_interface_colors.html'
 
     options = [
         config.Option("setting", "interface_colors", interface_colors.get_colors()),

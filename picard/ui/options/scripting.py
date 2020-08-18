@@ -141,6 +141,7 @@ class ScriptingOptionsPage(OptionsPage):
     PARENT = None
     SORT_ORDER = 85
     ACTIVE = True
+    HELP_URL = '/config/options_scripting.html'
 
     options = [
         config.BoolOption("setting", "enable_tagger_scripts", False),

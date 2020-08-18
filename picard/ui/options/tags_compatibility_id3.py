@@ -40,6 +40,7 @@ class TagsCompatibilityID3OptionsPage(OptionsPage):
     PARENT = "tags"
     SORT_ORDER = 30
     ACTIVE = True
+    HELP_URL = '/config/options_tags_compatibility_id3.html'
 
     options = [
         config.BoolOption("setting", "write_id3v1", True),

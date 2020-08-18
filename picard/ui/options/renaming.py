@@ -71,6 +71,7 @@ class RenamingOptionsPage(OptionsPage):
     PARENT = None
     SORT_ORDER = 40
     ACTIVE = True
+    HELP_URL = '/config/options_filerenaming.html'
 
     options = [
         config.BoolOption("setting", "windows_compatibility", True),
