@@ -155,9 +155,9 @@ elif IS_MACOS:
                     AppKit.NSAppearanceNameAqua,
                     AppKit.NSAppearanceNameDarkAqua
                 ])
+                return basic_appearance == AppKit.NSAppearanceNameDarkAqua
             except AttributeError:
-                basic_appearance = None
-            return basic_appearance == AppKit.NSAppearanceNameDarkAqua
+                return False
 
     theme = MacTheme()
 
