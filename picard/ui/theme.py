@@ -88,10 +88,6 @@ class BaseTheme:
             link_color.setHsl(accent_color.hue(), accent_color.saturation(), 160, accent_color.alpha())
             palette.setColor(QtGui.QPalette.Link, link_color)
 
-        if dark_theme:
-            palette.setColor(QtGui.QPalette.Inactive, QtGui.QPalette.Highlight, QtGui.QColor(51, 51, 51))
-            palette.setColor(QtGui.QPalette.Inactive, QtGui.QPalette.HighlightedText, QtCore.Qt.white)
-
 
 if IS_WIN:
     import winreg
@@ -135,6 +131,8 @@ if IS_WIN:
                 palette.setColor(QtGui.QPalette.Disabled, QtGui.QPalette.Light, QtGui.QColor(0, 0, 0, 0))
                 palette.setColor(QtGui.QPalette.Disabled, QtGui.QPalette.ButtonText, QtCore.Qt.darkGray)
                 palette.setColor(QtGui.QPalette.Disabled, QtGui.QPalette.Base, QtGui.QColor(60, 60, 60))
+                palette.setColor(QtGui.QPalette.Inactive, QtGui.QPalette.Highlight, QtGui.QColor(51, 51, 51))
+                palette.setColor(QtGui.QPalette.Inactive, QtGui.QPalette.HighlightedText, QtCore.Qt.white)
 
     theme = WindowsTheme()
 
@@ -158,6 +156,10 @@ elif IS_MACOS:
                 return basic_appearance == AppKit.NSAppearanceNameDarkAqua
             except AttributeError:
                 return False
+
+        # pylint: disable=no-self-use
+        def update_palette(self, palette, dark_theme, accent_color):
+            pass  # No palette changes, theme is fully handled by Qt
 
     theme = MacTheme()
 
