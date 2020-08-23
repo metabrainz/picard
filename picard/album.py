@@ -170,6 +170,13 @@ class Album(DataObject, Item):
                     file.metadata['musicbrainz_discid'] = track_discids
                     file.update()
 
+    def get_next_track(self, track):
+        try:
+            index = self.tracks.index(track)
+            return self.tracks[index + 1]
+        except (IndexError, ValueError):
+            return None
+
     def get_album_artists(self):
         """Returns the list of album artists (as AlbumArtist objects)"""
         return self._album_artists

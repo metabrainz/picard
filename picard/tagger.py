@@ -468,9 +468,15 @@ class Tagger(QtWidgets.QApplication):
             log.debug("Aborting move since target is invalid")
             return
         self.window.set_sorting(False)
-        if isinstance(target, (Track, Cluster)):
+        if isinstance(target, Cluster):
             for file in files:
                 file.move(target)
+                QtCore.QCoreApplication.processEvents()
+        elif isinstance(target, Track):
+            album = target.album
+            for file in files:
+                file.move(target)
+                target = album.get_next_track(target) or album.unmatched_files
                 QtCore.QCoreApplication.processEvents()
         elif isinstance(target, File):
             for file in files:
