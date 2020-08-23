@@ -436,7 +436,8 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         self.setHeader(ConfigurableColumnsHeader(self))
         self.window = window
         self.panel = parent
-
+        # Should multiple files dropped be assigned to tracks sequentially?
+        self._move_to_multi_tracks = True
         self.setHeaderLabels([_(h) if n != '~fingerprint' else ''
                               for h, n in MainPanel.columns])
         self.restore_state()
@@ -719,7 +720,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         hscrollbar.setValue(xpos)
 
     @staticmethod
-    def drop_urls(urls, target):
+    def drop_urls(urls, target, move_to_multi_tracks=True):
         files = []
         new_paths = []
         tagger = QtCore.QObject.tagger
@@ -743,11 +744,15 @@ class BaseTreeView(QtWidgets.QTreeWidget):
                     elif entity == "recording":
                         tagger.load_nat(mbid)
         if files:
-            tagger.move_files(files, target)
+            tagger.move_files(files, target, move_to_multi_tracks)
         if new_paths:
             tagger.add_paths(new_paths, target=target)
 
     def dropEvent(self, event):
+        # Dropping with Alt key pressed forces all dropped files being
+        # assigned to the same track.
+        if event.keyboardModifiers() == QtCore.Qt.AltModifier:
+            self._move_to_multi_tracks = False
         return QtWidgets.QTreeView.dropEvent(self, event)
 
     def dropMimeData(self, parent, index, data, action):
@@ -767,7 +772,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         urls = data.urls()
         if urls:
             # Use QTimer.singleShot to run expensive processing outside of the drop handler.
-            QtCore.QTimer.singleShot(0, partial(self.drop_urls, urls, target))
+            QtCore.QTimer.singleShot(0, partial(self.drop_urls, urls, target, self._move_to_multi_tracks))
             handled = True
         # application/picard.album-list
         albums = data.data("application/picard.album-list")
@@ -777,6 +782,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
             QtCore.QTimer.singleShot(0, partial(self.tagger.move_files,
                 self.tagger.get_files_from_objects(albums), target))
             handled = True
+        self._move_to_multi_tracks = True  # Reset for next drop
         return handled
 
     def activate_item(self, index):
