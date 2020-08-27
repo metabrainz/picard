@@ -935,8 +935,8 @@ class ClusterItem(TreeItem):
         # Benchmarked performance was not noticeably different.
         for file in files:
             item = FileItem(file, True)
-            item.update()
             self.addChild(item)
+            item.update()
 
     def remove_file(self, file):
         file.item.setSelected(False)
