@@ -1,0 +1,16 @@
+{
+    "MsgAlreadyInstalled": "${PRODUCT_NAME} est d\u00e9j\u00e0 install\u00e9. \n\nCliquez sur \u00ab\u00a0OK\u00a0\u00bb pour d\u00e9sinstaller la version pr\u00e9c\u00e9dente ou \u00ab\u00a0Annuler\u00a0\u00bb pour annuler cette mise \u00e0 jour.",
+    "MsgApplicationRunning": "L\u2019application ${PRODUCT_NAME} est en cours d\u2019ex\u00e9cution. Veuillez la stopper et essayer \u00e0 nouveau.",
+    "MsgRequires64Bit": "Cette version de ${PRODUCT_NAME} requiert un syst\u00e8me Windows 64 bits.",
+    "MuiDescriptionRequired": "Installe ${PRODUCT_NAME} ainsi que les fichiers n\u00e9cessaires \u00e0 son ex\u00e9cution.",
+    "MuiDescriptionLang": "Installe les traductions de ${PRODUCT_NAME} dans diff\u00e9rentes langues.",
+    "MuiDescriptionShortcuts": "Installe les raccourcis pour lancer ${PRODUCT_NAME}.",
+    "MuiDescriptionDesktop": "Installe un raccourci sur le bureau.",
+    "MuiDescriptionStarteMenu": "Installe un raccourci dans le menu D\u00e9marrer.",
+    "OptionRemoveSettings": "Supprimer les pr\u00e9f\u00e9rences et les donn\u00e9es personnelles",
+    "SectionDesktop": "Bureau",
+    "SectionLanguages": "Langues",
+    "SectionRequired": "Fichiers du programme (requis)",
+    "SectionShortcuts": "Raccourcis",
+    "SectionStartMenu": "Menu D\u00e9marrer"
+}

@@ -1,0 +1,16 @@
+{
+    "MsgAlreadyInstalled": "${PRODUCT_NAME} ist bereits installiert. \n\nKlicken Sie \u201eOK\u201c um die vorherige Version zu deinstallieren oder \u201eAbbrechen\u201c um das Update abzubrechen.",
+    "MsgApplicationRunning": "Die Anwendung ${PRODUCT_NAME} wird ausgef\u00fchrt. Bitte schlie\u00dfen und erneut versuchen.",
+    "MsgRequires64Bit": "Diese Version von ${PRODUCT_NAME} erfordert ein 64-bit Windows-System.",
+    "MuiDescriptionRequired": "Installiert ${PRODUCT_NAME} mit den f\u00fcr die Ausf\u00fchrung erforderlichen Dateien.",
+    "MuiDescriptionLang": "Installiert \u00dcbersetzungen von ${PRODUCT_NAME} in verschiedenen Sprachen.",
+    "MuiDescriptionShortcuts": "Installiert Verkn\u00fcpfungen, um ${PRODUCT_NAME} zu starten.",
+    "MuiDescriptionDesktop": "Installiert eine Verkn\u00fcpfung auf dem Desktop.",
+    "MuiDescriptionStarteMenu": "Installiert eine Verkn\u00fcpfung im Startmen\u00fc.",
+    "OptionRemoveSettings": "Einstellungen und pers\u00f6nliche Daten entfernen",
+    "SectionDesktop": "Desktop",
+    "SectionLanguages": "Sprachen",
+    "SectionRequired": "Programmdateien (erforderlich)",
+    "SectionShortcuts": "Verkn\u00fcpfungen",
+    "SectionStartMenu": "Startmen\u00fc"
+}
