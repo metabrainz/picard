@@ -1,4 +1,4 @@
-LangString MsgAlreadyInstalled ${LANG_ENGLISH} '${PRODUCT_NAME} is already installed. $\n$\nClick "OK" to uninstall the previous version or "Cancel" to cancel this upgrade.'
+LangString MsgAlreadyInstalled ${LANG_ENGLISH} "${PRODUCT_NAME} is already installed. $\n$\nClick $\"OK$\" to uninstall the previous version or $\"Cancel$\" to cancel this upgrade."
 LangString MsgApplicationRunning ${LANG_ENGLISH} "The application ${PRODUCT_NAME} is running. Please close it and try again."
 LangString MsgRequires64Bit ${LANG_ENGLISH} "This version of ${PRODUCT_NAME} requires a 64-bit Windows system."
 LangString MuiDescriptionRequired ${LANG_ENGLISH} "Installs ${PRODUCT_NAME} along with the necessary files for it run."

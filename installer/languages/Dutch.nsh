@@ -1,4 +1,4 @@
-LangString MsgAlreadyInstalled ${LANG_DUTCH} '${PRODUCT_NAME} is al geïnstalleerd. $\n$\nKlik op “OK” om de vorige versie te verwijderen of op “Annuleren” om de installatie te annuleren.'
+LangString MsgAlreadyInstalled ${LANG_DUTCH} "${PRODUCT_NAME} is al geïnstalleerd. $\n$\nKlik op “OK” om de vorige versie te verwijderen of op “Annuleren” om de installatie te annuleren."
 LangString MsgApplicationRunning ${LANG_DUTCH} "De applicatie ${PRODUCT_NAME} is nog actief. Sluit haar af en probeer het opnieuw."
 LangString MsgRequires64Bit ${LANG_DUTCH} "Voor deze versie van ${PRODUCT_NAME} heb je een 64 bitssysteem nodig."
 LangString MuiDescriptionRequired ${LANG_DUTCH} "Installeert ${PRODUCT_NAME} en de bestanden die het nodig heeft om te draaien."
