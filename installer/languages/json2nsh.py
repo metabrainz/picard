@@ -36,9 +36,22 @@ def write_langstring(f, language, identifier, text):
     f.write(langstring)
 
 
+def merge_translations(*translations):
+    merged = {}
+    for trans in translations:
+        for k, v in trans.items():
+            if v:
+                merged[k] = v
+    return merged
+
+
 def main():
     scriptdir = os.path.dirname(os.path.abspath(__file__))
     sourcesdir = os.path.join(scriptdir, 'sources')
+
+    # Read the english sources for defaults
+    with open(os.path.join(sourcesdir, 'en.json'), 'r', encoding='utf-8') as infile:
+        data_en = json.loads(infile.read())
 
     for path in glob.glob(os.path.join(sourcesdir, '*.json')):
         language, language_code = language_from_filename(path)
@@ -48,6 +61,7 @@ def main():
         target_file = os.path.join(scriptdir, f'{language}.nsh')
         with open(path, 'r', encoding='utf-8') as infile:
             data = json.loads(infile.read())
+            data = merge_translations(data_en, data)
             with open(target_file, 'w+', encoding='utf-8') as outfile:
                 for identifier, text in data.items():
                     write_langstring(outfile, language, identifier, text)
