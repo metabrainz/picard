@@ -349,7 +349,7 @@ class Tagger(QtWidgets.QApplication):
     def move_file_to_track(self, file, albumid, recordingid):
         """Move `file` to recording `recordingid` on album `albumid`."""
         album = self.load_album(albumid)
-        album.run_when_loaded(partial(file.move, album.unmatched_files))
+        album.run_when_loaded(partial(file.move, album.unmatched_files), always=True)
         album.run_when_loaded(partial(album.match_files, [file],
                                       recordingid=recordingid))
 

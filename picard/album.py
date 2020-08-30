@@ -286,6 +286,10 @@ class Album(DataObject, Item):
             del self._new_metadata
             del self._new_tracks
             self.update()
+            if not self._requests:
+                for func, always in self._after_load_callbacks:
+                    if always:
+                        func()
             return
 
         if self._requests > 0:
@@ -393,7 +397,7 @@ class Album(DataObject, Item):
                 },
                 timeout=3000
             )
-            for func in self._after_load_callbacks:
+            for func, always in self._after_load_callbacks:
                 func()
             self._after_load_callbacks = []
             if self.item.isSelected():
@@ -475,11 +479,11 @@ class Album(DataObject, Item):
             self.id, self._release_request_finished, inc=inc,
             mblogin=require_authentication, priority=priority, refresh=refresh)
 
-    def run_when_loaded(self, func):
+    def run_when_loaded(self, func, always=False):
         if self.loaded:
             func()
         else:
-            self._after_load_callbacks.append(func)
+            self._after_load_callbacks.append((func, always))
 
     def stop_loading(self):
         if self.load_task:
