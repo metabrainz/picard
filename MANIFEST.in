@@ -1,5 +1,4 @@
 graft po
-prune test
 
 recursive-include scripts *.in
 recursive-exclude scripts picard
@@ -9,4 +8,8 @@ include *.in
 include *.md
 include *.txt
 
+recursive-include test *.py
+recursive-include test/data *
+
 exclude org.musicbrainz.Picard.appdata.xml
+exclude win-version-info.txt

@@ -113,3 +113,8 @@ jobs:
     - name: Test running installed package
       if: runner.os != 'Windows'
       run: picard --long-version
+    - name: Verify sdist package
+      if: runner.os != 'Windows'
+      run: |
+        pip install pytest
+        scripts/package/run-sdist-test.sh
