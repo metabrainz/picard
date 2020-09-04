@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2020-07-14 19:05+0200\n"
-"PO-Revision-Date: 2020-08-18 05:21+0000\n"
+"PO-Revision-Date: 2020-08-31 07:06+0000\n"
 "Last-Translator: Avi Markovitz <avi.markovitz@gmail.com>\n"
 "Language-Team: Hebrew (http://www.transifex.com/musicbrainz/musicbrainz/language/he/)\n"
 "MIME-Version: 1.0\n"
@@ -259,7 +259,7 @@ msgid ""
 "`$if2(a1,a2,a3,...)`\n"
 "\n"
 "Returns first non empty argument."
-msgstr "`$if2(a1,a2,a3,...)`\nהחזרת איבר לא-ריק ראשון."
+msgstr "`$if2(a1,a2,a3,...)`\nהחזרת משתנה בלתי-תלוי לא-ריק ראשון."
 
 #: picard/script.py:610
 msgid ""
@@ -457,7 +457,7 @@ msgid ""
 "Example:\n"
 "\n"
 "    $add(x,y,z) = ((x + y) + z)\n"
-msgstr ""
+msgstr "`$add(x,y,*args)`\n\nחיבור `y` ו `x`.\nניתן לשימוש  במספר שרירותי של משתנים בלתי-תלויים.\n\nלדוגמה:\n\n $add(x,y,z) = ((x + y) + z)\n"
 
 #: picard/script.py:916
 msgid ""
@@ -469,7 +469,7 @@ msgid ""
 "Example:\n"
 "\n"
 "    $sub(x,y,z) = ((x - y) - z)\n"
-msgstr ""
+msgstr "`$sub(x,y,*args)`\n\n חיסור`y` מ `x`.\nניתן לשימוש  במספר שרירותי של משתנים בלתי-תלויים.\n\nלדוגמה:\n\n $sub(x,y,z) = ((x - y) - z)\n"
 
 #: picard/script.py:934
 msgid ""
@@ -481,7 +481,7 @@ msgid ""
 "Example:\n"
 "\n"
 "    $div(x,y,z) = ((x / y) / z)\n"
-msgstr ""
+msgstr "`$div(x,y,*args)`\n\nחילוק `y` ב `x`.\nניתן לשימוש  במספר שרירותי של משתנים בלתי-תלויים.\n\nלדוגמה:\n\n $div(x,y,z) = ((x / y) / z)\n"
 
 #: picard/script.py:954
 msgid ""
@@ -493,7 +493,7 @@ msgid ""
 "Example:\n"
 "\n"
 "    $mod(x,y,z) = ((x % y) % z)\n"
-msgstr ""
+msgstr "`$mod(x,y,*args)`\n\nמחזיר את השארית של חילוק `y` ב `x`.\nניתן לשימוש  במספר שרירותי של משתנים בלתי-תלויים.\n\nלדוגמה:\n\n $mod(x,y,z) = ((x % y )% z)\n"
 
 #: picard/script.py:972
 msgid ""
@@ -505,7 +505,7 @@ msgid ""
 "Example:\n"
 "\n"
 "    $mul(x,y,z) = ((x * y) * z)\n"
-msgstr ""
+msgstr "`$$mul(x,y,*args)`\n\nהכפלת `y` ב `x`.\nניתן לשימוש  במספר שרירותי של משתנים בלתי-תלויים.\n\nלדוגמה:\n\n $mul(x,y,z) = ((x* y)* z)\n"
 
 #: picard/script.py:990
 msgid ""
@@ -514,7 +514,7 @@ msgid ""
 "Returns true if either `x` or `y` not empty.\n"
 "    Can be used with an arbitrary number of arguments.\n"
 "    The result is true if ANY of the arguments is not empty."
-msgstr ""
+msgstr "`$or(x,y,*args)`\n\nמחזיר 'true' אם `y` או `x` אינם ריקים.\nניתן לשימוש  במספר שרירותי של משתנים בלתי-תלויים.\n\nהתוצאה תהיה 'true'  אם אחד המשתנים אינם ריקים."
 
 #: picard/script.py:1004
 msgid ""
@@ -523,7 +523,7 @@ msgid ""
 "Returns true if both `x` and `y` are not empty.\n"
 "    Can be used with an arbitrary number of arguments.\n"
 "    The result is true if ALL of the arguments are not empty."
-msgstr ""
+msgstr "`$and(x,y,*args)`\n\nמחזיר 'true' אם `y` וגם `x` אינם ריקים.\nניתן לשימוש  במספר שרירותי של משתנים בלתי-תלויים.\n\nהתוצאה תהיה 'true'  אם כל המשתנים אינם ריקים."
 
 #: picard/script.py:1018
 msgid ""
@@ -764,7 +764,7 @@ msgid ""
 "Returns true, if the file processed is an audio file.\n"
 "\n"
 "_Since Picard 2.2_"
-msgstr ""
+msgstr "`$is_audio()`\n\nהחזרת 'true' אם הקובץ שבעיבוד הוא קובץ שמע.\n\n_מפיקארד 2.2 והלאה_"
 
 #: picard/script.py:1441
 msgid ""
@@ -2077,7 +2077,7 @@ msgstr "מקדונית"
 
 #: picard/const/locales.py:280
 msgid "Macedonian (Macedonia)"
-msgstr ""
+msgstr "מקדונית (מקדוניה)"
 
 #: picard/const/locales.py:281
 msgid "Malay"
@@ -2085,7 +2085,7 @@ msgstr "מאלאית"
 
 #: picard/const/locales.py:282
 msgid "Malay (Brunei)"
-msgstr ""
+msgstr "מלאית (ברוניי)"
 
 #: picard/const/locales.py:284
 msgid "Malayalam"
@@ -2109,7 +2109,7 @@ msgstr "מאנקס"
 
 #: picard/const/locales.py:289
 msgid "Manx (United Kingdom)"
-msgstr ""
+msgstr "מנקס (בריטניה)"
 
 #: picard/const/locales.py:290
 msgid "Marathi"
@@ -2161,27 +2161,27 @@ msgstr "נפלית (הודו)"
 
 #: picard/const/locales.py:302
 msgid "Nepali (Nepal)"
-msgstr ""
+msgstr "נפלית (נפל)"
 
 #: picard/const/locales.py:303
 msgid "Northern Sami"
-msgstr ""
+msgstr "סאמית צפונית"
 
 #: picard/const/locales.py:304
 msgid "Northern Sami (Finland)"
-msgstr ""
+msgstr "סאמית צפונית (פינדלנד)"
 
 #: picard/const/locales.py:305
 msgid "Northern Sami (Norway)"
-msgstr ""
+msgstr "סאמית צפונית (נורווגיה)"
 
 #: picard/const/locales.py:306
 msgid "Northern Sotho"
-msgstr ""
+msgstr "סוטו צפונית"
 
 #: picard/const/locales.py:307
 msgid "Northern Sotho (South Africa)"
-msgstr ""
+msgstr "סוטו צפונית (דרום אפריקה)"
 
 #: picard/const/locales.py:308
 msgid "Norwegian"
@@ -2201,11 +2201,11 @@ msgstr "נורווגית נינורסק (נורווגיה)"
 
 #: picard/const/locales.py:313
 msgid "Nyanja"
-msgstr ""
+msgstr "מיאנג'ה"
 
 #: picard/const/locales.py:314
 msgid "Nyanja (Malawi)"
-msgstr ""
+msgstr "מיאנג'ה (מלאווי)"
 
 #: picard/const/locales.py:316
 msgid "Occitan (France)"
@@ -2225,11 +2225,11 @@ msgstr "אורומו"
 
 #: picard/const/locales.py:320
 msgid "Oromo (Ethiopia)"
-msgstr ""
+msgstr "אורומו (אתיופיה)"
 
 #: picard/const/locales.py:321
 msgid "Oromo (Kenya)"
-msgstr ""
+msgstr "אורומו (קניה)"
 
 #: picard/const/locales.py:322
 msgid "Pashto"
@@ -2237,7 +2237,7 @@ msgstr "פשטו"
 
 #: picard/const/locales.py:323
 msgid "Pashto (Afghanistan)"
-msgstr ""
+msgstr "פאשטו (אפגניסטן)"
 
 #: picard/const/locales.py:324
 msgid "Persian"
@@ -2245,23 +2245,23 @@ msgstr "פרסית"
 
 #: picard/const/locales.py:325
 msgid "Persian (Afghanistan)"
-msgstr ""
+msgstr "פרסית (אפגניסטן)"
 
 #: picard/const/locales.py:326
 msgid "Persian (Iran)"
-msgstr ""
+msgstr "פרסית (אירן)"
 
 #: picard/const/locales.py:328
 msgid "Polish (Poland)"
-msgstr ""
+msgstr "פולנית (פולין)"
 
 #: picard/const/locales.py:330
 msgid "Portuguese (Brazil)"
-msgstr ""
+msgstr "פורטוגזית (ברזיל)"
 
 #: picard/const/locales.py:331
 msgid "Portuguese (Portugal)"
-msgstr ""
+msgstr "פורטוגזית (פורטוגל)"
 
 #: picard/const/locales.py:332
 msgid "Punjabi"
@@ -2269,15 +2269,15 @@ msgstr "פונג'אבית"
 
 #: picard/const/locales.py:333
 msgid "Punjabi (Arabic)"
-msgstr ""
+msgstr "פונג'אבית (ערבית)"
 
 #: picard/const/locales.py:334
 msgid "Punjabi (Arabic) (Pakistan)"
-msgstr ""
+msgstr "פונג'אבית (ערבית) (פקיסטן)"
 
 #: picard/const/locales.py:335
 msgid "Punjabi (Gurmukhi)"
-msgstr ""
+msgstr "פונג'טית (גרומוקי)"
 
 #: picard/const/locales.py:336
 msgid "Punjabi (Gurmukhi) (India)"
@@ -2289,7 +2289,7 @@ msgstr "פונג'אבית (הודו)"
 
 #: picard/const/locales.py:338
 msgid "Punjabi (Pakistan)"
-msgstr ""
+msgstr "פונג'אבית (פקיסטן)"
 
 #: picard/const/locales.py:340
 msgid "Romanian (Moldova)"
@@ -2405,19 +2405,19 @@ msgstr "סידמו (אתיופיה)"
 
 #: picard/const/locales.py:373
 msgid "Sinhala"
-msgstr ""
+msgstr "סינהלה"
 
 #: picard/const/locales.py:374
 msgid "Sinhala (Sri Lanka)"
-msgstr ""
+msgstr "סינהלה (סרי לנקה)"
 
 #: picard/const/locales.py:376
 msgid "Slovak (Slovakia)"
-msgstr ""
+msgstr "סלובקית (סלובקיה)"
 
 #: picard/const/locales.py:378
 msgid "Slovenian (Slovenia)"
-msgstr ""
+msgstr "סלובנית (סלובניה)"
 
 #: picard/const/locales.py:379
 msgid "Somali"
@@ -2429,35 +2429,35 @@ msgstr "סומלית (ג'יבוטי)"
 
 #: picard/const/locales.py:381
 msgid "Somali (Ethiopia)"
-msgstr ""
+msgstr "סומלי (אתיופיה )"
 
 #: picard/const/locales.py:382
 msgid "Somali (Kenya)"
-msgstr ""
+msgstr "סומלי (קניה)"
 
 #: picard/const/locales.py:383
 msgid "Somali (Somalia)"
-msgstr ""
+msgstr "סומלי (סומליה )"
 
 #: picard/const/locales.py:384
 msgid "South Ndebele"
-msgstr ""
+msgstr "נדבלה דרומית"
 
 #: picard/const/locales.py:385
 msgid "South Ndebele (South Africa)"
-msgstr ""
+msgstr "נדבלה דרומית (דרום אפריקה)"
 
 #: picard/const/locales.py:386
 msgid "Southern Sotho"
-msgstr ""
+msgstr "סוטו דרומית"
 
 #: picard/const/locales.py:387
 msgid "Southern Sotho (Lesotho)"
-msgstr ""
+msgstr "סוטו דרומית (ליסוטו)"
 
 #: picard/const/locales.py:388
 msgid "Southern Sotho (South Africa)"
-msgstr ""
+msgstr "סוטו דרומית (דרום אפריקה)"
 
 #: picard/const/locales.py:390
 msgid "Spanish (Argentina)"
@@ -2545,11 +2545,11 @@ msgstr "סווהילית"
 
 #: picard/const/locales.py:411
 msgid "Swahili (Kenya)"
-msgstr ""
+msgstr "סווהילית (קניה)"
 
 #: picard/const/locales.py:412
 msgid "Swahili (Tanzania)"
-msgstr ""
+msgstr "סווהילית (טנזניה)"
 
 #: picard/const/locales.py:413
 msgid "Swati"
@@ -2557,11 +2557,11 @@ msgstr "סוואטי"
 
 #: picard/const/locales.py:414
 msgid "Swati (South Africa)"
-msgstr ""
+msgstr "סוואטי (דרום אפריקה)"
 
 #: picard/const/locales.py:415
 msgid "Swati (Swaziland)"
-msgstr ""
+msgstr "סוואטי (סווזילנד)"
 
 #: picard/const/locales.py:417
 msgid "Swedish (Finland)"
