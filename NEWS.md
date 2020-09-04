@@ -1,3 +1,16 @@
+# Version 2.4.3 - 2020-09-04
+
+## Bugfixes
+- [PICARD-1916](https://tickets.metabrainz.org/browse/PICARD-1916) - Picard crashes on older releases of macOS due to theming exception
+- [PICARD-1918](https://tickets.metabrainz.org/browse/PICARD-1918) - Saving files fails if there is no front image and "Save only one front image as separate file" is enabled
+- [PICARD-1921](https://tickets.metabrainz.org/browse/PICARD-1921) - Windows 10: With dark theme inactive checkboxes cannot be distinguished from active ones
+- [PICARD-1928](https://tickets.metabrainz.org/browse/PICARD-1928) - After clustering fingerprint icon disappears
+- [PICARD-1931](https://tickets.metabrainz.org/browse/PICARD-1931) - Regression: "Unmatched Files" do not appear when release was deleted from MB
+
+## Improvements
+- [PICARD-1935](https://tickets.metabrainz.org/browse/PICARD-1935) - Include tests in PyPI sdist tarball
+
+
 # Version 2.4.2 - 2020-08-18
 
 ## Bugfixes
