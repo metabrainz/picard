@@ -1,3 +1,9 @@
+# Version 2.4.4 - 2020-09-04
+
+## Bugfixes
+- [PICARD-1931](https://tickets.metabrainz.org/browse/PICARD-1931) - Regression: "Unmatched Files" do not appear when release was deleted from MB
+
+
 # Version 2.4.3 - 2020-09-04
 
 ## Bugfixes
