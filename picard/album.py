@@ -287,6 +287,7 @@ class Album(DataObject, Item):
             del self._new_tracks
             self.update()
             if not self._requests:
+                self.loaded = True
                 for func, always in self._after_load_callbacks:
                     if always:
                         func()
