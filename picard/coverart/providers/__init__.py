@@ -42,7 +42,7 @@ from picard.coverart.providers.provider import (  # noqa: F401 # pylint: disable
     CoverArtProvider,
     ProviderOptions,
 )
-from picard.coverart.providers.whitelist import CoverArtProviderWhitelist
+from picard.coverart.providers.urlrels import CoverArtProviderUrlRelationships
 from picard.plugin import ExtensionPoint
 
 from picard.ui.options import register_options_page
@@ -93,7 +93,7 @@ def cover_art_providers():
 __providers = [
     CoverArtProviderLocal,
     CoverArtProviderCaa,
-    CoverArtProviderWhitelist,
+    CoverArtProviderUrlRelationships,
     CoverArtProviderCaaReleaseGroup,
 ]
 

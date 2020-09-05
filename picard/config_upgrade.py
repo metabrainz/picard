@@ -303,6 +303,15 @@ def upgrade_to_v2_4_0_beta_3(config):
     _s[opt] = [t.strip() for t in _s.raw_value(opt, qtype='QString').split(',')]
 
 
+def upgrade_to_v2_5_0_dev_1(config):
+    """Rename whitelist cover art provider"""
+    _s = config.setting
+    _s['ca_providers'] = [
+        ('UrlRelationships' if n == 'Whitelist' else n, s)
+        for n, s in _s['ca_providers']
+    ]
+
+
 def rename_option(config, old_opt, new_opt, option_type, default):
     _s = config.setting
     if old_opt in _s:
@@ -327,4 +336,5 @@ def upgrade_config(config):
     cfg.register_upgrade_hook(upgrade_to_v2_1_0_dev_1)
     cfg.register_upgrade_hook(upgrade_to_v2_2_0_dev_3)
     cfg.register_upgrade_hook(upgrade_to_v2_4_0_beta_3)
+    cfg.register_upgrade_hook(upgrade_to_v2_5_0_dev_1)
     cfg.run_upgrade_hooks(log.debug)
