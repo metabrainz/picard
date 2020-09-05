@@ -35,7 +35,7 @@ class TagGenreFilterTest(PicardTestCase):
         tag_filter = TagGenreFilter("-jazz")
         self.assertTrue(tag_filter.skip('jazz'))
 
-    def test_strict_filter_whitelist(self):
+    def test_strict_filter_allowlist(self):
         filters = """
             +jazz
             -jazz
@@ -43,7 +43,7 @@ class TagGenreFilterTest(PicardTestCase):
         tag_filter = TagGenreFilter(filters)
         self.assertFalse(tag_filter.skip('jazz'))
 
-    def test_strict_filter_whitelist_reverseorder(self):
+    def test_strict_filter_allowlist_reverseorder(self):
         filters = """
             -jazz
             +jazz
