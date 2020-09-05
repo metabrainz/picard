@@ -59,7 +59,7 @@ from .mutagenext import (
 
 
 INVALID_CHARS = re.compile('[^\x20-\x7e]')
-BLACKLISTED_KEYS = ['ID3', 'TAG', 'OggS', 'MP+']
+DISALLOWED_KEYS = ['ID3', 'TAG', 'OggS', 'MP+']
 UNSUPPORTED_TAGS = [
     'gapless',
     'musicip_fingerprint',
@@ -82,7 +82,7 @@ def is_valid_key(key):
     See http://wiki.hydrogenaud.io/index.php?title=APE_key
     """
     return (key and 2 <= len(key) <= 255
-            and key not in BLACKLISTED_KEYS
+            and key not in DISALLOWED_KEYS
             and INVALID_CHARS.search(key) is None)
 
 
