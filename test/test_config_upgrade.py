@@ -46,6 +46,7 @@ from picard.config_upgrade import (
     upgrade_to_v2_2_0_dev_3,
     upgrade_to_v2_2_0_dev_4,
     upgrade_to_v2_4_0_beta_3,
+    upgrade_to_v2_5_0_dev_1,
 )
 from picard.const import (
     DEFAULT_FILE_NAMING_FORMAT,
@@ -255,3 +256,19 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
         self.config.setting['preserved_tags'] = 'foo,bar'
         upgrade_to_v2_4_0_beta_3(self.config)
         self.assertEqual(['foo', 'bar'], self.config.setting['preserved_tags'])
+
+    def test_upgrade_to_v2_5_0_dev_1(self):
+        ListOption("setting", "ca_providers", [])
+
+        self.config.setting['ca_providers'] = [
+            ('Cover Art Archive', True),
+            ('Whitelist', True),
+            ('Local', False),
+        ]
+        expected = [
+            ('Cover Art Archive', True),
+            ('UrlRelationships', True),
+            ('Local', False),
+        ]
+        upgrade_to_v2_5_0_dev_1(self.config)
+        self.assertEqual(expected, self.config.setting['ca_providers'])

@@ -54,8 +54,7 @@ class CoverOptionsPage(OptionsPage):
         config.BoolOption("setting", "save_images_overwrite", False),
         config.ListOption("setting", "ca_providers", [
             ('Cover Art Archive', True),
-            ('Amazon', True),
-            ('Whitelist', True),
+            ('UrlRelationships', True),
             ('CaaReleaseGroup', False),
             ('Local', False),
         ]),
