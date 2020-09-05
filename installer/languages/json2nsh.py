@@ -48,6 +48,8 @@ def merge_translations(*translations):
 def main():
     scriptdir = os.path.dirname(os.path.abspath(__file__))
     sourcesdir = os.path.join(scriptdir, 'sources')
+    outdir = os.path.join(scriptdir, 'out')
+    os.makedirs(outdir, exist_ok=True)
 
     # Read the english sources for defaults
     with open(os.path.join(sourcesdir, 'en.json'), 'r', encoding='utf-8') as infile:
@@ -58,7 +60,8 @@ def main():
         if not language:
             print(f'Unknown language code "{language_code}", skipping')
             continue
-        target_file = os.path.join(scriptdir, f'{language}.nsh')
+        target_file = os.path.join(outdir, f'{language}.nsh')
+        print(f'{path} => {target_file}')
         with open(path, 'r', encoding='utf-8') as infile:
             data = json.loads(infile.read())
             data = merge_translations(data_en, data)

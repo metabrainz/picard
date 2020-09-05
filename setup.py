@@ -274,6 +274,9 @@ class picard_build(build):
             }
             if os.path.isfile('installer/picard-setup.nsi.in'):
                 generate_file('installer/picard-setup.nsi.in', 'installer/picard-setup.nsi', {**args, **installer_args})
+                log.info('generating NSIS translation files')
+                self.spawn(['python', 'installer/languages/json2nsh.py'])
+
             version_args = {
                 'filevers': str(file_version),
                 'prodvers': str(file_version),

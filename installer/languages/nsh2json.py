@@ -40,13 +40,16 @@ def extract_strings(f):
 
 def main():
     scriptdir = os.path.dirname(os.path.abspath(__file__))
+    sourcesdir = os.path.join(scriptdir, 'sources')
+    outdir = os.path.join(scriptdir, 'out')
 
-    for path in glob.glob(os.path.join(scriptdir, '*.nsh')):
+    for path in glob.glob(os.path.join(outdir, '*.nsh')):
         language, language_code = language_from_filename(path)
         if not language_code:
             print(f'Unknown language "{language}", skipping')
             continue
-        target_file = os.path.join(scriptdir, 'sources', f'{language_code}.json')
+        target_file = os.path.join(sourcesdir, f'{language_code}.json')
+        print(f'{path} => {target_file}')
         with open(path, 'r', encoding='utf-8') as infile:
             output = {}
             for identifier, text in extract_strings(infile):
