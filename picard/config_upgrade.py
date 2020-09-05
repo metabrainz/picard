@@ -297,7 +297,7 @@ def upgrade_to_v2_2_0_dev_4(config):
 
 
 def upgrade_to_v2_4_0_beta_3(config):
-    """Improved default file naming script"""
+    """Convert preserved tags to list"""
     _s = config.setting
     opt = 'preserved_tags'
     _s[opt] = [t.strip() for t in _s.raw_value(opt, qtype='QString').split(',')]

@@ -45,6 +45,7 @@ from picard.config_upgrade import (
     upgrade_to_v2_1_0_dev_1,
     upgrade_to_v2_2_0_dev_3,
     upgrade_to_v2_2_0_dev_4,
+    upgrade_to_v2_4_0_beta_3,
 )
 from picard.const import (
     DEFAULT_FILE_NAMING_FORMAT,
@@ -248,3 +249,9 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
         self.config.setting['file_naming_format'] = OLD_DEFAULT_FILE_NAMING_FORMAT_v2_1
         upgrade_to_v2_2_0_dev_4(self.config)
         self.assertEqual(DEFAULT_FILE_NAMING_FORMAT, self.config.setting['file_naming_format'])
+
+    def test_upgrade_to_v2_4_0_beta_3(self):
+        ListOption("setting", "preserved_tags", [])
+        self.config.setting['preserved_tags'] = 'foo,bar'
+        upgrade_to_v2_4_0_beta_3(self.config)
+        self.assertEqual(['foo', 'bar'], self.config.setting['preserved_tags'])
