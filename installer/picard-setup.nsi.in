@@ -80,7 +80,7 @@ ReserveFile "${NSISDIR}\Plugins\x86-unicode\InstallOptions.dll"
 ; Language handling
 !macro LOAD_LANGUAGE LANGUAGE
   !insertmacro MUI_LANGUAGE "${LANGUAGE}"
-  !include "languages\out\${LANGUAGE}.nsh"
+  !include "i18n\out\${LANGUAGE}.nsh"
 !macroend
 
 ; Language files
