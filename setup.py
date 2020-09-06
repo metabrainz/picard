@@ -472,7 +472,7 @@ class picard_regen_appdata_pot_file(Command):
             ])
 
 
-class picard_get_po_files(Command):
+class picard_pull_translations(Command):
     description = "Retrieve po files from transifex"
     minimum_perc_default = 5
     user_options = [
@@ -767,7 +767,7 @@ args = {
         'install': picard_install,
         'install_locales': picard_install_locales,
         'update_constants': picard_update_constants,
-        'get_po_files': picard_get_po_files,
+        'pull_translations': picard_pull_translations,
         'regen_pot_file': picard_regen_pot_file,
         'patch_version': picard_patch_version,
     },
