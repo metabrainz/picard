@@ -56,7 +56,7 @@ def main():
                 output[identifier] = text
 
             with open(target_file, 'w+', encoding='utf-8') as outfile:
-                outfile.write(json.dumps(output, indent=4))
+                outfile.write(json.dumps(output, ensure_ascii=False, indent=4))
 
 
 if __name__ == "__main__":
