@@ -1,3 +1,5 @@
+; See https://docs.transifex.com/client/client-configuration
+
 [main]
 host = https://www.transifex.com
 
