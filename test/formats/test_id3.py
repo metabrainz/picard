@@ -265,7 +265,7 @@ class CommonId3Tests:
 
         def test_rename_txxx_tags(self):
             file_path = os.path.join('test', 'data', 'test-id3-rename-tags.mp3')
-            filename = self.copy_file_tmp(file_path, 'mp3')
+            filename = self.copy_file_tmp(file_path, '.mp3')
             raw_metadata = load_raw(filename)
             self.assertIn('TXXX:Artists', raw_metadata)
             self.assertNotIn('TXXX:ARTISTS', raw_metadata)
