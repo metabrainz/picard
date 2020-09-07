@@ -514,6 +514,17 @@ class CoverArtBox(QtWidgets.QGroupBox):
             self.cover_art.set_metadata(self.item.metadata)
             self.show()
 
+    def choose_local_file(self):
+        file_chooser = QtWidgets.QFileDialog(self)
+        file_chooser.setNameFilters([
+            _("All supported image formats") + " (*.png *.jpg *.jpeg *.tif *.tiff *.gif *.pdf)",
+            _("All files") + " (*)",
+        ])
+        if file_chooser.exec_():
+            file_urls = file_chooser.selectedUrls()
+            if file_urls:
+                self.fetch_remote_image(file_urls[0])
+
     def set_load_image_behavior(self, behavior):
         config.setting["load_image_behavior"] = behavior
 
@@ -530,6 +541,12 @@ class CoverArtBox(QtWidgets.QGroupBox):
             use_orig_value_action = QtWidgets.QAction(name, self.parent)
             use_orig_value_action.triggered.connect(self.item.keep_original_images)
             menu.addAction(use_orig_value_action)
+
+        if self.item and self.item.can_show_coverart:
+            name = _('Choose local file ...')
+            choose_local_file_action = QtWidgets.QAction(name, self.parent)
+            choose_local_file_action.triggered.connect(self.choose_local_file)
+            menu.addAction(choose_local_file_action)
 
         if not menu.isEmpty():
             menu.addSeparator()
