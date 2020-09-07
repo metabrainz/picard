@@ -552,7 +552,7 @@ class CoverArtBox(QtWidgets.QGroupBox):
             menu.addSeparator()
 
         load_image_behavior_group = QtWidgets.QActionGroup(self.parent)
-        action = QtWidgets.QAction(_('Replace front cover art on drop'), self.parent)
+        action = QtWidgets.QAction(_('Replace front cover art'), self.parent)
         action.setCheckable(True)
         action.triggered.connect(partial(self.set_load_image_behavior, behavior='replace'))
         load_image_behavior_group.addAction(action)
@@ -560,7 +560,7 @@ class CoverArtBox(QtWidgets.QGroupBox):
             action.setChecked(True)
         menu.addAction(action)
 
-        action = QtWidgets.QAction(_('Append front cover art on drop'), self.parent)
+        action = QtWidgets.QAction(_('Append front cover art'), self.parent)
         action.setCheckable(True)
         action.triggered.connect(partial(self.set_load_image_behavior, behavior='append'))
         load_image_behavior_group.addAction(action)
