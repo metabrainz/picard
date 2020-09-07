@@ -15,6 +15,12 @@ source_file = po/appstream/picard-appstream.pot
 source_lang = en
 type = PO
 
+[musicbrainz.picard_installer]
+file_filter = installer/i18n/sources/<lang>.json
+source_file = installer/i18n/sources/en.json
+source_lang = en
+type = KEYVALUEJSON
+
 [musicbrainz.countries]
 file_filter = po/countries/<lang>.po
 source_file = po/countries/countries.pot
