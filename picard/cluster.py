@@ -137,13 +137,13 @@ class Cluster(QtCore.QObject, Item):
         self.files.remove(file)
         self.metadata['totaltracks'] = len(self.files)
         self.item.remove_file(file)
-        if not self.special and self.get_num_files() == 0:
-            self.tagger.remove_cluster(self)
         if self.can_show_coverart:
             file.metadata_images_changed.disconnect(self.update_metadata_images)
             remove_metadata_images(self, [file])
         self._update_related_album(removed_files=[file])
         self.tagger.window.set_processing(False)
+        if not self.special and self.get_num_files() == 0:
+            self.tagger.remove_cluster(self)
 
     def update(self):
         if self.item:
