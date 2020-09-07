@@ -59,29 +59,36 @@ from picard.track import Track
 from picard.util import imageinfo
 from picard.util.lrucache import LRUCache
 
+from picard.ui.widgets import ActiveLabel
 
-class ActiveLabel(QtWidgets.QLabel):
-    """Clickable QLabel."""
 
-    clicked = QtCore.pyqtSignal()
+class CoverArtThumbnail(ActiveLabel):
     image_dropped = QtCore.pyqtSignal(QtCore.QUrl, bytes)
 
-    def __init__(self, active=True, drops=False, *args):
-        super().__init__(*args)
+    def __init__(self, active=False, drops=False, pixmap_cache=None, *args, **kwargs):
+        super().__init__(active, drops, *args, **kwargs)
+        self.data = None
+        self.has_common_images = None
+        self.shadow = QtGui.QPixmap(":/images/CoverArtShadow.png")
+        self.pixel_ratio = self.tagger.primaryScreen().devicePixelRatio()
+        w, h = self.scaled(128, 128)
+        self.shadow = self.shadow.scaled(w, h, QtCore.Qt.KeepAspectRatio, QtCore.Qt.SmoothTransformation)
+        self.shadow.setDevicePixelRatio(self.pixel_ratio)
+        self.release = None
+        self.setPixmap(self.shadow)
+        self.setAlignment(QtCore.Qt.AlignTop | QtCore.Qt.AlignHCenter)
         self.setMargin(0)
-        self.setActive(active)
         self.setAcceptDrops(drops)
+        self.clicked.connect(self.open_release_page)
+        self.related_images = []
+        self._pixmap_cache = pixmap_cache
+        self.current_pixmap_key = None
 
-    def setActive(self, active):
-        self.active = active
-        if self.active:
-            self.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+    def __eq__(self, other):
+        if len(self.data) or len(other.data):
+            return self.current_pixmap_key == other.current_pixmap_key
         else:
-            self.setCursor(QtGui.QCursor())
-
-    def mouseReleaseEvent(self, event):
-        if self.active and event.button() == QtCore.Qt.LeftButton:
-            self.clicked.emit()
+            return True
 
     @staticmethod
     def dragEnterEvent(event):
@@ -127,32 +134,6 @@ class ActiveLabel(QtWidgets.QLabel):
 
         if accepted:
             event.acceptProposedAction()
-
-
-class CoverArtThumbnail(ActiveLabel):
-
-    def __init__(self, active=False, drops=False, pixmap_cache=None, *args, **kwargs):
-        super().__init__(active, drops, *args, **kwargs)
-        self.data = None
-        self.has_common_images = None
-        self.shadow = QtGui.QPixmap(":/images/CoverArtShadow.png")
-        self.pixel_ratio = self.tagger.primaryScreen().devicePixelRatio()
-        w, h = self.scaled(128, 128)
-        self.shadow = self.shadow.scaled(w, h, QtCore.Qt.KeepAspectRatio, QtCore.Qt.SmoothTransformation)
-        self.shadow.setDevicePixelRatio(self.pixel_ratio)
-        self.release = None
-        self.setPixmap(self.shadow)
-        self.setAlignment(QtCore.Qt.AlignTop | QtCore.Qt.AlignHCenter)
-        self.clicked.connect(self.open_release_page)
-        self.related_images = []
-        self._pixmap_cache = pixmap_cache
-        self.current_pixmap_key = None
-
-    def __eq__(self, other):
-        if len(self.data) or len(other.data):
-            return self.current_pixmap_key == other.current_pixmap_key
-        else:
-            return True
 
     def scaled(self, *dimensions):
         return (self.pixel_ratio * dimension for dimension in dimensions)
