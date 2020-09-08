@@ -4,7 +4,7 @@
 #
 # Copyright (C) 2006-2008 Lukáš Lalinský
 # Copyright (C) 2008 Hendrik van Antwerpen
-# Copyright (C) 2008-2009, 2019 Philipp Wolfer
+# Copyright (C) 2008-2009, 2019-2020 Philipp Wolfer
 # Copyright (C) 2011 Andrew Barnert
 # Copyright (C) 2012-2013 Michael Wiencek
 # Copyright (C) 2013 Wieland Hoffmann
@@ -57,10 +57,13 @@ class FileBrowser(QtWidgets.QTreeView):
         super().__init__(parent)
         self.setSelectionMode(QtWidgets.QAbstractItemView.ExtendedSelection)
         self.setDragEnabled(True)
-        self.move_files_here_action = QtWidgets.QAction(_("&Move Tagged Files Here"), self)
+        self.load_selected_files_action = QtWidgets.QAction(_("&Load selected files"), self)
+        self.load_selected_files_action.triggered.connect(self.load_selected_files)
+        self.addAction(self.load_selected_files_action)
+        self.move_files_here_action = QtWidgets.QAction(_("&Move tagged files here"), self)
         self.move_files_here_action.triggered.connect(self.move_files_here)
         self.addAction(self.move_files_here_action)
-        self.toggle_hidden_action = QtWidgets.QAction(_("Show &Hidden Files"), self)
+        self.toggle_hidden_action = QtWidgets.QAction(_("Show &hidden files"), self)
         self.toggle_hidden_action.setCheckable(True)
         self.toggle_hidden_action.setChecked(config.persist["show_hidden_files"])
         self.toggle_hidden_action.toggled.connect(self.show_hidden)
@@ -68,9 +71,18 @@ class FileBrowser(QtWidgets.QTreeView):
         self.set_as_starting_directory_action = QtWidgets.QAction(_("&Set as starting directory"), self)
         self.set_as_starting_directory_action.triggered.connect(self.set_as_starting_directory)
         self.addAction(self.set_as_starting_directory_action)
-        self.setContextMenuPolicy(QtCore.Qt.ActionsContextMenu)
         self.focused = False
         self._set_model()
+
+    def contextMenuEvent(self, event):
+        menu = QtWidgets.QMenu(self)
+        menu.addAction(self.load_selected_files_action)
+        menu.addSeparator()
+        menu.addAction(self.move_files_here_action)
+        menu.addAction(self.toggle_hidden_action)
+        menu.addAction(self.set_as_starting_directory_action)
+        menu.exec_(event.globalPos())
+        event.accept()
 
     def _set_model(self):
         self.model = QtWidgets.QFileSystemModel()
@@ -167,6 +179,18 @@ class FileBrowser(QtWidgets.QTreeView):
         if not os.path.isdir(destination):
             destination = os.path.dirname(destination)
         return destination
+
+    def load_selected_files(self):
+        indexes = self.selectedIndexes()
+        if not indexes:
+            return
+        paths = set(self.model.filePath(index) for index in indexes)
+        dirs = set(p for p in paths if os.path.isdir(p))
+        files = paths - dirs
+        tagger = QtCore.QObject.tagger
+        for d in dirs:
+            tagger.add_directory(d)
+        tagger.add_files(files)
 
     def move_files_here(self):
         indexes = self.selectedIndexes()
