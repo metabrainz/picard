@@ -520,13 +520,11 @@ class Tagger(QtWidgets.QApplication):
                 file.load(partial(self._file_loaded, target=target))
                 QtCore.QCoreApplication.processEvents()
 
-    def _scan_paths_recursive(self, paths, recursive, ignore_hidden):
-        files = []
+    @staticmethod
+    def _scan_paths_recursive(paths, recursive, ignore_hidden):
         local_paths = list(paths)
         while local_paths:
             current_path = local_paths.pop(0)
-            current_path_files = []
-
             try:
                 if os.path.isdir(current_path):
                     for entry in os.scandir(current_path):
@@ -535,33 +533,11 @@ class Tagger(QtWidgets.QApplication):
                         if recursive and entry.is_dir():
                             local_paths.append(entry.path)
                         else:
-                            current_path_files.append(entry.path)
+                            yield entry.path
                 else:
-                    current_path_files.append(current_path)
-                    current_path = os.path.dirname(current_path)
+                    yield current_path
             except FileNotFoundError:
                 pass
-
-            number_of_files = len(current_path_files)
-            if number_of_files:
-                mparms = {
-                    'count': number_of_files,
-                    'directory': current_path,
-                }
-                log.debug("Adding %(count)d files from '%(directory)r'" %
-                          mparms)
-                self.window.set_statusbar_message(
-                    ngettext(
-                        "Adding %(count)d file from '%(directory)s' ...",
-                        "Adding %(count)d files from '%(directory)s' ...",
-                        number_of_files),
-                    mparms,
-                    translate=None,
-                    echo=None
-                )
-                files.extend(current_path_files)
-                QtCore.QCoreApplication.processEvents()
-        return files
 
     def add_paths(self, paths, target=None):
         files = self._scan_paths_recursive(paths,
