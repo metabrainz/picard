@@ -482,10 +482,8 @@ class Tagger(QtWidgets.QApplication):
             self.cluster(files)
         self.window.set_sorting(True)
 
-    def add_files(self, filenames, target=None, result=None):
+    def add_files(self, filenames, target=None):
         """Add files to the tagger."""
-        if result:
-            filenames = result   # Handles add_directory task results coming from a worker thread
         ignoreregex = None
         pattern = config.setting['ignore_regex']
         if pattern:
