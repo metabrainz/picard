@@ -73,7 +73,6 @@ from picard.track import (
     Track,
 )
 from picard.util import (
-    encode_filename,
     icontheme,
     natsort,
     restore_method,
@@ -722,18 +721,17 @@ class BaseTreeView(QtWidgets.QTreeWidget):
     @staticmethod
     def drop_urls(urls, target):
         files = []
-        new_files = []
+        new_paths = []
+        tagger = QtCore.QObject.tagger
         for url in urls:
             log.debug("Dropped the URL: %r", url.toString(QtCore.QUrl.RemoveUserInfo))
             if url.scheme() == "file" or not url.scheme():
                 filename = os.path.normpath(os.path.realpath(url.toLocalFile().rstrip("\0")))
-                file = BaseTreeView.tagger.files.get(filename)
+                file = tagger.files.get(filename)
                 if file:
                     files.append(file)
-                elif os.path.isdir(encode_filename(filename)):
-                    BaseTreeView.tagger.add_directory(filename)
                 else:
-                    new_files.append(filename)
+                    new_paths.append(filename)
             elif url.scheme() in ("http", "https"):
                 path = url.path()
                 match = re.search(r"/(release|recording)/([0-9a-z\-]{36})", path)
@@ -741,13 +739,13 @@ class BaseTreeView(QtWidgets.QTreeWidget):
                     entity = match.group(1)
                     mbid = match.group(2)
                     if entity == "release":
-                        BaseTreeView.tagger.load_album(mbid)
+                        tagger.load_album(mbid)
                     elif entity == "recording":
-                        BaseTreeView.tagger.load_nat(mbid)
+                        tagger.load_nat(mbid)
         if files:
-            BaseTreeView.tagger.move_files(files, target)
-        if new_files:
-            BaseTreeView.tagger.add_files(new_files, target=target)
+            tagger.move_files(files, target)
+        if new_paths:
+            tagger.add_paths(new_paths, target=target)
 
     def dropEvent(self, event):
         return QtWidgets.QTreeView.dropEvent(self, event)

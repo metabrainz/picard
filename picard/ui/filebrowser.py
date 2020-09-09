@@ -185,12 +185,8 @@ class FileBrowser(QtWidgets.QTreeView):
         if not indexes:
             return
         paths = set(self.model.filePath(index) for index in indexes)
-        dirs = set(p for p in paths if os.path.isdir(p))
-        files = paths - dirs
         tagger = QtCore.QObject.tagger
-        for d in dirs:
-            tagger.add_directory(d)
-        tagger.add_files(files)
+        tagger.add_paths(paths)
 
     def move_files_here(self):
         indexes = self.selectedIndexes()

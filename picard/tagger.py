@@ -385,14 +385,8 @@ class Tagger(QtWidgets.QApplication):
 
     def _run_init(self):
         if self._cmdline_files:
-            files = []
-            for file in self._cmdline_files:
-                if os.path.isdir(file):
-                    self.add_directory(decode_filename(file))
-                else:
-                    files.append(decode_filename(file))
-            if files:
-                self.add_files(files)
+            files = [decode_filename(f) for f in self._cmdline_files]
+            self.add_paths(files)
             del self._cmdline_files
 
     def run(self):
@@ -409,10 +403,7 @@ class Tagger(QtWidgets.QApplication):
             event.run()
         elif event.type() == QtCore.QEvent.FileOpen:
             file = event.file()
-            if os.path.isdir(file):
-                self.add_directory(file)
-            else:
-                self.add_files([file])
+            self.add_paths([file])
             if IS_HAIKU:
                 self.bring_tagger_front()
             # We should just return True here, except that seems to
@@ -531,29 +522,33 @@ class Tagger(QtWidgets.QApplication):
                 file.load(partial(self._file_loaded, target=target))
                 QtCore.QCoreApplication.processEvents()
 
-    def _scan_dir(self, folders, recursive, ignore_hidden):
+    def _scan_paths_recursive(self, paths, recursive, ignore_hidden):
         files = []
-        local_folders = list(folders)
-        while local_folders:
-            current_folder = local_folders.pop(0)
-            current_folder_files = []
+        local_paths = list(paths)
+        while local_paths:
+            current_path = local_paths.pop(0)
+            current_path_files = []
 
             try:
-                for entry in os.scandir(current_folder):
-                    if ignore_hidden and is_hidden(entry.path):
-                        continue
-                    if recursive and entry.is_dir():
-                        local_folders.append(entry.path)
-                    else:
-                        current_folder_files.append(entry.path)
+                if os.path.isdir(current_path):
+                    for entry in os.scandir(current_path):
+                        if ignore_hidden and is_hidden(entry.path):
+                            continue
+                        if recursive and entry.is_dir():
+                            local_paths.append(entry.path)
+                        else:
+                            current_path_files.append(entry.path)
+                else:
+                    current_path_files.append(current_path)
+                    current_path = os.path.dirname(current_path)
             except FileNotFoundError:
                 pass
 
-            number_of_files = len(current_folder_files)
+            number_of_files = len(current_path_files)
             if number_of_files:
                 mparms = {
                     'count': number_of_files,
-                    'directory': current_folder,
+                    'directory': current_path,
                 }
                 log.debug("Adding %(count)d files from '%(directory)r'" %
                           mparms)
@@ -566,15 +561,15 @@ class Tagger(QtWidgets.QApplication):
                     translate=None,
                     echo=None
                 )
-                files.extend(current_folder_files)
+                files.extend(current_path_files)
                 QtCore.QCoreApplication.processEvents()
         return files
 
-    def add_directory(self, path):
-        files = self._scan_dir([path],
+    def add_paths(self, paths, target=None):
+        files = self._scan_paths_recursive(paths,
                             config.setting['recursively_add_files'],
                             config.setting["ignore_hidden_files"])
-        self.add_files(files)
+        self.add_files(files, target=target)
 
     def get_file_lookup(self):
         """Return a FileLookup object."""

@@ -940,8 +940,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                     {'directory': dir_list[0]}
                 )
 
-            for directory in dir_list:
-                self.tagger.add_directory(directory)
+            self.tagger.add_paths(dir_list)
 
     def close_active_window(self):
         self.tagger.activeWindow().close()
