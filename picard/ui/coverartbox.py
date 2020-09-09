@@ -543,7 +543,7 @@ class CoverArtBox(QtWidgets.QGroupBox):
             menu.addAction(use_orig_value_action)
 
         if self.item and self.item.can_show_coverart:
-            name = _('Choose local file ...')
+            name = _('Choose local file...')
             choose_local_file_action = QtWidgets.QAction(name, self.parent)
             choose_local_file_action.triggered.connect(self.choose_local_file)
             menu.addAction(choose_local_file_action)
