@@ -3,5 +3,5 @@ Babel>=2.6.0
 flake8
 isort>=4.3.10,<5
 pycodestyle
-pylint
+pylint>=2.6.0
 transifex-client
