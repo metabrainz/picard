@@ -290,6 +290,48 @@ def format_file_info(file_):
                              htmlescape(i[1])), info))
 
 
+def format_tracklist(cluster):
+    info = []
+    info.append("<b>%s</b> %s" % (_('Album:'),
+                                  htmlescape(cluster.metadata["album"])))
+    info.append("<b>%s</b> %s" % (_('Artist:'),
+                                  htmlescape(cluster.metadata["albumartist"])))
+    info.append("")
+    TrackListItem = namedtuple('TrackListItem', 'tracknumber, title, artist, length')
+    tracklists = defaultdict(list)
+    if isinstance(cluster, Album):
+        objlist = cluster.tracks
+    else:
+        objlist = cluster.iterfiles(False)
+    for obj_ in objlist:
+        m = obj_.metadata
+        artist = m["artist"] or m["albumartist"] or cluster.metadata["albumartist"]
+        track = TrackListItem(m["tracknumber"], m["title"], artist,
+                              m["~length"])
+        tracklists[obj_.discnumber].append(track)
+
+    def sorttracknum(item):
+        try:
+            return int(item.tracknumber)
+        except ValueError:
+            try:
+                # This allows to parse values like '3' but also '3/10'
+                m = re.search(r'^\d+', item.tracknumber)
+                return int(m.group(0))
+            except AttributeError:
+                return 0
+
+    ndiscs = len(tracklists)
+    for discnumber in sorted(tracklists):
+        tracklist = tracklists[discnumber]
+        if ndiscs > 1:
+            info.append("<b>%s</b>" % (_('Disc %d') % discnumber))
+        lines = ["%s %s - %s (%s)" % item for item in sorted(tracklist, key=sorttracknum)]
+        info.append("<b>%s</b><br />%s<br />" % (_('Tracklist:'),
+                    '<br />'.join([htmlescape(s).replace(' ', '&nbsp;') for s in lines])))
+    return '<br/>'.join(info)
+
+
 class FileInfoDialog(InfoDialog):
 
     def __init__(self, file_, parent=None):
@@ -325,7 +367,7 @@ class AlbumInfoDialog(InfoDialog):
             self.ui.info.setText(text + '<hr />')
         else:
             tabWidget.setTabText(tab_index, _("&Info"))
-            self.tab_hide(tab)
+            self.ui.info.setText(format_tracklist(album))
 
 
 class TrackInfoDialog(InfoDialog):
@@ -360,42 +402,7 @@ class ClusterInfoDialog(InfoDialog):
 
     def _display_info_tab(self):
         tab = self.ui.info_tab
-        cluster = self.obj
         tabWidget = self.ui.tabWidget
         tab_index = tabWidget.indexOf(tab)
         tabWidget.setTabText(tab_index, _("&Info"))
-        info = []
-        info.append("<b>%s</b> %s" % (_('Album:'),
-                                      htmlescape(cluster.metadata["album"])))
-        info.append("<b>%s</b> %s" % (_('Artist:'),
-                                      htmlescape(cluster.metadata["albumartist"])))
-        info.append("")
-        TrackListItem = namedtuple('TrackListItem', 'tracknumber, title, artist, length')
-        tracklists = defaultdict(list)
-        for file_ in cluster.iterfiles(False):
-            m = file_.metadata
-            artist = m["artist"] or m["albumartist"] or cluster.metadata["albumartist"]
-            track = TrackListItem(m["tracknumber"], m["title"], artist,
-                                  m["~length"])
-            tracklists[file_.discnumber].append(track)
-
-        def sorttracknum(item):
-            try:
-                return int(item.tracknumber)
-            except ValueError:
-                try:
-                    # This allows to parse values like '3' but also '3/10'
-                    m = re.search(r'^\d+', item.tracknumber)
-                    return int(m.group(0))
-                except AttributeError:
-                    return 0
-
-        ndiscs = len(tracklists)
-        for discnumber in sorted(tracklists):
-            tracklist = tracklists[discnumber]
-            if ndiscs > 1:
-                info.append("<b>%s</b>" % (_('Disc %d') % discnumber))
-            lines = ["%s %s - %s (%s)" % item for item in sorted(tracklist, key=sorttracknum)]
-            info.append("<b>%s</b><br />%s<br />" % (_('Tracklist:'),
-                        '<br />'.join([htmlescape(s).replace(' ', '&nbsp;') for s in lines])))
-        self.ui.info.setText('<br/>'.join(info))
+        self.ui.info.setText(format_tracklist(self.obj))

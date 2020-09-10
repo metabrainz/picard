@@ -821,22 +821,6 @@ class File(QtCore.QObject, Item):
     def iterfiles(self, save=False):
         yield self
 
-    @property
-    def tracknumber(self):
-        """The track number as an int."""
-        try:
-            return int(self.metadata["tracknumber"])
-        except BaseException:
-            return 0
-
-    @property
-    def discnumber(self):
-        """The disc number as an int."""
-        try:
-            return int(self.metadata["discnumber"])
-        except BaseException:
-            return 0
-
 
 _file_post_load_processors = PluginFunctions(label='file_post_load_processors')
 _file_post_addition_to_track_processors = PluginFunctions(label='file_post_addition_to_track_processors')
