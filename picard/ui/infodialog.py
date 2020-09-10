@@ -297,7 +297,7 @@ def format_tracklist(cluster):
     info.append("<b>%s</b> %s" % (_('Artist:'),
                                   htmlescape(cluster.metadata["albumartist"])))
     info.append("")
-    TrackListItem = namedtuple('TrackListItem', 'tracknumber, title, artist, length')
+    TrackListItem = namedtuple('TrackListItem', 'number, title, artist, length')
     tracklists = defaultdict(list)
     if isinstance(cluster, Album):
         objlist = cluster.tracks
@@ -310,13 +310,13 @@ def format_tracklist(cluster):
                               m["~length"])
         tracklists[obj_.discnumber].append(track)
 
-    def sorttracknum(item):
+    def sorttracknum(track):
         try:
-            return int(item.tracknumber)
+            return int(track.number)
         except ValueError:
             try:
                 # This allows to parse values like '3' but also '3/10'
-                m = re.search(r'^\d+', item.tracknumber)
+                m = re.search(r'^\d+', track.number)
                 return int(m.group(0))
             except AttributeError:
                 return 0
