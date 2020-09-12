@@ -66,3 +66,19 @@ class Item(object):
 
     def load(self, priority=False, refresh=False):
         pass
+
+    @property
+    def tracknumber(self):
+        """The track number as an int."""
+        try:
+            return int(self.metadata["tracknumber"])
+        except BaseException:
+            return 0
+
+    @property
+    def discnumber(self):
+        """The disc number as an int."""
+        try:
+            return int(self.metadata["discnumber"])
+        except BaseException:
+            return 0
