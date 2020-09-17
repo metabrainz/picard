@@ -56,6 +56,7 @@ _artist_rel_types = {
     # "recording": "engineer",
     "remixer": "remixer",
     "sound": "engineer",
+    "vocal arranger": "arranger",
     "writer": "writer",
 }
 
