@@ -2,4 +2,4 @@ python-dateutil==2.8.1
 discid==1.2.0
 markdown
 mutagen==1.45.1
-PyQt5==5.14.2
+PyQt5==5.15.1
