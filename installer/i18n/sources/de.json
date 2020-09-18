@@ -1,5 +1,5 @@
 {
-    "MsgAlreadyInstalled": "${PRODUCT_NAME} ist bereits installiert. \n\nKlicken Sie „OK“ um die vorherige Version zu deinstallieren oder „Abbrechen“ um das Update abzubrechen.",
+    "MsgAlreadyInstalled": "${PRODUCT_NAME} ist bereits installiert und muss vor der Installation dieses Upgrades auf Version ${PRODUCT_VERSION} deinstalliert werden. \n\nKlicken Sie „OK“ um fortzufahren oder „Abbrechen“ um das Upgrade abzubrechen.",
     "MsgApplicationRunning": "Die Anwendung ${PRODUCT_NAME} wird ausgeführt. Bitte schließen und erneut versuchen.",
     "MsgRequires64Bit": "Diese Version von ${PRODUCT_NAME} erfordert ein 64-bit Windows-System.",
     "MuiDescriptionRequired": "Installiert ${PRODUCT_NAME} mit den für die Ausführung erforderlichen Dateien.",
