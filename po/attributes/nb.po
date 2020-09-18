@@ -8,7 +8,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2020-09-03 17:21+0000\n"
+"PO-Revision-Date: 2020-09-17 21:05+0000\n"
 "Last-Translator: Michael Wiencek <mwtuea@gmail.com>\n"
 "Language-Team: Norwegian Bokmål (http://www.transifex.com/musicbrainz/musicbrainz/language/nb/)\n"
 "MIME-Version: 1.0\n"
@@ -2171,7 +2171,6 @@ msgid "E-flat major"
 msgstr "Es-dur"
 
 #: DB:work_attribute_type_allowed_value/value:12
-#: DB:work_attribute_type_allowed_value/value:815
 msgctxt "work_attribute_type_allowed_value"
 msgid "E-flat minor"
 msgstr "es-moll"
@@ -2335,6 +2334,11 @@ msgstr "f-moll"
 msgctxt "work_attribute_type_allowed_value"
 msgid "F-flat major"
 msgstr "Fes-dur"
+
+#: DB:work_attribute_type_allowed_value/value:815
+msgctxt "work_attribute_type_allowed_value"
+msgid "F-flat minor"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:19
 msgctxt "work_attribute_type_allowed_value"
@@ -3108,17 +3112,6 @@ msgctxt "work_attribute_type"
 msgid "ICE ID"
 msgstr ""
 
-#: DB:work_attribute_type/description:34
-msgctxt "work_attribute_type"
-msgid "ID assigned to a work by the British rights society PRS for Music"
-msgstr ""
-
-#: DB:work_attribute_type/description:22
-msgctxt "work_attribute_type"
-msgid ""
-"ID for rights intermediaries Christian Copyright Licensing International"
-msgstr ""
-
 #: DB:work_attribute_type/description:24
 msgctxt "work_attribute_type"
 msgid "ID for the Argentinean rights society SADAIC"
@@ -3144,6 +3137,11 @@ msgctxt "work_attribute_type"
 msgid "ID for the Brazilian rights society ECAD"
 msgstr ""
 
+#: DB:work_attribute_type/description:34
+msgctxt "work_attribute_type"
+msgid "ID for the British rights society PRS for Music"
+msgstr ""
+
 #: DB:work_attribute_type/description:10
 msgctxt "work_attribute_type"
 msgid "ID for the Canadian rights society SOCAN"
@@ -3167,6 +3165,11 @@ msgstr ""
 #: DB:work_attribute_type/description:25
 msgctxt "work_attribute_type"
 msgid "ID for the Czech rights society OSA"
+msgstr ""
+
+#: DB:work_attribute_type/description:51
+msgctxt "work_attribute_type"
+msgid "ID for the Danish rights society KODA"
 msgstr ""
 
 #: DB:work_attribute_type/description:26
@@ -3264,6 +3267,11 @@ msgctxt "work_attribute_type"
 msgid "ID for the Spanish rights society SGAE"
 msgstr ""
 
+#: DB:work_attribute_type/description:50
+msgctxt "work_attribute_type"
+msgid "ID for the Swedish rights society STIM"
+msgstr ""
+
 #: DB:work_attribute_type/description:18
 msgctxt "work_attribute_type"
 msgid "ID for the Swiss rights society SUISA"
@@ -3302,6 +3310,11 @@ msgstr ""
 #: DB:work_attribute_type/description:38
 msgctxt "work_attribute_type"
 msgid "ID for the international (formerly US) rights society AMRA"
+msgstr ""
+
+#: DB:work_attribute_type/description:22
+msgctxt "work_attribute_type"
+msgid "ID for the private licensing company CCLI"
 msgstr ""
 
 #: DB:work_attribute_type/name:14
@@ -3539,6 +3552,11 @@ msgstr ""
 msgctxt "work_attribute_type_allowed_value"
 msgid "Jōnpuri"
 msgstr "Jōnpuri"
+
+#: DB:work_attribute_type/name:51
+msgctxt "work_attribute_type"
+msgid "KODA ID"
+msgstr ""
 
 #: DB:work_attribute_type/name:11
 msgctxt "work_attribute_type"
@@ -5734,6 +5752,11 @@ msgstr "SOCAN ID"
 #: DB:work_attribute_type/name:35
 msgctxt "work_attribute_type"
 msgid "SPA ID"
+msgstr ""
+
+#: DB:work_attribute_type/name:50
+msgctxt "work_attribute_type"
+msgid "STIM ID"
 msgstr ""
 
 #: DB:work_attribute_type/name:18

@@ -23,13 +23,13 @@
 # Paul Tremberth <agigaday@gmail.com>, 2013
 # AO <ao@localizationlab.org>, 2015
 # AO <ao@localizationlab.org>, 2013-2015
-# yvanz, 2016-2019
+# yvanz, 2016-2020
 # yvanz, 2016,2018
 # yvanz, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2020-09-03 17:21+0000\n"
+"PO-Revision-Date: 2020-09-17 21:05+0000\n"
 "Last-Translator: Michael Wiencek <mwtuea@gmail.com>\n"
 "Language-Team: French (http://www.transifex.com/musicbrainz/musicbrainz/language/fr/)\n"
 "MIME-Version: 1.0\n"
@@ -430,17 +430,17 @@ msgstr "La♯ mineur"
 #: DB:work_attribute_type/name:44
 msgctxt "work_attribute_type"
 msgid "ACAM ID"
-msgstr ""
+msgstr "ID ACAM"
 
 #: DB:work_attribute_type/name:47
 msgctxt "work_attribute_type"
 msgid "ACDAM ID"
-msgstr ""
+msgstr "ID ACDAM"
 
 #: DB:work_attribute_type/name:43
 msgctxt "work_attribute_type"
 msgid "AGADU ID"
-msgstr ""
+msgstr "ID AGADU"
 
 #: DB:work_attribute_type/name:23
 msgctxt "work_attribute_type"
@@ -450,17 +450,17 @@ msgstr "ID AKM"
 #: DB:work_attribute_type/name:38
 msgctxt "work_attribute_type"
 msgid "AMRA ID"
-msgstr ""
+msgstr "ID AMRA"
 
 #: DB:work_attribute_type/name:46
 msgctxt "work_attribute_type"
 msgid "APA ID"
-msgstr ""
+msgstr "ID APA"
 
 #: DB:work_attribute_type/name:41
 msgctxt "work_attribute_type"
 msgid "APDAYC ID"
-msgstr ""
+msgstr "ID APDAYC"
 
 #: DB:work_attribute_type/name:13
 msgctxt "work_attribute_type"
@@ -470,7 +470,7 @@ msgstr "ID APRA"
 #: DB:work_attribute_type/name:48
 msgctxt "work_attribute_type"
 msgid "ARTISJUS ID"
-msgstr ""
+msgstr "ID ARTISJUS"
 
 #: DB:work_attribute_type/name:6
 msgctxt "work_attribute_type"
@@ -1439,7 +1439,7 @@ msgstr "CED"
 #: DB:work_attribute_type/name:45
 msgctxt "work_attribute_type"
 msgid "COMPASS ID"
-msgstr ""
+msgstr "ID COMPASS"
 
 #: DB:work_attribute_type_allowed_value/value:63
 msgctxt "work_attribute_type_allowed_value"
@@ -2192,7 +2192,6 @@ msgid "E-flat major"
 msgstr "Mi♭ majeur"
 
 #: DB:work_attribute_type_allowed_value/value:12
-#: DB:work_attribute_type_allowed_value/value:815
 msgctxt "work_attribute_type_allowed_value"
 msgid "E-flat minor"
 msgstr "Mi♭ mineur"
@@ -2210,7 +2209,7 @@ msgstr "Mi♯ mineur"
 #: DB:work_attribute_type/name:37
 msgctxt "work_attribute_type"
 msgid "ECAD ID"
-msgstr ""
+msgstr "ID ECAD"
 
 #: DB:release_group_primary_type/name:3
 msgctxt "release_group_primary_type"
@@ -2356,6 +2355,11 @@ msgstr "Fa mineur"
 msgctxt "work_attribute_type_allowed_value"
 msgid "F-flat major"
 msgstr "Fa♭ majeur"
+
+#: DB:work_attribute_type_allowed_value/value:815
+msgctxt "work_attribute_type_allowed_value"
+msgid "F-flat minor"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:19
 msgctxt "work_attribute_type_allowed_value"
@@ -3129,31 +3133,20 @@ msgctxt "work_attribute_type"
 msgid "ICE ID"
 msgstr "ID ICE"
 
-#: DB:work_attribute_type/description:34
-msgctxt "work_attribute_type"
-msgid "ID assigned to a work by the British rights society PRS for Music"
-msgstr ""
-
-#: DB:work_attribute_type/description:22
-msgctxt "work_attribute_type"
-msgid ""
-"ID for rights intermediaries Christian Copyright Licensing International"
-msgstr ""
-
 #: DB:work_attribute_type/description:24
 msgctxt "work_attribute_type"
 msgid "ID for the Argentinean rights society SADAIC"
-msgstr ""
+msgstr "ID pour la SADAIC, société argentine de gestion des droits"
 
 #: DB:work_attribute_type/description:13
 msgctxt "work_attribute_type"
 msgid "ID for the Australasian rights society APRA"
-msgstr ""
+msgstr "ID pour l’APRA, société australasienne de gestion des droits"
 
 #: DB:work_attribute_type/description:23
 msgctxt "work_attribute_type"
 msgid "ID for the Austrian rights society AKM"
-msgstr ""
+msgstr "ID pour l’AKM, société autrichienne de gestion des droits"
 
 #: DB:work_attribute_type/description:28
 msgctxt "work_attribute_type"
@@ -3163,62 +3156,72 @@ msgstr "ID pour la SABAM, société belge de gestion des droits d'auteur"
 #: DB:work_attribute_type/description:37
 msgctxt "work_attribute_type"
 msgid "ID for the Brazilian rights society ECAD"
+msgstr "ID pour l’ECAD, société brésilienne de gestion des droits"
+
+#: DB:work_attribute_type/description:34
+msgctxt "work_attribute_type"
+msgid "ID for the British rights society PRS for Music"
 msgstr ""
 
 #: DB:work_attribute_type/description:10
 msgctxt "work_attribute_type"
 msgid "ID for the Canadian rights society SOCAN"
-msgstr ""
+msgstr "ID pour la SOCAN, société canadienne de gestion des droits"
 
 #: DB:work_attribute_type/description:39
 msgctxt "work_attribute_type"
 msgid "ID for the Colombian rights society SAYCO"
-msgstr ""
+msgstr "ID pour la SAYCO, société colombienne de gestion des droits"
 
 #: DB:work_attribute_type/description:44
 msgctxt "work_attribute_type"
 msgid "ID for the Costa Rican rights society ACAM"
-msgstr ""
+msgstr "ID pour l’ACAM, société costaricaine de gestion des droits"
 
 #: DB:work_attribute_type/description:47
 msgctxt "work_attribute_type"
 msgid "ID for the Cuban rights society ACDAM"
-msgstr ""
+msgstr "ID pour l’ACDAM, société cubaine de gestion des droits"
 
 #: DB:work_attribute_type/description:25
 msgctxt "work_attribute_type"
 msgid "ID for the Czech rights society OSA"
+msgstr "ID pour l’OSA, société tchèque de gestion des droits"
+
+#: DB:work_attribute_type/description:51
+msgctxt "work_attribute_type"
+msgid "ID for the Danish rights society KODA"
 msgstr ""
 
 #: DB:work_attribute_type/description:26
 msgctxt "work_attribute_type"
 msgid "ID for the Dutch rights society BUMA/STEMRA"
-msgstr ""
+msgstr "ID pour la BUMA/STEMRA, société hollandaise de gestion des droits"
 
 #: DB:work_attribute_type/description:40
 msgctxt "work_attribute_type"
 msgid "ID for the Ecuadorian rights society SAYCE"
-msgstr ""
+msgstr "ID pour la SAYCE, société équatorienne de gestion des droits"
 
 #: DB:work_attribute_type/description:21
 msgctxt "work_attribute_type"
 msgid "ID for the French rights society Sacem"
-msgstr ""
+msgstr "ID pour la SACEM, société française de gestion des droits"
 
 #: DB:work_attribute_type/description:9
 msgctxt "work_attribute_type"
 msgid "ID for the German rights society GEMA"
-msgstr ""
+msgstr "ID pour la GEMA, société allemande de gestion des droits"
 
 #: DB:work_attribute_type/description:19
 msgctxt "work_attribute_type"
 msgid "ID for the Hong Kong rights society CASH"
-msgstr ""
+msgstr "ID pour la CASH, société hongkongaise de gestion des droits"
 
 #: DB:work_attribute_type/description:48
 msgctxt "work_attribute_type"
 msgid "ID for the Hungarian rights society ARTISJUS"
-msgstr ""
+msgstr "ID pour l’ARTISJUS, société hongroise de gestion des droits"
 
 #: DB:work_attribute_type/description:29
 msgctxt "work_attribute_type"
@@ -3228,7 +3231,7 @@ msgstr "ID pour l’ICE, entreprise internationale de gestion des droits d'auteu
 #: DB:work_attribute_type/description:36
 msgctxt "work_attribute_type"
 msgid "ID for the Italian rights society SIAE"
-msgstr ""
+msgstr "ID pour la SIAE, société italienne de gestion des droits"
 
 #: DB:work_attribute_type/description:3
 msgctxt "work_attribute_type"
@@ -3243,12 +3246,12 @@ msgstr "ID pour la société japonaise de gestion des droits NexTone"
 #: DB:work_attribute_type/description:11
 msgctxt "work_attribute_type"
 msgid "ID for the Korean rights society KOMCA"
-msgstr ""
+msgstr "ID pour la KOMCA, société coréenne de gestion des droits"
 
 #: DB:work_attribute_type/description:49
 msgctxt "work_attribute_type"
 msgid "ID for the Malaysian rights society MACP"
-msgstr ""
+msgstr "ID pour la MACP, société malaisienne de gestion des droits"
 
 #: DB:work_attribute_type/description:27
 msgctxt "work_attribute_type"
@@ -3258,12 +3261,12 @@ msgstr "ID pour la SACM, société mexicaine de gestion des droits d'auteur"
 #: DB:work_attribute_type/description:46
 msgctxt "work_attribute_type"
 msgid "ID for the Paraguayan rights society APA"
-msgstr ""
+msgstr "ID pour l’APA, société paraguayenne de gestion des droits"
 
 #: DB:work_attribute_type/description:41
 msgctxt "work_attribute_type"
 msgid "ID for the Peruvian rights society APDAYC"
-msgstr ""
+msgstr "ID pour l’APDAYC, société péruvienne de gestion des droits"
 
 #: DB:work_attribute_type/description:30
 msgctxt "work_attribute_type"
@@ -3273,56 +3276,66 @@ msgstr "ID pour la ZAiKS, société polonaise de gestion des droits d'auteur"
 #: DB:work_attribute_type/description:35
 msgctxt "work_attribute_type"
 msgid "ID for the Portuguese rights society SPA"
-msgstr ""
+msgstr "ID pour la SPA, société portugaise de gestion des droits"
 
 #: DB:work_attribute_type/description:45
 msgctxt "work_attribute_type"
 msgid "ID for the Singaporean rights society COMPASS"
-msgstr ""
+msgstr "ID pour la COMPASS, société singapourienne de gestion des droits"
 
 #: DB:work_attribute_type/description:20
 msgctxt "work_attribute_type"
 msgid "ID for the Spanish rights society SGAE"
+msgstr "ID pour la SGAE, société espagnole de gestion des droits"
+
+#: DB:work_attribute_type/description:50
+msgctxt "work_attribute_type"
+msgid "ID for the Swedish rights society STIM"
 msgstr ""
 
 #: DB:work_attribute_type/description:18
 msgctxt "work_attribute_type"
 msgid "ID for the Swiss rights society SUISA"
-msgstr ""
+msgstr "ID pour la SUISA, société suisse de gestion des droits"
 
 #: DB:work_attribute_type/description:12
 msgctxt "work_attribute_type"
 msgid "ID for the Taiwanese rights society MÜST"
-msgstr ""
+msgstr "ID pour la MÜST, société taïwanaise de gestion des droits"
 
 #: DB:work_attribute_type/description:6
 msgctxt "work_attribute_type"
 msgid "ID for the US rights society ASCAP"
-msgstr ""
+msgstr "ID pour l’ASCAP, société états-unienne de gestion des droits"
 
 #: DB:work_attribute_type/description:7
 msgctxt "work_attribute_type"
 msgid "ID for the US rights society BMI"
-msgstr ""
+msgstr "ID pour la BMI, société états-unienne de gestion des droits"
 
 #: DB:work_attribute_type/description:8
 msgctxt "work_attribute_type"
 msgid "ID for the US rights society SESAC"
-msgstr ""
+msgstr "ID pour la SESAC, société états-unienne de gestion des droits"
 
 #: DB:work_attribute_type/description:43
 msgctxt "work_attribute_type"
 msgid "ID for the Uruguayan rights society AGADU"
-msgstr ""
+msgstr "ID pour l’AGADU, société uruguayenne de gestion des droits"
 
 #: DB:work_attribute_type/description:42
 msgctxt "work_attribute_type"
 msgid "ID for the Venezuelan rights society SACVEN"
-msgstr ""
+msgstr "ID pour la SACVEN, société vénézuélienne de gestion des droits"
 
 #: DB:work_attribute_type/description:38
 msgctxt "work_attribute_type"
 msgid "ID for the international (formerly US) rights society AMRA"
+msgstr "ID pour l’AMRA, société internationale (initialement états-unienne) de gestion des droits"
+
+#: DB:work_attribute_type/description:22
+msgctxt "work_attribute_type"
+msgid "ID for the private licensing company CCLI"
 msgstr ""
 
 #: DB:work_attribute_type/name:14
@@ -3560,6 +3573,11 @@ msgstr "Jôgkauns"
 msgctxt "work_attribute_type_allowed_value"
 msgid "Jōnpuri"
 msgstr "Jônpuri"
+
+#: DB:work_attribute_type/name:51
+msgctxt "work_attribute_type"
+msgid "KODA ID"
+msgstr ""
 
 #: DB:work_attribute_type/name:11
 msgctxt "work_attribute_type"
@@ -4077,7 +4095,7 @@ msgstr "Longa"
 #: DB:work_attribute_type/name:49
 msgctxt "work_attribute_type"
 msgid "MACP ID"
-msgstr ""
+msgstr "ID MACP"
 
 #: DB:work_attribute_type_allowed_value/value:963
 msgctxt "work_attribute_type_allowed_value"
@@ -5097,7 +5115,7 @@ msgstr "Oyunhavası"
 #: DB:work_attribute_type/name:34
 msgctxt "work_attribute_type"
 msgid "PRS tune code"
-msgstr ""
+msgstr "Code d’air (« tune ») PRS"
 
 #: DB:work_attribute_type_allowed_value/value:993
 msgctxt "work_attribute_type_allowed_value"
@@ -5700,7 +5718,7 @@ msgstr "ID SACM"
 #: DB:work_attribute_type/name:42
 msgctxt "work_attribute_type"
 msgid "SACVEN ID"
-msgstr ""
+msgstr "SACVEN ID"
 
 #: DB:work_attribute_type/name:24
 msgctxt "work_attribute_type"
@@ -5710,12 +5728,12 @@ msgstr "ID SADAIC"
 #: DB:work_attribute_type/name:40
 msgctxt "work_attribute_type"
 msgid "SAYCE ID"
-msgstr ""
+msgstr "SAYCE ID"
 
 #: DB:work_attribute_type/name:39
 msgctxt "work_attribute_type"
 msgid "SAYCO ID"
-msgstr ""
+msgstr "SAYCO ID"
 
 #: DB:medium_format/name:62
 msgctxt "medium_format"
@@ -5745,7 +5763,7 @@ msgstr "SHM-SACD"
 #: DB:work_attribute_type/name:36
 msgctxt "work_attribute_type"
 msgid "SIAE ID"
-msgstr ""
+msgstr "SIAE ID"
 
 #: DB:work_attribute_type/name:10
 msgctxt "work_attribute_type"
@@ -5755,6 +5773,11 @@ msgstr "ID SOCAN"
 #: DB:work_attribute_type/name:35
 msgctxt "work_attribute_type"
 msgid "SPA ID"
+msgstr "SPA ID"
+
+#: DB:work_attribute_type/name:50
+msgctxt "work_attribute_type"
+msgid "STIM ID"
 msgstr ""
 
 #: DB:work_attribute_type/name:18
