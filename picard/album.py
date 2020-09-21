@@ -422,7 +422,6 @@ class Album(DataObject, Item):
         tm.copy(metadata)
         track_to_metadata(track_node, track)
         tm["~absolutetracknumber"] = absolutetracknumber
-        track.orig_metadata.copy(tm)
         track._customize_metadata()
 
         self._new_metadata.length += tm.length
@@ -440,6 +439,7 @@ class Album(DataObject, Item):
         except BaseException:
             self.error_append(traceback.format_exc())
 
+        track.orig_metadata.copy(tm)
         return track
 
     def load(self, priority=False, refresh=False):
