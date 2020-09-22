@@ -38,6 +38,7 @@ from picard.mbjson import (
 from picard.metadata import (
     MULTI_VALUED_JOINER,
     Metadata,
+    MultiMetadataProxy,
     weights_from_preferred_countries,
     weights_from_preferred_formats,
     weights_from_release_type_scores,
@@ -598,3 +599,56 @@ class MetadataTest(PicardTestCase):
             track_json['score'] = score
             match = track.metadata.compare_to_track(track_json, File.comparison_weights)
             self.assertEqual(sim, match.similarity)
+
+
+class MultiMetadataProxyTest(PicardTestCase):
+
+    def setUp(self):
+        super().setUp()
+        self.m1 = Metadata({
+            "key1": "m1.val1",
+            "key2": "m1.val2",
+        })
+        self.m2 = Metadata({
+            "key2": "m2.val2",
+            "key3": "m2.val3",
+        })
+        self.m3 = Metadata({
+            "key2": "m3.val2",
+            "key4": "m3.val4",
+        })
+
+    def test_get_attribute(self):
+        mp = MultiMetadataProxy(self.m1, self.m2, self.m3)
+        self.assertEqual(mp.deleted_tags, self.m1.deleted_tags)
+
+    def test_gettitem(self):
+        mp = MultiMetadataProxy(self.m1, self.m2, self.m3)
+        self.assertEqual("m1.val1", mp["key1"])
+        self.assertEqual("m1.val2", mp["key2"])
+        self.assertEqual("m2.val3", mp["key3"])
+        self.assertEqual("m3.val4", mp["key4"])
+
+    def test_settitem(self):
+        orig_m2 = Metadata(self.m2)
+        mp = MultiMetadataProxy(self.m1, self.m2, self.m3)
+        mp["key1"] = "foo1"
+        mp["key2"] = "foo2"
+        mp["key3"] = "foo3"
+        mp["key4"] = "foo4"
+        mp["key5"] = "foo5"
+        self.assertEqual("foo1", self.m1["key1"])
+        self.assertEqual("foo2", self.m1["key2"])
+        self.assertEqual("foo3", self.m1["key3"])
+        self.assertEqual("foo4", self.m1["key4"])
+        self.assertEqual("foo5", self.m1["key5"])
+        self.assertEqual(orig_m2, self.m2)
+
+    def test_delitem(self):
+        orig_m2 = Metadata(self.m2)
+        mp = MultiMetadataProxy(self.m1, self.m2, self.m3)
+        del mp["key2"]
+        del mp["key3"]
+        self.assertIn("key2", self.m1.deleted_tags)
+        self.assertIn("key3", self.m1.deleted_tags)
+        self.assertEqual(orig_m2, self.m2)

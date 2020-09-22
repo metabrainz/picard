@@ -37,6 +37,7 @@ from collections.abc import (
     Iterable,
     MutableMapping,
 )
+from functools import partial
 
 from PyQt5.QtCore import QObject
 
@@ -518,6 +519,78 @@ class Metadata(MutableMapping):
 
     def __str__(self):
         return ("store: %r\ndeleted: %r\nimages: %r\nlength: %r" % (self._store, self.deleted_tags, [str(img) for img in self.images], self.length))
+
+
+class MultiMetadataProxy(MutableMapping):
+    """
+    Wraps a writable Metadata object together with another
+    readonly Metadata object.
+
+    Changes are written to the writable object, while values are
+    read from both the writable and the readonly object (with the writable
+    object taking precedence). The use case is to provide access to Metadata
+    values without making them part of the actual Metadata. E.g. allow track
+    metadata to use file specific metadata, without making it actually part
+    of the track.
+    """
+
+    WRITE_METHODS = [
+        'add_unique',
+        'add',
+        'apply_func',
+        'clear_deleted',
+        'clear',
+        'copy',
+        'delete',
+        'set',
+        'strip_whitespace',
+        'update',
+    ]
+
+    def __init__(self, metadata, *readonly_metadata):
+        self.metadata = metadata
+        self.combined_metadata = Metadata()
+        for m in reversed(readonly_metadata):
+            self.combined_metadata.update(m)
+        self.combined_metadata.update(metadata)
+
+    def __getattr__(self, name):
+        if name in self.WRITE_METHODS:
+            return partial(self.__write, name)
+        else:
+            attribute = self.metadata.__getattribute__(name)
+            if callable(attribute):
+                return partial(self.__read, name)
+            else:
+                return attribute
+
+    def __write(self, name, *args, **kwargs):
+        func1 = self.metadata.__getattribute__(name)
+        func2 = self.combined_metadata.__getattribute__(name)
+        func1(*args, **kwargs)
+        return func2(*args, **kwargs)
+
+    def __read(self, name, *args, **kwargs):
+        func = self.combined_metadata.__getattribute__(name)
+        return func(*args, **kwargs)
+
+    def __delitem__(self, name):
+        return self.__write('__delitem__', name)
+
+    def __getitem__(self, name):
+        return self.__read('__getitem__', name)
+
+    def __iter__(self):
+        return self.__read('__iter__')
+
+    def __len__(self):
+        return self.__read('__len__')
+
+    def __setitem__(self, name, values):
+        return self.__write('__setitem__', name, values)
+
+    def __repr__(self):
+        return self.__read('__repr__')
 
 
 _album_metadata_processors = PluginFunctions(label='album_metadata_processors')
