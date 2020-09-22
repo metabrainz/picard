@@ -147,6 +147,7 @@ class Track(DataObject, Item):
         self.num_linked_files = 0
         self.metadata = Metadata()
         self.orig_metadata = Metadata()
+        self.scripted_metadata = Metadata()
         self.error = None
         self._track_artists = []
 
@@ -175,8 +176,10 @@ class Track(DataObject, Item):
         metadata = Metadata(file.metadata)
         metadata.update(self.orig_metadata)
         self.run_scripts(metadata)
+        # Apply changes to the track's metadata done manually after the scripts ran
+        meta_diff = self.metadata.diff(self.scripted_metadata)
+        metadata.update(meta_diff)
         file.copy_metadata(metadata)
-        file.metadata['~extension'] = file.orig_metadata['~extension']
         file.update(signal=False)
         self.update()
 

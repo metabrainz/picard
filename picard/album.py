@@ -368,6 +368,7 @@ class Album(DataObject, Item):
                     except ScriptError:
                         log.exception("Failed to run tagger script %s on track", s_name)
                     track.metadata.strip_whitespace()
+                    track.scripted_metadata.update(track.metadata)
                 # Run tagger script for the album itself
                 try:
                     parser.eval(s_text, self._new_metadata)
