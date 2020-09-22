@@ -95,14 +95,15 @@ class AcoustIDManager(QtCore.QObject):
         log.debug("AcoustID: submitting total of %d fingerprints...", len(submissions))
         self._batch_submit(submissions)
 
-    def _batch_submit(self, submissions):
+    def _batch_submit(self, submissions, errors=None):
         if not submissions:  # All fingerprints submitted, nothing to do
-            log.debug("AcoustID: submitted all fingerprints")
+            if errors:
+                log_msg = N_("AcoustID submission finished, but not all fingerprints have been submitted")
+            else:
+                log_msg = N_("AcoustID submission finished successfully")
+            log.debug(log_msg)
             self.tagger.window.set_statusbar_message(
-                N_('AcoustIDs successfully submitted.'),
-                echo=None,
-                timeout=3000
-            )
+                log_msg, echo=None, timeout=3000)
             self._check_unsubmitted()
             return
         submission_batch = submissions[:self.BATCH_SUBMIT_COUNT]
@@ -114,11 +115,13 @@ class AcoustIDManager(QtCore.QObject):
             N_('Submitting AcoustIDs ...'),
             echo=None
         )
+        if not errors:
+            errors = []
         next_func = partial(self._batch_submit, submissions)
         self._acoustid_api.submit_acoustid_fingerprints(fingerprints,
-            partial(self._batch_submit_finished, submission_batch, next_func))
+            partial(self._batch_submit_finished, submission_batch, errors, next_func))
 
-    def _batch_submit_finished(self, submissions, next_func, document, http, error):
+    def _batch_submit_finished(self, submissions, previous_errors, next_func, document, http, error):
         if error:
             try:
                 error = load_json(document)
@@ -129,19 +132,15 @@ class AcoustIDManager(QtCore.QObject):
                 'error': http.errorString(),
                 'message': message
             }
-            log.error(
-                "AcoustID: submission failed with error '%(error)s': %(message)s" %
-                mparms)
+            previous_errors.append(mparms)
+            log_msg = N_("AcoustID submission failed with error '%(error)s': %(message)s")
+            log.error(log_msg, mparms)
             self.tagger.window.set_statusbar_message(
-                N_("AcoustID submission failed with error '%(error)s': %(message)s"),
-                mparms,
-                echo=None,
-                timeout=3000
-            )
+                log_msg, mparms, echo=None, timeout=3000)
         else:
             log.debug('AcoustID: %d fingerprints successfully submitted', len(submissions))
             for file, submission in submissions:
                 submission.orig_recordingid = submission.recordingid
                 file.update()
             self._check_unsubmitted()
-        next_func()
+        next_func(previous_errors)
