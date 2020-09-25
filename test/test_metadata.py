@@ -215,6 +215,19 @@ class MetadataTest(PicardTestCase):
         self.metadata["old"] = "old-value"
         self.assertEqual(self.metadata._store, m._store)
 
+    def test_metadata_diff(self):
+        m1 = Metadata({
+            "foo1": "bar1",
+            "foo2": "bar2",
+            "foo3": "bar3",
+        })
+        m2 = Metadata(m1)
+        m1["foo1"] = "baz"
+        del m1["foo2"]
+        diff = m1.diff(m2)
+        self.assertEqual({"foo1": "baz"}, diff)
+        self.assertEqual(set(["foo2"]), diff.deleted_tags)
+
     def test_metadata_clear(self):
         self.metadata.clear()
         self.assertEqual(0, len(self.metadata))

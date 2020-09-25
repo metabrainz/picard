@@ -375,6 +375,16 @@ class Metadata(MutableMapping):
             # no argument, raise TypeError to mimic dict.update()
             raise TypeError("descriptor 'update' of '%s' object needs an argument" % self.__class__.__name__)
 
+    def diff(self, other):
+        """Returns a new Metadata object with only the tags that changed in self compared to other"""
+        m = Metadata()
+        for tag, values in self.rawitems():
+            other_values = other.getall(tag)
+            if other_values != values:
+                m[tag] = values
+        m.deleted_tags = self.deleted_tags - other.deleted_tags
+        return m
+
     def _update_from_metadata(self, other, copy_images=True):
         for k, v in other.rawitems():
             self.set(k, v[:])

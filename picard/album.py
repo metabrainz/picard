@@ -368,6 +368,7 @@ class Album(DataObject, Item):
                     except ScriptError:
                         log.exception("Failed to run tagger script %s on track", s_name)
                     track.metadata.strip_whitespace()
+                    track.scripted_metadata.update(track.metadata)
                 # Run tagger script for the album itself
                 try:
                     parser.eval(s_text, self._new_metadata)
@@ -422,7 +423,6 @@ class Album(DataObject, Item):
         tm.copy(metadata)
         track_to_metadata(track_node, track)
         tm["~absolutetracknumber"] = absolutetracknumber
-        track.orig_metadata.copy(tm)
         track._customize_metadata()
 
         self._new_metadata.length += tm.length
@@ -440,6 +440,7 @@ class Album(DataObject, Item):
         except BaseException:
             self.error_append(traceback.format_exc())
 
+        track.orig_metadata.copy(tm)
         return track
 
     def load(self, priority=False, refresh=False):
