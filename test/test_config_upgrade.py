@@ -3,7 +3,7 @@
 # Picard, the next-generation MusicBrainz tagger
 #
 # Copyright (C) 2019 Laurent Monin
-# Copyright (C) 2019 Philipp Wolfer
+# Copyright (C) 2019-2020 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -19,6 +19,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+from PyQt5.QtCore import QByteArray
 
 from test.test_config import TestPicardConfigCommon
 
@@ -26,6 +27,7 @@ from picard.config import (
     BoolOption,
     IntOption,
     ListOption,
+    Option,
     TextOption,
 )
 from picard.config_upgrade import (
@@ -47,6 +49,7 @@ from picard.config_upgrade import (
     upgrade_to_v2_2_0_dev_4,
     upgrade_to_v2_4_0_beta_3,
     upgrade_to_v2_5_0_dev_1,
+    upgrade_to_v2_5_0_dev_2,
 )
 from picard.const import (
     DEFAULT_FILE_NAMING_FORMAT,
@@ -272,3 +275,12 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
         ]
         upgrade_to_v2_5_0_dev_1(self.config)
         self.assertEqual(expected, self.config.setting['ca_providers'])
+
+    def test_upgrade_to_v2_5_0_dev_2(self):
+        Option("persist", "splitter_state", QByteArray())
+        Option("persist", "bottom_splitter_state", QByteArray())
+        self.config.persist["splitter_state"] = b'foo'
+        self.config.persist["bottom_splitter_state"] = b'bar'
+        upgrade_to_v2_5_0_dev_2(self.config)
+        self.assertEqual(b'', self.config.persist['splitter_state'])
+        self.assertEqual(b'', self.config.persist['bottom_splitter_state'])

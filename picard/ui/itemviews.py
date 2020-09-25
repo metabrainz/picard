@@ -185,6 +185,7 @@ class MainPanel(QtWidgets.QSplitter):
 
     def __init__(self, window, parent=None):
         super().__init__(parent)
+        self.setChildrenCollapsible(False)
         self.window = window
         self.create_icons()
         self._views = [FileTreeView(window, self), AlbumTreeView(window, self)]
