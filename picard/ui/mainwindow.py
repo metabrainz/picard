@@ -175,8 +175,8 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             self.search_toolbar.setMovable(False)
 
         mainLayout = QtWidgets.QSplitter(QtCore.Qt.Vertical)
+        mainLayout.setChildrenCollapsible(False)
         mainLayout.setContentsMargins(0, 0, 0, 0)
-        mainLayout.setHandleWidth(1)
 
         self.panel = MainPanel(self, mainLayout)
         self.file_browser = FileBrowser(self.panel)
