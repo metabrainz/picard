@@ -42,7 +42,7 @@ jobs:
     - name: Setup macOS build environment
       run: |
         ./scripts/package/macos-setup.sh
-        PYTHON_BASE_VERSION=$(echo $PYTHON_VERSION | sed -e "s/\.[0-9]\+$//")
+        PYTHON_BASE_VERSION=$(echo $PYTHON_VERSION | sed -e "s/\.[0-9]\{1,\}$//")
         echo "::add-path::/Library/Frameworks/Python.framework/Versions/$PYTHON_BASE_VERSION/bin"
         echo "::add-path::/usr/local/opt/gettext/bin"
         RELEASE_TAG=$(git describe --match "release-*" --abbrev=0 --always HEAD)
