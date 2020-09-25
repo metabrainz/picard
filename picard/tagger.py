@@ -463,14 +463,21 @@ class Tagger(QtWidgets.QApplication):
             log.debug("Trying to analyze %r ...", file)
             self.analyze([file])
 
-    def move_files(self, files, target):
+    def move_files(self, files, target, move_to_multi_tracks=True):
         if target is None:
             log.debug("Aborting move since target is invalid")
             return
         self.window.set_sorting(False)
-        if isinstance(target, (Track, Cluster)):
+        if isinstance(target, Cluster):
             for file in files:
                 file.move(target)
+                QtCore.QCoreApplication.processEvents()
+        elif isinstance(target, Track):
+            album = target.album
+            for file in files:
+                file.move(target)
+                if move_to_multi_tracks:  # Assign next file to following track
+                    target = album.get_next_track(target) or album.unmatched_files
                 QtCore.QCoreApplication.processEvents()
         elif isinstance(target, File):
             for file in files:
