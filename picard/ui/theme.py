@@ -27,6 +27,7 @@ from PyQt5 import (
 from picard import log
 from picard.const.sys import (
     IS_HAIKU,
+    IS_LINUX,
     IS_MACOS,
     IS_WIN,
 )
@@ -55,7 +56,7 @@ class BaseTheme:
     def setup(self, app):
         # Use the new fusion style from PyQt5 for a modern and consistent look
         # across all OSes.
-        if not IS_MACOS and not IS_HAIKU:
+        if not IS_MACOS and not IS_HAIKU and not IS_LINUX:
             app.setStyle('Fusion')
 
         app.setStyleSheet(
