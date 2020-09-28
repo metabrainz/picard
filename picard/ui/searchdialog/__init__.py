@@ -4,7 +4,7 @@
 #
 # Copyright (C) 2016 Rahul Raturi
 # Copyright (C) 2018-2019 Laurent Monin
-# Copyright (C) 2018-2019 Philipp Wolfer
+# Copyright (C) 2018-2020 Philipp Wolfer
 # Copyright (C) 2020 Ray Bouchard
 #
 # This program is free software; you can redistribute it and/or
@@ -42,11 +42,17 @@ from picard.ui.util import StandardButton
 
 class SearchBox(QtWidgets.QWidget):
 
-    def __init__(self, parent):
+    def __init__(self, parent, force_advanced_search=None):
         super().__init__(parent)
         self.search_action = QtWidgets.QAction(icontheme.lookup('system-search'), _("Search"), self)
         self.search_action.setEnabled(False)
         self.search_action.triggered.connect(self.search)
+        if force_advanced_search is None:
+            self.force_advanced_search = False
+            self.use_advanced_search = config.setting["use_adv_search_syntax"]
+        else:
+            self.force_advanced_search = True
+            self.use_advanced_search = force_advanced_search
         self.setupUi()
 
     def focus_in_event(self, event):
@@ -103,10 +109,12 @@ class SearchBox(QtWidgets.QWidget):
         self.parent().search(self.query)
 
     def restore_checkbox_state(self):
-        self.use_adv_search_syntax.setChecked(config.setting["use_adv_search_syntax"])
+        self.use_adv_search_syntax.setChecked(self.use_advanced_search)
 
     def update_advanced_syntax_setting(self):
-        config.setting["use_adv_search_syntax"] = self.use_adv_search_syntax.isChecked()
+        self.use_advanced_search = self.use_adv_search_syntax.isChecked()
+        if not self.force_advanced_search:
+            config.setting["use_adv_search_syntax"] = self.use_advanced_search
 
     def enable_search(self):
         if self.query:
@@ -133,13 +141,23 @@ Retry = namedtuple("Retry", ["function", "query"])
 class SearchDialog(TableBasedDialog):
     accept_button_title = ""
 
-    def __init__(self, parent, accept_button_title, show_search=True, search_type=None):
+    def __init__(self, parent, accept_button_title, show_search=True, search_type=None, force_advanced_search=None):
         self.accept_button_title = accept_button_title
         self.search_results = []
         self.show_search = show_search
         self.search_type = search_type
+        self.force_advanced_search = force_advanced_search
         self.search_box = None
         super().__init__(parent)
+
+    @property
+    def use_advanced_search(self):
+        if self.show_search:
+            return self.search_box.use_advanced_search
+        elif self.force_advanced_search is not None:
+            return self.force_advanced_search
+        else:
+            return config.setting["use_adv_search_syntax"]
 
     def get_value_for_row_id(self, row, value):
         return row
@@ -148,7 +166,7 @@ class SearchDialog(TableBasedDialog):
         self.verticalLayout = QtWidgets.QVBoxLayout(self)
         self.verticalLayout.setObjectName("vertical_layout")
         if self.show_search:
-            self.search_box = SearchBox(self)
+            self.search_box = SearchBox(self, force_advanced_search=self.force_advanced_search)
             self.search_box.setObjectName("search_box")
             self.verticalLayout.addWidget(self.search_box)
         self.center_widget = QtWidgets.QWidget(self)
@@ -242,7 +260,7 @@ class SearchDialog(TableBasedDialog):
 
     def search_browser(self):
         self.tagger.search(self.search_box.query, self.search_type,
-                           adv=config.setting["use_adv_search_syntax"], force_browser=True)
+                           adv=self.use_advanced_search, force_browser=True)
 
     @restore_method
     def restore_state(self):
