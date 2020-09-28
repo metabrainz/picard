@@ -220,6 +220,11 @@ class InterfaceOptionsPage(OptionsPage):
         if new_theme_setting != config.setting["use_system_theme"]:
             restart_warning_title = _('Theme changed')
             restart_warning = _('You have changed the application theme. You have to restart Picard in order for the change to take effect.')
+            if new_theme_setting:
+                restart_warning += '\n\n' + _(
+                    'Please note that using the system theme might cause the user interface to be not shown correctly. '
+                    'If this is the case disable the "Use system theme" option to use Picard\'s default theme again.'
+                )
         elif new_language != config.setting["ui_language"]:
             restart_warning_title = _('Language changed')
             restart_warning = _('You have changed the interface language. You have to restart Picard in order for the change to take effect.')
