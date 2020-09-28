@@ -6,7 +6,7 @@
 # Copyright (C) 2006-2008, 2011 Lukáš Lalinský
 # Copyright (C) 2008 Hendrik van Antwerpen
 # Copyright (C) 2008 Will
-# Copyright (C) 2010-2011, 2014, 2018-2019 Philipp Wolfer
+# Copyright (C) 2010-2011, 2014, 2018-2020 Philipp Wolfer
 # Copyright (C) 2011-2013 Michael Wiencek
 # Copyright (C) 2012 Chad Wilson
 # Copyright (C) 2012 Wieland Hoffmann
@@ -115,18 +115,22 @@ class Cluster(QtCore.QObject, Item):
             self.related_album.update()
 
     def add_files(self, files):
+        added_files = []
         for file in files:
+            if file in self.files:
+                continue
+            added_files.append(file)
             self.metadata.length += file.metadata.length
             file._move(self)
             file.update(signal=False)
             if self.can_show_coverart:
                 file.metadata_images_changed.connect(self.update_metadata_images)
-        self.files.extend(files)
+        self.files.extend(added_files)
         self.metadata['totaltracks'] = len(self.files)
-        self.item.add_files(files)
+        self.item.add_files(added_files)
         if self.can_show_coverart:
-            add_metadata_images(self, files)
-        self._update_related_album(added_files=files)
+            add_metadata_images(self, added_files)
+        self._update_related_album(added_files=added_files)
 
     def add_file(self, file):
         self.add_files([file])
