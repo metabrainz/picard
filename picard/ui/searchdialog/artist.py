@@ -4,7 +4,7 @@
 #
 # Copyright (C) 2016 Rahul Raturi
 # Copyright (C) 2018 Laurent Monin
-# Copyright (C) 2018-2019 Philipp Wolfer
+# Copyright (C) 2018-2020 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -67,6 +67,7 @@ class ArtistSearchDialog(SearchDialog):
         self.tagger.mb_api.find_artists(self.handle_reply,
                                         query=text,
                                         search=True,
+                                        advanced_search=self.use_advanced_search,
                                         limit=QUERY_LIMIT)
 
     def retry(self):

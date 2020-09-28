@@ -45,7 +45,6 @@ from heapq import (
     heappush,
 )
 import os
-import re
 
 from PyQt5 import (
     QtCore,
@@ -735,15 +734,8 @@ class BaseTreeView(QtWidgets.QTreeWidget):
                 else:
                     new_paths.append(filename)
             elif url.scheme() in ("http", "https"):
-                path = url.path()
-                match = re.search(r"/(release|recording)/([0-9a-z\-]{36})", path)
-                if match:
-                    entity = match.group(1)
-                    mbid = match.group(2)
-                    if entity == "release":
-                        tagger.load_album(mbid)
-                    elif entity == "recording":
-                        tagger.load_nat(mbid)
+                file_lookup = tagger.get_file_lookup()
+                file_lookup.mbid_lookup(url.path(), browser_fallback=False)
         if files:
             tagger.move_files(files, target, move_to_multi_tracks)
         if new_paths:

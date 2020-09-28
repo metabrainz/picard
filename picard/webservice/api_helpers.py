@@ -156,7 +156,8 @@ class MBAPIHelper(APIHelper):
 
         is_search = kwargs.pop("search", False)
         if is_search:
-            if config.setting["use_adv_search_syntax"]:
+            use_advanced_search = kwargs.pop("advanced_search", config.setting["use_adv_search_syntax"])
+            if use_advanced_search:
                 query = kwargs["query"]
             else:
                 query = escape_lucene_query(kwargs["query"]).strip().lower()

@@ -5,7 +5,7 @@
 # Copyright (C) 2016 Rahul Raturi
 # Copyright (C) 2018 Antonio Larrosa
 # Copyright (C) 2018-2019 Laurent Monin
-# Copyright (C) 2018-2019 Philipp Wolfer
+# Copyright (C) 2018-2020 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -78,6 +78,7 @@ class TrackSearchDialog(SearchDialog):
         self.tagger.mb_api.find_tracks(self.handle_reply,
                                        query=text,
                                        search=True,
+                                       advanced_search=self.use_advanced_search,
                                        limit=QUERY_LIMIT)
 
     def load_similar_tracks(self, file_):
@@ -99,7 +100,7 @@ class TrackSearchDialog(SearchDialog):
         # Generate query to be displayed to the user (in search box).
         # If advanced query syntax setting is enabled by user, display query in
         # advanced syntax style. Otherwise display only track title.
-        if config.setting["use_adv_search_syntax"]:
+        if self.use_advanced_search:
             query_str = ' '.join(['%s:(%s)' % (item, escape_lucene_query(value))
                                   for item, value in query.items() if value])
         else:
