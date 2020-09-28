@@ -485,6 +485,10 @@ class Tagger(QtWidgets.QApplication):
         elif isinstance(target, Album):
             self.move_files_to_album(files, album=target)
         elif isinstance(target, ClusterList):
+            for file in files:
+                if isinstance(file.parent, Track):
+                    file.parent.remove_file(file)
+                    QtCore.QCoreApplication.processEvents()
             self.cluster(files)
         self.window.set_sorting(True)
 
