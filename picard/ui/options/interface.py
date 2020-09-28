@@ -122,7 +122,7 @@ class InterfaceOptionsPage(OptionsPage):
     options = [
         config.BoolOption("setting", "toolbar_show_labels", True),
         config.BoolOption("setting", "toolbar_multiselect", False),
-        config.BoolOption("setting", "builtin_search", False),
+        config.BoolOption("setting", "builtin_search", True),
         config.BoolOption("setting", "use_adv_search_syntax", False),
         config.BoolOption("setting", "quit_confirmation", True),
         config.TextOption("setting", "ui_language", ""),
