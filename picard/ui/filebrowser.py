@@ -71,6 +71,7 @@ class FileBrowser(QtWidgets.QTreeView):
         self.set_as_starting_directory_action = QtWidgets.QAction(_("&Set as starting directory"), self)
         self.set_as_starting_directory_action.triggered.connect(self.set_as_starting_directory)
         self.addAction(self.set_as_starting_directory_action)
+        self.doubleClicked.connect(self.load_file_for_item)
         self.focused = False
         self._set_model()
 
@@ -180,13 +181,17 @@ class FileBrowser(QtWidgets.QTreeView):
             destination = os.path.dirname(destination)
         return destination
 
+    def load_file_for_item(self, index):
+        QtCore.QObject.tagger.add_paths([
+            self.model.filePath(index)
+        ])
+
     def load_selected_files(self):
         indexes = self.selectedIndexes()
         if not indexes:
             return
         paths = set(self.model.filePath(index) for index in indexes)
-        tagger = QtCore.QObject.tagger
-        tagger.add_paths(paths)
+        QtCore.QObject.tagger.add_paths(paths)
 
     def move_files_here(self):
         indexes = self.selectedIndexes()
