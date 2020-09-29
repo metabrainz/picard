@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: picard 2.5.0.dev2\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-09-29 10:02+0200\n"
+"POT-Creation-Date: 2020-09-29 17:50+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -54,41 +54,41 @@ msgid_plural "; %i different images among tracks"
 msgstr[0] ""
 msgstr[1] ""
 
-#: picard/cluster.py:232
+#: picard/cluster.py:237
 #, python-format
 msgid "No matching releases for cluster %(album)s"
 msgstr ""
 
-#: picard/cluster.py:234
+#: picard/cluster.py:239
 #, python-format
 msgid "Cluster %(album)s identified!"
 msgstr ""
 
-#: picard/cluster.py:256
+#: picard/cluster.py:261
 #, python-format
 msgid "Looking up the metadata for cluster %(album)s..."
 msgstr ""
 
-#: picard/cluster.py:295 picard/cluster.py:549
+#: picard/cluster.py:300 picard/cluster.py:554
 #, python-format
 msgid "Clustering - step %(step)d/3: %(cluster_type)s (%(update)d%%)"
 msgstr ""
 
-#: picard/cluster.py:354
+#: picard/cluster.py:359
 msgid "Unclustered Files"
 msgstr ""
 
-#: picard/cluster.py:484
+#: picard/cluster.py:489
 msgid "Metadata Extraction"
 msgstr ""
 
-#: picard/cluster.py:485 picard/ui/cdlookup.py:72 picard/ui/itemviews.py:154
+#: picard/cluster.py:490 picard/ui/cdlookup.py:72 picard/ui/itemviews.py:154
 #: picard/ui/mainwindow.py:802 picard/ui/searchdialog/album.py:154
 #: picard/ui/searchdialog/track.py:65 picard/util/tags.py:41
 msgid "Artist"
 msgstr ""
 
-#: picard/cluster.py:486 picard/ui/cdlookup.py:72 picard/ui/itemviews.py:157
+#: picard/cluster.py:491 picard/ui/cdlookup.py:72 picard/ui/itemviews.py:157
 #: picard/ui/mainwindow.py:801 picard/util/tags.py:38
 msgid "Album"
 msgstr ""
@@ -236,24 +236,24 @@ msgstr ""
 msgid "[no release info]"
 msgstr ""
 
-#: picard/tagger.py:307 picard/ui/ui_options_general.py:135
+#: picard/tagger.py:306 picard/ui/ui_options_general.py:135
 msgid "MusicBrainz Account"
 msgstr ""
 
-#: picard/tagger.py:308
+#: picard/tagger.py:307
 msgid "Authorization code:"
 msgstr ""
 
-#: picard/tagger.py:731
+#: picard/tagger.py:734
 #, python-format
 msgid "Removing album %(id)s: %(artist)s - %(album)s"
 msgstr ""
 
-#: picard/tagger.py:749
+#: picard/tagger.py:752
 msgid "CD Lookup Error"
 msgstr ""
 
-#: picard/tagger.py:750
+#: picard/tagger.py:753
 #, python-format
 msgid ""
 "Error while reading CD:\n"
@@ -3398,108 +3398,112 @@ msgstr ""
 msgid "Excellent match"
 msgstr ""
 
-#: picard/ui/itemviews.py:408
+#: picard/ui/itemviews.py:410
 msgid "Restore default columns"
 msgstr ""
 
-#: picard/ui/itemviews.py:452
+#: picard/ui/itemviews.py:415
+msgid "Lock columns"
+msgstr ""
+
+#: picard/ui/itemviews.py:467
 msgid "&Expand all"
 msgstr ""
 
-#: picard/ui/itemviews.py:454
+#: picard/ui/itemviews.py:469
 msgid "&Collapse all"
 msgstr ""
 
-#: picard/ui/itemviews.py:456
+#: picard/ui/itemviews.py:471
 msgid "Select &all"
 msgstr ""
 
-#: picard/ui/itemviews.py:458
+#: picard/ui/itemviews.py:473
 msgid "Ctrl+A"
 msgstr ""
 
-#: picard/ui/itemviews.py:532
+#: picard/ui/itemviews.py:547
 msgid "&Other versions"
 msgstr ""
 
-#: picard/ui/itemviews.py:535
+#: picard/ui/itemviews.py:550
 msgid "Loading..."
 msgstr ""
 
-#: picard/ui/itemviews.py:587
+#: picard/ui/itemviews.py:602
 #, python-format
 msgid "&Other versions (%d)"
 msgstr ""
 
-#: picard/ui/itemviews.py:611
+#: picard/ui/itemviews.py:626
 msgid "Collections"
 msgstr ""
 
-#: picard/ui/itemviews.py:619
+#: picard/ui/itemviews.py:634
 msgid "P&lugins"
 msgstr ""
 
-#: picard/ui/itemviews.py:635
+#: picard/ui/itemviews.py:650
 msgid "&Run scripts"
 msgstr ""
 
-#: picard/ui/itemviews.py:812
+#: picard/ui/itemviews.py:830
 msgid "file view"
 msgstr ""
 
-#: picard/ui/itemviews.py:813
+#: picard/ui/itemviews.py:831
 msgid "Contains unmatched files and clusters"
 msgstr ""
 
-#: picard/ui/itemviews.py:833
+#: picard/ui/itemviews.py:851
 msgid "Clusters"
 msgstr ""
 
-#: picard/ui/itemviews.py:842
+#: picard/ui/itemviews.py:861
 msgid "album view"
 msgstr ""
 
-#: picard/ui/itemviews.py:843
+#: picard/ui/itemviews.py:862
 msgid "Contains albums and matched files"
 msgstr ""
 
-#: picard/ui/itemviews.py:979 picard/ui/options/renaming.py:210
+#: picard/ui/itemviews.py:998 picard/ui/options/renaming.py:210
 msgid "Error"
 msgstr ""
 
-#: picard/ui/itemviews.py:983
+#: picard/ui/itemviews.py:1002
 msgid "Album modified and complete"
 msgstr ""
 
-#: picard/ui/itemviews.py:986
+#: picard/ui/itemviews.py:1005
 msgid "Album unchanged and complete"
 msgstr ""
 
-#: picard/ui/itemviews.py:990
+#: picard/ui/itemviews.py:1009
 msgid "Album modified"
 msgstr ""
 
-#: picard/ui/itemviews.py:993
+#: picard/ui/itemviews.py:1012
 msgid "Album unchanged"
 msgstr ""
 
-#: picard/ui/itemviews.py:1131
+#: picard/ui/itemviews.py:1150
 msgid "Track saved"
 msgstr ""
 
-#: picard/ui/itemviews.py:1133 picard/ui/itemviews.py:1137
+#: picard/ui/itemviews.py:1152 picard/ui/itemviews.py:1156
 msgid "Pending"
 msgstr ""
 
-#: picard/ui/itemviews.py:1143
+#: picard/ui/itemviews.py:1162
 msgid "Fingerprint has already been submitted"
 msgstr ""
 
-#: picard/ui/itemviews.py:1145
+#: picard/ui/itemviews.py:1164
 msgid "Unsubmitted fingerprint"
 msgstr ""
 
-#: picard/ui/itemviews.py:1147
+#: picard/ui/itemviews.py:1166
 msgid ""
 "No fingerprint was calculated for this file, use \"Scan\" or \"Generate "
 "AcoustID Fingerprints\" to calculate the fingerprint."
@@ -5465,6 +5469,12 @@ msgstr ""
 
 #: picard/ui/widgets/scriptlistwidget.py:75
 msgid "Confirm Remove"
+msgstr ""
+
+#: picard/ui/widgets/tristatesortheaderview.py:53
+msgid ""
+"The table is locked. To enable sorting and column resizing\n"
+"unlock the table in the table header's context menu."
 msgstr ""
 
 #: picard/util/bytes2human.py:37
