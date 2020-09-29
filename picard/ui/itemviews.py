@@ -394,20 +394,29 @@ class ConfigurableColumnsHeader(TristateSortHeaderView):
 
     def contextMenuEvent(self, event):
         menu = QtWidgets.QMenu(self)
+        parent = self.parent()
 
         for i, column in enumerate(MainPanel.columns):
             if i == 0:
                 continue
-            action = QtWidgets.QAction(_(column[0]), self.parent())
+            action = QtWidgets.QAction(_(column[0]), parent)
             action.setCheckable(True)
             action.setChecked(i in self._visible_columns)
+            action.setEnabled(not self.is_locked)
             action.triggered.connect(partial(self.show_column, i))
             menu.addAction(action)
 
         menu.addSeparator()
-        restore_action = QtWidgets.QAction(_('Restore default columns'), self.parent())
+        restore_action = QtWidgets.QAction(_('Restore default columns'), parent)
+        restore_action.setEnabled(not self.is_locked)
         restore_action.triggered.connect(self.restore_defaults)
         menu.addAction(restore_action)
+
+        lock_action = QtWidgets.QAction(_('Lock columns'), parent)
+        lock_action.setCheckable(True)
+        lock_action.setChecked(self.is_locked)
+        lock_action.toggled.connect(self.lock)
+        menu.addAction(lock_action)
 
         menu.exec_(event.globalPos())
         event.accept()
@@ -427,6 +436,12 @@ class ConfigurableColumnsHeader(TristateSortHeaderView):
     def on_sort_indicator_changed(self, index, order):
         if index == MainPanel.FINGERPRINT_COLUMN:
             self.setSortIndicator(-1, QtCore.Qt.AscendingOrder)
+
+    def lock(self, is_locked):
+        super().lock(is_locked)
+        fingerprint_column_index = MainPanel.FINGERPRINT_COLUMN
+        if not self.is_locked and self.count() > fingerprint_column_index:
+            self.setSectionResizeMode(fingerprint_column_index, QtWidgets.QHeaderView.Fixed)
 
 
 class BaseTreeView(QtWidgets.QTreeWidget):
@@ -648,9 +663,11 @@ class BaseTreeView(QtWidgets.QTreeWidget):
     @restore_method
     def restore_state(self):
         self._restore_state(config.persist[self.header_state.name])
+        self.header().lock(config.persist[self.header_locked.name])
 
     def save_state(self):
         config.persist[self.header_state.name] = self.header().saveState()
+        config.persist[self.header_locked.name] = self.header().is_locked
 
     def restore_default_columns(self):
         self._restore_state(None)
@@ -806,6 +823,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
 class FileTreeView(BaseTreeView):
 
     header_state = config.Option("persist", "file_view_header_state", QtCore.QByteArray())
+    header_locked = config.BoolOption("persist", "file_view_header_locked", False)
 
     def __init__(self, window, parent=None):
         super().__init__(window, parent)
@@ -836,6 +854,7 @@ class FileTreeView(BaseTreeView):
 class AlbumTreeView(BaseTreeView):
 
     header_state = config.Option("persist", "album_view_header_state", QtCore.QByteArray())
+    header_locked = config.BoolOption("persist", "album_view_header_locked", False)
 
     def __init__(self, window, parent=None):
         super().__init__(window, parent)
