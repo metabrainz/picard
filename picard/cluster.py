@@ -41,6 +41,7 @@ from heapq import (
     heappush,
 )
 import ntpath
+from operator import attrgetter
 import re
 
 from PyQt5 import QtCore
@@ -115,16 +116,16 @@ class Cluster(QtCore.QObject, Item):
             self.related_album.update()
 
     def add_files(self, files):
-        added_files = []
-        for file in files:
-            if file in self.files:
-                continue
-            added_files.append(file)
+        added_files = set(files) - set(self.files)
+        if not added_files:
+            return
+        for file in added_files:
             self.metadata.length += file.metadata.length
             file._move(self)
             file.update(signal=False)
             if self.can_show_coverart:
                 file.metadata_images_changed.connect(self.update_metadata_images)
+        added_files = sorted(added_files, key=attrgetter('discnumber', 'tracknumber', 'base_filename'))
         self.files.extend(added_files)
         self.metadata['totaltracks'] = len(self.files)
         self.item.add_files(added_files)
