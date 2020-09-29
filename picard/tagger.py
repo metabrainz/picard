@@ -47,7 +47,6 @@ from collections import defaultdict
 from functools import partial
 from itertools import chain
 import logging
-from operator import attrgetter
 import os.path
 import platform
 import re
@@ -820,7 +819,7 @@ class Tagger(QtWidgets.QApplication):
         cluster_files = defaultdict(list)
         for name, artist, files in Cluster.cluster(files, 1.0, self):
             cluster = self.load_cluster(name, artist)
-            cluster_files[cluster].extend(sorted(files, key=attrgetter('discnumber', 'tracknumber', 'base_filename')))
+            cluster_files[cluster].extend(files)
         for cluster, files in cluster_files.items():
             cluster.add_files(files)
             QtCore.QCoreApplication.processEvents()
