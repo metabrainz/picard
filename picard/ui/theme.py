@@ -68,19 +68,20 @@ class BaseTheme:
         palette = QtGui.QPalette(app.palette())
         base_color = palette.color(QtGui.QPalette.Active, QtGui.QPalette.Base)
         self._dark_theme = base_color.lightness() < 128
-        self.update_palette(palette, self.is_dark_theme(), self.get_accent_color())
+        self.update_palette(palette, self.is_dark_theme, self.accent_color)
         app.setPalette(palette)
 
-    # pylint: disable=no-self-use
+    @property
     def is_dark_theme(self):
         return self._dark_theme
 
-    # pylint: disable=no-self-use
-    def get_accent_color(self):
+    @property
+    def accent_color(self):  # pylint: disable=no-self-use
         return None
 
-    def get_syntax_theme(self):
-        return dark_syntax_theme if self.is_dark_theme() else light_syntax_theme
+    @property
+    def syntax_theme(self):
+        return dark_syntax_theme if self.is_dark_theme else light_syntax_theme
 
     # pylint: disable=no-self-use
     def update_palette(self, palette, dark_theme, accent_color):
@@ -98,6 +99,7 @@ if IS_WIN:
     import winreg
 
     class WindowsTheme(BaseTheme):
+        @property
         def is_dark_theme(self):
             dark_theme = False
             try:
@@ -107,7 +109,8 @@ if IS_WIN:
                 log.warning('Failed reading AppsUseLightTheme from registry')
             return dark_theme
 
-        def get_accent_color(self):
+        @property
+        def accent_color(self):
             accent_color = None
             try:
                 with winreg.OpenKey(winreg.HKEY_CURRENT_USER, r"Software\Microsoft\Windows\DWM") as key:
@@ -148,6 +151,7 @@ elif IS_MACOS:
         AppKit = None
 
     class MacTheme(BaseTheme):
+        @property
         def is_dark_theme(self):
             if not AppKit:
                 return False

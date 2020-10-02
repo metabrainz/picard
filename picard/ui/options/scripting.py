@@ -120,10 +120,9 @@ class ScriptingDocumentationDialog(PicardDialog):
             postprocessor=process_html,
         )
 
-        syntax_theme = theme.get_syntax_theme()
         html = DOCUMENTATION_HTML_TEMPLATE % {
             'html': "<dl>%s</dl>" % funcdoc,
-            'script_function_fg': syntax_theme.func.name(),
+            'script_function_fg': theme.syntax_theme.func.name(),
             'monospace_font': FONT_FAMILY_MONOSPACE,
         }
         self.ui.textBrowser.setHtml(html)
