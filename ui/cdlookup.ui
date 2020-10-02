@@ -173,7 +173,7 @@
      <item>
       <widget class="QPushButton" name="lookup_button">
        <property name="text">
-        <string>Lookup in &amp;Browser</string>
+        <string>&amp;Submit disc ID</string>
        </property>
       </widget>
      </item>
