@@ -85,8 +85,12 @@ if [ -n "$TRAVIS_OSX_IMAGE" ]; then
 else
   DMG="MusicBrainz-Picard-$VERSION.dmg"
 fi
+mkdir staging
+mv "MusicBrainz Picard.app" staging/
+# Offer a link to /Applications for easy installation
+ln -s /Applications staging/Applications
 hdiutil create -volname "MusicBrainz Picard $VERSION" \
-  -srcfolder 'MusicBrainz Picard.app' -ov -format UDBZ "$DMG"
+  -srcfolder staging -ov -format UDBZ "$DMG"
 [ "$CODESIGN" = '1' ] && codesign --verify --verbose \
   --keychain "$KEYCHAIN_PATH" --sign "$CERTIFICATE_NAME" "$DMG"
 md5 -r "$DMG"
