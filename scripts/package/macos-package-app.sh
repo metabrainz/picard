@@ -7,7 +7,8 @@ fi
 VERSION=$(python3 -c 'import picard; print(picard.__version__)')
 
 MACOS_VERSION=$(sw_vers -productVersion)
-MACOS_VERSION_MAJOR=${MACOS_VERSION%.*.*}
+MACOS_VERSION_MAJOR=${MACOS_VERSION%.*}
+MACOS_VERSION_MAJOR=${MACOS_VERSION_MAJOR%.*}
 MACOS_VERSION_MINOR=${MACOS_VERSION#*.}
 MACOS_VERSION_MINOR=${MACOS_VERSION_MINOR%.*}
 
@@ -43,7 +44,7 @@ if [ -f scripts/package/appledev.p12 ] && [ -n "$appledev_p12_password" ]; then
 fi
 
 # Submit app for notarization on macOS >= 10.14
-if [ "$MACOS_VERSION_MAJOR" -eq 10 ] && [ "$MACOS_VERSION_MINOR" -ge 14 ]; then
+if { [ "$MACOS_VERSION_MAJOR" -eq 10 ] && [ "$MACOS_VERSION_MINOR" -ge 14 ]; } || [ "$MACOS_VERSION_MAJOR" -ge 11 ]; then
     NOTARIZE=1
 fi
 
