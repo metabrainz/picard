@@ -27,6 +27,7 @@
 
 from PyQt5 import (
     QtCore,
+    QtGui,
     QtWidgets,
 )
 
@@ -125,6 +126,10 @@ class EditTagDialog(PicardDialog):
         if event.modifiers() == QtCore.Qt.NoModifier and event.key() in (QtCore.Qt.Key_Enter, QtCore.Qt.Key_Return):
             self.add_or_edit_value()
             event.accept()
+        elif event.matches(QtGui.QKeySequence.Delete):
+            self.remove_value()
+        elif event.key() == QtCore.Qt.Key_Insert:
+            self.add_value()
         else:
             super().keyPressEvent(event)
 
