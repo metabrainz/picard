@@ -55,6 +55,7 @@ from picard.const import (
 )
 from picard.dataobj import DataObject
 from picard.file import (
+    FILE_INFO_TAGS,
     run_file_post_addition_to_track_processors,
     run_file_post_removal_from_track_processors,
 )
@@ -173,7 +174,13 @@ class Track(DataObject, Item):
             return
         # Run the scripts for the file to allow usage of
         # file specific metadata and variables
-        metadata = Metadata(file.metadata)
+        metadata = Metadata()
+        if config.setting["clear_existing_tags"]:
+            # Only use technical variables from existing file, but ignore actual tags
+            for info in FILE_INFO_TAGS:
+                metadata[info] = file.metadata[info]
+        else:
+            metadata.update(file.metadata)
         metadata.update(self.orig_metadata)
         self.run_scripts(metadata)
         # Apply changes to the track's metadata done manually after the scripts ran

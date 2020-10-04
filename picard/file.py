@@ -87,6 +87,9 @@ from picard.util.tags import PRESERVED_TAGS
 from picard.ui.item import Item
 
 
+FILE_INFO_TAGS = ('~bitrate', '~sample_rate', '~channels', '~bits_per_sample', '~format')
+
+
 class File(QtCore.QObject, Item):
 
     metadata_images_changed = QtCore.pyqtSignal()
@@ -354,8 +357,7 @@ class File(QtCore.QObject, Item):
             self.base_filename = os.path.basename(new_filename)
             length = self.orig_metadata.length
             temp_info = {}
-            for info in ('~bitrate', '~sample_rate', '~channels',
-                         '~bits_per_sample', '~format'):
+            for info in FILE_INFO_TAGS:
                 temp_info[info] = self.orig_metadata[info]
             # Data is copied from New to Original because New may be
             # a subclass to handle id3v23
