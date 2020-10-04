@@ -356,7 +356,7 @@ class CommonTests:
         @skipUnlessTestfile
         def test_delete_tags_with_description(self):
             for key in (
-                'comment:foo', 'comment:de:foo', 'performer:foo', 'lyrics:foo',
+                'comment:foo', 'comment:deu:foo', 'performer:foo', 'lyrics::foo', 'lyrics:jpn:foo'
                 'comment:a*', 'comment:a[', 'performer:(x)', 'performer: Ä é '
             ):
                 if not self.format.supports_tag(key):

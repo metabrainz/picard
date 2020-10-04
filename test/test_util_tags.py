@@ -22,8 +22,10 @@
 from test.picardtestcase import PicardTestCase
 
 from picard.util.tags import (
+    create_lang_desc_tag,
     display_tag_name,
     parse_comment_tag,
+    parse_lang_desc_tag,
 )
 
 
@@ -37,3 +39,19 @@ class UtilTagsTest(PicardTestCase):
         self.assertEqual(('XXX', 'foo'), parse_comment_tag('comment:XXX:foo'))
         self.assertEqual(('eng', 'foo'), parse_comment_tag('comment:foo'))
         self.assertEqual(('eng', ''), parse_comment_tag('comment'))
+
+    def test_parse_lang_desc_tag(self):
+        self.assertEqual(('jpn', ''), parse_lang_desc_tag('lyrics:jpn'))
+        self.assertEqual(('jpn', ''), parse_lang_desc_tag('lyrics:jpn:'))
+        self.assertEqual(('jpn', 'foo'), parse_lang_desc_tag('lyrics:jpn:foo'))
+        self.assertEqual(('xxx', 'foo'), parse_lang_desc_tag('lyrics::foo'))
+        self.assertEqual(('xxx', 'notalanguage:foo'), parse_lang_desc_tag('lyrics:notalanguage:foo'))
+
+    def test_create_lang_desc_tag(self):
+        self.assertEqual('comment', create_lang_desc_tag('comment'))
+        self.assertEqual('comment:eng', create_lang_desc_tag('comment', language='eng'))
+        self.assertEqual('comment::foo', create_lang_desc_tag('comment', description='foo'))
+        self.assertEqual('lyrics:jpn:foo', create_lang_desc_tag(
+            'lyrics', language='jpn', description='foo'))
+        self.assertEqual('lyrics::foo', create_lang_desc_tag(
+            'lyrics', language='jpn', description='foo', default_language='jpn'))

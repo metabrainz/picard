@@ -61,7 +61,11 @@ from picard.util import (
     encode_filename,
     sanitize_date,
 )
-from picard.util.tags import parse_comment_tag
+from picard.util.tags import (
+    create_lang_desc_tag,
+    parse_comment_tag,
+    parse_lang_desc_tag,
+)
 
 
 id3.GRP1 = compatid3.GRP1
@@ -324,9 +328,7 @@ class ID3File(File):
                 for text in frame.text:
                     metadata.add(name, text)
             elif frameid == 'USLT':
-                name = 'lyrics'
-                if frame.desc:
-                    name += ':%s' % frame.desc
+                name = create_lang_desc_tag('lyrics', frame.lang, frame.desc)
                 metadata.add(name, frame.text)
             elif frameid == 'UFID' and frame.owner == 'http://musicbrainz.org':
                 metadata['musicbrainz_recordingid'] = frame.data.decode('ascii', 'ignore')
@@ -444,12 +446,9 @@ class ID3File(File):
                 else:
                     tags.add(id3.COMM(encoding=encoding, desc=desc, lang=lang, text=values))
             elif name.startswith('lyrics:') or name == 'lyrics':
-                if ':' in name:
-                    desc = name.split(':', 1)[1]
-                else:
-                    desc = ''
+                (lang, desc) = parse_lang_desc_tag(name)
                 for value in values:
-                    tags.add(id3.USLT(encoding=encoding, desc=desc, text=value))
+                    tags.add(id3.USLT(encoding=encoding, desc=desc, lang=lang, text=value))
             elif name in self._rtipl_roles:
                 for value in values:
                     tipl.people.append([self._rtipl_roles[name], value])
@@ -556,12 +555,10 @@ class ID3File(File):
                             and frame.lang == lang):
                             del tags[key]
                 elif name.startswith('lyrics:') or name == 'lyrics':
-                    if ':' in name:
-                        desc = name.split(':', 1)[1]
-                    else:
-                        desc = ''
+                    (lang, desc) = parse_lang_desc_tag(name)
                     for key, frame in list(tags.items()):
-                        if frame.FrameID == 'USLT' and frame.desc == desc:
+                        if (frame.FrameID == 'USLT' and frame.desc == desc
+                            and frame.lang == lang):
                             del tags[key]
                 elif name in self._rtipl_roles:
                     role = self._rtipl_roles[name]

@@ -334,10 +334,25 @@ class CommonId3Tests:
             self.assertNotIn('TXXX:REPLAYGAIN_ALBUM_PEAK', raw_metadata)
 
         @skipUnlessTestfile
-        def test_lyrics_with_description(self):
-            metadata = Metadata({'lyrics:foo': 'bar'})
+        def test_lyrics_with_language(self):
+            metadata = Metadata({'lyrics:jpn': 'bar'})
             loaded_metadata = save_and_load_metadata(self.filename, metadata)
-            self.assertEqual(metadata['lyrics:foo'], loaded_metadata['lyrics:foo'])
+            self.assertIn('lyrics:jpn', loaded_metadata)
+            self.assertEqual(metadata['lyrics:jpn'], loaded_metadata['lyrics:jpn'])
+
+        @skipUnlessTestfile
+        def test_lyrics_with_description(self):
+            metadata = Metadata({'lyrics::foo': 'bar'})
+            loaded_metadata = save_and_load_metadata(self.filename, metadata)
+            self.assertIn('lyrics::foo', loaded_metadata)
+            self.assertEqual(metadata['lyrics::foo'], loaded_metadata['lyrics::foo'])
+
+        @skipUnlessTestfile
+        def test_lyrics_with_language_and_description(self):
+            metadata = Metadata({'lyrics:fra:foo': 'bar'})
+            loaded_metadata = save_and_load_metadata(self.filename, metadata)
+            self.assertIn('lyrics:fra:foo', loaded_metadata)
+            self.assertEqual(metadata['lyrics:fra:foo'], loaded_metadata['lyrics:fra:foo'])
 
         @skipUnlessTestfile
         def test_invalid_track_and_discnumber(self):

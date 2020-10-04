@@ -146,7 +146,7 @@ RE_COMMENT_LANG = re.compile('^([a-zA-Z]{3}):')
 def parse_comment_tag(name):  # noqa: E302
     """
     Parses a tag name like "comment:XXX:desc", where XXX is the language.
-    If language is not set ("comment:desc") "eng" is assumed as default.
+    If language is not set ("comment:desc") default_language is used.
     Returns a (lang, desc) tuple.
     """
     try:
@@ -159,3 +159,36 @@ def parse_comment_tag(name):  # noqa: E302
         lang = match.group(1)
         desc = desc[4:]
     return (lang, desc)
+
+
+RE_LYRICS_TAG = re.compile('^(?P<name>[^:]+)(?::(?P<lang>[a-zA-Z]{3})?)?(?::(?P<desc>.*))?$')
+def parse_lang_desc_tag(name, default_language='xxx'):  # noqa: E302
+    """
+    Parses a tag name like with a language and description such as "lyrics:XXX:desc".
+
+    Language must be a 3 letter language code as defined in ISO639-2, with the special
+    value 'xxx' being used if the language is not specified. If language is not set ("lyrics"
+    or "lyrics::desc") default_language is used.
+    Language and description are optional.
+
+    Returns a (lang, desc) tuple.
+    """
+    match = RE_LYRICS_TAG.match(name)
+    lang = default_language
+    desc = ''
+    if match:
+        lang = match.group('lang') or default_language
+        desc = match.group('desc') or ''
+    return (lang, desc)
+
+
+def create_lang_desc_tag(name, language='xxx', description='', default_language='xxx'):
+    name_parts = [name, ]
+    if language and language.lower() != default_language:
+        name_parts.append(language)
+    elif description:
+        # Add empty language part if description is also set
+        name_parts.append('')
+    if description:
+        name_parts.append(description)
+    return ':'.join(name_parts)
