@@ -23,8 +23,6 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-import re
-
 from picard import config
 from picard.const import RELEASE_FORMATS
 from picard.util import (
@@ -100,10 +98,6 @@ _RELEASE_GROUP_TO_METADATA = {
 }
 
 
-def _decamelcase(text):
-    return re.sub(r'(?<![A-Z\s])([A-Z])', r' \1', text).strip()
-
-
 _REPLACE_MAP = {}
 _PREFIX_ATTRS = ['guest', 'additional', 'minor', 'solo']
 _BLANK_SPECIAL_RELTYPES = {'vocal': 'vocals'}
@@ -113,7 +107,7 @@ def _transform_attribute(attr, attr_credits):
     if attr in attr_credits:
         return attr_credits[attr]
     else:
-        return _decamelcase(_REPLACE_MAP.get(attr, attr))
+        return _REPLACE_MAP.get(attr, attr)
 
 
 def _parse_attributes(attrs, reltype, attr_credits):
@@ -132,7 +126,7 @@ def _parse_attributes(attrs, reltype, attr_credits):
         result = nouns[0]
     else:
         result = _BLANK_SPECIAL_RELTYPES.get(reltype, '')
-    return ' '.join([prefix, result]).strip().lower()
+    return ' '.join([prefix, result]).strip()
 
 
 def _relations_to_metadata(relations, m):
