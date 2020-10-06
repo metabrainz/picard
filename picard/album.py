@@ -80,10 +80,10 @@ from picard.script import (
 )
 from picard.track import Track
 from picard.util import (
-    EventProcessingIterator,
     find_best_match,
     format_time,
     mbid_validate,
+    process_events_iter,
 )
 from picard.util.imagelist import (
     add_metadata_images,
@@ -552,7 +552,7 @@ class Album(DataObject, Item):
 
             # try to match by similarity
             def candidates():
-                for track in EventProcessingIterator(self.tracks):
+                for track in process_events_iter(self.tracks):
                     yield SimMatchAlbum(
                         similarity=track.metadata.compare(file.orig_metadata),
                         track=track

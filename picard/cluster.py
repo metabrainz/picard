@@ -55,10 +55,10 @@ from picard.metadata import (
 )
 from picard.similarity import similarity
 from picard.util import (
-    EventProcessingIterator,
     album_artist_from_path,
     find_best_match,
     format_time,
+    process_events_iter,
 )
 from picard.util.imagelist import (
     add_metadata_images,
@@ -284,7 +284,7 @@ class Cluster(QtCore.QObject, Item):
         # 10 evenly spaced indexes of files being clustered, used as checkpoints for every 10% progress
         status_update_steps = ProgressCheckpoints(num_files, 10)
 
-        for i, file in EventProcessingIterator(enumerate(files)):
+        for i, file in process_events_iter(enumerate(files)):
             artist = file.metadata["albumartist"] or file.metadata["artist"]
             album = file.metadata["album"]
             # Improve clustering from directory structure if no existing tags
@@ -535,7 +535,7 @@ class ClusterEngine(object):
         # 20 evenly spaced indexes of files being clustered, used as checkpoints for every 5% progress
         status_update_steps = ProgressCheckpoints(num_files, 20)
 
-        for y in EventProcessingIterator(range(num_files)):
+        for y in process_events_iter(range(num_files)):
             token_y = self.cluster_dict.get_token(y).lower()
             for x in range(y):
                 if x != y:

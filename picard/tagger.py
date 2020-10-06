@@ -107,12 +107,12 @@ from picard.track import (
     Track,
 )
 from picard.util import (
-    EventProcessingIterator,
     check_io_encoding,
     decode_filename,
     encode_filename,
     is_hidden,
     mbid_validate,
+    process_events_iter,
     thread,
     uniqify,
     versions,
@@ -469,21 +469,21 @@ class Tagger(QtWidgets.QApplication):
             return
         self.window.set_sorting(False)
         if isinstance(target, Cluster):
-            for file in EventProcessingIterator(files):
+            for file in process_events_iter(files):
                 file.move(target)
         elif isinstance(target, Track):
             album = target.album
-            for file in EventProcessingIterator(files):
+            for file in process_events_iter(files):
                 file.move(target)
                 if move_to_multi_tracks:  # Assign next file to following track
                     target = album.get_next_track(target) or album.unmatched_files
         elif isinstance(target, File):
-            for file in EventProcessingIterator(files):
+            for file in process_events_iter(files):
                 file.move(target.parent)
         elif isinstance(target, Album):
             self.move_files_to_album(files, album=target)
         elif isinstance(target, ClusterList):
-            for file in EventProcessingIterator(files):
+            for file in process_events_iter(files):
                 if isinstance(file.parent, Track):
                     file.parent.remove_file(file)
             self.cluster(files)
@@ -523,7 +523,7 @@ class Tagger(QtWidgets.QApplication):
             new_files.sort(key=lambda x: x.filename)
             self.window.set_sorting(False)
             self._pending_files_count += len(new_files)
-            for file in EventProcessingIterator(new_files):
+            for file in process_events_iter(new_files):
                 file.load(partial(self._file_loaded, target=target))
 
     @staticmethod
@@ -820,7 +820,7 @@ class Tagger(QtWidgets.QApplication):
         for name, artist, files in Cluster.cluster(files, 1.0, self):
             cluster = self.load_cluster(name, artist)
             cluster_files[cluster].extend(files)
-        for cluster, files in EventProcessingIterator(cluster_files.items(), steps=2):
+        for cluster, files in process_events_iter(cluster_files.items(), steps=2):
             cluster.add_files(files)
         self.window.set_sorting(True)
 
