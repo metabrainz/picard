@@ -88,6 +88,29 @@ class LockableObject(QtCore.QObject):
         self.__lock.unlock()
 
 
+class EventProcessingIterator:
+    """
+    Wrapper around an existing iterator, that calls QCoreApplication.processEvents()
+    in certain iteration steps.
+    """
+
+    def __init__(self, iterable, steps=10):
+        self.iterable = iterable
+        self.steps = steps
+        self._current_step = 0
+
+    def __iter__(self):
+        self._current_step = 0
+        self._iter = iter(self.iterable)
+        return self
+
+    def __next__(self):
+        self._current_step = (self._current_step + 1) % self.steps
+        if self._current_step == 0:
+            QtCore.QCoreApplication.processEvents()
+        return next(self._iter)
+
+
 _io_encoding = sys.getfilesystemencoding()
 
 

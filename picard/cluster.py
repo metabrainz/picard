@@ -55,6 +55,7 @@ from picard.metadata import (
 )
 from picard.similarity import similarity
 from picard.util import (
+    EventProcessingIterator,
     album_artist_from_path,
     find_best_match,
     format_time,
@@ -283,7 +284,7 @@ class Cluster(QtCore.QObject, Item):
         # 10 evenly spaced indexes of files being clustered, used as checkpoints for every 10% progress
         status_update_steps = ProgressCheckpoints(num_files, 10)
 
-        for i, file in enumerate(files):
+        for i, file in EventProcessingIterator(enumerate(files)):
             artist = file.metadata["albumartist"] or file.metadata["artist"]
             album = file.metadata["album"]
             # Improve clustering from directory structure if no existing tags
@@ -304,7 +305,6 @@ class Cluster(QtCore.QObject, Item):
                     'update': status_update_steps.progress(i),
                 }
                 tagger.window.set_statusbar_message(statusmsg, mparams)
-                QtCore.QCoreApplication.processEvents()
 
         artist_cluster_engine = ClusterEngine(artist_dict, ClusterType.ARTIST)
         artist_cluster_engine.cluster(threshold, tagger)
@@ -535,7 +535,7 @@ class ClusterEngine(object):
         # 20 evenly spaced indexes of files being clustered, used as checkpoints for every 5% progress
         status_update_steps = ProgressCheckpoints(num_files, 20)
 
-        for y in range(num_files):
+        for y in EventProcessingIterator(range(num_files)):
             token_y = self.cluster_dict.get_token(y).lower()
             for x in range(y):
                 if x != y:
@@ -558,7 +558,6 @@ class ClusterEngine(object):
                     'update': status_update_steps.progress(y),
                 }
                 tagger.window.set_statusbar_message(statusmsg, mparams)
-                QtCore.QCoreApplication.processEvents()
 
         for i in range(len(heap)):
             c, pair = heappop(heap)

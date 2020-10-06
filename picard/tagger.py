@@ -107,6 +107,7 @@ from picard.track import (
     Track,
 )
 from picard.util import (
+    EventProcessingIterator,
     check_io_encoding,
     decode_filename,
     encode_filename,
@@ -468,27 +469,23 @@ class Tagger(QtWidgets.QApplication):
             return
         self.window.set_sorting(False)
         if isinstance(target, Cluster):
-            for file in files:
+            for file in EventProcessingIterator(files):
                 file.move(target)
-                QtCore.QCoreApplication.processEvents()
         elif isinstance(target, Track):
             album = target.album
-            for file in files:
+            for file in EventProcessingIterator(files):
                 file.move(target)
                 if move_to_multi_tracks:  # Assign next file to following track
                     target = album.get_next_track(target) or album.unmatched_files
-                QtCore.QCoreApplication.processEvents()
         elif isinstance(target, File):
-            for file in files:
+            for file in EventProcessingIterator(files):
                 file.move(target.parent)
-                QtCore.QCoreApplication.processEvents()
         elif isinstance(target, Album):
             self.move_files_to_album(files, album=target)
         elif isinstance(target, ClusterList):
-            for file in files:
+            for file in EventProcessingIterator(files):
                 if isinstance(file.parent, Track):
                     file.parent.remove_file(file)
-                    QtCore.QCoreApplication.processEvents()
             self.cluster(files)
         self.window.set_sorting(True)
 
@@ -526,9 +523,8 @@ class Tagger(QtWidgets.QApplication):
             new_files.sort(key=lambda x: x.filename)
             self.window.set_sorting(False)
             self._pending_files_count += len(new_files)
-            for file in new_files:
+            for file in EventProcessingIterator(new_files):
                 file.load(partial(self._file_loaded, target=target))
-                QtCore.QCoreApplication.processEvents()
 
     @staticmethod
     def _scan_paths_recursive(paths, recursive, ignore_hidden):
@@ -824,9 +820,8 @@ class Tagger(QtWidgets.QApplication):
         for name, artist, files in Cluster.cluster(files, 1.0, self):
             cluster = self.load_cluster(name, artist)
             cluster_files[cluster].extend(files)
-        for cluster, files in cluster_files.items():
+        for cluster, files in EventProcessingIterator(cluster_files.items(), steps=2):
             cluster.add_files(files)
-            QtCore.QCoreApplication.processEvents()
         self.window.set_sorting(True)
 
     def load_cluster(self, name, artist):

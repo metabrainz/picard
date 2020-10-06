@@ -80,6 +80,7 @@ from picard.script import (
 )
 from picard.track import Track
 from picard.util import (
+    EventProcessingIterator,
     find_best_match,
     format_time,
     mbid_validate,
@@ -551,12 +552,11 @@ class Album(DataObject, Item):
 
             # try to match by similarity
             def candidates():
-                for track in self.tracks:
+                for track in EventProcessingIterator(self.tracks):
                     yield SimMatchAlbum(
                         similarity=track.metadata.compare(file.orig_metadata),
                         track=track
                     )
-                    QtCore.QCoreApplication.processEvents()
 
             no_match = SimMatchAlbum(similarity=-1, track=self.unmatched_files)
             best_match = find_best_match(candidates, no_match)
