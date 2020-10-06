@@ -9,6 +9,7 @@
 # Copyright (C) 2016 Sambhav Kothari
 # Copyright (C) 2017 Sophist-UK
 # Copyright (C) 2018 Vishal Choudhary
+# Copyright (C) 2020 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -25,14 +26,16 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+from functools import partial
 import sys
 import traceback
 
 from PyQt5.QtCore import (
     QCoreApplication,
     QEvent,
-    QRunnable,
 )
+
+from picard import log
 
 
 class ProxyToMainEvent(QEvent):
@@ -47,30 +50,38 @@ class ProxyToMainEvent(QEvent):
         self.func(*self.args, **self.kwargs)
 
 
-class Runnable(QRunnable):
-
-    def __init__(self, func, next_func, traceback=True):
-        super().__init__()
-        self.func = func
-        self.next_func = next_func
-        self.traceback = traceback
-
-    def run(self):
-        try:
-            result = self.func()
-        except BaseException:
-            from picard import log
-            if self.traceback:
-                log.error(traceback.format_exc())
-            to_main(self.next_func, error=sys.exc_info()[1])
-        else:
-            to_main(self.next_func, result=result)
+def future_callback(callback, future, log_traceback=True):
+    try:
+        result = future.result()
+        error = None
+    except BaseException:
+        if log_traceback:
+            log.error(traceback.format_exc())
+        result = None
+        error = sys.exc_info()[1]
+    to_main(callback, result=result, error=error)
 
 
 def run_task(func, next_func, priority=0, thread_pool=None, traceback=True):
-    if thread_pool is None:
+    """Schedules func to be run on a separate thread
+
+    Args:
+        func: Function to run on a separate thread.
+        next_func: Callback function to run after the thread has been completed.
+          The callback will be run on the main thread.
+        priority: Deprecated, for backward compatibility only
+        thread_pool: Instance of concurrent.futures.Executor to run this task.
+        traceback: If set to true the stack trace will be logged to the error log
+          if an exception was raised.
+
+    Returns:
+        An instance of concurrent.futures.Future
+    """
+    if not thread_pool:
         thread_pool = QCoreApplication.instance().thread_pool
-    thread_pool.start(Runnable(func, next_func, traceback), priority)
+    future = thread_pool.submit(func)
+    future.add_done_callback(partial(future_callback, next_func, log_traceback=traceback))
+    return future
 
 
 def to_main(func, *args, **kwargs):
