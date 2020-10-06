@@ -453,7 +453,7 @@ class Tagger(QtWidgets.QApplication):
                 return
 
         if target:
-            self.move_files([file], target)
+            self.move_file(file, target)
         else:
             self.unclustered_files.add_file(file)
 
@@ -461,6 +461,19 @@ class Tagger(QtWidgets.QApplication):
         if config.setting['analyze_new_files'] and file.can_analyze():
             log.debug("Trying to analyze %r ...", file)
             self.analyze([file])
+
+    def move_file(self, file, target):
+        if target is None:
+            log.debug("Aborting move since target is invalid")
+            return
+        if isinstance(target, Album):
+            self.move_files_to_album([file], album=target)
+        elif isinstance(target, ClusterList):
+            if isinstance(file.parent, Track):
+                file.parent.remove_file(file)
+            self.cluster([file])
+        elif hasattr(target, 'move'):
+            file.move(target)
 
     def move_files(self, files, target, move_to_multi_tracks=True):
         if target is None:
