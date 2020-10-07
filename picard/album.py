@@ -83,6 +83,7 @@ from picard.util import (
     find_best_match,
     format_time,
     mbid_validate,
+    process_events_iter,
 )
 from picard.util.imagelist import (
     add_metadata_images,
@@ -551,12 +552,11 @@ class Album(DataObject, Item):
 
             # try to match by similarity
             def candidates():
-                for track in self.tracks:
+                for track in process_events_iter(self.tracks):
                     yield SimMatchAlbum(
                         similarity=track.metadata.compare(file.orig_metadata),
                         track=track
                     )
-                    QtCore.QCoreApplication.processEvents()
 
             no_match = SimMatchAlbum(similarity=-1, track=self.unmatched_files)
             best_match = find_best_match(candidates, no_match)
