@@ -43,11 +43,11 @@ jobs:
       run: |
         ./scripts/package/macos-setup.sh
         PYTHON_BASE_VERSION=$(echo $PYTHON_VERSION | sed -e "s/\.[0-9]\{1,\}$//")
-        echo "::add-path::/Library/Frameworks/Python.framework/Versions/$PYTHON_BASE_VERSION/bin"
-        echo "::add-path::/usr/local/opt/gettext/bin"
+        echo "/Library/Frameworks/Python.framework/Versions/$PYTHON_BASE_VERSION/bin" >> $GITHUB_PATH
+        echo "/usr/local/opt/gettext/bin" >> $GITHUB_PATH
         RELEASE_TAG=$(git describe --match "release-*" --abbrev=0 --always HEAD)
         BUILD_NUMBER=$(git rev-list --count $RELEASE_TAG..HEAD)
-        echo "::set-env name=BUILD_NUMBER::$BUILD_NUMBER"
+        echo "BUILD_NUMBER=$BUILD_NUMBER" >> $GITHUB_ENV
         mkdir artifacts
     - name: Patch build version
       if: startsWith(github.ref, 'refs/tags/') != true
@@ -99,10 +99,10 @@ jobs:
     - name: Setup Windows build environment
       run: |
         & .\scripts\package\win-setup.ps1 -DiscidVersion $Env:DISCID_VERSION -FpcalVersion $Env:FPCALC_VERSION
-        Write-Output "::add-path::C:\Program Files (x86)\Windows Kits\10\bin\10.0.18362.0\x64"
+        Write-Output "C:\Program Files (x86)\Windows Kits\10\bin\10.0.18362.0\x64" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8
         $ReleaseTag = $(git describe --match "release-*" --abbrev=0 --always HEAD)
         $BuildNumber = $(git rev-list --count "$ReleaseTag..HEAD")
-        Write-Output "::set-env name=BUILD_NUMBER::$BuildNumber"
+        Write-Output "BUILD_NUMBER=$BuildNumber" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8
         New-Item -Name .\artifacts -ItemType Directory
       env:
         DISCID_VERSION: 0.6.2
@@ -124,7 +124,7 @@ jobs:
         If ($Env:CODESIGN_PFX_URL -And $Env:AWS_ACCESS_KEY_ID) {
           pip install awscli
           aws s3 cp "$Env:CODESIGN_PFX_URL" .\codesign.pfx
-          Write-Output "::set-env name=CODESIGN::1"
+          Write-Output "CODESIGN=1" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8
         } Else {
           Write-Output "::warning::No code signing certificate available, skipping code signing."
         }

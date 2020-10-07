@@ -105,7 +105,7 @@ jobs:
       run: |
         brew install gettext
         brew link gettext --force
-        echo "::add-path::/usr/local/opt/gettext/bin"
+        echo "/usr/local/opt/gettext/bin" >> $GITHUB_PATH
     - name: Run pip install .
       run: |
         python -m pip install --upgrade pip
