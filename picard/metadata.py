@@ -362,7 +362,7 @@ class Metadata(MutableMapping):
 
     def update(self, *args, **kwargs):
         one_arg = len(args) == 1
-        if one_arg and isinstance(args[0], self.__class__):
+        if one_arg and (isinstance(args[0], self.__class__) or isinstance(args[0], MultiMetadataProxy)):
             self._update_from_metadata(args[0])
         elif one_arg and isinstance(args[0], MutableMapping):
             # update from MutableMapping (ie. dict)
@@ -521,7 +521,7 @@ class Metadata(MutableMapping):
         return ("store: %r\ndeleted: %r\nimages: %r\nlength: %r" % (self._store, self.deleted_tags, [str(img) for img in self.images], self.length))
 
 
-class MultiMetadataProxy(MutableMapping):
+class MultiMetadataProxy:
     """
     Wraps a writable Metadata object together with another
     readonly Metadata object.
@@ -544,6 +544,7 @@ class MultiMetadataProxy(MutableMapping):
         'delete',
         'set',
         'strip_whitespace',
+        'unset',
         'update',
     ]
 
@@ -558,11 +559,18 @@ class MultiMetadataProxy(MutableMapping):
         if name in self.WRITE_METHODS:
             return partial(self.__write, name)
         else:
-            attribute = self.metadata.__getattribute__(name)
+            attribute = self.combined_metadata.__getattribute__(name)
             if callable(attribute):
                 return partial(self.__read, name)
             else:
                 return attribute
+
+    def __setattr__(self, name, value):
+        if name in ('metadata', 'combined_metadata'):
+            super().__setattr__(name, value)
+        else:
+            self.metadata.__setattr__(name, value)
+            self.combined_metadata.__setattr__(name, value)
 
     def __write(self, name, *args, **kwargs):
         func1 = self.metadata.__getattribute__(name)
@@ -574,11 +582,14 @@ class MultiMetadataProxy(MutableMapping):
         func = self.combined_metadata.__getattribute__(name)
         return func(*args, **kwargs)
 
-    def __delitem__(self, name):
-        return self.__write('__delitem__', name)
-
     def __getitem__(self, name):
         return self.__read('__getitem__', name)
+
+    def __setitem__(self, name, values):
+        return self.__write('__setitem__', name, values)
+
+    def __delitem__(self, name):
+        return self.__write('__delitem__', name)
 
     def __iter__(self):
         return self.__read('__iter__')
@@ -586,8 +597,8 @@ class MultiMetadataProxy(MutableMapping):
     def __len__(self):
         return self.__read('__len__')
 
-    def __setitem__(self, name, values):
-        return self.__write('__setitem__', name, values)
+    def __contains__(self, name):
+        return self.__read('__contains__', name)
 
     def __repr__(self):
         return self.__read('__repr__')
