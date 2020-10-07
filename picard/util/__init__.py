@@ -47,7 +47,7 @@ from operator import attrgetter
 import os
 import re
 import sys
-from time import time
+from time import monotonic
 import unicodedata
 
 from dateutil.parser import parse
@@ -88,17 +88,28 @@ class LockableObject(QtCore.QObject):
         self.__lock.unlock()
 
 
-def process_events_iter(iterable, steps=10):
+def process_events_iter(iterable, interval=0.1):
     """
     Creates an iterator over iterable that calls QCoreApplication.processEvents()
-    in certain iteration steps.
+    after certain time intervals.
 
     This must only be used in the main thread.
+
+    Args:
+        iterable: iterable object to iterate over
+        interval: interval in seconds to call QCoreApplication.processEvents()
     """
-    for i, item in enumerate(iterable):
-        if (i + 1) % steps == 0:
-            QtCore.QCoreApplication.processEvents()
+    if interval:
+        start = monotonic()
+    for item in iterable:
+        if interval:
+            now = monotonic()
+            delta = now - start
+            if delta > interval:
+                start = now
+                QtCore.QCoreApplication.processEvents()
         yield item
+    QtCore.QCoreApplication.processEvents()
 
 
 _io_encoding = sys.getfilesystemencoding()
@@ -291,7 +302,7 @@ def throttle(interval):
         def later():
             mutex.lock()
             func(*decorator.args, **decorator.kwargs)
-            decorator.prev = time()
+            decorator.prev = monotonic()
             decorator.is_ticking = False
             mutex.unlock()
 
@@ -303,7 +314,7 @@ def throttle(interval):
                 mutex.unlock()
                 return
             mutex.lock()
-            now = time()
+            now = monotonic()
             r = interval - (now-decorator.prev)*1000.0
             if r <= 0:
                 func(*args, **kwargs)
