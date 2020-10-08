@@ -67,7 +67,8 @@ dt {
     color: %(script_function_fg)s
 }
 dd {
-    padding: 50px;
+    /* Qt does not support margin-inline-start, use margin-left/margin-right instead */
+    margin-%(inline_start)s: 50px;
     margin-bottom: 50px;
 }
 code {
@@ -75,7 +76,7 @@ code {
 }
 </style>
 </head>
-<body>
+<body dir="%(dir)s">
     %(html)s
 </body>
 </html>
@@ -122,11 +123,21 @@ class ScriptingDocumentationDialog(PicardDialog):
             postprocessor=process_html,
         )
 
+        if self.ui.textBrowser.layoutDirection() == QtCore.Qt.RightToLeft:
+            text_direction = 'rtl'
+        else:
+            text_direction = 'ltr'
+
         html = DOCUMENTATION_HTML_TEMPLATE % {
             'html': "<dl>%s</dl>" % funcdoc,
             'script_function_fg': theme.syntax_theme.func.name(),
             'monospace_font': FONT_FAMILY_MONOSPACE,
+            'dir': text_direction,
+            'inline_start': 'right' if text_direction == 'rtl' else 'left'
         }
+        # Scripting code is always left-to-right. Qt does not support the dir
+        # attribute on inline tags, insert explicit left-right-marks instead.
+        html = html.replace('<code>', '<code>&#8206;')
         self.ui.textBrowser.setHtml(html)
         self.ui.buttonBox.rejected.connect(self.close)
 
