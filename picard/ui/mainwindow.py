@@ -400,9 +400,19 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     def _on_submit_acoustid(self):
         if self.tagger.use_acoustid:
             if not config.setting["acoustid_apikey"]:
-                QtWidgets.QMessageBox.warning(self,
-                    _("Submission Error"),
-                    _("You need to configure your AcoustID API key before you can submit fingerprints."))
+                msg = QtWidgets.QMessageBox(self)
+                msg.setIcon(QtWidgets.QMessageBox.Information)
+                msg.setWindowModality(QtCore.Qt.WindowModal)
+                msg.setWindowTitle(_("AcoustID submission not configured"))
+                msg.setText(_(
+                    "You need to configure your AcoustID API key before you can submit fingerprints."))
+                open_options = QtWidgets.QPushButton(
+                    icontheme.lookup('preferences-desktop'), _("Open AcoustID options"))
+                msg.addButton(QtWidgets.QMessageBox.Cancel)
+                msg.addButton(open_options, QtWidgets.QMessageBox.YesRole)
+                msg.exec_()
+                if msg.clickedButton() == open_options:
+                    self.show_options("fingerprinting")
             else:
                 self.tagger.acoustidmanager.submit()
 
