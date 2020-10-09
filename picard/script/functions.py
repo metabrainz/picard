@@ -1199,7 +1199,7 @@ Returns a multi-value variable containing the elements between the `start` and
     If the `start` or `end` indexes are left blank, they will default to the
     start and end of the list respectively.
 
-    The following example will create a multi-value variable with all artists
+The following example will create a multi-value variable with all artists
     in `%artists%` except the first, which can be used to create a "feat." list.
 
 Example:

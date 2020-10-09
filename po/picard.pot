@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: picard 2.5.0.dev2\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-10-08 19:50+0200\n"
+"POT-Creation-Date: 2020-10-09 13:46+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -148,22 +148,22 @@ msgstr ""
 msgid "Remove"
 msgstr ""
 
-#: picard/file.py:741
+#: picard/file.py:743
 #, python-format
 msgid "No matching tracks above the threshold for file '%(filename)s'"
 msgstr ""
 
-#: picard/file.py:743
+#: picard/file.py:745
 #, python-format
 msgid "File '%(filename)s' identified!"
 msgstr ""
 
-#: picard/file.py:755
+#: picard/file.py:757
 #, python-format
 msgid "No matching tracks for file '%(filename)s'"
 msgstr ""
 
-#: picard/file.py:787
+#: picard/file.py:789
 #, python-format
 msgid "Looking up the metadata for file %(filename)s ..."
 msgstr ""
@@ -261,11 +261,11 @@ msgid ""
 "%s"
 msgstr ""
 
-#: picard/track.py:380
+#: picard/track.py:385
 msgid "[loading recording information]"
 msgstr ""
 
-#: picard/track.py:415
+#: picard/track.py:420
 #, python-format
 msgid "[could not load recording %s]"
 msgstr ""
@@ -2941,8 +2941,8 @@ msgid ""
 "the\n"
 "    start and end of the list respectively.\n"
 "\n"
-"    The following example will create a multi-value variable with all "
-"artists\n"
+"The following example will create a multi-value variable with all artists"
+"\n"
 "    in `%artists%` except the first, which can be used to create a "
 "\"feat.\" list.\n"
 "\n"
@@ -5354,7 +5354,7 @@ msgstr ""
 msgid "File Naming"
 msgstr ""
 
-#: picard/ui/options/renaming.py:197 picard/ui/options/scripting.py:100
+#: picard/ui/options/renaming.py:197 picard/ui/options/scripting.py:102
 msgid ""
 "<a href=\"%(picard-doc-scripting-url)s\">Open Scripting Documentation in "
 "your browser</a>"
@@ -5368,11 +5368,11 @@ msgstr ""
 msgid "The file naming format must not be empty."
 msgstr ""
 
-#: picard/ui/options/scripting.py:139
+#: picard/ui/options/scripting.py:141
 msgid "Scripting"
 msgstr ""
 
-#: picard/ui/options/scripting.py:206
+#: picard/ui/options/scripting.py:208
 msgid "Script Error"
 msgstr ""
 
