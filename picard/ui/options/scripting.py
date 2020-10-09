@@ -84,6 +84,7 @@ code {
 
 class ScriptingDocumentationDialog(PicardDialog):
     defaultsize = QtCore.QSize(570, 400)
+    autorestore = False
 
     def __init__(self, parent):
         super().__init__(parent)
@@ -94,6 +95,7 @@ class ScriptingDocumentationDialog(PicardDialog):
         self.setWindowFlags(QtCore.Qt.Window)
         self.ui = Ui_ScriptingDocumentationDialog()
         self.ui.setupUi(self)
+        self.restore_geometry()
         args = {
             "picard-doc-scripting-url": PICARD_URLS['doc_scripting'],
         }
