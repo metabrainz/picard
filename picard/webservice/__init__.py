@@ -5,7 +5,7 @@
 # Copyright (C) 2007 Lukáš Lalinský
 # Copyright (C) 2009 Carlin Mangar
 # Copyright (C) 2017 Sambhav Kothari
-# Copyright (C) 2018-2019 Philipp Wolfer
+# Copyright (C) 2018-2020 Philipp Wolfer
 # Copyright (C) 2018-2020 Laurent Monin
 #
 # This program is free software; you can redistribute it and/or
@@ -319,11 +319,16 @@ class WebService(QtCore.QObject):
     def setup_proxy(self):
         proxy = QtNetwork.QNetworkProxy()
         if config.setting["use_proxy"]:
-            proxy.setType(QtNetwork.QNetworkProxy.HttpProxy)
+            if config.setting["proxy_type"] == 'socks':
+                proxy.setType(QtNetwork.QNetworkProxy.Socks5Proxy)
+            else:
+                proxy.setType(QtNetwork.QNetworkProxy.HttpProxy)
             proxy.setHostName(config.setting["proxy_server_host"])
             proxy.setPort(config.setting["proxy_server_port"])
-            proxy.setUser(config.setting["proxy_username"])
-            proxy.setPassword(config.setting["proxy_password"])
+            if config.setting["proxy_username"]:
+                proxy.setUser(config.setting["proxy_username"])
+            if config.setting["proxy_password"]:
+                proxy.setPassword(config.setting["proxy_password"])
         self.manager.setProxy(proxy)
 
     def _send_request(self, request, access_token=None):
