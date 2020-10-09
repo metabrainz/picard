@@ -174,9 +174,14 @@ class Track(DataObject, Item):
             return
         # Run the scripts for the file to allow usage of
         # file specific metadata and variables
-        metadata = Metadata(self.orig_metadata)
-        metadata_proxy = MultiMetadataProxy(metadata, file.metadata)
-        self.run_scripts(metadata_proxy)
+        if config.setting["clear_existing_tags"]:
+            metadata = Metadata(self.orig_metadata)
+            metadata_proxy = MultiMetadataProxy(metadata, file.metadata)
+            self.run_scripts(metadata_proxy)
+        else:
+            metadata = Metadata(file.metadata)
+            metadata.update(self.orig_metadata)
+            self.run_scripts(metadata)
         # Apply changes to the track's metadata done manually after the scripts ran
         meta_diff = self.metadata.diff(self.scripted_metadata)
         metadata.update(meta_diff)
