@@ -3,7 +3,7 @@
 # Picard, the next-generation MusicBrainz tagger
 #
 # Copyright (C) 2006 Lukáš Lalinský
-# Copyright (C) 2013 Philipp Wolfer
+# Copyright (C) 2013, 2020 Philipp Wolfer
 # Copyright (C) 2013, 2018 Laurent Monin
 # Copyright (C) 2016-2017 Sambhav Kothari
 #
@@ -42,6 +42,7 @@ class NetworkOptionsPage(OptionsPage):
 
     options = [
         config.BoolOption("setting", "use_proxy", False),
+        config.TextOption("setting", "proxy_type", "http"),
         config.TextOption("setting", "proxy_server_host", ""),
         config.IntOption("setting", "proxy_server_port", 80),
         config.TextOption("setting", "proxy_username", ""),
@@ -58,6 +59,10 @@ class NetworkOptionsPage(OptionsPage):
 
     def load(self):
         self.ui.web_proxy.setChecked(config.setting["use_proxy"])
+        if config.setting["proxy_type"] == 'socks':
+            self.ui.proxy_type_socks.setChecked(True)
+        else:
+            self.ui.proxy_type_http.setChecked(True)
         self.ui.server_host.setText(config.setting["proxy_server_host"])
         self.ui.server_port.setValue(config.setting["proxy_server_port"])
         self.ui.username.setText(config.setting["proxy_username"])
@@ -70,6 +75,10 @@ class NetworkOptionsPage(OptionsPage):
 
     def save(self):
         config.setting["use_proxy"] = self.ui.web_proxy.isChecked()
+        if self.ui.proxy_type_socks.isChecked():
+            config.setting["proxy_type"] = 'socks'
+        else:
+            config.setting["proxy_type"] = 'http'
         config.setting["proxy_server_host"] = self.ui.server_host.text()
         config.setting["proxy_server_port"] = self.ui.server_port.value()
         config.setting["proxy_username"] = self.ui.username.text()
