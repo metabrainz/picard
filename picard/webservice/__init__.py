@@ -69,7 +69,6 @@ from picard.webservice import ratecontrol
 
 
 COUNT_REQUESTS_DELAY_MS = 250
-TRANSFER_TIMEOUT = 30000
 
 TEMP_ERRORS_RETRIES = 5
 USER_AGENT_STRING = '%s-%s/%s (%s;%s-%s)' % (PICARD_ORG_NAME, PICARD_APP_NAME,
@@ -267,11 +266,6 @@ class WebService(QtCore.QObject):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.manager = QtNetwork.QNetworkAccessManager()
-        if hasattr(self.manager, 'setTransferTimeout'):  # Available since Qt 5.15
-            self._native_timeout = True
-            self.manager.setTransferTimeout(TRANSFER_TIMEOUT)
-        else:
-            self._native_timeout = False
         self._network_accessible_changed(self.manager.networkAccessible())
         self.manager.networkAccessibleChanged.connect(self._network_accessible_changed)
         self.oauth_manager = OAuthManager(self)
@@ -344,12 +338,19 @@ class WebService(QtCore.QObject):
         request.access_token = access_token
         send = self._request_methods[request.method]
         data = request.data
+        transfer_timeout = config.setting['network_transfer_timeout_seconds'] * 1000
+        if hasattr(self.manager, 'setTransferTimeout'):  # Available since Qt 5.15
+            native_timeout = True
+            request.setTransferTimeout(transfer_timeout)
+        else:
+            native_timeout = False
         reply = send(request, data.encode('utf-8')) if data is not None else send(request)
-        self._start_transfer_timeout(reply)
+        if not native_timeout:
+            self._start_transfer_timeout(reply, transfer_timeout)
         self._active_requests[reply] = request
 
-    def _start_transfer_timeout(self, reply):
-        if self._native_timeout:
+    def _start_transfer_timeout(self, reply, timeout):
+        if not timeout:
             return
         # Fallback implementation of a transfer timeout for Qt < 5.15.
         # Aborts a request if no data gets transferred for TRANSFER_TIMEOUT milliseconds.
@@ -358,13 +359,14 @@ class WebService(QtCore.QObject):
         timer.setTimerType(QtCore.Qt.PreciseTimer)
         timer.timeout.connect(partial(self._timeout_request, reply))
         reply.finished.connect(timer.stop)
-        reply.uploadProgress.connect(partial(self._reset_transfer_timeout, timer))
-        reply.downloadProgress.connect(partial(self._reset_transfer_timeout, timer))
-        timer.start(TRANSFER_TIMEOUT)
+        reset_callback = partial(self._reset_transfer_timeout, timer, timeout)
+        reply.uploadProgress.connect(reset_callback)
+        reply.downloadProgress.connect(reset_callback)
+        timer.start(timeout)
 
     @staticmethod
-    def _reset_transfer_timeout(timer, bytesTransferred, bytesTotal):
-        timer.start(TRANSFER_TIMEOUT)
+    def _reset_transfer_timeout(timer, timeout, bytesTransferred, bytesTotal):
+        timer.start(timeout)
 
     @staticmethod
     def _timeout_request(reply):
