@@ -49,7 +49,8 @@ class NetworkOptionsPage(OptionsPage):
         config.TextOption("setting", "proxy_password", ""),
         config.BoolOption("setting", "browser_integration", True),
         config.IntOption("setting", "browser_integration_port", 8000),
-        config.BoolOption("setting", "browser_integration_localhost_only", True)
+        config.BoolOption("setting", "browser_integration_localhost_only", True),
+        config.IntOption("setting", "network_transfer_timeout_seconds", 30),
     ]
 
     def __init__(self, parent=None):
@@ -67,6 +68,7 @@ class NetworkOptionsPage(OptionsPage):
         self.ui.server_port.setValue(config.setting["proxy_server_port"])
         self.ui.username.setText(config.setting["proxy_username"])
         self.ui.password.setText(config.setting["proxy_password"])
+        self.ui.transfer_timeout.setValue(config.setting["network_transfer_timeout_seconds"])
         self.ui.browser_integration.setChecked(config.setting["browser_integration"])
         self.ui.browser_integration_port.setValue(config.setting["browser_integration_port"])
         self.ui.browser_integration_localhost_only.setChecked(
@@ -83,6 +85,7 @@ class NetworkOptionsPage(OptionsPage):
         config.setting["proxy_username"] = self.ui.username.text()
         config.setting["proxy_password"] = self.ui.password.text()
         self.tagger.webservice.setup_proxy()
+        config.setting["network_transfer_timeout_seconds"] = self.ui.transfer_timeout.value()
         config.setting["browser_integration"] = self.ui.browser_integration.isChecked()
         config.setting["browser_integration_port"] = self.ui.browser_integration_port.value()
         config.setting["browser_integration_localhost_only"] = \
