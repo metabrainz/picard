@@ -71,7 +71,6 @@ class NetworkOptionsPage(OptionsPage):
         self.ui.browser_integration_port.setValue(config.setting["browser_integration_port"])
         self.ui.browser_integration_localhost_only.setChecked(
             config.setting["browser_integration_localhost_only"])
-        self.ui.browser_integration_port.valueChanged.connect(self.change_browser_integration_port)
 
     def save(self):
         config.setting["use_proxy"] = self.ui.web_proxy.isChecked()
@@ -95,9 +94,6 @@ class NetworkOptionsPage(OptionsPage):
             self.tagger.browser_integration.start()
         else:
             self.tagger.browser_integration.stop()
-
-    def change_browser_integration_port(self, port):
-        config.setting["browser_integration_port"] = port
 
 
 register_options_page(NetworkOptionsPage)
