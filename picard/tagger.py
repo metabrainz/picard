@@ -473,7 +473,8 @@ class Tagger(QtWidgets.QApplication):
             if isinstance(file.parent, Track):
                 file.parent.remove_file(file)
             self.cluster([file])
-        elif hasattr(target, 'move'):
+        # To be able to move a file to it target must implement add_file(file)
+        elif hasattr(target, 'add_file'):
             file.move(target)
 
     def move_files(self, files, target, move_to_multi_tracks=True):
