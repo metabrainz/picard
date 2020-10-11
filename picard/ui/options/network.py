@@ -85,7 +85,9 @@ class NetworkOptionsPage(OptionsPage):
         config.setting["proxy_username"] = self.ui.username.text()
         config.setting["proxy_password"] = self.ui.password.text()
         self.tagger.webservice.setup_proxy()
-        config.setting["network_transfer_timeout_seconds"] = self.ui.transfer_timeout.value()
+        transfer_timeout = self.ui.transfer_timeout.value()
+        config.setting["network_transfer_timeout_seconds"] = transfer_timeout
+        self.tagger.webservice.set_transfer_timeout(transfer_timeout)
         config.setting["browser_integration"] = self.ui.browser_integration.isChecked()
         config.setting["browser_integration_port"] = self.ui.browser_integration_port.value()
         config.setting["browser_integration_localhost_only"] = \
