@@ -12,8 +12,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2020-09-17 21:05+0000\n"
-"Last-Translator: Michael Wiencek <mwtuea@gmail.com>\n"
+"PO-Revision-Date: 2020-09-30 20:33+0000\n"
+"Last-Translator: yvanz\n"
 "Language-Team: Italian (http://www.transifex.com/musicbrainz/musicbrainz/language/it/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -205,6 +205,15 @@ msgstr "Una festa, ricevimento o altro tipo di evento organizzato appositamente 
 msgctxt "release_packaging"
 msgid "A perfect bound book with a sleeve at the end to hold a CD"
 msgstr "Un libro con rilegatura perfetta (perfect bind) e una custodia per CD alla fine"
+
+#: DB:event_type/description:6
+msgctxt "event_type"
+msgid ""
+"A performance of one or more plays, musicals, operas, ballets or other "
+"similar works for the stage in their staged form (as opposed to a <a "
+"href=\"https://en.wikipedia.org/wiki/Concert_performance\">concert "
+"performance</a> without staging)."
+msgstr ""
 
 #: DB:place_type/description:8
 msgctxt "place_type"
@@ -2342,7 +2351,7 @@ msgstr "Fa bemolle maggiore"
 #: DB:work_attribute_type_allowed_value/value:815
 msgctxt "work_attribute_type_allowed_value"
 msgid "F-flat minor"
-msgstr ""
+msgstr "Fa bemolle minore"
 
 #: DB:work_attribute_type_allowed_value/value:19
 msgctxt "work_attribute_type_allowed_value"
@@ -3144,7 +3153,7 @@ msgstr "ID per la società di diritti brasiliana ECAD"
 #: DB:work_attribute_type/description:34
 msgctxt "work_attribute_type"
 msgid "ID for the British rights society PRS for Music"
-msgstr ""
+msgstr "ID per la società di diritti britannica PRS for Music"
 
 #: DB:work_attribute_type/description:10
 msgctxt "work_attribute_type"
@@ -3174,7 +3183,7 @@ msgstr "ID per la società di diritti ceca OSA"
 #: DB:work_attribute_type/description:51
 msgctxt "work_attribute_type"
 msgid "ID for the Danish rights society KODA"
-msgstr ""
+msgstr "ID per la società di diritti danese KODA"
 
 #: DB:work_attribute_type/description:26
 msgctxt "work_attribute_type"
@@ -3210,6 +3219,11 @@ msgstr "ID per la società di diritti ungherese ARTISJUS"
 msgctxt "work_attribute_type"
 msgid "ID for the International Copyright Enterprise"
 msgstr "ID per l'International Copyright Enterprise"
+
+#: DB:work_attribute_type/description:52
+msgctxt "work_attribute_type"
+msgid "ID for the Irish rights society IMRO"
+msgstr ""
 
 #: DB:work_attribute_type/description:36
 msgctxt "work_attribute_type"
@@ -3274,7 +3288,7 @@ msgstr "ID per la società di diritti spagnola SGAE"
 #: DB:work_attribute_type/description:50
 msgctxt "work_attribute_type"
 msgid "ID for the Swedish rights society STIM"
-msgstr ""
+msgstr "ID per la società di diritti svedese STIM"
 
 #: DB:work_attribute_type/description:18
 msgctxt "work_attribute_type"
@@ -3319,6 +3333,11 @@ msgstr "ID per la società di diritti internazionale (precedentemente statuniten
 #: DB:work_attribute_type/description:22
 msgctxt "work_attribute_type"
 msgid "ID for the private licensing company CCLI"
+msgstr "ID per la società licenziataria privata CCLI"
+
+#: DB:work_attribute_type/name:52
+msgctxt "work_attribute_type"
+msgid "IMRO ID"
 msgstr ""
 
 #: DB:work_attribute_type/name:14
@@ -3560,7 +3579,7 @@ msgstr "Jōnpuri"
 #: DB:work_attribute_type/name:51
 msgctxt "work_attribute_type"
 msgid "KODA ID"
-msgstr ""
+msgstr "ID KODA"
 
 #: DB:work_attribute_type/name:11
 msgctxt "work_attribute_type"
@@ -5761,7 +5780,7 @@ msgstr "ID SPA"
 #: DB:work_attribute_type/name:50
 msgctxt "work_attribute_type"
 msgid "STIM ID"
-msgstr ""
+msgstr "ID STIM"
 
 #: DB:work_attribute_type/name:18
 msgctxt "work_attribute_type"
@@ -6093,6 +6112,11 @@ msgstr "Spoken word (parlato)"
 msgctxt "place_type"
 msgid "Stadium"
 msgstr "Stadio"
+
+#: DB:event_type/name:6
+msgctxt "event_type"
+msgid "Stage performance"
+msgstr ""
 
 #: DB:cover_art_archive.art_type/name:10
 msgctxt "cover_art_type"

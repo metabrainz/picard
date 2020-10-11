@@ -1,12 +1,12 @@
 # 
 # Translators:
-# Avi Markovitz <avi.markovitz@gmail.com>, 2018-2019
+# Avi Markovitz <avi.markovitz@gmail.com>, 2018-2020
 # Avi Markovitz <avi.markovitz@gmail.com>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2020-09-17 21:05+0000\n"
-"Last-Translator: Michael Wiencek <mwtuea@gmail.com>\n"
+"PO-Revision-Date: 2020-10-11 09:31+0000\n"
+"Last-Translator: Avi Markovitz <avi.markovitz@gmail.com>\n"
 "Language-Team: Hebrew (http://www.transifex.com/musicbrainz/musicbrainz/language/he/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -165,7 +165,7 @@ msgid ""
 "A mass is a choral composition that sets the invariable portions of the "
 "Christian Eucharistic liturgy (Kyrie - Gloria - Credo - Sanctus - Benedictus"
 " - Agnus Dei, with other portions sometimes added) to music."
-msgstr "מסה היא קומפוזיציה מקהלתית המכילה את האלמנטים הבלתי-נמנעים מהליטורגיה הנוצרית (קירי - גלוריה - קרדו - סנקטוס - בנדיקטוס - אגנוס דיי, עם רכיבים אחרים שנוספות לפעמים) למוזיקה."
+msgstr "מסה היא קומפוזיציה מקהלתית המכילה את היסודות הבלתי-נמנעים מהליטורגיה הנוצרית (קירי - גלוריה - קרדו - סנקטוס - בנדיקטוס - אגנוס דיי, עם רכיבים אחרים שנוספות לפעמים) למוזיקה."
 
 #: DB:event_type/description:5
 msgctxt "event_type"
@@ -198,6 +198,15 @@ msgstr "מסיבה, קבלת פנים או אירוע אחר שנערך במיו
 msgctxt "release_packaging"
 msgid "A perfect bound book with a sleeve at the end to hold a CD"
 msgstr "חיבור מושלם של ספר עם שרוול בקצהו שנועד להחזיק תקליטור"
+
+#: DB:event_type/description:6
+msgctxt "event_type"
+msgid ""
+"A performance of one or more plays, musicals, operas, ballets or other "
+"similar works for the stage in their staged form (as opposed to a <a "
+"href=\"https://en.wikipedia.org/wiki/Concert_performance\">concert "
+"performance</a> without staging)."
+msgstr "ביצוע של הצגה אחת, או יותר, מחזות זמר, אופרות, בלט או יצירות דומות אחרות לבמה בצורתם הבימתית (בניגוד למופע <a href=\"https://en.wikipedia.org/wiki/Concert_performance\">קונצרט </a>ללא בימוי)"
 
 #: DB:place_type/description:8
 msgctxt "place_type"
@@ -406,17 +415,17 @@ msgstr "לה דיאז מינור"
 #: DB:work_attribute_type/name:44
 msgctxt "work_attribute_type"
 msgid "ACAM ID"
-msgstr ""
+msgstr "מזהה ACAM"
 
 #: DB:work_attribute_type/name:47
 msgctxt "work_attribute_type"
 msgid "ACDAM ID"
-msgstr ""
+msgstr "מזהה ACDAM"
 
 #: DB:work_attribute_type/name:43
 msgctxt "work_attribute_type"
 msgid "AGADU ID"
-msgstr ""
+msgstr "מזהה AGADU"
 
 #: DB:work_attribute_type/name:23
 msgctxt "work_attribute_type"
@@ -426,17 +435,17 @@ msgstr "מזהה AKM"
 #: DB:work_attribute_type/name:38
 msgctxt "work_attribute_type"
 msgid "AMRA ID"
-msgstr ""
+msgstr "מזהה AMRA"
 
 #: DB:work_attribute_type/name:46
 msgctxt "work_attribute_type"
 msgid "APA ID"
-msgstr ""
+msgstr "מזהה APA"
 
 #: DB:work_attribute_type/name:41
 msgctxt "work_attribute_type"
 msgid "APDAYC ID"
-msgstr ""
+msgstr "מזהה APDAYC"
 
 #: DB:work_attribute_type/name:13
 msgctxt "work_attribute_type"
@@ -446,7 +455,7 @@ msgstr "מזהה APRA"
 #: DB:work_attribute_type/name:48
 msgctxt "work_attribute_type"
 msgid "ARTISJUS ID"
-msgstr ""
+msgstr "מזהה ARTISJUS"
 
 #: DB:work_attribute_type/name:6
 msgctxt "work_attribute_type"
@@ -3112,17 +3121,17 @@ msgstr "מזהה ICE"
 #: DB:work_attribute_type/description:24
 msgctxt "work_attribute_type"
 msgid "ID for the Argentinean rights society SADAIC"
-msgstr ""
+msgstr "מזהה עבור אגודת הזכויות הארגנטינאי  SADAIC"
 
 #: DB:work_attribute_type/description:13
 msgctxt "work_attribute_type"
 msgid "ID for the Australasian rights society APRA"
-msgstr ""
+msgstr "מזהה עבור אגודת הזכויות האוסטרלית APRA"
 
 #: DB:work_attribute_type/description:23
 msgctxt "work_attribute_type"
 msgid "ID for the Austrian rights society AKM"
-msgstr ""
+msgstr "מזהה עבור אגודת הזכויות האוסטרית AKM"
 
 #: DB:work_attribute_type/description:28
 msgctxt "work_attribute_type"
@@ -3132,37 +3141,37 @@ msgstr "מזהה עבור אגודת הזכויות הבלגית SABAM"
 #: DB:work_attribute_type/description:37
 msgctxt "work_attribute_type"
 msgid "ID for the Brazilian rights society ECAD"
-msgstr ""
+msgstr "מזהה עבור אגודת הזכויות ברזילאית  ECAD"
 
 #: DB:work_attribute_type/description:34
 msgctxt "work_attribute_type"
 msgid "ID for the British rights society PRS for Music"
-msgstr ""
+msgstr "מזהה עבור אגודת הזכויות הבריטית PRS למוזיקה"
 
 #: DB:work_attribute_type/description:10
 msgctxt "work_attribute_type"
 msgid "ID for the Canadian rights society SOCAN"
-msgstr ""
+msgstr "מזהה עבור אגודת הזכויות הקנדית  SOCAN"
 
 #: DB:work_attribute_type/description:39
 msgctxt "work_attribute_type"
 msgid "ID for the Colombian rights society SAYCO"
-msgstr ""
+msgstr "מזהה עבור אגודת הזכויות הקולומביאנית SAYCO"
 
 #: DB:work_attribute_type/description:44
 msgctxt "work_attribute_type"
 msgid "ID for the Costa Rican rights society ACAM"
-msgstr ""
+msgstr "מזהה עבור אגודת הזכויות הקוסטריקנית ACAM"
 
 #: DB:work_attribute_type/description:47
 msgctxt "work_attribute_type"
 msgid "ID for the Cuban rights society ACDAM"
-msgstr ""
+msgstr "מזהה עבור אגודת הזכויות הקובנית ACDAM"
 
 #: DB:work_attribute_type/description:25
 msgctxt "work_attribute_type"
 msgid "ID for the Czech rights society OSA"
-msgstr ""
+msgstr "מזהה עבור אגודת הזכויות הצ'כית OSA"
 
 #: DB:work_attribute_type/description:51
 msgctxt "work_attribute_type"
@@ -3203,6 +3212,11 @@ msgstr ""
 msgctxt "work_attribute_type"
 msgid "ID for the International Copyright Enterprise"
 msgstr "מזהה עבור ארגון זכויות היוצרים הבינלאומי"
+
+#: DB:work_attribute_type/description:52
+msgctxt "work_attribute_type"
+msgid "ID for the Irish rights society IMRO"
+msgstr ""
 
 #: DB:work_attribute_type/description:36
 msgctxt "work_attribute_type"
@@ -3313,6 +3327,11 @@ msgstr ""
 msgctxt "work_attribute_type"
 msgid "ID for the private licensing company CCLI"
 msgstr ""
+
+#: DB:work_attribute_type/name:52
+msgctxt "work_attribute_type"
+msgid "IMRO ID"
+msgstr "מזהה IMRO"
 
 #: DB:work_attribute_type/name:14
 msgctxt "work_attribute_type"
@@ -4641,7 +4660,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:647
 msgctxt "work_attribute_type_allowed_value"
 msgid "Naat"
-msgstr ""
+msgstr "נאאט"
 
 #: DB:work_attribute_type_allowed_value/value:984
 msgctxt "work_attribute_type_allowed_value"
@@ -6087,6 +6106,11 @@ msgctxt "place_type"
 msgid "Stadium"
 msgstr ""
 
+#: DB:event_type/name:6
+msgctxt "event_type"
+msgid "Stage performance"
+msgstr ""
+
 #: DB:cover_art_archive.art_type/name:10
 msgctxt "cover_art_type"
 msgid "Sticker"
@@ -6505,7 +6529,7 @@ msgctxt "work_type"
 msgid ""
 "The operetta is a genre of light opera, in terms both of music and subject "
 "matter. Operettas are generally short and include spoken parts."
-msgstr "האופרטה היא סוגה של אופרה קלה, הן מבחינת המוסיקה והן מבחינת הנושא. אופרטות הן בדרך כלל קצרות וכוללות חלקים מדובררים."
+msgstr "האופרטה היא סוגה של אופרה קלה, הן מבחינת המוזיקה והן מבחינת הנושא. אופרטות הן בדרך כלל קצרות וכוללות חלקים מדובררים."
 
 #: DB:release_packaging/description:1
 msgctxt "release_packaging"
@@ -7200,7 +7224,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:620
 msgctxt "work_attribute_type_allowed_value"
 msgid "İlahi"
-msgstr ""
+msgstr "ליחאי"
 
 #: DB:work_attribute_type_allowed_value/value:226
 msgctxt "work_attribute_type_allowed_value"

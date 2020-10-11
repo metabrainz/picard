@@ -29,8 +29,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2020-09-17 21:05+0000\n"
-"Last-Translator: Michael Wiencek <mwtuea@gmail.com>\n"
+"PO-Revision-Date: 2020-10-05 19:19+0000\n"
+"Last-Translator: yvanz\n"
 "Language-Team: French (http://www.transifex.com/musicbrainz/musicbrainz/language/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -222,6 +222,15 @@ msgstr "Une fête, une réception ou autre événement tenu spécialement pour l
 msgctxt "release_packaging"
 msgid "A perfect bound book with a sleeve at the end to hold a CD"
 msgstr "Un livre parfaitement relié avec une pochette à la fin pour tenir un CD "
+
+#: DB:event_type/description:6
+msgctxt "event_type"
+msgid ""
+"A performance of one or more plays, musicals, operas, ballets or other "
+"similar works for the stage in their staged form (as opposed to a <a "
+"href=\"https://en.wikipedia.org/wiki/Concert_performance\">concert "
+"performance</a> without staging)."
+msgstr "Une représentation de une ou plusieurs pièces de théâtre, comédies musicales, opéras, ballets, ou autres œuvres pour la scène dans leur version avec mise en scène (par opposition à leur version sans jeu de scène)."
 
 #: DB:place_type/description:8
 msgctxt "place_type"
@@ -2359,7 +2368,7 @@ msgstr "Fa♭ majeur"
 #: DB:work_attribute_type_allowed_value/value:815
 msgctxt "work_attribute_type_allowed_value"
 msgid "F-flat minor"
-msgstr ""
+msgstr "Fa♭ mineur"
 
 #: DB:work_attribute_type_allowed_value/value:19
 msgctxt "work_attribute_type_allowed_value"
@@ -3161,7 +3170,7 @@ msgstr "ID pour l’ECAD, société brésilienne de gestion des droits"
 #: DB:work_attribute_type/description:34
 msgctxt "work_attribute_type"
 msgid "ID for the British rights society PRS for Music"
-msgstr ""
+msgstr "ID pour la PRS for Music, société britannique de gestion des droits"
 
 #: DB:work_attribute_type/description:10
 msgctxt "work_attribute_type"
@@ -3191,7 +3200,7 @@ msgstr "ID pour l’OSA, société tchèque de gestion des droits"
 #: DB:work_attribute_type/description:51
 msgctxt "work_attribute_type"
 msgid "ID for the Danish rights society KODA"
-msgstr ""
+msgstr "ID pour la KODA, société danoise de gestion des droits"
 
 #: DB:work_attribute_type/description:26
 msgctxt "work_attribute_type"
@@ -3227,6 +3236,11 @@ msgstr "ID pour l’ARTISJUS, société hongroise de gestion des droits"
 msgctxt "work_attribute_type"
 msgid "ID for the International Copyright Enterprise"
 msgstr "ID pour l’ICE, entreprise internationale de gestion des droits d'auteur"
+
+#: DB:work_attribute_type/description:52
+msgctxt "work_attribute_type"
+msgid "ID for the Irish rights society IMRO"
+msgstr "ID pour l’IMRO, société irlandaise de gestion des droits"
 
 #: DB:work_attribute_type/description:36
 msgctxt "work_attribute_type"
@@ -3291,7 +3305,7 @@ msgstr "ID pour la SGAE, société espagnole de gestion des droits"
 #: DB:work_attribute_type/description:50
 msgctxt "work_attribute_type"
 msgid "ID for the Swedish rights society STIM"
-msgstr ""
+msgstr "ID pour la STIM, société suédoise de gestion des droits"
 
 #: DB:work_attribute_type/description:18
 msgctxt "work_attribute_type"
@@ -3336,7 +3350,12 @@ msgstr "ID pour l’AMRA, société internationale (initialement états-unienne)
 #: DB:work_attribute_type/description:22
 msgctxt "work_attribute_type"
 msgid "ID for the private licensing company CCLI"
-msgstr ""
+msgstr "ID pour la CCLI, compagnie privée de gestion de licences"
+
+#: DB:work_attribute_type/name:52
+msgctxt "work_attribute_type"
+msgid "IMRO ID"
+msgstr "ID IMRO"
 
 #: DB:work_attribute_type/name:14
 msgctxt "work_attribute_type"
@@ -3577,7 +3596,7 @@ msgstr "Jônpuri"
 #: DB:work_attribute_type/name:51
 msgctxt "work_attribute_type"
 msgid "KODA ID"
-msgstr ""
+msgstr "ID KODA"
 
 #: DB:work_attribute_type/name:11
 msgctxt "work_attribute_type"
@@ -5778,7 +5797,7 @@ msgstr "SPA ID"
 #: DB:work_attribute_type/name:50
 msgctxt "work_attribute_type"
 msgid "STIM ID"
-msgstr ""
+msgstr "ID STIM"
 
 #: DB:work_attribute_type/name:18
 msgctxt "work_attribute_type"
@@ -6110,6 +6129,11 @@ msgstr "Création parlée"
 msgctxt "place_type"
 msgid "Stadium"
 msgstr "Stade"
+
+#: DB:event_type/name:6
+msgctxt "event_type"
+msgid "Stage performance"
+msgstr "Performance scénique"
 
 #: DB:cover_art_archive.art_type/name:10
 msgctxt "cover_art_type"

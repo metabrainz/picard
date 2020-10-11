@@ -36,7 +36,7 @@ msgid ""
 "files even without any existing metadata."
 msgstr ""
 "צריכים לנקות את ספריית המוזיקה שלכם? פיקארד הוא מתייג מוזיקה בקוד פתוח, חוצת"
-" פלטפורמת על ידי מיוזיקבריינז. בעל יכולת זיהוי קבצי שמע גם ללא מטא נתונים "
+" פלטפורמת על ידי מיוזיקבריינז. בעל יכולת זיהוי קבצי שמע גם ללא נתוני-על "
 "קיימים."
 
 #: org.musicbrainz.Picard.appdata.xml.in:15
@@ -117,4 +117,4 @@ msgstr ""
 
 #: org.musicbrainz.Picard.appdata.xml.in:92
 msgid "MetaBrainz Foundation"
-msgstr "ממסד MetaBrainz"
+msgstr "קרן מטהבריינז"

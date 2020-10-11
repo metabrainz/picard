@@ -10,7 +10,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2020-09-18 07:55+0000\n"
+"PO-Revision-Date: 2020-10-01 09:37+0000\n"
 "Last-Translator: Maurits Meulenbelt <mfmeulenbelt@gmail.com>\n"
 "Language-Team: Dutch (http://www.transifex.com/musicbrainz/musicbrainz/language/nl/)\n"
 "MIME-Version: 1.0\n"
@@ -203,6 +203,15 @@ msgstr "Een feest, receptie of ander evenement dat speciaal wordt gehouden voor 
 msgctxt "release_packaging"
 msgid "A perfect bound book with a sleeve at the end to hold a CD"
 msgstr "Een gelijmd gebonden boek met achterin een hoesje voor een cd."
+
+#: DB:event_type/description:6
+msgctxt "event_type"
+msgid ""
+"A performance of one or more plays, musicals, operas, ballets or other "
+"similar works for the stage in their staged form (as opposed to a <a "
+"href=\"https://en.wikipedia.org/wiki/Concert_performance\">concert "
+"performance</a> without staging)."
+msgstr "Een uitvoering van een of meer toneelstukken, musicals, opera’s, balletten of soortgelijke composities met de bijbehorende voorstelling (in tegenstelling tot een <a href=\"https://en.wikipedia.org/wiki/Concert_performance\">concert</a> van alleen de muziek)."
 
 #: DB:place_type/description:8
 msgctxt "place_type"
@@ -3209,6 +3218,11 @@ msgctxt "work_attribute_type"
 msgid "ID for the International Copyright Enterprise"
 msgstr "Identificatiecode van de International Copyright Enterprise"
 
+#: DB:work_attribute_type/description:52
+msgctxt "work_attribute_type"
+msgid "ID for the Irish rights society IMRO"
+msgstr "Een ID van de Ierse auteursrechtenorganisatie IMRO"
+
 #: DB:work_attribute_type/description:36
 msgctxt "work_attribute_type"
 msgid "ID for the Italian rights society SIAE"
@@ -3318,6 +3332,11 @@ msgstr "Een ID van de internationale (vroeger Amerikaanse) auteursrechtenorganis
 msgctxt "work_attribute_type"
 msgid "ID for the private licensing company CCLI"
 msgstr "Een ID van het particuliere licentiebedrijf CCLI"
+
+#: DB:work_attribute_type/name:52
+msgctxt "work_attribute_type"
+msgid "IMRO ID"
+msgstr "IMRO-ID"
 
 #: DB:work_attribute_type/name:14
 msgctxt "work_attribute_type"
@@ -6091,6 +6110,11 @@ msgstr "Spokenword"
 msgctxt "place_type"
 msgid "Stadium"
 msgstr "Stadion"
+
+#: DB:event_type/name:6
+msgctxt "event_type"
+msgid "Stage performance"
+msgstr "Theatervoorstelling"
 
 #: DB:cover_art_archive.art_type/name:10
 msgctxt "cover_art_type"
