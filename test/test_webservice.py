@@ -47,6 +47,7 @@ PROXY_SETTINGS = {
     "proxy_server_port": 3128,
     "proxy_username": 'user',
     "proxy_password": 'password',
+    "network_transfer_timeout_seconds": 30,
 }
 
 
@@ -54,7 +55,11 @@ class WebServiceTest(PicardTestCase):
 
     def setUp(self):
         super().setUp()
-        config.setting = {'use_proxy': False, 'server_host': ''}
+        config.setting = {
+            'use_proxy': False,
+            'server_host': '',
+            'network_transfer_timeout_seconds': 30,
+        }
         self.ws = WebService()
 
     def tearDown(self):
@@ -92,7 +97,10 @@ class WebServiceTaskTest(PicardTestCase):
 
     def setUp(self):
         super().setUp()
-        config.setting = {'use_proxy': False}
+        config.setting = {
+            'use_proxy': False,
+            'network_transfer_timeout_seconds': 30,
+        }
         self.ws = WebService()
 
         # Patching the QTimers since they can only be started in a QThread

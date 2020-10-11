@@ -271,6 +271,7 @@ class WebService(QtCore.QObject):
         self.oauth_manager = OAuthManager(self)
         self.set_cache()
         self.setup_proxy()
+        self.set_transfer_timeout(config.setting['network_transfer_timeout_seconds'])
         self.manager.finished.connect(self._process_reply)
         self._request_methods = {
             "GET": self.manager.get,
@@ -331,6 +332,14 @@ class WebService(QtCore.QObject):
                 proxy.setPassword(config.setting["proxy_password"])
         self.manager.setProxy(proxy)
 
+    def set_transfer_timeout(self, timeout):
+        timeout_ms = timeout * 1000
+        if hasattr(self.manager, 'setTransferTimeout'):  # Available since Qt 5.15
+            self.manager.setTransferTimeout(timeout_ms)
+            self._transfer_timeout = 0
+        else:  # Use fallback implementation
+            self._transfer_timeout = timeout_ms
+
     def _send_request(self, request, access_token=None):
         hostkey = request.get_host_key()
         ratecontrol.increment_requests(hostkey)
@@ -338,19 +347,12 @@ class WebService(QtCore.QObject):
         request.access_token = access_token
         send = self._request_methods[request.method]
         data = request.data
-        transfer_timeout = config.setting['network_transfer_timeout_seconds'] * 1000
-        if hasattr(self.manager, 'setTransferTimeout'):  # Available since Qt 5.15
-            native_timeout = True
-            request.setTransferTimeout(transfer_timeout)
-        else:
-            native_timeout = False
         reply = send(request, data.encode('utf-8')) if data is not None else send(request)
-        if not native_timeout:
-            self._start_transfer_timeout(reply, transfer_timeout)
+        self._start_transfer_timeout(reply)
         self._active_requests[reply] = request
 
-    def _start_transfer_timeout(self, reply, timeout):
-        if not timeout:
+    def _start_transfer_timeout(self, reply):
+        if not self._transfer_timeout:
             return
         # Fallback implementation of a transfer timeout for Qt < 5.15.
         # Aborts a request if no data gets transferred for TRANSFER_TIMEOUT milliseconds.
@@ -359,14 +361,13 @@ class WebService(QtCore.QObject):
         timer.setTimerType(QtCore.Qt.PreciseTimer)
         timer.timeout.connect(partial(self._timeout_request, reply))
         reply.finished.connect(timer.stop)
-        reset_callback = partial(self._reset_transfer_timeout, timer, timeout)
+        reset_callback = partial(self._reset_transfer_timeout)
         reply.uploadProgress.connect(reset_callback)
         reply.downloadProgress.connect(reset_callback)
-        timer.start(timeout)
+        timer.start(self._transfer_timeout)
 
-    @staticmethod
-    def _reset_transfer_timeout(timer, timeout, bytesTransferred, bytesTotal):
-        timer.start(timeout)
+    def _reset_transfer_timeout(self, timer, bytesTransferred, bytesTotal):
+        timer.start(self._transfer_timeout)
 
     @staticmethod
     def _timeout_request(reply):
