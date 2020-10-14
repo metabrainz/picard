@@ -361,7 +361,7 @@ class WebService(QtCore.QObject):
         timer.setTimerType(QtCore.Qt.PreciseTimer)
         timer.timeout.connect(partial(self._timeout_request, reply))
         reply.finished.connect(timer.stop)
-        reset_callback = partial(self._reset_transfer_timeout)
+        reset_callback = partial(self._reset_transfer_timeout, timer)
         reply.uploadProgress.connect(reset_callback)
         reply.downloadProgress.connect(reset_callback)
         timer.start(self._transfer_timeout)
