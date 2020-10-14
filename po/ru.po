@@ -25,8 +25,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-10-09 13:46+0200\n"
-"PO-Revision-Date: 2020-10-09 12:14+0000\n"
+"POT-Creation-Date: 2020-10-11 15:19+0200\n"
+"PO-Revision-Date: 2020-10-12 00:14+0000\n"
 "Last-Translator: Transifex Bot <>\n"
 "Language-Team: Russian (http://www.transifex.com/musicbrainz/musicbrainz/language/ru/)\n"
 "MIME-Version: 1.0\n"
@@ -266,16 +266,16 @@ msgstr "Аккаунт MusicBrainz"
 msgid "Authorization code:"
 msgstr "Код авторизации:"
 
-#: picard/tagger.py:750
+#: picard/tagger.py:751
 #, python-format
 msgid "Removing album %(id)s: %(artist)s - %(album)s"
 msgstr "Удаление альбома %(id)s: %(artist)s - %(album)s"
 
-#: picard/tagger.py:768
+#: picard/tagger.py:769
 msgid "CD Lookup Error"
 msgstr "Ошибка опознавания CD"
 
-#: picard/tagger.py:769
+#: picard/tagger.py:770
 #, python-format
 msgid ""
 "Error while reading CD:\n"
@@ -4344,11 +4344,11 @@ msgstr "Получить API ключ..."
 msgid "MusicBrainz Server"
 msgstr "Сервер MusicBrainz"
 
-#: picard/ui/ui_options_general.py:133 picard/ui/ui_options_network.py:110
+#: picard/ui/ui_options_general.py:133 picard/ui/ui_options_network.py:138
 msgid "Port:"
 msgstr "Порт:"
 
-#: picard/ui/ui_options_general.py:134 picard/ui/ui_options_network.py:111
+#: picard/ui/ui_options_general.py:134 picard/ui/ui_options_network.py:140
 msgid "Server address:"
 msgstr "Адрес сервера:"
 
@@ -4570,27 +4570,39 @@ msgstr "Произведения не из альбома:"
 msgid "Default"
 msgstr "По умолчанию"
 
-#: picard/ui/ui_options_network.py:107
+#: picard/ui/ui_options_network.py:134
 msgid "Web Proxy"
 msgstr "Прокси"
 
-#: picard/ui/ui_options_network.py:108 picard/ui/ui_passworddialog.py:62
-msgid "Password:"
-msgstr "Пароль:"
+#: picard/ui/ui_options_network.py:135
+msgid "HTTP"
+msgstr ""
 
-#: picard/ui/ui_options_network.py:109 picard/ui/ui_passworddialog.py:61
+#: picard/ui/ui_options_network.py:136
+msgid "SOCKS"
+msgstr ""
+
+#: picard/ui/ui_options_network.py:137 picard/ui/ui_passworddialog.py:61
 msgid "Username:"
 msgstr "Имя пользователя:"
 
-#: picard/ui/ui_options_network.py:112
+#: picard/ui/ui_options_network.py:139 picard/ui/ui_passworddialog.py:62
+msgid "Password:"
+msgstr "Пароль:"
+
+#: picard/ui/ui_options_network.py:141
+msgid "Request timeout in seconds:"
+msgstr ""
+
+#: picard/ui/ui_options_network.py:142
 msgid "Browser Integration"
 msgstr "Интеграция с браузером"
 
-#: picard/ui/ui_options_network.py:113
+#: picard/ui/ui_options_network.py:143
 msgid "Default listening port:"
 msgstr "Порт для прослушивания:"
 
-#: picard/ui/ui_options_network.py:114
+#: picard/ui/ui_options_network.py:144
 msgid "Listen only on localhost"
 msgstr "Слушать только на localhost"
 
@@ -5326,7 +5338,7 @@ msgstr "Сбросить всё"
 msgid "File Naming"
 msgstr "Имя файла"
 
-#: picard/ui/options/renaming.py:197 picard/ui/options/scripting.py:102
+#: picard/ui/options/renaming.py:197 picard/ui/options/scripting.py:103
 msgid ""
 "<a href=\"%(picard-doc-scripting-url)s\">Open Scripting Documentation in "
 "your browser</a>"
@@ -5340,11 +5352,11 @@ msgstr "Местоположение для перемещаемых файло�
 msgid "The file naming format must not be empty."
 msgstr "Формат переименования файла не может быть пустым."
 
-#: picard/ui/options/scripting.py:141
+#: picard/ui/options/scripting.py:152
 msgid "Scripting"
 msgstr "Скрипты"
 
-#: picard/ui/options/scripting.py:208
+#: picard/ui/options/scripting.py:219
 msgid "Script Error"
 msgstr "Ошибка скрипта"
 

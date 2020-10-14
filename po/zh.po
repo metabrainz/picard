@@ -26,8 +26,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-10-09 13:46+0200\n"
-"PO-Revision-Date: 2020-10-09 12:14+0000\n"
+"POT-Creation-Date: 2020-10-11 15:19+0200\n"
+"PO-Revision-Date: 2020-10-12 00:14+0000\n"
 "Last-Translator: Transifex Bot <>\n"
 "Language-Team: Chinese (http://www.transifex.com/musicbrainz/musicbrainz/language/zh/)\n"
 "MIME-Version: 1.0\n"
@@ -255,16 +255,16 @@ msgstr "MusicBrainz 账号"
 msgid "Authorization code:"
 msgstr "授权码:"
 
-#: picard/tagger.py:750
+#: picard/tagger.py:751
 #, python-format
 msgid "Removing album %(id)s: %(artist)s - %(album)s"
 msgstr "正在移除专辑 %(id)s: %(artist)s - %(album)s"
 
-#: picard/tagger.py:768
+#: picard/tagger.py:769
 msgid "CD Lookup Error"
 msgstr "CD 查询错误"
 
-#: picard/tagger.py:769
+#: picard/tagger.py:770
 #, python-format
 msgid ""
 "Error while reading CD:\n"
@@ -4315,11 +4315,11 @@ msgstr "获取 API 密钥..."
 msgid "MusicBrainz Server"
 msgstr "MusicBrainz 服务器"
 
-#: picard/ui/ui_options_general.py:133 picard/ui/ui_options_network.py:110
+#: picard/ui/ui_options_general.py:133 picard/ui/ui_options_network.py:138
 msgid "Port:"
 msgstr "端口:"
 
-#: picard/ui/ui_options_general.py:134 picard/ui/ui_options_network.py:111
+#: picard/ui/ui_options_general.py:134 picard/ui/ui_options_network.py:140
 msgid "Server address:"
 msgstr "服务器地址:"
 
@@ -4541,27 +4541,39 @@ msgstr "无专辑的音轨:"
 msgid "Default"
 msgstr "默认"
 
-#: picard/ui/ui_options_network.py:107
+#: picard/ui/ui_options_network.py:134
 msgid "Web Proxy"
 msgstr "网络代理"
 
-#: picard/ui/ui_options_network.py:108 picard/ui/ui_passworddialog.py:62
-msgid "Password:"
-msgstr "密码:"
+#: picard/ui/ui_options_network.py:135
+msgid "HTTP"
+msgstr ""
 
-#: picard/ui/ui_options_network.py:109 picard/ui/ui_passworddialog.py:61
+#: picard/ui/ui_options_network.py:136
+msgid "SOCKS"
+msgstr ""
+
+#: picard/ui/ui_options_network.py:137 picard/ui/ui_passworddialog.py:61
 msgid "Username:"
 msgstr "用户名:"
 
-#: picard/ui/ui_options_network.py:112
+#: picard/ui/ui_options_network.py:139 picard/ui/ui_passworddialog.py:62
+msgid "Password:"
+msgstr "密码:"
+
+#: picard/ui/ui_options_network.py:141
+msgid "Request timeout in seconds:"
+msgstr ""
+
+#: picard/ui/ui_options_network.py:142
 msgid "Browser Integration"
 msgstr "浏览器集成"
 
-#: picard/ui/ui_options_network.py:113
+#: picard/ui/ui_options_network.py:143
 msgid "Default listening port:"
 msgstr "默认监听端口:"
 
-#: picard/ui/ui_options_network.py:114
+#: picard/ui/ui_options_network.py:144
 msgid "Listen only on localhost"
 msgstr "仅在 localhost 监听"
 
@@ -5297,7 +5309,7 @@ msgstr "全部重置"
 msgid "File Naming"
 msgstr "正在重命名文件"
 
-#: picard/ui/options/renaming.py:197 picard/ui/options/scripting.py:102
+#: picard/ui/options/renaming.py:197 picard/ui/options/scripting.py:103
 msgid ""
 "<a href=\"%(picard-doc-scripting-url)s\">Open Scripting Documentation in "
 "your browser</a>"
@@ -5311,11 +5323,11 @@ msgstr "移动文件的目标位置不能为空。"
 msgid "The file naming format must not be empty."
 msgstr "文件命名格式不能为空。"
 
-#: picard/ui/options/scripting.py:141
+#: picard/ui/options/scripting.py:152
 msgid "Scripting"
 msgstr "脚本编写"
 
-#: picard/ui/options/scripting.py:208
+#: picard/ui/options/scripting.py:219
 msgid "Script Error"
 msgstr "脚本错误"
 

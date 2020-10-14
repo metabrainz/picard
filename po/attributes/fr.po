@@ -29,7 +29,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2020-10-05 19:19+0000\n"
+"PO-Revision-Date: 2020-10-13 14:56+0000\n"
 "Last-Translator: yvanz\n"
 "Language-Team: French (http://www.transifex.com/musicbrainz/musicbrainz/language/fr/)\n"
 "MIME-Version: 1.0\n"
@@ -170,6 +170,13 @@ msgid ""
 "release (e.g. pre-release versions, releases included with a magazine, "
 "versions supplied to radio DJs for air-play)."
 msgstr "Une parution cadeau ou dédiée à la promotion de la parution officielle à venir (p. ex. des versions en avant-première, ou des parutions proposées avec un magazine, des versions fournies aux DJ pour la diffusion à la radio)."
+
+#: DB:artist_type/description:2
+msgctxt "artist_type"
+msgid ""
+"A grouping of multiple musicians who perform together (in some cases, some "
+"or all of the members might differ in different performances or recordings)."
+msgstr ""
 
 #: DB:instrument_type/description:7
 msgctxt "instrument_type"
@@ -3067,6 +3074,16 @@ msgctxt "medium_format"
 msgid "Hybrid SACD (SACD layer)"
 msgstr "SACD hybride (couche SACD)"
 
+#: DB:medium_format/name:87
+msgctxt "medium_format"
+msgid "Hybrid SACD (SACD layer, 2ch)"
+msgstr ""
+
+#: DB:medium_format/name:86
+msgctxt "medium_format"
+msgid "Hybrid SACD (SACD layer, mch)"
+msgstr ""
+
 #: DB:work_attribute_type_allowed_value/value:418
 msgctxt "work_attribute_type_allowed_value"
 msgid "Hüdavendigar"
@@ -5724,6 +5741,16 @@ msgctxt "medium_format"
 msgid "SACD"
 msgstr "SACD"
 
+#: DB:medium_format/name:84
+msgctxt "medium_format"
+msgid "SACD (2ch)"
+msgstr ""
+
+#: DB:medium_format/name:85
+msgctxt "medium_format"
+msgid "SACD (mch)"
+msgstr ""
+
 #: DB:work_attribute_type/name:21
 msgctxt "work_attribute_type"
 msgid "SACEM ID"
@@ -5778,6 +5805,16 @@ msgstr "SHM-CD"
 msgctxt "medium_format"
 msgid "SHM-SACD"
 msgstr "SHM-SACD"
+
+#: DB:medium_format/name:89
+msgctxt "medium_format"
+msgid "SHM-SACD (2ch)"
+msgstr ""
+
+#: DB:medium_format/name:88
+msgctxt "medium_format"
+msgid "SHM-SACD (mch)"
+msgstr ""
 
 #: DB:work_attribute_type/name:36
 msgctxt "work_attribute_type"
@@ -6567,6 +6604,37 @@ msgid ""
 "separate medium."
 msgstr "La face vinyle d’un VinylDisc. La face CD ou DVD doit être ajoutée comme un support à part."
 
+#: DB:artist_type/description:6
+msgctxt "artist_type"
+msgid ""
+"This indicates a choir/chorus (an organized, usually large group of "
+"singers). Smaller vocal ensembles and groupings that do not generally call "
+"themselves choirs are better entered as “Group”."
+msgstr ""
+
+#: DB:artist_type/description:4
+msgctxt "artist_type"
+msgid ""
+"This indicates an individual fictional character (whether a fictional "
+"person, animal or any other kind of character)."
+msgstr ""
+
+#: DB:artist_type/description:1
+msgctxt "artist_type"
+msgid ""
+"This indicates an individual person, be it under its legal name (“John "
+"Lennon”), or a performance name (“Sting”)."
+msgstr ""
+
+#: DB:artist_type/description:5
+msgctxt "artist_type"
+msgid ""
+"This indicates an orchestra (an organized, usually large group of "
+"instrumentalists). Smaller ensembles (such as trios and quartets) and "
+"groupings that do not generally call themselves orchestras are better "
+"entered as “Group”."
+msgstr ""
+
 #: DB:work_type/description:23
 msgctxt "work_type"
 msgid ""
@@ -6574,6 +6642,44 @@ msgid ""
 "relatively ordinary language without metrical structure (e.g. novels, short "
 "stories, essays...)."
 msgstr "Ceci représente des œuvres littéraires en prose, c’est à dire une forme de discours relativement ordinaire sans structure métrique (p. ex. romans, nouvelles, essais...)."
+
+#: DB:medium_format/description:84
+msgctxt "medium_format"
+msgid ""
+"This represents the 2 channel (stereo/mono/dual) table of contents on a "
+"SACD."
+msgstr ""
+
+#: DB:medium_format/description:89
+msgctxt "medium_format"
+msgid ""
+"This represents the 2 channel (stereo/mono/dual) table of contents on a SHM-"
+"SACD."
+msgstr ""
+
+#: DB:medium_format/description:87
+msgctxt "medium_format"
+msgid ""
+"This represents the 2 channel (stereo/mono/dual) table of contents on a "
+"hybrid SACD's SACD layer."
+msgstr ""
+
+#: DB:medium_format/description:85
+msgctxt "medium_format"
+msgid "This represents the multichannel table of contents on a SACD."
+msgstr ""
+
+#: DB:medium_format/description:88
+msgctxt "medium_format"
+msgid "This represents the multichannel table of contents on a SHM-SACD."
+msgstr ""
+
+#: DB:medium_format/description:86
+msgctxt "medium_format"
+msgid ""
+"This represents the multichannel table of contents on a hybrid SACD's SACD "
+"layer."
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:1041
 msgctxt "work_attribute_type_allowed_value"
