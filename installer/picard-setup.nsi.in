@@ -255,5 +255,5 @@ FunctionEnd
   !insertmacro MUI_DESCRIPTION_TEXT ${lang} "$(MuiDescriptionLang)"
   !insertmacro MUI_DESCRIPTION_TEXT ${shortcuts} "$(MuiDescriptionShortcuts)"
   !insertmacro MUI_DESCRIPTION_TEXT ${desktop} "$(MuiDescriptionDesktop)"
-  !insertmacro MUI_DESCRIPTION_TEXT ${startmenu} "$(MuiDescriptionStarteMenu)"
+  !insertmacro MUI_DESCRIPTION_TEXT ${startmenu} "$(MuiDescriptionStartMenu)"
 !insertmacro MUI_FUNCTION_DESCRIPTION_END

@@ -6,7 +6,7 @@
     "MuiDescriptionLang": "Instala traduções do ${PRODUCT_NAME} para diferentes línguas.",
     "MuiDescriptionShortcuts": "Instala atalhos para executar o ${PRODUCT_NAME}.",
     "MuiDescriptionDesktop": "Instala um atalho na área de trabalho.",
-    "MuiDescriptionStarteMenu": "Instala um atalho no Menu Iniciar.",
+    "MuiDescriptionStartMenu": "Instala um atalho no Menu Iniciar.",
     "OptionRemoveSettings": "Remover configurações e dados pessoais",
     "SectionDesktop": "Área de Trabalho",
     "SectionLanguages": "Linguagens",

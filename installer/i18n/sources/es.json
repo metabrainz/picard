@@ -6,7 +6,7 @@
     "MuiDescriptionLang": "Instalar traducciones de ${PRODUCT_NAME} en diferentes lenguajes.",
     "MuiDescriptionShortcuts": "Instalar atajos para iniciar ${PRODUCT_NAME}.",
     "MuiDescriptionDesktop": "Instalar un atajo en el escritorio",
-    "MuiDescriptionStarteMenu": "Instalar un atajo en el Menú de Inicio",
+    "MuiDescriptionStartMenu": "Instalar un atajo en el Menú de Inicio",
     "OptionRemoveSettings": "Remover ajustes e información personal",
     "SectionDesktop": "Escritorio",
     "SectionLanguages": "Idiomas",

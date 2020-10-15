@@ -6,7 +6,7 @@
     "MuiDescriptionLang": "Asentaa sovelluksen ${PRODUCT_NAME} eri kieliset käännöstiedostot.",
     "MuiDescriptionShortcuts": "Asentaa pikakuvakkeet sovelluksen ${PRODUCT_NAME} käynnistämiseksi.",
     "MuiDescriptionDesktop": "Asentaa pikakuvakkeen työpöydälle.",
-    "MuiDescriptionStarteMenu": "Asentaa pikakuvakkeen käynnistys-valikkoon.",
+    "MuiDescriptionStartMenu": "Asentaa pikakuvakkeen käynnistys-valikkoon.",
     "OptionRemoveSettings": "Poista asetukset ja henkilökohtaiset tiedot.",
     "SectionDesktop": "Työpöytä",
     "SectionLanguages": "Kielet",

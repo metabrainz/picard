@@ -6,7 +6,7 @@
     "MuiDescriptionLang": "Installerar översättningar av ${PRODUCT_NAME} till olika språk.",
     "MuiDescriptionShortcuts": "Installerar en genväg för att starta ${PRODUCT_NAME}.",
     "MuiDescriptionDesktop": "Installerar en genväg på skrivbordet.",
-    "MuiDescriptionStarteMenu": "Installerar en genväg i startmenyn.",
+    "MuiDescriptionStartMenu": "Installerar en genväg i startmenyn.",
     "OptionRemoveSettings": "Ta bort inställningar och personlig data",
     "SectionDesktop": "Skrivbord",
     "SectionLanguages": "Språk",

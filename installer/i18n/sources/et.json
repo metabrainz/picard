@@ -6,7 +6,7 @@
     "MuiDescriptionLang": "Paigaldab ${PRODUCT_NAME}i eri keeltesse tõlgitud kasutajaliidese.",
     "MuiDescriptionShortcuts": "Paigaldab otseteed ${PRODUCT_NAME}i käivtamiseks.",
     "MuiDescriptionDesktop": "Lisab otsetee töölauale.",
-    "MuiDescriptionStarteMenu": "Lisab otsetee Start-menüüsse.",
+    "MuiDescriptionStartMenu": "Lisab otsetee Start-menüüsse.",
     "OptionRemoveSettings": "Seadete ja isiklike andmete eemaldamine",
     "SectionDesktop": "Töölaud",
     "SectionLanguages": "Keeled",

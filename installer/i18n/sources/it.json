@@ -6,7 +6,7 @@
     "MuiDescriptionLang": "Installa le traduzioni di ${PRODUCT_NAME} per le differenti lingue.",
     "MuiDescriptionShortcuts": "Installa collegamenti per eseguire ${PRODUCT_NAME}.",
     "MuiDescriptionDesktop": "Installa collegamento sul desktop.",
-    "MuiDescriptionStarteMenu": "Installa collegamento nel menu Start.",
+    "MuiDescriptionStartMenu": "Installa collegamento nel menu Start.",
     "OptionRemoveSettings": "Elimina impostazioni e dati personali",
     "SectionDesktop": "Desktop",
     "SectionLanguages": "Lingue",
