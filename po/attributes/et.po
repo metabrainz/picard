@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2020-10-13 14:56+0000\n"
+"PO-Revision-Date: 2020-10-15 09:51+0000\n"
 "Last-Translator: yvanz\n"
 "Language-Team: Estonian (http://www.transifex.com/musicbrainz/musicbrainz/language/et/)\n"
 "MIME-Version: 1.0\n"
@@ -3052,12 +3052,12 @@ msgstr "hübriid-SACD (SACD-kiht)"
 
 #: DB:medium_format/name:87
 msgctxt "medium_format"
-msgid "Hybrid SACD (SACD layer, 2ch)"
+msgid "Hybrid SACD (SACD layer, 2 channel)"
 msgstr ""
 
 #: DB:medium_format/name:86
 msgctxt "medium_format"
-msgid "Hybrid SACD (SACD layer, mch)"
+msgid "Hybrid SACD (SACD layer, multichannel)"
 msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:418
@@ -5719,12 +5719,12 @@ msgstr "SACD"
 
 #: DB:medium_format/name:84
 msgctxt "medium_format"
-msgid "SACD (2ch)"
+msgid "SACD (2 channel)"
 msgstr ""
 
 #: DB:medium_format/name:85
 msgctxt "medium_format"
-msgid "SACD (mch)"
+msgid "SACD (multichannel)"
 msgstr ""
 
 #: DB:work_attribute_type/name:21
@@ -5784,12 +5784,12 @@ msgstr "SHM-SACD"
 
 #: DB:medium_format/name:89
 msgctxt "medium_format"
-msgid "SHM-SACD (2ch)"
+msgid "SHM-SACD (2 channel)"
 msgstr ""
 
 #: DB:medium_format/name:88
 msgctxt "medium_format"
-msgid "SHM-SACD (mch)"
+msgid "SHM-SACD (multichannel)"
 msgstr ""
 
 #: DB:work_attribute_type/name:36
@@ -6622,22 +6622,20 @@ msgstr ""
 #: DB:medium_format/description:84
 msgctxt "medium_format"
 msgid ""
-"This represents the 2 channel (stereo/mono/dual) table of contents on a "
-"SACD."
+"This represents the 2 channel (stereo/mono) table of contents on a SACD."
 msgstr ""
 
 #: DB:medium_format/description:89
 msgctxt "medium_format"
 msgid ""
-"This represents the 2 channel (stereo/mono/dual) table of contents on a SHM-"
-"SACD."
+"This represents the 2 channel (stereo/mono) table of contents on a SHM-SACD."
 msgstr ""
 
 #: DB:medium_format/description:87
 msgctxt "medium_format"
 msgid ""
-"This represents the 2 channel (stereo/mono/dual) table of contents on a "
-"hybrid SACD's SACD layer."
+"This represents the 2 channel (stereo/mono) table of contents on a hybrid "
+"SACD's SACD layer."
 msgstr ""
 
 #: DB:medium_format/description:85

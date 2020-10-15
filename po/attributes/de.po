@@ -47,8 +47,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2020-10-13 14:56+0000\n"
-"Last-Translator: yvanz\n"
+"PO-Revision-Date: 2020-10-15 10:52+0000\n"
+"Last-Translator: David Kellner <kellnerd@gmx.net>\n"
 "Language-Team: German (http://www.transifex.com/musicbrainz/musicbrainz/language/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -194,7 +194,7 @@ msgctxt "artist_type"
 msgid ""
 "A grouping of multiple musicians who perform together (in some cases, some "
 "or all of the members might differ in different performances or recordings)."
-msgstr ""
+msgstr "Eine Gruppierung von mehreren Musikern, die zusammen auftreten (in manchen Fällen können sich einige oder alle Mitglieder bei verschiedenen Auftritten oder Aufnahmen unterscheiden)."
 
 #: DB:instrument_type/description:7
 msgctxt "instrument_type"
@@ -255,7 +255,7 @@ msgid ""
 "similar works for the stage in their staged form (as opposed to a <a "
 "href=\"https://en.wikipedia.org/wiki/Concert_performance\">concert "
 "performance</a> without staging)."
-msgstr ""
+msgstr "Eine Aufführung eines oder mehrerer Theaterstücke, Musicals, Opern, Ballette oder anderer ähnlicher Werke für die Bühne in ihrer inszenierten Form (im Gegensatz zu einer <a href=\"https://en.wikipedia.org/wiki/Concert_performance\">Konzertaufführung</a> ohne Inszenierung)."
 
 #: DB:place_type/description:8
 msgctxt "place_type"
@@ -2393,7 +2393,7 @@ msgstr "Fes-Dur"
 #: DB:work_attribute_type_allowed_value/value:815
 msgctxt "work_attribute_type_allowed_value"
 msgid "F-flat minor"
-msgstr ""
+msgstr "fes-Moll"
 
 #: DB:work_attribute_type_allowed_value/value:19
 msgctxt "work_attribute_type_allowed_value"
@@ -3085,22 +3085,22 @@ msgstr "Hybrid-SACD"
 #: DB:medium_format/name:63
 msgctxt "medium_format"
 msgid "Hybrid SACD (CD layer)"
-msgstr "Hybrid SACD (CD-Seite)"
+msgstr "Hybrid SACD (CD-Schicht)"
 
 #: DB:medium_format/name:64
 msgctxt "medium_format"
 msgid "Hybrid SACD (SACD layer)"
-msgstr "Hybrid SACD (SACD-Seite)"
+msgstr "Hybrid SACD (SACD-Schicht)"
 
 #: DB:medium_format/name:87
 msgctxt "medium_format"
-msgid "Hybrid SACD (SACD layer, 2ch)"
-msgstr ""
+msgid "Hybrid SACD (SACD layer, 2 channel)"
+msgstr "Hybrid SACD (SACD-Schicht, 2-Kanal)    "
 
 #: DB:medium_format/name:86
 msgctxt "medium_format"
-msgid "Hybrid SACD (SACD layer, mch)"
-msgstr ""
+msgid "Hybrid SACD (SACD layer, multichannel)"
+msgstr "Hybrid SACD (SACD-Schicht, Mehrkanal)    "
 
 #: DB:work_attribute_type_allowed_value/value:418
 msgctxt "work_attribute_type_allowed_value"
@@ -3205,7 +3205,7 @@ msgstr "ID für die brasilianische Verwertungsgesellschaft ECAD"
 #: DB:work_attribute_type/description:34
 msgctxt "work_attribute_type"
 msgid "ID for the British rights society PRS for Music"
-msgstr ""
+msgstr "Id für die britische Verwertungsgesellschaft PRS for Music"
 
 #: DB:work_attribute_type/description:10
 msgctxt "work_attribute_type"
@@ -3235,7 +3235,7 @@ msgstr "ID für die tschechische Verwertungsgesellschaft OSA"
 #: DB:work_attribute_type/description:51
 msgctxt "work_attribute_type"
 msgid "ID for the Danish rights society KODA"
-msgstr ""
+msgstr "ID für die dänische Verwertungsgesellschaft KODA"
 
 #: DB:work_attribute_type/description:26
 msgctxt "work_attribute_type"
@@ -3275,7 +3275,7 @@ msgstr "ID für das International Copyright Enterprise"
 #: DB:work_attribute_type/description:52
 msgctxt "work_attribute_type"
 msgid "ID for the Irish rights society IMRO"
-msgstr ""
+msgstr "ID für die irische Verwertungsgesellschaft IMRO"
 
 #: DB:work_attribute_type/description:36
 msgctxt "work_attribute_type"
@@ -3340,7 +3340,7 @@ msgstr "ID für die spanische Verwertungsgesellschaft SGAE"
 #: DB:work_attribute_type/description:50
 msgctxt "work_attribute_type"
 msgid "ID for the Swedish rights society STIM"
-msgstr ""
+msgstr "ID für die schwedische Verwertungsgesellschaft STIM"
 
 #: DB:work_attribute_type/description:18
 msgctxt "work_attribute_type"
@@ -3385,12 +3385,12 @@ msgstr "ID für die internationale (ehemalige US-) Verwertungsgesellschaft AMRA"
 #: DB:work_attribute_type/description:22
 msgctxt "work_attribute_type"
 msgid "ID for the private licensing company CCLI"
-msgstr ""
+msgstr "ID für das private Lizenzunternehmen CCLI"
 
 #: DB:work_attribute_type/name:52
 msgctxt "work_attribute_type"
 msgid "IMRO ID"
-msgstr ""
+msgstr "IMRO-ID"
 
 #: DB:work_attribute_type/name:14
 msgctxt "work_attribute_type"
@@ -3631,7 +3631,7 @@ msgstr "Jōnpuri"
 #: DB:work_attribute_type/name:51
 msgctxt "work_attribute_type"
 msgid "KODA ID"
-msgstr ""
+msgstr "KODA-ID"
 
 #: DB:work_attribute_type/name:11
 msgctxt "work_attribute_type"
@@ -5761,13 +5761,13 @@ msgstr "SACD"
 
 #: DB:medium_format/name:84
 msgctxt "medium_format"
-msgid "SACD (2ch)"
-msgstr ""
+msgid "SACD (2 channel)"
+msgstr "SACD (2-Kanal)"
 
 #: DB:medium_format/name:85
 msgctxt "medium_format"
-msgid "SACD (mch)"
-msgstr ""
+msgid "SACD (multichannel)"
+msgstr "SACD (Mehrkanal)"
 
 #: DB:work_attribute_type/name:21
 msgctxt "work_attribute_type"
@@ -5826,13 +5826,13 @@ msgstr "SHM-SACD"
 
 #: DB:medium_format/name:89
 msgctxt "medium_format"
-msgid "SHM-SACD (2ch)"
-msgstr ""
+msgid "SHM-SACD (2 channel)"
+msgstr "SHM-SACD (2-Kanal)"
 
 #: DB:medium_format/name:88
 msgctxt "medium_format"
-msgid "SHM-SACD (mch)"
-msgstr ""
+msgid "SHM-SACD (multichannel)"
+msgstr "SHM-SACD (Mehrkanal)"
 
 #: DB:work_attribute_type/name:36
 msgctxt "work_attribute_type"
@@ -5852,7 +5852,7 @@ msgstr "SPA-ID"
 #: DB:work_attribute_type/name:50
 msgctxt "work_attribute_type"
 msgid "STIM ID"
-msgstr ""
+msgstr "STIM-ID"
 
 #: DB:work_attribute_type/name:18
 msgctxt "work_attribute_type"
@@ -6188,7 +6188,7 @@ msgstr "Stadion"
 #: DB:event_type/name:6
 msgctxt "event_type"
 msgid "Stage performance"
-msgstr ""
+msgstr "Bühnenaufführung"
 
 #: DB:cover_art_archive.art_type/name:10
 msgctxt "cover_art_type"
@@ -6628,21 +6628,21 @@ msgid ""
 "This indicates a choir/chorus (an organized, usually large group of "
 "singers). Smaller vocal ensembles and groupings that do not generally call "
 "themselves choirs are better entered as “Group”."
-msgstr ""
+msgstr "Dies bezeichnet einen Chor (eine organisierte, in der Regel große Gruppe von Sängern). Kleinere Gesangsensembles und Gruppierungen, die sich im Allgemeinen nicht als Chor bezeichnen, werden besser als „Gruppe” erfasst."
 
 #: DB:artist_type/description:4
 msgctxt "artist_type"
 msgid ""
 "This indicates an individual fictional character (whether a fictional "
 "person, animal or any other kind of character)."
-msgstr ""
+msgstr "Dies kennzeichnet einen eigenständigen fiktiven Charakter (sei es eine fiktive Person, ein Tier oder irgendeine andere Art von Charakter)."
 
 #: DB:artist_type/description:1
 msgctxt "artist_type"
 msgid ""
 "This indicates an individual person, be it under its legal name (“John "
 "Lennon”), or a performance name (“Sting”)."
-msgstr ""
+msgstr "Dies kennzeichnet eine einzelne Person, sei es unter ihrem rechtlichen Namen („John Lennon”) oder einem Künstlernamen („Sting”)."
 
 #: DB:artist_type/description:5
 msgctxt "artist_type"
@@ -6651,7 +6651,7 @@ msgid ""
 "instrumentalists). Smaller ensembles (such as trios and quartets) and "
 "groupings that do not generally call themselves orchestras are better "
 "entered as “Group”."
-msgstr ""
+msgstr "Dies kennzeichnet ein Orchester (eine organisierte, in der Regel große Gruppe von Instrumentalisten). Kleinere Ensembles (wie Trios und Quartette) und Gruppierungen, die sich im Allgemeinen nicht als Orchester bezeichnen, werden besser als „Gruppe” erfasst."
 
 #: DB:work_type/description:23
 msgctxt "work_type"
@@ -6664,40 +6664,38 @@ msgstr "Repräsentiert literarische Werke, die in Prosa geschrieben wurden, d. h
 #: DB:medium_format/description:84
 msgctxt "medium_format"
 msgid ""
-"This represents the 2 channel (stereo/mono/dual) table of contents on a "
-"SACD."
-msgstr ""
+"This represents the 2 channel (stereo/mono) table of contents on a SACD."
+msgstr "Dies stellt das 2-Kanal-Inhaltsverzeichnis (Stereo/Mono) auf einer SACD dar."
 
 #: DB:medium_format/description:89
 msgctxt "medium_format"
 msgid ""
-"This represents the 2 channel (stereo/mono/dual) table of contents on a SHM-"
-"SACD."
-msgstr ""
+"This represents the 2 channel (stereo/mono) table of contents on a SHM-SACD."
+msgstr "Dies stellt das 2-Kanal-Inhaltsverzeichnis (Stereo/Mono) auf einer SHM-SACD dar."
 
 #: DB:medium_format/description:87
 msgctxt "medium_format"
 msgid ""
-"This represents the 2 channel (stereo/mono/dual) table of contents on a "
-"hybrid SACD's SACD layer."
-msgstr ""
+"This represents the 2 channel (stereo/mono) table of contents on a hybrid "
+"SACD's SACD layer."
+msgstr "Dies stellt das 2-Kanal-Inhaltsverzeichnis (Stereo/Mono) auf der SACD-Schicht einer Hybrid SACD dar."
 
 #: DB:medium_format/description:85
 msgctxt "medium_format"
 msgid "This represents the multichannel table of contents on a SACD."
-msgstr ""
+msgstr "Dies stellt das Mehrkanal-Inhaltsverzeichnis auf einer SACD dar."
 
 #: DB:medium_format/description:88
 msgctxt "medium_format"
 msgid "This represents the multichannel table of contents on a SHM-SACD."
-msgstr ""
+msgstr "Dies stellt das Mehrkanal-Inhaltsverzeichnis auf einer SHM-SACD dar."
 
 #: DB:medium_format/description:86
 msgctxt "medium_format"
 msgid ""
 "This represents the multichannel table of contents on a hybrid SACD's SACD "
 "layer."
-msgstr ""
+msgstr "Dies stellt das Mehrkanal-Inhaltsverzeichnis auf der SACD-Schicht einer Hybrid SACD dar."
 
 #: DB:work_attribute_type_allowed_value/value:1041
 msgctxt "work_attribute_type_allowed_value"

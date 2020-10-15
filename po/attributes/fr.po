@@ -29,7 +29,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2020-10-13 14:56+0000\n"
+"PO-Revision-Date: 2020-10-15 09:57+0000\n"
 "Last-Translator: yvanz\n"
 "Language-Team: French (http://www.transifex.com/musicbrainz/musicbrainz/language/fr/)\n"
 "MIME-Version: 1.0\n"
@@ -176,7 +176,7 @@ msgctxt "artist_type"
 msgid ""
 "A grouping of multiple musicians who perform together (in some cases, some "
 "or all of the members might differ in different performances or recordings)."
-msgstr ""
+msgstr "Un groupe de plusieurs musiciens qui jouent ensemble. (Dans  certains cas, une partie ou tous les membres peuvent changer selon les représentations ou enregistrements.)"
 
 #: DB:instrument_type/description:7
 msgctxt "instrument_type"
@@ -3076,13 +3076,13 @@ msgstr "SACD hybride (couche SACD)"
 
 #: DB:medium_format/name:87
 msgctxt "medium_format"
-msgid "Hybrid SACD (SACD layer, 2ch)"
-msgstr ""
+msgid "Hybrid SACD (SACD layer, 2 channel)"
+msgstr "Hybrid SACD (couche SACD, 2 canaux)"
 
 #: DB:medium_format/name:86
 msgctxt "medium_format"
-msgid "Hybrid SACD (SACD layer, mch)"
-msgstr ""
+msgid "Hybrid SACD (SACD layer, multichannel)"
+msgstr "Hybrid SACD (couche SACD, multicanal)"
 
 #: DB:work_attribute_type_allowed_value/value:418
 msgctxt "work_attribute_type_allowed_value"
@@ -5743,13 +5743,13 @@ msgstr "SACD"
 
 #: DB:medium_format/name:84
 msgctxt "medium_format"
-msgid "SACD (2ch)"
-msgstr ""
+msgid "SACD (2 channel)"
+msgstr "SACD (2 canaux)"
 
 #: DB:medium_format/name:85
 msgctxt "medium_format"
-msgid "SACD (mch)"
-msgstr ""
+msgid "SACD (multichannel)"
+msgstr "SACD (multicanal)"
 
 #: DB:work_attribute_type/name:21
 msgctxt "work_attribute_type"
@@ -5808,13 +5808,13 @@ msgstr "SHM-SACD"
 
 #: DB:medium_format/name:89
 msgctxt "medium_format"
-msgid "SHM-SACD (2ch)"
-msgstr ""
+msgid "SHM-SACD (2 channel)"
+msgstr "SHM-SACD (2 canaux)"
 
 #: DB:medium_format/name:88
 msgctxt "medium_format"
-msgid "SHM-SACD (mch)"
-msgstr ""
+msgid "SHM-SACD (multichannel)"
+msgstr "SHM-SACD (multicanal)"
 
 #: DB:work_attribute_type/name:36
 msgctxt "work_attribute_type"
@@ -6610,21 +6610,21 @@ msgid ""
 "This indicates a choir/chorus (an organized, usually large group of "
 "singers). Smaller vocal ensembles and groupings that do not generally call "
 "themselves choirs are better entered as “Group”."
-msgstr ""
+msgstr "Un chœur (ensemble organisé et assez large de chanteurs). Les ensembles vocaux plus petits et les groupes vocaux qui ne se désignent pas eux-mêmes généralement comme des chœurs sont mieux associés au type « Groupe »."
 
 #: DB:artist_type/description:4
 msgctxt "artist_type"
 msgid ""
 "This indicates an individual fictional character (whether a fictional "
 "person, animal or any other kind of character)."
-msgstr ""
+msgstr "Un personnage fictif (que ce soit une personne fictive, un animal, ou tout autre sorte de personnage)."
 
 #: DB:artist_type/description:1
 msgctxt "artist_type"
 msgid ""
 "This indicates an individual person, be it under its legal name (“John "
 "Lennon”), or a performance name (“Sting”)."
-msgstr ""
+msgstr "Une personne, que ce soit sous son nom civil (comme John Lennon) ou sous un nom de scène (comme Sting)."
 
 #: DB:artist_type/description:5
 msgctxt "artist_type"
@@ -6633,7 +6633,7 @@ msgid ""
 "instrumentalists). Smaller ensembles (such as trios and quartets) and "
 "groupings that do not generally call themselves orchestras are better "
 "entered as “Group”."
-msgstr ""
+msgstr "Un orchestre (ensemble organisé et assez large d’instrumentistes). Les ensembles instrumentaux plus petits (trios, quartets…) et les groupes instrumentaux qui ne se désignent pas eux-mêmes généralement comme des orchestres sont mieux associés au type « Groupe »."
 
 #: DB:work_type/description:23
 msgctxt "work_type"
@@ -6646,40 +6646,38 @@ msgstr "Ceci représente des œuvres littéraires en prose, c’est à dire une 
 #: DB:medium_format/description:84
 msgctxt "medium_format"
 msgid ""
-"This represents the 2 channel (stereo/mono/dual) table of contents on a "
-"SACD."
-msgstr ""
+"This represents the 2 channel (stereo/mono) table of contents on a SACD."
+msgstr "Cela représente le contenu à 2 canaux (stéréo ou mono) d’un SACD."
 
 #: DB:medium_format/description:89
 msgctxt "medium_format"
 msgid ""
-"This represents the 2 channel (stereo/mono/dual) table of contents on a SHM-"
-"SACD."
-msgstr ""
+"This represents the 2 channel (stereo/mono) table of contents on a SHM-SACD."
+msgstr "Cela représente le contenu à 2 canaux (stéréo ou mono) d’un SHM-SACD."
 
 #: DB:medium_format/description:87
 msgctxt "medium_format"
 msgid ""
-"This represents the 2 channel (stereo/mono/dual) table of contents on a "
-"hybrid SACD's SACD layer."
-msgstr ""
+"This represents the 2 channel (stereo/mono) table of contents on a hybrid "
+"SACD's SACD layer."
+msgstr "Cela représente le contenu à 2 canaux (stéréo ou mono) de la couch SACD d’un SACD hybride."
 
 #: DB:medium_format/description:85
 msgctxt "medium_format"
 msgid "This represents the multichannel table of contents on a SACD."
-msgstr ""
+msgstr "Cela représente le contenu multicanal d’un SACD."
 
 #: DB:medium_format/description:88
 msgctxt "medium_format"
 msgid "This represents the multichannel table of contents on a SHM-SACD."
-msgstr ""
+msgstr "Cela représente le contenu multicanal d’un SHM-SACD."
 
 #: DB:medium_format/description:86
 msgctxt "medium_format"
 msgid ""
 "This represents the multichannel table of contents on a hybrid SACD's SACD "
 "layer."
-msgstr ""
+msgstr "Cela représente le contenu multicanal de la couche SACD d’un SACD hybride."
 
 #: DB:work_attribute_type_allowed_value/value:1041
 msgctxt "work_attribute_type_allowed_value"
