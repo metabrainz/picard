@@ -1,3 +1,48 @@
+# Version 2.5.0b1 - 2020-10-15
+
+## Bugfixes
+- [PICARD-1858](https://tickets.metabrainz.org/browse/PICARD-1858) - MusicBrainz Picard does not respond on macOS 11 Big Sur Beta
+- [PICARD-1882](https://tickets.metabrainz.org/browse/PICARD-1882) - Scripting text not well readable with dark theme on KDE
+- [PICARD-1888](https://tickets.metabrainz.org/browse/PICARD-1888) - Returning tracks to cluster uses matched release rather than what's in the files
+- [PICARD-1932](https://tickets.metabrainz.org/browse/PICARD-1932) - Failed AcoustID submission shows as successful
+- [PICARD-1939](https://tickets.metabrainz.org/browse/PICARD-1939) - Crash when "Remove" button is hit without picking a file first
+- [PICARD-1941](https://tickets.metabrainz.org/browse/PICARD-1941) - Unchanged multi-value tags on tracks show up as changed
+- [PICARD-1954](https://tickets.metabrainz.org/browse/PICARD-1954) - Right-clicking on album with "could not load album" message crashes
+- [PICARD-1956](https://tickets.metabrainz.org/browse/PICARD-1956) - It is possible to have the same file multiple times inside the same cluster
+- [PICARD-1961](https://tickets.metabrainz.org/browse/PICARD-1961) - Capitalization for non-standardized instruments
+- [PICARD-1963](https://tickets.metabrainz.org/browse/PICARD-1963) - Possible stack overflow when loading files
+- [PICARD-1964](https://tickets.metabrainz.org/browse/PICARD-1964) - Scripting documentation does not support RTL languages
+- [PICARD-1969](https://tickets.metabrainz.org/browse/PICARD-1969) - Browser integration port changes without saving options
+- [PICARD-1971](https://tickets.metabrainz.org/browse/PICARD-1971) - Tags from file names dialog does not restore window size
+
+## New Features
+- [PICARD-259](https://tickets.metabrainz.org/browse/PICARD-259) - Make file-specific variables and metadata available to tagger script
+- [PICARD-534](https://tickets.metabrainz.org/browse/PICARD-534) - Support SOCKS proxy
+- [PICARD-1908](https://tickets.metabrainz.org/browse/PICARD-1908) - Allow loading release group URLs / MBIDs
+- [PICARD-1942](https://tickets.metabrainz.org/browse/PICARD-1942) - Display tracklist in Info dialog for loaded releases
+- [PICARD-1946](https://tickets.metabrainz.org/browse/PICARD-1946) - Map "vocal arranger" rel to arranger tag
+
+## Improvements
+- [PICARD-1390](https://tickets.metabrainz.org/browse/PICARD-1390) - Apply a network timeout to avoid network requests hanging indefinitely
+- [PICARD-1782](https://tickets.metabrainz.org/browse/PICARD-1782) - Allow locking table headers to prevent accidental resorting
+- [PICARD-1879](https://tickets.metabrainz.org/browse/PICARD-1879) - When dragging tracks onto a release add those tracks sequentially
+- [PICARD-1906](https://tickets.metabrainz.org/browse/PICARD-1906) - Clarify uninstall message in Windows installer
+- [PICARD-1936](https://tickets.metabrainz.org/browse/PICARD-1936) - Rename the "Whitelist" cover art provider to "Allowed Cover Art URLs"
+- [PICARD-1937](https://tickets.metabrainz.org/browse/PICARD-1937) - Add context menu entry to cover art box to browse for local file
+- [PICARD-1938](https://tickets.metabrainz.org/browse/PICARD-1938) - Add context menu option to load files / folders from file browser
+- [PICARD-1951](https://tickets.metabrainz.org/browse/PICARD-1951) - Avoid complete hiding of metadata box or file panes
+- [PICARD-1952](https://tickets.metabrainz.org/browse/PICARD-1952) - Allow using native Qt styles on Linux
+- [PICARD-1955](https://tickets.metabrainz.org/browse/PICARD-1955) - Use built-in search by default for new installs
+- [PICARD-1957](https://tickets.metabrainz.org/browse/PICARD-1957) - Load files in file browser on double click
+- [PICARD-1958](https://tickets.metabrainz.org/browse/PICARD-1958) - macOS: Offer link to Applicatipons folder in disk image
+- [PICARD-1959](https://tickets.metabrainz.org/browse/PICARD-1959) - In disc ID dialog rename "Lookup in Browser" to "Submit disc ID"
+- [PICARD-1960](https://tickets.metabrainz.org/browse/PICARD-1960) - Allow adding new items in list editor views using Insert key
+- [PICARD-1965](https://tickets.metabrainz.org/browse/PICARD-1965) - Allow opening fingerprinting options in AcoustID missing API key dialog
+
+## Tasks
+- [PICARD-1929](https://tickets.metabrainz.org/browse/PICARD-1929) - Make NSIS installer translations available on Transifex
+
+
 # Version 2.4.4 - 2020-09-04
 
 ## Bugfixes
