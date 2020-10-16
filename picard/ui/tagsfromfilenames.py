@@ -26,17 +26,71 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+from collections import OrderedDict
 import os.path
 import re
 
 from PyQt5 import QtWidgets
 
 from picard import config
+from picard.script.parser import normalize_tagname
 from picard.util.tags import display_tag_name
 
 from picard.ui import PicardDialog
 from picard.ui.ui_tagsfromfilenames import Ui_TagsFromFileNamesDialog
 from picard.ui.util import StandardButton
+
+
+class TagMatchExpression:
+    _numeric_tags = ('tracknumber', 'totaltracks', 'discnumber', 'totaldiscs')
+
+    def __init__(self, expression, replace_underscores=False):
+        self.replace_underscores = replace_underscores
+        self._tag_re = re.compile(r"(%\w+%)")
+        self._parse(expression)
+
+    def _parse(self, expression):
+        self._group_map = OrderedDict()
+        format_re = ['(?:^|/)']
+        for i, part in enumerate(self._tag_re.split(expression)):
+            if part.startswith('%') and part.endswith('%'):
+                name = part[1:-1]
+                group = '%s_%i' % (name, i)
+                tag = normalize_tagname(name)
+                self._group_map[group] = tag
+                if tag in self._numeric_tags:
+                    format_re.append(r'(?P<' + group + r'>\d+)')
+                elif tag == 'date':
+                    format_re.append(r'(?P<' + group + r'>\d+(?:-\d+(?:-\d+)?)?)')
+                else:
+                    format_re.append(r'(?P<' + group + r'>[^/]*?)')
+            else:
+                format_re.append(re.escape(part))
+        # Optional extension
+        format_re.append(r'(?:\.\w+)?$')
+        self._format_re = re.compile("".join(format_re))
+
+    @property
+    def matched_tags(self):
+        # Return unique values, but preserve order
+        return list(OrderedDict.fromkeys(self._group_map.values()))
+
+    def match_file(self, filename):
+        match = self._format_re.search(filename.replace('\\', '/'))
+        if match:
+            result = {}
+            for group, tag in self._group_map.items():
+                value = match.group(group).strip()
+                if tag in self._numeric_tags:
+                    value = value.lstrip("0")
+                if self.replace_underscores:
+                    value = value.replace('_', ' ')
+                all_values = result.get(tag, [])
+                all_values.append(value)
+                result[tag] = all_values
+            return result
+        else:
+            return {}
 
 
 class TagsFromFileNamesDialog(PicardDialog):
@@ -82,60 +136,27 @@ class TagsFromFileNamesDialog(PicardDialog):
             item = QtWidgets.QTreeWidgetItem(self.ui.files)
             item.setText(0, os.path.basename(file.filename))
             self.items.append(item)
-        self._tag_re = re.compile(r"(%\w+%)")
-        self.numeric_tags = ('tracknumber', 'totaltracks', 'discnumber', 'totaldiscs')
-
-    def parse_response(self):
-        tff_format = self.ui.format.currentText()
-        columns = []
-        format_re = ['(?:^|/)']
-        for part in self._tag_re.split(tff_format):
-            if part.startswith('%') and part.endswith('%'):
-                name = part[1:-1]
-                columns.append(name)
-                if name in self.numeric_tags:
-                    format_re.append('(?P<' + name + r'>\d+)')
-                elif name == 'date':
-                    format_re.append('(?P<' + name + r'>\d+(?:-\d+(?:-\d+)?)?)')
-                else:
-                    format_re.append('(?P<' + name + '>[^/]*?)')
-            else:
-                format_re.append(re.escape(part))
-        format_re.append(r'\.(\w+)$')
-        format_re = re.compile("".join(format_re))
-        return format_re, columns
-
-    def match_file(self, file, tff_format):
-        match = tff_format.search(file.filename.replace('\\', '/'))
-        if match:
-            result = {}
-            for name, value in match.groupdict().items():
-                value = value.strip()
-                if name in self.numeric_tags:
-                    value = value.lstrip("0")
-                if self.ui.replace_underscores.isChecked():
-                    value = value.replace('_', ' ')
-                result[name] = value
-            return result
-        else:
-            return {}
 
     def preview(self):
-        tff_format, columns = self.parse_response()
-        self.ui.files.setHeaderLabels([_("File Name")] + list(map(display_tag_name, columns)))
+        expression = TagMatchExpression(self.ui.format.currentText(), self.ui.replace_underscores.isChecked())
+        columns = expression.matched_tags
+        headers = [_("File Name")] + list(map(display_tag_name, columns))
+        self.ui.files.setColumnCount(len(headers))
+        self.ui.files.setHeaderLabels(headers)
         for item, file in zip(self.items, self.files):
-            matches = self.match_file(file, tff_format)
+            matches = expression.match_file(file.filename)
             for i, column in enumerate(columns):
-                item.setText(i + 1, matches.get(column, ''))
+                values = matches.get(column, [])
+                item.setText(i + 1, '; '.join(values))
         self.ui.files.header().resizeSections(QtWidgets.QHeaderView.ResizeToContents)
         self.ui.files.header().setStretchLastSection(True)
 
     def accept(self):
-        tff_format, columns = self.parse_response()
+        expression = TagMatchExpression(self.ui.format.currentText(), self.ui.replace_underscores.isChecked())
         for file in self.files:
-            metadata = self.match_file(file, tff_format)
-            for name, value in metadata.items():
-                file.metadata[name] = value
+            metadata = expression.match_file(file.filename)
+            for name, values in metadata.items():
+                file.metadata[name] = values
             file.update()
         config.persist["tags_from_filenames_format"] = self.ui.format.currentText()
         super().accept()
