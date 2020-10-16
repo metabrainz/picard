@@ -175,9 +175,8 @@ class Metadata(MutableMapping):
         self.images = ImageList()
         self.has_common_images = True
 
-        d = dict(*args, **kwargs)
-        for k, v in d.items():
-            self[k] = v
+        if args or kwargs:
+            self.update(*args, **kwargs)
         if images is not None:
             for image in images:
                 self.images.append(image)

@@ -24,12 +24,14 @@
 
 from test.picardtestcase import (
     PicardTestCase,
+    create_fake_png,
     load_test_json,
 )
 from test.test_coverart_image import create_image
 
 from picard import config
 from picard.cluster import Cluster
+from picard.coverart.image import CoverArtImage
 from picard.file import File
 from picard.mbjson import (
     release_to_metadata,
@@ -74,6 +76,7 @@ class CommonTests:
             super().setUp()
             config.setting = settings.copy()
             self.metadata = self.get_metadata_object()
+            self.metadata.length = 242
             self.metadata["single1"] = "single1-value"
             self.metadata.add_unique("single2", "single2-value")
             self.metadata.add_unique("single2", "single2-value")
@@ -207,18 +210,30 @@ class CommonTests:
             self.assertEqual(self.metadata.length, m.length)
             self.assertEqual(ImageList(), m.images)
 
+        def test_metadata_init_with_existing_metadata(self):
+            self.metadata.delete("single1")
+            cover = CoverArtImage(url='file://file1', data=create_fake_png(b'a'))
+            self.metadata.images.append(cover)
+            m = Metadata(self.metadata)
+            self.assertEqual(self.metadata.length, m.length)
+            self.assertEqual(self.metadata.deleted_tags, m.deleted_tags)
+            self.assertEqual(self.metadata.images, m.images)
+            self.assertEqual(self.metadata._store, m._store)
+
         def test_metadata_update(self):
             m = Metadata()
             m["old"] = "old-value"
             self.metadata.delete("single1")
+            cover = CoverArtImage(url='file://file1', data=create_fake_png(b'a'))
+            self.metadata.images.append(cover)
             m.update(self.metadata)
             self.assertIn("old", m)
             self.assertNotIn("single1", m)
             self.assertIn("single1", m.deleted_tags)
             self.assertEqual("single2-value", m["single2"])
+            self.assertEqual(self.metadata.length, m.length)
             self.assertEqual(self.metadata.deleted_tags, m.deleted_tags)
             self.assertEqual(self.metadata.images, m.images)
-
             self.metadata["old"] = "old-value"
             self.assertEqual(self.metadata._store, m._store)
 
