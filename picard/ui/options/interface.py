@@ -122,6 +122,10 @@ class InterfaceOptionsPage(OptionsPage):
             'label': N_('Lookup CD...'),
             'icon': 'media-optical'
         },
+        'tags_from_filenames_action': {
+            'label': N_('Parse File Names...'),
+            'icon': 'picard-tags-from-filename'
+        },
     }
     ACTION_NAMES = set(TOOLBAR_BUTTONS.keys())
     options = [

@@ -63,6 +63,8 @@
     <file>images/16x16/picard-cluster@2x.png</file>
     <file>images/16x16/picard-edit-tags.png</file>
     <file>images/16x16/picard-edit-tags@2x.png</file>
+    <file>images/16x16/picard-tags-from-filename.png</file>
+    <file>images/16x16/picard-tags-from-filename@2x.png</file>
     <file>images/16x16/play-music.png</file>
     <file>images/16x16/play-music@2x.png</file>
     <file>images/16x16/play.png</file>
@@ -117,6 +119,8 @@
     <file>images/22x22/picard-cluster@2x.png</file>
     <file>images/22x22/picard-edit-tags.png</file>
     <file>images/22x22/picard-edit-tags@2x.png</file>
+    <file>images/22x22/picard-tags-from-filename.png</file>
+    <file>images/22x22/picard-tags-from-filename@2x.png</file>
     <file>images/22x22/play-music.png</file>
     <file>images/22x22/play-music@2x.png</file>
     <file>images/22x22/play.png</file>
