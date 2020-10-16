@@ -41,8 +41,8 @@ class TagMatchExpressionTest(PicardTestCase):
         ]
         for filename in files:
             matches = expression.match_file(filename)
-            self.assertEqual('42', matches['tracknumber'])
-            self.assertEqual('The Title', matches['title'])
+            self.assertEqual(['42'], matches['tracknumber'])
+            self.assertEqual(['The Title'], matches['title'])
 
     def test_parse_tags_with_path(self):
         expression = TagMatchExpression(r'%artist%/%album%/%tracknumber% - %title%')
@@ -55,32 +55,32 @@ class TagMatchExpressionTest(PicardTestCase):
         ]
         for filename in files:
             matches = expression.match_file(filename)
-            self.assertEqual('The Artist', matches['artist'])
-            self.assertEqual('The Album', matches['album'])
-            self.assertEqual('1', matches['tracknumber'])
-            self.assertEqual('The Title', matches['title'])
+            self.assertEqual(['The Artist'], matches['artist'])
+            self.assertEqual(['The Album'], matches['album'])
+            self.assertEqual(['1'], matches['tracknumber'])
+            self.assertEqual(['The Title'], matches['title'])
 
     def test_parse_replace_underscores(self):
         expression = TagMatchExpression(r'%artist%-%title%', replace_underscores=True)
         matches = expression.match_file('Some_Artist-Some_Title.ogg')
-        self.assertEqual('Some Artist', matches['artist'])
-        self.assertEqual('Some Title', matches['title'])
+        self.assertEqual(['Some Artist'], matches['artist'])
+        self.assertEqual(['Some Title'], matches['title'])
 
     def test_parse_tags_duplicates(self):
         expression = TagMatchExpression(r'%dummy% %title% %dummy%')
         expected_tags = ['dummy', 'title']
         self.assertEqual(expected_tags, expression.matched_tags)
         matches = expression.match_file('foo title bar')
-        self.assertEqual('title', matches['title'])
-        self.assertEqual('bar', matches['dummy'])
+        self.assertEqual(['title'], matches['title'])
+        self.assertEqual(['foo', 'bar'], matches['dummy'])
 
     def test_parse_tags_hidden(self):
         expression = TagMatchExpression(r'%_dummy% %title% %_dummy%')
         expected_tags = ['~dummy', 'title']
         self.assertEqual(expected_tags, expression.matched_tags)
         matches = expression.match_file('foo title bar')
-        self.assertEqual('title', matches['title'])
-        self.assertEqual('bar', matches['~dummy'])
+        self.assertEqual(['title'], matches['title'])
+        self.assertEqual(['foo', 'bar'], matches['~dummy'])
 
     def test_parse_empty(self):
         expression = TagMatchExpression(r'')

@@ -85,7 +85,9 @@ class TagMatchExpression:
                     value = value.lstrip("0")
                 if self.replace_underscores:
                     value = value.replace('_', ' ')
-                result[tag] = value
+                all_values = result.get(tag, [])
+                all_values.append(value)
+                result[tag] = all_values
             return result
         else:
             return {}
@@ -144,7 +146,8 @@ class TagsFromFileNamesDialog(PicardDialog):
         for item, file in zip(self.items, self.files):
             matches = expression.match_file(file.filename)
             for i, column in enumerate(columns):
-                item.setText(i + 1, matches.get(column, ''))
+                values = matches.get(column, [])
+                item.setText(i + 1, '; '.join(values))
         self.ui.files.header().resizeSections(QtWidgets.QHeaderView.ResizeToContents)
         self.ui.files.header().setStretchLastSection(True)
 
@@ -152,8 +155,8 @@ class TagsFromFileNamesDialog(PicardDialog):
         expression = TagMatchExpression(self.ui.format.currentText(), self.ui.replace_underscores.isChecked())
         for file in self.files:
             metadata = expression.match_file(file.filename)
-            for name, value in metadata.items():
-                file.metadata[name] = value
+            for name, values in metadata.items():
+                file.metadata[name] = values
             file.update()
         config.persist["tags_from_filenames_format"] = self.ui.format.currentText()
         super().accept()
