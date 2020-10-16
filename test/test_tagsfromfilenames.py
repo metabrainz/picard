@@ -74,6 +74,14 @@ class TagMatchExpressionTest(PicardTestCase):
         self.assertEqual('title', matches['title'])
         self.assertEqual('bar', matches['dummy'])
 
+    def test_parse_tags_hidden(self):
+        expression = TagMatchExpression(r'%_dummy% %title% %_dummy%')
+        expected_tags = ['~dummy', 'title']
+        self.assertEqual(expected_tags, expression.matched_tags)
+        matches = expression.match_file('foo title bar')
+        self.assertEqual('title', matches['title'])
+        self.assertEqual('bar', matches['~dummy'])
+
     def test_parse_empty(self):
         expression = TagMatchExpression(r'')
         expected_tags = []

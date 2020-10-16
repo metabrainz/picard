@@ -33,6 +33,7 @@ import re
 from PyQt5 import QtWidgets
 
 from picard import config
+from picard.script.parser import normalize_tagname
 from picard.util.tags import display_tag_name
 
 from picard.ui import PicardDialog
@@ -53,8 +54,9 @@ class TagMatchExpression:
         format_re = ['(?:^|/)']
         for i, part in enumerate(self._tag_re.split(expression)):
             if part.startswith('%') and part.endswith('%'):
-                tag = part[1:-1]
-                group = '%s_%i' % (tag, i)
+                name = part[1:-1]
+                group = '%s_%i' % (name, i)
+                tag = normalize_tagname(name)
                 self._group_map[group] = tag
                 if tag in self._numeric_tags:
                     format_re.append(r'(?P<' + group + r'>\d+)')
