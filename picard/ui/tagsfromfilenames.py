@@ -50,7 +50,7 @@ class TagMatchExpression:
         self._parse(expression)
 
     def _parse(self, expression):
-        self._group_map = {}
+        self._group_map = OrderedDict()
         format_re = ['(?:^|/)']
         for i, part in enumerate(self._tag_re.split(expression)):
             if part.startswith('%') and part.endswith('%'):
@@ -79,9 +79,8 @@ class TagMatchExpression:
         match = self._format_re.search(filename.replace('\\', '/'))
         if match:
             result = {}
-            for group, value in match.groupdict().items():
-                value = value.strip()
-                tag = self._group_map[group]
+            for group, tag in self._group_map.items():
+                value = match.group(group).strip()
                 if tag in self._numeric_tags:
                     value = value.lstrip("0")
                 if self.replace_underscores:
