@@ -597,7 +597,10 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.enable_tag_saving_action.setChecked(not config.setting["dont_write_tags"])
         self.enable_tag_saving_action.triggered.connect(self.toggle_tag_saving)
 
-        self.tags_from_filenames_action = QtWidgets.QAction(_("Tags From &File Names..."), self)
+        self.tags_from_filenames_action = QtWidgets.QAction(icontheme.lookup('picard-tags-from-filename'), _("Tags From &File Names..."), self)
+        self.tags_from_filenames_action.setIconText(_("Parse File Names..."))
+        self.tags_from_filenames_action.setToolTip(_('Set tags based on the file names'))
+        self.tags_from_filenames_action.setShortcut(QtGui.QKeySequence(_("Ctrl+Shift+T")))
         self.tags_from_filenames_action.triggered.connect(self.open_tags_from_filenames)
         self.tags_from_filenames_action.setEnabled(False)
 
