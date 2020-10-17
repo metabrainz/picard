@@ -4,7 +4,7 @@
 #
 # Copyright (C) 2007 Oliver Charles
 # Copyright (C) 2007, 2010-2011 Lukáš Lalinský
-# Copyright (C) 2007-2011, 2019 Philipp Wolfer
+# Copyright (C) 2007-2011, 2019-2020 Philipp Wolfer
 # Copyright (C) 2011 Michael Wiencek
 # Copyright (C) 2011-2012 Wieland Hoffmann
 # Copyright (C) 2013-2015, 2018-2019 Laurent Monin
@@ -207,6 +207,7 @@ class CoverArt:
             coverartimage.port,
             coverartimage.path,
             partial(self._coverart_downloaded, coverartimage),
+            queryargs=coverartimage.queryargs,
             priority=True,
             important=False
         )
