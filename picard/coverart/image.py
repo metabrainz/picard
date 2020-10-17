@@ -4,7 +4,7 @@
 #
 # Copyright (C) 2007 Oliver Charles
 # Copyright (C) 2007, 2010-2011 Lukáš Lalinský
-# Copyright (C) 2007-2011, 2014, 2018-2019 Philipp Wolfer
+# Copyright (C) 2007-2011, 2014, 2018-2020 Philipp Wolfer
 # Copyright (C) 2011 Michael Wiencek
 # Copyright (C) 2011-2012, 2015 Wieland Hoffmann
 # Copyright (C) 2013-2015, 2018-2019 Laurent Monin
@@ -37,6 +37,7 @@ from PyQt5.QtCore import (
     QMutex,
     QObject,
     QUrl,
+    QUrlQuery,
 )
 
 from picard import (
@@ -165,7 +166,10 @@ class CoverArtImage:
         self.port = self.url.port(443 if self.url.scheme() == 'https' else 80)
         self.path = self.url.path(QUrl.FullyEncoded)
         if self.url.hasQuery():
-            self.path += '?' + self.url.query(QUrl.FullyEncoded)
+            query = QUrlQuery(self.url.query())
+            self.queryargs = dict(query.queryItems())
+        else:
+            self.queryargs = None
 
     @property
     def source(self):
