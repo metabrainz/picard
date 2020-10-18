@@ -80,7 +80,7 @@ class MP4File(File):
         "\xa9day": "date",
         "\xa9gen": "genre",
         "\xa9lyr": "lyrics",
-        "\xa9cmt": "comment:",
+        "\xa9cmt": "comment",
         "\xa9too": "encodedby",
         "cprt": "copyright",
         "soal": "albumsort",
@@ -258,6 +258,8 @@ class MP4File(File):
         for name, values in metadata.rawitems():
             if name.startswith('lyrics:'):
                 name = 'lyrics'
+            if name == 'comment:':
+                name = 'comment'
             if name in self.__r_text_tags:
                 tags[self.__r_text_tags[name]] = values
             elif name in self.__r_bool_tags:
