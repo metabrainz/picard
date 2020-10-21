@@ -154,10 +154,6 @@ def decode_filename(filename):
         return filename.decode(_io_encoding)
 
 
-def pathcmp(a, b):
-    return os.path.normcase(a) == os.path.normcase(b)
-
-
 def format_time(ms, display_zero=False):
     """Formats time in milliseconds to a string representation."""
     ms = float(ms)
@@ -372,16 +368,6 @@ def tracknum_from_filename(base_filename):
     if numbers:
         return numbers[0]
     return None
-
-
-# Provide os.path.samefile equivalent which is missing in Python under Windows
-if IS_WIN:
-    def os_path_samefile(p1, p2):
-        ap1 = os.path.abspath(p1)
-        ap2 = os.path.abspath(p2)
-        return ap1 == ap2
-else:
-    os_path_samefile = os.path.samefile
 
 
 def is_hidden(filepath):
