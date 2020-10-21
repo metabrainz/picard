@@ -185,6 +185,8 @@ class Track(DataObject, Item):
         # Apply changes to the track's metadata done manually after the scripts ran
         meta_diff = self.metadata.diff(self.scripted_metadata)
         metadata.update(meta_diff)
+        # Images are not affected by scripting, always use the tracks current images
+        metadata.images = self.metadata.images
         file.copy_metadata(metadata)
         file.update(signal=False)
         self.update()
