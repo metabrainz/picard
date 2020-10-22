@@ -26,7 +26,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2020-10-15 09:51+0000\n"
+"PO-Revision-Date: 2020-10-19 14:01+0000\n"
 "Last-Translator: yvanz\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/musicbrainz/musicbrainz/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
@@ -3073,7 +3073,7 @@ msgstr "混合 SACD (SACD 层)"
 
 #: DB:medium_format/name:87
 msgctxt "medium_format"
-msgid "Hybrid SACD (SACD layer, 2 channel)"
+msgid "Hybrid SACD (SACD layer, 2 channels)"
 msgstr ""
 
 #: DB:medium_format/name:86
@@ -5740,7 +5740,7 @@ msgstr "SACD"
 
 #: DB:medium_format/name:84
 msgctxt "medium_format"
-msgid "SACD (2 channel)"
+msgid "SACD (2 channels)"
 msgstr ""
 
 #: DB:medium_format/name:85
@@ -5805,7 +5805,7 @@ msgstr "SHM-SACD"
 
 #: DB:medium_format/name:89
 msgctxt "medium_format"
-msgid "SHM-SACD (2 channel)"
+msgid "SHM-SACD (2 channels)"
 msgstr ""
 
 #: DB:medium_format/name:88

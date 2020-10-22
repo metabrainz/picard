@@ -12,9 +12,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-10-11 15:19+0200\n"
-"PO-Revision-Date: 2020-10-12 00:14+0000\n"
-"Last-Translator: Transifex Bot <>\n"
+"POT-Creation-Date: 2020-10-18 16:07+0200\n"
+"PO-Revision-Date: 2020-10-20 15:05+0000\n"
+"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/musicbrainz/musicbrainz/language/zh_TW/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -87,13 +87,13 @@ msgid "Metadata Extraction"
 msgstr "後設資料萃取"
 
 #: picard/cluster.py:490 picard/ui/cdlookup.py:72 picard/ui/itemviews.py:154
-#: picard/ui/mainwindow.py:812 picard/ui/searchdialog/album.py:154
+#: picard/ui/mainwindow.py:815 picard/ui/searchdialog/album.py:154
 #: picard/ui/searchdialog/track.py:65 picard/util/tags.py:41
 msgid "Artist"
 msgstr "創作者"
 
 #: picard/cluster.py:491 picard/ui/cdlookup.py:72 picard/ui/itemviews.py:157
-#: picard/ui/mainwindow.py:811 picard/util/tags.py:38
+#: picard/ui/mainwindow.py:814 picard/util/tags.py:38
 msgid "Album"
 msgstr "專輯"
 
@@ -3685,7 +3685,7 @@ msgstr "封面圖片(&C)"
 msgid "&Actions"
 msgstr "&動作"
 
-#: picard/ui/mainwindow.py:525 picard/ui/mainwindow.py:805
+#: picard/ui/mainwindow.py:525 picard/ui/mainwindow.py:808
 #: picard/ui/searchdialog/__init__.py:47
 msgid "Search"
 msgstr "搜尋"
@@ -3698,7 +3698,7 @@ msgstr "查找 &CD…"
 msgid "Lookup the details of the CD in your drive"
 msgstr "在您的光碟內查找詳細資訊"
 
-#: picard/ui/mainwindow.py:532 picard/ui/mainwindow.py:656
+#: picard/ui/mainwindow.py:532 picard/ui/mainwindow.py:659
 msgid "Ctrl+K"
 msgstr "Ctrl+K"
 
@@ -3798,135 +3798,147 @@ msgstr "儲存標籤 (&T)"
 msgid "Tags From &File Names..."
 msgstr "由檔名來上標籤 (&F)…"
 
-#: picard/ui/mainwindow.py:604
+#: picard/ui/mainwindow.py:601 picard/ui/options/interface.py:126
+msgid "Parse File Names..."
+msgstr ""
+
+#: picard/ui/mainwindow.py:602
+msgid "Set tags based on the file names"
+msgstr ""
+
+#: picard/ui/mainwindow.py:603
+msgid "Ctrl+Shift+T"
+msgstr "Ctrl+Shift+T"
+
+#: picard/ui/mainwindow.py:607
 msgid "&Open My Collections in Browser"
 msgstr "在瀏覽器中開啟我的收藏 (&O)"
 
-#: picard/ui/mainwindow.py:608
+#: picard/ui/mainwindow.py:611
 msgid "View &Error/Debug Log"
 msgstr "檢視錯誤/偵錯日誌 (&E)"
 
-#: picard/ui/mainwindow.py:611
+#: picard/ui/mainwindow.py:614
 msgid "Ctrl+G"
 msgstr "Ctrl+G"
 
-#: picard/ui/mainwindow.py:613
+#: picard/ui/mainwindow.py:616
 msgid "View Activity &History"
 msgstr "檢視活動歷史紀錄 (&H)"
 
-#: picard/ui/mainwindow.py:616
+#: picard/ui/mainwindow.py:619
 msgid "Ctrl+H"
 msgstr "Ctrl+H"
 
-#: picard/ui/mainwindow.py:622
+#: picard/ui/mainwindow.py:625
 msgid "Open in &Player"
 msgstr "在播放器中開啟 (&P)"
 
-#: picard/ui/mainwindow.py:623
+#: picard/ui/mainwindow.py:626
 msgid "Play the file in your default media player"
 msgstr "使用您的預設媒體播放器來播放"
 
-#: picard/ui/mainwindow.py:627
+#: picard/ui/mainwindow.py:630
 msgid "Open Containing &Folder"
 msgstr "開啟包含的資料夾 (&F)"
 
-#: picard/ui/mainwindow.py:628
+#: picard/ui/mainwindow.py:631
 msgid "Open the containing folder in your file explorer"
 msgstr "在您的檔案總管中開啟包含該檔案的資料夾"
 
-#: picard/ui/mainwindow.py:633
+#: picard/ui/mainwindow.py:636
 msgid "&Check for Update…"
 msgstr "檢查更新(&C)⋯"
 
-#: picard/ui/mainwindow.py:693
+#: picard/ui/mainwindow.py:696
 msgid "&File"
 msgstr "檔案 (&F)"
 
-#: picard/ui/mainwindow.py:706
+#: picard/ui/mainwindow.py:709
 msgid "&Edit"
 msgstr "編輯 (&E)"
 
-#: picard/ui/mainwindow.py:712
+#: picard/ui/mainwindow.py:715
 msgid "&View"
 msgstr "檢視 (&V)"
 
-#: picard/ui/mainwindow.py:720
+#: picard/ui/mainwindow.py:723
 msgid "&Options"
 msgstr "選項 (&O)"
 
-#: picard/ui/mainwindow.py:726
+#: picard/ui/mainwindow.py:729
 msgid "&Tools"
 msgstr "工具 (&T)"
 
-#: picard/ui/mainwindow.py:738 picard/ui/util.py:51
+#: picard/ui/mainwindow.py:741 picard/ui/util.py:51
 msgid "&Help"
 msgstr "說明 (&H)"
 
-#: picard/ui/mainwindow.py:773 picard/ui/ui_options_plugins.py:132
+#: picard/ui/mainwindow.py:776 picard/ui/ui_options_plugins.py:132
 msgid "Actions"
 msgstr "動作"
 
-#: picard/ui/mainwindow.py:813
+#: picard/ui/mainwindow.py:816
 msgid "Track"
 msgstr "音軌"
 
-#: picard/ui/mainwindow.py:830
+#: picard/ui/mainwindow.py:833
 msgid "&Advanced search"
 msgstr "進階搜尋 (&A)"
 
-#: picard/ui/mainwindow.py:831
+#: picard/ui/mainwindow.py:834
 msgid "&Builtin search"
 msgstr "基本搜尋 (&B)"
 
-#: picard/ui/mainwindow.py:918
+#: picard/ui/mainwindow.py:921
 msgid "All Supported Formats"
 msgstr "所有支援的格式"
 
-#: picard/ui/mainwindow.py:944
+#: picard/ui/mainwindow.py:947
 #, python-format
 msgid "Adding multiple directories from '%(directory)s' ..."
 msgstr "從「%(directory)s」新增多個資料夾…"
 
-#: picard/ui/mainwindow.py:949
+#: picard/ui/mainwindow.py:952
 #, python-format
 msgid "Adding directory: '%(directory)s' ..."
 msgstr "新增資料夾: 「%(directory)s」…"
 
-#: picard/ui/mainwindow.py:1035
+#: picard/ui/mainwindow.py:1038
 msgid "Configuration Required"
 msgstr "需要設定"
 
-#: picard/ui/mainwindow.py:1036
+#: picard/ui/mainwindow.py:1039
 msgid ""
 "Audio fingerprinting is not yet configured. Would you like to configure it "
 "now?"
 msgstr "尚未設定音訊特徵碼。請問您想要現在設定嗎？"
 
-#: picard/ui/mainwindow.py:1151
+#: picard/ui/mainwindow.py:1154
 #, python-format
 msgid "%(filename)s (error: %(error)s)"
 msgstr "%(filename)s (錯誤: %(error)s)"
 
-#: picard/ui/mainwindow.py:1157
+#: picard/ui/mainwindow.py:1160
 #, python-format
 msgid "%(filename)s"
 msgstr "%(filename)s"
 
-#: picard/ui/mainwindow.py:1168
+#: picard/ui/mainwindow.py:1171
 #, python-format
 msgid "%(filename)s (%(similarity)d%%) (error: %(error)s)"
 msgstr "%(filename)s (%(similarity)d%%) (錯誤: %(error)s)"
 
-#: picard/ui/mainwindow.py:1175
+#: picard/ui/mainwindow.py:1178
 #, python-format
 msgid "%(filename)s (%(similarity)d%%)"
 msgstr "%(filename)s (%(similarity)d%%)"
 
-#: picard/ui/mainwindow.py:1226
+#: picard/ui/mainwindow.py:1229
 msgid "Authentication Required"
 msgstr "需要鑑認"
 
-#: picard/ui/mainwindow.py:1227
+#: picard/ui/mainwindow.py:1230
 msgid ""
 "Picard needs authorization to access your personal data on the MusicBrainz "
 "server. Would you like to log in now?"
@@ -4087,7 +4099,7 @@ msgstr "音量"
 msgid "Script error in \"%(script)s\": %(message)s"
 msgstr "腳本發生錯誤於「%(script)s」: %(message)s"
 
-#: picard/ui/tagsfromfilenames.py:75 picard/ui/tagsfromfilenames.py:122
+#: picard/ui/tagsfromfilenames.py:132 picard/ui/tagsfromfilenames.py:143
 msgid "File Name"
 msgstr "檔案名稱"
 
@@ -4301,11 +4313,11 @@ msgstr "取得 API 金鑰…"
 msgid "MusicBrainz Server"
 msgstr "MusicBrainz 伺服器"
 
-#: picard/ui/ui_options_general.py:133 picard/ui/ui_options_network.py:138
+#: picard/ui/ui_options_general.py:133 picard/ui/ui_options_network.py:141
 msgid "Port:"
 msgstr "連接埠:"
 
-#: picard/ui/ui_options_general.py:134 picard/ui/ui_options_network.py:140
+#: picard/ui/ui_options_general.py:134 picard/ui/ui_options_network.py:143
 msgid "Server address:"
 msgstr "伺服機位址:"
 
@@ -4527,39 +4539,39 @@ msgstr "非專輯音軌:"
 msgid "Default"
 msgstr "預設"
 
-#: picard/ui/ui_options_network.py:134
+#: picard/ui/ui_options_network.py:137
 msgid "Web Proxy"
 msgstr "網頁代理伺服器"
 
-#: picard/ui/ui_options_network.py:135
+#: picard/ui/ui_options_network.py:138
 msgid "HTTP"
 msgstr ""
 
-#: picard/ui/ui_options_network.py:136
+#: picard/ui/ui_options_network.py:139
 msgid "SOCKS"
 msgstr ""
 
-#: picard/ui/ui_options_network.py:137 picard/ui/ui_passworddialog.py:61
+#: picard/ui/ui_options_network.py:140 picard/ui/ui_passworddialog.py:61
 msgid "Username:"
 msgstr "使用者名稱:"
 
-#: picard/ui/ui_options_network.py:139 picard/ui/ui_passworddialog.py:62
+#: picard/ui/ui_options_network.py:142 picard/ui/ui_passworddialog.py:62
 msgid "Password:"
 msgstr "密碼:"
 
-#: picard/ui/ui_options_network.py:141
+#: picard/ui/ui_options_network.py:144
 msgid "Request timeout in seconds:"
 msgstr ""
 
-#: picard/ui/ui_options_network.py:142
+#: picard/ui/ui_options_network.py:145
 msgid "Browser Integration"
 msgstr "瀏覽器整合"
 
-#: picard/ui/ui_options_network.py:143
+#: picard/ui/ui_options_network.py:146
 msgid "Default listening port:"
 msgstr "預設的聆聽連接埠:"
 
-#: picard/ui/ui_options_network.py:144
+#: picard/ui/ui_options_network.py:147
 msgid "Listen only on localhost"
 msgstr "只在本機端的連接埠聆聽"
 
@@ -5134,38 +5146,38 @@ msgstr "以播放器開啟"
 msgid "Lookup CD..."
 msgstr "查找 CD…"
 
-#: picard/ui/options/interface.py:162
+#: picard/ui/options/interface.py:166
 msgid "System default"
 msgstr "系統預設"
 
-#: picard/ui/options/interface.py:221
+#: picard/ui/options/interface.py:225
 msgid "Theme changed"
 msgstr ""
 
-#: picard/ui/options/interface.py:222
+#: picard/ui/options/interface.py:226
 msgid ""
 "You have changed the application theme. You have to restart Picard in order "
 "for the change to take effect."
 msgstr ""
 
-#: picard/ui/options/interface.py:224
+#: picard/ui/options/interface.py:228
 msgid ""
 "Please note that using the system theme might cause the user interface to be"
 " not shown correctly. If this is the case disable the \"Use system theme\" "
 "option to use Picard's default theme again."
 msgstr ""
 
-#: picard/ui/options/interface.py:229
+#: picard/ui/options/interface.py:233
 msgid "Language changed"
 msgstr "已更改語言"
 
-#: picard/ui/options/interface.py:230
+#: picard/ui/options/interface.py:234
 msgid ""
 "You have changed the interface language. You have to restart Picard in order"
 " for the change to take effect."
 msgstr "您更改了界面的語言。您必須重新執行 Picard 來使更改生效。"
 
-#: picard/ui/options/interface.py:261
+#: picard/ui/options/interface.py:265
 msgid "Drag and Drop to re-order"
 msgstr "透過拖拉來調整順序"
 
