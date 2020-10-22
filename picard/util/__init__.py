@@ -154,6 +154,21 @@ def decode_filename(filename):
         return filename.decode(_io_encoding)
 
 
+def samepath(path1, path2):
+    return os.path.normcase(os.path.normpath(path1)) == os.path.normcase(os.path.normpath(path2))
+
+
+def samefile(path1, path2):
+    """Returns True, if both `path1` and `path2` refer to the same file.
+
+    Behaves similar to os.path.samefile, but first checks identical paths including
+    case insensitive comparison on Windows using os.path.normcase. This fixes issues on
+    some network drives (e.g. VirtualBox mounts) where two paths different only in case
+    are considered separate files by os.path.samefile.
+    """
+    return samepath(path1, path2) or os.path.samefile(path1, path2)
+
+
 def format_time(ms, display_zero=False):
     """Formats time in milliseconds to a string representation."""
     ms = float(ms)

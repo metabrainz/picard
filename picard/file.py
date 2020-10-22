@@ -75,6 +75,7 @@ from picard.util import (
     emptydir,
     find_best_match,
     format_time,
+    samefile,
     thread,
     tracknum_from_filename,
 )
@@ -485,7 +486,7 @@ class File(QtCore.QObject, Item):
         tmp_filename = new_filename
         i = 1
         while (os.path.exists(new_filename + ext)
-               and not os.path.samefile(old_filename, new_filename + ext)):
+               and not samefile(old_filename, new_filename + ext)):
             new_filename = "%s (%d)" % (tmp_filename, i)
             i += 1
         new_filename = new_filename + ext
