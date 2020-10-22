@@ -1,3 +1,19 @@
+# Version 2.5 - 2020-10-22
+
+## Bugfixes
+- [PICARD-214](https://tickets.metabrainz.org/browse/PICARD-214) - Take case insensitive file systems into account when renaming files
+- [PICARD-1972](https://tickets.metabrainz.org/browse/PICARD-1972) - Times missing in bottom panel
+- [PICARD-1973](https://tickets.metabrainz.org/browse/PICARD-1973) - Multi-value tags getting flattened when files get matched to tracks
+- [PICARD-1974](https://tickets.metabrainz.org/browse/PICARD-1974) - Picard crashes when using the same tag name more than once in "Tags from File Names..."
+- [PICARD-1975](https://tickets.metabrainz.org/browse/PICARD-1975) - Tags from file names does not properly set hidden tags
+- [PICARD-1976](https://tickets.metabrainz.org/browse/PICARD-1976) - Cover art providers do not handle URLs with query arguments correctly
+- [PICARD-1979](https://tickets.metabrainz.org/browse/PICARD-1979) - Comment tag in MP4 not saved correctly
+- [PICARD-1982](https://tickets.metabrainz.org/browse/PICARD-1982) - Cover art not saving properly
+
+## Improvements
+- [PICARD-1978](https://tickets.metabrainz.org/browse/PICARD-1978) - Add keyboard shortcut for Tags From Filenames and allow to place it in toolbar
+
+
 # Version 2.5.0b1 - 2020-10-15
 
 ## Bugfixes
@@ -34,7 +50,7 @@
 - [PICARD-1952](https://tickets.metabrainz.org/browse/PICARD-1952) - Allow using native Qt styles on Linux
 - [PICARD-1955](https://tickets.metabrainz.org/browse/PICARD-1955) - Use built-in search by default for new installs
 - [PICARD-1957](https://tickets.metabrainz.org/browse/PICARD-1957) - Load files in file browser on double click
-- [PICARD-1958](https://tickets.metabrainz.org/browse/PICARD-1958) - macOS: Offer link to Applicatipons folder in disk image
+- [PICARD-1958](https://tickets.metabrainz.org/browse/PICARD-1958) - macOS: Offer link to Applications folder in disk image
 - [PICARD-1959](https://tickets.metabrainz.org/browse/PICARD-1959) - In disc ID dialog rename "Lookup in Browser" to "Submit disc ID"
 - [PICARD-1960](https://tickets.metabrainz.org/browse/PICARD-1960) - Allow adding new items in list editor views using Insert key
 - [PICARD-1965](https://tickets.metabrainz.org/browse/PICARD-1965) - Allow opening fingerprinting options in AcoustID missing API key dialog
