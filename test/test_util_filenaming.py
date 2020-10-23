@@ -6,7 +6,7 @@
 # Copyright (C) 2016 Sambhav Kothari
 # Copyright (C) 2018 Wieland Hoffmann
 # Copyright (C) 2018-2019 Laurent Monin
-# Copyright (C) 2019 Philipp Wolfer
+# Copyright (C) 2019-2020 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -26,6 +26,7 @@
 import os
 import os.path
 import sys
+from tempfile import NamedTemporaryFile
 import unittest
 
 from test.picardtestcase import PicardTestCase
@@ -34,7 +35,11 @@ from picard.const.sys import (
     IS_MACOS,
     IS_WIN,
 )
-from picard.util.filenaming import make_short_filename
+from picard.util.filenaming import (
+    filename_case_differs,
+    fix_filename_casing,
+    make_short_filename,
+)
 
 
 class ShortFilenameTest(PicardTestCase):
@@ -143,3 +148,34 @@ class ShortFilenameTest(PicardTestCase):
     def test_whitespace(self):
         fn = make_short_filename(self.root, os.path.join("a1234567890   ", "  b1234567890  "))
         self.assertEqual(fn, os.path.join("a1234567890", "b1234567890"))
+
+
+class FilenameCaseDiffersTest(PicardTestCase):
+
+    @unittest.skipUnless(IS_WIN, "windows test")
+    def test_filename_case_differs(self):
+        with NamedTemporaryFile(prefix='Foo') as f:
+            real_name = f.name
+            lower_name = real_name.lower()
+            self.assertFalse(filename_case_differs(real_name))
+            self.assertTrue(filename_case_differs(lower_name))
+
+    def test_filename_case_differs_non_existant_file(self):
+        self.assertFalse(filename_case_differs("/foo/bar"))
+
+
+class FixFilenameCasingTest(PicardTestCase):
+
+    @unittest.skipUnless(IS_WIN, "windows test")
+    def test_fix_filename_casing(self):
+        with NamedTemporaryFile(prefix='foo') as f:
+            created_name = f.name
+            wanted_name = created_name.title()
+            self.assertTrue(fix_filename_casing(wanted_name))
+            self.assertEqual(
+                os.path.basename(wanted_name),
+                os.path.basename(os.path.realpath(created_name)))
+            self.assertFalse(fix_filename_casing(wanted_name))
+
+    def test_fix_filename_casing_non_existant_file(self):
+        self.assertFalse(filename_case_differs("/foo/bar"))

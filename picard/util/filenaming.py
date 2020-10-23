@@ -8,7 +8,7 @@
 # Copyright (C) 2017 Sambhav Kothari
 # Copyright (C) 2017 Ville Skyttä
 # Copyright (C) 2018 Antonio Larrosa
-# Copyright (C) 2019 Philipp Wolfer
+# Copyright (C) 2019-2020 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -372,3 +372,35 @@ def make_short_filename(basedir, relpath, win_compat=False, relative_to=""):
         limit = _get_filename_limit(basedir)
         relpath = shorten_path(relpath, limit, mode=SHORTEN_BYTES)
     return relpath
+
+
+def filename_case_differs(path):
+    """Returns True only if the file name of `path` has different casing then the
+    actual file name of the file it refers to.
+    Returns False if the casing is identical.
+    """
+    expected_filename = os.path.basename(path)
+    # Since Python 3.8 on Windows os.path.realpath will return the actual file name casing as on disk
+    real_filename = os.path.basename(os.path.realpath(path))
+    # Check if both paths are the same except for the casing
+    return expected_filename.lower() == real_filename.lower() and expected_filename != real_filename
+
+
+def fix_filename_casing(path):
+    """Checks if the actual file name of path has the expected casing and attempts to fix it if not.
+    On some case-insensitive file systems a case-only change is not applied with a normal rename (e.g.
+    FAT32 on Windows or SMB on Linux). This function attempts to detect this situation and fix the
+    file name by double renaming.
+
+    Returns True if casing was changed, False otherwise
+    """
+    if filename_case_differs(path):
+        i = 0
+        temp_name = "%s_%d" % (path, i)
+        while os.path.exists(temp_name):
+            i += 1
+            temp_name = "%s_%d" % (path, i)
+        os.rename(path, temp_name)
+        os.rename(temp_name, path)
+        return True
+    return False
