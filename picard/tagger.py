@@ -563,8 +563,8 @@ class Tagger(QtWidgets.QApplication):
                             yield entry.path
                 else:
                     yield current_path
-            except FileNotFoundError:
-                pass
+            except OSError as err:
+                log.warning(err)
 
     def add_paths(self, paths, target=None):
         files = self._scan_paths_recursive(paths,
