@@ -461,17 +461,18 @@ class File(QtCore.QObject, Item):
                 new_dirname = os.path.normpath(os.path.join(os.path.dirname(filename), new_dirname))
         else:
             new_dirname = os.path.dirname(filename)
+        try:
+            new_dirname = os.path.realpath(new_dirname)
+        except FileNotFoundError:
+            # os.path.realpath can fail if cwd does not exist and path is relative
+            pass
         new_filename = os.path.basename(filename)
 
         if settings["rename_files"] or settings["move_files"]:
             new_filename = self._format_filename(new_dirname, new_filename, metadata, settings)
 
         new_path = os.path.join(new_dirname, new_filename)
-        try:
-            return os.path.realpath(new_path)
-        except FileNotFoundError:
-            # os.path.realpath can fail if cwd doesn't exist
-            return new_path
+        return new_path
 
     def _rename(self, old_filename, metadata):
         new_filename, ext = os.path.splitext(
