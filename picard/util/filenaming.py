@@ -45,6 +45,11 @@ from picard.util import (
 )
 
 
+if IS_WIN:
+    import pywintypes
+    import win32api
+
+
 def _get_utf16_length(text):
     """Returns the number of code points used by a unicode object in its
     UTF-16 representation.
@@ -380,8 +385,18 @@ def filename_case_differs(path):
     Returns False if the casing is identical.
     """
     expected_filename = os.path.basename(path)
-    # Since Python 3.8 on Windows os.path.realpath will return the actual file name casing as on disk
-    real_filename = os.path.basename(os.path.realpath(path))
+    if IS_WIN:
+        try:
+            # Get the path in the actual casing as stored on disk
+            path = win32api.GetLongPathNameW(win32api.GetShortPathName(path))
+        except pywintypes.error:
+            pass
+        real_filename = os.path.basename(path)
+    else:
+        # FIXME: Figure out how to get the actual casing of the file as stored on disk on other OS.
+        # This applies to macOS, which commonly has the fs configured for case insensitivity, but also
+        # Linux when using ext4 with case insensitivity or other file systems such as FAT32.
+        real_filename = os.path.basename(path)
     # Check if both paths are the same except for the casing
     return expected_filename.lower() == real_filename.lower() and expected_filename != real_filename
 

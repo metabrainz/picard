@@ -168,13 +168,15 @@ class FixFilenameCasingTest(PicardTestCase):
 
     @unittest.skipUnless(IS_WIN, "windows test")
     def test_fix_filename_casing(self):
+        import win32api
+
         with NamedTemporaryFile(prefix='foo') as f:
             created_name = f.name
             wanted_name = created_name.title()
             self.assertTrue(fix_filename_casing(wanted_name))
             self.assertEqual(
                 os.path.basename(wanted_name),
-                os.path.basename(os.path.realpath(created_name)))
+                os.path.basename(win32api.GetLongPathNameW(win32api.GetShortPathName(created_name))))
             self.assertFalse(fix_filename_casing(wanted_name))
 
     def test_fix_filename_casing_non_existant_file(self):
