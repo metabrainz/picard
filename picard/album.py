@@ -319,7 +319,6 @@ class Album(DataObject, Item):
                 mm = Metadata()
                 mm.copy(self._new_metadata)
                 medium_to_metadata(medium_node, mm)
-                discpregap = False
                 format = medium_node.get('format')
                 if format:
                     all_media.append(format)
@@ -327,33 +326,43 @@ class Album(DataObject, Item):
                 for dj in djmix_ars.get(mm["discnumber"], []):
                     mm.add("djmixer", dj)
 
+                if va:
+                    mm["compilation"] = "1"
+                else:
+                    del mm["compilation"]
+
                 if 'discs' in medium_node:
                     discids = [disc.get('id') for disc in medium_node['discs']]
                     mm['~musicbrainz_discids'] = discids
                     mm['musicbrainz_discid'] = list(self._discids.intersection(discids))
 
                 if "pregap" in medium_node:
-                    discpregap = True
                     absolutetracknumber += 1
-                    extra = {
-                        '~pregap': '1'
+                    mm['~discpregap'] = '1'
+                    extra_metadata = {
+                        '~pregap': '1',
+                        '~absolutetracknumber': absolutetracknumber,
                     }
-                    self._finalize_loading_track(medium_node['pregap'], mm, artists, va, absolutetracknumber, discpregap, extra)
+                    self._finalize_loading_track(medium_node['pregap'], mm, artists, extra_metadata)
 
                 track_count = medium_node['track-count']
                 if track_count:
                     tracklist_node = medium_node['tracks']
                     for track_node in tracklist_node:
                         absolutetracknumber += 1
-                        self._finalize_loading_track(track_node, mm, artists, va, absolutetracknumber, discpregap)
+                        extra_metadata = {
+                            '~absolutetracknumber': absolutetracknumber,
+                        }
+                        self._finalize_loading_track(track_node, mm, artists, extra_metadata)
 
                 if "data-tracks" in medium_node:
                     for track_node in medium_node['data-tracks']:
                         absolutetracknumber += 1
-                        extra = {
-                            '~datatrack': '1'
+                        extra_metadata = {
+                            '~datatrack': '1',
+                            '~absolutetracknumber': absolutetracknumber,
                         }
-                        self._finalize_loading_track(track_node, mm, artists, va, absolutetracknumber, discpregap, extra)
+                        self._finalize_loading_track(track_node, mm, artists, extra_metadata)
 
             totalalbumtracks = absolutetracknumber
             self._new_metadata['~totalalbumtracks'] = totalalbumtracks
@@ -418,7 +427,7 @@ class Album(DataObject, Item):
             if self.item.isSelected():
                 self.tagger.window.refresh_metadatabox()
 
-    def _finalize_loading_track(self, track_node, metadata, artists, va, absolutetracknumber, discpregap, extrametadata=None):
+    def _finalize_loading_track(self, track_node, metadata, artists, extra_metadata=None):
         # As noted in `_parse_release` above, the release artist nodes
         # may contain supplementary data that isn't present in track
         # artist nodes. Similarly, the track artists may contain
@@ -435,19 +444,12 @@ class Album(DataObject, Item):
         tm = track.metadata
         tm.copy(metadata)
         track_to_metadata(track_node, track)
-        tm["~absolutetracknumber"] = absolutetracknumber
         track._customize_metadata()
 
         self._new_metadata.length += tm.length
         artists.add(tm["artist"])
-        if va:
-            tm["compilation"] = "1"
-        else:
-            del tm["compilation"]
-        if discpregap:
-            tm["~discpregap"] = "1"
-        if extrametadata:
-            tm.update(extrametadata)
+        if extra_metadata:
+            tm.update(extra_metadata)
 
         # Run track metadata plugins
         try:
