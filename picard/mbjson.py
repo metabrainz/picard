@@ -36,7 +36,7 @@ from picard.util import (
 _artist_rel_types = {
     "arranger": "arranger",
     "audio": "engineer",
-    "chorus master": "conductor",
+    "chorus master": "performer:chorus master",
     "composer": "composer",
     "concertmaster": "performer:concertmaster",
     "conductor": "conductor",
