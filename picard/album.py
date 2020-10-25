@@ -371,6 +371,7 @@ class Album(DataObject, Item):
 
             for track in self._new_tracks:
                 track.metadata["~totalalbumtracks"] = totalalbumtracks
+                track.orig_metadata["~totalalbumtracks"] = totalalbumtracks
                 if len(artists) > 1:
                     track.metadata["~multiartist"] = "1"
                     track.orig_metadata["~multiartist"] = "1"
