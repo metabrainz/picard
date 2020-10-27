@@ -102,7 +102,6 @@ from picard.ui.passworddialog import (
     PasswordDialog,
     ProxyDialog,
 )
-from picard.ui.playertoolbar import Player
 from picard.ui.searchdialog.album import AlbumSearchDialog
 from picard.ui.searchdialog.track import TrackSearchDialog
 from picard.ui.statusindicator import DesktopStatusIndicator
@@ -138,17 +137,19 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         config.IntOption("persist", "mediaplayer_volume", 50),
     ]
 
-    def __init__(self, parent=None):
+    def __init__(self, parent=None, disable_player=False):
         super().__init__(parent)
         self.selected_objects = []
         self.ignore_selection_changes = False
         self.toolbar = None
         self.player = None
         self.status_indicators = []
-        player = Player(self)
-        if player.available:
-            self.player = player
-            self.player.error.connect(self._on_player_error)
+        if not disable_player:
+            from picard.ui.playertoolbar import Player
+            player = Player(self)
+            if player.available:
+                self.player = player
+                self.player.error.connect(self._on_player_error)
         self.setupUi()
 
     def setupUi(self):
