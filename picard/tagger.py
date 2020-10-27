@@ -277,7 +277,7 @@ class Tagger(QtWidgets.QApplication):
         self.mbid_redirects = {}
         self.unclustered_files = UnclusteredFiles()
         self.nats = None
-        self.window = MainWindow()
+        self.window = MainWindow(disable_player=picard_args.no_player)
         self.exit_cleanup = []
         self.stopping = False
 
@@ -920,6 +920,8 @@ def process_picard_args():
                         help="location of the configuration file")
     parser.add_argument("-d", "--debug", action='store_true',
                         help="enable debug-level logging")
+    parser.add_argument("-M", "--no-player", action='store_true',
+                        help="disable built-in media player")
     parser.add_argument("-N", "--no-restore", action='store_true',
                         help="do not restore positions and/or sizes")
     parser.add_argument("-P", "--no-plugins", action='store_true',
