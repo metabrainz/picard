@@ -21,21 +21,17 @@ pyinstaller --noconfirm --clean picard.spec
 CODESIGN=0
 NOTARIZE=0
 KEYCHAIN_PATH=picard.keychain
-KEYCHAIN_PASSWORD=picard
-CERTIFICATE_NAME="Developer ID Application: MetaBrainz Foundation Inc."
+KEYCHAIN_PASSWORD=$(openssl rand -base64 32)
+CERTIFICATE_NAME="MetaBrainz Foundation Inc."
 CERTIFICATE_FILE=scripts/package/appledev.p12
 
-if [ -n "$encrypted_be5fb2212036_key" ] && [ -n "$encrypted_be5fb2212036_iv" ]; then
-    openssl aes-256-cbc -K "$encrypted_be5fb2212036_key" -iv "$encrypted_be5fb2212036_iv" -in scripts/package/appledev.p12.enc -out $CERTIFICATE_FILE -d
-fi
-
-if [ -f scripts/package/appledev.p12 ] && [ -n "$appledev_p12_password" ]; then
+if [ -f $CERTIFICATE_FILE ] && [ -n "$CODESIGN_MACOS_P12_PASSWORD" ]; then
     security create-keychain -p $KEYCHAIN_PASSWORD $KEYCHAIN_PATH
     security unlock-keychain -p $KEYCHAIN_PASSWORD $KEYCHAIN_PATH
     security set-keychain-settings $KEYCHAIN_PATH  # Ensure keychain stays unlocked
     security list-keychains -d user -s $KEYCHAIN_PATH
     security default-keychain -s $KEYCHAIN_PATH
-    security import $CERTIFICATE_FILE -k $KEYCHAIN_PATH -P "$appledev_p12_password" -T /usr/bin/codesign
+    security import $CERTIFICATE_FILE -k $KEYCHAIN_PATH -P "$CODESIGN_MACOS_P12_PASSWORD" -T /usr/bin/codesign
     # The line below is necessary when building on Sierra.
     # See https://stackoverflow.com/q/39868578
     security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k $KEYCHAIN_PASSWORD $KEYCHAIN_PATH
