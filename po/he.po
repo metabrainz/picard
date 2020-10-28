@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2020-10-18 16:07+0200\n"
-"PO-Revision-Date: 2020-10-19 07:41+0000\n"
+"PO-Revision-Date: 2020-10-27 16:29+0000\n"
 "Last-Translator: Avi Markovitz <avi.markovitz@gmail.com>\n"
 "Language-Team: Hebrew (http://www.transifex.com/musicbrainz/musicbrainz/language/he/)\n"
 "MIME-Version: 1.0\n"
@@ -304,11 +304,11 @@ msgstr " חיפוש טביעת אצבע לקובץ '%(filename)s'..."
 #: picard/acoustid/manager.py:101
 msgid ""
 "AcoustID submission finished, but not all fingerprints have been submitted"
-msgstr "הַגָּשָׁת AcoustID הסתיימה, אך לא כל טביעות האצבע נקלטו"
+msgstr "שגור AcoustID הסתיים, אך לא כל טביעות האצבע נקלטו"
 
 #: picard/acoustid/manager.py:103
 msgid "AcoustID submission finished successfully"
-msgstr "הַגָּשָׁת AcoustID צלחה"
+msgstr "שגור AcoustID צלח"
 
 #: picard/acoustid/manager.py:115
 msgid "Submitting AcoustIDs ..."
@@ -2981,7 +2981,7 @@ msgid ""
 " is operated by the MetaBrainz Foundation with the help of thousands of "
 "volunteers. If you like this application please consider donating to the "
 "MetaBrainz Foundation to keep the service running."
-msgstr "מודים לכם על השימוש ב פיקארד. פיקארד מתבסס על מסד הנתונים של מיוזיקבריינז, המופעל על ידי קרן מטהבריינז בעזרתם של אלפי מתנדבים. אם אתם אוהבים את היישום הזה, שקולו בבקשה לתרום ל מטהבריינז על מנת להבטיח המשכיות השירות."
+msgstr "מודים לכם על השימוש בפיקארד. פיקארד מתבסס על מסד הנתונים של מיוזיקבריינז, המופעל על ידי קרן מטהבריינז בעזרתם של אלפי מתנדבים. אם אתם אוהבים את היישום הזה, שקולו בבקשה לתרום למטהבריינז על מנת להבטיח את המשכיות השירות."
 
 #: picard/ui/aboutdialog.py:109
 msgid "Donate now!"
@@ -3560,7 +3560,7 @@ msgstr "האזנה לפִּתְחָה %(port)d "
 
 #: picard/ui/mainwindow.py:406
 msgid "AcoustID submission not configured"
-msgstr "לא הוגדרו הגשות AcoustID "
+msgstr "שגור AcoustID לא תוצר"
 
 #: picard/ui/mainwindow.py:407
 msgid ""
@@ -3871,7 +3871,7 @@ msgstr "פתיחה התקיה המכילה בסייר"
 
 #: picard/ui/mainwindow.py:636
 msgid "&Check for Update…"
-msgstr "&בדיקת עדכון..."
+msgstr "&בדיקת זמינות עדכונים..."
 
 #: picard/ui/mainwindow.py:696
 msgid "&File"
@@ -3965,7 +3965,7 @@ msgstr "נדרש אימות"
 msgid ""
 "Picard needs authorization to access your personal data on the MusicBrainz "
 "server. Would you like to log in now?"
-msgstr "ל פיקארד  נדרשת הרשאה לגשת לנתונים האישיים שלך בשרת מוזיקבריינז. האם ברצונך להיכנס כעת?"
+msgstr "לפיקארד נדרשת הרשאת גישה לנתונים האישיים שלכם בשרת מוזיקבריינז. האם להתחבר כעת?"
 
 #: picard/ui/metadatabox.py:102
 #, python-format
@@ -4359,7 +4359,7 @@ msgstr "התחברות למערכת"
 
 #: picard/ui/ui_options_general.py:137
 msgid "Log out"
-msgstr "התנתק מהמערכת"
+msgstr "התנתקות מהמערכת"
 
 #: picard/ui/options/general.py:49 picard/ui/ui_options_general.py:138
 msgid "General"
@@ -4375,11 +4375,11 @@ msgstr "‮להתעלם ממזהי מוזיקבריינז בטעינת קבצי�
 
 #: picard/ui/ui_options_general.py:141
 msgid "Update Checking"
-msgstr "בדיקת עדכון"
+msgstr "בדיקת זמינות עדכונים"
 
 #: picard/ui/ui_options_general.py:142
 msgid "Check for updates during start-up"
-msgstr "בדיקת עדכון בעת האתחול"
+msgstr "בדיקת עדכונים בעת האתחול"
 
 #: picard/ui/ui_options_general.py:143
 msgid "Days between checks:"
@@ -4647,7 +4647,7 @@ msgid ""
 "user who did the rating. That way different ratings for different users can "
 "be stored in the files. Please specify the e-mail you want to use to save "
 "your ratings."
-msgstr "פיקארד ‮שומר את הדרוג בצרוף כתובת דוא\"ל המשמש לזיהוי המשתמש שביצע את הדרוג. בדרך זו, נשמרים  בקבצים, דרוגים שונים עבור משתמשים שונים. נא ספק כתובת דוא\"ל לשמירת הדרוגים שלך."
+msgstr "פיקארד ‮שומר את הדרוג בצרוף כתובת דוא\"ל המשמש, לזיהוי המשתמש שביצע את הדרוג. בדרך זו, נשמרים דרוגים שונים עבור משתמשים שונים  בקבצים. נא לספק כתובת דוא\"ל לשמירת הדרוגים שלכם."
 
 #: picard/ui/ui_options_ratings.py:47
 msgid "E-mail:"
@@ -4655,7 +4655,7 @@ msgstr "דוא\"ל:"
 
 #: picard/ui/ui_options_ratings.py:48
 msgid "Submit ratings to MusicBrainz"
-msgstr "שגור דרוג ל מוזיקבריינז"
+msgstr "שגור דרוג למוזיקבריינז"
 
 #: picard/ui/ui_options_releases.py:110
 msgid "Preferred release types"
@@ -5082,7 +5082,7 @@ msgstr " קובץ הפעלה fpcalc לא תקין"
 #: picard/ui/options/general.py:110
 #, python-format
 msgid "Logged in as <b>%s</b>."
-msgstr "מחובר כ <b>%s</b>."
+msgstr "התחברות בשם <b>%s</b>."
 
 #: picard/ui/options/genres.py:41
 msgid ""
@@ -5585,7 +5585,7 @@ msgid ""
 "There is no update currently available for your subscribed update level: {update_level}\n"
 "\n"
 "Your version: {picard_old_version}\n"
-msgstr "לא נמצאו עדכונים זמינים לרמת מנוי העדכונים שלך: {update_level}\n\nהגרסה שלך: {picard_old_version}\n"
+msgstr "לא נמצאו עדכונים זמינים לרמת מנוי העדכונים שכם: {update_level}\n\nהגרסה שלכם: {picard_old_version}\n"
 
 #: picard/util/tags.py:34
 msgid "AcoustID Fingerprint"
@@ -5817,7 +5817,7 @@ msgstr "סוג ההוצאה"
 
 #: picard/util/tags.py:103
 msgid "Remixer"
-msgstr "רמיקסר"
+msgstr "עריכה מחדש"
 
 #: picard/util/tags.py:104
 msgid "ReplayGain Album Gain"

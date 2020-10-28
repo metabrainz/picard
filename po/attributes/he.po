@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2020-10-19 14:01+0000\n"
-"Last-Translator: yvanz\n"
+"PO-Revision-Date: 2020-10-25 12:41+0000\n"
+"Last-Translator: Avi Markovitz <avi.markovitz@gmail.com>\n"
 "Language-Team: Hebrew (http://www.transifex.com/musicbrainz/musicbrainz/language/he/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1719,7 +1719,7 @@ msgstr "DCC"
 #: DB:release_group_secondary_type/name:8
 msgctxt "release_group_secondary_type"
 msgid "DJ-mix"
-msgstr "די.ג'י מיקס"
+msgstr "תמהיל-די.ג'י"
 
 #: DB:medium_format/name:44
 msgctxt "medium_format"
@@ -1734,7 +1734,7 @@ msgstr "DVD"
 #: DB:medium_format/name:18
 msgctxt "medium_format"
 msgid "DVD-Audio"
-msgstr "אידיו-DVD"
+msgstr "DVD-שמע"
 
 #: DB:medium_format/name:19
 msgctxt "medium_format"
