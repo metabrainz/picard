@@ -57,4 +57,4 @@ jobs:
     - name: Cleanup
       if: env.CODESIGN
       run: |
-        rm -rf "$HOME/.gnupg
+        rm -rf "$HOME/.gnupg"
