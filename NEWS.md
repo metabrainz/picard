@@ -1,3 +1,17 @@
+# Version 2.5.1 - 2020-10-28
+
+## Bugfixes
+- [PICARD-1987](https://tickets.metabrainz.org/browse/PICARD-1987) - Special variables `%_multiartist%`, `%_pregap%`, `%_datatrack%` and `%_totalalbumtracks%` missing after files got matched to a track
+- [PICARD-1988](https://tickets.metabrainz.org/browse/PICARD-1988) - Aborts if directory scan finds a directory which cannot be read
+- [PICARD-1989](https://tickets.metabrainz.org/browse/PICARD-1989) - Auto-sizing does not work right on first column
+- [PICARD-1990](https://tickets.metabrainz.org/browse/PICARD-1990) - Case-only changes to file names are not applied on Windows if running with Python >= 3.8
+
+## Improvements
+- [PICARD-1985](https://tickets.metabrainz.org/browse/PICARD-1985) - Support chorus master recording relationships as "performer:chorus master" instead of second conductor
+- [PICARD-1995](https://tickets.metabrainz.org/browse/PICARD-1995) - Add command line parameter `--no-player` to disable media player
+- [PICARD-1997](https://tickets.metabrainz.org/browse/PICARD-1997) - Reduce performance impact of fingerprinting column
+
+
 # Version 2.5 - 2020-10-22
 
 ## Bugfixes
