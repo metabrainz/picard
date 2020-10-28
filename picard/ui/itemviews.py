@@ -323,29 +323,10 @@ def paint_fingerprint_icon(painter, rect, icon):
     if not icon:
         return
     size = COLUMN_ICON_SIZE
-    padding_h = (rect.width() - size) / 2
+    padding_h = COLUMN_ICON_BORDER
     padding_v = (rect.height() - size) / 2
     target_rect = QtCore.QRect(rect.x() + padding_h, rect.y() + padding_v, size, size)
     painter.drawPixmap(target_rect, icon.pixmap(size, size))
-
-
-class FingerprintColumnWidget(QtWidgets.QWidget):
-    def __init__(self, file, parent=None):
-        super().__init__(parent=parent)
-        self._file = file
-
-    def paintEvent(self, event=None):
-        painter = QtGui.QPainter(self)
-        paint_fingerprint_icon(painter, self.rect(), self.decide_icon())
-
-    def decide_icon(self):
-        if getattr(self._file, 'acoustid_fingerprint', None):
-            if self.tagger.acoustidmanager.is_submitted(self._file):
-                return FileItem.icon_fingerprint_gray
-            else:
-                return FileItem.icon_fingerprint
-        else:
-            return None
 
 
 class ConfigurableColumnsHeader(TristateSortHeaderView):
@@ -378,7 +359,7 @@ class ConfigurableColumnsHeader(TristateSortHeaderView):
             self._visible_columns.add(column)
             if column == MainPanel.FINGERPRINT_COLUMN:
                 self.setSectionResizeMode(column, QtWidgets.QHeaderView.Fixed)
-                self.parent().resizeColumnToContents(column)
+                self.resizeSection(column, COLUMN_ICON_SIZE)
             else:
                 self.setSectionResizeMode(column, QtWidgets.QHeaderView.Interactive)
         elif column in self._visible_columns:
@@ -897,6 +878,7 @@ class TreeItem(QtWidgets.QTreeWidgetItem):
             MainPanel.DISCNUMBER_COLUMN,
         ]:
             self.setTextAlignment(column, QtCore.Qt.AlignRight | QtCore.Qt.AlignVCenter)
+        self.setSizeHint(MainPanel.FINGERPRINT_COLUMN, ICON_SIZE)
 
     def setText(self, column, text):
         self._sortkeys[column] = None
@@ -1035,7 +1017,6 @@ class TrackItem(TreeItem):
 
     def update(self, update_album=True, update_files=True):
         track = self.obj
-        tree_widget = self.treeWidget()
         if track.num_linked_files == 1:
             file = track.linked_files[0]
             file.item = self
@@ -1045,16 +1026,13 @@ class TrackItem(TreeItem):
             self.setToolTip(MainPanel.TITLE_COLUMN, _(FileItem.decide_file_icon_info(file)))
             self.takeChildren()
             self.setExpanded(False)
-            self.setToolTip(MainPanel.FINGERPRINT_COLUMN, FileItem.decide_fingerprint_icon_info(file))
-            if tree_widget:
-                if not tree_widget.itemWidget(self, MainPanel.FINGERPRINT_COLUMN):
-                    tree_widget.setItemWidget(self, MainPanel.FINGERPRINT_COLUMN,
-                        FingerprintColumnWidget(file=file))
+            fingerprint_icon, fingerprint_tooltip = FileItem.decide_fingerprint_icon_info(file)
+            self.setToolTip(MainPanel.FINGERPRINT_COLUMN, fingerprint_tooltip)
+            self.setIcon(MainPanel.FINGERPRINT_COLUMN, fingerprint_icon)
         else:
             self.setToolTip(MainPanel.TITLE_COLUMN, "")
             self.setToolTip(MainPanel.FINGERPRINT_COLUMN, "")
-            if tree_widget:
-                tree_widget.setItemWidget(self, MainPanel.FINGERPRINT_COLUMN, None)
+            self.setIcon(MainPanel.FINGERPRINT_COLUMN, QtGui.QIcon())
             if track.ignored_for_completeness():
                 color = TreeItem.text_color_secondary
             else:
@@ -1107,18 +1085,15 @@ class FileItem(TreeItem):
     def update(self, update_track=True):
         file = self.obj
         self.setIcon(MainPanel.TITLE_COLUMN, FileItem.decide_file_icon(file))
-        self.setToolTip(MainPanel.FINGERPRINT_COLUMN, self.decide_fingerprint_icon_info(file))
+        fingerprint_icon, fingerprint_tooltip = FileItem.decide_fingerprint_icon_info(file)
+        self.setToolTip(MainPanel.FINGERPRINT_COLUMN, fingerprint_tooltip)
+        self.setIcon(MainPanel.FINGERPRINT_COLUMN, fingerprint_icon)
         color = FileItem.file_colors[file.state]
         bgcolor = get_match_color(file.similarity, TreeItem.base_color)
         for i, column in enumerate(MainPanel.columns):
             self.setText(i, file.column(column[1]))
             self.setForeground(i, color)
             self.setBackground(i, bgcolor)
-        tree_widget = self.treeWidget()
-        if tree_widget:
-            if not tree_widget.itemWidget(self, MainPanel.FINGERPRINT_COLUMN):
-                tree_widget.setItemWidget(self, MainPanel.FINGERPRINT_COLUMN,
-                    FingerprintColumnWidget(file=file))
         if self.isSelected():
             TreeItem.window.update_selection(new_selection=False)
         parent = self.parent()
@@ -1156,10 +1131,14 @@ class FileItem(TreeItem):
 
     @staticmethod
     def decide_fingerprint_icon_info(file):
-        if file.acoustid_fingerprint:
+        if getattr(file, 'acoustid_fingerprint', None):
             if QtCore.QObject.tagger.acoustidmanager.is_submitted(file):
-                return _('Fingerprint has already been submitted')
+                icon = FileItem.icon_fingerprint_gray
+                tooltip = _('Fingerprint has already been submitted')
             else:
-                return _('Unsubmitted fingerprint')
+                icon = FileItem.icon_fingerprint
+                tooltip = _('Unsubmitted fingerprint')
         else:
-            return _('No fingerprint was calculated for this file, use "Scan" or "Generate AcoustID Fingerprints" to calculate the fingerprint.')
+            icon = QtGui.QIcon()
+            tooltip = _('No fingerprint was calculated for this file, use "Scan" or "Generate AcoustID Fingerprints" to calculate the fingerprint.')
+        return (icon, tooltip)
