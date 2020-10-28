@@ -897,7 +897,6 @@ class TreeItem(QtWidgets.QTreeWidgetItem):
             MainPanel.DISCNUMBER_COLUMN,
         ]:
             self.setTextAlignment(column, QtCore.Qt.AlignRight | QtCore.Qt.AlignVCenter)
-        self.setSizeHint(MainPanel.TITLE_COLUMN, ICON_SIZE)
 
     def setText(self, column, text):
         self._sortkeys[column] = None
