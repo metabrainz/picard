@@ -70,7 +70,46 @@ from picard.util.progresscheckpoints import ProgressCheckpoints
 from picard.ui.item import Item
 
 
-class Cluster(QtCore.QObject, Item):
+class FileList(QtCore.QObject, Item):
+
+    def __init__(self, files=None):
+        QtCore.QObject.__init__(self)
+        self.metadata = Metadata()
+        self.orig_metadata = Metadata()
+        self.files = files or []
+        self.update_metadata_images_enabled = True
+        for file in self.files:
+            if self.can_show_coverart:
+                file.metadata_images_changed.connect(self.update_metadata_images)
+        update_metadata_images(self)
+
+    def iterfiles(self, save=False):
+        for file in self.files:
+            yield file
+
+    def update(self):
+        pass
+
+    @property
+    def can_show_coverart(self):
+        return True
+
+    def enable_update_metadata_images(self, enabled):
+        self.update_metadata_images_enabled = enabled
+
+    def update_metadata_images(self):
+        if self.update_metadata_images_enabled and self.can_show_coverart:
+            update_metadata_images(self)
+
+    def keep_original_images(self):
+        self.enable_update_metadata_images(False)
+        for file in list(self.files):
+            file.keep_original_images()
+        self.enable_update_metadata_images(True)
+        self.update_metadata_images()
+
+
+class Cluster(FileList):
 
     # Weights for different elements when comparing a cluster to a release
     comparison_weights = {
@@ -84,18 +123,15 @@ class Cluster(QtCore.QObject, Item):
     }
 
     def __init__(self, name, artist="", special=False, related_album=None, hide_if_empty=False):
-        QtCore.QObject.__init__(self)
+        super().__init__()
         self.item = None
-        self.metadata = Metadata()
         self.metadata['album'] = name
         self.metadata['albumartist'] = artist
         self.metadata['totaltracks'] = 0
         self.special = special
         self.hide_if_empty = hide_if_empty
         self.related_album = related_album
-        self.files = []
         self.lookup_task = None
-        self.update_metadata_images_enabled = True
 
     def __repr__(self):
         if self.related_album:
@@ -157,10 +193,6 @@ class Cluster(QtCore.QObject, Item):
 
     def get_num_files(self):
         return len(self.files)
-
-    def iterfiles(self, save=False):
-        for file in self.files:
-            yield file
 
     def can_save(self):
         """Return if this object can be saved."""
