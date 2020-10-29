@@ -472,7 +472,7 @@ class CoverArtBox(QtWidgets.QGroupBox):
             for file in album.iterfiles():
                 set_image(file, coverartimage)
                 file.metadata_images_changed.emit()
-                file.update()
+                file.update(signal=False)
             album.enable_update_metadata_images(True)
             album.update_metadata_images()
             album.update(False)
@@ -483,7 +483,7 @@ class CoverArtBox(QtWidgets.QGroupBox):
             for file in cluster.iterfiles():
                 set_image(file, coverartimage)
                 file.metadata_images_changed.emit()
-                file.update()
+                file.update(signal=False)
             cluster.enable_update_metadata_images(True)
             cluster.update_metadata_images()
             cluster.update()
@@ -495,10 +495,11 @@ class CoverArtBox(QtWidgets.QGroupBox):
             for file in track.iterfiles():
                 set_image(file, coverartimage)
                 file.metadata_images_changed.emit()
-                file.update()
+                file.update(signal=False)
             track.album.enable_update_metadata_images(True)
             track.album.update_metadata_images()
             track.album.update(False)
+            track.update()
         elif isinstance(self.item, File):
             file = self.item
             set_image(file, coverartimage)
@@ -528,6 +529,11 @@ class CoverArtBox(QtWidgets.QGroupBox):
     def set_load_image_behavior(self, behavior):
         config.setting["load_image_behavior"] = behavior
 
+    def keep_original_images(self):
+        self.item.keep_original_images()
+        self.cover_art.set_metadata(self.item.metadata)
+        self.show()
+
     def contextMenuEvent(self, event):
         menu = QtWidgets.QMenu(self)
         if self.show_details_button.isVisible():
@@ -539,7 +545,7 @@ class CoverArtBox(QtWidgets.QGroupBox):
         if self.orig_cover_art.isVisible():
             name = _('Keep original cover art')
             use_orig_value_action = QtWidgets.QAction(name, self.parent)
-            use_orig_value_action.triggered.connect(self.item.keep_original_images)
+            use_orig_value_action.triggered.connect(self.keep_original_images)
             menu.addAction(use_orig_value_action)
 
         if self.item and self.item.can_show_coverart:
