@@ -4,7 +4,7 @@
 #
 # Copyright (C) 2017 Antonio Larrosa
 # Copyright (C) 2017 Sambhav Kothari
-# Copyright (C) 2018 Philipp Wolfer
+# Copyright (C) 2018, 2020 Philipp Wolfer
 # Copyright (C) 2019 Laurent Monin
 #
 # This program is free software; you can redistribute it and/or
@@ -139,7 +139,7 @@ def _update_state(obj, state):
 # TODO: use functools.singledispatch when py3 is supported
 def _get_state(obj):
     from picard.album import Album
-    from picard.cluster import Cluster
+    from picard.cluster import (Cluster, FileList)
     from picard.track import Track
 
     state = ImageListState()
@@ -157,6 +157,10 @@ def _get_state(obj):
     elif isinstance(obj, Cluster):
         state.sources = obj.files
         state.update_new_metadata = True
+    elif isinstance(obj, FileList):
+        state.sources = obj.files
+        state.update_new_metadata = True
+        state.update_orig_metadata = True
 
     return state
 

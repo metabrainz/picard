@@ -61,7 +61,10 @@ from picard import (
     log,
 )
 from picard.album import Album
-from picard.cluster import Cluster
+from picard.cluster import (
+    Cluster,
+    FileList,
+)
 from picard.const import PROGRAM_UPDATE_LEVELS
 from picard.const.sys import IS_MACOS
 from picard.file import File
@@ -1188,6 +1191,12 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                 orig_metadata = obj.orig_metadata
             elif obj.can_show_coverart:
                 metadata = obj.metadata
+        else:
+            # Create a temporary file list which allows changing cover art for all selected files
+            files = self.tagger.get_files_from_objects(objects)
+            obj = FileList(files)
+            metadata = obj.metadata
+            orig_metadata = obj.orig_metadata
 
         if new_selection:
             self.metadata_box.selection_dirty = True
