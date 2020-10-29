@@ -360,7 +360,6 @@ class Track(DataObject, Item):
             self.metadata.images = self.orig_metadata.images.copy()
         else:
             self.metadata.images = ImageList()
-        self.update()
 
 
 class NonAlbumTrack(Track):

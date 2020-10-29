@@ -262,7 +262,7 @@ class File(QtCore.QObject, Item):
 
     def keep_original_images(self):
         self.metadata.images = self.orig_metadata.images.copy()
-        self.update()
+        self.update(signal=False)
         self.metadata_images_changed.emit()
 
     def has_error(self):
