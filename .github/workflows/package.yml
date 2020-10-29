@@ -77,7 +77,7 @@ jobs:
     - name: Build macOS app
       run: |
         ./scripts/package/macos-package-app.sh
-        rm ./scripts/package/appledev.p12
+        rm -f ./scripts/package/appledev.p12
         mv dist/*.dmg artifacts/
       env:
         APPLE_ID_USER: ${{ secrets.APPLE_ID_USER }}
