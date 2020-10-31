@@ -28,6 +28,7 @@
 import math
 import os
 import re
+import shutil
 import struct
 import sys
 import unicodedata
@@ -35,6 +36,7 @@ import unicodedata
 from PyQt5.QtCore import QStandardPaths
 
 from picard.const.sys import (
+    IS_LINUX,
     IS_MACOS,
     IS_WIN,
 )
@@ -42,6 +44,7 @@ from picard.util import (
     _io_encoding,
     decode_filename,
     encode_filename,
+    samefile,
 )
 
 
@@ -379,43 +382,77 @@ def make_short_filename(basedir, relpath, win_compat=False, relative_to=""):
     return relpath
 
 
-def filename_case_differs(path):
-    """Returns True only if the file name of `path` has different casing then the
-    actual file name of the file it refers to.
-    Returns False if the casing is identical.
+def samefile_different_casing(path1, path2):
+    """Returns True if path1 and path2 refer to the same file, but differ in casing of the filename.
+    Returns False if path1 and path2 refer to different files or there case is identical.
     """
-    expected_filename = os.path.basename(path)
-    if IS_WIN:
-        try:
-            # Get the path in the actual casing as stored on disk
-            path = win32api.GetLongPathNameW(win32api.GetShortPathName(path))
-        except pywintypes.error:
-            pass
-        real_filename = os.path.basename(path)
-    else:
-        # FIXME: Figure out how to get the actual casing of the file as stored on disk on other OS.
-        # This applies to macOS, which commonly has the fs configured for case insensitivity, but also
-        # Linux when using ext4 with case insensitivity or other file systems such as FAT32.
-        real_filename = os.path.basename(path)
-    # Check if both paths are the same except for the casing
-    return expected_filename.lower() == real_filename.lower() and expected_filename != real_filename
+    path1 = os.path.normpath(path1)
+    path2 = os.path.normpath(path2)
+    if path1 == path2 or not os.path.exists(path1) or not os.path.exists(path2):
+        return False
+    dir1 = os.path.realpath(os.path.normcase(os.path.dirname(path1)))
+    dir2 = os.path.realpath(os.path.normcase(os.path.dirname(path2)))
+    if dir1 != dir2 or not samefile(path1, path2):
+        return False
+    file1 = os.path.basename(path1)
+    file2 = os.path.basename(path2)
+    return file1 != file2 and file1.lower() == file2.lower()
 
 
-def fix_filename_casing(path):
-    """Checks if the actual file name of path has the expected casing and attempts to fix it if not.
-    On some case-insensitive file systems a case-only change is not applied with a normal rename (e.g.
-    FAT32 on Windows or SMB on Linux). This function attempts to detect this situation and fix the
-    file name by double renaming.
+def _make_unique_temp_name(target_path):
+    i = 0
+    target_dir = os.path.dirname(target_path)
+    target_filename = os.path.basename(target_path)
+    while True:
+        # Attempt to get a non-existant temporary name for the file
+        # without changing path length.
+        temp_filename = '.%s%02d' % (target_filename[:-3], i)
+        temp_path = os.path.join(target_dir, temp_filename)
+        if not os.path.exists(temp_path):
+            return temp_path
+        i += 1
 
-    Returns True if casing was changed, False otherwise
+
+def _move_force_rename(source_path, target_path):
+    """Moves a file by renaming it first to a temporary name.
+    Ensure file casing changes on system's not natively supporting this.
     """
-    if filename_case_differs(path):
-        i = 0
-        temp_name = "%s_%d" % (path, i)
-        while os.path.exists(temp_name):
-            i += 1
-            temp_name = "%s_%d" % (path, i)
-        os.rename(path, temp_name)
-        os.rename(temp_name, path)
-        return True
-    return False
+    temp_path = _make_unique_temp_name(target_path)
+    shutil.move(source_path, temp_path)
+    os.rename(temp_path, target_path)
+
+
+def move_ensure_casing(source_path, target_path):
+    """Moves a file from source_path to target_path.
+    If the move would result just in the name changing the case apply workarounds
+    for Linux and Windows to ensure the case change is applied on case-insensitive
+    file systems. Otherwise use shutil.move to move the file.
+    """
+    source_path = os.path.normpath(source_path)
+    target_path = os.path.normpath(target_path)
+    if source_path == target_path:
+        return
+    # Special handling is only required if both paths refer to the same file
+    # but the file name differs in casing.
+    # Also macOS does allow renaming only the casing and does not need special
+    # handling.
+    if not IS_MACOS and samefile_different_casing(source_path, target_path):
+        if IS_LINUX:
+            # On Linux always force a double move
+            _move_force_rename(source_path, target_path)
+            return
+        elif IS_WIN:
+            # Windows supports case renaming for NTFS and SMB shares, but not
+            # on FAT32 or exFAT file systems. Perform a normal move first,
+            # then check the result.
+            shutil.move(source_path, target_path)
+            try:
+                # Get the path in the actual casing as stored on disk
+                actual_path = win32api.GetLongPathNameW(win32api.GetShortPathName(target_path))
+                if samefile_different_casing(target_path, actual_path):
+                    _move_force_rename(source_path, target_path)
+            except pywintypes.error:
+                pass
+            return
+    # Just perform a normal move
+    shutil.move(source_path, target_path)

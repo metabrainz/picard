@@ -26,7 +26,10 @@
 import os
 import os.path
 import sys
-from tempfile import NamedTemporaryFile
+from tempfile import (
+    NamedTemporaryFile,
+    TemporaryDirectory,
+)
 import unittest
 
 from test.picardtestcase import PicardTestCase
@@ -36,9 +39,9 @@ from picard.const.sys import (
     IS_WIN,
 )
 from picard.util.filenaming import (
-    filename_case_differs,
-    fix_filename_casing,
     make_short_filename,
+    move_ensure_casing,
+    samefile_different_casing,
 )
 
 
@@ -150,34 +153,31 @@ class ShortFilenameTest(PicardTestCase):
         self.assertEqual(fn, os.path.join("a1234567890", "b1234567890"))
 
 
-class FilenameCaseDiffersTest(PicardTestCase):
+class SamefileDifferentCasingTest(PicardTestCase):
 
     @unittest.skipUnless(IS_WIN, "windows test")
-    def test_filename_case_differs(self):
+    def test_samefile_different_casing(self):
         with NamedTemporaryFile(prefix='Foo') as f:
             real_name = f.name
             lower_name = real_name.lower()
-            self.assertFalse(filename_case_differs(real_name))
-            self.assertTrue(filename_case_differs(lower_name))
+            self.assertFalse(samefile_different_casing(real_name, real_name))
+            self.assertFalse(samefile_different_casing(lower_name, lower_name))
+            self.assertTrue(samefile_different_casing(real_name, lower_name))
 
-    def test_filename_case_differs_non_existant_file(self):
-        self.assertFalse(filename_case_differs("/foo/bar"))
+    def test_samefile_different_casing_non_existant_file(self):
+        self.assertFalse(samefile_different_casing("/foo/bar", "/foo/BAR"))
+
+    def test_samefile_different_casing_identical_path(self):
+        self.assertFalse(samefile_different_casing("/foo/BAR", "/foo/BAR"))
 
 
-class FixFilenameCasingTest(PicardTestCase):
+class MoveEnsureCasingTest(PicardTestCase):
 
-    @unittest.skipUnless(IS_WIN, "windows test")
-    def test_fix_filename_casing(self):
-        import win32api
-
-        with NamedTemporaryFile(prefix='foo') as f:
-            created_name = f.name
-            wanted_name = created_name.title()
-            self.assertTrue(fix_filename_casing(wanted_name))
-            self.assertEqual(
-                os.path.basename(wanted_name),
-                os.path.basename(win32api.GetLongPathNameW(win32api.GetShortPathName(created_name))))
-            self.assertFalse(fix_filename_casing(wanted_name))
-
-    def test_fix_filename_casing_non_existant_file(self):
-        self.assertFalse(filename_case_differs("/foo/bar"))
+    def test_move_ensure_casing(self):
+        with TemporaryDirectory() as d:
+            file_path = os.path.join(d, 'foo')
+            target_path = os.path.join(d, 'FOO')
+            open(file_path, 'a').close()
+            move_ensure_casing(file_path, target_path)
+            files = os.listdir(d)
+            self.assertIn('FOO', files)
