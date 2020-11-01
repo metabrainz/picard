@@ -453,10 +453,7 @@ class Tagger(QtWidgets.QApplication):
                 self.move_file_to_nat(file, recordingid)
                 return
 
-        if target:
-            self.move_file(file, target)
-        else:
-            self.unclustered_files.add_file(file)
+        self.move_file(file, target)
 
         # fallback on analyze if nothing else worked
         if config.setting['analyze_new_files'] and file.can_analyze():
@@ -465,9 +462,8 @@ class Tagger(QtWidgets.QApplication):
 
     def move_file(self, file, target):
         if target is None:
-            log.debug("Aborting move since target is invalid")
-            return
-        if isinstance(target, Album):
+            self.unclustered_files.add_file(file)
+        elif isinstance(target, Album):
             self.move_files_to_album([file], album=target)
         elif isinstance(target, ClusterList):
             if isinstance(file.parent, Track):
@@ -476,6 +472,8 @@ class Tagger(QtWidgets.QApplication):
         # To be able to move a file to it target must implement add_file(file)
         elif hasattr(target, 'add_file'):
             file.move(target)
+        else:
+            self.unclustered_files.add_file(file)
 
     def move_files(self, files, target, move_to_multi_tracks=True):
         if target is None:
