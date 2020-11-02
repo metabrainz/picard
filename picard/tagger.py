@@ -462,18 +462,20 @@ class Tagger(QtWidgets.QApplication):
 
     def move_file(self, file, target):
         if target is None:
-            self.unclustered_files.add_file(file)
-        elif isinstance(target, Album):
+            if not file.parent:
+                target = self.unclustered_files
+            else:
+                log.debug("Aborting move since target is invalid and file already has a parent")
+        if isinstance(target, Album):
             self.move_files_to_album([file], album=target)
-        elif isinstance(target, ClusterList):
-            if isinstance(file.parent, Track):
-                file.parent.remove_file(file)
-            self.cluster([file])
+        elif isinstance(target, File) and target.parent:
+            file.move(target.parent)
         # To be able to move a file to it target must implement add_file(file)
         elif hasattr(target, 'add_file'):
             file.move(target)
-        else:
-            self.unclustered_files.add_file(file)
+        # Ensure a file always has a parent so it shows up in UI
+        elif not file.parent:
+            file.move(self.unclustered_files)
 
     def move_files(self, files, target, move_to_multi_tracks=True):
         if target is None:
