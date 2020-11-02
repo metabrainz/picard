@@ -24,11 +24,14 @@ on:
 jobs:
   package-macos:
     runs-on: macos-10.15
+    strategy:
+      matrix:
+        macos-deployment-version: [10.12, 10.14]
     env:
       DISCID_VERSION: 0.6.2
       FPCALC_VERSION: 1.5.0
       PYTHON_VERSION: 3.7.6
-      MACOSX_DEPLOYMENT_TARGET: 10.12
+      MACOSX_DEPLOYMENT_TARGET: ${{ matrix.macos-deployment-version }}
     steps:
     - uses: actions/checkout@v2
       with:
@@ -57,7 +60,7 @@ jobs:
       run: |
         python3 -m pip install --upgrade pip setuptools wheel
         pip3 install -r requirements-build.txt
-        pip3 install -r requirements-macos.txt
+        pip3 install -r requirements-macos-${MACOSX_DEPLOYMENT_TARGET}.txt
     - name: Run tests
       run: |
         python3 setup.py test
@@ -86,7 +89,7 @@ jobs:
     - name: Archive production artifacts
       uses: actions/upload-artifact@v1
       with:
-        name: macos-app
+        name: macos-app-${{ matrix.macos-deployment-version }}
         path: artifacts/
 
   package-windows:

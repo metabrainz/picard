@@ -76,10 +76,10 @@ LIBDISCID_REGEX="libdiscid [0-9]+\.[0-9]+\.[0-9]+"
 "MusicBrainz Picard.app/Contents/MacOS/fpcalc" -version
 
 # Package app bundle into DMG image
-if [ -n "$TRAVIS_OSX_IMAGE" ]; then
-  DMG="MusicBrainz-Picard-${VERSION}_macOS-$MACOS_VERSION_MAJOR.$MACOS_VERSION_MINOR.dmg"
+if [ -n "$MACOSX_DEPLOYMENT_TARGET" ]; then
+  DMG="MusicBrainz-Picard-${VERSION}-macOS-${MACOSX_DEPLOYMENT_TARGET}.dmg"
 else
-  DMG="MusicBrainz-Picard-$VERSION.dmg"
+  DMG="MusicBrainz-Picard-${VERSION}.dmg"
 fi
 mkdir staging
 mv "MusicBrainz Picard.app" staging/
