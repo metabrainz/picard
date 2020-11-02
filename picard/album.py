@@ -371,16 +371,17 @@ class Album(DataObject, Item):
 
             for track in self._new_tracks:
                 track.metadata["~totalalbumtracks"] = totalalbumtracks
-                track.orig_metadata["~totalalbumtracks"] = totalalbumtracks
                 if len(artists) > 1:
                     track.metadata["~multiartist"] = "1"
-                    track.orig_metadata["~multiartist"] = "1"
             del self._release_node
             del self._release_artist_nodes
             self._tracks_loaded = True
 
         if not self._requests:
             self.enable_update_metadata_images(False)
+            for track in self._new_tracks:
+                track.orig_metadata.copy(track.metadata)
+
             # Prepare parser for user's script
             for s_name, s_text in enabled_tagger_scripts_texts():
                 parser = ScriptParser()
@@ -458,7 +459,6 @@ class Album(DataObject, Item):
         except BaseException:
             self.error_append(traceback.format_exc())
 
-        track.orig_metadata.copy(tm)
         return track
 
     def load(self, priority=False, refresh=False):
