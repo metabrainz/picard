@@ -35,6 +35,7 @@ import unicodedata
 
 from PyQt5.QtCore import QStandardPaths
 
+from picard import log
 from picard.const.sys import (
     IS_LINUX,
     IS_MACOS,
@@ -48,9 +49,13 @@ from picard.util import (
 )
 
 
+win32api = None
 if IS_WIN:
-    import pywintypes
-    import win32api
+    try:
+        import pywintypes
+        import win32api
+    except ImportError:
+        log.warning('pywin32 not available')
 
 
 def _get_utf16_length(text):
@@ -441,7 +446,7 @@ def move_ensure_casing(source_path, target_path):
             # On Linux always force a double move
             _move_force_rename(source_path, target_path)
             return
-        elif IS_WIN:
+        elif IS_WIN and win32api:
             # Windows supports case renaming for NTFS and SMB shares, but not
             # on FAT32 or exFAT file systems. Perform a normal move first,
             # then check the result.
