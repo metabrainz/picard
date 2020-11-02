@@ -5,3 +5,4 @@ mutagen>=1.37
 pyobjc-core; sys_platform == 'darwin'
 pyobjc-framework-Cocoa; sys_platform == 'darwin'
 PyQt5>=5.7.1
+pywin32; sys_platform == 'win32'

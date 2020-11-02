@@ -79,7 +79,10 @@ from picard.util import (
     thread,
     tracknum_from_filename,
 )
-from picard.util.filenaming import make_short_filename
+from picard.util.filenaming import (
+    make_short_filename,
+    move_ensure_casing,
+)
 from picard.util.preservedtags import PreservedTags
 from picard.util.scripttofilename import script_to_filename_with_metadata
 from picard.util.tags import PRESERVED_TAGS
@@ -492,7 +495,7 @@ class File(QtCore.QObject, Item):
             i += 1
         new_filename = new_filename + ext
         log.debug("Moving file %r => %r", old_filename, new_filename)
-        shutil.move(old_filename, new_filename)
+        move_ensure_casing(old_filename, new_filename)
         return new_filename
 
     def _save_images(self, dirname, metadata):
