@@ -1,9 +1,6 @@
-name: Publish to PyPI
+name: Package for PyPI
 
-on:
-  push:
-    tags:
-      - 'release-*'
+on: [push]
 
 jobs:
   pypi-sdist:
@@ -24,6 +21,11 @@ jobs:
     - name: Build Python source distribution
       run: |
         python setup.py clean sdist
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: picard-sdist
+        path: dist/*
     - name: Prepare GPG signing key
       run: |
         if [ -n "$CODESIGN_PGP_URL" ] && [ -n "$AWS_ACCESS_KEY_ID" ]; then
@@ -43,6 +45,7 @@ jobs:
         CODESIGN_PGP_URL: ${{ secrets.CODESIGN_PGP_URL }}
         CODESIGN_PGP_PASSWORD: ${{ secrets.CODESIGN_PGP_PASSWORD }}
     - name: Publish Python distribution to PyPI
+      if: startsWith(github.ref, 'refs/tags/')
       run: |
         pip install --upgrade twine
         if [ "$CODESIGN" = '1' ]; then
@@ -89,7 +92,13 @@ jobs:
     - name: Build Python binary distribution
       run: |
         python setup.py clean bdist_wheel
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: picard-bdist-${{ runner.os }}
+        path: dist/*.whl
     - name: Publish Python distribution to PyPI
+      if: startsWith(github.ref, 'refs/tags/')
       run: |
         pip install --upgrade twine>=3.0
         twine upload --non-interactive dist/*.whl
