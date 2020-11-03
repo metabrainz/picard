@@ -31,6 +31,7 @@ jobs:
         name: picard-sdist
         path: dist/*
     - name: Prepare GPG signing key
+      if: startsWith(github.ref, 'refs/tags/')
       run: |
         if [ -n "$CODESIGN_PGP_URL" ] && [ -n "$AWS_ACCESS_KEY_ID" ]; then
           pip3 install awscli
@@ -104,6 +105,7 @@ jobs:
         name: picard-bdist-${{ runner.os }}
         path: dist/*.whl
     - name: Prepare GPG signing key
+      if: startsWith(github.ref, 'refs/tags/')
       run: |
         if [ -n "$CODESIGN_PGP_URL" ] && [ -n "$AWS_ACCESS_KEY_ID" ]; then
           pip3 install awscli
