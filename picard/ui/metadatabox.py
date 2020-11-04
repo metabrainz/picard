@@ -519,9 +519,6 @@ class MetadataBox(QtWidgets.QTableWidget):
         tag_diff = TagDiff(max_length_diff=config.setting["ignore_track_duration_difference_under"])
         orig_tags = tag_diff.orig
         new_tags = tag_diff.new
-        # existing_tags are orig_tags that would not be overwritten by
-        # any new_tags, assuming clear_existing_tags is disabled.
-        existing_tags = set()
         tag_diff.objects = len(files)
 
         clear_existing_tags = config.setting["clear_existing_tags"]
@@ -535,9 +532,8 @@ class MetadataBox(QtWidgets.QTableWidget):
                 new_values = new_metadata.getall(name)
                 orig_values = orig_metadata.getall(name)
 
-                if not ((new_values and name not in existing_tags) or clear_existing_tags):
+                if not clear_existing_tags and not new_values:
                     new_values = list(orig_values or [""])
-                    existing_tags.add(name)
 
                 removed = name in new_metadata.deleted_tags
                 tag_diff.add(name, orig_values, new_values, True, removed)
