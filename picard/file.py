@@ -151,6 +151,7 @@ class File(QtCore.QObject, Item):
 
         self.acoustid_fingerprint = None
         self.acoustid_length = 0
+        self.match_recordingid = None
 
     def __repr__(self):
         return '<%s %r>' % (type(self).__name__, self.base_filename)

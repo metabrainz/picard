@@ -526,7 +526,7 @@ class Album(DataObject, Item):
         file.metadata_images_changed.disconnect(self.update_metadata_images)
         remove_metadata_images(self, [file])
 
-    def _match_files(self, files, recordingid=None, threshold=0):
+    def _match_files(self, files, threshold=0):
         """Match files to tracks on this album, based on metadata similarity or recordingid."""
         tracks_cache = defaultdict(lambda: None)
 
@@ -547,7 +547,7 @@ class Album(DataObject, Item):
             if file.state == File.REMOVED:
                 continue
             # if we have a recordingid to match against, use that in priority
-            recid = recordingid or file.metadata['musicbrainz_recordingid']
+            recid = file.match_recordingid or file.metadata['musicbrainz_recordingid']
             if recid and mbid_validate(recid):
                 if not tracks_cache:
                     build_tracks_cache()
@@ -576,13 +576,15 @@ class Album(DataObject, Item):
             else:
                 yield (file, best_match.result.track)
 
-    def match_files(self, files, recordingid=None):
+    def match_files(self, files):
         """Match and move files to tracks on this album, based on metadata similarity or recordingid."""
-        moves = self._match_files(files,
-                                  recordingid=recordingid,
-                                  threshold=config.setting['track_matching_threshold'])
-        for file, target in moves:
-            file.move(target)
+        if self.loaded:
+            moves = self._match_files(files, threshold=config.setting['track_matching_threshold'])
+            for file, target in moves:
+                file.move(target)
+        else:
+            for file in files:
+                file.move(self.unmatched_files)
 
     def can_save(self):
         return self._files > 0
