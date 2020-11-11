@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2020-10-18 16:07+0200\n"
-"PO-Revision-Date: 2020-10-19 18:55+0000\n"
+"PO-Revision-Date: 2020-10-29 16:33+0000\n"
 "Last-Translator: Maurits Meulenbelt <mfmeulenbelt@gmail.com>\n"
 "Language-Team: Dutch (http://www.transifex.com/musicbrainz/musicbrainz/language/nl/)\n"
 "MIME-Version: 1.0\n"
@@ -275,17 +275,17 @@ msgstr "[opname %s kon niet worden geladen]"
 #: picard/acoustid/__init__.py:84
 #, python-format
 msgid "AcoustID lookup network error for '%(filename)s'!"
-msgstr "AcoustID netwerkfout bij het opzoeken van ‘%(filename)s’!"
+msgstr "Netwerkfout bij het opzoeken van AcoustID van ‘%(filename)s’!"
 
 #: picard/acoustid/__init__.py:117
 #, python-format
 msgid "AcoustID lookup failed for '%(filename)s'!"
-msgstr "AcoustID opzoeken gefaald voor ‘%(filename)s’!"
+msgstr "AcoustID van ‘%(filename)s’ opzoeken mislukt!"
 
 #: picard/acoustid/__init__.py:142
 #, python-format
 msgid "AcoustID lookup returned no result for file '%(filename)s'"
-msgstr "AcoustID zoekactie gaf geen resultaat voor ‘%(filename)s’"
+msgstr "AcoustID-zoekactie gaf geen resultaat voor ‘%(filename)s’"
 
 #: picard/acoustid/__init__.py:153
 #, python-format
@@ -2778,7 +2778,7 @@ msgid ""
 "\n"
 "    $set(album,$title(%album%))\n"
 "_Since Picard 2.1_"
-msgstr "`$title(tekst)`\n\nRetourneert `tekst` met de eerste letter van elk woord met een hoofdletter.\n\nExample:\n\n    $set(album,$title(%album%))\n\n_Sinds Picard 2.1_"
+msgstr "`$title(tekst)`\n\nRetourneert `tekst` met de eerste letter van elk woord met een hoofdletter.\n\nVoorbeeld:\n\n    $set(album,$title(%album%))\n\n_Sinds Picard 2.1_"
 
 #: picard/script/functions.py:1023
 msgid ""
@@ -3545,7 +3545,7 @@ msgstr "Luistert op poort %(port)d"
 
 #: picard/ui/mainwindow.py:406
 msgid "AcoustID submission not configured"
-msgstr ""
+msgstr "AcoustID’s indienen niet geconfigureerd"
 
 #: picard/ui/mainwindow.py:407
 msgid ""
@@ -3555,7 +3555,7 @@ msgstr "Je moet je API-sleutel voor AcoustID invoeren voor je vingerafdrukken ka
 
 #: picard/ui/mainwindow.py:410
 msgid "Open AcoustID options"
-msgstr ""
+msgstr "AcoustID-opties openen"
 
 #: picard/ui/mainwindow.py:420
 msgid "&Options..."
@@ -3808,11 +3808,11 @@ msgstr "&Tags uit bestandsnamen halen"
 
 #: picard/ui/mainwindow.py:601 picard/ui/options/interface.py:126
 msgid "Parse File Names..."
-msgstr ""
+msgstr "Bestandsnamen gebruiken …"
 
 #: picard/ui/mainwindow.py:602
 msgid "Set tags based on the file names"
-msgstr ""
+msgstr "Tags aan de hand van de bestandsnamen invullen"
 
 #: picard/ui/mainwindow.py:603
 msgid "Ctrl+Shift+T"
@@ -4572,7 +4572,7 @@ msgstr "Wachtwoord:"
 
 #: picard/ui/ui_options_network.py:144
 msgid "Request timeout in seconds:"
-msgstr ""
+msgstr "Maximale wachttijd voor verzoeken in seconden:"
 
 #: picard/ui/ui_options_network.py:145
 msgid "Browser Integration"

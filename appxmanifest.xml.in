@@ -26,6 +26,7 @@
     <Resource Language="ms-my"/>
     <Resource Language="nl"/>
     <Resource Language="pt-br"/>
+    <Resource Language="ru"/>
     <Resource Language="zh-tw"/>
   </Resources>
   <Dependencies>

@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2020-10-18 16:07+0200\n"
-"PO-Revision-Date: 2020-10-27 16:29+0000\n"
+"PO-Revision-Date: 2020-11-07 08:44+0000\n"
 "Last-Translator: Avi Markovitz <avi.markovitz@gmail.com>\n"
 "Language-Team: Hebrew (http://www.transifex.com/musicbrainz/musicbrainz/language/he/)\n"
 "MIME-Version: 1.0\n"
@@ -4175,7 +4175,7 @@ msgstr "עריכה תג"
 
 #: picard/ui/ui_edittagdialog.py:116
 msgid "Edit value"
-msgstr "עריכה ערך"
+msgstr "עריכת ערך"
 
 #: picard/ui/ui_edittagdialog.py:117
 msgid "Add value"

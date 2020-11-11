@@ -10,8 +10,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2020-10-19 14:01+0000\n"
-"Last-Translator: yvanz\n"
+"PO-Revision-Date: 2020-11-03 19:11+0000\n"
+"Last-Translator: Maurits Meulenbelt <mfmeulenbelt@gmail.com>\n"
 "Language-Team: Dutch (http://www.transifex.com/musicbrainz/musicbrainz/language/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -157,7 +157,7 @@ msgctxt "artist_type"
 msgid ""
 "A grouping of multiple musicians who perform together (in some cases, some "
 "or all of the members might differ in different performances or recordings)."
-msgstr ""
+msgstr "Een groep van meerdere muzikanten die samen optreden (in sommige gevallen heeft de groep tijdens verschillende optredens of opnames verschillende leden)."
 
 #: DB:instrument_type/description:7
 msgctxt "instrument_type"
@@ -6521,7 +6521,7 @@ msgid ""
 "system developed by RCA, in which video and audio could be played back on a "
 "TV set using a special needle and high-density groove system similar to "
 "phonograph records."
-msgstr "De Capacitance Electronic Disc (CED) is een type  analoge beeldplaat. Het systeem werd ontwikkeld door RCA en maakte het mogelijk om beeld en geluid af te spelen op een TV door middel van een speciale naald en een plaat die lijkt op een grammofoonplaat."
+msgstr "De Capacitance Electronic Disc (CED) is een type analoge beeldplaat. Het systeem werd ontwikkeld door RCA en maakte het mogelijk om beeld en geluid af te spelen op een tv door middel van een speciale naald en een plaat die lijkt op een grammofoonplaat."
 
 #: DB:medium_format/description:68 DB:medium_format/description:69
 msgctxt "medium_format"
@@ -6591,21 +6591,21 @@ msgid ""
 "This indicates a choir/chorus (an organized, usually large group of "
 "singers). Smaller vocal ensembles and groupings that do not generally call "
 "themselves choirs are better entered as “Group”."
-msgstr ""
+msgstr "Dit geeft een koor aan (een georganiseerde, meestal grote groep zangers/zangeressen). Kleinere vocale ensembles en groepen die zichzelf meestal geen koor noemen, kunnen beter als ‘groep’ worden toegevoegd."
 
 #: DB:artist_type/description:4
 msgctxt "artist_type"
 msgid ""
 "This indicates an individual fictional character (whether a fictional "
 "person, animal or any other kind of character)."
-msgstr ""
+msgstr "Dit geeft een fictief personage aan (dit kan een persoon, dier of elk ander personage zijn)."
 
 #: DB:artist_type/description:1
 msgctxt "artist_type"
 msgid ""
 "This indicates an individual person, be it under its legal name (“John "
 "Lennon”), or a performance name (“Sting”)."
-msgstr ""
+msgstr "Dit geeft een persoon aan en wordt zowel voor de wettelijke naam (John Lennon) als een artiestennaam (Sting) gebruikt."
 
 #: DB:artist_type/description:5
 msgctxt "artist_type"
@@ -6614,7 +6614,7 @@ msgid ""
 "instrumentalists). Smaller ensembles (such as trios and quartets) and "
 "groupings that do not generally call themselves orchestras are better "
 "entered as “Group”."
-msgstr ""
+msgstr "Dit geeft een orkest aan (een georganiseerde, meestal grote groep bespelers van instrumenten). Kleinere ensembles (zoals trio’s en kwartetten) en groepen die zichzelf meestal geen orkest noemen, kunnen beter als ‘groep’ worden toegevoegd."
 
 #: DB:work_type/description:23
 msgctxt "work_type"
