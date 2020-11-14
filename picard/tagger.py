@@ -944,8 +944,9 @@ def main(localedir=None, autoupdate=True):
     QtWidgets.QApplication.setAttribute(QtCore.Qt.AA_UseHighDpiPixmaps)
     QtWidgets.QApplication.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling)
     # HighDpiScaleFactorRoundingPolicy is available since Qt 5.14. This is
-    # required to support fractional scaling properly.
-    if hasattr(QtGui.QGuiApplication, 'setHighDpiScaleFactorRoundingPolicy'):
+    # required to support fractional scaling on Windows properly.
+    # It causes issues without scaling on Linux, see https://tickets.metabrainz.org/browse/PICARD-1948
+    if IS_WIN and hasattr(QtGui.QGuiApplication, 'setHighDpiScaleFactorRoundingPolicy'):
         QtGui.QGuiApplication.setHighDpiScaleFactorRoundingPolicy(
             QtCore.Qt.HighDpiScaleFactorRoundingPolicy.PassThrough)
 
