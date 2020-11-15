@@ -1,3 +1,21 @@
+# Version 2.5.2 - 2020-11-15
+
+## Bugfixes
+- [PICARD-1991](https://tickets.metabrainz.org/browse/PICARD-1991) - Case-only changes to file names are not applied on case insensitive file systems on Linux
+- [PICARD-1992](https://tickets.metabrainz.org/browse/PICARD-1992) - Case-only changes to file names are not applied on FAT32 and exFAT file systems on Windows 10
+- [PICARD-2001](https://tickets.metabrainz.org/browse/PICARD-2001) - Directory drag & drop from file browser to cluster area broken
+- [PICARD-2004](https://tickets.metabrainz.org/browse/PICARD-2004) - Metadata changes loaded asynchronously by plugins are reset if file gets matched to track
+- [PICARD-2005](https://tickets.metabrainz.org/browse/PICARD-2005) - Modified fields are sometimes not correctly marked as changed when multiple files are selected
+- [PICARD-2006](https://tickets.metabrainz.org/browse/PICARD-2006) - "Local files" cover provider does not detect cover files for files already present at release loading time
+- [PICARD-2012](https://tickets.metabrainz.org/browse/PICARD-2012) - Loaded files not shown in UI if release MBID is a redirect
+- [PICARD-2014](https://tickets.metabrainz.org/browse/PICARD-2014) - Config upgrade from Picard < 1.3.0 to version 2.4 or later fails
+
+# Improvements
+- [PICARD-1828](https://tickets.metabrainz.org/browse/PICARD-1828) - Allow assigning cover art to multiple selected files
+- [PICARD-1999](https://tickets.metabrainz.org/browse/PICARD-1999) - Provide binary distributions for Windows and macOS on PyPI
+- [PICARD-2007](https://tickets.metabrainz.org/browse/PICARD-2007) - Disable analyze / audio fingerprinting for MIDI files
+
+
 # Version 2.5.1 - 2020-10-28
 
 ## Bugfixes
