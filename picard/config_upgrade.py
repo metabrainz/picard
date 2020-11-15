@@ -117,7 +117,7 @@ def upgrade_to_v1_3_0_dev_2(config):
     """
     _s = config.setting
     opt = "preserved_tags"
-    if opt in _s:
+    if opt in _s and isinstance(_s[opt], str):
         _s[opt] = re.sub(r"\s+", ",", _s[opt].strip())
 
 

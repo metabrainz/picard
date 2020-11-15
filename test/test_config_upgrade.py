@@ -97,10 +97,15 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
 
     def test_upgrade_to_v1_3_0_dev_2(self):
         TextOption('setting', 'preserved_tags', '')
-
         self.config.setting['preserved_tags'] = "a b  c  "
         upgrade_to_v1_3_0_dev_2(self.config)
         self.assertEqual("a,b,c", self.config.setting['preserved_tags'])
+
+    def test_upgrade_to_v1_3_0_dev_2_skip_list(self):
+        ListOption('setting', 'preserved_tags', [])
+        self.config.setting['preserved_tags'] = ['foo']
+        upgrade_to_v1_3_0_dev_2(self.config)
+        self.assertEqual(['foo'], self.config.setting['preserved_tags'])
 
     def test_upgrade_to_v1_3_0_dev_3(self):
         ListOption("setting", "preferred_release_countries", [])
