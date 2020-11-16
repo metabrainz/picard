@@ -1,6 +1,7 @@
 # Version 2.5.2 - 2020-11-15
 
 ## Bugfixes
+- [PICARD-1948](https://tickets.metabrainz.org/browse/PICARD-1948) - ScaleFactorRoundPolicy breaks text rendering on Linux
 - [PICARD-1991](https://tickets.metabrainz.org/browse/PICARD-1991) - Case-only changes to file names are not applied on case insensitive file systems on Linux
 - [PICARD-1992](https://tickets.metabrainz.org/browse/PICARD-1992) - Case-only changes to file names are not applied on FAT32 and exFAT file systems on Windows 10
 - [PICARD-2001](https://tickets.metabrainz.org/browse/PICARD-2001) - Directory drag & drop from file browser to cluster area broken
