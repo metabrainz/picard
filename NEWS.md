@@ -11,7 +11,7 @@
 - [PICARD-2012](https://tickets.metabrainz.org/browse/PICARD-2012) - Loaded files not shown in UI if release MBID is a redirect
 - [PICARD-2014](https://tickets.metabrainz.org/browse/PICARD-2014) - Config upgrade from Picard < 1.3.0 to version 2.4 or later fails
 
-# Improvements
+## Improvements
 - [PICARD-1828](https://tickets.metabrainz.org/browse/PICARD-1828) - Allow assigning cover art to multiple selected files
 - [PICARD-1999](https://tickets.metabrainz.org/browse/PICARD-1999) - Provide binary distributions for Windows and macOS on PyPI
 - [PICARD-2007](https://tickets.metabrainz.org/browse/PICARD-2007) - Disable analyze / audio fingerprinting for MIDI files
