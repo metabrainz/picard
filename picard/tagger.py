@@ -718,6 +718,8 @@ class Tagger(QtWidgets.QApplication):
         """Remove the specified non-album track."""
         log.debug("Removing %r", track)
         self.remove_files(self.get_files_from_objects([track]))
+        if not self.nats:
+            return
         self.nats.tracks.remove(track)
         if not self.nats.tracks:
             self.remove_album(self.nats)
