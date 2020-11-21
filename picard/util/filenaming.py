@@ -189,6 +189,10 @@ def _shorten_to_utf16_ratio(text, ratio):
         return _shorten_to_utf16_length(text, limit).strip()
 
 
+class WinPathTooLong(OSError):
+    pass
+
+
 def _make_win_short_filename(relpath, reserved=0):
     r"""Shorten a relative file path according to WinAPI quirks.
 
@@ -246,9 +250,10 @@ def _make_win_short_filename(relpath, reserved=0):
         # make sure we can have at least single-character dirnames
         average = float(remaining) / len(dirnames)
         if average < 1:
-            # TODO: a nice exception
-            raise IOError("Path too long. You need to move renamed files \
-                       to a different directory.")
+            raise WinPathTooLong(
+                "Path too long. "
+                "You need to move renamed files to a different directory."
+            )
 
         # try to reduce directories exceeding average with a ratio proportional
         # to how much they exceed with; if not possible, reduce all dirs
