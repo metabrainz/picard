@@ -88,7 +88,7 @@ def setup_gettext(localedir, ui_language=None, logger=None):
         trans_countries = gettext.translation("picard-countries", localedir)
         logger("Loading gettext translation (picard-attributes), localedir=%r", localedir)
         trans_attributes = gettext.translation("picard-attributes", localedir)
-    except IOError as e:
+    except OSError as e:
         logger(e)
         trans = gettext.NullTranslations()
         trans_countries = gettext.NullTranslations()
