@@ -292,7 +292,7 @@ class picard_build(build):
                 'publisher': os.environ.get('PICARD_APPX_PUBLISHER', default_publisher),
                 'version': '.'.join([str(v) for v in store_version]),
             })
-        elif sys.platform == 'linux':
+        elif sys.platform not in ['darwin', 'haiku1', 'win32']:
             self.run_command('build_appdata')
         build.run(self)
 
