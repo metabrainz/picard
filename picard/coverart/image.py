@@ -264,7 +264,7 @@ class CoverArtImage:
 
         try:
             self.datahash = DataHash(data, suffix=self.extension)
-        except (OSError, IOError) as e:
+        except OSError as e:
             raise CoverArtImageIOError(e)
 
     @property
@@ -334,7 +334,7 @@ class CoverArtImage:
                 if not os.path.isdir(new_dirname):
                     os.makedirs(new_dirname)
                 shutil.copyfile(self.tempfile_filename, new_filename)
-            except (OSError, IOError) as e:
+            except OSError as e:
                 raise CoverArtImageIOError(e)
 
     def _next_filename(self, filename, counters):
@@ -359,7 +359,7 @@ class CoverArtImage:
         """
         try:
             return self.datahash.data
-        except (OSError, IOError) as e:
+        except OSError as e:
             raise CoverArtImageIOError(e)
 
     @property

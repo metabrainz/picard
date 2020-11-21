@@ -180,8 +180,8 @@ class CoverArt:
                 path = coverartimage.url.toLocalFile()
                 with open(path, 'rb') as file:
                     self._set_metadata(coverartimage, file.read())
-            except IOError as ioexcept:
-                (errnum, errmsg) = ioexcept.args
+            except OSError as exc:
+                (errnum, errmsg) = exc.args
                 log.error("Failed to read %r: %s (%d)" %
                           (path, errmsg, errnum))
             except CoverArtImageIOError:
