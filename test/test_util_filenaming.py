@@ -39,6 +39,7 @@ from picard.const.sys import (
     IS_WIN,
 )
 from picard.util.filenaming import (
+    WinPathTooLong,
     make_short_filename,
     move_ensure_casing,
     samefile_different_casing,
@@ -140,7 +141,7 @@ class ShortFilenameTest(PicardTestCase):
 
     def test_windows_path_too_long(self):
         root = self.root + "x" * 230
-        self.assertRaises(IOError, make_short_filename,
+        self.assertRaises(WinPathTooLong, make_short_filename,
                           root, os.path.join("a", "b", "c", "d"), win_compat=True)
 
     def test_windows_path_not_too_long(self):
