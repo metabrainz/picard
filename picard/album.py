@@ -782,3 +782,20 @@ def register_album_post_removal_processor(function, priority=PluginPriority.NORM
 
 def run_album_post_removal_processors(album_object):
     _album_post_removal_processors.run(album_object)
+
+_album_post_save_processors = PluginFunctions(label='album_post_save_processors')
+
+
+def register_album_post_save_processor(function, priority=PluginPriority.NORMAL):
+    """Registers an album-removed processor.
+    Args:
+        function: function to call after album save, it will be passed the album object
+        priority: optional, PluginPriority.NORMAL by default
+    Returns:
+        None
+    """
+    _album_post_save_processors.register(function.__module__, function, priority)
+
+
+def run_album_post_save_processors(album_object):
+    _album_post_save_processors.run(album_object)

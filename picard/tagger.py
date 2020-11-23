@@ -75,6 +75,7 @@ from picard.album import (
     Album,
     NatAlbum,
     run_album_post_removal_processors,
+    run_album_post_save_processors,
 )
 from picard.browser.browser import BrowserIntegration
 from picard.browser.filelookup import FileLookup
@@ -97,7 +98,10 @@ from picard.const.sys import (
 )
 from picard.dataobj import DataObject
 from picard.disc import Disc
-from picard.file import File
+from picard.file import (
+    File,
+    register_file_post_save_processor,
+)
 from picard.formats import open_ as open_file
 from picard.i18n import setup_gettext
 from picard.pluginmanager import PluginManager
@@ -284,6 +288,10 @@ class Tagger(QtWidgets.QApplication):
         # Load release version information
         if self.autoupdate_enabled:
             self.updatecheckmanager = UpdateCheckManager(parent=self.window)
+
+        # track all file save completions for album save
+        self._album_saves = []
+        register_file_post_save_processor(self._file_post_save)
 
     def register_cleanup(self, func):
         self.exit_cleanup.append(func)
@@ -647,9 +655,14 @@ class Tagger(QtWidgets.QApplication):
 
     def save(self, objects):
         """Save the specified objects."""
-        files = self.get_files_from_objects(objects, save=True)
-        for file in files:
-            file.save()
+        for o in objects:
+            log.debug('save object %r', o)
+            files = self.get_files_from_objects([o, ], save=True)
+            for file in files:
+                file.save()
+            if isinstance(o, Album):
+                # track the album and its files pending save
+                self._album_saves.append((o, files))
 
     def load_album(self, album_id, discid=None):
         album_id = self.mbid_redirects.get(album_id, album_id)
@@ -763,6 +776,17 @@ class Tagger(QtWidgets.QApplication):
                 self.remove_cluster(obj)
         if files:
             self.remove_files(files)
+
+    # run album_save hooks when the last file is saved
+    def _file_post_save(self, file):
+        for album, files in self._album_saves:
+            if file in files:
+                files.remove(file)
+            if not files:
+                log.debug("Album %r saved, running post_save_processors", album)
+                run_album_post_save_processors(album)
+                self._album_saves.remove((album, files))
+                return
 
     def _lookup_disc(self, disc, result=None, error=None):
         self.restore_cursor()
