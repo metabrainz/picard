@@ -465,4 +465,8 @@ def move_ensure_casing(source_path, target_path):
                 pass
             return
     # Just perform a normal move
-    shutil.move(source_path, target_path)
+    try:
+        shutil.move(source_path, target_path)
+    except shutil.SameFileError:
+        # Sometimes different paths refer to the same file (e.g. network path / local path on Windows)
+        pass
