@@ -428,10 +428,12 @@ class Tagger(QtWidgets.QApplication):
             return
 
         if not config.setting["ignore_file_mbids"]:
-            recordingid = file.metadata['musicbrainz_recordingid']
+            recordingid = file.metadata.getall('musicbrainz_recordingid')
+            recordingid = recordingid[0] if recordingid else ''
             is_valid_recordingid = mbid_validate(recordingid)
 
-            albumid = file.metadata['musicbrainz_albumid']
+            albumid = file.metadata.getall('musicbrainz_albumid')
+            albumid = albumid[0] if albumid else ''
             is_valid_albumid = mbid_validate(albumid)
 
             if is_valid_albumid and is_valid_recordingid:
