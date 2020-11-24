@@ -52,10 +52,10 @@ from picard.util import (
 win32api = None
 if IS_WIN:
     try:
+        import win32api  # isort:skip
         import pywintypes
-        import win32api
-    except ImportError:
-        log.warning('pywin32 not available')
+    except ImportError as e:
+        log.warning('pywin32 not available: %s', e)
 
 
 def _get_utf16_length(text):
