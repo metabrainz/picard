@@ -163,6 +163,13 @@ def normpath(path):
     return os.path.normpath(path)
 
 
+def is_absolute_path(path):
+    """Similar to os.path.isabs, but properly detects Windows shares as absolute paths
+    See https://bugs.python.org/issue22302
+    """
+    return os.path.isabs(path) or (IS_WIN and os.path.normpath(path).startswith("\\\\"))
+
+
 def samepath(path1, path2):
     return os.path.normcase(os.path.normpath(path1)) == os.path.normcase(os.path.normpath(path2))
 
