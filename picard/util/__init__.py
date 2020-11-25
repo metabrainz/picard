@@ -154,6 +154,15 @@ def decode_filename(filename):
         return filename.decode(_io_encoding)
 
 
+def normpath(path):
+    try:
+        path = os.path.realpath(path)
+    except OSError as why:
+        # realpath can fail if path does not exist or is not accessible
+        log.warning('Failed getting realpath for "%s": %s', path, why)
+    return os.path.normpath(path)
+
+
 def samepath(path1, path2):
     return os.path.normcase(os.path.normpath(path1)) == os.path.normcase(os.path.normpath(path2))
 

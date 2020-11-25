@@ -112,6 +112,7 @@ from picard.util import (
     encode_filename,
     is_hidden,
     mbid_validate,
+    normpath,
     process_events_iter,
     thread,
     uniqify,
@@ -516,7 +517,7 @@ class Tagger(QtWidgets.QApplication):
         ignore_hidden = config.setting["ignore_hidden_files"]
         new_files = []
         for filename in filenames:
-            filename = os.path.normpath(os.path.realpath(filename))
+            filename = normpath(filename)
             if ignore_hidden and is_hidden(filename):
                 log.debug("File ignored (hidden): %r" % (filename))
                 continue

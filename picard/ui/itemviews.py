@@ -44,7 +44,6 @@ from heapq import (
     heappop,
     heappush,
 )
-import os
 
 from PyQt5 import (
     QtCore,
@@ -74,6 +73,7 @@ from picard.track import (
 from picard.util import (
     icontheme,
     natsort,
+    normpath,
     restore_method,
 )
 
@@ -725,7 +725,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         for url in urls:
             log.debug("Dropped the URL: %r", url.toString(QtCore.QUrl.RemoveUserInfo))
             if url.scheme() == "file" or not url.scheme():
-                filename = os.path.normpath(os.path.realpath(url.toLocalFile().rstrip("\0")))
+                filename = normpath(url.toLocalFile().rstrip("\0"))
                 file = tagger.files.get(filename)
                 if file:
                     files.append(file)
