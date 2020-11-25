@@ -50,6 +50,7 @@ from picard.util import (
     decode_filename,
     encode_filename,
     imageinfo,
+    is_absolute_path,
 )
 from picard.util.scripttofilename import script_to_filename
 
@@ -291,7 +292,7 @@ class CoverArtImage:
         filename = script_to_filename(filename, metadata)
         if not filename:
             filename = "cover"
-        if not os.path.isabs(filename):
+        if not is_absolute_path(filename):
             filename = os.path.join(dirname, filename)
         return encode_filename(filename)
 

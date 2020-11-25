@@ -75,6 +75,7 @@ from picard.util import (
     emptydir,
     find_best_match,
     format_time,
+    is_absolute_path,
     samefile,
     thread,
     tracknum_from_filename,
@@ -461,7 +462,7 @@ class File(QtCore.QObject, Item):
             settings = config.setting
         if settings["move_files"]:
             new_dirname = settings["move_files_to"]
-            if not os.path.isabs(new_dirname):
+            if not is_absolute_path(new_dirname):
                 new_dirname = os.path.normpath(os.path.join(os.path.dirname(filename), new_dirname))
         else:
             new_dirname = os.path.dirname(filename)

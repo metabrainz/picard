@@ -41,6 +41,7 @@ from picard.util import (
     extract_year_from_date,
     find_best_match,
     imageinfo,
+    is_absolute_path,
     limited_join,
     sort_by_similarity,
 )
@@ -263,6 +264,25 @@ class AlbumArtistFromPathTest(PicardTestCase):
         self.assertEqual(aafp(r'/artistx/albumy/the DVD 23 B/file.flac', '', ''), ('albumy', 'artistx'))
         self.assertEqual(aafp(r'/artistx/albumy/disc23/file.flac', '', ''), ('albumy', 'artistx'))
         self.assertNotEqual(aafp(r'/artistx/albumy/disc/file.flac', '', ''), ('albumy', 'artistx'))
+
+
+class IsAbsolutePathTest(PicardTestCase):
+
+    def test_is_absolute(self):
+        self.assertTrue(is_absolute_path('/foo/bar'))
+        self.assertFalse(is_absolute_path('foo/bar'))
+        self.assertFalse(is_absolute_path('./foo/bar'))
+        self.assertFalse(is_absolute_path('../foo/bar'))
+
+    @unittest.skipUnless(IS_WIN, "windows test")
+    def test_is_absolute_windows(self):
+        self.assertTrue(is_absolute_path('D:/foo/bar'))
+        self.assertTrue(is_absolute_path('D:\\foo\\bar'))
+        self.assertTrue(is_absolute_path('\\foo\\bar'))
+        # Paths to Windows shares
+        self.assertTrue(is_absolute_path('\\\\foo\\bar'))
+        self.assertTrue(is_absolute_path('\\\\foo\\bar\\'))
+        self.assertTrue(is_absolute_path('\\\\foo\\bar\\baz'))
 
 
 class ImageInfoTest(PicardTestCase):
