@@ -743,6 +743,7 @@ class Tagger(QtWidgets.QApplication):
     def remove(self, objects):
         """Remove the specified objects."""
         files = []
+        self.window.ignore_selection_changes = True
         for obj in objects:
             if isinstance(obj, File):
                 files.append(obj)
@@ -766,6 +767,8 @@ class Tagger(QtWidgets.QApplication):
                 self.remove_cluster(obj)
         if files:
             self.remove_files(files)
+        self.window.ignore_selection_changes = False
+        self.window.update_selection()
 
     def _lookup_disc(self, disc, result=None, error=None):
         self.restore_cursor()
@@ -840,6 +843,7 @@ class Tagger(QtWidgets.QApplication):
         else:
             files = self.get_files_from_objects(objs)
 
+        self.window.ignore_selection_changes = True
         self.window.set_sorting(False)
         cluster_files = defaultdict(list)
         for name, artist, files in Cluster.cluster(files, 1.0, self):
@@ -848,6 +852,8 @@ class Tagger(QtWidgets.QApplication):
         for cluster, files in process_events_iter(cluster_files.items()):
             cluster.add_files(files)
         self.window.set_sorting(True)
+        self.window.ignore_selection_changes = False
+        self.window.update_selection()
 
     def load_cluster(self, name, artist):
         for cluster in self.clusters:
