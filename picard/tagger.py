@@ -743,32 +743,30 @@ class Tagger(QtWidgets.QApplication):
     def remove(self, objects):
         """Remove the specified objects."""
         files = []
-        self.window.ignore_selection_changes = True
-        for obj in objects:
-            if isinstance(obj, File):
-                files.append(obj)
-            elif isinstance(obj, NonAlbumTrack):
-                self.remove_nat(obj)
-            elif isinstance(obj, Track):
-                files.extend(obj.linked_files)
-            elif isinstance(obj, Album):
-                self.window.set_statusbar_message(
-                    N_("Removing album %(id)s: %(artist)s - %(album)s"),
-                    {
-                        'id': obj.id,
-                        'artist': obj.metadata['albumartist'],
-                        'album': obj.metadata['album']
-                    }
-                )
-                self.remove_album(obj)
-            elif isinstance(obj, UnclusteredFiles):
-                files.extend(list(obj.files))
-            elif isinstance(obj, Cluster):
-                self.remove_cluster(obj)
-        if files:
-            self.remove_files(files)
-        self.window.ignore_selection_changes = False
-        self.window.update_selection()
+        with self.window.ignore_selection_changes:
+            for obj in objects:
+                if isinstance(obj, File):
+                    files.append(obj)
+                elif isinstance(obj, NonAlbumTrack):
+                    self.remove_nat(obj)
+                elif isinstance(obj, Track):
+                    files.extend(obj.linked_files)
+                elif isinstance(obj, Album):
+                    self.window.set_statusbar_message(
+                        N_("Removing album %(id)s: %(artist)s - %(album)s"),
+                        {
+                            'id': obj.id,
+                            'artist': obj.metadata['albumartist'],
+                            'album': obj.metadata['album']
+                        }
+                    )
+                    self.remove_album(obj)
+                elif isinstance(obj, UnclusteredFiles):
+                    files.extend(list(obj.files))
+                elif isinstance(obj, Cluster):
+                    self.remove_cluster(obj)
+            if files:
+                self.remove_files(files)
 
     def _lookup_disc(self, disc, result=None, error=None):
         self.restore_cursor()
@@ -843,17 +841,15 @@ class Tagger(QtWidgets.QApplication):
         else:
             files = self.get_files_from_objects(objs)
 
-        self.window.ignore_selection_changes = True
-        self.window.set_sorting(False)
-        cluster_files = defaultdict(list)
-        for name, artist, files in Cluster.cluster(files, 1.0, self):
-            cluster = self.load_cluster(name, artist)
-            cluster_files[cluster].extend(files)
-        for cluster, files in process_events_iter(cluster_files.items()):
-            cluster.add_files(files)
-        self.window.set_sorting(True)
-        self.window.ignore_selection_changes = False
-        self.window.update_selection()
+        with self.window.ignore_selection_changes:
+            self.window.set_sorting(False)
+            cluster_files = defaultdict(list)
+            for name, artist, files in Cluster.cluster(files, 1.0, self):
+                cluster = self.load_cluster(name, artist)
+                cluster_files[cluster].extend(files)
+            for cluster, files in process_events_iter(cluster_files.items()):
+                cluster.add_files(files)
+            self.window.set_sorting(True)
 
     def load_cluster(self, name, artist):
         for cluster in self.clusters:

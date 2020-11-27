@@ -122,6 +122,24 @@ def register_ui_init(function):
     ui_init.register(function.__module__, function)
 
 
+class IgnoreSelectionContext:
+
+    def __init__(self, onexit=None):
+        self._ignore = False
+        self._onexit = onexit
+
+    def __enter__(self):
+        self._ignore = True
+
+    def __exit__(self, type, value, tb):
+        self._ignore = False
+        if self._onexit:
+            self._onexit()
+
+    def __bool__(self):
+        return self._ignore
+
+
 class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     defaultsize = QtCore.QSize(780, 560)
@@ -143,7 +161,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     def __init__(self, parent=None, disable_player=False):
         super().__init__(parent)
         self.selected_objects = []
-        self.ignore_selection_changes = False
+        self.ignore_selection_changes = IgnoreSelectionContext(self.update_selection)
         self.toolbar = None
         self.player = None
         self.status_indicators = []
