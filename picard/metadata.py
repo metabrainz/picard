@@ -541,6 +541,7 @@ class MultiMetadataProxy:
         'clear',
         'copy',
         'delete',
+        'pop',
         'set',
         'strip_whitespace',
         'unset',

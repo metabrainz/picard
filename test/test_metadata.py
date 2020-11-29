@@ -148,6 +148,12 @@ class CommonTests:
             self.assertNotIn("single1", self.metadata.deleted_tags)
             self.metadata.unset('unknown_tag')
 
+        def test_metadata_pop(self):
+            self.metadata.pop("single1")
+            self.assertNotIn("single1", self.metadata)
+            self.assertIn("single1", self.metadata.deleted_tags)
+            self.metadata.pop('unknown_tag')
+
         def test_metadata_delete(self):
             del self.metadata["single1"]
             self.assertNotIn("single1", self.metadata)
