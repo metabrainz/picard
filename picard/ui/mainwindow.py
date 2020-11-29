@@ -123,21 +123,32 @@ def register_ui_init(function):
 
 
 class IgnoreSelectionContext:
+    """Context manager for holding a boolean value, indicating whether selection changes are performed or not.
+    By default the context resolves to False. If entered it is True. This allows
+    to temporarily set a state on a block of code like:
+
+        ignore_changes = IgnoreSelectionContext()
+        # Initially ignore_changes is True
+        with ignore_changes:
+            # Perform some tasks with ignore_changes now being True
+            ...
+        # ignore_changes is False again
+    """
 
     def __init__(self, onexit=None):
-        self._ignore = False
+        self._entered = 0
         self._onexit = onexit
 
     def __enter__(self):
-        self._ignore = True
+        self._entered += 1
 
     def __exit__(self, type, value, tb):
-        self._ignore = False
+        self._entered -= 1
         if self._onexit:
             self._onexit()
 
     def __bool__(self):
-        return self._ignore
+        return self._entered > 0
 
 
 class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
