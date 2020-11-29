@@ -58,6 +58,7 @@ from picard.util import (
 from picard.ui import PicardDialog
 from picard.ui.ui_infodialog import Ui_InfoDialog
 from picard.ui.util import StandardButton
+from picard.ui.colors import interface_colors
 
 
 class ArtworkCoverWidget(QtWidgets.QWidget):
@@ -357,12 +358,14 @@ class AlbumInfoDialog(InfoDialog):
         tab_index = tabWidget.indexOf(tab)
         if album.errors:
             tabWidget.setTabText(tab_index, _("&Errors"))
-            text = '<br />'.join(map(lambda s: '<font color="red">%s</font>' %
-                                     '<br />'.join(htmlescape(str(s))
+            color = interface_colors.get_color("log_error")
+            text = '<br />'.join(map(lambda s: '<font color="%s">%s</font>' %
+                                     (color, '<br />'.join(htmlescape(str(s))
                                                    .replace('\t', ' ')
                                                    .replace(' ', '&nbsp;')
                                                    .splitlines()
-                                                   ), album.errors)
+                                     )),
+                                     album.errors)
                                  )
             self.ui.info.setText(text + '<hr />')
         else:
