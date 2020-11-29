@@ -976,7 +976,7 @@ class AlbumItem(TreeItem):
                     item.update(update_album=False)
         if album.errors:
             self.setIcon(MainPanel.TITLE_COLUMN, AlbumItem.icon_error)
-            self.setToolTip(MainPanel.TITLE_COLUMN, _("Error"))
+            self.setToolTip(MainPanel.TITLE_COLUMN, _("Processing error(s): See the Errors tab in the Album Info popup"))
         elif album.is_complete():
             if album.is_modified():
                 self.setIcon(MainPanel.TITLE_COLUMN, AlbumItem.icon_cd_saved_modified)
