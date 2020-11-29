@@ -56,9 +56,9 @@ from picard.util import (
 )
 
 from picard.ui import PicardDialog
+from picard.ui.colors import interface_colors
 from picard.ui.ui_infodialog import Ui_InfoDialog
 from picard.ui.util import StandardButton
-from picard.ui.colors import interface_colors
 
 
 class ArtworkCoverWidget(QtWidgets.QWidget):
@@ -333,6 +333,13 @@ def format_tracklist(cluster):
     return '<br/>'.join(info)
 
 
+def text_as_html(text):
+    return '<br />'.join(htmlescape(str(text))
+        .replace('\t', ' ')
+        .replace(' ', '&nbsp;')
+        .splitlines())
+
+
 class FileInfoDialog(InfoDialog):
 
     def __init__(self, file_, parent=None):
@@ -359,14 +366,9 @@ class AlbumInfoDialog(InfoDialog):
         if album.errors:
             tabWidget.setTabText(tab_index, _("&Errors"))
             color = interface_colors.get_color("log_error")
-            text = '<br />'.join(map(lambda s: '<font color="%s">%s</font>' %
-                                     (color, '<br />'.join(htmlescape(str(s))
-                                                   .replace('\t', ' ')
-                                                   .replace(' ', '&nbsp;')
-                                                   .splitlines()
-                                     )),
-                                     album.errors)
-                                 )
+            text = '<br />'.join(map(
+                lambda s: '<font color="%s">%s</font>' % (color, text_as_html(s)),
+                album.errors))
             self.ui.info.setText(text + '<hr />')
         else:
             tabWidget.setTabText(tab_index, _("&Info"))
