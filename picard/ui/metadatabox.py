@@ -49,6 +49,7 @@ from picard.metadata import MULTI_VALUED_JOINER
 from picard.track import Track
 from picard.util import (
     format_time,
+    icontheme,
     restore_method,
     thread,
     throttle,
@@ -282,20 +283,32 @@ class MetadataBox(QtWidgets.QTableWidget):
                 return super().edit(index, trigger, event)
         return False
 
-    def event(self, e):
+    def keyPressEvent(self, event):
+        if event.matches(QtGui.QKeySequence.Copy):
+            self.copy_value()
+        elif event.matches(QtGui.QKeySequence.Paste):
+            self.paste_value()
+        else:
+            super().keyPressEvent(event)
+
+    def copy_value(self):
         item = self.currentItem()
-        if (item and e.type() == QtCore.QEvent.KeyPress and e.modifiers() == QtCore.Qt.ControlModifier):
+        if item:
             column = item.column()
             tag = self.tag_diff.tag_names[item.row()]
-            if e.key() == QtCore.Qt.Key_C:
-                if column == 1:
-                    self.clipboard = list(self.tag_diff.orig[tag])
-                elif column == 2:
-                    self.clipboard = list(self.tag_diff.new[tag])
-            elif e.key() == QtCore.Qt.Key_V and column == 2 and tag != "~length":
+            if column == 1:
+                self.clipboard = list(self.tag_diff.orig[tag])
+            elif column == 2:
+                self.clipboard = list(self.tag_diff.new[tag])
+
+    def paste_value(self):
+        item = self.currentItem()
+        if item:
+            column = item.column()
+            tag = self.tag_diff.tag_names[item.row()]
+            if column == 2 and tag != "~length":
                 self.set_tag_values(tag, list(self.clipboard))
                 self.update()
-        return super().event(e)
 
     def closeEditor(self, editor, hint):
         super().closeEditor(editor, hint)
@@ -384,6 +397,16 @@ class MetadataBox(QtWidgets.QTableWidget):
                     use_orig_value_action.triggered.connect(partial(self._apply_update_funcs, useorigs))
                     menu.addAction(use_orig_value_action)
                     menu.addSeparator()
+                if len(tags) == 1:
+                    menu.addSeparator()
+                    copy_action = QtWidgets.QAction(icontheme.lookup('edit-copy', icontheme.ICON_SIZE_MENU), _("&Copy"), self)
+                    copy_action.triggered.connect(self.copy_value)
+                    copy_action.setShortcut(QtGui.QKeySequence.Copy)
+                    menu.addAction(copy_action)
+                    paste_action = QtWidgets.QAction(icontheme.lookup('edit-paste', icontheme.ICON_SIZE_MENU), _("&Paste"), self)
+                    paste_action.triggered.connect(self.paste_value)
+                    paste_action.setShortcut(QtGui.QKeySequence.Paste)
+                    menu.addAction(paste_action)
             if len(tags) == 1 or removals or useorigs:
                 menu.addSeparator()
             menu.addAction(self.add_tag_action)
