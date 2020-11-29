@@ -364,7 +364,7 @@ class AlbumInfoDialog(InfoDialog):
                                                    .replace('\t', ' ')
                                                    .replace(' ', '&nbsp;')
                                                    .splitlines()
-                                                   )), 
+                                                   )),
                                      album.errors)
                                  )
             self.ui.info.setText(text + '<hr />')
