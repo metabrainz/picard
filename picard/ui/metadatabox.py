@@ -243,6 +243,7 @@ class MetadataBox(QtWidgets.QTableWidget):
         self.preserved_tags = PreservedTags()
         self._single_file_album = False
         self._single_track_album = False
+        self.tagger.clipboard().dataChanged.connect(self.update_clipboard)
 
     def get_file_lookup(self):
         """Return a FileLookup object."""
@@ -303,10 +304,16 @@ class MetadataBox(QtWidgets.QTableWidget):
         if item:
             column = item.column()
             tag = self.tag_diff.tag_names[item.row()]
+            value = None
             if column == self.COLUMN_ORIG:
-                self.clipboard = list(self.tag_diff.orig[tag])
+                value = self.tag_diff.orig[tag]
             elif column == self.COLUMN_NEW:
-                self.clipboard = list(self.tag_diff.new[tag])
+                value = self.tag_diff.new[tag]
+            if tag == '~length':
+                value = [format_time(value or 0), ]
+            if value is not None:
+                self.tagger.clipboard().setText(MULTI_VALUED_JOINER.join(value))
+                self.clipboard = value
 
     def paste_value(self):
         item = self.currentItem()
@@ -314,8 +321,13 @@ class MetadataBox(QtWidgets.QTableWidget):
             column = item.column()
             tag = self.tag_diff.tag_names[item.row()]
             if column == self.COLUMN_NEW and self.tag_is_editable(tag):
-                self.set_tag_values(tag, list(self.clipboard))
+                self.set_tag_values(tag, self.clipboard)
                 self.update()
+
+    def update_clipboard(self):
+        clipboard = self.tagger.clipboard().text().split(MULTI_VALUED_JOINER)
+        if clipboard:
+            self.clipboard = clipboard
 
     def closeEditor(self, editor, hint):
         super().closeEditor(editor, hint)
