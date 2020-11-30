@@ -197,6 +197,9 @@ class MetadataBox(QtWidgets.QTableWidget):
         config.BoolOption("persist", "show_changes_first", False)
     )
 
+    COLUMN_ORIG = 1
+    COLUMN_NEW = 2
+
     def __init__(self, parent):
         super().__init__(parent)
         self.parent = parent
@@ -269,7 +272,7 @@ class MetadataBox(QtWidgets.QTableWidget):
             lookup_func(v)
 
     def edit(self, index, trigger, event):
-        if index.column() != 2:
+        if index.column() != self.COLUMN_NEW:
             return False
         item = self.itemFromIndex(index)
         if item.flags() & QtCore.Qt.ItemIsEditable and \
@@ -300,9 +303,9 @@ class MetadataBox(QtWidgets.QTableWidget):
         if item:
             column = item.column()
             tag = self.tag_diff.tag_names[item.row()]
-            if column == 1:
+            if column == self.COLUMN_ORIG:
                 self.clipboard = list(self.tag_diff.orig[tag])
-            elif column == 2:
+            elif column == self.COLUMN_NEW:
                 self.clipboard = list(self.tag_diff.new[tag])
 
     def paste_value(self):
@@ -310,7 +313,7 @@ class MetadataBox(QtWidgets.QTableWidget):
         if item:
             column = item.column()
             tag = self.tag_diff.tag_names[item.row()]
-            if column == 2 and self.tag_is_editable(tag):
+            if column == self.COLUMN_NEW and self.tag_is_editable(tag):
                 self.set_tag_values(tag, list(self.clipboard))
                 self.update()
 
@@ -339,7 +342,8 @@ class MetadataBox(QtWidgets.QTableWidget):
         if self.objects:
             tags = self.selected_tags()
             editable = self.tag_is_editable(tags[0])
-            if len(tags) == 1:
+            single_tag = len(tags) == 1
+            if single_tag:
                 selected_tag = tags[0]
                 edit_tag_action = QtWidgets.QAction(_("Edit..."), self.parent)
                 edit_tag_action.triggered.connect(partial(self.edit_tag, selected_tag))
@@ -363,8 +367,8 @@ class MetadataBox(QtWidgets.QTableWidget):
                 column = item.column()
                 for tag in tags:
                     if tag in self.lookup_tags().keys():
-                        if (column == 1 or column == 2) and len(tags) == 1 and item.text():
-                            if column == 1:
+                        if (column == self.COLUMN_ORIG or column == self.COLUMN_NEW) and single_tag and item.text():
+                            if column == self.COLUMN_ORIG:
                                 values = self.tag_diff.orig[tag]
                             else:
                                 values = self.tag_diff.new[tag]
@@ -405,7 +409,7 @@ class MetadataBox(QtWidgets.QTableWidget):
                     use_orig_value_action.triggered.connect(partial(self._apply_update_funcs, useorigs))
                     menu.addAction(use_orig_value_action)
                     menu.addSeparator()
-                if len(tags) == 1:
+                if single_tag:
                     menu.addSeparator()
                     copy_action = QtWidgets.QAction(icontheme.lookup('edit-copy', icontheme.ICON_SIZE_MENU), _("&Copy"), self)
                     copy_action.triggered.connect(self.copy_value)
@@ -416,7 +420,7 @@ class MetadataBox(QtWidgets.QTableWidget):
                     paste_action.setShortcut(QtGui.QKeySequence.Paste)
                     paste_action.setEnabled(editable)
                     menu.addAction(paste_action)
-            if len(tags) == 1 or removals or useorigs:
+            if single_tag or removals or useorigs:
                 menu.addSeparator()
             menu.addAction(self.add_tag_action)
             menu.addSeparator()
