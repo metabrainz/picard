@@ -1187,7 +1187,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                     msg = N_("%(filename)s (error: %(error)s)")
                     mparms = {
                         'filename': obj.filename,
-                        'error': obj.error
+                        'error': obj.errors[0] if obj.errors else ''
                     }
                 else:
                     msg = N_("%(filename)s")
@@ -1200,12 +1200,12 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                 if obj.num_linked_files == 1:
                     file = obj.linked_files[0]
                     orig_metadata = file.orig_metadata
-                    if file.state == File.ERROR:
+                    if file.has_error():
                         msg = N_("%(filename)s (%(similarity)d%%) (error: %(error)s)")
                         mparms = {
                             'filename': file.filename,
                             'similarity': file.similarity * 100,
-                            'error': file.error
+                            'error': file.errors[0] if file.errors else ''
                         }
                     else:
                         msg = N_("%(filename)s (%(similarity)d%%)")
