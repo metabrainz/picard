@@ -39,7 +39,7 @@ class IgnoreSelectionContextTest(PicardTestCase):
         context = IgnoreSelectionContext(onexit=onexit)
         with context:
             onexit.assert_not_called()
-        onexit.assert_called_once()
+        onexit.assert_called_once_with()
 
     def test_nested_with(self):
         context = IgnoreSelectionContext()
