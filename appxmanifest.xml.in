@@ -27,6 +27,7 @@
     <Resource Language="nl"/>
     <Resource Language="pt-br"/>
     <Resource Language="ru"/>
+    <Resource Language="zh-cn"/>
     <Resource Language="zh-tw"/>
   </Resources>
   <Dependencies>
