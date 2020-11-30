@@ -3,7 +3,7 @@
 # Picard, the next-generation MusicBrainz tagger
 #
 # Copyright (C) 2006-2007 Lukáš Lalinský
-# Copyright (C) 2010, 2018 Philipp Wolfer
+# Copyright (C) 2010, 2018, 2020 Philipp Wolfer
 # Copyright (C) 2011-2012 Michael Wiencek
 # Copyright (C) 2012 Chad Wilson
 # Copyright (C) 2013 Laurent Monin
@@ -22,6 +22,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+
+from picard import log
 
 
 class Item(object):
@@ -82,3 +84,16 @@ class Item(object):
             return int(self.metadata["discnumber"])
         except BaseException:
             return 0
+
+    @property
+    def errors(self):
+        if not hasattr(self, '_errors'):
+            self._errors = []
+        return self._errors
+
+    def error_append(self, msg):
+        log.error('%r: %s', self, msg)
+        self.errors.append(msg)
+
+    def clear_errors(self):
+        self._errors = []

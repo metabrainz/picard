@@ -149,7 +149,6 @@ class Track(DataObject, Item):
         self.metadata = Metadata()
         self.orig_metadata = Metadata()
         self.scripted_metadata = Metadata()
-        self.errors = []
         self._track_artists = []
 
     def __repr__(self):
@@ -287,10 +286,6 @@ class Track(DataObject, Item):
         self._track_artists.append(track_artist)
         return track_artist
 
-    def error_append(self, msg):
-        log.error(msg)
-        self.errors.append(msg)
-
     def _customize_metadata(self):
         tm = self.metadata
 
@@ -388,7 +383,7 @@ class NonAlbumTrack(Track):
     def load(self, priority=False, refresh=False):
         self.metadata.copy(self.album.metadata, copy_images=False)
         self.status = _("[loading recording information]")
-        self.errors = []
+        self.clear_errors()
         self.loaded = False
         self.album.update(True)
         mblogin = False

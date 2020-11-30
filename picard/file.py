@@ -139,7 +139,6 @@ class File(QtCore.QObject, Item):
         self.base_filename = os.path.basename(filename)
         self._state = File.UNDEFINED
         self.state = File.PENDING
-        self.errors = []
 
         self.orig_metadata = Metadata()
         self.metadata = Metadata()
@@ -213,7 +212,7 @@ class File(QtCore.QObject, Item):
                 callback(self, remove_file=True)
                 return
         else:
-            self.errors = []
+            self.clear_errors()
             self.state = self.NORMAL
             self._copy_loaded_metadata(result)
         # use cached fingerprint from file metadata
@@ -282,10 +281,6 @@ class File(QtCore.QObject, Item):
             self._saving_finished,
             priority=2,
             thread_pool=self.tagger.save_thread_pool)
-
-    def error_append(self, msg):
-        log.error(msg)
-        self.errors.append(msg)
 
     def _preserve_times(self, filename, func):
         """Save filename times before calling func, and set them again"""
@@ -383,7 +378,7 @@ class File(QtCore.QObject, Item):
             self.orig_metadata['~length'] = format_time(length)
             for k, v in temp_info.items():
                 self.orig_metadata[k] = v
-            self.errors = []
+            self.clear_errors()
             self.clear_pending()
             self._add_path_to_metadata(self.orig_metadata)
             self.metadata_images_changed.emit()
