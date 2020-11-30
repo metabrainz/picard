@@ -72,6 +72,7 @@ class TagStatus:
     CHANGED = ADDED | REMOVED
     EMPTY = 8
     NOTREMOVABLE = 16
+    READONLY = 32
 
 
 class TagCounter(dict):
@@ -131,7 +132,7 @@ class TagDiff(object):
         else:
             return orig != new
 
-    def add(self, tag, orig_values, new_values, removable, removed=False):
+    def add(self, tag, orig_values, new_values, removable, removed=False, readonly=False):
         if orig_values:
             self.orig.add(tag, orig_values)
 
@@ -152,6 +153,9 @@ class TagDiff(object):
 
         if not removable:
             self.status[tag] |= TagStatus.NOTREMOVABLE
+
+        if readonly:
+            self.status[tag] |= TagStatus.READONLY
 
     def tag_status(self, tag):
         status = self.status[tag]
@@ -306,7 +310,7 @@ class MetadataBox(QtWidgets.QTableWidget):
         if item:
             column = item.column()
             tag = self.tag_diff.tag_names[item.row()]
-            if column == 2 and tag != "~length":
+            if column == 2 and self.tag_is_editable(tag):
                 self.set_tag_values(tag, list(self.clipboard))
                 self.update()
 
@@ -333,20 +337,24 @@ class MetadataBox(QtWidgets.QTableWidget):
     def contextMenuEvent(self, event):
         menu = QtWidgets.QMenu(self)
         if self.objects:
-            tags = self.selected_tags(discard=('~length',))
+            tags = self.selected_tags()
+            editable = self.tag_is_editable(tags[0])
             if len(tags) == 1:
                 selected_tag = tags[0]
                 edit_tag_action = QtWidgets.QAction(_("Edit..."), self.parent)
                 edit_tag_action.triggered.connect(partial(self.edit_tag, selected_tag))
                 edit_tag_action.setShortcut(self.edit_tag_shortcut.key())
+                edit_tag_action.setEnabled(editable)
                 menu.addAction(edit_tag_action)
                 if selected_tag not in self.preserved_tags:
                     add_to_preserved_tags_action = QtWidgets.QAction(_("Add to 'Preserve Tags' List"), self.parent)
                     add_to_preserved_tags_action.triggered.connect(partial(self.preserved_tags.add, selected_tag))
+                    add_to_preserved_tags_action.setEnabled(editable)
                     menu.addAction(add_to_preserved_tags_action)
                 else:
                     remove_from_preserved_tags_action = QtWidgets.QAction(_("Remove from 'Preserve Tags' List"), self.parent)
                     remove_from_preserved_tags_action.triggered.connect(partial(self.preserved_tags.discard, selected_tag))
+                    remove_from_preserved_tags_action.setEnabled(editable)
                     menu.addAction(remove_from_preserved_tags_action)
             removals = []
             useorigs = []
@@ -386,11 +394,11 @@ class MetadataBox(QtWidgets.QTableWidget):
                             objects = [album]
                             orig_values = list(album.orig_metadata.getall(tag)) or [""]
                             useorigs.append(partial(self.set_tag_values, tag, orig_values, objects))
-                if removals:
-                    remove_tag_action = QtWidgets.QAction(_("Remove"), self.parent)
-                    remove_tag_action.triggered.connect(partial(self._apply_update_funcs, removals))
-                    remove_tag_action.setShortcut(self.remove_tag_shortcut.key())
-                    menu.addAction(remove_tag_action)
+                remove_tag_action = QtWidgets.QAction(_("Remove"), self.parent)
+                remove_tag_action.triggered.connect(partial(self._apply_update_funcs, removals))
+                remove_tag_action.setShortcut(self.remove_tag_shortcut.key())
+                remove_tag_action.setEnabled(bool(removals))
+                menu.addAction(remove_tag_action)
                 if useorigs:
                     name = ngettext("Use Original Value", "Use Original Values", len(useorigs))
                     use_orig_value_action = QtWidgets.QAction(name, self.parent)
@@ -406,6 +414,7 @@ class MetadataBox(QtWidgets.QTableWidget):
                     paste_action = QtWidgets.QAction(icontheme.lookup('edit-paste', icontheme.ICON_SIZE_MENU), _("&Paste"), self)
                     paste_action.triggered.connect(self.paste_value)
                     paste_action.setShortcut(QtGui.QKeySequence.Paste)
+                    paste_action.setEnabled(editable)
                     menu.addAction(paste_action)
             if len(tags) == 1 or removals or useorigs:
                 menu.addSeparator()
@@ -424,7 +433,7 @@ class MetadataBox(QtWidgets.QTableWidget):
         EditTagDialog(self.parent, tag).exec_()
 
     def edit_selected_tag(self):
-        tags = self.selected_tags(discard=('~length',))
+        tags = self.selected_tags(filter_func=self.tag_is_editable)
         if len(tags) == 1:
             self.edit_tag(tags[0])
 
@@ -451,7 +460,7 @@ class MetadataBox(QtWidgets.QTableWidget):
         self.set_tag_values(tag, [])
 
     def remove_selected_tags(self):
-        for tag in self.selected_tags(discard=('~length',)):
+        for tag in self.selected_tags(filter_func=self.tag_is_removable):
             if self.tag_is_removable(tag):
                 self.remove_tag(tag)
         self.parent.update_selection(new_selection=False, drop_album_caches=True)
@@ -459,12 +468,15 @@ class MetadataBox(QtWidgets.QTableWidget):
     def tag_is_removable(self, tag):
         return self.tag_diff.status[tag] & TagStatus.NOTREMOVABLE == 0
 
-    def selected_tags(self, discard=None):
-        if discard is None:
-            discard = set()
+    def tag_is_editable(self, tag):
+        return self.tag_diff.status[tag] & TagStatus.READONLY == 0
+
+    def selected_tags(self, filter_func=None):
         tags = set(self.tag_diff.tag_names[item.row()]
                    for item in self.selectedItems())
-        return list(tags.difference(discard))
+        if filter_func:
+            tags = filter(filter_func, tags)
+        return list(tags)
 
     def _update_selection(self):
         files = set()
@@ -560,8 +572,8 @@ class MetadataBox(QtWidgets.QTableWidget):
                 removed = name in new_metadata.deleted_tags
                 tag_diff.add(name, orig_values, new_values, True, removed)
 
-            tag_diff.add("~length",
-                         str(orig_metadata.length), str(new_metadata.length), False)
+            tag_diff.add("~length", str(orig_metadata.length), str(new_metadata.length),
+                         removable=False, readonly=True)
 
         for track in tracks:
             if track.num_linked_files == 0:
@@ -574,7 +586,7 @@ class MetadataBox(QtWidgets.QTableWidget):
                         tag_diff.add(name, orig_values, new_values, True)
 
                 length = str(track.metadata.length)
-                tag_diff.add("~length", length, length, False)
+                tag_diff.add("~length", length, length, removable=False, readonly=True)
 
                 tag_diff.objects += 1
 
