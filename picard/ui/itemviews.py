@@ -1065,9 +1065,9 @@ class TrackItem(TreeItem):
                         items.append(item)
                     self.addChildren(items)
             self.setExpanded(True)
-        if track.error:
+        if track.errors:
             self.setIcon(MainPanel.TITLE_COLUMN, TrackItem.icon_error)
-            self.setToolTip(MainPanel.TITLE_COLUMN, track.error)
+            self.setToolTip(MainPanel.TITLE_COLUMN, _("Processing error(s): See the Errors tab in the Track Info dialog"))
         else:
             self.setIcon(MainPanel.TITLE_COLUMN, icon)
         for i, column in enumerate(MainPanel.columns):
@@ -1094,6 +1094,8 @@ class FileItem(TreeItem):
             self.setText(i, file.column(column[1]))
             self.setForeground(i, color)
             self.setBackground(i, bgcolor)
+        if file.errors:
+            self.setToolTip(MainPanel.TITLE_COLUMN, _("Processing error(s): See the Errors tab in the File Info dialog"))
         if self.isSelected():
             TreeItem.window.update_selection(new_selection=False)
         parent = self.parent()

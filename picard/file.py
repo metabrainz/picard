@@ -139,7 +139,6 @@ class File(QtCore.QObject, Item):
         self.base_filename = os.path.basename(filename)
         self._state = File.UNDEFINED
         self.state = File.PENDING
-        self.error = None
 
         self.orig_metadata = Metadata()
         self.metadata = Metadata()
@@ -186,8 +185,8 @@ class File(QtCore.QObject, Item):
         if self.state != File.PENDING or self.tagger.stopping:
             return
         if error is not None:
-            self.error = str(error)
             self.state = self.ERROR
+            self.error_append(str(error))
 
             # If loading failed, force format guessing and try loading again
             from picard.formats.util import guess_format
@@ -213,7 +212,7 @@ class File(QtCore.QObject, Item):
                 callback(self, remove_file=True)
                 return
         else:
-            self.error = None
+            self.clear_errors()
             self.state = self.NORMAL
             self._copy_loaded_metadata(result)
         # use cached fingerprint from file metadata
@@ -357,8 +356,8 @@ class File(QtCore.QObject, Item):
             return
         old_filename = new_filename = self.filename
         if error is not None:
-            self.error = str(error)
             self.state = File.ERROR
+            self.error_append(str(error))
         else:
             self.filename = new_filename = result
             self.base_filename = os.path.basename(new_filename)
@@ -379,7 +378,7 @@ class File(QtCore.QObject, Item):
             self.orig_metadata['~length'] = format_time(length)
             for k, v in temp_info.items():
                 self.orig_metadata[k] = v
-            self.error = None
+            self.clear_errors()
             self.clear_pending()
             self._add_path_to_metadata(self.orig_metadata)
             self.metadata_images_changed.emit()

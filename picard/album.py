@@ -131,7 +131,6 @@ class Album(DataObject, Item):
             self._discids.add(discid)
         self._after_load_callbacks = []
         self.unmatched_files = Cluster(_("Unmatched Files"), special=True, related_album=self, hide_if_empty=True)
-        self.errors = []
         self.status = None
         self._album_artists = []
         self.update_metadata_images_enabled = True
@@ -282,10 +281,6 @@ class Album(DataObject, Item):
         #     to delete the QNetworkReply object at an appropriate time.
         #     Do not directly delete it inside the slot connected to finished().
         #     You can use the deleteLater() function.
-
-    def error_append(self, msg):
-        log.error(msg)
-        self.errors.append(msg)
 
     def _finalize_loading(self, error):
         if error:
@@ -480,7 +475,7 @@ class Album(DataObject, Item):
         self._new_metadata = Metadata()
         self._new_tracks = []
         self._requests = 1
-        self.errors = []
+        self.clear_errors()
         require_authentication = False
         inc = ['release-groups', 'media', 'discids', 'recordings', 'artist-credits',
                'artists', 'aliases', 'labels', 'isrcs', 'collections']

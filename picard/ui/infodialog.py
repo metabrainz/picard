@@ -11,7 +11,7 @@
 # Copyright (C) 2016-2017 Sambhav Kothari
 # Copyright (C) 2017-2019 Antonio Larrosa
 # Copyright (C) 2018 Vishal Choudhary
-# Copyright (C) 2018-2019 Philipp Wolfer
+# Copyright (C) 2018-2020 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -148,7 +148,7 @@ class InfoDialog(PicardDialog):
         # Add the ArtworkTable to the ui
         self.ui.artwork_table = ArtworkTable(self.display_existing_artwork)
         self.ui.artwork_table.setObjectName("artwork_table")
-        self.ui.vboxlayout1.addWidget(self.ui.artwork_table)
+        self.ui.artwork_tab.layout().addWidget(self.ui.artwork_table)
         self.setTabOrder(self.ui.tabWidget, self.ui.artwork_table)
         self.setTabOrder(self.ui.artwork_table, self.ui.buttonBox)
 
@@ -159,7 +159,21 @@ class InfoDialog(PicardDialog):
 
     def _display_tabs(self):
         self._display_info_tab()
+        self._display_error_tab()
         self._display_artwork_tab()
+
+    def _display_error_tab(self):
+        if hasattr(self.obj, 'errors') and self.obj.errors:
+            self._show_errors(self.obj.errors)
+        else:
+            self.tab_hide(self.ui.error_tab)
+
+    def _show_errors(self, errors):
+        if errors:
+            color = interface_colors.get_color("log_error")
+            text = '<br />'.join(map(
+                lambda s: '<font color="%s">%s</font>' % (color, text_as_html(s)), errors))
+            self.ui.error.setText(text + '<hr />')
 
     def _display_artwork(self, images, col):
         """Draw artwork in corresponding cell if image type matches type in Type column.
@@ -359,20 +373,11 @@ class AlbumInfoDialog(InfoDialog):
         self.setWindowTitle(_("Album Info"))
 
     def _display_info_tab(self):
-        tab = self.ui.info_tab
         album = self.obj
-        tabWidget = self.ui.tabWidget
-        tab_index = tabWidget.indexOf(tab)
-        if album.errors:
-            tabWidget.setTabText(tab_index, _("&Errors"))
-            color = interface_colors.get_color("log_error")
-            text = '<br />'.join(map(
-                lambda s: '<font color="%s">%s</font>' % (color, text_as_html(s)),
-                album.errors))
-            self.ui.info.setText(text + '<hr />')
-        else:
-            tabWidget.setTabText(tab_index, _("&Info"))
+        if album._tracks_loaded:
             self.ui.info.setText(format_tracklist(album))
+        else:
+            self.tab_hide(self.ui.info_tab)
 
 
 class TrackInfoDialog(InfoDialog):
