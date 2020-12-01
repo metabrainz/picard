@@ -347,17 +347,29 @@ class CoverArtBox(QtWidgets.QGroupBox):
             self.cover_art_label.setText(_('New Cover Art'))
             self.orig_cover_art_label.setText(_('Original Cover Art'))
 
-    def show(self):
-        self.update_display(True)
-        super().show()
+    def set_item(self, item):
+        if not item.can_show_coverart:
+            return
 
-    def set_metadata(self, metadata, orig_metadata, item):
+        if self.item and hasattr(self.item, 'metadata_images_changed'):
+            self.item.metadata_images_changed.disconnect(self.update_metadata)
+        self.item = item
+        if hasattr(self.item, 'metadata_images_changed'):
+            self.item.metadata_images_changed.connect(self.update_metadata)
+        self.update_metadata()
+
+    def update_metadata(self):
+        if not self.item:
+            return
+
+        metadata = self.item.metadata
+        orig_metadata = self.item.orig_metadata
+
         if not metadata or not metadata.images:
             self.cover_art.set_metadata(orig_metadata)
         else:
             self.cover_art.set_metadata(metadata)
         self.orig_cover_art.set_metadata(orig_metadata)
-        self.item = item
         self.update_display()
 
     def fetch_remote_image(self, url, fallback_data=None):
@@ -461,7 +473,6 @@ class CoverArtBox(QtWidgets.QGroupBox):
             set_image = set_image_append
             debug_info = "Appending dropped %r to %r"
 
-        update = True
         if isinstance(self.item, Album):
             album = self.item
             album.enable_update_metadata_images(False)
@@ -507,13 +518,8 @@ class CoverArtBox(QtWidgets.QGroupBox):
             file.update()
         else:
             debug_info = "Dropping %r to %r is not handled"
-            update = False
 
         log.debug(debug_info, coverartimage, self.item)
-
-        if update:
-            self.cover_art.set_metadata(self.item.metadata)
-            self.show()
 
     def choose_local_file(self):
         file_chooser = QtWidgets.QFileDialog(self)

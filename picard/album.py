@@ -113,6 +113,7 @@ class AlbumArtist(DataObject):
 
 class Album(DataObject, Item):
 
+    metadata_images_changed = QtCore.pyqtSignal()
     release_group_loaded = QtCore.pyqtSignal()
 
     def __init__(self, album_id, discid=None):
@@ -131,6 +132,7 @@ class Album(DataObject, Item):
             self._discids.add(discid)
         self._after_load_callbacks = []
         self.unmatched_files = Cluster(_("Unmatched Files"), special=True, related_album=self, hide_if_empty=True)
+        self.unmatched_files.metadata_images_changed.connect(self.update_metadata_images)
         self.status = None
         self._album_artists = []
         self.update_metadata_images_enabled = True
@@ -376,6 +378,7 @@ class Album(DataObject, Item):
             self.enable_update_metadata_images(False)
             for track in self._new_tracks:
                 track.orig_metadata.copy(track.metadata)
+                track.metadata_images_changed.connect(self.update_metadata_images)
 
             # Prepare parser for user's script
             for s_name, s_text in enabled_tagger_scripts_texts():
@@ -396,7 +399,6 @@ class Album(DataObject, Item):
                 self._new_metadata.strip_whitespace()
 
             for track in self.tracks:
-                track.metadata_images_changed.connect(self.update_metadata_images)
                 for file in list(track.linked_files):
                     file.move(self.unmatched_files)
             self.metadata = self._new_metadata
@@ -513,12 +515,10 @@ class Album(DataObject, Item):
         self._files += 1
         self.update(update_tracks=False)
         add_metadata_images(self, [file])
-        file.metadata_images_changed.connect(self.update_metadata_images)
 
     def _remove_file(self, track, file):
         self._files -= 1
         self.update(update_tracks=False)
-        file.metadata_images_changed.disconnect(self.update_metadata_images)
         remove_metadata_images(self, [file])
 
     def _match_files(self, files, threshold=0):
@@ -719,8 +719,8 @@ class Album(DataObject, Item):
             return
 
         update_metadata_images(self)
-
         self.update(False)
+        self.metadata_images_changed.emit()
 
     def keep_original_images(self):
         self.enable_update_metadata_images(False)

@@ -72,6 +72,8 @@ from picard.ui.item import Item
 
 class FileList(QtCore.QObject, Item):
 
+    metadata_images_changed = QtCore.pyqtSignal()
+
     def __init__(self, files=None):
         QtCore.QObject.__init__(self)
         self.metadata = Metadata()
@@ -81,7 +83,8 @@ class FileList(QtCore.QObject, Item):
         for file in self.files:
             if self.can_show_coverart:
                 file.metadata_images_changed.connect(self.update_metadata_images)
-        update_metadata_images(self)
+        if self.files:
+            update_metadata_images(self)
 
     def iterfiles(self, save=False):
         for file in self.files:
@@ -100,6 +103,7 @@ class FileList(QtCore.QObject, Item):
     def update_metadata_images(self):
         if self.update_metadata_images_enabled and self.can_show_coverart:
             update_metadata_images(self)
+            self.metadata_images_changed.emit()
 
     def keep_original_images(self):
         self.enable_update_metadata_images(False)
