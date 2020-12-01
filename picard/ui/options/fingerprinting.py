@@ -5,7 +5,7 @@
 # Copyright (C) 2011-2012 Lukáš Lalinský
 # Copyright (C) 2011-2013 Michael Wiencek
 # Copyright (C) 2013, 2018 Laurent Monin
-# Copyright (C) 2015 Philipp Wolfer
+# Copyright (C) 2015, 2020 Philipp Wolfer
 # Copyright (C) 2016-2017 Sambhav Kothari
 #
 # This program is free software; you can redistribute it and/or
@@ -27,6 +27,7 @@ import os
 
 from PyQt5 import (
     QtCore,
+    QtGui,
     QtWidgets,
 )
 
@@ -43,6 +44,13 @@ from picard.ui.options import (
     register_options_page,
 )
 from picard.ui.ui_options_fingerprinting import Ui_FingerprintingOptionsPage
+
+
+class ApiKeyValidator(QtGui.QValidator):
+
+    def validate(self, input, pos):
+        # Strip whitespace to avoid typical copy and paste user errors
+        return (QtGui.QValidator.Acceptable, input.strip(), pos)
 
 
 class FingerprintingOptionsPage(OptionsPage):
@@ -72,6 +80,7 @@ class FingerprintingOptionsPage(OptionsPage):
         self.ui.acoustid_fpcalc_browse.clicked.connect(self.acoustid_fpcalc_browse)
         self.ui.acoustid_fpcalc_download.clicked.connect(self.acoustid_fpcalc_download)
         self.ui.acoustid_apikey_get.clicked.connect(self.acoustid_apikey_get)
+        self.ui.acoustid_apikey.setValidator(ApiKeyValidator())
 
     def load(self):
         if config.setting["fingerprinting_system"] == "acoustid":
