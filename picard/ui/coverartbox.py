@@ -48,13 +48,17 @@ from picard import (
     log,
 )
 from picard.album import Album
-from picard.cluster import FileList
+from picard.cluster import (
+    Cluster,
+    FileList,
+)
 from picard.const import MAX_COVERS_TO_STACK
 from picard.coverart.image import (
     CoverArtImage,
     CoverArtImageError,
 )
 from picard.file import File
+from picard.track import Track
 from picard.util import imageinfo
 from picard.util.lrucache import LRUCache
 
@@ -277,10 +281,22 @@ class CoverArtThumbnail(ActiveLabel):
 def set_image_replace(obj, coverartimage):
     obj.metadata.images.strip_front_images()
     obj.metadata.images.append(coverartimage)
+    obj.metadata_images_changed.emit()
 
 
 def set_image_append(obj, coverartimage):
     obj.metadata.images.append(coverartimage)
+    obj.metadata_images_changed.emit()
+
+
+def iter_file_parents(file):
+    parent = file.parent
+    if parent:
+        yield parent
+        if isinstance(parent, Track) and parent.album:
+            yield parent.album
+        elif isinstance(parent, Cluster) and parent.related_album:
+            yield parent.related_album
 
 
 HTML_IMG_SRC_REGEX = re.compile(r'<img .*?src="(.*?)"', re.UNICODE)
@@ -477,30 +493,38 @@ class CoverArtBox(QtWidgets.QGroupBox):
             album.enable_update_metadata_images(False)
             set_image(album, coverartimage)
             for track in album.tracks:
+                track.enable_update_metadata_images(False)
                 set_image(track, coverartimage)
-                track.metadata_images_changed.emit()
             for file in album.iterfiles():
                 set_image(file, coverartimage)
-                file.metadata_images_changed.emit()
                 file.update(signal=False)
+            for track in album.tracks:
+                track.enable_update_metadata_images(True)
             album.enable_update_metadata_images(True)
-            album.update_metadata_images()
-            album.update(False)
+            album.update(update_tracks=False)
         elif isinstance(self.item, FileList):
+            parents = set()
             filelist = self.item
             filelist.enable_update_metadata_images(False)
             set_image(filelist, coverartimage)
             for file in filelist.iterfiles():
+                for parent in iter_file_parents(file):
+                    parent.enable_update_metadata_images(False)
+                    parents.add(parent)
                 set_image(file, coverartimage)
-                file.metadata_images_changed.emit()
                 file.update(signal=False)
+            for parent in parents:
+                set_image(parent, coverartimage)
+                parent.enable_update_metadata_images(True)
+                if isinstance(parent, Album):
+                    parent.update(update_tracks=False)
+                else:
+                    parent.update()
             filelist.enable_update_metadata_images(True)
-            filelist.update_metadata_images()
             filelist.update()
         elif isinstance(self.item, File):
             file = self.item
             set_image(file, coverartimage)
-            file.metadata_images_changed.emit()
             file.update()
         else:
             debug_info = "Dropping %r to %r is not handled"
