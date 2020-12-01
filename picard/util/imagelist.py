@@ -148,8 +148,7 @@ def _update_state(obj, state):
 # TODO: use functools.singledispatch when py3 is supported
 def _get_state(obj):
     from picard.album import Album
-    from picard.cluster import (Cluster, FileList)
-    from picard.track import Track
+    from picard.cluster import FileList
 
     state = ImageListState()
 
@@ -160,12 +159,6 @@ def _get_state(obj):
         state.sources += obj.unmatched_files.files
         state.update_new_metadata = True
         state.update_orig_metadata = True
-    elif isinstance(obj, Track):
-        state.sources = obj.files
-        state.update_orig_metadata = True
-    elif isinstance(obj, Cluster):
-        state.sources = obj.files
-        state.update_new_metadata = True
     elif isinstance(obj, FileList):
         state.sources = obj.files
         state.update_new_metadata = True

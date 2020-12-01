@@ -71,7 +71,6 @@ from picard.script import (
     enabled_tagger_scripts_texts,
 )
 from picard.util.imagelist import (
-    ImageList,
     add_metadata_images,
     remove_metadata_images,
 )
@@ -344,13 +343,6 @@ class Track(DataObject, FileList):
         if join_genres:
             genre = [join_genres.join(genre)]
         self.metadata['genre'] = genre
-
-    def keep_original_images(self):
-        super().keep_original_images()
-        if self.files:
-            self.metadata.images = self.orig_metadata.images.copy()
-        else:
-            self.metadata.images = ImageList()
 
 
 class NonAlbumTrack(Track):
