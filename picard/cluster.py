@@ -102,8 +102,8 @@ class FileList(QtCore.QObject, Item):
 
     def update_metadata_images(self):
         if self.update_metadata_images_enabled and self.can_show_coverart:
-            update_metadata_images(self)
-            self.metadata_images_changed.emit()
+            if update_metadata_images(self):
+                self.metadata_images_changed.emit()
 
     def keep_original_images(self):
         self.enable_update_metadata_images(False)
@@ -378,13 +378,6 @@ class Cluster(FileList):
                 artist_name = artist_cluster_engine.get_cluster_title(artist_id)
 
             yield album_name, artist_name, (files[i] for i in album)
-
-    def enable_update_metadata_images(self, enabled):
-        self.update_metadata_images_enabled = enabled
-
-    def update_metadata_images(self):
-        if self.update_metadata_images_enabled and self.can_show_coverart:
-            update_metadata_images(self)
 
 
 class UnclusteredFiles(Cluster):

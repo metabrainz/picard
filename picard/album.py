@@ -718,9 +718,9 @@ class Album(DataObject, Item):
         if not self.update_metadata_images_enabled:
             return
 
-        update_metadata_images(self)
-        self.update(False)
-        self.metadata_images_changed.emit()
+        if update_metadata_images(self):
+            self.update(False)
+            self.metadata_images_changed.emit()
 
     def keep_original_images(self):
         self.enable_update_metadata_images(False)

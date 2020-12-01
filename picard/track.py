@@ -196,8 +196,8 @@ class Track(DataObject, FileList):
             return
         self.files.remove(file)
         self.num_linked_files -= 1
-        file.copy_metadata(file.orig_metadata, preserve_deleted=False)
         file.metadata_images_changed.disconnect(self.update_metadata_images)
+        file.copy_metadata(file.orig_metadata, preserve_deleted=False)
         self.album._remove_file(self, file)
         remove_metadata_images(self, [file])
         run_file_post_removal_from_track_processors(self, file)

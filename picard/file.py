@@ -251,6 +251,7 @@ class File(QtCore.QObject, Item):
             if tag in preserved_tags or tag in PRESERVED_TAGS:
                 saved_metadata[tag] = values
         deleted_tags = self.metadata.deleted_tags
+        images_changed = self.metadata.images != metadata.images
         self.metadata.copy(metadata)
         for info in FILE_INFO_TAGS:
             metadata[info] = self.orig_metadata[info]
@@ -262,12 +263,14 @@ class File(QtCore.QObject, Item):
 
         if acoustid and "acoustid_id" not in metadata.deleted_tags:
             self.metadata["acoustid_id"] = acoustid
-        self.metadata_images_changed.emit()
+        if images_changed:
+            self.metadata_images_changed.emit()
 
     def keep_original_images(self):
-        self.metadata.images = self.orig_metadata.images.copy()
-        self.update(signal=False)
-        self.metadata_images_changed.emit()
+        if self.metadata.images != self.orig_metadata.images:
+            self.metadata.images = self.orig_metadata.images.copy()
+            self.update(signal=False)
+            self.metadata_images_changed.emit()
 
     def has_error(self):
         return self.state == File.ERROR
@@ -365,6 +368,7 @@ class File(QtCore.QObject, Item):
             temp_info = {}
             for info in FILE_INFO_TAGS:
                 temp_info[info] = self.orig_metadata[info]
+            images_changed = self.orig_metadata.images != self.new_metadata.images
             # Data is copied from New to Original because New may be
             # a subclass to handle id3v23
             if config.setting["clear_existing_tags"]:
@@ -381,7 +385,8 @@ class File(QtCore.QObject, Item):
             self.clear_errors()
             self.clear_pending()
             self._add_path_to_metadata(self.orig_metadata)
-            self.metadata_images_changed.emit()
+            if images_changed:
+                self.metadata_images_changed.emit()
 
             # run post save hook
             run_file_post_save_processors(self)
