@@ -399,7 +399,7 @@ class TrackInfoDialog(InfoDialog):
         tabWidget.setTabText(tab_index, _("&Info"))
         text = ngettext("%i file in this track", "%i files in this track",
                         track.num_linked_files) % track.num_linked_files
-        info_files = [format_file_info(file_) for file_ in track.linked_files]
+        info_files = [format_file_info(file_) for file_ in track.files]
         text += '<hr />' + '<hr />'.join(info_files)
         self.ui.info.setText(text)
 

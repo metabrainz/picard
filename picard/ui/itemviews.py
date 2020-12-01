@@ -1018,7 +1018,7 @@ class TrackItem(TreeItem):
     def update(self, update_album=True, update_files=True):
         track = self.obj
         if track.num_linked_files == 1:
-            file = track.linked_files[0]
+            file = track.files[0]
             file.item = self
             color = TrackItem.track_colors[file.state]
             bgcolor = get_match_color(file.similarity, TreeItem.base_color)
@@ -1053,14 +1053,14 @@ class TrackItem(TreeItem):
                     oldnum = newnum
                 for i in range(oldnum):  # update existing items
                     item = self.child(i)
-                    file = track.linked_files[i]
+                    file = track.files[i]
                     item.obj = file
                     file.item = item
                     item.update(update_track=False)
                 if newnum > oldnum:  # add new items
                     items = []
                     for i in range(newnum - 1, oldnum - 1, -1):
-                        item = FileItem(track.linked_files[i], False)
+                        item = FileItem(track.files[i], False)
                         item.update(update_track=False)
                         items.append(item)
                     self.addChildren(items)

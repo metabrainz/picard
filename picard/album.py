@@ -168,7 +168,7 @@ class Album(DataObject, Item):
             if track_discids:
                 track.metadata['musicbrainz_discid'] = track_discids
                 track.update()
-                for file in track.linked_files:
+                for file in track.files:
                     file.metadata['musicbrainz_discid'] = track_discids
                     file.update()
 
@@ -399,7 +399,7 @@ class Album(DataObject, Item):
                 self._new_metadata.strip_whitespace()
 
             for track in self.tracks:
-                for file in list(track.linked_files):
+                for file in list(track.files):
                     file.move(self.unmatched_files)
             self.metadata = self._new_metadata
             self.orig_metadata.copy(self.metadata)
@@ -632,7 +632,7 @@ class Album(DataObject, Item):
     def is_modified(self):
         if self.tracks:
             for track in self.tracks:
-                for file in track.linked_files:
+                for file in track.files:
                     if not file.is_saved():
                         return True
         return False
@@ -640,7 +640,7 @@ class Album(DataObject, Item):
     def get_num_unsaved_files(self):
         count = 0
         for track in self.tracks:
-            for file in track.linked_files:
+            for file in track.files:
                 if not file.is_saved():
                     count += 1
         return count
@@ -746,7 +746,7 @@ class NatAlbum(Album):
         for track in self.tracks:
             if old_album_title == track.metadata["album"]:
                 track.metadata["album"] = self.metadata["album"]
-            for file in track.linked_files:
+            for file in track.files:
                 track.update_file_metadata(file)
         self.enable_update_metadata_images(True)
         super().update(update_tracks)

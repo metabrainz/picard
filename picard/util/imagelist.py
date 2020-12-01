@@ -147,12 +147,12 @@ def _get_state(obj):
     if isinstance(obj, Album):
         for track in obj.tracks:
             state.sources.append(track)
-            state.sources += track.linked_files
+            state.sources += track.files
         state.sources += obj.unmatched_files.files
         state.update_new_metadata = True
         state.update_orig_metadata = True
     elif isinstance(obj, Track):
-        state.sources = obj.linked_files
+        state.sources = obj.files
         state.update_orig_metadata = True
     elif isinstance(obj, Cluster):
         state.sources = obj.files

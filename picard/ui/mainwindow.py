@@ -1077,7 +1077,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     def show_more_tracks(self):
         obj = self.selected_objects[0]
         if isinstance(obj, Track):
-            obj = obj.linked_files[0]
+            obj = obj.files[0]
         dialog = TrackSearchDialog(self)
         dialog.load_similar_tracks(obj)
         dialog.exec_()
@@ -1193,7 +1193,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                 self.set_statusbar_message(msg, mparms, echo=None, history=None)
             elif isinstance(obj, Track):
                 if obj.num_linked_files == 1:
-                    file = obj.linked_files[0]
+                    file = obj.files[0]
                     if file.has_error():
                         msg = N_("%(filename)s (%(similarity)d%%) (error: %(error)s)")
                         mparms = {

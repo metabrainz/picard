@@ -55,7 +55,6 @@ from picard.coverart.image import (
     CoverArtImageError,
 )
 from picard.file import File
-from picard.track import Track
 from picard.util import imageinfo
 from picard.util.lrucache import LRUCache
 
@@ -488,29 +487,16 @@ class CoverArtBox(QtWidgets.QGroupBox):
             album.update_metadata_images()
             album.update(False)
         elif isinstance(self.item, FileList):
-            cluster = self.item
-            cluster.enable_update_metadata_images(False)
-            set_image(cluster, coverartimage)
-            for file in cluster.iterfiles():
+            filelist = self.item
+            filelist.enable_update_metadata_images(False)
+            set_image(filelist, coverartimage)
+            for file in filelist.iterfiles():
                 set_image(file, coverartimage)
                 file.metadata_images_changed.emit()
                 file.update(signal=False)
-            cluster.enable_update_metadata_images(True)
-            cluster.update_metadata_images()
-            cluster.update()
-        elif isinstance(self.item, Track):
-            track = self.item
-            track.album.enable_update_metadata_images(False)
-            set_image(track, coverartimage)
-            track.metadata_images_changed.emit()
-            for file in track.iterfiles():
-                set_image(file, coverartimage)
-                file.metadata_images_changed.emit()
-                file.update(signal=False)
-            track.album.enable_update_metadata_images(True)
-            track.album.update_metadata_images()
-            track.album.update(False)
-            track.update()
+            filelist.enable_update_metadata_images(True)
+            filelist.update_metadata_images()
+            filelist.update()
         elif isinstance(self.item, File):
             file = self.item
             set_image(file, coverartimage)

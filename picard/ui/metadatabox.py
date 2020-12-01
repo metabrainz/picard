@@ -395,7 +395,7 @@ class MetadataBox(QtWidgets.QTableWidget):
                         track_albums = set()
                         for file in self.files:
                             objects = [file]
-                            if file.parent in self.tracks and len(self.files & set(file.parent.linked_files)) == 1:
+                            if file.parent in self.tracks and len(self.files & set(file.parent.files)) == 1:
                                 objects.append(file.parent)
                                 file_tracks.append(file.parent)
                                 track_albums.add(file.parent.album)
@@ -503,7 +503,7 @@ class MetadataBox(QtWidgets.QTableWidget):
                 files.add(obj)
             elif isinstance(obj, Track):
                 tracks.add(obj)
-                files.update(obj.linked_files)
+                files.update(obj.files)
             elif isinstance(obj, Cluster) and obj.can_edit_tags():
                 objects.add(obj)
                 files.update(obj.files)
@@ -511,7 +511,7 @@ class MetadataBox(QtWidgets.QTableWidget):
                 objects.add(obj)
                 tracks.update(obj.tracks)
                 for track in obj.tracks:
-                    files.update(track.linked_files)
+                    files.update(track.files)
         objects.update(files)
         objects.update(tracks)
         self.selection_dirty = False
