@@ -113,6 +113,7 @@ class AlbumArtist(DataObject):
 
 class Album(DataObject, Item):
 
+    metadata_images_changed = QtCore.pyqtSignal()
     release_group_loaded = QtCore.pyqtSignal()
 
     def __init__(self, album_id, discid=None):
@@ -131,6 +132,7 @@ class Album(DataObject, Item):
             self._discids.add(discid)
         self._after_load_callbacks = []
         self.unmatched_files = Cluster(_("Unmatched Files"), special=True, related_album=self, hide_if_empty=True)
+        self.unmatched_files.metadata_images_changed.connect(self.update_metadata_images)
         self.status = None
         self._album_artists = []
         self.update_metadata_images_enabled = True
@@ -166,7 +168,7 @@ class Album(DataObject, Item):
             if track_discids:
                 track.metadata['musicbrainz_discid'] = track_discids
                 track.update()
-                for file in track.linked_files:
+                for file in track.files:
                     file.metadata['musicbrainz_discid'] = track_discids
                     file.update()
 
@@ -376,6 +378,7 @@ class Album(DataObject, Item):
             self.enable_update_metadata_images(False)
             for track in self._new_tracks:
                 track.orig_metadata.copy(track.metadata)
+                track.metadata_images_changed.connect(self.update_metadata_images)
 
             # Prepare parser for user's script
             for s_name, s_text in enabled_tagger_scripts_texts():
@@ -396,11 +399,11 @@ class Album(DataObject, Item):
                 self._new_metadata.strip_whitespace()
 
             for track in self.tracks:
-                track.metadata_images_changed.connect(self.update_metadata_images)
-                for file in list(track.linked_files):
+                for file in list(track.files):
                     file.move(self.unmatched_files)
             self.metadata = self._new_metadata
             self.orig_metadata.copy(self.metadata)
+            self.orig_metadata.images.clear()
             self.tracks = self._new_tracks
             del self._new_metadata
             del self._new_tracks
@@ -513,12 +516,10 @@ class Album(DataObject, Item):
         self._files += 1
         self.update(update_tracks=False)
         add_metadata_images(self, [file])
-        file.metadata_images_changed.connect(self.update_metadata_images)
 
     def _remove_file(self, track, file):
         self._files -= 1
         self.update(update_tracks=False)
-        file.metadata_images_changed.disconnect(self.update_metadata_images)
         remove_metadata_images(self, [file])
 
     def _match_files(self, files, threshold=0):
@@ -632,7 +633,7 @@ class Album(DataObject, Item):
     def is_modified(self):
         if self.tracks:
             for track in self.tracks:
-                for file in track.linked_files:
+                for file in track.files:
                     if not file.is_saved():
                         return True
         return False
@@ -640,7 +641,7 @@ class Album(DataObject, Item):
     def get_num_unsaved_files(self):
         count = 0
         for track in self.tracks:
-            for file in track.linked_files:
+            for file in track.files:
                 if not file.is_saved():
                     count += 1
         return count
@@ -718,9 +719,9 @@ class Album(DataObject, Item):
         if not self.update_metadata_images_enabled:
             return
 
-        update_metadata_images(self)
-
-        self.update(False)
+        if update_metadata_images(self):
+            self.update(False)
+            self.metadata_images_changed.emit()
 
     def keep_original_images(self):
         self.enable_update_metadata_images(False)
@@ -746,7 +747,7 @@ class NatAlbum(Album):
         for track in self.tracks:
             if old_album_title == track.metadata["album"]:
                 track.metadata["album"] = self.metadata["album"]
-            for file in track.linked_files:
+            for file in track.files:
                 track.update_file_metadata(file)
         self.enable_update_metadata_images(True)
         super().update(update_tracks)

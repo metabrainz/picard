@@ -95,7 +95,7 @@ class RatingWidget(QtWidgets.QWidget):
         track = self._track
         rating = str(self._rating)
         track.metadata["~rating"] = rating
-        for file in track.linked_files:
+        for file in track.files:
             file.metadata["~rating"] = rating
         if config.setting["submit_ratings"]:
             ratings = {("recording", track.id): self._rating}

@@ -82,4 +82,4 @@ class ScriptsMenu(QtWidgets.QMenu):
                 yield from self._get_metadata_objects(obj.tracks)
                 yield from self._get_metadata_objects(obj.unmatched_files.iterfiles())
             if isinstance(obj, Track):
-                yield from self._get_metadata_objects(obj.linked_files)
+                yield from self._get_metadata_objects(obj.files)

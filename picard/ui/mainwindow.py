@@ -1077,7 +1077,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     def show_more_tracks(self):
         obj = self.selected_objects[0]
         if isinstance(obj, Track):
-            obj = obj.linked_files[0]
+            obj = obj.files[0]
         dialog = TrackSearchDialog(self)
         dialog.load_similar_tracks(obj)
         dialog.exec_()
@@ -1168,8 +1168,6 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
         self.update_actions()
 
-        metadata = None
-        orig_metadata = None
         obj = None
 
         # Clear any existing status bar messages
@@ -1181,8 +1179,6 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         if len(objects) == 1:
             obj = list(objects)[0]
             if isinstance(obj, File):
-                metadata = obj.metadata
-                orig_metadata = obj.orig_metadata
                 if obj.state == obj.ERROR:
                     msg = N_("%(filename)s (error: %(error)s)")
                     mparms = {
@@ -1196,10 +1192,8 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                     }
                 self.set_statusbar_message(msg, mparms, echo=None, history=None)
             elif isinstance(obj, Track):
-                metadata = obj.metadata
                 if obj.num_linked_files == 1:
-                    file = obj.linked_files[0]
-                    orig_metadata = file.orig_metadata
+                    file = obj.files[0]
                     if file.has_error():
                         msg = N_("%(filename)s (%(similarity)d%%) (error: %(error)s)")
                         mparms = {
@@ -1215,22 +1209,15 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                         }
                     self.set_statusbar_message(msg, mparms, echo=None,
                                                history=None)
-            elif isinstance(obj, Album):
-                metadata = obj.metadata
-                orig_metadata = obj.orig_metadata
-            elif obj.can_show_coverart:
-                metadata = obj.metadata
-        else:
+        elif new_selection:
             # Create a temporary file list which allows changing cover art for all selected files
             files = self.tagger.get_files_from_objects(objects)
             obj = FileList(files)
-            metadata = obj.metadata
-            orig_metadata = obj.orig_metadata
 
         if new_selection:
             self.metadata_box.selection_dirty = True
+            self.cover_art_box.set_item(obj)
         self.metadata_box.update(drop_album_caches=drop_album_caches)
-        self.cover_art_box.set_metadata(metadata, orig_metadata, obj)
         self.selection_updated.emit(objects)
 
     def refresh_metadatabox(self):

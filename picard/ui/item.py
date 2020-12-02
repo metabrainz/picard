@@ -24,6 +24,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from picard import log
+from picard.util.imagelist import update_metadata_images
 
 
 class Item(object):
@@ -97,3 +98,31 @@ class Item(object):
 
     def clear_errors(self):
         self._errors = []
+
+
+class FileListItem(Item):
+
+    def __init__(self, files=None):
+        super().__init__()
+        self.files = files or []
+        self.update_metadata_images_enabled = True
+
+    def iterfiles(self, save=False):
+        for file in self.files:
+            yield file
+
+    def enable_update_metadata_images(self, enabled):
+        self.update_metadata_images_enabled = enabled
+
+    def update_metadata_images(self):
+        if self.update_metadata_images_enabled and self.can_show_coverart:
+            if update_metadata_images(self):
+                self.metadata_images_changed.emit()
+
+    def keep_original_images(self):
+        self.enable_update_metadata_images(False)
+        for file in list(self.files):
+            if file.can_show_coverart:
+                file.keep_original_images()
+        self.enable_update_metadata_images(True)
+        self.update_metadata_images()

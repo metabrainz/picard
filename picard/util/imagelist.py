@@ -53,6 +53,8 @@ class ImageList(MutableSequence):
         return sorted(self, key=lambda image: image.normalized_types())
 
     def __eq__(self, other):
+        if len(self) != len(other):
+            return False
         return self._sorted() == other._sorted()
 
     def copy(self):
@@ -124,22 +126,29 @@ def _process_images(state, src_obj):
 
 
 def _update_state(obj, state):
+    changed = False
     for src_obj in state.sources:
         _process_images(state, src_obj)
 
     if state.update_new_metadata:
-        obj.metadata.images = ImageList(state.new_images)
+        updated_images = ImageList(state.new_images)
+        changed |= updated_images != obj.metadata.images
+        obj.metadata.images = updated_images
         obj.metadata.has_common_images = state.has_common_new_images
 
     if state.update_orig_metadata:
-        obj.orig_metadata.images = ImageList(state.orig_images)
+        updated_images = ImageList(state.orig_images)
+        changed |= updated_images != obj.orig_metadata.images
+        obj.orig_metadata.images = updated_images
         obj.orig_metadata.has_common_images = state.has_common_orig_images
+
+    return changed
 
 
 # TODO: use functools.singledispatch when py3 is supported
 def _get_state(obj):
     from picard.album import Album
-    from picard.cluster import (Cluster, FileList)
+    from picard.cluster import FileList
     from picard.track import Track
 
     state = ImageListState()
@@ -147,16 +156,13 @@ def _get_state(obj):
     if isinstance(obj, Album):
         for track in obj.tracks:
             state.sources.append(track)
-            state.sources += track.linked_files
+            state.sources += track.files
         state.sources += obj.unmatched_files.files
         state.update_new_metadata = True
         state.update_orig_metadata = True
     elif isinstance(obj, Track):
-        state.sources = obj.linked_files
-        state.update_orig_metadata = True
-    elif isinstance(obj, Cluster):
         state.sources = obj.files
-        state.update_new_metadata = True
+        state.update_orig_metadata = True
     elif isinstance(obj, FileList):
         state.sources = obj.files
         state.update_new_metadata = True
@@ -188,8 +194,10 @@ def update_metadata_images(obj):
 
     Args:
         obj: A `Cluster`, `Album` or `Track` object with `metadata` property
+    Returns:
+        bool: True, if images where changed, False otherwise
     """
-    _update_state(obj, _get_state(obj))
+    return _update_state(obj, _get_state(obj))
 
 
 def _add_images(metadata, added_images):

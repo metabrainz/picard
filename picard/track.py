@@ -70,14 +70,12 @@ from picard.script import (
     enabled_tagger_scripts_texts,
 )
 from picard.util.imagelist import (
-    ImageList,
     add_metadata_images,
     remove_metadata_images,
-    update_metadata_images,
 )
 from picard.util.textencoding import asciipunct
 
-from picard.ui.item import Item
+from picard.ui.item import FileListItem
 
 
 _TRANSLATE_TAGS = {
@@ -137,39 +135,44 @@ class TrackArtist(DataObject):
         super().__init__(ta_id)
 
 
-class Track(DataObject, Item):
+class Track(DataObject, FileListItem):
 
     metadata_images_changed = QtCore.pyqtSignal()
 
     def __init__(self, track_id, album=None):
         DataObject.__init__(self, track_id)
-        self.album = album
-        self.linked_files = []
-        self.num_linked_files = 0
+        FileListItem.__init__(self)
         self.metadata = Metadata()
         self.orig_metadata = Metadata()
+        self.album = album
+        self.num_linked_files = 0
         self.scripted_metadata = Metadata()
         self._track_artists = []
 
     def __repr__(self):
         return '<Track %s %r>' % (self.id, self.metadata["title"])
 
+    @property
+    def linked_files(self):
+        """For backward compatibility with old code in plugins"""
+        return self.files
+
     def add_file(self, file):
-        if file not in self.linked_files:
+        if file not in self.files:
             track_will_expand = self.num_linked_files == 1
-            self.linked_files.append(file)
+            self.files.append(file)
             self.num_linked_files += 1
         self.update_file_metadata(file)
         add_metadata_images(self, [file])
         self.album._add_file(self, file)
-        file.metadata_images_changed.connect(self.update_orig_metadata_images)
+        file.metadata_images_changed.connect(self.update_metadata_images)
         run_file_post_addition_to_track_processors(self, file)
         if track_will_expand:
             # Files get expanded, ensure the existing item renders correctly
-            self.linked_files[0].update_item()
+            self.files[0].update_item()
 
     def update_file_metadata(self, file):
-        if file not in self.linked_files:
+        if file not in self.files:
             return
         # Run the scripts for the file to allow usage of
         # file specific metadata and variables
@@ -191,12 +194,12 @@ class Track(DataObject, Item):
         self.update()
 
     def remove_file(self, file):
-        if file not in self.linked_files:
+        if file not in self.files:
             return
-        self.linked_files.remove(file)
+        self.files.remove(file)
         self.num_linked_files -= 1
+        file.metadata_images_changed.disconnect(self.update_metadata_images)
         file.copy_metadata(file.orig_metadata, preserve_deleted=False)
-        file.metadata_images_changed.disconnect(self.update_orig_metadata_images)
         self.album._remove_file(self, file)
         remove_metadata_images(self, [file])
         run_file_post_removal_from_track_processors(self, file)
@@ -218,23 +221,19 @@ class Track(DataObject, Item):
         if self.item:
             self.item.update()
 
-    def iterfiles(self, save=False):
-        for file in self.linked_files:
-            yield file
-
     def is_linked(self):
         return self.num_linked_files > 0
 
     def can_save(self):
         """Return if this object can be saved."""
-        for file in self.linked_files:
+        for file in self.files:
             if file.can_save():
                 return True
         return False
 
     def can_remove(self):
         """Return if this object can be removed."""
-        for file in self.linked_files:
+        for file in self.files:
             if file.can_remove():
                 return True
         return False
@@ -254,7 +253,7 @@ class Track(DataObject, Item):
         elif column in m:
             return m[column]
         elif self.num_linked_files == 1:
-            return self.linked_files[0].column(column)
+            return self.files[0].column(column)
 
     def is_video(self):
         return self.metadata['~video'] == '1'
@@ -348,18 +347,6 @@ class Track(DataObject, Item):
             genre = [join_genres.join(genre)]
         self.metadata['genre'] = genre
 
-    def update_orig_metadata_images(self):
-        update_metadata_images(self)
-
-    def keep_original_images(self):
-        for file in self.linked_files:
-            file.keep_original_images()
-        self.update_orig_metadata_images()
-        if self.linked_files:
-            self.metadata.images = self.orig_metadata.images.copy()
-        else:
-            self.metadata.images = ImageList()
-
 
 class NonAlbumTrack(Track):
 
@@ -410,7 +397,7 @@ class NonAlbumTrack(Track):
             return
         try:
             self._parse_recording(recording)
-            for file in self.linked_files:
+            for file in self.files:
                 self.update_file_metadata(file)
         except Exception:
             self._set_error(traceback.format_exc())
