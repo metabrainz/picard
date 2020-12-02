@@ -48,7 +48,6 @@ from picard import (
     config,
     log,
 )
-from picard.cluster import FileList
 from picard.const import (
     DATA_TRACK_TITLE,
     SILENCE_TRACK_TITLE,
@@ -75,6 +74,8 @@ from picard.util.imagelist import (
     remove_metadata_images,
 )
 from picard.util.textencoding import asciipunct
+
+from picard.ui.item import FileListItem
 
 
 _TRANSLATE_TAGS = {
@@ -134,13 +135,15 @@ class TrackArtist(DataObject):
         super().__init__(ta_id)
 
 
-class Track(DataObject, FileList):
+class Track(DataObject, FileListItem):
 
     metadata_images_changed = QtCore.pyqtSignal()
 
     def __init__(self, track_id, album=None):
         DataObject.__init__(self, track_id)
-        FileList.__init__(self)
+        FileListItem.__init__(self)
+        self.metadata = Metadata()
+        self.orig_metadata = Metadata()
         self.album = album
         self.num_linked_files = 0
         self.scripted_metadata = Metadata()

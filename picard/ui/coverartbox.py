@@ -48,10 +48,7 @@ from picard import (
     log,
 )
 from picard.album import Album
-from picard.cluster import (
-    Cluster,
-    FileList,
-)
+from picard.cluster import Cluster
 from picard.const import MAX_COVERS_TO_STACK
 from picard.coverart.image import (
     CoverArtImage,
@@ -62,6 +59,7 @@ from picard.track import Track
 from picard.util import imageinfo
 from picard.util.lrucache import LRUCache
 
+from picard.ui.item import FileListItem
 from picard.ui.widgets import ActiveLabel
 
 
@@ -502,7 +500,7 @@ class CoverArtBox(QtWidgets.QGroupBox):
                 track.enable_update_metadata_images(True)
             album.enable_update_metadata_images(True)
             album.update(update_tracks=False)
-        elif isinstance(self.item, FileList):
+        elif isinstance(self.item, FileListItem):
             parents = set()
             filelist = self.item
             filelist.enable_update_metadata_images(False)

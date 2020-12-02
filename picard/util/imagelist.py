@@ -149,6 +149,7 @@ def _update_state(obj, state):
 def _get_state(obj):
     from picard.album import Album
     from picard.cluster import FileList
+    from picard.track import Track
 
     state = ImageListState()
 
@@ -159,7 +160,7 @@ def _get_state(obj):
         state.sources += obj.unmatched_files.files
         state.update_new_metadata = True
         state.update_orig_metadata = True
-    elif isinstance(obj, FileList):
+    elif isinstance(obj, FileList) or isinstance(obj, Track):
         state.sources = obj.files
         state.update_new_metadata = True
         state.update_orig_metadata = True

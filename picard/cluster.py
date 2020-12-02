@@ -67,19 +67,21 @@ from picard.util.imagelist import (
 )
 from picard.util.progresscheckpoints import ProgressCheckpoints
 
-from picard.ui.item import Item
+from picard.ui.item import (
+    FileListItem,
+    Item,
+)
 
 
-class FileList(QtCore.QObject, Item):
+class FileList(QtCore.QObject, FileListItem):
 
     metadata_images_changed = QtCore.pyqtSignal()
 
     def __init__(self, files=None):
         QtCore.QObject.__init__(self)
+        FileListItem.__init__(self, files)
         self.metadata = Metadata()
         self.orig_metadata = Metadata()
-        self.files = files or []
-        self.update_metadata_images_enabled = True
         for file in self.files:
             if self.can_show_coverart:
                 file.metadata_images_changed.connect(self.update_metadata_images)
@@ -96,21 +98,6 @@ class FileList(QtCore.QObject, Item):
     @property
     def can_show_coverart(self):
         return True
-
-    def enable_update_metadata_images(self, enabled):
-        self.update_metadata_images_enabled = enabled
-
-    def update_metadata_images(self):
-        if self.update_metadata_images_enabled and self.can_show_coverart:
-            if update_metadata_images(self):
-                self.metadata_images_changed.emit()
-
-    def keep_original_images(self):
-        self.enable_update_metadata_images(False)
-        for file in list(self.files):
-            file.keep_original_images()
-        self.enable_update_metadata_images(True)
-        self.update_metadata_images()
 
 
 class Cluster(FileList):
