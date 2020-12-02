@@ -160,7 +160,10 @@ def _get_state(obj):
         state.sources += obj.unmatched_files.files
         state.update_new_metadata = True
         state.update_orig_metadata = True
-    elif isinstance(obj, FileList) or isinstance(obj, Track):
+    elif isinstance(obj, Track):
+        state.sources = obj.files
+        state.update_orig_metadata = True
+    elif isinstance(obj, FileList):
         state.sources = obj.files
         state.update_new_metadata = True
         state.update_orig_metadata = True

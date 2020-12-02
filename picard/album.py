@@ -403,6 +403,7 @@ class Album(DataObject, Item):
                     file.move(self.unmatched_files)
             self.metadata = self._new_metadata
             self.orig_metadata.copy(self.metadata)
+            self.orig_metadata.images.clear()
             self.tracks = self._new_tracks
             del self._new_metadata
             del self._new_tracks
