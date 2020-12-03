@@ -368,18 +368,13 @@ def throttle(interval):
 
 def uniqify(seq):
     """Uniqify a list, preserving order"""
-    # Courtesy of Dave Kirby
-    # See http://www.peterbe.com/plog/uniqifiers-benchmark
-    seen = set()
-    add_seen = seen.add
-    return [x for x in seq if x not in seen and not add_seen(x)]
+    return list(iter_unique(seq))
 
 
 def iter_unique(seq):
     """Creates an iterator only returning unique values from seq"""
     seen = set()
-    add_seen = seen.add
-    return (x for x in seq if x not in seen and not add_seen(x))
+    return (x for x in seq if x not in seen and not seen.add(x))
 
 
 # order is important
