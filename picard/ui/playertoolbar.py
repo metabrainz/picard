@@ -133,7 +133,7 @@ class Player(QtCore.QObject):
         playlist = QtMultimedia.QMediaPlaylist(self)
         playlist.setPlaybackMode(QtMultimedia.QMediaPlaylist.Sequential)
         playlist.addMedia([QtMultimedia.QMediaContent(QtCore.QUrl.fromLocalFile(file.filename))
-                          for file in self.tagger.get_files_from_objects(self._selected_objects)])
+                          for file in self.tagger.iter_files_from_objects(self._selected_objects)])
         self._player.setPlaylist(playlist)
         self._player.play()
 

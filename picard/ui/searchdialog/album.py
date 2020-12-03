@@ -367,6 +367,6 @@ class AlbumSearchDialog(SearchDialog):
                 release["musicbrainz_albumid"])
         album = self.tagger.load_album(release["musicbrainz_albumid"])
         if self.cluster:
-            files = self.tagger.get_files_from_objects([self.cluster])
+            files = self.cluster.iterfiles()
             self.tagger.move_files_to_album(files, release["musicbrainz_albumid"],
                                             album)

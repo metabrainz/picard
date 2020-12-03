@@ -111,11 +111,11 @@ from picard.util import (
     decode_filename,
     encode_filename,
     is_hidden,
+    iter_unique,
     mbid_validate,
     normpath,
     process_events_iter,
     thread,
-    uniqify,
     versions,
     webbrowser2,
 )
@@ -582,7 +582,7 @@ class Tagger(QtWidgets.QApplication):
 
     def copy_files(self, objects):
         mimeData = QtCore.QMimeData()
-        mimeData.setUrls([QtCore.QUrl.fromLocalFile(f.filename) for f in (self.get_files_from_objects(objects))])
+        mimeData.setUrls([QtCore.QUrl.fromLocalFile(f.filename) for f in self.iter_files_from_objects(objects)])
         self.clipboard().setMimeData(mimeData)
 
     def paste_files(self, target):
@@ -646,12 +646,16 @@ class Tagger(QtWidgets.QApplication):
 
     def get_files_from_objects(self, objects, save=False):
         """Return list of files from list of albums, clusters, tracks or files."""
-        return uniqify(chain(*[obj.iterfiles(save) for obj in objects]))
+        return list(self.iter_files_from_objects(objects, save=save))
+
+    @staticmethod
+    def iter_files_from_objects(objects, save=False):
+        """Creates an iterator over all unique files from list of albums, clusters, tracks or files."""
+        return iter_unique(chain(*(obj.iterfiles(save) for obj in objects)))
 
     def save(self, objects):
         """Save the specified objects."""
-        files = self.get_files_from_objects(objects, save=True)
-        for file in files:
+        for file in self.iter_files_from_objects(objects, save=True):
             file.save()
 
     def load_album(self, album_id, discid=None):
@@ -707,7 +711,7 @@ class Tagger(QtWidgets.QApplication):
         if album.id not in self.albums:
             return
         album.stop_loading()
-        self.remove_files(self.get_files_from_objects([album]))
+        self.remove_files(album.iterfiles())
         del self.albums[album.id]
         if album.release_group:
             album.release_group.remove_album(album.id)
@@ -720,7 +724,7 @@ class Tagger(QtWidgets.QApplication):
     def remove_nat(self, track):
         """Remove the specified non-album track."""
         log.debug("Removing %r", track)
-        self.remove_files(self.get_files_from_objects([track]))
+        self.remove_files(track.iterfiles())
         if not self.nats:
             return
         self.nats.tracks.remove(track)
@@ -801,8 +805,7 @@ class Tagger(QtWidgets.QApplication):
         """Analyze the file(s)."""
         if not self.use_acoustid:
             return
-        files = self.get_files_from_objects(objs)
-        for file in files:
+        for file in self.iter_files_from_objects(objs):
             if file.can_analyze():
                 file.set_pending()
                 self._acoustid.analyze(file, partial(file._lookup_finished, File.LOOKUP_ACOUSTID))
@@ -811,12 +814,11 @@ class Tagger(QtWidgets.QApplication):
         """Generate the fingerprints without matching the files."""
         if not self.use_acoustid:
             return
-        files = self.get_files_from_objects(objs)
 
         def finished(file, result):
             file.clear_pending()
 
-        for file in files:
+        for file in self.iter_files_from_objects(objs):
             file.set_pending()
             self._acoustid.fingerprint(file, partial(finished, file))
 

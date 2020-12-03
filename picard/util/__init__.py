@@ -369,6 +369,13 @@ def uniqify(seq):
     return [x for x in seq if x not in seen and not add_seen(x)]
 
 
+def iter_unique(seq):
+    """Creates an iterator only returning unique values from seq"""
+    seen = set()
+    add_seen = seen.add
+    return (x for x in seq if x not in seen and not add_seen(x))
+
+
 # order is important
 _tracknum_regexps = (
     # search for explicit track number (prefix "track")
