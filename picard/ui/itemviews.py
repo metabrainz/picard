@@ -911,13 +911,13 @@ class ClusterItem(TreeItem):
         super().__init__(*args)
         self.setIcon(MainPanel.TITLE_COLUMN, ClusterItem.icon_dir)
 
-    def update(self):
+    def update(self, update_selection=True):
         for i, column in enumerate(MainPanel.columns):
             self.setText(i, self.obj.column(column[1]))
         album = self.obj.related_album
         if self.obj.special and album and album.loaded:
             album.item.update(update_tracks=False)
-        if self.isSelected():
+        if update_selection and self.isSelected():
             TreeItem.window.update_selection(new_selection=False)
 
     def add_file(self, file):
@@ -945,7 +945,7 @@ class ClusterItem(TreeItem):
 
 class AlbumItem(TreeItem):
 
-    def update(self, update_tracks=True):
+    def update(self, update_tracks=True, update_selection=True):
         album = self.obj
         selection_changed = self.isSelected()
         if update_tracks:
@@ -993,7 +993,7 @@ class AlbumItem(TreeItem):
                 self.setToolTip(MainPanel.TITLE_COLUMN, _("Album unchanged"))
         for i, column in enumerate(MainPanel.columns):
             self.setText(i, album.column(column[1]))
-        if selection_changed:
+        if selection_changed and update_selection:
             TreeItem.window.update_selection(new_selection=False)
         # Workaround for PICARD-1446: Expand/collapse indicator for the release
         # is briefly missing on Windows
@@ -1015,7 +1015,7 @@ class NatAlbumItem(AlbumItem):
 
 class TrackItem(TreeItem):
 
-    def update(self, update_album=True, update_files=True):
+    def update(self, update_album=True, update_files=True, update_selection=True):
         track = self.obj
         if track.num_linked_files == 1:
             file = track.files[0]
@@ -1061,7 +1061,7 @@ class TrackItem(TreeItem):
                     items = []
                     for i in range(newnum - 1, oldnum - 1, -1):
                         item = FileItem(track.files[i], False)
-                        item.update(update_track=False)
+                        item.update(update_track=False, update_selection=update_selection)
                         items.append(item)
                     self.addChildren(items)
             self.setExpanded(True)
@@ -1074,15 +1074,15 @@ class TrackItem(TreeItem):
             self.setText(i, track.column(column[1]))
             self.setForeground(i, color)
             self.setBackground(i, bgcolor)
-        if self.isSelected():
+        if update_selection and self.isSelected():
             TreeItem.window.update_selection(new_selection=False)
         if update_album:
-            self.parent().update(update_tracks=False)
+            self.parent().update(update_tracks=False, update_selection=update_selection)
 
 
 class FileItem(TreeItem):
 
-    def update(self, update_track=True):
+    def update(self, update_track=True, update_selection=True):
         file = self.obj
         self.setIcon(MainPanel.TITLE_COLUMN, FileItem.decide_file_icon(file))
         fingerprint_icon, fingerprint_tooltip = FileItem.decide_fingerprint_icon_info(file)
@@ -1096,11 +1096,11 @@ class FileItem(TreeItem):
             self.setBackground(i, bgcolor)
         if file.errors:
             self.setToolTip(MainPanel.TITLE_COLUMN, _("Processing error(s): See the Errors tab in the File Info dialog"))
-        if self.isSelected():
+        if update_selection and self.isSelected():
             TreeItem.window.update_selection(new_selection=False)
         parent = self.parent()
         if isinstance(parent, TrackItem) and update_track:
-            parent.update(update_files=False)
+            parent.update(update_files=False, update_selection=update_selection)
 
     @staticmethod
     def decide_file_icon(file):

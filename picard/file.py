@@ -383,7 +383,7 @@ class File(QtCore.QObject, Item):
             for k, v in temp_info.items():
                 self.orig_metadata[k] = v
             self.clear_errors()
-            self.clear_pending()
+            self.clear_pending(signal=False)
             self._add_path_to_metadata(self.orig_metadata)
             if images_changed:
                 self.metadata_images_changed.emit()
@@ -821,16 +821,17 @@ class File(QtCore.QObject, Item):
     def set_pending(self):
         if self.state != File.REMOVED:
             self.state = File.PENDING
-            self.update_item()
+            self.update_item(update_selection=False)
 
-    def clear_pending(self):
+    def clear_pending(self, signal=True):
         if self.state == File.PENDING:
             self.state = File.NORMAL if self.similarity == 1.0 else File.CHANGED
-            self.update_item()
+            if signal:
+                self.update_item(update_selection=False)
 
-    def update_item(self):
+    def update_item(self, update_selection=True):
         if self.item:
-            self.item.update()
+            self.item.update(update_selection=update_selection)
 
     def iterfiles(self, save=False):
         yield self
