@@ -460,7 +460,7 @@ class MetadataBox(QtWidgets.QTableWidget):
     def set_tag_values(self, tag, values, objects=None):
         if objects is None:
             objects = self.objects
-        with self.window.ignore_selection_changes:
+        with self.parent.ignore_selection_changes:
             if values == [""]:
                 values = []
             if not values and self.tag_is_removable(tag):
