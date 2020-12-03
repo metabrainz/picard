@@ -398,9 +398,7 @@ class Album(DataObject, Item):
                     log.exception("Failed to run tagger script %s on album", s_name)
                 self._new_metadata.strip_whitespace()
 
-            for track in self.tracks:
-                for file in list(track.files):
-                    file.move(self.unmatched_files)
+            unmatched_files = [file for track in self.tracks for file in track.files]
             self.metadata = self._new_metadata
             self.orig_metadata.copy(self.metadata)
             self.orig_metadata.images.clear()
@@ -409,7 +407,7 @@ class Album(DataObject, Item):
             del self._new_tracks
             self.loaded = True
             self.status = None
-            self.match_files(self.unmatched_files.files)
+            self.match_files(unmatched_files + self.unmatched_files.files)
             self.enable_update_metadata_images(True)
             self.update()
             self.tagger.window.set_statusbar_message(
@@ -474,7 +472,7 @@ class Album(DataObject, Item):
             self.release_group.genres.clear()
         self.metadata.clear()
         self.genres.clear()
-        self.update()
+        self.update(update_selection=False)
         self._new_metadata = Metadata()
         self._new_tracks = []
         self._requests = 1
@@ -508,9 +506,9 @@ class Album(DataObject, Item):
             self.tagger.webservice.remove_task(self.load_task)
             self.load_task = None
 
-    def update(self, update_tracks=True):
+    def update(self, update_tracks=True, update_selection=True):
         if self.item:
-            self.item.update(update_tracks)
+            self.item.update(update_tracks, update_selection=update_selection)
 
     def _add_file(self, track, file):
         self._files += 1

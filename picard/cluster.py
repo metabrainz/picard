@@ -135,6 +135,10 @@ class Cluster(FileList):
     def __len__(self):
         return len(self.files)
 
+    @property
+    def album(self):
+        return self.related_album
+
     def _update_related_album(self, added_files=None, removed_files=None):
         if self.related_album:
             if added_files:
@@ -143,7 +147,7 @@ class Cluster(FileList):
                 remove_metadata_images(self.related_album, removed_files)
             self.related_album.update()
 
-    def add_files(self, files):
+    def add_files(self, files, update_album=True):
         added_files = set(files) - set(self.files)
         if not added_files:
             return
@@ -159,12 +163,13 @@ class Cluster(FileList):
         self.item.add_files(added_files)
         if self.can_show_coverart:
             add_metadata_images(self, added_files)
-        self._update_related_album(added_files=added_files)
+        if update_album:
+            self._update_related_album(added_files=added_files)
 
-    def add_file(self, file):
+    def add_file(self, file, update_album=True):
         self.add_files([file])
 
-    def remove_file(self, file):
+    def remove_file(self, file, update_album=True):
         self.tagger.window.set_processing(True)
         self.metadata.length -= file.metadata.length
         self.files.remove(file)
@@ -173,7 +178,8 @@ class Cluster(FileList):
         if self.can_show_coverart:
             file.metadata_images_changed.disconnect(self.update_metadata_images)
             remove_metadata_images(self, [file])
-        self._update_related_album(removed_files=[file])
+        if update_album:
+            self._update_related_album(removed_files=[file])
         self.tagger.window.set_processing(False)
         if not self.special and self.get_num_files() == 0:
             self.tagger.remove_cluster(self)
@@ -374,16 +380,12 @@ class UnclusteredFiles(Cluster):
     def __init__(self):
         super().__init__(_("Unclustered Files"), special=True)
 
-    def add_files(self, files):
-        super().add_files(files)
+    def add_files(self, files, update_album=True):
+        super().add_files(files, update_album=update_album)
         self.tagger.window.enable_cluster(self.get_num_files() > 0)
 
-    def add_file(self, file):
-        super().add_file(file)
-        self.tagger.window.enable_cluster(self.get_num_files() > 0)
-
-    def remove_file(self, file):
-        super().remove_file(file)
+    def remove_file(self, file, update_album=True):
+        super().remove_file(file, update_album=update_album)
         self.tagger.window.enable_cluster(self.get_num_files() > 0)
 
     def lookup_metadata(self):
