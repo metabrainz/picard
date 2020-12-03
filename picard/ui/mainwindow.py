@@ -73,6 +73,7 @@ from picard.plugin import ExtensionPoint
 from picard.track import Track
 from picard.util import (
     icontheme,
+    iter_files_from_objects,
     iter_unique,
     restore_method,
     thread,
@@ -1044,7 +1045,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         return QtCore.QUrl.fromLocalFile(url)
 
     def play_file(self):
-        for file in self.tagger.iter_files_from_objects(self.selected_objects):
+        for file in iter_files_from_objects(self.selected_objects):
             QtGui.QDesktopServices.openUrl(self._openUrl(file.filename))
 
     def _on_player_error(self, error, msg):
@@ -1053,7 +1054,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     def open_folder(self):
         folders = iter_unique(
             os.path.dirname(f.filename) for f
-            in self.tagger.iter_files_from_objects(self.selected_objects))
+            in iter_files_from_objects(self.selected_objects))
         for folder in folders:
             QtGui.QDesktopServices.openUrl(self._openUrl(folder))
 

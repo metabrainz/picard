@@ -45,7 +45,6 @@
 import argparse
 from collections import defaultdict
 from functools import partial
-from itertools import chain
 import logging
 import os.path
 import platform
@@ -111,7 +110,7 @@ from picard.util import (
     decode_filename,
     encode_filename,
     is_hidden,
-    iter_unique,
+    iter_files_from_objects,
     mbid_validate,
     normpath,
     process_events_iter,
@@ -582,7 +581,7 @@ class Tagger(QtWidgets.QApplication):
 
     def copy_files(self, objects):
         mimeData = QtCore.QMimeData()
-        mimeData.setUrls([QtCore.QUrl.fromLocalFile(f.filename) for f in self.iter_files_from_objects(objects)])
+        mimeData.setUrls([QtCore.QUrl.fromLocalFile(f.filename) for f in iter_files_from_objects(objects)])
         self.clipboard().setMimeData(mimeData)
 
     def paste_files(self, target):
@@ -645,17 +644,15 @@ class Tagger(QtWidgets.QApplication):
                 item.filename if isinstance(item, File) else '')
 
     def get_files_from_objects(self, objects, save=False):
-        """Return list of files from list of albums, clusters, tracks or files."""
-        return list(self.iter_files_from_objects(objects, save=save))
+        """Return list of unique files from list of albums, clusters, tracks or files.
 
-    @staticmethod
-    def iter_files_from_objects(objects, save=False):
-        """Creates an iterator over all unique files from list of albums, clusters, tracks or files."""
-        return iter_unique(chain(*(obj.iterfiles(save) for obj in objects)))
+        Note: Consider using picard.util.iter_files_from_objects instead, which returns an iterator.
+        """
+        return list(iter_files_from_objects(objects, save=save))
 
     def save(self, objects):
         """Save the specified objects."""
-        for file in self.iter_files_from_objects(objects, save=True):
+        for file in iter_files_from_objects(objects, save=True):
             file.save()
 
     def load_album(self, album_id, discid=None):
@@ -805,7 +802,7 @@ class Tagger(QtWidgets.QApplication):
         """Analyze the file(s)."""
         if not self.use_acoustid:
             return
-        for file in self.iter_files_from_objects(objs):
+        for file in iter_files_from_objects(objs):
             if file.can_analyze():
                 file.set_pending()
                 self._acoustid.analyze(file, partial(file._lookup_finished, File.LOOKUP_ACOUSTID))
@@ -818,7 +815,7 @@ class Tagger(QtWidgets.QApplication):
         def finished(file, result):
             file.clear_pending()
 
-        for file in self.iter_files_from_objects(objs):
+        for file in iter_files_from_objects(objs):
             file.set_pending()
             self._acoustid.fingerprint(file, partial(finished, file))
 

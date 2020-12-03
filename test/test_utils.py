@@ -33,6 +33,7 @@ from collections import namedtuple
 from collections.abc import Iterator
 import os.path
 import unittest
+from unittest.mock import Mock
 
 from test.picardtestcase import PicardTestCase
 
@@ -43,6 +44,7 @@ from picard.util import (
     find_best_match,
     imageinfo,
     is_absolute_path,
+    iter_files_from_objects,
     iter_unique,
     limited_join,
     sort_by_similarity,
@@ -453,6 +455,21 @@ class LimitedJoin(PicardTestCase):
         expected = '0,1,2,3,…,6,7,8,9'
         result = limited_join(self.list, len(self.list) - 1, ',')
         self.assertEqual(result, expected)
+
+
+class IterFilesFromObjectsTest(PicardTestCase):
+
+    def test_iterate_only_unique(self):
+        f1 = Mock()
+        f2 = Mock()
+        f3 = Mock()
+        obj1 = Mock()
+        obj1.iterfiles = Mock(return_value=[f1, f2])
+        obj2 = Mock()
+        obj2.iterfiles = Mock(return_value=[f2, f3])
+        result = iter_files_from_objects([obj1, obj2])
+        self.assertTrue(isinstance(result, Iterator))
+        self.assertEqual([f1, f2, f3], list(result))
 
 
 class IterUniqifyTest(PicardTestCase):

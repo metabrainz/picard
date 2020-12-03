@@ -41,6 +41,7 @@ import builtins
 from collections import namedtuple
 from collections.abc import Mapping
 import html
+from itertools import chain
 import json
 import ntpath
 from operator import attrgetter
@@ -110,6 +111,11 @@ def process_events_iter(iterable, interval=0.1):
                 QtCore.QCoreApplication.processEvents()
         yield item
     QtCore.QCoreApplication.processEvents()
+
+
+def iter_files_from_objects(objects, save=False):
+    """Creates an iterator over all unique files from list of albums, clusters, tracks or files."""
+    return iter_unique(chain(*(obj.iterfiles(save) for obj in objects)))
 
 
 _io_encoding = sys.getfilesystemencoding()
