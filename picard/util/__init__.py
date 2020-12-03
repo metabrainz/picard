@@ -41,6 +41,7 @@ import builtins
 from collections import namedtuple
 from collections.abc import Mapping
 import html
+from itertools import chain
 import json
 import ntpath
 from operator import attrgetter
@@ -110,6 +111,11 @@ def process_events_iter(iterable, interval=0.1):
                 QtCore.QCoreApplication.processEvents()
         yield item
     QtCore.QCoreApplication.processEvents()
+
+
+def iter_files_from_objects(objects, save=False):
+    """Creates an iterator over all unique files from list of albums, clusters, tracks or files."""
+    return iter_unique(chain(*(obj.iterfiles(save) for obj in objects)))
 
 
 _io_encoding = sys.getfilesystemencoding()
@@ -362,11 +368,13 @@ def throttle(interval):
 
 def uniqify(seq):
     """Uniqify a list, preserving order"""
-    # Courtesy of Dave Kirby
-    # See http://www.peterbe.com/plog/uniqifiers-benchmark
+    return list(iter_unique(seq))
+
+
+def iter_unique(seq):
+    """Creates an iterator only returning unique values from seq"""
     seen = set()
-    add_seen = seen.add
-    return [x for x in seq if x not in seen and not add_seen(x)]
+    return (x for x in seq if x not in seen and not seen.add(x))
 
 
 # order is important

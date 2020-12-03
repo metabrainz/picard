@@ -4,7 +4,7 @@
 #
 # Copyright (C) 2006-2007 Lukáš Lalinský
 # Copyright (C) 2010 fatih
-# Copyright (C) 2010-2011, 2014, 2018-2019 Philipp Wolfer
+# Copyright (C) 2010-2011, 2014, 2018-2020 Philipp Wolfer
 # Copyright (C) 2012, 2014, 2018 Wieland Hoffmann
 # Copyright (C) 2013 Ionuț Ciocîrlan
 # Copyright (C) 2013-2014, 2018-2020 Laurent Monin
@@ -30,8 +30,10 @@
 
 import builtins
 from collections import namedtuple
+from collections.abc import Iterator
 import os.path
 import unittest
+from unittest.mock import Mock
 
 from test.picardtestcase import PicardTestCase
 
@@ -42,8 +44,11 @@ from picard.util import (
     find_best_match,
     imageinfo,
     is_absolute_path,
+    iter_files_from_objects,
+    iter_unique,
     limited_join,
     sort_by_similarity,
+    uniqify,
 )
 
 
@@ -450,3 +455,35 @@ class LimitedJoin(PicardTestCase):
         expected = '0,1,2,3,…,6,7,8,9'
         result = limited_join(self.list, len(self.list) - 1, ',')
         self.assertEqual(result, expected)
+
+
+class IterFilesFromObjectsTest(PicardTestCase):
+
+    def test_iterate_only_unique(self):
+        f1 = Mock()
+        f2 = Mock()
+        f3 = Mock()
+        obj1 = Mock()
+        obj1.iterfiles = Mock(return_value=[f1, f2])
+        obj2 = Mock()
+        obj2.iterfiles = Mock(return_value=[f2, f3])
+        result = iter_files_from_objects([obj1, obj2])
+        self.assertTrue(isinstance(result, Iterator))
+        self.assertEqual([f1, f2, f3], list(result))
+
+
+class IterUniqifyTest(PicardTestCase):
+
+    def test_unique(self):
+        items = [1, 2, 3, 2, 3, 4]
+        result = uniqify(items)
+        self.assertEqual([1, 2, 3, 4], result)
+
+
+class IterUniqueTest(PicardTestCase):
+
+    def test_unique(self):
+        items = [1, 2, 3, 2, 3, 4]
+        result = iter_unique(items)
+        self.assertTrue(isinstance(result, Iterator))
+        self.assertEqual([1, 2, 3, 4], list(result))
