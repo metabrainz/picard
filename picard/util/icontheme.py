@@ -5,6 +5,7 @@
 # Copyright (C) 2006-2008 Lukáš Lalinský
 # Copyright (C) 2013, 2018-2019 Laurent Monin
 # Copyright (C) 2016-2017 Sambhav Kothari
+# Copyright (C) 2020 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -31,11 +32,12 @@ from picard.const.sys import IS_WIN
 if IS_WIN:
     _search_paths = []
 else:
-    _search_paths = [
-        os.path.expanduser('~/.icons'),
-        os.path.join(os.environ.get('XDG_DATA_DIRS', '/usr/share'), 'icons'),
-        '/usr/share/pixmaps',
+    _search_paths = [os.path.expanduser('~/.icons')]
+    _search_paths += [
+        os.path.join(path, 'icons') for path in
+        os.environ.get('XDG_DATA_DIRS', '/usr/share').split(':')
     ]
+    _search_paths.append('/usr/share/pixmaps')
 
 _current_theme = None
 if 'XDG_CURRENT_DESKTOP' in os.environ:
