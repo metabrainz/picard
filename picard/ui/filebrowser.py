@@ -140,10 +140,10 @@ class FileBrowser(QtWidgets.QTreeView):
         self.horizontalScrollBar().setValue(pos_x)
 
     def mousePressEvent(self, event):
+        super().mousePressEvent(event)
         index = self.indexAt(event.pos())
         if index.isValid():
             self.selectionModel().setCurrentIndex(index, QtCore.QItemSelectionModel.NoUpdate)
-        super().mousePressEvent(event)
 
     def focusInEvent(self, event):
         self.focused = True
