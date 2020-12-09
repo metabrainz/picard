@@ -163,6 +163,8 @@ class MainPanel(QtWidgets.QSplitter):
         (N_('Media'), 'media'),
         (N_('Genre'), 'genre'),
         (N_('Fingerprint status'), '~fingerprint'),
+        (N_('Date'), 'date'),
+        (N_('Original Release Date'), 'originaldate'),
     ]
 
     _column_indexes = {column[1]: i for i, column in enumerate(columns)}
