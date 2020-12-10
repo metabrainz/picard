@@ -3,7 +3,7 @@
 # Picard, the next-generation MusicBrainz tagger
 #
 # Copyright (C) 2019 Laurent Monin
-# Copyright (C) 2019 Philipp Wolfer
+# Copyright (C) 2019-2020 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -23,6 +23,8 @@
 from PyQt5 import QtGui
 
 from picard import config
+
+from picard.ui.theme import theme
 
 
 class UnknownColorException(Exception):
@@ -50,28 +52,63 @@ _DEFAULT_COLORS = {
     'tagstatus_removed': DefaultColor('red', N_("Tag removed")),
 }
 
+_DEFAULT_COLORS_DARK = {
+    'entity_error': DefaultColor('#C80000', N_("Errored entity")),
+    'entity_pending': DefaultColor('#808080', N_("Pending entity")),
+    'entity_saved': DefaultColor('#00AA00', N_("Saved entity")),
+    'log_debug': DefaultColor('plum', N_('Log view text (debug)')),
+    'log_error': DefaultColor('red', N_('Log view text (error)')),
+    'log_info': DefaultColor('white', N_('Log view text (info)')),
+    'log_warning': DefaultColor('darkorange', N_('Log view text (warning)')),
+    'tagstatus_added': DefaultColor('green', N_("Tag added")),
+    'tagstatus_changed': DefaultColor('darkgoldenrod', N_("Tag changed")),
+    'tagstatus_removed': DefaultColor('red', N_("Tag removed")),
+}
+
 
 class InterfaceColors:
 
-    def __init__(self):
-        self.default_colors()
+    def __init__(self, dark_theme=None):
+        self._dark_theme = dark_theme
+        self.set_default_colors()
 
+    @property
+    def dark_theme(self):
+        if self._dark_theme is None:
+            return theme.is_dark_theme
+        else:
+            return self._dark_theme
+
+    @property
     def default_colors(self):
+        if self.dark_theme:
+            return _DEFAULT_COLORS_DARK
+        else:
+            return _DEFAULT_COLORS
+
+    @property
+    def _config_key(self):
+        if self.dark_theme:
+            return 'interface_colors_dark'
+        else:
+            return 'interface_colors'
+
+    def set_default_colors(self):
         self._colors = dict()
-        for color_key in _DEFAULT_COLORS:
-            color_value = _DEFAULT_COLORS[color_key].value
+        for color_key in self.default_colors:
+            color_value = self.default_colors[color_key].value
             self.set_color(color_key, color_value)
 
     def set_colors(self, colors_dict):
-        for color_key in _DEFAULT_COLORS:
+        for color_key in self.default_colors:
             if color_key in colors_dict:
                 color_value = colors_dict[color_key]
             else:
-                color_value = _DEFAULT_COLORS[color_key].value
+                color_value = self.default_colors[color_key].value
             self.set_color(color_key, color_value)
 
     def load_from_config(self):
-        self.set_colors(config.setting['interface_colors'])
+        self.set_colors(config.setting[self._config_key])
 
     def get_colors(self):
         return self._colors
@@ -80,22 +117,21 @@ class InterfaceColors:
         try:
             return self._colors[color_key]
         except KeyError:
-            if color_key in _DEFAULT_COLORS:
-                return _DEFAULT_COLORS[color_key].value
+            if color_key in self.default_colors:
+                return self.default_colors[color_key].value
             raise UnknownColorException("Unknown color key: %s" % color_key)
 
     def get_qcolor(self, color_key):
         return QtGui.QColor(self.get_color(color_key))
 
-    @staticmethod
-    def get_color_description(color_key):
-        return _(_DEFAULT_COLORS[color_key].description)
+    def get_color_description(self, color_key):
+        return _(self.default_colors[color_key].description)
 
     def set_color(self, color_key, color_value):
-        if color_key in _DEFAULT_COLORS:
+        if color_key in self.default_colors:
             qcolor = QtGui.QColor(color_value)
             if not qcolor.isValid():
-                qcolor = QtGui.QColor(_DEFAULT_COLORS[color_key].value)
+                qcolor = QtGui.QColor(self.default_colors[color_key].value)
             self._colors[color_key] = qcolor.name()
         else:
             raise UnknownColorException("Unknown color key: %s" % color_key)
@@ -103,7 +139,7 @@ class InterfaceColors:
     def save_to_config(self):
         # returns True if user has to be warned about color changes
         changed = False
-        conf = config.setting['interface_colors']
+        conf = config.setting[self._config_key]
         for key, color in self._colors.items():
             if key not in conf:
                 # new color key, not need to warn user
@@ -112,7 +148,7 @@ class InterfaceColors:
                 # color changed
                 conf[key] = color
                 changed = True
-        for key in set(conf) - set(_DEFAULT_COLORS):
+        for key in set(conf) - set(self.default_colors):
             # old color key, remove
             del conf[key]
         return changed

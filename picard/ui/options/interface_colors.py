@@ -3,7 +3,7 @@
 # Picard, the next-generation MusicBrainz tagger
 #
 # Copyright (C) 2019 Laurent Monin
-# Copyright (C) 2019 Philipp Wolfer
+# Copyright (C) 2019-2020 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -30,7 +30,10 @@ from PyQt5 import (
 
 from picard import config
 
-from picard.ui.colors import interface_colors
+from picard.ui.colors import (
+    InterfaceColors,
+    interface_colors,
+)
 from picard.ui.options import (
     OptionsPage,
     register_options_page,
@@ -89,7 +92,8 @@ class InterfaceColorsOptionsPage(OptionsPage):
     HELP_URL = '/config/options_interface_colors.html'
 
     options = [
-        config.Option("setting", "interface_colors", interface_colors.get_colors()),
+        config.Option("setting", "interface_colors", InterfaceColors(dark_theme=False).get_colors()),
+        config.Option("setting", "interface_colors_dark", InterfaceColors(dark_theme=True).get_colors()),
     ]
 
     def __init__(self, parent=None):
@@ -142,7 +146,7 @@ class InterfaceColorsOptionsPage(OptionsPage):
             dialog.exec_()
 
     def restore_defaults(self):
-        interface_colors.default_colors()
+        interface_colors.set_default_colors()
         self.update_color_selectors()
 
 
