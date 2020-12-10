@@ -2,7 +2,7 @@
 #
 # Picard, the next-generation MusicBrainz tagger
 #
-# Copyright (C) 2019 Laurent Monin
+# Copyright (C) 2019-2020 Laurent Monin
 # Copyright (C) 2019-2020 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
@@ -19,6 +19,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+from collections import defaultdict
 
 from PyQt5 import QtGui
 
@@ -31,6 +32,23 @@ class UnknownColorException(Exception):
     pass
 
 
+_COLOR_DESCRIPTIONS = {
+    'entity_error': N_("Errored entity"),
+    'entity_pending': N_("Pending entity"),
+    'entity_saved': N_("Saved entity"),
+    'log_debug': N_('Log view text (debug)'),
+    'log_error': N_('Log view text (error)'),
+    'log_info': N_('Log view text (info)'),
+    'log_warning': N_('Log view text (warning)'),
+    'tagstatus_added': N_("Tag added"),
+    'tagstatus_changed': N_("Tag changed"),
+    'tagstatus_removed': N_("Tag removed"),
+}
+
+
+_DEFAULT_COLORS = defaultdict(dict)
+
+
 class DefaultColor:
 
     def __init__(self, value, description):
@@ -39,31 +57,28 @@ class DefaultColor:
         self.description = description
 
 
-_DEFAULT_COLORS = {
-    'entity_error': DefaultColor('#C80000', N_("Errored entity")),
-    'entity_pending': DefaultColor('#808080', N_("Pending entity")),
-    'entity_saved': DefaultColor('#00AA00', N_("Saved entity")),
-    'log_debug': DefaultColor('purple', N_('Log view text (debug)')),
-    'log_error': DefaultColor('red', N_('Log view text (error)')),
-    'log_info': DefaultColor('black', N_('Log view text (info)')),
-    'log_warning': DefaultColor('darkorange', N_('Log view text (warning)')),
-    'tagstatus_added': DefaultColor('green', N_("Tag added")),
-    'tagstatus_changed': DefaultColor('darkgoldenrod', N_("Tag changed")),
-    'tagstatus_removed': DefaultColor('red', N_("Tag removed")),
-}
+def register_color(themes, name, value):
+    description = _COLOR_DESCRIPTIONS.get(name, "FIXME: color desc for %s" % name)
+    for theme_name in themes:
+        _DEFAULT_COLORS[theme_name][name] = DefaultColor(value, description)
 
-_DEFAULT_COLORS_DARK = {
-    'entity_error': DefaultColor('#C80000', N_("Errored entity")),
-    'entity_pending': DefaultColor('#808080', N_("Pending entity")),
-    'entity_saved': DefaultColor('#00AA00', N_("Saved entity")),
-    'log_debug': DefaultColor('plum', N_('Log view text (debug)')),
-    'log_error': DefaultColor('red', N_('Log view text (error)')),
-    'log_info': DefaultColor('white', N_('Log view text (info)')),
-    'log_warning': DefaultColor('darkorange', N_('Log view text (warning)')),
-    'tagstatus_added': DefaultColor('green', N_("Tag added")),
-    'tagstatus_changed': DefaultColor('darkgoldenrod', N_("Tag changed")),
-    'tagstatus_removed': DefaultColor('red', N_("Tag removed")),
-}
+
+_DARK = ('dark', )
+_LIGHT = ('light', )
+_ALL = _DARK + _LIGHT
+
+register_color(_ALL, 'entity_error', '#C80000')
+register_color(_ALL, 'entity_pending', '#808080')
+register_color(_ALL, 'entity_saved', '#00AA00')
+register_color(_LIGHT, 'log_debug', 'purple')
+register_color(_DARK, 'log_debug', 'plum')
+register_color(_ALL, 'log_error', 'red')
+register_color(_LIGHT, 'log_info', 'black')
+register_color(_DARK, 'log_info', 'white')
+register_color(_ALL, 'log_warning', 'darkorange')
+register_color(_ALL, 'tagstatus_added', 'green')
+register_color(_ALL, 'tagstatus_changed', 'darkgoldenrod')
+register_color(_ALL, 'tagstatus_removed', 'red')
 
 
 class InterfaceColors:
@@ -82,9 +97,9 @@ class InterfaceColors:
     @property
     def default_colors(self):
         if self.dark_theme:
-            return _DEFAULT_COLORS_DARK
+            return _DEFAULT_COLORS['dark']
         else:
-            return _DEFAULT_COLORS
+            return _DEFAULT_COLORS['light']
 
     @property
     def _config_key(self):
