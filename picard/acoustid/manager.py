@@ -108,7 +108,7 @@ class AcoustIDManager(QtCore.QObject):
             return
         submission_batch = submissions[:self.BATCH_SUBMIT_COUNT]
         submissions = submissions[self.BATCH_SUBMIT_COUNT:]
-        fingerprints = [fingerprint for file_, fingerprint in submission_batch]
+        submissions_to_do = [submission for file_, submission in submission_batch]
         log.debug("AcoustID: submitting batch of %d fingerprints (%d remaining)...",
             len(submission_batch), len(submissions))
         self.tagger.window.set_statusbar_message(
@@ -118,7 +118,7 @@ class AcoustIDManager(QtCore.QObject):
         if not errors:
             errors = []
         next_func = partial(self._batch_submit, submissions)
-        self._acoustid_api.submit_acoustid_fingerprints(fingerprints,
+        self._acoustid_api.submit_acoustid_fingerprints(submissions_to_do,
             partial(self._batch_submit_finished, submission_batch, errors, next_func))
 
     def _batch_submit_finished(self, submissions, previous_errors, next_func, document, http, error):
