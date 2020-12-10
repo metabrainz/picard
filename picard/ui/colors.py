@@ -151,6 +151,7 @@ class InterfaceColors:
         for key in set(conf) - set(self.default_colors):
             # old color key, remove
             del conf[key]
+        config.setting[self._config_key] = conf
         return changed
 
 
