@@ -50,36 +50,36 @@ class AcoustIDManager(QtCore.QObject):
 
     def __init__(self, acoustid_api):
         super().__init__()
-        self._fingerprints = {}
+        self._submissions = {}
         self._acoustid_api = acoustid_api
 
     def add(self, file, recordingid):
         if not file.acoustid_fingerprint or not file.acoustid_length:
             return
         puid = file.metadata['musicip_puid']
-        self._fingerprints[file] = Submission(file.acoustid_fingerprint, file.acoustid_length, recordingid, recordingid, puid)
+        self._submissions[file] = Submission(file.acoustid_fingerprint, file.acoustid_length, recordingid, recordingid, puid)
         self._check_unsubmitted()
 
     def update(self, file, recordingid):
-        submission = self._fingerprints.get(file)
+        submission = self._submissions.get(file)
         if submission is None:
             return
         submission.recordingid = recordingid
         self._check_unsubmitted()
 
     def remove(self, file):
-        if file in self._fingerprints:
-            del self._fingerprints[file]
+        if file in self._submissions:
+            del self._submissions[file]
         self._check_unsubmitted()
 
     def is_submitted(self, file):
-        submission = self._fingerprints.get(file)
+        submission = self._submissions.get(file)
         if submission:
             return not submission.recordingid or submission.orig_recordingid == submission.recordingid
         return True
 
     def _unsubmitted(self):
-        for file, submission in self._fingerprints.items():
+        for file, submission in self._submissions.items():
             if submission.recordingid and submission.orig_recordingid != submission.recordingid:
                 yield (file, submission)
 
