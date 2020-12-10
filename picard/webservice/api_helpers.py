@@ -230,13 +230,15 @@ class MBAPIHelper(APIHelper):
     def get_collection_list(self, handler):
         return self.get_collection(None, handler)
 
-    def _collection_request(self, collection_id, releases):
+    @staticmethod
+    def _collection_request(collection_id, releases):
         while releases:
             ids = ";".join(releases if len(releases) <= 400 else releases[:400])
             releases = releases[400:]
             yield ["collection", collection_id, "releases", ids]
 
-    def _get_client_queryarg(self):
+    @staticmethod
+    def _get_client_queryarg():
         return {"client": CLIENT_STRING}
 
     def put_to_collection(self, collection_id, releases, handler):
@@ -256,7 +258,8 @@ class AcoustIdAPIHelper(APIHelper):
         super().__init__(ACOUSTID_HOST, ACOUSTID_PORT,
                          '/v2/', webservice)
 
-    def _encode_acoustid_args(self, args, format_='json'):
+    @staticmethod
+    def _encode_acoustid_args(args, format_='json'):
         filters = []
         args['client'] = ACOUSTID_KEY
         args['clientversion'] = PICARD_VERSION_STR
