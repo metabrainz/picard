@@ -40,6 +40,9 @@ class Submission(object):
         self.orig_recordingid = orig_recordingid
         self.recordingid = recordingid
 
+    def is_submitted(self):
+        return not self.recordingid or self.orig_recordingid == self.recordingid
+
 
 class AcoustIDManager(QtCore.QObject):
 
@@ -75,12 +78,12 @@ class AcoustIDManager(QtCore.QObject):
     def is_submitted(self, file):
         submission = self._submissions.get(file)
         if submission:
-            return not submission.recordingid or submission.orig_recordingid == submission.recordingid
+            return submission.is_submitted()
         return True
 
     def _unsubmitted(self):
         for file, submission in self._submissions.items():
-            if submission.recordingid and submission.orig_recordingid != submission.recordingid:
+            if not submission.is_submitted():
                 yield (file, submission)
 
     def _check_unsubmitted(self):
