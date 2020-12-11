@@ -66,7 +66,10 @@ from picard.cluster import (
     FileList,
 )
 from picard.const import PROGRAM_UPDATE_LEVELS
-from picard.const.sys import IS_MACOS
+from picard.const.sys import (
+    IS_MACOS,
+    IS_WIN,
+)
 from picard.file import File
 from picard.formats import supported_formats
 from picard.plugin import ExtensionPoint
@@ -948,7 +951,16 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         formats = []
         extensions = []
         for exts, name in supported_formats():
-            exts = ["*" + e for e in exts]
+            exts = ["*" + e.lower() for e in exts]
+            if not exts:
+                continue
+            if not IS_MACOS and not IS_WIN:
+                # Also consider upper case extensions
+                # macOS and Windows usually support case sensitive file names. Furthermore on both systems
+                # the file dialog filters list all extensions we provide, which becomes a bit long when we give the
+                # full list twice. Hence only do this trick on other operating systems.
+                exts.extend([e.upper() for e in exts])
+            exts.sort()
             formats.append("%s (%s)" % (name, " ".join(exts)))
             extensions.extend(exts)
         formats.sort()
