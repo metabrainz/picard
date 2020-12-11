@@ -287,6 +287,10 @@ class WebService(QtCore.QObject):
         response_code = reply.attribute(QNetworkRequest.HttpStatusCodeAttribute)
         return int(response_code) if response_code else 0
 
+    @staticmethod
+    def http_response_phrase(reply):
+        return reply.attribute(QNetworkRequest.HttpReasonPhraseAttribute)
+
     def _network_accessible_changed(self, accessible):
         # Qt's network accessibility check sometimes fails, e.g. with VPNs on Windows.
         # If the accessibility is reported to be not accessible, set it to
@@ -471,8 +475,8 @@ class WebService(QtCore.QObject):
             cached = ' (CACHED)' if fromCache else ''
             log.debug("Received reply for %s: HTTP %d (%s) %s",
                       reply.request().url().toString(QUrl.RemoveUserInfo),
-                      reply.attribute(QNetworkRequest.HttpReasonPhraseAttribute),
                       response_code,
+                      self.http_response_phrase(reply),
                       cached
                       )
             if handler is not None:
