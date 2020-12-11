@@ -71,7 +71,7 @@ CAA_PORT = 443
 
 # Prepare documentation URLs
 if PICARD_VERSION.identifier == 'final':
-    DOCS_VERSION = "v{}/".format(PICARD_VERSION.to_string(short=True))
+    DOCS_VERSION = "v{}.{}/".format(PICARD_VERSION.major, PICARD_VERSION.minor)
 else:
     DOCS_VERSION = ""  # points to latest version
 DOCS_LANGUAGE = 'en'
