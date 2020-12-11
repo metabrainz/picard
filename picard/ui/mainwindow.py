@@ -965,7 +965,8 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             extensions.extend(exts)
         formats.sort()
         extensions.sort()
-        formats.insert(0, _("All Supported Formats") + " (%s)" % " ".join(extensions))
+        formats.insert(0, _("All supported formats") + " (%s)" % " ".join(extensions))
+        formats.insert(1, _("All files") + " (*)")
         files, _filter = QtWidgets.QFileDialog.getOpenFileNames(self, "", current_directory, ";;".join(formats))
         if files:
             config.persist["current_directory"] = os.path.dirname(files[0])
