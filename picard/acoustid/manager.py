@@ -93,9 +93,11 @@ class AcoustIDManager(QtCore.QObject):
             return submission.is_submitted()
         return True
 
-    def _unsubmitted(self):
+    def _unsubmitted(self, reset=False):
         for file, submission in self._submissions.items():
             if not submission.is_submitted():
+                if reset:
+                    submission.attempts = 0
                 yield (file, submission)
 
     def _check_unsubmitted(self):
@@ -104,7 +106,7 @@ class AcoustIDManager(QtCore.QObject):
 
     def submit(self):
         self.max_batch_size = self.MAX_PAYLOAD
-        submissions = list(self._unsubmitted())
+        submissions = list(self._unsubmitted(reset=True))
         if not submissions:
             self._check_unsubmitted()
             return
