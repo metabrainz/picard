@@ -282,6 +282,11 @@ class WebService(QtCore.QObject):
         self._init_queues()
         self._init_timers()
 
+    @staticmethod
+    def http_response_code(reply):
+        response_code = reply.attribute(QNetworkRequest.HttpStatusCodeAttribute)
+        return int(response_code) if response_code else 0
+
     def _network_accessible_changed(self, accessible):
         # Qt's network accessibility check sometimes fails, e.g. with VPNs on Windows.
         # If the accessibility is reported to be not accessible, set it to
@@ -436,16 +441,15 @@ class WebService(QtCore.QObject):
 
         error = int(reply.error())
         handler = request.handler
+        response_code = self.http_response_code(reply)
         if error:
-            code = reply.attribute(QNetworkRequest.HttpStatusCodeAttribute)
-            code = int(code) if code else 0
             errstr = reply.errorString()
             url = reply.request().url().toString(QUrl.RemoveUserInfo)
             log.error("Network request error for %s: %s (QT code %d, HTTP code %d)",
-                      url, errstr, error, code)
+                      url, errstr, error, response_code)
             if (not request.max_retries_reached()
-                and (code == 503
-                     or code == 429
+                and (response_code == 503
+                     or response_code == 429
                      # Sometimes QT returns a http status code of 200 even when there
                      # is a service unavailable error. But it returns a QT error code
                      # of 403 when this happens
@@ -459,7 +463,7 @@ class WebService(QtCore.QObject):
             elif handler is not None:
                 handler(reply.readAll(), reply, error)
 
-            slow_down = (slow_down or code >= 500)
+            slow_down = (slow_down or response_code >= 500)
 
         else:
             redirect = reply.attribute(QNetworkRequest.RedirectionTargetAttribute)
@@ -467,8 +471,8 @@ class WebService(QtCore.QObject):
             cached = ' (CACHED)' if fromCache else ''
             log.debug("Received reply for %s: HTTP %d (%s) %s",
                       reply.request().url().toString(QUrl.RemoveUserInfo),
-                      reply.attribute(QNetworkRequest.HttpStatusCodeAttribute),
                       reply.attribute(QNetworkRequest.HttpReasonPhraseAttribute),
+                      response_code,
                       cached
                       )
             if handler is not None:
