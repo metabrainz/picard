@@ -32,7 +32,6 @@ from PyQt5.QtCore import (
     QUrl,
     QUrlQuery,
 )
-from PyQt5.QtNetwork import QNetworkRequest
 
 from picard import (
     config,
@@ -187,7 +186,7 @@ class OAuthManager(object):
         try:
             if error:
                 log.error("OAuth: access_token refresh failed: %s", data)
-                if http.attribute(QNetworkRequest.HttpStatusCodeAttribute) == 400:
+                if self.webservice.http_response_code(http) == 400:
                     response = load_json(data)
                     if response["error"] == "invalid_grant":
                         self.forget_refresh_token()
