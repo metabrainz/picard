@@ -66,6 +66,10 @@ class APIHelper(object):
         self._webservice = webservice
 
     @property
+    def webservice(self):
+        return self._webservice
+
+    @property
     def host(self):
         return self._host
 
