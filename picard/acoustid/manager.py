@@ -115,13 +115,17 @@ class AcoustIDManager(QtCore.QObject):
         batch = []
         remaining = []
         batch_size = 0
+        max_attempts = self.MAX_ATTEMPTS
         for file, submission in submissions:
-            if submission.attempts < self.MAX_ATTEMPTS:
+            if submission.attempts < max_attempts:
                 batch_size += len(submission)
                 if batch_size < self.max_batch_size:
                     submission.attempts += 1
                     batch.append((file, submission))
                     continue
+                else:
+                    # force appending the rest to remaining if we reach max_batch_size
+                    max_attempts = 0
             remaining.append((file, submission))
         return batch, remaining
 
