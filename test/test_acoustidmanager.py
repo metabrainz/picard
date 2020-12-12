@@ -42,6 +42,16 @@ def mock_fail_submission(*args, **kwargs):
     args[1]({}, MagicMock(), True)
 
 
+FINGERPRINT_SIZE = 4000
+
+
+def dummy_file(i):
+    file = File('foo%d.flac' % i)
+    file.acoustid_fingerprint = 'Z' * FINGERPRINT_SIZE
+    file.acoustid_length = 120
+    return file
+
+
 class AcoustIDManagerTest(PicardTestCase):
     def setUp(self):
         super().setUp()
@@ -54,14 +64,14 @@ class AcoustIDManagerTest(PicardTestCase):
         self.acoustidmanager = AcoustIDManager(self.mock_api_helper)
         self.tagger.window = MagicMock()
         self.tagger.window.enable_submit = MagicMock()
+        AcoustIDManager.MAX_PAYLOAD = FINGERPRINT_SIZE * 5
+        AcoustIDManager.MAX_ATTEMPTS = 3
 
     def _add_unsubmitted_files(self, count):
         files = []
         for i in range(0, count):
-            file = File('foo%d.flac' % i)
+            file = dummy_file(i)
             files.append(file)
-            file.acoustid_fingerprint = 'foo'
-            file.acoustid_length = 120
             self.acoustidmanager.add(file, None)
             self.acoustidmanager.update(file, '00000000-0000-0000-0000-%012d' % i)
             self.assertFalse(self.acoustidmanager.is_submitted(file))
@@ -73,9 +83,7 @@ class AcoustIDManagerTest(PicardTestCase):
         self.tagger.window.enable_submit.assert_not_called()
 
     def test_add_and_update(self):
-        file = File('foo.flac')
-        file.acoustid_fingerprint = 'foo'
-        file.acoustid_length = 120
+        file = dummy_file(0)
         self.acoustidmanager.add(file, '00000000-0000-0000-0000-000000000001')
         self.tagger.window.enable_submit.assert_called_with(False)
         self.acoustidmanager.update(file, '00000000-0000-0000-0000-000000000002')
@@ -84,9 +92,7 @@ class AcoustIDManagerTest(PicardTestCase):
         self.tagger.window.enable_submit.assert_called_with(False)
 
     def test_add_and_remove(self):
-        file = File('foo.flac')
-        file.acoustid_fingerprint = 'foo'
-        file.acoustid_length = 120
+        file = dummy_file(0)
         self.acoustidmanager.add(file, '00000000-0000-0000-0000-000000000001')
         self.tagger.window.enable_submit.assert_called_with(False)
         self.acoustidmanager.update(file, '00000000-0000-0000-0000-000000000002')
@@ -95,9 +101,7 @@ class AcoustIDManagerTest(PicardTestCase):
         self.tagger.window.enable_submit.assert_called_with(False)
 
     def test_is_submitted(self):
-        file = File('foo.flac')
-        file.acoustid_fingerprint = 'foo'
-        file.acoustid_length = 120
+        file = dummy_file(0)
         self.assertTrue(self.acoustidmanager.is_submitted(file))
         self.acoustidmanager.add(file, '00000000-0000-0000-0000-000000000001')
         self.assertTrue(self.acoustidmanager.is_submitted(file))
@@ -116,16 +120,16 @@ class AcoustIDManagerTest(PicardTestCase):
         )
 
     def test_submit_multi_batch(self):
-        files = self._add_unsubmitted_files(5 * AcoustIDManager.BATCH_SUBMIT_COUNT + 1)
+        files = self._add_unsubmitted_files(int(AcoustIDManager.MAX_PAYLOAD / FINGERPRINT_SIZE) * 2)
         self.acoustidmanager.submit()
-        self.assertEqual(self.mock_api_helper.submit_acoustid_fingerprints.call_count, 6)
+        self.assertEqual(self.mock_api_helper.submit_acoustid_fingerprints.call_count, 3)
         for f in files:
             self.assertTrue(self.acoustidmanager.is_submitted(f))
 
     def test_submit_multi_batch_failure(self):
         self.mock_api_helper.submit_acoustid_fingerprints = Mock(wraps=mock_fail_submission)
-        files = self._add_unsubmitted_files(5 * AcoustIDManager.BATCH_SUBMIT_COUNT + 1)
+        files = self._add_unsubmitted_files(int(AcoustIDManager.MAX_PAYLOAD / FINGERPRINT_SIZE) * 2)
         self.acoustidmanager.submit()
-        self.assertEqual(self.mock_api_helper.submit_acoustid_fingerprints.call_count, 6)
+        self.assertEqual(self.mock_api_helper.submit_acoustid_fingerprints.call_count, 8)
         for f in files:
             self.assertFalse(self.acoustidmanager.is_submitted(f))

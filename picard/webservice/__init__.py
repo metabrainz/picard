@@ -282,6 +282,19 @@ class WebService(QtCore.QObject):
         self._init_queues()
         self._init_timers()
 
+    @staticmethod
+    def http_response_code(reply):
+        response_code = reply.attribute(QNetworkRequest.HttpStatusCodeAttribute)
+        return int(response_code) if response_code else 0
+
+    @staticmethod
+    def http_response_phrase(reply):
+        return reply.attribute(QNetworkRequest.HttpReasonPhraseAttribute)
+
+    @staticmethod
+    def http_response_safe_url(reply):
+        return reply.request().url().toString(QUrl.RemoveUserInfo)
+
     def _network_accessible_changed(self, accessible):
         # Qt's network accessibility check sometimes fails, e.g. with VPNs on Windows.
         # If the accessibility is reported to be not accessible, set it to
@@ -422,7 +435,7 @@ class WebService(QtCore.QObject):
                      cacheloadcontrol=request.attribute(QNetworkRequest.CacheLoadControlAttribute))
         else:
             log.error("Redirect loop: %s",
-                      reply.request().url().toString(QUrl.RemoveUserInfo)
+                      self.http_response_safe_url(reply)
                       )
             request.handler(reply.readAll(), reply, error)
 
@@ -436,16 +449,15 @@ class WebService(QtCore.QObject):
 
         error = int(reply.error())
         handler = request.handler
+        response_code = self.http_response_code(reply)
+        url = self.http_response_safe_url(reply)
         if error:
-            code = reply.attribute(QNetworkRequest.HttpStatusCodeAttribute)
-            code = int(code) if code else 0
             errstr = reply.errorString()
-            url = reply.request().url().toString(QUrl.RemoveUserInfo)
             log.error("Network request error for %s: %s (QT code %d, HTTP code %d)",
-                      url, errstr, error, code)
+                      url, errstr, error, response_code)
             if (not request.max_retries_reached()
-                and (code == 503
-                     or code == 429
+                and (response_code == 503
+                     or response_code == 429
                      # Sometimes QT returns a http status code of 200 even when there
                      # is a service unavailable error. But it returns a QT error code
                      # of 403 when this happens
@@ -459,16 +471,16 @@ class WebService(QtCore.QObject):
             elif handler is not None:
                 handler(reply.readAll(), reply, error)
 
-            slow_down = (slow_down or code >= 500)
+            slow_down = (slow_down or response_code >= 500)
 
         else:
             redirect = reply.attribute(QNetworkRequest.RedirectionTargetAttribute)
             fromCache = reply.attribute(QNetworkRequest.SourceIsFromCacheAttribute)
             cached = ' (CACHED)' if fromCache else ''
             log.debug("Received reply for %s: HTTP %d (%s) %s",
-                      reply.request().url().toString(QUrl.RemoveUserInfo),
-                      reply.attribute(QNetworkRequest.HttpStatusCodeAttribute),
-                      reply.attribute(QNetworkRequest.HttpReasonPhraseAttribute),
+                      url,
+                      response_code,
+                      self.http_response_phrase(reply),
                       cached
                       )
             if handler is not None:
@@ -479,7 +491,6 @@ class WebService(QtCore.QObject):
                     try:
                         document = request.response_parser(reply)
                     except Exception as e:
-                        url = reply.request().url().toString(QUrl.RemoveUserInfo)
                         log.error("Unable to parse the response for %s: %s", url, e)
                         document = reply.readAll()
                         error = e
@@ -494,7 +505,7 @@ class WebService(QtCore.QObject):
         try:
             request = self._active_requests.pop(reply)
         except KeyError:
-            log.error("Request not found for %s", reply.request().url().toString(QUrl.RemoveUserInfo))
+            log.error("Request not found for %s", self.http_response_safe_url(reply))
             return
         try:
             self._handle_reply(reply, request)
