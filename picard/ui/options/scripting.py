@@ -108,7 +108,7 @@ class ScriptingDocumentationDialog(PicardDialog):
             if not html:
                 html = ''
             template = '<dt>%s%s</dt><dd>%s</dd>'
-            if function.module is not None and function.module != 'picard.script':
+            if function.module is not None and function.module != 'picard.script.functions':
                 module = ' [' + function.module + ']'
             else:
                 module = ''
