@@ -827,7 +827,9 @@ class File(QtCore.QObject, Item):
 
     def clear_pending(self, signal=True):
         if self.state == File.PENDING:
-            self.state = File.NORMAL if self.similarity == 1.0 else File.CHANGED
+            self.state = File.NORMAL
+            # Update file to recalculate changed state
+            self.update(signal=False)
             if signal:
                 self.update_item(update_selection=False)
 
