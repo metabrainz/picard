@@ -199,7 +199,7 @@ class TrackSearchDialog(SearchDialog):
                 if isinstance(self.file_.parent, Track):
                     album = self.file_.parent.album
                     self.tagger.move_file_to_track(self.file_, track["musicbrainz_albumid"], track["musicbrainz_recordingid"])
-                    if album._files == 0:
+                    if album.get_num_total_files() == 0:
                         # Remove album if it has no more files associated
                         self.tagger.remove_album(album)
                 else:
@@ -211,7 +211,7 @@ class TrackSearchDialog(SearchDialog):
             if self.file_ and getattr(self.file_.parent, 'album', None):
                 album = self.file_.parent.album
                 self.tagger.move_file_to_nat(self.file_, track["musicbrainz_recordingid"], node)
-                if album._files == 0:
+                if album.get_num_total_files() == 0:
                     self.tagger.remove_album(album)
             else:
                 self.tagger.load_nat(track["musicbrainz_recordingid"], node)
