@@ -510,15 +510,17 @@ class Album(DataObject, Item):
         if self.item:
             self.item.update(update_tracks, update_selection=update_selection)
 
-    def _add_file(self, track, file):
+    def _add_file(self, track, file, new_album=True):
         self._files += 1
-        self.update(update_tracks=False)
-        add_metadata_images(self, [file])
+        if new_album:
+            self.update(update_tracks=False)
+            add_metadata_images(self, [file])
 
-    def _remove_file(self, track, file):
+    def _remove_file(self, track, file, new_album=True):
         self._files -= 1
-        self.update(update_tracks=False)
-        remove_metadata_images(self, [file])
+        if new_album:
+            self.update(update_tracks=False)
+            remove_metadata_images(self, [file])
 
     def _match_files(self, files, threshold=0):
         """Match files to tracks on this album, based on metadata similarity or recordingid."""

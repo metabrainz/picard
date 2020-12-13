@@ -157,15 +157,14 @@ class Track(DataObject, FileListItem):
         """For backward compatibility with old code in plugins"""
         return self.files
 
-    def add_file(self, file, update_album=True):
+    def add_file(self, file, new_album=True):
         if file not in self.files:
             track_will_expand = self.num_linked_files == 1
             self.files.append(file)
             self.num_linked_files += 1
         self.update_file_metadata(file)
         add_metadata_images(self, [file])
-        if update_album:
-            self.album._add_file(self, file)
+        self.album._add_file(self, file, new_album=new_album)
         file.metadata_images_changed.connect(self.update_metadata_images)
         run_file_post_addition_to_track_processors(self, file)
         if track_will_expand:
@@ -194,15 +193,14 @@ class Track(DataObject, FileListItem):
         file.update(signal=False)
         self.update()
 
-    def remove_file(self, file, update_album=True):
+    def remove_file(self, file, new_album=True):
         if file not in self.files:
             return
         self.files.remove(file)
         self.num_linked_files -= 1
         file.metadata_images_changed.disconnect(self.update_metadata_images)
         file.copy_metadata(file.orig_metadata, preserve_deleted=False)
-        if update_album:
-            self.album._remove_file(self, file)
+        self.album._remove_file(self, file, new_album=new_album)
         remove_metadata_images(self, [file])
         run_file_post_removal_from_track_processors(self, file)
         self.update()

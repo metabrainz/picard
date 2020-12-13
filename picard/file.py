@@ -577,13 +577,13 @@ class File(QtCore.QObject, Item):
             log.debug("Moving %r from %r to %r", self, self.parent, parent)
             self.clear_lookup_task()
             self.tagger._acoustid.stop_analyze(self)
-            update_album = True
+            new_album = True
             if self.parent:
-                update_album = self.parent.album != parent.album
+                new_album = self.parent.album != parent.album
                 self.clear_pending()
-                self.parent.remove_file(self, update_album=update_album)
+                self.parent.remove_file(self, new_album=new_album)
             self.parent = parent
-            self.parent.add_file(self, update_album=update_album)
+            self.parent.add_file(self, new_album=new_album)
             self.acoustid_update()
 
     def _move(self, parent):
