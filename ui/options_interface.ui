@@ -60,6 +60,13 @@
        </widget>
       </item>
       <item>
+       <widget class="QCheckBox" name="filebrowser_horizontal_autoscroll">
+        <property name="text">
+         <string>Adjust horizontal position in file browser automatically</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QCheckBox" name="starting_directory">
         <property name="text">
          <string>Begin browsing in the following directory:</string>

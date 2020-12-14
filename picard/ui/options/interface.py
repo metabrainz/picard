@@ -136,6 +136,7 @@ class InterfaceOptionsPage(OptionsPage):
         config.BoolOption("setting", "quit_confirmation", True),
         config.TextOption("setting", "ui_language", ""),
         config.BoolOption("setting", "use_system_theme", False),
+        config.BoolOption("setting", "filebrowser_horizontal_autoscroll", True),
         config.BoolOption("setting", "starting_directory", False),
         config.TextOption("setting", "starting_directory_path", _default_starting_dir),
         config.TextOption("setting", "load_image_behavior", "append"),
@@ -205,6 +206,7 @@ class InterfaceOptionsPage(OptionsPage):
         self.ui.use_system_theme.setChecked(config.setting["use_system_theme"])
         current_ui_language = config.setting["ui_language"]
         self.ui.ui_language.setCurrentIndex(self.ui.ui_language.findData(current_ui_language))
+        self.ui.filebrowser_horizontal_autoscroll.setChecked(config.setting["filebrowser_horizontal_autoscroll"])
         self.ui.starting_directory.setChecked(config.setting["starting_directory"])
         self.ui.starting_directory_path.setText(config.setting["starting_directory_path"])
         self.populate_action_list()
@@ -242,6 +244,7 @@ class InterfaceOptionsPage(OptionsPage):
             dialog.exec_()
         config.setting["use_system_theme"] = self.ui.use_system_theme.isChecked()
         config.setting["ui_language"] = self.ui.ui_language.itemData(self.ui.ui_language.currentIndex())
+        config.setting["filebrowser_horizontal_autoscroll"] = self.ui.filebrowser_horizontal_autoscroll.isChecked()
         config.setting["starting_directory"] = self.ui.starting_directory.isChecked()
         config.setting["starting_directory_path"] = os.path.normpath(self.ui.starting_directory_path.text())
         self.update_layout_config()
