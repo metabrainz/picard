@@ -147,9 +147,9 @@ class AcoustIDManager(QtCore.QObject):
 
         if not batch:
             if self.max_batch_size == 0:
-                log_msg = N_("AcoustID submission failed permanently, max batch size reduced to zero")
+                log_msg = N_("AcoustID submission failed permanently, maximum batch size reduced to zero")
             else:
-                log_msg = N_("AcoustID submission failed permanently, prolly too many retries")
+                log_msg = N_("AcoustID submission failed permanently, probably too many retries")
             log.error(log_msg)
             self.tagger.window.set_statusbar_message(
                 log_msg, echo=None, timeout=3000)

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: picard 2.5.2\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-12-14 11:53+0100\n"
+"POT-Creation-Date: 2020-12-14 14:44+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -299,11 +299,11 @@ msgid "AcoustID submission finished successfully"
 msgstr ""
 
 #: picard/acoustid/manager.py:150
-msgid "AcoustID submission failed permanently, max batch size reduced to zero"
+msgid "AcoustID submission failed permanently, maximum batch size reduced to zero"
 msgstr ""
 
 #: picard/acoustid/manager.py:152
-msgid "AcoustID submission failed permanently, prolly too many retries"
+msgid "AcoustID submission failed permanently, probably too many retries"
 msgstr ""
 
 #: picard/acoustid/manager.py:162
