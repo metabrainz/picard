@@ -336,11 +336,7 @@ class Tagger(QtWidgets.QApplication):
         """Move `files` to tracks on album `albumid`."""
         if album is None:
             album = self.load_album(albumid)
-        if album.loaded:
-            album.match_files(files)
-        else:
-            for file in list(files):
-                file.move(album.unmatched_files)
+        album.match_files(files)
 
     def move_file_to_album(self, file, albumid):
         """Move `file` to a track on album `albumid`."""

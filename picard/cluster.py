@@ -420,8 +420,7 @@ class ClusterList(list, Item):
 
     def iterfiles(self, save=False):
         for cluster in self:
-            for file in cluster.iterfiles(save):
-                yield file
+            yield from cluster.iterfiles(save)
 
     def can_save(self):
         return len(self) > 0

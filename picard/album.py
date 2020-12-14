@@ -142,11 +142,9 @@ class Album(DataObject, Item):
 
     def iterfiles(self, save=False):
         for track in self.tracks:
-            for file in track.iterfiles():
-                yield file
+            yield from track.iterfiles()
         if not save:
-            for file in self.unmatched_files.iterfiles():
-                yield file
+            yield from self.unmatched_files.iterfiles()
 
     def enable_update_metadata_images(self, enabled):
         self.update_metadata_images_enabled = enabled
