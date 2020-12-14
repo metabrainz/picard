@@ -128,15 +128,18 @@ class FileBrowser(QtWidgets.QTreeView):
 
     def scrollTo(self, index, scrolltype=QtWidgets.QAbstractItemView.EnsureVisible):
         # QTreeView.scrollTo resets the horizontal scroll position to 0.
-        # Reimplemented to instead scroll to horizontal parent position.
-        level = -1
+        # Reimplemented to instead scroll to horizontal parent position or keep previous position.
+        if index and config.setting['filebrowser_horizontal_autoscroll']:
+            level = -1
+            parent = index.parent()
+            root = self.rootIndex()
+            while parent.isValid() and parent != root:
+                parent = parent.parent()
+                level += 1
+            pos_x = max(self.indentation() * level, 0)
+        else:
+            pos_x = self.horizontalScrollBar().value()
         super().scrollTo(index, scrolltype)
-        parent = self.currentIndex().parent()
-        root = self.rootIndex()
-        while parent.isValid() and parent != root:
-            parent = parent.parent()
-            level += 1
-        pos_x = max(self.indentation() * level, 0)
         self.horizontalScrollBar().setValue(pos_x)
 
     def mousePressEvent(self, event):
