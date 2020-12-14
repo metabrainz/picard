@@ -12,7 +12,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2020-10-22 21:49+0000\n"
+"PO-Revision-Date: 2020-12-03 17:18+0000\n"
 "Last-Translator: Luca Salini\n"
 "Language-Team: Italian (http://www.transifex.com/musicbrainz/musicbrainz/language/it/)\n"
 "MIME-Version: 1.0\n"
@@ -1575,7 +1575,7 @@ msgstr "\"Città\" è utilizzato per luoghi abitati di qualsiasi dimensione, com
 #: DB:release_group_secondary_type/name:1
 msgctxt "release_group_secondary_type"
 msgid "Compilation"
-msgstr "Compilation"
+msgstr "Raccolta"
 
 #: DB:event_type/name:1
 msgctxt "event_type"
@@ -3177,6 +3177,11 @@ msgctxt "work_attribute_type"
 msgid "ID for the Canadian rights society SOCAN"
 msgstr "ID per la società di diritti canadese SOCAN"
 
+#: DB:work_attribute_type/description:53
+msgctxt "work_attribute_type"
+msgid "ID for the Canadian rights society SODRAC"
+msgstr "ID per la società di diritti canadese SODRAC"
+
 #: DB:work_attribute_type/description:39
 msgctxt "work_attribute_type"
 msgid "ID for the Colombian rights society SAYCO"
@@ -4089,7 +4094,7 @@ msgstr "Laṅkēśrī"
 #: DB:artist_alias_type/name:2
 msgctxt "alias_type"
 msgid "Legal name"
-msgstr "Nome legale"
+msgstr "Nome all'anagrafe"
 
 #: DB:work_attribute_type_allowed_value/value:744
 msgctxt "work_attribute_type_allowed_value"
@@ -5809,6 +5814,11 @@ msgctxt "work_attribute_type"
 msgid "SOCAN ID"
 msgstr "ID SOCAN"
 
+#: DB:work_attribute_type/name:53
+msgctxt "work_attribute_type"
+msgid "SODRAC ID"
+msgstr "ID SODRAC"
+
 #: DB:work_attribute_type/name:35
 msgctxt "work_attribute_type"
 msgid "SPA ID"
@@ -6593,21 +6603,21 @@ msgid ""
 "This indicates a choir/chorus (an organized, usually large group of "
 "singers). Smaller vocal ensembles and groupings that do not generally call "
 "themselves choirs are better entered as “Group”."
-msgstr "Questo indica un coro (un gruppo organizzato e solitamente grande di cantanti). Ensemble vocali più piccole e gruppi che generalmente non si riferiscono a se stessi come cori vanno inseriti come \"Gruppo\"."
+msgstr "Indica un coro (un gruppo organizzato e solitamente grande di cantanti). Ensemble vocali più piccole e gruppi che generalmente non si riferiscono a se stessi come cori vanno inseriti come \"Gruppo\"."
 
 #: DB:artist_type/description:4
 msgctxt "artist_type"
 msgid ""
 "This indicates an individual fictional character (whether a fictional "
 "person, animal or any other kind of character)."
-msgstr "Questo indica un singolo personaggio di finzione (che sia una persona, animale o qualsiasi altro tipo di personaggio)."
+msgstr "Indica un singolo personaggio di finzione (che sia una persona, animale o qualsiasi altro tipo di personaggio)."
 
 #: DB:artist_type/description:1
 msgctxt "artist_type"
 msgid ""
 "This indicates an individual person, be it under its legal name (“John "
 "Lennon”), or a performance name (“Sting”)."
-msgstr "Questo indica una singola persona, che sia sotto il suo nome legale (\"John Lennon\") o sotto un nome d'arte (\"Sting\")."
+msgstr "Indica una singola persona, che sia sotto il suo nome all'anagrafe (\"John Lennon\") o sotto un nome d'arte (\"Sting\")."
 
 #: DB:artist_type/description:5
 msgctxt "artist_type"
@@ -6616,7 +6626,7 @@ msgid ""
 "instrumentalists). Smaller ensembles (such as trios and quartets) and "
 "groupings that do not generally call themselves orchestras are better "
 "entered as “Group”."
-msgstr "Questo indica un'orchestra (un gruppo organizzato e solitamente grande di strumentisti). Ensemble più piccole (come trii e quartetti) e gruppi che generalmente non si riferiscono a se stessi come orchestre vanno inseriti come \"Gruppo\"."
+msgstr "Indica un'orchestra (un gruppo organizzato e solitamente grande di strumentisti). Ensemble più piccole (come trii e quartetti) e gruppi che generalmente non si riferiscono a se stessi come orchestre vanno inseriti come \"Gruppo\"."
 
 #: DB:work_type/description:23
 msgctxt "work_type"
@@ -6630,37 +6640,37 @@ msgstr "Questa voce rappresenta le opere letterarie scritte in prosa, cioè scri
 msgctxt "medium_format"
 msgid ""
 "This represents the 2 channel (stereo/mono) table of contents on a SACD."
-msgstr "Questo rappresenta l'indice (stereo/mono) a 2 canali su un SACD."
+msgstr "Rappresenta l'indice (stereo/mono) a 2 canali su un SACD."
 
 #: DB:medium_format/description:89
 msgctxt "medium_format"
 msgid ""
 "This represents the 2 channel (stereo/mono) table of contents on a SHM-SACD."
-msgstr "Questo rappresenta l'indice (stereo/mono) a 2 canali su un SHM-SACD."
+msgstr "Rappresenta l'indice (stereo/mono) a 2 canali su un SHM-SACD."
 
 #: DB:medium_format/description:87
 msgctxt "medium_format"
 msgid ""
 "This represents the 2 channel (stereo/mono) table of contents on a hybrid "
 "SACD's SACD layer."
-msgstr "Questo rappresenta l'indice (stereo/mono) a 2 canali sullo strato SACD di un SACD ibrido."
+msgstr "Rappresenta l'indice (stereo/mono) a 2 canali sullo strato SACD di un SACD ibrido."
 
 #: DB:medium_format/description:85
 msgctxt "medium_format"
 msgid "This represents the multichannel table of contents on a SACD."
-msgstr "Questo rappresenta l'indice multicanale su un SACD."
+msgstr "Rappresenta l'indice multicanale su un SACD."
 
 #: DB:medium_format/description:88
 msgctxt "medium_format"
 msgid "This represents the multichannel table of contents on a SHM-SACD."
-msgstr "Questo rappresenta l'indice multicanale su un SHM-SACD."
+msgstr "Rappresenta l'indice multicanale su un SHM-SACD."
 
 #: DB:medium_format/description:86
 msgctxt "medium_format"
 msgid ""
 "This represents the multichannel table of contents on a hybrid SACD's SACD "
 "layer."
-msgstr "Questo rappresenta l'indice multicanale sullo strato SACD di un SACD ibrido."
+msgstr "Rappresenta l'indice multicanale sullo strato SACD di un SACD ibrido."
 
 #: DB:work_attribute_type_allowed_value/value:1041
 msgctxt "work_attribute_type_allowed_value"

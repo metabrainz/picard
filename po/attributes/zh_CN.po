@@ -13,6 +13,7 @@
 #   LI Daobing <lidaobing@gmail.com>, 2007, 2008, 2009, 2010, 2011
 # LI Daobing <lidaobing@gmail.com>, 2007, 2008, 2009, 2010
 # LXY <767763591@qq.com>, 2016
+# Lionel <a472714747@gmail.com>, 2020
 # Lo Nie <asd7878787@163.com>, 2020
 # Maureen <mry_33@163.com>, 2019
 # MR <admin@mr-cn.net>, 2019
@@ -26,8 +27,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2020-10-19 14:01+0000\n"
-"Last-Translator: yvanz\n"
+"PO-Revision-Date: 2020-12-03 14:00+0000\n"
+"Last-Translator: Michael Wiencek <mwtuea@gmail.com>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/musicbrainz/musicbrainz/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -48,7 +49,7 @@ msgctxt "work_type"
 msgid ""
 "\"Sonata\" is a general term used to describe small scale (very often solo "
 "or solo + keyboard) instrumental works, initially in baroque music."
-msgstr "“奏鸣曲”是一种源自巴洛克音乐的小规模(常常仅有独唱或者仅有独唱和键盘手)的音乐。"
+msgstr "“奏鸣曲”是用于描述小型(常常是独奏或独奏+键盘)器乐作品的总称，最初出现在巴洛克音乐中。"
 
 #: DB:medium_format/name:54
 msgctxt "medium_format"
@@ -173,7 +174,7 @@ msgctxt "artist_type"
 msgid ""
 "A grouping of multiple musicians who perform together (in some cases, some "
 "or all of the members might differ in different performances or recordings)."
-msgstr ""
+msgstr "一组由多个音乐家共同表演（在某些情况下，某些或全部成员在不同的表演或录音中可能会有所不同）。"
 
 #: DB:instrument_type/description:7
 msgctxt "instrument_type"
@@ -234,7 +235,7 @@ msgid ""
 "similar works for the stage in their staged form (as opposed to a <a "
 "href=\"https://en.wikipedia.org/wiki/Concert_performance\">concert "
 "performance</a> without staging)."
-msgstr ""
+msgstr "以舞台形式演出舞台上的一种或多种戏剧，音乐剧，歌剧，芭蕾舞或其他类似作品的表演（与没有舞台演出的<a href=\"https://en.wikipedia.org/wiki/Concert_performance\">音乐会表演</a>相反）。"
 
 #: DB:place_type/description:8
 msgctxt "place_type"
@@ -3179,22 +3180,27 @@ msgstr "比利时版权协会SABAM的代号"
 #: DB:work_attribute_type/description:37
 msgctxt "work_attribute_type"
 msgid "ID for the Brazilian rights society ECAD"
-msgstr ""
+msgstr "巴西版权协会ECAD的ID"
 
 #: DB:work_attribute_type/description:34
 msgctxt "work_attribute_type"
 msgid "ID for the British rights society PRS for Music"
-msgstr ""
+msgstr "英国音乐版权协会PRS的ID"
 
 #: DB:work_attribute_type/description:10
 msgctxt "work_attribute_type"
 msgid "ID for the Canadian rights society SOCAN"
 msgstr ""
 
+#: DB:work_attribute_type/description:53
+msgctxt "work_attribute_type"
+msgid "ID for the Canadian rights society SODRAC"
+msgstr ""
+
 #: DB:work_attribute_type/description:39
 msgctxt "work_attribute_type"
 msgid "ID for the Colombian rights society SAYCO"
-msgstr ""
+msgstr "哥伦比亚版权协会SAYCO的ID"
 
 #: DB:work_attribute_type/description:44
 msgctxt "work_attribute_type"
@@ -3209,7 +3215,7 @@ msgstr ""
 #: DB:work_attribute_type/description:25
 msgctxt "work_attribute_type"
 msgid "ID for the Czech rights society OSA"
-msgstr ""
+msgstr "捷克版权协会OSA的ID"
 
 #: DB:work_attribute_type/description:51
 msgctxt "work_attribute_type"
@@ -3304,12 +3310,12 @@ msgstr "波兰版权协会ZAiKS的代号"
 #: DB:work_attribute_type/description:35
 msgctxt "work_attribute_type"
 msgid "ID for the Portuguese rights society SPA"
-msgstr ""
+msgstr "葡萄牙版权协会SPA的ID"
 
 #: DB:work_attribute_type/description:45
 msgctxt "work_attribute_type"
 msgid "ID for the Singaporean rights society COMPASS"
-msgstr ""
+msgstr "新加坡版权协会COMPASS的ID"
 
 #: DB:work_attribute_type/description:20
 msgctxt "work_attribute_type"
@@ -3339,12 +3345,12 @@ msgstr ""
 #: DB:work_attribute_type/description:7
 msgctxt "work_attribute_type"
 msgid "ID for the US rights society BMI"
-msgstr ""
+msgstr "美国版权协会BMI的ID"
 
 #: DB:work_attribute_type/description:8
 msgctxt "work_attribute_type"
 msgid "ID for the US rights society SESAC"
-msgstr ""
+msgstr "美国版权协会SESAC的ID"
 
 #: DB:work_attribute_type/description:43
 msgctxt "work_attribute_type"
@@ -3354,17 +3360,17 @@ msgstr ""
 #: DB:work_attribute_type/description:42
 msgctxt "work_attribute_type"
 msgid "ID for the Venezuelan rights society SACVEN"
-msgstr ""
+msgstr "委内瑞拉版权协会SACVEN的ID"
 
 #: DB:work_attribute_type/description:38
 msgctxt "work_attribute_type"
 msgid "ID for the international (formerly US) rights society AMRA"
-msgstr ""
+msgstr "国际（以前为美国）版权协会AMRA的ID"
 
 #: DB:work_attribute_type/description:22
 msgctxt "work_attribute_type"
 msgid "ID for the private licensing company CCLI"
-msgstr ""
+msgstr "私人许可公司CCLI的ID"
 
 #: DB:work_attribute_type/name:52
 msgctxt "work_attribute_type"
@@ -5823,10 +5829,15 @@ msgctxt "work_attribute_type"
 msgid "SOCAN ID"
 msgstr "SOCAN ID"
 
+#: DB:work_attribute_type/name:53
+msgctxt "work_attribute_type"
+msgid "SODRAC ID"
+msgstr ""
+
 #: DB:work_attribute_type/name:35
 msgctxt "work_attribute_type"
 msgid "SPA ID"
-msgstr ""
+msgstr "SPA的ID"
 
 #: DB:work_attribute_type/name:50
 msgctxt "work_attribute_type"
@@ -6167,7 +6178,7 @@ msgstr "体育场"
 #: DB:event_type/name:6
 msgctxt "event_type"
 msgid "Stage performance"
-msgstr ""
+msgstr "舞台表演"
 
 #: DB:cover_art_archive.art_type/name:10
 msgctxt "cover_art_type"
@@ -6607,21 +6618,21 @@ msgid ""
 "This indicates a choir/chorus (an organized, usually large group of "
 "singers). Smaller vocal ensembles and groupings that do not generally call "
 "themselves choirs are better entered as “Group”."
-msgstr ""
+msgstr "这表示合唱团/合唱团（一种有组织的、通常人数很多的歌手组织）。 较小的声乐乐团和通常不自称为合唱团的团队最好输入“Group”。"
 
 #: DB:artist_type/description:4
 msgctxt "artist_type"
 msgid ""
 "This indicates an individual fictional character (whether a fictional "
 "person, animal or any other kind of character)."
-msgstr ""
+msgstr "这表示一个虚构人物（无论是虚构人物，动物还是任何其他种类的生物）。"
 
 #: DB:artist_type/description:1
 msgctxt "artist_type"
 msgid ""
 "This indicates an individual person, be it under its legal name (“John "
 "Lennon”), or a performance name (“Sting”)."
-msgstr ""
+msgstr "这表示一个人，无论是其法定名称（“ John Lennon”）还是艺名（“ Sting”）。"
 
 #: DB:artist_type/description:5
 msgctxt "artist_type"
@@ -6630,7 +6641,7 @@ msgid ""
 "instrumentalists). Smaller ensembles (such as trios and quartets) and "
 "groupings that do not generally call themselves orchestras are better "
 "entered as “Group”."
-msgstr ""
+msgstr "这表示一个乐团（一种有组织的、通常人数很多的乐器演奏者组织）。 较小的乐团（如三重奏和四重奏）和通常不称自己为乐团的乐队最好输入“ Group”。"
 
 #: DB:work_type/description:23
 msgctxt "work_type"

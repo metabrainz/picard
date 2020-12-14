@@ -29,7 +29,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2020-10-28 18:33+0000\n"
+"PO-Revision-Date: 2020-12-07 18:29+0000\n"
 "Last-Translator: yvanz\n"
 "Language-Team: French (http://www.transifex.com/musicbrainz/musicbrainz/language/fr/)\n"
 "MIME-Version: 1.0\n"
@@ -3194,6 +3194,11 @@ msgctxt "work_attribute_type"
 msgid "ID for the Canadian rights society SOCAN"
 msgstr "ID pour la SOCAN, société canadienne de gestion des droits"
 
+#: DB:work_attribute_type/description:53
+msgctxt "work_attribute_type"
+msgid "ID for the Canadian rights society SODRAC"
+msgstr "ID pour la SODRAC, société canadienne de gestion des droits"
+
 #: DB:work_attribute_type/description:39
 msgctxt "work_attribute_type"
 msgid "ID for the Colombian rights society SAYCO"
@@ -5825,6 +5830,11 @@ msgstr "SIAE ID"
 msgctxt "work_attribute_type"
 msgid "SOCAN ID"
 msgstr "ID SOCAN"
+
+#: DB:work_attribute_type/name:53
+msgctxt "work_attribute_type"
+msgid "SODRAC ID"
+msgstr "ID SODRAC"
 
 #: DB:work_attribute_type/name:35
 msgctxt "work_attribute_type"

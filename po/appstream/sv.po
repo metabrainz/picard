@@ -71,6 +71,9 @@ msgid ""
 "MusicBrainz database to provide accurate information about millions of music"
 " releases."
 msgstr ""
+"Omfattande databas: Picard använder den öppna och gemenskapsunderhållna "
+"MusicBrainz-databasen för att ge korrekt information om miljontals "
+"musikutgåvor."
 
 #: org.musicbrainz.Picard.appdata.xml.in:40
 msgid "CD lookups: Picard can lookup entire music CDs with a click."
