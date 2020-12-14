@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: picard 2.5.2\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-12-11 15:54+0100\n"
+"POT-Creation-Date: 2020-12-14 11:53+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,22 +21,22 @@ msgstr ""
 msgid "Unmatched Files"
 msgstr ""
 
-#: picard/album.py:290
+#: picard/album.py:288
 #, python-format
 msgid "[could not load album %s]"
 msgstr ""
 
-#: picard/album.py:414
+#: picard/album.py:412
 #, python-format
 msgid "Album %(id)s loaded: %(artist)s - %(album)s"
 msgstr ""
 
-#: picard/album.py:465
+#: picard/album.py:463
 #, python-format
 msgid "Loading album %(id)s ..."
 msgstr ""
 
-#: picard/album.py:469
+#: picard/album.py:467
 msgid "[loading album information]"
 msgstr ""
 
@@ -69,7 +69,7 @@ msgstr ""
 msgid "Looking up the metadata for cluster %(album)s..."
 msgstr ""
 
-#: picard/cluster.py:330 picard/cluster.py:572
+#: picard/cluster.py:330 picard/cluster.py:571
 #, python-format
 msgid "Clustering - step %(step)d/3: %(cluster_type)s (%(update)d%%)"
 msgstr ""
@@ -78,17 +78,17 @@ msgstr ""
 msgid "Unclustered Files"
 msgstr ""
 
-#: picard/cluster.py:507
+#: picard/cluster.py:506
 msgid "Metadata Extraction"
 msgstr ""
 
-#: picard/cluster.py:508 picard/ui/cdlookup.py:72 picard/ui/itemviews.py:154
+#: picard/cluster.py:507 picard/ui/cdlookup.py:72 picard/ui/itemviews.py:154
 #: picard/ui/mainwindow.py:853 picard/ui/searchdialog/album.py:154
 #: picard/ui/searchdialog/track.py:65 picard/util/tags.py:41
 msgid "Artist"
 msgstr ""
 
-#: picard/cluster.py:509 picard/ui/cdlookup.py:72 picard/ui/itemviews.py:157
+#: picard/cluster.py:508 picard/ui/cdlookup.py:72 picard/ui/itemviews.py:157
 #: picard/ui/mainwindow.py:852 picard/util/tags.py:38
 msgid "Album"
 msgstr ""
@@ -144,7 +144,7 @@ msgid "Merge"
 msgstr ""
 
 #: picard/config_upgrade.py:98 picard/ui/metadatabox.py:413
-#: picard/ui/options/interface.py:106 picard/ui/ui_options_interface.py:148
+#: picard/ui/options/interface.py:106 picard/ui/ui_options_interface.py:152
 msgid "Remove"
 msgstr ""
 
@@ -244,16 +244,16 @@ msgstr ""
 msgid "Authorization code:"
 msgstr ""
 
-#: picard/tagger.py:757
+#: picard/tagger.py:753
 #, python-format
 msgid "Removing album %(id)s: %(artist)s - %(album)s"
 msgstr ""
 
-#: picard/tagger.py:775
+#: picard/tagger.py:771
 msgid "CD Lookup Error"
 msgstr ""
 
-#: picard/tagger.py:776
+#: picard/tagger.py:772
 #, python-format
 msgid ""
 "Error while reading CD:\n"
@@ -261,11 +261,11 @@ msgid ""
 "%s"
 msgstr ""
 
-#: picard/track.py:374
+#: picard/track.py:372
 msgid "[loading recording information]"
 msgstr ""
 
-#: picard/track.py:409
+#: picard/track.py:407
 #, python-format
 msgid "[could not load recording %s]"
 msgstr ""
@@ -290,19 +290,27 @@ msgstr ""
 msgid "Looking up the fingerprint for file '%(filename)s' ..."
 msgstr ""
 
-#: picard/acoustid/manager.py:101
+#: picard/acoustid/manager.py:137
 msgid "AcoustID submission finished, but not all fingerprints have been submitted"
 msgstr ""
 
-#: picard/acoustid/manager.py:103
+#: picard/acoustid/manager.py:139
 msgid "AcoustID submission finished successfully"
 msgstr ""
 
-#: picard/acoustid/manager.py:115
+#: picard/acoustid/manager.py:150
+msgid "AcoustID submission failed permanently, max batch size reduced to zero"
+msgstr ""
+
+#: picard/acoustid/manager.py:152
+msgid "AcoustID submission failed permanently, prolly too many retries"
+msgstr ""
+
+#: picard/acoustid/manager.py:162
 msgid "Submitting AcoustIDs ..."
 msgstr ""
 
-#: picard/acoustid/manager.py:136
+#: picard/acoustid/manager.py:192
 #, python-format
 msgid "AcoustID submission failed with error '%(error)s': %(message)s"
 msgstr ""
@@ -4344,11 +4352,11 @@ msgstr ""
 msgid "Reorder Priority: "
 msgstr ""
 
-#: picard/ui/ui_options_cover.py:98 picard/ui/ui_options_interface.py:145
+#: picard/ui/ui_options_cover.py:98 picard/ui/ui_options_interface.py:149
 msgid "Move selected item up"
 msgstr ""
 
-#: picard/ui/ui_options_cover.py:99 picard/ui/ui_options_interface.py:146
+#: picard/ui/ui_options_cover.py:99 picard/ui/ui_options_interface.py:150
 msgid "Move selected item down"
 msgstr ""
 
@@ -4377,7 +4385,7 @@ msgid "Fingerprint calculator:"
 msgstr ""
 
 #: picard/ui/ui_options_fingerprinting.py:79
-#: picard/ui/ui_options_interface.py:138 picard/ui/ui_options_renaming.py:146
+#: picard/ui/ui_options_interface.py:142 picard/ui/ui_options_renaming.py:146
 msgid "Browse..."
 msgstr ""
 
@@ -4492,63 +4500,67 @@ msgstr ""
 msgid "Playground for genres or folksonomy tags filters (cleared on exit):"
 msgstr ""
 
-#: picard/ui/ui_options_interface.py:130
+#: picard/ui/ui_options_interface.py:133
 msgid "Miscellaneous"
 msgstr ""
 
-#: picard/ui/ui_options_interface.py:131
+#: picard/ui/ui_options_interface.py:134
 msgid "Show text labels under icons"
 msgstr ""
 
-#: picard/ui/ui_options_interface.py:132
+#: picard/ui/ui_options_interface.py:135
 msgid "Use system theme"
 msgstr ""
 
-#: picard/ui/ui_options_interface.py:133
+#: picard/ui/ui_options_interface.py:136
 msgid "Allow selection of multiple directories"
 msgstr ""
 
-#: picard/ui/ui_options_interface.py:134
+#: picard/ui/ui_options_interface.py:137
 msgid "Use builtin search rather than looking in browser"
 msgstr ""
 
-#: picard/ui/searchdialog/__init__.py:93 picard/ui/ui_options_interface.py:135
+#: picard/ui/searchdialog/__init__.py:93 picard/ui/ui_options_interface.py:138
 msgid "Use advanced query syntax"
 msgstr ""
 
-#: picard/ui/ui_options_interface.py:136
+#: picard/ui/ui_options_interface.py:139
 msgid "Show a quit confirmation dialog for unsaved changes"
 msgstr ""
 
-#: picard/ui/ui_options_interface.py:137
-msgid "Begin browsing in the following directory:"
-msgstr ""
-
-#: picard/ui/ui_options_interface.py:139
-msgid "User interface language:"
-msgstr ""
-
 #: picard/ui/ui_options_interface.py:140
-msgid "Customize Action Toolbar"
+msgid "Adjust horizontal position in file browser automatically"
 msgstr ""
 
 #: picard/ui/ui_options_interface.py:141
-msgid "Add a new button to Toolbar"
-msgstr ""
-
-#: picard/ui/ui_options_interface.py:142
-msgid "Add Action"
+msgid "Begin browsing in the following directory:"
 msgstr ""
 
 #: picard/ui/ui_options_interface.py:143
-msgid "Insert a separator"
+msgid "User interface language:"
 msgstr ""
 
 #: picard/ui/ui_options_interface.py:144
-msgid "Add Separator"
+msgid "Customize Action Toolbar"
+msgstr ""
+
+#: picard/ui/ui_options_interface.py:145
+msgid "Add a new button to Toolbar"
+msgstr ""
+
+#: picard/ui/ui_options_interface.py:146
+msgid "Add Action"
 msgstr ""
 
 #: picard/ui/ui_options_interface.py:147
+msgid "Insert a separator"
+msgstr ""
+
+#: picard/ui/ui_options_interface.py:148
+msgid "Add Separator"
+msgstr ""
+
+#: picard/ui/ui_options_interface.py:151
 msgid "Remove button from toolbar"
 msgstr ""
 
@@ -5233,38 +5245,38 @@ msgstr ""
 msgid "Lookup CD..."
 msgstr ""
 
-#: picard/ui/options/interface.py:166
+#: picard/ui/options/interface.py:167
 msgid "System default"
 msgstr ""
 
-#: picard/ui/options/interface.py:225
+#: picard/ui/options/interface.py:227
 msgid "Theme changed"
 msgstr ""
 
-#: picard/ui/options/interface.py:226
+#: picard/ui/options/interface.py:228
 msgid ""
 "You have changed the application theme. You have to restart Picard in "
 "order for the change to take effect."
 msgstr ""
 
-#: picard/ui/options/interface.py:228
+#: picard/ui/options/interface.py:230
 msgid ""
 "Please note that using the system theme might cause the user interface to"
 " be not shown correctly. If this is the case disable the \"Use system "
 "theme\" option to use Picard's default theme again."
 msgstr ""
 
-#: picard/ui/options/interface.py:233
+#: picard/ui/options/interface.py:235
 msgid "Language changed"
 msgstr ""
 
-#: picard/ui/options/interface.py:234
+#: picard/ui/options/interface.py:236
 msgid ""
 "You have changed the interface language. You have to restart Picard in "
 "order for the change to take effect."
 msgstr ""
 
-#: picard/ui/options/interface.py:265
+#: picard/ui/options/interface.py:268
 msgid "Drag and Drop to re-order"
 msgstr ""
 
