@@ -704,7 +704,7 @@ class Tagger(QtWidgets.QApplication):
         if album.id not in self.albums:
             return
         album.stop_loading()
-        self.remove_files(album.iterfiles())
+        self.remove_files(list(album.iterfiles()))
         del self.albums[album.id]
         if album.release_group:
             album.release_group.remove_album(album.id)
@@ -717,7 +717,7 @@ class Tagger(QtWidgets.QApplication):
     def remove_nat(self, track):
         """Remove the specified non-album track."""
         log.debug("Removing %r", track)
-        self.remove_files(track.iterfiles())
+        self.remove_files(list(track.iterfiles()))
         if not self.nats:
             return
         self.nats.tracks.remove(track)
