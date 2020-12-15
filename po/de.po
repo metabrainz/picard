@@ -41,7 +41,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2020-12-14 14:44+0100\n"
-"PO-Revision-Date: 2020-12-15 09:47+0000\n"
+"PO-Revision-Date: 2020-12-15 09:57+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: German (http://www.transifex.com/musicbrainz/musicbrainz/language/de/)\n"
 "MIME-Version: 1.0\n"
@@ -2652,7 +2652,7 @@ msgid ""
 "Example:\n"
 "\n"
 "    $lenmulti(One; Two; Three) = 3\n"
-msgstr ""
+msgstr "`$lenmulti(Name,Separator=\"; \")`\n\nLiefert die Anzahl der Elemente im mehrwertigen Tag `Name` zurück. Statt eines Variablennamens kann für `Name` auch direkt ein Wert mit mehreren Elementen angegeben werden, die durch `Separator` (oder \"; \" falls nicht angegeben) getrennt werden.\n\nBeispiel:\n\n    $lenmulti(Eins; Zwei; Drei) = 3\n"
 
 #: picard/script/functions.py:732
 msgid ""
@@ -2768,7 +2768,7 @@ msgid ""
 "Returns true if `x` equals `a1` or `a2` or ...\n"
 "Functionally equivalent to `$or($eq(x,a1),$eq(x,a2) ...)`.\n"
 "Functionally equivalent to the eq2 plugin."
-msgstr ""
+msgstr "`$eq_any(x,a1,a2...)`\n\nLiefert wahr zurück, wenn `x` gleich `a1` oder `a2` oder ...\nFunktional gleichwertig zu `$or($eq(x,a1),$eq(x,a2) ...)`.\nFunktional gleichwertig zum eq2-Plugin."
 
 #: picard/script/functions.py:938
 msgid ""
@@ -2777,7 +2777,7 @@ msgid ""
 "Returns true if `x` does not equal `a1` and `a2` and ...\n"
 "Functionally equivalent to `$and($ne(x,a1),$ne(x,a2) ...)`.\n"
 "Functionally equivalent to the ne2 plugin."
-msgstr ""
+msgstr "`$ne_all(x,a1,a2...)`\n\nGibt wahr zurück, wenn `x` ungleich `a1` und `a2` und ...\nFunktional gleichwertig zu `$and($ne(x,a1),$ne(x,a2) ...)`.\nFunktional gleichwertig zum ne2-Plugin."
 
 #: picard/script/functions.py:950
 msgid ""
@@ -2789,7 +2789,7 @@ msgid ""
 "Example:\n"
 "\n"
 "    $if($eq_all(%albumartist%,%artist%,Justin Bieber),$set(engineer,Meat Loaf))\n"
-msgstr ""
+msgstr "`$eq_all(x,a1,a2...)`\n\nLiefert wahr zurück, wenn `x` gleich `a1` und `a2` and ...\nFunktional gleichwertig zu`$and($eq(x,a1),$eq(x,a2) ...)`.\n\nBeispiel:\n\n    $if($eq_all(%albumartist%,%artist%,Justin Bieber),$set(engineer,Meat Loaf))\n"
 
 #: picard/script/functions.py:968
 #, python-format
@@ -2802,7 +2802,7 @@ msgid ""
 "Example:\n"
 "\n"
 "    $if($ne_any(%albumartist%,%trackartist%,%composer%),$set(lyricist,%composer%))\n"
-msgstr ""
+msgstr "`$ne_any(x,a1,a2...)`\n\nLiefert wahr zurück, wenn `x` ungleich `a1` oder `a2` oder ...\nFunktional gleichwertig zu `$or($ne(x,a1),$ne(x,a2) ...)`.Beispiel:\n\n    $if($ne_any(%albumartist%,%trackartist%,%composer%),$set(lyricist,%composer%))\n"
 
 #: picard/script/functions.py:983
 msgid ""
