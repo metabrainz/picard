@@ -13,9 +13,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-12-14 11:53+0100\n"
-"PO-Revision-Date: 2020-12-14 12:15+0000\n"
-"Last-Translator: Transifex Bot <>\n"
+"POT-Creation-Date: 2020-12-14 14:44+0100\n"
+"PO-Revision-Date: 2020-12-14 16:39+0000\n"
+"Last-Translator: Maurits Meulenbelt <mfmeulenbelt@gmail.com>\n"
 "Language-Team: Dutch (http://www.transifex.com/musicbrainz/musicbrainz/language/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -302,12 +302,13 @@ msgid "AcoustID submission finished successfully"
 msgstr "De AcoustID’s zijn met succes verzonden"
 
 #: picard/acoustid/manager.py:150
-msgid "AcoustID submission failed permanently, max batch size reduced to zero"
-msgstr ""
+msgid ""
+"AcoustID submission failed permanently, maximum batch size reduced to zero"
+msgstr "Verzenden AcoustID permanent mislukt; maximale partijgrootte verlaagd tot nul"
 
 #: picard/acoustid/manager.py:152
-msgid "AcoustID submission failed permanently, prolly too many retries"
-msgstr ""
+msgid "AcoustID submission failed permanently, probably too many retries"
+msgstr "Verzenden AcoustID permanent mislukt; waarschijnlijk te vaak opnieuw geprobeerd"
 
 #: picard/acoustid/manager.py:162
 msgid "Submitting AcoustIDs ..."
@@ -4473,7 +4474,7 @@ msgstr "Bij het afsluiten om een bevestiging vragen als er niet-opgeslagen wijzi
 
 #: picard/ui/ui_options_interface.py:140
 msgid "Adjust horizontal position in file browser automatically"
-msgstr ""
+msgstr "De horizontale positie in de bestandsbrowser automatisch aanpassen"
 
 #: picard/ui/ui_options_interface.py:141
 msgid "Begin browsing in the following directory:"

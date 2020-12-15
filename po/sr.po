@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-12-14 11:53+0100\n"
-"PO-Revision-Date: 2020-12-14 12:15+0000\n"
+"POT-Creation-Date: 2020-12-14 14:44+0100\n"
+"PO-Revision-Date: 2020-12-14 15:16+0000\n"
 "Last-Translator: Transifex Bot <>\n"
 "Language-Team: Serbian (http://www.transifex.com/musicbrainz/musicbrainz/language/sr/)\n"
 "MIME-Version: 1.0\n"
@@ -303,11 +303,12 @@ msgid "AcoustID submission finished successfully"
 msgstr ""
 
 #: picard/acoustid/manager.py:150
-msgid "AcoustID submission failed permanently, max batch size reduced to zero"
+msgid ""
+"AcoustID submission failed permanently, maximum batch size reduced to zero"
 msgstr ""
 
 #: picard/acoustid/manager.py:152
-msgid "AcoustID submission failed permanently, prolly too many retries"
+msgid "AcoustID submission failed permanently, probably too many retries"
 msgstr ""
 
 #: picard/acoustid/manager.py:162

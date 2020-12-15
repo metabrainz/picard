@@ -4,6 +4,7 @@
 # 
 # Translators:
 # AO <ao@localizationlab.org>, 2013
+# AO <ao@localizationlab.org>, 2013,2015
 # Benjamin Sonntag <benjamin@sonntag.fr>, 2012
 # Idlusen <boulanger.m@mailoo.org>, 2019
 # David Kellner <kellnerd@gmx.net>, 2019
@@ -13,6 +14,8 @@
 # AO <ao@localizationlab.org>, 2013,2015
 # AO <ao@localizationlab.org>, 2013,2015
 # ybsar <gybsar@gmail.com>, 2013
+# Idlusen <boulanger.m@mailoo.org>, 2019
+# Jack, 2020
 # Jack, 2020
 # Jahrynx <fjochaud@yahoo.fr>, 2006
 # Jean-Xavier Bardant <bardant.jean-xavier@neuf.fr>, 2019
@@ -35,9 +38,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-12-14 11:53+0100\n"
-"PO-Revision-Date: 2020-12-14 12:15+0000\n"
-"Last-Translator: Transifex Bot <>\n"
+"POT-Creation-Date: 2020-12-14 14:44+0100\n"
+"PO-Revision-Date: 2020-12-15 09:46+0000\n"
+"Last-Translator: Laurent Monin <i18n@norz.org>\n"
 "Language-Team: French (http://www.transifex.com/musicbrainz/musicbrainz/language/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -317,19 +320,20 @@ msgstr "Recherche d’empreinte pour le fichier « %(filename)s »..."
 #: picard/acoustid/manager.py:137
 msgid ""
 "AcoustID submission finished, but not all fingerprints have been submitted"
-msgstr "Soumission AcoustID terminée, mais toutes les empreintes n'ont pu être soumises"
+msgstr "Envoi d’AcoustID terminé, mais toutes les empreintes n’ont pu être transmises"
 
 #: picard/acoustid/manager.py:139
 msgid "AcoustID submission finished successfully"
-msgstr "Soumission AcoustID terminée avec succès"
+msgstr "Envoi d’AcoustID terminé avec succès"
 
 #: picard/acoustid/manager.py:150
-msgid "AcoustID submission failed permanently, max batch size reduced to zero"
-msgstr ""
+msgid ""
+"AcoustID submission failed permanently, maximum batch size reduced to zero"
+msgstr "L’envoi d’AcoustID a échoué de manière permanente, la taille maximale de lot a été réduite à zéro"
 
 #: picard/acoustid/manager.py:152
-msgid "AcoustID submission failed permanently, prolly too many retries"
-msgstr ""
+msgid "AcoustID submission failed permanently, probably too many retries"
+msgstr "L’envoi d’AcoustID a échoué de manière permanente, probablement trop d’essais d’envoi"
 
 #: picard/acoustid/manager.py:162
 msgid "Submitting AcoustIDs ..."
@@ -2298,14 +2302,14 @@ msgstr "Fichiers locaux"
 
 #: picard/coverart/providers/urlrels.py:39
 msgid "Allowed Cover Art URLs"
-msgstr "URLs d'Illustration Autorisées"
+msgstr "URLs d’Illustration Autorisées"
 
 #: picard/script/functions.py:180
 msgid ""
 "`$if(if,then,else)`\n"
 "\n"
 "If `if` is not empty, it returns `then`, otherwise it returns `else`."
-msgstr "`$if(si,alors,sinon)`\n\nSi `si` n'est pas vide, retourne `alors`, sinon retourne `sinon`."
+msgstr "`$if(si,alors,sinon)`\n\nSi `si` n’est pas vide, retourne `alors`, sinon retourne `sinon`."
 
 #: picard/script/functions.py:193
 msgid ""
@@ -2363,7 +2367,7 @@ msgid ""
 "\n"
 "Replaces all whitespace in `text` with a single space, and removes leading and trailing spaces.\n"
 "Whitespace characters include multiple consecutive spaces, and various other unicode characters."
-msgstr "`$strip(texte)`\n\nRemplace tous les caractères d'espacement dans `texte` avec un seul espace, et supprimes les espaces en début et fin de chaîne.\nLes caractères d'espacement inclus les espaces multiples consécutifs et différents caractères Unicode."
+msgstr "`$strip(texte)`\n\nRemplace tous les caractères d’espacement dans `texte` avec un seul espace, et supprimes les espaces en début et fin de chaîne.\nLes caractères d’espacement inclus les espaces multiples consécutifs et différents caractères Unicode."
 
 #: picard/script/functions.py:280
 msgid ""
@@ -2490,7 +2494,7 @@ msgid ""
 "    will also copy multi-valued variables without flattening them.\n"
 "\n"
 "_Since Picard 1.0_"
-msgstr "`$copymerge(new,old)`\n\nFusionne les métadonnées de la variable `old` dans `new`, supprimant les doublons et ajoutant à la fin\n    de manière à préserver l'ordre original. Comme `$copy`, cela\n    copiera aussi les variables multi-valeurs sans les aplatir.\n\n_Depuis Picard 1.0_"
+msgstr "`$copymerge(new,old)`\n\nFusionne les métadonnées de la variable `old` dans `new`, supprimant les doublons et ajoutant à la fin\n    de manière à préserver l’ordre original. Comme `$copy`, cela\n    copiera aussi les variables multi-valeurs sans les aplatir.\n\n_Depuis Picard 1.0_"
 
 #: picard/script/functions.py:481
 msgid ""
@@ -2498,7 +2502,7 @@ msgid ""
 "\n"
 "Trims all leading and trailing whitespaces from `text`.\n"
 "    The optional second parameter `char` specifies the character to trim."
-msgstr "`$trim(texte[,caractère])`\n\nSupprime les caractères d'espacement en début et fin de `texte`.\n    Le paramètre optionnel `caractère` indique le caractère à supprimer."
+msgstr "`$trim(texte[,caractère])`\n\nSupprime les caractères d’espacement en début et fin de `texte`.\n    Le paramètre optionnel `caractère` indique le caractère à supprimer."
 
 #: picard/script/functions.py:494
 msgid ""
@@ -2510,7 +2514,7 @@ msgid ""
 "Example:\n"
 "\n"
 "    $add(x,y,z) = ((x + y) + z)\n"
-msgstr "`$add(x,y,*args)`\n\nAjoute `y` à `x`.\nPeut être utilisé avec un nombre arbitraire d'arguments.\n\nExemple:\n\n    $add(x,y,z) = ((x + y) + z)\n"
+msgstr "`$add(x,y,*args)`\n\nAjoute `y` à `x`.\nPeut être utilisé avec un nombre arbitraire d’arguments.\n\nExemple:\n\n    $add(x,y,z) = ((x + y) + z)\n"
 
 #: picard/script/functions.py:512
 msgid ""
@@ -2522,7 +2526,7 @@ msgid ""
 "Example:\n"
 "\n"
 "    $sub(x,y,z) = ((x - y) - z)\n"
-msgstr "`$sub(x,y,*args)`\n\nSoustrait `y` de `x`.\nPeut être utilisé avec un nombre arbitraire d'arguments.\n\nExemple:\n\n    $sub(x,y,z) = ((x - y) - z)\n"
+msgstr "`$sub(x,y,*args)`\n\nSoustrait `y` de `x`.\nPeut être utilisé avec un nombre arbitraire d’arguments.\n\nExemple:\n\n    $sub(x,y,z) = ((x - y) - z)\n"
 
 #: picard/script/functions.py:530
 msgid ""
@@ -2534,7 +2538,7 @@ msgid ""
 "Example:\n"
 "\n"
 "    $div(x,y,z) = ((x / y) / z)\n"
-msgstr "`$div(x,y,*args)`\n\nDivise `x` par `y`.\nPeut être utilisé avec un nombre arbitraire d'arguments.\n\nExemple:\n\n    $div(x,y,z) = ((x / y) / z)\n"
+msgstr "`$div(x,y,*args)`\n\nDivise `x` par `y`.\nPeut être utilisé avec un nombre arbitraire d’arguments.\n\nExemple:\n\n    $div(x,y,z) = ((x / y) / z)\n"
 
 #: picard/script/functions.py:550
 msgid ""
@@ -2546,7 +2550,7 @@ msgid ""
 "Example:\n"
 "\n"
 "    $mod(x,y,z) = ((x % y) % z)\n"
-msgstr "`$mod(x,y,*args)`\n\nRetourne le reste de `x` divisé par `y`.\nPeut être utilisé avec un nombre arbitraire d'arguments.\n\nExemple:\n\n    $mod(x,y,z) = ((x % y) % z)\n"
+msgstr "`$mod(x,y,*args)`\n\nRetourne le reste de `x` divisé par `y`.\nPeut être utilisé avec un nombre arbitraire d’arguments.\n\nExemple:\n\n    $mod(x,y,z) = ((x % y) % z)\n"
 
 #: picard/script/functions.py:568
 msgid ""
@@ -2558,7 +2562,7 @@ msgid ""
 "Example:\n"
 "\n"
 "    $mul(x,y,z) = ((x * y) * z)\n"
-msgstr "`$mul(x,y,*args)`\n\nMultiplie `x` par `y`.\nPeut être utilisé avec un nombre arbitraire d'arguments.\n\nExemple:\n\n    $mul(x,y,z) = ((x * y) * z)\n"
+msgstr "`$mul(x,y,*args)`\n\nMultiplie `x` par `y`.\nPeut être utilisé avec un nombre arbitraire d’arguments.\n\nExemple:\n\n    $mul(x,y,z) = ((x * y) * z)\n"
 
 #: picard/script/functions.py:586
 msgid ""
@@ -2567,7 +2571,7 @@ msgid ""
 "Returns true if either `x` or `y` not empty.\n"
 "    Can be used with an arbitrary number of arguments.\n"
 "    The result is true if ANY of the arguments is not empty."
-msgstr "`$or(x,y,*args)`\n\nRetourne vrai si `x` ou `y` n'est pas vide.\n    Peut être utilisé avec un nombre arbitraire d'arguments.\n    Le résultat est vide si au moins un des arguments n'est pas vide."
+msgstr "`$or(x,y,*args)`\n\nRetourne vrai si `x` ou `y` n’est pas vide.\n    Peut être utilisé avec un nombre arbitraire d’arguments.\n    Le résultat est vide si au moins un des arguments n’est pas vide."
 
 #: picard/script/functions.py:600
 msgid ""
@@ -2576,7 +2580,7 @@ msgid ""
 "Returns true if both `x` and `y` are not empty.\n"
 "    Can be used with an arbitrary number of arguments.\n"
 "    The result is true if ALL of the arguments are not empty."
-msgstr "`$and(x,y,*args)`\n\nRetourne vrai si `x` et `y` ne sont pas vides.\n    Peut être utilisé avec un nombre arbitraire d'arguments.\n    Le résultat est vrai si tous les arguements ne sont pas vides."
+msgstr "`$and(x,y,*args)`\n\nRetourne vrai si `x` et `y` ne sont pas vides.\n    Peut être utilisé avec un nombre arbitraire d’arguments.\n    Le résultat est vrai si tous les arguements ne sont pas vides."
 
 #: picard/script/functions.py:614
 msgid ""
@@ -2597,7 +2601,7 @@ msgid ""
 "`$ne(x,y)`\n"
 "\n"
 "Returns true if `x` does not equal `y`."
-msgstr "`$ne(x,y)`\n\nRetourne vrai si `x` n'est pas égal à `y`."
+msgstr "`$ne(x,y)`\n\nRetourne vrai si `x` n’est pas égal à `y`."
 
 #: picard/script/functions.py:650
 msgid ""
@@ -2646,7 +2650,7 @@ msgid ""
 "Example:\n"
 "\n"
 "    $lenmulti(One; Two; Three) = 3\n"
-msgstr "`$lenmulti(nom,séparateur=\"; \")`\n\nRetourne le nombre d'élements dans la balise multi-valeurs `nom`. Une valeur litérale représentant une multi-valeurs peut être substituée au `nom`, en utilisant le\n    `séparateur` (ou \"; \" si non passé) pour convertir la valeur en une balise multi-valeurs.\n\nExemple:\n\n    $lenmulti(Un; Deux; Trois) = 3\n"
+msgstr "`$lenmulti(nom,séparateur=\"; \")`\n\nRetourne le nombre d’élements dans la balise multi-valeurs `nom`. Une valeur litérale représentant une multi-valeurs peut être substituée au `nom`, en utilisant le\n    `séparateur` (ou \"; \" si non passé) pour convertir la valeur en une balise multi-valeurs.\n\nExemple:\n\n    $lenmulti(Un; Deux; Trois) = 3\n"
 
 #: picard/script/functions.py:732
 msgid ""
@@ -2655,7 +2659,7 @@ msgid ""
 "Returns the performers where the performance type (e.g. \"vocal\") matches `pattern`, joined by `join`.\n"
 "\n"
 "_Since Picard 0.10_"
-msgstr "`$performer(pattern=\"\",join=\", \")`\n\nRetourne les interprètes dont le type d'interprètation (par exemple, \"vocal\") correspond à `pattern`, joint par `join`.\n\n_Depuis Picard 0.10_"
+msgstr "`$performer(pattern=\"\",join=\", \")`\n\nRetourne les interprètes dont le type d’interprètation (par exemple, \"vocal\") correspond à `pattern`, joint par `join`.\n\n_Depuis Picard 0.10_"
 
 #: picard/script/functions.py:747
 msgid ""
@@ -2673,7 +2677,7 @@ msgid ""
 "\n"
 "Returns true if every track in the album is matched to a single file.\n"
 "**Only works in File Naming scripts.**"
-msgstr "`$is_complete()`\n\nRetourne vrai si chaque piste de l'album correspond à un seul fichier.\n**Ne fonctionne que dans les scripts de nommage de fichiers.**"
+msgstr "`$is_complete()`\n\nRetourne vrai si chaque piste de l’album correspond à un seul fichier.\n**Ne fonctionne que dans les scripts de nommage de fichiers.**"
 
 #: picard/script/functions.py:778
 msgid ""
@@ -2684,7 +2688,7 @@ msgid ""
 "specified, the default value \"#\" will be used.\n"
 "\n"
 "_Since Picard 0.12_"
-msgstr "`$firstalphachar(texte,nonalpha=\"#\")`\n\nRetourne le premier caractère de `texte`.\nSi `texte` ne commence pas par un caractère alphabétique, alors `nonalpha` sera retourné.\nSi `nonalpha` n'est pas spécifié, la valeur par défaut \"#\" sera utilisée.\n\n_Depuis Picard 0.12_"
+msgstr "`$firstalphachar(texte,nonalpha=\"#\")`\n\nRetourne le premier caractère de `texte`.\nSi `texte` ne commence pas par un caractère alphabétique, alors `nonalpha` sera retourné.\nSi `nonalpha` n’est pas spécifié, la valeur par défaut \"#\" sera utilisée.\n\n_Depuis Picard 0.12_"
 
 #: picard/script/functions.py:797
 msgid ""
@@ -2693,7 +2697,7 @@ msgid ""
 "Returns the first character of each word in `text`, if it is an alphabetic character.\n"
 "\n"
 "_Since Picard 0.12_"
-msgstr "`$initials(texte)`\n\nRetourne le premier caractère de chaque mot du `texet`, s'il s'agit d'un caractère alphabétique.\n\n_Depuis Picard 0.12_"
+msgstr "`$initials(texte)`\n\nRetourne le premier caractère de chaque mot du `texet`, s’il s’agit d’un caractère alphabétique.\n\n_Depuis Picard 0.12_"
 
 #: picard/script/functions.py:808
 msgid ""
@@ -2702,7 +2706,7 @@ msgid ""
 "Like `$truncate()` except that it will only return the complete words from `text` which fit within `length` characters.\n"
 "\n"
 "_Since Picard 0.12_"
-msgstr "`$firstwords(texte,longueur)`\n\nComme `$truncate()` à l'exception qu'il ne retourne que les mots complets du `texte` qui font au plus `longueur` characters.\n\n_Depuis Picard 0.12_"
+msgstr "`$firstwords(texte,longueur)`\n\nComme `$truncate()` à l’exception qu’il ne retourne que les mots complets du `texte` qui font au plus `longueur` characters.\n\n_Depuis Picard 0.12_"
 
 #: picard/script/functions.py:831
 msgid ""
@@ -2743,7 +2747,7 @@ msgid ""
 "    $swapprefix(%albumartist%,A,An,The,Le)\n"
 "\n"
 "_Since Picard 1.3, previously as a plugin since Picard 0.13_"
-msgstr "`$swapprefix(texte,*préfixes=\"a\",\"the\")`\n\nDéplace les `préfixes` spécifiés du début à la fin de `texte` \nSi aucun préfixe n'est spécifié, 'A' et 'The' sont utilisés par défaut.\n\nExemple:\n\n    $swapprefix(%albumartist%,A,An,The,Le)\n\n_Depuis Picard 1.3, auparavant comme greffon depuis Picard 0.13_"
+msgstr "`$swapprefix(texte,*préfixes=\"a\",\"the\")`\n\nDéplace les `préfixes` spécifiés du début à la fin de `texte` \nSi aucun préfixe n’est spécifié, 'A' et 'The' sont utilisés par défaut.\n\nExemple:\n\n    $swapprefix(%albumartist%,A,An,The,Le)\n\n_Depuis Picard 1.3, auparavant comme greffon depuis Picard 0.13_"
 
 #: picard/script/functions.py:893
 msgid ""
@@ -2753,7 +2757,7 @@ msgid ""
 "If no prefix is specified 'A' and 'The' are used by default.\n"
 "\n"
 "_Since Picard 1.3_"
-msgstr "`$delprefix(texte,*préfixes=\"a\",\"the\")`\n\nSupprime les `préfixes` spécifiés du début de `texte`.\nSi aucun préfixe n'est spécifié, 'A' et 'The' sont utilisés par défaut.\n\n_Depuis Picard 1.3_"
+msgstr "`$delprefix(texte,*préfixes=\"a\",\"the\")`\n\nSupprime les `préfixes` spécifiés du début de `texte`.\nSi aucun préfixe n’est spécifié, 'A' et 'The' sont utilisés par défaut.\n\n_Depuis Picard 1.3_"
 
 #: picard/script/functions.py:926
 msgid ""
@@ -2771,7 +2775,7 @@ msgid ""
 "Returns true if `x` does not equal `a1` and `a2` and ...\n"
 "Functionally equivalent to `$and($ne(x,a1),$ne(x,a2) ...)`.\n"
 "Functionally equivalent to the ne2 plugin."
-msgstr "`$ne_all(x,a1,a2...)`\n\nRetourne vrai si `x` n'est pas égal à `a1` et `a2` et ...\nFonctionnalité équivalente à `$and($ne(x,a1),$ne(x,a2) ...)`.\nFonctionnalité équivalente au greffon ne2."
+msgstr "`$ne_all(x,a1,a2...)`\n\nRetourne vrai si `x` n’est pas égal à `a1` et `a2` et ...\nFonctionnalité équivalente à `$and($ne(x,a1),$ne(x,a2) ...)`.\nFonctionnalité équivalente au greffon ne2."
 
 #: picard/script/functions.py:950
 msgid ""
@@ -2796,7 +2800,7 @@ msgid ""
 "Example:\n"
 "\n"
 "    $if($ne_any(%albumartist%,%trackartist%,%composer%),$set(lyricist,%composer%))\n"
-msgstr "`$ne_any(x,a1,a2...)`\n\nRetourne vrai si `x` n'est pas égal à `a1` ou `a2` ou ...\nFonctionnalité équivalent à `$or($ne(x,a1),$ne(x,a2) ...)`.\n\nExemple:\n\n    $if($ne_any(%albumartist%,%trackartist%,%composer%),$set(lyricist,%composer%))\n"
+msgstr "`$ne_any(x,a1,a2...)`\n\nRetourne vrai si `x` n’est pas égal à `a1` ou `a2` ou ...\nFonctionnalité équivalent à `$or($ne(x,a1),$ne(x,a2) ...)`.\n\nExemple:\n\n    $if($ne_any(%albumartist%,%trackartist%,%composer%),$set(lyricist,%composer%))\n"
 
 #: picard/script/functions.py:983
 msgid ""
@@ -2838,14 +2842,14 @@ msgid ""
 "_Since Picard 2.3_\n"
 "\n"
 "Note that prior to Picard 2.3.2 `$find` returned \"-1\" if `needle` was not found."
-msgstr "`$find(haystack,needle)`\n\nTrouve la position d'une chaîne de caractères dans une autre.\n    Retourne l'index de la première occurrence de  `needle` dans `haystack`, ou \"\" si `needle` n'est pas trouvé.\n\n_Depuis Picard 2.3_\n\nNote avant Picard 2.3.2 `$find` retournait \"-1\" si `needle` n'était pas trouvé."
+msgstr "`$find(haystack,needle)`\n\nTrouve la position d’une chaîne de caractères dans une autre.\n    Retourne l’index de la première occurrence de  `needle` dans `haystack`, ou \"\" si `needle` n’est pas trouvé.\n\n_Depuis Picard 2.3_\n\nNote avant Picard 2.3.2 `$find` retournait \"-1\" si `needle` n’était pas trouvé."
 
 #: picard/script/functions.py:1068
 msgid ""
 "`$reverse(text)`\n"
 "\n"
 "Returns `text` in reverse order."
-msgstr "`$reverse(texte)`\n\nRetourne le `texte` à l'envers."
+msgstr "`$reverse(texte)`\n\nRetourne le `texte` à l’envers."
 
 #: picard/script/functions.py:1077
 msgid ""
@@ -2856,7 +2860,7 @@ msgid ""
 "    zero-based. Negative numbers will be counted back from the end of the\n"
 "    string. If the `start` or `end` indexes are left blank, they will default to\n"
 "    the start and end of the string respectively."
-msgstr "`$substr(texte,début,fin)`\n\nRetourne la sous-chaîne commençant par le caractère à l'index `début` jusqu'au caractère\n    situé à l'index `fin` (mais sans l'inclure). Les indexes commencent à zéro.\n    Les nombres négatifs sont comptés à partir de la fin de la chaîne.\n    Si les indexes `début` et `fin` sont laissés vides, ils correspondront respectivemennt au début et la fin de la chaîne."
+msgstr "`$substr(texte,début,fin)`\n\nRetourne la sous-chaîne commençant par le caractère à l’index `début` jusqu’au caractère\n    situé à l’index `fin` (mais sans l’inclure). Les indexes commencent à zéro.\n    Les nombres négatifs sont comptés à partir de la fin de la chaîne.\n    Si les indexes `début` et `fin` sont laissés vides, ils correspondront respectivemennt au début et la fin de la chaîne."
 
 #: picard/script/functions.py:1098
 msgid ""
@@ -2866,7 +2870,7 @@ msgid ""
 "    representing a multi-value can be substituted for `name`, using the\n"
 "    separator (or \"; \" if not passed) to coerce the value into a proper\n"
 "    multi-valued tag."
-msgstr "`$getmulti(nom,index,séparateur=\"; \")`\n\nRetourne l'élément à l'index `index` dans la balise multi-valeurs `nom`. Une valeur litérale\n    représentant une multi-valeurs peut remplacée `nom`, en utilisant\n    `séparateur` (ou \"; \" si non passé) pour convertir la valeur en une balise multi-valeurs."
+msgstr "`$getmulti(nom,index,séparateur=\"; \")`\n\nRetourne l’élément à l’index `index` dans la balise multi-valeurs `nom`. Une valeur litérale\n    représentant une multi-valeurs peut remplacée `nom`, en utilisant\n    `séparateur` (ou \"; \" si non passé) pour convertir la valeur en une balise multi-valeurs."
 
 #: picard/script/functions.py:1117
 msgid ""
@@ -2879,7 +2883,7 @@ msgid ""
 "    literal value representing a multi-value can be substituted for `name`,\n"
 "    using the separator (or \"; \" if not passed) to coerce the value into a\n"
 "    proper multi-valued tag."
-msgstr "`$foreach(nom,code,séparateur=\"; \")`\n\nParcourt chacun des éléments de la balise multi-valeurs `nom`, exécutant\n    `code`. À chaque itération, la valeur de l'élément est d'abord mémorisé dans la balise\n    `_loop_value` et le compte est mémorisé dans la balise _loop_count`. Ceci permet\n    d'accéder à l'élément ou au compte dans le script `code`. Une \n    valeur litérale représentant une multi-valeurs peut remplacer `nom`,\n    en utilisant le séparateur (ou \"; \" si non passé) pour convertir la valeur en une \n    balise multi-valeurs."
+msgstr "`$foreach(nom,code,séparateur=\"; \")`\n\nParcourt chacun des éléments de la balise multi-valeurs `nom`, exécutant\n    `code`. À chaque itération, la valeur de l’élément est d’abord mémorisé dans la balise\n    `_loop_value` et le compte est mémorisé dans la balise _loop_count`. Ceci permet\n    d’accéder à l’élément ou au compte dans le script `code`. Une \n    valeur litérale représentant une multi-valeurs peut remplacer `nom`,\n    en utilisant le séparateur (ou \"; \" si non passé) pour convertir la valeur en une \n    balise multi-valeurs."
 
 #: picard/script/functions.py:1139
 msgid ""
@@ -2890,7 +2894,7 @@ msgid ""
 "    `_loop_count`. This allows the count value to be accessed within the `code`\n"
 "    script. The function limites the maximum number of iterations to 1000 as a\n"
 "    safeguard against accidentally creating an infinite loop."
-msgstr "`$while(condition,code)`\n\nBoucle 'while' standard. Exécute le `code` jusqu'à ce que la `condition` ne soit plus\n    évaluée à `True`. A chaque itération, le numéro de l'itération est stocké dans la variable\n    `_loop_count`. Cela permet d’accéder au numéro de l'itération dans le `code`.\n    La fonction limite à 1000 le nombre maximum d'itérations, pour préserver le script\n    des boucles infinies accidentelles."
+msgstr "`$while(condition,code)`\n\nBoucle 'while' standard. Exécute le `code` jusqu’à ce que la `condition` ne soit plus\n    évaluée à `True`. A chaque itération, le numéro de l’itération est stocké dans la variable\n    `_loop_count`. Cela permet d’accéder au numéro de l’itération dans le `code`.\n    La fonction limite à 1000 le nombre maximum d’itérations, pour préserver le script\n    des boucles infinies accidentelles."
 
 #: picard/script/functions.py:1160
 msgid ""
@@ -2901,7 +2905,7 @@ msgid ""
 "    multi-value tag. For each loop, the element value is first stored in the tag\n"
 "    `_loop_value` and the count is stored in the tag `_loop_count`. This allows\n"
 "    the element or count value to be accessed within the `code` script."
-msgstr "`$map(nom,code,séparateur=\"; \")`\n\nParcourt tous les éléments de la balise multi-valeurs `nom` et met à jour la valeur de l'élément avec la valeur retournée par `code`, puis retourne la balise multi-valeurs mise à jour.\nÀ chaque itération, la valeur de l'élément est d'abord mémorisée dans la balise `_loop_value` et le compte est mémorisé dans la balise `_loop_count`.\nCela permet d'y accéder dans le script `code`."
+msgstr "`$map(nom,code,séparateur=\"; \")`\n\nParcourt tous les éléments de la balise multi-valeurs `nom` et met à jour la valeur de l’élément avec la valeur retournée par `code`, puis retourne la balise multi-valeurs mise à jour.\nÀ chaque itération, la valeur de l’élément est d’abord mémorisée dans la balise `_loop_value` et le compte est mémorisé dans la balise `_loop_count`.\nCela permet d’y accéder dans le script `code`."
 
 #: picard/script/functions.py:1180
 msgid ""
@@ -2928,7 +2932,7 @@ msgid ""
 "Example:\n"
 "\n"
 "    $setmulti(supporting_artists,$slice(%artists%,1,))\n"
-msgstr "`$slice(nom,début,fin,séparateur=\"; \")`\n\nRetourne une variable multi-valeurs contenant les éléments entre les index `début` et\n    `fin` de la balise multi-valeurs `nom`. Une valeur litérale représentant \n    une multi-valeurs peut être substituée à `nom`, en utilisant le séparateur (ou \"; \" si\n    non fourni) pour assembler la valeur en une balise multi-valeurs. Les index commencent\n    à zéro. Les nombres négatifs sont comptés à partir de la fin de la liste.\n    Si les index de `début` ou de `fin` sont laissés vides, \n    ils seront initialisés respectivement au début et à la fin de la liste.\n\nL'exemple suivant créera une variable multi-valeurs avec tous les artistes\n    dans `%artists%` à l'exception du premier\n\nExemple:\n\n    $setmulti(supporting_artists,$slice(%artists%,1,))\n"
+msgstr "`$slice(nom,début,fin,séparateur=\"; \")`\n\nRetourne une variable multi-valeurs contenant les éléments entre les index `début` et\n    `fin` de la balise multi-valeurs `nom`. Une valeur litérale représentant \n    une multi-valeurs peut être substituée à `nom`, en utilisant le séparateur (ou \"; \" si\n    non fourni) pour assembler la valeur en une balise multi-valeurs. Les index commencent\n    à zéro. Les nombres négatifs sont comptés à partir de la fin de la liste.\n    Si les index de `début` ou de `fin` sont laissés vides, \n    ils seront initialisés respectivement au début et à la fin de la liste.\n\nL’exemple suivant créera une variable multi-valeurs avec tous les artistes\n    dans `%artists%` à l’exception du premier\n\nExemple:\n\n    $setmulti(supporting_artists,$slice(%artists%,1,))\n"
 
 #: picard/script/functions.py:1223
 #, python-format
@@ -2944,7 +2948,7 @@ msgid ""
 "    remove zero-padding (e.g. `%-d` and `%-m` on Linux or macOS, and their\n"
 "    equivalent `%#d` and `%#m` on Windows); element length specifiers (e.g.\n"
 "    `%3Y`); and hanging '%' at the end of the format string."
-msgstr "`$datetime(format=\"%Y-%m-%d %H:%M:%S\")`\n\nRetourne la date et l'heure courantes dans le format spécifié par `format`, qui est basé sur\n    la fonction Python `strftime` [format codes](https://strftime.org/). Si aucun\n    `format` n'est spécifié, la date et l'heure seront retournées dans la forme\n    `2020-02-05 14:26:32`.\nNote: les codes de formatage spécifiques à la plateforme doivent être évités pour assurer la\n    portabilité des scripts entre les plateformes.  Ces codes incluent:\n    enlever le rajout de zéro (par exemple `%-d` et `%-m` sous Linux ou macOS, et leurs\n     équivalents `%#d` et `%#m` sous Windows); les spécificateurs de longueur d'éléments (comme\n    `%3Y`); et '%' à la fin de la chaîne de formatage."
+msgstr "`$datetime(format=\"%Y-%m-%d %H:%M:%S\")`\n\nRetourne la date et l’heure courantes dans le format spécifié par `format`, qui est basé sur\n    la fonction Python `strftime` [format codes](https://strftime.org/). Si aucun\n    `format` n’est spécifié, la date et l’heure seront retournées dans la forme\n    `2020-02-05 14:26:32`.\nNote: les codes de formatage spécifiques à la plateforme doivent être évités pour assurer la\n    portabilité des scripts entre les plateformes.  Ces codes incluent:\n    enlever le rajout de zéro (par exemple `%-d` et `%-m` sous Linux ou macOS, et leurs\n     équivalents `%#d` et `%#m` sous Windows); les spécificateurs de longueur d’éléments (comme\n    `%3Y`); et '%' à la fin de la chaîne de formatage."
 
 #: picard/script/functions.py:1252
 msgid ""
@@ -3015,7 +3019,7 @@ msgstr "Crédits"
 #: picard/ui/aboutdialog.py:111
 #, python-format
 msgid "Copyright © %(copyright_years)s %(authors_credits)s and others"
-msgstr "Copyright © %(copyright_years)s %(authors_credits)s et d'autres"
+msgstr "Copyright © %(copyright_years)s %(authors_credits)s et d’autres"
 
 #: picard/ui/aboutdialog.py:113
 msgid "Official website"
@@ -3117,7 +3121,7 @@ msgstr "Illustration initiale"
 
 #: picard/ui/coverartbox.py:543
 msgid "All supported image formats"
-msgstr "Tous les formats d'image pris en charge"
+msgstr "Tous les formats d’image pris en charge"
 
 #: picard/ui/coverartbox.py:544 picard/ui/mainwindow.py:969
 msgid "All files"
@@ -3439,7 +3443,7 @@ msgstr "Contient des albums et fichiers concordants"
 
 #: picard/ui/itemviews.py:981
 msgid "Processing error(s): See the Errors tab in the Album Info dialog"
-msgstr "Erreur(s) de traitement: Voir l'onglet Erreurs dans le dialogue Infos sur l'Album"
+msgstr "Erreur(s) de traitement: Voir l’onglet Erreurs dans le dialogue Infos sur l’Album"
 
 #: picard/ui/itemviews.py:985
 msgid "Album modified and complete"
@@ -3459,11 +3463,11 @@ msgstr "Album non modifié"
 
 #: picard/ui/itemviews.py:1072
 msgid "Processing error(s): See the Errors tab in the Track Info dialog"
-msgstr "Erreur(s) de traitement: Voir l'onglet Erreurs dans le dialogue Infos sur la Piste"
+msgstr "Erreur(s) de traitement: Voir l’onglet Erreurs dans le dialogue Infos sur la Piste"
 
 #: picard/ui/itemviews.py:1100
 msgid "Processing error(s): See the Errors tab in the File Info dialog"
-msgstr "Erreur(s) de traitement: Voir l'onglet Erreurs dans le dialogue Infos sur le Fichier"
+msgstr "Erreur(s) de traitement: Voir l’onglet Erreurs dans le dialogue Infos sur le Fichier"
 
 #: picard/ui/itemviews.py:1128
 msgid "Track saved"
@@ -3583,7 +3587,7 @@ msgstr " Écoute sur le port %(port)d "
 
 #: picard/ui/mainwindow.py:444
 msgid "AcoustID submission not configured"
-msgstr "La soumission d’AcoustID n’est pas configurée"
+msgstr "L’envoi d’AcoustID n’est pas configuré"
 
 #: picard/ui/mainwindow.py:445
 msgid ""
@@ -4495,7 +4499,7 @@ msgstr "Afficher une fenêtre de confirmation de sortie pour les changements non
 
 #: picard/ui/ui_options_interface.py:140
 msgid "Adjust horizontal position in file browser automatically"
-msgstr ""
+msgstr "Ajuster la position horizontale dans le navigateur de fichiers automatiquement"
 
 #: picard/ui/ui_options_interface.py:141
 msgid "Begin browsing in the following directory:"
@@ -4940,7 +4944,7 @@ msgid ""
 "players not supporting AAC files with APEv2 tags can have issues loading and"
 " playing those files. To deal with this you can choose whether to save tags "
 "to those files."
-msgstr "Picard peut enregistré les balises APEv2 dans des fichiers AAC purs, qui par défaut ne prennent pas en charge les balises. Les balises APEv2 dans de l'AAC sont pris en charge par quelques applications audio, mais celles ne supportant pas les balises APEv2 dans les fichiers AAC peuvent avoir des problèmes pour charger et jouer ces fichiers. Pour cela vous pouvez choisir d'enregistrer ou pas les balises dans ces fichiers."
+msgstr "Picard peut enregistré les balises APEv2 dans des fichiers AAC purs, qui par défaut ne prennent pas en charge les balises. Les balises APEv2 dans de l’AAC sont pris en charge par quelques applications audio, mais celles ne supportant pas les balises APEv2 dans les fichiers AAC peuvent avoir des problèmes pour charger et jouer ces fichiers. Pour cela vous pouvez choisir d’enregistrer ou pas les balises dans ces fichiers."
 
 #: picard/ui/ui_options_tags_compatibility_ac3.py:46
 msgid ""
@@ -4949,7 +4953,7 @@ msgid ""
 "players not supporting AC3 files with APEv2 tags can have issues loading and"
 " playing those files. To deal with this you can choose whether to save tags "
 "to those files."
-msgstr "Picard peut enregistré les balises APEv2 dans des fichiers AC3 purs, qui par défaut ne prennent pas en charge les balises. Les balises APEv2 dans de l'AC3 sont pris en charge par quelques applications audio, mais celles ne supportant pas les balises APEv2 dans les fichiers AC3 peuvent avoir des problèmes pour charger et jouer ces fichiers. Pour cela vous pouvez choisir d'enregistrer ou pas les balises dans ces fichiers."
+msgstr "Picard peut enregistré les balises APEv2 dans des fichiers AC3 purs, qui par défaut ne prennent pas en charge les balises. Les balises APEv2 dans de l’AC3 sont pris en charge par quelques applications audio, mais celles ne supportant pas les balises APEv2 dans les fichiers AC3 peuvent avoir des problèmes pour charger et jouer ces fichiers. Pour cela vous pouvez choisir d’enregistrer ou pas les balises dans ces fichiers."
 
 #: picard/ui/ui_options_tags_compatibility_wave.py:57
 msgid ""
@@ -4957,7 +4961,7 @@ msgid ""
 "software. For compatibility with software which does not support ID3v2 tags "
 "in WAVE files additional RIFF INFO tags can be written to the files. RIFF "
 "INFO has only limited support for tags and character encodings."
-msgstr "Picard balisera les fichiers WAVE en utilisant des balises ID3v2. Ceci n'est pas pris en charge par tous les programmes. Pour la compatibilité avec les logiciels qui ne prennent pas en charge les balises ID3v2 dans les fichiers WAVE des balises additionnelles RIFF INFO peuvent être enregistrées dans les fichiers. RIFF INFO n'a qu'une prise en charge limitée des balises et des encodages de caractères."
+msgstr "Picard balisera les fichiers WAVE en utilisant des balises ID3v2. Ceci n’est pas pris en charge par tous les programmes. Pour la compatibilité avec les logiciels qui ne prennent pas en charge les balises ID3v2 dans les fichiers WAVE des balises additionnelles RIFF INFO peuvent être enregistrées dans les fichiers. RIFF INFO n’a qu’une prise en charge limitée des balises et des encodages de caractères."
 
 #: picard/ui/ui_passworddialog.py:60
 msgid "Authentication required"
@@ -5522,7 +5526,7 @@ msgstr "Confirmation de la suppression"
 msgid ""
 "The table is locked. To enable sorting and column resizing\n"
 "unlock the table in the table header's context menu."
-msgstr "La table est verrouillée. Pour permettre le tri et le redimensionnement des colonnes\ndéverrouiller la table dans le menu contextuel de l'entête de table."
+msgstr "La table est verrouillée. Pour permettre le tri et le redimensionnement des colonnes\ndéverrouiller la table dans le menu contextuel de l’entête de table."
 
 #: picard/util/bytes2human.py:37
 #, python-format

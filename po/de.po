@@ -40,9 +40,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-12-14 11:53+0100\n"
-"PO-Revision-Date: 2020-12-14 12:15+0000\n"
-"Last-Translator: Transifex Bot <>\n"
+"POT-Creation-Date: 2020-12-14 14:44+0100\n"
+"PO-Revision-Date: 2020-12-15 09:47+0000\n"
+"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: German (http://www.transifex.com/musicbrainz/musicbrainz/language/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -329,12 +329,13 @@ msgid "AcoustID submission finished successfully"
 msgstr "AcoustID-Übermittlung erfolgreich abgeschlossen"
 
 #: picard/acoustid/manager.py:150
-msgid "AcoustID submission failed permanently, max batch size reduced to zero"
-msgstr ""
+msgid ""
+"AcoustID submission failed permanently, maximum batch size reduced to zero"
+msgstr "AcoustID-Übermittlung dauerhaft fehlgeschlagen, max. Übermittlungsgröße auf Null reduziert"
 
 #: picard/acoustid/manager.py:152
-msgid "AcoustID submission failed permanently, prolly too many retries"
-msgstr ""
+msgid "AcoustID submission failed permanently, probably too many retries"
+msgstr "AcoustID-Übermittlung dauerhaft fehlgeschlagen, möglicherweise zu viele Versuche"
 
 #: picard/acoustid/manager.py:162
 msgid "Submitting AcoustIDs ..."
@@ -2913,7 +2914,7 @@ msgid ""
 "`$join(name,text,separator=\"; \")`\n"
 "\n"
 "Joins all elements in `name`, placing `text` between each element, and returns the result as a string."
-msgstr ""
+msgstr "`$join(Name,Text,Separator=\"; \")`\n\nFügt alle Werte aus `Name` zusammen, wobei zwischen den Werten jeweils `Text` platziert wird, und liefert das Ergebnis als Zeichenkette zurück."
 
 #: picard/script/functions.py:1191
 msgid ""
@@ -2956,7 +2957,7 @@ msgid ""
 "`$sortmulti(name,separator=\"; \")`\n"
 "\n"
 "Returns a copy of the multi-value tag `name` with the elements sorted in ascending order."
-msgstr ""
+msgstr "`$sortmulti(Name,Separator=\"; \")`\n\nLiefert eine Kopie des mehrwertigen Tags `Name` zurück, wobei die Werte aufsteigend sortiert werden."
 
 #: picard/script/functions.py:1262
 msgid ""
@@ -2965,7 +2966,7 @@ msgid ""
 "Returns a copy of the multi-value tag `name` with the elements in reverse order.\n"
 "    This can be used in conjunction with the `$sortmulti` function to sort in\n"
 "    descending order."
-msgstr ""
+msgstr "`$reversemulti(Name,Separator=\"; \")`\n\nLiefert eine Kopie des mehrwertigen Tags `Name` mit den Werten in umgekehrter Reihenfolge zurück.\nReturns a copy of the multi-value tag `name` with the elements in reverse order.\n    Kann in Kombination mit der Funktion `$sortmulti` für eine absteigende Sortierung verwendet werden."
 
 #: picard/ui/aboutdialog.py:74
 msgid "translator-credits"
@@ -3464,11 +3465,11 @@ msgstr "Album unverändert"
 
 #: picard/ui/itemviews.py:1072
 msgid "Processing error(s): See the Errors tab in the Track Info dialog"
-msgstr ""
+msgstr "Verarbeitungsfehler: Siehe den Reiter \"Fehler\" im Titelinfodialog"
 
 #: picard/ui/itemviews.py:1100
 msgid "Processing error(s): See the Errors tab in the File Info dialog"
-msgstr ""
+msgstr "Verarbeitungsfehler: Siehe den Reiter \"Fehler\" im Dateiinfodialog"
 
 #: picard/ui/itemviews.py:1128
 msgid "Track saved"
@@ -4221,7 +4222,7 @@ msgstr "Ausgewählten Wert nach unten verschieben"
 
 #: picard/ui/ui_infodialog.py:82
 msgid "&Error"
-msgstr ""
+msgstr "&Fehler"
 
 #: picard/ui/ui_infodialog.py:83
 msgid "A&rtwork"
@@ -4500,7 +4501,7 @@ msgstr "Bei ungespeicherten Änderungen Bestätigungsdialog beim Beenden zeigen"
 
 #: picard/ui/ui_options_interface.py:140
 msgid "Adjust horizontal position in file browser automatically"
-msgstr ""
+msgstr "Horizontale Bildlaufposition im Dateibrowser automatisch anpassen"
 
 #: picard/ui/ui_options_interface.py:141
 msgid "Begin browsing in the following directory:"
