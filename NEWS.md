@@ -1,3 +1,37 @@
+# Version 2.5.3 - 2020-12-15
+
+## Bugfixes
+- [PICARD-2016](https://tickets.metabrainz.org/browse/PICARD-2016) - AcoustID API Key is not stripped
+- [PICARD-2017](https://tickets.metabrainz.org/browse/PICARD-2017) - Picard crashes when removing entries on the right side while loading
+- [PICARD-2019](https://tickets.metabrainz.org/browse/PICARD-2019) - Saving tracks to SMB share on Windows 10 results in ever more nested folders
+- [PICARD-2020](https://tickets.metabrainz.org/browse/PICARD-2020) - Multi-value album or recording ID tags prevent Picard from loading the proper albums
+- [PICARD-2021](https://tickets.metabrainz.org/browse/PICARD-2021) - SameFileError when moving files between network path and local path on Windows
+- [PICARD-2022](https://tickets.metabrainz.org/browse/PICARD-2022) - Crash accessing network share without access rights on Windows
+- [PICARD-2023](https://tickets.metabrainz.org/browse/PICARD-2023) - Appdata file not generated on non-Linux platforms
+- [PICARD-2028](https://tickets.metabrainz.org/browse/PICARD-2028) - Deleting albums and saving files is extremely slow
+- [PICARD-2031](https://tickets.metabrainz.org/browse/PICARD-2031) - Scripting documentation link 404
+- [PICARD-2036](https://tickets.metabrainz.org/browse/PICARD-2036) - MultiMetadataProxy::pop is not flagged as a WRITE_METHOD; this breaks the "keep" plugin
+- [PICARD-2037](https://tickets.metabrainz.org/browse/PICARD-2037) - Improve Info/Error tab readability
+- [PICARD-2045](https://tickets.metabrainz.org/browse/PICARD-2045) - After fingerprint, unsaved tracks have green tick
+- [PICARD-2050](https://tickets.metabrainz.org/browse/PICARD-2050) - File selector pane jumps around horizontally instead of expanding / collapsing the folder
+- [PICARD-2056](https://tickets.metabrainz.org/browse/PICARD-2056) - Interface color changes are not saved
+- [PICARD-2058](https://tickets.metabrainz.org/browse/PICARD-2058) - Add File dialog does not show files with uppercase extension on case-sensitive file systems
+- [PICARD-2059](https://tickets.metabrainz.org/browse/PICARD-2059) - Scripting Documentation shows extra line for each function
+- [PICARD-2062](https://tickets.metabrainz.org/browse/PICARD-2062) - Searching for similar tracks can remove current album even if there are unmatched tracks
+- [PICARD-2064](https://tickets.metabrainz.org/browse/PICARD-2064) - Cluster shows empty album column
+
+## Improvements
+- [PICARD-2034](https://tickets.metabrainz.org/browse/PICARD-2034) - Add context menu entry for copy and paste to metadata view
+- [PICARD-2035](https://tickets.metabrainz.org/browse/PICARD-2035) - More verbose tooltip for album error icon
+- [PICARD-2038](https://tickets.metabrainz.org/browse/PICARD-2038) - Integrate metadata box clipboard with system clipboard
+- [PICARD-2039](https://tickets.metabrainz.org/browse/PICARD-2039) - Unify error handling for albums, non-album tracks and files, show errors in info dialog
+- [PICARD-2044](https://tickets.metabrainz.org/browse/PICARD-2044) - Add date and originaldate fields to the choice of columns in the list views
+- [PICARD-2046](https://tickets.metabrainz.org/browse/PICARD-2046) - AcoustID submission can fail due to body size limit of AcoustID server
+- [PICARD-2047](https://tickets.metabrainz.org/browse/PICARD-2047) - Improve contrast for console text in dark mode
+- [PICARD-2057](https://tickets.metabrainz.org/browse/PICARD-2057) - Allow showing all files in Add Files dialog
+- [PICARD-2063](https://tickets.metabrainz.org/browse/PICARD-2063) - Add an option to disable automatic horizontal scrolling in file browser
+
+
 # Version 2.5.2 - 2020-11-15
 
 ## Bugfixes
