@@ -1,3 +1,10 @@
+# Version 2.5.4 - 2020-12-15
+
+## Bugfixes
+
+- [PICARD-2067](https://tickets.metabrainz.org/browse/PICARD-2067) - 2.5.3 crashes on start on Windows
+
+
 # Version 2.5.3 - 2020-12-15
 
 ## Bugfixes
