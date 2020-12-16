@@ -577,7 +577,7 @@ class Album(DataObject, Item):
             for file, target in moves:
                 file.move(target)
         else:
-            for file in files:
+            for file in list(files):
                 file.move(self.unmatched_files)
 
     def can_save(self):
