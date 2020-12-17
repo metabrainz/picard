@@ -32,6 +32,7 @@
 # Shepard, 2012
 # Wieland Hoffmann <themineo+transifex@googlemail.com>, 2012
 # TL, 2019
+# Tobias Sarner <Tobias.Sarner@googlemail.com>, 2020
 # Wieland Hoffmann <themineo+transifex@googlemail.com>, 2012-2013,2015,2017
 # Wildwatz <daniel@theis-internet.de>, 2017
 # c8ba6e46576070595b2ba64068f9a431_0cfbcb2, 2015
@@ -41,8 +42,8 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2020-12-14 14:44+0100\n"
-"PO-Revision-Date: 2020-12-15 09:57+0000\n"
-"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
+"PO-Revision-Date: 2020-12-17 11:15+0000\n"
+"Last-Translator: Tobias Sarner <Tobias.Sarner@googlemail.com>\n"
 "Language-Team: German (http://www.transifex.com/musicbrainz/musicbrainz/language/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -2466,7 +2467,7 @@ msgid ""
 "    $setmulti(genre,$lower(%genre%))\n"
 "\n"
 "_Since Picard 1.0_"
-msgstr ""
+msgstr "`$setmulti(name,wert,separator=\"; \")`\n\nSetzt die Variable `name` auf `wert`, wobei das Trennzeichen `separator` (oder auf \"; \", falls nicht übergeben)\num den Wert zurück in ein richtiges mehrwertiges Tag zu zwingen. Dies kann verwendet werden, um\nmit mehrwertigen Tags als Zeichenkette zu arbeiten und sie dann wieder als richtige\nmehrwertigen Tags zurückzusetzen.\n\nBeispiel: Genre in großer Schreibweise\n\n$setmulti(genre,$lower(%genre%))\n\n_Seit Picard 1.0_"
 
 #: picard/script/functions.py:437
 msgid ""
@@ -2485,7 +2486,7 @@ msgid ""
 "    multi-value variables without flattening them.\n"
 "\n"
 "_Since Picard 0.9_"
-msgstr ""
+msgstr "`$copy(neu,alt)`\n\nKopiert Metadaten von der Variablen `neu` nach `alt`.\nDer Unterschied zu `$set(neu,%alt%)` ist, dass `$copy(neu,alt)` mehrwertige Variablen kopiert\nmehrwertige Variablen kopiert, ohne sie zu glätten.\n\n_Seit Picard 0.9_"
 
 #: picard/script/functions.py:463
 msgid ""
@@ -2496,7 +2497,7 @@ msgid ""
 "    will also copy multi-valued variables without flattening them.\n"
 "\n"
 "_Since Picard 1.0_"
-msgstr ""
+msgstr "`$copymerge(neu,alt)`\n\nFügt Metadaten aus der Variablen `alt` in `neu` zusammen, entfernt Duplikate und\nan das Ende angehängt, so dass die ursprüngliche Reihenfolge beibehalten wird. Wie `$copy`, kopiert dies\nkopiert auch mehrwertige Variablen, ohne sie zu verflachen.\n\nSeit Picard 1.0"
 
 #: picard/script/functions.py:481
 msgid ""
@@ -2759,7 +2760,7 @@ msgid ""
 "If no prefix is specified 'A' and 'The' are used by default.\n"
 "\n"
 "_Since Picard 1.3_"
-msgstr "`$delprefix(Text,*Präfixe=\"a\",\"the\")`\n\nEntfernt die angegebenen `Präfixe` vom Anfang von `Text`.\nFalls kein Präfix angegeben wird, werden\"A'\" und \"The\" verwendet.\n\n_Ab Picard 1.3_"
+msgstr "`$delprefix(Text,*Präfixe=\"a\",\"the\")`\n\nEntfernt die angegebenen `Präfixe` vom Anfang von `Text`.\nFalls kein Präfix angegeben wird, werden \"a'\" und \"the\" verwendet.\n\n_Ab Picard 1.3_"
 
 #: picard/script/functions.py:926
 msgid ""
@@ -2844,7 +2845,7 @@ msgid ""
 "_Since Picard 2.3_\n"
 "\n"
 "Note that prior to Picard 2.3.2 `$find` returned \"-1\" if `needle` was not found."
-msgstr ""
+msgstr "`$find(heuhaufen,nadel)`\n\nFindet die Position einer Zeichenkette innerhalb einer anderen.\nGibt den Index des ersten Vorkommens von `nadel` in `heuhaufen` zurück, oder \"\", wenn `nadel` nicht gefunden wurde.\n\n_Seit Picard 2.3_\n\nBeachten Sie, dass vor Picard 2.3.2 `$find` \"-1\" zurückgab, wenn `nadel` nicht gefunden wurde."
 
 #: picard/script/functions.py:1068
 msgid ""
@@ -2862,7 +2863,7 @@ msgid ""
 "    zero-based. Negative numbers will be counted back from the end of the\n"
 "    string. If the `start` or `end` indexes are left blank, they will default to\n"
 "    the start and end of the string respectively."
-msgstr ""
+msgstr "`$substr(text,start,ende)`\n\nGibt die Teilzeichenkette zurück, beginnend mit dem Zeichen am `start`-Index, bis zu\n(aber nicht einschließlich) des Zeichens am `ende`-Index. Indizes sind\nNull-basiert. Negative Zahlen werden vom Ende der Zeichenkette\nZeichenkette. Wenn die Indizes `start` oder `end` leer gelassen werden, werden sie standardmäßig auf\nden Anfang bzw. das Ende der Zeichenkette."
 
 #: picard/script/functions.py:1098
 msgid ""
@@ -2872,7 +2873,7 @@ msgid ""
 "    representing a multi-value can be substituted for `name`, using the\n"
 "    separator (or \"; \" if not passed) to coerce the value into a proper\n"
 "    multi-valued tag."
-msgstr ""
+msgstr "`$getmulti(Name,Index,Separator=\"; \")`\n\nLiefert das Element an Position `Index` von dem mehrwertigen Tag `Name` zurück. Statt eines Variablennamens kann für `Name` auch direkt ein Wert mit mehreren Elementen angegeben werden, die durch `Separator` (oder \"; \" falls nicht angegeben) getrennt werden."
 
 #: picard/script/functions.py:1117
 msgid ""
@@ -2885,7 +2886,7 @@ msgid ""
 "    literal value representing a multi-value can be substituted for `name`,\n"
 "    using the separator (or \"; \" if not passed) to coerce the value into a\n"
 "    proper multi-valued tag."
-msgstr ""
+msgstr "`$foreach(Name,Code,Separator=\"; \")`\n\nIteriert über jedes Element im mehrwertigen Tag `Name` und führt jedesmal `Code` aus. Für jeden Durchgang werden zunächst der Wert des Elements im Tag `_loop_value` und der aktuelle Iterationszähler im Tag `_loop_count` gespeichert. Das erlaubt den Zugriff auf den Wert des Elements oder den Zähler innerhalb des `Code`-Scripts. Statt eines Variablennamens kann für `Name` auch direkt ein Wert mit mehreren Elementen angegeben werden, die durch `Separator` (oder \"; \" falls nicht angegeben) getrennt werden."
 
 #: picard/script/functions.py:1139
 msgid ""
@@ -2896,7 +2897,7 @@ msgid ""
 "    `_loop_count`. This allows the count value to be accessed within the `code`\n"
 "    script. The function limites the maximum number of iterations to 1000 as a\n"
 "    safeguard against accidentally creating an infinite loop."
-msgstr ""
+msgstr "`$while(bedingung,befehl)`\n\nStandard 'while'-Schleife. Führt `befehl` wiederholt aus, bis `bedingung` nicht mehr\nwahr` ausgewertet wird. Für jede Schleife wird die Anzahl in dem Tag\n`_loop_count` gespeichert. Dadurch kann auf den Zählwert innerhalb des Skripts `befehl` zugegriffen werden.\nSkript zugreifen. Die Funktion begrenzt die maximale Anzahl der Iterationen auf 1000 als\nSchutz gegen das versehentliche Erzeugen einer Endlosschleife."
 
 #: picard/script/functions.py:1160
 msgid ""
@@ -2907,7 +2908,7 @@ msgid ""
 "    multi-value tag. For each loop, the element value is first stored in the tag\n"
 "    `_loop_value` and the count is stored in the tag `_loop_count`. This allows\n"
 "    the element or count value to be accessed within the `code` script."
-msgstr ""
+msgstr "`$map(name,befehl,separator=\"; \")`\n\nIteriert über jedes im mehrwertigen Tag `name` gefundene Element und aktualisiert den\nWert des Elements auf den von `befehl` zurückgegebenen Wert und gibt das aktualisierte\nmehrwertigen Tag zurück. Für jede Schleife wird der Elementwert zunächst im Tag\n`_loop_value` und der Zählerstand im Tag `_loop_count` gespeichert. Dies ermöglicht\nDies ermöglicht den Zugriff auf den Element- oder Zählwert innerhalb des Skripts `befehl`."
 
 #: picard/script/functions.py:1180
 msgid ""
@@ -2934,7 +2935,7 @@ msgid ""
 "Example:\n"
 "\n"
 "    $setmulti(supporting_artists,$slice(%artists%,1,))\n"
-msgstr ""
+msgstr "`$slice(name,start,ende,separator=\"; \")`\n\nGibt eine mehrwertige Variable zurück, die die Elemente zwischen den Indizes `start` und\n`ende` aus dem mehrwertigen Tag `name` enthält. Ein literaler Wert, der\neinen mehrwertigen Wert repräsentiert, kann für `name` ersetzt werden, wobei das Trennzeichen (oder \"; \", wenn\nnicht übergeben), um den Wert in ein richtiges mehrwertiges Tag zu zwingen. Indizes sind\nnullbasiert. Negative Zahlen werden vom Ende der Liste zurück gezählt.\nWenn die Indizes `start` oder `ende` leer gelassen werden, werden sie standardmäßig auf den\nAnfang bzw. Ende der Liste.\n\nDas folgende Beispiel erstellt eine mehrwertige Variable mit allen Künstlern\nin `rtists%` außer dem ersten, der zum Erstellen einer \"feat.\"-Liste verwendet werden kann.\n\nBeispiel:\n\n$setmulti(supporting_artists,$slice(rtists%,1,))\n"
 
 #: picard/script/functions.py:1223
 #, python-format
@@ -2950,7 +2951,7 @@ msgid ""
 "    remove zero-padding (e.g. `%-d` and `%-m` on Linux or macOS, and their\n"
 "    equivalent `%#d` and `%#m` on Windows); element length specifiers (e.g.\n"
 "    `%3Y`); and hanging '%' at the end of the format string."
-msgstr ""
+msgstr "`$datetime(format=\"%Y-%m- %H:%M:%S\")`\n\nGibt das aktuelle Datum und die Uhrzeit im angegebenen `format` zurück, das auf dem\ndem Python-Standard `strftime` [Formatcodes](https://strftime.org/). Wenn kein\n`format` angegeben wird, wird das Datum/die Uhrzeit in folgender Form zurückgegeben\n`2020-02-05 14:26:32`.\nHinweis: Plattformspezifische Formatierungscodes sollten vermieden werden, um die\nPortabilität von Skripten über die verschiedenen Plattformen hinweg zu gewährleisten. Diese Codes umfassen:\nEntfernen des Null-Musters (z. B. `` und `%-m` unter Linux oder macOS, und deren\nÄquivalent `` und `%#m` unter Windows); Elementlängenangaben (z. B.\n`%3Y`); und das Hängen von '%' am Ende der Formatzeichenfolge."
 
 #: picard/script/functions.py:1252
 msgid ""
