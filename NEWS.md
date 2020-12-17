@@ -1,3 +1,11 @@
+# Version 2.5.5 - 2020-12-17
+
+## Bugfixes
+
+- [PICARD-2070](https://tickets.metabrainz.org/browse/PICARD-2070) - Lookup on cluster only moves every other file
+- [PICARD-2071](https://tickets.metabrainz.org/browse/PICARD-2071) - Track listings sometimes in reverse order
+
+
 # Version 2.5.4 - 2020-12-15
 
 ## Bugfixes
