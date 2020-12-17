@@ -972,7 +972,7 @@ class AlbumItem(TreeItem):
                 item.update(update_album=False)
             if newnum > oldnum:  # add new items
                 items = []
-                for i in range(newnum - 1, oldnum - 1, -1):  # insertChildren is backwards
+                for i in range(oldnum, newnum):
                     item = TrackItem(album.tracks[i], True)
                     item.setHidden(False)  # Workaround to make sure the parent state gets updated
                     items.append(item)
@@ -1064,7 +1064,7 @@ class TrackItem(TreeItem):
                     item.update(update_track=False)
                 if newnum > oldnum:  # add new items
                     items = []
-                    for i in range(newnum - 1, oldnum - 1, -1):
+                    for i in range(oldnum, newnum):
                         item = FileItem(track.files[i], False)
                         item.update(update_track=False, update_selection=update_selection)
                         items.append(item)
@@ -1090,10 +1090,10 @@ class TrackItem(TreeItem):
         order = self.treeWidget().header().sortIndicatorOrder()
         sortkey = self.sortkey(None)
         other_sortkey = other.sortkey(None)
-        if order == QtCore.Qt.AscendingOrder:
-            return sortkey < other_sortkey
-        else:
+        if order == QtCore.Qt.DescendingOrder:
             return sortkey > other_sortkey
+        else:
+            return sortkey < other_sortkey
 
     def sortkey(self, column):
         try:
