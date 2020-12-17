@@ -969,11 +969,18 @@ class AlbumItem(TreeItem):
                 item.update(update_album=False)
             if newnum > oldnum:  # add new items
                 items = []
-                for i in range(newnum - 1, oldnum - 1, -1):  # insertChildren is backwards
+                for i in range(oldnum, newnum):
                     item = TrackItem(album.tracks[i], False)
                     item.setHidden(False)  # Workaround to make sure the parent state gets updated
                     items.append(item)
+                # insertChildren behaves differently if sorting is disabled / enabled, which results
+                # in different sort order of tracks in unsorted state. As we sort the tracks later
+                # anyway make sure sorting is disabled here.
+                tree_view = self.treeWidget()
+                sorting_enabled = tree_view.isSortingEnabled()
+                tree_view.setSortingEnabled(False)
                 self.insertChildren(oldnum, items)
+                tree_view.setSortingEnabled(sorting_enabled)
                 for item in items:  # Update after insertChildren so that setExpanded works
                     item.update(update_album=False)
         if album.errors:
