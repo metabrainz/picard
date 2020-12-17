@@ -890,7 +890,10 @@ class TreeItem(QtWidgets.QTreeWidgetItem):
         if not self.sortable:
             return False
         column = self.treeWidget().sortColumn()
-        return self.sortkey(column) < other.sortkey(column)
+        try:
+            return self.sortkey(column) < other.sortkey(column)
+        except TypeError:
+            return False
 
     def sortkey(self, column):
         sortkey = self._sortkeys.get(column)
@@ -970,7 +973,7 @@ class AlbumItem(TreeItem):
             if newnum > oldnum:  # add new items
                 items = []
                 for i in range(newnum - 1, oldnum - 1, -1):  # insertChildren is backwards
-                    item = TrackItem(album.tracks[i], False)
+                    item = TrackItem(album.tracks[i], True)
                     item.setHidden(False)  # Workaround to make sure the parent state gets updated
                     items.append(item)
                 self.insertChildren(oldnum, items)
@@ -1080,6 +1083,23 @@ class TrackItem(TreeItem):
             TreeItem.window.update_selection(new_selection=False)
         if update_album:
             self.parent().update(update_tracks=False, update_selection=update_selection)
+
+    def __lt__(self, other):
+        if not isinstance(other, TrackItem):
+            return False
+        order = self.treeWidget().header().sortIndicatorOrder()
+        sortkey = self.sortkey(None)
+        other_sortkey = other.sortkey(None)
+        if order == QtCore.Qt.AscendingOrder:
+            return sortkey < other_sortkey
+        else:
+            return sortkey > other_sortkey
+
+    def sortkey(self, column):
+        try:
+            return int(self.obj.metadata['~absolutetracknumber'] or 0)
+        except ValueError:
+            return 0
 
 
 class FileItem(TreeItem):
