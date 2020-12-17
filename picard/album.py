@@ -336,28 +336,23 @@ class Album(DataObject, Item):
                     mm['~discpregap'] = '1'
                     extra_metadata = {
                         '~pregap': '1',
-                        '~absolutetracknumber': absolutetracknumber,
                     }
-                    self._finalize_loading_track(medium_node['pregap'], mm, artists, extra_metadata)
+                    self._finalize_loading_track(medium_node['pregap'], mm, artists, absolutetracknumber, extra_metadata)
 
                 track_count = medium_node['track-count']
                 if track_count:
                     tracklist_node = medium_node['tracks']
                     for track_node in tracklist_node:
                         absolutetracknumber += 1
-                        extra_metadata = {
-                            '~absolutetracknumber': absolutetracknumber,
-                        }
-                        self._finalize_loading_track(track_node, mm, artists, extra_metadata)
+                        self._finalize_loading_track(track_node, mm, artists, absolutetracknumber)
 
                 if "data-tracks" in medium_node:
                     for track_node in medium_node['data-tracks']:
                         absolutetracknumber += 1
                         extra_metadata = {
                             '~datatrack': '1',
-                            '~absolutetracknumber': absolutetracknumber,
                         }
-                        self._finalize_loading_track(track_node, mm, artists, extra_metadata)
+                        self._finalize_loading_track(track_node, mm, artists, absolutetracknumber, extra_metadata)
 
             totalalbumtracks = absolutetracknumber
             self._new_metadata['~totalalbumtracks'] = totalalbumtracks
@@ -423,7 +418,7 @@ class Album(DataObject, Item):
             if self.item.isSelected():
                 self.tagger.window.refresh_metadatabox()
 
-    def _finalize_loading_track(self, track_node, metadata, artists, extra_metadata=None):
+    def _finalize_loading_track(self, track_node, metadata, artists, absolutetracknumber=0, extra_metadata=None):
         # As noted in `_parse_release` above, the release artist nodes
         # may contain supplementary data that isn't present in track
         # artist nodes. Similarly, the track artists may contain
@@ -446,6 +441,9 @@ class Album(DataObject, Item):
         artists.add(tm["artist"])
         if extra_metadata:
             tm.update(extra_metadata)
+
+        track.absolutetracknumber = absolutetracknumber
+        tm['~absolutetracknumber'] = absolutetracknumber
 
         # Run track metadata plugins
         try:

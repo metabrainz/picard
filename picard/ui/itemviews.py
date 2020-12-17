@@ -1097,7 +1097,7 @@ class TrackItem(TreeItem):
 
     def sortkey(self, column):
         try:
-            return int(self.obj.metadata['~absolutetracknumber'] or 0)
+            return self.obj.absolutetracknumber
         except ValueError:
             return 0
 

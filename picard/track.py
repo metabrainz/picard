@@ -142,6 +142,7 @@ class Track(DataObject, FileListItem):
     def __init__(self, track_id, album=None):
         DataObject.__init__(self, track_id)
         FileListItem.__init__(self)
+        self.absolutetracknumber = 0
         self.metadata = Metadata()
         self.orig_metadata = Metadata()
         self.album = album
