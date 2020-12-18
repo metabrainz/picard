@@ -353,10 +353,10 @@ class MetadataBox(QtWidgets.QTableWidget):
         menu = QtWidgets.QMenu(self)
         if self.objects:
             tags = self.selected_tags()
-            editable = self.tag_is_editable(tags[0])
             single_tag = len(tags) == 1
             if single_tag:
                 selected_tag = tags[0]
+                editable = self.tag_is_editable(selected_tag)
                 edit_tag_action = QtWidgets.QAction(_("Edit..."), self.parent)
                 edit_tag_action.triggered.connect(partial(self.edit_tag, selected_tag))
                 edit_tag_action.setShortcut(self.edit_tag_shortcut.key())
