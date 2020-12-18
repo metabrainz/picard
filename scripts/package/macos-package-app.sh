@@ -54,7 +54,7 @@ mv "$APP_BUNDLE.tmp" "$APP_BUNDLE"
 if [ "$CODESIGN" = '1' ]; then
     # Enable hardened runtime if app will get notarized
     if [ "$NOTARIZE" = "1" ]; then
-      codesign --verbose --deep \
+      codesign --verbose --deep --force \
         --options runtime \
         --entitlements ../scripts/package/entitlements.plist \
         --keychain "$KEYCHAIN_PATH" --sign "$CERTIFICATE_NAME" \
@@ -62,7 +62,7 @@ if [ "$CODESIGN" = '1' ]; then
       ../scripts/package/macos-notarize-app.sh "$APP_BUNDLE"
       codesign --verbose --deep --verbose --strict=all --check-notarization "$APP_BUNDLE"
     else
-      codesign --verify --verbose --deep \
+      codesign --verify --verbose --deep --force \
         --keychain "$KEYCHAIN_PATH" --sign "$CERTIFICATE_NAME" \
         "$APP_BUNDLE"
     fi
