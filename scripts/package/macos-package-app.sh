@@ -47,33 +47,35 @@ fi
 cd dist
 
 # Create app bundle
-ditto -rsrc --arch x86_64 'MusicBrainz Picard.app' 'MusicBrainz Picard.tmp'
-rm -r 'MusicBrainz Picard.app'
-mv 'MusicBrainz Picard.tmp' 'MusicBrainz Picard.app'
+APP_BUNDLE="MusicBrainz Picard.app"
+ditto -rsrc --arch x86_64 "$APP_BUNDLE" "$APP_BUNDLE.tmp"
+rm -r "$APP_BUNDLE"
+mv "$APP_BUNDLE.tmp" "$APP_BUNDLE"
 if [ "$CODESIGN" = '1' ]; then
     # Enable hardened runtime if app will get notarized
     if [ "$NOTARIZE" = "1" ]; then
-      codesign --verify --verbose --deep \
+      codesign --verbose --deep \
         --options runtime \
         --entitlements ../scripts/package/entitlements.plist \
         --keychain "$KEYCHAIN_PATH" --sign "$CERTIFICATE_NAME" \
-        "MusicBrainz Picard.app"
-      ../scripts/package/macos-notarize-app.sh "MusicBrainz Picard.app"
+        "$APP_BUNDLE"
+      ../scripts/package/macos-notarize-app.sh "$APP_BUNDLE"
+      codesign --verbose --deep --verbose --strict=all --check-notarization "$APP_BUNDLE"
     else
       codesign --verify --verbose --deep \
         --keychain "$KEYCHAIN_PATH" --sign "$CERTIFICATE_NAME" \
-        "MusicBrainz Picard.app"
+        "$APP_BUNDLE"
     fi
 fi
 
 # Verify Picard executable works and required dependencies are bundled
-VERSIONS=$("MusicBrainz Picard.app/Contents/MacOS/picard-run" --long-version)
+VERSIONS=$("$APP_BUNDLE/Contents/MacOS/picard-run" --long-version)
 echo "$VERSIONS"
 ASTRCMP_REGEX="astrcmp C"
 [[ $VERSIONS =~ $ASTRCMP_REGEX ]] || (echo "Failed: Build does not include astrcmp C" && false)
 LIBDISCID_REGEX="libdiscid [0-9]+\.[0-9]+\.[0-9]+"
 [[ $VERSIONS =~ $LIBDISCID_REGEX ]] || (echo "Failed: Build does not include libdiscid" && false)
-"MusicBrainz Picard.app/Contents/MacOS/fpcalc" -version
+"$APP_BUNDLE/Contents/MacOS/fpcalc" -version
 
 # Package app bundle into DMG image
 if [ -n "$MACOSX_DEPLOYMENT_TARGET" ]; then
@@ -82,7 +84,7 @@ else
   DMG="MusicBrainz-Picard-${VERSION}.dmg"
 fi
 mkdir staging
-mv "MusicBrainz Picard.app" staging/
+mv "$APP_BUNDLE" staging/
 # Offer a link to /Applications for easy installation
 ln -s /Applications staging/Applications
 hdiutil create -volname "MusicBrainz Picard $VERSION" \
