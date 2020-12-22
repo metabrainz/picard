@@ -30,6 +30,7 @@
 from operator import itemgetter
 import os
 import shutil
+import threading
 
 from PyQt5 import QtCore
 
@@ -57,7 +58,6 @@ class ConfigSection(LockableObject):
         self.__name = name
         self.__prefix = self.__name + '/'
         self.__prefix_len = len(self.__prefix)
-        self._memoization = {}
 
     def key(self, name):
         return self.__prefix + name
@@ -78,8 +78,6 @@ class ConfigSection(LockableObject):
         try:
             key = self.key(name)
             self.__qt_config.setValue(key, value)
-            if key in self._memoization:
-                self._memoization[key][0] = False
         finally:
             self.unlock()
 
@@ -92,8 +90,6 @@ class ConfigSection(LockableObject):
             if name in self:
                 key = self.key(name)
                 self.__qt_config.remove(key)
-                if key in self._memoization:
-                    del self._memoization[key]
         finally:
             self.unlock()
 
@@ -109,21 +105,14 @@ class ConfigSection(LockableObject):
     def value(self, name, option_type, default=None):
         """Return an option value converted to the given Option type."""
         if name in self:
-            key = self.key(name)
+            self.lock_for_read()
             try:
-                valid, value = self._memoization[key]
-            except KeyError:
-                valid = False
-
-            if not valid:
-                self.lock_for_read()
-                try:
-                    value = self.raw_value(name, qtype=option_type.qtype)
-                    value = option_type.convert(value)
-                    self._memoization[key] = [True, value]
-                except Exception as why:
-                    log.error('Cannot read %s value: %s', self.key(name), why, exc_info=True)
-                    value = default
+                value = self.raw_value(name, qtype=option_type.qtype)
+                value = option_type.convert(value)
+            except Exception as why:
+                log.error('Cannot read %s value: %s', self.key(name), why, exc_info=True)
+                value = default
+            finally:
                 self.unlock()
             return value
         return default
@@ -131,7 +120,13 @@ class ConfigSection(LockableObject):
 
 class Config(QtCore.QSettings):
 
-    """Configuration."""
+    """Configuration.
+    QSettings is not thread safe, each thread must use its own instance of this class.
+    Use `get_config()` to obtain a Config instance for the current thread.
+    Changes to one Config instances are automatically available to all other instances.
+
+    See: https://doc.qt.io/qt-5/qsettings.html#accessing-settings-from-multiple-threads-or-processes-simultaneously
+    """
 
     def __init__(self):
         self.__known_keys = set()
@@ -341,12 +336,51 @@ config = None
 setting = None
 persist = None
 
+PURGE_INTERVAL_MILLISECONDS = 60000
+_thread_configs = {}
+_thread_config_lock = threading.RLock()
 
-def _setup(app, filename=None):
+
+def setup_config(app, filename=None):
     global config, setting, persist
     if filename is None:
         config = Config.from_app(app)
     else:
         config = Config.from_file(app, filename)
+    _thread_configs[threading.get_ident()] = config
     setting = config.setting
     persist = config.persist
+    QtCore.QTimer.singleShot(PURGE_INTERVAL_MILLISECONDS, _purge_config_instances)
+
+
+def get_config():
+    """Returns a config object for the current thread.
+
+    Config objects for threads are created on demand and cached for later use.
+    """
+    thread_id = threading.get_ident()
+    thread_config = _thread_configs.get(thread_id)
+    if not thread_config:
+        _thread_config_lock.acquire()
+        try:
+            config_file = config.fileName()
+            log.debug('Instantiating Config for thread %s using %s.', thread_id, config_file)
+            thread_config = Config.from_file(None, config_file)
+            _thread_configs[thread_id] = thread_config
+        finally:
+            _thread_config_lock.release()
+    return thread_config
+
+
+def _purge_config_instances():
+    """Removes cached config instances for no longer active threads."""
+    _thread_config_lock.acquire()
+    try:
+        all_threads = set([thread.ident for thread in threading.enumerate()])
+        threads_config = set(_thread_configs)
+        for thread_id in threads_config.difference(all_threads):
+            log.debug('Purging config instance for thread %s.', thread_id)
+            del _thread_configs[thread_id]
+    finally:
+        _thread_config_lock.release()
+        QtCore.QTimer.singleShot(PURGE_INTERVAL_MILLISECONDS, _purge_config_instances)
