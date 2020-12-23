@@ -54,9 +54,9 @@ from PyQt5 import QtCore
 
 from picard import (
     PICARD_APP_NAME,
-    config,
     log,
 )
+from picard.config import get_config
 from picard.const import QUERY_LIMIT
 from picard.const.sys import (
     IS_MACOS,
@@ -216,6 +216,7 @@ class File(QtCore.QObject, Item):
             self.state = self.NORMAL
             self._copy_loaded_metadata(result)
         # use cached fingerprint from file metadata
+        config = get_config()
         if not config.setting["ignore_existing_acoustid_fingerprints"]:
             fingerprints = self.metadata.getall('acoustid_fingerprint')
             if fingerprints:
@@ -307,6 +308,7 @@ class File(QtCore.QObject, Item):
 
     def _save_and_rename(self, old_filename, metadata):
         """Save the metadata."""
+        config = get_config()
         # Check that file has not been removed since thread was queued
         # Also don't save if we are stopping.
         if self.state == File.REMOVED:
@@ -371,6 +373,7 @@ class File(QtCore.QObject, Item):
             images_changed = self.orig_metadata.images != self.new_metadata.images
             # Data is copied from New to Original because New may be
             # a subclass to handle id3v23
+            config = get_config()
             if config.setting["clear_existing_tags"]:
                 self.orig_metadata.copy(self.new_metadata)
             else:
@@ -407,6 +410,7 @@ class File(QtCore.QObject, Item):
 
     def _script_to_filename(self, naming_format, file_metadata, file_extension, settings=None):
         if settings is None:
+            config = get_config()
             settings = config.setting
         metadata = Metadata()
         if settings["clear_existing_tags"]:
@@ -463,6 +467,7 @@ class File(QtCore.QObject, Item):
     def make_filename(self, filename, metadata, settings=None):
         """Constructs file name based on metadata and file naming formats."""
         if settings is None:
+            config = get_config()
             settings = config.setting
         if settings["move_files"]:
             new_dirname = settings["move_files_to"]
@@ -510,6 +515,7 @@ class File(QtCore.QObject, Item):
             return
         counters = defaultdict(lambda: 0)
         images = []
+        config = get_config()
         if config.setting["caa_save_single_front_image"]:
             front = metadata.images.get_front_image()
             if front:
@@ -526,6 +532,7 @@ class File(QtCore.QObject, Item):
         if new_path == old_path:
             # skip, same directory, nothing to move
             return
+        config = get_config()
         patterns = config.setting["move_additional_files_pattern"]
         pattern_regexes = set()
         for pattern in patterns.split():
@@ -626,6 +633,7 @@ class File(QtCore.QObject, Item):
         new_metadata = self.new_metadata
         names = set(new_metadata.keys())
         names.update(self.orig_metadata.keys())
+        config = get_config()
         clear_existing_tags = config.setting["clear_existing_tags"]
         ignored_tags = config.setting["compare_ignore_tags"]
         for name in names:
@@ -748,6 +756,7 @@ class File(QtCore.QObject, Item):
             if lookuptype == File.LOOKUP_ACOUSTID:
                 threshold = 0
             else:
+                config = get_config()
                 threshold = config.setting['file_lookup_threshold']
 
             trackmatch = self._match_to_track(tracks, threshold=threshold)

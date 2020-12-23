@@ -36,10 +36,8 @@ from mutagen.mp4 import (
     MP4Cover,
 )
 
-from picard import (
-    config,
-    log,
-)
+from picard import log
+from picard.config import get_config
 from picard.coverart.image import (
     CoverArtImageError,
     TagCoverArtImage,
@@ -247,6 +245,7 @@ class MP4File(File):
 
     def _save(self, filename, metadata):
         log.debug("Saving file %r", filename)
+        config = get_config()
         file = MP4(encode_filename(self.filename))
         if file.tags is None:
             file.add_tags()

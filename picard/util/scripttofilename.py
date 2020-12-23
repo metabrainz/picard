@@ -22,7 +22,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from picard import config
+from picard.config import get_config
 from picard.const.sys import IS_WIN
 from picard.metadata import Metadata
 from picard.script import ScriptParser
@@ -48,6 +48,7 @@ def script_to_filename_with_metadata(naming_format, metadata, file=None, setting
         with changes from the script as second.
     """
     if settings is None:
+        config = get_config()
         settings = config.setting
     # make sure every metadata can safely be used in a path name
     win_compat = IS_WIN or settings["windows_compatibility"]

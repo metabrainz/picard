@@ -37,10 +37,8 @@ import mutagen.musepack
 import mutagen.optimfrog
 import mutagen.wavpack
 
-from picard import (
-    config,
-    log,
-)
+from picard import log
+from picard.config import get_config
 from picard.coverart.image import (
     CoverArtImageError,
     TagCoverArtImage,
@@ -185,6 +183,7 @@ class APEv2File(File):
     def _save(self, filename, metadata):
         """Save metadata to the file."""
         log.debug("Saving file %r", filename)
+        config = get_config()
         try:
             tags = mutagen.apev2.APEv2(encode_filename(filename))
         except mutagen.apev2.APENoHeaderError:
@@ -305,6 +304,7 @@ class WavPackFile(APEv2File):
         """Includes an additional check for WavPack correction files"""
         wvc_filename = old_filename.replace(".wv", ".wvc")
         if isfile(wvc_filename):
+            config = get_config()
             if config.setting["rename_files"] or config.setting["move_files"]:
                 self._rename(wvc_filename, metadata)
         return File._save_and_rename(self, old_filename, metadata)
@@ -356,6 +356,7 @@ class AACFile(APEv2File):
             metadata['~format'] = "%s (APEv2)" % self.NAME
 
     def _save(self, filename, metadata):
+        config = get_config()
         if config.setting['aac_save_ape']:
             super()._save(filename, metadata)
         elif config.setting['remove_ape_from_aac']:
@@ -366,6 +367,7 @@ class AACFile(APEv2File):
 
     @classmethod
     def supports_tag(cls, name):
+        config = get_config()
         if config.setting['aac_save_ape']:
             return APEv2File.supports_tag(name)
         else:

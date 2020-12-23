@@ -5,7 +5,7 @@
 # Copyright (C) 2004 Robert Kaye
 # Copyright (C) 2007 Lukáš Lalinský
 # Copyright (C) 2008 Will
-# Copyright (C) 2008, 2018-2019 Philipp Wolfer
+# Copyright (C) 2008, 2018-2020 Philipp Wolfer
 # Copyright (C) 2009 david
 # Copyright (C) 2013 Johannes Dewender
 # Copyright (C) 2013 Sebastian Ramacher
@@ -34,7 +34,7 @@ from PyQt5.QtCore import (
     QIODevice,
 )
 
-from picard import config
+from picard.config import get_config
 from picard.const.sys import (
     IS_LINUX,
     IS_WIN,
@@ -118,6 +118,7 @@ def get_cdrom_drives():
                     drives.append(device)
 
     else:
+        config = get_config()
         for device in config.setting["cd_lookup_device"].split(","):
             # Need to filter out empty strings,
             # particularly if the device list is empty

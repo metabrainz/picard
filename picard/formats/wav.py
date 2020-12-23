@@ -27,10 +27,8 @@ from collections.abc import MutableMapping
 
 import mutagen
 
-from picard import (
-    config,
-    log,
-)
+from picard import log
+from picard.config import get_config
 from picard.file import File
 from picard.formats.id3 import NonCompatID3File
 from picard.metadata import Metadata
@@ -187,7 +185,7 @@ try:
         def _info(self, metadata, file):
             super()._info(metadata, file)
             metadata['~format'] = self.NAME
-
+            config = get_config()
             info = RiffListInfo(encoding=config.setting['wave_riff_info_encoding'])
             info.load(file.filename)
             for tag, value in info.items():
@@ -200,6 +198,7 @@ try:
             super()._save(filename, metadata)
 
             # Save RIFF LIST INFO
+            config = get_config()
             if config.setting['write_wave_riff_info']:
                 info = RiffListInfo(encoding=config.setting['wave_riff_info_encoding'])
                 if config.setting['clear_existing_tags']:

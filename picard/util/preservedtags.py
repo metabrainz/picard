@@ -20,7 +20,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from picard import config
+from picard.config import get_config
 
 
 class PreservedTags:
@@ -31,9 +31,11 @@ class PreservedTags:
         self._tags = self._from_config()
 
     def _to_config(self):
+        config = get_config()
         config.setting[self.opt_name] = sorted(self._tags)
 
     def _from_config(self):
+        config = get_config()
         tags = config.setting[self.opt_name]
         return set(filter(bool, map(self._normalize_tag, tags)))
 
