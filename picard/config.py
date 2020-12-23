@@ -125,11 +125,16 @@ class Config(QtCore.QSettings):
     Use `get_config()` to obtain a Config instance for the current thread.
     Changes to one Config instances are automatically available to all other instances.
 
+    Use `Config.from_app` or `Config.from_file` to obtain a new `Config` instance.
+
     See: https://doc.qt.io/qt-5/qsettings.html#accessing-settings-from-multiple-threads-or-processes-simultaneously
     """
 
     def __init__(self):
-        self.__known_keys = set()
+        # Do not call `QSettings.__init__` here. The proper overloaded `QSettings.__init__`
+        # gets called in `from_app` or `from_config`. Only those class methods must be used
+        # to create a new instance of `Config`.
+        pass
 
     def __initialize(self):
         """Common initializer method for :meth:`from_app` and
@@ -144,12 +149,6 @@ class Config(QtCore.QSettings):
         TextOption("application", "version", '0.0.0dev0')
         self._version = Version.from_string(self.application["version"])
         self._upgrade_hooks = dict()
-        # Save known config names for faster access and to prevent
-        # strange cases of Qt locking up when accessing QSettings.allKeys()
-        # or QSettings.contains() shortly after having written settings
-        # inside threads.
-        # See https://tickets.metabrainz.org/browse/PICARD-1590
-        self.__known_keys = set(self.allKeys())
 
     @classmethod
     def from_app(cls, parent):
@@ -186,19 +185,6 @@ class Config(QtCore.QSettings):
                                   parent)
         this.__initialize()
         return this
-
-    def setValue(self, key, value):
-        super().setValue(key, value)
-        self.__known_keys.add(key)
-
-    def remove(self, key):
-        super().remove(key)
-        self.__known_keys.discard(key)
-
-    def contains(self, key):
-        # Overwritten due to https://tickets.metabrainz.org/browse/PICARD-1590
-        # See comment above in __initialize
-        return key in self.__known_keys or super().contains(key)
 
     def switchProfile(self, profilename):
         """Sets the current profile."""
