@@ -388,6 +388,7 @@ SimMatchTest = namedtuple('SimMatchTest', 'similarity name')
 class SortBySimilarity(PicardTestCase):
 
     def setUp(self):
+        super().setUp()
         self.test_values = [
             SimMatchTest(similarity=0.74, name='d'),
             SimMatchTest(similarity=0.61, name='a'),
@@ -435,6 +436,7 @@ class GetQtEnum(PicardTestCase):
 class LimitedJoin(PicardTestCase):
 
     def setUp(self):
+        super().setUp()
         self.list = [str(x) for x in range(0, 10)]
 
     def test_1(self):

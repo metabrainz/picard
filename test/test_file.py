@@ -171,7 +171,7 @@ class FileNamingTest(PicardTestCase):
     def setUp(self):
         super().setUp()
         self.file = File('/somepath/somefile.mp3')
-        config.setting = {
+        self.set_config_values({
             'ascii_filenames': False,
             'clear_existing_tags': False,
             'enabled_plugins': [],
@@ -180,7 +180,7 @@ class FileNamingTest(PicardTestCase):
             'move_files': False,
             'rename_files': False,
             'windows_compatibility': True,
-        }
+        })
         self.metadata = Metadata({
             'album': 'somealbum',
             'title': 'sometitle',

@@ -47,7 +47,7 @@ settings = {
 class InterfaceColorsTest(PicardTestCase):
     def setUp(self):
         super().setUp()
-        config.setting = settings.copy()
+        self.set_config_values(settings)
 
     def test_interface_colors(self):
         for key in ('interface_colors', 'interface_colors_dark'):

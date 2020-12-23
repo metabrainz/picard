@@ -27,7 +27,6 @@ from unittest.mock import (
 
 from test.picardtestcase import PicardTestCase
 
-from picard import config
 from picard.acoustid.manager import AcoustIDManager
 from picard.file import File
 
@@ -55,10 +54,10 @@ def dummy_file(i):
 class AcoustIDManagerTest(PicardTestCase):
     def setUp(self):
         super().setUp()
-        config.setting = {
+        self.set_config_values({
             "clear_existing_tags": False,
             "compare_ignore_tags": []
-        }
+        })
         self.mock_api_helper = MagicMock()
         self.mock_api_helper.submit_acoustid_fingerprints = Mock(wraps=mock_succeed_submission)
         self.acoustidmanager = AcoustIDManager(self.mock_api_helper)

@@ -64,7 +64,7 @@ class MBJSONTest(PicardTestCase):
         self.init_test(self.filename)
 
     def init_test(self, filename):
-        config.setting = settings.copy()
+        self.set_config_values(settings)
         self.json_doc = load_test_json(filename)
 
 

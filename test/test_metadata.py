@@ -29,7 +29,6 @@ from test.picardtestcase import (
 )
 from test.test_coverart_image import create_image
 
-from picard import config
 from picard.cluster import Cluster
 from picard.coverart.image import CoverArtImage
 from picard.file import File
@@ -74,7 +73,7 @@ class CommonTests:
 
         def setUp(self):
             super().setUp()
-            config.setting = settings.copy()
+            self.set_config_values(settings)
             self.metadata = self.get_metadata_object()
             self.metadata.length = 242
             self.metadata["single1"] = "single1-value"

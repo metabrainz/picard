@@ -55,16 +55,12 @@ class WebServiceTest(PicardTestCase):
 
     def setUp(self):
         super().setUp()
-        config.setting = {
+        self.set_config_values({
             'use_proxy': False,
             'server_host': '',
             'network_transfer_timeout_seconds': 30,
-        }
+        })
         self.ws = WebService()
-
-    def tearDown(self):
-        del self.ws
-        config.setting = {}
 
     @patch.object(WebService, 'add_task')
     def test_webservice_method_calls(self, mock_add_task):
@@ -97,19 +93,15 @@ class WebServiceTaskTest(PicardTestCase):
 
     def setUp(self):
         super().setUp()
-        config.setting = {
+        self.set_config_values({
             'use_proxy': False,
             'network_transfer_timeout_seconds': 30,
-        }
+        })
         self.ws = WebService()
 
         # Patching the QTimers since they can only be started in a QThread
         self.ws._timer_run_next_task = MagicMock()
         self.ws._timer_count_pending_requests = MagicMock()
-
-    def tearDown(self):
-        del self.ws
-        config.setting = {}
 
     def test_add_task(self):
 
@@ -215,10 +207,7 @@ class WebServiceProxyTest(PicardTestCase):
 
     def setUp(self):
         super().setUp()
-        config.setting = PROXY_SETTINGS.copy()
-
-    def tearDown(self):
-        config.setting = {}
+        self.set_config_values(PROXY_SETTINGS)
 
     def test_proxy_setup(self):
         proxy_types = [
