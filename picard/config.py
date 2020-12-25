@@ -322,7 +322,6 @@ config = None
 setting = None
 persist = None
 
-PURGE_INTERVAL_MILLISECONDS = 60000
 _thread_configs = {}
 _thread_config_lock = threading.RLock()
 
@@ -336,7 +335,7 @@ def setup_config(app, filename=None):
     _thread_configs[threading.get_ident()] = config
     setting = config.setting
     persist = config.persist
-    QtCore.QTimer.singleShot(PURGE_INTERVAL_MILLISECONDS, _purge_config_instances)
+    _init_purge_config_timer()
 
 
 def get_config():
@@ -358,7 +357,18 @@ def get_config():
     return thread_config
 
 
-def _purge_config_instances():
+def _init_purge_config_timer(purge_interval_milliseconds=60000):
+    def run_purge_config_timer():
+        purge_config_instances()
+        start_purge_config_timer()
+
+    def start_purge_config_timer():
+        QtCore.QTimer.singleShot(purge_interval_milliseconds, run_purge_config_timer)
+
+    start_purge_config_timer()
+
+
+def purge_config_instances():
     """Removes cached config instances for no longer active threads."""
     _thread_config_lock.acquire()
     try:
@@ -369,4 +379,3 @@ def _purge_config_instances():
             del _thread_configs[thread_id]
     finally:
         _thread_config_lock.release()
-        QtCore.QTimer.singleShot(PURGE_INTERVAL_MILLISECONDS, _purge_config_instances)
