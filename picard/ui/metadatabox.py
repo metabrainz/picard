@@ -144,7 +144,7 @@ class TagDiff(object):
             self.new.add(tag, new_values)
 
         if not top_tags:
-            top_tags = []
+            top_tags = set()
 
         if (orig_values and not new_values) or removed:
             self.status[tag] |= TagStatus.REMOVED
@@ -584,6 +584,7 @@ class MetadataBox(QtWidgets.QTableWidget):
 
         clear_existing_tags = config.setting["clear_existing_tags"]
         top_tags = config.setting['metadatabox_top_tags']
+        top_tags_set = set(top_tags)
 
         for file in files:
             new_metadata = file.new_metadata
@@ -598,7 +599,7 @@ class MetadataBox(QtWidgets.QTableWidget):
                     new_values = list(orig_values or [""])
 
                 removed = name in new_metadata.deleted_tags
-                tag_diff.add(name, orig_values, new_values, True, removed, top_tags=top_tags)
+                tag_diff.add(name, orig_values, new_values, True, removed, top_tags=top_tags_set)
 
             tag_diff.add("~length", str(orig_metadata.length), str(new_metadata.length),
                          removable=False, readonly=True)
@@ -619,7 +620,7 @@ class MetadataBox(QtWidgets.QTableWidget):
                 tag_diff.objects += 1
 
         all_tags = set(list(orig_tags.keys()) + list(new_tags.keys()))
-        common_tags = [tag for tag in config.setting['metadatabox_top_tags'] if tag in all_tags]
+        common_tags = [tag for tag in top_tags if tag in all_tags]
         tag_names = common_tags + sorted(all_tags.difference(common_tags),
                                          key=lambda x: display_tag_name(x).lower())
 
