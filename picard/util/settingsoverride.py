@@ -23,7 +23,7 @@ from collections.abc import MutableMapping
 
 
 class SettingsOverride(MutableMapping):
-    """ This class can be used to override config temporarly
+    """ This class can be used to override config temporarily
         Basically it returns config[key] if key isn't found in internal dict
 
         Typical usage:
