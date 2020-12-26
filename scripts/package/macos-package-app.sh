@@ -70,14 +70,17 @@ if [ "$CODESIGN" = '1' ]; then
     fi
 fi
 
-echo "Verify Picard executable works and required dependencies are bundled..."
-VERSIONS=$("$APP_BUNDLE/Contents/MacOS/picard-run" --long-version)
-echo "$VERSIONS"
-ASTRCMP_REGEX="astrcmp C"
-[[ $VERSIONS =~ $ASTRCMP_REGEX ]] || (echo "Failed: Build does not include astrcmp C" && false)
-LIBDISCID_REGEX="libdiscid [0-9]+\.[0-9]+\.[0-9]+"
-[[ $VERSIONS =~ $LIBDISCID_REGEX ]] || (echo "Failed: Build does not include libdiscid" && false)
-"$APP_BUNDLE/Contents/MacOS/fpcalc" -version
+# Only test the app if it was codesigned, otherwise execution likely fails
+if [ "$CODESIGN" = '1' ]; then
+  echo "Verify Picard executable works and required dependencies are bundled..."
+  VERSIONS=$("$APP_BUNDLE/Contents/MacOS/picard-run" --long-version)
+  echo "$VERSIONS"
+  ASTRCMP_REGEX="astrcmp C"
+  [[ $VERSIONS =~ $ASTRCMP_REGEX ]] || (echo "Failed: Build does not include astrcmp C" && false)
+  LIBDISCID_REGEX="libdiscid [0-9]+\.[0-9]+\.[0-9]+"
+  [[ $VERSIONS =~ $LIBDISCID_REGEX ]] || (echo "Failed: Build does not include libdiscid" && false)
+  "$APP_BUNDLE/Contents/MacOS/fpcalc" -version
+fi
 
 echo "Package app bundle into DMG image..."
 if [ -n "$MACOSX_DEPLOYMENT_TARGET" ]; then
