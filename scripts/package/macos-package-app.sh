@@ -12,6 +12,7 @@ MACOS_VERSION_MAJOR=${MACOS_VERSION_MAJOR%.*}
 MACOS_VERSION_MINOR=${MACOS_VERSION#*.}
 MACOS_VERSION_MINOR=${MACOS_VERSION_MINOR%.*}
 
+echo "Building Picard..."
 rm -rf dist build locale
 python3 setup.py clean
 python3 setup.py build
@@ -26,6 +27,7 @@ CERTIFICATE_NAME="MetaBrainz Foundation Inc."
 CERTIFICATE_FILE=scripts/package/appledev.p12
 
 if [ -f $CERTIFICATE_FILE ] && [ -n "$CODESIGN_MACOS_P12_PASSWORD" ]; then
+    echo "Preparing code signing certificate..."
     security create-keychain -p $KEYCHAIN_PASSWORD $KEYCHAIN_PATH
     security unlock-keychain -p $KEYCHAIN_PASSWORD $KEYCHAIN_PATH
     security set-keychain-settings $KEYCHAIN_PATH  # Ensure keychain stays unlocked
@@ -46,7 +48,7 @@ fi
 
 cd dist
 
-# Create app bundle
+echo "Create and sign app bundle..."
 APP_BUNDLE="MusicBrainz Picard.app"
 ditto -rsrc --arch x86_64 "$APP_BUNDLE" "$APP_BUNDLE.tmp"
 rm -r "$APP_BUNDLE"
@@ -68,7 +70,7 @@ if [ "$CODESIGN" = '1' ]; then
     fi
 fi
 
-# Verify Picard executable works and required dependencies are bundled
+echo "Verify Picard executable works and required dependencies are bundled..."
 VERSIONS=$("$APP_BUNDLE/Contents/MacOS/picard-run" --long-version)
 echo "$VERSIONS"
 ASTRCMP_REGEX="astrcmp C"
@@ -77,7 +79,7 @@ LIBDISCID_REGEX="libdiscid [0-9]+\.[0-9]+\.[0-9]+"
 [[ $VERSIONS =~ $LIBDISCID_REGEX ]] || (echo "Failed: Build does not include libdiscid" && false)
 "$APP_BUNDLE/Contents/MacOS/fpcalc" -version
 
-# Package app bundle into DMG image
+echo "Package app bundle into DMG image..."
 if [ -n "$MACOSX_DEPLOYMENT_TARGET" ]; then
   DMG="MusicBrainz-Picard-${VERSION}-macOS-${MACOSX_DEPLOYMENT_TARGET}.dmg"
 else
