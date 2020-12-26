@@ -201,7 +201,7 @@ class CommonTests:
 
         def setUp(self):
             super().setUp()
-            config.setting = settings.copy()
+            self.set_config_values(settings)
             if self.testfile:
                 _name, self.testfile_ext = os.path.splitext(self.testfile)
                 self.testfile_path = os.path.join('test', 'data', self.testfile)

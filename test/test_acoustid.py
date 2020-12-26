@@ -27,7 +27,6 @@ import os
 
 from test.picardtestcase import PicardTestCase
 
-from picard import config
 from picard.acoustid.json_helpers import parse_recording
 from picard.mbjson import recording_to_metadata
 from picard.metadata import Metadata
@@ -49,7 +48,7 @@ class AcoustIDTest(PicardTestCase):
         self.init_test(self.filename)
 
     def init_test(self, filename):
-        config.setting = settings.copy()
+        self.set_config_values(settings)
         self.json_doc = None
         with open(os.path.join('test', 'data', 'ws_data', filename), encoding='utf-8') as f:
             self.json_doc = json.load(f)

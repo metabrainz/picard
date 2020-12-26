@@ -35,7 +35,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from picard import config
+from picard.config import get_config
 from picard.script.functions import (  # noqa: F401 # pylint: disable=unused-import
     register_script_function,
     script_function,
@@ -97,6 +97,7 @@ def script_function_documentation_all(fmt='markdown', pre='',
 def enabled_tagger_scripts_texts():
     """Returns an iterator over the enabled tagger scripts.
     For each script, you'll get a tuple consisting of the script name and text"""
+    config = get_config()
     if not config.setting["enable_tagger_scripts"]:
         return []
     return [(s_name, s_text) for _s_pos, s_name, s_enabled, s_text in config.setting["list_of_scripts"] if s_enabled and s_text]

@@ -66,7 +66,6 @@ from picard import (
     PICARD_FANCY_VERSION_STR,
     PICARD_ORG_NAME,
     acoustid,
-    config,
     log,
 )
 from picard.acoustid.manager import AcoustIDManager
@@ -83,6 +82,10 @@ from picard.cluster import (
     UnclusteredFiles,
 )
 from picard.collection import load_user_collections
+from picard.config import (
+    get_config,
+    setup_config,
+)
 from picard.config_upgrade import upgrade_config
 from picard.const import (
     USER_DIR,
@@ -165,7 +168,8 @@ class Tagger(QtWidgets.QApplication):
 
         super().__init__(sys.argv)
         self.__class__.__instance = self
-        config._setup(self, picard_args.config_file)
+        setup_config(self, picard_args.config_file)
+        config = get_config()
         theme.setup(self)
 
         self._cmdline_files = picard_args.FILE
@@ -226,7 +230,7 @@ class Tagger(QtWidgets.QApplication):
         log.debug("Platform: %s %s %s", platform.platform(),
                   platform.python_implementation(), platform.python_version())
         log.debug("Versions: %s", versions.as_string())
-        log.debug("Configuration file path: %r", config.config.fileName())
+        log.debug("Configuration file path: %r", config.fileName())
 
         log.debug("User directory: %r", os.path.abspath(USER_DIR))
 
@@ -241,7 +245,7 @@ class Tagger(QtWidgets.QApplication):
         # translated
         setup_gettext(localedir, config.setting["ui_language"], log.debug)
 
-        upgrade_config(config.config)
+        upgrade_config(config)
 
         self.webservice = WebService()
         self.mb_api = MBAPIHelper(self.webservice)
@@ -385,6 +389,7 @@ class Tagger(QtWidgets.QApplication):
             del self._cmdline_files
 
     def run(self):
+        config = get_config()
         if config.setting["browser_integration"]:
             self.browser_integration.start()
         self.window.show()
@@ -408,6 +413,7 @@ class Tagger(QtWidgets.QApplication):
         return super().event(event)
 
     def _file_loaded(self, file, target=None, remove_file=False):
+        config = get_config()
         self._pending_files_count -= 1
         if self._pending_files_count == 0:
             self.window.set_sorting(True)
@@ -503,6 +509,7 @@ class Tagger(QtWidgets.QApplication):
     def add_files(self, filenames, target=None):
         """Add files to the tagger."""
         ignoreregex = None
+        config = get_config()
         pattern = config.setting['ignore_regex']
         if pattern:
             try:
@@ -564,6 +571,7 @@ class Tagger(QtWidgets.QApplication):
                 log.warning(err)
 
     def add_paths(self, paths, target=None):
+        config = get_config()
         files = self._scan_paths_recursive(paths,
                             config.setting['recursively_add_files'],
                             config.setting["ignore_hidden_files"])
@@ -571,6 +579,7 @@ class Tagger(QtWidgets.QApplication):
 
     def get_file_lookup(self):
         """Return a FileLookup object."""
+        config = get_config()
         return FileLookup(self, config.setting["server_host"],
                           config.setting["server_port"],
                           self.browser_integration.port)
@@ -605,6 +614,7 @@ class Tagger(QtWidgets.QApplication):
             return
         search = search_types[search_type]
         lookup = self.get_file_lookup()
+        config = get_config()
         if config.setting["builtin_search"] and not force_browser:
             if not lookup.mbid_lookup(text, search['entity'],
                                       mbid_matched_callback=mbid_matched_callback):
@@ -617,6 +627,7 @@ class Tagger(QtWidgets.QApplication):
     def collection_lookup(self):
         """Lookup the users collections on the MusicBrainz website."""
         lookup = self.get_file_lookup()
+        config = get_config()
         lookup.collection_lookup(config.persist["oauth_username"])
 
     def browser_lookup(self, item):
@@ -775,6 +786,7 @@ class Tagger(QtWidgets.QApplication):
 
     def lookup_cd(self, action):
         """Reads CD from the selected drive and tries to lookup the DiscID on MusicBrainz."""
+        config = get_config()
         if isinstance(action, QtWidgets.QAction):
             device = action.data()
         elif config.setting["cd_lookup_device"] != '':
@@ -792,6 +804,7 @@ class Tagger(QtWidgets.QApplication):
 
     @property
     def use_acoustid(self):
+        config = get_config()
         return config.setting["fingerprinting_system"] == "acoustid"
 
     def analyze(self, objs):

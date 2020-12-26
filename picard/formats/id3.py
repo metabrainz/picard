@@ -43,10 +43,8 @@ import mutagen.dsf
 import mutagen.mp3
 import mutagen.trueaudio
 
-from picard import (
-    config,
-    log,
-)
+from picard import log
+from picard.config import get_config
 from picard.coverart.image import (
     CoverArtImageError,
     TagCoverArtImage,
@@ -258,6 +256,10 @@ class ID3File(File):
         self.__casemap = {}
         file = self._get_file(encode_filename(filename))
         tags = file.tags or {}
+        config = get_config()
+        itunes_compatible = config.setting['itunes_compatible_grouping']
+        rating_user_email = config.setting['rating_user_email']
+        rating_steps = config.setting['rating_steps']
         # upgrade custom 2.3 frames to 2.4
         for old, new in self.__upgrade.items():
             if old in tags and new not in tags:
@@ -283,7 +285,6 @@ class ID3File(File):
                 else:
                     metadata.add(name, frame)
             elif frameid == 'TIT1':
-                itunes_compatible = config.setting['itunes_compatible_grouping']
                 name = 'work' if itunes_compatible else 'grouping'
                 for text in frame.text:
                     if text:
@@ -354,8 +355,8 @@ class ID3File(File):
                     metadata.images.append(coverartimage)
             elif frameid == 'POPM':
                 # Rating in ID3 ranges from 0 to 255, normalize this to the range 0 to 5
-                if frame.email == config.setting['rating_user_email']:
-                    rating = int(round(frame.rating / 255.0 * (config.setting['rating_steps'] - 1)))
+                if frame.email == rating_user_email:
+                    rating = int(round(frame.rating / 255.0 * (rating_steps - 1)))
                     metadata.add('~rating', rating)
 
         if 'date' in metadata:
@@ -370,7 +371,7 @@ class ID3File(File):
         """Save metadata to the file."""
         log.debug("Saving file %r", filename)
         tags = self._get_tags(filename)
-
+        config = get_config()
         if config.setting['clear_existing_tags']:
             tags.clear()
         images_to_save = list(metadata.images.to_be_saved_to_tags())
@@ -543,6 +544,8 @@ class ID3File(File):
 
     def _remove_deleted_tags(self, metadata, tags):
         """Remove the tags from the file that were deleted in the UI"""
+        config = get_config()
+
         for name in metadata.deleted_tags:
             real_name = self._get_tag_name(name)
             try:
@@ -626,6 +629,7 @@ class ID3File(File):
             return compatid3.CompatID3()
 
     def _save_tags(self, tags, filename):
+        config = get_config()
         if config.setting['write_id3v1']:
             v1 = 2
         else:
@@ -641,6 +645,7 @@ class ID3File(File):
 
     @property
     def new_metadata(self):
+        config = get_config()
         if not config.setting["write_id3v23"]:
             return self.metadata
 
@@ -713,6 +718,7 @@ class NonCompatID3File(ID3File):
         return file.tags
 
     def _save_tags(self, tags, filename):
+        config = get_config()
         if config.setting['write_id3v23']:
             compatid3.update_to_v23(tags)
             separator = config.setting['id3v23_join_with']

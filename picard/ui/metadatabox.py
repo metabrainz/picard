@@ -39,11 +39,15 @@ from PyQt5 import (
     QtWidgets,
 )
 
-from picard import config
 from picard.album import Album
 from picard.browser.browser import BrowserIntegration
 from picard.browser.filelookup import FileLookup
 from picard.cluster import Cluster
+from picard.config import (
+    BoolOption,
+    Option,
+    get_config,
+)
 from picard.file import File
 from picard.metadata import MULTI_VALUED_JOINER
 from picard.track import Track
@@ -132,12 +136,15 @@ class TagDiff(object):
         else:
             return orig != new
 
-    def add(self, tag, orig_values, new_values, removable, removed=False, readonly=False):
+    def add(self, tag, orig_values, new_values, removable, removed=False, readonly=False, top_tags=None):
         if orig_values:
             self.orig.add(tag, orig_values)
 
         if new_values:
             self.new.add(tag, new_values)
+
+        if not top_tags:
+            top_tags = set()
 
         if (orig_values and not new_values) or removed:
             self.status[tag] |= TagStatus.REMOVED
@@ -146,7 +153,7 @@ class TagDiff(object):
             removable = True
         elif orig_values and new_values and self.__tag_ne(tag, orig_values, new_values):
             self.status[tag] |= TagStatus.CHANGED
-        elif not (orig_values or new_values or tag in config.setting['metadatabox_top_tags']):
+        elif not (orig_values or new_values or tag in top_tags):
             self.status[tag] |= TagStatus.EMPTY
         else:
             self.status[tag] |= TagStatus.NOCHANGE
@@ -193,8 +200,8 @@ class TableTagEditorDelegate(TagEditorDelegate):
 class MetadataBox(QtWidgets.QTableWidget):
 
     options = (
-        config.Option("persist", "metadatabox_header_state", QtCore.QByteArray()),
-        config.BoolOption("persist", "show_changes_first", False)
+        Option("persist", "metadatabox_header_state", QtCore.QByteArray()),
+        BoolOption("persist", "show_changes_first", False)
     )
 
     COLUMN_ORIG = 1
@@ -202,6 +209,7 @@ class MetadataBox(QtWidgets.QTableWidget):
 
     def __init__(self, parent):
         super().__init__(parent)
+        config = get_config()
         self.parent = parent
         self.setAccessibleName(_("metadata view"))
         self.setAccessibleDescription(_("Displays original and new tags for the selected files"))
@@ -247,6 +255,7 @@ class MetadataBox(QtWidgets.QTableWidget):
 
     def get_file_lookup(self):
         """Return a FileLookup object."""
+        config = get_config()
         return FileLookup(self, config.setting["server_host"],
                           config.setting["server_port"],
                           self.browser_integration.port)
@@ -454,6 +463,7 @@ class MetadataBox(QtWidgets.QTableWidget):
             self.edit_tag(tags[0])
 
     def toggle_changes_first(self, checked):
+        config = get_config()
         config.persist["show_changes_first"] = checked
         self.update()
 
@@ -566,12 +576,15 @@ class MetadataBox(QtWidgets.QTableWidget):
             TagStatus.CHANGED: QtGui.QBrush(interface_colors.get_qcolor('tagstatus_changed'))
         }
 
+        config = get_config()
         tag_diff = TagDiff(max_length_diff=config.setting["ignore_track_duration_difference_under"])
         orig_tags = tag_diff.orig
         new_tags = tag_diff.new
         tag_diff.objects = len(files)
 
         clear_existing_tags = config.setting["clear_existing_tags"]
+        top_tags = config.setting['metadatabox_top_tags']
+        top_tags_set = set(top_tags)
 
         for file in files:
             new_metadata = file.new_metadata
@@ -586,7 +599,7 @@ class MetadataBox(QtWidgets.QTableWidget):
                     new_values = list(orig_values or [""])
 
                 removed = name in new_metadata.deleted_tags
-                tag_diff.add(name, orig_values, new_values, True, removed)
+                tag_diff.add(name, orig_values, new_values, True, removed, top_tags=top_tags_set)
 
             tag_diff.add("~length", str(orig_metadata.length), str(new_metadata.length),
                          removable=False, readonly=True)
@@ -607,7 +620,7 @@ class MetadataBox(QtWidgets.QTableWidget):
                 tag_diff.objects += 1
 
         all_tags = set(list(orig_tags.keys()) + list(new_tags.keys()))
-        common_tags = [tag for tag in config.setting['metadatabox_top_tags'] if tag in all_tags]
+        common_tags = [tag for tag in top_tags if tag in all_tags]
         tag_names = common_tags + sorted(all_tags.difference(common_tags),
                                          key=lambda x: display_tag_name(x).lower())
 
@@ -702,12 +715,14 @@ class MetadataBox(QtWidgets.QTableWidget):
 
     @restore_method
     def restore_state(self):
+        config = get_config()
         state = config.persist["metadatabox_header_state"]
         header = self.horizontalHeader()
         header.restoreState(state)
         header.setSectionResizeMode(QtWidgets.QHeaderView.Interactive)
 
     def save_state(self):
+        config = get_config()
         header = self.horizontalHeader()
         state = header.saveState()
         config.persist["metadatabox_header_state"] = state

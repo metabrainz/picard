@@ -38,10 +38,8 @@ import mutagen.oggspeex
 import mutagen.oggtheora
 import mutagen.oggvorbis
 
-from picard import (
-    config,
-    log,
-)
+from picard import log
+from picard.config import get_config
 from picard.coverart.image import (
     CoverArtImageError,
     TagCoverArtImage,
@@ -122,6 +120,7 @@ class VCommentFile(File):
 
     def _load(self, filename):
         log.debug("Loading file %r", filename)
+        config = get_config()
         file = self._File(encode_filename(filename))
         file.tags = file.tags or {}
         metadata = Metadata()
@@ -226,6 +225,7 @@ class VCommentFile(File):
     def _save(self, filename, metadata):
         """Save metadata to the file."""
         log.debug("Saving file %r", filename)
+        config = get_config()
         is_flac = self._File == mutagen.flac.FLAC
         file = self._File(encode_filename(filename))
         if file.tags is None:
@@ -334,6 +334,7 @@ class VCommentFile(File):
 
     def _get_tag_name(self, name):
         if name == '~rating':
+            config = get_config()
             if config.setting['rating_user_email']:
                 return 'rating:%s' % config.setting['rating_user_email']
             else:

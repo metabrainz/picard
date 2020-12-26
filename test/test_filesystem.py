@@ -46,7 +46,7 @@ class TestFileSystem(PicardTestCase):
         super().setUp()
         self.src_directory = self.mktmpdir()
         self.tgt_directory = self.mktmpdir()
-        config.setting = settings.copy()
+        self.set_config_values(settings)
 
     def _prepare_files(self, src_rel_path='', tgt_rel_path=''):
         """Prepare src files and tgt filenames for a test."""

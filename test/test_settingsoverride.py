@@ -28,8 +28,8 @@ from picard.util.settingsoverride import SettingsOverride
 class SettingsOverrideTest(PicardTestCase):
 
     def setUp(self):
-        self.config = {'key1': 'origval1', 'key2': 'origval2'}
-        config.setting = self.config.copy()
+        super().setUp()
+        self.set_config_values({'key1': 'origval1', 'key2': 'origval2'})
         self.new_settings = {'key1': 'newval2'}
 
     def test_read_orig_settings(self):

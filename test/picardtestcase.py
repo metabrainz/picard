@@ -3,7 +3,7 @@
 # Picard, the next-generation MusicBrainz tagger
 #
 # Copyright (C) 2018 Wieland Hoffmann
-# Copyright (C) 2019 Philipp Wolfer
+# Copyright (C) 2019-2020 Philipp Wolfer
 # Copyright (C) 2020 Laurent Monin
 #
 # This program is free software; you can redistribute it and/or
@@ -29,7 +29,9 @@ from tempfile import (
     mkdtemp,
     mkstemp,
 )
+import threading
 import unittest
+from unittest.mock import Mock
 
 from PyQt5 import QtCore
 
@@ -72,7 +74,28 @@ class PicardTestCase(unittest.TestCase):
         self.tagger = FakeTagger()
         QtCore.QObject.tagger = self.tagger
         self.addCleanup(self.tagger.run_cleanup)
-        config.setting = {}
+        self.init_config()
+
+    @staticmethod
+    def init_config():
+        fake_config = Mock()
+        fake_config.setting = {}
+        fake_config.persist = {}
+        # Make config object available to current thread
+        config._thread_configs[threading.get_ident()] = fake_config
+        # Make config object available for legacy use
+        config.config = fake_config
+        config.setting = fake_config.setting
+        config.persist = fake_config.persist
+
+    @staticmethod
+    def set_config_values(setting=None, persist=None):
+        if setting:
+            for key, value in setting.items():
+                config.config.setting[key] = value
+        if persist:
+            for key, value in persist.items():
+                config.config.persist[key] = value
 
     def mktmpdir(self, ignore_errors=False):
         tmpdir = mkdtemp(suffix=self.__class__.__name__)

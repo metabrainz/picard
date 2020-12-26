@@ -24,7 +24,7 @@
 
 from collections.abc import MutableSequence
 
-from picard import config
+from picard.config import get_config
 
 
 class ImageList(MutableSequence):
@@ -71,6 +71,7 @@ class ImageList(MutableSequence):
            passed settings or config.setting
         """
         if settings is None:
+            config = get_config()
             settings = config.setting
         if settings['save_images_to_tags']:
             only_one_front = settings['embed_only_one_front_image']
