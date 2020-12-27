@@ -30,6 +30,7 @@ from picard.config import (
     Option,
     TextOption,
 )
+import picard.config_upgrade
 from picard.config_upgrade import (
     OLD_DEFAULT_FILE_NAMING_FORMAT_v1_3,
     OLD_DEFAULT_FILE_NAMING_FORMAT_v2_1,
@@ -50,6 +51,7 @@ from picard.config_upgrade import (
     upgrade_to_v2_4_0_beta_3,
     upgrade_to_v2_5_0_dev_1,
     upgrade_to_v2_5_0_dev_2,
+    upgrade_to_v2_5_6_dev_2,
 )
 from picard.const import (
     DEFAULT_FILE_NAMING_FORMAT,
@@ -289,3 +291,29 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
         upgrade_to_v2_5_0_dev_2(self.config)
         self.assertEqual(b'', self.config.persist['splitter_state'])
         self.assertEqual(b'', self.config.persist['bottom_splitter_state'])
+
+    def test_upgrade_to_v2_5_6_dev_2(self):
+        TextOption("setting", "acoustid_fpcalc", "")
+        self.config.setting["acoustid_fpcalc"] = "/usr/bin/fpcalc"
+        upgrade_to_v2_5_6_dev_2(self.config)
+        self.assertEqual("/usr/bin/fpcalc", self.config.setting["acoustid_fpcalc"])
+
+    def test_upgrade_to_v2_5_6_dev_2_empty(self):
+        TextOption("setting", "acoustid_fpcalc", "")
+        self.config.setting["acoustid_fpcalc"] = None
+        upgrade_to_v2_5_6_dev_2(self.config)
+        self.assertEqual("", self.config.setting["acoustid_fpcalc"])
+
+    def test_upgrade_to_v2_5_6_dev_2_snap(self):
+        TextOption("setting", "acoustid_fpcalc", "")
+        self.config.setting["acoustid_fpcalc"] = "/snap/picard/221/usr/bin/fpcalc"
+        upgrade_to_v2_5_6_dev_2(self.config)
+        self.assertEqual("", self.config.setting["acoustid_fpcalc"])
+
+    def test_upgrade_to_v2_5_6_dev_2_frozen(self):
+        TextOption("setting", "acoustid_fpcalc", "")
+        self.config.setting["acoustid_fpcalc"] = r"C:\Program Files\MusicBrainz Picard\fpcalc.exe"
+        picard.config_upgrade.IS_FROZEN = True
+        upgrade_to_v2_5_6_dev_2(self.config)
+        picard.config_upgrade.IS_FROZEN = False
+        self.assertEqual("", self.config.setting["acoustid_fpcalc"])

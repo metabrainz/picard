@@ -32,11 +32,8 @@ from PyQt5 import (
 )
 
 from picard import config
-from picard.const import FPCALC_NAMES
-from picard.util import (
-    find_executable,
-    webbrowser2,
-)
+from picard.acoustid import find_fpcalc
+from picard.util import webbrowser2
 
 from picard.ui.options import (
     OptionsCheckError,
@@ -87,6 +84,7 @@ class FingerprintingOptionsPage(OptionsPage):
             self.ui.use_acoustid.setChecked(True)
         else:
             self.ui.disable_fingerprinting.setChecked(True)
+        self.ui.acoustid_fpcalc.setPlaceholderText(find_fpcalc())
         self.ui.acoustid_fpcalc.setText(config.setting["acoustid_fpcalc"])
         self.ui.acoustid_apikey.setText(config.setting["acoustid_apikey"])
         self.ui.ignore_existing_acoustid_fingerprints.setChecked(config.setting["ignore_existing_acoustid_fingerprints"])
@@ -104,10 +102,6 @@ class FingerprintingOptionsPage(OptionsPage):
     def update_groupboxes(self):
         if self.ui.use_acoustid.isChecked():
             self.ui.acoustid_settings.setEnabled(True)
-            if not self.ui.acoustid_fpcalc.text():
-                fpcalc_path = find_executable(*FPCALC_NAMES)
-                if fpcalc_path:
-                    self.ui.acoustid_fpcalc.setText(fpcalc_path)
         else:
             self.ui.acoustid_settings.setEnabled(False)
         self._acoustid_fpcalc_check()
@@ -130,9 +124,7 @@ class FingerprintingOptionsPage(OptionsPage):
             return
         fpcalc = self.ui.acoustid_fpcalc.text()
         if not fpcalc:
-            self._acoustid_fpcalc_set_success("")
-            return
-
+            fpcalc = find_fpcalc()
         self._fpcalc_valid = False
         process = QtCore.QProcess(self)
         process.finished.connect(self._on_acoustid_fpcalc_check_finished)
