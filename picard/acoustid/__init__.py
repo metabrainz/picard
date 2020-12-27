@@ -34,8 +34,8 @@ from picard import (
     log,
 )
 from picard.acoustid.json_helpers import parse_recording
+from picard.config import get_config
 from picard.const import FPCALC_NAMES
-from picard.const.sys import IS_FROZEN
 from picard.util import find_executable
 
 
@@ -46,6 +46,19 @@ def get_score(node):
         return 1.0
 
 
+def get_fpcalc(config=None):
+    if not config:
+        config = get_config()
+    fpcalc_path = config.setting["acoustid_fpcalc"]
+    if not fpcalc_path:
+        fpcalc_path = find_fpcalc()
+    return fpcalc_path or 'fpcalc'
+
+
+def find_fpcalc():
+    return find_executable(*FPCALC_NAMES)
+
+
 class AcoustIDClient(QtCore.QObject):
 
     def __init__(self, acoustid_api):
@@ -54,14 +67,6 @@ class AcoustIDClient(QtCore.QObject):
         self._running = 0
         self._max_processes = 2
         self._acoustid_api = acoustid_api
-
-        # The second condition is checked because in case of a packaged build of picard
-        # the temp directory that pyinstaller decompresses picard into changes on every
-        # launch, thus we need to ignore the existing config values.
-        if not config.setting["acoustid_fpcalc"] or IS_FROZEN:
-            fpcalc_path = find_executable(*FPCALC_NAMES)
-            if fpcalc_path:
-                config.setting["acoustid_fpcalc"] = fpcalc_path
 
     def init(self):
         pass
@@ -214,14 +219,13 @@ class AcoustIDClient(QtCore.QObject):
             file, next_func = self._queue.popleft()
         except IndexError:
             return
-        fpcalc = config.setting["acoustid_fpcalc"] or "fpcalc"
         self._running += 1
         process = QtCore.QProcess(self)
         process.setProperty('picard_finished', False)
         process.finished.connect(partial(self._on_fpcalc_finished, next_func, file))
         process.error.connect(partial(self._on_fpcalc_error, next_func, file))
-        process.start(fpcalc, ["-json", "-length", "120", file.filename])
-        log.debug("Starting fingerprint calculator %r %r", fpcalc, file.filename)
+        process.start(self._fpcalc, ["-json", "-length", "120", file.filename])
+        log.debug("Starting fingerprint calculator %r %r", self._fpcalc, file.filename)
 
     def analyze(self, file, next_func):
         fpcalc_next = partial(self._lookup_fingerprint, next_func, file.filename)
@@ -246,6 +250,7 @@ class AcoustIDClient(QtCore.QObject):
     def fingerprint(self, file, next_func):
         task = (file, next_func)
         self._queue.append(task)
+        self._fpcalc = get_fpcalc()
         if self._running < self._max_processes:
             self._run_next_task()
 
