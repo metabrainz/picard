@@ -39,6 +39,7 @@ from picard.const import (
     DEFAULT_FILE_NAMING_FORMAT,
     DEFAULT_NUMBERED_SCRIPT_NAME,
 )
+from picard.const.sys import IS_FROZEN
 
 
 # TO ADD AN UPGRADE HOOK:
@@ -318,6 +319,12 @@ def upgrade_to_v2_5_0_dev_2(config):
     config.persist["bottom_splitter_state"] = b''
 
 
+def upgrade_to_v2_5_6_dev_2(config):
+    """Unset fpcalc path in environments where auto detection is preferred."""
+    if IS_FROZEN or config.setting['acoustid_fpcalc'].startswith('/snap/picard/'):
+        config.setting['acoustid_fpcalc'] = ''
+
+
 def rename_option(config, old_opt, new_opt, option_type, default):
     _s = config.setting
     if old_opt in _s:
@@ -344,4 +351,5 @@ def upgrade_config(config):
     cfg.register_upgrade_hook(upgrade_to_v2_4_0_beta_3)
     cfg.register_upgrade_hook(upgrade_to_v2_5_0_dev_1)
     cfg.register_upgrade_hook(upgrade_to_v2_5_0_dev_2)
+    cfg.register_upgrade_hook(upgrade_to_v2_5_6_dev_2)
     cfg.run_upgrade_hooks(log.debug)
