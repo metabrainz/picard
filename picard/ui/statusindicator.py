@@ -119,7 +119,7 @@ elif not (IS_MACOS or IS_HAIKU):
             def __init__(self, bus, app_id):
                 QObject.__init__(self)
                 self._bus = bus
-                self._app_id = app_id
+                self._app_uri = 'application://' + app_id
                 self._path = '/'
                 self._progress = 0
                 self._visible = False
@@ -144,11 +144,11 @@ elif not (IS_MACOS or IS_HAIKU):
                 # since Qt cannot handle the complex "a{sv}" type.
                 # Create the signal message manually.
                 message = QDBusMessage.createSignal(self._path, DBUS_INTERFACE, 'Update')
-                message.setArguments([self._app_id, self.current_progress])
+                message.setArguments([self._app_uri, self.current_progress])
                 self._bus.send(message)
 
             def query(self):
-                return [self._app_id, self.current_progress]
+                return [self._app_uri, self.current_progress]
 
         class UnityLauncherEntryAdaptor(QDBusAbstractAdaptor):
             """ This provides the DBus adaptor to the outside world"""
