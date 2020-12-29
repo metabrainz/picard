@@ -12,6 +12,7 @@ MACOS_VERSION_MAJOR=${MACOS_VERSION_MAJOR%.*}
 MACOS_VERSION_MINOR=${MACOS_VERSION#*.}
 MACOS_VERSION_MINOR=${MACOS_VERSION_MINOR%.*}
 
+echo "Building Picard..."
 rm -rf dist build locale
 python3 setup.py clean
 python3 setup.py build
@@ -26,6 +27,7 @@ CERTIFICATE_NAME="MetaBrainz Foundation Inc."
 CERTIFICATE_FILE=scripts/package/appledev.p12
 
 if [ -f $CERTIFICATE_FILE ] && [ -n "$CODESIGN_MACOS_P12_PASSWORD" ]; then
+    echo "Preparing code signing certificate..."
     security create-keychain -p $KEYCHAIN_PASSWORD $KEYCHAIN_PATH
     security unlock-keychain -p $KEYCHAIN_PASSWORD $KEYCHAIN_PATH
     security set-keychain-settings $KEYCHAIN_PATH  # Ensure keychain stays unlocked
@@ -46,43 +48,48 @@ fi
 
 cd dist
 
-# Create app bundle
-ditto -rsrc --arch x86_64 'MusicBrainz Picard.app' 'MusicBrainz Picard.tmp'
-rm -r 'MusicBrainz Picard.app'
-mv 'MusicBrainz Picard.tmp' 'MusicBrainz Picard.app'
+echo "Create and sign app bundle..."
+APP_BUNDLE="MusicBrainz Picard.app"
+ditto -rsrc --arch x86_64 "$APP_BUNDLE" "$APP_BUNDLE.tmp"
+rm -r "$APP_BUNDLE"
+mv "$APP_BUNDLE.tmp" "$APP_BUNDLE"
 if [ "$CODESIGN" = '1' ]; then
     # Enable hardened runtime if app will get notarized
     if [ "$NOTARIZE" = "1" ]; then
-      codesign --verify --verbose --deep \
+      codesign --verbose --deep --force \
         --options runtime \
         --entitlements ../scripts/package/entitlements.plist \
         --keychain "$KEYCHAIN_PATH" --sign "$CERTIFICATE_NAME" \
-        "MusicBrainz Picard.app"
-      ../scripts/package/macos-notarize-app.sh "MusicBrainz Picard.app"
+        "$APP_BUNDLE"
+      ../scripts/package/macos-notarize-app.sh "$APP_BUNDLE"
+      codesign --verbose --deep --verbose --strict=all --check-notarization "$APP_BUNDLE"
     else
-      codesign --verify --verbose --deep \
+      codesign --verify --verbose --deep --force \
         --keychain "$KEYCHAIN_PATH" --sign "$CERTIFICATE_NAME" \
-        "MusicBrainz Picard.app"
+        "$APP_BUNDLE"
     fi
 fi
 
-# Verify Picard executable works and required dependencies are bundled
-VERSIONS=$("MusicBrainz Picard.app/Contents/MacOS/picard-run" --long-version)
-echo "$VERSIONS"
-ASTRCMP_REGEX="astrcmp C"
-[[ $VERSIONS =~ $ASTRCMP_REGEX ]] || (echo "Failed: Build does not include astrcmp C" && false)
-LIBDISCID_REGEX="libdiscid [0-9]+\.[0-9]+\.[0-9]+"
-[[ $VERSIONS =~ $LIBDISCID_REGEX ]] || (echo "Failed: Build does not include libdiscid" && false)
-"MusicBrainz Picard.app/Contents/MacOS/fpcalc" -version
+# Only test the app if it was codesigned, otherwise execution likely fails
+if [ "$CODESIGN" = '1' ]; then
+  echo "Verify Picard executable works and required dependencies are bundled..."
+  VERSIONS=$("$APP_BUNDLE/Contents/MacOS/picard-run" --long-version)
+  echo "$VERSIONS"
+  ASTRCMP_REGEX="astrcmp C"
+  [[ $VERSIONS =~ $ASTRCMP_REGEX ]] || (echo "Failed: Build does not include astrcmp C" && false)
+  LIBDISCID_REGEX="libdiscid [0-9]+\.[0-9]+\.[0-9]+"
+  [[ $VERSIONS =~ $LIBDISCID_REGEX ]] || (echo "Failed: Build does not include libdiscid" && false)
+  "$APP_BUNDLE/Contents/MacOS/fpcalc" -version
+fi
 
-# Package app bundle into DMG image
-if [ -n "$TRAVIS_OSX_IMAGE" ]; then
-  DMG="MusicBrainz-Picard-${VERSION}_macOS-$MACOS_VERSION_MAJOR.$MACOS_VERSION_MINOR.dmg"
+echo "Package app bundle into DMG image..."
+if [ -n "$MACOSX_DEPLOYMENT_TARGET" ]; then
+  DMG="MusicBrainz-Picard-${VERSION}-macOS-${MACOSX_DEPLOYMENT_TARGET}.dmg"
 else
-  DMG="MusicBrainz-Picard-$VERSION.dmg"
+  DMG="MusicBrainz-Picard-${VERSION}.dmg"
 fi
 mkdir staging
-mv "MusicBrainz Picard.app" staging/
+mv "$APP_BUNDLE" staging/
 # Offer a link to /Applications for easy installation
 ln -s /Applications staging/Applications
 hdiutil create -volname "MusicBrainz Picard $VERSION" \
