@@ -138,7 +138,11 @@ class EditTagDialog(PicardDialog):
 
     def edit_value(self):
         item = self.value_list.currentItem()
-        if item and not self.value_list.isPersistentEditorOpen(item):
+        if item:
+            # Do not initialize editing if editor is already active. Avoids flickering of the edit field
+            # when already in edit mode. `isPersistentEditorOpen` is only supported in Qt 5.10 and later.
+            if hasattr(self.value_list, 'isPersistentEditorOpen') and self.value_list.isPersistentEditorOpen(item):
+                return
             self.value_list.editItem(item)
 
     def add_value(self):
