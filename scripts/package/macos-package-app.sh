@@ -53,6 +53,16 @@ APP_BUNDLE="MusicBrainz Picard.app"
 ditto -rsrc --arch x86_64 "$APP_BUNDLE" "$APP_BUNDLE.tmp"
 rm -r "$APP_BUNDLE"
 mv "$APP_BUNDLE.tmp" "$APP_BUNDLE"
+
+# Fix placing text files in Resources instead of Contents to avoid signatures ending up in extended attributes.
+# This fixes the signature breaking if extended attributes get removed or modified.
+# Fixes https://tickets.metabrainz.org/browse/PICARD-1943 and related issues.
+mkdir "$APP_BUNDLE/Contents/Resources/Qt/"
+mv "$APP_BUNDLE/Contents/MacOS/PyQt5/Qt/translations" "$APP_BUNDLE/Contents/Resources/Qt/"
+pushd "$APP_BUNDLE/Contents/MacOS/PyQt5/Qt/"
+ln -s ../../../Resources/Qt/translations .
+popd
+
 if [ "$CODESIGN" = '1' ]; then
     # Enable hardened runtime if app will get notarized
     if [ "$NOTARIZE" = "1" ]; then
