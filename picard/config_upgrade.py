@@ -319,7 +319,7 @@ def upgrade_to_v2_5_0_dev_2(config):
     config.persist["bottom_splitter_state"] = b''
 
 
-def upgrade_to_v2_5_6_dev_2(config):
+def upgrade_to_v2_6_0_dev_1(config):
     """Unset fpcalc path in environments where auto detection is preferred."""
     if IS_FROZEN or config.setting['acoustid_fpcalc'].startswith('/snap/picard/'):
         config.setting['acoustid_fpcalc'] = ''
@@ -351,5 +351,5 @@ def upgrade_config(config):
     cfg.register_upgrade_hook(upgrade_to_v2_4_0_beta_3)
     cfg.register_upgrade_hook(upgrade_to_v2_5_0_dev_1)
     cfg.register_upgrade_hook(upgrade_to_v2_5_0_dev_2)
-    cfg.register_upgrade_hook(upgrade_to_v2_5_6_dev_2)
+    cfg.register_upgrade_hook(upgrade_to_v2_6_0_dev_1)
     cfg.run_upgrade_hooks(log.debug)
