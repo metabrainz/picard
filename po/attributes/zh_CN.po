@@ -4,6 +4,7 @@
 #   Alastair McKinstry <mckinstry@computer.org>, 2002
 # Alastair McKinstry <mckinstry@computer.org>, 2001
 # Clay Cheng <569735195@qq.com>, 2017-2018
+# Clay Cheng <569735195@qq.com>, 2020
 # Clay Cheng <569735195@qq.com>, 2016-2017
 # Dian Li <xslidian@gmail.com>, 2009-2019
 # Erwin Synth <kingdzy1996@gmail.com>, 2017
@@ -24,11 +25,12 @@
 #   - Wang Jian <lark@linux.net.cn>, 2000
 # YunQiang Su <wzssyqa@gmail.com>, 2011
 # Maureen <mry_33@163.com>, 2014,2019
+# 刘岩 <xuanqidongjim@gmail.com>, 2020
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2020-12-03 14:00+0000\n"
-"Last-Translator: Michael Wiencek <mwtuea@gmail.com>\n"
+"PO-Revision-Date: 2020-12-24 15:14+0000\n"
+"Last-Translator: 刘岩 <xuanqidongjim@gmail.com>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/musicbrainz/musicbrainz/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -42,24 +44,24 @@ msgid ""
 "\"Motet\" is a term that applies to different types of (usually "
 "unaccompanied) choral works. What exactly is a motet depends quite a bit on "
 "the period."
-msgstr "\"经文歌\"指多种不同种类的唱诗班作品(通常无伴奏)。何为经文歌与时代颇有关联。"
+msgstr "\"经文歌\"指多种不同种类的唱诗班作品（通常无伴奏）。何为经文歌与时代颇有关联。"
 
 #: DB:work_type/description:5
 msgctxt "work_type"
 msgid ""
 "\"Sonata\" is a general term used to describe small scale (very often solo "
 "or solo + keyboard) instrumental works, initially in baroque music."
-msgstr "“奏鸣曲”是用于描述小型(常常是独奏或独奏+键盘)器乐作品的总称，最初出现在巴洛克音乐中。"
+msgstr "“奏鸣曲”是用于描述小型（常常是独奏或独奏+键盘）器乐作品的总称，最初出现在巴洛克音乐中。"
 
 #: DB:medium_format/name:54
 msgctxt "medium_format"
 msgid "10\" Shellac"
-msgstr "10\" Shellac"
+msgstr "10\" 虫胶唱片"
 
 #: DB:medium_format/name:30
 msgctxt "medium_format"
 msgid "10\" Vinyl"
-msgstr "10\" 唱片"
+msgstr "10\" 黑胶唱片"
 
 #: DB:medium_format/name:72
 msgctxt "medium_format"
@@ -69,12 +71,12 @@ msgstr "12\" LaserDisc"
 #: DB:medium_format/name:55
 msgctxt "medium_format"
 msgid "12\" Shellac"
-msgstr "12\" Shellac"
+msgstr "12\" 虫胶唱片"
 
 #: DB:medium_format/name:31
 msgctxt "medium_format"
 msgid "12\" Vinyl"
-msgstr "12\" 唱片"
+msgstr "12\" 黑胶唱片"
 
 #: DB:medium_format/name:49
 msgctxt "medium_format"
@@ -89,12 +91,12 @@ msgstr "7\" Flexi-disc"
 #: DB:medium_format/name:56
 msgctxt "medium_format"
 msgid "7\" Shellac"
-msgstr "7\" Shellac"
+msgstr "7\" 虫胶唱片"
 
 #: DB:medium_format/name:29
 msgctxt "medium_format"
 msgid "7\" Vinyl"
-msgstr "7\" 唱片"
+msgstr "7\" 黑胶唱片"
 
 #: DB:medium_format/name:71
 msgctxt "medium_format"
@@ -104,7 +106,7 @@ msgstr "8\" LaserDisc"
 #: DB:medium_format/name:78
 msgctxt "medium_format"
 msgid "8-Track Cartridge"
-msgstr "8 轨磁带"
+msgstr "8 轨唱头"
 
 #: DB:medium_format/name:34
 msgctxt "medium_format"
@@ -121,17 +123,17 @@ msgctxt "medium_format"
 msgid ""
 "90 rpm, vertical-cut shellac discs, produced by the Pathé label from 1906 to"
 " 1932."
-msgstr "每分钟90转的垂直切割虫胶唱片，1906至1932年由百代厂牌制造。"
+msgstr "每分钟90转的垂直切割虫胶唱片，1906至1932年由百代唱片公司制造。"
 
 #: DB:work_attribute_type_allowed_value/value:794
 msgctxt "work_attribute_type_allowed_value"
 msgid "A Dorian"
-msgstr "A Dorian"
+msgstr "多利安A调式"
 
 #: DB:work_attribute_type_allowed_value/value:806
 msgctxt "work_attribute_type_allowed_value"
 msgid "A Mixolydian"
-msgstr "A Mixolydian"
+msgstr "混合吕底安A调式"
 
 #: DB:work_type/description:2
 msgctxt "work_type"
@@ -145,13 +147,13 @@ msgctxt "work_type"
 msgid ""
 "A cantata is a vocal (often choral) composition with an instrumental "
 "(usually orchestral) accompaniment, typically in several movements."
-msgstr "康塔塔是一种配有器乐(常为管弦乐队)伴奏的声乐(常为合唱作品)，一般分为多个乐章。"
+msgstr "康塔塔是一种配有器乐（常为管弦乐队）伴奏的声乐（常为合唱作品），一般分为多个乐章。"
 
 #: DB:work_type/description:4
 msgctxt "work_type"
 msgid ""
 "A concerto is a musical work for soloist(s) accompanied by an orchestra."
-msgstr "协奏曲是伴有交响的独奏音乐作品。"
+msgstr "协奏曲是由管弦乐队伴奏的独奏者（们）的音乐作品。"
 
 #: DB:event_type/description:4
 msgctxt "event_type"
@@ -167,7 +169,7 @@ msgid ""
 "A give-away release or a release intended to promote an upcoming official "
 "release (e.g. pre-release versions, releases included with a magazine, "
 "versions supplied to radio DJs for air-play)."
-msgstr "赠送式发行版或用于用于推广将发行正式版的发行版(如预发行版，随杂志发行版，电台DJ播放版)。"
+msgstr "赠送式发行版或用于用于推广将发行正式版的发行版（如预发行版，随杂志发行版，电台DJ播放版）。"
 
 #: DB:artist_type/description:2
 msgctxt "artist_type"
@@ -194,7 +196,7 @@ msgid ""
 "A mass is a choral composition that sets the invariable portions of the "
 "Christian Eucharistic liturgy (Kyrie - Gloria - Credo - Sanctus - Benedictus"
 " - Agnus Dei, with other portions sometimes added) to music."
-msgstr "弥撒曲是基督教圣餐仪式所用合唱曲，有固定乐章安排(垂怜经-荣耀颂-信经-圣哉经-降福经-羔羊颂，可能加入其它乐章)。"
+msgstr "弥撒曲是基督教圣餐仪式所用合唱曲，有固定乐章安排（垂怜经-荣耀颂-信经-圣哉经-降福经-羔羊颂，可能加入其它乐章）。"
 
 #: DB:event_type/description:5
 msgctxt "event_type"
@@ -241,7 +243,7 @@ msgstr "以舞台形式演出舞台上的一种或多种戏剧，音乐剧，歌
 msgctxt "place_type"
 msgid ""
 "A place (generally a factory) at which physical media are manufactured."
-msgstr "指用来制造媒体设备的场所。（通常为工厂）"
+msgstr "指用来制造媒体设备的地方（通常是工厂）。"
 
 #: DB:place_type/description:5
 msgctxt "place_type"
@@ -312,7 +314,7 @@ msgctxt "place_type"
 msgid ""
 "A school, university or other similar educational institution (especially, "
 "but not only, one where music is taught)"
-msgstr "中小学,大学或其他类似的教育机构(尤指但不局限于音乐教育机构)"
+msgstr "中小学,大学或其他类似的教育机构（尤指但不局限于音乐教育机构）"
 
 #: DB:series_type/description:6
 msgctxt "series_type"
@@ -369,14 +371,14 @@ msgid ""
 "with or without instruments, performed by singing. This is the most common "
 "form by far in folk and popular music, but also fairly common in a classical"
 " context (\"art songs\")."
-msgstr "歌曲最初(多数情况下仍然)指用于演唱的声乐作品，可带或不带伴奏。这是流行音乐和民间音乐的最广泛形式，但也广泛用于古典乐领域(艺术歌曲)。"
+msgstr "歌曲最初（多数情况下仍然）指用于演唱的声乐作品，可带或不带伴奏。这是流行音乐和民间音乐的最广泛形式，但也广泛用于古典乐领域（艺术歌曲）。"
 
 #: DB:work_type/description:22
 msgctxt "work_type"
 msgid ""
 "A soundtrack is the music that accompanies a film, TV program, videogame, or"
 " even book."
-msgstr "原声是指电影、电视节目、游戏或书籍所伴有的音乐。"
+msgstr "原声音乐是指电影、电视节目、游戏或书籍的配乐。"
 
 #: DB:instrument_type/description:6
 msgctxt "instrument_type"
@@ -444,17 +446,17 @@ msgstr "升A小调"
 #: DB:work_attribute_type/name:44
 msgctxt "work_attribute_type"
 msgid "ACAM ID"
-msgstr ""
+msgstr "ACAM ID"
 
 #: DB:work_attribute_type/name:47
 msgctxt "work_attribute_type"
 msgid "ACDAM ID"
-msgstr ""
+msgstr "ACDAM ID"
 
 #: DB:work_attribute_type/name:43
 msgctxt "work_attribute_type"
 msgid "AGADU ID"
-msgstr ""
+msgstr "AGADU ID"
 
 #: DB:work_attribute_type/name:23
 msgctxt "work_attribute_type"
@@ -464,17 +466,17 @@ msgstr "AKM ID"
 #: DB:work_attribute_type/name:38
 msgctxt "work_attribute_type"
 msgid "AMRA ID"
-msgstr ""
+msgstr "AMRA ID"
 
 #: DB:work_attribute_type/name:46
 msgctxt "work_attribute_type"
 msgid "APA ID"
-msgstr ""
+msgstr "APA ID"
 
 #: DB:work_attribute_type/name:41
 msgctxt "work_attribute_type"
 msgid "APDAYC ID"
-msgstr ""
+msgstr "APDAYC ID"
 
 #: DB:work_attribute_type/name:13
 msgctxt "work_attribute_type"
@@ -484,7 +486,7 @@ msgstr "APRA ID"
 #: DB:work_attribute_type/name:48
 msgctxt "work_attribute_type"
 msgid "ARTISJUS ID"
-msgstr ""
+msgstr "ARTISJUS ID"
 
 #: DB:work_attribute_type/name:6
 msgctxt "work_attribute_type"
@@ -627,7 +629,7 @@ msgid ""
 "An alternate version of a release where the titles have been changed. These "
 "don't correspond to any real release and should be linked to the original "
 "release using the transl(iter)ation relationship."
-msgstr "某发行版变更标题后的另一版本。它们并不对应任何正式发行版，与原发行版间关系为翻译(转写)。"
+msgstr "某发行版变更标题后的另一版本。它们并不对应任何正式发行版，与原发行版间关系为翻译（转写）。"
 
 #: DB:work_type/description:1
 msgctxt "work_type"
@@ -635,14 +637,14 @@ msgid ""
 "An aria is a self-contained piece for one voice usually with orchestral "
 "accompaniment. They are most common inside operas, but also appear in "
 "cantatas, oratorios and even on their own (concert arias)."
-msgstr "咏叹调是通常具有管弦乐队伴奏的单一人声作品。在歌剧中最常见，但也在康塔塔中，清唱剧中出现，甚至单独出现(音乐会咏叹调)。"
+msgstr "咏叹调是通常具有管弦乐队伴奏的单一人声作品。在歌剧中最常见，但也在康塔塔中，清唱剧中出现，甚至单独出现（音乐会咏叹调）。"
 
 #: DB:work_type/description:25
 msgctxt "work_type"
 msgid ""
 "An audio drama is a dramatized, purely acoustic performance, broadcast on "
 "radio or published on an audio medium (tape, CD, etc.)."
-msgstr "广播剧是戏剧化的纯声音表演，通过电台广播或者以音频媒介(磁带，CD等)出版。"
+msgstr "广播剧是戏剧化的纯声音表演，通过电台广播或者以音频媒介（磁带，CD等）出版。"
 
 #: DB:event_type/description:2
 msgctxt "event_type"
@@ -664,7 +666,7 @@ msgid ""
 "An opera is a dramatised work (text + musical score) for singers and "
 "orchestra/ensemble. In true operas all dialog is sung, through arias and "
 "recitatives, but some styles of opera include spoken dialogue."
-msgstr "歌剧是由歌唱家和管弦乐队/歌舞团表演的戏剧作品(文本+音乐部分)。真正的歌剧所有对话由咏叹调和宣叙调演唱，但部分体裁的歌剧包含口白。"
+msgstr "歌剧是由歌唱家和管弦乐队/歌舞团表演的戏剧作品（文本+音乐部分）。真正的歌剧所有对话由咏叹调和宣叙调演唱，但部分体裁的歌剧包含口白。"
 
 #: DB:work_type/description:11
 msgctxt "work_type"
@@ -673,7 +675,7 @@ msgid ""
 "orchestra, a choir, and soloists. While it has characters and a plot, it is "
 "usually not performed theatrically (it lacks costumes, props and strong "
 "character interaction)."
-msgstr "清唱剧是由管弦乐队，合唱团和独奏家表演的大型(通常神圣)的音乐作品。尽管有角色和情节，它通常不以戏剧化形式演出(缺乏戏服，道具，强烈的角色互动)。"
+msgstr "清唱剧是由管弦乐队，合唱团和独奏家表演的大型（通常神圣）的音乐作品。尽管有角色和情节，它通常不以戏剧化形式演出（缺乏戏服，道具，强烈的角色互动）。"
 
 #: DB:work_type/description:12
 msgctxt "work_type"
@@ -681,7 +683,7 @@ msgid ""
 "An overture is, generally, the instrumental introduction to an opera. "
 "Independent (\"concert\") overtures also exist, which are generally "
 "programmatic works shorter than a symphonic poem."
-msgstr "序曲通常指歌剧开场时的器乐曲。也存在独立(音乐会)序曲，一般是比交响诗短的程式化作品。"
+msgstr "序曲通常指歌剧开场时的器乐曲。也存在独立（音乐会）序曲，一般是比交响诗短的程式化作品。"
 
 #: DB:release_status/description:3
 msgctxt "release_status"
@@ -1453,7 +1455,7 @@ msgstr "CED"
 #: DB:work_attribute_type/name:45
 msgctxt "work_attribute_type"
 msgid "COMPASS ID"
-msgstr ""
+msgstr "COMPASS ID"
 
 #: DB:work_attribute_type_allowed_value/value:63
 msgctxt "work_attribute_type_allowed_value"
@@ -1619,7 +1621,7 @@ msgid ""
 "containing software that is ostensibly designed to prevent the CD from being"
 " ripped. There are a number of software variants: the most well-known are "
 "Macrovision's Cactus Data Shield (CDS) and SunnComm's MediaMax."
-msgstr "Copy Control光盘(CCCD)是用于指代2001至2006年间发行的含有表面上用于防止音频抽取的软件的CD的雨伞术语。有数个软件变体：最为人所知者为Macrovision的Cactus Data Shield (CDS)和SunnComm的MediaMax。"
+msgstr "Copy Control光盘（CCCD）是用于指代2001至2006年间发行的含有表面上用于防止音频抽取的软件的CD的雨伞术语。有数个软件变体：最为人所知者为Macrovision的Cactus Data Shield （CDS）和SunnComm的MediaMax。"
 
 #: DB:area_type/name:1
 msgctxt "area_type"
@@ -1631,7 +1633,7 @@ msgctxt "area_type"
 msgid ""
 "Country is used for areas included (or previously included) in ISO 3166-1, "
 "e.g. United States."
-msgstr "国家指列于(或曾经列于)ISO 3166-1的区域，如美国。"
+msgstr "国家指列于（或曾经列于）ISO 3166-1的区域，如美国。"
 
 #: DB:area_type/name:7
 msgctxt "area_type"
@@ -1771,17 +1773,17 @@ msgstr "DVDplus"
 #: DB:medium_format/name:70
 msgctxt "medium_format"
 msgid "DVDplus (CD side)"
-msgstr "DVDplus (CD 面)"
+msgstr "DVDplus （CD 面）"
 
 #: DB:medium_format/name:68
 msgctxt "medium_format"
 msgid "DVDplus (DVD-Audio side)"
-msgstr "DVDplus (DVD 音频面)"
+msgstr "DVDplus （DVD 音频面）"
 
 #: DB:medium_format/name:69
 msgctxt "medium_format"
 msgid "DVDplus (DVD-Video side)"
-msgstr "DVDplus (DVD 视频面)"
+msgstr "DVDplus （DVD 视频面）"
 
 #: DB:work_attribute_type_allowed_value/value:343
 msgctxt "work_attribute_type_allowed_value"
@@ -2042,17 +2044,17 @@ msgstr "DualDisc"
 #: DB:medium_format/name:67
 msgctxt "medium_format"
 msgid "DualDisc (CD side)"
-msgstr "DualDisc (CD 面)"
+msgstr "DualDisc （CD 面）"
 
 #: DB:medium_format/name:65
 msgctxt "medium_format"
 msgid "DualDisc (DVD-Audio side)"
-msgstr "DualDisc (DVD 音频面)"
+msgstr "DualDisc （DVD 音频面）"
 
 #: DB:medium_format/name:66
 msgctxt "medium_format"
 msgid "DualDisc (DVD-Video side)"
-msgstr "DualDisc (DVD 视频面)"
+msgstr "DualDisc （DVD 视频面）"
 
 #: DB:work_attribute_type_allowed_value/value:612
 msgctxt "work_attribute_type_allowed_value"
@@ -2223,7 +2225,7 @@ msgstr "升E小调"
 #: DB:work_attribute_type/name:37
 msgctxt "work_attribute_type"
 msgid "ECAD ID"
-msgstr ""
+msgstr "ECAD ID"
 
 #: DB:release_group_primary_type/name:3
 msgctxt "release_group_primary_type"
@@ -2373,7 +2375,7 @@ msgstr "降 F 大调"
 #: DB:work_attribute_type_allowed_value/value:815
 msgctxt "work_attribute_type_allowed_value"
 msgid "F-flat minor"
-msgstr ""
+msgstr "降F小调"
 
 #: DB:work_attribute_type_allowed_value/value:19
 msgctxt "work_attribute_type_allowed_value"
@@ -2515,7 +2517,7 @@ msgstr "在区分性别无用的情况下。（就像大公司以艺术家的身
 #: DB:work_attribute_type/name:16
 msgctxt "work_attribute_type"
 msgid "Form (Ottoman, Turkish)"
-msgstr "形式(奥斯曼，土耳其)"
+msgstr "形式（奥斯曼，土耳其）"
 
 #: DB:area_alias_type/name:2
 msgctxt "alias_type"
@@ -3075,12 +3077,12 @@ msgstr "混合 SACD (SACD 层)"
 #: DB:medium_format/name:87
 msgctxt "medium_format"
 msgid "Hybrid SACD (SACD layer, 2 channels)"
-msgstr ""
+msgstr "混合 SACD (SACD 层,双通道)"
 
 #: DB:medium_format/name:86
 msgctxt "medium_format"
 msgid "Hybrid SACD (SACD layer, multichannel)"
-msgstr ""
+msgstr "混合 SACD (SACD 层,多通道)"
 
 #: DB:work_attribute_type_allowed_value/value:418
 msgctxt "work_attribute_type_allowed_value"
@@ -3160,207 +3162,207 @@ msgstr "ICE ID"
 #: DB:work_attribute_type/description:24
 msgctxt "work_attribute_type"
 msgid "ID for the Argentinean rights society SADAIC"
-msgstr ""
+msgstr "阿根廷著作权协会SADAIC ID"
 
 #: DB:work_attribute_type/description:13
 msgctxt "work_attribute_type"
 msgid "ID for the Australasian rights society APRA"
-msgstr ""
+msgstr "澳大利亚著作权协会APRA ID"
 
 #: DB:work_attribute_type/description:23
 msgctxt "work_attribute_type"
 msgid "ID for the Austrian rights society AKM"
-msgstr ""
+msgstr "奥地利著作权协会AKM ID"
 
 #: DB:work_attribute_type/description:28
 msgctxt "work_attribute_type"
 msgid "ID for the Belgian rights society SABAM"
-msgstr "比利时版权协会SABAM的代号"
+msgstr "比利时著作权协会SABAM ID"
 
 #: DB:work_attribute_type/description:37
 msgctxt "work_attribute_type"
 msgid "ID for the Brazilian rights society ECAD"
-msgstr "巴西版权协会ECAD的ID"
+msgstr "巴西著作权协会ECAD ID"
 
 #: DB:work_attribute_type/description:34
 msgctxt "work_attribute_type"
 msgid "ID for the British rights society PRS for Music"
-msgstr "英国音乐版权协会PRS的ID"
+msgstr "英国音乐著作权协会PRS ID"
 
 #: DB:work_attribute_type/description:10
 msgctxt "work_attribute_type"
 msgid "ID for the Canadian rights society SOCAN"
-msgstr ""
+msgstr "加拿大著作权协会SOCAN ID"
 
 #: DB:work_attribute_type/description:53
 msgctxt "work_attribute_type"
 msgid "ID for the Canadian rights society SODRAC"
-msgstr ""
+msgstr "加拿大著作权协会SODRAC ID"
 
 #: DB:work_attribute_type/description:39
 msgctxt "work_attribute_type"
 msgid "ID for the Colombian rights society SAYCO"
-msgstr "哥伦比亚版权协会SAYCO的ID"
+msgstr "哥伦比亚著作权协会SAYCO ID"
 
 #: DB:work_attribute_type/description:44
 msgctxt "work_attribute_type"
 msgid "ID for the Costa Rican rights society ACAM"
-msgstr ""
+msgstr "哥斯达黎加著作权协会ACAM ID"
 
 #: DB:work_attribute_type/description:47
 msgctxt "work_attribute_type"
 msgid "ID for the Cuban rights society ACDAM"
-msgstr ""
+msgstr "古巴著作权协会ACDAM ID"
 
 #: DB:work_attribute_type/description:25
 msgctxt "work_attribute_type"
 msgid "ID for the Czech rights society OSA"
-msgstr "捷克版权协会OSA的ID"
+msgstr "捷克著作权协会OSA ID"
 
 #: DB:work_attribute_type/description:51
 msgctxt "work_attribute_type"
 msgid "ID for the Danish rights society KODA"
-msgstr ""
+msgstr "丹麦著作权协会KODA ID"
 
 #: DB:work_attribute_type/description:26
 msgctxt "work_attribute_type"
 msgid "ID for the Dutch rights society BUMA/STEMRA"
-msgstr ""
+msgstr "荷兰著作权协会BUMA/STEMRA ID"
 
 #: DB:work_attribute_type/description:40
 msgctxt "work_attribute_type"
 msgid "ID for the Ecuadorian rights society SAYCE"
-msgstr ""
+msgstr "厄瓜多尔著作权协会SAYCE ID"
 
 #: DB:work_attribute_type/description:21
 msgctxt "work_attribute_type"
 msgid "ID for the French rights society Sacem"
-msgstr ""
+msgstr "法国著作权协会Sacem ID"
 
 #: DB:work_attribute_type/description:9
 msgctxt "work_attribute_type"
 msgid "ID for the German rights society GEMA"
-msgstr ""
+msgstr "德国著作权协会GEMA ID"
 
 #: DB:work_attribute_type/description:19
 msgctxt "work_attribute_type"
 msgid "ID for the Hong Kong rights society CASH"
-msgstr ""
+msgstr "香港著作权协会CASH(香港作曲家及作词家协会) ID"
 
 #: DB:work_attribute_type/description:48
 msgctxt "work_attribute_type"
 msgid "ID for the Hungarian rights society ARTISJUS"
-msgstr ""
+msgstr "匈牙利著作权协会ARTISJUS ID"
 
 #: DB:work_attribute_type/description:29
 msgctxt "work_attribute_type"
 msgid "ID for the International Copyright Enterprise"
-msgstr "国际版权企业的代号"
+msgstr "国际著作权企业ID"
 
 #: DB:work_attribute_type/description:52
 msgctxt "work_attribute_type"
 msgid "ID for the Irish rights society IMRO"
-msgstr ""
+msgstr "爱尔兰著作权协会IMRO ID"
 
 #: DB:work_attribute_type/description:36
 msgctxt "work_attribute_type"
 msgid "ID for the Italian rights society SIAE"
-msgstr ""
+msgstr "意大利著作权协会SIAE ID"
 
 #: DB:work_attribute_type/description:3
 msgctxt "work_attribute_type"
 msgid "ID for the Japanese rights society JASRAC"
-msgstr "日本音乐著作权协会JASRAC（社团法人日本音乐著作权协会）ID"
+msgstr "日本著作权协会JASRAC（社团法人日本音乐著作权协会）ID"
 
 #: DB:work_attribute_type/description:33
 msgctxt "work_attribute_type"
 msgid "ID for the Japanese rights society NexTone"
-msgstr "日本音乐著作权协会Nextone ID"
+msgstr "日本著作权协会Nextone ID"
 
 #: DB:work_attribute_type/description:11
 msgctxt "work_attribute_type"
 msgid "ID for the Korean rights society KOMCA"
-msgstr ""
+msgstr "韩国著作权协会KOMCA(韩国音乐著作权协会) ID"
 
 #: DB:work_attribute_type/description:49
 msgctxt "work_attribute_type"
 msgid "ID for the Malaysian rights society MACP"
-msgstr ""
+msgstr "马来西亚著作权协会MACP ID"
 
 #: DB:work_attribute_type/description:27
 msgctxt "work_attribute_type"
 msgid "ID for the Mexican rights society SACM"
-msgstr "墨西哥版权协会SACM的代号"
+msgstr "墨西哥著作权协会SACM ID"
 
 #: DB:work_attribute_type/description:46
 msgctxt "work_attribute_type"
 msgid "ID for the Paraguayan rights society APA"
-msgstr ""
+msgstr "巴拉圭著作权协会APA ID"
 
 #: DB:work_attribute_type/description:41
 msgctxt "work_attribute_type"
 msgid "ID for the Peruvian rights society APDAYC"
-msgstr ""
+msgstr "秘鲁著作权协会APDAYC ID"
 
 #: DB:work_attribute_type/description:30
 msgctxt "work_attribute_type"
 msgid "ID for the Polish rights society ZAiKS"
-msgstr "波兰版权协会ZAiKS的代号"
+msgstr "波兰著作权协会ZAiKS ID"
 
 #: DB:work_attribute_type/description:35
 msgctxt "work_attribute_type"
 msgid "ID for the Portuguese rights society SPA"
-msgstr "葡萄牙版权协会SPA的ID"
+msgstr "葡萄牙著作权协会SPA ID"
 
 #: DB:work_attribute_type/description:45
 msgctxt "work_attribute_type"
 msgid "ID for the Singaporean rights society COMPASS"
-msgstr "新加坡版权协会COMPASS的ID"
+msgstr "新加坡著作权协会COMPASS ID"
 
 #: DB:work_attribute_type/description:20
 msgctxt "work_attribute_type"
 msgid "ID for the Spanish rights society SGAE"
-msgstr ""
+msgstr "西班牙著作权协会SGAE ID"
 
 #: DB:work_attribute_type/description:50
 msgctxt "work_attribute_type"
 msgid "ID for the Swedish rights society STIM"
-msgstr ""
+msgstr "瑞典著作权协会STIM ID"
 
 #: DB:work_attribute_type/description:18
 msgctxt "work_attribute_type"
 msgid "ID for the Swiss rights society SUISA"
-msgstr ""
+msgstr "瑞士著作权协会SUISA ID"
 
 #: DB:work_attribute_type/description:12
 msgctxt "work_attribute_type"
 msgid "ID for the Taiwanese rights society MÜST"
-msgstr ""
+msgstr "台湾著作权协会MÜST(社团法人中华音乐著作权协会) ID"
 
 #: DB:work_attribute_type/description:6
 msgctxt "work_attribute_type"
 msgid "ID for the US rights society ASCAP"
-msgstr ""
+msgstr "美国著作权协会ASCAP ID"
 
 #: DB:work_attribute_type/description:7
 msgctxt "work_attribute_type"
 msgid "ID for the US rights society BMI"
-msgstr "美国版权协会BMI的ID"
+msgstr "美国著作权协会BMI ID"
 
 #: DB:work_attribute_type/description:8
 msgctxt "work_attribute_type"
 msgid "ID for the US rights society SESAC"
-msgstr "美国版权协会SESAC的ID"
+msgstr "美国著作权协会SESAC ID"
 
 #: DB:work_attribute_type/description:43
 msgctxt "work_attribute_type"
 msgid "ID for the Uruguayan rights society AGADU"
-msgstr ""
+msgstr "乌拉圭著作权协会AGADU ID"
 
 #: DB:work_attribute_type/description:42
 msgctxt "work_attribute_type"
 msgid "ID for the Venezuelan rights society SACVEN"
-msgstr "委内瑞拉版权协会SACVEN的ID"
+msgstr "委内瑞拉著作权协会SACVEN ID"
 
 #: DB:work_attribute_type/description:38
 msgctxt "work_attribute_type"
@@ -3375,7 +3377,7 @@ msgstr "私人许可公司CCLI的ID"
 #: DB:work_attribute_type/name:52
 msgctxt "work_attribute_type"
 msgid "IMRO ID"
-msgstr ""
+msgstr "IMRO ID"
 
 #: DB:work_attribute_type/name:14
 msgctxt "work_attribute_type"
@@ -3402,7 +3404,7 @@ msgctxt "work_type"
 msgid ""
 "Incidental music is music written as background for (usually) a theatre "
 "play."
-msgstr "配乐指(通常)为戏剧演出伴奏创作的音乐。"
+msgstr "配乐指（通常）为戏剧演出伴奏创作的音乐。"
 
 #: DB:place_type/name:5
 msgctxt "place_type"
@@ -3616,7 +3618,7 @@ msgstr "Jōnpuri"
 #: DB:work_attribute_type/name:51
 msgctxt "work_attribute_type"
 msgid "KODA ID"
-msgstr ""
+msgstr "KODA ID"
 
 #: DB:work_attribute_type/name:11
 msgctxt "work_attribute_type"
@@ -4029,12 +4031,12 @@ msgstr "Kōmal riṣabh asāvēri"
 #: DB:editor_collection_type/name:10
 msgctxt "collection_type"
 msgid "Label"
-msgstr "厂牌"
+msgstr "唱片公司"
 
 #: DB:label_alias_type/name:1
 msgctxt "alias_type"
 msgid "Label name"
-msgstr "厂牌名称"
+msgstr "唱片公司名称"
 
 #: DB:work_attribute_type_allowed_value/value:956
 msgctxt "work_attribute_type_allowed_value"
@@ -4134,7 +4136,7 @@ msgstr "Longa"
 #: DB:work_attribute_type/name:49
 msgctxt "work_attribute_type"
 msgid "MACP ID"
-msgstr ""
+msgstr "MACP ID"
 
 #: DB:work_attribute_type_allowed_value/value:963
 msgctxt "work_attribute_type_allowed_value"
@@ -4204,7 +4206,7 @@ msgstr "Mahālakṣmi"
 #: DB:work_attribute_type/name:15
 msgctxt "work_attribute_type"
 msgid "Makam (Ottoman, Turkish)"
-msgstr "木卡姆(奥斯曼，土耳其)"
+msgstr "木卡姆（奥斯曼，土耳其）"
 
 #: DB:work_attribute_type_allowed_value/value:164
 msgctxt "work_attribute_type_allowed_value"
@@ -5154,7 +5156,7 @@ msgstr "Oyunhavası"
 #: DB:work_attribute_type/name:34
 msgctxt "work_attribute_type"
 msgid "PRS tune code"
-msgstr ""
+msgstr "PRS旋律代号"
 
 #: DB:work_attribute_type_allowed_value/value:993
 msgctxt "work_attribute_type_allowed_value"
@@ -5656,7 +5658,7 @@ msgstr "Ruy-i Neva"
 #: DB:work_attribute_type/name:4
 msgctxt "work_attribute_type"
 msgid "Rāga (Carnatic)"
-msgstr "拉格 (卡纳提克)"
+msgstr "拉格 （卡纳提克）"
 
 #: DB:work_attribute_type/name:32
 msgctxt "work_attribute_type"
@@ -5747,12 +5749,12 @@ msgstr "SACD"
 #: DB:medium_format/name:84
 msgctxt "medium_format"
 msgid "SACD (2 channels)"
-msgstr ""
+msgstr "SACD (双通道)"
 
 #: DB:medium_format/name:85
 msgctxt "medium_format"
 msgid "SACD (multichannel)"
-msgstr ""
+msgstr "SACD (多通道)"
 
 #: DB:work_attribute_type/name:21
 msgctxt "work_attribute_type"
@@ -5767,7 +5769,7 @@ msgstr "SACM ID"
 #: DB:work_attribute_type/name:42
 msgctxt "work_attribute_type"
 msgid "SACVEN ID"
-msgstr ""
+msgstr "SACVEN ID"
 
 #: DB:work_attribute_type/name:24
 msgctxt "work_attribute_type"
@@ -5777,12 +5779,12 @@ msgstr "SADAIC ID"
 #: DB:work_attribute_type/name:40
 msgctxt "work_attribute_type"
 msgid "SAYCE ID"
-msgstr ""
+msgstr "SAYCE ID"
 
 #: DB:work_attribute_type/name:39
 msgctxt "work_attribute_type"
 msgid "SAYCO ID"
-msgstr ""
+msgstr "SAYCO ID"
 
 #: DB:medium_format/name:62
 msgctxt "medium_format"
@@ -5812,17 +5814,17 @@ msgstr "SHM-SACD"
 #: DB:medium_format/name:89
 msgctxt "medium_format"
 msgid "SHM-SACD (2 channels)"
-msgstr ""
+msgstr "SHM-SACD (双通道)"
 
 #: DB:medium_format/name:88
 msgctxt "medium_format"
 msgid "SHM-SACD (multichannel)"
-msgstr ""
+msgstr "SHM-SACD (多通道)"
 
 #: DB:work_attribute_type/name:36
 msgctxt "work_attribute_type"
 msgid "SIAE ID"
-msgstr ""
+msgstr "SIAE ID"
 
 #: DB:work_attribute_type/name:10
 msgctxt "work_attribute_type"
@@ -5832,17 +5834,17 @@ msgstr "SOCAN ID"
 #: DB:work_attribute_type/name:53
 msgctxt "work_attribute_type"
 msgid "SODRAC ID"
-msgstr ""
+msgstr "SODRAC ID"
 
 #: DB:work_attribute_type/name:35
 msgctxt "work_attribute_type"
 msgid "SPA ID"
-msgstr "SPA的ID"
+msgstr "SPA ID"
 
 #: DB:work_attribute_type/name:50
 msgctxt "work_attribute_type"
 msgid "STIM ID"
-msgstr ""
+msgstr "STIM ID"
 
 #: DB:work_attribute_type/name:18
 msgctxt "work_attribute_type"
@@ -6158,7 +6160,7 @@ msgstr "原声音乐"
 #: DB:work_type/name:22
 msgctxt "work_type"
 msgid "Soundtrack"
-msgstr "原声带"
+msgstr "原声音乐"
 
 #: DB:cover_art_archive.art_type/name:6
 msgctxt "cover_art_type"
@@ -6539,7 +6541,7 @@ msgctxt "medium_format"
 msgid ""
 "The CD side of a vinyl + CD VinylDisc. The vinyl side should be added as a "
 "separate medium."
-msgstr "黑胶光盘二合一碟的CD面。黑胶面材料为单独添加的介质。"
+msgstr "黑胶唱片二合一碟的CD面。黑胶面材料为单独添加的介质。"
 
 #: DB:medium_format/description:60
 msgctxt "medium_format"
@@ -6548,35 +6550,35 @@ msgid ""
 "system developed by RCA, in which video and audio could be played back on a "
 "TV set using a special needle and high-density groove system similar to "
 "phonograph records."
-msgstr "高容量电子碟片(CED)是一种由RCA公司研发的影碟重放系统，使用特殊的唱针和类似于留声机的高密度音轨在电视机重放音视频信号。"
+msgstr "高容量电子碟片（CED）是一种由RCA公司研发的影碟重放系统，使用特殊的唱针和类似于留声机的高密度音轨在电视机重放音视频信号。"
 
 #: DB:medium_format/description:68 DB:medium_format/description:69
 msgctxt "medium_format"
 msgid ""
 "The DVD (audio) layer of a DVDplus. The CD layer should be added as a "
 "separate medium."
-msgstr "DVDplus的DVD(audio)面。CD面应视为独立媒介。"
+msgstr "DVDplus的DVD（audio）面。CD面应视为独立媒介。"
 
 #: DB:medium_format/description:65
 msgctxt "medium_format"
 msgid ""
 "The DVD (audio) layer of a DualDisc. The CD layer should be added as a "
 "separate medium."
-msgstr "双面碟的DVD(audio)面。CD面应视为独立媒介。"
+msgstr "双面碟的DVD（audio）面。CD面应视为独立媒介。"
 
 #: DB:medium_format/description:66
 msgctxt "medium_format"
 msgid ""
 "The DVD (video) layer of a DualDisc. The CD layer should be added as a "
 "separate medium."
-msgstr "双面碟的DVD(video)面。CD面应视为独立媒介。"
+msgstr "双面碟的DVD（video）面。CD面应视为独立媒介。"
 
 #: DB:medium_format/description:80
 msgctxt "medium_format"
 msgid ""
 "The DVD side of a vinyl + DVD VinylDisc. The vinyl side should be added as a"
 " separate medium."
-msgstr "黑胶光盘二合一碟的DVD面。黑胶面材料为单独添加的介质。"
+msgstr "黑胶唱片二合一碟的DVD面。黑胶面材料为单独添加的介质。"
 
 #: DB:medium_format/description:64
 msgctxt "medium_format"
@@ -6610,7 +6612,7 @@ msgctxt "medium_format"
 msgid ""
 "The vinyl side of a VinylDisc. The CD or DVD side should be added as a "
 "separate medium."
-msgstr "黑胶光盘二合一碟的黑胶面。CD/DVD面材料为单独添加的介质。"
+msgstr "黑胶唱片二合一碟的黑胶面。CD/DVD面材料为单独添加的介质。"
 
 #: DB:artist_type/description:6
 msgctxt "artist_type"
@@ -6649,43 +6651,43 @@ msgid ""
 "This represents literary works written in prose, that is, written in "
 "relatively ordinary language without metrical structure (e.g. novels, short "
 "stories, essays...)."
-msgstr "这指代散体文学作品，即相对更常规无格律的语言(如小说，随笔...)。"
+msgstr "这指代散体文学作品，即相对更常规无格律的语言（如小说，随笔...）。"
 
 #: DB:medium_format/description:84
 msgctxt "medium_format"
 msgid ""
 "This represents the 2 channel (stereo/mono) table of contents on a SACD."
-msgstr ""
+msgstr "这指的是SACD内容的双通道(立体声/单声道)列表。"
 
 #: DB:medium_format/description:89
 msgctxt "medium_format"
 msgid ""
 "This represents the 2 channel (stereo/mono) table of contents on a SHM-SACD."
-msgstr ""
+msgstr "这指的是SHM-SACD内容的双通道(立体声/单声道)列表。"
 
 #: DB:medium_format/description:87
 msgctxt "medium_format"
 msgid ""
 "This represents the 2 channel (stereo/mono) table of contents on a hybrid "
 "SACD's SACD layer."
-msgstr ""
+msgstr "这指的是复合SACD的SACD面的双通道(立体声/单声道)列表。"
 
 #: DB:medium_format/description:85
 msgctxt "medium_format"
 msgid "This represents the multichannel table of contents on a SACD."
-msgstr ""
+msgstr "这指的是SACD内容的多通道列表。"
 
 #: DB:medium_format/description:88
 msgctxt "medium_format"
 msgid "This represents the multichannel table of contents on a SHM-SACD."
-msgstr ""
+msgstr "这指的是SHM-SACD内容的多通道列表。"
 
 #: DB:medium_format/description:86
 msgctxt "medium_format"
 msgid ""
 "This represents the multichannel table of contents on a hybrid SACD's SACD "
 "layer."
-msgstr ""
+msgstr "这指的是复合SACD的SACD面的多通道列表。"
 
 #: DB:work_attribute_type_allowed_value/value:1041
 msgctxt "work_attribute_type_allowed_value"
@@ -6735,7 +6737,7 @@ msgstr "巡回"
 #: DB:cover_art_archive.art_type/name:7
 msgctxt "cover_art_type"
 msgid "Track"
-msgstr "音轨"
+msgstr "曲目"
 
 #: DB:cover_art_archive.art_type/name:9
 msgctxt "cover_art_type"
@@ -6780,12 +6782,12 @@ msgstr "Tüvanger"
 #: DB:work_attribute_type/name:5
 msgctxt "work_attribute_type"
 msgid "Tāla (Carnatic)"
-msgstr "塔拉 (卡纳提克)"
+msgstr "塔拉 （卡纳提克）"
 
 #: DB:work_attribute_type/name:31
 msgctxt "work_attribute_type"
 msgid "Tāla (Hindustani)"
-msgstr "Tāla (Hindustani)"
+msgstr "Tāla （Hindustani）"
 
 #: DB:work_attribute_type_allowed_value/value:846
 msgctxt "work_attribute_type_allowed_value"
@@ -6827,12 +6829,12 @@ msgctxt "cover_art_type"
 msgid ""
 "Use for images that need work to be used for tagging (but can possibly "
 "already be used for reference)"
-msgstr "用于不适合直接供标签使用的图像 (但可能已经足以参考)"
+msgstr "用于不适合直接供标签使用的图像 （但可能已经足以参考）"
 
 #: DB:work_attribute_type/name:17
 msgctxt "work_attribute_type"
 msgid "Usul (Ottoman, Turkish)"
-msgstr "乌苏尔(奥斯曼，土耳其)"
+msgstr "乌苏尔（奥斯曼，土耳其）"
 
 #: DB:work_attribute_type_allowed_value/value:676
 msgctxt "work_attribute_type_allowed_value"
@@ -6949,7 +6951,7 @@ msgctxt "medium_format"
 msgid ""
 "Video High Density (VHD) was a videodisc format which was marketed "
 "predominantly in Japan by JVC."
-msgstr "高密度影碟(VHD)是一种主要在日本由JVC公司销售的影碟格式。"
+msgstr "高密度影碟（VHD）是一种主要在日本由JVC公司销售的影碟格式。"
 
 #: DB:work_attribute_type_allowed_value/value:273
 msgctxt "work_attribute_type_allowed_value"
@@ -6969,7 +6971,7 @@ msgstr "Vijayaśrī"
 #: DB:medium_format/name:7
 msgctxt "medium_format"
 msgid "Vinyl"
-msgstr "唱片（Vinyl）"
+msgstr "黑胶唱片"
 
 #: DB:medium_format/name:48
 msgctxt "medium_format"
@@ -6979,17 +6981,17 @@ msgstr "VinylDisc"
 #: DB:medium_format/name:82
 msgctxt "medium_format"
 msgid "VinylDisc (CD side)"
-msgstr "VinylDisc (CD 面)"
+msgstr "VinylDisc （CD 面）"
 
 #: DB:medium_format/name:80
 msgctxt "medium_format"
 msgid "VinylDisc (DVD side)"
-msgstr "VinylDisc (DVD 面)"
+msgstr "VinylDisc （DVD 面）"
 
 #: DB:medium_format/name:81
 msgctxt "medium_format"
 msgid "VinylDisc (Vinyl side)"
-msgstr "VinylDisc (唱片面)"
+msgstr "VinylDisc （唱片面）"
 
 #: DB:work_attribute_type_allowed_value/value:259
 #: DB:work_attribute_type_allowed_value/value:1047
@@ -7203,7 +7205,7 @@ msgstr "Çargah"
 #: DB:work_attribute_type_allowed_value/value:341
 msgctxt "work_attribute_type_allowed_value"
 msgid "Çargah (Yeni)"
-msgstr "Çargah (Yeni)"
+msgstr "Çargah （Yeni）"
 
 #: DB:work_attribute_type_allowed_value/value:342
 msgctxt "work_attribute_type_allowed_value"
@@ -7294,7 +7296,7 @@ msgstr "Ādi"
 #: DB:work_attribute_type_allowed_value/value:290
 msgctxt "work_attribute_type_allowed_value"
 msgid "Ādi (Tiśra naḍe)"
-msgstr "Ādi (Tiśra naḍe)"
+msgstr "Ādi （Tiśra naḍe）"
 
 #: DB:work_attribute_type_allowed_value/value:37
 msgctxt "work_attribute_type_allowed_value"

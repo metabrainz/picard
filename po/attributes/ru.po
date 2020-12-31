@@ -2,6 +2,7 @@
 # Translators:
 # Anton Karpuzikov <karpuzikovanton@gmail.com>, 2015
 # Dmitr Y, 2017
+# Ekaterina <nawsikaya@bk.ru>, 2020
 # greycat <greycat.na.kor@gmail.com>, 2012
 # MrClon . <MrClon2007@yandex.ru>, 2019
 # Nikita P <nik-p13@yandex.ru>, 2018
@@ -21,8 +22,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2020-12-03 14:00+0000\n"
-"Last-Translator: Michael Wiencek <mwtuea@gmail.com>\n"
+"PO-Revision-Date: 2020-12-20 21:34+0000\n"
+"Last-Translator: Ekaterina <nawsikaya@bk.ru>\n"
 "Language-Team: Russian (http://www.transifex.com/musicbrainz/musicbrainz/language/ru/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -2589,7 +2590,7 @@ msgstr ""
 #: DB:release_packaging/name:12
 msgctxt "release_packaging"
 msgid "Gatefold Cover"
-msgstr ""
+msgstr "Сторона обложки"
 
 #: DB:work_attribute_type_allowed_value/value:911
 msgctxt "work_attribute_type_allowed_value"
@@ -6115,7 +6116,7 @@ msgstr "Тонкая коробка для диска"
 #: DB:release_packaging/name:11
 msgctxt "release_packaging"
 msgid "Snap Case"
-msgstr ""
+msgstr "Футляр"
 
 #: DB:work_attribute_type_allowed_value/value:771
 msgctxt "work_attribute_type_allowed_value"

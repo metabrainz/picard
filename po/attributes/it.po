@@ -12,7 +12,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2020-12-03 17:18+0000\n"
+"PO-Revision-Date: 2020-12-20 12:43+0000\n"
 "Last-Translator: Luca Salini\n"
 "Language-Team: Italian (http://www.transifex.com/musicbrainz/musicbrainz/language/it/)\n"
 "MIME-Version: 1.0\n"
@@ -1630,7 +1630,7 @@ msgid ""
 "not the main administrative divisions but are also not municipalities, e.g. "
 "counties in the USA. These are not considered when displaying the parent "
 "areas for a given area."
-msgstr "\"Provincia\" è utilizzato per piccole suddivisioni amministrative di uno Stato che non siano le principali suddivisioni amministrative ma nemmeno i comuni, per es. le contee negli Stati Uniti. Queste non sono considerate nella visualizzazione delle aree superiori di una determinata area."
+msgstr "\"Provincia\" è utilizzato per suddivisioni amministrative di livello basso di uno Stato che non siano né le suddivisioni amministrative principali né i comuni, per es. le contee negli Stati Uniti. Queste non sono considerate quando si visualizzano le aree di livello superiore di una determinata area."
 
 #: DB:work_attribute_type_allowed_value/value:608
 msgctxt "work_attribute_type_allowed_value"
@@ -3470,7 +3470,7 @@ msgid ""
 "Island is used for islands and atolls which don't form subdivisions of their"
 " own, e.g. Skye. These are not considered when displaying the parent areas "
 "for a given area."
-msgstr "\"Isola\" è utilizzato per isole e atolli che non formano suddivisioni independenti, per es. Skye. Queste non sono considerate nella visualizzazione delle aree superiori di una determinata area."
+msgstr "\"Isola\" è utilizzato per isole e atolli che non formano suddivisioni independenti, per es. Skye. Queste non sono considerate quando si visualizzano le aree di livello superiore di una determinata area."
 
 #: DB:work_attribute_type/name:3
 msgctxt "work_attribute_type"
@@ -6191,7 +6191,7 @@ msgid ""
 "Subdivision is used for the main administrative divisions of a country, e.g."
 " California, Ontario, Okinawa. These are considered when displaying the "
 "parent areas for a given area."
-msgstr "Suddivisione è utilizzato per la principale suddivisione amministrativa di uno Stato, per es. la California, l'Ontario, Okinawa. Queste sono considerate nella visualizzazione delle aree superiori di una determinata area."
+msgstr "\"Suddivisione\" è utilizzato per le principali suddivisioni amministrative di uno Stato, per es. la California, l'Ontario, Okinawa. Queste sono considerate quando si visualizzano le aree di livello superiore di una determinata area."
 
 #: DB:work_attribute_type_allowed_value/value:244
 msgctxt "work_attribute_type_allowed_value"
