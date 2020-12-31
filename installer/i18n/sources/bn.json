@@ -1,0 +1,16 @@
+{
+    "MsgAlreadyInstalled": "${PRODUCT_NAME}  ইতিমধ্যে ইনস্টল করা আছে এবং ${PRODUCT_VERSION} ভার্সনটি আপগ্রেড ইনস্টল করার আগে আনইনস্টল করতে হবে। \n\nএই আপগ্রেডটি করতে \"OK\"  অথবা বাতিল করতে \"Cancel\" ক্লিক করুন।",
+    "MsgApplicationRunning": "The application ${PRODUCT_NAME} is running. Please close it and try again.",
+    "MsgRequires64Bit": "This version of ${PRODUCT_NAME} requires a 64-bit Windows system.",
+    "MuiDescriptionRequired": "Installs ${PRODUCT_NAME} along with the necessary files for it run.",
+    "MuiDescriptionLang": "Installs translations of ${PRODUCT_NAME} in different languages.",
+    "MuiDescriptionShortcuts": "Installs shortcuts to launch ${PRODUCT_NAME}.",
+    "MuiDescriptionDesktop": "Installs a shortcut on the desktop.",
+    "MuiDescriptionStartMenu": "Installs a shortcut in the Start Menu.",
+    "OptionRemoveSettings": "Remove settings and personal data",
+    "SectionDesktop": "Desktop",
+    "SectionLanguages": "Languages",
+    "SectionRequired": "Program files (required)",
+    "SectionShortcuts": "Shortcuts",
+    "SectionStartMenu": "Start menu"
+}

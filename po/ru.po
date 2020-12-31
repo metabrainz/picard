@@ -13,8 +13,8 @@
 # Nikolai Prokoschenko <nikolai@prokoschenko.de>, 2012
 # Oleg, 2018
 # Philipp Wolfer <ph.wolfer@gmail.com>, 2019-2020
-# roman412 <romanio412@gmail.com>, 2018
-# roman412 <romanio412@gmail.com>, 2017
+# arsinclair <romanio412@gmail.com>, 2018
+# arsinclair <romanio412@gmail.com>, 2017
 # Serg Green <serg.green@gmail.com>, 2016,2020
 # aeontech <stroganov.a@gmail.com>, 2014
 # Un Knwn <hiroaritillwhen@gmail.com>, 2016

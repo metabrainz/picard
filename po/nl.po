@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2020-12-14 14:44+0100\n"
-"PO-Revision-Date: 2020-12-14 16:39+0000\n"
+"PO-Revision-Date: 2020-12-22 10:54+0000\n"
 "Last-Translator: Maurits Meulenbelt <mfmeulenbelt@gmail.com>\n"
 "Language-Team: Dutch (http://www.transifex.com/musicbrainz/musicbrainz/language/nl/)\n"
 "MIME-Version: 1.0\n"
@@ -2948,7 +2948,7 @@ msgstr "Balaam’s Miracle https://launchpad.net/~balaam-balaamsmiracle\nDogmati
 #: picard/ui/aboutdialog.py:77
 #, python-format
 msgid "<br/>Translated to LANG by %s"
-msgstr "<br/>Nederlandse vertaling door %s"
+msgstr "<br/>Nederlandse vertaling door:\n %s"
 
 #: picard/ui/aboutdialog.py:80
 msgid ""
@@ -2989,7 +2989,7 @@ msgstr "Doneer nu!"
 
 #: picard/ui/aboutdialog.py:110
 msgid "Credits"
-msgstr "Relaties"
+msgstr "Met dank aan"
 
 #: picard/ui/aboutdialog.py:111
 #, python-format
