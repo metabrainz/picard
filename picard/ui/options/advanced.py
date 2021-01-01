@@ -22,7 +22,13 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from picard import config
+from picard.config import (
+    BoolOption,
+    IntOption,
+    ListOption,
+    TextOption,
+    get_config,
+)
 
 from picard.ui.options import (
     OptionsPage,
@@ -41,15 +47,15 @@ class AdvancedOptionsPage(OptionsPage):
     HELP_URL = '/config/options_advanced.html'
 
     options = [
-        config.TextOption("setting", "ignore_regex", ""),
-        config.BoolOption("setting", "ignore_hidden_files", False),
-        config.BoolOption("setting", "recursively_add_files", True),
-        config.IntOption("setting", "ignore_track_duration_difference_under", 2),
-        config.BoolOption("setting", "completeness_ignore_videos", False),
-        config.BoolOption("setting", "completeness_ignore_pregap", False),
-        config.BoolOption("setting", "completeness_ignore_data", False),
-        config.BoolOption("setting", "completeness_ignore_silence", False),
-        config.ListOption("setting", "compare_ignore_tags", []),
+        TextOption("setting", "ignore_regex", ""),
+        BoolOption("setting", "ignore_hidden_files", False),
+        BoolOption("setting", "recursively_add_files", True),
+        IntOption("setting", "ignore_track_duration_difference_under", 2),
+        BoolOption("setting", "completeness_ignore_videos", False),
+        BoolOption("setting", "completeness_ignore_pregap", False),
+        BoolOption("setting", "completeness_ignore_data", False),
+        BoolOption("setting", "completeness_ignore_silence", False),
+        ListOption("setting", "compare_ignore_tags", []),
     ]
 
     def __init__(self, parent=None):
@@ -59,6 +65,7 @@ class AdvancedOptionsPage(OptionsPage):
         self.init_regex_checker(self.ui.ignore_regex, self.ui.regex_error)
 
     def load(self):
+        config = get_config()
         self.ui.ignore_regex.setText(config.setting["ignore_regex"])
         self.ui.ignore_hidden_files.setChecked(config.setting["ignore_hidden_files"])
         self.ui.recursively_add_files.setChecked(config.setting["recursively_add_files"])
@@ -71,6 +78,7 @@ class AdvancedOptionsPage(OptionsPage):
         self.ui.compare_ignore_tags.set_user_sortable(False)
 
     def save(self):
+        config = get_config()
         config.setting["ignore_regex"] = self.ui.ignore_regex.text()
         config.setting["ignore_hidden_files"] = self.ui.ignore_hidden_files.isChecked()
         config.setting["recursively_add_files"] = self.ui.recursively_add_files.isChecked()

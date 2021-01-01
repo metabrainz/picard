@@ -346,6 +346,8 @@ def get_config():
     thread_id = threading.get_ident()
     thread_config = _thread_configs.get(thread_id)
     if not thread_config:
+        if not config:
+            return None  # Not yet initialized
         _thread_config_lock.acquire()
         try:
             config_file = config.fileName()

@@ -30,7 +30,7 @@ from PyQt5 import (
     QtWidgets,
 )
 
-from picard import config
+from picard.config import get_config
 from picard.const.sys import (
     IS_MACOS,
     IS_WIN,
@@ -75,6 +75,7 @@ def enabledSlot(func, state):
 
 
 def find_starting_directory():
+    config = get_config()
     if config.setting["starting_directory"]:
         path = config.setting["starting_directory_path"]
     else:

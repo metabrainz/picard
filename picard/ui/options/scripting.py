@@ -28,7 +28,13 @@
 
 from PyQt5 import QtCore
 
-from picard import config
+from picard.config import (
+    BoolOption,
+    IntOption,
+    ListOption,
+    Option,
+    get_config,
+)
 from picard.const import PICARD_URLS
 from picard.script import (
     ScriptParser,
@@ -156,10 +162,10 @@ class ScriptingOptionsPage(OptionsPage):
     HELP_URL = '/config/options_scripting.html'
 
     options = [
-        config.BoolOption("setting", "enable_tagger_scripts", False),
-        config.ListOption("setting", "list_of_scripts", []),
-        config.IntOption("persist", "last_selected_script_pos", 0),
-        config.Option("persist", "scripting_splitter", QtCore.QByteArray()),
+        BoolOption("setting", "enable_tagger_scripts", False),
+        ListOption("setting", "list_of_scripts", []),
+        IntOption("persist", "last_selected_script_pos", 0),
+        Option("persist", "scripting_splitter", QtCore.QByteArray()),
     ]
 
     def __init__(self, parent=None):
@@ -225,6 +231,7 @@ class ScriptingOptionsPage(OptionsPage):
         super().restore_defaults()
 
     def load(self):
+        config = get_config()
         self.ui.enable_tagger_scripts.setChecked(config.setting["enable_tagger_scripts"])
         for pos, name, enabled, text in config.setting["list_of_scripts"]:
             list_item = ScriptListWidgetItem(name, enabled, text)
@@ -247,9 +254,11 @@ class ScriptingOptionsPage(OptionsPage):
     @restore_method
     def restore_state(self):
         # Preserve previous splitter position
+        config = get_config()
         self.ui.splitter.restoreState(config.persist["scripting_splitter"])
 
     def save(self):
+        config = get_config()
         config.setting["enable_tagger_scripts"] = self.ui.enable_tagger_scripts.isChecked()
         config.setting["list_of_scripts"] = list(self._all_scripts())
         config.persist["last_selected_script_pos"] = self.ui.script_list.currentRow()

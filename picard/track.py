@@ -44,10 +44,8 @@ import traceback
 
 from PyQt5 import QtCore
 
-from picard import (
-    config,
-    log,
-)
+from picard import log
+from picard.config import get_config
 from picard.const import (
     DATA_TRACK_TITLE,
     SILENCE_TRACK_TITLE,
@@ -176,6 +174,7 @@ class Track(DataObject, FileListItem):
             return
         # Run the scripts for the file to allow usage of
         # file specific metadata and variables
+        config = get_config()
         if config.setting["clear_existing_tags"]:
             metadata = Metadata(self.orig_metadata)
             metadata_proxy = MultiMetadataProxy(metadata, file.metadata)
@@ -271,6 +270,7 @@ class Track(DataObject, FileListItem):
         return self.ignored_for_completeness() or self.num_linked_files == 1
 
     def ignored_for_completeness(self):
+        config = get_config()
         if (config.setting['completeness_ignore_videos'] and self.is_video()) \
                 or (config.setting['completeness_ignore_pregap'] and self.is_pregap()) \
                 or (config.setting['completeness_ignore_data'] and self.is_data()) \
@@ -286,6 +286,7 @@ class Track(DataObject, FileListItem):
         return track_artist
 
     def _customize_metadata(self):
+        config = get_config()
         tm = self.metadata
 
         # Custom VA name
@@ -306,6 +307,7 @@ class Track(DataObject, FileListItem):
             tm.apply_func(asciipunct)
 
     def _convert_folksonomy_tags_to_genre(self):
+        config = get_config()
         # Combine release and track tags
         tags = dict(self.genres)
         self.merge_genres(tags, self.album.genres)
@@ -373,6 +375,7 @@ class NonAlbumTrack(Track):
         self.clear_errors()
         self.loaded = False
         self.album.update(True)
+        config = get_config()
         mblogin = False
         inc = ["artist-credits", "artists", "aliases"]
         if config.setting["track_ars"]:

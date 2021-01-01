@@ -43,12 +43,10 @@ from PyQt5 import (
     QtWidgets,
 )
 
-from picard import (
-    config,
-    log,
-)
+from picard import log
 from picard.album import Album
 from picard.cluster import Cluster
+from picard.config import get_config
 from picard.const import MAX_COVERS_TO_STACK
 from picard.coverart.image import (
     CoverArtImage,
@@ -487,6 +485,7 @@ class CoverArtBox(QtWidgets.QGroupBox):
             log.warning("Can't load image: %s" % e)
             return
 
+        config = get_config()
         if config.setting["load_image_behavior"] == 'replace':
             set_image = set_image_replace
             debug_info = "Replacing with dropped %r in %r"
@@ -549,6 +548,7 @@ class CoverArtBox(QtWidgets.QGroupBox):
                 self.fetch_remote_image(file_urls[0])
 
     def set_load_image_behavior(self, behavior):
+        config = get_config()
         config.setting["load_image_behavior"] = behavior
 
     def keep_original_images(self):
@@ -584,6 +584,7 @@ class CoverArtBox(QtWidgets.QGroupBox):
         action.setCheckable(True)
         action.triggered.connect(partial(self.set_load_image_behavior, behavior='replace'))
         load_image_behavior_group.addAction(action)
+        config = get_config()
         if config.setting["load_image_behavior"] == 'replace':
             action.setChecked(True)
         menu.addAction(action)

@@ -29,10 +29,7 @@ import json
 
 from PyQt5 import QtCore
 
-from picard import (
-    config,
-    log,
-)
+from picard import log
 from picard.acoustid.json_helpers import parse_recording
 from picard.config import get_config
 from picard.const import FPCALC_NAMES
@@ -230,6 +227,7 @@ class AcoustIDClient(QtCore.QObject):
     def analyze(self, file, next_func):
         fpcalc_next = partial(self._lookup_fingerprint, next_func, file.filename)
 
+        config = get_config()
         fingerprint = file.acoustid_fingerprint
         if not fingerprint and not config.setting["ignore_existing_acoustid_fingerprints"]:
             # use cached fingerprint from file metadata

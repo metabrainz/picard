@@ -25,10 +25,8 @@ import re
 
 from PyQt5.QtCore import QUrl
 
-from picard import (
-    PICARD_VERSION_STR,
-    config,
-)
+from picard import PICARD_VERSION_STR
+from picard.config import get_config
 from picard.const import (
     ACOUSTID_HOST,
     ACOUSTID_KEY,
@@ -115,10 +113,12 @@ class MBAPIHelper(APIHelper):
 
     @property
     def host(self):
+        config = get_config()
         return config.setting['server_host']
 
     @property
     def port(self):
+        config = get_config()
         return config.setting['server_port']
 
     def _get_by_id(self, entitytype, entityid, handler, inc=None, queryargs=None,
@@ -160,6 +160,7 @@ class MBAPIHelper(APIHelper):
 
         is_search = kwargs.pop("search", False)
         if is_search:
+            config = get_config()
             use_advanced_search = kwargs.pop("advanced_search", config.setting["use_adv_search_syntax"])
             if use_advanced_search:
                 query = kwargs["query"]
@@ -281,6 +282,7 @@ class AcoustIdAPIHelper(APIHelper):
 
     def submit_acoustid_fingerprints(self, submissions, handler):
         path_list = ['submit']
+        config = get_config()
         args = {'user': config.setting["acoustid_apikey"]}
         for i, submission in enumerate(submissions):
             args['fingerprint.%d' % i] = submission.fingerprint

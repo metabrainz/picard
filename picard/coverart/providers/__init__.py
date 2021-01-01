@@ -29,10 +29,8 @@ from collections import (
     namedtuple,
 )
 
-from picard import (
-    config,
-    log,
-)
+from picard import log
+from picard.config import get_config
 from picard.coverart.providers.caa import CoverArtProviderCaa
 from picard.coverart.providers.caa_release_group import (
     CoverArtProviderCaaReleaseGroup,
@@ -68,6 +66,7 @@ POrderTuple = namedtuple('OrderTuple', 'name position enabled')
 def cover_art_providers():
     def from_ca_providers_option():
         """Iterate through ca_providers option and yield name, position and enabled"""
+        config = get_config()
         for pos, (name, enabled) in enumerate(config.setting['ca_providers']):
             yield POrderTuple(name=name, position=pos, enabled=enabled)
 

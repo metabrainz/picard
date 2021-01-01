@@ -26,7 +26,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from picard import config
+from picard.config import get_config
 
 from picard.ui import PicardDialog
 from picard.ui.ui_passworddialog import Ui_PasswordDialog
@@ -60,6 +60,7 @@ class ProxyDialog(PicardDialog):
         self._proxy = proxy
         self.ui = Ui_PasswordDialog()
         self.ui.setupUi(self)
+        config = get_config()
         self.ui.info_text.setText(_("The proxy %s requires you to login. Please enter your username and password.")
                                   % config.setting["proxy_server_host"])
         self.ui.username.setText(config.setting["proxy_username"])
@@ -67,6 +68,7 @@ class ProxyDialog(PicardDialog):
         self.ui.buttonbox.accepted.connect(self.set_proxy_password)
 
     def set_proxy_password(self):
+        config = get_config()
         config.setting["proxy_username"] = self.ui.username.text()
         config.setting["proxy_password"] = self.ui.password.text()
         self._authenticator.setUser(self.ui.username.text())

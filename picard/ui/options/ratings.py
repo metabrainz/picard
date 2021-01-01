@@ -21,7 +21,12 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from picard import config
+from picard.config import (
+    BoolOption,
+    IntOption,
+    TextOption,
+    get_config,
+)
 
 from picard.ui.options import (
     OptionsPage,
@@ -40,10 +45,10 @@ class RatingsOptionsPage(OptionsPage):
     HELP_URL = '/config/options_ratings.html'
 
     options = [
-        config.BoolOption("setting", "enable_ratings", False),
-        config.TextOption("setting", "rating_user_email", "users@musicbrainz.org"),
-        config.BoolOption("setting", "submit_ratings", True),
-        config.IntOption("setting", "rating_steps", 6),
+        BoolOption("setting", "enable_ratings", False),
+        TextOption("setting", "rating_user_email", "users@musicbrainz.org"),
+        BoolOption("setting", "submit_ratings", True),
+        IntOption("setting", "rating_steps", 6),
     ]
 
     def __init__(self, parent=None):
@@ -52,11 +57,13 @@ class RatingsOptionsPage(OptionsPage):
         self.ui.setupUi(self)
 
     def load(self):
+        config = get_config()
         self.ui.enable_ratings.setChecked(config.setting["enable_ratings"])
         self.ui.rating_user_email.setText(config.setting["rating_user_email"])
         self.ui.submit_ratings.setChecked(config.setting["submit_ratings"])
 
     def save(self):
+        config = get_config()
         config.setting["enable_ratings"] = self.ui.enable_ratings.isChecked()
         config.setting["rating_user_email"] = self.ui.rating_user_email.text()
         config.setting["submit_ratings"] = self.ui.submit_ratings.isChecked()

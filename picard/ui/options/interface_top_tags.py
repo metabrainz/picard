@@ -19,7 +19,10 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from picard import config
+from picard.config import (
+    ListOption,
+    get_config,
+)
 
 from picard.ui.options import (
     OptionsPage,
@@ -40,7 +43,7 @@ class InterfaceTopTagsOptionsPage(OptionsPage):
     HELP_URL = '/config/options_interface_top_tags.html'
 
     options = [
-        config.ListOption("setting", "metadatabox_top_tags", [
+        ListOption("setting", "metadatabox_top_tags", [
             "title",
             "artist",
             "album",
@@ -56,10 +59,12 @@ class InterfaceTopTagsOptionsPage(OptionsPage):
         self.ui.setupUi(self)
 
     def load(self):
+        config = get_config()
         tags = config.setting["metadatabox_top_tags"]
         self.ui.top_tags_list.update(tags)
 
     def save(self):
+        config = get_config()
         tags = list(self.ui.top_tags_list.tags)
         if tags != config.setting["metadatabox_top_tags"]:
             config.setting["metadatabox_top_tags"] = tags

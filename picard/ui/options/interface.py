@@ -38,7 +38,12 @@ from PyQt5 import (
 )
 from PyQt5.QtCore import QStandardPaths
 
-from picard import config
+from picard.config import (
+    BoolOption,
+    ListOption,
+    TextOption,
+    get_config,
+)
 from picard.const import UI_LANGUAGES
 from picard.const.sys import (
     IS_HAIKU,
@@ -129,18 +134,18 @@ class InterfaceOptionsPage(OptionsPage):
     }
     ACTION_NAMES = set(TOOLBAR_BUTTONS.keys())
     options = [
-        config.BoolOption("setting", "toolbar_show_labels", True),
-        config.BoolOption("setting", "toolbar_multiselect", False),
-        config.BoolOption("setting", "builtin_search", True),
-        config.BoolOption("setting", "use_adv_search_syntax", False),
-        config.BoolOption("setting", "quit_confirmation", True),
-        config.TextOption("setting", "ui_language", ""),
-        config.BoolOption("setting", "use_system_theme", False),
-        config.BoolOption("setting", "filebrowser_horizontal_autoscroll", True),
-        config.BoolOption("setting", "starting_directory", False),
-        config.TextOption("setting", "starting_directory_path", _default_starting_dir),
-        config.TextOption("setting", "load_image_behavior", "append"),
-        config.ListOption("setting", "toolbar_layout", [
+        BoolOption("setting", "toolbar_show_labels", True),
+        BoolOption("setting", "toolbar_multiselect", False),
+        BoolOption("setting", "builtin_search", True),
+        BoolOption("setting", "use_adv_search_syntax", False),
+        BoolOption("setting", "quit_confirmation", True),
+        TextOption("setting", "ui_language", ""),
+        BoolOption("setting", "use_system_theme", False),
+        BoolOption("setting", "filebrowser_horizontal_autoscroll", True),
+        BoolOption("setting", "starting_directory", False),
+        TextOption("setting", "starting_directory_path", _default_starting_dir),
+        TextOption("setting", "load_image_behavior", "append"),
+        ListOption("setting", "toolbar_layout", [
             'add_directory_action',
             'add_files_action',
             'separator',
@@ -198,6 +203,7 @@ class InterfaceOptionsPage(OptionsPage):
             self.ui.use_system_theme.hide()
 
     def load(self):
+        config = get_config()
         self.ui.toolbar_show_labels.setChecked(config.setting["toolbar_show_labels"])
         self.ui.toolbar_multiselect.setChecked(config.setting["toolbar_multiselect"])
         self.ui.builtin_search.setChecked(config.setting["builtin_search"])
@@ -214,6 +220,7 @@ class InterfaceOptionsPage(OptionsPage):
         self.update_buttons()
 
     def save(self):
+        config = get_config()
         config.setting["toolbar_show_labels"] = self.ui.toolbar_show_labels.isChecked()
         config.setting["toolbar_multiselect"] = self.ui.toolbar_multiselect.isChecked()
         config.setting["builtin_search"] = self.ui.builtin_search.isChecked()
@@ -289,6 +296,7 @@ class InterfaceOptionsPage(OptionsPage):
 
     def populate_action_list(self):
         self.ui.toolbar_layout_list.clear()
+        config = get_config()
         for name in config.setting['toolbar_layout']:
             if name in self.ACTION_NAMES or name == 'separator':
                 self._insert_item(name)
@@ -314,6 +322,7 @@ class InterfaceOptionsPage(OptionsPage):
         self.update_buttons()
 
     def update_layout_config(self):
+        config = get_config()
         config.setting['toolbar_layout'] = self._all_list_items()
         self._update_toolbar()
 

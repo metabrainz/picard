@@ -40,10 +40,8 @@ from PyQt5.QtCore import (
     QUrlQuery,
 )
 
-from picard import (
-    config,
-    log,
-)
+from picard import log
+from picard.config import get_config
 from picard.coverart.utils import translate_caa_type
 from picard.metadata import Metadata
 from picard.util import (
@@ -306,6 +304,7 @@ class CoverArtImage:
         """
         if not self.can_be_saved_to_disk:
             return
+        config = get_config()
         if (config.setting["caa_image_type_as_filename"]
             and not self.is_front_image()):
             filename = self.maintype

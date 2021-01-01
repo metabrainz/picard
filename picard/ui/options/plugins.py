@@ -41,9 +41,11 @@ from PyQt5 import (
 )
 from PyQt5.QtWidgets import QTreeWidgetItemIterator
 
-from picard import (
-    config,
-    log,
+from picard import log
+from picard.config import (
+    ListOption,
+    Option,
+    get_config,
 )
 from picard.const import (
     PLUGINS_API,
@@ -220,11 +222,10 @@ class PluginsOptionsPage(OptionsPage):
     HELP_URL = '/config/options_plugins.html'
 
     options = [
-        config.ListOption("setting", "enabled_plugins", []),
-        config.Option("persist", "plugins_list_state", QtCore.QByteArray()),
-        config.Option("persist", "plugins_list_sort_section", 0),
-        config.Option("persist", "plugins_list_sort_order",
-                      QtCore.Qt.AscendingOrder),
+        ListOption("setting", "enabled_plugins", []),
+        Option("persist", "plugins_list_state", QtCore.QByteArray()),
+        Option("persist", "plugins_list_sort_section", 0),
+        Option("persist", "plugins_list_sort_order", QtCore.Qt.AscendingOrder),
     ]
 
     def __init__(self, parent=None):
@@ -275,6 +276,7 @@ class PluginsOptionsPage(OptionsPage):
 
     def save_state(self):
         header = self.ui.plugins.header()
+        config = get_config()
         config.persist["plugins_list_state"] = header.saveState()
         config.persist["plugins_list_sort_section"] = header.sortIndicatorSection()
         config.persist["plugins_list_sort_order"] = header.sortIndicatorOrder()
@@ -287,6 +289,7 @@ class PluginsOptionsPage(OptionsPage):
 
     def restore_state(self):
         header = self.ui.plugins.header()
+        config = get_config()
         header.restoreState(config.persist["plugins_list_state"])
         idx = config.persist["plugins_list_sort_section"]
         order = config.persist["plugins_list_sort_order"]
@@ -295,6 +298,7 @@ class PluginsOptionsPage(OptionsPage):
 
     @staticmethod
     def is_plugin_enabled(plugin):
+        config = get_config()
         return bool(plugin.module_name in config.setting["enabled_plugins"])
 
     def available_plugins_name_version(self):
@@ -578,6 +582,7 @@ class PluginsOptionsPage(OptionsPage):
         return item
 
     def save(self):
+        config = get_config()
         config.setting["enabled_plugins"] = self.enabled_plugins()
         self.save_state()
 

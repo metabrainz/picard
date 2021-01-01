@@ -37,7 +37,11 @@ from PyQt5 import (
 )
 from PyQt5.QtCore import QStandardPaths
 
-from picard import config
+from picard.config import (
+    BoolOption,
+    TextOption,
+    get_config,
+)
 from picard.const.sys import IS_MACOS
 from picard.formats import supported_formats
 from picard.util import find_existing_path
@@ -49,8 +53,8 @@ _default_current_browser_path = QStandardPaths.writableLocation(QStandardPaths.H
 class FileBrowser(QtWidgets.QTreeView):
 
     options = [
-        config.TextOption("persist", "current_browser_path", _default_current_browser_path),
-        config.BoolOption("persist", "show_hidden_files", False),
+        TextOption("persist", "current_browser_path", _default_current_browser_path),
+        BoolOption("persist", "show_hidden_files", False),
     ]
 
     def __init__(self, parent):
@@ -65,6 +69,7 @@ class FileBrowser(QtWidgets.QTreeView):
         self.addAction(self.move_files_here_action)
         self.toggle_hidden_action = QtWidgets.QAction(_("Show &hidden files"), self)
         self.toggle_hidden_action.setCheckable(True)
+        config = get_config()
         self.toggle_hidden_action.setChecked(config.persist["show_hidden_files"])
         self.toggle_hidden_action.toggled.connect(self.show_hidden)
         self.addAction(self.toggle_hidden_action)
@@ -109,6 +114,7 @@ class FileBrowser(QtWidgets.QTreeView):
         header.setVisible(False)
 
     def _set_model_filter(self):
+        config = get_config()
         model_filter = QtCore.QDir.AllDirs | QtCore.QDir.Files | QtCore.QDir.Drives | QtCore.QDir.NoDotAndDotDot
         if config.persist["show_hidden_files"]:
             model_filter |= QtCore.QDir.Hidden
@@ -129,6 +135,7 @@ class FileBrowser(QtWidgets.QTreeView):
     def scrollTo(self, index, scrolltype=QtWidgets.QAbstractItemView.EnsureVisible):
         # QTreeView.scrollTo resets the horizontal scroll position to 0.
         # Reimplemented to instead scroll to horizontal parent position or keep previous position.
+        config = get_config()
         if index and config.setting['filebrowser_horizontal_autoscroll']:
             level = -1
             parent = index.parent()
@@ -153,6 +160,7 @@ class FileBrowser(QtWidgets.QTreeView):
         super().focusInEvent(event)
 
     def show_hidden(self, state):
+        config = get_config()
         config.persist["show_hidden_files"] = state
         self._set_model_filter()
 
@@ -160,12 +168,14 @@ class FileBrowser(QtWidgets.QTreeView):
         indexes = self.selectedIndexes()
         if indexes:
             path = self.model.filePath(indexes[0])
+            config = get_config()
             config.persist["current_browser_path"] = os.path.normpath(path)
 
     def restore_state(self):
         pass
 
     def _restore_state(self):
+        config = get_config()
         if config.setting["starting_directory"]:
             path = config.setting["starting_directory_path"]
             scrolltype = QtWidgets.QAbstractItemView.PositionAtTop
@@ -201,11 +211,13 @@ class FileBrowser(QtWidgets.QTreeView):
         indexes = self.selectedIndexes()
         if not indexes:
             return
+        config = get_config()
         path = self.model.filePath(indexes[0])
         config.setting["move_files_to"] = self._get_destination_from_path(path)
 
     def set_as_starting_directory(self):
         indexes = self.selectedIndexes()
         if indexes:
+            config = get_config()
             path = self.model.filePath(indexes[0])
             config.setting["starting_directory_path"] = self._get_destination_from_path(path)

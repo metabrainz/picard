@@ -23,7 +23,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from picard import config
+from picard.config import get_config
 from picard.const import RELEASE_FORMATS
 from picard.util import (
     format_time,
@@ -130,6 +130,7 @@ def _parse_attributes(attrs, reltype, attr_credits):
 
 
 def _relations_to_metadata(relations, m):
+    config = get_config()
     use_credited_as = not config.setting['standardize_artists']
     use_instrument_credits = not config.setting['standardize_instruments']
     for relation in relations:
@@ -181,6 +182,7 @@ def _relations_to_metadata(relations, m):
 
 
 def _translate_artist_node(node):
+    config = get_config()
     transl, translsort = None, None
     if config.setting['translate_artist_names']:
         locale = config.setting["artist_locale"]
@@ -228,6 +230,7 @@ def artist_credit_from_node(node):
     artistsort = ""
     artists = []
     artistssort = []
+    config = get_config()
     use_credited_as = not config.setting["standardize_artists"]
     for artist_info in node:
         a = artist_info['artist']
@@ -441,6 +444,7 @@ def artist_to_metadata(node, m):
 
 def release_to_metadata(node, m, album=None):
     """Make metadata dict from a JSON 'release' node."""
+    config = get_config()
     m.add_unique('musicbrainz_albumid', node['id'])
     for key, value in node.items():
         if not value and value != 0:

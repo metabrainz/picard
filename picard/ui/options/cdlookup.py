@@ -24,7 +24,10 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from picard import config
+from picard.config import (
+    TextOption,
+    get_config,
+)
 from picard.util.cdrom import (
     AUTO_DETECT_DRIVES,
     DEFAULT_DRIVES,
@@ -53,7 +56,7 @@ class CDLookupOptionsPage(OptionsPage):
     HELP_URL = '/config/options_cdlookup.html'
 
     options = [
-        config.TextOption("setting", "cd_lookup_device", ",".join(DEFAULT_DRIVES)),
+        TextOption("setting", "cd_lookup_device", ",".join(DEFAULT_DRIVES)),
     ]
 
     def __init__(self, parent=None):
@@ -65,6 +68,7 @@ class CDLookupOptionsPage(OptionsPage):
             self.ui.cd_lookup_device.addItems(self._device_list)
 
     def load(self):
+        config = get_config()
         device = config.setting["cd_lookup_device"]
         if AUTO_DETECT_DRIVES:
             try:
@@ -75,6 +79,7 @@ class CDLookupOptionsPage(OptionsPage):
             self.ui.cd_lookup_device.setText(device)
 
     def save(self):
+        config = get_config()
         if AUTO_DETECT_DRIVES:
             device = self.ui.cd_lookup_device.currentText()
             device_list = self._device_list

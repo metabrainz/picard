@@ -32,9 +32,10 @@ from PyQt5 import (
     QtWidgets,
 )
 
-from picard import (
-    config,
-    log,
+from picard import log
+from picard.config import (
+    Option,
+    get_config,
 )
 from picard.mbjson import (
     artist_credit_from_node,
@@ -56,7 +57,7 @@ class CDLookupDialog(PicardDialog):
     dialog_header_state = "cdlookupdialog_header_state"
 
     options = [
-        config.Option("persist", dialog_header_state, QtCore.QByteArray())
+        Option("persist", dialog_header_state, QtCore.QByteArray())
     ]
 
     def __init__(self, releases, disc, parent=None):
@@ -124,6 +125,7 @@ class CDLookupDialog(PicardDialog):
     def restore_header_state(self):
         if self.ui.release_list:
             header = self.ui.release_list.header()
+            config = get_config()
             state = config.persist[self.dialog_header_state]
             if state:
                 header.restoreState(state)
@@ -132,5 +134,6 @@ class CDLookupDialog(PicardDialog):
     def save_header_state(self):
         if self.ui.release_list:
             state = self.ui.release_list.header().saveState()
+            config = get_config()
             config.persist[self.dialog_header_state] = state
             log.debug("save_state: %s" % self.dialog_header_state)

@@ -22,7 +22,11 @@
 
 from functools import partial
 
-from picard import config
+from picard.config import (
+    BoolOption,
+    TextOption,
+    get_config,
+)
 
 from picard.ui.options import (
     OptionsPage,
@@ -43,11 +47,11 @@ class TagsCompatibilityID3OptionsPage(OptionsPage):
     HELP_URL = '/config/options_tags_compatibility_id3.html'
 
     options = [
-        config.BoolOption("setting", "write_id3v1", True),
-        config.BoolOption("setting", "write_id3v23", True),
-        config.TextOption("setting", "id3v2_encoding", "utf-16"),
-        config.TextOption("setting", "id3v23_join_with", "/"),
-        config.BoolOption("setting", "itunes_compatible_grouping", False),
+        BoolOption("setting", "write_id3v1", True),
+        BoolOption("setting", "write_id3v23", True),
+        TextOption("setting", "id3v2_encoding", "utf-16"),
+        TextOption("setting", "id3v23_join_with", "/"),
+        BoolOption("setting", "itunes_compatible_grouping", False),
     ]
 
     def __init__(self, parent=None):
@@ -58,6 +62,7 @@ class TagsCompatibilityID3OptionsPage(OptionsPage):
         self.ui.write_id3v24.clicked.connect(partial(self.update_encodings, force_utf8=True))
 
     def load(self):
+        config = get_config()
         self.ui.write_id3v1.setChecked(config.setting["write_id3v1"])
         if config.setting["write_id3v23"]:
             self.ui.write_id3v23.setChecked(True)
@@ -74,6 +79,7 @@ class TagsCompatibilityID3OptionsPage(OptionsPage):
         self.update_encodings()
 
     def save(self):
+        config = get_config()
         config.setting["write_id3v1"] = self.ui.write_id3v1.isChecked()
         config.setting["write_id3v23"] = self.ui.write_id3v23.isChecked()
         config.setting["id3v23_join_with"] = self.ui.id3v23_join_with.currentText()

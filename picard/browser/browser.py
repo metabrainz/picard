@@ -33,10 +33,8 @@ from urllib.parse import (
 
 from PyQt5 import QtNetwork
 
-from picard import (
-    config,
-    log,
-)
+from picard import log
+from picard.config import get_config
 from picard.util import mbid_validate
 
 
@@ -68,6 +66,7 @@ class BrowserIntegration(QtNetwork.QTcpServer):
         if self.port:
             self.stop()
 
+        config = get_config()
         if config.setting["browser_integration_localhost_only"]:
             self.host_address = QtNetwork.QHostAddress(QtNetwork.QHostAddress.LocalHost)
         else:

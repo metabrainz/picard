@@ -28,7 +28,7 @@ from PyQt5 import (
     QtWidgets,
 )
 
-from picard import config
+from picard.config import Option
 
 from picard.ui.colors import (
     InterfaceColors,
@@ -92,8 +92,8 @@ class InterfaceColorsOptionsPage(OptionsPage):
     HELP_URL = '/config/options_interface_colors.html'
 
     options = [
-        config.Option("setting", "interface_colors", InterfaceColors(dark_theme=False).get_colors()),
-        config.Option("setting", "interface_colors_dark", InterfaceColors(dark_theme=True).get_colors()),
+        Option("setting", "interface_colors", InterfaceColors(dark_theme=False).get_colors()),
+        Option("setting", "interface_colors_dark", InterfaceColors(dark_theme=True).get_colors()),
     ]
 
     def __init__(self, parent=None):
