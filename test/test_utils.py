@@ -31,7 +31,6 @@
 import builtins
 from collections import namedtuple
 from collections.abc import Iterator
-import os.path
 import unittest
 from unittest.mock import Mock
 
@@ -42,7 +41,6 @@ from picard.const.sys import IS_WIN
 from picard.util import (
     extract_year_from_date,
     find_best_match,
-    imageinfo,
     is_absolute_path,
     iter_files_from_objects,
     iter_unique,
@@ -288,63 +286,6 @@ class IsAbsolutePathTest(PicardTestCase):
         self.assertTrue(is_absolute_path('\\\\foo\\bar'))
         self.assertTrue(is_absolute_path('\\\\foo\\bar\\'))
         self.assertTrue(is_absolute_path('\\\\foo\\bar\\baz'))
-
-
-class ImageInfoTest(PicardTestCase):
-
-    def test_gif(self):
-        file = os.path.join('test', 'data', 'mb.gif')
-
-        with open(file, 'rb') as f:
-            self.assertEqual(
-                imageinfo.identify(f.read()),
-                (140, 96, 'image/gif', '.gif', 5806)
-            )
-
-    def test_png(self):
-        file = os.path.join('test', 'data', 'mb.png')
-
-        with open(file, 'rb') as f:
-            self.assertEqual(
-                imageinfo.identify(f.read()),
-                (140, 96, 'image/png', '.png', 11137)
-            )
-
-    def test_jpeg(self):
-        file = os.path.join('test', 'data', 'mb.jpg')
-
-        with open(file, 'rb') as f:
-            self.assertEqual(
-                imageinfo.identify(f.read()),
-                (140, 96, 'image/jpeg', '.jpg', 8550)
-            )
-
-    def test_pdf(self):
-        file = os.path.join('test', 'data', 'mb.pdf')
-
-        with open(file, 'rb') as f:
-            self.assertEqual(
-                imageinfo.identify(f.read()),
-                (0, 0, 'application/pdf', '.pdf', 10362)
-            )
-
-    def test_not_enough_data(self):
-        self.assertRaises(imageinfo.IdentificationError,
-                          imageinfo.identify, "x")
-        self.assertRaises(imageinfo.NotEnoughData, imageinfo.identify, "x")
-
-    def test_invalid_data(self):
-        self.assertRaises(imageinfo.IdentificationError,
-                          imageinfo.identify, "x" * 20)
-        self.assertRaises(imageinfo.UnrecognizedFormat,
-                          imageinfo.identify, "x" * 20)
-
-    def test_invalid_png_data(self):
-        data = '\x89PNG\x0D\x0A\x1A\x0A' + "x" * 20
-        self.assertRaises(imageinfo.IdentificationError,
-                          imageinfo.identify, data)
-        self.assertRaises(imageinfo.UnrecognizedFormat,
-                          imageinfo.identify, data)
 
 
 class CompareBarcodesTest(PicardTestCase):

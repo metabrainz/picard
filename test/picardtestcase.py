@@ -3,7 +3,7 @@
 # Picard, the next-generation MusicBrainz tagger
 #
 # Copyright (C) 2018 Wieland Hoffmann
-# Copyright (C) 2019-2020 Philipp Wolfer
+# Copyright (C) 2019-2021 Philipp Wolfer
 # Copyright (C) 2020 Laurent Monin
 #
 # This program is free software; you can redistribute it and/or
@@ -115,11 +115,15 @@ class PicardTestCase(unittest.TestCase):
             os.unlink(filepath)
 
 
+def get_test_data_path(*paths):
+    return os.path.join('test', 'data', *paths)
+
+
 def create_fake_png(extra):
     """Creates fake PNG data that satisfies Picard's internal image type detection"""
     return b'\x89PNG\x0D\x0A\x1A\x0A' + (b'a' * 4) + b'IHDR' + struct.pack('>LL', 100, 100) + extra
 
 
 def load_test_json(filename):
-    with open(os.path.join('test', 'data', 'ws_data', filename), encoding='utf-8') as f:
+    with open(get_test_data_path('ws_data', filename), encoding='utf-8') as f:
         return json.load(f)
