@@ -35,9 +35,12 @@ from PyQt5 import (
     QtWidgets,
 )
 
-from picard import (
-    config,
-    log,
+from picard import log
+from picard.config import (
+    ListOption,
+    Option,
+    TextOption,
+    get_config,
 )
 from picard.const import DOCS_BASE_URL
 from picard.util import (
@@ -84,9 +87,9 @@ class OptionsDialog(PicardDialog, SingletonDialog):
     autorestore = False
 
     options = [
-        config.TextOption("persist", "options_last_active_page", ""),
-        config.ListOption("persist", "options_pages_tree_state", []),
-        config.Option("persist", "options_splitter", QtCore.QByteArray()),
+        TextOption("persist", "options_last_active_page", ""),
+        ListOption("persist", "options_pages_tree_state", []),
+        Option("persist", "options_splitter", QtCore.QByteArray()),
     ]
 
     def add_pages(self, parent, default_page, parent_item):
@@ -147,6 +150,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         self.page_to_item = {}
         self.default_item = None
         if not default_page:
+            config = get_config()
             default_page = config.persist["options_last_active_page"]
         self.add_pages(None, default_page, self.ui.pages_tree)
 
@@ -180,6 +184,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
     def switch_page(self):
         items = self.ui.pages_tree.selectedItems()
         if items:
+            config = get_config()
             page = self.item_to_page[items[0]]
             config.persist["options_last_active_page"] = page.NAME
             self.ui.pages_stack.setCurrentWidget(page)
@@ -233,11 +238,13 @@ class OptionsDialog(PicardDialog, SingletonDialog):
             index = self.ui.pages_tree.indexFromItem(item)
             is_expanded = self.ui.pages_tree.isExpanded(index)
             expanded_pages.append((page, is_expanded))
+        config = get_config()
         config.persist["options_pages_tree_state"] = expanded_pages
         config.persist["options_splitter"] = self.ui.splitter.saveState()
 
     @restore_method
     def restoreWindowState(self):
+        config = get_config()
         pages_tree_state = config.persist["options_pages_tree_state"]
         if not pages_tree_state:
             self.ui.pages_tree.expandAll()

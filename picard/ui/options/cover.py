@@ -25,7 +25,12 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from picard import config
+from picard.config import (
+    BoolOption,
+    ListOption,
+    TextOption,
+    get_config,
+)
 from picard.coverart.providers import cover_art_providers
 
 from picard.ui.checkbox_list_item import CheckboxListItem
@@ -47,12 +52,12 @@ class CoverOptionsPage(OptionsPage):
     HELP_URL = '/config/options_cover.html'
 
     options = [
-        config.BoolOption("setting", "save_images_to_tags", True),
-        config.BoolOption("setting", "embed_only_one_front_image", True),
-        config.BoolOption("setting", "save_images_to_files", False),
-        config.TextOption("setting", "cover_image_filename", "cover"),
-        config.BoolOption("setting", "save_images_overwrite", False),
-        config.ListOption("setting", "ca_providers", [
+        BoolOption("setting", "save_images_to_tags", True),
+        BoolOption("setting", "embed_only_one_front_image", True),
+        BoolOption("setting", "save_images_to_files", False),
+        TextOption("setting", "cover_image_filename", "cover"),
+        BoolOption("setting", "save_images_overwrite", False),
+        ListOption("setting", "ca_providers", [
             ('Cover Art Archive', True),
             ('UrlRelationships', True),
             ('CaaReleaseGroup', False),
@@ -88,6 +93,7 @@ class CoverOptionsPage(OptionsPage):
         return items
 
     def load(self):
+        config = get_config()
         self.ui.save_images_to_tags.setChecked(config.setting["save_images_to_tags"])
         self.ui.cb_embed_front_only.setChecked(config.setting["embed_only_one_front_image"])
         self.ui.save_images_to_files.setChecked(config.setting["save_images_to_files"])
@@ -98,6 +104,7 @@ class CoverOptionsPage(OptionsPage):
         self.update_all()
 
     def save(self):
+        config = get_config()
         config.setting["save_images_to_tags"] = self.ui.save_images_to_tags.isChecked()
         config.setting["embed_only_one_front_image"] = self.ui.cb_embed_front_only.isChecked()
         config.setting["save_images_to_files"] = self.ui.save_images_to_files.isChecked()

@@ -27,7 +27,11 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from picard import config
+from picard.config import (
+    BoolOption,
+    ListOption,
+    get_config,
+)
 
 from picard.ui.options import (
     OptionsPage,
@@ -46,12 +50,12 @@ class TagsOptionsPage(OptionsPage):
     HELP_URL = '/config/options_tags.html'
 
     options = [
-        config.BoolOption("setting", "dont_write_tags", False),
-        config.BoolOption("setting", "preserve_timestamps", False),
-        config.BoolOption("setting", "clear_existing_tags", False),
-        config.BoolOption("setting", "remove_id3_from_flac", False),
-        config.BoolOption("setting", "remove_ape_from_mp3", False),
-        config.ListOption("setting", "preserved_tags", []),
+        BoolOption("setting", "dont_write_tags", False),
+        BoolOption("setting", "preserve_timestamps", False),
+        BoolOption("setting", "clear_existing_tags", False),
+        BoolOption("setting", "remove_id3_from_flac", False),
+        BoolOption("setting", "remove_ape_from_mp3", False),
+        ListOption("setting", "preserved_tags", []),
     ]
 
     def __init__(self, parent=None):
@@ -60,6 +64,7 @@ class TagsOptionsPage(OptionsPage):
         self.ui.setupUi(self)
 
     def load(self):
+        config = get_config()
         self.ui.write_tags.setChecked(not config.setting["dont_write_tags"])
         self.ui.preserve_timestamps.setChecked(config.setting["preserve_timestamps"])
         self.ui.clear_existing_tags.setChecked(config.setting["clear_existing_tags"])
@@ -69,6 +74,7 @@ class TagsOptionsPage(OptionsPage):
         self.ui.preserved_tags.set_user_sortable(False)
 
     def save(self):
+        config = get_config()
         config.setting["dont_write_tags"] = not self.ui.write_tags.isChecked()
         config.setting["preserve_timestamps"] = self.ui.preserve_timestamps.isChecked()
         clear_existing_tags = self.ui.clear_existing_tags.isChecked()

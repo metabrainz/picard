@@ -22,7 +22,12 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from picard import config
+from picard.config import (
+    BoolOption,
+    IntOption,
+    TextOption,
+    get_config,
+)
 
 from picard.ui.options import (
     OptionsPage,
@@ -41,16 +46,16 @@ class NetworkOptionsPage(OptionsPage):
     HELP_URL = '/config/options_network.html'
 
     options = [
-        config.BoolOption("setting", "use_proxy", False),
-        config.TextOption("setting", "proxy_type", "http"),
-        config.TextOption("setting", "proxy_server_host", ""),
-        config.IntOption("setting", "proxy_server_port", 80),
-        config.TextOption("setting", "proxy_username", ""),
-        config.TextOption("setting", "proxy_password", ""),
-        config.BoolOption("setting", "browser_integration", True),
-        config.IntOption("setting", "browser_integration_port", 8000),
-        config.BoolOption("setting", "browser_integration_localhost_only", True),
-        config.IntOption("setting", "network_transfer_timeout_seconds", 30),
+        BoolOption("setting", "use_proxy", False),
+        TextOption("setting", "proxy_type", "http"),
+        TextOption("setting", "proxy_server_host", ""),
+        IntOption("setting", "proxy_server_port", 80),
+        TextOption("setting", "proxy_username", ""),
+        TextOption("setting", "proxy_password", ""),
+        BoolOption("setting", "browser_integration", True),
+        IntOption("setting", "browser_integration_port", 8000),
+        BoolOption("setting", "browser_integration_localhost_only", True),
+        IntOption("setting", "network_transfer_timeout_seconds", 30),
     ]
 
     def __init__(self, parent=None):
@@ -59,6 +64,7 @@ class NetworkOptionsPage(OptionsPage):
         self.ui.setupUi(self)
 
     def load(self):
+        config = get_config()
         self.ui.web_proxy.setChecked(config.setting["use_proxy"])
         if config.setting["proxy_type"] == 'socks':
             self.ui.proxy_type_socks.setChecked(True)
@@ -75,6 +81,7 @@ class NetworkOptionsPage(OptionsPage):
             config.setting["browser_integration_localhost_only"])
 
     def save(self):
+        config = get_config()
         config.setting["use_proxy"] = self.ui.web_proxy.isChecked()
         if self.ui.proxy_type_socks.isChecked():
             config.setting["proxy_type"] = 'socks'

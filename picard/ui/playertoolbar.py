@@ -29,10 +29,8 @@ from PyQt5 import (
     QtWidgets,
 )
 
-from picard import (
-    config,
-    log,
-)
+from picard import log
+from picard.config import get_config
 from picard.const.sys import IS_MACOS
 from picard.util import (
     format_time,
@@ -215,6 +213,7 @@ class PlayerToolbar(QtWidgets.QToolBar):
         self.progress_widget = PlaybackProgressSlider(self, self.player)
         self.addWidget(self.progress_widget)
 
+        config = get_config()
         volume = config.persist["mediaplayer_volume"]
         self.player.set_volume(volume)
         self.volume_button = VolumeControlButton(self, volume)

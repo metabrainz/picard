@@ -41,7 +41,7 @@ from functools import partial
 
 from PyQt5.QtCore import QObject
 
-from picard import config
+from picard.config import get_config
 from picard.mbjson import (
     artist_credit_from_node,
     get_score,
@@ -292,6 +292,7 @@ class Metadata(MutableMapping):
 
         parts.append((date_match_factor, weights['date']))
 
+        config = get_config()
         weights_from_preferred_countries(parts, release,
                                          config.setting["preferred_release_countries"],
                                          weights["releasecountry"])

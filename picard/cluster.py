@@ -46,7 +46,7 @@ import re
 
 from PyQt5 import QtCore
 
-from picard import config
+from picard.config import get_config
 from picard.const import QUERY_LIMIT
 from picard.const.sys import IS_WIN
 from picard.metadata import (
@@ -259,6 +259,7 @@ class Cluster(FileList):
             )
 
         if releases:
+            config = get_config()
             albumid = self._match_to_album(releases, threshold=config.setting['cluster_lookup_threshold'])
         else:
             albumid = None
@@ -304,6 +305,7 @@ class Cluster(FileList):
 
     @staticmethod
     def cluster(files, threshold, tagger=None):
+        config = get_config()
         win_compat = config.setting["windows_compatibility"] or IS_WIN
         artist_dict = ClusterDict()
         album_dict = ClusterDict()

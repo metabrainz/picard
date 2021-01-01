@@ -31,8 +31,12 @@ from PyQt5 import (
     QtWidgets,
 )
 
-from picard import config
 from picard.acoustid import find_fpcalc
+from picard.config import (
+    BoolOption,
+    TextOption,
+    get_config,
+)
 from picard.util import webbrowser2
 
 from picard.ui.options import (
@@ -60,10 +64,10 @@ class FingerprintingOptionsPage(OptionsPage):
     HELP_URL = '/config/options_fingerprinting.html'
 
     options = [
-        config.BoolOption("setting", "ignore_existing_acoustid_fingerprints", False),
-        config.TextOption("setting", "fingerprinting_system", "acoustid"),
-        config.TextOption("setting", "acoustid_fpcalc", ""),
-        config.TextOption("setting", "acoustid_apikey", ""),
+        BoolOption("setting", "ignore_existing_acoustid_fingerprints", False),
+        TextOption("setting", "fingerprinting_system", "acoustid"),
+        TextOption("setting", "acoustid_fpcalc", ""),
+        TextOption("setting", "acoustid_apikey", ""),
     ]
 
     def __init__(self, parent=None):
@@ -80,6 +84,7 @@ class FingerprintingOptionsPage(OptionsPage):
         self.ui.acoustid_apikey.setValidator(ApiKeyValidator())
 
     def load(self):
+        config = get_config()
         if config.setting["fingerprinting_system"] == "acoustid":
             self.ui.use_acoustid.setChecked(True)
         else:
@@ -91,6 +96,7 @@ class FingerprintingOptionsPage(OptionsPage):
         self.update_groupboxes()
 
     def save(self):
+        config = get_config()
         if self.ui.use_acoustid.isChecked():
             config.setting["fingerprinting_system"] = "acoustid"
         else:

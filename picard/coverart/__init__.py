@@ -30,10 +30,8 @@ import traceback
 
 from PyQt5.QtCore import QObject
 
-from picard import (
-    config,
-    log,
-)
+from picard import log
+from picard.config import get_config
 from picard.coverart.image import (
     CoverArtImageIdentificationError,
     CoverArtImageIOError,
@@ -59,6 +57,7 @@ class CoverArt:
 
     def retrieve(self):
         """Retrieve available cover art images for the release"""
+        config = get_config()
         if (not config.setting["save_images_to_tags"] and not
                 config.setting["save_images_to_files"]):
             log.debug("Cover art disabled by user options.")
@@ -130,6 +129,7 @@ class CoverArt:
             # album removed
             return
 
+        config = get_config()
         if (self.front_image_found
             and config.setting["save_images_to_tags"]
             and not config.setting["save_images_to_files"]

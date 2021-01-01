@@ -49,12 +49,10 @@ from PyQt5 import (
     QtNetwork,
 )
 
-from picard import (
-    config,
-    log,
-)
+from picard import log
 from picard.cluster import Cluster
 from picard.collection import add_release_to_user_collections
+from picard.config import get_config
 from picard.const import VARIOUS_ARTISTS_ID
 from picard.dataobj import DataObject
 from picard.file import File
@@ -221,6 +219,8 @@ class Album(DataObject, Item):
         m.copy(rg.metadata)
         release_to_metadata(release_node, m, album=self)
 
+        config = get_config()
+
         # Custom VA name
         if m['musicbrainz_albumartistid'] == VARIOUS_ARTISTS_ID:
             m['albumartistsort'] = m['albumartist'] = config.setting['va_name']
@@ -253,6 +253,7 @@ class Album(DataObject, Item):
                 self.error_append(http.errorString())
                 # Fix for broken NAT releases
                 if error == QtNetwork.QNetworkReply.ContentNotFoundError:
+                    config = get_config()
                     nats = False
                     nat_name = config.setting["nat_name"]
                     files = list(self.unmatched_files.files)
@@ -475,6 +476,7 @@ class Album(DataObject, Item):
         self._new_tracks = []
         self._requests = 1
         self.clear_errors()
+        config = get_config()
         require_authentication = False
         inc = ['release-groups', 'media', 'discids', 'recordings', 'artist-credits',
                'artists', 'aliases', 'labels', 'isrcs', 'collections']
@@ -573,6 +575,7 @@ class Album(DataObject, Item):
     def match_files(self, files):
         """Match and move files to tracks on this album, based on metadata similarity or recordingid."""
         if self.loaded:
+            config = get_config()
             moves = self._match_files(files, threshold=config.setting['track_matching_threshold'])
             for file, target in moves:
                 file.move(target)
@@ -739,6 +742,7 @@ class NatAlbum(Album):
         self.update()
 
     def update(self, update_tracks=True):
+        config = get_config()
         self.enable_update_metadata_images(False)
         old_album_title = self.metadata["album"]
         self.metadata["album"] = config.setting["nat_name"]

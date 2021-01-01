@@ -27,7 +27,7 @@ import re
 
 from PyQt5 import QtWidgets
 
-from picard import config
+from picard.config import get_config
 from picard.plugin import ExtensionPoint
 
 
@@ -75,6 +75,7 @@ class OptionsPage(QtWidgets.QWidget):
             options = self.options
         except AttributeError:
             return
+        config = get_config()
         old_options = {}
         for option in options:
             if option.section == 'setting':

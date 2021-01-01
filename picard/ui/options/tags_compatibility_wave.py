@@ -20,7 +20,11 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from picard import config
+from picard.config import (
+    BoolOption,
+    TextOption,
+    get_config,
+)
 from picard.formats.wav import WAVFile
 
 from picard.ui.options import (
@@ -42,9 +46,9 @@ class TagsCompatibilityWaveOptionsPage(OptionsPage):
     HELP_URL = '/config/options_tags_compatibility_wave.html'
 
     options = [
-        config.BoolOption("setting", "write_wave_riff_info", True),
-        config.BoolOption("setting", "remove_wave_riff_info", False),
-        config.TextOption("setting", "wave_riff_info_encoding", "windows-1252"),
+        BoolOption("setting", "write_wave_riff_info", True),
+        BoolOption("setting", "remove_wave_riff_info", False),
+        TextOption("setting", "wave_riff_info_encoding", "windows-1252"),
     ]
 
     def __init__(self, parent=None):
@@ -53,6 +57,7 @@ class TagsCompatibilityWaveOptionsPage(OptionsPage):
         self.ui.setupUi(self)
 
     def load(self):
+        config = get_config()
         self.ui.write_wave_riff_info.setChecked(config.setting["write_wave_riff_info"])
         self.ui.remove_wave_riff_info.setChecked(config.setting["remove_wave_riff_info"])
         if config.setting["wave_riff_info_encoding"] == "utf-8":
@@ -61,6 +66,7 @@ class TagsCompatibilityWaveOptionsPage(OptionsPage):
             self.ui.wave_riff_info_enc_cp1252.setChecked(True)
 
     def save(self):
+        config = get_config()
         config.setting["write_wave_riff_info"] = self.ui.write_wave_riff_info.isChecked()
         config.setting["remove_wave_riff_info"] = self.ui.remove_wave_riff_info.isChecked()
         if self.ui.wave_riff_info_enc_utf8.isChecked():

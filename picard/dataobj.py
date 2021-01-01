@@ -26,7 +26,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from picard import config
+from picard.config import get_config
 from picard.util import LockableObject
 
 
@@ -44,6 +44,7 @@ class DataObject(LockableObject):
     @staticmethod
     def set_genre_inc_params(inc):
         require_authentication = False
+        config = get_config()
         if config.setting['use_genres']:
             use_folksonomy = config.setting['folksonomy_tags']
             if config.setting['only_my_genres']:

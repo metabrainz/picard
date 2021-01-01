@@ -20,7 +20,10 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from picard import config
+from picard.config import (
+    BoolOption,
+    get_config,
+)
 
 from picard.ui.options import (
     OptionsPage,
@@ -41,8 +44,8 @@ class TagsCompatibilityAC3OptionsPage(OptionsPage):
     HELP_URL = '/config/options_tags_compatibility_ac3.html'
 
     options = [
-        config.BoolOption("setting", "ac3_save_ape", True),
-        config.BoolOption("setting", "remove_ape_from_ac3", False),
+        BoolOption("setting", "ac3_save_ape", True),
+        BoolOption("setting", "remove_ape_from_ac3", False),
     ]
 
     def __init__(self, parent=None):
@@ -52,6 +55,7 @@ class TagsCompatibilityAC3OptionsPage(OptionsPage):
         self.ui.ac3_no_tags.toggled.connect(self.ui.remove_ape_from_ac3.setEnabled)
 
     def load(self):
+        config = get_config()
         if config.setting["ac3_save_ape"]:
             self.ui.ac3_save_ape.setChecked(True)
         else:
@@ -60,6 +64,7 @@ class TagsCompatibilityAC3OptionsPage(OptionsPage):
         self.ui.remove_ape_from_ac3.setEnabled(not config.setting["ac3_save_ape"])
 
     def save(self):
+        config = get_config()
         config.setting["ac3_save_ape"] = self.ui.ac3_save_ape.isChecked()
         config.setting["remove_ape_from_ac3"] = self.ui.remove_ape_from_ac3.isChecked()
 

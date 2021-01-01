@@ -23,7 +23,7 @@
 
 from PyQt5 import QtCore
 
-from picard import config
+from picard.config import Option
 from picard.const import QUERY_LIMIT
 from picard.mbjson import artist_to_metadata
 from picard.metadata import Metadata
@@ -39,7 +39,7 @@ class ArtistSearchDialog(SearchDialog):
     dialog_header_state = "artistsearchdialog_header_state"
 
     options = [
-        config.Option("persist", dialog_header_state, QtCore.QByteArray())
+        Option("persist", dialog_header_state, QtCore.QByteArray())
     ]
 
     def __init__(self, parent):

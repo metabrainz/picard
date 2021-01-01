@@ -20,7 +20,10 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from picard import config
+from picard.config import (
+    BoolOption,
+    get_config,
+)
 
 from picard.ui.options import (
     OptionsPage,
@@ -41,8 +44,8 @@ class TagsCompatibilityAACOptionsPage(OptionsPage):
     HELP_URL = '/config/options_tags_compatibility_aac.html'
 
     options = [
-        config.BoolOption("setting", "aac_save_ape", True),
-        config.BoolOption("setting", "remove_ape_from_aac", False),
+        BoolOption("setting", "aac_save_ape", True),
+        BoolOption("setting", "remove_ape_from_aac", False),
     ]
 
     def __init__(self, parent=None):
@@ -52,6 +55,7 @@ class TagsCompatibilityAACOptionsPage(OptionsPage):
         self.ui.aac_no_tags.toggled.connect(self.ui.remove_ape_from_aac.setEnabled)
 
     def load(self):
+        config = get_config()
         if config.setting["aac_save_ape"]:
             self.ui.aac_save_ape.setChecked(True)
         else:
@@ -60,6 +64,7 @@ class TagsCompatibilityAACOptionsPage(OptionsPage):
         self.ui.remove_ape_from_aac.setEnabled(not config.setting["aac_save_ape"])
 
     def save(self):
+        config = get_config()
         config.setting["aac_save_ape"] = self.ui.aac_save_ape.isChecked()
         config.setting["remove_ape_from_aac"] = self.ui.remove_ape_from_aac.isChecked()
 

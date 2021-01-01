@@ -34,9 +34,10 @@ from PyQt5 import (
     QtWidgets,
 )
 
-from picard import (
-    config,
-    log,
+from picard import log
+from picard.config import (
+    IntOption,
+    get_config,
 )
 from picard.util import reconnect
 
@@ -155,7 +156,7 @@ class VerbosityMenu(QtWidgets.QMenu):
 class LogView(LogViewCommon):
 
     options = [
-        config.IntOption("setting", "log_verbosity", log.VERBOSITY_DEFAULT),
+        IntOption("setting", "log_verbosity", log.VERBOSITY_DEFAULT),
     ]
 
     def __init__(self, parent=None):
@@ -304,6 +305,7 @@ class LogView(LogViewCommon):
 
     def _verbosity_changed(self, level):
         if level != self.verbosity:
+            config = get_config()
             config.setting['log_verbosity'] = level
             QtCore.QObject.tagger.set_log_level(level)
             self.verbosity = level

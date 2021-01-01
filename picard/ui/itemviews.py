@@ -51,10 +51,7 @@ from PyQt5 import (
     QtWidgets,
 )
 
-from picard import (
-    config,
-    log,
-)
+from picard import log
 from picard.album import (
     Album,
     NatAlbum,
@@ -63,6 +60,11 @@ from picard.cluster import (
     Cluster,
     ClusterList,
     UnclusteredFiles,
+)
+from picard.config import (
+    BoolOption,
+    Option,
+    get_config,
 )
 from picard.file import File
 from picard.plugin import ExtensionPoint
@@ -145,7 +147,7 @@ def get_match_color(similarity, basecolor):
 class MainPanel(QtWidgets.QSplitter):
 
     options = [
-        config.Option("persist", "splitter_state", QtCore.QByteArray()),
+        Option("persist", "splitter_state", QtCore.QByteArray()),
     ]
 
     columns = [
@@ -231,12 +233,14 @@ class MainPanel(QtWidgets.QSplitter):
         tab_order(prev, after)
 
     def save_state(self):
+        config = get_config()
         config.persist["splitter_state"] = self.saveState()
         for view in self._views:
             view.save_state()
 
     @restore_method
     def restore_state(self):
+        config = get_config()
         self.restoreState(config.persist["splitter_state"])
 
     def create_icons(self):
@@ -461,6 +465,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         item = self.itemAt(event.pos())
         if not item:
             return
+        config = get_config()
         obj = item.obj
         plugin_actions = None
         can_view_info = self.window.view_info_action.isEnabled()
@@ -645,10 +650,12 @@ class BaseTreeView(QtWidgets.QTreeWidget):
 
     @restore_method
     def restore_state(self):
+        config = get_config()
         self._restore_state(config.persist[self.header_state.name])
         self.header().lock(config.persist[self.header_locked.name])
 
     def save_state(self):
+        config = get_config()
         config.persist[self.header_state.name] = self.header().saveState()
         config.persist[self.header_locked.name] = self.header().is_locked
 
@@ -805,8 +812,8 @@ class BaseTreeView(QtWidgets.QTreeWidget):
 
 class FileTreeView(BaseTreeView):
 
-    header_state = config.Option("persist", "file_view_header_state", QtCore.QByteArray())
-    header_locked = config.BoolOption("persist", "file_view_header_locked", False)
+    header_state = Option("persist", "file_view_header_state", QtCore.QByteArray())
+    header_locked = BoolOption("persist", "file_view_header_locked", False)
 
     def __init__(self, window, parent=None):
         super().__init__(window, parent)
@@ -836,8 +843,8 @@ class FileTreeView(BaseTreeView):
 
 class AlbumTreeView(BaseTreeView):
 
-    header_state = config.Option("persist", "album_view_header_state", QtCore.QByteArray())
-    header_locked = config.BoolOption("persist", "album_view_header_locked", False)
+    header_state = Option("persist", "album_view_header_state", QtCore.QByteArray())
+    header_locked = BoolOption("persist", "album_view_header_locked", False)
 
     def __init__(self, window, parent=None):
         super().__init__(window, parent)

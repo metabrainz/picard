@@ -57,13 +57,20 @@ from PyQt5 import (
 
 from picard import (
     PICARD_APP_ID,
-    config,
     log,
 )
 from picard.album import Album
 from picard.cluster import (
     Cluster,
     FileList,
+)
+from picard.config import (
+    BoolOption,
+    FloatOption,
+    IntOption,
+    Option,
+    TextOption,
+    get_config,
 )
 from picard.const import PROGRAM_UPDATE_LEVELS
 from picard.const.sys import (
@@ -163,15 +170,15 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     selection_updated = QtCore.pyqtSignal(object)
 
     options = [
-        config.Option("persist", "window_state", QtCore.QByteArray()),
-        config.Option("persist", "bottom_splitter_state", QtCore.QByteArray()),
-        config.BoolOption("persist", "window_maximized", False),
-        config.BoolOption("persist", "view_cover_art", True),
-        config.BoolOption("persist", "view_toolbar", True),
-        config.BoolOption("persist", "view_file_browser", False),
-        config.TextOption("persist", "current_directory", ""),
-        config.FloatOption("persist", "mediaplayer_playback_rate", 1.0),
-        config.IntOption("persist", "mediaplayer_volume", 50),
+        Option("persist", "window_state", QtCore.QByteArray()),
+        Option("persist", "bottom_splitter_state", QtCore.QByteArray()),
+        BoolOption("persist", "window_maximized", False),
+        BoolOption("persist", "view_cover_art", True),
+        BoolOption("persist", "view_toolbar", True),
+        BoolOption("persist", "view_file_browser", False),
+        TextOption("persist", "current_directory", ""),
+        FloatOption("persist", "mediaplayer_playback_rate", 1.0),
+        IntOption("persist", "mediaplayer_volume", 50),
     ]
 
     def __init__(self, parent=None, disable_player=False):
@@ -285,6 +292,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             self.register_status_indicator(DesktopStatusIndicator(self.windowHandle()))
 
     def closeEvent(self, event):
+        config = get_config()
         if config.setting["quit_confirmation"] and not self.show_quit_confirmation():
             event.ignore()
             return
@@ -323,6 +331,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         return True
 
     def saveWindowState(self):
+        config = get_config()
         config.persist["window_state"] = self.saveState()
         isMaximized = int(self.windowState()) & QtCore.Qt.WindowMaximized != 0
         self.save_geometry()
@@ -339,6 +348,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     @restore_method
     def restoreWindowState(self):
+        config = get_config()
         self.restoreState(config.persist["window_state"])
         self.restore_geometry()
         if config.persist["window_maximized"]:
@@ -437,6 +447,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     def _on_submit_acoustid(self):
         if self.tagger.use_acoustid:
+            config = get_config()
             if not config.setting["acoustid_apikey"]:
                 msg = QtWidgets.QMessageBox(self)
                 msg.setIcon(QtWidgets.QMessageBox.Information)
@@ -455,6 +466,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                 self.tagger.acoustidmanager.submit()
 
     def create_actions(self):
+        config = get_config()
         self.options_action = QtWidgets.QAction(icontheme.lookup('preferences-desktop'), _("&Options..."), self)
         self.options_action.setMenuRole(QtWidgets.QAction.PreferencesRole)
         self.options_action.triggered.connect(self.show_options)
@@ -685,6 +697,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         if not drives:
             log.warning("CDROM: No CD-ROM drives found - Lookup CD functionality disabled")
         else:
+            config = get_config()
             shortcut_drive = config.setting["cd_lookup_device"].split(",")[0] if len(drives) > 1 else ""
             self.cd_lookup_action.setEnabled(discid is not None)
             self.cd_lookup_menu.clear()
@@ -707,12 +720,15 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             self.cd_lookup_action.setMenu(None)
 
     def toggle_rename_files(self, checked):
+        config = get_config()
         config.setting["rename_files"] = checked
 
     def toggle_move_files(self, checked):
+        config = get_config()
         config.setting["move_files"] = checked
 
     def toggle_tag_saving(self, checked):
+        config = get_config()
         config.setting["dont_write_tags"] = not checked
 
     def get_selected_or_unmatched_files(self):
@@ -792,6 +808,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         menu.addAction(self.about_action)
 
     def update_toolbar_style(self):
+        config = get_config()
         if config.setting["toolbar_show_labels"]:
             self.toolbar.setToolButtonStyle(QtCore.Qt.ToolButtonTextUnderIcon)
             if self.player:
@@ -822,6 +839,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             widget.setFocusPolicy(QtCore.Qt.TabFocus)
             widget.setAttribute(QtCore.Qt.WA_MacShowFocusRect)
 
+        config = get_config()
         for action in config.setting['toolbar_layout']:
             if action == 'cd_lookup_action':
                 add_toolbar_action(self.cd_lookup_action)
@@ -843,6 +861,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         toolbar.hide()  # Hide by default
 
     def create_search_toolbar(self):
+        config = get_config()
         self.search_toolbar = toolbar = self.addToolBar(_("Search"))
         self.search_toolbar_toggle_action = self.search_toolbar.toggleViewAction()
         toolbar.setObjectName("search_toolbar")
@@ -894,6 +913,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         prev_action = None
         current_action = None
         # Setting toolbar widget tab-orders for accessibility
+        config = get_config()
         for action in config.setting['toolbar_layout']:
             if action != 'separator':
                 try:
@@ -941,6 +961,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         """Search for album, artist or track on the MusicBrainz website."""
         text = self.search_edit.text()
         entity = self.search_combo.itemData(self.search_combo.currentIndex())
+        config = get_config()
         self.tagger.search(text, entity,
                            config.setting["use_adv_search_syntax"],
                            mbid_matched_callback=self.search_mbid_found)
@@ -969,6 +990,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         formats.insert(1, _("All files") + " (*)")
         files, _filter = QtWidgets.QFileDialog.getOpenFileNames(self, "", current_directory, ";;".join(formats))
         if files:
+            config = get_config()
             config.persist["current_directory"] = os.path.dirname(files[0])
             self.tagger.add_files(files)
 
@@ -977,6 +999,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         current_directory = find_starting_directory()
 
         dir_list = []
+        config = get_config()
         if not config.setting["toolbar_multiselect"]:
             directory = QtWidgets.QFileDialog.getExistingDirectory(self, "", current_directory)
             if directory:
@@ -1072,6 +1095,8 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             QtGui.QDesktopServices.openUrl(self._openUrl(folder))
 
     def _ensure_fingerprinting_configured(self, callback):
+        config = get_config()
+
         def on_finished(result):
             callback(config.setting['fingerprinting_system'])
         if not config.setting['fingerprinting_system']:
@@ -1265,6 +1290,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             self.file_browser.hide()
 
     def show_password_dialog(self, reply, authenticator):
+        config = get_config()
         if reply.url().host() == config.setting['server_host']:
             ret = QtWidgets.QMessageBox.question(self,
                 _("Authentication Required"),
@@ -1305,6 +1331,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.check_for_update(True)
 
     def auto_update_check(self):
+        config = get_config()
         check_for_updates = config.setting['check_for_updates']
         update_check_days = config.setting['update_check_days']
         last_update_check = config.persist['last_update_check']
@@ -1323,6 +1350,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             self.check_for_update(False)
 
     def check_for_update(self, show_always):
+        config = get_config()
         self.tagger.updatecheckmanager.check_update(
             show_always=show_always,
             update_level=config.setting['update_level'],
@@ -1332,6 +1360,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
 def update_last_check_date(is_success):
     if is_success:
+        config = get_config()
         config.persist['last_update_check'] = datetime.date.today().toordinal()
     else:
         log.debug('The update check was unsuccessful. The last update date will not be changed.')

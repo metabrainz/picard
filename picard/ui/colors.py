@@ -23,7 +23,7 @@ from collections import defaultdict
 
 from PyQt5 import QtGui
 
-from picard import config
+from picard.config import get_config
 
 from picard.ui.theme import theme
 
@@ -123,6 +123,7 @@ class InterfaceColors:
             self.set_color(color_key, color_value)
 
     def load_from_config(self):
+        config = get_config()
         self.set_colors(config.setting[self._config_key])
 
     def get_colors(self):
@@ -154,6 +155,7 @@ class InterfaceColors:
     def save_to_config(self):
         # returns True if user has to be warned about color changes
         changed = False
+        config = get_config()
         conf = config.setting[self._config_key]
         for key, color in self._colors.items():
             if key not in conf:

@@ -38,7 +38,11 @@ from PyQt5 import QtWidgets
 from PyQt5.QtCore import QStandardPaths
 from PyQt5.QtGui import QPalette
 
-from picard import config
+from picard.config import (
+    BoolOption,
+    TextOption,
+    get_config,
+)
 from picard.const import (
     DEFAULT_FILE_NAMING_FORMAT,
     PICARD_URLS,
@@ -74,19 +78,19 @@ class RenamingOptionsPage(OptionsPage):
     HELP_URL = '/config/options_filerenaming.html'
 
     options = [
-        config.BoolOption("setting", "windows_compatibility", True),
-        config.BoolOption("setting", "ascii_filenames", False),
-        config.BoolOption("setting", "rename_files", False),
-        config.TextOption(
+        BoolOption("setting", "windows_compatibility", True),
+        BoolOption("setting", "ascii_filenames", False),
+        BoolOption("setting", "rename_files", False),
+        TextOption(
             "setting",
             "file_naming_format",
             DEFAULT_FILE_NAMING_FORMAT,
         ),
-        config.BoolOption("setting", "move_files", False),
-        config.TextOption("setting", "move_files_to", _default_music_dir),
-        config.BoolOption("setting", "move_additional_files", False),
-        config.TextOption("setting", "move_additional_files_pattern", "*.jpg *.png"),
-        config.BoolOption("setting", "delete_empty_dirs", True),
+        BoolOption("setting", "move_files", False),
+        TextOption("setting", "move_files_to", _default_music_dir),
+        BoolOption("setting", "move_additional_files", False),
+        TextOption("setting", "move_additional_files_pattern", "*.jpg *.png"),
+        BoolOption("setting", "delete_empty_dirs", True),
     ]
 
     def __init__(self, parent=None):
@@ -149,6 +153,7 @@ class RenamingOptionsPage(OptionsPage):
         self.update_examples()
 
     def _example_to_filename(self, file):
+        config = get_config()
         settings = SettingsOverride(config.setting, {
             'ascii_filenames': self.ui.ascii_filenames.isChecked(),
             'file_naming_format': self.ui.file_naming_format.toPlainText(),
@@ -182,6 +187,7 @@ class RenamingOptionsPage(OptionsPage):
         self.ui.example_filename_va.setText(example2)
 
     def load(self):
+        config = get_config()
         if IS_WIN:
             self.ui.windows_compatibility.setChecked(True)
             self.ui.windows_compatibility.setEnabled(False)
@@ -220,6 +226,7 @@ class RenamingOptionsPage(OptionsPage):
                 raise ScriptCheckError("", _("The file naming format must not be empty."))
 
     def save(self):
+        config = get_config()
         config.setting["windows_compatibility"] = self.ui.windows_compatibility.isChecked()
         config.setting["ascii_filenames"] = self.ui.ascii_filenames.isChecked()
         config.setting["rename_files"] = self.ui.rename_files.isChecked()
@@ -269,6 +276,7 @@ class RenamingOptionsPage(OptionsPage):
         return file
 
     def example_2(self):
+        config = get_config()
         file = File("track05.mp3")
         file.state = File.NORMAL
         file.metadata['album'] = "Coup d'État, Volume 1: Ku De Ta / Prologue"

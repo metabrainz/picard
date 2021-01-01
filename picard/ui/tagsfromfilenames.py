@@ -32,7 +32,10 @@ import re
 
 from PyQt5 import QtWidgets
 
-from picard import config
+from picard.config import (
+    TextOption,
+    get_config,
+)
 from picard.script.parser import normalize_tagname
 from picard.util.tags import display_tag_name
 
@@ -98,7 +101,7 @@ class TagsFromFileNamesDialog(PicardDialog):
     autorestore = False
 
     options = [
-        config.TextOption("persist", "tags_from_filenames_format", ""),
+        TextOption("persist", "tags_from_filenames_format", ""),
     ]
 
     def __init__(self, files, parent=None):
@@ -115,6 +118,7 @@ class TagsFromFileNamesDialog(PicardDialog):
             "%artist% - %album%/%tracknumber% %title%",
             "%artist% - %album%/%tracknumber% - %title%",
         ]
+        config = get_config()
         tff_format = config.persist["tags_from_filenames_format"]
         if tff_format not in items:
             selected_index = 0
@@ -158,5 +162,6 @@ class TagsFromFileNamesDialog(PicardDialog):
             for name, values in metadata.items():
                 file.metadata[name] = values
             file.update()
+        config = get_config()
         config.persist["tags_from_filenames_format"] = self.ui.format.currentText()
         super().accept()

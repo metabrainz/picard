@@ -51,9 +51,9 @@ from picard import (
     PICARD_APP_NAME,
     PICARD_ORG_NAME,
     PICARD_VERSION_STR,
-    config,
     log,
 )
+from picard.config import get_config
 from picard.const import (
     CACHE_DIR,
     CACHE_SIZE_IN_BYTES,
@@ -271,6 +271,7 @@ class WebService(QtCore.QObject):
         self.oauth_manager = OAuthManager(self)
         self.set_cache()
         self.setup_proxy()
+        config = get_config()
         self.set_transfer_timeout(config.setting['network_transfer_timeout_seconds'])
         self.manager.finished.connect(self._process_reply)
         self._request_methods = {
@@ -332,6 +333,7 @@ class WebService(QtCore.QObject):
 
     def setup_proxy(self):
         proxy = QtNetwork.QNetworkProxy()
+        config = get_config()
         if config.setting["use_proxy"]:
             if config.setting["proxy_type"] == 'socks':
                 proxy.setType(QtNetwork.QNetworkProxy.Socks5Proxy)

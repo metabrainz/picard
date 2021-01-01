@@ -36,10 +36,8 @@
 from collections import defaultdict
 import os.path
 
-from picard import (
-    config,
-    log,
-)
+from picard import log
+from picard.config import get_config
 from picard.const import USER_PLUGIN_DIR
 from picard.version import (
     Version,
@@ -93,7 +91,8 @@ class ExtensionPoint(object):
             pass
 
     def __iter__(self):
-        enabled_plugins = config.setting["enabled_plugins"] if config.setting else []
+        config = get_config()
+        enabled_plugins = config.setting["enabled_plugins"] if config else []
         for name in self.__dict:
             if name is None or name in enabled_plugins:
                 for item in self.__dict[name]:

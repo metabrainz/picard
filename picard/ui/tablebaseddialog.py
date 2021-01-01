@@ -33,10 +33,8 @@ from PyQt5 import (
 )
 from PyQt5.QtCore import pyqtSignal
 
-from picard import (
-    config,
-    log,
-)
+from picard import log
+from picard.config import get_config
 from picard.util import (
     natsort,
     restore_method,
@@ -199,6 +197,7 @@ class TableBasedDialog(PicardDialog):
     @restore_method
     def restore_table_header_state(self):
         header = self.table.horizontalHeader()
+        config = get_config()
         state = config.persist[self.dialog_header_state]
         if state:
             header.restoreState(state)
@@ -211,5 +210,6 @@ class TableBasedDialog(PicardDialog):
 
     def save_table_header_state(self):
         state = self.table.horizontalHeader().saveState()
+        config = get_config()
         config.persist[self.dialog_header_state] = state
         log.debug("save_state: %s", self.dialog_header_state)

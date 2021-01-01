@@ -33,10 +33,8 @@ from PyQt5.QtCore import (
     QUrlQuery,
 )
 
-from picard import (
-    config,
-    log,
-)
+from picard import log
+from picard.config import get_config
 from picard.const import (
     MUSICBRAINZ_OAUTH_CLIENT_ID,
     MUSICBRAINZ_OAUTH_CLIENT_SECRET,
@@ -51,8 +49,16 @@ class OAuthManager(object):
 
     def __init__(self, webservice):
         self.webservice = webservice
-        self.setting = config.setting
-        self.persist = config.persist
+
+    @property
+    def setting(self):
+        config = get_config()
+        return config.setting
+
+    @property
+    def persist(self):
+        config = get_config()
+        return config.persist
 
     @property
     def host(self):

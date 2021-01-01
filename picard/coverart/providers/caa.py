@@ -45,9 +45,12 @@ from PyQt5.QtNetwork import (
     QNetworkRequest,
 )
 
-from picard import (
-    config,
-    log,
+from picard import log
+from picard.config import (
+    BoolOption,
+    IntOption,
+    ListOption,
+    get_config,
 )
 from picard.const import (
     CAA_HOST,
@@ -433,13 +436,13 @@ class ProviderOptionsCaa(ProviderOptions):
     HELP_URL = '/config/options_cover_art_archive.html'
 
     options = [
-        config.BoolOption("setting", "caa_save_single_front_image", False),
-        config.BoolOption("setting", "caa_approved_only", False),
-        config.BoolOption("setting", "caa_image_type_as_filename", False),
-        config.IntOption("setting", "caa_image_size", _CAA_IMAGE_SIZE_DEFAULT),
-        config.ListOption("setting", "caa_image_types", _CAA_IMAGE_TYPE_DEFAULT_INCLUDE),
-        config.BoolOption("setting", "caa_restrict_image_types", True),
-        config.ListOption("setting", "caa_image_types_to_omit", _CAA_IMAGE_TYPE_DEFAULT_EXCLUDE),
+        BoolOption("setting", "caa_save_single_front_image", False),
+        BoolOption("setting", "caa_approved_only", False),
+        BoolOption("setting", "caa_image_type_as_filename", False),
+        IntOption("setting", "caa_image_size", _CAA_IMAGE_SIZE_DEFAULT),
+        ListOption("setting", "caa_image_types", _CAA_IMAGE_TYPE_DEFAULT_INCLUDE),
+        BoolOption("setting", "caa_restrict_image_types", True),
+        ListOption("setting", "caa_image_types_to_omit", _CAA_IMAGE_TYPE_DEFAULT_EXCLUDE),
     ]
 
     _options_ui = Ui_CaaOptions
@@ -459,6 +462,7 @@ class ProviderOptionsCaa(ProviderOptions):
         for item_id, item in _CAA_THUMBNAIL_SIZE_MAP.items():
             self.ui.cb_image_size.addItem(_(item.label), userData=item_id)
 
+        config = get_config()
         size = config.setting["caa_image_size"]
         index = self.ui.cb_image_size.findData(size)
         if index < 0:
@@ -475,6 +479,7 @@ class ProviderOptionsCaa(ProviderOptions):
         self.update_caa_types()
 
     def save(self):
+        config = get_config()
         size = self.ui.cb_image_size.currentData()
         config.setting["caa_image_size"] = size
         config.setting["caa_save_single_front_image"] = \
@@ -514,6 +519,7 @@ class CoverArtProviderCaa(CoverArtProvider):
 
     def __init__(self, coverart):
         super().__init__(coverart)
+        config = get_config()
         self.caa_types = list(map(str.lower, config.setting["caa_image_types"]))
         self.caa_types_to_omit = list(map(str.lower, config.setting["caa_image_types_to_omit"]))
         self.len_caa_types = len(self.caa_types)
@@ -603,6 +609,7 @@ class CoverArtProviderCaa(CoverArtProvider):
             if self.restrict_types:
                 log.debug('CAA types: included: %s, excluded: %s' % (self.caa_types, self.caa_types_to_omit,))
             try:
+                config = get_config()
                 for image in data["images"]:
                     if config.setting["caa_approved_only"] and not image["approved"]:
                         continue

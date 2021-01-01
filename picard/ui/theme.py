@@ -24,10 +24,8 @@ from PyQt5 import (
     QtGui,
 )
 
-from picard import (
-    config,
-    log,
-)
+from picard import log
+from picard.config import get_config
 from picard.const.sys import (
     IS_HAIKU,
     IS_MACOS,
@@ -59,6 +57,7 @@ class BaseTheme:
         self._dark_theme = False
 
     def setup(self, app):
+        config = get_config()
         # Use the new fusion style from PyQt5 for a modern and consistent look
         # across all OSes.
         if not IS_MACOS and not IS_HAIKU and not config.setting['use_system_theme']:
