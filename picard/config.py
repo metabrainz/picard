@@ -40,7 +40,6 @@ from picard import (
     PICARD_VERSION,
     log,
 )
-from picard.util import LockableObject
 from picard.version import Version
 
 
@@ -48,7 +47,7 @@ class ConfigUpgradeError(Exception):
     pass
 
 
-class ConfigSection(LockableObject):
+class ConfigSection(QtCore.QObject):
 
     """Configuration section."""
 
@@ -74,24 +73,17 @@ class ConfigSection(LockableObject):
         return self.value(name, opt, opt.default)
 
     def __setitem__(self, name, value):
-        self.lock_for_write()
-        try:
-            key = self.key(name)
-            self.__qt_config.setValue(key, value)
-        finally:
-            self.unlock()
+        key = self.key(name)
+        self.__qt_config.setValue(key, value)
 
     def __contains__(self, name):
         return self.__qt_config.contains(self.key(name))
 
     def remove(self, name):
-        self.lock_for_write()
-        try:
-            if name in self:
-                key = self.key(name)
-                self.__qt_config.remove(key)
-        finally:
-            self.unlock()
+        key = self.key(name)
+        config = self.__qt_config
+        if config.contains(key):
+            config.remove(key)
 
     def raw_value(self, name, qtype=None):
         """Return an option value without any type conversion."""
@@ -105,15 +97,12 @@ class ConfigSection(LockableObject):
     def value(self, name, option_type, default=None):
         """Return an option value converted to the given Option type."""
         if name in self:
-            self.lock_for_read()
             try:
                 value = self.raw_value(name, qtype=option_type.qtype)
                 value = option_type.convert(value)
             except Exception as why:
                 log.error('Cannot read %s value: %s', self.key(name), why, exc_info=True)
                 value = default
-            finally:
-                self.unlock()
             return value
         return default
 
