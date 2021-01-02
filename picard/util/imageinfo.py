@@ -24,7 +24,7 @@
 from io import BytesIO
 import struct
 
-from mutagen.tak import _LSBBitReader as LSBBitReader
+from picard.util.bitreader import LSBBitReader
 
 
 class IdentificationError(Exception):
