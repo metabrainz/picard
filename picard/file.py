@@ -379,7 +379,7 @@ class File(QtCore.QObject, Item):
             else:
                 self.orig_metadata.update(self.new_metadata)
             # After saving deleted tags should no longer be marked deleted
-            self.new_metadata.clear_deleted()
+            self.metadata.clear_deleted()
             self.orig_metadata.clear_deleted()
             self.orig_metadata.length = length
             self.orig_metadata['~length'] = format_time(length)
