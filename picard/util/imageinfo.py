@@ -147,6 +147,50 @@ def identify(data):
         mime = 'image/webp'
         extension = '.webp'
 
+    # TIFF
+    elif data[:4] == b'II*\x00' or data[:4] == b'MM\x00*':
+        TIFF_BYTE_ORDER_LSB = b'II'
+        TIFF_BYTE_ORDER_MSB = b'MM'
+        TIFF_TAG_IMAGE_LENGTH = 257
+        TIFF_TAG_IMAGE_WIDTH = 256
+        TIFF_TYPE_SHORT = 3
+        TIFF_TYPE_LONG = 4
+
+        def read_value(type, data):
+            if type == TIFF_TYPE_LONG:
+                value = data[:4]
+                format = order + 'I'
+            elif type == TIFF_TYPE_SHORT:
+                value = data[:2]
+                format = order + 'H'
+            return struct.unpack(format, value)[0]
+
+        byte_order = data[:2]
+        if byte_order == TIFF_BYTE_ORDER_LSB:
+            order = '<'
+        elif byte_order == TIFF_BYTE_ORDER_MSB:
+            order = '>'
+        try:
+            offset, = struct.unpack(order + 'I', data[4:8])
+            entry_count, = struct.unpack(order + 'H', data[offset:offset + 2])
+            pos = offset + 2
+            for i in range(entry_count):
+                field = data[pos:pos + 12]
+                tag, type = struct.unpack(order + 'HH', field[:4])
+                if tag == TIFF_TAG_IMAGE_WIDTH:
+                    w = read_value(type, field[8:12])
+                elif tag == TIFF_TAG_IMAGE_LENGTH:
+                    h = read_value(type, field[8:12])
+                if h > -1 and w > -1:  # Found both width and height, abort
+                    break
+                pos += 12
+            else:
+                w, h = 0, 0
+        except struct.error:
+            w, h = 0, 0
+        mime = 'image/tiff'
+        extension = '.tiff'
+
     # PDF
     elif data[:4] == b'%PDF':
         h, w = 0, 0

@@ -88,6 +88,15 @@ class IdentifyTest(PicardTestCase):
         self.assertRaises(imageinfo.NotEnoughData, imageinfo.identify, b'RIFF\x00\x00\x00\x00WEBPVP8L')
         self.assertRaises(imageinfo.NotEnoughData, imageinfo.identify, b'RIFF\x00\x00\x00\x00WEBPVP8X')
 
+    def test_tiff(self):
+        file = get_test_data_path('mb.tiff')
+
+        with open(file, 'rb') as f:
+            self.assertEqual(
+                imageinfo.identify(f.read()),
+                (140, 96, 'image/tiff', '.tiff', 12509)
+            )
+
     def test_pdf(self):
         file = get_test_data_path('mb.pdf')
 
