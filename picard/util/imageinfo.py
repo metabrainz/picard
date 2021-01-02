@@ -117,8 +117,17 @@ def identify(data):
         format = data[12:16]
         # Simple File Format (Lossy)
         if format == b'VP8 ':
-            # TODO: Implement reading width and height
-            h, w = 0, 0
+            # See https://tools.ietf.org/html/rfc6386#section-9.1
+            index = data.find(b'\x9d\x01\x2a')
+            if index != -1:
+                if len(data) < index + 7:
+                    raise NotEnoughData('Not enough data for WebP VP8')
+                w, h = struct.unpack('<HH', data[index + 3:index + 7])
+                # Width and height are encoded as 14 bit integers, ignore the first 2 bits
+                w &= 0x3fff
+                h &= 0x3fff
+            else:
+                w, h = 0, 0
         # Simple File Format (Lossless)
         elif format == b'VP8L':
             if len(data) < 25:
