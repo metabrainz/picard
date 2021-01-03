@@ -193,6 +193,14 @@ class IdentifyWebP(IdentifyImageType):
             self.h, self.w = 0, 0
 
 
+TIFF_BYTE_ORDER_LSB = b'II'
+TIFF_BYTE_ORDER_MSB = b'MM'
+TIFF_TAG_IMAGE_LENGTH = 257
+TIFF_TAG_IMAGE_WIDTH = 256
+TIFF_TYPE_SHORT = 3
+TIFF_TYPE_LONG = 4
+
+
 class IdentifyTiff(IdentifyImageType):
     mime = 'image/tiff'
     extension = '.tiff'
@@ -201,25 +209,6 @@ class IdentifyTiff(IdentifyImageType):
         return self.data[:4] == b'II*\x00' or self.data[:4] == b'MM\x00*'
 
     def _read(self):
-
-        TIFF_BYTE_ORDER_LSB = b'II'
-        TIFF_BYTE_ORDER_MSB = b'MM'
-        TIFF_TAG_IMAGE_LENGTH = 257
-        TIFF_TAG_IMAGE_WIDTH = 256
-        TIFF_TYPE_SHORT = 3
-        TIFF_TYPE_LONG = 4
-
-        def _tiff_read_value(type, order, data):
-            if type == TIFF_TYPE_LONG:
-                value = data[:4]
-                format = order + 'I'
-            elif type == TIFF_TYPE_SHORT:
-                value = data[:2]
-                format = order + 'H'
-            else:
-                raise UnexpectedError('TIFF: unexpected field type %s' % type)
-            return struct.unpack(format, value)[0]
-
         # See https://www.adobe.io/content/dam/udp/en/open/standards/tiff/TIFF6.pdf
         data = self.data
         self.w, self.h = 0, 0
@@ -236,16 +225,28 @@ class IdentifyTiff(IdentifyImageType):
             pos = offset + 2
             for i in range(entry_count):
                 field = data[pos:pos + 12]
-                tag, type = struct.unpack(order + 'HH', field[:4])
+                tag, tiff_type = struct.unpack(order + 'HH', field[:4])
                 if tag == TIFF_TAG_IMAGE_WIDTH:
-                    self.w = _tiff_read_value(type, order, field[8:12])
+                    self.w = self._read_value(tiff_type, order, field[8:12])
                 elif tag == TIFF_TAG_IMAGE_LENGTH:
-                    self.h = _tiff_read_value(type, order, field[8:12])
+                    self.h = self._read_value(tiff_type, order, field[8:12])
                 if self.w and self.h:  # Found both width and height, abort
                     break
                 pos += 12
         except struct.error:
             pass
+
+    @staticmethod
+    def _read_value(tiff_type, order, data):
+        if tiff_type == TIFF_TYPE_LONG:
+            value = data[:4]
+            struct_format = order + 'I'
+        elif tiff_type == TIFF_TYPE_SHORT:
+            value = data[:2]
+            struct_format = order + 'H'
+        else:
+            raise UnexpectedError('TIFF: unexpected field type %s' % tiff_type)
+        return struct.unpack(struct_format, value)[0]
 
 
 def identify(data):
