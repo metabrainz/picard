@@ -228,10 +228,12 @@ class IdentifyTiff(IdentifyImageType):
                 tag, tiff_type = struct.unpack(order + 'HH', field[:4])
                 if tag == TIFF_TAG_IMAGE_WIDTH:
                     self.w = self._read_value(tiff_type, order, field[8:12])
+                    if self.h:
+                        return
                 elif tag == TIFF_TAG_IMAGE_LENGTH:
                     self.h = self._read_value(tiff_type, order, field[8:12])
-                if self.w and self.h:  # Found both width and height, abort
-                    break
+                    if self.w:
+                        return
                 pos += 12
         except struct.error:
             pass
