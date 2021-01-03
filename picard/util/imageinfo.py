@@ -83,13 +83,21 @@ class IdentifyJPEG(IdentifyImageType):
         jpeg.read(2)
         b = jpeg.read(1)
         try:
+            # https://en.wikibooks.org/wiki/JPEG_-_Idea_and_Practice/The_header_part
+            # https://www.disktuna.com/list-of-jpeg-markers/
+            # https://de.wikipedia.org/wiki/JPEG_File_Interchange_Format
+            SOF_markers = {
+                0xC0, 0xC1, 0xC2, 0xC3,
+                0xC5, 0xC6, 0xC7,
+                0xC9, 0xCA, 0xCB,
+                0xCD, 0xCE, 0xCF
+            }
             while b and ord(b) != 0xDA:  # Start Of Scan (SOS)
                 while ord(b) != 0xFF:
                     b = jpeg.read(1)
                 while ord(b) == 0xFF:
                     b = jpeg.read(1)
-                if ord(b) in (0xC0, 0xC1, 0xC2, 0xC5, 0xC6, 0xC7,
-                                0xC9, 0xCA, 0xCB, 0xCD, 0xCE, 0xCF):
+                if ord(b) in SOF_markers:
                     jpeg.read(2)  # parameter length (2 bytes)
                     jpeg.read(1)  # data precision (1 byte)
                     self.h, self.w = struct.unpack('>HH', jpeg.read(4))
