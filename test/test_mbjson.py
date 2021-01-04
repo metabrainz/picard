@@ -5,7 +5,7 @@
 # Copyright (C) 2017 Sambhav Kothari
 # Copyright (C) 2017, 2019 Laurent Monin
 # Copyright (C) 2018 Wieland Hoffmann
-# Copyright (C) 2018-2020 Philipp Wolfer
+# Copyright (C) 2018-2021 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -149,6 +149,30 @@ class ReleaseTest(MBJSONTest):
         formats = media_formats_from_node(self.json_doc['media'])
         self.assertEqual(formats, '12" Vinyl')
 
+    def test_originaldate(self):
+        metadata = Metadata()
+        release_group_to_metadata(self.json_doc['release-group'], metadata)
+        release_to_metadata(self.json_doc, metadata)
+        self.assertEqual('1973-03-24', metadata['originaldate'])
+        # Track 1 has a custom first release date
+        track1 = self.json_doc['media'][0]['tracks'][0]
+        recording_metadata = Metadata(metadata)
+        recording_to_metadata(track1['recording'], recording_metadata)
+        self.assertEqual('1972-02-23', recording_metadata['originaldate'])
+        self.assertEqual('1972', recording_metadata['originalyear'])
+        # Track 2 has the same first release date set as the release
+        track2 = self.json_doc['media'][0]['tracks'][1]
+        recording_metadata = Metadata(metadata)
+        recording_to_metadata(track2['recording'], recording_metadata)
+        self.assertEqual('1973-03-24', recording_metadata['originaldate'])
+        self.assertEqual('1973', recording_metadata['originalyear'])
+        # Track 3 has no first release date set
+        track2 = self.json_doc['media'][0]['tracks'][2]
+        recording_metadata = Metadata(metadata)
+        recording_to_metadata(track2['recording'], recording_metadata)
+        self.assertEqual('1973-03-24', recording_metadata['originaldate'])
+        self.assertEqual('1973', recording_metadata['originalyear'])
+
 
 class NullReleaseTest(MBJSONTest):
 
@@ -190,6 +214,9 @@ class RecordingTest(MBJSONTest):
         self.assertEqual(m['~artists_sort'], 'Sheeran, Ed')
         self.assertEqual(m['~length'], '4:41')
         self.assertEqual(m['~recordingtitle'], 'Thinking Out Loud')
+        self.assertEqual(m['~recordingoriginaldate'], '2014-06-20')
+        self.assertEqual(m['originaldate'], '2014-06-20')
+        self.assertEqual(m['originalyear'], '2014')
         self.assertEqual(t.genres, {
             'blue-eyed soul': 1,
             'pop': 3})
