@@ -1,6 +1,9 @@
 {
-    "disambiguation":"",
     "id":"cb2cc207-8125-445c-9ef9-6ea44eee959a",
+    "title": "Thinking Out Loud",
+    "length": 281000,
+    "first-release-date": "2014-06-20",
+    "disambiguation":"",
     "aliases":[
         {
             "type":null,
@@ -672,7 +675,5 @@
     }, {
       "count": 3,
       "name": "pop"
-    }],
-    "length":281000,
-    "title":"Thinking Out Loud"
+    }]
 }
