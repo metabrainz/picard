@@ -251,6 +251,16 @@ class IdentifyTiff(IdentifyImageType):
         return struct.unpack(struct_format, value)[0]
 
 
+knownimagetypes = (
+    IdentifyJPEG,
+    IdentifyPNG,
+    IdentifyPDF,
+    IdentifyGIF,
+    IdentifyWebP,
+    IdentifyTiff,
+)
+
+
 def identify(data):
     """Parse data for jpg, gif, png, webp, tiff and pdf metadata
     If successfully recognized, it returns a tuple with:
@@ -265,17 +275,16 @@ def identify(data):
         - `UnexpectedError` if unhandled cases (shouldn't happen).
         - `IdentificationError` is parent class for all preceding exceptions.
     """
-    knownimagetypes = (
-        IdentifyJPEG,
-        IdentifyPNG,
-        IdentifyPDF,
-        IdentifyGIF,
-        IdentifyWebP,
-        IdentifyTiff,
-    )
     for cls in knownimagetypes:
         obj = cls(data)
         if obj.match():
             return obj.read()
 
     raise UnrecognizedFormat('Unrecognized image data')
+
+
+def supports_mime_type(mime):
+    for cls in knownimagetypes:
+        if cls.mime == mime:
+            return True
+    return False

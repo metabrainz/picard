@@ -123,3 +123,18 @@ class IdentifyTest(PicardTestCase):
                           imageinfo.identify, data)
         self.assertRaises(imageinfo.UnrecognizedFormat,
                           imageinfo.identify, data)
+
+
+class SupportsMimeTypeTest(PicardTestCase):
+
+    def test_supported_mime_types(self):
+        self.assertTrue(imageinfo.supports_mime_type('application/pdf'))
+        self.assertTrue(imageinfo.supports_mime_type('image/gif'))
+        self.assertTrue(imageinfo.supports_mime_type('image/jpeg'))
+        self.assertTrue(imageinfo.supports_mime_type('image/png'))
+        self.assertTrue(imageinfo.supports_mime_type('image/tiff'))
+        self.assertTrue(imageinfo.supports_mime_type('image/webp'))
+
+    def test_unsupported_mime_types(self):
+        self.assertFalse(imageinfo.supports_mime_type('application/octet-stream'))
+        self.assertFalse(imageinfo.supports_mime_type('text/html'))
