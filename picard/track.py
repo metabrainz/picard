@@ -427,6 +427,9 @@ class NonAlbumTrack(Track):
     def _customize_metadata(self):
         super()._customize_metadata()
         self.metadata['album'] = self.album.metadata['album']
+        if self.metadata['~recordingoriginaldate']:
+            self.metadata['originaldate'] = self.metadata['~recordingoriginaldate']
+            self.metadata['originalyear'] = self.metadata['originaldate'][:4]
 
     def run_when_loaded(self, func):
         if self.loaded:

@@ -5,7 +5,7 @@
 # Copyright (C) 2017 David Mandelberg
 # Copyright (C) 2017-2018 Sambhav Kothari
 # Copyright (C) 2017-2019 Laurent Monin
-# Copyright (C) 2018-2020 Philipp Wolfer
+# Copyright (C) 2018-2021 Philipp Wolfer
 # Copyright (C) 2019 Michael Wiencek
 #
 # This program is free software; you can redistribute it and/or
@@ -73,6 +73,7 @@ _MEDIUM_TO_METADATA = {
 
 _RECORDING_TO_METADATA = {
     'disambiguation': '~recordingcomment',
+    'first-release-date': '~recordingoriginaldate',
     'title': 'title',
 }
 
@@ -93,7 +94,7 @@ _ARTIST_TO_METADATA = {
 
 _RELEASE_GROUP_TO_METADATA = {
     'disambiguation': '~releasegroupcomment',
-    'first-release-date': 'originaldate',
+    'first-release-date': '~releaseoriginaldate',
     'title': '~releasegroup',
 }
 
@@ -494,7 +495,8 @@ def release_group_to_metadata(node, m, release_group=None):
         elif key == 'secondary-types':
             add_secondary_release_types(value, m)
     add_genres_from_node(node, release_group)
-    if m['originaldate']:
+    if m['~releaseoriginaldate']:
+        m['originaldate'] = m['~releaseoriginaldate']
         m['originalyear'] = m['originaldate'][:4]
     m['releasetype'] = m.getall('~primaryreleasetype') + m.getall('~secondaryreleasetype')
 
