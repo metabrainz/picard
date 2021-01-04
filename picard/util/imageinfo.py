@@ -68,6 +68,10 @@ class IdentifyImageType:
     def _read(self):
         raise NotImplementedError
 
+    @classmethod
+    def all_extensions(cls):
+        return [cls.extension]
+
 
 class IdentifyJPEG(IdentifyImageType):
     mime = 'image/jpeg'
@@ -76,6 +80,10 @@ class IdentifyJPEG(IdentifyImageType):
     def match(self):
         # http://en.wikipedia.org/wiki/JPEG
         return self.data[:2] == b'\xFF\xD8'  # Start Of Image (SOI) marker
+
+    @classmethod
+    def all_extensions(cls):
+        return [cls.extension, '.jpeg']
 
     def _read(self):
         jpeg = BytesIO(self.data)
@@ -208,6 +216,10 @@ class IdentifyTiff(IdentifyImageType):
     def match(self):
         return self.data[:4] == b'II*\x00' or self.data[:4] == b'MM\x00*'
 
+    @classmethod
+    def all_extensions(cls):
+        return [cls.extension, '.tif']
+
     def _read(self):
         # See https://www.adobe.io/content/dam/udp/en/open/standards/tiff/TIFF6.pdf
         data = self.data
@@ -288,3 +300,8 @@ def supports_mime_type(mime):
         if cls.mime == mime:
             return True
     return False
+
+
+def get_supported_extensions():
+    for cls in knownimagetypes:
+        yield from cls.all_extensions()

@@ -138,3 +138,16 @@ class SupportsMimeTypeTest(PicardTestCase):
     def test_unsupported_mime_types(self):
         self.assertFalse(imageinfo.supports_mime_type('application/octet-stream'))
         self.assertFalse(imageinfo.supports_mime_type('text/html'))
+
+
+class GetSupportedExtensionsTest(PicardTestCase):
+
+    def test_supported_extensions(self):
+        extensions = list(imageinfo.get_supported_extensions())
+        self.assertIn('.jpeg', extensions)
+        self.assertIn('.jpg', extensions)
+        self.assertIn('.pdf', extensions)
+        self.assertIn('.png', extensions)
+        self.assertIn('.tif', extensions)
+        self.assertIn('.tiff', extensions)
+        self.assertIn('.webp', extensions)
