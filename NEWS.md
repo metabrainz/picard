@@ -1,3 +1,13 @@
+# Version 2.5.6 - 2021-01-05
+
+## Bugfixes
+
+- [PICARD-1943](https://tickets.metabrainz.org/browse/PICARD-1943) - App does not start on macOS 10.12 / 10.13, Gatekeeper reports it as damaged
+- [PICARD-2074](https://tickets.metabrainz.org/browse/PICARD-2074) - Crash when trying to add new tags
+- [PICARD-2083](https://tickets.metabrainz.org/browse/PICARD-2083) - Snap version: path to fpcalc gets invalid after update
+- [PICARD-2087](https://tickets.metabrainz.org/browse/PICARD-2087) - Adding new tags crashes Picard with Qt < 5.10
+
+
 # Version 2.5.5 - 2020-12-17
 
 ## Bugfixes
