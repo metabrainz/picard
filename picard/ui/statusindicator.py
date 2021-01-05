@@ -120,7 +120,7 @@ elif not (IS_MACOS or IS_HAIKU):
                 QObject.__init__(self)
                 self._bus = bus
                 self._app_uri = 'application://' + app_id
-                self._path = '/'
+                self._path = '/com/canonical/unity/launcherentry/1'
                 self._progress = 0
                 self._visible = False
                 self._dbus_adaptor = UnityLauncherEntryAdaptor(self)
