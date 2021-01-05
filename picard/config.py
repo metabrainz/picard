@@ -3,7 +3,7 @@
 # Picard, the next-generation MusicBrainz tagger
 #
 # Copyright (C) 2006-2007, 2014, 2017 Lukáš Lalinský
-# Copyright (C) 2008, 2014, 2019-2020 Philipp Wolfer
+# Copyright (C) 2008, 2014, 2019-2021 Philipp Wolfer
 # Copyright (C) 2012, 2017 Wieland Hoffmann
 # Copyright (C) 2012-2014 Michael Wiencek
 # Copyright (C) 2013-2016, 2018-2019 Laurent Monin
@@ -195,6 +195,11 @@ class Config(QtCore.QSettings):
 
     def run_upgrade_hooks(self, outputfunc=None):
         """Executes registered functions to upgrade config version to the latest"""
+        if self._version == Version(0, 0, 0, 'dev', 0):
+            # This is a freshly created config
+            self._version = PICARD_VERSION
+            self._write_version()
+            return
         if not self._upgrade_hooks:
             return
         if self._version >= PICARD_VERSION:
